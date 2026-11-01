@@ -1,0 +1,25 @@
+id: eva_foam_perforated
+name: Perforated closed-cell EVA, ~35 Shore C, 6 mm
+category: foams
+generic: true
+trade_names: []
+supplier_examples:
+- Seattle Fabrics
+- Extremtextil
+- custom die-perforation by foam converter
+properties:
+  density_kg_m3: 55
+  hardness_shore_c: 35
+  compression_25pct_kpa: 35
+  compression_set_pct: 20
+  closed_cell: true
+  open_area_pct: 15
+  thickness_typical_mm: 6
+confidence: estimate
+sources:
+- Supplier EVA data scaled for ~15% open area (6 mm holes on 15 mm pitch)
+cost_usd:
+  value: 28
+  per: m2
+notes: 'ESTIMATE: effective density and stiffness reduced in proportion to open area. Breathable back-panel and
+  shoulder-strap comfort layer under spacer mesh; ~15% lighter than solid EVA.'

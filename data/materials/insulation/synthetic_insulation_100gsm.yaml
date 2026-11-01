@@ -1,0 +1,24 @@
+id: synthetic_insulation_100gsm
+name: Synthetic insulation ~100 gsm (continuous-filament / high-loft class)
+category: insulation
+generic: true
+trade_names:
+- Climashield APEX 3.6 oz
+- PrimaLoft Gold 100 - benchmarks
+supplier_examples:
+- Discovery Trekking Outfitters
+- Ripstop by the Roll
+- Extremtextil
+properties:
+  areal_density_gsm: 100
+  thickness_mm: 13
+  thermal_resistance_clo: 1.5
+  wet_warmth_retention_pct: 90
+  quietness_1to5: 5
+confidence: estimate
+sources:
+- Manufacturer published weights; clo estimated (ASTM F1868 typical)
+cost_usd:
+  value: 14
+  per: yd
+notes: ESTIMATE. Glassing parka / late-season puffy in wet climates where down risk is high.

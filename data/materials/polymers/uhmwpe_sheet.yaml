@@ -1,0 +1,29 @@
+id: uhmwpe_sheet
+name: UHMWPE sheet
+category: polymers
+generic: true
+trade_names:
+- e.g. Tivar 1000-class
+supplier_examples:
+- McMaster-Carr
+- US Plastic Corp
+- Seattle Fabrics
+properties:
+  density_kg_m3: 935
+  youngs_modulus_mpa: 690
+  poisson: 0.46
+  yield_strength_mpa: 21
+  elongation_pct: 350
+  brittle_temp_c: -200
+  max_service_temp_c: 80
+  coefficient_of_friction: 0.15
+confidence: handbook
+sources:
+- 'MatWeb: UHMWPE, generic sheet'
+- Quadrant/Mitsubishi Tivar 1000 product data (typical)
+cost_usd:
+  value: 12
+  per: kg
+notes: Lower stiffness than HDPE but best abrasion and impact resistance of any thermoplastic; very low friction
+  (dynamic COF ~0.10-0.20). Use for wear strips, stay pockets, load-shelf skids. Heavier per stiffness than HDPE;
+  HDPE is the framesheet pick.

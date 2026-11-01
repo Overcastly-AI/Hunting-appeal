@@ -1,0 +1,25 @@
+id: active_insulation_alpha_class
+name: Active insulation, lofted knit (Polartec Alpha Direct class) ~90-120 gsm
+category: insulation
+generic: false
+trade_names:
+- Polartec Alpha Direct (benchmark)
+supplier_examples:
+- Discovery Trekking Outfitters
+- Ripstop by the Roll
+- Extremtextil
+properties:
+  areal_density_gsm: 100
+  thickness_mm: 6
+  air_permeability_cfm: 300
+  thermal_resistance_clo: 0.9
+  stretch_pct: 10
+  quietness_1to5: 5
+confidence: estimate
+sources:
+- Polartec Alpha Direct published weights (approx. 90-120 gsm)
+cost_usd:
+  value: 28
+  per: yd
+notes: 'ESTIMATE. Knit-stabilized loft that tolerates very air-permeable shells: active mid layer worn while hiking
+  in cold. Snags; needs a liner or open-weave shell.'

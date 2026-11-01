@@ -1,0 +1,29 @@
+id: nylon_webbing_38mm
+name: Nylon webbing 38 mm (1.5 in), heavyweight
+category: webbing
+generic: true
+trade_names: []
+supplier_examples:
+- Strapworks
+- Rockywoods
+- Seattle Fabrics
+- Ripstop by the Roll
+properties:
+  width_mm: 38
+  breaking_strength_n: 26688
+  mass_g_m: 28
+  fiber: nylon 6,6
+  weave: flat twill/plain, heavyweight
+  elongation_at_break_pct: 25
+  quietness_1to5: 5
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+confidence: estimate
+sources:
+- PIA-W-4088 / MIL-W-4088 and MIL-W-17337 webbing families (exact Type/Class sets minimum strength; confirm on purchase)
+- Strapworks / Rockywoods published breaking strengths for heavyweight webbing
+cost_usd:
+  value: 1.0
+  per: m
+notes: 'ESTIMATE: typical vendor rating ~6000 lbf for heavyweight 38 mm nylon 6,6. Buy mil-spec Type/Class with
+  a cert to make this a datasheet value. Nylon: higher strength and energy absorption but stretches 2-4% more when
+  wet; good for hipbelt and harness where shock absorption helps. Seal cut ends with a hot knife.'

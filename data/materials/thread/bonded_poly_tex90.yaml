@@ -1,0 +1,27 @@
+id: bonded_poly_tex90
+name: Bonded polyester thread, Tex 90 (#92)
+category: thread
+generic: true
+trade_names:
+- A&E Anefil Poly / Coats Dabond / Gütermann Mara-class bonded polyester
+supplier_examples:
+- Wawak
+- Rockywoods
+- Ripstop by the Roll
+- Seattle Fabrics
+properties:
+  tex: 90
+  breaking_strength_n: 58
+  mass_g_m: 0.09
+  elongation_at_break_pct: 18
+  fiber: bonded continuous-filament polyester
+  ticket_number: '92'
+confidence: estimate
+sources:
+- A&E (American & Efird) thread size/strength charts (ASTM D204 single-end breaking strength)
+- V-T-285 (polyester) / V-T-295 (nylon) federal thread spec families
+cost_usd:
+  value: 0.0061
+  per: m
+notes: 'Tex = g per 1000 m. Typical minimum single-end breaking strength for bonded polyester at this size. Polyester:
+  better UV and lower shrink/stretch; preferred for exposed seams and seam-taped garments.'

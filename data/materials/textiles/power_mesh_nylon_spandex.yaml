@@ -1,0 +1,25 @@
+id: power_mesh_nylon_spandex
+name: Power mesh, nylon/spandex ~80/20
+category: textiles
+generic: true
+trade_names: []
+supplier_examples:
+- Seattle Fabrics
+- Rockywoods
+- Extremtextil
+properties:
+  areal_density_gsm: 170
+  fiber: nylon/elastane
+  weave: warp-knit mesh
+  stretch_pct: 150
+  recovery_pct: 95
+  quietness_1to5: 5
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+confidence: estimate
+sources:
+- Supplier listings for nylon/spandex power mesh (150-200 gsm)
+cost_usd:
+  value: 10
+  per: yd
+notes: ESTIMATE. Stretch side/hipbelt/water-bottle pockets. Snags on brush; spandex loses recovery with UV and heat
+  over seasons.

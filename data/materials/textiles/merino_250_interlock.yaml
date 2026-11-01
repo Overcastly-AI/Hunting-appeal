@@ -1,0 +1,25 @@
+id: merino_250_interlock
+name: Merino wool interlock 250 gsm (19.5 um)
+category: textiles
+generic: true
+trade_names: []
+supplier_examples:
+- The Fabric Store
+- Merino mill direct (MOQ)
+properties:
+  areal_density_gsm: 250
+  fiber: 100% merino wool
+  fiber_diameter_um: 19.5
+  weave: interlock
+  stretch_pct: 35
+  abrasion_cycles_martindale: 20000
+  odor_resistance: high
+  quietness_1to5: 5
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+confidence: estimate
+sources:
+- Woolmark / supplier specs for 250 gsm merino interlock
+cost_usd:
+  value: 32
+  per: yd
+notes: ESTIMATE. Late-season base / light mid layer (hoodie, quarter-zip). Slow to dry when soaked.

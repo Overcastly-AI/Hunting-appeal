@@ -1,0 +1,26 @@
+id: xpac_vx21
+name: X-Pac VX21 (210D nylon / X-Ply / PET film / 50D taffeta)
+category: laminates_membranes
+generic: false
+trade_names:
+- Dimension-Polyant X-Pac VX21
+supplier_examples:
+- Ripstop by the Roll
+- Extremtextil
+- Rockywoods
+properties:
+  areal_density_gsm: 200
+  denier: 210
+  construction: 210D nylon face + polyester X-ply + 0.25 mil PET film + 50D poly taffeta
+  tear_warp_n: 120
+  hydrostatic_head_mm: 20000
+  quietness_1to5: 2
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+confidence: estimate
+sources:
+- Dimension-Polyant X-Pac product sheets (VX21 ~5.9 oz/yd2)
+cost_usd:
+  value: 25
+  per: yd
+notes: ESTIMATE apart from nominal weight. Waterproof, dimensionally stable, very sewable. Film laminate crinkles
+  (moderate noise); delamination at heavy-flex zones after several seasons. Good lid/pocket fabric.

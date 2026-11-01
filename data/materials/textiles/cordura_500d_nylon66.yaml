@@ -1,0 +1,36 @@
+id: cordura_500d_nylon66
+name: CORDURA 500D nylon 6,6 plain weave, PU coated
+category: textiles
+generic: false
+trade_names:
+- CORDURA 500D (INVISTA/The LYCRA Co. licensed mills)
+supplier_examples:
+- Rockywoods
+- Seattle Fabrics
+- Ripstop by the Roll
+- Extremtextil
+properties:
+  areal_density_gsm: 255
+  denier: 500
+  fiber: nylon 6,6 air-textured
+  weave: plain
+  grab_warp_n: 1550
+  grab_weft_n: 1150
+  tear_warp_n: 130
+  tear_weft_n: 110
+  abrasion_taber_cycles: 1500
+  hydrostatic_head_mm: 1000
+  dwr: C0 DWR + PU back coat
+  quietness_1to5: 3
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+  ir_notes: Solution/IR-managed dyes available as mil-spec NIR-compliant colors (Coyote, Ranger Green)
+confidence: estimate
+sources:
+- CORDURA 500D brand fabric spec sheets (typical coated weight 7.0-7.5 oz/yd2)
+- Mil-spec 500D nylon duck family (e.g. MIL-DTL-32439 class) for grab/tear order of magnitude
+cost_usd:
+  value: 15
+  per: yd
+notes: 'ESTIMATE: values typical of commercial PU-coated 500D CORDURA; exact numbers vary by mill and coating. Grab
+  tensile per ASTM D5034, tongue tear ASTM D2261, Taber H-18 1000 g. Workhorse pack-body fabric: good abrasion-to-weight,
+  very sewable, quiet-ish (air-textured yarn). PU coating hydrolyzes after ~5-10 years in heat/humidity.'

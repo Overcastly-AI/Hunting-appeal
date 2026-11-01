@@ -1,0 +1,29 @@
+id: robic_100d_ripstop
+name: 100D high-tenacity nylon 6,6 ripstop (Robic-class), PU coated
+category: textiles
+generic: false
+trade_names:
+- Robic high-tenacity nylon yarn (trade name)
+supplier_examples:
+- Ripstop by the Roll
+- Extremtextil
+- Rockywoods
+properties:
+  areal_density_gsm: 90
+  denier: 100
+  weave: ripstop
+  grab_warp_n: 550
+  grab_weft_n: 450
+  tear_warp_n: 45
+  tear_weft_n: 40
+  hydrostatic_head_mm: 1500
+  dwr: C0 DWR
+  quietness_1to5: 3
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+confidence: estimate
+sources:
+- RBTR / Extremtextil product listings for 100D Robic ripstop (~2.6-2.8 oz/yd2)
+cost_usd:
+  value: 16
+  per: yd
+notes: ESTIMATE. Linings, internal dividers, bladder/meat-bag sleeves, light pockets.

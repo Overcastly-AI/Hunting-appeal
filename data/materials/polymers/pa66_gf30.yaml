@@ -1,0 +1,28 @@
+id: pa66_gf30
+name: Nylon 6/6, 30% glass-filled
+category: polymers
+generic: true
+trade_names:
+- DuPont Zytel 70G30 (reference)
+supplier_examples:
+- molding resin distributors (MOQ)
+- McMaster-Carr (GF nylon rod/sheet)
+properties:
+  density_kg_m3: 1370
+  youngs_modulus_mpa: 9500
+  youngs_modulus_conditioned_mpa: 6500
+  poisson: 0.35
+  ultimate_strength_mpa: 185
+  ultimate_strength_conditioned_mpa: 125
+  elongation_pct: 3
+  notched_izod_j_m: 110
+  max_service_temp_c: 120
+confidence: datasheet
+sources:
+- DuPont Zytel 70G30HSL datasheet (DAM and 50% RH conditioned)
+- Campus plastics database PA66-GF30 typical
+cost_usd:
+  value: 5
+  per: kg
+notes: Values DAM (dry as molded) and conditioned at 50% RH. Used for high-load molded hardware (hipbelt pivots,
+  frame hubs, load-lifter buckles). Moisture drops stiffness ~30%; design to conditioned values.

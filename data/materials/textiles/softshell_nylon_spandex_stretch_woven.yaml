@@ -1,0 +1,31 @@
+id: softshell_nylon_spandex_stretch_woven
+name: Stretch-woven nylon/spandex softshell ~90/10, DWR
+category: textiles
+generic: true
+trade_names:
+- Schoeller/Pertex-class stretch wovens (benchmark)
+supplier_examples:
+- Discovery Trekking Outfitters
+- Extremtextil
+- Rockywoods
+properties:
+  areal_density_gsm: 170
+  fiber: nylon 6,6 / elastane
+  weave: double-weave stretch woven
+  stretch_pct: 25
+  abrasion_cycles_martindale: 40000
+  air_permeability_cfm: 10
+  dwr: C0 DWR
+  aatcc_spray_rating: 90
+  quietness_1to5: 3
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+confidence: estimate
+sources:
+- Mill catalog ranges for 150-200 gsm nylon/spandex softshells
+- AATCC 22 spray rating
+- ISO 12947 Martindale
+cost_usd:
+  value: 20
+  per: yd
+notes: 'ESTIMATE. Pant and active-jacket shell: abrasion-resistant against rock/scree, sheds snow and brush. Rustles
+  more than brushed knit; a peached/micro-brushed face improves quietness to ~4.'

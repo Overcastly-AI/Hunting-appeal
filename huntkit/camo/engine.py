@@ -40,12 +40,57 @@ PATTERN_DIR = Path(__file__).resolve().parents[2] / "designs" / "apparel" / "cam
 
 
 # ----------------------------------------------------------------------------- spec I/O
+_MM_KEYS = ("scale_mm", "cell_mm", "width_mm", "amp_mm", "min_mm")
+
+
+def _scale_mm(obj: Any, s: float, floor_min_mm: float) -> Any:
+    """Recursively multiply every *_mm length in a layer tree by ``s``."""
+    if isinstance(obj, dict):
+        out = {}
+        for k, v in obj.items():
+            if k in _MM_KEYS and isinstance(v, (int, float)):
+                v = float(v) * s
+                if k == "min_mm":
+                    v = max(v, floor_min_mm)
+                out[k] = v
+            else:
+                out[k] = _scale_mm(v, s, floor_min_mm)
+        return out
+    if isinstance(obj, list):
+        return [_scale_mm(v, s, floor_min_mm) for v in obj]
+    return obj
+
+
 def load_pattern(name_or_path: str | Path) -> dict:
+    """Load a pattern YAML. Supports derived patterns:
+
+    ``extends: <base>``      start from the base spec (recursively resolved)
+    ``feature_scale: s``     multiply every layer length (*_mm) by s (min_mm floored at
+                             ``min_feature_floor_mm``, default 2.5 mm, printable limit)
+    ``layer_overrides``      {layer_name: {coverage:, color:, ...}} shallow per-layer update
+    Any other top-level key (palette, repeat_mm, seed, background, ...) replaces the base.
+    """
     p = Path(name_or_path)
     if not p.suffix:
         p = PATTERN_DIR / f"{name_or_path}.yaml"
     with open(p, "r", encoding="utf-8") as fh:
         spec = yaml.safe_load(fh)
+    if "extends" in spec:
+        base = load_pattern(p.parent / f"{spec['extends']}.yaml")
+        merged = {k: v for k, v in base.items() if k not in ("name", "display_name")}
+        merged.update({k: v for k, v in spec.items()
+                       if k not in ("feature_scale", "layer_overrides")})
+        s = float(spec.get("feature_scale", 1.0))
+        if s != 1.0:
+            merged["layers"] = _scale_mm(base["layers"], s,
+                                         float(spec.get("min_feature_floor_mm", 2.5)))
+        ov = spec.get("layer_overrides") or {}
+        names = {L["name"] for L in merged["layers"]}
+        unknown = set(ov) - names
+        if unknown:
+            raise KeyError(f"layer_overrides for unknown layers: {sorted(unknown)}")
+        merged["layers"] = [{**L, **ov.get(L["name"], {})} for L in merged["layers"]]
+        spec = merged
     spec.setdefault("name", p.stem)
     return spec
 

@@ -1,0 +1,32 @@
+id: gfrp_eglass_ud_epoxy_ply
+name: E-glass/epoxy UD ply (Scotchply 1002 class, Vf ~45%)
+category: composites
+generic: true
+trade_names:
+- 3M Scotchply 1002 (reference data set)
+supplier_examples:
+- Fibre Glast
+- ACP Composites
+- McMaster-Carr (G10/FR4 sheet as woven alternative)
+properties:
+  density_kg_m3: 1800
+  E1_mpa: 38600
+  E2_mpa: 8270
+  G12_mpa: 4140
+  nu12: 0.26
+  Xt_mpa: 1062
+  Xc_mpa: 610
+  Yt_mpa: 31
+  Yc_mpa: 118
+  S_mpa: 72
+  ply_thickness_mm: 0.125
+  fiber_volume_fraction: 0.45
+confidence: handbook
+sources:
+- Tsai & Hahn, Introduction to Composite Materials (1980), Table 1.7 (Scotchply 1002)
+- Daniel & Ishai, Engineering Mechanics of Composite Materials, Table A.4
+cost_usd:
+  value: 20
+  per: kg
+notes: Cheap, tough, high strain-to-failure (~2.8%); ~3.5x more compliant than carbon. Good for flexible framesheet
+  ribs, hipbelt wing stiffeners and as a sacrificial outer ply. Radar/IR neutral.

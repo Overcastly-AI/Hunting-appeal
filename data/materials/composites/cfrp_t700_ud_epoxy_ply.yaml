@@ -1,0 +1,36 @@
+id: cfrp_t700_ud_epoxy_ply
+name: Carbon/epoxy UD prepreg ply, Toray T700S (60% Vf)
+category: composites
+generic: false
+trade_names:
+- Toray TORAYCA T700S-12K
+- typical 120-150 gsm FAW UD prepreg (e.g. 250F/2510 resin systems)
+supplier_examples:
+- Rock West Composites (prepreg rolls)
+- ACP Composites
+- Composite Envisions
+properties:
+  density_kg_m3: 1580
+  E1_mpa: 135000
+  E2_mpa: 8800
+  G12_mpa: 4500
+  nu12: 0.3
+  Xt_mpa: 2550
+  Xc_mpa: 1470
+  Yt_mpa: 69
+  Yc_mpa: 200
+  S_mpa: 90
+  ilss_mpa: 90
+  ply_thickness_mm: 0.125
+  fiber_volume_fraction: 0.6
+confidence: datasheet
+sources:
+- 'Toray T700S technical data sheet (CFA-005): composite 0 deg tensile 2550 MPa, modulus 135 GPa, compressive 1470
+  MPa, 90 deg tensile 69 MPa, ILSS 90 MPa (2500 resin, Vf 60%)'
+- CMH-17 Vol. 2 (generic T700/epoxy) for E2, G12, Yc
+cost_usd:
+  value: 70
+  per: kg
+notes: E1, Xt, Xc, Yt, ILSS from Toray datasheet. E2, G12, nu12, Yc are ESTIMATES (typical T700/epoxy, CMH-17 class).
+  S_mpa approximated by ILSS. Cured ply thickness 0.125 mm for ~125 gsm FAW; scale for other FAW. Room-temp dry
+  values; apply ~0.8 knockdown for hot/wet and ~0.6 for open-hole/impact on stays.

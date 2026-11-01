@@ -1,0 +1,28 @@
+id: coil_zipper_10
+name: 'Coil zipper #10 (nylon coil)'
+category: hardware
+generic: false
+trade_names:
+- 'YKK coil (CN) #10'
+supplier_examples:
+- Ripstop by the Roll (chain by the yard + sliders)
+- Rockywoods
+- Seattle Fabrics
+- YKK direct (MOQ)
+properties:
+  zipper_size: 10
+  chain_width_mm: 9.0
+  crosswise_strength_n: 900
+  mass_g_m: 20
+  water_resistant: false
+  quietness_1to5: 4
+confidence: estimate
+sources:
+- YKK product catalog (chain widths, strength classes per ASTM D2061 crosswise test)
+- Supplier listings for chain mass
+cost_usd:
+  value: 4.0
+  per: m
+notes: 'ESTIMATE: crosswise strength and mass are typical for this size class; get the YKK spec sheet for the exact
+  chain. Coil chain is quieter than molded (Vislon) teeth; use cord or rubber-coated pulls - metal pull tabs click
+  against each other.'

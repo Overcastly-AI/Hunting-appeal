@@ -1,0 +1,26 @@
+id: synthetic_insulation_60gsm
+name: Synthetic insulation ~60-67 gsm (continuous-filament / high-loft class)
+category: insulation
+generic: true
+trade_names:
+- Climashield APEX (continuous filament)
+- PrimaLoft Gold 60 (short staple) - benchmarks
+supplier_examples:
+- Discovery Trekking Outfitters
+- Ripstop by the Roll
+- Extremtextil
+properties:
+  areal_density_gsm: 60
+  thickness_mm: 8
+  thermal_resistance_clo: 0.9
+  wet_warmth_retention_pct: 90
+  quietness_1to5: 5
+confidence: estimate
+sources:
+- Manufacturer published weights; clo estimated from typical ~1.4-1.6 clo per 100 gsm for high-loft synthetics (ASTM
+  F1868)
+cost_usd:
+  value: 12
+  per: yd
+notes: ESTIMATE (clo is rough). Active/light puffy and vest. Continuous filament needs only edge stabilization (no
+  quilting), short-staple needs quilting at <=15-20 cm.

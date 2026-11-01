@@ -1,0 +1,30 @@
+id: brushed_poly_knit_shell
+name: Brushed-face polyester knit shell, DWR (quiet hunting shell)
+category: textiles
+generic: true
+trade_names: []
+supplier_examples:
+- Discovery Trekking Outfitters
+- Rockywoods
+- mill direct (MOQ 500-1000 m for custom camo print)
+properties:
+  areal_density_gsm: 230
+  fiber: polyester (some with 5-8% elastane)
+  weave: tricot/weft knit, brushed face
+  stretch_pct: 20
+  abrasion_cycles_martindale: 20000
+  air_permeability_cfm: 40
+  dwr: C0 DWR
+  quietness_1to5: 5
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+  ir_notes: Disperse dyes on polyester can be formulated for low NIR contrast; specify NIR target on camo print
+confidence: estimate
+sources:
+- Typical brushed-tricot hunting shell specs (200-260 gsm) from mill catalogs
+- ISO 12947 Martindale method
+cost_usd:
+  value: 14
+  per: yd
+notes: 'ESTIMATE. The quietest outer-face option: brushed knit near-silent on brush contact (bowhunting). Picks
+  up burrs/seeds, slower drying than wovens, low wind resistance unless laminated (see laminate_3l_quiet_tricot).
+  Sublimation-printable for original camo.'

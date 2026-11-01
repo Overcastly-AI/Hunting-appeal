@@ -1,0 +1,28 @@
+id: merino_150_jersey
+name: Merino wool jersey 150 gsm (17.5-18.5 um)
+category: textiles
+generic: true
+trade_names: []
+supplier_examples:
+- The Fabric Store (merino knits)
+- Discovery Trekking Outfitters
+- Merino mill direct (e.g. NZ/AU knitters, MOQ)
+properties:
+  areal_density_gsm: 150
+  fiber: 100% merino wool
+  fiber_diameter_um: 18
+  weave: single jersey
+  stretch_pct: 30
+  abrasion_cycles_martindale: 12000
+  odor_resistance: high
+  quietness_1to5: 5
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+confidence: estimate
+sources:
+- Woolmark / supplier specs for 150 gsm merino jersey
+- ISO 12947 Martindale (merino jersey typically 10-20k)
+cost_usd:
+  value: 25
+  per: yd
+notes: ESTIMATE. Warm-weather base layer (early season). 100% merino is fragile at pack-strap abrasion points; consider
+  core-spun blend for durability.

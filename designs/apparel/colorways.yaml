@@ -1,0 +1,131 @@
+# Hunting-Appeal solid colorway line — designed as ONE system with the Cirquefall camo family.
+# Every solid is also an ink in at least one camo palette (same hex), so a camo accent panel
+# seamed to a solid body shares that colour across the seam (intentional, not "close enough").
+# Generated values: sRGB / CIELAB computed with huntkit.camo.color (D65, CIE 1931 2 deg).
+#
+# Dye-lot QC (all colours):
+#   - Measure: spectrophotometer, D65/10 deg, SCI, 4 readings averaged, conditioned fabric.
+#   - Commercial acceptance: dE00 <= 1.0 (l:c 2:1 dE CMC <= 1.0 accepted as equivalent);
+#     lot-to-lot within a garment (panel-to-panel shade match): dE00 <= 0.6.
+#   - Metamerism check: also read under illuminant A and F11 (TL84); dE00 <= 1.5 vs standard.
+#   - Darks (L* < 35): dE00 tolerance tightened on L only (|dL*| <= 0.7) since dark shades show
+#     streaks; chroma tolerance relaxed to 1.2 (ASSUMPTION: typical outdoor-brand practice).
+# NO OPTICAL BRIGHTENERS: no fluorescent whitening agents (FWA/OBA) in fibre, dye bath, finish,
+# DWR, laundering aids, labels or thread. Ungulates see into the near-UV; OBAs re-emit UV as
+# visible blue glow. QC: UV-A (365 nm) lamp check on every lot — no visible fluorescence;
+# if a spectro with UV-included/excluded modes is available, |dE00(UV in - UV out)| <= 0.5.
+# Colour standards: these hex/LAB values are DESIGN TARGETS. The physical standard is the
+# approved lab dip on the actual base fabric (polyester vs nylon vs merino shift differently);
+# record the approved dip LAB here as `lab_approved` once it exists.
+
+qc_defaults:
+  delta_e00_commercial: 1.0
+  delta_e00_panel_match: 0.6
+  delta_e00_metamerism_A_F11: 1.5
+  optical_brightener: none_permitted
+  uv_check: "365 nm lamp, no visible fluorescence"
+
+solids:
+  - key: scree_dust
+    name: "Scree Dust"
+    code: "HA 14-0210"
+    hex: "#9F9888"
+    srgb: [159, 152, 136]
+    cielab_d65: [63.0, -0.3, 9.3]
+    qc_tolerance: {dE00: 1.0}
+    optical_brightener: "none — no FWA/OBA anywhere in the colour chain (see header)"
+    description: "stone grey-tan; the neutral that sits on talus, dry grass and sage"
+    suits: ['softshell jacket & pant (early/mid season)', 'merino/synthetic base & mid layers', 'pack body (light-terrain build)']
+    shared_with_camo: ['cirquefall', 'cirquefall_shard']
+  - key: wind_slab
+    name: "Wind Slab"
+    code: "HA 14-4102"
+    hex: "#A9ACA6"
+    srgb: [169, 172, 166]
+    cielab_d65: [70.0, -2.2, 2.7]
+    qc_tolerance: {dE00: 1.0}
+    optical_brightener: "none — no FWA/OBA anywhere in the colour chain (see header)"
+    description: "cool light grey for late season / snow-transition"
+    suits: ['insulated jacket & vest shells', 'late-season hardshell', 'pack body (late-season build)']
+    shared_with_camo: ['cirquefall_firn', 'cirquefall_firn_shard']
+  - key: krummholz_sage
+    name: "Krummholz Sage"
+    code: "HA 17-0312"
+    hex: "#6E745B"
+    srgb: [110, 116, 91]
+    cielab_d65: [47.7, -7.0, 13.1]
+    qc_tolerance: {dE00: 1.0}
+    optical_brightener: "none — no FWA/OBA anywhere in the colour chain (see header)"
+    description: "muted grey-green mid tone; workhorse body colour"
+    suits: ['softshell jacket & pant', 'hoody mid layer', 'pack body & lid']
+    shared_with_camo: ['cirquefall', 'cirquefall_shard']
+  - key: cured_grass
+    name: "Cured Grass"
+    code: "HA 16-1118"
+    hex: "#A08A68"
+    srgb: [160, 138, 104]
+    cielab_d65: [58.6, 3.2, 21.3]
+    qc_tolerance: {dE00: 1.0}
+    optical_brightener: "none — no FWA/OBA anywhere in the colour chain (see header)"
+    description: "warm tan for open sage/grass country and early season"
+    suits: ['lightweight early-season shirt & pant', 'gaiters', 'pack side pockets']
+    shared_with_camo: ['cirquefall', 'cirquefall_shard']
+  - key: spruce_shadow
+    name: "Spruce Shadow"
+    code: "HA 19-0408"
+    hex: "#4A4B3C"
+    srgb: [74, 75, 60]
+    cielab_d65: [31.4, -3.4, 8.8]
+    qc_tolerance: {dE00: 1.0, dL_max: 0.7, note: 'dark shade: L* held tight'}
+    optical_brightener: "none — no FWA/OBA anywhere in the colour chain (see header)"
+    description: "dark olive-brown; reads as timber shade"
+    suits: ['rain shell & rain pant', 'pant reinforcement (knee/seat) in solid builds', 'pack harness & hipbelt']
+    shared_with_camo: ['cirquefall', 'cirquefall_shard']
+  - key: basalt_ink
+    name: "Basalt Ink"
+    code: "HA 19-0805"
+    hex: "#2D2B27"
+    srgb: [45, 43, 39]
+    cielab_d65: [17.6, 0.0, 2.9]
+    qc_tolerance: {dE00: 1.0, dL_max: 0.7, note: 'dark shade: L* held tight'}
+    optical_brightener: "none — no FWA/OBA anywhere in the colour chain (see header)"
+    description: "near-black warm charcoal; trim, binding, webbing and zips (never full garments: too dark a silhouette)"
+    suits: ['zip tapes, binding, webbing, cord', 'abrasion overlays (cuffs, hem, pack base)', 'thread for dark seams']
+    shared_with_camo: ['cirquefall', 'cirquefall_shard', 'cirquefall_firn', 'cirquefall_firn_shard']
+
+# Accent pairings: solid body + camo accent panels (yokes, forearms, side/underarm, knee/seat,
+# pack lid, side pockets, hipbelt wings) + trim (zips, binding, webbing) + thread.
+# shared_inks = colours that appear both in the body solid / trim and inside the camo panel.
+accent_pairings:
+  - id: talus
+    display_name: "Talus"
+    body: krummholz_sage
+    accent_pattern: cirquefall_shard
+    trim: basalt_ink
+    thread: krummholz_sage        # thread matches body; contrast lines come from the seams, not stitching
+    shared_inks: [krummholz_sage, basalt_ink]
+    use: "flagship all-season system"
+  - id: scree
+    display_name: "Scree"
+    body: scree_dust
+    accent_pattern: cirquefall_shard
+    trim: spruce_shadow
+    thread: scree_dust
+    shared_inks: [scree_dust, spruce_shadow]
+    use: "open country / early season, light and rugged look"
+  - id: timber
+    display_name: "Timber"
+    body: spruce_shadow
+    accent_pattern: cirquefall_shard
+    trim: basalt_ink
+    thread: spruce_shadow
+    shared_inks: [spruce_shadow, basalt_ink]
+    use: "dark timber, rain shells, pack harness"
+  - id: firnline
+    display_name: "Firnline"
+    body: wind_slab
+    accent_pattern: cirquefall_firn_shard
+    trim: basalt_ink
+    thread: wind_slab
+    shared_inks: [wind_slab, basalt_ink]
+    use: "late season / snow transition"

@@ -1,0 +1,33 @@
+id: alu_7075_t6
+name: Aluminum 7075-T6
+category: metals
+generic: true
+trade_names: []
+supplier_examples:
+- McMaster-Carr (bar, tube)
+- OnlineMetals
+- Speedy Metals
+properties:
+  density_kg_m3: 2810
+  youngs_modulus_mpa: 71700
+  shear_modulus_mpa: 26900
+  poisson: 0.33
+  yield_strength_mpa: 503
+  ultimate_strength_mpa: 572
+  elongation_pct: 11
+  fatigue_limit_mpa: 159
+  yield_strength_sbasis_mpa: 462
+  ultimate_strength_sbasis_mpa: 524
+  thermal_expansion_ppm_c: 23.6
+confidence: handbook
+sources:
+- ASM Handbook Vol. 2 (1990), 7075-T6 typical properties
+- MMPDS-01 Table 3.7.6.0(b1) (S-basis sheet 0.040-0.249 in)
+- 'MatWeb: Aluminum 7075-T6; 7075-T651'
+cost_usd:
+  value: 15
+  per: kg
+notes: Typical values; design to MMPDS S-basis (yield_strength_sbasis_mpa) for load-path parts. Fatigue limit is
+  R.R. Moore rotating-beam, 5e8 cycles, unnotched; apply Kt and size/surface factors. Poor weldability and SCC susceptibility
+  in ST direction; good for machined frame hubs, load-lifter hardware, stays. Anodize to dull/dark finish to avoid
+  glint.

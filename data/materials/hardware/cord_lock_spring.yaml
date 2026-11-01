@@ -1,0 +1,23 @@
+id: cord_lock_spring
+name: Spring cord lock, single hole (acetal)
+category: hardware
+generic: true
+trade_names:
+- Duraflex / ITW cord lock class
+supplier_examples:
+- Rockywoods
+- Strapworks
+- Ripstop by the Roll
+properties:
+  cord_diameter_max_mm: 4
+  mass_g: 2.5
+  holding_force_n: 30
+  quietness_1to5: 4
+confidence: estimate
+sources:
+- Supplier listings for mini/single-hole cord locks
+cost_usd:
+  value: 0.4
+  per: unit
+notes: ESTIMATE. Holding force depends on cord diameter and sheath; check grip on 2 mm Dyneema cord (slippery sheath
+  may slip).

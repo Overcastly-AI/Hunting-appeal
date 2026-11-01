@@ -1,0 +1,33 @@
+id: cfrp_pultruded_rod_tube
+name: Pultruded carbon rod/tube, standard modulus, all-0 deg
+category: composites
+generic: true
+trade_names: []
+supplier_examples:
+- Rock West Composites
+- Goodwinds
+- DragonPlate
+- CST Composites
+properties:
+  density_kg_m3: 1550
+  E1_mpa: 125000
+  E2_mpa: 7000
+  G12_mpa: 4000
+  nu12: 0.3
+  Xt_mpa: 2000
+  Xc_mpa: 1200
+  Yt_mpa: 40
+  Yc_mpa: 140
+  S_mpa: 50
+  fiber_volume_fraction: 0.62
+confidence: estimate
+sources:
+- Rock West Composites pultruded rod/tube product pages (flexural modulus ~18-20 Msi, tensile ~2,000 MPa)
+- Goodwinds pultruded carbon tube data
+cost_usd:
+  value: 8
+  per: m
+notes: 'ESTIMATE representing mid-range supplier values; transverse/shear properties assumed for vinyl-ester/epoxy
+  matrix. All fibers axial: very weak in hoop and torsion - prone to longitudinal splitting at holes, clamps and
+  bends. Fine for straight compression struts/frame-sheet stiffeners; not for bent stays or pinned joints without
+  a woven overwrap. Cost for ~8 mm rod.'

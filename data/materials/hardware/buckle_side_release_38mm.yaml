@@ -1,0 +1,29 @@
+id: buckle_side_release_38mm
+name: Side-release buckle 38 mm, acetal (Duraflex Stealth / ITW Nexus class)
+category: hardware
+generic: false
+trade_names:
+- Duraflex Stealth / Mojave
+- ITW Nexus GT / Ultra
+supplier_examples:
+- Strapworks
+- Rockywoods
+- Seattle Fabrics
+- Ripstop by the Roll
+properties:
+  width_mm: 38
+  breaking_strength_n: 900
+  mass_g: 18
+  polymer: acetal (POM)
+  quietness_1to5: 3
+  service_temp_low_c: -30
+confidence: estimate
+sources:
+- Duraflex / ITW Nexus published buckle break-strength classes (typical)
+- Pull-test values reported by supplier listings
+cost_usd:
+  value: 1.5
+  per: unit
+notes: 'ESTIMATE: break strength varies by model and temperature; proof-test 5 samples to the design load before
+  release. Buckle snap is loud - for hipbelt use a quiet-close technique or a magnetic/cam alternative on frequently
+  used closures. Matte black or coyote, no brightener.'

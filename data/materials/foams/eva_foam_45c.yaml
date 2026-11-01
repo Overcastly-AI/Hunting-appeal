@@ -1,0 +1,26 @@
+id: eva_foam_45c
+name: Closed-cell EVA foam, ~45 Shore C (firm load layer)
+category: foams
+generic: true
+trade_names: []
+supplier_examples:
+- Seattle Fabrics
+- Extremtextil
+- FoamOrder
+properties:
+  density_kg_m3: 110
+  hardness_shore_c: 45
+  compression_25pct_kpa: 120
+  compression_set_pct: 15
+  closed_cell: true
+  water_absorption_pct: 1.5
+  thickness_typical_mm: 8
+confidence: estimate
+sources:
+- Supplier EVA foam data sheets (Asker/Shore C 40-50 class)
+- ASTM D3575
+cost_usd:
+  value: 25
+  per: m2
+notes: ESTIMATE. Load-transfer layer in hipbelt wings and shoulder straps. Heat-formable (~90-110 C) for contoured
+  belts. Lower compression set than XLPE at same density.

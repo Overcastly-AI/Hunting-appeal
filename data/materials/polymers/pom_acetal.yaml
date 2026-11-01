@@ -1,0 +1,28 @@
+id: pom_acetal
+name: POM / acetal homopolymer
+category: polymers
+generic: true
+trade_names:
+- DuPont Delrin 100/150 (reference)
+supplier_examples:
+- McMaster-Carr (rod, sheet)
+- OnlineMetals (plastics)
+properties:
+  density_kg_m3: 1420
+  youngs_modulus_mpa: 3100
+  poisson: 0.35
+  yield_strength_mpa: 70
+  elongation_pct: 25
+  fatigue_limit_mpa: 31
+  notched_izod_j_m: 120
+  water_absorption_24h_pct: 0.25
+  max_service_temp_c: 90
+confidence: datasheet
+sources:
+- DuPont Delrin 100 product data sheet (typical properties)
+- 'Delrin design guide: fatigue endurance ~31 MPa at 1e7 cycles, 23 C'
+cost_usd:
+  value: 15
+  per: kg
+notes: Material of most side-release buckles and ladder locks. Stiff, low creep, dimensionally stable, good spring
+  properties. Notch-sensitive in cold; check buckle prongs at -20 C. UV-degrades unless stabilized/black.

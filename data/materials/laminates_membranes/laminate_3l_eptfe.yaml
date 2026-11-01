@@ -1,0 +1,30 @@
+id: laminate_3l_eptfe
+name: 3-layer waterproof-breathable laminate, ePTFE membrane (generic)
+category: laminates_membranes
+generic: true
+trade_names:
+- GORE-TEX Pro class (benchmark only)
+- eVent class
+supplier_examples:
+- Extremtextil
+- Discovery Trekking Outfitters
+- Rockywoods
+properties:
+  areal_density_gsm: 150
+  construction: 40-70D nylon face / ePTFE / tricot backer
+  hydrostatic_head_mm: 28000
+  ret_m2pa_w: 6
+  mvtr_g_m2_24h: 20000
+  air_permeability_cfm: 0.1
+  dwr: C0 DWR
+  quietness_1to5: 2
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+confidence: estimate
+sources:
+- ISO 11092 (RET), ISO 811 / JIS L1092 (HH), JIS L1099 B-1 (MVTR) typical published ranges for 3L ePTFE
+cost_usd:
+  value: 35
+  per: yd
+notes: 'ESTIMATE representing generic aftermarket 3L ePTFE. Must be seam-taped (hot-air tape machine). ePTFE is
+  PFAS: EU/US-state restrictions are phasing it out; Gore is moving to ePE. Woven nylon face rustles - see quiet
+  tricot laminate for bowhunting.'

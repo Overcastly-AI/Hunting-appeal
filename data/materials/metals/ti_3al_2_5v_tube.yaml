@@ -1,0 +1,30 @@
+id: ti_3al_2_5v_tube
+name: Titanium Ti-3Al-2.5V (Grade 9) seamless tube, CWSR
+category: metals
+generic: true
+trade_names: []
+supplier_examples:
+- McMaster-Carr (Grade 9 tube)
+- OnlineMetals
+- bicycle-frame tube suppliers (Paragon Machine Works)
+properties:
+  density_kg_m3: 4480
+  youngs_modulus_mpa: 100000
+  poisson: 0.3
+  yield_strength_mpa: 724
+  ultimate_strength_mpa: 862
+  elongation_pct: 10
+  yield_strength_annealed_mpa: 500
+  ultimate_strength_annealed_mpa: 620
+  thermal_expansion_ppm_c: 9.5
+confidence: handbook
+sources:
+- AMS 4945 (Ti-3Al-2.5V seamless hydraulic tube, CWSR) minimum properties
+- 'ASM Materials Properties Handbook: Titanium Alloys'
+- 'MatWeb: Titanium Ti-3Al-2.5V (Grade 9)'
+cost_usd:
+  value: 80
+  per: kg
+notes: Yield/ultimate are AMS 4945 CWSR minimums (design-grade). Cold-bendable and TIG-weldable; excellent fatigue
+  and corrosion. Specific stiffness ~ same as Al, specific strength ~1.4x 7075. Option for a premium bent perimeter
+  frame.

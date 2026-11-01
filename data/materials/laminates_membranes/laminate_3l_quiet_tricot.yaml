@@ -1,0 +1,26 @@
+id: laminate_3l_quiet_tricot
+name: Quiet 3-layer laminate, brushed knit/tricot face (generic)
+category: laminates_membranes
+generic: true
+trade_names: []
+supplier_examples:
+- mill direct (MOQ for printed face)
+- Discovery Trekking Outfitters (limited)
+properties:
+  areal_density_gsm: 260
+  construction: brushed polyester knit face / PU or ePE membrane / tricot backer
+  hydrostatic_head_mm: 10000
+  ret_m2pa_w: 12
+  mvtr_g_m2_24h: 8000
+  stretch_pct: 15
+  quietness_1to5: 4
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+  ir_notes: 'Printed polyester face: control NIR of camo dyes'
+confidence: estimate
+sources:
+- Typical specs for brushed-face hunting laminates from mill catalogs
+cost_usd:
+  value: 30
+  per: yd
+notes: 'ESTIMATE. Rain/wind shell for still hunting and bowhunting: near-silent, but heavier, lower breathability
+  and slower drying than woven-face 3L. Pick for the quiet rain layer.'

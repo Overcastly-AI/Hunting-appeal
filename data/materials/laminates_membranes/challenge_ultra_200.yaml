@@ -1,0 +1,28 @@
+id: challenge_ultra_200
+name: Challenge ULTRA 200 (UHMWPE woven face laminate)
+category: laminates_membranes
+generic: false
+trade_names:
+- Challenge Sailcloth ULTRA 200 / ULTRA 200TX
+supplier_examples:
+- Challenge Sailcloth (direct, small qty ok)
+- Ripstop by the Roll
+- Extremtextil
+properties:
+  areal_density_gsm: 125
+  construction: 200D UHMWPE (ULTRA) woven face + film + backer
+  tear_warp_n: 250
+  abrasion_taber_cycles: 2000
+  hydrostatic_head_mm: 20000
+  quietness_1to5: 2
+  uv_brighteners: n/a; face is undyed white/black/limited colors
+  ir_notes: Limited colors; UHMWPE fiber is hard to dye so camo print options are restricted
+confidence: estimate
+sources:
+- Challenge Sailcloth ULTRA product sheets (ULTRA 200 ~3.6-3.8 oz/yd2)
+- RBTR product listing
+cost_usd:
+  value: 50
+  per: yd
+notes: ESTIMATE. Best abrasion- and tear-per-gram pack fabric commercially available to small builders; waterproof.
+  Costly, limited colors (no original camo), louder than CORDURA. Pick for an UL premium variant.

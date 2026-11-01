@@ -1,0 +1,36 @@
+id: cfrp_t300_3k_woven_epoxy_ply
+name: Carbon/epoxy woven ply, T300 3K 2x2 twill ~200 gsm (Vf ~50%)
+category: composites
+generic: true
+trade_names:
+- Toray T300 3K
+- Hexcel/Toray 3K twill prepreg or wet-layup fabric
+supplier_examples:
+- Rock West Composites
+- Fibre Glast
+- ACP Composites
+- DragonPlate (finished sheet/tube)
+properties:
+  density_kg_m3: 1500
+  E1_mpa: 58000
+  E2_mpa: 58000
+  G12_mpa: 4000
+  nu12: 0.05
+  Xt_mpa: 600
+  Xc_mpa: 570
+  Yt_mpa: 600
+  Yc_mpa: 570
+  S_mpa: 90
+  ply_thickness_mm: 0.22
+  fiber_volume_fraction: 0.5
+confidence: handbook
+sources:
+- CMH-17 (MIL-HDBK-17-2F) T300 3K plain/twill weave epoxy data sets
+- Toray T300 data sheet (fiber)
+- Rock West / DragonPlate published laminate properties
+cost_usd:
+  value: 45
+  per: m2
+notes: 'Balanced fabric: E1=E2, Xt=Yt. Values are typical room-temp dry for prepreg; wet-layup at ~40-45% Vf gives
+  ~15-20% lower stiffness/strength. Used as outer ply on stays/tubes for hoop strength, abrasion and impact. Clear-coat
+  gloss glints: specify matte finish or paint.'

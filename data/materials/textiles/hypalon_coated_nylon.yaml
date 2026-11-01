@@ -1,0 +1,26 @@
+id: hypalon_coated_nylon
+name: CSM ('Hypalon') coated nylon reinforcement, ~1 mm
+category: textiles
+generic: true
+trade_names:
+- Hypalon (DuPont trade name, production ended 2010; most current stock is CSM-equivalent or neoprene/CSM)
+supplier_examples:
+- Seattle Fabrics
+- Rockywoods
+- inflatable-boat fabric suppliers
+properties:
+  areal_density_gsm: 1000
+  thickness_mm: 1.0
+  grab_warp_n: 1800
+  grab_weft_n: 1600
+  abrasion_taber_cycles: 5000
+  quietness_1to5: 4
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+confidence: estimate
+sources:
+- Supplier listings for CSM/neoprene-coated nylon (patch and lash-tab material)
+cost_usd:
+  value: 35
+  per: yd
+notes: ESTIMATE. Laser-cut lash tabs, daisy-chain plates, pack-bottom and hipbelt-pocket reinforcements. Laser-cuts
+  without fraying. Rubbery surface is quiet against brush; heavier than TPU-coated 840D.

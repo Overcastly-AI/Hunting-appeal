@@ -1,0 +1,30 @@
+id: cordura_330d_nylon66
+name: CORDURA 330D nylon 6,6, PU coated
+category: textiles
+generic: false
+trade_names:
+- CORDURA 330D
+supplier_examples:
+- Rockywoods
+- Seattle Fabrics
+- Extremtextil
+properties:
+  areal_density_gsm: 180
+  denier: 330
+  fiber: nylon 6,6 air-textured
+  weave: plain
+  grab_warp_n: 1000
+  grab_weft_n: 800
+  tear_warp_n: 90
+  tear_weft_n: 80
+  abrasion_taber_cycles: 800
+  hydrostatic_head_mm: 1000
+  quietness_1to5: 3
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+confidence: estimate
+sources:
+- CORDURA 330D brand fabric spec sheets (typical ~5.3 oz/yd2 coated)
+cost_usd:
+  value: 14
+  per: yd
+notes: ESTIMATE. Lighter pack-body / pocket fabric; adequate for lid, side pockets and lightly abraded panels.

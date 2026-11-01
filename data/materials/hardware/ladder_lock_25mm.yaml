@@ -1,0 +1,25 @@
+id: ladder_lock_25mm
+name: Ladder lock 25 mm, acetal
+category: hardware
+generic: true
+trade_names:
+- Duraflex / ITW ladder lock class
+supplier_examples:
+- Strapworks
+- Rockywoods
+- Ripstop by the Roll
+properties:
+  width_mm: 25
+  breaking_strength_n: 600
+  slip_load_n: 300
+  mass_g: 4
+  polymer: acetal (POM)
+  quietness_1to5: 4
+confidence: estimate
+sources:
+- Supplier listings for 1 in ladder locks (typical slip/break classes)
+cost_usd:
+  value: 0.4
+  per: unit
+notes: ESTIMATE. Slip load depends strongly on webbing thickness and stiffness; test with the chosen webbing (thick
+  heavyweight webbing holds best).

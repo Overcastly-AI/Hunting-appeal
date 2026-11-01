@@ -1,0 +1,31 @@
+id: alu_7001_t6_tube
+name: Aluminum 7001-T6 drawn tube (tent-pole / arrow grade)
+category: metals
+generic: true
+trade_names:
+- Easton 7001-T6 tubing (tent poles, arrow shafts)
+- DAC TH72M is a comparable proprietary 7xxx tube alloy
+supplier_examples:
+- Quest Outfitters (replacement pole sections, small qty)
+- Ripstop by the Roll (pole sections)
+- Easton Technical Products / DAC (OEM, MOQ)
+properties:
+  density_kg_m3: 2840
+  youngs_modulus_mpa: 71000
+  poisson: 0.33
+  yield_strength_mpa: 627
+  ultimate_strength_mpa: 676
+  elongation_pct: 9
+  fatigue_limit_mpa: 150
+  thermal_expansion_ppm_c: 23.4
+confidence: handbook
+sources:
+- ASM Handbook Vol. 2, 7001-T6 (wrought, typical)
+- 'MatWeb: Aluminum 7001-T6'
+- Easton tent-pole product literature (7001-T6 alloy)
+cost_usd:
+  value: 6
+  per: m
+notes: Highest-strength common Al tube; ideal for removable pack stays/frame rods (e.g. 9-11 mm OD x 0.7-0.9 mm
+  wall). fatigue_limit_mpa is an ESTIMATE scaled from 7075-T6 (no published S-N in hand). Available only as small-diameter
+  drawn tube; bending to shape needs a mandrel or pre-formed parts from OEM.

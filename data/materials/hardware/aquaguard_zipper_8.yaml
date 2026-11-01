@@ -1,0 +1,29 @@
+id: aquaguard_zipper_8
+name: 'Water-resistant coated coil zipper #8 (AquaGuard class)'
+category: hardware
+generic: false
+trade_names:
+- 'YKK AquaGuard coil (CNV/CNVF) #8'
+supplier_examples:
+- Ripstop by the Roll (chain by the yard + sliders)
+- Rockywoods
+- Seattle Fabrics
+- YKK direct (MOQ)
+properties:
+  zipper_size: 8
+  chain_width_mm: 7.8
+  crosswise_strength_n: 650
+  mass_g_m: 19
+  water_resistant: true
+  quietness_1to5: 3
+confidence: estimate
+sources:
+- YKK product catalog (chain widths, strength classes per ASTM D2061 crosswise test)
+- Supplier listings for chain mass
+cost_usd:
+  value: 8.0
+  per: m
+notes: 'ESTIMATE: crosswise strength and mass are typical for this size class; get the YKK spec sheet for the exact
+  chain. PU-film coated tape: water-resistant (not waterproof), stiffer and needs garage at top end; slides harder
+  in cold. Coil chain is quieter than molded (Vislon) teeth; use cord or rubber-coated pulls - metal pull tabs click
+  against each other.'

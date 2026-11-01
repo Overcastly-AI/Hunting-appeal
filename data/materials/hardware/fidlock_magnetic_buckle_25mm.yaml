@@ -1,0 +1,24 @@
+id: fidlock_magnetic_buckle_25mm
+name: Magnetic-guided buckle 25 mm (Fidlock SNAP / V-Buckle class)
+category: hardware
+generic: false
+trade_names:
+- FIDLOCK V-BUCKLE 25 / SNAP buckle
+supplier_examples:
+- Fidlock (direct/OEM)
+- Extremtextil
+- Ripstop by the Roll
+properties:
+  width_mm: 25
+  breaking_strength_n: 300
+  mass_g: 15
+  quietness_1to5: 4
+  one_hand_operation: true
+confidence: estimate
+sources:
+- FIDLOCK product literature (V-Buckle 25 load rating, approx.)
+cost_usd:
+  value: 6
+  per: unit
+notes: ESTIMATE. One-handed, quieter closing than side-release; low strength - use for lid, sternum strap, bino
+  harness, not hipbelt. Magnets can affect compasses at short range.

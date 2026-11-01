@@ -1,0 +1,35 @@
+id: cfrp_m40j_ud_epoxy_ply
+name: Carbon/epoxy UD ply, Toray M40J high-modulus (60% Vf)
+category: composites
+generic: false
+trade_names:
+- Toray TORAYCA M40J
+supplier_examples:
+- ACP Composites (special order)
+- Rock West Composites (HM tubes)
+- Toray distributors (MOQ)
+properties:
+  density_kg_m3: 1600
+  E1_mpa: 230000
+  E2_mpa: 7000
+  G12_mpa: 4500
+  nu12: 0.3
+  Xt_mpa: 2450
+  Xc_mpa: 1270
+  Yt_mpa: 59
+  Yc_mpa: 180
+  S_mpa: 78
+  ilss_mpa: 78
+  ply_thickness_mm: 0.125
+  fiber_volume_fraction: 0.6
+confidence: datasheet
+sources:
+- 'Toray M40J technical data sheet (CFA-014): composite tensile 2450 MPa, modulus 230 GPa (approx.), compressive
+  1270 MPa, ILSS 78 MPa'
+- CMH-17 HM carbon/epoxy typical transverse values
+cost_usd:
+  value: 180
+  per: kg
+notes: E1/Xt/Xc/ILSS per Toray datasheet (approx.); E2, G12, Yt, Yc are ESTIMATES. ~70% stiffer than T700 at lower
+  strain-to-failure (~1.0%) - more brittle under impact/rock strikes. Use for stiffness-critical stays only with
+  a woven or T700 overwrap.

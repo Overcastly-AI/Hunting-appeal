@@ -1,0 +1,27 @@
+id: bonded_nylon_tex90
+name: Bonded nylon 6,6 thread, Tex 90 (#92)
+category: thread
+generic: true
+trade_names:
+- A&E Anefil Nylon / Coats Dabond / Gütermann Mara-class bonded nylon 6,6
+supplier_examples:
+- Wawak
+- Rockywoods
+- Ripstop by the Roll
+- Seattle Fabrics
+properties:
+  tex: 90
+  breaking_strength_n: 64
+  mass_g_m: 0.09
+  elongation_at_break_pct: 24
+  fiber: bonded continuous-filament nylon 6,6
+  ticket_number: '92'
+confidence: handbook
+sources:
+- A&E (American & Efird) thread size/strength charts (ASTM D204 single-end breaking strength)
+- V-T-285 (polyester) / V-T-295 (nylon) federal thread spec families
+cost_usd:
+  value: 0.0061
+  per: m
+notes: 'Tex = g per 1000 m. Typical minimum single-end breaking strength for bonded nylon 6,6 at this size. Nylon:
+  highest strength/abrasion, standard for packs; UV degrades it - avoid for long-exposure seams.'

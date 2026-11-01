@@ -1,0 +1,27 @@
+id: xlpe_foam
+name: Cross-linked polyethylene foam (XLPE), ~33 kg/m3
+category: foams
+generic: true
+trade_names:
+- Sekisui Voltek Volara / Minicel L200 (reference grades)
+supplier_examples:
+- Seattle Fabrics
+- Rockywoods (closed-cell foam)
+- FoamOrder
+properties:
+  density_kg_m3: 33
+  compression_25pct_kpa: 60
+  compression_set_pct: 20
+  closed_cell: true
+  water_absorption_pct: 1
+  thickness_typical_mm: 6
+  service_temp_low_c: -70
+confidence: estimate
+sources:
+- Sekisui Voltek Minicel L200 typical data (2 lb/ft3 class)
+- ASTM D3575
+cost_usd:
+  value: 15
+  per: m2
+notes: ESTIMATE from 2 pcf XLPE datasheets. Lightest closed-cell option; good for back-panel padding and removable
+  sit-pads. Higher compression set than EVA under hipbelt loads - avoid as the only hipbelt layer.

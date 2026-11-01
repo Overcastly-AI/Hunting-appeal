@@ -1,0 +1,26 @@
+id: tpu_sheet_film
+name: TPU (thermoplastic polyurethane), ester/ether 85-90A, film/sheet
+category: polymers
+generic: true
+trade_names:
+- e.g. Covestro Desmopan, Lubrizol Estane (reference grades)
+supplier_examples:
+- Extremtextil (TPU film, TPU-coated fabrics)
+- McMaster-Carr (polyurethane sheet)
+properties:
+  density_kg_m3: 1200
+  hardness_shore_a: 87
+  ultimate_strength_mpa: 40
+  elongation_pct: 550
+  modulus_100pct_mpa: 6
+  tear_strength_n_mm: 90
+  brittle_temp_c: -50
+confidence: estimate
+sources:
+- Lubrizol Estane / Covestro Desmopan 85-90A datasheets (typical ranges)
+- 'MatWeb: TPU, polyether, 85A generic'
+cost_usd:
+  value: 20
+  per: kg
+notes: ESTIMATE - mid-range of 85-90A grades. Use ether-based TPU for hydrolysis resistance (coatings that live
+  wet/warm for years). RF/heat weldable; basis for welded pockets, coated reinforcements and Fidlock-style sliders.

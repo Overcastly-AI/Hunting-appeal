@@ -1,0 +1,26 @@
+id: merino_synthetic_blend_core_spun
+name: Merino/nylon core-spun jersey ~170 gsm (Nuyarn/core-spun class)
+category: textiles
+generic: true
+trade_names:
+- Nuyarn (twisted-free merino/nylon, trade name)
+- generic merino-wrapped nylon core-spun
+supplier_examples:
+- Discovery Trekking Outfitters
+- Merino mill direct (MOQ)
+properties:
+  areal_density_gsm: 170
+  fiber: ~80% merino / 20% nylon core (or 52/48 merino/poly)
+  weave: single jersey
+  stretch_pct: 35
+  abrasion_cycles_martindale: 30000
+  odor_resistance: medium-high
+  quietness_1to5: 5
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+confidence: estimate
+sources:
+- Supplier specs for merino/nylon core-spun jersey
+cost_usd:
+  value: 24
+  per: yd
+notes: ESTIMATE. ~2x merino abrasion life with similar hand; faster drying. Pick for base layers that see pack straps.

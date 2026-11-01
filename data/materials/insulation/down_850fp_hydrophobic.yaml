@@ -1,0 +1,24 @@
+id: down_850fp_hydrophobic
+name: Goose down 850 FP, 90/10, hydrophobic-treated, RDS
+category: insulation
+generic: true
+trade_names:
+- DownTek / Allied HyperDRY / Nikwax Hydrophobic Down class (benchmarks)
+supplier_examples:
+- Extremtextil (by 100 g)
+- Downlite / Allied Feather (bulk, MOQ)
+properties:
+  fill_power_in3_oz: 850
+  down_cluster_pct: 90
+  loft_cm3_g: 491
+  quietness_1to5: 5
+confidence: datasheet
+sources:
+- IDFB testing regulations (fill power in in3/oz; 850 in3/oz = 491 cm3/g)
+- Responsible Down Standard (Textile Exchange)
+cost_usd:
+  value: 450
+  per: kg
+notes: Fill power and cluster ratio are the purchase spec (verify by IDFB test certificate). Best warmth-to-weight
+  and packability; hydrophobic treatment slows but does not prevent collapse when soaked. Needs down-proof shell
+  (<=0.5 cfm, e.g. 10-20D nylon). Many hydrophobic treatments were C6/C8 fluoro - require PFC-free.

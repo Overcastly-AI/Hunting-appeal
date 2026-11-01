@@ -1,0 +1,25 @@
+id: dcf_hybrid_150d
+name: DCF hybrid 2.92 oz/yd2 (DCF + 150D polyester face)
+category: laminates_membranes
+generic: false
+trade_names:
+- Dyneema Composite Fabric Hybrid 2.92 oz/yd2 (DCF150)
+supplier_examples:
+- Ripstop by the Roll
+- Extremtextil
+properties:
+  areal_density_gsm: 99
+  construction: DCF laminated to 150D polyester woven face
+  tensile_warp_n_50mm: 1500
+  hydrostatic_head_mm: 20000
+  abrasion_taber_cycles: 500
+  quietness_1to5: 2
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+confidence: estimate
+sources:
+- DCF hybrid product listings (2.92 oz/yd2 = ~99 gsm)
+cost_usd:
+  value: 55
+  per: yd
+notes: Weight nominal; other values ESTIMATES. UL pack fabric; face fabric improves abrasion vs plain DCF but still
+  well below CORDURA 500D. Pricey and noisy relative to woven nylons.

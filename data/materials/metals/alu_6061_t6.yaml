@@ -1,0 +1,33 @@
+id: alu_6061_t6
+name: Aluminum 6061-T6
+category: metals
+generic: true
+trade_names: []
+supplier_examples:
+- McMaster-Carr
+- OnlineMetals
+- Speedy Metals
+- local metal supermarket
+properties:
+  density_kg_m3: 2700
+  youngs_modulus_mpa: 68900
+  shear_modulus_mpa: 26000
+  poisson: 0.33
+  yield_strength_mpa: 276
+  ultimate_strength_mpa: 310
+  elongation_pct: 12
+  fatigue_limit_mpa: 96.5
+  yield_strength_sbasis_mpa: 241
+  ultimate_strength_sbasis_mpa: 290
+  thermal_expansion_ppm_c: 23.6
+confidence: handbook
+sources:
+- ASM Handbook Vol. 2, 6061-T6 typical properties
+- MMPDS-01 Table 3.6.2.0(b) (S-basis, sheet/extrusion)
+- 'MatWeb: Aluminum 6061-T6; 6061-T651'
+cost_usd:
+  value: 8
+  per: kg
+notes: 'Cheapest, most available tube/flat bar; weldable (weld HAZ drops to ~T4/O strength, do not weld load-path
+  parts without re-heat-treat). Fatigue: R.R. Moore 5e8 cycles. Good for prototype stays and jigs; 7075/7001 preferred
+  for production stays by ~1.8x specific strength.'

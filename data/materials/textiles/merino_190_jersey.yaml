@@ -1,0 +1,26 @@
+id: merino_190_jersey
+name: Merino wool jersey 190 gsm (18.5 um)
+category: textiles
+generic: true
+trade_names: []
+supplier_examples:
+- The Fabric Store
+- Discovery Trekking Outfitters
+- Merino mill direct (MOQ)
+properties:
+  areal_density_gsm: 190
+  fiber: 100% merino wool
+  fiber_diameter_um: 18.5
+  weave: single jersey
+  stretch_pct: 30
+  abrasion_cycles_martindale: 15000
+  odor_resistance: high
+  quietness_1to5: 5
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+confidence: estimate
+sources:
+- Woolmark / supplier specs for 190 gsm merino jersey
+cost_usd:
+  value: 28
+  per: yd
+notes: 'ESTIMATE. All-season base layer: best balance of warmth, wicking and odor control.'

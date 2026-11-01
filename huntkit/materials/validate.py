@@ -20,15 +20,19 @@ UNIT_SUFFIXES = (
     "_pct", "_c", "_k", "_j_m", "_j", "_s",
     "_g_m2_24h", "_m2pa_w", "_m2k_w", "_clo", "_cfm", "_l_m2_s",
     "_cycles", "_hours", "_1to5", "_1to10", "_shore_a", "_shore_d",
-    "_per_10cm", "_spi", "_ppm_c", "_w_mk", "_mm_s",
+    "_per_10cm", "_spi", "_ppm_c", "_w_mk", "_mm_s", "_n_mm", "_shore_c", "_asker_c",
 )
 # ... or be one of these dimensionless/conventional keys.
 DIMENSIONLESS = {
     "poisson", "nu12", "nu23", "denier", "tex", "fiber_volume_fraction",
     "zipper_size", "fill_power", "ply_count", "upf", "aatcc_spray_rating",
-    "yarn_count", "gauge", "layers",
+    "yarn_count", "gauge", "layers", "coefficient_of_friction",
+    "abrasion_cycles_martindale",  # contract key (unit is cycles)
 }
 ID_RE = re.compile(r"^[a-z0-9]+(_[a-z0-9]+)*$")
+# Property keys are snake_case; the contract's composite keys (E1_mpa, Xt_mpa, G12_mpa) may
+# capitalize the leading symbol.
+PROP_KEY_RE = re.compile(r"^[A-Za-z][A-Za-z0-9]*(_[a-z0-9]+)*$")
 
 
 def _numeric(v: Any) -> bool:
@@ -80,8 +84,8 @@ def validate_record(raw: dict[str, Any], path: Path | None = None) -> list[str]:
         errs.append("properties must be a non-empty mapping")
     else:
         for k, v in props.items():
-            if not isinstance(k, str) or not ID_RE.match(k):
-                errs.append(f"property key {k!r} must be snake_case")
+            if not isinstance(k, str) or not PROP_KEY_RE.match(k):
+                errs.append(f"property key {k!r} must be snake_case (leading symbol may be capitalized)")
                 continue
             if _numeric(v):
                 _check_numeric_key(k, v, errs)

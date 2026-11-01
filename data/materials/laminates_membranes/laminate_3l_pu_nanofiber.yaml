@@ -1,0 +1,29 @@
+id: laminate_3l_pu_nanofiber
+name: 3-layer laminate, electrospun PU nanofiber membrane (generic)
+category: laminates_membranes
+generic: true
+trade_names:
+- electrospun nanofiber membrane class (e.g. Pertex Shield Air / Polartec NeoShell-type air-permeable PU, benchmark
+  only)
+supplier_examples:
+- Extremtextil
+- Discovery Trekking Outfitters
+- mill direct (MOQ)
+properties:
+  areal_density_gsm: 140
+  construction: nylon face / electrospun PU nanofiber / knit backer
+  hydrostatic_head_mm: 15000
+  ret_m2pa_w: 4
+  mvtr_g_m2_24h: 25000
+  air_permeability_cfm: 0.5
+  dwr: C0 DWR
+  quietness_1to5: 3
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+confidence: estimate
+sources:
+- ISO 11092 / JIS L1092 typical published ranges for air-permeable nanofiber membranes
+cost_usd:
+  value: 28
+  per: yd
+notes: 'ESTIMATE. PFAS-free, slightly air-permeable: more breathable during climbs, lower HH than ePTFE. Strong
+  candidate for an active rain shell.'

@@ -1,0 +1,26 @@
+id: grid_fleece_poly
+name: Grid fleece, polyester/elastane ~160 gsm (Power Grid-class)
+category: textiles
+generic: true
+trade_names:
+- Polartec Power Grid (benchmark)
+supplier_examples:
+- Discovery Trekking Outfitters
+- Rockywoods
+- Mood Fabrics (Polartec)
+properties:
+  areal_density_gsm: 160
+  fiber: polyester/elastane
+  weave: grid-back knit, smooth face
+  stretch_pct: 40
+  air_permeability_cfm: 120
+  quietness_1to5: 5
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+confidence: estimate
+sources:
+- Polartec Power Grid published weights (~150-170 gsm)
+- Supplier listings for generic grid fleece
+cost_usd:
+  value: 18
+  per: yd
+notes: 'ESTIMATE. Active mid layer: high warmth-to-weight, very breathable, silent. Pills under pack straps.'

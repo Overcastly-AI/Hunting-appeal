@@ -1,0 +1,29 @@
+id: tpu_coated_nylon_840d
+name: 840D ballistic-weave nylon, TPU coated
+category: textiles
+generic: true
+trade_names: []
+supplier_examples:
+- Extremtextil
+- Seattle Fabrics
+- Rockywoods
+properties:
+  areal_density_gsm: 480
+  denier: 840
+  weave: 2x2 basket (ballistic)
+  grab_warp_n: 2400
+  grab_weft_n: 2000
+  tear_warp_n: 220
+  tear_weft_n: 200
+  abrasion_taber_cycles: 4000
+  hydrostatic_head_mm: 10000
+  quietness_1to5: 2
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+confidence: estimate
+sources:
+- Supplier listings for TPU-coated 840D nylon (450-520 gsm)
+cost_usd:
+  value: 22
+  per: yd
+notes: ESTIMATE. RF-weldable, hydrolysis-resistant alternative to PU-coated heavy fabrics and to CSM patches; good
+  pack-bottom/wear-panel material. Stiffer and louder than CORDURA.

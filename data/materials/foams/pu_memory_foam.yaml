@@ -1,0 +1,23 @@
+id: pu_memory_foam
+name: Viscoelastic PU (memory) foam, open cell
+category: foams
+generic: true
+trade_names: []
+supplier_examples:
+- Foam Factory
+- FoamOrder
+properties:
+  density_kg_m3: 64
+  compression_25pct_kpa: 3
+  compression_set_pct: 5
+  closed_cell: false
+  water_absorption_pct: 500
+  glass_transition_c: 10
+confidence: estimate
+sources:
+- Generic viscoelastic PU foam supplier data (4 pcf, IFD ~10-15 lbf)
+cost_usd:
+  value: 30
+  per: m2
+notes: 'ESTIMATE. Open cell: soaks water and blood, and stiffens badly in cold (Tg near 0-15 C). NOT recommended
+  for mountain hunting packs except as thin, fully encapsulated lumbar comfort layer. Listed for comparison.'

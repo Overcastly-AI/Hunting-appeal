@@ -1,0 +1,29 @@
+id: dcf_ct9hk_18
+name: Dyneema Composite Fabric CT9HK.18 (1.43 oz/yd2)
+category: laminates_membranes
+generic: false
+trade_names:
+- Dyneema Composite Fabric CT9HK.18 (Avient/DSM)
+supplier_examples:
+- Ripstop by the Roll
+- Extremtextil
+- Dutchware
+properties:
+  areal_density_gsm: 48.5
+  construction: UHMWPE UD cross-ply between PET films
+  tensile_warp_n_50mm: 900
+  hydrostatic_head_mm: 20000
+  stretch_pct: 1
+  quietness_1to5: 1
+  uv_brighteners: n/a (film; translucent)
+  ir_notes: Translucent/white film reflects strongly in NIR; colored versions still glint and crinkle
+confidence: estimate
+sources:
+- Dyneema Composite Fabric product listings (CT9HK.18 = 1.43 oz/yd2)
+- RBTR/Extremtextil spec pages
+cost_usd:
+  value: 45
+  per: yd
+notes: Weight is datasheet nominal; strength and HH are ESTIMATES (vendors quote different bases). Extremely strong/light
+  and waterproof but LOUD (crinkle) and poor abrasion/puncture against rock and brush - bad fit for a hunting pack
+  outer; OK for internal stuff sacks or a meat/bivy dry liner.

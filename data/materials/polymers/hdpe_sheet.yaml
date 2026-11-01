@@ -1,0 +1,30 @@
+id: hdpe_sheet
+name: HDPE sheet (framesheet grade)
+category: polymers
+generic: true
+trade_names: []
+supplier_examples:
+- McMaster-Carr (1/16 in, 3/32 in sheet)
+- Seattle Fabrics (framesheet HDPE)
+- Ripstop by the Roll (HDPE framesheet)
+- US Plastic Corp
+properties:
+  density_kg_m3: 955
+  youngs_modulus_mpa: 1100
+  flexural_modulus_mpa: 1250
+  poisson: 0.42
+  yield_strength_mpa: 26
+  elongation_pct: 600
+  brittle_temp_c: -70
+  max_service_temp_c: 80
+  thickness_typical_mm: 1.6
+confidence: handbook
+sources:
+- 'Plastics Design Library / MatWeb: HDPE, extruded sheet, generic'
+- McMaster-Carr HDPE sheet specifications
+cost_usd:
+  value: 6
+  per: kg
+notes: Standard pack framesheet (1.5-2.0 mm). Stays tough well below -40 C (no cold cracking), creeps under sustained
+  load; use as a load-spreading plate, not the primary vertical load path. Cannot be glued easily; mechanically
+  fasten or sew through drilled holes. Quiet when flexed (no crinkle).

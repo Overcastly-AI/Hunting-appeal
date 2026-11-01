@@ -1,0 +1,29 @@
+id: poly_webbing_25mm
+name: Polyester webbing 25 mm (1 in), heavyweight
+category: webbing
+generic: true
+trade_names: []
+supplier_examples:
+- Strapworks
+- Rockywoods
+- Seattle Fabrics
+- Ripstop by the Roll
+properties:
+  width_mm: 25
+  breaking_strength_n: 13344
+  mass_g_m: 18
+  fiber: polyester
+  weave: flat twill/plain, heavyweight
+  elongation_at_break_pct: 15
+  quietness_1to5: 5
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+confidence: estimate
+sources:
+- A-A-55301 / MIL-W-27265-class polyester webbing families (confirm Type/Class on purchase)
+- Strapworks / Rockywoods published breaking strengths for heavyweight webbing
+cost_usd:
+  value: 0.7
+  per: m
+notes: 'ESTIMATE: typical vendor rating ~3000 lbf for heavyweight 25 mm polyester. Buy mil-spec Type/Class with
+  a cert to make this a datasheet value. Polyester: low stretch, low water uptake (no sag when wet), better UV -
+  preferred for compression straps and load lifters. Seal cut ends with a hot knife.'

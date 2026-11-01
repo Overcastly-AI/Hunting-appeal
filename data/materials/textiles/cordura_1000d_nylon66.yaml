@@ -1,0 +1,32 @@
+id: cordura_1000d_nylon66
+name: CORDURA 1000D nylon 6,6, PU coated
+category: textiles
+generic: false
+trade_names:
+- CORDURA 1000D
+supplier_examples:
+- Rockywoods
+- Seattle Fabrics
+- Strapworks
+properties:
+  areal_density_gsm: 340
+  denier: 1000
+  fiber: nylon 6,6 air-textured
+  weave: plain
+  grab_warp_n: 2200
+  grab_weft_n: 1800
+  tear_warp_n: 200
+  tear_weft_n: 180
+  abrasion_taber_cycles: 3000
+  hydrostatic_head_mm: 1000
+  quietness_1to5: 2
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+confidence: estimate
+sources:
+- CORDURA 1000D brand fabric spec sheets (typical ~10-11 oz/yd2 coated)
+- Mil-spec 1000D nylon duck family
+cost_usd:
+  value: 17
+  per: yd
+notes: ESTIMATE. Pack bottom, hipbelt outer face, load-shelf and high-wear zones. Stiff; heavier needle (#18-#22)
+  and tex 90-135 thread.

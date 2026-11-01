@@ -1,0 +1,27 @@
+id: eva_foam_30c
+name: Closed-cell EVA foam, ~30 Shore C (soft)
+category: foams
+generic: true
+trade_names: []
+supplier_examples:
+- Seattle Fabrics (EVA sheet)
+- Extremtextil (EVA foams)
+- Foam Factory / FoamOrder
+properties:
+  density_kg_m3: 65
+  hardness_shore_c: 30
+  compression_25pct_kpa: 45
+  compression_set_pct: 20
+  closed_cell: true
+  water_absorption_pct: 2
+  thickness_typical_mm: 6
+confidence: estimate
+sources:
+- Supplier EVA foam data sheets (Asker/Shore C 25-35 class)
+- ASTM D3575 test methods for compression and set
+cost_usd:
+  value: 20
+  per: m2
+notes: 'ESTIMATE from supplier ranges; hardness grades vary by vendor (Asker C ~= Shore C). Comfort layer next to
+  body in hipbelts and shoulder straps. Pair with a firmer 45C load layer. Closed-cell: does not soak up water/blood;
+  quiet.'

@@ -1,0 +1,29 @@
+id: ultragrid_210d_uhmwpe_ripstop
+name: 210D nylon with UHMWPE gridstop (Ultragrid-class), PU coated
+category: textiles
+generic: false
+trade_names:
+- EcoPak/Challenge-style 'Ultragrid' nylon-UHMWPE ripstop (trade class)
+supplier_examples:
+- Ripstop by the Roll
+- Extremtextil
+- Challenge Sailcloth
+properties:
+  areal_density_gsm: 155
+  denier: 210
+  weave: ripstop with UHMWPE grid yarns
+  grab_warp_n: 1300
+  grab_weft_n: 1100
+  tear_warp_n: 180
+  tear_weft_n: 160
+  hydrostatic_head_mm: 1500
+  quietness_1to5: 3
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+confidence: estimate
+sources:
+- Supplier listings for 210D nylon/UHMWPE gridstop fabrics (~4.5 oz/yd2)
+cost_usd:
+  value: 20
+  per: yd
+notes: ESTIMATE. UHMWPE grid raises tear strength ~2x over plain 210D nylon; UHMWPE yarns are slippery, so use a
+  tighter SPI and bartacks. Good body fabric for weight-focused builds; less abrasion than 500D CORDURA.
