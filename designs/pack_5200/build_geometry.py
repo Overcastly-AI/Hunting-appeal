@@ -756,13 +756,25 @@ def build_panels(Hf, diag):
                    seam_allowance_mm=10.0), "yoke", "harness_common", "sandwich over the yoke plate; quick-connect for J/S straps")
 
     # ---- back panels
-    for pid, nm, w, h, mat, kind, t in (("BP-01", "lower back panel face", 230.0, 300.0, "spacer_mesh_3d", "fabric", None),
-                                        ("BP-02", "lower back panel foam", 210.0, 280.0, "xlpe_foam", "foam", 6.0),
-                                        ("BP-03", "upper back pad face (on crown)", 210.0, 180.0, "spacer_mesh_3d", "fabric", None),
-                                        ("BP-04", "upper back pad foam", 190.0, 160.0, "xlpe_foam", "foam", 6.0),
-                                        ("BP-05", "back panel shell", 230.0, 300.0, "robic_210d_ripstop", "fabric", None)):
-        add(rect_panel(nm, w, h, 30.0, material_id=mat, piece_id=pid, seam_allowance_mm=10.0 if kind == "fabric" else 0.0),
-            "back panel", "back_panel", "perforated foam channels; wraps stays with 6 tabs", kind=kind, thickness_mm=t)
+    # Back system (2026-11-01, analysis/back_comfort.md): foam rails on the stays, open mesh
+    # over the window, carbon spreader on the bag side. Not one foam sheet across the hole.
+    for pid, nm, w, h, mat, kind, t, note in (
+            ("BP-01", "lower back panel face", 230.0, 300.0, "spacer_mesh_3d", "fabric", None,
+             "mesh over the stay pads and slack across the window air gap"),
+            ("BP-02", "stay-rail foam", 100.0, 420.0, "xlpe_foam", "foam", 10.0,
+             "PAIR, one on each stay, wearer face. Window between the rails is not foamed"),
+            ("BP-03", "upper back pad face (on crown)", 210.0, 180.0, "spacer_mesh_3d", "fabric", None,
+             "on the crown, above the frame window"),
+            ("BP-04", "upper back pad foam", 190.0, 160.0, "xlpe_foam", "foam", 6.0,
+             "on the crown"),
+            ("BP-05", "back panel shell", 230.0, 300.0, "robic_210d_ripstop", "fabric", None,
+             "bag side of the mesh; the carbon spreader is behind it, not this fabric"),
+            ("BP-06", "window spreader, QI carbon 2.0 mm", 208.0, 300.0, "cfrp_plate_quasi_iso", "sheet", 2.0,
+             "clipped to the stays on the bag side. Carries bone ends and the meat cinch to the stay pads")):
+        qty = 2 if pid == "BP-02" else 1
+        add(rect_panel(nm, w, h, 30.0, material_id=mat, piece_id=pid, quantity=qty,
+                       seam_allowance_mm=10.0 if kind == "fabric" else 0.0),
+            "back panel", "back_panel", note, kind=kind, thickness_mm=t)
 
     # ---- rifle carry (optional, either side)
     add(tapered_panel("rifle butt boot body", 300.0, 260.0, 200.0, material_id="cordura_500d_nylon66", piece_id="R-01",
@@ -916,11 +928,13 @@ def meat_harness(Hf, topo, wraps):
     mass = (hw(MEAT_WEB, length_m=sum(s["cut_length_mm"] for s in straps) / 1000)
             + hw(MEAT_WEB, length_m=6 * STUB_LEN) + 6 * MEAT_HOOK_G + 3 * MEAT_CAM_G)
     return {
-        "concept": ("INTERNAL MEAT HARNESS: 3 x 38 mm straps (IM1-IM3) anchored at bonded frame nodes. Meat in game bags goes "
-                    "INSIDE the bag, high and tight against the frame-side panel B-01; each strap crosses the load and hooks to "
-                    "two frame stubs whose sewn eyes poke through bound ports in B-01, then cams tight. Bag pulled back or off: "
-                    "the stub eyes slide out of the ports and the SAME strap hooks stub-to-stub across the meat in the bay "
-                    "(same hooks, same cam, same motion)."),
+        "concept": ("INTERNAL MEAT HARNESS: 3 x 38 mm straps (IM1-IM3) anchored at the stay nodes, not across the "
+                    "open window. Meat in game bags goes INSIDE the bag and is cinched against the carbon window spreader "
+                    "(BP-06), which delivers the load to the stay-rail foam (BP-02). The wearer touches those rails and the "
+                    "lumbar pad, not a foam sheet spanning the hole. Each strap crosses the load and hooks to two frame stubs "
+                    "whose sewn eyes poke through bound ports in B-01, then cams tight. Bag pulled back or off: the stub eyes "
+                    "slide out of the ports and the SAME strap hooks stub-to-stub across the meat in the bay (same hooks, same "
+                    "cam, same motion). See analysis/back_comfort.md."),
         "straps": straps,
         "anchor_stub": {"material_id": MEAT_WEB, "length_mm": STUB_LEN * 1000, "qty": 6,
                         "fixing": "girth hitch round the stay directly above/below the bonded node wrap (cannot slide), sewn eye box-X bartacked with bonded_nylon_tex135",
@@ -1292,6 +1306,9 @@ def main():
         "harness": {"padded_length": 440.0, "width_top": 72.0, "width_bottom": 58.0,
                     "options": ["J (unisex default)", "S (curved, 35 mm lateral offset)"], "sternum_rail_travel": 120.0},
         "weight": {"groups_g": groups, "total_g": total, "total_lb": round(total / 453.592, 2), "target_g": 2268,
+                   "production_pack_note": ("This total is the v2 carbon-tube bag baseline (frame line 569.2 g). "
+                                            "The printed-frame pack, with the carbon spreader and stay rails, is in "
+                                            "analysis/back_comfort.md."),
                    "rifle_boot_optional_g": carry, "lid_accessory_g": lid_g, "extension_posts_accessory_g": 60,
                    "excluded_from_base": ["rifle boot (switchable, either side)", "lid / hip pack accessory",
                                           "extension posts accessory (ASSUMPTION ~60 g)"],

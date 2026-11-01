@@ -570,11 +570,13 @@ side_pockets:
   position: {z_bottom: 90.0, y_center_fraction_of_depth: 0.55}
 load_shelf: null
 meat_harness:
-  concept: 'INTERNAL MEAT HARNESS: 3 x 38 mm straps (IM1-IM3) anchored at bonded frame nodes. Meat in game bags
-    goes INSIDE the bag, high and tight against the frame-side panel B-01; each strap crosses the load and hooks
-    to two frame stubs whose sewn eyes poke through bound ports in B-01, then cams tight. Bag pulled back or off:
-    the stub eyes slide out of the ports and the SAME strap hooks stub-to-stub across the meat in the bay (same
-    hooks, same cam, same motion).'
+  concept: 'INTERNAL MEAT HARNESS: 3 x 38 mm straps (IM1-IM3) anchored at the stay nodes, not across the
+    open window. Meat in game bags goes INSIDE the bag and is cinched against the carbon window spreader
+    (BP-06), which delivers the load to the stay-rail foam (BP-02). The wearer touches those rails and the
+    lumbar pad, not a foam sheet spanning the hole. Each strap crosses the load and hooks to two frame stubs
+    whose sewn eyes poke through bound ports in B-01, then cams tight. Bag pulled back or off: the stub eyes
+    slide out of the ports and the SAME strap hooks stub-to-stub across the meat in the bay (same hooks, same
+    cam, same motion). See analysis/back_comfort.md.'
   straps:
   - id: IM1
     z: 190.0
@@ -721,6 +723,7 @@ harness:
   options: [J (unisex default), 'S (curved, 35 mm lateral offset)']
   sternum_rail_travel: 120.0
 weight:
+  production_pack_note: This total is the v2 carbon-tube bag baseline (frame line 569.2 g). The printed-frame pack, with the carbon spreader and stay rails, is in analysis/back_comfort.md.
   groups_g: {frame (frame.yaml v2 + printed Ti hip-pivot mount): 569.2, torso adjust (not in frame.yaml): 41.7,
     main bag: 405.4, accents: 52.7, rain fly: 74.7, pockets: 60.3, hipbelt (M): 334.3, harness: 212.5, back panel: 75.2,
     internal meat harness: 253.9, haul wraps (= compression): 108.1, misc: 36.1}
