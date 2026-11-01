@@ -214,7 +214,52 @@ class Laminate:
         return best
 
 
+    def membrane_fpf_batch(self, N: np.ndarray, knockdown: dict | None = DEFAULT_KNOCKDOWN,
+                           criterion: str = "tsai_wu"):
+        """Vectorised first-ply failure for membrane running loads N (n, 3) [Nx, Ny, Nxy], M = 0.
+
+        Requires a symmetric laminate (B = 0). Returns (fi (n,), ply index (n,), sig12 (n, 3)).
+        """
+        N = np.atleast_2d(np.asarray(N, float))
+        eps0 = np.linalg.solve(self.A, N.T)              # (3, n)
+        best_fi = np.zeros(N.shape[0])
+        best_ply = np.zeros(N.shape[0], int)
+        best_sig = np.zeros((N.shape[0], 3))
+        for i, (p, a) in enumerate(zip(self.plies, self.angles)):
+            sig = (Q_matrix(p) @ T_eps(a) @ eps0).T      # (n, 3)
+            pk = p.knocked_down(knockdown)
+            fis = []
+            if criterion in ("tsai_wu", "both"):
+                fis.append(tsai_wu_fi_vec(sig, pk))
+            if criterion in ("max_stress", "both"):
+                fis.append(max_stress_fi_vec(sig, pk))
+            fi = np.max(fis, axis=0)
+            upd = fi > best_fi
+            best_fi[upd], best_ply[upd], best_sig[upd] = fi[upd], i, sig[upd]
+        return best_fi, best_ply, best_sig
+
+
 # ----------------------------------------------------------------------------- failure
+def tsai_wu_fi_vec(sig, p: Ply, F12_star: float = -0.5) -> np.ndarray:
+    s1, s2, t12 = sig[:, 0], sig[:, 1], sig[:, 2]
+    F1 = 1 / p.Xt - 1 / p.Xc
+    F2 = 1 / p.Yt - 1 / p.Yc
+    F11, F22, F66 = 1 / (p.Xt * p.Xc), 1 / (p.Yt * p.Yc), 1 / p.S ** 2
+    F12 = F12_star * np.sqrt(F11 * F22)
+    a = F11 * s1 ** 2 + F22 * s2 ** 2 + F66 * t12 ** 2 + 2 * F12 * s1 * s2
+    b = F1 * s1 + F2 * s2
+    with np.errstate(divide="ignore", invalid="ignore"):
+        R = np.where(a > 1e-30, (-b + np.sqrt(b * b + 4 * a)) / (2 * a), np.where(b > 0, 1 / b, np.inf))
+        return np.where(np.isfinite(R) & (R > 0), 1 / R, 0.0)
+
+
+def max_stress_fi_vec(sig, p: Ply) -> np.ndarray:
+    s1, s2, t12 = sig[:, 0], sig[:, 1], sig[:, 2]
+    f1 = np.where(s1 >= 0, s1 / p.Xt, -s1 / p.Xc)
+    f2 = np.where(s2 >= 0, s2 / p.Yt, -s2 / p.Yc)
+    return np.maximum.reduce([f1, f2, np.abs(t12) / p.S])
+
+
 def tsai_wu_fi(sig12, p: Ply, F12_star: float = -0.5) -> float:
     """Tsai-Wu inverse strength ratio. F12 = F12* sqrt(F11 F22) (F12* = -0.5 by default)."""
     s1, s2, t12 = sig12

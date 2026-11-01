@@ -143,16 +143,16 @@ class CompositeTube(Section):
         Rm = self.dims["od"] / 2 - self.laminate.thickness / 2
         t = self.laminate.thickness
         q_t = T / (2 * np.pi * Rm ** 2)
-        best = {"fi": 0.0}
-        for th in np.linspace(0, 2 * np.pi, n, endpoint=False):
-            y, z = Rm * np.cos(th), Rm * np.sin(th)
-            sx = N / self.A + My * z / self.Iy - Mz * y / self.Iz
-            # shear flow from Vy peaks at y=0 (sin), from Vz at z=0
-            q_v = (Vy * np.sin(th) - Vz * np.cos(th)) / (np.pi * Rm)
-            Nx, Nxy = sx * t, q_t + q_v
-            r = self.laminate.first_ply_failure((Nx, 0.0, Nxy), (0, 0, 0), kd, crit)
-            if r["fi"] > best["fi"]:
-                best = dict(r, theta_deg=float(np.degrees(th)), Nx=Nx, Nxy=Nxy)
+        th = np.linspace(0, 2 * np.pi, n, endpoint=False)
+        y, z = Rm * np.cos(th), Rm * np.sin(th)
+        sx = N / self.A + My * z / self.Iy - Mz * y / self.Iz
+        q_v = (Vy * np.sin(th) - Vz * np.cos(th)) / (np.pi * Rm)   # transverse shear flow
+        Nx, Nxy = sx * t, q_t + q_v
+        fi, ply, sig = self.laminate.membrane_fpf_batch(np.c_[Nx, np.zeros(n), Nxy], kd, crit)
+        k = int(np.argmax(fi))
+        best = {"fi": float(fi[k]), "criterion": crit, "ply": int(ply[k]),
+                "angle": self.laminate.angles[int(ply[k])], "sig12": sig[k],
+                "theta_deg": float(np.degrees(th[k])), "Nx": float(Nx[k]), "Nxy": float(Nxy[k])}
         best["sf"] = 1 / best["fi"] if best["fi"] > 0 else np.inf
         return best
 
