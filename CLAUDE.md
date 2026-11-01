@@ -16,8 +16,9 @@ No GUI. Everything is Python scripts and CLI tools that write files into `output
   (in, lb, oz, cu in).
 - **Every design number traces to a source:** a material in `data/materials/`, a calculation in
   `huntkit/`, or a stated assumption marked `ASSUMPTION:` in the design doc.
-- **Safety factors:** pack load-path parts SF ≥ 2.0 on yield at the 150 lb (68 kg) design load,
-  under a 2.5 g dynamic factor (stumble or drop). Fatigue gets checked separately.
+- **Safety factors:** owner chose "match the leaders" (2026-11-01). Load cases and factors are defined
+  in `designs/pack_5200/analysis/load_standard.md`, calibrated to cited market data, and backed by physical
+  prototype load tests. Fatigue gets checked separately.
 - Generated artifacts go in `outputs/` (git-tracked only when they're released deliverables in
   `outputs/release/`). Source of truth is code plus YAML in `designs/`.
 
