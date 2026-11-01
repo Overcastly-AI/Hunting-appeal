@@ -27,7 +27,7 @@ def demo(out: str = "outputs/fea_demo", torsos=(15, 19, 23)) -> Path:
     md = report(studies, outdir / "report.md",
                 title="Placeholder pack frame - FEA demo (carbon primary, aluminium baseline)")
     with open(md, "a") as f:
-        f.write("\n".join(plate_example()) + "\n")
+        f.write("\n".join(plate_example(studies[1])) + "\n")
     with open(outdir / "summary.csv", "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["config", "case", "min_sf", "required_sf", "critical", "buckling",
@@ -41,26 +41,32 @@ def demo(out: str = "outputs/fea_demo", torsos=(15, 19, 23)) -> Path:
     return md
 
 
-def plate_example() -> list[str]:
-    """Illustrative Kirchhoff-plate check: CFRP hipbelt stiffener plate (cantilever wing)."""
+def plate_example(study) -> list[str]:
+    """Illustrative Kirchhoff-plate check: CFRP lumbar plate bridging the stays, loaded by the
+    lumbar-pad bearing reaction of the tall_load case."""
     from .materials_bridge import get_material
     from .plate import kirchhoff_plate
+    r = study["results"]["tall_load"]
+    hip = study["frame"]["groups"]["hipbelt"]
+    Fy = abs(sum(r.reactions[n][1] for n in hip))
     mat = get_material("cfrp_plate_quasi_iso")
-    a, b, t = 120.0, 70.0, 2.0
-    W = 68 * 9.80665 * 2.5 * 0.8 / 2          # hipbelt share per wing at 2.5 g
-    r = kirchhoff_plate(a, b, t, E=mat.require("youngs_modulus_mpa"), nu=mat.get("poisson", 0.3),
-                        patch={"x0": a - 20, "x1": a, "y0": 0, "y1": b, "force_n": W},
-                        edges={"left": "clamped", "right": "free", "bottom": "free", "top": "free"})
+    p = study["frame"]["params"]
+    a = p["width_bottom"] - 12.7          # clear span between stay tubes (approx.)
+    b, t = 100.0, 1.5
+    q = Fy / (a * b)
+    pr = kirchhoff_plate(a, b, t, E=mat.require("youngs_modulus_mpa"), nu=mat.get("poisson", 0.3), q=q,
+                         edges={"left": "ss", "right": "ss", "bottom": "free", "top": "free"})
     allow = float(mat.get("compressive_strength_mpa", 450)) * 0.8 * 0.65
-    return ["## Plate check example: CFRP hipbelt stiffener wing", "",
-            f"Quasi-isotropic CFRP plate ({mat.id}, source {mat.source}) {a:g} x {b:g} x {t:g} mm, clamped "
-            f"to the lumbar node on one {b:g} mm edge, {W:.0f} N (hipbelt 80 % share of 68 kg x 2.5 g, one "
-            f"side) spread over the outer 20 mm. Kirchhoff/Morley plate (`huntkit.fea.plate`).", "",
-            f"- tip deflection {r.w_max:.1f} mm; peak bending stress {r.sigma_vm_max:.0f} MPa; allowable "
-            f"{allow:.0f} MPa (compression strength x0.8 hot/wet x0.65 impact) -> SF {allow / r.sigma_vm_max:.2f}",
-            "- ASSUMPTION: homogenised quasi-isotropic plate; ply-level check with `composite.Laminate` "
-            "is needed once the plate layup is chosen. Linear theory: if deflection > ~t/2, treat as indicative.",
-            ""]
+    return ["## Plate check example: CFRP lumbar plate between the stays", "",
+            f"Quasi-isotropic CFRP plate ({mat.id}, source {mat.source}) {a:.0f} x {b:g} x {t:g} mm, simply "
+            f"supported on the two stays, free top/bottom edges, uniform pressure {q * 1e3:.1f} kPa = the "
+            f"lumbar bearing reaction {Fy:.0f} N of `tall_load` ({study['label']}). Kirchhoff/Morley plate "
+            f"(`huntkit.fea.plate`, verified vs Navier).", "",
+            f"- max deflection {pr.w_max:.1f} mm; peak bending stress {pr.sigma_vm_max:.0f} MPa; allowable "
+            f"{allow:.0f} MPa (compression strength x0.8 hot/wet x0.65 impact) -> SF {allow / pr.sigma_vm_max:.2f}",
+            "- ASSUMPTION: homogenised quasi-isotropic plate, uniform pad pressure; do a ply-level check with "
+            "`composite.Laminate` once the layup is chosen. Linear theory: deflection > ~t/2 means membrane "
+            "action, so treat the numbers as indicative.", ""]
 
 
 def solve_file(path: str, out: str | None, buckling: bool):
