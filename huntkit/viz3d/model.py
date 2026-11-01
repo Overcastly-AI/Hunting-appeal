@@ -216,17 +216,23 @@ def _generative_frame_parts(p: dict) -> list:
     if rods.exists():
         out.append(Part("frame_generative_rods", _planar_uv(trimesh.load(rods, force="mesh")), "carbon", "frame",
                         label="Pultruded carbon rods (hybrid load paths)"))
-    barrier = d / "genframe_barrier.stl"
-    if barrier.exists():
-        meta = {}
-        side = d / "genframe_barrier.json"
-        if side.exists():
-            import json
-            meta = json.loads(side.read_text())
-        out.append(Part("frame_barrier", _planar_uv(trimesh.load(barrier, force="mesh")),
-                        meta.get("material", "printed_cf"), "frame",
-                        label=meta.get("label", "Meat back-pressure barrier")))
     return out
+
+
+def _barrier_part() -> Part | None:
+    """The carbon spreader is part of the back system on either frame."""
+    d = GENERATIVE_DIR
+    barrier = d / "genframe_barrier.stl"
+    if not barrier.exists():
+        return None
+    meta = {}
+    side = d / "genframe_barrier.json"
+    if side.exists():
+        import json
+        meta = json.loads(side.read_text())
+    return Part("frame_barrier", _planar_uv(trimesh.load(barrier, force="mesh")),
+                meta.get("material", "carbon"), "frame",
+                label=meta.get("label", "QI carbon window spreader"))
 
 
 def build_pack(params: dict | None = None) -> PackModel:
@@ -330,6 +336,9 @@ def build_pack(params: dict | None = None) -> PackModel:
             metrics["frame_type"] = "tube"
     else:
         metrics["frame_type"] = "tube"
+    barrier = _barrier_part()
+    if barrier is not None and not any(q.name == "frame_barrier" for q in parts):
+        parts.append(barrier)
 
     # ------------------------------------------------------------------ crown per torso
     settings = fr["crown_settings"]

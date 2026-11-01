@@ -1306,9 +1306,9 @@ def main():
         "harness": {"padded_length": 440.0, "width_top": 72.0, "width_bottom": 58.0,
                     "options": ["J (unisex default)", "S (curved, 35 mm lateral offset)"], "sternum_rail_travel": 120.0},
         "weight": {"groups_g": groups, "total_g": total, "total_lb": round(total / 453.592, 2), "target_g": 2268,
-                   "production_pack_note": ("This total is the v2 carbon-tube bag baseline (frame line 569.2 g). "
-                                            "The printed-frame pack, with the carbon spreader and stay rails, is in "
-                                            "analysis/back_comfort.md."),
+                   "production_pack_note": ("This total is the v2 carbon-tube bag baseline (frame line 569.2 g) "
+                                            "without the carbon spreader. The production pack, tube frame plus the "
+                                            "2.0 mm spreader and the stay rails, is in analysis/mass_cut.md."),
                    "rifle_boot_optional_g": carry, "lid_accessory_g": lid_g, "extension_posts_accessory_g": 60,
                    "excluded_from_base": ["rifle boot (switchable, either side)", "lid / hip pack accessory",
                                           "extension posts accessory (ASSUMPTION ~60 g)"],

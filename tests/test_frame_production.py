@@ -81,6 +81,6 @@ def test_mass_rollup_adds_and_uses_the_soft_goods_baseline():
     assert roll["pack_lb"] == pytest.approx(roll["pack_g"] / 453.59237)
 
 
-def test_default_viewer_is_the_generative_frame():
+def test_default_viewer_is_the_carbon_tube_frame():
     from huntkit.viz3d.params import load_params
-    assert load_params()["frame_type"] == "generative"
+    assert load_params()["frame_type"] == "tube"
