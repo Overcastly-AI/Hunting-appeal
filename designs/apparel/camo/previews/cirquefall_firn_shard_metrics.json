@@ -1,0 +1,179 @@
+{
+ "pattern": "cirquefall_firn_shard",
+ "seed": 9157,
+ "repeat_mm": {
+  "width": 380,
+  "height": 380
+ },
+ "coverage": {
+  "firn": 0.3174,
+  "windslab": 0.2418,
+  "frostsage": 0.1613,
+  "baretimber": 0.2186,
+  "basalt": 0.061
+ },
+ "coverage_target": {
+  "firn": 0.32,
+  "windslab": 0.24,
+  "frostsage": 0.16,
+  "baretimber": 0.22,
+  "basalt": 0.06
+ },
+ "coverage_max_abs_error": 0.0026,
+ "palette_L": {
+  "firn": 85.4,
+  "windslab": 70.0,
+  "frostsage": 55.1,
+  "baretimber": 35.7,
+  "basalt": 17.6
+ },
+ "palette_L_ungulate": {
+  "firn": 85.4,
+  "windslab": 70.1,
+  "frostsage": 55.4,
+  "baretimber": 35.3,
+  "basalt": 17.5
+ },
+ "luminance_bands": {
+  "dark_L<40": 0.28,
+  "mid_40-60": 0.161,
+  "light_L>=60": 0.559
+ },
+ "coverage_weighted_mean_L": 61.8,
+ "dichromat_pairs": [
+  {
+   "de00_human": 11.001,
+   "de00_dichromat": 10.884,
+   "michelson_human": 0.243,
+   "michelson_dichromat": 0.241,
+   "dL_dichromat": 15.358,
+   "pair": "firn/windslab"
+  },
+  {
+   "de00_human": 23.753,
+   "de00_dichromat": 23.336,
+   "michelson_human": 0.487,
+   "michelson_dichromat": 0.483,
+   "dL_dichromat": 30.07,
+   "pair": "firn/frostsage"
+  },
+  {
+   "de00_human": 43.719,
+   "de00_dichromat": 43.997,
+   "michelson_human": 0.767,
+   "michelson_dichromat": 0.771,
+   "dL_dichromat": 50.121,
+   "pair": "firn/baretimber"
+  },
+  {
+   "de00_human": 67.337,
+   "de00_dichromat": 67.468,
+   "michelson_human": 0.93,
+   "michelson_dichromat": 0.93,
+   "dL_dichromat": 67.933,
+   "pair": "firn/basalt"
+  },
+  {
+   "de00_human": 13.108,
+   "de00_dichromat": 12.809,
+   "michelson_human": 0.277,
+   "michelson_dichromat": 0.274,
+   "dL_dichromat": 14.713,
+   "pair": "windslab/frostsage"
+  },
+  {
+   "de00_human": 34.059,
+   "de00_dichromat": 34.237,
+   "michelson_human": 0.643,
+   "michelson_dichromat": 0.65,
+   "dL_dichromat": 34.763,
+   "pair": "windslab/baretimber"
+  },
+  {
+   "de00_human": 48.767,
+   "de00_dichromat": 48.883,
+   "michelson_human": 0.887,
+   "michelson_dichromat": 0.889,
+   "dL_dichromat": 52.576,
+   "pair": "windslab/basalt"
+  },
+  {
+   "de00_human": 19.938,
+   "de00_dichromat": 19.099,
+   "michelson_human": 0.446,
+   "michelson_dichromat": 0.458,
+   "dL_dichromat": 20.051,
+   "pair": "frostsage/baretimber"
+  },
+  {
+   "de00_human": 32.009,
+   "de00_dichromat": 31.884,
+   "michelson_human": 0.809,
+   "michelson_dichromat": 0.812,
+   "dL_dichromat": 37.863,
+   "pair": "frostsage/basalt"
+  },
+  {
+   "de00_human": 13.954,
+   "de00_dichromat": 13.737,
+   "michelson_human": 0.568,
+   "michelson_dichromat": 0.565,
+   "dL_dichromat": 17.813,
+   "pair": "baretimber/basalt"
+  }
+ ],
+ "dichromat_collapsed_pairs_dE00_lt_5": [],
+ "distance_rms_contrast": {
+  "10m": {
+   "human_rms_contrast": 0.4777,
+   "ungulate_rms_contrast": 0.3699,
+   "ungulate_cycle_mm": 29.1
+  },
+  "50m": {
+   "human_rms_contrast": 0.3695,
+   "ungulate_rms_contrast": 0.2259,
+   "ungulate_cycle_mm": 145.4
+  },
+  "150m": {
+   "human_rms_contrast": 0.2831,
+   "ungulate_rms_contrast": 0.0521,
+   "ungulate_cycle_mm": 436.3
+  },
+  "300m": {
+   "human_rms_contrast": 0.2002,
+   "ungulate_rms_contrast": 0.0026,
+   "ungulate_cycle_mm": 872.7
+  },
+  "0m": {
+   "human_rms_contrast": 0.644,
+   "ungulate_rms_contrast": 0.6447
+  }
+ },
+ "mean_colour_hex": "#A3A49D",
+ "mean_vs_backgrounds_dE00_ungulate": {
+  "dry_bunchgrass": 13.6,
+  "sagebrush": 10.6,
+  "conifer_shade": 40.8,
+  "talus_scree": 5.0,
+  "aspen_bark_late": 5.2,
+  "shaded_snow": 12.5,
+  "dark_timber_floor": 38.6
+ },
+ "panel_test": {
+  "150mm": {
+   "flat_blob_fraction": 0.0,
+   "median_L_range": 67.8,
+   "median_colours_ge5pct": 4.0
+  },
+  "250mm": {
+   "flat_blob_fraction": 0.0,
+   "median_L_range": 67.8,
+   "median_colours_ge5pct": 5.0
+  },
+  "380mm": {
+   "flat_blob_fraction": 0.0,
+   "median_L_range": 67.8,
+   "median_colours_ge5pct": 5.0
+  }
+ }
+}

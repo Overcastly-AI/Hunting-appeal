@@ -14,3 +14,5 @@ Standards
 - Think about mass production: minimize piece count, keep pieces nestable, mark the knife direction, and include cutting instructions (ply count, fabric face up/down, nap direction).
 
 Return a short summary listing the files written and any seam-length mismatches found.
+
+Screenshots (owner request): for any visual output, also save phone-readable PNG previews (≤ 1.5 MB) to `outputs/screens/<YYYYMMDD>_<topic>_<n>.png` and list them in your final reply under `SCREENSHOTS:`. The orchestrator forwards them to the owner.

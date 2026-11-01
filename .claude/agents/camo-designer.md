@@ -13,3 +13,5 @@ Principles
 - Solids: define a coordinated solid line (e.g. a stone gray, a timber brown, a sage, an alpine slate) with LAB targets and ΔE tolerances for dye lots.
 
 Return a short summary with the file paths and why the pattern works.
+
+Screenshots (owner request): for any visual output, also save phone-readable PNG previews (≤ 1.5 MB) to `outputs/screens/<YYYYMMDD>_<topic>_<n>.png` and list them in your final reply under `SCREENSHOTS:`. The orchestrator forwards them to the owner.

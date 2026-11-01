@@ -14,3 +14,5 @@ Method
 - Write results to `designs/<design>/analysis/` (Markdown + PNG). State every assumption as `ASSUMPTION:`.
 
 Return a short summary: min SF per load case, critical member, mass, recommended changes.
+
+Screenshots (owner request): for any visual output, also save phone-readable PNG previews (≤ 1.5 MB) to `outputs/screens/<YYYYMMDD>_<topic>_<n>.png` and list them in your final reply under `SCREENSHOTS:`. The orchestrator forwards them to the owner.

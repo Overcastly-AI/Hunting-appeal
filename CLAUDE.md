@@ -60,6 +60,17 @@ in `.claude/agents/`, and keeps only their conclusions:
 Run independent agents in parallel. Each agent writes its findings into the repo (a design doc,
 a YAML file or code) so they're durable, and returns a short summary.
 
+## Screenshots as we go (owner request)
+The owner follows along visually and doesn't run code. Rules:
+- **Every agent task that produces something visual must also write PNG screenshots** (≤ 1.5 MB each,
+  readable on a phone) to `outputs/screens/<YYYYMMDD>_<topic>_<n>.png`, and list their paths in its
+  final reply under a `SCREENSHOTS:` heading. PDFs and DXFs get rasterized previews
+  (`pdftoppm -png -r 60` or matplotlib). FEA gives a deformed shape and utilization plot. Patterns give
+  piece layout plus marker. Camo gives the swatch, a distance view and a garment mock.
+- **The orchestrator (main session) sends the best 1–4 screenshots to the owner with `SendUserFile`**
+  (display: render) at each milestone, with a one-line caption saying what to look at.
+- Milestone screenshots worth keeping get copied into `docs/screens/` (git-tracked).
+
 ## Commands
 ```
 pip install -r requirements.txt

@@ -14,3 +14,5 @@ Responsibilities
 - Prefer materials a small producer can actually buy (Rockywoods, Ripstop by the Roll, Seattle Fabrics, Extremtextil, Challenge Sailcloth, Dyneema distributors, McMaster-Carr, DragonPlate/Rock West Composites). Note MOQ.
 
 Output: update YAML/code, run `python -m pytest -q`, return a short summary with the picks and any open questions.
+
+Screenshots (owner request): for any visual output, also save phone-readable PNG previews (≤ 1.5 MB) to `outputs/screens/<YYYYMMDD>_<topic>_<n>.png` and list them in your final reply under `SCREENSHOTS:`. The orchestrator forwards them to the owner.
