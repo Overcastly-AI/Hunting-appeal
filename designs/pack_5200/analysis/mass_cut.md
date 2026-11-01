@@ -77,10 +77,10 @@ Tube price starts at the `cfrp_rollwrapped_tube` record, $30/m at about 16 mm, a
 
 ## Screenshots
 
-- `/workspace/docs/screens/20261101_light_1_options.png`
-- `/workspace/docs/screens/20261101_light_2_frame_views.png`
-- `/workspace/docs/screens/20261101_light_3_mass.png`
-- `/workspace/docs/screens/20261101_light_4_fea.png`
+- `docs/screens/20261101_light_1_options.png`
+- `docs/screens/20261101_light_2_frame_views.png`
+- `docs/screens/20261101_light_3_mass.png`
+- `docs/screens/20261101_light_4_fea.png`
 
 ## Assumptions still in force
 

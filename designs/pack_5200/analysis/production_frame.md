@@ -145,12 +145,12 @@ Study headline was 718 g and 2373 g (5.23 lb). Target 2268 g.
 
 ## Screenshots
 
-- `/workspace/outputs/screens/20261101_prodframe_1_pawl_joint.png`
-- `/workspace/outputs/screens/20261101_prodframe_2_barrier.png`
-- `/workspace/outputs/screens/20261101_prodframe_3_surface_sections.png`
-- `/workspace/outputs/screens/20261101_prodframe_5_fea.png`
-- `/workspace/outputs/screens/20261101_prodframe_6_heat_mass.png`
-- `/workspace/outputs/screens/20261101_prodframe_4_surface_3d.png`
+- `outputs/screens/20261101_prodframe_1_pawl_joint.png`
+- `outputs/screens/20261101_prodframe_2_barrier.png`
+- `outputs/screens/20261101_prodframe_3_surface_sections.png`
+- `outputs/screens/20261101_prodframe_5_fea.png`
+- `outputs/screens/20261101_prodframe_6_heat_mass.png`
+- `outputs/screens/20261101_prodframe_4_surface_3d.png`
 
 ## Assumptions
 

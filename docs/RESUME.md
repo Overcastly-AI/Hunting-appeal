@@ -13,6 +13,12 @@ Merged on main:
 - 5.0 lb is still missed, by 833 g. Fairleads are 113 g of that and the under-straps are 122 g. Soft goods, the carbon crown, the spreader and the sleeve around the crown-leg bore are most of the rest
 - Camo: owner's base pattern SVG is uploaded at `designs/apparel/camo/source/owner_base.svg`. `owner_base.yaml` and `designs/apparel/camo/DESIGN.md` still describe the proxy
 
+## Merge status (all on main)
+- PR #1 (owner camo SVG), PR #2 (generative branch frame), PR #3 (bag-to-frame attachment + under-straps) are all merged into `main`
+- Housekeeping after the merge: analysis records stored Cursor's absolute `/workspace/...` screenshot paths. Made repo-relative so tests pass on any machine
+- `python -m pytest -q`: **196 passed**. Needs `pypardiso` (in requirements.txt)
+- To resume: read this file, then `docs/DECISIONS.md` (latest rows), then the analysis records linked above
+
 ## Done this pass
 1. structural-fea-engineer (PR #2): production frame is the generative branch print. Tube ladder reverted. Comfort kept. Split joint at z=234 not re-solved
 2. Bag-to-frame attachment (PR #3): branch fairleads, detachable bag, two under-bag cradle straps. Lifters stay on the crown. Hipbelt stays on the Ti pivot

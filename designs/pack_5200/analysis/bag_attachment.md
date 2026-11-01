@@ -140,10 +140,10 @@ Cost is marginal. Filament $4.26, scrap $0.64, extra machine time $1.75, hooks p
 
 ## Screenshots
 
-- `/workspace/docs/screens/20261101_attach_1_options.png`
-- `/workspace/docs/screens/20261101_attach_2_closeup.png`
-- `/workspace/docs/screens/20261101_attach_3_exploded.png`
-- `/workspace/docs/screens/20261101_attach_4_fea.png`
+- `docs/screens/20261101_attach_1_options.png`
+- `docs/screens/20261101_attach_2_closeup.png`
+- `docs/screens/20261101_attach_3_exploded.png`
+- `docs/screens/20261101_attach_4_fea.png`
 
 ## Assumptions
 

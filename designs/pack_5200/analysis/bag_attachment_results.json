@@ -331,10 +331,10 @@
   },
   "cost_usd": 47.849773696,
   "screens": [
-    "/workspace/docs/screens/20261101_attach_1_options.png",
-    "/workspace/docs/screens/20261101_attach_2_closeup.png",
-    "/workspace/docs/screens/20261101_attach_3_exploded.png",
-    "/workspace/docs/screens/20261101_attach_4_fea.png"
+    "docs/screens/20261101_attach_1_options.png",
+    "docs/screens/20261101_attach_2_closeup.png",
+    "docs/screens/20261101_attach_3_exploded.png",
+    "docs/screens/20261101_attach_4_fea.png"
   ],
   "detach_s": 34,
   "attach_s": 70

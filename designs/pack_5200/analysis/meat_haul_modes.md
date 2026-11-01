@@ -142,8 +142,8 @@ About **$22** on top of the fairlead set. Detach time **40 s** (the two cam pops
 
 ## Screenshots
 
-- `/workspace/docs/screens/20261101_attach_8_cradle_anchors.png`
-- `/workspace/docs/screens/20261101_attach_9_cradle_bag_on.png`
-- `/workspace/docs/screens/20261101_attach_6_between.png`
-- `/workspace/docs/screens/20261101_attach_10_cradle_bag_off.png`
-- `/workspace/docs/screens/20261101_attach_11_cradle_fea.png`
+- `docs/screens/20261101_attach_8_cradle_anchors.png`
+- `docs/screens/20261101_attach_9_cradle_bag_on.png`
+- `docs/screens/20261101_attach_6_between.png`
+- `docs/screens/20261101_attach_10_cradle_bag_off.png`
+- `docs/screens/20261101_attach_11_cradle_fea.png`

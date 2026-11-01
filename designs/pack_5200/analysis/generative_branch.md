@@ -49,10 +49,10 @@ Fatigue SF **1.10**. Creep-rupture SF **2.35**.
 
 ## Screenshots
 
-- `/workspace/docs/screens/20261101_gen_1_options.png`
-- `/workspace/docs/screens/20261101_gen_2_views.png`
-- `/workspace/docs/screens/20261101_gen_3_mass.png`
-- `/workspace/docs/screens/20261101_gen_4_fea.png`
+- `docs/screens/20261101_gen_1_options.png`
+- `docs/screens/20261101_gen_2_views.png`
+- `docs/screens/20261101_gen_3_mass.png`
+- `docs/screens/20261101_gen_4_fea.png`
 
 ## Assumptions
 

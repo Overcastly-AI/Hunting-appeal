@@ -95,11 +95,11 @@ Comfort was not traded away to save grams. Savings outside that system: the SIMP
 
 ## Screenshots
 
-- `/workspace/docs/screens/20261101_back_1_comfort_options.png`
-- `/workspace/docs/screens/20261101_back_2_pressure_maps.png`
-- `/workspace/docs/screens/20261101_frame_4_fea.png`
-- `/workspace/docs/screens/20261101_frame_2_smooth_views.png`
-- `/workspace/docs/screens/20261101_frame_3_before_after.png`
+- `docs/screens/20261101_back_1_comfort_options.png`
+- `docs/screens/20261101_back_2_pressure_maps.png`
+- `docs/screens/20261101_frame_4_fea.png`
+- `docs/screens/20261101_frame_2_smooth_views.png`
+- `docs/screens/20261101_frame_3_before_after.png`
 
 ## Assumptions still in force
 
