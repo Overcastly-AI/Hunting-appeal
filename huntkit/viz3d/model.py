@@ -760,7 +760,7 @@ def build_pack(params: dict | None = None) -> PackModel:
             hw.append(G.superellipsoid(c + ln * 2.5, (13, 14, 3.5), 0.3, 0.3, nu=20, nv=10,
                                        R=np.stack([np.cross(dd, ln), dd, ln], 1)))
             torso_info[tin][f"lifter_angle_deg_{'R' if s > 0 else 'L'}"] = float(
-                np.degrees(np.arctan2(d[2], np.hypot(d[0], d[1]))))
+                abs(np.degrees(np.arctan2(d[2], np.hypot(d[0], d[1])))))
         parts.append(Part(f"shoulder_straps{tag}", G.concat(straps), "harness", "suspension", torso=tin,
                           explode=HE, label="Shoulder harness"))
         parts.append(Part(f"harness_webbing{tag}", G.concat(webs), "webbing", "suspension", torso=tin, explode=HE))
@@ -908,12 +908,15 @@ def mass_estimate(parts: list, fm: dict) -> dict:
     hw = fm.get("hardware") or {}
     frame_g = float(hw.get("total_g", 0.0))
     plates = next((p for p in parts if p.name == "frame_plates"), None)
-    plate_g = G.volume_mm3(plates.mesh) * 1550e-9 if plates is not None else 0.0
-    allowance = 160.0 + 140.0
+    plate_g = G.volume_mm3(plates.mesh) * 1550e-6 if plates is not None else 0.0
+    # ASSUMPTION allowances: buckles/ladder-locks 160 g, load shelf 140 g, hipbelt HDPE
+    # stiffener 120 g, zips + binding + labels 180 g, bag liner (210D ripstop) on the bag area
+    liner = next((p.mesh.area / 1e6 * _gsm("robic_210d_ripstop") for p in parts if p.name == "bag_body"), 0.0)
+    allowance = 160.0 + 140.0 + 120.0 + 180.0 + liner
     total = frame_g + plate_g + soft + allowance
     return {"frame_mass_g": frame_g + plate_g, "frame_tubes_g": float(hw.get("tubes_g", 0.0)),
             "frame_hubs_g": float(hw.get("hubs_g", 0.0)), "frame_plates_g": plate_g,
-            "soft_goods_g": soft, "soft_goods_rows_g": rows, "hardware_shelf_allowance_g": allowance,
+            "soft_goods_g": soft, "soft_goods_rows_g": rows, "allowances_g": allowance,
             "total_mass_g": total}
 
 

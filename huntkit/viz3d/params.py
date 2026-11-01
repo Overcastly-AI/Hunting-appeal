@@ -25,18 +25,18 @@ DEFAULT_PARAMS: dict = {
     "colorway": "talus",           # designs/apparel/colorways.yaml accent_pairings id
     # PLACEHOLDER frame geometry, passed to huntkit.fea.frames.carbon_variant(**frame)
     "frame": {
-        "height": 760.0, "width_top": 200.0, "width_bottom": 270.0,
+        "height": 790.0, "width_top": 200.0, "width_bottom": 270.0,
         "lumbar_z": 135.0, "lumbar_depth": 30.0, "lumbar_width": 130.0, "top_sweep": 25.0,
-        "hip_z": 100.0, "shelf_z": 40.0, "shelf_strap_z": 300.0, "lash_z": 520.0,
+        "hip_z": 100.0, "shelf_z": 40.0, "shelf_strap_z": 300.0, "lash_z": 540.0,
         "stay_style": "curved", "n_stay": 24, "yoke_drop": 50.0,
     },
     "frame_yaml": "auto",          # "auto" -> <spec dir>/frame.yaml if it exists; None disables
     "frame_plates": {"thick": 2.5, "lumbar_h": 100.0, "corner_leg": 85.0},
     # PLACEHOLDER main bag: tapered rounded box hugging the frame; depth auto-scaled to the target
     "bag": {
-        "z_bottom": 55.0, "height": 715.0,
-        "a_bottom": 150.0, "a_top": 156.0, "a_bulge": 14.0,      # half-widths (x)
-        "b_bottom": 115.0, "b_top": 100.0, "b_bulge": 38.0,      # half-depths (y), pre-scaling
+        "z_bottom": 55.0, "height": 770.0,
+        "a_bottom": 158.0, "a_top": 160.0, "a_bulge": 12.0,      # half-widths (x)
+        "b_bottom": 125.0, "b_top": 108.0, "b_bulge": 40.0,      # half-depths (y), pre-scaling
         "n_front": 2.7, "n_back": 5.0, "r_bottom": 35.0, "r_top": 85.0,
         "gap_to_frame": 6.0, "solve_depth": True, "rings": 72, "segments": 96,
     },
