@@ -45,7 +45,7 @@ def _to_manifold(mesh: trimesh.Trimesh):
 
 def _from_manifold(man) -> trimesh.Trimesh:
     mm = man.to_mesh()
-    return trimesh.Trimesh(np.asarray(mm.vert_properties)[:, :3], np.asarray(mm.tri_verts), process=True)
+    return trimesh.Trimesh(np.asarray(mm.vert_properties)[:, :3], np.asarray(mm.tri_verts), process=False)
 
 
 def _frame(axis):
@@ -125,7 +125,16 @@ def orient_to(mesh: trimesh.Trimesh, build_dir) -> trimesh.Trimesh:
     """Copy rotated so ``build_dir`` becomes +Z and the part sits on z = 0."""
     m = mesh.copy()
     d = np.asarray(build_dir, float)
-    T = trimesh.geometry.align_vectors(d, [0, 0, 1])
-    m.apply_transform(T)
+    # axis-aligned rotation (permutation with signs) so the part stays square to the plate
+    k = int(np.argmax(np.abs(d)))
+    sgn = np.sign(d[k])
+    R = np.eye(4)
+    if k == 2:
+        R[:3, :3] = np.diag([1, sgn, sgn])
+    elif k == 0:
+        R[:3, :3] = np.array([[0, 0, -sgn], [0, 1, 0], [sgn, 0, 0]])
+    else:
+        R[:3, :3] = np.array([[1, 0, 0], [0, 0, -sgn], [0, sgn, 0]])
+    m.apply_transform(R)
     m.apply_translation(-m.bounds[0])
     return m

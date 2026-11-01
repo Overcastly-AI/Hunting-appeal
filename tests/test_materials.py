@@ -82,7 +82,7 @@ def test_query_comparisons():
     assert {m.id for m in lte} >= {"alu_7075_t6", "alu_6061_t6"}
     assert "ti_6al_4v" not in {m.id for m in lte}
     strong = mat.query("metals", yield_strength_mpa__gt=600)
-    assert {m.id for m in strong} == {"alu_7001_t6_tube", "ti_6al_4v", "ti_3al_2_5v_tube"}
+    assert {m.id for m in strong} == {"alu_7001_t6_tube", "ti_6al_4v", "ti_3al_2_5v_tube", "ti_6al_4v_slm"}
     gte = mat.query(yield_strength_mpa__gte=880)
     assert "ti_6al_4v" in {m.id for m in gte}
 

@@ -65,14 +65,19 @@ def run_simp(pb: SimpProblem, iters: int = 60, beta_schedule=(0, 1, 2, 4, 8), be
     g = pb.grid
     t0 = time.time()
     KE = ke_h8(g.h, 1.0, pb.nu) if g.dim == 3 else ke_q4(g.h, 1.0, pb.nu, pb.thickness)
-    asm = Assembler(g.edof, g.ndof, KE, pb.fixed)
-    solver = Solver(g.node_coords(), pb.fixed, tol=solver_tol)
     ps = np.zeros(g.ne, bool) if pb.passive_solid is None else pb.passive_solid.copy()
     pv = np.zeros(g.ne, bool) if pb.passive_void is None else (pb.passive_void & ~ps)
+    # nodes touched only by passive-void elements carry nothing: drop them (better CG conditioning)
+    fixed = pb.fixed.copy()
+    act = np.zeros(g.nn, bool)
+    act[np.unique(g.enodes[~pv])] = True
+    fixed |= np.repeat(~act, g.dim)
+    asm = Assembler(g.edof, g.ndof, KE, fixed)
+    solver = Solver(g.node_coords(), fixed, tol=solver_tol)
     design = ~(ps | pv)
     H, Hs = density_filter(g, pb.rmin_vox)
     F = pb.loads.reshape(g.ndof, -1).copy()
-    F[pb.fixed] = 0.0
+    F[fixed] = 0.0
     w = np.ones(F.shape[1]) if pb.weights is None else np.asarray(pb.weights, float)
     Emin = pb.Emin_ratio * pb.E0
 

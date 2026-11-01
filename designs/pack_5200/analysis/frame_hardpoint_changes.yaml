@@ -1,0 +1,179 @@
+# Frame v2 hard-point changes (structural-fea-engineer -> pack-designer)
+from: structural-fea-engineer
+date: '2026-11-01'
+for: pack-designer (Spine bag redesign) - update geometry.yaml hard_points / members_topology
+summary: 'Frame v2 deletes the lumbar elbow: one straight stay per side from the foot (moved 20 mm inboard to x
+  +-115, under the stay top) to the unchanged stay top. Crown, stay top, pawl, hipbelt pivot and shelf pivots are
+  unchanged. Hard points riding on the stay between z 0 and z 530 shift by the amounts below (mirror for _L: negate
+  x). Lower frame is 40 mm narrower at the feet.'
+changes:
+  stay_foot_R:
+    old:
+    - 135.0
+    - 0.0
+    - 0.0
+    new:
+    - 115.0
+    - 0.0
+    - 0.0
+    why: 'straight stay: foot in-line under the stay top (x 115) so the two crown legs stay parallel; fore-aft position
+      kept'
+  lumbar_elbow_R:
+    old:
+    - 115.0
+    - -25.0
+    - 130.0
+    new: null
+    why: elbow deleted (one straight tube). Stay centreline at z 130 is now [115.0, -2.5, 130.0]; the formed lumbar
+      pan face sits ~20 mm toward the body, so the lumbar contour the foam sees is ~unchanged
+  crown axis_unit_vector_yz:
+    old:
+    - 0.0375
+    - 0.9993
+    new:
+    - -0.0189
+    - 0.9998
+    why: 'crown legs coaxial with the straight stay, which now leans slightly TOWARD the body going up (old upper
+      stay leaned aft). Crown top bar, lifter anchors and yoke move -4.0 mm (y) at 15 in and -15.4 mm at 23 in (toward
+      the wearer). PACK-DESIGNER: check head clearance and lifter angle at 23 in; if not acceptable, the alternative
+      is foot y -30 (crown axis unchanged) at the cost of 30 mm less buttock clearance'
+  mid_bar_node_R:
+    old:
+    - 115.0
+    - -17.5
+    - 330.0
+    new:
+    - 115.0
+    - -6.2
+    - 330.0
+    why: follows the straight stay (shelf-strap and bag-mid anchors move with it)
+  upper_bar_node_R:
+    old:
+    - 115.0
+    - -10.4
+    - 520.0
+    new:
+    - 115.0
+    - -9.8
+    - 520.0
+    why: follows the straight stay (sub-mm)
+  bag_anchor_low_R:
+    old:
+    - 125.8
+    - 0.5
+    - 60.0
+    new:
+    - 115.0
+    - 10.9
+    - 60.0
+    why: 'rides on the stay: shifts dx -10.8 dy +10.4 mm'
+  hip_stabilizer_anchor_R:
+    old:
+    - 120.8
+    - -23.5
+    - 60.0
+    new:
+    - 110.0
+    - -13.1
+    - 60.0
+    why: 'rides on the stay: shifts dx -10.8 dy +10.4 mm'
+  load_wing_lash_z80_R:
+    old:
+    - 122.7
+    - -3.4
+    - 80.0
+    new:
+    - 115.0
+    - 10.5
+    - 80.0
+    why: 'rides on the stay: shifts dx -7.7 dy +13.9 mm'
+  load_wing_lash_z250_R:
+    old:
+    - 115.0
+    - -8.5
+    - 250.0
+    new:
+    - 115.0
+    - 7.3
+    - 250.0
+    why: 'rides on the stay: shifts dx +0.0 dy +15.8 mm'
+  load_wing_lash_z420_R:
+    old:
+    - 115.0
+    - -2.1
+    - 420.0
+    new:
+    - 115.0
+    - 4.1
+    - 420.0
+    why: 'rides on the stay: shifts dx +0.0 dy +6.2 mm'
+  shoulder_strap_lower_anchor_R:
+    old:
+    - 118.1
+    - -36.2
+    - 110.0
+    new:
+    - 115.0
+    - -17.1
+    - 110.0
+    why: 'rides on the stay: shifts dx -3.1 dy +19.1 mm'
+  shelf_pivot_R:
+    old:
+    - 135.0
+    - 8.0
+    - 25.0
+    new:
+    - 135.0
+    - 8.0
+    - 25.0
+    why: 'UNCHANGED: the foot boot carries a 20 mm outboard boss for the pivot'
+  hipbelt_pivot:
+    old:
+    - 0.0
+    - -48.1
+    - 120.0
+    new:
+    - 0.0
+    - -48.1
+    - 120.0
+    why: 'UNCHANGED: carried by the formed lumbar pan (face 20 mm toward the body)'
+  stay_top_crown_socket_R:
+    old:
+    - 115.0
+    - -10.0
+    - 530.0
+    new:
+    - 115.0
+    - -10.0
+    - 530.0
+    why: UNCHANGED
+  rack_lock_pawl_upper_bar:
+    old:
+    - 0.0
+    - -24.4
+    - 520.0
+    new:
+    - 0.0
+    - -24.4
+    - 520.0
+    why: UNCHANGED
+  pulley_fixed_guide_A:
+    old:
+    - -18.0
+    - -34.8
+    - 190.0
+    new:
+    - -18.0
+    - -34.8
+    - 190.0
+    why: UNCHANGED
+  pulley_fixed_guide_C:
+    old:
+    - 18.0
+    - -34.8
+    - 190.0
+    new:
+    - 18.0
+    - -34.8
+    - 190.0
+    why: UNCHANGED

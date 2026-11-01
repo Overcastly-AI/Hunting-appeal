@@ -227,7 +227,7 @@ class Solver:
 
     def solve(self, K, F, x0=None):
         """F (ndof,) or (ndof, ncases) -> U of the same shape."""
-        if K.shape[0] <= self.direct_below:
+        if K.shape[0] <= self.direct_below or (self.B.shape[1] == 3 and K.shape[0] <= 150000):   # 2D: direct
             self.calls += 1
             lu = spla.splu(K.tocsc())
             self.last_iters = [0]

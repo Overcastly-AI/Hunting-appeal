@@ -20,3 +20,8 @@
 | 2026-11-01 | IP: extension posts are LASH/FLAG POINTS ONLY; load lifters never relocate onto posts | Claude | Avoids Mystery Ranch US 10,952,523 claim scope. Patent attorney review before tooling |
 | 2026-11-01 | Add GENERATIVE DESIGN to the frame: topology-optimized 3D-printed Ti/Al node lugs (bonded to carbon tubes), a topology-optimized water-jet carbon lumbar/hipbelt plate, and ground-structure layout optimization. No full one-piece generative frame for now (tooling cost, field repair) | owner idea + Claude scoping | New package huntkit/gendesign/ |
 | 2026-11-01 | 3D PRINTING is first-class: two tiers for every printable part. SLM Ti/Al for production (online service); desktop CF-nylon for prototypes (owner's printer). Printable hardware: lugs, hipbelt pivot mount, crown rack/pawl, pulley guides, later shelf hooks, rod clips, sewing jigs. Files go in designs/pack_5200/print/ | owner | Owner to confirm whether "3D printed" also means printing the whole frame |
+| 2026-11-01 | Volume: TRUE 85 L in the main bag alone; allow ~11.5–12 in depth so the bag is ~42 in tall | owner | Overrides the 10 in depth from Direction A |
+| 2026-11-01 | Single diagonal zip (no side zips) | owner | |
+| 2026-11-01 | Rain fly counts in the advertised base weight | owner | |
+| 2026-11-01 | Load standard HA-LS-1 adopted; frame v2 = 577 g (straight stays, carbon wraps, hat lumbar pan) | Claude (per owner "match leaders") | Crush coupon T7 must pass before relying on the bushing-contact credit |
+| 2026-11-01 | Generative design result: printed Ti lugs are +194 g vs carbon wraps, so KEEP carbon wraps; Ti hip-pivot mount only (-8 g). Printed parts used for crown rack/pawl, pulley guides and prototypes | Claude | See analysis/generative_design.md |

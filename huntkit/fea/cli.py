@@ -118,7 +118,7 @@ def main(argv=None):
         if a.pickle and Path(a.pickle).exists():
             sw = pickle.loads(Path(a.pickle).read_bytes())
         else:
-            sw = sweep(procs=a.procs)
+            sw = sweep(procs=a.procs, ckpt=a.pickle)
             if a.pickle:
                 Path(a.pickle).write_bytes(pickle.dumps(sw))
         out = deliver(sw, a.design_dir, a.screens, a.date)

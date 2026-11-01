@@ -61,7 +61,20 @@ def stay_options():
                 yield section_spec(("round", od), fam, k)
 
 
-def sweep(log=print, procs=4, keep_a=6, keep_d=16):
+def _ckpt(path, key, fn):
+    """Stage checkpoint: reuse ``path.<key>.pkl`` if present, else run ``fn`` and save it."""
+    import pickle
+    if path is None:
+        return fn()
+    f = Path(f"{path}.{key}.pkl")
+    if f.exists():
+        return pickle.loads(f.read_bytes())
+    out = fn()
+    f.write_bytes(pickle.dumps(out))
+    return out
+
+
+def sweep(log=print, procs=4, keep_a=6, keep_d=16, keep_c=1, ckpt=None):
     t0 = time.time()
     ca = []
     for st in stay_options():
@@ -69,7 +82,7 @@ def sweep(log=print, procs=4, keep_a=6, keep_d=16):
             leg = leg_for(st, lf, lk)
             if leg is not None:
                 ca.append({**BASE2, "stay": st, "leg": leg})
-    sa = _map(_q, ca, procs)
+    sa = _ckpt(ckpt, "A", lambda: _map(_q, ca, procs))
     log(f"A: {len(sa)} stay/leg options, {time.time() - t0:.0f} s")
 
     def rank(e):   # feasible-first by mass, else by margin
@@ -94,18 +107,18 @@ def sweep(log=print, procs=4, keep_a=6, keep_d=16):
                 [section_spec(("round", od), "RW45", k) for od, k in ((20, 4), (22, 4), (22, 6))],
                 [section_spec(("round", od), "RW45", k) for od, k in ((18, 4), (20, 4), (20, 6))]):
             cb.append({**e["cand"], "bar": bar, "ubar": ub, "spine": sp})
-    sb = _map(_q, cb, procs)
+    sb = _ckpt(ckpt, "B", lambda: _map(_q, cb, procs))
     log(f"B: {len(sb)} bar/spine variants, {time.time() - t0:.0f} s")
     # C: plate / flange / pad-up / wrap thickness / bushing length on the 2 best B per stay
     cc = []
     for e in best:
-        mine = sorted([x for x in sb if x["cand"]["stay"] == e["cand"]["stay"]], key=rank)[:2]
+        mine = sorted([x for x in sb if x["cand"]["stay"] == e["cand"]["stay"]], key=rank)[:keep_c]
         for x in mine:
             for pt, fl, pu, sl, bl in itertools.product((1.5, 2.0), (15.0, 20.0, 25.0), (1.0, 1.5),
                                                         (0.75, 1.0), (70.0, 110.0)):
                 cc.append({**x["cand"], "plate": ("cfrp_plate_quasi_iso", pt), "lumbar_flange_mm": fl,
                            "lumbar_padup_t_mm": pu, "sleeve_t": sl, "bushing_len": bl})
-    sc = _map(_q, cc, procs)
+    sc = _ckpt(ckpt, "C", lambda: _map(_q, cc, procs))
     log(f"C: {len(sc)} plate/joint variants, {time.time() - t0:.0f} s")
     allq = sa + sb + sc
     feas = sorted([e for e in allq if e["margin"] >= 1.0], key=lambda e: e["mass_g"])
@@ -114,7 +127,7 @@ def sweep(log=print, procs=4, keep_a=6, keep_d=16):
         if e["label"] not in seen:
             seen.add(e["label"])
             pick.append(e["cand"])
-    sd = _map(_f, pick, procs)
+    sd = _ckpt(ckpt, "D", lambda: _map(_f, pick, procs))
     log(f"D: {len(sd)} full 15/19/23 in checks, {time.time() - t0:.0f} s")
     return {"stageA": sa, "stageB": sb, "stageC": sc, "stage2": allq, "stage3": sd}
 
@@ -242,8 +255,13 @@ def hardpoint_changes(model19) -> dict:
                                   "~20 mm toward the body, so the lumbar contour the foam sees is ~unchanged"},
         "crown axis_unit_vector_yz": {"old": g["frame"]["members_topology"]["crown"]["axis_unit_vector_yz"],
                                       "new": [round(u[1], 4), round(u[2], 4)],
-                                      "why": "crown legs coaxial with the straight stay; crown top y moves "
-                                             f"{(u[1] - 0.0375) * 274:+.1f} mm at 23 in (negligible)"},
+                                      "why": "crown legs coaxial with the straight stay, which now leans slightly TOWARD the "
+                                             "body going up (old upper stay leaned aft). Crown top bar, lifter anchors and "
+                                             f"yoke move {(u[1] - 0.0375) * 71:+.1f} mm (y) at 15 in and "
+                                             f"{(u[1] - 0.0375) * 274:+.1f} mm at 23 in (toward the wearer). PACK-DESIGNER: "
+                                             "check head clearance and lifter angle at 23 in; if not acceptable, the "
+                                             "alternative is foot y -30 (crown axis unchanged) at the cost of 30 mm less "
+                                             "buttock clearance"},
         "mid_bar_node_R": {"old": hp["mid_bar_node_R"], "new": [round(float(v), 1) for v in on(330.0)],
                            "why": "follows the straight stay (shelf-strap and bag-mid anchors move with it)"},
         "upper_bar_node_R": {"old": hp["upper_bar_node_R"], "new": [round(float(v), 1) for v in on(520.0)],
@@ -303,7 +321,12 @@ def plot_utilization(kept19, png, title, mass_g):
     ax.scatter(*base.coords[[base.elements[k].n1, base.elements[k].n2]].mean(0), s=80, facecolors="none",
                edgecolors=INK, linewidths=1.4)
     _setup3d(ax, base.coords)
-    ax.view_init(elev=12, azim=-62)
+    c = base.coords
+    ax.set_xlim(c[:, 0].min() - 20, c[:, 0].max() + 20)
+    ax.set_ylim(c[:, 1].min() - 60, c[:, 1].max() + 60)
+    ax.set_zlim(c[:, 2].min() - 10, c[:, 2].max() + 10)
+    ax.set_box_aspect((np.ptp(c[:, 0]) + 40, np.ptp(c[:, 1]) + 120, np.ptp(c[:, 2]) + 20))
+    ax.view_init(elev=14, azim=-58)
     sm = plt.cm.ScalarMappable(norm=norm, cmap=CMAP)
     cax = fig.add_axes([0.15, 0.06, 0.7, 0.014])
     cb = fig.colorbar(sm, cax=cax, orientation="horizontal")
@@ -311,7 +334,7 @@ def plot_utilization(kept19, png, title, mass_g):
     cb.ax.tick_params(labelsize=7)
     fig.suptitle(f"{title}\n{mass_g:.0f} g, max member utilization {util.max():.2f} (circle)", fontsize=10, color=INK)
     fig.subplots_adjust(left=0.0, right=1.0, top=0.92, bottom=0.1)
-    fig.savefig(png)
+    fig.savefig(png, bbox_inches="tight")
     plt.close(fig)
 
 
@@ -324,7 +347,9 @@ def plot_mass_compare(old_items, new_items, png, new_total, old_total=1103.0):
         b = {"stay tubes": 0, "crown legs": 0, "bars + spine": 0, "lumbar plate": 0, "sleeves / wraps": 0,
              "adhesive": 0, "boots, pivot, crown lock, bushings": 0}
         for k, v in items.items():
-            if "stay" in k and k.startswith("tubes"):
+            if "adhesive" in k:
+                b["adhesive"] += v
+            elif "stay" in k and k.startswith("tubes"):
                 b["stay tubes"] += v
             elif "crown_leg" in k:
                 b["crown legs"] += v
@@ -386,7 +411,7 @@ def plot_test_rig(png):
     ax.plot([2.95, 2.98], [6.8, 8.6], color="#555555", lw=3.5)
     ax.plot([2.35, 2.75], [3.0, 3.1], color=blue, lw=4)                        # hipbelt
     ax.plot([2.1, 2.9, 2.98], [7.95, 7.3, 8.5], color=blue, lw=3)              # shoulder strap + lifter
-    ax.text(3.15, 8.7, "crown top: dial indicator /\nlaser dot target (deflection)", fontsize=7.5, color=ink)
+    ax.text(3.15, 8.2, "crown top: dial indicator /\nlaser dot target (deflection)", fontsize=7.5, color=ink)
     # bag / load
     ax.add_patch(Polygon([[3.0, 1.3], [4.4, 1.6], [4.6, 6.3], [3.05, 6.6]], closed=True, fc="#e6eef6", ec=blue, lw=1.5))
     for i, yy in enumerate((1.9, 2.9, 3.9)):
@@ -398,7 +423,7 @@ def plot_test_rig(png):
     ax.add_patch(Circle((3.9, 0.75), 0.32, fc="white", ec=ink, lw=1.2))
     ax.plot([3.9, 4.1], [0.75, 0.95], color=ink, lw=1.5)
     ax.plot([4.1, 3.9], [0.95, 1.6], color=red, lw=1.5, ls="--")
-    ax.text(4.35, 0.55, "T5 cycle: 12 V wiper motor + crank\n+ bungee pulls the load down\n0.4 -> 1.6 g, ~1 Hz, counter", fontsize=7, color=red)
+    ax.text(4.35, 0.55, "T5 cycle: 12 V wiper motor + crank\n+ bungee pulls the load down\n0.4 -> 1.6 g, ~50/min, counter", fontsize=7, color=red)
     # drop arrow
     ax.add_patch(FancyArrowPatch((5.2, 4.2), (5.2, 2.6), arrowstyle="-|>", mutation_scale=14, color=red, lw=1.5))
     ax.text(5.3, 3.3, "T4 drop:\nlift 15-40 mm,\nrelease; phone\naccelerometer\non crown", fontsize=7, color=red)
@@ -471,6 +496,45 @@ def deliver(sw, design_dir="designs/pack_5200", screens_dir="outputs/screens", d
             "rec_under_v1": rec_old, "rec_no_contact_credit": rec_nocredit}
 
 
+def _test_refs(e) -> list[str]:
+    """FEA numbers the owner compares against in T1, T6 and T7."""
+    kept = e["kept"]
+    out = []
+    for t in sorted(kept):
+        r = kept[t]["results"]["static_carry"]
+        d = r.displacements
+        top = np.array(d["TB1"][:3]) - np.array(d["HP"][:3])
+        lum = np.array(d["P22"][:3]) - np.array(d["HP"][:3])
+        out.append(f"- T1(a) 150 lb static carry, {t} in torso: crown top bar centre moves {top[1]:+.1f} mm fore-aft "
+                   f"(+ = away from the back), {top[2]:+.1f} mm vertical relative to the hipbelt pivot; lumbar pan centre "
+                   f"{lum[1]:+.1f} mm fore-aft. Most of it is the frame rotating on the modelled body springs (hipbelt "
+                   "foam, harness), so the rig reading depends on how stiff the hip log and shoulder bar are: treat it "
+                   "as an order-of-magnitude check (+-50 %) and use YOUR first 150 lb reading as the baseline for the "
+                   "10 % stiffness-change and permanent-set criteria. At 300 lb expect ~2x (linear).")
+    fmax, case_f = 0.0, ""
+    jmax = {}
+    for t, k in kept.items():
+        for n, r in k["results"].items():
+            lf = r.meta.get("link_forces", {})
+            for lid, f in lf.items():
+                if lid.startswith("bush"):
+                    fr = float(np.hypot(f[0], f[1]))
+                    if fr > fmax:
+                        fmax, case_f = fr, f"{n} {t} in, {lid}"
+            for j in k["joints"][n]:
+                key = j["joint"].rstrip("_LR").rstrip("_")
+                cur = jmax.get(key, (0.0, 0.0, ""))
+                if abs(j["N"]) > cur[0]:
+                    jmax[key] = (abs(j["N"]), j["M"], f"{n} {t} in")
+    out.append(f"- T7 bushing crush coupon: max FEA bushing radial force {fmax:.0f} N ({case_f}); test to "
+               f"**{1.5 * fmax:.0f} N** with no crack and <= 0.2 mm ovalisation after unload, then to failure.")
+    out.append("- T6 joint coupons, largest FEA end force per joint type (all HA-LS-1 cases, limit loads):")
+    for k_, (N, M, w) in sorted(jmax.items()):
+        out.append(f"  - {k_}: axial {N:.0f} N (with {M / 1e3:.1f} N m bending, {w}) -> mean coupon pull-out "
+                   f">= {1.5 * N:.0f} N, lowest >= {1.25 * N:.0f} N")
+    return out
+
+
 def _md(sw, e, feasible, model, crown, v1_new, rec_old, rec_nc):
     from .load_standard import describe
     from .pack5200 import crown_checks, plate_checks
@@ -522,9 +586,15 @@ def _md(sw, e, feasible, model, crown, v1_new, rec_old, rec_nc):
           f"| min margin under the OTHER standard | {v1_new['margin']:.2f} (v1 design under HA-LS-1; governing "
           f"`{v1_new['governing']['what']}`) | {rec_old['margin']:.2f} (v2 design under the old standard; governing "
           f"`{rec_old['governing']['what']}`) |", "",
-          "Where the 1103 -> " f"{m:.0f} g came from: the standard alone lets the v1 topology drop its margin from 1.09 to "
-          f"{v1_new['margin']:.2f} spare (i.e. it is over-built by that factor under HA-LS-1); the topology changes remove "
-          "the parasitic mass (7075 sleeves, the flat 4 mm plate, the elbow joints) that no tube-size change could remove.", "",
+          f"Where the 1103 -> {m:.0f} g came from: **neither change alone gets there.** The v1 design re-checked "
+          f"against HA-LS-1 has only {v1_new['margin']:.2f} margin (governing `{v1_new['governing']['what']}`): the "
+          "hipbelt-off abuse case is unchanged by the new standard (1.5 g x 1.0 in both) and, with the point-load ring "
+          "formula and the 7075 parts, it sizes the v1 crown just as before. The v2 topology checked against the OLD "
+          f"standard has {rec_old['margin']:.2f} margin. The saving is the combination: HA-LS-1 cuts the dynamic design "
+          "loads 40 % (5.0x -> 3.0x rated) and the Volkersen-peak requirement 2x, and the topology changes delete the "
+          "parasitic mass that no tube size could remove (7075 sleeves 338 -> 65 g as carbon wraps, flat 4 mm plate "
+          "217 -> 123 g as a formed pan, elbow joints gone, leg-end bushings unload the crown legs).", "",
+          "### Reference values for the physical tests (load_standard.md section 5)", ""] + _test_refs(e) + ["",
           "![mass old vs new](frame_v2_mass_old_vs_new.png)", "",
           "### Mass breakdown (v2)", "", "| item | g | oz |", "|---|---|---|"]
     for k, v in e["mass_items"].items():

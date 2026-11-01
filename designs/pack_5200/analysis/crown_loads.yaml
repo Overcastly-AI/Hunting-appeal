@@ -1,37 +1,37 @@
-# FEA crown retention loads (huntkit.fea.sizing5200), for the pack-designer
+# FEA crown retention loads (huntkit.fea.sizing5200v2, HA-LS-1 cases), for the pack-designer
 sign: + = crown pulled UP out of the stays (extension), - = pushed DOWN (compression)
 basis: 'pawl link force, huntkit.fea.pack5200 (pulley assumed slack: the pawl takes
   everything)'
 by_case_worst_torso:
   static_carry:
-    force_n: 32.4
+    force_n: 32.6
     torso_in: 23
   drop_2p5g:
-    force_n: 81.0
+    force_n: 65.2
     torso_in: 23
   side_hill_torsion:
-    force_n: 79.6
+    force_n: 51.0
     torso_in: 15
   single_stay_setdown:
-    force_n: -250.3
+    force_n: -199.9
     torso_in: 23
   meat_shelf_heavy_low:
-    force_n: 331.8
+    force_n: 264.3
     torso_in: 23
   tall_load:
-    force_n: 333.8
+    force_n: 267.1
     torso_in: 15
   overload_haul:
-    force_n: 266.4
+    force_n: 283.0
     torso_in: 23
   hipbelt_off_abuse:
     force_n: 850.2
-    torso_in: 15
+    torso_in: 19
   tall_load_posts:
-    force_n: 331.0
+    force_n: 265.5
     torso_in: 23
 max_extension_n: 850.2
-max_compression_n: -250.3
+max_compression_n: -199.9
 pack_designer_estimate_n:
   extension: 1001.0
   compression: 1334.0
