@@ -1,0 +1,27 @@
+id: rohacell_110_igf
+name: PMI structural foam core, 110 kg/m3 (ROHACELL 110 IG-F)
+category: foams
+generic: false
+trade_names:
+- Evonik ROHACELL 110 IG-F
+supplier_examples:
+- Rock West Composites
+- Easy Composites
+properties:
+  density_kg_m3: 110
+  compressive_strength_mpa: 3.0
+  compressive_modulus_mpa: 120
+  tensile_strength_mpa: 3.5
+  tensile_modulus_mpa: 160
+  shear_strength_mpa: 2.4
+  shear_modulus_mpa: 50
+  poisson: 0.3
+  max_process_temp_c: 130
+  closed_cell: true
+confidence: datasheet
+sources:
+- 'Evonik ROHACELL IG-F product information (April 2022), ISO 844 / ISO 527-2 / DIN 53294. https://media.easycomposites.eu/datasheets/Rohacell-IG-F-TDS.pdf'
+cost_usd:
+  value: 150
+  per: m2
+notes: 'Poisson ratio and cost are ASSUMPTIONS. Denser core for bone-end crush and core shear margins.'

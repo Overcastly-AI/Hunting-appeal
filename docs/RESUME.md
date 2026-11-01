@@ -13,6 +13,20 @@ Merged on main:
 - 5.0 lb is still missed, by 833 g. Fairleads are 113 g of that and the under-straps are 122 g. Soft goods, the carbon crown, the spreader and the sleeve around the crown-leg bore are most of the rest
 - Camo: owner's base pattern SVG is uploaded at `designs/apparel/camo/source/owner_base.svg`. `owner_base.yaml` and `designs/apparel/camo/DESIGN.md` still describe the proxy
 
+## Paused again: spreader in progress
+- Started the SPREADER rework, then paused at the owner's request. Partial, untested work is committed:
+  - `docs/research/spreader_research.md` (research)
+  - foam/core material records (`xlpe_foam_l200`, `rohacell_71/110_igf`)
+  - `huntkit/fea/plate_grid.py`
+  - `huntkit/gendesign/spreader.py`
+- Resume by re-launching the structural-fea-engineer spreader task:
+  1. research
+  2. contact check on the XLPE rails, with bone-end loads at center, edge, holes and between rails
+  3. mass cut toward ≤100 g: beads, cutouts with max hole size, layup, sandwich, G10
+  4. manufacture detail: radii, fairlead notches, removable clips, DXF and drawing, cost
+  5. records, viz3d, tests and screenshots
+- Progression image of the whole project so far: `docs/screens/20261102_progression.png`
+
 ## Merge status (all on main)
 - PR #1 (owner camo SVG), PR #2 (generative branch frame), PR #3 (bag-to-frame attachment + under-straps) are all merged into `main`
 - Housekeeping after the merge: analysis records stored Cursor's absolute `/workspace/...` screenshot paths. Made repo-relative so tests pass on any machine

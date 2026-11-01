@@ -1,0 +1,32 @@
+id: xlpe_foam_l200
+name: Cross-linked polyethylene foam, 2 lb/ft3 (Minicel L200 class), with a compression curve
+category: foams
+generic: false
+trade_names:
+- Sekisui Voltek Minicel L200
+supplier_examples:
+- Foam By Mail
+- Seattle Fabrics (2 lb XLPE)
+properties:
+  density_kg_m3: 32
+  compression_25pct_kpa: 48
+  compression_50pct_kpa: 103
+  compression_set_pct: 12
+  compression_5pct_kpa: 25
+  compression_10pct_kpa: 32
+  compression_70pct_kpa: 250
+  compression_80pct_kpa: 700
+  shear_modulus_kpa: 100
+  closed_cell: true
+  thickness_typical_mm: 10
+confidence: datasheet
+sources:
+- 'Minicel Type L physical data sheet: L200 density 2.0 lb/ft3, compression strength 25 % / 50 % = 7 / 15 psi (ASTM D3575), compression set 12 % of original thickness. https://canada.foambymail.com/minicel-type-l-foam-sheet.html'
+- 'Same values on the L200 product page: https://www.foambymail.com/product/minicel-l200.html'
+cost_usd:
+  value: 15
+  per: m2
+notes: '25 % and 50 % points and the compression set are datasheet values. The 5 %, 10 %, 70 % and 80 % points and
+  the shear modulus are ASSUMPTIONS that give the usual closed-cell shape (linear to about 5 %, a rising plateau,
+  densification past 70 %); they are used by huntkit/gendesign/spreader.py for the rail contact model. The older
+  record xlpe_foam (60 kPa at 25 %) is an estimate and is stiffer than this datasheet.'
