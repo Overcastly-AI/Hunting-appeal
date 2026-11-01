@@ -1,0 +1,726 @@
+{
+  "joint": {
+    "n_per_flange": 2,
+    "d_mm": 5.0,
+    "embed_mm": 35.0,
+    "length_mm": 70.0,
+    "count": 8,
+    "mass_g": 17.043140145724628,
+    "min_sf": 1.4354535623452056,
+    "min_pull_sf": 1.4354535623452056,
+    "min_shear_sf": 15.103810834566312,
+    "rows": [
+      {
+        "set": "drop_2p5g|19",
+        "side": "L",
+        "flange_n": 3917.0,
+        "shear_n": 312.0,
+        "pull_sf": 1.684285058090009,
+        "shear_sf": 15.103810834566312,
+        "sf": 1.684285058090009
+      },
+      {
+        "set": "drop_2p5g|19",
+        "side": "R",
+        "flange_n": 3917.0,
+        "shear_n": 312.0,
+        "pull_sf": 1.684285058090009,
+        "shear_sf": 15.103810834566312,
+        "sf": 1.684285058090009
+      },
+      {
+        "set": "side_hill_torsion|15",
+        "side": "L",
+        "flange_n": 3572.0,
+        "shear_n": 291.0,
+        "pull_sf": 1.8469609665561493,
+        "shear_sf": 16.193776564895842,
+        "sf": 1.8469609665561493
+      },
+      {
+        "set": "side_hill_torsion|15",
+        "side": "R",
+        "flange_n": 2376.0,
+        "shear_n": 155.0,
+        "pull_sf": 2.7766601736273424,
+        "shear_sf": 30.402509550868967,
+        "sf": 2.7766601736273424
+      },
+      {
+        "set": "meat_straps|23",
+        "side": "L",
+        "flange_n": 4596.0,
+        "shear_n": 182.0,
+        "pull_sf": 1.4354535623452056,
+        "shear_sf": 25.89224714497082,
+        "sf": 1.4354535623452056
+      },
+      {
+        "set": "meat_straps|23",
+        "side": "R",
+        "flange_n": 4596.0,
+        "shear_n": 182.0,
+        "pull_sf": 1.4354535623452056,
+        "shear_sf": 25.89224714497082,
+        "sf": 1.4354535623452056
+      },
+      {
+        "set": "hipbelt_off_abuse|19",
+        "side": "L",
+        "flange_n": 1796.0,
+        "shear_n": 280.0,
+        "pull_sf": 3.6733544390526536,
+        "shear_sf": 16.829960644231033,
+        "sf": 3.6733544390526536
+      },
+      {
+        "set": "hipbelt_off_abuse|19",
+        "side": "R",
+        "flange_n": 1796.0,
+        "shear_n": 280.0,
+        "pull_sf": 3.6733544390526536,
+        "shear_sf": 16.829960644231033,
+        "sf": 3.6733544390526536
+      }
+    ],
+    "baseline_min_pull_sf": 1.0253239731037183,
+    "baseline": "1 x 5 mm x 50 mm embed per flange (study)"
+  },
+  "pawl": {
+    "chosen": {
+      "fi99": 0.6373460406134349,
+      "fi_max": 0.6905725368074433,
+      "bearing_mpa": 16.355387261330463,
+      "bearing_sf": 2.298936698912585,
+      "metal_sf": 6.9013957417488845,
+      "thick_mm": 8.0,
+      "hole_d_mm": 8.0,
+      "pin_d_mm": 4.2,
+      "metal": 1,
+      "force_n": 2093.4895694502993,
+      "wall_g": 5.3424,
+      "bush_g": 4.602357839285361,
+      "mass_g": 9.94475783928536,
+      "passes": 1
+    },
+    "options": [
+      {
+        "fi99": 1.1131858117169888,
+        "fi_max": 1.1964438061405316,
+        "bearing_mpa": 49.84498974881665,
+        "bearing_sf": 0.754338604330692,
+        "metal_sf": null,
+        "thick_mm": 5.0,
+        "hole_d_mm": 4.2,
+        "pin_d_mm": 4.2,
+        "metal": 0,
+        "force_n": 2093.4895694502993,
+        "wall_g": 0.0,
+        "bush_g": 0.0,
+        "mass_g": 0.0,
+        "passes": 0
+      },
+      {
+        "fi99": 0.9868885911024451,
+        "fi_max": 1.0947251135007883,
+        "bearing_mpa": 26.16861961812874,
+        "bearing_sf": 1.4368354368203657,
+        "metal_sf": 4.3133723385930525,
+        "thick_mm": 5.0,
+        "hole_d_mm": 8.0,
+        "pin_d_mm": 4.2,
+        "metal": 1,
+        "force_n": 2093.4895694502993,
+        "wall_g": 0.0,
+        "bush_g": 2.87647364955335,
+        "mass_g": 2.87647364955335,
+        "passes": 1
+      },
+      {
+        "fi99": 0.6373460406134349,
+        "fi_max": 0.6905725368074433,
+        "bearing_mpa": 16.355387261330463,
+        "bearing_sf": 2.298936698912585,
+        "metal_sf": 6.9013957417488845,
+        "thick_mm": 8.0,
+        "hole_d_mm": 8.0,
+        "pin_d_mm": 4.2,
+        "metal": 1,
+        "force_n": 2093.4895694502993,
+        "wall_g": 5.3424,
+        "bush_g": 4.602357839285361,
+        "mass_g": 9.94475783928536,
+        "passes": 1
+      },
+      {
+        "fi99": 0.6891746648184535,
+        "fi_max": 0.7334571491126546,
+        "bearing_mpa": 13.08430980906437,
+        "bearing_sf": 2.8736708736407315,
+        "metal_sf": 6.9013957417488845,
+        "thick_mm": 8.0,
+        "hole_d_mm": 10.0,
+        "pin_d_mm": 4.2,
+        "metal": 1,
+        "force_n": 2093.4895694502993,
+        "wall_g": 5.3424,
+        "bush_g": 8.176233642009109,
+        "mass_g": 13.518633642009108,
+        "passes": 1
+      },
+      {
+        "fi99": 0.5580363651603085,
+        "fi_max": 0.6762101350228015,
+        "bearing_mpa": 8.722873206042914,
+        "bearing_sf": 4.310506310461097,
+        "metal_sf": 10.269934139507267,
+        "thick_mm": 10.0,
+        "hole_d_mm": 12.0,
+        "pin_d_mm": 5.0,
+        "metal": 1,
+        "force_n": 2093.4895694502993,
+        "wall_g": 8.904,
+        "bush_g": 14.767056268198822,
+        "mass_g": 23.67105626819882,
+        "passes": 1
+      }
+    ],
+    "beam_worst": {
+      "set": "hipbelt_off_abuse|15",
+      "factor": 1.0,
+      "mag": 2093.4895694502993,
+      "mag_yz": 2093.4895694502993,
+      "f": [
+        4.6633843911020945e-06,
+        1913.0594278973163,
+        850.2365569242443
+      ]
+    }
+  },
+  "barrier": {
+    "winner": {
+      "family": "tensioned panel",
+      "name": "UHMWPE film",
+      "id": "uhmwpe_sheet",
+      "t_mm": 1.2,
+      "mount": "bag",
+      "mode": "spanning",
+      "passes": 1,
+      "defl_mm": 14.363837335788794,
+      "span_defl_mm": 14.363837335788794,
+      "foam_defl_factored_mm": null,
+      "pressure_kpa": 0.0,
+      "stress_mpa": 11.89484034901309,
+      "sf": 1.412377090155219,
+      "standoff_mm": 29.514510907276794,
+      "mass_g": 88.98835400344849,
+      "sheet_g": 76.98835400344849,
+      "hardware_g": 12.0,
+      "pretension_n_per_mm": 2.0,
+      "walk_defl_mm": 10.982743179522604,
+      "E": 690.0,
+      "rho": 935.0
+    },
+    "best": {
+      "printed web": {
+        "family": "printed web",
+        "name": "PAHT-CF web",
+        "id": "pa12_cf_fdm_paht",
+        "t_mm": 3.2,
+        "mount": "bag",
+        "mode": "spanning",
+        "passes": 1,
+        "defl_mm": 22.242026290949564,
+        "span_defl_mm": 22.242026290949564,
+        "foam_defl_factored_mm": 2.281688858736129,
+        "pressure_kpa": 0.0,
+        "stress_mpa": 75.24483622357774,
+        "sf": 1.4884742345270086,
+        "standoff_mm": 29.514510907276794,
+        "mass_g": 232.7491058642578,
+        "sheet_g": 232.7491058642578,
+        "hardware_g": 0.0,
+        "E": 3860.0,
+        "rho": 1060.0,
+        "ledge_g": 0.0
+      },
+      "clip-in sheet": {
+        "family": "clip-in sheet",
+        "name": "QI carbon sheet",
+        "id": "cfrp_plate_quasi_iso",
+        "t_mm": 2.0,
+        "mount": "bag",
+        "mode": "spanning",
+        "passes": 1,
+        "defl_mm": 8.10407321271588,
+        "span_defl_mm": 8.10407321271588,
+        "foam_defl_factored_mm": 1.3772758260423525,
+        "pressure_kpa": 0.0,
+        "stress_mpa": 185.72988477571712,
+        "sf": 1.9382987311639546,
+        "standoff_mm": 29.514510907276794,
+        "mass_g": 232.505721043396,
+        "sheet_g": 212.712921043396,
+        "hardware_g": 19.7928,
+        "E": 45000.0,
+        "rho": 1550.0,
+        "ledge_g": 12.5928
+      },
+      "tensioned panel": {
+        "family": "tensioned panel",
+        "name": "UHMWPE film",
+        "id": "uhmwpe_sheet",
+        "t_mm": 1.2,
+        "mount": "bag",
+        "mode": "spanning",
+        "passes": 1,
+        "defl_mm": 14.363837335788794,
+        "span_defl_mm": 14.363837335788794,
+        "foam_defl_factored_mm": null,
+        "pressure_kpa": 0.0,
+        "stress_mpa": 11.89484034901309,
+        "sf": 1.412377090155219,
+        "standoff_mm": 29.514510907276794,
+        "mass_g": 88.98835400344849,
+        "sheet_g": 76.98835400344849,
+        "hardware_g": 12.0,
+        "pretension_n_per_mm": 2.0,
+        "walk_defl_mm": 10.982743179522604,
+        "E": 690.0,
+        "rho": 935.0
+      }
+    },
+    "loads": {
+      "static_n": 133.37044,
+      "walk_n": 213.392704,
+      "factored_n": 400.11132,
+      "share": 0.2,
+      "contact_d_mm": 22.0
+    }
+  },
+  "fea": {
+    "cases": [
+      {
+        "set": "static_carry|15",
+        "case": "static_carry",
+        "torso": 15.0,
+        "factor": 2.0,
+        "fi99": 0.6883501380376487,
+        "sf": 1.4527490367777132,
+        "vm99_mpa": 41.480715974672634
+      },
+      {
+        "set": "drop_2p5g|15",
+        "case": "drop_2p5g",
+        "torso": 15.0,
+        "factor": 1.5,
+        "fi99": 1.032525207614544,
+        "sf": 0.9684993573283432,
+        "vm99_mpa": 62.221073987844846
+      },
+      {
+        "set": "side_hill_torsion|15",
+        "case": "side_hill_torsion",
+        "torso": 15.0,
+        "factor": 1.5,
+        "fi99": 0.8889276590671459,
+        "sf": 1.1249509336332442,
+        "vm99_mpa": 60.430637507831094
+      },
+      {
+        "set": "single_stay_setdown|15",
+        "case": "single_stay_setdown",
+        "torso": 15.0,
+        "factor": 1.5,
+        "fi99": 1.687836999400488,
+        "sf": 0.5924742734963124,
+        "vm99_mpa": 121.50359139860056
+      },
+      {
+        "set": "meat_straps|15",
+        "case": "meat_straps",
+        "torso": 15.0,
+        "factor": 1.5,
+        "fi99": 0.495589666313411,
+        "sf": 2.017798327876352,
+        "vm99_mpa": 33.372331599558166
+      },
+      {
+        "set": "tall_load|15",
+        "case": "tall_load",
+        "torso": 15.0,
+        "factor": 1.5,
+        "fi99": 0.5945543353373908,
+        "sf": 1.6819320633370398,
+        "vm99_mpa": 39.851931664975375
+      },
+      {
+        "set": "overload_haul|15",
+        "case": "overload_haul",
+        "torso": 15.0,
+        "factor": 1.0,
+        "fi99": 0.35363421738299927,
+        "sf": 2.8277806582188343,
+        "vm99_mpa": 23.814102746451837
+      },
+      {
+        "set": "tall_load_posts|15",
+        "case": "tall_load_posts",
+        "torso": 15.0,
+        "factor": 1.5,
+        "fi99": 0.6501819542898472,
+        "sf": 1.5380309979415487,
+        "vm99_mpa": 41.29982154486338
+      },
+      {
+        "set": "hipbelt_off_abuse|15",
+        "case": "hipbelt_off_abuse",
+        "torso": 15.0,
+        "factor": 1.0,
+        "fi99": 1.0471868307597818,
+        "sf": 0.9549394345175773,
+        "vm99_mpa": 66.35917363413968
+      },
+      {
+        "set": "static_carry|19",
+        "case": "static_carry",
+        "torso": 19.0,
+        "factor": 2.0,
+        "fi99": 0.5126386498861258,
+        "sf": 1.9506917791355243,
+        "vm99_mpa": 32.39131614272248
+      },
+      {
+        "set": "drop_2p5g|19",
+        "case": "drop_2p5g",
+        "torso": 19.0,
+        "factor": 1.5,
+        "fi99": 0.7689579749139978,
+        "sf": 1.3004611859469206,
+        "vm99_mpa": 48.58697421360959
+      },
+      {
+        "set": "side_hill_torsion|19",
+        "case": "side_hill_torsion",
+        "torso": 19.0,
+        "factor": 1.5,
+        "fi99": 0.805848276966548,
+        "sf": 1.24092838389417,
+        "vm99_mpa": 55.86602456978995
+      },
+      {
+        "set": "single_stay_setdown|19",
+        "case": "single_stay_setdown",
+        "torso": 19.0,
+        "factor": 1.5,
+        "fi99": 1.6515923427901946,
+        "sf": 0.6054762873934153,
+        "vm99_mpa": 117.57143684719719
+      },
+      {
+        "set": "meat_straps|19",
+        "case": "meat_straps",
+        "torso": 19.0,
+        "factor": 1.5,
+        "fi99": 0.4165879067077542,
+        "sf": 2.400453743131633,
+        "vm99_mpa": 28.669104628931933
+      },
+      {
+        "set": "tall_load|19",
+        "case": "tall_load",
+        "torso": 19.0,
+        "factor": 1.5,
+        "fi99": 0.43530803391329204,
+        "sf": 2.29722385550823,
+        "vm99_mpa": 28.46379574974723
+      },
+      {
+        "set": "overload_haul|19",
+        "case": "overload_haul",
+        "torso": 19.0,
+        "factor": 1.0,
+        "fi99": 0.2961111642780882,
+        "sf": 3.377110087821159,
+        "vm99_mpa": 20.430373870290506
+      },
+      {
+        "set": "tall_load_posts|19",
+        "case": "tall_load_posts",
+        "torso": 19.0,
+        "factor": 1.5,
+        "fi99": 0.4789241953882252,
+        "sf": 2.088013112783706,
+        "vm99_mpa": 30.877877073080757
+      },
+      {
+        "set": "hipbelt_off_abuse|19",
+        "case": "hipbelt_off_abuse",
+        "torso": 19.0,
+        "factor": 1.0,
+        "fi99": 0.7517538311797379,
+        "sf": 1.3302226853046906,
+        "vm99_mpa": 47.43076636024492
+      },
+      {
+        "set": "static_carry|23",
+        "case": "static_carry",
+        "torso": 23.0,
+        "factor": 2.0,
+        "fi99": 0.3974144044747481,
+        "sf": 2.5162651095187982,
+        "vm99_mpa": 25.755745571553206
+      },
+      {
+        "set": "drop_2p5g|23",
+        "case": "drop_2p5g",
+        "torso": 23.0,
+        "factor": 1.5,
+        "fi99": 0.5961216066651668,
+        "sf": 1.6775100731446664,
+        "vm99_mpa": 38.63361835535361
+      },
+      {
+        "set": "side_hill_torsion|23",
+        "case": "side_hill_torsion",
+        "torso": 23.0,
+        "factor": 1.5,
+        "fi99": 0.7765488296300681,
+        "sf": 1.287749027290891,
+        "vm99_mpa": 53.29850827817486
+      },
+      {
+        "set": "single_stay_setdown|23",
+        "case": "single_stay_setdown",
+        "torso": 23.0,
+        "factor": 1.5,
+        "fi99": 1.5987109276736853,
+        "sf": 0.6255039498948812,
+        "vm99_mpa": 116.6654338319578
+      },
+      {
+        "set": "meat_straps|23",
+        "case": "meat_straps",
+        "torso": 23.0,
+        "factor": 1.5,
+        "fi99": 0.5086486714162592,
+        "sf": 1.9659935358046714,
+        "vm99_mpa": 35.7002975310219
+      },
+      {
+        "set": "tall_load|23",
+        "case": "tall_load",
+        "torso": 23.0,
+        "factor": 1.5,
+        "fi99": 0.35698015495923513,
+        "sf": 2.801276166497809,
+        "vm99_mpa": 25.640120683750276
+      },
+      {
+        "set": "overload_haul|23",
+        "case": "overload_haul",
+        "torso": 23.0,
+        "factor": 1.0,
+        "fi99": 0.36183164099830195,
+        "sf": 2.7637162887164224,
+        "vm99_mpa": 25.409455419069058
+      },
+      {
+        "set": "tall_load_posts|23",
+        "case": "tall_load_posts",
+        "torso": 23.0,
+        "factor": 1.5,
+        "fi99": 0.3614730736230748,
+        "sf": 2.7664577888939736,
+        "vm99_mpa": 25.49328808014569
+      },
+      {
+        "set": "hipbelt_off_abuse|23",
+        "case": "hipbelt_off_abuse",
+        "torso": 23.0,
+        "factor": 1.0,
+        "fi99": 0.6819226396614317,
+        "sf": 1.466442000659328,
+        "vm99_mpa": 43.03885304412857
+      }
+    ],
+    "sf_strength_min": 0.5924742734963124,
+    "sf_fatigue": 0.5447808887916423,
+    "sf_creep_rupture": 1.1621992294221706,
+    "governing": "single_stay_setdown|15",
+    "stiff": {
+      "carry_dy_mm": 29.696346577089276,
+      "carry_dz_mm": -2.5440015958210247,
+      "torsion_Nm_per_deg": 0.43754904703705844,
+      "E_ref": 3860.0
+    },
+    "tube": {
+      "carry_dy_mm": -6.333869497618316,
+      "carry_dz_mm": 0.0033344962619667106,
+      "torsion_Nm_per_deg": 2.8733020978704613
+    },
+    "torsion_rel": 0.1522809061258635,
+    "joint_rows": [
+      {
+        "set": "side_hill_torsion|15",
+        "side": "L",
+        "N": -457.77328464836677,
+        "M_nmm": 61107.14260335117,
+        "V": 202.85046141661982,
+        "flange_n": 2775.017584130482
+      },
+      {
+        "set": "side_hill_torsion|15",
+        "side": "R",
+        "N": -114.37026571330121,
+        "M_nmm": 64073.956210383585,
+        "V": 241.46646084102326,
+        "flange_n": 2726.9333082893
+      },
+      {
+        "set": "drop_2p5g|19",
+        "side": "L",
+        "N": -402.3519366771457,
+        "M_nmm": 81431.85610873689,
+        "V": 314.4246757880626,
+        "flange_n": 3594.1699728692765
+      },
+      {
+        "set": "drop_2p5g|19",
+        "side": "R",
+        "N": -405.82361084094293,
+        "M_nmm": 81700.37703337273,
+        "V": 314.8085288889238,
+        "flange_n": 3607.094181811002
+      },
+      {
+        "set": "hipbelt_off_abuse|19",
+        "side": "L",
+        "N": 600.8913106654666,
+        "M_nmm": 30914.86676788166,
+        "V": 303.44659473517765,
+        "flange_n": 1588.5651039944692
+      },
+      {
+        "set": "hipbelt_off_abuse|19",
+        "side": "R",
+        "N": 599.4426572276716,
+        "M_nmm": 31389.18497070274,
+        "V": 301.26701802479795,
+        "flange_n": 1607.6040357264499
+      },
+      {
+        "set": "meat_straps|23",
+        "side": "L",
+        "N": -2.3724729497139947,
+        "M_nmm": 102257.98363934907,
+        "V": 195.27506950185887,
+        "flange_n": 4261.935554781068
+      },
+      {
+        "set": "meat_straps|23",
+        "side": "R",
+        "N": -3.9366614125417243,
+        "M_nmm": 101979.86554633606,
+        "V": 195.18636060941765,
+        "flange_n": 4251.12939513694
+      }
+    ],
+    "seconds": 3.375694513320923,
+    "E": 3860.0,
+    "material": "pa12_cf_fdm_paht"
+  },
+  "heat": {
+    "paht": {
+      "cold": 0.94,
+      "hot_8h_40c": 0.3948,
+      "hot_60c": 0.32899999999999996,
+      "tg_c": 45.0,
+      "hdt_c": 170.0,
+      "elong_z_pct": 5.2,
+      "water_pct": 0.88,
+      "rho": 1060.0
+    },
+    "ppa": {
+      "cold": 2.8735751295336787,
+      "hot_8h_40c": 2.0761580310880827,
+      "hot_60c": 2.155181347150259,
+      "tg_c": 85.0,
+      "hdt_c": 227.0,
+      "elong_z_pct": 0.9,
+      "water_pct": 1.3,
+      "rho": 1250.0
+    },
+    "ppa_plastic_g": 551.8493530240611,
+    "E_ratio": 3.05699481865285,
+    "feel_limit": 0.8,
+    "recommend": "pa12_cf_fdm_paht",
+    "reason": "PAHT-CF stays the production filament. PPA-CF is below its glass transition at 60 C, so the same geometry stays near or above the tube frame's torsional stiffness in a hot cab, while PAHT (Tg 45 C) does not. That is a feel difference the owner already accepted, not a strength failure, as long as the creep-rupture SF is at least 1. PPA costs the density ratio in mass, its Z elongation is 0.9 % (a cold-drop risk), it absorbs more water, and the TDS warns that annealing a large flat part can warp it. Use PPA only as a hot-climate alternate.",
+    "paht_cost_per_g": 0.08,
+    "ppa_cost_per_g": 0.12
+  },
+  "roll": {
+    "parts_g": {
+      "printed body": 467.9682513644038,
+      "segment dowels": 17.043140145724628,
+      "pawl bushings and wall": 9.94475783928536,
+      "meat barrier": 88.98835400344849,
+      "kept crown, rack, pawl, guides, Ti mount, UHMWPE bushings": 204.6,
+      "inserts and screws": 10.8
+    },
+    "frame_g": 799.3445033528623,
+    "pack_g": 2454.244503352862,
+    "pack_lb": 5.410682951639733,
+    "target_g": 2268.0,
+    "gap_g": 186.244503352862,
+    "study_frame_g": 718.0,
+    "kept_g": 204.6,
+    "soft_g": 1654.8999999999999
+  },
+  "cost": {
+    "filament": 40.43245691788449,
+    "scrap_allowance": 6.064868537682673,
+    "dowels": 4.48,
+    "bushings": 8.0,
+    "adhesive": 2.0,
+    "inserts": 3.0,
+    "barrier": 3.9238602480413816,
+    "machine": 16.55548059072183,
+    "total": 84.45666629433036,
+    "hours": 16.55548059072183,
+    "price_per_g": 0.08
+  },
+  "farm": {
+    "batch": 20,
+    "hours_per_frame": 16.55548059072183,
+    "printer_hours": 331.1096118144366,
+    "days_1": 20.69435073840229,
+    "days_3": 6.898116912800763,
+    "days_5": 4.138870147680458,
+    "oven": "anneal 4 frames at a time, 6 h + slow cool, one shelf oven"
+  },
+  "plastic_g": 467.9682513644038,
+  "volume_cm3": 441.4794824192488,
+  "hours": 16.55548059072183,
+  "window": {
+    "width_mm": 207.9305191040039,
+    "height_mm": 330.0,
+    "cavity_mm": 29.514510907276794,
+    "foam_mm": 6.0,
+    "foam_k_n_per_mm3": 0.04,
+    "z0": 170.0,
+    "z1": 500.0,
+    "x_inner_mm": 103.96525955200195,
+    "y_wearer": -19.935579801571777,
+    "y_bag": 12.187443241678839,
+    "note": "inner-edge gap and y-depth measured on genframe_assembled.stl; foam is panels.yaml BP-02"
+  },
+  "screens": [
+    "/workspace/outputs/screens/20261101_prodframe_1_pawl_joint.png",
+    "/workspace/outputs/screens/20261101_prodframe_2_barrier.png",
+    "/workspace/outputs/screens/20261101_prodframe_3_surface_sections.png",
+    "/workspace/outputs/screens/20261101_prodframe_5_fea.png",
+    "/workspace/outputs/screens/20261101_prodframe_6_heat_mass.png",
+    "/workspace/outputs/screens/20261101_prodframe_4_surface_3d.png"
+  ]
+}

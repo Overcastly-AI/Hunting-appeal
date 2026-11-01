@@ -1,0 +1,56 @@
+id: ppa_cf_fdm
+name: PPA-CF (polyphthalamide + carbon fiber) FDM filament, printed, unannealed TDS values
+category: polymers
+generic: false
+trade_names:
+- Bambu Lab PPA-CF
+supplier_examples:
+- Bambu Lab store
+properties:
+  density_kg_m3: 1250
+  youngs_modulus_xy_mpa: 11800
+  youngs_modulus_z_mpa: 4300
+  youngs_modulus_mpa: 11800
+  poisson: 0.35
+  tensile_strength_xy_mpa: 168
+  tensile_strength_z_mpa: 57
+  bending_strength_xy_mpa: 208
+  bending_strength_z_mpa: 63
+  bending_modulus_xy_mpa: 9860
+  elongation_xy_pct: 3.2
+  elongation_z_pct: 0.9
+  heat_deflection_temp_c: 227
+  heat_deflection_temp_1_8_mpa_c: 196
+  glass_transition_c: 85
+  melting_temp_c: 258
+  water_absorption_pct: 1.30
+  impact_xy_unnotched_kj_m2: 41.7
+  impact_xy_notched_kj_m2: 6.5
+  impact_z_kj_m2: 4.3
+  drying_temp_c: 120
+  drying_time_hours: 10
+  nozzle_temp_c: 290
+  bed_temp_c: 110
+  anneal_temp_c: 130
+  anneal_time_hours: 8
+  min_wall_mm: 2.0
+  process: FDM (enclosed printer, hardened 0.6 mm nozzle)
+  anisotropic: true
+  env_knockdown_ratio: 0.8
+  modulus_40c_wet_ratio: 0.85
+  modulus_60c_ratio: 0.75
+  creep_modulus_8h_40c_ratio: 0.85
+  creep_rupture_8h_40c_ratio: 0.55
+  fatigue_1e5_ratio: 0.3
+  modulus_minus20c_ratio: 1.25
+  impact_minus20c_ratio: 0.5
+  print_cost_usd_per_g: 0.12
+  print_cost_basis: US store 0.75 kg spool at $89.99 (2026-11-01), about $120/kg
+confidence: datasheet
+sources:
+- 'Bambu Lab PPA-CF Technical Data Sheet (density 1.25 g/cm3, Tg 85 C, HDT 196 C at 1.8 MPa and 227 C at 0.45 MPa, E XY 11800 / Z 4300 MPa, tensile XY 168 / Z 57 MPa, elongation Z 0.9 %, Charpy Z 4.3 kJ/m2; specimens unannealed, X1C, 100 % infill); https://www.3d-printerstore.ch/mediafiles/Sonstiges/BambuLab/Filament/PPA/Bambu_PPA-CF_Technical_Data_Sheet.pdf'
+- 'Bambu Lab PPA-CF product page: dry 100-140 C for 8-12 h, nozzle 280-310 C, bed 100-120 C, anneal 120-140 C for 6-12 h; spool 0.75 kg at $89.99; https://us.store.bambulab.com/products/ppa-cf'
+cost_usd:
+  value: 120
+  per: kg
+notes: 'TDS mechanicals are unannealed. Annealing (120-140 C, 6-12 h) can raise properties and can also warp a large flat part and cut toughness; the TDS says so. Environmental ratios are ASSUMPTIONS (no published E(T) or creep curve): 40 C and 60 C are still below Tg 85 C, so modulus_40c_wet_ratio 0.85, modulus_60c_ratio 0.75, creep_modulus_8h_40c_ratio 0.85, creep_rupture_8h_40c_ratio 0.55. env_knockdown_ratio 0.8 and fatigue_1e5_ratio 0.3 match the PAHT frame study (no printed-PPA fatigue curve). impact_minus20c_ratio 0.5 is an ASSUMPTION; Z elongation is already 0.9 %, so a cold drop is the risk. Saturated water absorption 1.30 % at 25 C / 55 % RH (TDS), higher than PAHT-CF.'

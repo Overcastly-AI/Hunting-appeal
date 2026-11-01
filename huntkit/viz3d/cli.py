@@ -50,7 +50,9 @@ def shots(m: dict) -> list[dict]:
              caption="Exploded view", sub="Frame, crown, shelf, bag, pockets, harness and hipbelt"),
         dict(name="frame", view="frame", state={"mode": "frame", "harness": False},
              caption="Carbon frame close-up",
-             sub=f"Straight stays (v2), formed lumbar pan, Ti pivot mount, telescoping crown, swept top bar. Tubes: {m['tube_size_source']}"),
+             sub=("Generative printed frame, carbon crown kept"
+                  if m.get("frame_type") == "generative"
+                  else f"Straight stays (v2), formed lumbar pan, Ti pivot mount, telescoping crown, swept top bar. Tubes: {m['tube_size_source']}")),
         dict(name="fea", view="fea", state={"mode": "frame", "fea": True, "harness": False},
              caption="FEA utilization overlay (worst load case)",
              sub=(f"max {fea.get('max_utilization', 0):.2f} in {str(fea.get('critical_case', '')).replace('_', ' ')}"

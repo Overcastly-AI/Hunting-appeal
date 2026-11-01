@@ -1,5 +1,8 @@
 # Generative printed frame - print package (Pack 5200)
 
+Production process, proof load, cost and the print-farm plan: `PRODUCTION.md` in this folder.
+The engineering record is `designs/pack_5200/analysis/production_frame.md`.
+
 Source: `huntkit/gendesign/frame_report.py` from the topology optimization in `designs/pack_5200/analysis/printed_frame_study.md`. Units mm. Frame coordinates: x = wearer's right, y = aft (toward the bag), z = up from the stay feet.
 
 ## Files
@@ -8,7 +11,7 @@ Source: `huntkit/gendesign/frame_report.py` from the topology optimization in `d
 |---|---|
 | genframe_lower_flat.stl / .3mf | lower segment, already laid flat (wearer face on the plate) |
 | genframe_upper_flat.stl / .3mf | upper segment, flat |
-| genframe_assembled.stl | whole body in frame coordinates (viz3d `frame_type: generative`, fit checks) |
+| genframe_assembled.stl | whole body in frame coordinates, including the eight bag fairleads (`huntkit.gendesign.bag_attach`) |
 | genframe_rods.stl | (hybrid variant only) the 4 pultruded carbon rods in frame coordinates |
 | fiber_paths_principal_stress.csv | continuous-fiber target paths (if printing with continuous fiber) |
 

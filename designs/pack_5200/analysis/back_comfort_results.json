@@ -1,0 +1,39 @@
+{
+  "winner": {
+    "name": "QI carbon 2.0 mm, full span, 10 mm stay pads",
+    "peak_kpa": 10.62889310691824,
+    "avg_kpa": 8.088503773584906,
+    "spread_mm": 100.0,
+    "defl_mm": 7.805049023986947,
+    "mass_g": 217.66,
+    "passes": true,
+    "vent": 0.42
+  },
+  "sf_min": 1.3911617665243237,
+  "sf_fatigue": 2.2755390289029362,
+  "governing": "hipbelt_off_abuse|15",
+  "cases": {
+    "static_carry": 6.068104077074497,
+    "drop_2p5g": 4.045402717957823,
+    "side_hill_torsion": 5.212260855291502,
+    "single_stay_setdown": 5.008469185093187,
+    "meat_straps": 4.868563154422317,
+    "tall_load": 4.935316239929948,
+    "overload_haul": 6.828181514549057,
+    "tall_load_posts": 4.498960038283691,
+    "hipbelt_off_abuse": 1.3911617665243237
+  },
+  "body_g": 1290.58816,
+  "frame_g": 1734.4113001457247,
+  "pack_g": 3405.5313001457243,
+  "pack_lb": 7.507911343715337,
+  "sf_creep_rupture": 4.85,
+  "scale": 0.75,
+  "screens": [
+    "/workspace/docs/screens/20261101_back_1_comfort_options.png",
+    "/workspace/docs/screens/20261101_back_2_pressure_maps.png",
+    "/workspace/docs/screens/20261101_frame_4_fea.png",
+    "/workspace/docs/screens/20261101_frame_2_smooth_views.png",
+    "/workspace/docs/screens/20261101_frame_3_before_after.png"
+  ]
+}

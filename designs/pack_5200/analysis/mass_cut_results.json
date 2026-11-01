@@ -1,0 +1,163 @@
+{
+  "winner": "Carbon-tube ladder",
+  "frame_g": 762.6400000000001,
+  "pack_g": 2433.76,
+  "pack_lb": 5.365522352150677,
+  "sf_min": 1.0437588439704832,
+  "sf_fatigue": 1.1771370932281322,
+  "governing": "hipbelt_off_abuse",
+  "cases": {
+    "static_carry": 1.8834193491650117,
+    "drop_2p5g": 1.255612899443341,
+    "side_hill_torsion": 1.536862528658598,
+    "single_stay_setdown": 2.7732482826646305,
+    "meat_straps": 1.4591138704420186,
+    "tall_load": 1.4152202370758233,
+    "overload_haul": 2.0443046106745917,
+    "tall_load_posts": 1.3823438658367235,
+    "hipbelt_off_abuse": 1.0437588439704832
+  },
+  "where": {
+    "static_carry": "lumbar_plate (15 in)",
+    "drop_2p5g": "lumbar_plate (15 in)",
+    "side_hill_torsion": "lumbar_plate (19 in)",
+    "single_stay_setdown": "mid_bar (19 in)",
+    "meat_straps": "crown_leg_R (23 in)",
+    "tall_load": "lumbar_plate (15 in)",
+    "overload_haul": "crown_leg_L (23 in)",
+    "tall_load_posts": "lumbar_plate (15 in)",
+    "hipbelt_off_abuse": "upper_bar (15 in)"
+  },
+  "peak_kpa": 10.62889310691824,
+  "spread_mm": 100.0,
+  "cost_usd": 205.62538119293976,
+  "print_h": 1.5566037735849059,
+  "rows": [
+    {
+      "name": "Solid PAHT ladder (retired)",
+      "frame_g": 1734.4113001457247,
+      "pack_g": 3405.5313001457243,
+      "pack_lb": 7.507911343715337,
+      "sf_min": 1.3911617665243237,
+      "sf_fatigue": 2.2755390289029362,
+      "peak_kpa": 10.62889310691824,
+      "spread_mm": 100.0,
+      "print_h": 45.7,
+      "cost_usd": 206.0,
+      "passes": true,
+      "cases": {
+        "static_carry": 6.068104077074497,
+        "drop_2p5g": 4.045402717957823,
+        "side_hill_torsion": 5.212260855291502,
+        "single_stay_setdown": 5.008469185093187,
+        "meat_straps": 4.868563154422317,
+        "tall_load": 4.935316239929948,
+        "overload_haul": 6.828181514549057,
+        "tall_load_posts": 4.498960038283691,
+        "hipbelt_off_abuse": 1.3911617665243237
+      }
+    },
+    {
+      "name": "PAHT stays OD 26 \u00d7 3.5 mm",
+      "frame_g": 960.6685892452804,
+      "pack_g": 2631.7885892452805,
+      "pack_lb": 5.802100659773621,
+      "sf_min": 1.056334188406023,
+      "sf_fatigue": 0.9768659823155391,
+      "peak_kpa": 10.62889310691824,
+      "spread_mm": 100.0,
+      "print_h": 11.392520845941522,
+      "cost_usd": 190.27205130373198,
+      "passes": false,
+      "cases": {
+        "static_carry": 1.920149222349683,
+        "drop_2p5g": 1.2800994815664553,
+        "side_hill_torsion": 1.5970387825349661,
+        "single_stay_setdown": 2.476320324535163,
+        "meat_straps": 1.2355218364900213,
+        "tall_load": 1.4345654360187592,
+        "overload_haul": 1.7408077800563901,
+        "tall_load_posts": 1.397146062001819,
+        "hipbelt_off_abuse": 1.056334188406023
+      }
+    },
+    {
+      "name": "PAHT stays OD 28 \u00d7 4 mm",
+      "frame_g": 1021.5700897466274,
+      "pack_g": 2692.6900897466276,
+      "pack_lb": 5.936365485483425,
+      "sf_min": 1.067251371516447,
+      "sf_fatigue": 1.191163706996019,
+      "peak_kpa": 10.62889310691824,
+      "spread_mm": 100.0,
+      "print_h": 13.547055061791067,
+      "cost_usd": 195.53394094704836,
+      "passes": true,
+      "cases": {
+        "static_carry": 1.9058619311936307,
+        "drop_2p5g": 1.2705746207957538,
+        "side_hill_torsion": 1.6303923483265879,
+        "single_stay_setdown": 2.5946646905304704,
+        "meat_straps": 1.4840773733327053,
+        "tall_load": 1.4267548726075319,
+        "overload_haul": 2.0791960439345085,
+        "tall_load_posts": 1.3910032877987195,
+        "hipbelt_off_abuse": 1.067251371516447
+      }
+    },
+    {
+      "name": "Carbon tubes + 1.2 mm fairing",
+      "frame_g": 904.7596181802944,
+      "pack_g": 2575.8796181802945,
+      "pack_lb": 5.678842477399464,
+      "sf_min": 1.0437588439704832,
+      "sf_fatigue": 1.1771370932281322,
+      "peak_kpa": 10.62889310691824,
+      "spread_mm": 100.0,
+      "print_h": 6.584420454491546,
+      "cost_usd": 217.90451620371718,
+      "passes": true,
+      "cases": {
+        "static_carry": 1.8834193491650117,
+        "drop_2p5g": 1.255612899443341,
+        "side_hill_torsion": 1.536862528658598,
+        "single_stay_setdown": 2.7732482826646305,
+        "meat_straps": 1.4591138704420186,
+        "tall_load": 1.4152202370758233,
+        "overload_haul": 2.0443046106745917,
+        "tall_load_posts": 1.3823438658367235,
+        "hipbelt_off_abuse": 1.0437588439704832
+      }
+    },
+    {
+      "name": "Carbon-tube ladder",
+      "frame_g": 762.6400000000001,
+      "pack_g": 2433.76,
+      "pack_lb": 5.365522352150677,
+      "sf_min": 1.0437588439704832,
+      "sf_fatigue": 1.1771370932281322,
+      "peak_kpa": 10.62889310691824,
+      "spread_mm": 100.0,
+      "print_h": 1.5566037735849059,
+      "cost_usd": 205.62538119293976,
+      "passes": true,
+      "cases": {
+        "static_carry": 1.8834193491650117,
+        "drop_2p5g": 1.255612899443341,
+        "side_hill_torsion": 1.536862528658598,
+        "single_stay_setdown": 2.7732482826646305,
+        "meat_straps": 1.4591138704420186,
+        "tall_load": 1.4152202370758233,
+        "overload_haul": 2.0443046106745917,
+        "tall_load_posts": 1.3823438658367235,
+        "hipbelt_off_abuse": 1.0437588439704832
+      }
+    }
+  ],
+  "screens": [
+    "/workspace/docs/screens/20261101_light_1_options.png",
+    "/workspace/docs/screens/20261101_light_2_frame_views.png",
+    "/workspace/docs/screens/20261101_light_3_mass.png",
+    "/workspace/docs/screens/20261101_light_4_fea.png"
+  ]
+}
