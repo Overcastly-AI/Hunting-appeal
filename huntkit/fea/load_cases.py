@@ -181,13 +181,32 @@ class LoadCase:
             add(nid, np.array([0.0, h_, 0.0]))
         T0 = float(pr.get("pretension_n", 150.0))
         anchors = levels + list(bottom)
+        for nid, w in zip(face, wf):
+            if w:
+                add(nid, np.array([0.0, -H * w, 0.0]))
+        # strap cinch: a LOCAL squeeze - the anchor is pulled aft, the meat presses forward on the frame
+        # face around the same height (stay nodes within 80 mm on the same side): no net force or moment
+        allz = {n: np.asarray(nodes[n], float) for n in nodes if n.startswith("S") and not n.startswith("SP")}
         for nid in anchors:
+            pa = np.asarray(nodes[nid], float)
+            near = [n for n, q in allz.items() if n != nid and np.sign(q[0]) == np.sign(pa[0])
+                    and 0 < abs(q[2] - pa[2]) <= 80.0]
+            if not near:
+                continue
             add(nid, np.array([0.0, T0, 0.0]))
-        inface = (zf >= z0 - 1e-6) & (zf <= z1 + 1e-6)
-        for nid, w, ok in zip(face, wf, inface):
-            f = -H * w - (T0 * len(anchors) / inface.sum() if ok else 0.0)
-            if f:
-                add(nid, np.array([0.0, f, 0.0]))
+            zc = np.array([allz[n][2] - pa[2] for n in near])
+            # forward reactions with zero net moment about the anchor height (lever-weighted split)
+            up, dn = zc > 0, zc < 0
+            if up.any() and dn.any():
+                a_up, a_dn = zc[up].mean(), -zc[dn].mean()
+                f_up, f_dn = T0 * a_dn / (a_up + a_dn), T0 * a_up / (a_up + a_dn)
+                for n, z_ in zip(near, zc):
+                    f = f_up / up.sum() if z_ > 0 else f_dn / dn.sum()
+                    add(n, np.array([0.0, -f, 0.0]))
+            else:
+                loads_back = T0 / len(near)
+                for n in near:
+                    add(n, np.array([0.0, -loads_back, 0.0]))
         if tilt:
             for nid in anchors:
                 add(nid, np.array([W * np.sin(tilt) / len(anchors), 0.0, 0.0]))

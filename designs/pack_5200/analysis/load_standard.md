@@ -1,9 +1,17 @@
-# HA-LS-1: Pack 5200 frame load standard (calibrated, "match the leaders")
+# HA-LS-1: Pack 5200 frame load standard (calibrated, "match the leaders") - revision B
 
 Owner: structural-fea-engineer. Status: **adopted for frame v2** (owner decision 2026-11-01, docs/DECISIONS.md:
 "Frame strength standard: MATCH THE LEADERS. Realistic field loads, verified by physical prototype load tests").
 Executable form: `huntkit/fea/load_standard.py` (cases + factors), applied by `huntkit/fea/sizing5200v2.py`.
 Results: [frame_sizing.md](frame_sizing.md).
+
+> **Revision B (2026-11-01, owner direction): there is NO meat shelf.** Meat (boned in game bags, or a bone-in
+> quarter) rides INSIDE the bag and is cinched against the frame face by the internal meat harness
+> (geometry.yaml `meat_harness`: straps IM1-IM3 at `meat_anchor_z190 / z330 / z520`, vertical load into the
+> bag-bottom hinge pins `bag_anchor_low` z 60). The shelf pivots, shelf-strap anchors and the shelf-bending
+> case are retired. C5 `meat_shelf_heavy_low` is replaced by **C5 `meat_straps`**; C6 / C6p / C7 use the same
+> strap placement (section 4.1). Factors and g-levels are unchanged. Code: `huntkit/fea/load_standard.py`
+> (`REVISION = "B"`, `MEAT`), placement `meat_straps` in `huntkit/fea/load_cases.py`.
 
 > **Conflict to resolve (orchestrator):** CLAUDE.md "Hard rules" still states "SF >= 2.0 on yield at 150 lb
 > under a 2.5 g dynamic factor". The owner's 2026-11-01 decision replaces that. This document defines the
@@ -81,10 +89,10 @@ Definitions:
 | C2 | stumble / drop-step (`drop_2p5g` code name kept) | as C1 | **2.0** | **1.5** | 3.0 | limit | T1 (300 lb), T4a |
 | C3 | side-hill torsion | 25 deg tilt, 30 % downhill bias, downhill strap + lifter slack | **1.6** | **1.5** | 2.4 | limit | T3 |
 | C4 | single-stay set-down | impact on one foot + 0.2 friction, inertia relief | **2.0** | **1.5** | 3.0 | limit | T4b |
-| C5 | meat shelf heavy-low | 68 kg on the shelf, CG 120 mm aft | **2.0** | **1.5** | 3.0 | limit, primary mission | T2 |
-| C6 | tall load | quarter on the shelf, CG 250 mm aft, lashed to the crown | **2.0** | **1.5** | 3.0 | limit | T2 |
-| C6p | tall load on extension posts | lashed 220 mm above the crown | **2.0** | **1.5** | 3.0 | limit (accessory) | T2 (posts) |
-| C7 | overload haul | **91 kg** on the shelf | **1.6** | **1.0** | 2.1 | **ultimate, no collapse** | T2u |
+| C5 | meat on internal straps (`meat_straps`, rev B) | 68 kg in the bag, CG 150 mm aft, face pressure + strap tension (4.1) | **2.0** | **1.5** | 3.0 | limit, primary mission | T2 |
+| C6 | tall load | bone-in quarter on the bag floor, cinched, CG 160 mm aft, top lashed to the crown top bar (4.1) | **2.0** | **1.5** | 3.0 | limit | T2 |
+| C6p | tall load on extension posts | as C6, lashed 220 mm above the crown; load lifters STAY on the crown top bar (IP) | **2.0** | **1.5** | 3.0 | limit (accessory) | T2 (posts) |
+| C7 | overload haul | **91 kg** in the bag on the internal straps, CG 150 mm aft | **1.6** | **1.0** | 2.1 | **ultimate, no collapse** | T2u |
 | C8 | hipbelt-off abuse | 68 kg, 100 % on shoulders + lifters (creek crossing) | 1.5 | **1.0** | 1.5 | ultimate, no damage, no crown slip | T1 variant |
 
 Other rules:
@@ -103,6 +111,24 @@ Other rules:
 **Old vs. new in one line:** dynamic cases go from 5.0x to 3.0x rated (no-yield, knocked-down allowables),
 the Volkersen peak requirement goes from 2.0 to 1.0, and the drop/set-down/fatigue claims move from analysis to
 **physical tests**. Static 2.0x is kept: it is the number the leaders publish.
+
+### 4.1 Meat-load placement (rev B, internal straps)
+
+Frame-side resolution of a meat load of weight P = m g (x case g), CG `e` aft of the frame axis
+(`LoadCase._meat_straps`):
+
+| item | value | basis |
+|---|---|---|
+| CG offset e | 150 mm (C5, C7), 160 mm (C6, C6p) | pack-designer `meat_harness.load_cases.bag_on_rated` ("CG 150 mm aft of the stay"); ASSUMPTION +10 mm for a stiff bone-in quarter that does not conform to the panel |
+| vertical path | 70 % into the bag-bottom hinge pins (`bag_anchor_low`, z 60), 30 % by strap / panel friction into the three strap anchors | ASSUMPTION (pack-designer: "vertical into the bag bottom + hinge pins"; part is shared by friction) |
+| overturning P e | aft (+y) pulls at the strap anchors in proportion to their lever above the pressure centroid (sum H_i (z_i - z_p) = P e); C6/C6p add the crown top-bar lash (posts bar for C6p) | pack-designer: "overturning reacted by the straps in proportion to height" |
+| contact pressure | forward (-y) on the frame face, triangular over z 60-330 (peak at the bottom), on the stays, lumbar-pan grid and mid bar | ASSUMPTION |
+| strap cinch | 150 N pretension per anchor, aft, balanced by uniform face pressure (self-equilibrated) | ASSUMPTION (hand-cinched 38 mm cam strap) |
+| bag in carry cases | CG 180 mm aft kept (v3.1 uniform-fill CG is 148 mm: 180 is conservative) | geometry.yaml `bag.cg_uniform_fill` |
+
+Effect on the v2 tube frame (member first-ply level, rev B, worst torso; `outputs/genframe/tube_baseline.json`):
+see printed_frame_study.md section 2. The physical test T2 becomes: 300 lb of sandbags in game bags inside the
+bag, cinched with IM1-IM3, instead of on a shelf.
 
 ASSUMPTIONS specific to HA-LS-1:
 - ASSUMPTION: stumble limit 2.0 g (between Rome's 1.6 walking and 3.0 running); verify in T4a.
@@ -152,7 +178,7 @@ Loads in the bag unless stated. "Hold" = 10 min unless stated. Load in 25 % step
 | Test | What | Load (lb / kg) | Pass |
 |---|---|---|---|
 | **T1 static proof** (C1, C2 limit, C8) | Pack on the rig, hipbelt on the log, shoulder straps ratcheted to carry ~20 % (read on the crane scale). (a) 150 lb, (b) **300 lb / 136 kg** (= 2.0 x rated = static factor = stumble limit). (c) Hipbelt-off: unbuckle the belt and hang the pack from the shoulder bar by straps + lifters only, 150 lb x 1.5 = **225 lb / 102 kg**, 2 min | 150 / 300 / 225 | No crack sound, no visible damage, tap test clean. **Permanent set at the crown <= 1 mm** (or <= 5 % of peak deflection). Re-load to 150 lb: deflection within 10 % of the first 150 lb reading. Crown slip 0 teeth. At 150 lb, deflection within +-30 % of the FEA prediction (frame_sizing.md) |
-| **T2 shelf / tall-load proof** (C5, C6, C6p) | Frame-only / shelf mode: 300 lb on the shelf (meat bags or sandbags in game bags), strapped as in the field. Tall-load variant: 300 lb stacked tall, top lashed to the crown top bar (and to the post bar if posts fitted) | **300 / 136** | Same as T1 |
+| **T2 meat / tall-load proof** (C5, C6, C6p) | Rev B: 300 lb of sandbags in game bags INSIDE the bag, cinched with the internal straps IM1-IM3 as in the field. Tall-load variant: 300 lb stacked tall, top lashed to the crown top bar (and to the post bar if posts fitted) | **300 / 136** | Same as T1 |
 | **T2u ultimate demo** (C7, and 1.5 x C5) - **P1 only, last test** | Shelf load stepped to **450 lb / 204 kg** (1.5 x 300) and held 30 s. Outdoors, back-up sling, exclusion zone | 450 / 204 | **No collapse**: still carries the load at 30 s. Damage allowed (it's the sacrificial frame). Record first noise / first visible damage load: that is the measured margin |
 | **T3 side-hill** (C3) | Rig tilted 25 deg (shim one end of the log or tilt the A-frame), downhill shoulder strap slackened to ~25 % of the uphill tension (crane scale), load pushed 30 % downhill. **240 lb / 109 kg** (1.6 x 150) | 240 / 109 | Same as T1; also crown legs slide freely after unload (no binding = no permanent twist) |
 | **T4a drop-step** (C2) | 150 lb in the bag, pack hung on the log. Lift the whole pack by its haul loop with the ratchet strap h mm off the log, release with the snap shackle. Increase h from 10 mm in 5 mm steps until phyphox reads a **2.0 g peak** at the crown (expect 15-40 mm). Then **20 drops** at that height | 150 / 68 at 2.0 g | No damage, tap test clean, crown slip 0, T1(a) re-check within 10 %. **Also record the g-level at each h**: if 2.0 g needs < 10 mm, the 2.0 g limit is too low and the standard must be revisited |

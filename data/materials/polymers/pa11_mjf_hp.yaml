@@ -1,0 +1,46 @@
+id: pa11_mjf_hp
+name: HP 3D High Reusability PA 11 (Multi Jet Fusion), as printed
+category: polymers
+generic: false
+trade_names:
+- HP 3D High Reusability PA 11
+supplier_examples:
+- JLC3DP (PA11-HP)
+- Materialise / Xometry (PA11 MJF/SLS)
+properties:
+  process: MJF powder bed (service)
+  anisotropic: false
+  density_kg_m3: 1050
+  youngs_modulus_xy_mpa: 1800
+  youngs_modulus_z_mpa: 1800
+  youngs_modulus_mpa: 1800
+  poisson: 0.4
+  tensile_strength_xy_mpa: 52
+  tensile_strength_z_mpa: 50
+  elongation_xy_pct: 50
+  elongation_z_pct: 35
+  heat_deflection_temp_c: 185
+  charpy_notched_kj_m2: 6.0
+  glass_transition_c: 45
+  water_absorption_pct: 0.4
+  env_knockdown_ratio: 0.8
+  modulus_40c_wet_ratio: 0.55
+  modulus_minus20c_ratio: 1.4
+  impact_minus20c_ratio: 0.8
+  creep_modulus_8h_40c_ratio: 0.6
+  creep_rupture_8h_40c_ratio: 0.35
+  fatigue_1e5_ratio: 0.3
+  min_wall_mm: 1.5
+  print_cost_usd_per_g: 0.35
+  print_cost_basis: 'ASSUMPTION: JLC3DP PA11-HP ~1.25 x MJF-PA12 (Nov 2025 PA11 price adjustment, figure not captured)'
+confidence: datasheet
+sources:
+- 'HP 3D HR PA 11 TDS 4AA7-0715 (tensile 50 MPa Z, modulus 1800 MPa, elongation 50 %); https://3dprinting.com/wp-content/uploads/2019/02/HP-PA-11-TDS-4AA7-0715ENE.pdf'
+- 'Craftcloud PA11 guide (50-58 MPa, 1500-2200 MPa, 35-50 %); https://craftcloud3d.com/en/material-guide/hp-3d-hr-pa-11'
+- 'JLC3DP PA11 price adjustment notice 15 Nov 2025; https://jlc3dp.com/de/news/pa11-nylon-powder-price-adjustment'
+cost_usd:
+  value: 350
+  per: kg
+notes: 'ASSUMPTIONS: HDT 185 C at 0.45 MPa, charpy notched 6 kJ/m2, Tg 45 C (typical PA11 powder values, not
+  re-verified); impact_minus20c_ratio 0.8 (PA11 keeps ductility in the cold better than PA12 - bio-based
+  long-chain polyamide); creep/fatigue as PA12 (no printed-PA11 creep data found).'

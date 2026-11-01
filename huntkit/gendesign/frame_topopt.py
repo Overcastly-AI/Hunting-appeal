@@ -52,7 +52,7 @@ import scipy.sparse as sp
 
 from huntkit.fea.materials_bridge import REPO_ROOT
 
-from .fem import Assembler, Grid, Solver, b_h8_center, density_filter, iso_D3, ke_h8, von_mises_3d
+from .fem import Grid, b_h8_center, density_filter, iso_D3, ke_h8, von_mises_3d
 from .lugs import distribute
 from .simp import _project
 
@@ -70,7 +70,7 @@ SLEEVE_Z0 = 160.0      # leg-end bushing reaches z 171 at the 15 in setting
 NU = 0.35
 PATCH_R = 12.0
 MOMENT_PATCH_R = 50.0
-PAD_R = 8.0
+PAD_R = 6.0
 
 
 # ============================================================================= envelope
@@ -172,7 +172,7 @@ def build_domain(h: float = 4.0, env: Envelope | None = None, sleeve_wall: float
         void |= bore
     # crown-spine channel (spine 30 x 3 + rack, travel 296..544) and the pawl housing around it
     ch = (np.abs(x) < 20.0) & (y > -34.0) & (y < -16.0) & (z > 296.0)
-    pawl = (np.abs(x) < 28.0) & (y > -42.0) & (y < -8.0) & (z > 500.0) & (z < 540.0) & ~ch
+    pawl = (np.abs(x) < 25.0) & (y > -39.0) & (y < -11.0) & (z > 506.0) & (z < 536.0) & ~ch
     void |= ch
     solid |= pawl
     masks["spine_channel"] = ch
@@ -384,6 +384,8 @@ def assemble_loads(dom: Domain, sets: list[LoadSet], solid_mask=None):
                 f[idx] += F3 / idx.size
         if np.any(ls.pawl):
             idx = np.where(pawl_n & free_n)[0]
+            if idx.size == 0:
+                idx = point_patch(np.array([0.0, -24.4, 520.0]), 20.0)
             f[idx] += ls.pawl / idx.size
         F[:, k] = ls.factor * f.reshape(-1)
     F[fixed] = 0.0
@@ -435,6 +437,78 @@ def eliminate(K: sp.csr_matrix, fixed: np.ndarray) -> sp.csr_matrix:
     return (d @ K @ d).tocsr()
 
 
+# ============================================================================= reduced direct solver
+class ReducedSystem:
+    """K assembled over ACTIVE elements only and reduced to the free DOFs they touch (void and clamped DOFs
+    dropped, not just pinned), solved with a sparse direct solver (MKL PARDISO via pypardiso, SPD, multi-RHS;
+    scipy SuperLU fallback). One factorization per optimization iteration serves all load cases."""
+
+    def __init__(self, g: Grid, active: np.ndarray, fixed: np.ndarray, KE: np.ndarray, rods: list | None = None):
+        self.g = g
+        self.ae = np.where(active)[0]
+        ed = g.edof[self.ae]
+        used = np.zeros(g.ndof, bool)
+        used[ed.ravel()] = True
+        free = used & ~fixed
+        self.free = np.where(free)[0]
+        gmap = -np.ones(g.ndof, np.int64)
+        gmap[self.free] = np.arange(self.free.size)
+        self.gmap = gmap
+        led = gmap[ed]                                     # (nae, 24) reduced ids or -1
+        nd = led.shape[1]
+        r = np.repeat(led, nd, axis=1)
+        c = np.tile(led, (1, nd))
+        keep = (r >= 0) & (c >= 0) & (c >= r)              # upper triangle (SPD storage)
+        n = self.free.size
+        key = (r[keep].astype(np.int64) * n + c[keep])
+        uniq, inv = np.unique(key, return_inverse=True)
+        self.inv = inv.astype(np.int64)
+        self.keep = keep
+        self.rows = (uniq // n).astype(np.int32)
+        self.cols = (uniq % n).astype(np.int32)
+        self.n = n
+        indptr = np.zeros(n + 1, np.int64)
+        np.add.at(indptr, self.rows.astype(np.int64) + 1, 1)
+        self.indptr = np.cumsum(indptr)
+        self.ke = KE.ravel()
+        self.Kr = None
+        if rods:
+            Kg = rod_matrix(g, rods)[0].tocoo()
+            ok = (gmap[Kg.row] >= 0) & (gmap[Kg.col] >= 0)
+            rr, cc, vv = gmap[Kg.row[ok]], gmap[Kg.col[ok]], Kg.data[ok]
+            up = cc >= rr
+            self.Kr = sp.csr_matrix((vv[up], (rr[up], cc[up])), shape=(n, n))
+
+    def assemble(self, w_active: np.ndarray) -> sp.csr_matrix:
+        vals = (w_active[:, None] * self.ke[None, :])[self.keep]
+        data = np.bincount(self.inv, weights=vals, minlength=self.rows.size)
+        K = sp.csr_matrix((data, self.cols, self.indptr), shape=(self.n, self.n))
+        if self.Kr is not None:
+            K = (K + self.Kr).tocsr()
+        return K
+
+    def solve(self, Ku: sp.csr_matrix, F: np.ndarray) -> np.ndarray:
+        """Ku: upper-triangular reduced K. F: (ndof, m) global. Returns U (ndof, m) global."""
+        Fr = F[self.free]
+        try:
+            import pypardiso
+            s = pypardiso.PyPardisoSolver(mtype=2)
+            Ku.sort_indices()
+            Ur = s.solve(Ku, np.ascontiguousarray(Fr))
+            s.free_memory(everything=True)
+        except ImportError:                    # pragma: no cover
+            import scipy.sparse.linalg as spla
+            Kf = (Ku + sp.triu(Ku, 1).T).tocsc()
+            Ur = spla.splu(Kf).solve(Fr)
+        Ur = Ur.reshape(Fr.shape)
+        U = np.zeros((self.g.ndof,) + F.shape[1:])
+        U[self.free] = Ur
+        return U
+
+    def full(self, Ku):
+        return (Ku + sp.triu(Ku, 1).T).tocsr()
+
+
 # ============================================================================= SIMP (whole frame)
 @dataclass
 class FrameOpt:
@@ -462,17 +536,11 @@ def simp_frame(dom: Domain, F: np.ndarray, fixed: np.ndarray, volfrac: float, it
     t0 = time.time()
     KE = ke_h8(g.h, 1.0, NU)
     ps, pv = dom.passive_solid, dom.passive_void & ~dom.passive_solid
-    fx = fixed.copy()
-    act = np.zeros(g.nn, bool)
-    act[np.unique(g.enodes[~pv])] = True
-    fx |= np.repeat(~act, 3)
-    asm = Assembler(g.edof, g.ndof, KE, fx)
-    solver = Solver(g.node_coords(), fx, tol=tol, maxiter=400, direct_below=0)
-    Kr = eliminate(rod_matrix(g, rods)[0], fx) if rods else None
+    rs = ReducedSystem(g, ~pv, fixed, KE, rods)
     H, Hs = density_filter(g, rmin_vox)
     design = ~(ps | pv)
     nd = design.sum()
-    Fm = F.copy(); Fm[fx] = 0.0
+    Fm = F.copy(); Fm[fixed] = 0.0
     Emin = 1e-6
     x = np.where(ps, 1.0, np.where(pv, 0.0, volfrac)) if x0 is None else np.where(ps, 1.0, np.where(pv, 0.0, x0))
     beta_i = 0
@@ -484,12 +552,13 @@ def simp_frame(dom: Domain, F: np.ndarray, fixed: np.ndarray, volfrac: float, it
     mir = dom.mirror
     for it in range(1, iters + 1):
         E = Emin + xPhys ** penal * (1 - Emin)
-        K = asm.assemble(E)
-        if Kr is not None:
-            K = K + Kr
-        U = solver.solve(K, Fm, x0=U)
-        ce_c = np.stack([np.einsum("ij,jk,ik->i", U[g.edof, c], KE, U[g.edof, c]) for c in range(Fm.shape[1])], 1)
-        comps = (E[:, None] * ce_c).sum(0) + (np.einsum("ij,ij->j", U, Kr @ U) if Kr is not None else 0.0)
+        K = rs.assemble(E[rs.ae])
+        U = rs.solve(K, Fm)
+        ce_c = np.zeros((g.ne, Fm.shape[1]))
+        for c in range(Fm.shape[1]):
+            Ue = U[g.edof[rs.ae], c]
+            ce_c[rs.ae, c] = np.einsum("ij,jk,ik->i", Ue, KE, Ue)
+        comps = np.einsum("ij,ij->j", Fm, U)
         if w is None:
             w = 1.0 / np.maximum(comps, 1e-30)
             w = w / w.sum()
@@ -522,13 +591,13 @@ def simp_frame(dom: Domain, F: np.ndarray, fixed: np.ndarray, volfrac: float, it
         xPhys, dproj = _phys(H, Hs, x, beta, ps, pv)
         vol = float(xPhys[design].mean())
         rec = {"it": it, "h": g.h, "compliance": comp, "volume": vol, "change": ch, "beta": beta,
-               "cg": list(solver.last_iters)}
+               "ndof": int(rs.n), "comps": comps.tolist()}
         hist.append(rec)
         if hist_cb:
             hist_cb(it, xPhys, rec)
         if log:
             log(f"   h{g.h:g} vf{volfrac:.3f} it {it:3d} c={comp:.4g} vol={vol:.3f} ch={ch:.3f} beta={beta} "
-                f"cg={max(solver.last_iters) if solver.last_iters else 0}")
+                f"ndof={rs.n} t={time.time() - t0:.0f}s")
         if (it % beta_every == 0) and beta_i + 1 < len(beta_schedule):
             beta_i += 1
             beta = beta_schedule[beta_i]
@@ -564,18 +633,40 @@ class Verified:
     S: dict = field(default_factory=dict)    # key -> (ne_s, 6) stresses (kept for the governing sets only)
 
 
-def threshold_up(dom_f: Domain, xPhys: np.ndarray, up: int = 2, level: float = 0.5, sleeve_wall=SLEEVE_WALL):
-    """Up-sample the density 'up' times, threshold, re-impose passives, keep the largest body."""
+def threshold_up(dom_f: Domain, xPhys: np.ndarray, up: int = 2, level: float = 0.5, sleeve_wall=SLEEVE_WALL,
+                 rods: list | None = None):
+    """Up-sample the density 'up' times, threshold, re-impose passives and keep the body that is connected to
+    the hip-pivot clamp (directly, or through embedded rods): islands that cannot carry load are dropped."""
     from scipy import ndimage
     dv = build_domain(dom_f.h / up, dom_f.env, sleeve_wall=sleeve_wall)
     x = prolong(dom_f, xPhys, dv)
     solid = (x >= level) | dv.passive_solid
     solid &= ~dv.passive_void
-    lab, n = ndimage.label(dv.grid.to_array(solid))
+    lab3, n = ndimage.label(dv.grid.to_array(solid))
+    lab = dv.grid.from_array(lab3)
     if n > 1:
-        sizes = ndimage.sum(np.ones_like(lab), lab, index=np.arange(1, n + 1))
-        keep = 1 + int(np.argmax(sizes))
-        solid = dv.grid.from_array(lab == keep)
+        piv = np.unique(lab[dv.masks["pivot"] & solid])
+        keep = set(int(v) for v in piv if v > 0)
+        if not keep:
+            sizes = ndimage.sum(np.ones_like(lab3), lab3, index=np.arange(1, n + 1))
+            keep = {1 + int(np.argmax(sizes))}
+        if rods:
+            c = dv.grid.elem_centers()
+            touched = []
+            for r in rods:
+                d = (r.p1 - r.p0) / np.linalg.norm(r.p1 - r.p0)
+                v = c - r.p0
+                t = np.clip(v @ d, 0, np.linalg.norm(r.p1 - r.p0))
+                near = np.linalg.norm(v - t[:, None] * d, axis=1) < 1.5 * dv.h
+                touched.append(set(int(q) for q in np.unique(lab[near & solid]) if q > 0))
+            grew = True
+            while grew:
+                grew = False
+                for tset in touched:
+                    if tset & keep and not tset <= keep:
+                        keep |= tset
+                        grew = True
+        solid = np.isin(lab, list(keep))
     return dv, solid
 
 
@@ -583,21 +674,14 @@ def solve_solid(dv: Domain, solid: np.ndarray, F: np.ndarray, fixed: np.ndarray,
                 rods: list | None = None, tol=1e-7, log=None):
     g = dv.grid
     KE = ke_h8(g.h, 1.0, NU)
-    fx = fixed.copy()
-    act = np.zeros(g.nn, bool)
-    act[np.unique(g.enodes[solid])] = True
-    fx |= np.repeat(~act, 3)
-    asm = Assembler(g.edof, g.ndof, KE, fx)
-    w = np.where(solid, E, 1e-9 * E)
-    K = asm.assemble(w)
     if rods:
-        K = K + eliminate(rod_matrix(g, rods)[0], fx)
-    solver = Solver(g.node_coords(), fx, tol=tol, maxiter=600, direct_below=0)
-    Fm = F.copy(); Fm[fx] = 0.0
-    U = solver.solve(K, Fm)
+        rods = [Rod(r.p0, r.p1, r.area, r.E_ratio, r.name, r.density) for r in rods]
+    rs = ReducedSystem(g, solid, fixed, KE, rods)
+    K = rs.assemble(np.full(rs.ae.size, 1.0))
+    U = rs.solve(K, F) / E
     if log:
-        log(f"   solid solve: {solid.sum()} elements, cg {solver.last_iters}")
-    return U, fx
+        log(f"   solid solve: {solid.sum()} elements, {rs.n} dof")
+    return U, fixed
 
 
 def element_stress(g: Grid, U: np.ndarray, solid: np.ndarray, E=1.0):
@@ -610,7 +694,8 @@ def element_stress(g: Grid, U: np.ndarray, solid: np.ndarray, E=1.0):
 
 def verify(dom_f: Domain, xPhys: np.ndarray, sets: list[LoadSet], up: int = 2, rods_fn=None, E_mat=1.0,
            log=None, keep_S=("drop_2p5g|19", "side_hill_torsion|15", "meat_straps|23", "hipbelt_off_abuse|19")):
-    dv, solid = threshold_up(dom_f, xPhys, up)
+    rods = rods_fn(dom_f) if rods_fn else None
+    dv, solid = threshold_up(dom_f, xPhys, up, rods=rods)
     F, fixed = assemble_loads(dv, sets, solid_mask=solid)
     rods = rods_fn(dv) if rods_fn else None
     U, fx = solve_solid(dv, solid, F, fixed, E=E_mat, rods=rods, log=log)
@@ -784,10 +869,10 @@ def material_table() -> dict:
             Ez=float(g("youngs_modulus_z_mpa", g("youngs_modulus_mpa"))),
             s_xy=float(g("tensile_strength_xy_mpa", g("tensile_strength_mpa", 0.0))),
             s_z=float(g("tensile_strength_z_mpa", g("tensile_strength_xy_mpa", g("tensile_strength_mpa", 0.0)))),
-            knock=float(g("env_knockdown", 0.8)), E_hot=float(g("modulus_ratio_40c_wet", 0.6)),
-            creep8h=float(g("creep_modulus_ratio_8h_40c", 0.7)), rupture=float(g("creep_rupture_ratio_8h_40c", 0.4)),
-            fat=float(g("fatigue_ratio_1e5", 0.3)), E_cold=float(g("modulus_ratio_minus20c", 1.3)),
-            impact_kj_m2=float(g("charpy_notched_kj_m2", 0.0)), impact_cold_ratio=float(g("impact_ratio_minus20c", 0.7)),
+            knock=float(g("env_knockdown_ratio", 0.8)), E_hot=float(g("modulus_40c_wet_ratio", 0.6)),
+            creep8h=float(g("creep_modulus_8h_40c_ratio", 0.7)), rupture=float(g("creep_rupture_8h_40c_ratio", 0.4)),
+            fat=float(g("fatigue_1e5_ratio", 0.3)), E_cold=float(g("modulus_minus20c_ratio", 1.3)),
+            impact_kj_m2=float(g("charpy_notched_kj_m2", 0.0)), impact_cold_ratio=float(g("impact_minus20c_ratio", 0.7)),
             hdt_c=float(g("heat_deflection_temp_c", 0.0)), tg_c=float(g("glass_transition_c", 0.0)),
             water_pct=float(g("water_absorption_pct", 0.0)), cost_per_g=float(g("print_cost_usd_per_g", 0.1)),
             cost_basis=str(g("print_cost_basis", "")), min_wall=float(g("min_wall_mm", 2.0)),
@@ -940,7 +1025,11 @@ def save_npz(path, **kw):
 
 
 def run_optimization(sets: list[LoadSet], volfrac: float, h_coarse=8.0, h_fine=4.0, it_coarse=45, it_fine=28,
-                     rods_fn=None, log=None, rmin_vox=1.5, keep_frac=0.97, snap_every=None, snaps=None) -> dict:
+                     rods_fn=None, log=None, rmin_vox=1.5, keep_frac=0.97, snap_every=None, snaps=None,
+                     band_mm=16.0) -> dict:
+    """Coarse (all distinct load shapes x 3 torsos) -> fine (governing sets, active band around the coarse
+    structure: elements farther than ``band_mm`` from coarse material > 0.02 are void at the fine level)."""
+    from scipy import ndimage
     env = load_envelope()
     opt_sets = [s for s in sets if s.case in SHAPES_FOR_OPT]
     dc = build_domain(h_coarse, env)
@@ -952,22 +1041,9 @@ def run_optimization(sets: list[LoadSet], volfrac: float, h_coarse=8.0, h_fine=4
             snaps.append({"stage": tag, "it": it, "h": rec["h"], "x": xp.astype(np.float16), "rec": rec})
     oc = simp_frame(dc, Fc, fxc, volfrac, iters=it_coarse, rmin_vox=rmin_vox, rods=rc, log=log,
                     beta_schedule=(1, 2, 4), beta_every=15, hist_cb=cb)
-    # pick the governing sets at the coarse optimum
-    g = dc.grid
-    KE = ke_h8(g.h, 1.0, NU)
-    E = 1e-6 + oc.xPhys ** 3
-    fx = fxc.copy()
-    act = np.zeros(g.nn, bool); act[np.unique(g.enodes[~dc.passive_void])] = True
-    fx |= np.repeat(~act, 3)
-    K = Assembler(g.edof, g.ndof, KE, fx).assemble(E)
-    if rc:
-        K = K + eliminate(rod_matrix(g, rc)[0], fx)
-    Fm = Fc.copy(); Fm[fx] = 0
-    U = Solver(g.node_coords(), fx, tol=1e-6, maxiter=400, direct_below=0).solve(K, Fm)
-    comps = np.einsum("ij,ij->j", Fm, U)
-    w0 = np.array([1.0 / max(h["compliance"], 1e-30) for h in oc.history[:1]])  # noqa: F841 (doc)
-    # normalized by each set's own starting compliance (same weights as the optimizer)
-    rel = comps / comps.max()
+    comps = np.array(oc.history[-1]["comps"])
+    c0 = np.array(oc.history[0]["comps"])
+    rel = comps / c0                                   # same normalization as the optimizer weights
     order = np.argsort(-rel)
     keep, acc = [], 0.0
     for k in order:
@@ -976,11 +1052,17 @@ def run_optimization(sets: list[LoadSet], volfrac: float, h_coarse=8.0, h_fine=4
             break
     fine_sets = [opt_sets[k] for k in sorted(keep)]
     df = build_domain(h_fine, env)
-    x0 = prolong(dc, oc.x, df)
+    x0 = prolong(dc, oc.xPhys, df)
+    near = df.grid.to_array(x0 > 0.02)
+    band = ndimage.binary_dilation(near, iterations=max(1, int(round(band_mm / h_fine))))
+    df.passive_void = df.passive_void | (~df.grid.from_array(band) & ~df.passive_solid)
     Ff, fxf = assemble_loads(df, fine_sets)
     rf = rods_fn(df) if rods_fn else None
-    of = simp_frame(df, Ff, fxf, volfrac, iters=it_fine, rmin_vox=rmin_vox, rods=rf, x0=x0, log=log,
+    of = simp_frame(df, Ff, fxf, volfrac * (df.design().sum() and (build_domain(h_fine, env).design().sum() / df.design().sum())),
+                    iters=it_fine, rmin_vox=rmin_vox, rods=rf, x0=prolong(dc, oc.x, df), log=log,
                     beta_schedule=(2, 4, 8), beta_every=10, hist_cb=lambda i, xp, r: cb(i, xp, r, "f"))
+    full = build_domain(h_fine, env)
     return {"coarse": oc, "fine": of, "fine_keys": [s.key for s in fine_sets], "domain_f": df,
-            "design_volume_mm3": float(df.design().sum() * df.h ** 3),
-            "passive_volume_mm3": float(df.passive_solid.sum() * df.h ** 3)}
+            "volfrac": volfrac, "design_volume_mm3": float(full.design().sum() * h_fine ** 3),
+            "passive_volume_mm3": float(full.passive_solid.sum() * h_fine ** 3),
+            "rel_compliance": dict(zip([s.key for s in opt_sets], rel.tolist()))}

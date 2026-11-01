@@ -1,0 +1,50 @@
+id: pa12_mjf_hp
+name: HP 3D High Reusability PA 12 (Multi Jet Fusion), as printed
+category: polymers
+generic: false
+trade_names:
+- HP 3D High Reusability PA 12
+supplier_examples:
+- JLC3DP (MJF-PA12)
+- Xometry / Protolabs / Craftcloud (MJF PA12)
+properties:
+  process: MJF powder bed (service)
+  anisotropic: false
+  density_kg_m3: 1010
+  youngs_modulus_xy_mpa: 1700
+  youngs_modulus_z_mpa: 1800
+  youngs_modulus_mpa: 1700
+  poisson: 0.39
+  tensile_strength_xy_mpa: 48
+  tensile_strength_z_mpa: 48
+  elongation_xy_pct: 20
+  elongation_z_pct: 15
+  heat_deflection_temp_c: 173
+  heat_deflection_temp_1p82_c: 95
+  charpy_notched_kj_m2: 3.5
+  glass_transition_c: 40
+  water_absorption_pct: 0.5
+  env_knockdown_ratio: 0.8
+  modulus_40c_wet_ratio: 0.55
+  modulus_minus20c_ratio: 1.4
+  impact_minus20c_ratio: 0.6
+  creep_modulus_8h_40c_ratio: 0.6
+  creep_rupture_8h_40c_ratio: 0.35
+  fatigue_1e5_ratio: 0.3
+  min_wall_mm: 1.5
+  print_cost_usd_per_g: 0.275
+  print_cost_basis: 'JLC3DP MJF-PA12 $0.275/g (price cut of 13 Aug 2025, still the listed basis Nov 2026)'
+confidence: datasheet
+sources:
+- 'HP MJF PA12 spec sheet (tensile XY 48 MPa, modulus XY 1700 / Z 1800 MPa, HDT 0.45 MPa 173 C (Z)); https://hlhrapid.com/wp-content/uploads/2022/06/HP-MJF-PA12-Spec-Sheet.pdf'
+- 'HP PA12 W datasheet (HDT 1.8 MPa 95 C); https://weerg.com/hubfs/Datasheets/Datasheets%202024/ENG/EN_NylonPA12W.pdf'
+- 'NETZSCH DMA of laser-sintered PA12: Tg onset 27 C, E'' 1438 MPa at RT, ~500 MPa after the glass transition; https://analyzing-testing.netzsch.com/en/blog/2021/estimating-residual-stresses-in-sls-parts-using-dma'
+- 'Kroenert et al., SLS PA12 creep 5-20 MPa, 10 h / 1000 h, Burgers model, Int J Adv Manuf Technol (2022), doi:10.1007/s00170-022-09446-z'
+- 'JLC3DP price update (MJF-PA12 $0.35 -> $0.275/g); https://jlc3dp.com/blog/drastic-material-price-cuts-and-adjusted-post-processing-service-fees'
+cost_usd:
+  value: 275
+  per: kg
+notes: 'ASSUMPTIONS: charpy notched 3.5 kJ/m2 (sheets list 2.8-4.5); Tg 40 C mid-range of the reported 27 C
+  DMA onset and ~50 C; modulus_40c_wet_ratio 0.55 from the DMA curve (40 C sits inside the glass transition);
+  creep_modulus_8h_40c_ratio 0.6 and creep_rupture 0.35 (Kroenert measured RT creep only; 40 C is above the
+  Tg onset); fatigue_1e5_ratio 0.3. PA12 absorbs little water (vs PA6).'

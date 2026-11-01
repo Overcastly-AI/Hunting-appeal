@@ -27,6 +27,18 @@ properties:
   bed_temp_c: 90
   chamber_temp_c: 50
   min_wall_mm: 2.0
+  process: FDM (Bambu H2S, hardened nozzle, enclosed)
+  anisotropic: true
+  glass_transition_c: 45
+  env_knockdown_ratio: 0.8
+  modulus_40c_wet_ratio: 0.6
+  modulus_minus20c_ratio: 1.3
+  impact_minus20c_ratio: 0.65
+  creep_modulus_8h_40c_ratio: 0.7
+  creep_rupture_8h_40c_ratio: 0.4
+  fatigue_1e5_ratio: 0.3
+  print_cost_usd_per_g: 0.08
+  print_cost_basis: filament only, record cost $80/kg
 confidence: datasheet
 sources:
 - 'Bambu PAHT-CF Technical Data Sheet V2.0 (XY 88 +/- 7 MPa, Z 64 +/- 3 MPa, E XY 3860 / Z 2180 MPa; dry 80 C 8-12 h; anneal 80-130 C 5-12 h); https://cdn.shopify.com/s/files/1/0380/5149/files/Bambu_PAHT-CF_Technical_Data_Sheet.pdf'
@@ -36,4 +48,4 @@ cost_usd:
   per: kg
 notes: 'Design uses the LOWER published Z strength (47 MPa) because two revisions of the same sheet disagree
   (64 vs 47). Max overhang ~70 deg from vertical per TDS (= 20 deg from horizontal). PA12-based: retains
-  properties wet better than PA6-CF (TDS). Needs hardened nozzle, enclosure (chamber 45-60 C), dry box.'
+  properties wet better than PA6-CF (TDS). Needs hardened nozzle, enclosure (chamber 45-60 C), dry box. Frame-study fields (2026-11-01, ASSUMPTIONS, no published creep data): env_knockdown_ratio 0.8, modulus_40c_wet_ratio 0.6, creep_modulus_8h_40c_ratio 0.7, creep_rupture_8h_40c_ratio 0.4, fatigue_1e5_ratio 0.3, Tg ~45 C.'

@@ -15,3 +15,4 @@ pyamg>=5.0            # huntkit.gendesign: AMG-preconditioned CG for 3D SIMP
 scikit-image>=0.22    # huntkit.gendesign: marching cubes, skeleton (min member size), contours
 manifold3d>=2.4       # huntkit.gendesign: exact boolean union/difference for printable STL
 threadpoolctl>=3.0    # huntkit.gendesign: pin BLAS threads (OpenBLAS thrash in AMG/CG)
+pypardiso>=0.4      # MKL PARDISO direct solver for huntkit.gendesign.frame_topopt (SuperLU fallback if absent)

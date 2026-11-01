@@ -48,6 +48,10 @@ API (`huntkit.materials`):
   member, reaction forces, and `max_sf`.
 - `load_cases.pack_standard(design_load_kg=68)` gives the standard pack cases (static carry,
   2.5 g drop, side-hill torsion, set-down on one stay, meat-shelf heavy-low).
+- `load_standard.ls1_cases()` (HA-LS-1 **rev B**, 2026-11-01): no meat shelf. `meat_shelf_heavy_low` is
+  replaced by `meat_straps` (placement `"meat_straps"`: internal-strap anchors + frame-face pressure); frame models
+  must provide groups `strap_bottom`, `strap_lumbar`, `strap_mid`, `strap_upper`, `meat_face`
+  (`huntkit.fea.pack5200` builds them from geometry.yaml `meat_anchor_z*` / `bag_anchor_low`).
 - Report: `report(result, path)` writes Markdown plus PNG plots (deformed shape, utilization).
 
 ## 3. Pattern pieces (`huntkit.patterns`)

@@ -17,6 +17,7 @@ Display modes (``Part.modes``): "pack" (carry), "pack_haul" (bag pulled back, me
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from pathlib import Path
 
 import numpy as np
 import trimesh
@@ -191,6 +192,33 @@ class Body:
 
 
 # ============================================================================ main builder
+GENERATIVE_REPLACES = ("frame_stays", "frame_bars", "frame_fittings", "lumbar_plate")
+GENERATIVE_DIR = Path(__file__).resolve().parents[2] / "designs" / "pack_5200" / "print" / "frame"
+
+
+def _planar_uv(mesh, tile=40.0):
+    v = np.asarray(mesh.vertices)
+    mesh.metadata["uv"] = np.c_[v[:, 0] / tile, v[:, 2] / tile]
+    return mesh
+
+
+def _generative_frame_parts(p: dict) -> list:
+    """frame_type: generative -> the topology-optimized printed frame body (huntkit.gendesign.frame_topopt,
+    analysis/printed_frame_study.md) as assembled in frame coordinates, plus its embedded carbon rods."""
+    d = Path(p.get("generative_frame_dir") or GENERATIVE_DIR)
+    body = d / "genframe_assembled.stl"
+    if not body.exists():
+        return []
+    m = trimesh.load(body, force="mesh")
+    out = [Part("frame_generative", _planar_uv(m), "printed_cf", "frame",
+                label="Generative printed frame body (topology-optimized)")]
+    rods = d / "genframe_rods.stl"
+    if rods.exists():
+        out.append(Part("frame_generative_rods", _planar_uv(trimesh.load(rods, force="mesh")), "carbon", "frame",
+                        label="Pultruded carbon rods (hybrid load paths)"))
+    return out
+
+
 def build_pack(params: dict | None = None) -> PackModel:
     p = deep_merge(DEFAULT_PARAMS, params or {})
     if p.get("frame_yaml") == "auto":
@@ -281,6 +309,17 @@ def build_pack(params: dict | None = None) -> PackModel:
         hs = _mx(hp["hip_stabilizer_anchor_R"], s)
         ti.append(_block(hs + [0, -4, 0], (14, 8, 18), e=0.5))
     parts.append(Part("ti_hardware", G.concat(ti), "titanium", "frame", label="Ti hipbelt pivot + anchors"))
+    if p.get("frame_type", "tube") == "generative":
+        gen = _generative_frame_parts(p)
+        if gen:   # the printed body replaces stays, bars, wraps/boots and the lumbar pan; crown + Ti mount kept
+            parts = [q for q in parts if q.name not in GENERATIVE_REPLACES]
+            parts.extend(gen)
+            metrics["frame_type"] = "generative"
+        else:
+            metrics["warnings"].append("frame_type generative: no printed-frame mesh found, tube frame shown")
+            metrics["frame_type"] = "tube"
+    else:
+        metrics["frame_type"] = "tube"
 
     # ------------------------------------------------------------------ crown per torso
     settings = fr["crown_settings"]

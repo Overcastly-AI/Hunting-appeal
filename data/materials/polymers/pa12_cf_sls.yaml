@@ -1,0 +1,49 @@
+id: pa12_cf_sls
+name: Carbon-fiber-filled PA12 laser sintering powder (EOS ALM PA 603 CF / Protolabs SLS PA12-CF class)
+category: polymers
+generic: false
+trade_names:
+- ALM PA 603 CF
+- Windform XT 2.0 (comparable carbon-filled PA)
+supplier_examples:
+- Protolabs (SLS PA12-CF)
+- JLC3DP (PA12-CF)
+- CRP Technology (Windform XT 2.0)
+properties:
+  process: SLS powder bed (service)
+  anisotropic: true
+  density_kg_m3: 1100
+  youngs_modulus_xy_mpa: 7900
+  youngs_modulus_z_mpa: 3500
+  youngs_modulus_mpa: 7900
+  poisson: 0.35
+  tensile_strength_xy_mpa: 85
+  tensile_strength_y_mpa: 55
+  tensile_strength_z_mpa: 45
+  heat_deflection_temp_c: 175
+  heat_deflection_temp_1p82_c: 173
+  charpy_notched_kj_m2: 4.0
+  glass_transition_c: 45
+  water_absorption_pct: 0.5
+  env_knockdown_ratio: 0.8
+  modulus_40c_wet_ratio: 0.65
+  modulus_minus20c_ratio: 1.25
+  impact_minus20c_ratio: 0.6
+  creep_modulus_8h_40c_ratio: 0.75
+  creep_rupture_8h_40c_ratio: 0.4
+  fatigue_1e5_ratio: 0.3
+  min_wall_mm: 1.5
+  print_cost_usd_per_g: 0.6
+  print_cost_basis: 'ASSUMPTION ~2.2 x MJF-PA12; JLC3DP cut PA12-CF by 24 % on 24 Jul 2026 (no absolute figure published)'
+confidence: estimate
+sources:
+- 'Protolabs SLS PA12-CF sheet (tensile 85 +/- 5 MPa x plane, 55 +/- 4 y, 45 +/- 4 z); https://www.protolabs.com/media/kuylbdiz/pa12-cf-smooth-black-en-28_02.pdf'
+- 'EOS ALM PA 603 CF (33 % carbon fibre, tensile modulus 7900 MPa XY), reseller summary via search'
+- 'Windform XT 2.0 (density 1.097 g/cc, flexural modulus ~7338 MPa, HDT 1.82 MPa 173.4 C); https://knowde.com/stores/crp-technology/products/windform-xt-2-0'
+- 'JLC3DP materials price update 24 Jul 2026 (PA12-CF -24 %); https://jlc3dp.com/news/materials-finishing-pricing-update-july2026'
+cost_usd:
+  value: 600
+  per: kg
+notes: 'ESTIMATE: Z modulus 3500 (no published value; FDM/SLS CF grades show XY/Z ~ 2), density 1100 (Windform
+  XT 2.0 value), Charpy, Tg and the creep/fatigue ratios are ASSUMPTIONS. Fibers align with the recoater: orient
+  the long frame members along the recoat (x) direction in the build.'

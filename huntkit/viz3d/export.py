@@ -69,6 +69,8 @@ def build_materials(p: dict) -> tuple[dict, dict]:
         "carbon": PBRMaterial(name="carbon_twill", baseColorTexture=twill, metallicFactor=0.3, roughnessFactor=0.35),
         "fitting": PBRMaterial(name="anodized_black", baseColorFactor=_hex_factor("#1c1d20"), metallicFactor=0.55,
                                roughnessFactor=0.42),
+        "printed_cf": PBRMaterial(name="printed_cf_nylon", baseColorFactor=_hex_factor("#2b2c2f"), metallicFactor=0.05,
+                                  roughnessFactor=0.72),
         "titanium": PBRMaterial(name="titanium", baseColorFactor=_hex_factor("#b4b6ba"), metallicFactor=0.85,
                                 roughnessFactor=0.45),
         "hardware": PBRMaterial(name="pom_black", baseColorFactor=_hex_factor("#202020"), metallicFactor=0.0,

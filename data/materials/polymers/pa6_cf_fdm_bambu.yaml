@@ -1,0 +1,53 @@
+id: pa6_cf_fdm_bambu
+name: Bambu Lab PA6-CF (carbon-fiber nylon 6) FDM filament, printed, dried + annealed
+category: polymers
+generic: false
+trade_names:
+- Bambu Lab PA6-CF
+supplier_examples:
+- Bambu Lab store (US / EU)
+- MatterHackers
+properties:
+  process: FDM (Bambu H2S, hardened nozzle, enclosed)
+  anisotropic: true
+  density_kg_m3: 1170
+  youngs_modulus_xy_mpa: 4430
+  youngs_modulus_z_mpa: 2170
+  youngs_modulus_mpa: 4430
+  poisson: 0.35
+  tensile_strength_xy_mpa: 102
+  tensile_strength_z_mpa: 66
+  bending_strength_xy_mpa: 151
+  bending_modulus_xy_mpa: 5460
+  elongation_xy_pct: 5.8
+  charpy_notched_kj_m2: 13.4
+  heat_deflection_temp_c: 186
+  glass_transition_c: 50
+  water_absorption_pct: 2.35
+  env_knockdown_ratio: 0.75
+  modulus_40c_wet_ratio: 0.55
+  modulus_minus20c_ratio: 1.3
+  impact_minus20c_ratio: 0.6
+  creep_modulus_8h_40c_ratio: 0.7
+  creep_rupture_8h_40c_ratio: 0.4
+  fatigue_1e5_ratio: 0.3
+  min_wall_mm: 2.0
+  print_cost_usd_per_g: 0.043
+  print_cost_basis: 'filament only, US reseller $42.99 / kg (2026); electricity + nozzle wear ignored'
+confidence: datasheet
+sources:
+- 'Bambu PA6-CF TDS V3.0 (Young''s modulus XY 4430 +/- 310 MPa, Z 2170 MPa; tensile 102 +/- 7 MPa), as summarized by search of the Bambu TDS; https://polyalkemi.no/wp-content/uploads/2024/01/Bambu_PA6-CF_Technical_Data_Sheet-v2.pdf'
+- 'filament2print Bambu PA6-CF page (flexural 151 MPa / 5460 MPa dry XY, Charpy 13.4 kJ/m2, HDT ~186 C at 0.45 MPa, water absorption 2.35 % at 25 C / 55 % RH); https://filament2print.com/en/filaments/3669-pa6-cf-bambu-lab.html'
+- 'Price: MatterHackers Bambu PA6-CF 1 kg; https://www.matterhackers.com/store/l/bambu-lab-pa6-cf-filament/sk/MHUAEMPV'
+- 'Z/XY strength ratio 0.645 from PolyMide PA6-CF TDS V4.1 (XY 105, Z 67.7 MPa); https://cdn.shopify.com/s/files/1/0151/1735/files/PolyMide__PA6-CF_TDS_EN_V4.1.pdf'
+cost_usd:
+  value: 43
+  per: kg
+notes: 'ASSUMPTIONS (no published data for this grade): tensile_strength_z = 0.645 x XY (PolyMide ratio);
+  density 1170 (Polymaker PA6-CF20 value; one reseller lists 1090 - the higher value is used for mass);
+  glass transition ~50 C dry, lower when moisture-conditioned (PA6 is plasticized by water);
+  env_knockdown_ratio 0.75 (conditioned/40 C strength vs dry 23 C; PolyMide conditioned XY = 0.78 x dry);
+  modulus_40c_wet_ratio 0.55, creep_modulus_8h_40c_ratio 0.7, creep_rupture_8h_40c_ratio 0.4 (no published
+  creep data found for printed PA6-CF; CNC Kitchen reports "a serious creep problem" without annealing,
+  https://www.cnckitchen.com/blog/carbon-fiber-nylon-in-3d-printing-pa6-vs-pa12-tested); fatigue_1e5_ratio 0.3
+  (as the generative lug study). These must be confirmed by the coupon tests in printed_frame_study.md.'

@@ -1,0 +1,50 @@
+id: onyx_ccf_markforged
+name: Continuous carbon fiber printed in a chopped-CF nylon matrix (Markforged Onyx + CCF class; Anisoprint CFC, FibreSeek X-CCF comparable)
+category: composites
+generic: false
+trade_names:
+- Markforged Onyx + Continuous Carbon Fiber
+- Anisoprint CFC (CCF + PA/PETG)
+- FibreSeek X-CCF
+supplier_examples:
+- Markforged print services / resellers
+- FibreSeeker 3 desktop continuous-fiber printer (owner option)
+properties:
+  process: continuous-fiber FDM (fiber laid in flat layers along programmed paths)
+  anisotropic: true
+  density_kg_m3: 1200
+  fiber_density_kg_m3: 1400
+  youngs_modulus_xy_mpa: 2400
+  youngs_modulus_z_mpa: 2000
+  youngs_modulus_mpa: 2400
+  tensile_strength_xy_mpa: 40
+  tensile_strength_z_mpa: 30
+  E1_mpa: 60000
+  Xt_mpa: 800
+  Xc_mpa: 320
+  fiber_strand_area_mm2: 0.11
+  heat_deflection_temp_c: 145
+  glass_transition_c: 50
+  env_knockdown_ratio: 0.75
+  modulus_40c_wet_ratio: 0.6
+  modulus_minus20c_ratio: 1.3
+  impact_minus20c_ratio: 0.7
+  creep_modulus_8h_40c_ratio: 0.7
+  creep_rupture_8h_40c_ratio: 0.4
+  fatigue_1e5_ratio: 0.3
+  min_wall_mm: 2.0
+  print_cost_usd_per_g: 1.2
+  print_cost_basis: 'ASSUMPTION service rate; owner option: FibreSeeker 3 printer $2,449 + X-CCF $55 / 500 m'
+confidence: estimate
+sources:
+- 'Markforged Mark Two (Gen 2) product specifications F-PR-2027 rev 4.4 (continuous carbon fiber 800 MPa, 60 GPa tensile); via https://www.cad.at/wp-content/uploads/2022/05/Mark-Two-Datasheet.pdf'
+- 'Markforged composites datasheet (ASTM D3039 carbon 54 GPa; Onyx tensile modulus 2.4 GPa D638); https://3dverkstan.se/wp-content/uploads/2018/07/markforged_composites_datasheet.pdf'
+- 'Anisoprint CFC: CCF composite up to 860 MPa at 1.4 g/cm3; CFC PETG+CCF 56.6 GPa along paths; https://top3dshop.com/product/anisoprint-cfc-petg-1-75-mm-750-g'
+- 'FibreSeeker 3 US$2,449; X-CCF US$55 per 500 m; https://www.fabbaloo.com/news/fibreseeker-3-brings-continuous-carbon-fiber-3d-printing-to-the-personal-desktop-market'
+cost_usd:
+  value: 1200
+  per: kg
+notes: 'E1/Xt are for the printed fiber strand composite along the path (fiber + nylon). Xc ASSUMPTION 0.4 x Xt
+  (continuous-fiber prints are weak in compression: micro-buckling in a soft nylon matrix). Strand area 0.11 mm2
+  ASSUMPTION (0.125 mm layer x ~0.9 mm width). Matrix (Onyx) values for the non-fiber volume. Fibers lie in the
+  layer plane only (no z fibers): interlayer strength = matrix Z strength.'
