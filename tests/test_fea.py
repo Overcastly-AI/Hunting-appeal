@@ -394,7 +394,8 @@ def test_ha_ls1_factors():
     eq = {d["case"]: d["equivalent_x_rated"] for d in describe()}
     assert eq["static_carry"] == 2.0 and eq["stumble_2g"] == pytest.approx(3.0)
     assert TABLE["overload_haul"][1] == 1.0 and TABLE["hipbelt_off_abuse"][1] == 1.0
-    assert [c.name for c in ls1_cases()] == [c.name for c in pack5200_cases()]
+    assert [c.name for c in ls1_cases()] == [("meat_straps" if c.name == "meat_shelf_heavy_low" else c.name) for c in pack5200_cases()]
     c = {x.name: x for x in ls1_cases()}
-    assert c["meat_shelf_heavy_low"].W == pytest.approx(RATED_KG * 9.80665 * 2.0)
+    assert c["meat_straps"].W == pytest.approx(RATED_KG * 9.80665 * 2.0)
+    assert c["meat_straps"].placement == "meat_straps" and "meat_shelf_heavy_low" not in c
     assert buckling_required(1.5) == pytest.approx(2.25)

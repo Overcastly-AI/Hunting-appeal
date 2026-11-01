@@ -6,3 +6,4 @@ outputs/*
 !outputs/.gitkeep
 *.egg-info/
 .venv/
+*.whl

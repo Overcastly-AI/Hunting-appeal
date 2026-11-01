@@ -101,6 +101,8 @@ class LoadCase:
                     add(nid, np.array([0.0, H / len(top), 0.0]))
                 for nid in bot:
                     add(nid, np.array([0.0, -H / len(bot), 0.0]))
+        elif placement == "meat_straps":
+            self._meat_straps(model, W, tilt, add)
         elif placement in ("meat_shelf", "tall_load"):
             piv, P = g["shelf_pivot"], W * np.cos(tilt)
             e = self.cg_aft_mm
@@ -133,6 +135,62 @@ class LoadCase:
                 for nid in piv:
                     add(nid, np.array([W * np.sin(tilt), 0, 0]) / len(piv))
         return loads
+
+    def _meat_straps(self, model, W, tilt, add):
+        """HA-LS-1 rev B meat load (owner 2026-11-01: NO meat shelf). Meat (boned in game bags or a
+        bone-in quarter) rides INSIDE the bag, cinched against the frame face by internal straps.
+
+        Load path on the frame (statically determinate resolution, ASSUMPTIONS in load_standard.md):
+        - vertical P = W cos(tilt): ``floor_share`` into the bottom strap pair (the bag floor is sewn to
+          it and slings the meat), the rest by strap/face friction into the strap anchors (equal split);
+        - overturning P*e (CG ``cg_aft_mm`` aft of the frame axis): a couple of aft (+y) strap pull H at
+          the ``upper_groups`` anchors and forward (-y) contact pressure on the frame face, triangular
+          over ``face_z`` (peak at the bottom); strap pulls in proportion to their lever above the
+          discrete pressure centroid z_p (sum H_i (z_i - z_p) = P e);
+        - strap cinch pretension ``pretension_n`` per anchor (aft), balanced by uniform face pressure.
+        Groups: strap_bottom, strap_lumbar, strap_mid, strap_upper, meat_face.
+        """
+        g, nodes = model["groups"], model["nodes"]
+        pr = self.params
+        P = W * np.cos(tilt)
+        e = self.cg_aft_mm
+        bottom = g["strap_bottom"]
+        levels = [n for k in ("strap_lumbar", "strap_mid", "strap_upper") for n in g.get(k, [])]
+        upper = [n for k in pr.get("upper_groups", ("strap_mid", "strap_upper")) for n in g.get(k, [])]
+        face = list(g["meat_face"])
+        fs = float(pr.get("floor_share", 0.5))
+        for nid in bottom:
+            add(nid, np.array([0.0, 0.0, -fs * P / len(bottom)]))
+        for nid in levels:
+            add(nid, np.array([0.0, 0.0, -(1 - fs) * P / len(levels)]))
+        z0, z1 = pr.get("face_z", (50.0, 330.0))
+        zf = np.array([nodes[n][2] for n in face])
+        wf = np.clip((z1 - zf) / (z1 - z0), 0.0, None) + 1e-9
+        wf = np.where((zf >= z0 - 1e-6) & (zf <= z1 + 1e-6), wf, 0.0)
+        wf /= wf.sum()
+        zp = float(wf @ zf)
+        zu = np.array([nodes[n][2] for n in upper])
+        if pr.get("proportional", True):
+            # straps share the overturning couple in proportion to their lever above the pressure centroid
+            lev = np.clip(zu - zp, 1.0, None)
+            Hn = P * e * lev / np.sum(lev ** 2)
+        else:
+            Hn = np.full(len(upper), P * e / (zu.mean() - zp) / len(upper))
+        H = float(Hn.sum())
+        for nid, h_ in zip(upper, Hn):
+            add(nid, np.array([0.0, h_, 0.0]))
+        T0 = float(pr.get("pretension_n", 150.0))
+        anchors = levels + list(bottom)
+        for nid in anchors:
+            add(nid, np.array([0.0, T0, 0.0]))
+        inface = (zf >= z0 - 1e-6) & (zf <= z1 + 1e-6)
+        for nid, w, ok in zip(face, wf, inface):
+            f = -H * w - (T0 * len(anchors) / inface.sum() if ok else 0.0)
+            if f:
+                add(nid, np.array([0.0, f, 0.0]))
+        if tilt:
+            for nid in anchors:
+                add(nid, np.array([W * np.sin(tilt) / len(anchors), 0.0, 0.0]))
 
     # ------------------------------------------------------------------ supports
     def _supports(self, model, sh_scale: float = 1.0) -> dict:

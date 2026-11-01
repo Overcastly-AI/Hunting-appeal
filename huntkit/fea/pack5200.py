@@ -111,6 +111,30 @@ def _sec(spec, default=None):
     return spec if isinstance(spec, Section) else from_spec(spec)
 
 
+STRAP_DEFAULT_Z = {"strap_bottom": 60.0, "strap_lumbar": 190.0, "strap_mid": 330.0, "strap_upper": 520.0}
+
+
+def strap_levels(frame_geom: dict) -> dict:
+    """Internal meat-strap anchor heights {group: z} (HA-LS-1 rev B). Read from geometry.yaml
+    frame.hard_points: the bottom pair = ``bag_anchor_low`` (bag-bottom hinge pins carry the meat's
+    vertical load), the three strap pairs = ``meat_anchor_z*`` (pack-designer v3.1 internal meat harness)
+    sorted by height, or legacy ``internal_strap_<level>`` keys. Defaults = the v3.1 values."""
+    out = dict(STRAP_DEFAULT_Z)
+    hp = (frame_geom or {}).get("hard_points", {}) or {}
+    zs = sorted({float(v[2]) for k, v in hp.items() if k.lower().startswith("meat_anchor") and k.endswith("_R")})
+    if len(zs) >= 3:
+        out["strap_lumbar"], out["strap_mid"], out["strap_upper"] = zs[0], zs[len(zs) // 2], zs[-1]
+    if "bag_anchor_low_R" in hp:
+        out["strap_bottom"] = float(hp["bag_anchor_low_R"][2])
+    for k, v in hp.items():
+        kl = k.lower()
+        if "internal_strap" in kl and isinstance(v, (list, tuple)):
+            for lvl in ("bottom", "lumbar", "mid", "upper"):
+                if lvl in kl:
+                    out[f"strap_{lvl}"] = float(v[2])
+    return out
+
+
 def load_geometry(path=None) -> dict:
     import yaml
     return yaml.safe_load(Path(path or GEOMETRY).read_text())
@@ -390,6 +414,17 @@ def build(params: dict | None = None) -> dict:
     groups["shelf_pivot"] = [sid("L", 25.0), sid("R", 25.0)]
     groups["shelf_strap"] = [sid("L", 330.0), sid("R", 330.0)]
     groups["lash"] = ["TB0", "TB2"]
+    # internal meat-strap anchors (HA-LS-1 rev B, owner 2026-11-01: no meat shelf). Levels from
+    # geometry.yaml frame.hard_points 'internal_strap_*' when the pack-designer has placed them, else the
+    # geometry.yaml v3.1 meat_anchor_z190/z330/z520 + bag_anchor_low z60 (defaults if absent).
+    stay_zs = sorted(set(z_lo) | set(z_up))
+    lv = strap_levels(fr)
+    for key, z in lv.items():
+        zn = min(stay_zs, key=lambda q: abs(q - z))
+        groups[key] = [sid("L", zn), sid("R", zn)]
+    face = [sid(t_, z) for t_ in ("L", "R") for z in stay_zs if 50.0 <= z <= 330.0]
+    face += [grid[i, j] for i in range(nz) for j in range(1, nx - 1)] + ["MB0", "MB1", "MB2"]
+    groups["meat_face"] = face
     groups["foot_left"] = [sid("L", 0.0)]
     groups["foot_right"] = [sid("R", 0.0)]
     bag_w = []

@@ -34,23 +34,23 @@ def shots(m: dict) -> list[dict]:
                 if v3 else f"{vol} + {m['lid_design_l']:.1f} L lid · camo shards on corners, lash zone, lid, pockets")
     out = [
         dict(name="hero", view="hero", state={"mode": "pack"},
-             caption="Pack 5200 v3 SPINE: 3/4 view of the outer face" if v3 else "Pack 5200: 3/4 view of the outer face",
+             caption="Pack 5200 v3.1 SPINE: 3/4 view of the outer face" if v3 else "Pack 5200: 3/4 view of the outer face",
              sub=hero_sub),
         dict(name="side", view="side", state={"mode": "pack", "mannequin": True},
-             caption="Side profile, 19 in torso: teardrop keeps the load close" if v3 else "Side profile, 19 in torso",
+             caption="Side profile, 19 in torso: deeper teardrop, 30 mm head setback" if v3 else "Side profile, 19 in torso",
              sub="Crown sets yoke + lifters together; hipbelt on the Ti pivot at z 120 mm"),
         dict(name="back", view="back", state={"mode": "pack"},
              caption="Back panel and suspension",
              sub="Lumbar plate, J-straps on the crown yoke, sternum strap, load lifters, hipbelt (M)"),
         dict(name="haul", view="haul", state={"mode": "pack", "haul": True},
              caption=f"Haul mode: bag hinges back {m['haul_pullback_mm']:.0f} mm",
-             sub=("Quarter on the fold-down lip; the 3 frame-anchored wraps become the meat sling (no wings, no re-rigging)"
+             sub=("No shelf: internal 38 mm meat straps hook to frame stubs and cam the quarter to the frame; wraps close the bay"
                   if v3 else "Bone-in hindquarter on the 270 x 260 shelf, shelf straps to the mid-bar nodes, load wings, flag on extension posts")),
         dict(name="exploded", view="exploded", state={"mode": "pack", "explode": True},
              caption="Exploded view", sub="Frame, crown, shelf, bag, pockets, harness and hipbelt"),
         dict(name="frame", view="frame", state={"mode": "frame", "harness": False},
              caption="Carbon frame close-up",
-             sub=f"Segmented stays, lumbar plate, Ti pivot, telescoping crown. Tubes: {m['tube_size_source']}"),
+             sub=f"Straight stays (v2), formed lumbar pan, Ti pivot mount, telescoping crown, swept top bar. Tubes: {m['tube_size_source']}"),
         dict(name="fea", view="fea", state={"mode": "frame", "fea": True, "harness": False},
              caption="FEA utilization overlay (worst load case)",
              sub=(f"max {fea.get('max_utilization', 0):.2f} in {str(fea.get('critical_case', '')).replace('_', ' ')}"

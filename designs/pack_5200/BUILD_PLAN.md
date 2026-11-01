@@ -5,6 +5,11 @@
 and a straight roll-top collar. There are no box corners, no side zips, no lid (optional accessory) and
 no load wings. The steps below are updated; piece ids refer to the v3 `panels.yaml`.
 
+**v3.1 update (2026-11-01).** The bag is deeper (11.9 in) and shorter (42 in to the fill line); B-01 has a 30 mm
+step aft near its top (head setback) and **6 meat-strap ports** (B-12). **The shelf lip is gone**: meat is held by
+3 internal 38 mm straps (IM1–IM3) that hook to webbing stubs girth-hitched on the frame. The frame is v2 (straight
+stays). Old step 6 (shelf lip) is now "haul wraps + meat harness".
+
 For the owner, a first-time sewer with no machine yet. Goal: a working prototype in ~10–14 weeks
 of evenings and weekends, by climbing a **skill ladder**. Each practice project uses the exact
 operations the real pack needs, in cheaper fabric and lower-stakes parts. Every practice piece is
@@ -39,10 +44,10 @@ the tech pack to a contract factory.
 | 3 | **Hipbelt pocket** `HP-01/02` (make 3 and keep the best 2) | Zip insertion (#8 coil), gusseted box shape, small curves, binding | All zips, floating side pockets `P-01..03`, fly base pocket `F-02` | 1 weekend |
 | 4 | **Camo shard practice panel**: sew SH-01 onto a 500D scrap | Edge-turn and topstitch angular appliqué, sharp outside/inside corners, sewing through 2 layers + Hypalon tab | All shards, lash tabs `B-11` | 2 evenings |
 | 5 | **Roll-top collar + rain fly** `B-06/B-07`, `F-01..03` | Long straight tube seam, folded hem with an inserted 0.8 mm HDPE strip, elastic hem on silicone-coated fabric (use tape, not pins), tether | Main-bag collar; the fly is your first light-fabric project | 1 weekend |
-| 6 | **Shelf lip + haul wraps** `S-01/S-05`, wraps W1–W3 | Sewing Challenge Ultra 200 (slippery laminate: walking foot, 3.5 mm stitch), webbing bartacks for load (tex 135, 120/19), grommets, G-hook and ladder-lock terminations | Frame-side panel `B-01` (same laminate) | 1 weekend |
+| 6 | **Haul wraps + internal meat harness**: wraps W1–W3; meat straps IM1–IM3 (38 mm, hot-knifed ends, a sliding-gate hook sewn into each end, one cam threaded); 6 frame stubs (200 mm, sewn eye); 6 port patches `B-12` on a Challenge Ultra 200 scrap | Webbing bartacks for load (box-X, tex 135, 120/19), hook and cam terminations, laser-cut slot through Hypalon + laminate, sewing Challenge Ultra 200 (walking foot, 3.5 mm stitch) | Frame-side panel `B-01` (same laminate, real ports) | 1 weekend |
 | 7 | **Back panel + harness straps + crown pulley** `BP-*`, `HS-J*`, pulley webbing | Foam sandwiches (pre-cut foam), spacer mesh, binding around foam, matching left/right mirror pieces. Then thread the 3:1 crown pulley (sealed 25 mm webbing through the 3 guides into the cam buckle) and tie the pawl release cord to its strap toggle | Hipbelt wings | 1–2 weekends |
 | 8 | **Hipbelt M** `H-01..09` (2-stage lumbar), rifle-boot mount tabs `R-03` on **both** wings | Graded parts, stiffener insertion, the 50 mm buckle and webbing bartacks under load | Other belt sizes | 1–2 weekends |
-| 9 | **Main bag** `B-01..B-11`, `D-01`, `SH-01..04` | Teardrop assembly in order: (a) flat-work: SPINE band `D-01` onto `B-02b` (lower edge + right end), camo binding `SH-02` on its mouth, corner shards `SH-01`, cam cup `SH-04`, LINK/lash tabs, wrap keeper loops, hydration sleeve on `B-01`, floating pockets on `B-03`; (b) the **diagonal zip** joining `B-02a` to `B-02b` with the backing strip `B-08`, band mouth lying over it as the storm flap; (c) curved gore seams face ↔ side gores ↔ frame panel, matching notches every 50 mm of centre-line length; (d) bottom oval `B-05` with the fly base pocket; (e) collar + roll hem | — | 2–3 weekends |
+| 9 | **Main bag** `B-01..B-12`, `D-01`, `SH-01..04` | Teardrop assembly in order: (a) flat-work: SPINE band `D-01` onto `B-02b` (lower edge + right end), camo binding `SH-02` on its mouth, corner shards `SH-01`, cam cup `SH-04`, LINK/lash tabs, wrap keeper loops, **6 meat-strap port patches `B-12` on the inside of `B-01` (slot 45 × 6 at x ±100, z 190/330/520 frame heights: check against the frame before cutting)**, hydration sleeve on `B-01`, floating pockets on `B-03`; (b) the **diagonal zip** joining `B-02a` to `B-02b` with the backing strip `B-08`, band mouth lying over it as the storm flap; (c) curved gore seams face ↔ side gores ↔ frame panel, matching notches every 50 mm of centre-line length; (d) bottom oval `B-05` with the fly base pocket; (e) collar + roll hem | — | 2–3 weekends |
 | 10 | **Integration**: fit to frame, field test with a sandbag | Adjust strap lengths, record mass | — | 1 weekend |
 
 Rule of thumb: **all flat-work goes on before panels become 3D.** Shards, tabs, pockets, ladders
@@ -56,9 +61,9 @@ Hypalon tab) and adjust tension until both sides look the same.
 | Hard thing | Why it's hard | How we make it easier |
 |---|---|---|
 | Sewing **840D TPU-coated nylon** | It's stiff and grippy. The coating sticks to the presser foot and the layers creep | Walking foot, Teflon foot or tape on the bed, longer stitch (3.5 mm), clips not pins |
-| **Curved gore seams** (v3 teardrop: ~890 mm long, gently curved, seam-length mismatch ≤ 2.2 mm) | Two curves of opposite sense must meet without puckers or twist | Match notches every 50 mm (from `panels.yaml` seam lines), clip the allowance on the concave side, sew with the convex piece on top. Practise on a half-scale gore pair in scrap first |
+| **Curved gore seams** (v3.1 teardrop: ~760 mm long, more curved than v3, seam-length mismatch ≤ 5.8 mm on the outer face) | Two curves of opposite sense must meet without puckers or twist | Match notches every 50 mm (from `panels.yaml` seam lines), clip the allowance on the concave side, sew with the convex piece on top. Practise on a half-scale gore pair in scrap first |
 | **Bottom oval** (`B-05` into the gore ring) | Easing a long tube edge onto a closed oval | Quarter-notch both, pin with clips at 8 points, sew bottom-up with the needle down at every pivot. The stuff sack (step 2) is the rehearsal |
-| **Diagonal SPINE zip** (577 mm on a seam at 31°) | Bias-ish edges stretch and wave | Stay-stitch both face edges first, baste the zip with 6 mm basting tape, keep the band mouth out of the seam (it lies over the zip, it is not sewn into it) |
+| **Diagonal SPINE zip** (509 mm on a seam at 39°) | Bias-ish edges stretch and wave | Stay-stitch both face edges first, baste the zip with 6 mm basting tape, keep the band mouth out of the seam (it lies over the zip, it is not sewn into it) |
 | **Load-bearing bartacks** (lifters, shelf straps, hipbelt) | These carry the 3.3 kN proof load. A bad tack fails in the field | Box-X pattern, tex 135, 120/19 needle. Test 3 samples to failure before using it on the pack (hang a bucket of sand, or use a luggage scale + lever) |
 | **Foam sandwiches** (straps, belt) | Foam shifts and the binding wanders | Outsource die-cut foam; glue-stick the foam to the mesh; sew the binding with a binding foot |
 | **Many-layer stacks** at tab and ladder points (up to 6 layers + webbing) | Needle deflection, skipped stitches | Hammer the seam flat, use a bigger needle and slow hand-crank through the thickest spot |
@@ -75,8 +80,9 @@ Hypalon tab) and adjust tension until both sides look the same.
 | **Foam die-cutting** (EVA 45C/30C, XLPE: `H-03/04/08`, `HS-*3/4`, `BP-02/04`) | A foam converter from DXF | Clean bevelled edges. Hand-cut foam looks and feels lumpy |
 | HDPE stiffeners (`H-05`, `S-05`) | Waterjet or a CNC router shop from DXF | Smooth radiused edges that won't wear through the fabric |
 | Camo shard fabric (`polyester_ht_630d_printable`) | A sublimation print bureau, printing the owner base camo | Small runs; 1–2 m is plenty for several prototypes |
-| Hardware families: aluminium G-hooks (HAUL), POM toggles + quick-pins (LINK), 25 mm metal cams (SHELF), magnetic buckles (QUICK) | Buy off the shelf (pack-hardware suppliers) | Tactile coding only works if each family really is different in the hand: check them blind with gloves before sewing |
-| Roll hem strip (0.8 × 20 mm HDPE) and shelf-lip stiffener (1.0 mm HDPE) | Waterjet / CNC router from DXF, or hand-cut strip with rounded ends | Sharp corners wear through fabric |
+| Hardware families: aluminium G-hooks (HAUL), POM toggles + quick-pins (LINK), 38 mm hooks + cams (MEAT), magnetic buckles (QUICK) | Buy off the shelf (pack-hardware suppliers) | Tactile coding only works if each family really is different in the hand: check them blind with gloves before sewing |
+| Roll hem strip (0.8 × 20 mm HDPE) | Waterjet / CNC router from DXF, or hand-cut strip with rounded ends | Sharp corners wear through fabric |
+| MEAT family hardware: 38 mm aluminium sliding-gate hooks (6) and 38 mm metal cam buckles with pull-tabs (3) | Buy off the shelf (pack/rescue hardware suppliers) | Proof-test 5 of each to 910 N before sewing (§5a) |
 | Hypalon tabs, slot holes | Laser cutter (local makerspace) | Precise slots, sealed edges |
 | Hipbelt centre plate (PA66-GF30) | 3D-printed nylon-CF for the prototype; injection mold for production | Complex shape |
 
@@ -91,12 +97,20 @@ design gets proven.
 4. Frame: move to a composite supplier with a fixture-bonded process and a proof test on every
    frame (R-02).
 
-## 5a. Meat-mode check (v3, before the first loaded hike)
-1. Carry mode: wraps W1–W3 snug, toggles seated. Pop the 4 LINK toggles, let out the 3 wraps: the bag
-   must hinge back on its 2 bottom quick-pins without anything else being undone.
-2. Put a 30 kg sandbag in game bags high against the frame, cinch the wraps, walk 30 min on a slope:
-   < 25 mm slip (R-08/R-09). Time the whole change: target ≤ 90 s with gloves.
-3. Fold the shelf lip down, put a 36 kg sandbag "quarter" on it, cam the 2 shelf straps: no lip sag past 20 mm.
+## 5a. Meat-mode check (v3.1, before the first loaded hike)
+0. **Proof tests first** (R-29): hang 910 N (93 kg, 205 lb) for 1 min from 5 samples each of: a 38 mm box-X bartack, a
+   sliding-gate hook, a cam buckle on 38 mm webbing (mark the webbing: < 3 mm slip). Any failure: change hardware.
+1. Girth-hitch the 6 stubs on the frame right at the node wraps (z 190 / 330 / 520). Fit the bag: each stub eye must
+   poke through its B-01 port.
+2. **Bag-on meat mode**: 30 kg sandbags in game bags inside the bag, high against B-01; hook IM1–IM3 to the stub eyes,
+   cam tight; walk 30 min on a slope: no load shift you can feel; time it (≤ 60 s with gloves).
+3. **Bay mode**: pop the 4 LINK toggles, let out W1–W3, the bag hinges back on its 2 bottom quick-pins; stub eyes slide
+   out of the ports; hook the same straps stub-to-stub round the sandbags, re-cinch the wraps: ≤ 90 s, < 25 mm slip
+   after 30 min (R-08/R-09).
+4. **Frame-only**: a 36 kg sandbag "quarter" with IM1–IM3 + W1/W2: < 25 mm slip after 30 min (no shelf: friction hold).
+5. Wash: unhook the straps, machine-wash cold, dry: hooks and cams still work.
+6. **Head check (R-28)**: at your torso setting, bag full and collar unrolled, look up at a ridge: side photo; you
+   should reach ~30° of neck tilt before touching the bag.
 
 ## 5. Torso-adjust check (do this before the first loaded hike)
 1. With the pack empty, pull the release toggle, run the crown through its full travel with the

@@ -78,6 +78,7 @@ def build_materials(p: dict) -> tuple[dict, dict]:
         "tpu": fab("tpu_840d", cw["harness"], rough=0.62),
         "trim": fab("binding_trim", cw["trim"], rough=0.85),
         "webbing": fab("webbing", cw["trim"], normal=foam, rough=0.8),
+        "meat_strap": fab("meat_strap_38mm", "#cdbf9f", normal=foam, rough=0.8),   # v3.1 MEAT family (bone/stone webbing)
         "harness": fab("harness_shell", cw["harness"], normal=rip, rough=0.88),
         "spacer": fab("spacer_mesh", "#3b3c34", normal=knit, rough=0.95),
         "camo": fab("camo_owner_base", "#ffffff", tex=camo),

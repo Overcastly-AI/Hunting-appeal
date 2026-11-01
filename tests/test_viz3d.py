@@ -51,7 +51,7 @@ def test_main_bag_volume_is_5200_cu_in(pack):
 
 @pytest.mark.parametrize("name", ["bag_body", "lid", "frame_stays", "frame_bars", "lumbar_plate",
                                   "side_pockets", "quarter_proxy", "hipbelt", "bag_shards",
-                                  "load_shelf", "mannequin@t19"])
+                                  "quarter_proxy", "mannequin@t19"])
 def test_watertight_parts(pack, name):
     assert G.is_closed(pack.part(name).mesh), name
 
@@ -67,7 +67,8 @@ def test_crown_follows_torso(pack):
 def test_frame_stays_follow_geometry_hard_points(pack):
     hp = pack.geometry["frame"]["hard_points"]
     v = pack.part("frame_stays").mesh.vertices
-    for key in ("stay_foot_R", "lumbar_elbow_R", "stay_top_crown_socket_R"):
+    keys = ("stay_foot_R", "lumbar_elbow_R" if "lumbar_elbow_R" in hp else "stay_lumbar_node_R", "stay_top_crown_socket_R")
+    for key in keys:
         d = np.linalg.norm(v - np.array(hp[key]), axis=1).min()
         assert d <= pack.metrics["tube_sizes"]["stay_od"] / 2 + 1.0, key
 
@@ -114,10 +115,10 @@ def test_v3_teardrop_parts_and_states(pack):
     assert pack.metrics["bag_volume_rolled_l"] == pytest.approx(pack.geometry["volumes"]["rolled_down_L"], rel=0.01)
     assert G.volume_mm3(rolled) < G.volume_mm3(full)
     assert pack.part("bag_body").variant == "rolled" and pack.part("bag_body_full").variant == "full"
-    # teardrop: slim at the hips, fullest high up; depth within the 10.5 in research cap
+    # teardrop: slim at the hips, fullest high up; depth within the owner's v3.1 cap (11.5-12 in at the widest)
     st = np.array(pack.geometry["bag"]["profile"]["stations"])
     k = int(np.argmax(st[:, 3]))
-    assert st[0, 3] < st[k, 3] <= 10.5 * 25.4
+    assert st[0, 3] < st[k, 3] <= 12.0 * 25.4
     assert st[0, 1] < st[:, 1].max()
     assert st[k, 0] > st[0, 0] + 0.4 * (st[-1, 0] - st[0, 0])
 
@@ -127,3 +128,20 @@ def test_export_puts_wearers_right_on_screen_right():
     from huntkit.viz3d.export import M_FCS_TO_GLTF, to_gltf
     assert np.linalg.det(M_FCS_TO_GLTF) < 0
     assert to_gltf([100.0, 0, 0])[0] > 0          # camera on +Z (behind the wearer): +X = screen right
+
+
+def test_v31_no_shelf_internal_meat_harness(pack):
+    """v3.1 (owner): shelf deleted; meat held by internal straps anchored at bonded frame nodes."""
+    g = pack.geometry
+    if not g.get("meat_harness"):
+        pytest.skip("geometry.yaml predates v3.1")
+    assert not g.get("load_shelf")
+    names = {p.name for p in pack.parts}
+    assert "load_shelf" not in names and "meat_straps" in names
+    hp = g["frame"]["hard_points"]
+    for s in g["meat_harness"]["straps"]:
+        for a in s["anchors"]:
+            assert a in hp
+        assert s["z"] in (190.0, 330.0, 520.0)                 # bonded nodes, never mid-span
+    assert g["meat_harness"]["load_cases"]["min_margin"] >= 1.0
+    assert g["head_clearance"]["all_pass"]

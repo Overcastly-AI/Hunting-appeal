@@ -7,7 +7,10 @@ Owner: pack-designer. Source of truth for the numbers in DESIGN.md. Run from rep
 Writes (all regenerated, do not hand-edit):
     designs/pack_5200/geometry.yaml
     designs/pack_5200/panels.yaml
-    outputs/screens/20261101_packv3_concept.png
+    outputs/screens/20261101_packv31_concept.png, outputs/screens/20261101_packv31_headclear.png
+
+v3.1 (2026-11-01): frame v2 hard points (straight stays), deeper bag solved to 85.2 L at a 42 in fill height,
+head-clearance check (ANSUR II), shelf deleted in favour of an internal meat harness.
 
 v3 "SPINE" (2026-11-01): the v2 box bag was rejected (too boxy/dated). The bag is now a tall,
 tapered, domed TEARDROP roll-top lofted from mixed-superellipse rings, with its volume integrated
@@ -35,17 +38,25 @@ from huntkit.patterns import (Piece, cubic_inches, develop_ruled_surface, litres
 
 ROOT = Path(__file__).resolve().parents[2]
 HERE = ROOT / "designs" / "pack_5200"
-SCREEN = ROOT / "outputs" / "screens" / "20261101_packv3_concept.png"  # v3 SPINE (v2 sketch: _packconcept_2.png)
+SCREEN = ROOT / "outputs" / "screens" / "20261101_packv31_concept.png"  # v3.1 (v3: _packv3_concept.png)
+SCREEN_HEAD = ROOT / "outputs" / "screens" / "20261101_packv31_headclear.png"
 IN = 25.4
 TARGET_L = 85.2  # spec.yaml: 5200 cu in main bag
 
 # ============================================================================ 1. FRAME TOPOLOGY
-# Segmented carbon stays (straight bought tubes + bonded elbow), parallel upper segments so the
-# crown legs can telescope in them. Numbers are TOPOLOGY requirements; tube sizes = FEA engineer.
-FOOT = (135.0, 0.0, 0.0)        # stay foot centreline (x = +/-)
-ELBOW = (115.0, -25.0, 130.0)   # lumbar apex: bonded elbow (stays bulge toward the wearer)
+# Frame v2 (structural-fea-engineer, frame.yaml 577 g, analysis/frame_hardpoint_changes.yaml): ONE straight
+# carbon tube per side from the foot boot to the stay top (the v1 lumbar elbow is deleted). The foot moved
+# 20 mm inboard (x 135 -> 115) so the two crown legs stay parallel and coaxial with the stays. The crown axis
+# now leans 1.1 deg TOWARD the wearer going up (v1 leaned aft). Numbers are TOPOLOGY requirements; tube
+# sizes live in frame.yaml.
+FOOT = (115.0, 0.0, 0.0)        # stay foot centreline (x = +/-), v2: in-line under the stay top
 STAY_TOP = (115.0, -10.0, 530.0)  # top of fixed stay = crown socket (UHMWPE bushing)
+LUMBAR_NODE_Z = 130.0           # z of the old elbow: now just a node on the straight stay (lumbar-pan land)
 Z_IC = 120.0                    # iliac-crest datum = hipbelt pivot height
+HIP_PIVOT = (0.0, -48.1, 120.0)  # frame v2: UNCHANGED, carried by the formed lumbar pan (face 20 mm toward the body)
+PAWL = (0.0, -24.4, 520.0)       # frame v2: UNCHANGED (pawl housing on the upper bar)
+PULLEY_Y = -34.8                 # frame v2: fixed guides A/C UNCHANGED on the lumbar-pan top flange
+CAM_BUCKLE = (105.0, -44.3, 150.0)  # pulley cam on the lumbar-pan corner (pan face 20 mm toward the body; v1 value kept)
 YOKE_DROP = 50.0                # ASSUMPTION (same as FEA): yoke anchor 50 mm below C7
 LIFTER_ABOVE_YOKE = 150.0       # crown top bar (lifter anchors) sits 150 mm above the yoke
 CROWN_LEG = 430.0               # crown leg length along axis
@@ -55,21 +66,24 @@ PULLEY_MA = 3                   # 3:1 webbing pulley (adjuster)
 SPINE_LEN = 300.0               # crown centre spine length below the top bar
 PULLEY_FIXED_Z = 190.0          # fixed guide rings on the top edge of the lumbar plate
 TORSO_IN = (15.0, 23.0)
+TOP_BAR_AFT = 25.0              # v3.1 head clearance: crown top bar sits 25 mm AFT of the leg axis (offset corner wraps)
+LIFTER_X = 105.0                # v3.1: lifter lugs move from the bar (x 70) to the crown-corner wraps (node loads, angle kept)
+MEAT_ANCHOR_Z = (190.0, 330.0, 520.0)   # internal meat-strap anchors: lumbar-pan top land, mid-bar node, upper-bar node
 
-u_axis = np.subtract(STAY_TOP, ELBOW)[1:]
-u_axis = u_axis / np.linalg.norm(u_axis)  # (y, z) unit vector of the upper stays / crown
+u_axis = np.subtract(STAY_TOP, FOOT)[1:]
+u_axis = u_axis / np.linalg.norm(u_axis)  # (y, z) unit vector of the straight stay = crown axis
 
 
 def y_on_axis(z: float) -> float:
-    return ELBOW[1] + (z - ELBOW[2]) * u_axis[0] / u_axis[1]
+    return FOOT[1] + z * u_axis[0] / u_axis[1]
 
 
 def stay_xyz(z: float) -> tuple[float, float, float]:
-    """Stay centreline at height z (right stay; mirror x for left)."""
-    if z <= ELBOW[2]:
-        t = z / ELBOW[2]
-        return tuple(float(a + (b - a) * t) for a, b in zip(FOOT, ELBOW))
-    return (ELBOW[0], y_on_axis(z), z)
+    """Stay centreline at height z (right stay; mirror x for left). v2: one straight line foot -> top."""
+    return (FOOT[0], float(y_on_axis(z)), float(z))
+
+
+LUMBAR_NODE = stay_xyz(LUMBAR_NODE_Z)
 
 
 def r3(p):
@@ -88,12 +102,13 @@ def crown_settings():
         c7_z = yoke_z + YOKE_DROP
         # lifter angle: shoulder-strap lifter point 20 mm below C7 and 140 mm forward of the
         # anchor (ASSUMPTION: back panel ~35 mm + trapezius/clavicle offset ~105 mm)
-        strap = (-140.0 + y_on_axis(top_z) - 15.0, c7_z - 20.0)
-        anchor = (y_on_axis(top_z) - 15.0, top_z)
+        strap = (-140.0 + y_on_axis(top_z) - 15.0, c7_z - 20.0)          # body-referenced (unchanged)
+        anchor = (y_on_axis(top_z) - 15.0, top_z)    # v3.1: lifter lugs on the crown-corner wraps (leg tops), NOT on the swept bar
         ang = math.degrees(math.atan2(anchor[1] - strap[1], anchor[0] - strap[0]))
         rows.append({"index": i, "torso_in": t_in, "torso_mm": round(t_in * IN, 1),
                      "yoke_anchor": r3((0, y_on_axis(yoke_z) - 30, yoke_z)),
-                     "lifter_anchor_R": r3((70, y_on_axis(top_z) - 15, top_z)),
+                     "lifter_anchor_R": r3((LIFTER_X, y_on_axis(top_z) - 15, top_z)),
+                     "top_bar_centre": r3((0, y_on_axis(top_z) + TOP_BAR_AFT, top_z)),
                      "crown_top_z": round(top_z, 1), "leg_overlap_mm": round(overlap, 1),
                      "lifter_angle_deg": round(ang, 1)})
     return rows
@@ -186,25 +201,29 @@ def frame_topology():
         hp[name + "_L"] = r3((-p[0], p[1], p[2]))
 
     both("stay_foot", FOOT)
-    both("lumbar_elbow", ELBOW)
+    both("stay_lumbar_node", LUMBAR_NODE)   # v2: was the bonded lumbar elbow (deleted); a node on the straight stay
     both("stay_top_crown_socket", STAY_TOP)
-    both("shelf_pivot", (FOOT[0], 8.0, 25.0))
     both("hip_stabilizer_anchor", (stay_xyz(60)[0] - 5, stay_xyz(60)[1] - 12, 60.0))
     both("shoulder_strap_lower_anchor", (stay_xyz(110)[0], stay_xyz(110)[1] - 15, 110.0))
     x330 = stay_xyz(330)
     both("mid_bar_node", x330)
-    both("shelf_strap_anchor_fixed", (x330[0], x330[1] + 12, 330.0))
     for z in (80.0, 250.0, 420.0):
         s = stay_xyz(z)
-        both(f"load_wing_lash_z{int(z)}", (s[0], s[1] + 12, z))
-    both("bag_anchor_low", (stay_xyz(60)[0], stay_xyz(60)[1] + 12, 60.0))
+        both(f"load_wing_lash_z{int(z)}", (s[0], s[1] + 12, z))   # external haul-wrap anchors (W1-W3), name kept for FEA
+    both("bag_anchor_low", (stay_xyz(60)[0], stay_xyz(60)[1] + 12, 60.0))   # bag-bottom hinge quick-pins (LINK)
     both("bag_anchor_mid", (x330[0], x330[1] + 12, 330.0))
-    hp["hipbelt_pivot"] = r3((0.0, stay_xyz(Z_IC)[1] - 25.0, Z_IC))
-    hp["rack_lock_pawl_upper_bar"] = r3((0.0, y_on_axis(520.0) - 14.0, 520.0))
-    hp["pulley_fixed_guide_A"] = r3((-18.0, stay_xyz(PULLEY_FIXED_Z)[1] - 12.0, PULLEY_FIXED_Z))
-    hp["pulley_fixed_guide_C"] = r3((18.0, stay_xyz(PULLEY_FIXED_Z)[1] - 12.0, PULLEY_FIXED_Z))
-    hp["pulley_cam_buckle_R"] = r3((stay_xyz(150)[0] - 10.0, stay_xyz(150)[1] - 20.0, 150.0))
-    hp["pulley_cam_buckle_L_alt"] = r3((-(stay_xyz(150)[0] - 10.0), stay_xyz(150)[1] - 20.0, 150.0))
+    # v3.1: the shelf lip is DELETED (owner). Its hard points (shelf_pivot at the foot boot, shelf_strap_anchor_fixed
+    # at the mid-bar node) are replaced by the internal meat-harness anchors: a girth-hitched 38 mm stub on the stay
+    # AT a bonded node (never mid-span), poking aft through a bound port in the frame-side panel B-01.
+    for z in MEAT_ANCHOR_Z:
+        s = stay_xyz(z)
+        both(f"meat_anchor_z{int(z)}", (s[0], s[1] + 12, z))
+    hp["hipbelt_pivot"] = r3(HIP_PIVOT)
+    hp["rack_lock_pawl_upper_bar"] = r3(PAWL)
+    hp["pulley_fixed_guide_A"] = r3((-18.0, PULLEY_Y, PULLEY_FIXED_Z))
+    hp["pulley_fixed_guide_C"] = r3((18.0, PULLEY_Y, PULLEY_FIXED_Z))
+    hp["pulley_cam_buckle_R"] = r3(CAM_BUCKLE)
+    hp["pulley_cam_buckle_L_alt"] = r3((-CAM_BUCKLE[0], CAM_BUCKLE[1], CAM_BUCKLE[2]))
     hp["upper_bar_node_R"] = r3(stay_xyz(520.0))
     hp["upper_bar_node_L"] = r3((-stay_xyz(520)[0], stay_xyz(520)[1], 520.0))
     return {
@@ -220,19 +239,22 @@ def frame_topology():
                    "yoke_drop_below_C7_mm": YOKE_DROP,
                    "torso_definition": "C7 vertebra to top of iliac crest, measured along the spine"},
         "members_topology": {
-            "stay_lower_R": {"from": r3(FOOT), "to": r3(ELBOW), "note": "straight tube, bonded into foot boot and elbow"},
-            "stay_upper_R": {"from": r3(ELBOW), "to": r3(STAY_TOP), "note": "straight tube; bore receives crown leg (UHMWPE bushings at top and at z~380)"},
+            "stay_lower_R": {"from": r3(FOOT), "to": r3(LUMBAR_NODE),
+                             "note": "frame v2: ONE straight OD 20 tube foot -> stay top; split here only at the lumbar-pan node (collinear with stay_upper_R, no elbow)"},
+            "stay_upper_R": {"from": r3(LUMBAR_NODE), "to": r3(STAY_TOP),
+                             "note": "same straight tube; bore receives the crown leg (UHMWPE bushing in the stay-top collar + 70 mm bushing on the leg end)"},
             "stay_lower_L": {"mirror_of": "stay_lower_R"},
             "stay_upper_L": {"mirror_of": "stay_upper_R"},
             "lumbar_plate": {"z_range": [50.0, 190.0], "x_range": [-125.0, 125.0],
-                             "note": "cfrp_plate_pm45 shear web bonded across both stays (closes the torsion box; carries hipbelt pivot)"},
+                             "note": "frame v2: formed QI CFRP pan 1.5 mm, 25 mm return flanges, face 20 mm toward the body (closes the torsion box; carries the Ti hip-pivot mount)"},
             "mid_bar": {"from": r3((-x330[0], x330[1], 330)), "to": r3(x330),
-                        "note": "cross tube; shelf-strap and bag-mid anchors sit AT its nodes (no mid-span loads)"},
+                        "note": "cross tube; bag-mid LINK and internal meat-strap IM2 anchors sit AT its nodes (no mid-span loads)"},
             "upper_bar": {"from": r3((-115, y_on_axis(520), 520)), "to": r3((115, y_on_axis(520), 520)),
-                          "note": "cross tube 10 mm below stay tops; carries the rack-lock pawl housing (release toggle cord to the left shoulder strap)"},
+                          "note": "cross tube 10 mm below stay tops; carries the rack-lock pawl housing (release toggle cord to the left shoulder strap); internal meat-strap IM3 anchors at its nodes"},
             "crown": {"legs_x": [-115.0, 115.0], "leg_length_along_axis": CROWN_LEG,
                       "axis_unit_vector_yz": [round(float(u_axis[0]), 4), round(float(u_axis[1]), 4)],
-                      "top_bar": "cross tube joining leg tops; lifter anchors at x=+/-70; bag top buckles at x=+/-70; extension-post sockets at leg tops",
+                      "top_bar": "cross tube joining the leg tops, offset 25 mm AFT of the leg axis by the corner wraps (v3.1 head clearance); lifter lugs on the corner wraps at x=+/-105 (node loads); bag top LINK toggles at x=+/-70; extension-post sockets at leg tops",
+                      "top_bar_aft_offset_mm": TOP_BAR_AFT,
                       "spine": f"cfrp_plate_quasi_iso 3 mm centre spine, top bar down {SPINE_LEN:.0f} mm; carries the yoke, the pa66_gf30 toothed rack ({RACK_PITCH:g} mm pitch, bonded + screwed into plate inserts) and the moving pulley guide B at its bottom end",
                       "retention": "3:1 webbing pulley (adjust, continuous, while worn) + two-way toothed-rack/pawl positive lock; see crown_retention",
                       "travel_mm": round(TORSO_IN[1] * IN - TORSO_IN[0] * IN, 1),
@@ -244,13 +266,12 @@ def frame_topology():
         "crown_settings": settings,
         "crown_retention": crown_retention(),
         "fea_handoff_notes": [
-            "Torso 23 in needs yoke z=654; crown puts it there with the top bar at z=804 (FEA demo warned frame >= 634 mm).",
-            "Single-stay set-down failed at the lumbar bar in the demo: replace the lumbar tube with the pm45 lumbar plate (closed torsion box).",
-            "Meat-shelf heavy-low failed at mid-stay: shelf straps now anchor at the mid-bar node (z=330), not mid-span.",
-            "Bonded elbow peel (Volkersen) was the critical bond: elbow fitting should be a sleeve in shear with >= 25 mm overlap each side, no peel.",
-            "No holes in carbon tubes: the toothed rack is a PA66-GF30 strip on the crown spine plate; all fasteners go through bonded Ti/Al inserts in plates.",
+            "Frame v2 hard points per analysis/frame_hardpoint_changes.yaml are now in this file (straight stays, foot x 115, crown axis -0.0189/0.9998).",
+            "v3.1 SHELF DELETED (owner): no shelf pivots, no shelf-strap anchors. Replace the shelf cases (meat_shelf_heavy_low, tall_load, overload_haul) with INTERNAL-STRAP cases: meat CG 120-150 mm aft of the frame face, vertical load into the bag-bottom hinge pins (bag_anchor_low, z 60), aft pull at meat_anchor_z190/z330/z520 (see meat_harness.load_cases). Frame-only: same anchors + external wraps, vertical by strap friction.",
+            "Foot boots no longer need the 20 mm outboard shelf-pivot boss (bag hinge pins only): re-cost foot_boot_g.",
+            "Bag CG moves aft with the deeper v3.1 bag (see bag.cg_uniform_fill); update sizing5200 CG_BAG.",
+            "No holes in carbon tubes: the toothed rack is a PA66-GF30 strip on the crown spine; all fasteners go through bonded Ti/Al inserts in plates; meat stubs are girth-hitched webbing at bonded nodes.",
             "Crown retention load to resist (see crown_retention.required_capacity_n): extension 1001 N, compression 1334 N, applied at the pawl on the upper bar (z 520) and reacted by the crown spine.",
-            "Crown legs: check bending at the stay socket in tall_load with min overlap 150 mm.",
         ],
     }
 
@@ -262,12 +283,17 @@ def frame_topology():
 #   half-width a(t), depth d(t) and a frame-side face at y_f(z) (follows the stay axis);
 #   outer (aft) half exponent N_OUT (rounded), frame half exponent N_FRM (flat on the frame).
 # t = 0..1 runs from the bag bottom to the FILL LINE (roll-top closed with 3 rolls).
-BAG_Z0 = 35.0            # bag bottom sits on the shelf lip at the stay feet (v2 datum kept)
-FRAME_GAP = 20.0         # frame-side face this far aft of the stay centreline (stay r 12.5 + 7.5 clearance)
+BAG_Z0 = 35.0            # bag bottom sits on the hinge quick-pins at the stay feet (v2 datum kept; no shelf in v3.1)
+FRAME_GAP = 20.0         # frame-side face this far aft of the stay centreline (stay r 10 + back-panel clearance)
 N_OUT, N_FRM = 2.5, 5.0  # ring exponents: outer half rounded, frame half flat
-T_PEAK = 0.60            # fullest section: shoulder blades (research §7.3)
-HALF_W_CTRL = [(0.00, 128.0), (0.10, 136.0), (0.32, 160.0), (0.60, 185.0), (0.82, 181.0), (0.94, 168.0), (1.00, 150.0)]
-DEPTH_CTRL = [(0.00, 178.0), (0.12, 200.0), (0.35, 240.0), (T_PEAK, 264.0)]
+# v3.1 (owner 2026-11-01): TRUE 85.2 L in the main bag alone, deeper bag (11.5-12 in at the widest) so the
+# fill height drops to ~42 in. Depth stays tapered: shallow at the hips, deepest at the shoulder blades.
+FILL_TARGET_MM = 42.0 * 25.4   # owner target fill height (bag bottom -> fill line)
+D_PEAK = 302.0                 # 11.9 in: upper half of the owner 11.5-12 in window (keeps the width rise to +0.9 in)
+T_PEAK = 0.56                  # fullest section z = 35 + 0.56 x 1067 = 632: shoulder blades at the 19 in torso (C7 z 603)
+HALF_W_BASE = [(0.00, 128.0), (0.10, 136.0), (0.32, 160.0), (T_PEAK, 185.0), (0.80, 181.0), (0.93, 168.0), (1.00, 150.0)]
+DEPTH_CTRL = [(0.00, 190.0), (0.12, 214.0), (0.34, 262.0), (T_PEAK, D_PEAK)]   # 7.5 in at the hips -> 11.7 in
+W_SCALE = 1.0            # half-width scale, SOLVED in solve_profile() so the 85.2 L fill line lands at FILL_TARGET_MM
 D_TOP = 62.0             # closed roll (3 turns of 210D + HDPE stiffener) ~ 60 mm thick
 T_COLLAR = 0.70          # body/collar seam: below = shaped gores, above = straight roll-top collar
 CLOSURE_MM = 150.0       # 3 rolls x 50 mm: collar fabric consumed by the closure, NOT counted as volume
@@ -289,8 +315,18 @@ def _pchip(ctrl):
     return PchipInterpolator(t, v)
 
 
-_AW = _pchip(HALF_W_CTRL)
 _DR = _pchip(DEPTH_CTRL)
+_AW = None
+
+
+def set_width_scale(k):
+    global _AW, W_SCALE, HALF_W_CTRL
+    W_SCALE = float(k)
+    HALF_W_CTRL = [(t, v * W_SCALE) for t, v in HALF_W_BASE]
+    _AW = _pchip(HALF_W_CTRL)
+
+
+set_width_scale(1.0)
 
 
 def half_width(t):
@@ -305,9 +341,15 @@ def depth(t):
     return np.where(t <= T_PEAK, rise, dome)
 
 
+HEAD_SETBACK = 30.0      # v3.1 head clearance: frame-side face steps 30 mm aft above the head zone (no volume cost:
+HEAD_SB_Z = (560.0, 640.0)   # the rings shift aft, their area is unchanged). Ramp z 560 -> 640 (C7 at 15 in = 501)
+
+
 def y_frame(z):
     z = np.atleast_1d(np.asarray(z, float))
-    return np.array([stay_xyz(float(zz))[1] for zz in z]) + FRAME_GAP
+    ramp = np.clip((z - HEAD_SB_Z[0]) / (HEAD_SB_Z[1] - HEAD_SB_Z[0]), 0, 1)
+    sb = HEAD_SETBACK * (3 * ramp ** 2 - 2 * ramp ** 3)                 # smooth step: no kink in B-01
+    return np.array([stay_xyz(float(zz))[1] for zz in z]) + FRAME_GAP + sb
 
 
 def _F(n):
@@ -330,6 +372,19 @@ def solve_fill_height():
         mid = (lo + hi) / 2
         lo, hi = (mid, hi) if litres(bag_volume_mm3(mid)) < TARGET_L else (lo, mid)
     return float(round((lo + hi) / 2))   # whole mm
+
+
+def solve_profile():
+    """Owner v3.1 rule: depth fixed at D_PEAK (tapered), fill height ~42 in, volume EXACTLY 85.2 L.
+    Bisection on the half-width scale so that the fill height that holds 85.2 L equals FILL_TARGET_MM;
+    then the fill height is re-solved (whole mm) at that width. Returns (W_SCALE, Hf)."""
+    lo, hi = 0.8, 1.4
+    for _ in range(50):
+        mid = (lo + hi) / 2
+        set_width_scale(mid)
+        lo, hi = (lo, mid) if solve_fill_height() < FILL_TARGET_MM else (mid, hi)
+    set_width_scale(round((lo + hi) / 2, 4))
+    return W_SCALE, solve_fill_height()
 
 
 def ring_xy(t, Hf, M=RING_M):
@@ -649,14 +704,12 @@ def build_panels(Hf, diag):
     add(rect_panel("hipbelt pocket gusset", hpg, 55.0, 0.0, seam_allowance_mm=8.0, material_id="cordura_330d_nylon66",
                    piece_id="HP-02", quantity=2), "hipbelt pockets", "hipbelt", "")
 
-    # ---- load shelf LIP (light, fold-down) - replaces the v2 shelf + load wings
-    add(rect_panel("shelf lip skin", SHELF_W, SHELF_D, {"tl": 30, "tr": 30}, seam_allowance_mm=10.0, material_id="challenge_ultra_200",
-                   piece_id="S-01", quantity=2),
-        "meat shelf lip", "shelf", "two layers around the HDPE stiffener; hinges on the shelf pivots; folds flat under the bag in carry mode")
-    add(rect_panel("shelf lip stiffener (cut, not sewn)", SHELF_W - 20, SHELF_D - 20, 20.0, seam_allowance_mm=0.0,
-                   material_id="hdpe_sheet", piece_id="S-05"),
-        "meat shelf lip", "shelf", f"{SHELF_HDPE_T} mm HDPE", kind="sheet", thickness_mm=SHELF_HDPE_T)
-
+    # ---- internal meat harness ports (v3.1; the shelf lip is deleted): 6 bound slots in B-01, Hypalon both faces
+    add(rect_panel("meat-strap port patch", 40.0, 60.0, 8.0, seam_allowance_mm=0.0, material_id="hypalon_coated_nylon",
+                   piece_id="B-12", quantity=6),
+        "frame-side panel B-01: internal meat-strap ports", "meat",
+        "on the INSIDE face of B-01 at x +/-100, z 190 / 330 / 520; laser-cut 45 x 6 mm slot through patch + B-01; edge-stitched "
+        "round the slot + perimeter (the port carries no load: the stub eye only passes through it). Sew before B-01 goes 3D")
     # ---- hipbelt (size M shown; grade table in panels.yaml)
     wing_len = HIPBELT_WINGS["M"]
     for pid, nm, mat, kind, t, notes in (
@@ -732,7 +785,6 @@ def build_panels(Hf, diag):
     return P, info
 
 
-SHELF_W, SHELF_D, SHELF_HDPE_T = 260.0, 200.0, 1.0
 HIPBELT_SIZES = {"S": (26, 30), "M": (30, 34), "L": (34, 38), "XL": (38, 42)}  # hip circ. at iliac crest, in
 HIPBELT_PAD_FRACTION = 0.72  # ASSUMPTION: padded length (wings+centre) = 72 % of hip circumference
 LUMBAR_CENTRE = 140.0
@@ -781,7 +833,6 @@ def hw(id_, n=1, length_m=None):
 
 YOKE_OUTLINE = [(-108, -18), (-84, -46), (84, -46), (108, -18), (96, 34), (42, 50), (-42, 50), (-96, 34)]
 YOKE_AREA_MM2 = 0.5 * abs(sum(x0 * y1 - x1 * y0 for (x0, y0), (x1, y1) in zip(YOKE_OUTLINE, YOKE_OUTLINE[1:] + YOKE_OUTLINE[:1])))
-FRAME_ALLOCATION_G = 650.0   # orchestrator: use 650 g until frame.yaml is re-sized (target 550-700 g)
 
 
 def haul_wraps(Hf, topo):
@@ -813,7 +864,197 @@ def haul_wraps(Hf, topo):
     return out
 
 
+# ============================================================================ 3b. INTERNAL MEAT HARNESS (v3.1)
+# Owner 2026-11-01: delete the shelf lip; meat is held by INTERNAL STRAPS that cinch it tight against the frame /
+# frame-side panel inside the bag, and work the same way with the bag pulled away from the frame.
+MEAT_WEB = "poly_webbing_38mm"      # the only 38 mm webbing on the pack (MEAT family is identified by width)
+MEAT_CAM_G, MEAT_CAM_SLIP_N = 22.0, 1100.0   # ASSUMPTION: 38 mm aluminium cam buckle (no record; materials-engineer)
+MEAT_HOOK_G, MEAT_HOOK_N = 9.0, 1500.0       # ASSUMPTION: 38 mm aluminium sliding-gate (keeper) hook (no record)
+BARTACK_38_N = 2700.0                        # ASSUMPTION: box-X bartack, bonded_nylon_tex135, on 38 mm poly webbing (proof-test)
+PORT_X = 100.0                               # bound ports in B-01 sit 15 mm inboard of the stay centreline
+STUB_LEN = 0.20                              # m of 38 mm webbing per anchor stub (girth hitch round the stay + sewn eye)
+MU_MEAT = 0.40                               # ASSUMPTION: game bag on the frame-side panel / back panel, wet
+
+
+def meat_harness(Hf, topo, wraps):
+    """3 internal 38 mm straps IM1-IM3 at bonded frame nodes. Each strap = plain webbing with a sliding-gate
+    hook at each end + one cam buckle; it hooks into the eyes of 2 frame stubs. Bag-on: stubs poke through
+    bound ports in B-01, the strap crosses the meat INSIDE the bag. Bag pulled back / frame-only: the stub eyes
+    slide out of the ports and the same strap hooks stub-to-stub across the meat in the bay."""
+    hp = topo["hard_points"]
+    g = 9.81
+    straps = []
+    for i, z in enumerate(MEAT_ANCHOR_Z):
+        t = (z - BAG_Z0) / Hf
+        d_in = 0.85 * float(depth(t))                         # meat stack in the bag: up to 85 % of local depth
+        bay = min(HAUL_PULLBACK * (z - 60.0) / (700.0 - 60.0), HAUL_PULLBACK) + 60.0   # V bay gap + panel slack
+        path_in = 2 * d_in + 2 * PORT_X + 2 * 40.0            # around the stack + through the ports to the stub eyes
+        path_bay = 2 * max(bay, 180.0) + 2 * FOOT[0]          # stub to stub round the meat in the bay (>=180 deep quarter)
+        cut = max(path_in, path_bay) + 2 * 60.0 + 200.0       # 2 hook loops + cam tail
+        straps.append({"id": f"IM{i + 1}", "z": z, "anchors": [f"meat_anchor_z{int(z)}_R", f"meat_anchor_z{int(z)}_L"],
+                       "frame_node": {190.0: "lumbar-pan top land on the stay (bonded, torsion box)",
+                                      330.0: "mid-bar node (same node the v2 shelf straps loaded)",
+                                      520.0: "upper-bar node"}[z],
+                       "path_bag_on_mm": round(path_in), "path_bay_mm": round(path_bay), "cut_length_mm": round(cut)})
+    # ---- load cases (HA-LS-1 g-levels and factors, load_standard.md)
+    zs = np.array(MEAT_ANCHOR_Z) - 60.0                         # lever arms about the bag-bottom hinge pins (z 60)
+    W, cg_y, g_lim, f_lim = 68.0, 150.0, 2.0, 2.0               # rated meat load; CG 150 aft of the stay (ASSUMPTION)
+    M = W * g * g_lim * cg_y / 1000.0                           # overturning moment about the hinge, N m
+    k = M / float(np.sum((zs / 1000.0) ** 2))
+    F = k * zs / 1000.0                                         # aft pull per strap (rigid-body share)
+    pre = 150.0                                                 # ASSUMPTION: hand cinch pretension per leg
+    T_on = F / 2 + pre                                          # 2 legs per strap
+    Wq = 36.0                                                   # R-08 bone-in quarter, frame-only / bay
+    n_clamp = len(MEAT_ANCHOR_Z) + 2                            # + external wraps W1/W2 round the same load
+    T_bay = Wq * g * 1.6 / MU_MEAT / (2 * n_clamp)              # leg tension for friction hold at the 1.6 g walking peak
+    T_worst = float(max(T_on.max(), T_bay))
+    req = T_worst * f_lim                                       # HA-LS-1 limit factor 2.0 (= the leaders' 2x static proof)
+    web = MAT.load(MEAT_WEB).require("breaking_strength_n")
+    caps = {"poly_webbing_38mm (record)": web, "girth-hitched stub, 2 legs (record x2)": 2 * web,
+            "box-X bartack tex135 (ASSUMPTION)": BARTACK_38_N, "38 mm Al cam buckle slip (ASSUMPTION)": MEAT_CAM_SLIP_N,
+            "38 mm Al sliding-gate hook (ASSUMPTION)": MEAT_HOOK_N}
+    mass = (hw(MEAT_WEB, length_m=sum(s["cut_length_mm"] for s in straps) / 1000)
+            + hw(MEAT_WEB, length_m=6 * STUB_LEN) + 6 * MEAT_HOOK_G + 3 * MEAT_CAM_G)
+    return {
+        "concept": ("INTERNAL MEAT HARNESS: 3 x 38 mm straps (IM1-IM3) anchored at bonded frame nodes. Meat in game bags goes "
+                    "INSIDE the bag, high and tight against the frame-side panel B-01; each strap crosses the load and hooks to "
+                    "two frame stubs whose sewn eyes poke through bound ports in B-01, then cams tight. Bag pulled back or off: "
+                    "the stub eyes slide out of the ports and the SAME strap hooks stub-to-stub across the meat in the bay "
+                    "(same hooks, same cam, same motion)."),
+        "straps": straps,
+        "anchor_stub": {"material_id": MEAT_WEB, "length_mm": STUB_LEN * 1000, "qty": 6,
+                        "fixing": "girth hitch round the stay directly above/below the bonded node wrap (cannot slide), sewn eye box-X bartacked with bonded_nylon_tex135",
+                        "port": "B-01 slot 45 x 6 mm at x +/-100 through a 40 x 60 Hypalon patch on the inside face (B-12); self-closing lips; carries no load"},
+        "hardware_family": "MEAT: 38 mm webbing (only 38 mm on the pack), aluminium sliding-gate hooks + 38 mm metal cam with a "
+                           "glove pull-tab. No squeeze buckles, so it cannot be confused with HIP/ROLL; wider than HAUL (25 mm, G-hook)",
+        "stow": "unused: hook each strap across B-01 port-to-port and cam it flat against the panel (doubles as internal "
+                "compression for a small load); or unhook and roll it into the fly pocket",
+        "wash": "plain polyester webbing + anodised Al hardware, no foam, no hook-and-loop: unhook and machine-wash cold; "
+                "stubs rinse on the frame; ports are raw-edge Hypalon (no fray, no wicking)",
+        "external_wraps": ("W1-W3 KEPT: carry-mode compression, outer sling that closes the V in bay mode and lash straps "
+                           "for antlers/cape. Internal straps hold the meat; wraps hold the bag. Merging was rejected: an "
+                           "internal strap cannot also compress the outside of the bag or close the bay"),
+        "load_cases": {
+            "bag_on_rated": {"basis": f"{W:.0f} kg meat inside the bag, CG {cg_y:.0f} mm aft of the stay, {g_lim} g stumble (HA-LS-1); "
+                                      "vertical into the bag bottom + hinge pins, overturning reacted by the straps in proportion to height",
+                             "aft_pull_per_strap_n": [round(float(v)) for v in F],
+                             "leg_tension_n": [round(float(v)) for v in T_on]},
+            "frame_only_quarter": {"basis": f"{Wq:.0f} kg bone-in quarter, no shelf: friction hold mu {MU_MEAT} at the 1.6 g walking peak, "
+                                            f"{n_clamp} clamping straps (IM1-IM3 + W1/W2)",
+                                   "leg_tension_n": round(T_bay)},
+            "required_leg_capacity_n": round(req),
+            "capacities_n": caps,
+            "min_margin": round(min(caps.values()) / req, 2),
+            "governing": min(caps, key=caps.get),
+        },
+        "mass_g": round(mass, 1),
+        "ip": ("Mystery Ranch US 8,579,171 (sling between frame and bag) EXPIRED; stubs girth-hitch at nodes, not through a frame "
+               "slot (US 2014/0263519); deleting the shelf removes the 'adjustable shelf' element of US 10,952,523 claim 1. "
+               "SG Terminus internal load cell and KUIU internal meat sleeve: no patents found for SG; KUIU's patent-pending "
+               "covers its corrugated frame. Attorney FTO before tooling"),
+    }
+
+
+# ============================================================================ 3c. HEAD CLEARANCE (v3.1)
+ANTHRO = HERE / "analysis" / "anthropometry_ansur2.yaml"
+HEAD_REQ_DEG = 30.0      # ASSUMPTION requirement: no contact up to 30 deg neck extension (~half the 59 deg mean ROM;
+                         # + ~15-20 deg of eye elevation = a 45-50 deg upward gaze for glassing a ridge or an uphill shot)
+BACK_PAD = 40.0          # ASSUMPTION: body surface at the yoke = crown axis - 40 mm (spine tube r 10 + yoke + pad)
+C7_IN = 15.0             # ASSUMPTION: C7 spinous skin point sits 15 mm anterior of that upper-back contact plane
+BULGE = 15.0             # ASSUMPTION: stuffed frame-side panel above the crown top bulges 15 mm toward the head
+COLLAR_LEAN = 25.0       # ASSUMPTION: unrolled, open collar leans 25 mm toward the head at its hem
+
+
+def _head_shape(h, cva, c7):
+    """Sagittal cranial-vault ellipse for one ANSUR II percentile head, neutral posture, in (y, z)."""
+    yC7, zC7 = c7
+    z_tr = zC7 + h["vertex_above_c7"] - h["tragiontopofhead"]
+    y_tr = yC7 - (z_tr - zC7) / math.tan(math.radians(cva))       # tragion forward of C7 by the CVA
+    a = h["headlength"] / 2                                       # fore-aft semi-axis
+    b = 0.75 * h["tragiontopofhead"]                              # ASSUMPTION: vault centre 1/4 TtT above tragion
+    yc, zc = y_tr, z_tr + 0.25 * h["tragiontopofhead"]            # ASSUMPTION: opisthocranion 0.5 L behind tragion
+    th = np.linspace(0, 2 * np.pi, 181)
+    pts = np.column_stack([yc + a * np.cos(th), zc + b * np.sin(th)])
+    upper = np.array([y_tr + 5.0, z_tr - 30.0])                   # ASSUMPTION: occipital condyles below the tragion
+    lower = np.array([yC7 - 60.0, zC7 - 15.0])                    # ASSUMPTION: C7/T1 disc centre, 60 mm anterior
+    return pts, upper, lower
+
+
+def _rot(P, piv, ang):
+    c, s_ = math.cos(ang), math.sin(ang)
+    d = np.asarray(P, float) - piv
+    return piv + np.column_stack([d[..., 0] * c + d[..., 1] * s_, -d[..., 0] * s_ + d[..., 1] * c]) if d.ndim > 1 else \
+        piv + np.array([d[0] * c + d[1] * s_, -d[0] * s_ + d[1] * c])
+
+
+def head_pose(h, cva, c7, theta_deg, share):
+    pts, up, lo = _head_shape(h, cva, c7)
+    tu, tl = math.radians(theta_deg * share), math.radians(theta_deg * (1 - share))
+    pts = _rot(pts, up, tu)
+    return _rot(pts, lo, tl), _rot(up, lo, tl), lo
+
+
+def head_obstacles(top_z, z_bag_top, collar=False, z_fill=None):
+    """Frame + bag outline the back of the head can meet (mid-plane x = 0), as shapely geometry."""
+    from shapely.geometry import LineString, Point
+    from shapely.ops import unary_union
+    yt = y_on_axis(top_z)
+    g = [Point(yt + TOP_BAR_AFT, top_z).buffer(10.0),                                    # crown top bar OD 18 + wrap
+         # yoke / upper back pad: on the body surface, from 300 below the top bar up to C7 - 10 (top bar = C7 + 100)
+         LineString([(y_on_axis(top_z - 300) - BACK_PAD, top_z - 300), (y_on_axis(top_z - 110) - BACK_PAD, top_z - 110)]).buffer(1.0)]
+    zz = np.linspace(top_z + 10, z_fill if collar else z_bag_top, 40)
+    face = [(float(y_frame(z)[0]) - BULGE, float(z)) for z in zz]
+    if collar:
+        face.append((float(y_frame(z_fill)[0]) - BULGE - COLLAR_LEAN, z_fill + CLOSURE_MM + COLLAR_HEM))
+    if len(face) > 1 and zz[-1] > zz[0]:
+        g.append(LineString(face).buffer(1.0))
+    return unary_union(g)
+
+
+def head_clearance(topo, Hf, rolled_top_z):
+    from shapely.geometry import Polygon as SPoly
+    A = yaml.safe_load(ANTHRO.read_text())
+    cva = A["posture"]["craniovertebral_angle_deg"]["used"]
+    cva_sens = A["posture"]["craniovertebral_angle_deg"]["sensitivity"]
+    share = A["posture"]["upper_cervical_share"]["value"]
+    heads = {"female_p05": A["ansur2"]["female"]["p05"], "male_p50": A["ansur2"]["male"]["p50"],
+             "male_p95": A["ansur2"]["male"]["p95"]}
+    z_fill = BAG_Z0 + Hf
+    rows = []
+    for t_in in (15.0, 19.0, 23.0):
+        cs = min(crown_settings(), key=lambda c: abs(c["torso_in"] - t_in))
+        zC7 = Z_IC + t_in * IN
+        c7 = (y_on_axis(zC7) - BACK_PAD - C7_IN, zC7)
+        for state, obs in (("rolled", head_obstacles(cs["crown_top_z"], rolled_top_z)),
+                           ("collar_unrolled", head_obstacles(cs["crown_top_z"], z_fill, collar=True, z_fill=z_fill))):
+            for hn, h in heads.items():
+                gap0 = SPoly(head_pose(h, cva, c7, 0.0, share)[0]).distance(obs)
+                contact = None
+                for th in np.arange(0.0, 80.01, 1.0):
+                    if SPoly(head_pose(h, cva, c7, th, share)[0]).intersects(obs):
+                        contact = float(th)
+                        break
+                g_req = SPoly(head_pose(h, cva, c7, HEAD_REQ_DEG, share)[0]).distance(obs)
+                c_sens = next((float(th) for th in np.arange(0.0, 80.01, 1.0)
+                               if SPoly(head_pose(h, cva_sens, c7, th, share)[0]).intersects(obs)), None)
+                rows.append({"torso_in": t_in, "state": state, "head": hn, "gap_neutral_mm": round(gap0, 1),
+                             f"contact_deg_at_cva_{cva_sens:g}": c_sens if c_sens is not None else ">80",
+                             f"gap_at_{HEAD_REQ_DEG:.0f}deg_mm": round(g_req, 1),
+                             "contact_extension_deg": contact if contact is not None else ">80",
+                             "pass": contact is None or contact > HEAD_REQ_DEG})
+    worst = min(rows, key=lambda r: r["contact_extension_deg"] if isinstance(r["contact_extension_deg"], float) else 99)
+    return {"method": ("sagittal 2D: ANSUR II head (vault ellipse from head length + tragion-to-top), neutral posture from the "
+                       f"craniovertebral angle ({cva} deg), extension split {share:.2f} about the occipital condyles + "
+                       f"{1 - share:.2f} about C7/T1; obstacles = crown top bar, upper back pad, bag frame-side face above the "
+                       "crown (15 mm bulge) and, unrolled, the open collar leaning 25 mm forward"),
+            "requirement": f"no contact up to {HEAD_REQ_DEG:.0f} deg neck extension, every torso setting, 5th F to 95th M head",
+            "inputs": "designs/pack_5200/analysis/anthropometry_ansur2.yaml",
+            "rows": rows, "all_pass": all(r["pass"] for r in rows),
+            "worst": worst}
+
+
 def weight_budget(P, Hf, diag, wraps, info):
+    """Base weight: size M belt, J-straps, rain fly (owner: fly counts), meat harness. Lid, rifle boot, posts excluded."""
     sub_mass = {}
     for rec in P:
         sub_mass.setdefault(rec["sub"], 0.0)
@@ -823,12 +1064,18 @@ def weight_budget(P, Hf, diag, wraps, info):
     def row(group, item, g, basis):
         rows.append({"group": group, "item": item, "mass_g": round(g, 1), "basis": basis})
 
-    row("frame (allocation, FEA re-sizing)", "carbon frame: stays, crown + post sockets, bars, lumbar plate, nodes, inserts, feet",
-        FRAME_ALLOCATION_G, "ASSUMPTION: allocation 650 g (leader-calibrated standard, target 550-700 g); frame.yaml governs when re-sized")
-    row("torso adjust", "toothed rack PA66-GF30 + Ti pawl, spring, POM housing, release cord + toggle", 50,
-        "computed rack 27 g (pa66_gf30 rho) + ASSUMPTION 23 g pawl/housing (v2)")
-    row("torso adjust", "3:1 pulley: 25 mm poly webbing 1.4 m, 3 UHMWPE-lined guides, metal cam buckle",
-        hw("poly_webbing_25mm", length_m=1.4) + 9 + 12, "records; guides 3 g ea, cam 12 g ASSUMPTION (v2)")
+    fy = yaml.safe_load((HERE / "frame.yaml").read_text())
+    gd = yaml.safe_load((HERE / "analysis" / "gendesign_results.yaml").read_text())
+    ti_mount = float(gd["lugs"]["hip_pivot_mount/slm_ti"]["mass_g"])
+    ti_insert = float(fy["mass_g"]["Ti hipbelt pivot insert"])
+    frame_g = float(fy["mass_total_g"]) - ti_insert + ti_mount
+    row("frame (frame.yaml v2 + printed Ti hip-pivot mount)",
+        "carbon frame v2: straight stays, crown, bars, formed lumbar pan, wraps, foot boots, bushings, rack + pawl housing + pulley guides",
+        frame_g, f"frame.yaml mass_total_g {fy['mass_total_g']:g} - Ti pivot insert {ti_insert:g} + SLM Ti hip-pivot mount "
+                 f"{ti_mount:g} (analysis/gendesign_results.yaml, DECISIONS 2026-11-01)")
+    row("torso adjust (not in frame.yaml)", "3:1 pulley webbing 25 mm x 1.4 m, metal cam buckle, pawl release cord + strap toggle",
+        hw("poly_webbing_25mm", length_m=1.4) + 12 + hw("dyneema_cord_2mm", length_m=0.6) + 3,
+        "records; cam 12 g + toggle 3 g ASSUMPTION. Rack 22 g, pawl/housing 14 g and guides 8 g are inside frame.yaml (v3 double-counted them)")
     row("main bag", "fabric panels (B-*, D-01, collar, tabs)", sub_mass["main bag"], "computed: cut area x gsm")
     row("main bag", "#10 coil diagonal zip + 2 sliders", hw("coil_zipper_10", length_m=(diag["zip_len"] + 60) / 1000) + 12,
         "coil_zipper_10 g/m; sliders 6 g ea ASSUMPTION")
@@ -859,9 +1106,10 @@ def weight_budget(P, Hf, diag, wraps, info):
         hw("poly_webbing_25mm", length_m=0.9) + 2 * hw("ladder_lock_25mm") + hw("fidlock_magnetic_buckle_25mm") + 12
         + hw("poly_webbing_25mm", length_m=0.8), "records; rails 12 g ASSUMPTION")
     row("back panel", "lower + upper pads", sub_mass["back_panel"], "computed")
-    row("load shelf lip", "lip skins + HDPE stiffener", sub_mass["shelf"], "computed")
-    row("load shelf lip", "2 shelf straps 25 mm x 0.8 m + 2 metal cam buckles (SHELF family) + 2 drain grommets",
-        hw("poly_webbing_25mm", length_m=1.6) + 2 * 12 + 2 * 1.5, "records; cam 12 g ASSUMPTION (v2), grommet 1.5 g ASSUMPTION")
+    mh = info["meat_harness"]
+    row("internal meat harness", f"3 x 38 mm straps IM1-IM3 + 6 frame stubs, 6 sliding-gate hooks, 3 cams (MEAT family)",
+        mh["mass_g"], "poly_webbing_38mm record x cut lengths (meat_harness); hook 9 g, cam 22 g ASSUMPTION")
+    row("internal meat harness", "B-01 strap ports: 6 Hypalon patches (B-12)", sub_mass.get("meat", 0.0), "computed")
     wrap_len = sum(w["cut_length_mm"] for w in wraps) / 1000
     row("haul wraps (= compression)", f"3 frame-anchored wraps, 25 mm coyote poly webbing {wrap_len:.2f} m",
         hw("poly_webbing_25mm", length_m=wrap_len), "records; lengths from the 3D teardrop (haul_wraps)")
@@ -879,6 +1127,15 @@ def weight_budget(P, Hf, diag, wraps, info):
     return rows, groups, round(tot, 1), round(carry, 1), round(lid, 1)
 
 
+def meat_bay_volume(Hf, z_hinge=60.0, z_top=700.0, n=200):
+    """Bay mode (bag hinged back on its bottom pins, 250 mm at the crown at the 19 in setting): V-wedge between
+    the frame face and B-01; width 90 % of the local bag width (corners do not fill)."""
+    z = np.linspace(z_hinge, z_top, n)
+    gap = HAUL_PULLBACK * (z - z_hinge) / (z_top - z_hinge)
+    w = 2 * half_width((z - BAG_Z0) / Hf) * 0.9
+    return float(np.trapezoid(gap * w, z))
+
+
 # ============================================================================ 5. SMALL VOLUMES
 def small_volumes(Hf):
     lid = rect_panel("lid", 300.0, 240.0, 50.0)
@@ -891,7 +1148,7 @@ def small_volumes(Hf):
         "side_pocket_each_L": round(litres(panel_volume(sp, 50.0)), 2),
         "hipbelt_pocket_each_L": round(litres(panel_volume(hp, 55.0)), 2),
         "diagonal_band_pocket_L": None,   # filled in main(): developed area x 40 mm stretch loft (ASSUMPTION)
-        "meat_bay_L": round(litres(SHELF_W * HAUL_PULLBACK * 600), 1),
+        "meat_bay_L": None,   # main(): V-wedge between frame face and the hinged-back B-01 (meat_bay_volume)
     }
 
 
@@ -906,8 +1163,9 @@ HARDWARE_FAMILIES = [
      "qty": 3, "feel": "metal hook, no squeeze; webbing colour differs from everything else"},
     {"family": "LINK", "function": "bag to frame (meat-mode release)", "hardware": "POM toggle through a 3-slot Hypalon tab (4; slot = length setting) + 2 bottom hinge quick-pins",
      "qty": 6, "feel": "toggle-and-slot, impossible to confuse with a buckle"},
-    {"family": "SHELF", "function": "shelf-lip straps (bone-in quarter)", "hardware": "25 mm metal cam buckle", "qty": 2,
-     "feel": "lever cam, low on the frame"},
+    {"family": "MEAT", "function": "internal meat harness IM1-IM3 (meat against the frame, inside the bag or in the bay)",
+     "hardware": "38 mm webbing (the only 38 mm on the pack), aluminium sliding-gate hooks into frame-stub eyes + 38 mm metal cam with glove pull-tab",
+     "qty": "3 straps, 6 hooks, 3 cams", "feel": "widest webbing, keeper hooks, no squeeze buckle; lives inside the bag"},
     {"family": "QUICK", "function": "sternum strap, accessory lid", "hardware": "Fidlock-type magnetic 25 mm", "qty": "1 (+4 lid)",
      "feel": "magnetic snap, one-handed, silent"},
     {"family": "TRIM", "function": "lifters, stabilizers, harness", "hardware": "25 mm ladder locks", "qty": 6,
@@ -929,10 +1187,8 @@ def _py(o):
 
 
 def main():
-    hp_changes = HERE / "analysis" / "frame_hardpoint_changes.yaml"
-    if hp_changes.exists():
-        print(f"NOTE: {hp_changes} exists: reconcile frame hard points before release")
-    Hf = solve_fill_height()
+    # frame v2 hard points (analysis/frame_hardpoint_changes.yaml) are integrated in section 1 (v3.1)
+    w_scale, Hf = solve_profile()
     _HF["Hf"] = Hf
     v_mm3 = bag_volume_mm3(Hf)
     v_chk = mesh_check_volume(Hf)
@@ -943,6 +1199,8 @@ def main():
     P, info = build_panels(Hf, diag)
     band_piece = next(r["piece"] for r in P if r["piece"].piece_id == "D-01")
     vols["diagonal_band_pocket_L"] = round(litres(band_piece.seam_area_mm2 * 40.0), 2)  # ASSUMPTION 40 mm mean stretch loft
+    info["meat_harness"] = meat_harness(Hf, topo, wraps)
+    vols["meat_bay_L"] = round(litres(meat_bay_volume(Hf)), 1)
     rows, groups, total, carry, lid_g = weight_budget(P, Hf, diag, wraps, info)
     cg_y, cg_z = bag_cg(Hf)
     z_top = BAG_Z0 + Hf
@@ -952,9 +1210,10 @@ def main():
     zc = BAG_Z0 + T_COLLAR * Hf
     rolled_rows, v_rolled = rolled_profile(Hf)
     vols["rolled_down_L"] = round(litres(v_rolled), 2)
+    headc = head_clearance(topo, Hf, rolled_rows[-1][0])
 
     geom = {
-        "meta": {"design": "Pack 5200", "version": "v3 SPINE (teardrop roll-top)", "owner": "pack-designer",
+        "meta": {"design": "Pack 5200", "version": "v3.1 SPINE (deeper teardrop roll-top, frame v2, internal meat harness, no shelf)", "owner": "pack-designer",
                  "generated_by": "designs/pack_5200/build_geometry.py", "date": "2026-11-01", "units": "mm, L, g",
                  "research": "docs/research/pack_market_2026.md (Direction A 'Spine')"},
         "frame": topo,
@@ -963,7 +1222,9 @@ def main():
             "description": ("loft of mixed superellipse rings (outer half n_out, frame half n_frm) along z; frame-side face "
                             "follows the stay axis; tapered in front view, teardrop in side view, domed roll-top closure"),
             # v2-compatible keys (envelope)
-            "width_x": round(2 * a_max, 1), "height_z": Hf, "depth_y": round(d_max, 1), "bottom_corner_radius": 25.0,
+            "width_x": round(2 * a_max, 1), "height_z": Hf, "width_scale_solved": w_scale,
+            "profile_rule": ("owner v3.1: true 85.2 L in the main bag alone; peak depth fixed at D_PEAK (tapered), half-width "
+                             "scale solved so the fill line lands at ~42 in"), "depth_y": round(d_max, 1), "bottom_corner_radius": 25.0,
             "origin_carry_mode": {"x_center": 0.0, "y_frame_side_panel": round(float(y_frame(BAG_Z0)[0]), 1), "z_bottom": BAG_Z0},
             "haul_mode_pullback_y_max": HAUL_PULLBACK,
             "profile": {
@@ -1020,9 +1281,9 @@ def main():
         "side_pockets": {"type": "floating (own back panel; haul wraps run underneath)", "face_bottom_w": 170.0,
                          "face_top_w": 150.0, "height": 360.0, "bellows": 50.0,
                          "position": {"z_bottom": 90.0, "y_center_fraction_of_depth": 0.55}},
-        "load_shelf": {"type": "fold-down lip (bone-in quarters); boned meat rides in the haul-wrap sling",
-                       "floor_w_x": SHELF_W, "floor_d_y": SHELF_D, "z": 25.0, "y_from": 8.0, "hdpe_t_mm": SHELF_HDPE_T,
-                       "straps": "aft lip corners -> shelf_strap_anchor_fixed (z=330), SHELF-family cam buckles"},
+        "load_shelf": None,   # v3.1: DELETED (owner). Meat is held by the internal meat harness below
+        "meat_harness": info["meat_harness"],
+        "head_clearance": headc,
         "haul_wraps": wraps,
         "hardware_families": HARDWARE_FAMILIES,
         "hipbelt": {"sizes_hip_circ_in": HIPBELT_SIZES, "wing_length_mm": HIPBELT_WINGS, "lumbar_centre_w": LUMBAR_CENTRE,
@@ -1058,7 +1319,7 @@ def main():
              "everything_else": "one size (universal frame and bag)"}
     wrap_cut = [{"use": f"haul wrap {w['id']} ({w['anchor']})", "material_id": "poly_webbing_25mm",
                  "colour": "coyote (HAUL family)", "length_mm": w["cut_length_mm"], "qty": 1} for w in wraps]
-    pan = {"meta": {"design": "Pack 5200 v3 SPINE", "generated_by": "designs/pack_5200/build_geometry.py",
+    pan = {"meta": {"design": "Pack 5200 v3.1 SPINE (no shelf, internal meat harness)", "generated_by": "designs/pack_5200/build_geometry.py",
                     "note": ("approx_size = seam-line bounding box (mm). Body gores B-01/02a/02b/03 are DEVELOPED from the 3D "
                              "teardrop (gore method: pattern height = true centre-line length, widths = true cross-arcs); "
                              "seam_line_mm carries their true outlines. D-01 is develop_ruled_surface between the zip line and "
@@ -1069,7 +1330,10 @@ def main():
            "webbing_cut_list": wrap_cut + [
                {"use": "hipbelt strap", "material_id": "nylon_webbing_50mm", "length_mm": 900, "qty": 1},
                {"use": "load lifters", "material_id": "poly_webbing_25mm", "length_mm": 450, "qty": 2},
-               {"use": "shelf-lip straps", "material_id": "poly_webbing_25mm", "length_mm": 800, "qty": 2},
+               *[{"use": f"internal meat strap {m['id']} (z {m['z']:.0f}; hooks both ends, cam)", "material_id": MEAT_WEB,
+                  "colour": "bone/stone (MEAT family; blood shows, so it gets washed)", "length_mm": m["cut_length_mm"], "qty": 1}
+                 for m in info["meat_harness"]["straps"]],
+               {"use": "meat-strap frame stubs (girth hitch + sewn eye)", "material_id": MEAT_WEB, "length_mm": round(STUB_LEN * 1000), "qty": 6},
                {"use": "roll-top clips", "material_id": "poly_webbing_25mm", "length_mm": 350, "qty": 2},
                {"use": "bag-frame link (toggles)", "material_id": "poly_webbing_25mm", "length_mm": 150, "qty": 4},
                {"use": "haul-wrap keeper loops", "material_id": "poly_webbing_25mm", "length_mm": 80, "qty": 6},
@@ -1079,6 +1343,13 @@ def main():
     (HERE / "panels.yaml").write_text("# GENERATED by build_geometry.py - do not hand-edit\n"
                                       + yaml.safe_dump(_py(pan), sort_keys=False, width=110, default_flow_style=None))
     plot(Hf, topo, geom, diag, P)
+    plot_head(geom, Hf, rolled_rows[-1][0])
+    print("head clearance:", "ALL PASS" if headc["all_pass"] else "FAIL", "worst:", headc["worst"])
+    for r in headc["rows"]:
+        print("   ", r)
+    print("meat harness:", info["meat_harness"]["load_cases"], info["meat_harness"]["mass_g"])
+    print("frame axis", topo["members_topology"]["crown"]["axis_unit_vector_yz"], "lifter",
+          [(c["torso_in"], c["lifter_angle_deg"]) for c in topo["crown_settings"][::4]])
     print(f"fill height Hf = {Hf:.0f} mm ({Hf / IN:.1f} in); collar seam z {zc:.0f}; top z {z_top:.0f}")
     print(f"main bag {litres(v_mm3):.2f} L = {cubic_inches(v_mm3):.0f} cu in (polygon check {litres(v_chk):.2f} L)")
     print(f"max width {2 * a_max:.0f} mm ({2 * a_max / IN:.1f} in), max depth {d_max:.0f} mm ({d_max / IN:.1f} in)")
@@ -1102,8 +1373,8 @@ def plot(Hf, topo, geom, diag, P):
     CAMO = ["#ae9d6c", "#8b8148", "#c6b497", "#313120"]
     FR = "#1a1a1a"; DIM = "#b03a2e"; ZIP = "#d35400"; HAUL = "#a0804a"
     fig, axs = plt.subplots(1, 3, figsize=(16, 9.6), dpi=100, gridspec_kw={"width_ratios": [660, 1180, 660]})
-    fig.suptitle("Pack 5200 v3 'SPINE': teardrop roll-top, diagonal zip + stretch band, frame-anchored haul wraps "
-                 "(FCS mm; in)", fontsize=13, weight="bold")
+    fig.suptitle("Pack 5200 v3.1 'SPINE': deeper teardrop roll-top, diagonal zip + stretch band, internal meat harness, "
+                 "no shelf (FCS mm; in)", fontsize=13, weight="bold")
     st = np.array(geom["bag"]["profile"]["stations"])
     z, a, yf, d = st[:, 0], st[:, 1], st[:, 2], st[:, 3]
     zc = geom["bag"]["profile"]["z_collar_seam"]
@@ -1194,7 +1465,7 @@ def plot(Hf, topo, geom, diag, P):
 
     # ---------------- SIDE view (from the wearer's right; y aft to the right)
     ax = axs[1]
-    ax.set_title("SIDE: teardrop, load close to the back; haul mode dashed", fontsize=11)
+    ax.set_title("SIDE: deeper teardrop, meat strapped inside; bay mode dashed", fontsize=11)
     prof = np.vstack([np.column_stack([yf, z]), np.column_stack([(yf + d)[::-1], z[::-1]])])
     prof_r = np.vstack([np.column_stack([yr_, zr_]), np.column_stack([(yr_ + dr_)[::-1], zr_[::-1]])])
     ax.add_patch(MPoly(prof, closed=True, fc="none", ec=SOLID, lw=1.2, ls="--"))
@@ -1202,9 +1473,9 @@ def plot(Hf, topo, geom, diag, P):
     ax.add_patch(plt.Circle((yr_[-1] + dr_[-1] / 2, z_roll - 6), 26, fc=SOLID_D, ec=FR))
     prof_h = prof_r + np.array([HAUL_PULLBACK, 0])
     ax.add_patch(MPoly(prof_h, closed=True, fc="none", ec="#7a5c2e", lw=1.2, ls=(0, (3, 2))))
-    ax.text(yr_[0] + HAUL_PULLBACK + 250, z_roll + 70, "haul mode: bag hinges back 250 on its\nbottom pins; meat rides in the wrap sling",
+    ax.text(yr_[0] + HAUL_PULLBACK + 250, z_roll + 70, "bay mode: bag hinges back 250 on its\nbottom pins; same internal straps hook\nstub-to-stub round the meat",
             ha="center", fontsize=7.8, color="#7a5c2e")
-    dim(ax, (yr_[0], -95), (yr_[0] + HAUL_PULLBACK, -95), "meat bay 250 (9.8 in)", fs=7.8)
+    dim(ax, (yr_[0], -95), (yr_[0] + HAUL_PULLBACK, -95), "bay pull-back 250 (9.8 in) at the crown", fs=7.8)
     ax.text(yr_[-1] + 150, z_top - 20, "full 85.2 L (collar unrolled)", fontsize=7.5, color=SOLID)
     ax.text(yr_[-1] - 20, z_roll + 60, f"rolled down\n{geom['bag']['rolltop']['rolled_down_volume_L']:.0f} L", fontsize=7.5)
     # side pocket + band bulge on the outer face
@@ -1213,16 +1484,40 @@ def plot(Hf, topo, geom, diag, P):
     ax.fill_betweenx(zz, ypc - 80, ypc + 80, color=SOLID_L, ec=FR, lw=0.7)
     ax.text(float(ypc.mean()), 270, "floating\nside pocket", ha="center", fontsize=7.5)
     # frame
-    ys = [FOOT[1], ELBOW[1], STAY_TOP[1]]; zs = [FOOT[2], ELBOW[2], STAY_TOP[2]]
+    ys = [FOOT[1], STAY_TOP[1]]; zs = [FOOT[2], STAY_TOP[2]]
     ax.plot(ys, zs, color=FR, lw=4, solid_capstyle="round")
     for st_, ls, lab in ((cs[0], ":", "15 in"), (c19, "--", "19 in"), (cs[-1], "-", "23 in")):
         zt = st_["crown_top_z"]; yt = y_on_axis(zt)
         ax.plot([y_on_axis(zt - CROWN_LEG), yt], [zt - CROWN_LEG, zt], color="#555", lw=2.2, ls=ls)
-        ax.plot([yt - 15], [zt], "s", color=FR, ms=5)
+        ax.plot([yt + TOP_BAR_AFT], [zt], "s", color=FR, ms=5)       # top bar, swept 25 mm aft
         ax.text(yt - 30, zt, f"crown {lab}", fontsize=7, ha="right", va="center")
-    # shelf lip + hipbelt + harness hint
-    ax.add_patch(plt.Rectangle((8, 18), SHELF_D, 12, fc="#222", ec=FR))
-    ax.text(8 + SHELF_D / 2, -5, f"shelf lip {SHELF_W:.0f}x{SHELF_D:.0f}", ha="center", fontsize=7.5, va="top")
+    # internal meat harness (inside the bag): IM1-IM3 hug a game-bag stack against B-01, hooked to frame stubs
+    MEAT = "#c9b99a"
+    mz = [m["z"] for m in geom["meat_harness"]["straps"]]
+    stack_top = 640.0
+    zs_m = np.linspace(BAG_Z0 + 120, stack_top, 30)
+    ym = np.interp(zs_m, z, yf) + 0.80 * np.interp(zs_m, z, d)
+    ax.add_patch(MPoly(np.vstack([np.column_stack([np.interp(zs_m, z, yf) + 4, zs_m]), np.column_stack([ym[::-1], zs_m[::-1]])]),
+                       closed=True, fc=MEAT, ec="#8a6d3b", lw=0.8, alpha=0.55, hatch=".."))
+    ax.text(float(ym.mean()) - 60, 430, "boned meat in\ngame bags\n(inside the bag)", fontsize=7, ha="center", color="#5a4520")
+    for zm in mz:
+        yb = float(np.interp(zm, zs_m, ym)) if zm >= zs_m[0] else float(np.interp(zm, z, yf + 0.6 * d))
+        ax.plot([stay_xyz(zm)[1] + 12, yb + 6], [zm, zm], color="#efe6d2", lw=4.2, solid_capstyle="butt")
+        ax.plot([stay_xyz(zm)[1] + 12, yb + 6], [zm, zm], color="#6b5a3a", lw=0.8, ls=(0, (2, 2)))
+        ax.plot([stay_xyz(zm)[1] + 12], [zm], "D", color="#6b5a3a", ms=4.5)
+        ax.text(yb + 12, zm, f"IM{mz.index(zm) + 1}", fontsize=7, va="center", color="#6b5a3a")
+    ax.text(150, -5, "no shelf: hinge pins at the feet", ha="center", fontsize=7.5, va="top")
+    # head clearance silhouettes (19 in torso, 95th M head): neutral and at the 30 deg requirement
+    hcl = geom["head_clearance"]
+    A = yaml.safe_load(ANTHRO.read_text())
+    h95 = A["ansur2"]["male"]["p95"]
+    zC7 = Z_IC + 19 * IN
+    c7 = (y_on_axis(zC7) - BACK_PAD - C7_IN, zC7)
+    for th, ls_ in ((0.0, "-"), (HEAD_REQ_DEG, "--")):
+        hp_, _, _ = head_pose(h95, A["posture"]["craniovertebral_angle_deg"]["used"], c7, th,
+                              A["posture"]["upper_cervical_share"]["value"])
+        ax.plot(hp_[:, 0], hp_[:, 1], color="#555", lw=1.0, ls=ls_)
+    ax.text(c7[0] - 120, zC7 + 300, f"95th M head, 19 in:\nneutral / {HEAD_REQ_DEG:.0f} deg look-up", fontsize=7, ha="center", color="#555")
     ax.add_patch(MPoly([(-40, 60), (-130, 70), (-140, 170), (-45, 180)], fc="#1f5fa0", alpha=0.25, ec="#1f5fa0"))
     yk = c19["yoke_anchor"][2]
     ax.plot([-45, -110, -170, -185, -170, -60], [yk, yk + 40, yk + 10, yk - 120, 230, 115], color="#666", lw=7, alpha=0.35,
@@ -1245,9 +1540,9 @@ def plot(Hf, topo, geom, diag, P):
 
     # ---------------- BACK view (wearer side)
     ax = axs[2]
-    ax.set_title("BACK (wearer side): frame, harness, wraps", fontsize=11)
+    ax.set_title("BACK (wearer side): frame v2, harness, meat stubs, wraps", fontsize=11)
     ax.add_patch(MPoly(np.column_stack([-outline_r[:, 0], outline_r[:, 1]]), closed=True, fc=SOLID_D, ec=FR, lw=1.2, alpha=0.55))
-    stay = [(FOOT[0], 0), (ELBOW[0], ELBOW[2]), (STAY_TOP[0], STAY_TOP[2])]
+    stay = [(FOOT[0], 0), (STAY_TOP[0], STAY_TOP[2])]
     for sx in (-1, 1):
         ax.plot([sx * p[0] for p in stay], [p[1] for p in stay], color=FR, lw=4)
         ax.plot([sx * 115] * 2, [c19["crown_top_z"] - CROWN_LEG, c19["crown_top_z"]], color="#555", lw=2.4, ls="--")
@@ -1270,8 +1565,13 @@ def plot(Hf, topo, geom, diag, P):
         ax.plot([-a_at(zR) - 6, -115], [zR, zR], color=HAUL, lw=3); ax.plot([115, a_at(zL) + 6], [zL, zL], color=HAUL, lw=3)
         ax.plot([115], [zL], "o", color="#888", ms=7, mec=FR)        # G-hook (wearer's left)
         ax.plot([-115], [zR], "s", color="#222", ms=6)                # ladder lock (wearer's right)
-    ax.text(0, -60, "Haul wraps anchor on the frame (o = G-hook, square = ladder lock);\n"
-                    "they ARE the compression in carry mode and the meat sling in haul mode.\n"
+    for m in geom["meat_harness"]["straps"]:     # meat stubs at the bonded nodes (diamonds) + strap seen through the bag
+        zm = m["z"]
+        ax.plot([-PORT_X, PORT_X], [zm, zm], color="#efe6d2", lw=4.5, alpha=0.9)
+        ax.plot([-115, 115], [zm, zm], "D", color="#6b5a3a", ms=6)
+        ax.text(0, zm - 22, f"{m['id']} (inside bag)", ha="center", fontsize=7, color="#6b5a3a")
+    ax.text(0, -60, "Diamonds = meat-strap stubs at bonded nodes\n(z 190 / 330 / 520), through ports in B-01.\n"
+                    "Haul wraps (o = G-hook, square = ladder lock)\n= compression + bay closure.\n"
                     "Lifters stay on the crown at every setting (posts = lash/flag only).", ha="center", fontsize=8)
     for a_ in axs:
         a_.set_aspect("equal"); a_.axis("off")
@@ -1283,11 +1583,68 @@ def plot(Hf, topo, geom, diag, P):
              f"Main bag {vol['main_bag_L']} L ({vol['main_bag_cu_in']} cu in) computed to the roll-top fill line  |  "
              f"rolled down {vol['rolled_down_L']:.0f} L  |  side pockets 2x{vol['side_pocket_each_L']} L, band pocket "
              f"~{vol['diagonal_band_pocket_L']} L, meat bay ~{vol['meat_bay_L']} L (not counted)  |  "
-             f"base {w['total_g']:.0f} g ({w['total_lb']} lb; target 2268 g / 5.0 lb, frame 650 g allocation)",
+             f"base {w['total_g']:.0f} g ({w['total_lb']} lb incl. fly; frame v2 + Ti mount)  |  head clearance: "
+             f"{'PASS' if geom['head_clearance']['all_pass'] else 'see table'}",
              ha="center", fontsize=9.3, bbox=dict(fc="#f3efe3", ec="#999"))
     fig.subplots_adjust(left=0.01, right=0.99, top=0.91, bottom=0.05, wspace=0.02)
     SCREEN.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(SCREEN, dpi=100)
+    plt.close(fig)
+
+
+def plot_head(geom, Hf, rolled_top_z):
+    """Head-clearance check figure: 15 / 19 / 23 in, collar unrolled (worst), 5th F and 95th M heads."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    A = yaml.safe_load(ANTHRO.read_text())
+    cva = A["posture"]["craniovertebral_angle_deg"]["used"]
+    share = A["posture"]["upper_cervical_share"]["value"]
+    hc = geom["head_clearance"]
+    z_fill = BAG_Z0 + Hf
+    fig, axs = plt.subplots(1, 3, figsize=(13, 7.6), dpi=100)
+    fig.suptitle(f"Pack 5200 v3.1 head clearance (ANSUR II heads, collar UNROLLED = worst): requirement no contact to "
+                 f"{HEAD_REQ_DEG:.0f} deg neck extension", fontsize=11.5, weight="bold")
+    st = np.array(geom["bag"]["profile"]["stations"])
+    rs = np.array(geom["bag"]["profile"]["stations_rolled"])
+    for ax, t_in in zip(axs, (15.0, 19.0, 23.0)):
+        for S, col, al in ((st, "#59604a", 0.18), (rs, "#59604a", 0.45)):
+            ax.fill(np.r_[S[:, 2], (S[:, 2] + S[:, 3])[::-1]], np.r_[S[:, 0], S[:, 0][::-1]], color=col, alpha=al, lw=0)
+        zz_ = np.array([0.0, STAY_TOP[2]])
+        ax.plot([y_on_axis(z_) for z_ in zz_], zz_, color="#1a1a1a", lw=3)
+        cs = min(geom["frame"]["crown_settings"], key=lambda c: abs(c["torso_in"] - t_in))
+        ax.plot([y_on_axis(cs["crown_top_z"] - CROWN_LEG), y_on_axis(cs["crown_top_z"])],
+                [cs["crown_top_z"] - CROWN_LEG, cs["crown_top_z"]], color="#555", lw=2)
+        obs = head_obstacles(cs["crown_top_z"], z_fill, collar=True, z_fill=z_fill)
+        obr = head_obstacles(cs["crown_top_z"], rolled_top_z)
+        for g_, col, lab in ((obs, "#59604a", "bag face + open collar"), (obr, "#1a1a1a", "frame / rolled bag")):
+            for gg in getattr(g_, "geoms", [g_]):
+                x, y = gg.exterior.xy
+                ax.fill(x, y, color=col, alpha=0.6 if col != "#1a1a1a" else 0.9, lw=0)
+        zC7 = Z_IC + t_in * IN
+        c7 = (y_on_axis(zC7) - BACK_PAD - C7_IN, zC7)
+        for hn, col in (("female_p05", "#1f5fa0"), ("male_p95", "#b03a2e")):
+            sex, pc = hn.split("_")
+            h = A["ansur2"][sex][pc]
+            for th, ls_ in ((0.0, "-"), (HEAD_REQ_DEG, "--")):
+                pts, _, _ = head_pose(h, cva, c7, th, share)
+                ax.plot(pts[:, 0], pts[:, 1], color=col, ls=ls_, lw=1.4)
+        ax.plot([c7[0]], [c7[1]], "k^", ms=5)
+        rows = [r for r in hc["rows"] if r["torso_in"] == t_in]
+        txt = "\n".join(f"{r['head'].replace('_', ' ')} {r['state'].replace('_', ' ')}: contact at "
+                         f"{r['contact_extension_deg']}{'' if isinstance(r['contact_extension_deg'], str) else ' deg'}"
+                         f", gap@{HEAD_REQ_DEG:.0f} {r[f'gap_at_{HEAD_REQ_DEG:.0f}deg_mm']:.0f} mm" for r in rows)
+        ax.text(0.02, 0.02, txt, transform=ax.transAxes, fontsize=6.6, va="bottom",
+                bbox=dict(fc="white", ec="#999", alpha=0.9))
+        ax.set_title(f"torso {t_in:g} in: crown top z {cs['crown_top_z']:.0f}, C7 z {zC7:.0f}", fontsize=10)
+        ax.set_aspect("equal"); ax.set_xlim(-330, 170); ax.set_ylim(zC7 - 330, z_fill + 230)
+        ax.set_xlabel("y mm (wearer <- -> bag)"); ax.grid(alpha=0.25)
+    axs[0].set_ylabel("z mm (FCS)")
+    fig.text(0.5, 0.015, "solid = neutral, dashed = 30 deg look-up; blue = 5th pct female head, red = 95th pct male head (ANSUR II); "
+             "dark = rolled bag, light = full 85.2 L bag; black = stay, crown leg, swept top bar, yoke pad; triangle = C7",
+             ha="center", fontsize=8.5)
+    fig.tight_layout(rect=(0, 0.04, 1, 0.95))
+    fig.savefig(SCREEN_HEAD, dpi=100)
     plt.close(fig)
 
 

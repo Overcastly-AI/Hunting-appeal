@@ -1,0 +1,75 @@
+# Anthropometry inputs for the Pack 5200 head-clearance check (pack-designer, 2026-11-01).
+# Source data: ANSUR II public release (US Army anthropometric survey 2012, released 2017):
+#   ANSUR_II_MALE_Public.csv (n 4082) and ANSUR_II_FEMALE_Public.csv (n 1986), downloaded 2026-11-01 from
+#   https://www.openlab.psu.edu/ansur2/ (files at tools.openlab.psu.edu/publicData/). Methods: Gordon et al.,
+#   NATICK/TR-15/007 (2014). Percentiles computed per sex (never pooled, per the dataset notes). Units mm.
+# Derived: vertex_above_c7 = stature - cervicaleheight; torso_vertical = cervicaleheight - iliocristaleheight
+#   (a VERTICAL distance; the pack torso is measured ALONG the spine, which is why the 15-23 in range is longer).
+# Posture / range-of-motion inputs (cited, used in build_geometry.head_clearance):
+posture:
+  craniovertebral_angle_deg: {mean: 48.8, sd: 6.8, used: 48.8, sensitivity: 55.0,
+    note: 'C7-tragion line vs horizontal, 122 healthy adults, unloaded (Zarate-Tejero et al., Applied Sciences 2024, https://zaguan.unizar.es/record/145251). Design case = the unloaded mean (load carriage pushes the head FORWARD, i.e. lowers the CVA, so this is already conservative for a loaded hunter: ASSUMPTION, confirm on the prototype with a side photo). Sensitivity = mean + 1 SD (55 deg, upright head sits further aft)'}
+  cervical_extension_rom_deg: {mean: 59.1, sd: 10.2,
+    note: 'goniometric, 300 healthy adults 18-29 (Apti et al. 2023, https://avesis.iku.edu.tr/yayin/e6a38307-12a9-4526-9d9f-efa478dba5e1/normative-values-for-cervical-and-lumbar-range-of-motion-in-healthy-young-adults)'}
+  upper_cervical_share: {value: 0.39,
+    note: 'O-C2 ROM 23.1 deg (Imagama et al. 2020, via https://springerlink.bibliotecabuap.elogim.com/content/pdf/10.1007/s00586-020-06547-9.pdf) / 59.1 deg total'}
+ansur2:
+  female:
+    n: 1986
+    p05:
+      stature: 1525.0
+      cervicaleheight: 1300.2
+      iliocristaleheight: 918.0
+      torso_vertical: 363.0
+      vertex_above_c7: 214.0
+      tragiontopofhead: 116.0
+      headlength: 178.0
+      headbreadth: 140.0
+    p50:
+      stature: 1626.0
+      cervicaleheight: 1393.0
+      iliocristaleheight: 993.0
+      torso_vertical: 400.0
+      vertex_above_c7: 232.0
+      tragiontopofhead: 127.0
+      headlength: 190.0
+      headbreadth: 147.0
+    p95:
+      stature: 1740.0
+      cervicaleheight: 1498.0
+      iliocristaleheight: 1079.8
+      torso_vertical: 437.0
+      vertex_above_c7: 253.0
+      tragiontopofhead: 137.0
+      headlength: 202.0
+      headbreadth: 156.0
+  male:
+    n: 4082
+    p05:
+      stature: 1648.0
+      cervicaleheight: 1416.0
+      iliocristaleheight: 977.0
+      torso_vertical: 413.0
+      vertex_above_c7: 218.0
+      tragiontopofhead: 121.0
+      headlength: 188.0
+      headbreadth: 146.0
+    p50:
+      stature: 1755.0
+      cervicaleheight: 1517.0
+      iliocristaleheight: 1061.0
+      torso_vertical: 456.0
+      vertex_above_c7: 239.0
+      tragiontopofhead: 131.0
+      headlength: 200.0
+      headbreadth: 154.0
+    p95:
+      stature: 1870.0
+      cervicaleheight: 1622.9
+      iliocristaleheight: 1148.0
+      torso_vertical: 496.0
+      vertex_above_c7: 260.0
+      tragiontopofhead: 141.0
+      headlength: 211.0
+      headbreadth: 163.0
+  

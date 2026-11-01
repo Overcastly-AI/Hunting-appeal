@@ -2,7 +2,8 @@
 
 Reads ``bag.profile`` (stations ``[z, half_width_x, y_frame_side, depth_y]`` for the FULL 85.2 L
 state and ``stations_rolled`` for the daily rolled-down state), ``bag.diagonal`` (zip line and
-stretch band), ``bag.rolltop``, ``haul_wraps``, ``side_pockets``, ``load_shelf`` and ``lid``.
+stretch band), ``bag.rolltop``, ``haul_wraps``, ``side_pockets``, ``meat_harness`` (v3.1; ``load_shelf``
+for legacy geometry) and ``lid``.
 
 Every ring is the mixed superellipse used by designs/pack_5200/build_geometry.py (outer half
 exponent ``n_out``, frame half ``n_frm``), so the mesh volume reproduces the computed volume.
@@ -324,15 +325,17 @@ def build_teardrop_bag(p, g, hp, Part, crown_info, tubes, metrics, block, ribbon
     parts.append(Part("lid", lid, "body", "accessory", modes=BAGM, explode=(0, 280, 190), haul=HAUL, variant="lid",
                       label="Optional lid / hip pack (accessory, short fixed straps)"))
 
-    # ------------------------------------------------------------------ load shelf lip
-    sg = g["load_shelf"]
-    sw_, sd_ = sg["floor_w_x"], sg["floor_d_y"]
-    shz, shy = sg["z"], sg["y_from"]
-    from shapely.geometry import box
-    spoly = box(-sw_ / 2, 0, sw_ / 2, sd_).buffer(-14).buffer(14, quad_segs=10)
-    shelf = G.plate(spoly, [0, shy, shz + 3], [1, 0, 0], [0, 1, 0], 5.0, tile=G.TILE_MM)
-    parts.append(Part("load_shelf", shelf, "tpu", "shelf", explode=(0, 60, -90),
-                      label=f"Fold-down shelf lip {sw_:.0f} x {sd_:.0f}"))
+    # ------------------------------------------------------------------ v3.1: NO SHELF (owner). Legacy geometry still draws the lip
+    sg = g.get("load_shelf")
+    shz, shy = 50.0, 14.0                      # quarter rests in the V at the bag-bottom hinge pins, against the frame
+    if sg:
+        sw_, sd_ = sg["floor_w_x"], sg["floor_d_y"]
+        shz, shy = sg["z"], sg["y_from"]
+        from shapely.geometry import box
+        spoly = box(-sw_ / 2, 0, sw_ / 2, sd_).buffer(-14).buffer(14, quad_segs=10)
+        shelf = G.plate(spoly, [0, shy, shz + 3], [1, 0, 0], [0, 1, 0], 5.0, tile=G.TILE_MM)
+        parts.append(Part("load_shelf", shelf, "tpu", "shelf", explode=(0, 60, -90),
+                          label=f"Fold-down shelf lip {sw_:.0f} x {sd_:.0f}"))
 
     # ------------------------------------------------------------------ quarter proxy (haul modes)
     q = p["quarter"]
@@ -356,31 +359,40 @@ def build_teardrop_bag(p, g, hp, Part, crown_info, tubes, metrics, block, ribbon
                      G.superellipsoid(bc + [4, 6, 124], (28, 24, 22), 0.8, 0.8)])
     QE = (0.0, 120.0, 0.0)
     parts.append(Part("quarter_proxy", quarter, "game_bag", "haul", modes=HAULM, explode=QE,
-                      label="Bone-in elk hindquarter proxy in a game bag"))
+                      label="Bone-in elk hindquarter proxy in a game bag (no shelf: rests in the V, strapped to the frame)"))
     parts.append(Part("quarter_bone", bone, "bone", "haul", modes=HAULM, explode=QE))
     qinfo = np.array(qinfo)
 
     def q_half(z):
         return float(np.interp(z, qinfo[:, 0], qinfo[:, 1])) if qinfo[0, 0] <= z <= qinfo[-1, 0] else 0.0
 
-    # shelf-lip straps (haul modes): aft lip corners -> shelf_strap_anchor_fixed (mid-bar node)
-    ss = []
-    anc = np.array(hp["shelf_strap_anchor_fixed_R"], float)
-    rb = tubes["bar_od"] / 2
-    for s in (-1, 1):
-        a0 = np.array([s * (sw_ / 2 - 18), shy + sd_ - 14, shz + 7])
-        a1 = mx(anc, s)
-        pts, nr = [a0], [[s * 0.3, 1, 0.4]]
-        for t in np.linspace(0.12, 0.9, 9):
-            y = a0[1] + (a1[1] - a0[1]) * t
-            z = a0[2] + (a1[2] - a0[2]) * t
-            x = max(q_half(z) + 3.0, abs(a0[0] + (a1[0] - a0[0]) * t))
-            pts.append([s * x, y, z]); nr.append([s, 0, 0])
-        pts.append(a1 + [s * (rb + 2), 0, 0]); nr.append([s, 0, 0])
-        ss.append(ribbon_on(pts, nr, 25.0, 2.4, smooth=False))
-        ss.append(block(pts[2] + np.array([s * 3, 0, 0]), (6, 26, 30), e=0.3))     # SHELF-family cam
-    parts.append(Part("shelf_straps", G.concat(ss), "webbing", "haul", modes=HAULM, explode=QE,
-                      label="Shelf-lip straps + cam buckles (SHELF family)"))
+    # internal meat harness (v3.1): IM1-IM3 hook to the frame stubs and cam the quarter / game bags tight against the
+    # frame. Inside the bag in carry mode (hidden); shown in the haul modes routed stub-to-stub round the load.
+    mh = g.get("meat_harness") or {}
+    if mh:
+        ims, imh = [], []
+        for st_ in mh["straps"]:
+            aR = np.array(hp[st_["anchors"][0]], float)
+            zm = float(np.clip(st_["z"], qinfo[0, 0] + 5, qinfo[-1, 0] - 5))
+            a_ = np.interp(zm, qinfo[:, 0], qinfo[:, 1]); b_ = np.interp(zm, qinfo[:, 0], qinfo[:, 2])
+            c_ = np.interp(zm, qinfo[:, 0], qinfo[:, 3])
+            th_ = np.linspace(0.0, np.pi, 50)
+            cth, sth = np.cos(th_), np.sin(th_)
+            qp = np.column_stack([(a_ + 3.5) * np.sign(cth) * np.abs(cth) ** (2 / 2.3), c_ + (b_ + 3.5) * np.abs(sth) ** (2 / 2.3),
+                                  np.full(50, st_["z"])])
+            qp = qp[qp[:, 1] > aR[1] + 15]
+            Pq = np.vstack([[[aR[0] + 6, aR[1], st_["z"]]], qp, [[-aR[0] - 6, aR[1], st_["z"]]]])
+            nq = Pq - np.column_stack([np.zeros(len(Pq)), np.full(len(Pq), c_), Pq[:, 2]])
+            ims.append(ribbon_on(Pq, nq, 38.0, 2.6, smooth=False))
+            for sgn in (-1, 1):                                       # sliding-gate hooks at both stub eyes
+                imh.append(block([sgn * (aR[0] + 4), aR[1] + 22, st_["z"]], (10, 16, 40), e=0.5))
+            k = int(len(qp) * 0.25)                                    # cam on the wearer's-right leg
+            imh.append(block(qp[k] + (qp[k] - [0, c_, st_["z"]]) / max(np.linalg.norm(qp[k][:2] - [0, c_]), 1) * 6,
+                             (12, 18, 46), e=0.35))
+        parts.append(Part("meat_straps", G.concat(ims), "meat_strap", "haul", modes=HAULM, explode=QE,
+                          label="Internal meat harness IM1-IM3 (38 mm, MEAT family): stub-to-stub round the load"))
+        parts.append(Part("meat_hardware", G.concat(imh), "titanium", "haul", modes=HAULM, explode=QE,
+                          label="MEAT hooks + cams"))
 
     # ------------------------------------------------------------------ haul wraps (= compression)
     wraps = g.get("haul_wraps") or []

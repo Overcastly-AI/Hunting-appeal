@@ -26,6 +26,7 @@ from __future__ import annotations
 from .load_cases import LoadCase, pack5200_cases
 
 NAME = "HA-LS-1"
+REVISION = "B"             # rev B 2026-11-01: no meat shelf; meat held by internal straps (meat_straps)
 RATED_KG = 68.0            # 150 lb
 OVERLOAD_KG = 91.0         # 200 lb
 G_STUMBLE = 2.0            # stumble / drop-step limit factor (load_standard.md section 3)
@@ -43,7 +44,7 @@ TABLE = {
     "drop_2p5g":            (G_STUMBLE, F_LIMIT, RATED_KG),     # renamed in reports: dynamic stumble
     "side_hill_torsion":    (G_WALK, F_LIMIT, RATED_KG),
     "single_stay_setdown":  (G_STUMBLE, F_LIMIT, RATED_KG),
-    "meat_shelf_heavy_low": (G_STUMBLE, F_LIMIT, RATED_KG),
+    "meat_straps":          (G_STUMBLE, F_LIMIT, RATED_KG),     # rev B: replaces meat_shelf_heavy_low
     "tall_load":            (G_STUMBLE, F_LIMIT, RATED_KG),
     "tall_load_posts":      (G_STUMBLE, F_LIMIT, RATED_KG),
     "overload_haul":        (G_WALK, F_ULT, OVERLOAD_KG),
@@ -53,18 +54,43 @@ TABLE = {
 DISPLAY = {
     "drop_2p5g": "stumble_2g",
 }
+RETIRED = {"meat_shelf_heavy_low": "meat_straps"}     # rev A name -> rev B name
+
+
+# rev B meat placements (load_standard.md section 4.1), matched to the pack-designer's v3.1 internal meat
+# harness (geometry.yaml meat_harness): meat CG 150 mm aft of the frame (bag_on_rated basis), vertical mostly
+# into the bag-bottom hinge pins (bag_anchor_low, z 60), overturning taken by the three straps IM1-IM3
+# (meat_anchor_z190 / z330 / z520) in proportion to height, the rest as contact pressure on the frame face.
+_MEAT_P = {"floor_share": 0.7, "pretension_n": 150.0, "face_z": (60.0, 330.0),
+           "upper_groups": ("strap_lumbar", "strap_mid", "strap_upper"), "proportional": True}
+MEAT = {
+    "meat_straps":     {"placement": "meat_straps", "cg_aft_mm": 150.0, "params": dict(_MEAT_P)},
+    # bone-in quarter standing on the bag floor: CG higher in the strap stack and lashed to the crown top bar too
+    "tall_load":       {"placement": "meat_straps", "cg_aft_mm": 160.0,
+                        "params": {**_MEAT_P, "upper_groups": ("strap_mid", "strap_upper", "lash")}},
+    "tall_load_posts": {"placement": "meat_straps", "cg_aft_mm": 160.0,
+                        "params": {**_MEAT_P, "upper_groups": ("strap_mid", "strap_upper", "lash_posts")}},
+    "overload_haul":   {"placement": "meat_straps", "cg_aft_mm": 150.0, "params": dict(_MEAT_P)},
+}
 
 
 def ls1_cases(cg_bag_mm: float = 180.0) -> list[LoadCase]:
-    """pack5200_cases with the HA-LS-1 g-factors and required factors (case names kept so every
-    consumer of the v1 names keeps working; ``drop_2p5g`` is the 2.0 g stumble case here)."""
+    """pack5200_cases with the HA-LS-1 (rev B) g-factors, required factors and meat placements.
+    ``drop_2p5g`` is the 2.0 g stumble case; ``meat_straps`` replaces ``meat_shelf_heavy_low`` (no shelf)."""
     bag = ("static_carry", "drop_2p5g", "side_hill_torsion", "single_stay_setdown")
     over = {}
     for n, (g, req, kg) in TABLE.items():
-        over[n] = {"g_factor": g, "required_sf": req, "load_kg": kg}
+        key = "meat_shelf_heavy_low" if n == "meat_straps" else n
+        over[key] = {"g_factor": g, "required_sf": req, "load_kg": kg}
         if n in bag:
-            over[n]["cg_aft_mm"] = cg_bag_mm
+            over[key]["cg_aft_mm"] = cg_bag_mm
     cases = pack5200_cases(**over)
+    for c in cases:
+        if c.name == "meat_shelf_heavy_low":
+            c.name = "meat_straps"
+        if c.name in MEAT:
+            m = MEAT[c.name]
+            c.placement, c.cg_aft_mm, c.params = m["placement"], m["cg_aft_mm"], dict(m["params"])
     for c in cases:
         g, req, kg = TABLE[c.name]
         c.description = (f"[{NAME}] {kg:g} kg x {g:g} g, required factor {req:g}"
@@ -79,11 +105,13 @@ DESC = {
                          "lifter slack (25 % stiffness) -> frame torsion. Walking peak factor.",
     "single_stay_setdown": "Loaded pack set down hard on ONE stay foot: impact + 0.2 friction, balanced by the load's "
                            "inertia (free-free).",
-    "meat_shelf_heavy_low": "Meat on the load shelf between frame and bag, CG 120 mm aft, shelf tip strapped to the mid-bar "
-                            "nodes. Primary mission.",
-    "tall_load": "Bone-in quarter standing on the shelf, CG 250 mm aft, top lashed to the crown top bar.",
-    "tall_load_posts": "Tall load lashed to the extension-post bar 220 mm above the crown (accessory fitted).",
-    "overload_haul": "200 lb meat haul on the shelf at the walking peak: ultimate, no collapse.",
+    "meat_straps": "Meat (boned in game bags) inside the bag, cinched to the frame face by internal straps, CG 150 mm "
+                   "aft; face pressure + strap tension (rev B, no shelf). Primary mission.",
+    "tall_load": "Bone-in quarter standing on the bag floor, cinched by the internal straps, CG 160 mm aft, top "
+                 "lashed to the crown top bar.",
+    "tall_load_posts": "Tall load lashed to the extension-post bar 220 mm above the crown (accessory fitted); load "
+                       "lifters stay on the crown top bar.",
+    "overload_haul": "200 lb meat haul in the bag on the internal straps at the walking peak: ultimate, no collapse.",
     "hipbelt_off_abuse": "Hipbelt unbuckled (creek crossing): 100 % on shoulders + lifters; no damage, no slip.",
 }
 

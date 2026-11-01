@@ -628,7 +628,7 @@ def _md(sw, e, feasible, model, crown, v1_new, rec_old, rec_nc):
     kept = e["kept"]
     L += ["### Telescoping crown checks (23 in and 15 in, left side)", "", "| case | torso | check | value | SF |", "|---|---|---|---|---|"]
     for t in (15, 23):
-        for n_ in ("drop_2p5g", "meat_shelf_heavy_low", "hipbelt_off_abuse"):
+        for n_ in ("drop_2p5g", "meat_straps", "hipbelt_off_abuse"):
             r = kept[t]["results"][n_]
             for cc in crown_checks(r, kept[t]["model"]):
                 if cc.get("retention") or cc.get("info") or "_R" in cc["check"]:

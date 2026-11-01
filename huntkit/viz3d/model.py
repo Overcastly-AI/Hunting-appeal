@@ -206,7 +206,10 @@ def build_pack(params: dict | None = None) -> PackModel:
     rb = tubes["bar_od"] / 2
     rl = tubes["crown_leg_od"] / 2
 
-    FOOT, ELB, TOP = (np.array(hp[k], float) for k in ("stay_foot_R", "lumbar_elbow_R", "stay_top_crown_socket_R"))
+    # frame v2 (geometry v3.1): one straight stay; the old lumbar elbow is a collinear node (stay_lumbar_node_R)
+    FOOT, ELB, TOP = (np.array(hp.get(k) or hp[alt], float) for k, alt in (
+        ("stay_foot_R", "stay_foot_R"), ("lumbar_elbow_R", "stay_lumbar_node_R"),
+        ("stay_top_crown_socket_R", "stay_top_crown_socket_R")))
     cr = topo["crown"]
     uy, uz = cr["axis_unit_vector_yz"]
     U = np.array([0.0, uy, uz])
@@ -222,17 +225,25 @@ def build_pack(params: dict | None = None) -> PackModel:
     stays, bars, fits = [], [], []
     for s in (-1, 1):
         f, e, t = _mx(FOOT, s), _mx(ELB, s), _mx(TOP, s)
-        stays.append(G.tube(G.resample([f, e], 5.0), rs, n=24, tile=40.0))
-        stays.append(G.tube(G.resample([e, t], 5.0), rs, n=24, tile=40.0))
-        d1, d2 = _u(f - e), _u(t - e)
-        fits.append(G.tube([e + d1 * 34, e], rs + 1.8, n=24, tile=40.0))
-        fits.append(G.tube([e, e + d2 * 34], rs + 1.8, n=24, tile=40.0))
-        fits.append(G.superellipsoid(e, (rs + 2.6,) * 3, 0.9, 0.9, nu=28, nv=14))
+        straight = "lumbar_elbow_R" not in hp
+        if straight:                                     # frame v2: one straight tube foot -> stay top
+            stays.append(G.tube(G.resample([f, t], 5.0), rs, n=24, tile=40.0))
+        else:
+            stays.append(G.tube(G.resample([f, e], 5.0), rs, n=24, tile=40.0))
+            stays.append(G.tube(G.resample([e, t], 5.0), rs, n=24, tile=40.0))
+            d1, d2 = _u(f - e), _u(t - e)
+            fits.append(G.tube([e + d1 * 34, e], rs + 1.8, n=24, tile=40.0))
+            fits.append(G.tube([e, e + d2 * 34], rs + 1.8, n=24, tile=40.0))
+            fits.append(G.superellipsoid(e, (rs + 2.6,) * 3, 0.9, 0.9, nu=28, nv=14))
         fits.append(G.tube([t - U * 16, t + U * 2], rs + 1.6, n=24, tile=40.0))           # bushing collar
         up = _u(e - f)
         fits.append(G.capsule_between(f + up * 42, f - up * 6, rs + 2.8, rs + 3.4))         # foot boot
-        piv = _mx(hp["shelf_pivot_R"], s)
-        fits.append(G.tube([piv - [s * 4, 0, 0], piv + [s * 10, 0, 0]], 6.5, n=20, tile=40.0))
+        if hp.get("shelf_pivot_R"):                      # v3.1: no shelf -> no pivot boss
+            piv = _mx(hp["shelf_pivot_R"], s)
+            fits.append(G.tube([piv - [s * 4, 0, 0], piv + [s * 10, 0, 0]], 6.5, n=20, tile=40.0))
+        for k_ in [k for k in hp if k.startswith("meat_anchor_z") and k.endswith("_R")]:   # meat-strap stubs
+            m_ = _mx(hp[k_], s)
+            fits.append(_block(m_ + [0, 4, 0], (rs * 2 + 8, 10, 40), e=0.4))
     for key in ("mid_bar", "upper_bar"):
         a, b = np.array(topo[key]["from"], float), np.array(topo[key]["to"], float)
         bars.append(G.tube(G.resample([a, b], 5.0), rb, n=28, tile=40.0))
@@ -244,10 +255,10 @@ def build_pack(params: dict | None = None) -> PackModel:
     latch = np.array(hp.get("rack_lock_pawl_upper_bar") or hp.get("index_latch_upper_bar")
                      or [0.0, topo["upper_bar"]["from"][1] - 14, topo["upper_bar"]["from"][2]], float)
     fits.append(_block(latch + [0, -4, 0], (44, 20, 36), e=0.3))
-    parts.append(Part("frame_stays", G.concat(stays), "carbon", "frame", label="Carbon stays (segmented)"))
+    parts.append(Part("frame_stays", G.concat(stays), "carbon", "frame", label="Carbon stays (frame v2: straight)"))
     parts.append(Part("frame_bars", G.concat(bars), "carbon", "frame", label="Mid + upper cross-bars"))
     parts.append(Part("frame_fittings", G.concat(fits), "fitting", "frame",
-                      label="Bonded elbows, sleeves, foot boots, index latch"))
+                      label="Carbon-wrapped nodes, foot boots, pawl housing"))
 
     # lumbar plate (pm45 shear web) + Ti hipbelt pivot + lower strap anchors
     lp = topo["lumbar_plate"]
@@ -290,7 +301,13 @@ def build_pack(params: dict | None = None) -> PackModel:
             cfit.append(_block(pt + U * 2, (rl * 2 + 9, rl * 2 + 9, rl * 2 + 12), e=0.35))
             la = _mx(cs["lifter_anchor_R"], s)
             cfit.append(G.superellipsoid(la + [0, -rb - 3, -2], (6, 5, 9), 0.6, 0.6, nu=16, nv=10))
-        legs.append(G.tube(G.resample([[-cr["legs_x"][1], yt, top], [cr["legs_x"][1], yt, top]], 5.0), rb, n=28, tile=40.0))
+        aft = float(cr.get("top_bar_aft_offset_mm", 0.0))    # v3.1: top bar swept aft of the leg axis (head clearance)
+        xl = cr["legs_x"][1]
+        if aft > 0:
+            for s in (-1, 1):                                   # corner dog-legs (wrapped) from leg top to the swept bar
+                legs.append(G.tube(G.resample([[s * xl, yt, top], [s * (xl - 12), yt + aft, top]], 3.0), rb, n=28, tile=40.0))
+        legs.append(G.tube(G.resample([[-(xl - 12 if aft > 0 else xl), yt + aft, top],
+                                       [xl - 12 if aft > 0 else xl, yt + aft, top]], 5.0), rb, n=28, tile=40.0))
         # centre spine (carries the yoke and the lock rack) and the yoke plate
         sw, st = p["spine_w"], p["spine_t"]
         L = 300.0
@@ -954,12 +971,13 @@ def fea_frame_model(p, tubes, g):
     fr = g["frame"]
     hp = fr["hard_points"]
     cs = min(fr["crown_settings"], key=lambda c: abs(c["torso_in"] - t))
+    ELBk = hp.get("lumbar_elbow_R") or hp["stay_lumbar_node_R"]
     sec = composite_tube(tubes["stay_od"], "[0,±45,0,90]s", first_available(CARBON_CANDIDATES), ply_t=0.10)
     prm = {"name": "viz3d approximation of geometry.yaml", "section": sec, "material": None,
            "stay_style": "segmented", "height": float(cs["crown_top_z"]),
            "width_bottom": 2 * hp["stay_foot_R"][0], "width_top": 2 * hp["stay_top_crown_socket_R"][0] - 2,
-           "lumbar_z": hp["lumbar_elbow_R"][2], "lumbar_depth": -hp["lumbar_elbow_R"][1], "lumbar_width": 1e3,
-           "top_sweep": 0.0, "hip_z": hp["hipbelt_pivot"][2], "shelf_z": hp["shelf_pivot_R"][2],
+           "lumbar_z": ELBk[2], "lumbar_depth": -ELBk[1], "lumbar_width": 1e3,
+           "top_sweep": 0.0, "hip_z": hp["hipbelt_pivot"][2], "shelf_z": (hp.get("shelf_pivot_R") or [0, 0, 25.0])[2],
            "mid_bar_z": 330.0, "shelf_strap_z": 330.0, "lash_z": 420.0, "torso_in": t, "bonded": True}
     return frames.build_frame(prm), "approximation of geometry.yaml (frame.yaml pending)"
 
