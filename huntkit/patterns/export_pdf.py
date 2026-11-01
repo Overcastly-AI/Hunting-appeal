@@ -68,7 +68,8 @@ def draw_piece_pdf(c: canvas.Canvas, p: Piece, to_pt: ToPt, *, scale: float = 1.
     c.setStrokeColor(grey)
     _poly(c, p.outline, to_pt, True)
     for ln in p.internal_lines:
-        c.setDash(*({"fold": (6, 2, 1, 2), "stitch": (3, 2)}.get(ln.kind, ())))
+        dash = {"fold": [6, 2, 1, 2], "stitch": [3, 2]}.get(ln.kind)
+        c.setDash(dash) if dash else c.setDash()
         c.setStrokeColor(blue if ln.kind != "stitch" else grey)
         _poly(c, ln.points, to_pt, ln.closed)
     c.setDash()

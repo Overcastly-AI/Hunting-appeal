@@ -57,8 +57,15 @@ FALLBACK: dict[str, dict[str, Any]] = {
 }
 
 # Candidate DB ids tried (in order) when a frame asks for a generic carbon tube material.
-CARBON_CANDIDATES = ["cfrp_ud_t700_epoxy", "cfrp_t700_epoxy_ud", "carbon_ud_t700_epoxy",
+CARBON_CANDIDATES = ["cfrp_t700_ud_epoxy_ply", "cfrp_ud_t700_epoxy", "cfrp_t700_epoxy_ud", "carbon_ud_t700_epoxy",
                      "cfrp_ud_t300_epoxy", "carbon_epoxy_ud", "cfrp_ud"]
+
+
+_CACHE: dict = {}
+
+
+def clear_cache():
+    _CACHE.clear()
 
 
 @dataclass
@@ -135,12 +142,16 @@ def get_material(ref) -> Mat:
                                                             if k not in ("id", "name", "category")},
                    source="inline")
     if isinstance(ref, str):
+        if ref in _CACHE:
+            return _CACHE[ref]
         for fn in (_try_huntkit_materials, _try_yaml):
             m = fn(ref)
             if m is not None and m.props:
+                _CACHE[ref] = m
                 return m
         if ref in FALLBACK:
-            return _from_record(FALLBACK[ref], ref, "fallback")
+            _CACHE[ref] = _from_record(FALLBACK[ref], ref, "fallback")
+            return _CACHE[ref]
         raise KeyError(f"material '{ref}' not found in huntkit.materials, data/materials/ or the "
                        f"FEA fallback table; pass an inline property dict instead")
     raise TypeError(f"cannot interpret material reference {ref!r}")
@@ -174,3 +185,11 @@ def G_of(m: Mat) -> float:
 
 def rho_of(m: Mat) -> float:
     return float(m.get("density_kg_m3", 0.0) or 0.0)
+
+
+def yield_of(m: Mat) -> tuple[float, str]:
+    """Design yield: MMPDS S-basis if the record has it, else typical. Returns (value, key)."""
+    for k in ("yield_strength_sbasis_mpa", "yield_strength_mpa"):
+        if m.get(k):
+            return float(m.get(k)), k
+    raise KeyError(f"material '{m.id}' has no yield strength")

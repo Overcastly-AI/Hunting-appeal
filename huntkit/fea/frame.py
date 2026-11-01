@@ -36,7 +36,7 @@ import scipy.linalg as sla
 import scipy.sparse as sp
 import scipy.sparse.linalg as spla
 
-from .materials_bridge import E_of, G_of, get_material, rho_of
+from .materials_bridge import E_of, G_of, get_material, rho_of, yield_of
 from .sections import Section, from_spec
 
 DOF_NAMES = ["x", "y", "z", "rx", "ry", "rz"]
@@ -383,7 +383,7 @@ def solve(model: dict, buckling: bool = False, n_modes: int = 3, name: str = "")
                 r["sigma_axial"] = N / sec.A
             else:
                 r = sec.stresses(N, Vy, Vz, Tq, My, Mz)
-                fy = mi["material"].require("yield_strength_mpa")
+                fy, _ = yield_of(mi["material"])
                 r["sf"] = fy / r["von_mises"] if r["von_mises"] > 0 else np.inf
             if worst is None or r["sf"] < worst["sf"]:
                 worst = dict(r, end=end)
@@ -424,10 +424,10 @@ def buckling_factors(K, Kg, free, n_modes=3) -> list:
     Gf = Kg[free][:, free]
     if abs(Gf).max() == 0:
         return []
-    if len(free) <= 3000:
+    k = min(max(n_modes, 6), len(free) - 2)
+    try:
+        mu = spla.eigsh(-Gf.tocsc(), k=k, M=Kf.tocsc(), which="LA", return_eigenvectors=False)
+    except Exception:   # small / awkward problems: dense fallback
         mu = sla.eigh(-Gf.toarray(), Kf.toarray(), eigvals_only=True)
-    else:
-        mu = spla.eigsh(-Gf.tocsc(), k=min(20, len(free) - 2), M=Kf.tocsc(), which="LA",
-                        return_eigenvectors=False)
     mu = np.sort(mu[mu > 1e-12])[::-1]
     return [float(1 / m) for m in mu[:n_modes]]

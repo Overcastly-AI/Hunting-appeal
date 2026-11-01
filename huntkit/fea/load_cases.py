@@ -185,7 +185,8 @@ class LoadCase:
                 hf = self.hip_fraction(res, frame_model)
                 if abs(hf - self.hip_share) < 0.005:
                     break
-                sh *= ((1 - hf) / hf) * (self.hip_share / (1 - self.hip_share))
+                ratio = (hf / max(1 - hf, 1e-6)) / (self.hip_share / (1 - self.hip_share))
+                sh = float(np.clip(sh * np.clip(ratio, 0.1, 10.0), 1e-3, 1e3))
             if self.buckling:
                 res = solve(m, buckling=True, name=name)
             res.meta["hip_fraction"] = self.hip_fraction(res, frame_model)

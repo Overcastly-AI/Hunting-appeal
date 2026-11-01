@@ -40,6 +40,8 @@ def export_svg(pieces: Iterable[Piece], path: str | Path, *, labels: bool = True
     X1 = max(p.bounds()[2] for p in placed) + margin_mm
     Y1 = max(p.bounds()[3] for p in placed) + margin_mm
     W, H = X1 + margin_mm, Y1 + margin_mm
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
     dwg = svgwrite.Drawing(str(path), size=(f"{W:.2f}mm", f"{H:.2f}mm"),
                            viewBox=f"0 0 {W:.3f} {H:.3f}")
     # SVG y runs down: flip so pattern y-up is preserved
@@ -66,7 +68,5 @@ def export_svg(pieces: Iterable[Piece], path: str | Path, *, labels: bool = True
             (x, y), = flip([(cx + 5, cy)])
             for i, t in enumerate(p.label_lines()):
                 g_text.add(dwg.text(t, insert=(x, y + i * 6.5)))
-    path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
     dwg.save()
     return path

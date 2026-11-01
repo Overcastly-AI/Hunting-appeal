@@ -60,11 +60,13 @@ def simulate_distance(rgb_u8: np.ndarray, px_per_mm: float, distance_m: float,
     ys = ((np.arange(ny) + 0.5) * h / ny).astype(int).clip(0, h - 1)
     xs = ((np.arange(nx) + 0.5) * w / nx).astype(int).clip(0, w - 1)
     small = blurred[np.ix_(ys, xs)]
-    y_small = color.relative_luminance(color.linear_to_srgb(small))
+    # contrast metric from the band-limited (blurred) luminance, not the decimated samples
+    # (decimation phase would make it noisy for few samples)
+    y_blur = blurred @ color._M_RGB2XYZ[1]
     info = {
         "distance_m": distance_m, "cpd": cpd, "cycle_mm": cyc, "sigma_mm": sigma_mm,
         "observer_samples": (ny, nx),
-        "rms_contrast": color.rms_contrast(y_small),
+        "rms_contrast": color.rms_contrast(y_blur),
     }
     dh, dw = display_shape or (h, w)
     yi = (np.arange(dh) * ny // dh).clip(0, ny - 1)

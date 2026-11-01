@@ -294,8 +294,9 @@ def cylinder(diameter: float, height: float, *, rolltop_mm: float = 0.0, oval_ra
                   name=f"{prefix}body back seam"),
              Seam(body.edge("bottom"), base.edge("perimeter"), stitch=stitch,
                   name=f"{prefix}body to base")]
-    # quarter notches on base and body bottom (matching)
-    seams[1].add_match_notches((0.0, 0.25, 0.5, 0.75))
+    # quarter notches on base and body bottom (matching); base also marks the back seam
+    seams[1].add_match_notches((0.25, 0.5, 0.75))
+    base.add_notch(*base.edge_points("perimeter")[0], kind="v", label="BACK SEAM")
     return Cylinder({"body": body, "base": base}, seams, diameter, height)
 
 

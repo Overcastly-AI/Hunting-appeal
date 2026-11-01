@@ -34,8 +34,10 @@ from .materials_bridge import get_material
 
 DEFAULT_JOINT = {
     "overlap_mm": 25.0,          # ASSUMPTION: 2x tube OD socket depth
-    "adhesive_t_mm": 0.15,       # ASSUMPTION: glass-bead controlled bondline
-    "adhesive": "epoxy_adhesive_toughened",
+    "adhesive_t_mm": None,       # None -> record bondline_thickness_mm, else 0.15 (ASSUMPTION)
+    "adhesive": "adhesive_epoxy_toughened_2part",
+    "adhesive_G_mpa": 800.0,     # ASSUMPTION if the record has no shear/Young's modulus
+    "cfrp_adherend": False,      # True -> use lap_shear_strength_cfrp_mpa when available
     "hot_wet": 0.8,
     "sleeve_Et_n_mm": None,      # adherend 2 axial stiffness per width; None -> equal to tube
     "sleeve_Gt_n_mm": None,
@@ -70,10 +72,22 @@ def volkersen_factor(omega_L: float, psi: float = 1.0) -> float:
 def bond_check(N: float, T: float, M: float, r: float, tube_Et: float, tube_Gt: float,
                params: dict | None = None) -> BondResult:
     p = {**DEFAULT_JOINT, **(params or {})}
-    adh = get_material(p["adhesive"])
-    Ga = float(adh.get("shear_modulus_mpa") or adh.require("youngs_modulus_mpa") / (2 * (1 + adh.get("poisson", 0.4))))
-    tau_s = float(adh.get("lap_shear_strength_mpa") or adh.require("shear_strength_mpa"))
-    L, ta = p["overlap_mm"], p["adhesive_t_mm"]
+    try:
+        adh = get_material(p["adhesive"])
+    except KeyError:
+        adh = get_material("epoxy_adhesive_toughened")
+    if adh.get("shear_modulus_mpa"):
+        Ga = float(adh.get("shear_modulus_mpa"))
+    elif adh.get("youngs_modulus_mpa"):
+        Ga = float(adh.get("youngs_modulus_mpa")) / (2 * (1 + adh.get("poisson", 0.4)))
+    else:
+        Ga = float(p["adhesive_G_mpa"])
+    tau_s = None
+    if p["cfrp_adherend"]:
+        tau_s = adh.get("lap_shear_strength_cfrp_mpa")
+    tau_s = float(tau_s or adh.get("lap_shear_strength_mpa") or adh.require("shear_strength_mpa"))
+    L = p["overlap_mm"]
+    ta = p["adhesive_t_mm"] or adh.get("bondline_thickness_mm") or 0.15
     E2t = p["sleeve_Et_n_mm"] or tube_Et
     G2t = p["sleeve_Gt_n_mm"] or tube_Gt
 
@@ -122,7 +136,8 @@ def check_frame_joints(result, joints: list[dict]) -> list[dict]:
             N, Vy, Vz, T, My, Mz = f
             Et, Gt = tube_wall_stiffness(sec, md.get("material"))
             r = sec.dims["od"] / 2
-            br = bond_check(N, T, float(np.hypot(My, Mz)), r, Et, Gt, j.get("params"))
+            prm = {"cfrp_adherend": bool(getattr(sec, "composite", False)), **(j.get("params") or {})}
+            br = bond_check(N, T, float(np.hypot(My, Mz)), r, Et, Gt, prm)
             out.append({"joint": j["id"], "member": mid, "N": N, "T": T, "M": float(np.hypot(My, Mz)),
                         **br.as_dict()})
     return out
