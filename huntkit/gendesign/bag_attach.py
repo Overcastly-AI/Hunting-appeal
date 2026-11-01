@@ -94,6 +94,8 @@ def stations() -> list[dict]:
     """Four heights, both sides. z matches the HA-LS-1 strap nodes."""
     spec = (
         ("hinge", 60.0, "bag hinge and the bay pivot", True),
+        ("us1", 95.0, "under-strap, floor cradle", False),
+        ("us2", 142.0, "under-strap, second cradle", False),
         ("im1", 190.0, "meat strap IM1 only", False),
         ("im2", 330.0, "bag clip and meat strap IM2, beside the branch window", True),
         ("im3", 520.0, "bag clip and meat strap IM3", True),

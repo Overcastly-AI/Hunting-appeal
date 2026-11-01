@@ -3,6 +3,8 @@ id: branch_fairlead
 scale: 1.05
 stations_mm:
   hinge: 60.0
+  us1: 95.0
+  us2: 142.0
   im1: 190.0
   im2: 330.0
   im3: 520.0

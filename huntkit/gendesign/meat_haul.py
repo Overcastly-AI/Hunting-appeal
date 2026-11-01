@@ -30,8 +30,19 @@ G = 9.80665
 MU = 0.4                         # wet game bag on the spreader, geometry.yaml
 QUARTER_KG = 36.0                # R-08, one bone-in quarter
 RATED_KG = 68.0
-CAM_N = 1100.0                   # ASSUMPTION, DESIGN.md §4.5
+CAM_N = 1100.0                   # ASSUMPTION, DESIGN.md §4.5, 38 mm metal cam
 WEB_N = 20016.0                  # poly_webbing_38mm record
+# Under-straps. The belly is how far the cradle hangs below the straight line
+# between the stays. A deeper belly keeps the cam tension down.
+US1_Z = 95.0
+US2_Z = 142.0
+BELLY_MM = 70.0
+HALF_SPAN_MM = 115.0
+# Of the bag-floor vertical, this fraction moves onto the two under-straps.
+# The rest stays on the hinge pins. ASSUMPTION.
+CRADLE_SHARE = 0.55
+US1_FRACTION = 0.60              # lower strap takes the greater share
+DETACH_S = 40                    # was 34; two cam pops add about 6 s
 
 
 def _stations(case: LoadCase) -> dict:
@@ -54,6 +65,43 @@ def _scale(sf: float, checked_n: float, new_n: float) -> float:
     return float(sf) * float(checked_n) / max(float(new_n), 1.0)
 
 
+def _theta() -> float:
+    return float(np.arctan(BELLY_MM / HALF_SPAN_MM))
+
+
+def cradle_tension(vertical_n: float) -> float:
+    """Strap tension for a cradle whose two side legs rise at ``_theta``."""
+    return float(vertical_n) / (2.0 * np.sin(_theta()))
+
+
+def _pair(vertical_n: float, basis: dict) -> dict:
+    """US1 and US2 anchor forces. ``vertical_n`` is the factored load in the cradle."""
+    out = {}
+    for name, frac in (("us1", US1_FRACTION), ("us2", 1.0 - US1_FRACTION)):
+        t = cradle_tension(vertical_n * frac)
+        th = _theta()
+        n = t
+        out[name] = {
+            "n": n, "fy": float(t * np.cos(th)), "fz": float(-t * np.sin(th)),
+            "vertical_n": float(vertical_n * frac), "tension_n": t,
+            "sf": _scale(basis["sf"], basis["force_n"], n),
+            "sf_fatigue": _scale(basis["sf_fatigue"], basis["force_n"], n),
+            "from": basis.get("station", "cradle"),
+        }
+    return out
+
+
+def _shift_hinge(row: dict, keep: float, basis: dict) -> dict:
+    """Leave ``keep`` of the hinge's vertical force on the pin. Rescale from the hinge FEA."""
+    fy, fz = float(row["fy"]), float(row["fz"]) * keep
+    n = float(np.hypot(fy, fz))
+    out = dict(row)
+    out.update({"n": n, "fy": fy, "fz": fz,
+                "sf": _scale(basis["sf"], basis["force_n"], n),
+                "sf_fatigue": _scale(basis["sf_fatigue"], basis["force_n"], n)})
+    return out
+
+
 def _friction_leg(weight_n: float, n_straps: int) -> float:
     """Tension in one strap leg so μ times the strap's normal force holds ``weight_n``.
 
@@ -63,7 +111,7 @@ def _friction_leg(weight_n: float, n_straps: int) -> float:
     return weight_n / (MU * n_straps * 2.0)
 
 
-def analyse() -> dict:
+def analyse(cradle_fea: dict | None = None) -> dict:
     """Load paths and safety factors for bag-on, the wedge, and bag-off."""
     branch = json.loads((ANALYSIS / "generative_branch_results.json").read_text())
     fair = json.loads((ANALYSIS / "bag_attachment_results.json").read_text())
@@ -87,32 +135,6 @@ def analyse() -> dict:
     )
     bay_nodes = _stations(bay)
 
-    # Bag off. No floor. 36 kg quarter, walking peak 1.6 g, then the 1.5 limit factor
-    # on that tension for the cleat. Three IM straps are the requirement; W1 and W2
-    # are a second clamp.
-    walk = QUARTER_KG * G * 1.6
-    leg3 = _friction_leg(walk, 3)
-    leg5 = _friction_leg(walk, 5)
-    leg3_f = leg3 * 1.5
-    # cleat sees one leg, departing aft. Compare with the IM3 aft check.
-    bag_off_cleat = {
-        "im1": leg3_f, "im2": leg3_f, "im3": leg3_f, "hinge": 0.0,
-    }
-
-    def cleat_row(nodes, basis_name, basis_n, basis_sf, basis_fat):
-        out = {}
-        for name, force in nodes.items():
-            n = force["n"] if isinstance(force, dict) else float(force)
-            out[name] = {
-                "n": n,
-                "sf": _scale(basis_sf, basis_n, n) if n else 99.0,
-                "sf_fatigue": _scale(basis_fat, basis_n, n) if n else 99.0,
-            }
-        out["basis"] = basis_name
-        return out
-
-    # Aft-directed stations scale from the IM3 fairlead. The hinge (mostly down)
-    # scales from the hinge fairlead.
     def mixed(nodes):
         rows = {}
         for name, force in nodes.items():
@@ -133,8 +155,38 @@ def analyse() -> dict:
         bag_on[name]["sf"] = src["sf"]
         bag_on[name]["sf_fatigue"] = src["sf_fatigue"]
     bay_c = mixed(bay_nodes)
-    off_nodes = {k: {"n": v, "fy": v, "fz": 0.0} for k, v in bag_off_cleat.items() if v}
-    off_c = mixed(off_nodes)
+
+    # Under-straps take part of the floor vertical off the hinge pins.
+    # Bag-off has no floor: the cradle carries the quarter and the IM straps only cinch.
+    us_basis = cradle_fea if cradle_fea else hinge
+    if "force_n" not in us_basis:
+        us_basis = {**us_basis, "force_n": us_basis.get("requested_n", us_basis["n"]),
+                    "station": "us1"}
+
+    def with_cradle(nodes, cradle_vertical, keep_hinge):
+        out = {k: dict(v) for k, v in nodes.items() if k != "hinge"}
+        if "hinge" in nodes and keep_hinge > 0:
+            out["hinge"] = _shift_hinge(nodes["hinge"], keep_hinge, hinge)
+        out.update(_pair(cradle_vertical, us_basis))
+        return out
+
+    floor_on = 2.0 * abs(bag_on["hinge"]["fz"])
+    bag_on = with_cradle(bag_on, CRADLE_SHARE * floor_on, 1.0 - CRADLE_SHARE)
+    floor_bay = 2.0 * abs(bay_c["hinge"]["fz"])
+    bay_c = with_cradle(bay_c, CRADLE_SHARE * floor_bay, 1.0 - CRADLE_SHARE)
+
+    walk = QUARTER_KG * G * 1.6
+    leg3 = _friction_leg(walk, 3)
+    leg5 = _friction_leg(walk, 5)
+    # Strength case for the bare frame: 1.5 on the 1.6 g walking peak.
+    w_off = walk * 1.5
+    cinch = 150.0 * 1.5
+    off_c = mixed({
+        "im1": {"n": cinch, "fy": cinch, "fz": 0.0},
+        "im2": {"n": cinch, "fy": cinch, "fz": 0.0},
+        "im3": {"n": cinch, "fy": cinch, "fz": 0.0},
+    })
+    off_c.update(_pair(w_off, us_basis))
 
     web = float(load("poly_webbing_38mm").require("breaking_strength_n"))
     assert abs(web - WEB_N) < 1.0
@@ -145,11 +197,11 @@ def analyse() -> dict:
     angle = float(np.degrees(np.arctan(250.0 / rise)))
 
     def pack(name, required, nodes, note, strap_n):
-        cleat_fat = min(r["sf_fatigue"] for r in nodes.values())
-        cleat_sf = min(r["sf"] for r in nodes.values())
+        cleat_fat = min(float(r["sf_fatigue"]) for r in nodes.values())
+        cleat_sf = min(float(r["sf"]) for r in nodes.values())
         hinge_n = nodes.get("hinge", {}).get("n", strap_n)
         return {
-            "name": name, "required": required, "viable": cleat_sf >= 1.0 and cleat_fat >= 1.0,
+            "name": name, "required": required, "viable": bool(cleat_sf >= 1.0 and cleat_fat >= 1.0),
             "nodes": nodes, "note": note,
             "cleat_sf": cleat_sf, "cleat_fatigue": cleat_fat,
             "hook_sf": HOOK_N / strap_n, "cam_sf": CAM_N / strap_n,
@@ -175,16 +227,34 @@ def analyse() -> dict:
         ),
         "bag_off": pack(
             "Bag off, bare frame", True, off_c,
-            "Quarter on the spreader. IM1–IM3 hooked eye-to-eye. No bag floor: friction holds the weight.",
-            leg3_f,
+            "Quarter in the under-strap cradle, cinched to the spreader by IM1–IM3.",
+            cinch,
         ),
+    }
+    for key, vertical in (
+        ("bag_on", CRADLE_SHARE * floor_on),
+        ("between", CRADLE_SHARE * floor_bay),
+        ("bag_off", w_off),
+    ):
+        t = max(modes[key]["nodes"]["us1"]["tension_n"], modes[key]["nodes"]["us2"]["tension_n"])
+        modes[key]["cradle_tension_n"] = t
+        modes[key]["cradle_cam_sf"] = CAM_N / t
+        modes[key]["cradle_web_sf"] = web / t
+        modes[key]["cradle_vertical_n"] = vertical
+        modes[key]["viable"] = bool(modes[key]["viable"] and modes[key]["cradle_cam_sf"] >= 1.0)
+    modes["cradle"] = {
+        "us1_z": US1_Z, "us2_z": US2_Z, "belly_mm": BELLY_MM,
+        "theta_deg": float(np.degrees(_theta())),
+        "share": CRADLE_SHARE, "us1_fraction": US1_FRACTION,
+        "detach_s": DETACH_S,
+        "basis": "cradle_fea" if cradle_fea else "hinge_scaled",
     }
     modes["between"]["opening_mm"] = {str(int(k)): v for k, v in opening.items()}
     modes["between"]["angle_deg"] = angle
     modes["between"]["viable"] = modes["between"]["viable"] and opening[330.0] >= 120.0
     modes["bag_off"]["leg_walk_im_n"] = leg3
     modes["bag_off"]["leg_walk_with_wraps_n"] = leg5
-    modes["bag_off"]["leg_factored_n"] = leg3_f
+    modes["bag_off"]["leg_factored_n"] = leg3 * 1.5
     modes["bag_off"]["walk_n"] = walk
     modes["bag_on"]["frame_sf"] = branch["cases"]["meat_straps"]
     # Bag-off cleat forces are inside the meat_straps envelope, so the frame SF stands.
@@ -192,6 +262,23 @@ def analyse() -> dict:
     modes["between"]["frame_sf"] = branch["cases"]["meat_straps"]
     modes["sheet"] = {"sf": sheet["sf"], "peak_kpa": sheet["peak_kpa"], "defl_mm": sheet["defl_mm"],
                       "name": sheet["name"]}
+    web_m = load("poly_webbing_38mm")
+    pa = load("pa12_cf_fdm_paht")
+    anchor_g = float((cradle_fea or {}).get("added_g", 6.2))
+    parts = {
+        "printed anchors (4)": 4 * anchor_g,
+        "7075 pins (4)": 4 * 2.41,
+        "UHMWPE sleeves (4)": 4 * 0.29,
+        "38 mm cams (2)": 2 * 22.0,
+        "tri-glide keepers (2)": 2 * 3.0,
+        "38 mm webbing, 1.10 m": 1.10 * float(web_m.require("mass_g_m")),
+        "bag-floor channels": 8.0,
+    }
+    plastic = parts["printed anchors (4)"]
+    filament = plastic * 1.08 * float(pa.require("print_cost_usd_per_g"))
+    modes["cradle"]["mass_g"] = float(sum(parts.values()))
+    modes["cradle"]["parts_g"] = parts
+    modes["cradle"]["cost_usd"] = filament * 1.15 + 4 * 2.50 + 2 * 4.00 + 1.10 * float(web_m.cost_usd["value"]) + 2 * 0.40
     return modes
 
 
@@ -223,9 +310,13 @@ def _draw(mode_key: str, modes: dict) -> str:
         # spreader, bag side of the stay
         ax.plot([10, 10], [70, 500], color=sheet, lw=4, solid_capstyle="butt", zorder=4)
         ax.text(16, 80, "spreader", color=sheet, fontsize=8)
-        for z, lab in ((60, "hinge"), (190, "IM1"), (330, "IM2"), (520, "IM3")):
-            ax.add_patch(Circle((0, z), 7, facecolor="#6a6b6e", edgecolor=ink, lw=0.4, zorder=5))
-            ax.text(-8, z, lab, ha="right", va="center", fontsize=8, color=ink)
+        for z, lab in ((60, "hinge"), (95, "US1"), (142, "US2"), (190, "IM1"), (330, "IM2"), (520, "IM3")):
+            ax.add_patch(Circle((0, z), 6, facecolor="#6a6b6e", edgecolor=ink, lw=0.4, zorder=5))
+            ax.text(-8, z, lab, ha="right", va="center", fontsize=7.5, color=ink)
+        # cradle: aft and down from US1 and US2, under the floor
+        ax.plot([0, 55, 120], [95, 25, 25], color="#1baf7a", lw=2.4, zorder=6)
+        ax.plot([0, 70, 140], [142, 55, 55], color="#1baf7a", lw=2.4, zorder=6)
+        ax.text(125, 18, "under-straps", color="#1baf7a", fontsize=8)
         if mode_key == "bag_on":
             bag_x = [18, 18, 250, 200, 18]
             bag_z = [40, 760, 700, 40, 40]
@@ -277,10 +368,11 @@ def _draw(mode_key: str, modes: dict) -> str:
         else:
             ax.add_patch(FancyBboxPatch((-90, 110), 180, 400, boxstyle="round,pad=0,rounding_size=16",
                                          facecolor=meat, edgecolor="none", alpha=0.85, zorder=2))
-        for z, lab in ((190, "IM1"), (330, "IM2"), (520, "IM3")):
-            ax.plot([-115, 115], [z, z], color=strap, lw=3.0, zorder=4)
-            ax.plot(-115, z, "o", color="#6a6b6e", ms=7, zorder=5)
-            ax.plot(115, z, "o", color="#6a6b6e", ms=7, zorder=5)
+        for z, lab, col in ((95, "US1", "#1baf7a"), (142, "US2", "#1baf7a"),
+                            (190, "IM1", strap), (330, "IM2", strap), (520, "IM3", strap)):
+            ax.plot([-115, 115], [z, z], color=col, lw=3.0, zorder=4)
+            ax.plot(-115, z, "o", color="#6a6b6e", ms=6, zorder=5)
+            ax.plot(115, z, "o", color="#6a6b6e", ms=6, zorder=5)
             ax.text(122, z, lab, va="center", fontsize=8, color=ink)
         if mode_key != "bag_off":
             ax.plot([-115, 115], [60, 60], color="#6a6b6e", lw=2.0, zorder=4)
@@ -290,14 +382,13 @@ def _draw(mode_key: str, modes: dict) -> str:
     face(axes[1])
     sf = m["cleat_fatigue"]
     fig.suptitle(
-        f"{m['name']}   ·   cleat fatigue SF {sf:.2f}   ·   spreader SF {m['sheet_sf']:.1f}   ·   "
-        f"hook SF {m['hook_sf']:.2f}",
+        f"{m['name']}   ·   anchor fatigue SF {sf:.2f}   ·   cradle cam SF {m['cradle_cam_sf']:.2f}",
         x=0.02, ha="left", fontsize=12, fontweight="bold")
     fig.tight_layout(rect=(0, 0.04, 1, 0.90))
     fig.text(0.02, 0.02, m["note"], fontsize=8, color="#52514e")
-    names = {"bag_on": f"{DATE}_attach_5_bag_on.png",
+    names = {"bag_on": f"{DATE}_attach_9_cradle_bag_on.png",
              "between": f"{DATE}_attach_6_between.png",
-             "bag_off": f"{DATE}_attach_7_bag_off.png"}
+             "bag_off": f"{DATE}_attach_10_cradle_bag_off.png"}
     return _save(fig, names[mode_key])
 
 
@@ -306,7 +397,7 @@ def write(modes: dict, screens: list[str]) -> str:
 
     def row(nodes):
         lines = ["| station | force N | strength SF | fatigue SF |", "|---|---:|---:|---:|"]
-        for name in ("hinge", "im1", "im2", "im3"):
+        for name in ("hinge", "us1", "us2", "im1", "im2", "im3"):
             if name not in nodes:
                 continue
             r = nodes[name]
@@ -320,29 +411,42 @@ IM1 stays a meat anchor only, for now. The hook proof test is still open.
 Code: `huntkit/gendesign/meat_haul.py`.
 
 The bearing face in every mode is the **2.0 mm QI carbon spreader** on the bag side of the
-stays. Bone and the cinch land on the sheet. The sheet delivers them to the stay rails.
-The mesh over the air gap is not a meat support. The wearer stays on the XLPE rails.
+stays. Two **38 mm under-straps** also run under the bag, from fairleads at z {US1_Z:.0f} and
+z {US2_Z:.0f}. With the bag on they cinch the floor up to the frame, and the bag shell shares
+the vertical load with the hinge pins. With the bag off they are the cradle, so the quarter
+does not hang on friction alone. IM1–IM3 still cinch the meat against the spreader.
+
+Each strap is a sewn eye on the left pin, under the floor, and a 38 mm cam on the right pin.
+A tri-glide sits behind the cam so a slip cannot lengthen the cradle. The belly under the
+anchor line is specified at **{BELLY_MM:.0f} mm**, which keeps the side legs at
+**{modes['cradle']['theta_deg']:.0f}°** and the cam inside its assumed slip rating.
+25 mm webbing was set aside: its ladder lock slips at 300 N and its side-release breaks at
+450 N, both under the factored cradle tension.
 
 Spreader, from the comfort check (20 % of 68 kg on a 22 mm bone, factored): stress SF **{b['sheet_sf']:.2f}**,
 peak skin pressure **{b['sheet_peak_kpa']:.1f} kPa**, factored deflection **{b['sheet_defl_mm']:.1f} mm**.
 A 36 kg quarter is inside that check.
 
+Of the bag-floor vertical, **{CRADLE_SHARE:.0%}** moves onto the under-straps and the rest stays
+on the hinge pins (ASSUMPTION). The lower strap takes {US1_FRACTION:.0%} of that cradle load.
+
 ## A. Bag on (required)
 
-Meat stays in the bag. IM1–IM3 pass through the B-01 ports, hook to the eyes on the cleat pins,
-and cam tight. The meat is squeezed against the spreader. The bag floor carries the vertical
-share into the hinge pins at z 60.
+Meat stays in the bag. IM1–IM3 hook to the cleat eyes and cam the meat against the spreader.
+The two under-straps run through open channels in the bag floor and are cammed tight, so the
+floor is a sling between the hinge pins and the cradle anchors.
 
-Load path: meat → strap → hook → eye → pin → fairlead → stay. Face pressure → spreader → stay rails.
+Load path: meat → bag floor → under-straps and hinge pins for the vertical share. IM straps →
+cleats for the cinch and the overturning. Face pressure → spreader → stay rails.
 
-This is the HA-LS-1 `meat_straps` resolution. The cleat FEA was run on these forces.
-Branch-frame SF on that case is **{b['frame_sf']:.2f}**.
+Branch-frame SF on `meat_straps` is **{b['frame_sf']:.2f}**. Under-strap tension **{b['cradle_tension_n']:.0f} N**,
+cam SF **{b['cradle_cam_sf']:.2f}**, webbing SF **{b['cradle_web_sf']:.0f}**.
 
 {row(b['nodes'])}
 
-Hook and cam are checked against the larger of the factored cleat force and the published
-605 N strap demand (2 × the 303 N service leg). Hook SF **{b['hook_sf']:.2f}**. Cam SF **{b['cam_sf']:.2f}**.
-Webbing SF **{b['web_sf']:.0f}**. Bartack SF **{b['bartack_sf']:.2f}**. The cam rating is an assumption.
+Hook and cam on the IM straps are checked against the larger of the factored IM force and the
+published 605 N strap demand. Hook SF **{b['hook_sf']:.2f}**. IM-cam SF **{b['cam_sf']:.2f}**.
+The under-strap cam is the line above, not this one. Bartack SF **{b['bartack_sf']:.2f}**.
 
 ### A2. Between the bag and the frame (viable, part of bag-on)
 
@@ -366,53 +470,59 @@ because the wedge is shallower than the full bag.
 
 {row(w['nodes'])}
 
-Minimum cleat fatigue SF **{w['cleat_fatigue']:.2f}**. Hook SF **{w['hook_sf']:.2f}**.
-The hinge sees {w['nodes']['hinge']['n']:.0f} N, under the {b['nodes']['hinge']['n']:.0f} N it was checked at.
-IM1 sees {w['nodes']['im1']['n']:.0f} N against {b['nodes']['im1']['n']:.0f} N with the bag closed. Both sit under the
-cleat that was checked at {b['nodes']['im3']['n']:.0f} N aft. **Viable.** A bone-in quarter rides here with the bag
-still on the frame.
+Minimum cleat fatigue SF **{w['cleat_fatigue']:.2f}**. IM hook SF **{w['hook_sf']:.2f}**.
+Under-strap tension **{w['cradle_tension_n']:.0f} N**, cam SF **{w['cradle_cam_sf']:.2f}**.
+The hinge, after the cradle takes its share, sees {w['nodes']['hinge']['n']:.0f} N.
+**Viable.** The under-straps stay cammed, so the open bag floor does not dump the low end of the quarter.
 
 ## B. Bag off (required)
 
-The bag comes off. A quarter lies on the spreader. IM1, IM2 and IM3 hook eye-to-eye over it
-and cam tight. There is no bag floor, so the weight is held by friction between the meat and
-the sheet. μ 0.4 is the wet game-bag assumption already in `geometry.yaml`.
+The bag comes off. The two under-straps stay on the frame and become the cradle. The quarter
+sits in them. IM1–IM3 still hook eye-to-eye and cam the meat against the spreader so it cannot
+tip off the cradle. Friction is only a reserve. μ 0.4 and the old 141 N leg (five straps) are
+the reserve numbers, not the design path.
 
-### Procedure (gloves, about 34 s, limit 2 min)
+### Procedure (gloves, about {DETACH_S} s, limit 2 min)
 
-1. Unhook the four bag hooks (IM2 and IM3, both sides). IM1 has no bag hook.
-2. Pull the two tethered hinge pins at z 60. The eyes for the meat straps stay on the other six pins.
-3. Lift the bag clear and set it aside.
-4. Lay the quarter on the spreader, bone against the sheet. The open window is mesh and air. It is not the bed.
-5. Hook IM1, IM2 and IM3 from eye to eye over the meat. Cam tight. A hock can sit on IM1.
-6. W1 and W2 can go over the top as a second clamp. They are not required for the friction sum below. W3 lashes a tall load to the crown.
+1. Pop the two under-strap cams and lift the bag floor out of the open channels. The straps stay on their pins. About 6 s.
+2. Unhook the four bag hooks (IM2 and IM3, both sides). IM1 has no bag hook.
+3. Pull the two tethered hinge pins at z 60.
+4. Lift the bag clear.
+5. Set the quarter in the cradle, bone toward the spreader. Cam the two under-straps until the belly is about {BELLY_MM:.0f} mm.
+6. Hook IM1–IM3 eye-to-eye over the meat and cam them. A hock can sit on IM1.
 
-Walking peak of 36 kg is **{o['walk_n']:.0f} N**. With only the three IM straps, each leg needs **{o['leg_walk_im_n']:.0f} N**
-so the cinch does not slip. Adding W1 and W2 drops that to **{o['leg_walk_with_wraps_n']:.0f} N**, which is the
-141 N figure already in `geometry.yaml`. The strength check uses 1.5 times the three-strap tension,
-**{o['leg_factored_n']:.0f} N** per leg, aft, on each cleat.
+Walking peak of 36 kg is **{o['walk_n']:.0f} N**. The strength check is 1.5 times that,
+**{o['cradle_vertical_n']:.0f} N**, all of it in the cradle. Lower strap tension
+**{o['nodes']['us1']['tension_n']:.0f} N**. Cam SF **{o['cradle_cam_sf']:.2f}**.
+The IM cinch used here is the 150 N hand tension times 1.5, **{o['hook_n']:.0f} N** per leg.
+Hook SF on that cinch **{o['hook_sf']:.2f}**.
 
 {row(o['nodes'])}
 
-Hook SF **{o['hook_sf']:.2f}**. Cam SF **{o['cam_sf']:.2f}**. Webbing SF **{o['web_sf']:.0f}**.
-Cleat fatigue SF **{o['cleat_fatigue']:.2f}**, scaled from the IM3 fairlead because the pull is aft.
-The factored leg, {o['leg_factored_n']:.0f} N, is under the {b['nodes']['im3']['n']:.0f} N aft load that cleat was
-checked at. IM1 in this mode is {o['nodes']['im1']['n']:.0f} N, which is above the {b['nodes']['im1']['n']:.0f} N
-that station sees with the bag closed, and still under that checked cleat. The branch-frame
-`meat_straps` SF **{o['frame_sf']:.2f}** is the bag-on number. This bare-frame pull does not add a
-heavier case than that check at IM3 or the hinge. The spreader check above was run on a heavier
-bone than a 36 kg quarter.
+The cradle anchors are the same fairlead as the hinge, on the solid lower stay. Their fatigue
+SF is scaled from the fine-mesh solve of the governing cradle vector when that solve is on file,
+and from the hinge solve otherwise (`{modes['cradle']['basis']}`).
 
-To put the bag back: set the hinge eyes on the pins, clip IM2 and IM3, about 70 s.
+To put the bag back: pins in, bag hooks on, floor channels over the cradle straps, cams tight.
+About 80 s.
 
 ## What is still open
 
-- Hook break strength is an assumption (1500 N). Proof-test five to 830 N before the first sewn bag.
+- Hook and cam ratings are assumptions (hook 1500 N, cam slip 1100 N). Proof-test five of each to 830 N before the first sewn bag. The under-strap cam is in this test.
 - IM1 does not get a bag clip yet. It is a meat anchor only until the owner says otherwise.
 
-## Screenshots
+## Mass and cost of the under-straps
 
+| part | g |
+|---|---:|
 """
+    for name, grams in modes["cradle"]["parts_g"].items():
+        text += f"| {name} | {grams:.1f} |\n"
+    text += f"| **added** | **{modes['cradle']['mass_g']:.0f}** |\n\n"
+    text += (f"About **${modes['cradle']['cost_usd']:.0f}** on top of the fairlead set. "
+             f"Detach time **{DETACH_S} s** (the two cam pops are about 6 s of that). "
+             f"Pack with the cradle is the previous 2979 g plus this added mass.\n\n")
+    text += "## Screenshots\n\n"
     for s in screens:
         text += f"- `{s}`\n"
     path = ANALYSIS / "meat_haul_modes.md"
@@ -420,20 +530,100 @@ To put the bag back: set the hinge eyes on the pins, clip IM2 and IM3, about 70 
     return str(path)
 
 
+def plot_anchor_closeup() -> str:
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from huntkit.gendesign.bag_attach import SCALE, _march
+    from huntkit.gendesign.frame_branch import frame_sdf
+    from huntkit.gendesign.frame_render import autocrop, raster
+    from huntkit.gendesign.render import _style
+    _style()
+    lo = np.array([70.0, -28.0, 40.0])
+    hi = np.array([160.0, 48.0, 175.0])
+    mesh = _march(lambda p: frame_sdf(p, SCALE), lo, hi, 0.85)
+    fig = plt.figure(figsize=(10.4, 4.6))
+    views = (("bag side", 14, -70), ("side", 8, 8), ("above the two anchors", 64, -36))
+    for i, (lab, el, az) in enumerate(views):
+        ax = fig.add_subplot(1, 3, i + 1)
+        img, info = raster([(mesh, (0.32, 0.33, 0.36))], el, az, size=420, spec=0.18)
+        ax.imshow(autocrop(img, info["mask"], pad=8))
+        ax.set_axis_off()
+        ax.set_title(lab, fontsize=10)
+    fig.suptitle("Under-strap anchors at z 95 and z 142, above the hinge pin",
+                 x=0.02, ha="left", fontsize=13, fontweight="bold")
+    fig.tight_layout(rect=(0, 0, 1, 0.88))
+    return _save(fig, f"{DATE}_attach_8_cradle_anchors.png")
+
+
+def plot_cradle_fea(row: dict) -> str:
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from huntkit.gendesign.render import _style
+    _style()
+    fig, axes = plt.subplots(1, 2, figsize=(10.2, 4.6))
+    ax = axes[0]
+    names = ["strength", "fatigue"]
+    vals = [row["sf"], row["sf_fatigue"]]
+    ax.barh(names, vals, color=["#1baf7a" if v >= 1 else "#d6342a" for v in vals])
+    ax.axvline(1.0, color="#0b0b0b", ls="--", lw=1)
+    ax.set_xlabel("safety factor")
+    ax.set_title(f"Cradle anchor  ·  {row['requested_n']:.0f} N  ·  {row['h_mm']:.0f} mm mesh",
+                 loc="left", fontweight="bold")
+    slab = row["slab"]
+    finite = np.isfinite(slab)
+    show = np.where(finite, slab, np.nan)
+    vals_fi = show[finite]
+    vmax = float(np.percentile(vals_fi, 99)) if vals_fi.size else 1.0
+    im = axes[1].imshow(show.T, origin="lower", cmap="magma", vmin=0, vmax=max(0.25, vmax))
+    axes[1].set_title("Failure index through one cheek", loc="left", fontsize=11)
+    axes[1].set_xlabel("y, toward the bag")
+    axes[1].set_ylabel("z, up the stay")
+    fig.colorbar(im, ax=axes[1], fraction=0.046, pad=0.04).set_label("failure index")
+    fig.tight_layout()
+    return _save(fig, f"{DATE}_attach_11_cradle_fea.png")
+
+
 def emit(log=print):
-    log("haul modes")
-    modes = analyse()
+    from huntkit.gendesign.bag_attach import _fatigue_sf, _creep_sf, _paht, solve_fairlead
+    from huntkit.gendesign.frame_branch import stay_radius
+    walk = QUARTER_KG * G * 1.6
+    us1_v = US1_FRACTION * walk * 1.5
+    tension = cradle_tension(us1_v)
+    th = _theta()
+    force = np.array([tension * np.cos(th), -tension * np.sin(th)])
+    radius = float(stay_radius(US1_Z, 1.05))
+    log(f"FEA cradle anchor, stay r {radius:.1f} mm, tension {tension:.0f} N")
+    row = solve_fairlead(radius, force, h=1.0, label="us1 1.00 mm")
+    pa = _paht()
+    row["sf_fatigue"] = _fatigue_sf(row["fi99"], 1.6 * 1.5, pa["fat"])
+    row["sf_creep"] = _creep_sf(row["fi99"], 1.6 * 1.5, pa["rupture"])
+    row["station"] = "us1"
+    row["force_n"] = row["requested_n"]
+    log(f"  FI99 {row['fi99']:.3f}  SF {row['sf']:.2f}  fat {row['sf_fatigue']:.2f}  "
+        f"applied {row['applied_n']:.0f}/{row['requested_n']:.0f}")
+    basis = {k: row[k] for k in ("sf", "sf_fatigue", "force_n", "station", "added_g", "fi99", "h_mm")}
+    (ANALYSIS / "cradle_fea.json").write_text(json.dumps(basis, indent=2))
+    modes = analyse(basis)
     for key in ("bag_on", "between", "bag_off"):
         m = modes[key]
         log(f"  {key}: cleat fat {m['cleat_fatigue']:.2f}  hook {m['hook_sf']:.2f}  "
-            f"viable {m['viable']}")
-    screens = [_draw(k, modes) for k in ("bag_on", "between", "bag_off")]
+            f"cam {m['cradle_cam_sf']:.2f}  viable {m['viable']}")
+    screens = [
+        plot_anchor_closeup(),
+        _draw("bag_on", modes),
+        _draw("bag_off", modes),
+        plot_cradle_fea(row),
+    ]
+    # keep the between drawing current as well
+    screens.insert(2, _draw("between", modes))
     path = write(modes, screens)
     out = {k: {kk: vv for kk, vv in modes[k].items() if kk != "nodes"} | {"nodes": modes[k]["nodes"]}
            for k in ("bag_on", "between", "bag_off")}
     out["sheet_sf"] = modes["sheet"]["sf"]
     out["screens"] = screens
-    (ANALYSIS / "meat_haul_modes.json").write_text(json.dumps(out, indent=2))
+    (ANALYSIS / "meat_haul_modes.json").write_text(json.dumps(out, indent=2, default=float))
     log(path)
     return out
 

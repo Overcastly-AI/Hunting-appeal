@@ -39,7 +39,7 @@ the frame.
 | R-01* | Main bag **85.2 L ± 1 L** (5200 ± 60 cu in), geometric, to the roll-top fill line with the collar closed by 3 rolls (150 mm of collar is closure, not volume). **Main bag only**: collar, lid, pockets, band pocket and meat bay excluded. Peak depth 11.5–12 in, fill height ~42 in (owner) | `build_geometry.py` exact ring-area integral **85.16 L**, polygon rings 85.15 L, `huntkit.viz3d` mesh **85.00 L** (−0.2 %). Prototype: ball fill ±5 % |
 | R-02 | Rated load 68 kg (150 lb), frame standard HA-LS-1 (`analysis/load_standard.md`) | FEA + physical proof/drop tests |
 | R-03..R-07 | Torso adjust 15–23 in, lifter angle 35–50° (40.6° at every setting), hipbelts S–XL, J/S harness, hip share: unchanged (Appendix A §1) | as v2 |
-| R-08* | **Bag-off haul, required.** Bag off in ≤ 2 min (4 hooks + 2 hinge pins). On the bare frame, IM1–IM3 cinch one bone-in quarter (≤ 36 kg) against the carbon spreader, slip < 25 mm after 30 min. **No shelf** | Field test, sandbag dummy. Procedure in `analysis/meat_haul_modes.md` |
+| R-08* | **Bag-off haul, required.** Bag off in ≤ 2 min (2 under-strap cams + 4 hooks + 2 hinge pins, about 40 s). The two under-straps stay on the frame as a cradle. IM1–IM3 cinch one bone-in quarter (≤ 36 kg) against the carbon spreader. **No shelf** | Field test, sandbag dummy. `analysis/meat_haul_modes.md` |
 | R-09* | **Bag-on haul, required.** Boned meat inside the bag, IM1–IM3 cinched against the spreader, ≤ 60 s, gloves. **Between bag and frame** (bulk): release the IM2/IM3 hooks, bag hinges open on the z 60 pins, same straps cinch the meat against the spreader in the wedge | Timed, measured |
 | R-10 | Extension posts are an ACCESSORY, lash/flag points only; lifters never move to the posts (US 10,952,523) | Drawing check |
 | R-12* | Meat-zone materials blood/wash tolerant; **meat straps removable and machine-washable** (plain polyester + anodised Al, no foam, no hook-and-loop) | BOM check, wash test |
@@ -231,22 +231,22 @@ The clip tongue is fatigue SF 0.28 even with an 18 mm root. The comparison is in
 ### 4.9 Meat haul, both modes required
 
 Record: `analysis/meat_haul_modes.md`. The bearing face in every mode is the 2.0 mm QI carbon
-spreader. Spreader stress SF **1.95** on the factored bone check. Peak skin pressure 10.6 kPa.
+spreader (stress SF **1.95**). Two 38 mm under-straps, anchored on fairleads at **z 95 and z 142**,
+cinch the bag floor to the frame when the bag is on and stay behind as a cradle when it is off.
+Each strap is an eye on the left pin, a 70 mm belly under the floor, and a 38 mm cam plus a
+tri-glide on the right. Added mass **122 g**, about **$22**. Detach **40 s**.
 
-**Bag on.** Meat in the bag. IM1–IM3 hook to the cleat eyes through the B-01 ports and cam against
-the spreader. The bag floor feeds the hinge pins. Cleat fatigue SF **1.67** (hinge, 726 N).
-Hook SF **2.48** on the 605 N strap demand. Branch-frame SF on `meat_straps` **2.49**.
+**Bag on.** IM1–IM3 cinch meat against the spreader. The under-straps take 55 % of the floor
+vertical. Governing anchor is US1 at 444 N, fatigue SF **1.62** (1 mm mesh, scaled from the
+489 N solve). Cradle cam SF **2.48**. Hinge drops to 368 N.
 
-**Between the bag and the frame.** Viable, and it is the bulk-meat way to keep the bag on.
-Release the four IM2/IM3 bag hooks, leave the hinge pins in, swing the bag open (250 mm at z 520,
-about 29°). The wedge is 147 mm at IM2. Meat sits on the spreader. The same straps hook to the
-eyes. Cleat fatigue SF **2.46**. Heaviest station is the hinge at 444 N.
+**Between the bag and the frame.** The under-straps stay cammed so the open floor does not dump
+the low end. US1 is 254 N, fatigue SF **2.84**. IM3 remains the heaviest cleat at 496 N,
+fatigue SF **2.46**.
 
-**Bag off.** Unhook those four hooks, pull the two hinge pins, lift the bag off (about 34 s,
-limit 2 min). Lay the quarter on the spreader. Hook IM1–IM3 eye-to-eye and cam tight. Friction
-on the sheet holds the weight (μ 0.4). Three straps need 235 N per leg at the walking peak of
-36 kg. The strength check is 353 N per leg. Cleat fatigue SF **3.45**. Hook SF **4.25**.
-W1 and W2 can add a second clamp. They are not required for that friction sum.
+**Bag off.** Pop the two cams, unhook IM2/IM3, pull the hinge pins. The quarter sits in the
+cradle. Factored cradle load 847 N. US1 tension **489 N**, strength SF **3.28**, fatigue SF
+**1.47** on the 1 mm cheek mesh. Cam SF **2.25**. IM straps only cinch (225 N, hook SF 6.67).
 
 ## 5. Meat hauling v3.1: internal meat harness, no shelf (DECISION D-19, owner 2026-11-01)
 

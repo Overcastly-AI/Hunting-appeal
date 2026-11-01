@@ -82,15 +82,17 @@ API (`huntkit.materials`):
 
 Owner, 2026-11-01. Both modes are requirements. The eight B-01 swells over the fairleads are accepted.
 
-Stations, both sides, z in mm: hinge 60, IM1 190, IM2 330, IM3 520. The bearing face in every
-mode is the 2.0 mm QI carbon spreader on the bag side of the stays. IM1 is a meat anchor only
-until the owner says otherwise. The hook break strength is still an assumption awaiting a proof test.
+Stations, both sides, z in mm: hinge 60, under-strap US1 95, under-strap US2 142, IM1 190,
+IM2 330, IM3 520. The bearing face in every mode is the 2.0 mm QI carbon spreader. The two
+38 mm under-straps cinch the bag floor to US1/US2 when the bag is on, and they are the cradle
+when the bag is off. IM1 is a meat anchor only until the owner says otherwise. Hook and cam
+ratings are still assumptions awaiting a proof test.
 
 | Mode | Required | What the modules share |
 |---|---|---|
-| `bag_on` | yes | Meat inside the bag. IM1–IM3 cinch it against the spreader. Vertical share into `strap_bottom` (the hinge pins). HA-LS-1 `meat_straps` is this mode. |
-| `between` | yes, as the bulk method of `bag_on` | Bag swings open on the hinge pins. IM2 and IM3 bag hooks released. Same straps cinch the meat against the spreader in the wedge. |
-| `bag_off` | yes | Bag off in ≤ 120 s (4 hooks + 2 hinge pins). A quarter ≤ 36 kg is cinched eye-to-eye on IM1–IM3 against the spreader. No shelf. |
+| `bag_on` | yes | Meat inside the bag. IM1–IM3 cinch it against the spreader. Floor vertical is shared by the hinge pins and the US1/US2 under-straps. |
+| `between` | yes, as the bulk method of `bag_on` | Bag swings open on the hinge pins. The under-straps stay cammed. IM2 and IM3 bag hooks released. |
+| `bag_off` | yes | Bag off in ≤ 120 s (2 cams + 4 hooks + 2 hinge pins). The under-straps stay on the frame as the cradle. IM1–IM3 cinch the quarter against the spreader. No shelf. |
 
 FEA models keep the groups in §2 (`strap_bottom`, `strap_lumbar`, `strap_mid`, `strap_upper`,
 `meat_face`). `meat_face` is the spreader, not the wearer's back. Pattern pieces for B-01 include

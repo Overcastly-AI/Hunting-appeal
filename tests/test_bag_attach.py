@@ -92,6 +92,9 @@ def test_both_haul_modes_required():
         assert modes[key]["hook_sf"] >= 1.0
         assert modes[key]["sheet_sf"] >= 1.3
     assert modes["bag_off"]["leg_walk_with_wraps_n"] == pytest.approx(141, abs=2)
-    for name in ("20261101_attach_5_bag_on.png", "20261101_attach_6_between.png",
-                 "20261101_attach_7_bag_off.png"):
+    assert modes["bag_off"]["cradle_cam_sf"] >= 1.5
+    assert modes["bag_on"]["nodes"]["us1"]["sf_fatigue"] >= 1.0
+    assert modes["bag_off"]["nodes"]["us1"]["n"] > modes["bag_on"]["nodes"]["us1"]["n"]
+    for name in ("20261101_attach_8_cradle_anchors.png", "20261101_attach_9_cradle_bag_on.png",
+                 "20261101_attach_10_cradle_bag_off.png", "20261101_attach_11_cradle_fea.png"):
         assert (ROOT / "docs" / "screens" / name).exists()
