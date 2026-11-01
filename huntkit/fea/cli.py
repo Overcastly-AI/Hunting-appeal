@@ -26,6 +26,8 @@ def demo(out: str = "outputs/fea_demo", torsos=(15, 19, 23)) -> Path:
         studies.append(run_study(fm, label=f"{name} 19 in, frame-only haul"))
     md = report(studies, outdir / "report.md",
                 title="Placeholder pack frame - FEA demo (carbon primary, aluminium baseline)")
+    with open(md, "a") as f:
+        f.write("\n".join(plate_example()) + "\n")
     with open(outdir / "summary.csv", "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["config", "case", "min_sf", "required_sf", "critical", "buckling",
@@ -37,6 +39,28 @@ def demo(out: str = "outputs/fea_demo", torsos=(15, 19, 23)) -> Path:
                             f"{r['buckling']:.2f}", f"{r['joint_sf']:.3f}", f"{r['joint_peak_sf']:.3f}",
                             r["pass"], f"{mass:.1f}"])
     return md
+
+
+def plate_example() -> list[str]:
+    """Illustrative Kirchhoff-plate check: CFRP hipbelt stiffener plate (cantilever wing)."""
+    from .materials_bridge import get_material
+    from .plate import kirchhoff_plate
+    mat = get_material("cfrp_plate_quasi_iso")
+    a, b, t = 120.0, 70.0, 2.0
+    W = 68 * 9.80665 * 2.5 * 0.8 / 2          # hipbelt share per wing at 2.5 g
+    r = kirchhoff_plate(a, b, t, E=mat.require("youngs_modulus_mpa"), nu=mat.get("poisson", 0.3),
+                        patch={"x0": a - 20, "x1": a, "y0": 0, "y1": b, "force_n": W},
+                        edges={"left": "clamped", "right": "free", "bottom": "free", "top": "free"})
+    allow = float(mat.get("compressive_strength_mpa", 450)) * 0.8 * 0.65
+    return ["## Plate check example: CFRP hipbelt stiffener wing", "",
+            f"Quasi-isotropic CFRP plate ({mat.id}, source {mat.source}) {a:g} x {b:g} x {t:g} mm, clamped "
+            f"to the lumbar node on one {b:g} mm edge, {W:.0f} N (hipbelt 80 % share of 68 kg x 2.5 g, one "
+            f"side) spread over the outer 20 mm. Kirchhoff/Morley plate (`huntkit.fea.plate`).", "",
+            f"- tip deflection {r.w_max:.1f} mm; peak bending stress {r.sigma_vm_max:.0f} MPa; allowable "
+            f"{allow:.0f} MPa (compression strength x0.8 hot/wet x0.65 impact) -> SF {allow / r.sigma_vm_max:.2f}",
+            "- ASSUMPTION: homogenised quasi-isotropic plate; ply-level check with `composite.Laminate` "
+            "is needed once the plate layup is chosen. Linear theory: if deflection > ~t/2, treat as indicative.",
+            ""]
 
 
 def solve_file(path: str, out: str | None, buckling: bool):
