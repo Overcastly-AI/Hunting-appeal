@@ -74,8 +74,19 @@ def load_colorways(path: Path = COLORWAYS) -> dict:
         return yaml.safe_load(fh)
 
 
+def colorway_section(cw: dict, section: str | None = None) -> dict:
+    """``None``/"primary" -> top-level (Owner Base system); "alternate" -> Cirquefall system."""
+    if section in (None, "primary"):
+        return cw
+    return cw[section]
+
+
+def all_solids(cw: dict) -> list[dict]:
+    return list(cw.get("solids", [])) + list(cw.get("alternate", {}).get("solids", []))
+
+
 def _solid_hex(cw: dict, key: str) -> str:
-    for s in cw["solids"]:
+    for s in all_solids(cw):
         if s["key"] == key:
             return s["hex"]
     raise KeyError(key)
@@ -319,8 +330,10 @@ def preview_distance(spec: dict, extra: list[tuple[str, np.ndarray, float]] | No
     return save_png(im, PREVIEW_DIR / f"{spec['name']}_distance.png", limit=MAX_PREVIEW_BYTES)
 
 
-def swatch_card(pattern_names: list[str], path: Path | None = None) -> Path:
-    cw = load_colorways()
+def swatch_card(pattern_names: list[str], path: Path | None = None,
+                section: str | None = "alternate") -> Path:
+    """Cirquefall (alternate) colour card. The Owner Base card is owner_export.swatch_card."""
+    cw = colorway_section(load_colorways(), section)
     rows: list[tuple[str, list[dict]]] = []
     seen = set()
     for n in pattern_names:
@@ -330,7 +343,7 @@ def swatch_card(pattern_names: list[str], path: Path | None = None) -> Path:
             continue
         seen.add(key)
         rows.append((f"Camo inks — {sp.get('display_name', n)}", sp["palette"]))
-    rows.append(("Solid colorway line (colorways.yaml)", cw["solids"]))
+    rows.append((f"Solid colorway line (colorways.yaml{' ' + section if section else ''})", cw["solids"]))
     sw, gap, rowh, left = 200, 14, 300, 20
     ncol = max(len(r[1]) for r in rows)
     W = left * 2 + ncol * (sw + gap)
@@ -458,10 +471,11 @@ def render_mock(geom: dict, body_hex: str, trim_hex: str, pattern_rgb: np.ndarra
     return np.asarray(im)
 
 
-def preview_accent_mocks(ppmm: float = 0.8) -> Path:
-    """Jacket + pack front, solid body + camo accents, one row per accent pairing."""
+def preview_accent_mocks(ppmm: float = 0.8, section: str | None = "alternate") -> Path:
+    """Jacket + pack front, solid body + camo accents, one row per accent pairing
+    (Cirquefall alternate system; Owner Base mocks are in owner_export)."""
     cw = load_colorways()
-    pairs = cw["accent_pairings"]
+    pairs = colorway_section(cw, section)["accent_pairings"]
     cache: dict[str, np.ndarray] = {}
     tiles = []
     for p in pairs:
@@ -503,9 +517,10 @@ def preview_fullfill_mock(names: list[str], ppmm: float = 0.6) -> Path:
     return save_png(im, PREVIEW_DIR / "fullfill_jacket_mock.png", limit=MAX_PREVIEW_BYTES)
 
 
-def accent_mock_rgb(pairing_id: str, ppmm: float = 1.0, bg_hex: str | None = None) -> np.ndarray:
+def accent_mock_rgb(pairing_id: str, ppmm: float = 1.0, bg_hex: str | None = None,
+                    section: str | None = "alternate") -> np.ndarray:
     cw = load_colorways()
-    p = next(x for x in cw["accent_pairings"] if x["id"] == pairing_id)
+    p = next(x for x in colorway_section(cw, section)["accent_pairings"] if x["id"] == pairing_id)
     pat = render_rgb(engine.load_pattern(p["accent_pattern"]), ppmm * 25.4)
     bg = color.hex_to_rgb8(bg_hex) if bg_hex else (246, 245, 241)
     return render_mock(JACKET, _solid_hex(cw, p["body"]), _solid_hex(cw, p["trim"]), pat, ppmm,

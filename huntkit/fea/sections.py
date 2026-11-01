@@ -157,7 +157,63 @@ class CompositeTube(Section):
         return best
 
 
-def composite_tube(od: float, layup, material_id, ply_t: float | None = None,
+def _laminate(layup, material_id, ply_t):
+    ply = None
+    if material_id is not None:
+        ply = material_id if isinstance(material_id, Ply) else Ply.from_material(material_id, ply_t)
+        if ply_t is not None:
+            ply.t = ply_t
+    return Laminate.from_layup(layup, ply)
+
+
+def _layup_str(layup, lam):
+    if isinstance(layup, str):
+        return layup
+    if isinstance(layup, (list, tuple)) and all(isinstance(a, (int, float)) for a in layup):
+        return str(list(layup))
+    return lam.describe()
+
+
+@dataclass
+class CompositeRectTube(CompositeTube):
+    """Thin-walled rectangular composite tube; ``w`` along local y, ``h`` along local z."""
+
+    def failure(self, N, Vy, Vz, T, My, Mz, knockdown=None, criterion=None, n: int = 0) -> dict:
+        kd = self.knockdown if knockdown is None else knockdown
+        crit = criterion or self.criterion
+        t = self.laminate.thickness
+        wm, hm = self.dims["w"] - t, self.dims["h"] - t
+        Am = wm * hm
+        y = np.array([wm / 2, wm / 2, -wm / 2, -wm / 2, 0, 0, wm / 2, -wm / 2])
+        z = np.array([hm / 2, -hm / 2, hm / 2, -hm / 2, hm / 2, -hm / 2, 0, 0])
+        sx = N / self.A + My * z / self.Iy - Mz * y / self.Iz
+        q_t = T / (2 * Am)
+        q_v = 0.75 * abs(Vz) / hm + 0.75 * abs(Vy) / wm      # conservative, added at every point
+        Nxy = q_t + np.sign(q_t if q_t else 1.0) * q_v
+        fi, ply, sig = self.laminate.membrane_fpf_batch(np.c_[sx * t, np.zeros(8), np.full(8, Nxy)], kd, crit)
+        k = int(np.argmax(fi))
+        return {"fi": float(fi[k]), "criterion": crit, "ply": int(ply[k]),
+                "angle": self.laminate.angles[int(ply[k])], "sig12": sig[k], "point_yz": (y[k], z[k]),
+                "Nx": float(sx[k] * t), "Nxy": float(Nxy), "sf": 1 / fi[k] if fi[k] > 0 else np.inf}
+
+
+def composite_rect_tube(w: float, h: float, layup, material_id=None, ply_t: float | None = None,
+                        knockdown: dict | None = None, criterion: str = "tsai_wu") -> CompositeRectTube:
+    """Rectangular (or, approximately, oval) roll-wrapped composite tube, outer w x h."""
+    lam = _laminate(layup, material_id, ply_t)
+    t = lam.thickness
+    base = tube_rect(w, h, t)
+    eng = lam.engineering()
+    return CompositeRectTube("composite_rect_tube", {"w": w, "h": h, "t": t, "n_plies": len(lam.angles)},
+                             base.A, base.Iy, base.Iz, base.J, Wt=base.Wt, ymax=w / 2, zmax=h / 2,
+                             Asy=base.Asy, Asz=base.Asz, composite=True, laminate=lam,
+                             layup_str=_layup_str(layup, lam), Ex=eng["Ex"], Gxy=eng["Gxy"],
+                             density_kg_m3=lam.density_kg_m3,
+                             knockdown=dict(DEFAULT_KNOCKDOWN) if knockdown is None else knockdown,
+                             criterion=criterion)
+
+
+def composite_tube(od: float, layup, material_id=None, ply_t: float | None = None,
                    knockdown: dict | None = None, criterion: str = "tsai_wu") -> CompositeTube:
     """Composite tube from a layup (angles from the tube axis) and a UD ply material.
 
@@ -165,10 +221,7 @@ def composite_tube(od: float, layup, material_id, ply_t: float | None = None,
     composite keys (E1_mpa, E2_mpa, G12_mpa, nu12, Xt_mpa, Xc_mpa, Yt_mpa, Yc_mpa, S_mpa,
     ply_thickness_mm, density_kg_m3).
     """
-    ply = material_id if isinstance(material_id, Ply) else Ply.from_material(material_id, ply_t)
-    if ply_t is not None:
-        ply.t = ply_t
-    lam = Laminate.from_layup(layup, ply)
+    lam = _laminate(layup, material_id, ply_t)
     t = lam.thickness
     di = od - 2 * t
     if di <= 0:
@@ -180,8 +233,8 @@ def composite_tube(od: float, layup, material_id, ply_t: float | None = None,
     return CompositeTube("composite_tube", {"od": od, "t": t, "n_plies": len(lam.angles)}, A, I, I, J,
                          Wt=J / (od / 2), ymax=od / 2, zmax=od / 2, Asy=A / 2, Asz=A / 2,
                          composite=True, laminate=lam,
-                         layup_str=str(layup) if isinstance(layup, str) else str(parse_layup(layup)),
-                         Ex=eng["Ex"], Gxy=eng["Gxy"], density_kg_m3=ply.density_kg_m3,
+                         layup_str=_layup_str(layup, lam),
+                         Ex=eng["Ex"], Gxy=eng["Gxy"], density_kg_m3=lam.density_kg_m3,
                          knockdown=dict(DEFAULT_KNOCKDOWN) if knockdown is None else knockdown,
                          criterion=criterion)
 
@@ -193,5 +246,8 @@ def from_spec(spec) -> Section:
     s = dict(spec)
     typ = s.pop("type")
     fn = {"tube_round": tube_round, "tube_rect": tube_rect, "flat_bar": flat_bar,
-          "composite_tube": composite_tube, "generic": generic}[typ]
+          "composite_tube": composite_tube, "composite_rect_tube": composite_rect_tube,
+          "generic": generic}[typ]
+    if "material" in s and typ.startswith("composite"):
+        s["material_id"] = s.pop("material")
     return fn(**s)

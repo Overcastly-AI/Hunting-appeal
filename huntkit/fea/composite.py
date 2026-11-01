@@ -151,9 +151,52 @@ class Laminate:
         self.A, self.B, self.D = A, B, D
 
     @classmethod
-    def from_layup(cls, layup, ply: Ply) -> "Laminate":
-        ang = parse_layup(layup)
-        return cls([ply] * len(ang), ang)
+    def from_layup(cls, layup, ply: Ply | None = None) -> "Laminate":
+        """Single-material layup (string / angle list) with ``ply``, or a mixed layup: a list of
+        tuples ``(angle, material_ref[, t])`` or dicts ``{"angle", "material", "t", "n"}``
+        (inner -> outer). Plain numbers in a mixed list use ``ply``."""
+        if isinstance(layup, (list, tuple)) and any(isinstance(x, (tuple, list, dict)) for x in layup):
+            plies, ang = [], []
+            cache = {}
+            for item in layup:
+                if isinstance(item, dict):
+                    a, mref, t, n = item["angle"], item.get("material"), item.get("t"), int(item.get("n", 1))
+                elif isinstance(item, (tuple, list)):
+                    a, mref = item[0], item[1]
+                    t = item[2] if len(item) > 2 else None
+                    n = 1
+                else:
+                    a, mref, t, n = item, None, None, 1
+                if mref is None:
+                    p = ply
+                else:
+                    key = (str(mref), t)
+                    if key not in cache:
+                        cache[key] = mref if isinstance(mref, Ply) else Ply.from_material(mref, t)
+                    p = cache[key]
+                for aa in parse_layup([a] if not isinstance(a, str) else a):
+                    plies += [p] * n
+                    ang += [aa] * n
+            return cls(plies, ang)
+        angs = parse_layup(layup)
+        return cls([ply] * len(angs), angs)
+
+    @property
+    def density_kg_m3(self) -> float:
+        return sum(p.t * p.density_kg_m3 for p in self.plies) / self.thickness
+
+    def describe(self) -> str:
+        out, prev, n = [], None, 0
+        for p, a in zip(self.plies, self.angles):
+            key = (p.name, a)
+            if key == prev:
+                n += 1
+                continue
+            if prev:
+                out.append(f"{prev[1]:g}{'_' + str(n) if n > 1 else ''}({prev[0]})")
+            prev, n = key, 1
+        out.append(f"{prev[1]:g}{'_' + str(n) if n > 1 else ''}({prev[0]})")
+        return "[" + " / ".join(out) + "]  (inner -> outer)"
 
     @property
     def thickness(self) -> float:
