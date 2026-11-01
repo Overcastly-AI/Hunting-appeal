@@ -25,3 +25,4 @@
 | 2026-11-01 | Rain fly counts in the advertised base weight | owner | |
 | 2026-11-01 | Load standard HA-LS-1 adopted; frame v2 = 577 g (straight stays, carbon wraps, hat lumbar pan) | Claude (per owner "match leaders") | Crush coupon T7 must pass before relying on the bushing-contact credit |
 | 2026-11-01 | Generative design result: printed Ti lugs are +194 g vs carbon wraps, so KEEP carbon wraps; Ti hip-pivot mount only (-8 g). Printed parts used for crown rack/pawl, pulley guides and prototypes | Claude | See analysis/generative_design.md |
+| 2026-11-01 | CORRECTION: generative design applies to the WHOLE FRAME as one topology-optimized 3D-printed structure (fully plastic acceptable), not the joints | owner | Study: analysis/printed_frame_study.md compares FDM PA-CF, SLS PA11/12, continuous-fiber printing, SLM Al vs the 577 g tube frame; covers mass, stiffness, creep, fatigue, printability |
