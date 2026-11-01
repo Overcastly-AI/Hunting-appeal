@@ -97,7 +97,7 @@ def plot_deformed(results: dict, png: Path, title: str):
         ax.set_title(f"{name}\nmax elastic {dmax:.1f} mm (x{sc:.0f})", fontsize=8, color=INK)
     fig.suptitle(f"{title}: deformed shape (blue, rigid-body motion on body springs removed) "
                  f"vs undeformed (grey dashed)", fontsize=9, color=INK)
-    fig.tight_layout()
+    fig.subplots_adjust(left=0.02, right=0.98, bottom=0.03, top=0.88, wspace=0.05, hspace=0.25)
     fig.savefig(png)
     plt.close(fig)
 
@@ -125,13 +125,13 @@ def plot_utilization(results: dict, png: Path, title: str):
         ax.set_title(f"{name}\nmax u = {u.max():.2f} ({status}; SF {r.min_sf:.2f} vs req "
                      f"{r.meta.get('required_sf', 2.0):g})", fontsize=8, color=INK)
     sm = plt.cm.ScalarMappable(norm=norm, cmap=CMAP)
-    cax = fig.add_axes([0.25, 0.02, 0.5, 0.015])
+    cax = fig.add_axes([0.25, 0.07, 0.5, 0.015])
     cb = fig.colorbar(sm, cax=cax, orientation="horizontal")
     cb.set_label("utilisation u = required SF / member SF  (u > 1 fails; thick lines; circle = max)",
                  fontsize=8, color=INK)
     cb.ax.tick_params(labelsize=7)
     fig.suptitle(f"{title}: member utilisation", fontsize=9, color=INK)
-    fig.tight_layout(rect=(0, 0.05, 1, 1))
+    fig.subplots_adjust(left=0.02, right=0.98, bottom=0.13, top=0.9, wspace=0.05, hspace=0.25)
     fig.savefig(png)
     plt.close(fig)
 
