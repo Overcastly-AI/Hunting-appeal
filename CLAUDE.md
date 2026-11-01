@@ -1,7 +1,7 @@
 # Hunting-Appeal — Claude-driven hunting gear design
 
 This repo designs technical mountain-hunting apparel (original camo plus solid colorways,
-in the performance class of brands like KUIU) and a 5200 cu in (≈85 L) framed hunting pack.
+in the performance class of brands like KUIU; mostly solid colors with camo used as edgy accent panels) and a 5200 cu in (≈85 L) framed hunting pack.
 **Claude does most of the engineering. The human owner builds and sews the gear.**
 That means every design must end with **mass-production-ready cut and sew packages**:
 true-scale patterns, cutting markers, sewing operation sequences, BOMs and QC specs.
