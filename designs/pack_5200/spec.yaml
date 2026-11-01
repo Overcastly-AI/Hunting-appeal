@@ -9,8 +9,21 @@ load:
   sf_yield_min: 2.0
   sf_buckling_min: 3.0
 fit:
-  torso_range_in: [15, 23]      # adjustable
-  hipbelt_sizes: [S, M, L, XL]
+  universal: true               # OWNER DECISION 2026-11-01: one frame/bag fits all users
+  torso_range_in: [15, 23]      # continuously adjustable on ONE frame, no tools / field-adjustable
+  hipbelt: "interchangeable sizes S-XL on a common attachment, plus angle/cant adapting to hip shape"
+  shoulder_harness: "interchangeable or wide-range; works for men and women (curved/S-strap option)"
+  sternum_strap: "sliding rail, wide vertical range"
+frame:
+  material_family: carbon       # OWNER DECISION 2026-11-01: carbon fiber frame
+  fabrication: "builder-achievable: off-the-shelf roll-wrapped/pultruded carbon tubes & plate + bonded/molded joints; no autoclave required"
+builder:
+  experience: beginner          # OWNER: first time sewing, no machine yet
+  equipment_owned: []
+  implications:
+    - "provide equipment buy list (prototype -> batch production)"
+    - "step-by-step illustrated build guides with practice exercises before each skill"
+    - "minimize difficult ops for prototypes; production docs also quote-ready for a contract factory"
 targets:                        # to be refined by pack-designer with benchmarks
   total_mass_g_max: null
   frame_mass_g_max: null
