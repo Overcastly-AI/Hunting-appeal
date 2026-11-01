@@ -723,7 +723,7 @@ harness:
   options: [J (unisex default), 'S (curved, 35 mm lateral offset)']
   sternum_rail_travel: 120.0
 weight:
-  production_pack_note: This total is the v2 carbon-tube bag baseline (frame line 569.2 g) without the carbon spreader. The production pack, tube frame plus the 2.0 mm spreader and the stay rails, is in analysis/mass_cut.md.
+  production_pack_note: This total is the v2 carbon-tube bag baseline (frame line 569.2 g). The production pack is the printed branch frame plus the spreader and the stay rails, in analysis/generative_branch.md.
   groups_g: {frame (frame.yaml v2 + printed Ti hip-pivot mount): 569.2, torso adjust (not in frame.yaml): 41.7,
     main bag: 405.4, accents: 52.7, rain fly: 74.7, pockets: 60.3, hipbelt (M): 334.3, harness: 212.5, back panel: 75.2,
     internal meat harness: 253.9, haul wraps (= compression): 108.1, misc: 36.1}

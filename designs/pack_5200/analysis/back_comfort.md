@@ -1,6 +1,6 @@
 # Back comfort and the smooth frame
 
-The back system in this file is still the production back system. The frame under it is not: the solid PAHT ladder was retired for mass. The production frame is the carbon-tube ladder in `mass_cut.md`. Comfort numbers below did not change.
+The back system in this file is still the production back system. The frame under it is the branching print in `generative_branch.md`, not the solid ladder and not the carbon-tube ladder. Comfort numbers below did not change.
 
 Owner priority (PR #2): the open window still lets meat, bone ends and lumpy gear push on the back. Comfort outranks mass. Code: `huntkit/gendesign/frame_smooth.py`.
 

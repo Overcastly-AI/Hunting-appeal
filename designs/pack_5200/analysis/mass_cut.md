@@ -1,5 +1,7 @@
 # Mass cut: keep the back, drop the solid nylon stays
 
+Superseded the same day. The owner rejected the carbon-tube ladder: the product has to read as a generative print. Production is `generative_branch.md`. The numbers below stay as the comparison.
+
 The back system does not change: 2.0 mm QI carbon spreader, two 100 × 420 × 10 mm XLPE rails, mesh over the air gap. Peak skin pressure **10.6 kPa**, spread **100 mm**. Code: `huntkit/gendesign/frame_light.py`.
 
 The solid smooth ladder (1291 g of PAHT, pack 7.51 lb, about 46 h to print) is retired as the structure. Hollowing that same outer shape saves almost nothing: the section is already about as thick as an 8 mm wall. A real hollow stay is a smaller tube, checked here as a beam.

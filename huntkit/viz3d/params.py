@@ -29,7 +29,7 @@ DEFAULT_PARAMS: dict = {
     "colorway": "talus",                    # colorways.yaml accent_pairings id
     "geometry_yaml": str(REPO / "designs" / "pack_5200" / "geometry.yaml"),
     "frame_yaml": "auto",                   # <spec dir>/frame.yaml if present (tube sizes)
-    "frame_type": "tube",                   # production frame: v2 carbon-tube ladder. "generative" is the heavy printed body.
+    "frame_type": "generative",             # production frame: the branching PAHT print. "tube" is the rejected carbon ladder.
     # PLACEHOLDER tube sizes until frame.yaml exists (FEA agent sizes them)
     "frame_tubes": {"stay_od": 19.05, "crown_leg_od": 15.9, "bar_od": 15.9, "post_od": 12.7},
     "lumbar_plate_t": 3.0, "spine_w": 46.0, "spine_t": 3.0, "yoke_plate_t": 1.5,
