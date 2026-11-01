@@ -77,3 +77,22 @@ API (`huntkit.materials`):
   spi, thread_id, needle, attachment/folder, notes, time_s)`.
 - `tech_pack(design, path)` builds the PDF: cover, flats, BOM, pattern list, op sequence, QC
   points, packaging.
+
+## 6. Meat haul and the bag-to-frame joint
+
+Owner, 2026-11-01. Both modes are requirements. The eight B-01 swells over the fairleads are accepted.
+
+Stations, both sides, z in mm: hinge 60, IM1 190, IM2 330, IM3 520. The bearing face in every
+mode is the 2.0 mm QI carbon spreader on the bag side of the stays. IM1 is a meat anchor only
+until the owner says otherwise. The hook break strength is still an assumption awaiting a proof test.
+
+| Mode | Required | What the modules share |
+|---|---|---|
+| `bag_on` | yes | Meat inside the bag. IM1–IM3 cinch it against the spreader. Vertical share into `strap_bottom` (the hinge pins). HA-LS-1 `meat_straps` is this mode. |
+| `between` | yes, as the bulk method of `bag_on` | Bag swings open on the hinge pins. IM2 and IM3 bag hooks released. Same straps cinch the meat against the spreader in the wedge. |
+| `bag_off` | yes | Bag off in ≤ 120 s (4 hooks + 2 hinge pins). A quarter ≤ 36 kg is cinched eye-to-eye on IM1–IM3 against the spreader. No shelf. |
+
+FEA models keep the groups in §2 (`strap_bottom`, `strap_lumbar`, `strap_mid`, `strap_upper`,
+`meat_face`). `meat_face` is the spreader, not the wearer's back. Pattern pieces for B-01 include
+the eight accepted swells. The procedure and the safety factors are in
+`designs/pack_5200/analysis/meat_haul_modes.md`.

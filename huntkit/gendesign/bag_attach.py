@@ -743,9 +743,9 @@ def write_docs(ctx: dict) -> str:
     a(f"- Bag off in about **{34} s** (four hooks and two hinge pins). Back on in about **70 s**.")
     a(f"- Marginal hardware and filament about **${cost['total']:.0f}**. Extra print time about **{cost['hours']:.2f} h**.")
     a("")
-    a("Bag-off stays available. The shelf is gone; the frame-only haul is the same fairleads with the")
-    a("bag unclipped and the meat straps hooked eye-to-eye. It costs no second mechanism. It is optional:")
-    a("leave the hinge pins in and the pack still carries every HA-LS-1 case.")
+    a("Bag-off is a required mode (owner, 2026-11-01), not an option. The same fairleads take the")
+    a("meat straps eye-to-eye once the bag is off. The procedure, the in-bag mode, and the wedge")
+    a("between bag and frame are in `analysis/meat_haul_modes.md`.")
     a("")
     a("## Why this one")
     a("")
@@ -893,10 +893,8 @@ def write_docs(ctx: dict) -> str:
     a("")
     a("## Open questions for the owner")
     a("")
-    a("1. Frame-only haul: the shelf is gone, and R-08 still asks for the bag to come off. This keeps that mode, and it adds no second set of hardware. Do you still want to unclip the bag and hang a quarter on the bare frame?")
-    a("2. The panel needs a feathered 16 mm swell over each cleat, inside the bag, so the cleat does not rub. Eight swells. Accept them?")
-    a("3. The hook rating is still an assumption. If a bought hook breaks under 900 N, IM3 needs two hooks or a larger one. Proof test before the first sewn bag.")
-    a("4. IM1 is meat-only, so the bag is held by the hinge, IM2 and IM3. A bag clip at IM1 adds two hooks and about eight seconds. Leave it meat-only?")
+    a("1. The hook rating is still an assumption. If a bought hook breaks under 900 N, IM3 needs two hooks or a larger one. Proof-test five hooks to 830 N before the first sewn bag.")
+    a("2. IM1 is a meat anchor only for now. A bag clip there adds two hooks. Leave it meat-only?")
     a("")
     path = ANALYSIS / "bag_attachment.md"
     path.write_text("\n".join(lines))
@@ -909,6 +907,10 @@ def write_docs(ctx: dict) -> str:
         "throat_mm": THROAT,
         "cheek_mm": CHEEK,
         "swell_mm": SWELL,
+        "swells_accepted": True,
+        "bag_on_required": True,
+        "bag_off_required": True,
+        "im1_bag_clip": False,
         "delta_g": mass["delta_g"],
         "pack_g": pack,
         "sf_min": min(r["sf"] for r in fea),

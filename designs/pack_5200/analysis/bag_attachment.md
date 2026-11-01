@@ -17,9 +17,9 @@ Code: `huntkit/gendesign/bag_attach.py`. Load standard: HA-LS-1 rev B.
 - Bag off in about **34 s** (four hooks and two hinge pins). Back on in about **70 s**.
 - Marginal hardware and filament about **$48**. Extra print time about **1.75 h**.
 
-Bag-off stays available. The shelf is gone; the frame-only haul is the same fairleads with the
-bag unclipped and the meat straps hooked eye-to-eye. It costs no second mechanism. It is optional:
-leave the hinge pins in and the pack still carries every HA-LS-1 case.
+Bag-off is a required mode (owner, 2026-11-01). The same fairleads take the
+meat straps eye-to-eye once the bag is off. Both haul modes, the wedge between bag and frame,
+and the safety factors are in `analysis/meat_haul_modes.md`. The eight B-01 swells are accepted.
 
 ## Why this one
 
@@ -161,7 +161,5 @@ Cost is marginal. Filament $4.26, scrap $0.64, extra machine time $1.75, hooks p
 
 ## Open questions for the owner
 
-1. Frame-only haul: the shelf is gone, and R-08 still asks for the bag to come off. This keeps that mode, and it adds no second set of hardware. Do you still want to unclip the bag and hang a quarter on the bare frame?
-2. The panel needs a feathered 16 mm swell over each cleat, inside the bag, so the cleat does not rub. Eight swells. Accept them?
-3. The hook rating is still an assumption. If a bought hook breaks under 900 N, IM3 needs two hooks or a larger one. Proof test before the first sewn bag.
-4. IM1 is meat-only, so the bag is held by the hinge, IM2 and IM3. A bag clip at IM1 adds two hooks and about eight seconds. Leave it meat-only?
+1. The hook rating is still an assumption. If a bought hook breaks under 900 N, IM3 needs two hooks or a larger one. Proof-test five hooks to 830 N before the first sewn bag.
+2. IM1 is a meat anchor only for now. A bag clip there adds two hooks. Leave it meat-only?

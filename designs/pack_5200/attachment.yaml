@@ -11,6 +11,10 @@ hole_d_mm: 7.2
 throat_mm: 18
 cheek_mm: 8
 swell_mm: 16
+swells_accepted: true
+bag_on_required: true
+bag_off_required: true
+im1_bag_clip: false
 delta_g: 113.3
 pack_g: 2979
 sf_min: 2.966

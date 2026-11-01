@@ -80,3 +80,18 @@ def test_recorded_fairlead_clears_strength_and_fatigue():
     assert len(screens) >= 4
     for s in screens:
         assert Path(s).exists()
+
+
+def test_both_haul_modes_required():
+    from huntkit.gendesign.meat_haul import analyse
+    modes = analyse()
+    for key in ("bag_on", "between", "bag_off"):
+        assert modes[key]["required"] is True
+        assert modes[key]["viable"] is True
+        assert modes[key]["cleat_fatigue"] >= 1.0
+        assert modes[key]["hook_sf"] >= 1.0
+        assert modes[key]["sheet_sf"] >= 1.3
+    assert modes["bag_off"]["leg_walk_with_wraps_n"] == pytest.approx(141, abs=2)
+    for name in ("20261101_attach_5_bag_on.png", "20261101_attach_6_between.png",
+                 "20261101_attach_7_bag_off.png"):
+        assert (ROOT / "docs" / "screens" / name).exists()

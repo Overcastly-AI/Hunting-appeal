@@ -39,8 +39,8 @@ the frame.
 | R-01* | Main bag **85.2 L ± 1 L** (5200 ± 60 cu in), geometric, to the roll-top fill line with the collar closed by 3 rolls (150 mm of collar is closure, not volume). **Main bag only**: collar, lid, pockets, band pocket and meat bay excluded. Peak depth 11.5–12 in, fill height ~42 in (owner) | `build_geometry.py` exact ring-area integral **85.16 L**, polygon rings 85.15 L, `huntkit.viz3d` mesh **85.00 L** (−0.2 %). Prototype: ball fill ±5 % |
 | R-02 | Rated load 68 kg (150 lb), frame standard HA-LS-1 (`analysis/load_standard.md`) | FEA + physical proof/drop tests |
 | R-03..R-07 | Torso adjust 15–23 in, lifter angle 35–50° (40.6° at every setting), hipbelts S–XL, J/S harness, hip share: unchanged (Appendix A §1) | as v2 |
-| R-08* | Frame-only haul: bag off in ≤ 2 min; **internal straps IM1–IM3 hooked stub-to-stub + wraps W1/W2** hold one bone-in quarter (≤ 36 kg) with < 25 mm slip after 30 min. **No shelf** | Field test, sandbag dummy |
-| R-09* | **Meat mode (default, bag on)**: boned meat in game bags goes INSIDE the bag against B-01; IM1–IM3 hook to the frame stubs through the B-01 ports and cam tight: ≤ 60 s, gloves. **Bay mode** (bulk): pop 4 LINK toggles, bag hinges back 250 mm at the crown on its bottom pins (bay ~26 L), same straps hook stub-to-stub round the meat | Timed, measured |
+| R-08* | **Bag-off haul, required.** Bag off in ≤ 2 min (4 hooks + 2 hinge pins). On the bare frame, IM1–IM3 cinch one bone-in quarter (≤ 36 kg) against the carbon spreader, slip < 25 mm after 30 min. **No shelf** | Field test, sandbag dummy. Procedure in `analysis/meat_haul_modes.md` |
+| R-09* | **Bag-on haul, required.** Boned meat inside the bag, IM1–IM3 cinched against the spreader, ≤ 60 s, gloves. **Between bag and frame** (bulk): release the IM2/IM3 hooks, bag hinges open on the z 60 pins, same straps cinch the meat against the spreader in the wedge | Timed, measured |
 | R-10 | Extension posts are an ACCESSORY, lash/flag points only; lifters never move to the posts (US 10,952,523) | Drawing check |
 | R-12* | Meat-zone materials blood/wash tolerant; **meat straps removable and machine-washable** (plain polyester + anodised Al, no foam, no hook-and-loop) | BOM check, wash test |
 | R-13 | Quiet: no hook-and-loop, no film laminate on exposed faces, coil zips, magnetic sternum | BOM + brush-drag test |
@@ -219,12 +219,34 @@ Load lifters stay on the carbon crown corner wraps, with a tri-glide keeper behi
 lock. They do not move onto the printed body or the extension posts. The hipbelt stays on the Ti
 pivot (checked SF/required 8.6, fatigue 19.7).
 
-Bag-off is still in the design and it is optional. Four hooks and two hinge pins, about 34 s
-with gloves. The meat straps then hook eye-to-eye on the same fairleads. Leaving the pins in
-keeps a normal bag. Net mass **+113 g**. Pack **2979 g (6.57 lb)**. Marginal cost about **$48**.
+The eight feathered swells are accepted (owner, 2026-11-01). Bag-on and bag-off are both
+required. The procedures, the wedge between the bag and the frame, and the safety factors are
+in §4.9.
+
+Net mass **+113 g**. Pack **2979 g (6.57 lb)**. Marginal cost about **$48**.
 
 A sleeve, a rail, a magnetic buckle, a cam, and a printed clip tongue were compared and set aside.
 The clip tongue is fatigue SF 0.28 even with an 18 mm root. The comparison is in the analysis note.
+
+### 4.9 Meat haul, both modes required
+
+Record: `analysis/meat_haul_modes.md`. The bearing face in every mode is the 2.0 mm QI carbon
+spreader. Spreader stress SF **1.95** on the factored bone check. Peak skin pressure 10.6 kPa.
+
+**Bag on.** Meat in the bag. IM1–IM3 hook to the cleat eyes through the B-01 ports and cam against
+the spreader. The bag floor feeds the hinge pins. Cleat fatigue SF **1.67** (hinge, 726 N).
+Hook SF **2.48** on the 605 N strap demand. Branch-frame SF on `meat_straps` **2.49**.
+
+**Between the bag and the frame.** Viable, and it is the bulk-meat way to keep the bag on.
+Release the four IM2/IM3 bag hooks, leave the hinge pins in, swing the bag open (250 mm at z 520,
+about 29°). The wedge is 147 mm at IM2. Meat sits on the spreader. The same straps hook to the
+eyes. Cleat fatigue SF **2.46**. Heaviest station is the hinge at 444 N.
+
+**Bag off.** Unhook those four hooks, pull the two hinge pins, lift the bag off (about 34 s,
+limit 2 min). Lay the quarter on the spreader. Hook IM1–IM3 eye-to-eye and cam tight. Friction
+on the sheet holds the weight (μ 0.4). Three straps need 235 N per leg at the walking peak of
+36 kg. The strength check is 353 N per leg. Cleat fatigue SF **3.45**. Hook SF **4.25**.
+W1 and W2 can add a second clamp. They are not required for that friction sum.
 
 ## 5. Meat hauling v3.1: internal meat harness, no shelf (DECISION D-19, owner 2026-11-01)
 
@@ -324,7 +346,12 @@ v3 → v3.1 (−4 g): frame 650 → 569 (−81); torso adjust 96 → 42 (−54, 
 - D-22 (owner): main bag 85.2 L counted alone, depth 11.9 in, fill 42 in; one diagonal zip; fly in base weight.
 - D-23: frame v2 hard points adopted; frame mass = frame.yaml + printed Ti hip-pivot mount.
 - D-24 (2026-11-01): the bag attaches to the branch frame with eight printed fairleads (§4.8).
-  Bag-off stays available and optional. Lifters stay on the crown. The hipbelt stays on the Ti pivot.
+  Lifters stay on the crown. The hipbelt stays on the Ti pivot. Bag-off was written here as optional;
+  the owner made it required the same day (D-25).
+- D-25 (owner, 2026-11-01): **both meat-haul modes are required.** Bag on: IM1–IM3 cinch meat against
+  the spreader inside the bag, and the wedge between the open bag and the spreader is the bulk method.
+  Bag off: detach the bag and cinch the quarter to the bare frame on the same cleats and the spreader.
+  The eight B-01 swells are accepted. IM1 stays a meat anchor only for now. Hook proof test still open.
 
 **ASSUMPTIONS** (new in v3.1): meat CG 150 mm aft; 150 N hand cinch; μ 0.4 game bag on panel; 38 mm cam 22 g /
 1100 N; sliding-gate hook 9 g / 1500 N; bartack 2700 N; bay V-wedge to z 700 at 90 % width; head model inputs
@@ -335,10 +362,8 @@ tragion, condyle pivot 30 mm below the tragion, C7/T1 pivot 60 mm anterior); 30�
 **Open questions for the owner**
 1. Width: accept 15.5 in at the shoulder blades for the 42 in height, or keep 14.6 in and stand 45.5 in tall?
 2. Meat straps: 3 × 38 mm (254 g, recommended) or 2 × 38 mm (−80 g)?
-3. Frame-only haul: the shelf is gone. The fairleads still let the bag come off, and that mode adds no second mechanism. Do you still want to unclip the bag and hang a quarter on the bare frame?
-4. Eight feathered 16 mm swells in B-01, inside the bag, so each cleat has air over it. Accept them?
-5. The 1500 N hook rating is still an assumption. If a bought hook breaks under 900 N, IM3 needs two hooks or a larger one.
-6. IM1 is meat-only. A bag clip there adds two hooks. Leave it meat-only?
+3. The 1500 N hook rating is still an assumption. If a bought hook breaks under 900 N, IM3 needs two hooks or a larger one. Proof-test five to 830 N.
+4. IM1 is a meat anchor only for now. Add a bag clip there later, or leave it?
 
 **Hand-offs**
 - structural-fea-engineer: (1) replace the shelf cases with the internal-strap cases (`meat_harness.load_cases`:
