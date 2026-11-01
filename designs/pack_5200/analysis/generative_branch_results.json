@@ -1,0 +1,34 @@
+{
+  "winner": "Branch frame + carbon spreader",
+  "body_g": 774.34272,
+  "frame_g": 1194.32272,
+  "pack_g": 2865.44272,
+  "pack_lb": 6.317219842123888,
+  "scale": 1.05,
+  "sf_min": 1.6645320700725712,
+  "sf_fatigue": 1.0995441732727564,
+  "sf_creep": 2.345694236315214,
+  "governing": "hipbelt_off_abuse|15",
+  "cases": {
+    "static_carry": 2.9321177953940176,
+    "drop_2p5g": 1.9547451967775078,
+    "side_hill_torsion": 2.6613244028816774,
+    "single_stay_setdown": 3.2405726998663944,
+    "meat_straps": 2.4922690275410315,
+    "tall_load": 2.727021284318044,
+    "overload_haul": 3.50084138521643,
+    "tall_load_posts": 2.6995286912688736,
+    "hipbelt_off_abuse": 1.6645320700725712
+  },
+  "peak_kpa": 10.62889310691824,
+  "spread_mm": 100.0,
+  "print_h": 27.3942,
+  "cost_usd": 208.1653926592,
+  "h_mm": 2.0,
+  "screens": [
+    "/workspace/docs/screens/20261101_gen_1_options.png",
+    "/workspace/docs/screens/20261101_gen_2_views.png",
+    "/workspace/docs/screens/20261101_gen_3_mass.png",
+    "/workspace/docs/screens/20261101_gen_4_fea.png"
+  ]
+}

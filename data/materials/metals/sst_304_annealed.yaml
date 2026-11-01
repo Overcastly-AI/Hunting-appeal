@@ -1,0 +1,25 @@
+id: sst_304_annealed
+name: Stainless steel 304 (18-8), annealed
+category: metals
+generic: true
+trade_names: []
+supplier_examples:
+- McMaster-Carr (sleeve bearings and 304 tube)
+- OnlineMetals
+properties:
+  density_kg_m3: 7900
+  youngs_modulus_mpa: 193000
+  shear_modulus_mpa: 75000
+  poisson: 0.29
+  yield_strength_mpa: 215
+  ultimate_strength_mpa: 505
+  elongation_pct: 70
+  fatigue_limit_mpa: 95
+confidence: handbook
+sources:
+- 'ASM Handbook Vol. 1, Wrought Stainless Steels: 304 annealed typical properties (Sy ~215 MPa, Su ~505 MPa, E 193 GPa, density 7.9 g/cm3)'
+- 'MatWeb: AISI 304 stainless steel, annealed'
+cost_usd:
+  value: 12
+  per: kg
+notes: 'Annealed bar, not cold-worked. A pressed-in pawl bushing sees bearing, not the polished fatigue limit. Cold-worked 304 is stronger (Sy ~400+ MPa) if the bushing is drawn tube; the annealed yield is the conservative check. Fatigue limit is a typical R=-1 rotating-beam figure for annealed 304, not a design allowable for this part.'

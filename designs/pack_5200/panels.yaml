@@ -1258,21 +1258,35 @@ panels:
   zone: back panel
   cut_area_m2_each: 0.0786
   mass_g_total: 29.9
-  notes: perforated foam channels; wraps stays with 6 tabs
+  notes: 'mesh over the stay pads and slack across the window air gap (analysis/back_comfort.md)'
   seam_line_mm: null
 - id: BP-02
-  name: lower back panel foam
+  name: stay-rail foam
   sub_assembly: back_panel
   material_id: xlpe_foam
-  approx_size_mm: [210, 280]
+  approx_size_mm: [100, 420]
+  qty_total: 2
+  mirror_pair: true
+  seam_allowance_mm: 0.0
+  thickness_mm: 10.0
+  zone: back panel
+  cut_area_m2_each: 0.042
+  mass_g_total: 27.7
+  notes: 'PAIR on the stay lines, wearer face (analysis/back_comfort.md). The window between the rails is open mesh over an air gap, not foam. Replaces the single 210 x 280 x 6 mm sheet.'
+  seam_line_mm: null
+- id: BP-06
+  name: window spreader, QI carbon 2.0 mm
+  sub_assembly: back_panel
+  material_id: cfrp_plate_quasi_iso
+  approx_size_mm: [208, 300]
   qty_total: 1
   mirror_pair: false
   seam_allowance_mm: 0.0
-  thickness_mm: 6.0
+  thickness_mm: 2.0
   zone: back panel
-  cut_area_m2_each: 0.058
-  mass_g_total: 11.5
-  notes: perforated foam channels; wraps stays with 6 tabs
+  cut_area_m2_each: 0.0624
+  mass_g_total: 193.0
+  notes: 'Clipped to the stays on the bag side. Bone ends and the meat cinch land here and go into the stay pads. Not a foam hammock.'
   seam_line_mm: null
 - id: BP-03
   name: upper back pad face (on crown)
@@ -1286,7 +1300,7 @@ panels:
   zone: back panel
   cut_area_m2_each: 0.0446
   mass_g_total: 17.0
-  notes: perforated foam channels; wraps stays with 6 tabs
+  notes: 'on the crown, above the frame window'
   seam_line_mm: null
 - id: BP-04
   name: upper back pad foam
@@ -1300,7 +1314,7 @@ panels:
   zone: back panel
   cut_area_m2_each: 0.0296
   mass_g_total: 5.9
-  notes: perforated foam channels; wraps stays with 6 tabs
+  notes: on the crown
   seam_line_mm: null
 - id: BP-05
   name: back panel shell
@@ -1314,7 +1328,7 @@ panels:
   zone: back panel
   cut_area_m2_each: 0.0786
   mass_g_total: 11.0
-  notes: perforated foam channels; wraps stays with 6 tabs
+  notes: 'bag side of the mesh; the carbon spreader is behind it, not this fabric'
   seam_line_mm: null
 - id: R-01
   name: rifle butt boot body

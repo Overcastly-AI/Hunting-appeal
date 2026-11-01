@@ -219,6 +219,22 @@ def _generative_frame_parts(p: dict) -> list:
     return out
 
 
+def _barrier_part() -> Part | None:
+    """The carbon spreader is part of the back system on either frame."""
+    d = GENERATIVE_DIR
+    barrier = d / "genframe_barrier.stl"
+    if not barrier.exists():
+        return None
+    meta = {}
+    side = d / "genframe_barrier.json"
+    if side.exists():
+        import json
+        meta = json.loads(side.read_text())
+    return Part("frame_barrier", _planar_uv(trimesh.load(barrier, force="mesh")),
+                meta.get("material", "carbon"), "frame",
+                label=meta.get("label", "QI carbon window spreader"))
+
+
 def build_pack(params: dict | None = None) -> PackModel:
     p = deep_merge(DEFAULT_PARAMS, params or {})
     if p.get("frame_yaml") == "auto":
@@ -320,6 +336,9 @@ def build_pack(params: dict | None = None) -> PackModel:
             metrics["frame_type"] = "tube"
     else:
         metrics["frame_type"] = "tube"
+    barrier = _barrier_part()
+    if barrier is not None and not any(q.name == "frame_barrier" for q in parts):
+        parts.append(barrier)
 
     # ------------------------------------------------------------------ crown per torso
     settings = fr["crown_settings"]
@@ -958,7 +977,7 @@ def build_pack(params: dict | None = None) -> PackModel:
 
     # ------------------------------------------------------------------ FEA overlay
     fm = None
-    if p["fea"].get("enabled", True):
+    if p["fea"].get("enabled", True) and metrics.get("frame_type") != "generative":
         fea, fm = fea_overlay(p, tubes, g)
         if fea is not None:
             parts.append(Part("frame_fea", fea["mesh"], "fea", "fea", colors=fea["colors"],

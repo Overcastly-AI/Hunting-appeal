@@ -14,7 +14,7 @@ from huntkit.viz3d.params import CU_IN_TO_L, load_params  # noqa: E402
 @pytest.fixture(scope="module")
 def pack():
     from huntkit.viz3d.model import build_pack
-    p = load_params(overrides={"fea": {"enabled": False}})
+    p = load_params(overrides={"fea": {"enabled": False}, "frame_type": "tube"})
     return build_pack(p)
 
 
