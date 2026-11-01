@@ -147,7 +147,7 @@ Hypalon port patches on the inside of B-01). Shelf pieces S-01/S-05 deleted. 97 
 | HIP | hipbelt | 50 mm side-release | 1 |
 | ROLL | roll-top | 25 mm side-release, black | 2 |
 | HAUL | W1–W3 wraps | Al G-hook (left) + ladder lock (right), **coyote 25 mm** | 3 |
-| LINK | bag ↔ frame | POM toggle in 3-slot Hypalon tab + 2 hinge quick-pins | 4 + 2 |
+| LINK | bag ↔ frame | printed fairlead, 5 mm 7075 pin, 38 mm hook on IM2/IM3 (§4.8) | 8 fairleads, 2 pull-pins, 4 hooks |
 | **MEAT** (new; replaces SHELF) | internal meat straps IM1–IM3 | **38 mm** bone/stone webbing (the only 38 mm on the pack), Al sliding-gate hooks into frame-stub eyes, 38 mm metal cam with glove pull-tab | 3 straps, 6 hooks, 3 cams |
 | QUICK | sternum, lid | magnetic 25 mm | 1 (+4 lid) |
 | TRIM | lifters, stabilizers | 25 mm ladder locks | 6 |
@@ -190,6 +190,42 @@ upright head (CVA +1 SD) touches at 25–27°, i.e. a soft bag contact on a shar
 carry the head forward (lower CVA), so the mean is the right design case, but the prototype must confirm it (side photos
 of 3 testers at the 15/19/23 settings). The orange-flag accessory posts are not in this check (lash points, behind the bar).
 
+### 4.8 Bag-to-frame attachment (branch fairlead)
+
+The production frame is the printed branch body. The toggles and the girth-hitched stubs in the
+v3.1 notes were drawn for a carbon-tube stay. On this frame the bag hangs on **eight printed
+fairleads**, one part, grown on the bag face of the stays. Record:
+`analysis/bag_attachment.md`. Parameters: `attachment.yaml`.
+
+| Station | z | What uses it |
+|---|---:|---|
+| Hinge | 60 | Sewn 38 mm eye on a tethered pull-pin. Leave the pins in and the bag swings for a bay load. Pull them and the bag comes off. |
+| IM1 | 190 | Meat strap only. The bag does not clip here. |
+| IM2 | 330 | Bag hook and meat strap, beside the open branch window. |
+| IM3 | 520 | Bag hook and meat strap. |
+
+The pin is 5 mm 7075-T6 in double shear (yield SF 14.4 on the 726 N hinge load) inside a UHMWPE
+sleeve (bearing SF 2.32). The printed cheek, 1 mm mesh, is strength SF 2.97 and fatigue SF 1.67
+at the hinge, which governs. IM3, the heavy aft pull (554 N), is strength SF 3.91 and fatigue
+SF 2.20. The bag hook is the 38 mm sliding-gate hook already assumed for the meat harness
+(1500 N), SF 2.71 at IM3. The bartack on the hinge eye is the same 2700 N assumption, SF 3.72.
+
+Nothing is added on the wearer side. The branch window stays open. B-01, which sits 20 mm aft of
+the stay centre, gets a feathered 16 mm swell, 90 mm long, over each fairlead so the cleat has
+about 2 mm of air and does not rub the cloth. The spreader is notched 22 mm in height at each
+fairlead, at the edge landing.
+
+Load lifters stay on the carbon crown corner wraps, with a tri-glide keeper behind each ladder
+lock. They do not move onto the printed body or the extension posts. The hipbelt stays on the Ti
+pivot (checked SF/required 8.6, fatigue 19.7).
+
+Bag-off is still in the design and it is optional. Four hooks and two hinge pins, about 34 s
+with gloves. The meat straps then hook eye-to-eye on the same fairleads. Leaving the pins in
+keeps a normal bag. Net mass **+113 g**. Pack **2979 g (6.57 lb)**. Marginal cost about **$48**.
+
+A sleeve, a rail, a magnetic buckle, a cam, and a printed clip tongue were compared and set aside.
+The clip tongue is fatigue SF 0.28 even with an 18 mm root. The comparison is in the analysis note.
+
 ## 5. Meat hauling v3.1: internal meat harness, no shelf (DECISION D-19, owner 2026-11-01)
 
 ### 5.1 Research and IP
@@ -202,6 +238,12 @@ shelf" element of MR US 10,952,523 claim 1; no SG patents found; KUIU's patent-p
 the attorney FTO before tooling.
 
 ### 5.2 Architecture
+
+**Branch-frame update.** The six girth-hitched stubs below are eyes on the fairlead pins (§4.8).
+Same heights, same 38 mm straps, same hooks. A cracked cleat is bypassed in the field by hitching
+the webbing around the stay, which puts the old path back without a printer. The paragraphs under
+this line are the v3.1 tube-frame writeup and stay as the load and hardware record.
+
 - **3 straps, IM1–IM3**, 38 mm `poly_webbing_38mm` (bone/stone colour: blood shows, so it gets washed), at **z 190**
   (lumbar-pan top land on the stay), **z 330** (mid-bar node, the same node the v2 shelf straps loaded) and **z 520**
   (upper-bar node). Never mid-span. Cut lengths 973 / 1023 / 1083 mm.
@@ -255,6 +297,10 @@ the attorney FTO before tooling.
 | Thread, labels | 36 | 1.3 | ASSUMPTION: 3 % of soft goods + 8 g |
 | **Total** | **2224** | **78.5 (4.90 lb)** | target 2268 g (5.0 lb): **44 g margin** |
 
+The 2224 g line is the v3.1 tube-frame budget. On the printed branch frame the pack is 2865 g
+before this attachment (`analysis/generative_branch.md`). The fairleads add **113 g** net of the
+LINK hardware they replace. Current pack **2979 g (6.57 lb)**.
+
 Not in base: optional lid 141 g, rifle boot 36 g, extension posts ≈ 60 g (ASSUMPTION), XL belt ≈ +45 g.
 Levers if needed: 25 mm meat straps (−40 g, but they bite game bags), 2 internal straps instead of 3 (−80 g; IM2 + IM3
 only), 100D side-pocket gussets (−8 g).
@@ -277,6 +323,8 @@ v3 → v3.1 (−4 g): frame 650 → 569 (−81); torso adjust 96 → 42 (−54, 
   crown-corner wraps (x ±105).
 - D-22 (owner): main bag 85.2 L counted alone, depth 11.9 in, fill 42 in; one diagonal zip; fly in base weight.
 - D-23: frame v2 hard points adopted; frame mass = frame.yaml + printed Ti hip-pivot mount.
+- D-24 (2026-11-01): the bag attaches to the branch frame with eight printed fairleads (§4.8).
+  Bag-off stays available and optional. Lifters stay on the crown. The hipbelt stays on the Ti pivot.
 
 **ASSUMPTIONS** (new in v3.1): meat CG 150 mm aft; 150 N hand cinch; μ 0.4 game bag on panel; 38 mm cam 22 g /
 1100 N; sliding-gate hook 9 g / 1500 N; bartack 2700 N; bay V-wedge to z 700 at 90 % width; head model inputs
@@ -287,6 +335,10 @@ tragion, condyle pivot 30 mm below the tragion, C7/T1 pivot 60 mm anterior); 30�
 **Open questions for the owner**
 1. Width: accept 15.5 in at the shoulder blades for the 42 in height, or keep 14.6 in and stand 45.5 in tall?
 2. Meat straps: 3 × 38 mm (254 g, recommended) or 2 × 38 mm (−80 g)?
+3. Frame-only haul: the shelf is gone. The fairleads still let the bag come off, and that mode adds no second mechanism. Do you still want to unclip the bag and hang a quarter on the bare frame?
+4. Eight feathered 16 mm swells in B-01, inside the bag, so each cleat has air over it. Accept them?
+5. The 1500 N hook rating is still an assumption. If a bought hook breaks under 900 N, IM3 needs two hooks or a larger one.
+6. IM1 is meat-only. A bag clip there adds two hooks. Leave it meat-only?
 
 **Hand-offs**
 - structural-fea-engineer: (1) replace the shelf cases with the internal-strap cases (`meat_harness.load_cases`:
@@ -296,7 +348,7 @@ tragion, condyle pivot 30 mm below the tragion, C7/T1 pivot 60 mm anterior); 30�
   shelf-pivot socket: drop it.
 - materials-engineer: records for `cam_buckle_38mm_al`, `hook_sliding_gate_38mm_al`, G-hook 25 mm, POM toggle,
   quick-pin, 3 mm flat elastic, blaze-orange 210D; a bartack strength coupon for 38 mm webbing (tex 135 box-X).
-- pattern-maker: re-draft B-01 (setback step + 6 ports), B-02a/b, B-03, D-01 from `panels.yaml → seam_line_mm`
+- pattern-maker: re-draft B-01 (setback step + 6 ports + eight 16 mm feathered swells over the fairleads, §4.8), B-02a/b, B-03, D-01 from `panels.yaml → seam_line_mm`
   (seam mismatch now ≤ 5.8 mm: notch every 50 mm); delete S-01/S-05.
 - manufacturing-engineer: BUILD_PLAN steps 6 and 9 updated; meat-harness proof tests (§5.3) in QC.
 
