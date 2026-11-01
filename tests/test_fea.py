@@ -67,8 +67,11 @@ def test_thin_tube_torsion():
     J_thin = 2 * np.pi * Rm ** 3 * t
     r = solve(beam(L, s, supports={"A": "fixed"}, loads={"B": [0, 0, 0, T, 0, 0]}))
     assert rel(r.displacements["B"][3], T * L / (G * J_thin)) < 0.01
-    tau_thin = T / (2 * np.pi * Rm ** 2 * t)              # Bredt
-    assert rel(r.critical_member["check"]["torsion"], tau_thin) < 0.02
+    # max shear stress at the outer fibre, closed form T*Ro/Jp with Jp = pi (D^4 - d^4) / 32
+    Jp = np.pi * (od ** 4 - (od - 2 * t) ** 4) / 32
+    assert rel(r.critical_member["check"]["torsion"], T * (od / 2) / Jp) < 0.01
+    # and the Bredt thin-wall mean-radius stress is within the 2 % thick-wall correction
+    assert rel(r.critical_member["check"]["torsion"], T / (2 * np.pi * Rm ** 2 * t)) < 0.021
 
 
 def test_euler_buckling_pinned_column():
@@ -105,15 +108,12 @@ def test_spring_supports_and_inertia_relief():
     r = solve(m)
     assert rel(-sum(v[2] for v in r.reactions.values()), -P) < 1e-6
     # free-free bar with self-equilibrated axial loads: elongation = P L / EA
-    m = beam(L, s, supports={}, loads={"A": [-P, 0, 0, 0, 0, 0], "B": [P, 0, 0, 0, 0, 0]})
-    m["supports"] = None
+    m = beam(L, s, supports=None, loads={"A": [-P, 0, 0, 0, 0, 0], "B": [P, 0, 0, 0, 0, 0]})
     m["inertia_relief"] = True
-    m["masses"] = {"A": 1.0, "B": 1.0, "b#2": 1.0} if False else {"A": 1.0, "B": 1.0}
-    m["masses"]["A"] = 1.0
-    # add a third non-collinear mass node via an extra member so rotations are defined
+    # a third, non-collinear (tiny) mass node so all six rigid-body modes carry mass
     m["nodes"]["C"] = [L / 2, 100.0, 0]
     m["members"].append({"id": "c", "nodes": ["A", "C"], "section": s, "material": MAT})
-    m["masses"]["C"] = 1e-6
+    m["masses"] = {"A": 1.0, "B": 1.0, "C": 1e-6}
     r = solve(m)
     U = r.displacements
     assert rel(U["B"][0] - U["A"][0], P * L / (E * s.A)) < 0.01
