@@ -3,7 +3,7 @@
 ## Where we are
 - Pack 5200 v3.1 "Spine" bag: true 85.16 L main bag, diagonal zip, internal meat straps (no shelf), 4.90 lb with the tube frame
 - PRODUCTION FRAME = generative 3D-printed PAHT-CF frame (~718 g, 2 segments). Pack is ~5.23 lb, over the 5.0 lb target
-- Camo: owner's base pattern; the SVG still needs uploading to designs/apparel/camo/source/owner_base.svg
+- Camo: owner's base pattern SVG is uploaded at designs/apparel/camo/source/owner_base.svg
 
 ## Tasks stopped before they started (re-launch these)
 1. structural-fea-engineer: make the printed frame production-ready
