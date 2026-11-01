@@ -11,7 +11,7 @@ Source: `huntkit/gendesign/frame_report.py` from the topology optimization in `d
 |---|---|
 | genframe_lower_flat.stl / .3mf | lower segment, already laid flat (wearer face on the plate) |
 | genframe_upper_flat.stl / .3mf | upper segment, flat |
-| genframe_assembled.stl | whole body in frame coordinates (viz3d `frame_type: generative`, fit checks) |
+| genframe_assembled.stl | whole body in frame coordinates, including the eight bag fairleads (`huntkit.gendesign.bag_attach`) |
 | genframe_rods.stl | (hybrid variant only) the 4 pultruded carbon rods in frame coordinates |
 | fiber_paths_principal_stress.csv | continuous-fiber target paths (if printing with continuous fiber) |
 

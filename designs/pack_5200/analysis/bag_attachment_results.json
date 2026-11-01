@@ -1,0 +1,341 @@
+{
+  "recommendation": "branch_fairlead",
+  "delta_g": 113.28479179323278,
+  "pack_g": 2978.7275117932327,
+  "pack_lb": 6.566970056822677,
+  "sf_min": 2.96592494800924,
+  "sf_fatigue_min": 1.668332783255197,
+  "sf_creep_min": 3.559109937611088,
+  "h_mm": 1.0,
+  "pin_sf": 14.427767937476787,
+  "sleeve_sf": 2.3154251999694377,
+  "hook_sf": 2.7088542014736974,
+  "bartack_sf": 3.721219071379453,
+  "governing": {
+    "hinge": {
+      "n": 725.5686774170788,
+      "fy": 190.20287510401346,
+      "fz": -700.19481,
+      "fx": 0.0,
+      "case": "tall_load",
+      "node": "SL60",
+      "g_times_req": 3.0,
+      "g": 2.0,
+      "required": 1.5
+    },
+    "im2": {
+      "n": 403.3357385451958,
+      "fy": 390.73539795274456,
+      "fz": -100.02783,
+      "fx": 0.0,
+      "case": "tall_load_posts",
+      "node": "SL330",
+      "g_times_req": 3.0,
+      "g": 2.0,
+      "required": 1.5
+    },
+    "im1": {
+      "n": 267.36015998478223,
+      "fy": 247.9433168540331,
+      "fz": -100.02783,
+      "fx": 0.0,
+      "case": "meat_straps",
+      "node": "SL190",
+      "g_times_req": 3.0,
+      "g": 2.0,
+      "required": 1.5
+    },
+    "im3": {
+      "n": 553.7396583337543,
+      "fy": 544.6301886941947,
+      "fz": -100.02783,
+      "fx": 0.0,
+      "case": "tall_load_posts",
+      "node": "SL520",
+      "g_times_req": 3.0,
+      "g": 2.0,
+      "required": 1.5
+    }
+  },
+  "fea": [
+    {
+      "label": "hinge 1.50 mm",
+      "h_mm": 1.5,
+      "fi99": 0.2983989037445105,
+      "fi_max": 0.5463397702036101,
+      "sf": 3.3512187459515643,
+      "bearing_mpa": 6.2983392136899194,
+      "bearing_sf": 5.969827715578345,
+      "added_g": 6.59691,
+      "solid": 5260,
+      "applied_n": 725.568677417079,
+      "requested_n": 725.5686774170788,
+      "stay_r": 9.354545454545455,
+      "slab_origin": [
+        -13.354545454545455,
+        -22.0
+      ],
+      "slab_h": 1.5,
+      "y_hole": 15.854545454545455,
+      "n_contact": 108,
+      "g_times_req_placeholder": 3.0,
+      "station": "hinge",
+      "sf_fatigue": 1.8850605445977546,
+      "sf_creep": 4.021462495141877,
+      "case": "tall_load",
+      "force_n": 725.5686774170788,
+      "g_times_req": 3.0
+    },
+    {
+      "label": "im3 1.50 mm",
+      "h_mm": 1.5,
+      "fi99": 0.24848445148383264,
+      "fi_max": 0.3148351819464369,
+      "sf": 4.024396673628748,
+      "bearing_mpa": 4.806767867480506,
+      "bearing_sf": 7.822304100511567,
+      "added_g": 5.616675,
+      "solid": 12630,
+      "applied_n": 553.7396583337543,
+      "requested_n": 553.7396583337543,
+      "stay_r": 16.8,
+      "slab_origin": [
+        -20.8,
+        -22.0
+      ],
+      "slab_h": 1.5,
+      "y_hole": 23.3,
+      "n_contact": 108,
+      "g_times_req_placeholder": 3.0,
+      "station": "im3",
+      "sf_fatigue": 2.2637231289161703,
+      "sf_creep": 4.829276008354498,
+      "case": "tall_load_posts",
+      "force_n": 553.7396583337543,
+      "g_times_req": 3.0
+    },
+    {
+      "label": "hinge 1.00 mm",
+      "h_mm": 1.0,
+      "fi99": 0.33716294833124844,
+      "fi_max": 0.8561973372125687,
+      "sf": 2.96592494800924,
+      "bearing_mpa": 6.2983392136899194,
+      "bearing_sf": 5.969827715578345,
+      "added_g": 6.20736,
+      "solid": 17364,
+      "applied_n": 725.5686774170788,
+      "requested_n": 725.5686774170788,
+      "stay_r": 9.354545454545455,
+      "slab_origin": [
+        -13.354545454545455,
+        -22.0
+      ],
+      "slab_h": 1.0,
+      "y_hole": 15.854545454545455,
+      "n_contact": 234,
+      "g_times_req_placeholder": 3.0,
+      "station": "hinge",
+      "sf_fatigue": 1.668332783255197,
+      "sf_creep": 3.559109937611088,
+      "case": "tall_load",
+      "force_n": 725.5686774170788,
+      "g_times_req": 3.0
+    },
+    {
+      "label": "im3 1.00 mm",
+      "h_mm": 1.0,
+      "fi99": 0.25557039252723124,
+      "fi_max": 0.38434202580161175,
+      "sf": 3.912816309085761,
+      "bearing_mpa": 4.806767867480506,
+      "bearing_sf": 7.822304100511567,
+      "added_g": 6.13104,
+      "solid": 43080,
+      "applied_n": 553.7396583337543,
+      "requested_n": 553.7396583337543,
+      "stay_r": 16.8,
+      "slab_origin": [
+        -20.8,
+        -22.0
+      ],
+      "slab_h": 1.0,
+      "y_hole": 23.3,
+      "n_contact": 270,
+      "g_times_req_placeholder": 3.0,
+      "station": "im3",
+      "sf_fatigue": 2.20095917386074,
+      "sf_creep": 4.695379570902913,
+      "case": "tall_load_posts",
+      "force_n": 553.7396583337543,
+      "g_times_req": 3.0
+    }
+  ],
+  "clip": {
+    "winner": null,
+    "tried": [
+      {
+        "fi99": 2.3374579618619724,
+        "sf": 0.42781518055769435,
+        "added_g": 2.289765625,
+        "thick_z": 6.0,
+        "proud": 16.0,
+        "h_mm": 1.25,
+        "force_n": 553.7396583337543,
+        "applied_n": 553.7396583337543,
+        "sf_fatigue": 0.24064603906370305,
+        "passes": false
+      },
+      {
+        "fi99": 2.259990861513243,
+        "sf": 0.44247966530732813,
+        "added_g": 2.935703125,
+        "thick_z": 10.0,
+        "proud": 16.0,
+        "h_mm": 1.25,
+        "force_n": 553.7396583337543,
+        "applied_n": 553.7396583337543,
+        "sf_fatigue": 0.24889481173537206,
+        "passes": false
+      },
+      {
+        "fi99": 2.0803388479621945,
+        "sf": 0.4806909225290652,
+        "added_g": 3.581640625,
+        "thick_z": 14.0,
+        "proud": 16.0,
+        "h_mm": 1.25,
+        "force_n": 553.7396583337543,
+        "applied_n": 553.7396583337543,
+        "sf_fatigue": 0.2703886439225992,
+        "passes": false
+      },
+      {
+        "fi99": 2.012444317551489,
+        "sf": 0.49690815854059756,
+        "added_g": 4.227578125,
+        "thick_z": 18.0,
+        "proud": 16.0,
+        "h_mm": 1.25,
+        "force_n": 553.7396583337543,
+        "applied_n": 553.7396583337543,
+        "sf_fatigue": 0.27951083917908615,
+        "passes": false
+      }
+    ]
+  },
+  "options": [
+    {
+      "id": "fairlead",
+      "short": "Branch fairlead",
+      "mass_g": 113.28479179323278,
+      "detach_s": 34,
+      "attach_s": 70,
+      "sf_show": 1.668332783255197,
+      "passes": true,
+      "note": "shows the branch"
+    },
+    {
+      "id": "clip",
+      "short": "Printed clip ear",
+      "mass_g": 57.820625,
+      "detach_s": 20,
+      "attach_s": 25,
+      "sf_show": 0.27951083917908615,
+      "passes": false,
+      "note": "tongue fatigue 0.28 at a 18 mm root"
+    },
+    {
+      "id": "window",
+      "short": "Webbing through window",
+      "mass_g": 40.0,
+      "detach_s": 45,
+      "attach_s": 80,
+      "sf_show": 0.4,
+      "passes": false,
+      "note": "return strand crosses the back"
+    },
+    {
+      "id": "sleeve",
+      "short": "Sleeve over the limbs",
+      "mass_g": 18.0,
+      "detach_s": 180,
+      "attach_s": 180,
+      "sf_show": 2.0,
+      "passes": false,
+      "note": "hides the frame"
+    },
+    {
+      "id": "fidlock",
+      "short": "Magnetic buckle",
+      "mass_g": 90.0,
+      "detach_s": 12,
+      "attach_s": 12,
+      "sf_show": 0.4134687857088281,
+      "passes": false,
+      "note": "300 N vs 726 N"
+    },
+    {
+      "id": "cam",
+      "short": "Cam strap",
+      "mass_g": 132.0,
+      "detach_s": 30,
+      "attach_s": 40,
+      "sf_show": 1.9864930810807115,
+      "passes": false,
+      "note": "creeps under gait"
+    },
+    {
+      "id": "rail",
+      "short": "Rail and slider",
+      "mass_g": 272.64,
+      "detach_s": 25,
+      "attach_s": 40,
+      "sf_show": 2.5,
+      "passes": false,
+      "note": "covers the stay face"
+    },
+    {
+      "id": "buckle25",
+      "short": "25 mm buckle in series",
+      "mass_g": 54.0,
+      "detach_s": 30,
+      "attach_s": 40,
+      "sf_show": 0.6202031785632423,
+      "passes": false,
+      "note": "450 N break"
+    },
+    {
+      "id": "buckle38",
+      "short": "38 mm buckle in series",
+      "mass_g": 108.0,
+      "detach_s": 30,
+      "attach_s": 40,
+      "sf_show": 1.2404063571264845,
+      "passes": false,
+      "note": "estimate, thin at the hinge"
+    }
+  ],
+  "parts_g": {
+    "printed fairleads (8)": 49.3536,
+    "7075 pins (8)": 19.280079778786703,
+    "UHMWPE sleeves (8)": 2.331112014446084,
+    "bag hooks, 38 mm Al (4)": 36.0,
+    "TPU hook sleeves (4)": 4.0,
+    "webbing eyes, net of old stubs": -6.720000000000006,
+    "bag-side straps": 17.92,
+    "B-01 swell patches": 12.320000000000002,
+    "elastic keepers": 3.5999999999999996,
+    "lifter tri-glide keepers": 6.0,
+    "old LINK hardware removed": -30.8
+  },
+  "cost_usd": 47.849773696,
+  "screens": [
+    "/workspace/docs/screens/20261101_attach_1_options.png",
+    "/workspace/docs/screens/20261101_attach_2_closeup.png",
+    "/workspace/docs/screens/20261101_attach_3_exploded.png",
+    "/workspace/docs/screens/20261101_attach_4_fea.png"
+  ],
+  "detach_s": 34,
+  "attach_s": 70
+}

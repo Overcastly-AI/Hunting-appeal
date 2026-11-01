@@ -59,17 +59,23 @@ def _dist_to_segment(p, a, b):
     return np.linalg.norm(p - (a + t[:, None] * ab), axis=1)
 
 
-def frame_sdf(pts: np.ndarray, scale: float = 1.0) -> np.ndarray:
-    """Negative inside. ``scale`` multiplies branch radii. The sleeve bore is cut for z > 160."""
-    x, y, z = pts[:, 0], pts[:, 1], pts[:, 2]
-    yc = np.asarray(_sleeve_y(z), float)
-    sdf = np.full(len(pts), 80.0)
-    # outer limb: solid below the bore, a tube once the crown leg enters
+def stay_radius(z, scale: float = 1.0) -> np.ndarray:
+    """Outer radius of the sleeve limb at height z (mm). Matches the branch-frame body."""
+    z = np.asarray(z, float)
     r_out = np.interp(z, [0.0, 40.0, 150.0, 190.0, 420.0, 532.0],
                       np.array([10.0, 9.0, 8.5, 13.4, 13.0, 14.0]) * scale)
     r_out = np.maximum(r_out, np.where(z > 160.0, 9.0 + 4.2 * scale, 8.0 * scale))
     # hipbelt-off lands on the upper bar and the pawl. Thicken only that end.
     r_out = np.maximum(r_out, np.where(z > 470.0, 16.0 * scale, 0.0))
+    return r_out
+
+
+def frame_sdf(pts: np.ndarray, scale: float = 1.0) -> np.ndarray:
+    """Negative inside. ``scale`` multiplies branch radii. The sleeve bore is cut for z > 160."""
+    x, y, z = pts[:, 0], pts[:, 1], pts[:, 2]
+    yc = np.asarray(_sleeve_y(z), float)
+    sdf = np.full(len(pts), 80.0)
+    r_out = stay_radius(z, scale)
     for s in (1.0, -1.0):
         stay = np.hypot(x - s * 115.0, y - yc) - r_out
         stay = np.where((z < -2.0) | (z > 540.0), 40.0, stay)
@@ -100,6 +106,9 @@ def frame_sdf(pts: np.ndarray, scale: float = 1.0) -> np.ndarray:
     yp = float(_sleeve_y(512.0))
     pawl = np.sqrt(x ** 2 + (y - yp + 6.0) ** 2 + (z - 512.0) ** 2) - 16.0 * scale
     sdf = _smin(sdf, pawl, 8.0)
+    # bag fairleads: added on the bag face only. Bore cut below still owns the sleeve.
+    from .bag_attach import attachment_field
+    sdf = _smin(sdf, attachment_field(pts, scale), 4.5)
     # sleeve bores. Wall outside the bore is at least 4.2 mm * scale (two voxels on a 2 mm mesh).
     for s in (1.0, -1.0):
         r = np.hypot(x - s * 115.0, y - yc)
