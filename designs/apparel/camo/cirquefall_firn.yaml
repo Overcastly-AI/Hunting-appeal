@@ -1,7 +1,7 @@
 # Cirquefall Firn — LATE-SEASON / SNOW-TRANSITION variant of Cirquefall.
 # Same structural rules (warped Voronoi talus slabs + fractures + two-scale flecks) with a
 # colder, lighter 5-colour palette and coverage shifted toward light: patchy wind-scoured
-# snow over rock and bare timber. Light coverage ~52 % vs ~37 % in Cirquefall.
+# snow over rock and bare timber. Light (L*>=60) coverage 56 % vs 37 % in Cirquefall.
 # Macro tone field is stretched horizontally (aniso 1.5) — snow lies in ledges and wind
 # bands, so light masses read as horizontal drifts, not blobs.
 extends: cirquefall

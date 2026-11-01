@@ -215,7 +215,7 @@ pattern-maker and apparel-designer (shown in `previews/accent_mocks_jacket_pack.
    symmetric-logo shapes. The straight cuts echo the angular Voronoi slab edges inside the
    print.
 2. **Asymmetric diagonal yoke.** The shoulder yoke's lower edge is a broken diagonal that
-   drops lower on one side (a 150 mm vs 175–205 mm drop, with a chevron notch off-centre).
+   drops lower on one side (≈140 mm at one armhole vs ≈175 mm at the other, with an off-centre chevron notch to ≈205 mm).
    *Function:* it moves the shoulder seam off the pack-strap pressure line, and the yoke can
    be a tougher face fabric where straps abrade.
 3. **Forearm chevrons = articulation.** The forearm accent is a chevron whose apex sits at
