@@ -66,11 +66,11 @@ def preview_swatch_card(base: ob.OwnerBase, metrics: dict) -> Path:
     solids = cw["solids"]
     sw, gap, left = 220, 16, 24
     W = left * 2 + 5 * (sw + gap)
-    H = 1180
+    H = 1080
     im = Image.new("RGB", (W, H), (248, 247, 243))
     d = ImageDraw.Draw(im)
     _label(im, (left, 14), f"{base.title_tag}Owner Base colour card — big chip human, small chip "
-           "ungulate (dichromat) sim. Targets; approve on lab dips. No OBA.", 18, bold=True)
+           "deer (dichromat) sim. Targets only; no OBA.", 18, bold=True)
 
     def chip_row(y0, title, cols, cov=None):
         _label(im, (left, y0), title, 18, bold=True)
@@ -95,8 +95,10 @@ def preview_swatch_card(base: ob.OwnerBase, metrics: dict) -> Path:
     chip_row(356, "Solid colorway line (colorways.yaml, primary)", solids)
     # pair table
     y = 660
-    _label(im, (left, y), "Ink pairs — dE00 human / dE00 deer-sim / Michelson luminance contrast (deer-sim)."
-           "  Flag: dE00 deer < 5 = merges; Michelson < 0.2 = weak", 16, bold=True)
+    _label(im, (left, y), "Ink pairs — dE00 human / dE00 deer-sim / Michelson luminance contrast (deer-sim)",
+           16, bold=True)
+    _label(im, (left, y + 22), "flags: dE00 deer < 5 = colours merge for deer; Michelson < 0.2 = weak tonal step", 14)
+    y += 18
     names = {c["key"]: c["name"] for c in inks}
     for k, r in enumerate(sorted(metrics["dichromat_pairs"], key=lambda r: r["de00_dichromat"])):
         a, b = r["pair"].split("/")
@@ -113,12 +115,14 @@ def preview_swatch_card(base: ob.OwnerBase, metrics: dict) -> Path:
     Ls = metrics["palette_L"]
     _label(im, (left, y + 34 + 6 * 30 + 16),
            f"L* ladder: {' | '.join(f'{names[k]} {v:.1f}' for k, v in sorted(Ls.items(), key=lambda kv: kv[1]))}"
-           "   -> 34 L* gap between dark and olive; Elk Wallow (L* 38) solid bridges it.", 16)
+           , 16)
+    _label(im, (left, y + 34 + 6 * 30 + 72), "-> 34 L* gap between dark and olive (no mid-dark ink); "
+           "the Elk Wallow solid (L* 38) bridges it in the garment system.", 16)
     lb = metrics["luminance_bands"]
-    _label(im, (left, y + 34 + 6 * 30 + 44),
+    _label(im, (left, y + 34 + 6 * 30 + 44 + 56),
            f"Luminance bands{' (PROXY coverage)' if base.is_proxy else ''}: dark {lb['dark_L<40'] * 100:.0f} %, "
            f"mid {lb['mid_40-60'] * 100:.0f} %, light {lb['light_L>=60'] * 100:.0f} %; "
-           f"coverage-weighted mean L* {metrics['coverage_weighted_mean_L']}; mean colour {metrics['mean_colour_hex']}", 16)
+           f"weighted mean L* {metrics['coverage_weighted_mean_L']}; mean {metrics['mean_colour_hex']}", 16)
     return save_png(im, PREVIEW_DIR / "owner_base_swatch_card.png", limit=MAX_PREVIEW_BYTES)
 
 

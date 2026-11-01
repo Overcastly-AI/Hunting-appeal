@@ -316,6 +316,17 @@ def solve(model: dict, buckling: bool = False, n_modes: int = 3, name: str = "")
             springs[nid] = kv
             for d in range(6):
                 K[6 * i + d, 6 * i + d] += kv[d]
+    # node-to-node spring links (global axes): bushings, clamps, pins
+    links = model.get("links") or []
+    for ln in links:
+        a, b = idx[ln["nodes"][0]], idx[ln["nodes"][1]]
+        kv = np.zeros(6)
+        kv[: len(ln["k"])] = ln["k"]
+        for d in range(6):
+            if kv[d]:
+                ia, ib = 6 * a + d, 6 * b + d
+                K[ia, ia] += kv[d]; K[ib, ib] += kv[d]
+                K[ia, ib] -= kv[d]; K[ib, ia] -= kv[d]
     K = K.tocsr()
 
     # DOFs with no stiffness at all (e.g. rotations at pure-truss nodes): constrain them.
@@ -407,6 +418,14 @@ def solve(model: dict, buckling: bool = False, n_modes: int = 3, name: str = "")
             summ["von_mises"] = checks[k]["von_mises"]
         members.append(summ)
 
+    # link forces: force exerted ON node b BY the link = -k (u_b - u_a)
+    lf = {}
+    for k_, ln in enumerate(links):
+        a, b = idx[ln["nodes"][0]], idx[ln["nodes"][1]]
+        kv = np.zeros(6)
+        kv[: len(ln["k"])] = ln["k"]
+        lf[ln.get("id", str(k_))] = kv * (u[6 * b: 6 * b + 6] - u[6 * a: 6 * a + 6])
+    meta["link_forces"] = lf
     res = Result(name=name or model.get("name", ""), model=model, node_ids=node_ids, coords=coords,
                  n_user_nodes=n_user, u=u, elements=elements, elem_forces=ef, elem_check=checks,
                  members=members, reactions=reactions, meta=meta)

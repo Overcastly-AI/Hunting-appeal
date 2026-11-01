@@ -269,3 +269,20 @@ def test_through_sleeve_joint_transfers_load_jump():
                                  "params": {"adhesive": {"shear_modulus_mpa": 700,
                                                          "lap_shear_strength_mpa": 20}}}])
     assert rel(abs(js[0]["N"]), 300.0) < 1e-6      # the hub load, not the stay's total force
+
+
+def test_links_series_springs():
+    s = tube_round(20.0, 1.0)
+    m = {"nodes": {"A": [0, 0, 0], "B": [0, 0, 100], "C": [0, 0, 100]},
+         "members": [{"id": "ab", "nodes": ["A", "B"], "section": s, "material": MAT},
+                     {"id": "cc", "nodes": ["C", "A"], "section": s, "material": MAT, "type": "truss"}],
+         "supports": {"A": "fixed"}, "links": [{"id": "L", "nodes": ["B", "C"], "k": [0, 0, 1000.0]}],
+         "loads": {"C": [0, 0, 0, 0, 0, 0]}}
+    # pull C up: load path link -> B -> beam (axially stiff) AND truss C->A in parallel
+    m["loads"]["C"] = [0, 0, 500.0, 0, 0, 0]
+    r = solve(m)
+    lfz = r.meta["link_forces"]["L"][2]
+    ka = E * s.A / 100.0
+    # link (1000) in series with beam (ka), in parallel with truss (ka): share through link
+    k_series = 1 / (1 / 1000.0 + 1 / ka)
+    assert rel(abs(lfz), 500.0 * k_series / (k_series + ka)) < 1e-6

@@ -23,18 +23,25 @@ def fatigue_screen(static_result, joints_static=None, cfg=None) -> dict:
     c = {**FATIGUE, **(cfg or {})}
     scale = c["g"] / static_result.meta["case"].g_factor
     rows = []
+    mdefs = {str(md.get("id", i)): md for i, md in enumerate(static_result.model["members"])}
+    from .materials_bridge import get_material
     for m in static_result.members:
-        chk = m["check"]
-        if "von_mises" in m:
-            mat = static_result.model["members"][[str(md.get("id", i)) for i, md in
-                                                  enumerate(static_result.model["members"])].index(m["id"])]["material"]
+        mat = mdefs[m["id"]].get("material")
+        metal = False
+        if "von_mises" in m and mat is not None:
+            mm = get_material(mat)
+            metal = bool(mm.get("ultimate_strength_mpa")) and mm.category != "composites" and \
+                not mm.get("design_allowable_mpa")
+        if metal:
             curve = sn_from_material(mat)
             smax = c["Kt_metal"] * scale * m["von_mises"]
             n = life(smax, 0.0, curve)
             rows.append({"member": m["id"], "group": m["group"], "kind": "metal", "smax": smax,
                          "life": n, "ok": n >= c["cycles_required"]})
         else:
-            fi = scale * m["fi"]
+            if m["group"] == "lumbar_plate_shear":
+                continue
+            fi = scale * (m["fi"] if "fi" in m else (1 / m["sf"] if m["sf"] > 0 else np.inf))
             rows.append({"member": m["id"], "group": m["group"], "kind": "cfrp", "fi": fi,
                          "sf": c["cfrp_fi_limit"] / fi if fi > 0 else np.inf,
                          "ok": fi <= c["cfrp_fi_limit"]})

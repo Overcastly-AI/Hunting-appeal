@@ -30,7 +30,7 @@ from huntkit.patterns import (Piece, box_bag, cubic_inches, litres, panel_volume
 
 ROOT = Path(__file__).resolve().parents[2]
 HERE = ROOT / "designs" / "pack_5200"
-SCREEN = ROOT / "outputs" / "screens" / "20261101_packconcept_1.png"
+SCREEN = ROOT / "outputs" / "screens" / "20261101_packconcept_2.png"  # v2: pulley crown, ambidextrous
 IN = 25.4
 TARGET_L = 85.2  # spec.yaml: 5200 cu in main bag
 
@@ -45,7 +45,10 @@ YOKE_DROP = 50.0                # ASSUMPTION (same as FEA): yoke anchor 50 mm be
 LIFTER_ABOVE_YOKE = 150.0       # crown top bar (lifter anchors) sits 150 mm above the yoke
 CROWN_LEG = 430.0               # crown leg length along axis
 MIN_OVERLAP = 150.0             # requirement: >= 150 mm leg insertion at max extension
-PITCH = 12.7                    # index-rack pitch (0.5 in)
+RACK_PITCH = 4.0                # toothed-rack pitch for the positive lock (0.16 in) - see crown_retention()
+PULLEY_MA = 3                   # 3:1 webbing pulley (adjuster)
+SPINE_LEN = 300.0               # crown centre spine length below the top bar
+PULLEY_FIXED_Z = 190.0          # fixed guide rings on the top edge of the lumbar plate
 TORSO_IN = (15.0, 23.0)
 
 u_axis = np.subtract(STAY_TOP, ELBOW)[1:]
@@ -91,6 +94,84 @@ def crown_settings():
     return rows
 
 
+def crown_retention():
+    """Trade study numbers for holding the telescoping crown. Positive = extension (crown pushed UP
+    out of the stays: the shoulders lift the yoke while the frame + load hang below it)."""
+    g = 9.81
+    shoulder_share = 0.20                      # huntkit.fea.load_cases hip_share = 0.80
+    cases = {
+        "drop_2p5g_extension": {"load_n": 0.20 * 68 * g * 2.5, "sf": 2.0,
+                                "basis": "68 kg x 2.5 g x 20 % shoulder share (spec drop case)"},
+        "overload_extension": {"load_n": 0.20 * 91 * g * 1.5, "sf": 1.5,
+                               "basis": "91 kg x 1.5 g x 20 % (FEA overload_haul case)"},
+        "hipbelt_off_abuse_extension": {"load_n": 1.0 * 68 * g * 1.5, "sf": 1.0,
+                                        "basis": "ASSUMPTION abuse: hipbelt unbuckled (creek crossing), 68 kg x 1.5 g, 100 % on shoulders; no slip, no damage"},
+        "tall_load_compression": {"load_n": -0.40 * 68 * g * 2.5, "sf": 2.0,
+                                  "basis": "ASSUMPTION: 40 % of 68 kg lashed to crown/extension posts x 2.5 g pushes the crown DOWN"},
+    }
+    for c in cases.values():
+        c["load_n"] = round(c["load_n"], 0)
+        c["required_n"] = round(abs(c["load_n"]) * c["sf"], 0)
+    ext = max(c["required_n"] for c in cases.values() if c["load_n"] > 0)
+    comp = max(c["required_n"] for c in cases.values() if c["load_n"] < 0)
+    ll = MAT.load("ladder_lock_25mm").require("slip_load_n")
+    fid = MAT.load("fidlock_magnetic_buckle_25mm").require("breaking_strength_n")
+    cam_slip = 700.0   # ASSUMPTION: 25 mm metal cam buckle on heavyweight poly webbing; no DB record yet
+    mu, wraps = 0.10, 2  # UHMWPE-lined guides, 180 deg wrap each
+    capstan = math.exp(mu * math.pi) ** wraps
+    tail_for_ext = ext / PULLEY_MA / capstan
+    walk_tail = shoulder_share * 68 * g / PULLEY_MA / capstan
+    # rack tooth shear: 2 engaged teeth, 20 mm wide, root = pitch/2, PA66-GF30 conditioned
+    su = MAT.load("pa66_gf30").require("ultimate_strength_mpa") if MAT.load("pa66_gf30").get("ultimate_strength_mpa") else 185.0
+    tau = 0.6 * su * 0.6     # shear ~0.6 Su, x0.6 conditioned (moisture) knock-down: ASSUMPTION
+    rack_cap = 2 * 20.0 * (RACK_PITCH / 2) * tau
+    options = [
+        {"option": "Pulley 3:1 + ladder lock only", "hold_n": round(ll * PULLEY_MA * capstan),
+         "source": f"ladder_lock_25mm slip_load_n={ll:g} (estimate) x MA x capstan {capstan:.2f}",
+         "creep": "poor: webbing walks through ladder locks under cyclic gait loads", "ice_mud": "fair", "mass_g": 35,
+         "two_way": False, "beginner": "easy", "verdict": "reject as sole retention (holds once, creeps)"},
+        {"option": "Pulley 3:1 + cam buckle only", "hold_n": round(cam_slip * PULLEY_MA * capstan),
+         "source": "cam slip 700 N ASSUMPTION (no DB record; materials-engineer to add)",
+         "creep": "fair: cam teeth hold, but webbing creep/stretch over a day of hauling", "ice_mud": "fair-poor (iced cam teeth)",
+         "mass_g": 45, "two_way": False, "beginner": "easy", "verdict": "good ADJUSTER; one-way, so not a lock"},
+        {"option": "Cam-lever friction collars x2 (seatpost QR)", "hold_n": 1600,
+         "source": "ASSUMPTION ~800 N per QR at rated torque with carbon paste; ~50 % when wet/iced",
+         "creep": "good dry; slips wet/icy", "ice_mud": "poor (friction-only, grit in the sliding fit)", "mass_g": 70,
+         "two_way": True, "beginner": "hard (slotted bonded Al sockets, clamp-crush risk on carbon legs)",
+         "verdict": "reject: friction-only and levers sit behind the shoulder blades (not adjustable while worn)"},
+        {"option": "Fidlock/Austrialpin-style hard-lock buckle in the pulley line", "hold_n": fid,
+         "source": f"fidlock_magnetic_buckle_25mm breaking_strength_n={fid:g}",
+         "creep": "n/a: locks the buckle, not the webbing position", "ice_mud": "good", "mass_g": 15, "two_way": False,
+         "beginner": "easy", "verdict": "reject: does not fix position; strength below need"},
+        {"option": "Two-way toothed rack + spring pawl (PA66-GF30 rack, Ti pawl)", "hold_n": round(rack_cap),
+         "source": f"2 teeth x 20 mm x {RACK_PITCH / 2:g} mm root x tau {tau:.0f} MPa (pa66_gf30, conditioned ASSUMPTION)",
+         "creep": "none (positive)", "ice_mud": "good: open teeth self-clear; pawl snaps in under its spring", "mass_g": 50,
+         "two_way": True, "beginner": "medium (rack waterjet/3D-printed outsourced; screw-on)",
+         "verdict": "CHOSEN as the positive lock"},
+    ]
+    return {
+        "concept": ("Pulley-tensioned telescoping crown: a 3:1 webbing pulley (25 mm poly webbing, UHMWPE-lined guides, "
+                    "metal cam buckle) sets crown height continuously, while worn. A two-way toothed rack + spring pawl "
+                    "is the positive lock: pull the release toggle (left shoulder strap) to lift the pawl, pull the tail "
+                    "to shorten / ease the cam and shrug to lengthen, let go and the pawl drops into the nearest tooth."),
+        "sign_convention": "extension = crown pushed up out of the stays; compression = pushed down",
+        "load_cases": cases,
+        "required_capacity_n": {"extension": ext, "compression": comp,
+                                "note": "lock (rack+pawl) must hold BOTH with zero slip; ultimate >= 1.5 x these"},
+        "pulley": {"mechanical_advantage": PULLEY_MA, "guide_friction_mu": mu, "capstan_factor": round(capstan, 2),
+                   "routing": "dead end on crown spine bottom -> fixed guide A (lumbar plate top, z 190) -> moving guide B (crown spine bottom) -> fixed guide C -> cam buckle at the lumbar plate right corner (alt. left)",
+                   "tail_tension_while_walking_n": round(walk_tail, 1),
+                   "tail_tension_to_hold_extension_requirement_n": round(tail_for_ext, 0),
+                   "tail_travel_mm": round(PULLEY_MA * (TORSO_IN[1] - TORSO_IN[0]) * IN),
+                   "role": "adjuster; carries load only while the pawl is released"},
+        "lock": {"type": "two-way toothed rack + spring pawl", "rack_material": "pa66_gf30", "pawl_material": "ti_6al_4v",
+                 "pitch_mm": RACK_PITCH, "engaged_teeth": 2, "rack_width_mm": 20.0,
+                 "capacity_n": round(rack_cap), "sf_vs_requirement": round(rack_cap / max(ext, comp), 2),
+                 "resolution_mm": RACK_PITCH, "release": "Dyneema 2 mm cord to a toggle on the left shoulder strap"},
+        "options": options,
+    }
+
+
 def frame_topology():
     settings = crown_settings()
     hp = {}
@@ -114,7 +195,11 @@ def frame_topology():
     both("bag_anchor_low", (stay_xyz(60)[0], stay_xyz(60)[1] + 12, 60.0))
     both("bag_anchor_mid", (x330[0], x330[1] + 12, 330.0))
     hp["hipbelt_pivot"] = r3((0.0, stay_xyz(Z_IC)[1] - 25.0, Z_IC))
-    hp["index_latch_upper_bar"] = r3((0.0, y_on_axis(520.0) - 14.0, 520.0))
+    hp["rack_lock_pawl_upper_bar"] = r3((0.0, y_on_axis(520.0) - 14.0, 520.0))
+    hp["pulley_fixed_guide_A"] = r3((-18.0, stay_xyz(PULLEY_FIXED_Z)[1] - 12.0, PULLEY_FIXED_Z))
+    hp["pulley_fixed_guide_C"] = r3((18.0, stay_xyz(PULLEY_FIXED_Z)[1] - 12.0, PULLEY_FIXED_Z))
+    hp["pulley_cam_buckle_R"] = r3((stay_xyz(150)[0] - 10.0, stay_xyz(150)[1] - 20.0, 150.0))
+    hp["pulley_cam_buckle_L_alt"] = r3((-(stay_xyz(150)[0] - 10.0), stay_xyz(150)[1] - 20.0, 150.0))
     hp["upper_bar_node_R"] = r3(stay_xyz(520.0))
     hp["upper_bar_node_L"] = r3((-stay_xyz(520)[0], stay_xyz(520)[1], 520.0))
     return {
@@ -139,24 +224,27 @@ def frame_topology():
             "mid_bar": {"from": r3((-x330[0], x330[1], 330)), "to": r3(x330),
                         "note": "cross tube; shelf-strap and bag-mid anchors sit AT its nodes (no mid-span loads)"},
             "upper_bar": {"from": r3((-115, y_on_axis(520), 520)), "to": r3((115, y_on_axis(520), 520)),
-                          "note": "cross tube 10 mm below stay tops; carries index latch housing"},
+                          "note": "cross tube 10 mm below stay tops; carries the rack-lock pawl housing (release toggle cord to the left shoulder strap)"},
             "crown": {"legs_x": [-115.0, 115.0], "leg_length_along_axis": CROWN_LEG,
                       "axis_unit_vector_yz": [round(float(u_axis[0]), 4), round(float(u_axis[1]), 4)],
                       "top_bar": "cross tube joining leg tops; lifter anchors at x=+/-70; bag top buckles at x=+/-70; extension-post sockets at leg tops",
-                      "spine": "cfrp_plate_quasi_iso 3 mm centre spine, top bar down 300 mm; carries the yoke and the index rack (holes at 12.7 mm pitch)",
+                      "spine": f"cfrp_plate_quasi_iso 3 mm centre spine, top bar down {SPINE_LEN:.0f} mm; carries the yoke, the pa66_gf30 toothed rack ({RACK_PITCH:g} mm pitch, bonded + screwed into plate inserts) and the moving pulley guide B at its bottom end",
+                      "retention": "3:1 webbing pulley (adjust, continuous, while worn) + two-way toothed-rack/pawl positive lock; see crown_retention",
                       "travel_mm": round(TORSO_IN[1] * IN - TORSO_IN[0] * IN, 1),
-                      "positions": len(settings)},
+                      "positions": "continuous (lock resolution 4 mm); table lists 0.5 in reference settings"},
             "extension_posts_accessory": {"length_mm": 220.0,
-                                          "note": "two plug-in posts + bar on crown top for tall loads / antlers / orange flag"},
+                                          "note": "ACCESSORY (owner 2026-11-01): two plug-in posts + bar for tall loads / antlers / orange flag; sockets in the crown top bar stay on every frame; not in base weight"},
         },
         "hard_points": hp,
         "crown_settings": settings,
+        "crown_retention": crown_retention(),
         "fea_handoff_notes": [
             "Torso 23 in needs yoke z=654; crown puts it there with the top bar at z=804 (FEA demo warned frame >= 634 mm).",
             "Single-stay set-down failed at the lumbar bar in the demo: replace the lumbar tube with the pm45 lumbar plate (closed torsion box).",
             "Meat-shelf heavy-low failed at mid-stay: shelf straps now anchor at the mid-bar node (z=330), not mid-span.",
             "Bonded elbow peel (Volkersen) was the critical bond: elbow fitting should be a sleeve in shear with >= 25 mm overlap each side, no peel.",
-            "No holes in carbon tubes: index rack is a separate plate on the crown spine; all pins go through bonded Ti/Al inserts.",
+            "No holes in carbon tubes: the toothed rack is a PA66-GF30 strip on the crown spine plate; all fasteners go through bonded Ti/Al inserts in plates.",
+            "Crown retention load to resist (see crown_retention.required_capacity_n): extension 1001 N, compression 1334 N, applied at the pawl on the upper bar (z 520) and reacted by the crown spine.",
             "Crown legs: check bending at the stay socket in tall_load with min overlap 150 mm.",
         ],
     }
@@ -199,12 +287,10 @@ def build_panels(H):
     add(fr, "meat contact / frame side", "main bag", "box_bag 'front'. Webbing ladders + 6 frame-attach tabs sewn on before assembly")
     ou = f["back"]; ou.name = "bag outer face panel"; ou.piece_id = "B-02"; ou.material_id = "cordura_500d_nylon66"
     add(ou, "outer face (solid colour)", "main bag", "box_bag 'back'. Carries shards SH-01/SH-02, bow pocket, compression anchors")
-    sl = f["side_left"]; sl.name = "side gusset left"; sl.piece_id = "B-03"; sl.material_id = "cordura_500d_nylon66"
-    add(sl, "side", "main bag", "side pocket P-01 and compression ladder sewn on flat first")
     zw = BAG_D / 2
-    for pid, nm in (("B-04a", "side gusset right, fore strip (zip)"), ("B-04b", "side gusset right, aft strip (zip)")):
-        add(rect_panel(nm, zw, side_len, 0.0, seam_allowance_mm={"default": 12.0}, material_id="cordura_500d_nylon66", piece_id=pid),
-            "side, full-length zip", "main bag", "right gusset split on its centreline for the full-length #10 coil zip (zip SA 10 mm)")
+    for pid, nm in (("B-03a", "side gusset, fore strip (zip)"), ("B-03b", "side gusset, aft strip (zip)")):
+        add(rect_panel(nm, zw, side_len, 0.0, seam_allowance_mm={"default": 12.0}, material_id="cordura_500d_nylon66", piece_id=pid, quantity=2),
+            "sides, full-length zips BOTH sides (ambidextrous)", "main bag", "each gusset split on its centreline for a full-length #10 coil zip (zip SA 10 mm); side pocket + compression ladder go on the aft strip flat first")
     bt = f["bottom"]; bt.name = "bag bottom"; bt.piece_id = "B-05"; bt.material_id = "tpu_coated_nylon_840d"
     add(bt, "bottom (abrasion, blood)", "main bag", "2 drain grommets (8 mm) at front corners")
     perim = 2 * (BAG_W + BAG_D)
@@ -212,7 +298,7 @@ def build_panels(H):
         "collar", "main bag", "one back seam; drawcord channel B-07 on top edge")
     ch = rect_panel("collar drawcord channel", perim, 50.0, 0.0, seam_allowance_mm=10.0, material_id="robic_210d_ripstop", piece_id="B-07")
     add(ch, "collar", "main bag", "fold lengthwise, 3 mm Dyneema cord + cord lock")
-    add(rect_panel("side-zip garage/storm flap", 45.0, side_len, 0.0, seam_allowance_mm=10.0, material_id="cordura_330d_nylon66", piece_id="B-08"),
+    add(rect_panel("side-zip garage/storm flap", 45.0, side_len, 0.0, seam_allowance_mm=10.0, material_id="cordura_330d_nylon66", piece_id="B-08", quantity=2),
         "side zip", "main bag", "quiet: covers coil, parks the slider in a garage at the top")
     add(rect_panel("hydration sleeve", 260.0, 450.0, 0.0, seam_allowance_mm=10.0, material_id="robic_100d_ripstop", piece_id="B-09"),
         "interior", "main bag", "sewn into frame-side panel side seams; hose port both sides")
@@ -337,7 +423,9 @@ def build_panels(H):
 
     # ---- rifle carry
     add(tapered_panel("rifle butt boot body", 300.0, 260.0, 200.0, material_id="cordura_500d_nylon66", piece_id="R-01", seam_allowance_mm=10.0),
-        "rifle carry", "carry", "rolled into a cone; mounts to left hipbelt wing")
+        "rifle carry", "carry", "rolled into a cone; clips to EITHER hipbelt wing (ambidextrous)")
+    add(rect_panel("rifle-boot mount tab", 40.0, 60.0, 0.0, seam_allowance_mm=0.0, material_id="hypalon_coated_nylon", piece_id="R-03", quantity=4),
+        "rifle carry mounts", "hipbelt", "2 per hipbelt wing (both sides); muzzle-strap loops on both upper compression ladders")
     add(rect_panel("rifle boot bottom", 100.0, 60.0, 30.0, material_id="tpu_coated_nylon_840d", piece_id="R-02", seam_allowance_mm=10.0),
         "rifle carry", "carry", "drain eyelet")
     return P, bag, side_len
@@ -374,21 +462,23 @@ def weight_budget(P, H):
     for rec in P:
         sub_mass.setdefault(rec["sub"], 0.0)
         sub_mass[rec["sub"]] += piece_mass(rec)
-    side_zip = (H + 60) / 1000
+    side_zip = 2 * (H + 60) / 1000   # ambidextrous: full zip both sides
     rows = []
 
     def row(group, item, g, basis):
         rows.append({"group": group, "item": item, "mass_g": round(g, 1), "basis": basis})
 
     # Frame: allocation pending FEA sizing (ASSUMPTION)
-    for item, g in (("stays (2 lower + 2 upper tubes)", 130), ("crown: legs, top bar, spine/index rack", 120),
+    for item, g in (("stays (2 lower + 2 upper tubes)", 130), ("crown: legs, top bar (accessory-post sockets), spine", 115),
                     ("mid + upper cross bars", 40), ("lumbar plate (pm45)", 60),
                     ("bonded nodes, elbows, sockets, adhesive", 90),
-                    ("Ti/Al inserts, hipbelt pivot pin, index latch", 50),
+                    ("Ti/Al inserts, hipbelt pivot pin", 35),
                     ("foot boots + shelf pivots, UHMWPE bushings", 35)):
         row("frame (allocation, FEA to confirm)", item, g, "ASSUMPTION: allocation; tube sizes by structural-fea-engineer")
+    row("torso adjust", "toothed rack PA66-GF30 + Ti pawl, spring, POM housing, release cord + toggle", 50, "computed rack 27 g (pa66_gf30 rho) + ASSUMPTION 23 g pawl/housing")
+    row("torso adjust", "3:1 pulley: 25 mm poly webbing 1.4 m, 3 UHMWPE-lined guides, metal cam buckle", hw("poly_webbing_25mm", length_m=1.4) + 9 + 12, "records; guides 3 g ea, cam 12 g ASSUMPTION")
     row("main bag", "fabric panels (B-*, incl. collar, tabs, bow pocket)", sub_mass["main bag"], "computed: cut area x gsm")
-    row("main bag", "#10 coil full side zip + 2 sliders", hw("coil_zipper_10", length_m=side_zip) + 12, "coil_zipper_10 g/m; sliders 6 g ea ASSUMPTION")
+    row("main bag", "#10 coil full side zips x2 (both sides) + 4 sliders", hw("coil_zipper_10", length_m=side_zip) + 24, "coil_zipper_10 g/m; sliders 6 g ea ASSUMPTION")
     row("main bag", "collar cord + cord lock", hw("dyneema_cord_3mm", length_m=1.6) + hw("cord_lock_spring", 1), "records")
     row("accents", "camo shards SH-01..05 (overlay mass)", sub_mass["accents"], "computed")
     row("lid", "lid panels", sub_mass["lid"], "computed")
@@ -409,7 +499,7 @@ def weight_budget(P, H):
     row("compression", "6 side compression straps 25 mm + 6 buckles", hw("poly_webbing_25mm", length_m=3.6) + 6 * hw("buckle_side_release_25mm"), "records")
     row("misc", "thread (~3 % of soft goods) + labels", 0.03 * sum(v for k, v in sub_mass.items() if k != "carry") + 10, "ASSUMPTION")
     tot = sum(r["mass_g"] for r in rows)
-    carry = sub_mass["carry"] + hw("poly_webbing_25mm", length_m=0.6) + hw("ladder_lock_25mm")
+    carry = sub_mass["carry"] + hw("poly_webbing_25mm", length_m=0.6) + hw("ladder_lock_25mm")  # one switchable boot
     groups = {}
     for r in rows:
         groups[r["group"]] = round(groups.get(r["group"], 0) + r["mass_g"], 1)
@@ -451,7 +541,8 @@ def main():
             "width_x": BAG_W, "height_z": H, "depth_y": BAG_D, "bottom_corner_radius": BAG_R,
             "origin_carry_mode": {"x_center": 0.0, "y_frame_side_panel": BAG_Y0, "z_bottom": BAG_Z0},
             "haul_mode_pullback_y_max": 250.0,
-            "side_zip": {"side": "right (x+)", "type": "coil_zipper_10", "length_mm": round(side_len + 60)},
+            "side_zip": {"side": "BOTH (ambidextrous)", "type": "coil_zipper_10", "length_mm_each": round(side_len + 60), "qty": 2},
+            "height_note": "one bag height for now (owner); a short (~70 L) bag on the same frame is a future option",
             "extension_collar_height": COLLAR_H,
         },
         "volumes": {
@@ -477,7 +568,8 @@ def main():
                     "options": ["J (unisex default)", "S (curved, 35 mm lateral offset)"],
                     "sternum_rail_travel": 120.0},
         "weight": {"groups_g": groups, "total_g": total, "total_lb": round(total / 453.592, 2),
-                   "rifle_boot_optional_g": carry},
+                   "rifle_boot_optional_g": carry, "extension_posts_accessory_g": 60,
+                   "excluded_from_base": ["rifle boot (switchable, either side)", "extension posts accessory (ASSUMPTION ~60 g)"]},
     }
     (HERE / "geometry.yaml").write_text("# GENERATED by build_geometry.py - do not hand-edit\n" + yaml.safe_dump(geom, sort_keys=False, width=110, default_flow_style=None))
 
@@ -512,7 +604,8 @@ def main():
                {"use": "lid straps", "material_id": "poly_webbing_25mm", "length_mm": 400, "qty": 4},
                {"use": "hip stabilizers", "material_id": "poly_webbing_25mm", "length_mm": 400, "qty": 2},
                {"use": "sternum + bag-top attach", "material_id": "poly_webbing_25mm", "length_mm": 300, "qty": 4},
-               {"use": "bow/rifle straps", "material_id": "poly_webbing_25mm", "length_mm": 300, "qty": 2}]}
+               {"use": "bow straps + rifle muzzle straps (both sides)", "material_id": "poly_webbing_25mm", "length_mm": 300, "qty": 4},
+               {"use": "crown 3:1 pulley", "material_id": "poly_webbing_25mm", "length_mm": 1400, "qty": 1}]}
     (HERE / "panels.yaml").write_text("# GENERATED by build_geometry.py - do not hand-edit\n" + yaml.safe_dump(pan, sort_keys=False, width=110, default_flow_style=None))
 
     plot(H, topo, geom)
@@ -538,7 +631,7 @@ def plot(H, topo, geom):
     FR = "#1a1a1a"; DIM = "#b03a2e"
     fig, axs = plt.subplots(1, 3, figsize=(16, 9.2), dpi=100,
                             gridspec_kw={"width_ratios": [1, 1.15, 1]})
-    fig.suptitle("Pack 5200 concept: 85.2 L meat-hauler, carbon frame with telescoping torso crown  (FCS mm; in)",
+    fig.suptitle("Pack 5200 concept v2: pulley-tensioned telescoping crown (continuous 15-23 in) + rack lock, ambidextrous  (FCS mm; in)",
                  fontsize=13, weight="bold")
     s = topo["crown_settings"]
     smin, smid, smax = s[0], s[len(s) // 2], s[-1]
@@ -576,7 +669,9 @@ def plot(H, topo, geom):
     dim(ax, (-W / 2, -40), (W / 2, -40), f"{W:.0f} ({W / IN:.1f} in)")
     dim(ax, (-W / 2 - 75, BAG_Z0), (-W / 2 - 75, z_bag_top), f"{H} ({H / IN:.1f} in)", rot=90)
     dim(ax, (W / 2 + 75, BAG_Z0), (W / 2 + 75, z_bag_top + 80), f"{H + 80:.0f} w/ lid", rot=90)
-    ax.text(0, -110, "shards = owner-camo double-layer overlays at corners,\nlash/rub zone, lid; 25 mm compression x3 per side",
+    for sx in (-1, 1):
+        ax.plot([sx * (W / 2 + 4)] * 2, [BAG_Z0 + 40, z_bag_top - 5], color="#d35400", lw=2.2, ls=(0, (6, 3)))
+    ax.text(0, -110, "full-length side zips BOTH sides (orange dashes); rifle boot clips either hipbelt wing\nshards = owner-camo double-layer overlays; 25 mm compression x3 per side",
             ha="center", fontsize=8.5)
     ax.text(W / 2 + 35, 260, "side\npocket", fontsize=7.5, rotation=90, va="center")
     ax.text(-W / 2 - 10, 150, "hipbelt\n(dashed)", fontsize=7.5, ha="right")
@@ -618,7 +713,7 @@ def plot(H, topo, geom):
     ax.plot([-45, -110, -170, -185, -170, -60], [yk2, yk2 + 40, yk2 + 10, yk2 - 120, 230, 115], color="#666", lw=7, alpha=0.35, solid_capstyle="round")
     ax.text(-195, 380, "shoulder\nstrap", fontsize=7.5, ha="right", color="#555")
     dim(ax, (BAG_Y0, -45), (BAG_Y0 + BAG_D, -45), f"{BAG_D:.0f} ({BAG_D / IN:.1f} in)")
-    dim(ax, (-480, smin["crown_top_z"]), (-480, smax["crown_top_z"]), f"crown travel {smax['crown_top_z'] - smin['crown_top_z']:.0f} (8 in)\n17 pin positions, 0.5 in", rot=90, off=(-30, 0))
+    dim(ax, (-480, smin["crown_top_z"]), (-480, smax["crown_top_z"]), f"crown travel {smax['crown_top_z'] - smin['crown_top_z']:.0f} (8 in)\ncontinuous, 3:1 pulley + 4 mm rack lock", rot=90, off=(-30, 0))
     dim(ax, (-560, 0), (-560, smax["crown_top_z"]), f"frame 0-{smax['crown_top_z']:.0f} ({smax['crown_top_z'] / IN:.1f} in) max", rot=90)
     ax.text(-150, -120, "<- wearer        y aft ->", fontsize=8.5)
 
@@ -635,14 +730,23 @@ def plot(H, topo, geom):
         ax.plot([X(sx * 115)] * 2, [zt - CROWN_LEG, zt], color="#555", lw=2.4, ls="--")
     ax.add_patch(plt.Rectangle((-125, 50), 250, 140, fc="#333", ec=FR, alpha=0.5))
     ax.text(0, 70, "lumbar plate (pm45)", ha="center", color="w", fontsize=7.5)
-    for z, lab in ((330, "mid bar z=330"), (520, "upper bar + index latch z=520")):
+    for z, lab in ((330, "mid bar z=330"), (520, "upper bar + pawl z=520")):
         ax.plot([-115, 115], [z, z], color=FR, lw=3)
         ax.text(0, z + 12, lab, ha="center", fontsize=7.5)
     zt = smid["crown_top_z"]
     ax.plot([-115, 115], [zt, zt], color="#555", lw=3, ls="--")
     ax.add_patch(plt.Rectangle((-18, zt - 300), 36, 300, fc="#888", ec=FR, alpha=0.6))
-    for k in range(17):
-        ax.plot([0], [zt - 300 + 25 + k * PITCH], ".", color="k", ms=2.5)
+    for k in range(int(SPINE_LEN / RACK_PITCH / 2)):
+        ax.plot([-8, 8], [zt - SPINE_LEN + 10 + 2 * k * RACK_PITCH] * 2, color="k", lw=0.6)
+    # 3:1 pulley routing (viewed from the front): dead end B -> A -> B -> C -> cam
+    zB = zt - SPINE_LEN
+    PUL = "#d35400"
+    ax.plot([5, 18, 0, -18, -18, -95], [zB, PULLEY_FIXED_Z, zB, PULLEY_FIXED_Z, PULLEY_FIXED_Z, 150], color=PUL, lw=1.6)
+    ax.plot([18, -18, 0], [PULLEY_FIXED_Z, PULLEY_FIXED_Z, zB], "o", color=PUL, ms=5)
+    ax.plot([-95], [150], "s", color=PUL, ms=8)
+    ax.text(-140, 215, "3:1 pulley tail\n+ cam buckle", color=PUL, fontsize=7.5, ha="center")
+    ax.annotate("rack + pawl lock\n(release toggle on strap)", (0, 520), (150, 600), fontsize=7.5, color=PUL,
+                arrowprops=dict(arrowstyle="->", color=PUL))
     yk = smid["yoke_anchor"][2]
     ax.add_patch(plt.Rectangle((-130, yk - 30), 260, 60, fc="#a9a9a9", ec=FR, alpha=0.8))
     ax.text(140, yk, "yoke on crown\n(19 in shown)", ha="left", va="center", fontsize=7.5)
@@ -675,7 +779,7 @@ def plot(H, topo, geom):
     fig.text(0.5, 0.015,
              f"Main bag {geom['volumes']['main_bag_L']} L ({geom['volumes']['main_bag_cu_in']} cu in, computed)  |  lid {geom['volumes']['lid_main_L'] + geom['volumes']['lid_underlid_L']:.1f} L, "
              f"side pockets 2x{geom['volumes']['side_pocket_each_L']} L, hipbelt pockets 2x{geom['volumes']['hipbelt_pocket_each_L']} L, collar +{geom['volumes']['collar_L']} L (not counted)  |  "
-             f"weight budget {w['total_g']:.0f} g ({w['total_lb']} lb)  |  torso 15-23 in, hipbelt S-XL, 150 lb rated",
+             f"base weight {w['total_g']:.0f} g ({w['total_lb']} lb, ext. posts = accessory)  |  torso 15-23 in, hipbelt S-XL, 150 lb rated",
              ha="center", fontsize=9.5, bbox=dict(fc="#f3efe3", ec="#999"))
     fig.subplots_adjust(left=0.01, right=0.99, top=0.93, bottom=0.06, wspace=0.02)
     SCREEN.parent.mkdir(parents=True, exist_ok=True)

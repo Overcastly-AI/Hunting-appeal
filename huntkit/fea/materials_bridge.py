@@ -189,7 +189,11 @@ def rho_of(m: Mat) -> float:
 
 def yield_of(m: Mat) -> tuple[float, str]:
     """Design yield: MMPDS S-basis if the record has it, else typical. Returns (value, key)."""
-    for k in ("yield_strength_sbasis_mpa", "yield_strength_mpa"):
+    for k in ("yield_strength_sbasis_mpa", "yield_strength_mpa", "design_allowable_mpa"):
         if m.get(k):
             return float(m.get(k)), k
+    if m.category == "composites" and m.get("ultimate_strength_mpa"):
+        # ASSUMPTION: homogenised CFRP plate, allowable = min(tension, compression) x hot/wet 0.8 x impact 0.65
+        ult = min(float(m.get("ultimate_strength_mpa")), float(m.get("compressive_strength_mpa") or 1e9))
+        return ult * 0.8 * 0.65, "cfrp_plate_allowable(ult x0.8 x0.65)"
     raise KeyError(f"material '{m.id}' has no yield strength")

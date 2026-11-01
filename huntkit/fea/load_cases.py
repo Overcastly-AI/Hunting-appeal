@@ -94,7 +94,7 @@ class LoadCase:
                 # Rigid shelf of depth d hinged at the pivots, tip held by straps running up to the
                 # shelf_strap anchors. Load P at e aft: strap vertical Tv = P e / d.
                 anc = g["shelf_strap"]
-                d = self.params.get("shelf_depth_mm", 2.0 * e)
+                d = self.params.get("shelf_depth_mm", model.get("shelf_depth_mm", 2.0 * e))
                 z_p = np.mean([nodes[n][2] for n in piv])
                 z_a = np.mean([nodes[n][2] for n in anc])
                 h = z_a - z_p
@@ -107,7 +107,7 @@ class LoadCase:
                 # Tall load: weight sits on the shelf pivots; overturning moment P*e is reacted by
                 # near-horizontal lashing at the upper 'lash' nodes (pulled aft) and the pivots
                 # bearing forward (toward the wearer).
-                anc = g["lash"]
+                anc = g[self.params.get("lash_group", "lash")]
                 z_p = np.mean([nodes[n][2] for n in piv])
                 z_a = np.mean([nodes[n][2] for n in anc])
                 H = P * e / (z_a - z_p)
@@ -125,12 +125,16 @@ class LoadCase:
         g = model["groups"]
         nodes = model["nodes"]
         sup = {}
-        for grp in ("hipbelt", "shoulder", "lifter"):
-            ids = g.get(grp, [])
+        springs = model.get("springs") or self.springs     # a frame may define its own body springs
+        for grp, kk in springs.items():
+            src = grp
+            if grp == "lifter" and self.params.get("lifter_group"):
+                src = self.params["lifter_group"]
+            ids = g.get(src, [])
             if not ids:
                 continue
-            kx, ky, kz = self.springs[grp]
-            if grp != "hipbelt":
+            kx, ky, kz = kk
+            if grp in ("shoulder", "lifter"):
                 kz *= sh_scale
             for nid in ids:
                 f = 1.0
@@ -222,6 +226,21 @@ def pack_standard(design_load_kg: float = 68.0, overload_kg: float = 91.0, **ove
                  params={"shelf_depth_mm": 240.0}),
     ]
     for c in cases:
+        for k, v in overrides.get(c.name, {}).items():
+            setattr(c, k, v)
+    return cases
+
+
+def pack5200_cases(design_load_kg: float = 68.0, overload_kg: float = 91.0, **overrides) -> list[LoadCase]:
+    """pack_standard + ``tall_load_posts`` (extension posts fitted: lashing and lifters on the post
+    bar, the R-10 tall-load mode of designs/pack_5200/DESIGN.md). Needs groups lash_posts/lifter_posts."""
+    cases = pack_standard(design_load_kg, overload_kg, **overrides)
+    W = design_load_kg
+    cases.append(LoadCase("tall_load_posts", f"{W:g} kg x 2.5 g tall load (antlers / quarter) lashed to the "
+                          "extension-post bar 220 mm above the crown, CG 250 mm aft; lifters moved to the post bar.",
+                          W, 2.5, placement="tall_load", cg_aft_mm=250.0,
+                          params={"lash_group": "lash_posts", "lifter_group": "lifter_posts"}))
+    for c in cases[-1:]:
         for k, v in overrides.get(c.name, {}).items():
             setattr(c, k, v)
     return cases

@@ -115,6 +115,9 @@ def _sec(spec, default=None):
 
 
 def build_frame(params: dict | None = None) -> dict:
+    if params and params.get("topology") == "pack5200_crown":
+        from .pack5200 import build   # pack-designer topology (designs/pack_5200/geometry.yaml)
+        return build(params)
     p = copy.deepcopy(DEFAULT_PARAMS)
     p.update(params or {})
     H = p["height"]
@@ -353,10 +356,17 @@ def load_frame_params(path) -> dict:
     import yaml
     doc = yaml.safe_load(Path(path).read_text())
     fr = dict(doc.get("frame", doc))
-    for k in ("section", "crossbar_section", "brace_section"):
+    if fr.get("topology") == "pack5200_crown":
+        from .pack5200 import P5200_DEFAULTS
+        keys, sec_keys = P5200_DEFAULTS, ("stay_section", "leg_section", "bar_section", "post_section")
+    else:
+        keys, sec_keys = DEFAULT_PARAMS, ("section", "crossbar_section", "brace_section")
+    for k in sec_keys:
         if isinstance(fr.get(k), dict):
             fr[k] = _sec(_yaml_layup(fr[k]))
-    return {k: v for k, v in fr.items() if k in DEFAULT_PARAMS}
+    if isinstance(fr.get("springs"), dict):
+        fr["springs"] = {k: tuple(v) for k, v in fr["springs"].items()}
+    return {k: v for k, v in fr.items() if k in keys}
 
 
 def _yaml_layup(spec: dict) -> dict:

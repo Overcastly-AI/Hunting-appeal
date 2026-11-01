@@ -1,13 +1,16 @@
 """Parameters for the 3D pack model.
 
-EVERY number in DEFAULT_PARAMS is a PLACEHOLDER (visual stand-in) until the pack-designer sets the
-real geometry. Override any of them from the design spec: add a ``viz3d:`` mapping to
-``designs/pack_5200/spec.yaml`` (same nested keys), or pass a dict to ``build_pack``.
-A ``designs/pack_5200/frame.yaml`` (huntkit.fea.frames.load_frame_params format) next to the spec,
-if present, replaces the placeholder frame so the render always uses the FEA frame.
+Source of truth (pack-designer): ``designs/pack_5200/geometry.yaml`` (+ DESIGN.md, panels.yaml).
+The model reads frame hard points, crown settings, bag / lid / pocket / shelf / wing / hipbelt /
+harness dimensions from it. Frame TUBE SIZES come from ``designs/pack_5200/frame.yaml`` (FEA
+agent) when it exists; until then the ``frame_tubes`` below are PLACEHOLDERS.
 
-Units: mm, g; coordinates = huntkit.fea convention (x lateral, y aft toward the bag, z up,
-z = 0 at the stay feet; the wearer stands at -y).
+Everything in DEFAULT_PARAMS that is not read from geometry.yaml is a VISUAL PLACEHOLDER
+(strap paths, foam thicknesses, mannequin anthropometry, quarter proxy size...). Override any of it
+with a ``viz3d:`` mapping in spec.yaml or a dict passed to ``build_pack``.
+
+Units mm, g. Coordinates = FCS (huntkit.fea): x lateral (+ wearer's right), y aft (+ toward the
+bag; the wearer stands at -y), z up, z = 0 at the stay feet.
 """
 from __future__ import annotations
 
@@ -15,43 +18,30 @@ import copy
 from pathlib import Path
 
 CU_IN_TO_L = 0.016387064
+REPO = Path(__file__).resolve().parents[2]
+DEFAULT_SPEC = REPO / "designs" / "pack_5200" / "spec.yaml"
 
 DEFAULT_PARAMS: dict = {
-    "placeholder": True,           # shown in the viewer header until the pack-designer signs off
     "name": "Pack 5200",
     "target_volume_l": 5200 * CU_IN_TO_L,   # spec volume.main_bag_cu_in -> 85.2 L
-    "torsos_in": [15.0, 19.0, 23.0],         # fit comparison (spec fit.torso_range_in + mid)
+    "torsos_in": [15.0, 19.0, 23.0],
     "default_torso_in": 19.0,
-    "colorway": "talus",           # designs/apparel/colorways.yaml accent_pairings id
-    # PLACEHOLDER frame geometry, passed to huntkit.fea.frames.carbon_variant(**frame)
-    "frame": {
-        "height": 790.0, "width_top": 200.0, "width_bottom": 270.0,
-        "lumbar_z": 135.0, "lumbar_depth": 30.0, "lumbar_width": 130.0, "top_sweep": 25.0,
-        "hip_z": 100.0, "shelf_z": 40.0, "shelf_strap_z": 300.0, "lash_z": 540.0,
-        "stay_style": "curved", "n_stay": 24, "yoke_drop": 50.0,
-    },
-    "frame_yaml": "auto",          # "auto" -> <spec dir>/frame.yaml if it exists; None disables
-    "frame_plates": {"thick": 2.5, "lumbar_h": 100.0, "corner_leg": 85.0},
-    # PLACEHOLDER main bag: tapered rounded box hugging the frame; depth auto-scaled to the target
-    "bag": {
-        "z_bottom": 55.0, "height": 770.0,
-        "a_bottom": 158.0, "a_top": 160.0, "a_bulge": 12.0,      # half-widths (x)
-        "b_bottom": 125.0, "b_top": 108.0, "b_bulge": 40.0,      # half-depths (y), pre-scaling
-        "n_front": 2.7, "n_back": 5.0, "r_bottom": 35.0, "r_top": 85.0,
-        "gap_to_frame": 6.0, "solve_depth": True, "rings": 72, "segments": 96,
-    },
-    "lid": {"height": 105.0, "overhang_x": 14.0, "overhang_front": 22.0, "overlap": 32.0, "radius": 46.0},
-    "side_pocket": {"theta": [-0.75, 0.62], "z": [35.0, 335.0], "thick": 42.0},
-    "front_pocket": {"theta_half": 0.62, "z": [110.0, 500.0], "thick": 16.0},
-    "compression": {"z": [205.0, 470.0], "width": 25.0, "thick": 2.4, "theta": [-1.15, 1.22]},
-    "hipbelt": {"height_center": 125.0, "height_wing": 105.0, "height_end": 72.0,
-                "thick": 18.0, "end_deg": 150.0, "wing_deg": [36.0, 108.0], "pocket_deg": [110.0, 143.0]},
-    "harness": {"width": 72.0, "thick": 16.0, "sternum_drop": 145.0},
-    "shelf": {"depth": 230.0, "thick": 9.0},
-    "quarter": {"width": 300.0, "depth": 200.0, "height": 640.0},   # bone-in elk hindquarter proxy
+    "colorway": "talus",                    # colorways.yaml accent_pairings id
+    "geometry_yaml": str(REPO / "designs" / "pack_5200" / "geometry.yaml"),
+    "frame_yaml": "auto",                   # <spec dir>/frame.yaml if present (tube sizes)
+    # PLACEHOLDER tube sizes until frame.yaml exists (FEA agent sizes them)
+    "frame_tubes": {"stay_od": 19.05, "crown_leg_od": 15.9, "bar_od": 15.9, "post_od": 12.7},
+    "lumbar_plate_t": 3.0, "spine_w": 46.0, "spine_t": 3.0, "yoke_plate_t": 1.5,
+    "bag_edge_radius": 10.0, "bag_top_radius": 14.0,
+    "lid_edge_radius": 22.0,
+    "shard_thick": 1.2,
+    "compression_z": [180.0, 400.0, 620.0],   # from the concept sketch (DESIGN.md: 3 x 25 mm per side)
+    "hipbelt": {"size": "M", "thick": 20.0, "height_center": 130.0, "height_wing": 100.0, "height_tip": 95.0},
+    "harness": {"thick": 16.0, "sternum_drop": 150.0},
+    "haul_pullback_y": None,                 # None -> geometry.yaml bag.haul_mode_pullback_y_max
+    "quarter": {"width": 280.0, "depth": 190.0, "height": 620.0},   # bone-in elk hindquarter proxy
     "mannequin": {"enabled": True},
     "fea": {"enabled": True},
-    "camo_tile_mm": 500.0,
 }
 
 
@@ -65,11 +55,12 @@ def deep_merge(base: dict, over: dict | None) -> dict:
     return out
 
 
-def load_params(spec_path: str | Path | None = None, overrides: dict | None = None) -> dict:
-    """DEFAULT_PARAMS <- spec.yaml (volume, torso range, optional viz3d: block) <- overrides."""
+def load_params(spec_path: str | Path | None = DEFAULT_SPEC, overrides: dict | None = None) -> dict:
+    """DEFAULT_PARAMS <- spec.yaml (volume, torso range, optional viz3d: block) <- overrides.
+    geometry.yaml / frame.yaml are looked up next to the spec."""
+    import yaml
     p = copy.deepcopy(DEFAULT_PARAMS)
     if spec_path:
-        import yaml
         spec_path = Path(spec_path)
         spec = yaml.safe_load(spec_path.read_text()) or {}
         p["name"] = spec.get("name", p["name"])
@@ -81,10 +72,20 @@ def load_params(spec_path: str | Path | None = None, overrides: dict | None = No
             lo, hi = float(tr[0]), float(tr[1])
             p["torsos_in"] = [lo, (lo + hi) / 2, hi]
             p["default_torso_in"] = (lo + hi) / 2
+        gy = spec_path.parent / "geometry.yaml"
+        if gy.exists():
+            p["geometry_yaml"] = str(gy)
         p = deep_merge(p, spec.get("viz3d"))
         if p.get("frame_yaml") == "auto":
             fy = spec_path.parent / "frame.yaml"
             p["frame_yaml"] = str(fy) if fy.exists() else None
-    elif p.get("frame_yaml") == "auto":
-        p["frame_yaml"] = None
-    return deep_merge(p, overrides)
+    p = deep_merge(p, overrides)
+    if p.get("frame_yaml") == "auto":
+        fy = Path(p["geometry_yaml"]).parent / "frame.yaml"
+        p["frame_yaml"] = str(fy) if fy.exists() else None
+    return p
+
+
+def load_geometry(p: dict) -> dict:
+    import yaml
+    return yaml.safe_load(Path(p["geometry_yaml"]).read_text())

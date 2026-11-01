@@ -35,9 +35,9 @@ the tech pack to a contract factory.
 | 4 | **Camo shard practice panel**: sew SH-01 onto a 500D scrap | Edge-turn and topstitch angular appliqué, sharp outside/inside corners, sewing through 2 layers + Hypalon tab | All shards, lash tabs `B-11` | 2 evenings |
 | 5 | **Lid** `L-01..05` | Box gusset around radiused corners, AquaGuard zip, under-lid pocket, buckle/webbing tabs | Main bag corners (same R-corner-to-strip operation, bigger) | 1–2 weekends |
 | 6 | **Load shelf + load wings** `S-01..04` | Sewing 840D TPU (the hardest fabric), webbing bartacks for load (tex 135, 120/19), grommets | Frame-side panel `B-01`, bottom `B-05` | 1 weekend |
-| 7 | **Back panel + harness straps** `BP-*`, `HS-J*` | Foam sandwiches (pre-cut foam), spacer mesh, binding around foam, matching left/right mirror pieces | Hipbelt wings | 1–2 weekends |
-| 8 | **Hipbelt M** `H-01..08` | Graded parts, stiffener insertion, the 50 mm buckle and webbing bartacks under load | Other belt sizes | 1–2 weekends |
-| 9 | **Main bag** `B-01..12`, `SH-01/02` | Full box-bag assembly in order: flat-work first (shards, tabs, ladders, pockets on the flat panels), then the side zip, then box seams, bottom, collar, binding | — | 2–3 weekends |
+| 7 | **Back panel + harness straps + crown pulley** `BP-*`, `HS-J*`, pulley webbing | Foam sandwiches (pre-cut foam), spacer mesh, binding around foam, matching left/right mirror pieces. Then thread the 3:1 crown pulley (sealed 25 mm webbing through the 3 guides into the cam buckle) and tie the pawl release cord to its strap toggle | Hipbelt wings | 1–2 weekends |
+| 8 | **Hipbelt M** `H-01..08`, rifle-boot mount tabs `R-03` on **both** wings | Graded parts, stiffener insertion, the 50 mm buckle and webbing bartacks under load | Other belt sizes | 1–2 weekends |
+| 9 | **Main bag** `B-01..12`, `SH-01/02` | Full box-bag assembly in order: flat-work first (shards, tabs, ladders, pockets on the flat panels), then **both** side zips (`B-03a/b` ×2, garages `B-08` ×2), then box seams, bottom, collar, binding | — | 2–3 weekends |
 | 10 | **Integration**: fit to frame, field test with a sandbag | Adjust strap lengths, record mass | — | 1 weekend |
 
 Rule of thumb: **all flat-work goes on before panels become 3D.** Shards, tabs, pockets, ladders
@@ -52,7 +52,7 @@ Hypalon tab) and adjust tension until both sides look the same.
 |---|---|---|
 | Sewing **840D TPU-coated nylon** | It's stiff and grippy. The coating sticks to the presser foot and the layers creep | Walking foot, Teflon foot or tape on the bed, longer stitch (3.5 mm), clips not pins |
 | **Box corners** (R60 bag bottom, R50 lid) | Turning a strip around a curve without puckers | Match notches every 25 mm (the pattern has them), clip the allowance, sew slowly with the needle down at each pivot. The lid is the rehearsal |
-| **Full-length side zip** (835 mm) | Long straight seam across two strips; easy to wave | Baste with 6 mm double-sided basting tape first; mark matching notches at 100 mm spacing |
+| **Full-length side zips, both sides** (2 × 835 mm, ambidextrous) | Long straight seams across two strips; easy to wave. Doing it twice means the second one is better: sew the left side first, it's the less-used side for most | Baste with 6 mm double-sided basting tape first; mark matching notches at 100 mm spacing |
 | **Load-bearing bartacks** (lifters, shelf straps, hipbelt) | These carry the 3.3 kN proof load. A bad tack fails in the field | Box-X pattern, tex 135, 120/19 needle. Test 3 samples to failure before using it on the pack (hang a bucket of sand, or use a luggage scale + lever) |
 | **Foam sandwiches** (straps, belt) | Foam shifts and the binding wanders | Outsource die-cut foam; glue-stick the foam to the mesh; sew the binding with a binding foot |
 | **Many-layer stacks** at tab and ladder points (up to 6 layers + webbing) | Needle deflection, skipped stitches | Hammer the seam flat, use a bigger needle and slow hand-crank through the thickest spot |
@@ -62,8 +62,10 @@ Hypalon tab) and adjust tension until both sides look the same.
 
 | Part | Outsource to | Why |
 |---|---|---|
-| **Carbon frame** (cut tubes, bonded nodes, inserts, crown, index rack) | A composite shop or bike-frame builder, using the FEA engineer's drawings | It's the safety-critical load path. Bond prep and cure are hard to verify at home. **Minimum:** buy the tubes pre-cut and have the plates (lumbar plate, spine/rack, yoke plate) **waterjet-cut** from DXF |
-| Ti pins, inserts, index pin | A machine shop (send a print) | Tolerance for the pin/hole fit |
+| **Carbon frame** (cut tubes, bonded nodes, inserts, crown with post sockets) | A composite shop or bike-frame builder, using the FEA engineer's drawings | It's the safety-critical load path. Bond prep and cure are hard to verify at home. **Minimum:** buy the tubes pre-cut and have the plates (lumbar plate, crown spine, yoke plate) **waterjet-cut** from DXF |
+| **Torso lock**: PA66-GF30 toothed rack (4 mm pitch), Ti pawl, spring, POM housing | Rack: 3D-printed nylon-CF for prototype 1 (proof-test it to 1334 N both ways before use), then injection-molded or machined PA66-GF30. Pawl: machine shop | Tooth geometry and the pawl spring decide whether it locks reliably. The owner just screws the rack onto the inserts |
+| Ti hipbelt pivot pin, bonded inserts | A machine shop (send a print) | Tolerance |
+| Pulley guides (UHMWPE-lined rings) and metal cam buckle | Buy off the shelf (climbing/rescue or pack hardware suppliers) | Beginner bolts or sews them on; no fabrication |
 | **Foam die-cutting** (EVA 45C/30C, XLPE: `H-03/04/08`, `HS-*3/4`, `BP-02/04`) | A foam converter from DXF | Clean bevelled edges. Hand-cut foam looks and feels lumpy |
 | HDPE stiffeners (`H-05`, `S-05`) | Waterjet or a CNC router shop from DXF | Smooth radiused edges that won't wear through the fabric |
 | Camo shard fabric (`polyester_ht_630d_printable`) | A sublimation print bureau, printing the owner base camo | Small runs; 1–2 m is plenty for several prototypes |
@@ -81,7 +83,14 @@ design gets proven.
 4. Frame: move to a composite supplier with a fixture-bonded process and a proof test on every
    frame (R-02).
 
-## 5. Safety notes
+## 5. Torso-adjust check (do this before the first loaded hike)
+1. With the pack empty, pull the release toggle, run the crown through its full travel with the
+   pulley tail, and confirm the pawl clicks into the rack along the whole range.
+2. Hang 136 kg (300 lb, ≈ 1334 N) from the crown top bar with the frame held upside-down, then
+   right-way-up: no slip either way. Use sandbags and a luggage scale.
+3. Mark the rack with your torso setting in paint pen so you can see creep at a glance.
+
+## 6. Safety notes
 - Proof-test every frame and every load bartack sample before carrying a real load.
 - Carbon dust: cut it wet, wear a mask, vacuum (don't sweep).
 - Don't leave the frame in a hot car above 60 °C. The epoxy softens (materials overview).

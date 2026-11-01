@@ -29,19 +29,22 @@ frame:
     upper_bar:
       from: [-115.0, -10.4, 520.0]
       to: [115.0, -10.4, 520.0]
-      note: cross tube 10 mm below stay tops; carries index latch housing
+      note: cross tube 10 mm below stay tops; carries the rack-lock pawl housing (release toggle cord to the left
+        shoulder strap)
     crown:
       legs_x: [-115.0, 115.0]
       leg_length_along_axis: 430.0
       axis_unit_vector_yz: [0.0375, 0.9993]
       top_bar: cross tube joining leg tops; lifter anchors at x=+/-70; bag top buckles at x=+/-70; extension-post
         sockets at leg tops
-      spine: cfrp_plate_quasi_iso 3 mm centre spine, top bar down 300 mm; carries the yoke and the index rack (holes
-        at 12.7 mm pitch)
+      spine: cfrp_plate_quasi_iso 3 mm centre spine, top bar down 300 mm; carries the yoke, the pa66_gf30 toothed
+        rack (4 mm pitch, bonded + screwed into plate inserts) and the moving pulley guide B at its bottom end
+      retention: 3:1 webbing pulley (adjust, continuous, while worn) + two-way toothed-rack/pawl positive lock;
+        see crown_retention
       travel_mm: 203.2
-      positions: 17
-    extension_posts_accessory: {length_mm: 220.0, note: two plug-in posts + bar on crown top for tall loads / antlers
-        / orange flag}
+      positions: continuous (lock resolution 4 mm); table lists 0.5 in reference settings
+    extension_posts_accessory: {length_mm: 220.0, note: 'ACCESSORY (owner 2026-11-01): two plug-in posts + bar for
+        tall loads / antlers / orange flag; sockets in the crown top bar stay on every frame; not in base weight'}
   hard_points:
     stay_foot_R: [135.0, 0.0, 0.0]
     stay_foot_L: [-135.0, 0.0, 0.0]
@@ -70,7 +73,11 @@ frame:
     bag_anchor_mid_R: [115.0, -5.5, 330.0]
     bag_anchor_mid_L: [-115.0, -5.5, 330.0]
     hipbelt_pivot: [0.0, -48.1, 120.0]
-    index_latch_upper_bar: [0.0, -24.4, 520.0]
+    rack_lock_pawl_upper_bar: [0.0, -24.4, 520.0]
+    pulley_fixed_guide_A: [-18.0, -34.8, 190.0]
+    pulley_fixed_guide_C: [18.0, -34.8, 190.0]
+    pulley_cam_buckle_R: [105.0, -44.2, 150.0]
+    pulley_cam_buckle_L_alt: [-105.0, -44.2, 150.0]
     upper_bar_node_R: [115.0, -10.4, 520.0]
     upper_bar_node_L: [-115.0, -10.4, 520.0]
   crown_settings:
@@ -210,12 +217,58 @@ frame:
     crown_top_z: 804.2
     leg_overlap_mm: 155.8
     lifter_angle_deg: 40.6
+  crown_retention:
+    concept: 'Pulley-tensioned telescoping crown: a 3:1 webbing pulley (25 mm poly webbing, UHMWPE-lined guides,
+      metal cam buckle) sets crown height continuously, while worn. A two-way toothed rack + spring pawl is the
+      positive lock: pull the release toggle (left shoulder strap) to lift the pawl, pull the tail to shorten /
+      ease the cam and shrug to lengthen, let go and the pawl drops into the nearest tooth.'
+    sign_convention: extension = crown pushed up out of the stays; compression = pushed down
+    load_cases:
+      drop_2p5g_extension: {load_n: 334.0, sf: 2.0, basis: 68 kg x 2.5 g x 20 % shoulder share (spec drop case),
+        required_n: 668.0}
+      overload_extension: {load_n: 268.0, sf: 1.5, basis: 91 kg x 1.5 g x 20 % (FEA overload_haul case), required_n: 402.0}
+      hipbelt_off_abuse_extension: {load_n: 1001.0, sf: 1.0, basis: 'ASSUMPTION abuse: hipbelt unbuckled (creek
+          crossing), 68 kg x 1.5 g, 100 % on shoulders; no slip, no damage', required_n: 1001.0}
+      tall_load_compression: {load_n: -667.0, sf: 2.0, basis: 'ASSUMPTION: 40 % of 68 kg lashed to crown/extension
+          posts x 2.5 g pushes the crown DOWN', required_n: 1334.0}
+    required_capacity_n: {extension: 1001.0, compression: 1334.0, note: lock (rack+pawl) must hold BOTH with zero
+        slip; ultimate >= 1.5 x these}
+    pulley: {mechanical_advantage: 3, guide_friction_mu: 0.1, capstan_factor: 1.87, routing: 'dead end on crown
+        spine bottom -> fixed guide A (lumbar plate top, z 190) -> moving guide B (crown spine bottom) -> fixed
+        guide C -> cam buckle at the lumbar plate right corner (alt. left)', tail_tension_while_walking_n: 23.7,
+      tail_tension_to_hold_extension_requirement_n: 178.0, tail_travel_mm: 610, role: adjuster; carries load only
+        while the pawl is released}
+    lock: {type: two-way toothed rack + spring pawl, rack_material: pa66_gf30, pawl_material: ti_6al_4v, pitch_mm: 4.0,
+      engaged_teeth: 2, rack_width_mm: 20.0, capacity_n: 5328, sf_vs_requirement: 3.99, resolution_mm: 4.0, release: Dyneema
+        2 mm cord to a toggle on the left shoulder strap}
+    options:
+    - {option: 'Pulley 3:1 + ladder lock only', hold_n: 1687, source: ladder_lock_25mm slip_load_n=300 (estimate)
+        x MA x capstan 1.87, creep: 'poor: webbing walks through ladder locks under cyclic gait loads', ice_mud: fair,
+      mass_g: 35, two_way: false, beginner: easy, verdict: 'reject as sole retention (holds once, creeps)'}
+    - {option: 'Pulley 3:1 + cam buckle only', hold_n: 3936, source: cam slip 700 N ASSUMPTION (no DB record; materials-engineer
+        to add), creep: 'fair: cam teeth hold, but webbing creep/stretch over a day of hauling', ice_mud: fair-poor
+        (iced cam teeth), mass_g: 45, two_way: false, beginner: easy, verdict: 'good ADJUSTER; one-way, so not a
+        lock'}
+    - {option: Cam-lever friction collars x2 (seatpost QR), hold_n: 1600, source: ASSUMPTION ~800 N per QR at rated
+        torque with carbon paste; ~50 % when wet/iced, creep: good dry; slips wet/icy, ice_mud: 'poor (friction-only,
+        grit in the sliding fit)', mass_g: 70, two_way: true, beginner: 'hard (slotted bonded Al sockets, clamp-crush
+        risk on carbon legs)', verdict: 'reject: friction-only and levers sit behind the shoulder blades (not adjustable
+        while worn)'}
+    - {option: Fidlock/Austrialpin-style hard-lock buckle in the pulley line, hold_n: 300, source: fidlock_magnetic_buckle_25mm
+        breaking_strength_n=300, creep: 'n/a: locks the buckle, not the webbing position', ice_mud: good, mass_g: 15,
+      two_way: false, beginner: easy, verdict: 'reject: does not fix position; strength below need'}
+    - {option: 'Two-way toothed rack + spring pawl (PA66-GF30 rack, Ti pawl)', hold_n: 5328, source: '2 teeth x
+        20 mm x 2 mm root x tau 67 MPa (pa66_gf30, conditioned ASSUMPTION)', creep: none (positive), ice_mud: 'good:
+        open teeth self-clear; pawl snaps in under its spring', mass_g: 50, two_way: true, beginner: medium (rack
+        waterjet/3D-printed outsourced; screw-on), verdict: CHOSEN as the positive lock}
   fea_handoff_notes: [Torso 23 in needs yoke z=654; crown puts it there with the top bar at z=804 (FEA demo warned
       frame >= 634 mm)., 'Single-stay set-down failed at the lumbar bar in the demo: replace the lumbar tube with
       the pm45 lumbar plate (closed torsion box).', 'Meat-shelf heavy-low failed at mid-stay: shelf straps now anchor
       at the mid-bar node (z=330), not mid-span.', 'Bonded elbow peel (Volkersen) was the critical bond: elbow fitting
-      should be a sleeve in shear with >= 25 mm overlap each side, no peel.', 'No holes in carbon tubes: index rack
-      is a separate plate on the crown spine; all pins go through bonded Ti/Al inserts.', 'Crown legs: check bending
+      should be a sleeve in shear with >= 25 mm overlap each side, no peel.', 'No holes in carbon tubes: the toothed
+      rack is a PA66-GF30 strip on the crown spine plate; all fasteners go through bonded Ti/Al inserts in plates.',
+    'Crown retention load to resist (see crown_retention.required_capacity_n): extension 1001 N, compression 1334
+      N, applied at the pawl on the upper bar (z 520) and reacted by the crown spine.', 'Crown legs: check bending
       at the stay socket in tall_load with min overlap 150 mm.']
 bag:
   type: 'box bag (huntkit.patterns.box_bag): front=frame-side panel, back=outer face, 2 side gussets, bottom'
@@ -225,7 +278,8 @@ bag:
   bottom_corner_radius: 60.0
   origin_carry_mode: {x_center: 0.0, y_frame_side_panel: 20.0, z_bottom: 35.0}
   haul_mode_pullback_y_max: 250.0
-  side_zip: {side: right (x+), type: coil_zipper_10, length_mm: 835}
+  side_zip: {side: BOTH (ambidextrous), type: coil_zipper_10, length_mm_each: 835, qty: 2}
+  height_note: one bag height for now (owner); a short (~70 L) bag on the same frame is a future option
   extension_collar_height: 150.0
 volumes: {method: 'geometric: front-panel seam-line area (huntkit Piece.seam_area_mm2) x gusset width, via BoxBag.volume_mm3()',
   main_bag_L: 85.24, main_bag_cu_in: 5202, main_bag_analytic_check_L: 85.24, counted_in_5200: 'main bag only (to
@@ -264,8 +318,11 @@ harness:
   options: [J (unisex default), 'S (curved, 35 mm lateral offset)']
   sternum_rail_travel: 120.0
 weight:
-  groups_g: {'frame (allocation, FEA to confirm)': 525, main bag: 589.1, accents: 98.8, lid: 185.0, pockets: 48.3,
-    hipbelt (M): 343.8, harness: 287.9, back panel: 94.8, load shelf: 532.0, compression: 118.8, misc: 60.4}
-  total_g: 2883.9
-  total_lb: 6.36
+  groups_g: {'frame (allocation, FEA to confirm)': 505, torso adjust: 96.2, main bag: 632.2, accents: 98.8, lid: 185.0,
+    pockets: 48.3, hipbelt (M): 353.4, harness: 287.9, back panel: 94.8, load shelf: 532.0, compression: 118.8,
+    misc: 61.1}
+  total_g: 3013.5
+  total_lb: 6.64
   rifle_boot_optional_g: 35.6
+  extension_posts_accessory_g: 60
+  excluded_from_base: ['rifle boot (switchable, either side)', extension posts accessory (ASSUMPTION ~60 g)]

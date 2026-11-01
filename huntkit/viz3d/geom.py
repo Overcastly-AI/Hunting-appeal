@@ -399,3 +399,84 @@ def rot_z(a):
 def rot_x(a):
     c, s = np.cos(a), np.sin(a)
     return np.array([[1.0, 0, 0], [0, c, -s], [0, s, c]])
+
+
+# ----------------------------------------------------------------------------- conformal overlays
+def conformal_plate(poly2d, surf, nrm, thick=1.2, lift=0.5, max_edge=8.0, tile=TILE_MM):
+    """A thin closed plate shaped like the shapely polygon ``poly2d`` (2D parameter coords, mm),
+    wrapped onto a surface: ``surf(u, v) -> (n,3)`` and ``nrm(u, v) -> (n,3)``. Used for the camo
+    shard overlays (they follow the bag's rounded corners, the pocket bellows, the hipbelt)."""
+    v2, f = trimesh.creation.triangulate_polygon(poly2d, engine="earcut")
+    v3 = np.column_stack([v2, np.zeros(len(v2))])
+    v3, f = trimesh.remesh.subdivide_to_size(v3, f, max_edge)
+    u, v = v3[:, 0], v3[:, 1]
+    P = np.asarray(surf(u, v), float)
+    N = np.asarray(nrm(u, v), float)
+    N = N / np.linalg.norm(N, axis=1, keepdims=True)
+    n = len(P)
+    bot, top = P + N * lift, P + N * (lift + thick)
+    verts = np.vstack([top, bot])
+    F = [f, f[:, ::-1] + n]
+    e = np.sort(np.vstack([f[:, [0, 1]], f[:, [1, 2]], f[:, [2, 0]]]), axis=1)
+    uniq, cnt = np.unique(e, axis=0, return_counts=True)
+    bnd = uniq[cnt == 1]
+    F.append(np.column_stack([bnd[:, 0], bnd[:, 1], bnd[:, 1] + n]))
+    F.append(np.column_stack([bnd[:, 0], bnd[:, 1] + n, bnd[:, 0] + n]))
+    m = trimesh.Trimesh(vertices=verts, faces=np.vstack(F), process=False)
+    trimesh.repair.fix_winding(m)
+    if _signed_volume(m) < 0:
+        m.faces = m.faces[:, ::-1]
+    uv = np.column_stack([u, v]) / tile
+    m.metadata["uv"] = np.vstack([uv, uv])
+    return m
+
+
+def outline_xz(w, h, z0, r_bottom, r_top, inset=0.0, n_arc=14, n_edge=24):
+    """Closed rounded-rectangle outline in the x-z plane (CCW seen from +y), fixed point count,
+    shrunk by ``inset``. Returns points (N,2) [x, z] and outward normals (N,2)."""
+    hw = w / 2 - inset
+    zb, zt = z0 + inset, z0 + h - inset
+    rb = max(r_bottom - inset, 0.5)
+    rt = max(r_top - inset, 0.5)
+    pts, nrm = [], []
+
+    def edge(p0, p1, nv, k=n_edge):
+        for t in np.linspace(0, 1, k, endpoint=False):
+            pts.append(np.array(p0) * (1 - t) + np.array(p1) * t)
+            nrm.append(nv)
+
+    def arc(c, r, a0, a1, k=n_arc):
+        for a in np.linspace(a0, a1, k, endpoint=False):
+            pts.append(np.array(c) + r * np.array([np.cos(a), np.sin(a)]))
+            nrm.append(np.array([np.cos(a), np.sin(a)]))
+    edge([-hw + rb, zb], [hw - rb, zb], [0, -1])
+    arc([hw - rb, zb + rb], rb, -np.pi / 2, 0)
+    edge([hw, zb + rb], [hw, zt - rt], [1, 0], k=n_edge * 2)
+    arc([hw - rt, zt - rt], rt, 0, np.pi / 2)
+    edge([hw - rt, zt], [-hw + rt, zt], [0, 1])
+    arc([-hw + rt, zt - rt], rt, np.pi / 2, np.pi)
+    edge([-hw, zt - rt], [-hw, zb + rb], [-1, 0], k=n_edge * 2)
+    arc([-hw + rb, zb + rb], rb, np.pi, 1.5 * np.pi)
+    return np.array(pts, float), np.array(nrm, float)
+
+
+def soft_box(w, h, z0, y0, d, r_bottom, r_top, r_edge=10.0, rings_edge=6):
+    """Box bag: the x-z outline extruded over y0..y0+d, with r_edge rounding where the gusset
+    meets the front/back panels (sewn-seam look). Closed; volume ~ outline area x d."""
+    ys, insets = [], []
+    for k in range(rings_edge + 1):          # frame-side rounding
+        ph = np.pi / 2 * k / rings_edge
+        ys.append(y0 + r_edge * (1 - np.sin(ph)) * 0 + r_edge * (1 - np.cos(ph)))
+        insets.append(r_edge * (1 - np.sin(ph)))
+    for t in np.linspace(0, 1, 8)[1:-1]:
+        ys.append(y0 + r_edge + (d - 2 * r_edge) * t)
+        insets.append(0.0)
+    for k in range(rings_edge, -1, -1):
+        ph = np.pi / 2 * k / rings_edge
+        ys.append(y0 + d - r_edge * (1 - np.cos(ph)))
+        insets.append(r_edge * (1 - np.sin(ph)))
+    rings = []
+    for y, i in zip(ys, insets):
+        p, _ = outline_xz(w, h, z0, r_bottom, r_top, inset=i)
+        rings.append(np.column_stack([p[:, 0], np.full(len(p), y), p[:, 1]]))
+    return loft(np.array(rings), cap_start=True, cap_end=True)
