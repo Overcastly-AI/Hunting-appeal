@@ -14,3 +14,4 @@
 | 2026-11-01 | One bag height for now; short bag (15–17 in torso) is a later option | owner | |
 | 2026-11-01 | Tall-load extension posts are a separate ACCESSORY | owner | Frame keeps the sockets |
 | 2026-11-01 | Torso adjust: owner asked for a pulley-buckle system instead of pin holes. Under evaluation: pulley-tensioned telescoping crown with positive lock backup | owner+Claude | Gives continuous, on-body adjustment; must hold drop loads without creeping |
+| 2026-11-01 | First pack bag design REJECTED: too boxy/dated, wrong bag shape/profile, wrong features/layout. Frame/suspension concept not objected to | owner | Root cause: no market research. Fix: research phase (docs/research/) before redesign. Owner's favorite benchmarks: Stone Glacier, Exo Mountain Gear (performance benchmarks only; no copying the look) |

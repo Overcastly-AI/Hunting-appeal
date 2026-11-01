@@ -42,6 +42,9 @@ tests/              pytest, run `python -m pytest -q`
 The modules talk through the contracts in `docs/CONTRACTS.md`. Change a contract only if you
 update every consumer in the same change.
 
+## Research first (owner rule)
+Every design phase starts with cited web research (docs/research/), covering competitors, user pain points, design language and patents, before any geometry is drawn. Benchmarks come from cited sources, not model memory.
+
 ## Working with agents (important — preserves main context)
 The main session acts as **orchestrator**. It delegates substantive work to the specialist agents
 in `.claude/agents/`, and keeps only their conclusions:
