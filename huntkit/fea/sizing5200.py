@@ -374,7 +374,8 @@ def deliver(sw, design_dir="designs/pack_5200", screens_dir="outputs/screens", d
     png1 = adir / "frame_sizing_worst_case.png"
     plot_worst_case(res, png1, f"Pack 5200 frame, worst case: {gcase} ({gov['torso']:g} in torso)")
     png2 = adir / "frame_sizing_pareto.png"
-    plot_pareto({"stage2": sw["stage2"], "stage3": s3}, rec if feasible else None, png2)
+    plot_pareto({"stage2": sw["stage2"], "stage3": s3}, rec if feasible else None, png2,
+                budget_g=FRAME_BUDGET_G, screen_label="screened at 15 + 23 in torso")
     png3 = adir / "frame_sizing_case_margins.png"
     names = list(kept["results"]) + ["fatigue"]
     plot_case_margins({"cases": names, "torsos": (15, 19, 23),
@@ -415,6 +416,27 @@ def _md(sw, e, feasible, model, crown, gcase, png1, png2, png3):
         L.append(f"**No design in the sweep passes every check.** The best candidate weighs {m:.0f} g "
                  f"({m * G2OZ:.1f} oz), {vs}, with a min margin of {e['margin']:.2f}. See the governing checks "
                  "and recommendations below.")
+    items = e["mass_items"]
+    top3 = sorted(items.items(), key=lambda kv: -kv[1])[:3]
+    L += ["", "### Why it is heavy, and the path to the 525-600 g target", "",
+          "The three largest mass items are " + ", ".join(f"{k} ({v:.0f} g)" for k, v in top3) + ". "
+          "The checks that set the mass are the Volkersen PEAK bond shear at the lumbar elbows (tall_load, "
+          "15 in), the crown-leg ring crush at the stay-top bushing (hipbelt-off abuse) and lumbar-plate "
+          "bending at its free top edge. None of these can be fixed by tube size alone. These changes "
+          "go to the pack-designer:",
+          "1. **Delete the lumbar elbows.** Use one straight stay per side from the foot boot to the stay top, "
+          "with the lumbar curve in the foam. The elbow is the governing bond, and its 2 mm 7075 sleeves "
+          "plus the elbow sockets are ~90 g of the sleeve mass.",
+          "2. **Replace the 7075 sockets/sleeves with carbon wraps** (a wet-wrapped or prepreg-wrapped "
+          "sleeve over the tube at each node), or with 1 mm tapered Al. A scarfed sleeve end cuts the "
+          "Volkersen peak about 2x. That is not credited here: run a joint coupon test to earn it.",
+          "3. **Make the lumbar plate a formed hat-section** (2 mm with a 15 mm return flange on the top and "
+          "bottom edges), or use a 22 mm lumbar tube at z 120 with a 1.5 mm pm45 shear web. The 4 mm flat "
+          "QI plate (217 g) is sized by free-edge bending.",
+          "4. **Crown legs:** 50-70 mm bushings, plus a bonded 7075 collar at the stay top (credited). A "
+          "UHMWPE bushing with a 120 deg contact land, rather than the point-load ring formula used here, "
+          "should allow the 0.94 mm leg wall. Verify with a crush coupon.",
+          "Re-run `python -m huntkit.fea.cli size5200` after the topology update.", ""]
     L += ["", f"- Design: {e['label']}",
           f"- Min margin (SF / required, all checks, torsos 15/19/23 in): **{e['margin']:.2f}**. Governing: "
           f"{e['governing']['what']} at {e['governing']['torso']:g} in.", "",

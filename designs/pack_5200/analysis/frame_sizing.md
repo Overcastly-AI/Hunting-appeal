@@ -6,6 +6,16 @@ Owner: structural-fea-engineer. Model: `huntkit/fea/pack5200.py` built from `des
 
 **Lightest design that passes every check: 1103 g (38.9 oz, 2.43 lb).** That is OVER the 525 g allocation by 578 g. The R-15 limit is 600 g, and the premium-frame benchmark is 450-700 g.
 
+### Why it is heavy, and the path to the 525-600 g target
+
+The three largest mass items are 7075 sockets/sleeves + gussets (338 g), lumbar plate (250 x 140) (217 g), tubes: crown_leg (112 g). The checks that set the mass are the Volkersen PEAK bond shear at the lumbar elbows (tall_load, 15 in), the crown-leg ring crush at the stay-top bushing (hipbelt-off abuse) and lumbar-plate bending at its free top edge. None of these can be fixed by tube size alone. These changes go to the pack-designer:
+1. **Delete the lumbar elbows.** Use one straight stay per side from the foot boot to the stay top, with the lumbar curve in the foam. The elbow is the governing bond, and its 2 mm 7075 sleeves plus the elbow sockets are ~90 g of the sleeve mass.
+2. **Replace the 7075 sockets/sleeves with carbon wraps** (a wet-wrapped or prepreg-wrapped sleeve over the tube at each node), or with 1 mm tapered Al. A scarfed sleeve end cuts the Volkersen peak about 2x. That is not credited here: run a joint coupon test to earn it.
+3. **Make the lumbar plate a formed hat-section** (2 mm with a 15 mm return flange on the top and bottom edges), or use a 22 mm lumbar tube at z 120 with a 1.5 mm pm45 shear web. The 4 mm flat QI plate (217 g) is sized by free-edge bending.
+4. **Crown legs:** 50-70 mm bushings, plus a bonded 7075 collar at the stay top (credited). A UHMWPE bushing with a 120 deg contact land, rather than the point-load ring formula used here, should allow the 0.94 mm leg wall. Verify with a crush coupon.
+Re-run `python -m huntkit.fea.cli size5200` after the topology update.
+
+
 - Design: stay 25 RW45 k6 (1.19) | leg 20 RW45 k8 (1.44) | bars 22 RW45 k6 (1.19) | plate QI 4 | spine tube 20 RW45 k6 (1.19) | mma | sleeve 2 | bushing 70
 - Min margin (SF / required, all checks, torsos 15/19/23 in): **1.09**. Governing: tall_load: bond peak elbow_L/end at 15 in.
 

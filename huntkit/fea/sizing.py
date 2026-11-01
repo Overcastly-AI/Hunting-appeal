@@ -428,7 +428,8 @@ def _plain(x):
 
 
 # ---------------------------------------------------------------------------- plots
-def plot_pareto(sw: dict, rec: dict | None, png, phone: bool = True):
+def plot_pareto(sw: dict, rec: dict | None, png, phone: bool = True, budget_g: float | None = None,
+                screen_label: str = "screened at 19 in torso"):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -438,11 +439,15 @@ def plot_pareto(sw: dict, rec: dict | None, png, phone: bool = True):
     ax.text(575, 0.06, "premium frame\nbenchmark\n450-700 g", ha="center", va="bottom", fontsize=8,
             color="#555555", transform=ax.get_xaxis_transform())
     ax.axhline(1.0, color="#555555", lw=1, ls="--")
-    ax.text(ax.get_xlim()[0] if False else 0.99, 1.0, "requirement (all checks)", ha="right", va="bottom",
+    ax.text(0.01, 1.0, "requirement: all checks pass", ha="left", va="bottom",
             fontsize=8, color="#555555", transform=ax.get_yaxis_transform())
+    if budget_g:
+        ax.axvline(budget_g, color="#555555", lw=1, ls=":")
+        ax.text(budget_g, 0.98, f" frame allocation\n {budget_g:.0f} g", ha="left", va="top", fontsize=8,
+                color="#555555", transform=ax.get_xaxis_transform())
     x2 = [e["mass_g"] for e in s2]
     y2 = [min(e["margin"], 3.0) for e in s2]
-    ax.scatter(x2, y2, s=10, color="#b9c7d6", label="screened at 19 in torso", zorder=2, lw=0)
+    ax.scatter(x2, y2, s=10, color="#b9c7d6", label=screen_label, zorder=2, lw=0)
     x3 = [e["mass_g"] for e in s3]
     y3 = [min(e["margin"], 3.0) for e in s3]
     ax.scatter(x3, y3, s=26, color="#2a6fb0", label="full check 15/19/23 in", zorder=3,
@@ -454,7 +459,7 @@ def plot_pareto(sw: dict, rec: dict | None, png, phone: bool = True):
         ax.scatter([rec["mass_g"]], [rec["margin"]], s=120, facecolors="none", edgecolors="#222222",
                    linewidths=2, zorder=4)
         ax.annotate(f"recommended\n{rec['mass_g']:.0f} g, margin {rec['margin']:.2f}",
-                    (rec["mass_g"], rec["margin"]), xytext=(18, -34), textcoords="offset points",
+                    (rec["mass_g"], rec["margin"]), xytext=(-150, 28), textcoords="offset points",
                     fontsize=9, color="#222222", arrowprops=dict(arrowstyle="-", color="#222222", lw=1))
     ax.set_xlabel("frame mass incl. hubs, sleeves, inserts, adhesive (g)", fontsize=9)
     ax.set_ylabel("min margin = min over all checks of SF / required SF", fontsize=9)
