@@ -20,9 +20,8 @@ Pipeline (real file)
    * pure-Python vectorised scanline fill (``rasterize_shapes``), exact pixel-centre
      sampling, even-odd or non-zero rule. Used when cairosvg is missing and in tests.
 3. ``edge_wrap_check`` - is the 1000x1000 tile seamless? Mean CIEDE2000 across the wrap seam
-   vs the same statistic on interior lines that sit on the SAME pixel grids (multiples of
-   250 units are grid lines of the 5.556, 15.625 and 7.8125 unit grids), so a digital-pixel
-   boundary at the seam is not mistaken for a seam.
+   as a z-score against the same statistic on the interior lines of the finest pixel grid
+   (7.8125 units), so a digital-pixel boundary at the seam is not mistaken for a seam.
 4. ``make_seamless`` - if the check fails: ``offset_blend`` (default) or ``mirror``.
    offset_blend = half-repeat offset copy cross-faded in LABEL space with a noisy smoothstep
    mask (x pass then y pass), so the output still contains only the 4 inks and the repeat
@@ -390,7 +389,9 @@ def rasterize_svg(path: Path | str, nx: int, ny: int | None = None,
         from PIL import Image
         text = Path(path).read_text(encoding="utf-8")
         # crisp edges: no anti-aliasing -> flat inks (any residual AA pixel is snapped)
-        text = re.sub(r"<svg\b", '<svg shape-rendering="crispEdges"', text, count=1)
+        # even-odd inherited by default (same assumption as the pure back end; an element's
+        # own fill-rule still wins)
+        text = re.sub(r"<svg\b", '<svg shape-rendering="crispEdges" fill-rule="evenodd"', text, count=1)
         png = cs.svg2png(bytestring=text.encode("utf-8"), output_width=nx, output_height=ny,
                          background_color=hexes[0])
         rgb = np.asarray(Image.open(io.BytesIO(png)).convert("RGB"))
@@ -407,32 +408,37 @@ def _line_de(lab_img: np.ndarray, i: int, axis: int) -> float:
 
 
 def edge_wrap_check(labels: np.ndarray, hexes: list[str] | None = None,
-                    tol_ratio: float = 1.5, tol_abs: float = 1.0) -> dict:
-    """Edge-wrap dE00 seam test. For each axis: mean dE00 across the wrap seam, the mean
-    over the common-grid interior lines (250/500/750 units) and over all interior lines.
-    Seamless if seam <= tol_ratio * max(common, interior) + tol_abs."""
+                    z_max: float = 3.5, ref_grid: int = 128) -> dict:
+    """Edge-wrap dE00 seam test.
+
+    For each axis: mean CIEDE2000 between the last and first line (the wrap seam) compared
+    with the same statistic on the ``ref_grid - 1`` interior lines of the finest pixel grid
+    (multiples of 7.8125 units). Using grid lines as the reference matters: the seam is a
+    boundary of every grid in the artwork, so it changes colour more often than an average
+    pixel row would; against other grid lines it is a fair comparison.
+    Seamless if the seam's ROBUST z-score (median / 1.4826*MAD of the reference lines) is
+    <= ``z_max``. Calibration (proxy, 7 seeds, 400 and 1000 px): seamless tiles z <= 2.9;
+    tiles with unrelated content across the wrap z >= 4.2 (grid-misaligned) / >= 7.0
+    (grid-aligned). It is a screening statistic: also eyeball previews/owner_base_tile2x2.png.
+    """
     hexes = hexes or palette_hexes()
     labs = np.array([color.hex_to_lab(h) for h in hexes])
     L = labs[labels]
-    res = {"tol_ratio": tol_ratio, "tol_abs": tol_abs}
+    res = {"z_max": z_max, "reference": f"{ref_grid - 1} interior {TILE_UNITS / ref_grid:g}-unit grid lines"}
     ok = True
     for axis, name in ((1, "x"), (0, "y")):
         n = labels.shape[axis]
         seam = _line_de(L, 0, axis)
+        ref = np.array([_line_de(L, int(round(k * n / ref_grid)), axis) for k in range(1, ref_grid)])
         common = float(np.mean([_line_de(L, int(round(u / TILE_UNITS * n)), axis)
                                 for u in COMMON_GRID_LINES]))
-        diff = np.diff(L, axis=axis)
-        changed = np.any(diff != 0, axis=-1)
-        # mean dE over all interior lines (dE only where the ink changes; exact otherwise 0)
-        a = np.take(L, np.arange(n - 1), axis=axis)[changed]
-        b = np.take(L, np.arange(1, n), axis=axis)[changed]
-        interior = float(color.delta_e2000(a, b).sum() / changed.size) if a.size else 0.0
-        limit = tol_ratio * max(common, interior) + tol_abs
-        res[name] = {"seam_dE00": round(seam, 3), "common_grid_lines_dE00": round(common, 3),
-                     "interior_dE00": round(interior, 3), "limit": round(limit, 3),
-                     "seam_change_fraction": round(float(np.mean(
-                         np.any(np.take(labels, [0], axis=axis) != np.take(labels, [-1], axis=axis), axis=axis))), 4)}
-        ok &= seam <= limit
+        med = float(np.median(ref))
+        mad = 1.4826 * float(np.median(np.abs(ref - med)))
+        z = float((seam - med) / (mad + 1e-9))
+        res[name] = {"seam_dE00": round(seam, 3), "ref_median_dE00": round(med, 3),
+                     "ref_mad_dE00": round(mad, 3), "ref_max_dE00": round(float(ref.max()), 3),
+                     "common_grid_lines_dE00": round(common, 3), "z": round(z, 2)}
+        ok &= z <= z_max
     res["seamless"] = bool(ok)
     return res
 

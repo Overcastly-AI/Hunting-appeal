@@ -1,4 +1,6 @@
 """Tests for huntkit.camo: seamlessness, determinism, colour maths, coverage."""
+from pathlib import Path
+
 import numpy as np
 import pytest
 
@@ -193,17 +195,124 @@ def test_distance_sim_reduces_contrast(specs):
     assert vision.cycle_mm(100, 6.0) == pytest.approx(290.9, rel=1e-3)
 
 
-def test_colorways_share_inks_with_camo():
+@pytest.mark.parametrize("section", ["primary", "alternate"])
+def test_colorways_share_inks_with_camo(section):
     import yaml
     from pathlib import Path
     cw = yaml.safe_load((Path(__file__).resolve().parents[1] / "designs/apparel/colorways.yaml").read_text())
-    solids = {s["key"]: s for s in cw["solids"]}
+    sec = cw if section == "primary" else cw["alternate"]
+    solids = {s["key"]: s for s in sec["solids"]}
     assert 4 <= len(solids) <= 6
     for s in solids.values():
         assert np.allclose(color.hex_to_lab(s["hex"]), s["cielab_d65"], atol=0.06)
         assert s["qc_tolerance"]["dE00"] <= 1.0
-    for p in cw["accent_pairings"]:
+        assert "none" in s["optical_brightener"]
+    for p in sec["accent_pairings"]:
         spec = engine.load_pattern(p["accent_pattern"])
         camo_hex = {c["hex"] for c in spec["palette"]}
         shared = [k for k in (p["body"], p["trim"]) if solids[k]["hex"] in camo_hex]
         assert len(shared) >= 1, p["id"]
+
+
+# ----------------------------------------------------------------------------- Owner Base
+from huntkit.camo import owner_base as ob  # noqa: E402
+
+# Same syntax as the owner file: field rect, then paths with several subpaths each
+# ("M..L..zM.."), absolute + relative h/v, implicit lineto, an even-odd hole.
+TINY_SVG = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+<rect width="100" height="100" fill="#ae9d6c"/>
+<path fill="#8b8148" d="M0 0L50 0L50 50L0 50zM10 10L40 10 40 40 10 40z"/>
+<path fill="#c6b497" d="M60 0h40v20h-40zM60 30H100V50H60Z"/>
+<path fill="#313120" d="M0 60l40 0 0 40 -40 0zm50 0L90 60L50 100z"/>
+</svg>"""
+
+
+def test_parse_path_d_syntax():
+    subs = ob.parse_path_d("M0 0L50 0L50 50L0 50zM10 10L40 10 40 40 10 40z")
+    assert len(subs) == 2 and subs[0].shape == (4, 2) and subs[1].shape == (4, 2)
+    assert np.allclose(subs[1][2], [40, 40])            # implicit lineto pairs
+    hv = ob.parse_path_d("M60 0h40v20h-40z")[0]
+    assert np.allclose(hv, [[60, 0], [100, 0], [100, 20], [60, 20]])
+    rel = ob.parse_path_d("M0 60l40 0 0 40 -40 0zm50 0L90 60L50 100z")
+    assert np.allclose(rel[1][0], [50, 60])             # m after z is relative to subpath start
+    with pytest.raises(ValueError):
+        ob.parse_path_d("M0 0C1 1 2 2 3 3z")
+
+
+def test_rasterize_tiny_svg_pure_python():
+    doc = ob.parse_svg(TINY_SVG)
+    assert [s.fill for s in doc.shapes] == ["#AE9D6C", "#8B8148", "#C6B497", "#313120"]
+    lab = ob.rasterize_shapes(doc, 100)
+    assert lab.shape == (100, 100) and set(np.unique(lab)) <= {0, 1, 2, 3}
+    assert lab[5, 5] == 1 and lab[25, 25] == 0           # even-odd hole shows the field
+    assert lab[5, 80] == 2 and lab[40, 80] == 2 and lab[25, 80] == 0
+    assert lab[80, 20] == 3 and lab[62, 52] == 3 and lab[95, 85] == 0   # triangle
+    cov = ob.coverage(lab)
+    assert cov[1] == pytest.approx((2500 - 900) / 1e4)  # exact pixel-centre fill
+    assert cov[2] == pytest.approx(1600 / 1e4)
+    assert cov[3] == pytest.approx((1600 + 800) / 1e4, abs=0.003)
+    # resolution independence: 2x DPI gives the same coverage
+    assert np.allclose(ob.coverage(ob.rasterize_shapes(doc, 200)), cov, atol=0.003)
+    nz = ob.rasterize_shapes(ob.parse_svg(TINY_SVG.replace('fill="#8b8148"',
+                                                            'fill="#8b8148" fill-rule="nonzero"')), 100)
+    assert nz[25, 25] == 1                               # same winding: nonzero fills the hole
+
+
+def test_cairo_and_pure_backends_agree(tmp_path):
+    p = tmp_path / "tiny.svg"
+    p.write_text(TINY_SVG)
+    pure, b = ob.rasterize_svg(p, 100, backend="pure")
+    assert b == "pure-python"
+    if ob._cairosvg() is None:
+        pytest.skip("cairosvg not installed")
+    cairo, b2 = ob.rasterize_svg(p, 100, backend="cairo")
+    assert b2 == "cairosvg"
+    assert np.mean(cairo != pure) < 0.03                 # only boundary pixels may differ
+
+
+def test_owner_palette_loading():
+    pal = ob.load_owner_palette()
+    assert [c["role"] for c in pal] == ["field", "olive", "light_tan", "dark"]
+    assert ob.palette_hexes(pal) == ["#AE9D6C", "#8B8148", "#C6B497", "#313120"]
+    for c in pal:
+        assert np.allclose(color.hex_to_lab(c["hex"]), c["cielab_d65"], atol=0.06)
+    # missing spec file -> built-in fallback with the same inks
+    assert ob.palette_hexes(ob.load_owner_palette(Path("/nonexistent.yaml"))) == ob.palette_hexes(pal)
+
+
+def test_load_owner_base_prefers_file_then_falls_back(tmp_path):
+    p = tmp_path / "owner_base.svg"
+    p.write_text(TINY_SVG)
+    real = ob.load_owner_base(p)
+    assert real.source == "svg" and not real.is_proxy and real.title_tag == ""
+    assert set(np.unique(real.labels(64))) <= {0, 1, 2, 3}
+    with pytest.warns(ob.ProxyWarning):
+        prox = ob.load_owner_base(tmp_path / "missing.svg")
+    assert prox.is_proxy and "PROXY" in prox.title_tag
+    with pytest.raises(FileNotFoundError):
+        ob.load_owner_base(tmp_path / "missing.svg", allow_proxy=False)
+
+
+def test_proxy_structure_and_seamless():
+    model = ob.build_proxy()
+    lab = model.render(512)
+    cov = ob.coverage(lab)
+    assert cov[0] == cov.max()                          # tan field dominant
+    assert cov[1] > cov[3] > 0.05 and cov[2] > 0.04      # olive large, dark medium, light highlight
+    assert set(np.unique(lab)) == {0, 1, 2, 3}
+    assert ob.edge_wrap_check(lab)["seamless"]
+    assert np.array_equal(lab, ob.build_proxy().render(512))   # deterministic
+    for ov in model.overlays.values():                  # light tan never in pixel overlays
+        assert 2 not in set(np.unique(ov))
+
+
+def test_seam_check_and_offset_blend_fix():
+    lab = ob.build_proxy().render(400)
+    # right part from unrelated artwork -> content doesn't continue across the wrap
+    broken = np.concatenate([lab[:, :250], ob.build_proxy(seed=7).render(400)[:, 250:]], axis=1)
+    assert not ob.edge_wrap_check(broken)["seamless"]
+    fixed = ob.make_seamless(broken, "offset_blend")
+    assert fixed.shape == broken.shape and set(np.unique(fixed)) <= {0, 1, 2, 3}
+    assert ob.edge_wrap_check(fixed)["seamless"]
+    m = ob.make_seamless(broken, "mirror")
+    assert m.shape == (800, 800) and ob.edge_wrap_check(m)["seamless"]

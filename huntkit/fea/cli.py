@@ -2,6 +2,7 @@
 
   python -m huntkit.fea.cli demo [--out outputs/fea_demo]
   python -m huntkit.fea.cli solve model.yaml [--out DIR] [--buckling]
+  python -m huntkit.fea.cli size [--procs 3] [--pickle sweep.pkl]
 """
 from __future__ import annotations
 
@@ -90,11 +91,33 @@ def main(argv=None):
     s.add_argument("model")
     s.add_argument("--out")
     s.add_argument("--buckling", action="store_true")
+    z = sub.add_parser("size", help="carbon frame sizing sweep -> designs/pack_5200/frame.yaml + analysis")
+    z.add_argument("--procs", type=int, default=3)
+    z.add_argument("--design-dir", default="designs/pack_5200")
+    z.add_argument("--screens", default="outputs/screens")
+    z.add_argument("--date", default="20261101")
+    z.add_argument("--pickle", help="reuse / save the raw sweep results here")
     a = ap.parse_args(argv)
     if a.cmd == "demo":
         print(demo(a.out))
+    elif a.cmd == "size":
+        size(a)
     else:
         solve_file(a.model, a.out, a.buckling)
+
+
+def size(a):
+    import pickle
+    from .sizing import deliver, sweep
+    if a.pickle and Path(a.pickle).exists():
+        sw = pickle.loads(Path(a.pickle).read_bytes())
+    else:
+        sw = sweep(procs=a.procs)
+        if a.pickle:
+            Path(a.pickle).write_bytes(pickle.dumps(sw))
+    out = deliver(sw, a.design_dir, a.screens, a.date)
+    r = out["recommended"]
+    print(f"recommended: {r['label']}  mass {r['mass_g']:.0f} g  min margin {r['margin']:.2f}")
 
 
 if __name__ == "__main__":

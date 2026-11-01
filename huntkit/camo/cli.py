@@ -1,4 +1,4 @@
-"""CLI: python -m huntkit.camo.cli {render,swatches,mocks,analyze,all} ..."""
+"""CLI: python -m huntkit.camo.cli {render,swatches,mocks,analyze,owner-base,all} ..."""
 from __future__ import annotations
 
 import argparse
@@ -25,6 +25,10 @@ def main(argv=None) -> int:
     sub.add_parser("mocks", help="jacket/pack accent mocks, full-fill mock, mock distance series")
     a = sub.add_parser("analyze", help="print metrics JSON")
     a.add_argument("pattern")
+    ob = sub.add_parser("owner-base", help="Owner Base (primary): ingest SVG or PROXY, metrics, "
+                        "scale study, previews, phone screenshots, print TIFFs")
+    ob.add_argument("--dpi", type=float, default=300, help="print TIFF dpi (0 = skip)")
+    ob.add_argument("--no-screens", action="store_true")
     al = sub.add_parser("all", help="render every default pattern + swatches + mocks")
     al.add_argument("--dpi", type=float, default=300)
     args = ap.parse_args(argv)
@@ -39,6 +43,11 @@ def main(argv=None) -> int:
         _mocks()
     elif args.cmd == "analyze":
         print(json.dumps(export.analyze(engine.load_pattern(args.pattern)), indent=1))
+    elif args.cmd == "owner-base":
+        from . import owner_export
+        res = owner_export.run_all(args.dpi or None, not args.no_screens)
+        res.pop("metrics")
+        _print(res)
     elif args.cmd == "all":
         for p in DEFAULT_PATTERNS:
             _print(export.render_all(p, args.dpi))

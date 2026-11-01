@@ -219,3 +219,53 @@ def test_pack_standard_cases_and_frame():
     assert fc["warnings"]                              # 560 mm frame too short for a 23 in torso
     rs = cases["single_stay_setdown"].run(carbon_variant())
     assert np.isfinite(rs.min_sf) and rs.min_sf > 0
+
+
+def test_composite_rect_tube_and_mixed_layup():
+    from huntkit.fea.sections import composite_rect_tube
+    W = {**PLY, "E1_mpa": 58000, "E2_mpa": 58000, "G12_mpa": 4000, "nu12": 0.05, "Xt_mpa": 600,
+         "Xc_mpa": 570, "Yt_mpa": 600, "Yc_mpa": 570, "ply_thickness_mm": 0.22, "density_kg_m3": 1500}
+    lay = [(0, W)] + [(0, PLY)] * 4 + [(0, W)]
+    s = composite_tube(20.0, lay)
+    assert abs(s.dims["t"] - (2 * 0.22 + 4 * 0.125)) < 1e-12
+    # all-0 deg plies: Ex = thickness-weighted E1 rule of mixtures (nu21 effects ~0)
+    ex = (2 * 0.22 * 58000 / (1 - 0.05 * 0.05) + 0.5 * 135000 / (1 - 0.3 * 0.3 * 8800 / 135000)) / s.dims["t"]
+    assert rel(s.Ex, ex) < 0.01
+    r = composite_rect_tube(12.0, 24.0, lay)
+    assert rel(r.Iy, (12 * 24 ** 3 - (12 - 2 * r.dims["t"]) * (24 - 2 * r.dims["t"]) ** 3) / 12) < 1e-12
+    # pure axial: FI equals laminate FI at Nx = N t / A
+    fi = r.failure(500.0, 0, 0, 0, 0, 0)["fi"]
+    assert rel(fi, r.laminate.first_ply_failure((500.0 / r.A * r.dims["t"], 0, 0))["fi"]) < 1e-9
+
+
+def test_frame_yaml_roundtrip_and_hardware(tmp_path):
+    import yaml
+    from huntkit.fea.frames import build_frame, build_frame_from_yaml
+    spec = {"type": "composite_tube", "od": 20,
+            "layup": [{"angle": 45, "material": PLY}, {"angle": 0, "material": PLY, "n": 6}]}
+    p = {"height": 640, "stay_style": "straight", "mid_bar_z": 330, "anchors_at_nodes": True,
+         "section": spec, "crossbar_section": spec, "material": None}
+    f = tmp_path / "frame.yaml"
+    f.write_text(yaml.safe_dump({"frame": p}))
+    m = build_frame_from_yaml(f, torso_in=23)
+    assert not m["warnings"]                       # 640 mm reaches a 23 in torso
+    assert {"corner_L", "mid_hub_R", "lumbar_hub_L", "foot_SL"} <= {j["id"] for j in m["joints"]}
+    assert m["groups"]["shelf_strap"][0] in [j["node"] for j in m["joints"]]   # anchors at hubs
+    hw = m["hardware"]
+    assert hw["hubs_g"] > 0 and abs(hw["total_g"] - hw["tubes_g"] - hw["hubs_g"]) < 1e-9
+    m2 = build_frame(p)
+    assert len(m2["members"]) == len(m["members"])
+
+
+def test_through_sleeve_joint_transfers_load_jump():
+    from huntkit.fea.joints import check_frame_joints
+    s = tube_round(20.0, 1.0)
+    m = {"nodes": {"A": [0, 0, 0], "B": [0, 0, 100], "C": [0, 0, 200]},
+         "members": [{"id": "lo", "nodes": ["A", "B"], "section": s, "material": MAT},
+                     {"id": "hi", "nodes": ["B", "C"], "section": s, "material": MAT}],
+         "supports": {"A": "fixed"}, "loads": {"B": [0, 0, -300.0, 0, 0, 0], "C": [0, 0, -100.0, 0, 0, 0]}}
+    r = solve(m)
+    js = check_frame_joints(r, [{"id": "hub", "node": "B", "members": [], "through": [["lo", "hi"]],
+                                 "params": {"adhesive": {"shear_modulus_mpa": 700,
+                                                         "lap_shear_strength_mpa": 20}}}])
+    assert rel(abs(js[0]["N"]), 300.0) < 1e-6      # the hub load, not the stay's total force
