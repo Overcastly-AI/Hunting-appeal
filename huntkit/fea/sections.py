@@ -61,7 +61,7 @@ class Section:
         i = int(np.argmax(np.abs(sig)))
         if self.kind == "tube_round":
             tau_v = 2.0 * np.hypot(Vy, Vz) / self.A
-        elif self.kind == "flat_bar":
+        elif self.kind in ("flat_bar", "plate_strip"):
             tau_v = 1.5 * np.hypot(Vy, Vz) / self.A
         elif self.kind == "tube_rect":
             tau_v = max(abs(Vy) / (self.Asy or self.A), abs(Vz) / (self.Asz or self.A))

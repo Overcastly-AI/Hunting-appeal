@@ -56,8 +56,17 @@ def fallback_camo(size: int = 1024, seed: int = 7, palette=OWNER_BASE_HEX) -> Im
 def owner_base_camo(size: int = 1024) -> tuple[Image.Image, str]:
     """Owner base camo if huntkit.camo.owner_base exists, else the 4-colour fallback."""
     try:
+        import warnings
         from huntkit.camo.owner_base import load_owner_base  # type: ignore
-        obj = load_owner_base()
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            obj = load_owner_base()
+        if hasattr(obj, "rgb"):
+            rgb = np.asarray(obj.rgb(size))
+            if rgb.dtype != np.uint8:
+                rgb = (np.clip(rgb, 0, 1) * 255).astype(np.uint8) if rgb.max() <= 1.0 else rgb.astype(np.uint8)
+            tag = "owner_base PROXY (owner SVG not uploaded yet)" if getattr(obj, "is_proxy", False) else "owner_base SVG"
+            return Image.fromarray(rgb[..., :3], "RGB"), tag
         img = _to_image(obj)
         if img is not None:
             return img.convert("RGB").resize((size, size), Image.NEAREST), "owner_base"
@@ -99,7 +108,7 @@ def carbon_twill(size: int = 512, tows: int = 16) -> Image.Image:
     streak = ndimage.gaussian_filter(rng.standard_normal((size, size)), (0.6, 6), mode="wrap")
     streak2 = ndimage.gaussian_filter(rng.standard_normal((size, size)), (6, 0.6), mode="wrap")
     st = np.where(warp, streak, streak2)
-    base = 26 + 30 * crown * np.where(warp, 1.0, 0.75) + 5 * st - 6 * (np.abs(along - 0.5) > 0.47)
+    base = 34 + 58 * crown * np.where(warp, 1.0, 0.7) + 7 * st - 10 * (np.abs(along - 0.5) > 0.46)
     rgb = np.stack([base * 0.97, base * 1.0, base * 1.06], -1)
     return Image.fromarray(np.clip(rgb, 0, 255).astype(np.uint8), "RGB")
 
@@ -112,7 +121,7 @@ def _height_to_normal(h, strength):
     return Image.fromarray(((n * 0.5 + 0.5) * 255).astype(np.uint8), "RGB")
 
 
-def ripstop_normal(size: int = 512, cells: int = 80, strength: float = 1.6) -> Image.Image:
+def ripstop_normal(size: int = 512, cells: int = 80, strength: float = 0.9) -> Image.Image:
     """Cordura/ripstop look: plain-weave grain plus a ripstop grid (500 mm tile -> 6.25 mm grid)."""
     y, x = np.mgrid[0:size, 0:size] / size
     weave = 0.35 * np.sin(2 * np.pi * x * size / 2.0) * np.sin(2 * np.pi * y * size / 2.0)
@@ -121,7 +130,7 @@ def ripstop_normal(size: int = 512, cells: int = 80, strength: float = 1.6) -> I
     grid = np.clip((gx - 0.42) / 0.08, 0, 1) + np.clip((gy - 0.42) / 0.08, 0, 1)
     rng = np.random.default_rng(11)
     noise = ndimage.gaussian_filter(rng.standard_normal((size, size)), 2.0, mode="wrap")
-    h = 0.25 * weave + 0.9 * grid + 0.35 * noise
+    h = 0.35 * weave + 0.35 * grid + 0.45 * noise
     return _height_to_normal(h, strength)
 
 
@@ -145,3 +154,17 @@ def foam_normal(size: int = 256, strength: float = 1.2) -> Image.Image:
 
 def solid(hex_color: str, size: int = 4) -> Image.Image:
     return Image.new("RGB", (size, size), hex_rgb(hex_color))
+
+
+def game_bag(size: int = 512, seed: int = 4) -> Image.Image:
+    """Used cotton game bag over meat: cream knit with soft rust/blood blotches (tileable)."""
+    rng = np.random.default_rng(seed)
+    base = np.array([214, 204, 182], float)
+    n1 = _field(rng, size, size / 40)
+    n2 = _field(rng, size, size / 90)
+    stain = np.clip((n1 * 0.8 + n2 * 0.5 - 1.0) / 0.9, 0, 1) ** 1.2
+    meat = np.clip((n1 * 0.6 + n2 * 0.7 - 1.6) / 0.6, 0, 1)
+    rgb = base[None, None] * (1 - 0.05 * _field(rng, size, 2.0)[..., None])
+    rgb = rgb * (1 - stain[..., None]) + np.array([150, 92, 70.0]) * stain[..., None]
+    rgb = rgb * (1 - meat[..., None]) + np.array([110, 45, 38.0]) * meat[..., None]
+    return Image.fromarray(np.clip(rgb, 0, 255).astype(np.uint8), "RGB")

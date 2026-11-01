@@ -46,8 +46,9 @@ P5200_DEFAULTS = {
     "spine_t": 3.0,
     "spine_len": 300.0,
     "spine_material": "cfrp_plate_quasi_iso",
+    "spine_section": None,         # optional tube section instead of the plate spine
     "bushing_k_n_mm": 2.0e4,       # ASSUMPTION: UHMWPE bushing radial stiffness
-    "bushing_len_mm": 20.0,
+    "bushing_len_mm": 40.0,        # ASSUMPTION: UHMWPE bushing length (each)
     "bushing_wall_mm": 1.0,
     "bushing_low_z": 380.0,
     "pawl_z": 520.0,               # rack/pawl lock on the upper bar centre (geometry.yaml crown_retention)
@@ -67,6 +68,16 @@ P5200_DEFAULTS = {
 
 PLATE_Z = [50.0, 90.0, 120.0, 155.0, 190.0]
 FRACS = [0.0, 0.25, 0.5, 0.75, 1.0]
+
+
+def _strip(w, t):
+    """Grillage strip of a plate: flat bar with J = w t^3 / 6 (Hambly: the plate twisting stiffness
+    is shared by the two strip directions)."""
+    s = flat_bar(w, t)
+    s.J = w * t ** 3 / 6
+    s.Wt = s.J / t
+    s.kind = "plate_strip"
+    return s
 
 
 def _sec(spec, default=None):
@@ -173,14 +184,14 @@ def build(params: dict | None = None) -> dict:
         wz = ((dz[i - 1] if i > 0 else 0) + (dz[i] if i < nz - 1 else 0)) / 2
         for j in range(nx - 1):
             members.append({"id": f"plh{i}{j}", "nodes": [grid[i, j], grid[i, j + 1]],
-                            "section": flat_bar(wz, t), "material": pm, "group": "lumbar_plate",
+                            "section": _strip(wz, t), "material": pm, "group": "lumbar_plate",
                             "ref": [0.0, 0.0, 1.0]})
     for j in range(nx):
         a_ = np.linalg.norm(np.subtract(nodes[grid[2, 1]], nodes[grid[2, 0]]))
         wx = a_ / 2 if j in (0, nx - 1) else a_
         for i in range(nz - 1):
             members.append({"id": f"plv{i}{j}", "nodes": [grid[i, j], grid[i + 1, j]],
-                            "section": flat_bar(wx, t), "material": pm, "group": "lumbar_plate",
+                            "section": _strip(wx, t), "material": pm, "group": "lumbar_plate",
                             "ref": [1.0, 0.0, 0.0]})
     G_pl = float(pl_mat.get("shear_modulus_mpa"))
     E_pl = float(pl_mat.require("youngs_modulus_mpa"))
@@ -210,6 +221,11 @@ def build(params: dict | None = None) -> dict:
     nodes["HP"] = list(map(float, hp))
     members.append({"id": "pivot_boss", "nodes": [grid[2, 2], "HP"], "section": tube_round(12.0, 3.0),
                     "material": "ti_6al_4v", "group": "hip_pivot", "ref": [1.0, 0.0, 0.0]})
+    # ASSUMPTION: the pivot insert has a 70 mm tall backing doubler that spreads the pivot load to
+    # the plate grid nodes above and below (z 90 / 155)
+    for k, (i_, j_) in enumerate(((1, 2), (3, 2))):
+        members.append({"id": f"pivot_doubler_{k}", "nodes": ["HP", grid[i_, j_]], "section": tube_round(10.0, 2.0),
+                        "material": "ti_6al_4v", "group": "hip_pivot", "ref": [1.0, 0.0, 0.0]})
 
     # ------------------------------------------------------------- bars
     def crossbar(prefix, nl, nr, xs, group, sec, ref=bar_ref):
@@ -262,8 +278,11 @@ def build(params: dict | None = None) -> dict:
                       "k": [p["bushing_k_n_mm"], p["bushing_k_n_mm"], 0, 0, 0, 0]})
     tb_chain, tb_ids = crossbar("TB", "CLtop", "CRtop", [-70.0, 0.0, 70.0], "crown_top_bar", bar)
     # spine (hangs from the top-bar centre), yoke at 150 mm
-    spine_sec = flat_bar(p["spine_w"], p["spine_t"])
-    spm = plate_mat(sp_mat)
+    if p.get("spine_section") is not None:      # tube spine option (rack bonded to the tube)
+        spine_sec, spm = _sec(p["spine_section"]), None
+    else:
+        spine_sec = flat_bar(p["spine_w"], p["spine_t"])
+        spm = plate_mat(sp_mat)
     s_nodes = ["TB1"]
     s_pawl = (nodes["TB1"][2] - p["pawl_z"]) / u[2]
     if not 0 < s_pawl <= p["spine_len"]:
@@ -339,6 +358,8 @@ def build(params: dict | None = None) -> dict:
              "crown_setting": cs, "topology": "pack5200_crown"}
     if bag_w:
         model["bag_weights"] = bag_w
+        model["bag_couple"] = {"top": ["TB0", "TB2"], "bottom": [sid("L", 25.0), sid("R", 25.0),
+                                                              sid("L", 60.0), sid("R", 60.0)]}
     model["hardware"] = hardware_mass(model)
     return model
 
@@ -348,9 +369,10 @@ HW = {
     "al_density": 2810.0, "ti_density": 4430.0, "cf_density": 1550.0, "uhmw_density": 935.0,
     "pom_density": 1410.0, "adhesive_density": 1150.0, "fillet": 1.5, "socket_extra_mm": 5.0,
     "foot_boot_g": 14.0,          # ASSUMPTION: 7075 boot + shelf-pivot boss + bumper seat (each)
-    "pivot_insert_g": 18.0,       # ASSUMPTION: Ti flanged insert + pin, bonded with a glass ply
-    "collar_g": 9.0,              # ASSUMPTION: 7075 seatpost-style collar + Ti bolt (each)
-    "lock_pulley_g": 12.0,        # ASSUMPTION: webbing pulley + friction lock hardware (total)
+    "pivot_insert_g": 28.0,       # ASSUMPTION: Ti flanged insert + pin + 70 mm backing doubler
+    "rack_g": 22.0,               # ASSUMPTION: PA66-GF30 toothed rack 300 x 12 x 4 mm + 2 bonded inserts/screws
+    "pawl_housing_g": 14.0,       # ASSUMPTION: POM pawl housing + spring + Ti pawl on the upper bar
+    "pulley_guides_g": 8.0,       # ASSUMPTION: UHMWPE-lined guides A (lumbar plate) and B (spine bottom)
     "spine_clamp_g": 6.0,         # ASSUMPTION: spine-to-top-bar clamp
     "web_plate_g": 4.0,           # ASSUMPTION: CF gusset per T / corner hub
 }
@@ -394,8 +416,9 @@ def hardware_mass(model: dict) -> dict:
     # plates
     pl = get_material(p["lumbar_plate_material"])
     items["lumbar plate (250 x 140)"] = 250 * 140 * p["lumbar_plate_t"] * float(pl.get("density_kg_m3", 1550)) * 1e-6
-    sp = get_material(p["spine_material"])
-    items["crown spine plate"] = p["spine_w"] * p["spine_len"] * p["spine_t"] * float(sp.get("density_kg_m3", 1550)) * 1e-6
+    if p.get("spine_section") is None:
+        sp = get_material(p["spine_material"])
+        items["crown spine plate"] = p["spine_w"] * p["spine_len"] * p["spine_t"] * float(sp.get("density_kg_m3", 1550)) * 1e-6
 
     def sleeve_g(sec, length):
         per = _perim(sec) + np.pi * (2 * ta + ts)
@@ -422,7 +445,7 @@ def hardware_mass(model: dict) -> dict:
     items["adhesive (incl. lumbar-plate bond)"] = g_adh + 2 * 140 * 0.5 * stay.dims.get("od", 20) * ta * h["adhesive_density"] * h["fillet"] * 1e-6
     items["foot boots (2)"] = 2 * h["foot_boot_g"]
     items["Ti hipbelt pivot insert"] = h["pivot_insert_g"]
-    items["crown collars (2) + lock/pulley"] = 2 * h["collar_g"] + h["lock_pulley_g"]
+    items["crown rack + pawl housing + pulley guides"] = h["rack_g"] + h["pawl_housing_g"] + h["pulley_guides_g"]
     if legm:
         leg = _sec(legm[0]["section"])
         bw = p.get("bushing_wall_mm", 1.0)
@@ -472,6 +495,16 @@ def crown_checks(res, model: dict, required_sf: float = 2.0) -> list[dict]:
         out.append({"check": f"{name}: UHMWPE bushing bearing", "value": pb, "unit": "MPa",
                     "allow": p_allow, "sf": p_allow / pb if pb > 0 else np.inf})
         for who, sec in (("stay", stay), ("leg", leg)):
+            if who == "stay" and name.startswith("bush_top"):
+                # the stay top carries a bonded 7075 collar/socket: check that ring instead
+                ts = (p.get("joint") or {}).get("sleeve_t_mm", 1.0) or 1.0
+                Rm_c = sec.dims["od"] / 2 + ts / 2
+                m_c = 0.318 * (Fr / Lb) * Rm_c
+                fy = 462.0   # 7075-T6 S-basis yield (alu_7075_t6 record)
+                sig = 6 * m_c / ts ** 2
+                out.append({"check": f"{name}: 7075 stay-top collar ring bending", "value": sig, "unit": "MPa",
+                            "allow": fy, "sf": fy / sig if sig > 0 else np.inf})
+                continue
             if not getattr(sec, "composite", False):
                 continue
             Rm = sec.dims["od"] / 2 - sec.dims["t"] / 2
@@ -501,7 +534,8 @@ def plate_checks(res, model: dict) -> list[dict]:
     p = model["params"]
     t = p["lumbar_plate_t"]
     pl = get_material(p["lumbar_plate_material"])
-    tau_a = float(pl.get("shear_strength_mpa")) * DEFAULT_KNOCKDOWN["hot_wet"] * DEFAULT_KNOCKDOWN["impact_comp"]
+    tau_s = pl.get("shear_strength_mpa") or 0.5 * float(pl.require("ultimate_strength_mpa"))  # ASSUMPTION if absent
+    tau_a = float(tau_s) * DEFAULT_KNOCKDOWN["hot_wet"] * DEFAULT_KNOCKDOWN["impact_comp"]
     mf = {m["id"]: m for m in res.members}
     out = []
     worst = 0.0

@@ -83,10 +83,24 @@ class LoadCase:
                 xs = np.array([nodes[n][0] for n in bag])
                 w = w * (1 + self.params["downhill_bias"] * np.sign(xs))
             w /= w.sum()
+            couple = model.get("bag_couple")
             for nid, wi in zip(bag, w):
                 F = W * wi * Fdir
-                r = np.array([0.0, self.cg_aft_mm, 0.0])
-                add(nid, np.r_[F, np.cross(r, F)])
+                if couple:      # forces only; the CG-offset moment is resolved as a couple below
+                    add(nid, F)
+                else:
+                    r = np.array([0.0, self.cg_aft_mm, 0.0])
+                    add(nid, np.r_[F, np.cross(r, F)])
+            if couple:
+                # bag CG aft of the frame: top tabs pull aft (+y), bottom bears forward (-y)
+                top, bot = couple["top"], couple["bottom"]
+                zt = np.mean([nodes[n][2] for n in top])
+                zb = np.mean([nodes[n][2] for n in bot])
+                H = W * np.cos(tilt) * self.cg_aft_mm / (zt - zb)
+                for nid in top:
+                    add(nid, np.array([0.0, H / len(top), 0.0]))
+                for nid in bot:
+                    add(nid, np.array([0.0, -H / len(bot), 0.0]))
         elif placement in ("meat_shelf", "tall_load"):
             piv, P = g["shelf_pivot"], W * np.cos(tilt)
             e = self.cg_aft_mm
@@ -127,6 +141,8 @@ class LoadCase:
         sup = {}
         springs = model.get("springs") or self.springs     # a frame may define its own body springs
         for grp, kk in springs.items():
+            if self.params.get("no_hipbelt") and grp in ("hipbelt", "lumbar_pad"):
+                continue
             src = grp
             if grp == "lifter" and self.params.get("lifter_group"):
                 src = self.params["lifter_group"]
@@ -182,6 +198,10 @@ class LoadCase:
         if self.kind == "setdown":
             m = self.build_model(frame_model)
             res = solve(m, buckling=False, name=name)
+        elif self.params.get("no_hipbelt"):
+            m = self.build_model(frame_model, sh)
+            res = solve(m, buckling=self.buckling, name=name)
+            res.meta["hip_fraction"] = 0.0
         else:
             for _ in range(8):
                 m = self.build_model(frame_model, sh)
@@ -240,7 +260,11 @@ def pack5200_cases(design_load_kg: float = 68.0, overload_kg: float = 91.0, **ov
                           "extension-post bar 220 mm above the crown, CG 250 mm aft; lifters moved to the post bar.",
                           W, 2.5, placement="tall_load", cg_aft_mm=250.0,
                           params={"lash_group": "lash_posts", "lifter_group": "lifter_posts"}))
-    for c in cases[-1:]:
+    cases.append(LoadCase("hipbelt_off_abuse", f"{W:g} kg x 1.5 g with the hipbelt unbuckled (creek crossing): "
+                          "100 % on the shoulders + lifters; abuse case, required SF 1.0 (no damage, no slip). "
+                          "Source: geometry.yaml crown_retention.", W, 1.5, required_sf=1.0,
+                          cg_aft_mm=180.0, params={"no_hipbelt": True}))
+    for c in cases[-2:]:
         for k, v in overrides.get(c.name, {}).items():
             setattr(c, k, v)
     return cases

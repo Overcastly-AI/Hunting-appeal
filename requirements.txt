@@ -9,3 +9,5 @@ reportlab>=4.0
 PyYAML>=6.0
 pytest>=8.0
 # optional: cairosvg>=2.7  (Owner Base SVG rasteriser; pure-Python fallback in huntkit/camo/owner_base.py)
+trimesh>=4.0          # huntkit.viz3d mesh + GLB export
+mapbox-earcut>=1.0    # polygon triangulation for trimesh (viz3d plates / shards)

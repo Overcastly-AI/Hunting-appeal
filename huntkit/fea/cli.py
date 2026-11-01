@@ -2,7 +2,8 @@
 
   python -m huntkit.fea.cli demo [--out outputs/fea_demo]
   python -m huntkit.fea.cli solve model.yaml [--out DIR] [--buckling]
-  python -m huntkit.fea.cli size [--procs 3] [--pickle sweep.pkl]
+  python -m huntkit.fea.cli size [--procs 3] [--pickle sweep.pkl]        (generic ladder frame study)
+  python -m huntkit.fea.cli size5200 [--procs 3] [--pickle sweep.pkl]    (Pack 5200 frame, geometry.yaml)
 """
 from __future__ import annotations
 
@@ -97,7 +98,27 @@ def main(argv=None):
     z.add_argument("--screens", default="outputs/screens")
     z.add_argument("--date", default="20261101")
     z.add_argument("--pickle", help="reuse / save the raw sweep results here")
+    z5 = sub.add_parser("size5200", help="size the Pack 5200 frame (pack-designer topology) -> frame.yaml + analysis")
+    z5.add_argument("--procs", type=int, default=3)
+    z5.add_argument("--design-dir", default="designs/pack_5200")
+    z5.add_argument("--screens", default="outputs/screens")
+    z5.add_argument("--date", default="20261101")
+    z5.add_argument("--pickle", help="reuse / save the raw sweep results here")
     a = ap.parse_args(argv)
+    if a.cmd == "size5200":
+        import pickle
+        from .sizing5200 import deliver, sweep
+        if a.pickle and Path(a.pickle).exists():
+            sw = pickle.loads(Path(a.pickle).read_bytes())
+        else:
+            sw = sweep(procs=a.procs)
+            if a.pickle:
+                Path(a.pickle).write_bytes(pickle.dumps(sw))
+        out = deliver(sw, a.design_dir, a.screens, a.date)
+        r = out["recommended"]
+        print(f"{'feasible' if out['feasible'] else 'NOT feasible'}: {r['label']}  {r['mass_g']:.0f} g  "
+              f"margin {r['margin']:.2f}")
+        return
     if a.cmd == "demo":
         print(demo(a.out))
     elif a.cmd == "size":

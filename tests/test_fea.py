@@ -286,3 +286,25 @@ def test_links_series_springs():
     # link (1000) in series with beam (ka), in parallel with truss (ka): share through link
     k_series = 1 / (1 / 1000.0 + 1 / ka)
     assert rel(abs(lfz), 500.0 * k_series / (k_series + ka)) < 1e-6
+
+
+def test_pack5200_model_builds_and_balances():
+    from huntkit.fea.frames import build_frame
+    from huntkit.fea.load_cases import pack5200_cases
+    from huntkit.fea.pack5200 import crown_checks
+    st = composite_tube(22.0, [(45, PLY)] + [(0, PLY)] * 6 + [(45, PLY)])
+    lg = composite_tube(18.0, [(45, PLY)] + [(0, PLY)] * 4 + [(45, PLY)])
+    for torso, top in ((15, 601.0), (23, 804.2)):
+        m = build_frame({"topology": "pack5200_crown", "torso_in": torso, "stay_section": st,
+                         "leg_section": lg, "bar_section": lg})
+        assert not m["warnings"], m["warnings"]
+        assert abs(m["nodes"]["CLtop"][2] - top) < 0.5           # crown follows geometry.yaml
+    cases = {c.name: c for c in pack5200_cases()}
+    r = cases["drop_2p5g"].run(m)
+    assert abs(r.meta["hip_fraction"] - 0.80) < 0.01
+    assert rel(sum(v[2] for v in r.reactions.values()), 68 * 9.80665 * 2.5) < 1e-6
+    ret = [c for c in crown_checks(r, m) if c.get("retention")][0]["value"]
+    assert ret > 0                                              # shoulders push the crown up (extension)
+    r2 = cases["hipbelt_off_abuse"].run(m)
+    assert "HP" not in r2.reactions                              # no hipbelt support at all
+    assert rel(sum(v[2] for v in r2.reactions.values()), 68 * 9.80665 * 1.5) < 1e-6

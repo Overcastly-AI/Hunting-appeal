@@ -90,13 +90,22 @@ def grid_mesh(V, uv=None, pole_start=None, pole_end=None, close_u=True, cap_star
     for ring, pole, cap, rev in ((0, pole_start, cap_start, True), (K - 1, pole_end, cap_end, False)):
         if pole is None and not cap:
             continue
-        p = np.asarray(pole, float) if pole is not None else V[ring, :-1].mean(axis=0)
-        extra_v.append(p)
-        extra_uv.append(uvs[idx[ring]].mean(axis=0))
-        pi = n + len(extra_v) - 1
         r = idx[ring]
-        tri = np.stack([np.full(Mc - 1, pi), r[1:], r[:-1]], -1) if rev else \
-            np.stack([np.full(Mc - 1, pi), r[:-1], r[1:]], -1)
+        if pole is not None:                 # smooth pole (shared ring vertices)
+            p = np.asarray(pole, float)
+            base = r
+        else:                                # flat cap: duplicate the ring for crisp edges
+            p = V[ring, :-1].mean(axis=0)
+            dup = V[ring]
+            base = np.arange(n + len(extra_v), n + len(extra_v) + Mc)
+            extra_v.extend(list(dup))
+            cuv = (dup - p)[:, :2] / TILE_MM
+            extra_uv.extend(list(cuv))
+        extra_v.append(p)
+        extra_uv.append(uvs[r].mean(axis=0))
+        pi = n + len(extra_v) - 1
+        tri = np.stack([np.full(Mc - 1, pi), base[1:], base[:-1]], -1) if rev else \
+            np.stack([np.full(Mc - 1, pi), base[:-1], base[1:]], -1)
         extra_f.append(tri)
     if extra_v:
         verts = np.vstack([verts, np.array(extra_v)])
@@ -248,7 +257,7 @@ def tube(path, r, n=24, tile=40.0, smooth=False, step=None, caps=True):
     return sweep(path, circle(r, n), tile=tile, smooth=smooth, step=step, caps=caps)
 
 
-def ribbon(path, width, thick, normals, tile=TILE_MM, step=6.0, caps=True):
+def ribbon(path, width, thick, normals, tile=TILE_MM, step=8.0, caps=True):
     """Flat strap/webbing lying on a surface: the strap face is perpendicular to ``normals``."""
     P = np.asarray(path, float)
     Nrm = _interp_rows(np.asarray(normals, float), len(P)) if np.ndim(normals) == 2 else normals
@@ -260,7 +269,7 @@ def ribbon(path, width, thick, normals, tile=TILE_MM, step=6.0, caps=True):
         if np.ndim(Nrm) == 2:
             Nrm = _unit(np.stack([np.interp(s, d, Nrm[:, k]) for k in range(3)], -1))
         P = P2
-    prof = rounded_rect(width, thick, nexp=6.0, n=28)
+    prof = rounded_rect(width, thick, nexp=6.0, n=14)
     return sweep(P, prof, up=Nrm, tile=tile, caps=caps)
 
 
@@ -339,7 +348,12 @@ def plate(poly2d, origin, ex, ey, thick, tile=40.0):
     uv = np.stack([v[:, 0] / tile, v[:, 1] / tile], -1)
     v[:, 2] -= thick / 2
     W = np.asarray(origin, float) + v[:, :1] * ex + v[:, 1:2] * ey + v[:, 2:3] * ez
-    return _mesh(W, m.faces, uv)
+    F = m.faces
+    if _signed_volume(trimesh.Trimesh(W, F, process=False)) < 0:
+        F = F[:, ::-1]
+    # unmerge -> flat-shaded crisp plate edges
+    idx = F.reshape(-1)
+    return _mesh(W[idx], np.arange(len(idx)).reshape(-1, 3), uv[idx], flip_if_negative=False)
 
 
 def patch_shell(surf, nrm, u_rng, v_rng, thick, inset=3.0, nu=40, nv=40, tile=TILE_MM):
@@ -364,13 +378,7 @@ def patch_shell(surf, nrm, u_rng, v_rng, thick, inset=3.0, nu=40, nv=40, tile=TI
     idx = np.arange(nO).reshape(nu, nv)
     a, b, c, d = idx[:-1, :-1], idx[1:, :-1], idx[1:, 1:], idx[:-1, 1:]
     Fo = np.concatenate([np.stack([a, b, c], -1).reshape(-1, 3), np.stack([a, c, d], -1).reshape(-1, 3)])
-    Fi = Fo[:, ::-1] + nO
-    loop = ([(i, 0) for i in range(nu)] + [(nu - 1, j) for j in range(1, nv)] +
-            [(i, nv - 1) for i in range(nu - 2, -1, -1)] + [(0, j) for j in range(nv - 2, 0, -1)])
-    L = np.array([idx[i, j] for i, j in loop])
-    L2 = np.roll(L, -1)
-    Fs = np.concatenate([np.stack([L, L + nO, L2 + nO], -1), np.stack([L, L2 + nO, L2], -1)])
-    F = np.vstack([Fo, Fi, Fs])
+    F = _shell_faces(Fo, nO)
     # uv from arc length on the outer face
     du = np.linalg.norm(np.diff(outer, axis=0), axis=2)
     dv = np.linalg.norm(np.diff(outer, axis=1), axis=2)
@@ -378,12 +386,23 @@ def patch_shell(surf, nrm, u_rng, v_rng, thick, inset=3.0, nu=40, nv=40, tile=TI
     vv = np.concatenate([np.zeros((nu, 1)), np.cumsum(dv, axis=1)], 1)
     uv = np.stack([uu, vv], -1).reshape(-1, 2) / tile
     m = trimesh.Trimesh(vertices=verts, faces=F, process=False)
-    # make winding consistent and outward
-    trimesh.repair.fix_winding(m)
     if _signed_volume(m) < 0:
         m.faces = m.faces[:, ::-1]
     m.metadata["uv"] = np.vstack([uv, uv])
     return m
+
+
+def _shell_faces(f_top, n):
+    """Faces of a closed thin shell: top faces ``f_top`` (indices < n), the bottom copy (index + n,
+    reversed) and side walls on the boundary, all consistently wound."""
+    f_top = np.asarray(f_top, np.int64)
+    d = np.vstack([f_top[:, [0, 1]], f_top[:, [1, 2]], f_top[:, [2, 0]]])
+    key = d[:, 0] * (2 * n + 1) + d[:, 1]
+    rkey = d[:, 1] * (2 * n + 1) + d[:, 0]
+    bnd = d[~np.isin(key, rkey)]
+    a, b = bnd[:, 0], bnd[:, 1]
+    side = np.vstack([np.column_stack([b, a, a + n]), np.column_stack([b, a + n, b + n])])
+    return np.vstack([f_top, f_top[:, ::-1] + n, side])
 
 
 def bump(s, power=0.5):
@@ -415,15 +434,7 @@ def conformal_plate(poly2d, surf, nrm, thick=1.2, lift=0.5, max_edge=8.0, tile=T
     N = N / np.linalg.norm(N, axis=1, keepdims=True)
     n = len(P)
     bot, top = P + N * lift, P + N * (lift + thick)
-    verts = np.vstack([top, bot])
-    F = [f, f[:, ::-1] + n]
-    e = np.sort(np.vstack([f[:, [0, 1]], f[:, [1, 2]], f[:, [2, 0]]]), axis=1)
-    uniq, cnt = np.unique(e, axis=0, return_counts=True)
-    bnd = uniq[cnt == 1]
-    F.append(np.column_stack([bnd[:, 0], bnd[:, 1], bnd[:, 1] + n]))
-    F.append(np.column_stack([bnd[:, 0], bnd[:, 1] + n, bnd[:, 0] + n]))
-    m = trimesh.Trimesh(vertices=verts, faces=np.vstack(F), process=False)
-    trimesh.repair.fix_winding(m)
+    m = trimesh.Trimesh(vertices=np.vstack([top, bot]), faces=_shell_faces(f, n), process=False)
     if _signed_volume(m) < 0:
         m.faces = m.faces[:, ::-1]
     uv = np.column_stack([u, v]) / tile
