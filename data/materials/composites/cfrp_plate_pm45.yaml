@@ -1,0 +1,26 @@
+id: cfrp_plate_pm45
+name: Carbon/epoxy plate, ±45
+category: composites
+generic: true
+trade_names:
+- DragonPlate ±45 plate (class)
+supplier_examples:
+- DragonPlate
+- Rock West Composites
+properties:
+  density_kg_m3: 1550
+  youngs_modulus_mpa: 17000
+  shear_modulus_mpa: 28000
+  poisson: 0.7
+  ultimate_strength_mpa: 180
+  shear_strength_mpa: 300
+  thickness_typical_mm: 2.0
+confidence: estimate
+sources:
+- CLT estimate from cfrp_t700_ud_epoxy_ply rotated ±45
+- DragonPlate product notes
+cost_usd:
+  value: 350
+  per: m2
+notes: ESTIMATE. Torsion/shear webs (e.g. hipbelt-pivot torsion plate, frame cross-brace shear panel). Weak and
+  compliant in axial tension.

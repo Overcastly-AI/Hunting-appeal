@@ -20,7 +20,7 @@ UNIT_SUFFIXES = (
     "_pct", "_c", "_k", "_j_m", "_j", "_s",
     "_g_m2_24h", "_m2pa_w", "_m2k_w", "_clo", "_cfm", "_l_m2_s",
     "_cycles", "_hours", "_1to5", "_1to10", "_shore_a", "_shore_d",
-    "_per_10cm", "_spi", "_ppm_c", "_w_mk", "_mm_s", "_n_mm", "_shore_c", "_asker_c",
+    "_per_10cm", "_spi", "_ppm_c", "_w_mk", "_mm_s", "_n_mm", "_shore_c", "_asker_c", "_minutes",
 )
 # ... or be one of these dimensionless/conventional keys.
 DIMENSIONLESS = {

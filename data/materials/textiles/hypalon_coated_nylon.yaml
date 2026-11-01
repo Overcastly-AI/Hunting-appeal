@@ -16,6 +16,10 @@ properties:
   abrasion_taber_cycles: 5000
   quietness_1to5: 4
   uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+  coating: CSM / neoprene rubber coat
+  hydrolysis_resistance_1to5: 4
+  washability_1to5: 4
+  stain_odor_resistance_1to5: 4
 confidence: estimate
 sources:
 - Supplier listings for CSM/neoprene-coated nylon (patch and lash-tab material)

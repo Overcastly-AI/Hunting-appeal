@@ -1,0 +1,40 @@
+id: adhesive_epoxy_toughened_2part
+name: Toughened 2-part structural epoxy (3M DP460 / Loctite EA 9460 class)
+category: polymers
+generic: false
+trade_names:
+- 3M Scotch-Weld DP460
+- Loctite EA 9460 (Hysol)
+supplier_examples:
+- McMaster-Carr
+- Rock West Composites
+- Amazon / industrial distributors (50 ml cartridges + mixing nozzles + gun)
+properties:
+  lap_shear_strength_mpa: 30
+  lap_shear_strength_cfrp_mpa: 22
+  floating_roller_peel_n_mm: 5
+  elongation_pct: 4
+  service_temp_min_c: -55
+  service_temp_max_c: 80
+  glass_transition_c: 65
+  work_life_minutes: 60
+  handling_time_minutes: 240
+  full_cure_hours: 24
+  bondline_thickness_mm: 0.2
+  density_kg_m3: 1150
+confidence: datasheet
+sources:
+- 3M Scotch-Weld DP460 technical data sheet (overlap shear ~31 MPa / 4,500 psi on etched Al, ASTM D1002; peel ASTM
+  D1876/D3167)
+- Henkel Loctite EA 9460 TDS (lap shear ~30 MPa, ASTM D1002)
+cost_usd:
+  value: 25
+  per: unit
+notes: 'Values recalled from the TDS headline numbers - verify against current sheets. lap_shear_strength_cfrp_mpa
+  and peel are ESTIMATES (substrate failure / peel at room temp). PICK for bonded tube-to-node joints: high strength,
+  gap filling, forgiving 60 min work life for a beginner. Strength drops above ~60 C (car in sun) - keep design
+  bondline stress <= 1/3 of lap shear and avoid peel loading (design joints in shear with >= 25 mm overlap, tapered
+  edges). SURFACE PREP (decides the joint): carbon - sand with 120-180 grit to remove gloss/peel-ply, wipe with
+  acetone/IPA, bond within 1 h; aluminum - abrade + solvent wipe, ideally sol-gel or phosphoric/chromic etch; titanium
+  - abrade + solvent, primer. Control bondline 0.15-0.3 mm with 0.2 mm glass beads or wire shims. Room-temp cure
+  24 h; 1-2 h at 65 C post-cure raises Tg and strength. Cost per 50 ml cartridge.'

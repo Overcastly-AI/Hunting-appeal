@@ -1,0 +1,29 @@
+id: poly_spandex_stretch_woven_printable
+name: Polyester/spandex stretch woven ~88/12, 180 gsm, sublimation-printable (apparel accents)
+category: textiles
+generic: true
+trade_names: []
+supplier_examples:
+- Discovery Trekking Outfitters
+- mill direct (printed, MOQ 300-500 m)
+- print-on-demand sublimation houses (small batch)
+properties:
+  areal_density_gsm: 180
+  fiber: polyester/elastane
+  weave: stretch woven, peached face
+  stretch_pct: 20
+  abrasion_cycles_martindale: 50000
+  dwr: C0 DWR (apply after print)
+  quietness_1to5: 4
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+  printable: sublimation / rotary disperse print
+confidence: estimate
+sources:
+- Mill catalog ranges for printable poly/spandex stretch wovens
+- ISO 12947 Martindale
+cost_usd:
+  value: 18
+  per: yd
+notes: 'ESTIMATE. Camo accent panels at knees, seat, forearms and yokes: high abrasion, stretch for articulation,
+  peached face for quietness. Sublimation needs light-colored base, and disperse dyes can bleed when hot - test
+  colorfastness (AATCC 61) and print before DWR.'

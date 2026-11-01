@@ -1,0 +1,32 @@
+id: adhesive_methacrylate_ma
+name: Methacrylate structural adhesive (Plexus MA300/MA310 class)
+category: polymers
+generic: false
+trade_names:
+- ITW Plexus MA300 / MA310 / MA530
+supplier_examples:
+- McMaster-Carr
+- marine/composite distributors (Fiberglass Supply, Jamestown Distributors)
+properties:
+  lap_shear_strength_mpa: 24
+  lap_shear_strength_cfrp_mpa: 20
+  floating_roller_peel_n_mm: 8
+  elongation_pct: 20
+  service_temp_min_c: -40
+  service_temp_max_c: 120
+  work_life_minutes: 10
+  handling_time_minutes: 25
+  full_cure_hours: 24
+  bondline_thickness_mm: 0.5
+  density_kg_m3: 980
+confidence: estimate
+sources:
+- ITW Plexus MA300/MA310 technical data sheets (lap shear ~3,000-3,700 psi, elongation 5-25% depending on grade)
+cost_usd:
+  value: 35
+  per: unit
+notes: 'ESTIMATE (grade-dependent). Pros: minimal surface prep (bonds lightly abraded composites and metals, tolerates
+  some oil), high peel and impact toughness, good at temperature. Cons: short work life (~10 min at 23 C) is hard
+  for a first-timer on multi-joint frames; strong odor (ventilate); not as stiff, slightly lower shear. Use for
+  repairs and small single joints, or as an alternative if peel/impact tests on epoxy joints fail. Cost per 50 ml
+  cartridge.'

@@ -1,0 +1,27 @@
+id: insert_al_7075_bonded
+name: Bonded aluminum hard-point insert/sleeve, 7075-T6, hard-anodized
+category: hardware
+generic: true
+trade_names: []
+supplier_examples:
+- machined from alu_7075_t6 bar (McMaster-Carr/OnlineMetals) or a local CNC shop
+- Rock West aluminum tube-end inserts (class)
+properties:
+  mass_g: 4
+  outer_diameter_mm: 12
+  length_mm: 20
+  thread: M5 (or 10-32)
+  pullout_strength_bonded_n: 3000
+  quietness_1to5: 5
+confidence: estimate
+sources:
+- alu_7075_t6 record (insert material)
+- adhesive_epoxy_toughened_2part lap shear with 1/3 derating and peel/stress-concentration factor
+cost_usd:
+  value: 4
+  per: unit
+notes: 'ESTIMATE of bonded pull-out (12 mm OD x 20 mm bond, epoxy, derated); verify by pull-testing 5 samples. Used
+  for load-lifter, hipbelt pivot and shelf-strap hard points in carbon tubes/plates. GALVANIC: aluminum in contact
+  with carbon corrodes (carbon is cathodic), especially with salty blood/sweat - hard-anodize AND keep an insulating
+  layer (adhesive bondline with glass beads, or one E-glass ply / G10 washer); never let bare Al touch carbon. Cheaper
+  and lighter than Ti.'

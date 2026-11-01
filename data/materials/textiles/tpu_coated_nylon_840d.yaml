@@ -19,11 +19,17 @@ properties:
   hydrostatic_head_mm: 10000
   quietness_1to5: 2
   uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+  coating: ether-TPU back coat (specify ether, not ester)
+  hydrolysis_resistance_1to5: 4
+  washability_1to5: 5
+  stain_odor_resistance_1to5: 4
 confidence: estimate
 sources:
 - Supplier listings for TPU-coated 840D nylon (450-520 gsm)
 cost_usd:
   value: 22
   per: yd
-notes: ESTIMATE. RF-weldable, hydrolysis-resistant alternative to PU-coated heavy fabrics and to CSM patches; good
-  pack-bottom/wear-panel material. Stiffer and louder than CORDURA.
+notes: 'ESTIMATE. RF-weldable, hydrolysis-resistant alternative to PU-coated heavy fabrics and to CSM patches; good
+  pack-bottom/wear-panel material. Stiffer and louder than CORDURA. MEAT HAULING: best washable load-shelf/meat-zone
+  fabric of the set - ether-TPU survives repeated hot-water/enzyme washing and blood exposure far longer than PU;
+  wipes clean; RF-weldable drain-friendly pockets.'

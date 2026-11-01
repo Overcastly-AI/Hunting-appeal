@@ -1,0 +1,25 @@
+id: insert_ti_6al_4v_bonded
+name: Bonded titanium hard-point insert/sleeve, Ti-6Al-4V
+category: hardware
+generic: true
+trade_names: []
+supplier_examples:
+- machined from ti_6al_4v bar (McMaster-Carr) or CNC shop
+- Ti bicycle-frame fittings (class)
+properties:
+  mass_g: 6
+  outer_diameter_mm: 12
+  length_mm: 20
+  thread: M5 (or 10-32)
+  pullout_strength_bonded_n: 3000
+  quietness_1to5: 5
+confidence: estimate
+sources:
+- ti_6al_4v record
+- adhesive_epoxy_toughened_2part lap shear with derating
+cost_usd:
+  value: 15
+  per: unit
+notes: 'ESTIMATE. Galvanically compatible with carbon (no isolation needed), better fatigue, thread-strong; ~50%
+  heavier than Al and pricier to machine. PICK for hard points that see high cyclic load or that live in the wet
+  meat zone (shelf-strap anchors, hipbelt pivot). Prep: grit-blast/abrade + solvent + primer before bonding.'

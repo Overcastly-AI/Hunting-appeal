@@ -1,0 +1,33 @@
+id: cfrp_plate_0_90_woven
+name: Carbon/epoxy plate, 3K twill 0/90
+category: composites
+generic: true
+trade_names:
+- DragonPlate EconoPlate / Rock West 0/90 plate (class)
+supplier_examples:
+- DragonPlate
+- Rock West Composites
+- CarbonFiberGear
+properties:
+  density_kg_m3: 1500
+  E1_mpa: 55000
+  E2_mpa: 55000
+  G12_mpa: 4000
+  nu12: 0.05
+  Xt_mpa: 580
+  Xc_mpa: 500
+  Yt_mpa: 580
+  Yc_mpa: 500
+  S_mpa: 90
+  modulus_at_45deg_mpa: 14000
+  bearing_strength_mpa: 450
+  thickness_typical_mm: 2.0
+confidence: estimate
+sources:
+- DragonPlate/Rock West plate specs (typical)
+- CMH-17 T300 3K weave data (see cfrp_t300_3k_woven_epoxy_ply)
+cost_usd:
+  value: 250
+  per: m2
+notes: ESTIMATE. Stiff and strong along 0/90 but only ~25% of that at 45 deg - orient fibers along the load path.
+  Cheapest carbon plate; good for framesheet stiffeners and the load shelf.

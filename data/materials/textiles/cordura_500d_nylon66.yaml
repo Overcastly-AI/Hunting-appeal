@@ -24,6 +24,10 @@ properties:
   quietness_1to5: 3
   uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
   ir_notes: Solution/IR-managed dyes available as mil-spec NIR-compliant colors (Coyote, Ranger Green)
+  coating: PU back coat (polyester-type PU, standard)
+  hydrolysis_resistance_1to5: 2
+  washability_1to5: 4
+  stain_odor_resistance_1to5: 3
 confidence: estimate
 sources:
 - CORDURA 500D brand fabric spec sheets (typical coated weight 7.0-7.5 oz/yd2)
@@ -33,4 +37,7 @@ cost_usd:
   per: yd
 notes: 'ESTIMATE: values typical of commercial PU-coated 500D CORDURA; exact numbers vary by mill and coating. Grab
   tensile per ASTM D5034, tongue tear ASTM D2261, Taber H-18 1000 g. Workhorse pack-body fabric: good abrasion-to-weight,
-  very sewable, quiet-ish (air-textured yarn). PU coating hydrolyzes after ~5-10 years in heat/humidity.'
+  very sewable, quiet-ish (air-textured yarn). PU coating hydrolyzes after ~5-10 years in heat/humidity. Printable:
+  CORDURA nylon is routinely rotary-printed with acid dyes (NIR-compliant camo is made this way) - custom original
+  camo needs a mill run (MOQ ~1000 m); not sublimation-printable. MEAT HAULING: PU coat hydrolyzes faster with repeated
+  wet/warm/blood exposure; order TPU-coated version for the meat zone if available.'

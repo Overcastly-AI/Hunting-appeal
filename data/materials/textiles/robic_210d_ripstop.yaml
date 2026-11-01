@@ -21,6 +21,10 @@ properties:
   dwr: C0 DWR
   quietness_1to5: 3
   uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+  coating: PU back coat
+  hydrolysis_resistance_1to5: 2
+  washability_1to5: 4
+  stain_odor_resistance_1to5: 3
 confidence: estimate
 sources:
 - RBTR / Extremtextil product listings for 210D Robic ripstop (~4.0-4.3 oz/yd2)

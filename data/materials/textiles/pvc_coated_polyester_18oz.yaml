@@ -1,0 +1,32 @@
+id: pvc_coated_polyester_18oz
+name: PVC-coated polyester scrim (18 oz/yd2 vinyl tarp class)
+category: textiles
+generic: true
+trade_names: []
+supplier_examples:
+- Seattle Fabrics
+- Rockywoods
+- Sailrite
+properties:
+  areal_density_gsm: 610
+  fiber: 1000D polyester scrim
+  coating: PVC both sides
+  grab_warp_n: 1800
+  grab_weft_n: 1600
+  tear_warp_n: 450
+  tear_weft_n: 400
+  hydrostatic_head_mm: 20000
+  hydrolysis_resistance_1to5: 4
+  washability_1to5: 5
+  stain_odor_resistance_1to5: 5
+  cold_crack_temp_c: -30
+  quietness_1to5: 1
+confidence: estimate
+sources:
+- Supplier listings for 18 oz/yd2 vinyl-coated polyester (truck-tarp / dry-bag class)
+cost_usd:
+  value: 12
+  per: yd
+notes: 'ESTIMATE. Listed as the washability benchmark: hose-clean, non-absorbent. Too heavy, stiff and noisy for
+  a hunting pack body, cracks in deep cold, plasticizer migration; acceptable only for a removable meat-shelf liner.
+  TPU-coated nylon is the pick.'

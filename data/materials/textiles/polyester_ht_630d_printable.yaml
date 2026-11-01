@@ -1,0 +1,37 @@
+id: polyester_ht_630d_printable
+name: High-tenacity polyester 630D, TPU coated, sublimation-printable (accent panels)
+category: textiles
+generic: true
+trade_names: []
+supplier_examples:
+- Extremtextil
+- Rockywoods
+- mill direct (printed, MOQ)
+properties:
+  areal_density_gsm: 290
+  denier: 630
+  fiber: high-tenacity polyester
+  weave: plain/oxford
+  coating: ether-TPU back coat
+  grab_warp_n: 1500
+  grab_weft_n: 1200
+  tear_warp_n: 120
+  tear_weft_n: 100
+  abrasion_taber_cycles: 1000
+  hydrolysis_resistance_1to5: 4
+  washability_1to5: 5
+  stain_odor_resistance_1to5: 3
+  quietness_1to5: 3
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+  printable: sublimation (white/light base) or rotary disperse print
+  ir_notes: Disperse-dye camo can be formulated to NIR targets; check sublimation inks for NIR reflectance
+confidence: estimate
+sources:
+- Supplier listings for 600-630D HT polyester (coated)
+- general disperse-dye/sublimation printing practice for polyester
+cost_usd:
+  value: 18
+  per: yd
+notes: ESTIMATE. Pack accent panels (lid, pocket faces, hipbelt wings) in original camo, printable in small batches
+  by sublimation. Polyester resists UV and wet stretch better than nylon; abrasion ~60-70% of 500D CORDURA, so place
+  it where printing matters and add a 1000D/TPU-840D overlay at the highest-wear corners.

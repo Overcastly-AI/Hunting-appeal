@@ -15,6 +15,10 @@ properties:
   abrasion_taber_cycles: 500
   quietness_1to5: 2
   uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+  coating: PET film laminate
+  hydrolysis_resistance_1to5: 3
+  washability_1to5: 2
+  stain_odor_resistance_1to5: 3
 confidence: estimate
 sources:
 - DCF hybrid product listings (2.92 oz/yd2 = ~99 gsm)

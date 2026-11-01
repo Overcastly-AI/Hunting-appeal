@@ -1,0 +1,29 @@
+id: cfrp_plate_quasi_iso
+name: Carbon/epoxy plate, quasi-isotropic (0/±45/90)
+category: composites
+generic: true
+trade_names:
+- DragonPlate quasi-isotropic plate
+- Rock West quasi-iso plate (class)
+supplier_examples:
+- DragonPlate
+- Rock West Composites
+properties:
+  density_kg_m3: 1550
+  youngs_modulus_mpa: 45000
+  shear_modulus_mpa: 17000
+  poisson: 0.3
+  ultimate_strength_mpa: 550
+  compressive_strength_mpa: 450
+  bearing_strength_mpa: 500
+  thickness_typical_mm: 3.0
+confidence: estimate
+sources:
+- DragonPlate / Rock West plate specification pages (typical)
+- CLT estimate from cfrp_t700_ud_epoxy_ply
+cost_usd:
+  value: 350
+  per: m2
+notes: 'ESTIMATE. Pick for frame nodes/gussets and load-lifter plates: same stiffness in every direction, best bearing
+  (bolt/pin) strength. Cut with carbide or diamond tooling, wet, with a dust mask (carbon dust is conductive and
+  an irritant). Cost for ~3 mm.'

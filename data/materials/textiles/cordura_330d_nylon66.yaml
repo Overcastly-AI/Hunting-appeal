@@ -21,6 +21,10 @@ properties:
   hydrostatic_head_mm: 1000
   quietness_1to5: 3
   uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+  coating: PU back coat
+  hydrolysis_resistance_1to5: 2
+  washability_1to5: 4
+  stain_odor_resistance_1to5: 3
 confidence: estimate
 sources:
 - CORDURA 330D brand fabric spec sheets (typical ~5.3 oz/yd2 coated)

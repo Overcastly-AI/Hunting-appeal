@@ -1,0 +1,29 @@
+id: silicone_coated_poly_ripstop_40d
+name: Silicone-coated polyester ripstop 40D (silpoly), PU-free
+category: textiles
+generic: true
+trade_names: []
+supplier_examples:
+- Ripstop by the Roll
+- Extremtextil
+- Dutchware
+properties:
+  areal_density_gsm: 45
+  denier: 40
+  weave: ripstop
+  coating: silicone both sides (or sil/PU)
+  tear_warp_n: 25
+  hydrostatic_head_mm: 2000
+  hydrolysis_resistance_1to5: 5
+  washability_1to5: 4
+  stain_odor_resistance_1to5: 4
+  quietness_1to5: 3
+  uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+confidence: estimate
+sources:
+- RBTR / Extremtextil silpoly product listings (~1.1-1.3 oz/yd2)
+cost_usd:
+  value: 10
+  per: yd
+notes: ESTIMATE. Silicone does not hydrolyze and blood rinses off its slick face. Not glue/tape-sealable (seams
+  must be silicone-sealed). Use for a removable, washable meat-shelf liner or quarter sleeve; not structural.

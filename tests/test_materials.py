@@ -17,6 +17,12 @@ REQUIRED_IDS = [
     "merino_190_jersey", "laminate_3l_eptfe", "down_850fp_hydrophobic",
     "eva_foam_45c", "xlpe_foam", "nylon_webbing_50mm", "bonded_nylon_tex90",
     "coil_zipper_8", "buckle_side_release_50mm", "dyneema_cord_2mm",
+    # owner decisions 2026-11-01: carbon frame, meat hauling, camo accents
+    "cfrp_rollwrapped_tube", "cfrp_plate_quasi_iso", "cfrp_plate_0_90_woven", "cfrp_plate_pm45",
+    "adhesive_epoxy_toughened_2part", "adhesive_methacrylate_ma",
+    "insert_al_7075_bonded", "insert_ti_6al_4v_bonded",
+    "polyester_ht_630d_printable", "poly_spandex_stretch_woven_printable",
+    "pvc_coated_polyester_18oz", "silicone_coated_poly_ripstop_40d",
 ]
 
 
@@ -96,6 +102,17 @@ def test_query_in_contains_eq_and_missing():
     assert all(m.get("quietness_1to5", 0) >= 5 for m in mat.query(quietness_1to5__gte=5))
     # list-valued top-level field: membership
     assert mat.query(trade_names__contains="Toray TORAYCA M40J")
+
+
+def test_adhesives_and_meat_zone_props():
+    for a in mat.query(lap_shear_strength_mpa__gt=0):
+        assert a.require("service_temp_max_c") > 0
+        assert "floating_roller_peel_n_mm" in a.props
+    assert len(mat.query(lap_shear_strength_mpa__gt=0)) >= 2
+    best = mat.query("textiles", hydrolysis_resistance_1to5__gte=4, abrasion_taber_cycles__gte=3000)
+    assert "tpu_coated_nylon_840d" in {m.id for m in best}
+    pu = [m for m in mat.query(coating__contains="PU back coat") if "TPU" not in m.props["coating"]]
+    assert pu and all(m.props["hydrolysis_resistance_1to5"] <= 2 for m in pu)
 
 
 # ---- validation ---------------------------------------------------------------

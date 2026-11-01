@@ -1,0 +1,34 @@
+id: cfrp_rollwrapped_tube
+name: Roll-wrapped carbon/epoxy tube, standard modulus (off-the-shelf)
+category: composites
+generic: true
+trade_names:
+- Rock West Composites roll-wrapped tubing
+- DragonPlate tubes
+- Clearwater Composites tubes (class)
+supplier_examples:
+- Rock West Composites
+- DragonPlate
+- Clearwater Composites
+- CST Composites
+properties:
+  density_kg_m3: 1550
+  youngs_modulus_mpa: 75000
+  shear_modulus_mpa: 12000
+  ultimate_strength_mpa: 650
+  compressive_strength_mpa: 450
+  shear_strength_mpa: 90
+  fiber_volume_fraction: 0.58
+  layup: UD 0 deg core with 3K woven/±45 inner and outer wraps (vendor-specific)
+confidence: estimate
+sources:
+- Rock West Composites roll-wrapped tube product pages / technical notes (standard-modulus, 0/90 woven + UD)
+- DragonPlate tube specification pages
+- Laminate estimate from cfrp_t700_ud_epoxy_ply + cfrp_t300_3k_woven_epoxy_ply by CLT (~60% 0 deg, 40% woven)
+cost_usd:
+  value: 30
+  per: m
+notes: 'ESTIMATE of effective axial properties; actual depends on the vendor''s layup - ask for it and model with
+  composite_tube(od, layup, ply id) in FEA. Unlike pultruded, the woven/±45 wraps give hoop and torsion strength:
+  the right stock for straight frame members bonded into nodes. Cannot be bent; frame geometry = straight tubes
+  + bonded nodes. Cost for ~12-16 mm OD. Validate with a 3-point bend coupon from each batch.'

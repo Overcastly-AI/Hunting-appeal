@@ -17,6 +17,10 @@ properties:
   quietness_1to5: 1
   uv_brighteners: n/a (film; translucent)
   ir_notes: Translucent/white film reflects strongly in NIR; colored versions still glint and crinkle
+  coating: PET film laminate
+  hydrolysis_resistance_1to5: 3
+  washability_1to5: 2
+  stain_odor_resistance_1to5: 4
 confidence: estimate
 sources:
 - Dyneema Composite Fabric product listings (CT9HK.18 = 1.43 oz/yd2)
