@@ -1,0 +1,26 @@
+# 5200 cu in framed hunting pack — top-level requirements (owner: pack-designer)
+name: "Pack 5200"
+volume:
+  main_bag_cu_in: 5200          # 85.2 L, main bag excluding lid & external pockets
+  measure_method: "geometric, computed in code; lid/pockets reported separately"
+load:
+  rated_kg: 68                  # 150 lb rated
+  dynamic_factor_g: 2.5
+  sf_yield_min: 2.0
+  sf_buckling_min: 3.0
+fit:
+  torso_range_in: [15, 23]      # adjustable
+  hipbelt_sizes: [S, M, L, XL]
+targets:                        # to be refined by pack-designer with benchmarks
+  total_mass_g_max: null
+  frame_mass_g_max: null
+features:
+  - load_shelf_between_frame_and_bag
+  - removable_bag
+  - full_length_side_zip_access
+  - top_lid_removable
+  - bow_and_rifle_carry
+  - hipbelt_pockets
+  - hydration_sleeve
+  - compression_system
+  - quiet_hunt_mode     # no velcro rip, no crinkle

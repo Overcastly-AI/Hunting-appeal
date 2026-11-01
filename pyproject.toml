@@ -1,0 +1,11 @@
+[project]
+name = "huntkit"
+version = "0.1.0"
+description = "Engineering toolkit for hunting apparel and pack design (materials, FEA, patterns, camo, manufacturing)"
+requires-python = ">=3.11"
+
+[tool.setuptools.packages.find]
+include = ["huntkit*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
