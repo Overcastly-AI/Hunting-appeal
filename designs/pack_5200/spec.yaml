@@ -1,10 +1,12 @@
 # 5200 cu in framed hunting pack — top-level requirements (owner: pack-designer)
 name: "Pack 5200"
+primary_mission: "PACKING ANIMALS OUT: hauling boned/quartered elk, moose, sheep, deer meat, plus head/antlers/cape, over steep deadfall terrain in multiple trips"   # OWNER 2026-11-01
 volume:
   main_bag_cu_in: 5200          # 85.2 L, main bag excluding lid & external pockets
   measure_method: "geometric, computed in code; lid/pockets reported separately"
 load:
-  rated_kg: 68                  # 150 lb rated
+  rated_kg: 68                  # 150 lb rated carry
+  overload_check_kg: 91         # 200 lb abuse/overload case (hunters overload when hauling meat); SF>=1.5 on yield required
   dynamic_factor_g: 2.5
   sf_yield_min: 2.0
   sf_buckling_min: 3.0
@@ -27,6 +29,15 @@ builder:
 targets:                        # to be refined by pack-designer with benchmarks
   total_mass_g_max: null
   frame_mass_g_max: null
+meat_hauling:                   # driven by primary_mission
+  - "load shelf between frame and bag holds quarters (bone-in elk hindquarter ~60-80 lb) close to the back and high"
+  - "frame-only haul mode: bag detaches or pulls back fully; frame + lashing straps carry game bags or a quarter"
+  - "tall-load geometry: high load lifters / frame extension so a tall load doesn't pull the hauler backwards"
+  - "head/antler/horn/cape carry with lashing points that don't snag; orange-flagging attachment for hunter safety"
+  - "blood/fluid tolerant: washable, hydrolysis-resistant coatings, no open-cell foam in the meat zone, drain grommets"
+  - "meat cooling: no airtight sealing of meat against the back panel, game bags breathe"
+  - "wide, load-spreading compression straps (soft goods won't cut into meat or game bags)"
+  - "rifle/bow carry that still works with a full meat load"
 features:
   - load_shelf_between_frame_and_bag
   - removable_bag

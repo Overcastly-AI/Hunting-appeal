@@ -1,0 +1,14 @@
+# Cirquefall Shard — ACCENT-SCALE variant of Cirquefall for small camo panels
+# (shoulder yokes, forearms, knee/seat, pack lid, side pockets, hipbelt wings; ~150-400 mm).
+# Same procedural rules and palette as Cirquefall, all feature lengths x0.5 and a 380 mm
+# repeat, so a 150 mm panel still holds 1-2 slab facets + fracture lines + flecks instead of
+# landing inside one flat macro blob. See DESIGN.md "Accent scale".
+extends: cirquefall
+name: cirquefall_shard
+display_name: "Cirquefall Shard"
+environment: "accent panels on solid garments/pack; same habitats as Cirquefall"
+seed: 7311
+repeat_mm: {width: 380, height: 380}   # 4 repeats across 1520 mm print width; divides 760 drum (2x)
+field_px_per_mm: 2.0                    # finer field grid to keep 2.5 mm minimum features crisp
+feature_scale: 0.5
+min_feature_floor_mm: 2.5

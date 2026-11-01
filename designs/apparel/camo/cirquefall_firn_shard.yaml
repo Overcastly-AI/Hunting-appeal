@@ -1,0 +1,10 @@
+# Cirquefall Firn Shard — accent-scale (380 mm repeat, features x0.5) version of
+# Cirquefall Firn for late-season accent panels on solid garments and the pack.
+extends: cirquefall_firn
+name: cirquefall_firn_shard
+display_name: "Cirquefall Firn Shard"
+environment: "late-season accent panels"
+repeat_mm: {width: 380, height: 380}
+field_px_per_mm: 2.0
+feature_scale: 0.5
+min_feature_floor_mm: 2.5
