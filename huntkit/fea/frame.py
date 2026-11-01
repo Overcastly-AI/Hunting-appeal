@@ -236,6 +236,7 @@ def build(model: dict):
     for mi, mem in enumerate(model["members"]):
         sec = from_spec(mem["section"])
         props, mat = _member_props(mem, sec)
+        props["no_kg"] = bool(mem.get("no_kg", False))
         a, b = mem["nodes"]
         p1, p2 = coords[idx[a]], coords[idx[b]]
         nseg = int(mem.get("nseg", settings["nseg"]))
@@ -272,11 +273,15 @@ def _assemble(n_dof, elements, which="k", P=None):
         if which == "k":
             kl = el.k
         else:
+            if el.props.get("no_kg"):     # e.g. equivalent shear-panel diagonals (not real columns)
+                continue
             kl = kg_local(el.L, P[e], el.props["Ip_over_A"], el.truss)
         kg = el.T.T @ kl @ el.T
         dofs = np.r_[6 * el.n1: 6 * el.n1 + 6, 6 * el.n2: 6 * el.n2 + 6]
         rr, cc = np.meshgrid(dofs, dofs, indexing="ij")
         rows.append(rr.ravel()); cols.append(cc.ravel()); vals.append(kg.ravel())
+    if not vals:
+        return sp.csr_matrix((n_dof, n_dof))
     return sp.csr_matrix((np.concatenate(vals), (np.concatenate(rows), np.concatenate(cols))),
                          shape=(n_dof, n_dof))
 

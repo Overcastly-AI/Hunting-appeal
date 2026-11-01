@@ -51,6 +51,7 @@ P5200_DEFAULTS = {
     "bushing_wall_mm": 1.0,
     "bushing_low_z": 380.0,
     "pawl_z": 520.0,               # rack/pawl lock on the upper bar centre (geometry.yaml crown_retention)
+    "pawl_guide_k_n_mm": 2.0e3,    # ASSUMPTION: pawl housing guides the spine laterally / fore-aft
     "pawl_k_n_mm": 5.0e4,          # ASSUMPTION: pawl + rack tooth axial stiffness (carries all; pulley ignored)
     "collar_len_mm": 20.0,
     "collar_mu": 0.20,             # ASSUMPTION: carbon/carbon with carbon assembly (grip) paste
@@ -199,7 +200,8 @@ def build(params: dict | None = None) -> dict:
             for k, (n1, n2) in enumerate(((grid[i, j], grid[i + 1, j + 1]), (grid[i, j + 1], grid[i + 1, j]))):
                 did = f"pld{i}{j}{k}"
                 members.append({"id": did, "nodes": [n1, n2], "section": generic(Ad, 1.0, 1.0, 1.0),
-                                "material": dm, "type": "truss", "group": "lumbar_plate_shear"})
+                                "material": dm, "type": "truss", "group": "lumbar_plate_shear",
+                                "no_kg": True})
                 ids.append(did)
             cells.append({"cell": (i, j), "a": a_, "b": b_, "cos": c, "diags": ids})
 
@@ -277,7 +279,8 @@ def build(params: dict | None = None) -> dict:
         if abs(sv - sp) < 3.0:
             pawl_node = nid
     if pawl_node:
-        links.append({"id": "pawl", "nodes": ["UB1", pawl_node], "k": [0, 0, p["pawl_k_n_mm"], 0, 0, 0]})
+        links.append({"id": "pawl", "nodes": ["UB1", pawl_node],
+                      "k": [p["pawl_guide_k_n_mm"], p["pawl_guide_k_n_mm"], p["pawl_k_n_mm"], 0, 0, 0]})
     for a, b in zip(s_nodes[:-1], s_nodes[1:]):
         members.append({"id": f"{a}-{b}", "nodes": [a, b], "section": spine_sec, "material": spm,
                         "group": "crown_spine", "ref": [1.0, 0.0, 0.0]})
@@ -509,6 +512,13 @@ def plate_checks(res, model: dict) -> list[dict]:
         worst = max(worst, tau)
     out.append({"check": "lumbar plate in-plane shear", "value": worst, "unit": "MPa", "allow": tau_a,
                 "sf": tau_a / worst if worst > 0 else np.inf})
+    # shear buckling of the web between the stays (isotropic approximation, ss edges, k_s = 5.35 + 4(b/a)^2)
+    E, nu = float(pl.require("youngs_modulus_mpa")), min(float(pl.get("poisson", 0.3)), 0.5)
+    a_, b_ = 230.0, PLATE_Z[-1] - PLATE_Z[0]
+    ks = 5.35 + 4 * (b_ / a_) ** 2
+    tau_cr = ks * np.pi ** 2 * E * t ** 2 / (12 * (1 - nu ** 2) * b_ ** 2)
+    out.append({"check": "lumbar plate shear buckling (req. 3.0)", "value": worst, "unit": "MPa",
+                "allow": tau_cr, "sf": tau_cr / worst if worst > 0 else np.inf, "buckling": True})
     # plate -> stay bond (per attach node, tributary length)
     stay = _sec(next(m for m in model["members"] if m["group"].startswith("stay_upper"))["section"])
     jp = {**DEFAULT_JOINT, **(p.get("joint") or {})}
