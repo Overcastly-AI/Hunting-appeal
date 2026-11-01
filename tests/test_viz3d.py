@@ -97,3 +97,33 @@ def test_glb_exports_and_reloads(pack, tmp_path):
     # glTF is metres, Y up: volume in m^3 must match the mm^3 model
     assert G.volume_mm3(bag) * 1e9 == pytest.approx(G.volume_mm3(pack.part("bag_body").mesh), rel=1e-4)
     assert bag.bounds[1][1] > 0.8                             # bag top ~0.82 m up the Y axis
+
+
+# --------------------------------------------------------------------------------------------
+# v3 SPINE teardrop bag (geometry.yaml bag.profile)
+# --------------------------------------------------------------------------------------------
+def test_v3_teardrop_parts_and_states(pack):
+    if pack.geometry["bag"].get("type") != "teardrop_rolltop":
+        pytest.skip("geometry.yaml is not the v3 teardrop")
+    for name in ("bag_body_full", "diagonal_band", "rolltop", "rolltop_full", "compression_straps"):
+        assert G.is_closed(pack.part(name).mesh), name
+    full = pack.part("bag_body_full").mesh
+    rolled = pack.part("bag_body").mesh
+    # the counted 85.2 L is the FULL state; rolled-down is the smaller daily state
+    assert G.volume_mm3(full) / 1e6 == pytest.approx(pack.metrics["bag_volume_l"])
+    assert pack.metrics["bag_volume_rolled_l"] == pytest.approx(pack.geometry["volumes"]["rolled_down_L"], rel=0.01)
+    assert G.volume_mm3(rolled) < G.volume_mm3(full)
+    assert pack.part("bag_body").variant == "rolled" and pack.part("bag_body_full").variant == "full"
+    # teardrop: slim at the hips, fullest high up; depth within the 10.5 in research cap
+    st = np.array(pack.geometry["bag"]["profile"]["stations"])
+    k = int(np.argmax(st[:, 3]))
+    assert st[0, 3] < st[k, 3] <= 10.5 * 25.4
+    assert st[0, 1] < st[:, 1].max()
+    assert st[k, 0] > st[0, 0] + 0.4 * (st[-1, 0] - st[0, 0])
+
+
+def test_export_puts_wearers_right_on_screen_right():
+    # FCS is left-handed as labelled (x+ = wearer's right, y+ aft, z up): the export must mirror
+    from huntkit.viz3d.export import M_FCS_TO_GLTF, to_gltf
+    assert np.linalg.det(M_FCS_TO_GLTF) < 0
+    assert to_gltf([100.0, 0, 0])[0] > 0          # camera on +Z (behind the wearer): +X = screen right

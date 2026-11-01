@@ -1,0 +1,31 @@
+id: pa6_cf_fdm
+name: PA6-CF (carbon-fiber nylon 6) FDM filament, printed and annealed
+category: polymers
+generic: false
+trade_names:
+- Polymaker Fiberon PA6-CF20 (formerly PolyMide PA6-CF)
+supplier_examples:
+- Polymaker
+- Amazon / MatterHackers
+properties:
+  density_kg_m3: 1170
+  youngs_modulus_mpa: 7450
+  poisson: 0.35
+  tensile_strength_xy_mpa: 105
+  tensile_strength_z_mpa: 67.7
+  tensile_strength_xy_conditioned_mpa: 81.7
+  tensile_strength_z_conditioned_mpa: 64.4
+  elongation_xy_pct: 3
+  min_wall_mm: 2.0
+  drying_temp_c: 80
+  drying_time_hours: 12
+confidence: datasheet
+sources:
+- 'PolyMide PA6-CF TDS V4.1 (XY 105.0 +/- 5.0, Z 67.7 +/- 4.7 MPa dry annealed; conditioned 70 % RH 15 d: 81.7 / 64.4); https://cdn.shopify.com/s/files/1/0151/1735/files/PolyMide__PA6-CF_TDS_EN_V4.1.pdf'
+- 'Polymaker Fiberon PA6-CF20 TDS V1.1; https://fiberon.polymaker.com/wp-content/uploads/TDS_FIBERON-PA6-CF20_V1.1_EN.pdf'
+cost_usd:
+  value: 60
+  per: kg
+notes: 'youngs_modulus_mpa ASSUMPTION 7450 (PolyMide sheet XY, not re-verified on the Fiberon sheet). Absorbs
+  water: strength drops to the conditioned values in the field. Use PAHT-CF (pa12_cf_fdm_paht) as the default
+  prototype filament; PA6-CF is the stiffer alternate.'

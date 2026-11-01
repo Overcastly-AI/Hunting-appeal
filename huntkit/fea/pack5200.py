@@ -39,6 +39,7 @@ P5200_DEFAULTS = {
     "stay_section": None,          # lower and upper stays
     "leg_section": None,           # crown legs (must fit inside the upper stay bore)
     "bar_section": None,           # mid bar, upper bar, crown top bar
+    "upper_bar_section": None,     # optional: upper bar (carries the pawl at mid-span) sized separately
     "post_section": None,          # extension posts + post bar (default: leg section)
     "lumbar_plate_t": 2.0,
     "lumbar_plate_material": "cfrp_plate_pm45",
@@ -64,10 +65,34 @@ P5200_DEFAULTS = {
                 "shoulder": (4.0, 8.0, 10.0), "lifter": (0.0, 6.0, 3.0)},
     "joint": {},
     "hardware": {},
+    # --- v2 options (load_standard.md / frame_sizing.md "v2"); defaults reproduce the v1 model ---
+    "stay_style": "segmented",     # "segmented" (lumbar elbow) | "straight" (one tube foot -> stay top)
+    "low_bushing": "stay",         # "stay" (fixed in the stay at bushing_low_z) | "leg_end" (rides on the leg bottom)
+    "bushing_contact_deg": 0.0,    # contact half-angle of the bushing pressure (0 = point load, Roark 0.318 F R)
+    "lumbar_flange_mm": 0.0,       # formed return flange on the top + bottom edges of the lumbar plate (hat section)
+    "lumbar_padup_t_mm": 0.0,      # CF pad-up strip behind the hipbelt pivot (centre column, full plate height)
 }
 
 PLATE_Z = [50.0, 90.0, 120.0, 155.0, 190.0]
 FRACS = [0.0, 0.25, 0.5, 0.75, 1.0]
+
+
+def _flanged_strip(w, t, f):
+    """Edge strip of a formed (hat-section) lumbar plate: web w x t (w along local y) plus a return
+    flange t x f standing in local z at the free edge (L-section). Thin-wall properties."""
+    Aw, Af = w * t, t * f
+    A = Aw + Af
+    zf = t / 2 + f / 2                      # flange centroid (local z) from the web mid-plane
+    zc = Af * zf / A
+    Iy = w * t ** 3 / 12 + Aw * zc ** 2 + t * f ** 3 / 12 + Af * (zf - zc) ** 2
+    yf = w / 2 - t / 2
+    yc = Af * yf / A
+    Iz = t * w ** 3 / 12 + Aw * yc ** 2 + f * t ** 3 / 12 + Af * (yf - yc) ** 2
+    J = w * t ** 3 / 6 + f * t ** 3 / 3
+    s = generic(A, Iy, Iz, J, ymax=w / 2 + abs(yc), zmax=max(t / 2 + f - zc, zc + t / 2), Wt=J / t)
+    s.kind = "plate_strip_flanged"
+    s.dims = {"w": w, "t": t, "flange": f}
+    return s
 
 
 def _strip(w, t):
@@ -114,9 +139,15 @@ def build(params: dict | None = None) -> dict:
     fr = geom["frame"]
     cs = crown_setting(geom, p["torso_in"])
     foot, elbow, top = _stay_pts(geom)
+    straight = p.get("stay_style") == "straight"
+    if straight:
+        # one straight tube per side, foot moved in-line under the stay top (x = top x) so the two crown
+        # legs stay PARALLEL (coaxial telescoping needs parallel axes); foot keeps its fore-aft position.
+        foot = np.array([top[0], foot[1], 0.0])
     stay = _sec(p["stay_section"], tube_round(22.0, 1.2))
     leg = _sec(p["leg_section"], tube_round(18.0, 1.2))
     bar = _sec(p["bar_section"], stay)
+    ubar = _sec(p.get("upper_bar_section"), bar)
     post = _sec(p["post_section"], leg)
     warnings = []
     if "od" in stay.dims and "od" in leg.dims:
@@ -138,17 +169,46 @@ def build(params: dict | None = None) -> dict:
     nodes, members, groups, joints, links = {}, [], {}, [], []
     stay_ref, bar_ref = [1.0, 0.0, 0.0], [0.0, 0.0, 1.0]
 
+    # ------------------------------------------------------------- crown axis + leg-end bushing z
+    crown = fr.get("crown") or fr["members_topology"]["crown"]
+    if straight:
+        u = (top - foot) / np.linalg.norm(top - foot)
+        u = np.array([0.0, u[1], u[2]]) / np.hypot(u[1], u[2])
+    else:
+        u = np.array(crown["axis_unit_vector_yz"], float)
+        u = np.array([0.0, u[0], u[1]])
+    zt = float(cs["crown_top_z"])
+    leg_len = float(crown["leg_length_along_axis"])
+    z_legbot = zt - leg_len * u[2]
+
     # ------------------------------------------------------------- stays
     z_lo = sorted({0.0, 25.0, 50.0, 60.0, 80.0, 90.0, 120.0, elbow[2]})
     z_up = sorted({elbow[2], 155.0, 190.0, 250.0, 290.0, 330.0, p["bushing_low_z"], 420.0, 470.0, 520.0, top[2]})
+    leg_end = p.get("low_bushing") == "leg_end"
+    if leg_end:
+        zs_all = z_lo + z_up[1:]
+        near = min(zs_all, key=lambda z: abs(z - z_legbot))
+        if abs(near - z_legbot) < 4.0:
+            z_legbot = near
+        else:
+            z_legbot = round(float(z_legbot), 1)
+            if z_legbot <= elbow[2]:
+                z_lo = sorted(set(z_lo) | {z_legbot})
+            else:
+                z_up = sorted(set(z_up) | {z_legbot})
+        z_bush_low = z_legbot
+    else:
+        z_bush_low = p["bushing_low_z"]
     for side, tag in ((-1, "L"), (1, "R")):
         mir = np.array([side, 1.0, 1.0])
         chain = []
         for z in z_lo:
-            nodes[f"S{tag}{z:g}"] = list(map(float, _on_segment(foot, elbow, z) * mir))
+            a_, b_ = (foot, top) if straight else (foot, elbow)
+            nodes[f"S{tag}{z:g}"] = list(map(float, _on_segment(a_, b_, z) * mir))
             chain.append(f"S{tag}{z:g}")
         for z in z_up[1:]:
-            nodes[f"S{tag}{z:g}"] = list(map(float, _on_segment(elbow, top, z) * mir))
+            a_ = foot if straight else elbow
+            nodes[f"S{tag}{z:g}"] = list(map(float, _on_segment(a_, top, z) * mir))
             chain.append(f"S{tag}{z:g}")
         for a, b in zip(chain[:-1], chain[1:]):
             grp = "stay_lower" if nodes[b][2] <= elbow[2] + 1e-6 else "stay_upper"
@@ -159,7 +219,7 @@ def build(params: dict | None = None) -> dict:
         return f"S{tag}{z:g}"
 
     def mid(tag, z):   # stay member id that ends at z (below) / starts at z (above)
-        zs = z_lo + z_up[1:]
+        zs = sorted(set(z_lo) | set(z_up))
         i = zs.index(z)
         return f"{sid(tag, zs[i - 1])}-{sid(tag, z)}", (f"{sid(tag, z)}-{sid(tag, zs[i + 1])}" if i + 1 < len(zs) else None)
 
@@ -176,22 +236,29 @@ def build(params: dict | None = None) -> dict:
                 grid[i, j] = sid("R", z)
             else:
                 nid = f"P{i}{j}"
-                nodes[nid] = list(map(float, L + f * (R - L)))
+                pt = L + f * (R - L)
+                # formed (pan / hat-section) plate: the face between the stay lands is pressed toward the
+                # body by the flange depth; the top/bottom return flanges join face and lands
+                pt[1] -= float(p.get("lumbar_flange_mm") or 0.0)
+                nodes[nid] = list(map(float, pt))
                 grid[i, j] = nid
     nz, nx = len(PLATE_Z), len(FRACS)
     dz = np.diff(PLATE_Z)
+    fl = float(p.get("lumbar_flange_mm") or 0.0)
     for i in range(nz):
         wz = ((dz[i - 1] if i > 0 else 0) + (dz[i] if i < nz - 1 else 0)) / 2
+        sec_i = _flanged_strip(wz, t, fl) if (fl > 0 and i in (0, nz - 1)) else _strip(wz, t)
         for j in range(nx - 1):
             members.append({"id": f"plh{i}{j}", "nodes": [grid[i, j], grid[i, j + 1]],
-                            "section": _strip(wz, t), "material": pm, "group": "lumbar_plate",
+                            "section": sec_i, "material": pm, "group": "lumbar_plate",
                             "ref": [0.0, 0.0, 1.0]})
     for j in range(nx):
         a_ = np.linalg.norm(np.subtract(nodes[grid[2, 1]], nodes[grid[2, 0]]))
         wx = a_ / 2 if j in (0, nx - 1) else a_
+        t_j = t + (float(p.get("lumbar_padup_t_mm") or 0.0) if j == nx // 2 else 0.0)
         for i in range(nz - 1):
             members.append({"id": f"plv{i}{j}", "nodes": [grid[i, j], grid[i + 1, j]],
-                            "section": _strip(wx, t), "material": pm, "group": "lumbar_plate",
+                            "section": _strip(wx, t_j), "material": pm, "group": "lumbar_plate",
                             "ref": [1.0, 0.0, 0.0]})
     G_pl = float(pl_mat.get("shear_modulus_mpa"))
     E_pl = float(pl_mat.require("youngs_modulus_mpa"))
@@ -245,20 +312,15 @@ def build(params: dict | None = None) -> dict:
         return chain, ids
 
     _, mb_ids = crossbar("MB", sid("L", 330.0), sid("R", 330.0), [-57.5, 0.0, 57.5], "mid_bar", bar)
-    _, ub_ids = crossbar("UB", sid("L", 520.0), sid("R", 520.0), [-57.5, 0.0, 57.5], "upper_bar", bar)
+    _, ub_ids = crossbar("UB", sid("L", 520.0), sid("R", 520.0), [-57.5, 0.0, 57.5], "upper_bar", ubar)
 
     # ------------------------------------------------------------- crown
-    crown = fr.get("crown") or fr["members_topology"]["crown"]
-    u = np.array(crown["axis_unit_vector_yz"], float)
-    u = np.array([0.0, u[0], u[1]])
-    zt = float(cs["crown_top_z"])
-    leg_len = float(crown["leg_length_along_axis"])
     for side, tag in ((-1, "L"), (1, "R")):
         topL = np.array(nodes[sid(tag, top[2])])
         s_top = (zt - top[2]) / u[2]
         ptop = topL + s_top * u
         pbot = ptop - leg_len * u
-        if pbot[2] > p["bushing_low_z"] - 1:
+        if not leg_end and pbot[2] > p["bushing_low_z"] - 1:
             warnings.append(f"crown leg bottom z={pbot[2]:.0f} is above the lower bushing z={p['bushing_low_z']:g}")
         names = [f"C{tag}bot"]
         nodes[f"C{tag}bot"] = list(map(float, pbot))
@@ -266,13 +328,20 @@ def build(params: dict | None = None) -> dict:
         nodes[f"C{tag}530"] = list(map(float, nodes[sid(tag, top[2])]))
         nodes[f"C{tag}mid"] = list(map(float, (topL + ptop) / 2))
         nodes[f"C{tag}top"] = list(map(float, ptop))
-        names = [f"C{tag}bot", f"C{tag}380", f"C{tag}530", f"C{tag}mid", f"C{tag}top"]
-        if pbot[2] > p["bushing_low_z"] - 3:      # leg ends at the bushing: drop the separate bottom node
-            names.remove(f"C{tag}bot")
+        if leg_end:
+            nodes[f"C{tag}bot"] = list(map(float, nodes[sid(tag, z_bush_low)]))
+            del nodes[f"C{tag}380"]
+            names = [f"C{tag}bot", f"C{tag}530", f"C{tag}mid", f"C{tag}top"]
+            low_node = f"C{tag}bot"
+        else:
+            names = [f"C{tag}bot", f"C{tag}380", f"C{tag}530", f"C{tag}mid", f"C{tag}top"]
+            if pbot[2] > p["bushing_low_z"] - 3:      # leg ends at the bushing: drop the separate bottom node
+                names.remove(f"C{tag}bot")
+            low_node = f"C{tag}380"
         for a, b in zip(names[:-1], names[1:]):
             members.append({"id": f"{a}-{b}", "nodes": [a, b], "section": leg, "material": None,
                             "group": f"crown_leg_{tag}", "ref": stay_ref})
-        links.append({"id": f"bush_low_{tag}", "nodes": [sid(tag, p["bushing_low_z"]), f"C{tag}380"],
+        links.append({"id": f"bush_low_{tag}", "nodes": [sid(tag, z_bush_low), low_node],
                       "k": [p["bushing_k_n_mm"], p["bushing_k_n_mm"], 0, 0, 0, 0]})
         links.append({"id": f"bush_top_{tag}", "nodes": [sid(tag, top[2]), f"C{tag}530"],
                       "k": [p["bushing_k_n_mm"], p["bushing_k_n_mm"], 0, 0, 0, 0]})
@@ -337,8 +406,10 @@ def build(params: dict | None = None) -> dict:
     for tag in ("L", "R"):
         lo_last, up_first = mid(tag, elbow[2])
         joints += [
-            {"id": f"foot_{tag}", "node": sid(tag, 0.0), "members": [mid(tag, 0.0)[1]], "params": jp},
-            {"id": f"elbow_{tag}", "node": sid(tag, elbow[2]), "members": [lo_last, up_first], "params": jp},
+            {"id": f"foot_{tag}", "node": sid(tag, 0.0), "members": [mid(tag, 0.0)[1]], "params": jp}]
+        if not straight:
+            joints.append({"id": f"elbow_{tag}", "node": sid(tag, elbow[2]), "members": [lo_last, up_first], "params": jp})
+        joints += [
             {"id": f"mid_hub_{tag}", "node": sid(tag, 330.0), "members": [mb_ids[0] if tag == "L" else mb_ids[-1]],
              "through": [list(mid(tag, 330.0))], "params": jp},
             {"id": f"upper_hub_{tag}", "node": sid(tag, 520.0), "members": [ub_ids[0] if tag == "L" else ub_ids[-1]],
@@ -355,7 +426,10 @@ def build(params: dict | None = None) -> dict:
              "joints": joints, "params": p, "warnings": warnings, "settings": {"nseg": 2},
              "springs": p["springs"], "shelf_depth_mm": p["shelf_depth_mm"],
              "plate_cells": cells, "plate_grid": {f"{i},{j}": v for (i, j), v in grid.items()},
-             "crown_setting": cs, "topology": "pack5200_crown"}
+             "crown_setting": cs, "topology": "pack5200_crown",
+             "stay_points": {"foot": list(map(float, foot)), "top": list(map(float, top)),
+                             "elbow": None if straight else list(map(float, elbow))},
+             "crown_axis": list(map(float, u)), "bushing_low_z_actual": float(z_bush_low)}
     if bag_w:
         model["bag_weights"] = bag_w
         model["bag_couple"] = {"top": ["TB0", "TB2"], "bottom": [sid("L", 25.0), sid("R", 25.0),
@@ -365,6 +439,8 @@ def build(params: dict | None = None) -> dict:
 
 
 # ============================================================================ mass
+SLEEVE_DENSITY = {"alu_7075_t6": 2810.0, "cfrp_plate_quasi_iso": 1550.0, "cfrp_plate_0_90_woven": 1550.0}
+
 HW = {
     "al_density": 2810.0, "ti_density": 4430.0, "cf_density": 1550.0, "uhmw_density": 935.0,
     "pom_density": 1410.0, "adhesive_density": 1150.0, "fillet": 1.5, "socket_extra_mm": 5.0,
@@ -375,6 +451,7 @@ HW = {
     "pulley_guides_g": 8.0,       # ASSUMPTION: UHMWPE-lined guides A (lumbar plate) and B (spine bottom)
     "spine_clamp_g": 6.0,         # ASSUMPTION: spine-to-top-bar clamp
     "web_plate_g": 4.0,           # ASSUMPTION: CF gusset per T / corner hub
+    "pivot_boss_extra_g_per_mm": 0.35,   # ASSUMPTION: Ti boss 12 x 3 mm beyond the v1 23 mm standoff (0.38 g/mm)
 }
 
 
@@ -415,14 +492,23 @@ def hardware_mass(model: dict) -> dict:
         items[f"tubes: {k}"] = v
     # plates
     pl = get_material(p["lumbar_plate_material"])
-    items["lumbar plate (250 x 140)"] = 250 * 140 * p["lumbar_plate_t"] * float(pl.get("density_kg_m3", 1550)) * 1e-6
+    fl = float(p.get("lumbar_flange_mm") or 0.0)
+    items["lumbar plate (250 x 140)" + (f" + 2 x {fl:g} mm flanges" if fl else "")] = \
+        (250 * 140 + 2 * 250 * fl) * p["lumbar_plate_t"] * float(pl.get("density_kg_m3", 1550)) * 1e-6
+    tpad = float(p.get("lumbar_padup_t_mm") or 0.0)
+    if tpad:
+        g_ = model.get("plate_grid", {})
+        wpad = float(np.linalg.norm(np.subtract(nodes[g_["2,2"]], nodes[g_["2,1"]])))
+        items["lumbar pivot pad-up (CF)"] = wpad * 140 * tpad * float(pl.get("density_kg_m3", 1550)) * 1e-6
     if p.get("spine_section") is None:
         sp = get_material(p["spine_material"])
         items["crown spine plate"] = p["spine_w"] * p["spine_len"] * p["spine_t"] * float(sp.get("density_kg_m3", 1550)) * 1e-6
 
+    rho_sl = SLEEVE_DENSITY.get(jp.get("sleeve_material", "alu_7075_t6"), h["al_density"])
+
     def sleeve_g(sec, length):
         per = _perim(sec) + np.pi * (2 * ta + ts)
-        return per * ts * (length + h["socket_extra_mm"]) * h["al_density"] * 1e-6
+        return per * ts * (length + h["socket_extra_mm"]) * rho_sl * 1e-6
 
     def adh_g(sec, length):
         return _perim(sec) * length * ta * h["adhesive_density"] * h["fillet"] * 1e-6
@@ -441,10 +527,17 @@ def hardware_mass(model: dict) -> dict:
             g_adh += adh_g(stay, ov_t)
         if j["id"].startswith(("mid_hub", "upper_hub", "crown_corner")):
             g_sock += h["web_plate_g"]
-    items["7075 sockets/sleeves + gussets"] = g_sock
+    sl_name = "7075 sockets/sleeves + gussets" if rho_sl > 2000 else "carbon wraps (sleeves/hubs) + gussets"
+    items[sl_name] = g_sock
     items["adhesive (incl. lumbar-plate bond)"] = g_adh + 2 * 140 * 0.5 * stay.dims.get("od", 20) * ta * h["adhesive_density"] * h["fillet"] * 1e-6
     items["foot boots (2)"] = 2 * h["foot_boot_g"]
-    items["Ti hipbelt pivot insert"] = h["pivot_insert_g"]
+    pin = h["pivot_insert_g"]
+    hp_ = nodes.get("HP")
+    gc = model.get("plate_grid", {}).get("2,2")
+    if hp_ is not None and gc is not None:
+        extra = max(0.0, float(np.linalg.norm(np.subtract(hp_, nodes[gc]))) - 23.1)
+        pin += extra * h["pivot_boss_extra_g_per_mm"]
+    items["Ti hipbelt pivot insert"] = pin
     items["crown rack + pawl housing + pulley guides"] = h["rack_g"] + h["pawl_housing_g"] + h["pulley_guides_g"]
     if legm:
         leg = _sec(legm[0]["section"])
@@ -486,6 +579,10 @@ def crown_checks(res, model: dict, required_sf: float = 2.0) -> list[dict]:
     uh = get_material("uhmwpe_sheet")
     p_allow = float(uh.require("yield_strength_mpa"))
     Lb = p["bushing_len_mm"]
+    from .rings import ring_moment_coeff
+    cm = ring_moment_coeff(float(p.get("bushing_contact_deg") or 0.0))
+    jp = p.get("joint") or {}
+    cf_collar = jp.get("sleeve_material", "alu_7075_t6") != "alu_7075_t6"
     for name in ("bush_low_L", "bush_low_R", "bush_top_L", "bush_top_R"):
         f = lf.get(name)
         if f is None:
@@ -497,18 +594,37 @@ def crown_checks(res, model: dict, required_sf: float = 2.0) -> list[dict]:
         for who, sec in (("stay", stay), ("leg", leg)):
             if who == "stay" and name.startswith("bush_top"):
                 # the stay top carries a bonded 7075 collar/socket: check that ring instead
-                ts = (p.get("joint") or {}).get("sleeve_t_mm", 1.0) or 1.0
+                ts = jp.get("sleeve_t_mm", 1.0) or 1.0
                 Rm_c = sec.dims["od"] / 2 + ts / 2
-                m_c = 0.318 * (Fr / Lb) * Rm_c
-                fy = 462.0   # 7075-T6 S-basis yield (alu_7075_t6 record)
-                sig = 6 * m_c / ts ** 2
-                out.append({"check": f"{name}: 7075 stay-top collar ring bending", "value": sig, "unit": "MPa",
-                            "allow": fy, "sf": fy / sig if sig > 0 else np.inf})
+                m_c = cm * (Fr / Lb) * Rm_c
+                if not cf_collar:
+                    fy = 462.0   # 7075-T6 S-basis yield (alu_7075_t6 record)
+                    sig = 6 * m_c / ts ** 2
+                    out.append({"check": f"{name}: 7075 stay-top collar ring bending", "value": sig, "unit": "MPa",
+                                "allow": fy, "sf": fy / sig if sig > 0 else np.inf})
+                    continue
+                # carbon wrap collar over the stay top: ring moment shared by the stay wall and the wrap in
+                # proportion to their bending stiffness E t^3 (no composite action credited: conservative)
+                wm = get_material(jp["sleeve_material"])
+                Ew = float(wm.require("youngs_modulus_mpa"))
+                allow_w = float(wm.get("compressive_strength_mpa") or wm.require("ultimate_strength_mpa")) \
+                    * DEFAULT_KNOCKDOWN["hot_wet"] * DEFAULT_KNOCKDOWN["impact_comp"]
+                ts_st = sec.dims["t"]
+                Dw, Ds = Ew * ts ** 3, sec.Ex * ts_st ** 3
+                share_w = Dw / (Dw + Ds)
+                sig = 6 * m_c * share_w / ts ** 2
+                out.append({"check": f"{name}: carbon-wrap stay-top collar ring bending", "value": sig, "unit": "MPa",
+                            "allow": allow_w, "sf": allow_w / sig if sig > 0 else np.inf})
+                Rm = sec.dims["od"] / 2 - ts_st / 2
+                m_st = cm * (Fr / Lb) * Rm * (1 - share_w)
+                fpf = sec.laminate.first_ply_failure((0, -Fr / (2 * Lb), 0), (0, m_st, 0))
+                out.append({"check": f"{name}: stay ring crush under the wrap collar", "value": m_st,
+                            "unit": "N*mm/mm", "sf": fpf["sf"]})
                 continue
             if not getattr(sec, "composite", False):
                 continue
             Rm = sec.dims["od"] / 2 - sec.dims["t"] / 2
-            m_hoop = 0.318 * (Fr / Lb) * Rm      # ring under diametral load (conservative: point load)
+            m_hoop = cm * (Fr / Lb) * Rm         # ring under diametral load (cm = 0.318 for a point load)
             fpf = sec.laminate.first_ply_failure((0, -Fr / (2 * Lb), 0), (0, m_hoop, 0))
             out.append({"check": f"{name}: {who} ring crush at bushing", "value": m_hoop, "unit": "N*mm/mm",
                         "sf": fpf["sf"]})

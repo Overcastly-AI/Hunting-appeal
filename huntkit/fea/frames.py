@@ -358,7 +358,8 @@ def load_frame_params(path) -> dict:
     fr = dict(doc.get("frame", doc))
     if fr.get("topology") == "pack5200_crown":
         from .pack5200 import P5200_DEFAULTS
-        keys, sec_keys = P5200_DEFAULTS, ("stay_section", "leg_section", "bar_section", "post_section", "spine_section")
+        keys, sec_keys = P5200_DEFAULTS, ("stay_section", "leg_section", "bar_section", "upper_bar_section",
+                                     "post_section", "spine_section")
     else:
         keys, sec_keys = DEFAULT_PARAMS, ("section", "crossbar_section", "brace_section")
     for k in sec_keys:

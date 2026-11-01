@@ -21,28 +21,33 @@ from .model import build_pack
 from .params import DEFAULT_SPEC, REPO, load_params
 from .viewer import build_html
 
-BEST = ("hero", "haul", "fit")
+BEST = ("hero", "haul", "fit", "side", "front")
 
 
 def shots(m: dict) -> list[dict]:
     vol = f"main bag {m['bag_volume_l']:.1f} L ({m['bag_volume_cu_in']:,.0f} cu in, from the mesh)"
     t = m["torsos"]
     fea = m.get("fea") or {}
-    return [
+    v3 = m.get("bag_type") == "teardrop_rolltop"
+    rolled = f"rolled down {m.get('bag_volume_rolled_l', 0):.0f} L" if v3 else ""
+    hero_sub = (f"{rolled}; {vol} with the collar unrolled. SPINE: diagonal zip under a stretch band, camo on wear zones"
+                if v3 else f"{vol} + {m['lid_design_l']:.1f} L lid · camo shards on corners, lash zone, lid, pockets")
+    out = [
         dict(name="hero", view="hero", state={"mode": "pack"},
-             caption="Pack 5200: 3/4 view of the outer face",
-             sub=f"{vol} + {m['lid_design_l']:.1f} L lid · camo shards on corners, lash zone, lid, pockets"),
+             caption="Pack 5200 v3 SPINE: 3/4 view of the outer face" if v3 else "Pack 5200: 3/4 view of the outer face",
+             sub=hero_sub),
         dict(name="side", view="side", state={"mode": "pack", "mannequin": True},
-             caption="Side profile, 19 in torso",
+             caption="Side profile, 19 in torso: teardrop keeps the load close" if v3 else "Side profile, 19 in torso",
              sub="Crown sets yoke + lifters together; hipbelt on the Ti pivot at z 120 mm"),
         dict(name="back", view="back", state={"mode": "pack"},
              caption="Back panel and suspension",
              sub="Lumbar plate, J-straps on the crown yoke, sternum strap, load lifters, hipbelt (M)"),
         dict(name="haul", view="haul", state={"mode": "pack", "haul": True},
-             caption="Haul mode: bag pulled back 250 mm",
-             sub="Bone-in hindquarter on the 270 x 260 shelf, shelf straps to the mid-bar nodes, load wings, flag on extension posts"),
+             caption=f"Haul mode: bag hinges back {m['haul_pullback_mm']:.0f} mm",
+             sub=("Quarter on the fold-down lip; the 3 frame-anchored wraps become the meat sling (no wings, no re-rigging)"
+                  if v3 else "Bone-in hindquarter on the 270 x 260 shelf, shelf straps to the mid-bar nodes, load wings, flag on extension posts")),
         dict(name="exploded", view="exploded", state={"mode": "pack", "explode": True},
-             caption="Exploded view", sub="Frame, crown, shelf, bag, lid, pockets, harness and hipbelt"),
+             caption="Exploded view", sub="Frame, crown, shelf, bag, pockets, harness and hipbelt"),
         dict(name="frame", view="frame", state={"mode": "frame", "harness": False},
              caption="Carbon frame close-up",
              sub=f"Segmented stays, lumbar plate, Ti pivot, telescoping crown. Tubes: {m['tube_size_source']}"),
@@ -54,6 +59,17 @@ def shots(m: dict) -> list[dict]:
              caption="Fit: one frame, three torsos",
              sub=" · ".join(f"{k:g} in: crown top {v['crown_top_z']:.0f} mm" for k, v in sorted(t.items()))),
     ]
+    if v3:
+        out.insert(1, dict(name="full", view="hero", state={"mode": "pack", "full": True},
+                           caption="Collar unrolled: the counted 85.2 L",
+                           sub=f"{vol}; computed to the fill line with the roll-top closed by 3 rolls"))
+        out.insert(2, dict(name="front", view="front", state={"mode": "pack"},
+                           caption="Outer face: taper + SPINE diagonal",
+                           sub="One #10 zip from the right hip to the left shoulder, reachable from either side"))
+        out.append(dict(name="lid", view="hero", state={"mode": "pack", "lid": True},
+                        caption="Optional lid / hip pack on the closed roll",
+                        sub="Short fixed rear tabs + front magnets: nothing to flop"))
+    return out
 
 
 def render(html: Path, shot_list: list[dict], screens: Path, date: str, width=800, height=600, scale=2) -> list[Path]:

@@ -46,6 +46,7 @@ class Part:
     haul: tuple = (0.0, 0.0, 0.0)        # extra offset in pack_haul mode (mm)
     label: str = ""
     colors: np.ndarray | None = None     # optional per-vertex RGBA (FEA overlay)
+    variant: str | None = None           # viewer toggle: "rolled" | "full" | "lid" (v3 bag), None = always
 
 
 @dataclass
@@ -325,360 +326,373 @@ def build_pack(params: dict | None = None) -> PackModel:
         parts.append(Part(f"orange_flag{tag}", flag, "blaze", "haul", torso=tin, modes=HAULM, label="Orange flag sleeve"))
         crown_info[tin] = cs
 
-    # ------------------------------------------------------------------ main bag
-    W, Hb, D = float(bag_g["width_x"]), float(bag_g["height_z"]), float(bag_g["depth_y"])
-    Rb = float(bag_g["bottom_corner_radius"])
-    org_b = bag_g["origin_carry_mode"]
-    by0, bz0 = float(org_b["y_frame_side_panel"]), float(org_b["z_bottom"])
-    by1, bz1 = by0 + D, bz0 + Hb
-    re_ = p["bag_edge_radius"]
-    pull = float(p["haul_pullback_y"] or bag_g.get("haul_mode_pullback_y_max", 250.0))
-    HAUL = (0.0, pull, 0.0)
-    bag = G.soft_box(W, Hb, bz0, by0, D, Rb, p["bag_top_radius"], r_edge=re_)
-    vol_l = G.volume_mm3(bag) / 1e6
-    metrics.update({"bag_volume_l": vol_l, "bag_volume_cu_in": vol_l / CU_IN_TO_L,
-                    "target_volume_l": p["target_volume_l"],
-                    "volume_error_pct": 100 * (vol_l / p["target_volume_l"] - 1),
-                    "design_volume_l": (g.get("volumes") or {}).get("main_bag_L"),
-                    "bag_dims_mm": [W, Hb, D]})
-    BE = (0.0, 260.0, 0.0)
-    parts.append(Part("bag_body", bag, "body", "bag", modes=BAGM, explode=BE, haul=HAUL, label="Main bag"))
+    def _legacy_box_bag():
+        """v2 box bag, shelf, quarter and load wings (geometry.yaml without bag.profile)."""
+        W, Hb, D = float(bag_g["width_x"]), float(bag_g["height_z"]), float(bag_g["depth_y"])
+        Rb = float(bag_g["bottom_corner_radius"])
+        org_b = bag_g["origin_carry_mode"]
+        by0, bz0 = float(org_b["y_frame_side_panel"]), float(org_b["z_bottom"])
+        by1, bz1 = by0 + D, bz0 + Hb
+        re_ = p["bag_edge_radius"]
+        pull = float(p["haul_pullback_y"] or bag_g.get("haul_mode_pullback_y_max", 250.0))
+        HAUL = (0.0, pull, 0.0)
+        bag = G.soft_box(W, Hb, bz0, by0, D, Rb, p["bag_top_radius"], r_edge=re_)
+        vol_l = G.volume_mm3(bag) / 1e6
+        metrics.update({"bag_volume_l": vol_l, "bag_volume_cu_in": vol_l / CU_IN_TO_L,
+                        "target_volume_l": p["target_volume_l"],
+                        "volume_error_pct": 100 * (vol_l / p["target_volume_l"] - 1),
+                        "design_volume_l": (g.get("volumes") or {}).get("main_bag_L"),
+                        "bag_dims_mm": [W, Hb, D]})
+        BE = (0.0, 260.0, 0.0)
+        parts.append(Part("bag_body", bag, "body", "bag", modes=BAGM, explode=BE, haul=HAUL, label="Main bag"))
 
-    # gusset band: right-side outline from the bottom centre, by arc length
-    o_pts, o_nrm = G.outline_xz(W, Hb, bz0, Rb, p["bag_top_radius"], inset=0.0, n_arc=60, n_edge=80)
-    i_mid = int(np.argmin(np.abs(o_pts[: len(o_pts) // 4, 0])))
-    seq = np.r_[np.arange(i_mid, len(o_pts)), np.arange(0, i_mid)]
-    P2, N2 = o_pts[seq], o_nrm[seq]
-    sarc = np.r_[0, np.cumsum(np.linalg.norm(np.diff(P2, axis=0), axis=1))]
-    half = int(np.argmax(P2[:, 1] >= bz1 - 1e-6))
-    s_r, P_r, N_r = sarc[: half + 1], P2[: half + 1], N2[: half + 1]
-    s_corner0 = W / 2 - Rb                      # bottom edge from the centre to the corner arc
+        # gusset band: right-side outline from the bottom centre, by arc length
+        o_pts, o_nrm = G.outline_xz(W, Hb, bz0, Rb, p["bag_top_radius"], inset=0.0, n_arc=60, n_edge=80)
+        i_mid = int(np.argmin(np.abs(o_pts[: len(o_pts) // 4, 0])))
+        seq = np.r_[np.arange(i_mid, len(o_pts)), np.arange(0, i_mid)]
+        P2, N2 = o_pts[seq], o_nrm[seq]
+        sarc = np.r_[0, np.cumsum(np.linalg.norm(np.diff(P2, axis=0), axis=1))]
+        half = int(np.argmax(P2[:, 1] >= bz1 - 1e-6))
+        s_r, P_r, N_r = sarc[: half + 1], P2[: half + 1], N2[: half + 1]
+        s_corner0 = W / 2 - Rb                      # bottom edge from the centre to the corner arc
 
-    def band(side, s, y, lift=0.0):
-        s = np.asarray(s, float)
-        x = np.interp(s, s_r, P_r[:, 0])
-        z = np.interp(s, s_r, P_r[:, 1])
-        nx = np.interp(s, s_r, N_r[:, 0])
-        nz = np.interp(s, s_r, N_r[:, 1])
-        n = np.stack([side * nx, np.zeros_like(nx), nz], -1)
-        n /= np.linalg.norm(n, axis=-1, keepdims=True)
-        P = np.stack([side * x, np.broadcast_to(y, x.shape), z], -1)
-        return P + n * lift, n
-
-    def s_at_z(z):                              # right side wall, above the corner arc
-        return s_corner0 + Rb * np.pi / 2 + (np.asarray(z, float) - (bz0 + Rb))
-
-    # bottom (TPU 840D): band over the bottom edge + both corner arcs
-    s_end = s_corner0 + Rb * np.pi / 2 + 12
-    bottom = []
-    for s in (-1, 1):
-        poly_b = box(0, by0 + re_, s_end, by1 - re_)
-        bottom.append(G.conformal_plate(poly_b, lambda u, v, s=s: band(s, u, v)[0], lambda u, v, s=s: band(s, u, v)[1],
-                                        thick=1.0, lift=0.3, max_edge=14))
-    parts.append(Part("bag_bottom", G.concat(bottom), "tpu", "bag", modes=BAGM, explode=(0, 260, -40), haul=HAUL,
-                      label="Bottom (TPU 840D)"))
-    # seam piping (frame-side and outer-face panel edges) + full-length right side zip garage
-    pip = []
-    for yy, sgn_y in ((by0 + 2.9, -1), (by1 - 2.9, 1)):
-        pp, nn = G.outline_xz(W, Hb, bz0, Rb, p["bag_top_radius"], inset=2.9, n_arc=16, n_edge=30)
-        ring = np.column_stack([pp[:, 0] + nn[:, 0] * 2.4, np.full(len(pp), yy + sgn_y * 2.4), pp[:, 1] + nn[:, 1] * 2.4])
-        pip.append(G.tube(np.vstack([ring, ring[:1]]), 2.6, n=10, tile=G.TILE_MM, caps=False))
-    sz = np.linspace(s_at_z(bz0 + Rb + 30), s_at_z(bz1 - 8), 120)
-    Pz, Nz = band(1, sz, by0 + 160, lift=1.2)
-    pip.append(G.ribbon(Pz, 20.0, 2.6, Nz, step=8))
-    parts.append(Part("bag_trim", G.concat(pip), "trim", "bag", modes=BAGM, explode=BE, haul=HAUL,
-                      label="Piping + side zip garage"))
-
-    # ------------------------------------------------------------------ side pockets (bellowed)
-    spg = g["side_pockets"]
-    swb, swt, sph, bell = spg["face_bottom_w"], spg["face_top_w"], spg["height"], spg["bellows"]
-    spz0, spy = spg["position"]["z_bottom"], spg["position"]["y_center"]
-
-    def sp_w(v):
-        return swb + (swt - swb) * v
-
-    def sp_thick(s, t):
-        return 3.0 + bell * G.bump(s, 0.32) * G.bump(0.05 + 0.9 * t, 0.28) * (1 - 0.22 * t)
-
-    def pocket_off(y, z):
-        v = (np.asarray(z, float) - spz0) / sph
-        u = (np.asarray(y, float) - spy) / sp_w(np.clip(v, 0, 1)) + 0.5
-        inside = (u >= 0) & (u <= 1) & (v >= 0) & (v <= 1)
-        return np.where(inside, sp_thick(np.clip(u, 0, 1), np.clip(v, 0, 1)), 0.0)
-
-    pockets, pshards = [], []
-    sh_t = p["shard_thick"]
-    SH04 = Polygon([(0, 0), (175, 0), (175, 120), (60, 200), (0, 160)])
-    for s in (-1, 1):
-        xs = s * W / 2
-
-        def surf(u, v, xs=xs):
-            return np.stack([np.full(np.shape(u), xs), spy + (u - 0.5) * sp_w(v), spz0 + sph * v], -1)
-
-        def nrm(u, v, s=s):
-            return np.broadcast_to(np.array([s, 0, 0.0]), np.shape(u) + (3,))
-        pockets.append(G.patch_shell(surf, nrm, (0, 1), (0, 1), sp_thick, inset=2.0, nu=40, nv=44))
-        uu = np.linspace(0, 1, 40)
-        rim = surf(uu, np.ones_like(uu)) + np.array([s, 0, 0]) * (sp_thick(uu, np.ones_like(uu)) + 1)[:, None]
-        pockets.append(G.tube(rim, 3.2, n=10, tile=G.TILE_MM))
-        clip = Polygon([(spy - swb / 2 + 8, spz0 + 6), (spy + swb / 2 - 8, spz0 + 6),
-                        (spy + swt / 2 - 8, spz0 + sph - 10), (spy - swt / 2 + 8, spz0 + sph - 10)])
-        sh4 = sh_translate(SH04, spy + swb / 2 - 175 - 8, spz0 + 6).intersection(clip)
-
-        def sh_surf(y, z, s=s, xs=xs):
-            v = (z - spz0) / sph
-            u = (y - spy) / sp_w(v) + 0.5
-            return np.stack([xs + s * sp_thick(u, v), y, z], -1)
-
-        def sh_nrm(y, z, s=s, f=sh_surf):
-            h = 0.5
-            a = f(y + h, z) - f(y - h, z)
-            b = f(y, z + h) - f(y, z - h)
-            n = np.cross(a, b)
+        def band(side, s, y, lift=0.0):
+            s = np.asarray(s, float)
+            x = np.interp(s, s_r, P_r[:, 0])
+            z = np.interp(s, s_r, P_r[:, 1])
+            nx = np.interp(s, s_r, N_r[:, 0])
+            nz = np.interp(s, s_r, N_r[:, 1])
+            n = np.stack([side * nx, np.zeros_like(nx), nz], -1)
             n /= np.linalg.norm(n, axis=-1, keepdims=True)
-            return n * np.sign(n[..., :1] * s)
-        pshards.append(G.conformal_plate(sh4, sh_surf, sh_nrm, thick=sh_t, lift=0.4, max_edge=10))
-    parts.append(Part("side_pockets", G.concat(pockets), "pocket", "bag", modes=BAGM, explode=(0, 260, 0), haul=HAUL,
-                      label="Bellowed side pockets (2 x 3.99 L)"))
-    side_pocket_vol = G.volume_mm3(pockets[0]) / 1e6
+            P = np.stack([side * x, np.broadcast_to(y, x.shape), z], -1)
+            return P + n * lift, n
 
-    # ------------------------------------------------------------------ camo shards on the bag
-    shards = list(pshards)
-    face_clip = Polygon(G.outline_xz(W, Hb, bz0, Rb, p["bag_top_radius"], inset=re_ + 1)[0])
+        def s_at_z(z):                              # right side wall, above the corner arc
+            return s_corner0 + Rb * np.pi / 2 + (np.asarray(z, float) - (bz0 + Rb))
 
-    def face_surf(x, z):
-        return np.stack([x, np.full(np.shape(x), by1), z], -1)
-
-    def face_n(x, z):
-        return np.broadcast_to(np.array([0, 1.0, 0]), np.shape(x) + (3,))
-    SH02 = Polygon([(0, 0), (90, 0), (260, 300), (250, 430), (170, 430), (0, 120)])
-    sh2 = sh_translate(SH02, -W / 2 + 80, bz1 - 430 - 6).intersection(face_clip)
-    shards.append(G.conformal_plate(sh2, face_surf, face_n, thick=sh_t, lift=0.4, max_edge=40))
-    SH01 = Polygon([(0, 0), (230, 0), (300, 70), (210, 150), (95, 260), (0, 190)])
-    wrap = 120.0
-    for s in (-1, 1):
-        # outer-face part: px >= wrap -> x = s * (W/2 + wrap - px)
-        fpart = SH01.intersection(box(wrap, -1, 400, 400))
-        fpart = sh_translate(fpart, -(W / 2 + wrap), bz0)
-        fpart = sh_scale(fpart, xfact=-s, yfact=1, origin=(0, 0))
-        fpart = fpart.intersection(face_clip)
-        if not fpart.is_empty:
-            shards.append(G.conformal_plate(fpart, face_surf, face_n, thick=sh_t, lift=0.4, max_edge=20))
-        # gusset part: px < wrap -> y = by1 - wrap + px ; arc length from the corner start
-        gpart = SH01.intersection(box(-1, -1, wrap - re_ - 1, 400))
-        if not gpart.is_empty:
-            shards.append(G.conformal_plate(
-                gpart, lambda px, pz, s=s: band(s, s_corner0 + pz, by1 - wrap + px, 0)[0],
-                lambda px, pz, s=s: band(s, s_corner0 + pz, by1 - wrap + px, 0)[1],
-                thick=sh_t, lift=0.4, max_edge=10))
-    parts.append(Part("bag_shards", G.concat(shards), "camo", "bag", modes=BAGM, explode=BE, haul=HAUL,
-                      label="Camo shard reinforcements SH-01/02/04"))
-
-    # bow / cam boot (TPU) low on the outer face + Hypalon lash tabs
-    def boot_surf(u, v):
-        return np.stack([u, np.full(np.shape(u), by1), v], -1)
-    boot = G.patch_shell(boot_surf, face_n, (-110, 110), (bz0 + 20, bz0 + 170),
-                         lambda s, t: 2 + 12 * G.bump(s, 0.25) * np.clip(t * 1.4, 0, 1) ** 0.5 * G.bump(0.5 + 0.5 * t, 0.2),
-                         inset=1.5, nu=30, nv=24)
-    tabs = []
-    for (tx, tz) in ((-40, 470), (40, 560), (110, 660), (150, 760), (-150, 760), (-150, 470)):
-        tabs.append(_block([tx, by1 + 2.0 + sh_t, tz], (26, 4.0, 12), e=0.2))
-    parts.append(Part("bag_boot_tabs", G.concat([boot] + tabs), "tpu", "bag", modes=BAGM, explode=(0, 300, 0),
-                      haul=HAUL, label="Bow/cam boot + Hypalon lash tabs"))
-
-    # ------------------------------------------------------------------ compression straps (25 mm, 3 per side)
-    straps, buckles = [], []
-    for zc in p["compression_z"]:
-        in_boot = abs(zc - (bz0 + 95)) < 75
+        # bottom (TPU 840D): band over the bottom edge + both corner arcs
+        s_end = s_corner0 + Rb * np.pi / 2 + 12
+        bottom = []
         for s in (-1, 1):
-            yy = np.linspace(by0 + 14, by1 - re_, 40)
-            off = pocket_off(yy, zc) + 2.0
-            side_pts = np.column_stack([s * (W / 2 + off), yy, np.full_like(yy, zc)])
-            side_n = np.tile([s, 0, 0.0], (len(yy), 1))
-            ang = np.linspace(0, np.pi / 2, 6)
-            corner = np.column_stack([s * (W / 2 - re_ + (re_ + 2) * np.cos(ang)), by1 - re_ + (re_ + 2) * np.sin(ang),
-                                      np.full_like(ang, zc)])
-            corner_n = np.column_stack([s * np.cos(ang), np.sin(ang), np.zeros_like(ang)])
-            xx = np.linspace(W / 2 - re_, 22, 30)
-            face_pts = np.column_stack([s * xx, np.full_like(xx, by1 + 2.0 + sh_t + (13 if in_boot else 0)),
-                                        np.full_like(xx, zc)])
-            P = np.vstack([side_pts, corner[1:-1], face_pts])
-            Nn = np.vstack([side_n, corner_n[1:-1], np.tile([0, 1, 0.0], (len(xx), 1))])
-            straps.append(G.ribbon(P, 25.0, 2.4, Nn, step=8))
-        yb = by1 + 5.5 + sh_t + (13 if in_boot else 0)
-        buckles.append(G.superellipsoid([0, yb, zc], (26, 5, 16), 0.3, 0.3, nu=24, nv=12))
-    parts.append(Part("compression_straps", G.concat(straps), "webbing", "bag", modes=BAGM, explode=(0, 300, 0),
-                      haul=HAUL, label="Compression straps (3 x 25 mm per side)"))
-    parts.append(Part("buckles", G.concat(buckles), "hardware", "bag", modes=BAGM, explode=(0, 300, 0), haul=HAUL))
+            poly_b = box(0, by0 + re_, s_end, by1 - re_)
+            bottom.append(G.conformal_plate(poly_b, lambda u, v, s=s: band(s, u, v)[0], lambda u, v, s=s: band(s, u, v)[1],
+                                            thick=1.0, lift=0.3, max_edge=14))
+        parts.append(Part("bag_bottom", G.concat(bottom), "tpu", "bag", modes=BAGM, explode=(0, 260, -40), haul=HAUL,
+                          label="Bottom (TPU 840D)"))
+        # seam piping (frame-side and outer-face panel edges) + full-length right side zip garage
+        pip = []
+        for yy, sgn_y in ((by0 + 2.9, -1), (by1 - 2.9, 1)):
+            pp, nn = G.outline_xz(W, Hb, bz0, Rb, p["bag_top_radius"], inset=2.9, n_arc=16, n_edge=30)
+            ring = np.column_stack([pp[:, 0] + nn[:, 0] * 2.4, np.full(len(pp), yy + sgn_y * 2.4), pp[:, 1] + nn[:, 1] * 2.4])
+            pip.append(G.tube(np.vstack([ring, ring[:1]]), 2.6, n=10, tile=G.TILE_MM, caps=False))
+        sz = np.linspace(s_at_z(bz0 + Rb + 30), s_at_z(bz1 - 8), 120)
+        Pz, Nz = band(1, sz, by0 + 160, lift=1.2)
+        pip.append(G.ribbon(Pz, 20.0, 2.6, Nz, step=8))
+        parts.append(Part("bag_trim", G.concat(pip), "trim", "bag", modes=BAGM, explode=BE, haul=HAUL,
+                          label="Piping + side zip garage"))
 
-    # ------------------------------------------------------------------ lid
-    lg = g["lid"]
-    lw_, ld_ = lg["footprint"]
-    lh, lr = lg["height"], lg["corner_radius"]
-    lz0, lyc = lg["position"]["z_bottom"], lg["position"]["y_center"]
-    ler = p["lid_edge_radius"]
-    zs_l, ins = [], []
-    for k in range(8):
-        ph_ = np.pi / 2 * k / 7
-        zs_l.append(lz0 + 10 * (1 - np.cos(ph_)))
-        ins.append(10 * (1 - np.sin(ph_)))
-    for t in np.linspace(0, 1, 6)[1:-1]:
-        zs_l.append(lz0 + 10 + (lh - 10 - ler) * t)
-        ins.append(0.0)
-    for k in range(10, -1, -1):
-        ph_ = np.pi / 2 * k / 10
-        zs_l.append(lz0 + lh - ler * (1 - np.cos(ph_)))
-        ins.append(ler * (1 - np.sin(ph_)))
-    rings = []
-    for z, i in zip(zs_l, ins):
-        pp, _ = G.outline_xz(lw_, ld_, lyc - ld_ / 2, lr, lr, inset=i, n_arc=12, n_edge=20)
-        rings.append(np.column_stack([pp[:, 0], pp[:, 1], np.full(len(pp), z)]))
-    lid = G.loft(np.array(rings), cap_start=True, cap_end=True)
-    lid_vol = G.volume_mm3(lid) / 1e6
-    LE = (0.0, 280.0, 190.0)
-    parts.append(Part("lid", lid, "body", "bag", modes=BAGM, explode=LE, haul=HAUL, label="Lid (8.3 L)"))
-    top_clip = Polygon(G.outline_xz(lw_, ld_, lyc - ld_ / 2, lr, lr, inset=ler + 2)[0])
-    SH03 = Polygon([(0, 0), (150, 0), (300, 90), (300, 200), (120, 200), (0, 90)])
-    sh3 = sh_translate(SH03, -150, lyc - 100).intersection(top_clip)
-    lid_sh = G.conformal_plate(sh3, lambda x, y: np.stack([x, y, np.full(np.shape(x), lz0 + lh)], -1),
-                               lambda x, y: np.broadcast_to(np.array([0, 0, 1.0]), np.shape(x) + (3,)),
-                               thick=sh_t, lift=0.3, max_edge=40)
-    parts.append(Part("lid_shard", lid_sh, "camo", "bag", modes=BAGM, explode=LE, haul=HAUL, label="Lid shard SH-03"))
-    ltrim = []
-    pp, nn = G.outline_xz(lw_, ld_, lyc - ld_ / 2, lr, lr, inset=0)
-    ring = np.column_stack([pp[:, 0] + nn[:, 0] * 1.5, pp[:, 1] + nn[:, 1] * 1.5, np.full(len(pp), lz0 + 10)])
-    ltrim.append(G.tube(np.vstack([ring, ring[:1]]), 2.8, n=10, tile=G.TILE_MM, caps=False))
-    zx = np.linspace(-150 + lr, 150 - lr, 30)
-    ltrim.append(G.ribbon(np.column_stack([zx, np.full_like(zx, lyc + ld_ / 2 + 1.3), np.full_like(zx, lz0 + 40)]),
-                          9.0, 2.6, np.array([0, 1.0, 0]), step=8))
-    ltrim.append(_block([95, lyc + ld_ / 2 + 5, lz0 + 30], (8, 5, 26), e=0.4))
-    for s in (-1, 1):   # lid straps down to the bag outer face
-        zz = np.linspace(lz0 + lh - ler, lz0 - 90, 10)
-        ltrim.append(G.ribbon(np.column_stack([np.full_like(zz, s * 95), np.full_like(zz, lyc + ld_ / 2 + 1.4), zz]),
-                              20.0, 2.2, np.array([0, 1.0, 0]), step=8))
-    parts.append(Part("lid_trim", G.concat(ltrim), "trim", "bag", modes=BAGM, explode=LE, haul=HAUL))
+        # ------------------------------------------------------------------ side pockets (bellowed)
+        spg = g["side_pockets"]
+        swb, swt, sph, bell = spg["face_bottom_w"], spg["face_top_w"], spg["height"], spg["bellows"]
+        spz0, spy = spg["position"]["z_bottom"], spg["position"]["y_center"]
 
-    # ------------------------------------------------------------------ load shelf
-    sg = g["load_shelf"]
-    sw_, sd_ = sg["floor_w_x"], sg["floor_d_y"]
-    shz, shy = sg["z"], sg["y_from"]
-    spoly = box(-sw_ / 2, 0, sw_ / 2, sd_).buffer(-14).buffer(14, quad_segs=10)
-    shelf = G.plate(spoly, [0, shy, shz + 3], [1, 0, 0], [0, 1, 0], 6.0, tile=G.TILE_MM)
-    parts.append(Part("load_shelf", shelf, "tpu", "shelf", explode=(0, 60, -90), label="Load (meat) shelf 270 x 260"))
+        def sp_w(v):
+            return swb + (swt - swb) * v
 
-    # ------------------------------------------------------------------ haul: quarter + straps + load wings
-    q = p["quarter"]
-    qz0 = shz + 6.5
-    qy0 = shy + 6
-    qyc = qy0 + q["depth"] / 2
-    qrings, qinfo = [], []
-    for f in np.linspace(0, 1, 36):
-        z = qz0 + q["height"] * f
-        taper = 1 - 0.45 * f ** 1.3
-        bul = 1 + 0.10 * np.sin(np.pi * min(f * 1.6, 1))
-        rr = np.sqrt(max(1 - ((f - 0.5) / 0.5) ** 10, 0.05))
-        a = max(q["width"] / 2 * taper * bul * rr, 18)
-        b = max(q["depth"] / 2 * (1 - 0.25 * f) * bul * rr, 14)
-        cyy = qyc - (q["depth"] / 2 - b)
-        qrings.append(G.superellipse_ring(a, b, 2.3, 3.4, M=64, cy=cyy, z=z))
-        qinfo.append((z, a, b, cyy))
-    quarter = G.loft(np.array(qrings), cap_start=True, cap_end=True)
-    qtop = qz0 + q["height"]
-    bc = np.array([14, qyc - 20, qtop - 30])
-    bone = G.concat([G.capsule_between(bc, bc + [4, 6, 110], 20, 17),
-                     G.superellipsoid(bc + [4, 6, 124], (28, 24, 22), 0.8, 0.8)])
-    QE = (0.0, 120.0, 0.0)
-    parts.append(Part("quarter_proxy", quarter, "game_bag", "haul", modes=HAULM, explode=QE,
-                      label="Bone-in elk hindquarter proxy in a game bag"))
-    parts.append(Part("quarter_bone", bone, "bone", "haul", modes=HAULM, explode=QE))
-    qinfo = np.array(qinfo)
+        def sp_thick(s, t):
+            return 3.0 + bell * G.bump(s, 0.32) * G.bump(0.05 + 0.9 * t, 0.28) * (1 - 0.22 * t)
 
-    def q_x(y, z):
-        a = np.interp(z, qinfo[:, 0], qinfo[:, 1])
-        b = np.interp(z, qinfo[:, 0], qinfo[:, 2])
-        c = np.interp(z, qinfo[:, 0], qinfo[:, 3])
-        u = np.clip(np.abs(y - c) / b, 0, 0.999)
-        n = np.where(y > c, 2.3, 3.4)
-        return a * (1 - u ** n) ** (1 / n)
+        def pocket_off(y, z):
+            v = (np.asarray(z, float) - spz0) / sph
+            u = (np.asarray(y, float) - spy) / sp_w(np.clip(v, 0, 1)) + 0.5
+            inside = (u >= 0) & (u <= 1) & (v >= 0) & (v <= 1)
+            return np.where(inside, sp_thick(np.clip(u, 0, 1), np.clip(v, 0, 1)), 0.0)
 
-    # shelf straps: aft shelf corners -> shelf_strap_anchor_fixed (mid-bar node), over the quarter sides
-    ss = []
-    anc = np.array(hp["shelf_strap_anchor_fixed_R"], float)
-    for s in (-1, 1):
-        a0 = np.array([s * (sw_ / 2 - 18), shy + sd_ - 14, shz + 7])
-        a1 = _mx(anc, s)
-        pts, nr = [a0], [[s * 0.3, 1, 0.4]]
-        for t in np.linspace(0.12, 0.9, 9):
-            y = a0[1] + (a1[1] - a0[1]) * t
-            z = a0[2] + (a1[2] - a0[2]) * t
-            x = max(float(q_x(y, z)) + 2.5, abs(a0[0] + (a1[0] - a0[0]) * t))
-            pts.append([s * x, y, z])
+        pockets, pshards = [], []
+        sh_t = p["shard_thick"]
+        SH04 = Polygon([(0, 0), (175, 0), (175, 120), (60, 200), (0, 160)])
+        for s in (-1, 1):
+            xs = s * W / 2
+
+            def surf(u, v, xs=xs):
+                return np.stack([np.full(np.shape(u), xs), spy + (u - 0.5) * sp_w(v), spz0 + sph * v], -1)
+
+            def nrm(u, v, s=s):
+                return np.broadcast_to(np.array([s, 0, 0.0]), np.shape(u) + (3,))
+            pockets.append(G.patch_shell(surf, nrm, (0, 1), (0, 1), sp_thick, inset=2.0, nu=40, nv=44))
+            uu = np.linspace(0, 1, 40)
+            rim = surf(uu, np.ones_like(uu)) + np.array([s, 0, 0]) * (sp_thick(uu, np.ones_like(uu)) + 1)[:, None]
+            pockets.append(G.tube(rim, 3.2, n=10, tile=G.TILE_MM))
+            clip = Polygon([(spy - swb / 2 + 8, spz0 + 6), (spy + swb / 2 - 8, spz0 + 6),
+                            (spy + swt / 2 - 8, spz0 + sph - 10), (spy - swt / 2 + 8, spz0 + sph - 10)])
+            sh4 = sh_translate(SH04, spy + swb / 2 - 175 - 8, spz0 + 6).intersection(clip)
+
+            def sh_surf(y, z, s=s, xs=xs):
+                v = (z - spz0) / sph
+                u = (y - spy) / sp_w(v) + 0.5
+                return np.stack([xs + s * sp_thick(u, v), y, z], -1)
+
+            def sh_nrm(y, z, s=s, f=sh_surf):
+                h = 0.5
+                a = f(y + h, z) - f(y - h, z)
+                b = f(y, z + h) - f(y, z - h)
+                n = np.cross(a, b)
+                n /= np.linalg.norm(n, axis=-1, keepdims=True)
+                return n * np.sign(n[..., :1] * s)
+            pshards.append(G.conformal_plate(sh4, sh_surf, sh_nrm, thick=sh_t, lift=0.4, max_edge=10))
+        parts.append(Part("side_pockets", G.concat(pockets), "pocket", "bag", modes=BAGM, explode=(0, 260, 0), haul=HAUL,
+                          label="Bellowed side pockets (2 x 3.99 L)"))
+        side_pocket_vol = G.volume_mm3(pockets[0]) / 1e6
+
+        # ------------------------------------------------------------------ camo shards on the bag
+        shards = list(pshards)
+        face_clip = Polygon(G.outline_xz(W, Hb, bz0, Rb, p["bag_top_radius"], inset=re_ + 1)[0])
+
+        def face_surf(x, z):
+            return np.stack([x, np.full(np.shape(x), by1), z], -1)
+
+        def face_n(x, z):
+            return np.broadcast_to(np.array([0, 1.0, 0]), np.shape(x) + (3,))
+        SH02 = Polygon([(0, 0), (90, 0), (260, 300), (250, 430), (170, 430), (0, 120)])
+        sh2 = sh_translate(SH02, -W / 2 + 80, bz1 - 430 - 6).intersection(face_clip)
+        shards.append(G.conformal_plate(sh2, face_surf, face_n, thick=sh_t, lift=0.4, max_edge=40))
+        SH01 = Polygon([(0, 0), (230, 0), (300, 70), (210, 150), (95, 260), (0, 190)])
+        wrap = 120.0
+        for s in (-1, 1):
+            # outer-face part: px >= wrap -> x = s * (W/2 + wrap - px)
+            fpart = SH01.intersection(box(wrap, -1, 400, 400))
+            fpart = sh_translate(fpart, -(W / 2 + wrap), bz0)
+            fpart = sh_scale(fpart, xfact=-s, yfact=1, origin=(0, 0))
+            fpart = fpart.intersection(face_clip)
+            if not fpart.is_empty:
+                shards.append(G.conformal_plate(fpart, face_surf, face_n, thick=sh_t, lift=0.4, max_edge=20))
+            # gusset part: px < wrap -> y = by1 - wrap + px ; arc length from the corner start
+            gpart = SH01.intersection(box(-1, -1, wrap - re_ - 1, 400))
+            if not gpart.is_empty:
+                shards.append(G.conformal_plate(
+                    gpart, lambda px, pz, s=s: band(s, s_corner0 + pz, by1 - wrap + px, 0)[0],
+                    lambda px, pz, s=s: band(s, s_corner0 + pz, by1 - wrap + px, 0)[1],
+                    thick=sh_t, lift=0.4, max_edge=10))
+        parts.append(Part("bag_shards", G.concat(shards), "camo", "bag", modes=BAGM, explode=BE, haul=HAUL,
+                          label="Camo shard reinforcements SH-01/02/04"))
+
+        # bow / cam boot (TPU) low on the outer face + Hypalon lash tabs
+        def boot_surf(u, v):
+            return np.stack([u, np.full(np.shape(u), by1), v], -1)
+        boot = G.patch_shell(boot_surf, face_n, (-110, 110), (bz0 + 20, bz0 + 170),
+                             lambda s, t: 2 + 12 * G.bump(s, 0.25) * np.clip(t * 1.4, 0, 1) ** 0.5 * G.bump(0.5 + 0.5 * t, 0.2),
+                             inset=1.5, nu=30, nv=24)
+        tabs = []
+        for (tx, tz) in ((-40, 470), (40, 560), (110, 660), (150, 760), (-150, 760), (-150, 470)):
+            tabs.append(_block([tx, by1 + 2.0 + sh_t, tz], (26, 4.0, 12), e=0.2))
+        parts.append(Part("bag_boot_tabs", G.concat([boot] + tabs), "tpu", "bag", modes=BAGM, explode=(0, 300, 0),
+                          haul=HAUL, label="Bow/cam boot + Hypalon lash tabs"))
+
+        # ------------------------------------------------------------------ compression straps (25 mm, 3 per side)
+        straps, buckles = [], []
+        for zc in p["compression_z"]:
+            in_boot = abs(zc - (bz0 + 95)) < 75
+            for s in (-1, 1):
+                yy = np.linspace(by0 + 14, by1 - re_, 40)
+                off = pocket_off(yy, zc) + 2.0
+                side_pts = np.column_stack([s * (W / 2 + off), yy, np.full_like(yy, zc)])
+                side_n = np.tile([s, 0, 0.0], (len(yy), 1))
+                ang = np.linspace(0, np.pi / 2, 6)
+                corner = np.column_stack([s * (W / 2 - re_ + (re_ + 2) * np.cos(ang)), by1 - re_ + (re_ + 2) * np.sin(ang),
+                                          np.full_like(ang, zc)])
+                corner_n = np.column_stack([s * np.cos(ang), np.sin(ang), np.zeros_like(ang)])
+                xx = np.linspace(W / 2 - re_, 22, 30)
+                face_pts = np.column_stack([s * xx, np.full_like(xx, by1 + 2.0 + sh_t + (13 if in_boot else 0)),
+                                            np.full_like(xx, zc)])
+                P = np.vstack([side_pts, corner[1:-1], face_pts])
+                Nn = np.vstack([side_n, corner_n[1:-1], np.tile([0, 1, 0.0], (len(xx), 1))])
+                straps.append(G.ribbon(P, 25.0, 2.4, Nn, step=8))
+            yb = by1 + 5.5 + sh_t + (13 if in_boot else 0)
+            buckles.append(G.superellipsoid([0, yb, zc], (26, 5, 16), 0.3, 0.3, nu=24, nv=12))
+        parts.append(Part("compression_straps", G.concat(straps), "webbing", "bag", modes=BAGM, explode=(0, 300, 0),
+                          haul=HAUL, label="Compression straps (3 x 25 mm per side)"))
+        parts.append(Part("buckles", G.concat(buckles), "hardware", "bag", modes=BAGM, explode=(0, 300, 0), haul=HAUL))
+
+        # ------------------------------------------------------------------ lid
+        lg = g["lid"]
+        lw_, ld_ = lg["footprint"]
+        lh, lr = lg["height"], lg["corner_radius"]
+        lz0, lyc = lg["position"]["z_bottom"], lg["position"]["y_center"]
+        ler = p["lid_edge_radius"]
+        zs_l, ins = [], []
+        for k in range(8):
+            ph_ = np.pi / 2 * k / 7
+            zs_l.append(lz0 + 10 * (1 - np.cos(ph_)))
+            ins.append(10 * (1 - np.sin(ph_)))
+        for t in np.linspace(0, 1, 6)[1:-1]:
+            zs_l.append(lz0 + 10 + (lh - 10 - ler) * t)
+            ins.append(0.0)
+        for k in range(10, -1, -1):
+            ph_ = np.pi / 2 * k / 10
+            zs_l.append(lz0 + lh - ler * (1 - np.cos(ph_)))
+            ins.append(ler * (1 - np.sin(ph_)))
+        rings = []
+        for z, i in zip(zs_l, ins):
+            pp, _ = G.outline_xz(lw_, ld_, lyc - ld_ / 2, lr, lr, inset=i, n_arc=12, n_edge=20)
+            rings.append(np.column_stack([pp[:, 0], pp[:, 1], np.full(len(pp), z)]))
+        lid = G.loft(np.array(rings), cap_start=True, cap_end=True)
+        lid_vol = G.volume_mm3(lid) / 1e6
+        LE = (0.0, 280.0, 190.0)
+        parts.append(Part("lid", lid, "body", "bag", modes=BAGM, explode=LE, haul=HAUL, label="Lid (8.3 L)"))
+        top_clip = Polygon(G.outline_xz(lw_, ld_, lyc - ld_ / 2, lr, lr, inset=ler + 2)[0])
+        SH03 = Polygon([(0, 0), (150, 0), (300, 90), (300, 200), (120, 200), (0, 90)])
+        sh3 = sh_translate(SH03, -150, lyc - 100).intersection(top_clip)
+        lid_sh = G.conformal_plate(sh3, lambda x, y: np.stack([x, y, np.full(np.shape(x), lz0 + lh)], -1),
+                                   lambda x, y: np.broadcast_to(np.array([0, 0, 1.0]), np.shape(x) + (3,)),
+                                   thick=sh_t, lift=0.3, max_edge=40)
+        parts.append(Part("lid_shard", lid_sh, "camo", "bag", modes=BAGM, explode=LE, haul=HAUL, label="Lid shard SH-03"))
+        ltrim = []
+        pp, nn = G.outline_xz(lw_, ld_, lyc - ld_ / 2, lr, lr, inset=0)
+        ring = np.column_stack([pp[:, 0] + nn[:, 0] * 1.5, pp[:, 1] + nn[:, 1] * 1.5, np.full(len(pp), lz0 + 10)])
+        ltrim.append(G.tube(np.vstack([ring, ring[:1]]), 2.8, n=10, tile=G.TILE_MM, caps=False))
+        zx = np.linspace(-150 + lr, 150 - lr, 30)
+        ltrim.append(G.ribbon(np.column_stack([zx, np.full_like(zx, lyc + ld_ / 2 + 1.3), np.full_like(zx, lz0 + 40)]),
+                              9.0, 2.6, np.array([0, 1.0, 0]), step=8))
+        ltrim.append(_block([95, lyc + ld_ / 2 + 5, lz0 + 30], (8, 5, 26), e=0.4))
+        for s in (-1, 1):   # lid straps down to the bag outer face
+            zz = np.linspace(lz0 + lh - ler, lz0 - 90, 10)
+            ltrim.append(G.ribbon(np.column_stack([np.full_like(zz, s * 95), np.full_like(zz, lyc + ld_ / 2 + 1.4), zz]),
+                                  20.0, 2.2, np.array([0, 1.0, 0]), step=8))
+        parts.append(Part("lid_trim", G.concat(ltrim), "trim", "bag", modes=BAGM, explode=LE, haul=HAUL))
+
+        # ------------------------------------------------------------------ load shelf
+        sg = g["load_shelf"]
+        sw_, sd_ = sg["floor_w_x"], sg["floor_d_y"]
+        shz, shy = sg["z"], sg["y_from"]
+        spoly = box(-sw_ / 2, 0, sw_ / 2, sd_).buffer(-14).buffer(14, quad_segs=10)
+        shelf = G.plate(spoly, [0, shy, shz + 3], [1, 0, 0], [0, 1, 0], 6.0, tile=G.TILE_MM)
+        parts.append(Part("load_shelf", shelf, "tpu", "shelf", explode=(0, 60, -90), label="Load (meat) shelf 270 x 260"))
+
+        # ------------------------------------------------------------------ haul: quarter + straps + load wings
+        q = p["quarter"]
+        qz0 = shz + 6.5
+        qy0 = shy + 6
+        qyc = qy0 + q["depth"] / 2
+        qrings, qinfo = [], []
+        for f in np.linspace(0, 1, 36):
+            z = qz0 + q["height"] * f
+            taper = 1 - 0.45 * f ** 1.3
+            bul = 1 + 0.10 * np.sin(np.pi * min(f * 1.6, 1))
+            rr = np.sqrt(max(1 - ((f - 0.5) / 0.5) ** 10, 0.05))
+            a = max(q["width"] / 2 * taper * bul * rr, 18)
+            b = max(q["depth"] / 2 * (1 - 0.25 * f) * bul * rr, 14)
+            cyy = qyc - (q["depth"] / 2 - b)
+            qrings.append(G.superellipse_ring(a, b, 2.3, 3.4, M=64, cy=cyy, z=z))
+            qinfo.append((z, a, b, cyy))
+        quarter = G.loft(np.array(qrings), cap_start=True, cap_end=True)
+        qtop = qz0 + q["height"]
+        bc = np.array([14, qyc - 20, qtop - 30])
+        bone = G.concat([G.capsule_between(bc, bc + [4, 6, 110], 20, 17),
+                         G.superellipsoid(bc + [4, 6, 124], (28, 24, 22), 0.8, 0.8)])
+        QE = (0.0, 120.0, 0.0)
+        parts.append(Part("quarter_proxy", quarter, "game_bag", "haul", modes=HAULM, explode=QE,
+                          label="Bone-in elk hindquarter proxy in a game bag"))
+        parts.append(Part("quarter_bone", bone, "bone", "haul", modes=HAULM, explode=QE))
+        qinfo = np.array(qinfo)
+
+        def q_x(y, z):
+            a = np.interp(z, qinfo[:, 0], qinfo[:, 1])
+            b = np.interp(z, qinfo[:, 0], qinfo[:, 2])
+            c = np.interp(z, qinfo[:, 0], qinfo[:, 3])
+            u = np.clip(np.abs(y - c) / b, 0, 0.999)
+            n = np.where(y > c, 2.3, 3.4)
+            return a * (1 - u ** n) ** (1 / n)
+
+        # shelf straps: aft shelf corners -> shelf_strap_anchor_fixed (mid-bar node), over the quarter sides
+        ss = []
+        anc = np.array(hp["shelf_strap_anchor_fixed_R"], float)
+        for s in (-1, 1):
+            a0 = np.array([s * (sw_ / 2 - 18), shy + sd_ - 14, shz + 7])
+            a1 = _mx(anc, s)
+            pts, nr = [a0], [[s * 0.3, 1, 0.4]]
+            for t in np.linspace(0.12, 0.9, 9):
+                y = a0[1] + (a1[1] - a0[1]) * t
+                z = a0[2] + (a1[2] - a0[2]) * t
+                x = max(float(q_x(y, z)) + 2.5, abs(a0[0] + (a1[0] - a0[0]) * t))
+                pts.append([s * x, y, z])
+                nr.append([s, 0, 0])
+            pts.append(a1 + [s * (rb + 2), 0, 0])
             nr.append([s, 0, 0])
-        pts.append(a1 + [s * (rb + 2), 0, 0])
-        nr.append([s, 0, 0])
-        ss.append(_ribbon_on(pts, nr, 38.0, 2.4, smooth=False))
-    parts.append(Part("shelf_straps", G.concat(ss), "webbing", "haul", modes=HAULM, explode=QE,
-                      label="Shelf straps (38 mm)"))
+            ss.append(_ribbon_on(pts, nr, 38.0, 2.4, smooth=False))
+        parts.append(Part("shelf_straps", G.concat(ss), "webbing", "haul", modes=HAULM, explode=QE,
+                          label="Shelf straps (38 mm)"))
 
-    # load wings: tapered TPU panels hinged on the stay lash points, wrapping the load
-    wg = g["load_wings"]
-    wx = q["width"] / 2 + 8
-    wz0, wz1 = 40.0, 40.0 + wg["length"]
-    wings, wstr_bag, wstr_frame = [], [], []
-    for s in (-1, 1):
-        def wsurf(u, v, s=s):
-            z = wz0 + (wz1 - wz0) * v
-            yspan = wg["root_w"] + (wg["tip_w"] - wg["root_w"]) * v
-            return np.stack([np.full(np.shape(u), s * wx), -4 + yspan * u, z], -1)
+        # load wings: tapered TPU panels hinged on the stay lash points, wrapping the load
+        wg = g["load_wings"]
+        wx = q["width"] / 2 + 8
+        wz0, wz1 = 40.0, 40.0 + wg["length"]
+        wings, wstr_bag, wstr_frame = [], [], []
+        for s in (-1, 1):
+            def wsurf(u, v, s=s):
+                z = wz0 + (wz1 - wz0) * v
+                yspan = wg["root_w"] + (wg["tip_w"] - wg["root_w"]) * v
+                return np.stack([np.full(np.shape(u), s * wx), -4 + yspan * u, z], -1)
 
-        def wn(u, v, s=s):
-            return np.broadcast_to(np.array([s, 0, 0.0]), np.shape(u) + (3,))
-        wings.append(G.patch_shell(wsurf, wn, (0, 1), (0, 1),
-                                   lambda a, b: 1.5 + 2.5 * G.bump(a, 0.05) * G.bump(b, 0.05), inset=1.5, nu=16, nv=30))
-        for zl in (80.0, 250.0, 420.0):
-            la = _mx(hp[f"load_wing_lash_z{int(zl)}_R"], s)
-            wings.append(G.ribbon(np.array([la + [s * (rs + 1), 0, 0], [s * (wx + 2), la[1] + 6, zl]]), 30.0, 3.0,
-                                  np.array([0, -1.0, 0]), step=4))
-            v = (zl - wz0) / (wz1 - wz0)
-            ytip = -4 + wg["root_w"] + (wg["tip_w"] - wg["root_w"]) * v
-            # (a) bag pulled back: along the bag side to the outer face
-            yy = np.linspace(ytip - 10, by1 + pull - re_, 40)
-            ramp = np.clip((yy - ytip) / (by0 + pull - ytip), 0, 1)
-            xo = np.where(yy < by0 + pull, wx + 3 + (W / 2 + 2 - wx - 3) * ramp,
-                          W / 2 + pocket_off(yy - pull, zl) + 3.5)
-            pts = np.column_stack([s * xo, yy, np.full_like(yy, zl)])
-            ang = np.linspace(0, np.pi / 2, 6)[1:-1]
-            cor = np.column_stack([s * (W / 2 - re_ + (re_ + 3.5) * np.cos(ang)), by1 + pull - re_ + (re_ + 3.5) * np.sin(ang),
-                                   np.full_like(ang, zl)])
-            xx = np.linspace(W / 2 - re_, 26, 20)
-            face = np.column_stack([s * xx, np.full_like(xx, by1 + pull + 4.5 + sh_t), np.full_like(xx, zl)])
-            Pw = np.vstack([pts, cor, face])
-            Nw = np.vstack([np.tile([s, 0, 0.0], (len(pts), 1)), np.column_stack([s * np.cos(ang), np.sin(ang), 0 * ang]),
-                            np.tile([0, 1, 0.0], (len(xx), 1))])
-            wstr_bag.append(G.ribbon(Pw, 38.0, 2.6, Nw, step=8))
-            if s > 0:
-                wstr_bag.append(_block([0, by1 + pull + 8 + sh_t, zl], (40, 6, 24), e=0.3))
-                # (b) frame-only: around the quarter's aft face, wing to wing
-                zq = np.clip(zl, qinfo[0, 0] + 5, qinfo[-1, 0] - 5)
-                a_ = np.interp(zq, qinfo[:, 0], qinfo[:, 1])
-                b_ = np.interp(zq, qinfo[:, 0], qinfo[:, 2])
-                c_ = np.interp(zq, qinfo[:, 0], qinfo[:, 3])
-                th_ = np.linspace(0.0, np.pi, 50)
-                cth, sth = np.cos(th_), np.sin(th_)
-                qx = (a_ + 3) * np.sign(cth) * np.abs(cth) ** (2 / 2.3)
-                qy = c_ + (b_ + 3) * np.abs(sth) ** (2 / 2.3)
-                qp = np.column_stack([qx, qy, np.full_like(qx, zl)])
-                qp = qp[qp[:, 1] > ytip - 5]
-                Pq = np.vstack([[[wx + 3, ytip - 10, zl]], qp, [[-(wx + 3), ytip - 10, zl]]])
-                nq = Pq - np.array([0, c_, zl])
-                nq[:, 2] = 0
-                wstr_frame.append(_ribbon_on(Pq, nq, 38.0, 2.6, smooth=False))
-    parts.append(Part("load_wings", G.concat(wings), "tpu", "haul", modes=HAULM, explode=(0, 40, 0),
-                      label="Load wings (TPU 840D, frame-mounted)"))
-    parts.append(Part("wing_straps_bag", G.concat(wstr_bag), "webbing", "haul", modes=("pack_haul",),
-                      explode=(0, 120, 0), label="Wing straps around meat + bag"))
-    parts.append(Part("wing_straps_frame", G.concat(wstr_frame), "webbing", "haul", modes=("frame_haul",),
-                      explode=QE, label="Wing straps around the quarter"))
+            def wn(u, v, s=s):
+                return np.broadcast_to(np.array([s, 0, 0.0]), np.shape(u) + (3,))
+            wings.append(G.patch_shell(wsurf, wn, (0, 1), (0, 1),
+                                       lambda a, b: 1.5 + 2.5 * G.bump(a, 0.05) * G.bump(b, 0.05), inset=1.5, nu=16, nv=30))
+            for zl in (80.0, 250.0, 420.0):
+                la = _mx(hp[f"load_wing_lash_z{int(zl)}_R"], s)
+                wings.append(G.ribbon(np.array([la + [s * (rs + 1), 0, 0], [s * (wx + 2), la[1] + 6, zl]]), 30.0, 3.0,
+                                      np.array([0, -1.0, 0]), step=4))
+                v = (zl - wz0) / (wz1 - wz0)
+                ytip = -4 + wg["root_w"] + (wg["tip_w"] - wg["root_w"]) * v
+                # (a) bag pulled back: along the bag side to the outer face
+                yy = np.linspace(ytip - 10, by1 + pull - re_, 40)
+                ramp = np.clip((yy - ytip) / (by0 + pull - ytip), 0, 1)
+                xo = np.where(yy < by0 + pull, wx + 3 + (W / 2 + 2 - wx - 3) * ramp,
+                              W / 2 + pocket_off(yy - pull, zl) + 3.5)
+                pts = np.column_stack([s * xo, yy, np.full_like(yy, zl)])
+                ang = np.linspace(0, np.pi / 2, 6)[1:-1]
+                cor = np.column_stack([s * (W / 2 - re_ + (re_ + 3.5) * np.cos(ang)), by1 + pull - re_ + (re_ + 3.5) * np.sin(ang),
+                                       np.full_like(ang, zl)])
+                xx = np.linspace(W / 2 - re_, 26, 20)
+                face = np.column_stack([s * xx, np.full_like(xx, by1 + pull + 4.5 + sh_t), np.full_like(xx, zl)])
+                Pw = np.vstack([pts, cor, face])
+                Nw = np.vstack([np.tile([s, 0, 0.0], (len(pts), 1)), np.column_stack([s * np.cos(ang), np.sin(ang), 0 * ang]),
+                                np.tile([0, 1, 0.0], (len(xx), 1))])
+                wstr_bag.append(G.ribbon(Pw, 38.0, 2.6, Nw, step=8))
+                if s > 0:
+                    wstr_bag.append(_block([0, by1 + pull + 8 + sh_t, zl], (40, 6, 24), e=0.3))
+                    # (b) frame-only: around the quarter's aft face, wing to wing
+                    zq = np.clip(zl, qinfo[0, 0] + 5, qinfo[-1, 0] - 5)
+                    a_ = np.interp(zq, qinfo[:, 0], qinfo[:, 1])
+                    b_ = np.interp(zq, qinfo[:, 0], qinfo[:, 2])
+                    c_ = np.interp(zq, qinfo[:, 0], qinfo[:, 3])
+                    th_ = np.linspace(0.0, np.pi, 50)
+                    cth, sth = np.cos(th_), np.sin(th_)
+                    qx = (a_ + 3) * np.sign(cth) * np.abs(cth) ** (2 / 2.3)
+                    qy = c_ + (b_ + 3) * np.abs(sth) ** (2 / 2.3)
+                    qp = np.column_stack([qx, qy, np.full_like(qx, zl)])
+                    qp = qp[qp[:, 1] > ytip - 5]
+                    Pq = np.vstack([[[wx + 3, ytip - 10, zl]], qp, [[-(wx + 3), ytip - 10, zl]]])
+                    nq = Pq - np.array([0, c_, zl])
+                    nq[:, 2] = 0
+                    wstr_frame.append(_ribbon_on(Pq, nq, 38.0, 2.6, smooth=False))
+        parts.append(Part("load_wings", G.concat(wings), "tpu", "haul", modes=HAULM, explode=(0, 40, 0),
+                          label="Load wings (TPU 840D, frame-mounted)"))
+        parts.append(Part("wing_straps_bag", G.concat(wstr_bag), "webbing", "haul", modes=("pack_haul",),
+                          explode=(0, 120, 0), label="Wing straps around meat + bag"))
+        parts.append(Part("wing_straps_frame", G.concat(wstr_frame), "webbing", "haul", modes=("frame_haul",),
+                          explode=QE, label="Wing straps around the quarter"))
+        return lid_vol, side_pocket_vol, pull
+
+    # ------------------------------------------------------------------ main bag
+    if bag_g.get("profile"):                     # v3 SPINE teardrop roll-top (geometry.yaml bag.profile)
+        from .bag_v3 import build_teardrop_bag
+        bparts, bx = build_teardrop_bag(p, g, hp, Part, crown_info, tubes, metrics, _block, _ribbon_on, _mx)
+        parts.extend(bparts)
+        lid_vol, side_pocket_vol, pull = bx["lid_vol"], bx["side_pocket_vol"], bx["pull"]
+    else:                                        # v2 box bag (legacy geometry.yaml)
+        lid_vol, side_pocket_vol, pull = _legacy_box_bag()
+    sh_t = p["shard_thick"]
+
 
     # ------------------------------------------------------------------ hipbelt (size M) on the Ti pivot
     hb = p["hipbelt"]

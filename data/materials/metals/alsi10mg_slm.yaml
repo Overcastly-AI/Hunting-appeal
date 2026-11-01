@@ -1,0 +1,35 @@
+id: alsi10mg_slm
+name: AlSi10Mg, laser powder-bed fusion (SLM/DMLS), stress-relieved
+category: metals
+generic: true
+trade_names:
+- EOS Aluminium AlSi10Mg (reference datasheet)
+supplier_examples:
+- JLC3DP (AlSi10Mg SLM)
+- PCBWay metal 3D printing (AlSi10Mg)
+- Xometry DMLS (AlSi10Mg, instant quote)
+properties:
+  density_kg_m3: 2670
+  youngs_modulus_mpa: 70000
+  shear_modulus_mpa: 26500
+  poisson: 0.33
+  yield_strength_mpa: 230
+  ultimate_strength_mpa: 345
+  yield_strength_design_mpa: 184
+  elongation_pct: 6
+  fatigue_limit_machined_mpa: 110
+  fatigue_limit_asbuilt_mpa: 60
+  min_wall_mm: 0.8
+  thermal_expansion_ppm_c: 21
+confidence: datasheet
+sources:
+- 'EOS Aluminium AlSi10Mg MDS (as-built YS 230 V / 270 H MPa; HCF 110 MPa at 2e7, machined, R=-1); https://eos.info/metal-solutions/metal-materials/data-sheets/mds-eos-aluminium-alsi10mg'
+- 'Granges GPM AlSi10Mg 50 um (minimum YS 184 MPa stress-relieved 300 C/2 h); https://www.granges.com/globalassets/09.-kampanjer/01.-trillium/datasheet_gpm_alsi10mg_50um.pdf'
+- 'AddUp AlSi10Mg MDS (stress-relieved YS 230-232 MPa); https://addupsolutions.com/wp-content/uploads/2023/10/AlSi10Mg-Material-Data-Sheet.pdf'
+cost_usd:
+  value: 1.5
+  per: g
+notes: 'Design yield = Granges minimum stress-relieved value (184 MPa). As-built-surface fatigue
+  ASSUMPTION 60 MPa (~0.55 x machined, same surface-roughness logic as Ti). Galvanic: anodise / glass-bead
+  bondline against carbon, same as 7075 sleeves. Cheaper and lighter per part than Ti but ~4x lower
+  allowable, so lugs come out heavier.'

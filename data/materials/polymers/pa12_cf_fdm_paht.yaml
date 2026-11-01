@@ -1,0 +1,39 @@
+id: pa12_cf_fdm_paht
+name: PAHT-CF (PA12/long-chain PA + carbon fiber) FDM filament, printed and annealed
+category: polymers
+generic: false
+trade_names:
+- Bambu Lab PAHT-CF
+supplier_examples:
+- Bambu Lab store
+- MatterHackers
+properties:
+  density_kg_m3: 1060
+  youngs_modulus_xy_mpa: 3860
+  youngs_modulus_z_mpa: 2180
+  youngs_modulus_mpa: 3860
+  poisson: 0.35
+  tensile_strength_xy_mpa: 88
+  tensile_strength_z_mpa: 47
+  bending_strength_xy_mpa: 140
+  bending_strength_z_mpa: 68
+  elongation_xy_pct: 10.4
+  elongation_z_pct: 5.2
+  heat_deflection_temp_c: 170
+  water_absorption_pct: 0.88
+  drying_temp_c: 80
+  drying_time_hours: 10
+  nozzle_temp_c: 280
+  bed_temp_c: 90
+  chamber_temp_c: 50
+  min_wall_mm: 2.0
+confidence: datasheet
+sources:
+- 'Bambu PAHT-CF Technical Data Sheet V2.0 (XY 88 +/- 7 MPa, Z 64 +/- 3 MPa, E XY 3860 / Z 2180 MPa; dry 80 C 8-12 h; anneal 80-130 C 5-12 h); https://cdn.shopify.com/s/files/1/0380/5149/files/Bambu_PAHT-CF_Technical_Data_Sheet.pdf'
+- 'Bambu PAHT-CF TDS v2 mirror at U Waterloo RPC (XY 92 +/- 7, Z 47 +/- 5 MPa); https://uwaterloo.ca/rapid-prototyping-centre/sites/default/files/uploads/documents/bambu_paht-cf_technical_data_sheet_v2.pdf'
+cost_usd:
+  value: 80
+  per: kg
+notes: 'Design uses the LOWER published Z strength (47 MPa) because two revisions of the same sheet disagree
+  (64 vs 47). Max overhang ~70 deg from vertical per TDS (= 20 deg from horizontal). PA12-based: retains
+  properties wet better than PA6-CF (TDS). Needs hardened nozzle, enclosure (chamber 45-60 C), dry box.'

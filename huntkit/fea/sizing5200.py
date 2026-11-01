@@ -27,8 +27,14 @@ BAG_CASES = ("static_carry", "drop_2p5g", "side_hill_torsion", "single_stay_setd
 CG_BAG = 180.0   # geometry.yaml: bag frame-side panel at y 20 + depth 320 / 2
 
 
-def cases():
+def cases(standard: str = "v1"):
+    if standard == "ls1":
+        from .load_standard import ls1_cases
+        return ls1_cases(CG_BAG)
     return pack5200_cases(**{n: {"cg_aft_mm": CG_BAG} for n in BAG_CASES})
+
+
+V2_KEYS = ("stay_style", "low_bushing", "bushing_contact_deg", "lumbar_flange_mm", "lumbar_padup_t_mm")
 
 
 def leg_for(stay_spec, family="RW45", k=4, min_gap=0.75):
@@ -50,7 +56,10 @@ def params_for(c: dict) -> dict:
         **({"spine_section": make_section(c["spine"])} if isinstance(c["spine"], dict)
            else {"spine_w": c["spine"][0], "spine_t": c["spine"][1]}),
         "bushing_len_mm": c.get("bushing_len", 40.0),
-        "joint": {**adh, "overlap_mm": 30.0, "through_overlap_mm": 40.0, "sleeve_t_mm": st},
+        "joint": {**adh, "overlap_mm": c.get("overlap", 30.0), "through_overlap_mm": c.get("through_overlap", 40.0),
+                  "sleeve_t_mm": st, "sleeve_material": c.get("sleeve_material", "alu_7075_t6")},
+        **{k: c[k] for k in V2_KEYS if k in c},
+        **({"upper_bar_section": make_section(c["ubar"])} if c.get("ubar") else {}),
     }
 
 
@@ -62,16 +71,25 @@ def _desc(spec):
 
 def label(c):
     pl = "pm45" if "pm45" in c["plate"][0] else "QI"
-    return (f"stay {_desc(c['stay'])} | leg {_desc(c['leg'])} | bars {_desc(c['bar'])} | "
-            f"plate {pl} {c['plate'][1]:g} | spine {_spine(c['spine'])} | {c['adhesive']} | "
-            f"sleeve {c.get('sleeve_t', 1.0):g} | bushing {c.get('bushing_len', 40.0):g}")
+    s = (f"stay {_desc(c['stay'])} | leg {_desc(c['leg'])} | bars {_desc(c['bar'])} | "
+         f"plate {pl} {c['plate'][1]:g} | spine {_spine(c['spine'])} | {c['adhesive']} | "
+         f"sleeve {c.get('sleeve_t', 1.0):g} | bushing {c.get('bushing_len', 40.0):g}")
+    if c.get("ubar"):
+        s += f" | upper bar {_desc(c['ubar'])}"
+    if c.get("stay_style") == "straight" or c.get("sleeve_material", "alu_7075_t6") != "alu_7075_t6":
+        s += (f" | {c.get('stay_style', 'segmented')} | {'CF wrap' if c.get('sleeve_material', '').startswith('cfrp') else '7075'}"
+              f" | flange {c.get('lumbar_flange_mm', 0):g} pad {c.get('lumbar_padup_t_mm', 0):g}"
+              f" | contact {c.get('bushing_contact_deg', 0):g} deg | low bush {c.get('low_bushing', 'stay')}")
+    return s
 
 
 def _spine(sp):
     return f"tube {_desc(sp)}" if isinstance(sp, dict) else f"plate {sp[0]:g}x{sp[1]:g}"
 
 
-def evaluate(c: dict, torsos=(15, 19, 23), keep_results: bool = False) -> dict:
+def evaluate(c: dict, torsos=(15, 19, 23), keep_results: bool = False, standard: str | None = None) -> dict:
+    standard = standard or c.get("standard", "v1")
+    peak_req = (lambda req: 1.0) if standard == "ls1" else (lambda req: req)
     worst = {"margin": np.inf}
     per = {}
     retention = {"extension": 0.0, "compression": 0.0, "by_case": {}}
@@ -83,8 +101,11 @@ def evaluate(c: dict, torsos=(15, 19, 23), keep_results: bool = False) -> dict:
         fm = build({**p, "torso_in": t})
         fmp = build({**p, "torso_in": t, "extension_posts": True})
         mass = fm["hardware"]
-        cs = cases()
+        cs = cases(standard)
         st = run_study(fm, [x for x in cs if x.name != "tall_load_posts"])
+        if standard == "ls1":
+            from .load_standard import FATIGUE as LS1F
+            st["fatigue"] = fatigue_screen(st["results"]["static_carry"], st["joints"]["static_carry"], {"g": LS1F["g"]})
         stp = run_study(fmp, [x for x in cs if x.name == "tall_load_posts"])
         results = {**st["results"], **stp["results"]}
         joints = {**st["joints"], **stp["joints"]}
@@ -103,7 +124,7 @@ def evaluate(c: dict, torsos=(15, 19, 23), keep_results: bool = False) -> dict:
                 checks.append((r.buckling_sf / (3.0 * req / 2.0), f"{name}: buckling", "buckling"))
             for j in joints[name]:
                 checks.append((j["sf_avg"] / req, f"{name}: bond avg {j['joint']}/{j['kind']}", "bond_avg"))
-                checks.append((j["sf_peak"] / req, f"{name}: bond peak {j['joint']}/{j['kind']}", "bond_peak"))
+                checks.append((j["sf_peak"] / peak_req(req), f"{name}: bond peak {j['joint']}/{j['kind']}", "bond_peak"))
             for cc in crown_checks(r, model):
                 if cc.get("retention"):
                     v = cc["value"]
@@ -117,7 +138,7 @@ def evaluate(c: dict, torsos=(15, 19, 23), keep_results: bool = False) -> dict:
                     continue
                 checks.append((cc["sf"] / req, f"{name}: crown {cc['check']}", "crown"))
             for pc in plate_checks(r, model):
-                div = 3.0 * req / 2.0 if pc.get("buckling") else req
+                div = 3.0 * req / 2.0 if pc.get("buckling") else (peak_req(req) if "peak" in pc["check"] else req)
                 kind = "plate_buckling" if pc.get("buckling") else ("bond_peak" if "peak" in pc["check"] else "plate")
                 checks.append((pc["sf"] / div, f"{name}: {pc['check']}", kind))
         f = st["fatigue"]
@@ -127,7 +148,7 @@ def evaluate(c: dict, torsos=(15, 19, 23), keep_results: bool = False) -> dict:
         for j in f["joints"]:
             checks.append((j["sf"], f"fatigue bond {j['joint']}", "fatigue"))
         for mrg, what, kind in checks:
-            case = what.split(":")[0]
+            case = "fatigue" if kind == "fatigue" else what.split(":")[0]
             per[(case, t)] = min(per.get((case, t), np.inf), mrg)
             per[kind] = min(per.get(kind, np.inf), mrg)
             if mrg < worst["margin"]:
@@ -135,7 +156,7 @@ def evaluate(c: dict, torsos=(15, 19, 23), keep_results: bool = False) -> dict:
     out = {"cand": c, "margin": worst["margin"], "governing": worst, "per_check": per,
            "stay_margin": stay_margin, "mass_g": mass["total_g"], "tubes_g": mass["tubes_g"],
            "hubs_g": mass["hubs_g"], "mass_items": mass["items"], "feasible": worst["margin"] >= 1.0,
-           "label": label(c), "retention": retention}
+           "label": label(c), "retention": retention, "standard": standard}
     if keep_results:
         out["kept"] = kept
     return out

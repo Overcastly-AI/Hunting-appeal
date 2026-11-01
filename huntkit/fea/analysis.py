@@ -55,6 +55,12 @@ def fatigue_screen(static_result, joints_static=None, cfg=None) -> dict:
 
 
 def run_study(frame_model: dict, cases: list[LoadCase] | None = None, label: str | None = None) -> dict:
+    ls1 = cases is None and frame_model.get("topology") == "pack5200_crown"
+    if ls1:
+        # Pack 5200 frames are judged against HA-LS-1 (designs/pack_5200/analysis/load_standard.md);
+        # the extension-post case needs the posts model, so it is left to the sizing.
+        from .load_standard import FATIGUE as LS1_FATIGUE, ls1_cases
+        cases = [c for c in ls1_cases() if c.name != "tall_load_posts"]
     cases = cases or pack_standard()
     results, joints = {}, {}
     for c in cases:
@@ -63,7 +69,8 @@ def run_study(frame_model: dict, cases: list[LoadCase] | None = None, label: str
         joints[c.name] = check_frame_joints(r, frame_model.get("joints", []))
     fat = None
     if "static_carry" in results:
-        fat = fatigue_screen(results["static_carry"], joints.get("static_carry"))
+        fat = fatigue_screen(results["static_carry"], joints.get("static_carry"),
+                             {"g": LS1_FATIGUE["g"]} if ls1 else None)
     return {"label": label or frame_model.get("name", "frame"), "frame": frame_model,
             "results": results, "joints": joints, "fatigue": fat}
 
@@ -81,6 +88,6 @@ def summarize(study: dict) -> list[dict]:
                      "joint_peak_sf": jmin["sf_peak"] if jmin else np.inf,
                      "joint": jmin["joint"] if jmin else "",
                      "pass": (r.min_sf >= req and (not jmin or jmin["sf_avg"] >= req)
-                              and (r.buckling_sf >= 3.0)),
+                              and (r.buckling_sf >= 3.0 * req / 2.0)),
                      "hip_fraction": r.meta.get("hip_fraction")})
     return rows

@@ -1,0 +1,47 @@
+id: ti_6al_4v_slm
+name: Ti-6Al-4V, laser powder-bed fusion (SLM/DMLS), stress-relieved + HIP
+category: metals
+generic: true
+trade_names: []
+supplier_examples:
+- JLC3DP (Titanium TC4 SLM)
+- PCBWay metal 3D printing (TC4)
+- Xometry DMLS (Titanium Grade 5)
+properties:
+  density_kg_m3: 4430
+  youngs_modulus_mpa: 110000
+  shear_modulus_mpa: 42000
+  poisson: 0.34
+  # HIP'd L-PBF typical: YS ~ 930 MPa, UTS ~ 1000 MPa (Mechanical Behavior Assessment of
+  # Ti-6Al-4V ELI by LPBF). Design value = wrought S-basis 827 x 0.95 process knockdown.
+  yield_strength_mpa: 930
+  ultimate_strength_mpa: 1000
+  yield_strength_design_mpa: 785
+  ultimate_strength_design_mpa: 850
+  elongation_pct: 12
+  # Fatigue, R=-1, 1e7 cycles. Machined + HIP ~ 500-600 MPa; AS-BUILT SURFACE (Ra 10-15 um)
+  # ~ 1/3 of machined (preprints 202601.0826: machining raised the limit ~3x; HIP adds 10-20 %).
+  fatigue_limit_machined_hip_mpa: 500
+  fatigue_limit_asbuilt_hip_mpa: 200
+  fatigue_limit_asbuilt_nohip_mpa: 160
+  min_wall_mm: 1.0
+  min_hole_mm: 1.0
+  surface_roughness_asbuilt_um: 12
+  thermal_expansion_ppm_c: 8.6
+confidence: estimate
+sources:
+- 'ASTM F3001-14(2021) Ti-6Al-4V ELI by powder-bed fusion (scope incl. HIP); https://webstore.ansi.org/standards/astm/astmf300114'
+- 'Mechanical Behavior Assessment of Ti-6Al-4V ELI Alloy Produced by Laser Powder Bed Fusion (HIP: YS 928 MPa, UTS 1003 MPa); https://bohrium.dp.tech/paper/arxiv/992967918188757003'
+- 'Preprint 202601.0826 (2026): as-printed fatigue governed by surface roughness, machining ~3x fatigue limit, HIP +10-20 %; https://www.preprints.org/manuscript/202601.0826'
+- 'Scielo Mat. Res.: SLM Ti6Al4V as-built Ra < 15 um vs machined Ra 3-6 um, runout 1e7; https://www.scielo.br/j/mr/a/DSjX7NFDjNktbn3FyRFLwgg/?lang=en'
+- 'JOM 2020 72:1022 Fatigue of AM Ti-6Al-4V: surface condition vs internal defects; https://ui.adsabs.harvard.edu/abs/2020JOM....72.1022S/abstract'
+- data/materials/metals/ti_6al_4v.yaml (wrought basis, MMPDS S-basis 827 MPa)
+cost_usd:
+  value: 12
+  per: g
+notes: 'Design allowables used by huntkit.gendesign: static yield_strength_design_mpa (785), fatigue
+  fatigue_limit_asbuilt_hip_mpa (200) for as-printed lattice/web surfaces, fatigue_limit_machined_hip_mpa
+  only on machined bores. Specify HIP (920 C / 100 MPa / 2 h, ASTM F3001) and stress relief before support
+  removal. Cost ~ $5-20 per cm3 printed (JLC3DP 2026 guide), i.e. ~ $1-4.5 per g of part; the cost_usd
+  value is a conservative small-lot figure incl. HIP and bore machining. Confidence estimate: fatigue values
+  are literature ranges, not coupons from the chosen vendor; earn them with a vendor coupon test.'

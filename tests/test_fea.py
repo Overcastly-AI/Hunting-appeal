@@ -308,3 +308,93 @@ def test_pack5200_model_builds_and_balances():
     r2 = cases["hipbelt_off_abuse"].run(m)
     assert "HP" not in r2.reactions                              # no hipbelt support at all
     assert rel(sum(v[2] for v in r2.reactions.values()), 68 * 9.80665 * 1.5) < 1e-6
+
+
+# ----------------------------------------------------------------------------- frame v2 / HA-LS-1
+def test_ring_moment_matches_roark_point_load():
+    """Thin ring, two opposed point loads F (Roark): M = F R / pi under the load, F R (1/2 - 1/pi) at 90 deg."""
+    from huntkit.fea.rings import ring_moment, ring_moment_coeff
+    assert rel(abs(ring_moment(0.0, 0.0, n_max=4000)), 1 / np.pi) < 0.002
+    assert rel(ring_moment(np.pi / 2, 0.0, n_max=4000), 0.5 - 1 / np.pi) < 0.002
+    # a tiny contact patch converges to the point load; spreading the contact lowers the peak monotonically
+    assert rel(ring_moment_coeff(0.5), 1 / np.pi) < 0.01
+    c = [ring_moment_coeff(a) for a in (15, 30, 60, 90)]
+    assert all(x > y for x, y in zip(c, c[1:]))
+    assert 0.14 < ring_moment_coeff(60) < 0.17
+
+
+def test_flanged_plate_strip_properties():
+    from huntkit.fea.pack5200 import _flanged_strip, _strip
+    w, t = 40.0, 2.0
+    assert rel(_flanged_strip(w, t, 1e-9).Iy, _strip(w, t).Iy) < 1e-6
+    f = 20.0
+    s = _flanged_strip(w, t, f)
+    # hand calc: L-section, web w x t + flange t x f, z measured from the web mid-plane
+    A = w * t + t * f
+    zc = t * f * (t / 2 + f / 2) / A
+    Iy = w * t ** 3 / 12 + w * t * zc ** 2 + t * f ** 3 / 12 + t * f * (t / 2 + f / 2 - zc) ** 2
+    assert rel(s.A, A) < 1e-12 and rel(s.Iy, Iy) < 1e-12
+    assert s.Iy > 50 * _strip(w, t).Iy
+
+
+def _v2_params(**kw):
+    st = composite_tube(22.0, [(45, PLY)] + [(0, PLY)] * 4 + [(45, PLY)])
+    lg = composite_tube(18.0, [(45, PLY)] + [(0, PLY)] * 4 + [(45, PLY)])
+    p = {"topology": "pack5200_crown", "stay_section": st, "leg_section": lg, "bar_section": lg,
+         "stay_style": "straight", "low_bushing": "leg_end", "lumbar_plate_material": "cfrp_plate_quasi_iso",
+         "lumbar_plate_t": 2.0, "lumbar_flange_mm": 20.0, "lumbar_padup_t_mm": 1.5, "bushing_contact_deg": 60.0,
+         "bushing_len_mm": 90.0,
+         "joint": {"adhesive": "adhesive_methacrylate_ma", "adhesive_G_mpa": 300.0, "adhesive_t_mm": 0.5,
+                   "overlap_mm": 30.0, "through_overlap_mm": 40.0, "sleeve_t_mm": 1.0,
+                   "sleeve_material": "cfrp_plate_quasi_iso"}}
+    p.update(kw)
+    return p
+
+
+def test_pack5200_v2_straight_stays_build_and_balance():
+    from huntkit.fea.frames import build_frame
+    from huntkit.fea.load_standard import ls1_cases
+    for torso in (15, 23):
+        m = build_frame({**_v2_params(), "torso_in": torso})
+        assert not m["warnings"], m["warnings"]
+        assert not any(j["id"].startswith("elbow") for j in m["joints"])        # no lumbar elbow
+        # straight stay: every stay node is on the foot -> top line
+        foot, top = np.array(m["stay_points"]["foot"]), np.array(m["stay_points"]["top"])
+        d = (top - foot) / np.linalg.norm(top - foot)
+        for n, xyz in m["nodes"].items():
+            if n.startswith("SR") and n[2:].replace(".", "").isdigit():
+                v = np.array(xyz) - foot
+                assert np.linalg.norm(v - v.dot(d) * d) < 1e-6, n
+        # crown legs parallel (telescoping needs it) and coaxial with the stays
+        uL = np.subtract(m["nodes"]["CLtop"], m["nodes"]["CLbot"])
+        uR = np.subtract(m["nodes"]["CRtop"], m["nodes"]["CRbot"])
+        assert np.linalg.norm(uL / np.linalg.norm(uL) - uR / np.linalg.norm(uR)) < 1e-9
+        # low bushing rides on the leg end
+        assert abs(m["nodes"]["CRbot"][2] - m["bushing_low_z_actual"]) < 1e-9
+    cases = {c.name: c for c in ls1_cases()}
+    r = cases["drop_2p5g"].run(m)
+    assert abs(r.meta["hip_fraction"] - 0.80) < 0.01
+    assert rel(sum(v[2] for v in r.reactions.values()), 68 * 9.80665 * 2.0) < 1e-6   # HA-LS-1: 2.0 g
+
+
+def test_carbon_wraps_lighter_than_7075_sleeves():
+    from huntkit.fea.frames import build_frame
+    cf = build_frame({**_v2_params(), "torso_in": 19})["hardware"]["items"]
+    p = _v2_params()
+    p["joint"] = {**p["joint"], "sleeve_material": "alu_7075_t6"}
+    al = build_frame({**p, "torso_in": 19})["hardware"]["items"]
+    g_cf = cf["carbon wraps (sleeves/hubs) + gussets"]
+    g_al = al["7075 sockets/sleeves + gussets"]
+    assert rel(g_cf - 4 * 6, (g_al - 4 * 6) * 1550 / 2810) < 1e-9                 # same geometry, density ratio
+
+
+def test_ha_ls1_factors():
+    from huntkit.fea.load_cases import pack5200_cases
+    from huntkit.fea.load_standard import RATED_KG, TABLE, buckling_required, describe, ls1_cases
+    eq = {d["case"]: d["equivalent_x_rated"] for d in describe()}
+    assert eq["static_carry"] == 2.0 and eq["stumble_2g"] == pytest.approx(3.0)
+    assert TABLE["overload_haul"][1] == 1.0 and TABLE["hipbelt_off_abuse"][1] == 1.0
+    assert [c.name for c in ls1_cases()] == [c.name for c in pack5200_cases()]
+    c = {x.name: x for x in ls1_cases()}
+    assert c["meat_shelf_heavy_low"].W == pytest.approx(RATED_KG * 9.80665 * 2.0)
+    assert buckling_required(1.5) == pytest.approx(2.25)

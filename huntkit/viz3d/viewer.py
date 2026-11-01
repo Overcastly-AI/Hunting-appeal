@@ -92,7 +92,7 @@ TEMPLATE = r"""<!DOCTYPE html>
 <div id="caption" class="card"><div class="t" id="capT"></div><div id="capS"></div></div>
 <div id="bar" class="card">
   <div class="grp"><button data-mode="pack" class="on">Full pack</button><button data-mode="frame">Frame only</button></div>
-  <div class="grp"><button data-tog="haul">Haul mode</button><button data-tog="explode">Exploded</button><button data-tog="fea">FEA colors</button><button data-tog="mannequin">Mannequin</button><button data-tog="harness" class="on">Harness</button></div>
+  <div class="grp"><button data-tog="haul">Haul mode</button><button data-tog="explode">Exploded</button><button data-tog="fea">FEA colors</button><button data-tog="mannequin">Mannequin</button><button data-tog="harness" class="on">Harness</button><button data-tog="full">Full 85 L</button><button data-tog="lid">Lid</button></div>
   <div class="grp"><button data-torso="15">15 in</button><button data-torso="19" class="on">19 in</button><button data-torso="23">23 in</button><button data-tog="fit">Fit 3 sizes</button></div>
   <div class="grp"><button id="reset">Reset view</button></div>
 </div>
@@ -133,7 +133,7 @@ const rim = new THREE.DirectionalLight(0xffffff, 1.4); rim.position.set(-0.6, 2.
 const ground = new THREE.Mesh(new THREE.CircleGeometry(4, 64), new THREE.ShadowMaterial({opacity:0.22}));
 ground.rotation.x = -Math.PI/2; ground.receiveShadow = true; scene.add(ground);
 
-const state = {mode:'pack', haul:false, explode:false, fea:false, mannequin:false, torso:19, fit:false, harness:true};
+const state = {mode:'pack', haul:false, explode:false, fea:false, mannequin:false, torso:19, fit:false, harness:true, full:false, lid:false};
 let root = null, fitRoots = [], explodeT = 0, needsFrame = 3, fitFloor = 0;
 const P = DATA.parts;
 const M = DATA.metrics;
@@ -206,7 +206,7 @@ function buildStats() {
   ];
   s.innerHTML = chips.map(c => `<span class="chip">${c}</span>`).join('') +
     `<span class="chip warn">Tube sizes: ${M.tube_size_source}</span>`;
-  document.getElementById('subtitle').textContent = `85.2 L meat hauler · telescoping carbon crown · ${DATA.info.colorway ? DATA.info.colorway.name : ''} colorway`;
+  document.getElementById('subtitle').textContent = `v3 SPINE · 85.2 L teardrop roll-top · telescoping carbon crown · ${DATA.info.colorway ? DATA.info.colorway.name : ''} colorway`;
   if (M.fea) document.getElementById('feainfo').innerHTML =
     `Worst: <b>${fmt(M.fea.max_utilization,2)}</b> (${M.fea.critical_case.replace(/_/g,' ')})<br>FEA model: ${M.fea.source}`;
 }
@@ -216,6 +216,9 @@ function visibleFor(name, torso) {
   const p = P[name]; if (!p) return true;
   if (!p.modes.includes(modeKey())) return false;
   if (p.torso != null && Math.abs(p.torso - torso) > 0.01) return false;
+  if (p.variant === 'full' && !state.full) return false;
+  if (p.variant === 'rolled' && state.full) return false;
+  if (p.variant === 'lid' && !state.lid) return false;
   if (p.group === 'mannequin') return state.mannequin && explodeT < 0.02;
   if (p.group === 'fea') return state.fea;
   if (p.group === 'suspension' && !state.harness) return false;
@@ -267,17 +270,18 @@ document.querySelectorAll('[data-tog]').forEach(b => b.onclick = () => {
 document.querySelectorAll('[data-torso]').forEach(b => b.onclick = () => { state.torso = +b.dataset.torso; state.fit = false; apply(); });
 document.getElementById('reset').onclick = () => view(state.fit ? 'fit' : 'hero');
 
-// camera presets: azimuth (deg, 0 = looking at the bag outer face from +Z, -90 = from the wearer's right),
+// camera presets: azimuth (deg, 0 = looking at the bag outer face from +Z, +90 = from the wearer's right),
 // elevation (deg), zoom (1 = fit the visible bounding sphere), optional target override (glTF metres)
 const VIEWS = {
-  hero:    {az:38,  el:14, zoom:1},
-  side:    {az:-90, el:4,  zoom:1},
-  back:    {az:150, el:14, zoom:1},
-  haul:    {az:-58, el:18, zoom:1},
-  exploded:{az:-42, el:16, zoom:1},
-  frame:   {az:218, el:12, zoom:1.0},
-  fea:     {az:160, el:12, zoom:1},
-  fit:     {az:-90, el:4,  zoom:0.95, fov:14},
+  hero:    {az:-38, el:14, zoom:1},
+  side:    {az:90,  el:4,  zoom:1},
+  front:   {az:0,   el:6,  zoom:1},
+  back:    {az:-150, el:14, zoom:1},
+  haul:    {az:58,  el:18, zoom:1},
+  exploded:{az:42,  el:16, zoom:1},
+  frame:   {az:142, el:12, zoom:1.0},
+  fea:     {az:-160, el:12, zoom:1},
+  fit:     {az:90,  el:4,  zoom:0.95, fov:14},
 };
 let currentView = 'hero';
 function visibleBox() {

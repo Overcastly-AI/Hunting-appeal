@@ -1,7 +1,11 @@
 """GLB export (glTF binary, PBR materials + textures) and the viewer part manifest.
 
 Axis change at export: FCS mm (x lateral, y aft, z up) -> glTF metres, +Y up:
-    X = -x/1000, Y = z/1000, Z = y/1000      (a proper rotation, so winding is preserved)
+    X = x/1000, Y = z/1000, Z = y/1000
+The FCS is LEFT-handed as labelled (x+ = wearer's right, y+ aft, z up), so this map is a
+reflection: face winding is reversed at export to keep outward normals. Result: seen from behind
+(camera on +Z), the wearer's right is on screen right, as in the concept sketches. (Before v3 the
+map was X = -x, a proper rotation that rendered x+ on the wearer's LEFT.)
 So the bag's outer face looks toward +Z and the wearer stands at -Z.
 """
 from __future__ import annotations
@@ -18,7 +22,8 @@ from . import geom as G
 from . import textures as TX
 from .params import REPO
 
-M_FCS_TO_GLTF = np.array([[-1.0, 0, 0], [0, 0, 1.0], [0, 1.0, 0]]) / 1000.0
+M_FCS_TO_GLTF = np.array([[1.0, 0, 0], [0, 0, 1.0], [0, 1.0, 0]]) / 1000.0
+FLIP_WINDING = np.linalg.det(M_FCS_TO_GLTF) < 0
 
 
 def to_gltf(v):
@@ -91,7 +96,7 @@ def scene_from_pack(pack, mats: dict) -> trimesh.Scene:
     for prt in pack.parts:
         m = prt.mesh
         v = to_gltf(m.vertices)
-        tm = trimesh.Trimesh(vertices=v, faces=m.faces.copy(), process=False)
+        tm = trimesh.Trimesh(vertices=v, faces=(m.faces[:, ::-1] if FLIP_WINDING else m.faces).copy(), process=False)
         if prt.colors is not None:
             tm.visual = ColorVisuals(tm, vertex_colors=prt.colors)
         else:
@@ -109,6 +114,7 @@ def manifest(pack) -> dict:
     parts = {}
     for prt in pack.parts:
         parts[prt.name] = {"group": prt.group, "torso": prt.torso, "modes": list(prt.modes),
+                           "variant": getattr(prt, "variant", None),
                            "material": prt.material, "label": prt.label,
                            "explode": to_gltf(prt.explode).round(4).tolist(),
                            "haul": to_gltf(prt.haul).round(4).tolist()}
