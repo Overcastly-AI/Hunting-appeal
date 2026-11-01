@@ -1,5 +1,8 @@
 # Generative printed frame - print package (Pack 5200)
 
+Production process, proof load, cost and the print-farm plan: `PRODUCTION.md` in this folder.
+The engineering record is `designs/pack_5200/analysis/production_frame.md`.
+
 Source: `huntkit/gendesign/frame_report.py` from the topology optimization in `designs/pack_5200/analysis/printed_frame_study.md`. Units mm. Frame coordinates: x = wearer's right, y = aft (toward the bag), z = up from the stay feet.
 
 ## Files

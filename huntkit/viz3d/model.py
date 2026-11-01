@@ -216,6 +216,16 @@ def _generative_frame_parts(p: dict) -> list:
     if rods.exists():
         out.append(Part("frame_generative_rods", _planar_uv(trimesh.load(rods, force="mesh")), "carbon", "frame",
                         label="Pultruded carbon rods (hybrid load paths)"))
+    barrier = d / "genframe_barrier.stl"
+    if barrier.exists():
+        meta = {}
+        side = d / "genframe_barrier.json"
+        if side.exists():
+            import json
+            meta = json.loads(side.read_text())
+        out.append(Part("frame_barrier", _planar_uv(trimesh.load(barrier, force="mesh")),
+                        meta.get("material", "printed_cf"), "frame",
+                        label=meta.get("label", "Meat back-pressure barrier")))
     return out
 
 
@@ -958,7 +968,7 @@ def build_pack(params: dict | None = None) -> PackModel:
 
     # ------------------------------------------------------------------ FEA overlay
     fm = None
-    if p["fea"].get("enabled", True):
+    if p["fea"].get("enabled", True) and metrics.get("frame_type") != "generative":
         fea, fm = fea_overlay(p, tubes, g)
         if fea is not None:
             parts.append(Part("frame_fea", fea["mesh"], "fea", "fea", colors=fea["colors"],

@@ -37,6 +37,7 @@ properties:
   creep_modulus_8h_40c_ratio: 0.7
   creep_rupture_8h_40c_ratio: 0.4
   fatigue_1e5_ratio: 0.3
+  modulus_60c_ratio: 0.35
   print_cost_usd_per_g: 0.08
   print_cost_basis: filament only, record cost $80/kg
 confidence: datasheet
@@ -48,4 +49,4 @@ cost_usd:
   per: kg
 notes: 'Design uses the LOWER published Z strength (47 MPa) because two revisions of the same sheet disagree
   (64 vs 47). Max overhang ~70 deg from vertical per TDS (= 20 deg from horizontal). PA12-based: retains
-  properties wet better than PA6-CF (TDS). Needs hardened nozzle, enclosure (chamber 45-60 C), dry box. Frame-study fields (2026-11-01, ASSUMPTIONS, no published creep data): env_knockdown_ratio 0.8, modulus_40c_wet_ratio 0.6, creep_modulus_8h_40c_ratio 0.7, creep_rupture_8h_40c_ratio 0.4, fatigue_1e5_ratio 0.3, Tg ~45 C.'
+  properties wet better than PA6-CF (TDS). Needs hardened nozzle, enclosure (chamber 45-60 C), dry box. Frame-study fields (2026-11-01, ASSUMPTIONS, no published creep data): env_knockdown_ratio 0.8, modulus_40c_wet_ratio 0.6, creep_modulus_8h_40c_ratio 0.7, creep_rupture_8h_40c_ratio 0.4, fatigue_1e5_ratio 0.3, Tg ~45 C. modulus_60c_ratio 0.35 is an ASSUMPTION for a 60 C truck cab (above Tg): the printed-frame study cites NETZSCH DMA on LS-PA12, E prime falling through the glass transition (about 1438 to 500 MPa).'
