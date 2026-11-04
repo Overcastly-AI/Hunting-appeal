@@ -18,10 +18,13 @@ properties:
   brittle_temp_c: -70
   max_service_temp_c: 80
   thickness_typical_mm: 1.6
+  roll_width_mm: 1220
+  usable_width_mm: 1220
 confidence: handbook
 sources:
 - 'Plastics Design Library / MatWeb: HDPE, extruded sheet, generic'
 - McMaster-Carr HDPE sheet specifications
+- "ASSUMPTION (pattern-maker 2026-11-04): 1220 x 2440 mm (4 x 8 ft) HDPE sheet, CNC-routed"
 cost_usd:
   value: 6
   per: kg

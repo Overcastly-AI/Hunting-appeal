@@ -25,9 +25,12 @@ properties:
   hydrolysis_resistance_1to5: 2
   washability_1to5: 4
   stain_odor_resistance_1to5: 3
+  roll_width_mm: 1524
+  usable_width_mm: 1448
 confidence: estimate
 sources:
 - CORDURA 330D brand fabric spec sheets (typical ~5.3 oz/yd2 coated)
+- "ASSUMPTION (pattern-maker 2026-11-04): same 57-60 in class as the cited 500D CORDURA listings (Rockywoods); 330D width not found in a cited listing, confirm with the supplier before cutting"
 cost_usd:
   value: 14
   per: yd

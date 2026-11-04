@@ -20,9 +20,12 @@ properties:
   hydrolysis_resistance_1to5: 4
   washability_1to5: 4
   stain_odor_resistance_1to5: 4
+  roll_width_mm: 1370
+  usable_width_mm: 1350
 confidence: estimate
 sources:
 - Supplier listings for CSM/neoprene-coated nylon (patch and lash-tab material)
+- "ASSUMPTION (pattern-maker 2026-11-04): 54 in typical coated-fabric roll; small parts are laser-cut from offcuts"
 cost_usd:
   value: 35
   per: yd

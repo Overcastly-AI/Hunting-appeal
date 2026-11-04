@@ -23,9 +23,12 @@ properties:
   hydrolysis_resistance_1to5: 2
   washability_1to5: 4
   stain_odor_resistance_1to5: 3
+  roll_width_mm: 1422
+  usable_width_mm: 1397
 confidence: estimate
 sources:
 - Supplier listings for 210D nylon/UHMWPE gridstop fabrics (~4.5 oz/yd2)
+- "ASSUMPTION (pattern-maker 2026-11-04): 56 in, same as the RBTR Challenge ULTRA laminate class; confirm with the supplier"
 cost_usd:
   value: 20
   per: yd

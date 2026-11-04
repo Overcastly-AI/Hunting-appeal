@@ -70,7 +70,8 @@ def draw_piece_pdf(c: canvas.Canvas, p: Piece, to_pt: ToPt, *, scale: float = 1.
     for ln in p.internal_lines:
         dash = {"fold": [6, 2, 1, 2], "stitch": [3, 2]}.get(ln.kind)
         c.setDash(dash) if dash else c.setDash()
-        c.setStrokeColor(blue if ln.kind != "stitch" else grey)
+        c.setStrokeColor({"stitch": grey, "cut_inside": black}.get(ln.kind, blue))
+        c.setLineWidth(0.7 if ln.kind == "cut_inside" else 0.35)
         _poly(c, ln.points, to_pt, ln.closed)
     c.setDash()
     c.setStrokeColor(red)
@@ -162,7 +163,8 @@ def _obstacles(placed: Sequence[Piece]):
 # --------------------------------------------------------------------------------------------
 def export_pdf_tiled(pieces: Iterable[Piece], path: str | Path, paper: str = "letter", *,
                      margin_mm: float = 8.0, overlap_mm: float = 12.0, landscape: bool = False,
-                     title: str = "Pattern", max_row_mm: float | None = None) -> dict:
+                     title: str = "Pattern", max_row_mm: float | None = None,
+                     compress: bool = False) -> dict:
     """Write a true-scale PDF. Returns info: ``pages, cols, rows, single_sheet, page_size_mm``.
 
     Home papers (letter/a4/...): page 1 is the page map (+ instructions), then one page per
@@ -203,7 +205,8 @@ def export_pdf_tiled(pieces: Iterable[Piece], path: str | Path, paper: str = "le
             if not fits and need_w <= ph and need_h <= pw:  # try landscape
                 pw, ph, sheet_h, fits = ph, pw, pw, True
         if fits:
-            c = canvas.Canvas(str(path), pagesize=(pw * MM, sheet_h * MM), pageCompression=0)
+            c = canvas.Canvas(str(path), pagesize=(pw * MM, sheet_h * MM),
+                              pageCompression=int(compress))
             c.setTitle(title)
             off_y = margin_mm + TEST_BOX_MM + 10
             to_pt = lambda x, y: ((x + margin_mm) * MM, (y + off_y) * MM)  # noqa: E731
@@ -229,7 +232,7 @@ def export_pdf_tiled(pieces: Iterable[Piece], path: str | Path, paper: str = "le
     cols = max(1, math.ceil((X1 - overlap_mm) / step_x)) if X1 > pr_w else 1
     rows = max(1, math.ceil((Y1 - overlap_mm) / step_y)) if Y1 > pr_h else 1
     total = rows * cols + 1
-    c = canvas.Canvas(str(path), pagesize=(pw * MM, ph * MM), pageCompression=0)
+    c = canvas.Canvas(str(path), pagesize=(pw * MM, ph * MM), pageCompression=int(compress))
     c.setTitle(title)
 
     def tile_id(r, col):

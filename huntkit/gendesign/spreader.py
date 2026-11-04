@@ -160,6 +160,36 @@ def sandwich_lam(core_id: str, core_t: float, skin=("twill", 1)) -> Laminate:
     return lam_from(sk + [(core_ply(core_id, core_t), 0.0)] + sk[::-1])
 
 
+DOUBLER_X = 76.0                  # doubler zone: |x| >= 76 mm (notch roots at 92, tabs, clip slots)
+DOUBLER_DZ = 14.0                 # and within notch half-height + 14 mm of each cleat station
+
+
+def doubler_mask(exy: np.ndarray) -> np.ndarray:
+    m = np.zeros(exy.shape[:2], bool)
+    hz = FAIRLEAD_HALF_Z + NOTCH_CLEAR
+    for zf in (142.0, 190.0, 330.0):
+        m |= (np.abs(exy[..., 0]) >= DOUBLER_X) & (np.abs(exy[..., 1] - zf) <= hz + DOUBLER_DZ)
+    return m
+
+
+def doubler_zone():
+    """Doubler patches as shapely geometry, clipped to the part (for mass and the drawing)."""
+    from shapely.geometry import box
+    from shapely.ops import unary_union
+    hz = FAIRLEAD_HALF_Z + NOTCH_CLEAR
+    bs = [box(min(s * DOUBLER_X, s * 130.0), zf - hz - DOUBLER_DZ, max(s * DOUBLER_X, s * 130.0), zf + hz + DOUBLER_DZ)
+          for s in (1.0, -1.0) for zf in (142.0, 190.0, 330.0)]
+    return unary_union(bs).intersection(outline_v2())
+
+
+def doubler_lam(opt: "Option") -> Laminate:
+    """Skins become [0 / 45] twill in the doubler zone (one 45 deg ply added on the core side)."""
+    if not opt.core:
+        return opt.lam
+    sk = [(_twill(), 0.0), (_twill(), 45.0)]
+    return lam_from(sk + [(core_ply(opt.core, opt.core_t), 0.0)] + sk[::-1])
+
+
 RESIN_SANDWICH_KG_M2 = 0.06       # ASSUMPTION: extra resin to wet the cut core cells, both faces
 
 
@@ -178,9 +208,10 @@ class Option:
     extra_kg_m2: float = 0.0
     buy: str = ""
     usd_m2: float = 0.0            # material cost for the cost table
-    tubes: bool = True             # bonded edge tubes at the top and bottom (v2 outline)
+    tubes: bool | tuple = True     # bonded edge tubes: True = EDGE_TUBES, False = none, or ((z, OD, ID), ...)
     pucks: bool = True             # bonded pucks onto the branches and the bar (v2 outline)
-    edge_seal: bool = False        # sandwich: sealed core edge (epoxy + microballoon fill)
+    edge_seal: bool = False        # sandwich: sealed core edge (brushed epoxy)
+    doubler: bool = False          # sandwich: one extra 45 deg twill ply per skin around the cleat notches
     results: dict = field(default_factory=dict)
 
     @property
@@ -198,35 +229,34 @@ class Option:
 
 
 def options() -> list[Option]:
-    tw = load("cfrp_t300_3k_woven_epoxy_ply")
-    out = [
+    """Candidates on the v2 outline. All carry the two bonded edge tubes and the pucks unless noted."""
+    def sw(key, name, core, ct, doubler=False, note=""):
+        return Option(key, name, "sandwich", sandwich_lam(core, ct), note, core=core, core_t=ct, skin_t=0.22,
+                      extra_kg_m2=RESIN_SANDWICH_KG_M2, edge_seal=True, doubler=doubler,
+                      buy="vacuum-bagged in-house (twill + PMI), CNC-routed")
+    return [
         Option("qi20", "QI carbon 2.0 mm (current material)", "monolithic", qi_lam(2.0),
-               "the 193 g sheet's laminate on the new outline", buy="bought plate, water-jet", usd_m2=0),
+               "the 193 g sheet's laminate on the new outline", buy="bought plate, water-jet"),
         Option("qi15", "QI carbon 1.5 mm", "monolithic", qi_lam(1.5), buy="bought plate, water-jet"),
         Option("qi10", "QI carbon 1.0 mm", "monolithic", qi_lam(1.0), buy="bought plate, water-jet"),
-        Option("b10", "0/90 span-biased carbon 1.0 mm [0/90/0/0]s", "monolithic",
+        Option("b10", "Span-biased carbon 1.0 mm [0/90/0/0]s", "monolithic",
                Laminate([_t700()] * 8, [0, 90, 0, 0, 0, 0, 90, 0]), "custom press-cured layup"),
         Option("tw10", "Twill carbon 1.0 mm (4 x 200 g 2x2 twill)", "monolithic",
                Laminate([_twill(0.25)] * 4, [0, 45, 45, 0]), "SendCutSend-class stock sheet, 1.02 mm",
                buy="SendCutSend 0.040 in carbon, water-jet"),
         Option("bd10", "QI carbon 1.0 mm + 3 span beads (5 mm)", "beaded", qi_lam(1.0),
                "needs a matched press tool", beads={"pitch": 75.0, "width": 24.0, "depth": 5.0}),
-        Option("pf15", "QI carbon 1.5 mm, graded cut-outs <= 20 mm (SIMP)", "perforated", qi_lam(1.5),
-               "holes sized from a SIMP density field", perforated=True),
-        Option("sw71", "Sandwich: 200 g twill skins on 3 mm ROHACELL 71", "sandwich",
-               sandwich_lam("rohacell_71_igf", 3.0), "vacuum-bagged or bought panel; edges sealed",
-               core="rohacell_71_igf", core_t=3.0, skin_t=0.22, extra_kg_m2=RESIN_SANDWICH_KG_M2),
-        Option("sw71c5", "Sandwich: 200 g twill skins on 5 mm ROHACELL 71", "sandwich",
-               sandwich_lam("rohacell_71_igf", 5.0), "thicker core: half the face stress",
-               core="rohacell_71_igf", core_t=5.0, skin_t=0.22, extra_kg_m2=RESIN_SANDWICH_KG_M2),
-        Option("sw110", "Sandwich: 200 g twill skins on 3 mm ROHACELL 110", "sandwich",
-               sandwich_lam("rohacell_110_igf", 3.0), "denser core for bone crush and core shear",
-               core="rohacell_110_igf", core_t=3.0, skin_t=0.22, extra_kg_m2=RESIN_SANDWICH_KG_M2),
-        Option("g20", "Glass (G10-class) QI 2.0 mm", "monolithic", qi_lam(2.0, _glass()), "cost variant"),
-        Option("g30", "Glass (G10-class) QI 3.0 mm", "monolithic", qi_lam(3.0, _glass()), "cost variant"),
+        sw("sw71c5", "Sandwich: 200 g twill skins on 5 mm ROHACELL 71", "rohacell_71_igf", 5.0),
+        sw("sw110c5", "Sandwich: 200 g twill skins on 5 mm ROHACELL 110", "rohacell_110_igf", 5.0),
+        sw("sw110c3d", "Sandwich: twill / 3 mm ROHACELL 110, notch doublers", "rohacell_110_igf", 3.0, True),
+        sw("sw110c4d", "Sandwich: twill / 4 mm ROHACELL 110, notch doublers", "rohacell_110_igf", 4.0, True),
+        sw("sw110c5d", "Sandwich: twill / 5 mm ROHACELL 110, notch doublers", "rohacell_110_igf", 5.0, True),
+        sw("sw110c6d", "Sandwich: twill / 6 mm ROHACELL 110, notch doublers", "rohacell_110_igf", 6.0, True),
+        Option("g20", "Glass (G10-class) QI 2.0 mm", "monolithic", qi_lam(2.0, _glass()), "cost variant",
+               buy="bought G10 sheet, water-jet"),
+        Option("g30", "Glass (G10-class) QI 3.0 mm", "monolithic", qi_lam(3.0, _glass()), "cost variant",
+               buy="bought G10 sheet, water-jet"),
     ]
-    del tw
-    return out
 
 
 # ============================================================================ geometry
@@ -246,6 +276,7 @@ def branch_x(z):
     return 115.0 - 46.0 * np.sin(np.pi * t)
 
 
+NOTCH_ROOT_R = 6.0                # notch root corner radius (>= 3 t, and the water-jet inside-corner rule)
 BOTTOM_CORNER_R = 8.0             # bottom corners: the z 119 clip tab sits 7 mm above the edge
 
 
@@ -261,9 +292,10 @@ def outline_v2(half_w: float = 121.0, corner_r: float = 20.0, z_lo: float = Z_LO
         for zf in FAIRLEADS_Z:
             if zf + hz < z_lo or zf - hz > Z_HI:
                 continue
-            # U-notch: straight sides, full-round root at x_in (the bag_attachment.md cleat stations)
-            rect = box(min(s * (x_in + hz), s * 140.0), zf - hz, max(s * (x_in + hz), s * 140.0), zf + hz)
-            cuts += [rect, Point(s * (x_in + hz), zf).buffer(hz, 48)]
+            # U-notch, straight sides, NOTCH_ROOT_R root corners: clears the cleat footprint by
+            # NOTCH_CLEAR on all three sides (bag_attachment.md stations)
+            rect = box(min(s * x_in, s * 150.0), zf - hz, max(s * x_in, s * 150.0), zf + hz)
+            cuts.append(rect.buffer(-NOTCH_ROOT_R, join_style=2).buffer(NOTCH_ROOT_R, 32))
     shape = body.difference(unary_union(cuts))
     # outside corners round, inside corners filleted (R5): open then close
     shape = shape.buffer(-5.0, join_style=1).buffer(5.0, join_style=1)
@@ -415,8 +447,12 @@ def build_plate(opt: Option, h: float = 4.0, shape=None, version: str = "v2", ho
         I_bead = t * b["depth"] ** 2 / 8.0 + t ** 3 / 12.0          # per width, shallow arc
         f = I_bead / (t ** 3 / 12.0)
         D[bead, 0, 0] *= f
+    dbl = np.zeros((nx, ny), bool)
+    if opt.doubler and version == "v2":
+        dbl = doubler_mask(exy)
+        D[dbl] = doubler_lam(opt).D
     pl.D = D
-    info = {"shape": shape, "bead": bead, "h": h, "version": version}
+    info = {"shape": shape, "bead": bead, "h": h, "version": version, "doubler": dbl}
     xs, zs, top = frame_top(h, x0, x0 + nx * h, z_lo)
     nxy = pl.node_xy()
     i = np.clip(np.round((nxy[:, 0] - xs[0]) / h).astype(int), 0, len(xs) - 1)
@@ -804,6 +840,9 @@ def _fi_field(opt: Option, pl: GridPlate, info: dict, u: np.ndarray) -> np.ndarr
         M = M.copy()
         M[info["bead"], :, 0] *= red
     fi = laminate_bending_fi(opt.lam, M, KD).max(axis=2)
+    dbl = info.get("doubler")
+    if dbl is not None and dbl.any():
+        fi[dbl] = laminate_bending_fi(doubler_lam(opt), M[dbl], KD).max(axis=1)
     if opt.perforated and info.get("hole_edge") is not None:
         fi = np.where(info["hole_edge"], fi * 1.8, fi)          # Kt bending at a circular hole (Savin)
     fi[~pl.active] = 0.0
@@ -827,19 +866,49 @@ def sandwich_checks(opt: Option, pl: GridPlate, u: np.ndarray, sol: dict, P_bone
     inner = pl.active.copy()
     from scipy import ndimage
     inner = ndimage.binary_erosion(inner, iterations=1)
-    Q_fe = float(np.hypot(Qx, Qy)[inner].max())
+    # resolve the plate shear over the sandwich shear length, as for the crown line load below
+    l_s0 = float(np.sqrt(opt.lam.D[0, 0] / (Gc * d ** 2 / opt.core_t)))
+    k_sm = max(int(round(max(20.0, 2.0 * l_s0) / h)), 1)
+    Qa = np.where(inner, np.hypot(Qx, Qy), 0.0)
+    Qa = ndimage.uniform_filter(Qa, k_sm) / np.maximum(ndimage.uniform_filter(inner.astype(float), k_sm), 1e-9)
+    Q_fe = float(Qa[inner].max())
     Q_patch = P_bone / (np.pi * BONE_D)
-    # stay crown line load: largest contact force per node / node spacing, two sides of the line
+    # Stay crown line load. Penalty contact closes at single nodes, so the raw node force / h is a
+    # mesh artefact. The crown carries a 1 mm EVA rub strip; ASSUMPTION: the line load is resolved
+    # over 20 mm of stay length (sum of crown contact forces per z row, both sides separately,
+    # 20 mm moving window).
     f = sol["spring_force"]
     tags = np.array([s.tag for s in pl.springs])
-    f_stay = float(f[(tags == "stay") | (tags == "rigid")].max(initial=0.0))
-    q_stay = f_stay / h
-    Q_sup = q_stay / 2.0
+    nodes = np.array([s.node for s in pl.springs])
+    nxy = pl.node_xy()
+    crown = (tags == "stay") | (tags == "rigid")
+    zrow = np.round((nxy[nodes, 1] - pl.y0) / h).astype(int)
+    q_stay = 0.0
+    # A sandwich spreads a concentrated reaction by its own core shear over about +-sqrt(D / S)
+    # (Zenkert ch. 5; S = G_c d^2 / c). The Kirchhoff plate has no such length, so the window
+    # is the larger of 20 mm and 2 sqrt(D / S).
+    S_sh = Gc * d ** 2 / opt.core_t
+    l_s = float(np.sqrt(opt.lam.D[0, 0] / S_sh))
+    win = max(int(round(max(20.0, 2.0 * l_s) / h)), 1)
+    for side in (1.0, -1.0):
+        sel = crown & (np.sign(nxy[nodes, 0]) == side) & (np.abs(nxy[nodes, 0]) >= 95.0)
+        prof = np.bincount(zrow[sel], weights=f[sel], minlength=pl.ny + 1)
+        sm = np.convolve(prof, np.ones(win) / win, mode="same") / h
+        q_stay = max(q_stay, float(sm.max(initial=0.0)))
+    Q_sup = q_stay      # the outboard overhang past the crown is short: all the shear is on the inboard side
+    # Plate shear away from the contacts, from the moment gradient on elements one row clear of a support
     Q = max(Q_fe, Q_patch, Q_sup)
     tau = Q / d
     crush_patch = P_bone / (np.pi * BONE_D ** 2 / 4.0)
     b_crown = 8.0      # ASSUMPTION: 1 mm EVA rub strip on the crown spreads the line to >= 8 mm
     crush_crown = q_stay / b_crown
+    # bonded pucks: the force a puck takes from the branch / bar over its own area
+    f_puck = 0.0
+    land = (tags == "branch") | (tags == "bar")
+    for px, pz in (pucks() if opt.pucks else []):
+        sel = land & (np.hypot(nxy[nodes, 0] - px, nxy[nodes, 1] - pz) <= PUCK_D / 2 + 1e-6)
+        f_puck = max(f_puck, float(f[sel].sum()))
+    crush_puck = f_puck / (np.pi * PUCK_D ** 2 / 4.0)
     f_clip = float(np.abs(f[tags == "clip"]).sum()) / max(len(CLIP_Z) * 2, 1)
     crush_clip = f_clip / (CLIP_W * 10.0)
     Mmax = float(np.abs(np.c_[Mx[pl.active], My[pl.active]]).max())
@@ -850,8 +919,11 @@ def sandwich_checks(opt: Option, pl: GridPlate, u: np.ndarray, sol: dict, P_bone
             "crush_patch_mpa": crush_patch, "crush_patch_sf": sc_a / crush_patch,
             "crush_crown_mpa": crush_crown, "crush_crown_sf": sc_a / max(crush_crown, 1e-9),
             "crush_clip_sf": sc_a / max(crush_clip, 1e-9), "face_mpa": s_face,
+            "puck_n": f_puck, "crush_puck_mpa": crush_puck, "crush_puck_sf": sc_a / max(crush_puck, 1e-9),
             "wrinkle_mpa": s_wr, "wrinkle_sf": s_wr / s_face,
-            "sf_min": min(tau_a / tau, sc_a / crush_patch, sc_a / max(crush_crown, 1e-9), s_wr / s_face)}
+            "shear_length_mm": l_s,
+            "sf_min": min(tau_a / tau, sc_a / crush_patch, sc_a / max(crush_crown, 1e-9), s_wr / s_face,
+                          sc_a / max(crush_puck, 1e-9))}
 
 
 def shear_deflection(opt: Option, P: float) -> float:
@@ -914,11 +986,11 @@ def run_case(opt: Option, pl: GridPlate, info: dict, kind: str, bone_xy=None, bo
     return out
 
 
-def evaluate(opt: Option, h: float = 4.0, version: str = "v2", step: float = 24.0, rail=None,
+def evaluate(opt: Option, h: float = 4.0, version: str = "v2", step: float | None = 24.0, rail=None,
              holes_mask=None, shape=None, keep_fields: bool = False, info_extra=None) -> dict:
     """Full check of one option: meat-only, bone map (walking and factored), skin pressure, clearance."""
     pl, info = build_plate(opt, h, shape=shape, version=version, holes_mask=holes_mask,
-                           tubes=None if opt.tubes else (), lands=opt.pucks)
+                           tubes=None if opt.tubes is True else (opt.tubes or ()), lands=opt.pucks)
     if info_extra:
         info.update(info_extra)
     shape = info["shape"]
@@ -929,7 +1001,7 @@ def evaluate(opt: Option, h: float = 4.0, version: str = "v2", step: float = 24.
     # rail indentation for clearance: meat only, and with the worst bone side load
     meat_w = run_case(opt, pl, info, "walk")
     meat_f = run_case(opt, pl, info, "factored")
-    pos = bone_positions(shape, step)
+    pos = bone_positions(shape, step) if step else []
     named = named_positions(version)
     allpos = list(named.values()) + pos
     rows = []
@@ -1005,6 +1077,9 @@ def evaluate(opt: Option, h: float = 4.0, version: str = "v2", step: float = 24.
         res["fittings_g"] = fittings_mass_g(opt.lam.thickness, pucks=opt.pucks)
         if opt.edge_seal:
             res["fittings_g"] += edge_seal_g(shape, opt.lam.thickness)
+        if opt.doubler and opt.core:
+            res["doubler_g"] = float(doubler_zone().area * 2 * _twill().t * _twill().density_kg_m3 / 1e6)
+            res["fittings_g"] += res["doubler_g"]
     else:
         res["fittings_g"] = 4 * M4_SET_G
     res["mass_g"] = res["sheet_g"] + res["tubes_g"] + res["fittings_g"]
@@ -1027,14 +1102,14 @@ def evaluate(opt: Option, h: float = 4.0, version: str = "v2", step: float = 24.
 M4_SET_G = 2.4                    # ASSUMPTION: M4 x 12 stainless button head + nyloc nut + washer
 
 
-EDGE_FILL_KG_M3 = 700.0           # ASSUMPTION: epoxy + glass microballoon edge fill (about 0.7 g/cc)
-EDGE_FILL_DEPTH = 2.0             # mm routed back from the cut edge and filled
+EDGE_COAT_KG_M3 = 1150.0          # brushed laminating epoxy
+EDGE_COAT_T = 0.3                 # ASSUMPTION: two brushed coats, 0.3 mm, over the cut PMI edge
 
 
 def edge_seal_g(shape, t: float) -> float:
-    """Sealed sandwich edge: core routed back EDGE_FILL_DEPTH from every cut edge and filled."""
-    per = float(shape.length)
-    return per * EDGE_FILL_DEPTH * t * EDGE_FILL_KG_M3 / 1e6
+    """Sealed sandwich edge: the cut PMI edge is brushed with epoxy (closed-cell core, so this is an
+    abrasion and grime seal, not a structural closure)."""
+    return float(shape.length) * t * EDGE_COAT_T * EDGE_COAT_KG_M3 / 1e6
 
 
 def fittings_mass_g(t_sheet: float, pucks: bool = True) -> float:
@@ -1046,8 +1121,10 @@ def fittings_mass_g(t_sheet: float, pucks: bool = True) -> float:
         r = float(stay_r(zc)) if zc in CLIP_STANDOFF else r_mid
         clips += 2 * clip_mass_g(clip_profile(r, t_sheet, so), CLIP_W_BY_Z.get(zc, CLIP_W))
     rho = float(load("pa12_cf_fdm_paht").require("density_kg_m3"))
-    # ASSUMPTION: puck heights average 4 mm (gap table in puck_heights, fit to the branch/bar tops)
-    pk = len(_pucks()) * np.pi / 4 * PUCK_D ** 2 * 4.0 * rho / 1e6 if pucks else 0.0
+    pk = 0.0
+    if pucks:
+        hts = [p["height_mm"] for p in puck_table()]
+        pk = float(np.pi / 4 * PUCK_D ** 2 * (np.sum(hts) + 1.0 * len(hts)) * rho / 1e6)   # +1 mm bond flange
     pads = 2 * len(PAD_Z) * CLIP_W * 16.0 * float(stay_r(260.0) - stay_r(119.0)) * rho / 1e6
     return float(clips + pk + pads)
 
@@ -1246,7 +1323,16 @@ def clip_mass_g(prof, width: float) -> float:
     return prof.area * width * float(load(CLIP_MAT).require("density_kg_m3")) / 1e6
 
 
-def puck_heights(opt: Option, h: float = 2.0) -> list[dict]:
+@lru_cache(maxsize=1)
+def _puck_table_cached():
+    return tuple(tuple(sorted(d.items())) for d in puck_heights(None))
+
+
+def puck_table() -> list[dict]:
+    return [dict(t) for t in _puck_table_cached()]
+
+
+def puck_heights(opt: Option | None = None, h: float = 2.0) -> list[dict]:
     """Height of each bonded puck = gap from the sheet's wearer face to the branch / bar top - LAND_FIT."""
     xs, zs, top = frame_top(h, -124.0, 124.0, Z_LO_V2)
     out = []
@@ -1310,3 +1396,8 @@ def write_clip_dxf(path, t_sheet: float) -> dict:
                      "mass_g": clip_mass_g(prof, CLIP_W_BY_Z.get(zc, CLIP_W)), "profile": prof}
     doc.saveas(path)
     return out
+
+
+if __name__ == "__main__":       # pragma: no cover
+    from .spreader_report import run
+    run()

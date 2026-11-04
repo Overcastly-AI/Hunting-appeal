@@ -28,10 +28,13 @@ properties:
   hydrolysis_resistance_1to5: 2
   washability_1to5: 4
   stain_odor_resistance_1to5: 3
+  roll_width_mm: 1524
+  usable_width_mm: 1448
 confidence: estimate
 sources:
 - CORDURA 500D brand fabric spec sheets (typical coated weight 7.0-7.5 oz/yd2)
 - Mil-spec 500D nylon duck family (e.g. MIL-DTL-32439 class) for grab/tear order of magnitude
+- "Rockywoods 500D coated CORDURA listings: 57-60 in (145-153 cm), https://rockywoods.com/products/500-denier-coated-cordura-nylon-fabric (accessed 2026-11-04); usable = 57 in (conservative end)"
 cost_usd:
   value: 15
   per: yd

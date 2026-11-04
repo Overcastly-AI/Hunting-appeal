@@ -57,7 +57,9 @@ def export_svg(pieces: Iterable[Piece], path: str | Path, *, labels: bool = True
         if mark_seam_line:
             g_mark.add(dwg.polygon(flip(p.outline), stroke_dasharray="2,1"))
         for ln in p.internal_lines:
-            g_mark.add(dwg.polyline(flip(ln.points)))
+            g = g_cut if ln.kind == "cut_inside" else g_mark
+            pts = flip(ln.points)
+            g.add(dwg.polygon(pts) if ln.closed else dwg.polyline(pts))
         for seg in arrow(*p.grain_arrow()):
             g_mark.add(dwg.polyline(flip(seg)))
         for d in p.drill_holes:

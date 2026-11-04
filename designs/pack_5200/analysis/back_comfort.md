@@ -1,5 +1,7 @@
 # Back comfort and the smooth frame
 
+> **2026-11-04: the spreader in this file is superseded by `spreader.md` (v2).** On the real branch-frame supports the 208 × 300 × 2.0 mm sheet fails: FPF SF 0.66, fatigue SF 0.38, and the overhanging bottom edge bottoms on the back. Its M4 holes have e/d 1.78 and land on no frame material. The 10.6 kPa and 7.8 mm figures below came from a simply supported plate and should not be used. v2 is a twill / 6 mm ROHACELL 110 sandwich, 154 g. The rail and mesh system is unchanged.
+
 The back system in this file is still the production back system. The frame under it is the branching print in `generative_branch.md`, not the solid ladder and not the carbon-tube ladder. Comfort numbers below did not change.
 
 Owner priority (PR #2): the open window still lets meat, bone ends and lumpy gear push on the back. Comfort outranks mass. Code: `huntkit/gendesign/frame_smooth.py`.

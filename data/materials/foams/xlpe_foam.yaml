@@ -16,10 +16,13 @@ properties:
   water_absorption_pct: 1
   thickness_typical_mm: 6
   service_temp_low_c: -70
+  roll_width_mm: 1000
+  usable_width_mm: 1000
 confidence: estimate
 sources:
 - Sekisui Voltek Minicel L200 typical data (2 lb/ft3 class)
 - ASTM D3575
+- "ASSUMPTION (pattern-maker 2026-11-04): 1000 x 2000 mm XLPE sheet"
 cost_usd:
   value: 15
   per: m2

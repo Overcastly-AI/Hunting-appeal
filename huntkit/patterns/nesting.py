@@ -112,9 +112,10 @@ class Marker:
                 "fabric_area_m2": round(self.fabric_area_m2, 4), "unplaced": self.unplaced}
 
     # ------------------------------------------------------------------ exports
-    def export_pdf(self, path: str | Path, scale: float | None = None) -> Path:
+    def export_pdf(self, path: str | Path, scale: float | None = None,
+                   compress: bool = False) -> Path:
         from .export_marker import marker_pdf
-        return marker_pdf(self, path, scale)
+        return marker_pdf(self, path, scale, compress)
 
     def export_dxf(self, path: str | Path) -> Path:
         from .export_marker import marker_dxf

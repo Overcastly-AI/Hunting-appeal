@@ -24,9 +24,12 @@ properties:
   hydrolysis_resistance_1to5: 2
   washability_1to5: 4
   stain_odor_resistance_1to5: 3
+  roll_width_mm: 1524
+  usable_width_mm: 1473
 confidence: estimate
 sources:
 - RBTR / Extremtextil product listings for 100D Robic ripstop (~2.6-2.8 oz/yd2)
+- "Ripstop by the Roll, 100D ROBIC listing: 60 in incl. selvedge, ~58 in usable, https://ripstopbytheroll.com/products/100d-robic-ripstop-nylon (accessed 2026-11-04)"
 cost_usd:
   value: 16
   per: yd

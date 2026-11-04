@@ -13,19 +13,12 @@ Merged on main:
 - 5.0 lb is still missed, by 833 g. Fairleads are 113 g of that and the under-straps are 122 g. Soft goods, the carbon crown, the spreader and the sleeve around the crown-leg bore are most of the rest
 - Camo: owner's base pattern SVG is uploaded at `designs/apparel/camo/source/owner_base.svg`. `owner_base.yaml` and `designs/apparel/camo/DESIGN.md` still describe the proxy
 
-## Paused again: spreader in progress
-- Started the SPREADER rework, then paused at the owner's request. Partial, untested work is committed:
-  - `docs/research/spreader_research.md` (research)
-  - foam/core material records (`xlpe_foam_l200`, `rohacell_71/110_igf`)
-  - `huntkit/fea/plate_grid.py`
-  - `huntkit/gendesign/spreader.py`
-- Resume by re-launching the structural-fea-engineer spreader task:
-  1. research
-  2. contact check on the XLPE rails, with bone-end loads at center, edge, holes and between rails
-  3. mass cut toward ≤100 g: beads, cutouts with max hole size, layup, sandwich, G10
-  4. manufacture detail: radii, fairlead notches, removable clips, DXF and drawing, cost
-  5. records, viz3d, tests and screenshots
-- Progression image of the whole project so far: `docs/screens/20261102_progression.png`
+## Spreader v2 done (2026-11-04, not committed)
+- Record: `designs/pack_5200/analysis/spreader.md` plus `spreader_results.json`. Code: `huntkit/gendesign/spreader.py` and `spreader_report.py`. Solver: `huntkit/fea/plate_grid.py`. Tests: `tests/test_spreader.py`
+- The current 2.0 mm QI sheet fails on the real frame (FPF 0.66, fatigue 0.38, bottoms at the bottom edge, M4 holes land on nothing)
+- Chosen part: twill / 6 mm ROHACELL 110 sandwich, notch doublers, edge tubes, pucks, 6 clips. **154 g** (−49 g). FPF 1.21, fatigue 1.04, sandwich 1.06, skin 13.0 kPa, air 10.1 / 4.0 mm
+- ≤100 g not reached. Next levers: drop the cleat notches (sheet inboard of the cleats), a bottom bay support from the lumbar struts, or relax the bone-at-notch-root case with a physical test
+- Cut files: `designs/pack_5200/cut/spreader/` (DXF, clip DXF, 1:1 A3 PDF)
 
 ## Merge status (all on main)
 - PR #1 (owner camo SVG), PR #2 (generative branch frame), PR #3 (bag-to-frame attachment + under-straps) are all merged into `main`
@@ -41,7 +34,7 @@ Merged on main:
 
 ## Next
 1. Torso-adjust shoulder yoke: hook-and-loop on a loop-faced fabric skin over the carbon spreader, plus a tightening strap. The run was cancelled before any output
-2. Round the spreader corners and add fairlead notches. Check flex against the 10 mm XLPE rails (bone-end deflection is 7.8 mm)
+2. Spreader v2: build a coupon and run a bone-punch test on a notch root (done in analysis, `analysis/spreader.md`)
 3. Re-solve the z=234 split joint
 4. Proof-test the 1500 N hook and the 1100 N under-strap cam
 5. Decide whether IM1 later gets a bag clip

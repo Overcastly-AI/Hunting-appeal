@@ -15,9 +15,12 @@ properties:
   closed_cell: true
   open_area_pct: 15
   thickness_typical_mm: 6
+  roll_width_mm: 1000
+  usable_width_mm: 1000
 confidence: estimate
 sources:
 - Supplier EVA data scaled for ~15% open area (6 mm holes on 15 mm pitch)
+- "ASSUMPTION (pattern-maker 2026-11-04): 1000 x 2000 mm perforated EVA sheet"
 cost_usd:
   value: 28
   per: m2

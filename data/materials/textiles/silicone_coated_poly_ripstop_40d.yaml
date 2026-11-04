@@ -19,9 +19,12 @@ properties:
   stain_odor_resistance_1to5: 4
   quietness_1to5: 3
   uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
+  roll_width_mm: 1524
+  usable_width_mm: 1473
 confidence: estimate
 sources:
 - RBTR / Extremtextil silpoly product listings (~1.1-1.3 oz/yd2)
+- "Ripstop by the Roll, 1.6 oz silpoly listing: ~58 in usable, selvedge removed, https://ripstopbytheroll.com/products/1-6-oz-silpoly (accessed 2026-11-04); roll incl. selvedge ASSUMPTION 60 in"
 cost_usd:
   value: 10
   per: yd

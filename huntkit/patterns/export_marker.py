@@ -29,7 +29,7 @@ def marker_dxf(marker, path) -> Path:
     return path
 
 
-def marker_pdf(marker, path, scale: float | None = None) -> Path:
+def marker_pdf(marker, path, scale: float | None = None, compress: bool = False) -> Path:
     """Marker PDF. ``scale=None``: true scale (1:1) if the length fits a single PDF page
     (5080 mm), else scaled to fit. Pass e.g. ``scale=0.1`` for a 1:10 overview."""
     W, L = marker.fabric_width_mm, max(marker.length_mm, 1.0)
@@ -43,7 +43,7 @@ def marker_pdf(marker, path, scale: float | None = None) -> Path:
     page_w = max(page_w, 250.0)
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    c = canvas.Canvas(str(path), pagesize=(page_w * MM, page_h * MM), pageCompression=0)
+    c = canvas.Canvas(str(path), pagesize=(page_w * MM, page_h * MM), pageCompression=int(compress))
     c.setTitle("Marker")
     ox = margin + (TEST_BOX_MM + 5 if scale == 1.0 else 0)
     oy = margin

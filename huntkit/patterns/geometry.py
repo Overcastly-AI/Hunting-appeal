@@ -378,16 +378,25 @@ def _unfold_strip(A: np.ndarray, B: np.ndarray):
 
 
 def develop_ruled_surface(curve_a: Sequence[Sequence[float]], curve_b: Sequence[Sequence[float]],
-                          n: int = 60) -> DevelopedSurface:
+                          n: int = 60, *, resample: bool = True) -> DevelopedSurface:
     """Flatten the ruled surface between two 3D curves (e.g. the edges of a curved pack panel).
 
     Both curves are resampled to ``n`` points by arc length and joined by straight rulings;
     each quad is split along its shorter diagonal and the triangle strip is unfolded
     edge-to-edge, preserving every triangle's edge lengths (exact for developable surfaces
     such as cylinders, cones and tangent developables). The developability error is reported
-    as ``max_strain``. Curves must run in the same direction."""
-    A = C.resample(np.asarray(curve_a, float), n)
-    B = C.resample(np.asarray(curve_b, float), n)
+    as ``max_strain``. Curves must run in the same direction. With ``resample=False`` the
+    curves are used as given (same point count; ruling i joins ``curve_a[i]`` to
+    ``curve_b[i]``), which keeps a known parametrisation such as rings of a loft."""
+    if resample:
+        A = C.resample(np.asarray(curve_a, float), n)
+        B = C.resample(np.asarray(curve_b, float), n)
+    else:  # keep the caller's point correspondence (rulings join A[i] to B[i])
+        A = np.asarray(curve_a, float)
+        B = np.asarray(curve_b, float)
+        if A.shape != B.shape:
+            raise ValueError("resample=False needs curves with the same number of points")
+        n = len(A)
     if A.shape[1] == 2:
         A = np.column_stack([A, np.zeros(n)])
     if B.shape[1] == 2:
@@ -397,3 +406,217 @@ def develop_ruled_surface(curve_a: Sequence[Sequence[float]], curve_b: Sequence[
                for i in range(0, n, max(1, n // 10))]
     len3 = lambda P: float(np.sum(np.linalg.norm(np.diff(P, axis=0), axis=1)))  # noqa: E731
     return DevelopedSurface(a2, b2, rulings, strain, len3(A), len3(B))
+
+
+# --------------------------------------------------------------------------------------------
+# Mesh flattening of doubly curved regions (strain report, darts, split lines)
+# --------------------------------------------------------------------------------------------
+@dataclass
+class FlatMesh:
+    """A surface region triangulated in its parameter plane (``uv``), its 3D image ``V3`` and
+    its flat pattern ``V2`` (least-squares on every edge length, see :func:`flatten_mesh`).
+
+    ``strain`` is flat/3D - 1 per mesh edge; ``max_strain`` is the stretch (+) or ease (-) the
+    cloth would need to take the 3D shape. Use :meth:`map_uv` to carry any parameter-space
+    polyline (seam, placement line, notch) onto the pattern."""
+    uv: np.ndarray
+    V3: np.ndarray
+    V2: np.ndarray
+    tris: np.ndarray
+    edges: np.ndarray
+    strain: np.ndarray
+    boundary_edge: np.ndarray
+
+    @property
+    def max_strain(self) -> float:
+        return float(np.max(np.abs(self.strain))) if self.strain.size else 0.0
+
+    @property
+    def p95_strain(self) -> float:
+        return float(np.percentile(np.abs(self.strain), 95)) if self.strain.size else 0.0
+
+    @property
+    def area_3d(self) -> float:
+        a, b, c = (self.V3[self.tris[:, j]] for j in range(3))
+        return float(0.5 * np.linalg.norm(np.cross(b - a, c - a), axis=1).sum())
+
+    @property
+    def area_flat(self) -> float:
+        return float(0.5 * np.abs(_signed(self.V2, self.tris)).sum())
+
+    def tri_strain(self) -> np.ndarray:
+        """Principal strain per triangle: (n, 2) array of (min, max) stretch - 1, from the
+        deformation gradient taking each 3D triangle onto its flat image."""
+        a, b, c = (self.V3[self.tris[:, j]] for j in range(3))
+        e1 = b - a
+        l1 = np.linalg.norm(e1, axis=1)
+        x = e1 / l1[:, None]
+        nrm = np.cross(e1, c - a)
+        y = np.cross(nrm / np.linalg.norm(nrm, axis=1)[:, None], x)
+        P = np.stack([np.stack([l1, np.zeros_like(l1)], 1),
+                      np.stack([np.einsum("ij,ij->i", c - a, x), np.einsum("ij,ij->i", c - a, y)], 1)], 1)
+        A2, B2, C2 = (self.V2[self.tris[:, j]] for j in range(3))
+        Q = np.stack([B2 - A2, C2 - A2], 1)
+        F = np.linalg.solve(P, Q)              # rows: local 3D -> flat
+        sv = np.linalg.svd(F, compute_uv=False)
+        return np.stack([sv[:, 1] - 1.0, sv[:, 0] - 1.0], 1)
+
+    def min_angles_deg(self) -> np.ndarray:
+        P = self.V3[self.tris]
+        ang = []
+        for j in range(3):
+            u = P[:, (j + 1) % 3] - P[:, j]
+            v = P[:, (j + 2) % 3] - P[:, j]
+            cosv = np.einsum("ij,ij->i", u, v) / (np.linalg.norm(u, axis=1) * np.linalg.norm(v, axis=1))
+            ang.append(np.degrees(np.arccos(np.clip(cosv, -1, 1))))
+        return np.min(ang, axis=0)
+
+    def strain_stats(self, sliver_deg: float = 12.0) -> dict:
+        """Area-weighted principal-strain statistics (percent): max, p99, p95, mean |e|.
+        Triangles with a corner under ``sliver_deg`` (mesh slivers at acute pattern corners)
+        are left out of max/p99 and counted in ``slivers``; ``max_all_pct`` includes them."""
+        e_all = np.abs(self.tri_strain()).max(1)
+        good = self.min_angles_deg() >= sliver_deg
+        e = e_all[good]
+        a, b, c = (self.V3[self.tris[good, j]] for j in range(3))
+        w = 0.5 * np.linalg.norm(np.cross(b - a, c - a), axis=1)
+        o = np.argsort(e)
+        cw = np.cumsum(w[o]) / w.sum()
+        pct = lambda q: float(e[o][min(np.searchsorted(cw, q), len(o) - 1)])  # noqa: E731
+        return {"max_pct": 100 * float(e.max()), "p99_pct": 100 * pct(0.99),
+                "p95_pct": 100 * pct(0.95), "mean_pct": 100 * float((e * w).sum() / w.sum()),
+                "max_all_pct": 100 * float(e_all.max()), "slivers": int((~good).sum())}
+
+    def folded(self) -> int:
+        """Number of triangles whose flat orientation is flipped (should be 0)."""
+        s_uv = _signed(self.uv, self.tris)
+        s_2 = _signed(self.V2, self.tris)
+        return int(np.sum(np.sign(s_uv) != np.sign(s_2)))
+
+    def map_uv(self, pts_uv) -> np.ndarray:
+        """Flat image of parameter-space points (barycentric in the containing triangle; a
+        point just outside the region snaps to the nearest triangle)."""
+        P = np.atleast_2d(np.asarray(pts_uv, float))
+        A, B, Cc = (self.uv[self.tris[:, j]] for j in range(3))
+        out = np.zeros((len(P), 2))
+        for n, p in enumerate(P):
+            v0, v1, v2 = B - A, Cc - A, p - A
+            den = v0[:, 0] * v1[:, 1] - v0[:, 1] * v1[:, 0]
+            den = np.where(np.abs(den) < 1e-12, 1e-12, den)
+            l1 = (v2[:, 0] * v1[:, 1] - v2[:, 1] * v1[:, 0]) / den
+            l2 = (v0[:, 0] * v2[:, 1] - v0[:, 1] * v2[:, 0]) / den
+            l0 = 1 - l1 - l2
+            bary = np.stack([l0, l1, l2], 1)
+            bad = np.clip(-bary, 0, None).sum(1)
+            j = int(np.argmin(bad))
+            bb = np.clip(bary[j], 0, None)
+            bb /= bb.sum()
+            out[n] = bb @ self.V2[self.tris[j]]
+        return out
+
+
+def _signed(P, tris):
+    a, b, c = (P[tris[:, j]] for j in range(3))
+    return (b[:, 0] - a[:, 0]) * (c[:, 1] - a[:, 1]) - (b[:, 1] - a[:, 1]) * (c[:, 0] - a[:, 0])
+
+
+def flatten_mesh(V3, tris, init2=None, *, boundary_weight: float = 30.0, max_nfev: int = 300):
+    """Least-squares flattening of a triangle mesh: minimise the relative error of every edge
+    length. Boundary edges (seams) are weighted ``boundary_weight`` so their lengths stay
+    true to 3D and the interior takes the strain. Returns ``(V2, edges, strain, boundary)``."""
+    from scipy.optimize import least_squares
+    from scipy.sparse import lil_matrix
+
+    V3 = np.asarray(V3, float)
+    tris = np.asarray(tris, int)
+    cnt: dict[tuple[int, int], int] = {}
+    for t in tris:
+        for a, b in ((t[0], t[1]), (t[1], t[2]), (t[2], t[0])):
+            k = (min(a, b), max(a, b))
+            cnt[k] = cnt.get(k, 0) + 1
+    E = np.array(sorted(cnt))
+    bnd = np.array([cnt[tuple(e)] == 1 for e in E])
+    L = np.linalg.norm(V3[E[:, 1]] - V3[E[:, 0]], axis=1)
+    ok = L > 1e-9
+    E, bnd, L = E[ok], bnd[ok], L[ok]
+    sw = np.where(bnd, math.sqrt(boundary_weight), 1.0) / L
+    x0 = (np.asarray(init2, float) if init2 is not None else V3[:, :2]).ravel()
+
+    def res(x):
+        P = x.reshape(-1, 2)
+        return (np.linalg.norm(P[E[:, 1]] - P[E[:, 0]], axis=1) - L) * sw
+
+    J = lil_matrix((len(E), V3.shape[0] * 2), dtype=int)
+    for r, (a, b) in enumerate(E):
+        J[r, 2 * a:2 * a + 2] = 1
+        J[r, 2 * b:2 * b + 2] = 1
+    sol = least_squares(res, x0, jac_sparsity=J, method="trf", x_scale="jac",
+                        max_nfev=max_nfev, xtol=1e-10, ftol=1e-10)
+    V2 = sol.x.reshape(-1, 2)
+    strain = np.linalg.norm(V2[E[:, 1]] - V2[E[:, 0]], axis=1) / L - 1.0
+    return V2, E, strain, bnd
+
+
+def develop_region(surface, polygon_uv, spacing: float = 10.0, *, boundary_spacing: float | None = None,
+                   boundary_weight: float = 30.0, max_nfev: int = 300) -> FlatMesh:
+    """Develop the part of a parametric surface ``surface(uv: (n,2)) -> (n,3)`` that lies inside
+    ``polygon_uv`` (a shapely Polygon or a point ring in parameter units, ideally ~mm).
+
+    The region is meshed in the parameter plane (boundary sampled every ``boundary_spacing``,
+    interior grid every ``spacing``, Delaunay, triangles kept whose centroid is inside), lifted
+    to 3D and flattened with :func:`flatten_mesh`. Darts are thin wedges cut out of the
+    polygon; split lines are just polygon edges. The flat pattern is oriented so the parameter
+    axes keep their handedness (u -> +x, v -> +y as seen from the side du x dv points to)."""
+    from scipy.spatial import Delaunay
+    from shapely.geometry import Point as _P, Polygon as _Poly
+    from shapely.prepared import prep as _prep
+
+    poly = polygon_uv if hasattr(polygon_uv, "exterior") else _Poly(polygon_uv)
+    bs = boundary_spacing or spacing / 2
+    ring = np.asarray(poly.exterior.coords)
+    bpts = []
+    for p, q in zip(ring[:-1], ring[1:]):
+        n = max(1, int(math.ceil(np.linalg.norm(q - p) / bs)))
+        for j in range(n):
+            bpts.append(p + (q - p) * j / n)
+    bpts = np.array(bpts)
+    x0, y0, x1, y1 = poly.bounds
+    gx = np.arange(x0 + spacing / 2, x1, spacing)
+    gy = np.arange(y0 + spacing / 2, y1, spacing)
+    inner = poly.buffer(-0.45 * spacing)
+    pin = _prep(inner) if not inner.is_empty else None
+    grid = [(x, y) for x in gx for y in gy if pin is not None and pin.contains(_P(x, y))]
+    uv = np.vstack([bpts, np.array(grid).reshape(-1, 2)])
+    tri = Delaunay(uv).simplices
+    pp = _prep(poly.buffer(1e-6))
+    cen = uv[tri].mean(1)
+    keep = np.array([pp.contains(_P(*c)) for c in cen])
+    tri = tri[keep]
+    # drop unused points
+    used = np.unique(tri)
+    remap = -np.ones(len(uv), int)
+    remap[used] = np.arange(len(used))
+    uv = uv[used]
+    tri = remap[tri]
+    # orient triangles CCW in uv
+    sgn = _signed(uv, tri)
+    tri[sgn < 0] = tri[sgn < 0][:, [0, 2, 1]]
+    V3 = np.asarray(surface(uv), float)
+    V2, E, strain, bnd = flatten_mesh(V3, tri, init2=uv, boundary_weight=boundary_weight,
+                                      max_nfev=max_nfev)
+    if np.sum(_signed(V2, tri) < 0) > len(tri) / 2:
+        V2[:, 0] *= -1
+    # align: least-squares rigid fit of flat onto uv (keeps the pattern upright)
+    R, t = _kabsch2(V2, uv)
+    V2 = V2 @ R.T + t
+    return FlatMesh(uv, V3, V2, tri, E, strain, bnd)
+
+
+def _kabsch2(P: np.ndarray, Q: np.ndarray):
+    """Rigid (rotation + translation, no reflection) 2D fit taking P onto Q."""
+    pc, qc = P.mean(0), Q.mean(0)
+    H = (P - pc).T @ (Q - qc)
+    U, _, Vt = np.linalg.svd(H)
+    d = np.sign(np.linalg.det(Vt.T @ U.T)) or 1.0
+    R = Vt.T @ np.diag([1.0, d]) @ U.T
+    return R, qc - pc @ R.T

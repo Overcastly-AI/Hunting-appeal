@@ -20,9 +20,12 @@ properties:
   hydrolysis_resistance_1to5: 5
   washability_1to5: 4
   stain_odor_resistance_1to5: 2
+  roll_width_mm: 1500
+  usable_width_mm: 1450
 confidence: estimate
 sources:
 - Supplier listings for 3D spacer mesh (300-450 gsm, 3-6 mm)
+- "ASSUMPTION (pattern-maker 2026-11-04): ~59 in typical 3D spacer mesh roll; confirm with the supplier"
 cost_usd:
   value: 15
   per: yd

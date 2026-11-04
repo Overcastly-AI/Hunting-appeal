@@ -25,10 +25,13 @@ properties:
   uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
   printable: sublimation (white/light base) or rotary disperse print
   ir_notes: Disperse-dye camo can be formulated to NIR targets; check sublimation inks for NIR reflectance
+  roll_width_mm: 1500
+  usable_width_mm: 1450
 confidence: estimate
 sources:
 - Supplier listings for 600-630D HT polyester (coated)
 - general disperse-dye/sublimation printing practice for polyester
+- "ASSUMPTION (pattern-maker 2026-11-04): ~59 in typical HT polyester roll; sublimation bureau sets the printable width"
 cost_usd:
   value: 18
   per: yd

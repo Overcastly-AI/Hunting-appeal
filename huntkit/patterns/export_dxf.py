@@ -3,7 +3,7 @@
 Layers (with the AAMA layer number each corresponds to, noted in the layer description):
   CUT    (AAMA 1)  cut line / piece boundary
   SEW    (AAMA 14) seam (stitch) line and stitch internal lines
-  INTERNAL (AAMA 8) fold / placement / dart lines
+  INTERNAL (AAMA 8) fold / placement / dart lines (``cut_inside`` holes go on CUT)
   NOTCH  (AAMA 4)  notches (slit = line, V = 2-segment polyline)
   GRAIN  (AAMA 7)  grain line with arrow heads
   DRILL  (AAMA 13) drill holes (POINT + circle)
@@ -63,7 +63,7 @@ def draw_piece(layout, p: Piece, text_height: float = 5.0, with_text: bool = Tru
     layout.add_lwpolyline(p.cut_line(), close=True, dxfattribs={"layer": "CUT"})
     layout.add_lwpolyline(p.outline, close=True, dxfattribs={"layer": "SEW", "linetype": "DASHED"})
     for ln in p.internal_lines:
-        layer = "SEW" if ln.kind == "stitch" else "INTERNAL"
+        layer = {"stitch": "SEW", "cut_inside": "CUT"}.get(ln.kind, "INTERNAL")
         lt = {"fold": "DASHDOT", "stitch": "DASHED"}.get(ln.kind, "CONTINUOUS")
         layout.add_lwpolyline(ln.points, close=ln.closed, dxfattribs={"layer": layer, "linetype": lt})
     for kind, pts in p.notch_marks():

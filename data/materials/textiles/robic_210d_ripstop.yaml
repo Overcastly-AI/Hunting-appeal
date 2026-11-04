@@ -25,9 +25,12 @@ properties:
   hydrolysis_resistance_1to5: 2
   washability_1to5: 4
   stain_odor_resistance_1to5: 3
+  roll_width_mm: 1524
+  usable_width_mm: 1473
 confidence: estimate
 sources:
 - RBTR / Extremtextil product listings for 210D Robic ripstop (~4.0-4.3 oz/yd2)
+- "Ripstop by the Roll, 210D ROBIC listing: 60 in incl. selvedge, ~58 in usable, https://ripstopbytheroll.com/products/210d-robic-ripstop-nylon (accessed 2026-11-04)"
 cost_usd:
   value: 18
   per: yd

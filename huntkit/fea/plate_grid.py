@@ -280,7 +280,7 @@ class GridPlate:
         return F * frac / area
 
     # solve
-    def solve(self, f: np.ndarray, k_pen: float = 2.0e4, max_iter: int = 60, active0=None) -> dict:
+    def solve(self, f: np.ndarray, k_pen: float = 2.0e4, max_iter: int = 80, active0=None) -> dict:
         K0 = self._K_base()
         fixed = self._fixed_dofs()
         free = np.setdiff1d(np.arange(self.ndof), fixed)
@@ -312,10 +312,18 @@ class GridPlate:
             wo = np.where(o_dof >= 0, u[np.maximum(o_dof, 0)], 0.0)
             pen = u[a_dof] - wo - gg
             new = np.where(uni, sen * pen > 0.0, True)
-            nchg = int((new != act).sum())
-            if nchg == 0 or (it >= 10 and nchg <= max(2, len(S) // 500)):
+            chg = new != act
+            nchg = int(chg.sum())
+            if nchg == 0 or (it >= 30 and nchg <= max(2, len(S) // 500)):
                 act = new if nchg == 0 else act
                 break
+            if it >= 8:
+                # active-set chatter: flip only the worst violators (largest |penetration error|)
+                viol = np.where(chg, np.abs(pen), -1.0)
+                keep = max(1, nchg // 4)
+                idx = np.argsort(viol)[::-1][:keep]
+                new = act.copy()
+                new[idx] = ~act[idx]
             act = new
         wo = np.where(o_dof >= 0, u[np.maximum(o_dof, 0)], 0.0)
         pen = u[a_dof] - wo - gg

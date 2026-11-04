@@ -21,10 +21,13 @@ properties:
   hydrolysis_resistance_1to5: 3
   washability_1to5: 3
   stain_odor_resistance_1to5: 4
+  roll_width_mm: 1422
+  usable_width_mm: 1397
 confidence: estimate
 sources:
 - Challenge Sailcloth ULTRA product sheets (ULTRA 200 ~3.6-3.8 oz/yd2)
 - RBTR product listing
+- "Ripstop by the Roll, Challenge ULTRA 200 listing: 56 in (142.2 cm) wide, https://ripstopbytheroll.com/products/challenge-ultra-200 (accessed 2026-11-04); usable = roll - 25 mm selvedge ASSUMPTION"
 cost_usd:
   value: 50
   per: yd

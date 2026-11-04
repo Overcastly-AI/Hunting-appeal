@@ -16,7 +16,8 @@ from .export_dxf import export_dxf
 from .export_pdf import export_pdf_tiled
 from .export_svg import export_svg
 from .geometry import (BoxBag, Cylinder, DevelopedSurface, box_bag, box_bag_volume,
-                       cubic_inches, cylinder, dart_seams, darted_panel, develop_ruled_surface,
+                       cubic_inches, cylinder, dart_seams, darted_panel, develop_region,
+                       develop_ruled_surface, FlatMesh, flatten_mesh,
                        litres, panel_volume, rect_panel, tapered_panel)
 from .grading import GradeRules, grade, grade_all, proportional_rules
 from .nesting import Marker, Placement, nest
@@ -29,6 +30,7 @@ __all__ = [
     "line", "bezier", "arc", "arc_3pt", "polyline_length",
     "rect_panel", "tapered_panel", "darted_panel", "dart_seams", "box_bag", "BoxBag",
     "cylinder", "Cylinder", "develop_ruled_surface", "DevelopedSurface",
+    "develop_region", "flatten_mesh", "FlatMesh",
     "panel_volume", "box_bag_volume", "litres", "cubic_inches",
     "grade", "grade_all", "GradeRules", "proportional_rules",
     "export_dxf", "export_pdf_tiled", "export_svg",

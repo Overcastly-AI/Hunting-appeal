@@ -212,8 +212,8 @@ SF 2.20. The bag hook is the 38 mm sliding-gate hook already assumed for the mea
 
 Nothing is added on the wearer side. The branch window stays open. B-01, which sits 20 mm aft of
 the stay centre, gets a feathered 16 mm swell, 90 mm long, over each fairlead so the cleat has
-about 2 mm of air and does not rub the cloth. The spreader is notched 22 mm in height at each
-fairlead, at the edge landing.
+about 2 mm of air and does not rub the cloth. The spreader (v2, `analysis/spreader.md`) is notched 30 mm in height at the US2, IM1 and IM2
+fairleads, with R6 roots and 6 mm of air around each cleat.
 
 Load lifters stay on the carbon crown corner wraps, with a tri-glide keeper behind each ladder
 lock. They do not move onto the printed body or the extension posts. The hipbelt stays on the Ti
@@ -230,8 +230,8 @@ The clip tongue is fatigue SF 0.28 even with an 18 mm root. The comparison is in
 
 ### 4.9 Meat haul, both modes required
 
-Record: `analysis/meat_haul_modes.md`. The bearing face in every mode is the 2.0 mm QI carbon
-spreader (stress SF **1.95**). Two 38 mm under-straps, anchored on fairleads at **z 95 and z 142**,
+Record: `analysis/meat_haul_modes.md`. The bearing face in every mode is the spreader. v2 is a twill /
+6 mm ROHACELL 110 sandwich: FPF SF **1.21**, fatigue SF **1.04** on the real supports (`analysis/spreader.md`). Two 38 mm under-straps, anchored on fairleads at **z 95 and z 142**,
 cinch the bag floor to the frame when the bag is on and stay behind as a cradle when it is off.
 Each strap is an eye on the left pin, a 70 mm belly under the floor, and a 38 mm cam plus a
 tri-glide on the right. Added mass **122 g**, about **$22**. Detach **40 s**.
@@ -322,6 +322,11 @@ this line are the v3.1 tube-frame writeup and stay as the load and hardware reco
 The 2224 g line is the v3.1 tube-frame budget. On the printed branch frame the pack is 2865 g
 before this attachment (`analysis/generative_branch.md`). The fairleads add **113 g** net of the
 LINK hardware they replace. Current pack **2979 g (6.57 lb)**.
+
+**Spreader v2 (2026-11-04, `analysis/spreader.md`).** The back-system spreader goes from 203 g (2.0 mm QI
+sheet, 193 g, plus 4 M4 sets) to **154 g (5.4 oz)**. The new part is a twill / 6 mm ROHACELL 110 sandwich with
+notch doublers, edge tubes, pucks and 6 removable clips. The branch-frame pack, 3101 g (6.84 lb) with the
+under-straps, becomes **3052 g (6.73 lb)**. That is still 784 g over the 5.0 lb target.
 
 Not in base: optional lid 141 g, rifle boot 36 g, extension posts ≈ 60 g (ASSUMPTION), XL belt ≈ +45 g.
 Levers if needed: 25 mm meat straps (−40 g, but they bite game bags), 2 internal straps instead of 3 (−80 g; IM2 + IM3

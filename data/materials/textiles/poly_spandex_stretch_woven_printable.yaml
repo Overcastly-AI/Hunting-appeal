@@ -17,10 +17,13 @@ properties:
   quietness_1to5: 4
   uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
   printable: sublimation / rotary disperse print
+  roll_width_mm: 1450
+  usable_width_mm: 1400
 confidence: estimate
 sources:
 - Mill catalog ranges for printable poly/spandex stretch wovens
 - ISO 12947 Martindale
+- "ASSUMPTION (pattern-maker 2026-11-04): 57 in typical printable stretch woven; print bureau sets the printable width"
 cost_usd:
   value: 18
   per: yd
