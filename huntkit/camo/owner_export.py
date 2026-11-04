@@ -1,8 +1,8 @@
 """Previews, metrics and print files for the Owner Base camo (primary pattern).
 
-Every image made from the procedural stand-in carries "PROXY" in its title
-(``OwnerBase.title_tag``). Previews go to designs/apparel/camo/previews/owner_base_*.png
-(<= 1.5 MB); phone copies go to outputs/screens/<date>_ownerbase_<n>.png.
+The real owner SVG (designs/apparel/camo/source/owner_base.svg) is used when present; only
+images made from the procedural stand-in carry "PROXY" in their title (``OwnerBase.title_tag``). Previews go to designs/apparel/camo/previews/owner_base_*.png
+(<= 1.5 MB); phone copies go to outputs/screens/<date>_ownerbase_{real,proxy}_<n>.png.
 """
 from __future__ import annotations
 
@@ -202,11 +202,12 @@ def preview_accent_mocks(base: ob.OwnerBase, cw: dict, ids=("sidehill", "benchla
     return save_png(im, PREVIEW_DIR / "owner_base_accent_mocks.png", limit=MAX_PREVIEW_BYTES)
 
 
-def phone_copy(src: Path, n: int, date: str = "20261101", width: int = 1080) -> Path:
+def phone_copy(src: Path, n: int, date: str = "20261101", width: int = 1080,
+               topic: str = "ownerbase") -> Path:
     im = Image.open(src).convert("RGB")
     if im.width > width:
         im = im.resize((width, int(im.height * width / im.width)), Image.Resampling.LANCZOS)
-    return save_png(im, SCREENS_DIR / f"{date}_ownerbase_{n}.png", limit=MAX_PREVIEW_BYTES)
+    return save_png(im, SCREENS_DIR / f"{date}_{topic}_{n}.png", limit=MAX_PREVIEW_BYTES)
 
 
 # ----------------------------------------------------------------------------- print files
@@ -223,7 +224,8 @@ def export_print(base: ob.OwnerBase, scale: str = "full", dpi: float = 300, out:
 
 
 # ----------------------------------------------------------------------------- bundle
-def run_all(print_dpi: float | None = 300, screens: bool = True) -> dict:
+def run_all(print_dpi: float | None = 300, screens: bool = True, date: str = "20261104",
+            topic: str | None = None) -> dict:
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", ob.ProxyWarning)
         base = ob.load_owner_base()
@@ -242,7 +244,8 @@ def run_all(print_dpi: float | None = 300, screens: bool = True) -> dict:
             preview_accent_mocks(base, cw), preview_tile(base)]
     res["previews"] = pngs
     if screens:
-        res["screens"] = [phone_copy(p, i + 1) for i, p in enumerate(pngs)]
+        topic = topic or ("ownerbase_proxy" if base.is_proxy else "ownerbase_real")
+        res["screens"] = [phone_copy(p, i + 1, date, topic=topic) for i, p in enumerate(pngs)]
     if print_dpi:
         res["print"] = [export_print(base, "full", print_dpi), export_print(base, "accent", print_dpi)]
     res["metrics"] = {"full": m_full, "accent": m_acc}
