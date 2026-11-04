@@ -64,6 +64,10 @@ TISSUE_H = 25.0
 TISSUE_E_KPA = 60.0
 TISSUE_E_SOFT_KPA = 20.0
 PEAK_KPA = 14.0                   # Golriz et al. 2017 (back_comfort.md)
+# ASSUMPTION: the spacer mesh over the gutter lies on the skin and is 3 mm thick. At the 1.6 g walking
+# peak the sheet must stay 3 mm off the skin (it never presses the mesh). At the factored 3.0 g case it
+# must not touch the skin at all (clearance >= 0) on the design torso (R 230 mm).
+MESH_T = 3.0
 FAT_FI = 0.5                      # HA-LS-1: CFRP FI <= 0.5 at the 1.6 g walking peak
 SCREENS = REPO_ROOT / "outputs" / "screens"
 DOC_SCREENS = REPO_ROOT / "docs" / "screens"
@@ -88,11 +92,15 @@ CINCH_N_PER_ANCHOR = 150.0        # HA-LS-1 4.1, six anchors (IM1-IM3, both side
 FACE_W = 2.0 * STAY_X             # meat contact width on the frame face
 
 
-def meat_pressure(z: np.ndarray, kind: str) -> np.ndarray:
+def meat_pressure(z: np.ndarray, kind: str, less_n: float = 0.0) -> np.ndarray:
     """Face pressure on the sheet, MPa. Rev B: overturning triangular z 60-330 (peak at the
-    bottom) plus the strap cinch spread uniformly over z 60-560."""
+    bottom) plus the strap cinch spread uniformly over z 60-560.
+
+    ``less_n``: a bone end is part of the meat, not extra meat. Its force is taken out of the
+    overturning resultant so the total normal force on the back stays the rev B couple
+    (ASSUMPTION; the v1 study added it on top)."""
     g, f_over, f_cinch = {"walk": (1.6, 1.0, 1.0), "factored": (2.0, 1.5, 1.5)}[kind]
-    H = meat_normal_n(g) * f_over
+    H = max(meat_normal_n(g) * f_over - less_n, 0.0)
     p0 = 2.0 * H / (270.0 * FACE_W)
     tri = p0 * np.clip((330.0 - z) / 270.0, 0.0, None)
     cinch = 6.0 * CINCH_N_PER_ANCHOR * f_cinch / (500.0 * FACE_W)
@@ -170,6 +178,9 @@ class Option:
     extra_kg_m2: float = 0.0
     buy: str = ""
     usd_m2: float = 0.0            # material cost for the cost table
+    tubes: bool = True             # bonded edge tubes at the top and bottom (v2 outline)
+    pucks: bool = True             # bonded pucks onto the branches and the bar (v2 outline)
+    edge_seal: bool = False        # sandwich: sealed core edge (epoxy + microballoon fill)
     results: dict = field(default_factory=dict)
 
     @property
@@ -235,6 +246,9 @@ def branch_x(z):
     return 115.0 - 46.0 * np.sin(np.pi * t)
 
 
+BOTTOM_CORNER_R = 8.0             # bottom corners: the z 119 clip tab sits 7 mm above the edge
+
+
 def outline_v2(half_w: float = 121.0, corner_r: float = 20.0, z_lo: float = Z_LO_V2):
     """New outline: edges land on the stay crowns, U-notches at the cleats, round corners."""
     from shapely.geometry import Point, box
@@ -247,14 +261,9 @@ def outline_v2(half_w: float = 121.0, corner_r: float = 20.0, z_lo: float = Z_LO
         for zf in FAIRLEADS_Z:
             if zf + hz < z_lo or zf - hz > Z_HI:
                 continue
-            if zf - hz <= z_lo + 1.0:
-                # US2 cleat at z 142 sits on the bottom edge: open corner relief
-                rect = box(min(s * (x_in + hz), s * 140.0), z_lo - 20.0, max(s * (x_in + hz), s * 140.0), zf + hz)
-                cuts += [rect, Point(s * (x_in + hz), zf + hz - hz).buffer(hz, 32),
-                         box(min(s * (x_in + hz), s * x_in), z_lo - 20.0, max(s * (x_in + hz), s * x_in), zf)]
-            else:
-                rect = box(min(s * (x_in + hz), s * 140.0), zf - hz, max(s * (x_in + hz), s * 140.0), zf + hz)
-                cuts += [rect, Point(s * (x_in + hz), zf).buffer(hz, 48)]
+            # U-notch: straight sides, full-round root at x_in (the bag_attachment.md cleat stations)
+            rect = box(min(s * (x_in + hz), s * 140.0), zf - hz, max(s * (x_in + hz), s * 140.0), zf + hz)
+            cuts += [rect, Point(s * (x_in + hz), zf).buffer(hz, 48)]
     shape = body.difference(unary_union(cuts))
     # outside corners round, inside corners filleted (R5): open then close
     shape = shape.buffer(-5.0, join_style=1).buffer(5.0, join_style=1)
@@ -264,6 +273,10 @@ def outline_v2(half_w: float = 121.0, corner_r: float = 20.0, z_lo: float = Z_LO
     tr = box(half_w - corner_r, Z_HI - corner_r, half_w, Z_HI).difference(
         Point(half_w - corner_r, Z_HI - corner_r).buffer(corner_r, 64))
     shape = shape.difference(tl).difference(tr)
+    rb = BOTTOM_CORNER_R
+    bl = box(-half_w, z_lo, -half_w + rb, z_lo + rb).difference(Point(-half_w + rb, z_lo + rb).buffer(rb, 48))
+    br = box(half_w - rb, z_lo, half_w, z_lo + rb).difference(Point(half_w - rb, z_lo + rb).buffer(rb, 48))
+    shape = shape.difference(bl).difference(br)
     return shape.simplify(0.05)
 
 
@@ -277,10 +290,13 @@ def outline_v1():
     return body.difference(unary_union(cuts))
 
 
-CLIP_Z = (119.0, 166.0, 260.0, 400.0)  # stay segments clear of cleats: 110-127, 157-175, 205-315, 345-430
-CLIP_W_BY_Z = {119.0: 10.0}
+CLIP_Z = (166.0, 260.0, 400.0)  # stay segments clear of cleats: 157-175, 205-315, 345-430
+# z 119: the bottom tab (z 112-130) is too short for a slot. The stay is r 9 there, 4.5 mm below the
+# sheet, so a bonded PAHT stand-off pad carries the tab instead of a clip.
+PAD_Z = (119.0,)
+CLIP_W_BY_Z: dict = {}
 # z 119: the stay is r 9 there, 4.5 mm below the sheet. That clip carries a stand-off pad under the sheet.
-CLIP_STANDOFF = (119.0,)
+CLIP_STANDOFF: tuple = ()
 CLIP_W = 10.0
 CLIP_MAT = "pa12_mjf_hp"          # MJF PA12 clips: 20 % elongation for the snap, bought printed
 
@@ -331,7 +347,11 @@ PUCK_BRANCH_Z = (240.0, 285.0, 365.0, 405.0)
 PUCK_BAR_X = (-36.0, 0.0, 36.0)
 
 
-def pucks() -> list[tuple[float, float]]:
+def _pucks():
+    return pucks()
+
+
+def pucks() -> list[tuple[float, float]]:  # noqa: D401
     """Printed PAHT-CF pucks bonded to the wearer face of the sheet where it crosses a branch or the bar.
     Each is machined to the local gap minus LAND_FIT, so the sheet bears on the branch at once."""
     pts = [(s * float(branch_x(z)), z) for s in (1.0, -1.0) for z in PUCK_BRANCH_Z]
@@ -457,13 +477,13 @@ def build_plate(opt: Option, h: float = 4.0, shape=None, version: str = "v2", ho
             kinds[n] = "stay" if abs(x) >= 100.0 else "rigid"
     # clips (v2) / bolts (v1)
     if version == "v2":
-        for zc in CLIP_Z:
+        for zc in CLIP_Z + PAD_Z:
             cw = CLIP_W_BY_Z.get(zc, CLIP_W)
-            for n in np.nonzero(actn & (np.abs(nxy[:, 1] - zc) <= cw / 2 + 1e-6)
-                                & (np.abs(nxy[:, 0]) >= STAY_X - 4.0))[0]:
-                sel = actn & (np.abs(nxy[:, 1] - zc) <= cw / 2 + 1e-6) & (np.abs(nxy[:, 0]) >= STAY_X - 4.0)
-                pl.springs.append(Spring(n, clip_k(cw) / max(int(sel.sum()), 1), 0.0, sense=-1.0, tag="clip"))
-                if zc in CLIP_STANDOFF:
+            sel = actn & (np.abs(nxy[:, 1] - zc) <= cw / 2 + 1e-6) & (np.abs(nxy[:, 0]) >= STAY_X - 4.0)
+            for n in np.nonzero(sel)[0]:
+                if zc in CLIP_Z:
+                    pl.springs.append(Spring(n, clip_k(cw) / max(int(sel.sum()), 1), 0.0, sense=-1.0, tag="clip"))
+                if zc in PAD_Z:
                     pl.springs.append(Spring(n, 0.0, LAND_FIT, tag="stay"))
     else:
         for s in (1.0, -1.0):
@@ -722,22 +742,26 @@ def stay_EI() -> float:
     return E * np.pi * (r ** 4 - 9.0 ** 4) / 4.0
 
 
-def skin_pressure(bone_side_n: float, kind: str = "walk", rail=None, tissue_kpa: float = TISSUE_E_KPA) -> dict:
+def skin_pressure(bone_side_n: float, kind: str = "walk", rail=None, tissue_kpa: float = TISSUE_E_KPA,
+                  bone_total_n: float = 0.0) -> dict:
     rail = rail or RAIL_DESIGN
-    key = (round(float(bone_side_n) / 2.0) * 2.0, kind, rail["layers"], rail["backer"], float(tissue_kpa))
+    key = (round(float(bone_side_n) / 2.0) * 2.0, kind, rail["layers"], rail["backer"], float(tissue_kpa),
+           round(float(bone_total_n)))
     if key not in _SKIN_CACHE:
-        _SKIN_CACHE[key] = _skin_pressure(key[0], kind, rail, tissue_kpa)
+        _SKIN_CACHE[key] = _skin_pressure(key[0], kind, rail, tissue_kpa, key[5])
     return dict(_SKIN_CACHE[key])
 
 
 _SKIN_CACHE: dict = {}
 
 
-def _skin_pressure(bone_side_n: float, kind: str = "walk", rail=None, tissue_kpa: float = TISSUE_E_KPA) -> dict:
+def _skin_pressure(bone_side_n: float, kind: str = "walk", rail=None, tissue_kpa: float = TISSUE_E_KPA,
+                   bone_total_n: float = 0.0) -> dict:
     """Peak skin pressure under a rail: pack-level forward meat force over the two rails plus the
-    bone reaction spread along the stay as a beam on the rail foundation (Hetenyi, peak P beta / 2)."""
+    bone reaction spread along the stay as a beam on the rail foundation (Hetenyi, peak P beta / 2).
+    The bone is part of the meat: ``bone_total_n`` comes out of the uniform share first."""
     g = {"walk": 1.6, "factored": 3.0, "static": 1.0}[kind]
-    H = meat_normal_n(g)
+    H = max(meat_normal_n(g) - bone_total_n, 0.0)
     q0 = H / 2.0 / RAIL_L
     sec0 = rail_eval(q0, rail, tissue_kpa)
     beta = (sec0["k_line"] / (4.0 * stay_EI())) ** 0.25
@@ -858,10 +882,9 @@ def clearance_field(pl: GridPlate, info: dict, w: np.ndarray, indent_mm: float, 
 
 def run_case(opt: Option, pl: GridPlate, info: dict, kind: str, bone_xy=None, bone_only=False, active0=None) -> dict:
     exy = pl.elem_xy()
-    q = np.zeros((pl.nx, pl.ny)) if bone_only else meat_pressure(exy[..., 1], kind)
-    P = 0.0
+    P = bone_n(kind) if bone_xy is not None else 0.0
+    q = np.zeros((pl.nx, pl.ny)) if bone_only else meat_pressure(exy[..., 1], kind, less_n=P)
     if bone_xy is not None:
-        P = bone_n(kind)
         q = q + pl.patch_pressure(bone_xy[0], bone_xy[1], BONE_D, P)
     f = pl.load_vector(q)
     if active0 is None:
@@ -894,7 +917,8 @@ def run_case(opt: Option, pl: GridPlate, info: dict, kind: str, bone_xy=None, bo
 def evaluate(opt: Option, h: float = 4.0, version: str = "v2", step: float = 24.0, rail=None,
              holes_mask=None, shape=None, keep_fields: bool = False, info_extra=None) -> dict:
     """Full check of one option: meat-only, bone map (walking and factored), skin pressure, clearance."""
-    pl, info = build_plate(opt, h, shape=shape, version=version, holes_mask=holes_mask)
+    pl, info = build_plate(opt, h, shape=shape, version=version, holes_mask=holes_mask,
+                           tubes=None if opt.tubes else (), lands=opt.pucks)
     if info_extra:
         info.update(info_extra)
     shape = info["shape"]
@@ -919,8 +943,8 @@ def evaluate(opt: Option, h: float = 4.0, version: str = "v2", step: float = 24.
         side = max(bw["side_R"], bw["side_L"])
         side_f = side * bone_n("factored") / bone_n("walk")
         # bone reaction share into the stays rises the line load locally; take the side with more
-        sk = skin_pressure(side, "walk", rail)
-        skf = skin_pressure(side_f, "factored", rail)
+        sk = skin_pressure(side, "walk", rail, bone_total_n=bone_n("walk"))
+        skf = skin_pressure(side_f, "factored", rail, bone_total_n=bone_n("factored"))
         cw = clearance_field(pl, info, rw["w"], sk["indent_mm"])
         cf = clearance_field(pl, info, rf["w"], skf["indent_mm"])
         cf_lo = clearance_field(pl, info, rf["w"], skf["indent_mm"], R_TORSO_LO)
@@ -972,14 +996,22 @@ def evaluate(opt: Option, h: float = 4.0, version: str = "v2", step: float = 24.
         "rail_indent_walk_mm": rail_w0["indent_mm"], "rail_foam_walk_mm": rail_w0["foam_mm"],
         "clip_lift_max_n": max(r["clip_lift_n"] for r in rows), "bolt_max_n": max(r["bolt_n"] for r in rows),
         "rows": rows, "plane_lift_mm": info["lift"],
+        "sheet_g": mass_g, "tubes_g": float(sum(t["mass_g"] for t in info.get("tubes", []))),
     }
     if opt.core:
         res["sandwich_sf_min"] = min(r["sandwich_sf"] for r in rows)
         res["sandwich_worst"] = min((r for r in rows), key=lambda r: r["sandwich_sf"])["sandwich"]
+    if version == "v2":
+        res["fittings_g"] = fittings_mass_g(opt.lam.thickness, pucks=opt.pucks)
+        if opt.edge_seal:
+            res["fittings_g"] += edge_seal_g(shape, opt.lam.thickness)
+    else:
+        res["fittings_g"] = 4 * M4_SET_G
+    res["mass_g"] = res["sheet_g"] + res["tubes_g"] + res["fittings_g"]
     res["checks"] = {
         "fpf": res["sf_fpf"] >= 1.0,
         "fatigue": res["sf_fatigue"] >= 1.0,
-        "no_bottoming": res["clear_fact_min"] >= 2.0,
+        "no_bottoming": res["clear_walk_min"] >= MESH_T and res["clear_fact_min"] >= 0.0,
         "skin_pressure": res["skin_peak_kpa"] <= PEAK_KPA,
     }
     if opt.core:
@@ -990,6 +1022,34 @@ def evaluate(opt: Option, h: float = 4.0, version: str = "v2", step: float = 24.
         res["_fields"] = fields
         res["_plate"] = (pl, info)
     return res
+
+
+M4_SET_G = 2.4                    # ASSUMPTION: M4 x 12 stainless button head + nyloc nut + washer
+
+
+EDGE_FILL_KG_M3 = 700.0           # ASSUMPTION: epoxy + glass microballoon edge fill (about 0.7 g/cc)
+EDGE_FILL_DEPTH = 2.0             # mm routed back from the cut edge and filled
+
+
+def edge_seal_g(shape, t: float) -> float:
+    """Sealed sandwich edge: core routed back EDGE_FILL_DEPTH from every cut edge and filled."""
+    per = float(shape.length)
+    return per * EDGE_FILL_DEPTH * t * EDGE_FILL_KG_M3 / 1e6
+
+
+def fittings_mass_g(t_sheet: float, pucks: bool = True) -> float:
+    """Clips (MJF PA12) and bonded pucks (PAHT-CF) for the v2 part. Not the sheet or the tubes."""
+    clips = 0.0
+    r_mid = float(np.mean(stay_r(np.array([166.0, 260.0, 400.0]))))
+    for zc in CLIP_Z:
+        so = float(stay_r(260.0) - stay_r(119.0)) if zc in CLIP_STANDOFF else 0.0
+        r = float(stay_r(zc)) if zc in CLIP_STANDOFF else r_mid
+        clips += 2 * clip_mass_g(clip_profile(r, t_sheet, so), CLIP_W_BY_Z.get(zc, CLIP_W))
+    rho = float(load("pa12_cf_fdm_paht").require("density_kg_m3"))
+    # ASSUMPTION: puck heights average 4 mm (gap table in puck_heights, fit to the branch/bar tops)
+    pk = len(_pucks()) * np.pi / 4 * PUCK_D ** 2 * 4.0 * rho / 1e6 if pucks else 0.0
+    pads = 2 * len(PAD_Z) * CLIP_W * 16.0 * float(stay_r(260.0) - stay_r(119.0)) * rho / 1e6
+    return float(clips + pk + pads)
 
 
 def _where(r):

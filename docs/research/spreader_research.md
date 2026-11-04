@@ -119,3 +119,23 @@ Kifaru packs above). The v2 part uses a flat sheet, edge tubes and clips; none o
 5. Make it removable, toolless.
 6. Stays print through thin foam. Riders ask for a sheet to "spread load from the stays". The skin-pressure
    check must model the stay on the foam, not a uniform pad pressure.
+
+## 8. Verification pass (2026-11-04)
+
+Re-checked before the v2 analysis. Fetched pages are marked as fetched. Search-summary items stay *(reported)*.
+
+| Claim | Status | Source |
+|---|---|---|
+| Seek Outside cross stays: 7075, "prevent barreling ... reduce back intrusion while allowing some air flow", removable, 4 oz the pair, 24 in frame 2 lb 9 oz, 2 lb 3 oz minimum | **fetched, confirmed** | [Seek Outside Revolution](https://seekoutside.com/revolution-suspension-and-frame/) |
+| Wettenschwiler et al. 2015: occlusion 16 kPa (Holloway), ischemia 5.6–9.5 kPa (Sangeorzan), 20 kPa mean shoulder pressure uncomfortable for 90 % (Bryant). The paper itself gives no single comfort limit | **fetched, confirmed** | [PLOS ONE 10(11):e0142004](https://pmc.ncbi.nlm.nih.gov/articles/PMC4631336/) |
+| Closed-cell EVA, 80–180 kg/m³, compression curves fitted by the Rusch formula (Chen et al., Polymers 16(1):34, 2024). Read off the fits: 80 kg/m³ ≈ 130 kPa at 25 % and 206 kPa at 50 %; 106 kg/m³ ≈ 227 / 320 kPa | **fetched**; the stress values are read from the fitted curves, not tabulated by the authors | [PMC10780418](https://pmc.ncbi.nlm.nih.gov/articles/PMC10780418) |
+| Minicel L200 7 / 15 psi at 25 / 50 %, 12 % compression set | The Foam By Mail product page returns HTTP 403 to the fetch tool. The Type L sheet values are as recorded on 2026-11-01. *(reported)* until somebody reads the page by hand | [L200](https://www.foambymail.com/product/minicel-l200.html) |
+| Mystery Ranch: HDPE "for torsional rigidity" with four composite stays (Guide Light MT, no gauge). The older Terraplane framesheet was 0.060 in HDPE | confirmed by search; Blister states the 0.060 in | [Blister Terraplane](https://blisterreview.com/recommended/mystery-ranch-terraplane), [MR S24 workbook](https://issuu.com/mysteryranch/docs/s24_mr_outdoor_wb_issuu) |
+| Stone Glacier Krux: 500D Cordura / X-Pac and hook-and-loop, four straight carbon stays, frame 2 lb 7 oz (EVO) to 2 lb 12 oz. The shoulder-strap height adjusts on the "frame sheet". No sheet material is published. Not listed as removable | search, retailer listings | [goHUNT Krux EVO](https://shop.gohunt.com/products/krux-evo-frame), [Gearfool Krux](https://www.gearfool.com/collections/gear/products/stone-glacier-krux-frame-1) |
+| Field failures (anecdotal): a cracked SG carbon stay after 5–6 heavy pack-outs; SG sent a replacement, reinforced frame sheet; a Mystery Ranch carbon rod ripped through its nylon sleeve; KUIU frames broken on backcountry hunts, and KUIU replaced the frame sheet. **Lesson:** a sheet should be a cheap, replaceable part that is not bonded into the frame | *(reported)*, forum threads | [Rokslide SG](https://rokslide.com/forums/threads/bad-experiences-with-stone-glacier-packs.297404/page-2), [Rokslide MR Marshall](https://rokslide.com/forums/threads/mystery-ranch-marshall-frame-issues-mystery-ranch-customer-service.202418), [HuntTalk "why my pack sucks"](https://www.hunttalk.com/threads/why-my-pack-sucks-kifaru-stone-glacier-exo-seek-mystery-ranch-kuiu-etc.290968/post-2852466) |
+
+What this changes for v2:
+
+- **EVA is 3–5× stiffer than L200.** That makes it the right choice for a hard-wearing rub strip, and the wrong choice for the rail: at 10 kPa it hardly compresses, so it spreads less.
+- **Keep the 14 kPa peak limit.** It sits between ischemia (5.6–9.5 kPa) and occlusion (16 kPa). The 8 kPa pad-average target stays as well.
+- **Make the spreader replaceable.** Clip it on, never bond it to the frame, since every brand ships replacement sheets.
