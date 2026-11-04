@@ -4,10 +4,10 @@
   "is_proxy": false,
   "repeat_mm": 760.0,
   "coverage": {
-   "bench_grass": 0.293,
-   "sidehill_olive": 0.3358,
+   "bench_grass": 0.2929,
+   "sidehill_olive": 0.3356,
    "bleached_tine": 0.0746,
-   "deadfall_shadow": 0.2967
+   "deadfall_shadow": 0.2968
   },
   "palette_L": {
    "bench_grass": 65.1,
@@ -99,16 +99,16 @@
   },
   "distance_rms_contrast": {
    "0m": {
-    "human_rms_contrast": 0.6405,
+    "human_rms_contrast": 0.6406,
     "ungulate_rms_contrast": 0.6373
    },
    "10m": {
-    "human_rms_contrast": 0.6009,
-    "ungulate_rms_contrast": 0.5124,
+    "human_rms_contrast": 0.601,
+    "ungulate_rms_contrast": 0.5125,
     "ungulate_cycle_mm": 29.1
    },
    "50m": {
-    "human_rms_contrast": 0.5151,
+    "human_rms_contrast": 0.5152,
     "ungulate_rms_contrast": 0.2831,
     "ungulate_cycle_mm": 145.4
    },
@@ -118,7 +118,7 @@
     "ungulate_cycle_mm": 436.3
    },
    "300m": {
-    "human_rms_contrast": 0.2435,
+    "human_rms_contrast": 0.2436,
     "ungulate_rms_contrast": 0.0172,
     "ungulate_cycle_mm": 872.7
    }
@@ -156,18 +156,18 @@
    "x": {
     "seam_dE00": 5.889,
     "ref_median_dE00": 4.304,
-    "ref_mad_dE00": 2.489,
+    "ref_mad_dE00": 2.539,
     "ref_max_dE00": 13.963,
-    "common_grid_lines_dE00": 8.923,
-    "z": 0.64
+    "common_grid_lines_dE00": 8.916,
+    "z": 0.62
    },
    "y": {
     "seam_dE00": 7.664,
     "ref_median_dE00": 3.856,
-    "ref_mad_dE00": 2.251,
-    "ref_max_dE00": 10.529,
-    "common_grid_lines_dE00": 6.062,
-    "z": 1.69
+    "ref_mad_dE00": 2.215,
+    "ref_max_dE00": 10.539,
+    "common_grid_lines_dE00": 6.072,
+    "z": 1.72
    },
    "seamless": true
   }
@@ -177,10 +177,10 @@
   "is_proxy": false,
   "repeat_mm": 380.0,
   "coverage": {
-   "bench_grass": 0.293,
-   "sidehill_olive": 0.3358,
+   "bench_grass": 0.2929,
+   "sidehill_olive": 0.3356,
    "bleached_tine": 0.0746,
-   "deadfall_shadow": 0.2967
+   "deadfall_shadow": 0.2968
   },
   "palette_L": {
    "bench_grass": 65.1,
@@ -273,20 +273,20 @@
   "distance_rms_contrast": {
    "0m": {
     "human_rms_contrast": 0.6486,
-    "ungulate_rms_contrast": 0.6452
+    "ungulate_rms_contrast": 0.6453
    },
    "10m": {
     "human_rms_contrast": 0.5898,
-    "ungulate_rms_contrast": 0.4594,
+    "ungulate_rms_contrast": 0.4595,
     "ungulate_cycle_mm": 29.1
    },
    "50m": {
-    "human_rms_contrast": 0.4619,
+    "human_rms_contrast": 0.462,
     "ungulate_rms_contrast": 0.1381,
     "ungulate_cycle_mm": 145.4
    },
    "150m": {
-    "human_rms_contrast": 0.252,
+    "human_rms_contrast": 0.2521,
     "ungulate_rms_contrast": 0.0179,
     "ungulate_cycle_mm": 436.3
    },

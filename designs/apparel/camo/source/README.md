@@ -15,6 +15,6 @@ Palette taken from the SVG:
 `huntkit.camo.owner_base.load_owner_base()` checks for `owner_base.svg` here. If it is present
 it is used automatically (cairosvg rasteriser if installed, else the pure-Python even-odd
 scanline filler); if not, a procedural **PROXY** is used and every preview says "PROXY".
-After uploading, run `python -m huntkit.camo.cli owner-base`, then replace the
-`measured_proxy` numbers in `../owner_base.yaml` and the Owner Base section of `../DESIGN.md`
-with the real measurements, and set `source.present_in_repo: true`.
+**Status 2026-11-04:** the file is here and ingested. `../owner_base.yaml › measured` and the
+Owner Base section of `../DESIGN.md` hold the real measurements. If the art changes, re-run
+`python -m huntkit.camo.cli owner-base` and update both.

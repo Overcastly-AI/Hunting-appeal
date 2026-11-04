@@ -2,12 +2,11 @@
 
 ## 0. Owner Base (primary)
 
-> **STATUS: PROXY.** The owner's master SVG (`source/owner_base.svg`) is not in the repo yet.
-> Every coverage number and image below marked PROXY comes from a procedural stand-in
-> (`owner_base_proxy`) that copies the *described* structure. The palette analysis is exact,
-> because it uses the owner's real hex values. When the file is uploaded, `load_owner_base()`
-> uses it automatically. Then re-run `python -m huntkit.camo.cli owner-base` and update this
-> section and `owner_base.yaml › measured_proxy`.
+> **STATUS: REAL FILE (2026-11-04).** The owner's master SVG (`source/owner_base.svg`, PR #1)
+> is ingested by `load_owner_base()` (source `svg`, cairosvg back end). Every number and image in
+> this section is measured on the real artwork. The procedural proxy (`owner_base_proxy`) is
+> retired for design use and kept only as a test fixture and fallback. Proxy-era numbers are kept
+> for comparison in `owner_base.yaml › real_vs_proxy`.
 
 Decision (DECISIONS 2026-11-01): the owner's 4-colour SVG is the **primary** camo. Cirquefall
 (sections 1–11 below) is the **alternate**. Garments stay mostly solid, with Owner Base on the
@@ -16,7 +15,8 @@ same shard/chevron accent panels as before.
 **Files.** Spec: `owner_base.yaml`. Pipeline: `huntkit/camo/owner_base.py`. Previews and
 metrics: `huntkit/camo/owner_export.py`, which writes `previews/owner_base_*.png`,
 `owner_base_metrics.json` and `owner_base_scale_study.json`. Print TIFFs go to
-`outputs/camo/owner_base[_PROXY]_{full,accent}_*mm_300dpi.tif`.
+`outputs/camo/owner_base_{full_760,accent_380}mm_300dpi.tif` (8976 px and 4488 px square,
+LZW, 4 flat inks; not tracked).
 
 ### 0.1 Ingestion pipeline
 1. **Parse.** The parser reads `<rect>/<path>/<polygon>` in paint order, along with
@@ -32,25 +32,25 @@ metrics: `huntkit/camo/owner_export.py`, which writes `previews/owner_base_*.png
    robust z-score against the 127 interior 7.8125-unit grid lines. Grid lines are the fair
    reference because the seam is a boundary of every pixel grid. Seamless means z ≤ 3.5.
    Calibration: seamless proxies scored z ≤ 2.9, and tiles with an artificial seam scored
-   z ≥ 4.2. The proxy scores z = 2.9 / 1.7, so it is seamless (it is periodic by construction).
+   z ≥ 4.2. **The real owner tile scores z = 0.6 (x) / 1.7 (y): seamless, no fix applied.**
 4. **Fix if not seamless.** The default is **offset-blend**: a half-repeat-offset copy is
    cross-faded in *label space* using a noisy smoothstep mask (x pass, then y pass). It
    keeps the 4 inks and the repeat size. **Mirror** (a 2×2 reflected tile) is only a
    fallback, because it doubles the repeat and shows symmetry axes. Which one was applied
    is recorded in the metrics `seam_check`.
 
-### 0.2 Proxy (labelled PROXY everywhere)
-- **Macro.** Periodic fbm blobs are classified on the 180×180 grid (5.556 units). Dark sits
-  nested inside olive, and light tan forms highlights in the tan field. Isolated single
-  cells are removed. Rendering uses bilinear-of-binary thresholded at 0.5, which gives the
-  45° corner cuts of a traced raster.
-- **Micro.** Square pixel clusters sit on the 64 grid (15.625 units) and the 128 grid
-  (7.8125 units). They are seeded only on blob-edge cells (10 % and 16 %). Each cluster
-  takes the colour from across the edge and grows by a 1–6 or 1–8 cell random walk. Light
-  tan is never used as an overlay, matching the owner file.
-- **Proxy coverage (PROXY):** tan 41.6 %, olive 25.6 %, dark 22.0 %, light tan 10.8 %.
-  That splits into dark 22 % / mid 26 % / light 52 %, with mean L* 53.2 and mean colour
-  #978A5F.
+### 0.2 The real artwork (measured)
+- **Structure.** Macro blobs traced on the 180-cell grid with 45° corner cuts, as described.
+  They are **strongly vertically elongated** (streaks about 2–3× taller than wide). Dark, olive
+  and tan alternate across the width every ~100–150 mm at full scale. Square pixel clusters
+  (64- and 128-grid) sit along nearly every blob edge. Light tan appears as small highlights
+  on blob edges, never as an overlay.
+- **Coverage (real):** olive **33.6 %**, dark **29.7 %**, tan field **29.3 %**, light tan
+  **7.5 %** (proxy was 25.6 / 22.0 / 41.6 / 10.8). Luminance bands are dark 30 % / mid 34 % /
+  light 37 % (proxy 22 / 26 / 52). Weighted mean L* is **48.5** (proxy 53.2), and the mean
+  colour is **#8C8056**. The real file is darker and more evenly balanced than the proxy.
+- **Blob sizes, full 760 mm (median):** dark 153 mm, olive 132 mm, tan 126 mm, light tan 51 mm.
+  At the 380 mm accent scale they are half that.
 
 ### 0.3 Owner palette under deer vision (exact; no proxy involved)
 
@@ -75,40 +75,44 @@ metrics: `huntkit/camo/owner_export.py`, which writes `previews/owner_base_*.png
   mostly luminance (ΔL* 11).
 - **Tan vs light tan:** ΔE00 is 9.0 and Michelson is 0.16. That's enough up close, and
   better than Cirquefall's weakest pair (0.10). But it's purely tonal, and the highlights
-  (~70 mm at full scale) disappear for deer by about 25 m. So it works, but it's the
+  (real file: 51 mm median at full scale, 25 mm at accent) disappear for deer by about
+  17 m (full) or 9 m (accent). So it works, but it's the
   weakest link.
 - **Luminance spread:** L* runs 20 → 54 → 65 → 74. Three inks sit within 20 L*, and there's
   a 34 L* gap below olive with no mid-dark ink. At range, the dark ink carries almost all of
   the macro contrast.
 
-### 0.4 Physical repeat (scale study, PROXY geometry)
+### 0.4 Physical repeat (scale study, REAL geometry)
 
 Candidates were scored with `repeat_scale_study` on four measures: finest pixel ≥ 2.5 mm
-(printable floor), repeats across 1520 mm, deer RMS contrast by distance (vision.py, 6 cpd),
-and the panel flat-blob test.
+(printable floor), repeats across 1520 mm, deer RMS contrast by distance (vision.py, 6 cpd
+ASSUMPTION), and the panel flat-blob test. Proxy values are in brackets.
 
-| Repeat | finest px | across 1520 | deer RMS 50 / 150 / 300 m | flat-blob @150 mm |
-|---|---|---|---|---|
-| 508 | 4.0 mm | 2.99 | 0.30 / 0.12 / 0.02 | 9.5 % |
-| 610 | 4.8 mm | 2.49 | 0.33 / 0.16 / 0.04 | 12 % |
-| 640 | 5.0 mm | 2.38 | 0.33 / 0.17 / 0.05 | 14 % |
-| **760 (full)** | 5.9 mm | **2.00** | **0.36 / 0.20 / 0.07** | 18 % |
-| 305 | **2.4 mm ✗** | 4.98 | 0.23 / 0.04 / 0.00 | 1.8 % |
-| 320 | 2.5 mm (at floor) | 4.75 | 0.23 / 0.05 / 0.00 | 3.0 % |
-| **380 (accent)** | 3.0 mm | **4.00** | 0.26 / 0.07 / 0.00 | 4.5 % |
+| Repeat | finest px | across 1520 | deer RMS 50 / 150 / 300 m | flat-blob @150 mm | dark blob, deer-visible to |
+|---|---|---|---|---|---|
+| 508 | 4.0 mm | 2.99 | 0.20 / 0.03 / 0.01 | 0 % | 35 m |
+| 610 | 4.8 mm | 2.49 | 0.24 / 0.04 / 0.01 | 0 % | 42 m |
+| 640 | 5.0 mm | 2.38 | 0.25 / 0.05 / 0.01 | 0 % | 44 m |
+| **760 (full)** | 5.9 mm | **2.00** | **0.28 / 0.07 / 0.02** (0.36 / 0.20 / 0.07) | 0.3 % (18 %) | **53 m** |
+| 305 | **2.4 mm ✗** | 4.98 | 0.10 / 0.01 / 0.00 | 0 % | 21 m |
+| 320 | 2.5 mm (at floor) | 4.75 | 0.11 / 0.01 / 0.00 | 0 % | 22 m |
+| **380 (accent)** | 3.0 mm | **4.00** | 0.14 / 0.02 / 0.00 (0.26 / 0.07 / 0.00) | 0 % (4.5 %) | 26 m |
 
-- **Full scale = 760 mm** (1000 units = 760 mm). The ≈610 mm suggestion works, but 760
-  gives the most deer contrast at 50–300 m: blobs stay resolvable further out, and the
-  dark masses (~107 mm) are visible to about 37 m. It also tiles exactly 2× across a
-  1520 mm width, on the same drum as Cirquefall. Use it only on panels over 400 mm and on
-  full-fill garments: at 150 mm, 18 % of windows are plain tan.
-- **Accent scale = 380 mm.** This gives 4.5 % flat blobs at 150 mm, 0 % at 250 mm, and all
-  4 inks in the median panel. The finest pixel is 3.0 mm, which leaves margin over the
-  2.5 mm floor. Half of 610 (305 mm) fails that floor. The repeat divides the 760 mm drum.
-  Like Cirquefall Shard, the print averages out beyond ~150 m. At range, the panel layout
-  does the silhouette breaking (`owner_base_distance.png`, jacket rows).
-- Re-run the study on the real file. Blob sizes in the owner's art may differ from the
-  proxy's.
+- **Full scale stays 760 mm.** It still gives the most deer contrast at range and tiles exactly
+  2× across 1520 mm on the Cirquefall drum. The real art is fine on small panels too: only
+  0.3 % of 150 mm windows land in plain field, against 18 % for the proxy.
+- **Accent scale stays 380 mm.** All 4 inks appear in every 150 mm panel, and the finest pixel
+  is 3.0 mm, above the 2.5 mm floor.
+- **What the real file changes.** Deer contrast falls off **faster** than the proxy predicted.
+  At full scale it is 0.28 at 50 m and 0.07 at 150 m (proxy 0.36 / 0.20). At accent scale it
+  is 0.14 at 50 m. The blobs are larger, but the tight vertical dark/olive/tan alternation
+  averages out once the deer's acuity cycle (145 mm at 50 m, 436 mm at 150 m) spans one
+  stripe set. So beyond ~150 m (full) or ~50 m (accent), a deer sees the print as a flat
+  #8C8056. At that range the solid-body vs accent-panel layout does the silhouette breaking
+  (see the jacket rows in `owner_base_distance.png`).
+- The flat-blob argument for 380 is gone. 380 vs 760 on accents is now a trade between
+  close-range busy-ness and deer-visible range (26 m vs 53 m). This is offered to the owner
+  in 0.6; the default is unchanged.
 
 ### 0.5 Colorways (colorways.yaml, primary)
 The solids are three owner inks (**Sidehill Olive, Bench Grass, Deadfall Shadow**; same hex,
@@ -122,25 +126,37 @@ note. Pairings, all with Owner Base accent panels at 380 mm and Deadfall Shadow 
 **Lichen** (talus/late season). The Cirquefall solids and pairings are kept under
 `alternate:`.
 
-### 0.6 Recommendations (owner colours unchanged)
-1. Keep the 4 inks as they are. Close the L* gap in the *system*: use Elk Wallow bodies for
-   timber.
-2. Use the 380 mm accent repeat on every panel under ~400 mm.
-3. In the real file, keep the dark ink at about 18 % or more of the area (proxy: 22 %). If
-   it's lower, deer at 50–150 m will see a flat tan.
-4. Keep the light-tan highlights next to olive or dark, not isolated in tan (that's the weak
-   0.16 step).
-5. Habitat: the pattern mean matches dry bunchgrass (deer ΔE00 2.6) and sagebrush (7.5). It
-   is weak in dark timber and snow (~28); use the Wallow body or Cirquefall Firn there.
-   Body vs background (deer ΔE00): Lichen Stone on sage 2.2 and talus 3.9, Bench Grass on
-   grass 5.1, Elk Wallow on timber floor 9.5.
-6. On lab dips, hold olive and tan chroma (C* 32 and 28) to the low side. Check that the
+### 0.6 Recommendations (owner colours unchanged; re-derived on the real file)
+1. Keep the 4 inks and the artwork exactly as supplied. Close the L* 20 → 54 gap in the
+   *system*: use Elk Wallow (L* 38) bodies for timber.
+2. **Dark share target met.** Dark is 29.7 % against the ≥ 18 % target. Dark blobs carry the
+   macro contrast, and deer can resolve them to ~53 m at full scale and ~26 m at accent scale.
+3. Keep 760 mm full-fill and 380 mm accents. Panel size no longer forces the accent scale:
+   the real art has no flat-field problem at either scale.
+4. **Owner decision offered:** put large accent panels (≥ 250 mm: yoke, pack lid, hipbelt
+   wings) on the 760 repeat. That roughly doubles the deer-resolvable range (~50 m vs ~25 m)
+   and uses one drum. Narrow forearm and side panels stay at 380.
+5. Past ~150 m the print reads as one colour (#8C8056) for deer. Make the accent panels
+   large, asymmetric, and crossing the shoulder and hip lines, so the layout breaks the
+   silhouette where the print can't.
+6. **Grain:** the art is vertically elongated. Cut panels with the repeat upright, so the
+   streaks echo standing grass and timber trunks. Lock the marker rotation to 0°/180°, never 90°.
+7. Light tan is only 7.5 % and sits on edges next to olive or dark. That hides the weak
+   tan/light-tan step (Michelson 0.16), so no change is needed.
+8. Habitat: the mean colour is closest to dry bunchgrass (deer ΔE00 6.0, proxy 2.6) and
+   sagebrush (8.3). Against dark timber it is 24.3 (proxy 28.1), better than the proxy but still
+   weak. Use the Wallow body or Cirquefall Firn for timber and snow (30.2). Body vs
+   background (deer ΔE00): Lichen Stone on sage 2.2 and talus 3.9, Bench Grass on grass 5.1,
+   Elk Wallow on timber floor 9.5.
+9. On lab dips, hold olive and tan chroma (C* 32 and 28) to the low side. Check that the
    dark ink isn't NIR-black. No OBA, especially on the light inks.
 
 ### 0.7 Previews
-`previews/owner_base_swatch_card.png`, `owner_base_distance.png`, `owner_base_dichromat.png`,
-`owner_base_accent_mocks.png` (jacket + pack × Sidehill/Benchland/Wallow) and
-`owner_base_tile2x2.png`. Phone copies: `outputs/screens/20261101_ownerbase_{1..5}.png`.
+All are rendered from the real SVG with no PROXY labels: `previews/owner_base_swatch_card.png`,
+`owner_base_distance.png`, `owner_base_dichromat.png`, `owner_base_accent_mocks.png` (jacket +
+pack × Sidehill/Benchland/Wallow) and `owner_base_tile2x2.png`. Phone copies are
+`outputs/screens/20261104_ownerbase_real_{1..5}.png`. The pack hero render
+(`outputs/screens/20261104_pack3d_hero.png`) uses the real texture (viz3d log: `camo: owner_base SVG`).
 
 ---
 
