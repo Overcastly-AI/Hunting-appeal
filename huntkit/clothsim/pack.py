@@ -370,16 +370,31 @@ class PackModel:
             self.cables[name] = cb
         nan3 = [np.nan] * 3
         # hinge eyes at the floor / frame-panel seam, pinned at z 60 (bag_anchor_low)
+        # optional hinge-eye doubler (``hinge.doubler_mm`` > 0): the eye is bartacked through a doubler sewn along
+        # the B-01 | B-05 seam, so the pin holds every seam node within doubler_mm / 2 of the eye (stiffness split
+        # equally), not one node. Default 0 = one node (phase-1 baseline).
         h = sc["hinge"]
+        self.hinge_nodes, self.hinge_groups = [], {}
+        seam_nodes = np.intersect1d(self.nodes_of("B-05"), self.nodes_of("B-01"))
+        dbl = float(h.get("doubler_mm", 0.0) or 0.0)
         for side, sx in (("R", 1), ("L", -1)):
             pin = hp[f"bag_anchor_low_{side}"]
-            seam_nodes = np.intersect1d(self.nodes_of("B-05"), self.nodes_of("B-01"))
-            k = int(seam_nodes[np.argmin(np.abs(X[seam_nodes, 0] - sx * abs(pin[0])))])
+            dx = np.abs(X[seam_nodes, 0] - sx * abs(pin[0]))
+            k = int(seam_nodes[np.argmin(dx)])
             add(f"hinge_{side}", [k, -1], [nan3, pin], h["webbing"], h.get("pretension_n", 0.0), "hinge",
                 capacity_n=h.get("capacity_n"))
-            self.hinge_nodes = getattr(self, "hinge_nodes", []) + [k]
+            ks = [k]
+            if dbl > 0:
+                ks = sorted(set([k] + seam_nodes[dx <= 0.5 * dbl + 1e-6].astype(int).tolist()))
+            self.hinge_groups[f"hinge_{side}"] = list(range(len(self.hinge_nodes), len(self.hinge_nodes) + len(ks)))
+            self.hinge_nodes += ks
+        self.hinge_doubler_mm = dbl
         # bag hooks at IM2 / IM3: hook strap bartacked on B-01 70 mm below the eye
+        # optional bag-side hook tab (``hooks.tab: {stations, width_mm}``): the hook strap is bartacked to a tab sewn
+        # across width_mm of B-01, modelled as a bridle of legs from every B-01 node on that line to the eye (one
+        # elastic leg each, pretension split); reported as one attachment (sum) plus its legs
         hk = sc["hooks"]
+        tab = hk.get("tab") or {}
         for st in hk["stations"]:
             for side, sx in (("R", 1), ("L", -1)):
                 eye = hp[f"meat_anchor_z{int(st)}_{side}"]
@@ -387,8 +402,16 @@ class PackModel:
                 cand = self.nodes_of("B-01", "B-01b", "B-01u")
                 d = np.hypot(X[cand, 0] - tgt[0], X[cand, 2] - tgt[2])
                 k = int(cand[np.argmin(d)])
-                add(f"hook_im{int(st)}_{side}", [k, -1], [nan3, eye], hk["webbing"], hk.get("pretension_n", 0.0),
-                    "hook", capacity_n=hk.get("capacity_n"))
+                name = f"hook_im{int(st)}_{side}"
+                if tab and float(st) in [float(v) for v in tab.get("stations", [])]:
+                    legs = self._line_nodes(cand, tgt[0], X[k, 2], float(tab["width_mm"]), k)
+                    for i, kk in enumerate(legs):
+                        add(f"{name}.{i + 1}", [kk, -1], [nan3, eye], hk["webbing"],
+                            hk.get("pretension_n", 0.0) / len(legs), "hook", capacity_n=hk.get("capacity_n"),
+                            group=name, tab_width_mm=float(tab["width_mm"]))
+                else:
+                    add(name, [k, -1], [nan3, eye], hk["webbing"], hk.get("pretension_n", 0.0),
+                        "hook", capacity_n=hk.get("capacity_n"))
         # under-straps: frame pin L -> floor channel -> cam on pin R
         us = sc["under_straps"]
         floor = self.nodes_of("B-05")
@@ -420,6 +443,32 @@ class PackModel:
             fixed = [pR] + [nan3] * len(seq) + [pL]
             add(w["id"], nodes, fixed, wr["webbing"], wr["pretension_n"], "wrap", mode=wr.get("mode", "cinched"),
                 capacity_n=wr.get("capacity_n"))
+        # bag-top ties (``attachments.ties``, added 2026-11-05 for the crown tie / top guys): a strap from a bag point
+        # (nearest node of ``pieces`` to ``at`` = [x, z], or a bridle across ``width_mm``) to a fixed frame anchor.
+        # mode elastic = fixed-length (G-hook in a daisy loop, snug at the drafted shape); mode cinched = ladder lock,
+        # re-cinched on the loaded bag like the wraps. ``via`` = optional list of [x, z] bag points the strap is
+        # routed through (keepers; it slides freely there)
+        tl = sc.get("ties") or {}
+        for t in tl.get("list", []):
+            cand = self.nodes_of(*t["pieces"])
+            ax_, az_ = float(t["at"][0]), float(t["at"][1])
+            d = np.hypot(X[cand, 0] - ax_, X[cand, 2] - az_)
+            k = int(cand[np.argmin(d)])
+            anchor = np.asarray(t["anchor"], float)
+            via = []
+            for v in t.get("via", []):
+                cv = self.nodes_of(*v.get("pieces", t["pieces"]))
+                dv = np.hypot(X[cv, 0] - float(v["at"][0]), X[cv, 2] - float(v["at"][1]))
+                via.append(int(cv[np.argmin(dv)]))
+            legs = self._line_nodes(cand, ax_, X[k, 2], float(t.get("width_mm", 0.0)), k)
+            for i, kk in enumerate(legs):
+                nm = t["id"] if len(legs) == 1 else f"{t['id']}.{i + 1}"
+                nodes = [kk] + via[::-1] + [-1]
+                fixed = [nan3] * (len(nodes) - 1) + [anchor]
+                add(nm, nodes, fixed, t.get("webbing", tl.get("webbing", "poly_webbing_25mm")),
+                    float(t.get("pretension_n", tl.get("pretension_n", 30.0))) / len(legs), "tie",
+                    mode=t.get("mode", tl.get("mode", "elastic")), capacity_n=t.get("capacity_n", tl.get("capacity_n")),
+                    **({"group": t["id"]} if len(legs) > 1 else {}), label=t.get("label", ""))
         # roll-top clips: the two ends of the closed roll pulled down onto the side gores
         rc = sc.get("roll_clips")
         if rc:
@@ -433,6 +482,15 @@ class PackModel:
                 g = int(gore[np.argmin(np.linalg.norm(X[gore] - tgt, axis=1) + 1e3 * (np.abs(X[gore, 2] - tgt[2]) > 40))])
                 add(f"roll_clip_{side}", [e, g], [nan3, nan3], rc["webbing"], rc["pretension_n"], "roll_clip",
                     mode="cinched", capacity_n=rc.get("capacity_n"))
+
+    def _line_nodes(self, cand, x_c, z_c, width, k0):
+        """Nodes of ``cand`` on a horizontal line of ``width`` (mm) centred on x_c at the height of node k0
+        (within half an element); [k0] when width is 0."""
+        if width <= 0:
+            return [k0]
+        X = self.mesh.X0
+        s = cand[(np.abs(X[cand, 2] - z_c) <= 0.5 * self.h) & (np.abs(X[cand, 0] - x_c) <= 0.5 * width + 1e-6)]
+        return sorted(set([k0] + s.astype(int).tolist()))
 
     # ---- one load case
     def build_sim(self, case: dict, cinched: bool = True) -> Sim:
@@ -455,7 +513,7 @@ class PackModel:
         for c in self.cables.values():
             if c.kind == "hinge":
                 continue
-            if c.kind in ("hook",):
+            if c.kind == "hook" or (c.kind == "tie" and case.get("ties", True)):
                 use.append(c)
             elif cinched and ((c.kind == "under_strap" and case.get("under_straps", True))
                               or (c.kind == "wrap" and case.get("wraps", False))
