@@ -1,0 +1,75 @@
+# Cloth-sim scenario: Pack 5200 v3.1 main bag on the branch frame + BP-06 rev B spreader.
+# "Adjust a panel": copy this file (or write a small one with `extends: pack5200_v31.yaml`), change a
+# value under `panels:` / `fabric_overrides:`, run `python -m huntkit.clothsim.cli run --scenario <file>`,
+# then `python -m huntkit.clothsim.cli diff <base results.json> <new results.json>`.
+name: pack5200_v31_baseline
+mesh:
+  h: 40            # coarse default element size, mm
+  fine_h: 25       # --fine
+  tol: 1.5         # weld tolerance (mm) between seam curves on the master surface
+solver:
+  tol_n: 0.02      # max nodal residual force, N
+  max_iter: 150
+  time_cap_s: 900  # per load case; reported as not converged if hit
+  ramp: [0.25, 0.5, 1.0]
+panels: {}
+#  B-03:  {scale_weft: 1.03}            # both gores 3 % wider (weft = across the gore, grain is vertical)
+#  B-01:  {material: cordura_500d_nylon66}
+#  B-02b: {scale_warp: 0.98}
+fabric_overrides: {}
+#  cordura_330d_nylon66: {shear_scale: 2.0}
+seams:
+  thread: bonded_nylon_tex90     # BUILD_PLAN.md thread list; body seams ASSUMPTION tex 90
+  stitch: "301"
+  stitch_mm: 3.5                 # BUILD_PLAN.md step 6 (Challenge Ultra 200, walking foot, 3.5 mm stitch)
+contact:
+  kc: 50.0          # N/mm per node penalty
+  clearance: 1.0    # mm
+  cutoff: 20.0      # mm search radius
+  spacing: 4.0      # point-cloud sampling of the STL, mm
+attachments:
+  hinge:            # bag eye on the floor/frame-panel seam over the z 60 hinge pin (bag_anchor_low)
+    webbing: poly_webbing_25mm     # ASSUMPTION eye webbing
+    pretension_n: 0.0
+    capacity_n: 2700.0             # geometry.yaml meat_harness capacities: box-X bartack tex135 (ASSUMPTION)
+  hooks:            # bag hooks on the IM2 / IM3 eyes (attachment.yaml / bag_attachment.md)
+    stations: [330, 520]
+    bartack_below_mm: 70           # patterns_v31.HOOK_STRAP_DZ (ASSUMPTION there)
+    webbing: poly_webbing_38mm
+    pretension_n: 20.0             # ASSUMPTION: hooked snug
+    capacity_n: 1500.0             # 38 mm Al sliding-gate hook (ASSUMPTION, geometry.yaml)
+  under_straps:     # US1 / US2, 38 mm, cammed (meat_haul_modes.md)
+    z: [95, 142]
+    channel_depth_frac: [0.30, 0.65]   # patterns_v31.CHANNEL_Y (ASSUMPTION there)
+    webbing: poly_webbing_38mm
+    pretension_n: 100.0            # ASSUMPTION: hand-cammed
+    capacity_n: 1100.0             # 38 mm cam slip (ASSUMPTION, geometry.yaml)
+  wraps:            # haul wraps W1-W3 = carry-mode compression (geometry.yaml haul_wraps)
+    webbing: poly_webbing_25mm
+    pretension_n: 80.0             # ASSUMPTION: hand-cinched ladder lock
+    capacity_n: 300.0              # 25 mm ladder-lock slip (meat_haul_modes.md)
+    list:
+      - {id: W1, anchor_R: [115.0, 10.5, 80.0], anchor_L: [-115.0, 7.3, 250.0]}
+      - {id: W2, anchor_R: [115.0, 7.3, 250.0], anchor_L: [-115.0, 4.1, 420.0]}
+      - {id: W3, anchor_R: [115.0, 0.0, 702.6], anchor_L: [-115.0, 0.0, 702.6]}   # crown top bar, x/y ASSUMPTION
+meat:               # HA-LS-1 rev B section 4.1 (load_standard.md)
+  vertical_to_floor: 0.70          # 70 % into the bag bottom + hinge pins; 30 % by friction to the strap anchors
+  cg_aft_mm: 150.0
+  strap_z: [190.0, 330.0, 520.0]
+  cinch_per_anchor_n: 150.0
+  face_z: [60.0, 330.0]
+  face_half_width_mm: 121.0        # spreader 242 mm wide (spreader_results.json)
+cases:
+  empty:            # (a) empty, hanging on the frame
+    p0_kpa: 0.05     # ASSUMPTION: a little loft so the empty shell keeps its panels apart (no self-contact)
+    wraps: false
+  fill:             # (b) filled to volume: HA-LS-1 C1 rated 68 kg as a fluid-equivalent fill + packing pressure
+    fill_kg: 68.0
+    p0_kpa: 0.5      # ASSUMPTION: firm packing pressure at the top of the load
+    wraps: true
+  meat:             # (c) 30 kg meat on the internal straps + the rest of the 68 kg rated load as gear
+    meat_kg: 30.0
+    fill_kg: 38.0
+    p0_kpa: 0.5
+    wraps: true
+volume_sweep_kpa: [0.25, 0.5, 1.0, 2.0]   # gas inflation only (no weight): the bag's real capacity

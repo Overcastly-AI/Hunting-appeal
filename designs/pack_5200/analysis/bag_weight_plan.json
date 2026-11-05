@@ -1,0 +1,273 @@
+{
+  "date": "2026-11-05",
+  "total_g": 3030.2,
+  "gap_g": 762.2,
+  "items": [
+    {
+      "id": "W-01",
+      "zone": "reinforcement",
+      "title": "Retire the B-10 frame-link tabs (6 Hypalon 50 x 70)",
+      "g": 21.6,
+      "usd": -0.59,
+      "durability": "none: the bag hangs on the eight fairleads; the toggles these tabs took were removed in PR #3",
+      "source": "analysis/bag_attachment.md (LINK hardware removed); patterns_v31.py note 'B-10 tabs retired'",
+      "status": "applied",
+      "rec": "applied in build_geometry.py",
+      "pattern_regen": "none (the v3.1 patterns already omit B-10)"
+    },
+    {
+      "id": "O-1",
+      "zone": "feature count",
+      "title": "Meat straps 3 -> 2 (drop IM1, keep its fairlead eyes)",
+      "g": 72.1,
+      "usd": -12.97,
+      "durability": "bag-off quarter loses its lowest clamp: friction hold drops from 5 to 4 straps and the hock can no longer hook over IM1; bag-on loads move to IM2/IM3 (IM3 hook already the heaviest, SF 2.71)",
+      "source": "geometry.yaml meat_harness (IM1 cut length, hook 9 g / cam 22 g ASSUMPTION; hook $3, cam $6 ASSUMPTION); meat_haul_modes.md; DESIGN Q2",
+      "status": "owner",
+      "rec": "NO. Packing meat out is the primary mission; IM1 is the low clamp in bag-off. Keep 3.",
+      "pattern_regen": "B-01: delete the 2 IM1 ports (B-12 x2)"
+    },
+    {
+      "id": "O-2",
+      "zone": "hardware",
+      "title": "Meat straps 38 mm -> 25 mm (webbing, cams, hooks)",
+      "g": 84.8,
+      "usd": -0.92,
+      "durability": "25 mm bites game bags and the 25 mm cam/buckle ratings were already too low for the cradle (meat_haul_modes.md); breaks the one-width MEAT family (R-25)",
+      "source": "poly_webbing_25/38mm records; 25 mm cam 12 g and hook 5 g ASSUMPTION (no records)",
+      "status": "owner",
+      "rec": "NO. Load rating and glove use beat 80 g.",
+      "pattern_regen": "none"
+    },
+    {
+      "id": "O-3",
+      "zone": "fabric: collar",
+      "title": "Roll-top collar B-06 100D Robic -> 70D ripstop (40D silpoly shown for scale)",
+      "g": 12.8,
+      "usd": 0.94,
+      "alt": "40D silpoly: -28.8 g",
+      "durability": "tear 45 -> 35 N (40D: 25 N). The collar carries an over-stuffed load and the roll; silpoly is too slick to hold a roll",
+      "source": "robic_100d_ripstop record; 70D ripstop ASSUMPTION (no record); B-06 cut area from panels.yaml",
+      "status": "owner",
+      "rec": "YES to 70D once the materials-engineer adds a record with a real tear value; NO to 40D silpoly.",
+      "pattern_regen": "B-06 material id only (marker re-nest at the 70D roll width)"
+    },
+    {
+      "id": "O-4",
+      "zone": "fabric: body",
+      "title": "Body face, side gores, hem, storm strip 330D Cordura -> 210D UHMWPE grid",
+      "g": 17.9,
+      "usd": 3.7,
+      "durability": "tear 90 -> 180 N (2x); abrasion of the grid fabric is not in its record; visible grid lines change the solid-colour look; same quietness (3)",
+      "source": "cordura_330d_nylon66 and ultragrid_210d_uhmwpe_ripstop records; Exo users report thin pocket fabric tearing on rock (docs/research/pack_market_2026.md 3.2)",
+      "status": "owner",
+      "rec": "YES if a supplier abrasion figure is >= the 330D (800 Taber cycles) and the owner likes the swatch.",
+      "pattern_regen": "B-02a/b/c/d, B-03, B-07, B-08 material id; re-nest markers"
+    },
+    {
+      "id": "O-5",
+      "zone": "fabric: bottom",
+      "title": "Bag bottom B-05 500D Cordura -> Challenge ULTRA 200 (B-01 fabric)",
+      "g": 7.6,
+      "usd": 1.56,
+      "durability": "better: Taber 1500 -> 2000, tear 130 -> 250 N, waterproof floor (blood/wet ground); louder (quietness 2) but the floor is not brushed; stock colours only",
+      "source": "cordura_500d_nylon66, challenge_ultra_200 records; Seek Outside Unaweep in ULTRA 200X (research 3.6)",
+      "status": "owner",
+      "rec": "YES. A durability gain that also saves grams; pick the closest stock ULTRA colour (black/coyote).",
+      "pattern_regen": "B-05 material id (and B-16 floor channels stay 500D)"
+    },
+    {
+      "id": "O-6",
+      "zone": "reinforcement / accents",
+      "title": "Camo shards SH-02..04 on a 300D printable base (SH-01 corner stays 630D)",
+      "g": 9.7,
+      "usd": -0.09,
+      "durability": "SH-02/03/04 are trim on low-wear spots; SH-01 wraps the bottom corner and stays the abrasion doubler (DECISIONS: accents as functional reinforcement)",
+      "source": "polyester_ht_630d_printable record; 300D printable ASSUMPTION (no record)",
+      "status": "owner",
+      "rec": "YES, after a print test on the 300D base (camo-designer colour match).",
+      "pattern_regen": "SH-02, SH-03, SH-04 material id"
+    },
+    {
+      "id": "O-7",
+      "zone": "rain fly",
+      "title": "Rain fly F-01 40D -> 20D silpoly",
+      "g": 8.5,
+      "usd": 1.89,
+      "durability": "tear 25 -> 15 N; the fly is also the brush cover in rain",
+      "source": "silicone_coated_poly_ripstop_40d record; 20D silpoly ASSUMPTION (no record)",
+      "status": "owner",
+      "rec": "NO. 10 g does not pay for a fly that snags open on the first deadfall.",
+      "pattern_regen": "F-01a/b/c material id"
+    },
+    {
+      "id": "O-8",
+      "zone": "rain fly",
+      "title": "Fly integration: stow the fly in the SPINE band, delete fly pocket F-02 + #5 zip",
+      "g": 11.0,
+      "usd": -1.19,
+      "durability": "the fly no longer deploys from the bottom without unpacking; the band then holds fly + bow/poles",
+      "source": "F-02 piece, coil_zipper_5 record; research P7 (stowable fly in a base pocket is the users' wish)",
+      "status": "owner",
+      "rec": "NO. The base-pocket fly is a researched answer to P7.",
+      "pattern_regen": "delete F-02; D-01 unchanged"
+    },
+    {
+      "id": "O-9",
+      "zone": "rain fly",
+      "title": "Delete the fly: waterproof body (ULTRA 200 face + gores, taped seams), keep the flag sleeve",
+      "g": 82.1,
+      "usd": 23.94,
+      "durability": "ULTRA's film backing is louder (quietness 2, R-13 quiet requirement), UHMWPE takes camo print poorly (record ir_notes), taped seams in a 3D teardrop are hard for a first-time builder",
+      "source": "fly rows in geometry.yaml weight; challenge_ultra_200 record; seam tape 3 g/m ASSUMPTION; owner: fly counts in base",
+      "status": "owner",
+      "rec": "NO. Quiet hunting and the owner's camo direction win; keep the fly.",
+      "pattern_regen": "all face/gore pieces and the fly set"
+    },
+    {
+      "id": "O-10",
+      "zone": "pockets",
+      "title": "Side-pocket gussets P-02 210D grid -> 100D Robic",
+      "g": 8.5,
+      "usd": -0.5,
+      "durability": "tear 180 -> 45 N on the brush-facing gusset",
+      "source": "records; research 3.2 'thin pocket fabric tears on rock' (Exo)",
+      "status": "owner",
+      "rec": "NO. This is the pain point we were built to fix.",
+      "pattern_regen": "P-02 material id"
+    },
+    {
+      "id": "O-11",
+      "zone": "pockets / feature count",
+      "title": "Delete both floating side pockets",
+      "g": 62.1,
+      "usd": -5.64,
+      "durability": "loses tripod / rifle-stock / bottle carry and 5.8 L; wraps alone carry long items",
+      "source": "geometry.yaml weight row; volumes.side_pocket_each_L",
+      "status": "owner",
+      "rec": "NO. Tripod and stock carry are requirements R-18..22.",
+      "pattern_regen": "delete P-01..P-03"
+    },
+    {
+      "id": "O-12",
+      "zone": "feature count",
+      "title": "Hydration: replace the sleeve B-09 with 2 hanger loops",
+      "g": 7.6,
+      "usd": -1.4,
+      "durability": "the bladder then sits against the meat stack: blood on the bladder and no separation",
+      "source": "B-09 piece, poly_webbing_25mm record",
+      "status": "owner",
+      "rec": "NO. Meat rides in this bag; keep the sleeve.",
+      "pattern_regen": "delete B-09"
+    },
+    {
+      "id": "O-13",
+      "zone": "zip",
+      "title": "Diagonal zip #10 -> #8 coil (2 sliders kept)",
+      "g": 6.8,
+      "usd": -0.57,
+      "durability": "#8 under a meat load and gloved hands; the leaders use #10 on the main zip (SG, research 3.1)",
+      "source": "coil_zipper_10/8 records; slider masses ASSUMPTION",
+      "status": "owner",
+      "rec": "NO. The main zip is the last place to save 7 g.",
+      "pattern_regen": "none (tape width differs 1 mm: B-08 notes)"
+    },
+    {
+      "id": "O-14",
+      "zone": "zip",
+      "title": "Diagonal zip: one slider instead of two",
+      "g": 6.0,
+      "usd": -1.0,
+      "durability": "lose the open-from-either-end access that makes one zip ambidextrous",
+      "source": "slider 6 g ASSUMPTION (build_geometry zip row)",
+      "status": "owner",
+      "rec": "NO. Ambidextrous access is a decision.",
+      "pattern_regen": "none"
+    },
+    {
+      "id": "O-15",
+      "zone": "reinforcement",
+      "title": "Lash tabs B-11 Hypalon -> laser-cut TPU-coated 840D",
+      "g": 6.4,
+      "usd": -0.14,
+      "durability": "lighter and stiffer; laser fuses the cut edge; pull-test the 25 x 5 slot to the 450 N buckle class first",
+      "source": "hypalon_coated_nylon, tpu_coated_nylon_840d records",
+      "status": "owner",
+      "rec": "YES, pending a 5-sample slot pull test.",
+      "pattern_regen": "B-11 material id"
+    },
+    {
+      "id": "O-16",
+      "zone": "feature count",
+      "title": "Delete haul wrap W3 (crown wrap)",
+      "g": 38.9,
+      "usd": -2.0,
+      "durability": "the roll-top clips still compress the top; frame-only loses the top lash to the crown and antler carry",
+      "source": "geometry.yaml haul_wraps W3; G-hook 4 g ASSUMPTION",
+      "status": "owner",
+      "rec": "NO. Antler/cape lash is a field use case; keep W3.",
+      "pattern_regen": "none"
+    }
+  ],
+  "cut_list_cross_check": {
+    "main bag": {
+      "design_g": 272.9,
+      "cut_list_g": 273.1,
+      "delta_g": 0.2
+    },
+    "fly": {
+      "design_g": 58.9,
+      "cut_list_g": 45.3,
+      "delta_g": -13.6
+    },
+    "pockets": {
+      "design_g": 53.3,
+      "cut_list_g": 49.8,
+      "delta_g": -3.5
+    },
+    "accents": {
+      "design_g": 44.3,
+      "cut_list_g": 35.2,
+      "delta_g": -9.1
+    }
+  },
+  "missing_records": {
+    "nylon_ripstop_70d": {
+      "gsm": 70,
+      "tear_n": 35,
+      "usd_m2": 13.0,
+      "why": "70D nylon ripstop (PU), collar option. ASSUMPTION ~2.0 oz/yd2 class"
+    },
+    "silpoly_20d": {
+      "gsm": 37,
+      "tear_n": 15,
+      "usd_m2": 9.0,
+      "why": "20D silpoly (1.1 oz/yd2 class), lighter fly. ASSUMPTION"
+    },
+    "polyester_300d_printable": {
+      "gsm": 170,
+      "tear_n": 70,
+      "usd_m2": 12.0,
+      "why": "300D printable polyester for the camo shards. ASSUMPTION"
+    },
+    "cam_buckle_25mm_al": {
+      "mass_g": 12.0,
+      "why": "25 mm metal cam (same as the torso-adjust cam ASSUMPTION)"
+    },
+    "hook_sliding_gate_25mm_al": {
+      "mass_g": 5.0,
+      "why": "25 mm sliding-gate hook. ASSUMPTION"
+    },
+    "slider_coil_8": {
+      "mass_g": 4.0,
+      "why": "#8 coil slider. ASSUMPTION (the #10 slider is a 6 g ASSUMPTION)"
+    },
+    "ultragrid abrasion": {
+      "why": "ultragrid_210d_uhmwpe_ripstop has no abrasion property; needed before O-4"
+    }
+  },
+  "screens": [
+    "outputs/screens/20261105_bag_3.png",
+    "outputs/screens/20261105_bag_4.png"
+  ]
+}

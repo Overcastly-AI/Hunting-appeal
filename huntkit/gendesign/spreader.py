@@ -313,7 +313,7 @@ def outline_v2(half_w: float = 121.0, corner_r: float = 20.0, z_lo: float = Z_LO
 
 
 def outline_v1():
-    """Current drawing: 208 x 300, square corners, plus the 22 mm notches bag_attachment.md calls for."""
+    """Retired v1 drawing: 208 x 300, square corners, 22 mm notches (the v1 attachment note; v2 notches are 30 mm)."""
     from shapely.geometry import box
     from shapely.ops import unary_union
     body = box(-104.0, Z_LO, 104.0, Z_HI)

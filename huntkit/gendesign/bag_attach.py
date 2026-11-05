@@ -745,9 +745,9 @@ def write_docs(ctx: dict) -> str:
     a(f"- Bag off in about **{34} s** (four hooks and two hinge pins). Back on in about **70 s**.")
     a(f"- Marginal hardware and filament about **${cost['total']:.0f}**. Extra print time about **{cost['hours']:.2f} h**.")
     a("")
-    a("Bag-off is a required mode (owner, 2026-11-01), not an option. The same fairleads take the")
-    a("meat straps eye-to-eye once the bag is off. The procedure, the in-bag mode, and the wedge")
-    a("between bag and frame are in `analysis/meat_haul_modes.md`.")
+    a("Bag-off is a required mode (owner, 2026-11-01). The same fairleads take the")
+    a("meat straps eye-to-eye once the bag is off. Both haul modes, the wedge between bag and frame,")
+    a("and the safety factors are in `analysis/meat_haul_modes.md`. The eight B-01 swells are accepted.")
     a("")
     a("## Why this one")
     a("")
@@ -868,7 +868,13 @@ def write_docs(ctx: dict) -> str:
     a(f"  Each fairlead stands about {HOLE_PROUD + HOLE_D / 2 + WALL_FRONT:.0f} mm proud of the surface.")
     a(f"  A feathered {SWELL:.0f} mm swell in B-01, 90 mm long, puts 2 mm of air over the cleat")
     a("  so it does not rub the cloth or print a point into the meat. The swell is inside the bag.")
-    a("- Spreader sheet is notched 22 mm in height at each fairlead. The notch is at the edge landing,")
+    from .spreader import FAIRLEAD_HALF_Z, FAIRLEADS_Z, NOTCH_CLEAR, NOTCH_ROOT_R, Z_HI, Z_LO_V2
+    notch_h = 2 * (FAIRLEAD_HALF_Z + NOTCH_CLEAR)
+    notched = [z for z in FAIRLEADS_Z if Z_LO_V2 <= z <= Z_HI]
+    a(f"- The Sandwich v2 spreader (BP-06 rev B, `spreader.md`) is notched {notch_h:.0f} mm in height at the "
+      + ", ".join(f"z {z:.0f}" for z in notched) + " fairleads,")
+    a(f"  with R{NOTCH_ROOT_R:.0f} roots and {NOTCH_CLEAR:.0f} mm of air round each cleat (`cut/spreader/README.md`). "
+      "The notch is at the edge landing,")
     a("  not in the window span. The rails and the mesh are untouched.")
     a("- Slack hooks sit under a 3 mm elastic keeper so an empty pack does not click on the stalk.")
     a("- Field repair: spare pin, spare sleeve, spare hook, in the hipbelt pocket. A cracked cleat")
@@ -931,6 +937,8 @@ def _yaml_dump(d: dict) -> str:
             lines.append(f"{k}:")
             for kk, vv in v.items():
                 lines.append(f"  {kk}: {vv}")
+        elif isinstance(v, bool):
+            lines.append(f"{k}: {str(v).lower()}")      # YAML style, as committed
         elif isinstance(v, float):
             lines.append(f"{k}: {v:.4g}")
         else:
@@ -1019,5 +1027,25 @@ def run(log=print, fine_h: float = 1.0, coarse_h: float = 1.5):
     return out
 
 
+def docs_only(log=print) -> str:
+    """Rewrite analysis/bag_attachment.md from bag_attachment_results.json without re-running the FEA.
+    Cheap checks (pin, cost, lifter/hip) are recomputed; FEA rows, options and screens come from the record."""
+    res = json.loads((ANALYSIS / "bag_attachment_results.json").read_text())
+    gov = res["governing"]
+    fine = [r for r in res["fea"] if abs(r["h_mm"] - res["h_mm"]) < 1e-6]
+    pin = pin_check(gov["hinge"]["n"], gov["hinge"]["g_times_req"])
+    added = float(np.mean([r["added_g"] for r in fine]))
+    mass = _mass_budget(added, pin)
+    if abs(mass["delta_g"] - res["delta_g"]) > 0.05:
+        raise RuntimeError("mass budget changed since the last run(): re-run run() instead of docs_only()")
+    ctx = {"gov": gov, "fea": fine, "mass": mass, "cost": _cost(added, mass), "pin": pin, "hip": lifter_and_hip(),
+           "options": res["options"], "screens": res["screens"], "base_pack_g": res["pack_g"] - res["delta_g"],
+           "clip": res["clip"], "coarse": [r for r in res["fea"] if abs(r["h_mm"] - res["h_mm"]) > 1e-6]}
+    path = write_docs(ctx)
+    log(path)
+    return path
+
+
 if __name__ == "__main__":
-    run()
+    import sys
+    docs_only() if "--docs-only" in sys.argv else run()

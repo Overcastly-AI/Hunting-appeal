@@ -5,13 +5,15 @@ meta:
   note: 'approx_size = seam-line bounding box (mm). Body gores B-01/02a/02b/03 are DEVELOPED from the 3D teardrop
     (gore method: pattern height = true centre-line length, widths = true cross-arcs); seam_line_mm carries their
     true outlines. D-01 is develop_ruled_surface between the zip line and the band''s lower edge. qty_total counts
-    mirror pairs (contract). Hipbelt pieces at size M.'
-  piece_count_total: 97
+    mirror pairs (contract). Hipbelt pieces at size M. This is the DESIGN bill of panels (masses for the weight
+    budget). The cut set is the v3.1 production patterns (designs/pack_5200/patterns_v31.py: two-ring-seam head
+    setback, B-01b/B-01u/B-02c/B-02d, fairlead swells B-13..B-15); outputs/release/pack5200_v3.1_patterns.'
+  piece_count_total: 93
   gore_seam_check_mm:
-    frame_side: {seam_from_3d_mm: 757.1, seam_from_pattern_mm: 757.6, seam_to_3d_mm: 757.1, seam_to_pattern_mm: 757.6}
-    outer_face: {seam_from_3d_mm: 763.0, seam_from_pattern_mm: 768.8, seam_to_3d_mm: 763.0, seam_to_pattern_mm: 768.8}
-    side_gore: {seam_from_3d_mm: 757.1, seam_from_pattern_mm: 760.4, seam_to_3d_mm: 763.0, seam_to_pattern_mm: 760.4}
-  band_develop: {max_strain: 0.0002, len_zip_edge_mm: 509.2, len_lower_edge_mm: 496.7}
+    frame_side: {seam_from_3d_mm: 756.2, seam_from_pattern_mm: 756.7, seam_to_3d_mm: 756.2, seam_to_pattern_mm: 756.7}
+    outer_face: {seam_from_3d_mm: 762.2, seam_from_pattern_mm: 768.0, seam_to_3d_mm: 762.2, seam_to_pattern_mm: 768.0}
+    side_gore: {seam_from_3d_mm: 756.2, seam_from_pattern_mm: 759.5, seam_to_3d_mm: 762.2, seam_to_pattern_mm: 759.5}
+  band_develop: {max_strain: 0.0001, len_zip_edge_mm: 508.8, len_lower_edge_mm: 496.7}
 grading:
   hipbelt_wings:
     rule: length grades; root/tip widths constant (140/95 mm)
@@ -28,16 +30,16 @@ panels:
   name: bag frame-side panel
   sub_assembly: main bag
   material_id: challenge_ultra_200
-  approx_size_mm: [476, 752]
+  approx_size_mm: [476, 751]
   qty_total: 1
   mirror_pair: false
   seam_allowance_mm: 12.0
   thickness_mm: null
   zone: frame side / meat contact (laminate on the HIDDEN face only)
-  cut_area_m2_each: 0.3388
+  cut_area_m2_each: 0.3383
   mass_g_total: 42.3
-  notes: gore from the 3D teardrop; follows the stay S-curve. 6 Hypalon frame-link tabs + hydration sleeve sewn
-    flat first
+  notes: gore from the 3D teardrop; follows the stay S-curve. Fairlead swells, 6 meat-strap ports + hydration sleeve
+    sewn flat first
   seam_line_mm:
   - [-158.4, 0.0]
   - [158.4, 0.0]
@@ -82,42 +84,42 @@ panels:
   - [227.7, 493.3]
   - [229.4, 506.0]
   - [231.0, 518.6]
-  - [232.5, 531.3]
-  - [233.9, 544.4]
-  - [235.1, 558.3]
-  - [236.2, 572.7]
-  - [237.2, 586.8]
-  - [237.9, 600.2]
-  - [238.1, 612.9]
-  - [238.0, 625.6]
-  - [237.8, 638.2]
-  - [237.5, 650.9]
-  - [237.2, 663.5]
-  - [236.8, 676.2]
-  - [236.3, 688.8]
-  - [235.8, 701.5]
-  - [235.2, 714.1]
-  - [234.5, 726.8]
-  - [233.7, 739.4]
-  - [232.8, 752.1]
-  - [-232.8, 752.1]
-  - [-233.7, 739.4]
-  - [-234.5, 726.8]
-  - [-235.2, 714.1]
-  - [-235.8, 701.5]
-  - [-236.3, 688.8]
-  - [-236.8, 676.2]
-  - [-237.2, 663.5]
-  - [-237.5, 650.9]
-  - [-237.8, 638.2]
-  - [-238.0, 625.6]
-  - [-238.1, 612.9]
-  - [-237.9, 600.2]
-  - [-237.2, 586.8]
-  - [-236.2, 572.7]
-  - [-235.1, 558.3]
-  - [-233.9, 544.4]
-  - [-232.5, 531.3]
+  - [232.3, 531.5]
+  - [233.4, 545.1]
+  - [234.5, 558.6]
+  - [235.7, 572.2]
+  - [236.8, 585.8]
+  - [237.9, 599.3]
+  - [238.1, 612.1]
+  - [238.0, 624.7]
+  - [237.8, 637.4]
+  - [237.5, 650.0]
+  - [237.2, 662.7]
+  - [236.8, 675.3]
+  - [236.3, 688.0]
+  - [235.8, 700.6]
+  - [235.2, 713.3]
+  - [234.5, 725.9]
+  - [233.7, 738.6]
+  - [232.8, 751.2]
+  - [-232.8, 751.2]
+  - [-233.7, 738.6]
+  - [-234.5, 725.9]
+  - [-235.2, 713.3]
+  - [-235.8, 700.6]
+  - [-236.3, 688.0]
+  - [-236.8, 675.3]
+  - [-237.2, 662.7]
+  - [-237.5, 650.0]
+  - [-237.8, 637.4]
+  - [-238.0, 624.7]
+  - [-238.1, 612.1]
+  - [-237.9, 599.3]
+  - [-236.8, 585.8]
+  - [-235.7, 572.2]
+  - [-234.5, 558.6]
+  - [-233.4, 545.1]
+  - [-232.3, 531.5]
   - [-231.0, 518.6]
   - [-229.4, 506.0]
   - [-227.7, 493.3]
@@ -163,28 +165,28 @@ panels:
   name: outer face, upper-right (above the diagonal zip)
   sub_assembly: main bag
   material_id: cordura_330d_nylon66
-  approx_size_mm: [377, 549]
+  approx_size_mm: [377, 548]
   qty_total: 1
   mirror_pair: false
   seam_allowance_mm: 12.0
   thickness_mm: null
   zone: outer face (solid colour)
-  cut_area_m2_each: 0.1525
-  mass_g_total: 27.5
+  cut_area_m2_each: 0.1522
+  mass_g_total: 27.4
   notes: gore from the 3D teardrop, split on the diagonal zip line (zip SA 10 mm)
   seam_line_mm:
-  - [-188.4, 614.3]
-  - [-180.1, 607.3]
-  - [-172.3, 600.0]
-  - [-165.1, 592.3]
-  - [-158.5, 584.6]
-  - [-152.3, 576.7]
-  - [-146.1, 568.8]
-  - [-139.8, 561.1]
-  - [-134.1, 553.5]
-  - [-128.3, 546.3]
-  - [-122.4, 539.3]
-  - [-116.3, 532.6]
+  - [-188.3, 613.4]
+  - [-180.5, 606.4]
+  - [-172.6, 599.0]
+  - [-165.9, 591.6]
+  - [-158.5, 584.2]
+  - [-152.4, 576.8]
+  - [-146.2, 569.4]
+  - [-140.0, 562.0]
+  - [-133.7, 554.6]
+  - [-128.0, 547.2]
+  - [-122.2, 539.8]
+  - [-116.3, 532.9]
   - [-111.0, 526.0]
   - [-105.5, 519.5]
   - [-100.0, 512.9]
@@ -258,41 +260,41 @@ panels:
   - [180.3, 500.7]
   - [181.6, 513.5]
   - [182.9, 526.3]
-  - [184.1, 539.2]
-  - [185.2, 553.0]
-  - [186.2, 567.9]
-  - [187.0, 583.3]
-  - [187.8, 598.4]
-  - [188.4, 612.6]
-  - [188.5, 625.3]
-  - [188.4, 638.0]
-  - [188.3, 650.6]
-  - [188.1, 663.3]
-  - [187.8, 676.0]
-  - [187.5, 688.7]
-  - [187.1, 701.4]
-  - [186.7, 714.2]
-  - [186.2, 726.9]
-  - [185.7, 739.7]
-  - [185.1, 752.5]
-  - [184.4, 765.4]
-  - [-184.4, 765.4]
-  - [-185.1, 752.5]
-  - [-185.7, 739.7]
-  - [-186.2, 726.9]
-  - [-186.7, 714.2]
-  - [-187.1, 701.4]
-  - [-187.5, 688.7]
-  - [-187.8, 676.0]
-  - [-188.1, 663.3]
-  - [-188.3, 650.6]
-  - [-188.4, 638.0]
-  - [-188.5, 625.3]
+  - [184.0, 539.7]
+  - [184.8, 554.1]
+  - [185.7, 568.5]
+  - [186.6, 582.9]
+  - [187.5, 597.3]
+  - [188.3, 611.8]
+  - [188.5, 624.5]
+  - [188.4, 637.2]
+  - [188.3, 649.9]
+  - [188.1, 662.5]
+  - [187.8, 675.2]
+  - [187.5, 687.9]
+  - [187.1, 700.6]
+  - [186.7, 713.4]
+  - [186.2, 726.1]
+  - [185.7, 738.9]
+  - [185.1, 751.8]
+  - [184.4, 764.6]
+  - [-184.4, 764.6]
+  - [-185.1, 751.8]
+  - [-185.7, 738.9]
+  - [-186.2, 726.1]
+  - [-186.7, 713.4]
+  - [-187.1, 700.6]
+  - [-187.5, 687.9]
+  - [-187.8, 675.2]
+  - [-188.1, 662.5]
+  - [-188.3, 649.9]
+  - [-188.4, 637.2]
+  - [-188.5, 624.5]
 - id: B-02b
   name: outer face, lower-left (below the diagonal zip; carries the stretch band + fly pocket)
   sub_assembly: main bag
   material_id: cordura_330d_nylon66
-  approx_size_mm: [336, 614]
+  approx_size_mm: [336, 613]
   qty_total: 1
   mirror_pair: false
   seam_allowance_mm: 12.0
@@ -350,24 +352,24 @@ panels:
   - [-100.0, 512.9]
   - [-105.5, 519.5]
   - [-111.0, 526.0]
-  - [-116.3, 532.6]
-  - [-122.4, 539.3]
-  - [-128.3, 546.3]
-  - [-134.1, 553.5]
-  - [-139.8, 561.1]
-  - [-146.1, 568.8]
-  - [-152.3, 576.7]
-  - [-158.5, 584.6]
-  - [-165.1, 592.3]
-  - [-172.3, 600.0]
-  - [-180.1, 607.3]
-  - [-188.4, 614.3]
-  - [-188.4, 612.6]
-  - [-187.8, 598.4]
-  - [-187.0, 583.3]
-  - [-186.2, 567.9]
-  - [-185.2, 553.0]
-  - [-184.1, 539.2]
+  - [-116.3, 532.9]
+  - [-122.2, 539.8]
+  - [-128.0, 547.2]
+  - [-133.7, 554.6]
+  - [-140.0, 562.0]
+  - [-146.2, 569.4]
+  - [-152.4, 576.8]
+  - [-158.5, 584.2]
+  - [-165.9, 591.6]
+  - [-172.6, 599.0]
+  - [-180.5, 606.4]
+  - [-188.3, 613.4]
+  - [-188.3, 611.8]
+  - [-187.5, 597.3]
+  - [-186.6, 582.9]
+  - [-185.7, 568.5]
+  - [-184.8, 554.1]
+  - [-184.0, 539.7]
   - [-182.9, 526.3]
   - [-181.6, 513.5]
   - [-180.3, 500.7]
@@ -431,14 +433,14 @@ panels:
   name: side gore
   sub_assembly: main bag
   material_id: cordura_330d_nylon66
-  approx_size_mm: [172, 760]
+  approx_size_mm: [172, 759]
   qty_total: 2
   mirror_pair: true
   seam_allowance_mm: 12.0
   thickness_mm: null
   zone: sides (rounded corners of the teardrop)
-  cut_area_m2_each: 0.1358
-  mass_g_total: 48.9
+  cut_area_m2_each: 0.1356
+  mass_g_total: 48.8
   notes: floating side pocket, roll-top clip, hose port and lash tabs sewn flat first
   seam_line_mm:
   - [-57.4, 0.0]
@@ -484,42 +486,42 @@ panels:
   - [82.4, 498.0]
   - [83.0, 510.8]
   - [83.6, 523.5]
-  - [84.1, 536.3]
-  - [84.6, 549.8]
-  - [85.1, 564.2]
-  - [85.5, 579.1]
-  - [85.8, 593.7]
-  - [86.1, 607.5]
-  - [86.1, 620.2]
-  - [86.1, 632.9]
-  - [86.0, 645.5]
-  - [85.9, 658.2]
-  - [85.8, 670.8]
-  - [85.7, 683.5]
-  - [85.5, 696.2]
-  - [85.3, 708.9]
-  - [85.1, 721.6]
-  - [84.9, 734.3]
-  - [84.6, 747.0]
-  - [84.3, 759.7]
-  - [-84.3, 759.7]
-  - [-84.6, 747.0]
-  - [-84.9, 734.3]
-  - [-85.1, 721.6]
-  - [-85.3, 708.9]
-  - [-85.5, 696.2]
-  - [-85.7, 683.5]
-  - [-85.8, 670.8]
-  - [-85.9, 658.2]
-  - [-86.0, 645.5]
-  - [-86.1, 632.9]
-  - [-86.1, 620.2]
-  - [-86.1, 607.5]
-  - [-85.8, 593.7]
-  - [-85.5, 579.1]
-  - [-85.1, 564.2]
-  - [-84.6, 549.8]
-  - [-84.1, 536.3]
+  - [84.1, 536.6]
+  - [84.5, 550.6]
+  - [84.9, 564.6]
+  - [85.3, 578.6]
+  - [85.7, 592.6]
+  - [86.1, 606.6]
+  - [86.1, 619.4]
+  - [86.1, 632.0]
+  - [86.0, 644.7]
+  - [85.9, 657.3]
+  - [85.8, 670.0]
+  - [85.7, 682.7]
+  - [85.5, 695.3]
+  - [85.3, 708.0]
+  - [85.1, 720.7]
+  - [84.9, 733.4]
+  - [84.6, 746.1]
+  - [84.3, 758.8]
+  - [-84.3, 758.8]
+  - [-84.6, 746.1]
+  - [-84.9, 733.4]
+  - [-85.1, 720.7]
+  - [-85.3, 708.0]
+  - [-85.5, 695.3]
+  - [-85.7, 682.7]
+  - [-85.8, 670.0]
+  - [-85.9, 657.3]
+  - [-86.0, 644.7]
+  - [-86.1, 632.0]
+  - [-86.1, 619.4]
+  - [-86.1, 606.6]
+  - [-85.7, 592.6]
+  - [-85.3, 578.6]
+  - [-84.9, 564.6]
+  - [-84.5, 550.6]
+  - [-84.1, 536.6]
   - [-83.6, 523.5]
   - [-83.0, 510.8]
   - [-82.4, 498.0]
@@ -631,20 +633,6 @@ panels:
   mass_g_total: 10.9
   notes: sewn to B-01; hose ports at the collar seam BOTH sides
   seam_line_mm: null
-- id: B-10
-  name: frame-link tab
-  sub_assembly: main bag
-  material_id: hypalon_coated_nylon
-  approx_size_mm: [50, 70]
-  qty_total: 6
-  mirror_pair: false
-  seam_allowance_mm: 0.0
-  thickness_mm: null
-  zone: frame side
-  cut_area_m2_each: 0.0035
-  mass_g_total: 21.0
-  notes: 'raw-edge Hypalon, laser-cut toggle slot: 2 hinge (bottom), 2 mid (z 330), 2 top (crown)'
-  seam_line_mm: null
 - id: B-11
   name: lash tab
   sub_assembly: main bag
@@ -663,7 +651,7 @@ panels:
   name: diagonal stretch band
   sub_assembly: main bag
   material_id: poly_spandex_stretch_woven_printable
-  approx_size_mm: [629, 127]
+  approx_size_mm: [628, 127]
   qty_total: 1
   mirror_pair: false
   seam_allowance_mm: 10.0
@@ -680,88 +668,88 @@ panels:
   - [25.8, 2.1]
   - [34.4, 2.4]
   - [43.0, 2.6]
-  - [51.7, 2.6]
-  - [60.3, 2.6]
+  - [51.6, 2.7]
+  - [60.3, 2.7]
   - [68.9, 2.6]
-  - [77.6, 2.5]
-  - [86.2, 2.3]
+  - [77.5, 2.5]
+  - [86.1, 2.3]
   - [94.8, 2.1]
-  - [103.5, 1.9]
-  - [112.1, 1.6]
-  - [120.7, 1.4]
-  - [129.3, 1.1]
-  - [138.0, 0.9]
-  - [146.6, 0.6]
-  - [155.2, 0.4]
-  - [163.8, 0.1]
-  - [172.5, -0.1]
-  - [181.1, -0.4]
-  - [189.7, -0.6]
-  - [198.4, -0.8]
-  - [207.0, -1.0]
-  - [215.6, -1.2]
-  - [224.2, -1.4]
-  - [232.9, -1.6]
-  - [241.5, -1.8]
-  - [250.1, -2.0]
-  - [258.8, -2.2]
-  - [267.4, -2.3]
-  - [276.0, -2.5]
-  - [284.7, -2.6]
-  - [293.3, -2.8]
-  - [301.9, -2.9]
-  - [310.5, -3.0]
-  - [319.2, -3.1]
-  - [327.8, -3.1]
-  - [336.4, -3.2]
-  - [345.1, -3.2]
-  - [353.7, -3.2]
-  - [362.3, -3.1]
-  - [371.0, -3.0]
-  - [379.6, -2.9]
-  - [388.2, -2.7]
-  - [396.8, -2.5]
-  - [405.5, -2.2]
-  - [414.1, -1.8]
-  - [422.7, -1.6]
-  - [431.3, -1.5]
-  - [440.0, -1.7]
-  - [448.6, -2.0]
-  - [457.2, -2.5]
-  - [465.8, -2.9]
-  - [474.5, -3.3]
-  - [483.1, -3.5]
-  - [491.7, -3.1]
-  - [500.3, -2.1]
-  - [508.7, 0.0]
-  - [369.5, 109.7]
-  - [362.2, 113.9]
-  - [354.9, 118.1]
-  - [346.9, 118.5]
-  - [338.7, 116.6]
-  - [330.5, 114.7]
-  - [322.2, 113.2]
-  - [313.9, 111.9]
-  - [305.5, 110.8]
-  - [297.1, 109.9]
-  - [288.7, 109.2]
+  - [103.4, 1.9]
+  - [112.0, 1.7]
+  - [120.6, 1.4]
+  - [129.2, 1.2]
+  - [137.9, 0.9]
+  - [146.5, 0.7]
+  - [155.1, 0.4]
+  - [163.7, 0.2]
+  - [172.3, -0.1]
+  - [181.0, -0.3]
+  - [189.6, -0.5]
+  - [198.2, -0.8]
+  - [206.8, -1.0]
+  - [215.5, -1.2]
+  - [224.1, -1.4]
+  - [232.7, -1.6]
+  - [241.3, -1.8]
+  - [249.9, -1.9]
+  - [258.6, -2.1]
+  - [267.2, -2.3]
+  - [275.8, -2.4]
+  - [284.4, -2.6]
+  - [293.1, -2.7]
+  - [301.7, -2.8]
+  - [310.3, -2.9]
+  - [318.9, -3.0]
+  - [327.6, -3.1]
+  - [336.2, -3.1]
+  - [344.8, -3.1]
+  - [353.4, -3.1]
+  - [362.1, -3.1]
+  - [370.7, -3.0]
+  - [379.3, -2.8]
+  - [387.9, -2.7]
+  - [396.6, -2.4]
+  - [405.2, -2.1]
+  - [413.8, -1.8]
+  - [422.3, -1.9]
+  - [431.0, -2.2]
+  - [439.6, -2.5]
+  - [448.2, -2.8]
+  - [456.8, -2.9]
+  - [465.5, -3.0]
+  - [474.1, -3.0]
+  - [482.7, -2.8]
+  - [491.3, -2.2]
+  - [499.9, -1.4]
+  - [508.4, -0.0]
+  - [369.4, 109.9]
+  - [362.1, 114.1]
+  - [354.8, 118.4]
+  - [346.9, 118.8]
+  - [338.7, 116.9]
+  - [330.4, 115.0]
+  - [322.2, 113.4]
+  - [313.8, 112.1]
+  - [305.5, 110.9]
+  - [297.1, 110.0]
+  - [288.7, 109.3]
   - [280.3, 108.6]
   - [271.9, 108.1]
-  - [263.5, 107.7]
+  - [263.4, 107.7]
   - [255.0, 107.4]
-  - [246.6, 107.1]
+  - [246.6, 107.2]
   - [238.2, 107.0]
-  - [229.7, 106.8]
+  - [229.7, 106.9]
   - [221.3, 106.8]
-  - [212.9, 106.7]
+  - [212.9, 106.8]
   - [204.4, 106.8]
   - [196.0, 106.8]
   - [187.6, 106.9]
   - [179.1, 107.0]
   - [170.7, 107.1]
-  - [162.3, 107.2]
+  - [162.3, 107.3]
   - [153.8, 107.4]
-  - [145.4, 107.5]
+  - [145.4, 107.6]
   - [137.0, 107.7]
   - [128.5, 107.9]
   - [120.1, 108.1]
@@ -769,29 +757,29 @@ panels:
   - [103.2, 108.5]
   - [94.8, 108.7]
   - [86.4, 108.9]
-  - [77.9, 109.1]
+  - [77.9, 109.2]
   - [69.5, 109.4]
   - [61.1, 109.6]
-  - [52.7, 109.8]
+  - [52.6, 109.8]
   - [44.2, 110.1]
   - [35.8, 110.3]
-  - [27.4, 110.5]
+  - [27.3, 110.5]
   - [18.9, 110.8]
   - [10.5, 111.0]
-  - [2.1, 111.3]
+  - [2.0, 111.3]
   - [-6.4, 111.5]
   - [-14.8, 111.8]
   - [-23.2, 112.0]
   - [-31.7, 112.2]
   - [-40.1, 112.4]
-  - [-48.5, 112.6]
-  - [-57.0, 112.7]
+  - [-48.5, 112.5]
+  - [-57.0, 112.6]
   - [-65.4, 112.7]
   - [-73.8, 112.7]
   - [-82.3, 112.5]
   - [-90.7, 112.2]
-  - [-99.1, 111.8]
-  - [-107.2, 112.8]
+  - [-99.1, 111.7]
+  - [-107.3, 112.8]
   - [-114.0, 117.6]
   - [-120.0, 123.5]
 - id: SH-01
@@ -868,13 +856,13 @@ panels:
   name: rain fly (fitted, elastic hem)
   sub_assembly: fly
   material_id: silicone_coated_poly_ripstop_40d
-  approx_size_mm: [1019, 1019]
+  approx_size_mm: [1018, 1018]
   qty_total: 1
   mirror_pair: false
   seam_allowance_mm: 0.0
   thickness_mm: null
   zone: weather
-  cut_area_m2_each: 1.0379
+  cut_area_m2_each: 1.037
   mass_g_total: 46.7
   notes: pattern = covered bag surface x 1.12 (1.04 m2); tethered in its base pocket
   seam_line_mm: null
@@ -1258,7 +1246,7 @@ panels:
   zone: back panel
   cut_area_m2_each: 0.0786
   mass_g_total: 29.9
-  notes: 'mesh over the stay pads and slack across the window air gap (analysis/back_comfort.md)'
+  notes: mesh over the stay pads and slack across the window air gap (analysis/back_comfort.md)
   seam_line_mm: null
 - id: BP-02
   name: stay-rail foam
@@ -1266,13 +1254,14 @@ panels:
   material_id: xlpe_foam
   approx_size_mm: [100, 420]
   qty_total: 2
-  mirror_pair: true
+  mirror_pair: false
   seam_allowance_mm: 0.0
   thickness_mm: 10.0
   zone: back panel
-  cut_area_m2_each: 0.042
-  mass_g_total: 27.7
-  notes: 'PAIR on the stay lines, wearer face (analysis/back_comfort.md). The window between the rails is open mesh over an air gap, not foam. Replaces the single 210 x 280 x 6 mm sheet.'
+  cut_area_m2_each: 0.0412
+  mass_g_total: 27.2
+  notes: PAIR on the stay lines, wearer face (analysis/back_comfort.md). The window between the rails is open mesh
+    over an air gap, not foam. Replaces the single 210 x 280 x 6 mm sheet.
   seam_line_mm: null
 - id: BP-06
   name: 'window spreader, Sandwich v2: 200 g twill / 6 mm ROHACELL 110 / 200 g twill'
@@ -1286,7 +1275,10 @@ panels:
   zone: back panel
   cut_area_m2_each: 0.0716
   mass_g_total: 98.8
-  notes: 'Owner 2026-11-05: production spreader is Sandwich v2 (BP-06 rev B, analysis/spreader.md). Core rohacell_110_igf, skins cfrp_t300_3k_woven_epoxy_ply. Clipped to the stays on the bag side with 6 PA12 clips; bone ends and the meat cinch land here and go into the stays. Cut and build: cut/spreader/README.md. Edge tubes, clips, pucks, pads, doublers and seal (55 g) are hardware, not in this line. Replaces the 2.0 mm QI sheet (193 g).'
+  notes: 'Owner 2026-11-05: production spreader is Sandwich v2 (BP-06 rev B, analysis/spreader.md). Core rohacell_110_igf,
+    skins cfrp_t300_3k_woven_epoxy_ply. Clipped to the stays on the bag side with 6 PA12 clips; bone ends and the
+    meat cinch land here and go into the stays. Cut and build: cut/spreader/README.md. Edge tubes, clips, pucks,
+    pads, doublers and seal (55 g) are hardware, not in this line. Replaces the 2.0 mm QI sheet (193 g).'
   seam_line_mm: null
 - id: BP-03
   name: upper back pad face (on crown)
@@ -1300,7 +1292,7 @@ panels:
   zone: back panel
   cut_area_m2_each: 0.0446
   mass_g_total: 17.0
-  notes: 'on the crown, above the frame window'
+  notes: on the crown, above the frame window
   seam_line_mm: null
 - id: BP-04
   name: upper back pad foam
@@ -1328,7 +1320,7 @@ panels:
   zone: back panel
   cut_area_m2_each: 0.0786
   mass_g_total: 11.0
-  notes: 'bag side of the mesh; the carbon spreader is behind it, not this fabric'
+  notes: bag side of the mesh; the carbon spreader is behind it, not this fabric
   seam_line_mm: null
 - id: R-01
   name: rifle butt boot body
@@ -1429,10 +1421,10 @@ webbing_cut_list:
     (MEAT family; blood shows, so it gets washed)', length_mm: 1023, qty: 1}
 - {use: 'internal meat strap IM3 (z 520; hooks both ends, cam)', material_id: poly_webbing_38mm, colour: 'bone/stone
     (MEAT family; blood shows, so it gets washed)', length_mm: 1083, qty: 1}
-- {use: meat-strap frame stubs (girth hitch + sewn eye), material_id: poly_webbing_38mm, length_mm: 200, qty: 6}
 - {use: roll-top clips, material_id: poly_webbing_25mm, length_mm: 350, qty: 2}
-- {use: bag-frame link (toggles), material_id: poly_webbing_25mm, length_mm: 150, qty: 4}
 - {use: haul-wrap keeper loops, material_id: poly_webbing_25mm, length_mm: 80, qty: 6}
 - {use: hip stabilizers, material_id: poly_webbing_25mm, length_mm: 400, qty: 2}
 - {use: sternum, material_id: poly_webbing_25mm, length_mm: 400, qty: 2}
 - {use: 'crown 3:1 pulley', material_id: poly_webbing_25mm, length_mm: 1400, qty: 1}
+webbing_note: v3.1 girth-hitch stubs and LINK toggle webbing are retired (fairleads, analysis/bag_attachment.md);
+  fairlead eyes, bag-hook straps, hinge eyes and under-straps are listed by patterns_v31.build_cut_lists

@@ -1,0 +1,44 @@
+# Cloth-sim membrane models per material id (huntkit.clothsim.fabric).
+#
+# The material records (data/materials) give break strengths, not stress-strain curves. The sim uses a
+# linear secant stiffness per yarn direction:
+#     strip strength  S [N/mm] = grab strength [N] / GRAB_TO_STRIP_MM     (record, ASTM D5034 grab, 25 mm jaws)
+#     stiffness       k [N/mm] = S / break elongation
+# ASSUMPTION: grab ~ 1.25 x a 25 mm strip (adjacent-yarn assistance), i.e. GRAB_TO_STRIP_MM = 31.25 mm.
+# ASSUMPTION: break elongations (woven nylon 6,6 pack cloth 25 % warp / 30 % weft; UHMWPE laminate 4 %) until the
+#   materials-engineer adds tensile curves to the records. Secant stiffness under-predicts the crimp-region
+#   softness at very low load and over-predicts it near break: strain numbers are +/- 50 %, forces in a
+#   statically determinate membrane (hoop, seam) are not affected by stiffness at all.
+# Shear g and bending B: ASSUMPTION, scaled from KES-F ranges (docs/research/cloth_sim_methods.md):
+#   apparel wovens G 0.3-4 gf/cm/deg (0.017-0.23 N/mm/rad), B 0.02-0.12 gf cm2/cm (0.002-0.012 N mm).
+#   PU-coated pack cloth locks the yarns: taken ~5-10x the top of that range.
+# compression: fraction of the tensile stiffness kept in compression (tension-field stand-in; wrinkles).
+grab_to_strip_mm: 31.25
+seam_efficiency: 0.80      # ASSUMPTION: bound 301 seam breaks at 80 % of the weaker fabric strip strength
+defaults:
+  compression: 0.01
+fabrics:
+  cordura_330d_nylon66:
+    elong_warp: 0.25
+    elong_weft: 0.30
+    shear_n_mm: 1.0
+    bending_n_mm: 0.10
+  cordura_500d_nylon66:
+    elong_warp: 0.25
+    elong_weft: 0.30
+    shear_n_mm: 1.5
+    bending_n_mm: 0.20
+  robic_100d_ripstop:
+    elong_warp: 0.25
+    elong_weft: 0.30
+    shear_n_mm: 0.5
+    bending_n_mm: 0.03
+  challenge_ultra_200:
+    # record has no tensile data. ASSUMPTION: 200D UHMWPE woven face, strip 60 N/mm both ways, 4 % break
+    # elongation; PET film laminate gives a film-like shear stiffness (12 um PET x G ~1.4 GPa ~ 17 N/mm).
+    strip_warp_n_mm: 60.0
+    strip_weft_n_mm: 60.0
+    elong_warp: 0.04
+    elong_weft: 0.04
+    shear_n_mm: 15.0
+    bending_n_mm: 0.25

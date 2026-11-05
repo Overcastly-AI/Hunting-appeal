@@ -101,3 +101,13 @@ def test_both_haul_modes_required():
     for name in ("20261101_attach_8_cradle_anchors.png", "20261101_attach_9_cradle_bag_on.png",
                  "20261101_attach_10_cradle_bag_off.png", "20261101_attach_11_cradle_fea.png"):
         assert (ROOT / "docs" / "screens" / name).exists()
+
+
+def test_attachment_note_quotes_the_sandwich_v2_notch():
+    """bag_attachment.md is generated; its spreader notch must be the Sandwich v2 notch (spreader.py), not 22 mm."""
+    from huntkit.gendesign.spreader import FAIRLEAD_HALF_Z, NOTCH_CLEAR
+    md = (ROOT / "designs" / "pack_5200" / "analysis" / "bag_attachment.md").read_text()
+    h = 2 * (FAIRLEAD_HALF_Z + NOTCH_CLEAR)
+    assert h == pytest.approx(30.0)
+    assert f"notched {h:.0f} mm in height" in md
+    assert "notched 22 mm" not in md

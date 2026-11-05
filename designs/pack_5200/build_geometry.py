@@ -345,24 +345,80 @@ HEAD_SETBACK = 30.0      # v3.1 head clearance: frame-side face steps 30 mm aft 
 HEAD_SB_Z = (560.0, 640.0)   # the rings shift aft, their area is unchanged). Ramp z 560 -> 640 (C7 at 15 in = 501)
 
 
-def y_frame(z):
+# v3.1 production patterns (pattern-maker 2026-11-04, DECISIONS): the smooth step is NOT sewable (10.5 % stretch on
+# B-01, 8.5 % on the face). It is taken by TWO RING SEAMS: the SETBACK seam at z HEAD_SB_Z[0] = 560 and the SHOULDER
+# seam at the zip's upper end (z = collar seam - ZIP_DZ_TOP = 631.2 at Hf 1066). Between them the surface is RULED
+# ring-to-ring (half-width, depth and frame-face y linear in z); outside the band it is the smooth loft. This is the
+# surface patterns_v31.MasterSurface drafts, so geometry.yaml, the volume and the patterns describe one shape.
+SETBACK_RULED = True
+
+
+def setback_band(Hf):
+    """(z_setback_seam, z_shoulder_seam) of the ruled head-setback band, or None when it is off."""
+    if not SETBACK_RULED or HEAD_SETBACK == 0.0 or Hf is None:
+        return None
+    return float(HEAD_SB_Z[0]), float(BAG_Z0 + T_COLLAR * Hf - ZIP_DZ_TOP)
+
+
+def _y_frame_smooth(z):
     z = np.atleast_1d(np.asarray(z, float))
     ramp = np.clip((z - HEAD_SB_Z[0]) / (HEAD_SB_Z[1] - HEAD_SB_Z[0]), 0, 1)
-    sb = HEAD_SETBACK * (3 * ramp ** 2 - 2 * ramp ** 3)                 # smooth step: no kink in B-01
+    sb = HEAD_SETBACK * (3 * ramp ** 2 - 2 * ramp ** 3)                 # smooth step (the master loft)
     return np.array([stay_xyz(float(zz))[1] for zz in z]) + FRAME_GAP + sb
+
+
+def _blend(z, Hf, fn_z):
+    """fn_z(z) with the ruled setback band applied (linear in z between the two seam rings)."""
+    z = np.atleast_1d(np.asarray(z, float))
+    out = np.asarray(fn_z(z), float).copy()
+    band = setback_band(Hf if Hf is not None else _HF.get("Hf"))
+    if band is not None:
+        z1, z2 = band
+        m = (z > z1) & (z < z2)
+        if m.any():
+            v1, v2 = float(np.asarray(fn_z(np.array([z1])), float)[0]), float(np.asarray(fn_z(np.array([z2])), float)[0])
+            out[m] = v1 + (v2 - v1) * (z[m] - z1) / (z2 - z1)
+    return out
+
+
+def y_frame(z, Hf=None):
+    """Frame-side face y(z): stay line + FRAME_GAP + head setback (two ring seams, ruled between)."""
+    return _blend(z, Hf, _y_frame_smooth)
+
+
+def prof(t, Hf=None):
+    """(half_width, depth, y_frame) at fraction t on the as-sewn surface (ruled setback band applied)."""
+    Hf = Hf if Hf is not None else _HF.get("Hf")
+    t = np.atleast_1d(np.asarray(t, float))
+    if Hf is None:
+        raise ValueError("prof() needs the fill height Hf (z = BAG_Z0 + t * Hf)")
+    z = BAG_Z0 + t * Hf
+    a = _blend(z, Hf, lambda zz: half_width((zz - BAG_Z0) / Hf))
+    d = _blend(z, Hf, lambda zz: depth((zz - BAG_Z0) / Hf))
+    return a, d, y_frame(z, Hf)
 
 
 def _F(n):
     return math.gamma(1 + 1 / n) ** 2 / math.gamma(1 + 2 / n)
 
 
-def ring_area(t):
-    """Exact mixed-superellipse area: each half is 2 a b F(n), b = d/2."""
-    return half_width(t) * depth(t) * (_F(N_OUT) + _F(N_FRM))
+def ring_area(t, Hf=None):
+    """Exact mixed-superellipse area: each half is 2 a b F(n), b = d/2. With Hf the ruled setback band is applied
+    (a ring blended linearly between two superellipse rings is the superellipse of the blended a, d)."""
+    if Hf is None:
+        return half_width(t) * depth(t) * (_F(N_OUT) + _F(N_FRM))
+    a, d, _ = prof(t, Hf)
+    return a * d * (_F(N_OUT) + _F(N_FRM))
 
 
 def bag_volume_mm3(Hf, t1=1.0, n=4001):
     t = np.linspace(0, t1, n)
+    return float(np.trapezoid(ring_area(t, Hf), t * Hf))
+
+
+def _smooth_volume_mm3(Hf, n=4001):
+    """Volume of the smooth master loft (no ruled band), for the head_setback volume_effect_L report."""
+    t = np.linspace(0, 1, n)
     return float(np.trapezoid(ring_area(t), t * Hf))
 
 
@@ -370,7 +426,9 @@ def solve_fill_height():
     lo, hi = 600.0, 2000.0
     for _ in range(80):
         mid = (lo + hi) / 2
-        lo, hi = (mid, hi) if litres(bag_volume_mm3(mid)) < TARGET_L else (lo, mid)
+        # solved on the MASTER LOFT (smooth rings): the shape the v3.1 production patterns were drafted from
+        # (width scale 1.0639). The as-sewn volume with the ruled setback band is reported by bag_volume_mm3 (-0.02 L).
+        lo, hi = (mid, hi) if litres(_smooth_volume_mm3(mid)) < TARGET_L else (lo, mid)
     return float(round((lo + hi) / 2))   # whole mm
 
 
@@ -391,9 +449,9 @@ def ring_xy(t, Hf, M=RING_M):
     """Ring at fraction t: theta 0..pi = outer (aft) half from the wearer's RIGHT (+x) over to the
     left; pi..2pi = frame half back to the right. Returns (M,3) points and z."""
     z = BAG_Z0 + t * Hf
-    a, d = float(half_width(t)), float(depth(t))
+    a, d, yf = (float(v[0]) for v in prof(t, Hf))
     b = d / 2
-    yc = float(y_frame(z)[0]) + b
+    yc = yf + b
     th = np.linspace(0, 2 * np.pi, M, endpoint=False)
     c, s = np.cos(th), np.sin(th)
     n = np.where(s >= 0, N_OUT, N_FRM)
@@ -423,9 +481,9 @@ def point_at_s(P, s_arr, sq):
 def outer_point_at_x(t, Hf, x):
     """Point on the OUTER half of ring t with lateral coordinate x (|x| < a)."""
     z = BAG_Z0 + t * Hf
-    a, d = float(half_width(t)), float(depth(t))
+    a, d, yf = (float(v[0]) for v in prof(t, Hf))
     b = d / 2
-    yc = float(y_frame(z)[0]) + b
+    yc = yf + b
     u = np.clip(np.abs(np.asarray(x, float)) / a, 0, 1)
     return np.stack([np.asarray(x, float), yc + b * (1 - u ** N_OUT) ** (1 / N_OUT), np.full(np.shape(x), z)], -1)
 
@@ -434,8 +492,8 @@ def build_stations(Hf):
     rows = []
     for t in np.linspace(0, 1, N_STATIONS):
         z = BAG_Z0 + t * Hf
-        rows.append([round(float(z), 2), round(float(half_width(t)), 2), round(float(y_frame(z)[0]), 2),
-                     round(float(depth(t)), 2)])
+        a, d, yf = (float(v[0]) for v in prof(t, Hf))
+        rows.append([round(float(z), 2), round(a, 2), round(yf, 2), round(d, 2)])
     return rows
 
 
@@ -454,12 +512,12 @@ def rolled_profile(Hf, n=61):
     for z in np.r_[np.linspace(BAG_Z0, zr, n)[:-1], np.linspace(zr, zt, 21)]:
         if z <= zr:
             t = (z - BAG_Z0) / Hf
-            a, d = float(half_width(t)), float(depth(t))
+            a, d, _ = (float(v[0]) for v in prof(t, Hf))
         else:
             u = (z - zr) / (zt - zr)
             a = float(half_width(tr)) * (1 - 0.12 * u ** 2)
             d = D_TOP + (float(depth(tr)) - D_TOP) * math.sqrt(max(1 - u ** 2, 0.0))
-        rows.append([round(float(z), 2), round(a, 2), round(float(y_frame(z)[0]), 2), round(d, 2)])
+        rows.append([round(float(z), 2), round(a, 2), round(float(y_frame(z, Hf)[0]), 2), round(d, 2)])
         A.append(a * d * (_F(N_OUT) + _F(N_FRM)))
         Z.append(z)
     return rows, float(np.trapezoid(A, Z))
@@ -584,7 +642,7 @@ def build_panels(Hf, diag):
     fr = gore_piece("bag frame-side panel", g_frm, grain=90.0, seam_allowance_mm=12.0, material_id="challenge_ultra_200",
                     piece_id="B-01", quantity=1)
     add(fr, "frame side / meat contact (laminate on the HIDDEN face only)", "main bag",
-        "gore from the 3D teardrop; follows the stay S-curve. 6 Hypalon frame-link tabs + hydration sleeve sewn flat first")
+        "gore from the 3D teardrop; follows the stay S-curve. Fairlead swells, 6 meat-strap ports + hydration sleeve sewn flat first")
     # outer face split along the diagonal zip line (pattern coords: u = +right of centre, v = centre-line length)
     face_poly = SPoly(np.vstack([g_face["right"], g_face["left"][::-1]]))
     # zip line in pattern coords: at each zip z, u = arc from the face centre (+ toward the wearer's right)
@@ -635,9 +693,8 @@ def build_panels(Hf, diag):
     add(rect_panel("hydration sleeve", 250.0, 430.0, 0.0, seam_allowance_mm=10.0, material_id="robic_100d_ripstop",
                    piece_id="B-09"),
         "interior", "main bag", "sewn to B-01; hose ports at the collar seam BOTH sides")
-    add(rect_panel("frame-link tab", 50.0, 70.0, 0.0, seam_allowance_mm=0.0, material_id="hypalon_coated_nylon",
-                   piece_id="B-10", quantity=6),
-        "frame side", "main bag", "raw-edge Hypalon, laser-cut toggle slot: 2 hinge (bottom), 2 mid (z 330), 2 top (crown)")
+    # B-10 frame-link tabs (6 x 50 x 70 Hypalon, 21 g) RETIRED 2026-11-05 (bag weight plan W-01): the bag hangs on the
+    # printed fairleads (analysis/bag_attachment.md) and the v3.1 production patterns already dropped B-10.
     add(rect_panel("lash tab", 30.0, 50.0, 0.0, seam_allowance_mm=0.0, material_id="hypalon_coated_nylon",
                    piece_id="B-11", quantity=8),
         "side gores + face", "main bag", "laser-cut slot 25 x 5 mm; antler/cape lashing, rifle muzzle keepers both sides")
@@ -760,27 +817,34 @@ def build_panels(Hf, diag):
     # over the window, carbon spreader on the bag side. Not one foam sheet across the hole.
     for pid, nm, w, h, mat, kind, t, note in (
             ("BP-01", "lower back panel face", 230.0, 300.0, "spacer_mesh_3d", "fabric", None,
-             "mesh over the stay pads and slack across the window air gap"),
+             "mesh over the stay pads and slack across the window air gap (analysis/back_comfort.md)"),
             ("BP-02", "stay-rail foam", 100.0, 420.0, "xlpe_foam", "foam", 10.0,
-             "PAIR, one on each stay, wearer face. Window between the rails is not foamed"),
+             "PAIR on the stay lines, wearer face (analysis/back_comfort.md). The window between the rails is open "
+             "mesh over an air gap, not foam. Replaces the single 210 x 280 x 6 mm sheet."),
+            # owner 2026-11-05: production spreader = Sandwich v2 (BP-06 rev B, analysis/spreader.md). Cut from the
+            # DXF in cut/spreader/; material_id is the core, skins cfrp_t300_3k_woven_epoxy_ply. Mass and cut area
+            # from analysis/spreader_results.json (chosen). In the weight budget it is its own line (installed mass).
+            ("BP-06", "window spreader, Sandwich v2: 200 g twill / 6 mm ROHACELL 110 / 200 g twill", 242.0, 318.0,
+             "rohacell_110_igf", "sheet", 6.44,
+             "Owner 2026-11-05: production spreader is Sandwich v2 (BP-06 rev B, analysis/spreader.md). Core "
+             "rohacell_110_igf, skins cfrp_t300_3k_woven_epoxy_ply. Clipped to the stays on the bag side with 6 PA12 "
+             "clips; bone ends and the meat cinch land here and go into the stays. Cut and build: cut/spreader/README.md. "
+             "Edge tubes, clips, pucks, pads, doublers and seal (55 g) are hardware, not in this line. Replaces the "
+             "2.0 mm QI sheet (193 g)."),
             ("BP-03", "upper back pad face (on crown)", 210.0, 180.0, "spacer_mesh_3d", "fabric", None,
              "on the crown, above the frame window"),
             ("BP-04", "upper back pad foam", 190.0, 160.0, "xlpe_foam", "foam", 6.0,
              "on the crown"),
             ("BP-05", "back panel shell", 230.0, 300.0, "robic_210d_ripstop", "fabric", None,
-             "bag side of the mesh; the carbon spreader is behind it, not this fabric"),
-            # owner 2026-11-05: production spreader = Sandwich v2 (BP-06 rev B, analysis/spreader.md). Cut from the
-            # DXF in cut/spreader/; material_id is the core, skins cfrp_t300_3k_woven_epoxy_ply. Mass from the record.
-            ("BP-06", "window spreader, Sandwich v2: 200 g twill / 6 mm ROHACELL 110 / 200 g twill", 242.0, 318.0,
-             "rohacell_110_igf", "sheet", 6.44,
-             "clipped to the stays on the bag side (6 PA12 clips). Carries bone ends and the meat cinch to the stays. "
-             "Build: cut/spreader/README.md. Edge tubes, clips, pucks, pads (55 g) are hardware, not in this line")):
+             "bag side of the mesh; the carbon spreader is behind it, not this fabric")):
         qty = 2 if pid == "BP-02" else 1
         add(rect_panel(nm, w, h, 30.0, material_id=mat, piece_id=pid, quantity=qty,
                        seam_allowance_mm=10.0 if kind == "fabric" else 0.0),
             "back panel", "back_panel", note, kind=kind, thickness_mm=t)
         if pid == "BP-06":
             P[-1]["mass_g"] = SPREADER_SHEET_G
+            P[-1]["cut_area_m2"] = SPREADER_AREA_MM2 / 1e6
+            P[-1]["budget"] = "spreader"     # weight budget: installed spreader line, not the soft-goods group
 
     # ---- rifle carry (optional, either side)
     add(tapered_panel("rifle butt boot body", 300.0, 260.0, 200.0, material_id="cordura_500d_nylon66", piece_id="R-01",
@@ -839,6 +903,14 @@ def _spreader_sheet_g() -> float:
 
 
 SPREADER_SHEET_G = _spreader_sheet_g()
+
+
+def _spreader_chosen() -> dict:
+    import json
+    return json.loads((Path(__file__).resolve().parent / "analysis" / "spreader_results.json").read_text())
+
+
+SPREADER_AREA_MM2 = float(_spreader_chosen()["chosen"]["area_mm2"])   # true part outline (notches, R20/R8 corners)
 
 
 def piece_mass(rec):
@@ -916,7 +988,7 @@ def meat_harness(Hf, topo, wraps):
     straps = []
     for i, z in enumerate(MEAT_ANCHOR_Z):
         t = (z - BAG_Z0) / Hf
-        d_in = 0.85 * float(depth(t))                         # meat stack in the bag: up to 85 % of local depth
+        d_in = 0.85 * float(prof(t, Hf)[1][0])                         # meat stack in the bag: up to 85 % of local depth
         bay = min(HAUL_PULLBACK * (z - 60.0) / (700.0 - 60.0), HAUL_PULLBACK) + 60.0   # V bay gap + panel slack
         path_in = 2 * d_in + 2 * PORT_X + 2 * 40.0            # around the stack + through the ports to the stub eyes
         path_bay = 2 * max(bay, 180.0) + 2 * FOOT[0]          # stub to stub round the meat in the bay (>=180 deep quarter)
@@ -946,13 +1018,11 @@ def meat_harness(Hf, topo, wraps):
     mass = (hw(MEAT_WEB, length_m=sum(s["cut_length_mm"] for s in straps) / 1000)
             + hw(MEAT_WEB, length_m=6 * STUB_LEN) + 6 * MEAT_HOOK_G + 3 * MEAT_CAM_G)
     return {
-        "concept": ("INTERNAL MEAT HARNESS: 3 x 38 mm straps (IM1-IM3) anchored at the stay nodes, not across the "
-                    "open window. Meat in game bags goes INSIDE the bag and is cinched against the carbon window spreader "
-                    "(BP-06), which delivers the load to the stay-rail foam (BP-02). The wearer touches those rails and the "
-                    "lumbar pad, not a foam sheet spanning the hole. Each strap crosses the load and hooks to two frame stubs "
-                    "whose sewn eyes poke through bound ports in B-01, then cams tight. Bag pulled back or off: the stub eyes "
-                    "slide out of the ports and the SAME strap hooks stub-to-stub across the meat in the bay (same hooks, same "
-                    "cam, same motion). See analysis/back_comfort.md."),
+        "concept": ("INTERNAL MEAT HARNESS, both modes required (owner 2026-11-01). 3 x 38 mm straps (IM1-IM3) "
+                    "anchor on the fairlead eyes. Bag on: meat inside the bag, cinched against the carbon spreader (BP-06). "
+                    "Bulk: the bag hinges open on the z 60 pins and the same straps cinch meat against the spreader in the "
+                    "wedge. Bag off: the bag is unclipped and a quarter is cinched eye-to-eye on IM1-IM3 against that "
+                    "spreader. The wearer touches the stay-rail foam (BP-02), not the sheet. Record: analysis/meat_haul_modes.md."),
         "straps": straps,
         "anchor_stub": {"material_id": MEAT_WEB, "length_mm": STUB_LEN * 1000, "qty": 6,
                         "fixing": "girth hitch round the stay directly above/below the bonded node wrap (cannot slide), sewn eye box-X bartacked with bonded_nylon_tex135",
@@ -1085,29 +1155,47 @@ def head_clearance(topo, Hf, rolled_top_z):
             "worst": worst}
 
 
+# v3.1 tube-frame budget, FROZEN (geometry.yaml at commit 6061796). The frame studies take their soft-goods basis from
+# it (huntkit/gendesign/frame_production.py SOFT_GOODS_G = 2224.1 - 569.2). History only; the live budget is below.
+V31_TUBE_BASELINE = {"total_g": 2224.1, "frame_g": 569.2, "back_panel_g": 75.2, "misc_g": 36.1,
+                     "source": "geometry.yaml v3.1 (commit 6061796): carbon-tube frame v2, single 6 mm XLPE back sheet",
+                     "used_by": "huntkit/gendesign/frame_production.py SOFT_GOODS_G (soft-goods basis of the frame studies)"}
+
+
+def _analysis_json(name):
+    import json
+    return json.loads((HERE / "analysis" / name).read_text())
+
+
 def weight_budget(P, Hf, diag, wraps, info):
-    """Base weight: size M belt, J-straps, rain fly (owner: fly counts), meat harness. Lid, rifle boot, posts excluded."""
+    """PRODUCTION base weight: printed branch frame + Sandwich v2 spreader + fairlead attachment + under-straps + soft
+    goods (size M belt, J-straps, rain fly (owner: counts), meat harness). Lid, rifle boot, posts excluded.
+    Frame-side numbers come from the analysis records; soft goods are computed from the pieces and material records."""
     sub_mass = {}
     for rec in P:
-        sub_mass.setdefault(rec["sub"], 0.0)
-        sub_mass[rec["sub"]] += piece_mass(rec)
+        key = rec.get("budget", rec["sub"])
+        sub_mass.setdefault(key, 0.0)
+        sub_mass[key] += piece_mass(rec)
     rows = []
 
     def row(group, item, g, basis):
         rows.append({"group": group, "item": item, "mass_g": round(g, 1), "basis": basis})
 
-    fy = yaml.safe_load((HERE / "frame.yaml").read_text())
-    gd = yaml.safe_load((HERE / "analysis" / "gendesign_results.yaml").read_text())
-    ti_mount = float(gd["lugs"]["hip_pivot_mount/slm_ti"]["mass_g"])
-    ti_insert = float(fy["mass_g"]["Ti hipbelt pivot insert"])
-    frame_g = float(fy["mass_total_g"]) - ti_insert + ti_mount
-    row("frame (frame.yaml v2 + printed Ti hip-pivot mount)",
-        "carbon frame v2: straight stays, crown, bars, formed lumbar pan, wraps, foot boots, bushings, rack + pawl housing + pulley guides",
-        frame_g, f"frame.yaml mass_total_g {fy['mass_total_g']:g} - Ti pivot insert {ti_insert:g} + SLM Ti hip-pivot mount "
-                 f"{ti_mount:g} (analysis/gendesign_results.yaml, DECISIONS 2026-11-01)")
-    row("torso adjust (not in frame.yaml)", "3:1 pulley webbing 25 mm x 1.4 m, metal cam buckle, pawl release cord + strap toggle",
+    gb = _analysis_json("generative_branch_results.json")
+    sp = _analysis_json("spreader_results.json")
+    ba = _analysis_json("bag_attachment_results.json")
+    old_sheet = float(sp["old_part_g"])
+    row("frame (printed branch body + carbon crown)",
+        f"PAHT-CF branch body {gb['body_g']:.0f} g, carbon crown, rack + pawl + guides, bushings, Ti hip-pivot mount, "
+        "pawl bushings, inserts",
+        float(gb["frame_g"]) - old_sheet,
+        f"analysis/generative_branch_results.json frame_g {gb['frame_g']:.1f} - retired QI sheet + M4 sets "
+        f"{old_sheet:.1f} (spreader_results.json old_part_g)")
+    row("back-system spreader (Sandwich v2, BP-06)", "sheet, edge tubes, clips, pucks, pads, doublers, seal (installed)",
+        float(sp["chosen"]["mass_g"]), "analysis/spreader_results.json chosen.mass_g (owner 2026-11-05)")
+    row("torso adjust (not in the frame line)", "3:1 pulley webbing 25 mm x 1.4 m, metal cam buckle, pawl release cord + strap toggle",
         hw("poly_webbing_25mm", length_m=1.4) + 12 + hw("dyneema_cord_2mm", length_m=0.6) + 3,
-        "records; cam 12 g + toggle 3 g ASSUMPTION. Rack 22 g, pawl/housing 14 g and guides 8 g are inside frame.yaml (v3 double-counted them)")
+        "records; cam 12 g + toggle 3 g ASSUMPTION")
     row("main bag", "fabric panels (B-*, D-01, collar, tabs)", sub_mass["main bag"], "computed: cut area x gsm")
     row("main bag", "#10 coil diagonal zip + 2 sliders", hw("coil_zipper_10", length_m=(diag["zip_len"] + 60) / 1000) + 12,
         "coil_zipper_10 g/m; sliders 6 g ea ASSUMPTION")
@@ -1115,10 +1203,15 @@ def weight_budget(P, Hf, diag, wraps, info):
     row("main bag", "roll-top: HDPE 0.8 x 20 mm strip, 2 x 25 mm side-release (ROLL family), 2 x 0.35 m webbing",
         0.8e-3 * 0.020 * perim / 1000 * MAT.load("hdpe_sheet").require("density_kg_m3") * 1000
         + hw("buckle_side_release_25mm", 2) + hw("poly_webbing_25mm", length_m=0.7), "records")
-    row("main bag", "bag-frame link: 4 POM toggles on 25 mm webbing 4 x 0.15 m (3-slot Hypalon tabs set the length); 2 hinge quick-pins",
-        4 * 3 + hw("poly_webbing_25mm", length_m=0.6) + 2 * 4, "records; toggles 3 g, quick-pins 4 g ASSUMPTION")
     row("main bag", "6 haul-wrap keeper loops (25 mm webbing x 80 mm, sewn into the gore seams)",
         hw("poly_webbing_25mm", length_m=0.48), "records")
+    for item, g in ba["parts_g"].items():
+        if item.startswith("old LINK hardware"):
+            continue        # the v3.1 toggles/quick-pins are no longer in this budget (and B-10 tabs are retired)
+        row("bag-to-frame attachment (fairleads)", item, float(g), "analysis/bag_attachment_results.json parts_g")
+    from huntkit.gendesign.meat_haul import cradle_parts_g
+    for item, g in cradle_parts_g().items():
+        row("under-straps US1/US2 (cradle)", item, float(g), "huntkit/gendesign/meat_haul.py cradle_parts_g (meat_haul_modes.md)")
     row("accents", "camo SH-01..05 (overlay mass)", sub_mass["accents"], "computed")
     row("rain fly", "fly + fly pocket + flag sleeve", sub_mass["fly"], "computed")
     row("rain fly", "fly elastic hem 3.0 m, #5 pocket zip + slider, tether", 3.0 * 3 + hw("coil_zipper_5", length_m=0.18) + 3 + 2,
@@ -1137,18 +1230,20 @@ def weight_budget(P, Hf, diag, wraps, info):
     row("harness", "load lifters 25 mm poly + ladders, sternum Fidlock (QUICK family) + POM rails",
         hw("poly_webbing_25mm", length_m=0.9) + 2 * hw("ladder_lock_25mm") + hw("fidlock_magnetic_buckle_25mm") + 12
         + hw("poly_webbing_25mm", length_m=0.8), "records; rails 12 g ASSUMPTION")
-    row("back panel", "lower + upper pads", sub_mass["back_panel"], "computed")
+    row("back panel", "lower mesh, stay-rail foam pair, upper pad, shell (spreader is its own line)", sub_mass["back_panel"],
+        "computed")
     mh = info["meat_harness"]
     row("internal meat harness", f"3 x 38 mm straps IM1-IM3 + 6 frame stubs, 6 sliding-gate hooks, 3 cams (MEAT family)",
-        mh["mass_g"], "poly_webbing_38mm record x cut lengths (meat_harness); hook 9 g, cam 22 g ASSUMPTION")
+        mh["mass_g"], "poly_webbing_38mm record x cut lengths (meat_harness); hook 9 g, cam 22 g ASSUMPTION. The stubs "
+                      "became fairlead eyes: net in the attachment line 'webbing eyes, net of old stubs'")
     row("internal meat harness", "B-01 strap ports: 6 Hypalon patches (B-12)", sub_mass.get("meat", 0.0), "computed")
     wrap_len = sum(w["cut_length_mm"] for w in wraps) / 1000
     row("haul wraps (= compression)", f"3 frame-anchored wraps, 25 mm coyote poly webbing {wrap_len:.2f} m",
         hw("poly_webbing_25mm", length_m=wrap_len), "records; lengths from the 3D teardrop (haul_wraps)")
     row("haul wraps (= compression)", "3 aluminium G-hooks (HAUL family) + 3 ladder locks", 3 * 4 + 3 * hw("ladder_lock_25mm"),
         "G-hook 4 g ASSUMPTION (no record); ladder lock record")
-    row("misc", "thread (~3 % of soft goods) + labels", 0.03 * sum(v for k, v in sub_mass.items() if k not in ("carry", "lid")) + 8,
-        "ASSUMPTION")
+    soft = [k for k in sub_mass if k not in ("carry", "lid", "spreader")]
+    row("misc", "thread (~3 % of soft goods) + labels", 0.03 * sum(sub_mass[k] for k in soft) + 8, "ASSUMPTION")
     tot = sum(r["mass_g"] for r in rows)
     carry = sub_mass["carry"] + hw("poly_webbing_25mm", length_m=0.6) + hw("ladder_lock_25mm")
     lid = sub_mass["lid"] + hw("aquaguard_zipper_8", length_m=0.26) + 4 * hw("fidlock_magnetic_buckle_25mm") \
@@ -1164,7 +1259,7 @@ def meat_bay_volume(Hf, z_hinge=60.0, z_top=700.0, n=200):
     the frame face and B-01; width 90 % of the local bag width (corners do not fill)."""
     z = np.linspace(z_hinge, z_top, n)
     gap = HAUL_PULLBACK * (z - z_hinge) / (z_top - z_hinge)
-    w = 2 * half_width((z - BAG_Z0) / Hf) * 0.9
+    w = 2 * prof((z - BAG_Z0) / Hf, Hf)[0] * 0.9
     return float(np.trapezoid(gap * w, z))
 
 
@@ -1218,7 +1313,16 @@ def _py(o):
     return o
 
 
-def main():
+HEADER = "# GENERATED by build_geometry.py - do not hand-edit\n"
+
+
+def render_yaml(obj) -> str:
+    """Exact text written to geometry.yaml / panels.yaml (tests compare the committed files to this)."""
+    return HEADER + yaml.safe_dump(_py(obj), sort_keys=False, width=110, default_flow_style=None)
+
+
+def build():
+    """Compute everything. Returns (geom, pan, ctx); writes nothing."""
     # frame v2 hard points (analysis/frame_hardpoint_changes.yaml) are integrated in section 1 (v3.1)
     w_scale, Hf = solve_profile()
     _HF["Hf"] = Hf
@@ -1246,7 +1350,7 @@ def main():
 
     geom = {
         "meta": {"design": "Pack 5200", "version": "v3.1 SPINE (deeper teardrop roll-top, frame v2, internal meat harness, no shelf)", "owner": "pack-designer",
-                 "generated_by": "designs/pack_5200/build_geometry.py", "date": "2026-11-01", "units": "mm, L, g",
+                 "generated_by": "designs/pack_5200/build_geometry.py", "date": "2026-11-05", "units": "mm, L, g",
                  "research": "docs/research/pack_market_2026.md (Direction A 'Spine')"},
         "frame": topo,
         "bag": {
@@ -1288,6 +1392,18 @@ def main():
                 "band_lower_edge_3d": [[round(float(v), 1) for v in p] for p in diag["band3"][::4]],
                 "band_develop": info["band_develop"],
             },
+            "head_setback": {
+                "setback_mm": HEAD_SETBACK,
+                "method": ("TWO RING SEAMS (v3.1 production patterns, pattern-maker 2026-11-04): SETBACK seam and SHOULDER "
+                           "seam (= the diagonal zip's upper end); the surface is ruled ring-to-ring between them "
+                           "(half-width, depth and frame-face y linear in z). Outside the band: the smooth loft, whose "
+                           "step runs z 560 -> 640. A smooth step is not sewable (10.5 % stretch on B-01, 8.5 % on the face)"),
+                "z_setback_seam": setback_band(Hf)[0], "z_shoulder_seam": round(setback_band(Hf)[1], 1),
+                "setback_at_shoulder_seam_mm": round(float(y_frame(setback_band(Hf)[1], Hf)[0]
+                                                           - (stay_xyz(setback_band(Hf)[1])[1] + FRAME_GAP)), 1),
+                "panels": "B-01 | B-01b (ruled band) | B-01u on the frame side; B-02a/b | B-02c | B-02d on the face",
+                "volume_effect_L": round(litres(v_mm3 - _smooth_volume_mm3(Hf)), 3),
+                "source": "designs/pack_5200/patterns_v31.py MasterSurface; outputs/patterns_pack5200/pattern_checks.md"},
             "gore_seam_check": info["gores"],
             "side_zip": {"side": "NONE: replaced by the diagonal zip (one zip, reachable from either side)", "qty": 0},
             "cg_uniform_fill": {"y": round(cg_y, 1), "z": round(cg_z, 1),
@@ -1323,17 +1439,17 @@ def main():
                     "pivot": "hipbelt_pivot hard point; free roll +/-8 deg with elastomer centring; wing cant 0/5/10 deg (3-position)"},
         "harness": {"padded_length": 440.0, "width_top": 72.0, "width_bottom": 58.0,
                     "options": ["J (unisex default)", "S (curved, 35 mm lateral offset)"], "sternum_rail_travel": 120.0},
-        "weight": {"groups_g": groups, "total_g": total, "total_lb": round(total / 453.592, 2), "target_g": 2268,
-                   "production_pack_note": ("This total is the v2 carbon-tube bag baseline (frame line 569.2 g). "
-                                            "The production pack is the printed branch frame plus the spreader "
-                                            "and the stay rails, in analysis/generative_branch.md."),
+        "weight": {"basis": ("PRODUCTION pack: printed branch frame + Sandwich v2 spreader + fairlead attachment + "
+                             "under-straps + soft goods; size M belt, J-straps, rain fly (owner: counts), meat harness"),
+                   "groups_g": groups, "total_g": total, "total_lb": round(total / 453.592, 2), "target_g": 2268,
+                   "gap_g": round(total - 2268, 1),
+                   "weight_plan": "analysis/bag_weight_plan.md (bag-side savings, owner choices)",
+                   "v31_tube_baseline": V31_TUBE_BASELINE,
                    "rifle_boot_optional_g": carry, "lid_accessory_g": lid_g, "extension_posts_accessory_g": 60,
                    "excluded_from_base": ["rifle boot (switchable, either side)", "lid / hip pack accessory",
                                           "extension posts accessory (ASSUMPTION ~60 g)"],
                    "rows": rows},
     }
-    (HERE / "geometry.yaml").write_text("# GENERATED by build_geometry.py - do not hand-edit\n"
-                                        + yaml.safe_dump(_py(geom), sort_keys=False, width=110, default_flow_style=None))
 
     plist = []
     for rec in P:
@@ -1344,7 +1460,8 @@ def main():
                       "qty_total": p.quantity, "mirror_pair": p.mirror,
                       "seam_allowance_mm": p.seam_allowance_mm if not isinstance(p.seam_allowance_mm, dict) else p.seam_allowance_mm.get("default"),
                       "thickness_mm": rec["t"], "zone": rec["zone"],
-                      "cut_area_m2_each": round(p.area_mm2 / 1e6, 4), "mass_g_total": round(piece_mass(rec), 1),
+                      "cut_area_m2_each": round(rec.get("cut_area_m2", p.area_mm2 / 1e6), 4),
+                      "mass_g_total": round(piece_mass(rec), 1),
                       "notes": rec["notes"],
                       "seam_line_mm": [[round(float(x), 1), round(float(y), 1)] for x, y in p.outline]
                       if p.piece_id in ("B-01", "B-02a", "B-02b", "B-03", "D-01") else None})
@@ -1358,7 +1475,10 @@ def main():
                     "note": ("approx_size = seam-line bounding box (mm). Body gores B-01/02a/02b/03 are DEVELOPED from the 3D "
                              "teardrop (gore method: pattern height = true centre-line length, widths = true cross-arcs); "
                              "seam_line_mm carries their true outlines. D-01 is develop_ruled_surface between the zip line and "
-                             "the band's lower edge. qty_total counts mirror pairs (contract). Hipbelt pieces at size M."),
+                             "the band's lower edge. qty_total counts mirror pairs (contract). Hipbelt pieces at size M. "
+                             "This is the DESIGN bill of panels (masses for the weight budget). The cut set is the v3.1 "
+                             "production patterns (designs/pack_5200/patterns_v31.py: two-ring-seam head setback, B-01b/"
+                             "B-01u/B-02c/B-02d, fairlead swells B-13..B-15); outputs/release/pack5200_v3.1_patterns."),
                     "piece_count_total": sum(x["qty_total"] for x in plist),
                     "gore_seam_check_mm": info["gores"], "band_develop": info["band_develop"]},
            "grading": grade, "panels": plist,
@@ -1368,15 +1488,29 @@ def main():
                *[{"use": f"internal meat strap {m['id']} (z {m['z']:.0f}; hooks both ends, cam)", "material_id": MEAT_WEB,
                   "colour": "bone/stone (MEAT family; blood shows, so it gets washed)", "length_mm": m["cut_length_mm"], "qty": 1}
                  for m in info["meat_harness"]["straps"]],
-               {"use": "meat-strap frame stubs (girth hitch + sewn eye)", "material_id": MEAT_WEB, "length_mm": round(STUB_LEN * 1000), "qty": 6},
                {"use": "roll-top clips", "material_id": "poly_webbing_25mm", "length_mm": 350, "qty": 2},
-               {"use": "bag-frame link (toggles)", "material_id": "poly_webbing_25mm", "length_mm": 150, "qty": 4},
                {"use": "haul-wrap keeper loops", "material_id": "poly_webbing_25mm", "length_mm": 80, "qty": 6},
                {"use": "hip stabilizers", "material_id": "poly_webbing_25mm", "length_mm": 400, "qty": 2},
                {"use": "sternum", "material_id": "poly_webbing_25mm", "length_mm": 400, "qty": 2},
-               {"use": "crown 3:1 pulley", "material_id": "poly_webbing_25mm", "length_mm": 1400, "qty": 1}]}
-    (HERE / "panels.yaml").write_text("# GENERATED by build_geometry.py - do not hand-edit\n"
-                                      + yaml.safe_dump(_py(pan), sort_keys=False, width=110, default_flow_style=None))
+               {"use": "crown 3:1 pulley", "material_id": "poly_webbing_25mm", "length_mm": 1400, "qty": 1}],
+           "webbing_note": ("v3.1 girth-hitch stubs and LINK toggle webbing are retired (fairleads, analysis/bag_attachment.md); "
+                            "fairlead eyes, bag-hook straps, hinge eyes and under-straps are listed by patterns_v31.build_cut_lists")}
+    ctx = {"Hf": Hf, "topo": topo, "diag": diag, "P": P, "rolled_rows": rolled_rows, "headc": headc, "info": info,
+           "zc": zc, "z_top": z_top, "v_mm3": v_mm3, "v_chk": v_chk, "a_max": a_max, "d_max": d_max, "vols": vols,
+           "wraps": wraps, "cg": (cg_y, cg_z), "groups": groups, "total": total, "carry": carry, "lid_g": lid_g}
+    return geom, pan, ctx
+
+
+def main(plots: bool = True):
+    geom, pan, c = build()
+    (HERE / "geometry.yaml").write_text(render_yaml(geom))
+    (HERE / "panels.yaml").write_text(render_yaml(pan))
+    Hf, topo, diag, P, headc, info = c["Hf"], c["topo"], c["diag"], c["P"], c["headc"], c["info"]
+    zc, z_top, v_mm3, v_chk, a_max, d_max = c["zc"], c["z_top"], c["v_mm3"], c["v_chk"], c["a_max"], c["d_max"]
+    vols, wraps, (cg_y, cg_z), groups, total = c["vols"], c["wraps"], c["cg"], c["groups"], c["total"]
+    carry, lid_g, rolled_rows = c["carry"], c["lid_g"], c["rolled_rows"]
+    if not plots:
+        return geom, pan
     plot(Hf, topo, geom, diag, P)
     plot_head(geom, Hf, rolled_rows[-1][0])
     print("head clearance:", "ALL PASS" if headc["all_pass"] else "FAIL", "worst:", headc["worst"])
@@ -1684,4 +1818,4 @@ def plot_head(geom, Hf, rolled_top_z):
 
 
 if __name__ == "__main__":
-    main()
+    main(plots="--no-plots" not in sys.argv)

@@ -275,8 +275,24 @@ def analyse(cradle_fea: dict | None = None) -> dict:
     modes["sheet"] = dict(sheet)
     web_m = load("poly_webbing_38mm")
     pa = load("pa12_cf_fdm_paht")
+    parts = cradle_parts_g(cradle_fea)
+    plastic = parts["printed anchors (4)"]
+    filament = plastic * 1.08 * float(pa.require("print_cost_usd_per_g"))
+    modes["cradle"]["mass_g"] = float(sum(parts.values()))
+    modes["cradle"]["parts_g"] = parts
+    modes["cradle"]["cost_usd"] = filament * 1.15 + 4 * 2.50 + 2 * 4.00 + 1.10 * float(web_m.cost_usd["value"]) + 2 * 0.40
+    return modes
+
+
+def cradle_parts_g(cradle_fea: dict | None = None) -> dict:
+    """Mass list of the two 38 mm under-straps (cradle), g. Shared with designs/pack_5200/build_geometry.py.
+    Anchor mass from cradle_fea.json (``added_g``) when given; pins/sleeves as bag_attach; cam 22 g ASSUMPTION."""
+    if cradle_fea is None:
+        f = ANALYSIS / "cradle_fea.json"
+        cradle_fea = json.loads(f.read_text()) if f.exists() else {}
+    web_m = load("poly_webbing_38mm")
     anchor_g = float((cradle_fea or {}).get("added_g", 6.2))
-    parts = {
+    return {
         "printed anchors (4)": 4 * anchor_g,
         "7075 pins (4)": 4 * 2.41,
         "UHMWPE sleeves (4)": 4 * 0.29,
@@ -285,12 +301,6 @@ def analyse(cradle_fea: dict | None = None) -> dict:
         "38 mm webbing, 1.10 m": 1.10 * float(web_m.require("mass_g_m")),
         "bag-floor channels": 8.0,
     }
-    plastic = parts["printed anchors (4)"]
-    filament = plastic * 1.08 * float(pa.require("print_cost_usd_per_g"))
-    modes["cradle"]["mass_g"] = float(sum(parts.values()))
-    modes["cradle"]["parts_g"] = parts
-    modes["cradle"]["cost_usd"] = filament * 1.15 + 4 * 2.50 + 2 * 4.00 + 1.10 * float(web_m.cost_usd["value"]) + 2 * 0.40
-    return modes
 
 
 def _draw(mode_key: str, modes: dict) -> str:

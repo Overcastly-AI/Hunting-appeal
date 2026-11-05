@@ -132,7 +132,8 @@ Cost is marginal. Filament $4.26, scrap $0.64, extra machine time $1.75, hooks p
   Each fairlead stands about 14 mm proud of the surface.
   A feathered 16 mm swell in B-01, 90 mm long, puts 2 mm of air over the cleat
   so it does not rub the cloth or print a point into the meat. The swell is inside the bag.
-- Spreader sheet is notched 22 mm in height at each fairlead. The notch is at the edge landing,
+- The Sandwich v2 spreader (BP-06 rev B, `spreader.md`) is notched 30 mm in height at the z 142, z 190, z 330 fairleads,
+  with R6 roots and 6 mm of air round each cleat (`cut/spreader/README.md`). The notch is at the edge landing,
   not in the window span. The rails and the mesh are untouched.
 - Slack hooks sit under a 3 mm elastic keeper so an empty pack does not click on the stalk.
 - Field repair: spare pin, spare sleeve, spare hook, in the hipbelt pocket. A cracked cleat
