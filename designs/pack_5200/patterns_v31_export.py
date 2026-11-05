@@ -2,7 +2,7 @@
 
 Writes outputs/patterns_pack5200/ (scratch, regenerated) and the beginner print set in
 outputs/release/pack5200_v3.1_patterns/ (git-tracked deliverable), plus phone-readable PNG
-previews in outputs/screens/20261104_packpatterns_<n>.png.
+previews in outputs/screens/20261105_packpatterns_<n>.png.
 """
 from __future__ import annotations
 
@@ -31,11 +31,12 @@ OUT = ROOT / "outputs" / "patterns_pack5200"
 REL = ROOT / "outputs" / "release" / "pack5200_v3.1_patterns"
 SCREENS = ROOT / "outputs" / "screens"
 DOCS_SCREENS = ROOT / "docs" / "screens"
-DATE = "20261104"
+DATE = "20261105"
 YD = 914.4
 WASTE_PROD = 0.03       # ASSUMPTION: 3 % spreading / end / defect loss on production lays
 N_LOTS = (1, 10, 50, 100)
 NEST_UNITS = 10         # production marker: 10 packs nested together
+NEST_TIME_S = 240.0     # per-marker time cap; after it the nester places the rest greedily
 
 
 def rel(p: Path) -> str:
@@ -214,6 +215,16 @@ def write_checks(ps, vol, rep, graded, path: Path):
           "## Seam check", "", f"{len(rep.results)} seams, **{len(rep.mismatches)} mismatches**.", "", rep.markdown(), ""]
     for s, g in graded.items():
         L += [f"### Graded {s}: {len(g.results)} seams, {len(g.mismatches)} mismatches", "", g.markdown(), ""]
+    L += ["## Note for the pack-designer: geometry.yaml vs the patterns", "",
+          "**`designs/pack_5200/geometry.yaml` still describes the smooth 30 mm head-setback step (z 560-640, "
+          "kink at T_PEAK z 632). The production patterns do not follow it: they take the setback with two ring "
+          "seams, SETBACK at z 560 and SHOULDER at z 631.2 (= zip upper end), ruled between, so the frame panel "
+          "(B-01 / B-01b / B-01u) and the outer face (B-02a-d) are 3 tiers each.** Volume rebuilt from the flats is "
+          "85.02 L vs 85.16 L design (see above). Action for the pack-designer: adopt the two seams in geometry.yaml / panels.yaml "
+          "(seam z levels, tier piece ids) and in DESIGN.md, then rerun `python designs/pack_5200/patterns_v31.py "
+          "--check`. Until then geometry.yaml and the cut pieces disagree above z 560 by design. Also: BUILD_PLAN.md "
+          "step 9 still puts the B-12 ports at x +/-100, z 190/330/520; the patterns put them in the swell crests "
+          "over the fairlead eyes (x +/-115), and step 6 still lists the retired frame stubs.", ""]
     L += ["## Open items for other owners", ""] + [f"- {n}" for n in ps.notes]
     path.write_text("\n".join(L) + "\n")
     return path
@@ -326,15 +337,22 @@ def export_all(ps, *, release=True, screens=True, nest10=True, log=print):
                   allow_180=mid not in PV.ONE_WAY, free_rotation_step_deg=90.0)
         mk = nest(pcs, rw, **kw)
         mk.material_id = mid
+        assert not mk.unplaced, (mid, mk.unplaced)
         markers[mid] = mk
         mk.export_pdf(OUT / "markers" / f"{mid}_marker_1pack.pdf", compress=True)
         mk.export_dxf(OUT / "markers" / f"{mid}_marker_1pack.dxf")
         mk.export_csv(OUT / "markers" / f"{mid}_marker_1pack.csv")
         if nest10:
             t1 = time.time()
-            units = NEST_UNITS if len(pcs) * NEST_UNITS <= 260 else 4
-            m10 = nest(pcs, rw, units=units, **kw)
+            units = NEST_UNITS
+            npc = sum(p.quantity for p in pcs) * units
+
+            def prog(i, n, m, _mid=mid, _t=t1):
+                if i % 25 == 0 or i == n:
+                    log(f"    {_mid} 10-pack {i}/{n} placed, L {m.length_mm:.0f} mm, {time.time() - _t:.0f} s")
+            m10 = nest(pcs, rw, units=units, time_limit_s=NEST_TIME_S, progress=prog if npc > 60 else None, **kw)
             m10.material_id = mid
+            assert not m10.unplaced, (mid, m10.unplaced)
             markers10[mid] = m10
             m10.export_pdf(OUT / "markers" / f"{mid}_marker_{units}pack.pdf", scale=0.1, compress=True)
             m10.export_dxf(OUT / "markers" / f"{mid}_marker_{units}pack.dxf")

@@ -139,6 +139,8 @@ class Beam:
     clamp_end: bool = True
     tag: str = ""
     dof0: int = -1                # set by the model: first global dof (w0, th0, w1, th1, ...)
+    pin_start: bool = False       # w = 0 only (a socket); ignored when clamp_start is set
+    pin_end: bool = False
 
 
 class GridPlate:
@@ -219,7 +221,13 @@ class GridPlate:
         rows = np.repeat(ed, 12, axis=1).ravel()
         cols = np.tile(ed, (1, 12)).ravel()
         K = sp.coo_matrix((Ke.ravel(), (rows, cols)), shape=(self.ndof, self.ndof))
-        parts = [K]
+        self._K0 = K.tocsr() + self._K_supports()
+        return self._K0
+
+    def _K_supports(self, ndof: int | None = None):
+        """Beams and ties only (no plate bending), size ``ndof`` (default self.ndof)."""
+        ndof = self.ndof if ndof is None else ndof
+        parts = [sp.csr_matrix((ndof, ndof))]
         for b in self.beams:
             n = len(b.xy)
             L = np.linalg.norm(np.diff(b.xy, axis=0), axis=1)
@@ -230,14 +238,13 @@ class GridPlate:
                                               [-12, -6 * l, 12, -6 * l], [6 * l, 2 * l * l, -6 * l, 4 * l * l]])
                 d = b.dof0 + 2 * e + np.arange(4)
                 r += list(np.repeat(d, 4)); c += list(np.tile(d, 4)); v += list(k.ravel())
-            parts.append(sp.coo_matrix((v, (r, c)), shape=(self.ndof, self.ndof)))
+            parts.append(sp.coo_matrix((v, (r, c)), shape=(ndof, ndof)))
         if self.ties:
             r, c, v = [], [], []
             for a, b, k in self.ties:
                 r += [a, b, a, b]; c += [a, b, b, a]; v += [k, k, -k, -k]
-            parts.append(sp.coo_matrix((v, (r, c)), shape=(self.ndof, self.ndof)))
-        self._K0 = sum(p.tocsr() for p in parts)
-        return self._K0
+            parts.append(sp.coo_matrix((v, (r, c)), shape=(ndof, ndof)))
+        return sum(p.tocsr() for p in parts)
 
     def _fixed_dofs(self) -> np.ndarray:
         fx = set(self.fixed)
@@ -250,6 +257,11 @@ class GridPlate:
                 fx.update((b.dof0, b.dof0 + 1))
             if b.clamp_end:
                 fx.update((b.dof0 + 2 * (n - 1), b.dof0 + 2 * (n - 1) + 1))
+            if b.pin_start and not b.clamp_start:
+                fx.add(b.dof0)
+            if b.pin_end and not b.clamp_end:
+                fx.add(b.dof0 + 2 * (n - 1))
+        fx.update(getattr(self, "fixed_dofs_extra", set()))
         return np.array(sorted(fx), int)
 
     def load_vector(self, q_elem=None, point=None) -> np.ndarray:
@@ -363,3 +375,182 @@ def laminate_bending_fi(lam, M: np.ndarray, knockdown=None, criterion: str = "ts
             fi = tsai_wu_fi_vec(sig, pk) if criterion == "tsai_wu" else max_stress_fi_vec(sig, pk)
             best = np.maximum(best, fi)
     return best.reshape(shp)
+
+
+# ----------------------------------------------------------------------------- von Karman (large deflection)
+def _q4_Bm(h: float, x: float, y: float) -> np.ndarray:
+    """Bilinear membrane strain operator (3, 8) on an h x h square, node order as ACM
+    (0,0), (h,0), (h,h), (0,h); dofs (u0, v0, u1, v1, ...)."""
+    xi, et = x / h, y / h
+    dNx = np.array([-(1 - et), (1 - et), et, -et]) / h
+    dNy = np.array([-(1 - xi), -xi, xi, (1 - xi)]) / h
+    B = np.zeros((3, 8))
+    B[0, 0::2] = dNx
+    B[1, 1::2] = dNy
+    B[2, 0::2] = dNy
+    B[2, 1::2] = dNx
+    return B
+
+
+def solve_von_karman(pl: GridPlate, f: np.ndarray, A, fix_uv_nodes=(), n_steps: int = 6, tol: float = 1e-7,
+                     max_newton: int = 40, k_pen: float = 2.0e4, active0=None, extra_fixed=(), max_dw: float = 2.0, verbose: bool = False) -> dict:
+    """Geometrically nonlinear (von Karman) solve of the same plate: ACM bending plus bilinear membrane
+    dofs (u, v), strains eps = grad(u)_sym + 1/2 grad(w) x grad(w). Total Lagrangian, Newton-Raphson with
+    load stepping; the unilateral springs are updated inside the Newton loop (semi-smooth Newton).
+
+    ``A``: membrane stiffness (3, 3) or (nx, ny, 3, 3) (N/mm), e.g. Laminate.A or E t / (1 - nu^2) [...].
+    ``fix_uv_nodes``: plate nodes held in-plane (clips, rivets). At least the in-plane rigid-body modes must
+    be held; inactive nodes are held automatically.
+
+    Returns the same keys as ``GridPlate.solve`` plus ``N`` and ``M`` (nx, ny, 9, 3) at the 3x3 Gauss points
+    (N mm/mm, M with the sign of D kappa) and ``uv`` (nn, 2).
+
+    Verified in ``tests/test_plate_vk.py`` against the exact cylindrical-bending solution of a clamped strip
+    with immovable edges (Timoshenko & Woinowsky-Krieger, Theory of Plates and Shells, sec. 3) and against the
+    linear solver at small load."""
+    nx, ny, nn = pl.nx, pl.ny, pl.nn
+    n0 = pl.ndof
+    ndof = n0 + 2 * nn
+    A = np.asarray(A, float)
+    Ae = np.broadcast_to(A, (nx, ny, 3, 3)) if A.ndim == 2 else A
+    act = pl.active
+    De = pl.D[act]
+    Aa = Ae[act]
+    ne = int(act.sum())
+    edw = pl.edof[act]                                                   # (ne, 12)
+    edm = n0 + (2 * pl.enodes[act][..., None] + np.arange(2)).reshape(ne, 8)
+    ed = np.c_[edw, edm]                                                 # (ne, 20)
+    el = pl.el
+    g, wg = np.polynomial.legendre.leggauss(3)
+    gps = []
+    for gi, wi in zip(g, wg):
+        for gj, wj in zip(g, wg):
+            x, y = (gi + 1) * pl.h / 2, (gj + 1) * pl.h / 2
+            Gx = np.array([_Px(x, y), _Py(x, y)]) @ el.Ainv               # (2, 12)
+            gps.append((wi * wj * pl.h * pl.h / 4, el.B(x, y), Gx, _q4_Bm(pl.h, x, y)))
+    Ksup = pl._K_supports(ndof)
+    # fixed dofs: plate/beam fixed + membrane of inactive nodes + requested in-plane holds
+    fx = set(pl._fixed_dofs().tolist())
+    inact = ~pl.active_nodes()
+    for n in np.nonzero(inact)[0]:
+        fx.update((n0 + 2 * n, n0 + 2 * n + 1))
+    for n in np.atleast_1d(np.asarray(fix_uv_nodes, int)):
+        fx.update((n0 + 2 * int(n), n0 + 2 * int(n) + 1))
+    fx.update(int(d) for d in extra_fixed)
+    fixed = np.array(sorted(fx), int)
+    free = np.setdiff1d(np.arange(ndof), fixed)
+    S = pl.springs
+    a_dof = np.array([3 * s.node for s in S], int)
+    o_dof = np.array([(-1 if s.other is None else s.other) for s in S], int)
+    kk = np.array([s.k if s.k > 0 else k_pen for s in S], float)
+    gg = np.array([s.gap for s in S], float)
+    uni = np.array([s.unilateral for s in S], bool)
+    sen = np.array([s.sense for s in S], float)
+    actS = ((gg <= 0) | ~uni) if active0 is None else np.asarray(active0, bool).copy()
+    fext = np.zeros(ndof)
+    fext[:n0] = f[:n0]
+    rows = np.repeat(ed, 20, axis=1).ravel()
+    cols = np.tile(ed, (1, 20)).ravel()
+
+    def internal(u):
+        ue = u[ed]
+        uw, um = ue[:, :12], ue[:, 12:]
+        fe = np.zeros((ne, 20))
+        Ke = np.zeros((ne, 20, 20))
+        Ns, Ms = [], []
+        for wt, Bb, Gx, Bm in gps:
+            gw = uw @ Gx.T                                               # (ne, 2)
+            eps = um @ Bm.T
+            eps[:, 0] += 0.5 * gw[:, 0] ** 2
+            eps[:, 1] += 0.5 * gw[:, 1] ** 2
+            eps[:, 2] += gw[:, 0] * gw[:, 1]
+            N = (Aa @ eps[:, :, None])[:, :, 0]
+            M = (De @ (uw @ Bb.T)[:, :, None])[:, :, 0]
+            Lam = np.zeros((ne, 3, 2))
+            Lam[:, 0, 0] = gw[:, 0]; Lam[:, 1, 1] = gw[:, 1]; Lam[:, 2, 0] = gw[:, 1]; Lam[:, 2, 1] = gw[:, 0]
+            Hm = Lam @ Gx                                                # (ne, 3, 12)
+            HmT = np.transpose(Hm, (0, 2, 1))
+            fe[:, :12] += wt * (M @ Bb + (HmT @ N[:, :, None])[:, :, 0])
+            fe[:, 12:] += wt * (N @ Bm)
+            Nm = np.empty((ne, 2, 2))
+            Nm[:, 0, 0] = N[:, 0]; Nm[:, 1, 1] = N[:, 1]; Nm[:, 0, 1] = Nm[:, 1, 0] = N[:, 2]
+            AHm = Aa @ Hm
+            Ke[:, :12, :12] += wt * (Bb.T @ De @ Bb + HmT @ AHm + Gx.T @ Nm @ Gx)
+            Kwm = HmT @ (Aa @ Bm)
+            Ke[:, :12, 12:] += wt * Kwm
+            Ke[:, 12:, :12] += wt * np.transpose(Kwm, (0, 2, 1))
+            Ke[:, 12:, 12:] += wt * (Bm.T @ Aa @ Bm)
+            Ns.append(N); Ms.append(M)
+        F = np.zeros(ndof)
+        np.add.at(F, ed.ravel(), fe.ravel())
+        K = sp.coo_matrix((Ke.ravel(), (rows, cols)), shape=(ndof, ndof)).tocsr()
+        return F, K, np.stack(Ns, 1), np.stack(Ms, 1)
+
+    def springs(u, a):
+        ad, od, ka, ga = a_dof[a], o_dof[a], kk[a], gg[a]
+        wo = np.where(od >= 0, u[np.maximum(od, 0)], 0.0)
+        fs = ka * (u[ad] - wo - ga)
+        F = np.zeros(ndof)
+        np.add.at(F, ad, fs)
+        m = od >= 0
+        np.add.at(F, od[m], -fs[m])
+        r = list(ad) + list(od[m]) + list(ad[m]) + list(od[m])
+        c = list(ad) + list(od[m]) + list(od[m]) + list(ad[m])
+        v = list(ka) + list(ka[m]) + list(-ka[m]) + list(-ka[m])
+        return F, sp.coo_matrix((v, (r, c)), shape=(ndof, ndof)).tocsr()
+
+    u = np.zeros(ndof)
+    fn = max(np.linalg.norm(fext[free]), 1e-12)
+    it_tot = 0
+    for step in range(1, n_steps + 1):
+        lam = step / n_steps
+        for it in range(max_newton):
+            it_tot += 1
+            Fi, Kt, _, _ = internal(u)
+            Fs, Ks = springs(u, actS)
+            R = Fi + Ksup @ u + Fs - lam * fext
+            K = (Kt + Ksup + Ks)[free][:, free]
+            du = np.zeros(ndof)
+            du[free] = _spsolve(K.tocsr(), -R[free])
+            dw = np.abs(du[0:pl.ndof_plate:3]).max(initial=0.0)
+            if dw > max_dw:                          # step limiter: an indefinite tangent (membrane
+                du *= max_dw / dw                    # compression round a dimple) must not throw the iterate
+            u = u + du
+            wo = np.where(o_dof >= 0, u[np.maximum(o_dof, 0)], 0.0)
+            pen = u[a_dof] - wo - gg
+            new = np.where(uni, sen * pen > 0.0, True)
+            changed = int((new != actS).sum())
+            if it >= 15 and changed:
+                viol = np.where(new != actS, np.abs(pen), -1.0)
+                idx = np.argsort(viol)[::-1][:max(1, changed // 4)]
+                nw = actS.copy(); nw[idx] = ~actS[idx]; new = nw
+            actS = new
+            res = np.linalg.norm(R[free]) / fn
+            if verbose:
+                print(f"step {step} it {it} res {res:.2e} dw {dw:.3g} active {int(actS.sum())} changed {changed} wmax {u[0:pl.ndof_plate:3].max():.3g} wmin {u[0:pl.ndof_plate:3].min():.3g}")
+            if changed == 0 and dw <= max_dw and (np.linalg.norm(du[free]) <= tol * max(np.linalg.norm(u[free]), 1e-9)
+                                                  or res < tol):
+                break
+    Fi, _, N, M = internal(u)
+    wo = np.where(o_dof >= 0, u[np.maximum(o_dof, 0)], 0.0)
+    pen = u[a_dof] - wo - gg
+    force = np.where(actS, kk * pen, 0.0)
+    Nf = np.zeros((nx, ny, 9, 3)); Mf = np.zeros((nx, ny, 9, 3))
+    Nf[act] = N; Mf[act] = M
+    return {"u": u, "w": u[0:pl.ndof_plate:3], "uv": u[n0:].reshape(nn, 2), "active": actS,
+            "spring_force": force, "iters": it_tot, "N": Nf, "M": Mf, "ndof": ndof}
+
+
+def iso_A(E: float, t: float, nu: float) -> np.ndarray:
+    a = E * t / (1.0 - nu ** 2)
+    return a * np.array([[1.0, nu, 0.0], [nu, 1.0, 0.0], [0.0, 0.0, (1.0 - nu) / 2.0]])
+
+
+def iso_surface_vm(N: np.ndarray, M: np.ndarray, t: float) -> np.ndarray:
+    """Max von Mises over both faces: sigma = N / t +- 6 M / t^2 (plane stress). N, M (..., 3)."""
+    out = None
+    for s in (1.0, -1.0):
+        sg = N / t + s * 6.0 * M / t ** 2
+        vm = np.sqrt(sg[..., 0] ** 2 - sg[..., 0] * sg[..., 1] + sg[..., 1] ** 2 + 3.0 * sg[..., 2] ** 2)
+        out = vm if out is None else np.maximum(out, vm)
+    return out
