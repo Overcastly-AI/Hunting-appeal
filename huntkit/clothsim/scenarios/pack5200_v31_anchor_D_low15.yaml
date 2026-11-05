@@ -1,0 +1,12 @@
+# Sensitivity: crown tie as A at the 15 in setting (crown top bar z 601, index 0: centre y 13.7 -> face y 22.7).
+extends: pack5200_v31_tab_doubler.yaml
+name: pack5200_v31_anchor_D_low15
+contact:
+  crown: {top_z: 601.0}
+attachments:
+  ties:
+    webbing: poly_webbing_25mm
+    capacity_n: 1000.0
+    list:
+      - {id: CT_R, pieces: [B-01b, B-01u, B-01], at: [70.0, 601.0], anchor: [70.0, 22.7, 601.0], mode: elastic, pretension_n: 30.0}
+      - {id: CT_L, pieces: [B-01b, B-01u, B-01], at: [-70.0, 601.0], anchor: [-70.0, 22.7, 601.0], mode: elastic, pretension_n: 30.0}

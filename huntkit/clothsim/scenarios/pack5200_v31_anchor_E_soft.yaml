@@ -1,0 +1,10 @@
+# Sensitivity: anchor STIFFNESS. Crown tie as A but cinched (ladder-lock model: 3 % take-up, soft) at 80 N.
+extends: pack5200_v31_tab_doubler.yaml
+name: pack5200_v31_anchor_E_soft
+attachments:
+  ties:
+    webbing: poly_webbing_25mm
+    capacity_n: 1000.0
+    list:
+      - {id: CT_R, pieces: [B-01u, B-01b], at: [70.0, 702.6], anchor: [70.0, 20.7, 702.6], mode: cinched, pretension_n: 80.0}
+      - {id: CT_L, pieces: [B-01u, B-01b], at: [-70.0, 702.6], anchor: [-70.0, 20.7, 702.6], mode: cinched, pretension_n: 80.0}

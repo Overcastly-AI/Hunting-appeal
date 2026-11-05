@@ -212,21 +212,28 @@ class Pins:
     """Zero-length springs node -> target: E = k/2 |x_i - p|^2."""
     name = "pins"
 
-    def __init__(self, idx, targets, k: float = 500.0):
-        self.idx, self.p, self.k = np.asarray(idx), np.asarray(targets, float), k
+    def __init__(self, idx, targets, k=500.0):
+        # k: one stiffness for all pins, or one per pin (N/mm)
+        self.idx, self.p = np.asarray(idx), np.asarray(targets, float)
+        self.k = k if np.ndim(k) == 0 else np.asarray(k, float)
+
+    def _kc(self):
+        return self.k if np.ndim(self.k) == 0 else self.k[:, None]
 
     def __call__(self, x, hess=True):
         d = x[self.idx] - self.p
-        grad = _scatter(len(x), self.idx, self.k * d)
+        kc = self._kc()
+        grad = _scatter(len(x), self.idx, kc * d)
         H = None
         if hess:
             n = len(x)
             dof = (3 * self.idx[:, None] + np.arange(3)).ravel()
-            H = sp.coo_matrix((np.full(len(dof), self.k), (dof, dof)), shape=(3 * n, 3 * n)).tocsr()
-        return float(0.5 * self.k * np.sum(d * d)), grad, H
+            kd = np.broadcast_to(kc, d.shape).ravel()
+            H = sp.coo_matrix((kd, (dof, dof)), shape=(3 * n, 3 * n)).tocsr()
+        return float(0.5 * np.sum(kc * d * d)), grad, H
 
     def forces(self, x):
-        return -self.k * (x[self.idx] - self.p)
+        return -self._kc() * (x[self.idx] - self.p)
 
 
 @dataclass

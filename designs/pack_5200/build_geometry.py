@@ -629,6 +629,14 @@ def shard(name, pts, **kw):
     return Piece(name, outline=pts, grain=90.0, seam_allowance_mm=8.0, **kw)
 
 
+# Bag-side load spreaders and bow riser carry (pack-designer 2026-11-05; analysis/bag_top_anchor.md). Sizes in mm.
+BAGTOP = {"im3_tab_w": 90.0, "im3_tab_h": 110.0, "im3_tab_stitch_mm": 80.0,       # cloth_sim.md 5.1: >= 80 mm of B-01
+          "hinge_dbl_w": 90.0, "hinge_dbl_h": 45.0, "hinge_dbl_seam_mm": 80.0}     # cloth_sim.md 3.4: >= 60 mm of seam
+# Bow riser carry (owner feature freeze 2026-11-05): two 25 mm webbing loops through the B-11 lash tabs on the right
+# face + one 25 mm G-hook strap over the riser. Lengths ASSUMPTION (riser ~ 60 mm wrap, 2 x 100 mm loops).
+BOW_RISER = {"loop_m": 2 * 0.10, "strap_m": 0.25, "g_hook_g": 4.0}
+
+
 def build_panels(Hf, diag):
     from shapely.geometry import LineString, Polygon as SPoly
     from shapely.ops import split
@@ -772,6 +780,19 @@ def build_panels(Hf, diag):
         "frame-side panel B-01: internal meat-strap ports", "meat",
         "on the INSIDE face of B-01 at x +/-100, z 190 / 330 / 520; laser-cut 45 x 6 mm slot through patch + B-01; edge-stitched "
         "round the slot + perimeter (the port carries no load: the stub eye only passes through it). Sew before B-01 goes 3D")
+    # ---- bag-side load spreaders (2026-11-05, cloth sim follow-up; analysis/bag_top_anchor.md)
+    add(rect_panel("IM3 bag-hook tab", BAGTOP["im3_tab_w"], BAGTOP["im3_tab_h"], 6.0, seam_allowance_mm=0.0,
+                   material_id="hypalon_coated_nylon", piece_id="B-17", quantity=2),
+        "frame-side panel B-01: IM3 bag-hook strap anchor", "reinforcement",
+        f"OUTSIDE face of B-01 under the IM3 swell, centred on the hook strap at x +/-115, z 450; the 38 mm hook strap is "
+        f"box-X bartacked to the tab and the tab is stitched to B-01 on a {BAGTOP['im3_tab_stitch_mm']:.0f} mm wide "
+        "perimeter (spreads the 340 N meat-case hook load, analysis/cloth_sim.md 3.5). Sew before B-01 goes 3D")
+    add(rect_panel("hinge-eye doubler", BAGTOP["hinge_dbl_w"], BAGTOP["hinge_dbl_h"], 6.0, seam_allowance_mm=0.0,
+                   material_id="hypalon_coated_nylon", piece_id="B-18", quantity=2),
+        "B-01 | B-05 seam at the hinge eyes", "reinforcement",
+        f"INSIDE face of B-01, lower edge caught in the B-01 | B-05 seam, centred on the hinge eye (x +/-115); eye box-X "
+        f"through doubler + B-01; spreads ~375 N (meat, 1 g) over {BAGTOP['hinge_dbl_seam_mm']:.0f} mm of seam "
+        "(4.7 N/mm, < 6 N/mm)")
     # ---- hipbelt (size M shown; grade table in panels.yaml)
     wing_len = HIPBELT_WINGS["M"]
     for pid, nm, mat, kind, t, notes in (
@@ -1210,6 +1231,11 @@ def weight_budget(P, Hf, diag, wraps, info):
         + hw("buckle_side_release_25mm", 2) + hw("poly_webbing_25mm", length_m=0.7), "records")
     row("main bag", "6 haul-wrap keeper loops (25 mm webbing x 80 mm, sewn into the gore seams)",
         hw("poly_webbing_25mm", length_m=0.48), "records")
+    row("main bag", "bow riser carry: 2 x 25 mm webbing loops through B-11 + 25 mm G-hook strap (owner freeze 2026-11-05)",
+        hw("poly_webbing_25mm", length_m=BOW_RISER["loop_m"] + BOW_RISER["strap_m"]) + BOW_RISER["g_hook_g"],
+        "poly_webbing_25mm record; G-hook 4 g ASSUMPTION (as the haul wraps); lengths ASSUMPTION")
+    row("bag-side load spreaders", "IM3 bag-hook tabs B-17 + hinge-eye doublers B-18 (Hypalon)",
+        sub_mass.get("reinforcement", 0.0), "computed: cut area x gsm (analysis/bag_top_anchor.md)")
     for item, g in ba["parts_g"].items():
         if item.startswith("old LINK hardware"):
             continue        # the v3.1 toggles/quick-pins are no longer in this budget (and B-10 tabs are retired)

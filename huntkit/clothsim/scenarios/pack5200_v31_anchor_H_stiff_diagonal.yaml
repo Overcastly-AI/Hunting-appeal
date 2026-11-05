@@ -1,0 +1,11 @@
+# Stiffness case: the diagonal top guys of candidate F as FIXED-LENGTH straps (elastic webbing, snug 30 N at the
+# drafted shape: length set on the packed bag, then locked), with the crown-bar tie of A.
+extends: pack5200_v31_anchor_A_crownbar.yaml
+name: pack5200_v31_anchor_H_stiff_diagonal
+attachments:
+  ties:
+    list:
+      - {id: CT_R, pieces: [B-01u, B-01b], at: [70.0, 702.6], anchor: [70.0, 20.7, 702.6], mode: elastic, pretension_n: 30.0}
+      - {id: CT_L, pieces: [B-01u, B-01b], at: [-70.0, 702.6], anchor: [-70.0, 20.7, 702.6], mode: elastic, pretension_n: 30.0}
+      - {id: TG_R, pieces: [B-02d, B-02a, B-03R], at: [150.0, 760.0], anchor: [115.0, 4.1, 420.0], mode: elastic, pretension_n: 30.0}
+      - {id: TG_L, pieces: [B-02d, B-03L], at: [-150.0, 760.0], anchor: [-115.0, 4.1, 420.0], mode: elastic, pretension_n: 30.0}

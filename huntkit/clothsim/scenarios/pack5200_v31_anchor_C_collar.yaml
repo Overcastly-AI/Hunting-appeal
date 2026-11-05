@@ -1,0 +1,12 @@
+# Candidate C: HIGH ANCHOR at the collar seam (z 780): crown tie as A but 78 mm higher. On the frame this is the
+# crown top bar at the 23 in setting only; at 19 in it NEEDS A NEW FRAME FEATURE (a fixed anchor ~80 mm above the
+# crown top bar, e.g. an extension-post bar used as an anchor) - study case for anchor height.
+extends: pack5200_v31_tab_doubler.yaml
+name: pack5200_v31_anchor_C_collar
+attachments:
+  ties:
+    webbing: poly_webbing_25mm
+    capacity_n: 1000.0
+    list:
+      - {id: CT_R, pieces: [B-01u, B-01b], at: [70.0, 775.0], anchor: [70.0, 20.7, 775.0], mode: elastic, pretension_n: 30.0}
+      - {id: CT_L, pieces: [B-01u, B-01b], at: [-70.0, 775.0], anchor: [-70.0, 20.7, 775.0], mode: elastic, pretension_n: 30.0}

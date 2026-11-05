@@ -296,14 +296,14 @@ Status of every bag feature as the files stand. **FROZEN** = owner decision or s
 | Side pockets | Two floating pockets, 2.88 L each, own back panel, wraps run under them; tripod / poles / bottle | P-01..P-03 (210D grid face + gusset, 100D back) | **FROZEN** (R-20). Delete / 100D gusset rejected (O-10/O-11) |
 | SPINE band pocket | Full-length stretch band over the zip: overload, bow-cam cup, pole quiver, 2.2 L | D-01, SH-02 binding, SH-04 cam cup | **FROZEN** |
 | Rifle carry | Butt boot clips to either hipbelt wing (accessory, 36 g); muzzle keepers = lash tabs on both gores | R-01..R-03, B-11 | **FROZEN** (ambidextrous, owner) |
-| Bow carry | Cam/limb end in the band's cam cup; riser retention is **not drawn** (v2 had two 25 mm riser straps on the face; v3.1 has only lash tabs) | SH-04, B-11 | **OPEN**: riser retention. Recommend two 25 mm webbing loops + one G-hook strap through the B-11 lash tabs on the right face (HAUL family, ~10 g), no new face piece |
+| Bow carry | Cam/limb end in the band's cam cup; riser held by **two 25 mm webbing loops threaded through the B-11 lash tabs on the right face + one 25 mm G-hook strap over the riser** (HAUL family), no new face piece. 12.1 g (webbing 0.45 m + G-hook 4 g ASSUMPTION) | SH-04, B-11, webbing | **FROZEN** (owner 2026-11-05). Pattern-maker: add loop/strap lengths to the webbing cut list and mark the loop tabs |
 | Hydration | Sleeve B-09 on the inside of B-01, hose ports at the collar seam both sides | B-09 | **FROZEN** (R-19), with a check: the meat stack is cinched against B-01, so the bladder sits under the meat. Recommend the prototype checks the sleeve sits above IM3 (z ≥ 540) or hangs from the hem |
-| Spotter pocket | **None.** A spotter goes in a side pocket (2.88 L, 360 mm) or the band | — | **OPEN**: owner to confirm no dedicated spotter pocket. Recommend none: a 1 kg scope in a face pocket moves the CG aft; the side pocket keeps it close and either-side |
-| Meat-bag sleeve | **None.** Meat in game bags goes straight into the main bag against B-01 (ULTRA 200, waterproof) and is cinched by IM1–IM3; drain grommets in B-05 | B-01, B-05, IM1–IM3 | **OPEN** (not decided either way). Recommend no sewn sleeve (the straps already isolate the load; a sleeve adds ~40 g of 100D and traps blood); a washable removable liner could be a later accessory |
+| Spotter pocket | **None.** A spotter goes in a side pocket (2.88 L, 360 mm) or the band | — | **FROZEN** (owner 2026-11-05: none) |
+| Meat-bag sleeve | **None.** Meat in game bags goes straight into the main bag against B-01 (ULTRA 200, waterproof) and is cinched by IM1–IM3; drain grommets in B-05 | B-01, B-05, IM1–IM3 | **FROZEN** (owner 2026-11-05: no sewn sleeve) |
 | Rain fly | 40D silpoly fitted fly in its own base pocket, tethered, deploys upward; orange flag sleeve | F-01a–c, F-02, F-03 | **FROZEN** (owner: counts in base). Waterproof-body / no-fly option rejected (O-9) |
 | Bag-to-frame attachment | Eight printed fairleads; hinge pins z 60, hooks at IM2/IM3, two under-straps US1/US2; detach 40 s | swells B-13..B-15, hinge eyes, B-16 channels | **FROZEN** (D-24/D-25). **OPEN**: IM1 bag clip (DESIGN Q4) |
 | Compression | Roll-top + W1–W3 frame-anchored wraps + IM1–IM3 inside | keepers, G-hooks | **FROZEN** (D-20) |
-| Width at the shoulder blades | 15.5 in (394 mm) for a 42 in fill height | — | **OPEN on paper** (Q1, never answered), but the released patterns are cut at 15.5 in. Recommend the owner confirms 15.5 in |
+| Width at the shoulder blades | 15.5 in (394 mm) for a 42 in fill height | — | **FROZEN** (owner 2026-11-05: 15.5 in; the released patterns are cut at it) |
 | Quiet | No hook-and-loop on the bag, ULTRA film only on hidden B-01 / B-05 option, coil zips | — | **FROZEN** (R-13). Flag: RESUME's next shoulder-yoke step uses hook-and-loop on the frame skin; it must stay set-and-forget, never opened in hunt mode |
 
 ## 5. Meat hauling v3.1: internal meat harness, no shelf (DECISION D-19, owner 2026-11-01)
@@ -371,7 +371,8 @@ studies take their soft-goods basis from it (`frame_production.SOFT_GOODS_G`).
 | Frame: printed branch body + carbon crown, rack, pawl, bushings, Ti hip-pivot mount | 992 | 35.0 | `generative_branch_results.json` frame 1194 − retired QI sheet + M4 203 |
 | Back-system spreader, Sandwich v2 (installed) | 154 | 5.4 | `spreader_results.json` (owner 2026-11-05) |
 | Torso adjust (pulley webbing, cam, cord) | 42 | 1.5 | records + ASSUMPTION |
-| Main bag (fabric 273, zip 23, roll-top 49, keepers 9) | 353 | 12.5 | computed; B-10 tabs retired (−21.6 g) |
+| Main bag (fabric 273, zip 23, roll-top 49, keepers 9, bow riser carry 12) | 366 | 12.9 | computed; B-10 tabs retired (−21.6 g); bow riser carry added 2026-11-05 (+12.1 g, owner freeze) |
+| Bag-side load spreaders: IM3 hook tabs B-17 (2 × 90 × 110 Hypalon) + hinge-eye doublers B-18 (2 × 90 × 45) | 28 | 1.0 | computed (cut area × 1000 gsm); cloth-sim follow-up 2026-11-05, `analysis/bag_top_anchor.md` |
 | Bag-to-frame attachment (8 fairleads, pins, sleeves, 4 hooks, eyes, straps, swells, keepers) | 144 | 5.1 | `bag_attachment_results.json` parts (the v3.1 LINK toggles are out) |
 | Under-straps US1/US2 (cradle) | 122 | 4.3 | `meat_haul.cradle_parts_g` |
 | Camo accents | 53 | 1.9 | computed |
@@ -382,8 +383,8 @@ studies take their soft-goods basis from it (`frame_production.SOFT_GOODS_G`).
 | Back panel (mesh, stay-rail foam pair, upper pad, shell) | 91 | 3.2 | computed (the spreader is its own line) |
 | Internal meat harness (IM1–IM3, hooks, cams, 6 ports) | 254 | 9.0 | computed; hooks/cams ASSUMPTION |
 | Haul wraps W1–W3 + hardware | 108 | 3.8 | computed |
-| Thread, labels | 36 | 1.3 | ASSUMPTION 3 % + 8 g |
-| **Total** | **3030** | **106.9 (6.68 lb)** | target 2268 g (5.0 lb): **762 g over** |
+| Thread, labels | 37 | 1.3 | ASSUMPTION 3 % + 8 g |
+| **Total** | **3071** | **108.3 (6.77 lb)** | target 2268 g (5.0 lb): **803 g over**. Owner-published printed-frame figure ~2976 g assumed the held swaps O-3/4/5/6/15 (−54 g, not applied): with them 3017 g |
 
 The bag side (bag, attachment, under-straps, accents, fly, pockets, meat harness, wraps) is 1170 g; the frame,
 spreader, back panel, belt and harness are 1861 g. **Weight-cut plan: `analysis/bag_weight_plan.md`** (generated by

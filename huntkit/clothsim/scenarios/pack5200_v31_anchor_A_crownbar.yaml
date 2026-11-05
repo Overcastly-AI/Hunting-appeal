@@ -1,0 +1,12 @@
+# Bag-top study, candidate A: CROWN-BAR TIE (existing frame feature: the crown top bar tube, x +/-70 = the
+# old LINK toggle positions). B-01u held at the bar height, fixed length, snug at the drafted shape.
+# Bar at 19 in: centre [0, 11.7, 702.6], OD 18 (frame.yaml) -> bag-facing surface y 20.7.
+extends: pack5200_v31_tab_doubler.yaml
+name: pack5200_v31_anchor_A_crownbar
+attachments:
+  ties:
+    webbing: poly_webbing_25mm
+    capacity_n: 1000.0             # ASSUMPTION placeholder (hardware not chosen: attachment phase)
+    list:
+      - {id: CT_R, pieces: [B-01u, B-01b], at: [70.0, 702.6], anchor: [70.0, 20.7, 702.6], mode: elastic, pretension_n: 30.0}
+      - {id: CT_L, pieces: [B-01u, B-01b], at: [-70.0, 702.6], anchor: [-70.0, 20.7, 702.6], mode: elastic, pretension_n: 30.0}

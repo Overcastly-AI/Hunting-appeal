@@ -8,7 +8,7 @@ meta:
     mirror pairs (contract). Hipbelt pieces at size M. This is the DESIGN bill of panels (masses for the weight
     budget). The cut set is the v3.1 production patterns (designs/pack_5200/patterns_v31.py: two-ring-seam head
     setback, B-01b/B-01u/B-02c/B-02d, fairlead swells B-13..B-15); outputs/release/pack5200_v3.1_patterns.'
-  piece_count_total: 93
+  piece_count_total: 97
   gore_seam_check_mm:
     frame_side: {seam_from_3d_mm: 756.2, seam_from_pattern_mm: 756.7, seam_to_3d_mm: 756.2, seam_to_pattern_mm: 756.7}
     outer_face: {seam_from_3d_mm: 762.2, seam_from_pattern_mm: 768.0, seam_to_3d_mm: 762.2, seam_to_pattern_mm: 768.0}
@@ -981,6 +981,37 @@ panels:
   notes: 'on the INSIDE face of B-01 at x +/-100, z 190 / 330 / 520; laser-cut 45 x 6 mm slot through patch + B-01;
     edge-stitched round the slot + perimeter (the port carries no load: the stub eye only passes through it). Sew
     before B-01 goes 3D'
+  seam_line_mm: null
+- id: B-17
+  name: IM3 bag-hook tab
+  sub_assembly: reinforcement
+  material_id: hypalon_coated_nylon
+  approx_size_mm: [90, 110]
+  qty_total: 2
+  mirror_pair: false
+  seam_allowance_mm: 0.0
+  thickness_mm: null
+  zone: 'frame-side panel B-01: IM3 bag-hook strap anchor'
+  cut_area_m2_each: 0.0099
+  mass_g_total: 19.7
+  notes: OUTSIDE face of B-01 under the IM3 swell, centred on the hook strap at x +/-115, z 450; the 38 mm hook
+    strap is box-X bartacked to the tab and the tab is stitched to B-01 on a 80 mm wide perimeter (spreads the 340
+    N meat-case hook load, analysis/cloth_sim.md 3.5). Sew before B-01 goes 3D
+  seam_line_mm: null
+- id: B-18
+  name: hinge-eye doubler
+  sub_assembly: reinforcement
+  material_id: hypalon_coated_nylon
+  approx_size_mm: [90, 45]
+  qty_total: 2
+  mirror_pair: false
+  seam_allowance_mm: 0.0
+  thickness_mm: null
+  zone: B-01 | B-05 seam at the hinge eyes
+  cut_area_m2_each: 0.004
+  mass_g_total: 8.0
+  notes: INSIDE face of B-01, lower edge caught in the B-01 | B-05 seam, centred on the hinge eye (x +/-115); eye
+    box-X through doubler + B-01; spreads ~375 N (meat, 1 g) over 80 mm of seam (4.7 N/mm, < 6 N/mm)
   seam_line_mm: null
 - id: H-01
   name: hipbelt wing outer shell

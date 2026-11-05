@@ -106,7 +106,8 @@ def summarize(pm, case_name: str, case: dict, x: np.ndarray, sim, infos) -> dict
     out["hot_spots"] = spots
     # seams
     cab = sim.term("cables")
-    att_nodes = [int(n) for c in cab.cables for n in c.nodes if n >= 0 and c.kind in ("hook", "roll_clip")]
+    att_nodes = [int(n) for c in cab.cables for n in c.nodes[:1] if n >= 0 and c.kind in ("hook", "roll_clip", "tie")]
+    att_nodes += [int(n) for c in cab.cables for n in c.nodes if n >= 0 and c.kind in ("hook", "roll_clip")]
     att_nodes += [int(n) for n in getattr(pm, "hinge_nodes", [])]
     sf = seam_forces(m, x, memb, pm.seams, exclude=att_nodes)
     gs = group_seams(sf)
@@ -133,19 +134,41 @@ def summarize(pm, case_name: str, case: dict, x: np.ndarray, sim, infos) -> dict
                        "sf_capacity": _f(cap / T, 1) if cap and T > 1e-6 else None,
                        "sf_webbing_break": _f(c.meta["break_n"] / T, 0) if T > 1e-6 else None,
                        "length_mm": _f(c.length(x), 0), "mode": c.meta.get("mode")}
+    # bridled attachments (hook tab, tie across a width): one entry with the summed force + its legs
+    groups = {}
+    for c in cab.cables:
+        g = c.meta.get("group")
+        if g:
+            groups.setdefault(g, []).append(c)
+    for g, cs in groups.items():
+        Ts = [c.tension(x) for c in cs]
+        T = float(sum(Ts))
+        cap = cs[0].meta.get("capacity_n")
+        att[g] = {"kind": cs[0].kind, "tension_n": _f(T, 1), "webbing": cs[0].material_id, "capacity_n": cap,
+                  "sf_capacity": _f(cap / T, 1) if cap and T > 1e-6 else None, "legs": len(cs),
+                  "leg_max_n": _f(max(Ts), 1), "width_mm": cs[0].meta.get("tab_width_mm"),
+                  "mode": cs[0].meta.get("mode")}
     hp = sim.term("hinge_pins")
     if hp is not None:
-        for nm, f in zip(("hinge_R", "hinge_L"), hp.forces(x)):
+        F = hp.forces(x)
+        hg = getattr(pm, "hinge_groups", None) or {"hinge_R": [0], "hinge_L": [1]}
+        dbl = float(getattr(pm, "hinge_doubler_mm", 0.0) or 0.0)
+        for nm, ids in hg.items():
+            f = F[ids].sum(0)
             T = float(np.linalg.norm(f))
             cap = pm.scen["attachments"]["hinge"].get("capacity_n")
             att[nm] = {"kind": "hinge", "tension_n": _f(T, 1), "webbing": pm.scen["attachments"]["hinge"]["webbing"],
                        "capacity_n": cap, "sf_capacity": _f(cap / T, 1) if cap and T > 1e-6 else None,
-                       "force_xyz_n": [_f(v, 1) for v in f], "mode": "pin"}
+                       "force_xyz_n": [_f(v, 1) for v in f], "mode": "pin", "seam_nodes": len(ids)}
+            if dbl > 0:
+                att[nm].update(doubler_mm=dbl, doubler_line_n_mm=_f(T / dbl, 2))
     out["attachments"] = att
     # contact with the spreader and the frame
     cont = {}
-    for nm in ("contact_spreader", "contact_frame"):
+    for nm in ("contact_spreader", "contact_frame", "contact_crown"):
         t = sim.term(nm)
+        if t is None:
+            continue
         idx, f = t.forces(x)
         cont[nm] = {"nodes": int(len(idx)), "force_n": [_f(v, 1) for v in f.sum(0)],
                     "force_total_n": _f(np.linalg.norm(f.sum(0)), 1)}

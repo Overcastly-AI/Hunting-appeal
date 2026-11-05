@@ -731,13 +731,13 @@ weight:
   basis: 'PRODUCTION pack: printed branch frame + Sandwich v2 spreader + fairlead attachment + under-straps + soft
     goods; size M belt, J-straps, rain fly (owner: counts), meat harness'
   groups_g: {frame (printed branch body + carbon crown): 991.7, 'back-system spreader (Sandwich v2, BP-06)': 153.7,
-    torso adjust (not in the frame line): 41.7, main bag: 353.4, bag-to-frame attachment (fairleads): 144.1, under-straps US1/US2 (cradle): 122.4,
-    accents: 52.7, rain fly: 74.7, pockets: 60.3, hipbelt (M): 334.3, harness: 212.5, back panel: 90.9, internal meat harness: 253.9,
-    haul wraps (= compression): 108.1, misc: 35.9}
-  total_g: 3030.3
-  total_lb: 6.68
+    torso adjust (not in the frame line): 41.7, main bag: 365.5, bag-side load spreaders: 27.8, bag-to-frame attachment (fairleads): 144.1,
+    under-straps US1/US2 (cradle): 122.4, accents: 52.7, rain fly: 74.7, pockets: 60.3, hipbelt (M): 334.3, harness: 212.5,
+    back panel: 90.9, internal meat harness: 253.9, haul wraps (= compression): 108.1, misc: 36.7}
+  total_g: 3071.0
+  total_lb: 6.77
   target_g: 2268
-  gap_g: 762.3
+  gap_g: 803.0
   weight_plan: analysis/bag_weight_plan.md (bag-side savings, owner choices)
   v31_tube_baseline: {total_g: 2224.1, frame_g: 569.2, back_panel_g: 75.2, misc_g: 36.1, source: 'geometry.yaml
       v3.1 (commit 6061796): carbon-tube frame v2, single 6 mm XLPE back sheet', used_by: huntkit/gendesign/frame_production.py
@@ -763,6 +763,11 @@ weight:
       webbing', mass_g: 48.5, basis: records}
   - {group: main bag, item: '6 haul-wrap keeper loops (25 mm webbing x 80 mm, sewn into the gore seams)', mass_g: 8.6,
     basis: records}
+  - {group: main bag, item: 'bow riser carry: 2 x 25 mm webbing loops through B-11 + 25 mm G-hook strap (owner freeze
+      2026-11-05)', mass_g: 12.1, basis: poly_webbing_25mm record; G-hook 4 g ASSUMPTION (as the haul wraps); lengths
+      ASSUMPTION}
+  - {group: bag-side load spreaders, item: IM3 bag-hook tabs B-17 + hinge-eye doublers B-18 (Hypalon), mass_g: 27.8,
+    basis: 'computed: cut area x gsm (analysis/bag_top_anchor.md)'}
   - {group: bag-to-frame attachment (fairleads), item: printed fairleads (8), mass_g: 49.4, basis: analysis/bag_attachment_results.json
       parts_g}
   - {group: bag-to-frame attachment (fairleads), item: 7075 pins (8), mass_g: 19.3, basis: analysis/bag_attachment_results.json
@@ -822,4 +827,4 @@ weight:
     basis: records; lengths from the 3D teardrop (haul_wraps)}
   - {group: haul wraps (= compression), item: 3 aluminium G-hooks (HAUL family) + 3 ladder locks, mass_g: 24, basis: G-hook
       4 g ASSUMPTION (no record); ladder lock record}
-  - {group: misc, item: thread (~3 % of soft goods) + labels, mass_g: 35.9, basis: ASSUMPTION}
+  - {group: misc, item: thread (~3 % of soft goods) + labels, mass_g: 36.7, basis: ASSUMPTION}

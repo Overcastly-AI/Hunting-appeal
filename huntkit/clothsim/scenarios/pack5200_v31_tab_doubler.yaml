@@ -1,0 +1,18 @@
+# Bag-top study (pack-designer, 2026-11-05), step 0: the two specified bag-side fixes only, no top anchor.
+#   IM3 hook tab: hook strap bartacked to an 80 mm wide Hypalon tab on B-01 (bridle across 80 mm)
+#   hinge-eye doubler: the z 60 eye spreads its pin load over 80 mm of the B-01 | B-05 seam
+# Record: designs/pack_5200/analysis/bag_top_anchor.md
+extends: pack5200_v31.yaml
+name: pack5200_v31_tab_doubler
+contact:
+  crown:            # carbon crown (not in the printed-frame STL): legs OD 22, top bar OD 18, spine OD 20 (frame.yaml)
+    enabled: true
+    top_z: 702.6    # 19 in setting (geometry.yaml crown_settings index 8)
+    leg_od: 22.0
+    bar_od: 18.0
+    bar_aft_mm: 25.0
+    spine_od: 20.0
+    spine_len: 300.0
+attachments:
+  hinge: {doubler_mm: 80.0}       # legs from the covered B-01|B-05 seam nodes into the pinned eye node
+  hooks: {tab: {stations: [520], width_mm: 80.0}}

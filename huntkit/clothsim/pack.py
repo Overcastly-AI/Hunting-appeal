@@ -291,6 +291,50 @@ def gap_fields(cl: dict, cs: dict) -> dict:
     return out
 
 
+def crown_field(cc: dict, cs: dict) -> GapField:
+    """Optional contact with the carbon crown, which is not in genframe_assembled.stl (the print ends at z 540):
+    two legs (OD from ``leg_od``) on the frame axis from the stay tops, the top bar (``bar_od``) ``bar_aft_mm`` aft of
+    the leg axis at ``top_z``, and the centre spine tube (``spine_od``) from the top bar down ``spine_len``.
+    Dimensions: frame.yaml parts + geometry.yaml crown / crown_settings. Sampled as point clouds with outward
+    normals; only faces not pointing at the wearer push (same rule as the frame field)."""
+    key = "_".join(f"{cc.get(k)}" for k in ("top_z", "leg_od", "bar_od", "spine_od", "spine_len", "bar_aft_mm", "spine_y_mm"))
+    f = CACHE / f"crown_field_{hashlib.sha1(key.encode()).hexdigest()[:10]}.npz"
+    if f.exists():
+        z = np.load(f)
+        return GapField(z["o"], float(z["h"]), z["v"])
+    ax = np.array([0.0, -0.0189, 0.9998])
+    ax /= np.linalg.norm(ax)
+    zt = float(cc["top_z"])
+    sp = float(cs.get("spacing", 4.0))
+    pts, nrm = [], []
+
+    def cyl(a, b, r):
+        a, b = np.asarray(a, float), np.asarray(b, float)
+        L = np.linalg.norm(b - a)
+        t = (b - a) / L
+        u = np.cross(t, [1.0, 0, 0] if abs(t[0]) < 0.9 else [0, 1.0, 0])
+        u /= np.linalg.norm(u)
+        v = np.cross(t, u)
+        for s_ in np.arange(0, L + 1e-9, sp):
+            for th in np.linspace(0, 2 * np.pi, max(8, int(2 * np.pi * r / sp)), endpoint=False):
+                n = np.cos(th) * u + np.sin(th) * v
+                pts.append(a + s_ * t + r * n)
+                nrm.append(n)
+    for sx in (1, -1):
+        a = np.array([sx * 115.0, -10.0, 530.0])
+        b = a + ax * (zt - 530.0) / ax[2]
+        cyl(a, b, float(cc.get("leg_od", 22.0)) / 2)
+    yb = -10.0 + (zt - 530.0) * ax[1] / ax[2] + float(cc.get("bar_aft_mm", 25.0))
+    cyl([-115.0, yb, zt], [115.0, yb, zt], float(cc.get("bar_od", 18.0)) / 2)
+    ys = float(cc.get("spine_y_mm", yb - 25.0))
+    cyl([0.0, ys, zt], [0.0, ys, zt - float(cc.get("spine_len", 300.0))], float(cc.get("spine_od", 20.0)) / 2)
+    P, N = np.asarray(pts), np.asarray(nrm)
+    sel = N[:, 1] > float(cs.get("frame_ny_min", -0.3))
+    gf = GapField.from_samples(P[sel], N[sel], spacing=float(cs.get("grid_mm", 2.0)))
+    np.savez_compressed(f, o=gf.o, h=gf.h, v=gf.v.astype(np.float32))
+    return gf
+
+
 # ============================================================================ the model
 def load_scenario(path=None, overrides=None) -> dict:
     scen = yaml.safe_load(Path(path or SCENARIO).read_text())
@@ -332,6 +376,8 @@ class PackModel:
                 self.node_pieces.setdefault(int(g), set()).add(p.name)
         self.clouds = frame_clouds(float(scen["contact"].get("spacing", 4.0)))
         self.fields = gap_fields(self.clouds, scen["contact"])
+        if (scen["contact"].get("crown") or {}).get("enabled"):
+            self.fields["crown"] = crown_field(scen["contact"]["crown"], scen["contact"])
         self._attachments()
 
     # ---- nodes helpers
@@ -383,11 +429,15 @@ class PackModel:
             k = int(seam_nodes[np.argmin(dx)])
             add(f"hinge_{side}", [k, -1], [nan3, pin], h["webbing"], h.get("pretension_n", 0.0), "hinge",
                 capacity_n=h.get("capacity_n"))
-            ks = [k]
+            self.hinge_groups[f"hinge_{side}"] = [len(self.hinge_nodes)]
+            self.hinge_nodes.append(k)
             if dbl > 0:
-                ks = sorted(set([k] + seam_nodes[dx <= 0.5 * dbl + 1e-6].astype(int).tolist()))
-            self.hinge_groups[f"hinge_{side}"] = list(range(len(self.hinge_nodes), len(self.hinge_nodes) + len(ks)))
-            self.hinge_nodes += ks
+                # the doubler is a stiff patch on the bag: tension legs from each seam node it covers into the eye
+                # node. Only the eye node is pinned, so the bag still rotates freely about the pin (bulk mode)
+                for j in seam_nodes[(dx <= 0.5 * dbl + 1e-6)].astype(int).tolist():
+                    if j != k:
+                        add(f"doubler_{side}.{j}", [j, k], [nan3, nan3], h.get("doubler_webbing", "poly_webbing_38mm"),
+                            0.0, "doubler", group=f"doubler_{side}")
         self.hinge_doubler_mm = dbl
         # bag hooks at IM2 / IM3: hook strap bartacked on B-01 70 mm below the eye
         # optional bag-side hook tab (``hooks.tab: {stations, width_mm}``): the hook strap is bartacked to a tab sewn
@@ -503,6 +553,9 @@ class PackModel:
                                   label="contact_spreader"))
         terms.append(FieldContact(self.fields["frame"], kc=cs["kc"], clearance=cs["clearance"],
                                   label="contact_frame"))
+        if "crown" in self.fields:
+            terms.append(FieldContact(self.fields["crown"], kc=cs["kc"], clearance=cs["clearance"],
+                                      label="contact_crown"))
         # hinge eyes on the z 60 pins: the eye on the pin holds the floor corner in place (stiff pin,
         # ASSUMPTION k from scenario); reported as the hinge force
         hk = float(self.scen["attachments"]["hinge"].get("pin_stiffness_n_mm", 200.0))
@@ -513,7 +566,7 @@ class PackModel:
         for c in self.cables.values():
             if c.kind == "hinge":
                 continue
-            if c.kind == "hook" or (c.kind == "tie" and case.get("ties", True)):
+            if c.kind in ("hook", "doubler") or (c.kind == "tie" and case.get("ties", True)):
                 use.append(c)
             elif cinched and ((c.kind == "under_strap" and case.get("under_straps", True))
                               or (c.kind == "wrap" and case.get("wraps", False))

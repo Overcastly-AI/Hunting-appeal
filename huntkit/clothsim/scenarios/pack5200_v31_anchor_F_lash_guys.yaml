@@ -1,0 +1,12 @@
+# Candidate F: A + DIAGONAL GUYS from the upper aft corners of the bag (z 760) down and forward to the existing
+# z 420 load-wing lash points on the stays (geometry.yaml load_wing_lash_z420). Direction about 50 deg below
+# horizontal: pulls the top corner forward AND down. Cinched on the loaded bag (ladder-lock model, 120 N).
+extends: pack5200_v31_anchor_A_crownbar.yaml
+name: pack5200_v31_anchor_F_lash_guys
+attachments:
+  ties:
+    list:
+      - {id: CT_R, pieces: [B-01u, B-01b], at: [70.0, 702.6], anchor: [70.0, 20.7, 702.6], mode: elastic, pretension_n: 30.0}
+      - {id: CT_L, pieces: [B-01u, B-01b], at: [-70.0, 702.6], anchor: [-70.0, 20.7, 702.6], mode: elastic, pretension_n: 30.0}
+      - {id: TG_R, pieces: [B-02d, B-02a, B-03R], at: [150.0, 760.0], anchor: [115.0, 4.1, 420.0], mode: cinched, pretension_n: 120.0}
+      - {id: TG_L, pieces: [B-02d, B-03L], at: [-150.0, 760.0], anchor: [-115.0, 4.1, 420.0], mode: cinched, pretension_n: 120.0}
