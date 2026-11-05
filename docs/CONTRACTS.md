@@ -65,6 +65,13 @@ API (`huntkit.materials`):
   100 mm / 4 in test square, page-match marks and an assembly map.
 - `nest(pieces, fabric_width_mm, grain_constraint=True) -> Marker` gives `.length_mm .efficiency`;
   `marker.export_pdf/dxf`.
+- Additions (2026-11-04, backward compatible): `develop_ruled_surface(..., resample=False)` keeps the caller's
+  point correspondence; `develop_region(surface_fn, polygon_uv, spacing) -> FlatMesh` flattens any doubly curved
+  region by least squares (`.strain_stats()` area-weighted principal strain, `.map_uv()` carries seams/marks to
+  the flat); `flatten_mesh(V3, tris)`; `InternalLine(kind="cut_inside")` goes on the DXF CUT layer / SVG cut
+  group; `export_pdf_tiled(..., compress=True)` and `marker.export_pdf(..., compress=True)`.
+- Material records may carry `roll_width_mm` / `usable_width_mm` (textiles, laminates, sheet goods); markers
+  are nested at the roll width with selvedge = (roll - usable) / 2.
 
 ## 4. Camo (`huntkit.camo`)
 - `generate(pattern_spec: dict, palette: list[hex], width_mm, height_mm, dpi, seed) -> RGB array`
