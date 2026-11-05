@@ -301,7 +301,7 @@ Status of every bag feature as the files stand. **FROZEN** = owner decision or s
 | Spotter pocket | **None.** A spotter goes in a side pocket (2.88 L, 360 mm) or the band | — | **FROZEN** (owner 2026-11-05: none) |
 | Meat-bag sleeve | **None.** Meat in game bags goes straight into the main bag against B-01 (ULTRA 200, waterproof) and is cinched by IM1–IM3; drain grommets in B-05 | B-01, B-05, IM1–IM3 | **FROZEN** (owner 2026-11-05: no sewn sleeve) |
 | Rain fly | 40D silpoly fitted fly in its own base pocket, tethered, deploys upward; orange flag sleeve | F-01a–c, F-02, F-03 | **FROZEN** (owner: counts in base). Waterproof-body / no-fly option rejected (O-9) |
-| Bag-to-frame attachment | Eight printed fairleads; hinge pins z 60, hooks at IM2/IM3, two under-straps US1/US2; detach 40 s | swells B-13..B-15, hinge eyes, B-16 channels | **FROZEN** (D-24/D-25). **OPEN**: IM1 bag clip (DESIGN Q4) |
+| Bag-to-frame attachment | Eight printed fairleads; hinge pins z 60, hooks at IM2/IM3 (IM3 on tab B-17), hinge-eye doublers B-18, two under-straps US1/US2; detach 40 s | swells B-13..B-15, hinge eyes, B-16 channels, B-17, B-18 | **RE-OPENED** (owner 2026-11-05): own research-first design phase. The cloth sim shows that the bag needs a top anchor (`analysis/bag_top_anchor.md`). **OPEN**: IM1 bag clip (DESIGN Q4) |
 | Compression | Roll-top + W1–W3 frame-anchored wraps + IM1–IM3 inside | keepers, G-hooks | **FROZEN** (D-20) |
 | Width at the shoulder blades | 15.5 in (394 mm) for a 42 in fill height | — | **FROZEN** (owner 2026-11-05: 15.5 in; the released patterns are cut at it) |
 | Quiet | No hook-and-loop on the bag, ULTRA film only on hidden B-01 / B-05 option, coil zips | — | **FROZEN** (R-13). Flag: RESUME's next shoulder-yoke step uses hook-and-loop on the frame skin; it must stay set-and-forget, never opened in hunt mode |
@@ -456,6 +456,15 @@ v3 → v3.1 (−4 g): frame 650 → 569 (−81); torso adjust 96 → 42 (−54, 
   between, §4.1). Profile solve stays on the master loft (width scale 1.0639), so the released patterns stay valid.
 - D-28 (Claude, 2026-11-05): B-10 frame-link tabs retired (fairleads; the patterns had already dropped them), −21.6 g.
   The weight budget in `geometry.yaml` is now the production pack (3030 g); the v3.1 tube budget is frozen beside it.
+- D-29 (Claude, 2026-11-05): cloth-sim follow-up (`analysis/bag_top_anchor.md`). Bag-side load spreaders specified:
+  IM3 hook tab **B-17** (2 × 90 × 110 Hypalon, 80 mm stitch line) and hinge-eye doubler **B-18** (2 × 90 × 45 Hypalon,
+  80 mm of B-01|B-05 seam, 4.1–4.3 N/mm at 1 g), +27.8 g. With the tab, the IM3 hook load rises to 450–472 N at 1 g (SF 1.06
+  against the assumed 1500 N hook at C5 × 3.0), so the hook proof test must rise. B-01 vs spreader "3.1 mm" checked: it is the two
+  edge-tube ridges (+1.2 mm path), so no redraft. Top anchor: candidates only (crown-bar tie; tie + fixed-length forward
+  top guys = best, CG 179 / 174 mm at 19 in; high collar anchor needs a new frame feature). The choice belongs to the
+  bag-to-frame attachment phase.
+- D-30 (owner freeze, 2026-11-05): bow riser carry = two 25 mm loops through the B-11 lash tabs (right face) + one 25 mm
+  G-hook strap, 12.1 g. No spotter pocket, no sewn meat sleeve, 15.5 in width. Pack **3071 g (6.77 lb)**.
 
 **ASSUMPTIONS** (new in v3.1): meat CG 150 mm aft; 150 N hand cinch; μ 0.4 game bag on panel; 38 mm cam 22 g /
 1100 N; sliding-gate hook 9 g / 1500 N; bartack 2700 N; bay V-wedge to z 700 at 90 % width; head model inputs

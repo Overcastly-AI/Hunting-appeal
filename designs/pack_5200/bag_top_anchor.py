@@ -147,8 +147,8 @@ def plot_profiles(runs, path, keys=("baseline", "A", "B")):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    cols = {"baseline": "#b03a2e", "T0": "#9aa0a6", "A": "#2e6fb0", "B": "#1e8a4c", "C": "#7a4fb0", "D": "#c27c0e",
-            "E": "#5aa0a0", "F": "#d1495b"}
+    cols = {"baseline": "#b03a2e", "T0": "#9aa0a6", "A": "#2e6fb0", "B": "#6aa84f", "C": "#7a4fb0", "D": "#c27c0e",
+            "E": "#5aa0a0", "F": "#d1495b", "G": "#1e8a4c", "H": "#888888"}
     fig, axs = plt.subplots(1, 2, figsize=(11, 8.2), sharey=True)
     for ax, case in zip(axs, ("fill", "meat")):
         frame_side(ax)
@@ -193,14 +193,12 @@ def plot_detail(path):
     sys.path.insert(0, str(REPO / "designs" / "pack_5200"))
     import build_geometry as BG
     T = BG.BAGTOP
-    fig, (a1, a2) = plt.subplots(1, 2, figsize=(12, 8.5), gridspec_kw={"width_ratios": [1.15, 1]})
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(13, 8.5), gridspec_kw={"width_ratios": [1.6, 1]})
     # --- left: B-01 frame-side view (looking forward at the bag's frame face), x right, z up
     a1.add_patch(mp.Rectangle((-150, 35), 300, 746, fc="#e9e4d8", ec="#6b6252", lw=1.2))
     a1.add_patch(mp.Rectangle((-150, 781), 300, 320, fc="#f3f1ec", ec="#6b6252", lw=1, ls="--"))
-    for zs, lab in ((560, "setback seam z 560"), (631.2, "shoulder seam z 631")):
-        a1.axhline(zs, xmin=0.08, xmax=0.92, color="#6b6252", lw=0.8, ls=":")
-        a1.text(-148, zs + 6, lab, fontsize=7.5, color="#6b6252")
-    a1.text(-148, 790, "collar B-06 (rolled)", fontsize=8, color="#6b6252")
+    for zs in (560, 631.2):
+        a1.plot([-150, 150], [zs, zs], color="#6b6252", lw=0.8, ls=":")
     a1.add_patch(mp.Rectangle((-121, 112), 242, 318, fc="#2b2e33", alpha=0.18, ec="#2b2e33"))
     a1.text(0, 270, "spreader\n(behind B-01)", ha="center", fontsize=8, color="#2b2e33")
     for sx in (1, -1):
@@ -218,17 +216,26 @@ def plot_detail(path):
         a1.plot(sx * 70, 702.6, "s", ms=11, mfc="#2e6fb0", mec="k")
         a1.plot(sx * 70, 775, "D", ms=9, mfc="#7a4fb0", mec="k")
     a1.plot([-70, 70], [702.6, 702.6], color="#5b6068", lw=4, alpha=0.6)
-    a1.text(0, 712, "crown top bar (19 in)", ha="center", fontsize=8)
-    a1.text(118, 525, "IM3 eye", fontsize=8)
-    a1.text(118, 64, "hinge pin", fontsize=8)
-    a1.text(-60, 440, f"B-17 IM3 tab\n{T['im3_tab_w']:.0f} x {T['im3_tab_h']:.0f} Hypalon\n"
-                      f"{T['im3_tab_stitch_mm']:.0f} mm stitch", fontsize=8, ha="center", color="#7a5a20")
-    a1.text(0, 92, f"B-18 hinge doubler {T['hinge_dbl_w']:.0f} x {T['hinge_dbl_h']:.0f}, "
-                   f"{T['hinge_dbl_seam_mm']:.0f} mm of seam", fontsize=8, ha="center", color="#b03a2e")
-    a1.text(0, 640, "A: tie z range 601-779\n(follows the crown)", ha="center", fontsize=8, color="#2e6fb0")
-    a1.text(0, 750, "C: z 775 (new anchor)", ha="center", fontsize=8, color="#7a4fb0")
-    a1.set_xlim(-170, 170)
-    a1.set_ylim(0, 1110)
+    L = dict(fontsize=8.5, ha="left", va="center")
+    R = dict(fontsize=8.5, ha="right", va="center")
+    arr = dict(arrowstyle="-", lw=0.7)
+    a1.annotate("crown top bar (19 in)", (0, 702.6), (175, 690), color="#3a3d42", arrowprops={**arr, "color": "#3a3d42"}, **L)
+    a1.annotate("A: crown-bar tie x \u00b170;\nslides z 601-779 with the crown", (-70, 650), (-175, 650),
+                color="#2e6fb0", arrowprops={**arr, "color": "#2e6fb0"}, **R)
+    a1.annotate("C: z 775 (needs a new\nfixed anchor at 19 in)", (-70, 775), (-175, 790), color="#7a4fb0",
+                arrowprops={**arr, "color": "#7a4fb0"}, **R)
+    a1.annotate("IM3 eye z 520", (115, 520), (175, 540), color="#333", arrowprops={**arr, "color": "#333"}, **L)
+    a1.annotate(f"B-17 IM3 hook tab\n{T['im3_tab_w']:.0f} x {T['im3_tab_h']:.0f} Hypalon,\n"
+                f"{T['im3_tab_stitch_mm']:.0f} mm stitch line", (150, 430), (175, 430), color="#7a5a20",
+                arrowprops={**arr, "color": "#7a5a20"}, **L)
+    a1.annotate(f"B-18 hinge-eye doubler\n{T['hinge_dbl_w']:.0f} x {T['hinge_dbl_h']:.0f} Hypalon,\n"
+                f"{T['hinge_dbl_seam_mm']:.0f} mm of B-01|B-05 seam", (150, 55), (175, 110), color="#b03a2e",
+                arrowprops={**arr, "color": "#b03a2e"}, **L)
+    a1.annotate("hinge pin z 60", (-115, 60), (-175, 110), color="#333", arrowprops={**arr, "color": "#333"}, **R)
+    a1.annotate("setback seam z 560", (-150, 560), (-175, 560), color="#6b6252", arrowprops={**arr, "color": "#6b6252"}, **R)
+    a1.annotate("shoulder seam z 631", (-150, 631), (-175, 610), color="#6b6252", arrowprops={**arr, "color": "#6b6252"}, **R)
+    a1.text(-175, 940, "collar B-06\n(rolled)", color="#6b6252", **R)
+    a1.set_xlim(-330, 330)
     a1.set_aspect("equal")
     a1.set_title("Frame side of the bag (B-01), seen from the frame", fontsize=11)
     a1.set_xlabel("x, mm (+ = wearer's right)")
@@ -240,7 +247,7 @@ def plot_detail(path):
     a2.annotate("", xy=(20.7, 702.6), xytext=(48, 702.6), arrowprops=dict(arrowstyle="-|>", color="#2e6fb0", lw=2.5))
     a2.text(60, 690, "A: tie to the bar, horizontal", color="#2e6fb0", fontsize=8.5)
     a2.annotate("", xy=(20.7, 702.6), xytext=(293, 752), arrowprops=dict(arrowstyle="-|>", color="#1e8a4c", lw=2.5))
-    a2.text(150, 760, "B: top guy from the aft upper\ncorner to the bar end", color="#1e8a4c", fontsize=8.5)
+    a2.text(150, 760, "B/G: top guy from the aft upper\ncorner to the bar end", color="#1e8a4c", fontsize=8.5)
     a2.annotate("", xy=(20.7, 775), xytext=(48, 775), arrowprops=dict(arrowstyle="-|>", color="#7a4fb0", lw=2.5))
     a2.text(60, 800, "C: tie at the collar seam", color="#7a4fb0", fontsize=8.5)
     a2.annotate("", xy=(14, 520), xytext=(19, 450), arrowprops=dict(arrowstyle="-|>", color="#7a5a20", lw=2.5))
@@ -265,7 +272,7 @@ def main():
                 "fill": metrics(v["r"], "fill", k), "meat": metrics(v["r"], "meat", k)} for k, v in runs.items()}
     (OUT / "bagtop_compare.json").write_text(json.dumps(comp, indent=1, default=float))
     SCREENS.mkdir(parents=True, exist_ok=True)
-    best = [k for k in ("baseline", "A", "B") if k in runs]
+    best = [k for k in ("baseline", "A", "G", "C") if k in runs]
     plot_profiles(runs, SCREENS / "20261105_bagtop_1.png", keys=tuple(best))
     plot_detail(SCREENS / "20261105_bagtop_2.png")
     print("PNG", SCREENS / "20261105_bagtop_1.png", SCREENS / "20261105_bagtop_2.png")

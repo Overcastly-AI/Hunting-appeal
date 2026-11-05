@@ -426,6 +426,8 @@ def diff_tables(a: dict, b: dict) -> str:
         row("closed volume, L", A["volume"]["closed_L"], B["volume"]["closed_L"])
         row("body volume, L", A["volume"]["body_below_collar_seam_L"], B["volume"]["body_below_collar_seam_L"])
         row("max depth aft, mm", A["profile"]["max_depth_aft_mm"], B["profile"]["max_depth_aft_mm"])
+        row("contents CG aft (y), mm", A["volume"]["contents_cg_mm"][1], B["volume"]["contents_cg_mm"][1])
+        row("contents CG height (z), mm", A["volume"]["contents_cg_mm"][2], B["volume"]["contents_cg_mm"][2])
         row("floor drop, mm", A["profile"]["floor_drop_mm"], B["profile"]["floor_drop_mm"])
         for p in A["pieces"]:
             if p in B["pieces"]:

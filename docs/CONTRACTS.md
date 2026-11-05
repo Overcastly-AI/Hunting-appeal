@@ -138,7 +138,11 @@ Method: `docs/research/cloth_sim_methods.md`. Validation and limits: `designs/pa
   `designs/pack_5200/patterns_v31.py` `build_body` (read only, cached in `outputs/clothsim/cache/`). The scenario
   YAML (`huntkit/clothsim/scenarios/pack5200_v31.yaml`, `extends:` supported) holds the mesh, solver,
   `panels:` adjustments (`scale_warp`, `scale_weft`, `material`, `*_scale`), `fabric_overrides`, seams,
-  contact, attachments, Janssen fill, meat (HA-LS-1 rev B §4.1) and cases.
+  contact, attachments, Janssen fill, meat (HA-LS-1 rev B §4.1) and cases. Optional keys (additive, 2026-11-05; absent
+  = phase-1 behaviour): `attachments.hinge.doubler_mm`, `attachments.hooks.tab {stations, width_mm}`,
+  `attachments.ties {list: [{id, pieces, at [x, z], anchor [x, y, z], mode elastic|cinched, pretension_n, width_mm, via}]}`,
+  `contact.crown {enabled, top_z, leg_od, bar_od, bar_aft_mm, spine_od, spine_len}`. Bridled attachments report one
+  summed entry (`legs`, `leg_max_n`); the crown reports as `contact.contact_crown`.
 - **Outputs** (`python -m huntkit.clothsim.cli run|validate|diff`): `outputs/clothsim/<scenario>/results.json`.
   Per case it holds `volume` (L), `pieces` (strain %, wrinkle area %, mass g), `hot_spots`, `seams`
   (`max_n_mm`, `p95_n_mm`, `strength_n_mm`, `sf`), `attachments` (tension N, SF), `contact` (spreader and
