@@ -90,7 +90,10 @@ def test_both_haul_modes_required():
         assert modes[key]["viable"] is True
         assert modes[key]["cleat_fatigue"] >= 1.0
         assert modes[key]["hook_sf"] >= 1.0
-        assert modes[key]["sheet_sf"] >= 1.3
+        # bearing face = Sandwich v2 on the real supports (spreader.md). HA-LS-1 puts the factor on the load,
+        # so first-ply and fatigue SF >= 1.0. (The old 1.3 margin belonged to the retired QI comfort model.)
+        assert modes[key]["sheet_sf"] >= 1.0
+        assert modes[key]["sheet_fatigue_sf"] >= 1.0
     assert modes["bag_off"]["leg_walk_with_wraps_n"] == pytest.approx(141, abs=2)
     assert modes["bag_off"]["cradle_cam_sf"] >= 1.5
     assert modes["bag_on"]["nodes"]["us1"]["sf_fatigue"] >= 1.0

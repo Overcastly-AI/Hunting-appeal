@@ -2965,8 +2965,8 @@
   "segments": {
    "lower": {
     "files": [
-     "designs/pack_5200/print/frame/genframe_lower_flat.stl",
-     "designs/pack_5200/print/frame/genframe_lower_flat.3mf"
+     "outputs/spreader_layout/print_d6L/genframe_lower_flat.stl",
+     "outputs/spreader_layout/print_d6L/genframe_lower_flat.3mf"
     ],
     "mass_g": 332.38424479784317,
     "hours": 11.758876584829359,
@@ -2978,8 +2978,8 @@
    },
    "upper": {
     "files": [
-     "designs/pack_5200/print/frame/genframe_upper_flat.stl",
-     "designs/pack_5200/print/frame/genframe_upper_flat.3mf"
+     "outputs/spreader_layout/print_d6L/genframe_upper_flat.stl",
+     "outputs/spreader_layout/print_d6L/genframe_upper_flat.3mf"
     ],
     "mass_g": 484.3594025405355,
     "hours": 17.135356221952907,
@@ -2990,8 +2990,9 @@
     ]
    }
   },
-  "assembled": "designs/pack_5200/print/frame/genframe_assembled.stl",
-  "barrier": "designs/pack_5200/print/frame/genframe_barrier.stl"
+  "assembled": "outputs/spreader_layout/print_d6L/genframe_assembled.stl",
+  "barrier": "outputs/spreader_layout/print_d6L/genframe_barrier.stl"
  },
- "doc": "designs/pack_5200/analysis/spreader_layout.md"
+ "doc": "designs/pack_5200/analysis/spreader_layout.md",
+ "status": "alternative (owner 2026-11-05: production spreader is sandwich v2, spreader.md)"
 }

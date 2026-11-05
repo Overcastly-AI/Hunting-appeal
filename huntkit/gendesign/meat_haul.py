@@ -111,6 +111,18 @@ def _friction_leg(weight_n: float, n_straps: int) -> float:
     return weight_n / (MU * n_straps * 2.0)
 
 
+def spreader_bearing_face() -> dict:
+    """The bearing face in every mode (CONTRACTS.md §6): Sandwich v2, BP-06 rev B (owner 2026-11-05).
+
+    Numbers are the real-support check in analysis/spreader.md (spreader_results.json, 2 mm grid): first-ply SF
+    under the factored HA-LS-1 C5 meat + bone (factor on the load, so the requirement is SF >= 1), fatigue SF at
+    the 1.6 g walking peak, peak skin pressure, and the largest factored deflection."""
+    r = json.loads((ANALYSIS / "spreader_results.json").read_text())["chosen"]
+    return {"sf": float(r["sf_fpf"]), "sf_fatigue": float(r["sf_fatigue"]),
+            "sf_sandwich": float(r["sandwich_sf_min"]), "peak_kpa": float(r["skin_peak_kpa"]),
+            "defl_mm": float(r["w_fact_max"]), "name": r["name"], "mass_g": float(r["mass_g"])}
+
+
 def analyse(cradle_fea: dict | None = None) -> dict:
     """Load paths and safety factors for bag-on, the wedge, and bag-off."""
     branch = json.loads((ANALYSIS / "generative_branch_results.json").read_text())
@@ -118,8 +130,7 @@ def analyse(cradle_fea: dict | None = None) -> dict:
     fine = [r for r in fair["fea"] if abs(r["h_mm"] - fair["h_mm"]) < 1e-6]
     hinge = next(r for r in fine if r["station"] == "hinge")
     im3 = next(r for r in fine if r["station"] == "im3")
-    from huntkit.gendesign.frame_smooth import options
-    sheet = next(r for r in options() if r["name"].startswith("QI carbon 2.0"))
+    sheet = spreader_bearing_face()
 
     # Bag on is the HA-LS-1 meat resolution already used to size the cleats.
     bag_on_nodes = fair["governing"]
@@ -207,7 +218,8 @@ def analyse(cradle_fea: dict | None = None) -> dict:
             "hook_sf": HOOK_N / strap_n, "cam_sf": CAM_N / strap_n,
             "bartack_sf": BARTACK_N / max(hinge_n, strap_n),
             "web_sf": web / strap_n, "hook_n": strap_n,
-            "sheet_sf": sheet["sf"], "sheet_peak_kpa": sheet["peak_kpa"], "sheet_defl_mm": sheet["defl_mm"],
+            "sheet_sf": sheet["sf"], "sheet_fatigue_sf": sheet["sf_fatigue"],
+            "sheet_peak_kpa": sheet["peak_kpa"], "sheet_defl_mm": sheet["defl_mm"],
             "frame_sf": branch["cases"]["meat_straps"],
         }
 
@@ -260,8 +272,7 @@ def analyse(cradle_fea: dict | None = None) -> dict:
     # Bag-off cleat forces are inside the meat_straps envelope, so the frame SF stands.
     modes["bag_off"]["frame_sf"] = branch["cases"]["meat_straps"]
     modes["between"]["frame_sf"] = branch["cases"]["meat_straps"]
-    modes["sheet"] = {"sf": sheet["sf"], "peak_kpa": sheet["peak_kpa"], "defl_mm": sheet["defl_mm"],
-                      "name": sheet["name"]}
+    modes["sheet"] = dict(sheet)
     web_m = load("poly_webbing_38mm")
     pa = load("pa12_cf_fdm_paht")
     anchor_g = float((cradle_fea or {}).get("added_g", 6.2))
@@ -410,7 +421,8 @@ Owner, 2026-11-01: both modes are requirements. The eight B-01 swells are accept
 IM1 stays a meat anchor only, for now. The hook proof test is still open.
 Code: `huntkit/gendesign/meat_haul.py`.
 
-The bearing face in every mode is the **2.0 mm QI carbon spreader** on the bag side of the
+The bearing face in every mode is the **Sandwich v2 spreader** (BP-06 rev B: 200 g twill carbon skins on 6 mm
+ROHACELL 110, 6.44 mm, 242 × 318 mm, z 112–430; owner 2026-11-05, `spreader.md`) on the bag side of the
 stays. Two **38 mm under-straps** also run under the bag, from fairleads at z {US1_Z:.0f} and
 z {US2_Z:.0f}. With the bag on they cinch the floor up to the frame, and the bag shell shares
 the vertical load with the hinge pins. With the bag off they are the cradle, so the quarter
@@ -423,9 +435,10 @@ anchor line is specified at **{BELLY_MM:.0f} mm**, which keeps the side legs at
 25 mm webbing was set aside: its ladder lock slips at 300 N and its side-release breaks at
 450 N, both under the factored cradle tension.
 
-Spreader, from the comfort check (20 % of 68 kg on a 22 mm bone, factored): stress SF **{b['sheet_sf']:.2f}**,
-peak skin pressure **{b['sheet_peak_kpa']:.1f} kPa**, factored deflection **{b['sheet_defl_mm']:.1f} mm**.
-A 36 kg quarter is inside that check.
+Spreader, from the real-support check in `spreader.md` (HA-LS-1 C5 meat plus a bone end, 20 % of 68 kg on a
+22 mm patch, factored 2.0 g × 1.5, 2 mm grid): first-ply SF **{b['sheet_sf']:.2f}** (≥ 1.0, factor on the load),
+fatigue SF **{b['sheet_fatigue_sf']:.2f}** at the 1.6 g walking peak, peak skin pressure **{b['sheet_peak_kpa']:.1f} kPa**,
+largest factored deflection **{b['sheet_defl_mm']:.1f} mm**. A 36 kg quarter is inside that check (the C5 case is 68 kg).
 
 Of the bag-floor vertical, **{CRADLE_SHARE:.0%}** moves onto the under-straps and the rest stays
 on the hinge pins (ASSUMPTION). The lower strap takes {US1_FRACTION:.0%} of that cradle load.

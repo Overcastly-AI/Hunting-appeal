@@ -232,7 +232,7 @@ def _barrier_part() -> Part | None:
         meta = json.loads(side.read_text())
     return Part("frame_barrier", _planar_uv(trimesh.load(barrier, force="mesh")),
                 meta.get("material", "carbon"), "frame",
-                label=meta.get("label", "QI carbon window spreader"))
+                label=meta.get("label", "Sandwich v2 window spreader (carbon / ROHACELL)"))
 
 
 def build_pack(params: dict | None = None) -> PackModel:

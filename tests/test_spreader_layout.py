@@ -87,8 +87,16 @@ def test_recorded_result_meets_requirements():
     assert m["total_g"] < 230.0               # the thin-sheet option is heavier than the 154 g sandwich (record)
     assert r["sandwich_recheck"]["clear_fact_lean_min"] >= 0.0
     assert ch["passes"]
-    for p in (r["files"]["dxf"], r["files"]["drawing"], r["files"]["assembled"], r["doc"]):
+    for p in (r["files"]["dxf"], r["files"]["drawing"], r["doc"]):
         assert (ROOT / p).exists()
+    # owner 2026-11-05: d6L is an alternative. Its socketed frame must never be recorded as the production print file.
+    for p in (r["files"]["assembled"], r["files"]["barrier"]):
+        assert not p.startswith("designs/pack_5200/print/frame/"), p
     for s in r["screens"]:
         f = ROOT / s
         assert f.exists() and f.stat().st_size <= 1_500_000
+
+
+def test_alternative_never_writes_production_print_folder():
+    from huntkit.gendesign import spreader_layout_report as R
+    assert R.ALT_PRINT != R.PRINT and R.PRINT not in R.ALT_PRINT.parents

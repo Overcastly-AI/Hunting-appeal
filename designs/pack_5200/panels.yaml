@@ -1275,18 +1275,18 @@ panels:
   notes: 'PAIR on the stay lines, wearer face (analysis/back_comfort.md). The window between the rails is open mesh over an air gap, not foam. Replaces the single 210 x 280 x 6 mm sheet.'
   seam_line_mm: null
 - id: BP-06
-  name: window spreader, QI carbon 2.0 mm
+  name: 'window spreader, Sandwich v2: 200 g twill / 6 mm ROHACELL 110 / 200 g twill'
   sub_assembly: back_panel
-  material_id: cfrp_plate_quasi_iso
-  approx_size_mm: [208, 300]
+  material_id: rohacell_110_igf
+  approx_size_mm: [242, 318]
   qty_total: 1
   mirror_pair: false
   seam_allowance_mm: 0.0
-  thickness_mm: 2.0
+  thickness_mm: 6.44
   zone: back panel
-  cut_area_m2_each: 0.0624
-  mass_g_total: 193.0
-  notes: 'Clipped to the stays on the bag side. Bone ends and the meat cinch land here and go into the stay pads. Not a foam hammock.'
+  cut_area_m2_each: 0.0716
+  mass_g_total: 98.8
+  notes: 'Owner 2026-11-05: production spreader is Sandwich v2 (BP-06 rev B, analysis/spreader.md). Core rohacell_110_igf, skins cfrp_t300_3k_woven_epoxy_ply. Clipped to the stays on the bag side with 6 PA12 clips; bone ends and the meat cinch land here and go into the stays. Cut and build: cut/spreader/README.md. Edge tubes, clips, pucks, pads, doublers and seal (55 g) are hardware, not in this line. Replaces the 2.0 mm QI sheet (193 g).'
   seam_line_mm: null
 - id: BP-03
   name: upper back pad face (on crown)

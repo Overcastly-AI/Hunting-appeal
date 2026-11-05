@@ -1,6 +1,11 @@
 """Spreader layout study (BP-06 rev C) pipeline: evaluate every frame layout with a thin sheet, re-run the
 frame cases, pick one, and write the record, the print and cut files, the viz3d mesh and the screenshots.
 
+Status (owner, 2026-11-05): the thin-sheet layout (d6L_tubes + 1.5 mm HDPE) is a DOCUMENTED ALTERNATIVE, not
+production. The production spreader is Sandwich v2 (``huntkit.gendesign.spreader``) on the socket-free body from
+``frame_branch``. This pipeline therefore writes its socketed frame and HDPE barrier mesh to ``ALT_PRINT``
+(outputs/spreader_layout/print_d6L/, scratch) and never into ``designs/pack_5200/print/frame/``.
+
 Engineering: ``huntkit.gendesign.spreader_layout``. Run: python -m huntkit.gendesign.spreader_layout_report
 (about 40 min on 4 cores; results are cached in outputs/spreader_layout/).
 """
@@ -27,6 +32,7 @@ ANALYSIS = REPO_ROOT / "designs" / "pack_5200" / "analysis"
 CUT = REPO_ROOT / "designs" / "pack_5200" / "cut" / "spreader"
 PRINT = REPO_ROOT / "designs" / "pack_5200" / "print" / "frame"
 OUT = REPO_ROOT / "outputs" / "spreader_layout"
+ALT_PRINT = OUT / "print_d6L"     # alternative (d6L) frame + barrier; production print files are not touched
 CURRENT_G = 203.0                 # 2.0 mm QI sheet + 4 M4 sets (spreader.md)
 SANDWICH_G = 154.0                # spreader v2, installed (spreader.md)
 SANDWICH_USD = 188.0
@@ -420,13 +426,17 @@ def tube_meshes(layout: L.Layout):
     return out
 
 
-def write_print_files(layout: L.Layout, sheet: L.Sheet, log=print) -> dict:
+def write_print_files(layout: L.Layout, sheet: L.Sheet, log=print, out_dir: Path | None = None) -> dict:
+    """Socketed frame, flat segments and barrier mesh for a thin-sheet layout. Default target is ALT_PRINT.
+    Passing ``out_dir=PRINT`` would replace the production frame; only do that on an owner decision."""
     import trimesh
     from .frame_report import fdm_stats, orient_flat
     from .frame_topopt import split_mesh
     from .surface import export
+    dst = Path(out_dir) if out_dir is not None else ALT_PRINT
+    dst.mkdir(parents=True, exist_ok=True)
     m = L.frame_mesh(layout, h=2.0)
-    m.export(PRINT / "genframe_assembled.stl")
+    m.export(dst / "genframe_assembled.stl")
     rho = float(load(L.PAHT).require("density_kg_m3"))
     price = float(load(L.PAHT).require("print_cost_usd_per_g"))
     segs = {}
@@ -434,7 +444,7 @@ def write_print_files(layout: L.Layout, sheet: L.Sheet, log=print) -> dict:
         lo, hi = split_mesh(m, 234.0)
         for nm, sm in (("lower", lo), ("upper", hi)):
             om = orient_flat(sm, "wearer")
-            files = export(om, PRINT / f"genframe_{nm}_flat", formats=("stl", "3mf"))
+            files = export(om, dst / f"genframe_{nm}_flat", formats=("stl", "3mf"))
             st = fdm_stats(sm, rho, price)
             segs[nm] = {"files": [rel(f) for f in files], "mass_g": st["mass_g"], "hours": st["hours"],
                         "extents": [float(e) for e in om.extents]}
@@ -442,11 +452,11 @@ def write_print_files(layout: L.Layout, sheet: L.Sheet, log=print) -> dict:
         log(f"  split skipped: {e}")
     tubes = tube_meshes(layout)
     bar = trimesh.util.concatenate([sheet_mesh(sheet, layout.lift)] + tubes)
-    bar.export(PRINT / "genframe_barrier.stl")
+    bar.export(dst / "genframe_barrier.stl")
     label = f"BP-06 rev C spreader: {sheet.name} on layout {layout.key} (frame ribs/sockets + removable sheet)"
-    (PRINT / "genframe_barrier.json").write_text(json.dumps({"material": "hdpe", "label": label}))
-    return {"mesh": m, "tubes": tubes, "segments": segs, "assembled": rel(PRINT / "genframe_assembled.stl"),
-            "barrier": rel(PRINT / "genframe_barrier.stl")}
+    (dst / "genframe_barrier.json").write_text(json.dumps({"material": "hdpe", "label": label}))
+    return {"mesh": m, "tubes": tubes, "segments": segs, "assembled": rel(dst / "genframe_assembled.stl"),
+            "barrier": rel(dst / "genframe_barrier.stl")}
 
 
 def write_dxf(layout: L.Layout, sheet: L.Sheet) -> str:
@@ -638,7 +648,8 @@ def run(log=print, resume: bool = True) -> dict:
            "mass": mass, "cost": c, "screens": screens, "fieldres": _strip(fieldres)}
     from .spreader_layout_doc import write_doc
     path = write_doc(ctx)
-    out = {"sandwich_recheck": sandwich, "chosen": chosen.key, "sheet": sheet.key, "mass": mass, "cost": c, "screens": screens,
+    out = {"status": "alternative (owner 2026-11-05: production spreader is sandwich v2, spreader.md)",
+           "sandwich_recheck": sandwich, "chosen": chosen.key, "sheet": sheet.key, "mass": mass, "cost": c, "screens": screens,
            "final": final, "frames": frames, "rows": [{k: v for k, v in r.items() if k != "frame"} for r in rows],
            "files": ctx["files"], "doc": rel(path)}
     (ANALYSIS / "spreader_layout_results.json").write_text(json.dumps(out, indent=1, default=_jd))

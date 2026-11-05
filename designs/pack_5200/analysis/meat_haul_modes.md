@@ -4,7 +4,8 @@ Owner, 2026-11-01: both modes are requirements. The eight B-01 swells are accept
 IM1 stays a meat anchor only, for now. The hook proof test is still open.
 Code: `huntkit/gendesign/meat_haul.py`.
 
-The bearing face in every mode is the **2.0 mm QI carbon spreader** on the bag side of the
+The bearing face in every mode is the **Sandwich v2 spreader** (BP-06 rev B: 200 g twill carbon skins on 6 mm
+ROHACELL 110, 6.44 mm, 242 × 318 mm, z 112–430; owner 2026-11-05, `spreader.md`) on the bag side of the
 stays. Two **38 mm under-straps** also run under the bag, from fairleads at z 95 and
 z 142. With the bag on they cinch the floor up to the frame, and the bag shell shares
 the vertical load with the hinge pins. With the bag off they are the cradle, so the quarter
@@ -17,9 +18,10 @@ anchor line is specified at **70 mm**, which keeps the side legs at
 25 mm webbing was set aside: its ladder lock slips at 300 N and its side-release breaks at
 450 N, both under the factored cradle tension.
 
-Spreader, from the comfort check (20 % of 68 kg on a 22 mm bone, factored): stress SF **1.95**,
-peak skin pressure **10.6 kPa**, factored deflection **7.8 mm**.
-A 36 kg quarter is inside that check.
+Spreader, from the real-support check in `spreader.md` (HA-LS-1 C5 meat plus a bone end, 20 % of 68 kg on a
+22 mm patch, factored 2.0 g × 1.5, 2 mm grid): first-ply SF **1.21** (≥ 1.0, factor on the load),
+fatigue SF **1.04** at the 1.6 g walking peak, peak skin pressure **13.0 kPa**,
+largest factored deflection **3.8 mm**. A 36 kg quarter is inside that check (the C5 case is 68 kg).
 
 Of the bag-floor vertical, **55%** moves onto the under-straps and the rest stays
 on the hinge pins (ASSUMPTION). The lower strap takes 60% of that cradle load.

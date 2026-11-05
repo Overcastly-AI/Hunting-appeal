@@ -286,10 +286,12 @@ def run(log=print):
     log("surface")
     mesh = mesh_from_sdf(scale, h=2.2)
     mesh.export(PRINT / "genframe_assembled.stl")
-    # keep the carbon spreader mesh already written; refresh its label
-    (PRINT / "genframe_barrier.json").write_text(json.dumps({
-        "material": "carbon",
-        "label": "QI carbon 2.0 mm spreader, behind the branching frame"}))
+    # The spreader mesh and its label belong to spreader_report (production: Sandwich v2, owner 2026-11-05).
+    # Only write a placeholder label if none exists; never overwrite the production record.
+    if not (PRINT / "genframe_barrier.json").exists():
+        (PRINT / "genframe_barrier.json").write_text(json.dumps({
+            "material": "carbon",
+            "label": "BP-06 rev B spreader: Sandwich v2 (twill / 6 mm ROHACELL 110), behind the branching frame"}))
 
     by = {}
     for c in use["cases"]:

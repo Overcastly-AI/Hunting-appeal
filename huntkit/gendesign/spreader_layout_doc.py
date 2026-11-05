@@ -9,6 +9,18 @@ from . import spreader as S
 from . import spreader_layout as L
 
 ANALYSIS = REPO_ROOT / "designs" / "pack_5200" / "analysis"
+DECISION = """## Decision (owner, 2026-11-05)
+
+**Production spreader: Sandwich v2** (`spreader.md`): 154 g (5.4 oz), about $188, strict HA-LS-1 rule, re-checked here
+with the lumbar pan in the skin model (factored lean-torso air **8.4 mm**, walking 19.3 mm). The frame stays the
+socket-free branch body it was checked on (`designs/pack_5200/print/frame/`). Build files: `designs/pack_5200/cut/spreader/`
+(`spreader_v2_*`, `README.md`).
+
+**Rejected for production:** d6L, 1.5 mm HDPE on 6 removable carbon cross stays (217 g, about $60, barrier rule + T8). It
+stays in code (`huntkit/gendesign/spreader_layout.py`, layout `d6L_tubes`) as a documented alternative. Its socketed frame
+files are written to `outputs/spreader_layout/print_d6L/` (scratch), not to the production print folder. The study below is
+kept unchanged as the record.
+"""
 CASES = ("static_carry", "drop_2p5g", "side_hill_torsion", "single_stay_setdown", "meat_straps", "tall_load",
          "overload_haul", "tall_load_posts", "hipbelt_off_abuse")
 
@@ -35,7 +47,8 @@ def write_doc(ctx: dict) -> Path:
     lines = [
         "# Spreader layout study (BP-06 rev C): change the frame so a thin sheet works",
         "",
-        "Owner decision 2026-11-05: support the sheet the way the leaders do (Mystery Ranch 0.060 in HDPE, "
+        DECISION,
+        "Earlier owner direction 2026-11-05 (superseded by the decision above): support the sheet the way the leaders do (Mystery Ranch 0.060 in HDPE, "
         "Kifaru 1/16 in, Seek Outside removable cross stays). Sandwich v2 (`spreader.md`, 154 g, $188) is the fallback. "
         "Code: `huntkit/gendesign/spreader_layout.py` (model), `spreader_layout_report.py` (this record). "
         "Solver: `huntkit/fea/plate_grid.py` (`solve_von_karman`, new: large deflection, verified in "
@@ -235,11 +248,11 @@ def write_doc(ctx: dict) -> Path:
         "",
         "## 8. Files",
         "",
-        f"- Frame print files with the six stay sockets: `{ctx['files']['assembled']}`, "
+        f"- Frame print files with the six stay sockets (alternative only, not production): `{ctx['files']['assembled']}`, "
         + ", ".join(f"`{f}`" for s in ctx["files"].get("segments", {}).values() for f in s["files"]),
         f"- Sheet cut file (DXF, mm; CUT, MARK = support lines, TEXT): `{ctx['files']['dxf']}`",
         f"- Sheet drawing, 1:1 A3: `{ctx['files']['drawing']}`",
-        f"- viz3d back-system mesh (sheet + carbon stays): `{ctx['files']['barrier']}`",
+        f"- viz3d back-system mesh (sheet + carbon stays, alternative): `{ctx['files']['barrier']}`",
         "- Results: `designs/pack_5200/analysis/spreader_layout_results.json`",
         "",
         "## 9. Sources added",

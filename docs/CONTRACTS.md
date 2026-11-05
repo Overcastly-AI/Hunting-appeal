@@ -93,7 +93,11 @@ API (`huntkit.materials`):
 Owner, 2026-11-01. Both modes are requirements. The eight B-01 swells over the fairleads are accepted.
 
 Stations, both sides, z in mm: hinge 60, under-strap US1 95, under-strap US2 142, IM1 190,
-IM2 330, IM3 520. The bearing face in every mode is the 2.0 mm QI carbon spreader. The two
+IM2 330, IM3 520. The bearing face in every mode is the **Sandwich v2 spreader** (BP-06 rev B, owner
+2026-11-05): 200 g twill carbon skins on 6 mm ROHACELL 110 IG-F, 6.44 mm thick, 242 × 318 mm at z 112–430,
+6 removable PA12 clips on the stays, record `designs/pack_5200/analysis/spreader.md`, build files
+`designs/pack_5200/cut/spreader/`. Consumers take its numbers from `analysis/spreader_results.json`
+(`chosen`), not from the retired 2.0 mm QI comfort model. The frame under it is the socket-free branch body. The two
 38 mm under-straps cinch the bag floor to US1/US2 when the bag is on, and they are the cradle
 when the bag is off. IM1 is a meat anchor only until the owner says otherwise. Hook and cam
 ratings are still assumptions awaiting a proof test.

@@ -248,6 +248,24 @@ fatigue SF **2.46**.
 cradle. Factored cradle load 847 N. US1 tension **489 N**, strength SF **3.28**, fatigue SF
 **1.47** on the 1 mm cheek mesh. Cam SF **2.25**. IM straps only cinch (225 N, hook SF 6.67).
 
+### 4.10 Back system (production, owner 2026-11-05)
+
+From the bag side to the wearer: bag (B-01) → **Sandwich v2 spreader** (BP-06 rev B) clipped to the bag face of the
+stays → printed branch frame (stays, branches, z 330 bar) → two 10 mm XLPE rails on the stay lines → spacer mesh over
+the rails → wearer. The air path is the 130 mm gutter between the rails. The spreader is solid on purpose: it is the
+bag-side blood and sweat barrier and the bearing face for every meat mode (§4.9, `docs/CONTRACTS.md` §6).
+
+- Part: 242 × 318 mm (z 112–430), 6.44 mm thick: one 200 g 2x2 twill ply each side of 6 mm ROHACELL 110 IG-F, a 45°
+  twill doubler round the US2/IM1/IM2 notches, edges sealed with epoxy (`analysis/spreader.md` §3).
+- Mounting: 6 removable MJF PA12 snap clips over the stays at z 166, 260, 400; PAHT-CF stand-off pads under the
+  bottom tab at z 119; 11 PAHT-CF pucks on the wearer face over the branches (z 240, 285, 365, 405) and the bar
+  (z 330); two bonded 10/8 mm pultruded edge tubes on the bag face (z 118.5, 424); 1 mm EVA rub strips on the crown lines.
+  Toolless removal for washing. No bolts, no bonded joint to the frame.
+- Checks (HA-LS-1 rev B, 2 mm grid): FPF SF 1.21, fatigue 1.04, sandwich local 1.06, walking air 10.1 mm (19.3 mm
+  with the lumbar pan), factored lean-torso air 8.4 mm, skin 13.0 kPa (≤ 14). Frame (socket-free body) min SF 1.69,
+  fatigue 1.19 (`analysis/spreader_layout.md` §3, "today" column).
+- Build files: `cut/spreader/` (`spreader_v2_cut.dxf`, `spreader_v2_clip.dxf`, `spreader_v2_drawing.pdf`, `README.md`).
+
 ## 5. Meat hauling v3.1: internal meat harness, no shelf (DECISION D-19, owner 2026-11-01)
 
 ### 5.1 Research and IP
@@ -328,18 +346,18 @@ sheet, 193 g, plus 4 M4 sets) to **154 g (5.4 oz)**. The new part is a twill / 6
 notch doublers, edge tubes, pucks and 6 removable clips. The branch-frame pack, 3101 g (6.84 lb) with the
 under-straps, becomes **3052 g (6.73 lb)**. That is still 784 g over the 5.0 lb target.
 
-**Spreader layout study (2026-11-05, `analysis/spreader_layout.md`), owner to choose.** The best thin-sheet layout is
-6 removable carbon cross stays in printed sockets under a 1.5 mm HDPE sheet raised 6 mm on the clip saddles:
+**Spreader decision (owner, 2026-11-05): Sandwich v2 is the production spreader** (`analysis/spreader.md`,
+re-checked in `analysis/spreader_layout.md` with the lumbar pan in the skin model: factored lean-torso air 8.4 mm).
+The frame is the socket-free branch body it was checked on (`print/frame/genframe_assembled.stl`).
 
-| back-system spreader | g | oz | USD | bone rule |
-|---|---:|---:|---:|---|
-| today: 2.0 mm QI sheet + 4 M4 | 203 | 7.2 | ~15 | fails on the real frame |
-| **sandwich v2** (twill / 6 mm ROHACELL 110) | **154** | 5.4 | ~188 | strict HA-LS-1: passes |
-| thin sheet: HDPE 1.5 mm 102 + clips with saddles 25 + 6 carbon stays 73 + printed sockets 16 | 217 | 7.7 | ~60 | barrier rule + T8 test |
+| back-system spreader | g | oz | USD | bone rule | status |
+|---|---:|---:|---:|---|---|
+| old: 2.0 mm QI sheet + 4 M4 | 203 | 7.2 | ~15 | fails on the real frame | retired |
+| **sandwich v2** (twill / 6 mm ROHACELL 110): sheet 99 + edge tubes 21 + clips, pucks, pads, doublers, seal 34 | **154** | **5.4** | **~188** | strict HA-LS-1: passes | **production** |
+| d6L: HDPE 1.5 mm 102 + clips with saddles 25 + 6 carbon stays 73 + printed sockets 16 | 217 | 7.7 | ~60 | barrier rule + T8 test | rejected, kept in code as an alternative |
 
-With the sandwich the pack stays **3052 g (6.73 lb)**. With the thin sheet it is **3115 g (6.87 lb)** (+63 g), cheaper by about
-$128 and washable. The printed body in `print/frame/` now carries the stay sockets (+16 g); they stand 1.8 mm proud of
-the crown plane, so the sandwich needs the previous body (no sockets).
+Pack build-up on the branch frame: 2979 g (fairleads, §4.8) + 122 g under-straps (§4.9) = 3101 g with the old QI
+sheet; with the sandwich (−49 g) **3052 g (6.73 lb)**. That is 784 g over the 5.0 lb (2268 g) target.
 
 Not in base: optional lid 141 g, rifle boot 36 g, extension posts ≈ 60 g (ASSUMPTION), XL belt ≈ +45 g.
 Levers if needed: 25 mm meat straps (−40 g, but they bite game bags), 2 internal straps instead of 3 (−80 g; IM2 + IM3

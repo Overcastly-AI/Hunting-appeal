@@ -1,6 +1,18 @@
 # Spreader layout study (BP-06 rev C): change the frame so a thin sheet works
 
-Owner decision 2026-11-05: support the sheet the way the leaders do (Mystery Ranch 0.060 in HDPE, Kifaru 1/16 in, Seek Outside removable cross stays). Sandwich v2 (`spreader.md`, 154 g, $188) is the fallback. Code: `huntkit/gendesign/spreader_layout.py` (model), `spreader_layout_report.py` (this record). Solver: `huntkit/fea/plate_grid.py` (`solve_von_karman`, new: large deflection, verified in `tests/test_plate_vk.py`). Frame FEA: `frame_production.verify_solid`, 2 mm voxels, all HA-LS-1 rev B cases. Tests: `tests/test_spreader_layout.py`. Research: `docs/research/spreader_research.md` (leaders), §9 below (HDPE data).
+## Decision (owner, 2026-11-05)
+
+**Production spreader: Sandwich v2** (`spreader.md`): 154 g (5.4 oz), about $188, strict HA-LS-1 rule, re-checked here
+with the lumbar pan in the skin model (factored lean-torso air **8.4 mm**, walking 19.3 mm). The frame stays the
+socket-free branch body it was checked on (`designs/pack_5200/print/frame/`). Build files: `designs/pack_5200/cut/spreader/`
+(`spreader_v2_*`, `README.md`).
+
+**Rejected for production:** d6L, 1.5 mm HDPE on 6 removable carbon cross stays (217 g, about $60, barrier rule + T8). It
+stays in code (`huntkit/gendesign/spreader_layout.py`, layout `d6L_tubes`) as a documented alternative. Its socketed frame
+files are written to `outputs/spreader_layout/print_d6L/` (scratch), not to the production print folder. The study below is
+kept unchanged as the record.
+
+Earlier owner direction 2026-11-05 (superseded by the decision above): support the sheet the way the leaders do (Mystery Ranch 0.060 in HDPE, Kifaru 1/16 in, Seek Outside removable cross stays). Sandwich v2 (`spreader.md`, 154 g, $188) is the fallback. Code: `huntkit/gendesign/spreader_layout.py` (model), `spreader_layout_report.py` (this record). Solver: `huntkit/fea/plate_grid.py` (`solve_von_karman`, new: large deflection, verified in `tests/test_plate_vk.py`). Frame FEA: `frame_production.verify_solid`, 2 mm voxels, all HA-LS-1 rev B cases. Tests: `tests/test_spreader_layout.py`. Research: `docs/research/spreader_research.md` (leaders), §9 below (HDPE data).
 
 ## Recommendation
 
@@ -146,10 +158,10 @@ Mass reductions: 1.0 mm HDPE saves 34 g but fails the barrier rule here (table 4
 
 ## 8. Files
 
-- Frame print files with the six stay sockets: `designs/pack_5200/print/frame/genframe_assembled.stl`, `designs/pack_5200/print/frame/genframe_lower_flat.stl`, `designs/pack_5200/print/frame/genframe_lower_flat.3mf`, `designs/pack_5200/print/frame/genframe_upper_flat.stl`, `designs/pack_5200/print/frame/genframe_upper_flat.3mf`
+- Frame print files with the six stay sockets (alternative only; regenerate with `write_print_files`, written to `outputs/spreader_layout/print_d6L/`): `genframe_assembled.stl`, `genframe_lower_flat.stl/.3mf`, `genframe_upper_flat.stl/.3mf`. The production files in `designs/pack_5200/print/frame/` have no sockets
 - Sheet cut file (DXF, mm; CUT, MARK = support lines, TEXT): `designs/pack_5200/cut/spreader/spreader_v3_hdpe_cut.dxf`
 - Sheet drawing, 1:1 A3: `designs/pack_5200/cut/spreader/spreader_v3_drawing.pdf`
-- viz3d back-system mesh (sheet + carbon stays): `designs/pack_5200/print/frame/genframe_barrier.stl`
+- viz3d back-system mesh (sheet + carbon stays, alternative): `outputs/spreader_layout/print_d6L/genframe_barrier.stl`. The production `genframe_barrier.stl` is the sandwich
 - Results: `designs/pack_5200/analysis/spreader_layout_results.json`
 
 ## 9. Sources added

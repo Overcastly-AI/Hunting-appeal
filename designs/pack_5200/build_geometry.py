@@ -769,12 +769,18 @@ def build_panels(Hf, diag):
              "on the crown"),
             ("BP-05", "back panel shell", 230.0, 300.0, "robic_210d_ripstop", "fabric", None,
              "bag side of the mesh; the carbon spreader is behind it, not this fabric"),
-            ("BP-06", "window spreader, QI carbon 2.0 mm", 208.0, 300.0, "cfrp_plate_quasi_iso", "sheet", 2.0,
-             "clipped to the stays on the bag side. Carries bone ends and the meat cinch to the stay pads")):
+            # owner 2026-11-05: production spreader = Sandwich v2 (BP-06 rev B, analysis/spreader.md). Cut from the
+            # DXF in cut/spreader/; material_id is the core, skins cfrp_t300_3k_woven_epoxy_ply. Mass from the record.
+            ("BP-06", "window spreader, Sandwich v2: 200 g twill / 6 mm ROHACELL 110 / 200 g twill", 242.0, 318.0,
+             "rohacell_110_igf", "sheet", 6.44,
+             "clipped to the stays on the bag side (6 PA12 clips). Carries bone ends and the meat cinch to the stays. "
+             "Build: cut/spreader/README.md. Edge tubes, clips, pucks, pads (55 g) are hardware, not in this line")):
         qty = 2 if pid == "BP-02" else 1
         add(rect_panel(nm, w, h, 30.0, material_id=mat, piece_id=pid, quantity=qty,
                        seam_allowance_mm=10.0 if kind == "fabric" else 0.0),
             "back panel", "back_panel", note, kind=kind, thickness_mm=t)
+        if pid == "BP-06":
+            P[-1]["mass_g"] = SPREADER_SHEET_G
 
     # ---- rifle carry (optional, either side)
     add(tapered_panel("rifle butt boot body", 300.0, 260.0, 200.0, material_id="cordura_500d_nylon66", piece_id="R-01",
@@ -825,7 +831,19 @@ def info_fly_area(Hf):
 
 
 # ============================================================================ 4. MASSES
+def _spreader_sheet_g() -> float:
+    """Sandwich v2 sheet mass (skins + core + resin + doublers excluded), analysis/spreader_results.json."""
+    import json
+    f = Path(__file__).resolve().parent / "analysis" / "spreader_results.json"
+    return float(json.loads(f.read_text())["chosen"]["sheet_g"])
+
+
+SPREADER_SHEET_G = _spreader_sheet_g()
+
+
 def piece_mass(rec):
+    if rec.get("mass_g") is not None:          # composite parts whose mass is not area x t x rho of one record
+        return rec["mass_g"]
     p = rec["piece"]
     m = MAT.load(p.material_id)
     a_m2 = p.area_mm2 / 1e6  # cut-line area (what you buy)
