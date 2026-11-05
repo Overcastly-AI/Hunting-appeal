@@ -106,7 +106,7 @@ def summarize(pm, case_name: str, case: dict, x: np.ndarray, sim, infos) -> dict
     out["hot_spots"] = spots
     # seams
     cab = sim.term("cables")
-    att_nodes = [int(n) for c in cab.cables for n in c.nodes[:1] if n >= 0 and c.kind in ("hook", "roll_clip", "tie")]
+    att_nodes = [int(n) for c in cab.cables for n in c.nodes[:1] if n >= 0 and c.kind in ("hook", "roll_clip", "tie", "pocket")]
     att_nodes += [int(n) for c in cab.cables for n in c.nodes if n >= 0 and c.kind in ("hook", "roll_clip")]
     att_nodes += [int(n) for n in getattr(pm, "hinge_nodes", [])]
     sf = seam_forces(m, x, memb, pm.seams, exclude=att_nodes)

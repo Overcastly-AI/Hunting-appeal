@@ -1,0 +1,20 @@
+# Attachment phase (pack-designer 2026-11-05), designs/pack_5200/analysis/bag_attachment.md.
+# G15: study candidate G (crown tie x +/-70 + fixed forward guys) at this torso
+extends: pack5200_v31_tab_doubler.yaml
+name: pack5200_v31_att_G15
+contact:
+  crown: {top_z: 601.0}
+attachments:
+  wraps:
+    list:
+      - {id: W1, anchor_R: [115.0, 10.5, 80.0], anchor_L: [-115.0, 7.3, 250.0]}
+      - {id: W2, anchor_R: [115.0, 7.3, 250.0], anchor_L: [-115.0, 4.1, 420.0]}
+      - {id: W3, anchor_R: [115.0, 0.0, 601.0], anchor_L: [-115.0, 0.0, 601.0]}   # crown top bar, moves with torso
+  ties:
+    webbing: poly_webbing_25mm
+    capacity_n: 1000.0
+    list:
+      - {id: CT_R, pieces: [B-01u, B-01b, B-01], at: [70.0, 601.0], anchor: [70.0, 22.7, 601.0], mode: elastic, pretension_n: 30.0}
+      - {id: CT_L, pieces: [B-01u, B-01b, B-01], at: [-70.0, 601.0], anchor: [-70.0, 22.7, 601.0], mode: elastic, pretension_n: 30.0}
+      - {id: TG_R, pieces: [B-02d, B-02a, B-03R], at: [150.0, 760.0], anchor: [100.0, 22.7, 601.0], mode: elastic, pretension_n: 30.0}
+      - {id: TG_L, pieces: [B-02d, B-03L], at: [-150.0, 760.0], anchor: [-100.0, 22.7, 601.0], mode: elastic, pretension_n: 30.0}

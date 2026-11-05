@@ -519,6 +519,32 @@ class PackModel:
                     float(t.get("pretension_n", tl.get("pretension_n", 30.0))) / len(legs), "tie",
                     mode=t.get("mode", tl.get("mode", "elastic")), capacity_n=t.get("capacity_n", tl.get("capacity_n")),
                     **({"group": t["id"]} if len(legs) > 1 else {}), label=t.get("label", ""))
+        # crown pocket (``attachments.pocket``, added 2026-11-05, attachment phase): an inverted Hypalon hood on the frame
+        # face of B-01 that drops over the crown top bar. Every node of ``pieces`` in the band |z - bar_z| <= band_mm
+        # and |x| <= half_width_mm gets a short tension-only leg to the bar's bag-facing surface at its own x
+        # ([x, anchor_y, bar_z]); the legs are reported as one group ``pocket``. The hood holds B-01 against the bar
+        # (no aft peel) and rests on it (no drop); it cannot pull the bag forward of the bar (crown contact does that).
+        # ``hood_depth_mm``: free fabric between the bar face and B-01 when taut (rest length = max(drafted, depth)).
+        pk = sc.get("pocket") or {}
+        self.pocket_legs = []
+        if pk.get("enabled"):
+            cand = self.nodes_of(*pk.get("pieces", ["B-01u", "B-01b"]))
+            zb = float(pk["bar_z"])
+            band = float(pk.get("band_mm", 0.5 * self.h))
+            hw_ = float(pk.get("half_width_mm", 90.0))
+            sel = cand[(np.abs(X[cand, 2] - zb) <= band) & (np.abs(X[cand, 0]) <= hw_)]
+            ay = float(pk["anchor_y"])
+            depth = float(pk.get("hood_depth_mm", 0.0))
+            pre = float(pk.get("pretension_n", 0.0)) / max(len(sel), 1)
+            for j in sel.astype(int).tolist():
+                anchor = [float(X[j, 0]), ay, zb]
+                nm = f"pocket.{j}"
+                add(nm, [j, -1], [nan3, anchor], pk.get("webbing", "poly_webbing_38mm"), pre, "pocket",
+                    mode="elastic", capacity_n=pk.get("capacity_n"), group="pocket")
+                cb = self.cables[nm]
+                if depth > 0 and cb.meta["L_init"] < depth:
+                    cb.L0 = depth                      # slack hood: taut only once B-01 has moved aft to the depth
+                self.pocket_legs.append(nm)
         # roll-top clips: the two ends of the closed roll pulled down onto the side gores
         rc = sc.get("roll_clips")
         if rc:
@@ -566,7 +592,7 @@ class PackModel:
         for c in self.cables.values():
             if c.kind == "hinge":
                 continue
-            if c.kind in ("hook", "doubler") or (c.kind == "tie" and case.get("ties", True)):
+            if c.kind in ("hook", "doubler") or (c.kind in ("tie", "pocket") and case.get("ties", True)):
                 use.append(c)
             elif cinched and ((c.kind == "under_strap" and case.get("under_straps", True))
                               or (c.kind == "wrap" and case.get("wraps", False))

@@ -1,0 +1,18 @@
+# Attachment phase (pack-designer 2026-11-05), designs/pack_5200/analysis/bag_attachment.md.
+# L19: load lifters counted as the top anchor (lifter routed over the crown corner to a bag-top keeper, 1 g tension)
+extends: pack5200_v31_tab_doubler.yaml
+name: pack5200_v31_att_L19
+contact:
+  crown: {top_z: 702.6}
+attachments:
+  wraps:
+    list:
+      - {id: W1, anchor_R: [115.0, 10.5, 80.0], anchor_L: [-115.0, 7.3, 250.0]}
+      - {id: W2, anchor_R: [115.0, 7.3, 250.0], anchor_L: [-115.0, 4.1, 420.0]}
+      - {id: W3, anchor_R: [115.0, 0.0, 702.6], anchor_L: [-115.0, 0.0, 702.6]}   # crown top bar, moves with torso
+  ties:
+    webbing: poly_webbing_25mm
+    capacity_n: 300.0
+    list:
+      - {id: LF_R, pieces: [B-01u], at: [105.0, 760.0], anchor: [105.0, -26.3, 702.6], mode: cinched, pretension_n: 23.7}
+      - {id: LF_L, pieces: [B-01u], at: [-105.0, 760.0], anchor: [-105.0, -26.3, 702.6], mode: cinched, pretension_n: 23.7}

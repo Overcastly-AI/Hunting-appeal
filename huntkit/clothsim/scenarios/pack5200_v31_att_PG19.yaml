@@ -1,0 +1,27 @@
+# Attachment phase (pack-designer 2026-11-05), designs/pack_5200/analysis/bag_attachment.md.
+# PG19: crown pocket + fixed-length top side guys (TG) to the bar ends
+extends: pack5200_v31_tab_doubler.yaml
+name: pack5200_v31_att_PG19
+contact:
+  crown: {top_z: 702.6}
+attachments:
+  pocket:           # crown pocket: inverted Hypalon hood on B-01 that drops over the crown top bar (gravity-seated)
+    enabled: true
+    pieces: [B-01u, B-01b, B-01]
+    bar_z: 702.6
+    anchor_y: 21.7   # bar centre y 11.7 + OD/2 9 + 1 mm hood ply
+    half_width_mm: 92.0   # hood 190 mm wide between the crown legs (inner faces x +/-104)
+    hood_depth_mm: 16.0   # free hood depth bar face -> B-01 (the 30 mm head setback minus the bar), one hood for all torsos
+    webbing: poly_webbing_38mm   # ASSUMPTION: 1 mm Hypalon hood ply ~ 38 mm webbing EA per 40 mm node strip
+    capacity_n: 2000.0
+  wraps:
+    list:
+      - {id: W1, anchor_R: [115.0, 10.5, 80.0], anchor_L: [-115.0, 7.3, 250.0]}
+      - {id: W2, anchor_R: [115.0, 7.3, 250.0], anchor_L: [-115.0, 4.1, 420.0]}
+      - {id: W3, anchor_R: [115.0, 0.0, 702.6], anchor_L: [-115.0, 0.0, 702.6]}   # crown top bar, moves with torso
+  ties:
+    webbing: poly_webbing_25mm
+    capacity_n: 1000.0
+    list:
+      - {id: TG_R, pieces: [B-02d, B-02a, B-03R], at: [150.0, 760.0], anchor: [100.0, 20.7, 702.6], mode: elastic, pretension_n: 30.0}
+      - {id: TG_L, pieces: [B-02d, B-03L], at: [-150.0, 760.0], anchor: [-100.0, 20.7, 702.6], mode: elastic, pretension_n: 30.0}

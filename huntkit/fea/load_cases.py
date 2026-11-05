@@ -54,6 +54,11 @@ class LoadCase:
     springs: dict = field(default_factory=lambda: dict(DEFAULT_SPRINGS))
     params: dict = field(default_factory=dict)
     buckling: bool = True
+    # Optional (additive 2026-11-05, frame_cg_recheck.md). None = rev B behaviour: the lateral (tilt)
+    # component of the bag load acts at the weighted height of the bag attachment nodes. A value moves its
+    # line of action to the contents CG height by adding the couple W sin(tilt) (cg_z - z_nodes) as
+    # left/right vertical forces on the bag nodes.
+    cg_z_mm: float | None = None
 
     @property
     def W(self) -> float:
@@ -91,9 +96,24 @@ class LoadCase:
                 else:
                     r = np.array([0.0, self.cg_aft_mm, 0.0])
                     add(nid, np.r_[F, np.cross(r, F)])
+            if self.cg_z_mm is not None and tilt:
+                # lateral load at the CG height, not at the node heights: extra M_y = Fx (z_cg - z_w)
+                zs = np.array([nodes[n][2] for n in bag], float)
+                xs = np.array([nodes[n][0] for n in bag], float)
+                Fx = W * np.sin(tilt)
+                My = Fx * (float(self.cg_z_mm) - float(w @ zs))
+                for side in (1.0, -1.0):
+                    m = np.sign(xs) == side
+                    if m.any():
+                        ws = w[m] / w[m].sum()
+                        a = float(np.abs(xs[m]) @ ws)        # weighted lever: this side carries exactly My / 2
+                        for nid, wi in zip(np.array(bag)[m], ws):
+                            add(str(nid), np.array([0.0, 0.0, -side * My / (2 * a) * wi]))
             if couple:
                 # bag CG aft of the frame: top tabs pull aft (+y), bottom bears forward (-y)
                 top, bot = couple["top"], couple["bottom"]
+                if self.params.get("couple_top_group"):      # e.g. "strap_upper": IM3 hooks take the couple
+                    top = g[self.params["couple_top_group"]]
                 zt = np.mean([nodes[n][2] for n in top])
                 zb = np.mean([nodes[n][2] for n in bot])
                 H = W * np.cos(tilt) * self.cg_aft_mm / (zt - zb)
@@ -134,6 +154,9 @@ class LoadCase:
             if tilt:
                 for nid in piv:
                     add(nid, np.array([W * np.sin(tilt), 0, 0]) / len(piv))
+        # optional extra loads per 1 g, scaled by the case g-factor (e.g. bag top-anchor ties on the crown bar)
+        for nid, f1 in (self.params.get("extra_nodal_1g") or {}).items():
+            add(nid, self.g_factor * np.asarray(f1, float))
         return loads
 
     def _meat_straps(self, model, W, tilt, add):

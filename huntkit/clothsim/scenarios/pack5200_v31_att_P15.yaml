@@ -1,0 +1,21 @@
+# Attachment phase (pack-designer 2026-11-05), designs/pack_5200/analysis/bag_attachment.md.
+# P15: crown pocket only
+extends: pack5200_v31_tab_doubler.yaml
+name: pack5200_v31_att_P15
+contact:
+  crown: {top_z: 601.0}
+attachments:
+  pocket:           # crown pocket: inverted Hypalon hood on B-01 that drops over the crown top bar (gravity-seated)
+    enabled: true
+    pieces: [B-01u, B-01b, B-01]
+    bar_z: 601.0
+    anchor_y: 23.7   # bar centre y 13.7 + OD/2 9 + 1 mm hood ply
+    half_width_mm: 92.0   # hood 190 mm wide between the crown legs (inner faces x +/-104)
+    hood_depth_mm: 16.0   # free hood depth bar face -> B-01 (the 30 mm head setback minus the bar), one hood for all torsos
+    webbing: poly_webbing_38mm   # ASSUMPTION: 1 mm Hypalon hood ply ~ 38 mm webbing EA per 40 mm node strip
+    capacity_n: 2000.0
+  wraps:
+    list:
+      - {id: W1, anchor_R: [115.0, 10.5, 80.0], anchor_L: [-115.0, 7.3, 250.0]}
+      - {id: W2, anchor_R: [115.0, 7.3, 250.0], anchor_L: [-115.0, 4.1, 420.0]}
+      - {id: W3, anchor_R: [115.0, 0.0, 601.0], anchor_L: [-115.0, 0.0, 601.0]}   # crown top bar, moves with torso
