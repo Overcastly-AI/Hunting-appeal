@@ -71,6 +71,8 @@ def build_materials(p: dict) -> tuple[dict, dict]:
                                roughnessFactor=0.42),
         "printed_cf": PBRMaterial(name="printed_cf_nylon", baseColorFactor=_hex_factor("#2b2c2f"), metallicFactor=0.05,
                                   roughnessFactor=0.72),
+        "hdpe": PBRMaterial(name="hdpe_framesheet", baseColorFactor=_hex_factor("#dedbd2"), metallicFactor=0.0,
+                            roughnessFactor=0.6),
         "titanium": PBRMaterial(name="titanium", baseColorFactor=_hex_factor("#b4b6ba"), metallicFactor=0.85,
                                 roughnessFactor=0.45),
         "hardware": PBRMaterial(name="pom_black", baseColorFactor=_hex_factor("#202020"), metallicFactor=0.0,
