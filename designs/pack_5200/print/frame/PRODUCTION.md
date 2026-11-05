@@ -67,3 +67,20 @@ HA-LS-1 rev B tests in `analysis/load_standard.md` (T1–T5). On the first artic
 - Do not print a gyroid in place of the limbs.
 - Do not leave the frame strapped under a meat load in a closed hot vehicle. PAHT is above its glass transition at 60 C.
 - Do not skip the −20 C empty drop on the first article.
+
+## Spreader layout rev C (2026-11-05): thin-sheet option, owner to choose
+
+Record: `designs/pack_5200/analysis/spreader_layout.md`. The print files in this folder (`genframe_assembled.stl`,
+`genframe_lower_flat.*`, `genframe_upper_flat.*`, split at z = 234) now carry **six open-top stay sockets** (16 mm long,
+2.5 mm wall, about 220 deg wrap) on the stays at z 124 and 165 and on the inboard branches at z 225, 280, 385, 420.
+Printed body about 840 g on the 2 mm raster (+16 g). Lower segment about 265 x 237 x 79 mm, upper about 265 x 306 x 48 mm
+on the plate: both fit the H2S. Socket undersides take tree supports like the branches.
+
+- Cross stays: roll-wrapped carbon tube, 14/12 mm at z 124, 165, 225 and 12/10 mm at z 280, 385, 420, cut to the socket
+  ends (DXF MARK lines), ends sanded square, edges broken. They snap into the sockets from the bag side.
+- Sheet: 1.5 mm (0.060 in) HDPE, `designs/pack_5200/cut/spreader/spreader_v3_hdpe_cut.dxf`, drawing
+  `spreader_v3_drawing.pdf`. Six PA12 clips with a 6 mm saddle hold it 6 mm above the stay crowns.
+- New first-article test **T8**: 400 N through a 22 mm dowel at the worst bay centre and at the IM1 notch root, 10 min,
+  then 10,000 cycles 0 to 213 N. No crack or craze, dent <= 2 mm after 1 h, dowel never reaches the rail plane.
+- If the owner keeps the sandwich v2 instead, print the previous body without the sockets: the cups stand 1.8 mm proud
+  of the crown plane, where the sandwich sits.

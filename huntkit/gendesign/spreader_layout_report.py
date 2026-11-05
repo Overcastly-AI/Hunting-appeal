@@ -182,15 +182,15 @@ def plot_options(rows, chosen) -> str:
     k = [r["short"] for r in rows].index(chosen["short"])
     ax.get_yticklabels()[k].set_fontweight("bold")
     ax.set_xlabel("installed mass, g (frame delta + sheet + fasteners)")
-    ax.legend(loc="lower right", fontsize=7, frameon=False)
-    ax.set_xlim(0, max(r["total_g"] for r in rows) * 1.45)
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.13), ncol=3, fontsize=7, frameon=False)
+    ax.set_xlim(0, max(r["total_g"] for r in rows) * 1.7)
     ax.set_title("Thin-sheet layouts vs today", loc="left", fontweight="bold")
     clear = [r["clear_fact_lean_min"] for r in rows]
     cols = [S3 if c >= 0 else "#d6342a" for c in clear]
     bx.barh(y, clear, color=cols)
     bx.axvline(0, color="black", lw=0.8)
     bx.axvline(SANDWICH_LEAN, color=S2, ls=":", lw=1)
-    bx.text(SANDWICH_LEAN, len(rows) - 0.4, "sandwich -0.9", fontsize=7, color=S2, ha="right")
+    bx.text(SANDWICH_LEAN, len(rows) - 0.4, "sandwich v2, old skin model", fontsize=7, color=S2, ha="right")
     bx.set_yticks(y, [""] * len(rows))
     bx.invert_yaxis()
     bx.set_xlabel("air to skin, factored bone, lean torso (mm)")
@@ -373,8 +373,8 @@ def plot_render(frame_mesh, sheet_mesh, tube_meshes, n: int) -> str:
     _style()
     fm = simplify(frame_mesh, 60000)
     fig = plt.figure(figsize=(12.0, 5.6))
-    views = (("bag side, sheet off", 16, 28, False), ("bag side, sheet on", 16, 28, True),
-             ("wearer side", 12, 200, True), ("side", 4, 90, True))
+    views = (("bag side, sheet off", 16, 200, False), ("bag side, sheet on", 16, 200, True),
+             ("wearer side", 12, 28, True), ("side", 4, 90, True))
     for i, (lab, el, az, on) in enumerate(views):
         ax = fig.add_subplot(1, 4, i + 1)
         parts = [(fm, (0.30, 0.31, 0.34))] + [(t, (0.06, 0.06, 0.07)) for t in tube_meshes]
@@ -394,13 +394,13 @@ def plot_render(frame_mesh, sheet_mesh, tube_meshes, n: int) -> str:
 
 
 # ============================================================================ files
-def sheet_mesh(sheet: L.Sheet):
+def sheet_mesh(sheet: L.Sheet, lift: float = 0.0):
     import trimesh
     shape = S.part_shape()
     m = trimesh.creation.extrude_polygon(shape, sheet.t)
     v = np.asarray(m.vertices).copy()
     x, z, hh = v[:, 0], v[:, 1], v[:, 2]
-    m.vertices = np.c_[x, L.plane_y(z) + hh, z]
+    m.vertices = np.c_[x, L.plane_y(z) + lift + hh, z]
     m.fix_normals()
     return m
 
@@ -413,7 +413,7 @@ def tube_meshes(layout: L.Layout):
         a = np.array([P[0, 0] - L.SOCKET_L * 0.8, 0, P[0, 1]])
         b = np.array([P[-1, 0] + L.SOCKET_L * 0.8, 0, P[-1, 1]])
         zc = P[0, 1]
-        yc = float(L.plane_y(zc)) - L.LAND_FIT - r.od / 2
+        yc = float(L.plane_y(zc)) + r.lift - L.LAND_FIT - r.od / 2
         a[1] = b[1] = yc
         c = trimesh.creation.cylinder(radius=r.od / 2, segment=[a, b], sections=24)
         out.append(c)
@@ -441,7 +441,7 @@ def write_print_files(layout: L.Layout, sheet: L.Sheet, log=print) -> dict:
     except Exception as e:                         # pragma: no cover - manifold3d missing
         log(f"  split skipped: {e}")
     tubes = tube_meshes(layout)
-    bar = trimesh.util.concatenate([sheet_mesh(sheet)] + tubes)
+    bar = trimesh.util.concatenate([sheet_mesh(sheet, layout.lift)] + tubes)
     bar.export(PRINT / "genframe_barrier.stl")
     label = f"BP-06 rev C spreader: {sheet.name} on layout {layout.key} (frame ribs/sockets + removable sheet)"
     (PRINT / "genframe_barrier.json").write_text(json.dumps({"material": "hdpe", "label": label}))
@@ -482,7 +482,7 @@ def write_drawing(layout: L.Layout, sheet: L.Sheet, res: dict, mass: dict) -> di
     W, H = 297.0, 420.0
     fig = plt.figure(figsize=(W / 25.4, H / 25.4))
     fig.patch.set_facecolor("white")
-    ox, oy = 148.5, 100.0 - S.Z_LO_V2
+    ox, oy = 148.5, 74.0 - S.Z_LO_V2
     ax = fig.add_axes([0, 0, 1, 1])
     ax.set_xlim(-ox, W - ox)
     ax.set_ylim(-oy, H - oy)
@@ -519,7 +519,9 @@ def write_drawing(layout: L.Layout, sheet: L.Sheet, res: dict, mass: dict) -> di
         "Origin: frame axis x 0, frame z 0 (bottom edge at z %.0f). Dims from the bottom edge unless shown." % miny,
         "Tolerances: outline +/-0.5, slots +/-0.3. Inside corners R >= 6 (drill the notch roots first). Deburr.",
         f"Notches at the cleats US2 z 142, IM1 z 190, IM2 z 330: {2 * hz:.0f} tall, root at x +/-{x_in:.0f}, R{S.NOTCH_ROOT_R:.0f}.",
-        "No bonding: HDPE takes no glue. Lies on the printed lands, ribs and carbon cross stays; 6 PA12 snap clips.",
+        ("No bonding: HDPE takes no glue. Lies on the carbon cross stays"
+         + (f" and the clip saddles, {layout.lift:.0f} mm above the stay crowns" if layout.lift else "")
+         + "; held by 6 PA12 snap clips."),
         "Blue dash = printed rib, black dash-dot = removable carbon cross stay, green dot = flush land (frame side).",
         "Wash: pop 6 clips, lift the sheet out, pull the carbon cross stays out of their sockets, hose everything.",
         "Ventilation: solid sheet (bag-side blood barrier). Air path is the gutter between the rails.",
@@ -543,7 +545,8 @@ def write_drawing(layout: L.Layout, sheet: L.Sheet, res: dict, mass: dict) -> di
 
 # ============================================================================ selection
 SHORT = {"e_edges": "(e) edges only", "a2": "(a) 2 cross-ribs", "a3": "(a) 3 cross-ribs", "a4": "(a) 4 cross-ribs",
-         "bX": "(b) X ribs", "cgrid": "(c) coarse grid", "d_tubes": "(d) 2 carbon stays", "d4_tubes": "(d+e) 4 carbon stays",
+         "bX": "(b) X ribs", "cgrid": "(c) coarse grid", "d_tubes": "(d) 2 carbon stays", "d4_tubes": "(d+e) 4 carbon stays", "d6_tubes": "(d+e) 6 carbon stays",
+         "d6n_tubes": "(d+e) 6 carbon stays, no lands", "d6L_tubes": "(d+e) 6 carbon stays, sheet +6 mm",
          "none": "no layout change"}
 
 
@@ -567,6 +570,7 @@ def option_rows(evals, frames) -> list[dict]:
 
 
 def choose(rows) -> dict:
+    rows = [r for r in rows if r["layout"] != "none"]
     ok = [r for r in rows if r["passes"]]
     if not ok:
         return min(rows, key=lambda r: (len(r["fails"]), r["total_g"]))
@@ -581,6 +585,10 @@ def run(log=print, resume: bool = True) -> dict:
     evals = _cache("evals_hdpe15.json", lambda: _pool(_eval_job, [(k, "hdpe15", None) for k in keys + ["none"]]), resume)
     log("frame HA-LS-1 rev B on each layout (2 mm)")
     frames = _cache("frames.json", lambda: _pool(_frame_job, ["base"] + keys, procs=2), resume)
+    missing = [k for k in ["base"] + keys if k not in {f["key"] for f in frames}]
+    if missing:
+        frames += _pool(_frame_job, missing, procs=2)
+        (OUT / "frames.json").write_text(json.dumps(frames, indent=1, default=_jd))
     rows = option_rows(evals, frames)
     best = choose(rows)
     chosen = L.layout_by_key(best["layout"])
@@ -622,14 +630,15 @@ def run(log=print, resume: bool = True) -> dict:
                           "fallback: sandwich v2": {"g": SANDWICH_G, "usd": SANDWICH_USD},
                           f"new: {sheet.name} + {chosen.key}": {"g": tot["total_g"], "usd": c["total"]}}),
                drw["png"],
-               plot_render(pf["mesh"], sheet_mesh(sheet), pf["tubes"], 8)]
-    ctx = {"rows": rows, "best": best, "chosen": chosen, "final": final, "pitch": pitch, "simp": simp,
+               plot_render(pf["mesh"], sheet_mesh(sheet, chosen.lift), pf["tubes"], 8)]
+    sandwich = _cache("sandwich_recheck.json", lambda: L.sandwich_recheck(48.0), resume)
+    ctx = {"sandwich": sandwich, "rows": rows, "best": best, "chosen": chosen, "final": final, "pitch": pitch, "simp": simp,
            "frames": frames, "files": {"dxf": dxf, "drawing": drw["pdf"], **{k: v for k, v in pf.items()
                                        if k in ("assembled", "barrier", "segments")}},
            "mass": mass, "cost": c, "screens": screens, "fieldres": _strip(fieldres)}
     from .spreader_layout_doc import write_doc
     path = write_doc(ctx)
-    out = {"chosen": chosen.key, "sheet": sheet.key, "mass": mass, "cost": c, "screens": screens,
+    out = {"sandwich_recheck": sandwich, "chosen": chosen.key, "sheet": sheet.key, "mass": mass, "cost": c, "screens": screens,
            "final": final, "frames": frames, "rows": [{k: v for k, v in r.items() if k != "frame"} for r in rows],
            "files": ctx["files"], "doc": rel(path)}
     (ANALYSIS / "spreader_layout_results.json").write_text(json.dumps(out, indent=1, default=_jd))

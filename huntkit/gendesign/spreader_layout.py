@@ -139,6 +139,7 @@ class Rib:
     od: float = 0.0
     idd: float = 0.0
     tag: str = ""
+    lift: float = 0.0             # sheet plane raised above the stay crowns (mm), see Layout.lift
 
     def length(self) -> float:
         p = np.asarray(self.pts, float)
@@ -153,6 +154,7 @@ class Layout:
     ribs: list = field(default_factory=list)
     note: str = ""
     sockets: int = 0              # printed socket pairs for removable tubes
+    lift: float = 0.0             # sheet plane raised this far above the crown plane (clip saddles carry it)
 
     @property
     def tubes(self):
@@ -197,12 +199,15 @@ EDGE_LO, EDGE_HI = 121.0, 422.0   # edge ribs under the sheet's bottom and top e
 
 
 TUBE_OD, TUBE_ID = 12.0, 10.0
+SHEET_LIFT = 6.0                  # d6L: sheet plane raised on the clip saddles
+SADDLE_L = 10.0                   # saddle under the sheet = the clip width (clip_profile standoff)
 
 
-def _tube(z, od=TUBE_OD, idd=TUBE_ID):
+def _tube(z, od=TUBE_OD, idd=TUBE_ID, lift=0.0):
     """Removable roll-wrapped carbon cross stay: stay-to-stay below the branches, branch-to-branch above."""
     x = STAY_IN if not (165.0 < z < 485.0) else _bx(z) - 2.0
-    return Rib([(-x, z), (x, z)], kind="tube", ends=("socket", "socket"), od=od, idd=idd, tag=f"tube z{z:.0f}")
+    return Rib([(-x, z), (x, z)], kind="tube", ends=("socket", "socket"), od=od, idd=idd, tag=f"tube z{z:.0f}",
+               lift=lift)
 
 
 def layouts() -> list[Layout]:
@@ -213,8 +218,8 @@ def layouts() -> list[Layout]:
                L() + edges(), "no rib in the window; only the free edges and the branches carry the sheet"),
         Layout("a2", "(a) 2 cross-ribs: z 225, 385 + edge ribs", "a",
                L() + edges() + [_hrib(225.0, to="branch"), _hrib(385.0, to="branch")]),
-        Layout("a3", "(a) 3 cross-ribs: z 200, 265, 385 + edge ribs", "a",
-               L() + edges() + [_hrib(z, to="branch") for z in (200.0, 265.0, 385.0)]),
+        Layout("a3", "(a) 3 cross-ribs: z 210, 265, 385 + edge ribs", "a",
+               L() + edges() + [_hrib(z, to="branch") for z in (210.0, 265.0, 385.0)]),
         Layout("a4", "(a) 4 cross-ribs: z 175, 225, 280, 385 + edge ribs", "a",
                L() + edges() + [_hrib(z, to="branch") for z in (175.0, 225.0, 280.0, 385.0)]),
         Layout("bX", "(b) X ribs in the two bays + edge ribs", "b",
@@ -224,7 +229,7 @@ def layouts() -> list[Layout]:
                    Rib([(-_bx(338.0) + 2, 338.0), (_bx(415.0) - 2, 415.0)], ends=("branch", "branch"), tag="X3"),
                    Rib([(_bx(338.0) - 2, 338.0), (-_bx(415.0) + 2, 415.0)], ends=("branch", "branch"), tag="X4")]),
         Layout("cgrid", "(c) coarse grid: 3 cross-ribs + spine rib x 0 + edge ribs", "c",
-               L() + edges() + [_hrib(z, to="branch") for z in (200.0, 265.0, 385.0)] +
+               L() + edges() + [_hrib(z, to="branch") for z in (210.0, 265.0, 385.0)] +
                [Rib([(0.0, EDGE_LO), (0.0, EDGE_HI)], 6.0, 12.0, ends=("free", "free"), tag="spine")]),
         Layout("d_tubes", "(d) 2 removable carbon cross stays (12/10 mm roll-wrapped) in printed sockets + edge ribs",
                "d", L() + edges() + [_tube(225.0), _tube(385.0)],
@@ -232,6 +237,17 @@ def layouts() -> list[Layout]:
         Layout("d4_tubes", "(d+e) 4 removable carbon cross stays: both free edges + z 225, 385, in printed sockets",
                "d", L() + [_tube(124.0), _tube(225.0), _tube(385.0), _tube(420.0)],
                "the free edges sit on tubes too; no printed rib in the window", sockets=4),
+        Layout("d6_tubes", "(d+e) 6 removable carbon cross stays at about 50 mm pitch (z 124, 165, 225, 280, 385, 420)",
+               "d", L() + [_tube(z) for z in (124.0, 165.0, 225.0, 280.0, 385.0, 420.0)],
+               "bays small enough that the meat pressure does not yield or bottom the HDPE", sockets=6),
+        Layout("d6L_tubes", "(d+e) 6 removable carbon cross stays (14/12 at z 124, 165, 225; 12/10 at z 280, 385, 420), sheet raised 6 mm on the clip saddles",
+               "d", [_tube(z, 14.0, 12.0, lift=SHEET_LIFT) for z in (124.0, 165.0, 225.0)] +
+               [_tube(z, lift=SHEET_LIFT) for z in (280.0, 385.0, 420.0)],
+               "the tubes sit 6 mm further from the back, so a leaning torso under the factored load still clears them",
+               sockets=6, lift=SHEET_LIFT),
+        Layout("d6n_tubes", "(d+e) 6 removable carbon cross stays, no branch/bar lands (mass cut of d6)",
+               "d", [_tube(z) for z in (124.0, 165.0, 225.0, 280.0, 385.0, 420.0)],
+               "the sheet bears on the tubes and the crowns; the branches and bar are left as printed", sockets=6),
     ]
     return out
 
@@ -250,7 +266,7 @@ def _rib_sdf(pts: np.ndarray, rib: Rib) -> np.ndarray:
         ab = b - a
         t = np.clip(((x - a[0]) * ab[0] + (z - a[1]) * ab[1]) / (ab @ ab + 1e-12), 0.0, 1.0)
         dn = np.minimum(dn, np.hypot(x - (a[0] + t * ab[0]), z - (a[1] + t * ab[1])))
-    yp = plane_y(z)
+    yp = plane_y(z) + rib.lift
     if rib.kind == "land":
         # flat-topped land from the sheet plane down into the branch / bar
         bot = branch_y(z) if "branch" in rib.tag else S.sleeve_y(z)
@@ -275,7 +291,7 @@ SOCKET_L, SOCKET_WALL = 16.0, 2.5
 
 def _socket_sdf(pts, rib: Rib) -> np.ndarray:
     """Printed open-top cup at each tube end: a 16 mm long sleeve, 2.5 mm wall, top cut open so the tube
-    snaps in from the bag side (a 300 deg wrap)."""
+    snaps in from the bag side (about a 220 deg wrap)."""
     x, y, z = pts[:, 0], pts[:, 1], pts[:, 2]
     P = np.asarray(rib.pts, float)
     out = np.full(len(pts), 80.0)
@@ -283,7 +299,7 @@ def _socket_sdf(pts, rib: Rib) -> np.ndarray:
     for end, inward in ((P[0], P[1] - P[0]), (P[-1], P[-2] - P[-1])):
         u = inward / np.linalg.norm(inward)
         s = (x - end[0]) * u[0] + (z - end[1]) * u[1]          # along the tube, from the end inward
-        yc = plane_y(z) - LAND_FIT - rib.od / 2.0
+        yc = plane_y(z) + rib.lift - LAND_FIT - rib.od / 2.0
         n = np.hypot(-(x - end[0]) * u[1] + (z - end[1]) * u[0], y - yc)
         cyl = np.maximum(n - ro, np.maximum(-s - 2.0, s - SOCKET_L))
         bore = np.maximum(n - (rib.od / 2.0 + 0.15), np.maximum(-s, s - SOCKET_L - 1.0))
@@ -339,12 +355,17 @@ def frame_check(layout: Layout | None, h: float = 2.0) -> dict:
 def frame_mesh(layout: Layout | None, h: float = 2.2, scale: float = S.SCALE):
     from skimage.measure import marching_cubes
     import trimesh
-    x0 = np.array([-150.0, -52.0, -2.0])
-    dims = np.array([300.0, 78.0, 548.0])
+    x0 = np.array([-156.0, -64.0, -8.0])          # padded past the body on every side so the surface closes
+    dims = np.array([312.0, 112.0, 562.0])
     n = np.maximum((dims / h).astype(int), 2)
     axes = [x0[i] + np.arange(n[i]) * h for i in range(3)]
     X, Y, Z = np.meshgrid(*axes, indexing="ij")
     sdf = frame_sdf_layout(np.c_[X.ravel(), Y.ravel(), Z.ravel()], layout, scale).reshape(X.shape)
+    for ax in range(3):                            # force the domain boundary outside
+        sl = [slice(None)] * 3
+        for k in (0, -1):
+            sl[ax] = k
+            sdf[tuple(sl)] = np.maximum(sdf[tuple(sl)], 1.0)
     v, f, _, _ = marching_cubes(sdf, level=0.0, spacing=(h, h, h))
     m = trimesh.Trimesh(v + x0, f, process=False)
     trimesh.smoothing.filter_taubin(m, lamb=0.45, nu=-0.45, iterations=8)
@@ -363,9 +384,10 @@ def tube_mass_g(rib: Rib) -> float:
     return np.pi / 4 * (rib.od ** 2 - rib.idd ** 2) * (rib.length() + 2 * SOCKET_L) * rho / 1e6
 
 
-def clips_g(t_sheet: float) -> float:
+def clips_g(t_sheet: float, lift: float = 0.0) -> float:
+    """6 MJF PA12 clips; with a lift, each carries a saddle under the sheet (clip_profile standoff)."""
     r_mid = float(np.mean(S.stay_r(np.array(S.CLIP_Z))))
-    return float(2 * len(S.CLIP_Z) * S.clip_mass_g(S.clip_profile(r_mid, t_sheet), S.CLIP_W))
+    return float(2 * len(S.CLIP_Z) * S.clip_mass_g(S.clip_profile(r_mid, t_sheet, lift), S.CLIP_W))
 
 
 def sheet_shape():
@@ -414,7 +436,8 @@ def build_model(layout: Layout | None, sheet: Sheet, h: float = 4.0):
     i = np.clip(np.round((nxy[:, 0] - xs[0]) / h).astype(int), 0, len(xs) - 1)
     j = np.clip(np.round((nxy[:, 1] - zs[0]) / h).astype(int), 0, len(zs) - 1)
     topn = top[i, j]
-    plane = plane_y(nxy[:, 1])
+    lift = layout.lift if layout is not None else 0.0
+    plane = plane_y(nxy[:, 1]) + lift
     gap = np.maximum(plane - topn, 0.0)
     keep_out = np.zeros(pl.nn, bool)
     for zf in S.FAIRLEADS_Z:
@@ -522,6 +545,10 @@ def build_model(layout: Layout | None, sheet: Sheet, h: float = 4.0):
         for n in np.nonzero(sel)[0]:
             pl.springs.append(Spring(int(n), S.clip_k(S.CLIP_W) / max(int(sel.sum()), 1), 0.0, sense=-1.0, tag="clip"))
             clip_nodes.append(int(n))
+        if lift > 0:          # the clip's saddle pad (SADDLE_L long) carries the raised sheet over the crown
+            sad = actn & (np.abs(nxy[:, 1] - zc) <= SADDLE_L / 2 + 1e-6) & (np.abs(nxy[:, 0]) >= S.STAY_X - 8.0)
+            for n in np.nonzero(sad)[0]:
+                pl.springs.append(Spring(int(n), 0.0, LAND_FIT, tag="saddle"))
     info = {"shape": shape, "plane": plane, "kinds": kinds, "ribbeams": ribbeams, "beams": beams,
             "clip_nodes": np.array(clip_nodes, int), "layout": layout, "sheet": sheet, "h": h}
     return pl, info
@@ -578,7 +605,7 @@ def run_case(pl, info, kind: str, bone_xy=None, u0=None) -> dict:
         q = q + pl.patch_pressure(bone_xy[0], bone_xy[1], S.BONE_D, P)
     f = pl.load_vector(q)
     sol = solve_von_karman(pl, f, sheet.A(), fix_uv_nodes=info["clip_nodes"], n_steps=3, tol=1e-5,
-                           max_newton=30, max_dw=3.0)
+                           max_newton=30, max_dw=6.0)
     act = pl.active
     if sheet.kind == "iso":
         vm = iso_surface_vm(sol["N"], sol["M"], sheet.t).max(axis=2)
@@ -620,21 +647,55 @@ def rib_stress(pl, info, u) -> dict:
     return out
 
 
-def clearance(pl, info, w, rib: dict, indent: float, r_torso: float) -> float:
-    """Minimum air between the back-system parts and the skin (mm): the sheet (plane - w) and the rib
-    bottoms (plane - d - w_rib). Same skin model as spreader.clearance_field."""
-    c_sheet = float(np.nanmin(S.clearance_field(pl, {"plane": info["plane"]}, w, indent, r_torso)))
+# Lumbar pan: the upper lumbar struts run from the hip pivot (0, -42, 120) into each stay at z 155
+# (frame_branch.frame_sdf, r 7.5 x 1.05). Below that line the back rests on the hipbelt lumbar pad over the pan,
+# so the skin cannot come closer to the sheet than the strut's wearer face.
+PIVOT_Y, PIVOT_Z, STRUT_R = -42.0, 120.0, 7.5 * S.SCALE
+LUMBAR_BLEND = 60.0               # ASSUMPTION: the back leaves the pan over 60 mm of height above the strut line
+
+
+def _strut(x):
+    t = np.clip(np.abs(x) / S.STAY_X, 0.0, 1.0)
+    zs = PIVOT_Z + t * (155.0 - PIVOT_Z)
+    ys = PIVOT_Y + t * (float(S.sleeve_y(155.0)) - 4.0 - PIVOT_Y) - STRUT_R
+    return zs, ys
+
+
+def skin_ref(x, z, indent: float, r_torso: float, member: bool = False):
+    """Frame-y of the surface the back-system part must stay above (mm).
+
+    Gutter (|x| < 65): the unloaded skin bulging into the gutter (radius r_torso) while the frame sinks into the
+    rails by ``indent`` (spreader.clearance_field), except near the lumbar pan, where the back rests on the pan:
+    below the strut line the reference is the strut's wearer face, blended to the gutter skin over 60 mm.
+    Over a rail (|x| >= 65): the rail's top face (the stay's wearer face) for frame members; the spreader skin
+    model for the sheet (``member=False``)."""
+    x = np.abs(np.asarray(x, float))
+    z = np.asarray(z, float)
     h_rail = S.RAIL_T * (1 - float(load("xlpe_foam_l200").require("compression_set_pct")) / 100.0)
-    c = c_sheet
+    y_wear = S.sleeve_y(z) - S.stay_r(z)
+    bulge = np.where(x < S.GUTTER_HALF, (S.GUTTER_HALF ** 2 - x ** 2) / (2.0 * r_torso), 0.0)
+    yg = y_wear - h_rail + indent + bulge
+    zs, ys = _strut(x)
+    t = np.clip((z - zs) / LUMBAR_BLEND, 0.0, 1.0)
+    y_lum = np.where(ys < yg, ys * (1 - t) + yg * t, yg)
+    gut = x < S.GUTTER_HALF
+    out = np.where(gut, y_lum, y_wear if member else y_wear - h_rail + indent)
+    return out
+
+
+def clearance(pl, info, w, rib: dict, indent: float, r_torso: float) -> float:
+    """Minimum air (mm) between the back-system parts and the surface they must stay off: the sheet
+    (plane - w) and the rib / tube bottoms (plane - 0.3 - depth - w_member). See ``skin_ref``."""
+    nxy = pl.node_xy()
+    act = pl.active_nodes()
+    cs = info["plane"] - w - skin_ref(nxy[:, 0], nxy[:, 1], indent, r_torso)
+    c = float(np.min(cs[act]))
     for rib_o, bm, xy in info["ribbeams"]:
         xr, zr = xy[:, 0], xy[:, 1]
         _, wr = rib["rib_w"][rib_o.tag]
         depth = rib_o.od if rib_o.kind == "tube" else rib_o.d
-        y_bot = plane_y(zr) - LAND_FIT - depth - wr
-        y_skin = S.sleeve_y(zr) - S.stay_r(zr) - h_rail + indent
-        x = np.abs(xr)
-        bulge = np.where(x < S.GUTTER_HALF, (S.GUTTER_HALF ** 2 - x ** 2) / (2.0 * r_torso), 0.0)
-        c = min(c, float((y_bot - y_skin - bulge).min()))
+        y_bot = plane_y(zr) + rib_o.lift - LAND_FIT - depth - wr
+        c = min(c, float((y_bot - skin_ref(xr, zr, indent, r_torso, member=True)).min()))
     return c
 
 
@@ -694,11 +755,13 @@ def summarize(layout, sheet: Sheet, rows, meat_w, meat_f, pl) -> dict:
     if sheet.kind == "iso":
         sf_yield = sheet.yield_hot() / s_f
         sf_fat = sheet.fat_allow() / s_w
-        meat_sf = sheet.yield_hot() / max(float(meat_f["stress"].max()), 1e-9)
+        # same convention as the frame FEA (verify_solid): 99th percentile, so single contact-edge elements at
+        # the clip saddles and tube ends do not govern
+        meat_sf = sheet.yield_hot() / max(float(np.percentile(meat_f["stress"][pl.active], 99)), 1e-9)
     else:
         sf_yield = 1.0 / s_f
         sf_fat = S.FAT_FI / s_w
-        meat_sf = 1.0 / max(float(meat_f["stress"].max()), 1e-9)
+        meat_sf = 1.0 / max(float(np.percentile(meat_f["stress"][pl.active], 99)), 1e-9)
     rib_fi_f = max(r["rib_fi_fact"] for r in rows)
     rib_fi_w_p = max(r["rib_fi_paht_walk"] for r in rows)
     rib_fi_w_t = max(r["rib_fi_tube_walk"] for r in rows)
@@ -719,7 +782,7 @@ def summarize(layout, sheet: Sheet, rows, meat_w, meat_f, pl) -> dict:
         "clear_where": worst("clear_fact_lean", min)["name"],
         "skin_peak_kpa": worst("skin_kpa")["skin_kpa"],
         "clip_lift_max_n": max(r["clip_lift_n"] for r in rows),
-        "sheet_g": sheet_mass_g(sheet), "clips_g": clips_g(sheet.t),
+        "sheet_g": sheet_mass_g(sheet), "clips_g": clips_g(sheet.t, layout.lift if layout else 0.0),
         "tubes_g": float(sum(tube_mass_g(r) for r in (layout.tubes if layout else []))),
     }
     out["checks"] = {
@@ -850,3 +913,23 @@ def pitch_study(sheet: Sheet, pitches=(40.0, 64.0, 96.0, 136.0), h: float = 4.0,
             row[f"w_{kind}"] = float(sol["w"].max())
         out.append(row)
     return out
+
+
+def sandwich_recheck(step: float | None = 48.0) -> dict:
+    """Spreader v2 (the sandwich fallback) re-run with the lumbar-pan skin reference (``skin_ref``) in place
+    of the bulging gutter skin below the strut line. Everything else as spreader.evaluate."""
+    orig = S.clearance_field
+
+    def cf(pl, info, w, indent_mm, r_torso=S.R_TORSO, h_rail=None):
+        nxy = pl.node_xy()
+        c = info["plane"] - w - skin_ref(nxy[:, 0], nxy[:, 1], indent_mm, r_torso)
+        c[~pl.active_nodes()] = np.nan
+        return c
+    try:
+        S.clearance_field = cf
+        opt = {o.key: o for o in S.options()}["sw110c6d"]
+        r = S.evaluate(opt, h=4.0, step=step)
+    finally:
+        S.clearance_field = orig
+    return {k: r[k] for k in ("clear_walk_min", "clear_fact_min", "clear_fact_lean_min", "clear_where", "mass_g",
+                              "sf_fpf", "sf_fatigue")}

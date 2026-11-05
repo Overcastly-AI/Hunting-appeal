@@ -328,6 +328,19 @@ sheet, 193 g, plus 4 M4 sets) to **154 g (5.4 oz)**. The new part is a twill / 6
 notch doublers, edge tubes, pucks and 6 removable clips. The branch-frame pack, 3101 g (6.84 lb) with the
 under-straps, becomes **3052 g (6.73 lb)**. That is still 784 g over the 5.0 lb target.
 
+**Spreader layout study (2026-11-05, `analysis/spreader_layout.md`), owner to choose.** The best thin-sheet layout is
+6 removable carbon cross stays in printed sockets under a 1.5 mm HDPE sheet raised 6 mm on the clip saddles:
+
+| back-system spreader | g | oz | USD | bone rule |
+|---|---:|---:|---:|---|
+| today: 2.0 mm QI sheet + 4 M4 | 203 | 7.2 | ~15 | fails on the real frame |
+| **sandwich v2** (twill / 6 mm ROHACELL 110) | **154** | 5.4 | ~188 | strict HA-LS-1: passes |
+| thin sheet: HDPE 1.5 mm 102 + clips with saddles 25 + 6 carbon stays 73 + printed sockets 16 | 217 | 7.7 | ~60 | barrier rule + T8 test |
+
+With the sandwich the pack stays **3052 g (6.73 lb)**. With the thin sheet it is **3115 g (6.87 lb)** (+63 g), cheaper by about
+$128 and washable. The printed body in `print/frame/` now carries the stay sockets (+16 g); they stand 1.8 mm proud of
+the crown plane, so the sandwich needs the previous body (no sockets).
+
 Not in base: optional lid 141 g, rifle boot 36 g, extension posts ≈ 60 g (ASSUMPTION), XL belt ≈ +45 g.
 Levers if needed: 25 mm meat straps (−40 g, but they bite game bags), 2 internal straps instead of 3 (−80 g; IM2 + IM3
 only), 100D side-pocket gussets (−8 g).

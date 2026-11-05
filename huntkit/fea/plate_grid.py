@@ -428,7 +428,15 @@ def solve_von_karman(pl: GridPlate, f: np.ndarray, A, fix_uv_nodes=(), n_steps: 
             x, y = (gi + 1) * pl.h / 2, (gj + 1) * pl.h / 2
             Gx = np.array([_Px(x, y), _Py(x, y)]) @ el.Ainv               # (2, 12)
             gps.append((wi * wj * pl.h * pl.h / 4, el.B(x, y), Gx, _q4_Bm(pl.h, x, y)))
-    Ksup = pl._K_supports(ndof)
+    # linear parts (plate bending + beams + ties, and the membrane Bm' A Bm) are assembled once
+    K0 = pl._K_base()
+    Ksup = sp.block_diag([K0, sp.csr_matrix((2 * nn, 2 * nn))]).tocsr()
+    Kmm_e = np.zeros((ne, 8, 8))
+    for wt, Bb, Gx, Bm in gps:
+        Kmm_e += wt * (Bm.T @ Aa @ Bm)
+    rm = np.repeat(edm, 8, axis=1).ravel()
+    cm = np.tile(edm, (1, 8)).ravel()
+    Ksup = Ksup + sp.coo_matrix((Kmm_e.ravel(), (rm, cm)), shape=(ndof, ndof)).tocsr()
     # fixed dofs: plate/beam fixed + membrane of inactive nodes + requested in-plane holds
     fx = set(pl._fixed_dofs().tolist())
     inact = ~pl.active_nodes()
@@ -453,6 +461,7 @@ def solve_von_karman(pl: GridPlate, f: np.ndarray, A, fix_uv_nodes=(), n_steps: 
     cols = np.tile(ed, (1, 20)).ravel()
 
     def internal(u):
+        """Nonlinear part only: the linear bending and Bm' A Bm terms are in Ksup."""
         ue = u[ed]
         uw, um = ue[:, :12], ue[:, 12:]
         fe = np.zeros((ne, 20))
@@ -460,27 +469,24 @@ def solve_von_karman(pl: GridPlate, f: np.ndarray, A, fix_uv_nodes=(), n_steps: 
         Ns, Ms = [], []
         for wt, Bb, Gx, Bm in gps:
             gw = uw @ Gx.T                                               # (ne, 2)
-            eps = um @ Bm.T
-            eps[:, 0] += 0.5 * gw[:, 0] ** 2
-            eps[:, 1] += 0.5 * gw[:, 1] ** 2
-            eps[:, 2] += gw[:, 0] * gw[:, 1]
+            enl = np.c_[0.5 * gw[:, 0] ** 2, 0.5 * gw[:, 1] ** 2, gw[:, 0] * gw[:, 1]]
+            eps = um @ Bm.T + enl
             N = (Aa @ eps[:, :, None])[:, :, 0]
-            M = (De @ (uw @ Bb.T)[:, :, None])[:, :, 0]
+            Nnl = (Aa @ enl[:, :, None])[:, :, 0]
             Lam = np.zeros((ne, 3, 2))
             Lam[:, 0, 0] = gw[:, 0]; Lam[:, 1, 1] = gw[:, 1]; Lam[:, 2, 0] = gw[:, 1]; Lam[:, 2, 1] = gw[:, 0]
             Hm = Lam @ Gx                                                # (ne, 3, 12)
             HmT = np.transpose(Hm, (0, 2, 1))
-            fe[:, :12] += wt * (M @ Bb + (HmT @ N[:, :, None])[:, :, 0])
-            fe[:, 12:] += wt * (N @ Bm)
+            fe[:, :12] += wt * (HmT @ N[:, :, None])[:, :, 0]
+            fe[:, 12:] += wt * (Nnl @ Bm)
             Nm = np.empty((ne, 2, 2))
             Nm[:, 0, 0] = N[:, 0]; Nm[:, 1, 1] = N[:, 1]; Nm[:, 0, 1] = Nm[:, 1, 0] = N[:, 2]
-            AHm = Aa @ Hm
-            Ke[:, :12, :12] += wt * (Bb.T @ De @ Bb + HmT @ AHm + Gx.T @ Nm @ Gx)
+            Ke[:, :12, :12] += wt * (HmT @ (Aa @ Hm) + Gx.T @ Nm @ Gx)
             Kwm = HmT @ (Aa @ Bm)
             Ke[:, :12, 12:] += wt * Kwm
             Ke[:, 12:, :12] += wt * np.transpose(Kwm, (0, 2, 1))
-            Ke[:, 12:, 12:] += wt * (Bm.T @ Aa @ Bm)
-            Ns.append(N); Ms.append(M)
+            Ns.append(N)
+            Ms.append((De @ (uw @ Bb.T)[:, :, None])[:, :, 0])
         F = np.zeros(ndof)
         np.add.at(F, ed.ravel(), fe.ravel())
         K = sp.coo_matrix((Ke.ravel(), (rows, cols)), shape=(ndof, ndof)).tocsr()
