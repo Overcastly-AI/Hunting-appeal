@@ -8,8 +8,8 @@ mesh:
   fine_h: 25       # --fine
   tol: 1.5         # weld tolerance (mm) between seam curves on the master surface
 solver:
-  tol_n: 0.02      # max nodal residual force, N
-  max_iter: 150
+  tol_n: 0.5       # max nodal residual force, N (~1 % of a 40 mm seam node force at 1 N/mm)
+  max_iter: 300
   time_cap_s: 900  # per load case; reported as not converged if hit
   ramp: [0.25, 0.5, 1.0]
 panels: {}
@@ -23,14 +23,17 @@ seams:
   stitch: "301"
   stitch_mm: 3.5                 # BUILD_PLAN.md step 6 (Challenge Ultra 200, walking foot, 3.5 mm stitch)
 contact:
-  kc: 50.0          # N/mm per node penalty
+  kc: 10.0          # N/mm per node penalty (soft: keeps Newton smooth at plate edges; ~2 mm sink at 20 N)
   clearance: 1.0    # mm
   cutoff: 20.0      # mm search radius
   spacing: 4.0      # point-cloud sampling of the STL, mm
 attachments:
+  cinch_strain: 0.03   # ASSUMPTION: a cinched strap's pretension corresponds to 3 % take-up (webbing stretch,
+                       # buckle seating, channel and gear compression); sets its effective stiffness T0 / 0.03
   hinge:            # bag eye on the floor/frame-panel seam over the z 60 hinge pin (bag_anchor_low)
     webbing: poly_webbing_25mm     # ASSUMPTION eye webbing
     pretension_n: 0.0
+    pin_stiffness_n_mm: 200.0      # ASSUMPTION: eye on the pin holds the floor corner (stiff spring to its drafted spot)
     capacity_n: 2700.0             # geometry.yaml meat_harness capacities: box-X bartack tex135 (ASSUMPTION)
   hooks:            # bag hooks on the IM2 / IM3 eyes (attachment.yaml / bag_attachment.md)
     stations: [330, 520]
@@ -42,16 +45,29 @@ attachments:
     z: [95, 142]
     channel_depth_frac: [0.30, 0.65]   # patterns_v31.CHANNEL_Y (ASSUMPTION there)
     webbing: poly_webbing_38mm
-    pretension_n: 100.0            # ASSUMPTION: hand-cammed
+    mode: cinched                  # cammed after loading (run_case stage 2)
+    pretension_n: 150.0            # ASSUMPTION: hand-cammed (meat_haul_modes.md: 444 N at 3.0 x rated)
     capacity_n: 1100.0             # 38 mm cam slip (ASSUMPTION, geometry.yaml)
   wraps:            # haul wraps W1-W3 = carry-mode compression (geometry.yaml haul_wraps)
     webbing: poly_webbing_25mm
+    mode: cinched
     pretension_n: 80.0             # ASSUMPTION: hand-cinched ladder lock
     capacity_n: 300.0              # 25 mm ladder-lock slip (meat_haul_modes.md)
     list:
       - {id: W1, anchor_R: [115.0, 10.5, 80.0], anchor_L: [-115.0, 7.3, 250.0]}
       - {id: W2, anchor_R: [115.0, 7.3, 250.0], anchor_L: [-115.0, 4.1, 420.0]}
       - {id: W3, anchor_R: [115.0, 0.0, 702.6], anchor_L: [-115.0, 0.0, 702.6]}   # crown top bar, x/y ASSUMPTION
+  roll_clips_enabled: false   # phase 1: the roll + HDPE stiffener are not modelled, so the clips are off
+  roll_clips:       # ROLL family: 25 mm side-release, "high on the side gores" (geometry.yaml hardware_families)
+    webbing: poly_webbing_25mm
+    pretension_n: 40.0             # ASSUMPTION
+    below_collar_seam_mm: 60.0     # ASSUMPTION: buckle 60 mm under the collar seam
+    capacity_n: 450.0              # 25 mm side-release (meat_haul_modes.md)
+janssen:            # granular gear fill (Janssen 1895; arXiv cond-mat/0511618)
+  mu_wall: 0.4      # ASSUMPTION: soft gear / stuff sacks on PU-coated nylon
+  K: 0.4            # ASSUMPTION: lateral/vertical stress ratio (Janssen K ~ 1 - sin(phi) for phi ~ 37 deg)
+  wall_friction_share: 0.0   # ASSUMPTION: weight on the floor (conservative for floor, hinge eyes, under-straps)
+  friction_below_z: 520.0    # if a share is set, only walls under the IM3 hooks take friction
 meat:               # HA-LS-1 rev B section 4.1 (load_standard.md)
   vertical_to_floor: 0.70          # 70 % into the bag bottom + hinge pins; 30 % by friction to the strap anchors
   cg_aft_mm: 150.0
@@ -59,17 +75,25 @@ meat:               # HA-LS-1 rev B section 4.1 (load_standard.md)
   cinch_per_anchor_n: 150.0
   face_z: [60.0, 330.0]
   face_half_width_mm: 121.0        # spreader 242 mm wide (spreader_results.json)
+contents:
+  polytropic_n: 3.0  # ASSUMPTION: packed gear stiffens like p ~ V^-3 when squeezed (10 % squeeze -> +37 % pressure)
 cases:
   empty:            # (a) empty, hanging on the frame
     p0_kpa: 0.05     # ASSUMPTION: a little loft so the empty shell keeps its panels apart (no self-contact)
     wraps: false
-  fill:             # (b) filled to volume: HA-LS-1 C1 rated 68 kg as a fluid-equivalent fill + packing pressure
+  packed:           # (b1) packed to volume, no weight: sets the contents volume used by fill and meat
+    p0_kpa: 0.5      # ASSUMPTION: firm packing pressure
+    wraps: false
+  fill:             # (b) filled to volume: HA-LS-1 C1 rated 68 kg as a granular (Janssen) fill
     fill_kg: 68.0
-    p0_kpa: 0.5      # ASSUMPTION: firm packing pressure at the top of the load
+    fill_model: janssen            # or "fluid" (hydrostatic, K = 1: conservative for seams)
+    p0_kpa: 0.5
+    contents_L: auto               # = closed volume of the "packed" case
     wraps: true
   meat:             # (c) 30 kg meat on the internal straps + the rest of the 68 kg rated load as gear
     meat_kg: 30.0
     fill_kg: 38.0
     p0_kpa: 0.5
+    contents_L: auto
     wraps: true
 volume_sweep_kpa: [0.25, 0.5, 1.0, 2.0]   # gas inflation only (no weight): the bag's real capacity

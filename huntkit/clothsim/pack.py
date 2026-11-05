@@ -25,7 +25,8 @@ from scipy.spatial import cKDTree
 
 from .assemble import PieceSpec, assemble, densify
 from .fabric import fabric, webbing
-from .model import Bending, Cable, Cables, Contact, DeadLoad, Gravity, Membrane, Pressure, Sim
+from .model import (Bending, Cable, Cables, DeadLoad, FieldContact, GapField, Gravity, Membrane, Pressure,
+                    GasFill, Pins, PressureProfile, Sim)
 
 REPO = Path(__file__).resolve().parents[2]
 PACK = REPO / "designs" / "pack_5200"
@@ -271,6 +272,25 @@ def frame_clouds(spacing=4.0) -> dict:
     return out
 
 
+def gap_fields(cl: dict, cs: dict) -> dict:
+    """One-sided smooth gap fields: only the bag-facing surfaces push (the bag lives on the +y side
+    of the frame face): spreader samples with n_y > 0.5 (its front skin), frame samples with
+    n_y > -0.3 (anything not facing the wearer). Cached."""
+    key = f"{cs.get('spacing', 4.0):.1f}_{cs.get('grid_mm', 2.0):.1f}_{cs.get('spreader_ny_min', 0.5)}_{cs.get('frame_ny_min', -0.3)}"
+    f = CACHE / f"gap_fields_v2_{key}.npz"
+    if f.exists():
+        z = np.load(f)
+        return {k: GapField(z[k + "_o"], float(z[k + "_h"]), z[k + "_v"]) for k in ("spreader", "frame")}
+    out, save = {}, {}
+    for k, ny in (("spreader", cs.get("spreader_ny_min", 0.5)), ("frame", cs.get("frame_ny_min", -0.3))):
+        sel = cl[k + "_n"][:, 1] > ny
+        gf = GapField.from_samples(cl[k + "_p"][sel], cl[k + "_n"][sel], spacing=float(cs.get("grid_mm", 2.0)))
+        out[k] = gf
+        save.update({k + "_o": gf.o, k + "_h": gf.h, k + "_v": gf.v.astype(np.float32)})
+    np.savez_compressed(f, **save)
+    return out
+
+
 # ============================================================================ the model
 def load_scenario(path=None, overrides=None) -> dict:
     scen = yaml.safe_load(Path(path or SCENARIO).read_text())
@@ -311,6 +331,7 @@ class PackModel:
             for g in np.unique(p.gid):
                 self.node_pieces.setdefault(int(g), set()).add(p.name)
         self.clouds = frame_clouds(float(scen["contact"].get("spacing", 4.0)))
+        self.fields = gap_fields(self.clouds, scen["contact"])
         self._attachments()
 
     # ---- nodes helpers
@@ -333,12 +354,19 @@ class PackModel:
         geo = yaml.safe_load((PACK / "geometry.yaml").read_text())
         hp = _find_hardpoints(geo)
 
-        def add(name, nodes, fixed, wid, pre, kind, **meta):
+        def add(name, nodes, fixed, wid, pre, kind, mode="elastic", **meta):
             w = webbing(wid)
             cb = Cable(name, np.asarray(nodes), np.asarray(fixed, float), w["EA_n"], 1.0, kind, wid, meta)
             L = cb.length(X)
             cb.L0 = L / (1.0 + pre / w["EA_n"])
-            cb.meta.update(L_init=L, pretension_n=pre)
+            cb.meta.update(L_init=L, pretension_n=pre, mode=mode, break_n=w["break_n"])
+            if mode == "cinched":
+                # hand-cinched strap: pretension at the drafted shape, soft "cinch compliance" (webbing
+                # stretch + buckle/channel take-up) so a few mm of path change does not drop it slack
+                eps = float(sc.get("cinch_strain", 0.03))
+                cb.EA = min(w["EA_n"], pre / eps) if pre > 0 else w["EA_n"]
+                cb.L0 = L / (1.0 + pre / cb.EA)
+                cb.meta["EA_eff_n"] = cb.EA
             self.cables[name] = cb
         nan3 = [np.nan] * 3
         # hinge eyes at the floor / frame-panel seam, pinned at z 60 (bag_anchor_low)
@@ -349,6 +377,7 @@ class PackModel:
             k = int(seam_nodes[np.argmin(np.abs(X[seam_nodes, 0] - sx * abs(pin[0])))])
             add(f"hinge_{side}", [k, -1], [nan3, pin], h["webbing"], h.get("pretension_n", 0.0), "hinge",
                 capacity_n=h.get("capacity_n"))
+            self.hinge_nodes = getattr(self, "hinge_nodes", []) + [k]
         # bag hooks at IM2 / IM3: hook strap bartacked on B-01 70 mm below the eye
         hk = sc["hooks"]
         for st in hk["stations"]:
@@ -373,7 +402,7 @@ class PackModel:
             nodes = [-1] + band.tolist() + [-1]
             fixed = [aL] + [nan3] * len(band) + [aR]
             add(f"under_strap_US{i + 1}", nodes, fixed, us["webbing"], us["pretension_n"], "under_strap",
-                capacity_n=us.get("capacity_n"))
+                mode=us.get("mode", "cinched"), capacity_n=us.get("capacity_n"))
         # haul wraps W1-W3 (carry-mode compression), around the outside
         wr = sc["wraps"]
         for w in wr["list"]:
@@ -389,32 +418,125 @@ class PackModel:
                     seq.append(int(k))
             nodes = [-1] + seq + [-1]
             fixed = [pR] + [nan3] * len(seq) + [pL]
-            add(w["id"], nodes, fixed, wr["webbing"], wr["pretension_n"], "wrap", capacity_n=wr.get("capacity_n"))
+            add(w["id"], nodes, fixed, wr["webbing"], wr["pretension_n"], "wrap", mode=wr.get("mode", "cinched"),
+                capacity_n=wr.get("capacity_n"))
+        # roll-top clips: the two ends of the closed roll pulled down onto the side gores
+        rc = sc.get("roll_clips")
+        if rc:
+            top = self.nodes_of("B-06")
+            zt = X[top, 2].max()
+            ends = top[X[top, 2] > zt - 1.0]
+            for side, sx in (("R", 1), ("L", -1)):
+                e = int(ends[np.argmax(sx * X[ends, 0])])
+                gore = self.nodes_of(f"B-03{side}")
+                tgt = np.array([sx * 300.0, 120.0, self.c["Z_COLLAR"] - rc["below_collar_seam_mm"]])
+                g = int(gore[np.argmin(np.linalg.norm(X[gore] - tgt, axis=1) + 1e3 * (np.abs(X[gore, 2] - tgt[2]) > 40))])
+                add(f"roll_clip_{side}", [e, g], [nan3, nan3], rc["webbing"], rc["pretension_n"], "roll_clip",
+                    mode="cinched", capacity_n=rc.get("capacity_n"))
 
     # ---- one load case
-    def build_sim(self, case: dict) -> Sim:
+    def build_sim(self, case: dict, cinched: bool = True) -> Sim:
+        """Terms for one case. ``cinched=False`` leaves out the straps the owner cinches after
+        loading (under-straps, wraps, roll clips): stage 1 of :func:`run_case`."""
         m = self.mesh
         terms = [Membrane(m), Bending(m), Gravity(m.mass)]
         cs = self.scen["contact"]
-        cl = self.clouds
-        # one-sided: only the bag-facing surfaces push (the bag lives on the +y side of the frame face)
-        fs = cl["spreader_n"][:, 1] > cs.get("spreader_ny_min", 0.5)
-        ff = cl["frame_n"][:, 1] > cs.get("frame_ny_min", -0.3)
-        terms.append(Contact(cl["spreader_p"][fs], cl["spreader_n"][fs], kc=cs["kc"], clearance=cs["clearance"],
-                             cutoff=cs["cutoff"], label="contact_spreader"))
-        terms.append(Contact(cl["frame_p"][ff], cl["frame_n"][ff], kc=cs["kc"], clearance=cs["clearance"],
-                             cutoff=cs["cutoff"], label="contact_frame"))
-        use = [c for c in self.cables.values()
-               if c.kind in ("hinge", "hook", "under_strap") or (c.kind == "wrap" and case.get("wraps", False))]
+        terms.append(FieldContact(self.fields["spreader"], kc=cs["kc"], clearance=cs["clearance"],
+                                  label="contact_spreader"))
+        terms.append(FieldContact(self.fields["frame"], kc=cs["kc"], clearance=cs["clearance"],
+                                  label="contact_frame"))
+        # hinge eyes on the z 60 pins: the eye on the pin holds the floor corner in place (stiff pin,
+        # ASSUMPTION k from scenario); reported as the hinge force
+        hk = float(self.scen["attachments"]["hinge"].get("pin_stiffness_n_mm", 200.0))
+        hn = np.array(self.hinge_nodes)
+        terms.append(Pins(hn, m.X0[hn], k=hk))
+        terms[-1].name = "hinge_pins"
+        use = []
+        for c in self.cables.values():
+            if c.kind == "hinge":
+                continue
+            if c.kind in ("hook",):
+                use.append(c)
+            elif cinched and ((c.kind == "under_strap" and case.get("under_straps", True))
+                              or (c.kind == "wrap" and case.get("wraps", False))
+                              or (c.kind == "roll_clip" and case.get("roll_clips", self.scen["attachments"].get("roll_clips_enabled", False)))):
+                use.append(c)
         terms.append(Cables(use))
         p0 = float(case.get("p0_kpa", 0.0)) * 1e-3
         fill = float(case.get("fill_kg", 0.0))
-        vref = float(case.get("fill_volume_L", self.c["design_volume_L"]))
-        rho = fill / vref                                       # kg/L
-        terms.append(Pressure(m.tris, p0=p0, rho_g=rho * 9.81e-6, z_ref=float(case.get("z_ref", self.c["Z_FILL"]))))
+        model = case.get("fill_model", "janssen")
+        Vc = case.get("contents_L")
+        n = float(self.scen.get("contents", {}).get("polytropic_n", 3.0))
+        terms.append(GasFill(m.tris, p0, None if Vc is None else float(Vc) * 1e6, n))
+        self.fill_info = {"model": model, "fill_kg": fill, "p_pack_kpa": p0 * 1e3,
+                          "contents_L": Vc, "polytropic_n": n if Vc is not None else None}
+        if fill > 0 and model == "janssen":
+            terms += self.janssen(case, fill, 0.0)
+        elif fill > 0:
+            vref = float(case.get("fill_volume_L", self.c["design_volume_L"]))
+            rho = fill / vref
+            terms.append(Pressure(m.tris, p0=0.0, rho_g=rho * 9.81e-6, z_ref=float(case.get("z_ref", self.c["Z_FILL"]))))
         if case.get("meat_kg"):
             terms += self.meat_loads(case)
         return Sim(m, terms)
+
+    def janssen(self, case, fill_kg, p0) -> list:
+        """Granular gear fill (Janssen 1895, arXiv cond-mat/0511618): vertical stress
+        p_v(d) = rho g lam (1 - exp(-d / lam)), lam = D_h / (4 mu K), lateral p_h = K p_v.
+        p_h(z) acts on the closed bag (its net vertical is part of the weight). The rest of the weight
+        sits on the floor (ASSUMPTION: the gear column is carried by the floor; a share
+        ``wall_friction_share`` can be moved into the walls below ``friction_below_z`` as friction).
+        Total vertical = m g exactly."""
+        m = self.mesh
+        X = m.X0
+        jp = self.scen["janssen"]
+        mu, K = float(jp["mu_wall"]), float(jp["K"])
+        V = float(case.get("fill_volume_L", self.c["design_volume_L"]))
+        rho = fill_kg / V * 1e-6                     # kg/mm^3
+        rg = rho * 9.81                              # N/mm^3
+        zm = 0.5 * (self.c["Z0"] + self.c["Z_COLLAR"])
+        qs = np.linspace(0, 2, 401)
+        R = surface_point(self.pat, qs, np.full(len(qs), zm))
+        A = 0.5 * abs(np.dot(R[:-1, 0], R[1:, 1]) - np.dot(R[:-1, 1], R[1:, 0]))
+        Pm = np.linalg.norm(np.diff(R, axis=0), axis=1).sum()
+        Dh = 4 * A / Pm
+        lam = Dh / (4 * mu * K)
+        zt = float(case.get("z_ref", self.c["Z_FILL"]))
+
+        def pv(z):
+            d = np.maximum(zt - np.asarray(z, float), 0.0)
+            return rg * lam * (1 - np.exp(-d / lam))
+
+        def ph(z):
+            return p0 + K * pv(z)
+
+        def Fz(z):
+            z = np.asarray(z, float)
+            d = np.maximum(zt - z, 0.0)
+            return p0 * z - K * rg * lam * (d + lam * np.exp(-d / lam))
+        pres = PressureProfile(m.tris, ph, Fz)
+        pres.name = "pressure_janssen"
+        # net vertical of the pressure field on the closed bag (downward, like buoyancy)
+        _, gp, _ = pres(X, False)
+        F_ph = float(gp[:, 2].sum())                  # = -(sum of nodal z forces) > 0 means downward
+        W = fill_kg * 9.81
+        floor = self.nodes_of("B-05")
+        af = _vertex_area(m, floor)
+        zf = float(X[floor, 2].mean())
+        wall_frac = float(jp.get("wall_friction_share", 0.0))
+        F_fric = wall_frac * max(W - F_ph, 0.0)
+        F_floor = max(W - F_ph - F_fric, 0.0)
+        Ffl = np.zeros((len(floor), 3))
+        Ffl[:, 2] = -F_floor * af / af.sum()
+        walls = np.setdiff1d(np.arange(m.n), floor)
+        walls = walls[X[walls, 2] <= float(jp.get("friction_below_z", 520.0))]
+        aw = _vertex_area(m, walls) * pv(X[walls, 2])
+        Fw = np.zeros((len(walls), 3))
+        Fw[:, 2] = -F_fric * aw / max(aw.sum(), 1e-9)
+        self.fill_info.update({"D_h_mm": Dh, "lambda_mm": lam, "mu": mu, "K": K, "rho_kg_L": fill_kg / V,
+                               "p_v_floor_kpa": float(pv(zf)) * 1e3, "p_h_floor_kpa": float(ph(zf)) * 1e3,
+                               "W_n": W, "pressure_vertical_n": F_ph, "floor_n": F_floor, "wall_friction_n": F_fric})
+        return [pres, DeadLoad(walls, Fw, label="fill_wall_friction"), DeadLoad(floor, Ffl, label="fill_floor")]
 
     def meat_loads(self, case) -> list:
         """HA-LS-1 rev B section 4.1 resolved onto the bag cloth (static carry, 1.0 g)."""
@@ -469,3 +591,41 @@ def _find_hardpoints(geo) -> dict:
     if hp is None:
         raise KeyError("bag_anchor_low_R not found in geometry.yaml")
     return {k: [float(t) for t in v] for k, v in hp.items() if isinstance(v, list) and len(v) == 3}
+
+
+LOADS = ("gas", "pressure", "pressure_janssen", "meat_floor", "meat_face", "fill_wall_friction", "fill_floor")
+
+
+def run_case(pm: PackModel, case: dict, x0=None, verbose=False):
+    """Solve one load case with a load ramp (contents pressure, fill and meat loads scaled up
+    together). Hinge eyes and hook straps are fixed-length webbing (elastic, tension-only); the
+    cammed / ladder-lock straps carry their cinch pretension at the drafted shape with a soft cinch
+    compliance (``attachments.cinch_strain``)."""
+    sv = pm.scen["solver"]
+    x = pm.mesh.X0.copy() if x0 is None else x0.copy()
+    infos = []
+    t_left = float(sv.get("time_cap_s", 900))
+    sim = pm.build_sim(case, cinched=True)
+    for s in (sv.get("ramp", [1.0]) if x0 is None else [1.0]):
+        for t in sim.terms:
+            if t.name in LOADS:
+                t.scale = s
+        x, info = sim.solve(x, tol=float(sv["tol_n"]), max_iter=int(sv["max_iter"]), time_cap=max(t_left, 20.0),
+                            verbose=False)
+        t_left -= info.seconds
+        info.reason = f"load x{s:g}: {info.reason}"
+        infos.append(info)
+        if verbose:
+            print(f"   {info.reason} in {info.iterations} it, residual {info.residual_n:.3g} N, {info.seconds:.1f} s")
+    # the owner cams / cinches the straps on the loaded bag: re-set each cinched strap so it carries
+    # its pretension at the loaded shape, then re-equilibrate
+    cins = [c for c in sim.term("cables").cables if c.meta.get("mode") == "cinched"]
+    if cins and sv.get("recinch", True):
+        for c in cins:
+            c.L0 = c.length(x) / (1.0 + c.meta["pretension_n"] / c.EA)
+        x, info = sim.solve(x, tol=float(sv["tol_n"]), max_iter=int(sv["max_iter"]), time_cap=max(t_left, 30.0))
+        info.reason = f"re-cinched: {info.reason}"
+        infos.append(info)
+        if verbose:
+            print(f"   {info.reason} in {info.iterations} it, residual {info.residual_n:.3g} N, {info.seconds:.1f} s")
+    return x, sim, infos

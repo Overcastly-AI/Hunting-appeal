@@ -1,0 +1,8 @@
+# Panel-adjustment example: both side gores B-03 cut 4 % wider (across the gore = weft; grain is vertical).
+# Run:  python -m huntkit.clothsim.cli run --scenario huntkit/clothsim/scenarios/pack5200_v31_wide_gores.yaml --no-sweep
+# Diff: python -m huntkit.clothsim.cli diff outputs/clothsim/pack5200_v31_baseline/results.json \
+#                                           outputs/clothsim/pack5200_v31_wide_gores/results.json
+extends: pack5200_v31.yaml
+name: pack5200_v31_wide_gores
+panels:
+  B-03: {scale_weft: 1.04}

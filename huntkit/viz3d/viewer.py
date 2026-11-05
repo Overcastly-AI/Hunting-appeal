@@ -195,6 +195,11 @@ function load() {
 function fmt(x, d=1) { return (x==null) ? '-' : Number(x).toFixed(d); }
 function buildStats() {
   const s = document.getElementById('stats');
+  if (M.chips) {   // generic models (e.g. huntkit.clothsim) bring their own header chips + subtitle
+    s.innerHTML = M.chips.map(c => `<span class="chip">${c}</span>`).join('');
+    document.getElementById('subtitle').textContent = M.subtitle || '';
+    return;
+  }
   const t = M.torsos[String(state.torso.toFixed(1))] || M.torsos[state.torso] || {};
   const chips = [
     `Main bag <b>${fmt(M.bag_volume_l)} L</b> · ${Math.round(M.bag_volume_cu_in).toLocaleString()} cu in`,

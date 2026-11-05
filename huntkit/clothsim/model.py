@@ -244,6 +244,7 @@ class Cable:
     kind: str = "strap"
     material_id: str = ""
     meta: dict = field(default_factory=dict)
+    T_const: float | None = None   # cinched strap: constant tension (E = T L), else elastic tension-only
 
     def points(self, x):
         P = self.fixed.copy()
@@ -255,6 +256,8 @@ class Cable:
         return float(np.linalg.norm(np.diff(self.points(x), axis=0), axis=1).sum())
 
     def tension(self, x) -> float:
+        if self.T_const is not None:
+            return float(self.T_const)
         L = self.length(x)
         return max(0.0, self.EA / self.L0 * (L - self.L0))
 
@@ -275,11 +278,15 @@ class Cables:
             d = np.diff(P, axis=0)
             ell = np.maximum(np.linalg.norm(d, axis=1), 1e-9)
             L = ell.sum()
-            if L <= cb.L0:
-                continue
-            k = cb.EA / cb.L0
-            T = k * (L - cb.L0)
-            E += 0.5 * k * (L - cb.L0) ** 2
+            if cb.T_const is not None:
+                k, T = 0.0, float(cb.T_const)
+                E += T * L
+            else:
+                if L <= cb.L0:
+                    continue
+                k = cb.EA / cb.L0
+                T = k * (L - cb.L0)
+                E += 0.5 * k * (L - cb.L0) ** 2
             u = d / ell[:, None]
             dL = np.zeros_like(P)
             dL[1:] += u
@@ -448,7 +455,7 @@ class Sim:
             D = H.diagonal()
             dscale = np.maximum(D, 1e-9 * max(D.max(), 1e-12))
             accepted = False
-            for _ in range(8):
+            for _ in range(12):
                 A = H + sp.diags(lam * dscale + 1e-12)
                 rhs = -gf.ravel()
                 if fdof is not None:
@@ -476,13 +483,21 @@ class Sim:
                     if Et <= E + 1e-4 * a * min(slope, 0.0):
                         accepted = True
                         break
+                    if Et <= E + 1e-11 * max(1.0, abs(E)):
+                        # energy flat to round-off: accept only if the force residual drops
+                        gt = self.evaluate(x + a * dx, hess=False)[1]
+                        if free is not None:
+                            gt[~np.asarray(free, bool)] = 0
+                        if np.max(np.linalg.norm(gt, axis=1)) < res:
+                            accepted = True
+                            break
                     a *= 0.5
                 if accepted:
                     x = x + a * dx
                     lam = max(lam * (0.3 if a == 1.0 else 1.0), 1e-9)
                     break
                 lam *= 10
-            if not accepted or lam > 1e8:
+            if not accepted or lam > 1e10:
                 reason = "line_search" if not accepted else "stalled"
                 break
             E_old = E
@@ -492,3 +507,189 @@ class Sim:
                 break
         info = SolveInfo(reason == "converged", it, hist[-1][2] if hist else np.nan, E, time.time() - t0, hist, reason)
         return x, info
+
+
+# ============================================================================ smooth obstacle field
+class GapField:
+    """One-sided gap to a rigid surface, sampled on a regular grid and trilinearly interpolated
+    (continuous energy, exact gradient of the interpolant: Newton-friendly, unlike a raw
+    nearest-sample point cloud). Built from surface samples with outward normals by a moving
+    least-squares foot point: g(q) = (q - p_bar) . n_bar over the k nearest samples."""
+
+    def __init__(self, origin, spacing, values):
+        self.o = np.asarray(origin, float)
+        self.h = float(spacing)
+        self.v = np.asarray(values, float)
+
+    @classmethod
+    def from_samples(cls, P, N, spacing=2.0, margin=25.0, k=8, sigma=None, far=50.0, edge=None):
+        P = np.asarray(P, float)
+        N = np.asarray(N, float)
+        N = N / np.maximum(np.linalg.norm(N, axis=1, keepdims=True), 1e-12)
+        lo, hi = P.min(0) - margin, P.max(0) + margin
+        shape = np.ceil((hi - lo) / spacing).astype(int) + 1
+        axes = [lo[d] + spacing * np.arange(shape[d]) for d in range(3)]
+        Q = np.stack(np.meshgrid(*axes, indexing="ij"), -1).reshape(-1, 3)
+        tree = cKDTree(P)
+        sig = sigma or 1.5 * spacing
+        d_nn = cKDTree(P).query(P[:: max(1, len(P) // 2000)], k=2)[0][:, 1]
+        edge = edge or 1.5 * float(np.median(d_nn)) + spacing
+        vals = np.full(len(Q), far)
+        step = 400000
+        for s in range(0, len(Q), step):
+            q = Q[s:s + step]
+            d, j = tree.query(q, k=k, distance_upper_bound=margin)
+            ok = np.isfinite(d[:, 0])
+            if not ok.any():
+                continue
+            d, j, qq = d[ok], j[ok], q[ok]
+            fin = np.isfinite(d)
+            jj = np.where(fin, j, 0)
+            w = np.where(fin, np.exp(-((d - d[:, :1]) / sig) ** 2), 0.0)
+            w /= w.sum(1, keepdims=True)
+            pb = np.einsum("ik,ikd->id", w, P[jj])
+            nb = np.einsum("ik,ikd->id", w, N[jj])
+            nb /= np.maximum(np.linalg.norm(nb, axis=1, keepdims=True), 1e-12)
+            g = np.einsum("id,id->i", qq - pb, nb)
+            # beyond the edge of the sampled surface (foot point off the sheet): fade to "far" so a
+            # plate does not act as an infinite plane; smooth over two sample spacings
+            tan = np.linalg.norm(qq - pb - g[:, None] * nb, axis=1)
+            wt = np.clip(1.0 - (tan - edge) / (2 * edge), 0.0, 1.0)
+            g = wt * g + (1 - wt) * far
+            sub = vals[s:s + step]
+            sub[np.where(ok)[0]] = g
+            vals[s:s + step] = sub
+        return cls(lo, spacing, vals.reshape(shape))
+
+    def __call__(self, x):
+        """gap (n,) and gradient (n,3); points outside the grid get a large positive gap."""
+        u = (np.asarray(x, float) - self.o) / self.h
+        sh = np.array(self.v.shape)
+        inside = np.all((u >= 0) & (u <= sh - 1.000001), axis=1)
+        g = np.full(len(u), 1e3)
+        dg = np.zeros((len(u), 3))
+        if not inside.any():
+            return g, dg
+        ui = u[inside]
+        i0 = np.floor(ui).astype(int)
+        f = ui - i0
+        V = self.v
+        c = np.zeros((len(ui), 2, 2, 2))
+        for a in (0, 1):
+            for b in (0, 1):
+                for cc in (0, 1):
+                    c[:, a, b, cc] = V[i0[:, 0] + a, i0[:, 1] + b, i0[:, 2] + cc]
+        fx, fy, fz = f[:, 0], f[:, 1], f[:, 2]
+        c00 = c[:, 0, 0, 0] * (1 - fx) + c[:, 1, 0, 0] * fx
+        c01 = c[:, 0, 0, 1] * (1 - fx) + c[:, 1, 0, 1] * fx
+        c10 = c[:, 0, 1, 0] * (1 - fx) + c[:, 1, 1, 0] * fx
+        c11 = c[:, 0, 1, 1] * (1 - fx) + c[:, 1, 1, 1] * fx
+        c0 = c00 * (1 - fy) + c10 * fy
+        c1 = c01 * (1 - fy) + c11 * fy
+        gi = c0 * (1 - fz) + c1 * fz
+        dz = c1 - c0
+        dy = (c10 - c00) * (1 - fz) + (c11 - c01) * fz
+        dx_ = ((c[:, 1, 0, 0] - c[:, 0, 0, 0]) * (1 - fy) * (1 - fz) + (c[:, 1, 1, 0] - c[:, 0, 1, 0]) * fy * (1 - fz)
+               + (c[:, 1, 0, 1] - c[:, 0, 0, 1]) * (1 - fy) * fz + (c[:, 1, 1, 1] - c[:, 0, 1, 1]) * fy * fz)
+        g[inside] = gi
+        dg[inside] = np.column_stack([dx_, dy, dz]) / self.h
+        return g, dg
+
+
+class FieldContact:
+    """Penalty contact against a :class:`GapField`: E = kc/2 min(g - clearance, 0)^2."""
+
+    def __init__(self, field: GapField, kc=50.0, clearance=1.0, nodes=None, label="contact"):
+        self.f, self.kc, self.clr, self.nodes, self.name = field, kc, clearance, nodes, label
+
+    def _active(self, x):
+        idx = np.arange(len(x)) if self.nodes is None else np.asarray(self.nodes)
+        g, dg = self.f(x[idx])
+        gap = g - self.clr
+        a = gap < 0
+        return idx[a], dg[a], gap[a]
+
+    def __call__(self, x, hess=True):
+        idx, dg, gap = self._active(x)
+        E = 0.5 * self.kc * np.sum(gap ** 2)
+        grad = _scatter(len(x), idx, self.kc * gap[:, None] * dg)
+        H = None
+        if hess and len(idx):
+            H = _block_sparse(len(x), idx[:, None], self.kc * np.einsum("ki,kj->kij", dg, dg))
+        return float(E), grad, H
+
+    def forces(self, x):
+        idx, dg, gap = self._active(x)
+        return idx, -self.kc * gap[:, None] * dg
+
+    def gap(self, x, idx):
+        return self.f(x[idx])[0]
+
+
+class PressureProfile(Pressure):
+    """Interior pressure with any depth profile p(z) (antiderivative F(z) given): exact potential
+    -sum N_z <F>_t with 3-point edge-midpoint quadrature (exact for quadratic F)."""
+    name = "pressure"
+
+    def __init__(self, tris, p_of_z, F_of_z, scale=1.0):
+        super().__init__(tris, scale=scale)
+        self.pf, self.Ff = p_of_z, F_of_z
+
+    def __call__(self, x, hess=True):
+        s = self.scale
+        a, b, c, Nz, z, m1, m2 = self._parts(x)
+        mids = [(0, 1), (1, 2), (2, 0)]
+        zm = np.stack([0.5 * (z[:, i] + z[:, j]) for i, j in mids], 1)
+        Fm = self.Ff(zm) * s
+        pm = self.pf(zm) * s
+        phi = Fm.mean(1)
+        E = -np.sum(Nz * phi)
+        P = [a, b, c]
+        G = np.zeros((len(Nz), 3, 3))
+        for i in range(3):
+            j, k = (i + 1) % 3, (i + 2) % 3
+            G[:, i, 0] = -0.5 * (P[j][:, 1] - P[k][:, 1]) * phi
+            G[:, i, 1] = -0.5 * (P[k][:, 0] - P[j][:, 0]) * phi
+            # vertex i sits in midpoints (i,j) and (k,i)
+            G[:, i, 2] = -Nz * (pm[:, i] + pm[:, k]) / 6
+        grad = _scatter(len(x), self.tris.ravel(), G.reshape(-1, 3))
+        H = None
+        if hess:
+            self.p0, self.rho_g, self.z_ref = float(np.mean(pm)), 0.0, 0.0
+            sc, self.scale = self.scale, 1.0
+            H = Pressure.__call__(self, x, True)[2]
+            self.scale = sc
+        return float(E), grad, H
+
+    def pressure_at(self, z):
+        return self.pf(np.asarray(z, float)) * self.scale
+
+
+class GasFill(Pressure):
+    """Packed contents as a polytropic fill: p = p_pack (V_c / V)^n (n > 1), or a constant
+    pressure p_pack when V_c is None. Potential: p_pack V_c^n V^(1-n) / (n - 1). The contents
+    resist being squeezed (straps, meat) instead of vanishing like a constant-pressure gas."""
+    name = "gas"
+
+    def __init__(self, tris, p_pack, V_c=None, n=3.0, scale=1.0):
+        super().__init__(tris, p0=1.0, scale=scale)
+        self.pp, self.Vc, self.n = p_pack, V_c, n
+
+    def p_eff(self, V):
+        s = self.scale
+        if self.Vc is None:
+            return self.pp * s
+        return self.pp * s * (self.Vc / V) ** self.n
+
+    def __call__(self, x, hess=True):
+        V = self.volume(x)
+        pe = self.p_eff(V)
+        self.p0, self.rho_g, sc = 1.0, 0.0, self.scale
+        self.scale = 1.0
+        _, gV, HV = Pressure.__call__(self, x, hess)      # derivatives of -V
+        self.scale = sc
+        if self.Vc is None:
+            E = -pe * V
+        else:
+            E = self.pp * sc * self.Vc ** self.n * V ** (1 - self.n) / (self.n - 1)
+        return float(E), pe * gV, (pe * HV if HV is not None else None)
