@@ -68,8 +68,11 @@ API (`huntkit.materials`):
 - Additions (2026-11-04, backward compatible): `develop_ruled_surface(..., resample=False)` keeps the caller's
   point correspondence; `develop_region(surface_fn, polygon_uv, spacing) -> FlatMesh` flattens any doubly curved
   region by least squares (`.strain_stats()` area-weighted principal strain, `.map_uv()` carries seams/marks to
-  the flat); `flatten_mesh(V3, tris)`; `InternalLine(kind="cut_inside")` goes on the DXF CUT layer / SVG cut
+  the flat; edge targets are on-surface arc lengths, Richardson-corrected, since 2026-11-05);
+  `flatten_mesh(V3, tris, rest_length=None)`; `InternalLine(kind="cut_inside")` goes on the DXF CUT layer / SVG cut
   group; `export_pdf_tiled(..., compress=True)` and `marker.export_pdf(..., compress=True)`.
+- Addition (2026-11-05, backward compatible): `nest(..., time_limit_s=None, max_candidates=None, progress=None)`;
+  after `time_limit_s` the remaining pieces are placed greedily (never left unplaced while they fit the width).
 - Material records may carry `roll_width_mm` / `usable_width_mm` (textiles, laminates, sheet goods); markers
   are nested at the roll width with selvedge = (roll - usable) / 2.
 

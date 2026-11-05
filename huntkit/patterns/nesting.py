@@ -20,10 +20,13 @@ from __future__ import annotations
 
 import csv
 import math
+import time
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Iterable, Sequence
 
+import numpy as np
+import shapely
 from shapely import affinity
 from shapely.geometry import Polygon, box
 from shapely.strtree import STRtree
@@ -149,9 +152,19 @@ def _rotations(piece: Piece, grain_constraint: bool, allow_180: bool, step: floa
 def nest(pieces: Iterable[Piece], fabric_width_mm: float, grain_constraint: bool = True, *,
          selvedge_mm: float = 10.0, spacing_mm: float = 3.0, units: int = 1,
          allow_180: bool = True, free_rotation_step_deg: float = 90.0,
-         allow_mixed_materials: bool = False, max_length_mm: float = 1e6) -> Marker:
+         allow_mixed_materials: bool = False, max_length_mm: float = 1e6,
+         time_limit_s: float | None = None, max_candidates: int | None = None,
+         progress=None) -> Marker:
     """Nest pieces into a marker (see module docstring). ``pieces`` may mix sizes (e.g. the
-    values of :func:`grade`); each contributes ``quantity x units`` instances."""
+    values of :func:`grade`); each contributes ``quantity x units`` instances.
+
+    Speed: candidate positions are pre-screened with a vectorised point-in-occupied test
+    (a few interior points of the piece must not fall inside an already placed piece), and
+    collision tests use prepared, pre-buffered placed polygons. ``max_candidates`` caps the
+    exact checks per rotation (the lowest-x candidates are kept). After ``time_limit_s`` the
+    remaining pieces are placed greedily (only candidates at or right of the low-water x of
+    the last 30 placed pieces, at most 400 per rotation). ``progress(i, n, marker)`` is
+    called after every placement."""
     pieces = list(pieces)
     mats = {p.material_id for p in pieces}
     if len(mats) > 1 and not allow_mixed_materials:
@@ -170,25 +183,43 @@ def nest(pieces: Iterable[Piece], fabric_width_mm: float, grain_constraint: bool
     marker = Marker(fabric_width_mm, selvedge_mm, spacing_mm, units=units,
                     grain_constraint=grain_constraint, material_id=",".join(sorted(mats)))
     placed_polys: list[Polygon] = []
+    placed_buf: list[Polygon] = []          # placed piece grown by the knife clearance, prepared
     tree: STRtree | None = None
     clear = max(spacing_mm - 1e-3, 0.0)
+    t_start = time.time()
+    occupied = None                          # union of placed pieces (shrunk 0.5 mm), prepared
 
     def collides(poly: Polygon) -> bool:
         if not placed_polys:
             return False
-        test = poly.buffer(clear, join_style="mitre") if clear > 0 else poly
-        for i in tree.query(test):
-            other = placed_polys[i]
-            if test.intersects(other) and (clear > 0 or test.intersection(other).area > 1e-6):
+        for i in tree.query(poly):
+            other = placed_buf[i]
+            if clear > 0:
+                if other.intersects(poly):
+                    return True
+            elif other.intersects(poly) and poly.intersection(placed_polys[i]).area > 1e-6:
                 return True
         return False
+
+    def probe_points(poly: Polygon) -> np.ndarray:
+        """A few points inside the piece (used to reject candidates cheaply)."""
+        pts = [poly.representative_point().coords[0]]
+        inner = poly.buffer(-min(8.0, 0.2 * min(poly.bounds[2] - poly.bounds[0], poly.bounds[3] - poly.bounds[1])))
+        src = inner if (not inner.is_empty and inner.geom_type == "Polygon") else poly
+        ring = np.asarray(src.exterior.coords)[:-1]
+        if len(ring):
+            step = max(1, len(ring) // 12)
+            pts += [tuple(q) for q in ring[::step]]
+        return np.asarray(pts, float)
 
     def fits_band(poly: Polygon) -> bool:
         b = poly.bounds
         return b[1] >= y_lo - 1e-6 and b[3] <= y_hi + 1e-6 and b[0] >= -1e-6
 
-    for inst, src, mirrored, unit in items:
+    n_items = len(items)
+    for k_item, (inst, src, mirrored, unit) in enumerate(items):
         best = None
+        greedy = time_limit_s is not None and time.time() - t_start > time_limit_s
         for rot in _rotations(inst, grain_constraint, allow_180, free_rotation_step_deg):
             poly0 = affinity.rotate(inst.cut_polygon(), rot, origin=(0, 0))
             bx0, by0, bx1, by1 = poly0.bounds
@@ -199,7 +230,24 @@ def nest(pieces: Iterable[Piece], fabric_width_mm: float, grain_constraint: bool
             ys = {y_lo, y_hi - h} | {pp.bounds[3] + spacing_mm for pp in placed_polys} | \
                 {pp.bounds[1] - spacing_mm - h for pp in placed_polys}
             ys = {y for y in ys if y_lo - 1e-6 <= y <= y_hi - h + 1e-6}
-            cands = sorted((x, y) for x in xs for y in ys)
+            if greedy and placed_polys:
+                x_lw = min(pp.bounds[0] for pp in placed_polys[-30:])
+                xs = {x for x in xs if x >= x_lw - 1e-6} or xs
+            cands = np.array(sorted((x, y) for x in xs for y in ys), float).reshape(-1, 2)
+            if best is not None and len(cands):
+                cands = cands[cands[:, 0] < best[0]]
+            if occupied is not None and len(cands):
+                pr = probe_points(poly0) - np.array([bx0, by0])
+                bad = np.zeros(len(cands), bool)
+                for q in pr:
+                    bad |= shapely.contains_xy(occupied, cands[:, 0] + q[0], cands[:, 1] + q[1])
+                cands = cands[~bad]
+            cap = 400 if greedy else max_candidates
+            if cap is not None:
+                cands = cands[:cap]
+                if placed_polys:     # always keep the free end of the marker as a last resort
+                    x_end = max(pp.bounds[2] for pp in placed_polys) + spacing_mm
+                    cands = np.vstack([cands, [[x_end, y_lo]]])
             found = None
             for x, y in cands:
                 if best is not None and x >= best[0]:
@@ -237,6 +285,16 @@ def nest(pieces: Iterable[Piece], fabric_width_mm: float, grain_constraint: bool
         _, _, rot, dx, dy = best
         moved = inst.transformed(angle_deg=rot).transformed(dx=dx, dy=dy)
         marker.placements.append(Placement(moved, src, rot, mirrored, unit))
-        placed_polys.append(moved.cut_polygon())
-        tree = STRtree(placed_polys)
+        pc = moved.cut_polygon()
+        placed_polys.append(pc)
+        pb = pc.buffer(clear, quad_segs=16) if clear > 0 else pc   # round: never past bounds + clear, sag < 0.004 mm
+        shapely.prepare(pb)
+        placed_buf.append(pb)
+        tree = STRtree(placed_buf)
+        sh = pc.buffer(-0.5)
+        if not sh.is_empty:
+            occupied = sh if occupied is None else shapely.union(occupied, sh)
+            shapely.prepare(occupied)
+        if progress is not None:
+            progress(k_item + 1, n_items, marker)
     return marker

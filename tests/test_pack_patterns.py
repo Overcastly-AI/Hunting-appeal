@@ -126,3 +126,16 @@ def test_develop_ruled_surface_keeps_correspondence():
     d = develop_ruled_surface(A, B, resample=False)
     assert len(d.edge_a) == 30
     assert np.allclose(np.linalg.norm(d.edge_b - d.edge_a, axis=1), np.linalg.norm(B - A, axis=1), atol=1e-6)
+
+
+def test_greedy_nest_places_everything(ps):
+    """time_limit_s=0 forces the greedy mode from the first piece: nothing may be left unplaced."""
+    pcs = [p for p in ps.all_pieces(kit={"base"}, sizes={"M", "J"}) if p.material_id == "cordura_330d_nylon66"]
+    rw = float(MAT.load("cordura_330d_nylon66").require("roll_width_mm"))
+    uw = float(MAT.load("cordura_330d_nylon66").require("usable_width_mm"))
+    mk = nest(pcs, rw, selvedge_mm=(rw - uw) / 2, units=2, time_limit_s=0.0)
+    assert not mk.unplaced and len(mk.placements) == 2 * sum(p.quantity for p in pcs)
+    polys = [pl.polygon for pl in mk.placements]
+    for i, a in enumerate(polys):
+        for b in polys[i + 1:]:
+            assert a.distance(b) >= 2.9

@@ -520,10 +520,13 @@ def _signed(P, tris):
     return (b[:, 0] - a[:, 0]) * (c[:, 1] - a[:, 1]) - (b[:, 1] - a[:, 1]) * (c[:, 0] - a[:, 0])
 
 
-def flatten_mesh(V3, tris, init2=None, *, boundary_weight: float = 30.0, max_nfev: int = 300):
+def flatten_mesh(V3, tris, init2=None, *, boundary_weight: float = 30.0, max_nfev: int = 300,
+                 rest_length=None):
     """Least-squares flattening of a triangle mesh: minimise the relative error of every edge
     length. Boundary edges (seams) are weighted ``boundary_weight`` so their lengths stay
-    true to 3D and the interior takes the strain. Returns ``(V2, edges, strain, boundary)``."""
+    true to 3D and the interior takes the strain. ``rest_length(E) -> (m,)`` optionally gives
+    the target length of each edge (vertex-index pairs) instead of its 3D chord, e.g. the
+    on-surface arc length. Returns ``(V2, edges, strain, boundary)``."""
     from scipy.optimize import least_squares
     from scipy.sparse import lil_matrix
 
@@ -537,6 +540,8 @@ def flatten_mesh(V3, tris, init2=None, *, boundary_weight: float = 30.0, max_nfe
     E = np.array(sorted(cnt))
     bnd = np.array([cnt[tuple(e)] == 1 for e in E])
     L = np.linalg.norm(V3[E[:, 1]] - V3[E[:, 0]], axis=1)
+    if rest_length is not None:
+        L = np.where(L > 1e-9, np.asarray(rest_length(E), float), L)
     ok = L > 1e-9
     E, bnd, L = E[ok], bnd[ok], L[ok]
     sw = np.where(bnd, math.sqrt(boundary_weight), 1.0) / L
@@ -602,8 +607,18 @@ def develop_region(surface, polygon_uv, spacing: float = 10.0, *, boundary_spaci
     sgn = _signed(uv, tri)
     tri[sgn < 0] = tri[sgn < 0][:, [0, 2, 1]]
     V3 = np.asarray(surface(uv), float)
+
+    def arc_len(E):
+        # on-surface edge length: Richardson extrapolation of chord (h) and two half chords (h/2),
+        # error O(h^4) instead of the chord's O(h^2), so a developable region unrolls to true size
+        a, b = V3[E[:, 0]], V3[E[:, 1]]
+        m = np.asarray(surface(0.5 * (uv[E[:, 0]] + uv[E[:, 1]])), float)
+        c1 = np.linalg.norm(b - a, axis=1)
+        c2 = np.linalg.norm(m - a, axis=1) + np.linalg.norm(b - m, axis=1)
+        return (4.0 * c2 - c1) / 3.0
+
     V2, E, strain, bnd = flatten_mesh(V3, tri, init2=uv, boundary_weight=boundary_weight,
-                                      max_nfev=max_nfev)
+                                      max_nfev=max_nfev, rest_length=arc_len)
     if np.sum(_signed(V2, tri) < 0) > len(tri) / 2:
         V2[:, 0] *= -1
     # align: least-squares rigid fit of flat onto uv (keeps the pattern upright)

@@ -1,0 +1,189 @@
+# Pack 5200 v3.1 cut list and yardage
+
+Base pack = bag + fly + pockets + size M hipbelt + J straps + back panel (lid and rifle boot are accessories, listed below). Yardage = nested marker length at the material's real roll width (`data/materials` `roll_width_mm`, `usable_width_mm`). 1 pack = single-pack marker; 10/50/100 packs = the 10-pack production marker per pack x N + 3 % lay loss (ASSUMPTION).
+
+## Yardage per material
+
+| Material | Roll in (usable) | Pieces/pack | 1-pack marker eff. | Yd / 1 pack | m / 1 pack | 10-pack eff. | Yd / 10 | Yd / 50 | Yd / 100 |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| challenge_ultra_200 | 56 (55.0) | 19 | 52 % | 0.60 | 0.55 | 83 % | 3.9 | 19.5 | 38.9 |
+| cordura_330d_nylon66 | 60 (57.0) | 20 | 59 % | 1.37 | 1.25 | 82 % | 10.2 | 51.0 | 102.0 |
+| cordura_500d_nylon66 | 60 (57.0) | 3 | 27 % | 0.24 | 0.22 | 70 % | 1.0 | 4.9 | 9.7 |
+| eva_foam_30c | 39 (39.4) | 2 | 35 % | 0.14 | 0.13 | 79 % | 0.6 | 3.1 | 6.3 |
+| eva_foam_45c | 39 (39.4) | 6 | 61 % | 0.22 | 0.20 | 78 % | 1.7 | 8.7 | 17.4 |
+| eva_foam_perforated | 39 (39.4) | 2 | 65 % | 0.08 | 0.08 | 79 % | 0.7 | 3.5 | 7.0 |
+| hdpe_sheet | 48 (48.0) | 4 | 42 % | 0.12 | 0.11 | 79 % | 0.7 | 3.4 | 6.8 |
+| hypalon_coated_nylon | 54 (53.1) | 18 | 58 % | 0.04 | 0.04 | 78 % | 0.3 | 1.7 | 3.3 |
+| poly_spandex_stretch_woven_printable | 57 (55.1) | 1 | 7 % | 0.72 | 0.66 | 65 % | 0.7 | 3.7 | 7.4 |
+| polyester_ht_630d_printable | 59 (57.1) | 7 | 17 % | 0.64 | 0.58 | 75 % | 1.5 | 7.4 | 14.7 |
+| robic_100d_ripstop | 60 (58.0) | 4 | 63 % | 1.00 | 0.91 | 90 % | 7.2 | 35.9 | 71.8 |
+| robic_210d_ripstop | 60 (58.0) | 5 | 36 % | 0.49 | 0.45 | 91 % | 1.9 | 9.7 | 19.5 |
+| silicone_coated_poly_ripstop_40d | 60 (58.0) | 4 | 59 % | 0.88 | 0.80 | 76 % | 7.0 | 35.2 | 70.4 |
+| spacer_mesh_3d | 59 (57.1) | 7 | 58 % | 0.50 | 0.46 | 80 % | 3.7 | 18.7 | 37.5 |
+| ultragrid_210d_uhmwpe_ripstop | 56 (55.0) | 4 | 25 % | 0.77 | 0.70 | 74 % | 2.6 | 13.1 | 26.1 |
+| xlpe_foam | 39 (39.4) | 3 | 43 % | 0.29 | 0.26 | 90 % | 1.4 | 7.0 | 14.1 |
+| **all materials** | | | | **8.10** | | | **45.3** | **226.4** | **452.9** |
+
+Foams, HDPE and Hypalon are sheet goods: their 'yard' is a 1000 / 1220 / 1370 mm wide sheet length; send the DXF to the converter.
+
+## Cutting instructions per material
+
+| Material | Face | Lay | Plies | Allowance |
+|---|---|---|---|---|
+| challenge_ultra_200 | laminate (film) side DOWN = inside of bag | non-directional, keep grain | 1 ply (prototype); production: up to 24 plies on an automatic cutter, 12 for laminates | 12, 8 mm |
+| cordura_330d_nylon66 | PU coat DOWN (inside) | solid colour: two-way lay allowed | 1 ply (prototype); production: up to 24 plies on an automatic cutter, 12 for laminates | 10, 10/12, 12, 8, 8/10 mm |
+| cordura_500d_nylon66 | PU coat DOWN (inside) | solid colour: two-way lay allowed | 1 ply (prototype); production: up to 24 plies on an automatic cutter, 12 for laminates | 10/15, 10/20, 12 mm |
+| eva_foam_30c | - | die-cut sheet | die/laser/router from the DXF, no spreading | 0 mm |
+| eva_foam_45c | - | die-cut sheet, any rotation | die/laser/router from the DXF, no spreading | 0 mm |
+| eva_foam_perforated | - | die-cut sheet | die/laser/router from the DXF, no spreading | 0 mm |
+| hdpe_sheet | - | CNC router / waterjet, any rotation | die/laser/router from the DXF, no spreading | 0 mm |
+| hypalon_coated_nylon | coated face UP | laser-cut, any rotation | die/laser/router from the DXF, no spreading | 0 mm |
+| poly_spandex_stretch_woven_printable | print UP | ONE-WAY print; stretch across the band | 1 ply (prototype); production: up to 24 plies on an automatic cutter, 12 for laminates | 0/10 mm |
+| polyester_ht_630d_printable | print UP | ONE-WAY camo print (all shards same direction) | 1 ply (prototype); production: up to 24 plies on an automatic cutter, 12 for laminates | 0, 10, 12 mm |
+| robic_100d_ripstop | coated side DOWN (inside) | two-way lay allowed | 1 ply (prototype); production: up to 24 plies on an automatic cutter, 12 for laminates | 10/12 mm |
+| robic_210d_ripstop | coated side DOWN (inside) | two-way lay allowed | 1 ply (prototype); production: up to 24 plies on an automatic cutter, 12 for laminates | 10, 10/15 mm |
+| silicone_coated_poly_ripstop_40d | either | two-way; weigh plies down, it slides | 1 ply (prototype); production: up to 24 plies on an automatic cutter, 12 for laminates | 10/20 mm |
+| spacer_mesh_3d | open mesh face UP (wearer side) | ONE-WAY: rib direction along the grain | 1 ply (prototype); production: up to 24 plies on an automatic cutter, 12 for laminates | 10 mm |
+| tpu_coated_nylon_840d | TPU DOWN (inside) | two-way | 1 ply (prototype); production: up to 24 plies on an automatic cutter, 12 for laminates | 10 mm |
+| ultragrid_210d_uhmwpe_ripstop | grid face UP | two-way lay allowed | 1 ply (prototype); production: up to 24 plies on an automatic cutter, 12 for laminates | 10, 10/12/20 mm |
+| xlpe_foam | - | die-cut sheet | die/laser/router from the DXF, no spreading | 0 mm |
+
+Knife: CW from the grain-arrow head; cut inside windows/slots first. Notches 6 mm (never past the seam line). Drill holes 3 mm inside the feature.
+
+## Pieces
+
+| Piece ID | Piece | Material | Size | Qty | Mirror | Face | Area m² (ea) | Total m² | Perimeter mm | SA mm | Mass g |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| B-01 | frame-side panel, lower | challenge_ultra_200 |  | 1 |  | UP | 0.22653 | 0.22653 | 1933.0 | default=12 | 28.3 |
+| B-01b | frame-side setback band | challenge_ultra_200 |  | 1 |  | UP | 0.04903 | 0.04903 | 1200.3 | default=12 | 6.1 |
+| B-01u | frame-side panel, upper | challenge_ultra_200 |  | 1 |  | UP | 0.08646 | 0.08646 | 1333.2 | default=12 | 10.8 |
+| B-03 | side gore | cordura_330d_nylon66 |  | 2 | L+R | UP | 0.13424 | 0.26848 | 1898.7 | default=12 | 48.3 |
+| B-02a | outer face, right (above zip, below setback seam) | cordura_330d_nylon66 |  | 1 |  | UP | 0.06105 | 0.06105 | 1152.6 | default=12; zip=10 | 11.0 |
+| B-02c | outer face setback band (above zip) | cordura_330d_nylon66 |  | 1 |  | UP | 0.03753 | 0.03753 | 958.1 | default=12; zip=10 | 6.8 |
+| B-02b | outer face, lower-left (below zip; band + cam-cup shard) | cordura_330d_nylon66 |  | 1 |  | UP | 0.13617 | 0.13617 | 1688.7 | default=12; zip=10 | 24.5 |
+| B-02d | outer face, upper (2 darts) | cordura_330d_nylon66 |  | 1 |  | UP | 0.07013 | 0.07013 | 1255.6 | default=12 | 12.6 |
+| B-05 | bag bottom | cordura_500d_nylon66 |  | 1 |  | UP | 0.05648 | 0.05648 | 873.0 | 12 | 14.4 |
+| B-06 | roll-top collar | robic_100d_ripstop |  | 1 |  | UP | 0.61695 | 0.61695 | 3421.2 | default=12; top=10 | 55.5 |
+| B-07 | roll-top stiffener hem | cordura_330d_nylon66 |  | 1 |  | UP | 0.10708 | 0.10708 | 2559.6 | 10 | 19.3 |
+| B-07s | roll-top HDPE strip | hdpe_sheet |  | 2 |  | UP | 0.01081 | 0.02162 | 1112.5 | 0 |  |
+| B-13 | swell cap half, IM1/IM2 (45 mm) | challenge_ultra_200 |  | 8 |  | UP | 0.00253 | 0.02025 | 293.9 | 8 | 2.5 |
+| B-14a | hinge swell cap, lower (22 mm) | challenge_ultra_200 |  | 2 |  | UP | 0.00186 | 0.00373 | 205.8 | 8 | 0.5 |
+| B-14b | hinge swell cap, upper (68 mm) | challenge_ultra_200 |  | 2 |  | UP | 0.00325 | 0.00651 | 332.3 | 8 | 0.8 |
+| B-15a | IM3 swell cap, lower (58 mm) | challenge_ultra_200 |  | 2 |  | UP | 0.00275 | 0.00551 | 323.9 | 8 | 0.7 |
+| B-15b | IM3 swell cap, upper (32 mm) | challenge_ultra_200 |  | 2 |  | UP | 0.00213 | 0.00427 | 219.0 | 8 | 0.5 |
+| B-12 | meat-strap port frame | hypalon_coated_nylon |  | 6 |  | UP | 0.00165 | 0.00989 | 177.6 | 0 | 9.9 |
+| B-09 | hydration sleeve | robic_100d_ripstop |  | 1 |  | UP | 0.08963 | 0.08963 | 1306.6 | default=10; top=12 | 8.1 |
+| D-01 | diagonal stretch band | poly_spandex_stretch_woven_printable |  | 1 |  | UP | 0.05996 | 0.05996 | 1410.3 | default=10; a=0 | 10.8 |
+| B-08 | diagonal zip storm strip | cordura_330d_nylon66 |  | 1 |  | UP | 0.026 | 0.026 | 1222.5 | 8 | 4.7 |
+| SH-02 | band mouth binding (camo) | polyester_ht_630d_printable |  | 1 |  | UP | 0.01757 | 0.01757 | 1162.3 | 0 | 5.1 |
+| SH-03 | roll-top band (camo) | polyester_ht_630d_printable |  | 1 |  | UP | 0.03509 | 0.03509 | 1289.8 | 0 | 10.2 |
+| SH-01 | lower-corner shard | polyester_ht_630d_printable |  | 2 | L+R | UP | 0.02234 | 0.04468 | 582.4 | 12 | 13.0 |
+| SH-04 | cam-cup shard | polyester_ht_630d_printable |  | 1 |  | UP | 0.02385 | 0.02385 | 617.6 | 12 | 6.9 |
+| B-11 | lash tab | hypalon_coated_nylon |  | 8 |  | UP | 0.00149 | 0.01189 | 153.1 | 0 | 11.9 |
+| P-03 | side pocket floating back | robic_100d_ripstop |  | 2 | L+R | UP | 0.0694 | 0.1388 | 1129.6 | default=10; frm=12 | 12.5 |
+| P-01 | side pocket face | ultragrid_210d_uhmwpe_ripstop |  | 2 | L+R | UP | 0.07111 | 0.14222 | 1149.2 | default=10; frm=12; top=20 | 22.0 |
+| P-02 | side pocket gusset | ultragrid_210d_uhmwpe_ripstop |  | 2 |  | UP | 0.04921 | 0.09841 | 1545.9 | 10 | 15.3 |
+| F-02 | fly pocket | cordura_330d_nylon66 |  | 1 |  | UP | 0.04173 | 0.04173 | 788.5 | default=10; top=10 | 7.5 |
+| B-16 | under-strap floor channel | cordura_500d_nylon66 |  | 2 |  | UP | 0.0154 | 0.0308 | 580.0 | default=10; left=15; right=15 | 7.9 |
+| F-03 | orange flag sleeve | robic_210d_ripstop |  | 1 |  | UP | 0.0448 | 0.0448 | 920.0 | 10 | 6.3 |
+| F-01a | rain fly face, lower | silicone_coated_poly_ripstop_40d |  | 1 |  | UP | 0.23647 | 0.23647 | 2021.4 | default=10; bottom=20; top=20 | 10.6 |
+| F-01c | rain fly face, upper | silicone_coated_poly_ripstop_40d |  | 1 |  | UP | 0.08176 | 0.08176 | 1242.8 | default=10; bottom=20; top=20 | 3.7 |
+| F-01b | rain fly side | silicone_coated_poly_ripstop_40d |  | 2 | L+R | UP | 0.19059 | 0.38118 | 2046.8 | default=10; bottom=20; top=20; frm=20 | 17.2 |
+| H-01 | hipbelt wing outer shell | cordura_330d_nylon66 | S | 2 | L+R | UP | 0.02797 | 0.05594 | 670.5 | 10 | 10.1 |
+| H-01 | hipbelt wing outer shell | cordura_330d_nylon66 | M | 2 | L+R | UP | 0.03313 | 0.06625 | 743.5 | 10 | 11.9 |
+| H-01 | hipbelt wing outer shell | cordura_330d_nylon66 | L | 2 | L+R | UP | 0.03814 | 0.07629 | 814.9 | 10 | 13.7 |
+| H-01 | hipbelt wing outer shell | cordura_330d_nylon66 | XL | 2 | L+R | UP | 0.0433 | 0.08661 | 888.4 | 10 | 15.6 |
+| H-02 | hipbelt wing body face | spacer_mesh_3d | S | 2 | L+R | UP | 0.02797 | 0.05594 | 670.5 | 10 | 21.3 |
+| H-02 | hipbelt wing body face | spacer_mesh_3d | M | 2 | L+R | UP | 0.03313 | 0.06625 | 743.5 | 10 | 25.2 |
+| H-02 | hipbelt wing body face | spacer_mesh_3d | L | 2 | L+R | UP | 0.03814 | 0.07629 | 814.9 | 10 | 29.0 |
+| H-02 | hipbelt wing body face | spacer_mesh_3d | XL | 2 | L+R | UP | 0.0433 | 0.08661 | 888.4 | 10 | 32.9 |
+| H-03 | hipbelt wing load foam | eva_foam_45c | S | 2 | L+R | UP | 0.01702 | 0.03403 | 536.0 | 0 |  |
+| H-03 | hipbelt wing load foam | eva_foam_45c | M | 2 | L+R | UP | 0.02079 | 0.04157 | 609.5 | 0 |  |
+| H-03 | hipbelt wing load foam | eva_foam_45c | L | 2 | L+R | UP | 0.02446 | 0.04891 | 681.2 | 0 |  |
+| H-03 | hipbelt wing load foam | eva_foam_45c | XL | 2 | L+R | UP | 0.02823 | 0.05645 | 754.9 | 0 |  |
+| H-04 | hipbelt wing comfort foam | eva_foam_30c | S | 2 | L+R | UP | 0.01813 | 0.03625 | 551.1 | 0 |  |
+| H-04 | hipbelt wing comfort foam | eva_foam_30c | M | 2 | L+R | UP | 0.02206 | 0.04412 | 624.6 | 0 |  |
+| H-04 | hipbelt wing comfort foam | eva_foam_30c | L | 2 | L+R | UP | 0.02589 | 0.05178 | 696.2 | 0 |  |
+| H-04 | hipbelt wing comfort foam | eva_foam_30c | XL | 2 | L+R | UP | 0.02982 | 0.05964 | 770.0 | 0 |  |
+| H-05 | hipbelt wing stiffener | hdpe_sheet | S | 2 | L+R | UP | 0.01489 | 0.02977 | 505.9 | 0 |  |
+| H-05 | hipbelt wing stiffener | hdpe_sheet | M | 2 | L+R | UP | 0.01833 | 0.03666 | 579.3 | 0 |  |
+| H-05 | hipbelt wing stiffener | hdpe_sheet | L | 2 | L+R | UP | 0.02168 | 0.04336 | 651.0 | 0 |  |
+| H-05 | hipbelt wing stiffener | hdpe_sheet | XL | 2 | L+R | UP | 0.02512 | 0.05025 | 724.7 | 0 |  |
+| HP-01 | hipbelt pocket face | cordura_330d_nylon66 | S | 2 | L+R | UP | 0.01289 | 0.02578 | 459.6 | default=8; top=10 | 4.6 |
+| HP-01 | hipbelt pocket face | cordura_330d_nylon66 | M | 2 | L+R | UP | 0.01707 | 0.03414 | 533.6 | default=8; top=10 | 6.1 |
+| HP-01 | hipbelt pocket face | cordura_330d_nylon66 | L | 2 | L+R | UP | 0.02046 | 0.04092 | 593.6 | default=8; top=10 | 7.4 |
+| HP-01 | hipbelt pocket face | cordura_330d_nylon66 | XL | 2 | L+R | UP | 0.02046 | 0.04092 | 593.6 | default=8; top=10 | 7.4 |
+| HP-02 | hipbelt pocket gusset | cordura_330d_nylon66 | S | 2 |  | UP | 0.01812 | 0.03625 | 759.2 | 8 | 6.5 |
+| HP-02 | hipbelt pocket gusset | cordura_330d_nylon66 | M | 2 |  | UP | 0.02019 | 0.04039 | 833.2 | 8 | 7.3 |
+| HP-02 | hipbelt pocket gusset | cordura_330d_nylon66 | L | 2 |  | UP | 0.02187 | 0.04375 | 893.2 | 8 | 7.9 |
+| HP-02 | hipbelt pocket gusset | cordura_330d_nylon66 | XL | 2 |  | UP | 0.02187 | 0.04375 | 893.2 | 8 | 7.9 |
+| SH-05 | hipbelt wing-tip shard | polyester_ht_630d_printable |  | 2 | L+R | UP | 0.01037 | 0.02073 | 400.4 | 10 | 6.0 |
+| R-03 | rifle-boot mount tab | hypalon_coated_nylon |  | 4 |  | UP | 0.00239 | 0.00954 | 193.1 | 0 | 9.5 |
+| H-06 | lumbar pad shell | cordura_330d_nylon66 |  | 1 |  | UP | 0.0288 | 0.0288 | 680.0 | 10 | 5.2 |
+| H-07 | lumbar pad face (grippy) | spacer_mesh_3d |  | 1 |  | UP | 0.0288 | 0.0288 | 680.0 | 10 | 10.9 |
+| H-08 | lumbar pad foam, stage 1 | eva_foam_45c |  | 1 |  | UP | 0.0186 | 0.0186 | 517.6 | 0 |  |
+| H-09 | lumbar stage-2 wedge insert (removable) | eva_foam_45c |  | 1 |  | UP | 0.01116 | 0.01116 | 397.0 | 0 |  |
+| H-10 | lumbar wedge sleeve | robic_210d_ripstop |  | 1 |  | UP | 0.01875 | 0.01875 | 550.0 | default=10; top=15 | 2.6 |
+| HS-J1 | shoulder strap shell | cordura_330d_nylon66 | J | 2 | L+R | UP | 0.03911 | 0.07822 | 1091.1 | 10 | 14.1 |
+| HS-S1 | shoulder strap shell | cordura_330d_nylon66 | S | 2 | L+R | UP | 0.03925 | 0.0785 | 1106.0 | 10 | 14.1 |
+| HS-J2 | shoulder strap face | spacer_mesh_3d | J | 2 | L+R | UP | 0.03911 | 0.07822 | 1091.1 | 10 | 29.7 |
+| HS-S2 | shoulder strap face | spacer_mesh_3d | S | 2 | L+R | UP | 0.03925 | 0.0785 | 1106.0 | 10 | 29.8 |
+| HS-J3 | shoulder strap load foam | eva_foam_45c | J | 2 | L+R | UP | 0.02462 | 0.04925 | 979.0 | 0 |  |
+| HS-S3 | shoulder strap load foam | eva_foam_45c | S | 2 | L+R | UP | 0.02462 | 0.04925 | 991.9 | 0 |  |
+| HS-J4 | shoulder strap comfort foam | eva_foam_perforated | J | 2 | L+R | UP | 0.02462 | 0.04925 | 979.0 | 0 |  |
+| HS-S4 | shoulder strap comfort foam | eva_foam_perforated | S | 2 | L+R | UP | 0.02462 | 0.04925 | 991.9 | 0 |  |
+| HS-05 | yoke cover | cordura_330d_nylon66 |  | 2 |  | UP | 0.03782 | 0.07565 | 771.3 | 10 | 13.6 |
+| BP-01 | back panel mesh | spacer_mesh_3d |  | 1 |  | UP | 0.16882 | 0.16882 | 1591.3 | 10 | 64.2 |
+| BP-05 | stay-rail sleeve back | robic_210d_ripstop |  | 2 |  | UP | 0.0623 | 0.1246 | 1170.0 | default=10; top=15 | 17.4 |
+| BP-02 | stay-rail foam | xlpe_foam |  | 2 |  | UP | 0.04123 | 0.08245 | 988.5 | 0 |  |
+| BP-03 | upper back pad face (crown) | spacer_mesh_3d |  | 1 |  | UP | 0.04462 | 0.04462 | 791.3 | 10 | 17.0 |
+| BP-07 | upper back pad back | robic_210d_ripstop |  | 1 |  | UP | 0.04462 | 0.04462 | 791.3 | 10 | 6.2 |
+| BP-04 | upper back pad foam | xlpe_foam |  | 1 |  | UP | 0.03005 | 0.03005 | 665.6 | 0 |  |
+| R-01 | rifle butt boot body | cordura_500d_nylon66 |  | 1 |  | UP | 0.07619 | 0.07619 | 1122.6 | default=10; top=20 | 19.4 |
+| R-02 | rifle boot bottom | tpu_coated_nylon_840d |  | 1 |  | UP | 0.00822 | 0.00822 | 331.3 | 10 | 3.9 |
+| L-01 | lid top | robic_210d_ripstop |  | 1 |  | UP | 0.08011 | 0.08011 | 1057.0 | 10 | 11.2 |
+| L-02 | lid underside | cordura_330d_nylon66 |  | 1 |  | UP | 0.08011 | 0.08011 | 1057.0 | 10 | 14.4 |
+| L-03 | lid gusset | cordura_330d_nylon66 |  | 1 |  | UP | 0.09127 | 0.09127 | 2208.3 | 10 | 16.4 |
+
+**Net piece area by material** (before marker waste): challenge_ultra_200: 0.4023 m² (4.330 ft²), cordura_330d_nylon66: 1.7717 m² (19.071 ft²), cordura_500d_nylon66: 0.1635 m² (1.760 ft²), robic_100d_ripstop: 0.8454 m² (9.100 ft²), hdpe_sheet: 0.1817 m² (1.955 ft²), hypalon_coated_nylon: 0.0313 m² (0.337 ft²), poly_spandex_stretch_woven_printable: 0.0600 m² (0.645 ft²), polyester_ht_630d_printable: 0.1419 m² (1.528 ft²), ultragrid_210d_uhmwpe_ripstop: 0.2406 m² (2.590 ft²), robic_210d_ripstop: 0.3129 m² (3.368 ft²), silicone_coated_poly_ripstop_40d: 0.6994 m² (7.528 ft²), spacer_mesh_3d: 0.6841 m² (7.363 ft²), eva_foam_45c: 0.3092 m² (3.328 ft²), eva_foam_30c: 0.1918 m² (2.064 ft²), eva_foam_perforated: 0.0985 m² (1.060 ft²), xlpe_foam: 0.1125 m² (1.211 ft²), tpu_coated_nylon_840d: 0.0082 m² (0.088 ft²)
+
+## Webbing, binding and hardware (cut lengths)
+
+| Use | Material | Length mm | Qty | Total m | Source |
+|---|---|---:|---:|---:|---|
+| haul wrap W1 (load_wing_lash_z80_R) | poly_webbing_25mm | 1440 | 1 | 1.44 | panels.yaml webbing_cut_list |
+| haul wrap W2 (load_wing_lash_z250_R) | poly_webbing_25mm | 1512 | 1 | 1.51 | panels.yaml webbing_cut_list |
+| haul wrap W3 (crown top bar R (moves with torso)) | poly_webbing_25mm | 1718 | 1 | 1.72 | panels.yaml webbing_cut_list |
+| hipbelt strap | nylon_webbing_50mm | 900 | 1 | 0.90 | panels.yaml webbing_cut_list |
+| load lifters | poly_webbing_25mm | 450 | 2 | 0.90 | panels.yaml webbing_cut_list |
+| internal meat strap IM1 (z 190; hooks both ends, cam) | poly_webbing_38mm | 973 | 1 | 0.97 | panels.yaml webbing_cut_list |
+| internal meat strap IM2 (z 330; hooks both ends, cam) | poly_webbing_38mm | 1023 | 1 | 1.02 | panels.yaml webbing_cut_list |
+| internal meat strap IM3 (z 520; hooks both ends, cam) | poly_webbing_38mm | 1083 | 1 | 1.08 | panels.yaml webbing_cut_list |
+| roll-top clips | poly_webbing_25mm | 350 | 2 | 0.70 | panels.yaml webbing_cut_list |
+| haul-wrap keeper loops | poly_webbing_25mm | 80 | 6 | 0.48 | panels.yaml webbing_cut_list |
+| hip stabilizers | poly_webbing_25mm | 400 | 2 | 0.80 | panels.yaml webbing_cut_list |
+| sternum | poly_webbing_25mm | 400 | 2 | 0.80 | panels.yaml webbing_cut_list |
+| crown 3:1 pulley | poly_webbing_25mm | 1400 | 1 | 1.40 | panels.yaml webbing_cut_list |
+| fairlead captive eyes (8: hinge, IM1-IM3, both sides) | poly_webbing_38mm | 120 | 8 | 0.96 | bag_attach._mass_budget loops 0.12 m |
+| bag-hook straps IM2/IM3 (hook + TPU sleeve) | poly_webbing_38mm | 160 | 4 | 0.64 | bag_attach._mass_budget bag_straps 0.16 m |
+| hinge eyes (sewn eye on the tethered pin, caught in B-01/B-05 seam) | poly_webbing_38mm | 150 | 2 | 0.30 | ASSUMPTION 150 mm (25 mm rise + 2 x 50 mm eye + tails) |
+| under-straps US1/US2 (eye L, cam + tri-glide R, 70 mm belly) | poly_webbing_38mm | 550 | 2 | 1.10 | meat_haul_modes.md: 38 mm webbing 1.10 m for two |
+| lifter tri-glide keepers tails | poly_webbing_25mm | 60 | 2 | 0.12 | bag_attachment.md lifter keeper (ASSUMPTION length) |
+| binding: hipbelt wings (top+tip+bottom) x2, size M | grosgrain_binding_20mm (no record: ASSUMPTION) | 1159 | 1 | 1.16 | piece perimeters + 100 mm |
+| binding: lumbar pad top+bottom | grosgrain_binding_20mm (no record: ASSUMPTION) | 420 | 1 | 0.42 | piece perimeters + 100 mm |
+| binding: shoulder straps x2 (J) | grosgrain_binding_20mm (no record: ASSUMPTION) | 2122 | 1 | 2.12 | piece perimeters + 100 mm |
+| binding: back panel mesh perimeter | grosgrain_binding_20mm (no record: ASSUMPTION) | 1628 | 1 | 1.63 | piece perimeters + 100 mm |
+| binding: main-bag inside seams (B-01/B-03 x2, B-03/B-02 x2, bottom ring) | grosgrain_binding_20mm (no record: ASSUMPTION) | 3958 | 1 | 3.96 | piece perimeters + 100 mm |
+| #10 coil zip, 2 sliders (diagonal) | coil_zipper_10 | 549 | 1 | | |
+| #5 coil zip (fly pocket) | coil_zipper_5 | 230 | 1 | | |
+| #8 coil zip (hipbelt pockets, size M) | coil_zipper_8 | 150 | 2 | | |
+| #8 AquaGuard (lid) | aquaguard_zipper_8 | 260 | 1 | | |
+| 8 mm drain grommets | - |  | 2 | | |
+
+## Accessories (not in the base yardage)
+
+- R-01 rifle butt boot body: cordura_500d_nylon66, cut 1, 0.076 m2
+- R-02 rifle boot bottom: tpu_coated_nylon_840d, cut 1, 0.008 m2
+- L-01 lid top: robic_210d_ripstop, cut 1, 0.080 m2
+- L-02 lid underside: cordura_330d_nylon66, cut 1, 0.080 m2
+- L-03 lid gusset: cordura_330d_nylon66, cut 1, 0.091 m2

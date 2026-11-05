@@ -1230,7 +1230,7 @@ def build(spacing: float = 12.0) -> PatternSet:
     ps.notes += [
         "pack-designer: the 30 mm head setback is not sewable as a smooth step (10.5 % stretch on B-01, 8.5 % on the "
         "face). The pattern takes it with a SETBACK seam at z 560 and a SHOULDER seam at z 631.2 (zip end), ruled "
-        "between. Volume is unchanged (85.07 L rebuilt vs 85.16 L design). geometry.yaml should adopt the two seams.",
+        "between. Volume is unchanged (85.02 L rebuilt vs 85.16 L design). geometry.yaml should adopt the two seams.",
         "pack-designer / structural: the under-strap cleat US2 (z 142, cheek z 133-151) is not under a swell (hinge swell "
         "ends z 130, IM1 swell starts z 145). US1 (z 95) sits under the hinge swell (8 mm of rise there). Only the eight "
         "accepted swells are drawn.",
