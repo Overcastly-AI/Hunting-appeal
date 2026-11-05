@@ -502,7 +502,7 @@ bag:
       mouth of a full-length stretch band (overload / bow-cam / pole pocket)'
     zip_start_right: [135.2, 202.4, 248.2]
     zip_end_left: [-171.7, 279.9, 631.2]
-    zip_length_mm: 508.9
+    zip_length_mm: 509.2
     angle_from_vertical_deg: 38.7
     band_drop_mm: 170.0
     zip_line_3d:
@@ -519,8 +519,8 @@ bag:
     - [-72.9, 286.7, 507.9]
     - [-93.7, 285.9, 533.8]
     - [-114.5, 282.7, 559.8]
-    - [-135.3, 286.6, 585.8]
-    - [-156.1, 285.7, 611.7]
+    - [-135.3, 283.8, 585.8]
+    - [-156.1, 286.6, 611.7]
     band_lower_edge_3d:
     - [120.0, 179.6, 78.2]
     - [114.4, 190.5, 104.2]
@@ -537,7 +537,7 @@ bag:
     - [-114.5, 251.7, 389.8]
     - [-135.3, 243.3, 415.8]
     - [-155.4, 229.3, 441.7]
-    band_develop: {max_strain: 0.0001, len_zip_edge_mm: 508.8, len_lower_edge_mm: 496.7}
+    band_develop: {max_strain: 0.0002, len_zip_edge_mm: 509.2, len_lower_edge_mm: 496.7}
   head_setback: {setback_mm: 30.0, method: 'TWO RING SEAMS (v3.1 production patterns, pattern-maker 2026-11-04):
       SETBACK seam and SHOULDER seam (= the diagonal zip''s upper end); the surface is ruled ring-to-ring between
       them (half-width, depth and frame-face y linear in z). Outside the band: the smooth loft, whose step runs
@@ -732,12 +732,12 @@ weight:
     goods; size M belt, J-straps, rain fly (owner: counts), meat harness'
   groups_g: {frame (printed branch body + carbon crown): 991.7, 'back-system spreader (Sandwich v2, BP-06)': 153.7,
     torso adjust (not in the frame line): 41.7, main bag: 353.4, bag-to-frame attachment (fairleads): 144.1, under-straps US1/US2 (cradle): 122.4,
-    accents: 52.7, rain fly: 74.6, pockets: 60.3, hipbelt (M): 334.3, harness: 212.5, back panel: 90.9, internal meat harness: 253.9,
+    accents: 52.7, rain fly: 74.7, pockets: 60.3, hipbelt (M): 334.3, harness: 212.5, back panel: 90.9, internal meat harness: 253.9,
     haul wraps (= compression): 108.1, misc: 35.9}
-  total_g: 3030.2
+  total_g: 3030.3
   total_lb: 6.68
   target_g: 2268
-  gap_g: 762.2
+  gap_g: 762.3
   weight_plan: analysis/bag_weight_plan.md (bag-side savings, owner choices)
   v31_tube_baseline: {total_g: 2224.1, frame_g: 569.2, back_panel_g: 75.2, misc_g: 36.1, source: 'geometry.yaml
       v3.1 (commit 6061796): carbon-tube frame v2, single 6 mm XLPE back sheet', used_by: huntkit/gendesign/frame_production.py
@@ -798,7 +798,7 @@ weight:
   - {group: under-straps US1/US2 (cradle), item: bag-floor channels, mass_g: 8.0, basis: huntkit/gendesign/meat_haul.py
       cradle_parts_g (meat_haul_modes.md)}
   - {group: accents, item: camo SH-01..05 (overlay mass), mass_g: 52.7, basis: computed}
-  - {group: rain fly, item: fly + fly pocket + flag sleeve, mass_g: 58.8, basis: computed}
+  - {group: rain fly, item: fly + fly pocket + flag sleeve, mass_g: 58.9, basis: computed}
   - {group: rain fly, item: 'fly elastic hem 3.0 m, #5 pocket zip + slider, tether', mass_g: 15.8, basis: elastic
       3 g/m ASSUMPTION (no record); records}
   - {group: pockets, item: floating side pockets x2, mass_g: 60.3, basis: computed + records}

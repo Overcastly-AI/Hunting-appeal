@@ -53,5 +53,5 @@ Merged on main:
 6. Close the weight gap (now 3030 g / 6.68 lb vs 5.0 lb). Bag side: owner answers on `analysis/bag_weight_plan.md` (OC-0 target, O-1..O-16). Spreader levers left (`spreader.md`): drop the cleat notches, a bottom-bay support from the lumbar struts, or relax the bone-at-notch-root case on a physical test
 7. Update `designs/apparel/camo/owner_base.yaml` and `designs/apparel/camo/DESIGN.md` for the real camo SVG
 8. Manufacturing-engineer: add the spreader (board, clips, pucks, pads, tubes) to the BOM / tech pack and the beginner release set in `outputs/release/`. Rebuild the base-weight BOM from the released cut list (plan cross-check: fly −13.6 g, accents −9.1 g vs the design estimate). The generator drift is fixed
-9. pattern-maker: re-run `patterns_v31.py` to confirm the setback adoption (expect sub-mm on the B-02 zip edges); materials-engineer: add the records the plan lists as missing
+9. materials-engineer: add the records `analysis/bag_weight_plan.md` lists as missing (70D ripstop, 20D silpoly, 300D printable, 25 mm cam/hook, #8 slider, seam tape, grid abrasion). Pattern-maker: nothing to regenerate; material-id swaps only if the owner accepts plan items
 10. Then: design-reviewer pass on the spreader and frame records, BOM/tech pack, and the apparel line

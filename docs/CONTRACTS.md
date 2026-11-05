@@ -112,3 +112,36 @@ FEA models keep the groups in §2 (`strap_bottom`, `strap_lumbar`, `strap_mid`, 
 `meat_face`). `meat_face` is the spreader, not the wearer's back. Pattern pieces for B-01 include
 the eight accepted swells. The procedure and the safety factors are in
 `designs/pack_5200/analysis/meat_haul_modes.md`.
+
+## 7. Cloth simulation (`huntkit.clothsim`, added 2026-11-05, additive)
+
+Batch static cloth simulator. It takes the real flat pattern pieces, sews them in 3D on their seam pairing,
+loads them and reports volume, shape, strain, seam line force and frame contact. Owner: structural-fea-engineer.
+Method: `docs/research/cloth_sim_methods.md`. Validation and limits: `designs/pack_5200/analysis/cloth_sim.md`.
+
+- **Pieces in** (`PieceSpec(name, edges, map3d, fabric, grain_deg, rest_map=None)`): `edges` = ordered
+  `[(edge_name, flat (k,2) mm, X3 (k,3) mm)]`. This is the seam line in the piece's flat frame, with the 3D
+  arranged position of the same points. `map3d(flat) -> 3D` places interior points. `rest_map` is an optional
+  flat-to-flat panel adjustment. Edges are sewn where their arranged 3D curves coincide within `tol`, which is
+  notch-position pairing. `assemble(specs, h, tol, outward_ref) -> (ClothMesh, diag)`. `diag["seams"]` and
+  `diag["free_segments"]` must be empty for a closed bag.
+- **Fabric** (`fabric(material_id) -> FabricModel`): `k_warp, k_weft` N/mm, `shear` N/mm/rad, `bending` N mm,
+  `compression` fraction, `areal_kg_mm2`, `strip_warp/weft` N/mm. These are derived from `data/materials` break
+  strengths and the ASSUMPTION elongations in `huntkit/clothsim/fabrics.yaml`. Seam strength
+  `seam_strength_n_mm(mat_a, mat_b, thread_id, stitch_mm, stitch)` = min(1.5 or 1.7 × thread break / stitch
+  length, `seam_efficiency` × weaker strip strength).
+- **Solver** (`Sim(mesh, terms).solve(x0, tol, max_iter, time_cap) -> (x, SolveInfo)`): static equilibrium
+  by damped Newton. Terms: `Membrane`, `Bending`, `Gravity`, `DeadLoad`, `Pressure` (p0 + ρ g (z_ref − z)),
+  `PressureProfile` (any p(z)), `GasFill` (polytropic contents), `Pins`, `Cables` (`Cable`: elastic
+  tension-only, or `T_const` cinched), `FieldContact` (`GapField` from STL samples), `Anchor`.
+- **Pack 5200** (`huntkit.clothsim.pack`): `PackModel(scenario)` + `run_case(pm, case)`. Pieces come from
+  `designs/pack_5200/patterns_v31.py` `build_body` (read only, cached in `outputs/clothsim/cache/`). The scenario
+  YAML (`huntkit/clothsim/scenarios/pack5200_v31.yaml`, `extends:` supported) holds the mesh, solver,
+  `panels:` adjustments (`scale_warp`, `scale_weft`, `material`, `*_scale`), `fabric_overrides`, seams,
+  contact, attachments, Janssen fill, meat (HA-LS-1 rev B §4.1) and cases.
+- **Outputs** (`python -m huntkit.clothsim.cli run|validate|diff`): `outputs/clothsim/<scenario>/results.json`.
+  Per case it holds `volume` (L), `pieces` (strain %, wrinkle area %, mass g), `hot_spots`, `seams`
+  (`max_n_mm`, `p95_n_mm`, `strength_n_mm`, `sf`), `attachments` (tension N, SF), `contact` (spreader and
+  frame force, footprint touching %), `profile`. It also writes `x_<case>.npy`, `clothsim_<case>.glb` and
+  `clothsim_<case>_viewer.html`. The viewer is `huntkit.viz3d`'s; `metrics.chips` / `metrics.subtitle` are an
+  optional header added to `viz3d.viewer` here. Units: mm, N, N/mm, L.

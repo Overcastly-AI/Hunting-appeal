@@ -445,11 +445,16 @@ def solve_profile():
     return W_SCALE, solve_fill_height()
 
 
-def ring_xy(t, Hf, M=RING_M):
+def ring_xy(t, Hf, M=RING_M, ruled=False):
     """Ring at fraction t: theta 0..pi = outer (aft) half from the wearer's RIGHT (+x) over to the
-    left; pi..2pi = frame half back to the right. Returns (M,3) points and z."""
+    left; pi..2pi = frame half back to the right. Returns (M,3) points and z.
+    ruled=False (default) is the MASTER LOFT: the surface patterns_v31.MasterSurface samples and then rules between
+    the two setback seams itself (it also places the zip in (q, z) on it). ruled=True is the as-sewn ring."""
     z = BAG_Z0 + t * Hf
-    a, d, yf = (float(v[0]) for v in prof(t, Hf))
+    if ruled:
+        a, d, yf = (float(v[0]) for v in prof(t, Hf))
+    else:
+        a, d, yf = float(half_width(t)), float(depth(t)), float(_y_frame_smooth(z)[0])
     b = d / 2
     yc = yf + b
     th = np.linspace(0, 2 * np.pi, M, endpoint=False)
@@ -481,7 +486,7 @@ def point_at_s(P, s_arr, sq):
 def outer_point_at_x(t, Hf, x):
     """Point on the OUTER half of ring t with lateral coordinate x (|x| < a)."""
     z = BAG_Z0 + t * Hf
-    a, d, yf = (float(v[0]) for v in prof(t, Hf))
+    a, d, yf = float(half_width(t)), float(depth(t)), float(_y_frame_smooth(z)[0])   # master loft (zip in (q, z))
     b = d / 2
     yc = yf + b
     u = np.clip(np.abs(np.asarray(x, float)) / a, 0, 1)
@@ -527,7 +532,7 @@ def mesh_check_volume(Hf, n=241, M=720):
     """Independent check: polygon (shoelace) area of the discretised rings, trapezoid in z."""
     A, Z = [], []
     for t in np.linspace(0, 1, n):
-        P, z = ring_xy(t, Hf, M)
+        P, z = ring_xy(t, Hf, M, ruled=True)
         x, y = P[:, 0], P[:, 1]
         A.append(0.5 * abs(np.dot(x, np.roll(y, -1)) - np.dot(y, np.roll(x, -1))))
         Z.append(z)
@@ -539,7 +544,7 @@ def bag_cg(Hf, n=201, M=720):
     V = Sy = Sz = 0.0
     dz = Hf / (n - 1)
     for t in np.linspace(0, 1, n):
-        P, z = ring_xy(t, Hf, M)
+        P, z = ring_xy(t, Hf, M, ruled=True)
         x, y = P[:, 0], P[:, 1]
         cross = x * np.roll(y, -1) - np.roll(x, -1) * y
         A = 0.5 * cross.sum()
@@ -558,7 +563,7 @@ def gore_panel(Hf, t0, t1, s_from, s_to, n=60):
     ts = np.linspace(t0, t1, n)
     mids, seamA, seamB, widths = [], [], [], []
     for t in ts:
-        P, _ = ring_xy(t, Hf)
+        P, _ = ring_xy(t, Hf, ruled=True)
         sm = ring_seams(P)
         sa, sb = s_from(sm), s_to(sm)
         if sb < sa:

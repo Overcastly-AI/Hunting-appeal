@@ -92,7 +92,8 @@ t = 0..1 runs from the bag bottom (z 35) to the fill line.
 sewable (10.5 % stretch on B-01, 8.5 % on the face, pattern-maker 2026-11-04). The setback is taken by a SETBACK seam at
 z 560 and a SHOULDER seam at z 631.2 (the diagonal zip's upper end); between them the surface is ruled ring to ring
 (half-width, depth and face y linear in z), outside it is the master loft (step 560 → 640, 29.0 mm of the 30 mm reached
-at the shoulder seam). This is exactly the surface `patterns_v31.MasterSurface` drafts. The profile is still solved on
+at the shoulder seam). This is exactly the surface `patterns_v31.MasterSurface` drafts (`ring_xy(..., ruled=True)` in the generator; the default
+stays the master loft the patterns sample). The profile is still solved on
 the master loft (width scale 1.0639, so the released patterns stay valid); the as-sewn volume is reported (−0.02 L).
 
 **Solve (owner rule):** D_PEAK = 302 mm is fixed; the half-width control curve is scaled by k and k is bisected so the
@@ -486,11 +487,11 @@ tragion, condyle pivot 30 mm below the tragion, C7/T1 pivot 60 mm anterior); 30�
   (seam mismatch now ≤ 5.8 mm: notch every 50 mm); delete S-01/S-05.
 - manufacturing-engineer: BUILD_PLAN steps 6 and 9 updated; meat-harness proof tests (§5.3) in QC. (2026-11-05)
   rebuild the base-weight BOM from the released cut list (fly −13.6 g, accents −9.1 g vs the design estimate).
-- pattern-maker (2026-11-05): re-run `patterns_v31.py` and confirm. No panel outline is meant to change: width scale
-  and fill height are unchanged and B-10 was already gone. Two inputs did move slightly: `BG.ring_xy` now applies the
-  ruled band inside z 560–631.2. In 3D the band rings move up to 3.4 mm in y (the whole ring follows the face; zip
-  points up to 2.8 mm, zip length 509.2 → 508.9 mm), but the zip's (q, z) pattern coordinates come from those same
-  rings, so expect sub-millimetre changes on the B-02a/B-02c/B-02d zip edges only. Accepted owner choices then change material ids only (list in the plan).
+- pattern-maker (2026-11-05): nothing to regenerate for this pass. Width scale, fill height and every function the
+  patterns call (`ring_xy`, `diagonal`, `ring_area` without Hf) still return the master loft (ruled band only with
+  `ruled=True` / an Hf argument), B-10 was already gone, and `tests/test_pack_patterns.py` passes. Accepted owner
+  choices from the weight plan change material ids only (list in the plan). Open item for you: confirm the design
+  zip line (on the master loft) vs the as-sewn band, up to 2.8 mm in y between z 560 and 631.2, needs no note.
 - materials-engineer (2026-11-05): records missing for the weight plan: 70D nylon ripstop, 20D silpoly, 300D printable
   polyester, 25 mm cam and hook, #8 slider, seam tape; abrasion value for `ultragrid_210d_uhmwpe_ripstop`.
 

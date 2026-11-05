@@ -1,7 +1,7 @@
 {
   "date": "2026-11-05",
-  "total_g": 3030.2,
-  "gap_g": 762.2,
+  "total_g": 3030.3,
+  "gap_g": 762.3,
   "items": [
     {
       "id": "W-01",
@@ -92,7 +92,7 @@
       "id": "O-7",
       "zone": "rain fly",
       "title": "Rain fly F-01 40D -> 20D silpoly",
-      "g": 8.5,
+      "g": 8.6,
       "usd": 1.89,
       "durability": "tear 25 -> 15 N; the fly is also the brush cover in rain",
       "source": "silicone_coated_poly_ripstop_40d record; 20D silpoly ASSUMPTION (no record)",
@@ -116,7 +116,7 @@
       "id": "O-9",
       "zone": "rain fly",
       "title": "Delete the fly: waterproof body (ULTRA 200 face + gores, taped seams), keep the flag sleeve",
-      "g": 82.1,
+      "g": 82.2,
       "usd": 23.94,
       "durability": "ULTRA's film backing is louder (quietness 2, R-13 quiet requirement), UHMWPE takes camo print poorly (record ir_notes), taped seams in a 3D teardrop are hard for a first-time builder",
       "source": "fly rows in geometry.yaml weight; challenge_ultra_200 record; seam tape 3 g/m ASSUMPTION; owner: fly counts in base",
