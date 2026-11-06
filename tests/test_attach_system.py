@@ -125,7 +125,9 @@ def test_mass_delta_and_budget(res):
     import yaml
     geo = yaml.safe_load((ROOT / "designs" / "pack_5200" / "geometry.yaml").read_text())
     assert geo["weight"]["groups_g"]["bag-to-frame attachment system"] == pytest.approx(m["delta_g"], abs=0.5)
-    assert geo["weight"]["total_g"] == pytest.approx(res["pack_after_g"], abs=1.0)
+    # Later owner changes booked after this record was written (docs/DECISIONS.md):
+    later_g = {"2026-11-06 orange flag sleeve F-03 removed": -6.5}
+    assert geo["weight"]["total_g"] == pytest.approx(res["pack_after_g"] + sum(later_g.values()), abs=1.0)
 
 
 def test_drawings_and_screens_exist(res):

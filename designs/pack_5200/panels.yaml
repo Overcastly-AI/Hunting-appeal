@@ -8,7 +8,7 @@ meta:
     mirror pairs (contract). Hipbelt pieces at size M. This is the DESIGN bill of panels (masses for the weight
     budget). The cut set is the v3.1 production patterns (designs/pack_5200/patterns_v31.py: two-ring-seam head
     setback, B-01b/B-01u/B-02c/B-02d, fairlead swells B-13..B-15); outputs/release/pack5200_v3.1_patterns.'
-  piece_count_total: 110
+  piece_count_total: 109
   gore_seam_check_mm:
     frame_side: {seam_from_3d_mm: 756.2, seam_from_pattern_mm: 756.7, seam_to_3d_mm: 756.2, seam_to_pattern_mm: 756.7}
     outer_face: {seam_from_3d_mm: 762.2, seam_from_pattern_mm: 768.0, seam_to_3d_mm: 762.2, seam_to_pattern_mm: 768.0}
@@ -879,21 +879,7 @@ panels:
   cut_area_m2_each: 0.0328
   mass_g_total: 5.9
   notes: 'BASE pocket under B-05, #5 coil zip along the bottom''s aft edge (fly deploys upward over the bag); holds
-    fly + orange flag sleeve'
-  seam_line_mm: null
-- id: F-03
-  name: orange flag sleeve
-  sub_assembly: fly
-  material_id: robic_210d_ripstop
-  approx_size_mm: [300, 120]
-  qty_total: 1
-  mirror_pair: false
-  seam_allowance_mm: 10.0
-  thickness_mm: null
-  zone: safety
-  cut_area_m2_each: 0.0448
-  mass_g_total: 6.3
-  notes: 'ASSUMPTION: blaze-orange colourway of robic_210d; slides over the crown top bar / accessory posts'
+    the fly'
   seam_line_mm: null
 - id: P-01
   name: side pocket face

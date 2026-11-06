@@ -154,7 +154,7 @@ W-01). 93 design pieces.
 | B-06/B-07 | Roll-top collar 1172 × 495 mm, hem + HDPE | `robic_100d_ripstop`, 330D | fill line 150 mm below the hem |
 | B-12 ×6 | Meat-strap port patch 40 × 60, slot 45 × 6 | `hypalon_coated_nylon` | carries no load (the stub eye passes through it) |
 | D-01 | SPINE stretch band | `poly_spandex_stretch_woven_printable` | develop_ruled_surface, strain 0.0 % |
-| F-01..03 | Fly, fly pocket, flag sleeve | 40D silpoly, 330D, 210D | counted in base |
+| F-01..02 | Fly, fly pocket (F-03 flag sleeve removed 2026-11-06) | 40D silpoly, 330D, 210D | counted in base |
 
 ### 4.5 Hardware families (tactile coding, R-25)
 
@@ -333,7 +333,7 @@ Status of every bag feature as the files stand. **FROZEN** = owner decision or s
 | Hydration | Sleeve B-09 on the inside of B-01, hose ports at the collar seam both sides | B-09 | **FROZEN** (R-19), with a check: the meat stack is cinched against B-01, so the bladder sits under the meat. Recommend the prototype checks the sleeve sits above IM3 (z ≥ 540) or hangs from the hem |
 | Spotter pocket | **None.** A spotter goes in a side pocket (2.88 L, 360 mm) or the band | — | **FROZEN** (owner 2026-11-05: none) |
 | Meat-bag sleeve | **None.** Meat in game bags goes straight into the main bag against B-01 (ULTRA 200, waterproof) and is cinched by IM1–IM3; drain grommets in B-05 | B-01, B-05, IM1–IM3 | **FROZEN** (owner 2026-11-05: no sewn sleeve) |
-| Rain fly | 40D silpoly fitted fly in its own base pocket, tethered, deploys upward; orange flag sleeve | F-01a–c, F-02, F-03 | **FROZEN** (owner: counts in base). Waterproof-body / no-fly option rejected (O-9) |
+| Rain fly | 40D silpoly fitted fly in its own base pocket, tethered, deploys upward (orange flag sleeve removed by owner 2026-11-06) | F-01a–c, F-02 | **FROZEN** (owner: counts in base). Waterproof-body / no-fly option rejected (O-9) |
 | Bag-to-frame attachment | Eight printed fairleads; hinge pins z 60, hooks at IM2/IM3 (IM3 on tab B-17), hinge-eye doublers B-18, two under-straps US1/US2; detach 40 s | swells B-13..B-15, hinge eyes, B-16 channels, B-17, B-18 | **RE-OPENED** (owner 2026-11-05): own research-first design phase. The cloth sim shows that the bag needs a top anchor (`analysis/bag_top_anchor.md`). **OPEN**: IM1 bag clip (DESIGN Q4) |
 | Compression | Roll-top + W1–W3 frame-anchored wraps + IM1–IM3 inside | keepers, G-hooks | **FROZEN** (D-20) |
 | Width at the shoulder blades | 15.5 in (394 mm) for a 42 in fill height | — | **FROZEN** (owner 2026-11-05: 15.5 in; the released patterns are cut at it) |
@@ -410,7 +410,7 @@ studies take their soft-goods basis from it (`frame_production.SOFT_GOODS_G`).
 | Bag-to-frame attachment system (crown hood B-19 + ladder B-20, 2 top guys + B-22, B-23 backings, rated bag hooks +20 g) | 131 | 4.6 | `attach_system_results.json` mass (attachment phase 2026-11-05; hood lip relieved at the corner wraps 2026-11-06, −4.5 g) |
 | Under-straps US1/US2 (cradle) | 122 | 4.3 | `meat_haul.cradle_parts_g` |
 | Camo accents | 53 | 1.9 | computed |
-| Rain fly + pocket + flag sleeve + hem + zip (owner: counts) | 75 | 2.6 | computed |
+| Rain fly + pocket + hem + zip (owner: counts) | 75 | 2.6 | computed |
 | Floating side pockets | 60 | 2.1 | computed |
 | Hipbelt M | 334 | 11.8 | computed; centre plate ASSUMPTION |
 | Harness (J-straps, yoke plate, lifters, sternum) | 213 | 7.5 | computed |
@@ -585,7 +585,7 @@ compression in carry mode and the meat sling in haul mode.
 | R-08* | Frame-only haul: bag off in ≤ 2 min (2 hinge pins + 4 toggles); shelf lip + wraps W1/W2 hold one bone-in quarter (≤ 36 kg) with < 25 mm slip after 30 min | Field test, sandbag dummy |
 | R-09* | Meat mode in **3 steps, no re-routing**: (1) pop 4 LINK toggles, (2) let out W1–W3, bag hinges back 250 mm on its bottom pins, (3) load high and tight, cinch. Bay ≥ 39 L | Timed (≤ 90 s), measured |
 | R-10* | Extension posts are an ACCESSORY and **lash/flag points only**. Load lifters stay on the crown top bar at every setting and never move to the posts (IP: Mystery Ranch US 10,952,523, [R §6]) | Drawing check |
-| R-11 | Head/antler/cape lashing, orange flag sleeve (stows in the fly pocket) | Inspection |
+| R-11 | Head/antler/cape lashing (orange flag sleeve removed by owner 2026-11-06) | Inspection |
 | R-12 | Meat-zone materials blood/wash tolerant, closed-cell foam only, drain grommets | BOM check |
 | R-13* | Quiet: no hook-and-loop; **no film laminate on any exposed face** (Challenge Ultra 200 only on the hidden frame-side panel and the shelf lip); coil zips; magnetic sternum | BOM + brush-drag test |
 | R-14* | **Complete system ≤ 2268 g (5.0 lb)** with M belt, J-straps, fly and shelf lip; frame at its 650 g allocation. Current 2228 g (4.91 lb) | Scale |
@@ -704,7 +704,7 @@ max strain 0.07 % (developable).
 | B-07 | Roll hem + 0.8 × 20 mm HDPE strip | `cordura_330d_nylon66` + `hdpe_sheet` | clean roll, camo SH-03 overlay |
 | D-01 | SPINE stretch band | `poly_spandex_stretch_woven_printable` | overload / bow cam / pole pocket |
 | SH-01..05 | Camo accents | `polyester_ht_630d_printable` | lower corners, band-mouth binding, roll band, cam cup, belt tips |
-| F-01..03 | Rain fly, fly pocket, flag sleeve | `silicone_coated_poly_ripstop_40d`, 330D, 210D | fly 1.05 m² |
+| F-01..02 | Rain fly, fly pocket | `silicone_coated_poly_ripstop_40d`, 330D, 210D | fly 1.05 m² |
 | P-01..03 | Floating side pockets | `ultragrid_210d_uhmwpe_ripstop` + 100D back | wraps pass under them |
 | S-01/S-05 | Shelf lip skins + 1.0 mm HDPE | `challenge_ultra_200`, `hdpe_sheet` | 260 × 200 |
 
@@ -753,7 +753,7 @@ float on long straps, and a stowed 25 mm waist strap turns it into a hip pack (E
 | Torso adjust (rack + pawl 50, 3:1 pulley 46) | 96 | 3.4 | v2 (computed rack + ASSUMPTIONs) |
 | Main bag (gores, collar, hem + HDPE, zip, roll clips, LINK, keepers) | 415 | 14.6 | computed: cut area × gsm + records |
 | Camo accents | 53 | 1.9 | computed |
-| Rain fly + pocket + flag sleeve + hem elastic | 78 | 2.7 | computed; elastic 3 g/m ASSUMPTION |
+| Rain fly + pocket + hem elastic | 78 | 2.7 | computed; elastic 3 g/m ASSUMPTION |
 | Floating side pockets | 60 | 2.1 | computed |
 | Hipbelt M (2-stage lumbar, wings, pockets, rifle tabs, 50 mm buckle, centre plate) | 334 | 11.8 | computed; centre plate 45 g ASSUMPTION |
 | Harness (J-straps, shaped yoke plate, lifters, sternum) | 213 | 7.5 | computed |
@@ -851,7 +851,7 @@ to make a 40 L meat bay. The frame also works alone in frame-only haul mode.
 | R-08 | Frame-only haul mode: bag off in ≤ 2 min; shelf + load wings hold one bone-in elk hindquarter (≤ 36 kg / 80 lb) with < 25 mm slip after a 30 min hike | Field test with a sandbag dummy |
 | R-09 | Meat bay: the bag pulls back ≥ 250 mm and the shelf holds ≥ 40 L of game bags between the frame and bag | Measured |
 | R-10 | Tall-load mode: the crown top bar has sockets on every frame. The **extension posts are an accessory** (+220 mm) | Measured |
-| R-11 | Head, antler and cape carry: ≥ 12 Hypalon lash tabs with no open daisy loops; an orange flag sleeve stows in the lid and mounts on the crown top / extension posts | Inspection |
+| R-11 | Head, antler and cape carry: ≥ 12 Hypalon lash tabs with no open daisy loops (orange flag sleeve removed by owner 2026-11-06) | Inspection |
 | R-12 | Meat-zone materials are blood- and wash-tolerant: hydrolysis rating ≥ 4, closed-cell foam only, ≥ 4 drain grommets, no PU memory foam | BOM check against `data/materials` |
 | R-13 | Quiet hunt mode: no hook-and-loop anywhere, no film laminate on exposed faces, coil zips with cord pulls in garages, magnetic sternum and lid buckles | BOM check; a brush-drag sound test against a control pack |
 | R-14 | Base mass ≤ 3.1 kg (6.8 lb) for the size-M hipbelt and J-straps, with the rifle boot and the extension-post accessory excluded. Budget: 3.01 kg. Stretch goal 3.0 kg (levers in §11) | Scale |
@@ -1052,8 +1052,8 @@ strap is 20 mm below C7 and 140 mm forward of the anchor. The iliac crest sits a
 - **Head / antlers / cape**: the cape goes in a game bag in the bay. The skull sits on top of the
   bag, under the lid (the lid detaches and re-buckles over the skull plate on 4 long straps), with
   the antlers pointing up and aft. Twelve Hypalon lash tabs (no daisy loops to snag brush) carry
-  the lashing. The **orange flag sleeve** stows in the lid and slides over the crown top bar or
-  accessory extension posts for hunter safety when packing out antlers.
+  the lashing. (The orange flag sleeve was removed by the owner on 2026-11-06; carry your own
+  blaze orange if your state requires it.)
 - Both rifle and bow carry mount to things that don't move when the bag pulls back. **The rifle
   carry is ambidextrous** (v2). One butt boot (`R-01/02`) clips to **either** hipbelt wing through
   2 Hypalon mount tabs per wing (`R-03`, both sides). Muzzle loops sit on the upper compression
@@ -1071,8 +1071,8 @@ strap is 20 mm below C7 and 140 mm forward of the anchor. The iliac crest sits a
 - **Access**: a top opening with a 150 mm extension collar (drawcord) under the lid, plus full-length
   zips on **both** sides, each in a garage (`B-08` ×2) so it can't be heard or snagged.
 - **Lid**: 320 × 280 × 80 mm. The top is 210D with a camo shard, the underside is TPU 840D. It has
-  an AquaGuard #8 front zip and an under-lid flat pocket (#5 zip). It's removable, holds the
-  orange flag sleeve, and converts to a skull cap.
+  an AquaGuard #8 front zip and an under-lid flat pocket (#5 zip). It's removable and converts
+  to a skull cap.
 - **Pockets**: 2 bellowed side pockets (Ultragrid 210D, 3.99 L each) for a tripod, trekking poles
   or a bottle. 2 hipbelt pockets (0.97 L each, rangefinder-sized). Under-lid pocket 1.29 L.
   Hydration sleeve inside.

@@ -260,7 +260,7 @@ def frame_topology():
                       "travel_mm": round(TORSO_IN[1] * IN - TORSO_IN[0] * IN, 1),
                       "positions": "continuous (lock resolution 4 mm); table lists 0.5 in reference settings"},
             "extension_posts_accessory": {"length_mm": 220.0,
-                                          "note": "ACCESSORY (owner 2026-11-01): two plug-in posts + bar, LASH/FLAG POINTS ONLY (antlers, tall loads, orange flag). Load lifters NEVER move to the posts; they stay on the crown top bar at every setting (IP: Mystery Ranch US 10,952,523). Sockets in the crown top bar stay on every frame; not in base weight"},
+                                          "note": "ACCESSORY (owner 2026-11-01): two plug-in posts + bar, LASH POINTS ONLY (antlers, tall loads; orange flag sleeve removed by owner 2026-11-06). Load lifters NEVER move to the posts; they stay on the crown top bar at every setting (IP: Mystery Ranch US 10,952,523). Sockets in the crown top bar stay on every frame; not in base weight"},
         },
         "hard_points": hp,
         "crown_settings": settings,
@@ -748,10 +748,7 @@ def build_panels(Hf, diag):
         "weather", "fly", f"pattern = covered bag surface x 1.12 ({fly_area / 1e6:.2f} m2); tethered in its base pocket")
     add(rect_panel("fly pocket", 190.0, 140.0, 20.0, seam_allowance_mm=10.0, material_id="cordura_330d_nylon66",
                    piece_id="F-02"),
-        "weather", "fly", "BASE pocket under B-05, #5 coil zip along the bottom's aft edge (fly deploys upward over the bag); holds fly + orange flag sleeve")
-    add(rect_panel("orange flag sleeve", 300.0, 120.0, 0.0, seam_allowance_mm=10.0, material_id="robic_210d_ripstop",
-                   piece_id="F-03"),
-        "safety", "fly", "ASSUMPTION: blaze-orange colourway of robic_210d; slides over the crown top bar / accessory posts")
+        "weather", "fly", "BASE pocket under B-05, #5 coil zip along the bottom's aft edge (fly deploys upward over the bag); holds the fly")
 
     # ---- floating side pockets (x2): own back panel, haul wraps pass UNDER them
     sp = tapered_panel("side pocket face", 170.0, 150.0, 360.0, material_id="ultragrid_210d_uhmwpe_ripstop",
@@ -1285,7 +1282,7 @@ def weight_budget(P, Hf, diag, wraps, info):
     for item, g in cradle_parts_g().items():
         row("under-straps US1/US2 (cradle)", item, float(g), "huntkit/gendesign/meat_haul.py cradle_parts_g (meat_haul_modes.md)")
     row("accents", "camo SH-01..05 (overlay mass)", sub_mass["accents"], "computed")
-    row("rain fly", "fly + fly pocket + flag sleeve", sub_mass["fly"], "computed")
+    row("rain fly", "fly + fly pocket", sub_mass["fly"], "computed")
     row("rain fly", "fly elastic hem 3.0 m, #5 pocket zip + slider, tether", 3.0 * 3 + hw("coil_zipper_5", length_m=0.18) + 3 + 2,
         "elastic 3 g/m ASSUMPTION (no record); records")
     row("pockets", "floating side pockets x2", sub_mass["pockets"] + 2 * hw("cord_lock_spring") + hw("dyneema_cord_2mm", length_m=0.8),
@@ -1813,7 +1810,7 @@ def plot(Hf, topo, geom, diag, P):
         ax.text(0, zm - 22, f"{m['id']} (inside bag)", ha="center", fontsize=7, color="#6b5a3a")
     ax.text(0, -60, "Diamonds = meat-strap stubs at bonded nodes\n(z 190 / 330 / 520), through ports in B-01.\n"
                     "Haul wraps (o = G-hook, square = ladder lock)\n= compression + bay closure.\n"
-                    "Lifters stay on the crown at every setting (posts = lash/flag only).", ha="center", fontsize=8)
+                    "Lifters stay on the crown at every setting (posts = lash only).", ha="center", fontsize=8)
     for a_ in axs:
         a_.set_aspect("equal"); a_.axis("off")
     axs[0].set_xlim(-330, 330); axs[0].set_ylim(-170, z_top + 80)

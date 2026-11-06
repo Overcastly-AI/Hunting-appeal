@@ -50,9 +50,9 @@ frame:
       travel_mm: 203.2
       positions: continuous (lock resolution 4 mm); table lists 0.5 in reference settings
     extension_posts_accessory: {length_mm: 220.0, note: 'ACCESSORY (owner 2026-11-01): two plug-in posts + bar,
-        LASH/FLAG POINTS ONLY (antlers, tall loads, orange flag). Load lifters NEVER move to the posts; they stay
-        on the crown top bar at every setting (IP: Mystery Ranch US 10,952,523). Sockets in the crown top bar stay
-        on every frame; not in base weight'}
+        LASH POINTS ONLY (antlers, tall loads; orange flag sleeve removed by owner 2026-11-06). Load lifters NEVER
+        move to the posts; they stay on the crown top bar at every setting (IP: Mystery Ranch US 10,952,523). Sockets
+        in the crown top bar stay on every frame; not in base weight'}
   hard_points:
     stay_foot_R: [115.0, 0.0, 0.0]
     stay_foot_L: [-115.0, 0.0, 0.0]
@@ -732,13 +732,13 @@ weight:
     goods; size M belt, J-straps, rain fly (owner: counts), meat harness'
   groups_g: {frame (printed branch body + carbon crown): 1062.6, 'back-system spreader (Sandwich v2, BP-06)': 162.3,
     torso adjust (not in the frame line): 41.7, main bag: 365.5, bag-side load spreaders: 27.8, bag-to-frame attachment (fairleads): 144.1,
-    bag-to-frame attachment system: 131.4, under-straps US1/US2 (cradle): 122.4, accents: 52.7, rain fly: 74.7,
+    bag-to-frame attachment system: 131.4, under-straps US1/US2 (cradle): 122.4, accents: 52.7, rain fly: 68.4,
     pockets: 60.3, hipbelt (M): 334.3, harness: 212.5, back panel: 251.3, internal meat harness: 253.9, haul wraps (= compression): 108.1,
-    misc: 41.6}
-  total_g: 3447.2
-  total_lb: 7.6
+    misc: 41.4}
+  total_g: 3440.7
+  total_lb: 7.59
   target_g: 2268
-  gap_g: 1179.2
+  gap_g: 1172.7
   weight_plan: analysis/bag_weight_plan.md (bag-side savings, owner choices)
   v31_tube_baseline: {total_g: 2224.1, frame_g: 569.2, back_panel_g: 75.2, misc_g: 36.1, source: 'geometry.yaml
       v3.1 (commit 6061796): carbon-tube frame v2, single 6 mm XLPE back sheet', used_by: huntkit/gendesign/frame_production.py
@@ -832,7 +832,7 @@ weight:
   - {group: under-straps US1/US2 (cradle), item: bag-floor channels, mass_g: 8.0, basis: huntkit/gendesign/meat_haul.py
       cradle_parts_g (meat_haul_modes.md)}
   - {group: accents, item: camo SH-01..05 (overlay mass), mass_g: 52.7, basis: computed}
-  - {group: rain fly, item: fly + fly pocket + flag sleeve, mass_g: 58.9, basis: computed}
+  - {group: rain fly, item: fly + fly pocket, mass_g: 52.6, basis: computed}
   - {group: rain fly, item: 'fly elastic hem 3.0 m, #5 pocket zip + slider, tether', mass_g: 15.8, basis: elastic
       3 g/m ASSUMPTION (no record); records}
   - {group: pockets, item: floating side pockets x2, mass_g: 60.3, basis: computed + records}
@@ -856,4 +856,4 @@ weight:
     basis: records; lengths from the 3D teardrop (haul_wraps)}
   - {group: haul wraps (= compression), item: 3 aluminium G-hooks (HAUL family) + 3 ladder locks, mass_g: 24, basis: G-hook
       4 g ASSUMPTION (no record); ladder lock record}
-  - {group: misc, item: thread (~3 % of soft goods) + labels, mass_g: 41.6, basis: ASSUMPTION}
+  - {group: misc, item: thread (~3 % of soft goods) + labels, mass_g: 41.4, basis: ASSUMPTION}

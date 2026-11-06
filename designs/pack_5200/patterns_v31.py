@@ -813,7 +813,7 @@ def build_pockets(ps: PatternSet, S: MasterSurface):
         f02.add_internal_line([(20, yc + CHANNEL_W / 2), (210, yc + CHANNEL_W / 2)], "stitch", f"B-16 channel {k + 1} edge")
     for f in (0.25, 0.5, 0.75):
         f02.add_notch_on_edge("bottom", f, label="quarter")
-    ps.add(f02, "fly", "BASE pocket under B-05, #5 coil zip along the floor's aft edge; holds fly + flag sleeve; "
+    ps.add(f02, "fly", "BASE pocket under B-05, #5 coil zip along the floor's aft edge; holds the fly; "
                        "carries the two under-strap channels on its face")
     b16 = rect_panel("under-strap floor channel", 190.0, CHANNEL_W, 0.0, piece_id="B-16",
                      material_id="cordura_500d_nylon66", seam_allowance_mm={"default": SA_301, "left": 15.0, "right": 15.0},
@@ -825,10 +825,6 @@ def build_pockets(ps: PatternSet, S: MasterSurface):
                                              ("c", [(190, 1), (0, 1)]), ("d", [(0, 1), (0, 0)])])
         ps.virtual[vc.name] = vc
         ps.seams.append(Seam(b16.edge("bottom"), vc.edge("a"), name=f"B-16 channel {k} | F-02 placement"))
-    f03 = rect_panel("orange flag sleeve", 300.0, 120.0, 0.0, piece_id="F-03", material_id="robic_210d_ripstop",
-                     seam_allowance_mm=SA_301)
-    ps.add(f03, "fly", "ASSUMPTION blaze-orange colourway of robic_210d; tube, long edges sewn")
-    ps.seams.append(Seam(f03.edge("bottom"), f03.edge("top"), name="F-03 flag sleeve tube seam"))
 
 
 # ---------------------------------------------------------------------------- rain fly

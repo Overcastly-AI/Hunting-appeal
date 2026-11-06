@@ -1,7 +1,7 @@
 {
   "date": "2026-11-05",
-  "total_g": 3030.3,
-  "gap_g": 762.3,
+  "total_g": 3440.7,
+  "gap_g": 1172.7,
   "items": [
     {
       "id": "W-01",
@@ -115,7 +115,7 @@
     {
       "id": "O-9",
       "zone": "rain fly",
-      "title": "Delete the fly: waterproof body (ULTRA 200 face + gores, taped seams), keep the flag sleeve",
+      "title": "Delete the fly: waterproof body (ULTRA 200 face + gores, taped seams)",
       "g": 82.2,
       "usd": 23.94,
       "durability": "ULTRA's film backing is louder (quietness 2, R-13 quiet requirement), UHMWPE takes camo print poorly (record ir_notes), taped seams in a 3D teardrop are hard for a first-time builder",
@@ -211,14 +211,14 @@
   ],
   "cut_list_cross_check": {
     "main bag": {
-      "design_g": 272.9,
+      "design_g": 362.4,
       "cut_list_g": 273.1,
-      "delta_g": 0.2
+      "delta_g": -89.3
     },
     "fly": {
-      "design_g": 58.9,
+      "design_g": 52.6,
       "cut_list_g": 45.3,
-      "delta_g": -13.6
+      "delta_g": -7.3
     },
     "pockets": {
       "design_g": 53.3,

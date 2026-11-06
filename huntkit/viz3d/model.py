@@ -391,7 +391,7 @@ def build_pack(params: dict | None = None) -> PackModel:
         parts.append(Part(f"crown{tag}", G.concat(legs + [spine, yoke_plate]), "carbon", "frame", torso=tin,
                           label=f"Telescoping crown ({tin:g} in setting)"))
         parts.append(Part(f"crown_fittings{tag}", G.concat(cfit), "fitting", "frame", torso=tin))
-        # extension posts + orange flag sleeve (haul modes)
+        # extension posts (haul modes; orange flag removed by owner 2026-11-06)
         post = []
         ph = ((topo.get("extension_posts_accessory") or fr.get("extension_posts_accessory") or {})
               .get("length_mm", 220.0))
@@ -403,10 +403,6 @@ def build_pack(params: dict | None = None) -> PackModel:
                            tubes["post_od"] / 2, n=24, tile=40.0))
         parts.append(Part(f"extension_posts{tag}", G.concat(post), "carbon", "haul", torso=tin, modes=HAULM,
                           label="Extension posts (tall loads)"))
-        flag = G.concat([G.tube([tb - [95, 0, 0], tb + [95, 0, 0]], tubes["post_od"] / 2 + 4, n=24, tile=G.TILE_MM),
-                         G.plate(Polygon([(-95, 0), (95, 0), (95, -150), (0, -120), (-95, -150)]),
-                                 tb + [0, 0, -tubes["post_od"] / 2], [1, 0, 0], [0, 0, 1], 2.0, tile=G.TILE_MM)])
-        parts.append(Part(f"orange_flag{tag}", flag, "blaze", "haul", torso=tin, modes=HAULM, label="Orange flag sleeve"))
         crown_info[tin] = cs
 
     def _legacy_box_bag():

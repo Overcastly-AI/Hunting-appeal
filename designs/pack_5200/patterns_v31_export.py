@@ -435,7 +435,7 @@ def make_screens(ps, markers, markers10, log):
 STEPS = [
     ("step3_hipbelt_pocket", "Step 3: hipbelt pocket (make 3, keep 2)", lambda ps: [ps.graded["HP-01"]["M"], ps.graded["HP-02"]["M"]]),
     ("step4_shard_practice", "Step 4: camo shard + lash tab practice", lambda ps: [ps.pieces["SH-01"], ps.pieces["SH-04"], ps.pieces["B-11"]]),
-    ("step5_collar_fly", "Step 5: roll-top collar + rain fly", lambda ps: [ps.pieces[k] for k in ("B-06", "B-07", "B-07s", "SH-03", "F-01a", "F-01c", "F-01b", "F-02", "F-03", "B-16")]),
+    ("step5_collar_fly", "Step 5: roll-top collar + rain fly", lambda ps: [ps.pieces[k] for k in ("B-06", "B-07", "B-07s", "SH-03", "F-01a", "F-01c", "F-01b", "F-02", "B-16")]),
     ("step6_meat_ports_swells", "Step 6: meat ports + fairlead swell (practise one swell on scrap)", lambda ps: [ps.pieces[k] for k in ("B-12", "B-13", "B-14a", "B-14b", "B-15a", "B-15b")]),
     ("step7_back_panel_harness", "Step 7: back panel + shoulder straps (J and S)", lambda ps: [ps.pieces[k] for k in ("BP-01", "BP-02", "BP-03", "BP-04", "BP-05", "BP-07", "HS-05")] + [g for k in ("HS-1", "HS-2", "HS-3", "HS-4") for g in ps.graded[k].values()]),
     ("step8_hipbelt_S", "Step 8: hipbelt size S", lambda ps: _belt(ps, "S")),

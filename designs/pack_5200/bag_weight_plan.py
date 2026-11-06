@@ -184,8 +184,8 @@ def items(geom, ctx, P):
     fly_g = sum(v for k, v in w.items() if k.startswith("fly"))
     face_g, face_c, _ = swap(P, ["B-02a", "B-02b", "B-03"], "challenge_ultra_200")
     tape = 6.0 * 3.0                       # ASSUMPTION: 6 m of seam tape at 3 g/m (no record)
-    add(id="O-9", zone="rain fly", title="Delete the fly: waterproof body (ULTRA 200 face + gores, taped seams), keep the flag sleeve",
-        g=fly_g - BG.piece_mass(P["F-03"]) + face_g - tape, usd=face_c + 8.0,
+    add(id="O-9", zone="rain fly", title="Delete the fly: waterproof body (ULTRA 200 face + gores, taped seams)",
+        g=fly_g + face_g - tape, usd=face_c + 8.0,
         durability=("ULTRA's film backing is louder (quietness 2, R-13 quiet requirement), UHMWPE takes camo print poorly "
                     "(record ir_notes), taped seams in a 3D teardrop are hard for a first-time builder"),
         source="fly rows in geometry.yaml weight; challenge_ultra_200 record; seam tape 3 g/m ASSUMPTION; owner: fly counts in base",
