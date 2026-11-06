@@ -63,11 +63,12 @@ Margin = SF / requirement; pass ≥ 1.00. Each row is the worse of the crown-bar
 | spreader 7 mm core | first-ply failure | **1.25** | US2 corner relief | factored meat + bone | yes |
 | spreader 7 mm core | fatigue (FI <= 0.5 at 1.6 g) | **1.09** | US2 corner relief | walking | yes |
 | spreader 7 mm core | sandwich local (core shear, wrinkling, crush) | **1.11** | bone patch | factored | yes |
-| spreader 7 mm core | no bottoming: walking air / 3 mm mesh | **3.05** | walking | air >= 3 mm | yes |
+| spreader 7 mm core | no bottoming: walking air / 3 mm mesh | **4.16** | walking | air >= 3 mm | yes |
+| spreader 7 mm core | skin pressure over the rails (comfort, <= 14 kPa) | **1.01** | 13.83 kPa, x 96, z 412 | rail r120_b80, Golriz 2017 | yes |
 
 **Every HA-LS-1 rev C check passes** on the released parts.
 
-Not part of HA-LS-1, flagged: walking **skin pressure over the back rails 15.5 kPa** against the 14 kPa comfort limit (Golriz 2017) at the 190 mm meat CG. The sheet cannot fix it (it is the meat's forward force over the two stay rails). **Owner: pack-designer** (back panel / rails); not changed here, as instructed. This record uses `spreader.RAIL_DESIGN` (100 mm rails); the pack-designer's rail change (`analysis/back_rail.md`, 120 mm rails on 80 mm backers) is not in `RAIL_DESIGN` yet.
+Comfort (not HA-LS-1): walking **skin pressure over the back rails 13.83 kPa** at the 190 mm meat CG, against the 14 kPa limit (Golriz 2017), with the released rails (`spreader.RAIL_DESIGN` = `back_rail.released()`, r120_b80: 120 mm L200 rails on 80 mm 1 mm-twill backers, pack-designer D-32). It agrees with the pack-designer's 13.77 kPa (named positions, 2 mm); the 24 mm bone grid finds the worst at x 96, z 412. With the old 100 mm rails it was 15.5 kPa. Margin to the limit is small (1 %).
 
 ## 1. Printed body (2 mm voxels, FI99), min margin per case
 
@@ -167,10 +168,10 @@ Meat CG 190 mm (`spreader.MEAT_CG_MM`, from the load standard). Release procedur
 | first-ply SF | 1.25 (US2 corner relief) | 1.13 | ≥ 1.0 factored |
 | fatigue SF | 1.09 | 0.98 | FI ≤ 0.5 at 1.6 g |
 | sandwich local SF | 1.11 | 0.99 | ≥ 1.0 |
-| air walking / factored, mm | 9.2 / 2.1 | 9.4 / 2.5 | ≥ 3 / ≥ 0 |
-| info: factored lean-torso air, gutter-bulge skin model, mm | -2.8 | -2.4 | sensitivity |
-| factored lean-torso air with the lumbar-pan skin reference, mm | **6.5** | – | ≥ 0 (spreader_layout.md re-check method) |
-| skin pressure, kPa (comfort, not HA-LS-1) | 15.5 | 15.4 | ≤ 14: pack-designer |
+| air walking / factored, mm | 12.5 / 6.1 | 12.7 / 6.6 | ≥ 3 / ≥ 0 |
+| info: factored lean-torso air, gutter-bulge skin model, mm | 2.6 | 3.0 | sensitivity |
+| factored lean-torso air with the lumbar-pan skin reference, mm | **11.9** | – | ≥ 0 (spreader_layout.md re-check method) |
+| skin pressure, kPa (comfort, not HA-LS-1; released 120 mm rails) | 13.83 | 13.77 | ≤ 14 |
 | mass installed, g | 162.3 | 153.5 | |
 
 Sheet 7.44 mm (7 mm core + 2 × 0.22 mm skins). Clip slot depth +1.0 mm (`spreader_v2_clip.dxf`, regenerated for the 7.44 mm sheet), clip SF 71.7. Files: `designs/pack_5200/cut/spreader/spreader_v2_cut.dxf`, `designs/pack_5200/cut/spreader/spreader_v2_clip.dxf`, `designs/pack_5200/cut/spreader/spreader_v2_drawing.pdf`. Cost about $207.

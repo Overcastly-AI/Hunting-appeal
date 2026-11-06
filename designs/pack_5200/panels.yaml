@@ -1397,14 +1397,14 @@ panels:
     the skin (analysis/back_rail.md). 80 mm since 2026-11-06 (the model''s 60 mm strip was never booked before).'
   seam_line_mm: null
 - id: BP-06
-  name: 'window spreader, Sandwich v2: 200 g twill / 6 mm ROHACELL 110 / 200 g twill'
+  name: 'window spreader, Sandwich v2: 200 g twill / 7 mm ROHACELL 110 (rev C) / 200 g twill'
   sub_assembly: back_panel
   material_id: rohacell_110_igf
   approx_size_mm: [242, 318]
   qty_total: 1
   mirror_pair: false
   seam_allowance_mm: 0.0
-  thickness_mm: 6.44
+  thickness_mm: 7.44
   zone: back panel
   cut_area_m2_each: 0.0716
   mass_g_total: 106.6

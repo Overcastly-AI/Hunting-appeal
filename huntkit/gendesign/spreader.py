@@ -773,11 +773,34 @@ def backer_mass_g(kind: str) -> float:
     return 2 * w * RAIL_L * t * float(load(mid).require("density_kg_m3")) / 1e6
 
 
-RAIL_DESIGN = {"layers": "xlpe10", "backer": "tw10_60"}     # chosen rail build (see rail_options)
+RAIL_DESIGN_REV_B = {"layers": "xlpe10", "backer": "tw10_60"}   # 100 mm rail on a 60 mm 1 mm-twill backer (to 2026-11-05)
+
+
+def _released_rail():
+    """The released back-rail build (pack-designer, analysis/back_rail.md, D-32): 120 mm L200 rails on 80 mm
+    1 mm-twill backers. ``huntkit.gendesign.back_rail.released()`` is the single source."""
+    from .back_rail import released
+    return released()
+
+
+# 2026-11-06 (HA-LS-1 rev C): the rail build is the released back_rail.Rail; RAIL_W / GUTTER_HALF follow it. Pass
+# RAIL_DESIGN_REV_B (and set RAIL_W 100 / GUTTER_HALF 65) to reproduce the rev B spreader records.
+RAIL_DESIGN = _released_rail()
+RAIL_W, RAIL_L, RAIL_T = RAIL_DESIGN.width, RAIL_DESIGN.length, RAIL_DESIGN.foam_t
+GUTTER_HALF = STAY_X - RAIL_W / 2.0                       # 55 mm: rail inner edge (was 65 with the 100 mm rail)
+
+
+def _rail_key(rail) -> tuple:
+    if isinstance(rail, dict):
+        return ("dict", rail["layers"], rail["backer"])
+    return ("rail", rail.key, rail.width, rail.backer_w, rail.backer_t, rail.foam, rail.foam_t)
 
 
 def rail_eval(q_line: float, rail=None, tissue_kpa: float = TISSUE_E_KPA) -> dict:
     rail = rail or RAIL_DESIGN
+    if not isinstance(rail, dict):                       # a back_rail.Rail (the released build)
+        from .back_rail import section
+        return section(rail, q_line, tissue_kpa)
     layers = rail_layers(rail["layers"])
     D = backer_D(rail["backer"])
     if D > 0:
@@ -797,10 +820,10 @@ def skin_pressure(bone_side_n: float, kind: str = "walk", rail=None, tissue_kpa:
     # the key carries the meat force itself: a caller that changes the meat load (MEAT_CG_MM, or a patched
     # meat_normal_n) gets a fresh solve (bug fixed 2026-11-06: the key used to omit it, frame_cg_recheck.md §5)
     g_kind = {"walk": 1.6, "factored": 3.0, "static": 1.0}[kind]
-    key = (round(float(bone_side_n) / 2.0) * 2.0, kind, rail["layers"], rail["backer"], float(tissue_kpa),
-           round(float(bone_total_n)), round(float(meat_normal_n(g_kind)), 3))
+    key = (round(float(bone_side_n) / 2.0) * 2.0, kind, _rail_key(rail), float(tissue_kpa),
+           round(float(bone_total_n)), round(float(meat_normal_n(g_kind)), 3), id(rail_eval))
     if key not in _SKIN_CACHE:
-        _SKIN_CACHE[key] = _skin_pressure(key[0], kind, rail, tissue_kpa, key[5])
+        _SKIN_CACHE[key] = _skin_pressure(key[0], kind, rail, tissue_kpa, key[4])
     return dict(_SKIN_CACHE[key])
 
 

@@ -879,8 +879,8 @@ def build_panels(Hf, diag):
             # owner 2026-11-05: production spreader = Sandwich v2 (BP-06 rev B, analysis/spreader.md). Cut from the
             # DXF in cut/spreader/; material_id is the core, skins cfrp_t300_3k_woven_epoxy_ply. Mass and cut area
             # from analysis/spreader_results.json (chosen). In the weight budget it is its own line (installed mass).
-            ("BP-06", "window spreader, Sandwich v2: 200 g twill / 6 mm ROHACELL 110 / 200 g twill", 242.0, 318.0,
-             "rohacell_110_igf", "sheet", 6.44,
+            ("BP-06", "window spreader, Sandwich v2: 200 g twill / 7 mm ROHACELL 110 (rev C) / 200 g twill", 242.0, 318.0,
+             "rohacell_110_igf", "sheet", 7.44,
              "Owner 2026-11-05: production spreader is Sandwich v2 (BP-06 rev B, analysis/spreader.md). Core "
              "rohacell_110_igf, skins cfrp_t300_3k_woven_epoxy_ply. Clipped to the stays on the bag side with 6 PA12 "
              "clips; bone ends and the meat cinch land here and go into the stays. Cut and build: cut/spreader/README.md. "

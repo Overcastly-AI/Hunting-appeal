@@ -197,7 +197,7 @@ def spreader_check(log=print) -> dict:
     ch["passes"] = all(ch["checks"].values())
     ch["passes_sheet"] = all(v for k, v in ch["checks"].items() if k != "skin_pressure")
     return {"opt": opt, "chosen": ch, "fine": fine, "c6": c6, "lean": lean, "mesh_check": mesh,
-            "meat_cg_mm": S.MEAT_CG_MM}
+            "meat_cg_mm": S.MEAT_CG_MM, "rail": S.RAIL_DESIGN}
 
 
 def write_spreader_files(sp: dict, log=print) -> dict:
@@ -223,6 +223,7 @@ def write_spreader_files(sp: dict, log=print) -> dict:
     old_clip_t = 6.0 + 2 * 0.22
     new = {**old,
            "date": SHOT.split("_")[0], "standard": "HA-LS-1 rev C (meat CG 190 mm)", "part_rev": S.PART_REV,
+           "back_rail": getattr(S.RAIL_DESIGN, "key", str(S.RAIL_DESIGN)),
            "chosen_key": opt.key, "chosen": strip, "chosen_rows": SR._strip(ch)["rows"],
            "mesh_check": sp["mesh_check"], "clip": clip, "clip_mass_g": clips["mass_g"],
            "clip_slot_depth_change_mm": float(t - old_clip_t),
@@ -324,6 +325,7 @@ def run(log=print, spreader: bool = True, attach: bool = True, write_files: bool
         log("spreader (7 mm core, meat CG 190)")
         sp = spreader_check(log=log)
         ctx["spreader"] = {"key": sp["opt"].key, "meat_cg_mm": sp["meat_cg_mm"], "mesh_check": sp["mesh_check"],
+                           "rail": getattr(sp["rail"], "key", str(sp["rail"])),
                            "chosen": {k: v for k, v in sp["chosen"].items() if not k.startswith("_") and k != "rows"},
                            "c6": {k: v for k, v in sp["c6"].items() if k != "rows"}, "lean_recheck": sp["lean"]}
         if write_files:
@@ -400,6 +402,8 @@ def summary_rows(ctx: dict) -> list[dict]:
         add("spreader 7 mm core", "sandwich local (core shear, wrinkling, crush)", c["sandwich_sf_min"], "bone patch",
             "factored")
         add("spreader 7 mm core", "no bottoming: walking air / 3 mm mesh", c["clear_walk_min"] / 3.0, "walking", "air >= 3 mm")
+        add("spreader 7 mm core", "skin pressure over the rails (comfort, <= 14 kPa)", 14.0 / c["skin_peak_kpa"],
+            f"{c['skin_peak_kpa']:.2f} kPa, {c.get('skin_where', '')}", f"rail {sp.get('rail', '')}, Golriz 2017")
     return out
 
 
@@ -503,11 +507,15 @@ def write_doc(ctx: dict, screens: list) -> str:
     if sp:
         c = sp["chosen"]
         a("")
-        a(f"Not part of HA-LS-1, flagged: walking **skin pressure over the back rails {c['skin_peak_kpa']:.1f} kPa** "
-          f"against the 14 kPa comfort limit (Golriz 2017) at the 190 mm meat CG. The sheet cannot fix it (it is the "
-          "meat's forward force over the two stay rails). **Owner: pack-designer** (back panel / rails); not changed "
-          "here, as instructed. This record uses `spreader.RAIL_DESIGN` (100 mm rails); the pack-designer's rail change "
-          "(`analysis/back_rail.md`, 120 mm rails on 80 mm backers) is not in `RAIL_DESIGN` yet.")
+        if c["skin_peak_kpa"] <= 14.0:
+            a(f"Comfort (not HA-LS-1): walking **skin pressure over the back rails {c['skin_peak_kpa']:.2f} kPa** at the "
+              f"190 mm meat CG, against the 14 kPa limit (Golriz 2017), with the released rails (`spreader.RAIL_DESIGN` "
+              f"= `back_rail.released()`, {sp.get('rail', '')}: 120 mm L200 rails on 80 mm 1 mm-twill backers, "
+              "pack-designer D-32). It agrees with the pack-designer's 13.77 kPa (named positions, 2 mm); the 24 mm bone grid "
+              f"finds the worst at {c.get('skin_where', '')}. With the old 100 mm rails it was 15.5 kPa. Margin to the limit is small (1 %).")
+        else:
+            a(f"Not part of HA-LS-1, flagged: walking **skin pressure over the back rails {c['skin_peak_kpa']:.1f} kPa** "
+              "against the 14 kPa comfort limit (Golriz 2017) at the 190 mm meat CG. **Owner: pack-designer**.")
     a("")
     a("## 1. Printed body (2 mm voxels, FI99), min margin per case")
     a("")
@@ -648,7 +656,8 @@ def write_doc(ctx: dict, screens: list) -> str:
         if ln:
             a(f"| factored lean-torso air with the lumbar-pan skin reference, mm | **{ln['clear_fact_lean_min']:.1f}** | "
               "– | ≥ 0 (spreader_layout.md re-check method) |")
-        a(f"| skin pressure, kPa (comfort, not HA-LS-1) | {c['skin_peak_kpa']:.1f} | {c6['skin_peak_kpa']:.1f} | ≤ 14: pack-designer |")
+        a(f"| skin pressure, kPa (comfort, not HA-LS-1; released 120 mm rails) | {c['skin_peak_kpa']:.2f} | "
+          f"{c6['skin_peak_kpa']:.2f} | ≤ 14 |")
         a(f"| mass installed, g | {c['mass_g']:.1f} | {c6['mass_g']:.1f} | |")
         a("")
         if f:
@@ -703,6 +712,23 @@ def write_doc(ctx: dict, screens: list) -> str:
         a(f"- `{s}`")
     DOC.write_text("\n".join(L) + "\n")
     return rel(DOC)
+
+
+def refresh_spreader(log=print) -> dict:
+    """Re-run only the spreader part (e.g. after a back-rail change) and rewrite the record, chart and doc. The
+    frame, crown, torso-adjust and attachment results do not depend on the rail and are kept."""
+    ctx = json.loads(RESULTS.read_text())
+    sp = spreader_check(log=log)
+    ctx["spreader"] = {"key": sp["opt"].key, "meat_cg_mm": sp["meat_cg_mm"], "mesh_check": sp["mesh_check"],
+                       "rail": getattr(sp["rail"], "key", str(sp["rail"])),
+                       "chosen": {k: v for k, v in sp["chosen"].items() if not k.startswith("_") and k != "rows"},
+                       "c6": {k: v for k, v in sp["c6"].items() if k != "rows"}, "lean_recheck": sp["lean"]}
+    ctx["spreader_files"] = write_spreader_files(sp, log=log)
+    ctx["summary"] = summary_rows(ctx)
+    ctx["screens"] = [plot_summary(ctx), ctx["spreader_files"]["png"]]
+    save(ctx)
+    write_doc(ctx, ctx["screens"])
+    return ctx
 
 
 def main(log=print):

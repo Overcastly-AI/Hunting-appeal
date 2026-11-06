@@ -73,7 +73,7 @@ API (`huntkit.materials`):
   and `crown_joint` (overrides of `joint` for the two crown corners). frame.yaml carries the rev C crown fix through
   them; frame.yaml `crown_rev_b` holds the as-built crown (`frame_cg_recheck.rev_b_crown()` returns it as overrides).
 - Consumers: production checks use rev C (`huntkit.gendesign.rev_c_verification`, `frame_topopt.beam_loadsets(rev=None,
-  couple_top=..., over=...)`, `analysis.run_study(rev=None)`, `spreader.MEAT_CG_MM = 190`). Studies whose released
+  couple_top=..., over=...)`, `analysis.run_study(rev=None)`, `spreader.MEAT_CG_MM = 190`, `spreader.RAIL_DESIGN = back_rail.released()`: 120 mm rails on 80 mm backers; `rev_b` rail = `spreader.RAIL_DESIGN_REV_B`). Studies whose released
   records are rev B pin `rev="B"`: `sizing5200.cases("ls1")` (frame.yaml v2 sizing), `gendesign.loads` (lugs),
   `frame_light`, `frame_topopt.tube_frame_stiffness`, `bag_attach.case_loads()` (default `rev="B"`, takes `cases=`),
   `frame_cg_recheck` (the 2026-11-05 record).

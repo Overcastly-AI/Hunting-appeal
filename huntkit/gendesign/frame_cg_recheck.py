@@ -19,6 +19,8 @@ Since 2026-11-06 HA-LS-1 rev C is the default and frame.yaml carries the rev C c
 record of the 2026-11-05 check: its scenarios run the rev B cases (``ls1_cases(rev="B")``) on the crown AS BUILT
 before the fix (``rev_b_crown()``, frame.yaml ``crown_rev_b``) and the spreader at the rev B meat basis unless a
 CG is given. The rev C production check is ``huntkit.gendesign.rev_c_verification``.
+Note: ``spreader_at`` uses the current ``spreader.RAIL_DESIGN`` (the released 120 mm rails since 2026-11-06); the
+2026-11-05 skin numbers were on the 100 mm rail (``spreader.RAIL_DESIGN_REV_B``).
 """
 from __future__ import annotations
 

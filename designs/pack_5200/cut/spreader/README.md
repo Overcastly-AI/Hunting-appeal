@@ -30,8 +30,8 @@ Units are mm, with inches where it helps (1 in = 25.4 mm).
 | thickness | **7.44 mm (0.29 in)** = 7 mm core + 2 × 0.22 mm skins | record `cfrp_t300_3k_woven_epoxy_ply` ply 0.22 mm |
 | mass installed | **162 g (5.7 oz)**: board 107 g, edge tubes 21 g, clips, pucks, pads, doublers and seal 35 g | `spreader_results.json` `chosen` |
 | cost | about $207 per part (thicker core pro rata) | `spreader_results.json` `cost` |
-| checks (HA-LS-1 rev C, meat CG 190 mm; worse of the 4 mm and 2 mm grids) | first-ply SF 1.25, fatigue 1.09, sandwich local 1.11, walking air 9.2 mm, factored air 2.1 mm | `rev_c_verification.md` §5 |
-| not a sheet check | walking skin pressure over the back rails 15.5 kPa against the 14 kPa comfort limit at the rev C meat CG: a back-panel item (pack-designer) | `rev_c_verification.md` |
+| checks (HA-LS-1 rev C, meat CG 190 mm; worse of the 4 mm and 2 mm grids; released 120 mm rails on 80 mm backers) | first-ply SF 1.25, fatigue 1.09, sandwich local 1.11, walking air 12.5 mm, factored air 6.1 mm, lean-torso air 11.9 mm | `rev_c_verification.md` §5 |
+| skin pressure (comfort) | 13.8 kPa against the 14 kPa limit, with the released back rails (`analysis/back_rail.md`) | `rev_c_verification.md` §5 |
 
 ## 1. Layup and core
 
