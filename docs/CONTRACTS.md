@@ -48,7 +48,7 @@ API (`huntkit.materials`):
   member, reaction forces, and `max_sf`.
 - `load_cases.pack_standard(design_load_kg=68)` gives the standard pack cases (static carry,
   2.5 g drop, side-hill torsion, set-down on one stay, meat-shelf heavy-low).
-- `load_standard.ls1_cases()` (HA-LS-1 **rev B**, 2026-11-01): no meat shelf. `meat_shelf_heavy_low` is
+- `load_standard.ls1_cases()` (HA-LS-1 **rev C** since 2026-11-06; rev B 2026-11-01 introduced this): no meat shelf. `meat_shelf_heavy_low` is
   replaced by `meat_straps` (placement `"meat_straps"`: internal-strap anchors + frame-face pressure); frame models
   must provide groups `strap_bottom`, `strap_lumbar`, `strap_mid`, `strap_upper`, `meat_face`
   (`huntkit.fea.pack5200` builds them from geometry.yaml `meat_anchor_z*` / `bag_anchor_low`).
@@ -57,6 +57,26 @@ API (`huntkit.materials`):
   the CG height via a left/right vertical couple; None = node heights), `params["couple_top_group"]` (group that takes
   the top of the bag CG couple, e.g. `"strap_upper"` = IM3 hooks; default the crown top bar), `params["extra_nodal_1g"]`
   ({node: [fx, fy, fz]} per 1 g, scaled by the case g-factor). Used by `huntkit.gendesign.frame_cg_recheck`.
+- **HA-LS-1 rev C is the default (owner 2026-11-06).** `load_standard.REVISION = "C"`; `REVISIONS["B"|"C"]` hold the
+  offsets. `ls1_cases(cg_bag_mm=None, rev=None, couple_top="crown_bar")`: rev C gives bag cases C1-C4 and C8 205 mm
+  at `cg_z_mm` 550, meat C5 / C7 190 mm with `params["top_anchor"]` (crown hood + 2 guys,
+  `load_standard.TOP_ANCHOR_HOOD_GUYS`), tall C6 / C6p 185 mm. `couple_top="strap_upper"` puts the bag couple top on
+  the IM3 hooks. **A rev C check must envelope both**: `ls1_envelope(rev=None) -> {"crown_bar": [9 cases],
+  "strap_upper": [5 bag cases]}`. `ls1_cases(rev="B")` reproduces every record made before 2026-11-06 (rev B quirk
+  kept: a `cg_bag_mm` override does not reach C8). Other helpers: `revision(rev)`, `meat_cg_mm(rev)`,
+  `tie_bearing_ok(width_mm)` (rev C: ties on the crown bar >= 25 mm webbing), `BAG_CASES / MEAT_CASES / TALL_CASES`.
+- `params["top_anchor"]` (additive): `{kind: "hood_guys", hood_n, hood_half_span_mm, guy_ear_x_mm, guy_n, guy_corner_xz, guy_dy_mm,
+  basis_kg=68}` per 1 g, scaled by g and `load_kg / basis_kg`; resolved onto the frame's `crown_top_bar` members by
+  `load_cases.top_anchor_loads_1g(model, spec)` (consistent nodal loads; exact resultant and moment with or without
+  nodes at the hood ears).
+- Frame params (additive, `huntkit.fea.pack5200`): `top_bar_section` (crown top bar section; default `bar_section`)
+  and `crown_joint` (overrides of `joint` for the two crown corners). frame.yaml carries the rev C crown fix through
+  them; frame.yaml `crown_rev_b` holds the as-built crown (`frame_cg_recheck.rev_b_crown()` returns it as overrides).
+- Consumers: production checks use rev C (`huntkit.gendesign.rev_c_verification`, `frame_topopt.beam_loadsets(rev=None,
+  couple_top=..., over=...)`, `analysis.run_study(rev=None)`, `spreader.MEAT_CG_MM = 190`). Studies whose released
+  records are rev B pin `rev="B"`: `sizing5200.cases("ls1")` (frame.yaml v2 sizing), `gendesign.loads` (lugs),
+  `frame_light`, `frame_topopt.tube_frame_stiffness`, `bag_attach.case_loads()` (default `rev="B"`, takes `cases=`),
+  `frame_cg_recheck` (the 2026-11-05 record).
 
 ## 3. Pattern pieces (`huntkit.patterns`)
 - `Piece(name, outline: list[(x,y)] mm closed polygon of the SEAM LINE, grain: angle_deg,
@@ -97,8 +117,9 @@ API (`huntkit.materials`):
 Owner, 2026-11-01. Both modes are requirements. The eight B-01 swells over the fairleads are accepted.
 
 Stations, both sides, z in mm: hinge 60, under-strap US1 95, under-strap US2 142, IM1 190,
-IM2 330, IM3 520. The bearing face in every mode is the **Sandwich v2 spreader** (BP-06 rev B, owner
-2026-11-05): 200 g twill carbon skins on 6 mm ROHACELL 110 IG-F, 6.44 mm thick, 242 × 318 mm at z 112–430,
+IM2 330, IM3 520. The bearing face in every mode is the **Sandwich v2 spreader** (BP-06 **rev C**, owner
+2026-11-06; rev B 2026-11-05 had a 6 mm core): 200 g twill carbon skins on **7 mm** ROHACELL 110 IG-F, **7.44 mm**
+thick, 242 × 318 mm at z 112–430,
 6 removable PA12 clips on the stays, record `designs/pack_5200/analysis/spreader.md`, build files
 `designs/pack_5200/cut/spreader/`. Consumers take its numbers from `analysis/spreader_results.json`
 (`chosen`), not from the retired 2.0 mm QI comfort model. The frame under it is the socket-free branch body. The two
@@ -117,7 +138,8 @@ per crown setting) drops over the crown top bar, and two **top side guys** run f
 (B-22 at x ±149, z 752). It is lifted off in `between` and `bag_off`; it is never re-attached over meat. The four bag hooks
 (IM2/IM3) are one rated part, ≥ 2200 N (proof PT-1). Loads it adds on the crown top bar, the bag CG it gives and the
 procedures: `designs/pack_5200/analysis/bag_attachment.md` (numbers in `analysis/attach_system_results.json`). No frame
-station moves and no FEA group changes; the crown-bar load is handed to the frame re-check as an extra load.
+station moves and no FEA group changes. Since HA-LS-1 rev C (2026-11-06) the hood and guy loads are part of C5 / C7
+(`params["top_anchor"]`, §2).
 
 FEA models keep the groups in §2 (`strap_bottom`, `strap_lumbar`, `strap_mid`, `strap_upper`,
 `meat_face`). `meat_face` is the spreader, not the wearer's back. Pattern pieces for B-01 include

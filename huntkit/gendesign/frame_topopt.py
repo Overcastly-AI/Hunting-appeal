@@ -231,21 +231,27 @@ def _is_fixed_node(nid: str) -> bool:
     return nid.startswith(FIXED_PREFIX)
 
 
-def beam_loadsets(torsos=TORSOS, frame_yaml=FRAME_YAML, cases=None, log=print) -> list[LoadSet]:
-    """Interface loads on the fixed frame for every HA-LS-1 case x torso (beam model of frame.yaml)."""
+def beam_loadsets(torsos=TORSOS, frame_yaml=FRAME_YAML, cases=None, log=print, rev: str | None = None,
+                  couple_top: str = "crown_bar", over: dict | None = None) -> list[LoadSet]:
+    """Interface loads on the fixed frame for every HA-LS-1 case x torso (beam model of frame.yaml).
+
+    ``rev``: HA-LS-1 revision (None = current, rev C); ``couple_top``: rev C bag-couple variant ("crown_bar" or
+    "strap_upper"; a rev C check must envelope both, see ``load_standard.ls1_envelope``); ``over``: frame.yaml
+    param overrides (e.g. ``frame_cg_recheck.rev_b_crown()`` to rebuild a pre-2026-11-06 record)."""
     from huntkit.fea.frames import build_frame_from_yaml
     from huntkit.fea.load_standard import TABLE, ls1_cases
-    cases = cases or ls1_cases()
+    cases = cases or ls1_cases(rev=rev, couple_top=couple_top)
+    over = over or {}
     out = []
     for t in torsos:
-        fm = build_frame_from_yaml(frame_yaml, torso_in=float(t), extension_posts=False)
+        fm = build_frame_from_yaml(frame_yaml, torso_in=float(t), extension_posts=False, **over)
         fmp = None
         for c in cases:
             c = copy.copy(c)
             c.buckling = False
             m = fm
             if c.name == "tall_load_posts":
-                fmp = fmp or build_frame_from_yaml(frame_yaml, torso_in=float(t), extension_posts=True)
+                fmp = fmp or build_frame_from_yaml(frame_yaml, torso_in=float(t), extension_posts=True, **over)
                 m = fmp
             res = c.run(m)
             out.append(_extract(res, m, c, t, TABLE))
@@ -787,7 +793,7 @@ def tube_frame_stiffness(frame_yaml=FRAME_YAML, torso=19.0, sets=None) -> dict:
     from huntkit.fea.load_standard import ls1_cases
     fm = build_frame_from_yaml(frame_yaml, torso_in=float(torso), extension_posts=False)
     out = {}
-    c = next(x for x in ls1_cases() if x.name == "static_carry")
+    c = next(x for x in ls1_cases(rev="B") if x.name == "static_carry")     # stiffness record: rev B load
     c.buckling = False
     res = c.run(fm)
     # same load set as the voxel test: every external load / reaction except the hip pivot's

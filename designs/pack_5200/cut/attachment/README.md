@@ -34,6 +34,6 @@ Hardware: 4 bag hooks 38 mm rated >= 2200 N (PT-1 2120 N), 2 POM toggles, 2 ladd
 3. B-17 outside under the IM3 swell (double row), then box-X T3 to B-17. B-18 inside at the hinge-eye notch; box-X HE.
 4. Join the B-01 tiers (B-01 | B-01b | B-01u). Then sew the two B-20 ladder strips on both long edges (2 and 5 mm in) and bartack their ends. Then B-01 joins B-03 as before.
 5. B-02d before it joins the collar: LLT round a ladder lock, box-X through B-22 + B-02d; B-22 double row.
-6. Hood: glue B-19L inside the crown, slide B-19s into the lip hem and sew the hem; heat-form the J on a 19 mm dowel; fold 1 and fold 2 square; box-X HT tongues (toggle end first), GT grab tab and the TG guy ends on the ears.
+6. Hood: glue B-19L inside the crown (centred, bare-bar zone only), slide B-19s into the lip hem (centred) and sew the hem; heat-form the J on a 19 mm dowel; fold 1 and fold 2 square; box-X HT tongues (toggle end first), GT grab tab and the TG guy ends on the ears.
 7. Fit: weave each HT tongue into B-20 at the rung for the crown setting (in at k, out at k+1), push the toggle through. Thread each guy through its ladder lock and tri-glide, set snug on the packed bag.
 8. Bench tests before the first field use: PT-1 to PT-5 in analysis/bag_attachment.md section 5.

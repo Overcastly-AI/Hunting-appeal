@@ -235,7 +235,7 @@ def _dim(ax, p0, p1, off, text, horiz=True, fs=7):
                 fontsize=fs, rotation=90)
 
 
-def drawing_figure(opt: S.Option, res: dict, clips: dict, true_scale: bool = True):
+def drawing_figure(opt: S.Option, res: dict, clips: dict, true_scale: bool = True, date: str | None = None):
     """A3 portrait, 1:1. Part coordinates: x = frame x, z = frame z (origin: frame axis, frame z 0)."""
     import matplotlib
     matplotlib.use("Agg")
@@ -292,7 +292,8 @@ def drawing_figure(opt: S.Option, res: dict, clips: dict, true_scale: bool = Tru
     # notes and title block (paper coordinates via the same axes)
     lam = opt.lam
     notes = [
-        f"BP-06 rev B  SPREADER  ({opt.key})   scale 1:1 on A3   units mm (in = mm / 25.4)",
+        f"BP-06 rev {S.PART_REV if opt.key == S.PRODUCTION_KEY else 'B'}  SPREADER  ({opt.key})   scale 1:1 on A3   "
+        "units mm (in = mm / 25.4)",
         f"{opt.name}.  t = {lam.thickness:.2f} mm.  Laminate: {lam.describe()}",
         f"Mass: sheet {res['sheet_g']:.0f} g + tubes {res['tubes_g']:.0f} g + clips/pucks/doublers/seal {res['fittings_g']:.0f} g "
         f"= {res['mass_g']:.0f} g ({res['mass_g'] / 28.35:.1f} oz)",
@@ -314,20 +315,28 @@ def drawing_figure(opt: S.Option, res: dict, clips: dict, true_scale: bool = Tru
     ax.plot([-ox + 8, W_mm - ox - 8, W_mm - ox - 8, -ox + 8, -ox + 8],
             [-oy + 8, -oy + 8, H_mm - oy - 8, H_mm - oy - 8, -oy + 8], color="black", lw=0.6)
     yt = -oy + 10 + len(notes) * 3.8 + 2
-    ax.text(-ox + 10, yt, "BP-06 rev B   SPREADER   Hunting-Appeal Pack 5200", fontsize=10, fontweight="bold")
-    ax.text(-ox + 150, yt, f"{DATE}   huntkit.gendesign.spreader_report", fontsize=6)
+    rev = S.PART_REV if opt.key == S.PRODUCTION_KEY else "B"
+    ax.text(-ox + 10, yt, f"BP-06 rev {rev}   SPREADER   Hunting-Appeal Pack 5200", fontsize=10, fontweight="bold")
+    ax.text(-ox + 150, yt, f"{date or DATE}   huntkit.gendesign.spreader_report", fontsize=6)
     ax.plot([-ox + 190, -ox + 290], [yt - 3] * 2, color="black", lw=1.2)
     ax.text(-ox + 240, yt - 2, "100 mm check bar", fontsize=6, ha="center", va="bottom")
     return fig
 
 
-def write_drawing(opt, res, clips) -> dict:
+def write_drawing(opt, res, clips, date: str | None = None, screen: Path | None = None) -> dict:
+    """1:1 A3 PDF into cut/spreader/ plus a PNG screen (default: the 2026-11-04 release name, copied to
+    docs/screens; ``screen`` = another outputs/screens path, not copied)."""
     import matplotlib.pyplot as plt
+    from .render import save
     CUT.mkdir(parents=True, exist_ok=True)
-    fig = drawing_figure(opt, res, clips)
+    fig = drawing_figure(opt, res, clips, date=date)
     pdf = CUT / "spreader_v2_drawing.pdf"
     fig.savefig(pdf)
-    png = _save(fig, 2, doc=True)
+    if screen is None:
+        png = _save(fig, 2, doc=True)
+    else:
+        save(fig, screen)
+        png = rel(screen)
     plt.close(fig)
     return {"pdf": rel(pdf), "png": png}
 

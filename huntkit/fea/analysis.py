@@ -54,13 +54,16 @@ def fatigue_screen(static_result, joints_static=None, cfg=None) -> dict:
     return {"members": rows, "joints": jrows, "cfg": c}
 
 
-def run_study(frame_model: dict, cases: list[LoadCase] | None = None, label: str | None = None) -> dict:
+def run_study(frame_model: dict, cases: list[LoadCase] | None = None, label: str | None = None,
+              rev: str | None = None) -> dict:
     ls1 = cases is None and frame_model.get("topology") == "pack5200_crown"
     if ls1:
         # Pack 5200 frames are judged against HA-LS-1 (designs/pack_5200/analysis/load_standard.md);
         # the extension-post case needs the posts model, so it is left to the sizing.
         from .load_standard import FATIGUE as LS1_FATIGUE, ls1_cases
-        cases = [c for c in ls1_cases() if c.name != "tall_load_posts"]
+        # rev: HA-LS-1 revision (None = current, rev C). Only the crown-bar couple set runs here; the rev C IM3
+        # couple variant is enveloped by the production checks (huntkit.gendesign.rev_c_verification).
+        cases = [c for c in ls1_cases(rev=rev) if c.name != "tall_load_posts"]
     cases = cases or pack_standard()
     results, joints = {}, {}
     for c in cases:

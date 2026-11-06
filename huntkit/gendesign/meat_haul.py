@@ -112,7 +112,7 @@ def _friction_leg(weight_n: float, n_straps: int) -> float:
 
 
 def spreader_bearing_face() -> dict:
-    """The bearing face in every mode (CONTRACTS.md §6): Sandwich v2, BP-06 rev B (owner 2026-11-05).
+    """The bearing face in every mode (CONTRACTS.md §6): Sandwich v2, BP-06 rev C, 7 mm core (owner 2026-11-06).
 
     Numbers are the real-support check in analysis/spreader.md (spreader_results.json, 2 mm grid): first-ply SF
     under the factored HA-LS-1 C5 meat + bone (factor on the load, so the requirement is SF >= 1), fatigue SF at
@@ -431,8 +431,8 @@ Owner, 2026-11-01: both modes are requirements. The eight B-01 swells are accept
 IM1 stays a meat anchor only, for now. The hook proof test is still open.
 Code: `huntkit/gendesign/meat_haul.py`.
 
-The bearing face in every mode is the **Sandwich v2 spreader** (BP-06 rev B: 200 g twill carbon skins on 6 mm
-ROHACELL 110, 6.44 mm, 242 × 318 mm, z 112–430; owner 2026-11-05, `spreader.md`) on the bag side of the
+The bearing face in every mode is the **Sandwich v2 spreader** (BP-06 rev C: 200 g twill carbon skins on 7 mm
+ROHACELL 110, 7.44 mm, 242 × 318 mm, z 112–430; owner 2026-11-06, `rev_c_verification.md`) on the bag side of the
 stays. Two **38 mm under-straps** also run under the bag, from fairleads at z {US1_Z:.0f} and
 z {US2_Z:.0f}. With the bag on they cinch the floor up to the frame, and the bag shell shares
 the vertical load with the hinge pins. With the bag off they are the cradle, so the quarter

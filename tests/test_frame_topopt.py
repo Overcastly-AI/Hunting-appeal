@@ -127,7 +127,8 @@ def test_meat_strap_case_equilibrium_and_placement():
     from huntkit.fea.frames import build_frame_from_yaml
     from huntkit.fea.load_standard import MEAT, ls1_cases
     fm = build_frame_from_yaml(ft.FRAME_YAML, torso_in=19)
-    c = next(x for x in ls1_cases() if x.name == "meat_straps")
+    # rev B table (rev C adds the hood + guys on the crown bar: tests/test_load_standard_rev_c.py)
+    c = next(x for x in ls1_cases(rev="B") if x.name == "meat_straps")
     assert c.placement == "meat_straps" and c.cg_aft_mm == MEAT["meat_straps"]["cg_aft_mm"]
     loads = c._loads(fm)
     P = c.W
@@ -136,8 +137,8 @@ def test_meat_strap_case_equilibrium_and_placement():
     # the horizontal strap / pressure couple carries the overturning moment of the CG offset: sum z Fy = P e
     Mh = sum(fm["nodes"][n][2] * v[1] for n, v in loads.items())
     assert Mh == pytest.approx(P * c.cg_aft_mm, rel=1e-6)
-    # no shelf in rev B
-    assert all(x.placement != "meat_shelf" for x in ls1_cases())
+    # no shelf in rev B or rev C
+    assert all(x.placement != "meat_shelf" for x in ls1_cases(rev="B") + ls1_cases())
 
 
 def test_strap_levels_follow_geometry():

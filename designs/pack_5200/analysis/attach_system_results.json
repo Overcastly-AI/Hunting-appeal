@@ -1,6 +1,18 @@
 {
- "date": "2026-11-05",
+ "date": "2026-11-06",
  "chosen": "hood+guys",
+ "wrap_clearance": {
+  "hood_float_mm": 9.0,
+  "lip_half_mm": 66.0,
+  "lip_edge_worst_x_mm": 75.0,
+  "lip_margin_to_wrap_mm": 2.0,
+  "stiffener_half_mm": 62.0,
+  "lining_half_mm": 64.0,
+  "relief_width_mm": 29.0,
+  "crown_over_wrap_clear_mm": 2.25,
+  "bearing_len_mm": 132.0,
+  "pass": true
+ },
  "target_cg_mm": 180.0,
  "sims": {
   "baseline": {
@@ -1001,8 +1013,8 @@
   "PG15": {
    "scenario": "pack5200_v31_att_PG15",
    "torso_in": 15,
-   "family": "hood+guys",
-   "label": "crown hood + top side guys",
+   "family": "hood+guys full lip",
+   "label": "crown hood (full-width lip, 2026-11-05) + top side guys",
    "fill": {
     "cg_y": 189.2,
     "cg_z": 547.9,
@@ -1094,8 +1106,8 @@
   "PG19": {
    "scenario": "pack5200_v31_att_PG19",
    "torso_in": 19,
-   "family": "hood+guys",
-   "label": "crown hood + top side guys",
+   "family": "hood+guys full lip",
+   "label": "crown hood (full-width lip, 2026-11-05) + top side guys",
    "fill": {
     "cg_y": 177.0,
     "cg_z": 552.6,
@@ -1187,8 +1199,8 @@
   "PG23": {
    "scenario": "pack5200_v31_att_PG23",
    "torso_in": 23,
-   "family": "hood+guys",
-   "label": "crown hood + top side guys",
+   "family": "hood+guys full lip",
+   "label": "crown hood (full-width lip, 2026-11-05) + top side guys",
    "fill": {
     "cg_y": 168.0,
     "cg_z": 556.3,
@@ -1250,6 +1262,285 @@
     "wall_toward_head_mm": 7.058083523452275,
     "crown_contact_n": 5.2,
     "mixed_cg_y": 158.38235294117646,
+    "r28": {
+     "torso_in": 23,
+     "top_z": 804.2,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   }
+  },
+  "PR15": {
+   "scenario": "pack5200_v31_att_PR15",
+   "torso_in": 15,
+   "family": "hood+guys",
+   "label": "crown hood, lip relieved at the corner wraps + top side guys",
+   "fill": {
+    "cg_y": 189.2,
+    "cg_z": 547.9,
+    "aft_depth": 407.6,
+    "im3_max_n": 378.5,
+    "im2_max_n": 36.6,
+    "hinge_max_n": 168.3,
+    "top_n": {
+     "TG_R": 21.7,
+     "TG_L": 22.7,
+     "pocket": 0.0
+    },
+    "volume_L": 83.926,
+    "converged": false,
+    "residual_n": 14.5109,
+    "wall_toward_head_mm": 17.28142604030347,
+    "crown_contact_n": 26.0,
+    "r28": {
+     "torso_in": 15,
+     "top_z": 601.0,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   },
+   "meat": {
+    "cg_y": 180.6,
+    "cg_z": 554.7,
+    "aft_depth": 394.0,
+    "im3_max_n": 439.2,
+    "im2_max_n": 106.9,
+    "hinge_max_n": 336.5,
+    "top_n": {
+     "TG_R": 9.9,
+     "TG_L": 11.1,
+     "pocket": 0.0
+    },
+    "volume_L": 83.615,
+    "converged": true,
+    "residual_n": 0.488,
+    "wall_toward_head_mm": 27.28142604030347,
+    "crown_contact_n": 22.9,
+    "mixed_cg_y": 167.1,
+    "r28": {
+     "torso_in": 15,
+     "top_z": 601.0,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 33.0,
+       "gap_30_mm": 5.2
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 31.0,
+       "gap_30_mm": 0.6
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 32.0,
+       "gap_30_mm": 3.8
+      }
+     ],
+     "worst_contact_deg": 31.0,
+     "worst_gap_30_mm": 0.6,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   }
+  },
+  "PR19": {
+   "scenario": "pack5200_v31_att_PR19",
+   "torso_in": 19,
+   "family": "hood+guys",
+   "label": "crown hood, lip relieved at the corner wraps + top side guys",
+   "fill": {
+    "cg_y": 178.8,
+    "cg_z": 551.8,
+    "aft_depth": 388.0,
+    "im3_max_n": 389.7,
+    "im2_max_n": 34.3,
+    "hinge_max_n": 162.1,
+    "top_n": {
+     "TG_R": 31.5,
+     "TG_L": 32.9,
+     "pocket": 0.0
+    },
+    "volume_L": 84.086,
+    "converged": false,
+    "residual_n": 17.089,
+    "wall_toward_head_mm": 6.618795246130478,
+    "crown_contact_n": 3.6,
+    "r28": {
+     "torso_in": 19,
+     "top_z": 702.6,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   },
+   "meat": {
+    "cg_y": 173.7,
+    "cg_z": 557.1,
+    "aft_depth": 383.9,
+    "im3_max_n": 450.6,
+    "im2_max_n": 110.6,
+    "hinge_max_n": 328.7,
+    "top_n": {
+     "TG_R": 19.7,
+     "TG_L": 19.8,
+     "pocket": 0.0
+    },
+    "volume_L": 83.66,
+    "converged": false,
+    "residual_n": 0.7638,
+    "wall_toward_head_mm": 11.918795246130479,
+    "crown_contact_n": 3.3,
+    "mixed_cg_y": 163.2441176470588,
+    "r28": {
+     "torso_in": 19,
+     "top_z": 702.6,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   }
+  },
+  "PR23": {
+   "scenario": "pack5200_v31_att_PR23",
+   "torso_in": 23,
+   "family": "hood+guys",
+   "label": "crown hood, lip relieved at the corner wraps + top side guys",
+   "fill": {
+    "cg_y": 169.7,
+    "cg_z": 555.4,
+    "aft_depth": 372.1,
+    "im3_max_n": 376.4,
+    "im2_max_n": 32.0,
+    "hinge_max_n": 154.4,
+    "top_n": {
+     "TG_R": 35.9,
+     "TG_L": 37.3,
+     "pocket": 0.0
+    },
+    "volume_L": 83.986,
+    "converged": false,
+    "residual_n": 6.7678,
+    "wall_toward_head_mm": 0.758083523452278,
+    "crown_contact_n": 4.6,
+    "r28": {
+     "torso_in": 23,
+     "top_z": 804.2,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   },
+   "meat": {
+    "cg_y": 165.7,
+    "cg_z": 559.5,
+    "aft_depth": 369.3,
+    "im3_max_n": 436.2,
+    "im2_max_n": 119.6,
+    "hinge_max_n": 322.5,
+    "top_n": {
+     "TG_R": 22.1,
+     "TG_L": 24.1,
+     "pocket": 0.0
+    },
+    "volume_L": 83.438,
+    "converged": true,
+    "residual_n": 0.4523,
+    "wall_toward_head_mm": 4.458083523452274,
+    "crown_contact_n": 4.1,
+    "mixed_cg_y": 158.77352941176468,
     "r28": {
      "torso_in": 23,
      "top_z": 804.2,
@@ -1525,11 +1816,27 @@
     "worst_r28_deg": 33.0
    },
    {
-    "family": "hood+guys",
+    "family": "hood+guys full lip",
     "runs": [
      "PG15",
      "PG19",
      "PG23"
+    ],
+    "torsos": [
+     15,
+     19,
+     23
+    ],
+    "worst_fill_cg": 189.2,
+    "worst_meat_cg": 180.6,
+    "worst_r28_deg": 31.0
+   },
+   {
+    "family": "hood+guys",
+    "runs": [
+     "PR15",
+     "PR19",
+     "PR23"
     ],
     "torsos": [
      15,
@@ -1717,19 +2024,19 @@
   "hinge": 1018.8000000000001,
   "im2": 403.3357385451958,
   "im3": 1415.1,
-  "im3_chosen": 1344.0,
+  "im3_chosen": 1351.8000000000002,
   "hood_capture_per_side": 78.75,
-  "hood_total": 365.1,
-  "guy": 103.80000000000001,
+  "hood_total": 381.29999999999995,
+  "guy": 111.89999999999999,
   "basis": {
    "factor": 3.0,
    "chosen_runs": [
-    "PG15",
-    "PG19",
-    "PG23"
+    "PR15",
+    "PR19",
+    "PR23"
    ],
    "hood_1g_n": 52.5,
-   "guy_1g_n": 34.6
+   "guy_1g_n": 37.3
   }
  },
  "parts": [
@@ -1879,22 +2186,22 @@
    "qty": 1,
    "material": "hypalon_coated_nylon",
    "cut": "190 x 130 blank + 2 ears 30 x 40, laser-cut",
-   "fold": "fold 1 (back/crown) and fold 2 (crown/lip) square on a 19 mm dowel; lip hem 14 mm turned in over the HDPE stiffener B-19s; lining B-19L glued inside the crown",
+   "fold": "fold 1 (back/crown) and fold 2 (crown/lip) square on a 19 mm dowel; lip relieved over the outer 29 mm each side (lip on bare bar over x +/-66, clear of the crown corner wraps); lip hem 14 mm turned in over the HDPE stiffener B-19s; lining B-19L glued inside the crown",
    "stitch": "lip hem: single row 301 at 3 mm; tongues box-X 25 x 25; ears: guy box-X 25 x 25",
    "spi": 7,
    "thread": "bonded_nylon_tex135",
    "needle": "Nm 140 / 22",
    "backing": "-",
-   "placement": "rides on the crown top bar between the crown legs (x +/-95)",
-   "load_n": 365.0,
+   "placement": "rides on the crown top bar between the crown legs (shell x +/-95, lip bears on bare bar x +/-66)",
+   "load_n": 381.0,
    "load_basis": "sim hood capture + 2 guys, x 3.0",
    "caps_n": {
-    "lip on the bar (Hypalon strip x 190)": 7782.0,
+    "lip on bare bar (Hypalon strip x 132)": 5407.0,
     "2 tongue box-X 25": 6916.0
    },
-   "governs": "2 tongue box-X 25",
-   "sf": 18.94,
-   "proof_n": 550.0
+   "governs": "lip on bare bar (Hypalon strip x 132)",
+   "sf": 14.18,
+   "proof_n": 570.0
   },
   {
    "id": "HT",
@@ -1955,7 +2262,7 @@
    "needle": "Nm 140 / 22",
    "backing": "B-22 corner tab",
    "placement": "hood ear x +/-95 -> B-02d at x +/-149, z 752 (outer face, upper corner); free length about 314 mm",
-   "load_n": 104.0,
+   "load_n": 112.0,
    "load_basis": "sim guy x 3.0",
    "caps_n": {
     "box-X 25": 3458.0,
@@ -1963,8 +2270,8 @@
     "webbing": 6672.0
    },
    "governs": "ladder lock slip",
-   "sf": 2.89,
-   "proof_n": 160.0
+   "sf": 2.68,
+   "proof_n": 170.0
   },
   {
    "id": "B-22",
@@ -1979,15 +2286,15 @@
    "needle": "Nm 110 / 18",
    "backing": "-",
    "placement": "OUTSIDE B-02d at x +/-149, z 752",
-   "load_n": 104.0,
+   "load_n": 112.0,
    "load_basis": "as TG",
    "caps_n": {
     "perimeter seam (50 mm loaded)": 1024.0,
     "box-X 25": 3458.0
    },
    "governs": "perimeter seam (50 mm loaded)",
-   "sf": 9.87,
-   "proof_n": 160.0
+   "sf": 9.15,
+   "proof_n": 170.0
   }
  ],
  "proof_tests": [
@@ -2022,7 +2329,7 @@
    "id": "PT-4",
    "what": "crown hood on an 18 mm tube",
    "rig": "pull B-01 swatch aft through the ladder, guys pulled aft-outward",
-   "load_n": 550,
+   "load_n": 570,
    "covers": "hood capture + both guys x 3.0",
    "accept": "hood stays seated, no toggle pull-through",
    "also": "repeat at -10 C (HDPE lip)"
@@ -2031,7 +2338,7 @@
    "id": "PT-5",
    "what": "guy ladder lock with the tri-glide keeper",
    "rig": "25 mm webbing, 10 cycles 0-load",
-   "load_n": 160,
+   "load_n": 170,
    "covers": "guy x 3.0",
    "accept": "slip < 5 mm over 10 cycles",
    "also": "-"
@@ -2039,9 +2346,9 @@
  ],
  "mass": {
   "parts_g": {
-   "crown hood B-19 (Hypalon blank + ears + hem)": 26.7,
-   "hood lip stiffener B-19s (HDPE 1.5)": 5.7,
-   "hood lining B-19L (XLPE 3)": 0.9,
+   "crown hood B-19 (Hypalon blank + ears + hem)": 24.3,
+   "hood lip stiffener B-19s (HDPE 1.5)": 3.9,
+   "hood lining B-19L (XLPE 3)": 0.6,
    "hood ladder strips B-20 x2": 20.0,
    "hood tongues x2 + POM toggles": 10.3,
    "hood grab tab (25 mm x 90)": 1.6,
@@ -2053,12 +2360,12 @@
    "bag hooks 1500 N -> 2200 N rated (4 x +5 g)": 20.0,
    "thread (box-X + perimeters)": 2.0
   },
-  "delta_g": 136.0,
+  "delta_g": 131.5,
   "basis": "hypalon_coated_nylon 1000 gsm, hdpe_sheet, xlpe_foam, poly_webbing_25mm, ladder_lock_25mm records; toggle, tri-glide, hook masses ASSUMPTION; elastic keeper 0.6 g ASSUMPTION"
  },
- "pack_before_g": 3071.0,
- "pack_after_g": 3207.0,
- "cost_usd": 16.1,
+ "pack_before_g": 3315.8,
+ "pack_after_g": 3447.3,
+ "cost_usd": 16.03,
  "times_s": {
   "bag_on": 59,
   "bag_off": 52,
@@ -2092,7 +2399,8 @@
   "docs/screens/20261105_attach_2.png",
   "docs/screens/20261105_attach_3.png",
   "docs/screens/20261105_attach_4.png",
-  "docs/screens/20261105_attach_5.png"
+  "docs/screens/20261105_attach_5.png",
+  "docs/screens/20261106_backpanel_4.png"
  ],
  "hook_rated_n": 2200.0,
  "hook_rated_g": 14.0,
@@ -2102,7 +2410,8 @@
   "Bag hook: 38 mm forged 7075 sliding-gate class, rated >= 2200 N, 14 g, $6.00: a purchase requirement, proven by PT-1. No hook record exists yet (materials-engineer to add one from the bought part).",
   "POM toggle 30 x 8 x 5 mm, 3 g, bending pull-through 670 N (pom_acetal ~65 MPa, Z 33 mm3).",
   "Tri-glide 3 g, elastic keeper 0.6 g, hood rung bar fails at 30 deg sag.",
-  "Cloth sim: crown hood = tension-only legs from the B-01 rows within 25 mm of the bar to the bar's bag face, free to slide in z and x (hood on a ladder, not sewn at one height); 1 mm Hypalon ply ~ 38 mm webbing EA per 40 mm strip; free hood depth 16 mm (the drafted gap at 19-23 in). Ladder tongues at x +/-60 hold B-01; the sim holds every node of the row out to x +/-92 (hood width), so the sim capture is a little wider than the part.",
+  "Cloth sim: crown hood = tension-only legs from the B-01 rows within 25 mm of the bar to the bar's bag face, free to slide in z and x (hood on a ladder, not sewn at one height); 1 mm Hypalon ply ~ 38 mm webbing EA per 40 mm strip; free hood depth 16 mm (the drafted gap at 19-23 in). Ladder tongues at x +/-60 hold B-01. Released (PR) runs hold the row out to x +/-66 (the relieved lip on bare bar); the superseded PG runs held it to x +/-92. Hood-alone loads (P runs, x +/-92) stay the bound for the hood capture.",
+  "Hood float 9 mm a side between the crown legs; wrap step from x +/-77 (frame.yaml: 30 mm wrap, 8 mm ply drop, OD ~19.5); a 2 mm margin from the lip edge to the step.",
   "Guys fixed length: elastic 25 mm webbing snug (30 N) at the drafted shape, i.e. set once on the packed bag.",
   "R-28 with the sim wall adds 3 mm (fabric + coarse mesh) and the hood (+1 mm in front of the bar, +4 mm over it).",
   "Procedure seconds: 4 s a hook or pin, 3 s a cam pop or a hood lift, 10 s to place or clear the bag (gloved, not timed)."

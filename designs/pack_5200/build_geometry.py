@@ -858,12 +858,24 @@ def build_panels(Hf, diag):
     # ---- back panels
     # Back system (2026-11-01, analysis/back_comfort.md): foam rails on the stays, open mesh
     # over the window, carbon spreader on the bag side. Not one foam sheet across the hole.
+    # 2026-11-06 (analysis/back_rail.md, huntkit.gendesign.back_rail): rails widened for the HA-LS-1 rev C meat case,
+    # the carbon backer strips the comfort model always assumed are now a cut part (BP-08), and BP-01 / BP-05 / BP-07
+    # follow the released v3.1 back panel (patterns_v31.build_back_panel: mesh over both rail sleeves, sleeves, pad back).
+    from huntkit.gendesign.back_rail import back_panel_pieces
+    bpd = back_panel_pieces()
     for pid, nm, w, h, mat, kind, t, note in (
-            ("BP-01", "lower back panel face", 230.0, 300.0, "spacer_mesh_3d", "fabric", None,
-             "mesh over the stay pads and slack across the window air gap (analysis/back_comfort.md)"),
-            ("BP-02", "stay-rail foam", 100.0, 420.0, "xlpe_foam", "foam", 10.0,
-             "PAIR on the stay lines, wearer face (analysis/back_comfort.md). The window between the rails is open "
-             "mesh over an air gap, not foam. Replaces the single 210 x 280 x 6 mm sheet."),
+            ("BP-01", "back panel mesh", bpd["mesh_w"], bpd["mesh_h"], "spacer_mesh_3d", "fabric", None,
+             f"open spacer mesh over both rail sleeves and the window air gap (patterns v3.1 BP-01, widened "
+             f"350 -> {bpd['mesh_w']:.0f} mm for the {bpd['sleeve_w']:.0f} mm sleeves, analysis/back_rail.md); bound edge"),
+            ("BP-02", "stay-rail foam", bpd["rail_w"], bpd["rail_l"], "xlpe_foam", "foam", bpd["rail_t"],
+             f"PAIR on the stay lines, wearer face, in the BP-05 sleeves. {bpd['rail_w']:.0f} mm wide since 2026-11-06 "
+             "(rev C meat case skin pressure, analysis/back_rail.md; was 100). Buy Minicel L200 class: the comfort model "
+             "uses record xlpe_foam_l200. The window between the rails is open mesh over an air gap, not foam."),
+            ("BP-08", "stay-rail backer strip", bpd["backer_w"], bpd["backer_l"], bpd["backer_mat"], "sheet", bpd["backer_t"],
+             f"PAIR, 1 mm 2x2 twill carbon plate, water-jet, R10 corners, in the sleeve between the stay and the foam, "
+             f"centred on the stay line. Spreads the stay load across the rail: without it the rev C meat case is ~49 kPa "
+             f"at the skin (analysis/back_rail.md). {bpd['backer_w']:.0f} mm since 2026-11-06 (the model's 60 mm strip "
+             "was never booked before)."),
             # owner 2026-11-05: production spreader = Sandwich v2 (BP-06 rev B, analysis/spreader.md). Cut from the
             # DXF in cut/spreader/; material_id is the core, skins cfrp_t300_3k_woven_epoxy_ply. Mass and cut area
             # from analysis/spreader_results.json (chosen). In the weight budget it is its own line (installed mass).
@@ -878,10 +890,13 @@ def build_panels(Hf, diag):
              "on the crown, above the frame window"),
             ("BP-04", "upper back pad foam", 190.0, 160.0, "xlpe_foam", "foam", 6.0,
              "on the crown"),
-            ("BP-05", "back panel shell", 230.0, 300.0, "robic_210d_ripstop", "fabric", None,
-             "bag side of the mesh; the carbon spreader is behind it, not this fabric")):
-        qty = 2 if pid == "BP-02" else 1
-        add(rect_panel(nm, w, h, 30.0, material_id=mat, piece_id=pid, quantity=qty,
+            ("BP-05", "stay-rail sleeve back", bpd["sleeve_w"], bpd["sleeve_l"], "robic_210d_ripstop", "fabric", None,
+             f"PAIR, pocket for the rail foam + backer, sewn to BP-01 on 3 sides, top open (patterns v3.1 BP-05, "
+             f"{bpd['sleeve_w']:.0f} mm since 2026-11-06; replaces the old 230 x 300 'shell' row the patterns never had)"),
+            ("BP-07", "upper back pad back", 210.0, 180.0, "robic_210d_ripstop", "fabric", None,
+             "back of the crown pad (patterns v3.1 BP-07; booked 2026-11-06)")):
+        qty = 2 if pid in ("BP-02", "BP-05", "BP-08") else 1
+        add(rect_panel(nm, w, h, 10.0 if pid == "BP-08" else 30.0, material_id=mat, piece_id=pid, quantity=qty,
                        seam_allowance_mm=10.0 if kind == "fabric" else 0.0),
             "back panel", "back_panel", note, kind=kind, thickness_mm=t)
         if pid == "BP-06":
@@ -1224,18 +1239,21 @@ def weight_budget(P, Hf, diag, wraps, info):
     def row(group, item, g, basis):
         rows.append({"group": group, "item": item, "mass_g": round(g, 1), "basis": basis})
 
-    gb = _analysis_json("generative_branch_results.json")
     sp = _analysis_json("spreader_results.json")
     ba = _analysis_json("bag_attachment_results.json")
-    old_sheet = float(sp["old_part_g"])
+    # frame mass source (structural-fea-engineer, HA-LS-1 rev C, 2026-11-06): printed body from the production 2 mm
+    # raster (823 g, not the 774 g study body) + non-body items + the rev C crown fix. Written by
+    # huntkit/gendesign/rev_c_verification.write_frame_mass.
+    fm = _analysis_json("frame_mass_production.json")
     row("frame (printed branch body + carbon crown)",
-        f"PAHT-CF branch body {gb['body_g']:.0f} g, carbon crown, rack + pawl + guides, bushings, Ti hip-pivot mount, "
-        "pawl bushings, inserts",
-        float(gb["frame_g"]) - old_sheet,
-        f"analysis/generative_branch_results.json frame_g {gb['frame_g']:.1f} - retired QI sheet + M4 sets "
-        f"{old_sheet:.1f} (spreader_results.json old_part_g)")
+        f"PAHT-CF branch body {fm['printed_body_g']:.0f} g (production raster), carbon crown with the rev C inner plies "
+        f"(+{fm['crown_fix_g']:.1f} g), rack + pawl + guides, bushings, Ti hip-pivot mount, pawl bushings, inserts",
+        float(fm["frame_g"]),
+        f"analysis/frame_mass_production.json frame_g: body {fm['printed_body_g']:.1f} + non-body {fm['non_body_g']:.1f} "
+        f"+ crown fix {fm['crown_fix_g']:.1f}")
     row("back-system spreader (Sandwich v2, BP-06)", "sheet, edge tubes, clips, pucks, pads, doublers, seal (installed)",
-        float(sp["chosen"]["mass_g"]), "analysis/spreader_results.json chosen.mass_g (owner 2026-11-05)")
+        float(sp["chosen"]["mass_g"]), f"analysis/spreader_results.json chosen.mass_g ({sp['chosen_key']}; owner "
+        f"{'2026-11-06, 7 mm core' if sp['chosen_key'] == 'sw110c7d' else '2026-11-05'})")
     row("torso adjust (not in the frame line)", "3:1 pulley webbing 25 mm x 1.4 m, metal cam buckle, pawl release cord + strap toggle",
         hw("poly_webbing_25mm", length_m=1.4) + 12 + hw("dyneema_cord_2mm", length_m=0.6) + 3,
         "records; cam 12 g + toggle 3 g ASSUMPTION")
@@ -1284,8 +1302,8 @@ def weight_budget(P, Hf, diag, wraps, info):
     row("harness", "load lifters 25 mm poly + ladders, sternum Fidlock (QUICK family) + POM rails",
         hw("poly_webbing_25mm", length_m=0.9) + 2 * hw("ladder_lock_25mm") + hw("fidlock_magnetic_buckle_25mm") + 12
         + hw("poly_webbing_25mm", length_m=0.8), "records; rails 12 g ASSUMPTION")
-    row("back panel", "lower mesh, stay-rail foam pair, upper pad, shell (spreader is its own line)", sub_mass["back_panel"],
-        "computed")
+    row("back panel", "mesh, stay-rail foam pair + carbon backer strips, rail sleeves, upper pad (spreader is its own line)",
+        sub_mass["back_panel"], "computed; rails and backers from analysis/back_rail.md (2026-11-06)")
     mh = info["meat_harness"]
     row("internal meat harness", f"3 x 38 mm straps IM1-IM3 + 6 frame stubs, 6 sliding-gate hooks, 3 cams (MEAT family)",
         mh["mass_g"], "poly_webbing_38mm record x cut lengths (meat_harness); hook 9 g, cam 22 g ASSUMPTION. The stubs "

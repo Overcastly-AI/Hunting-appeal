@@ -222,6 +222,16 @@ a bag that hinges at z 60 meets the bar in the peel direction, so no pocket can 
 **+136 g**, pack **3207 g (7.07 lb)**. No new frame feature. Load lifters stay on the crown (counting them as the
 anchor would switch them bag/frame: US 10,952,523).
 
+**Hood vs the crown corner wraps (2026-11-06, D-31).** The carbon corner wraps cover the top bar from the leg face
+(x ±107) to x ±77 at OD ≈ 19.5 and cannot be shortened (corner bond). The hood is relieved instead: its lip, J-curl,
+hem, HDPE stiffener B-19s (now 124 mm) and XLPE lining B-19L (now 128 mm) stop at **x ±66**, so they bear on bare
+OD 18 bar over 132 mm; the hood floats 9 mm a side between the legs, which still leaves 2 mm to the wrap step, and the
+crown clears the wraps by 2.25 mm on the lining. Shell width (190 mm), ears, guys, tongues and ladder are unchanged.
+Cloth sim re-run with the capture narrowed to x ±66 (PR15/19/23): fill CG **189 / 179 / 170 mm**, meat 181 / 174 / 166 mm
+(within the ±5 mm scatter of the accepted 189 / 177 / 168); R-28 first contact ≥ 31° at every torso. Hood bar line
+load 158 N over 132 mm = 1.19 N/mm factored (was 0.83 over 190 mm), guy 112 N factored; B-19 SF 14.2 (lip on bare bar),
+TG SF 2.68. −4.5 g (attachment system 131.5 g). Drawing: `cut/attachment/attachment_parts.pdf` / `.dxf`.
+
 The fairlead record below is unchanged.
 
 The production frame is the printed branch body. The toggles and the girth-hitched stubs in the
@@ -297,6 +307,14 @@ bag-side blood and sweat barrier and the bearing face for every meat mode (§4.9
   with the lumbar pan), factored lean-torso air 8.4 mm, skin 13.0 kPa (≤ 14). Frame (socket-free body) min SF 1.69,
   fatigue 1.19 (`analysis/spreader_layout.md` §3, "today" column).
 - Build files: `cut/spreader/` (`spreader_v2_cut.dxf`, `spreader_v2_clip.dxf`, `spreader_v2_drawing.pdf`, `README.md`).
+- **Stay rails, rev C (2026-11-06, D-32, `analysis/back_rail.md`).** At the rev C meat case (CG 190 mm) the skin under
+  the rails was 15.4 kPa (limit 14). Rails widen **100 → 120 mm** (10 mm L200-class XLPE, 420 mm, centred on the
+  stays) and the 1 mm twill backer strips **60 → 80 mm**: **13.8 kPa** (full `spreader.evaluate` with the production
+  7 mm-core spreader, worst bone at a clip). Foam grade or thickness cannot do it (16 mm L200: 15.0 kPa; the 60 kPa tissue is the soft
+  spring); a wider backer in a 100 mm rail saturates at 14.7 kPa. Air gutter 130 → 110 mm, yet air to the skin rises
+  (walking 9.6 → 13.0 mm, factored 2.9 → 6.9 mm, lean torso −2.0 → +3.4 mm: less torso bulges into the narrower
+  gutter). Sheet checks unchanged (7 mm core: FPF 1.25, fatigue 1.09). **+37.6 g** for the change, about **+$4.7**. The backer strips (BP-08) were in the comfort model since 2026-11-04 but never in the patterns or
+  the weight table: without them the rails give ~49 kPa. They are now a cut part and booked.
 
 ### 4.11 Feature freeze check (2026-11-05)
 
@@ -383,28 +401,28 @@ studies take their soft-goods basis from it (`frame_production.SOFT_GOODS_G`).
 
 | Group | g | oz | Basis |
 |---|---:|---:|---|
-| Frame: printed branch body + carbon crown, rack, pawl, bushings, Ti hip-pivot mount | 992 | 35.0 | `generative_branch_results.json` frame 1194 − retired QI sheet + M4 203 |
-| Back-system spreader, Sandwich v2 (installed) | 154 | 5.4 | `spreader_results.json` (owner 2026-11-05) |
+| Frame: printed branch body + carbon crown, rack, pawl, bushings, Ti hip-pivot mount | 1063 | 37.5 | `analysis/frame_mass_production.json` (2026-11-06): printed body **823 g** from the production 2 mm raster (was booked at the 774 g study body, +49 g) + non-body items 217 g + rev C crown fix **+22.0 g** (inner UD plies, 0.8 mm corner bondline) |
+| Back-system spreader, Sandwich v2, 7 mm core (installed) | 162 | 5.7 | `spreader_results.json` (BP-06 rev C, owner 2026-11-06: 7 mm core, +8.7 g) |
 | Torso adjust (pulley webbing, cam, cord) | 42 | 1.5 | records + ASSUMPTION |
 | Main bag (fabric 273, zip 23, roll-top 49, keepers 9, bow riser carry 12) | 366 | 12.9 | computed; B-10 tabs retired (−21.6 g); bow riser carry added 2026-11-05 (+12.1 g, owner freeze) |
 | Bag-side load spreaders: IM3 hook tabs B-17 (2 × 90 × 110 Hypalon) + hinge-eye doublers B-18 (2 × 90 × 45) | 28 | 1.0 | computed (cut area × 1000 gsm); cloth-sim follow-up 2026-11-05, `analysis/bag_top_anchor.md` |
 | Bag-to-frame attachment (8 fairleads, pins, sleeves, 4 hooks, eyes, straps, swells, keepers) | 144 | 5.1 | `bag_attachment_results.json` parts (the v3.1 LINK toggles are out) |
-| Bag-to-frame attachment system (crown hood B-19 + ladder B-20, 2 top guys + B-22, B-23 backings, rated bag hooks +20 g) | 136 | 4.8 | `attach_system_results.json` mass (attachment phase 2026-11-05) |
+| Bag-to-frame attachment system (crown hood B-19 + ladder B-20, 2 top guys + B-22, B-23 backings, rated bag hooks +20 g) | 131 | 4.6 | `attach_system_results.json` mass (attachment phase 2026-11-05; hood lip relieved at the corner wraps 2026-11-06, −4.5 g) |
 | Under-straps US1/US2 (cradle) | 122 | 4.3 | `meat_haul.cradle_parts_g` |
 | Camo accents | 53 | 1.9 | computed |
 | Rain fly + pocket + flag sleeve + hem + zip (owner: counts) | 75 | 2.6 | computed |
 | Floating side pockets | 60 | 2.1 | computed |
 | Hipbelt M | 334 | 11.8 | computed; centre plate ASSUMPTION |
 | Harness (J-straps, yoke plate, lifters, sternum) | 213 | 7.5 | computed |
-| Back panel (mesh, stay-rail foam pair, upper pad, shell) | 91 | 3.2 | computed (the spreader is its own line) |
+| Back panel (mesh BP-01, stay-rail foam BP-02 + carbon backer strips BP-08, rail sleeves BP-05, upper pad BP-03/04/07) | 251 | 8.9 | computed (the spreader is its own line). 2026-11-06: +37.6 g rev C rail change (`analysis/back_rail.md`) and +122.8 g of booking corrections: BP-08 backers the comfort model always assumed (76.9 g at 60 mm), BP-01 mesh at the released v3.1 size (350 × 440, was booked 230 × 300: +34.1 g), BP-05 rail sleeves instead of a 230 × 300 shell (+5.5 g), BP-07 pad back (+6.2 g) |
 | Internal meat harness (IM1–IM3, hooks, cams, 6 ports) | 254 | 9.0 | computed; hooks/cams ASSUMPTION |
 | Haul wraps W1–W3 + hardware | 108 | 3.8 | computed |
-| Thread, labels | 37 | 1.3 | ASSUMPTION 3 % + 8 g |
-| **Total** | **3207** | **113.1 (7.07 lb)** | target 2268 g (5.0 lb): **939 g over**. Owner-published printed-frame figure ~2976 g assumed the held swaps O-3/4/5/6/15 (−54 g, not applied) and predates the top anchor (+136 g): with the swaps 3153 g |
+| Thread, labels | 42 | 1.5 | ASSUMPTION 3 % + 8 g |
+| **Total** | **3447** | **121.6 (7.60 lb)** | target 2268 g (5.0 lb): **1179 g over**. Owner-published printed-frame figure ~2976 g assumed the held swaps O-3/4/5/6/15 (−54 g, not applied) and predates the top anchor (+136 g), the 2026-11-06 back-panel booking (+161 g with thread) and the 2026-11-06 frame-side rows (+79.5 g: body booking +49.0, crown fix +22.0, spreader core +8.6; `analysis/rev_c_verification.md`): with the swaps 3393 g |
 
-The bag side (bag, attachment, under-straps, accents, fly, pockets, meat harness, wraps) is 1306 g with the
-attachment system (1170 g before it); the frame,
-spreader, back panel, belt and harness are 1861 g. **Weight-cut plan: `analysis/bag_weight_plan.md`** (generated by
+The bag side (bag, load spreaders, fairlead attachment, attachment system, under-straps, accents, fly, pockets, meat
+harness, wraps) is 1341 g; the frame, spreader, back panel, belt and harness are 2024 g (back panel 251 g since the
+2026-11-06 booking). **Weight-cut plan: `analysis/bag_weight_plan.md`** (generated by
 `bag_weight_plan.py`, chart `outputs/screens/20261105_bag_4.png`). Applied: W-01 (B-10 tabs, −22 g; 3052 → 3030 g).
 Recommended owner choices O-3/O-4/O-5/O-6/O-15 take another 54 g (≈ 2976 g, 6.56 lb). Every bag-side item on the
 list together is 464 g, and most of that costs meat-haul function or quiet. The bag cannot close the gap; the target is
@@ -482,6 +500,14 @@ v3 → v3.1 (−4 g): frame 650 → 569 (−81); torso adjust 96 → 42 (−54, 
   bag-to-frame attachment phase.
 - D-30 (owner freeze, 2026-11-05): bow riser carry = two 25 mm loops through the B-11 lash tabs (right face) + one 25 mm
   G-hook strap, 12.1 g. No spotter pocket, no sewn meat sleeve, 15.5 in width. Pack **3071 g (6.77 lb)**.
+- D-31 (Claude, 2026-11-06): crown hood B-19 relieved at the crown corner wraps: lip, stiffener and lining on bare bar
+  over x ±66 only (the wraps stay as built for the corner bond). Cloth sim PR15/19/23 confirms CG 189 / 179 / 170 mm and
+  R-28 ≥ 31°. −4.5 g. `analysis/bag_attachment.md` §2.5.
+- D-32 (Claude, 2026-11-06): stay rails 120 mm wide on 80 mm 1 mm-twill backer strips (BP-02, new BP-08), sleeves BP-05
+  140 mm, mesh BP-01 370 mm: rev C meat-case skin 15.4 → 13.8 kPa (limit 14). +37.6 g for the change; +122.8 g of
+  back-panel rows that were never booked (backers, released v3.1 mesh, sleeves, pad back). Pack 3368 g with these
+  (3447 g, 7.60 lb, after the same-day rev C frame-mass booking by the structural-fea-engineer).
+  `analysis/back_rail.md`.
 
 **ASSUMPTIONS** (new in v3.1): meat CG 150 mm aft; 150 N hand cinch; μ 0.4 game bag on panel; 38 mm cam 22 g /
 1100 N; sliding-gate hook 9 g / 1500 N; bartack 2700 N; bay V-wedge to z 700 at 90 % width; head model inputs

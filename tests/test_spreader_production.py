@@ -46,9 +46,19 @@ def test_sandwich_build_files_and_readme():
     assert max(xs) - min(xs) == pytest.approx(242.0, abs=1.0)
     assert max(zs) - min(zs) == pytest.approx(318.0, abs=1.0)
     r = json.loads((ROOT / "designs/pack_5200/analysis/spreader_results.json").read_text())
-    assert r["chosen_key"] == "sw110c6d" and abs(r["chosen"]["mass_g"] - 154.0) < 1.0
+    # HA-LS-1 rev C (owner 2026-11-06): 7 mm core, +8.7 g; the rev B 6 mm record is kept under rev_b_record
+    from huntkit.gendesign import spreader as S
+    assert r["chosen_key"] == S.PRODUCTION_KEY == "sw110c7d" and abs(r["chosen"]["mass_g"] - 162.2) < 1.0
+    assert r["rev_b_record"]["chosen_key"] == "sw110c6d" and abs(r["rev_b_record"]["chosen"]["mass_g"] - 154.0) < 1.0
+    assert r["chosen"]["t_mm"] == pytest.approx(7.44, abs=0.01)
     readme = (CUT / "README.md").read_text()
-    assert "154 g" in readme and "ASSUMPTION:" in readme
+    assert "162 g" in readme and "7.44 mm" in readme and "ASSUMPTION:" in readme
+    # the clip is drawn for the 7.44 mm sheet: its profile is 1 mm taller than the 6.44 mm clip
+    clip = ezdxf.readfile(CUT / "spreader_v2_clip.dxf")
+    ys = [y for e in clip.modelspace().query('LWPOLYLINE[layer=="CUT"]') for _, y, *_ in e.get_points()]
+    r_mid = float(np.mean(S.stay_r(np.array(S.CLIP_Z))))
+    t_old = S.clip_profile(r_mid, 6.44).bounds
+    assert max(ys) - min(ys) == pytest.approx((t_old[3] - t_old[1]) + 1.0, abs=0.05)
 
 
 def test_sandwich_recheck_clears_lean_torso():

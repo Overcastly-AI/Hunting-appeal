@@ -1,9 +1,19 @@
-# HA-LS-1: Pack 5200 frame load standard (calibrated, "match the leaders") - revision B
+# HA-LS-1: Pack 5200 frame load standard (calibrated, "match the leaders") - revision C
 
 Owner: structural-fea-engineer. Status: **adopted for frame v2** (owner decision 2026-11-01, docs/DECISIONS.md:
 "Frame strength standard: MATCH THE LEADERS. Realistic field loads, verified by physical prototype load tests").
 Executable form: `huntkit/fea/load_standard.py` (cases + factors), applied by `huntkit/fea/sizing5200v2.py`.
-Results: [frame_sizing.md](frame_sizing.md).
+Results: [frame_sizing.md](frame_sizing.md) (v2 sizing, rev B); production check under rev C:
+[rev_c_verification.md](rev_c_verification.md).
+
+> **Revision C (2026-11-06, owner decision, `docs/DECISIONS.md`): CG offsets calibrated to the cloth simulator.**
+> Bag cases (C1-C4, C8) **205 mm** aft at a CG height of **z 550**; meat cases (C5, C7) **190 mm**; tall cases (C6,
+> C6p) **185 mm**; the bag CG couple is checked with its top on the crown top bar **and** on the IM3 hooks (z 520),
+> the worse governs; the released top anchor (crown hood + 2 fixed guys) is applied in C5 / C7; ties on the crown bar
+> must bear on **>= 25 mm** of webbing; new prototype test **T9** measures the loaded CG. Factors, g-levels and every
+> other rule are unchanged. Section 4.2 has the table and the sources. Code: `huntkit/fea/load_standard.py`
+> (`REVISION = "C"`, `REVISIONS`, `ls1_cases(rev=...)`, `ls1_envelope()`); `ls1_cases(rev="B")` reproduces the
+> records made before 2026-11-06.
 
 > **Revision B (2026-11-01, owner direction): there is NO meat shelf.** Meat (boned in game bags, or a bone-in
 > quarter) rides INSIDE the bag and is cinched against the frame face by the internal meat harness
@@ -85,15 +95,15 @@ Definitions:
 
 | # | Case (code name) | Load | g | Factor | Equiv. x rated | Type | Covered by test |
 |---|---|---|---|---|---|---|---|
-| C1 | static carry (`static_carry`) | 68 kg in the bag, CG 180 mm aft, hips 80 % | 1.0 | **2.0** yield/FPF | 2.0 | limit (= the leaders' 2x static proof) | T1 |
+| C1 | static carry (`static_carry`) | 68 kg in the bag, CG 205 mm aft at z 550 (rev B 180), hips 80 % | 1.0 | **2.0** yield/FPF | 2.0 | limit (= the leaders' 2x static proof) | T1 |
 | C2 | stumble / drop-step (`drop_2p5g` code name kept) | as C1 | **2.0** | **1.5** | 3.0 | limit | T1 (300 lb), T4a |
 | C3 | side-hill torsion | 25 deg tilt, 30 % downhill bias, downhill strap + lifter slack | **1.6** | **1.5** | 2.4 | limit | T3 |
 | C4 | single-stay set-down | impact on one foot + 0.2 friction, inertia relief | **2.0** | **1.5** | 3.0 | limit | T4b |
-| C5 | meat on internal straps (`meat_straps`, rev B) | 68 kg in the bag, CG 150 mm aft, face pressure + strap tension (4.1) | **2.0** | **1.5** | 3.0 | limit, primary mission | T2 |
-| C6 | tall load | bone-in quarter on the bag floor, cinched, CG 160 mm aft, top lashed to the crown top bar (4.1) | **2.0** | **1.5** | 3.0 | limit | T2 |
+| C5 | meat on internal straps (`meat_straps`, rev B) | 68 kg in the bag, CG 190 mm aft (rev B 150), face pressure + strap tension (4.1), crown hood + 2 guys (4.2) | **2.0** | **1.5** | 3.0 | limit, primary mission | T2 |
+| C6 | tall load | bone-in quarter on the bag floor, cinched, CG 185 mm aft (rev B 160), top lashed to the crown top bar (4.1) | **2.0** | **1.5** | 3.0 | limit | T2 |
 | C6p | tall load on extension posts | as C6, lashed 220 mm above the crown; load lifters STAY on the crown top bar (IP) | **2.0** | **1.5** | 3.0 | limit (accessory) | T2 (posts) |
-| C7 | overload haul | **91 kg** in the bag on the internal straps, CG 150 mm aft | **1.6** | **1.0** | 2.1 | **ultimate, no collapse** | T2u |
-| C8 | hipbelt-off abuse | 68 kg, 100 % on shoulders + lifters (creek crossing) | 1.5 | **1.0** | 1.5 | ultimate, no damage, no crown slip | T1 variant |
+| C7 | overload haul | **91 kg** in the bag on the internal straps, CG 190 mm aft (rev B 150), hood + guys x 91/68 | **1.6** | **1.0** | 2.1 | **ultimate, no collapse** | T2u |
+| C8 | hipbelt-off abuse | 68 kg, 100 % on shoulders + lifters (creek crossing), bag CG 205 mm at z 550 (rev B 180) | 1.5 | **1.0** | 1.5 | ultimate, no damage, no crown slip | T1 variant |
 
 Other rules:
 
@@ -129,6 +139,32 @@ Frame-side resolution of a meat load of weight P = m g (x case g), CG `e` aft of
 Effect on the v2 tube frame (member first-ply level, rev B, worst torso; `outputs/genframe/tube_baseline.json`):
 see printed_frame_study.md section 2. The physical test T2 becomes: 300 lb of sandbags in game bags inside the
 bag, cinched with IM1-IM3, instead of on a shelf.
+
+### 4.2 Revision C: cloth-sim-calibrated CG (owner 2026-11-06)
+
+Rev B's offsets came from a drafted bag shape. The sewn-bag simulation (validated to 0.5 % on closed forms,
+[cloth_sim.md](cloth_sim.md) §2) shows the contents lean aft. No published offset was found to calibrate against
+(search 2026-11-05, [frame_cg_recheck.md](frame_cg_recheck.md) §6), so rev C uses the sim now and **T9** measures it on
+the prototype.
+
+| item | rev B | **rev C** | source |
+|---|---|---|---|
+| bag CG aft, C1-C4 and C8 | 180 mm (C8 hard-coded 180) | **205 mm**, all five cases | [bag_top_anchor.md](bag_top_anchor.md) §7: 15 in fill CG 202 mm + sim scatter; hood + guys give 189 / 177 / 168 mm at 15 / 19 / 23 in ([bag_attachment.md](bag_attachment.md) §2) |
+| bag CG height (lateral moment of C3) | at the attachment-node height (about z 212) | **z 550** (`LoadCase.cg_z_mm`) | [cloth_sim.md](cloth_sim.md) §3.2 (z 542) |
+| meat CG aft, C5 / C7 | 150 mm | **190 mm** | covers the 15 in hood + guys fill case (189 mm) and the meat runs 181 / 173 / 165 mm ([bag_attachment.md](bag_attachment.md) §2) |
+| tall-load CG aft, C6 / C6p | 160 mm | **185 mm** | ASSUMPTION: the same +25 mm as the bag cases; no sim run of a bone-in quarter. T9 (b) checks it |
+| bag couple top | crown top bar | **both**: crown top bar, and the IM3 hooks at z 520 (`couple_top="strap_upper"`); the worse governs | [cloth_sim.md](cloth_sim.md) §3.5: the IM3 hooks carry 338-472 N per side at 1 g |
+| top-anchor loads | none | C5 / C7: **crown hood 52.5 N aft per g**, spread over x -66..+66 of the top bar (the hood lip bears on bare bar only, relieved clear of the corner wraps, D-31), plus **2 guys of 37.3 N per g**, from the hood ears at x +/-95 toward the bag top corners (+/-149, z 752); x 91/68 on C7 (`TOP_ANCHOR_HOOD_GUYS`) | [bag_attachment.md](bag_attachment.md) §2 / §2.5, `attach_system_results.json` `factored_n` / 3.0 (runs PR15/19/23) |
+| tie bearing on the crown bar | none | **>= 25 mm webbing** (38 mm preferred), or a sleeve / pocket; no cord or 20 mm straps on the bare bar (`tie_bearing_ok`) | [frame_cg_recheck.md](frame_cg_recheck.md) §5: 210 N on 20 mm gives ring crush SF 0.87 |
+| factors, g-levels, rules | | unchanged | section 4 |
+
+Pass rule under rev C: every case set in `ls1_envelope()` (9 cases with the couple on the crown bar plus the 5 bag
+cases with the couple on the IM3 hooks) at torso 15 / 19 / 23 in. The production frame passes with the crown fix
+(inner UD plies + 0.8 mm corner bondline, +22.0 g) and the 7 mm spreader core (+8.7 g):
+[rev_c_verification.md](rev_c_verification.md).
+
+ASSUMPTION: C6 / C6p get the same +25 mm as the bag cases (no sim data for a stiff quarter). ASSUMPTION: the IM3
+couple variant puts the whole couple top on the IM3 anchors; reality lies between the two variants.
 
 ASSUMPTIONS specific to HA-LS-1:
 - ASSUMPTION: stumble limit 2.0 g (between Rome's 1.6 walking and 3.0 running); verify in T4a.
@@ -185,10 +221,11 @@ Loads in the bag unless stated. "Hold" = 10 min unless stated. Load in 25 % step
 | **T4b set-down** (C4) | 150 lb pack held upright, raised **50 mm (2 in)** and dropped onto ONE stay foot on the gym mat, 5 x each foot. Phone on the crown | 150 / 68 | No damage at the foot boot / wrap / lumbar pan, tap test clean. Record the peak g |
 | **T4c empty abuse drop** (MIL-STD-810 Proc IV style) | Empty pack (bag on) dropped from **48 in / 122 cm** onto 19 mm plywood over concrete, 6 orientations: each foot, each side, crown top, back panel | empty | Functional: crown still telescopes and locks, no cracks, tap test clean. Cosmetic scuffs OK |
 | **T5 cycle / fatigue** | Dead load 60 lb (0.4 W) in the bag + crank/bungee pulling the bag down 0 -> 180 lb (1.2 W, set with the crane scale at the crank's bottom dead centre): **0.4 -> 1.6 g**. **100,000 cycles** at ~50/min (~33 h; can be split over days). Stop every 25,000 cycles: T1(a) re-check + tap test | 60 -> 240 lb peak | No crack, no debond, **stiffness change <= 10 %** at each stop, crown slip < 1 tooth, pulley webbing not cut by its guides |
-| **T6 joint coupons** (before bonding the frame) | 3 x each joint type, made exactly like the frame: (a) bar coped to a stay and carbon-wrapped (T joint), (b) wrap collar over a stay end. Pull the bar out along its axis (a) / the stay out of the collar (b) with the rig (come-along + crane scale) to failure | to failure | Mean failure load >= 1.5 x the largest FEA limit end force for that joint (frame_sizing_cases_19in.md, bonded joints table) and lowest >= 1.25 x. Failure should be cohesive / in the laminate, not a clean adhesive peel (= bad prep) |
+| **T6 joint coupons** (before bonding the frame) | 3 x each joint type, made exactly like the frame: (a) bar coped to a stay and carbon-wrapped (T joint), (b) wrap collar over a stay end. Pull the bar out along its axis (a) / the stay out of the collar (b) with the rig (come-along + crane scale) to failure | to failure | Mean failure load >= 1.5 x the largest FEA limit end force for that joint (frame_sizing_cases_19in.md, bonded joints table) and lowest >= 1.25 x. Failure should be cohesive / in the laminate, not a clean adhesive peel (= bad prep). **Rev C: crown-corner coupons use the 0.8 mm bondline** (0.8 mm glass beads in the MMA), the same as the frame; a 0.5 mm coupon does not qualify the Volkersen-peak credit |
 | **T7 bushing crush coupon** (before release) | 150 mm stay offcut with the wrap collar + UHMWPE bushing; leg offcut through it; press the leg sideways at the bushing centre (lever or bench vise + crane scale) | 1.5 x the max FEA bushing force, then to failure | No crack, ovalisation <= 0.2 mm after unload at 1.5 x. **This earns the 120 deg contact credit** used in the sizing |
+| **T9 loaded CG** (rev C, P2, before T1) | Load the prototype to 68 kg (a) as T1 (uniform fill in the bag, hood + guys fitted) and (b) as T2 (game bags on IM1-IM3; a bone-in quarter for C6). Find the CG offset from the stay plane two ways: hang the pack from the haul loop and then from a pin through the hipbelt pivot and plumb both lines (CG = their intersection), or use two scales, one under the stay feet and one under the crown top bar, with the frame horizontal. Repeat at torso 15 / 19 / 23 in | 150 / 68 | Record the offset and height. **Pass:** bag CG <= 205 mm aft at a height z <= 590 (rev C uses 550; ASSUMPTION: 40 mm scatter); meat CG <= 190 mm; tall <= 185 mm. If a measured value is more than 10 mm below the rev C value the owner may relax it (re-run `rev_c_verification` at the measured CG first); if any is above, stop and re-run the check before T1 |
 
-Test order: T6, T7 -> bond P1, P2 -> T1 -> T3 -> T2 -> T4a/b -> T4c -> T5 (P2) -> T2u (P1 last).
+Test order: T6, T7 -> bond P1, P2 -> T9 -> T1 -> T3 -> T2 -> T4a/b -> T4c -> T5 (P2) -> T2u (P1 last).
 If anything fails: stop, photograph, send the log and photos for re-analysis. Do not repair and continue.
 
 ### 5.4 Log template

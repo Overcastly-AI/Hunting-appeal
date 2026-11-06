@@ -8,7 +8,7 @@ meta:
     mirror pairs (contract). Hipbelt pieces at size M. This is the DESIGN bill of panels (masses for the weight
     budget). The cut set is the v3.1 production patterns (designs/pack_5200/patterns_v31.py: two-ring-seam head
     setback, B-01b/B-01u/B-02c/B-02d, fairlead swells B-13..B-15); outputs/release/pack5200_v3.1_patterns.'
-  piece_count_total: 106
+  piece_count_total: 110
   gore_seam_check_mm:
     frame_side: {seam_from_3d_mm: 756.2, seam_from_pattern_mm: 756.7, seam_to_3d_mm: 756.2, seam_to_pattern_mm: 756.7}
     outer_face: {seam_from_3d_mm: 762.2, seam_from_pattern_mm: 768.0, seam_to_3d_mm: 762.2, seam_to_pattern_mm: 768.0}
@@ -1023,36 +1023,36 @@ panels:
   seam_allowance_mm: 0.0
   thickness_mm: null
   zone: crown top bar (hood)
-  cut_area_m2_each: 0.0267
-  mass_g_total: 26.7
+  cut_area_m2_each: 0.0243
+  mass_g_total: 24.3
   notes: J-profile Hypalon hood over the crown top bar between the legs; guys sewn to its ears (analysis/bag_attachment.md)
   seam_line_mm: null
 - id: B-19s
   name: hood lip stiffener
   sub_assembly: attachment system
   material_id: hdpe_sheet
-  approx_size_mm: [180, 22]
+  approx_size_mm: [124, 22]
   qty_total: 1
   mirror_pair: false
   seam_allowance_mm: 0.0
   thickness_mm: 1.5
   zone: crown hood lip
-  cut_area_m2_each: 0.004
-  mass_g_total: 5.7
+  cut_area_m2_each: 0.0027
+  mass_g_total: 3.9
   notes: HDPE 1.5 mm J stiffener in the lip hem (analysis/bag_attachment.md)
   seam_line_mm: null
 - id: B-19L
   name: hood lining
   sub_assembly: attachment system
   material_id: xlpe_foam
-  approx_size_mm: [180, 50]
+  approx_size_mm: [128, 50]
   qty_total: 1
   mirror_pair: false
   seam_allowance_mm: 0.0
   thickness_mm: 3.0
   zone: crown hood crown
-  cut_area_m2_each: 0.009
-  mass_g_total: 0.9
+  cut_area_m2_each: 0.0064
+  mass_g_total: 0.6
   notes: XLPE 3 mm lining (quiet on the bar) (analysis/bag_attachment.md)
   seam_line_mm: null
 - id: B-20
@@ -1350,33 +1350,51 @@ panels:
   notes: sandwich over the yoke plate; quick-connect for J/S straps
   seam_line_mm: null
 - id: BP-01
-  name: lower back panel face
+  name: back panel mesh
   sub_assembly: back_panel
   material_id: spacer_mesh_3d
-  approx_size_mm: [230, 300]
+  approx_size_mm: [370, 440]
   qty_total: 1
   mirror_pair: false
   seam_allowance_mm: 10.0
   thickness_mm: null
   zone: back panel
-  cut_area_m2_each: 0.0786
-  mass_g_total: 29.9
-  notes: mesh over the stay pads and slack across the window air gap (analysis/back_comfort.md)
+  cut_area_m2_each: 0.178
+  mass_g_total: 67.6
+  notes: open spacer mesh over both rail sleeves and the window air gap (patterns v3.1 BP-01, widened 350 -> 370
+    mm for the 140 mm sleeves, analysis/back_rail.md); bound edge
   seam_line_mm: null
 - id: BP-02
   name: stay-rail foam
   sub_assembly: back_panel
   material_id: xlpe_foam
-  approx_size_mm: [100, 420]
+  approx_size_mm: [120, 420]
   qty_total: 2
   mirror_pair: false
   seam_allowance_mm: 0.0
   thickness_mm: 10.0
   zone: back panel
-  cut_area_m2_each: 0.0412
-  mass_g_total: 27.2
-  notes: PAIR on the stay lines, wearer face (analysis/back_comfort.md). The window between the rails is open mesh
-    over an air gap, not foam. Replaces the single 210 x 280 x 6 mm sheet.
+  cut_area_m2_each: 0.0496
+  mass_g_total: 32.8
+  notes: 'PAIR on the stay lines, wearer face, in the BP-05 sleeves. 120 mm wide since 2026-11-06 (rev C meat case
+    skin pressure, analysis/back_rail.md; was 100). Buy Minicel L200 class: the comfort model uses record xlpe_foam_l200.
+    The window between the rails is open mesh over an air gap, not foam.'
+  seam_line_mm: null
+- id: BP-08
+  name: stay-rail backer strip
+  sub_assembly: back_panel
+  material_id: cfrp_t300_3k_woven_epoxy_ply
+  approx_size_mm: [80, 420]
+  qty_total: 2
+  mirror_pair: false
+  seam_allowance_mm: 0.0
+  thickness_mm: 1.02
+  zone: back panel
+  cut_area_m2_each: 0.0335
+  mass_g_total: 102.5
+  notes: 'PAIR, 1 mm 2x2 twill carbon plate, water-jet, R10 corners, in the sleeve between the stay and the foam,
+    centred on the stay line. Spreads the stay load across the rail: without it the rev C meat case is ~49 kPa at
+    the skin (analysis/back_rail.md). 80 mm since 2026-11-06 (the model''s 60 mm strip was never booked before).'
   seam_line_mm: null
 - id: BP-06
   name: 'window spreader, Sandwich v2: 200 g twill / 6 mm ROHACELL 110 / 200 g twill'
@@ -1389,7 +1407,7 @@ panels:
   thickness_mm: 6.44
   zone: back panel
   cut_area_m2_each: 0.0716
-  mass_g_total: 98.8
+  mass_g_total: 106.6
   notes: 'Owner 2026-11-05: production spreader is Sandwich v2 (BP-06 rev B, analysis/spreader.md). Core rohacell_110_igf,
     skins cfrp_t300_3k_woven_epoxy_ply. Clipped to the stays on the bag side with 6 PA12 clips; bone ends and the
     meat cinch land here and go into the stays. Cut and build: cut/spreader/README.md. Edge tubes, clips, pucks,
@@ -1424,18 +1442,33 @@ panels:
   notes: on the crown
   seam_line_mm: null
 - id: BP-05
-  name: back panel shell
+  name: stay-rail sleeve back
   sub_assembly: back_panel
   material_id: robic_210d_ripstop
-  approx_size_mm: [230, 300]
+  approx_size_mm: [140, 420]
+  qty_total: 2
+  mirror_pair: false
+  seam_allowance_mm: 10.0
+  thickness_mm: null
+  zone: back panel
+  cut_area_m2_each: 0.069
+  mass_g_total: 19.3
+  notes: PAIR, pocket for the rail foam + backer, sewn to BP-01 on 3 sides, top open (patterns v3.1 BP-05, 140 mm
+    since 2026-11-06; replaces the old 230 x 300 'shell' row the patterns never had)
+  seam_line_mm: null
+- id: BP-07
+  name: upper back pad back
+  sub_assembly: back_panel
+  material_id: robic_210d_ripstop
+  approx_size_mm: [210, 180]
   qty_total: 1
   mirror_pair: false
   seam_allowance_mm: 10.0
   thickness_mm: null
   zone: back panel
-  cut_area_m2_each: 0.0786
-  mass_g_total: 11.0
-  notes: bag side of the mesh; the carbon spreader is behind it, not this fabric
+  cut_area_m2_each: 0.0446
+  mass_g_total: 6.2
+  notes: back of the crown pad (patterns v3.1 BP-07; booked 2026-11-06)
   seam_line_mm: null
 - id: R-01
   name: rifle butt boot body

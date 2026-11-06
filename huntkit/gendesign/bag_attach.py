@@ -142,17 +142,21 @@ def _frame_model():
         pack.hardware_mass = original
 
 
-def case_loads() -> list[dict]:
+def case_loads(rev: str = "B", cases=None) -> list[dict]:
     """Factored force on each strap node, every HA-LS-1 case that applies one.
 
     The beam model is the same resolution the frame standard uses
     (``LoadCase._loads``). Set-down is a foot impact, not an attachment case.
+    ``rev="B"`` (default here) reproduces the 2026-11-01 attachment record (bag CG 148 mm); the rev C check
+    (``huntkit.gendesign.rev_c_verification``) passes its own ``cases`` (both couple variants).
     """
     from huntkit.fea.load_standard import ls1_cases
     m = _frame_model()
     rows = []
     groups = ("strap_bottom", "strap_lumbar", "strap_mid", "strap_upper")
-    for c in ls1_cases(cg_bag_mm=148.0):
+    if cases is None:
+        cases = ls1_cases(cg_bag_mm=148.0, rev=rev) if rev == "B" else ls1_cases(rev=rev)
+    for c in cases:
         if getattr(c, "kind", "") == "setdown":
             rows.append({"case": c.name, "kind": "setdown", "g": c.g_factor,
                          "required": c.required_sf, "nodes": {}})

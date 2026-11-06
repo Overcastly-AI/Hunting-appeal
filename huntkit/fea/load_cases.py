@@ -157,6 +157,13 @@ class LoadCase:
         # optional extra loads per 1 g, scaled by the case g-factor (e.g. bag top-anchor ties on the crown bar)
         for nid, f1 in (self.params.get("extra_nodal_1g") or {}).items():
             add(nid, self.g_factor * np.asarray(f1, float))
+        # HA-LS-1 rev C: the bag top anchor (crown hood + 2 guys) on the crown top bar, per 1 g at 68 kg,
+        # scaled by g and by the contents mass (C7 91 kg)
+        ta = self.params.get("top_anchor")
+        if ta:
+            s = self.g_factor * self.load_kg / float(ta.get("basis_kg", 68.0))
+            for nid, f1 in top_anchor_loads_1g(model, ta).items():
+                add(nid, s * f1)
         return loads
 
     def _meat_straps(self, model, W, tilt, add):
@@ -317,6 +324,67 @@ class LoadCase:
             res.meta["shoulder_kz_scale"] = sh
         res.meta.update({"case": self, "required_sf": self.required_sf, "W_N": self.W})
         return res
+
+
+def _top_bar_line(model) -> tuple[list, np.ndarray]:
+    """Crown top-bar nodes ordered by x (members of group ``crown_top_bar``) and their coordinates."""
+    ids = []
+    for m in model["members"]:
+        if str(m.get("group", "")).startswith("crown_top_bar"):
+            for n in m["nodes"]:
+                if n not in ids:
+                    ids.append(n)
+    if len(ids) < 2:
+        raise KeyError("top_anchor needs crown_top_bar members in the frame model")
+    P = np.array([model["nodes"][n] for n in ids], float)
+    o = np.argsort(P[:, 0])
+    return [ids[i] for i in o], P[o]
+
+
+def _split_on_line(ids, P, x, f, out):
+    """Put point force ``f`` at lateral position ``x`` on the polyline of nodes ``P`` (sorted by x) onto the two
+    neighbouring nodes by the lever rule: the force and its moment about any point are preserved exactly."""
+    k = int(np.clip(np.searchsorted(P[:, 0], x) - 1, 0, len(ids) - 2))
+    a = float(np.clip((x - P[k, 0]) / (P[k + 1, 0] - P[k, 0]), 0.0, 1.0))
+    for nid, w in ((ids[k], 1.0 - a), (ids[k + 1], a)):
+        if w:
+            out[nid] = out.get(nid, np.zeros(3)) + w * np.asarray(f, float)
+
+
+def top_anchor_loads_1g(model: dict, spec: dict) -> dict:
+    """Nodal forces (N per 1 g at the spec's basis mass) of a bag top anchor on the crown top bar.
+
+    ``spec["kind"] == "hood_guys"`` (HA-LS-1 rev C, ``load_standard.TOP_ANCHOR_HOOD_GUYS``): the crown hood pulls
+    the bar aft (+y) with ``hood_n`` spread uniformly over x -/+ ``hood_half_span_mm`` (consistent nodal loads of
+    the linear bar elements, i.e. tributary lengths), and each guy pulls ``guy_n`` from the hood ear at
+    x = +/- ``guy_ear_x_mm`` (default: the half span) toward the bag top corner (+/- cx, y_ear + ``guy_dy_mm``, cz)."""
+    if spec.get("kind") != "hood_guys":
+        raise ValueError(f"unknown top anchor kind {spec.get('kind')!r}")
+    ids, P = _top_bar_line(model)
+    a = float(spec["hood_half_span_mm"])
+    out: dict = {}
+    q = np.array([0.0, float(spec["hood_n"]) / (2 * a), 0.0])       # N/mm, aft
+    for k in range(len(ids) - 1):           # consistent nodal loads of the linear elements (exact integrals)
+        x0, x1 = P[k, 0], P[k + 1, 0]
+        lo, hi = max(x0, -a), min(x1, a)
+        if hi <= lo or x1 <= x0:
+            continue
+        L = x1 - x0
+        t0, t1 = (lo - x0) / L, (hi - x0) / L
+        w1 = L * (t1 ** 2 - t0 ** 2) / 2                            # integral of t over the overlap
+        w0 = (hi - lo) - w1                                          # integral of (1 - t)
+        for nid, w in ((ids[k], w0), (ids[k + 1], w1)):
+            out[nid] = out.get(nid, np.zeros(3)) + w * q
+    cx, cz = spec["guy_corner_xz"]
+    xe = float(spec.get("guy_ear_x_mm", a))
+    for s in (-1.0, 1.0):
+        x = s * xe
+        k = int(np.clip(np.searchsorted(P[:, 0], x) - 1, 0, len(ids) - 2))
+        t = (x - P[k, 0]) / (P[k + 1, 0] - P[k, 0])
+        p = P[k] + t * (P[k + 1] - P[k])
+        d = np.array([s * cx, p[1] + float(spec["guy_dy_mm"]), cz]) - p
+        _split_on_line(ids, P, x, float(spec["guy_n"]) * d / np.linalg.norm(d), out)
+    return out
 
 
 def pack_standard(design_load_kg: float = 68.0, overload_kg: float = 91.0, **overrides) -> list[LoadCase]:

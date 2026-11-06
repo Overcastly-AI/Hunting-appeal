@@ -1,0 +1,771 @@
+{
+ "date": "2026-11-06",
+ "e_rev_c_mm": 190.0,
+ "limit_kpa": 14.0,
+ "bone": {
+  "spreader": "sw110c7d",
+  "h": 2.0,
+  "sides_n": {
+   "center": 106.20940943255609,
+   "bottom edge": 104.5768811810654,
+   "top edge": 100.41975948866616,
+   "IM1 notch root": 188.88100516023061,
+   "IM2 notch root": 184.2978359382862,
+   "US2 corner relief": 196.83817562318302,
+   "between rails, low": 106.37849467184638,
+   "over the rail, mid": 189.82741588094095,
+   "at a clip": 203.60038051447293
+  }
+ },
+ "bone_side_n": 203.60038051447293,
+ "bone_where": "at a clip",
+ "rows": [
+  {
+   "rail": {
+    "key": "r100_b60",
+    "name": "current: 100 mm L200 rail, 60 mm 1 mm twill backer",
+    "width": 100.0,
+    "backer_w": 60.0,
+    "backer_t": 1.02,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 10.0,
+    "length": 420.0
+   },
+   "peak_kpa": 15.422160533600875,
+   "meat_only_kpa": 9.025454947670147,
+   "indent_mm": 6.697330247725074,
+   "gutter_mm": 130.0,
+   "mass_g": 103.99199999999999,
+   "delta_g": 0.0,
+   "cost_usd": 15.255192199753035,
+   "delta_usd": 0.0,
+   "pass": false,
+   "eligible": false
+  },
+  {
+   "rail": {
+    "key": "r100_nobacker",
+    "name": "as patterned in v3.1 and booked: 100 mm rail, NO backer strip",
+    "width": 100.0,
+    "backer_w": 60.0,
+    "backer_t": 0.0,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 10.0,
+    "length": 420.0
+   },
+   "peak_kpa": 48.93831910857966,
+   "meat_only_kpa": 34.49173992742192,
+   "indent_mm": 22.628499059584712,
+   "gutter_mm": 130.0,
+   "mass_g": 26.88,
+   "delta_g": -77.112,
+   "cost_usd": 2.655192199753035,
+   "delta_usd": -12.6,
+   "pass": false,
+   "eligible": false
+  },
+  {
+   "rail": {
+    "key": "r100_b70",
+    "name": "100 mm rail, 70 mm backer",
+    "width": 100.0,
+    "backer_w": 70,
+    "backer_t": 1.02,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 10.0,
+    "length": 420.0
+   },
+   "peak_kpa": 14.973717170498784,
+   "meat_only_kpa": 8.733068953174309,
+   "indent_mm": 6.5025862432419395,
+   "gutter_mm": 130.0,
+   "mass_g": 116.844,
+   "delta_g": 12.852000000000004,
+   "cost_usd": 17.355192199753034,
+   "delta_usd": 2.0999999999999996,
+   "pass": false,
+   "eligible": false
+  },
+  {
+   "rail": {
+    "key": "r100_b80",
+    "name": "100 mm rail, 80 mm backer",
+    "width": 100.0,
+    "backer_w": 80,
+    "backer_t": 1.02,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 10.0,
+    "length": 420.0
+   },
+   "peak_kpa": 14.778552761325056,
+   "meat_only_kpa": 8.606085661158955,
+   "indent_mm": 6.417832845818094,
+   "gutter_mm": 130.0,
+   "mass_g": 129.696,
+   "delta_g": 25.704000000000008,
+   "cost_usd": 19.455192199753036,
+   "delta_usd": 4.200000000000001,
+   "pass": false,
+   "eligible": false
+  },
+  {
+   "rail": {
+    "key": "r100_b90",
+    "name": "100 mm rail, 90 mm backer",
+    "width": 100.0,
+    "backer_w": 90,
+    "backer_t": 1.02,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 10.0,
+    "length": 420.0
+   },
+   "peak_kpa": 14.734539156422315,
+   "meat_only_kpa": 8.577470833376266,
+   "indent_mm": 6.398719204328998,
+   "gutter_mm": 130.0,
+   "mass_g": 142.548,
+   "delta_g": 38.55600000000001,
+   "cost_usd": 21.555192199753034,
+   "delta_usd": 6.299999999999999,
+   "pass": false,
+   "eligible": false
+  },
+  {
+   "rail": {
+    "key": "r100_b100",
+    "name": "100 mm rail, 100 mm backer",
+    "width": 100.0,
+    "backer_w": 100,
+    "backer_t": 1.02,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 10.0,
+    "length": 420.0
+   },
+   "peak_kpa": 14.728824894231813,
+   "meat_only_kpa": 8.573756397755199,
+   "indent_mm": 6.396237690735069,
+   "gutter_mm": 130.0,
+   "mass_g": 155.4,
+   "delta_g": 51.408000000000015,
+   "cost_usd": 23.655192199753035,
+   "delta_usd": 8.4,
+   "pass": false,
+   "eligible": false
+  },
+  {
+   "rail": {
+    "key": "r100_b60_t1.32",
+    "name": "100 mm rail, 60 mm 1.3 mm backer",
+    "width": 100.0,
+    "backer_w": 60,
+    "backer_t": 1.32,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 10.0,
+    "length": 420.0
+   },
+   "peak_kpa": 15.02611396595913,
+   "meat_only_kpa": 8.76718837093854,
+   "indent_mm": 6.525340424950518,
+   "gutter_mm": 130.0,
+   "mass_g": 126.672,
+   "delta_g": 22.680000000000007,
+   "cost_usd": 15.255192199753035,
+   "delta_usd": 0.0,
+   "pass": false,
+   "eligible": false
+  },
+  {
+   "rail": {
+    "key": "r100_b90_t1.32",
+    "name": "100 mm rail, 90 mm 1.3 mm backer",
+    "width": 100.0,
+    "backer_w": 90,
+    "backer_t": 1.32,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 10.0,
+    "length": 420.0
+   },
+   "peak_kpa": 14.082334950171942,
+   "meat_only_kpa": 8.154443155734196,
+   "indent_mm": 6.115488657694669,
+   "gutter_mm": 130.0,
+   "mass_g": 176.56799999999998,
+   "delta_g": 72.576,
+   "cost_usd": 21.555192199753034,
+   "delta_usd": 6.299999999999999,
+   "pass": false,
+   "eligible": false
+  },
+  {
+   "rail": {
+    "key": "r100_b60_t2.04",
+    "name": "100 mm rail, 60 mm 2 mm backer",
+    "width": 100.0,
+    "backer_w": 60,
+    "backer_t": 2.04,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 10.0,
+    "length": 420.0
+   },
+   "peak_kpa": 14.748570416495676,
+   "meat_only_kpa": 8.586592154994333,
+   "indent_mm": 6.40481251287019,
+   "gutter_mm": 130.0,
+   "mass_g": 181.10399999999998,
+   "delta_g": 77.112,
+   "cost_usd": 15.255192199753035,
+   "delta_usd": 0.0,
+   "pass": false,
+   "eligible": false
+  },
+  {
+   "rail": {
+    "key": "r100_b90_t2.04",
+    "name": "100 mm rail, 90 mm 2 mm backer",
+    "width": 100.0,
+    "backer_w": 90,
+    "backer_t": 2.04,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 10.0,
+    "length": 420.0
+   },
+   "peak_kpa": 13.602451202332452,
+   "meat_only_kpa": 7.844410165359084,
+   "indent_mm": 5.907091142132906,
+   "gutter_mm": 130.0,
+   "mass_g": 258.216,
+   "delta_g": 154.22400000000002,
+   "cost_usd": 21.555192199753034,
+   "delta_usd": 6.299999999999999,
+   "pass": true,
+   "eligible": true
+  },
+  {
+   "rail": {
+    "key": "r100_b60_f12",
+    "name": "100 mm rail, 12 mm L200 foam",
+    "width": 100.0,
+    "backer_w": 60.0,
+    "backer_t": 1.02,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 12.0,
+    "length": 420.0
+   },
+   "peak_kpa": 15.230321540854597,
+   "meat_only_kpa": 8.908602290030545,
+   "indent_mm": 6.667631699632265,
+   "gutter_mm": 130.0,
+   "mass_g": 109.368,
+   "delta_g": 5.376000000000005,
+   "cost_usd": 15.255192199753035,
+   "delta_usd": 0.0,
+   "pass": false,
+   "eligible": false
+  },
+  {
+   "rail": {
+    "key": "r100_b60_f14",
+    "name": "100 mm rail, 14 mm L200 foam",
+    "width": 100.0,
+    "backer_w": 60.0,
+    "backer_t": 1.02,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 14.0,
+    "length": 420.0
+   },
+   "peak_kpa": 15.077876397167186,
+   "meat_only_kpa": 8.81733827772574,
+   "indent_mm": 6.653967373245861,
+   "gutter_mm": 130.0,
+   "mass_g": 114.744,
+   "delta_g": 10.75200000000001,
+   "cost_usd": 15.255192199753035,
+   "delta_usd": 0.0,
+   "pass": false,
+   "eligible": false
+  },
+  {
+   "rail": {
+    "key": "r100_b60_f16",
+    "name": "100 mm rail, 16 mm L200 foam",
+    "width": 100.0,
+    "backer_w": 60.0,
+    "backer_t": 1.02,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 16.0,
+    "length": 420.0
+   },
+   "peak_kpa": 14.953105043062937,
+   "meat_only_kpa": 8.744004103791132,
+   "indent_mm": 6.65153987262221,
+   "gutter_mm": 130.0,
+   "mass_g": 120.12,
+   "delta_g": 16.128000000000014,
+   "cost_usd": 15.255192199753035,
+   "delta_usd": 0.0,
+   "pass": false,
+   "eligible": false
+  },
+  {
+   "rail": {
+    "key": "r100_b60_eva",
+    "name": "100 mm rail, 4 mm EVA 45C over 6 mm L200",
+    "width": 100.0,
+    "backer_w": 60.0,
+    "backer_t": 1.02,
+    "foam": "eva4_xlpe6",
+    "foam_t": 10.0,
+    "length": 420.0
+   },
+   "peak_kpa": 15.070159123489043,
+   "meat_only_kpa": 8.785658711294895,
+   "indent_mm": 6.479364681280369,
+   "gutter_mm": 130.0,
+   "mass_g": 130.2,
+   "delta_g": 26.208,
+   "cost_usd": 15.255192199753035,
+   "delta_usd": 0.0,
+   "pass": false,
+   "eligible": false
+  },
+  {
+   "rail": {
+    "key": "r100_b60_eva30",
+    "name": "100 mm rail, 10 mm EVA 30C (softer grade)",
+    "width": 100.0,
+    "backer_w": 60.0,
+    "backer_t": 1.02,
+    "foam": "eva_foam_30c",
+    "foam_t": 10.0,
+    "length": 420.0
+   },
+   "peak_kpa": 15.585141805228641,
+   "meat_only_kpa": 9.130628854691862,
+   "indent_mm": 6.759795505654503,
+   "gutter_mm": 130.0,
+   "mass_g": 131.712,
+   "delta_g": 27.72,
+   "cost_usd": 15.675192199753035,
+   "delta_usd": 0.41999999999999993,
+   "pass": false,
+   "eligible": false
+  },
+  {
+   "rail": {
+    "key": "r110_b70",
+    "name": "110 mm rail, 70 mm backer",
+    "width": 110.0,
+    "backer_w": 70.0,
+    "backer_t": 1.02,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 10.0,
+    "length": 420.0
+   },
+   "peak_kpa": 14.42121117322409,
+   "meat_only_kpa": 8.374007966255508,
+   "indent_mm": 6.262651305492116,
+   "gutter_mm": 120.0,
+   "mass_g": 122.498,
+   "delta_g": 18.506000000000014,
+   "cost_usd": 17.59745821639912,
+   "delta_usd": 2.342266016646084,
+   "pass": false,
+   "eligible": false
+  },
+  {
+   "rail": {
+    "key": "r110_b80",
+    "name": "110 mm rail, 80 mm backer",
+    "width": 110.0,
+    "backer_w": 80.0,
+    "backer_t": 1.02,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 10.0,
+    "length": 420.0
+   },
+   "peak_kpa": 14.158643633202942,
+   "meat_only_kpa": 8.20384020438214,
+   "indent_mm": 6.148626975112265,
+   "gutter_mm": 120.0,
+   "mass_g": 135.35,
+   "delta_g": 31.358000000000004,
+   "cost_usd": 19.69745821639912,
+   "delta_usd": 4.4422660166460854,
+   "pass": false,
+   "eligible": false
+  },
+  {
+   "rail": {
+    "key": "r110_b90",
+    "name": "110 mm rail, 90 mm backer",
+    "width": 110.0,
+    "backer_w": 90.0,
+    "backer_t": 1.02,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 10.0,
+    "length": 420.0
+   },
+   "peak_kpa": 14.026361813648423,
+   "meat_only_kpa": 8.118226719714647,
+   "indent_mm": 6.091181390273722,
+   "gutter_mm": 120.0,
+   "mass_g": 148.202,
+   "delta_g": 44.21000000000001,
+   "cost_usd": 21.797458216399118,
+   "delta_usd": 6.542266016646083,
+   "pass": false,
+   "eligible": false
+  },
+  {
+   "rail": {
+    "key": "r115_b75",
+    "name": "115 mm rail, 75 mm backer",
+    "width": 115.0,
+    "backer_w": 75.0,
+    "backer_t": 1.02,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 10.0,
+    "length": 420.0
+   },
+   "peak_kpa": 14.026490117895932,
+   "meat_only_kpa": 8.11830972044879,
+   "indent_mm": 6.091237108531607,
+   "gutter_mm": 115.0,
+   "mass_g": 131.75099999999998,
+   "delta_g": 27.758999999999986,
+   "cost_usd": 18.768591224722165,
+   "delta_usd": 3.5133990249691305,
+   "pass": false,
+   "eligible": false
+  },
+  {
+   "rail": {
+    "key": "r115_b80",
+    "name": "115 mm rail, 80 mm backer",
+    "width": 115.0,
+    "backer_w": 80.0,
+    "backer_t": 1.02,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 10.0,
+    "length": 420.0
+   },
+   "peak_kpa": 13.904156980569756,
+   "meat_only_kpa": 8.039205853675309,
+   "indent_mm": 6.0381119047620935,
+   "gutter_mm": 115.0,
+   "mass_g": 138.17700000000002,
+   "delta_g": 34.18500000000003,
+   "cost_usd": 19.818591224722166,
+   "delta_usd": 4.563399024969131,
+   "pass": true,
+   "eligible": false
+  },
+  {
+   "rail": {
+    "key": "r120_b70",
+    "name": "120 mm rail, 70 mm backer",
+    "width": 120.0,
+    "backer_w": 70.0,
+    "backer_t": 1.02,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 10.0,
+    "length": 420.0
+   },
+   "peak_kpa": 14.122797496920896,
+   "meat_only_kpa": 8.180632579440308,
+   "indent_mm": 6.133060192996182,
+   "gutter_mm": 110.0,
+   "mass_g": 128.15200000000002,
+   "delta_g": 24.160000000000025,
+   "cost_usd": 17.839724233045207,
+   "delta_usd": 2.584532033292172,
+   "pass": false,
+   "eligible": false
+  },
+  {
+   "rail": {
+    "key": "r120_b80",
+    "name": "120 mm rail, 80 mm backer",
+    "width": 120.0,
+    "backer_w": 80.0,
+    "backer_t": 1.02,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 10.0,
+    "length": 420.0
+   },
+   "peak_kpa": 13.756621253504202,
+   "meat_only_kpa": 7.943896848388733,
+   "indent_mm": 5.974042056355092,
+   "gutter_mm": 110.0,
+   "mass_g": 141.00400000000002,
+   "delta_g": 37.01200000000003,
+   "cost_usd": 19.939724233045208,
+   "delta_usd": 4.684532033292173,
+   "pass": true,
+   "eligible": true
+  },
+  {
+   "rail": {
+    "key": "r120_b100",
+    "name": "120 mm rail, 100 mm backer",
+    "width": 120.0,
+    "backer_w": 100.0,
+    "backer_t": 1.02,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 10.0,
+    "length": 420.0
+   },
+   "peak_kpa": 13.49028896674595,
+   "meat_only_kpa": 7.772101552488063,
+   "indent_mm": 5.858382821958875,
+   "gutter_mm": 110.0,
+   "mass_g": 166.70800000000003,
+   "delta_g": 62.71600000000004,
+   "cost_usd": 24.139724233045207,
+   "delta_usd": 8.884532033292173,
+   "pass": true,
+   "eligible": true
+  },
+  {
+   "rail": {
+    "key": "r130_b70",
+    "name": "130 mm rail, 70 mm backer",
+    "width": 130.0,
+    "backer_w": 70.0,
+    "backer_t": 1.02,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 10.0,
+    "length": 420.0
+   },
+   "peak_kpa": 13.88725535373062,
+   "meat_only_kpa": 8.028282202432088,
+   "indent_mm": 6.030772091613417,
+   "gutter_mm": 100.0,
+   "mass_g": 133.806,
+   "delta_g": 29.81400000000002,
+   "cost_usd": 18.081990249691295,
+   "delta_usd": 2.82679804993826,
+   "pass": true,
+   "eligible": false
+  },
+  {
+   "rail": {
+    "key": "r130_b90",
+    "name": "130 mm rail, 90 mm backer",
+    "width": 130.0,
+    "backer_w": 90.0,
+    "backer_t": 1.02,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 10.0,
+    "length": 420.0
+   },
+   "peak_kpa": 13.231613289423526,
+   "meat_only_kpa": 7.60556756920327,
+   "indent_mm": 5.746048597820324,
+   "gutter_mm": 100.0,
+   "mass_g": 159.51000000000002,
+   "delta_g": 55.51800000000003,
+   "cost_usd": 22.281990249691294,
+   "delta_usd": 7.026798049938259,
+   "pass": true,
+   "eligible": false
+  },
+  {
+   "rail": {
+    "key": "r100_b60_L460",
+    "name": "100 mm rail, 460 mm long (z 30-490)",
+    "width": 100.0,
+    "backer_w": 60.0,
+    "backer_t": 1.02,
+    "foam": "xlpe_foam_l200",
+    "foam_t": 10.0,
+    "length": 460.0
+   },
+   "peak_kpa": 14.637338364238271,
+   "meat_only_kpa": 8.240632778307509,
+   "indent_mm": 6.356508140309874,
+   "gutter_mm": 130.0,
+   "mass_g": 120.86399999999999,
+   "delta_g": 16.872,
+   "cost_usd": 16.70348573536251,
+   "delta_usd": 1.4482935356094746,
+   "pass": false,
+   "eligible": false
+  }
+ ],
+ "chosen": "r120_b80",
+ "rule": "lightest with peak <= 13.8 kPa and gutter >= 110 mm",
+ "sweep": {
+  "r100_b60": [
+   {
+    "e_mm": 150.0,
+    "peak_kpa": 12.895594607347986,
+    "meat_only_kpa": 6.498889021417212,
+    "indent_mm": 5.600126884817652
+   },
+   {
+    "e_mm": 165.0,
+    "peak_kpa": 13.843056829692829,
+    "meat_only_kpa": 7.446351243762072,
+    "indent_mm": 6.01157814590794
+   },
+   {
+    "e_mm": 175.0,
+    "peak_kpa": 14.474698311256088,
+    "meat_only_kpa": 8.07799272532528,
+    "indent_mm": 6.2858789866348115
+   },
+   {
+    "e_mm": 181.0,
+    "peak_kpa": 14.853683200193988,
+    "meat_only_kpa": 8.456977614263208,
+    "indent_mm": 6.45045949107091
+   },
+   {
+    "e_mm": 190.0,
+    "peak_kpa": 15.422160533600875,
+    "meat_only_kpa": 9.025454947670147,
+    "indent_mm": 6.697330247725074
+   },
+   {
+    "e_mm": 205.0,
+    "peak_kpa": 16.369622755945755,
+    "meat_only_kpa": 9.97291717001496,
+    "indent_mm": 7.108781508815377
+   },
+   {
+    "e_mm": 223.0,
+    "peak_kpa": 17.506577422759545,
+    "meat_only_kpa": 11.109871836828772,
+    "indent_mm": 7.602523022123713
+   }
+  ],
+  "r120_b80": [
+   {
+    "e_mm": 150.0,
+    "peak_kpa": 11.532824313053249,
+    "meat_only_kpa": 5.720099907937756,
+    "indent_mm": 5.008321171681924
+   },
+   {
+    "e_mm": 165.0,
+    "peak_kpa": 12.366748165722349,
+    "meat_only_kpa": 6.5540237606068645,
+    "indent_mm": 5.3704665034343595
+   },
+   {
+    "e_mm": 175.0,
+    "peak_kpa": 12.922697400835077,
+    "meat_only_kpa": 7.109972995719616,
+    "indent_mm": 5.611896724602647
+   },
+   {
+    "e_mm": 181.0,
+    "peak_kpa": 13.256266941902721,
+    "meat_only_kpa": 7.443542536787269,
+    "indent_mm": 5.756754857303622
+   },
+   {
+    "e_mm": 190.0,
+    "peak_kpa": 13.756621253504202,
+    "meat_only_kpa": 7.943896848388733,
+    "indent_mm": 5.974042056355092
+   },
+   {
+    "e_mm": 205.0,
+    "peak_kpa": 14.59054510617333,
+    "meat_only_kpa": 8.777820701057832,
+    "indent_mm": 6.336187388107539
+   },
+   {
+    "e_mm": 223.0,
+    "peak_kpa": 15.591253729376222,
+    "meat_only_kpa": 9.778529324260782,
+    "indent_mm": 6.770761786210448
+   }
+  ]
+ },
+ "soft_tissue": {
+  "r100_b60": {
+   "tissue_kpa": 20.0,
+   "peak_kpa": 12.78303882641063
+  },
+  "r120_b80": {
+   "tissue_kpa": 20.0,
+   "peak_kpa": 11.07178547387538
+  }
+ },
+ "mass": {
+  "r100_b60": {
+   "foam_g": 26.88,
+   "backer_g": 77.112,
+   "sleeve_extra_g": 0.0,
+   "mesh_extra_g": 0.0,
+   "total_g": 103.99199999999999
+  },
+  "r120_b80": {
+   "foam_g": 32.256,
+   "backer_g": 102.816,
+   "sleeve_extra_g": 2.436,
+   "mesh_extra_g": 3.496,
+   "total_g": 141.00400000000002
+  }
+ },
+ "cost": {
+  "r100_b60": 15.255192199753035,
+  "r120_b80": 19.939724233045208
+ },
+ "delta_g": 37.01200000000003,
+ "delta_usd": 4.684532033292173,
+ "confirm": {
+  "skin_peak_kpa": 13.772850228345545,
+  "skin_where": "at a clip",
+  "skin_meat_only_kpa": 10.563035467142079,
+  "clear_walk_min": 12.959502330414328,
+  "clear_fact_min": 6.924506309312601,
+  "clear_fact_lean_min": 3.4172599325010067,
+  "rail_indent_walk_mm": 4.587174202197567,
+  "sf_fpf": 1.2546503177548305,
+  "sf_fatigue": 1.0877761163782735,
+  "sandwich_sf_min": 1.1139065065439102,
+  "checks": {
+   "fpf": true,
+   "fatigue": true,
+   "no_bottoming": true,
+   "skin_pressure": true,
+   "sandwich_local": true
+  },
+  "passes": true,
+  "rail": "r120_b80",
+  "e_mm": 190.0,
+  "spreader": "sw110c7d"
+ },
+ "confirm_current": {
+  "skin_peak_kpa": 15.440191962325208,
+  "skin_where": "at a clip",
+  "skin_meat_only_kpa": 12.00118814970134,
+  "clear_walk_min": 9.636700499162078,
+  "clear_fact_min": 2.900440111217687,
+  "clear_fact_lean_min": -1.9981106134199944,
+  "rail_indent_walk_mm": 5.211715973810302,
+  "sf_fpf": 1.254650317730697,
+  "sf_fatigue": 1.0877761163889832,
+  "sandwich_sf_min": 1.1139065065266565,
+  "checks": {
+   "fpf": true,
+   "fatigue": true,
+   "no_bottoming": true,
+   "skin_pressure": false,
+   "sandwich_local": true
+  },
+  "passes": false,
+  "rail": "r100_b60",
+  "e_mm": 190.0,
+  "spreader": "sw110c7d"
+ },
+ "screens": [
+  "outputs/screens/20261106_backpanel_1.png",
+  "outputs/screens/20261106_backpanel_2.png",
+  "outputs/screens/20261106_backpanel_3.png"
+ ]
+}

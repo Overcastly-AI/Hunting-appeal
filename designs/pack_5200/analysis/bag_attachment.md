@@ -1,17 +1,17 @@
 # Bag-to-frame attachment system
 
-Owner: pack-designer. Attachment phase, 2026-11-05. This is the whole joint between the Spine bag and the printed branch frame, bottom to top: hinge eyes, under-straps, IM2/IM3 bag hooks, a **crown hood** on the top bar and two **top side guys**. The frame side (fairleads, pins, sleeves, their FEA) is unchanged and is kept at the end as the 2026-11-01 record. Research: `docs/research/bag_attachment_research.md`. Load standard: HA-LS-1 rev B.
+Owner: pack-designer. Attachment phase, 2026-11-05; hood relieved at the crown corner wraps 2026-11-06 (2.5). This is the whole joint between the Spine bag and the printed branch frame, bottom to top: hinge eyes, under-straps, IM2/IM3 bag hooks, a **crown hood** on the top bar and two **top side guys**. The frame side (fairleads, pins, sleeves, their FEA) is unchanged and is kept at the end as the 2026-11-01 record. Research: `docs/research/bag_attachment_research.md`. Load standard: HA-LS-1 rev B.
 
 Code: `huntkit/gendesign/attach_system.py` (system, sims, strengths, drawings, screens) and `huntkit/gendesign/bag_attach.py` (fairleads; `write_docs` / `docs_only` write this file). Numbers: `analysis/attach_system_results.json`. Drawings: `cut/attachment/attachment_parts.pdf` / `.dxf` (1:1).
 
 ## Decision
 
-- **Top anchor: crown hood + two fixed-length top side guys** (cloth-sim runs PG15/PG19/PG23). Load CG, 68 kg fill (C1): **189 / 177 / 168 mm** at 15 / 19 / 23 in (before: 223 mm at 19 in). Meat case (C5 contents): 181 / 173 / 165 mm; with the meat at its HA-LS-1 150 mm: 167 / 163 / 158 mm.
+- **Top anchor: crown hood + two fixed-length top side guys** (cloth-sim runs PR15/PR19/PR23, hood lip relieved at the corner wraps). Load CG, 68 kg fill (C1): **189 / 179 / 170 mm** at 15 / 19 / 23 in (before: 223 mm at 19 in). Meat case (C5 contents): 181 / 174 / 166 mm; with the meat at its HA-LS-1 150 mm: 167 / 163 / 159 mm.
 - **The 180 mm goal is met at 19 and 23 in and missed at 15 in by 9 mm on the fill case** (meat case on the line). Nothing on the frame is higher than the 15 in top bar (z 601); every concept simulated is worst there. Owner choice 1 below.
 - **Head clearance R-28 passes** at every torso with the simulated wall and the hood on the bar: first contact **31 deg or later** (requirement > 30 deg).
 - **IM3 hook fixed**: all four bag hooks become one **rated >= 2200 N** part, proof PT-1 at **2120 N**, which is 1.5 x the C5 IM3 load of 1415 N (hood-off case). SF on the rated hook **1.55** (was 1.06).
 - **Bag off 52 s** (limit 120 s), bag on 59 s, between mode 70 s plus loading. Estimates for gloved hands, not a timed trial.
-- **Mass +136 g**: pack 3071 -> **3207 g (7.07 lb)**. Marginal cost about **$16**. No new frame feature.
+- **Mass +132 g**: pack 3316 -> **3447 g (7.60 lb)**. Marginal cost about **$16**. No new frame feature.
 
 ## 1. The joint, bottom to top
 
@@ -46,9 +46,12 @@ Lifters stay on the crown corner wraps (not part of the joint). W1-W3 stay the h
 | P15 | 15 | crown hood only | 201 | 190 | 172 | 462 | pocket 0 | 33 / 33 | 4.9 |
 | P19 | 19 | crown hood only | 186 | 182 | 168 | 456 | pocket 24 | 33 / 33 | 4.9 |
 | P23 | 23 | crown hood only | 180 | 175 | 164 | 457 | pocket 29 | 33 / 33 | 4.9 |
-| PG15 | 15 | crown hood + top side guys | 189 | 181 | 167 | 439 | TG_R 10, TG_L 11, pocket 0 | 33 / 31 | 0.6 |
-| PG19 | 19 | crown hood + top side guys | 177 | 173 | 163 | 448 | TG_R 18, TG_L 20, pocket 3 | 33 / 33 | 4.9 |
-| PG23 | 23 | crown hood + top side guys | 168 | 165 | 158 | 434 | TG_R 21, TG_L 23, pocket 3 | 33 / 33 | 4.9 |
+| PG15 | 15 | crown hood (full-width lip, 2026-11-05) + top side guys | 189 | 181 | 167 | 439 | TG_R 10, TG_L 11, pocket 0 | 33 / 31 | 0.6 |
+| PG19 | 19 | crown hood (full-width lip, 2026-11-05) + top side guys | 177 | 173 | 163 | 448 | TG_R 18, TG_L 20, pocket 3 | 33 / 33 | 4.9 |
+| PG23 | 23 | crown hood (full-width lip, 2026-11-05) + top side guys | 168 | 165 | 158 | 434 | TG_R 21, TG_L 23, pocket 3 | 33 / 33 | 4.9 |
+| PR15 | 15 | crown hood, lip relieved at the corner wraps + top side guys | 189 | 181 | 167 | 439 | TG_R 10, TG_L 11, pocket 0 | 33 / 31 | 0.6 |
+| PR19 | 19 | crown hood, lip relieved at the corner wraps + top side guys | 179 | 174 | 163 | 451 | TG_R 20, TG_L 20, pocket 0 | 33 / 33 | 4.9 |
+| PR23 | 23 | crown hood, lip relieved at the corner wraps + top side guys | 170 | 166 | 159 | 436 | TG_R 22, TG_L 24, pocket 0 | 33 / 33 | 4.9 |
 | PGc15 | 15 | crown hood + guys cinched 60 N after loading | 181 | 172 | 162 | 444 | TG_R 23, TG_L 24, pocket 0 | 31 / 28 | 0.0 |
 | PGc19 | 19 | crown hood + guys cinched 60 N after loading | 173 | 166 | 159 | 439 | TG_R 26, TG_L 28, pocket 0 | 33 / 33 | 4.9 |
 
@@ -58,9 +61,25 @@ Top anchor N is the meat case; `pocket` is the hood capture summed over its widt
 
 - **The hood beats the crown tie as the bar anchor.** Alone at 19 in it gives 186 / 182 mm against 192 / 186 for the two-point tie (A): it holds B-01 across the bar width instead of at x +/-70. That is the research's best-in-class pattern: the frame top captured by the bag (KUIU ICON 6 stay pockets, Initial Ascent slots, the Mystery Ranch collar), here as one hood on the bar.
 - **A bar anchor alone is not enough at any torso.** At 23 in the hood alone is 180 mm (the bag between IM3 at z 520 and the bar at z 804 bulges aft), at 15 in it carries nothing (0 N) and gives 201 mm. What pulls the CG in is the pair of guys holding the aft upper corners forward (study finding 3).
-- **Hood + guys vs study G (tie + guys):** 177 vs 179 mm at 19 in, 168 vs 167 at 23 in, 189 vs 189 at 15 in: the same within the +/-5 mm scatter. The hood wins on use, not on CG: the guys are sewn to its ears, so one lift releases the whole top (hood and both guys) and one drop re-seats it. Nothing at the top is threaded, clipped or tensioned with the bag on, which is the field's failure point (K4 dealer's ~18 cases, research 3.3). G needs two more clips at the bar and the guy anchors crowd the lifter lugs at x +/-105.
+- **Hood + guys vs study G (tie + guys):** 179 vs 179 mm at 19 in, 170 vs 167 at 23 in, 189 vs 189 at 15 in: the same within the +/-5 mm scatter. The hood wins on use, not on CG: the guys are sewn to its ears, so one lift releases the whole top (hood and both guys) and one drop re-seats it. Nothing at the top is threaded, clipped or tensioned with the bag on, which is the field's failure point (K4 dealer's ~18 cases, research 3.3). G needs two more clips at the bar and the guy anchors crowd the lifter lugs at x +/-105.
 - **Load lifters as the anchor (L19)** reach 180 / 175 mm, about the same, but only by routing the lifter to the bag in bag-on and back to the frame in bag-off. That is the switching in US 10,952,523, and with the bag off the lifters would need a second anchor. Rejected. On our rigid crown a lifter that stays on the crown does not change the bag-to-frame peel at all (it loads the frame, not the bag).
 - **Cinching the guys** (60 N after loading, PGc) buys 8 mm at 15 in (181 / 172 mm) but R-28 then **fails: first contact 28 deg** (the top is pulled toward the head); at 19 in it gives 173 / 166 mm, R-28 33 deg. So the guys are set once on the packed bag and never cranked (the instruction is 'snug, do not crank'). This is the study's B finding again: cinched top straps over-pull toward the head.
+
+### 2.5 Hood and the crown corner wraps (2026-11-06)
+
+The frame re-check (`frame_cg_recheck.md` 5.1) found that the carbon corner wraps cover the top bar from the leg face (x +/-107) to about x +/-77, at OD about 19.5, and cannot be shortened (an 11 mm overlap fails the corner bond). The 2026-11-05 hood asked for bare bar over x +/-96: its lip and HDPE stiffener would have borne on the wrap step and the ply drop, putting the hood capture and the guy loads into the bond end. Fix on the hood, not the frame:
+
+- **Lip relief:** the lip, J-curl, hem, B-19s stiffener and B-19L lining stop at x +/-66 (132 mm on bare OD 18 bar). The outer 29 mm each side of the 190 mm shell is back ply and crown only, ending at fold 2 with an R4 root. Shell width, ears, guys, tongues and the ladder do not change.
+- **Why 66 and not 77:** the hood floats 9 mm a side between the crown legs, so the lip edge can reach x 75: 2 mm short of the wrap step. Over the wraps the crown sits on the 3 mm lining in the bare zone, 2.25 mm above the wrap (radial step 0.75 mm). Nothing touches the wraps in use.
+- **Cloth sim re-run** with the hood capture narrowed to x +/-66 (conservative: the shell still holds B-01 wider than that):
+
+| torso | fill CG full lip (PG) | fill CG relieved (PR) | meat CG PG | meat CG PR | hood 1 g N PG / PR (meat) | guys 1 g N PR (meat) | R-28 deg PR (fill / meat) | gap at 30 deg PR mm |
+|---:|---:|---:|---:|---:|---|---|---|---:|
+| 15 | 189 | **189** | 181 | **181** | 0 / 0 | 10 / 11 | 33 / 31 | 0.6 |
+| 19 | 177 | **179** | 173 | **174** | 3 / 0 | 20 / 20 | 33 / 33 | 4.9 |
+| 23 | 168 | **170** | 165 | **166** | 3 / 0 | 22 / 24 | 33 / 33 | 4.9 |
+
+The CG holds within the +/-5 mm fill scatter (accepted 189 / 177 / 168 mm), and R-28 still passes at every torso. With the narrower capture the hood itself carries almost nothing and the two guys take the top (a few N more each); the hood's job is to give the guys their anchor and centre the top. The guy factored load and the lip capacity (132 mm of Hypalon on the bar) are in section 5. The PR19 meat case stops at a 0.8 N residual (not flagged converged); the other meat cases converge.
 
 ### 2.3 Why the hood is lift-and-drop, not snap-on
 
@@ -72,12 +91,12 @@ At 15 in the top bar is at z 601, 500 mm below the bag top. Best head-safe resul
 
 ## 3. IM3 hook
 
-With B-17 the IM3 bag hook carries 472 N at 1 g with no top anchor (T0) and 448 N with the hood and guys: the top anchor relieves it only 24 N. The hook is designed for the hood-off case (a user who forgets the hood): C5 factored **1415 N**.
+With B-17 the IM3 bag hook carries 472 N at 1 g with no top anchor (T0) and 451 N with the hood and guys: the top anchor relieves it only 21 N. The hook is designed for the hood-off case (a user who forgets the hood): C5 factored **1415 N**.
 
 | option | rating N | SF at C5 | mass change | verdict |
 |---|---:|---:|---:|---|
 | keep the 1500 N hook (assumption) | 1500 | 1.06 | 0 | fails a 1.5 qualification margin |
-| hood relieves IM3 | 1500 | 1.12 | 0 | still thin, and lost if the hood is off |
+| hood relieves IM3 | 1500 | 1.11 | 0 | still thin, and lost if the hood is off |
 | two hooks per side on one eye | 2 x 1500 | not credited | +18 g | uneven share on one 38 mm eye; rejected |
 | **rated 38 mm hook, all four bag hooks** | **>= 2200** | **1.55** | **+20 g** | **chosen**; same handling and times; one spare part |
 
@@ -101,7 +120,7 @@ Stitch standards. Load joints: box-X, ISO 301 lockstitch, **7 SPI** (3.6 mm), `b
 | B-23 | IM2 tongue backing (new) | 2 | `hypalon_coated_nylon` | 60 x 60, laser-cut, R6 | flat | single-row perimeter 3 mm, 301 (the tongue box-X goes through it), 8 SPI, `bonded_nylon_tex90` | - | INSIDE B-01, centred on the IM2 tongue box at x +/-115, z 260 |
 | T3 | IM3 bag-hook tongue | 2 | `poly_webbing_38mm` | 38 mm x 160 mm | as T2 | box-X 38 x 38 both ends, 301, 7 SPI, `bonded_nylon_tex135` | B-17 tab (outside B-01) | box at x +/-115, z 450 on B-17; loop at the IM3 eye z 520 |
 | B-17 | IM3 bag-hook tab | 2 | `hypalon_coated_nylon` | 90 x 110, laser-cut, R6 | flat | double-row perimeter 3 / 9 mm, 301; 80 mm stitch line across the load, 8 SPI, `bonded_nylon_tex90` | - | OUTSIDE B-01 under the IM3 swell, centred x +/-115, z 450 |
-| B-19 | crown hood shell (new) | 1 | `hypalon_coated_nylon` | 190 x 130 blank + 2 ears 30 x 40, laser-cut | fold 1 (back/crown) and fold 2 (crown/lip) square on a 19 mm dowel; lip hem 14 mm turned in over the HDPE stiffener B-19s; lining B-19L glued inside the crown | lip hem: single row 301 at 3 mm; tongues box-X 25 x 25; ears: guy box-X 25 x 25, 7 SPI, `bonded_nylon_tex135` | - | rides on the crown top bar between the crown legs (x +/-95) |
+| B-19 | crown hood shell (new) | 1 | `hypalon_coated_nylon` | 190 x 130 blank + 2 ears 30 x 40, laser-cut | fold 1 (back/crown) and fold 2 (crown/lip) square on a 19 mm dowel; lip relieved over the outer 29 mm each side (lip on bare bar over x +/-66, clear of the crown corner wraps); lip hem 14 mm turned in over the HDPE stiffener B-19s; lining B-19L glued inside the crown | lip hem: single row 301 at 3 mm; tongues box-X 25 x 25; ears: guy box-X 25 x 25, 7 SPI, `bonded_nylon_tex135` | - | rides on the crown top bar between the crown legs (shell x +/-95, lip bears on bare bar x +/-66) |
 | HT | hood tongues (woven into the ladder, POM toggle end) | 2 | `poly_webbing_25mm` | 25 mm x 120 mm | one end box-X to the hood back ply at x +/-60; other end folded over a POM toggle 30 x 8 x 5 and box-X'd | box-X 25 x 25 both ends, 301, 7 SPI, `bonded_nylon_tex135` | - | woven in at the rung for the torso setting (rung k = crown setting k) |
 | B-20 | hood ladder strip (new) | 2 | `hypalon_coated_nylon` | 40 x 250, 17 slots 27 x 5 at 12.7 mm pitch, laser-cut | flat | double-row both long edges 2 / 5 mm (clear of the slots) + bartack both ends, 301, 8 SPI, `bonded_nylon_tex90` | - | OUTSIDE B-01b/B-01u, centred x +/-60, z 545-795 (sewn after the B-01 tiers are joined; follows the setback) |
 | TG | top side guy (fixed length, set once) | 2 | `poly_webbing_25mm` | 25 mm x 500 mm | hood end box-X on the ear; bag end through a 25 mm ladder lock + tri-glide keeper on B-22, tail 100 mm in an elastic keeper | box-X 25 x 25 (hood end), 301, 7 SPI, `bonded_nylon_tex135` | B-22 corner tab | hood ear x +/-95 -> B-02d at x +/-149, z 752 (outer face, upper corner); free length about 314 mm |
@@ -117,11 +136,11 @@ Strength (per side, factored HA-LS-1 x 3.0 or the beam model, whichever is large
 | B-23 | 403 | as T2 | tear-out (2 x 60 mm) 3628 | tear-out (2 x 60 mm) | **9.00** | 610 |
 | T3 | 1415 | max(sim IM3 x 3.0 incl. hood-off T0 472 N, beam model) | box-X 5256; webbing on hook bed 10008; hook (rated) 2200; B-17 seam (80 mm loaded) 3277 | hook (rated) | **1.55** | 2120 |
 | B-17 | 1415 | as T3 | perimeter seam (80 mm loaded) 3277 | perimeter seam (80 mm loaded) | **2.32** | 2120 |
-| B-19 | 365 | sim hood capture + 2 guys, x 3.0 | lip on the bar (Hypalon strip x 190) 7782; 2 tongue box-X 25 6916 | 2 tongue box-X 25 | **18.94** | 550 |
+| B-19 | 381 | sim hood capture + 2 guys, x 3.0 | lip on bare bar (Hypalon strip x 132) 5407; 2 tongue box-X 25 6916 | lip on bare bar (Hypalon strip x 132) | **14.18** | 570 |
 | HT | 79 | sim hood capture per side x 3.0 | box-X 25 3458; POM toggle (ASSUMPTION) 670; webbing 6672 | POM toggle (ASSUMPTION) | **8.51** | 120 |
 | B-20 | 79 | as HT | rung bar (7.7 mm, 30 deg sag) 315 | rung bar (7.7 mm, 30 deg sag) | **4.00** | 120 |
-| TG | 104 | sim guy x 3.0 | box-X 25 3458; ladder lock slip 300; webbing 6672 | ladder lock slip | **2.89** | 160 |
-| B-22 | 104 | as TG | perimeter seam (50 mm loaded) 1024; box-X 25 3458 | perimeter seam (50 mm loaded) | **9.87** | 160 |
+| TG | 112 | sim guy x 3.0 | box-X 25 3458; ladder lock slip 300; webbing 6672 | ladder lock slip | **2.68** | 170 |
+| B-22 | 112 | as TG | perimeter seam (50 mm loaded) 1024; box-X 25 3458 | perimeter seam (50 mm loaded) | **9.15** | 170 |
 
 Proof tests (owner bench, before the first sewn bag):
 
@@ -130,8 +149,8 @@ Proof tests (owner bench, before the first sewn bag):
 | PT-1 | 38 mm bag hook (all four bag hooks, one part) | hook on a 5 mm pin, 38 mm webbing loop on the bed | 2120 | C5 IM3 factored 1415 N (hood-off, T0) x 1.5 | 5 of 5 hold, gate closes after | every lot of 25: one hook to 1415 N |
 | PT-2 | T3 tongue on B-17 on a B-01 swatch | swatch clamped 120 mm wide, pull on the tongue loop | 2120 | IM3 sewn path (box-X, tab seam, laminate) | 5 of 5 hold, no stitch break, no laminate tear | first article only |
 | PT-3 | HE eye on B-18 + B-01 + B-05 seam swatch | 5 mm pin through the eye | 1530 | hinge factored 1019 N | 5 of 5 hold | first article only |
-| PT-4 | crown hood on an 18 mm tube | pull B-01 swatch aft through the ladder, guys pulled aft-outward | 550 | hood capture + both guys x 3.0 | hood stays seated, no toggle pull-through | repeat at -10 C (HDPE lip) |
-| PT-5 | guy ladder lock with the tri-glide keeper | 25 mm webbing, 10 cycles 0-load | 160 | guy x 3.0 | slip < 5 mm over 10 cycles | - |
+| PT-4 | crown hood on an 18 mm tube | pull B-01 swatch aft through the ladder, guys pulled aft-outward | 570 | hood capture + both guys x 3.0 | hood stays seated, no toggle pull-through | repeat at -10 C (HDPE lip) |
+| PT-5 | guy ladder lock with the tri-glide keeper | 25 mm webbing, 10 cycles 0-load | 170 | guy x 3.0 | slip < 5 mm over 10 cycles | - |
 
 ## 6. Quiet
 
@@ -215,8 +234,8 @@ Original IP: The hood is a single J-profile Hypalon cap between the crown legs, 
 ## 9. Frame interface (for the structural-fea-engineer)
 
 - No new printed feature and no edit to `print/frame`. The hood uses the existing carbon crown top bar.
-- Crown top bar: keep x +/-96 free of bonded lugs or wraps (hood 190 mm wide, crown-leg inner faces at x +/-104). OD 18 +/- 0.3 mm, no sharp edge on the bar ends.
-- New load on the crown top bar (factored, HA-LS-1 x 3.0): hood capture 158 N total, spread over x +/-95 on the bar's wearer-side face, pointing aft; plus each guy 104 N at x +/-95, pointing aft and outboard toward the face corner (x +/-149, z 752). Add both to the C1/C5 re-check with the bag CG below.
+- Crown top bar (2026-11-06, replaces 'bare x +/-96'): the corner wraps stay as built (x +/-77 to +/-107, OD ~19.5). The hood's lip, stiffener and lining bear on bare OD 18 +/- 0.3 bar over x +/-66 only (2 mm clear of the wrap step with the hood floated 9 mm to one leg); keep x +/-75 free of any bonded lug, label or tape.
+- New load on the crown top bar (factored, HA-LS-1 x 3.0): hood capture 158 N total, spread over x +/-66 on the bar's wearer-side face, pointing aft (1.19 N/mm, was 0.83 over x +/-95); each guy 112 N, from the hood ear at x +/-95 pointing aft and outboard toward the face corner (x +/-149, z 752), now reaching the bar through the hood shell and the lip (x +/-66), not at the ear. Nothing bears on the wraps. Add both to the C1/C5 re-check with the bag CG below.
 - Bag CG envelope for the frame re-check, chosen system (1 g sim, +/-5 mm on fill): see the 'Top anchor' table; worst is the 15 in setting.
 
 ## 10. Pattern-maker hand-off
@@ -227,6 +246,7 @@ Original IP: The hood is a single J-profile Hypalon cap between the crown legs, 
 | B-01b / B-01u | Mark the two B-20 ladder strips OUTSIDE, centred x +/-60, z 545-795, both long-edge stitch lines (3 and 9 mm in) and the end bartacks. They cross the B-01|B-01b and B-01b|B-01u seams: sew after the three tiers are joined, before B-01 joins B-03. No outline change. |
 | B-02d | Mark the B-22 corner tabs OUTSIDE at x +/-149, z 752 and the ladder-lock tab box-X. Sew before B-02d joins the collar. |
 | B-17, B-18 | Unchanged (2026-11-05). B-17 now carries tongue T3 for the rated hook. |
+| B-19 / B-19s / B-19L (rev 2026-11-06) | Hood lip relieved: the lip, J-curl and hem exist only over the centre 132 mm (x +/-66); the outer 29 mm each side ends at fold 2 with an R4 root. Back ply, crown, ears and the 190 mm shell width are unchanged. B-19s HDPE 180 -> 124 mm, B-19L XLPE 180 -> 128 mm. Blank outline, fold 2 and hem lines redrawn in cut/attachment/attachment_parts.pdf / .dxf. |
 | new pieces | B-19 hood shell (Hypalon, laser-cut, fold lines etched), B-19s lip stiffener (HDPE 1.5), B-19L lining (XLPE 3), B-20 x2 ladder strips (Hypalon, 17 slots), B-22 x2 corner tabs, B-23 x2 IM2 backings. No seam allowance (laser-cut, edge-stitched). True-scale in cut/attachment/attachment_parts.pdf / .dxf. |
 | webbing cut list | add: HT hood tongues 2 x 25 mm x 120; TG guys 2 x 25 mm x 500; ladder-lock tabs 2 x 25 mm x 70; hood grab tab 1 x 25 mm x 90. Unchanged: HE 2 x 38 x 150, T2/T3 4 x 38 x 160. |
 | hardware list | bag hooks 4 x 38 mm rated >= 2200 N (replaces the 1500 N assumption on the bag hooks only; the meat-strap hooks are unchanged); 2 x POM toggle; 2 x 25 mm ladder lock; 2 x tri-glide; Dyneema cord pull loops replace the metal rings on the two hinge pins. |
@@ -235,9 +255,9 @@ Original IP: The hood is a single J-profile Hypalon cap between the crown legs, 
 
 | part | g |
 |---|---:|
-| crown hood B-19 (Hypalon blank + ears + hem) | 26.7 |
-| hood lip stiffener B-19s (HDPE 1.5) | 5.7 |
-| hood lining B-19L (XLPE 3) | 0.9 |
+| crown hood B-19 (Hypalon blank + ears + hem) | 24.3 |
+| hood lip stiffener B-19s (HDPE 1.5) | 3.9 |
+| hood lining B-19L (XLPE 3) | 0.6 |
 | hood ladder strips B-20 x2 | 20.0 |
 | hood tongues x2 + POM toggles | 10.3 |
 | hood grab tab (25 mm x 90) | 1.6 |
@@ -248,14 +268,14 @@ Original IP: The hood is a single J-profile Hypalon cap between the crown legs, 
 | IM2 tongue backings B-23 x2 | 7.1 |
 | bag hooks 1500 N -> 2200 N rated (4 x +5 g) | 20.0 |
 | thread (box-X + perimeters) | 2.0 |
-| **delta** | **136.0** |
+| **delta** | **131.5** |
 
-Pack 3071 -> **3207 g (7.07 lb)**, 231 g over the published 2976 g. Basis: hypalon_coated_nylon 1000 gsm, hdpe_sheet, xlpe_foam, poly_webbing_25mm, ladder_lock_25mm records; toggle, tri-glide, hook masses ASSUMPTION; elastic keeper 0.6 g ASSUMPTION. Marginal cost about $16 (records' prices; hook $6.00 and toggle $0.50 ASSUMPTION).
+Pack 3316 -> **3447 g (7.60 lb)**, 471 g over the published 2976 g. Basis: hypalon_coated_nylon 1000 gsm, hdpe_sheet, xlpe_foam, poly_webbing_25mm, ladder_lock_25mm records; toggle, tri-glide, hook masses ASSUMPTION; elastic keeper 0.6 g ASSUMPTION. Marginal cost about $16 (records' prices; hook $6.00 and toggle $0.50 ASSUMPTION).
 
 ## 12. Owner choices (recommendation first)
 
 1. **15-16.5 in settings: accept the 15 in result (recommended)**, fill CG 189 mm, inside the 205 mm envelope of the frame re-check that is running; cinching the guys there gets closer to 180 but fails R-28 (2.2). The alternative is a hood on the accessory extension posts for short torsos: it needs an IP opinion on US 10,952,523, a C6p-type frame case and an R-28 check with posts.
-2. **Accept +136 g for the joint (recommended)**: pack 3207 g (7.07 lb), 231 g over the published 2976 g. Without the top anchor the frame has to carry the 205 mm CG at every torso.
+2. **Accept +132 g for the joint (recommended)**: pack 3447 g (7.60 lb), 471 g over the published 2976 g. Without the top anchor the frame has to carry the 205 mm CG at every torso.
 3. **One rated hook for all four bag hooks (recommended, +20 g)** or rated hooks at IM3 only (+10 g, two hook types in the kit).
 4. **FTO read on US 12,495,885 and confirmation that US 8,579,171 / 8,348,114 are expired** before release (recommended; open since the research).
 5. Lighter options if the weight is not accepted: ladder strips in 500D Cordura with bound slots (about -11 g, less durable at the slots), rated hooks at IM3 only (-10 g), no tri-glide keepers on the guys (-6 g; research says keep them).
@@ -267,7 +287,8 @@ Pack 3071 -> **3207 g (7.07 lb)**, 231 g over the published 2976 g. Basis: hypal
 - Bag hook: 38 mm forged 7075 sliding-gate class, rated >= 2200 N, 14 g, $6.00: a purchase requirement, proven by PT-1. No hook record exists yet (materials-engineer to add one from the bought part).
 - POM toggle 30 x 8 x 5 mm, 3 g, bending pull-through 670 N (pom_acetal ~65 MPa, Z 33 mm3).
 - Tri-glide 3 g, elastic keeper 0.6 g, hood rung bar fails at 30 deg sag.
-- Cloth sim: crown hood = tension-only legs from the B-01 rows within 25 mm of the bar to the bar's bag face, free to slide in z and x (hood on a ladder, not sewn at one height); 1 mm Hypalon ply ~ 38 mm webbing EA per 40 mm strip; free hood depth 16 mm (the drafted gap at 19-23 in). Ladder tongues at x +/-60 hold B-01; the sim holds every node of the row out to x +/-92 (hood width), so the sim capture is a little wider than the part.
+- Cloth sim: crown hood = tension-only legs from the B-01 rows within 25 mm of the bar to the bar's bag face, free to slide in z and x (hood on a ladder, not sewn at one height); 1 mm Hypalon ply ~ 38 mm webbing EA per 40 mm strip; free hood depth 16 mm (the drafted gap at 19-23 in). Ladder tongues at x +/-60 hold B-01. Released (PR) runs hold the row out to x +/-66 (the relieved lip on bare bar); the superseded PG runs held it to x +/-92. Hood-alone loads (P runs, x +/-92) stay the bound for the hood capture.
+- Hood float 9 mm a side between the crown legs; wrap step from x +/-77 (frame.yaml: 30 mm wrap, 8 mm ply drop, OD ~19.5); a 2 mm margin from the lip edge to the step.
 - Guys fixed length: elastic 25 mm webbing snug (30 N) at the drafted shape, i.e. set once on the packed bag.
 - R-28 with the sim wall adds 3 mm (fabric + coarse mesh) and the hood (+1 mm in front of the bar, +4 mm over it).
 - Procedure seconds: 4 s a hook or pin, 3 s a cam pop or a hood lift, 10 s to place or clear the bag (gloved, not timed).
@@ -281,6 +302,7 @@ Phone previews in `outputs/screens/20261105_attach_1..5.png`; milestone copies (
 - `docs/screens/20261105_attach_3.png`
 - `docs/screens/20261105_attach_4.png`
 - `docs/screens/20261105_attach_5.png`
+- `docs/screens/20261106_backpanel_4.png`
 
 ## Frame side: branch fairleads (record of 2026-11-01, still current)
 

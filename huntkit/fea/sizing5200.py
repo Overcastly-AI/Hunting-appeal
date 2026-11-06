@@ -30,7 +30,9 @@ CG_BAG = 180.0   # geometry.yaml: bag frame-side panel at y 20 + depth 320 / 2
 def cases(standard: str = "v1"):
     if standard == "ls1":
         from .load_standard import ls1_cases
-        return ls1_cases(CG_BAG)
+        # the v2 sizing (frame.yaml, frame_sizing.md) is a rev B record: pinned so it reproduces. A rev C re-size
+        # would call ls1_envelope() and must also envelope the IM3 couple variant.
+        return ls1_cases(CG_BAG, rev="B")
     return pack5200_cases(**{n: {"cg_aft_mm": CG_BAG} for n in BAG_CASES})
 
 

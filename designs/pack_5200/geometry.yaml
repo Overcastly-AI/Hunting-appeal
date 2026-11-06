@@ -730,15 +730,15 @@ harness:
 weight:
   basis: 'PRODUCTION pack: printed branch frame + Sandwich v2 spreader + fairlead attachment + under-straps + soft
     goods; size M belt, J-straps, rain fly (owner: counts), meat harness'
-  groups_g: {frame (printed branch body + carbon crown): 991.7, 'back-system spreader (Sandwich v2, BP-06)': 153.7,
+  groups_g: {frame (printed branch body + carbon crown): 1062.6, 'back-system spreader (Sandwich v2, BP-06)': 162.3,
     torso adjust (not in the frame line): 41.7, main bag: 365.5, bag-side load spreaders: 27.8, bag-to-frame attachment (fairleads): 144.1,
-    bag-to-frame attachment system: 135.9, under-straps US1/US2 (cradle): 122.4, accents: 52.7, rain fly: 74.7,
-    pockets: 60.3, hipbelt (M): 334.3, harness: 212.5, back panel: 90.9, internal meat harness: 253.9, haul wraps (= compression): 108.1,
-    misc: 36.7}
-  total_g: 3206.9
-  total_lb: 7.07
+    bag-to-frame attachment system: 131.4, under-straps US1/US2 (cradle): 122.4, accents: 52.7, rain fly: 74.7,
+    pockets: 60.3, hipbelt (M): 334.3, harness: 212.5, back panel: 251.3, internal meat harness: 253.9, haul wraps (= compression): 108.1,
+    misc: 41.6}
+  total_g: 3447.2
+  total_lb: 7.6
   target_g: 2268
-  gap_g: 938.9
+  gap_g: 1179.2
   weight_plan: analysis/bag_weight_plan.md (bag-side savings, owner choices)
   v31_tube_baseline: {total_g: 2224.1, frame_g: 569.2, back_panel_g: 75.2, misc_g: 36.1, source: 'geometry.yaml
       v3.1 (commit 6061796): carbon-tube frame v2, single 6 mm XLPE back sheet', used_by: huntkit/gendesign/frame_production.py
@@ -749,11 +749,13 @@ weight:
   excluded_from_base: ['rifle boot (switchable, either side)', lid / hip pack accessory, extension posts accessory
       (ASSUMPTION ~60 g)]
   rows:
-  - {group: frame (printed branch body + carbon crown), item: 'PAHT-CF branch body 774 g, carbon crown, rack + pawl
-      + guides, bushings, Ti hip-pivot mount, pawl bushings, inserts', mass_g: 991.7, basis: analysis/generative_branch_results.json
-      frame_g 1194.3 - retired QI sheet + M4 sets 202.6 (spreader_results.json old_part_g)}
+  - {group: frame (printed branch body + carbon crown), item: 'PAHT-CF branch body 823 g (production raster), carbon
+      crown with the rev C inner plies (+22.0 g), rack + pawl + guides, bushings, Ti hip-pivot mount, pawl bushings,
+      inserts', mass_g: 1062.6, basis: 'analysis/frame_mass_production.json frame_g: body 823.2 + non-body 217.4
+      + crown fix 22.0'}
   - {group: 'back-system spreader (Sandwich v2, BP-06)', item: 'sheet, edge tubes, clips, pucks, pads, doublers,
-      seal (installed)', mass_g: 153.7, basis: analysis/spreader_results.json chosen.mass_g (owner 2026-11-05)}
+      seal (installed)', mass_g: 162.3, basis: 'analysis/spreader_results.json chosen.mass_g (sw110c7d; owner 2026-11-06,
+      7 mm core)'}
   - {group: torso adjust (not in the frame line), item: '3:1 pulley webbing 25 mm x 1.4 m, metal cam buckle, pawl
       release cord + strap toggle', mass_g: 41.7, basis: records; cam 12 g + toggle 3 g ASSUMPTION}
   - {group: main bag, item: 'fabric panels (B-*, D-01, collar, tabs)', mass_g: 272.9, basis: 'computed: cut area
@@ -789,11 +791,11 @@ weight:
       parts_g}
   - {group: bag-to-frame attachment (fairleads), item: lifter tri-glide keepers, mass_g: 6.0, basis: analysis/bag_attachment_results.json
       parts_g}
-  - {group: bag-to-frame attachment system, item: crown hood B-19 (Hypalon blank + ears + hem), mass_g: 26.7, basis: analysis/attach_system_results.json
+  - {group: bag-to-frame attachment system, item: crown hood B-19 (Hypalon blank + ears + hem), mass_g: 24.3, basis: analysis/attach_system_results.json
       mass.parts_g (attachment phase 2026-11-05)}
-  - {group: bag-to-frame attachment system, item: hood lip stiffener B-19s (HDPE 1.5), mass_g: 5.7, basis: analysis/attach_system_results.json
+  - {group: bag-to-frame attachment system, item: hood lip stiffener B-19s (HDPE 1.5), mass_g: 3.9, basis: analysis/attach_system_results.json
       mass.parts_g (attachment phase 2026-11-05)}
-  - {group: bag-to-frame attachment system, item: hood lining B-19L (XLPE 3), mass_g: 0.9, basis: analysis/attach_system_results.json
+  - {group: bag-to-frame attachment system, item: hood lining B-19L (XLPE 3), mass_g: 0.6, basis: analysis/attach_system_results.json
       mass.parts_g (attachment phase 2026-11-05)}
   - {group: bag-to-frame attachment system, item: hood ladder strips B-20 x2, mass_g: 20.0, basis: analysis/attach_system_results.json
       mass.parts_g (attachment phase 2026-11-05)}
@@ -844,8 +846,8 @@ weight:
       yoke outline YOKE_OUTLINE (same polygon as huntkit.viz3d) x 1.5 mm x 1550 kg/m3 (cfrp_plate_quasi_iso)'}
   - {group: harness, item: 'load lifters 25 mm poly + ladders, sternum Fidlock (QUICK family) + POM rails', mass_g: 65.6,
     basis: records; rails 12 g ASSUMPTION}
-  - {group: back panel, item: 'lower mesh, stay-rail foam pair, upper pad, shell (spreader is its own line)', mass_g: 90.9,
-    basis: computed}
+  - {group: back panel, item: 'mesh, stay-rail foam pair + carbon backer strips, rail sleeves, upper pad (spreader
+      is its own line)', mass_g: 251.3, basis: computed; rails and backers from analysis/back_rail.md (2026-11-06)}
   - {group: internal meat harness, item: '3 x 38 mm straps IM1-IM3 + 6 frame stubs, 6 sliding-gate hooks, 3 cams
       (MEAT family)', mass_g: 239.8, basis: 'poly_webbing_38mm record x cut lengths (meat_harness); hook 9 g, cam
       22 g ASSUMPTION. The stubs became fairlead eyes: net in the attachment line ''webbing eyes, net of old stubs'''}
@@ -854,4 +856,4 @@ weight:
     basis: records; lengths from the 3D teardrop (haul_wraps)}
   - {group: haul wraps (= compression), item: 3 aluminium G-hooks (HAUL family) + 3 ladder locks, mass_g: 24, basis: G-hook
       4 g ASSUMPTION (no record); ladder lock record}
-  - {group: misc, item: thread (~3 % of soft goods) + labels, mass_g: 36.7, basis: ASSUMPTION}
+  - {group: misc, item: thread (~3 % of soft goods) + labels, mass_g: 41.6, basis: ASSUMPTION}

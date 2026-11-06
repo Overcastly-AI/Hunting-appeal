@@ -24,7 +24,8 @@ def standard_cases():
     """(cases, standard name, fatigue g)."""
     try:
         from huntkit.fea.load_standard import FATIGUE, NAME, ls1_cases
-        return ls1_cases(180.0), NAME, float(FATIGUE["g"])
+        # the lug / gendesign studies are rev B records (bag 180 mm on C1-C4): pinned so they reproduce
+        return ls1_cases(180.0, rev="B"), NAME + " rev B", float(FATIGUE["g"])
     except Exception:            # pragma: no cover - older trees
         from huntkit.fea.sizing5200 import cases
         return cases(), "v1 (pack5200_cases)", 1.2

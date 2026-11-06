@@ -102,7 +102,7 @@ def _length_mm(fm, groups) -> float:
 def _study(fm):
     from huntkit.fea.analysis import run_study
     from huntkit.fea.load_standard import ls1_cases
-    return run_study(fm, cases=ls1_cases(), label="light")
+    return run_study(fm, cases=ls1_cases(rev="B"), label="light")     # 2026-11 light study: a rev B record
 
 
 def _envelope(build):

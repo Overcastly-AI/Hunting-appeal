@@ -14,6 +14,11 @@ assumes (bag 180 mm, meat 150 mm). This module re-runs the PRODUCTION frame at s
 Offsets are applied through the existing LoadCase fields (``cg_aft_mm``) plus three additive options in
 ``huntkit.fea.load_cases`` (``cg_z_mm``, ``params.couple_top_group``, ``params.extra_nodal_1g``). HA-LS-1 itself is
 not changed here; the rev C draft lives in the analysis doc.
+
+Since 2026-11-06 HA-LS-1 rev C is the default and frame.yaml carries the rev C crown fix. This module stays the
+record of the 2026-11-05 check: its scenarios run the rev B cases (``ls1_cases(rev="B")``) on the crown AS BUILT
+before the fix (``rev_b_crown()``, frame.yaml ``crown_rev_b``) and the spreader at the rev B meat basis unless a
+CG is given. The rev C production check is ``huntkit.gendesign.rev_c_verification``.
 """
 from __future__ import annotations
 
@@ -71,7 +76,7 @@ class Scenario:
     def case_list(self):
         from huntkit.fea.load_standard import ls1_cases
         out = []
-        for c in ls1_cases(self.bag):
+        for c in ls1_cases(self.bag, rev="B"):         # the 2026-11-05 record is built on the rev B cases
             if c.name not in self.cases:
                 continue
             if c.name in BAG_CASES:
@@ -114,6 +119,14 @@ def sweep_scenarios(offsets=(150.0, 180.0, 205.0, 223.0, 250.0)) -> dict[str, Sc
 
 
 # ============================================================================ beam model (crown, pawl, pulley)
+def rev_b_crown() -> dict:
+    """frame.yaml overrides that restore the carbon crown as built before the rev C fix (frame.yaml
+    ``crown_rev_b``): 6-UD legs, 4-UD spine, top bar = bar_section, 0.5 mm corner bondline."""
+    import yaml
+    d = yaml.safe_load(ft.FRAME_YAML.read_text()).get("crown_rev_b") or {}
+    return {k: copy.deepcopy(v) for k, v in d.items() if k != "note"}
+
+
 def split_top_bar(model: dict, x_abs: float = 100.0) -> dict:
     """Insert top-bar nodes TBL100 / TBR100 at x = -/+ x_abs (between TB0/TB2 and the corners) so a tie or guy
     can load the bar there. Members and the corner joints are re-pointed. Returns a new model dict."""
@@ -155,27 +168,24 @@ def anchor_loads_1g(model: dict, where: str, elev_deg: float = 0.0, n_side: floa
     raise ValueError(where)
 
 
-# Final attachment (bag_attachment.md section 1-2, attach_system_results.json factored_n, C5 factor 3.0):
+# Final attachment as of 2026-11-05 (bag_attachment.md section 1-2, attach_system_results.json factored_n, C5 factor
+# 3.0). This module is the record of that check, so these stay the 2026-11-05 values; the current (rev C) top anchor is
+# huntkit.fea.load_standard.TOP_ANCHOR_HOOD_GUYS (lip relieved to x +/-66, guys 37.3 N/g since 2026-11-06).
 HOOD_1G_N = 52.5            # crown hood capture, total, aft, distributed over x -95..+95
 GUY_1G_N = 34.6             # each top side guy, from the hood ear at x +/-95 to the bag corner (+/-149, z 752)
 GUY_CORNER = (149.0, 752.0)
 GUY_FREE_MM = 314.0         # bag_attachment.md TG row: free length about 314 mm at 19 in
 GUY_DY_MM = float(np.sqrt(GUY_FREE_MM ** 2 - (149.0 - 95.0) ** 2 - (752.0 - 702.6) ** 2))   # ASSUMPTION: fixed aft run
+_TA = {"kind": "hood_guys", "hood_n": HOOD_1G_N, "hood_half_span_mm": 95.0, "guy_ear_x_mm": 95.0, "guy_n": GUY_1G_N,
+       "guy_corner_xz": GUY_CORNER, "guy_dy_mm": GUY_DY_MM}
 
 
 def hood_guy_loads_1g(model: dict) -> dict:
-    """Hood: 52.5 N aft spread over x +/-95 by tributary length; guys: 34.6 N each at TB?95 toward the bag corner
-    (+/-149, y_bar + GUY_DY_MM, 752). Needs the model split at x +/-95 (``split_top_bar(m, 95)``)."""
-    nodes = model["nodes"]
-    out = {}
-    trib = {"TBL95": 12.5, "TB0": 47.5, "TB1": 70.0, "TB2": 47.5, "TBR95": 12.5}     # mm, sums to 190
-    for k, L in trib.items():
-        out[k] = np.array([0.0, HOOD_1G_N * L / 190.0, 0.0])
-    for tag, s in (("L", -1.0), ("R", 1.0)):
-        p = np.asarray(nodes[f"TB{tag}95"], float)
-        d = np.array([s * GUY_CORNER[0], p[1] + GUY_DY_MM, GUY_CORNER[1]]) - p
-        out[f"TB{tag}95"] = out.get(f"TB{tag}95", np.zeros(3)) + GUY_1G_N * d / np.linalg.norm(d)
-    return out
+    """Hood: 52.5 N aft spread over x +/-95 by tributary length; guys: 34.6 N each at the x +/-95 ear toward the bag
+    corner (+/-149, y_bar + GUY_DY_MM, 752): the 2026-11-05 values, resolved by
+    ``huntkit.fea.load_cases.top_anchor_loads_1g``; split the model at x +/-95 (``split_top_bar(m, 95)``)."""
+    from huntkit.fea.load_cases import top_anchor_loads_1g
+    return top_anchor_loads_1g(model, _TA)
 
 
 def _crown_rows(res, model, case) -> dict:
@@ -219,7 +229,7 @@ def _crown_rows(res, model, case) -> dict:
 def beam_runs(sc: Scenario, torsos=TORSOS, buckling: bool = True, log=print, over: dict | None = None):
     """Solve the scenario on the beam model. Returns (LoadSets for the voxel body, crown rows).
     ``over``: frame.yaml param overrides (e.g. a thicker crown section) for the fix study."""
-    over = over or {}
+    over = rev_b_crown() if over is None else over       # None = the 2026-11-05 as-built crown
     from huntkit.fea.frames import build_frame_from_yaml
     from huntkit.fea.load_standard import TABLE
     sets, rows = [], []
@@ -484,13 +494,14 @@ def crown_summary(crown_rows: list, tag: str) -> dict:
     return out
 
 
-def bar_local(n_point: float = 210.0, width_mm: float = 25.0, pocket_line_n_mm: float | None = None) -> dict:
+def bar_local(n_point: float = 210.0, width_mm: float = 25.0, pocket_line_n_mm: float | None = None,
+              over: dict | None = None) -> dict:
     """Local ring crush of the crown top bar (OD 18 roll-wrapped) under a factored tie load bearing on a strap of
     ``width_mm`` (point-load ring, Roark 0.318 F R / L: conservative for a wrapped strap), and under a pocket
     line load (N/mm of bar)."""
     from huntkit.fea.frames import build_frame_from_yaml
     from huntkit.fea.pack5200 import _sec
-    fm = build_frame_from_yaml(ft.FRAME_YAML, torso_in=19.0)
+    fm = build_frame_from_yaml(ft.FRAME_YAML, torso_in=19.0, **(rev_b_crown() if over is None else over))
     sec = _sec(next(m for m in fm["members"] if m["group"] == "crown_top_bar")["section"])
     Rm = sec.dims["od"] / 2 - sec.dims["t"] / 2
     out = {}
@@ -524,25 +535,22 @@ def anchor_beam_sweep(log=print) -> list:
 
 # ============================================================================ spreader
 def spreader_at(e_mm: float, h: float = 2.0, step=None, core_t: float | None = None) -> dict:
-    """Sandwich v2 (spreader_results.json 'chosen', key sw110c6d) with the C5 overturning face load scaled by
-    e / 150 (H = P e sum(lev)/sum(lev^2) is linear in e; frame_smooth.meat_normal_n). The bone stays 20 % of
-    68 kg (part of the meat). Same h and positions as the release mesh check (2 mm, named positions)."""
-    from . import frame_smooth as fs
+    """Sandwich v2 (key sw110c6d, or a ``core_t`` variant) with the C5 meat CG at ``e_mm``. The overturning face
+    load is linear in e (H = P e sum(lev)/sum(lev^2), frame_smooth.meat_normal_n); ``spreader.MEAT_CG_MM`` sets it.
+    The bone stays 20 % of 68 kg (part of the meat). Same h and positions as the release mesh check (2 mm, named
+    positions). The skin-pressure cache is keyed on the meat force since 2026-11-06, so no manual clearing."""
     from . import spreader as S
     opt = {o.key: o for o in S.options()}["sw110c6d"]
     if core_t:          # candidate: thicker ROHACELL 110 core, same skins, doublers, tubes and clips
         import dataclasses
         opt = dataclasses.replace(opt, key=f"sw110c{core_t:g}d", lam=S.sandwich_lam("rohacell_110_igf", core_t),
                                   core_t=core_t)
-    orig = fs.meat_normal_n
-    scale = float(e_mm) / 150.0
-    fs.meat_normal_n = lambda g_level=1.6, _o=orig, _s=scale: _o(g_level) * _s
-    S._SKIN_CACHE.clear()          # the skin-pressure cache is keyed without the meat load: clear it per offset
+    old = S.MEAT_CG_MM
+    S.MEAT_CG_MM = float(e_mm)
     try:
         r = S.evaluate(opt, h=h, step=step)
     finally:
-        fs.meat_normal_n = orig
-        S._SKIN_CACHE.clear()
+        S.MEAT_CG_MM = old
     keys = ("sf_fpf", "fpf_where", "sf_fatigue", "sandwich_sf_min", "clear_walk_min", "clear_fact_min",
             "clear_fact_lean_min", "skin_peak_kpa", "skin_meat_only_kpa", "w_fact_max", "meat_force_fact_n",
             "clip_lift_max_n", "passes", "checks")
@@ -616,8 +624,11 @@ UD = "cfrp_t700_ud_epoxy_ply"
 
 
 def _frame_params() -> dict:
+    """frame.yaml ``frame`` params with the crown as built before the rev C fix (the fix-study baseline)."""
     import yaml
-    return yaml.safe_load(ft.FRAME_YAML.read_text())["frame"]
+    fp = yaml.safe_load(ft.FRAME_YAML.read_text())["frame"]
+    fp.update(rev_b_crown())
+    return fp
 
 
 def add_ud(section: dict, n: int) -> dict:
@@ -645,7 +656,7 @@ def ud_mass_g(section: dict, n: int, length_mm: float, qty: int = 1) -> float:
 
 def fix_overrides(spine=0, leg=0, bar=0, overlap=None) -> dict:
     fp = _frame_params()
-    over = {}
+    over = rev_b_crown()
     if spine:
         over["spine_section"] = add_ud(fp["spine_section"], spine)
     if leg:
@@ -772,7 +783,7 @@ def final_attachment_check(log=print) -> dict:
         sc = Scenario(tag, f"C5/C7 at {e:g} mm + crown hood + 2 guys", 205.0, e, 185.0, 550.0,
                       anchor={"where": "hood_guys", "elev": 0.0}, cases=("meat_straps", "overload_haul"),
                       split_x=95.0, anchor_cases=("meat_straps", "overload_haul"))
-        for lab, over in (("as_built", {}), ("fix", fix_over())):
+        for lab, over in (("as_built", None), ("fix", fix_over())):
             s_, cr = beam_runs(sc, buckling=False, log=None, over=over)
             out["crown"][f"{tag}_{lab}"] = crown_summary(cr, tag)
             if lab == "as_built":

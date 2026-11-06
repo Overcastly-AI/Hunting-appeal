@@ -1,12 +1,15 @@
-# Spreader (BP-06 rev B, Sandwich v2): build sheet
+# Spreader (BP-06 rev C, Sandwich v2, 7 mm core): build sheet
 
-**This is the production spreader** (owner decision 2026-11-05, `docs/DECISIONS.md`). It is the stiff carbon
+**This is the production spreader** (owner decisions 2026-11-05 and 2026-11-06, `docs/DECISIONS.md`). **Rev C
+(2026-11-06): the core is 7 mm instead of 6 mm (+8.7 g)** so the part passes HA-LS-1 rev C with the meat CG at 190 mm
+(`designs/pack_5200/analysis/rev_c_verification.md` §5). Everything else is the rev B part. Do not cut a 6 mm core. It is the stiff carbon
 board that sits between the bag and the frame. Meat and bone ends press on it and it passes that load into the two
 frame stays, so nothing hard reaches your back.
 
 Engineering record: `designs/pack_5200/analysis/spreader.md` (checks, cost, mass) and
 `designs/pack_5200/analysis/spreader_layout.md` (lean-torso re-check). Numbers below come from those files,
-`designs/pack_5200/analysis/spreader_results.json` (`chosen`, key `sw110c6d`), the code in
+`designs/pack_5200/analysis/spreader_results.json` (`chosen`, key `sw110c7d`; the rev B 6 mm record is under
+`rev_b_record`), the code in
 `huntkit/gendesign/spreader.py`, a material record in `data/materials/`, or a line marked `ASSUMPTION:`.
 Units are mm, with inches where it helps (1 in = 25.4 mm).
 
@@ -15,7 +18,7 @@ Units are mm, with inches where it helps (1 in = 25.4 mm).
 | file | what it is | use it for |
 |---|---|---|
 | `spreader_v2_cut.dxf` | outline, notches and 6 clip slots (layer CUT); 11 puck circles and 2 edge-tube lines (layer MARK, do not cut); label (TEXT). mm, 1:1. The doubler zones are on the PDF | CNC router or water-jet shop |
-| `spreader_v2_clip.dxf` | side profile of the snap clip, extrude 10 mm, qty 6 | MJF print bureau (PA12) |
+| `spreader_v2_clip.dxf` | side profile of the snap clip for the **7.44 mm** sheet (slot 1 mm deeper than rev B), extrude 10 mm, qty 6 | MJF print bureau (PA12). Do not reuse rev B clips: they will not close over the thicker board |
 | `spreader_v2_drawing.pdf` | dimensioned drawing, 1:1 on A3, with puck heights and a 100 mm check bar | print at 100 %, check the bar, use as a bonding jig |
 | `spreader_v3_*` | **not production.** The rejected d6L thin-HDPE alternative | do not cut |
 
@@ -24,10 +27,11 @@ Units are mm, with inches where it helps (1 in = 25.4 mm).
 | item | value | source |
 |---|---|---|
 | size | 242 × 318 mm (9.5 × 12.5 in), frame z 112–430 | drawing; `spreader.py` `outline_v2` |
-| thickness | 6.44 mm (0.25 in) = 6 mm core + 2 × 0.22 mm skins | record `cfrp_t300_3k_woven_epoxy_ply` ply 0.22 mm |
-| mass installed | **154 g (5.4 oz)**: board 99 g, edge tubes 21 g, clips, pucks, pads, doublers and seal 34 g | `spreader.md` §4 |
-| cost | about $188 per part | `spreader.md` cost table |
-| checks (HA-LS-1 rev B, 2 mm grid) | first-ply SF 1.21, fatigue 1.04, sandwich local 1.06, factored lean-torso air 8.4 mm | `spreader.md`, `spreader_layout.md` |
+| thickness | **7.44 mm (0.29 in)** = 7 mm core + 2 × 0.22 mm skins | record `cfrp_t300_3k_woven_epoxy_ply` ply 0.22 mm |
+| mass installed | **162 g (5.7 oz)**: board 107 g, edge tubes 21 g, clips, pucks, pads, doublers and seal 35 g | `spreader_results.json` `chosen` |
+| cost | about $207 per part (thicker core pro rata) | `spreader_results.json` `cost` |
+| checks (HA-LS-1 rev C, meat CG 190 mm; worse of the 4 mm and 2 mm grids) | first-ply SF 1.25, fatigue 1.09, sandwich local 1.11, walking air 9.2 mm, factored air 2.1 mm | `rev_c_verification.md` §5 |
+| not a sheet check | walking skin pressure over the back rails 15.5 kPa against the 14 kPa comfort limit at the rev C meat CG: a back-panel item (pack-designer) | `rev_c_verification.md` |
 
 ## 1. Layup and core
 
@@ -37,7 +41,9 @@ From the wearer side (inner) to the bag side (outer): **twill / ROHACELL / twill
 2. Doubler: one extra ply of the same twill at **45°** in four patches round the fairlead notches, on the core side
    of the skin: |x| 76–121 mm at z 113–219 and z 301–359 (both sides). Blue dashed on the drawing; `spreader.py`
    `doubler_zone`.
-3. Core: ROHACELL 110 IG-F, **6 mm** (`rohacell_110_igf`, 110 kg/m³, closed cell). Cut it a little oversize.
+3. Core: ROHACELL 110 IG-F, **7 mm** (`rohacell_110_igf`, 110 kg/m³, closed cell). Cut it a little oversize.
+   ASSUMPTION: 7 mm is a stock ROHACELL IG-F thickness (it is sold in 1 mm steps); if only 6 or 8 mm is on hand, use
+   8 mm and ask for a re-check (do not use 6 mm).
 4. Doubler patches again, then the second twill skin.
 
 Wet out with laminating epoxy, peel ply on both faces, vacuum bag on a flat plate, cure at room temperature, then
@@ -98,8 +104,8 @@ The pucks are cut to the measured gap less 0.3 mm, so the board bears on the fra
 
 ## 5. Check before use
 
-- Mass of the finished board with tubes, pucks and pads, without clips: about 141 g. ASSUMPTION: 154 g installed
-  less 6 clips at 2.1 g each (`spreader_results.json` `clip_mass_g`). Much heavier means too much resin.
+- Mass of the finished board with tubes, pucks and pads, without clips: about 149 g. ASSUMPTION: 162 g installed
+  less 6 clips at 2.2 g each (`spreader_results.json` `clip_mass_g`). Much heavier means too much resin.
 - Coin-tap the whole board. A dull sound means a skin is not bonded to the core: do not use it.
 - First article: the bone-end proof in `designs/pack_5200/print/frame/PRODUCTION.md` (400 N through a 22 mm dowel
   at the window centre, the US2 corner relief and the IM1 notch root).

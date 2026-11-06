@@ -915,9 +915,11 @@ def pitch_study(sheet: Sheet, pitches=(40.0, 64.0, 96.0, 136.0), h: float = 4.0,
     return out
 
 
-def sandwich_recheck(step: float | None = 48.0) -> dict:
+def sandwich_recheck(step: float | None = 48.0, key: str = "sw110c6d") -> dict:
     """Spreader v2 (the sandwich fallback) re-run with the lumbar-pan skin reference (``skin_ref``) in place
-    of the bulging gutter skin below the strut line. Everything else as spreader.evaluate."""
+    of the bulging gutter skin below the strut line. Everything else as spreader.evaluate. ``key``: the option
+    (the 2026-11-05 record is sw110c6d; the rev C production part is sw110c7d). The meat load follows
+    ``spreader.MEAT_CG_MM`` (rev C 190 mm; the 2026-11-05 record was 150)."""
     orig = S.clearance_field
 
     def cf(pl, info, w, indent_mm, r_torso=S.R_TORSO, h_rail=None):
@@ -927,7 +929,7 @@ def sandwich_recheck(step: float | None = 48.0) -> dict:
         return c
     try:
         S.clearance_field = cf
-        opt = {o.key: o for o in S.options()}["sw110c6d"]
+        opt = {o.key: o for o in S.options()}[key]
         r = S.evaluate(opt, h=4.0, step=step)
     finally:
         S.clearance_field = orig

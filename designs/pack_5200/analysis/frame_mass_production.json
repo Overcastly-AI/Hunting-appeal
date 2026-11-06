@@ -1,0 +1,17 @@
+{
+ "date": "2026-11-06",
+ "standard": "HA-LS-1 rev C",
+ "printed_body_g": 823.2,
+ "printed_body_basis": "spreader_layout.raster(None, 2.0) + frame_branch.solid_mass_g: the socket-free production print body (designs/pack_5200/print/frame/)",
+ "study_body_g_superseded": 774.3,
+ "non_body_g": 217.4,
+ "non_body_basis": "generative_branch_results.json frame_g 1194.3 - body_g 774.3 - retired QI sheet + M4 sets 202.6 (spreader_results.json old_part_g): carbon crown as built, rack + pawl + guides, bushings, Ti hip-pivot mount, pawl bushings, inserts",
+ "crown_fix_g": 22.0,
+ "crown_fix_lines_g": {
+  "spine": 3.35,
+  "legs": 14.27,
+  "top_bar": 2.12,
+  "corner_bondline": 2.21
+ },
+ "frame_g": 1062.6
+}

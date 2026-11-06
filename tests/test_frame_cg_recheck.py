@@ -24,7 +24,7 @@ def fm19():
 
 
 def _case(name, **kw):
-    c = next(x for x in ls1_cases() if x.name == name)
+    c = next(x for x in ls1_cases(rev="B") if x.name == name)      # the 2026-11-05 check is on rev B
     for k, v in kw.items():
         setattr(c, k, v)
     return c

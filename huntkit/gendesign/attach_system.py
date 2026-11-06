@@ -59,9 +59,14 @@ RUNS = {
     "P15": ("pack5200_v31_att_P15", 15, "hood", "crown hood only"),
     "P19": ("pack5200_v31_att_P19", 19, "hood", "crown hood only"),
     "P23": ("pack5200_v31_att_P23", 23, "hood", "crown hood only"),
-    "PG15": ("pack5200_v31_att_PG15", 15, "hood+guys", "crown hood + top side guys"),
-    "PG19": ("pack5200_v31_att_PG19", 19, "hood+guys", "crown hood + top side guys"),
-    "PG23": ("pack5200_v31_att_PG23", 23, "hood+guys", "crown hood + top side guys"),
+    "PG15": ("pack5200_v31_att_PG15", 15, "hood+guys full lip", "crown hood (full-width lip, 2026-11-05) + top side guys"),
+    "PG19": ("pack5200_v31_att_PG19", 19, "hood+guys full lip", "crown hood (full-width lip, 2026-11-05) + top side guys"),
+    "PG23": ("pack5200_v31_att_PG23", 23, "hood+guys full lip", "crown hood (full-width lip, 2026-11-05) + top side guys"),
+    # 2026-11-06: the lip, its HDPE stiffener and the lining stop at x +/-66 so they bear on bare OD 18 bar only, clear of
+    # the crown corner wraps (frame_cg_recheck.md 5.1); the sim hood captures B-01 over x +/-66 only (conservative)
+    "PR15": ("pack5200_v31_att_PR15", 15, "hood+guys", "crown hood, lip relieved at the corner wraps + top side guys"),
+    "PR19": ("pack5200_v31_att_PR19", 19, "hood+guys", "crown hood, lip relieved at the corner wraps + top side guys"),
+    "PR23": ("pack5200_v31_att_PR23", 23, "hood+guys", "crown hood, lip relieved at the corner wraps + top side guys"),
     "PGc15": ("pack5200_v31_att_PGc15", 15, "hood+guys cinched", "crown hood + guys cinched 60 N after loading"),
     "PGc19": ("pack5200_v31_att_PGc19", 19, "hood+guys cinched", "crown hood + guys cinched 60 N after loading"),
 }
@@ -261,7 +266,31 @@ def web_pin(material_id: str) -> float:
 
 # ================================================================ geometry of the new parts (mm)
 HOOD = {"width": 190.0, "back": 51.0, "crown": 36.0, "lip": 17.0, "curl": 12.0, "hem": 14.0, "depth": 16.0,
-        "ear_w": 30.0, "ear_h": 40.0, "lip_stiff": (180.0, 22.0, 1.5), "lining": (180.0, 50.0, 3.0)}
+        "ear_w": 30.0, "ear_h": 40.0, "lip_half": 66.0, "relief_r": 4.0,
+        "lip_stiff": (124.0, 22.0, 1.5), "lining": (128.0, 50.0, 3.0)}
+# Crown corner wraps (frame.yaml joints; frame_cg_recheck.md 5.1): 0.75 mm wrap, 30 mm onto the bar from the leg face at
+# x +/-107, ends ply-dropped over 8 mm, so the bar is OD ~19.5 from x +/-85 out and the step starts at x +/-77. The wrap
+# cannot be shortened (an 11 mm overlap fails the corner bond), so the hood is relieved instead (2026-11-06).
+WRAP = {"x_start": 77.0, "x_full": 85.0, "x_leg": 107.0, "od": 19.5}
+BAR_OD = 18.0
+LEG_INNER_X = 104.0                 # crown-leg inner faces
+
+
+def wrap_clearance() -> dict:
+    """Relieved hood vs the corner wraps. The hood floats (208 - 190) / 2 = 9 mm a side between the legs, so the lip,
+    its stiffener and the lining must stop 9 mm + margin inside the start of the wrap step."""
+    H = HOOD
+    float_ = LEG_INNER_X - H["width"] / 2.0
+    lip_edge = H["lip_half"] + float_
+    radial_step = (WRAP["od"] - BAR_OD) / 2.0
+    lining_t = H["lining"][2]
+    return {"hood_float_mm": float_, "lip_half_mm": H["lip_half"], "lip_edge_worst_x_mm": lip_edge,
+            "lip_margin_to_wrap_mm": WRAP["x_start"] - lip_edge,
+            "stiffener_half_mm": H["lip_stiff"][0] / 2.0, "lining_half_mm": H["lining"][0] / 2.0,
+            "relief_width_mm": H["width"] / 2.0 - H["lip_half"],
+            "crown_over_wrap_clear_mm": lining_t - radial_step, "bearing_len_mm": 2.0 * H["lip_half"],
+            "pass": WRAP["x_start"] - lip_edge >= 2.0 and lining_t - radial_step >= 2.0
+                    and H["lip_stiff"][0] / 2.0 <= H["lip_half"] - 2.0 and H["lining"][0] / 2.0 <= H["lip_half"]}
 # hood ladder: one rung per crown setting (12.7 mm), so the hood crown always sits on the bar (no vertical slop, no tap).
 # Rung k (setting k, torso 15 + k/2 in) slot centre = crown top z(k) - 40 mm (tongue weave below the bar).
 LADDER = {"w": 40.0, "h": 250.0, "slot": (27.0, 5.0), "pitch": 12.7, "rungs": 17, "x": 60.0, "z_lo": 545.0,
@@ -362,11 +391,13 @@ def parts(F: dict) -> list[dict]:
     hf = hood_flat()
     add("B-19", "crown hood shell (new)", 1, "hypalon_coated_nylon",
         f"{HOOD['width']:.0f} x {hf['length']:.0f} blank + 2 ears {HOOD['ear_w']:.0f} x {HOOD['ear_h']:.0f}, laser-cut",
-        "fold 1 (back/crown) and fold 2 (crown/lip) square on a 19 mm dowel; lip hem 14 mm turned in over the HDPE "
-        "stiffener B-19s; lining B-19L glued inside the crown", "lip hem: single row 301 at 3 mm; tongues box-X 25 x 25; "
-        "ears: guy box-X 25 x 25", "box", "-", "rides on the crown top bar between the crown legs (x +/-95)",
+        "fold 1 (back/crown) and fold 2 (crown/lip) square on a 19 mm dowel; lip relieved over the outer "
+        f"{HOOD['width'] / 2 - HOOD['lip_half']:.0f} mm each side (lip on bare bar over x +/-{HOOD['lip_half']:.0f}, clear of the "
+        "crown corner wraps); lip hem 14 mm turned in over the HDPE stiffener B-19s; lining B-19L glued inside the crown",
+        "lip hem: single row 301 at 3 mm; tongues box-X 25 x 25; ears: guy box-X 25 x 25", "box", "-",
+        f"rides on the crown top bar between the crown legs (shell x +/-95, lip bears on bare bar x +/-{HOOD['lip_half']:.0f})",
         F["hood_total"], "sim hood capture + 2 guys, x 3.0",
-        {"lip on the bar (Hypalon strip x 190)": strip_n_mm("hypalon_coated_nylon") * HOOD["width"] * SEAM_EFF,
+        {f"lip on bare bar (Hypalon strip x {2 * HOOD['lip_half']:.0f})": strip_n_mm("hypalon_coated_nylon") * 2 * HOOD["lip_half"] * SEAM_EFF,
          "2 tongue box-X 25": 2 * bx25["cap_n"]})
     add("HT", "hood tongues (woven into the ladder, POM toggle end)", 2, w25, f"25 mm x {TONGUE_25:.0f} mm",
         "one end box-X to the hood back ply at x +/-60; other end folded over a POM toggle 30 x 8 x 5 and box-X'd",
@@ -553,11 +584,16 @@ ORIGINAL_IP = ("The hood is a single J-profile Hypalon cap between the crown leg
 def frame_interface(F: dict) -> list:
     return [
         "No new printed feature and no edit to `print/frame`. The hood uses the existing carbon crown top bar.",
-        "Crown top bar: keep x +/-96 free of bonded lugs or wraps (hood 190 mm wide, crown-leg inner faces at x +/-104). "
-        "OD 18 +/- 0.3 mm, no sharp edge on the bar ends.",
+        f"Crown top bar (2026-11-06, replaces 'bare x +/-96'): the corner wraps stay as built (x +/-77 to +/-107, OD ~19.5). "
+        f"The hood's lip, stiffener and lining bear on bare OD 18 +/- 0.3 bar over x +/-{HOOD['lip_half']:.0f} only "
+        f"({wrap_clearance()['lip_margin_to_wrap_mm']:.0f} mm clear of the wrap step with the hood floated "
+        f"{wrap_clearance()['hood_float_mm']:.0f} mm to one leg); keep x +/-75 free of any bonded lug, label or tape.",
         f"New load on the crown top bar (factored, HA-LS-1 x 3.0): hood capture {F['hood_capture_per_side'] * 2:.0f} N total, "
-        f"spread over x +/-95 on the bar's wearer-side face, pointing aft; plus each guy {F['guy']:.0f} N at x +/-95, "
-        "pointing aft and outboard toward the face corner (x +/-149, z 752). Add both to the C1/C5 re-check with the bag CG below.",
+        f"spread over x +/-{HOOD['lip_half']:.0f} on the bar's wearer-side face, pointing aft "
+        f"({F['hood_capture_per_side'] * 2 / (2 * HOOD['lip_half']):.2f} N/mm, was 0.83 over x +/-95); each guy "
+        f"{F['guy']:.0f} N, from the hood ear at x +/-95 pointing aft and outboard toward the face corner (x +/-149, z 752), "
+        f"now reaching the bar through the hood shell and the lip (x +/-{HOOD['lip_half']:.0f}), not at the ear. Nothing "
+        "bears on the wraps. Add both to the C1/C5 re-check with the bag CG below.",
         "Bag CG envelope for the frame re-check, chosen system (1 g sim, +/-5 mm on fill): see the 'Top anchor' table; "
         "worst is the 15 in setting.",
     ]
@@ -573,6 +609,11 @@ HANDOFF = [
     ("B-02d", f"Mark the B-22 corner tabs OUTSIDE at x +/-{GUY['bag_xz'][0]:.0f}, z {GUY['bag_xz'][1]:.0f} and the ladder-lock "
      "tab box-X. Sew before B-02d joins the collar."),
     ("B-17, B-18", "Unchanged (2026-11-05). B-17 now carries tongue T3 for the rated hook."),
+    ("B-19 / B-19s / B-19L (rev 2026-11-06)", f"Hood lip relieved: the lip, J-curl and hem exist only over the centre "
+     f"{2 * HOOD['lip_half']:.0f} mm (x +/-{HOOD['lip_half']:.0f}); the outer {HOOD['width'] / 2 - HOOD['lip_half']:.0f} mm each "
+     "side ends at fold 2 with an R4 root. Back ply, crown, ears and the 190 mm shell width are unchanged. B-19s HDPE "
+     f"180 -> {HOOD['lip_stiff'][0]:.0f} mm, B-19L XLPE 180 -> {HOOD['lining'][0]:.0f} mm. Blank outline, fold 2 and hem lines "
+     "redrawn in cut/attachment/attachment_parts.pdf / .dxf."),
     ("new pieces", "B-19 hood shell (Hypalon, laser-cut, fold lines etched), B-19s lip stiffener (HDPE 1.5), B-19L lining "
      "(XLPE 3), B-20 x2 ladder strips (Hypalon, 17 slots), B-22 x2 corner tabs, B-23 x2 IM2 backings. No seam allowance "
      "(laser-cut, edge-stitched). True-scale in cut/attachment/attachment_parts.pdf / .dxf."),
@@ -620,27 +661,39 @@ def drawing_pieces() -> list:
     v = np.cumsum([0.0, H["back"], H["crown"], H["lip"], H["curl"], H["hem"]])   # + hem over the stiffener
     L = float(v[-1])
     ev = H["back"] - 4.0                       # ears on the back ply, just under fold 1
-    out = [(0, 0), (W, 0), (W, ev - H["ear_h"]), (W + H["ear_w"], ev - H["ear_h"] + 6), (W + H["ear_w"], ev - 6), (W, ev),
-           (W, L), (0, L), (0, ev), (-H["ear_w"], ev - 6), (-H["ear_w"], ev - H["ear_h"] + 6), (0, ev - H["ear_h"])]
+    # lip relief (2026-11-06): lip, J-curl and hem only over x W/2 +/- lip_half (bare bar), R4 roots at fold 2
+    xl, xr, v2, rr = W / 2 - H["lip_half"], W / 2 + H["lip_half"], float(v[2]), H["relief_r"]
+    arc = lambda cx, cy, a0, a1: [(cx + rr * math.cos(math.radians(t)), cy + rr * math.sin(math.radians(t)))
+                                  for t in np.linspace(a0, a1, 5)]
+    out = ([(0, 0), (W, 0), (W, ev - H["ear_h"]), (W + H["ear_w"], ev - H["ear_h"] + 6), (W + H["ear_w"], ev - 6), (W, ev),
+            (W, v2)] + arc(xr + rr, v2 + rr, 270, 180) + [(xr, L), (xl, L)] + arc(xl - rr, v2 + rr, 0, -90)
+           + [(0, v2), (0, ev), (-H["ear_w"], ev - 6), (-H["ear_w"], ev - H["ear_h"] + 6), (0, ev - H["ear_h"])])
     b19 = Piece("crown hood shell", outline=out, grain=90.0, seam_allowance_mm=0.0, material_id=hyp, quantity=1,
                 piece_id="B-19", labels={"note": f"{note}; fold 1 back|crown, fold 2 crown|lip on a 19 mm dowel; "
                                                   "lip hem 14 mm over B-19s; B-19L glued inside the crown"})
-    for vv, lab in zip(v[1:-1], ("fold 1: back | crown", "fold 2: crown | lip", "J-curl start", "hem fold over B-19s")):
-        b19.add_internal_line([(0, vv), (W, vv)], "fold", lab)
-    b19.add_internal_line([(0, L - 3), (W, L - 3)], "stitch", "hem 301 tex90, 3 mm from edge")
+    b19.add_internal_line([(0, v[1]), (W, v[1])], "fold", "fold 1: back | crown")
+    for vv, lab in zip(v[2:-1], ("fold 2: crown | lip (lip on bare bar only)", "J-curl start", "hem fold over B-19s")):
+        b19.add_internal_line([(xl, vv), (xr, vv)], "fold", lab)
+    b19.add_internal_line([(xl + 3, L - 3), (xr - 3, L - 3)], "stitch", "hem 301 tex90, 3 mm from edge")
+    for x0 in (xl - 4, xr + 4):
+        b19.add_internal_line([(x0, v2 + 2), (x0, v2 + 10)], "placement",
+                              f"relief: clears the crown corner wrap (x +/-{WRAP['x_start']:.0f} out)")
     for sx in (-1, 1):
         _box_x_lines(b19, W / 2 + sx * LADDER["x"], 15.0, 25, 25, "tongue HT")
         _box_x_lines(b19, (W + H["ear_w"] / 2) if sx > 0 else -H["ear_w"] / 2 + 0.0, ev - H["ear_h"] / 2, 22, 25, "guy TG")
     _box_x_lines(b19, W / 2, v[1] + H["crown"] / 2, 25, 20, "grab tab")
-    b19.add_internal_line([(W / 2 - 90, v[1] + 3), (W / 2 + 90, v[1] + 3), (W / 2 + 90, v[2] - 3), (W / 2 - 90, v[2] - 3)],
-                          "placement", "B-19L lining (inside)", closed=True)
+    lh = H["lining"][0] / 2
+    b19.add_internal_line([(W / 2 - lh, v[1] + 3), (W / 2 + lh, v[1] + 3), (W / 2 + lh, v[2] - 3), (W / 2 - lh, v[2] - 3)],
+                          "placement", "B-19L lining (inside, bare-bar zone only)", closed=True)
     P.append(b19)
     s0 = rect_panel("hood lip stiffener", H["lip_stiff"][0], H["lip_stiff"][1], 3.0, piece_id="B-19s", material_id=hdpe,
-                    quantity=1, seam_allowance_mm=0.0, labels={"note": "HDPE 1.5 mm; heat-form the J round a 19 mm dowel at the line"})
+                    quantity=1, seam_allowance_mm=0.0, labels={"note": "HDPE 1.5 mm; heat-form the J round a 19 mm dowel at the line; "
+                                                         "centred in the relieved lip (ends 2 mm inside the relief roots)"})
     s0.add_internal_line([(0, 12), (H["lip_stiff"][0], 12)], "fold", "J bend (heat-form)")
     P.append(s0)
     P.append(rect_panel("hood lining", H["lining"][0], H["lining"][1], 0.0, piece_id="B-19L", material_id=xlpe, quantity=1,
-                        seam_allowance_mm=0.0, labels={"note": "XLPE 3 mm, contact cement inside the crown"}))
+                        seam_allowance_mm=0.0, labels={"note": "XLPE 3 mm, contact cement inside the crown, centred: bare-bar zone "
+                                                                       "only (holds the crown 2.2 mm off the wraps)"}))
     # B-20 ladder strip: 17 slots, one per crown setting
     lw, lh = LADDER["w"], LADDER["h"]
     b20 = rect_panel("hood ladder strip", lw, lh, 3.0, piece_id="B-20", material_id=hyp, quantity=2, seam_allowance_mm=0.0,
@@ -881,7 +934,7 @@ def plot_profiles(sims: dict) -> str:
         frame_side(ax)
         ax.plot([-10, TORSO_BAR_Y[t] + 25], [TORSO_Z[t], TORSO_Z[t]], color="#5b6068", lw=5, alpha=0.7)
         sets = [("baseline", "#b03a2e", "before: no top anchor"), ("T0", "#9aa0a6", "tab + doubler only"),
-                (f"PG{t}", "#1e8a4c", "after: hood + guys")]
+                (f"PR{t}", "#1e8a4c", "after: hood + guys")]
         for key, col, lab in sets:
             f = SIMS / RUNS[key][0] / "results.json"
             if not f.exists():
@@ -892,7 +945,7 @@ def plot_profiles(sims: dict) -> str:
                 ax.plot(sg[:, 0], sg[:, 1], color=col, lw=2, label=lab if i == 0 else None)
             cg = c["volume"]["contents_cg_mm"]
             ax.plot(cg[1], cg[2], "o", ms=11, mfc=col, mec="white", mew=1.5)
-            dy = {"baseline": -26, "T0": -8, f"PG{t}": 12}[key]
+            dy = {"baseline": -26, "T0": -8, f"PR{t}": 12}[key]
             ax.annotate(f"{cg[1]:.0f}", (cg[1], cg[2]), xytext=(10, dy), textcoords="offset points", color=col,
                         fontsize=11, fontweight="bold")
         ax.axvline(TARGET_CG, color="#1e8a4c", ls=":", lw=1.2)
@@ -1009,6 +1062,83 @@ def plot_drawing_preview(pdf_rel: str) -> str:
     return _save(fig, f"{DATE}_attach_5.png")
 
 
+def plot_hood_relief(sims: dict) -> str:
+    """2026-11-06: the relieved hood on the crown bar, seen from the wearer, with the corner wraps; plus the flat blank
+    and the CG / R-28 of the re-run sims."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.patches as mp
+    import matplotlib.pyplot as plt
+    H, wc = HOOD, wrap_clearance()
+    fig = plt.figure(figsize=(14, 9.5))
+    gs = fig.add_gridspec(2, 2, height_ratios=[1.0, 1.0], width_ratios=[1.45, 1])
+    ax = fig.add_subplot(gs[0, :])
+    # bar, wraps, legs (front view, x across, z up; scale exaggerated in z for the OD step)
+    ax.add_patch(mp.Rectangle((-WRAP["x_leg"], -BAR_OD / 2), 2 * WRAP["x_leg"], BAR_OD, fc="#5b6068", ec="k"))
+    for sx in (-1, 1):
+        xs, xf, xl_ = sx * WRAP["x_start"], sx * WRAP["x_full"], sx * WRAP["x_leg"]
+        r = WRAP["od"] / 2
+        poly = [(xs, -BAR_OD / 2), (xf, -r), (xl_, -r), (xl_, r), (xf, r), (xs, BAR_OD / 2)]
+        ax.add_patch(mp.Polygon(poly, closed=True, fc="#222", ec="k", alpha=0.85))
+        ax.add_patch(mp.Rectangle((sx * LEG_INNER_X if sx > 0 else -LEG_INNER_X - 16, -60), 16, 70 + r, fc="#5b6068", ec="k"))
+        ax.text(sx * 92, -21, "corner wrap\nOD 19.5", ha="center", va="top", fontsize=9, color="#222")
+    # hood shell (back/crown band) and the relieved lip
+    ax.add_patch(mp.Rectangle((-H["width"] / 2, 10.5), H["width"], 5, fc="#2e6fb0", alpha=0.35, ec="#2e6fb0"))
+    ax.text(0, 18, "hood shell 190 mm (back ply + crown): unchanged, ears and guys at x +/-95", ha="center", fontsize=10,
+            color="#1d4f80")
+    ax.add_patch(mp.Rectangle((-H["lip_half"], -13), 2 * H["lip_half"], 24, fc="#2e6fb0", alpha=0.75, ec="k"))
+    ax.text(0, -4, f"lip + HDPE B-19s + XLPE lining: x +/-{H['lip_half']:.0f} on bare OD 18 bar", ha="center",
+            color="white", fontsize=10.5, fontweight="bold")
+    for sx in (-1, 1):
+        e = sx * wc["lip_edge_worst_x_mm"]
+        ax.plot([e, e], [-30, 12], color="#b03a2e", ls="--", lw=1.5)
+        ax.annotate("", (sx * WRAP["x_start"], -27), (e, -27), arrowprops=dict(arrowstyle="<->", color="#b03a2e"))
+    ax.text(0, -36, f"red dashed: lip edge with the hood floated {wc['hood_float_mm']:.0f} mm to one leg, still "
+            f"{wc['lip_margin_to_wrap_mm']:.0f} mm short of the wrap step at x +/-{WRAP['x_start']:.0f}", fontsize=9.5,
+            color="#b03a2e", ha="center")
+    ax.set_xlim(-130, 130)
+    ax.set_ylim(-45, 28)
+    ax.set_aspect("equal")
+    ax.set_xlabel("x mm across the crown top bar (seen from the wearer)")
+    ax.set_yticks([])
+    ax.set_title("B-19 crown hood, relieved over its outer 29 mm each side: nothing bears on the corner wraps", fontsize=12)
+    # flat blank
+    ax2 = fig.add_subplot(gs[1, 0])
+    b19 = next(p for p in drawing_pieces() if p.piece_id == "B-19")
+    o = np.asarray(b19.outline)
+    o = np.vstack([o, o[:1]])
+    ax2.fill(o[:, 0], o[:, 1], fc="#ece7db", ec="k")
+    for il in b19.internal_lines:
+        pts = np.asarray(il.points)
+        if il.closed:
+            pts = np.vstack([pts, pts[:1]])
+        st = {"stitch": dict(color="#b03a2e", lw=0.8, ls="--"), "fold": dict(color="#2e6fb0", lw=1.2, ls="-."),
+              "placement": dict(color="#1e8a4c", lw=0.8, ls=":")}.get(il.kind, dict(color="#888", lw=0.5))
+        ax2.plot(pts[:, 0], pts[:, 1], **st)
+    ax2.text(H["width"] / 2, -12, "B-19 blank (1:1 in cut/attachment): relief notches at the lip, R4 roots",
+             ha="center", fontsize=9.5)
+    ax2.set_aspect("equal")
+    ax2.axis("off")
+    # sims
+    ax3 = fig.add_subplot(gs[1, 1])
+    rows = [(t, sims.get(f"PG{t}"), sims.get(f"PR{t}")) for t in (15, 19, 23)]
+    xs = np.arange(3)
+    ax3.bar(xs - 0.2, [r[1]["fill"]["cg_y"] for r in rows], 0.38, color="#9aa0a6", label="full lip (11-05)")
+    ax3.bar(xs + 0.2, [r[2]["fill"]["cg_y"] for r in rows], 0.38, color="#1e8a4c", label="relieved (11-06)")
+    for i, r in enumerate(rows):
+        ax3.text(i + 0.2, r[2]["fill"]["cg_y"] + 2, f"{r[2]['fill']['cg_y']:.0f}\nR-28 "
+                 f"{min(r[2]['fill']['r28']['worst_contact_deg'], r[2]['meat']['r28']['worst_contact_deg']):.0f} deg",
+                 ha="center", fontsize=9)
+    ax3.axhline(TARGET_CG, color="k", ls="--", lw=1)
+    ax3.set_xticks(xs, ["15 in", "19 in", "23 in"])
+    ax3.set_ylim(140, 215)
+    ax3.set_ylabel("load CG aft of the frame, 68 kg fill, mm")
+    ax3.set_title("Cloth sim re-run: CG and head clearance hold", fontsize=11)
+    ax3.legend(fontsize=9, loc="upper right")
+    fig.tight_layout()
+    return _save(fig, "20261106_backpanel_4.png")
+
+
 # ================================================================ choose, record, render
 def choose(sims: dict) -> dict:
     """Rank the top-anchor families on the worst torso they were run at, then the mean, then head margin."""
@@ -1056,7 +1186,8 @@ def run(log=print) -> dict:
     before = _pack_before()
     log("drawings + screens")
     dr = export_drawings(log)
-    shots = [plot_exploded(), plot_hood_detail(), plot_profiles(sims), plot_storyboard(), plot_drawing_preview(dr["pdf"])]
+    shots = [plot_exploded(), plot_hood_detail(), plot_profiles(sims), plot_storyboard(), plot_drawing_preview(dr["pdf"]),
+             plot_hood_relief(sims)]
     # milestone copies, git-tracked (outputs/ is scratch): the record cites these
     import shutil
     keep = REPO / "docs" / "screens"
@@ -1066,7 +1197,7 @@ def run(log=print) -> dict:
         dst = keep / Path(sh).name
         shutil.copy2(REPO / sh, dst)
         screens.append(str(dst.relative_to(REPO)))
-    res = {"date": "2026-11-05", "chosen": CHOSEN, "target_cg_mm": TARGET_CG, "sims": sims, "rank": choose(sims),
+    res = {"date": "2026-11-06", "chosen": CHOSEN, "wrap_clearance": wrap_clearance(), "target_cg_mm": TARGET_CG, "sims": sims, "rank": choose(sims),
            "r28_reference": ref, "factored_n": F, "parts": P, "proof_tests": proof_tests(F, P), "mass": mass,
            "pack_before_g": round(before, 1), "pack_after_g": round(before + mass["delta_g"], 1), "cost_usd": _cost(mass),
            "times_s": procedure_times(), "drawings": dr, "screens": screens, "hook_rated_n": HOOK_RATED_N,
@@ -1089,8 +1220,11 @@ ASSUMPTIONS = [
     "Tri-glide 3 g, elastic keeper 0.6 g, hood rung bar fails at 30 deg sag.",
     "Cloth sim: crown hood = tension-only legs from the B-01 rows within 25 mm of the bar to the bar's bag face, free to "
     "slide in z and x (hood on a ladder, not sewn at one height); 1 mm Hypalon ply ~ 38 mm webbing EA per 40 mm strip; "
-    "free hood depth 16 mm (the drafted gap at 19-23 in). Ladder tongues at x +/-60 hold B-01; the sim holds every node "
-    "of the row out to x +/-92 (hood width), so the sim capture is a little wider than the part.",
+    "free hood depth 16 mm (the drafted gap at 19-23 in). Ladder tongues at x +/-60 hold B-01. Released (PR) runs hold "
+    f"the row out to x +/-{HOOD['lip_half']:.0f} (the relieved lip on bare bar); the superseded PG runs held it to x +/-92. "
+    "Hood-alone loads (P runs, x +/-92) stay the bound for the hood capture.",
+    f"Hood float {LEG_INNER_X - HOOD['width'] / 2:.0f} mm a side between the crown legs; wrap step from x +/-{WRAP['x_start']:.0f} "
+    f"(frame.yaml: 30 mm wrap, 8 mm ply drop, OD ~{WRAP['od']}); a 2 mm margin from the lip edge to the step.",
     "Guys fixed length: elastic 25 mm webbing snug (30 N) at the drafted shape, i.e. set once on the packed bag.",
     "R-28 with the sim wall adds 3 mm (fabric + coarse mesh) and the hood (+1 mm in front of the bar, +4 mm over it).",
     "Procedure seconds: 4 s a hook or pin, 3 s a cam pop or a hood lift, 10 s to place or clear the bag (gloved, not timed).",
@@ -1106,12 +1240,14 @@ def render_md(res: dict) -> list[str]:
     S, F = res["sims"], res["factored_n"]
     L = []
     a = L.append
-    ch = {t: S.get(f"PG{t}") for t in (15, 19, 23)}
+    ch = {t: S.get(f"PR{t}") for t in (15, 19, 23)}
+    pg = {t: S.get(f"PG{t}") for t in (15, 19, 23)}
+    wc = res.get("wrap_clearance") or wrap_clearance()
     t_ = res["times_s"]
     m = res["mass"]
     a("# Bag-to-frame attachment system")
     a("")
-    a("Owner: pack-designer. Attachment phase, 2026-11-05. This is the whole joint between the Spine bag and the printed "
+    a("Owner: pack-designer. Attachment phase, 2026-11-05; hood relieved at the crown corner wraps 2026-11-06 (2.5). This is the whole joint between the Spine bag and the printed "
       "branch frame, bottom to top: hinge eyes, under-straps, IM2/IM3 bag hooks, a **crown hood** on the top bar and two "
       "**top side guys**. The frame side (fairleads, pins, sleeves, their FEA) is unchanged and is kept at the end as the "
       "2026-11-01 record. Research: `docs/research/bag_attachment_research.md`. Load standard: HA-LS-1 rev B.")
@@ -1122,7 +1258,7 @@ def render_md(res: dict) -> list[str]:
     a("")
     a("## Decision")
     a("")
-    a(f"- **Top anchor: crown hood + two fixed-length top side guys** (cloth-sim runs PG15/PG19/PG23). Load CG, 68 kg fill "
+    a(f"- **Top anchor: crown hood + two fixed-length top side guys** (cloth-sim runs PR15/PR19/PR23, hood lip relieved at the corner wraps). Load CG, 68 kg fill "
       f"(C1): **{_f(ch[15]['fill']['cg_y'])} / {_f(ch[19]['fill']['cg_y'])} / {_f(ch[23]['fill']['cg_y'])} mm** at "
       f"15 / 19 / 23 in (before: {_f(S['baseline']['fill']['cg_y'])} mm at 19 in). Meat case (C5 contents): "
       f"{_f(ch[15]['meat']['cg_y'])} / {_f(ch[19]['meat']['cg_y'])} / {_f(ch[23]['meat']['cg_y'])} mm; with the meat at "
@@ -1215,6 +1351,44 @@ def render_md(res: dict) -> list[str]:
              f"{min(c19['fill']['r28']['worst_contact_deg'], c19['meat']['r28']['worst_contact_deg']):.0f} deg" if c19 else "")
           + ". So the guys are set once on the packed bag and never cranked (the instruction is 'snug, do not crank'). "
           "This is the study's B finding again: cinched top straps over-pull toward the head.")
+    a("")
+    a("### 2.5 Hood and the crown corner wraps (2026-11-06)")
+    a("")
+    a(f"The frame re-check (`frame_cg_recheck.md` 5.1) found that the carbon corner wraps cover the top bar from the leg "
+      f"face (x +/-{WRAP['x_leg']:.0f}) to about x +/-{WRAP['x_start']:.0f}, at OD about {WRAP['od']:.1f}, and cannot be "
+      "shortened (an 11 mm overlap fails the corner bond). The 2026-11-05 hood asked for bare bar over x +/-96: its lip "
+      f"and HDPE stiffener would have borne on the wrap step and the ply drop, putting the hood capture and the guy loads "
+      "into the bond end. Fix on the hood, not the frame:")
+    a("")
+    a(f"- **Lip relief:** the lip, J-curl, hem, B-19s stiffener and B-19L lining stop at x +/-{HOOD['lip_half']:.0f} "
+      f"({wc['bearing_len_mm']:.0f} mm on bare OD 18 bar). The outer {wc['relief_width_mm']:.0f} mm each side of the 190 mm "
+      "shell is back ply and crown only, ending at fold 2 with an R4 root. Shell width, ears, guys, tongues and the ladder "
+      "do not change.")
+    a(f"- **Why {HOOD['lip_half']:.0f} and not 77:** the hood floats {wc['hood_float_mm']:.0f} mm a side between the crown "
+      f"legs, so the lip edge can reach x {wc['lip_edge_worst_x_mm']:.0f}: {wc['lip_margin_to_wrap_mm']:.0f} mm short of the "
+      f"wrap step. Over the wraps the crown sits on the {HOOD['lining'][2]:.0f} mm lining in the bare zone, "
+      f"{wc['crown_over_wrap_clear_mm']:.2f} mm above the wrap (radial step {(WRAP['od'] - BAR_OD) / 2:.2f} mm). Nothing "
+      "touches the wraps in use.")
+    a(f"- **Cloth sim re-run** with the hood capture narrowed to x +/-{HOOD['lip_half']:.0f} (conservative: the shell still "
+      "holds B-01 wider than that):")
+    a("")
+    a("| torso | fill CG full lip (PG) | fill CG relieved (PR) | meat CG PG | meat CG PR | hood 1 g N PG / PR (meat) | guys 1 g N PR (meat) | R-28 deg PR (fill / meat) | gap at 30 deg PR mm |")
+    a("|---:|---:|---:|---:|---:|---|---|---|---:|")
+    for t in (15, 19, 23):
+        r_, g0 = ch[t], pg[t]
+        if not (r_ and g0):
+            continue
+        a(f"| {t} | {g0['fill']['cg_y']:.0f} | **{r_['fill']['cg_y']:.0f}** | {g0['meat']['cg_y']:.0f} | **{r_['meat']['cg_y']:.0f}** | "
+          f"{g0['meat']['top_n'].get('pocket', 0):.0f} / {r_['meat']['top_n'].get('pocket', 0):.0f} | "
+          f"{r_['meat']['top_n'].get('TG_R', 0):.0f} / {r_['meat']['top_n'].get('TG_L', 0):.0f} | "
+          f"{r_['fill']['r28']['worst_contact_deg']:.0f} / {r_['meat']['r28']['worst_contact_deg']:.0f} | "
+          f"{min(r_['fill']['r28']['worst_gap_30_mm'], r_['meat']['r28']['worst_gap_30_mm']):.1f} |")
+    a("")
+    a("The CG holds within the +/-5 mm fill scatter (accepted 189 / 177 / 168 mm), and R-28 still passes at every torso. "
+      "With the narrower capture the hood itself carries almost nothing and the two guys take the top (a few N more each); "
+      "the hood's job is to give the guys their anchor and centre the top. The guy factored load and the lip capacity "
+      "(132 mm of Hypalon on the bar) are in section 5. The PR19 meat case stops at a 0.8 N residual (not flagged converged); "
+      "the other meat cases converge.")
     a("")
     a("### 2.3 Why the hood is lift-and-drop, not snap-on")
     a("")
@@ -1385,7 +1559,7 @@ SEW_ORDER = [
     "Join the B-01 tiers (B-01 | B-01b | B-01u). Then sew the two B-20 ladder strips on both long edges (2 and 5 mm "
     "in) and bartack their ends. Then B-01 joins B-03 as before.",
     "B-02d before it joins the collar: LLT round a ladder lock, box-X through B-22 + B-02d; B-22 double row.",
-    "Hood: glue B-19L inside the crown, slide B-19s into the lip hem and sew the hem; heat-form the J on a 19 mm dowel; "
+    "Hood: glue B-19L inside the crown (centred, bare-bar zone only), slide B-19s into the lip hem (centred) and sew the hem; heat-form the J on a 19 mm dowel; "
     "fold 1 and fold 2 square; box-X HT tongues (toggle end first), GT grab tab and the TG guy ends on the ears.",
     "Fit: weave each HT tongue into B-20 at the rung for the crown setting (in at k, out at k+1), push the toggle "
     "through. Thread each guy through its ladder lock and tri-glide, set snug on the packed bag.",

@@ -19,15 +19,39 @@ def test_chosen_top_anchor_meets_180_at_19_and_23_and_is_best_at_15(res):
     S = res["sims"]
     assert res["chosen"] == "hood+guys"
     for t in (19, 23):
-        assert S[f"PG{t}"]["fill"]["cg_y"] <= TARGET_CG
-        assert S[f"PG{t}"]["meat"]["cg_y"] <= TARGET_CG
+        assert S[f"PR{t}"]["fill"]["cg_y"] <= TARGET_CG
+        assert S[f"PR{t}"]["meat"]["cg_y"] <= TARGET_CG
     # 15 in: the documented gap (no frame above z 601); still better than the no-anchor bag and the hood alone
-    assert S["PG15"]["fill"]["cg_y"] < S["P15"]["fill"]["cg_y"] - 5.0
-    assert S["PG15"]["fill"]["cg_y"] < S["baseline"]["fill"]["cg_y"] - 25.0
-    assert S["PG15"]["fill"]["cg_y"] <= 195.0          # inside the 205 mm C1 envelope of the frame re-check
+    assert S["PR15"]["fill"]["cg_y"] < S["P15"]["fill"]["cg_y"] - 5.0
+    assert S["PR15"]["fill"]["cg_y"] < S["baseline"]["fill"]["cg_y"] - 25.0
+    assert S["PR15"]["fill"]["cg_y"] <= 195.0          # inside the 205 mm C1 envelope of the frame re-check
     # the hood alone beats the two-point crown tie at 19 in, and the guys are what reach 180
     assert S["P19"]["fill"]["cg_y"] < S["A"]["fill"]["cg_y"]
-    assert S["PG19"]["fill"]["cg_y"] < S["P19"]["fill"]["cg_y"]
+    assert S["PR19"]["fill"]["cg_y"] < S["P19"]["fill"]["cg_y"]
+
+
+def test_relieved_hood_clears_the_corner_wraps_and_keeps_the_accepted_cg(res):
+    """2026-11-06: lip, stiffener and lining on bare OD 18 bar only; the owner-accepted CG (189 / 177 / 168 mm at
+    15 / 19 / 23 in, fill) holds within the +/-5 mm fill scatter; R-28 still passes."""
+    from huntkit.gendesign.attach_system import HOOD, WRAP, drawing_pieces, wrap_clearance
+    wc = wrap_clearance()
+    assert wc["pass"]
+    assert wc["lip_edge_worst_x_mm"] <= WRAP["x_start"] - 2.0          # hood floated to one leg
+    assert wc["crown_over_wrap_clear_mm"] >= 2.0
+    assert res["wrap_clearance"] == pytest.approx(wc)
+    b19 = next(p for p in drawing_pieces() if p.piece_id == "B-19")
+    o = np.asarray(b19.outline)
+    top = o[o[:, 1] > o[:, 1].max() - 1.0]                              # the hem edge exists only over the lip width
+    assert top[:, 0].min() >= HOOD["width"] / 2 - HOOD["lip_half"] - 1e-6
+    assert top[:, 0].max() <= HOOD["width"] / 2 + HOOD["lip_half"] + 1e-6
+    for p in drawing_pieces():
+        if p.piece_id in ("B-19s", "B-19L"):
+            assert np.ptp(np.asarray(p.outline)[:, 0]) <= 2 * HOOD["lip_half"]
+    S = res["sims"]
+    for t, accepted in ((15, 189.0), (19, 177.0), (23, 168.0)):
+        assert abs(S[f"PR{t}"]["fill"]["cg_y"] - accepted) <= 5.0
+        for case in ("fill", "meat"):
+            assert S[f"PR{t}"][case]["r28"]["pass"]
 
 
 def test_head_clearance_passes_with_the_simulated_wall_and_the_hood(res):

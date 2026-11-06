@@ -40,6 +40,7 @@ P5200_DEFAULTS = {
     "leg_section": None,           # crown legs (must fit inside the upper stay bore)
     "bar_section": None,           # mid bar, upper bar, crown top bar
     "upper_bar_section": None,     # optional: upper bar (carries the pawl at mid-span) sized separately
+    "top_bar_section": None,       # optional: crown top bar sized separately (HA-LS-1 rev C crown fix); default bar
     "post_section": None,          # extension posts + post bar (default: leg section)
     "lumbar_plate_t": 2.0,
     "lumbar_plate_material": "cfrp_plate_pm45",
@@ -64,6 +65,7 @@ P5200_DEFAULTS = {
     "springs": {"hipbelt": (20.0, 0.0, 40.0), "lumbar_pad": (0.0, 30.0, 0.0),
                 "shoulder": (4.0, 8.0, 10.0), "lifter": (0.0, 6.0, 3.0)},
     "joint": {},
+    "crown_joint": None,           # optional: overrides of "joint" for the two crown corners (rev C: 0.8 mm bondline)
     "hardware": {},
     # --- v2 options (load_standard.md / frame_sizing.md "v2"); defaults reproduce the v1 model ---
     "stay_style": "segmented",     # "segmented" (lumbar elbow) | "straight" (one tube foot -> stay top)
@@ -172,6 +174,7 @@ def build(params: dict | None = None) -> dict:
     leg = _sec(p["leg_section"], tube_round(18.0, 1.2))
     bar = _sec(p["bar_section"], stay)
     ubar = _sec(p.get("upper_bar_section"), bar)
+    tbar = _sec(p.get("top_bar_section"), bar)
     post = _sec(p["post_section"], leg)
     warnings = []
     if "od" in stay.dims and "od" in leg.dims:
@@ -369,7 +372,7 @@ def build(params: dict | None = None) -> dict:
                       "k": [p["bushing_k_n_mm"], p["bushing_k_n_mm"], 0, 0, 0, 0]})
         links.append({"id": f"bush_top_{tag}", "nodes": [sid(tag, top[2]), f"C{tag}530"],
                       "k": [p["bushing_k_n_mm"], p["bushing_k_n_mm"], 0, 0, 0, 0]})
-    tb_chain, tb_ids = crossbar("TB", "CLtop", "CRtop", [-70.0, 0.0, 70.0], "crown_top_bar", bar)
+    tb_chain, tb_ids = crossbar("TB", "CLtop", "CRtop", [-70.0, 0.0, 70.0], "crown_top_bar", tbar)
     # spine (hangs from the top-bar centre), yoke at 150 mm
     if p.get("spine_section") is not None:      # tube spine option (rack bonded to the tube)
         spine_sec, spm = _sec(p["spine_section"]), None
@@ -438,6 +441,7 @@ def build(params: dict | None = None) -> dict:
 
     # ------------------------------------------------------------- bonded joints
     jp = p["joint"]
+    jc = {**jp, **(p.get("crown_joint") or {})}
     for tag in ("L", "R"):
         lo_last, up_first = mid(tag, elbow[2])
         joints += [
@@ -451,7 +455,7 @@ def build(params: dict | None = None) -> dict:
              "through": [list(mid(tag, 520.0))], "params": jp},
             {"id": f"stay_top_{tag}", "node": sid(tag, top[2]), "members": [mid(tag, top[2])[0]], "params": jp},
             {"id": f"crown_corner_{tag}", "node": f"C{tag}top",
-             "members": [f"C{tag}mid-C{tag}top", tb_ids[0] if tag == "L" else tb_ids[-1]], "params": jp},
+             "members": [f"C{tag}mid-C{tag}top", tb_ids[0] if tag == "L" else tb_ids[-1]], "params": jc},
         ]
         if p["extension_posts"]:
             joints.append({"id": f"post_socket_{tag}", "node": f"C{tag}top", "members": [f"post_{tag}"],
@@ -545,8 +549,8 @@ def hardware_mass(model: dict) -> dict:
         per = _perim(sec) + np.pi * (2 * ta + ts)
         return per * ts * (length + h["socket_extra_mm"]) * rho_sl * 1e-6
 
-    def adh_g(sec, length):
-        return _perim(sec) * length * ta * h["adhesive_density"] * h["fillet"] * 1e-6
+    def adh_g(sec, length, t_a=None):
+        return _perim(sec) * length * (t_a or ta) * h["adhesive_density"] * h["fillet"] * 1e-6
 
     g_sock, g_adh = 0.0, 0.0
     for j in model["joints"]:
@@ -556,7 +560,7 @@ def hardware_mass(model: dict) -> dict:
         for mid_ in j.get("members", []):
             s = _sec(mem[mid_]["section"])
             g_sock += sleeve_g(s, ov)
-            g_adh += adh_g(s, ov)
+            g_adh += adh_g(s, ov, (j.get("params") or {}).get("adhesive_t_mm"))
         for _ in j.get("through", []):
             g_sock += sleeve_g(stay, ov_t)
             g_adh += adh_g(stay, ov_t)

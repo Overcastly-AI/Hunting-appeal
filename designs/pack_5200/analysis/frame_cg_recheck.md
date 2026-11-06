@@ -10,6 +10,13 @@ reproduce rev B exactly). Tests: `tests/test_frame_cg_recheck.py`. Results: [fra
 python -c "from huntkit.gendesign import frame_cg_recheck as R; R.save(R.run())"   # ~20 min, 4 cores
 ```
 
+> **Superseded for release by [rev_c_verification.md](rev_c_verification.md) (2026-11-06).** The owner adopted HA-LS-1
+> rev C with the meat cases at **190 mm** (not the 175 mm drafted in section 6), the crown fix and the 7 mm spreader
+> core. This file stays the record of the 2026-11-05 check: its code (`frame_cg_recheck.py`) still runs the rev B cases
+> on the crown as built (`rev_b_crown()`, frame.yaml `crown_rev_b`). The `spreader._SKIN_CACHE` bug of section 5 is
+> fixed in `spreader.py` (key includes the meat force; regression test in `tests/test_load_standard_rev_c.py`), and
+> corner-bond fatigue (section 8, "not re-run") is now in rev_c_verification.md §2.1.
+
 ## Verdict
 
 1. **The printed PAHT-CF branch body passes every HA-LS-1 rev B case at every offset checked**, up to 250 mm. The worst

@@ -155,15 +155,16 @@ def plate_D(E, t, nu):
     return E * t ** 3 / (12.0 * (1.0 - nu ** 2))
 
 
-def meat_normal_n(g_level: float = 1.6) -> float:
+def meat_normal_n(g_level: float = 1.6, e_mm: float = 150.0) -> float:
     """Total forward force of the meat on the frame face at ``g_level``.
 
     From the rev B couple: H = P e * sum(lev) / sum(lev^2) with the strap levers
     above the pressure centroid. Levers ASSUMPTION from the anchor heights
     (190 and 520 mm) and a centroid near z 160: about 80 mm and 280 mm.
+    ``e_mm``: meat CG aft of the frame (150 = HA-LS-1 rev B, the default of this study; rev C is 190).
     """
     P = 68.0 * G * g_level
-    e = 150.0
+    e = float(e_mm)
     lev = np.array([80.0, 280.0])
     return float(P * e * lev.sum() / np.sum(lev ** 2))
 

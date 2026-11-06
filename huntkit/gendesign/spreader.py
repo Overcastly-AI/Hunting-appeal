@@ -14,8 +14,10 @@ nonlinear Pasternak model of the rail (``rail_section``): rigid stay cylinder, a
 cited L200 compression curve, soft tissue in series. The rail compression and the tissue bulge
 into the gutter set the real clearance between the sheet and the back.
 
-Loads: HA-LS-1 rev B C5 (meat on the internal straps), walking 1.6 g and factored 2.0 g x 1.5,
+Loads: HA-LS-1 C5 (meat on the internal straps), walking 1.6 g and factored 2.0 g x 1.5,
 the strap cinch preload, and a bone end (20 % of 68 kg on a 22 mm patch) at many positions.
+The meat CG offset is ``MEAT_CG_MM``: rev C 190 mm since 2026-11-06 (``huntkit.fea.load_standard``);
+set it to 150 to reproduce the rev B records of 2026-11-04/05.
 
 Run: python -m huntkit.gendesign.spreader
 """
@@ -78,9 +80,18 @@ PRINT = REPO_ROOT / "designs" / "pack_5200" / "print" / "frame"
 
 
 # ============================================================================ loads
+def _rev_meat_cg() -> float:
+    from huntkit.fea.load_standard import meat_cg_mm
+    return meat_cg_mm()
+
+
+MEAT_CG_MM = _rev_meat_cg()       # HA-LS-1 rev C C5 meat CG aft of the frame (190 mm); rev B was 150
+
+
 def meat_normal_n(g_level: float = 1.6) -> float:
+    """Forward meat force on the frame face at ``g_level`` for the current ``MEAT_CG_MM`` (linear in e)."""
     from .frame_smooth import meat_normal_n as mn
-    return mn(g_level)
+    return mn(g_level, e_mm=MEAT_CG_MM)
 
 
 def bone_n(kind: str) -> float:
@@ -252,6 +263,8 @@ def options() -> list[Option]:
         sw("sw110c4d", "Sandwich: twill / 4 mm ROHACELL 110, notch doublers", "rohacell_110_igf", 4.0, True),
         sw("sw110c5d", "Sandwich: twill / 5 mm ROHACELL 110, notch doublers", "rohacell_110_igf", 5.0, True),
         sw("sw110c6d", "Sandwich: twill / 6 mm ROHACELL 110, notch doublers", "rohacell_110_igf", 6.0, True),
+        # HA-LS-1 rev C production part (owner 2026-11-06): the same part with a 1 mm thicker core
+        sw("sw110c7d", "Sandwich: twill / 7 mm ROHACELL 110, notch doublers", "rohacell_110_igf", 7.0, True),
         Option("g20", "Glass (G10-class) QI 2.0 mm", "monolithic", qi_lam(2.0, _glass()), "cost variant",
                buy="bought G10 sheet, water-jet"),
         Option("g30", "Glass (G10-class) QI 3.0 mm", "monolithic", qi_lam(3.0, _glass()), "cost variant",
@@ -781,8 +794,11 @@ def stay_EI() -> float:
 def skin_pressure(bone_side_n: float, kind: str = "walk", rail=None, tissue_kpa: float = TISSUE_E_KPA,
                   bone_total_n: float = 0.0) -> dict:
     rail = rail or RAIL_DESIGN
+    # the key carries the meat force itself: a caller that changes the meat load (MEAT_CG_MM, or a patched
+    # meat_normal_n) gets a fresh solve (bug fixed 2026-11-06: the key used to omit it, frame_cg_recheck.md §5)
+    g_kind = {"walk": 1.6, "factored": 3.0, "static": 1.0}[kind]
     key = (round(float(bone_side_n) / 2.0) * 2.0, kind, rail["layers"], rail["backer"], float(tissue_kpa),
-           round(float(bone_total_n)))
+           round(float(bone_total_n)), round(float(meat_normal_n(g_kind)), 3))
     if key not in _SKIN_CACHE:
         _SKIN_CACHE[key] = _skin_pressure(key[0], kind, rail, tissue_kpa, key[5])
     return dict(_SKIN_CACHE[key])
@@ -1272,6 +1288,8 @@ def evaluate_perforated(opt: Option, holes: list, h: float = 2.0, step: float = 
 # ============================================================================ detail: clips, DXF, drawing
 CLIP_LEG_T = 2.5                  # clip leg / bridge thickness
 SLOT_W, SLOT_L = 4.0, 16.0        # sheet slot for the inboard clip leg (full-round ends)
+PRODUCTION_KEY = "sw110c7d"       # owner 2026-11-06 (HA-LS-1 rev C): 7 mm core; rev B part was sw110c6d
+PART_REV = "C"                    # BP-06 part revision of the production spreader (rev B = the 6 mm core part)
 
 
 def clip_slots() -> list[tuple[float, float]]:
@@ -1368,7 +1386,7 @@ def write_dxf(opt: Option, path) -> dict:
         msp.add_line((-116.0, zt), (116.0, zt), dxfattribs={"layer": "MARK"})
     for (x, z) in pucks():
         msp.add_circle((x, z), PUCK_D / 2, dxfattribs={"layer": "MARK"})
-    msp.add_text(f"BP-06 rev B SPREADER  {opt.name}  qty 1  bag face up",
+    msp.add_text(f"BP-06 rev {PART_REV} SPREADER  {opt.name}  qty 1  bag face up",
                  dxfattribs={"layer": "TEXT", "height": 3.5}).set_placement((-118.0, Z_LO_V2 - 10.0))
     doc.saveas(path)
     return {"path": str(path), "n_cut_loops": n_cut, "area_mm2": float(shape.area)}
