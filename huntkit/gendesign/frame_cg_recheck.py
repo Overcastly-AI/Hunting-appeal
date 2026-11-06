@@ -65,6 +65,8 @@ class Scenario:
     couple_top: str | None = None   # None = crown top bar (rev B); "strap_upper" = IM3 anchors on the upper bar
     anchor: dict | None = None      # top-anchor extra loads on the meat case: {"where": "x70"|"x100"|"pocket", "elev": deg}
     cases: tuple = ORDER
+    split_x: float = 100.0          # top-bar nodes inserted at +/- split_x (95 for the final hood + guys)
+    anchor_cases: tuple = ("meat_straps",)
 
     def case_list(self):
         from huntkit.fea.load_standard import ls1_cases
@@ -81,7 +83,7 @@ class Scenario:
                 c.cg_aft_mm = float(self.meat)
             elif c.name in TALL_CASES:
                 c.cg_aft_mm = float(self.tall)
-            if self.anchor and c.name == "meat_straps":
+            if self.anchor and c.name in self.anchor_cases:
                 c.params = {**c.params, "_anchor": dict(self.anchor)}
             out.append(c)
         return out
@@ -148,7 +150,32 @@ def anchor_loads_1g(model: dict, where: str, elev_deg: float = 0.0, n_side: floa
         trib = {"TBL100": 15.0, "TB0": 50.0, "TB1": 70.0, "TB2": 50.0, "TBR100": 15.0}   # mm, sums to 200
         q = 2 * n_side / 200.0
         return {k: q * L * d for k, L in trib.items()}
+    if where == "hood_guys":
+        return hood_guy_loads_1g(model)
     raise ValueError(where)
+
+
+# Final attachment (bag_attachment.md section 1-2, attach_system_results.json factored_n, C5 factor 3.0):
+HOOD_1G_N = 52.5            # crown hood capture, total, aft, distributed over x -95..+95
+GUY_1G_N = 34.6             # each top side guy, from the hood ear at x +/-95 to the bag corner (+/-149, z 752)
+GUY_CORNER = (149.0, 752.0)
+GUY_FREE_MM = 314.0         # bag_attachment.md TG row: free length about 314 mm at 19 in
+GUY_DY_MM = float(np.sqrt(GUY_FREE_MM ** 2 - (149.0 - 95.0) ** 2 - (752.0 - 702.6) ** 2))   # ASSUMPTION: fixed aft run
+
+
+def hood_guy_loads_1g(model: dict) -> dict:
+    """Hood: 52.5 N aft spread over x +/-95 by tributary length; guys: 34.6 N each at TB?95 toward the bag corner
+    (+/-149, y_bar + GUY_DY_MM, 752). Needs the model split at x +/-95 (``split_top_bar(m, 95)``)."""
+    nodes = model["nodes"]
+    out = {}
+    trib = {"TBL95": 12.5, "TB0": 47.5, "TB1": 70.0, "TB2": 47.5, "TBR95": 12.5}     # mm, sums to 190
+    for k, L in trib.items():
+        out[k] = np.array([0.0, HOOD_1G_N * L / 190.0, 0.0])
+    for tag, s in (("L", -1.0), ("R", 1.0)):
+        p = np.asarray(nodes[f"TB{tag}95"], float)
+        d = np.array([s * GUY_CORNER[0], p[1] + GUY_DY_MM, GUY_CORNER[1]]) - p
+        out[f"TB{tag}95"] = out.get(f"TB{tag}95", np.zeros(3)) + GUY_1G_N * d / np.linalg.norm(d)
+    return out
 
 
 def _crown_rows(res, model, case) -> dict:
@@ -197,19 +224,22 @@ def beam_runs(sc: Scenario, torsos=TORSOS, buckling: bool = True, log=print, ove
     from huntkit.fea.load_standard import TABLE
     sets, rows = [], []
     for t in torsos:
-        fm = split_top_bar(build_frame_from_yaml(ft.FRAME_YAML, torso_in=float(t), extension_posts=False, **over))
+        fm = split_top_bar(build_frame_from_yaml(ft.FRAME_YAML, torso_in=float(t), extension_posts=False, **over),
+                           sc.split_x)
         fmp = None
         for c in sc.case_list():
             c = copy.copy(c)
             c.params = dict(c.params)
             anc = c.params.pop("_anchor", None)
             if anc:
-                c.params["extra_nodal_1g"] = {k: list(v) for k, v in anchor_loads_1g(fm, anc["where"], anc["elev"]).items()}
+                L1 = anchor_loads_1g(fm, anc["where"], anc["elev"])
+                kgs = c.load_kg / 68.0                      # C7 (91 kg): anchor loads scale with the contents
+                c.params["extra_nodal_1g"] = {k: list(kgs * np.asarray(v)) for k, v in L1.items()}
             c.buckling = buckling and c.kind != "setdown"
             m = fm
             if c.name == "tall_load_posts":
                 fmp = fmp or split_top_bar(build_frame_from_yaml(ft.FRAME_YAML, torso_in=float(t), extension_posts=True,
-                                                                     **over))
+                                                                     **over), sc.split_x)
                 m = fmp
             res = c.run(m)
             ls = ft._extract(res, m, c, t, TABLE)
@@ -718,4 +748,39 @@ def anchor_summary(rows: list) -> list:
             out.append({"where": where, "elev": elev, "top_bar": mn("crown_top_bar"), "leg": mn("crown_leg"),
                         "spine": mn("crown_spine"), "corner_avg": mn(None, 0), "corner_peak": mn(None, 1),
                         "pawl_z_max_n": float(max(abs(r["pawl_n"][2]) for r in rs))})
+    return out
+
+
+
+def final_attachment_check(log=print) -> dict:
+    """The released top anchor (crown hood + 2 fixed guys, bag_attachment.md) on C5 / C7 at 175 and 190 mm
+    (190 = the 15 in fill CG the orchestrator asked to cover on the meat cases), crown as built and with the fix,
+    plus the printed body and the spreader at 190 mm."""
+    from .spreader_layout import raster
+    out = {"loads_1g": {"hood_total_n": HOOD_1G_N, "guy_each_n": GUY_1G_N, "guy_dy_mm": GUY_DY_MM},
+           "crown": {}, "body": {}}
+    sets = []
+    for e in (175.0, 190.0):
+        tag = f"hg{e:g}"
+        sc = Scenario(tag, f"C5/C7 at {e:g} mm + crown hood + 2 guys", 205.0, e, 185.0, 550.0,
+                      anchor={"where": "hood_guys", "elev": 0.0}, cases=("meat_straps", "overload_haul"),
+                      split_x=95.0, anchor_cases=("meat_straps", "overload_haul"))
+        for lab, over in (("as_built", {}), ("fix", fix_over())):
+            s_, cr = beam_runs(sc, buckling=False, log=None, over=over)
+            out["crown"][f"{tag}_{lab}"] = crown_summary(cr, tag)
+            if lab == "as_built":
+                sets += s_
+        sc0 = Scenario(f"m{e:g}", f"C5/C7 at {e:g} mm, no top anchor", 205.0, e, 185.0, 550.0,
+                       cases=("meat_straps", "overload_haul"))
+        s_, cr = beam_runs(sc0, buckling=False, log=None)
+        out["crown"][f"m{e:g}_as_built"] = crown_summary(cr, sc0.tag)
+        sets += s_
+    dom, solid = raster(None, 2.0)
+    vr = verify_sets(dom, solid, sets, log=log)
+    for tg in sorted({s.key.split(":")[0] for s in sets}):
+        out["body"][tg] = summarize_body(vr["rows"], tg, vr["fat_ratio"], vr["creep_ratio"])
+    out["bar_local"] = {"hood_line": bar_local(158.0, 25.0, pocket_line_n_mm=158.0 / 190.0)["pocket"],
+                        "guy_via_hood_ear_30mm": bar_local(104.0, 30.0)["tie"]}
+    out["spreader_190"] = spreader_at(190.0)
+    out["spreader_181"] = spreader_at(181.0)
     return out
