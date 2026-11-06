@@ -536,14 +536,28 @@ class PackModel:
             ay = float(pk["anchor_y"])
             depth = float(pk.get("hood_depth_mm", 0.0))
             pre = float(pk.get("pretension_n", 0.0)) / max(len(sel), 1)
+            # ``slide: true`` (default): the hood rides on vertical rails on B-01, so it holds B-01 against aft peel only;
+            # B-01 may slide past it in z (and x). Modelled with a leg reaching FAR forward (``slide_reach_mm``) whose
+            # EA is scaled to keep the short leg's stiffness EA / max(drafted, depth): an aft move stretches it 1:1, a
+            # z or x slide of d only by d^2 / (2 reach)
+            slide = bool(pk.get("slide", True))
+            reach = float(pk.get("slide_reach_mm", 2000.0)) if slide else 0.0
             for j in sel.astype(int).tolist():
-                anchor = [float(X[j, 0]), ay, zb]
+                gap = max(float(X[j, 1]) - ay, 1.0)
+                anchor = [float(X[j, 0]), ay - reach, zb if not slide else float(X[j, 2])]
                 nm = f"pocket.{j}"
                 add(nm, [j, -1], [nan3, anchor], pk.get("webbing", "poly_webbing_38mm"), pre, "pocket",
                     mode="elastic", capacity_n=pk.get("capacity_n"), group="pocket")
                 cb = self.cables[nm]
-                if depth > 0 and cb.meta["L_init"] < depth:
-                    cb.L0 = depth                      # slack hood: taut only once B-01 has moved aft to the depth
+                # slack hood: taut only once B-01 has moved aft to the depth; ``fixed_depth: true`` = the hood is a fixed
+                # depth, so where the drafted gap is larger it pulls B-01 forward to it (negative slack)
+                fixed = bool(pk.get("fixed_depth"))
+                slack = (depth - gap) if fixed else max(depth - gap, 0.0)
+                L_short = max(depth, 1.0) if fixed else max(gap, depth)
+                k = cb.EA / L_short                     # hood stiffness (short leg)
+                cb.L0 = cb.meta["L_init"] + slack - (pre / k if pre > 0 else 0.0)
+                cb.EA = k * cb.L0
+                cb.meta.update(hood_gap_mm=gap, hood_slack_mm=slack, slide=slide)
                 self.pocket_legs.append(nm)
         # roll-top clips: the two ends of the closed roll pulled down onto the side gores
         rc = sc.get("roll_clips")

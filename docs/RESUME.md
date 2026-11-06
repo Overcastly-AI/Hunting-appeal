@@ -1,4 +1,17 @@
-# Updated 2026-11-05 (bag-top anchor study). The cloth sim shows the bag needs a top anchor. Candidates are in `analysis/bag_top_anchor.md`. Next: the bag-to-frame attachment phase (research first) and a structural frame re-check at the larger CG.
+# Updated 2026-11-05 (bag-to-frame attachment phase). The joint is designed bottom to top: crown hood + top guys at the top, rated bag hooks, sewn side with drawings. Next: owner choices in `analysis/bag_attachment.md` §12, the structural re-check with the hood loads, proof tests PT-1..PT-5.
+
+## Bag-to-frame attachment phase (2026-11-05, pack-designer, not committed)
+- Record: `designs/pack_5200/analysis/bag_attachment.md` (generated: `python -m huntkit.gendesign.attach_system` for the full run, `--docs-only` to rewrite; `bag_attach.docs_only()` still works). Numbers: `analysis/attach_system_results.json`
+- Top anchor: **crown hood** (B-19, Hypalon J-profile over the crown top bar, on a 17-rung ladder B-20, one rung per crown setting) + **two fixed-length top side guys** (sewn to the hood ears, to B-22 on the outer-face corners). Lift-and-drop: a bag hinged at z 60 meets the bar in the peel direction, so no pocket can snap on passively
+- Cloth sim (`huntkit/clothsim/scenarios/pack5200_v31_att_*.yaml`, new additive key `attachments.pocket`): load CG fill **189 / 177 / 168 mm** at 15 / 19 / 23 in (before 223); meat 181 / 173 / 165. 180 mm met at 19 and 23 in, missed at 15 in by 9 mm (nothing on the frame above z 601). R-28 with the simulated wall + hood: first contact >= 31 deg (15 in meat is the tightest, gap 0.6 mm at 30 deg)
+- Compared: hood alone, study G (tie + guys) at 15/19/23, lifters as the anchor (rejected, US 10,952,523 switching), cinched guys (fail R-28 at 15 in)
+- IM3 hook: all four bag hooks one rated part >= 2200 N; PT-1 2120 N (1.5 x C5 hood-off 1415 N); SF 1.55 (was 1.06)
+- Sewn side: HE, B-18, T2 + B-23 (new), T3 + B-17, B-19/B-19s/B-19L, HT + POM toggles, B-20, TG + B-22; box-X 7 SPI tex 135, perimeters 8 SPI tex 90; every part SF >= 1.55; proof tests PT-1..PT-5. 1:1 drawings `designs/pack_5200/cut/attachment/attachment_parts.pdf` / `.dxf`
+- Procedures: bag off 52 s, bag on 59 s, between 70 s + loading, bag-off haul 108 s; repair kit. `meat_haul.DETACH_S` = 52 (`meat_haul.docs_only()` added)
+- Mass **+136 g**, pack **3207 g (7.07 lb)**, about $16. No new frame feature; crown-bar loads for the structural re-check are in §9 of the record
+- Owner choices (record §12): (1) accept the 15 in result (rec.) vs hood on the extension posts (IP opinion); (2) accept +136 g (rec.); (3) one rated hook for all four bag hooks (rec.) vs IM3 only; (4) FTO read on US 12,495,885 + confirm MR '171/'114 expiry (rec.); (5) lighter options
+- Pattern-maker regen list: record §10 (B-01 B-23 marks, B-01b/B-01u B-20 placement, B-02d B-22 marks, new pieces, webbing cut list, hardware). Patterns and the release are not edited
+- Screens: `outputs/screens/20261105_attach_1.png` (exploded), `_2.png` (hood detail), `_3.png` (sim before/after at 15/19/23 in), `_4.png` (procedure storyboard), `_5.png` (sewn parts preview)
 
 ## Bag-top anchor study (2026-11-05, pack-designer, not committed)
 - Record: `designs/pack_5200/analysis/bag_top_anchor.md`. Scenarios: `huntkit/clothsim/scenarios/pack5200_v31_tab_doubler.yaml`, `pack5200_v31_anchor_{A..H}_*.yaml`. Compare and PNGs: `python designs/pack_5200/bag_top_anchor.py`
@@ -57,7 +70,7 @@ Merged on main:
 1. Spreader first article: lay up one board, weigh it (target about 141 g without clips), coin-tap, then the PRODUCTION.md bone-end proof (400 N, 22 mm dowel) at the window centre, the US2 corner relief and the IM1 notch root. A notch-root coupon first is cheaper
 2. Torso-adjust shoulder yoke: hook-and-loop on a loop-faced fabric skin over the spreader, plus a tightening strap. The run was cancelled before any output
 3. Re-solve the z=234 split joint
-4. Proof-test the 1500 N hook and the 1100 N under-strap cam
+4. Proof tests: PT-1..PT-5 (rated bag hook 2120 N, T3 tongue, hinge eye, crown hood, guy ladder lock; `analysis/bag_attachment.md` §5) and the 1500 N meat-strap hook + 1100 N under-strap cam at 830 N
 5. Decide whether IM1 later gets a bag clip
 6. Close the weight gap (now 3030 g / 6.68 lb vs 5.0 lb). Bag side: owner answers on `analysis/bag_weight_plan.md` (OC-0 target, O-1..O-16). Spreader levers left (`spreader.md`): drop the cleat notches, a bottom-bay support from the lumbar struts, or relax the bone-at-notch-root case on a physical test
 7. Update `designs/apparel/camo/owner_base.yaml` and `designs/apparel/camo/DESIGN.md` for the real camo SVG

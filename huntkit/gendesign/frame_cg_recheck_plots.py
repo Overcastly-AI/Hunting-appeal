@@ -30,30 +30,43 @@ def _style(ax):
 
 
 def plot_sf_vs_offset(ctx, path: Path, offsets=(150, 180, 205, 223, 250)) -> str:
-    groups = [("Bag-carry cases (C1-C4, C8)", ("static_carry", "drop_2p5g", "side_hill_torsion",
-                                              "single_stay_setdown", "hipbelt_off_abuse")),
-              ("Meat and tall-load cases (C5-C7)", ("meat_straps", "tall_load", "tall_load_posts", "overload_haul"))]
     names = {"static_carry": "C1 static", "drop_2p5g": "C2 stumble", "side_hill_torsion": "C3 side-hill",
              "single_stay_setdown": "C4 set-down", "hipbelt_off_abuse": "C8 hipbelt off", "meat_straps": "C5 meat",
              "tall_load": "C6 tall", "tall_load_posts": "C6p posts", "overload_haul": "C7 overload"}
-    fig, axs = plt.subplots(1, 2, figsize=(11, 5.2), dpi=110, sharey=True, facecolor=SURF)
-    for ax, (title, cs) in zip(axs, groups):
+    body = lambda c: [ctx["body"][f"s{e:g}"]["cases"][c]["sf"] for e in offsets]
+    crown = lambda k: [ctx["crown"][f"s{e:g}"][k]["sf"] for e in offsets]
+    panels = [
+        ("Printed body: bag-carry cases", [(names[c], body(c)) for c in
+          ("static_carry", "drop_2p5g", "side_hill_torsion", "single_stay_setdown", "hipbelt_off_abuse")]),
+        ("Printed body: meat and tall loads", [(names[c], body(c)) for c in
+          ("meat_straps", "tall_load", "tall_load_posts", "overload_haul")]),
+        ("Carbon crown as built (beam model)", [("spine", crown("crown_spine")), ("legs", crown("crown_leg")),
+                                                 ("top bar", crown("crown_top_bar")),
+                                                 ("corner bond peak", crown("corner_bond_peak"))]),
+    ]
+    fig, axs = plt.subplots(1, 3, figsize=(15, 5.6), dpi=90, sharey=True, facecolor=SURF)
+    for ax, (title, series) in zip(axs, panels):
         _style(ax)
-        for i, c in enumerate(cs):
-            y = [ctx["body"][f"s{e:g}"]["cases"][c]["sf"] for e in offsets]
-            ax.plot(offsets, y, color=SERIES[i], lw=2, marker="o", ms=6, mec=SURF, mew=1.5, label=names[c])
-            ax.annotate(names[c], (offsets[-1], y[-1]), xytext=(6, 0), textcoords="offset points",
+        for e, lab in ((150, "rev B meat"), (180, "rev B bag"), (205, "envelope"), (223, "as-is")):
+            ax.axvline(e, color=GRID, lw=1, zorder=0)
+            ax.text(e, 3.75, lab, rotation=90, fontsize=8, color=INK2, ha="right", va="top")
+        handles = []
+        for i, (lab, y) in enumerate(series):
+            h, = ax.plot(offsets, y, color=SERIES[i], lw=2, marker="o", ms=6, mec=SURF, mew=1.5, label=lab)
+            handles.append(h)
+            ax.annotate(lab, (offsets[-1], y[-1]), xytext=(6, 0), textcoords="offset points",
                         va="center", fontsize=9, color=INK2)
         ax.axhline(1.0, color=CRIT, lw=1.2, ls="--")
-        ax.text(offsets[0], 1.02, "pass line (SF / required = 1.0)", color=INK2, fontsize=9, va="bottom")
-        for e, lab in ((180, "rev B bag"), (150, "rev B meat"), (205, "envelope"), (223, "bag as-is")):
-            ax.axvline(e, color=GRID, lw=1, zorder=0)
         ax.set_title(title, color=INK, fontsize=12, loc="left")
-        ax.set_xlabel("load CG aft of the frame axis, mm (every case at this offset, CG z 550)", color=INK2, fontsize=10)
-        ax.set_xlim(offsets[0] - 5, offsets[-1] + 45)
-        ax.legend(frameon=False, fontsize=9, loc="lower left", labelcolor=INK2)
-    axs[0].set_ylabel("printed body margin = SF / required (worst torso)", color=INK2, fontsize=10)
-    fig.suptitle("Production frame (PAHT-CF branch body, 2 mm FE): margin vs load CG offset", color=INK, fontsize=13,
+        ax.set_xlabel("load CG aft of frame axis, mm", color=INK2, fontsize=10)
+        ax.set_xlim(offsets[0] - 5, offsets[-1] + 60)
+        ax.set_ylim(0.6, 3.8)
+        ax.legend(handles=handles, frameon=False, fontsize=9, loc="upper center", bbox_to_anchor=(0.5, -0.14),
+                  ncol=3, labelcolor=INK2)
+    axs[0].text(152, 0.93, "pass line: SF / required = 1.0", color=INK2, fontsize=9, va="top")
+    axs[0].set_ylabel("margin = SF / required (worst torso)", color=INK2, fontsize=10)
+    fig.suptitle("Production frame vs load CG offset (every case at the offset, CG z 550). "
+                 "The printed body passes; the crown as built does not past about 200 mm", color=INK, fontsize=12,
                  x=0.01, ha="left")
     fig.tight_layout(rect=(0, 0, 1, 0.95))
     fig.savefig(path, facecolor=SURF)
@@ -90,7 +103,7 @@ def plot_utilization(ctx, tag: str, path: Path, title: str) -> str:
                     (gx[0], gx[2]), xytext=(15, -40), textcoords="offset points", fontsize=9, color=INK,
                     arrowprops={"arrowstyle": "-", "color": INK2})
     cb = fig.colorbar(sc, ax=axs, fraction=0.03, pad=0.02)
-    cb.set_label("failure index on the factored load (envelope, all cases and torsos); red = 1.0 or more",
+    cb.set_label("failure index on the factored load (envelope of all cases and torsos)\nred = single elements over 1.0, above the FI99 rule (load-patch / strut-end peaks)",
                  color=INK2, fontsize=9)
     cb.ax.tick_params(colors=INK2, labelsize=9)
     fig.suptitle(title, color=INK, fontsize=12, x=0.01, ha="left")

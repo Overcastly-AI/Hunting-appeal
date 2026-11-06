@@ -8,7 +8,7 @@ meta:
     mirror pairs (contract). Hipbelt pieces at size M. This is the DESIGN bill of panels (masses for the weight
     budget). The cut set is the v3.1 production patterns (designs/pack_5200/patterns_v31.py: two-ring-seam head
     setback, B-01b/B-01u/B-02c/B-02d, fairlead swells B-13..B-15); outputs/release/pack5200_v3.1_patterns.'
-  piece_count_total: 97
+  piece_count_total: 106
   gore_seam_check_mm:
     frame_side: {seam_from_3d_mm: 756.2, seam_from_pattern_mm: 756.7, seam_to_3d_mm: 756.2, seam_to_pattern_mm: 756.7}
     outer_face: {seam_from_3d_mm: 762.2, seam_from_pattern_mm: 768.0, seam_to_3d_mm: 762.2, seam_to_pattern_mm: 768.0}
@@ -1012,6 +1012,90 @@ panels:
   mass_g_total: 8.0
   notes: INSIDE face of B-01, lower edge caught in the B-01 | B-05 seam, centred on the hinge eye (x +/-115); eye
     box-X through doubler + B-01; spreads ~375 N (meat, 1 g) over 80 mm of seam (4.7 N/mm, < 6 N/mm)
+  seam_line_mm: null
+- id: B-19
+  name: crown hood shell
+  sub_assembly: attachment system
+  material_id: hypalon_coated_nylon
+  approx_size_mm: [250, 130]
+  qty_total: 1
+  mirror_pair: false
+  seam_allowance_mm: 0.0
+  thickness_mm: null
+  zone: crown top bar (hood)
+  cut_area_m2_each: 0.0267
+  mass_g_total: 26.7
+  notes: J-profile Hypalon hood over the crown top bar between the legs; guys sewn to its ears (analysis/bag_attachment.md)
+  seam_line_mm: null
+- id: B-19s
+  name: hood lip stiffener
+  sub_assembly: attachment system
+  material_id: hdpe_sheet
+  approx_size_mm: [180, 22]
+  qty_total: 1
+  mirror_pair: false
+  seam_allowance_mm: 0.0
+  thickness_mm: 1.5
+  zone: crown hood lip
+  cut_area_m2_each: 0.004
+  mass_g_total: 5.7
+  notes: HDPE 1.5 mm J stiffener in the lip hem (analysis/bag_attachment.md)
+  seam_line_mm: null
+- id: B-19L
+  name: hood lining
+  sub_assembly: attachment system
+  material_id: xlpe_foam
+  approx_size_mm: [180, 50]
+  qty_total: 1
+  mirror_pair: false
+  seam_allowance_mm: 0.0
+  thickness_mm: 3.0
+  zone: crown hood crown
+  cut_area_m2_each: 0.009
+  mass_g_total: 0.9
+  notes: XLPE 3 mm lining (quiet on the bar) (analysis/bag_attachment.md)
+  seam_line_mm: null
+- id: B-20
+  name: hood ladder strip
+  sub_assembly: attachment system
+  material_id: hypalon_coated_nylon
+  approx_size_mm: [40, 250]
+  qty_total: 2
+  mirror_pair: false
+  seam_allowance_mm: 0.0
+  thickness_mm: null
+  zone: frame-side panel B-01b/B-01u
+  cut_area_m2_each: 0.01
+  mass_g_total: 20.0
+  notes: 'hood ladder: 17 slots, one per crown setting; sewn on both long edges (analysis/bag_attachment.md)'
+  seam_line_mm: null
+- id: B-22
+  name: guy corner tab
+  sub_assembly: attachment system
+  material_id: hypalon_coated_nylon
+  approx_size_mm: [50, 60]
+  qty_total: 2
+  mirror_pair: false
+  seam_allowance_mm: 0.0
+  thickness_mm: null
+  zone: outer face B-02d upper corners
+  cut_area_m2_each: 0.003
+  mass_g_total: 5.9
+  notes: guy ladder-lock anchor tab (analysis/bag_attachment.md)
+  seam_line_mm: null
+- id: B-23
+  name: IM2 tongue backing
+  sub_assembly: attachment system
+  material_id: hypalon_coated_nylon
+  approx_size_mm: [60, 60]
+  qty_total: 2
+  mirror_pair: false
+  seam_allowance_mm: 0.0
+  thickness_mm: null
+  zone: frame-side panel B-01 inside, IM2 tongue
+  cut_area_m2_each: 0.0036
+  mass_g_total: 7.1
+  notes: backing under the IM2 bag-hook tongue box-X (analysis/bag_attachment.md)
   seam_line_mm: null
 - id: H-01
   name: hipbelt wing outer shell

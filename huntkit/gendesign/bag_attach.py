@@ -725,7 +725,10 @@ def write_docs(ctx: dict) -> str:
     pack = base + mass["delta_g"]
     lines = []
     a = lines.append
-    a("# Bag to frame: branch fairleads")
+    a("# Frame side: branch fairleads (record of 2026-11-01, still current)")
+    a("")
+    a("Superseded in this record by the system sections above: the bag-hook rating (section 3), the detach time "
+      "(Decision) and the open questions. The fairlead geometry, pins, sleeves and their FEA are unchanged.")
     a("")
     a("The Spine bag hangs on the printed branching frame. The fairlead is a small cleat")
     a("grown on the bag face of each stay. A 5 mm 7075 pin through a UHMWPE sleeve holds a")
@@ -742,7 +745,7 @@ def write_docs(ctx: dict) -> str:
     a(f"- Printed fairlead, fine mesh {fea[0]['h_mm']:.2f} mm. Minimum strength SF **{min(r['sf'] for r in fea):.2f}**. "
       f"Minimum fatigue SF **{min(r['sf_fatigue'] for r in fea):.2f}**.")
     a(f"- Pin double-shear SF **{pin['sf_yield']:.1f}** (7075-T6 S-basis). Sleeve bearing SF **{pin['sleeve_sf']:.2f}**.")
-    a(f"- Bag off in about **{34} s** (four hooks and two hinge pins). Back on in about **70 s**.")
+    a(f"- Bag off in about **{34} s** (four hooks and two hinge pins; 2026-11-01 estimate, before the under-straps and the hood).")
     a(f"- Marginal hardware and filament about **${cost['total']:.0f}**. Extra print time about **{cost['hours']:.2f} h**.")
     a("")
     a("Bag-off is a required mode (owner, 2026-11-01). The same fairleads take the")
@@ -769,9 +772,9 @@ def write_docs(ctx: dict) -> str:
         a(f"  {last_clip['thick_z']:.0f} mm root. The tongue is pulled across the layers, and a thicker")
         a("  root does not fix it. A cracked tongue means reprinting the frame. The fairlead's pin and eye come off.")
     a("")
-    a("The closer on IM2 and IM3 is the aluminium sliding-gate hook already assumed for the meat")
-    a(f"harness (1500 N, 9 g). It sees the full station load. SF at the heavier clip is "
-      f"**{HOOK_N / max(gov['im2']['n'], gov['im3']['n']):.2f}**. The hinge does not use a hook:")
+    a("The closer on IM2 and IM3 was the aluminium sliding-gate hook assumed for the meat")
+    a(f"harness (1500 N, 9 g), SF **{HOOK_N / max(gov['im2']['n'], gov['im3']['n']):.2f}** on the beam-model load. "
+      "The cloth sim with the B-17 tab raised that load; the bag hooks are now a rated part (section 3). The hinge does not use a hook:")
     a("the bag's sewn eye is on the pin, so the bag can swing open for a bay load without leaving the frame.")
     a(f"The bartack on that eye is the v3.1 assumption, 2700 N, SF **{BARTACK_N / gov['hinge']['n']:.2f}**.")
     a("")
@@ -887,7 +890,7 @@ def write_docs(ctx: dict) -> str:
     a("")
     a("## Assumptions")
     a("")
-    a("- Hook 1500 N and 9 g, bartack 2700 N, cam 1100 N / 22 g: carried over from DESIGN.md §4.5. Proof-test five hooks to 830 N and five bartacks to 1100 N.")
+    a("- Hook 1500 N and 9 g, bartack 2700 N, cam 1100 N / 22 g: carried over from DESIGN.md §4.5 (2026-11-01). The bag hooks are now the rated part and PT-1 (section 3); the bartacks are checked by stitch count in section 5.")
     a("- Pin price $2.50 and tri-glide 3 g are small-shop assumptions. Aluminium strength is the 7075 record, S-basis.")
     a("- UHMWPE sleeve strength is the sheet yield, 21 MPa. No fatigue number is published here; the sleeve is replaceable.")
     a("- B-01 patch 200 gsm is an assumption. The cloth is the same `challenge_ultra_200` as the panel; the gram is the patch area.")
@@ -899,11 +902,17 @@ def write_docs(ctx: dict) -> str:
     a("- Rail mass uses `alu_6061_t6` density and a 20 × 4 mm bar, 520 mm, two of them, plus 12 g sliders (assumption).")
     a("- Sleeve mass is two 500 × 90 mm wraps at 200 gsm (assumption). It is rejected on the look, not on the grams.")
     a("")
-    a("## Open questions for the owner")
+    a("## Open questions for the owner (2026-11-01)")
     a("")
-    a("1. The hook rating is still an assumption. If a bought hook breaks under 900 N, IM3 needs two hooks or a larger one. Proof-test five hooks to 830 N before the first sewn bag.")
-    a("2. IM1 is a meat anchor only for now. A bag clip there adds two hooks. Leave it meat-only?")
+    a("1. Closed: the bag-hook rating is section 3 (rated part, PT-1). The meat-strap hooks keep the 830 N test.")
+    a("2. IM1 stays a meat anchor only (no bag clip).")
     a("")
+    # the system sections (attachment phase 2026-11-05) go first; this fairlead record follows them, one level down
+    sysres = ANALYSIS / "attach_system_results.json"
+    if sysres.exists():
+        from .attach_system import render_md
+        head = render_md(json.loads(sysres.read_text()))
+        lines = head + ["#" + ln if ln.startswith("#") else ln for ln in lines]
     path = ANALYSIS / "bag_attachment.md"
     path.write_text("\n".join(lines))
     spec = {
@@ -924,6 +933,14 @@ def write_docs(ctx: dict) -> str:
         "sf_min": min(r["sf"] for r in fea),
         "sf_fatigue_min": min(r["sf_fatigue"] for r in fea),
     }
+    sysres = ANALYSIS / "attach_system_results.json"
+    if sysres.exists():
+        r_ = json.loads(sysres.read_text())
+        spec.update({"top_anchor": "crown_hood_plus_top_guys", "hood_width_mm": 190.0, "hood_ladder_rungs": 17,
+                     "bag_hook_rated_n": r_["hook_rated_n"], "bag_hook_proof_n": r_["proof_tests"][0]["load_n"],
+                     "system_delta_g": r_["mass"]["delta_g"], "system_pack_g": r_["pack_after_g"],
+                     "bag_off_s": r_["times_s"]["bag_off"], "bag_on_s": r_["times_s"]["bag_on"],
+                     "record": "analysis/attach_system_results.json"})
     (REPO_ROOT / "designs" / "pack_5200" / "attachment.yaml").write_text(
         "# Generated by huntkit.gendesign.bag_attach. The prose is analysis/bag_attachment.md.\n"
         + _yaml_dump(spec))

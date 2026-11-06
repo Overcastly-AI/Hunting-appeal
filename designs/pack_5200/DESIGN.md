@@ -163,13 +163,14 @@ W-01). 93 design pieces.
 | HIP | hipbelt | 50 mm side-release | 1 |
 | ROLL | roll-top | 25 mm side-release, black | 2 |
 | HAUL | W1–W3 wraps | Al G-hook (left) + ladder lock (right), **coyote 25 mm** | 3 |
-| LINK | bag ↔ frame | printed fairlead, 5 mm 7075 pin, 38 mm hook on IM2/IM3 (§4.8); no toggles, no B-10 tabs | 8 fairleads, 2 pull-pins, 4 hooks |
+| LINK | bag ↔ frame | printed fairlead, 5 mm 7075 pin, **rated** 38 mm hook (≥ 2200 N) on IM2/IM3, **crown hood** over the top bar + 2 top guys (§4.8); no B-10 tabs | 8 fairleads, 2 pull-pins, 4 hooks, 1 hood, 2 guys |
 | **MEAT** (new; replaces SHELF) | internal meat straps IM1–IM3 | **38 mm** bone/stone webbing (the only 38 mm on the pack), Al sliding-gate hooks into frame-stub eyes, 38 mm metal cam with glove pull-tab | 3 straps, 6 hooks, 3 cams |
 | QUICK | sternum, lid | magnetic 25 mm | 1 (+4 lid) |
 | TRIM | lifters, stabilizers | 25 mm ladder locks | 6 |
 
 ASSUMPTION (no records yet; materials-engineer): G-hook 4 g, toggle 3 g, quick-pin 4 g, 38 mm Al cam 22 g / slip 1100 N,
-38 mm Al sliding-gate hook 9 g / 1500 N, box-X bartack on 38 mm webbing (tex 135) 2700 N.
+38 mm Al sliding-gate hook 9 g / 1500 N (meat straps), box-X bartack on 38 mm webbing (tex 135) 2700 N. Bag hooks since
+2026-11-05: purchase requirement ≥ 2200 N, 14 g ASSUMPTION, qualified by PT-1 at 2120 N (`analysis/bag_attachment.md` §3).
 
 ### 4.6 Lid (DECISION, unchanged)
 Base pack lid-less; optional 4.9 L lid / hip pack (141 g) rides on the closed roll on short fixed straps.
@@ -207,7 +208,21 @@ upright head (CVA +1 SD) touches at 25–27°, i.e. a soft bag contact on a shar
 carry the head forward (lower CVA), so the mean is the right design case, but the prototype must confirm it (side photos
 of 3 testers at the 15/19/23 settings). The orange-flag accessory posts are not in this check (lash points, behind the bar).
 
-### 4.8 Bag-to-frame attachment (branch fairlead)
+### 4.8 Bag-to-frame attachment (branch fairlead + crown hood)
+
+**Attachment phase, 2026-11-05 (record `analysis/bag_attachment.md`, numbers `analysis/attach_system_results.json`).**
+The joint is now complete bottom to top: hinge eyes on B-18 (pins), under-straps (cams), IM2/IM3 bag hooks (one rated
+≥ 2200 N part, PT-1 at 2120 N; it was SF 1.06 at C5 on the 1500 N assumption), and at the top a **crown hood** (B-19,
+Hypalon J-profile) that drops over the crown top bar, on a 17-rung ladder (B-20, one rung per crown setting), with two
+fixed-length **top side guys** sewn to its ears and running to the outer-face corners (B-22). Cloth sim, 68 kg fill:
+load CG **189 / 177 / 168 mm** at 15 / 19 / 23 in (no top anchor: 223 mm at 19 in); meat case 181 / 173 / 165 mm.
+The 180 mm goal is met at 19 and 23 in; at 15 in nothing on the frame is higher than the z 601 bar (owner choice).
+R-28 re-run with the simulated wall and the hood on the bar: first contact ≥ 31° (pass). The hood is lift-and-drop:
+a bag that hinges at z 60 meets the bar in the peel direction, so no pocket can catch it passively. Bag off **52 s**.
+**+136 g**, pack **3207 g (7.07 lb)**. No new frame feature. Load lifters stay on the crown (counting them as the
+anchor would switch them bag/frame: US 10,952,523).
+
+The fairlead record below is unchanged.
 
 The production frame is the printed branch body. The toggles and the girth-hitched stubs in the
 v3.1 notes were drawn for a carbon-tube stay. On this frame the bag hangs on **eight printed
@@ -374,6 +389,7 @@ studies take their soft-goods basis from it (`frame_production.SOFT_GOODS_G`).
 | Main bag (fabric 273, zip 23, roll-top 49, keepers 9, bow riser carry 12) | 366 | 12.9 | computed; B-10 tabs retired (−21.6 g); bow riser carry added 2026-11-05 (+12.1 g, owner freeze) |
 | Bag-side load spreaders: IM3 hook tabs B-17 (2 × 90 × 110 Hypalon) + hinge-eye doublers B-18 (2 × 90 × 45) | 28 | 1.0 | computed (cut area × 1000 gsm); cloth-sim follow-up 2026-11-05, `analysis/bag_top_anchor.md` |
 | Bag-to-frame attachment (8 fairleads, pins, sleeves, 4 hooks, eyes, straps, swells, keepers) | 144 | 5.1 | `bag_attachment_results.json` parts (the v3.1 LINK toggles are out) |
+| Bag-to-frame attachment system (crown hood B-19 + ladder B-20, 2 top guys + B-22, B-23 backings, rated bag hooks +20 g) | 136 | 4.8 | `attach_system_results.json` mass (attachment phase 2026-11-05) |
 | Under-straps US1/US2 (cradle) | 122 | 4.3 | `meat_haul.cradle_parts_g` |
 | Camo accents | 53 | 1.9 | computed |
 | Rain fly + pocket + flag sleeve + hem + zip (owner: counts) | 75 | 2.6 | computed |
@@ -384,9 +400,10 @@ studies take their soft-goods basis from it (`frame_production.SOFT_GOODS_G`).
 | Internal meat harness (IM1–IM3, hooks, cams, 6 ports) | 254 | 9.0 | computed; hooks/cams ASSUMPTION |
 | Haul wraps W1–W3 + hardware | 108 | 3.8 | computed |
 | Thread, labels | 37 | 1.3 | ASSUMPTION 3 % + 8 g |
-| **Total** | **3071** | **108.3 (6.77 lb)** | target 2268 g (5.0 lb): **803 g over**. Owner-published printed-frame figure ~2976 g assumed the held swaps O-3/4/5/6/15 (−54 g, not applied): with them 3017 g |
+| **Total** | **3207** | **113.1 (7.07 lb)** | target 2268 g (5.0 lb): **939 g over**. Owner-published printed-frame figure ~2976 g assumed the held swaps O-3/4/5/6/15 (−54 g, not applied) and predates the top anchor (+136 g): with the swaps 3153 g |
 
-The bag side (bag, attachment, under-straps, accents, fly, pockets, meat harness, wraps) is 1170 g; the frame,
+The bag side (bag, attachment, under-straps, accents, fly, pockets, meat harness, wraps) is 1306 g with the
+attachment system (1170 g before it); the frame,
 spreader, back panel, belt and harness are 1861 g. **Weight-cut plan: `analysis/bag_weight_plan.md`** (generated by
 `bag_weight_plan.py`, chart `outputs/screens/20261105_bag_4.png`). Applied: W-01 (B-10 tabs, −22 g; 3052 → 3030 g).
 Recommended owner choices O-3/O-4/O-5/O-6/O-15 take another 54 g (≈ 2976 g, 6.56 lb). Every bag-side item on the

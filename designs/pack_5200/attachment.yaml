@@ -21,3 +21,13 @@ delta_g: 113.3
 pack_g: 2979
 sf_min: 2.966
 sf_fatigue_min: 1.668
+top_anchor: crown_hood_plus_top_guys
+hood_width_mm: 190
+hood_ladder_rungs: 17
+bag_hook_rated_n: 2200
+bag_hook_proof_n: 2120
+system_delta_g: 136
+system_pack_g: 3207
+bag_off_s: 52
+bag_on_s: 59
+record: analysis/attach_system_results.json

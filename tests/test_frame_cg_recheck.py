@@ -170,3 +170,23 @@ def test_recorded_results_consistent():
     assert c["cases"]["static_carry"]["sf"] <= b["cases"]["static_carry"]["sf"] + 1e-6
     sw = [d["body"][f"s{e:g}"]["cases"]["static_carry"]["sf"] for e in (150, 180, 205, 223, 250)]
     assert all(x >= y - 1e-6 for x, y in zip(sw, sw[1:]))
+
+
+def test_crown_fix_keeps_od_and_mass():
+    fp = R._frame_params()
+    s = R.add_ud(fp["leg_section"], 2)
+    assert s["od"] == fp["leg_section"]["od"]
+    assert len(s["layup"]) == len(fp["leg_section"]["layup"]) + 2
+    m = R.fix_mass_total()
+    # hand check, legs: 2 x pi x d_mean x 2 plies x 0.125 x 430 x 1.58e-3, d_mean ~ 13.4 mm -> ~14.3 g
+    assert m["legs"] == pytest.approx(2 * np.pi * 13.36 * 0.25 * 430 * 1.58e-3, rel=0.02)
+    assert 20.0 < m["total"] < 24.0
+
+
+@pytest.mark.skipif(not RESULTS.exists(), reason="run huntkit.gendesign.frame_cg_recheck first")
+def test_recorded_fix_passes_and_as_built_crown_fails():
+    d = json.loads(RESULTS.read_text())
+    assert all(d["fix"]["pass"].values())
+    assert d["crown"]["b"]["crown_spine"]["sf"] < 1.0          # the reason for the fix
+    assert min(b["sf_min"] for b in d["body"].values() if "sf_min" in b) >= 1.0   # body passes everywhere
+    assert d["spreader"]["175"]["passes"] and not d["spreader"]["223"]["passes"]

@@ -42,7 +42,7 @@ HALF_SPAN_MM = 115.0
 # The rest stays on the hinge pins. ASSUMPTION.
 CRADLE_SHARE = 0.55
 US1_FRACTION = 0.60              # lower strap takes the greater share
-DETACH_S = 40                    # was 34; two cam pops add about 6 s
+DETACH_S = 52                    # attachment phase 2026-11-05 (attach_system.PROCEDURES bag_off): 34 + cams + hood lift
 
 
 def _stations(case: LoadCase) -> dict:
@@ -507,12 +507,15 @@ the reserve numbers, not the design path.
 
 ### Procedure (gloves, about {DETACH_S} s, limit 2 min)
 
-1. Pop the two under-strap cams and lift the bag floor out of the open channels. The straps stay on their pins. About 6 s.
-2. Unhook the four bag hooks (IM2 and IM3, both sides). IM1 has no bag hook.
-3. Pull the two tethered hinge pins at z 60.
-4. Lift the bag clear.
-5. Set the quarter in the cradle, bone toward the spreader. Cam the two under-straps until the belly is about {BELLY_MM:.0f} mm.
-6. Hook IM1–IM3 eye-to-eye over the meat and cam them. A hock can sit on IM1.
+The full step list with seconds is in `analysis/bag_attachment.md` section 7 (attachment phase, 2026-11-05).
+
+1. Lift the crown-hood tab and swing the top of the bag about 10 cm aft. The top guys come with the hood.
+2. Unhook the four bag hooks (IM3, then IM2, both sides). IM1 has no bag hook.
+3. Pop the two under-strap cams and lift the bag floor out of the open channels. The straps stay on their pins.
+4. Pull the two tethered hinge pins at z 60.
+5. Lift the bag clear.
+6. Set the quarter in the cradle, bone toward the spreader. Cam the two under-straps until the belly is about {BELLY_MM:.0f} mm.
+7. Hook IM1–IM3 eye-to-eye over the meat and cam them. A hock can sit on IM1.
 
 Walking peak of 36 kg is **{o['walk_n']:.0f} N**. The strength check is 1.5 times that,
 **{o['cradle_vertical_n']:.0f} N**, all of it in the cradle. Lower strap tension
@@ -526,12 +529,13 @@ The cradle anchors are the same fairlead as the hinge, on the solid lower stay. 
 SF is scaled from the fine-mesh solve of the governing cradle vector when that solve is on file,
 and from the hinge solve otherwise (`{modes['cradle']['basis']}`).
 
-To put the bag back: pins in, bag hooks on, floor channels over the cradle straps, cams tight.
-About 80 s.
+To put the bag back: pins in, floor channels over the cradle straps, cams tight, bag hooks on, then drop the
+crown hood over the top bar. About 60 s (`bag_attachment.md` section 7).
 
 ## What is still open
 
-- Hook and cam ratings are assumptions (hook 1500 N, cam slip 1100 N). Proof-test five of each to 830 N before the first sewn bag. The under-strap cam is in this test.
+- Meat-strap hook and cam ratings are assumptions (hook 1500 N, cam slip 1100 N). Proof-test five of each to 830 N before the first sewn bag. The under-strap cam is in this test.
+- The four BAG hooks (IM2/IM3) are a rated part since 2026-11-05 (>= 2200 N, proof PT-1, `bag_attachment.md` section 3); the 830 N test no longer covers them.
 - IM1 does not get a bag clip yet. It is a meat anchor only until the owner says otherwise.
 
 ## Mass and cost of the under-straps
@@ -543,7 +547,7 @@ About 80 s.
         text += f"| {name} | {grams:.1f} |\n"
     text += f"| **added** | **{modes['cradle']['mass_g']:.0f}** |\n\n"
     text += (f"About **${modes['cradle']['cost_usd']:.0f}** on top of the fairlead set. "
-             f"Detach time **{DETACH_S} s** (the two cam pops are about 6 s of that). "
+             f"Detach time now **{DETACH_S} s** with the crown hood (attachment phase); the two cam pops are about 6 s of that. "
              f"Pack with the cradle is the previous 2979 g plus this added mass.\n\n")
     text += "## Screenshots\n\n"
     for s in screens:
@@ -651,5 +655,21 @@ def emit(log=print):
     return out
 
 
+def docs_only(log=print) -> str:
+    """Rewrite meat_haul_modes.md / .json from the cradle FEA on file (cradle_fea.json) without re-solving it."""
+    basis = json.loads((ANALYSIS / "cradle_fea.json").read_text())
+    modes = analyse(basis)
+    old = json.loads((ANALYSIS / "meat_haul_modes.json").read_text())
+    path = write(modes, old["screens"])
+    out = {k: {kk: vv for kk, vv in modes[k].items() if kk != "nodes"} | {"nodes": modes[k]["nodes"]}
+           for k in ("bag_on", "between", "bag_off")}
+    out["sheet_sf"] = modes["sheet"]["sf"]
+    out["screens"] = old["screens"]
+    (ANALYSIS / "meat_haul_modes.json").write_text(json.dumps(out, indent=2, default=float))
+    log(path)
+    return path
+
+
 if __name__ == "__main__":
-    emit()
+    import sys
+    docs_only() if "--docs-only" in sys.argv else emit()

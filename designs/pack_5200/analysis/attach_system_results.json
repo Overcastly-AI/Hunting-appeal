@@ -1,0 +1,2110 @@
+{
+ "date": "2026-11-05",
+ "chosen": "hood+guys",
+ "target_cg_mm": 180.0,
+ "sims": {
+  "baseline": {
+   "scenario": "pack5200_v31_baseline",
+   "torso_in": 19,
+   "family": "none",
+   "label": "phase-1 bag, no top anchor (before)",
+   "fill": {
+    "cg_y": 223.2,
+    "cg_z": 530.6,
+    "aft_depth": 468.9,
+    "im3_max_n": 324.3,
+    "im2_max_n": 50.1,
+    "hinge_max_n": 242.1,
+    "top_n": {},
+    "volume_L": 83.607,
+    "converged": false,
+    "residual_n": 4.6101,
+    "wall_toward_head_mm": -69.08120475386953,
+    "crown_contact_n": 0.0,
+    "r28": {
+     "torso_in": 19,
+     "top_z": 702.6,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   },
+   "meat": {
+    "cg_y": 206.2,
+    "cg_z": 541.8,
+    "aft_depth": 438.4,
+    "im3_max_n": 338.2,
+    "im2_max_n": 168.3,
+    "hinge_max_n": 374.5,
+    "top_n": {},
+    "volume_L": 83.711,
+    "converged": false,
+    "residual_n": 1.5663,
+    "wall_toward_head_mm": -32.78120475386952,
+    "crown_contact_n": 0.0,
+    "mixed_cg_y": 181.40588235294115,
+    "r28": {
+     "torso_in": 19,
+     "top_z": 702.6,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   }
+  },
+  "T0": {
+   "scenario": "pack5200_v31_tab_doubler",
+   "torso_in": 19,
+   "family": "none",
+   "label": "IM3 tab B-17 + hinge doubler B-18, no top anchor",
+   "fill": {
+    "cg_y": 205.4,
+    "cg_z": 540.2,
+    "aft_depth": 438.6,
+    "im3_max_n": 402.6,
+    "im2_max_n": 32.9,
+    "hinge_max_n": 170.7,
+    "top_n": {},
+    "volume_L": 83.959,
+    "converged": false,
+    "residual_n": 15.2208,
+    "wall_toward_head_mm": -28.48120475386952,
+    "crown_contact_n": 0.0,
+    "r28": {
+     "torso_in": 19,
+     "top_z": 702.6,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   },
+   "meat": {
+    "cg_y": 192.7,
+    "cg_z": 549.2,
+    "aft_depth": 416.5,
+    "im3_max_n": 471.7,
+    "im2_max_n": 97.1,
+    "hinge_max_n": 339.6,
+    "top_n": {},
+    "volume_L": 83.776,
+    "converged": true,
+    "residual_n": 0.4687,
+    "wall_toward_head_mm": -12.281204753869524,
+    "crown_contact_n": 0.0,
+    "mixed_cg_y": 173.86176470588234,
+    "r28": {
+     "torso_in": 19,
+     "top_z": 702.6,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   }
+  },
+  "A": {
+   "scenario": "pack5200_v31_anchor_A_crownbar",
+   "torso_in": 19,
+   "family": "tie",
+   "label": "crown-bar tie x +/-70 (study A)",
+   "fill": {
+    "cg_y": 191.5,
+    "cg_z": 546.8,
+    "aft_depth": 413.8,
+    "im3_max_n": 387.4,
+    "im2_max_n": 33.1,
+    "hinge_max_n": 166.8,
+    "top_n": {
+     "CT_R": 21.0,
+     "CT_L": 29.3
+    },
+    "volume_L": 84.301,
+    "converged": false,
+    "residual_n": 11.783,
+    "wall_toward_head_mm": -0.9812047538695197,
+    "crown_contact_n": 0.0,
+    "r28": {
+     "torso_in": 19,
+     "top_z": 702.6,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   },
+   "meat": {
+    "cg_y": 186.3,
+    "cg_z": 551.7,
+    "aft_depth": 405.7,
+    "im3_max_n": 469.6,
+    "im2_max_n": 107.5,
+    "hinge_max_n": 336.2,
+    "top_n": {
+     "CT_R": 3.6,
+     "CT_L": 13.6
+    },
+    "volume_L": 83.849,
+    "converged": true,
+    "residual_n": 0.413,
+    "wall_toward_head_mm": 0.8187952461304775,
+    "crown_contact_n": 0.0,
+    "mixed_cg_y": 170.28529411764708,
+    "r28": {
+     "torso_in": 19,
+     "top_z": 702.6,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   }
+  },
+  "D": {
+   "scenario": "pack5200_v31_anchor_D_low15",
+   "torso_in": 15,
+   "family": "tie",
+   "label": "crown-bar tie at 15 in (study D)",
+   "fill": {
+    "cg_y": 201.5,
+    "cg_z": 542.1,
+    "aft_depth": 431.3,
+    "im3_max_n": 401.8,
+    "im2_max_n": 27.0,
+    "hinge_max_n": 170.7,
+    "top_n": {
+     "CT_R": 17.0,
+     "CT_L": 7.5
+    },
+    "volume_L": 84.071,
+    "converged": false,
+    "residual_n": 18.7877,
+    "wall_toward_head_mm": 8.981426040303468,
+    "crown_contact_n": 0.0,
+    "r28": {
+     "torso_in": 15,
+     "top_z": 601.0,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   },
+   "meat": {
+    "cg_y": 192.0,
+    "cg_z": 549.6,
+    "aft_depth": 415.4,
+    "im3_max_n": 467.2,
+    "im2_max_n": 95.7,
+    "hinge_max_n": 340.1,
+    "top_n": {
+     "CT_R": 0.0,
+     "CT_L": 0.0
+    },
+    "volume_L": 83.789,
+    "converged": true,
+    "residual_n": 0.4765,
+    "wall_toward_head_mm": 20.18142604030347,
+    "crown_contact_n": 2.8,
+    "mixed_cg_y": 173.47058823529412,
+    "r28": {
+     "torso_in": 15,
+     "top_z": 601.0,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   }
+  },
+  "G": {
+   "scenario": "pack5200_v31_anchor_G_stiff_forward",
+   "torso_in": 19,
+   "family": "G",
+   "label": "study G: crown tie + fixed forward guys",
+   "fill": {
+    "cg_y": 178.8,
+    "cg_z": 551.7,
+    "aft_depth": 387.7,
+    "im3_max_n": 388.0,
+    "im2_max_n": 30.9,
+    "hinge_max_n": 161.3,
+    "top_n": {
+     "CT_R": 0.0,
+     "CT_L": 0.0,
+     "TG_R": 32.5,
+     "TG_L": 31.8
+    },
+    "volume_L": 84.069,
+    "converged": false,
+    "residual_n": 13.181,
+    "wall_toward_head_mm": 6.3187952461304775,
+    "crown_contact_n": 4.0,
+    "r28": {
+     "torso_in": 19,
+     "top_z": 702.6,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   },
+   "meat": {
+    "cg_y": 173.7,
+    "cg_z": 557.0,
+    "aft_depth": 383.9,
+    "im3_max_n": 450.5,
+    "im2_max_n": 110.5,
+    "hinge_max_n": 328.8,
+    "top_n": {
+     "CT_R": 0.0,
+     "CT_L": 0.0,
+     "TG_R": 19.7,
+     "TG_L": 19.9
+    },
+    "volume_L": 83.656,
+    "converged": false,
+    "residual_n": 0.8652,
+    "wall_toward_head_mm": 11.918795246130479,
+    "crown_contact_n": 3.3,
+    "mixed_cg_y": 163.2441176470588,
+    "r28": {
+     "torso_in": 19,
+     "top_z": 702.6,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   }
+  },
+  "G15": {
+   "scenario": "pack5200_v31_att_G15",
+   "torso_in": 15,
+   "family": "G",
+   "label": "study G at 15 in",
+   "fill": {
+    "cg_y": 189.2,
+    "cg_z": 547.9,
+    "aft_depth": 407.6,
+    "im3_max_n": 378.4,
+    "im2_max_n": 36.3,
+    "hinge_max_n": 168.3,
+    "top_n": {
+     "CT_R": 0.0,
+     "CT_L": 0.0,
+     "TG_R": 21.6,
+     "TG_L": 22.7
+    },
+    "volume_L": 83.922,
+    "converged": false,
+    "residual_n": 14.3071,
+    "wall_toward_head_mm": 17.28142604030347,
+    "crown_contact_n": 26.0,
+    "r28": {
+     "torso_in": 15,
+     "top_z": 601.0,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   },
+   "meat": {
+    "cg_y": 182.7,
+    "cg_z": 553.9,
+    "aft_depth": 397.4,
+    "im3_max_n": 440.2,
+    "im2_max_n": 105.0,
+    "hinge_max_n": 337.7,
+    "top_n": {
+     "CT_R": 0.0,
+     "CT_L": 0.0,
+     "TG_R": 11.8,
+     "TG_L": 12.7
+    },
+    "volume_L": 83.504,
+    "converged": true,
+    "residual_n": 0.4777,
+    "wall_toward_head_mm": 27.18142604030347,
+    "crown_contact_n": 40.3,
+    "mixed_cg_y": 168.27352941176468,
+    "r28": {
+     "torso_in": 15,
+     "top_z": 601.0,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.1
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 32.0,
+       "gap_30_mm": 3.4
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 32.0,
+       "gap_30_mm": 3.9
+      }
+     ],
+     "worst_contact_deg": 32.0,
+     "worst_gap_30_mm": 3.4,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   }
+  },
+  "G23": {
+   "scenario": "pack5200_v31_att_G23",
+   "torso_in": 23,
+   "family": "G",
+   "label": "study G at 23 in",
+   "fill": {
+    "cg_y": 167.4,
+    "cg_z": 557.2,
+    "aft_depth": 370.7,
+    "im3_max_n": 370.4,
+    "im2_max_n": 48.4,
+    "hinge_max_n": 154.3,
+    "top_n": {
+     "CT_R": 12.0,
+     "CT_L": 17.5,
+     "TG_R": 31.8,
+     "TG_L": 33.3
+    },
+    "volume_L": 84.269,
+    "converged": false,
+    "residual_n": 9.1663,
+    "wall_toward_head_mm": 9.658083523452277,
+    "crown_contact_n": 7.2,
+    "r28": {
+     "torso_in": 23,
+     "top_z": 804.2,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   },
+   "meat": {
+    "cg_y": 164.2,
+    "cg_z": 560.6,
+    "aft_depth": 368.2,
+    "im3_max_n": 432.1,
+    "im2_max_n": 120.2,
+    "hinge_max_n": 320.7,
+    "top_n": {
+     "CT_R": 2.9,
+     "CT_L": 14.2,
+     "TG_R": 20.0,
+     "TG_L": 22.3
+    },
+    "volume_L": 83.578,
+    "converged": true,
+    "residual_n": 0.4158,
+    "wall_toward_head_mm": 9.958083523452277,
+    "crown_contact_n": 5.6,
+    "mixed_cg_y": 157.93529411764703,
+    "r28": {
+     "torso_in": 23,
+     "top_z": 804.2,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   }
+  },
+  "L19": {
+   "scenario": "pack5200_v31_att_L19",
+   "torso_in": 19,
+   "family": "lifter",
+   "label": "load lifters counted as the top anchor",
+   "fill": {
+    "cg_y": 180.5,
+    "cg_z": 550.9,
+    "aft_depth": 397.0,
+    "im3_max_n": 401.8,
+    "im2_max_n": 28.2,
+    "hinge_max_n": 163.4,
+    "top_n": {
+     "LF_R": 40.0,
+     "LF_L": 32.0
+    },
+    "volume_L": 84.338,
+    "converged": false,
+    "residual_n": 10.1025,
+    "wall_toward_head_mm": 17.218795246130476,
+    "crown_contact_n": 14.8,
+    "r28": {
+     "torso_in": 19,
+     "top_z": 702.6,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   },
+   "meat": {
+    "cg_y": 174.8,
+    "cg_z": 556.5,
+    "aft_depth": 391.5,
+    "im3_max_n": 458.4,
+    "im2_max_n": 109.8,
+    "hinge_max_n": 329.2,
+    "top_n": {
+     "LF_R": 26.5,
+     "LF_L": 19.8
+    },
+    "volume_L": 83.898,
+    "converged": true,
+    "residual_n": 0.4711,
+    "wall_toward_head_mm": 20.118795246130478,
+    "crown_contact_n": 12.1,
+    "mixed_cg_y": 163.85882352941178,
+    "r28": {
+     "torso_in": 19,
+     "top_z": 702.6,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   }
+  },
+  "P15": {
+   "scenario": "pack5200_v31_att_P15",
+   "torso_in": 15,
+   "family": "hood",
+   "label": "crown hood only",
+   "fill": {
+    "cg_y": 201.1,
+    "cg_z": 543.0,
+    "aft_depth": 431.1,
+    "im3_max_n": 390.0,
+    "im2_max_n": 31.6,
+    "hinge_max_n": 170.8,
+    "top_n": {
+     "pocket": 0.0
+    },
+    "volume_L": 83.807,
+    "converged": false,
+    "residual_n": 16.6373,
+    "wall_toward_head_mm": 6.0814260403034694,
+    "crown_contact_n": 0.0,
+    "r28": {
+     "torso_in": 15,
+     "top_z": 601.0,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   },
+   "meat": {
+    "cg_y": 189.5,
+    "cg_z": 551.5,
+    "aft_depth": 410.2,
+    "im3_max_n": 461.5,
+    "im2_max_n": 105.2,
+    "hinge_max_n": 339.7,
+    "top_n": {
+     "pocket": 0.0
+    },
+    "volume_L": 83.528,
+    "converged": true,
+    "residual_n": 0.4847,
+    "wall_toward_head_mm": 20.58142604030347,
+    "crown_contact_n": 1.1,
+    "mixed_cg_y": 172.0735294117647,
+    "r28": {
+     "torso_in": 15,
+     "top_z": 601.0,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   }
+  },
+  "P19": {
+   "scenario": "pack5200_v31_att_P19",
+   "torso_in": 19,
+   "family": "hood",
+   "label": "crown hood only",
+   "fill": {
+    "cg_y": 186.0,
+    "cg_z": 549.8,
+    "aft_depth": 405.2,
+    "im3_max_n": 389.2,
+    "im2_max_n": 26.2,
+    "hinge_max_n": 162.0,
+    "top_n": {
+     "pocket": 52.5
+    },
+    "volume_L": 84.484,
+    "converged": false,
+    "residual_n": 12.3927,
+    "wall_toward_head_mm": 7.018795246130477,
+    "crown_contact_n": 1.8,
+    "r28": {
+     "torso_in": 19,
+     "top_z": 702.6,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   },
+   "meat": {
+    "cg_y": 181.5,
+    "cg_z": 554.3,
+    "aft_depth": 399.7,
+    "im3_max_n": 455.6,
+    "im2_max_n": 106.7,
+    "hinge_max_n": 333.6,
+    "top_n": {
+     "pocket": 23.8
+    },
+    "volume_L": 83.973,
+    "converged": true,
+    "residual_n": 0.3658,
+    "wall_toward_head_mm": 8.118795246130478,
+    "crown_contact_n": 0.0,
+    "mixed_cg_y": 167.60294117647058,
+    "r28": {
+     "torso_in": 19,
+     "top_z": 702.6,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   }
+  },
+  "P23": {
+   "scenario": "pack5200_v31_att_P23",
+   "torso_in": 23,
+   "family": "hood",
+   "label": "crown hood only",
+   "fill": {
+    "cg_y": 179.7,
+    "cg_z": 549.6,
+    "aft_depth": 398.6,
+    "im3_max_n": 394.6,
+    "im2_max_n": 28.4,
+    "hinge_max_n": 161.5,
+    "top_n": {
+     "pocket": 50.5
+    },
+    "volume_L": 84.075,
+    "converged": false,
+    "residual_n": 13.6448,
+    "wall_toward_head_mm": -1.741916476547722,
+    "crown_contact_n": 4.4,
+    "r28": {
+     "torso_in": 23,
+     "top_z": 804.2,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   },
+   "meat": {
+    "cg_y": 175.2,
+    "cg_z": 554.2,
+    "aft_depth": 391.9,
+    "im3_max_n": 457.2,
+    "im2_max_n": 112.4,
+    "hinge_max_n": 328.1,
+    "top_n": {
+     "pocket": 28.7
+    },
+    "volume_L": 83.585,
+    "converged": true,
+    "residual_n": 0.3824,
+    "wall_toward_head_mm": -0.4419164765477248,
+    "crown_contact_n": 2.9,
+    "mixed_cg_y": 164.08235294117645,
+    "r28": {
+     "torso_in": 23,
+     "top_z": 804.2,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   }
+  },
+  "PG15": {
+   "scenario": "pack5200_v31_att_PG15",
+   "torso_in": 15,
+   "family": "hood+guys",
+   "label": "crown hood + top side guys",
+   "fill": {
+    "cg_y": 189.2,
+    "cg_z": 547.9,
+    "aft_depth": 407.6,
+    "im3_max_n": 378.5,
+    "im2_max_n": 36.6,
+    "hinge_max_n": 168.3,
+    "top_n": {
+     "TG_R": 21.7,
+     "TG_L": 22.7,
+     "pocket": 0.0
+    },
+    "volume_L": 83.926,
+    "converged": false,
+    "residual_n": 14.5109,
+    "wall_toward_head_mm": 17.28142604030347,
+    "crown_contact_n": 26.0,
+    "r28": {
+     "torso_in": 15,
+     "top_z": 601.0,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   },
+   "meat": {
+    "cg_y": 180.6,
+    "cg_z": 554.7,
+    "aft_depth": 394.0,
+    "im3_max_n": 439.2,
+    "im2_max_n": 106.9,
+    "hinge_max_n": 336.5,
+    "top_n": {
+     "TG_R": 9.9,
+     "TG_L": 11.1,
+     "pocket": 0.0
+    },
+    "volume_L": 83.615,
+    "converged": true,
+    "residual_n": 0.488,
+    "wall_toward_head_mm": 27.28142604030347,
+    "crown_contact_n": 22.9,
+    "mixed_cg_y": 167.1,
+    "r28": {
+     "torso_in": 15,
+     "top_z": 601.0,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 33.0,
+       "gap_30_mm": 5.2
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 31.0,
+       "gap_30_mm": 0.6
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 32.0,
+       "gap_30_mm": 3.8
+      }
+     ],
+     "worst_contact_deg": 31.0,
+     "worst_gap_30_mm": 0.6,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   }
+  },
+  "PG19": {
+   "scenario": "pack5200_v31_att_PG19",
+   "torso_in": 19,
+   "family": "hood+guys",
+   "label": "crown hood + top side guys",
+   "fill": {
+    "cg_y": 177.0,
+    "cg_z": 552.6,
+    "aft_depth": 386.5,
+    "im3_max_n": 385.7,
+    "im2_max_n": 34.6,
+    "hinge_max_n": 160.9,
+    "top_n": {
+     "TG_R": 26.8,
+     "TG_L": 31.7,
+     "pocket": 8.7
+    },
+    "volume_L": 84.13,
+    "converged": false,
+    "residual_n": 4.2329,
+    "wall_toward_head_mm": 10.918795246130479,
+    "crown_contact_n": 9.0,
+    "r28": {
+     "torso_in": 19,
+     "top_z": 702.6,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   },
+   "meat": {
+    "cg_y": 173.1,
+    "cg_z": 557.3,
+    "aft_depth": 383.5,
+    "im3_max_n": 448.0,
+    "im2_max_n": 110.6,
+    "hinge_max_n": 329.2,
+    "top_n": {
+     "TG_R": 18.5,
+     "TG_L": 19.5,
+     "pocket": 2.9
+    },
+    "volume_L": 83.7,
+    "converged": true,
+    "residual_n": 0.4346,
+    "wall_toward_head_mm": 13.418795246130479,
+    "crown_contact_n": 4.3,
+    "mixed_cg_y": 162.90882352941176,
+    "r28": {
+     "torso_in": 19,
+     "top_z": 702.6,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   }
+  },
+  "PG23": {
+   "scenario": "pack5200_v31_att_PG23",
+   "torso_in": 23,
+   "family": "hood+guys",
+   "label": "crown hood + top side guys",
+   "fill": {
+    "cg_y": 168.0,
+    "cg_z": 556.3,
+    "aft_depth": 371.0,
+    "im3_max_n": 376.4,
+    "im2_max_n": 33.6,
+    "hinge_max_n": 153.9,
+    "top_n": {
+     "TG_R": 33.1,
+     "TG_L": 34.6,
+     "pocket": 8.4
+    },
+    "volume_L": 84.123,
+    "converged": false,
+    "residual_n": 6.0097,
+    "wall_toward_head_mm": 6.3580835234522795,
+    "crown_contact_n": 6.9,
+    "r28": {
+     "torso_in": 23,
+     "top_z": 804.2,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   },
+   "meat": {
+    "cg_y": 165.0,
+    "cg_z": 559.8,
+    "aft_depth": 368.7,
+    "im3_max_n": 434.4,
+    "im2_max_n": 121.4,
+    "hinge_max_n": 321.9,
+    "top_n": {
+     "TG_R": 21.2,
+     "TG_L": 23.0,
+     "pocket": 3.2
+    },
+    "volume_L": 83.489,
+    "converged": true,
+    "residual_n": 0.4614,
+    "wall_toward_head_mm": 7.058083523452275,
+    "crown_contact_n": 5.2,
+    "mixed_cg_y": 158.38235294117646,
+    "r28": {
+     "torso_in": 23,
+     "top_z": 804.2,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   }
+  },
+  "PGc15": {
+   "scenario": "pack5200_v31_att_PGc15",
+   "torso_in": 15,
+   "family": "hood+guys cinched",
+   "label": "crown hood + guys cinched 60 N after loading",
+   "fill": {
+    "cg_y": 181.1,
+    "cg_z": 550.4,
+    "aft_depth": 392.5,
+    "im3_max_n": 367.7,
+    "im2_max_n": 36.1,
+    "hinge_max_n": 164.3,
+    "top_n": {
+     "TG_R": 31.2,
+     "TG_L": 32.4,
+     "pocket": 0.0
+    },
+    "volume_L": 83.776,
+    "converged": false,
+    "residual_n": 15.0515,
+    "wall_toward_head_mm": 27.38142604030347,
+    "crown_contact_n": 27.4,
+    "r28": {
+     "torso_in": 15,
+     "top_z": 601.0,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 33.0,
+       "gap_30_mm": 5.0
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 31.0,
+       "gap_30_mm": 0.5
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 32.0,
+       "gap_30_mm": 3.7
+      }
+     ],
+     "worst_contact_deg": 31.0,
+     "worst_gap_30_mm": 0.5,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   },
+   "meat": {
+    "cg_y": 172.0,
+    "cg_z": 556.4,
+    "aft_depth": 378.3,
+    "im3_max_n": 443.9,
+    "im2_max_n": 123.5,
+    "hinge_max_n": 333.0,
+    "top_n": {
+     "TG_R": 22.8,
+     "TG_L": 24.2,
+     "pocket": 0.0
+    },
+    "volume_L": 83.229,
+    "converged": true,
+    "residual_n": 0.4709,
+    "wall_toward_head_mm": 34.68142604030347,
+    "crown_contact_n": 9.2,
+    "mixed_cg_y": 162.2941176470588,
+    "r28": {
+     "torso_in": 15,
+     "top_z": 601.0,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 30.0,
+       "gap_30_mm": 0.0
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 28.0,
+       "gap_30_mm": 0.0
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 29.0,
+       "gap_30_mm": 0.0
+      }
+     ],
+     "worst_contact_deg": 28.0,
+     "worst_gap_30_mm": 0.0,
+     "pass": false,
+     "basis": "simulated wall + 3 mm"
+    }
+   }
+  },
+  "PGc19": {
+   "scenario": "pack5200_v31_att_PGc19",
+   "torso_in": 19,
+   "family": "hood+guys cinched",
+   "label": "crown hood + guys cinched 60 N after loading",
+   "fill": {
+    "cg_y": 172.9,
+    "cg_z": 553.6,
+    "aft_depth": 378.8,
+    "im3_max_n": 386.1,
+    "im2_max_n": 32.4,
+    "hinge_max_n": 159.2,
+    "top_n": {
+     "TG_R": 37.5,
+     "TG_L": 38.4,
+     "pocket": 2.4
+    },
+    "volume_L": 83.879,
+    "converged": false,
+    "residual_n": 6.9517,
+    "wall_toward_head_mm": 13.918795246130479,
+    "crown_contact_n": 11.2,
+    "r28": {
+     "torso_in": 19,
+     "top_z": 702.6,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   },
+   "meat": {
+    "cg_y": 165.6,
+    "cg_z": 559.8,
+    "aft_depth": 371.9,
+    "im3_max_n": 438.8,
+    "im2_max_n": 122.9,
+    "hinge_max_n": 325.9,
+    "top_n": {
+     "TG_R": 26.2,
+     "TG_L": 27.6,
+     "pocket": 0.0
+    },
+    "volume_L": 83.374,
+    "converged": true,
+    "residual_n": 0.3675,
+    "wall_toward_head_mm": 21.118795246130478,
+    "crown_contact_n": 9.5,
+    "mixed_cg_y": 158.71764705882353,
+    "r28": {
+     "torso_in": 19,
+     "top_z": 702.6,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
+   }
+  }
+ },
+ "rank": {
+  "families": [
+   {
+    "family": "tie",
+    "runs": [
+     "A",
+     "D"
+    ],
+    "torsos": [
+     15,
+     19
+    ],
+    "worst_fill_cg": 201.5,
+    "worst_meat_cg": 192.0,
+    "worst_r28_deg": 33.0
+   },
+   {
+    "family": "G",
+    "runs": [
+     "G",
+     "G15",
+     "G23"
+    ],
+    "torsos": [
+     15,
+     19,
+     23
+    ],
+    "worst_fill_cg": 189.2,
+    "worst_meat_cg": 182.7,
+    "worst_r28_deg": 32.0
+   },
+   {
+    "family": "lifter",
+    "runs": [
+     "L19"
+    ],
+    "torsos": [
+     19
+    ],
+    "worst_fill_cg": 180.5,
+    "worst_meat_cg": 174.8,
+    "worst_r28_deg": 33.0
+   },
+   {
+    "family": "hood",
+    "runs": [
+     "P15",
+     "P19",
+     "P23"
+    ],
+    "torsos": [
+     15,
+     19,
+     23
+    ],
+    "worst_fill_cg": 201.1,
+    "worst_meat_cg": 189.5,
+    "worst_r28_deg": 33.0
+   },
+   {
+    "family": "hood+guys",
+    "runs": [
+     "PG15",
+     "PG19",
+     "PG23"
+    ],
+    "torsos": [
+     15,
+     19,
+     23
+    ],
+    "worst_fill_cg": 189.2,
+    "worst_meat_cg": 180.6,
+    "worst_r28_deg": 31.0
+   },
+   {
+    "family": "hood+guys cinched",
+    "runs": [
+     "PGc15",
+     "PGc19"
+    ],
+    "torsos": [
+     15,
+     19
+    ],
+    "worst_fill_cg": 181.1,
+    "worst_meat_cg": 172.0,
+    "worst_r28_deg": 28.0
+   }
+  ],
+  "chosen": "hood+guys"
+ },
+ "r28_reference": {
+  "published": {
+   "15": {
+    "torso_in": 15,
+    "top_z": 601.0,
+    "rows": [
+     {
+      "head": "female_p05",
+      "contact_deg": 36.0,
+      "gap_30_mm": 10.5
+     },
+     {
+      "head": "male_p50",
+      "contact_deg": 34.0,
+      "gap_30_mm": 6.8
+     },
+     {
+      "head": "male_p95",
+      "contact_deg": 36.0,
+      "gap_30_mm": 11.4
+     }
+    ],
+    "worst_contact_deg": 34.0,
+    "worst_gap_30_mm": 6.8,
+    "pass": true,
+    "basis": "design bulge 15 mm"
+   },
+   "19": {
+    "torso_in": 19,
+    "top_z": 702.6,
+    "rows": [
+     {
+      "head": "female_p05",
+      "contact_deg": 36.0,
+      "gap_30_mm": 10.5
+     },
+     {
+      "head": "male_p50",
+      "contact_deg": 34.0,
+      "gap_30_mm": 6.8
+     },
+     {
+      "head": "male_p95",
+      "contact_deg": 36.0,
+      "gap_30_mm": 11.4
+     }
+    ],
+    "worst_contact_deg": 34.0,
+    "worst_gap_30_mm": 6.8,
+    "pass": true,
+    "basis": "design bulge 15 mm"
+   },
+   "23": {
+    "torso_in": 23,
+    "top_z": 804.2,
+    "rows": [
+     {
+      "head": "female_p05",
+      "contact_deg": 36.0,
+      "gap_30_mm": 10.5
+     },
+     {
+      "head": "male_p50",
+      "contact_deg": 34.0,
+      "gap_30_mm": 6.8
+     },
+     {
+      "head": "male_p95",
+      "contact_deg": 36.0,
+      "gap_30_mm": 11.4
+     }
+    ],
+    "worst_contact_deg": 34.0,
+    "worst_gap_30_mm": 6.8,
+    "pass": true,
+    "basis": "design bulge 15 mm"
+   }
+  },
+  "with_hood": {
+   "15": {
+    "torso_in": 15,
+    "top_z": 601.0,
+    "rows": [
+     {
+      "head": "female_p05",
+      "contact_deg": 35.0,
+      "gap_30_mm": 8.9
+     },
+     {
+      "head": "male_p50",
+      "contact_deg": 33.0,
+      "gap_30_mm": 4.9
+     },
+     {
+      "head": "male_p95",
+      "contact_deg": 35.0,
+      "gap_30_mm": 9.2
+     }
+    ],
+    "worst_contact_deg": 33.0,
+    "worst_gap_30_mm": 4.9,
+    "pass": true,
+    "basis": "design bulge 15 mm"
+   },
+   "19": {
+    "torso_in": 19,
+    "top_z": 702.6,
+    "rows": [
+     {
+      "head": "female_p05",
+      "contact_deg": 35.0,
+      "gap_30_mm": 8.9
+     },
+     {
+      "head": "male_p50",
+      "contact_deg": 33.0,
+      "gap_30_mm": 4.9
+     },
+     {
+      "head": "male_p95",
+      "contact_deg": 35.0,
+      "gap_30_mm": 9.2
+     }
+    ],
+    "worst_contact_deg": 33.0,
+    "worst_gap_30_mm": 4.9,
+    "pass": true,
+    "basis": "design bulge 15 mm"
+   },
+   "23": {
+    "torso_in": 23,
+    "top_z": 804.2,
+    "rows": [
+     {
+      "head": "female_p05",
+      "contact_deg": 35.0,
+      "gap_30_mm": 8.9
+     },
+     {
+      "head": "male_p50",
+      "contact_deg": 33.0,
+      "gap_30_mm": 4.9
+     },
+     {
+      "head": "male_p95",
+      "contact_deg": 35.0,
+      "gap_30_mm": 9.2
+     }
+    ],
+    "worst_contact_deg": 33.0,
+    "worst_gap_30_mm": 4.9,
+    "pass": true,
+    "basis": "design bulge 15 mm"
+   }
+  }
+ },
+ "factored_n": {
+  "hinge": 1018.8000000000001,
+  "im2": 403.3357385451958,
+  "im3": 1415.1,
+  "im3_chosen": 1344.0,
+  "hood_capture_per_side": 78.75,
+  "hood_total": 365.1,
+  "guy": 103.80000000000001,
+  "basis": {
+   "factor": 3.0,
+   "chosen_runs": [
+    "PG15",
+    "PG19",
+    "PG23"
+   ],
+   "hood_1g_n": 52.5,
+   "guy_1g_n": 34.6
+  }
+ },
+ "parts": [
+  {
+   "id": "HE",
+   "name": "hinge eye (sewn eye on the tethered z 60 pull-pin)",
+   "qty": 2,
+   "material": "poly_webbing_38mm",
+   "cut": "38 mm x 150 mm",
+   "fold": "end folded back 50 mm into a 25 mm eye for the 5 mm pin; first 30 mm tri-folded lengthwise to an 18 mm neck (fairlead throat) and held with a 304 bartack across the neck; tail runs down into the B-01|B-05 seam",
+   "stitch": "box-X 38 x 38 through eye plies + B-18 + B-01, 301",
+   "spi": 7,
+   "thread": "bonded_nylon_tex135",
+   "needle": "Nm 140 / 22",
+   "backing": "B-18 doubler (inside B-01), lower edge caught in the B-01|B-05 seam",
+   "placement": "x +/-115 at the hinge-eye notch, eye top at z 60",
+   "load_n": 1019.0,
+   "load_basis": "max(sim hinge eye x 3.0, beam model)",
+   "caps_n": {
+    "box-X": 5256.0,
+    "webbing on pin": 10008.0,
+    "B-18 seam (80 mm, B-05 strip governs)": 2355.0
+   },
+   "governs": "B-18 seam (80 mm, B-05 strip governs)",
+   "sf": 2.31,
+   "proof_n": 1530.0
+  },
+  {
+   "id": "B-18",
+   "name": "hinge-eye doubler",
+   "qty": 2,
+   "material": "hypalon_coated_nylon",
+   "cut": "90 x 45, laser-cut, R6 corners",
+   "fold": "flat",
+   "stitch": "double-row perimeter 3 / 9 mm from the edge, 301; lower edge in the B-01|B-05 seam",
+   "spi": 8,
+   "thread": "bonded_nylon_tex90",
+   "needle": "Nm 110 / 18",
+   "backing": "-",
+   "placement": "INSIDE B-01, centred on the hinge eye",
+   "load_n": 1019.0,
+   "load_basis": "as HE",
+   "caps_n": {
+    "perimeter seam (80 mm loaded)": 3277.0
+   },
+   "governs": "perimeter seam (80 mm loaded)",
+   "sf": 3.22,
+   "proof_n": 1530.0
+  },
+  {
+   "id": "T2",
+   "name": "IM2 bag-hook tongue",
+   "qty": 2,
+   "material": "poly_webbing_38mm",
+   "cut": "38 mm x 160 mm",
+   "fold": "end folded 45 mm round the hook bed into a 20 mm loop, box-X; other end box-X to B-01",
+   "stitch": "box-X 38 x 38 both ends, 301",
+   "spi": 7,
+   "thread": "bonded_nylon_tex135",
+   "needle": "Nm 140 / 22",
+   "backing": "B-23 backing 60 x 60 Hypalon inside B-01 (new)",
+   "placement": "B-01 outside, box at x +/-115, z 260 (existing 'im2 bag-hook strap box-X' drill marks); loop at the IM2 eye z 330",
+   "load_n": 403.0,
+   "load_basis": "max(sim IM2 x 3.0, beam model)",
+   "caps_n": {
+    "box-X": 5256.0,
+    "webbing on hook bed": 10008.0,
+    "B-23 tear-out (2 x 60 mm)": 4915.0,
+    "hook (rated)": 2200.0
+   },
+   "governs": "hook (rated)",
+   "sf": 5.45,
+   "proof_n": 610.0
+  },
+  {
+   "id": "B-23",
+   "name": "IM2 tongue backing (new)",
+   "qty": 2,
+   "material": "hypalon_coated_nylon",
+   "cut": "60 x 60, laser-cut, R6",
+   "fold": "flat",
+   "stitch": "single-row perimeter 3 mm, 301 (the tongue box-X goes through it)",
+   "spi": 8,
+   "thread": "bonded_nylon_tex90",
+   "needle": "Nm 110 / 18",
+   "backing": "-",
+   "placement": "INSIDE B-01, centred on the IM2 tongue box at x +/-115, z 260",
+   "load_n": 403.0,
+   "load_basis": "as T2",
+   "caps_n": {
+    "tear-out (2 x 60 mm)": 3628.0
+   },
+   "governs": "tear-out (2 x 60 mm)",
+   "sf": 9.0,
+   "proof_n": 610.0
+  },
+  {
+   "id": "T3",
+   "name": "IM3 bag-hook tongue",
+   "qty": 2,
+   "material": "poly_webbing_38mm",
+   "cut": "38 mm x 160 mm",
+   "fold": "as T2",
+   "stitch": "box-X 38 x 38 both ends, 301",
+   "spi": 7,
+   "thread": "bonded_nylon_tex135",
+   "needle": "Nm 140 / 22",
+   "backing": "B-17 tab (outside B-01)",
+   "placement": "box at x +/-115, z 450 on B-17; loop at the IM3 eye z 520",
+   "load_n": 1415.0,
+   "load_basis": "max(sim IM3 x 3.0 incl. hood-off T0 472 N, beam model)",
+   "caps_n": {
+    "box-X": 5256.0,
+    "webbing on hook bed": 10008.0,
+    "hook (rated)": 2200.0,
+    "B-17 seam (80 mm loaded)": 3277.0
+   },
+   "governs": "hook (rated)",
+   "sf": 1.55,
+   "proof_n": 2120.0
+  },
+  {
+   "id": "B-17",
+   "name": "IM3 bag-hook tab",
+   "qty": 2,
+   "material": "hypalon_coated_nylon",
+   "cut": "90 x 110, laser-cut, R6",
+   "fold": "flat",
+   "stitch": "double-row perimeter 3 / 9 mm, 301; 80 mm stitch line across the load",
+   "spi": 8,
+   "thread": "bonded_nylon_tex90",
+   "needle": "Nm 110 / 18",
+   "backing": "-",
+   "placement": "OUTSIDE B-01 under the IM3 swell, centred x +/-115, z 450",
+   "load_n": 1415.0,
+   "load_basis": "as T3",
+   "caps_n": {
+    "perimeter seam (80 mm loaded)": 3277.0
+   },
+   "governs": "perimeter seam (80 mm loaded)",
+   "sf": 2.32,
+   "proof_n": 2120.0
+  },
+  {
+   "id": "B-19",
+   "name": "crown hood shell (new)",
+   "qty": 1,
+   "material": "hypalon_coated_nylon",
+   "cut": "190 x 130 blank + 2 ears 30 x 40, laser-cut",
+   "fold": "fold 1 (back/crown) and fold 2 (crown/lip) square on a 19 mm dowel; lip hem 14 mm turned in over the HDPE stiffener B-19s; lining B-19L glued inside the crown",
+   "stitch": "lip hem: single row 301 at 3 mm; tongues box-X 25 x 25; ears: guy box-X 25 x 25",
+   "spi": 7,
+   "thread": "bonded_nylon_tex135",
+   "needle": "Nm 140 / 22",
+   "backing": "-",
+   "placement": "rides on the crown top bar between the crown legs (x +/-95)",
+   "load_n": 365.0,
+   "load_basis": "sim hood capture + 2 guys, x 3.0",
+   "caps_n": {
+    "lip on the bar (Hypalon strip x 190)": 7782.0,
+    "2 tongue box-X 25": 6916.0
+   },
+   "governs": "2 tongue box-X 25",
+   "sf": 18.94,
+   "proof_n": 550.0
+  },
+  {
+   "id": "HT",
+   "name": "hood tongues (woven into the ladder, POM toggle end)",
+   "qty": 2,
+   "material": "poly_webbing_25mm",
+   "cut": "25 mm x 120 mm",
+   "fold": "one end box-X to the hood back ply at x +/-60; other end folded over a POM toggle 30 x 8 x 5 and box-X'd",
+   "stitch": "box-X 25 x 25 both ends, 301",
+   "spi": 7,
+   "thread": "bonded_nylon_tex135",
+   "needle": "Nm 140 / 22",
+   "backing": "-",
+   "placement": "woven in at the rung for the torso setting (rung k = crown setting k)",
+   "load_n": 79.0,
+   "load_basis": "sim hood capture per side x 3.0",
+   "caps_n": {
+    "box-X 25": 3458.0,
+    "POM toggle (ASSUMPTION)": 670.0,
+    "webbing": 6672.0
+   },
+   "governs": "POM toggle (ASSUMPTION)",
+   "sf": 8.51,
+   "proof_n": 120.0
+  },
+  {
+   "id": "B-20",
+   "name": "hood ladder strip (new)",
+   "qty": 2,
+   "material": "hypalon_coated_nylon",
+   "cut": "40 x 250, 17 slots 27 x 5 at 12.7 mm pitch, laser-cut",
+   "fold": "flat",
+   "stitch": "double-row both long edges 2 / 5 mm (clear of the slots) + bartack both ends, 301",
+   "spi": 8,
+   "thread": "bonded_nylon_tex90",
+   "needle": "Nm 110 / 18",
+   "backing": "-",
+   "placement": "OUTSIDE B-01b/B-01u, centred x +/-60, z 545-795 (sewn after the B-01 tiers are joined; follows the setback)",
+   "load_n": 79.0,
+   "load_basis": "as HT",
+   "caps_n": {
+    "rung bar (7.7 mm, 30 deg sag)": 315.0
+   },
+   "governs": "rung bar (7.7 mm, 30 deg sag)",
+   "sf": 4.0,
+   "proof_n": 120.0
+  },
+  {
+   "id": "TG",
+   "name": "top side guy (fixed length, set once)",
+   "qty": 2,
+   "material": "poly_webbing_25mm",
+   "cut": "25 mm x 500 mm",
+   "fold": "hood end box-X on the ear; bag end through a 25 mm ladder lock + tri-glide keeper on B-22, tail 100 mm in an elastic keeper",
+   "stitch": "box-X 25 x 25 (hood end), 301",
+   "spi": 7,
+   "thread": "bonded_nylon_tex135",
+   "needle": "Nm 140 / 22",
+   "backing": "B-22 corner tab",
+   "placement": "hood ear x +/-95 -> B-02d at x +/-149, z 752 (outer face, upper corner); free length about 314 mm",
+   "load_n": 104.0,
+   "load_basis": "sim guy x 3.0",
+   "caps_n": {
+    "box-X 25": 3458.0,
+    "ladder lock slip": 300.0,
+    "webbing": 6672.0
+   },
+   "governs": "ladder lock slip",
+   "sf": 2.89,
+   "proof_n": 160.0
+  },
+  {
+   "id": "B-22",
+   "name": "guy corner tab (new)",
+   "qty": 2,
+   "material": "hypalon_coated_nylon",
+   "cut": "50 x 60, laser-cut, R6",
+   "fold": "flat",
+   "stitch": "double-row perimeter; ladder-lock tab (25 mm x 70 mm webbing) box-X 25 x 25 through it",
+   "spi": 8,
+   "thread": "bonded_nylon_tex90",
+   "needle": "Nm 110 / 18",
+   "backing": "-",
+   "placement": "OUTSIDE B-02d at x +/-149, z 752",
+   "load_n": 104.0,
+   "load_basis": "as TG",
+   "caps_n": {
+    "perimeter seam (50 mm loaded)": 1024.0,
+    "box-X 25": 3458.0
+   },
+   "governs": "perimeter seam (50 mm loaded)",
+   "sf": 9.87,
+   "proof_n": 160.0
+  }
+ ],
+ "proof_tests": [
+  {
+   "id": "PT-1",
+   "what": "38 mm bag hook (all four bag hooks, one part)",
+   "rig": "hook on a 5 mm pin, 38 mm webbing loop on the bed",
+   "load_n": 2120,
+   "covers": "C5 IM3 factored 1415 N (hood-off, T0) x 1.5",
+   "accept": "5 of 5 hold, gate closes after",
+   "also": "every lot of 25: one hook to 1415 N"
+  },
+  {
+   "id": "PT-2",
+   "what": "T3 tongue on B-17 on a B-01 swatch",
+   "rig": "swatch clamped 120 mm wide, pull on the tongue loop",
+   "load_n": 2120,
+   "covers": "IM3 sewn path (box-X, tab seam, laminate)",
+   "accept": "5 of 5 hold, no stitch break, no laminate tear",
+   "also": "first article only"
+  },
+  {
+   "id": "PT-3",
+   "what": "HE eye on B-18 + B-01 + B-05 seam swatch",
+   "rig": "5 mm pin through the eye",
+   "load_n": 1530,
+   "covers": "hinge factored 1019 N",
+   "accept": "5 of 5 hold",
+   "also": "first article only"
+  },
+  {
+   "id": "PT-4",
+   "what": "crown hood on an 18 mm tube",
+   "rig": "pull B-01 swatch aft through the ladder, guys pulled aft-outward",
+   "load_n": 550,
+   "covers": "hood capture + both guys x 3.0",
+   "accept": "hood stays seated, no toggle pull-through",
+   "also": "repeat at -10 C (HDPE lip)"
+  },
+  {
+   "id": "PT-5",
+   "what": "guy ladder lock with the tri-glide keeper",
+   "rig": "25 mm webbing, 10 cycles 0-load",
+   "load_n": 160,
+   "covers": "guy x 3.0",
+   "accept": "slip < 5 mm over 10 cycles",
+   "also": "-"
+  }
+ ],
+ "mass": {
+  "parts_g": {
+   "crown hood B-19 (Hypalon blank + ears + hem)": 26.7,
+   "hood lip stiffener B-19s (HDPE 1.5)": 5.7,
+   "hood lining B-19L (XLPE 3)": 0.9,
+   "hood ladder strips B-20 x2": 20.0,
+   "hood tongues x2 + POM toggles": 10.3,
+   "hood grab tab (25 mm x 90)": 1.6,
+   "top side guys x2 (25 mm webbing)": 18.0,
+   "guy ladder locks + tri-glides + ladder-lock tabs": 16.5,
+   "guy corner tabs B-22 x2": 5.9,
+   "guy tail elastic keepers x2": 1.2,
+   "IM2 tongue backings B-23 x2": 7.1,
+   "bag hooks 1500 N -> 2200 N rated (4 x +5 g)": 20.0,
+   "thread (box-X + perimeters)": 2.0
+  },
+  "delta_g": 136.0,
+  "basis": "hypalon_coated_nylon 1000 gsm, hdpe_sheet, xlpe_foam, poly_webbing_25mm, ladder_lock_25mm records; toggle, tri-glide, hook masses ASSUMPTION; elastic keeper 0.6 g ASSUMPTION"
+ },
+ "pack_before_g": 3071.0,
+ "pack_after_g": 3207.0,
+ "cost_usd": 16.1,
+ "times_s": {
+  "bag_on": 59,
+  "bag_off": 52,
+  "between": 70,
+  "bag_off_haul": 108,
+  "repair": 705
+ },
+ "drawings": {
+  "pdf": "designs/pack_5200/cut/attachment/attachment_parts.pdf",
+  "dxf": "designs/pack_5200/cut/attachment/attachment_parts.dxf",
+  "pages": 13,
+  "pieces": [
+   "B-17",
+   "B-18",
+   "B-19",
+   "B-19s",
+   "B-19L",
+   "B-20",
+   "B-22",
+   "B-23",
+   "HE",
+   "T2/T3",
+   "HT",
+   "TG",
+   "LLT",
+   "GT"
+  ]
+ },
+ "screens": [
+  "docs/screens/20261105_attach_1.png",
+  "docs/screens/20261105_attach_2.png",
+  "docs/screens/20261105_attach_3.png",
+  "docs/screens/20261105_attach_4.png",
+  "docs/screens/20261105_attach_5.png"
+ ],
+ "hook_rated_n": 2200.0,
+ "hook_rated_g": 14.0,
+ "assumptions": [
+  "Box-X load share ETA_BOX 0.5 of the stitch path; webbing on a 5 mm pin or hook bed keeps 50 % of its break; seam efficiency 0.8 and grab/strip 31.25 mm from huntkit/clothsim/fabrics.yaml. Proof tests PT-1..PT-5 replace these.",
+  "Qualification load = 1.5 x the HA-LS-1 factored load (n = 5 sample scatter allowance).",
+  "Bag hook: 38 mm forged 7075 sliding-gate class, rated >= 2200 N, 14 g, $6.00: a purchase requirement, proven by PT-1. No hook record exists yet (materials-engineer to add one from the bought part).",
+  "POM toggle 30 x 8 x 5 mm, 3 g, bending pull-through 670 N (pom_acetal ~65 MPa, Z 33 mm3).",
+  "Tri-glide 3 g, elastic keeper 0.6 g, hood rung bar fails at 30 deg sag.",
+  "Cloth sim: crown hood = tension-only legs from the B-01 rows within 25 mm of the bar to the bar's bag face, free to slide in z and x (hood on a ladder, not sewn at one height); 1 mm Hypalon ply ~ 38 mm webbing EA per 40 mm strip; free hood depth 16 mm (the drafted gap at 19-23 in). Ladder tongues at x +/-60 hold B-01; the sim holds every node of the row out to x +/-92 (hood width), so the sim capture is a little wider than the part.",
+  "Guys fixed length: elastic 25 mm webbing snug (30 N) at the drafted shape, i.e. set once on the packed bag.",
+  "R-28 with the sim wall adds 3 mm (fabric + coarse mesh) and the hood (+1 mm in front of the bar, +4 mm over it).",
+  "Procedure seconds: 4 s a hook or pin, 3 s a cam pop or a hood lift, 10 s to place or clear the bag (gloved, not timed)."
+ ]
+}

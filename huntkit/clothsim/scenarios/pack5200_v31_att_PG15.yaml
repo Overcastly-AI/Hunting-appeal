@@ -11,6 +11,7 @@ attachments:
     bar_z: 601.0
     anchor_y: 23.7   # bar centre y 13.7 + OD/2 9 + 1 mm hood ply
     half_width_mm: 92.0   # hood 190 mm wide between the crown legs (inner faces x +/-104)
+    band_mm: 25.0         # nearest coarse-mesh row of B-01 to the bar (rows ~40 mm apart)
     hood_depth_mm: 16.0   # free hood depth bar face -> B-01 (the 30 mm head setback minus the bar), one hood for all torsos
     webbing: poly_webbing_38mm   # ASSUMPTION: 1 mm Hypalon hood ply ~ 38 mm webbing EA per 40 mm node strip
     capacity_n: 2000.0

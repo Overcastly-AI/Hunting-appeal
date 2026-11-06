@@ -53,6 +53,10 @@ API (`huntkit.materials`):
   must provide groups `strap_bottom`, `strap_lumbar`, `strap_mid`, `strap_upper`, `meat_face`
   (`huntkit.fea.pack5200` builds them from geometry.yaml `meat_anchor_z*` / `bag_anchor_low`).
 - Report: `report(result, path)` writes Markdown plus PNG plots (deformed shape, utilization).
+- Additions (2026-11-05, backward compatible; defaults reproduce rev B): `LoadCase.cg_z_mm` (bag lateral load acts at
+  the CG height via a left/right vertical couple; None = node heights), `params["couple_top_group"]` (group that takes
+  the top of the bag CG couple, e.g. `"strap_upper"` = IM3 hooks; default the crown top bar), `params["extra_nodal_1g"]`
+  ({node: [fx, fy, fz]} per 1 g, scaled by the case g-factor). Used by `huntkit.gendesign.frame_cg_recheck`.
 
 ## 3. Pattern pieces (`huntkit.patterns`)
 - `Piece(name, outline: list[(x,y)] mm closed polygon of the SEAM LINE, grain: angle_deg,
@@ -106,7 +110,14 @@ ratings are still assumptions awaiting a proof test.
 |---|---|---|
 | `bag_on` | yes | Meat inside the bag. IM1–IM3 cinch it against the spreader. Floor vertical is shared by the hinge pins and the US1/US2 under-straps. |
 | `between` | yes, as the bulk method of `bag_on` | Bag swings open on the hinge pins. The under-straps stay cammed. IM2 and IM3 bag hooks released. |
-| `bag_off` | yes | Bag off in ≤ 120 s (2 cams + 4 hooks + 2 hinge pins). The under-straps stay on the frame as the cradle. IM1–IM3 cinch the quarter against the spreader. No shelf. |
+| `bag_off` | yes | Bag off in ≤ 120 s (crown-hood lift + 4 hooks + 2 cams + 2 hinge pins, about 52 s). The under-straps stay on the frame as the cradle. IM1–IM3 cinch the quarter against the spreader. No shelf. |
+
+Top anchor (attachment phase, 2026-11-05, additive): a **crown hood** on the bag (B-19, on a 17-rung ladder B-20, one rung
+per crown setting) drops over the crown top bar, and two **top side guys** run from its ears to the outer-face corners
+(B-22 at x ±149, z 752). It is lifted off in `between` and `bag_off`; it is never re-attached over meat. The four bag hooks
+(IM2/IM3) are one rated part, ≥ 2200 N (proof PT-1). Loads it adds on the crown top bar, the bag CG it gives and the
+procedures: `designs/pack_5200/analysis/bag_attachment.md` (numbers in `analysis/attach_system_results.json`). No frame
+station moves and no FEA group changes; the crown-bar load is handed to the frame re-check as an extra load.
 
 FEA models keep the groups in §2 (`strap_bottom`, `strap_lumbar`, `strap_mid`, `strap_upper`,
 `meat_face`). `meat_face` is the spreader, not the wearer's back. Pattern pieces for B-01 include
@@ -142,7 +153,10 @@ Method: `docs/research/cloth_sim_methods.md`. Validation and limits: `designs/pa
   = phase-1 behaviour): `attachments.hinge.doubler_mm`, `attachments.hooks.tab {stations, width_mm}`,
   `attachments.ties {list: [{id, pieces, at [x, z], anchor [x, y, z], mode elastic|cinched, pretension_n, width_mm, via}]}`,
   `contact.crown {enabled, top_z, leg_od, bar_od, bar_aft_mm, spine_od, spine_len}`. Bridled attachments report one
-  summed entry (`legs`, `leg_max_n`); the crown reports as `contact.contact_crown`.
+  summed entry (`legs`, `leg_max_n`); the crown reports as `contact.contact_crown`. Added 2026-11-05 (attachment phase,
+  additive): `attachments.pocket {enabled, pieces, bar_z, anchor_y, half_width_mm, band_mm, hood_depth_mm, fixed_depth,
+  slide, slide_reach_mm, webbing, capacity_n}`: the crown hood as tension-only legs from the B-01 rows near the bar to the
+  bar's bag face, free to slide in z and x when `slide` (default); reported as one group `pocket` (kind `pocket`).
 - **Outputs** (`python -m huntkit.clothsim.cli run|validate|diff`): `outputs/clothsim/<scenario>/results.json`.
   Per case it holds `volume` (L), `pieces` (strain %, wrinkle area %, mass g), `hot_spots`, `seams`
   (`max_n_mm`, `p95_n_mm`, `strength_n_mm`, `sf`), `attachments` (tension N, SF), `contact` (spreader and

@@ -189,13 +189,15 @@ def _crown_rows(res, model, case) -> dict:
     return out
 
 
-def beam_runs(sc: Scenario, torsos=TORSOS, buckling: bool = True, log=print):
-    """Solve the scenario on the beam model. Returns (LoadSets for the voxel body, crown rows, static results)."""
+def beam_runs(sc: Scenario, torsos=TORSOS, buckling: bool = True, log=print, over: dict | None = None):
+    """Solve the scenario on the beam model. Returns (LoadSets for the voxel body, crown rows).
+    ``over``: frame.yaml param overrides (e.g. a thicker crown section) for the fix study."""
+    over = over or {}
     from huntkit.fea.frames import build_frame_from_yaml
     from huntkit.fea.load_standard import TABLE
     sets, rows = [], []
     for t in torsos:
-        fm = split_top_bar(build_frame_from_yaml(ft.FRAME_YAML, torso_in=float(t), extension_posts=False))
+        fm = split_top_bar(build_frame_from_yaml(ft.FRAME_YAML, torso_in=float(t), extension_posts=False, **over))
         fmp = None
         for c in sc.case_list():
             c = copy.copy(c)
@@ -206,7 +208,8 @@ def beam_runs(sc: Scenario, torsos=TORSOS, buckling: bool = True, log=print):
             c.buckling = buckling and c.kind != "setdown"
             m = fm
             if c.name == "tall_load_posts":
-                fmp = fmp or split_top_bar(build_frame_from_yaml(ft.FRAME_YAML, torso_in=float(t), extension_posts=True))
+                fmp = fmp or split_top_bar(build_frame_from_yaml(ft.FRAME_YAML, torso_in=float(t), extension_posts=True,
+                                                                     **over))
                 m = fmp
             res = c.run(m)
             ls = ft._extract(res, m, c, t, TABLE)
@@ -251,42 +254,60 @@ def verify_sets(dom, solid, sets, material: str = "pa12_cf_fdm_paht", keep_env=(
     s_z = float(m.require("tensile_strength_z_mpa"))
     knock = float(m.get("env_knockdown_ratio", 0.8))
     t0 = time.time()
-    F, fixed = ft.assemble_loads(dom, sets, solid_mask=solid)
-    U, _ = ft.solve_solid(dom, solid, F, fixed, E=E, log=None)
-    if log:
-        log(f"  voxel solve: {len(sets)} load sets, {time.time() - t0:.0f} s")
     g = dom.grid
     idx = np.where(solid)[0]
     cen = g.elem_centers()[idx]
+    _, fixed = ft.assemble_loads(dom, sets[:1], solid_mask=solid)
     clamp = np.zeros(g.nn, bool)
     clamp[np.where(fixed[0::3])[0]] = True
-    tags = sorted({s.key.split(":")[0] for s in sets})
-    Fn = np.abs(F).reshape(g.nn, 3, -1).sum(axis=1)          # (nn, nsets)
-    ex_by_tag = {}
-    for tg in tags:
-        cols = [k for k, s in enumerate(sets) if s.key.split(":")[0] == tg]
-        bad = clamp | (Fn[:, cols].sum(axis=1) > 0)
-        ex_by_tag[tg] = bad[g.enodes].any(axis=1)[idx]
+    # one factorization, solved per scenario tag (memory: <= 27 dense load columns at a time)
+    rs = ft.ReducedSystem(g, solid, fixed, ft.ke_h8(g.h, 1.0, ft.NU))
+    K = rs.assemble(np.full(rs.ae.size, 1.0))
+    K.sort_indices()
+    try:
+        import pypardiso
+        solver = pypardiso.PyPardisoSolver(mtype=2)
+        solver.factorize(K)
+        solve = lambda Fr: solver.solve(K, np.ascontiguousarray(Fr))
+    except ImportError:                    # pragma: no cover
+        import scipy.sparse as sps
+        import scipy.sparse.linalg as spla
+        lu = spla.splu((K + sps.triu(K, 1).T).tocsc())
+        solve = lu.solve
+    tags = list(dict.fromkeys(s.key.split(":")[0] for s in sets))
     rows, env = [], {}
-    for k, ls in enumerate(sets):
-        tg = ls.key.split(":")[0]
-        ex = ex_by_tag[tg]
-        _, S = ft.element_stress(g, U[:, k], solid, E)
-        fi = ft.layer_failure_index(np.abs(S[:, :3]), np.abs(S[:, 3:]), 1, s_xy, s_z, knock)
-        ok = fi[~ex]
-        fi99 = float(np.percentile(ok, 99))
-        hot = np.where(~ex & (fi >= np.percentile(ok, 99.8)))[0]
-        w = fi[hot]
-        loc = (cen[hot] * w[:, None]).sum(0) / w.sum()
-        pk = hot[np.argmax(fi[hot])]
-        rows.append({"set": ls.key, "scenario": tg, "case": ls.case, "torso": ls.torso, "factor": ls.factor,
-                     "fi99": fi99, "sf": 1.0 / max(fi99, 1e-9), "loc": [float(v) for v in loc],
-                     "where": region_label(cen[pk]), "peak_xyz": [float(v) for v in cen[pk]]})
-        if tg in keep_env:
-            env[tg] = np.maximum(env.get(tg, np.zeros(idx.size)), np.where(ex, 0.0, fi))
-        if ls.key in sections:
-            res = ft.section_resultants(dom, solid, U[:, k], 234.0, E=E)
-            rows[-1]["section_z234"] = res
+    for tg in tags:
+        tsets = [s for s in sets if s.key.split(":")[0] == tg]
+        F, _ = ft.assemble_loads(dom, tsets, solid_mask=solid)
+        Ur = solve(F[rs.free]).reshape(rs.free.size, -1)
+        U = np.zeros((g.ndof, len(tsets)))
+        U[rs.free] = Ur / E
+        Fn = np.abs(F).reshape(g.nn, 3, -1).sum(axis=(1, 2))
+        ex = (clamp | (Fn > 0))[g.enodes].any(axis=1)[idx]
+        del F, Ur
+        for k, ls in enumerate(tsets):
+            _, S = ft.element_stress(g, U[:, k], solid, E)
+            fi = ft.layer_failure_index(np.abs(S[:, :3]), np.abs(S[:, 3:]), 1, s_xy, s_z, knock)
+            ok = fi[~ex]
+            fi99 = float(np.percentile(ok, 99))
+            hot = np.where(~ex & (fi >= np.percentile(ok, 99.8)))[0]
+            w = fi[hot]
+            loc = (cen[hot] * w[:, None]).sum(0) / w.sum()
+            pk = hot[np.argmax(fi[hot])]
+            rows.append({"set": ls.key, "scenario": tg, "case": ls.case, "torso": ls.torso, "factor": ls.factor,
+                         "fi99": fi99, "sf": 1.0 / max(fi99, 1e-9), "loc": [float(v) for v in loc],
+                         "where": region_label(cen[pk]), "peak_xyz": [float(v) for v in cen[pk]]})
+            if tg in keep_env:
+                env[tg] = np.maximum(env.get(tg, np.zeros(idx.size)), np.where(ex, 0.0, fi))
+            if ls.key in sections:
+                rows[-1]["section_z234"] = ft.section_resultants(dom, solid, U[:, k], 234.0, E=E)
+        del U
+        if log:
+            log(f"  voxel [{tg}] {len(tsets)} sets, {time.time() - t0:.0f} s")
+    try:
+        solver.free_memory(everything=True)
+    except Exception:
+        pass
     return {"rows": rows, "env": env, "centers": cen, "E": E, "material": material,
             "fat_ratio": float(m.get("fatigue_1e5_ratio", 0.3)),
             "creep_ratio": float(m.get("creep_rupture_8h_40c_ratio", 0.4)), "seconds": time.time() - t0}
@@ -416,6 +437,16 @@ def crown_summary(crown_rows: list, tag: str) -> dict:
         if vals:
             v = min(vals)
             out[key] = {"sf": v[0], "set": v[1]}
+    # fatigue (HA-LS-1: CFRP FI <= 0.5 at 0 -> 1.6 g bag carry): from the static-carry member FPF at 1 g
+    fat = []
+    for r in rs:
+        if r["case"] != "static_carry":
+            continue
+        for key, (m, mid) in r["members"].items():
+            fat.append((0.5 / (1.6 / (m * r["factor"])), f"static_carry|{r['torso']:g}", key))
+    if fat:
+        v = min(fat)
+        out["fatigue"] = {"sf": v[0], "set": v[1], "member": v[2]}
     bk = [(r["buckling"], f"{r['case']}|{r['torso']:g}") for r in rs if r.get("buckling") is not None]
     if bk:
         v = min(bk)
@@ -541,3 +572,150 @@ def save(ctx: dict, path: Path | None = None) -> Path:
     OUT.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(OUT / "fi_env.npz", centers=ctx["_centers"], **{k: v for k, v in ctx["_env"].items()})
     return path
+
+
+# ============================================================================ minimum crown change (task 4)
+UD = "cfrp_t700_ud_epoxy_ply"
+
+
+def _frame_params() -> dict:
+    import yaml
+    return yaml.safe_load(ft.FRAME_YAML.read_text())["frame"]
+
+
+def add_ud(section: dict, n: int) -> dict:
+    """Same OD, ``n`` more 0 deg UD plies in the core (the wall grows inward: sleeves, bores and the spine
+    channel in the printed body are unchanged)."""
+    s = copy.deepcopy(section)
+    lay = s["layup"]
+    k = max(i for i, p in enumerate(lay) if p["material"] == UD)
+    s["layup"] = lay[: k + 1] + [{"angle": 0, "material": UD} for _ in range(n)] + lay[k + 1:]
+    return s
+
+
+def ud_mass_g(section: dict, n: int, length_mm: float, qty: int = 1) -> float:
+    """Mass of n UD plies laid inside the existing wall (mean diameter of the new plies)."""
+    from huntkit.materials import load
+    m = load(UD)
+    tp = float(m.require("ply_thickness_mm"))
+    rho = float(m.require("density_kg_m3"))
+    from huntkit.fea.sections import from_spec
+    t0 = from_spec(copy.deepcopy(section)).dims["t"]
+    d_in = section["od"] - 2 * t0
+    dm = d_in - n * tp
+    return qty * np.pi * dm * n * tp * length_mm * rho * 1e-6
+
+
+def fix_overrides(spine=0, leg=0, bar=0, overlap=None) -> dict:
+    fp = _frame_params()
+    over = {}
+    if spine:
+        over["spine_section"] = add_ud(fp["spine_section"], spine)
+    if leg:
+        over["leg_section"] = add_ud(fp["leg_section"], leg)
+    if bar:
+        over["bar_section"] = add_ud(fp["bar_section"], bar)     # beam model: also the (printed) mid bar line
+    if overlap:
+        over["joint"] = {**fp["joint"], "overlap_mm": float(overlap)}
+    return over
+
+
+def fix_mass_g(spine=0, leg=0, bar=0, overlap=None) -> dict:
+    fp = _frame_params()
+    out = {"spine": ud_mass_g(fp["spine_section"], spine, 300.0) if spine else 0.0,
+           "legs": ud_mass_g(fp["leg_section"], leg, 430.0, 2) if leg else 0.0,
+           "top_bar": ud_mass_g(fp["bar_section"], bar, 214.0) if bar else 0.0}
+    if overlap:
+        # corner wrap 0.75 mm QI CFRP over the 18 mm bar and 16 mm leg, extra length on both tubes, 2 corners
+        w = (overlap - fp["joint"]["overlap_mm"])
+        out["corner_wraps"] = 2 * 0.75 * np.pi * (18.0 + 16.0 + 1.5) * w * 1550.0 * 1e-6
+    out["total"] = float(sum(out.values()))
+    return out
+
+
+def crown_pass(cs: dict) -> tuple[bool, float, str]:
+    vals = []
+    for k in ("crown_leg", "crown_top_bar", "crown_spine", "corner_bond_avg", "corner_bond_peak",
+              "bushing_bearing", "leg_ring_crush", "fatigue"):
+        if k in cs:
+            vals.append((cs[k]["sf"], f"{k} {cs[k]['set']}"))
+    worst = min(vals)
+    return worst[0] >= 1.0, worst[0], worst[1]
+
+
+def fix_study(cands=None, tags=("b", "c", "b_im3", "c_im3"), log=print) -> list:
+    S = scenarios()
+    cands = cands or [dict(), dict(spine=1), dict(spine=2), dict(spine=2, leg=1), dict(spine=2, leg=2),
+                      dict(spine=2, leg=2, bar=1), dict(spine=2, leg=2, bar=1, overlap=40.0),
+                      dict(spine=2, leg=3, bar=1, overlap=40.0), dict(spine=3, leg=3, bar=1, overlap=45.0)]
+    rows = []
+    for cd in cands:
+        over = fix_overrides(**cd)
+        per = {}
+        for tg in tags:
+            _, cr = beam_runs(S[tg], buckling=False, log=None, over=over)
+            cs = crown_summary(cr, tg)
+            ok, w, what = crown_pass(cs)
+            per[tg] = {"pass": ok, "worst": w, "what": what, "crown": cs}
+        row = {"change": cd, "mass": fix_mass_g(**cd), "per": per,
+               "pass": all(v["pass"] for v in per.values())}
+        rows.append(row)
+        if log:
+            log(f"  fix {cd}: +{row['mass']['total']:.1f} g  " +
+                "  ".join(f"{tg} {v['worst']:.2f}" for tg, v in per.items()))
+    return rows
+
+
+FIX = {"spine": 1, "leg": 2, "bar": 1, "adhesive_t_mm": 0.8}
+
+
+def fix_over(fix: dict = FIX) -> dict:
+    o = fix_overrides(spine=fix["spine"], leg=fix["leg"], bar=fix["bar"])
+    if fix.get("adhesive_t_mm"):
+        o["joint"] = {**_frame_params()["joint"], "adhesive_t_mm": fix["adhesive_t_mm"]}
+    return o
+
+
+def fix_mass_total(fix: dict = FIX) -> dict:
+    m = fix_mass_g(spine=fix["spine"], leg=fix["leg"], bar=fix["bar"])
+    if fix.get("adhesive_t_mm"):
+        fp = _frame_params()["joint"]
+        # 2 corners x (bar end + leg end) x pi d L, extra bondline thickness, MMA 1.15 g/cm3 (frame.yaml adhesive)
+        area = 2 * np.pi * (18.0 + 16.0) * fp["overlap_mm"]
+        m["corner_bondline"] = area * (fix["adhesive_t_mm"] - fp["adhesive_t_mm"]) * 1.15e-3
+    m["total"] = float(sum(v for k, v in m.items() if k != "total"))
+    return m
+
+
+def fix_recheck(tags=("a", "b", "c", "b_im3", "c_im3"), log=print) -> dict:
+    """Crown + printed body with the minimum crown change (the stiffer crown changes the body loads a little)."""
+    from .spreader_layout import raster
+    S = scenarios()
+    over = fix_over()
+    sets, crown = [], {}
+    for tg in tags:
+        s, cr = beam_runs(S[tg], buckling=tg in ("a", "b", "c"), log=None, over=over)
+        sets += s
+        crown[tg] = crown_summary(cr, tg)
+    dom, solid = raster(None, 2.0)
+    vr = verify_sets(dom, solid, sets, log=log)
+    body = {tg: summarize_body(vr["rows"], tg, vr["fat_ratio"], vr["creep_ratio"]) for tg in tags}
+    return {"fix": FIX, "mass_g": fix_mass_total(), "crown": crown, "body": body,
+            "pass": {tg: crown_pass(crown[tg])[0] and body[tg]["sf_min"] >= 1.0 for tg in tags}}
+
+
+def anchor_summary(rows: list) -> list:
+    out = []
+    for where in ("x70", "x100", "pocket"):
+        for elev in (-20.0, 0.0, 20.0):
+            rs = [r for r in rows if r["where"] == where and r["elev"] == elev]
+            if not rs:
+                continue
+            def mn(key, sub=None):
+                v = [(r["members"][key][0] if sub is None else r["joints"]["crown_corner"][sub]) for r in rs
+                     if (key in r["members"] if sub is None else "crown_corner" in r["joints"])]
+                return float(min(v)) if v else None
+            out.append({"where": where, "elev": elev, "top_bar": mn("crown_top_bar"), "leg": mn("crown_leg"),
+                        "spine": mn("crown_spine"), "corner_avg": mn(None, 0), "corner_peak": mn(None, 1),
+                        "pawl_z_max_n": float(max(abs(r["pawl_n"][2]) for r in rs))})
+    return out

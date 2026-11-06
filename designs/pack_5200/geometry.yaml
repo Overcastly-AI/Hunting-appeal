@@ -732,12 +732,13 @@ weight:
     goods; size M belt, J-straps, rain fly (owner: counts), meat harness'
   groups_g: {frame (printed branch body + carbon crown): 991.7, 'back-system spreader (Sandwich v2, BP-06)': 153.7,
     torso adjust (not in the frame line): 41.7, main bag: 365.5, bag-side load spreaders: 27.8, bag-to-frame attachment (fairleads): 144.1,
-    under-straps US1/US2 (cradle): 122.4, accents: 52.7, rain fly: 74.7, pockets: 60.3, hipbelt (M): 334.3, harness: 212.5,
-    back panel: 90.9, internal meat harness: 253.9, haul wraps (= compression): 108.1, misc: 36.7}
-  total_g: 3071.0
-  total_lb: 6.77
+    bag-to-frame attachment system: 135.9, under-straps US1/US2 (cradle): 122.4, accents: 52.7, rain fly: 74.7,
+    pockets: 60.3, hipbelt (M): 334.3, harness: 212.5, back panel: 90.9, internal meat harness: 253.9, haul wraps (= compression): 108.1,
+    misc: 36.7}
+  total_g: 3206.9
+  total_lb: 7.07
   target_g: 2268
-  gap_g: 803.0
+  gap_g: 938.9
   weight_plan: analysis/bag_weight_plan.md (bag-side savings, owner choices)
   v31_tube_baseline: {total_g: 2224.1, frame_g: 569.2, back_panel_g: 75.2, misc_g: 36.1, source: 'geometry.yaml
       v3.1 (commit 6061796): carbon-tube frame v2, single 6 mm XLPE back sheet', used_by: huntkit/gendesign/frame_production.py
@@ -788,6 +789,32 @@ weight:
       parts_g}
   - {group: bag-to-frame attachment (fairleads), item: lifter tri-glide keepers, mass_g: 6.0, basis: analysis/bag_attachment_results.json
       parts_g}
+  - {group: bag-to-frame attachment system, item: crown hood B-19 (Hypalon blank + ears + hem), mass_g: 26.7, basis: analysis/attach_system_results.json
+      mass.parts_g (attachment phase 2026-11-05)}
+  - {group: bag-to-frame attachment system, item: hood lip stiffener B-19s (HDPE 1.5), mass_g: 5.7, basis: analysis/attach_system_results.json
+      mass.parts_g (attachment phase 2026-11-05)}
+  - {group: bag-to-frame attachment system, item: hood lining B-19L (XLPE 3), mass_g: 0.9, basis: analysis/attach_system_results.json
+      mass.parts_g (attachment phase 2026-11-05)}
+  - {group: bag-to-frame attachment system, item: hood ladder strips B-20 x2, mass_g: 20.0, basis: analysis/attach_system_results.json
+      mass.parts_g (attachment phase 2026-11-05)}
+  - {group: bag-to-frame attachment system, item: hood tongues x2 + POM toggles, mass_g: 10.3, basis: analysis/attach_system_results.json
+      mass.parts_g (attachment phase 2026-11-05)}
+  - {group: bag-to-frame attachment system, item: hood grab tab (25 mm x 90), mass_g: 1.6, basis: analysis/attach_system_results.json
+      mass.parts_g (attachment phase 2026-11-05)}
+  - {group: bag-to-frame attachment system, item: top side guys x2 (25 mm webbing), mass_g: 18.0, basis: analysis/attach_system_results.json
+      mass.parts_g (attachment phase 2026-11-05)}
+  - {group: bag-to-frame attachment system, item: guy ladder locks + tri-glides + ladder-lock tabs, mass_g: 16.5,
+    basis: analysis/attach_system_results.json mass.parts_g (attachment phase 2026-11-05)}
+  - {group: bag-to-frame attachment system, item: guy corner tabs B-22 x2, mass_g: 5.9, basis: analysis/attach_system_results.json
+      mass.parts_g (attachment phase 2026-11-05)}
+  - {group: bag-to-frame attachment system, item: guy tail elastic keepers x2, mass_g: 1.2, basis: analysis/attach_system_results.json
+      mass.parts_g (attachment phase 2026-11-05)}
+  - {group: bag-to-frame attachment system, item: IM2 tongue backings B-23 x2, mass_g: 7.1, basis: analysis/attach_system_results.json
+      mass.parts_g (attachment phase 2026-11-05)}
+  - {group: bag-to-frame attachment system, item: bag hooks 1500 N -> 2200 N rated (4 x +5 g), mass_g: 20.0, basis: analysis/attach_system_results.json
+      mass.parts_g (attachment phase 2026-11-05)}
+  - {group: bag-to-frame attachment system, item: thread (box-X + perimeters), mass_g: 2.0, basis: analysis/attach_system_results.json
+      mass.parts_g (attachment phase 2026-11-05)}
   - {group: under-straps US1/US2 (cradle), item: printed anchors (4), mass_g: 22.8, basis: huntkit/gendesign/meat_haul.py
       cradle_parts_g (meat_haul_modes.md)}
   - {group: under-straps US1/US2 (cradle), item: 7075 pins (4), mass_g: 9.6, basis: huntkit/gendesign/meat_haul.py

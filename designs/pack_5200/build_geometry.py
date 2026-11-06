@@ -793,6 +793,23 @@ def build_panels(Hf, diag):
         f"INSIDE face of B-01, lower edge caught in the B-01 | B-05 seam, centred on the hinge eye (x +/-115); eye box-X "
         f"through doubler + B-01; spreads ~375 N (meat, 1 g) over {BAGTOP['hinge_dbl_seam_mm']:.0f} mm of seam "
         "(4.7 N/mm, < 6 N/mm)")
+    # ---- bag-to-frame attachment system (attachment phase 2026-11-05, analysis/bag_attachment.md): crown hood, hood
+    # ladder, guy corner tabs, IM2 tongue backings. Geometry from huntkit.gendesign.attach_system.drawing_pieces (one
+    # source with the 1:1 drawings); mass is counted once, from analysis/attach_system_results.json (budget key below)
+    from huntkit.gendesign.attach_system import drawing_pieces
+    att_notes = {"B-19": ("crown top bar (hood)", "J-profile Hypalon hood over the crown top bar between the legs; guys sewn to its ears"),
+                 "B-19s": ("crown hood lip", "HDPE 1.5 mm J stiffener in the lip hem"),
+                 "B-19L": ("crown hood crown", "XLPE 3 mm lining (quiet on the bar)"),
+                 "B-20": ("frame-side panel B-01b/B-01u", "hood ladder: 17 slots, one per crown setting; sewn on both long edges"),
+                 "B-22": ("outer face B-02d upper corners", "guy ladder-lock anchor tab"),
+                 "B-23": ("frame-side panel B-01 inside, IM2 tongue", "backing under the IM2 bag-hook tongue box-X")}
+    for dp in drawing_pieces():
+        if dp.piece_id in att_notes:
+            zone, nt = att_notes[dp.piece_id]
+            kind = "fabric" if dp.material_id == "hypalon_coated_nylon" else "sheet"
+            t = {"B-19s": 1.5, "B-19L": 3.0}.get(dp.piece_id)
+            add(dp, zone, "attachment system", nt + " (analysis/bag_attachment.md)", kind=kind, thickness_mm=t)
+            P[-1]["budget"] = "attach_system"     # counted in the weight budget from attach_system_results.json
     # ---- hipbelt (size M shown; grade table in panels.yaml)
     wing_len = HIPBELT_WINGS["M"]
     for pid, nm, mat, kind, t, notes in (
@@ -1240,6 +1257,12 @@ def weight_budget(P, Hf, diag, wraps, info):
         if item.startswith("old LINK hardware"):
             continue        # the v3.1 toggles/quick-pins are no longer in this budget (and B-10 tabs are retired)
         row("bag-to-frame attachment (fairleads)", item, float(g), "analysis/bag_attachment_results.json parts_g")
+    att = HERE / "analysis" / "attach_system_results.json"
+    if att.exists():
+        import json as _json
+        for item, g in _json.loads(att.read_text())["mass"]["parts_g"].items():
+            row("bag-to-frame attachment system", item, float(g),
+                "analysis/attach_system_results.json mass.parts_g (attachment phase 2026-11-05)")
     from huntkit.gendesign.meat_haul import cradle_parts_g
     for item, g in cradle_parts_g().items():
         row("under-straps US1/US2 (cradle)", item, float(g), "huntkit/gendesign/meat_haul.py cradle_parts_g (meat_haul_modes.md)")
@@ -1273,7 +1296,7 @@ def weight_budget(P, Hf, diag, wraps, info):
         hw("poly_webbing_25mm", length_m=wrap_len), "records; lengths from the 3D teardrop (haul_wraps)")
     row("haul wraps (= compression)", "3 aluminium G-hooks (HAUL family) + 3 ladder locks", 3 * 4 + 3 * hw("ladder_lock_25mm"),
         "G-hook 4 g ASSUMPTION (no record); ladder lock record")
-    soft = [k for k in sub_mass if k not in ("carry", "lid", "spreader")]
+    soft = [k for k in sub_mass if k not in ("carry", "lid", "spreader", "attach_system")]
     row("misc", "thread (~3 % of soft goods) + labels", 0.03 * sum(sub_mass[k] for k in soft) + 8, "ASSUMPTION")
     tot = sum(r["mass_g"] for r in rows)
     carry = sub_mass["carry"] + hw("poly_webbing_25mm", length_m=0.6) + hw("ladder_lock_25mm")

@@ -92,14 +92,17 @@ sits in them. IM1–IM3 still hook eye-to-eye and cam the meat against the sprea
 tip off the cradle. Friction is only a reserve. μ 0.4 and the old 141 N leg (five straps) are
 the reserve numbers, not the design path.
 
-### Procedure (gloves, about 40 s, limit 2 min)
+### Procedure (gloves, about 52 s, limit 2 min)
 
-1. Pop the two under-strap cams and lift the bag floor out of the open channels. The straps stay on their pins. About 6 s.
-2. Unhook the four bag hooks (IM2 and IM3, both sides). IM1 has no bag hook.
-3. Pull the two tethered hinge pins at z 60.
-4. Lift the bag clear.
-5. Set the quarter in the cradle, bone toward the spreader. Cam the two under-straps until the belly is about 70 mm.
-6. Hook IM1–IM3 eye-to-eye over the meat and cam them. A hock can sit on IM1.
+The full step list with seconds is in `analysis/bag_attachment.md` section 7 (attachment phase, 2026-11-05).
+
+1. Lift the crown-hood tab and swing the top of the bag about 10 cm aft. The top guys come with the hood.
+2. Unhook the four bag hooks (IM3, then IM2, both sides). IM1 has no bag hook.
+3. Pop the two under-strap cams and lift the bag floor out of the open channels. The straps stay on their pins.
+4. Pull the two tethered hinge pins at z 60.
+5. Lift the bag clear.
+6. Set the quarter in the cradle, bone toward the spreader. Cam the two under-straps until the belly is about 70 mm.
+7. Hook IM1–IM3 eye-to-eye over the meat and cam them. A hock can sit on IM1.
 
 Walking peak of 36 kg is **565 N**. The strength check is 1.5 times that,
 **847 N**, all of it in the cradle. Lower strap tension
@@ -119,12 +122,13 @@ The cradle anchors are the same fairlead as the hinge, on the solid lower stay. 
 SF is scaled from the fine-mesh solve of the governing cradle vector when that solve is on file,
 and from the hinge solve otherwise (`cradle_fea`).
 
-To put the bag back: pins in, bag hooks on, floor channels over the cradle straps, cams tight.
-About 80 s.
+To put the bag back: pins in, floor channels over the cradle straps, cams tight, bag hooks on, then drop the
+crown hood over the top bar. About 60 s (`bag_attachment.md` section 7).
 
 ## What is still open
 
-- Hook and cam ratings are assumptions (hook 1500 N, cam slip 1100 N). Proof-test five of each to 830 N before the first sewn bag. The under-strap cam is in this test.
+- Meat-strap hook and cam ratings are assumptions (hook 1500 N, cam slip 1100 N). Proof-test five of each to 830 N before the first sewn bag. The under-strap cam is in this test.
+- The four BAG hooks (IM2/IM3) are a rated part since 2026-11-05 (>= 2200 N, proof PT-1, `bag_attachment.md` section 3); the 830 N test no longer covers them.
 - IM1 does not get a bag clip yet. It is a meat anchor only until the owner says otherwise.
 
 ## Mass and cost of the under-straps
@@ -140,7 +144,7 @@ About 80 s.
 | bag-floor channels | 8.0 |
 | **added** | **122** |
 
-About **$22** on top of the fairlead set. Detach time **40 s** (the two cam pops are about 6 s of that). Pack with the cradle is the previous 2979 g plus this added mass.
+About **$22** on top of the fairlead set. Detach time now **52 s** with the crown hood (attachment phase); the two cam pops are about 6 s of that. Pack with the cradle is the previous 2979 g plus this added mass.
 
 ## Screenshots
 
