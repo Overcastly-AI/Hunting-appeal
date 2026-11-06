@@ -40,16 +40,40 @@ python -c "from huntkit.gendesign import frame_cg_recheck as R; R.save(R.run())"
    - Rack SF is 6.27 in every scenario: the C8 crown thrust is set by the shoulder share, not by the CG offset.
    - The printed pawl cheek, with its 304 bushing, goes from 1.57 to 1.39 to 1.29 (FI99).
    - The 3:1 pulley carries almost nothing with the pawl engaged. It does not change with the offset.
-5. **Crown top-bar anchor, 210 N per side at C5: passes.**
-   - Top-bar member ≥ 2.56, legs ≥ 1.47, corner ≥ 4.3.
-   - The body on C5 *improves*, 2.40 → 2.55, because the aft pull offsets the meat's forward push.
-   - The bar wall is only safe if the tie bears on **≥ 25 mm of webbing** (SF 1.08). Use 38 mm (1.65) or the crown pocket (4.34).
-     A 20 mm guy strap fails ring crush (0.87).
-6. **The Sandwich v2 spreader passes at 175 mm**, with fatigue 1.003 and sandwich-local 1.02. It fails at 206 / 223 mm
-   (fatigue 0.96 / 0.93, sandwich-local 0.97 / 0.95). The meat CG has to be held at ≤ 175 mm. The pack-designer's IM3
-   tab + crown tie does that (combined meat CG 163–174 mm, bag_top_anchor.md §3).
+5. **The final top anchor passes on the frame side, as built.** This is the crown hood plus two fixed guys
+   (bag_attachment.md):
+   - hood: 158 N factored over x ±95;
+   - guys: 104 N factored each, from x ±95 to (±149, z 752).
+
+   On C5 / C7 at 175 and 190 mm:
+   - crown worst 1.35 (legs, C5 at 23 in, 190 mm); 1.75 with the fix;
+   - top bar ≥ 2.96, corner peak ≥ 3.9;
+   - printed body ≥ 2.39;
+   - bar wall: 11.0 under the hood line load, 2.6 under a guy through the hood ear.
+
+   **One interface conflict:** the hood asks for x ±96 of bare OD 18 ± 0.3 bar, but the crown-corner wrap covers the
+   bar from the leg face (x ±107) to about x ±77, at OD ≈ 19.5. The wrap cannot be shortened to clear ±96: an 11 mm
+   overlap fails the corner bond (average 0.86 / 0.71, peak 0.95 / 0.79). The hood has to fit over the wrap ends, or
+   its bare-bar zone has to be x ±77. Section 5.1.
+   The earlier generic anchor sweep (210 N per side at x ±70 / ±100 / pocket) also passes: top bar ≥ 2.56,
+   legs ≥ 1.47. Ties must bear on ≥ 25 mm of webbing (20 mm: ring crush 0.87).
+6. **The Sandwich v2 spreader is the limiting part on the meat cases.** Its numbers are from the corrected run: the
+   first run hit a stale skin-pressure cache in `spreader.py`, now cleared per offset.
+   - **Sheet strength:** it passes to about 176 mm (175 mm: fatigue 1.003, sandwich local 1.02) and fails at 181–223 mm.
+     The minimum fix is a **7 mm ROHACELL 110 core instead of 6 mm, +8.7 g**. With it, FPF is 1.19, fatigue 1.03 and
+     sandwich local 1.06 even at 223 mm.
+   - **Walking skin pressure:** it exceeds the 14 kPa comfort limit above about **167 mm** (14.5 kPa at 175, 15.4 at 190).
+     The sheet cannot fix this; it is the meat's forward force over the two back rails. **It is a back-panel / rail item
+     for the pack-designer.**
+   - With the final hood + guys, the meat-case CG is 181 / 173 / 165 mm (contents uniform) or 167 / 163 / 158 mm (meat
+     held at 150). On the second basis skin is about 14.0 kPa at 15 in.
 7. **HA-LS-1 should go to rev C with a cloth-sim-calibrated CG.** A draft is in section 6, **not applied**: the owner
-   decides. The frame passes rev C as drafted **only with the +22 g crown fix**. The body and the spreader pass as they are.
+   decides.
+   - The frame (body, crown, torso adjust) passes rev C as drafted **only with the +22 g crown fix**.
+   - The spreader sheet passes at the rev C meat offset of 175 mm with no margin; take the 7 mm core (+8.7 g) if the
+     owner covers 190 mm.
+   - The rail skin pressure misses 14 kPa at 175 mm. That is a comfort limit, not part of HA-LS-1, and needs a
+     back-panel change.
 
 ## 1. What was run
 
@@ -213,18 +237,74 @@ bag_top_anchor.md §7 value. All torsos.
 **Sandwich v2 spreader** (`spreader.evaluate`, 2 mm, named positions). The C5 face load scales with e / 150. The bone is
 20 % of 68 kg and is part of the meat.
 
-| meat CG mm | FPF | fatigue | sandwich local | air factored mm | air lean (sensitivity) | skin kPa | pass |
-|---:|---:|---:|---:|---:|---:|---:|---|
-| 150 (rev B) | 1.21 | 1.04 | 1.06 | 5.0 | +0.10 | 12.9 | yes |
-| **175 (envelope)** | 1.16 | **1.003** | **1.02** | 4.8 | −0.11 | 12.9 | **yes, barely** |
-| 206 (as-is, uniform) | 1.11 | **0.96** | **0.97** | 4.5 | −0.37 | 12.9 | **no** |
-| 223 | 1.08 | **0.93** | **0.95** | 4.4 | −0.51 | 12.9 | **no** |
+**Bug found and fixed.** `spreader._SKIN_CACHE` is keyed without the meat load. The first pass of this check therefore
+reused the 150 mm skin and rail-indentation values at every offset. `frame_cg_recheck.spreader_at` now clears the
+cache per offset. FPF, fatigue and sandwich-local come from the plate solve and were never affected. The release record
+(150 mm) is unaffected.
 
-- The governing positions are the US2 corner relief (FPF) and the bone patch at the notch roots (core shear).
-- The as-is combined meat CG is 181 mm (bag_top_anchor.md §3). By interpolation, fatigue there is about 0.99.
-- **The spreader is the part that needs the bag-side fix:** IM3 tab B-17 + a crown-bar tie (A or G) hold the meat at
-  163–174 mm. If the owner keeps the bag as-is, the spreader needs a re-sizing, for example a 7 mm core. That is not
-  designed here.
+| meat CG mm | sheet | FPF | fatigue | sandwich local | air walk / fact mm | skin kPa (≤ 14) | sheet checks | skin |
+|---:|---|---:|---:|---:|---:|---:|---|---|
+| 150 (rev B) | 6 mm core | 1.21 | 1.04 | 1.06 | 10.7 / 5.0 | 12.9 | pass | pass |
+| 175 (envelope) | 6 mm core | 1.16 | **1.003** | **1.02** | 9.9 / 3.5 | **14.5** | pass | **fail** |
+| 181 (hood + guys, 15 in, meat contents) | 6 mm core | 1.15 | **0.99** | 1.01 | 9.7 / 3.1 | **14.9** | **fail** | **fail** |
+| 190 (orchestrator check) | 6 mm core | 1.13 | **0.98** | **0.99** | 9.4 / 2.5 | **15.4** | **fail** | **fail** |
+| 206 (as-is, uniform) | 6 mm core | 1.11 | 0.96 | 0.97 | 8.9 / 1.5 | 16.5 | fail | fail |
+| 223 | 6 mm core | 1.08 | 0.93 | 0.95 | 8.3 / 0.4 | 17.5 | fail | fail |
+| **190** | **7 mm core** | 1.26 | 1.09 | 1.11 | 9.6 / 2.9 | 15.4 | **pass** | fail |
+| **223** | **7 mm core** | 1.19 | 1.03 | 1.06 | 8.6 / 0.8 | 17.5 | **pass** | fail |
+
+- **Governing positions:** the US2 corner relief (FPF) and the bone patch at the notch roots (core shear).
+- **7 mm core:** 162.1 g against 153.5 g, so **+8.7 g**. It is the same part with a 1 mm thicker PMI core.
+  - The clips and saddles in `designs/pack_5200/cut/spreader/` take a 7.44 mm sheet instead of 6.44 mm: the
+    clip-slot depth needs +1 mm.
+  - Not drawn here. The cut files belong to the spreader package.
+- **Skin pressure** is the rail-and-tissue model (`spreader.skin_pressure`): the forward meat force over the two stay
+  rails, plus the bone. It rises linearly with e and **reaches 14 kPa at about 167 mm**. A stiffer sheet does not lower
+  it. The fix is on the back panel: a wider rail, or softer or thicker rail foam (back_comfort.md, spreader.md §1).
+  That belongs to the pack-designer.
+- The lean-torso air is a sensitivity only, as in spreader.md. It is negative from 175 mm upward.
+
+### 5.1 Final top anchor: crown hood + 2 fixed guys (bag_attachment.md, attach_system_results.json)
+
+**Loads.** C5 factor 3.0, so the 1 g values are the factored values / 3:
+- **Hood:** 158 N total factored (52.5 N at 1 g), aft. Spread over the bar from x −95 to +95 by tributary length on
+  nodes at ±95 / ±70 / 0.
+- **Guys:** 104 N each factored (34.6 N at 1 g), from the hood ear at x ±95 toward the bag corner (±149, z 752).
+  ASSUMPTION: the aft run of each guy is 305 mm, from the 314 mm free length at 19 in, held fixed at every torso. The
+  guy therefore points up at 15 in (bar z 601) and down at 23 in (bar z 804).
+- **Applied cases:** C5 and C7. On C7 the loads are scaled by 91 / 68. They are added on top of the full rev B meat load
+  in the beam model, which is conservative.
+- **Bag-carry cases:** C1–C4 and C8 already put the whole bag couple on the crown bar, so the hood and guys are part of
+  that couple, not extra.
+
+| run (C5 / C7, all torsos) | crown worst | top bar | spine | corner average / peak | leg ring crush | printed body C5 / C7 |
+|---|---:|---:|---:|---:|---:|---:|
+| 175 mm, no top anchor | 1.29 legs | 3.54 | 3.13 | 11.2 / 4.4 | 3.12 | 2.40 / 3.38 |
+| 175 mm + hood + guys | 1.46 legs | 3.15 | 2.26 | 10.5 / 4.2 | 3.53 | 2.49 / 3.50 |
+| 190 mm, no top anchor | 1.20 legs | 3.31 | 2.93 | 10.4 / 4.2 | 2.92 | 2.30 / 3.24 |
+| **190 mm + hood + guys** | **1.35 legs** | 2.96 | 2.16 | 9.8 / 3.9 | 3.26 | **2.39 / 3.36** |
+| 190 mm + hood + guys, crown fix | 1.75 legs | 3.49 | 2.64 | 11.0 / 5.3 | 4.54 | — |
+
+- **Bar wall.** Under the hood line load (0.83 N/mm) the ring-crush SF is 11.0. Under a guy bearing through the hood
+  ear (104 N over 30 mm, point-ring, conservative) it is 2.6.
+- **Pawl axial** with the anchors is ≤ 344 N (generic sweep at +20°). Rack SF is > 10.
+- **The hood and guys help the frame.** Their aft pull at the crown offsets the meat's forward push on the stays, so
+  every frame number goes up. The C5 / C7 *frame* check at 190 mm passes as built. The spreader does not (section 5).
+- **Interface: x ±96 bare bar, OD 18 ± 0.3.**
+  - Nothing is bonded to the bar inboard of the corner wraps. The lifter lugs sit on the corner wraps at x ±105.
+  - The crown fix adds plies inside the bar, so the OD stays 18.0.
+  - **But the corner wrap itself** (frame.yaml joints: 0.75 mm, 30 mm onto each tube, ends ply-dropped over 8 mm)
+    covers the bar from the leg face at x ±107 to about x ±77, at OD ≈ 19.5.
+  - Shortening the bar-side wrap to clear x ±96 (about 11 mm overlap) fails the corner bonds. With the crown fix:
+
+    | bar-side overlap | b average / peak | c average / peak |
+    |---|---|---|
+    | 30 mm (as now) | 2.34 / 1.22 | 1.95 / 1.01 |
+    | 20 mm | 1.56 / 1.16 | 1.30 / **0.97** |
+    | 11 mm | **0.86 / 0.95** | **0.71 / 0.79** |
+
+  - **Keep the 30 mm wrap.** The hood must either be relieved for OD 20 over its outer 20 mm a side, or seat on bare
+    bar over x ±77 only. That is a pack-designer change to B-19, not a frame change.
 
 ## 6. HA-LS-1 rev C (DRAFT, not applied: owner decision)
 
@@ -252,10 +332,10 @@ Draft changes:
 |---|---|---|---|
 | bag CG aft, C1–C4 and C8 | 180 mm (C8 hard-coded 180) | **205 mm**, all five cases | bag_top_anchor.md §7: candidate 1 at 15 in, 202 mm + sim scatter |
 | bag CG height (C3 lateral moment) | at the attachment-node height (≈ 212 mm) | **z 550** (`LoadCase.cg_z_mm`) | cloth_sim.md §3.2 (z 542, meat) |
-| meat CG aft, C5 / C7 | 150 mm | **175 mm** | bag_top_anchor.md §3 combined column, 163–181 mm |
+| meat CG aft, C5 / C7 | 150 mm | **175 mm**. The owner may choose 190 mm to cover the 15 in hood + guys fill case (189 mm) | bag_top_anchor.md §3 combined column, 163–181 mm; bag_attachment.md hood + guys: 181 / 173 / 165 mm (contents), 167 / 163 / 158 mm (meat at 150) |
 | tall load CG, C6 / C6p | 160 mm | **185 mm** (ASSUMPTION: same +25 mm) | none in the sim: flag for T2 |
 | bag couple top | crown top bar | **envelope of crown top bar AND the IM3 hooks** (`couple_top_group: strap_upper`) | cloth_sim.md §3.5: IM3 hooks carry 338–472 N per side at 1 g |
-| top-anchor loads | none | when a top anchor is fitted: **70 N per side at 1 g** on the crown bar, at the anchor station, −20…+20°, in C5 | bag_top_anchor.md §4.5 |
+| top-anchor loads | none | the released anchor in C5 / C7: **hood 52.5 N aft over x ±95 + 2 guys of 34.6 N toward (±149, z 752), per 1 g** (`anchor_loads_1g(..., "hood_guys")`) | bag_attachment.md, attach_system_results.json `factored_n` |
 | tie bearing on the crown bar | none | ≥ 25 mm webbing (local ring rule) | section 5 here |
 | **new T9: loaded-CG measurement** | none | Load the prototype to 68 kg as T1 (fill) and as T2 (game bags), then find the CG offset two ways: hang the pack from the haul loop and from a hipbelt-pivot pin and plumb both lines (offset = their intersection to the stay plane), or use a two-scale lever on the stay feet + crown bar. Repeat at 15 / 19 / 23 in. **If the measured CG is more than 10 mm below the rev C value, the owner may relax it; if above, re-run this check** | new |
 | factors, g-levels, rules | | unchanged | rev B §4 |
@@ -265,7 +345,8 @@ Draft changes:
 | part | as built | with the +22 g crown fix |
 |---|---|---|
 | printed body | yes: min 1.50 (1.53 with the IM3 couple), fatigue 1.04 | yes |
-| spreader (meat 175) | yes: fatigue 1.003, sandwich local 1.02 | yes |
+| spreader sheet (meat 175 / 190) | yes at 175, no margin (fatigue 1.003); **no at 190** (0.98) | 7 mm core (+8.7 g): yes to 223 mm |
+| back-rail skin pressure (comfort, not HA-LS-1) | **no**: 14.5 kPa at 175 (limit 14, reached at about 167 mm) | not fixed by the frame: back-panel change |
 | rack / pawl / pulley | yes | yes |
 | top-anchor loads | yes, if ties are ≥ 25 mm webbing | yes |
 | carbon crown | **no**: spine 0.96 (crown couple); legs 0.86 and leg fatigue 1.05 (IM3 couple) | **yes**: min 1.12 (legs, IM3), fatigue ≥ 1.36 |
@@ -283,7 +364,8 @@ Draft changes:
 | UHMWPE bushings ×4 | 23.0 | sizing5200v2 |
 | pawl 304 bushings + cheek wall | 9.9 | production_frame.md |
 | Sandwich v2 spreader, installed | 153.7 | spreader_results.json |
-| **change from this check** | **+22.0** | section 4 |
+| **change from this check, crown** | **+22.0** | section 4 |
+| **spreader 7 mm core (if the owner covers 190 mm)** | **+8.7** | section 5 |
 
 - **Flag for the pack-designer.** `geometry.yaml weight` books the printed body at 774 g, from
   generative_branch_results.json at scale 1.05. The production body on the 2 mm raster is **823 g**, the same figure as
@@ -313,6 +395,9 @@ Draft changes:
   cheek 8 mm).
 - The spreader face load scales linearly with e (`frame_smooth.meat_normal_n`). The cinch preload is unchanged.
 - The crown fix plies are T700 UD at 0.125 mm (`cfrp_t700_ud_epoxy_ply`). The bondline mass uses MMA at 1.15 g/cm³.
+- ASSUMPTION: the guy aft run is 305 mm at every torso (from the 314 mm free length at 19 in).
+- `spreader._SKIN_CACHE` (spreader.py) is keyed without the meat load. Any caller that changes the meat load must clear
+  it, as `spreader_at` now does. Reported to the spreader owner (structural-fea-engineer). `spreader.py` is not edited here.
 - Not re-run: corner-bond fatigue (bond ≤ 0.3 lap shear) and the stay-top collar. The collar is the printed sleeve now
   and is in the voxel check.
 

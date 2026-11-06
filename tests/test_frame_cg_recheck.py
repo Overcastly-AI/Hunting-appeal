@@ -189,4 +189,25 @@ def test_recorded_fix_passes_and_as_built_crown_fails():
     assert all(d["fix"]["pass"].values())
     assert d["crown"]["b"]["crown_spine"]["sf"] < 1.0          # the reason for the fix
     assert min(b["sf_min"] for b in d["body"].values() if "sf_min" in b) >= 1.0   # body passes everywhere
-    assert d["spreader"]["175"]["passes"] and not d["spreader"]["223"]["passes"]
+    sp = d["spreader"]
+    assert all(sp["175"]["checks"][k] for k in ("fpf", "fatigue", "sandwich_local", "no_bottoming"))
+    assert not sp["190"]["checks"]["fatigue"]
+    # skin pressure grows with the offset (the stale-cache bug would make these equal)
+    assert sp["150"]["skin_peak_kpa"] < sp["175"]["skin_peak_kpa"] < sp["223"]["skin_peak_kpa"]
+    c7 = d["spreader_core7"]["223"]
+    assert all(c7["checks"][k] for k in ("fpf", "fatigue", "sandwich_local", "no_bottoming"))
+    fa = d["final_attachment"]
+    assert min(v["sf_min"] for v in fa["body"].values()) >= 1.0
+    assert all(R.crown_pass(v)[0] for v in fa["crown"].values())
+
+
+def test_hood_guy_loads_match_attachment_record(fm19):
+    m = R.split_top_bar(fm19, 95.0)
+    L = R.hood_guy_loads_1g(m)
+    hood_y = sum(v[1] for k, v in L.items() if k in ("TB0", "TB1", "TB2")) + 2 * R.HOOD_1G_N * 12.5 / 190.0
+    assert hood_y == pytest.approx(R.HOOD_1G_N)
+    g = L["TBR95"] - np.array([0.0, R.HOOD_1G_N * 12.5 / 190.0, 0.0])
+    assert np.linalg.norm(g) == pytest.approx(R.GUY_1G_N)
+    assert g[0] > 0 and g[1] > 0                       # outboard and aft
+    # factored at C5 (x 3.0): 158 N hood, 104 N per guy (attach_system_results.json factored_n)
+    assert 3.0 * R.HOOD_1G_N == pytest.approx(157.5) and 3.0 * R.GUY_1G_N == pytest.approx(103.8)

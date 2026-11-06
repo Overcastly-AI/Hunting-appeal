@@ -4323,9 +4323,9 @@
    "clear_fact_lean_min": 0.10444317629175304,
    "skin_peak_kpa": 12.913626036072287,
    "skin_meat_only_kpa": 9.47462222344843,
-   "w_fact_max": 3.666650779618831,
+   "w_fact_max": 3.6666507796206775,
    "meat_force_fact_n": 1620.4546927935467,
-   "clip_lift_max_n": 0.5601842592701409,
+   "clip_lift_max_n": 0.5601842592729198,
    "passes": true,
    "checks": {
     "fpf": true,
@@ -4338,72 +4338,120 @@
   "175": {
    "e_mm": 175.0,
    "h": 2.0,
-   "sf_fpf": 1.1610029321634905,
+   "sf_fpf": 1.1610029321771749,
    "fpf_where": "US2 corner relief",
    "sf_fatigue": 1.002847834100318,
-   "sandwich_sf_min": 1.0175446501088496,
-   "clear_walk_min": 10.557658426992464,
-   "clear_fact_min": 4.792706043305503,
-   "clear_fact_lean_min": -0.1058446813321785,
-   "skin_peak_kpa": 12.913626036072287,
-   "skin_meat_only_kpa": 9.47462222344843,
-   "w_fact_max": 3.8749302695333223,
+   "sandwich_sf_min": 1.017544650114695,
+   "clear_walk_min": 9.87190632517532,
+   "clear_fact_min": 3.479780400382755,
+   "clear_fact_lean_min": -1.4187703242549268,
+   "skin_peak_kpa": 14.492729739980353,
+   "skin_meat_only_kpa": 11.05372592735648,
+   "w_fact_max": 3.874930269225938,
    "meat_force_fact_n": 1751.0148227518916,
-   "clip_lift_max_n": 0.6034081376355186,
-   "passes": true,
+   "clip_lift_max_n": 0.6034081377053451,
+   "passes": false,
    "checks": {
     "fpf": true,
     "fatigue": true,
     "no_bottoming": true,
-    "skin_pressure": true,
+    "skin_pressure": false,
     "sandwich_local": true
    }
   },
-  "206": {
-   "e_mm": 206.0,
+  "181": {
+   "e_mm": 181.0,
    "h": 2.0,
-   "sf_fpf": 1.1046896429844644,
+   "sf_fpf": 1.1496626512217647,
    "fpf_where": "US2 corner relief",
-   "sf_fatigue": 0.9562751956268274,
-   "sandwich_sf_min": 0.9706835177848648,
-   "clear_walk_min": 10.418617307241242,
-   "clear_fact_min": 4.531915209757905,
-   "clear_fact_lean_min": -0.36663551487977664,
-   "skin_peak_kpa": 12.913626036072287,
-   "skin_meat_only_kpa": 9.47462222344843,
-   "w_fact_max": 4.134029623910992,
-   "meat_force_fact_n": 1912.9093839002394,
-   "clip_lift_max_n": 0.6570072306345428,
+   "sf_fatigue": 0.9934874608168649,
+   "sandwich_sf_min": 1.0081252214272627,
+   "clear_walk_min": 9.680437467999234,
+   "clear_fact_min": 3.1019463094500312,
+   "clear_fact_lean_min": -1.7966044151876503,
+   "skin_peak_kpa": 14.871714628918287,
+   "skin_meat_only_kpa": 11.43271081629444,
+   "w_fact_max": 3.925078389869352,
+   "meat_force_fact_n": 1782.3492539418944,
+   "clip_lift_max_n": 0.6137818941672167,
    "passes": false,
    "checks": {
     "fpf": true,
     "fatigue": false,
     "no_bottoming": true,
-    "skin_pressure": true,
+    "skin_pressure": false,
+    "sandwich_local": true
+   }
+  },
+  "190": {
+   "e_mm": 190.0,
+   "h": 2.0,
+   "sf_fpf": 1.1330589324116667,
+   "fpf_where": "US2 corner relief",
+   "sf_fatigue": 0.9797642255879687,
+   "sandwich_sf_min": 0.9943181202873964,
+   "clear_walk_min": 9.393198223730579,
+   "clear_fact_min": 2.53229564567946,
+   "clear_fact_lean_min": -2.3662550789582215,
+   "skin_peak_kpa": 15.440191962325208,
+   "skin_meat_only_kpa": 12.00118814970134,
+   "w_fact_max": 4.00030057078182,
+   "meat_force_fact_n": 1829.3509007268983,
+   "clip_lift_max_n": 0.6293427758965683,
+   "passes": false,
+   "checks": {
+    "fpf": true,
+    "fatigue": false,
+    "no_bottoming": true,
+    "skin_pressure": false,
+    "sandwich_local": false
+   }
+  },
+  "206": {
+   "e_mm": 206.0,
+   "h": 2.0,
+   "sf_fpf": 1.1046896429648787,
+   "fpf_where": "US2 corner relief",
+   "sf_fatigue": 0.9562751956171219,
+   "sandwich_sf_min": 0.9706835177598081,
+   "clear_walk_min": 8.88253259905846,
+   "clear_fact_min": 1.5171229287900068,
+   "clear_fact_lean_min": -3.381427795847675,
+   "skin_peak_kpa": 16.450818332826337,
+   "skin_meat_only_kpa": 13.011814520202494,
+   "w_fact_max": 4.134029623905123,
+   "meat_force_fact_n": 1912.9093839002394,
+   "clip_lift_max_n": 0.6570072305799078,
+   "passes": false,
+   "checks": {
+    "fpf": true,
+    "fatigue": false,
+    "no_bottoming": true,
+    "skin_pressure": false,
     "sandwich_local": false
    }
   },
   "223": {
    "e_mm": 223.0,
    "h": 2.0,
-   "sf_fpf": 1.0760560282051908,
+   "sf_fpf": 1.0760560281694889,
    "fpf_where": "US2 corner relief",
-   "sf_fatigue": 0.9325174854447416,
-   "sandwich_sf_min": 0.9467722837081115,
-   "clear_walk_min": 10.342348398823646,
-   "clear_fact_min": 4.388898760506224,
-   "clear_fact_lean_min": -0.5096519641314567,
-   "skin_peak_kpa": 12.913626036072287,
-   "skin_meat_only_kpa": 9.47462222344843,
-   "w_fact_max": 4.276118545431492,
+   "sf_fatigue": 0.9325174854104061,
+   "sandwich_sf_min": 0.9467722836800042,
+   "clear_walk_min": 8.339952261452538,
+   "clear_fact_min": 0.4347212891563452,
+   "clear_fact_lean_min": -4.463829435481337,
+   "skin_peak_kpa": 17.524608851483848,
+   "skin_meat_only_kpa": 14.085605038859978,
+   "w_fact_max": 4.276118545671462,
    "meat_force_fact_n": 2001.6902722719133,
-   "clip_lift_max_n": 0.6864015657283583,
+   "clip_lift_max_n": 0.6864015658370224,
    "passes": false,
    "checks": {
     "fpf": true,
     "fatigue": false,
     "no_bottoming": true,
-    "skin_pressure": true,
+    "skin_pressure": false,
     "sandwich_local": false
    }
   }
@@ -25629,5 +25677,454 @@
   "outputs/screens/20261105_cgrecheck_1.png",
   "outputs/screens/20261105_cgrecheck_2.png",
   "outputs/screens/20261105_cgrecheck_3.png"
- ]
+ ],
+ "final_attachment": {
+  "loads_1g": {
+   "hood_total_n": 52.5,
+   "guy_each_n": 34.6,
+   "guy_dy_mm": 305.35166611629944
+  },
+  "crown": {
+   "hg175_as_built": {
+    "crown_leg": {
+     "sf": 1.4640910955128252,
+     "set": "meat_straps|23",
+     "member": "CRbot-CR530"
+    },
+    "crown_top_bar": {
+     "sf": 3.1534434137616665,
+     "set": "meat_straps|23",
+     "member": "TB1-TB2"
+    },
+    "crown_spine": {
+     "sf": 2.264027242245771,
+     "set": "meat_straps|15",
+     "member": "SP81-SP150"
+    },
+    "corner_bond_avg": {
+     "sf": 10.493147717312247,
+     "set": "meat_straps|23"
+    },
+    "corner_bond_peak": {
+     "sf": 4.180941517654842,
+     "set": "overload_haul|23"
+    },
+    "bushing_bearing": {
+     "sf": 36.88567907406756,
+     "set": "meat_straps|23"
+    },
+    "leg_ring_crush": {
+     "sf": 3.5250474822611277,
+     "set": "meat_straps|23"
+    }
+   },
+   "hg175_fix": {
+    "crown_leg": {
+     "sf": 1.8907279817945548,
+     "set": "meat_straps|23",
+     "member": "CRbot-CR530"
+    },
+    "crown_top_bar": {
+     "sf": 3.7089166204081714,
+     "set": "meat_straps|23",
+     "member": "TB2-TBR95"
+    },
+    "crown_spine": {
+     "sf": 2.7729131349877485,
+     "set": "meat_straps|15",
+     "member": "SP81-SP150"
+    },
+    "corner_bond_avg": {
+     "sf": 11.719761629749259,
+     "set": "meat_straps|23"
+    },
+    "corner_bond_peak": {
+     "sf": 5.684943668942667,
+     "set": "overload_haul|23"
+    },
+    "bushing_bearing": {
+     "sf": 36.97012364203834,
+     "set": "meat_straps|23"
+    },
+    "leg_ring_crush": {
+     "sf": 4.901728087292537,
+     "set": "meat_straps|23"
+    }
+   },
+   "m175_as_built": {
+    "crown_leg": {
+     "sf": 1.2859047277720124,
+     "set": "meat_straps|23",
+     "member": "CLbot-CL530"
+    },
+    "crown_top_bar": {
+     "sf": 3.538913988762283,
+     "set": "meat_straps|23",
+     "member": "TB0-TB1"
+    },
+    "crown_spine": {
+     "sf": 3.12672890654455,
+     "set": "meat_straps|15",
+     "member": "SP81-SP150"
+    },
+    "corner_bond_avg": {
+     "sf": 11.153986147938092,
+     "set": "meat_straps|23"
+    },
+    "corner_bond_peak": {
+     "sf": 4.444244537060731,
+     "set": "overload_haul|23"
+    },
+    "bushing_bearing": {
+     "sf": 32.696711948135835,
+     "set": "meat_straps|23"
+    },
+    "leg_ring_crush": {
+     "sf": 3.1247211661618874,
+     "set": "meat_straps|23"
+    }
+   },
+   "hg190_as_built": {
+    "crown_leg": {
+     "sf": 1.354278525465465,
+     "set": "meat_straps|23",
+     "member": "CLbot-CL530"
+    },
+    "crown_top_bar": {
+     "sf": 2.9649963470495693,
+     "set": "meat_straps|23",
+     "member": "TB0-TB1"
+    },
+    "crown_spine": {
+     "sf": 2.1579605677118994,
+     "set": "meat_straps|15",
+     "member": "SP81-SP150"
+    },
+    "corner_bond_avg": {
+     "sf": 9.834785350430804,
+     "set": "meat_straps|23"
+    },
+    "corner_bond_peak": {
+     "sf": 3.9186231425659015,
+     "set": "overload_haul|23"
+    },
+    "bushing_bearing": {
+     "sf": 34.14280844892677,
+     "set": "meat_straps|23"
+    },
+    "leg_ring_crush": {
+     "sf": 3.2629200269984655,
+     "set": "meat_straps|23"
+    }
+   },
+   "hg190_fix": {
+    "crown_leg": {
+     "sf": 1.7488907298654572,
+     "set": "meat_straps|23",
+     "member": "CRbot-CR530"
+    },
+    "crown_top_bar": {
+     "sf": 3.494501178620857,
+     "set": "meat_straps|23",
+     "member": "TB2-TBR95"
+    },
+    "crown_spine": {
+     "sf": 2.6432981040329167,
+     "set": "meat_straps|15",
+     "member": "SP81-SP150"
+    },
+    "corner_bond_avg": {
+     "sf": 10.990376039056883,
+     "set": "meat_straps|23"
+    },
+    "corner_bond_peak": {
+     "sf": 5.331142518432867,
+     "set": "overload_haul|23"
+    },
+    "bushing_bearing": {
+     "sf": 34.219055348659,
+     "set": "meat_straps|23"
+    },
+    "leg_ring_crush": {
+     "sf": 4.536974405257678,
+     "set": "meat_straps|23"
+    }
+   },
+   "m190_as_built": {
+    "crown_leg": {
+     "sf": 1.2004196009977481,
+     "set": "meat_straps|23",
+     "member": "CLbot-CL530"
+    },
+    "crown_top_bar": {
+     "sf": 3.308096263412722,
+     "set": "meat_straps|23",
+     "member": "TB0-TB1"
+    },
+    "crown_spine": {
+     "sf": 2.927966695384562,
+     "set": "meat_straps|15",
+     "member": "SP81-SP150"
+    },
+    "corner_bond_avg": {
+     "sf": 10.413711828508612,
+     "set": "meat_straps|23"
+    },
+    "corner_bond_peak": {
+     "sf": 4.1492897946147735,
+     "set": "overload_haul|23"
+    },
+    "bushing_bearing": {
+     "sf": 30.52317845704859,
+     "set": "meat_straps|23"
+    },
+    "leg_ring_crush": {
+     "sf": 2.917003456939776,
+     "set": "meat_straps|23"
+    }
+   }
+  },
+  "body": {
+   "hg175": {
+    "cases": {
+     "meat_straps": {
+      "sf": 2.4907176333888166,
+      "torso": 23.0,
+      "where": "stay R below the sleeve",
+      "peak_xyz": [
+       123.0,
+       3.0,
+       153.0
+      ],
+      "factor": 1.5
+     },
+     "overload_haul": {
+      "sf": 3.5030713499725743,
+      "torso": 23.0,
+      "where": "stay R below the sleeve",
+      "peak_xyz": [
+       123.0,
+       3.0,
+       153.0
+      ],
+      "factor": 1.0
+     }
+    },
+    "sf_min": 2.4907176333888166,
+    "governing": "meat_straps|23",
+    "where": "stay R below the sleeve",
+    "sf_fatigue_meat_info": 1.4010286687812092,
+    "sf_creep_meat_info": 2.98886116006658
+   },
+   "hg190": {
+    "cases": {
+     "meat_straps": {
+      "sf": 2.3921693585738826,
+      "torso": 23.0,
+      "where": "stay R below the sleeve",
+      "peak_xyz": [
+       123.0,
+       3.0,
+       153.0
+      ],
+      "factor": 1.5
+     },
+     "overload_haul": {
+      "sf": 3.361334457124044,
+      "torso": 23.0,
+      "where": "stay R below the sleeve",
+      "peak_xyz": [
+       123.0,
+       3.0,
+       153.0
+      ],
+      "factor": 1.0
+     }
+    },
+    "sf_min": 2.3921693585738826,
+    "governing": "meat_straps|23",
+    "where": "stay R below the sleeve",
+    "sf_fatigue_meat_info": 1.3455952641978088,
+    "sf_creep_meat_info": 2.8706032302886593
+   },
+   "m175": {
+    "cases": {
+     "meat_straps": {
+      "sf": 2.403207030887781,
+      "torso": 23.0,
+      "where": "stay R below the sleeve",
+      "peak_xyz": [
+       123.0,
+       3.0,
+       153.0
+      ],
+      "factor": 1.5
+     },
+     "overload_haul": {
+      "sf": 3.3778377159415265,
+      "torso": 23.0,
+      "where": "stay R below the sleeve",
+      "peak_xyz": [
+       123.0,
+       3.0,
+       153.0
+      ],
+      "factor": 1.0
+     }
+    },
+    "sf_min": 2.403207030887781,
+    "governing": "meat_straps|23",
+    "where": "stay R below the sleeve",
+    "sf_fatigue_meat_info": 1.3518039548743768,
+    "sf_creep_meat_info": 2.8838484370653372
+   },
+   "m190": {
+    "cases": {
+     "meat_straps": {
+      "sf": 2.3019437555791016,
+      "torso": 23.0,
+      "where": "stay R below the sleeve",
+      "peak_xyz": [
+       123.0,
+       3.0,
+       153.0
+      ],
+      "factor": 1.5
+     },
+     "overload_haul": {
+      "sf": 3.2352066953000946,
+      "torso": 23.0,
+      "where": "stay R below the sleeve",
+      "peak_xyz": [
+       123.0,
+       3.0,
+       153.0
+      ],
+      "factor": 1.0
+     }
+    },
+    "sf_min": 2.3019437555791016,
+    "governing": "meat_straps|23",
+    "where": "stay R below the sleeve",
+    "sf_fatigue_meat_info": 1.2948433625132447,
+    "sf_creep_meat_info": 2.7623325066949223
+   }
+  },
+  "bar_local": {
+   "hood_line": {
+    "q_n_mm": 0.8315789473684211,
+    "m_hoop": 2.255691157894737,
+    "sf": 10.954515982241452
+   },
+   "guy_via_hood_ear_30mm": {
+    "F_n": 104.0,
+    "width_mm": 30.0,
+    "m_hoop": 9.403471999999999,
+    "sf": 2.6277533277239113
+   }
+  },
+  "spreader_190": {
+   "e_mm": 190.0,
+   "h": 2.0,
+   "sf_fpf": 1.1330589324116667,
+   "fpf_where": "US2 corner relief",
+   "sf_fatigue": 0.9797642255879687,
+   "sandwich_sf_min": 0.9943181202873964,
+   "clear_walk_min": 9.393198223730579,
+   "clear_fact_min": 2.53229564567946,
+   "clear_fact_lean_min": -2.3662550789582215,
+   "skin_peak_kpa": 15.440191962325208,
+   "skin_meat_only_kpa": 12.00118814970134,
+   "w_fact_max": 4.00030057078182,
+   "meat_force_fact_n": 1829.3509007268983,
+   "clip_lift_max_n": 0.6293427758965683,
+   "passes": false,
+   "checks": {
+    "fpf": true,
+    "fatigue": false,
+    "no_bottoming": true,
+    "skin_pressure": false,
+    "sandwich_local": false
+   }
+  },
+  "spreader_181": {
+   "e_mm": 181.0,
+   "h": 2.0,
+   "sf_fpf": 1.1496626512217647,
+   "fpf_where": "US2 corner relief",
+   "sf_fatigue": 0.9934874608168649,
+   "sandwich_sf_min": 1.0081252214272627,
+   "clear_walk_min": 9.680437467999234,
+   "clear_fact_min": 3.1019463094500312,
+   "clear_fact_lean_min": -1.7966044151876503,
+   "skin_peak_kpa": 14.871714628918287,
+   "skin_meat_only_kpa": 11.43271081629444,
+   "w_fact_max": 3.925078389869352,
+   "meat_force_fact_n": 1782.3492539418944,
+   "clip_lift_max_n": 0.6137818941672167,
+   "passes": false,
+   "checks": {
+    "fpf": true,
+    "fatigue": false,
+    "no_bottoming": true,
+    "skin_pressure": false,
+    "sandwich_local": true
+   }
+  }
+ },
+ "spreader_core7": {
+  "190": {
+   "e_mm": 190.0,
+   "h": 2.0,
+   "core_t": 7.0,
+   "mass_g": 162.13793516225485,
+   "sf_fpf": 1.2546503177006787,
+   "fpf_where": "US2 corner relief",
+   "sf_fatigue": 1.0877761163847177,
+   "sandwich_sf_min": 1.1139065065066842,
+   "clear_walk_min": 9.636700499064425,
+   "clear_fact_min": 2.9004401110780034,
+   "clear_fact_lean_min": -1.9981106135596782,
+   "skin_peak_kpa": 15.440191962325208,
+   "skin_meat_only_kpa": 12.00118814970134,
+   "w_fact_max": 3.2396000353616197,
+   "meat_force_fact_n": 1829.3509007268983,
+   "clip_lift_max_n": 0.5287541269041354,
+   "passes": false,
+   "checks": {
+    "fpf": true,
+    "fatigue": true,
+    "no_bottoming": true,
+    "skin_pressure": false,
+    "sandwich_local": true
+   }
+  },
+  "223": {
+   "e_mm": 223.0,
+   "h": 2.0,
+   "core_t": 7.0,
+   "mass_g": 162.13793516225485,
+   "sf_fpf": 1.189470565720255,
+   "fpf_where": "US2 corner relief",
+   "sf_fatigue": 1.0336723478913945,
+   "sandwich_sf_min": 1.0594035905312083,
+   "clear_walk_min": 8.605636845320607,
+   "clear_fact_min": 0.8445826527104185,
+   "clear_fact_lean_min": -4.0539680719272635,
+   "skin_peak_kpa": 17.524608851483848,
+   "skin_meat_only_kpa": 14.085605038859978,
+   "w_fact_max": 3.466619616084715,
+   "meat_force_fact_n": 2001.6902722719133,
+   "clip_lift_max_n": 0.576454354175901,
+   "passes": false,
+   "checks": {
+    "fpf": true,
+    "fatigue": true,
+    "no_bottoming": true,
+    "skin_pressure": false,
+    "sandwich_local": true
+   }
+  },
+  "mass_6mm_g": 153.48473532053447
+ }
 }

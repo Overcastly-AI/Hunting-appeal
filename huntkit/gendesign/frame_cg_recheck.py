@@ -523,24 +523,31 @@ def anchor_beam_sweep(log=print) -> list:
 
 
 # ============================================================================ spreader
-def spreader_at(e_mm: float, h: float = 2.0, step=None) -> dict:
+def spreader_at(e_mm: float, h: float = 2.0, step=None, core_t: float | None = None) -> dict:
     """Sandwich v2 (spreader_results.json 'chosen', key sw110c6d) with the C5 overturning face load scaled by
     e / 150 (H = P e sum(lev)/sum(lev^2) is linear in e; frame_smooth.meat_normal_n). The bone stays 20 % of
     68 kg (part of the meat). Same h and positions as the release mesh check (2 mm, named positions)."""
     from . import frame_smooth as fs
     from . import spreader as S
     opt = {o.key: o for o in S.options()}["sw110c6d"]
+    if core_t:          # candidate: thicker ROHACELL 110 core, same skins, doublers, tubes and clips
+        import dataclasses
+        opt = dataclasses.replace(opt, key=f"sw110c{core_t:g}d", lam=S.sandwich_lam("rohacell_110_igf", core_t),
+                                  core_t=core_t)
     orig = fs.meat_normal_n
     scale = float(e_mm) / 150.0
     fs.meat_normal_n = lambda g_level=1.6, _o=orig, _s=scale: _o(g_level) * _s
+    S._SKIN_CACHE.clear()          # the skin-pressure cache is keyed without the meat load: clear it per offset
     try:
         r = S.evaluate(opt, h=h, step=step)
     finally:
         fs.meat_normal_n = orig
+        S._SKIN_CACHE.clear()
     keys = ("sf_fpf", "fpf_where", "sf_fatigue", "sandwich_sf_min", "clear_walk_min", "clear_fact_min",
             "clear_fact_lean_min", "skin_peak_kpa", "skin_meat_only_kpa", "w_fact_max", "meat_force_fact_n",
             "clip_lift_max_n", "passes", "checks")
-    return {"e_mm": float(e_mm), "h": h, **{k: r.get(k) for k in keys}}
+    return {"e_mm": float(e_mm), "h": h, "core_t": float(core_t or 6.0), "mass_g": r.get("mass_g"),
+            **{k: r.get(k) for k in keys}}
 
 
 # ============================================================================ driver
