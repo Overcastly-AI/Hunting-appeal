@@ -21,14 +21,18 @@ from .model import build_pack
 from .params import DEFAULT_SPEC, REPO, load_params
 from .viewer import build_html
 
-BEST = ("hero", "haul", "fit", "side", "front")
+BEST = ("hero", "between", "attach", "bagoff", "spreader", "side", "front", "fit")
 
 
 def shots(m: dict) -> list[dict]:
+    """Shot list with captions written from the metrics (no stale design words: there is no shelf, no LINK toggles,
+    no tube frame; the spreader is the flat Sandwich v2 board)."""
     vol = f"main bag {m['bag_volume_l']:.1f} L ({m['bag_volume_cu_in']:,.0f} cu in, from the mesh)"
     t = m["torsos"]
     fea = m.get("fea") or {}
     v3 = m.get("bag_type") == "teardrop_rolltop"
+    gen = m.get("frame_type") == "generative"
+    att, hg, sp, bp = m.get("attach"), m.get("hinge"), m.get("spreader"), m.get("back_panel")
     rolled = f"rolled down {m.get('bag_volume_rolled_l', 0):.0f} L" if v3 else ""
     hero_sub = (f"{rolled}; {vol} with the collar unrolled. SPINE: diagonal zip under a stretch band, camo on wear zones"
                 if v3 else f"{vol} + {m['lid_design_l']:.1f} L lid · camo shards on corners, lash zone, lid, pockets")
@@ -37,40 +41,84 @@ def shots(m: dict) -> list[dict]:
              caption="Pack 5200 v3.1 SPINE: 3/4 view of the outer face" if v3 else "Pack 5200: 3/4 view of the outer face",
              sub=hero_sub),
         dict(name="side", view="side", state={"mode": "pack", "mannequin": True},
-             caption="Side profile, 19 in torso: deeper teardrop, 30 mm head setback" if v3 else "Side profile, 19 in torso",
-             sub="Crown sets yoke + lifters together; hipbelt on the Ti pivot at z 120 mm"),
+             caption="Side profile, 19 in torso: teardrop, 30 mm head setback" if v3 else "Side profile, 19 in torso",
+             sub="Crown sets yoke + lifters together; hipbelt on the Ti pivot at z 120 mm; top guys run outside the gores"),
         dict(name="back", view="back", state={"mode": "pack"},
              caption="Back panel and suspension",
-             sub="Lumbar plate, J-straps on the crown yoke, sternum strap, load lifters, hipbelt (M)"),
-        dict(name="haul", view="haul", state={"mode": "pack", "haul": True},
-             caption=f"Haul mode: bag hinges back {m['haul_pullback_mm']:.0f} mm",
-             sub=("No shelf: internal 38 mm meat straps hook to frame stubs and cam the quarter to the frame; wraps close the bay"
-                  if v3 else "Bone-in hindquarter on the 270 x 260 shelf, shelf straps to the mid-bar nodes, load wings, flag on extension posts")),
+             sub=("BP-01 mesh over the stay rails, J-straps on the crown yoke, sternum strap, load lifters on the crown "
+                  "corner wraps, hipbelt (M) on the Ti pivot")),
         dict(name="exploded", view="exploded", state={"mode": "pack", "explode": True},
-             caption="Exploded view", sub="Frame, crown, shelf, bag, pockets, harness and hipbelt"),
-        dict(name="frame", view="frame", state={"mode": "frame", "harness": False},
-             caption="Carbon frame close-up",
-             sub=("Generative printed frame, carbon crown kept"
-                  if m.get("frame_type") == "generative"
-                  else f"Straight stays (v2), formed lumbar pan, Ti pivot mount, telescoping crown, swept top bar. Tubes: {m['tube_size_source']}")),
-        dict(name="fea", view="fea", state={"mode": "frame", "fea": True, "harness": False},
-             caption="FEA utilization overlay (worst load case)",
-             sub=(f"max {fea.get('max_utilization', 0):.2f} in {str(fea.get('critical_case', '')).replace('_', ' ')}"
-                  f" · {fea.get('source', '')}") if fea else "FEA unavailable"),
+             caption="Exploded view",
+             sub=("Frame + crown, spreader, back panel (mesh, rails, backers), bag with tongues, doublers and ladders, "
+                  "crown hood + guys, harness, hipbelt. No shelf: meat rides on the IM1-IM3 straps")),
+        dict(name="frame", view="frame", state={"mode": "frame", "harness": False, "bp": False},
+             caption="Printed frame close-up" if gen else "Carbon frame close-up",
+             sub=("PAHT-CF branch frame with its printed fairleads, carbon crown with corner wraps, Sandwich v2 spreader, "
+                  "under-straps hanging as the cradle" if gen
+                  else f"Straight stays (v2), formed lumbar pan, Ti pivot mount, telescoping crown. Tubes: {m['tube_size_source']}")),
         dict(name="fit", view="fit", state={"mode": "pack", "fit": True, "mannequin": True},
              caption="Fit: one frame, three torsos",
              sub=" · ".join(f"{k:g} in: crown top {v['crown_top_z']:.0f} mm" for k, v in sorted(t.items()))),
     ]
+    if fea:
+        out.insert(5, dict(name="fea", view="fea", state={"mode": "frame", "fea": True, "harness": False},
+                           caption="FEA utilization overlay (worst load case)",
+                           sub=f"max {fea.get('max_utilization', 0):.2f} in {str(fea.get('critical_case', '')).replace('_', ' ')}"
+                               f" · {fea.get('source', '')}"))
     if v3:
         out.insert(1, dict(name="full", view="hero", state={"mode": "pack", "full": True},
                            caption="Collar unrolled: the counted 85.2 L",
                            sub=f"{vol}; computed to the fill line with the roll-top closed by 3 rolls"))
         out.insert(2, dict(name="front", view="front", state={"mode": "pack"},
                            caption="Outer face: taper + SPINE diagonal",
-                           sub="One #10 zip from the right hip to the left shoulder, reachable from either side"))
+                           sub="One #10 zip from the right hip to the left shoulder; bow riser loops + G-hook strap on "
+                               "the right side, cam/limb in the band's cam cup"))
         out.append(dict(name="lid", view="hero", state={"mode": "pack", "lid": True},
                         caption="Optional lid / hip pack on the closed roll",
                         sub="Short fixed rear tabs + front magnets: nothing to flop"))
+    if att and hg:
+        wd = m.get("between_wedge_mm", {})
+        out[1:1] = [
+            dict(name="between", view="between", state={"mode": "pack", "haul": True},
+                 caption=f"Between mode: bag swung open {hg['angle_deg']:.1f} deg on the z {hg['z']:.0f} hinge pins",
+                 sub=(f"Hood lifted, 4 bag hooks off, under-straps stay cammed. Quarter thick end high in the wedge "
+                      f"({' / '.join(str(round(v)) for v in wd.values())} mm at IM1 / IM2 / IM3), IM1-IM3 eye to eye "
+                      "over it, W1-W3 close round bag and meat")),
+            dict(name="attach", view="attach", state={"mode": "pack", "xray": True, "harness": False, "bp": False},
+                 caption="Attachment close-up, bag in X-ray: hood on the bar, guys, IM3 hooks",
+                 sub=(f"Crown hood on the top bar, tongues in the B-20 ladder, top guys round the gores to B-22; "
+                      f"{att['hook_rated_n']:.0f} N bag hook on the IM3 fairlead eye, T3 tongue on tab B-17")),
+            dict(name="attach_low", view="attach_low", state={"mode": "pack", "xray": True, "harness": False, "bp": False},
+                 caption="Attachment close-up, lower joint (bag in X-ray)",
+                 sub=("Hinge eye on the z 60 pull-pin (B-18 doubler inside B-01), under-straps US1 / US2 under the floor, "
+                      "IM1 eye, IM2 bag hook + T2 tongue; fairleads with 5 mm pins; spreader edge and tube")),
+            dict(name="bagoff", view="bagoff", state={"mode": "frame", "haul": True},
+                 caption="Bag off: meat on the frame",
+                 sub=("Quarter in the two under-strap cradles (US1 / US2), IM1-IM3 cammed over it against the spreader; "
+                      "the hinge pins went with the bag")),
+            dict(name="hood", view="hood", state={"mode": "pack", "harness": False},
+                 caption="Crown hood B-19 on the top bar (19 in)",
+                 sub=(f"{att['hood_width_mm']:.0f} mm shell, J-lip relieved to x +/-{att['hood_lip_half_mm']:.0f} "
+                      f"clear of the corner wraps; tongues woven at the rung for the setting; guys to B-22 at "
+                      f"x +/-{att['guy_xz'][0]:.0f}, z {att['guy_xz'][1]:.0f}")),
+        ]
+        out.insert(5, dict(name="bow", view="bow", state={"mode": "pack"},
+                           caption="Bow riser carry, right side",
+                           sub="Two 25 mm loops through B-11 lash tabs hold the riser, one 25 mm G-hook strap closes over "
+                               "it; cam / lower limb in the SPINE band's cam cup"))
+        if sp:
+            out.insert(5, dict(name="spreader", view="spreader", state={"mode": "frame", "harness": False},
+                               caption="Spreader BP-06 rev C: flat Sandwich v2 board",
+                               sub=(f"{sp['size_mm'][0]:.0f} x {sp['size_mm'][1]:.0f} x {sp['t_mm']:.2f} mm, twill / 7 mm "
+                                    f"ROHACELL 110 / twill; notched at the cleats, {sp['edge_tubes']} carbon edge tubes, "
+                                    f"{sp['clips']} PA12 clips, {sp['pucks']} pucks")))
+        if bp:
+            out.insert(6, dict(name="backpanel", view="backpanel", state={"mode": "pack", "harness": False, "xray": True},
+                               caption=f"Back panel X-ray: {bp['rail_w']:.0f} mm XLPE rails on {bp['backer_w']:.0f} mm "
+                                       "carbon backers (BP-08)",
+                               sub=(f"Rails {bp['rail_w']:.0f} x {bp['rail_l']:.0f} x {bp['rail_t']:.0f} on the stay lines; "
+                                    f"BP-01 mesh {bp['mesh_w']:.0f} x {bp['mesh_h']:.0f} (drawn see-through) spans a "
+                                    f"{bp['gutter_mm']:.0f} mm air gutter")))
     return out
 
 

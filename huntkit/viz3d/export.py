@@ -73,6 +73,15 @@ def build_materials(p: dict) -> tuple[dict, dict]:
                                   roughnessFactor=0.72),
         "hdpe": PBRMaterial(name="hdpe_framesheet", baseColorFactor=_hex_factor("#dedbd2"), metallicFactor=0.0,
                             roughnessFactor=0.6),
+        # wet-layup board with peel-ply faces: satin, not clear-coated (spreader BP-06)
+        "carbon_matte": PBRMaterial(name="carbon_peelply", baseColorTexture=twill, metallicFactor=0.15,
+                                    roughnessFactor=0.62),
+        "aluminium": PBRMaterial(name="aluminium_7075", baseColorFactor=_hex_factor("#aeb2b8"), metallicFactor=0.9,
+                                 roughnessFactor=0.32),
+        "hypalon": PBRMaterial(name="hypalon", baseColorFactor=_hex_factor("#6a5a45"), metallicFactor=0.0,
+                               roughnessFactor=0.55),
+        "xlpe": PBRMaterial(name="xlpe_foam", baseColorFactor=_hex_factor("#8d918a"), normalTexture=foam,
+                            metallicFactor=0.0, roughnessFactor=0.9),
         "titanium": PBRMaterial(name="titanium", baseColorFactor=_hex_factor("#b4b6ba"), metallicFactor=0.85,
                                 roughnessFactor=0.45),
         "hardware": PBRMaterial(name="pom_black", baseColorFactor=_hex_factor("#202020"), metallicFactor=0.0,
@@ -122,7 +131,8 @@ def manifest(pack) -> dict:
                            "variant": getattr(prt, "variant", None),
                            "material": prt.material, "label": prt.label,
                            "explode": to_gltf(prt.explode).round(4).tolist(),
-                           "haul": to_gltf(prt.haul).round(4).tolist()}
+                           "haul": to_gltf(prt.haul).round(4).tolist(),
+                           "swing": bool(getattr(prt, "swing", False)), "xray": bool(getattr(prt, "xray", False))}
     return parts
 
 

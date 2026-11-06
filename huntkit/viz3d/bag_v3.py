@@ -33,6 +33,7 @@ class TeardropSurface:
         st = np.asarray(stations, float)
         self.z, self.a, self.yf, self.d = st[:, 0], st[:, 1], st[:, 2], st[:, 3]
         self.n_out, self.n_frm, self.M = n_out, n_frm, M
+        self.deform = None        # optional callable (N,3)->(N,3): frame face draped over the hard parts (attach.Drape)
         K = len(st)
         self.T = np.zeros((K, M + 1, 3))
         self.P = np.zeros(K)
@@ -87,7 +88,11 @@ class TeardropSurface:
 
         def at(k):
             return self.T[k, j0] * (1 - wj)[..., None] + self.T[k, j1] * wj[..., None]
-        return at(k0) * (1 - wk)[..., None] + at(np.minimum(k0 + 1, len(self.z) - 1)) * wk[..., None]
+        out = at(k0) * (1 - wk)[..., None] + at(np.minimum(k0 + 1, len(self.z) - 1)) * wk[..., None]
+        if self.deform is not None:
+            sh = out.shape
+            out = self.deform(out.reshape(-1, 3)).reshape(sh)
+        return out
 
     def nrm(self, u, z, h=1.0):
         a = self.pt(np.asarray(u, float) + h, z) - self.pt(np.asarray(u, float) - h, z)
@@ -115,6 +120,16 @@ class TeardropSurface:
 
     # ------------------------------------------------------------------ meshes
     def body_mesh(self, r_bottom=25.0, n_round=6):
+        deform, self.deform = self.deform, None       # build the drafted mesh, then drape it once
+        try:
+            m = self._body_mesh(r_bottom, n_round)
+        finally:
+            self.deform = deform
+        if deform is not None:
+            m.vertices = deform(np.asarray(m.vertices, float))
+        return m
+
+    def _body_mesh(self, r_bottom=25.0, n_round=6):
         rings = [self.T[k, :-1] for k in range(len(self.z))]
         # rounded bottom edge: rings over the first r_bottom mm, pulled in toward the ring centre
         zb = self.z[0]
@@ -138,8 +153,12 @@ def _shard(surf, poly, thick, lift=0.5, max_edge=10.0):
                              thick=thick, lift=lift, max_edge=max_edge)
 
 
-def build_teardrop_bag(p, g, hp, Part, crown_info, tubes, metrics, block, ribbon_on, mx):
-    """Returns (parts, extras). extras: lid_vol, side_pocket_vol, pull."""
+def build_teardrop_bag(p, g, hp, Part, crown_info, tubes, metrics, block, ribbon_on, mx, drape=None):
+    """Returns (parts, extras). extras: lid_vol, side_pocket_vol, pull, the two surfaces and wrap helpers.
+
+    ``drape`` (attach.Drape): the frame panel B-01 conforms to the hard parts between bag and frame (spreader, edge
+    tubes, clips, hooks) and carries the eight sewn swells over the fairleads. The COUNTED volume is taken from the
+    drafted (undraped) mesh, as in geometry.yaml; the draped display volume is reported separately."""
     bag_g = g["bag"]
     prof = bag_g["profile"]
     n_out, n_frm = prof["n_out"], prof["n_frm"]
@@ -149,7 +168,7 @@ def build_teardrop_bag(p, g, hp, Part, crown_info, tubes, metrics, block, ribbon
     f_out = seams.get("face_side_fraction_of_outer_half_arc", 0.17)
     f_frm = seams.get("gore_fraction_of_frame_half_arc", 0.12)
     pull = float(p["haul_pullback_y"] or bag_g.get("haul_mode_pullback_y_max", 250.0))
-    HAUL = (0.0, pull, 0.0)
+    HAUL = (0.0, 0.0, 0.0)        # between mode is a SWING on the z 60 hinge pins (Part.swing), not a translation
     rt_cfg = bag_g.get("rolltop", {})
     BE = (0.0, 260.0, 0.0)
     sh_t = p["shard_thick"]
@@ -170,6 +189,11 @@ def build_teardrop_bag(p, g, hp, Part, crown_info, tubes, metrics, block, ribbon
                     "design_volume_l": (g.get("volumes") or {}).get("main_bag_L"),
                     "bag_dims_mm": [float(bag_g["width_x"]), float(bag_g["height_z"]), float(bag_g["depth_y"])],
                     "bag_type": "teardrop_rolltop"})
+    if drape is not None:                                  # display meshes: B-01 draped over the hard parts + swells
+        full.deform = roll.deform = drape
+        body_r, body_f = roll.body_mesh(), full.body_mesh()
+        metrics["bag_volume_draped_l"] = G.volume_mm3(body_f) / 1e6
+        metrics["bag_volume_rolled_draped_l"] = G.volume_mm3(body_r) / 1e6
     parts.append(Part("bag_body", body_r, "body", "bag", modes=BAGM, explode=BE, haul=HAUL, variant="rolled",
                       label=f"Main bag, rolled down ({vol_r:.0f} L)"))
     parts.append(Part("bag_body_full", body_f, "body", "bag", modes=BAGM, explode=BE, haul=HAUL, variant="full",
@@ -243,12 +267,7 @@ def build_teardrop_bag(p, g, hp, Part, crown_info, tubes, metrics, block, ribbon
                                                 (uc - 11, zt_ + 18)]), 2.2, max_edge=8))
     parts.append(Part("bag_boot_tabs", G.concat(extras), "tpu", "bag", modes=BAGM, explode=(0, 300, 0), haul=HAUL,
                       label="Hypalon lash tabs / muzzle keepers"))
-    link = []
-    for s in (-1, 1):
-        for z_ in (60.0, 330.0):
-            link.append(block([s * 112, float(np.interp(z_, full.z, full.yf)) - 4, z_], (16, 8, 26), e=0.4))
-    parts.append(Part("bag_link", G.concat(link), "hardware", "bag", modes=("pack",), explode=BE,
-                      label="Bag-frame link: hinge pins + toggles (LINK family)"))
+    # (v3.1 LINK toggles/quick-pins retired: the joint is huntkit.viz3d.attach, analysis/bag_attachment.md)
 
     # ------------------------------------------------------------------ floating side pockets
     spg = g["side_pockets"]
@@ -325,94 +344,112 @@ def build_teardrop_bag(p, g, hp, Part, crown_info, tubes, metrics, block, ribbon
     parts.append(Part("lid", lid, "body", "accessory", modes=BAGM, explode=(0, 280, 190), haul=HAUL, variant="lid",
                       label="Optional lid / hip pack (accessory, short fixed straps)"))
 
-    # ------------------------------------------------------------------ v3.1: NO SHELF (owner). Legacy geometry still draws the lip
-    sg = g.get("load_shelf")
-    shz, shy = 50.0, 14.0                      # quarter rests in the V at the bag-bottom hinge pins, against the frame
-    if sg:
-        sw_, sd_ = sg["floor_w_x"], sg["floor_d_y"]
-        shz, shy = sg["z"], sg["y_from"]
-        from shapely.geometry import box
-        spoly = box(-sw_ / 2, 0, sw_ / 2, sd_).buffer(-14).buffer(14, quad_segs=10)
-        shelf = G.plate(spoly, [0, shy, shz + 3], [1, 0, 0], [0, 1, 0], 5.0, tile=G.TILE_MM)
-        parts.append(Part("load_shelf", shelf, "tpu", "shelf", explode=(0, 60, -90),
-                          label=f"Fold-down shelf lip {sw_:.0f} x {sd_:.0f}"))
-
-    # ------------------------------------------------------------------ quarter proxy (haul modes)
-    q = p["quarter"]
-    qz0, qy0 = shz + 6.5, shy + 6
-    qyc = qy0 + q["depth"] / 2
-    qrings, qinfo = [], []
-    for f in np.linspace(0, 1, 36):
-        z = qz0 + q["height"] * f
-        taper = 1 - 0.45 * f ** 1.3
-        bul = 1 + 0.10 * np.sin(np.pi * min(f * 1.6, 1))
-        rr = np.sqrt(max(1 - ((f - 0.5) / 0.5) ** 10, 0.05))
-        a = max(q["width"] / 2 * taper * bul * rr, 18)
-        b = max(q["depth"] / 2 * (1 - 0.25 * f) * bul * rr, 14)
-        cyy = qyc - (q["depth"] / 2 - b)
-        qrings.append(G.superellipse_ring(a, b, 2.3, 3.4, M=64, cy=cyy, z=z))
-        qinfo.append((z, a, b, cyy))
-    quarter = G.loft(np.array(qrings), cap_start=True, cap_end=True)
-    qtop = qz0 + q["height"]
-    bc = np.array([14, qyc - 20, qtop - 30])
-    bone = G.concat([G.capsule_between(bc, bc + [4, 6, 110], 20, 17),
-                     G.superellipsoid(bc + [4, 6, 124], (28, 24, 22), 0.8, 0.8)])
-    QE = (0.0, 120.0, 0.0)
-    parts.append(Part("quarter_proxy", quarter, "game_bag", "haul", modes=HAULM, explode=QE,
-                      label="Bone-in elk hindquarter proxy in a game bag (no shelf: rests in the V, strapped to the frame)"))
-    parts.append(Part("quarter_bone", bone, "bone", "haul", modes=HAULM, explode=QE))
-    qinfo = np.array(qinfo)
-
-    def q_half(z):
-        return float(np.interp(z, qinfo[:, 0], qinfo[:, 1])) if qinfo[0, 0] <= z <= qinfo[-1, 0] else 0.0
-
-    # internal meat harness (v3.1): IM1-IM3 hook to the frame stubs and cam the quarter / game bags tight against the
-    # frame. Inside the bag in carry mode (hidden); shown in the haul modes routed stub-to-stub round the load.
+    # ------------------------------------------------------------------ meat haul
+    # v3.1+ (meat_harness in geometry.yaml): the quarters, the IM1-IM3 harness and the haul wraps of each mode are built
+    # by huntkit.viz3d.attach (between mode = bag swung open on the hinge pins; bag off = quarter in the under-strap
+    # cradle). The block below is the pre-attachment (v3.0 shelf) model, kept for legacy geometry only.
     mh = g.get("meat_harness") or {}
-    if mh:
-        ims, imh = [], []
-        for st_ in mh["straps"]:
-            aR = np.array(hp[st_["anchors"][0]], float)
-            zm = float(np.clip(st_["z"], qinfo[0, 0] + 5, qinfo[-1, 0] - 5))
-            a_ = np.interp(zm, qinfo[:, 0], qinfo[:, 1]); b_ = np.interp(zm, qinfo[:, 0], qinfo[:, 2])
-            c_ = np.interp(zm, qinfo[:, 0], qinfo[:, 3])
-            th_ = np.linspace(0.0, np.pi, 50)
-            cth, sth = np.cos(th_), np.sin(th_)
-            qp = np.column_stack([(a_ + 3.5) * np.sign(cth) * np.abs(cth) ** (2 / 2.3), c_ + (b_ + 3.5) * np.abs(sth) ** (2 / 2.3),
-                                  np.full(50, st_["z"])])
-            qp = qp[qp[:, 1] > aR[1] + 15]
-            Pq = np.vstack([[[aR[0] + 6, aR[1], st_["z"]]], qp, [[-aR[0] - 6, aR[1], st_["z"]]]])
-            nq = Pq - np.column_stack([np.zeros(len(Pq)), np.full(len(Pq), c_), Pq[:, 2]])
-            ims.append(ribbon_on(Pq, nq, 38.0, 2.6, smooth=False))
-            for sgn in (-1, 1):                                       # sliding-gate hooks at both stub eyes
-                imh.append(block([sgn * (aR[0] + 4), aR[1] + 22, st_["z"]], (10, 16, 40), e=0.5))
-            k = int(len(qp) * 0.25)                                    # cam on the wearer's-right leg
-            imh.append(block(qp[k] + (qp[k] - [0, c_, st_["z"]]) / max(np.linalg.norm(qp[k][:2] - [0, c_]), 1) * 6,
-                             (12, 18, 46), e=0.35))
-        parts.append(Part("meat_straps", G.concat(ims), "meat_strap", "haul", modes=HAULM, explode=QE,
-                          label="Internal meat harness IM1-IM3 (38 mm, MEAT family): stub-to-stub round the load"))
-        parts.append(Part("meat_hardware", G.concat(imh), "titanium", "haul", modes=HAULM, explode=QE,
-                          label="MEAT hooks + cams"))
+    qinfo = None
+    if not mh:
+        # ------------------------------------------------------------------ v3.1: NO SHELF (owner). Legacy geometry still draws the lip
+        sg = g.get("load_shelf")
+        shz, shy = 50.0, 14.0                      # quarter rests in the V at the bag-bottom hinge pins, against the frame
+        if sg:
+            sw_, sd_ = sg["floor_w_x"], sg["floor_d_y"]
+            shz, shy = sg["z"], sg["y_from"]
+            from shapely.geometry import box
+            spoly = box(-sw_ / 2, 0, sw_ / 2, sd_).buffer(-14).buffer(14, quad_segs=10)
+            shelf = G.plate(spoly, [0, shy, shz + 3], [1, 0, 0], [0, 1, 0], 5.0, tile=G.TILE_MM)
+            parts.append(Part("load_shelf", shelf, "tpu", "shelf", explode=(0, 60, -90),
+                              label=f"Fold-down shelf lip {sw_:.0f} x {sd_:.0f}"))
+
+        # ------------------------------------------------------------------ quarter proxy (haul modes)
+        q = p["quarter"]
+        qz0, qy0 = shz + 6.5, shy + 6
+        qyc = qy0 + q["depth"] / 2
+        qrings, qinfo = [], []
+        for f in np.linspace(0, 1, 36):
+            z = qz0 + q["height"] * f
+            taper = 1 - 0.45 * f ** 1.3
+            bul = 1 + 0.10 * np.sin(np.pi * min(f * 1.6, 1))
+            rr = np.sqrt(max(1 - ((f - 0.5) / 0.5) ** 10, 0.05))
+            a = max(q["width"] / 2 * taper * bul * rr, 18)
+            b = max(q["depth"] / 2 * (1 - 0.25 * f) * bul * rr, 14)
+            cyy = qyc - (q["depth"] / 2 - b)
+            qrings.append(G.superellipse_ring(a, b, 2.3, 3.4, M=64, cy=cyy, z=z))
+            qinfo.append((z, a, b, cyy))
+        quarter = G.loft(np.array(qrings), cap_start=True, cap_end=True)
+        qtop = qz0 + q["height"]
+        bc = np.array([14, qyc - 20, qtop - 30])
+        bone = G.concat([G.capsule_between(bc, bc + [4, 6, 110], 20, 17),
+                         G.superellipsoid(bc + [4, 6, 124], (28, 24, 22), 0.8, 0.8)])
+        QE = (0.0, 120.0, 0.0)
+        parts.append(Part("quarter_proxy", quarter, "game_bag", "haul", modes=HAULM, explode=QE,
+                          label="Bone-in elk hindquarter proxy in a game bag (no shelf: rests in the V, strapped to the frame)"))
+        parts.append(Part("quarter_bone", bone, "bone", "haul", modes=HAULM, explode=QE))
+        qinfo = np.array(qinfo)
+
+        def q_half(z):
+            return float(np.interp(z, qinfo[:, 0], qinfo[:, 1])) if qinfo[0, 0] <= z <= qinfo[-1, 0] else 0.0
+
+        # internal meat harness (v3.1): IM1-IM3 hook to the frame stubs and cam the quarter / game bags tight against the
+        # frame. Inside the bag in carry mode (hidden); shown in the haul modes routed stub-to-stub round the load.
+        mh = g.get("meat_harness") or {}
+        if mh:
+            ims, imh = [], []
+            for st_ in mh["straps"]:
+                aR = np.array(hp[st_["anchors"][0]], float)
+                zm = float(np.clip(st_["z"], qinfo[0, 0] + 5, qinfo[-1, 0] - 5))
+                a_ = np.interp(zm, qinfo[:, 0], qinfo[:, 1]); b_ = np.interp(zm, qinfo[:, 0], qinfo[:, 2])
+                c_ = np.interp(zm, qinfo[:, 0], qinfo[:, 3])
+                th_ = np.linspace(0.0, np.pi, 50)
+                cth, sth = np.cos(th_), np.sin(th_)
+                qp = np.column_stack([(a_ + 3.5) * np.sign(cth) * np.abs(cth) ** (2 / 2.3), c_ + (b_ + 3.5) * np.abs(sth) ** (2 / 2.3),
+                                      np.full(50, st_["z"])])
+                qp = qp[qp[:, 1] > aR[1] + 15]
+                Pq = np.vstack([[[aR[0] + 6, aR[1], st_["z"]]], qp, [[-aR[0] - 6, aR[1], st_["z"]]]])
+                nq = Pq - np.column_stack([np.zeros(len(Pq)), np.full(len(Pq), c_), Pq[:, 2]])
+                ims.append(ribbon_on(Pq, nq, 38.0, 2.6, smooth=False))
+                for sgn in (-1, 1):                                       # sliding-gate hooks at both stub eyes
+                    imh.append(block([sgn * (aR[0] + 4), aR[1] + 22, st_["z"]], (10, 16, 40), e=0.5))
+                k = int(len(qp) * 0.25)                                    # cam on the wearer's-right leg
+                imh.append(block(qp[k] + (qp[k] - [0, c_, st_["z"]]) / max(np.linalg.norm(qp[k][:2] - [0, c_]), 1) * 6,
+                                 (12, 18, 46), e=0.35))
+            parts.append(Part("meat_straps", G.concat(ims), "meat_strap", "haul", modes=HAULM, explode=QE,
+                              label="Internal meat harness IM1-IM3 (38 mm, MEAT family): stub-to-stub round the load"))
+            parts.append(Part("meat_hardware", G.concat(imh), "titanium", "haul", modes=HAULM, explode=QE,
+                              label="MEAT hooks + cams"))
+
 
     # ------------------------------------------------------------------ haul wraps (= compression)
     wraps = g.get("haul_wraps") or []
 
-    def wrap_path(S, zR, zL, ayR, ayL, dy=0.0, meat=False):
+    def q_half_default(z):
+        if qinfo is None:
+            return 0.0
+        return float(np.interp(z, qinfo[:, 0], qinfo[:, 1])) if qinfo[0, 0] <= z <= qinfo[-1, 0] else 0.0
+
+    def wrap_path(S, zR, zL, ayR, ayL, dy=0.0, meat=False, xform=None, q_half=None):
         """Frame anchor R -> bag frame corner R -> round the outer face (rising from zR to zL, a helix
-        when the anchors differ) -> frame corner L -> anchor L. In meat mode the bag is dy aft and the
-        strap runs past the quarter's sides."""
+        when the anchors differ) -> frame corner L -> anchor L. ``xform`` moves the bag points (between mode:
+        the hinge swing); in meat mode the strap runs from the fixed frame anchor past the quarter's sides."""
+        q_half = q_half or q_half_default
         zm = (zR + zL) / 2
         u_fc = S.outer_half(zm) / 2 + f_frm * S.frame_half(zm) * 0.6
         us = np.linspace(u_fc, -u_fc, 90)
         zs = np.linspace(zR, zL, 90)
         Pw = S.pt(us, zs) + S.nrm(us, zs) * 2.6 + np.array([0, dy, 0])
         Nw = S.nrm(us, zs)
+        if xform is not None:
+            Pw, Nw = xform(Pw), xform(Nw, direction=True)
         head, tail, hn, tn = [], [], [], []
         for s, lst, nl, z, ay, end in ((1, head, hn, zR, ayR, Pw[0]), (-1, tail, tn, zL, ayL, Pw[-1])):
             lst.append([s * 123.0, ay, z]); nl.append([s, 0, 0.0])
             if meat:
-                for y in np.linspace(ay + 40, end[1] - 30, 6):
-                    lst.append([s * max(q_half(z) + 4, abs(end[0])), y, z]); nl.append([s, 0, 0.0])
+                for f_ in np.linspace(0.15, 0.85, 6):
+                    y = ay + (end[1] - ay) * f_
+                    zz = z + (end[2] - z) * f_
+                    lst.append([s * max(q_half(zz) + 4, abs(end[0])), y, zz]); nl.append([s, 0, 0.0])
         P = np.vstack([head, Pw, tail[::-1]])
         Nn = np.vstack([hn, Nw, tn[::-1]])
         return P, Nn
@@ -428,51 +465,44 @@ def build_teardrop_bag(p, g, hp, Part, crown_info, tubes, metrics, block, ribbon
         return -5.0, float(w.get(f"z_{side}_at_19in", w["z_at_19in"]))
     fixed = [w for w in wraps if not str(w.get("anchor_R", w.get("anchor", ""))).startswith("crown")]
     crown_w = [w for w in wraps if str(w.get("anchor_R", w.get("anchor", ""))).startswith("crown")]
-    W_c, W_h, HW = [], [], []
+    W_c, HW = [], []
     for w in fixed:
         (ayR, zR), (ayL, zL) = anchor_of(w, "R"), anchor_of(w, "L")
         P, Nn = wrap_path(roll, zR, zL, ayR, ayL)
         W_c.append(G.ribbon(P, 25.0, 2.4, Nn, step=8))
-        P, Nn = wrap_path(roll, zR, zL, ayR, ayL, dy=pull, meat=True)
-        W_h.append(G.ribbon(P, 25.0, 2.4, Nn, step=8))
         HW += hooks(zR, zL, ayR, ayL)
     parts.append(Part("compression_straps", G.concat(W_c), "webbing", "bag", modes=("pack",), explode=(0, 300, 0),
                       label="Haul wraps W1/W2 = compression, angled with the SPINE (HAUL family)"))
-    parts.append(Part("haul_wraps_meat", G.concat(W_h), "webbing", "haul", modes=("pack_haul",), explode=(0, 120, 0),
-                      label="Haul wraps around meat + pulled-back bag"))
-    parts.append(Part("buckles", G.concat(HW), "titanium", "bag", modes=BAGM, explode=(0, 0, 0),
-                      label="G-hooks (left) + ladder locks (right) at the frame anchors"))
+    parts.append(Part("buckles", G.concat(HW), "titanium", "frame", modes=("pack", "pack_haul"), explode=(0, 0, 0),
+                      label="G-hooks (left) + ladder locks (right) at the frame anchors (HAUL family)"))
     for tin, cs in crown_info.items():
         for w in crown_w:
             z = float(cs["crown_top_z"])
             ay = float(cs["lifter_anchor_R"][1])
-            S = roll if z < z_roll - 60 else full
-            P, Nn = wrap_path(S, z, z, ay, ay)
-            parts.append(Part(f"crown_wrap@t{tin:g}", G.concat([G.ribbon(P, 25.0, 2.4, Nn, step=8)] + hooks(z, z, ay, ay)),
-                              "webbing", "bag", torso=tin, modes=("pack",), explode=(0, 300, 0),
-                              label="Haul wrap W3 on the crown top bar"))
-            P, Nn = wrap_path(S, z, z, ay, ay, dy=pull, meat=True)
-            parts.append(Part(f"crown_wrap_meat@t{tin:g}", G.ribbon(P, 25.0, 2.4, Nn, step=8), "webbing", "haul",
-                              torso=tin, modes=("pack_haul",), explode=(0, 120, 0)))
-    # frame-only: W1/W2 round the quarter's aft face, anchor to anchor
-    wf = []
-    for w in fixed:
-        (ayR, zR), (ayL, zL) = anchor_of(w, "R"), anchor_of(w, "L")
-        zl_ = (zR + zL) / 2
-        zq = np.clip(zl_, qinfo[0, 0] + 5, qinfo[-1, 0] - 5)
-        a_ = np.interp(zq, qinfo[:, 0], qinfo[:, 1])
-        b_ = np.interp(zq, qinfo[:, 0], qinfo[:, 2])
-        c_ = np.interp(zq, qinfo[:, 0], qinfo[:, 3])
-        th_ = np.linspace(0.0, np.pi, 50)
-        cth, sth = np.cos(th_), np.sin(th_)
-        qx = (a_ + 3) * np.sign(cth) * np.abs(cth) ** (2 / 2.3)
-        qy = c_ + (b_ + 3) * np.abs(sth) ** (2 / 2.3)
-        qz = zR + (zL - zR) * th_ / np.pi
-        qp = np.column_stack([qx, qy, qz])
-        keep = qp[:, 1] > max(ayR, ayL) + 20
-        Pq = np.vstack([[[123.0, ayR, zR]], qp[keep], [[-123.0, ayL, zL]]])
-        nq = Pq - np.column_stack([np.zeros(len(Pq)), np.full(len(Pq), c_), Pq[:, 2]])
-        wf.append(ribbon_on(Pq, nq, 25.0, 2.6, smooth=False))
-    parts.append(Part("wing_straps_frame", G.concat(wf), "webbing", "haul", modes=("frame_haul",), explode=QE,
-                      label="Haul wraps around the quarter (frame-only)"))
-    return parts, {"lid_vol": lid_vol, "side_pocket_vol": side_pocket_vol, "pull": pull}
+            for var, S in (("rolled", roll), ("full", full)):    # W3 follows the displayed bag top
+                P, Nn = wrap_path(S, z, z, ay, ay)
+                parts.append(Part(f"crown_wrap{'' if var == 'rolled' else '_full'}@t{tin:g}",
+                                  G.concat([G.ribbon(P, 25.0, 2.4, Nn, step=8)] + hooks(z, z, ay, ay)),
+                                  "webbing", "bag", torso=tin, modes=("pack",), explode=(0, 300, 0), variant=var,
+                                  label="Haul wrap W3 on the crown top bar"))
+    if not mh:                                            # legacy: translated bag + frame-only wraps round the quarter
+        W_h = []
+        for w in fixed:
+            (ayR, zR), (ayL, zL) = anchor_of(w, "R"), anchor_of(w, "L")
+            P, Nn = wrap_path(roll, zR, zL, ayR, ayL, dy=pull, meat=True)
+            W_h.append(G.ribbon(P, 25.0, 2.4, Nn, step=8))
+        parts.append(Part("haul_wraps_meat", G.concat(W_h), "webbing", "haul", modes=("pack_haul",), explode=(0, 120, 0),
+                          label="Haul wraps around meat + pulled-back bag"))
+
+    XRAY = {"bag_body", "bag_body_full", "bag_bottom", "bag_trim", "diagonal_band", "bag_shards", "side_pockets",
+            "rolltop", "rolltop_full", "lid", "zip_pulls", "compression_straps", "rolltop_straps",
+            "rolltop_full_straps", "bag_boot_tabs"}
+    for q in parts:                                       # everything on the bag swings open with it in between mode
+        if q.group in ("bag", "accessory"):
+            q.swing = True
+        if q.name in XRAY or q.name.startswith("crown_wrap"):   # viewer X-ray: see the joint through the bag
+            q.xray = True
+    return parts, {"lid_vol": lid_vol, "side_pocket_vol": side_pocket_vol, "pull": pull, "full": full, "roll": roll,
+                   "z0": z0, "z_top": z_top, "z_roll": z_roll, "zip_uz": zip_uz, "f_frm": f_frm, "f_out": f_out,
+                   "wrap_path": wrap_path, "anchor_of": anchor_of, "fixed_wraps": fixed, "crown_wraps": crown_w,
+                   "wrap_hooks": hooks, "band_poly": band_poly}

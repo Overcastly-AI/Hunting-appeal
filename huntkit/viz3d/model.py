@@ -48,6 +48,8 @@ class Part:
     label: str = ""
     colors: np.ndarray | None = None     # optional per-vertex RGBA (FEA overlay)
     variant: str | None = None           # viewer toggle: "rolled" | "full" | "lid" (v3 bag), None = always
+    swing: bool = False                  # between mode (pack_haul): rotates with the bag about the z 60 hinge-pin axis
+    xray: bool = False                   # viewer X-ray toggle draws this part translucent (bag shell, back-panel mesh)
 
 
 @dataclass
@@ -336,9 +338,7 @@ def build_pack(params: dict | None = None) -> PackModel:
             metrics["frame_type"] = "tube"
     else:
         metrics["frame_type"] = "tube"
-    barrier = _barrier_part()
-    if barrier is not None and not any(q.name == "frame_barrier" for q in parts):
-        parts.append(barrier)
+    # spreader, fairleads, pins, eyes and back panel: huntkit.viz3d.attach (below, before the bag)
 
     # ------------------------------------------------------------------ crown per torso
     settings = fr["crown_settings"]
@@ -366,6 +366,14 @@ def build_pack(params: dict | None = None) -> PackModel:
                 legs.append(G.tube(G.resample([[s * xl, yt, top], [s * (xl - 12), yt + aft, top]], 3.0), rb, n=28, tile=40.0))
         legs.append(G.tube(G.resample([[-(xl - 12 if aft > 0 else xl), yt + aft, top],
                                        [xl - 12 if aft > 0 else xl, yt + aft, top]], 5.0), rb, n=28, tile=40.0))
+        if aft > 0:                                            # corner wraps: x 77 (ply drop) .. 85 (full) .. leg
+            from huntkit.gendesign.attach_system import WRAP
+            ro = WRAP["od"] / 2
+            for s in (-1, 1):
+                legs.append(G.tube([[s * WRAP["x_start"], yt + aft, top], [s * WRAP["x_full"], yt + aft, top]],
+                                   (rb + ro) / 2, n=28, tile=40.0))
+                legs.append(G.tube([[s * WRAP["x_full"], yt + aft, top], [s * (xl - 12), yt + aft, top]], ro, n=28,
+                                   tile=40.0))
         # centre spine (carries the yoke and the lock rack) and the yoke plate
         sw, st = p["spine_w"], p["spine_t"]
         L = 300.0
@@ -758,12 +766,27 @@ def build_pack(params: dict | None = None) -> PackModel:
                           explode=QE, label="Wing straps around the quarter"))
         return lid_vol, side_pocket_vol, pull
 
+    # ------------------------------------------------------------------ joint, spreader, back panel (frame side)
+    use_attach = bool(bag_g.get("profile")) and bool(g.get("meat_harness"))
+    fs = None
+    if use_attach:
+        from . import attach as A
+        st_ = np.asarray(bag_g["profile"]["stations"], float)
+        fs = A.frame_side(p, g, Part, _block, lambda z: np.interp(z, st_[:, 0], st_[:, 2]))
+        parts.extend(fs["parts"])
+        metrics["spreader"] = fs["spreader"]
+        metrics["back_panel"] = fs["back_panel"]
+
     # ------------------------------------------------------------------ main bag
     if bag_g.get("profile"):                     # v3 SPINE teardrop roll-top (geometry.yaml bag.profile)
         from .bag_v3 import build_teardrop_bag
-        bparts, bx = build_teardrop_bag(p, g, hp, Part, crown_info, tubes, metrics, _block, _ribbon_on, _mx)
+        bparts, bx = build_teardrop_bag(p, g, hp, Part, crown_info, tubes, metrics, _block, _ribbon_on, _mx,
+                                        drape=fs["drape"] if fs else None)
         parts.extend(bparts)
         lid_vol, side_pocket_vol, pull = bx["lid_vol"], bx["side_pocket_vol"], bx["pull"]
+        if use_attach:                           # bag side of the joint, hood + guys, bow carry, haul modes
+            parts.extend(A.bag_side(p, g, Part, _block, crown_info, bx, fs, metrics))
+            parts.extend(A.haul_parts(p, g, Part, _block, crown_info, bx, fs, metrics, _ribbon_on))
     else:                                        # v2 box bag (legacy geometry.yaml)
         lid_vol, side_pocket_vol, pull = _legacy_box_bag()
     sh_t = p["shard_thick"]
@@ -868,23 +891,24 @@ def build_pack(params: dict | None = None) -> PackModel:
     parts.append(Part("hipbelt_webbing", G.concat(hw_web), "webbing", "suspension", explode=HBE))
     parts.append(Part("hipbelt_hardware", G.concat(hw), "hardware", "suspension", explode=HBE))
 
-    # back panel: spacer-mesh pillow between the fixed stays and the upper back (below the lowest yoke)
-    zp0 = hz + hb["height_center"] / 2 + 12
-    zp1 = min(c["yoke_anchor"][2] for c in settings) - 60
-    xw = TOP[0] - rs - 3
+    if not use_attach:   # legacy back panel pillow (the released back panel is attach.frame_side: BP-01/02/08)
+        # back panel: spacer-mesh pillow between the fixed stays and the upper back (below the lowest yoke)
+        zp0 = hz + hb["height_center"] / 2 + 12
+        zp1 = min(c["yoke_anchor"][2] for c in settings) - 60
+        xw = TOP[0] - rs - 3
 
-    def bp_surf(u, v):
-        return np.stack([u, stay_y(v) - rs - 1.5, v], -1)
+        def bp_surf(u, v):
+            return np.stack([u, stay_y(v) - rs - 1.5, v], -1)
 
-    def bp_n(u, v):
-        return np.broadcast_to(np.array([0, -1.0, 0]), np.shape(u) + (3,))
+        def bp_n(u, v):
+            return np.broadcast_to(np.array([0, -1.0, 0]), np.shape(u) + (3,))
 
-    def bp_thick(s_, t_):
-        z = zp0 + (zp1 - zp0) * t_
-        gap = (stay_y(z) - rs - 1.5) - body0.y_back(z)
-        return np.clip(gap - 1.0, 4, None) * (0.3 + 0.7 * G.bump(s_, 0.25) * G.bump(t_, 0.2))
-    pad = G.patch_shell(bp_surf, bp_n, (-xw, xw), (zp0, zp1), bp_thick, inset=2.0, nu=30, nv=30)
-    parts.append(Part("back_panel", pad, "spacer", "suspension", explode=(0, -120.0, 0), label="Back panel (spacer mesh)"))
+        def bp_thick(s_, t_):
+            z = zp0 + (zp1 - zp0) * t_
+            gap = (stay_y(z) - rs - 1.5) - body0.y_back(z)
+            return np.clip(gap - 1.0, 4, None) * (0.3 + 0.7 * G.bump(s_, 0.25) * G.bump(t_, 0.2))
+        pad = G.patch_shell(bp_surf, bp_n, (-xw, xw), (zp0, zp1), bp_thick, inset=2.0, nu=30, nv=30)
+        parts.append(Part("back_panel", pad, "spacer", "suspension", explode=(0, -120.0, 0), label="Back panel (spacer mesh)"))
 
     # ------------------------------------------------------------------ harness + mannequin per torso
     hg = g["harness"]

@@ -19,7 +19,7 @@ try { playwright = require('playwright'); } catch (e) { playwright = require('/o
   for (const s of cfg.shots) {
     await page.evaluate((s) => {
       const v = window.viewer;
-      v.set(Object.assign({mode:'pack', haul:false, explode:false, fea:false, mannequin:false, torso:19, fit:false, harness:true, full:false, lid:false}, s.state || {}));
+      v.set(Object.assign({mode:'pack', haul:false, explode:false, fea:false, mannequin:false, torso:19, fit:false, harness:true, full:false, lid:false, xray:false, bp:true}, s.state || {}));
       if (s.cam) v.camera(s.cam.pos, s.cam.tgt, s.cam.fov); else v.view(s.view || 'hero');
       v.caption(s.caption || '', s.sub || '');
     }, s);

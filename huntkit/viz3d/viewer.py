@@ -92,7 +92,7 @@ TEMPLATE = r"""<!DOCTYPE html>
 <div id="caption" class="card"><div class="t" id="capT"></div><div id="capS"></div></div>
 <div id="bar" class="card">
   <div class="grp"><button data-mode="pack" class="on">Full pack</button><button data-mode="frame">Frame only</button></div>
-  <div class="grp"><button data-tog="haul">Haul mode</button><button data-tog="explode">Exploded</button><button data-tog="fea">FEA colors</button><button data-tog="mannequin">Mannequin</button><button data-tog="harness" class="on">Harness</button><button data-tog="full">Full 85 L</button><button data-tog="lid">Lid</button></div>
+  <div class="grp"><button data-tog="haul" title="Full pack: bag swung open on the hinge pins, meat between bag and frame. Frame only: bag off, meat in the cradle">Meat haul</button><button data-tog="xray" title="See through the bag and the back-panel mesh">X-ray</button><button data-tog="explode">Exploded</button><button data-tog="fea">FEA colors</button><button data-tog="mannequin">Mannequin</button><button data-tog="harness" class="on">Harness</button><button data-tog="bp" class="on">Back panel</button><button data-tog="full">Full 85 L</button><button data-tog="lid">Lid</button></div>
   <div class="grp"><button data-torso="15">15 in</button><button data-torso="19" class="on">19 in</button><button data-torso="23">23 in</button><button data-tog="fit">Fit 3 sizes</button></div>
   <div class="grp"><button id="reset">Reset view</button></div>
 </div>
@@ -133,7 +133,7 @@ const rim = new THREE.DirectionalLight(0xffffff, 1.4); rim.position.set(-0.6, 2.
 const ground = new THREE.Mesh(new THREE.CircleGeometry(4, 64), new THREE.ShadowMaterial({opacity:0.22}));
 ground.rotation.x = -Math.PI/2; ground.receiveShadow = true; scene.add(ground);
 
-const state = {mode:'pack', haul:false, explode:false, fea:false, mannequin:false, torso:19, fit:false, harness:true, full:false, lid:false};
+const state = {mode:'pack', haul:false, explode:false, fea:false, mannequin:false, torso:19, fit:false, harness:true, full:false, lid:false, xray:false, bp:true};
 let root = null, fitRoots = [], explodeT = 0, needsFrame = 3, fitFloor = 0;
 const P = DATA.parts;
 const M = DATA.metrics;
@@ -183,6 +183,7 @@ function load() {
         }
       });
       root.traverse(o => { if (P[o.name]) o.userData.part = o.name; });
+
       scene.add(root);
       document.getElementById('loading').style.display = 'none';
       buildStats(); resize();
@@ -209,9 +210,12 @@ function buildStats() {
     `Torso <b>${state.torso} in</b>: crown top ${Math.round(t.crown_top_z||0)} mm · lifters ${fmt(t.lifter_angle_design_deg,1)}°`,
     `Volume from the 3D mesh; target ${fmt(M.target_volume_l)} L (${fmt(M.volume_error_pct,2)} %)`,
   ];
+  if (M.attach) chips.push(`Bag hooks <b>${Math.round(M.attach.hook_rated_n)} N</b> rated · crown hood ${Math.round(M.attach.hood_width_mm)} mm`);
+  if (M.hinge) chips.push(`Between mode: bag swings <b>${fmt(M.hinge.angle_deg,1)}°</b> on the z ${Math.round(M.hinge.z)} pins`);
   s.innerHTML = chips.map(c => `<span class="chip">${c}</span>`).join('') +
-    `<span class="chip warn">Tube sizes: ${M.tube_size_source}</span>`;
-  document.getElementById('subtitle').textContent = `v3 SPINE · 85.2 L teardrop roll-top · telescoping carbon crown · ${DATA.info.colorway ? DATA.info.colorway.name : ''} colorway`;
+    (M.frame_type === 'generative' ? `<span class="chip">Frame: printed PAHT-CF branch frame + carbon crown</span>`
+                                   : `<span class="chip warn">Tube sizes: ${M.tube_size_source}</span>`);
+  document.getElementById('subtitle').textContent = `v3.1 SPINE · 85.2 L teardrop roll-top · printed branch frame, carbon crown · ${DATA.info.colorway ? DATA.info.colorway.name : ''} colorway`;
   if (M.fea) document.getElementById('feainfo').innerHTML =
     `Worst: <b>${fmt(M.fea.max_utilization,2)}</b> (${M.fea.critical_case.replace(/_/g,' ')})<br>FEA model: ${M.fea.source}`;
 }
@@ -227,16 +231,37 @@ function visibleFor(name, torso) {
   if (p.group === 'mannequin') return state.mannequin && explodeT < 0.02;
   if (p.group === 'fea') return state.fea;
   if (p.group === 'suspension' && !state.harness) return false;
+  if (p.group === 'backpanel' && !state.bp) return false;
   if (state.fea && (name === 'frame_stays' || name === 'frame_bars' || name.startsWith('crown@'))) return false;
   return true;
 }
+// between mode: bag parts rotate about the hinge-pin axis (FCS x through y_h, z_h -> glTF X through Y=z, Z=y)
+const HINGE = M.hinge || null;
+const XMAT = new Map(), XORIG = new Map();   // X-ray twin per original material (clones share materials, not userData)
+const _q = new THREE.Quaternion(), _ax = new THREE.Vector3(1, 0, 0), _pv = new THREE.Vector3(), _tmp = new THREE.Vector3();
 function placeAll(r, torso) {
   r.traverse(o => {
     const n = o.userData.part; if (!n) return;
     o.visible = visibleFor(n, torso);
     const p = P[n];
-    const h = (state.haul && state.mode === 'pack') ? p.haul : [0,0,0];
-    o.position.set(h[0] + p.explode[0]*explodeT, h[1] + p.explode[1]*explodeT, h[2] + p.explode[2]*explodeT);
+    const between = state.haul && state.mode === 'pack';
+    const h = between ? p.haul : [0,0,0];
+    let px = h[0] + p.explode[0]*explodeT, py = h[1] + p.explode[1]*explodeT, pz = h[2] + p.explode[2]*explodeT;
+    if (between && p.swing && HINGE) {
+      _q.setFromAxisAngle(_ax, THREE.MathUtils.degToRad(HINGE.angle_deg));
+      _pv.set(0, HINGE.z / 1000, HINGE.y / 1000);
+      _tmp.copy(_pv).applyQuaternion(_q);
+      o.quaternion.copy(_q);
+      px += _pv.x - _tmp.x; py += _pv.y - _tmp.y; pz += _pv.z - _tmp.z;
+    } else {
+      o.quaternion.identity();
+    }
+    o.position.set(px, py, pz);
+    if (p.xray) o.traverse(c => { if (!c.isMesh) return;
+      const orig = XORIG.get(c.material) || c.material;
+      if (!XMAT.has(orig)) { const x = orig.clone(); x.transparent = true; x.opacity = 0.26; x.depthWrite = false;
+                             XMAT.set(orig, x); XORIG.set(x, orig); }
+      c.material = state.xray ? XMAT.get(orig) : orig; c.castShadow = !state.xray; });
   });
 }
 const FIT_DZ = 1.05;
@@ -287,6 +312,15 @@ const VIEWS = {
   frame:   {az:142, el:12, zoom:1.0},
   fea:     {az:-160, el:12, zoom:1},
   fit:     {az:90,  el:4,  zoom:0.95, fov:14},
+  // close-ups framed on a box (FCS mm: [x0, y0, z0, x1, y1, z1]) instead of the whole visible model
+  attach:  {az:128, el:20, zoom:1, box:[-80, -30, 380, 215, 90, 810]},
+  attach_low:{az:70, el:4, zoom:1, box:[-40, -10, 15, 215, 160, 380]},
+  hood:    {az:-138, el:28, zoom:1, box:[-215, -40, 640, 215, 120, 780]},
+  bow:     {az:62, el:8, zoom:1, box:[60, 40, 300, 240, 300, 680]},
+  between: {az:72,  el:12, zoom:1},
+  bagoff:  {az:48,  el:14, zoom:1},
+  spreader:{az:22,  el:10, zoom:1, box:[-150, -30, 30, 150, 60, 560]},
+  backpanel:{az:-160, el:8, zoom:1, box:[-200, -60, 20, 200, 30, 520]},
 };
 let currentView = 'hero';
 function visibleBox() {
@@ -300,7 +334,8 @@ function view(name) {
   const v = VIEWS[name] || VIEWS.hero;
   if (!root) return;
   camera.fov = v.fov || (window.innerWidth < window.innerHeight ? 42 : 30); camera.updateProjectionMatrix();
-  const box = visibleBox();
+  const box = v.box ? new THREE.Box3(new THREE.Vector3(v.box[0]/1000, v.box[2]/1000, v.box[1]/1000),
+                                     new THREE.Vector3(v.box[3]/1000, v.box[5]/1000, v.box[4]/1000)) : visibleBox();
   const tgt = v.tgt ? new THREE.Vector3(...v.tgt) : box.getCenter(new THREE.Vector3());
   const az = THREE.MathUtils.degToRad(v.az), el = THREE.MathUtils.degToRad(v.el);
   const dir = new THREE.Vector3(Math.sin(az)*Math.cos(el), Math.sin(el), Math.cos(az)*Math.cos(el));
