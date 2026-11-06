@@ -256,6 +256,13 @@ strap; a timed gloved trial.
 
 ## 8. Hand-off to the structural-fea-engineer (float mode, 2026-11-06)
 
+> **Answered 2026-11-06 (structural-fea-engineer, [float_fea.md](float_fea.md)).** IM3 eye solved directly with the
+> float vectors: design 559 N SF **4.01**, fatigue **2.04**; misuse 1142 N SF **2.08**, fatigue **1.11** (0.75 mm mesh
+> -2 %). The printed cheek at the 1415 N bag-on hook case gives SF 1.54 and the misuse vector sits inside it. Friction
+> is **not** credited (no sourced coefficient, no measured clamp force): US1 fatigue 0.95 at 56 kg stands, so the
+> **float meat limit on the frame is 53 kg (116 lb)**, cradle cammed to the 70 mm belly (at 50 mm: about 41 kg).
+> The between case is in no envelope. HA-LS-1 rev C note: `load_standard.md` §4.3.
+
 Do not re-run the bag-side checks; they are in the records. These are the frame-side loads that changed. Factored =
 HA-LS-1 x 3.0 (2.0 g x 1.5) unless stated; per side; FCS (y aft, z up). Source: `analysis/meat_haul_modes.json`
 `float` (`meat_haul.analyse`, cradle basis `cradle_fea.json`).

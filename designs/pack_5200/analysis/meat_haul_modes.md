@@ -121,10 +121,12 @@ Misuse envelope for the link parts: the rest of the 68 kg rating (32 kg) in the 
 | us2 | 326 | 4.91 | 2.21 |
 | im1 | 225 | 9.63 | 5.42 |
 | im2 | 225 | 9.63 | 5.42 |
-| im3 | 559 | 3.87 | 2.18 |
+| im3 | 559 | 4.01 | 2.04 |
 
 Minimum cleat fatigue SF **1.47** (design case); IM3 cleat fatigue on the envelope
-**1.07** (scaled from the IM3 fine-mesh solve). Under-strap tension
+**1.11** (direct FE with the float force direction, `float_fea.md`; strength
+2.08). The printed IM3 cheek at the 1415 N bag-on hook case: SF
+1.54; the float envelope is inside it. Under-strap tension
 **489 N**, cam SF **2.25**.
 
 Load CG aft of the stay plane (lever sum, `meat_haul.float_lever`; rev C meat case 190 mm):
@@ -142,7 +144,9 @@ mode A (rated 68 kg) or on the frame in B.
 Heavier meat on the frame (the full 56 kg with the gear in the bag) is NOT in the design
 case: on B's no-friction rule the lower under-strap would see 760 N, strength SF
 2.11, fatigue SF **0.95**, cam SF
-1.45. Hand-off to the structural-fea-engineer (`meat_carry_alternatives.md` section 8).
+1.45. Friction is not credited (no sourced coefficient, no measured clamp force):
+**float meat limit on the frame 53 kg (116 lb)**, set by US1
+fatigue at the 70 mm belly. Direct FE of the IM3 eye and the US1 anchor: `analysis/float_fea.md`.
 
 W1–W3 reach: at the 220 mm gap they need about the carry path + 2 × 220 mm; the haul paths in `geometry.yaml`
 (1190 / 1262 / 1468 mm) cover 1010 / 1082 / 1288 mm.

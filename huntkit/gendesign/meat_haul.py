@@ -325,6 +325,22 @@ def analyse(cradle_fea: dict | None = None) -> dict:
                   "tension_envelope_factored_n": t_link_env, "hook_rated_n": float(HOOK_RATED_LINK_N),
                   "hook_sf": float(HOOK_RATED_LINK_N / t_link), "hook_sf_envelope": float(HOOK_RATED_LINK_N / t_link_env),
                   "mass_g": float(sum(float_link_parts_g().values())), "parts_g": float_link_parts_g()}
+    # Direct FE of the IM3 eye under the float vectors (float_fea.py, 2026-11-06) replaces the force-scaled factors,
+    # and the US1 fatigue sets the float meat limit on the frame. Kept optional so analyse() runs before the solve.
+    direct = ANALYSIS / "float_fea_results.json"
+    if direct.exists():
+        fe = json.loads(direct.read_text())
+        for rows, key in ((float_c, "design"), (float_env, "misuse")):
+            r = fe["im3"][key]
+            rows["im3"].update({"sf": float(r["sf"]), "sf_fatigue": float(r["sf_fatigue"]),
+                                "sf_creep": float(r["sf_creep"]), "from": "im3 float direct FE"})
+        fl["cleat_sf"] = min(float(r["sf"]) for r in float_c.values())
+        fl["cleat_fatigue"] = min(float(r["sf_fatigue"]) for r in float_c.values())
+        fl["im3_direct"] = {"design_sf": fe["im3"]["design"]["sf"], "design_fatigue": fe["im3"]["design"]["sf_fatigue"],
+                            "misuse_sf": fe["im3"]["misuse"]["sf"], "misuse_fatigue": fe["im3"]["misuse"]["sf_fatigue"],
+                            "bag_on_1415_sf": fe["bag_on_1415"]["sf"], "inside_envelope": fe["im3_inside_envelope"]}
+        fl["meat_limit_kg"] = float(fe["us1"]["limit_kg"])
+        fl["meat_limit_lb"] = float(fe["us1"]["limit_lb"])
     fl["im3_eye_n"] = float_c["im3"]["n"]
     fl["im3_eye_envelope_n"] = float_env["im3"]["n"]
     fl["nodes_envelope"] = float_env
@@ -614,7 +630,9 @@ Misuse envelope for the link parts: the rest of the 68 kg rating ({w['bag_envelo
 {row(w['nodes'])}
 
 Minimum cleat fatigue SF **{w['cleat_fatigue']:.2f}** (design case); IM3 cleat fatigue on the envelope
-**{w['nodes_envelope']['im3']['sf_fatigue']:.2f}** (scaled from the IM3 fine-mesh solve). Under-strap tension
+**{w['nodes_envelope']['im3']['sf_fatigue']:.2f}** (direct FE with the float force direction, `float_fea.md`; strength
+{w['nodes_envelope']['im3']['sf']:.2f}). The printed IM3 cheek at the 1415 N bag-on hook case: SF
+{w.get('im3_direct', {}).get('bag_on_1415_sf', float('nan')):.2f}; the float envelope is inside it. Under-strap tension
 **{w['cradle_tension_n']:.0f} N**, cam SF **{w['cradle_cam_sf']:.2f}**.
 
 Load CG aft of the stay plane (lever sum, `meat_haul.float_lever`; rev C meat case {w['cg_limit_mm']:.0f} mm):
@@ -630,7 +648,9 @@ mode A (rated 68 kg) or on the frame in B.
 Heavier meat on the frame (the full {w['heavy_meat']['meat_kg']:.0f} kg with the gear in the bag) is NOT in the design
 case: on B's no-friction rule the lower under-strap would see {w['heavy_meat']['us1_n']:.0f} N, strength SF
 {w['heavy_meat']['us1_sf']:.2f}, fatigue SF **{w['heavy_meat']['us1_sf_fatigue']:.2f}**, cam SF
-{w['heavy_meat']['cam_sf']:.2f}. Hand-off to the structural-fea-engineer (`meat_carry_alternatives.md` section 8).
+{w['heavy_meat']['cam_sf']:.2f}. Friction is not credited (no sourced coefficient, no measured clamp force):
+**float meat limit on the frame {w.get('meat_limit_kg', 0):.0f} kg ({w.get('meat_limit_lb', 0):.0f} lb)**, set by US1
+fatigue at the 70 mm belly. Direct FE of the IM3 eye and the US1 anchor: `analysis/float_fea.md`.
 
 W1–W3 reach: at the 220 mm gap they need about the carry path + 2 × 220 mm; the haul paths in `geometry.yaml`
 (1190 / 1262 / 1468 mm) cover 1010 / 1082 / 1288 mm.

@@ -166,6 +166,24 @@ cases with the couple on the IM3 hooks) at torso 15 / 19 / 23 in. The production
 ASSUMPTION: C6 / C6p get the same +25 mm as the bag cases (no sim data for a stiff quarter). ASSUMPTION: the IM3
 couple variant puts the whole couple top on the IM3 anchors; reality lies between the two variants.
 
+### 4.3 Rev C note: float meat mode (2026-11-06, additive)
+
+The owner replaced the hinge swing ("between" mode) with the **float** (DESIGN.md D-33): meat in the US1/US2 cradle
+with IM1-IM3 over it, the bag hung upright behind it on two B-24 stand-off links at the IM3 eyes. Nothing in sections
+4-4.2 changes. The float is **not a new frame case**: at most 68 kg goes on the frame with the CG <= 190 mm aft
+(`meat_haul_modes.md` C), inside C5. It adds three **attachment cases** (`load_standard.FLOAT_ATTACHMENT_CASES`),
+checked by direct FE in [float_fea.md](float_fea.md):
+
+| case | load | factored, per IM3 eye | rule |
+|---|---|---|---|
+| float design | 36 kg meat on the frame + 12 kg gear in the bag; link 30 deg below horizontal carries the whole bag | 559 N (531 aft, 177 down) | link x 3.0 (C5: 2.0 g x 1.5), hand cinch 150 N x 1.5; fatigue at cinch + 1.6 x link |
+| float misuse | 36 kg meat + 32 kg in the bag | 1142 N (1040 aft, 471 down) | as above; must stay inside the bag-on IM3 hook case (1415 N) |
+| float cradle | meat on the frame, all vertical in the cradle, **no friction credit** | US1 489 N at 36 kg | 1.6 g x 1.5 strength; fatigue 1e5 x 1.6 g. Sets the **float meat limit: 53 kg (116 lb)** on the frame |
+
+The retired between case (hinge 264 N, IM3 496 N, CG 110 mm) is dropped; it is in no envelope. The bag-on hinge
+case (1019 N factored, HE / B-18) is unchanged. Proposed prototype test **T5f**: 56 kg of wet sandbags in float, US1
+share measured over 0 -> 1.6 g cycles; a measured share <= 0.95 x the no-friction value would earn 56 kg.
+
 ASSUMPTIONS specific to HA-LS-1:
 - ASSUMPTION: stumble limit 2.0 g (between Rome's 1.6 walking and 3.0 running); verify in T4a.
 - ASSUMPTION: set-down at 2.0 g x 1.5 covers a deliberate hard set-down; a free drop of a 150 lb pack onto one

@@ -1,0 +1,173 @@
+{
+  "date": "2026-11-06",
+  "mesh_h_mm": 1.0,
+  "stay_r_im3_mm": 16.8,
+  "stay_r_us1_mm": 9.1875,
+  "material": {
+    "fatigue_1e5_ratio": 0.3,
+    "creep_rupture_8h_40c_ratio": 0.4,
+    "env_knockdown": 0.8,
+    "s_xy": 88.0,
+    "s_z": 47.0
+  },
+  "im3": {
+    "design": {
+      "what": "36 kg meat on the frame + 12 kg gear in the bag",
+      "bag_kg": 12.0,
+      "factored": {
+        "fy": 530.741088936816,
+        "fz": -176.5197,
+        "n": 559.3257619437239,
+        "fi99": 0.24940214649404477,
+        "fi_max": 0.4149358368818321,
+        "bearing_sf": 7.74418111003407
+      },
+      "walk": {
+        "fy": 313.0619140996352,
+        "fz": -94.14384,
+        "n": 326.9110347933715,
+        "fi99": 0.14720081705900182,
+        "fi_max": 0.23970386921193215,
+        "bearing_sf": 13.249843348780793
+      },
+      "static_1g": {
+        "fy": 251.913696312272,
+        "fz": -58.8399,
+        "n": 258.6941132336057,
+        "fi99": 0.11881251393374287,
+        "fi_max": 0.18425311790162954,
+        "bearing_sf": 16.743790362514183
+      },
+      "sf": 4.00958858637521,
+      "sf_fatigue": 2.0380321658116367,
+      "sf_creep": 3.3666487372118437,
+      "bearing_sf": 7.74418111003407,
+      "sf_scaled_handoff": 3.8737381925452765,
+      "sf_fatigue_scaled_handoff": 2.1789777333067177
+    },
+    "misuse": {
+      "what": "36 kg meat + 32 kg in the bag (rest of the 68 kg rating)",
+      "bag_kg": 32.0,
+      "factored": {
+        "fy": 1040.309570498176,
+        "fz": -470.7192,
+        "n": 1141.8496257032882,
+        "fi99": 0.4816765727834043,
+        "fi_max": 0.8633518378238605,
+        "bearing_sf": 3.7934241974569374
+      },
+      "walk": {
+        "fy": 584.8317709323605,
+        "fz": -251.05024,
+        "n": 636.438860611087,
+        "fi99": 0.27068816382894173,
+        "fi_max": 0.48104169652194884,
+        "bearing_sf": 6.805869767036259
+      },
+      "static_1g": {
+        "fy": 421.76985683272534,
+        "fz": -156.9064,
+        "n": 450.01047820429426,
+        "fi99": 0.19849586578826292,
+        "fi_max": 0.3366488922136549,
+        "bearing_sf": 9.625375874100405
+      },
+      "sf": 2.0760818700843697,
+      "sf_fatigue": 1.1082863607940447,
+      "sf_creep": 2.015155320296107,
+      "bearing_sf": 3.7934241974569374,
+      "sf_scaled_handoff": 1.8975191805850862,
+      "sf_fatigue_scaled_handoff": 1.0673545390791108
+    }
+  },
+  "reproduce": {
+    "force_n": 553.7396583337543,
+    "sf": 3.912816309085589,
+    "sf_record": 3.912816309085761
+  },
+  "bag_on_1415": {
+    "fy": 1395.6266390414728,
+    "fz": -233.95361591093635,
+    "n": 1415.0999999999997,
+    "fi99": 0.6504503705966851,
+    "sf": 1.5373963106249882,
+    "bearing_sf": 3.0609285562857758,
+    "basis": "attach_system_results.json factored_n.im3 along rev C gov_c.im3 direction"
+  },
+  "im3_inside_envelope": true,
+  "mesh_check": {
+    "h_mm": 0.75,
+    "sf": 2.0314700405465564,
+    "sf_h1": 2.0760818700843697,
+    "change": -0.021488473157371346
+  },
+  "us1": {
+    "record_36kg": {
+      "sf": 3.276480639732807,
+      "sf_fatigue": 1.4744162878797633,
+      "force_n": 488.8736620487694
+    },
+    "limit_exact_kg": 53.078986363671476,
+    "limit_kg": 53.0,
+    "limit_lb": 116.0,
+    "rows": {
+      "36": {
+        "meat_kg": 36.0,
+        "tension_n": 488.8736620487693,
+        "fy": 417.5951759999999,
+        "fz": -254.18836799999997,
+        "sf": 3.2764806397323447,
+        "sf_fatigue": 1.4744162878795553,
+        "cam_sf": 2.2500700802537112,
+        "us2_sf_fatigue": 2.2116244318196445
+      },
+      "53": {
+        "meat_kg": 53.0,
+        "tension_n": 719.7306691273548,
+        "fy": 614.7928979999998,
+        "fz": -374.22176399999995,
+        "sf": 2.225534019440807,
+        "sf_fatigue": 1.001490308748363,
+        "cam_sf": 1.528349488474219,
+        "us2_sf_fatigue": 1.5022354631227774
+      },
+      "56": {
+        "meat_kg": 56.0,
+        "tension_n": 760.4701409647523,
+        "fy": 649.592496,
+        "fz": -395.404128,
+        "sf": 2.1063089826849986,
+        "sf_fatigue": 0.9478390422082493,
+        "cam_sf": 1.4464736230202428,
+        "us2_sf_fatigue": 1.4217585633126286
+      }
+    },
+    "belly_sensitivity": {
+      "50": {
+        "tension_ratio": 1.3040203087058277,
+        "limit_kg": 40.704110211557676
+      },
+      "60": {
+        "tension_ratio": 1.1240491937803765,
+        "limit_kg": 47.22123075873347
+      },
+      "70": {
+        "tension_ratio": 1.0,
+        "limit_kg": 53.078986363671476
+      },
+      "80": {
+        "tension_ratio": 0.910487270073293,
+        "limit_kg": 58.29734045529125
+      }
+    }
+  },
+  "friction_credit": {
+    "credited": false,
+    "reason": "No sourced coefficient for a wet game bag on the Sandwich v2 spreader or on 38 mm webbing, and no measured clamp force: the 150 N IM cinch is an ASSUMPTION and relaxes as the meat settles. A friction share under 1e5 walking cycles needs both, and a slip moves the whole load to the cradle.",
+    "mu_assumed_in_repo": 0.4
+  },
+  "screens": [
+    "outputs/screens/20261106_float_fea_1.png",
+    "outputs/screens/20261106_float_fea_2.png"
+  ]
+}

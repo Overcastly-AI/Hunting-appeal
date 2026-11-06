@@ -104,6 +104,21 @@ REVISIONS = {
           "tall_cg_mm": 185.0, "hipbelt_off_cg_mm": 205.0, "couple_tops": ("crown_bar", "strap_upper"),
           "top_anchor": TOP_ANCHOR_HOOD_GUYS, "tie_webbing_min_mm": TIE_WEBBING_MIN_MM},
 }
+# Rev C additive note (2026-11-06, float mode, load_standard.md section 4.3). Attachment-level cases, not frame cases:
+# the float puts <= 68 kg on the frame at CG <= 190 mm, inside C5 meat_straps, so ls1_cases() is unchanged. They size
+# the IM3 eye (meat-strap leg + one B-24 link) and the US1 cradle anchor (huntkit/gendesign/float_fea.py). The hinge
+# swing ("between", hinge 264 N) is retired and is in no envelope.
+FLOAT_ATTACHMENT_CASES = {
+    "float_design": {"what": "36 kg meat on the frame + 12 kg gear in the bag, link 30 deg below horizontal",
+                     "link_factor": 3.0, "cinch_factor": 1.5, "im3_factored_n": (531.0, -177.0),
+                     "fatigue": "cinch 150 N steady + 1.6 x link at 1 g"},
+    "float_misuse": {"what": "36 kg meat on the frame + 32 kg in the bag (rest of the 68 kg rating)",
+                     "link_factor": 3.0, "cinch_factor": 1.5, "im3_factored_n": (1040.0, -471.0),
+                     "fatigue": "cinch 150 N steady + 1.6 x link at 1 g"},
+    "float_cradle": {"what": "meat on the frame in the US1/US2 cradle, no friction credit, belly 70 mm",
+                     "factor": 1.5, "g": 1.6, "meat_limit_kg": 53.0},
+}
+RETIRED_ATTACHMENT_CASES = {"between": "float"}     # hinge swing retired 2026-11-06 (owner)
 BAG_CASES = ("static_carry", "drop_2p5g", "side_hill_torsion", "single_stay_setdown", "hipbelt_off_abuse")
 MEAT_CASES = ("meat_straps", "overload_haul")
 TALL_CASES = ("tall_load", "tall_load_posts")
