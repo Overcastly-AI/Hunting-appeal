@@ -12,7 +12,8 @@ Every dimension comes from a record; nothing here is redrawn by eye:
   :mod:`huntkit.gendesign.frame_branch`. B-01 swells from ``designs/pack_5200/patterns_v31.py`` (B-13..B-15).
 - **Joint:** :mod:`huntkit.gendesign.attach_system` (HOOD, LADDER, GUY, PIN, HOOK_RATED_N, WRAP, HOOD_TOP_MM,
   HOOD_FRONT_MM), ``panels.yaml`` B-11/B-17..B-23 sizes, placements from ``analysis/bag_attachment.md`` section 5.
-- **Between mode:** ``analysis/meat_haul_modes.json`` ``between.angle_deg`` (250 mm at IM3 = 28.5 deg about z 60).
+- **Float mode (owner 2026-11-06, replaces the hinge swing):** ``analysis/meat_haul_modes.json`` ``float`` (gaps
+  120 / 170 / 220 mm, B-24 link); the bag translates straight aft by the gap, nothing rotates.
 - **Cradle:** :mod:`huntkit.gendesign.meat_haul` US1_Z / US2_Z / BELLY_MM.
 
 Visual-only choices that no record fixes are marked ``ASSUMPTION (visual)``.
@@ -115,30 +116,24 @@ def board_shape():
     return _S().part_shape()
 
 
-def hinge() -> dict:
-    """Hinge-pin axis (x through the z 60 pins) and the between-mode opening angle."""
-    st = next(s for s in _BA().stations() if s["name"] == "hinge")
-    mh = json.loads((ANALYSIS / "meat_haul_modes.json").read_text())["between"]
-    return {"y": pin_y(st["z"]), "z": float(st["z"]), "angle_deg": float(mh["angle_deg"]),
-            "opening_mm": {k: float(v) for k, v in mh["opening_mm"].items()},
-            "source": "analysis/meat_haul_modes.json between (bag swung open about the z 60 pins)"}
+def float_info() -> dict:
+    """Float mode: the B-24 gaps and the view gap (analysis/meat_haul_modes.json 'float')."""
+    fl = json.loads((ANALYSIS / "meat_haul_modes.json").read_text())["float"]
+    return {"gaps_mm": [float(g_) for g_ in fl["gaps_mm"]], "view_gap_mm": float(fl["view_gap_mm"]),
+            "link_id": fl["link"]["id"], "link_cut_mm": float(fl["link"]["cut_mm"]),
+            "link_factored_n": float(fl["link"]["tension_factored_n"]),
+            "source": "analysis/meat_haul_modes.json float (bag translated straight aft by the B-24 gap; no rotation)"}
 
 
-class Swing:
-    """Rotation of the bag about the hinge-pin axis (x) by the between-mode angle: the top goes aft."""
+class Float:
+    """Bag points in float mode: the whole bag moves straight aft (FCS +y) by the gap; directions are unchanged."""
 
-    def __init__(self, h: dict):
-        self.yc, self.zc = h["y"], h["z"]
-        a = np.radians(h["angle_deg"])
-        self.c, self.s = np.cos(a), np.sin(a)
+    def __init__(self, gap: float):
+        self.d = np.array([0.0, float(gap), 0.0])
 
     def __call__(self, P, direction=False):
         P = np.array(P, float, copy=True)
-        oy, oz = (0.0, 0.0) if direction else (self.yc, self.zc)
-        y, z = P[..., 1] - oy, P[..., 2] - oz
-        P[..., 1] = oy + y * self.c + z * self.s
-        P[..., 2] = oz + z * self.c - y * self.s
-        return P
+        return P if direction else P + self.d
 
 
 # ============================================================================ small mesh helpers
@@ -377,8 +372,9 @@ def frame_side(p: dict, g: dict, Part, block, face_y) -> dict:
                       label="Cradle fairleads (4): under-strap anchors US1 z 95 / US2 z 142"))
     parts.append(Part("fairlead_pins", G.concat(pins_fixed), "aluminium", "frame",
                       label="7075 pins 5 mm in UHMWPE sleeves (US1/US2, IM1-IM3)"))
-    parts.append(Part("hinge_pins", G.concat(pins_hinge), "aluminium", "frame", modes=BAGM,
-                      label="Hinge pins z 60: tethered 5 mm 7075 pull-pins, Dyneema pull loops (come off with the bag)"))
+    parts.append(Part("hinge_pins", G.concat(pins_hinge), "aluminium", "frame", modes=BAGM, floats=True,
+                      label="Hinge pins z 60: tethered 5 mm 7075 pull-pins, Dyneema pull loops (pulled in float and bag off; "
+                            "they stay tethered to the bag)"))
     parts.append(Part("captive_eyes", G.concat(eyes), "webbing", "frame",
                       label="Captive webbing eyes on the IM1-IM3 pins (bag hooks and meat straps clip here)"))
     for st in BA.stations():                     # cradle cleat tips are not under a swell: the cloth drapes them
@@ -543,7 +539,6 @@ def bag_side(p, g, Part, block, crown_info, bx, fs, metrics) -> list:
     AS, BA = _AS(), _BA()
     full, roll = bx["full"], bx["roll"]
     parts = []
-    sw = Swing(hinge())
     STAY_X = _S().STAY_X
     z0 = float(bx["z0"])
 
@@ -558,9 +553,9 @@ def bag_side(p, g, Part, block, crown_info, bx, fs, metrics) -> list:
         tabs_out.append(_tab(full, x, Z17, w17, h17))
         tabs_in.append(_tab(full, x, z0 + h18 / 2, w18, h18, lift=-2.2))   # INSIDE B-01, lower edge in the seam
         tabs_in.append(_tab(full, x, Z23, w23, h23, lift=-2.2))            # INSIDE B-01 under the T2 box
-    parts.append(Part("tab_b17", G.concat(tabs_out), "hypalon", "bag", modes=BAGM, explode=BE, swing=True,
+    parts.append(Part("tab_b17", G.concat(tabs_out), "hypalon", "bag", modes=BAGM, explode=BE, floats=True,
                       label=f"B-17 IM3 bag-hook tabs (Hypalon {w17:.0f} x {h17:.0f}, outside B-01)"))
-    parts.append(Part("doublers_b18_b23", G.concat(tabs_in), "hypalon", "bag", modes=BAGM, explode=(0, 120, 0), swing=True,
+    parts.append(Part("doublers_b18_b23", G.concat(tabs_in), "hypalon", "bag", modes=BAGM, explode=(0, 120, 0), floats=True,
                       label=f"B-18 hinge-eye doublers {w18:.0f} x {h18:.0f} + B-23 IM2 backings {w23:.0f} x {h23:.0f} "
                             "(INSIDE B-01; pulled out in the exploded view)"))
 
@@ -586,11 +581,11 @@ def bag_side(p, g, Part, block, crown_info, bx, fs, metrics) -> list:
             P = np.array([face_pt(full, x, z_, lift=lift)[0] for z_ in zz])
             N = np.array([face_pt(full, x, z_)[1] for z_ in zz])
             tg.append(G.ribbon(np.vstack([top, P]), 38.0, 2.0, np.vstack([[0, -1, 0], N]), step=4.0))
-    parts.append(Part("hinge_eyes", G.concat(he), "webbing", "bag", modes=BAGM, explode=BE, swing=True,
+    parts.append(Part("hinge_eyes", G.concat(he), "webbing", "bag", modes=BAGM, explode=BE, floats=True,
                       label="HE hinge eyes on the z 60 pins (38 mm, necked to the 18 mm throat), tails into the B-01|B-05 seam"))
-    parts.append(Part("hook_tongues", G.concat(tg), "webbing", "bag", modes=BAGM, explode=BE, swing=True,
+    parts.append(Part("hook_tongues", G.concat(tg), "webbing", "bag", modes=BAGM, explode=BE, floats=True,
                       label="T2 (z 260, on B-23) and T3 (z 450, on B-17) bag-hook tongues, 38 mm"))
-    parts.append(Part("bag_hooks", G.concat(hk), "aluminium", "bag", modes=BAGM, explode=BE, swing=True,
+    parts.append(Part("bag_hooks", G.concat(hk), "aluminium", "bag", modes=BAGM, explode=BE, floats=True,
                       label=f"Bag hooks (4), 38 mm sliding gate, rated >= {AS.HOOK_RATED_N:.0f} N, at IM2 / IM3"))
 
     # ---------------------------------------------------------------- B-20 ladders (one rung per crown setting)
@@ -603,7 +598,7 @@ def bag_side(p, g, Part, block, crown_info, bx, fs, metrics) -> list:
         holes = [lambda uc, k=k: box(uc - sl_w / 2, L["slot0_z"] + k * L["pitch"] - sl_h / 2,
                                      uc + sl_w / 2, L["slot0_z"] + k * L["pitch"] + sl_h / 2) for k in range(L["rungs"])]
         lad.append(_tab(full, s * L["x"], zc_, lw, lh, thick=1.2, lift=0.4, r=4.0, holes=holes))
-    parts.append(Part("hood_ladders", G.concat(lad), "hypalon", "bag", modes=BAGM, explode=BE, swing=True,
+    parts.append(Part("hood_ladders", G.concat(lad), "hypalon", "bag", modes=BAGM, explode=BE, floats=True,
                       label=f"B-20 hood ladders x {L['x']:.0f}, z {L['z_lo']:.0f}-{L['z_lo'] + lh:.0f}: "
                             f"{L['rungs']} slots, one rung per crown setting"))
 
@@ -619,7 +614,7 @@ def bag_side(p, g, Part, block, crown_info, bx, fs, metrics) -> list:
             b22.append(block(c + n_ * 4.0 + [0, 0, -8], (30, 9, 14), e=0.35))        # ladder lock
             b22.append(block(c + n_ * 3.0 + [0, 0, -26], (30, 5, 9), e=0.3))         # tri-glide keeper
         parts.append(Part("guy_tabs_b22" + ("" if var == "rolled" else "_full"), G.concat(b22), "hypalon", "bag",
-                          modes=BAGM, explode=BE, swing=True, variant=var,
+                          modes=BAGM, explode=BE, floats=True, variant=var,
                           label=f"B-22 guy corner tabs {w22:.0f} x {h22:.0f} + 25 mm ladder locks, x +/-{gx:.0f}, z {gz:.0f}"))
 
     def ybag(z):
@@ -646,7 +641,7 @@ def bag_side(p, g, Part, block, crown_info, bx, fs, metrics) -> list:
                                 f"relieved to x +/-{AS.HOOD['lip_half']:.0f}, tongues on rung {k}"))
         parts.append(Part(f"hood_lining{tag}", lining, "xlpe", "attach", torso=tin, modes=("pack",), explode=(0, 130, 150),
                           label="B-19L XLPE lining (quiet on the bar)"))
-        # between mode: the hood is lifted off the bar and lies flat on B-01 over the ladder (rides with the bag)
+        # float mode: the hood is lifted off the bar and lies flat on B-01 over the ladder (rides with the bag)
         flen = _AS().hood_flat()["length"]
         Wh = AS.HOOD["width"]
         hp_ = box(-Wh / 2, z_slot - 6, Wh / 2, z_slot - 6 + flen).buffer(-4).buffer(4, quad_segs=6)
@@ -655,8 +650,8 @@ def bag_side(p, g, Part, block, crown_info, bx, fs, metrics) -> list:
         hp_ = unary_union([hp_, box(-Wh / 2 - ew, ear_z - eh / 2, -Wh / 2 + 4, ear_z + eh / 2),
                            box(Wh / 2 - 4, ear_z - eh / 2, Wh / 2 + ew, ear_z + eh / 2)])
         flat = frame_shard(full, hp_, 1.4, lift=1.8, max_edge=10)
-        parts.append(Part(f"crown_hood_open{tag}", flat, "hypalon", "attach", torso=tin, modes=("pack_haul",), swing=True,
-                          label="Crown hood lifted off the bar, lying flat on B-01 (between mode)"))
+        parts.append(Part(f"crown_hood_open{tag}", flat, "hypalon", "attach", torso=tin, modes=("pack_haul",), floats=True,
+                          label="Crown hood lifted off the bar, lying flat on B-01 (float mode)"))
         ears_open = [face_pt(full, s * (Wh / 2 + AS.HOOD["ear_w"] / 2), ear_z, lift=3.0)[0] for s in (-1, 1)]
         for var, S in (("rolled", roll), ("full", full)):
             for mode, ear_pts in (("pack", ears), ("pack_haul", ears_open)):
@@ -672,7 +667,7 @@ def bag_side(p, g, Part, block, crown_info, bx, fs, metrics) -> list:
                     guy_len[(tin, var)] = float(np.mean(ln))
                 nm = "top_guys" + ("_open" if mode == "pack_haul" else "") + ("" if var == "rolled" else "_full") + tag
                 parts.append(Part(nm, G.concat(gm), "webbing", "attach", torso=tin, modes=(mode,), variant=var,
-                                  swing=(mode == "pack_haul"), explode=BE,
+                                  floats=(mode == "pack_haul"), explode=BE,
                                   label=f"TG top side guys: hood ears -> B-22 at x +/-{gx:.0f}, z {gz:.0f} "
                                         f"(fixed length, set once; record free length {AS.GUY['free_mm']:.0f} mm)"))
     metrics["attach"] = {"hook_rated_n": float(AS.HOOK_RATED_N), "hood_width_mm": float(AS.HOOD["width"]),
@@ -705,9 +700,9 @@ def bag_side(p, g, Part, block, crown_info, bx, fs, metrics) -> list:
     N = full.nrm(us, np.full(40, zs_))
     bow.append(G.ribbon(P, 25.0, 1.8, N, step=4.0))
     bow_hw = [block(P[-1] + N[-1] * 2.5, (8, 14, 30), e=0.6)]
-    parts.append(Part("bow_carry", G.concat(bow), "webbing", "bag", modes=BAGM, explode=BE, swing=True,
+    parts.append(Part("bow_carry", G.concat(bow), "webbing", "bag", modes=BAGM, explode=BE, floats=True,
                       label="Bow riser carry (right side): 2 x 25 mm loops through B-11 lash tabs + G-hook strap"))
-    parts.append(Part("bow_carry_hook", G.concat(bow_hw), "aluminium", "bag", modes=BAGM, explode=BE, swing=True,
+    parts.append(Part("bow_carry_hook", G.concat(bow_hw), "aluminium", "bag", modes=BAGM, explode=BE, floats=True,
                       label="Bow strap G-hook (HAUL family)"))
     return parts
 
@@ -741,30 +736,26 @@ def _strap_pack_path(full, fs, z_s, y_ch, z0, sw=None):
 
 
 def haul_parts(p, g, Part, block, crown_info, bx, fs, metrics, ribbon_on) -> list:
-    """Between mode (bag swung open on the hinge pins, quarter in the wedge) and bag-off (quarter in the cradle),
-    plus the under-straps in every mode."""
+    """Float mode (meat in the cradle, bag hung upright behind it on the B-24 links, one set per gap) and bag-off
+    (quarter in the cradle), plus the under-straps in every mode."""
     from huntkit.gendesign import meat_haul as MH
-    S = _S()
     full, roll = bx["full"], bx["roll"]
-    h = hinge()
-    sw = Swing(h)
+    fi = float_info()
     parts = []
     z0 = float(bx["z0"])
-    c0 = full.center(z0)
     d0 = float(full.d[0])
     # ASSUMPTION (visual): floor channels, US1 rear at 0.62 of the floor depth, US2 front at 0.30
     chans = {MH.US1_Z: float(full.yf[0]) + 0.62 * d0, MH.US2_Z: float(full.yf[0]) + 0.30 * d0}
 
-    # ---------------------------------------------------------------- under-straps: bag on / between / frame only
-    for mode, xf in (("pack", None), ("pack_haul", sw)):
-        straps, cams = [], []
-        for z_s, y_ch in chans.items():
-            P, N = _strap_pack_path(full, fs, z_s, y_ch, z0, sw=xf)
-            straps.append(G.ribbon(P, 38.0, 2.0, N, step=4.0))
-            cams.append(block(P[-2] + [0, 2, 0], (40, 10, 24), e=0.35))
-        parts.append(Part("under_straps" + ("" if mode == "pack" else "_open"), G.concat(straps + cams), "webbing", "frame",
-                          modes=(mode,), label="Under-straps US1 (z 95) / US2 (z 142), 38 mm, cammed under the bag floor "
-                                               "channels (eye on the left pin, cam on the right)"))
+    # ---------------------------------------------------------------- under-straps: bag on (cammed under the floor)
+    straps, cams = [], []
+    for z_s, y_ch in chans.items():
+        P, N = _strap_pack_path(full, fs, z_s, y_ch, z0)
+        straps.append(G.ribbon(P, 38.0, 2.0, N, step=4.0))
+        cams.append(block(P[-2] + [0, 2, 0], (40, 10, 24), e=0.35))
+    parts.append(Part("under_straps", G.concat(straps + cams), "webbing", "frame", modes=("pack",),
+                      label="Under-straps US1 (z 95) / US2 (z 142), 38 mm, cammed under the bag floor "
+                            "channels (eye on the left pin, cam on the right)"))
     slack = []
     for z_s in chans:
         pr = fs["pin_at"][f"{'us1' if z_s < 120 else 'us2'}_R"]
@@ -784,7 +775,7 @@ def haul_parts(p, g, Part, block, crown_info, bx, fs, metrics, ribbon_on) -> lis
     def y_front(z):                                   # game bag on the spreader (bag face + 1), the line above it
         return board_bag_y(z) + 1.0
 
-    def quarter(zq0, thick_high, wedge=None):
+    def quarter(zq0, thick_high, space=None):
         rings, info = [], []
         for f in np.linspace(0, 1, 40):
             z = zq0 + Hq * f
@@ -794,8 +785,8 @@ def haul_parts(p, g, Part, block, crown_info, bx, fs, metrics, ribbon_on) -> lis
             rr = np.sqrt(max(1 - ((f - 0.5) / 0.5) ** 10, 0.05))
             a = max(W / 2 * taper * bul * rr, 18)
             b = max(D / 2 * (1 - 0.25 * ff) * bul * rr, 14)
-            if wedge is not None:
-                b = max(min(b, (wedge(z) - 8.0) / 2), 12)
+            if space is not None:                     # float: the bone-in quarter is pressed to the gap by W1-W3
+                b = max(min(b, (space(z) - 6.0) / 2), 12)
             cy = float(y_front(z)) + b
             rings.append(G.superellipse_ring(a, b, 2.3, 3.4, M=64, cy=cy, z=z))
             info.append((z, a, b, cy))
@@ -806,24 +797,26 @@ def haul_parts(p, g, Part, block, crown_info, bx, fs, metrics, ribbon_on) -> lis
                          G.superellipsoid(bc + [4, 4, 124], (28, 24, 22), 0.8, 0.8)])
         return G.loft(np.array(rings), cap_start=True, cap_end=True), bone, info
 
-    # B-01 swung open: its frame-face line, rotated; the wedge is what is left between it and the spreader line
-    zz = np.linspace(z0, 1000, 300)
-    b01 = np.c_[np.zeros_like(zz), np.interp(zz, full.z, full.yf), zz]
-    b01r = sw(b01)
-
-    def wedge(z):
-        return float(np.interp(z, b01r[:, 2], b01r[:, 1])) - float(y_front(z))
-    ZQ_BETWEEN = 150.0     # ASSUMPTION (visual): hock just under the IM1 strap (bag_attachment.md 7: 'hock at IM1')
-    qb, bb, qi_b = quarter(ZQ_BETWEEN, True, wedge)
-    zq_off = MH.US1_Z - MH.BELLY_MM + 4.0              # bag off: the quarter sits in the US1 belly
+    zq_off = MH.US1_Z - MH.BELLY_MM + 4.0              # the quarter sits in the US1 belly (bag off and float)
     qo, bo, qi_o = quarter(zq_off, False)
     QE = (0.0, 120.0, 0.0)
-    parts.append(Part("quarter_between", qb, "game_bag", "haul", modes=("pack_haul",),
-                      label="Bone-in elk hindquarter in a game bag, thick end high in the wedge (between mode)"))
-    parts.append(Part("quarter_bone_between", bb, "bone", "haul", modes=("pack_haul",)))
     parts.append(Part("quarter_proxy", qo, "game_bag", "haul", modes=("frame_haul",), explode=QE,
                       label="Bone-in elk hindquarter in a game bag, in the under-strap cradle (bag off)"))
     parts.append(Part("quarter_bone", bo, "bone", "haul", modes=("frame_haul",), explode=QE))
+
+    # float: B-01 (frame face, x = 0) moved straight aft by the gap; the space is what is left to the spreader line
+    zz = np.linspace(z0, 1000, 300)
+    yb01 = np.interp(zz, full.z, full.yf)
+    space_mm, qi_f = {}, {}
+    for gap in fi["gaps_mm"]:
+        def space(z, gap=gap):
+            return float(np.interp(z, zz, yb01)) + gap - float(y_front(z))
+        tag = f"_g{gap:.0f}"
+        qf, bf, qi_f[gap] = quarter(zq_off, False, space)
+        parts.append(Part(f"quarter_float{tag}", qf, "game_bag", "haul", modes=("pack_haul",), gap=gap,
+                          label=f"Bone-in elk hindquarter in a game bag in the cradle; bag hung {gap:.0f} mm behind it (float)"))
+        parts.append(Part(f"quarter_bone_float{tag}", bf, "bone", "haul", modes=("pack_haul",), gap=gap))
+        space_mm[str(int(gap))] = {str(int(z)): round(space(z), 1) for z in (190.0, 330.0, 520.0)}
 
     def q_half_of(info):
         def f(z):
@@ -832,7 +825,8 @@ def haul_parts(p, g, Part, block, crown_info, bx, fs, metrics, ribbon_on) -> lis
 
     # ---------------------------------------------------------------- IM1-IM3 meat harness, eye to eye over the meat
     mh = g.get("meat_harness") or {}
-    for mode, info, name in (("pack_haul", qi_b, "between"), ("frame_haul", qi_o, "bagoff")):
+    sets = [("frame_haul", qi_o, "", None)] + [("pack_haul", qi_f[gap], f"_float_g{gap:.0f}", gap) for gap in fi["gaps_mm"]]
+    for mode, info, sfx, gap in sets:
         ims, imh = [], []
         for st_ in mh.get("straps", []):
             zs_ = float(st_["z"])
@@ -853,50 +847,77 @@ def haul_parts(p, g, Part, block, crown_info, bx, fs, metrics, ribbon_on) -> lis
             kq = int(len(qp) * 0.25)                                      # cam on the wearer's-right leg
             imh.append(block(qp[kq] + (qp[kq] - [0, c_, qp[kq][2]]) / max(np.linalg.norm(qp[kq][:2] - [0, c_]), 1) * 6,
                              (12, 18, 46), e=0.35))
-        parts.append(Part(f"meat_straps_{name}" if name != "bagoff" else "meat_straps", G.concat(ims), "meat_strap", "haul",
-                          modes=(mode,), label="Meat harness IM1-IM3 (38 mm, MEAT family): eye to eye over the quarter, cammed"))
-        parts.append(Part(f"meat_hardware_{name}" if name != "bagoff" else "meat_hardware", G.concat(imh), "aluminium",
-                          "haul", modes=(mode,), label="MEAT sliding-gate hooks + cams"))
+        parts.append(Part(f"meat_straps{sfx}", G.concat(ims), "meat_strap", "haul", modes=(mode,), gap=gap,
+                          label="Meat harness IM1-IM3 (38 mm, MEAT family): eye to eye over the quarter, cammed"))
+        parts.append(Part(f"meat_hardware{sfx}", G.concat(imh), "aluminium", "haul", modes=(mode,), gap=gap,
+                          label="MEAT sliding-gate hooks + cams"))
 
-    # bag off: the two under-straps are the cradle round the quarter's low end
-    cr = []
-    for z_s in chans:
-        pr, pl = fs["pin_at"][f"{'us1' if z_s < 120 else 'us2'}_R"], fs["pin_at"][f"{'us1' if z_s < 120 else 'us2'}_L"]
-        th_ = np.linspace(0.0, np.pi, 41)
-        pts = []
-        for t_ in th_:
-            zb = z_s - MH.BELLY_MM * np.sin(t_)
-            zq = float(np.clip(zb, qi_o[0, 0] + 6, qi_o[-1, 0]))
-            a_, b_, c_ = (float(np.interp(zq, qi_o[:, 0], qi_o[:, k])) for k in (1, 2, 3))
-            pts.append([(a_ + 4) * np.cos(t_), c_ + (b_ + 4) * np.sin(t_) ** 0.8, min(zb, zq) - (3 if zb < zq else 0)])
-        pts = np.array(pts)
-        pts = pts[pts[:, 1] > pr[1] + 6]
-        P = np.vstack([[pr + [0, 3, -3]], pts, [pl + [0, 3, -3]]])
-        cen = np.column_stack([np.zeros(len(P)), np.interp(P[:, 2], qi_o[:, 0], qi_o[:, 3]), P[:, 2] + 30])
-        cr.append(ribbon_on(P, P - cen, 38.0, 2.4, smooth=False))
-    parts.append(Part("cradle_straps", G.concat(cr), "webbing", "frame", modes=("frame_haul",),
+    # the two under-straps are the cradle round the quarter's low end (bag off and float)
+    def cradle(qi):
+        cr = []
+        for z_s in chans:
+            pr, pl = fs["pin_at"][f"{'us1' if z_s < 120 else 'us2'}_R"], fs["pin_at"][f"{'us1' if z_s < 120 else 'us2'}_L"]
+            th_ = np.linspace(0.0, np.pi, 41)
+            pts = []
+            for t_ in th_:
+                zb = z_s - MH.BELLY_MM * np.sin(t_)
+                zq = float(np.clip(zb, qi[0, 0] + 6, qi[-1, 0]))
+                a_, b_, c_ = (float(np.interp(zq, qi[:, 0], qi[:, k])) for k in (1, 2, 3))
+                pts.append([(a_ + 4) * np.cos(t_), c_ + (b_ + 4) * np.sin(t_) ** 0.8, min(zb, zq) - (3 if zb < zq else 0)])
+            pts = np.array(pts)
+            pts = pts[pts[:, 1] > pr[1] + 6]
+            P = np.vstack([[pr + [0, 3, -3]], pts, [pl + [0, 3, -3]]])
+            cen = np.column_stack([np.zeros(len(P)), np.interp(P[:, 2], qi[:, 0], qi[:, 3]), P[:, 2] + 30])
+            cr.append(ribbon_on(P, P - cen, 38.0, 2.4, smooth=False))
+        return G.concat(cr)
+    parts.append(Part("cradle_straps", cradle(qi_o), "webbing", "frame", modes=("frame_haul",),
                       label=f"Under-straps as the cradle: belly {MH.BELLY_MM:.0f} mm under the quarter"))
+    for gap in fi["gaps_mm"]:
+        parts.append(Part(f"cradle_straps_float_g{gap:.0f}", cradle(qi_f[gap]), "webbing", "frame", modes=("pack_haul",),
+                          gap=gap, label=f"Under-straps as the cradle (float): belly {MH.BELLY_MM:.0f} mm under the quarter"))
 
-    # ---------------------------------------------------------------- haul wraps W1-W3 round the open bag and the meat
+    # ---------------------------------------------------------------- B-24 stand-off links, IM3 eye -> T3 hook loop
+    # The bag's T3 hook (a bag part, it moves with the bag) sits at the IM3 eye end in carry; in float it is the same
+    # point moved aft by the gap, clipped into the loop whose apex is at that distance from the link's hook bed.
+    for gap in fi["gaps_mm"]:
+        lk, hw_ = [], []
+        for side in ("R", "L"):
+            e_ = np.asarray(fs["eye_ends"][f"im3_{side}"], float)
+            sx = 1.0 if side == "R" else -1.0
+            x_off = sx * 6.0                                   # ASSUMPTION (visual): beside the meat-strap hook
+            P = np.array([e_ + [x_off, 4, -15], e_ + [x_off, gap * 0.5, -15], e_ + [x_off, gap - 4, -15]])
+            N = np.tile([sx, 0.0, 0.0], (len(P), 1))
+            lk.append(G.ribbon(P, 38.0, 2.0, N, step=4.0))
+            for gl in fi["gaps_mm"]:                          # the three sewn loops (apex at each gap)
+                if gl <= gap + 1e-6:
+                    lk.append(block(e_ + [x_off + sx * 2.5, gl - 12.0, -15], (3.5, 25, 38), e=0.4))
+            hw_.append(_loop_rod(e_ + [x_off, 8, -15], [1, 0, 0], [0, 0, 1], 40.0, 30.0, 2.6))   # rated hook on the eye
+        parts.append(Part(f"float_links_g{gap:.0f}", G.concat(lk), "webbing", "haul", modes=("pack_haul",), gap=gap,
+                          label=f"{fi['link_id']} stand-off links (2): 38 mm webbing, loops at "
+                                + " / ".join(f"{x:.0f}" for x in fi["gaps_mm"]) + f" mm; bag hung on the {gap:.0f} mm loop"))
+        parts.append(Part(f"float_link_hooks_g{gap:.0f}", G.concat(hw_), "aluminium", "haul", modes=("pack_haul",),
+                          gap=gap, label=f"Rated 38 mm hooks (>= 2200 N) of the {fi['link_id']} links on the IM3 eyes"))
+
+    # ---------------------------------------------------------------- haul wraps W1-W3 round the hung bag and the meat
     wp, anchor_of = bx["wrap_path"], bx["anchor_of"]
-    q_half_b = q_half_of(qi_b)
-    wr = []
-    for w in bx["fixed_wraps"]:
-        (ayR, zR), (ayL, zL) = anchor_of(w, "R"), anchor_of(w, "L")
-        P, Nn = wp(roll, zR, zL, ayR, ayL, meat=True, xform=sw, q_half=q_half_b)
-        wr.append(G.ribbon(P, 25.0, 2.4, Nn, step=8))
-    parts.append(Part("haul_wraps_meat", G.concat(wr), "webbing", "haul", modes=("pack_haul",),
-                      label="W1/W2 close round the swung bag and the meat (frame anchors)"))
-    for tin, cs in crown_info.items():
-        for w in bx["crown_wraps"]:
-            z = float(cs["crown_top_z"])
-            ay = float(cs["lifter_anchor_R"][1])
-            for var, Sx in (("rolled", roll), ("full", full)):
-                P, Nn = wp(Sx, z, z, ay, ay, meat=True, xform=sw, q_half=q_half_b)
-                parts.append(Part(f"crown_wrap_meat{'' if var == 'rolled' else '_full'}@t{tin:g}",
-                                  G.concat([G.ribbon(P, 25.0, 2.4, Nn, step=8)] + bx["wrap_hooks"](z, z, ay, ay)),
-                                  "webbing", "haul", torso=tin, modes=("pack_haul",), variant=var,
-                                  label="W3 from the crown top bar round the swung bag"))
-    metrics["hinge"] = {k: v for k, v in h.items()}
-    metrics["between_wedge_mm"] = {str(int(z)): round(wedge(z), 1) for z in (190.0, 330.0, 520.0)}
+    for gap in fi["gaps_mm"]:
+        xf, q_half = Float(gap), q_half_of(qi_f[gap])
+        wr = []
+        for w in bx["fixed_wraps"]:
+            (ayR, zR), (ayL, zL) = anchor_of(w, "R"), anchor_of(w, "L")
+            P, Nn = wp(roll, zR, zL, ayR, ayL, meat=True, xform=xf, q_half=q_half)
+            wr.append(G.ribbon(P, 25.0, 2.4, Nn, step=8))
+        parts.append(Part(f"haul_wraps_meat_g{gap:.0f}", G.concat(wr), "webbing", "haul", modes=("pack_haul",), gap=gap,
+                          label="W1/W2 close round the hung bag and the meat (frame anchors)"))
+        for tin, cs in crown_info.items():
+            for w in bx["crown_wraps"]:
+                z = float(cs["crown_top_z"])
+                ay = float(cs["lifter_anchor_R"][1])
+                for var, Sx in (("rolled", roll), ("full", full)):
+                    P, Nn = wp(Sx, z, z, ay, ay, meat=True, xform=xf, q_half=q_half)
+                    parts.append(Part(f"crown_wrap_meat{'' if var == 'rolled' else '_full'}_g{gap:.0f}@t{tin:g}",
+                                      G.concat([G.ribbon(P, 25.0, 2.4, Nn, step=8)] + bx["wrap_hooks"](z, z, ay, ay)),
+                                      "webbing", "haul", torso=tin, modes=("pack_haul",), variant=var, gap=gap,
+                                      label="W3 from the crown top bar round the hung bag"))
+    metrics["float"] = {**fi, "space_mm": space_mm}
     return parts

@@ -39,11 +39,11 @@ straps cinch meat to the spreader.
 
 | # | Requirement | Verification |
 |---|---|---|
-| R-01* | Main bag **85.2 L ± 1 L** (5200 ± 60 cu in), geometric, to the roll-top fill line with the collar closed by 3 rolls (150 mm of collar is closure, not volume). **Main bag only**: collar, lid, pockets, band pocket and meat bay excluded. Peak depth 11.5–12 in, fill height ~42 in (owner) | `build_geometry.py` exact ring-area integral **85.16 L**, polygon rings 85.15 L, `huntkit.viz3d` mesh **85.00 L** (−0.2 %). Prototype: ball fill ±5 % |
+| R-01* | Main bag **85.2 L ± 1 L** (5200 ± 60 cu in), geometric, to the roll-top fill line with the collar closed by 3 rolls (150 mm of collar is closure, not volume). **Main bag only**: collar, lid, pockets, band pocket and the float space excluded. Peak depth 11.5–12 in, fill height ~42 in (owner) | `build_geometry.py` exact ring-area integral **85.16 L**, polygon rings 85.15 L, `huntkit.viz3d` mesh **85.00 L** (−0.2 %). Prototype: ball fill ±5 % |
 | R-02 | Rated load 68 kg (150 lb), frame standard HA-LS-1 (`analysis/load_standard.md`) | FEA + physical proof/drop tests |
 | R-03..R-07 | Torso adjust 15–23 in, lifter angle 35–50° (40.6° at every setting), hipbelts S–XL, J/S harness, hip share: unchanged (Appendix A §1) | as v2 |
 | R-08* | **Bag-off haul, required.** Bag off in ≤ 2 min (2 under-strap cams + 4 hooks + 2 hinge pins, about 40 s). The two under-straps stay on the frame as a cradle. IM1–IM3 cinch one bone-in quarter (≤ 36 kg) against the carbon spreader. **No shelf** | Field test, sandbag dummy. `analysis/meat_haul_modes.md` |
-| R-09* | **Bag-on haul, required.** Boned meat inside the bag, IM1–IM3 cinched against the spreader, ≤ 60 s, gloves. **Between bag and frame** (bulk): release the IM2/IM3 hooks, bag hinges open on the z 60 pins, same straps cinch the meat against the spreader in the wedge | Timed, measured |
+| R-09* | **Bag-on haul, required.** Boned meat inside the bag, IM1–IM3 cinched against the spreader, ≤ 60 s, gloves. **Float (bulk, owner 2026-11-06, replaces the hinge swing):** bag off its pins, meat on the frame in the cradle with IM1–IM3 over it (≤ 36 kg, the R-08 case), bag hung upright behind it on two B-24 stand-off links at the IM3 eyes, gap 120 / 170 / 220 mm, W1–W3 round both; the bag never pivots | Timed (estimate 128 s), measured CG (T9) |
 | R-10 | Extension posts are an ACCESSORY, lash/flag points only; lifters never move to the posts (US 10,952,523) | Drawing check |
 | R-12* | Meat-zone materials blood/wash tolerant; **meat straps removable and machine-washable** (plain polyester + anodised Al, no foam, no hook-and-loop) | BOM check, wash test |
 | R-13 | Quiet: no hook-and-loop, no film laminate on exposed faces, coil zips, magnetic sternum | BOM + brush-drag test |
@@ -126,7 +126,7 @@ alternative (keep 14.6 in) gives a 45.5 in fill height at 12 in deep. Open quest
 | Side pockets (2 × 2.88) | 5.76 | 351 | no |
 | Hipbelt pockets (2 × 0.97) | 1.94 | 118 | no |
 | Optional lid / hip pack | 4.89 | 298 | no (accessory) |
-| Bay mode V-wedge (250 mm at the crown, 90 % of bag width, z 60–700) | ~26 | ~1,600 | separate (haul mode) |
+| Float space at the 220 mm gap (90 % of bag width, z 60–700) | ~43 | ~2,640 | separate (haul mode) |
 
 Method: `bag_volume_mm3()` integrates A(z) = a·d·(F(2.5)+F(5.0)), F(n) = Γ(1+1/n)²/Γ(1+2/n). The head setback shifts
 rings aft without changing their area; the ruled band between the two setback seams costs 0.022 L (a blend of two
@@ -218,7 +218,8 @@ fixed-length **top side guys** sewn to its ears and running to the outer-face co
 load CG **189 / 177 / 168 mm** at 15 / 19 / 23 in (no top anchor: 223 mm at 19 in); meat case 181 / 173 / 165 mm.
 The 180 mm goal is met at 19 and 23 in; at 15 in nothing on the frame is higher than the z 601 bar (owner choice).
 R-28 re-run with the simulated wall and the hood on the bar: first contact ≥ 31° (pass). The hood is lift-and-drop:
-a bag that hinges at z 60 meets the bar in the peel direction, so no pocket can catch it passively. Bag off **52 s**.
+a bag that is tipped onto the z 60 pins at bag-on meets the bar in the peel direction, so no pocket can catch it
+passively. Bag off **52 s**.
 **+136 g**, pack **3207 g (7.07 lb)**. No new frame feature. Load lifters stay on the crown (counting them as the
 anchor would switch them bag/frame: US 10,952,523).
 
@@ -241,7 +242,7 @@ fairleads**, one part, grown on the bag face of the stays. Record:
 
 | Station | z | What uses it |
 |---|---:|---|
-| Hinge | 60 | Sewn 38 mm eye on a tethered pull-pin. Leave the pins in and the bag swings for a bay load. Pull them and the bag comes off. |
+| Hinge | 60 | Sewn 38 mm eye on a tethered pull-pin: the bag's bottom anchor in bag-on mode. Pull the pins and the bag comes off (bag off and float). The bag no longer pivots on them in use (D-33). |
 | IM1 | 190 | Meat strap only. The bag does not clip here. |
 | IM2 | 330 | Bag hook and meat strap, beside the open branch window. |
 | IM3 | 520 | Bag hook and meat strap. |
@@ -262,7 +263,7 @@ lock. They do not move onto the printed body or the extension posts. The hipbelt
 pivot (checked SF/required 8.6, fatigue 19.7).
 
 The eight feathered swells are accepted (owner, 2026-11-01). Bag-on and bag-off are both
-required. The procedures, the wedge between the bag and the frame, and the safety factors are
+required. The procedures, the float mode (bag hung behind meat on the frame, D-33), and the safety factors are
 in §4.9.
 
 Net mass **+113 g**. Pack **2979 g (6.57 lb)**. Marginal cost about **$48**.
@@ -270,7 +271,7 @@ Net mass **+113 g**. Pack **2979 g (6.57 lb)**. Marginal cost about **$48**.
 A sleeve, a rail, a magnetic buckle, a cam, and a printed clip tongue were compared and set aside.
 The clip tongue is fatigue SF 0.28 even with an 18 mm root. The comparison is in the analysis note.
 
-### 4.9 Meat haul, both modes required
+### 4.9 Meat haul, three modes required (bag on, float, bag off)
 
 Record: `analysis/meat_haul_modes.md`. The bearing face in every mode is the spreader. v2 is a twill /
 6 mm ROHACELL 110 sandwich: FPF SF **1.21**, fatigue SF **1.04** on the real supports (`analysis/spreader.md`). Two 38 mm under-straps, anchored on fairleads at **z 95 and z 142**,
@@ -282,9 +283,17 @@ tri-glide on the right. Added mass **122 g**, about **$22**. Detach **40 s**.
 vertical. Governing anchor is US1 at 444 N, fatigue SF **1.62** (1 mm mesh, scaled from the
 489 N solve). Cradle cam SF **2.48**. Hinge drops to 368 N.
 
-**Between the bag and the frame.** The under-straps stay cammed so the open floor does not dump
-the low end. US1 is 254 N, fatigue SF **2.84**. IM3 remains the heaviest cleat at 496 N,
-fatigue SF **2.46**.
+**Float (owner 2026-11-06, D-33; replaces the hinge swing).** Research: none of nine leading packs pivots the bag on a
+pin (`docs/research/meat_carry_mechanisms.md`); study `analysis/meat_carry_alternatives.md`. The bag comes off its pins,
+the meat goes on the frame exactly as in bag-off (cradle + IM1–IM3), and the bag hangs upright behind it on two
+**B-24 stand-off links** (38 mm webbing, 435 mm cut, a rated 2200 N hook on the IM3 eye, three loops at **120 / 170 /
+220 mm**, 4.7 / 6.7 / 8.7 in) that the bag's T3 hooks clip into. W1–W3 close round bag and meat. Design case 36 kg of
+meat + 12 kg of gear (ASSUMPTION): link 353 N factored (hook SF 6.2), IM3 eye 559 N; misuse envelope (32 kg in the
+bag) link 941 N (SF 2.34, PT-6 at 1410 N), IM3 eye 1142 N, inside the 1415 N bag-on IM3 case, cleat fatigue 1.07.
+Load CG (lever sum) 127 / 158 / 189 mm at the three gaps, against 179 mm for the old swing and 190 mm in rev C: use
+the smallest loop that fits. About **128 s** with the meat loaded. **+54.4 g** (own weight group). The hinge pins,
+HE eyes and B-18 doublers stay: they are the bag-on bottom anchor (1019 N factored). Heavier meat on the frame
+(56 kg) is not in the design case (US1 fatigue 0.95 on the no-friction rule): structural hand-off.
 
 **Bag off.** Pop the two cams, unhook IM2/IM3, pull the hinge pins. The quarter sits in the
 cradle. Factored cradle load 847 N. US1 tension **489 N**, strength SF **3.28**, fatigue SF
@@ -370,17 +379,17 @@ this line are the v3.1 tube-frame writeup and stay as the load and hardware reco
 - **Bag on (default meat mode)**: meat in game bags goes in through the roll-top, high and tight against B-01; each strap
   crosses the load and hooks to the two stub eyes; cam tight. The load path is meat → strap → stub → frame node; the bag
   fabric only carries the meat's weight down to the bottom and the hinge pins.
-- **Bag pulled back (bay mode, bulk meat)**: pop the 4 LINK toggles, let out W1–W3, the bag hinges back 250 mm at the
-  crown on its bottom pins; the stub eyes slide out of the ports. The SAME straps hook stub-to-stub round the meat in the
-  V; re-cinch W1–W3 round the bag to close the V. ≤ 90 s.
+- **Float (bulk meat, D-33, replaces the v3.1 bay where the bag hinged back on its bottom pins)**: bag off its pins, the
+  SAME straps hook eye to eye round the meat on the frame, the bag hangs upright behind it on two B-24 stand-off links
+  at the IM3 eyes (gap 120 / 170 / 220 mm), W1–W3 close round both. About 128 s (§4.9).
 - **Frame-only**: bag off; IM1–IM3 stub-to-stub + W1/W2 round a bone-in quarter, W3 lashes the top to the crown.
   Without a shelf the vertical hold is friction (5 clamping straps), checked in §5.3; the hock can also hook over IM1.
 - **Stow flat**: hook each strap across B-01 port-to-port and cam it flat (it doubles as internal compression for a small
   load), or unhook and roll all three into the fly pocket.
 - **Wash**: unhook, machine-wash cold (polyester + anodised Al, no foam, no hook-and-loop); stubs rinse on the frame;
   Hypalon port edges don't fray or wick.
-- **External wraps W1–W3 KEPT** (not merged): carry-mode compression, bay closure and antler/cape lashing. An internal
-  strap cannot compress the outside of the bag or close the bay; a wrap cannot reach inside it.
+- **External wraps W1–W3 KEPT** (not merged): carry-mode compression, the outer clamp in float mode and antler/cape
+  lashing. An internal strap cannot compress the outside of the bag; a wrap cannot reach inside it.
 
 ### 5.3 Loads (`geometry.yaml → meat_harness.load_cases`)
 - Bag on, rated: 68 kg meat, CG 150 mm aft of the stay (ASSUMPTION), 2.0 g stumble (HA-LS-1); overturning about the hinge
@@ -409,8 +418,9 @@ studies take their soft-goods basis from it (`frame_production.SOFT_GOODS_G`).
 | Bag-to-frame attachment (8 fairleads, pins, sleeves, 4 hooks, eyes, straps, swells, keepers) | 144 | 5.1 | `bag_attachment_results.json` parts (the v3.1 LINK toggles are out) |
 | Bag-to-frame attachment system (crown hood B-19 + ladder B-20, 2 top guys + B-22, B-23 backings, rated bag hooks +20 g) | 131 | 4.6 | `attach_system_results.json` mass (attachment phase 2026-11-05; hood lip relieved at the corner wraps 2026-11-06, −4.5 g) |
 | Under-straps US1/US2 (cradle) | 122 | 4.3 | `meat_haul.cradle_parts_g` |
+| Float-mode stand-off links B-24 (2 × 38 mm × 435 mm + 2 rated hooks) | 54 | 1.9 | `meat_haul.float_link_parts_g` (owner 2026-11-06, D-33) |
 | Camo accents | 53 | 1.9 | computed |
-| Rain fly + pocket + hem + zip (owner: counts) | 75 | 2.6 | computed |
+| Rain fly + pocket + hem + zip (owner: counts) | 68 | 2.4 | computed (flag sleeve F-03 removed by the owner 2026-11-06, −6.5 g) |
 | Floating side pockets | 60 | 2.1 | computed |
 | Hipbelt M | 334 | 11.8 | computed; centre plate ASSUMPTION |
 | Harness (J-straps, yoke plate, lifters, sternum) | 213 | 7.5 | computed |
@@ -418,7 +428,7 @@ studies take their soft-goods basis from it (`frame_production.SOFT_GOODS_G`).
 | Internal meat harness (IM1–IM3, hooks, cams, 6 ports) | 254 | 9.0 | computed; hooks/cams ASSUMPTION |
 | Haul wraps W1–W3 + hardware | 108 | 3.8 | computed |
 | Thread, labels | 42 | 1.5 | ASSUMPTION 3 % + 8 g |
-| **Total** | **3447** | **121.6 (7.60 lb)** | target 2268 g (5.0 lb): **1179 g over**. Owner-published printed-frame figure ~2976 g assumed the held swaps O-3/4/5/6/15 (−54 g, not applied) and predates the top anchor (+136 g), the 2026-11-06 back-panel booking (+161 g with thread) and the 2026-11-06 frame-side rows (+79.5 g: body booking +49.0, crown fix +22.0, spreader core +8.6; `analysis/rev_c_verification.md`): with the swaps 3393 g |
+| **Total** | **3496** | **123.3 (7.71 lb)** | `geometry.yaml` 3495.6 g; target 2268 g (5.0 lb): **1228 g over**. 2026-11-06: F-03 removed (−6.5 g), B-24 float links (+54.4 g), IM1 strap +17 mm (+0.5 g). Owner-published printed-frame figure ~2976 g assumed the held swaps O-3/4/5/6/15 (−54 g, not applied) and predates the top anchor (+136 g), the 2026-11-06 back-panel booking (+161 g with thread) and the 2026-11-06 frame-side rows (+79.5 g: body booking +49.0, crown fix +22.0, spreader core +8.6; `analysis/rev_c_verification.md`): with the swaps 3393 g |
 
 The bag side (bag, load spreaders, fairlead attachment, attachment system, under-straps, accents, fly, pockets, meat
 harness, wraps) is 1341 g; the frame, spreader, back panel, belt and harness are 2024 g (back panel 251 g since the
@@ -508,9 +518,16 @@ v3 → v3.1 (−4 g): frame 650 → 569 (−81); torso adjust 96 → 42 (−54, 
   back-panel rows that were never booked (backers, released v3.1 mesh, sleeves, pad back). Pack 3368 g with these
   (3447 g, 7.60 lb, after the same-day rev C frame-mass booking by the structural-fea-engineer).
   `analysis/back_rail.md`.
+- D-33 (owner 2026-11-06, implemented by Claude): **float mode replaces the hinge swing** ("between" mode, bag pivoted
+  28.5° on the z 60 pins). Meat on the frame (cradle + IM1–IM3), bag hung upright behind it on two **B-24 stand-off
+  links** (38 mm x 435 mm, rated hook, loops at 120 / 170 / 220 mm, all three kept: owner packs boned and bone-in
+  meat) at the IM3 eyes. +54.4 g (own weight group); IM1 meat strap +17 mm for the 220 mm gap (+0.5 g). Pack
+  **3495.6 g (7.71 lb)**. Hinge pins, HE eyes and B-18 stay (bag-on bottom anchor). Procedures and PT-6 in
+  `analysis/bag_attachment.md`; loads in `analysis/meat_haul_modes.md` C; structural hand-off in
+  `analysis/meat_carry_alternatives.md` §8.
 
 **ASSUMPTIONS** (new in v3.1): meat CG 150 mm aft; 150 N hand cinch; μ 0.4 game bag on panel; 38 mm cam 22 g /
-1100 N; sliding-gate hook 9 g / 1500 N; bartack 2700 N; bay V-wedge to z 700 at 90 % width; head model inputs
+1100 N; sliding-gate hook 9 g / 1500 N; bartack 2700 N; float space to z 700 at 90 % width (220 mm gap); 12 kg of gear in the bag in float; head model inputs
 (back pad 40 mm, C7 15 mm in front of the pad, stuffed bulge 15 mm, open collar lean 25 mm, vault centre ¼ TtT above the
 tragion, condyle pivot 30 mm below the tragion, C7/T1 pivot 60 mm anterior); 30° extension requirement (≈ half the
 59° ROM; plus 15–20° of eye elevation gives a 45–50° upward gaze).

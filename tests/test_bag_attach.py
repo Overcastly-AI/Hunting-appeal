@@ -82,10 +82,11 @@ def test_recorded_fairlead_clears_strength_and_fatigue():
         assert Path(s).exists()
 
 
-def test_both_haul_modes_required():
+def test_all_haul_modes_required():
     from huntkit.gendesign.meat_haul import analyse
     modes = analyse()
-    for key in ("bag_on", "between", "bag_off"):
+    assert "between" not in modes                     # the hinge swing is retired (owner 2026-11-06)
+    for key in ("bag_on", "float", "bag_off"):
         assert modes[key]["required"] is True
         assert modes[key]["viable"] is True
         assert modes[key]["cleat_fatigue"] >= 1.0

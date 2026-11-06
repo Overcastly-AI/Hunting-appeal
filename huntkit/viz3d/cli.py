@@ -21,7 +21,7 @@ from .model import build_pack
 from .params import DEFAULT_SPEC, REPO, load_params
 from .viewer import build_html
 
-BEST = ("hero", "between", "attach", "bagoff", "spreader", "side", "front", "fit")
+BEST = ("hero", "float", "float220", "float_links", "attach", "bagoff", "spreader", "side", "front", "fit")
 
 
 def shots(m: dict) -> list[dict]:
@@ -32,7 +32,7 @@ def shots(m: dict) -> list[dict]:
     fea = m.get("fea") or {}
     v3 = m.get("bag_type") == "teardrop_rolltop"
     gen = m.get("frame_type") == "generative"
-    att, hg, sp, bp = m.get("attach"), m.get("hinge"), m.get("spreader"), m.get("back_panel")
+    att, fl, sp, bp = m.get("attach"), m.get("float"), m.get("spreader"), m.get("back_panel")
     rolled = f"rolled down {m.get('bag_volume_rolled_l', 0):.0f} L" if v3 else ""
     hero_sub = (f"{rolled}; {vol} with the collar unrolled. SPINE: diagonal zip under a stretch band, camo on wear zones"
                 if v3 else f"{vol} + {m['lid_design_l']:.1f} L lid · camo shards on corners, lash zone, lid, pockets")
@@ -76,14 +76,23 @@ def shots(m: dict) -> list[dict]:
         out.append(dict(name="lid", view="hero", state={"mode": "pack", "lid": True},
                         caption="Optional lid / hip pack on the closed roll",
                         sub="Short fixed rear tabs + front magnets: nothing to flop"))
-    if att and hg:
-        wd = m.get("between_wedge_mm", {})
+    if att and fl:
+        gaps = " / ".join(f"{g:.0f}" for g in fl["gaps_mm"])
+
+        def float_shot(name, gap):
+            return dict(name=name, view="float", state={"mode": "pack", "haul": True, "gap": gap},
+                        caption=f"Float mode: bag hung upright on the {gap:.0f} mm loop of the {fl['link_id']} links",
+                        sub=(f"Bone-in quarter in the US1/US2 cradle, IM1-IM3 eye to eye over it; two {fl['link_id']} "
+                             f"stand-off links on the IM3 eyes, the bag's T3 hooks in the {gap:.0f} mm loop (loops {gaps} mm); "
+                             "W1-W3 round bag and meat; hood lies on the bag top"))
         out[1:1] = [
-            dict(name="between", view="between", state={"mode": "pack", "haul": True},
-                 caption=f"Between mode: bag swung open {hg['angle_deg']:.1f} deg on the z {hg['z']:.0f} hinge pins",
-                 sub=(f"Hood lifted, 4 bag hooks off, under-straps stay cammed. Quarter thick end high in the wedge "
-                      f"({' / '.join(str(round(v)) for v in wd.values())} mm at IM1 / IM2 / IM3), IM1-IM3 eye to eye "
-                      "over it, W1-W3 close round bag and meat")),
+            float_shot("float", fl["view_gap_mm"]),
+            float_shot("float220", max(fl["gaps_mm"])),
+            dict(name="float_links", view="float_links", state={"mode": "pack", "haul": True, "gap": fl["view_gap_mm"],
+                                                                 "xray": True, "harness": False, "bp": False},
+                 caption=f"Float mode close-up (bag in X-ray): {fl['link_id']} links at IM3",
+                 sub=(f"Rated hook on each IM3 eye beside the meat-strap hook, 38 mm link aft to the bag's T3 hook in the "
+                      f"{fl['view_gap_mm']:.0f} mm loop; the bag moved straight aft, the hinge pins went with it")),
             dict(name="attach", view="attach", state={"mode": "pack", "xray": True, "harness": False, "bp": False},
                  caption="Attachment close-up, bag in X-ray: hood on the bar, guys, IM3 hooks",
                  sub=(f"Crown hood on the top bar, tongues in the B-20 ladder, top guys round the gores to B-22; "

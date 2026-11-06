@@ -1550,7 +1550,7 @@ webbing_cut_list:
 - {use: hipbelt strap, material_id: nylon_webbing_50mm, length_mm: 900, qty: 1}
 - {use: load lifters, material_id: poly_webbing_25mm, length_mm: 450, qty: 2}
 - {use: 'internal meat strap IM1 (z 190; hooks both ends, cam)', material_id: poly_webbing_38mm, colour: 'bone/stone
-    (MEAT family; blood shows, so it gets washed)', length_mm: 973, qty: 1}
+    (MEAT family; blood shows, so it gets washed)', length_mm: 990, qty: 1}
 - {use: 'internal meat strap IM2 (z 330; hooks both ends, cam)', material_id: poly_webbing_38mm, colour: 'bone/stone
     (MEAT family; blood shows, so it gets washed)', length_mm: 1023, qty: 1}
 - {use: 'internal meat strap IM3 (z 520; hooks both ends, cam)', material_id: poly_webbing_38mm, colour: 'bone/stone

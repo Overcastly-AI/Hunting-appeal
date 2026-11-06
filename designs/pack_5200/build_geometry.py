@@ -1036,23 +1036,25 @@ MU_MEAT = 0.40                               # ASSUMPTION: game bag on the frame
 def meat_harness(Hf, topo, wraps):
     """3 internal 38 mm straps IM1-IM3 at bonded frame nodes. Each strap = plain webbing with a sliding-gate
     hook at each end + one cam buckle; it hooks into the eyes of 2 frame stubs. Bag-on: stubs poke through
-    bound ports in B-01, the strap crosses the meat INSIDE the bag. Bag pulled back / frame-only: the stub eyes
-    slide out of the ports and the same strap hooks stub-to-stub across the meat in the bay."""
+    bound ports in B-01, the strap crosses the meat INSIDE the bag. Float / bag off (owner 2026-11-06: the float
+    replaces the hinge swing): the meat is on the frame and the same strap hooks eye to eye across it; in float the
+    meat is up to the largest B-24 gap thick."""
+    from huntkit.gendesign.meat_haul import FLOAT_GAPS_MM
     hp = topo["hard_points"]
     g = 9.81
     straps = []
     for i, z in enumerate(MEAT_ANCHOR_Z):
         t = (z - BAG_Z0) / Hf
         d_in = 0.85 * float(prof(t, Hf)[1][0])                         # meat stack in the bag: up to 85 % of local depth
-        bay = min(HAUL_PULLBACK * (z - 60.0) / (700.0 - 60.0), HAUL_PULLBACK) + 60.0   # V bay gap + panel slack
+        meat_t = max(max(FLOAT_GAPS_MM), 180.0)                   # meat thickness on the frame (float gap / >=180 quarter)
         path_in = 2 * d_in + 2 * PORT_X + 2 * 40.0            # around the stack + through the ports to the stub eyes
-        path_bay = 2 * max(bay, 180.0) + 2 * FOOT[0]          # stub to stub round the meat in the bay (>=180 deep quarter)
-        cut = max(path_in, path_bay) + 2 * 60.0 + 200.0       # 2 hook loops + cam tail
+        path_float = 2 * meat_t + 2 * FOOT[0]                 # eye to eye round the meat on the frame (float / bag off)
+        cut = max(path_in, path_float) + 2 * 60.0 + 200.0     # 2 hook loops + cam tail
         straps.append({"id": f"IM{i + 1}", "z": z, "anchors": [f"meat_anchor_z{int(z)}_R", f"meat_anchor_z{int(z)}_L"],
                        "frame_node": {190.0: "lumbar-pan top land on the stay (bonded, torsion box)",
                                       330.0: "mid-bar node (same node the v2 shelf straps loaded)",
                                       520.0: "upper-bar node"}[z],
-                       "path_bag_on_mm": round(path_in), "path_bay_mm": round(path_bay), "cut_length_mm": round(cut)})
+                       "path_bag_on_mm": round(path_in), "path_float_mm": round(path_float), "cut_length_mm": round(cut)})
     # ---- load cases (HA-LS-1 g-levels and factors, load_standard.md)
     zs = np.array(MEAT_ANCHOR_Z) - 60.0                         # lever arms about the bag-bottom hinge pins (z 60)
     W, cg_y, g_lim, f_lim = 68.0, 150.0, 2.0, 2.0               # rated meat load; CG 150 aft of the stay (ASSUMPTION)
@@ -1061,7 +1063,7 @@ def meat_harness(Hf, topo, wraps):
     F = k * zs / 1000.0                                         # aft pull per strap (rigid-body share)
     pre = 150.0                                                 # ASSUMPTION: hand cinch pretension per leg
     T_on = F / 2 + pre                                          # 2 legs per strap
-    Wq = 36.0                                                   # R-08 bone-in quarter, frame-only / bay
+    Wq = 36.0                                                   # R-08 bone-in quarter, frame-only / float
     n_clamp = len(MEAT_ANCHOR_Z) + 2                            # + external wraps W1/W2 round the same load
     T_bay = Wq * g * 1.6 / MU_MEAT / (2 * n_clamp)              # leg tension for friction hold at the 1.6 g walking peak
     T_worst = float(max(T_on.max(), T_bay))
@@ -1075,9 +1077,9 @@ def meat_harness(Hf, topo, wraps):
     return {
         "concept": ("INTERNAL MEAT HARNESS, both modes required (owner 2026-11-01). 3 x 38 mm straps (IM1-IM3) "
                     "anchor on the fairlead eyes. Bag on: meat inside the bag, cinched against the carbon spreader (BP-06). "
-                    "Bulk: the bag hinges open on the z 60 pins and the same straps cinch meat against the spreader in the "
-                    "wedge. Bag off: the bag is unclipped and a quarter is cinched eye-to-eye on IM1-IM3 against that "
-                    "spreader. The wearer touches the stay-rail foam (BP-02), not the sheet. Record: analysis/meat_haul_modes.md."),
+                    "Bulk (float, owner 2026-11-06): the bag comes off its pins, the meat is cinched eye-to-eye on IM1-IM3 "
+                    "against the spreader in the under-strap cradle, and the bag hangs upright behind it on two B-24 "
+                    "stand-off links at the IM3 eyes. Bag off: the same, with the bag set aside. The wearer touches the stay-rail foam (BP-02), not the sheet. Record: analysis/meat_haul_modes.md."),
         "straps": straps,
         "anchor_stub": {"material_id": MEAT_WEB, "length_mm": STUB_LEN * 1000, "qty": 6,
                         "fixing": "girth hitch round the stay directly above/below the bonded node wrap (cannot slide), sewn eye box-X bartacked with bonded_nylon_tex135",
@@ -1088,9 +1090,9 @@ def meat_harness(Hf, topo, wraps):
                 "compression for a small load); or unhook and roll it into the fly pocket",
         "wash": "plain polyester webbing + anodised Al hardware, no foam, no hook-and-loop: unhook and machine-wash cold; "
                 "stubs rinse on the frame; ports are raw-edge Hypalon (no fray, no wicking)",
-        "external_wraps": ("W1-W3 KEPT: carry-mode compression, outer sling that closes the V in bay mode and lash straps "
-                           "for antlers/cape. Internal straps hold the meat; wraps hold the bag. Merging was rejected: an "
-                           "internal strap cannot also compress the outside of the bag or close the bay"),
+        "external_wraps": ("W1-W3 KEPT: carry-mode compression, the outer clamp round bag and meat in float mode, and lash "
+                           "straps for antlers/cape. Internal straps hold the meat; wraps hold the bag. Merging was rejected: "
+                           "an internal strap cannot also compress the outside of the bag or close the float"),
         "load_cases": {
             "bag_on_rated": {"basis": f"{W:.0f} kg meat inside the bag, CG {cg_y:.0f} mm aft of the stay, {g_lim} g stumble (HA-LS-1); "
                                       "vertical into the bag bottom + hinge pins, overturning reacted by the straps in proportion to height",
@@ -1281,6 +1283,10 @@ def weight_budget(P, Hf, diag, wraps, info):
     from huntkit.gendesign.meat_haul import cradle_parts_g
     for item, g in cradle_parts_g().items():
         row("under-straps US1/US2 (cradle)", item, float(g), "huntkit/gendesign/meat_haul.py cradle_parts_g (meat_haul_modes.md)")
+    from huntkit.gendesign.meat_haul import float_link_parts_g
+    for item, g in float_link_parts_g().items():        # owner 2026-11-06: float mode replaces the hinge swing
+        row("float-mode stand-off links B-24", item, float(g),
+            "huntkit/gendesign/meat_haul.py float_link_parts_g (meat_haul_modes.md C; hook 14 g, thread ASSUMPTION)")
     row("accents", "camo SH-01..05 (overlay mass)", sub_mass["accents"], "computed")
     row("rain fly", "fly + fly pocket", sub_mass["fly"], "computed")
     row("rain fly", "fly elastic hem 3.0 m, #5 pocket zip + slider, tether", 3.0 * 3 + hw("coil_zipper_5", length_m=0.18) + 3 + 2,
@@ -1323,11 +1329,12 @@ def weight_budget(P, Hf, diag, wraps, info):
     return rows, groups, round(tot, 1), round(carry, 1), round(lid, 1)
 
 
-def meat_bay_volume(Hf, z_hinge=60.0, z_top=700.0, n=200):
-    """Bay mode (bag hinged back on its bottom pins, 250 mm at the crown at the 19 in setting): V-wedge between
-    the frame face and B-01; width 90 % of the local bag width (corners do not fill)."""
-    z = np.linspace(z_hinge, z_top, n)
-    gap = HAUL_PULLBACK * (z - z_hinge) / (z_top - z_hinge)
+def meat_float_volume(Hf, z_lo=60.0, z_top=700.0, n=200):
+    """Float mode (owner 2026-11-06): the space between the frame face and the upright B-01 at the largest B-24 gap;
+    width 90 % of the local bag width (corners do not fill). Not counted in the 85.2 L main bag."""
+    from huntkit.gendesign.meat_haul import FLOAT_GAPS_MM
+    z = np.linspace(z_lo, z_top, n)
+    gap = np.full_like(z, max(FLOAT_GAPS_MM))
     w = 2 * prof((z - BAG_Z0) / Hf, Hf)[0] * 0.9
     return float(np.trapezoid(gap * w, z))
 
@@ -1344,7 +1351,7 @@ def small_volumes(Hf):
         "side_pocket_each_L": round(litres(panel_volume(sp, 50.0)), 2),
         "hipbelt_pocket_each_L": round(litres(panel_volume(hp, 55.0)), 2),
         "diagonal_band_pocket_L": None,   # filled in main(): developed area x 40 mm stretch loft (ASSUMPTION)
-        "meat_bay_L": None,   # main(): V-wedge between frame face and the hinged-back B-01 (meat_bay_volume)
+        "meat_float_L": None,   # main(): float space between frame face and B-01 at the 220 mm gap (meat_float_volume)
     }
 
 
@@ -1359,7 +1366,7 @@ HARDWARE_FAMILIES = [
      "qty": 3, "feel": "metal hook, no squeeze; webbing colour differs from everything else"},
     {"family": "LINK", "function": "bag to frame (meat-mode release)", "hardware": "POM toggle through a 3-slot Hypalon tab (4; slot = length setting) + 2 bottom hinge quick-pins",
      "qty": 6, "feel": "toggle-and-slot, impossible to confuse with a buckle"},
-    {"family": "MEAT", "function": "internal meat harness IM1-IM3 (meat against the frame, inside the bag or in the bay)",
+    {"family": "MEAT", "function": "internal meat harness IM1-IM3 (meat against the frame, inside the bag or on the frame in float / bag off)",
      "hardware": "38 mm webbing (the only 38 mm on the pack), aluminium sliding-gate hooks into frame-stub eyes + 38 mm metal cam with glove pull-tab",
      "qty": "3 straps, 6 hooks, 3 cams", "feel": "widest webbing, keeper hooks, no squeeze buckle; lives inside the bag"},
     {"family": "QUICK", "function": "sternum strap, accessory lid", "hardware": "Fidlock-type magnetic 25 mm", "qty": "1 (+4 lid)",
@@ -1405,7 +1412,7 @@ def build():
     band_piece = next(r["piece"] for r in P if r["piece"].piece_id == "D-01")
     vols["diagonal_band_pocket_L"] = round(litres(band_piece.seam_area_mm2 * 40.0), 2)  # ASSUMPTION 40 mm mean stretch loft
     info["meat_harness"] = meat_harness(Hf, topo, wraps)
-    vols["meat_bay_L"] = round(litres(meat_bay_volume(Hf)), 1)
+    vols["meat_float_L"] = round(litres(meat_float_volume(Hf)), 1)
     rows, groups, total, carry, lid_g = weight_budget(P, Hf, diag, wraps, info)
     cg_y, cg_z = bag_cg(Hf)
     z_top = BAG_Z0 + Hf
@@ -1485,7 +1492,7 @@ def build():
             "main_bag_L": round(litres(v_mm3), 2), "main_bag_cu_in": round(cubic_inches(v_mm3)),
             "main_bag_polygon_check_L": round(litres(v_chk), 2),
             "counted_in_5200": ("main bag to the FILL LINE with the roll-top closed by 3 rolls (150 mm of collar fabric "
-                                "is closure, not volume). Lid, pockets, band pocket and meat bay are NOT counted"),
+                                "is closure, not volume). Lid, pockets, band pocket and the float space are NOT counted"),
             **vols,
             "total_with_pockets_L": round(litres(v_mm3) + 2 * vols["side_pocket_each_L"] + 2 * vols["hipbelt_pocket_each_L"]
                                           + vols["diagonal_band_pocket_L"], 1),
@@ -1703,17 +1710,19 @@ def plot(Hf, topo, geom, diag, P):
 
     # ---------------- SIDE view (from the wearer's right; y aft to the right)
     ax = axs[1]
-    ax.set_title("SIDE: deeper teardrop, meat strapped inside; bay mode dashed", fontsize=11)
+    ax.set_title("SIDE: deeper teardrop, meat strapped inside; float mode dashed", fontsize=11)
+    from huntkit.gendesign.meat_haul import FLOAT_GAPS_MM, FLOAT_VIEW_GAP_MM
     prof = np.vstack([np.column_stack([yf, z]), np.column_stack([(yf + d)[::-1], z[::-1]])])
     prof_r = np.vstack([np.column_stack([yr_, zr_]), np.column_stack([(yr_ + dr_)[::-1], zr_[::-1]])])
     ax.add_patch(MPoly(prof, closed=True, fc="none", ec=SOLID, lw=1.2, ls="--"))
     ax.add_patch(MPoly(prof_r, closed=True, fc=SOLID, ec=FR, lw=1.6, alpha=0.95))
     ax.add_patch(plt.Circle((yr_[-1] + dr_[-1] / 2, z_roll - 6), 26, fc=SOLID_D, ec=FR))
-    prof_h = prof_r + np.array([HAUL_PULLBACK, 0])
+    prof_h = prof_r + np.array([FLOAT_VIEW_GAP_MM, 0])
     ax.add_patch(MPoly(prof_h, closed=True, fc="none", ec="#7a5c2e", lw=1.2, ls=(0, (3, 2))))
-    ax.text(yr_[0] + HAUL_PULLBACK + 250, z_roll + 70, "bay mode: bag hinges back 250 on its\nbottom pins; same internal straps hook\nstub-to-stub round the meat",
+    ax.text(yr_[0] + FLOAT_VIEW_GAP_MM + 250, z_roll + 70, "float mode: bag off its pins, hung upright on\n2 B-24 links at IM3; meat on the frame,\nsame internal straps eye to eye round it",
             ha="center", fontsize=7.8, color="#7a5c2e")
-    dim(ax, (yr_[0], -95), (yr_[0] + HAUL_PULLBACK, -95), "bay pull-back 250 (9.8 in) at the crown", fs=7.8)
+    dim(ax, (yr_[0], -95), (yr_[0] + FLOAT_VIEW_GAP_MM, -95),
+        "float gap " + " / ".join(f"{g_:.0f}" for g_ in FLOAT_GAPS_MM) + f" mm (shown {FLOAT_VIEW_GAP_MM:.0f})", fs=7.8)
     ax.text(yr_[-1] + 150, z_top - 20, "full 85.2 L (collar unrolled)", fontsize=7.5, color=SOLID)
     ax.text(yr_[-1] - 20, z_roll + 60, f"rolled down\n{geom['bag']['rolltop']['rolled_down_volume_L']:.0f} L", fontsize=7.5)
     # side pocket + band bulge on the outer face
@@ -1809,7 +1818,7 @@ def plot(Hf, topo, geom, diag, P):
         ax.plot([-115, 115], [zm, zm], "D", color="#6b5a3a", ms=6)
         ax.text(0, zm - 22, f"{m['id']} (inside bag)", ha="center", fontsize=7, color="#6b5a3a")
     ax.text(0, -60, "Diamonds = meat-strap stubs at bonded nodes\n(z 190 / 330 / 520), through ports in B-01.\n"
-                    "Haul wraps (o = G-hook, square = ladder lock)\n= compression + bay closure.\n"
+                    "Haul wraps (o = G-hook, square = ladder lock)\n= compression + float clamp.\n"
                     "Lifters stay on the crown at every setting (posts = lash only).", ha="center", fontsize=8)
     for a_ in axs:
         a_.set_aspect("equal"); a_.axis("off")
@@ -1820,7 +1829,7 @@ def plot(Hf, topo, geom, diag, P):
     fig.text(0.5, 0.012,
              f"Main bag {vol['main_bag_L']} L ({vol['main_bag_cu_in']} cu in) computed to the roll-top fill line  |  "
              f"rolled down {vol['rolled_down_L']:.0f} L  |  side pockets 2x{vol['side_pocket_each_L']} L, band pocket "
-             f"~{vol['diagonal_band_pocket_L']} L, meat bay ~{vol['meat_bay_L']} L (not counted)  |  "
+             f"~{vol['diagonal_band_pocket_L']} L, float space ~{vol['meat_float_L']} L at 220 mm (not counted)  |  "
              f"base {w['total_g']:.0f} g ({w['total_lb']} lb incl. fly; frame v2 + Ti mount)  |  head clearance: "
              f"{'PASS' if geom['head_clearance']['all_pass'] else 'see table'}",
              ha="center", fontsize=9.3, bbox=dict(fc="#f3efe3", ec="#999"))

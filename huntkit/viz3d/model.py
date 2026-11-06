@@ -11,7 +11,7 @@ geometry.yaml (pack-designer). Tube sizes come from frame.yaml (FEA agent) when 
 PLACEHOLDERS in params.py. The FEA colour overlay is swept along the huntkit.fea model members, so
 what is coloured is exactly what was analysed.
 
-Display modes (``Part.modes``): "pack" (carry), "pack_haul" (bag pulled back, meat bay loaded),
+Display modes (``Part.modes``): "pack" (carry), "pack_haul" (float: meat on the frame, bag hung behind it),
 "frame" (frame only), "frame_haul" (frame-only haul with a quarter).
 """
 from __future__ import annotations
@@ -48,7 +48,8 @@ class Part:
     label: str = ""
     colors: np.ndarray | None = None     # optional per-vertex RGBA (FEA overlay)
     variant: str | None = None           # viewer toggle: "rolled" | "full" | "lid" (v3 bag), None = always
-    swing: bool = False                  # between mode (pack_haul): rotates with the bag about the z 60 hinge-pin axis
+    floats: bool = False                 # float mode (pack_haul): moves straight aft with the bag by the chosen B-24 gap
+    gap: float | None = None             # float-mode part built for one gap (mm); the viewer shows it only at that gap
     xray: bool = False                   # viewer X-ray toggle draws this part translucent (bag shell, back-panel mesh)
 
 

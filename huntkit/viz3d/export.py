@@ -132,7 +132,8 @@ def manifest(pack) -> dict:
                            "material": prt.material, "label": prt.label,
                            "explode": to_gltf(prt.explode).round(4).tolist(),
                            "haul": to_gltf(prt.haul).round(4).tolist(),
-                           "swing": bool(getattr(prt, "swing", False)), "xray": bool(getattr(prt, "xray", False))}
+                           "floats": bool(getattr(prt, "floats", False)), "gap": getattr(prt, "gap", None),
+                           "xray": bool(getattr(prt, "xray", False))}
     return parts
 
 

@@ -92,7 +92,8 @@ TEMPLATE = r"""<!DOCTYPE html>
 <div id="caption" class="card"><div class="t" id="capT"></div><div id="capS"></div></div>
 <div id="bar" class="card">
   <div class="grp"><button data-mode="pack" class="on">Full pack</button><button data-mode="frame">Frame only</button></div>
-  <div class="grp"><button data-tog="haul" title="Full pack: bag swung open on the hinge pins, meat between bag and frame. Frame only: bag off, meat in the cradle">Meat haul</button><button data-tog="xray" title="See through the bag and the back-panel mesh">X-ray</button><button data-tog="explode">Exploded</button><button data-tog="fea">FEA colors</button><button data-tog="mannequin">Mannequin</button><button data-tog="harness" class="on">Harness</button><button data-tog="bp" class="on">Back panel</button><button data-tog="full">Full 85 L</button><button data-tog="lid">Lid</button></div>
+  <div class="grp"><button data-tog="haul" title="Full pack: float mode, meat on the frame, bag hung upright behind it on the B-24 links. Frame only: bag off, meat in the cradle">Meat haul</button><button data-tog="xray" title="See through the bag and the back-panel mesh">X-ray</button><button data-tog="explode">Exploded</button><button data-tog="fea">FEA colors</button><button data-tog="mannequin">Mannequin</button><button data-tog="harness" class="on">Harness</button><button data-tog="bp" class="on">Back panel</button><button data-tog="full">Full 85 L</button><button data-tog="lid">Lid</button></div>
+  <div class="grp" id="gaps"></div>
   <div class="grp"><button data-torso="15">15 in</button><button data-torso="19" class="on">19 in</button><button data-torso="23">23 in</button><button data-tog="fit">Fit 3 sizes</button></div>
   <div class="grp"><button id="reset">Reset view</button></div>
 </div>
@@ -133,7 +134,7 @@ const rim = new THREE.DirectionalLight(0xffffff, 1.4); rim.position.set(-0.6, 2.
 const ground = new THREE.Mesh(new THREE.CircleGeometry(4, 64), new THREE.ShadowMaterial({opacity:0.22}));
 ground.rotation.x = -Math.PI/2; ground.receiveShadow = true; scene.add(ground);
 
-const state = {mode:'pack', haul:false, explode:false, fea:false, mannequin:false, torso:19, fit:false, harness:true, full:false, lid:false, xray:false, bp:true};
+const state = {mode:'pack', haul:false, explode:false, fea:false, mannequin:false, torso:19, fit:false, harness:true, full:false, lid:false, xray:false, bp:true, gap:null};
 let root = null, fitRoots = [], explodeT = 0, needsFrame = 3, fitFloor = 0;
 const P = DATA.parts;
 const M = DATA.metrics;
@@ -211,7 +212,7 @@ function buildStats() {
     `Volume from the 3D mesh; target ${fmt(M.target_volume_l)} L (${fmt(M.volume_error_pct,2)} %)`,
   ];
   if (M.attach) chips.push(`Bag hooks <b>${Math.round(M.attach.hook_rated_n)} N</b> rated · crown hood ${Math.round(M.attach.hood_width_mm)} mm`);
-  if (M.hinge) chips.push(`Between mode: bag swings <b>${fmt(M.hinge.angle_deg,1)}°</b> on the z ${Math.round(M.hinge.z)} pins`);
+  if (M.float) chips.push(`Float mode: bag hung <b>${Math.round(curGap())} mm</b> behind the frame on the ${M.float.link_id} links (gaps ${M.float.gaps_mm.map(Math.round).join(' / ')} mm)`);
   s.innerHTML = chips.map(c => `<span class="chip">${c}</span>`).join('') +
     (M.frame_type === 'generative' ? `<span class="chip">Frame: printed PAHT-CF branch frame + carbon crown</span>`
                                    : `<span class="chip warn">Tube sizes: ${M.tube_size_source}</span>`);
@@ -221,6 +222,9 @@ function buildStats() {
 }
 
 function modeKey() { return state.mode + (state.haul ? '_haul' : ''); }
+// float mode: the bag translates straight aft by the chosen B-24 gap (FCS y -> glTF Z, metres); nothing rotates
+const FLOAT = M.float || null;
+function curGap() { return state.gap != null ? state.gap : (FLOAT ? FLOAT.view_gap_mm : 0); }
 function visibleFor(name, torso) {
   const p = P[name]; if (!p) return true;
   if (!p.modes.includes(modeKey())) return false;
@@ -228,6 +232,7 @@ function visibleFor(name, torso) {
   if (p.variant === 'full' && !state.full) return false;
   if (p.variant === 'rolled' && state.full) return false;
   if (p.variant === 'lid' && !state.lid) return false;
+  if (p.gap != null && Math.abs(p.gap - curGap()) > 0.5) return false;
   if (p.group === 'mannequin') return state.mannequin && explodeT < 0.02;
   if (p.group === 'fea') return state.fea;
   if (p.group === 'suspension' && !state.harness) return false;
@@ -235,27 +240,16 @@ function visibleFor(name, torso) {
   if (state.fea && (name === 'frame_stays' || name === 'frame_bars' || name.startsWith('crown@'))) return false;
   return true;
 }
-// between mode: bag parts rotate about the hinge-pin axis (FCS x through y_h, z_h -> glTF X through Y=z, Z=y)
-const HINGE = M.hinge || null;
 const XMAT = new Map(), XORIG = new Map();   // X-ray twin per original material (clones share materials, not userData)
-const _q = new THREE.Quaternion(), _ax = new THREE.Vector3(1, 0, 0), _pv = new THREE.Vector3(), _tmp = new THREE.Vector3();
 function placeAll(r, torso) {
   r.traverse(o => {
     const n = o.userData.part; if (!n) return;
     o.visible = visibleFor(n, torso);
     const p = P[n];
-    const between = state.haul && state.mode === 'pack';
-    const h = between ? p.haul : [0,0,0];
+    const fl = state.haul && state.mode === 'pack';
+    const h = fl ? p.haul : [0,0,0];
     let px = h[0] + p.explode[0]*explodeT, py = h[1] + p.explode[1]*explodeT, pz = h[2] + p.explode[2]*explodeT;
-    if (between && p.swing && HINGE) {
-      _q.setFromAxisAngle(_ax, THREE.MathUtils.degToRad(HINGE.angle_deg));
-      _pv.set(0, HINGE.z / 1000, HINGE.y / 1000);
-      _tmp.copy(_pv).applyQuaternion(_q);
-      o.quaternion.copy(_q);
-      px += _pv.x - _tmp.x; py += _pv.y - _tmp.y; pz += _pv.z - _tmp.z;
-    } else {
-      o.quaternion.identity();
-    }
+    if (fl && p.floats && FLOAT) pz += curGap() / 1000;
     o.position.set(px, py, pz);
     if (p.xray) o.traverse(c => { if (!c.isMesh) return;
       const orig = XORIG.get(c.material) || c.material;
@@ -289,6 +283,7 @@ function syncButtons() {
   document.querySelectorAll('[data-mode]').forEach(b => b.classList.toggle('on', b.dataset.mode === state.mode));
   document.querySelectorAll('[data-tog]').forEach(b => b.classList.toggle('on', !!state[b.dataset.tog]));
   document.querySelectorAll('[data-torso]').forEach(b => b.classList.toggle('on', +b.dataset.torso === state.torso && !state.fit));
+  document.querySelectorAll('[data-gap]').forEach(b => b.classList.toggle('on', state.haul && state.mode === 'pack' && Math.abs(+b.dataset.gap - curGap()) < 0.5));
 }
 document.querySelectorAll('[data-mode]').forEach(b => b.onclick = () => { state.mode = b.dataset.mode; if (state.mode==='pack') state.fea=false; apply(); });
 document.querySelectorAll('[data-tog]').forEach(b => b.onclick = () => {
@@ -298,6 +293,11 @@ document.querySelectorAll('[data-tog]').forEach(b => b.onclick = () => {
   if (k === 'fit') view(state.fit ? 'fit' : 'hero');
 });
 document.querySelectorAll('[data-torso]').forEach(b => b.onclick = () => { state.torso = +b.dataset.torso; state.fit = false; apply(); });
+if (FLOAT) {   // float-mode gap buttons (B-24 loops); picking one turns on the meat haul in the full pack
+  const g = document.getElementById('gaps');
+  g.innerHTML = FLOAT.gaps_mm.map(v => `<button data-gap="${v}" title="B-24 loop: bag ${Math.round(v)} mm aft of its carry position">${Math.round(v)} mm</button>`).join('');
+  g.querySelectorAll('[data-gap]').forEach(b => b.onclick = () => { state.gap = +b.dataset.gap; state.mode = 'pack'; state.haul = true; apply(); });
+}
 document.getElementById('reset').onclick = () => view(state.fit ? 'fit' : 'hero');
 
 // camera presets: azimuth (deg, 0 = looking at the bag outer face from +Z, +90 = from the wearer's right),
@@ -317,7 +317,8 @@ const VIEWS = {
   attach_low:{az:70, el:4, zoom:1, box:[-40, -10, 15, 215, 160, 380]},
   hood:    {az:-138, el:28, zoom:1, box:[-215, -40, 640, 215, 120, 780]},
   bow:     {az:62, el:8, zoom:1, box:[60, 40, 300, 240, 300, 680]},
-  between: {az:72,  el:12, zoom:1},
+  float:   {az:72,  el:12, zoom:1},
+  float_links:{az:62, el:12, zoom:1, box:[-60, -20, 400, 215, 300, 620]},
   bagoff:  {az:48,  el:14, zoom:1},
   spreader:{az:22,  el:10, zoom:1, box:[-150, -30, 30, 150, 60, 560]},
   backpanel:{az:-160, el:8, zoom:1, box:[-200, -60, 20, 200, 30, 520]},

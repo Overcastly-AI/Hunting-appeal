@@ -1,6 +1,14 @@
 # Meat carry without the swing: alternatives to "between mode"
 
-Owner: pack-designer. 2026-11-06. **Concept study only: no geometry, attachment code or YAML is changed.**
+Owner: pack-designer. 2026-11-06.
+
+> **Status (2026-11-06): the owner chose Concept A and it is implemented.** All three gaps are kept (120 / 170 /
+> 220 mm; the owner packs boned and bone-in meat). The link is part **B-24** (38 mm x 435 mm, the final cut is 5 mm
+> shorter than the 440 mm estimate below; +54.4 g). Records: `analysis/meat_haul_modes.md` C (loads, lever),
+> `analysis/bag_attachment.md` §5 (B-24 strength, PT-6) and §7 (float procedure, 128 s),
+> `cut/attachment/attachment_parts.pdf` / `.dxf` (B-24 1:1), `geometry.yaml` weight group
+> `float-mode stand-off links B-24`, DESIGN.md D-33. The structural hand-off is §8 below. Sections 1-7 are the
+> study as the owner saw it.
 Trigger: the owner saw the 3D render of between mode (the bag pivots about 28.5 deg on the z 60 hinge pins to open a
 wedge for a quarter) and said: "I do not like the swing motion. Research other bags."
 Research: `docs/research/meat_carry_mechanisms.md` (this phase) on top of `docs/research/bag_attachment_research.md`.
@@ -246,9 +254,62 @@ strap; a timed gloved trial.
 - Times: 4 s a hook or pin, 3 s a cam, 10 s to place the bag; gloved, not timed.
 - C's 3-4 min is a guess for unpack, load, repack; not timed.
 
+## 8. Hand-off to the structural-fea-engineer (float mode, 2026-11-06)
+
+Do not re-run the bag-side checks; they are in the records. These are the frame-side loads that changed. Factored =
+HA-LS-1 x 3.0 (2.0 g x 1.5) unless stated; per side; FCS (y aft, z up). Source: `analysis/meat_haul_modes.json`
+`float` (`meat_haul.analyse`, cradle basis `cradle_fea.json`).
+
+**1. IM3 captive eye (z 520, x +/-115): meat-strap leg + one B-24 link on the same eye.**
+
+| case | what | link N | eye resultant N | fy N (aft) | fz N | IM3 cleat SF (scaled) | fatigue SF (scaled) |
+|---|---|---:|---:|---:|---:|---:|---:|
+| design | 36 kg meat on the frame + 12 kg gear in the bag (ASSUMPTION) | **353** | **559** | 531 | -177 | 3.87 | 2.18 |
+| misuse envelope | 36 kg meat + 32 kg in the bag (rest of the 68 kg rating) | **941** | **1142** | 1040 | -471 | 1.90 | **1.07** |
+
+Basis: meat-strap leg 225 N aft (150 N hand cinch x 1.5, the bag-off rule); link 30 deg below horizontal (aft and
+down) carrying the whole bag (no W1-W3 friction credited). The scaled SFs are the IM3 fine-mesh fairlead solve
+(`bag_attachment_results.json`, 554 N) scaled by force, so the direction change (more downward than the solved aft
+pull) is NOT checked. **Ask:** solve the IM3 fairlead with the envelope vector (1040 aft, -471 down) and confirm it is
+inside the rev C IM3 bag-couple case (bag-on factored IM3 hook load 1415 N, `attach_system_results.json`).
+
+**2. Cradle anchors US1 (z 95) / US2 (z 142): unchanged from the bag-off haul** for the design case: US1 489 N
+(fy 418, fz -254), strength SF 3.28, fatigue SF 1.47; US2 326 N, SF 4.91 / 2.21; cam SF 2.25.
+**Open:** 56 kg of meat on the frame (68 kg rating minus 12 kg of gear) is NOT in the design case: on the
+no-friction rule US1 = 760 N, strength SF 2.11, **fatigue SF 0.95**, cam SF 1.45. Either credit the W1-W3 squeeze /
+IM friction (mu 0.4, 5 clamping straps) or keep the float meat limit at one quarter (36 kg); recommend which.
+
+**3. IM1 / IM2 eyes:** 225 N aft each (meat-strap cinch only), as bag-off.
+
+**4. Hinge pins z 60:** **0 N in float** (pins pulled, tethered to the bag). The retired `between` case (hinge 264 N,
+IM3 496 N, CG 110 mm assumption) can be dropped from any envelope that still lists it. Bag-on hinge (1019 N
+factored, HE / B-18) is unchanged.
+
+**5. Load CG for the frame cases** (lever sum, not a cloth sim; rev C meat case 190 mm):
+
+| gap | 36 kg meat + 12 kg gear | 56 kg meat + 12 kg gear |
+|---:|---:|---:|
+| 120 | 127 mm | 113 mm |
+| 170 | 158 mm | 142 mm |
+| 220 | 189 mm | 171 mm |
+
+All inside rev C; the 220 mm gap with a light meat load is on the line (user rule: smallest loop that fits). A T9
+measurement in float at 220 mm is worth adding.
+
+**6. Crown top bar:** the hood is lifted in float (no hood capture, no guy load). W3 still wraps from the crown, as
+in the retired mode; its path at 220 mm (about 1288 mm) is inside the 1468 mm haul path.
+
+**7. Not changed:** spreader face pressure (the meat bears on the spreader exactly as in bag-off), lifters (stay on
+the crown corner wraps), hipbelt pivot.
+
 ## Screenshots
 
 - `outputs/screens/20261106_meatcarry_1.png`
 - `outputs/screens/20261106_meatcarry_2.png`
 - `outputs/screens/20261106_meatcarry_3.png`
 - `outputs/screens/20261106_meatcarry_4.png`
+- `docs/screens/20261106_pack3d_float.png` (implemented float, 170 mm)
+- `docs/screens/20261106_pack3d_float220.png` (220 mm)
+- `docs/screens/20261106_pack3d_float_links.png` (B-24 links at IM3, X-ray)
+- `docs/screens/20261106_attach_6_float.png` (load path), `docs/screens/20261105_attach_4.png` (procedure storyboard),
+  `docs/screens/20261105_attach_5.png` (parts incl. B-24)

@@ -18,6 +18,7 @@ Sources of every number:
 
     python -m huntkit.gendesign.attach_system            # compile sims, checks, drawings, screens, JSON, docs
     python -m huntkit.gendesign.attach_system --docs-only
+    python -m huntkit.gendesign.attach_system --refresh     # parts, procedures, drawings, screens on the frozen sims
 """
 from __future__ import annotations
 
@@ -426,6 +427,21 @@ def parts(F: dict) -> list[dict]:
         f"OUTSIDE B-02d at x +/-{GUY['bag_xz'][0]:.0f}, z {GUY['bag_xz'][1]:.0f}", F["guy"], "as TG",
         {"perimeter seam (50 mm loaded)": patch_seam(50.0, "cordura_330d_nylon66", "hypalon_coated_nylon")["cap_n"],
          "box-X 25": bx25["cap_n"]})
+    # float-mode stand-off link (owner 2026-11-06): sized on the misuse envelope (the rest of the 68 kg rating in the bag)
+    from huntkit.gendesign import meat_haul as MH
+    gaps = " / ".join(f"{g_:.0f}" for g_ in MH.FLOAT_GAPS_MM)
+    add(MH.LINK["id"], "float-mode stand-off link (new)", 2, w38, f"38 mm x {MH.link_cut_mm():.0f} mm",
+        f"hook end folded {MH.LINK['hook_fold_mm']:.0f} mm round the bed of a rated 38 mm hook, box-X; three loops "
+        f"({MH.LINK['loop_open_mm']:.0f} mm opening, {MH.LINK['loop_fold_mm']:.0f} mm of webbing each) with their bed at "
+        f"{gaps} mm from the hook bed, each closed with a 38 x 20 box-X; {MH.LINK['tail_mm']:.0f} mm tail, heat-sealed",
+        "box-X 38 x 38 (hook) + 3 x box-X 38 x 20 (loops), 301", "box", "-",
+        "hook on the IM3 captive eye (z 520, x +/-115); the bag's T3 hook clips into a loop (float mode only; "
+        "stowed in the lid or hipbelt pocket)",
+        MH.link_tension(MH.FLOAT_BAG_ENVELOPE_KG), f"{MH.FLOAT_BAG_ENVELOPE_KG:.0f} kg bag on two links at "
+        f"{MH.LINK_ANGLE_DEG:.0f} deg x 3.0 (misuse envelope; design case {MH.FLOAT_GEAR_KG:.0f} kg = "
+        f"{MH.link_tension(MH.FLOAT_GEAR_KG):.0f} N)",
+        {"box-X (hook end)": bx38["cap_n"], "loop box-X 38 x 20": box_x(38.0, 20.0)["cap_n"],
+         "webbing on hook bed": web_pin(w38), "hook (rated)": HOOK_RATED_N})
     return out
 
 
@@ -445,6 +461,13 @@ def proof_tests(F: dict, P: list) -> list[dict]:
              "accept": "hood stays seated, no toggle pull-through", "also": "repeat at -10 C (HDPE lip)"},
             {"id": "PT-5", "what": "guy ladder lock with the tri-glide keeper", "rig": "25 mm webbing, 10 cycles 0-load",
              "load_n": round(QUAL * F["guy"] / 10) * 10, "covers": "guy x 3.0", "accept": "slip < 5 mm over 10 cycles", "also": "-"}]
+    sl = next((p for p in P if p["id"] == "B-24"), None)
+    if sl:
+        rows.append({"id": "PT-6", "what": "B-24 stand-off link, hook end and the 220 mm loop", "rig": "link hook on a 5 mm "
+                     "pin, 38 mm webbing loop through the 220 mm loop, pull in line",
+                     "load_n": sl["proof_n"], "covers": f"link misuse envelope {sl['load_n']:.0f} N x 1.5",
+                     "accept": "5 of 5 hold, no box-X break, gate closes after", "also": "first article; then 1 link per lot of 25 "
+                     f"to {sl['load_n']:.0f} N"})
     return rows
 
 
@@ -497,20 +520,22 @@ PROCEDURES = {
         ("Lifters and hipbelt as usual.", 0)]},
     "bag_off": {"title": "Bag off (keep it under 120 s)", "steps": [
         ("Set the pack down on its back pad.", 3),
-        ("Lift the hood tab and swing the top of the bag about 10 cm aft. The guys stay on the hood and come with the bag.", 3),
+        ("Lift the hood tab and ease the top of the bag about 10 cm aft so the hood clears the bar. The guys stay on the hood "
+         "and come with the bag.", 3),
         ("Unclip the four bag hooks, IM3 first, then IM2. Hang each on its elastic keeper.", 16),
         ("Pop the two under-strap cams. Slide the floor channels off the straps. The straps stay on their pins: they are the cradle.", 12),
         ("Pull the two hinge pins. They stay tethered to the bag eyes.", 8),
         ("Lift the bag clear.", 10)]},
-    "between": {"title": "Between mode (meat between bag and frame, hinge pins stay in)", "steps": [
-        ("Set the pack on its back pad, top toward the meat.", 3),
-        ("Lift the hood tab and swing the top of the bag aft.", 3),
-        ("Unclip the four bag hooks (IM3, then IM2). Leave the hinge pins in and the under-straps cammed.", 16),
-        ("Swing the bag back on its hinge pins until it lies open (about 29 deg at IM3 when it closes on the quarter).", 3),
-        ("Set the quarter (in a game bag) on the spreader, thick end high, hock at IM1.", 0),
-        ("Hook IM1-IM3 meat straps eye to eye over the meat and cam them.", 24),
-        ("Swing the bag onto the meat. Do NOT re-engage the hood or re-clip the bag hooks: they cannot reach and must not be "
-         "forced over the meat. The hood lies flat on B-01 against the game bag.", 3),
+    "float": {"title": "Float mode (meat on the frame, bag hung upright behind it on the B-24 links)", "steps": [
+        ("Take the bag off (procedure above). Lay the frame on its back pad, crown toward the meat.", None),
+        ("Set the quarter (in a game bag) in the two under-straps, bone toward the spreader. Cam them until the belly is "
+         "about 70 mm.", 12),
+        ("Hook IM1-IM3 meat straps eye to eye over the meat and cam them. A hock can sit on IM1.", 24),
+        ("Hook one B-24 stand-off link on each IM3 eye, gate toward the bag, beside the meat-strap hook. Let the loops hang "
+         "aft along the sides of the meat.", 8),
+        ("Stand the bag upright behind the meat, frame panel (B-01) toward it. Clip each T3 bag hook into the link loop that "
+         "just touches the bag (120, 170 or 220 mm; use the smallest that fits). The T2 hooks stay on their keepers; the "
+         "hood lies on the bag top and is not put on the bar.", 14),
         ("Close W1-W3 round the bag and the meat (ladder locks).", 18)]},
     "bag_off_haul": {"title": "Bag-off meat haul (frame and cradle only)", "steps": [
         ("Take the bag off (procedure above).", None),
@@ -545,7 +570,8 @@ QUIET = [
      "on the outer face, touching fabric only) and two POM toggles buried in webbing. Captive eyes and the hood lip are "
      "rubbed with paraffin at assembly (owners' wax fix)."),
     ("webbing loops at the frame", "Captive eyes sit on pins in UHMWPE sleeves in an 18 mm throat; the bag hooks are loaded "
-     "whenever the bag is on, and hang on elastic keepers when it is off. Hooks keep their TPU sleeves."),
+     "whenever the bag is on, and hang on elastic keepers when it is off. Hooks keep their TPU sleeves. The B-24 float "
+     "links ride in a pocket except in float mode, where the hanging bag keeps their hooks loaded."),
     ("frame rails rubbing inside the bag", "No frame part is inside the bag. B-01 keeps 2 mm of air over every cleat (swells). "
      "The hood is outside the bag, on the bar, and does not slide in use."),
     ("dirt in frame joints", "The hood is open at the bottom and the ladder slots drain. Pins and sleeves are field spares."),
@@ -564,7 +590,9 @@ QUIET = [
 PATENTS = [
     ("US 12,495,885 (Eberlestock, load sling)", "Under-straps US1/US2 run frame pin to frame pin (eye on the left pin, cam on the "
      "right pin) through channels sewn on the bag floor. No separate fabric shelf panel, and no strap ends on the bag. The hood "
-     "is above the bag top and is not a sling.", "compliant as drawn; FTO read still required before release"),
+     "is above the bag top and is not a sling. Float mode (2026-11-06): the meat sits on those frame-to-frame straps; the two "
+     "B-24 links run from the IM3 eyes (z 520, above the meat floor) to the bag's T3 hooks, and there is no fabric panel "
+     "between frame and bag for any strap to run under.", "compliant as drawn; FTO read still required before release"),
     ("US 10,952,523 (Mystery Ranch, pop-up frame)", "Load lifters stay on the crown corner wraps at every setting and in every mode. "
      "The 'lifters as anchor' option (L19) would route the lifter to the bag in bag-on and to the frame in bag-off: that is "
      "the switching the claim describes, so it is rejected whatever its CG. The hood sits on the crown bar but is not a "
@@ -596,7 +624,23 @@ def frame_interface(F: dict) -> list:
         "bears on the wraps. Add both to the C1/C5 re-check with the bag CG below.",
         "Bag CG envelope for the frame re-check, chosen system (1 g sim, +/-5 mm on fill): see the 'Top anchor' table; "
         "worst is the 15 in setting.",
-    ]
+    ] + float_interface(F)
+
+
+def float_interface(F: dict) -> list:
+    """Float mode (owner 2026-11-06): new IM3 eye load for the structural hand-off (meat_haul_modes.json 'float')."""
+    from huntkit.gendesign import meat_haul as MH
+    t, te = MH.link_tension(MH.FLOAT_GEAR_KG), MH.link_tension(MH.FLOAT_BAG_ENVELOPE_KG)
+    a = math.radians(MH.LINK_ANGLE_DEG)
+    cinch = 150.0 * 1.5
+    eye = math.hypot(cinch + t * math.cos(a), t * math.sin(a))
+    eye_e = math.hypot(cinch + te * math.cos(a), te * math.sin(a))
+    return [f"Float mode (2026-11-06, replaces the hinge swing): each IM3 captive eye carries its meat-strap leg "
+            f"({cinch:.0f} N aft, factored hand cinch) plus one B-24 link ({t:.0f} N factored, {MH.LINK_ANGLE_DEG:.0f} deg below "
+            f"horizontal, aft and down; {MH.FLOAT_GEAR_KG:.0f} kg bag): resultant {eye:.0f} N per side. Misuse envelope "
+            f"({MH.FLOAT_BAG_ENVELOPE_KG:.0f} kg in the bag): link {te:.0f} N, eye {eye_e:.0f} N per side, below the "
+            f"{F['im3']:.0f} N bag-hook case the IM3 eye already carries in bag-on. The hinge pins carry "
+            "nothing in float mode. Full list: analysis/meat_carry_alternatives.md section 8."]
 
 
 # ================================================================ pattern-maker hand-off
@@ -618,10 +662,11 @@ HANDOFF = [
      "(XLPE 3), B-20 x2 ladder strips (Hypalon, 17 slots), B-22 x2 corner tabs, B-23 x2 IM2 backings. No seam allowance "
      "(laser-cut, edge-stitched). True-scale in cut/attachment/attachment_parts.pdf / .dxf."),
     ("webbing cut list", f"add: HT hood tongues 2 x 25 mm x {TONGUE_25:.0f}; TG guys 2 x 25 mm x {GUY['cut_mm']:.0f}; "
-     "ladder-lock tabs 2 x 25 mm x 70; hood grab tab 1 x 25 mm x 90. Unchanged: HE 2 x 38 x 150, T2/T3 4 x 38 x 160."),
+     "ladder-lock tabs 2 x 25 mm x 70; hood grab tab 1 x 25 mm x 90; B-24 float links 2 x 38 mm x 435 (2026-11-06). "
+     "Unchanged: HE 2 x 38 x 150, T2/T3 4 x 38 x 160."),
     ("hardware list", f"bag hooks 4 x 38 mm rated >= {HOOK_RATED_N:.0f} N (replaces the 1500 N assumption on the bag hooks only; "
      "the meat-strap hooks are unchanged); 2 x POM toggle; 2 x 25 mm ladder lock; 2 x tri-glide; Dyneema cord pull loops "
-     "replace the metal rings on the two hinge pins."),
+     "replace the metal rings on the two hinge pins; 2 more rated 38 mm hooks on the B-24 float links (2026-11-06)."),
 ]
 
 
@@ -740,7 +785,34 @@ def drawing_pieces() -> list:
         for y, hb, lab in boxes:
             _box_x_lines(p, w / 2, y, w - 4, hb, lab)
         P.append(p)
+    P.append(link_piece())
     return P
+
+
+def link_piece():
+    """B-24 float-mode stand-off link, flat cut with fold and stitch lines (owner 2026-11-06, meat_haul.LINK).
+    Cut coordinate c from the hook end. The hook end folds at c = hook_fold round the hook bed (finished 0). Loop k is
+    pinched from the next loop_fold mm of webbing: it starts at s_k, its apex fold (where the T3 hook sits) is at
+    s_k + loop_fold / 2, i.e. at the gap distance g_k from the hook bed in the finished link, and it is closed by a
+    38 x 20 box-X across both plies at its base."""
+    from huntkit.gendesign import meat_haul as MH
+    from huntkit.patterns import rect_panel
+    L_ = MH.LINK
+    w, cut, hf, lf = L_["w_mm"], MH.link_cut_mm(), L_["hook_fold_mm"], L_["loop_fold_mm"]
+    p = rect_panel("float-mode stand-off link", w, cut, 0.0, piece_id=L_["id"], material_id="poly_webbing_38mm",
+                   quantity=2, seam_allowance_mm=0.0,
+                   labels={"note": "hot-knife cut, heat-seal both ends; rated 38 mm hook (same part as the bag hooks) on the "
+                                   "hook-end fold; 301 tex135 7 SPI"})
+    p.add_internal_line([(0, hf), (w, hf)], "fold", "fold round the hook bed (finished 0)")
+    _box_x_lines(p, w / 2, hf / 2, w - 4, 30, "hook box-X 38")
+    for k, g_ in enumerate(MH.FLOAT_GAPS_MM):
+        s_ = hf + (g_ - lf / 2) + lf * k
+        p.add_internal_line([(0, s_), (w, s_)], "fold", f"loop {k + 1} start")
+        p.add_internal_line([(0, s_ + lf / 2), (w, s_ + lf / 2)], "fold", f"loop {k + 1} apex: gap {g_:.0f} mm "
+                            f"({g_ / 25.4:.1f} in) - T3 hook sits here")
+        p.add_internal_line([(0, s_ + lf), (w, s_ + lf)], "fold", f"loop {k + 1} end (meets start)")
+        _box_x_lines(p, w / 2, s_ - 11, w - 4, 20, f"loop {k + 1} base box-X 38 x 20 (both plies, after folding)")
+    return p
 
 
 def export_drawings(log=print) -> dict:
@@ -879,7 +951,7 @@ def plot_hood_detail() -> str:
     ax.set_aspect("equal")
     ax.set_title("(a) Hood on the top bar: section", fontsize=11)
     ax.set_xlabel("y mm (aft +)")
-    # (b) why it cannot snap on by swinging: kinematics
+    # (b) why it cannot snap on as the bag closes: kinematics
     ax = axs[1]
     r = 643.0
     for th in (0, 10, 20, 29):
@@ -889,9 +961,9 @@ def plot_hood_detail() -> str:
         ax.text(y, z + 14, f"{th} deg open", ha="center", fontsize=8.5)
     ax.plot(_hood_profile(0, 0)[:, 0], _hood_profile(0, 0)[:, 1], color="#2e6fb0", lw=3)
     ax.annotate("", (-14, -1), (-100, -8), arrowprops=dict(arrowstyle="-|>", lw=2, color="#444"))
-    ax.text(-330, -175, "Where the top bar is, seen from the bag, as the bag swings shut\non its z 60 hinge pins "
-            "(radius 643 mm). It arrives level, from the\nwearer side, so the lip is in its way: capture is in the swing\n"
-            "direction. Any part that stops peel also blocks the swing.\nSo the hood is lifted 25 mm by its tab and dropped on.",
+    ax.text(-330, -175, "Where the top bar is, seen from the bag, as the bag is tipped\nonto the frame on its z 60 pins "
+            "(radius 643 mm, bag-on only). It arrives\nlevel, from the wearer side, so the lip is in its way: capture is in the\n"
+            "closing direction. Any part that stops peel also blocks closing.\nSo the hood is lifted 25 mm by its tab and dropped on.",
             fontsize=9)
     ax.set_xlim(-340, 70)
     ax.set_ylim(-185, 45)
@@ -969,13 +1041,15 @@ def plot_storyboard() -> str:
     matplotlib.use("Agg")
     import matplotlib.patches as mp
     import matplotlib.pyplot as plt
-    panels = [("1  Lift the hood tab, swing\nthe bag top 10 cm aft", "hood"),
+    from huntkit.gendesign import meat_haul as MH
+    gv = MH.FLOAT_VIEW_GAP_MM
+    panels = [("1  Lift the hood tab, ease\nthe bag top 10 cm aft", "hood"),
               ("2  Unclip IM3 then IM2\nbag hooks (4)", "hooks"),
               ("3  Pop US1/US2 cams, slide the\nfloor off: straps stay = cradle", "cams"),
               ("4  Pull both hinge pins\n(tethered)", "pins"),
               ("5  Lift the bag clear\n(about 52 s so far)", "off"),
-              ("6  Between mode: pins stay in,\nbag swings open on them", "between"),
-              ("7  Meat on the spreader, IM1-IM3\neye to eye, W1-W3 round it", "meat"),
+              ("6  Float: meat in the cradle,\nIM1-IM3 over it, B-24 on IM3", "links"),
+              ("7  Bag upright behind the meat,\nT3 hooks in a loop, W1-W3", "float"),
               ("8  Bag on: pins, floor, hooks,\nthen drop the hood on", "on")]
     fig, axs = plt.subplots(2, 4, figsize=(15, 8.6))
     for ax, (title, key) in zip(axs.ravel(), panels):
@@ -989,7 +1063,7 @@ def plot_storyboard() -> str:
         ax.plot([-8, -8], [520, 703], color="#5b6068", lw=4)
         ax.add_patch(mp.Circle((12, 703), 9, fc="#5b6068"))
         ax.add_patch(mp.Rectangle((6, 112), 6, 318, fc="#2b2e33", alpha=0.5))
-        ang = {"between": 29, "meat": 25, "off": None}.get(key, 0)
+        ang = {"off": None, "links": None, "float": None}.get(key, 0)
         if key in ("hood",):
             ang = 8
         if ang is not None:
@@ -1001,7 +1075,12 @@ def plot_storyboard() -> str:
             hz = (np.array([[37, 703]]) - [12, 60]) @ R.T + [12, 60]
             ax.add_patch(mp.Rectangle((hz[0, 0] - 8, hz[0, 1] - 20 + (25 if key == "hood" else 0)), 22, 32,
                                       fc="#2e6fb0", ec="k"))
-        else:
+        elif key == "float":
+            ax.set_xlim(-60, 560)
+            dy = gv
+            ax.add_patch(mp.Polygon(np.array([[20, 35], [20, 560], [50, 631], [50, 1000], [330, 1000], [339, 600], [300, 35]],
+                                             float) + [dy, 0], closed=True, fc="#ece7db", ec="#6b6252", alpha=0.9))
+        elif key == "off":
             ax.add_patch(mp.Polygon([[150, 35], [150, 560], [180, 631], [180, 1000], [400, 1000], [409, 600], [380, 35]],
                                     closed=True, fc="#ece7db", ec="#6b6252", alpha=0.5, ls="--"))
             ax.annotate("", (300, 500), (190, 500), arrowprops=dict(arrowstyle="-|>", lw=2.5, color="#b03a2e"))
@@ -1011,17 +1090,25 @@ def plot_storyboard() -> str:
         if key == "cams":
             for z in (95, 142):
                 ax.plot([0, 120], [z, z - 40], color="#7a4fb0", lw=3)
-        if key in ("pins", "between", "meat"):
+        if key == "pins":
             ax.plot(12, 60, "o", ms=12, mfc="#b03a2e", mec="k")
-        if key == "meat":
-            ax.add_patch(mp.Ellipse((90, 380), 120, 420, angle=-12, fc="#8b3a3a", alpha=0.8))
-            for z in (190, 330, 520):
-                ax.plot([12, 160], [z, z + 20], color="#4b3a1a", lw=3)
+        if key in ("links", "float"):
+            ax.add_patch(mp.FancyBboxPatch((16, 70), gv - 4, 560, boxstyle="round,pad=0,rounding_size=30", fc="#8b3a3a",
+                                           alpha=0.85))
+            for z in (95, 142):
+                ax.plot([0, gv / 2, gv], [z, z - 60, z - 40], color="#7a4fb0", lw=3)
+            for z in (190, 330):
+                ax.plot([12, gv + 6], [z, z + 10], color="#4b3a1a", lw=3)
+            ax.plot([12, gv + 20], [520, 520], color="#c27c0e", lw=5)
+            ax.text(20, 560, f"B-24 link, gap {gv:.0f} mm", fontsize=9, color="#c27c0e", fontweight="bold")
+        if key == "float":
+            for z in (165, 335, 703):
+                ax.plot([0, gv + 340], [z, z + 25], color="#3b3b3b", lw=1.5, ls="--")
         if key == "on":
             ax.annotate("", (40, 700), (40, 760), arrowprops=dict(arrowstyle="-|>", lw=2.5, color="#2e6fb0"))
     times = procedure_times()
     fig.suptitle(f"Procedures, gloved (estimates): bag off {times['bag_off']} s (limit 120), bag on {times['bag_on']} s, "
-                 f"between mode {times['between']} s + loading, bag-off haul {times['bag_off_haul']} s",
+                 f"float mode {times['float']} s, bag-off haul {times['bag_off_haul']} s",
                  fontweight="bold", fontsize=12.5)
     fig.tight_layout()
     return _save(fig, f"{DATE}_attach_4.png")
@@ -1247,7 +1334,8 @@ def render_md(res: dict) -> list[str]:
     m = res["mass"]
     a("# Bag-to-frame attachment system")
     a("")
-    a("Owner: pack-designer. Attachment phase, 2026-11-05; hood relieved at the crown corner wraps 2026-11-06 (2.5). This is the whole joint between the Spine bag and the printed "
+    a("Owner: pack-designer. Attachment phase, 2026-11-05; hood relieved at the crown corner wraps 2026-11-06 (2.5); float "
+      "mode with the B-24 stand-off links replaces the hinge swing 2026-11-06. This is the whole joint between the Spine bag and the printed "
       "branch frame, bottom to top: hinge eyes, under-straps, IM2/IM3 bag hooks, a **crown hood** on the top bar and two "
       "**top side guys**. The frame side (fairleads, pins, sleeves, their FEA) is unchanged and is kept at the end as the "
       "2026-11-01 record. Research: `docs/research/bag_attachment_research.md`. Load standard: HA-LS-1 rev B.")
@@ -1273,21 +1361,27 @@ def render_md(res: dict) -> list[str]:
     a(f"- **IM3 hook fixed**: all four bag hooks become one **rated >= {res['hook_rated_n']:.0f} N** part, proof PT-1 at "
       f"**{res['proof_tests'][0]['load_n']:.0f} N**, which is 1.5 x the C5 IM3 load of {_f(F['im3'])} N (hood-off case). "
       f"SF on the rated hook **{res['hook_rated_n'] / F['im3']:.2f}** (was 1.06).")
-    a(f"- **Bag off {t_['bag_off']} s** (limit 120 s), bag on {t_['bag_on']} s, between mode {t_['between']} s plus loading. "
-      "Estimates for gloved hands, not a timed trial.")
+    a(f"- **Bag off {t_['bag_off']} s** (limit 120 s), bag on {t_['bag_on']} s, float mode {t_['float']} s with the meat "
+      f"loaded, bag-off haul {t_['bag_off_haul']} s. Estimates for gloved hands, not a timed trial.")
+    a("- **Float mode replaces the hinge swing (owner 2026-11-06).** For bulk meat the bag comes off its pins, the meat goes "
+      "on the frame (cradle + IM1-IM3) and the bag hangs upright behind it on two B-24 stand-off links clipped to the IM3 "
+      "eyes, at a 120 / 170 / 220 mm gap. The bag never pivots in use. The hinge pins, HE eyes and B-18 doublers stay: "
+      "they are the bag's bottom anchor in bag-on mode (factored 1019 N per side, section 5) and the bag is still put on "
+      "by tipping it onto them. Links: +54.4 g, their own weight group (section 11). "
+      "Study: `analysis/meat_carry_alternatives.md`; research: `docs/research/meat_carry_mechanisms.md`.")
     a(f"- **Mass +{m['delta_g']:.0f} g**: pack {res['pack_before_g']:.0f} -> **{res['pack_after_g']:.0f} g "
       f"({res['pack_after_g'] / 453.59237:.2f} lb)**. Marginal cost about **${res['cost_usd']:.0f}**. No new frame feature.")
     a("")
     a("## 1. The joint, bottom to top")
     a("")
-    a("| # | station | frame side (unchanged) | bag side | closer | bag off | between mode |")
+    a("| # | station | frame side (unchanged) | bag side | closer | bag off | float mode |")
     a("|---|---|---|---|---|---|---|")
-    a("| 1 | hinge, z 60 | fairlead, UHMWPE sleeve | HE eye on B-18 doubler | tethered 5 mm 7075 pull-pin (cord pull loop) | pull | stays in (it is the hinge) |")
-    a("| 2 | US1 z 95, US2 z 142 | cradle fairleads, eye L, cam R | B-16 floor channels | 38 mm cam + tri-glide | pop, slide off (straps stay) | stay cammed |")
+    a("| 1 | hinge, z 60 | fairlead, UHMWPE sleeve | HE eye on B-18 doubler | tethered 5 mm 7075 pull-pin (cord pull loop) | pull | pull (tethered to the bag) |")
+    a("| 2 | US1 z 95, US2 z 142 | cradle fairleads, eye L, cam R | B-16 floor channels | 38 mm cam + tri-glide | pop, slide off (straps stay) | pop, slide off; the straps are the meat cradle |")
     a("| 3 | IM1, z 190 | captive eye | none (meat strap only) | - | - | meat strap |")
-    a("| 4 | IM2, z 330 | captive eye | T2 tongue + B-23 backing | rated 38 mm hook | unclip | unclip |")
-    a("| 5 | IM3, z 520 | captive eye | T3 tongue on B-17 | rated 38 mm hook | unclip | unclip |")
-    a("| 6 | crown top bar, z 601-804 | carbon bar, OD 18 | B-19 hood on 2 x B-20 ladder (one rung per setting) | gravity + peel seat it; lift tab to release | lift | lift, leave off |")
+    a("| 4 | IM2, z 330 | captive eye | T2 tongue + B-23 backing | rated 38 mm hook | unclip | unclip (keeper) |")
+    a("| 5 | IM3, z 520 | captive eye | T3 tongue on B-17 | rated 38 mm hook | unclip | T3 hook into a B-24 link loop; link hook on the IM3 eye |")
+    a("| 6 | crown top bar, z 601-804 | carbon bar, OD 18 | B-19 hood on 2 x B-20 ladder (one rung per setting) | gravity + peel seat it; lift tab to release | lift | lift, lies on the bag top |")
     a("| 7 | top side guys | via the hood | TG from the hood ears to B-22 on B-02d (x +/-149, z 752) | ladder lock + tri-glide, set once | come with the hood | come with the hood |")
     a("")
     a("Lifters stay on the crown corner wraps (not part of the joint). W1-W3 stay the haul wraps / carry compression.")
@@ -1392,9 +1486,10 @@ def render_md(res: dict) -> list[str]:
     a("")
     a("### 2.3 Why the hood is lift-and-drop, not snap-on")
     a("")
-    a("The bag hinges on the z 60 pins, 643 mm below the bar. Seen from the bag, the bar arrives on a 643 mm arc that is "
+    a("The bag goes on by tipping it onto the z 60 pins, 643 mm below the bar (in use it no longer pivots: the float "
+      "replaced the swing, 2026-11-06). Seen from the bag, the bar arrives on a 643 mm arc that is "
       "level at the bar: it comes in from the wearer side. Peel is the same motion. So any bag part that stops the peel is "
-      "also in the way when the bag swings shut. A pocket cannot be made to catch the bar passively. The hood is lifted "
+      "also in the way when the bag is tipped shut. A pocket cannot be made to catch the bar passively. The hood is lifted "
       "25 mm by its tab (B-01 above IM3 is slack in compression, and the hood rides on its ladder), the bag top is pressed "
       "to the crown, and the hood is let go. It drops over the bar. Under load the J-lip seats it harder: the peel pushes it "
       "down onto the bar. Lift and drop are about 3 s each, with no strap to stretch over meat.")
@@ -1432,7 +1527,7 @@ def render_md(res: dict) -> list[str]:
       "a side, then Hypalon on carbon). The guys are symmetric, so they centre the top.")
     a("- **Sway (side lean of the top):** the guys are the top side-compression straps. They run from the hood ears outside "
       "the side gores to the aft corners, so cinching the top sideways and holding it forward is one strap per side. W1-W3 "
-      "stay the frame-anchored wraps for the lower and middle bag and for between mode. The roll-top clips stay on the gores.")
+      "stay the frame-anchored wraps for the lower and middle bag and for float mode. The roll-top clips stay on the gores.")
     a("- **Small loads:** the guys are fixed at the full-bag length; for a part-full bag pull the tails one more step "
       "(they are ladder locks) and W1-W3 take up the rest.")
     a("")
@@ -1476,7 +1571,7 @@ def render_md(res: dict) -> list[str]:
     a("")
     a("## 7. Procedures")
     a("")
-    for key in ("bag_on", "bag_off", "between", "bag_off_haul", "repair"):
+    for key in ("bag_on", "bag_off", "float", "bag_off_haul", "repair"):
         pr = PROCEDURES[key]
         tot = t_[key]
         a(f"### {pr['title']}" + ("" if key == "repair" else f" - about {tot} s"))
@@ -1517,7 +1612,13 @@ def render_md(res: dict) -> list[str]:
         a(f"| {k} | {v:.1f} |")
     a(f"| **delta** | **{m['delta_g']:.1f}** |")
     a("")
-    a(f"Pack {res['pack_before_g']:.0f} -> **{res['pack_after_g']:.0f} g ({res['pack_after_g'] / 453.59237:.2f} lb)**, "
+    from huntkit.gendesign import meat_haul as MH
+    lg = MH.float_link_parts_g()
+    a("")
+    a(f"Float-mode stand-off links B-24 (owner 2026-11-06), booked as their own weight group, not in the delta above: "
+      + "; ".join(f"{k} {v:.1f} g" for k, v in lg.items()) + f"; **+{sum(lg.values()):.1f} g**.")
+    a("")
+    a(f"Pack (this phase) {res['pack_before_g']:.0f} -> **{res['pack_after_g']:.0f} g ({res['pack_after_g'] / 453.59237:.2f} lb)**, "
       f"{res['pack_after_g'] - 2976:.0f} g over the published 2976 g. Basis: {m['basis']}. Marginal cost about "
       f"${res['cost_usd']:.0f} (records' prices; hook $6.00 and toggle $0.50 ASSUMPTION).")
     a("")
@@ -1553,7 +1654,7 @@ def render_md(res: dict) -> list[str]:
 
 SEW_ORDER = [
     "Laser-cut the Hypalon parts (B-17, B-18, B-19, B-20 x2, B-22 x2, B-23 x2) and the HDPE lip B-19s from the DXF. "
-    "Hot-knife the webbing parts (HE, T2/T3, HT, TG, LLT, GT) to the lengths on the PDF.",
+    "Hot-knife the webbing parts (HE, T2/T3, HT, TG, LLT, GT, B-24) to the lengths on the PDF.",
     "Flat B-01 (lower), before it goes 3D: B-23 inside at the IM2 marks, then box-X T2 through T2 + B-01 + B-23.",
     "B-17 outside under the IM3 swell (double row), then box-X T3 to B-17. B-18 inside at the hinge-eye notch; box-X HE.",
     "Join the B-01 tiers (B-01 | B-01b | B-01u). Then sew the two B-20 ladder strips on both long edges (2 and 5 mm "
@@ -1563,7 +1664,10 @@ SEW_ORDER = [
     "fold 1 and fold 2 square; box-X HT tongues (toggle end first), GT grab tab and the TG guy ends on the ears.",
     "Fit: weave each HT tongue into B-20 at the rung for the crown setting (in at k, out at k+1), push the toggle "
     "through. Thread each guy through its ladder lock and tri-glide, set snug on the packed bag.",
-    "Bench tests before the first field use: PT-1 to PT-5 in analysis/bag_attachment.md section 5.",
+    "B-24 float links (separate, no bag sewing): fold the hook end round a rated hook, box-X; mark the three loop "
+    "start / apex / end lines from the PDF, pinch each loop at its apex line so start meets end, box-X 38 x 20 across "
+    "both plies at the base. Check each apex at 120 / 170 / 220 mm from the hook bed (+/-3 mm).",
+    "Bench tests before the first field use: PT-1 to PT-6 in analysis/bag_attachment.md section 5.",
 ]
 
 
@@ -1581,7 +1685,7 @@ def write_readme(res: dict) -> str:
                  f"{p['spi']} SPI, `{p['thread']}` ({p['needle']}) |")
     L += ["", f"Hardware: 4 bag hooks 38 mm rated >= {res['hook_rated_n']:.0f} N (PT-1 {res['proof_tests'][0]['load_n']:.0f} N), "
           "2 POM toggles, 2 ladder locks 25 mm, 2 tri-glides 25 mm, 2 elastic keepers, Dyneema cord pull loops on the "
-          "two hinge pins.", "", "## Sewing order", ""]
+          "two hinge pins; 2 more rated hooks on the B-24 float links.", "", "## Sewing order", ""]
     L += [f"{i}. {t}" for i, t in enumerate(SEW_ORDER, 1)]
     L.append("")
     path = CUT / "README.md"
@@ -1594,5 +1698,40 @@ def docs_only(log=print) -> str:
     return bag_attach.docs_only(log)
 
 
+def refresh(log=print) -> dict:
+    """Re-derive what changed with the float mode (2026-11-06) on top of the frozen record: parts and proof tests (B-24),
+    procedure times, drawings and the screens that show procedures or parts. The cloth-sim results, factored loads, the
+    phase mass delta and its pack before/after stay as recorded (they are the 2026-11-05/06 attachment phase; later
+    weight changes are booked in geometry.yaml and listed in tests/test_attach_system.py)."""
+    import shutil
+    res = json.loads(RESULT.read_text())
+    F = res["factored_n"]
+    P = parts(F)
+    res["parts"] = P
+    res["proof_tests"] = proof_tests(F, P)
+    res["times_s"] = procedure_times()
+    res["drawings"] = export_drawings(log)
+    keep = REPO / "docs" / "screens"
+    redo = {"_attach_2": plot_hood_detail, "_attach_4": plot_storyboard,
+            "_attach_5": lambda: plot_drawing_preview(res["drawings"]["pdf"])}
+    for s_ in res["screens"]:
+        for tag, fn in redo.items():
+            if tag in s_:
+                shutil.copy2(REPO / fn(), keep / Path(s_).name)
+    res["float_mode"] = {"date": "2026-11-06", "procedure": "float", "link": "B-24",
+                         "source": "analysis/meat_carry_alternatives.md, analysis/meat_haul_modes.json float"}
+    RESULT.write_text(json.dumps(res, indent=1, default=float))
+    write_readme(res)
+    log(f"  {RESULT.relative_to(REPO)}")
+    from huntkit.gendesign import bag_attach
+    bag_attach.docs_only(log)
+    return res
+
+
 if __name__ == "__main__":
-    docs_only() if "--docs-only" in sys.argv else run()
+    if "--docs-only" in sys.argv:
+        docs_only()
+    elif "--refresh" in sys.argv:
+        refresh()
+    else:
+        run()

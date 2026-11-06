@@ -2295,6 +2295,31 @@
    "governs": "perimeter seam (50 mm loaded)",
    "sf": 9.15,
    "proof_n": 170.0
+  },
+  {
+   "id": "B-24",
+   "name": "float-mode stand-off link (new)",
+   "qty": 2,
+   "material": "poly_webbing_38mm",
+   "cut": "38 mm x 435 mm",
+   "fold": "hook end folded 45 mm round the bed of a rated 38 mm hook, box-X; three loops (25 mm opening, 50 mm of webbing each) with their bed at 120 / 170 / 220 mm from the hook bed, each closed with a 38 x 20 box-X; 20 mm tail, heat-sealed",
+   "stitch": "box-X 38 x 38 (hook) + 3 x box-X 38 x 20 (loops), 301",
+   "spi": 7,
+   "thread": "bonded_nylon_tex135",
+   "needle": "Nm 140 / 22",
+   "backing": "-",
+   "placement": "hook on the IM3 captive eye (z 520, x +/-115); the bag's T3 hook clips into a loop (float mode only; stowed in the lid or hipbelt pocket)",
+   "load_n": 941.0,
+   "load_basis": "32 kg bag on two links at 30 deg x 3.0 (misuse envelope; design case 12 kg = 353 N)",
+   "caps_n": {
+    "box-X (hook end)": 5256.0,
+    "loop box-X 38 x 20": 4089.0,
+    "webbing on hook bed": 10008.0,
+    "hook (rated)": 2200.0
+   },
+   "governs": "hook (rated)",
+   "sf": 2.34,
+   "proof_n": 1410.0
   }
  ],
  "proof_tests": [
@@ -2342,6 +2367,15 @@
    "covers": "guy x 3.0",
    "accept": "slip < 5 mm over 10 cycles",
    "also": "-"
+  },
+  {
+   "id": "PT-6",
+   "what": "B-24 stand-off link, hook end and the 220 mm loop",
+   "rig": "link hook on a 5 mm pin, 38 mm webbing loop through the 220 mm loop, pull in line",
+   "load_n": 1410.0,
+   "covers": "link misuse envelope 941 N x 1.5",
+   "accept": "5 of 5 hold, no box-X break, gate closes after",
+   "also": "first article; then 1 link per lot of 25 to 941 N"
   }
  ],
  "mass": {
@@ -2369,7 +2403,7 @@
  "times_s": {
   "bag_on": 59,
   "bag_off": 52,
-  "between": 70,
+  "float": 128,
   "bag_off_haul": 108,
   "repair": 705
  },
@@ -2391,7 +2425,8 @@
    "HT",
    "TG",
    "LLT",
-   "GT"
+   "GT",
+   "B-24"
   ]
  },
  "screens": [
@@ -2415,5 +2450,11 @@
   "Guys fixed length: elastic 25 mm webbing snug (30 N) at the drafted shape, i.e. set once on the packed bag.",
   "R-28 with the sim wall adds 3 mm (fabric + coarse mesh) and the hood (+1 mm in front of the bar, +4 mm over it).",
   "Procedure seconds: 4 s a hook or pin, 3 s a cam pop or a hood lift, 10 s to place or clear the bag (gloved, not timed)."
- ]
+ ],
+ "float_mode": {
+  "date": "2026-11-06",
+  "procedure": "float",
+  "link": "B-24",
+  "source": "analysis/meat_carry_alternatives.md, analysis/meat_haul_modes.json float"
+ }
 }

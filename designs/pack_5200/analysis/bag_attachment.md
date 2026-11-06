@@ -1,6 +1,6 @@
 # Bag-to-frame attachment system
 
-Owner: pack-designer. Attachment phase, 2026-11-05; hood relieved at the crown corner wraps 2026-11-06 (2.5). This is the whole joint between the Spine bag and the printed branch frame, bottom to top: hinge eyes, under-straps, IM2/IM3 bag hooks, a **crown hood** on the top bar and two **top side guys**. The frame side (fairleads, pins, sleeves, their FEA) is unchanged and is kept at the end as the 2026-11-01 record. Research: `docs/research/bag_attachment_research.md`. Load standard: HA-LS-1 rev B.
+Owner: pack-designer. Attachment phase, 2026-11-05; hood relieved at the crown corner wraps 2026-11-06 (2.5); float mode with the B-24 stand-off links replaces the hinge swing 2026-11-06. This is the whole joint between the Spine bag and the printed branch frame, bottom to top: hinge eyes, under-straps, IM2/IM3 bag hooks, a **crown hood** on the top bar and two **top side guys**. The frame side (fairleads, pins, sleeves, their FEA) is unchanged and is kept at the end as the 2026-11-01 record. Research: `docs/research/bag_attachment_research.md`. Load standard: HA-LS-1 rev B.
 
 Code: `huntkit/gendesign/attach_system.py` (system, sims, strengths, drawings, screens) and `huntkit/gendesign/bag_attach.py` (fairleads; `write_docs` / `docs_only` write this file). Numbers: `analysis/attach_system_results.json`. Drawings: `cut/attachment/attachment_parts.pdf` / `.dxf` (1:1).
 
@@ -10,19 +10,20 @@ Code: `huntkit/gendesign/attach_system.py` (system, sims, strengths, drawings, s
 - **The 180 mm goal is met at 19 and 23 in and missed at 15 in by 9 mm on the fill case** (meat case on the line). Nothing on the frame is higher than the 15 in top bar (z 601); every concept simulated is worst there. Owner choice 1 below.
 - **Head clearance R-28 passes** at every torso with the simulated wall and the hood on the bar: first contact **31 deg or later** (requirement > 30 deg).
 - **IM3 hook fixed**: all four bag hooks become one **rated >= 2200 N** part, proof PT-1 at **2120 N**, which is 1.5 x the C5 IM3 load of 1415 N (hood-off case). SF on the rated hook **1.55** (was 1.06).
-- **Bag off 52 s** (limit 120 s), bag on 59 s, between mode 70 s plus loading. Estimates for gloved hands, not a timed trial.
+- **Bag off 52 s** (limit 120 s), bag on 59 s, float mode 128 s with the meat loaded, bag-off haul 108 s. Estimates for gloved hands, not a timed trial.
+- **Float mode replaces the hinge swing (owner 2026-11-06).** For bulk meat the bag comes off its pins, the meat goes on the frame (cradle + IM1-IM3) and the bag hangs upright behind it on two B-24 stand-off links clipped to the IM3 eyes, at a 120 / 170 / 220 mm gap. The bag never pivots in use. The hinge pins, HE eyes and B-18 doublers stay: they are the bag's bottom anchor in bag-on mode (factored 1019 N per side, section 5) and the bag is still put on by tipping it onto them. Links: +54.4 g, their own weight group (section 11). Study: `analysis/meat_carry_alternatives.md`; research: `docs/research/meat_carry_mechanisms.md`.
 - **Mass +132 g**: pack 3316 -> **3447 g (7.60 lb)**. Marginal cost about **$16**. No new frame feature.
 
 ## 1. The joint, bottom to top
 
-| # | station | frame side (unchanged) | bag side | closer | bag off | between mode |
+| # | station | frame side (unchanged) | bag side | closer | bag off | float mode |
 |---|---|---|---|---|---|---|
-| 1 | hinge, z 60 | fairlead, UHMWPE sleeve | HE eye on B-18 doubler | tethered 5 mm 7075 pull-pin (cord pull loop) | pull | stays in (it is the hinge) |
-| 2 | US1 z 95, US2 z 142 | cradle fairleads, eye L, cam R | B-16 floor channels | 38 mm cam + tri-glide | pop, slide off (straps stay) | stay cammed |
+| 1 | hinge, z 60 | fairlead, UHMWPE sleeve | HE eye on B-18 doubler | tethered 5 mm 7075 pull-pin (cord pull loop) | pull | pull (tethered to the bag) |
+| 2 | US1 z 95, US2 z 142 | cradle fairleads, eye L, cam R | B-16 floor channels | 38 mm cam + tri-glide | pop, slide off (straps stay) | pop, slide off; the straps are the meat cradle |
 | 3 | IM1, z 190 | captive eye | none (meat strap only) | - | - | meat strap |
-| 4 | IM2, z 330 | captive eye | T2 tongue + B-23 backing | rated 38 mm hook | unclip | unclip |
-| 5 | IM3, z 520 | captive eye | T3 tongue on B-17 | rated 38 mm hook | unclip | unclip |
-| 6 | crown top bar, z 601-804 | carbon bar, OD 18 | B-19 hood on 2 x B-20 ladder (one rung per setting) | gravity + peel seat it; lift tab to release | lift | lift, leave off |
+| 4 | IM2, z 330 | captive eye | T2 tongue + B-23 backing | rated 38 mm hook | unclip | unclip (keeper) |
+| 5 | IM3, z 520 | captive eye | T3 tongue on B-17 | rated 38 mm hook | unclip | T3 hook into a B-24 link loop; link hook on the IM3 eye |
+| 6 | crown top bar, z 601-804 | carbon bar, OD 18 | B-19 hood on 2 x B-20 ladder (one rung per setting) | gravity + peel seat it; lift tab to release | lift | lift, lies on the bag top |
 | 7 | top side guys | via the hood | TG from the hood ears to B-22 on B-02d (x +/-149, z 752) | ladder lock + tri-glide, set once | come with the hood | come with the hood |
 
 Lifters stay on the crown corner wraps (not part of the joint). W1-W3 stay the haul wraps / carry compression.
@@ -83,7 +84,7 @@ The CG holds within the +/-5 mm fill scatter (accepted 189 / 177 / 168 mm), and 
 
 ### 2.3 Why the hood is lift-and-drop, not snap-on
 
-The bag hinges on the z 60 pins, 643 mm below the bar. Seen from the bag, the bar arrives on a 643 mm arc that is level at the bar: it comes in from the wearer side. Peel is the same motion. So any bag part that stops the peel is also in the way when the bag swings shut. A pocket cannot be made to catch the bar passively. The hood is lifted 25 mm by its tab (B-01 above IM3 is slack in compression, and the hood rides on its ladder), the bag top is pressed to the crown, and the hood is let go. It drops over the bar. Under load the J-lip seats it harder: the peel pushes it down onto the bar. Lift and drop are about 3 s each, with no strap to stretch over meat.
+The bag goes on by tipping it onto the z 60 pins, 643 mm below the bar (in use it no longer pivots: the float replaced the swing, 2026-11-06). Seen from the bag, the bar arrives on a 643 mm arc that is level at the bar: it comes in from the wearer side. Peel is the same motion. So any bag part that stops the peel is also in the way when the bag is tipped shut. A pocket cannot be made to catch the bar passively. The hood is lifted 25 mm by its tab (B-01 above IM3 is slack in compression, and the hood rides on its ladder), the bag top is pressed to the crown, and the hood is let go. It drops over the bar. Under load the J-lip seats it harder: the peel pushes it down onto the bar. Lift and drop are about 3 s each, with no strap to stretch over meat.
 
 ### 2.4 The 15 in setting
 
@@ -105,7 +106,7 @@ Proof test PT-1: five hooks hold **2120 N** for 60 s (1.5 x C5), gate closes aft
 ## 4. Sway, barndoor and the side compression
 
 - **Barndoor (bag yawing on the frame):** held at three heights on both sides: the hinge pins (z 60), the IM2/IM3 hooks (z 330/520), and at the top the hood between the crown legs (190 mm hood, 208 mm between the leg faces: 9 mm a side, then Hypalon on carbon). The guys are symmetric, so they centre the top.
-- **Sway (side lean of the top):** the guys are the top side-compression straps. They run from the hood ears outside the side gores to the aft corners, so cinching the top sideways and holding it forward is one strap per side. W1-W3 stay the frame-anchored wraps for the lower and middle bag and for between mode. The roll-top clips stay on the gores.
+- **Sway (side lean of the top):** the guys are the top side-compression straps. They run from the hood ears outside the side gores to the aft corners, so cinching the top sideways and holding it forward is one strap per side. W1-W3 stay the frame-anchored wraps for the lower and middle bag and for float mode. The roll-top clips stay on the gores.
 - **Small loads:** the guys are fixed at the full-bag length; for a part-full bag pull the tails one more step (they are ladder locks) and W1-W3 take up the rest.
 
 ## 5. Sewn side
@@ -125,6 +126,7 @@ Stitch standards. Load joints: box-X, ISO 301 lockstitch, **7 SPI** (3.6 mm), `b
 | B-20 | hood ladder strip (new) | 2 | `hypalon_coated_nylon` | 40 x 250, 17 slots 27 x 5 at 12.7 mm pitch, laser-cut | flat | double-row both long edges 2 / 5 mm (clear of the slots) + bartack both ends, 301, 8 SPI, `bonded_nylon_tex90` | - | OUTSIDE B-01b/B-01u, centred x +/-60, z 545-795 (sewn after the B-01 tiers are joined; follows the setback) |
 | TG | top side guy (fixed length, set once) | 2 | `poly_webbing_25mm` | 25 mm x 500 mm | hood end box-X on the ear; bag end through a 25 mm ladder lock + tri-glide keeper on B-22, tail 100 mm in an elastic keeper | box-X 25 x 25 (hood end), 301, 7 SPI, `bonded_nylon_tex135` | B-22 corner tab | hood ear x +/-95 -> B-02d at x +/-149, z 752 (outer face, upper corner); free length about 314 mm |
 | B-22 | guy corner tab (new) | 2 | `hypalon_coated_nylon` | 50 x 60, laser-cut, R6 | flat | double-row perimeter; ladder-lock tab (25 mm x 70 mm webbing) box-X 25 x 25 through it, 8 SPI, `bonded_nylon_tex90` | - | OUTSIDE B-02d at x +/-149, z 752 |
+| B-24 | float-mode stand-off link (new) | 2 | `poly_webbing_38mm` | 38 mm x 435 mm | hook end folded 45 mm round the bed of a rated 38 mm hook, box-X; three loops (25 mm opening, 50 mm of webbing each) with their bed at 120 / 170 / 220 mm from the hook bed, each closed with a 38 x 20 box-X; 20 mm tail, heat-sealed | box-X 38 x 38 (hook) + 3 x box-X 38 x 20 (loops), 301, 7 SPI, `bonded_nylon_tex135` | - | hook on the IM3 captive eye (z 520, x +/-115); the bag's T3 hook clips into a loop (float mode only; stowed in the lid or hipbelt pocket) |
 
 Strength (per side, factored HA-LS-1 x 3.0 or the beam model, whichever is larger):
 
@@ -141,6 +143,7 @@ Strength (per side, factored HA-LS-1 x 3.0 or the beam model, whichever is large
 | B-20 | 79 | as HT | rung bar (7.7 mm, 30 deg sag) 315 | rung bar (7.7 mm, 30 deg sag) | **4.00** | 120 |
 | TG | 112 | sim guy x 3.0 | box-X 25 3458; ladder lock slip 300; webbing 6672 | ladder lock slip | **2.68** | 170 |
 | B-22 | 112 | as TG | perimeter seam (50 mm loaded) 1024; box-X 25 3458 | perimeter seam (50 mm loaded) | **9.15** | 170 |
+| B-24 | 941 | 32 kg bag on two links at 30 deg x 3.0 (misuse envelope; design case 12 kg = 353 N) | box-X (hook end) 5256; loop box-X 38 x 20 4089; webbing on hook bed 10008; hook (rated) 2200 | hook (rated) | **2.34** | 1410 |
 
 Proof tests (owner bench, before the first sewn bag):
 
@@ -151,6 +154,7 @@ Proof tests (owner bench, before the first sewn bag):
 | PT-3 | HE eye on B-18 + B-01 + B-05 seam swatch | 5 mm pin through the eye | 1530 | hinge factored 1019 N | 5 of 5 hold | first article only |
 | PT-4 | crown hood on an 18 mm tube | pull B-01 swatch aft through the ladder, guys pulled aft-outward | 570 | hood capture + both guys x 3.0 | hood stays seated, no toggle pull-through | repeat at -10 C (HDPE lip) |
 | PT-5 | guy ladder lock with the tri-glide keeper | 25 mm webbing, 10 cycles 0-load | 170 | guy x 3.0 | slip < 5 mm over 10 cycles | - |
+| PT-6 | B-24 stand-off link, hook end and the 220 mm loop | link hook on a 5 mm pin, 38 mm webbing loop through the 220 mm loop, pull in line | 1410 | link misuse envelope 941 N x 1.5 | 5 of 5 hold, no box-X break, gate closes after | first article; then 1 link per lot of 25 to 941 N |
 
 ## 6. Quiet
 
@@ -159,7 +163,7 @@ Checklist = the noise sources owners name (research 3.4) plus the four inferred 
 | source | how this joint answers it |
 |---|---|
 | dry webbing and buckles | No side-release buckle anywhere in the joint. Only plastic: two guy ladder locks (set once, on the outer face, touching fabric only) and two POM toggles buried in webbing. Captive eyes and the hood lip are rubbed with paraffin at assembly (owners' wax fix). |
-| webbing loops at the frame | Captive eyes sit on pins in UHMWPE sleeves in an 18 mm throat; the bag hooks are loaded whenever the bag is on, and hang on elastic keepers when it is off. Hooks keep their TPU sleeves. |
+| webbing loops at the frame | Captive eyes sit on pins in UHMWPE sleeves in an 18 mm throat; the bag hooks are loaded whenever the bag is on, and hang on elastic keepers when it is off. Hooks keep their TPU sleeves. The B-24 float links ride in a pocket except in float mode, where the hanging bag keeps their hooks loaded. |
 | frame rails rubbing inside the bag | No frame part is inside the bag. B-01 keeps 2 mm of air over every cleat (swells). The hood is outside the bag, on the bar, and does not slide in use. |
 | dirt in frame joints | The hood is open at the bottom and the ladder slots drain. Pins and sleeves are field spares. |
 | cold fabric | Hypalon and HDPE stay flexible; PT-4 is repeated at -10 C. |
@@ -184,22 +188,20 @@ Checklist = the noise sources owners name (research 3.4) plus the four inferred 
 ### Bag off (keep it under 120 s) - about 52 s
 
 1. Set the pack down on its back pad. (3 s)
-2. Lift the hood tab and swing the top of the bag about 10 cm aft. The guys stay on the hood and come with the bag. (3 s)
+2. Lift the hood tab and ease the top of the bag about 10 cm aft so the hood clears the bar. The guys stay on the hood and come with the bag. (3 s)
 3. Unclip the four bag hooks, IM3 first, then IM2. Hang each on its elastic keeper. (16 s)
 4. Pop the two under-strap cams. Slide the floor channels off the straps. The straps stay on their pins: they are the cradle. (12 s)
 5. Pull the two hinge pins. They stay tethered to the bag eyes. (8 s)
 6. Lift the bag clear. (10 s)
 
-### Between mode (meat between bag and frame, hinge pins stay in) - about 70 s
+### Float mode (meat on the frame, bag hung upright behind it on the B-24 links) - about 128 s
 
-1. Set the pack on its back pad, top toward the meat. (3 s)
-2. Lift the hood tab and swing the top of the bag aft. (3 s)
-3. Unclip the four bag hooks (IM3, then IM2). Leave the hinge pins in and the under-straps cammed. (16 s)
-4. Swing the bag back on its hinge pins until it lies open (about 29 deg at IM3 when it closes on the quarter). (3 s)
-5. Set the quarter (in a game bag) on the spreader, thick end high, hock at IM1.
-6. Hook IM1-IM3 meat straps eye to eye over the meat and cam them. (24 s)
-7. Swing the bag onto the meat. Do NOT re-engage the hood or re-clip the bag hooks: they cannot reach and must not be forced over the meat. The hood lies flat on B-01 against the game bag. (3 s)
-8. Close W1-W3 round the bag and the meat (ladder locks). (18 s)
+1. Take the bag off (procedure above). Lay the frame on its back pad, crown toward the meat. (52 s)
+2. Set the quarter (in a game bag) in the two under-straps, bone toward the spreader. Cam them until the belly is about 70 mm. (12 s)
+3. Hook IM1-IM3 meat straps eye to eye over the meat and cam them. A hock can sit on IM1. (24 s)
+4. Hook one B-24 stand-off link on each IM3 eye, gate toward the bag, beside the meat-strap hook. Let the loops hang aft along the sides of the meat. (8 s)
+5. Stand the bag upright behind the meat, frame panel (B-01) toward it. Clip each T3 bag hook into the link loop that just touches the bag (120, 170 or 220 mm; use the smallest that fits). The T2 hooks stay on their keepers; the hood lies on the bag top and is not put on the bar. (14 s)
+6. Close W1-W3 round the bag and the meat (ladder locks). (18 s)
 
 ### Bag-off meat haul (frame and cradle only) - about 108 s
 
@@ -224,7 +226,7 @@ Repair kit: spare 5 mm 7075 pin with cord pull loop, 2 UHMWPE sleeves, spare 38 
 
 | patent | how the joint stays clear | status |
 |---|---|---|
-| US 12,495,885 (Eberlestock, load sling) | Under-straps US1/US2 run frame pin to frame pin (eye on the left pin, cam on the right pin) through channels sewn on the bag floor. No separate fabric shelf panel, and no strap ends on the bag. The hood is above the bag top and is not a sling. | compliant as drawn; FTO read still required before release |
+| US 12,495,885 (Eberlestock, load sling) | Under-straps US1/US2 run frame pin to frame pin (eye on the left pin, cam on the right pin) through channels sewn on the bag floor. No separate fabric shelf panel, and no strap ends on the bag. The hood is above the bag top and is not a sling. Float mode (2026-11-06): the meat sits on those frame-to-frame straps; the two B-24 links run from the IM3 eyes (z 520, above the meat floor) to the bag's T3 hooks, and there is no fabric panel between frame and bag for any strap to run under. | compliant as drawn; FTO read still required before release |
 | US 10,952,523 (Mystery Ranch, pop-up frame) | Load lifters stay on the crown corner wraps at every setting and in every mode. The 'lifters as anchor' option (L19) would route the lifter to the bag in bag-on and to the frame in bag-off: that is the switching the claim describes, so it is rejected whatever its CG. The hood sits on the crown bar but is not a lifter connector. | compliant |
 | US 8,381,956 (Mystery Ranch, membrane + stay gap, est. to 2027) | No bag tab or strap is tucked between the spreader and the z 330 cross member. The IM2 tongue reaches the IM2 eye at the stay face through the spreader's 30 mm edge notch, aft of the spreader; nothing goes behind the spreader. | compliant |
 | US 8,579,171 / 8,348,114 (Mystery Ranch, expired per Google) | Their description includes a collar with an inverted pocket over the frame top. The crown hood is that family of idea (public domain if expired). | confirm expiry in the FTO read |
@@ -237,6 +239,7 @@ Original IP: The hood is a single J-profile Hypalon cap between the crown legs, 
 - Crown top bar (2026-11-06, replaces 'bare x +/-96'): the corner wraps stay as built (x +/-77 to +/-107, OD ~19.5). The hood's lip, stiffener and lining bear on bare OD 18 +/- 0.3 bar over x +/-66 only (2 mm clear of the wrap step with the hood floated 9 mm to one leg); keep x +/-75 free of any bonded lug, label or tape.
 - New load on the crown top bar (factored, HA-LS-1 x 3.0): hood capture 158 N total, spread over x +/-66 on the bar's wearer-side face, pointing aft (1.19 N/mm, was 0.83 over x +/-95); each guy 112 N, from the hood ear at x +/-95 pointing aft and outboard toward the face corner (x +/-149, z 752), now reaching the bar through the hood shell and the lip (x +/-66), not at the ear. Nothing bears on the wraps. Add both to the C1/C5 re-check with the bag CG below.
 - Bag CG envelope for the frame re-check, chosen system (1 g sim, +/-5 mm on fill): see the 'Top anchor' table; worst is the 15 in setting.
+- Float mode (2026-11-06, replaces the hinge swing): each IM3 captive eye carries its meat-strap leg (225 N aft, factored hand cinch) plus one B-24 link (353 N factored, 30 deg below horizontal, aft and down; 12 kg bag): resultant 559 N per side. Misuse envelope (32 kg in the bag): link 941 N, eye 1142 N per side, below the 1415 N bag-hook case the IM3 eye already carries in bag-on. The hinge pins carry nothing in float mode. Full list: analysis/meat_carry_alternatives.md section 8.
 
 ## 10. Pattern-maker hand-off
 
@@ -248,8 +251,8 @@ Original IP: The hood is a single J-profile Hypalon cap between the crown legs, 
 | B-17, B-18 | Unchanged (2026-11-05). B-17 now carries tongue T3 for the rated hook. |
 | B-19 / B-19s / B-19L (rev 2026-11-06) | Hood lip relieved: the lip, J-curl and hem exist only over the centre 132 mm (x +/-66); the outer 29 mm each side ends at fold 2 with an R4 root. Back ply, crown, ears and the 190 mm shell width are unchanged. B-19s HDPE 180 -> 124 mm, B-19L XLPE 180 -> 128 mm. Blank outline, fold 2 and hem lines redrawn in cut/attachment/attachment_parts.pdf / .dxf. |
 | new pieces | B-19 hood shell (Hypalon, laser-cut, fold lines etched), B-19s lip stiffener (HDPE 1.5), B-19L lining (XLPE 3), B-20 x2 ladder strips (Hypalon, 17 slots), B-22 x2 corner tabs, B-23 x2 IM2 backings. No seam allowance (laser-cut, edge-stitched). True-scale in cut/attachment/attachment_parts.pdf / .dxf. |
-| webbing cut list | add: HT hood tongues 2 x 25 mm x 120; TG guys 2 x 25 mm x 500; ladder-lock tabs 2 x 25 mm x 70; hood grab tab 1 x 25 mm x 90. Unchanged: HE 2 x 38 x 150, T2/T3 4 x 38 x 160. |
-| hardware list | bag hooks 4 x 38 mm rated >= 2200 N (replaces the 1500 N assumption on the bag hooks only; the meat-strap hooks are unchanged); 2 x POM toggle; 2 x 25 mm ladder lock; 2 x tri-glide; Dyneema cord pull loops replace the metal rings on the two hinge pins. |
+| webbing cut list | add: HT hood tongues 2 x 25 mm x 120; TG guys 2 x 25 mm x 500; ladder-lock tabs 2 x 25 mm x 70; hood grab tab 1 x 25 mm x 90; B-24 float links 2 x 38 mm x 435 (2026-11-06). Unchanged: HE 2 x 38 x 150, T2/T3 4 x 38 x 160. |
+| hardware list | bag hooks 4 x 38 mm rated >= 2200 N (replaces the 1500 N assumption on the bag hooks only; the meat-strap hooks are unchanged); 2 x POM toggle; 2 x 25 mm ladder lock; 2 x tri-glide; Dyneema cord pull loops replace the metal rings on the two hinge pins; 2 more rated 38 mm hooks on the B-24 float links (2026-11-06). |
 
 ## 11. Mass and cost of this phase
 
@@ -270,7 +273,10 @@ Original IP: The hood is a single J-profile Hypalon cap between the crown legs, 
 | thread (box-X + perimeters) | 2.0 |
 | **delta** | **131.5** |
 
-Pack 3316 -> **3447 g (7.60 lb)**, 471 g over the published 2976 g. Basis: hypalon_coated_nylon 1000 gsm, hdpe_sheet, xlpe_foam, poly_webbing_25mm, ladder_lock_25mm records; toggle, tri-glide, hook masses ASSUMPTION; elastic keeper 0.6 g ASSUMPTION. Marginal cost about $16 (records' prices; hook $6.00 and toggle $0.50 ASSUMPTION).
+
+Float-mode stand-off links B-24 (owner 2026-11-06), booked as their own weight group, not in the delta above: 38 mm webbing, 2 x 435 mm 24.4 g; rated 38 mm hooks (2), same part as the bag hooks 28.0 g; thread (box-X + loop box-X) 2.0 g; **+54.4 g**.
+
+Pack (this phase) 3316 -> **3447 g (7.60 lb)**, 471 g over the published 2976 g. Basis: hypalon_coated_nylon 1000 gsm, hdpe_sheet, xlpe_foam, poly_webbing_25mm, ladder_lock_25mm records; toggle, tri-glide, hook masses ASSUMPTION; elastic keeper 0.6 g ASSUMPTION. Marginal cost about $16 (records' prices; hook $6.00 and toggle $0.50 ASSUMPTION).
 
 ## 12. Owner choices (recommendation first)
 
@@ -326,7 +332,7 @@ Code: `huntkit/gendesign/bag_attach.py`. Load standard: HA-LS-1 rev B.
 - Marginal hardware and filament about **$48**. Extra print time about **1.75 h**.
 
 Bag-off is a required mode (owner, 2026-11-01). The same fairleads take the
-meat straps eye-to-eye once the bag is off. Both haul modes, the wedge between bag and frame,
+meat straps eye-to-eye once the bag is off. The haul modes (bag on, float, bag off; the float replaced the hinge swing 2026-11-06),
 and the safety factors are in `analysis/meat_haul_modes.md`. The eight B-01 swells are accepted.
 
 ### Why this one
@@ -344,7 +350,7 @@ and the safety factors are in `analysis/meat_haul_modes.md`. The eight B-01 swel
 
 The closer on IM2 and IM3 was the aluminium sliding-gate hook assumed for the meat
 harness (1500 N, 9 g), SF **2.71** on the beam-model load. The cloth sim with the B-17 tab raised that load; the bag hooks are now a rated part (section 3). The hinge does not use a hook:
-the bag's sewn eye is on the pin, so the bag can swing open for a bay load without leaving the frame.
+the bag's sewn eye is on the pin, the bag's bottom anchor in bag-on mode (2026-11-01 note: the pin was also a hinge for a bay load; retired 2026-11-06, float mode).
 The bartack on that eye is the v3.1 assumption, 2700 N, SF **3.72**.
 
 ### Loads
@@ -433,7 +439,7 @@ Cost is marginal. Filament $4.26, scrap $0.64, extra machine time $1.75, hooks p
   The hole is a drawn loop in each layer, not a bridge in mid-air.
 - UHMWPE sleeve, OD 7.2 mm, pressed into the cheeks. The pin turns in the sleeve, not in the nylon.
 - Hinge pins (z 60) have a pull ring and a silicone washer, tethered to the bag eye.
-  Leave them in and the bag hinges for a bay load. Pull them and the bag leaves.
+  Pull them and the bag leaves (bag off and float mode; the hinged bay load was retired 2026-11-06).
 - IM1 (z 190) keeps a captive eye for the meat strap. The bag does not clip there.
   IM2 (z 330) and IM3 (z 520) take a bag hook and a meat hook on the same eye.
 - B-01 is only 20 mm aft of the stay centre, so the stay crown leaves a few millimetres.

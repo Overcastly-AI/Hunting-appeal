@@ -168,7 +168,7 @@ def build_teardrop_bag(p, g, hp, Part, crown_info, tubes, metrics, block, ribbon
     f_out = seams.get("face_side_fraction_of_outer_half_arc", 0.17)
     f_frm = seams.get("gore_fraction_of_frame_half_arc", 0.12)
     pull = float(p["haul_pullback_y"] or bag_g.get("haul_mode_pullback_y_max", 250.0))
-    HAUL = (0.0, 0.0, 0.0)        # between mode is a SWING on the z 60 hinge pins (Part.swing), not a translation
+    HAUL = (0.0, 0.0, 0.0)        # float mode moves the bag by the B-24 gap the viewer picks (Part.floats)
     rt_cfg = bag_g.get("rolltop", {})
     BE = (0.0, 260.0, 0.0)
     sh_t = p["shard_thick"]
@@ -346,7 +346,7 @@ def build_teardrop_bag(p, g, hp, Part, crown_info, tubes, metrics, block, ribbon
 
     # ------------------------------------------------------------------ meat haul
     # v3.1+ (meat_harness in geometry.yaml): the quarters, the IM1-IM3 harness and the haul wraps of each mode are built
-    # by huntkit.viz3d.attach (between mode = bag swung open on the hinge pins; bag off = quarter in the under-strap
+    # by huntkit.viz3d.attach (float = meat in the cradle, bag hung upright behind it on the B-24 links; bag off = quarter in the under-strap
     # cradle). The block below is the pre-attachment (v3.0 shelf) model, kept for legacy geometry only.
     mh = g.get("meat_harness") or {}
     qinfo = None
@@ -431,8 +431,8 @@ def build_teardrop_bag(p, g, hp, Part, crown_info, tubes, metrics, block, ribbon
 
     def wrap_path(S, zR, zL, ayR, ayL, dy=0.0, meat=False, xform=None, q_half=None):
         """Frame anchor R -> bag frame corner R -> round the outer face (rising from zR to zL, a helix
-        when the anchors differ) -> frame corner L -> anchor L. ``xform`` moves the bag points (between mode:
-        the hinge swing); in meat mode the strap runs from the fixed frame anchor past the quarter's sides."""
+        when the anchors differ) -> frame corner L -> anchor L. ``xform`` moves the bag points (float mode:
+        the translation by the gap); in meat mode the strap runs from the fixed frame anchor past the quarter's sides."""
         q_half = q_half or q_half_default
         zm = (zR + zL) / 2
         u_fc = S.outer_half(zm) / 2 + f_frm * S.frame_half(zm) * 0.6
@@ -497,9 +497,9 @@ def build_teardrop_bag(p, g, hp, Part, crown_info, tubes, metrics, block, ribbon
     XRAY = {"bag_body", "bag_body_full", "bag_bottom", "bag_trim", "diagonal_band", "bag_shards", "side_pockets",
             "rolltop", "rolltop_full", "lid", "zip_pulls", "compression_straps", "rolltop_straps",
             "rolltop_full_straps", "bag_boot_tabs"}
-    for q in parts:                                       # everything on the bag swings open with it in between mode
+    for q in parts:                                       # everything on the bag moves aft with it in float mode
         if q.group in ("bag", "accessory"):
-            q.swing = True
+            q.floats = True
         if q.name in XRAY or q.name.startswith("crown_wrap"):   # viewer X-ray: see the joint through the bag
             q.xray = True
     return parts, {"lid_vol": lid_vol, "side_pocket_vol": side_pocket_vol, "pull": pull, "full": full, "roll": roll,

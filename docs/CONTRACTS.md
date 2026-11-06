@@ -130,12 +130,12 @@ ratings are still assumptions awaiting a proof test.
 | Mode | Required | What the modules share |
 |---|---|---|
 | `bag_on` | yes | Meat inside the bag. IM1–IM3 cinch it against the spreader. Floor vertical is shared by the hinge pins and the US1/US2 under-straps. |
-| `between` | yes, as the bulk method of `bag_on` | Bag swings open on the hinge pins. The under-straps stay cammed. IM2 and IM3 bag hooks released. |
+| `float` | yes, the bulk method (owner 2026-11-06; replaces `between`, the hinge swing, which is retired) | Bag off its pins as in `bag_off`; meat in the US1/US2 cradle with IM1–IM3 eye to eye over it; the bag hangs upright behind it on two B-24 stand-off links (rated hook on each IM3 eye, T3 bag hooks in a loop at 120 / 170 / 220 mm). `meat_haul_modes.json` key `float` (fields `gaps_mm`, `view_gap_mm`, `link`, `im3_eye_n`, `im3_eye_envelope_n`, `lever`); `huntkit.gendesign.meat_haul.FLOAT_GAPS_MM` / `FLOAT_VIEW_GAP_MM` / `float_link_parts_g` are the shared constants. The hinge pins carry nothing. |
 | `bag_off` | yes | Bag off in ≤ 120 s (crown-hood lift + 4 hooks + 2 cams + 2 hinge pins, about 52 s). The under-straps stay on the frame as the cradle. IM1–IM3 cinch the quarter against the spreader. No shelf. |
 
 Top anchor (attachment phase, 2026-11-05, additive): a **crown hood** on the bag (B-19, on a 17-rung ladder B-20, one rung
 per crown setting) drops over the crown top bar, and two **top side guys** run from its ears to the outer-face corners
-(B-22 at x ±149, z 752). It is lifted off in `between` and `bag_off`; it is never re-attached over meat. The four bag hooks
+(B-22 at x ±149, z 752). It is lifted off in `float` and `bag_off`; it is never re-attached over meat. The four bag hooks
 (IM2/IM3) are one rated part, ≥ 2200 N (proof PT-1). Loads it adds on the crown top bar, the bag CG it gives and the
 procedures: `designs/pack_5200/analysis/bag_attachment.md` (numbers in `analysis/attach_system_results.json`). No frame
 station moves and no FEA group changes. Since HA-LS-1 rev C (2026-11-06) the hood and guy loads are part of C5 / C7

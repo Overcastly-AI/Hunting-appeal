@@ -174,13 +174,15 @@ def test_attachment_parts_present(pack):
     want = {"spreader_board", "spreader_tubes", "spreader_pucks", "spreader_clips", "back_panel", "rail_foam",
             "rail_backers", "fairlead_cleats", "cradle_fairleads", "fairlead_pins", "hinge_pins", "captive_eyes",
             "tab_b17", "doublers_b18_b23", "hinge_eyes", "hook_tongues", "bag_hooks", "hood_ladders", "guy_tabs_b22",
-            "bow_carry", "bow_carry_hook", "under_straps", "under_straps_open", "cradle_straps", "quarter_between",
-            "meat_straps_between", "meat_straps"}
+            "bow_carry", "bow_carry_hook", "under_straps", "cradle_straps", "meat_straps"}
+    for g in (120, 170, 220):
+        want |= {f"quarter_float_g{g}", f"meat_straps_float_g{g}", f"cradle_straps_float_g{g}", f"float_links_g{g}",
+                 f"float_link_hooks_g{g}", f"haul_wraps_meat_g{g}"}
     for t in (15, 19, 23):
         want |= {f"crown_hood@t{t}", f"crown_hood_open@t{t}", f"top_guys@t{t}", f"top_guys_full@t{t}"}
     assert want <= names, sorted(want - names)
     # retired parts: the curved rev-B sheet STL, the LINK toggles, the shelf
-    assert not ({"frame_barrier", "bag_link", "load_shelf"} & names)
+    assert not ({"frame_barrier", "bag_link", "load_shelf", "quarter_between", "under_straps_open"} & names)
 
 
 def test_spreader_is_the_flat_sandwich_v2_board(pack):
@@ -253,7 +255,7 @@ def test_bag_hooks_rated_and_on_the_eyes(pack):
     assert len(parts) == 4
     zc = sorted(round(float(p.vertices[:, 2].mean())) for p in parts)
     assert zc[0] > 260 and zc[1] < 330 and 450 < zc[2] < 520                   # below IM2 (330) and IM3 (520)
-    assert hk.swing and pack.part("tab_b17").swing
+    assert hk.floats and pack.part("tab_b17").floats
 
 
 def test_crown_hood_on_the_bar_lip_relieved(pack):
@@ -290,29 +292,44 @@ def test_ladder_and_guys_follow_the_records(pack):
     assert gl == pytest.approx(GUY["free_mm"], rel=0.15)                       # drafted path vs the record free length
 
 
-def test_between_mode_swing_matches_meat_haul_record(pack):
+def test_float_mode_translates_the_bag_and_matches_the_record(pack):
+    """Owner 2026-11-06: the bag hangs upright behind the meat on the B-24 links; it moves straight aft by the gap."""
     _attach_or_skip(pack)
     import json
+    from huntkit.viz3d import attach as A
     from huntkit.viz3d.params import REPO
-    rec = json.loads((REPO / "designs/pack_5200/analysis/meat_haul_modes.json").read_text())["between"]
-    h = pack.metrics["hinge"]
-    assert h["angle_deg"] == pytest.approx(rec["angle_deg"]) and h["z"] == 60.0
-    for z, mm in rec["opening_mm"].items():                                    # wedge left for the meat
-        assert pack.metrics["between_wedge_mm"][z] == pytest.approx(mm, abs=10.0)
-    for name in ("bag_body", "bag_body_full", "hook_tongues", "crown_hood_open@t19", "top_guys_open@t19"):
-        assert pack.part(name).swing, name
-    assert not pack.part("quarter_between").swing and pack.part("quarter_between").modes == ("pack_haul",)
+    rec = json.loads((REPO / "designs/pack_5200/analysis/meat_haul_modes.json").read_text())["float"]
+    fl = pack.metrics["float"]
+    assert fl["gaps_mm"] == rec["gaps_mm"] == [120.0, 170.0, 220.0] and fl["view_gap_mm"] == 170.0
+    assert "hinge" not in pack.metrics and "between_wedge_mm" not in pack.metrics
+    assert np.allclose(A.Float(170.0)([[0, 10, 500]]), [[0, 180, 500]])
+    assert np.allclose(A.Float(170.0)([[0, 1, 0]], direction=True), [[0, 1, 0]])    # translation: no rotation
+    for name in ("bag_body", "bag_body_full", "hook_tongues", "hinge_pins", "crown_hood_open@t19", "top_guys_open@t19"):
+        assert pack.part(name).floats, name
+    for g in (120, 170, 220):
+        q = pack.part(f"quarter_float_g{g}")
+        assert not q.floats and q.modes == ("pack_haul",) and q.gap == g
+        assert min(fl["space_mm"][str(g)].values()) > 0.6 * g                  # the meat has its gap
+        # meat stays between the spreader and B-01 moved aft by the gap
+        v = np.asarray(q.mesh.vertices)
+        assert v[:, 1].max() < float(np.max(A.board_bag_y(v[:, 2]))) + g + 40.0
+        lk = np.asarray(pack.part(f"float_links_g{g}").mesh.vertices)
+        assert lk[:, 1].max() - lk[:, 1].min() == pytest.approx(g, abs=12.0)   # eye to the T3 hook, the gap long
+        assert abs(lk[:, 2].mean() - 505.0) < 20.0                              # at the IM3 eye (z 520 - 15)
     assert pack.part("quarter_proxy").modes == ("frame_haul",) and pack.part("cradle_straps").modes == ("frame_haul",)
+    assert pack.part("under_straps").modes == ("pack",)                         # cammed under the floor only when carried
     from huntkit.viz3d.export import manifest
     man = manifest(pack)
-    assert man["bag_body"]["swing"] and man["bag_body"]["xray"] and not man["spreader_board"]["swing"]
+    assert man["bag_body"]["floats"] and man["bag_body"]["xray"] and not man["spreader_board"]["floats"]
+    assert man["float_links_g170"]["gap"] == 170.0 and man["bag_body"]["gap"] is None
+    assert "swing" not in man["bag_body"]
 
 
 def test_bow_riser_carry_on_the_right(pack):
     _attach_or_skip(pack)
     v = np.asarray(pack.part("bow_carry").mesh.vertices)
     assert (v[:, 0] > 0).all()                                                 # D-30: right face
-    assert pack.part("bow_carry").swing
+    assert pack.part("bow_carry").floats
 
 
 def test_captions_match_the_current_design(pack):
@@ -322,7 +339,8 @@ def test_captions_match_the_current_design(pack):
     txt = " ".join((s["caption"] + " " + s["sub"]).lower() for s in shots(m))
     assert "frame, crown, shelf" not in txt and "shelf straps" not in txt
     assert txt.count("shelf") == txt.count("no shelf")                          # only ever 'no shelf'
-    assert "hinges back" not in txt and "link" not in txt and "lumbar plate" not in txt
+    assert "hinges back" not in txt and "link toggle" not in txt and "lumbar plate" not in txt
+    assert "swing" not in txt and "hinge rotation" not in txt and "between mode" not in txt and "wedge" not in txt
     names = [s["name"] for s in shots(m)]
     if "spreader_board" in {p.name for p in pack.parts}:
-        assert {"between", "attach", "bagoff", "hood", "spreader", "backpanel", "bow"} <= set(names)
+        assert {"float", "float220", "attach", "bagoff", "hood", "spreader", "backpanel", "bow"} <= set(names)

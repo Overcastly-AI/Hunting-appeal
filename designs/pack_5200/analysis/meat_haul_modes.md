@@ -1,6 +1,8 @@
-# Meat haul, both modes required
+# Meat haul, three modes required
 
-Owner, 2026-11-01: both modes are requirements. The eight B-01 swells are accepted.
+Owner, 2026-11-01: bag-on and bag-off are requirements. Owner, 2026-11-06: the hinge swing ("between" mode) is
+replaced by the float (C): meat on the frame, bag hung upright behind it on two stand-off links. The eight B-01 swells
+are accepted.
 IM1 stays a meat anchor only, for now. The hook proof test is still open.
 Code: `huntkit/gendesign/meat_haul.py`.
 
@@ -20,7 +22,7 @@ anchor line is specified at **70 mm**, which keeps the side legs at
 
 Spreader, from the real-support check in `spreader.md` (HA-LS-1 C5 meat plus a bone end, 20 % of 68 kg on a
 22 mm patch, factored 2.0 g × 1.5, 2 mm grid): first-ply SF **1.25** (≥ 1.0, factor on the load),
-fatigue SF **1.09** at the 1.6 g walking peak, peak skin pressure **15.5 kPa**,
+fatigue SF **1.09** at the 1.6 g walking peak, peak skin pressure **13.8 kPa**,
 largest factored deflection **3.5 mm**. A 36 kg quarter is inside that check (the C5 case is 68 kg).
 
 Of the bag-floor vertical, **55%** moves onto the under-straps and the rest stays
@@ -51,40 +53,6 @@ Hook and cam on the IM straps are checked against the larger of the factored IM 
 published 605 N strap demand. Hook SF **2.48**. IM-cam SF **1.82**.
 The under-strap cam is the line above, not this one. Bartack SF **4.46**.
 
-### A2. Between the bag and the frame (viable, part of bag-on)
-
-Bulk meat does not have to go inside the tube of the bag. Release the four bag hooks at IM2 and
-IM3. Leave the hinge pins in. The bag swings open about z 60. At IM3 the opening used here is
-250 mm, which is **29°**. The wedge is then 71 mm at IM1,
-147 mm at IM2 and 250 mm at IM3. A quarter fits,
-thick end high, where the wedge is widest. The narrow end at the lumbar is the hock.
-
-The captive eyes stay on the pins. The meat straps hook to those eyes across the meat, and the
-meat bears on the spreader, not on the wearer's back. W1–W3 close the bag onto the wedge.
-They are the outer clamp. They are not the meat anchor.
-
-Head clearance gets easier: the bag moves aft, away from the head. The head setback on B-01
-is for the closed bag.
-
-Load path: meat → spreader for the face, → IM straps for the cinch and the overturning,
-→ hinge pins for the share that still sits on the tilted floor.
-ASSUMPTION: floor share 0.40 (the closed bag uses 0.70) and the CG is 110 mm aft of the frame,
-because the wedge is shallower than the full bag.
-
-| station | force N | strength SF | fatigue SF |
-|---|---:|---:|---:|
-| hinge | 264 | 8.15 | 4.58 |
-| us1 | 254 | 6.31 | 2.84 |
-| us2 | 169 | 9.46 | 4.26 |
-| im1 | 309 | 7.01 | 3.95 |
-| im2 | 388 | 5.58 | 3.14 |
-| im3 | 496 | 4.37 | 2.46 |
-
-Minimum cleat fatigue SF **2.46**. IM hook SF **3.03**.
-Under-strap tension **254 N**, cam SF **4.33**.
-The hinge, after the cradle takes its share, sees 264 N.
-**Viable.** The under-straps stay cammed, so the open bag floor does not dump the low end of the quarter.
-
 ## B. Bag off (required)
 
 The bag comes off. The two under-straps stay on the frame and become the cradle. The quarter
@@ -96,7 +64,7 @@ the reserve numbers, not the design path.
 
 The full step list with seconds is in `analysis/bag_attachment.md` section 7 (attachment phase, 2026-11-05).
 
-1. Lift the crown-hood tab and swing the top of the bag about 10 cm aft. The top guys come with the hood.
+1. Lift the crown-hood tab and ease the top of the bag about 10 cm aft so the hood clears the bar. The top guys come with the hood.
 2. Unhook the four bag hooks (IM3, then IM2, both sides). IM1 has no bag hook.
 3. Pop the two under-strap cams and lift the bag floor out of the open channels. The straps stay on their pins.
 4. Pull the two tethered hinge pins at z 60.
@@ -125,6 +93,62 @@ and from the hinge solve otherwise (`cradle_fea`).
 To put the bag back: pins in, floor channels over the cradle straps, cams tight, bag hooks on, then drop the
 crown hood over the top bar. About 60 s (`bag_attachment.md` section 7).
 
+## C. Float: meat on the frame, bag hung behind it (required; owner 2026-11-06)
+
+Replaces the old "between" mode, where the bag pivoted about 28.5° on the z 60 hinge pins. Research
+(`docs/research/meat_carry_mechanisms.md`): none of the nine leading packs pivots the bag on a pin; they translate it
+aft or lay it back over meat that is already fixed to the frame. Concept and comparison:
+`analysis/meat_carry_alternatives.md`.
+
+The bag comes off its pins as in B. The meat goes on the frame exactly as in B: in the two under-strap cradles, IM1–IM3
+eye to eye over it. Two **B-24 stand-off links** (38 mm webbing, a rated hook at the frame end, three sewn
+loops) hook on the IM3 captive eyes. The bag stands upright behind the meat and its two T3 bag hooks clip into the loop
+that touches: gap **120 / 170 / 220 mm** (4.7 / 6.7 / 8.7 in).
+W1–W3 close round bag and meat. Nothing rotates; the hinge pins are pulled and stay tethered to the bag.
+
+Design case: 36 kg of meat on the frame (the cradle case of B) plus 12 kg of gear in the
+bag (ASSUMPTION). The meat path is B's, so its numbers are B's. The IM3 eyes also carry the links: all the bag's weight
+on the two links at 30° above horizontal (no W1–W3 friction credited), factored × 3.0:
+**353 N per link** (118 N at 1 g). Link hook SF
+**6.23** on the 2200 N rated hook.
+Misuse envelope for the link parts: the rest of the 68 kg rating (32 kg) in the bag:
+**941 N per link**, hook SF 2.34; IM3 eye
+**1142 N** (design case 559 N).
+
+| station | force N | strength SF | fatigue SF |
+|---|---:|---:|---:|
+| us1 | 489 | 3.28 | 1.47 |
+| us2 | 326 | 4.91 | 2.21 |
+| im1 | 225 | 9.63 | 5.42 |
+| im2 | 225 | 9.63 | 5.42 |
+| im3 | 559 | 3.87 | 2.18 |
+
+Minimum cleat fatigue SF **1.47** (design case); IM3 cleat fatigue on the envelope
+**1.07** (scaled from the IM3 fine-mesh solve). Under-strap tension
+**489 N**, cam SF **2.25**.
+
+Load CG aft of the stay plane (lever sum, `meat_haul.float_lever`; rev C meat case 190 mm):
+
+| gap mm | 36 kg meat + 12 kg gear | 56 kg meat + 12 kg gear | heaviest bag that keeps 36 kg of meat at ≤ 190 mm |
+|---:|---:|---:|---:|
+| 120 | 127 | 113 | 51 kg |
+| 170 | 158 | 142 | 24 kg |
+| 220 | 189 | 171 | 12 kg |
+
+The retired swing gave 179 mm and 159 mm for the same two loads.
+**Use the smallest loop that fits the meat.** In float the bag holds gear, not meat: more meat goes in the bag in
+mode A (rated 68 kg) or on the frame in B.
+
+Heavier meat on the frame (the full 56 kg with the gear in the bag) is NOT in the design
+case: on B's no-friction rule the lower under-strap would see 760 N, strength SF
+2.11, fatigue SF **0.95**, cam SF
+1.45. Hand-off to the structural-fea-engineer (`meat_carry_alternatives.md` section 8).
+
+W1–W3 reach: at the 220 mm gap they need about the carry path + 2 × 220 mm; the haul paths in `geometry.yaml`
+(1190 / 1262 / 1468 mm) cover 1010 / 1082 / 1288 mm.
+
+Procedure (gloves): `analysis/bag_attachment.md` section 7, "Float mode".
+
 ## What is still open
 
 - Meat-strap hook and cam ratings are assumptions (hook 1500 N, cam slip 1100 N). Proof-test five of each to 830 N before the first sewn bag. The under-strap cam is in this test.
@@ -150,6 +174,6 @@ About **$22** on top of the fairlead set. Detach time now **52 s** with the crow
 
 - `docs/screens/20261101_attach_8_cradle_anchors.png`
 - `docs/screens/20261101_attach_9_cradle_bag_on.png`
-- `docs/screens/20261101_attach_6_between.png`
+- `docs/screens/20261106_attach_6_float.png`
 - `docs/screens/20261101_attach_10_cradle_bag_off.png`
 - `docs/screens/20261101_attach_11_cradle_fea.png`

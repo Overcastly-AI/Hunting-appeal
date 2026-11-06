@@ -445,7 +445,7 @@ $SKPOLY
   9
 $TDCREATE
  40
-2461351.1029976853
+2461351.560150463
   9
 $TDUCREATE
  40
@@ -453,7 +453,7 @@ $TDUCREATE
   9
 $TDUPDATE
  40
-2461351.1029976853
+2461351.560150463
   9
 $TDUUPDATE
  40
@@ -505,7 +505,7 @@ $SPLINESEGS
   9
 $HANDSEED
   5
-1D5
+1FB
   9
 $SURFTAB1
  70
@@ -885,11 +885,11 @@ $PSTYLEMODE
   9
 $FINGERPRINTGUID
   2
-{D7AC88AE-1B18-43D0-A6B5-0E2B8751808F}
+{AC805506-C9A6-44A8-ABB9-B9C535C5B08B}
   9
 $VERSIONGUID
   2
-{457AEE9B-2B7E-4420-A3CE-E7145E6EEB6C}
+{26A5145C-C364-4E9C-8BB6-702882B7183A}
   9
 $EXTNAMES
 290
@@ -3057,7 +3057,7 @@ AcAecLayerStandard
   0
 APPID
   5
-1D2
+1F8
 330
 3
 100
@@ -3071,7 +3071,7 @@ HATCHBACKGROUNDCOLOR
   0
 APPID
   5
-1D3
+1F9
 330
 3
 100
@@ -4725,7 +4725,7 @@ BLOCK_RECORD
 100
 AcDbSymbolTable
  70
-19
+20
   0
 BLOCK_RECORD
   5
@@ -4990,6 +4990,20 @@ AcDbSymbolTableRecord
 AcDbBlockTableRecord
   2
 GT_13
+340
+0
+  0
+BLOCK_RECORD
+  5
+1D2
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+B-24_14
 340
 0
   0
@@ -14917,6 +14931,974 @@ AcDbEntity
 100
 AcDbBlockEnd
   0
+BLOCK
+  5
+1D3
+330
+1D2
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+B-24_14
+ 70
+0
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+B-24_14
+  1
+
+  0
+LWPOLYLINE
+  5
+1D5
+330
+1D2
+100
+AcDbEntity
+  8
+CUT
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 10
+38.0
+ 20
+0.0
+ 10
+38.0
+ 20
+435.0
+ 10
+0.0
+ 20
+435.0
+  0
+LWPOLYLINE
+  5
+1D6
+330
+1D2
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 10
+38.0
+ 20
+0.0
+ 10
+38.0
+ 20
+435.0
+ 10
+0.0
+ 20
+435.0
+  0
+LWPOLYLINE
+  5
+1D7
+330
+1D2
+100
+AcDbEntity
+  8
+INTERNAL
+  6
+DASHDOT
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+0.0
+ 20
+45.0
+ 10
+38.0
+ 20
+45.0
+  0
+LWPOLYLINE
+  5
+1D8
+330
+1D2
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+2.0
+ 20
+7.5
+ 10
+36.0
+ 20
+7.5
+ 10
+36.0
+ 20
+37.5
+ 10
+2.0
+ 20
+37.5
+  0
+LWPOLYLINE
+  5
+1D9
+330
+1D2
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+2.0
+ 20
+7.5
+ 10
+36.0
+ 20
+37.5
+  0
+LWPOLYLINE
+  5
+1DA
+330
+1D2
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+36.0
+ 20
+7.5
+ 10
+2.0
+ 20
+37.5
+  0
+LWPOLYLINE
+  5
+1DB
+330
+1D2
+100
+AcDbEntity
+  8
+INTERNAL
+  6
+DASHDOT
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+0.0
+ 20
+140.0
+ 10
+38.0
+ 20
+140.0
+  0
+LWPOLYLINE
+  5
+1DC
+330
+1D2
+100
+AcDbEntity
+  8
+INTERNAL
+  6
+DASHDOT
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+0.0
+ 20
+165.0
+ 10
+38.0
+ 20
+165.0
+  0
+LWPOLYLINE
+  5
+1DD
+330
+1D2
+100
+AcDbEntity
+  8
+INTERNAL
+  6
+DASHDOT
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+0.0
+ 20
+190.0
+ 10
+38.0
+ 20
+190.0
+  0
+LWPOLYLINE
+  5
+1DE
+330
+1D2
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+2.0
+ 20
+119.0
+ 10
+36.0
+ 20
+119.0
+ 10
+36.0
+ 20
+139.0
+ 10
+2.0
+ 20
+139.0
+  0
+LWPOLYLINE
+  5
+1DF
+330
+1D2
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+2.0
+ 20
+119.0
+ 10
+36.0
+ 20
+139.0
+  0
+LWPOLYLINE
+  5
+1E0
+330
+1D2
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+36.0
+ 20
+119.0
+ 10
+2.0
+ 20
+139.0
+  0
+LWPOLYLINE
+  5
+1E1
+330
+1D2
+100
+AcDbEntity
+  8
+INTERNAL
+  6
+DASHDOT
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+0.0
+ 20
+240.0
+ 10
+38.0
+ 20
+240.0
+  0
+LWPOLYLINE
+  5
+1E2
+330
+1D2
+100
+AcDbEntity
+  8
+INTERNAL
+  6
+DASHDOT
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+0.0
+ 20
+265.0
+ 10
+38.0
+ 20
+265.0
+  0
+LWPOLYLINE
+  5
+1E3
+330
+1D2
+100
+AcDbEntity
+  8
+INTERNAL
+  6
+DASHDOT
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+0.0
+ 20
+290.0
+ 10
+38.0
+ 20
+290.0
+  0
+LWPOLYLINE
+  5
+1E4
+330
+1D2
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+2.0
+ 20
+219.0
+ 10
+36.0
+ 20
+219.0
+ 10
+36.0
+ 20
+239.0
+ 10
+2.0
+ 20
+239.0
+  0
+LWPOLYLINE
+  5
+1E5
+330
+1D2
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+2.0
+ 20
+219.0
+ 10
+36.0
+ 20
+239.0
+  0
+LWPOLYLINE
+  5
+1E6
+330
+1D2
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+36.0
+ 20
+219.0
+ 10
+2.0
+ 20
+239.0
+  0
+LWPOLYLINE
+  5
+1E7
+330
+1D2
+100
+AcDbEntity
+  8
+INTERNAL
+  6
+DASHDOT
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+0.0
+ 20
+340.0
+ 10
+38.0
+ 20
+340.0
+  0
+LWPOLYLINE
+  5
+1E8
+330
+1D2
+100
+AcDbEntity
+  8
+INTERNAL
+  6
+DASHDOT
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+0.0
+ 20
+365.0
+ 10
+38.0
+ 20
+365.0
+  0
+LWPOLYLINE
+  5
+1E9
+330
+1D2
+100
+AcDbEntity
+  8
+INTERNAL
+  6
+DASHDOT
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+0.0
+ 20
+390.0
+ 10
+38.0
+ 20
+390.0
+  0
+LWPOLYLINE
+  5
+1EA
+330
+1D2
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+2.0
+ 20
+319.0
+ 10
+36.0
+ 20
+319.0
+ 10
+36.0
+ 20
+339.0
+ 10
+2.0
+ 20
+339.0
+  0
+LWPOLYLINE
+  5
+1EB
+330
+1D2
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+2.0
+ 20
+319.0
+ 10
+36.0
+ 20
+339.0
+  0
+LWPOLYLINE
+  5
+1EC
+330
+1D2
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+36.0
+ 20
+319.0
+ 10
+2.0
+ 20
+339.0
+  0
+LWPOLYLINE
+  5
+1ED
+330
+1D2
+100
+AcDbEntity
+  8
+GRAIN
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+18.999999999999993
+ 20
+87.0
+ 10
+19.000000000000007
+ 20
+348.0
+  0
+LWPOLYLINE
+  5
+1EE
+330
+1D2
+100
+AcDbEntity
+  8
+GRAIN
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+22.115346738469214
+ 20
+340.6315120479769
+ 10
+19.000000000000007
+ 20
+348.0
+ 10
+15.884653261530799
+ 20
+340.6315120479769
+  0
+LWPOLYLINE
+  5
+1EF
+330
+1D2
+100
+AcDbEntity
+  8
+GRAIN
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+15.88465326153079
+ 20
+94.36848795202309
+ 10
+18.999999999999993
+ 20
+87.0
+ 10
+22.115346738469196
+ 20
+94.36848795202309
+  0
+TEXT
+  5
+1F0
+330
+1D2
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+31.0
+ 20
+233.5
+ 30
+0.0
+ 40
+5.0
+  1
+ID: B-24
+ 11
+31.0
+ 21
+233.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+1F1
+330
+1D2
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+31.0
+ 20
+225.5
+ 30
+0.0
+ 40
+5.0
+  1
+PIECE: float-mode stand-off link
+ 11
+31.0
+ 21
+225.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+1F2
+330
+1D2
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+31.0
+ 20
+217.5
+ 30
+0.0
+ 40
+5.0
+  1
+MATERIAL: poly_webbing_38mm
+ 11
+31.0
+ 21
+217.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+1F3
+330
+1D2
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+31.0
+ 20
+209.5
+ 30
+0.0
+ 40
+5.0
+  1
+CUT 2
+ 11
+31.0
+ 21
+209.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+1F4
+330
+1D2
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+31.0
+ 20
+201.5
+ 30
+0.0
+ 40
+5.0
+  1
+FACE UP
+ 11
+31.0
+ 21
+201.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+1F5
+330
+1D2
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+31.0
+ 20
+193.5
+ 30
+0.0
+ 40
+5.0
+  1
+NOTE: hot-knife cut, heat-seal both ends; rated 38 mm hook (same part as the bag hooks) on the hook-end fold; 301 tex135 7 SPI
+ 11
+31.0
+ 21
+193.5
+ 31
+0.0
+100
+AcDbText
+  0
+ENDBLK
+  5
+1D4
+330
+1D2
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
 ENDSEC
   0
 SECTION
@@ -15198,6 +16180,26 @@ AcDbBlockReference
 GT_13
  10
 1373.0
+ 20
+0.0
+ 30
+0.0
+  0
+INSERT
+  5
+1F6
+330
+17
+100
+AcDbEntity
+  8
+CUT
+100
+AcDbBlockReference
+  2
+B-24_14
+ 10
+1428.0
  20
 0.0
  30
@@ -16293,7 +17295,7 @@ CREATED_BY_EZDXF
   3
 WRITTEN_BY_EZDXF
 350
-1D4
+1FA
   0
 DICTIONARYVAR
   5
@@ -16305,7 +17307,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-11-06T02:28:19.639805+00:00
+1.4.5 @ 2026-11-06T13:26:37.093309+00:00
   0
 VISUALSTYLE
   5
@@ -17009,7 +18011,7 @@ X-Ray
   0
 DICTIONARYVAR
   5
-1D4
+1FA
 330
 2D
 100
@@ -17017,7 +18019,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-11-06T02:28:19.656950+00:00
+1.4.5 @ 2026-11-06T13:26:37.117974+00:00
   0
 ENDSEC
   0

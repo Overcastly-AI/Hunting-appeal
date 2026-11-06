@@ -555,9 +555,9 @@ bag:
 volumes: {method: 'geometric: exact mixed-superellipse ring area a*d*(F(n_out)+F(n_frm)), F(n)=G(1+1/n)^2/G(1+2/n),
     integrated over z from the bag bottom to the fill line (roll-top closed with 3 rolls)', main_bag_L: 85.14, main_bag_cu_in: 5195,
   main_bag_polygon_check_L: 85.13, counted_in_5200: 'main bag to the FILL LINE with the roll-top closed by 3 rolls
-    (150 mm of collar fabric is closure, not volume). Lid, pockets, band pocket and meat bay are NOT counted', body_to_collar_seam_L: 60.54,
-  lid_accessory_L: 4.89, side_pocket_each_L: 2.88, hipbelt_pocket_each_L: 0.97, diagonal_band_pocket_L: 2.19, meat_bay_L: 26.2,
-  rolled_down_L: 61.22, total_with_pockets_L: 95.0}
+    (150 mm of collar fabric is closure, not volume). Lid, pockets, band pocket and the float space are NOT counted',
+  body_to_collar_seam_L: 60.54, lid_accessory_L: 4.89, side_pocket_each_L: 2.88, hipbelt_pocket_each_L: 0.97, diagonal_band_pocket_L: 2.19,
+  meat_float_L: 43.3, rolled_down_L: 61.22, total_with_pockets_L: 95.0}
 lid:
   accessory: true
   footprint: [300.0, 240.0]
@@ -578,31 +578,31 @@ side_pockets:
 load_shelf: null
 meat_harness:
   concept: 'INTERNAL MEAT HARNESS, both modes required (owner 2026-11-01). 3 x 38 mm straps (IM1-IM3) anchor on
-    the fairlead eyes. Bag on: meat inside the bag, cinched against the carbon spreader (BP-06). Bulk: the bag hinges
-    open on the z 60 pins and the same straps cinch meat against the spreader in the wedge. Bag off: the bag is
-    unclipped and a quarter is cinched eye-to-eye on IM1-IM3 against that spreader. The wearer touches the stay-rail
-    foam (BP-02), not the sheet. Record: analysis/meat_haul_modes.md.'
+    the fairlead eyes. Bag on: meat inside the bag, cinched against the carbon spreader (BP-06). Bulk (float, owner
+    2026-11-06): the bag comes off its pins, the meat is cinched eye-to-eye on IM1-IM3 against the spreader in the
+    under-strap cradle, and the bag hangs upright behind it on two B-24 stand-off links at the IM3 eyes. Bag off:
+    the same, with the bag set aside. The wearer touches the stay-rail foam (BP-02), not the sheet. Record: analysis/meat_haul_modes.md.'
   straps:
   - id: IM1
     z: 190.0
     anchors: [meat_anchor_z190_R, meat_anchor_z190_L]
     frame_node: lumbar-pan top land on the stay (bonded, torsion box)
     path_bag_on_mm: 653
-    path_bay_mm: 590
-    cut_length_mm: 973
+    path_float_mm: 670
+    cut_length_mm: 990
   - id: IM2
     z: 330.0
     anchors: [meat_anchor_z330_R, meat_anchor_z330_L]
     frame_node: mid-bar node (same node the v2 shelf straps loaded)
     path_bag_on_mm: 703
-    path_bay_mm: 590
+    path_float_mm: 670
     cut_length_mm: 1023
   - id: IM3
     z: 520.0
     anchors: [meat_anchor_z520_R, meat_anchor_z520_L]
     frame_node: upper-bar node
     path_bag_on_mm: 763
-    path_bay_mm: 709
+    path_float_mm: 670
     cut_length_mm: 1083
   anchor_stub: {material_id: poly_webbing_38mm, length_mm: 200.0, qty: 6, fixing: 'girth hitch round the stay directly
       above/below the bonded node wrap (cannot slide), sewn eye box-X bartacked with bonded_nylon_tex135', port: B-01
@@ -614,9 +614,9 @@ meat_harness:
     compression for a small load); or unhook and roll it into the fly pocket'
   wash: 'plain polyester webbing + anodised Al hardware, no foam, no hook-and-loop: unhook and machine-wash cold;
     stubs rinse on the frame; ports are raw-edge Hypalon (no fray, no wicking)'
-  external_wraps: 'W1-W3 KEPT: carry-mode compression, outer sling that closes the V in bay mode and lash straps
-    for antlers/cape. Internal straps hold the meat; wraps hold the bag. Merging was rejected: an internal strap
-    cannot also compress the outside of the bag or close the bay'
+  external_wraps: 'W1-W3 KEPT: carry-mode compression, the outer clamp round bag and meat in float mode, and lash
+    straps for antlers/cape. Internal straps hold the meat; wraps hold the bag. Merging was rejected: an internal
+    strap cannot also compress the outside of the bag or close the float'
   load_cases:
     bag_on_rated:
       basis: 68 kg meat inside the bag, CG 150 mm aft of the stay, 2.0 g stumble (HA-LS-1); vertical into the bag
@@ -630,7 +630,7 @@ meat_harness:
       38 mm Al cam buckle slip (ASSUMPTION): 1100.0, 38 mm Al sliding-gate hook (ASSUMPTION): 1500.0}
     min_margin: 1.82
     governing: 38 mm Al cam buckle slip (ASSUMPTION)
-  mass_g: 239.8
+  mass_g: 240.3
   ip: 'Mystery Ranch US 8,579,171 (sling between frame and bag) EXPIRED; stubs girth-hitch at nodes, not through
     a frame slot (US 2014/0263519); deleting the shelf removes the ''adjustable shelf'' element of US 10,952,523
     claim 1. SG Terminus internal load cell and KUIU internal meat sleeve: no patents found for SG; KUIU''s patent-pending
@@ -703,10 +703,10 @@ hardware_families:
 - {family: LINK, function: bag to frame (meat-mode release), hardware: POM toggle through a 3-slot Hypalon tab (4;
     slot = length setting) + 2 bottom hinge quick-pins, qty: 6, feel: 'toggle-and-slot, impossible to confuse with
     a buckle'}
-- {family: MEAT, function: 'internal meat harness IM1-IM3 (meat against the frame, inside the bag or in the bay)',
-  hardware: '38 mm webbing (the only 38 mm on the pack), aluminium sliding-gate hooks into frame-stub eyes + 38
-    mm metal cam with glove pull-tab', qty: '3 straps, 6 hooks, 3 cams', feel: 'widest webbing, keeper hooks, no
-    squeeze buckle; lives inside the bag'}
+- {family: MEAT, function: 'internal meat harness IM1-IM3 (meat against the frame, inside the bag or on the frame
+    in float / bag off)', hardware: '38 mm webbing (the only 38 mm on the pack), aluminium sliding-gate hooks into
+    frame-stub eyes + 38 mm metal cam with glove pull-tab', qty: '3 straps, 6 hooks, 3 cams', feel: 'widest webbing,
+    keeper hooks, no squeeze buckle; lives inside the bag'}
 - {family: QUICK, function: 'sternum strap, accessory lid', hardware: Fidlock-type magnetic 25 mm, qty: 1 (+4 lid),
   feel: 'magnetic snap, one-handed, silent'}
 - {family: TRIM, function: 'lifters, stabilizers, harness', hardware: 25 mm ladder locks, qty: 6, feel: on the harness
@@ -732,13 +732,13 @@ weight:
     goods; size M belt, J-straps, rain fly (owner: counts), meat harness'
   groups_g: {frame (printed branch body + carbon crown): 1062.6, 'back-system spreader (Sandwich v2, BP-06)': 162.3,
     torso adjust (not in the frame line): 41.7, main bag: 365.5, bag-side load spreaders: 27.8, bag-to-frame attachment (fairleads): 144.1,
-    bag-to-frame attachment system: 131.4, under-straps US1/US2 (cradle): 122.4, accents: 52.7, rain fly: 68.4,
-    pockets: 60.3, hipbelt (M): 334.3, harness: 212.5, back panel: 251.3, internal meat harness: 253.9, haul wraps (= compression): 108.1,
-    misc: 41.4}
-  total_g: 3440.7
-  total_lb: 7.59
+    bag-to-frame attachment system: 131.4, under-straps US1/US2 (cradle): 122.4, float-mode stand-off links B-24: 54.4,
+    accents: 52.7, rain fly: 68.4, pockets: 60.3, hipbelt (M): 334.3, harness: 212.5, back panel: 251.3, internal meat harness: 254.4,
+    haul wraps (= compression): 108.1, misc: 41.4}
+  total_g: 3495.6
+  total_lb: 7.71
   target_g: 2268
-  gap_g: 1172.7
+  gap_g: 1227.6
   weight_plan: analysis/bag_weight_plan.md (bag-side savings, owner choices)
   v31_tube_baseline: {total_g: 2224.1, frame_g: 569.2, back_panel_g: 75.2, misc_g: 36.1, source: 'geometry.yaml
       v3.1 (commit 6061796): carbon-tube frame v2, single 6 mm XLPE back sheet', used_by: huntkit/gendesign/frame_production.py
@@ -831,6 +831,12 @@ weight:
       cradle_parts_g (meat_haul_modes.md)}
   - {group: under-straps US1/US2 (cradle), item: bag-floor channels, mass_g: 8.0, basis: huntkit/gendesign/meat_haul.py
       cradle_parts_g (meat_haul_modes.md)}
+  - {group: float-mode stand-off links B-24, item: '38 mm webbing, 2 x 435 mm', mass_g: 24.4, basis: 'huntkit/gendesign/meat_haul.py
+      float_link_parts_g (meat_haul_modes.md C; hook 14 g, thread ASSUMPTION)'}
+  - {group: float-mode stand-off links B-24, item: 'rated 38 mm hooks (2), same part as the bag hooks', mass_g: 28.0,
+    basis: 'huntkit/gendesign/meat_haul.py float_link_parts_g (meat_haul_modes.md C; hook 14 g, thread ASSUMPTION)'}
+  - {group: float-mode stand-off links B-24, item: thread (box-X + loop box-X), mass_g: 2.0, basis: 'huntkit/gendesign/meat_haul.py
+      float_link_parts_g (meat_haul_modes.md C; hook 14 g, thread ASSUMPTION)'}
   - {group: accents, item: camo SH-01..05 (overlay mass), mass_g: 52.7, basis: computed}
   - {group: rain fly, item: fly + fly pocket, mass_g: 52.6, basis: computed}
   - {group: rain fly, item: 'fly elastic hem 3.0 m, #5 pocket zip + slider, tether', mass_g: 15.8, basis: elastic
@@ -849,7 +855,7 @@ weight:
   - {group: back panel, item: 'mesh, stay-rail foam pair + carbon backer strips, rail sleeves, upper pad (spreader
       is its own line)', mass_g: 251.3, basis: computed; rails and backers from analysis/back_rail.md (2026-11-06)}
   - {group: internal meat harness, item: '3 x 38 mm straps IM1-IM3 + 6 frame stubs, 6 sliding-gate hooks, 3 cams
-      (MEAT family)', mass_g: 239.8, basis: 'poly_webbing_38mm record x cut lengths (meat_harness); hook 9 g, cam
+      (MEAT family)', mass_g: 240.3, basis: 'poly_webbing_38mm record x cut lengths (meat_harness); hook 9 g, cam
       22 g ASSUMPTION. The stubs became fairlead eyes: net in the attachment line ''webbing eyes, net of old stubs'''}
   - {group: internal meat harness, item: 'B-01 strap ports: 6 Hypalon patches (B-12)', mass_g: 14.1, basis: computed}
   - {group: haul wraps (= compression), item: '3 frame-anchored wraps, 25 mm coyote poly webbing 4.67 m', mass_g: 84.1,
