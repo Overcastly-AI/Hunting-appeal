@@ -110,5 +110,5 @@ def test_scoring_and_results_file():
     res = ROOT / "designs" / "pack_5200" / "concepts" / "concepts_results.json"
     if res.exists():
         d = json.loads(res.read_text())
-        assert set(d["rows"]) == {"spine", "slab", "twin", "wrap", "hatch"}
+        assert {"spine", "slab", "twin", "wrap", "hatch"} <= set(d["rows"])
         assert d["rows"]["spine"]["mass_delta_g"] == 0.0

@@ -216,12 +216,17 @@ class Concept:
     zips: list = field(default_factory=list)      # dicts: name, z_lo, z_hi, length_mm, corners, where
     notes: list = field(default_factory=list)
     z_c: float = 0.0             # collar seam (solved)
+    # envelope (defaults = the first four concepts; the wider set overrides them, bag_concepts_wide.py)
+    a_bot: float = A_BOT         # half-width at the bottom (SPINE 136)
+    d_bot: float = D_BOT         # depth at the bottom (SPINE 190)
+    d_nom: float = D_MAX         # nominal depth at the shoulder crease, from the face without setback (302)
+    dome_h: float = DOME_H       # stuffed collar to the fill line; 0 = closed (zip) top, no roll-top
 
     # ---------------------------------------------------------------- body envelope (below the collar seam)
     def a(self, z):
         """Half-width: SPINE bottom (136) linearly to 15.5 in (197) at the shoulder crease, then constant."""
         z = np.atleast_1d(np.asarray(z, float))
-        return np.interp(z, [Z0, Z_SH], [A_BOT, A_MAX])
+        return np.interp(z, [Z0, Z_SH], [self.a_bot, A_MAX])
 
     def y_front(self, z):
         """Aft face: one plane from the SPINE bottom depth (190) to the 302 mm nominal depth at the shoulder crease
@@ -230,10 +235,10 @@ class Concept:
         a jog in the aft face would add 2 creases to the face / wrap for no volume."""
         z = np.atleast_1d(np.asarray(z, float))
         y_nom = stay_y(z) + FRAME_GAP
-        y0 = float(stay_y([Z0])[0]) + FRAME_GAP + D_BOT
-        y1 = float(stay_y([Z_SH])[0]) + FRAME_GAP + D_MAX
+        y0 = float(stay_y([Z0])[0]) + FRAME_GAP + self.d_bot
+        y1 = float(stay_y([Z_SH])[0]) + FRAME_GAP + self.d_nom
         low = y0 + (y1 - y0) * (z - Z0) / (Z_SH - Z0)
-        high = y_nom + D_MAX
+        high = y_nom + self.d_nom
         return np.where(z <= Z_SH, low, high)
 
     def depth(self, z):
@@ -250,9 +255,11 @@ class Concept:
         zb = np.unique(np.r_[np.linspace(Z0, z_c, n_body), Z_SB, Z_SH])
         zb = zb[zb <= z_c]
         rows = [np.column_stack([zb, self.a(zb), y_frame(zb), self.depth(zb), np.full(len(zb), self.k)])]
+        if self.dome_h <= 0:
+            return rows[0]
         a_c, d_c = float(self.a([z_c])[0]), float(self.depth([z_c])[0])
-        zd = np.linspace(z_c, z_c + DOME_H, n_dome)[1:]
-        a, d, k = dome_section((zd - z_c) / DOME_H, a_c, d_c, self.k)
+        zd = np.linspace(z_c, z_c + self.dome_h, n_dome)[1:]
+        a, d, k = dome_section((zd - z_c) / self.dome_h, a_c, d_c, self.k)
         rows.append(np.column_stack([zd, a, y_frame(zd), d, k * DOME_CAL]))
         return np.vstack(rows)
 
@@ -265,7 +272,7 @@ class Concept:
 
     def solve(self):
         """Collar-seam height such that the main bag holds exactly TARGET_L (bisection)."""
-        lo, hi = Z_SH + 1.0, 1400.0
+        lo, hi = Z_SH + 1.0, 1600.0
         for _ in range(60):
             mid = 0.5 * (lo + hi)
             lo, hi = (mid, hi) if self.volume_L(mid) < TARGET_L else (lo, mid)
@@ -274,7 +281,7 @@ class Concept:
 
     @property
     def z_fill(self):
-        return self.z_c + DOME_H
+        return self.z_c + self.dome_h
 
     def ring(self, z, M=240, state=None):
         """3D ring at z (full state). Dome rings keep the concept's section shape (render only)."""
@@ -894,6 +901,7 @@ HOURS = {
     "swell_boxed": 0.5,       # boxed swell: rectangle, 4 boxed corners, set into a straight window
     "applique_m": 0.8,        # per m of turned + topstitched camo edge
     "dart": 0.25,
+    "bartack": 0.1,           # per webbing / hardware termination added by a concept feature
 }
 CURVE_SAGITTA = 5.0   # ASSUMPTION: a seam segment whose flat edge bows > 5 mm off its chord is sewn as a curve
 PIVOT_DEG = 12.0      # a turn > 12 deg at one vertex is a pivot (straight-to-straight), not a curve
@@ -981,6 +989,7 @@ def metrics(build: Build) -> dict:
         "swells": build.swells["n"] * sw_rate,
         "camo applique": app_m * H["applique_m"],
         "darts": build.darts * H["dart"],
+        "hardware bartacks": build.extra.get("bartacks", 0) * H["bartack"],
     }
     mass = mass_breakdown(build)
     out = {"key": c.key, "name": c.name, "cut_pieces": n_cut, "pieces_by_group": by_group,
@@ -1021,6 +1030,10 @@ def mass_breakdown(build: Build) -> dict:
     for p, grp in build.pieces:
         g[grp] = g.get(grp, 0.0) + piece_mass_g(p)
     g["zips"] = sum(zip_mass_g(z) for z in build.zips)
+    if build.extra.get("hardware"):
+        g["hardware"] = sum(m for _, m in build.extra["hardware"])
+    if build.extra.get("common_delta_g"):
+        g["common items delta"] = float(build.extra["common_delta_g"])
     g = {k: round(v, 1) for k, v in g.items()}
     g["total"] = round(sum(v for k, v in g.items()), 1)
     return g

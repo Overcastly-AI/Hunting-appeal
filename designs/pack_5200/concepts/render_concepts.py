@@ -142,8 +142,15 @@ def _soup(part, max_faces):
 
 
 # ============================================================================ concept meshes
+COLOUR_HOOK = {}    # key -> fn(c, b, C, p, frame, s, L, zipdist) (render_wide.py registers the wider set)
+EXTRA_SOUPS = {}    # key -> fn(c, b, C) -> [soups] (lids, wings, drybags)
+CUSTOM_SOUP = {}    # key -> fn(c, b, C) -> [soups] replacing the loft (CRADLE)
+
+
 def concept_soup(c: BC.Concept, b: BC.Build, C, M=200, nz=170):
     """Bag skin as quads with per-face colours from the concept's panel / accent / zip map."""
+    if c.key in CUSTOM_SOUP:
+        return CUSTOM_SOUP[c.key](c, b, C)
     zs = np.unique(np.r_[np.linspace(BC.Z0, c.z_fill, nz), BC.Z_SB, BC.Z_SH, c.z_c])
     R, F, S, L = [], [], [], []
     for z in zs:
@@ -168,24 +175,44 @@ def concept_soup(c: BC.Concept, b: BC.Build, C, M=200, nz=170):
             frame = j < F[k] and j2 <= F[k]
             sc = 0.5 * (S[k, j] + S[k + 1, j])
             quads.append(q)
-            cols.append(_face_colour(c, C, cen, frame, sc, L[k], zipdist))
+            fc = COLOUR_HOOK.get(c.key)
+            cols.append(fc(c, b, C, cen, frame, sc, L[k], zipdist) if fc else
+                        _face_colour(c, C, cen, frame, sc, L[k], zipdist))
     # bottom cap
     P0 = R[0]
     cen0 = P0.mean(0)
     for j in range(Mm):
         quads.append(np.array([cen0, P0[(j + 1) % Mm], P0[j], cen0]))
         cols.append(C["bottom"])
+    if c.dome_h <= 0:      # closed top panel (MAW)
+        P1 = R[-1]
+        cen1 = P1.mean(0)
+        for j in range(Mm):
+            quads.append(np.array([cen1, P1[j], P1[(j + 1) % Mm], cen1]))
+            cols.append(C["body"])
     soups = [{"quad": np.array(quads), "col": np.array(cols)}]
-    # closed roll at the fill line (camo hem band, as SPINE)
-    a_f = float(np.interp(c.z_fill, *zip(*[(r[0], r[1]) for r in c.profile()])))
-    yc = float(BC.y_frame([c.z_fill])[0]) + BC.D_TOP / 2
-    soups.append(_roll(a_f + 40, yc, c.z_fill + 22, 30.0, C))
+    if c.dome_h > 0:
+        # closed roll at the fill line (camo hem band, as SPINE)
+        a_f = float(np.interp(c.z_fill, *zip(*[(r[0], r[1]) for r in c.profile()])))
+        yc = float(BC.y_frame([c.z_fill])[0]) + BC.D_TOP / 2
+        soups.append(_roll(a_f + 40, yc, c.z_fill + 22, 30.0, C))
+    if c.key in EXTRA_SOUPS:
+        soups += EXTRA_SOUPS[c.key](c, b, C)
     return soups
 
 
 def _zip_tree(c, b):
     from scipy.spatial import cKDTree
     pts = []
+    if "zip3d" in b.extra:
+        for P in b.extra["zip3d"]:
+            P = np.asarray(P, float)
+            if len(P) > 1:
+                pts.append(np.vstack([np.linspace(P[i], P[i + 1], 6)[:-1] for i in range(len(P) - 1)] + [P[-1:]]))
+        if not pts:
+            return None
+        P = np.vstack(pts)
+        return cKDTree(P), P
     for z in b.zips:
         pts.append(_zip_path(c, b, z))
     if not pts:
@@ -351,7 +378,7 @@ MATCOL = {"challenge_ultra_200": "#6d7060", "cordura_330d_nylon66": "#a3a68f", "
 
 def draw_flats(ax, b: BC.Build, title=True):
     from matplotlib.patches import Polygon as MP
-    pieces = [(p, g) for p, g in b.pieces if g in ("shell", "collar", "swell") and p.material_id != "hdpe_sheet"]
+    pieces = [(p, g) for p, g in b.pieces if g not in ("accent", "flat") and p.material_id != "hdpe_sheet"]
     pieces += [(p, g) for p, g in b.pieces if g in ("accent", "flat")]
     x0, y0, row_h, maxw = 0.0, 0.0, 0.0, 2300.0
     for p, g in pieces:

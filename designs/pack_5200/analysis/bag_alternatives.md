@@ -9,7 +9,106 @@ Research first: `docs/research/bag_body_architectures.md` (cited as **[BA §n]**
 Owner brief: "keep optimising, still simple to build; show me other designs of the bag". Beginner sewist, no machine
 yet. Build simplicity is a top criterion next to performance.
 
-## Decision asked of the owner
+## UPDATE 2026-11-07 (owner reaction): 13 bodies to choose from
+
+Owner on the first 5-concept sheet: product body "Give me multiple to choose from"; prototype "Multiple designs";
+simplifications "n/a. Look at other bags". So: **all build-simplification decisions are ON HOLD** (the SLAB-first
+recommendation and the boxed-swell-for-SPINE proposal below are parked, not withdrawn), the research is widened
+(`docs/research/bag_body_architectures.md` §6: KUIU, Stone Glacier, Exo, Mystery Ranch incl. Metcalf, Kifaru, Seek
+Outside, Initial Ascent, Eberlestock, Argali, Paradox, Hyperlite, ULA, Granite Gear, Sitka, ROKMAN, cottage / MYOG)
+and **eight more, clearly different concepts** are drawn (`designs/pack_5200/concepts/bag_concepts_wide.py`, run
+`render_wide.py`; numbers in `concepts_results.json`, tests `tests/test_bag_concepts_wide.py`).
+
+Galleries: `outputs/screens/20261107_bagalt_16.png` (1–7) and `_17.png` (8–13); score table `_18.png`; hours `_19.png`.
+Concept sheets (3/4 rear + side view on the frame and mannequin, pieces to scale, numbers): 1–5 = `_1`..`_5`,
+6–13 = `_8`..`_15`.
+
+### U.1 The new eight (research hook in brackets, no look copied)
+
+| # | Name | What it is | Access | Frame interface change |
+|---|---|---|---|---|
+| 6 | **SPIRE** | tall slim torpedo top-loader: round D section (n 2.5), 10.9 in deep, 47.1 in to the fill line; camo storm flap on a short front zip [UL tube packs, §6] | roll-top + 447 mm straight centre zip, z 120–560 | none (bottom 272 mm wide as SPINE) |
+| 7 | **CRADLE** | open harness (B-01 + two side wings + bottom cup) holding **four horizontal roll-top drybags** D 250/290/300/300 × 330 mm; drop one drybag and cinch meat in its place [Eberlestock / Sitka / ROKMAN dry-bag systems] | lift any drybag out; IM1–IM3 run across drybags or meat | B-01 becomes the harness back to z 1175; B-22 guy tabs move to the wing aft edges at z 752 |
+| 8 | **DUO** | two-zone: lower sleep-kit compartment with its own 508 mm horizontal zip (z 330) and a **removable** divider on 3 G-hook tabs (meat mode: unhook) [sleeping-bag-compartment debate, §6.1] | roll-top (main) + lower-zone zip | none |
+| 9 | **GULP** | giant 4-way-stretch shove-it pocket over the whole aft face (z 80–630, ~9 L ASSUMPTION, not counted) + side zip [Exo / ULA / Seek front pockets] | roll-top + 455 mm right-side zip, z 150–600 | none |
+| 10 | **MAW** | clamshell duffel hauler: closed top panel, one 2.06 m zip up both aft corners and across the top; the aft face drops open; **no roll-top** [MR 3-ZIP / duffel] | full opening | no collar / hem / roll buckles (−48.5 g common); compression only by W1–W3 |
+| 11 | **CAIRN** | roll-top + integrated **6.4 L lid** that comes off as a summit / stalk pack (2 stowable 25 mm straps), camo lid top [MR / Exo / Granite Gear lids] | roll-top + 450 mm left-side zip; lid zip | lid rear straps to the frame-side hem (as today's optional lid) |
+| 12 | **WISP** | minimalist ultralight tube: roll-top only, no lid, no zip, no body pockets [Hyperlite Porter, Kifaru Gnargali] | roll-top only (A2) | none |
+| 13 | **MANTLE** | expedition hauler: box body + two full-height **side compression wings** (230–250 mm, 3 G-hook straps each) for tripod, pads, antlers or a small-load squeeze [Kifaru bellowed sides, Seek strap systems] | roll-top + 520 mm centre zip | wing roots in the B-01 / gusset seams |
+
+All 13 keep: 85.2 L ±3 (CRADLE 84.65 L), 15.5 in width, depth ≤ 12 in, coil zips and no hook-and-loop, solid body
+with camo accents only at wear lines / edges (accents < 35 % of body mass, tested), fly in its base pocket and bow
+riser carry (common, not drawn), patent guardrails H1–H4 (CRADLE's harness IS the bag's frame-side panel on the
+fairleads, not a sling between frame and bag, so H1 holds).
+
+### U.2 Score table, all 13 (same metric code; weights unchanged; computed criteria now scaled to the best of 13)
+
+| # | Concept | L | Fill in | Mass Δ g | Pack lb | Pieces | Curved | Zips (mm) | Hours | Access | CG y/z | Look / feature | Score |
+|---:|---|---:|---:|---:|---:|---:|---:|---|---:|---:|---|---|---:|
+| 1 | SPINE | 85.1 | 42.0 | 0 | 7.71 | 37 | 14 | 1 (509) | 35 | 3.5 | 148/592 | slim teardrop, band pocket, best look | 2.45 |
+| 2 | SLAB | 85.2 | 40.2 | +34 | 7.78 | 25 | 0 | 1 (520) | 20 | 3.5 | 149/558 | boxy, no overload pocket | 3.14 |
+| 3 | TWIN | 85.2 | 40.2 | +60 | 7.84 | 24 | 0 | 2 (1160) | 20 | 4.5 | 149/558 | boxy, stretch pocket | 3.16 |
+| 4 | WRAP | 85.2 | 42.4 | +30 | 7.77 | 24 | 4 | 1 (646) | 22 | 3.5 | 142/590 | SPINE-like, band pocket | 2.85 |
+| 5 | HATCH | 85.2 | 40.2 | +50 | 7.82 | 25 | 1 | 1 (1426) | 23 | 5.0 | 149/558 | boxy, full view, long zip | 2.79 |
+| 6 | SPIRE | 85.2 | 47.1 | +13 | 7.73 | 20 | 2 | 1 (447) | 19 | 3.0 | **132**/659 | torpedo, tall, closest CG | 3.48 |
+| 7 | CRADLE | 84.7 | 45.5 | +161 | 8.06 | 33 | 0 | 0 | 27 | 4.0 | 168/632 | modular drybags, open sides | 2.41 |
+| 8 | DUO | 85.2 | 42.4 | +37 | 7.79 | 23 | 7 | 1 (508) | 26 | 4.0 | 142/590 | sleep zone + door | 2.25 |
+| 9 | GULP | 85.2 | 43.9 | +52 | 7.82 | 21 | 4 | 1 (455) | 23 | 4.0 | 139/611 | 9 L stretch pocket | 2.68 |
+| 10 | MAW | 85.2 | 36.7 | **−30** | 7.64 | 19 | 1 | 1 (2056) | 17 | 5.0 | 154/**554** | duffel opening, no roll-top | 3.81 |
+| 11 | CAIRN | 85.2 | 43.0 | +166 | 8.07 | 22 | 4 | 2 (1055) | 26 | 3.5 | 141/598 | 6 L summit-pack lid | 2.38 |
+| 12 | WISP | 85.2 | 44.2 | **−26** | 7.65 | 18 | 5 | 0 | 20 | 1.5 | 139/619 | UL minimal, no zip | 3.19 |
+| 13 | MANTLE | 85.2 | 40.2 | +207 | 8.16 | 28 | 0 | 1 (520) | 25 | 3.5 | 149/558 | side wings, heavy | 2.69 |
+
+Pack lb = 3495.6 g production pack (geometry.yaml) + the body delta (CAIRN's lid and MANTLE's wings are counted; the
+current optional lid is not). Mass deltas include common-item changes (MAW and CRADLE drop the 48.5 g roll-top
+hardware; CRADLE's four drybag clips are booked instead). Scores rank, they do not choose: with 13 options the
+"best" mass (MAW) and CG (SPIRE y, MAW z) set the scale, so the carry column now spreads 1–2.4 for everyone.
+
+### U.3 What each one is good and bad at (judgement, for the owner's pick)
+
+- **SPIRE**: the most "alpine" look and the closest load to the back (CG 16 mm closer than SPINE), light (+13 g),
+  quick to sew; but 47 in tall (5 in over SPINE, the full bag stands higher behind the head: re-run R-28 before use)
+  and the round section holds less in its corners.
+- **CRADLE**: the most modular and the most original look; drybags are waterproof without a fly and meat swaps in
+  cleanly; but +161 g, CG 168 mm aft (round drybags push the load out) and 45.5 in tall, and the open sides snag brush.
+- **DUO**: real organisation (sleep kit stays dry and reachable), same shape as WRAP; 7 curved seams and the most
+  hours; the divider must come out for meat.
+- **GULP**: the feature users ask for most (big front stretch pocket, ULA / Exo reviews) on a SPINE-like body; the
+  pocket fabric snags on brush (durability 3).
+- **MAW**: the widest opening and the lightest (−30 g) and fastest to sew; but no roll-top: no volume adjustment, a
+  2 m zip carrying the full hoop load (A1), rain on the top zip. Shortest bag (36.7 in, lowest CG z).
+- **CAIRN**: a summit / stalk pack in the system (the owner already has the 4.9 L lid / hip pack idea); +166 g.
+- **WISP**: lightest real roll-top (−26 g), quiet and waterproof-friendly; but reaching IM1 means unpacking (A2).
+- **MANTLE**: best external carry (tripod, pads, antlers, cape) and squeeze for small loads; +207 g, heaviest.
+
+### U.4 What I suggest the owner looks at first (not a decision)
+
+Shortlist by what the owner valued so far (slim modern look, meat hauling, quiet, ~6.6 lb): **SPIRE** (look + CG),
+**GULP** (pocket users want), **CAIRN** (summit pack) and **SPINE** as released, with **CRADLE** as the "different
+idea" if modularity matters. All simplification choices stay on hold until the owner picks a body.
+
+### U.5 Hand-offs for the wider set (none applied)
+- pack-designer / cloth sim: SPIRE and CRADLE are taller than SPINE: head clearance R-28 and the top-anchor sims must be
+  re-run on whichever is chosen; CRADLE moves B-22.
+- structural-fea-engineer: CRADLE CG 168 / 632 mm is inside the rev C 190 mm meat / 205 mm bag envelope but the
+  highest of the set; re-measure (T9) on the chosen body.
+- materials-engineer: GULP / TWIN stretch pocket fabric abrasion (no Martindale vs brush data in the stretch record
+  beyond 50 000 cycles); CRADLE drybag fabric (100D PU assumed; ULTRA 200 option).
+
+### U.6 Assumptions added
+CRADLE drybag diameters, 330 mm body length, 5 mm stack gap; GULP pocket 9 L; CAIRN lid shape (400 × 290 superellipse
+n 3, 80 mm gusset) and harness lengths; MANTLE wing size and strap count; DUO divider on 3 G-hook tabs; G-hook 4 g;
+SPIRE envelope (n 2.5, nominal depth 290 mm); every judged access / durability / look score in
+`bag_concepts_wide.JUDGED_WIDE`.
+
+---
+
+# First study (5 concepts, earlier the same day)
+
+Scores below are the 5-concept run (scaled to the best of 5). Sheets `_1`..`_7` now carry the 13-concept
+re-scoring of U.2; measured values (L, g, pieces, seams, hours, CG) are unchanged.
+
+## Decision asked of the owner (first study; ON HOLD per the owner update above)
 
 1. **Which body do you want to sew first?** Recommendation: **SLAB** as prototype 1 (the cheapest way to prove the frame
    interface, fit and meat haul), then choose the product body.

@@ -37,7 +37,8 @@
   "swell_cone": 1.2,
   "swell_boxed": 0.5,
   "applique_m": 0.8,
-  "dart": 0.25
+  "dart": 0.25,
+  "bartack": 0.1
  },
  "rows": {
   "spine": {
@@ -87,7 +88,8 @@
      "zips": 1.01,
      "swells": 9.6,
      "camo applique": 2.24,
-     "darts": 0.0
+     "darts": 0.0,
+     "hardware bartacks": 0.0
     },
     "hours_total": 35.0,
     "mass_g": {
@@ -374,15 +376,19 @@
    },
    "score": {
     "build": 1.0,
-    "mass": 5.0,
-    "carry": 2.99,
+    "mass": 3.5,
+    "carry": 1.0,
     "access": 3.5,
     "durability": 4.0,
     "look": 5.0,
-    "weighted": 2.97
+    "weighted": 2.45
    },
    "mass_delta_g": 0.0,
-   "pack_g": 3495.6
+   "pack_g": 3495.6,
+   "number": 1,
+   "pitch": "Released teardrop: diagonal zip under a stretch band, gores and cone swells",
+   "interface_changes": "none",
+   "note": "slim teardrop; band pocket; best look"
   },
   "slab": {
    "metrics": {
@@ -431,7 +437,8 @@
      "zips": 1.02,
      "swells": 4.0,
      "camo applique": 4.31,
-     "darts": 0.0
+     "darts": 0.0,
+     "hardware bartacks": 0.0
     },
     "hours_total": 19.9,
     "mass_g": {
@@ -648,16 +655,20 @@
     "collar_perimeter_mm": 1330.3690221339343
    },
    "score": {
-    "build": 4.9,
-    "mass": 3.29,
-    "carry": 3.78,
+    "build": 4.33,
+    "mass": 1.79,
+    "carry": 1.56,
     "access": 3.5,
     "durability": 4.0,
     "look": 2.0,
-    "weighted": 3.9
+    "weighted": 3.14
    },
    "mass_delta_g": 34.2,
-   "pack_g": 3529.8
+   "pack_g": 3529.8,
+   "number": 2,
+   "pitch": "Tapered flat-panel box, one straight centre zip, nothing curved",
+   "interface_changes": "none",
+   "note": "boxy; no overload pocket"
   },
   "twin": {
    "metrics": {
@@ -716,7 +727,8 @@
      "zips": 2.16,
      "swells": 4.0,
      "camo applique": 3.33,
-     "darts": 0.0
+     "darts": 0.0,
+     "hardware bartacks": 0.0
     },
     "hours_total": 19.5,
     "mass_g": {
@@ -923,16 +935,20 @@
     "collar_perimeter_mm": 1330.3690221339343
    },
    "score": {
-    "build": 5.0,
-    "mass": 1.98,
-    "carry": 3.78,
+    "build": 4.42,
+    "mass": 1.0,
+    "carry": 1.56,
     "access": 4.5,
     "durability": 3.0,
     "look": 2.5,
-    "weighted": 3.84
+    "weighted": 3.16
    },
    "mass_delta_g": 60.4,
-   "pack_g": 3556.0
+   "pack_g": 3556.0,
+   "number": 3,
+   "pitch": "Box with a zip in each corner seam and a flat stretch pocket",
+   "interface_changes": "none",
+   "note": "boxy; stretch pocket; 2 zips"
   },
   "wrap": {
    "metrics": {
@@ -981,7 +997,8 @@
      "zips": 1.15,
      "swells": 4.0,
      "camo applique": 3.22,
-     "darts": 0.0
+     "darts": 0.0,
+     "hardware bartacks": 0.0
     },
     "hours_total": 22.5,
     "mass_g": {
@@ -1181,16 +1198,20 @@
     "collar_perimeter_mm": 1218.4587798945008
    },
    "score": {
-    "build": 3.25,
-    "mass": 3.49,
-    "carry": 4.21,
+    "build": 2.67,
+    "mass": 1.99,
+    "carry": 1.98,
     "access": 3.5,
     "durability": 4.0,
     "look": 4.0,
-    "weighted": 3.62
+    "weighted": 2.85
    },
    "mass_delta_g": 30.2,
-   "pack_g": 3525.8
+   "pack_g": 3525.8,
+   "number": 4,
+   "pitch": "SPINE look from one wrap panel; diagonal zip cut straight on the flat",
+   "interface_changes": "none",
+   "note": "SPINE-like; band pocket"
   },
   "hatch": {
    "metrics": {
@@ -1238,7 +1259,8 @@
      "zips": 2.73,
      "swells": 4.0,
      "camo applique": 3.91,
-     "darts": 0.0
+     "darts": 0.0,
+     "hardware bartacks": 0.0
     },
     "hours_total": 23.0,
     "mass_g": {
@@ -1442,16 +1464,2204 @@
     "collar_perimeter_mm": 1330.3690221339343
    },
    "score": {
-    "build": 3.88,
-    "mass": 2.5,
-    "carry": 3.78,
+    "build": 3.3,
+    "mass": 1.0,
+    "carry": 1.56,
     "access": 5.0,
     "durability": 2.5,
     "look": 2.5,
-    "weighted": 3.55
+    "weighted": 2.79
    },
    "mass_delta_g": 49.9,
-   "pack_g": 3545.5
+   "pack_g": 3545.5,
+   "number": 5,
+   "pitch": "Box with a horseshoe-zip door under the roll-top",
+   "interface_changes": "none",
+   "note": "boxy; full view; long zip"
+  },
+  "spire": {
+   "metrics": {
+    "key": "spire",
+    "name": "SPIRE",
+    "cut_pieces": 20,
+    "pieces_by_group": {
+     "shell": 4,
+     "collar": 4,
+     "swell": 8,
+     "flat": 1,
+     "accent": 3
+    },
+    "piece_types": 12,
+    "seams": 12,
+    "seam_length_m": 7.54,
+    "curved_seams": 2,
+    "curved_seam_length_m": 1.26,
+    "pivots": 6,
+    "ring_seams": 3,
+    "zips": 1,
+    "zip_length_m": 0.447,
+    "zip_list": [
+     {
+      "name": "centre zip",
+      "length_mm": 446.6125833109272,
+      "corners": 0,
+      "z": [
+       120,
+       560
+      ],
+      "where": "slit"
+     }
+    ],
+    "swells": {
+     "kind": "boxed",
+     "n": 8
+    },
+    "applique_edge_m": 4.79,
+    "hours": {
+     "cutting": 2.4,
+     "straight seams": 3.77,
+     "curved seams": 2.27,
+     "pivots": 0.3,
+     "ring seams": 1.5,
+     "zips": 0.95,
+     "swells": 4.0,
+     "camo applique": 3.83,
+     "darts": 0.0,
+     "hardware bartacks": 0.2
+    },
+    "hours_total": 19.2,
+    "mass_g": {
+     "shell": 174.4,
+     "collar": 90.6,
+     "swell": 13.5,
+     "flat": 4.2,
+     "accent": 41.3,
+     "zips": 22.1,
+     "total": 346.1
+    },
+    "seam_rows": [
+     {
+      "name": "B-01 | wrap R",
+      "length_mm": 886.5,
+      "sagitta_mm": 4.6,
+      "pivots": 2,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.05
+     },
+     {
+      "name": "B-01 | wrap L",
+      "length_mm": 886.5,
+      "sagitta_mm": 4.3,
+      "pivots": 2,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.05
+     },
+     {
+      "name": "shoulder seam (ring, z 631.2)",
+      "length_mm": 750.4,
+      "sagitta_mm": 52.5,
+      "pivots": 0,
+      "curved": true,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.1
+     },
+     {
+      "name": "bottom | B-01",
+      "length_mm": 272.0,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound",
+       "ring"
+      ],
+      "error_mm": -0.36
+     },
+     {
+      "name": "bottom (D) | wrap",
+      "length_mm": 510.5,
+      "sagitta_mm": 175.0,
+      "pivots": 0,
+      "curved": true,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": -0.29
+     },
+     {
+      "name": "collar | body tops (ring)",
+      "length_mm": 1144.0,
+      "sagitta_mm": 4.9,
+      "pivots": 2,
+      "curved": false,
+      "tags": [
+       "bound",
+       "ring"
+      ],
+      "error_mm": -0.0
+     },
+     {
+      "name": "collar back seam",
+      "length_mm": 494.8,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "hem | collar top (ring)",
+      "length_mm": 1144.0,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "ring"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "hem back seam",
+      "length_mm": 70.0,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [],
+      "error_mm": 0.0
+     },
+     {
+      "name": "centre zip: tape 1",
+      "length_mm": 446.6,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "zip"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "centre zip: tape 2",
+      "length_mm": 446.6,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "zip"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "centre zip storm strip",
+      "length_mm": 486.6,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "flat"
+      ],
+      "error_mm": 0.0
+     }
+    ],
+    "seam_check_max_err_mm": 0.36,
+    "strain": {
+     "W-02": {
+      "max_pct": 7.154384377991341,
+      "p99_pct": 1.7943058578332671,
+      "p95_pct": 0.9679489606595482,
+      "mean_pct": 0.325279360284082,
+      "max_all_pct": 14.763952225496313,
+      "slivers": 131
+     },
+     "W-02c": {
+      "max_pct": 0.0741831687928296,
+      "p99_pct": 0.05921869997334017,
+      "p95_pct": 0.05744132416396486,
+      "mean_pct": 0.026822188957080332,
+      "max_all_pct": 0.0741831687928296,
+      "slivers": 68
+     }
+    }
+   },
+   "volumes": {
+    "volume_L": 85.2,
+    "volume_cu_in": 5199.0,
+    "body_to_collar_L": 63.58,
+    "z_collar": 912.7,
+    "z_fill": 1232.5,
+    "fill_height_mm": 1197.5,
+    "fill_height_in": 47.1,
+    "max_depth_mm": 276.2,
+    "max_depth_in": 10.88,
+    "depth_top_mm": 260.0,
+    "width_max_mm": 393.6,
+    "width_max_in": 15.5,
+    "cg_y": 131.9,
+    "cg_z": 658.7,
+    "section_k": 0.8452
+   },
+   "tagline": "Tall slim torpedo top-loader: round section, short straight front zip",
+   "access": "roll-top + 440 mm straight #10 zip down the centre of the aft face, z 120-560",
+   "pitch": "Tallest, slimmest, roundest: a torpedo that slips through timber",
+   "interface_changes": "none (B-01 2.5 in narrower at the bottom: 252 mm; hinge eyes x +/-115 still inside it)",
+   "extra": {
+    "collar_perimeter_mm": 1144.0236336575433
+   },
+   "score": {
+    "build": 4.0,
+    "mass": 2.85,
+    "carry": 2.37,
+    "access": 3.0,
+    "durability": 4.0,
+    "look": 4.5,
+    "weighted": 3.48
+   },
+   "mass_delta_g": 12.9,
+   "pack_g": 3508.5,
+   "number": 6,
+   "note": "torpedo; tall 47 in; CG closest"
+  },
+  "cradle": {
+   "metrics": {
+    "key": "cradle",
+    "name": "CRADLE",
+    "cut_pieces": 33,
+    "pieces_by_group": {
+     "shell": 4,
+     "drybags": 16,
+     "accent": 5,
+     "swell": 8
+    },
+    "piece_types": 21,
+    "seams": 16,
+    "seam_length_m": 12.08,
+    "curved_seams": 0,
+    "curved_seam_length_m": 0.0,
+    "pivots": 3,
+    "ring_seams": 8,
+    "zips": 0,
+    "zip_length_m": 0.0,
+    "zip_list": [],
+    "swells": {
+     "kind": "boxed",
+     "n": 8
+    },
+    "applique_edge_m": 8.63,
+    "hours": {
+     "cutting": 3.96,
+     "straight seams": 7.25,
+     "curved seams": 0.0,
+     "pivots": 0.15,
+     "ring seams": 4.0,
+     "zips": 0.0,
+     "swells": 4.0,
+     "camo applique": 6.9,
+     "darts": 0.0,
+     "hardware bartacks": 1.0
+    },
+    "hours_total": 27.3,
+    "mass_g": {
+     "shell": 132.3,
+     "drybags": 247.7,
+     "accent": 63.9,
+     "swell": 13.5,
+     "zips": 0,
+     "hardware": 85.4,
+     "common items delta": -48.5,
+     "total": 494.3
+    },
+    "seam_rows": [
+     {
+      "name": "wing R | B-01 edge",
+      "length_mm": 1163.8,
+      "sagitta_mm": 0.5,
+      "pivots": 1,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "wing L | B-01 edge",
+      "length_mm": 1163.8,
+      "sagitta_mm": 0.5,
+      "pivots": 1,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "cup | B-01 bottom",
+      "length_mm": 272.4,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "cup sides | wings",
+      "length_mm": 300.0,
+      "sagitta_mm": 0.0,
+      "pivots": 1,
+      "curved": false,
+      "tags": [],
+      "error_mm": 0.0
+     },
+     {
+      "name": "drybag 1 long seam",
+      "length_mm": 505.0,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [],
+      "error_mm": 0.0
+     },
+     {
+      "name": "drybag 1 end (ring)",
+      "length_mm": 785.4,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "ring"
+      ],
+      "error_mm": 0.09
+     },
+     {
+      "name": "drybag 1 hem",
+      "length_mm": 785.4,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "ring"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "drybag 2 long seam",
+      "length_mm": 505.0,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [],
+      "error_mm": 0.0
+     },
+     {
+      "name": "drybag 2 end (ring)",
+      "length_mm": 911.1,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "ring"
+      ],
+      "error_mm": 0.1
+     },
+     {
+      "name": "drybag 2 hem",
+      "length_mm": 911.1,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "ring"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "drybag 3 long seam",
+      "length_mm": 505.0,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [],
+      "error_mm": 0.0
+     },
+     {
+      "name": "drybag 3 end (ring)",
+      "length_mm": 942.5,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "ring"
+      ],
+      "error_mm": 0.11
+     },
+     {
+      "name": "drybag 3 hem",
+      "length_mm": 942.5,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "ring"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "drybag 4 long seam",
+      "length_mm": 505.0,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [],
+      "error_mm": 0.0
+     },
+     {
+      "name": "drybag 4 end (ring)",
+      "length_mm": 942.5,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "ring"
+      ],
+      "error_mm": 0.11
+     },
+     {
+      "name": "drybag 4 hem",
+      "length_mm": 942.5,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "ring"
+      ],
+      "error_mm": 0.0
+     }
+    ],
+    "seam_check_max_err_mm": 0.11,
+    "strain": {}
+   },
+   "volumes": {
+    "volume_L": 84.65,
+    "volume_cu_in": 5166.0,
+    "body_to_collar_L": 84.65,
+    "z_collar": 1190.0,
+    "z_fill": 1190.0,
+    "fill_height_mm": 1155.0,
+    "fill_height_in": 45.5,
+    "max_depth_mm": 300.0,
+    "max_depth_in": 11.81,
+    "depth_top_mm": 300.0,
+    "width_max_mm": 393.6,
+    "width_max_in": 15.5,
+    "cg_y": 168.5,
+    "cg_z": 631.8,
+    "section_k": 0.7854
+   },
+   "tagline": "Harness bag holding four roll-top drybags; meat swaps in for a drybag",
+   "access": "lift out any drybag; IM1-IM3 run across the drybags or the meat",
+   "pitch": "Modular: four waterproof drybags in an open harness, swap one for meat",
+   "interface_changes": "B-01 becomes the harness back and runs to z 1175; B-22 guy tabs move to the wing aft edges at z 752",
+   "extra": {
+    "hardware": [
+     [
+      "drybag 1 roll clip: 25 mm SR + 0.3 m webbing",
+      14.399999999999999
+     ],
+     [
+      "drybag 2 roll clip: 25 mm SR + 0.3 m webbing",
+      14.399999999999999
+     ],
+     [
+      "drybag 3 roll clip: 25 mm SR + 0.3 m webbing",
+      14.399999999999999
+     ],
+     [
+      "drybag 4 roll clip: 25 mm SR + 0.3 m webbing",
+      14.399999999999999
+     ],
+     [
+      "4th cinch strap round the top drybag: 25 mm 1.1 m + G-hook + ladder lock",
+      27.8
+     ]
+    ],
+    "common_delta_g": -48.5
+   },
+   "score": {
+    "build": 2.47,
+    "mass": 1.0,
+    "carry": 1.0,
+    "access": 4.0,
+    "durability": 3.0,
+    "look": 3.5,
+    "weighted": 2.41
+   },
+   "mass_delta_g": 161.1,
+   "pack_g": 3656.7,
+   "number": 7,
+   "note": "modular drybags; open sides"
+  },
+  "duo": {
+   "metrics": {
+    "key": "duo",
+    "name": "DUO",
+    "cut_pieces": 23,
+    "pieces_by_group": {
+     "shell": 4,
+     "collar": 4,
+     "swell": 8,
+     "flat": 2,
+     "accent": 5
+    },
+    "piece_types": 14,
+    "seams": 14,
+    "seam_length_m": 8.78,
+    "curved_seams": 7,
+    "curved_seam_length_m": 5.12,
+    "pivots": 6,
+    "ring_seams": 3,
+    "zips": 1,
+    "zip_length_m": 0.508,
+    "zip_list": [
+     {
+      "name": "lower-zone zip",
+      "length_mm": 507.67429245815765,
+      "corners": 0,
+      "z": [
+       330,
+       330
+      ],
+      "where": "slit"
+     }
+    ],
+    "swells": {
+     "kind": "boxed",
+     "n": 8
+    },
+    "applique_edge_m": 5.34,
+    "hours": {
+     "cutting": 2.76,
+     "straight seams": 2.19,
+     "curved seams": 9.22,
+     "pivots": 0.3,
+     "ring seams": 1.5,
+     "zips": 1.01,
+     "swells": 4.0,
+     "camo applique": 4.27,
+     "darts": 0.0,
+     "hardware bartacks": 0.8
+    },
+    "hours_total": 26.1,
+    "mass_g": {
+     "shell": 163.7,
+     "collar": 93.8,
+     "swell": 13.5,
+     "flat": 12.3,
+     "accent": 45.3,
+     "zips": 23.4,
+     "hardware": 18.5,
+     "total": 370.5
+    },
+    "seam_rows": [
+     {
+      "name": "B-01 | wrap R",
+      "length_mm": 765.3,
+      "sagitta_mm": 5.3,
+      "pivots": 2,
+      "curved": true,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.04
+     },
+     {
+      "name": "B-01 | wrap L",
+      "length_mm": 765.3,
+      "sagitta_mm": 4.6,
+      "pivots": 2,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.04
+     },
+     {
+      "name": "shoulder seam (ring, z 631.2)",
+      "length_mm": 824.8,
+      "sagitta_mm": 59.3,
+      "pivots": 0,
+      "curved": true,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.08
+     },
+     {
+      "name": "bottom | B-01",
+      "length_mm": 272.4,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound",
+       "ring"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "bottom (D) | wrap",
+      "length_mm": 573.9,
+      "sagitta_mm": 190.0,
+      "pivots": 0,
+      "curved": true,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": -0.01
+     },
+     {
+      "name": "collar | body tops (ring)",
+      "length_mm": 1218.5,
+      "sagitta_mm": 5.1,
+      "pivots": 2,
+      "curved": true,
+      "tags": [
+       "bound",
+       "ring"
+      ],
+      "error_mm": -0.0
+     },
+     {
+      "name": "collar back seam",
+      "length_mm": 495.4,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "hem | collar top (ring)",
+      "length_mm": 1171.6,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "ring"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "hem back seam",
+      "length_mm": 70.0,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [],
+      "error_mm": 0.0
+     },
+     {
+      "name": "lower-zone zip: tape 1",
+      "length_mm": 507.7,
+      "sagitta_mm": 27.8,
+      "pivots": 0,
+      "curved": true,
+      "tags": [
+       "zip"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "lower-zone zip: tape 2",
+      "length_mm": 507.7,
+      "sagitta_mm": 27.8,
+      "pivots": 0,
+      "curved": true,
+      "tags": [
+       "zip"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "lower-zone zip storm strip",
+      "length_mm": 547.7,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "flat"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "divider | B-01 (sewn)",
+      "length_mm": 332.4,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "flat"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "divider edge binding",
+      "length_mm": 725.0,
+      "sagitta_mm": 245.4,
+      "pivots": 0,
+      "curved": true,
+      "tags": [
+       "flat"
+      ],
+      "error_mm": 0.0
+     }
+    ],
+    "seam_check_max_err_mm": 0.08,
+    "strain": {
+     "W-02": {
+      "max_pct": 4.418532325354807,
+      "p99_pct": 1.2854230799128397,
+      "p95_pct": 0.727177702139481,
+      "mean_pct": 0.2527969513325198,
+      "max_all_pct": 9.691010223958907,
+      "slivers": 149
+     },
+     "W-02c": {
+      "max_pct": 0.2859062465327522,
+      "p99_pct": 0.19500910300125351,
+      "p95_pct": 0.18994521471706882,
+      "mean_pct": 0.04258560326635517,
+      "max_all_pct": 0.2859062465327522,
+      "slivers": 38
+     }
+    }
+   },
+   "volumes": {
+    "volume_L": 85.2,
+    "volume_cu_in": 5199.0,
+    "body_to_collar_L": 61.44,
+    "z_collar": 791.6,
+    "z_fill": 1111.4,
+    "fill_height_mm": 1076.4,
+    "fill_height_in": 42.4,
+    "max_depth_mm": 288.6,
+    "max_depth_in": 11.36,
+    "depth_top_mm": 272.0,
+    "width_max_mm": 393.6,
+    "width_max_in": 15.5,
+    "cg_y": 142.5,
+    "cg_z": 589.5,
+    "section_k": 0.927
+   },
+   "tagline": "Two-zone: lower compartment (own zip, removable divider) + main above",
+   "access": "roll-top for the main zone; 600 mm horizontal #10 zip into the lower zone at z 330",
+   "pitch": "Sleep kit low and dry with its own door; divider unhooks for meat",
+   "interface_changes": "none",
+   "extra": {
+    "collar_perimeter_mm": 1218.4587798945008,
+    "hardware": [
+     [
+      "divider tab 1: 25 mm webbing 0.12 m + G-hook",
+      6.16
+     ],
+     [
+      "divider tab 2: 25 mm webbing 0.12 m + G-hook",
+      6.16
+     ],
+     [
+      "divider tab 3: 25 mm webbing 0.12 m + G-hook",
+      6.16
+     ]
+    ]
+   },
+   "score": {
+    "build": 1.02,
+    "mass": 1.63,
+    "carry": 1.98,
+    "access": 4.0,
+    "durability": 3.5,
+    "look": 4.0,
+    "weighted": 2.25
+   },
+   "mass_delta_g": 37.3,
+   "pack_g": 3532.9,
+   "number": 8,
+   "note": "sleep zone + door; divider"
+  },
+  "gulp": {
+   "metrics": {
+    "key": "gulp",
+    "name": "GULP",
+    "cut_pieces": 21,
+    "pieces_by_group": {
+     "shell": 4,
+     "collar": 4,
+     "swell": 8,
+     "flat": 2,
+     "accent": 3
+    },
+    "piece_types": 13,
+    "seams": 16,
+    "seam_length_m": 9.55,
+    "curved_seams": 4,
+    "curved_seam_length_m": 2.9,
+    "pivots": 6,
+    "ring_seams": 3,
+    "zips": 1,
+    "zip_length_m": 0.455,
+    "zip_list": [
+     {
+      "name": "right side zip",
+      "length_mm": 455.30535857768683,
+      "corners": 0,
+      "z": [
+       150,
+       600
+      ],
+      "where": "slit"
+     }
+    ],
+    "swells": {
+     "kind": "boxed",
+     "n": 8
+    },
+    "applique_edge_m": 4.99,
+    "hours": {
+     "cutting": 2.52,
+     "straight seams": 3.99,
+     "curved seams": 5.22,
+     "pivots": 0.3,
+     "ring seams": 1.5,
+     "zips": 0.96,
+     "swells": 4.0,
+     "camo applique": 3.99,
+     "darts": 0.0,
+     "hardware bartacks": 0.2
+    },
+    "hours_total": 22.7,
+    "mass_g": {
+     "shell": 166.5,
+     "collar": 93.1,
+     "swell": 13.5,
+     "flat": 47.5,
+     "accent": 42.0,
+     "zips": 22.3,
+     "total": 384.9
+    },
+    "seam_rows": [
+     {
+      "name": "B-01 | wrap R",
+      "length_mm": 802.7,
+      "sagitta_mm": 4.9,
+      "pivots": 2,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.05
+     },
+     {
+      "name": "B-01 | wrap L",
+      "length_mm": 802.7,
+      "sagitta_mm": 4.4,
+      "pivots": 2,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.04
+     },
+     {
+      "name": "shoulder seam (ring, z 631.2)",
+      "length_mm": 793.6,
+      "sagitta_mm": 56.1,
+      "pivots": 0,
+      "curved": true,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.09
+     },
+     {
+      "name": "bottom | B-01",
+      "length_mm": 272.4,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound",
+       "ring"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "bottom (D) | wrap",
+      "length_mm": 552.3,
+      "sagitta_mm": 190.0,
+      "pivots": 0,
+      "curved": true,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": -0.01
+     },
+     {
+      "name": "collar | body tops (ring)",
+      "length_mm": 1187.3,
+      "sagitta_mm": 5.1,
+      "pivots": 2,
+      "curved": true,
+      "tags": [
+       "bound",
+       "ring"
+      ],
+      "error_mm": -0.0
+     },
+     {
+      "name": "collar back seam",
+      "length_mm": 494.9,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "hem | collar top (ring)",
+      "length_mm": 1171.6,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "ring"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "hem back seam",
+      "length_mm": 70.0,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [],
+      "error_mm": 0.0
+     },
+     {
+      "name": "pocket side R | wrap",
+      "length_mm": 558.3,
+      "sagitta_mm": 0.7,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "flat"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "pocket side L | wrap",
+      "length_mm": 558.3,
+      "sagitta_mm": 0.7,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "flat"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "pocket bottom | wrap",
+      "length_mm": 367.7,
+      "sagitta_mm": 18.1,
+      "pivots": 0,
+      "curved": true,
+      "tags": [
+       "flat"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "binding | pocket mouth",
+      "length_mm": 508.0,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "flat"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "right side zip: tape 1",
+      "length_mm": 455.3,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "zip"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "right side zip: tape 2",
+      "length_mm": 455.3,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "zip"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "right side zip storm strip",
+      "length_mm": 495.3,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "flat"
+      ],
+      "error_mm": 0.0
+     }
+    ],
+    "seam_check_max_err_mm": 0.09,
+    "strain": {
+     "W-02": {
+      "max_pct": 5.753387587186198,
+      "p99_pct": 1.5840895676236366,
+      "p95_pct": 0.8466087045979065,
+      "mean_pct": 0.291508077312113,
+      "max_all_pct": 12.271366469493895,
+      "slivers": 144
+     },
+     "W-02c": {
+      "max_pct": 0.13255451551018593,
+      "p99_pct": 0.09787085084522751,
+      "p95_pct": 0.09422582416684921,
+      "mean_pct": 0.03209406473733325,
+      "max_all_pct": 0.13255451551018593,
+      "slivers": 47
+     }
+    }
+   },
+   "volumes": {
+    "volume_L": 85.2,
+    "volume_cu_in": 5199.0,
+    "body_to_collar_L": 62.08,
+    "z_collar": 829.0,
+    "z_fill": 1148.8,
+    "fill_height_mm": 1113.8,
+    "fill_height_in": 43.9,
+    "max_depth_mm": 288.2,
+    "max_depth_in": 11.35,
+    "depth_top_mm": 272.0,
+    "width_max_mm": 393.6,
+    "width_max_in": 15.5,
+    "cg_y": 139.3,
+    "cg_z": 611.0,
+    "section_k": 0.8833
+   },
+   "tagline": "Big front stretch shove-it pocket over the aft face + side zip",
+   "access": "roll-top + 450 mm straight #10 zip in the right side, z 150-600; 9 L stretch pocket",
+   "pitch": "Stuff a wet layer, a bow cam or a game bag in the giant stretch pocket",
+   "interface_changes": "none",
+   "extra": {
+    "collar_perimeter_mm": 1187.2914783959618,
+    "pocket_L": 9.0
+   },
+   "score": {
+    "build": 2.62,
+    "mass": 1.0,
+    "carry": 2.08,
+    "access": 4.0,
+    "durability": 3.0,
+    "look": 4.0,
+    "weighted": 2.68
+   },
+   "mass_delta_g": 51.7,
+   "pack_g": 3547.3,
+   "number": 9,
+   "note": "9 L stretch pocket; side zip"
+  },
+  "maw": {
+   "metrics": {
+    "key": "maw",
+    "name": "MAW",
+    "cut_pieces": 19,
+    "pieces_by_group": {
+     "shell": 6,
+     "swell": 8,
+     "accent": 5
+    },
+    "piece_types": 9,
+    "seams": 11,
+    "seam_length_m": 6.03,
+    "curved_seams": 1,
+    "curved_seam_length_m": 0.39,
+    "pivots": 7,
+    "ring_seams": 2,
+    "zips": 1,
+    "zip_length_m": 2.056,
+    "zip_list": [
+     {
+      "name": "clamshell zip",
+      "length_mm": 2056.103706143592,
+      "corners": 2,
+      "z": [
+       120,
+       968.4
+      ],
+      "where": "corners + top"
+     }
+    ],
+    "swells": {
+     "kind": "boxed",
+     "n": 8
+    },
+    "applique_edge_m": 2.6,
+    "hours": {
+     "cutting": 2.28,
+     "straight seams": 3.38,
+     "curved seams": 0.71,
+     "pivots": 0.35,
+     "ring seams": 1.0,
+     "zips": 3.36,
+     "swells": 4.0,
+     "camo applique": 2.08,
+     "darts": 0.0,
+     "hardware bartacks": 0.0
+    },
+    "hours_total": 17.2,
+    "mass_g": {
+     "shell": 255.1,
+     "swell": 13.5,
+     "accent": 28.7,
+     "zips": 54.3,
+     "hardware": 0.0,
+     "common items delta": -48.5,
+     "total": 303.1
+    },
+    "seam_rows": [
+     {
+      "name": "B-01 | gusset R",
+      "length_mm": 942.2,
+      "sagitta_mm": 0.5,
+      "pivots": 2,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": -0.0
+     },
+     {
+      "name": "B-01 | gusset L",
+      "length_mm": 942.2,
+      "sagitta_mm": 0.5,
+      "pivots": 2,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": -0.0
+     },
+     {
+      "name": "aft face | gusset R",
+      "length_mm": 944.9,
+      "sagitta_mm": 0.0,
+      "pivots": 1,
+      "curved": false,
+      "tags": [
+       "bound",
+       "zip"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "aft face | gusset L",
+      "length_mm": 944.9,
+      "sagitta_mm": 0.0,
+      "pivots": 1,
+      "curved": false,
+      "tags": [
+       "bound",
+       "zip"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "bottom | B-01",
+      "length_mm": 272.4,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound",
+       "ring"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "bottom | aft face",
+      "length_mm": 272.4,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "bottom | gusset R",
+      "length_mm": 190.0,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "bottom | gusset L",
+      "length_mm": 190.0,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "top | B-01 + gusset R",
+      "length_mm": 665.6,
+      "sagitta_mm": 0.0,
+      "pivots": 1,
+      "curved": false,
+      "tags": [
+       "bound",
+       "ring"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "top | gusset L",
+      "length_mm": 272.0,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "top | aft face (zip across the top, R40 corners)",
+      "length_mm": 393.6,
+      "sagitta_mm": 11.9,
+      "pivots": 0,
+      "curved": true,
+      "tags": [
+       "bound",
+       "zip"
+      ],
+      "error_mm": 0.0
+     }
+    ],
+    "seam_check_max_err_mm": 0.0,
+    "strain": {}
+   },
+   "volumes": {
+    "volume_L": 85.2,
+    "volume_cu_in": 5199.0,
+    "body_to_collar_L": 85.2,
+    "z_collar": 968.4,
+    "z_fill": 968.4,
+    "fill_height_mm": 933.4,
+    "fill_height_in": 36.7,
+    "max_depth_mm": 288.5,
+    "max_depth_in": 11.36,
+    "depth_top_mm": 272.0,
+    "width_max_mm": 393.6,
+    "width_max_in": 15.5,
+    "cg_y": 153.5,
+    "cg_z": 553.5,
+    "section_k": 1.0
+   },
+   "tagline": "Clamshell duffel hauler: aft face drops open, closed top, no roll-top",
+   "access": "#10 zip up both aft corners and across the top: the whole aft face opens like a duffel",
+   "pitch": "Open it like a duffel on the ground: everything in view, IM straps reachable",
+   "interface_changes": "no roll-top: collar, hem, HDPE and the ROLL buckles go (-48.5 g common); B-20 ladder top on B-01 (z_c 790)",
+   "extra": {
+    "hardware": [
+     [
+      "4 haul-wrap keepers moved to the gussets (none new)",
+      0.0
+     ]
+    ],
+    "common_delta_g": -48.5
+   },
+   "score": {
+    "build": 4.75,
+    "mass": 5.0,
+    "carry": 1.0,
+    "access": 5.0,
+    "durability": 2.0,
+    "look": 3.0,
+    "weighted": 3.81
+   },
+   "mass_delta_g": -30.1,
+   "pack_g": 3465.5,
+   "number": 10,
+   "note": "duffel opening; no roll-top"
+  },
+  "cairn": {
+   "metrics": {
+    "key": "cairn",
+    "name": "CAIRN",
+    "cut_pieces": 22,
+    "pieces_by_group": {
+     "shell": 4,
+     "collar": 4,
+     "swell": 8,
+     "flat": 1,
+     "lid": 3,
+     "accent": 2
+    },
+    "piece_types": 14,
+    "seams": 15,
+    "seam_length_m": 9.97,
+    "curved_seams": 4,
+    "curved_seam_length_m": 3.36,
+    "pivots": 6,
+    "ring_seams": 3,
+    "zips": 2,
+    "zip_length_m": 1.055,
+    "zip_list": [
+     {
+      "name": "left side zip",
+      "length_mm": 455.30545122260565,
+      "corners": 0,
+      "z": [
+       150,
+       600
+      ],
+      "where": "slit"
+     },
+     {
+      "name": "lid zip (#8 class booked as #10)",
+      "length_mm": 600.0,
+      "corners": 2,
+      "z": [
+       0,
+       0
+      ],
+      "where": "lid top | gusset"
+     }
+    ],
+    "swells": {
+     "kind": "boxed",
+     "n": 8
+    },
+    "applique_edge_m": 5.04,
+    "hours": {
+     "cutting": 2.64,
+     "straight seams": 3.97,
+     "curved seams": 6.05,
+     "pivots": 0.3,
+     "ring seams": 1.5,
+     "zips": 2.86,
+     "swells": 4.0,
+     "camo applique": 4.03,
+     "darts": 0.0,
+     "hardware bartacks": 1.0
+    },
+    "hours_total": 26.3,
+    "mass_g": {
+     "shell": 164.7,
+     "collar": 93.5,
+     "swell": 13.5,
+     "flat": 4.2,
+     "lid": 73.1,
+     "accent": 34.4,
+     "zips": 47.5,
+     "hardware": 68.6,
+     "total": 499.5
+    },
+    "seam_rows": [
+     {
+      "name": "B-01 | wrap R",
+      "length_mm": 780.3,
+      "sagitta_mm": 5.1,
+      "pivots": 2,
+      "curved": true,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.04
+     },
+     {
+      "name": "B-01 | wrap L",
+      "length_mm": 780.3,
+      "sagitta_mm": 4.5,
+      "pivots": 2,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.04
+     },
+     {
+      "name": "shoulder seam (ring, z 631.2)",
+      "length_mm": 811.1,
+      "sagitta_mm": 57.9,
+      "pivots": 0,
+      "curved": true,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.09
+     },
+     {
+      "name": "bottom | B-01",
+      "length_mm": 272.4,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound",
+       "ring"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "bottom (D) | wrap",
+      "length_mm": 564.4,
+      "sagitta_mm": 190.0,
+      "pivots": 0,
+      "curved": true,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": -0.01
+     },
+     {
+      "name": "collar | body tops (ring)",
+      "length_mm": 1204.7,
+      "sagitta_mm": 5.1,
+      "pivots": 2,
+      "curved": true,
+      "tags": [
+       "bound",
+       "ring"
+      ],
+      "error_mm": -0.0
+     },
+     {
+      "name": "collar back seam",
+      "length_mm": 495.1,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "hem | collar top (ring)",
+      "length_mm": 1171.6,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "ring"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "hem back seam",
+      "length_mm": 70.0,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [],
+      "error_mm": 0.0
+     },
+     {
+      "name": "left side zip: tape 1",
+      "length_mm": 455.3,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "zip"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "left side zip: tape 2",
+      "length_mm": 455.3,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "zip"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "left side zip storm strip",
+      "length_mm": 495.3,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "flat"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "lid top | gusset (zip 600 mm in it)",
+      "length_mm": 1168.0,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "zip"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "lid underside | gusset",
+      "length_mm": 1168.0,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [],
+      "error_mm": 0.0
+     },
+     {
+      "name": "lid gusset end",
+      "length_mm": 80.0,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [],
+      "error_mm": 0.0
+     }
+    ],
+    "seam_check_max_err_mm": 0.09,
+    "strain": {
+     "W-02": {
+      "max_pct": 5.0330636624319025,
+      "p99_pct": 1.421055374386393,
+      "p95_pct": 0.784419893280619,
+      "mean_pct": 0.2704059789698456,
+      "max_all_pct": 10.848572191492888,
+      "slivers": 146
+     },
+     "W-02c": {
+      "max_pct": 0.20480854647212388,
+      "p99_pct": 0.14286824139733145,
+      "p95_pct": 0.13699842237693272,
+      "mean_pct": 0.036931993638442344,
+      "max_all_pct": 0.20480854647212388,
+      "slivers": 41
+     }
+    }
+   },
+   "volumes": {
+    "volume_L": 85.2,
+    "volume_cu_in": 5199.0,
+    "body_to_collar_L": 61.7,
+    "z_collar": 806.6,
+    "z_fill": 1126.4,
+    "fill_height_mm": 1091.4,
+    "fill_height_in": 43.0,
+    "max_depth_mm": 288.3,
+    "max_depth_in": 11.35,
+    "depth_top_mm": 272.0,
+    "width_max_mm": 393.6,
+    "width_max_in": 15.5,
+    "cg_y": 141.2,
+    "cg_z": 598.2,
+    "section_k": 0.909
+   },
+   "tagline": "Roll-top with an integrated 6 L lid that converts to a summit pack",
+   "access": "roll-top + 450 mm straight #10 zip in the left side; lid 600 mm zip",
+   "pitch": "The lid comes off with straps as a summit / stalk pack",
+   "interface_changes": "lid rear straps to the frame-side hem (as the current optional lid); B-22 unchanged",
+   "extra": {
+    "collar_perimeter_mm": 1204.7060808201238,
+    "hardware": [
+     [
+      "summit harness: 2 x 25 mm webbing 0.7 m + 2 ladder locks",
+      33.2
+     ],
+     [
+      "lid rear straps + 2 front magnetic clips (current lid rule)",
+      35.4
+     ]
+    ],
+    "lid_L": 6.4
+   },
+   "score": {
+    "build": 1.72,
+    "mass": 1.0,
+    "carry": 2.02,
+    "access": 3.5,
+    "durability": 4.0,
+    "look": 4.0,
+    "weighted": 2.38
+   },
+   "mass_delta_g": 166.3,
+   "pack_g": 3661.9,
+   "number": 11,
+   "note": "6 L summit-pack lid"
+  },
+  "wisp": {
+   "metrics": {
+    "key": "wisp",
+    "name": "WISP",
+    "cut_pieces": 18,
+    "pieces_by_group": {
+     "shell": 4,
+     "collar": 4,
+     "swell": 8,
+     "accent": 2
+    },
+    "piece_types": 10,
+    "seams": 9,
+    "seam_length_m": 6.15,
+    "curved_seams": 5,
+    "curved_seam_length_m": 4.14,
+    "pivots": 6,
+    "ring_seams": 3,
+    "zips": 0,
+    "zip_length_m": 0.0,
+    "zip_list": [],
+    "swells": {
+     "kind": "boxed",
+     "n": 8
+    },
+    "applique_edge_m": 3.83,
+    "hours": {
+     "cutting": 2.16,
+     "straight seams": 1.21,
+     "curved seams": 7.45,
+     "pivots": 0.3,
+     "ring seams": 1.5,
+     "zips": 0.0,
+     "swells": 4.0,
+     "camo applique": 3.06,
+     "darts": 0.0,
+     "hardware bartacks": 0.0
+    },
+    "hours_total": 19.7,
+    "mass_g": {
+     "shell": 166.6,
+     "collar": 93.1,
+     "swell": 13.5,
+     "accent": 33.9,
+     "zips": 0,
+     "total": 307.1
+    },
+    "seam_rows": [
+     {
+      "name": "B-01 | wrap R",
+      "length_mm": 811.5,
+      "sagitta_mm": 5.5,
+      "pivots": 2,
+      "curved": true,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.05
+     },
+     {
+      "name": "B-01 | wrap L",
+      "length_mm": 811.5,
+      "sagitta_mm": 5.0,
+      "pivots": 2,
+      "curved": true,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.04
+     },
+     {
+      "name": "shoulder seam (ring, z 631.2)",
+      "length_mm": 793.6,
+      "sagitta_mm": 60.0,
+      "pivots": 0,
+      "curved": true,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.09
+     },
+     {
+      "name": "bottom | B-01",
+      "length_mm": 272.4,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound",
+       "ring"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "bottom (D) | wrap",
+      "length_mm": 534.7,
+      "sagitta_mm": 180.0,
+      "pivots": 0,
+      "curved": true,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": -0.01
+     },
+     {
+      "name": "collar | body tops (ring)",
+      "length_mm": 1187.3,
+      "sagitta_mm": 5.1,
+      "pivots": 2,
+      "curved": true,
+      "tags": [
+       "bound",
+       "ring"
+      ],
+      "error_mm": -0.0
+     },
+     {
+      "name": "collar back seam",
+      "length_mm": 494.9,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "hem | collar top (ring)",
+      "length_mm": 1171.6,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "ring"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "hem back seam",
+      "length_mm": 70.0,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [],
+      "error_mm": 0.0
+     }
+    ],
+    "seam_check_max_err_mm": 0.09,
+    "strain": {
+     "W-02": {
+      "max_pct": 5.900442299401076,
+      "p99_pct": 1.601471929401388,
+      "p95_pct": 0.8546890247954186,
+      "mean_pct": 0.2936232588614076,
+      "max_all_pct": 12.403725669569221,
+      "slivers": 139
+     },
+     "W-02c": {
+      "max_pct": 0.1324103449170777,
+      "p99_pct": 0.09786948562384712,
+      "p95_pct": 0.09422689990292721,
+      "mean_pct": 0.031432823043703664,
+      "max_all_pct": 0.1324103449170777,
+      "slivers": 50
+     }
+    }
+   },
+   "volumes": {
+    "volume_L": 85.2,
+    "volume_cu_in": 5199.0,
+    "body_to_collar_L": 62.09,
+    "z_collar": 837.8,
+    "z_fill": 1157.6,
+    "fill_height_mm": 1122.6,
+    "fill_height_in": 44.2,
+    "max_depth_mm": 287.3,
+    "max_depth_in": 11.31,
+    "depth_top_mm": 272.0,
+    "width_max_mm": 393.6,
+    "width_max_in": 15.5,
+    "cg_y": 138.7,
+    "cg_z": 619.1,
+    "section_k": 0.8833
+   },
+   "tagline": "Minimalist ultralight: roll-top only, no lid, no zip, no body pockets",
+   "access": "roll-top only (A2: armpit-deep to reach IM1)",
+   "pitch": "The lightest and quickest to sew; everything through the top",
+   "interface_changes": "none",
+   "extra": {
+    "collar_perimeter_mm": 1187.291478395962
+   },
+   "score": {
+    "build": 3.12,
+    "mass": 4.8,
+    "carry": 2.0,
+    "access": 1.5,
+    "durability": 4.5,
+    "look": 4.0,
+    "weighted": 3.19
+   },
+   "mass_delta_g": -26.1,
+   "pack_g": 3469.5,
+   "number": 12,
+   "note": "UL minimal; no zip at all"
+  },
+  "mantle": {
+   "metrics": {
+    "key": "mantle",
+    "name": "MANTLE",
+    "cut_pieces": 28,
+    "pieces_by_group": {
+     "shell": 6,
+     "collar": 5,
+     "swell": 8,
+     "wing": 2,
+     "accent": 7
+    },
+    "piece_types": 18,
+    "seams": 16,
+    "seam_length_m": 9.45,
+    "curved_seams": 0,
+    "curved_seam_length_m": 0.0,
+    "pivots": 9,
+    "ring_seams": 3,
+    "zips": 1,
+    "zip_length_m": 0.52,
+    "zip_list": [
+     {
+      "name": "centre zip",
+      "length_mm": 520.0,
+      "corners": 0,
+      "z": [
+       140,
+       660
+      ],
+      "where": "centre seam"
+     }
+    ],
+    "swells": {
+     "kind": "boxed",
+     "n": 8
+    },
+    "applique_edge_m": 10.23,
+    "hours": {
+     "cutting": 3.36,
+     "straight seams": 5.67,
+     "curved seams": 0.0,
+     "pivots": 0.45,
+     "ring seams": 1.5,
+     "zips": 1.02,
+     "swells": 4.0,
+     "camo applique": 8.18,
+     "darts": 0.0,
+     "hardware bartacks": 1.2
+    },
+    "hours_total": 25.4,
+    "mass_g": {
+     "shell": 171.9,
+     "collar": 104.4,
+     "swell": 13.5,
+     "wing": 66.0,
+     "accent": 80.5,
+     "zips": 23.6,
+     "hardware": 80.4,
+     "total": 540.3
+    },
+    "seam_rows": [
+     {
+      "name": "B-01 | gusset R",
+      "length_mm": 710.0,
+      "sagitta_mm": 0.5,
+      "pivots": 2,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": -0.0
+     },
+     {
+      "name": "B-01 | gusset L",
+      "length_mm": 710.0,
+      "sagitta_mm": 0.5,
+      "pivots": 2,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": -0.0
+     },
+     {
+      "name": "bottom | B-01",
+      "length_mm": 272.4,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound",
+       "ring"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "bottom | gusset R",
+      "length_mm": 190.0,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "bottom | gusset L",
+      "length_mm": 190.0,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "collar | body tops (ring)",
+      "length_mm": 1331.3,
+      "sagitta_mm": 0.0,
+      "pivots": 3,
+      "curved": false,
+      "tags": [
+       "bound",
+       "ring"
+      ],
+      "error_mm": 0.91
+     },
+     {
+      "name": "collar frame side | collar R",
+      "length_mm": 496.4,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "collar frame side | collar L",
+      "length_mm": 496.4,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "hem | collar top (ring)",
+      "length_mm": 1171.6,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "ring"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "hem back seam",
+      "length_mm": 70.0,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [],
+      "error_mm": 0.0
+     },
+     {
+      "name": "aft face R | gusset R",
+      "length_mm": 712.8,
+      "sagitta_mm": 0.0,
+      "pivots": 1,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "aft face L | gusset L",
+      "length_mm": 712.8,
+      "sagitta_mm": 0.0,
+      "pivots": 1,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "bottom | aft face",
+      "length_mm": 272.4,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "centre seam (zip z 140-660)",
+      "length_mm": 709.8,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound",
+       "zip"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "wing R root | B-01 gusset seam",
+      "length_mm": 700.1,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.0
+     },
+     {
+      "name": "wing L root | B-01 gusset seam",
+      "length_mm": 700.1,
+      "sagitta_mm": 0.0,
+      "pivots": 0,
+      "curved": false,
+      "tags": [
+       "bound"
+      ],
+      "error_mm": 0.0
+     }
+    ],
+    "seam_check_max_err_mm": 0.91,
+    "strain": {}
+   },
+   "volumes": {
+    "volume_L": 85.2,
+    "volume_cu_in": 5199.0,
+    "body_to_collar_L": 60.35,
+    "z_collar": 736.3,
+    "z_fill": 1056.1,
+    "fill_height_mm": 1021.1,
+    "fill_height_in": 40.2,
+    "max_depth_mm": 288.6,
+    "max_depth_in": 11.36,
+    "depth_top_mm": 272.0,
+    "width_max_mm": 393.6,
+    "width_max_in": 15.5,
+    "cg_y": 148.6,
+    "cg_z": 557.7,
+    "section_k": 1.0
+   },
+   "tagline": "Expedition hauler: box body with two full-height side compression wings",
+   "access": "roll-top + 520 mm straight centre #10 zip (as SLAB)",
+   "pitch": "Wings wrap tripod, pads or antlers to the sides and squeeze small loads",
+   "interface_changes": "wing roots sewn in the B-01 | gusset seams; wings run outside W1-W3, wraps pass over them",
+   "extra": {
+    "collar_perimeter_mm": 1330.3690221339343,
+    "hardware": [
+     [
+      "wing R strap 1: 25 mm 0.30 m + G-hook + ladder lock",
+      13.399999999999999
+     ],
+     [
+      "wing R strap 2: 25 mm 0.30 m + G-hook + ladder lock",
+      13.399999999999999
+     ],
+     [
+      "wing R strap 3: 25 mm 0.30 m + G-hook + ladder lock",
+      13.399999999999999
+     ],
+     [
+      "wing L strap 1: 25 mm 0.30 m + G-hook + ladder lock",
+      13.399999999999999
+     ],
+     [
+      "wing L strap 2: 25 mm 0.30 m + G-hook + ladder lock",
+      13.399999999999999
+     ],
+     [
+      "wing L strap 3: 25 mm 0.30 m + G-hook + ladder lock",
+      13.399999999999999
+     ]
+    ]
+   },
+   "score": {
+    "build": 2.95,
+    "mass": 1.0,
+    "carry": 1.56,
+    "access": 3.5,
+    "durability": 4.0,
+    "look": 3.5,
+    "weighted": 2.69
+   },
+   "mass_delta_g": 207.1,
+   "pack_g": 3702.7,
+   "number": 13,
+   "note": "side wings; heavy"
   }
- }
+ },
+ "order": [
+  "spine",
+  "slab",
+  "twin",
+  "wrap",
+  "hatch",
+  "spire",
+  "cradle",
+  "duo",
+  "gulp",
+  "maw",
+  "cairn",
+  "wisp",
+  "mantle"
+ ]
 }
