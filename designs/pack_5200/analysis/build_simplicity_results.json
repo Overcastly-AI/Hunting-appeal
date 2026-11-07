@@ -1,0 +1,146 @@
+{
+ "pieces": {
+  "hand_cut": 73,
+  "laser_die_cutlist": 35,
+  "attach_laser": 13,
+  "bought_composite": 3,
+  "total": 124,
+  "piece_types": 69,
+  "webbing_parts": 52,
+  "materials": [
+   "cfrp_t300_3k_woven_epoxy_ply",
+   "challenge_ultra_200",
+   "cordura_330d_nylon66",
+   "cordura_500d_nylon66",
+   "eva_foam_30c",
+   "eva_foam_45c",
+   "eva_foam_perforated",
+   "hdpe_sheet",
+   "hypalon_coated_nylon",
+   "poly_spandex_stretch_woven_printable",
+   "polyester_ht_630d_printable",
+   "robic_100d_ripstop",
+   "robic_210d_ripstop",
+   "rohacell_110_igf",
+   "silicone_coated_poly_ripstop_40d",
+   "spacer_mesh_3d",
+   "ultragrid_210d_uhmwpe_ripstop",
+   "xlpe_foam"
+  ],
+  "seam_allowances_mm": [
+   "0",
+   "8",
+   "10",
+   "12",
+   "15",
+   "20"
+  ]
+ },
+ "counts": {
+  "boxx_load_joints": 68,
+  "bar_tacks_304": 32,
+  "binding_runs": 6,
+  "binding_m": 10.45,
+  "swells": 8,
+  "zips": 4,
+  "curved_seam_m": 12.69,
+  "overlay_m": 3.87,
+  "hot_cut_webbing_ends": 104
+ },
+ "hours_before": {
+  "Cutting + kitting": 13.38,
+  "Webbing + load parts": 6.96,
+  "Bag flat-work": 24.73,
+  "Bag 3D assembly": 9.04,
+  "Side pockets": 2.17,
+  "Rain fly + pocket": 4.68,
+  "Crown hood": 2.02,
+  "Hipbelt (M)": 8.69,
+  "Harness (J)": 5.2,
+  "Back panel": 3.01,
+  "Proof tests + fit": 10.75,
+  "Composite parts (spreader)": 8.0
+ },
+ "hours_after": {
+  "Cutting + kitting": 12.48,
+  "Webbing + load parts": 6.5,
+  "Bag flat-work": 22.58,
+  "Bag 3D assembly": 6.88,
+  "Side pockets": 2.17,
+  "Rain fly + pocket": 4.68,
+  "Crown hood": 1.89,
+  "Hipbelt (M)": 8.11,
+  "Harness (J)": 4.85,
+  "Back panel": 3.01,
+  "Proof tests + fit": 8.33,
+  "Composite parts (spreader)": 0.5,
+  "Jig + template kit (S-10)": 2.0
+ },
+ "total_before_h": 98.6,
+ "total_after_h": 84.0,
+ "hardware_skus": {
+  "buckles": {
+   "before": 3,
+   "after": 3
+  },
+  "adjusters": {
+   "before": 5,
+   "after": 5
+  },
+  "hooks": {
+   "before": 3,
+   "after": 2
+  },
+  "toggles + small parts": {
+   "before": 7,
+   "after": 6
+  },
+  "zips": {
+   "before": 3,
+   "after": 2
+  },
+  "elastic + cord": {
+   "before": 2,
+   "after": 2
+  },
+  "webbing + binding": {
+   "before": 6,
+   "after": 5
+  },
+  "thread": {
+   "before": 3,
+   "after": 2
+  }
+ },
+ "op_minutes_ASSUMPTION": {
+  "cut_hand": 6.0,
+  "cut_check": 1.5,
+  "web_cut": 3.0,
+  "boxx": 8.0,
+  "bar": 4.0,
+  "patch2": 12.0,
+  "patch1": 8.0,
+  "seam_flat_m": 15.0,
+  "seam_curve_m": 35.0,
+  "swell": 60.0,
+  "zip_diag": 150.0,
+  "zip_small": 45.0,
+  "bind_m": 30.0,
+  "hem_m": 20.0,
+  "overlay_m": 30.0,
+  "foam_assy": 45.0,
+  "hw": 2.0,
+  "grommet": 5.0,
+  "proof": 45.0,
+  "thread_change": 5.0,
+  "misc_min": 1.0
+ },
+ "rework": [
+  0.2,
+  0.12
+ ],
+ "screens": [
+  "outputs/screens/20261107_buildsimp_1.png",
+  "outputs/screens/20261107_buildsimp_2.png"
+ ]
+}
