@@ -92,7 +92,7 @@ TEMPLATE = r"""<!DOCTYPE html>
 <div id="caption" class="card"><div class="t" id="capT"></div><div id="capS"></div></div>
 <div id="bar" class="card">
   <div class="grp"><button data-mode="pack" class="on">Full pack</button><button data-mode="frame">Frame only</button></div>
-  <div class="grp"><button data-tog="haul" title="Full pack: float mode, meat on the frame, bag hung upright behind it on the B-24 links. Frame only: bag off, meat in the cradle">Meat haul</button><button data-tog="xray" title="See through the bag and the back-panel mesh">X-ray</button><button data-tog="explode">Exploded</button><button data-tog="fea">FEA colors</button><button data-tog="mannequin">Mannequin</button><button data-tog="harness" class="on">Harness</button><button data-tog="bp" class="on">Back panel</button><button data-tog="full">Full 85 L</button><button data-tog="lid">Lid</button></div>
+  <div class="grp"><button data-tog="haul" title="Full pack: float mode, meat on the frame, bag hung upright behind it on the B-24 links. Frame only: bag off, meat in the cradle">Meat haul</button><button data-tog="xray" title="See through the bag and the back-panel mesh">X-ray</button><button data-tog="explode">Exploded</button><button data-tog="fea">FEA colors</button><button data-tog="mannequin">Mannequin</button><button data-tog="harness" class="on">Harness</button><button data-tog="bp" class="on">Back panel</button><button data-tog="full">Full 85 L</button><button data-tog="lid">Lid</button><button data-tog="posts" title="Optional extension posts (add-on for antlers / tall loads; not standard)">Posts</button></div>
   <div class="grp" id="gaps"></div>
   <div class="grp"><button data-torso="15">15 in</button><button data-torso="19" class="on">19 in</button><button data-torso="23">23 in</button><button data-tog="fit">Fit 3 sizes</button></div>
   <div class="grp"><button id="reset">Reset view</button></div>
@@ -134,7 +134,7 @@ const rim = new THREE.DirectionalLight(0xffffff, 1.4); rim.position.set(-0.6, 2.
 const ground = new THREE.Mesh(new THREE.CircleGeometry(4, 64), new THREE.ShadowMaterial({opacity:0.22}));
 ground.rotation.x = -Math.PI/2; ground.receiveShadow = true; scene.add(ground);
 
-const state = {mode:'pack', haul:false, explode:false, fea:false, mannequin:false, torso:19, fit:false, harness:true, full:false, lid:false, xray:false, bp:true, gap:null};
+const state = {mode:'pack', haul:false, explode:false, fea:false, mannequin:false, torso:19, fit:false, harness:true, full:false, lid:false, xray:false, bp:true, posts:false, gap:null};
 let root = null, fitRoots = [], explodeT = 0, needsFrame = 3, fitFloor = 0;
 const P = DATA.parts;
 const M = DATA.metrics;
@@ -237,6 +237,7 @@ function visibleFor(name, torso) {
   if (p.group === 'fea') return state.fea;
   if (p.group === 'suspension' && !state.harness) return false;
   if (p.group === 'backpanel' && !state.bp) return false;
+  if (p.group === 'accessory' && !state.posts) return false;
   if (state.fea && (name === 'frame_stays' || name === 'frame_bars' || name.startsWith('crown@'))) return false;
   return true;
 }

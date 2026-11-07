@@ -402,8 +402,9 @@ def build_pack(params: dict | None = None) -> PackModel:
         tb = np.array([0, yt, top]) + U * ph
         post.append(G.tube([tb - [cr["legs_x"][1] + 4, 0, 0], tb + [cr["legs_x"][1] + 4, 0, 0]],
                            tubes["post_od"] / 2, n=24, tile=40.0))
-        parts.append(Part(f"extension_posts{tag}", G.concat(post), "carbon", "haul", torso=tin, modes=HAULM,
-                          label="Extension posts (tall loads)"))
+        # optional add-on (owner 2026-11-07): hidden by default, viewer "Posts" toggle
+        parts.append(Part(f"extension_posts{tag}", G.concat(post), "carbon", "accessory", torso=tin, modes=HAULM,
+                          label="Extension posts (optional add-on, tall loads / antlers)"))
         crown_info[tin] = cs
 
     def _legacy_box_bag():
