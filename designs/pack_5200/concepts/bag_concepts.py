@@ -641,17 +641,19 @@ def d_bottom(c: Concept):
 HATCH = {"inset": 40.0, "z_lo": 100.0, "z_hinge": 720.0, "r": 60.0}   # ASSUMPTION: door geometry
 
 
-def hatch_face(c: Concept):
+def hatch_face(c: Concept, H: dict | None = None):
     """Face of HATCH: U-surround (one piece, inner R60 corners), door (rounded bottom corners), hinge band above.
-    Face flat coords (x, s) with s the unrolled aft-face length (exact: planar facets containing x)."""
+    Face flat coords (x, s) with s the unrolled aft-face length (exact: planar facets containing x).
+    ``H`` overrides the door geometry (default HATCH)."""
+    HATCH_ = HATCH if H is None else H
     zk, s, a = front_face_profile(c)
     S = lambda z: float(np.interp(z, zk, s))           # noqa: E731
     A = lambda z: float(np.interp(z, zk, a))           # noqa: E731
-    ins, r = HATCH["inset"], HATCH["r"]
-    s0, s1 = S(HATCH["z_lo"]), S(HATCH["z_hinge"])
-    zz = np.linspace(HATCH["z_lo"] + r, HATCH["z_hinge"], 30)
+    ins, r = HATCH_["inset"], HATCH_["r"]
+    s0, s1 = S(HATCH_["z_lo"]), S(HATCH_["z_hinge"])
+    zz = np.linspace(HATCH_["z_lo"] + r, HATCH_["z_hinge"], 30)
     right_in = [(A(z) - ins, S(z)) for z in zz]
-    xr0 = A(HATCH["z_lo"] + r) - ins
+    xr0 = A(HATCH_["z_lo"] + r) - ins
     arc_r = [(xr0 - r + r * math.cos(t), s0 + r - r * math.sin(t)) for t in np.linspace(0, math.pi / 2, 12)]
     arc_r = arc_r[::-1]   # from the bottom (x = xr0 - r, s0) up to (xr0, s0 + r)
     arc_l = [(-x, y) for x, y in arc_r][::-1]
@@ -663,7 +665,7 @@ def hatch_face(c: Concept):
     door = Piece.from_edges("horseshoe door", door_edges, seam_allowance_mm={"default": SA_ZIP, "hinge": SA_BODY},
                             material_id="cordura_330d_nylon66", piece_id="B-02door")
     # surround: outer bottom, outer right up to hinge, top-right short edge, inner U (reversed), top-left, outer left
-    oz = [z for z in zk if z <= HATCH["z_hinge"]] + [HATCH["z_hinge"]]
+    oz = [z for z in zk if z <= HATCH_["z_hinge"]] + [HATCH_["z_hinge"]]
     out_r = [(A(z), S(z)) for z in oz]
     out_l = [(-A(z), S(z)) for z in oz]
     sur_edges = [("bottom", [out_l[0], out_r[0]]), ("outer_right", out_r),
@@ -671,7 +673,7 @@ def hatch_face(c: Concept):
                  ("top_left", [u_left[-1], out_l[-1]]), ("outer_left", out_l[::-1])]
     sur = Piece.from_edges("U-surround", sur_edges, seam_allowance_mm={"default": SA_BODY, "zip": SA_ZIP},
                            material_id="cordura_330d_nylon66", piece_id="B-02u")
-    hz = [HATCH["z_hinge"]] + [z for z in zk if z > HATCH["z_hinge"]]
+    hz = [HATCH_["z_hinge"]] + [z for z in zk if z > HATCH_["z_hinge"]]
     br = [(A(z), S(z)) for z in hz]
     bl = [(-A(z), S(z)) for z in hz]
     band_edges = [("bottom", [bl[0], br[0]]), ("right", br), ("top", [br[-1], bl[-1]]), ("left", bl[::-1])]
@@ -1021,7 +1023,9 @@ SLIDER_G = 6.0   # ASSUMPTION (build_geometry zip row: sliders 6 g each)
 
 
 def zip_mass_g(z) -> float:
-    """build_geometry rule: coil_zipper_10 g/m x (length + 60 mm) + 2 sliders x 6 g."""
+    """build_geometry rule: coil_zipper_10 g/m x (length + 60 mm) + 2 sliders x 6 g (``mass_g`` in the dict overrides)."""
+    if "mass_g" in z:
+        return float(z["mass_g"])
     return MAT.load("coil_zipper_10").require("mass_g_m") * (z["length_mm"] + 60) / 1000 + 2 * SLIDER_G
 
 
