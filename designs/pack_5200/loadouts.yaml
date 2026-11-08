@@ -1,0 +1,695 @@
+# Canonical hunting loadouts for the Pack 5200 / CORRIE packing study.
+# Owner: pack-designer. 2026-11-08. Research: docs/research/hunting_loadouts.md ([HL §n]).
+# Consumed by designs/pack_5200/concepts/corrie_loadout.py (tests: tests/test_corrie_loadout.py).
+#
+# Rules
+# - Every mass and every volume traces to a key in `sources` (URL) or is an explicit `ASSUMPTION: ...` string.
+#   `mass_src` covers mass_g, `vol_src` covers vol_L and dims_mm.
+# - mass_g / vol_L are per unit; `qty` in a loadout multiplies them. Volumes are PACKED volumes (stuff sack,
+#   case or folded size). oz -> g at 28.35 g/oz.
+# - access: constant (several times an hour, often without stopping) | hourly (about once an hour, on the move) |
+#   glassing (at each stop, pack usually off) | weather | daily (once a day / at camp) | camp | kill | emergency.
+# - pref: zones in preference order. The packer uses the first zone the configuration has and that has room.
+#   Zone ids are defined in corrie_loadout.ZONES. Zones not built on CORRIE today (e.g. scope_sleeve_L,
+#   bottle_hip, hydro_sleeve, door_pocket) are skipped in the "today" configuration.
+# - Worn clothing, boots and the weapon in the hands are not in the pack load (zone `hands`/`chest` = on the body).
+
+sources:
+  IA23: https://initialascent.com/blogs/hunting-gear/2023-elk-gearlist-4-days-4-days
+  GH_SHEEP: https://www.gohunt.com/browse/gear-lists-and-reviews/gear-breakdown-for-a-successful-sheep-hunt
+  EXO_RIFLE: https://www.exomtngear.com/blogs/article/hunting-gear-list-rifle-elk-mule-deer-in-october
+  EXO_20D: https://exomtngear.com/blogs/in-my-pack/20-day-elk-hunt-gear-list
+  SG_LYLE: https://stoneglacier.com/blogs/the-vestibule/lyles-10-day-alaska-dall-sheep-hunt-pack-dump
+  SWARO_FS: https://business.swarovskioptik.com/assets/downloads/pdfs/FactSheets_SpottingScopes_EN.pdf  # secondary: values via search summary
+  CLIFTON_ATX: https://www.cliftoncameras.co.uk/Swarovski-STX-25-60x65-Spotting-Scope-Kit---STX---Straight  # retailer
+  VORTEX_50: https://vortexoptics.com/vortex-razor-hd-11-33x50-spotting-scope-straight.html
+  VORTEX_85: https://www.bhphotovideo.com/c/product/1643390-REG/vortex_razor_hd_27_60x85_spotting.html  # retailer
+  SLIK_635: https://shop.gohunt.com/products/slik-pro-cf-635-tripod  # retailer
+  INREACH: https://www.campmor.com/collections/vendors/products/garmin-inreach-mini-2-gps  # retailer
+  NXT: https://whittakermountaineering.com/collections/gear/products/neoair-xlite-nxt-sleeping-pad  # retailer
+  CHILKOOT: https://www.stoneglacier.com/products/chilkoot-15
+  CHILKOOT_ALS: https://www.als.com/stone-glacier-chilkoot-15-down-sleeping-bag-10487193/p  # retailer
+  ULTAMID: https://www.campfirecycling.com/product/hyperlite-ultamid-2.html  # retailer
+  SKYSCRAPER: https://www.stoneglacier.com/pages/skyscraper-2p-tent
+  SKYSCRAPER_W: https://www.scheels.com/ca/p/stone-glacier-skyscraper-2-tent/18284-70013-BL-2P  # retailer
+  WAPITI: https://kenetrek.com/products/wapiti  # retailer
+  CARNIVORE: https://shop.gohunt.com/products/caribou-gear-the-carnivore-iii-high-country-game-bag-set  # retailer
+  STASH: https://bikepacking.com/news/jetboil-stash/
+  BD_Z: https://www.ems.com/black-diamond-distance-carbon-z-trekking-poles/2047964.html  # retailer
+  MD_DECOY: https://shop.gohunt.com/products/montana-decoy-backcountry-elk-decoy  # retailer
+  LIFT: https://outdoorlife.com/gear/mathews-lift-review
+  MARSUPIAL: https://elkshape.com/products/standard-binocular-chest-pack  # retailer
+  N1: https://n1outdoors.com/elk-hunting-pack-list/  # secondary (search summary)
+  MEATEATER: https://www.themeateater.com/gear/gear-hunt/ask-meateater-what-do-you-carry-in-a-mountain-hunting-pack
+
+items:
+  # ---------------------------------------------------------------- optics
+  binos:
+    name: Binoculars 10x42 (laser-ranging class)
+    cat: optics
+    mass_g: 964
+    mass_src: IA23 (Zeiss RF 10x42, 34 oz)
+    vol_L: 1.4
+    dims_mm: [155, 130, 70]
+    vol_src: "ASSUMPTION: 10x42 roof envelope; fits a harness interior 6.3-8 x 5.5 x 2.5 in (MARSUPIAL)"
+    access: constant
+    pref: [chest]
+  bino_harness:
+    name: Bino chest harness (not ours)
+    cat: optics
+    mass_g: 397
+    mass_src: IA23 (FHF FOB Pro, 14 oz)
+    vol_L: 0.0
+    dims_mm: [200, 150, 70]
+    vol_src: "worn: interior 6.3-8 x 5.5 x 2.5 in (MARSUPIAL)"
+    access: constant
+    pref: [chest]
+  rangefinder:
+    name: Rangefinder 6x22
+    cat: optics
+    mass_g: 142
+    mass_src: IA23 (Sig KILO1600, 5 oz)
+    vol_L: 0.26
+    dims_mm: [100, 75, 35]
+    vol_src: "ASSUMPTION: compact 6x22 LRF envelope"
+    access: constant
+    pref: [chest, hip_L, hip_R]
+  spotter_50:
+    name: Spotting scope 50 mm compact
+    cat: optics
+    mass_g: 709
+    mass_src: VORTEX_50 (Razor HD 11-33x50, 25.0 oz)
+    vol_L: 2.0
+    dims_mm: [280, 85, 85]
+    vol_src: "length VORTEX_50 (11 in straight); ASSUMPTION: 85 mm body diameter with caps"
+    access: glassing
+    rigid: true
+    pref: [scope_sleeve_L, wing_L, door_pocket, bag_A_high]
+  spotter_65:
+    name: Spotting scope 65 mm angled
+    cat: optics
+    mass_g: 1585
+    mass_src: SWARO_FS / CLIFTON_ATX (ATX 25-60x65 angled 1585 g)
+    vol_L: 3.5
+    dims_mm: [339, 95, 130]
+    vol_src: "length SWARO_FS (339 mm angled); ASSUMPTION: 95 mm body, 130 mm over the angled eyepiece"
+    access: glassing
+    rigid: true
+    pref: [scope_sleeve_L, wing_L, door_pocket, bag_A_high]
+  spotter_85:
+    name: Spotting scope 85 mm angled
+    cat: optics
+    mass_g: 1910
+    mass_src: SWARO_FS / CLIFTON_ATX (ATX 25-60x85 angled 1910 g; Zeiss 85 FL 52 oz = 1474 g in GH_SHEEP)
+    vol_L: 4.8
+    dims_mm: [372, 110, 150]
+    vol_src: "length SWARO_FS (372 mm angled; Vortex Razor 85 15.5 in VORTEX_85); ASSUMPTION: 110 mm body, 150 mm over the eyepiece"
+    access: glassing
+    rigid: true
+    pref: [scope_sleeve_L, wing_L, door_pocket, bag_A_high]
+  tripod_light:
+    name: Tripod, light carbon (legs)
+    cat: optics
+    mass_g: 709
+    mass_src: SLIK_635 (SLIK Pro CF 635, 1 lb 9 oz)
+    vol_L: 1.6
+    dims_mm: [371, 75, 75]
+    vol_src: "folded 14.6 in (SLIK_635); ASSUMPTION: 75 mm folded bundle diameter"
+    access: glassing
+    rigid: true
+    pref: [wing_R, wing_L, bag_A_high]
+  tripod_heavy:
+    name: Tripod, medium height (legs)
+    cat: optics
+    mass_g: 1089
+    mass_src: GH_SHEEP (Outdoorsmans medium, 38.4 oz)
+    vol_L: 2.7
+    dims_mm: [470, 85, 85]
+    vol_src: "ASSUMPTION: folded 470 mm x 85 mm (no published folded length found)"
+    access: glassing
+    rigid: true
+    pref: [wing_R, wing_L, bag_A_high]
+  pan_head:
+    name: Pan head + plate
+    cat: optics
+    mass_g: 289
+    mass_src: GH_SHEEP (Outdoorsmans pan head, 10.2 oz)
+    vol_L: 0.5
+    dims_mm: [90, 80, 70]
+    vol_src: "ASSUMPTION: pan head envelope, handle folded"
+    access: glassing
+    rigid: true
+    pref: [wing_R, top_pouch, bag_A_high]
+  glassing_pad:
+    name: Glassing / sit pad (foam)
+    cat: optics
+    mass_g: 184
+    mass_src: IA23 (glassing pad 6.5 oz)
+    vol_L: 1.5
+    dims_mm: [300, 250, 20]
+    vol_src: "ASSUMPTION: folded foam 300 x 250 x 20"
+    access: glassing
+    pref: [wing_L, wing_R, top_pouch, bag_A_high]
+  # ---------------------------------------------------------------- navigation, comms, power
+  phone:
+    name: Phone (onX maps)
+    cat: nav_comms
+    mass_g: 200
+    mass_src: "ASSUMPTION: large smartphone in a case"
+    vol_L: 0.12
+    dims_mm: [160, 80, 10]
+    vol_src: "ASSUMPTION: phone in case"
+    access: hourly
+    pref: [strap_pocket, hip_R, hip_L, top_pouch]
+  inreach:
+    name: Satellite messenger (inReach Mini class)
+    cat: nav_comms
+    mass_g: 100
+    mass_src: INREACH (3.53 oz)
+    vol_L: 0.13
+    dims_mm: [99, 52, 26]
+    vol_src: INREACH (2.04 x 3.90 x 1.03 in)
+    access: hourly
+    pref: [strap_clip, strap_pocket, hip_L, hip_R, top_pouch]
+  gps:
+    name: Handheld GPS
+    cat: nav_comms
+    mass_g: 204
+    mass_src: GH_SHEEP (Garmin 64s 7.2 oz)
+    vol_L: 0.3
+    dims_mm: [160, 61, 36]
+    vol_src: "ASSUMPTION: 64-series envelope"
+    access: hourly
+    pref: [hip_L, hip_R, top_pouch]
+  wind_checker:
+    name: Wind checker
+    cat: nav_comms
+    mass_g: 28
+    mass_src: IA23 (1 oz)
+    vol_L: 0.05
+    dims_mm: [80, 30, 30]
+    vol_src: "ASSUMPTION: squeeze bottle"
+    access: constant
+    pref: [chest, hip_L, hip_R]
+  headlamp:
+    name: Headlamp + spare light
+    cat: nav_comms
+    mass_g: 101
+    mass_src: IA23 (Peax Duo 2.65 oz + Petzl Mini 0.9 oz)
+    vol_L: 0.2
+    dims_mm: [70, 50, 40]
+    vol_src: "ASSUMPTION"
+    access: daily
+    pref: [top_pouch, hip_L, door_pocket, bag_A_high]
+  power_bank:
+    name: Power bank 10 Ah + cables
+    cat: nav_comms
+    mass_g: 292
+    mass_src: IA23 (Poseidon Pro 9.6 oz + cords 0.7 oz)
+    vol_L: 0.35
+    dims_mm: [150, 75, 25]
+    vol_src: "ASSUMPTION"
+    access: camp
+    pref: [bag_F_high, top_pouch]
+  batteries:
+    name: Spare batteries (AA/AAA lithium)
+    cat: nav_comms
+    mass_g: 79
+    mass_src: GH_SHEEP (4 AA 2 oz + 3 AAA 0.8 oz)
+    vol_L: 0.06
+    dims_mm: [60, 50, 20]
+    vol_src: "ASSUMPTION"
+    access: daily
+    pref: [top_pouch, bag_A_high]
+  # ---------------------------------------------------------------- shelter + sleep
+  shelter_mid:
+    name: Floorless mid shelter 2P + stakes (poles = trekking poles)
+    cat: shelter
+    mass_g: 624
+    mass_src: IA23 (Ultamid 2 & stakes 22 oz)
+    vol_L: 4.6
+    dims_mm: [216, 152, 140]
+    vol_src: ULTAMID (packed 8.5 x 6 x 5.5 in)
+    access: camp
+    pref: [bag_A_low, bag_F_low]
+  shelter_tent2p:
+    name: Freestanding 2P tent (alpine)
+    cat: shelter
+    mass_g: 1899
+    mass_src: SKYSCRAPER_W (min trail 4 lb 3 oz)
+    vol_L: 6.5
+    dims_mm: [356, 152, 152]
+    vol_src: "SKYSCRAPER (packed 14 x 6 in; cylinder)"
+    access: camp
+    pref: [bag_A_low, bag_F_low]
+  quilt_20:
+    name: Quilt 20 F, in stuff sack
+    cat: sleep
+    mass_g: 567
+    mass_src: IA23 (EE 20 deg quilt 20 oz)
+    vol_L: 7.0
+    dims_mm: [300, 175, 175]
+    vol_src: "ASSUMPTION: compressed down quilt, 7 L"
+    access: camp
+    pref: [bag_F_low, bag_A_low]
+  bag_15:
+    name: Sleeping bag 15 F, in stuff sack
+    cat: sleep
+    mass_g: 992
+    mass_src: CHILKOOT (2 lb 3 oz)
+    vol_L: 9.5
+    dims_mm: [381, 178, 178]
+    vol_src: "CHILKOOT_ALS stuff sack 15 x 7 in (cylinder)"
+    access: camp
+    pref: [bag_F_low, bag_A_low]
+  pad_nxt:
+    name: Inflatable pad + pump sack + pillow
+    cat: sleep
+    mass_g: 496
+    mass_src: IA23 (NeoAir XLite NXT 12.5 oz + pump 2.4 oz + pillow 2.1 oz)
+    vol_L: 2.3
+    dims_mm: [230, 110, 110]
+    vol_src: "NXT packed 9 x 4 in (cylinder 1.8 L) + ASSUMPTION 0.5 L pump/pillow"
+    access: camp
+    pref: [bag_F_low, bag_A_low]
+  # ---------------------------------------------------------------- cook + water
+  cook_kit:
+    name: Stove + pot + spoon (nested)
+    cat: cook
+    mass_g: 201
+    mass_src: STASH (Jetboil Stash 7.1 oz)
+    vol_L: 1.3
+    dims_mm: [130, 112, 112]
+    vol_src: STASH (packed 4.4 x 5.1 in)
+    access: daily
+    rigid: true
+    pref: [bag_A_mid, bag_F_mid]
+  fuel_100:
+    name: Fuel canister 100 g (full)
+    cat: cook
+    mass_g: 201
+    mass_src: IA23 (full 3.53 oz/100 g canister = 7.1 oz)
+    vol_L: 0.35
+    dims_mm: [90, 90, 65]
+    vol_src: "ASSUMPTION: 100 g canister envelope"
+    access: daily
+    rigid: true
+    pref: [bag_F_mid, bag_A_mid]
+  bladder_2L:
+    name: Bladder 3 L carrying 2 L
+    cat: water
+    mass_g: 2091
+    mass_src: "IA23 (Hydrapak Seeker 3L 3.2 oz) + 2.0 L water (1 kg/L)"
+    vol_L: 2.1
+    dims_mm: [400, 200, 40]
+    vol_src: "ASSUMPTION: flat bladder, 2 L filled"
+    access: hourly
+    pref: [hydro_sleeve, bag_F_high]
+  bottle_1L:
+    name: 1 L wide-mouth bottle (full)
+    cat: water
+    mass_g: 1184
+    mass_src: "IA23 (32 oz Nalgene 6.5 oz) + 1.0 L water"
+    vol_L: 1.66
+    dims_mm: [210, 89, 89]
+    vol_src: "ASSUMPTION: 89 mm x 210 mm bottle"
+    access: hourly
+    rigid: true
+    pref: [bottle_hip, wing_L, wing_R, bag_A_high]
+  filter:
+    name: Water treatment (UV pen / squeeze filter)
+    cat: water
+    mass_g: 71
+    mass_src: IA23 (SteriPen 2.5 oz)
+    vol_L: 0.15
+    dims_mm: [170, 40, 40]
+    vol_src: "ASSUMPTION"
+    access: daily
+    pref: [top_pouch, door_pocket, bag_A_high]
+  # ---------------------------------------------------------------- food
+  snacks_today:
+    name: Today's snacks
+    cat: food
+    mass_g: 250
+    mass_src: "ASSUMPTION: about 30 % of a 816 g/day ration (EXO_RIFLE 1.8 lb/day)"
+    vol_L: 0.5
+    dims_mm: [150, 100, 35]
+    vol_src: "ASSUMPTION: 0.5 kg/L trail food"
+    access: hourly
+    pref: [hip_R, hip_L, top_pouch]
+  lunch_today:
+    name: Today's lunch
+    cat: food
+    mass_g: 350
+    mass_src: "ASSUMPTION: rest of the day's carried food on a day hunt"
+    vol_L: 0.7
+    dims_mm: [200, 120, 30]
+    vol_src: "ASSUMPTION: 0.5 kg/L"
+    access: daily
+    pref: [top_pouch, door_pocket, bag_A_high]
+  food_day_elk:
+    name: Food, one day (elk ration)
+    cat: food
+    mass_g: 816
+    mass_src: EXO_RIFLE (1.7-2.0 lb/day; 3600 kcal ~ 1.8 lb)
+    vol_L: 1.6
+    dims_mm: [250, 200, 32]
+    vol_src: "ASSUMPTION: 0.5 kg/L for dehydrated meals + bars"
+    access: daily
+    pref: [bag_F_mid, bag_A_mid]
+  food_day_sheep:
+    name: Food, one day (sheep ration)
+    cat: food
+    mass_g: 680
+    mass_src: "IA23 (6 lb / 4 days = 1.5 lb/day); SG_LYLE ~2400 kcal/day"
+    vol_L: 1.35
+    dims_mm: [250, 200, 27]
+    vol_src: "ASSUMPTION: 0.5 kg/L"
+    access: daily
+    pref: [bag_F_mid, bag_A_mid]
+  # ---------------------------------------------------------------- clothing (packed, not worn)
+  puffy_jacket:
+    name: Down/synthetic hooded jacket
+    cat: clothing
+    mass_g: 360
+    mass_src: IA23 (800-fill jacket 12.7 oz)
+    vol_L: 3.0
+    dims_mm: [250, 180, 70]
+    vol_src: "ASSUMPTION: stuffed 3 L"
+    access: glassing
+    pref: [door_pocket, top_pouch, bag_A_high]
+  puffy_pants:
+    name: Insulated pants
+    cat: clothing
+    mass_g: 284
+    mass_src: GH_SHEEP (Superdown pant 10 oz)
+    vol_L: 2.5
+    dims_mm: [230, 160, 70]
+    vol_src: "ASSUMPTION: stuffed 2.5 L"
+    access: camp
+    pref: [bag_A_mid, bag_F_mid]
+  rain_jacket:
+    name: Rain jacket
+    cat: clothing
+    mass_g: 340
+    mass_src: IA23 (12 oz)
+    vol_L: 1.8
+    dims_mm: [220, 150, 55]
+    vol_src: "ASSUMPTION: rolled 1.8 L"
+    access: weather
+    pref: [wing_R, top_pouch, bag_A_high]
+  rain_pants:
+    name: Rain pants
+    cat: clothing
+    mass_g: 439
+    mass_src: GH_SHEEP (Chugach NX pant 15.5 oz)
+    vol_L: 1.8
+    dims_mm: [220, 150, 55]
+    vol_src: "ASSUMPTION: rolled 1.8 L"
+    access: weather
+    pref: [bag_A_high, bag_A_mid]
+  mid_layer:
+    name: Spare mid layer (merino / grid fleece)
+    cat: clothing
+    mass_g: 284
+    mass_src: IA23 (Kuhl Revel 1/4 zip 10 oz)
+    vol_L: 1.5
+    dims_mm: [220, 150, 45]
+    vol_src: "ASSUMPTION"
+    access: glassing
+    pref: [bag_A_high, bag_A_mid]
+  beanie_gloves:
+    name: Beanie + gloves
+    cat: clothing
+    mass_g: 142
+    mass_src: IA23 (beanie 3 oz + gloves 2 oz)
+    vol_L: 0.5
+    dims_mm: [150, 100, 35]
+    vol_src: "ASSUMPTION"
+    access: glassing
+    pref: [top_pouch, hip_L, bag_A_high]
+  socks_underwear:
+    name: Spare socks + underwear
+    cat: clothing
+    mass_g: 196
+    mass_src: IA23 (socks 3 oz + underwear 3.9 oz)
+    vol_L: 0.6
+    dims_mm: [150, 100, 40]
+    vol_src: "ASSUMPTION"
+    access: camp
+    pref: [bag_A_low, bag_F_low]
+  base_mid_sheep:
+    name: Spare base + mid tops (sheep)
+    cat: clothing
+    mass_g: 573
+    mass_src: GH_SHEEP (Ultra 145 zip-T 8.0 oz + 230 mid 12.2 oz)
+    vol_L: 2.5
+    dims_mm: [250, 180, 55]
+    vol_src: "ASSUMPTION"
+    access: camp
+    pref: [bag_A_low, bag_F_low]
+  # ---------------------------------------------------------------- kill kit
+  kill_kit:
+    name: "Kill kit: knife + blades, sharpener, gloves, paracord, contractor bag, drop cloth, saw, flagging"
+    cat: kill_kit
+    mass_g: 392
+    mass_src: "IA23 (knife 1.5 + paracord 1.1 + contractor bag 1.7 + DCF cloth 3.8 + sack 0.5 oz = 243 g); N1 saw 3.9 oz (111 g, secondary); ASSUMPTION 38 g sharpener + nitrile gloves + flagging"
+    vol_L: 1.2
+    dims_mm: [260, 120, 40]
+    vol_src: "ASSUMPTION: one small stuff sack (MEATEATER keeps the kit in one sack)"
+    access: kill
+    pref: [door_pocket, top_pouch, bag_A_low]
+  game_bags_elk:
+    name: Game bags, elk set (4 quarter + 1 parts)
+    cat: kill_kit
+    mass_g: 595
+    mass_src: WAPITI (21 oz)
+    vol_L: 2.0
+    dims_mm: [250, 150, 55]
+    vol_src: "ASSUMPTION: rolled set 2 L"
+    access: kill
+    pref: [door_pocket, bag_A_low, bag_F_low]
+  game_bags_small:
+    name: Game bags, deer/sheep set (5)
+    cat: kill_kit
+    mass_g: 397
+    mass_src: CARNIVORE (14 oz)
+    vol_L: 1.3
+    dims_mm: [200, 130, 50]
+    vol_src: "ASSUMPTION: rolled set 1.3 L"
+    access: kill
+    pref: [door_pocket, bag_A_low, bag_F_low]
+  # ---------------------------------------------------------------- safety, hygiene, repair
+  first_aid:
+    name: First aid + repair kit
+    cat: safety
+    mass_g: 485
+    mass_src: "IA23 (first aid 15 oz = 425 g); ASSUMPTION 60 g repair (pad patch, needle, tape)"
+    vol_L: 0.9
+    dims_mm: [200, 130, 35]
+    vol_src: "ASSUMPTION"
+    access: emergency
+    pref: [door_pocket, top_pouch, bag_A_high]
+  first_aid_light:
+    name: First aid + repair kit (alpine, minimal)
+    cat: safety
+    mass_g: 111
+    mass_src: "GH_SHEEP (custom kit 1.8 oz = 51 g); ASSUMPTION 60 g repair"
+    vol_L: 0.35
+    dims_mm: [150, 100, 25]
+    vol_src: "ASSUMPTION"
+    access: emergency
+    pref: [door_pocket, top_pouch, bag_A_high]
+  fire_kit:
+    name: Fire kit (lighter, matches, tinder)
+    cat: safety
+    mass_g: 99
+    mass_src: IA23 (2 + 0.5 + 0.5 + 0.5 oz)
+    vol_L: 0.1
+    dims_mm: [100, 50, 25]
+    vol_src: "ASSUMPTION"
+    access: emergency
+    pref: [top_pouch, hip_L, bag_A_high]
+  toilet_kit:
+    name: Toilet + hygiene kit (TP, wipes, toothbrush)
+    cat: safety
+    mass_g: 159
+    mass_src: IA23 (wipes & TP 4.1 oz + toothbrush/paste 1.5 oz)
+    vol_L: 0.6
+    dims_mm: [180, 110, 35]
+    vol_src: "ASSUMPTION"
+    access: daily
+    pref: [top_pouch, door_pocket, bag_A_high]
+  trekking_poles:
+    name: Trekking poles, folding carbon (pair)
+    cat: poles
+    mass_g: 280
+    mass_src: BD_Z (120 cm, 280 g/pair)
+    vol_L: 0.8
+    dims_mm: [400, 60, 40]
+    vol_src: BD_Z (collapsed 40 cm for 120 cm)
+    access: glassing   # in the hands while walking; stowed at each stop / stalk (MEATEATER)
+    rigid: true
+    pref: [wing_R, wing_L, bag_A_high]
+  # ---------------------------------------------------------------- weapon + archery
+  rifle:
+    name: Mountain rifle, scoped (carried / slung)
+    cat: weapon
+    mass_g: 4944
+    mass_src: GH_SHEEP (7mm Mag 174.4 oz)
+    vol_L: 0.0
+    dims_mm: [1100, 80, 200]
+    vol_src: "ASSUMPTION: carried in the hands or on the sling, not in the pack"
+    access: constant
+    pref: [hands]
+  bow:
+    name: Compound bow, accessorized (carried)
+    cat: weapon
+    mass_g: 2722
+    mass_src: LIFT (Mathews Lift 29.5, 6 lb accessorized, measured)
+    vol_L: 0.0
+    dims_mm: [750, 120, 330]
+    vol_src: "ASSUMPTION: carried in the hands"
+    access: constant
+    pref: [hands]
+  calls:
+    name: Elk calls (bugle tube + reeds + cow call)
+    cat: calls
+    mass_g: 280
+    mass_src: "ASSUMPTION: no published bugle-tube mass found (HL §2.11)"
+    vol_L: 1.2
+    dims_mm: [450, 75, 75]
+    vol_src: "ASSUMPTION: collapsible tube; carried on the person (EXO_20D lists calls under On Person)"
+    access: constant
+    pref: [chest]
+  decoy:
+    name: Cow elk decoy, backcountry (folded)
+    cat: calls
+    mass_g: 241
+    mass_src: MD_DECOY (Backcountry Elk 8.5 oz)
+    vol_L: 1.8
+    dims_mm: [300, 200, 30]
+    vol_src: "ASSUMPTION: folded panel"
+    access: glassing
+    pref: [wing_L, door_pocket, bag_A_high]
+
+loadouts:
+  day:
+    name: Day hunt from camp (rifle, Oct, elk / mule deer)
+    days: 1
+    weapon: rifle
+    meat_case: {meat_kg: 40.0, note: "ASSUMPTION: one boned elk load (half the boned meat of a mature elk) packed to camp"}
+    items:
+      binos: 1
+      bino_harness: 1
+      rangefinder: 1
+      wind_checker: 1
+      phone: 1
+      inreach: 1
+      headlamp: 1
+      batteries: 1
+      spotter_50: 1
+      tripod_light: 1
+      pan_head: 1
+      glassing_pad: 1
+      puffy_jacket: 1
+      rain_jacket: 1
+      beanie_gloves: 1
+      bladder_2L: 1
+      bottle_1L: 1
+      filter: 1
+      snacks_today: 1
+      lunch_today: 1
+      first_aid: 1
+      fire_kit: 1
+      toilet_kit: 1
+      kill_kit: 1
+      game_bags_elk: 1
+      trekking_poles: 1
+      rifle: 1
+  elk6:
+    name: 6-day backpack elk / mule deer (rifle; archery swaps listed)
+    days: 6
+    weapon: rifle
+    meat_case: {meat_kg: 45.0, note: "ASSUMPTION: camp + one boned meat load on day 6 (food eaten)"}
+    archery_swap: {remove: [rifle, spotter_65], add: {bow: 1, calls: 1, decoy: 1}}
+    items:
+      binos: 1
+      bino_harness: 1
+      rangefinder: 1
+      wind_checker: 1
+      phone: 1
+      inreach: 1
+      headlamp: 1
+      batteries: 1
+      power_bank: 1
+      spotter_65: 1
+      tripod_light: 1
+      pan_head: 1
+      glassing_pad: 1
+      shelter_mid: 1
+      quilt_20: 1
+      pad_nxt: 1
+      cook_kit: 1
+      fuel_100: 1
+      bladder_2L: 1
+      bottle_1L: 1
+      filter: 1
+      snacks_today: 1
+      food_day_elk: 5.7
+      puffy_jacket: 1
+      rain_jacket: 1
+      rain_pants: 1
+      mid_layer: 1
+      beanie_gloves: 1
+      socks_underwear: 1
+      first_aid: 1
+      fire_kit: 1
+      toilet_kit: 1
+      kill_kit: 1
+      game_bags_elk: 1
+      trekking_poles: 1
+      rifle: 1
+  sheep8:
+    name: 8-day alpine sheep / goat (rifle)
+    days: 8
+    weapon: rifle
+    meat_case: {meat_kg: 30.0, note: "ASSUMPTION: boned ram + cape/horns ~30 kg with camp on the pack-out"}
+    items:
+      binos: 1
+      bino_harness: 1
+      rangefinder: 1
+      wind_checker: 1
+      phone: 1
+      inreach: 1
+      gps: 1
+      headlamp: 1
+      batteries: 1
+      power_bank: 1
+      spotter_85: 1
+      tripod_heavy: 1
+      pan_head: 1
+      glassing_pad: 1
+      shelter_tent2p: 1
+      bag_15: 1
+      pad_nxt: 1
+      cook_kit: 1
+      fuel_100: 2
+      bottle_1L: 2
+      filter: 1
+      snacks_today: 1
+      food_day_sheep: 7.6
+      puffy_jacket: 1
+      puffy_pants: 1
+      rain_jacket: 1
+      rain_pants: 1
+      beanie_gloves: 1
+      base_mid_sheep: 1
+      socks_underwear: 1
+      first_aid_light: 1
+      fire_kit: 1
+      toilet_kit: 1
+      kill_kit: 1
+      game_bags_small: 1
+      trekking_poles: 1
+      rifle: 1
