@@ -35,6 +35,7 @@ from __future__ import annotations
 import csv
 import math
 from dataclasses import dataclass, field, replace
+from functools import lru_cache
 from pathlib import Path
 
 import numpy as np
@@ -67,7 +68,8 @@ P_HIP_PEAK_KPA = round(2.135 * P_SHOULDER_KPA + 18.75, 1)   # Wettenschwiler 201
 P_BONY_KPA = 30.0               # ASSUMPTION: crest top / ASIS (no site-specific PPT found): ~0.6 x hip peak limit
 T_TESTED_MAX_N = 120.0          # Mackie/Wettenschwiler 2015 tested belt tensions 30-120 N (20 kg load)
 ASIS_HALF_MM = 113.5            # inter-ASIS distance 227 +/- 16 mm, CT of 200 adults (research §1.2)
-ASIS_CLEAR_MM = 15.0            # ASSUMPTION: wing tip (and its webbing bartack) ends >= 15 mm behind the ASIS
+ASIS_CLEAR_MM = 5.0             # ASSUMPTION: padded wing tip ends >= 5 mm behind the ASIS ...
+ASIS_STIFF_CLEAR_MM = 30.0      # ... and the stiffener (and the webbing bartack) >= 30 mm behind it (soft tip)
 
 # ----------------------------------------------------------------------------------------- tissue (as spreader.py)
 TISSUE_E_KPA = 60.0             # spreader.py TISSUE_E_KPA (design), 20 kPa soft sensitivity
@@ -179,6 +181,13 @@ class HipForm:
     tan_lat: float        # lateral widening per mm of drop
     tan_post: float       # posterior widening per mm of drop
     n: int = 0            # subjects in the band
+    bicristal: float = 274.0   # bicristal breadth (ANSUR II), scales the ASIS half-distance
+
+    @property
+    def asis_half(self) -> float:
+        """ASIS half-distance: 227 mm inter-ASIS (CT, n 200) scaled by bicristal / 274 (pooled ANSUR II median).
+        ASSUMPTION: proportional scaling with pelvic breadth."""
+        return ASIS_HALF_MM * self.bicristal / 274.0
 
     @property
     def circ_in(self) -> float:
@@ -188,7 +197,7 @@ class HipForm:
 def hip_form(sex: str, band_in: int, name: str | None = None) -> HipForm:
     f = anthro()[sex]["forms"][f"{band_in}in"]
     return HipForm(name or f"{sex[0].upper()}{band_in}", sex, f["waistcircumference"], f["waistbreadth"] / 2,
-                   f["waistdepth"] / 2, f["tan_lat"], f["tan_post"], f["n"])
+                   f["waistdepth"] / 2, f["tan_lat"], f["tan_post"], f["n"], f["bicristalbreadth"])
 
 
 def _se_pts(a, bf, bb, ex, m=2001):
@@ -205,6 +214,7 @@ def _perim(P):
     return float(np.sum(np.linalg.norm(np.diff(P, axis=0), axis=1)))
 
 
+@lru_cache(maxsize=256)
 def section_exponent(form: HipForm) -> float:
     """Superellipse exponent n whose perimeter equals the measured circumference (bisection, n in [1.6, 6])."""
     lo, hi = 1.6, 6.0
@@ -231,6 +241,7 @@ class Section:
     ex: float
 
 
+@lru_cache(maxsize=256)
 def section(form: HipForm, z: float = 0.0, ds: float = 2.0) -> Section:
     """Body section at height z (mm, + up, 0 = crest/waist level) with local cone slope along the normal."""
     ex = section_exponent(form)
@@ -258,7 +269,7 @@ def section(form: HipForm, z: float = 0.0, ds: float = 2.0) -> Section:
     kappa = np.convolve(np.pad(kappa, 3, mode="edge"), np.ones(7) / 7, mode="valid")
     tan_a = np.einsum("ij,ij->i", xy2 - xy, nrm) / 10.0
     front = xy[:, 1] < 0
-    idx = np.where(front & (xy[:, 0] <= ASIS_HALF_MM))[0]
+    idx = np.where(front & (xy[:, 0] <= form.asis_half))[0]
     s_asis = float(s[idx[0]]) if len(idx) else float(s[-1])
     s_crest = float(s[int(np.argmax(xy[:, 0]))])
     return Section(s, xy, nrm, kappa, tan_a, float(s[-1]), s_asis, s_crest, ex)
@@ -273,7 +284,12 @@ class FoamLayer:
     @property
     def E_kpa(self) -> float:
         """Secant compression modulus to 25 % (record compression_25pct_kpa / 0.25)."""
-        return load(self.material_id).require("compression_25pct_kpa") / 0.25
+        return _foam_E_kpa(self.material_id)
+
+
+@lru_cache(maxsize=64)
+def _foam_E_kpa(material_id: str) -> float:
+    return load(material_id).require("compression_25pct_kpa") / 0.25
 
 
 @dataclass(frozen=True)
@@ -291,14 +307,18 @@ class BeltDesign:
     stiff_t: float = 1.0
     stiff_inset: float = 12.0               # stiffener inset from the wing edges (height and tip)
     stiff_to_tip: float = 1.0               # stiffener length as a fraction of the wing
+    stiff_tip_gap: float = 0.0              # extra soft (unstiffened) tip length, mm, beyond the inset
     beta_deg: float | dict = 0.0            # pattern cone angle (0 = straight wing); dict = per size
     pad_fraction: float = 0.72              # padded length / hip circumference at the size centre
     sizes: dict = field(default_factory=lambda: dict(SIZES_CURRENT))
     top_tension_share: float = 0.5          # share of the wing tension in the top edge (0.5 = centred strap)
     pull_ma: float = 1.0                    # mechanical advantage of the tightening pull
+    wing_len_mm: dict | None = None         # explicit wing length per size (overrides pad_fraction)
     notes: str = ""
 
     def wing_len(self, size: str) -> float:
+        if self.wing_len_mm:
+            return float(self.wing_len_mm[size])
         lo, hi = self.sizes[size]
         return (self.pad_fraction * (lo + hi) / 2 * IN - self.lumbar_w) / 2
 
@@ -321,6 +341,7 @@ class BeltDesign:
         return best[1]
 
 
+@lru_cache(maxsize=512)
 def _k_stack(layers, tissue_h, tissue_e=TISSUE_E_KPA) -> float:
     """Winkler modulus (MPa/mm = N/mm^3) of foam layers + tissue column in series."""
     c = sum(L.t / (L.E_kpa / 1000.0) for L in layers) + tissue_h / (tissue_e / 1000.0)
@@ -401,14 +422,15 @@ def evaluate(design: BeltDesign, form: HipForm, T: float, size: str | None = Non
         layers = design.crest_foam if (crest[i] and design.crest_foam) else design.wing_foam
         k[i] = _k_stack(layers, TISSUE_H_CREST if crest[i] else TISSUE_H_SOFT, tissue_e)
         t_f = sum(L.t for L in layers)
-        stiff_here = design.stiff_mat and frac[i] <= design.stiff_to_tip - design.stiff_inset / max(s_tip - s_root, 1)
+        stiff_here = (design.stiff_mat and frac[i] <= design.stiff_to_tip
+                      and (s_tip - s[i]) >= design.stiff_inset + design.stiff_tip_gap)
         if stiff_here:
             hs = max(h[i] - 2 * design.stiff_inset, 0.0)
             kh = Es * design.stiff_t * (hs / h[i]) / r[i] ** 2
             keff_h[i] = min(h[i], hs + 2 * t_f)
         else:
             kh = 30.0 / r[i] ** 2               # ASSUMPTION: shell + binding hoop stiffness E t ~ 30 N/mm
-            keff_h[i] = min(h[i], 0.6 * h[i] + 2 * t_f)
+            keff_h[i] = max(h[i] - 16.0, 0.5 * h[i])   # ASSUMPTION: foam-only band bears over the foam (inset 8)
         rem = kh / (k[i] + kh)                   # share of the cone mismatch the band cannot rotate away
         d = (tan_a[i] - tb) * rem
         # top/bottom tension split: moment per length (T_top - T_bot) kappa * (0.35 h) -> equivalent gradient
@@ -470,12 +492,14 @@ def tension_for_hold(design: BeltDesign, form: HipForm, g_hold: float = WALK_G, 
 
 
 def tension_allow(design: BeltDesign, form: HipForm, **kw) -> float:
-    """Highest wing tension at which wing peak <= P_HIP_PEAK, crest-top <= P_BONY and mean <= P_OCCLUSION."""
+    """Highest wing tension at which the wing and lumbar peaks <= P_HIP_PEAK and the mean <= P_OCCLUSION.
+    (Crest-top pressure is reported against P_BONY as a watch item, not used here: a belt that fits the cone
+    SHOULD bear on the crest; a straight belt scores low there only because it lifts off the crest top.)"""
     lo, hi = 0.0, 600.0
     for _ in range(30):
         mid = 0.5 * (lo + hi)
         m = metrics(evaluate(design, form, mid, **kw))
-        ok = (m["peak_wing_kpa"] <= P_HIP_PEAK_KPA and m["peak_crest_top_kpa"] <= P_BONY_KPA
+        ok = (m["peak_wing_kpa"] <= P_HIP_PEAK_KPA and m["peak_lumbar_kpa"] <= P_HIP_PEAK_KPA
               and m["mean_kpa"] <= P_OCCLUSION_KPA)
         lo, hi = (mid, hi) if ok else (lo, mid)
     return lo

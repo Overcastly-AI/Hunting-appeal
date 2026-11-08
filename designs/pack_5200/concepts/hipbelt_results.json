@@ -1,0 +1,3061 @@
+{
+ "meta": {
+  "generated_by": "designs/pack_5200/concepts/hipbelt_concepts.py",
+  "date": "2026-11-08",
+  "model": "huntkit/gendesign/hipbelt.py",
+  "mu": 0.3,
+  "hip_share": 0.8,
+  "rated_kg": 68.0,
+  "walk_g": 1.6,
+  "cg_aft_mm": 205.0,
+  "limits_kpa": {
+   "hip_peak": 48.6,
+   "mean_occlusion": 16.0,
+   "bony_crest_top": 30.0
+  }
+ },
+ "summary": {
+  "C0": {
+   "worst_peak_wing_kpa": 78.0,
+   "median_peak_wing_kpa": 61.5,
+   "worst_peak_lumbar_kpa": 60.5,
+   "median_mean_kpa": 26.450000000000003,
+   "worst_crest_top_kpa": 37.4,
+   "median_area_cm2": 730.5,
+   "worst_hold": 0.34,
+   "median_hold": 0.575,
+   "median_T_req_n": 305.5,
+   "median_pull_n": 305.5,
+   "min_asis_clear_mm": -21.0
+  },
+  "A": {
+   "worst_peak_wing_kpa": 71.6,
+   "median_peak_wing_kpa": 51.3,
+   "worst_peak_lumbar_kpa": 45.2,
+   "median_mean_kpa": 25.25,
+   "worst_crest_top_kpa": 48.5,
+   "median_area_cm2": 784.0,
+   "worst_hold": 0.54,
+   "median_hold": 0.665,
+   "median_T_req_n": 305.5,
+   "median_pull_n": 305.5,
+   "min_asis_clear_mm": -21.0
+  },
+  "B": {
+   "worst_peak_wing_kpa": 56.5,
+   "median_peak_wing_kpa": 50.8,
+   "worst_peak_lumbar_kpa": 45.4,
+   "median_mean_kpa": 22.4,
+   "worst_crest_top_kpa": 55.8,
+   "median_area_cm2": 848.5,
+   "worst_hold": 0.64,
+   "median_hold": 0.715,
+   "median_T_req_n": 320.5,
+   "median_pull_n": 188.5,
+   "min_asis_clear_mm": 3.0
+  },
+  "C": {
+   "worst_peak_wing_kpa": 58.9,
+   "median_peak_wing_kpa": 47.55,
+   "worst_peak_lumbar_kpa": 45.5,
+   "median_mean_kpa": 22.05,
+   "worst_crest_top_kpa": 51.8,
+   "median_area_cm2": 865.5,
+   "worst_hold": 0.62,
+   "median_hold": 0.73,
+   "median_T_req_n": 320.5,
+   "median_pull_n": 188.5,
+   "min_asis_clear_mm": 3.0
+  }
+ },
+ "rows": [
+  {
+   "design": "C0",
+   "form": "F28",
+   "sex": "female",
+   "circ_in": 28.2,
+   "size": "S",
+   "T_req_n": 209.0,
+   "pull_n": 209.0,
+   "peak_kpa": 78.0,
+   "mean_kpa": 28.9,
+   "area_cm2": 483.0,
+   "peak_wing_kpa": 78.0,
+   "peak_lumbar_kpa": 60.5,
+   "peak_crest_top_kpa": 13.7,
+   "V_cap_n": 749.0,
+   "asis_clear_mm": -4.0,
+   "pad_frac": 0.715,
+   "T_allow_n": 0.0,
+   "hold_margin_at_allow": 0.34
+  },
+  {
+   "design": "A",
+   "form": "F28",
+   "sex": "female",
+   "circ_in": 28.2,
+   "size": "S",
+   "T_req_n": 208.0,
+   "pull_n": 208.0,
+   "peak_kpa": 48.9,
+   "mean_kpa": 22.8,
+   "area_cm2": 612.0,
+   "peak_wing_kpa": 48.9,
+   "peak_lumbar_kpa": 45.2,
+   "peak_crest_top_kpa": 29.9,
+   "V_cap_n": 746.0,
+   "asis_clear_mm": -4.0,
+   "pad_frac": 0.715,
+   "T_allow_n": 114.0,
+   "hold_margin_at_allow": 0.7
+  },
+  {
+   "design": "B",
+   "form": "F28",
+   "sex": "female",
+   "circ_in": 28.2,
+   "size": "S",
+   "T_req_n": 230.0,
+   "pull_n": 135.0,
+   "peak_kpa": 55.4,
+   "mean_kpa": 22.1,
+   "area_cm2": 612.0,
+   "peak_wing_kpa": 55.4,
+   "peak_lumbar_kpa": 45.4,
+   "peak_crest_top_kpa": 36.9,
+   "V_cap_n": 743.0,
+   "asis_clear_mm": 20.0,
+   "pad_frac": 0.648,
+   "T_allow_n": 113.0,
+   "hold_margin_at_allow": 0.66
+  },
+  {
+   "design": "C",
+   "form": "F28",
+   "sex": "female",
+   "circ_in": 28.2,
+   "size": "S",
+   "T_req_n": 232.0,
+   "pull_n": 136.0,
+   "peak_kpa": 47.5,
+   "mean_kpa": 20.7,
+   "area_cm2": 658.0,
+   "peak_wing_kpa": 47.5,
+   "peak_lumbar_kpa": 45.5,
+   "peak_crest_top_kpa": 43.6,
+   "V_cap_n": 747.0,
+   "asis_clear_mm": 20.0,
+   "pad_frac": 0.648,
+   "T_allow_n": 162.0,
+   "hold_margin_at_allow": 0.8,
+   "cone": "C"
+  },
+  {
+   "design": "C0",
+   "form": "F30",
+   "sex": "female",
+   "circ_in": 30.2,
+   "size": "M",
+   "T_req_n": 207.0,
+   "pull_n": 207.0,
+   "peak_kpa": 72.1,
+   "mean_kpa": 26.6,
+   "area_cm2": 552.0,
+   "peak_wing_kpa": 72.1,
+   "peak_lumbar_kpa": 56.1,
+   "peak_crest_top_kpa": 7.2,
+   "V_cap_n": 753.0,
+   "asis_clear_mm": -19.0,
+   "pad_frac": 0.763,
+   "T_allow_n": 44.0,
+   "hold_margin_at_allow": 0.47
+  },
+  {
+   "design": "A",
+   "form": "F30",
+   "sex": "female",
+   "circ_in": 30.2,
+   "size": "M",
+   "T_req_n": 206.0,
+   "pull_n": 206.0,
+   "peak_kpa": 51.9,
+   "mean_kpa": 22.0,
+   "area_cm2": 666.0,
+   "peak_wing_kpa": 51.9,
+   "peak_lumbar_kpa": 40.7,
+   "peak_crest_top_kpa": 20.3,
+   "V_cap_n": 751.0,
+   "asis_clear_mm": -19.0,
+   "pad_frac": 0.763,
+   "T_allow_n": 116.0,
+   "hold_margin_at_allow": 0.71
+  },
+  {
+   "design": "B",
+   "form": "F30",
+   "sex": "female",
+   "circ_in": 30.2,
+   "size": "S",
+   "T_req_n": 274.0,
+   "pull_n": 161.0,
+   "peak_kpa": 54.6,
+   "mean_kpa": 22.0,
+   "area_cm2": 633.0,
+   "peak_wing_kpa": 54.6,
+   "peak_lumbar_kpa": 42.8,
+   "peak_crest_top_kpa": 38.9,
+   "V_cap_n": 747.0,
+   "asis_clear_mm": 42.0,
+   "pad_frac": 0.605,
+   "T_allow_n": 159.0,
+   "hold_margin_at_allow": 0.71
+  },
+  {
+   "design": "C",
+   "form": "F30",
+   "sex": "female",
+   "circ_in": 30.2,
+   "size": "S",
+   "T_req_n": 276.0,
+   "pull_n": 163.0,
+   "peak_kpa": 44.3,
+   "mean_kpa": 21.2,
+   "area_cm2": 661.0,
+   "peak_wing_kpa": 44.3,
+   "peak_lumbar_kpa": 42.9,
+   "peak_crest_top_kpa": 44.3,
+   "V_cap_n": 751.0,
+   "asis_clear_mm": 42.0,
+   "pad_frac": 0.605,
+   "T_allow_n": 189.0,
+   "hold_margin_at_allow": 0.79,
+   "cone": "C"
+  },
+  {
+   "design": "C0",
+   "form": "F32",
+   "sex": "female",
+   "circ_in": 32.0,
+   "size": "M",
+   "T_req_n": 223.0,
+   "pull_n": 223.0,
+   "peak_kpa": 69.3,
+   "mean_kpa": 26.3,
+   "area_cm2": 560.0,
+   "peak_wing_kpa": 69.3,
+   "peak_lumbar_kpa": 54.2,
+   "peak_crest_top_kpa": 8.0,
+   "V_cap_n": 756.0,
+   "asis_clear_mm": 1.0,
+   "pad_frac": 0.721,
+   "T_allow_n": 46.0,
+   "hold_margin_at_allow": 0.46
+  },
+  {
+   "design": "A",
+   "form": "F32",
+   "sex": "female",
+   "circ_in": 32.0,
+   "size": "M",
+   "T_req_n": 222.0,
+   "pull_n": 222.0,
+   "peak_kpa": 49.4,
+   "mean_kpa": 21.8,
+   "area_cm2": 673.0,
+   "peak_wing_kpa": 49.4,
+   "peak_lumbar_kpa": 38.7,
+   "peak_crest_top_kpa": 20.6,
+   "V_cap_n": 753.0,
+   "asis_clear_mm": 1.0,
+   "pad_frac": 0.721,
+   "T_allow_n": 128.0,
+   "hold_margin_at_allow": 0.71
+  },
+  {
+   "design": "B",
+   "form": "F32",
+   "sex": "female",
+   "circ_in": 32.0,
+   "size": "M",
+   "T_req_n": 236.0,
+   "pull_n": 139.0,
+   "peak_kpa": 50.5,
+   "mean_kpa": 20.4,
+   "area_cm2": 702.0,
+   "peak_wing_kpa": 50.5,
+   "peak_lumbar_kpa": 38.0,
+   "peak_crest_top_kpa": 27.2,
+   "V_cap_n": 749.0,
+   "asis_clear_mm": 22.0,
+   "pad_frac": 0.67,
+   "T_allow_n": 147.0,
+   "hold_margin_at_allow": 0.74
+  },
+  {
+   "design": "C",
+   "form": "F32",
+   "sex": "female",
+   "circ_in": 32.0,
+   "size": "M",
+   "T_req_n": 238.0,
+   "pull_n": 140.0,
+   "peak_kpa": 44.3,
+   "mean_kpa": 18.7,
+   "area_cm2": 771.0,
+   "peak_wing_kpa": 44.3,
+   "peak_lumbar_kpa": 38.1,
+   "peak_crest_top_kpa": 32.7,
+   "V_cap_n": 753.0,
+   "asis_clear_mm": 22.0,
+   "pad_frac": 0.67,
+   "T_allow_n": 192.0,
+   "hold_margin_at_allow": 0.87,
+   "cone": "C"
+  },
+  {
+   "design": "C0",
+   "form": "F34",
+   "sex": "female",
+   "circ_in": 34.0,
+   "size": "M",
+   "T_req_n": 267.0,
+   "pull_n": 267.0,
+   "peak_kpa": 68.0,
+   "mean_kpa": 25.5,
+   "area_cm2": 611.0,
+   "peak_wing_kpa": 68.0,
+   "peak_lumbar_kpa": 49.0,
+   "peak_crest_top_kpa": 11.9,
+   "V_cap_n": 764.0,
+   "asis_clear_mm": 23.0,
+   "pad_frac": 0.678,
+   "T_allow_n": 75.0,
+   "hold_margin_at_allow": 0.49
+  },
+  {
+   "design": "A",
+   "form": "F34",
+   "sex": "female",
+   "circ_in": 34.0,
+   "size": "M",
+   "T_req_n": 266.0,
+   "pull_n": 266.0,
+   "peak_kpa": 50.8,
+   "mean_kpa": 22.5,
+   "area_cm2": 692.0,
+   "peak_wing_kpa": 50.8,
+   "peak_lumbar_kpa": 33.4,
+   "peak_crest_top_kpa": 23.7,
+   "V_cap_n": 762.0,
+   "asis_clear_mm": 23.0,
+   "pad_frac": 0.678,
+   "T_allow_n": 158.0,
+   "hold_margin_at_allow": 0.71
+  },
+  {
+   "design": "B",
+   "form": "F34",
+   "sex": "female",
+   "circ_in": 34.0,
+   "size": "L",
+   "T_req_n": 240.0,
+   "pull_n": 141.0,
+   "peak_kpa": 47.4,
+   "mean_kpa": 19.8,
+   "area_cm2": 789.0,
+   "peak_wing_kpa": 47.4,
+   "peak_lumbar_kpa": 34.2,
+   "peak_crest_top_kpa": 12.6,
+   "V_cap_n": 758.0,
+   "asis_clear_mm": 9.0,
+   "pad_frac": 0.711,
+   "T_allow_n": 168.0,
+   "hold_margin_at_allow": 0.78
+  },
+  {
+   "design": "C",
+   "form": "F34",
+   "sex": "female",
+   "circ_in": 34.0,
+   "size": "L",
+   "T_req_n": 242.0,
+   "pull_n": 142.0,
+   "peak_kpa": 40.4,
+   "mean_kpa": 18.2,
+   "area_cm2": 863.0,
+   "peak_wing_kpa": 40.4,
+   "peak_lumbar_kpa": 34.3,
+   "peak_crest_top_kpa": 21.8,
+   "V_cap_n": 762.0,
+   "asis_clear_mm": 9.0,
+   "pad_frac": 0.711,
+   "T_allow_n": 204.0,
+   "hold_margin_at_allow": 0.89,
+   "cone": "C"
+  },
+  {
+   "design": "C0",
+   "form": "F36",
+   "sex": "female",
+   "circ_in": 35.9,
+   "size": "L",
+   "T_req_n": 273.0,
+   "pull_n": 273.0,
+   "peak_kpa": 59.7,
+   "mean_kpa": 23.9,
+   "area_cm2": 714.0,
+   "peak_wing_kpa": 59.7,
+   "peak_lumbar_kpa": 43.3,
+   "peak_crest_top_kpa": 9.6,
+   "V_cap_n": 771.0,
+   "asis_clear_mm": 9.0,
+   "pad_frac": 0.721,
+   "T_allow_n": 122.0,
+   "hold_margin_at_allow": 0.6
+  },
+  {
+   "design": "A",
+   "form": "F36",
+   "sex": "female",
+   "circ_in": 35.9,
+   "size": "L",
+   "T_req_n": 272.0,
+   "pull_n": 272.0,
+   "peak_kpa": 42.8,
+   "mean_kpa": 21.9,
+   "area_cm2": 777.0,
+   "peak_wing_kpa": 42.8,
+   "peak_lumbar_kpa": 30.9,
+   "peak_crest_top_kpa": 19.7,
+   "V_cap_n": 769.0,
+   "asis_clear_mm": 9.0,
+   "pad_frac": 0.721,
+   "T_allow_n": 172.0,
+   "hold_margin_at_allow": 0.73
+  },
+  {
+   "design": "B",
+   "form": "F36",
+   "sex": "female",
+   "circ_in": 35.9,
+   "size": "L",
+   "T_req_n": 291.0,
+   "pull_n": 171.0,
+   "peak_kpa": 46.0,
+   "mean_kpa": 20.2,
+   "area_cm2": 829.0,
+   "peak_wing_kpa": 46.0,
+   "peak_lumbar_kpa": 29.8,
+   "peak_crest_top_kpa": 18.0,
+   "V_cap_n": 766.0,
+   "asis_clear_mm": 31.0,
+   "pad_frac": 0.673,
+   "T_allow_n": 207.0,
+   "hold_margin_at_allow": 0.78
+  },
+  {
+   "design": "C",
+   "form": "F36",
+   "sex": "female",
+   "circ_in": 35.9,
+   "size": "L",
+   "T_req_n": 293.0,
+   "pull_n": 172.0,
+   "peak_kpa": 47.6,
+   "mean_kpa": 19.4,
+   "area_cm2": 868.0,
+   "peak_wing_kpa": 47.6,
+   "peak_lumbar_kpa": 29.9,
+   "peak_crest_top_kpa": 27.2,
+   "V_cap_n": 770.0,
+   "asis_clear_mm": 31.0,
+   "pad_frac": 0.673,
+   "T_allow_n": 231.0,
+   "hold_margin_at_allow": 0.84,
+   "cone": "C"
+  },
+  {
+   "design": "C0",
+   "form": "F38",
+   "sex": "female",
+   "circ_in": 37.8,
+   "size": "L",
+   "T_req_n": 322.0,
+   "pull_n": 322.0,
+   "peak_kpa": 58.5,
+   "mean_kpa": 24.4,
+   "area_cm2": 747.0,
+   "peak_wing_kpa": 58.5,
+   "peak_lumbar_kpa": 38.9,
+   "peak_crest_top_kpa": 14.3,
+   "V_cap_n": 780.0,
+   "asis_clear_mm": 29.0,
+   "pad_frac": 0.686,
+   "T_allow_n": 154.0,
+   "hold_margin_at_allow": 0.6
+  },
+  {
+   "design": "A",
+   "form": "F38",
+   "sex": "female",
+   "circ_in": 37.8,
+   "size": "L",
+   "T_req_n": 321.0,
+   "pull_n": 321.0,
+   "peak_kpa": 48.8,
+   "mean_kpa": 23.0,
+   "area_cm2": 791.0,
+   "peak_wing_kpa": 48.8,
+   "peak_lumbar_kpa": 26.7,
+   "peak_crest_top_kpa": 24.0,
+   "V_cap_n": 778.0,
+   "asis_clear_mm": 29.0,
+   "pad_frac": 0.686,
+   "T_allow_n": 196.0,
+   "hold_margin_at_allow": 0.7
+  },
+  {
+   "design": "B",
+   "form": "F38",
+   "sex": "female",
+   "circ_in": 37.8,
+   "size": "XL",
+   "T_req_n": 295.0,
+   "pull_n": 173.0,
+   "peak_kpa": 44.8,
+   "mean_kpa": 20.2,
+   "area_cm2": 899.0,
+   "peak_wing_kpa": 44.8,
+   "peak_lumbar_kpa": 28.4,
+   "peak_crest_top_kpa": 11.9,
+   "V_cap_n": 773.0,
+   "asis_clear_mm": 17.0,
+   "pad_frac": 0.71,
+   "T_allow_n": 212.0,
+   "hold_margin_at_allow": 0.78
+  },
+  {
+   "design": "C",
+   "form": "F38",
+   "sex": "female",
+   "circ_in": 37.8,
+   "size": "XL",
+   "T_req_n": 297.0,
+   "pull_n": 175.0,
+   "peak_kpa": 39.4,
+   "mean_kpa": 19.0,
+   "area_cm2": 962.0,
+   "peak_wing_kpa": 39.4,
+   "peak_lumbar_kpa": 28.5,
+   "peak_crest_top_kpa": 20.9,
+   "V_cap_n": 778.0,
+   "asis_clear_mm": 17.0,
+   "pad_frac": 0.71,
+   "T_allow_n": 241.0,
+   "hold_margin_at_allow": 0.85,
+   "cone": "C"
+  },
+  {
+   "design": "C0",
+   "form": "F40",
+   "sex": "female",
+   "circ_in": 39.9,
+   "size": "XL",
+   "T_req_n": 348.0,
+   "pull_n": 348.0,
+   "peak_kpa": 51.8,
+   "mean_kpa": 24.6,
+   "area_cm2": 837.0,
+   "peak_wing_kpa": 51.8,
+   "peak_lumbar_kpa": 29.4,
+   "peak_crest_top_kpa": 14.1,
+   "V_cap_n": 792.0,
+   "asis_clear_mm": 16.0,
+   "pad_frac": 0.722,
+   "T_allow_n": 190.0,
+   "hold_margin_at_allow": 0.64
+  },
+  {
+   "design": "A",
+   "form": "F40",
+   "sex": "female",
+   "circ_in": 39.9,
+   "size": "XL",
+   "T_req_n": 347.0,
+   "pull_n": 347.0,
+   "peak_kpa": 49.9,
+   "mean_kpa": 24.0,
+   "area_cm2": 858.0,
+   "peak_wing_kpa": 49.9,
+   "peak_lumbar_kpa": 29.4,
+   "peak_crest_top_kpa": 18.0,
+   "V_cap_n": 791.0,
+   "asis_clear_mm": 16.0,
+   "pad_frac": 0.722,
+   "T_allow_n": 197.0,
+   "hold_margin_at_allow": 0.65
+  },
+  {
+   "design": "B",
+   "form": "F40",
+   "sex": "female",
+   "circ_in": 39.9,
+   "size": "XXL",
+   "T_req_n": 320.0,
+   "pull_n": 188.0,
+   "peak_kpa": 41.7,
+   "mean_kpa": 20.5,
+   "area_cm2": 1000.0,
+   "peak_wing_kpa": 41.7,
+   "peak_lumbar_kpa": 26.8,
+   "peak_crest_top_kpa": 10.2,
+   "V_cap_n": 787.0,
+   "asis_clear_mm": 3.0,
+   "pad_frac": 0.748,
+   "T_allow_n": 228.0,
+   "hold_margin_at_allow": 0.77
+  },
+  {
+   "design": "C",
+   "form": "F40",
+   "sex": "female",
+   "circ_in": 39.9,
+   "size": "XXL",
+   "T_req_n": 321.0,
+   "pull_n": 189.0,
+   "peak_kpa": 39.6,
+   "mean_kpa": 19.4,
+   "area_cm2": 1063.0,
+   "peak_wing_kpa": 39.6,
+   "peak_lumbar_kpa": 26.8,
+   "peak_crest_top_kpa": 19.2,
+   "V_cap_n": 790.0,
+   "asis_clear_mm": 3.0,
+   "pad_frac": 0.748,
+   "T_allow_n": 253.0,
+   "hold_margin_at_allow": 0.83,
+   "cone": "C"
+  },
+  {
+   "design": "C0",
+   "form": "F42",
+   "sex": "female",
+   "circ_in": 41.9,
+   "size": "XL",
+   "T_req_n": 419.0,
+   "pull_n": 419.0,
+   "peak_kpa": 60.4,
+   "mean_kpa": 26.1,
+   "area_cm2": 863.0,
+   "peak_wing_kpa": 60.4,
+   "peak_lumbar_kpa": 30.0,
+   "peak_crest_top_kpa": 19.7,
+   "V_cap_n": 799.0,
+   "asis_clear_mm": 36.0,
+   "pad_frac": 0.688,
+   "T_allow_n": 213.0,
+   "hold_margin_at_allow": 0.59
+  },
+  {
+   "design": "A",
+   "form": "F42",
+   "sex": "female",
+   "circ_in": 41.9,
+   "size": "XL",
+   "T_req_n": 419.0,
+   "pull_n": 419.0,
+   "peak_kpa": 58.5,
+   "mean_kpa": 25.7,
+   "area_cm2": 877.0,
+   "peak_wing_kpa": 58.5,
+   "peak_lumbar_kpa": 30.0,
+   "peak_crest_top_kpa": 23.5,
+   "V_cap_n": 799.0,
+   "asis_clear_mm": 36.0,
+   "pad_frac": 0.688,
+   "T_allow_n": 224.0,
+   "hold_margin_at_allow": 0.62
+  },
+  {
+   "design": "B",
+   "form": "F42",
+   "sex": "female",
+   "circ_in": 41.9,
+   "size": "XXL",
+   "T_req_n": 381.0,
+   "pull_n": 224.0,
+   "peak_kpa": 46.3,
+   "mean_kpa": 21.5,
+   "area_cm2": 1040.0,
+   "peak_wing_kpa": 46.3,
+   "peak_lumbar_kpa": 26.7,
+   "peak_crest_top_kpa": 15.2,
+   "V_cap_n": 795.0,
+   "asis_clear_mm": 23.0,
+   "pad_frac": 0.713,
+   "T_allow_n": 256.0,
+   "hold_margin_at_allow": 0.73
+  },
+  {
+   "design": "C",
+   "form": "F42",
+   "sex": "female",
+   "circ_in": 41.9,
+   "size": "XXL",
+   "T_req_n": 382.0,
+   "pull_n": 225.0,
+   "peak_kpa": 46.3,
+   "mean_kpa": 21.3,
+   "area_cm2": 1053.0,
+   "peak_wing_kpa": 46.3,
+   "peak_lumbar_kpa": 26.7,
+   "peak_crest_top_kpa": 24.1,
+   "V_cap_n": 797.0,
+   "asis_clear_mm": 23.0,
+   "pad_frac": 0.713,
+   "T_allow_n": 265.0,
+   "hold_margin_at_allow": 0.74,
+   "cone": "C"
+  },
+  {
+   "design": "C0",
+   "form": "M28",
+   "sex": "male",
+   "circ_in": 28.5,
+   "size": "S",
+   "T_req_n": 283.0,
+   "pull_n": 283.0,
+   "peak_kpa": 68.9,
+   "mean_kpa": 28.7,
+   "area_cm2": 609.0,
+   "peak_wing_kpa": 68.9,
+   "peak_lumbar_kpa": 50.4,
+   "peak_crest_top_kpa": 30.1,
+   "V_cap_n": 769.0,
+   "asis_clear_mm": -4.0,
+   "pad_frac": 0.708,
+   "T_allow_n": 82.0,
+   "hold_margin_at_allow": 0.48
+  },
+  {
+   "design": "A",
+   "form": "M28",
+   "sex": "male",
+   "circ_in": 28.5,
+   "size": "S",
+   "T_req_n": 282.0,
+   "pull_n": 282.0,
+   "peak_kpa": 52.0,
+   "mean_kpa": 27.8,
+   "area_cm2": 628.0,
+   "peak_wing_kpa": 52.0,
+   "peak_lumbar_kpa": 34.8,
+   "peak_crest_top_kpa": 48.5,
+   "V_cap_n": 767.0,
+   "asis_clear_mm": -4.0,
+   "pad_frac": 0.708,
+   "T_allow_n": 135.0,
+   "hold_margin_at_allow": 0.62
+  },
+  {
+   "design": "B",
+   "form": "M28",
+   "sex": "male",
+   "circ_in": 28.5,
+   "size": "S",
+   "T_req_n": 313.0,
+   "pull_n": 184.0,
+   "peak_kpa": 55.4,
+   "mean_kpa": 26.1,
+   "area_cm2": 662.0,
+   "peak_wing_kpa": 55.4,
+   "peak_lumbar_kpa": 34.5,
+   "peak_crest_top_kpa": 53.0,
+   "V_cap_n": 768.0,
+   "asis_clear_mm": 20.0,
+   "pad_frac": 0.642,
+   "T_allow_n": 164.0,
+   "hold_margin_at_allow": 0.65
+  },
+  {
+   "design": "C",
+   "form": "M28",
+   "sex": "male",
+   "circ_in": 28.5,
+   "size": "S",
+   "T_req_n": 312.0,
+   "pull_n": 183.0,
+   "peak_kpa": 56.5,
+   "mean_kpa": 26.1,
+   "area_cm2": 658.0,
+   "peak_wing_kpa": 56.5,
+   "peak_lumbar_kpa": 34.4,
+   "peak_crest_top_kpa": 48.3,
+   "V_cap_n": 765.0,
+   "asis_clear_mm": 20.0,
+   "pad_frac": 0.642,
+   "T_allow_n": 149.0,
+   "hold_margin_at_allow": 0.62,
+   "cone": "T"
+  },
+  {
+   "design": "C0",
+   "form": "M30",
+   "sex": "male",
+   "circ_in": 30.2,
+   "size": "M",
+   "T_req_n": 276.0,
+   "pull_n": 276.0,
+   "peak_kpa": 62.6,
+   "mean_kpa": 26.6,
+   "area_cm2": 684.0,
+   "peak_wing_kpa": 62.6,
+   "peak_lumbar_kpa": 47.2,
+   "peak_crest_top_kpa": 23.8,
+   "V_cap_n": 771.0,
+   "asis_clear_mm": -21.0,
+   "pad_frac": 0.762,
+   "T_allow_n": 107.0,
+   "hold_margin_at_allow": 0.55
+  },
+  {
+   "design": "A",
+   "form": "M30",
+   "sex": "male",
+   "circ_in": 30.2,
+   "size": "M",
+   "T_req_n": 275.0,
+   "pull_n": 275.0,
+   "peak_kpa": 39.9,
+   "mean_kpa": 25.5,
+   "area_cm2": 711.0,
+   "peak_wing_kpa": 39.9,
+   "peak_lumbar_kpa": 31.6,
+   "peak_crest_top_kpa": 36.2,
+   "V_cap_n": 769.0,
+   "asis_clear_mm": -21.0,
+   "pad_frac": 0.762,
+   "T_allow_n": 150.0,
+   "hold_margin_at_allow": 0.67
+  },
+  {
+   "design": "B",
+   "form": "M30",
+   "sex": "male",
+   "circ_in": 30.2,
+   "size": "S",
+   "T_req_n": 360.0,
+   "pull_n": 212.0,
+   "peak_kpa": 55.8,
+   "mean_kpa": 26.7,
+   "area_cm2": 662.0,
+   "peak_wing_kpa": 55.8,
+   "peak_lumbar_kpa": 33.6,
+   "peak_crest_top_kpa": 55.8,
+   "V_cap_n": 770.0,
+   "asis_clear_mm": 40.0,
+   "pad_frac": 0.605,
+   "T_allow_n": 184.0,
+   "hold_margin_at_allow": 0.64
+  },
+  {
+   "design": "C",
+   "form": "M30",
+   "sex": "male",
+   "circ_in": 30.2,
+   "size": "S",
+   "T_req_n": 358.0,
+   "pull_n": 211.0,
+   "peak_kpa": 58.9,
+   "mean_kpa": 26.6,
+   "area_cm2": 661.0,
+   "peak_wing_kpa": 58.9,
+   "peak_lumbar_kpa": 33.5,
+   "peak_crest_top_kpa": 51.8,
+   "V_cap_n": 768.0,
+   "asis_clear_mm": 40.0,
+   "pad_frac": 0.605,
+   "T_allow_n": 175.0,
+   "hold_margin_at_allow": 0.62,
+   "cone": "T"
+  },
+  {
+   "design": "C0",
+   "form": "M32",
+   "sex": "male",
+   "circ_in": 32.1,
+   "size": "M",
+   "T_req_n": 305.0,
+   "pull_n": 305.0,
+   "peak_kpa": 58.7,
+   "mean_kpa": 27.0,
+   "area_cm2": 695.0,
+   "peak_wing_kpa": 58.7,
+   "peak_lumbar_kpa": 45.8,
+   "peak_crest_top_kpa": 29.3,
+   "V_cap_n": 772.0,
+   "asis_clear_mm": 3.0,
+   "pad_frac": 0.717,
+   "T_allow_n": 125.0,
+   "hold_margin_at_allow": 0.56
+  },
+  {
+   "design": "A",
+   "form": "M32",
+   "sex": "male",
+   "circ_in": 32.1,
+   "size": "M",
+   "T_req_n": 305.0,
+   "pull_n": 305.0,
+   "peak_kpa": 51.8,
+   "mean_kpa": 26.3,
+   "area_cm2": 711.0,
+   "peak_wing_kpa": 51.8,
+   "peak_lumbar_kpa": 30.2,
+   "peak_crest_top_kpa": 42.6,
+   "V_cap_n": 770.0,
+   "asis_clear_mm": 3.0,
+   "pad_frac": 0.717,
+   "T_allow_n": 160.0,
+   "hold_margin_at_allow": 0.65
+  },
+  {
+   "design": "B",
+   "form": "M32",
+   "sex": "male",
+   "circ_in": 32.1,
+   "size": "M",
+   "T_req_n": 327.0,
+   "pull_n": 192.0,
+   "peak_kpa": 54.1,
+   "mean_kpa": 24.0,
+   "area_cm2": 772.0,
+   "peak_wing_kpa": 54.1,
+   "peak_lumbar_kpa": 29.1,
+   "peak_crest_top_kpa": 45.9,
+   "V_cap_n": 771.0,
+   "asis_clear_mm": 24.0,
+   "pad_frac": 0.667,
+   "T_allow_n": 195.0,
+   "hold_margin_at_allow": 0.7
+  },
+  {
+   "design": "C",
+   "form": "M32",
+   "sex": "male",
+   "circ_in": 32.1,
+   "size": "M",
+   "T_req_n": 326.0,
+   "pull_n": 192.0,
+   "peak_kpa": 52.7,
+   "mean_kpa": 24.1,
+   "area_cm2": 768.0,
+   "peak_wing_kpa": 52.7,
+   "peak_lumbar_kpa": 29.0,
+   "peak_crest_top_kpa": 41.5,
+   "V_cap_n": 769.0,
+   "asis_clear_mm": 24.0,
+   "pad_frac": 0.667,
+   "T_allow_n": 186.0,
+   "hold_margin_at_allow": 0.68,
+   "cone": "T"
+  },
+  {
+   "design": "C0",
+   "form": "M34",
+   "sex": "male",
+   "circ_in": 34.0,
+   "size": "L",
+   "T_req_n": 306.0,
+   "pull_n": 306.0,
+   "peak_kpa": 50.7,
+   "mean_kpa": 25.5,
+   "area_cm2": 781.0,
+   "peak_wing_kpa": 50.7,
+   "peak_lumbar_kpa": 42.1,
+   "peak_crest_top_kpa": 26.1,
+   "V_cap_n": 774.0,
+   "asis_clear_mm": -9.0,
+   "pad_frac": 0.762,
+   "T_allow_n": 150.0,
+   "hold_margin_at_allow": 0.62
+  },
+  {
+   "design": "A",
+   "form": "M34",
+   "sex": "male",
+   "circ_in": 34.0,
+   "size": "L",
+   "T_req_n": 306.0,
+   "pull_n": 306.0,
+   "peak_kpa": 45.1,
+   "mean_kpa": 25.0,
+   "area_cm2": 794.0,
+   "peak_wing_kpa": 45.1,
+   "peak_lumbar_kpa": 29.6,
+   "peak_crest_top_kpa": 37.5,
+   "V_cap_n": 773.0,
+   "asis_clear_mm": -9.0,
+   "pad_frac": 0.762,
+   "T_allow_n": 174.0,
+   "hold_margin_at_allow": 0.68
+  },
+  {
+   "design": "B",
+   "form": "M34",
+   "sex": "male",
+   "circ_in": 34.0,
+   "size": "L",
+   "T_req_n": 321.0,
+   "pull_n": 189.0,
+   "peak_kpa": 48.6,
+   "mean_kpa": 22.7,
+   "area_cm2": 868.0,
+   "peak_wing_kpa": 48.6,
+   "peak_lumbar_kpa": 28.2,
+   "peak_crest_top_kpa": 35.1,
+   "V_cap_n": 774.0,
+   "asis_clear_mm": 13.0,
+   "pad_frac": 0.711,
+   "T_allow_n": 208.0,
+   "hold_margin_at_allow": 0.74
+  },
+  {
+   "design": "C",
+   "form": "M34",
+   "sex": "male",
+   "circ_in": 34.0,
+   "size": "L",
+   "T_req_n": 320.0,
+   "pull_n": 188.0,
+   "peak_kpa": 47.8,
+   "mean_kpa": 22.8,
+   "area_cm2": 861.0,
+   "peak_wing_kpa": 47.8,
+   "peak_lumbar_kpa": 28.1,
+   "peak_crest_top_kpa": 27.0,
+   "V_cap_n": 772.0,
+   "asis_clear_mm": 13.0,
+   "pad_frac": 0.711,
+   "T_allow_n": 198.0,
+   "hold_margin_at_allow": 0.71,
+   "cone": "T"
+  },
+  {
+   "design": "C0",
+   "form": "M36",
+   "sex": "male",
+   "circ_in": 35.9,
+   "size": "L",
+   "T_req_n": 343.0,
+   "pull_n": 343.0,
+   "peak_kpa": 52.9,
+   "mean_kpa": 26.0,
+   "area_cm2": 791.0,
+   "peak_wing_kpa": 52.9,
+   "peak_lumbar_kpa": 40.5,
+   "peak_crest_top_kpa": 28.3,
+   "V_cap_n": 777.0,
+   "asis_clear_mm": 13.0,
+   "pad_frac": 0.721,
+   "T_allow_n": 170.0,
+   "hold_margin_at_allow": 0.62
+  },
+  {
+   "design": "A",
+   "form": "M36",
+   "sex": "male",
+   "circ_in": 35.9,
+   "size": "L",
+   "T_req_n": 342.0,
+   "pull_n": 342.0,
+   "peak_kpa": 53.8,
+   "mean_kpa": 25.9,
+   "area_cm2": 794.0,
+   "peak_wing_kpa": 53.8,
+   "peak_lumbar_kpa": 28.1,
+   "peak_crest_top_kpa": 40.5,
+   "V_cap_n": 776.0,
+   "asis_clear_mm": 13.0,
+   "pad_frac": 0.721,
+   "T_allow_n": 187.0,
+   "hold_margin_at_allow": 0.66
+  },
+  {
+   "design": "B",
+   "form": "M36",
+   "sex": "male",
+   "circ_in": 35.9,
+   "size": "L",
+   "T_req_n": 369.0,
+   "pull_n": 217.0,
+   "peak_kpa": 56.2,
+   "mean_kpa": 23.5,
+   "area_cm2": 868.0,
+   "peak_wing_kpa": 56.2,
+   "peak_lumbar_kpa": 26.8,
+   "peak_crest_top_kpa": 39.6,
+   "V_cap_n": 777.0,
+   "asis_clear_mm": 35.0,
+   "pad_frac": 0.673,
+   "T_allow_n": 229.0,
+   "hold_margin_at_allow": 0.71
+  },
+  {
+   "design": "C",
+   "form": "M36",
+   "sex": "male",
+   "circ_in": 35.9,
+   "size": "L",
+   "T_req_n": 368.0,
+   "pull_n": 217.0,
+   "peak_kpa": 53.9,
+   "mean_kpa": 23.5,
+   "area_cm2": 868.0,
+   "peak_wing_kpa": 53.9,
+   "peak_lumbar_kpa": 26.8,
+   "peak_crest_top_kpa": 30.5,
+   "V_cap_n": 776.0,
+   "asis_clear_mm": 35.0,
+   "pad_frac": 0.673,
+   "T_allow_n": 228.0,
+   "hold_margin_at_allow": 0.71,
+   "cone": "T"
+  },
+  {
+   "design": "C0",
+   "form": "M38",
+   "sex": "male",
+   "circ_in": 38.0,
+   "size": "L",
+   "T_req_n": 415.0,
+   "pull_n": 415.0,
+   "peak_kpa": 64.7,
+   "mean_kpa": 28.2,
+   "area_cm2": 794.0,
+   "peak_wing_kpa": 64.7,
+   "peak_lumbar_kpa": 36.7,
+   "peak_crest_top_kpa": 34.4,
+   "V_cap_n": 784.0,
+   "asis_clear_mm": 37.0,
+   "pad_frac": 0.683,
+   "T_allow_n": 202.0,
+   "hold_margin_at_allow": 0.6
+  },
+  {
+   "design": "A",
+   "form": "M38",
+   "sex": "male",
+   "circ_in": 38.0,
+   "size": "L",
+   "T_req_n": 415.0,
+   "pull_n": 415.0,
+   "peak_kpa": 66.1,
+   "mean_kpa": 28.2,
+   "area_cm2": 794.0,
+   "peak_wing_kpa": 66.1,
+   "peak_lumbar_kpa": 34.3,
+   "peak_crest_top_kpa": 47.8,
+   "V_cap_n": 784.0,
+   "asis_clear_mm": 37.0,
+   "pad_frac": 0.683,
+   "T_allow_n": 203.0,
+   "hold_margin_at_allow": 0.6
+  },
+  {
+   "design": "B",
+   "form": "M38",
+   "sex": "male",
+   "circ_in": 38.0,
+   "size": "XL",
+   "T_req_n": 383.0,
+   "pull_n": 225.0,
+   "peak_kpa": 51.1,
+   "mean_kpa": 23.4,
+   "area_cm2": 962.0,
+   "peak_wing_kpa": 51.1,
+   "peak_lumbar_kpa": 26.5,
+   "peak_crest_top_kpa": 32.5,
+   "V_cap_n": 785.0,
+   "asis_clear_mm": 25.0,
+   "pad_frac": 0.707,
+   "T_allow_n": 243.0,
+   "hold_margin_at_allow": 0.71
+  },
+  {
+   "design": "C",
+   "form": "M38",
+   "sex": "male",
+   "circ_in": 38.0,
+   "size": "XL",
+   "T_req_n": 382.0,
+   "pull_n": 225.0,
+   "peak_kpa": 51.5,
+   "mean_kpa": 23.3,
+   "area_cm2": 960.0,
+   "peak_wing_kpa": 51.5,
+   "peak_lumbar_kpa": 26.4,
+   "peak_crest_top_kpa": 24.9,
+   "V_cap_n": 782.0,
+   "asis_clear_mm": 25.0,
+   "pad_frac": 0.707,
+   "T_allow_n": 235.0,
+   "hold_margin_at_allow": 0.7,
+   "cone": "T"
+  },
+  {
+   "design": "C0",
+   "form": "M40",
+   "sex": "male",
+   "circ_in": 39.9,
+   "size": "XL",
+   "T_req_n": 428.0,
+   "pull_n": 428.0,
+   "peak_kpa": 56.2,
+   "mean_kpa": 28.0,
+   "area_cm2": 877.0,
+   "peak_wing_kpa": 56.2,
+   "peak_lumbar_kpa": 31.1,
+   "peak_crest_top_kpa": 32.6,
+   "V_cap_n": 791.0,
+   "asis_clear_mm": 22.0,
+   "pad_frac": 0.722,
+   "T_allow_n": 216.0,
+   "hold_margin_at_allow": 0.6
+  },
+  {
+   "design": "A",
+   "form": "M40",
+   "sex": "male",
+   "circ_in": 39.9,
+   "size": "XL",
+   "T_req_n": 428.0,
+   "pull_n": 428.0,
+   "peak_kpa": 56.5,
+   "mean_kpa": 28.0,
+   "area_cm2": 877.0,
+   "peak_wing_kpa": 56.5,
+   "peak_lumbar_kpa": 31.1,
+   "peak_crest_top_kpa": 37.3,
+   "V_cap_n": 791.0,
+   "asis_clear_mm": 22.0,
+   "pad_frac": 0.722,
+   "T_allow_n": 216.0,
+   "hold_margin_at_allow": 0.6
+  },
+  {
+   "design": "B",
+   "form": "M40",
+   "sex": "male",
+   "circ_in": 39.9,
+   "size": "XXL",
+   "T_req_n": 397.0,
+   "pull_n": 234.0,
+   "peak_kpa": 44.7,
+   "mean_kpa": 23.1,
+   "area_cm2": 1067.0,
+   "peak_wing_kpa": 44.7,
+   "peak_lumbar_kpa": 28.1,
+   "peak_crest_top_kpa": 29.6,
+   "V_cap_n": 792.0,
+   "asis_clear_mm": 9.0,
+   "pad_frac": 0.748,
+   "T_allow_n": 258.0,
+   "hold_margin_at_allow": 0.72
+  },
+  {
+   "design": "C",
+   "form": "M40",
+   "sex": "male",
+   "circ_in": 39.9,
+   "size": "XXL",
+   "T_req_n": 397.0,
+   "pull_n": 234.0,
+   "peak_kpa": 44.3,
+   "mean_kpa": 23.1,
+   "area_cm2": 1067.0,
+   "peak_wing_kpa": 44.3,
+   "peak_lumbar_kpa": 28.1,
+   "peak_crest_top_kpa": 24.1,
+   "V_cap_n": 791.0,
+   "asis_clear_mm": 9.0,
+   "pad_frac": 0.748,
+   "T_allow_n": 257.0,
+   "hold_margin_at_allow": 0.72,
+   "cone": "T"
+  },
+  {
+   "design": "C0",
+   "form": "M42",
+   "sex": "male",
+   "circ_in": 41.9,
+   "size": "XL",
+   "T_req_n": 530.0,
+   "pull_n": 530.0,
+   "peak_kpa": 70.5,
+   "mean_kpa": 31.3,
+   "area_cm2": 877.0,
+   "peak_wing_kpa": 70.5,
+   "peak_lumbar_kpa": 35.4,
+   "peak_crest_top_kpa": 37.4,
+   "V_cap_n": 800.0,
+   "asis_clear_mm": 46.0,
+   "pad_frac": 0.687,
+   "T_allow_n": 236.0,
+   "hold_margin_at_allow": 0.54
+  },
+  {
+   "design": "A",
+   "form": "M42",
+   "sex": "male",
+   "circ_in": 41.9,
+   "size": "XL",
+   "T_req_n": 530.0,
+   "pull_n": 530.0,
+   "peak_kpa": 71.6,
+   "mean_kpa": 31.3,
+   "area_cm2": 877.0,
+   "peak_wing_kpa": 71.6,
+   "peak_lumbar_kpa": 35.5,
+   "peak_crest_top_kpa": 43.3,
+   "V_cap_n": 801.0,
+   "asis_clear_mm": 46.0,
+   "pad_frac": 0.687,
+   "T_allow_n": 235.0,
+   "hold_margin_at_allow": 0.54
+  },
+  {
+   "design": "B",
+   "form": "M42",
+   "sex": "male",
+   "circ_in": 41.9,
+   "size": "XXL",
+   "T_req_n": 483.0,
+   "pull_n": 284.0,
+   "peak_kpa": 56.5,
+   "mean_kpa": 25.6,
+   "area_cm2": 1067.0,
+   "peak_wing_kpa": 56.5,
+   "peak_lumbar_kpa": 32.0,
+   "peak_crest_top_kpa": 35.0,
+   "V_cap_n": 799.0,
+   "asis_clear_mm": 33.0,
+   "pad_frac": 0.712,
+   "T_allow_n": 277.0,
+   "hold_margin_at_allow": 0.64
+  },
+  {
+   "design": "C",
+   "form": "M42",
+   "sex": "male",
+   "circ_in": 41.9,
+   "size": "XXL",
+   "T_req_n": 484.0,
+   "pull_n": 285.0,
+   "peak_kpa": 55.3,
+   "mean_kpa": 25.7,
+   "area_cm2": 1067.0,
+   "peak_wing_kpa": 55.3,
+   "peak_lumbar_kpa": 32.0,
+   "peak_crest_top_kpa": 28.2,
+   "V_cap_n": 801.0,
+   "asis_clear_mm": 33.0,
+   "pad_frac": 0.712,
+   "T_allow_n": 278.0,
+   "hold_margin_at_allow": 0.64,
+   "cone": "T"
+  }
+ ],
+ "sensitivity": [
+  {
+   "form": "F30",
+   "design": "C0",
+   "mu": 0.3,
+   "torso_in": 15,
+   "T_req_n": 176.0,
+   "peak_wing_kpa": 66.4,
+   "peak_lumbar_kpa": 59.8,
+   "mean_kpa": 25.6,
+   "hold_margin_at_allow": 0.42
+  },
+  {
+   "form": "F30",
+   "design": "C0",
+   "mu": 0.3,
+   "torso_in": 19,
+   "T_req_n": 207.0,
+   "peak_wing_kpa": 72.1,
+   "peak_lumbar_kpa": 56.1,
+   "mean_kpa": 26.6,
+   "hold_margin_at_allow": 0.47
+  },
+  {
+   "form": "F30",
+   "design": "C0",
+   "mu": 0.3,
+   "torso_in": 23,
+   "T_req_n": 225.0,
+   "peak_wing_kpa": 75.3,
+   "peak_lumbar_kpa": 53.6,
+   "mean_kpa": 27.3,
+   "hold_margin_at_allow": 0.47
+  },
+  {
+   "form": "F30",
+   "design": "C0",
+   "mu": 0.5,
+   "torso_in": 19,
+   "T_req_n": 109.0,
+   "peak_wing_kpa": 51.8,
+   "peak_lumbar_kpa": 50.9,
+   "mean_kpa": 20.1,
+   "hold_margin_at_allow": 0.69
+  },
+  {
+   "form": "F30",
+   "design": "B",
+   "mu": 0.3,
+   "torso_in": 15,
+   "T_req_n": 234.0,
+   "peak_wing_kpa": 50.5,
+   "peak_lumbar_kpa": 45.2,
+   "mean_kpa": 21.5,
+   "hold_margin_at_allow": 0.7
+  },
+  {
+   "form": "F30",
+   "design": "B",
+   "mu": 0.3,
+   "torso_in": 19,
+   "T_req_n": 274.0,
+   "peak_wing_kpa": 54.6,
+   "peak_lumbar_kpa": 42.8,
+   "mean_kpa": 22.0,
+   "hold_margin_at_allow": 0.71
+  },
+  {
+   "form": "F30",
+   "design": "B",
+   "mu": 0.3,
+   "torso_in": 23,
+   "T_req_n": 299.0,
+   "peak_wing_kpa": 57.2,
+   "peak_lumbar_kpa": 41.3,
+   "mean_kpa": 22.5,
+   "hold_margin_at_allow": 0.69
+  },
+  {
+   "form": "F30",
+   "design": "B",
+   "mu": 0.5,
+   "torso_in": 19,
+   "T_req_n": 147.0,
+   "peak_wing_kpa": 39.9,
+   "peak_lumbar_kpa": 36.8,
+   "mean_kpa": 15.5,
+   "hold_margin_at_allow": 1.04
+  },
+  {
+   "form": "F34",
+   "design": "C0",
+   "mu": 0.3,
+   "torso_in": 15,
+   "T_req_n": 233.0,
+   "peak_wing_kpa": 63.5,
+   "peak_lumbar_kpa": 52.8,
+   "mean_kpa": 24.9,
+   "hold_margin_at_allow": 0.38
+  },
+  {
+   "form": "F34",
+   "design": "C0",
+   "mu": 0.3,
+   "torso_in": 19,
+   "T_req_n": 267.0,
+   "peak_wing_kpa": 68.0,
+   "peak_lumbar_kpa": 49.0,
+   "mean_kpa": 25.5,
+   "hold_margin_at_allow": 0.49
+  },
+  {
+   "form": "F34",
+   "design": "C0",
+   "mu": 0.3,
+   "torso_in": 23,
+   "T_req_n": 287.0,
+   "peak_wing_kpa": 70.6,
+   "peak_lumbar_kpa": 46.7,
+   "mean_kpa": 26.2,
+   "hold_margin_at_allow": 0.48
+  },
+  {
+   "form": "F34",
+   "design": "C0",
+   "mu": 0.5,
+   "torso_in": 19,
+   "T_req_n": 144.0,
+   "peak_wing_kpa": 49.6,
+   "peak_lumbar_kpa": 44.5,
+   "mean_kpa": 19.4,
+   "hold_margin_at_allow": 0.73
+  },
+  {
+   "form": "F34",
+   "design": "B",
+   "mu": 0.3,
+   "torso_in": 15,
+   "T_req_n": 210.0,
+   "peak_wing_kpa": 44.4,
+   "peak_lumbar_kpa": 37.5,
+   "mean_kpa": 19.5,
+   "hold_margin_at_allow": 0.77
+  },
+  {
+   "form": "F34",
+   "design": "B",
+   "mu": 0.3,
+   "torso_in": 19,
+   "T_req_n": 240.0,
+   "peak_wing_kpa": 47.4,
+   "peak_lumbar_kpa": 34.2,
+   "mean_kpa": 19.8,
+   "hold_margin_at_allow": 0.78
+  },
+  {
+   "form": "F34",
+   "design": "B",
+   "mu": 0.3,
+   "torso_in": 23,
+   "T_req_n": 258.0,
+   "peak_wing_kpa": 49.2,
+   "peak_lumbar_kpa": 32.2,
+   "mean_kpa": 20.0,
+   "hold_margin_at_allow": 0.78
+  },
+  {
+   "form": "F34",
+   "design": "B",
+   "mu": 0.5,
+   "torso_in": 19,
+   "T_req_n": 130.0,
+   "peak_wing_kpa": 34.9,
+   "peak_lumbar_kpa": 30.2,
+   "mean_kpa": 14.4,
+   "hold_margin_at_allow": 1.16
+  },
+  {
+   "form": "M34",
+   "design": "C0",
+   "mu": 0.3,
+   "torso_in": 15,
+   "T_req_n": 274.0,
+   "peak_wing_kpa": 47.5,
+   "peak_lumbar_kpa": 45.9,
+   "mean_kpa": 24.8,
+   "hold_margin_at_allow": 0.63
+  },
+  {
+   "form": "M34",
+   "design": "C0",
+   "mu": 0.3,
+   "torso_in": 19,
+   "T_req_n": 306.0,
+   "peak_wing_kpa": 50.7,
+   "peak_lumbar_kpa": 42.1,
+   "mean_kpa": 25.5,
+   "hold_margin_at_allow": 0.62
+  },
+  {
+   "form": "M34",
+   "design": "C0",
+   "mu": 0.3,
+   "torso_in": 23,
+   "T_req_n": 326.0,
+   "peak_wing_kpa": 52.6,
+   "peak_lumbar_kpa": 39.8,
+   "mean_kpa": 26.0,
+   "hold_margin_at_allow": 0.61
+  },
+  {
+   "form": "M34",
+   "design": "C0",
+   "mu": 0.5,
+   "torso_in": 19,
+   "T_req_n": 161.0,
+   "peak_wing_kpa": 35.9,
+   "peak_lumbar_kpa": 36.7,
+   "mean_kpa": 16.7,
+   "hold_margin_at_allow": 0.96
+  },
+  {
+   "form": "M34",
+   "design": "B",
+   "mu": 0.3,
+   "torso_in": 15,
+   "T_req_n": 289.0,
+   "peak_wing_kpa": 43.9,
+   "peak_lumbar_kpa": 31.3,
+   "mean_kpa": 21.9,
+   "hold_margin_at_allow": 0.77
+  },
+  {
+   "form": "M34",
+   "design": "B",
+   "mu": 0.3,
+   "torso_in": 19,
+   "T_req_n": 321.0,
+   "peak_wing_kpa": 48.6,
+   "peak_lumbar_kpa": 28.2,
+   "mean_kpa": 22.7,
+   "hold_margin_at_allow": 0.74
+  },
+  {
+   "form": "M34",
+   "design": "B",
+   "mu": 0.3,
+   "torso_in": 23,
+   "T_req_n": 341.0,
+   "peak_wing_kpa": 51.5,
+   "peak_lumbar_kpa": 26.3,
+   "mean_kpa": 23.2,
+   "hold_margin_at_allow": 0.72
+  },
+  {
+   "form": "M34",
+   "design": "B",
+   "mu": 0.5,
+   "torso_in": 19,
+   "T_req_n": 170.0,
+   "peak_wing_kpa": 27.0,
+   "peak_lumbar_kpa": 22.6,
+   "mean_kpa": 13.8,
+   "hold_margin_at_allow": 1.14
+  },
+  {
+   "form": "M38",
+   "design": "C0",
+   "mu": 0.3,
+   "torso_in": 15,
+   "T_req_n": 379.0,
+   "peak_wing_kpa": 59.3,
+   "peak_lumbar_kpa": 40.5,
+   "mean_kpa": 27.4,
+   "hold_margin_at_allow": 0.62
+  },
+  {
+   "form": "M38",
+   "design": "C0",
+   "mu": 0.3,
+   "torso_in": 19,
+   "T_req_n": 415.0,
+   "peak_wing_kpa": 64.7,
+   "peak_lumbar_kpa": 36.7,
+   "mean_kpa": 28.2,
+   "hold_margin_at_allow": 0.6
+  },
+  {
+   "form": "M38",
+   "design": "C0",
+   "mu": 0.3,
+   "torso_in": 23,
+   "T_req_n": 437.0,
+   "peak_wing_kpa": 68.1,
+   "peak_lumbar_kpa": 34.3,
+   "mean_kpa": 28.7,
+   "hold_margin_at_allow": 0.59
+  },
+  {
+   "form": "M38",
+   "design": "C0",
+   "mu": 0.5,
+   "torso_in": 19,
+   "T_req_n": 217.0,
+   "peak_wing_kpa": 34.7,
+   "peak_lumbar_kpa": 30.4,
+   "mean_kpa": 16.9,
+   "hold_margin_at_allow": 0.96
+  },
+  {
+   "form": "M38",
+   "design": "B",
+   "mu": 0.3,
+   "torso_in": 15,
+   "T_req_n": 351.0,
+   "peak_wing_kpa": 46.9,
+   "peak_lumbar_kpa": 29.8,
+   "mean_kpa": 22.7,
+   "hold_margin_at_allow": 0.74
+  },
+  {
+   "form": "M38",
+   "design": "B",
+   "mu": 0.3,
+   "torso_in": 19,
+   "T_req_n": 383.0,
+   "peak_wing_kpa": 51.1,
+   "peak_lumbar_kpa": 26.5,
+   "mean_kpa": 23.4,
+   "hold_margin_at_allow": 0.71
+  },
+  {
+   "form": "M38",
+   "design": "B",
+   "mu": 0.3,
+   "torso_in": 23,
+   "T_req_n": 403.0,
+   "peak_wing_kpa": 53.7,
+   "peak_lumbar_kpa": 24.4,
+   "mean_kpa": 23.8,
+   "hold_margin_at_allow": 0.7
+  },
+  {
+   "form": "M38",
+   "design": "B",
+   "mu": 0.5,
+   "torso_in": 19,
+   "T_req_n": 201.0,
+   "peak_wing_kpa": 27.5,
+   "peak_lumbar_kpa": 20.7,
+   "mean_kpa": 13.9,
+   "hold_margin_at_allow": 1.14
+  }
+ ],
+ "sweeps": {
+  "beta_deg": [
+   {
+    "value": 0,
+    "F30": {
+     "peak_wing_kpa": 72.1,
+     "peak_lumbar_kpa": 56.1,
+     "mean_kpa": 26.6,
+     "crest_top": 7.2,
+     "hold": 0.47
+    },
+    "M34": {
+     "peak_wing_kpa": 50.7,
+     "peak_lumbar_kpa": 42.1,
+     "mean_kpa": 25.5,
+     "crest_top": 26.1,
+     "hold": 0.62
+    }
+   },
+   {
+    "value": 2,
+    "F30": {
+     "peak_wing_kpa": 66.1,
+     "peak_lumbar_kpa": 56.1,
+     "mean_kpa": 25.5,
+     "crest_top": 12.0,
+     "hold": 0.52
+    },
+    "M34": {
+     "peak_wing_kpa": 44.6,
+     "peak_lumbar_kpa": 42.1,
+     "mean_kpa": 25.0,
+     "crest_top": 30.2,
+     "hold": 0.66
+    }
+   },
+   {
+    "value": 4,
+    "F30": {
+     "peak_wing_kpa": 59.5,
+     "peak_lumbar_kpa": 56.1,
+     "mean_kpa": 24.4,
+     "crest_top": 16.1,
+     "hold": 0.55
+    },
+    "M34": {
+     "peak_wing_kpa": 43.2,
+     "peak_lumbar_kpa": 42.1,
+     "mean_kpa": 25.0,
+     "crest_top": 34.3,
+     "hold": 0.68
+    }
+   },
+   {
+    "value": 6,
+    "F30": {
+     "peak_wing_kpa": 51.9,
+     "peak_lumbar_kpa": 56.0,
+     "mean_kpa": 23.3,
+     "crest_top": 20.3,
+     "hold": 0.55
+    },
+    "M34": {
+     "peak_wing_kpa": 46.9,
+     "peak_lumbar_kpa": 42.1,
+     "mean_kpa": 25.0,
+     "crest_top": 41.1,
+     "hold": 0.68
+    }
+   },
+   {
+    "value": 8,
+    "F30": {
+     "peak_wing_kpa": 43.4,
+     "peak_lumbar_kpa": 56.0,
+     "mean_kpa": 22.4,
+     "crest_top": 24.5,
+     "hold": 0.55
+    },
+    "M34": {
+     "peak_wing_kpa": 50.7,
+     "peak_lumbar_kpa": 42.1,
+     "mean_kpa": 25.2,
+     "crest_top": 48.4,
+     "hold": 0.66
+    }
+   },
+   {
+    "value": 10,
+    "F30": {
+     "peak_wing_kpa": 38.4,
+     "peak_lumbar_kpa": 56.0,
+     "mean_kpa": 21.7,
+     "crest_top": 28.7,
+     "hold": 0.55
+    },
+    "M34": {
+     "peak_wing_kpa": 55.7,
+     "peak_lumbar_kpa": 42.1,
+     "mean_kpa": 25.7,
+     "crest_top": 55.7,
+     "hold": 0.61
+    }
+   },
+   {
+    "value": 12,
+    "F30": {
+     "peak_wing_kpa": 42.2,
+     "peak_lumbar_kpa": 56.0,
+     "mean_kpa": 21.7,
+     "crest_top": 35.5,
+     "hold": 0.55
+    },
+    "M34": {
+     "peak_wing_kpa": 63.2,
+     "peak_lumbar_kpa": 42.1,
+     "mean_kpa": 26.5,
+     "crest_top": 63.2,
+     "hold": 0.56
+    }
+   },
+   {
+    "value": 14,
+    "F30": {
+     "peak_wing_kpa": 46.0,
+     "peak_lumbar_kpa": 56.0,
+     "mean_kpa": 22.0,
+     "crest_top": 43.0,
+     "hold": 0.55
+    },
+    "M34": {
+     "peak_wing_kpa": 70.8,
+     "peak_lumbar_kpa": 42.1,
+     "mean_kpa": 27.5,
+     "crest_top": 70.8,
+     "hold": 0.5
+    }
+   }
+  ],
+  "foam_comfort": [
+   {
+    "value": "EVA30 3",
+    "F30": {
+     "peak_wing_kpa": 74.8,
+     "peak_lumbar_kpa": 55.9,
+     "mean_kpa": 26.9,
+     "crest_top": 6.8,
+     "hold": 0.46
+    },
+    "M34": {
+     "peak_wing_kpa": 52.3,
+     "peak_lumbar_kpa": 42.0,
+     "mean_kpa": 25.8,
+     "crest_top": 26.7,
+     "hold": 0.61
+    }
+   },
+   {
+    "value": "EVA30 5",
+    "F30": {
+     "peak_wing_kpa": 72.1,
+     "peak_lumbar_kpa": 56.1,
+     "mean_kpa": 26.6,
+     "crest_top": 7.2,
+     "hold": 0.47
+    },
+    "M34": {
+     "peak_wing_kpa": 50.7,
+     "peak_lumbar_kpa": 42.1,
+     "mean_kpa": 25.5,
+     "crest_top": 26.1,
+     "hold": 0.62
+    }
+   },
+   {
+    "value": "EVA30 8",
+    "F30": {
+     "peak_wing_kpa": 69.7,
+     "peak_lumbar_kpa": 55.6,
+     "mean_kpa": 25.9,
+     "crest_top": 6.5,
+     "hold": 0.48
+    },
+    "M34": {
+     "peak_wing_kpa": 48.8,
+     "peak_lumbar_kpa": 41.7,
+     "mean_kpa": 24.5,
+     "crest_top": 24.8,
+     "hold": 0.64
+    }
+   },
+   {
+    "value": "perf 6",
+    "F30": {
+     "peak_wing_kpa": 69.9,
+     "peak_lumbar_kpa": 55.6,
+     "mean_kpa": 26.0,
+     "crest_top": 6.4,
+     "hold": 0.48
+    },
+    "M34": {
+     "peak_wing_kpa": 49.0,
+     "peak_lumbar_kpa": 41.7,
+     "mean_kpa": 24.5,
+     "crest_top": 24.7,
+     "hold": 0.64
+    }
+   },
+   {
+    "value": "EVA45 5 (firm)",
+    "F30": {
+     "peak_wing_kpa": 74.7,
+     "peak_lumbar_kpa": 56.1,
+     "mean_kpa": 26.9,
+     "crest_top": 5.1,
+     "hold": 0.46
+    },
+    "M34": {
+     "peak_wing_kpa": 52.2,
+     "peak_lumbar_kpa": 42.1,
+     "mean_kpa": 25.6,
+     "crest_top": 25.4,
+     "hold": 0.61
+    }
+   }
+  ],
+  "stiffener_inset_mm": [
+   {
+    "value": 4,
+    "F30": {
+     "peak_wing_kpa": 72.1,
+     "peak_lumbar_kpa": 55.5,
+     "mean_kpa": 26.1,
+     "crest_top": 4.6,
+     "hold": 0.47
+    },
+    "M34": {
+     "peak_wing_kpa": 50.2,
+     "peak_lumbar_kpa": 41.7,
+     "mean_kpa": 24.6,
+     "crest_top": 24.1,
+     "hold": 0.63
+    }
+   },
+   {
+    "value": 8,
+    "F30": {
+     "peak_wing_kpa": 72.1,
+     "peak_lumbar_kpa": 55.5,
+     "mean_kpa": 26.2,
+     "crest_top": 4.7,
+     "hold": 0.47
+    },
+    "M34": {
+     "peak_wing_kpa": 50.2,
+     "peak_lumbar_kpa": 41.7,
+     "mean_kpa": 24.6,
+     "crest_top": 24.2,
+     "hold": 0.63
+    }
+   },
+   {
+    "value": 12,
+    "F30": {
+     "peak_wing_kpa": 72.1,
+     "peak_lumbar_kpa": 56.1,
+     "mean_kpa": 26.6,
+     "crest_top": 7.2,
+     "hold": 0.47
+    },
+    "M34": {
+     "peak_wing_kpa": 50.7,
+     "peak_lumbar_kpa": 42.1,
+     "mean_kpa": 25.5,
+     "crest_top": 26.1,
+     "hold": 0.62
+    }
+   },
+   {
+    "value": 20,
+    "F30": {
+     "peak_wing_kpa": 72.8,
+     "peak_lumbar_kpa": 55.9,
+     "mean_kpa": 27.3,
+     "crest_top": 12.7,
+     "hold": 0.47
+    },
+    "M34": {
+     "peak_wing_kpa": 54.5,
+     "peak_lumbar_kpa": 41.9,
+     "mean_kpa": 27.6,
+     "crest_top": 31.9,
+     "hold": 0.59
+    }
+   },
+   {
+    "value": 30,
+    "F30": {
+     "peak_wing_kpa": 70.7,
+     "peak_lumbar_kpa": 56.0,
+     "mean_kpa": 28.9,
+     "crest_top": 23.5,
+     "hold": 0.48
+    },
+    "M34": {
+     "peak_wing_kpa": 68.7,
+     "peak_lumbar_kpa": 42.0,
+     "mean_kpa": 31.6,
+     "crest_top": 44.2,
+     "hold": 0.55
+    }
+   },
+   {
+    "value": 45,
+    "F30": {
+     "peak_wing_kpa": 98.6,
+     "peak_lumbar_kpa": 56.0,
+     "mean_kpa": 33.7,
+     "crest_top": 0.0,
+     "hold": 0.48
+    },
+    "M34": {
+     "peak_wing_kpa": 122.6,
+     "peak_lumbar_kpa": 42.0,
+     "mean_kpa": 39.2,
+     "crest_top": 0.0,
+     "hold": 0.47
+    }
+   }
+  ],
+  "stiffener_t_mm": [
+   {
+    "value": 0.5,
+    "F30": {
+     "peak_wing_kpa": 71.3,
+     "peak_lumbar_kpa": 56.1,
+     "mean_kpa": 26.3,
+     "crest_top": 7.8,
+     "hold": 0.48
+    },
+    "M34": {
+     "peak_wing_kpa": 50.1,
+     "peak_lumbar_kpa": 42.1,
+     "mean_kpa": 25.2,
+     "crest_top": 26.4,
+     "hold": 0.63
+    }
+   },
+   {
+    "value": 1.0,
+    "F30": {
+     "peak_wing_kpa": 72.1,
+     "peak_lumbar_kpa": 56.1,
+     "mean_kpa": 26.6,
+     "crest_top": 7.2,
+     "hold": 0.47
+    },
+    "M34": {
+     "peak_wing_kpa": 50.7,
+     "peak_lumbar_kpa": 42.1,
+     "mean_kpa": 25.5,
+     "crest_top": 26.1,
+     "hold": 0.62
+    }
+   },
+   {
+    "value": 1.5,
+    "F30": {
+     "peak_wing_kpa": 72.3,
+     "peak_lumbar_kpa": 56.1,
+     "mean_kpa": 26.8,
+     "crest_top": 7.0,
+     "hold": 0.46
+    },
+    "M34": {
+     "peak_wing_kpa": 50.9,
+     "peak_lumbar_kpa": 42.1,
+     "mean_kpa": 25.6,
+     "crest_top": 26.0,
+     "hold": 0.61
+    }
+   },
+   {
+    "value": 2.0,
+    "F30": {
+     "peak_wing_kpa": 72.4,
+     "peak_lumbar_kpa": 56.1,
+     "mean_kpa": 26.8,
+     "crest_top": 6.9,
+     "hold": 0.46
+    },
+    "M34": {
+     "peak_wing_kpa": 51.0,
+     "peak_lumbar_kpa": 42.1,
+     "mean_kpa": 25.7,
+     "crest_top": 26.0,
+     "hold": 0.61
+    }
+   },
+   {
+    "value": "none",
+    "F30": {
+     "peak_wing_kpa": 57.7,
+     "peak_lumbar_kpa": 56.0,
+     "mean_kpa": 23.7,
+     "crest_top": 20.1,
+     "hold": 0.56
+    },
+    "M34": {
+     "peak_wing_kpa": 52.3,
+     "peak_lumbar_kpa": 42.0,
+     "mean_kpa": 27.2,
+     "crest_top": 35.4,
+     "hold": 0.63
+    }
+   }
+  ],
+  "lumbar_taper": [
+   {
+    "value": 0.0,
+    "F30": {
+     "peak_wing_kpa": 72.1,
+     "peak_lumbar_kpa": 56.1,
+     "mean_kpa": 26.6,
+     "crest_top": 7.2,
+     "hold": 0.47
+    },
+    "M34": {
+     "peak_wing_kpa": 50.7,
+     "peak_lumbar_kpa": 42.1,
+     "mean_kpa": 25.5,
+     "crest_top": 26.1,
+     "hold": 0.62
+    }
+   },
+   {
+    "value": 0.05,
+    "F30": {
+     "peak_wing_kpa": 72.1,
+     "peak_lumbar_kpa": 48.5,
+     "mean_kpa": 25.4,
+     "crest_top": 7.2,
+     "hold": 0.53
+    },
+    "M34": {
+     "peak_wing_kpa": 50.7,
+     "peak_lumbar_kpa": 34.3,
+     "mean_kpa": 25.5,
+     "crest_top": 26.1,
+     "hold": 0.62
+    }
+   },
+   {
+    "value": 0.1,
+    "F30": {
+     "peak_wing_kpa": 72.1,
+     "peak_lumbar_kpa": 40.7,
+     "mean_kpa": 24.9,
+     "crest_top": 7.2,
+     "hold": 0.58
+    },
+    "M34": {
+     "peak_wing_kpa": 50.7,
+     "peak_lumbar_kpa": 28.6,
+     "mean_kpa": 25.5,
+     "crest_top": 26.1,
+     "hold": 0.62
+    }
+   },
+   {
+    "value": 0.15,
+    "F30": {
+     "peak_wing_kpa": 72.1,
+     "peak_lumbar_kpa": 33.0,
+     "mean_kpa": 24.9,
+     "crest_top": 7.2,
+     "hold": 0.58
+    },
+    "M34": {
+     "peak_wing_kpa": 50.7,
+     "peak_lumbar_kpa": 36.4,
+     "mean_kpa": 25.5,
+     "crest_top": 26.1,
+     "hold": 0.62
+    }
+   },
+   {
+    "value": 0.2,
+    "F30": {
+     "peak_wing_kpa": 72.1,
+     "peak_lumbar_kpa": 26.2,
+     "mean_kpa": 24.9,
+     "crest_top": 7.2,
+     "hold": 0.58
+    },
+    "M34": {
+     "peak_wing_kpa": 50.7,
+     "peak_lumbar_kpa": 44.1,
+     "mean_kpa": 25.5,
+     "crest_top": 26.1,
+     "hold": 0.62
+    }
+   }
+  ],
+  "wing_height_mm": [
+   {
+    "value": 120,
+    "F30": {
+     "peak_wing_kpa": 72.2,
+     "peak_lumbar_kpa": 56.0,
+     "mean_kpa": 28.1,
+     "crest_top": 18.9,
+     "hold": 0.45
+    },
+    "M34": {
+     "peak_wing_kpa": 57.2,
+     "peak_lumbar_kpa": 42.0,
+     "mean_kpa": 28.7,
+     "crest_top": 35.8,
+     "hold": 0.57
+    }
+   },
+   {
+    "value": 140,
+    "F30": {
+     "peak_wing_kpa": 72.1,
+     "peak_lumbar_kpa": 56.1,
+     "mean_kpa": 26.6,
+     "crest_top": 7.2,
+     "hold": 0.47
+    },
+    "M34": {
+     "peak_wing_kpa": 50.7,
+     "peak_lumbar_kpa": 42.1,
+     "mean_kpa": 25.5,
+     "crest_top": 26.1,
+     "hold": 0.62
+    }
+   },
+   {
+    "value": 160,
+    "F30": {
+     "peak_wing_kpa": 71.8,
+     "peak_lumbar_kpa": 56.1,
+     "mean_kpa": 25.6,
+     "crest_top": 0.0,
+     "hold": 0.48
+    },
+    "M34": {
+     "peak_wing_kpa": 49.8,
+     "peak_lumbar_kpa": 42.1,
+     "mean_kpa": 23.3,
+     "crest_top": 18.9,
+     "hold": 0.66
+    }
+   },
+   {
+    "value": 180,
+    "F30": {
+     "peak_wing_kpa": 71.7,
+     "peak_lumbar_kpa": 56.2,
+     "mean_kpa": 24.8,
+     "crest_top": 0.0,
+     "hold": 0.49
+    },
+    "M34": {
+     "peak_wing_kpa": 49.7,
+     "peak_lumbar_kpa": 42.2,
+     "mean_kpa": 21.9,
+     "crest_top": 13.3,
+     "hold": 0.7
+    }
+   }
+  ]
+ },
+ "coverage": {
+  "current": {
+   "male": 0.865,
+   "female": 0.96
+  },
+  "proposed": {
+   "male": 0.937,
+   "female": 0.967
+  }
+ },
+ "asis": {
+  "C0": {
+   "S": [
+    [
+     "F28",
+     -4.0
+    ],
+    [
+     "M28",
+     -4.0
+    ]
+   ],
+   "M": [
+    [
+     "F30",
+     -19.0
+    ],
+    [
+     "F32",
+     1.0
+    ],
+    [
+     "F34",
+     23.0
+    ],
+    [
+     "M30",
+     -21.0
+    ],
+    [
+     "M32",
+     3.0
+    ]
+   ],
+   "L": [
+    [
+     "F36",
+     9.0
+    ],
+    [
+     "F38",
+     29.0
+    ],
+    [
+     "M34",
+     -9.0
+    ],
+    [
+     "M36",
+     13.0
+    ],
+    [
+     "M38",
+     37.0
+    ]
+   ],
+   "XL": [
+    [
+     "F40",
+     16.0
+    ],
+    [
+     "F42",
+     36.0
+    ],
+    [
+     "M40",
+     22.0
+    ],
+    [
+     "M42",
+     46.0
+    ]
+   ]
+  },
+  "B": {
+   "S": [
+    [
+     "F28",
+     20.0
+    ],
+    [
+     "F30",
+     42.0
+    ],
+    [
+     "M28",
+     20.0
+    ],
+    [
+     "M30",
+     40.0
+    ]
+   ],
+   "M": [
+    [
+     "F32",
+     22.0
+    ],
+    [
+     "M32",
+     24.0
+    ]
+   ],
+   "L": [
+    [
+     "F34",
+     9.0
+    ],
+    [
+     "F36",
+     31.0
+    ],
+    [
+     "M34",
+     13.0
+    ],
+    [
+     "M36",
+     35.0
+    ]
+   ],
+   "XL": [
+    [
+     "F38",
+     17.0
+    ],
+    [
+     "M38",
+     25.0
+    ]
+   ],
+   "XXL": [
+    [
+     "F40",
+     3.0
+    ],
+    [
+     "F42",
+     23.0
+    ],
+    [
+     "M40",
+     9.0
+    ],
+    [
+     "M42",
+     33.0
+    ]
+   ]
+  }
+ },
+ "bom": {
+  "C0": {
+   "size": "M",
+   "form": "M32",
+   "wing_seam_area_mm2": 27639.0,
+   "wing_len_mm": 235.0,
+   "pieces": [
+    {
+     "piece": "wing shell",
+     "material": "cordura_330d_nylon66",
+     "area_mm2": 34845.0,
+     "qty": 2,
+     "mass_g": 12.5,
+     "cost_usd": 0.81
+    },
+    {
+     "piece": "wing face",
+     "material": "spacer_mesh_3d",
+     "area_mm2": 34845.0,
+     "qty": 2,
+     "mass_g": 26.5,
+     "cost_usd": 0.88
+    },
+    {
+     "piece": "wing load foam",
+     "material": "eva_foam_45c",
+     "area_mm2": 21874.0,
+     "qty": 2,
+     "mass_g": 28.9,
+     "cost_usd": 1.26
+    },
+    {
+     "piece": "wing comfort foam",
+     "material": "eva_foam_30c",
+     "area_mm2": 23315.0,
+     "qty": 2,
+     "mass_g": 15.2,
+     "cost_usd": 1.07
+    },
+    {
+     "piece": "wing stiffener",
+     "material": "hdpe_sheet",
+     "area_mm2": 18991.0,
+     "qty": 2,
+     "mass_g": 36.3,
+     "cost_usd": 0.25
+    },
+    {
+     "piece": "lumbar shell",
+     "material": "cordura_330d_nylon66",
+     "area_mm2": 32400.0,
+     "qty": 1,
+     "mass_g": 5.8,
+     "cost_usd": 0.37
+    },
+    {
+     "piece": "lumbar face",
+     "material": "spacer_mesh_3d",
+     "area_mm2": 32400.0,
+     "qty": 1,
+     "mass_g": 12.3,
+     "cost_usd": 0.41
+    },
+    {
+     "piece": "lumbar foam 1",
+     "material": "eva_foam_45c",
+     "area_mm2": 19600.0,
+     "qty": 1,
+     "mass_g": 17.2,
+     "cost_usd": 0.56
+    },
+    {
+     "piece": "lumbar stage-2 wedge (flat)",
+     "material": "eva_foam_45c",
+     "area_mm2": 11700,
+     "qty": 1,
+     "mass_g": 10.3,
+     "cost_usd": 0.34
+    }
+   ],
+   "hardware_delta": [],
+   "soft_g": 165.0,
+   "hardware_delta_g": 0,
+   "total_g": 165.0,
+   "material_cost_usd": 5.95
+  },
+  "A": {
+   "size": "M",
+   "form": "M32",
+   "wing_seam_area_mm2": 27639.0,
+   "wing_len_mm": 235.0,
+   "pieces": [
+    {
+     "piece": "wing shell",
+     "material": "cordura_330d_nylon66",
+     "area_mm2": 34834.0,
+     "qty": 2,
+     "mass_g": 12.5,
+     "cost_usd": 0.8
+    },
+    {
+     "piece": "wing face",
+     "material": "spacer_mesh_3d",
+     "area_mm2": 34834.0,
+     "qty": 2,
+     "mass_g": 26.5,
+     "cost_usd": 0.88
+    },
+    {
+     "piece": "wing load foam",
+     "material": "eva_foam_45c",
+     "area_mm2": 21882.0,
+     "qty": 2,
+     "mass_g": 28.9,
+     "cost_usd": 1.26
+    },
+    {
+     "piece": "wing comfort foam",
+     "material": "eva_foam_30c",
+     "area_mm2": 23322.0,
+     "qty": 2,
+     "mass_g": 15.2,
+     "cost_usd": 1.07
+    },
+    {
+     "piece": "wing stiffener",
+     "material": "hdpe_sheet",
+     "area_mm2": 19004.0,
+     "qty": 2,
+     "mass_g": 36.3,
+     "cost_usd": 0.25
+    },
+    {
+     "piece": "lumbar shell",
+     "material": "cordura_330d_nylon66",
+     "area_mm2": 32400.0,
+     "qty": 1,
+     "mass_g": 5.8,
+     "cost_usd": 0.37
+    },
+    {
+     "piece": "lumbar face",
+     "material": "spacer_mesh_3d",
+     "area_mm2": 32400.0,
+     "qty": 1,
+     "mass_g": 12.3,
+     "cost_usd": 0.41
+    },
+    {
+     "piece": "lumbar foam 1",
+     "material": "eva_foam_45c",
+     "area_mm2": 19600.0,
+     "qty": 1,
+     "mass_g": 17.2,
+     "cost_usd": 0.56
+    },
+    {
+     "piece": "lumbar terraced wedge (3 steps, 120 wide)",
+     "material": "eva_foam_45c",
+     "area_mm2": 33432.0,
+     "qty": 1,
+     "mass_g": 17.3,
+     "cost_usd": 0.96
+    }
+   ],
+   "hardware_delta": [
+    {
+     "item": "cant snap deleted (2 POM 3-position detents, ASSUMPTION -6 g)",
+     "mass_g": -6.0,
+     "cost_usd": -0.5
+    }
+   ],
+   "soft_g": 172.0,
+   "hardware_delta_g": -6.0,
+   "total_g": 166.0,
+   "material_cost_usd": 6.06
+  },
+  "B": {
+   "size": "M",
+   "form": "M32",
+   "wing_seam_area_mm2": 28114.0,
+   "wing_len_mm": 208.0,
+   "pieces": [
+    {
+     "piece": "wing shell",
+     "material": "cordura_330d_nylon66",
+     "area_mm2": 34768.0,
+     "qty": 2,
+     "mass_g": 12.5,
+     "cost_usd": 0.8
+    },
+    {
+     "piece": "wing face",
+     "material": "spacer_mesh_3d",
+     "area_mm2": 34768.0,
+     "qty": 2,
+     "mass_g": 26.4,
+     "cost_usd": 0.87
+    },
+    {
+     "piece": "wing load foam",
+     "material": "eva_foam_45c",
+     "area_mm2": 22790.0,
+     "qty": 2,
+     "mass_g": 30.1,
+     "cost_usd": 1.31
+    },
+    {
+     "piece": "wing comfort foam",
+     "material": "eva_foam_30c",
+     "area_mm2": 13670.0,
+     "qty": 2,
+     "mass_g": 8.9,
+     "cost_usd": 0.63
+    },
+    {
+     "piece": "wing crest-relief foam",
+     "material": "eva_foam_perforated",
+     "area_mm2": 10451.0,
+     "qty": 2,
+     "mass_g": 6.9,
+     "cost_usd": 0.67
+    },
+    {
+     "piece": "wing stiffener",
+     "material": "hdpe_sheet",
+     "area_mm2": 21459.0,
+     "qty": 2,
+     "mass_g": 41.0,
+     "cost_usd": 0.28
+    },
+    {
+     "piece": "lumbar shell",
+     "material": "cordura_330d_nylon66",
+     "area_mm2": 36100.0,
+     "qty": 1,
+     "mass_g": 6.5,
+     "cost_usd": 0.42
+    },
+    {
+     "piece": "lumbar face",
+     "material": "spacer_mesh_3d",
+     "area_mm2": 36100.0,
+     "qty": 1,
+     "mass_g": 13.7,
+     "cost_usd": 0.45
+    },
+    {
+     "piece": "lumbar foam 1",
+     "material": "eva_foam_45c",
+     "area_mm2": 22500.0,
+     "qty": 1,
+     "mass_g": 14.9,
+     "cost_usd": 0.65
+    },
+    {
+     "piece": "lumbar foam 2",
+     "material": "eva_foam_30c",
+     "area_mm2": 22500.0,
+     "qty": 1,
+     "mass_g": 8.8,
+     "cost_usd": 0.52
+    },
+    {
+     "piece": "lumbar terraced wedge (3 steps, 120 wide)",
+     "material": "eva_foam_45c",
+     "area_mm2": 35820.0,
+     "qty": 1,
+     "mass_g": 19.7,
+     "cost_usd": 1.03
+    }
+   ],
+   "hardware_delta": [
+    {
+     "item": "2:1 pull: 25 mm poly webbing +0.6 m",
+     "mass_g": 10.8,
+     "cost_usd": 0.6
+    },
+    {
+     "item": "2:1 pull: 2 x 25 mm Al D-ring (no record, ASSUMPTION 5 g, $1)",
+     "mass_g": 10.0,
+     "cost_usd": 2.0
+    },
+    {
+     "item": "silicone-dot grip print on lumbar + wing faces (ASSUMPTION 5 g, outsourced $3)",
+     "mass_g": 5.0,
+     "cost_usd": 3.0
+    },
+    {
+     "item": "cant snap deleted (2 POM 3-position detents, ASSUMPTION -6 g)",
+     "mass_g": -6.0,
+     "cost_usd": -0.5
+    }
+   ],
+   "soft_g": 189.4,
+   "hardware_delta_g": 19.8,
+   "total_g": 209.2,
+   "material_cost_usd": 12.73
+  },
+  "C": {
+   "size": "M",
+   "form": "M32",
+   "wing_seam_area_mm2": 28114.0,
+   "wing_len_mm": 208.0,
+   "pieces": [
+    {
+     "piece": "wing shell",
+     "material": "cordura_330d_nylon66",
+     "area_mm2": 34774.0,
+     "qty": 2,
+     "mass_g": 12.5,
+     "cost_usd": 0.8
+    },
+    {
+     "piece": "wing face",
+     "material": "spacer_mesh_3d",
+     "area_mm2": 34774.0,
+     "qty": 2,
+     "mass_g": 26.4,
+     "cost_usd": 0.87
+    },
+    {
+     "piece": "wing load foam",
+     "material": "eva_foam_45c",
+     "area_mm2": 22786.0,
+     "qty": 2,
+     "mass_g": 30.1,
+     "cost_usd": 1.31
+    },
+    {
+     "piece": "wing comfort foam",
+     "material": "eva_foam_30c",
+     "area_mm2": 13682.0,
+     "qty": 2,
+     "mass_g": 8.9,
+     "cost_usd": 0.63
+    },
+    {
+     "piece": "wing crest-relief foam",
+     "material": "eva_foam_perforated",
+     "area_mm2": 10436.0,
+     "qty": 2,
+     "mass_g": 6.9,
+     "cost_usd": 0.67
+    },
+    {
+     "piece": "wing stiffener",
+     "material": "hdpe_sheet",
+     "area_mm2": 21454.0,
+     "qty": 2,
+     "mass_g": 41.0,
+     "cost_usd": 0.28
+    },
+    {
+     "piece": "lumbar shell",
+     "material": "cordura_330d_nylon66",
+     "area_mm2": 36100.0,
+     "qty": 1,
+     "mass_g": 6.5,
+     "cost_usd": 0.42
+    },
+    {
+     "piece": "lumbar face",
+     "material": "spacer_mesh_3d",
+     "area_mm2": 36100.0,
+     "qty": 1,
+     "mass_g": 13.7,
+     "cost_usd": 0.45
+    },
+    {
+     "piece": "lumbar foam 1",
+     "material": "eva_foam_45c",
+     "area_mm2": 22500.0,
+     "qty": 1,
+     "mass_g": 14.9,
+     "cost_usd": 0.65
+    },
+    {
+     "piece": "lumbar foam 2",
+     "material": "eva_foam_30c",
+     "area_mm2": 22500.0,
+     "qty": 1,
+     "mass_g": 8.8,
+     "cost_usd": 0.52
+    },
+    {
+     "piece": "lumbar terraced wedge (3 steps, 120 wide)",
+     "material": "eva_foam_45c",
+     "area_mm2": 35820.0,
+     "qty": 1,
+     "mass_g": 19.7,
+     "cost_usd": 1.03
+    }
+   ],
+   "hardware_delta": [
+    {
+     "item": "2:1 pull: 25 mm poly webbing +0.6 m",
+     "mass_g": 10.8,
+     "cost_usd": 0.6
+    },
+    {
+     "item": "2:1 pull: 2 x 25 mm Al D-ring (no record, ASSUMPTION 5 g, $1)",
+     "mass_g": 10.0,
+     "cost_usd": 2.0
+    },
+    {
+     "item": "silicone-dot grip print on lumbar + wing faces (ASSUMPTION 5 g, outsourced $3)",
+     "mass_g": 5.0,
+     "cost_usd": 3.0
+    },
+    {
+     "item": "cant snap deleted (ASSUMPTION -6 g)",
+     "mass_g": -6.0,
+     "cost_usd": -0.5
+    },
+    {
+     "item": "swap-wing connectors: 2 x PA66-GF30 tongue + POM latch (ASSUMPTION 12 g each, $4)",
+     "mass_g": 24.0,
+     "cost_usd": 8.0
+    }
+   ],
+   "soft_g": 189.4,
+   "hardware_delta_g": 43.8,
+   "total_g": 233.2,
+   "material_cost_usd": 20.73
+  }
+ },
+ "hours_delta": {
+  "C0": {
+   "items": [],
+   "total_h": 0
+  },
+  "A": {
+   "items": [
+    [
+     "curved wing binding (5-10 mm bow, eased; 2 wings)",
+     0.4
+    ],
+    [
+     "terraced lumbar wedge: glue 3 die-cut layers",
+     0.2
+    ],
+    [
+     "fixed wing joint instead of the cant snap (bolt + bartack)",
+     -0.2
+    ]
+   ],
+   "total_h": 0.4
+  },
+  "B": {
+   "items": [
+    [
+     "curved wing binding (2 wings)",
+     0.4
+    ],
+    [
+     "terraced lumbar wedge",
+     0.2
+    ],
+    [
+     "fixed wing joint",
+     -0.2
+    ],
+    [
+     "crest-relief foam zone: 2 extra die-cut pieces, tack-glue",
+     0.3
+    ],
+    [
+     "2:1 pull: 4 bartacks + routing",
+     0.5
+    ],
+    [
+     "dual-density lumbar: one more layer",
+     0.1
+    ]
+   ],
+   "total_h": 1.3
+  },
+  "C": {
+   "items": [
+    [
+     "curved wing binding (2 wings)",
+     0.4
+    ],
+    [
+     "terraced lumbar wedge",
+     0.2
+    ],
+    [
+     "crest-relief foam zone",
+     0.3
+    ],
+    [
+     "2:1 pull",
+     0.5
+    ],
+    [
+     "dual-density lumbar",
+     0.1
+    ],
+    [
+     "swap-wing connector tongues: 2 bolted + bartacked joints",
+     1.0
+    ],
+    [
+     "second cone variant to sew (per extra wing pair)",
+     0.0
+    ]
+   ],
+   "total_h": 2.5
+  }
+ },
+ "flat_wing": {
+  "S": {
+   "form": "M28",
+   "beta_deg": 7.0,
+   "bow_mm": 4.7,
+   "wing_len_mm": 157.0,
+   "dev_strain": 0.0
+  },
+  "M": {
+   "form": "M32",
+   "beta_deg": 6.0,
+   "bow_mm": 5.4,
+   "wing_len_mm": 197.0,
+   "dev_strain": 0.0
+  },
+  "L": {
+   "form": "M36",
+   "beta_deg": 5.0,
+   "bow_mm": 5.5,
+   "wing_len_mm": 232.0,
+   "dev_strain": 0.0
+  },
+  "XL": {
+   "form": "M38",
+   "beta_deg": 3.0,
+   "bow_mm": 4.0,
+   "wing_len_mm": 266.0,
+   "dev_strain": 0.0
+  },
+  "XXL": {
+   "form": "M42",
+   "beta_deg": 2.0,
+   "bow_mm": 3.0,
+   "wing_len_mm": 304.0,
+   "dev_strain": 0.0
+  }
+ },
+ "pockets": {
+  "S": {
+   "wing_len_mm": 157.0,
+   "pocket_max_len_mm": 92.0,
+   "current_pocket_len_mm": 113,
+   "wing_h_mm_over_pocket": [
+    145,
+    105
+   ]
+  },
+  "M": {
+   "wing_len_mm": 197.0,
+   "pocket_max_len_mm": 132.0,
+   "current_pocket_len_mm": 150,
+   "wing_h_mm_over_pocket": [
+    145,
+    105
+   ]
+  },
+  "L": {
+   "wing_len_mm": 232.0,
+   "pocket_max_len_mm": 167.0,
+   "current_pocket_len_mm": 180,
+   "wing_h_mm_over_pocket": [
+    145,
+    105
+   ]
+  },
+  "XL": {
+   "wing_len_mm": 266.0,
+   "pocket_max_len_mm": 201.0,
+   "current_pocket_len_mm": 180,
+   "wing_h_mm_over_pocket": [
+    145,
+    105
+   ]
+  },
+  "XXL": {
+   "wing_len_mm": 304.0,
+   "pocket_max_len_mm": 239.0,
+   "current_pocket_len_mm": null,
+   "wing_h_mm_over_pocket": [
+    145,
+    105
+   ]
+  }
+ },
+ "lumbar_couple_n": {
+  "15": 413.0,
+  "19": 316.0,
+  "23": 256.0
+ }
+}

@@ -13,9 +13,10 @@ Concepts (same Ti pivot at z 120, same centre-plate interface, same pockets / ri
             bow in the flat pattern), cant snap deleted (fixed joint), removable terraced lumbar wedge (taper per size).
 * ``B``     CONE CUT + DUAL DENSITY + 2:1 (recommended): A plus a taller crest zone (150 / 145 / 105 mm), perforated
             EVA crest-relief comfort layer, dual-density 150 x 150 lumbar, 2:1 forward pull, silicone-dot grip face
-            (credited only after test HB-2), sizes re-centred on ANSUR II with 70 % padded length (ASIS clearance).
+            (credited only after test HB-2), soft tip (HDPE stops 25 mm short), 5 sizes 27-44 in re-centred on
+            ANSUR II, wing length per size set by the ASIS clearance (asis_wing_lengths), cones 7/6/5/3/2 deg.
 * ``C``     SWAP WING: B, but each wing swaps on the centre plate and comes in two cones per length
-            ("T" straighter: S 5 / M 4 / L 3 / XL 0; "C" conical: S 11 / M 10 / L 8 / XL 5).
+            ("T" = B cone - 3 deg, "C" = B cone + 4 deg).
 
     python designs/pack_5200/concepts/hipbelt_concepts.py            # results JSON + PNG screens + DXF/PDF pieces
 """
@@ -45,18 +46,44 @@ DATE = "20261108"
 # ------------------------------------------------------------------------------------------- concepts
 C0 = BeltDesign("C0", "Current v3.1 (straight wing, cant snap, flat lumbar)")
 BETA_A = {"S": 8.0, "M": 6.0, "L": 5.0, "XL": 2.0}
-TAPER = {"S": 0.12, "M": 0.10, "L": 0.08, "XL": 0.0}          # XL: wedge out (big frames have no lumbar hollow)
+TAPER = {"S": 0.10, "M": 0.10, "L": 0.08, "XL": 0.0}          # XL: wedge out (big frames have no lumbar hollow)
 A = replace(C0, key="A", name="CONE CUT (per-size cone, terraced lumbar wedge)", beta_deg=BETA_A,
             lumbar_taper_tan=TAPER)
-SIZES_B = {"S": (26, 31), "M": (30, 35), "L": (34, 39), "XL": (38, 44)}
+# B cone per size: maximises the WORST hold over the ANSUR II forms (both sexes) advised into each size
+# (beta scan 0-12 deg, 2026-11-08, see hipbelt_fit.md section 4.2); ties broken toward the women's forms
+BETA_B = {"S": 7.0, "M": 6.0, "L": 5.0, "XL": 3.0, "XXL": 2.0}
+TAPER_B = {"S": 0.10, "M": 0.10, "L": 0.08, "XL": 0.05, "XXL": 0.0}
+SIZES_B = {"S": (27, 31), "M": (30, 34), "L": (33, 37), "XL": (36, 40), "XXL": (39, 44)}   # 5 sizes, 1 in overlap
+
+
+def asis_wing_lengths(design: BeltDesign, sizes: dict, clear: float = hb.ASIS_CLEAR_MM) -> dict:
+    """Longest wing per size whose tip stays >= ``clear`` behind the ASIS for the SMALLEST user advised into that
+    size (size_for picks the nearest size centre). s_asis(circumference) is a linear fit over the ANSUR II forms."""
+    forms = []
+    for sex in ("female", "male"):
+        for k, f in hb.anthro()[sex]["forms"].items():
+            if f["n"] >= 30:
+                forms.append(hb.hip_form(sex, int(k[:-2])))
+    xs = np.array([f.circ_in for f in forms])
+    ys = np.array([hb.section(f).s_asis for f in forms])
+    fit = np.polyfit(xs, ys, 1)
+    d = replace(design, sizes=sizes)
+    out = {}
+    for size, (lo, hi) in sizes.items():
+        grid = np.arange(lo, hi + 1e-9, 0.1)
+        low = min(x for x in grid if d.size_for(x) == size)
+        out[size] = round(float(np.polyval(fit, low)) - clear - design.lumbar_w / 2)
+    return out
 B = replace(A, key="B", name="CONE CUT + DUAL DENSITY + 2:1 (recommended)",
             wing_h=((0.0, 150.0), (0.45, 145.0), (1.0, 105.0)),
             crest_foam=(F("eva_foam_45c", 5.0), F("eva_foam_perforated", 6.0)),
             lumbar_w=150.0, lumbar_h=150.0,
             lumbar_foam=(F("eva_foam_45c", 6.0), F("eva_foam_30c", 6.0)),
-            stiff_inset=10.0, sizes=SIZES_B, pad_fraction=0.70, pull_ma=2.0)
-BETA_T = {"S": 5.0, "M": 4.0, "L": 3.0, "XL": 0.0}
-BETA_C = {"S": 11.0, "M": 10.0, "L": 8.0, "XL": 5.0}
+            stiff_inset=10.0, stiff_tip_gap=hb.ASIS_STIFF_CLEAR_MM - hb.ASIS_CLEAR_MM - 10.0, sizes=SIZES_B, pull_ma=2.0,
+            beta_deg=BETA_B, lumbar_taper_tan=TAPER_B)
+B = replace(B, wing_len_mm=asis_wing_lengths(B, SIZES_B))
+BETA_T = {k: max(v - 3.0, 0.0) for k, v in BETA_B.items()}     # "T" straighter wing
+BETA_C = {k: v + 4.0 for k, v in BETA_B.items()}                # "C" conical wing
 C_T = replace(B, key="C-T", name="SWAP WING, T (straighter) cone", beta_deg=BETA_T)
 C_C = replace(B, key="C-C", name="SWAP WING, C (conical) cone", beta_deg=BETA_C)
 CONCEPTS = {"C0": C0, "A": A, "B": B}
@@ -139,15 +166,17 @@ def belt_bom(design: BeltDesign, size: str = "M") -> dict:
         add("wing comfort foam", lay[1].material_id, shrink(6.0), lay[1].t)
     if design.stiff_mat:
         add("wing stiffener", design.stiff_mat, shrink(design.stiff_inset), design.stiff_t)
-    lw, lh = design.lumbar_w + 20, design.lumbar_h
-    add("lumbar shell", "cordura_330d_nylon66", (lw + 20) * (lh + 20), qty=1)
-    add("lumbar face", "spacer_mesh_3d", (lw + 20) * (lh + 20), qty=1)
-    for i, Lf in enumerate(design.lumbar_foam):
+    lw, lh = design.lumbar_w, design.lumbar_h          # foam = the bearing pad; shell seam 10 mm outside it
+    add("lumbar shell", "cordura_330d_nylon66", (lw + 20 + 20) * (lh + 20 + 20), qty=1)
+    add("lumbar face", "spacer_mesh_3d", (lw + 20 + 20) * (lh + 20 + 20), qty=1)
+    # current belt: lumbar_foam models stage 1 + the stacked stage-2 wedge; the wedge mass is booked below (130 x 90)
+    stack = design.lumbar_foam[:1] if design.lumbar_foam == C0.lumbar_foam else design.lumbar_foam
+    for i, Lf in enumerate(stack):
         add(f"lumbar foam {i + 1}", Lf.material_id, lw * lh, Lf.t, qty=1)
     tap = max(design.taper(s) for s in design.sizes)
     if tap > 0:                               # terraced wedge: 3 die-cut EVA 45C layers, 100 / 66 / 33 % height
         t_layer = round(tap * lh / 3, 1)
-        add("lumbar terraced wedge (3 steps)", "eva_foam_45c", (lw - 20) * lh * (1 + 0.66 + 0.33), t_layer, qty=1)
+        add("lumbar terraced wedge (3 steps, 120 wide)", "eva_foam_45c", 120.0 * lh * (1 + 0.66 + 0.33), t_layer, qty=1)
     else:
         add("lumbar stage-2 wedge (flat)", "eva_foam_45c", 130 * 90, 8.0, qty=1)
     hw = []
@@ -289,10 +318,10 @@ def asis_table():
     out = {}
     for key, d in (("C0", C0), ("B", B)):
         out[key] = {}
-        for size, (lo, hi) in d.sizes.items():
+        for size in d.sizes:
             vals = []
             for f in all_forms(30):
-                if lo <= f.circ_in <= hi:
+                if d.size_for(f.circ_in) == size:
                     r = hb.evaluate(d, f, 100.0, size=size)
                     vals.append((f.name, round(r.extra["asis_clear"], 0)))
             out[key][size] = vals
@@ -300,16 +329,16 @@ def asis_table():
 
 
 def pocket_room():
-    """Room on each wing for a hipbelt pocket: from 25 mm forward of the crest-lateral point to 20 mm short of the
-    tip (keeps pocket loads off the crest top), at the smallest form in each proposed size."""
+    """Room on each B wing for a hipbelt pocket: wing length less 30 mm at the root (stabilizer strap, wing joint),
+    less the soft tip (stiffener inset + soft-tip gap: no pocket over the unstiffened tip or the 2:1 D-ring), less
+    10 mm. The pocket face must be cut to the developed (curved) wing outline, not a straight rectangle."""
     out = {}
-    for size, (lo, hi) in SIZES_B.items():
-        fs = [f for f in all_forms(30) if lo <= f.circ_in <= hi]
-        f = min(fs, key=lambda x: x.circ)
-        sec = hb.section(f)
-        s_tip = B.lumbar_w / 2 + B.wing_len(size)
-        out[size] = {"form": f.name, "pocket_max_len_mm": round(s_tip - 20 - (sec.s_crest + 25), 0),
-                     "wing_h_at_pocket_mm": [145, 105]}
+    for size in SIZES_B:
+        L = B.wing_len(size)
+        room = L - 30.0 - (B.stiff_inset + B.stiff_tip_gap) - 10.0
+        out[size] = {"wing_len_mm": round(L, 0), "pocket_max_len_mm": round(room, 0),
+                     "current_pocket_len_mm": {"S": 113, "M": 150, "L": 180, "XL": 180}.get(size),
+                     "wing_h_mm_over_pocket": [145, 105]}
     return out
 
 
@@ -322,7 +351,8 @@ def _cmap():
 def fig_pressure_maps(path):
     import matplotlib.pyplot as plt
     from matplotlib.colors import Normalize
-    fig, axes = plt.subplots(2, 4, figsize=(15, 6.6), constrained_layout=True)
+    fig, axes = plt.subplots(2, 4, figsize=(17, 6.4), sharex="col")
+    fig.subplots_adjust(left=0.04, right=0.91, top=0.86, bottom=0.09, wspace=0.12, hspace=0.42)
     norm = Normalize(0, 70)
     for j, (sex, band, lab) in enumerate(DISPLAY):
         f = hb.hip_form(sex, band)
@@ -334,34 +364,33 @@ def fig_pressure_maps(path):
             s_full = np.r_[-r.s[::-1], r.s[1:]]
             P = np.vstack([r.p[::-1], r.p[1:]])
             h = np.r_[r.h[::-1], r.h[1:]]
-            zg = np.linspace(-95, 95, 191)
+            zg = np.linspace(-80, 80, 161)
             grid = np.full((len(zg), len(s_full)), np.nan)
             for kk in range(len(s_full)):
                 uu = np.linspace(-h[kk] / 2, h[kk] / 2, P.shape[1])
                 inside = np.abs(zg) <= h[kk] / 2
                 grid[inside, kk] = np.interp(zg[inside], uu, P[kk])
-            ax.pcolormesh(s_full, zg, grid, cmap=_cmap(), norm=norm, shading="nearest")
+            ax.pcolormesh(s_full, zg, grid, cmap=_cmap(), norm=norm, shading="nearest", rasterized=True)
             ax.axvline(0, color="#888", lw=0.6)
             for sgn in (-1, 1):
-                ax.axvline(sgn * r.sec.s_crest, color="#3a7", lw=0.8, ls="--")
-                ax.axvline(sgn * r.sec.s_asis, color="#c33", lw=0.8, ls=":")
-            ax.set_xlim(-r.sec.half_perim * 0.8, r.sec.half_perim * 0.8)
-            ax.set_ylim(-95, 95)
-            ax.set_aspect("equal")
-            ax.invert_yaxis()      # belt top (u -) at the top of the plot
-            ttl = ("CURRENT" if i == 0 else "RECOMMENDED B") + f"  {lab} {f.name} ({f.circ_in:.0f} in, size {r.size})"
-            ax.set_title(ttl, fontsize=9.5, loc="left")
-            ax.text(0.01, 0.02, f"T {T:.0f} N  peak {m['peak_kpa']:.0f}  mean {m['mean_kpa']:.0f} kPa\n"
-                                f"area {m['area_cm2']:.0f} cm2  crest-top {m['peak_crest_top_kpa']:.0f} kPa",
-                    transform=ax.transAxes, fontsize=8, va="bottom", color="#222",
-                    bbox=dict(fc="white", ec="none", alpha=0.8))
-            ax.set_xlabel("along the belt from the spine (mm)   green -- crest side, red .. ASIS", fontsize=7.5)
-            ax.set_ylabel("up  <-  belt height (mm)  ->  down", fontsize=7.5)
+                ax.axvline(sgn * r.sec.s_crest, color="#1a8f4a", lw=1.0, ls="--")
+                ax.axvline(sgn * r.sec.s_asis, color="#c33", lw=1.0, ls=":")
+            ax.set_xlim(-r.sec.s_asis - 25, r.sec.s_asis + 25)
+            ax.set_ylim(80, -80)                      # belt top at the top of the plot
+            ax.set_yticks([-60, 0, 60], ["top", "crest\nline", "bottom"], fontsize=7)
+            ax.set_facecolor("#f4f2ec")
+            ttl = ("CURRENT" if i == 0 else "RECOMMENDED B") + f" | {f.sex} {f.circ_in:.0f} in, size {r.size}"
+            ax.set_title(ttl + f"\nT {T:.0f} N, peak {m['peak_kpa']:.0f}, mean {m['mean_kpa']:.0f} kPa, "
+                               f"{m['area_cm2']:.0f} cm2, ASIS {m['asis_clear_mm']:+.0f} mm",
+                         fontsize=8.4, loc="left")
             ax.tick_params(labelsize=7)
-    sm = plt.cm.ScalarMappable(norm=norm, cmap=_cmap())
-    fig.colorbar(sm, ax=axes, shrink=0.8, label="contact pressure, kPa (limits: mean 16, peak 48.6, bony 30)")
-    fig.suptitle("Hipbelt contact pressure laid flat (seen from the body), 68 kg, belt tension to hold 80 % at the "
-                 "1.6 g walking peak (mu 0.3), sustained 1 g lumbar couple", fontsize=11)
+            if i == 1:
+                ax.set_xlabel("mm along the belt from the spine (0); green -- crest side, red .. ASIS", fontsize=7.5)
+    cax = fig.add_axes([0.925, 0.12, 0.012, 0.7])
+    fig.colorbar(plt.cm.ScalarMappable(norm=norm, cmap=_cmap()), cax=cax,
+                 label="contact pressure, kPa\n(limits: mean 16, peak 48.6)")
+    fig.suptitle("Hipbelt pressure laid flat, seen from the body. 68 kg, tension to hold 80 % of it at the 1.6 g "
+                 "walking peak (mu 0.3), lumbar couple at 1 g, torso 19 in", fontsize=11.5)
     fig.savefig(path, dpi=110)
     plt.close(fig)
 
@@ -371,27 +400,27 @@ def fig_on_hip(path):
     import matplotlib.pyplot as plt
     from matplotlib.colors import Normalize
     from mpl_toolkits.mplot3d.art3d import Poly3DCollection
-    fig = plt.figure(figsize=(14, 7.2))
+    fig = plt.figure(figsize=(12, 10.5))
     norm = Normalize(0, 70)
     cmap = _cmap()
     cases = [(hb.hip_form("female", 30), "S"), (hb.hip_form("male", 34), "M")]
     k = 1
     for f, lab in cases:
         for d in (C0, B):
-            ax = fig.add_subplot(1, 4, k, projection="3d")
+            ax = fig.add_subplot(2, 2, k, projection="3d")
             k += 1
             T = hb.tension_for_hold(d, f)
             r = hb.evaluate(d, f, T)
             ex = r.sec.ex
             # body rings z -130 .. +110
-            zs = np.linspace(-130, 110, 25)
+            zs = np.linspace(-120, 100, 45)
             polys, cols = [], []
             for zi in range(len(zs) - 1):
                 rings = []
                 for z in (zs[zi], zs[zi + 1]):
                     a = f.a0 - f.tan_lat * z
                     bb = f.b0 - f.tan_post * z
-                    t, P = hb._se_pts(a, f.b0, bb, ex, m=97)
+                    t, P = hb._se_pts(a, f.b0, bb, ex, m=161)
                     rings.append(np.column_stack([P, np.full(len(P), z)]))
                 zc = 0.5 * (zs[zi] + zs[zi + 1])
                 for j in range(len(t) - 1):
@@ -411,18 +440,21 @@ def fig_on_hip(path):
                     cols.append(cmap(norm(pv)) if pv > 0.5 else (0.78, 0.77, 0.74, 1.0))
             pc = Poly3DCollection(polys, facecolors=cols, edgecolors="none")
             ax.add_collection3d(pc)
-            ax.set_xlim(-200, 200)
-            ax.set_ylim(-200, 200)
-            ax.set_zlim(-200, 200)
-            ax.view_init(elev=12, azim=60)
+            ax.set_xlim(-175, 175)
+            ax.set_ylim(-175, 175)
+            ax.set_zlim(-120, 100)
+            ax.set_box_aspect((350, 350, 220), zoom=1.35)
+            ax.view_init(elev=14, azim=50)
             ax.set_axis_off()
             m = hb.metrics(r)
             ax.set_title(f"{'CURRENT' if d is C0 else 'RECOMMENDED B'}\n{lab}: {f.name} ({f.circ_in:.0f} in)\n"
                          f"peak {m['peak_kpa']:.0f} kPa, mean {m['mean_kpa']:.0f}, crest-top {m['peak_crest_top_kpa']:.0f}",
                          fontsize=9)
     sm = plt.cm.ScalarMappable(norm=norm, cmap=cmap)
-    fig.colorbar(sm, ax=fig.axes, shrink=0.55, orientation="horizontal", pad=0.02,
-                 label="pressure on the hip, kPa (rear 3/4 view; grey = no belt contact)")
+    fig.subplots_adjust(left=0.0, right=1.0, top=0.9, bottom=0.1, wspace=0.0, hspace=0.08)
+    cax = fig.add_axes([0.25, 0.05, 0.5, 0.018])
+    fig.colorbar(sm, cax=cax, orientation="horizontal",
+                 label="pressure on the hip, kPa (rear-right 3/4 view, spine at the left; grey = no belt contact)")
     fig.suptitle("Belt pressure on the hip (ANSUR II median forms), 68 kg, tension to hold 80 % at 1.6 g", fontsize=12)
     fig.savefig(path, dpi=100)
     plt.close(fig)
@@ -473,17 +505,17 @@ def fig_sizing(out, path):
         ax.plot([lo, hi], [0.205 - 0.006 * (i % 2)] * 2, color="#555", lw=4, solid_capstyle="butt")
         ax.text((lo + hi) / 2, 0.209, f"{k}", ha="center", fontsize=8, color="#555")
     for i, (k, (lo, hi)) in enumerate(SIZES_B.items()):
-        ax.plot([lo, hi], [0.185 - 0.006 * (i % 2)] * 2, color="#1a8f4a", lw=4, solid_capstyle="butt")
+        ax.plot([lo, hi], [0.185 - 0.008 * (i % 2)] * 2, color="#1a8f4a", lw=4, solid_capstyle="butt")
         ax.text((lo + hi) / 2, 0.189 - 0.012, f"{k}", ha="center", fontsize=8, color="#1a8f4a")
     cov = out["coverage"]
     ax.text(0.99, 0.62, f"current S-XL 26-42 in covers men {cov['current']['male'] * 100:.0f} %, women "
-                        f"{cov['current']['female'] * 100:.0f} %\nproposed 26-44 in covers men "
+                        f"{cov['current']['female'] * 100:.0f} %\nproposed 27-44 in (5 sizes) covers men "
                         f"{cov['proposed']['male'] * 100:.0f} %, women {cov['proposed']['female'] * 100:.0f} %",
             transform=ax.transAxes, ha="right", fontsize=8.5)
     ax.set_xlabel("waist (iliac-crest level) circumference, in")
     ax.set_ylabel("density")
     ax.set_title("Size ranges vs ANSUR II (grey = current, green = proposed)", fontsize=10)
-    ax.legend(fontsize=8, loc="upper left")
+    ax.legend(fontsize=8, loc="center left")
     ax = axes[1]
     for sex, col, mk in (("male", "#2f6f8f", "o"), ("female", "#b5523b", "s")):
         xs, ys, ns = [], [], []
@@ -493,7 +525,7 @@ def fig_sizing(out, path):
             ns.append(f["n"])
         ax.scatter(xs, ys, s=np.array(ns) / 6, color=col, marker=mk, label=f"{sex}: lateral hip cone (median per band)")
     for k, (lo, hi) in SIZES_B.items():
-        ax.plot([lo, hi], [BETA_A[k]] * 2, color="#1a8f4a", lw=3)
+        ax.plot([lo, hi], [BETA_B[k]] * 2, color="#1a8f4a", lw=3)
         ax.plot([lo, hi], [BETA_C[k]] * 2, color="#1a8f4a", lw=1, ls="--")
         ax.plot([lo, hi], [BETA_T[k]] * 2, color="#1a8f4a", lw=1, ls=":")
     ax.text(0.02, 0.04, "green: B pattern cone per size; dashed / dotted = C swap-wing 'C' / 'T' cones\n"
@@ -536,7 +568,7 @@ def recommended_pieces(size: str = "M"):
                                                                (x_c - 45, 200)]))
     pieces.append(Piece("crest-relief insert, perforated EVA 6 mm", list(ip.exterior.coords)[:-1], seam_allowance_mm=0.0,
                         material_id="eva_foam_perforated", piece_id="HB-W5", **common))
-    lw, lh = B.lumbar_w + 20, B.lumbar_h
+    lw, lh = B.lumbar_w, B.lumbar_h
     one = dict(quantity=1, size="all")
     pieces.append(Piece("lumbar shell", [(0, 0), (lw + 20, 0), (lw + 20, lh + 20), (0, lh + 20)], seam_allowance_mm=10.0,
                         material_id="cordura_330d_nylon66", piece_id="HB-L1", **one))
@@ -548,71 +580,82 @@ def recommended_pieces(size: str = "M"):
                         material_id="eva_foam_30c", piece_id="HB-L4", **one))
     for i, frac in enumerate((1.0, 0.66, 0.33)):
         hgt = round(lh * frac)
-        pieces.append(Piece(f"lumbar wedge step {i + 1} EVA 45C 5 mm (top-aligned)", [(0, 0), (lw - 20, 0), (lw - 20, hgt), (0, hgt)],
+        pieces.append(Piece(f"wedge step {i + 1}, EVA 45C 5 mm", [(0, 0), (120, 0), (120, hgt), (0, hgt)],
                             seam_allowance_mm=0.0, material_id="eva_foam_45c", piece_id=f"HB-L5{'abc'[i]}", **one))
     return pieces, form
 
 
 def fig_flat(path):
     import matplotlib.pyplot as plt
-    fig = plt.figure(figsize=(15, 9.6))
-    ax = fig.add_axes([0.03, 0.30, 0.62, 0.62])
-    cols = {"S": "#b5523b", "M": "#1a8f4a", "L": "#2f6f8f", "XL": "#6b4f9c"}
+    fig = plt.figure(figsize=(15, 10.5))
+    ax = fig.add_axes([0.05, 0.42, 0.56, 0.50])
+    cols = {"S": "#b5523b", "M": "#1a8f4a", "L": "#2f6f8f", "XL": "#6b4f9c", "XXL": "#a07a1c"}
+    handles = []
     for size in SIZES_B:
         lo, hi = SIZES_B[size]
         band = int(round((lo + hi) / 2 / 2) * 2)
         form = hb.hip_form("male", band)
         T, Bt, _ = hb.wing_flat(B, form, size)
         P = np.vstack([Bt, T[::-1], Bt[:1]])
-        ax.plot(P[:, 0], P[:, 1], color=cols[size], lw=1.8,
-                label=f"{size} ({lo}-{hi} in): beta {B.beta(size):.0f} deg, bow {hb.flat_sagitta(T, Bt):.1f} mm, "
-                      f"length {B.wing_len(size):.0f} mm")
-        Tc, Bc, _ = hb.wing_flat(C0, form, "M" if size in ("S", "M") else ("L" if size == "L" else "XL"))
+        h, = ax.plot(P[:, 0], P[:, 1], color=cols[size], lw=1.8,
+                     label=f"{size} ({lo}-{hi} in): cone {B.beta(size):.0f} deg, bow {hb.flat_sagitta(T, Bt):.1f} mm, "
+                           f"wing {B.wing_len(size):.0f} mm")
+        handles.append(h)
     T0, B0, _ = hb.wing_flat(C0, hb.hip_form("male", 32), "M")
     P0 = np.vstack([B0, T0[::-1], B0[:1]])
-    ax.plot(P0[:, 0], P0[:, 1], color="#888", lw=1.2, ls="--", label="current M wing (straight trapezoid 140 -> 95)")
+    h, = ax.plot(P0[:, 0], P0[:, 1], color="#888", lw=1.2, ls="--", label="current M wing (straight trapezoid 140 -> 95)")
+    handles.append(h)
     ax.set_aspect("equal")
     ax.grid(True, color="#ddd", lw=0.5)
-    ax.set_xticks(np.arange(-20, 340, 20))
+    ax.set_xticks(np.arange(-20, 341, 20))
     ax.set_yticks(np.arange(-100, 101, 20))
     ax.tick_params(labelsize=7)
-    ax.set_title("Recommended B wing, graded S-XL (seam line, right wing seen from outside; root at x 0, 20 mm grid)",
-                 fontsize=10, loc="left")
-    ax.legend(fontsize=8, loc="lower left")
-    ax.plot([0, 100], [-118, -118], color="k", lw=3)
-    ax.text(50, -126, "100 mm", ha="center", fontsize=8)
-    ax.set_ylim(-135, 105)
-    # M pieces
+    ax.plot([0, 100], [-92, -92], color="k", lw=3)
+    ax.text(50, -99, "100 mm", ha="center", va="top", fontsize=8)
+    ax.set_ylim(-110, 95)
+    ax.set_title("B wing graded S-XXL: seam line, right wing seen from outside, root (centre-plate end) at x 0, 20 mm grid",
+                 fontsize=9.5, loc="left")
+    fig.legend(handles=handles, fontsize=8.5, loc="upper left", bbox_to_anchor=(0.05, 0.40), ncol=2, frameon=False)
     pieces, form = recommended_pieces("M")
-    ax2 = fig.add_axes([0.67, 0.30, 0.32, 0.62])
-    y0 = 0
-    for p in pieces:
-        if not p.piece_id.startswith("HB-L"):
-            continue
-        cut = np.array(p.cut_line()) if p.seam_allowance_mm else np.array(p.outline)
-        seam = np.array(p.outline + [p.outline[0]])
-        ax2.plot(seam[:, 0], seam[:, 1] + y0, color="k", lw=1.0)
-        if p.seam_allowance_mm:
-            ax2.plot(np.r_[cut[:, 0], cut[0, 0]], np.r_[cut[:, 1], cut[0, 1]] + y0, color="#c33", lw=0.8, ls="--")
-        ax2.text(-5, y0 + 5, f"{p.piece_id} {p.name}", fontsize=6.5, ha="right", rotation=0)
-        y0 -= (max(seam[:, 1]) - min(seam[:, 1])) + 45
-    ax2.set_aspect("equal")
-    ax2.set_xlim(-260, 220)
-    ax2.axis("off")
-    ax2.set_title("Lumbar pieces (all sizes), black seam / red cut", fontsize=9)
-    ax3 = fig.add_axes([0.03, 0.03, 0.62, 0.24])
+    ax3 = fig.add_axes([0.05, 0.03, 0.40, 0.27])
+    hs = []
     for p in pieces:
         if not p.piece_id.startswith("HB-W"):
             continue
         seam = np.array(p.outline + [p.outline[0]])
-        ax3.plot(seam[:, 0], seam[:, 1], lw=1.0, label=f"{p.piece_id} {p.name}")
+        hh, = ax3.plot(seam[:, 0], seam[:, 1], lw=1.1, label=f"{p.piece_id} {p.name}")
+        hs.append(hh)
         if p.seam_allowance_mm:
             cut = np.array(p.cut_line())
             ax3.plot(np.r_[cut[:, 0], cut[0, 0]], np.r_[cut[:, 1], cut[0, 1]], color="#c33", lw=0.6, ls="--")
     ax3.set_aspect("equal")
-    ax3.legend(fontsize=6.5, loc="center left", bbox_to_anchor=(1.0, 0.5))
-    ax3.set_title("Size M wing stack: shell / face (cut line red), foams, crest insert, HDPE", fontsize=9, loc="left")
-    ax3.tick_params(labelsize=6)
+    ax3.tick_params(labelsize=6.5)
+    ax3.grid(True, color="#eee", lw=0.5)
+    ax3.set_title("Size M wing stack (red dashed = cut line of shell / face, 10 mm SA)", fontsize=9, loc="left")
+    fig.legend(handles=hs, fontsize=7.5, loc="lower left", bbox_to_anchor=(0.46, 0.05), frameon=False)
+    ax2 = fig.add_axes([0.65, 0.05, 0.34, 0.87])
+    x0 = 0.0
+    y0 = 0.0
+    for p in pieces:
+        if not p.piece_id.startswith("HB-L"):
+            continue
+        seam = np.array(p.outline + [p.outline[0]])
+        w = seam[:, 0].max() - seam[:, 0].min()
+        hgt = seam[:, 1].max() - seam[:, 1].min()
+        ax2.plot(seam[:, 0] + x0, seam[:, 1] + y0 - hgt, color="k", lw=1.0)
+        if p.seam_allowance_mm:
+            cut = np.array(p.cut_line())
+            ax2.plot(np.r_[cut[:, 0], cut[0, 0]] + x0, np.r_[cut[:, 1], cut[0, 1]] + y0 - hgt, color="#c33", lw=0.8, ls="--")
+        ax2.text(x0 + w / 2, y0 - hgt / 2, f"{p.piece_id}\n{p.name}\n{w:.0f} x {hgt:.0f}", fontsize=6.3,
+                 ha="center", va="center")
+        if x0 == 0.0:
+            x0 = 230.0
+        else:
+            x0 = 0.0
+            y0 -= max(hgt, 170) + 40
+    ax2.set_aspect("equal")
+    ax2.axis("off")
+    ax2.set_title("Lumbar pieces (one set, all sizes), black seam / red cut", fontsize=9)
     fig.suptitle("Hipbelt B flat pattern pieces, to scale (DXF + 1:1 tiled PDF in outputs/hipbelt/)", fontsize=12)
     fig.savefig(path, dpi=100)
     plt.close(fig)
