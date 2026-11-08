@@ -80,7 +80,8 @@ def build_materials(p: dict) -> tuple[dict, dict]:
                                  roughnessFactor=0.32),
         "hypalon": PBRMaterial(name="hypalon", baseColorFactor=_hex_factor("#6a5a45"), metallicFactor=0.0,
                                roughnessFactor=0.55),
-        "xlpe": PBRMaterial(name="xlpe_foam", baseColorFactor=_hex_factor("#8d918a"), normalTexture=foam,
+        # BP-02 rails / hood lining: black XLPE (Minicel class), not pale grey (read as a white board in renders)
+        "xlpe": PBRMaterial(name="xlpe_foam", baseColorFactor=_hex_factor("#1e1f1d"), normalTexture=foam,
                             metallicFactor=0.0, roughnessFactor=0.9),
         "titanium": PBRMaterial(name="titanium", baseColorFactor=_hex_factor("#b4b6ba"), metallicFactor=0.85,
                                 roughnessFactor=0.45),
@@ -93,7 +94,7 @@ def build_materials(p: dict) -> tuple[dict, dict]:
         "webbing": fab("webbing", cw["trim"], normal=foam, rough=0.8),
         "meat_strap": fab("meat_strap_38mm", "#cdbf9f", normal=foam, rough=0.8),   # v3.1 MEAT family (bone/stone webbing)
         "harness": fab("harness_shell", cw["harness"], normal=rip, rough=0.88),
-        "spacer": fab("spacer_mesh", "#3b3c34", normal=knit, rough=0.95),
+        "spacer": fab("spacer_mesh", "#262724", normal=knit, rough=0.95),   # BP-01 black spacer mesh
         "camo": fab("camo_owner_base", "#ffffff", tex=camo),
         "game_bag": fab("game_bag_cotton", "#ffffff", normal=knit, rough=1.0, tex=TX.game_bag(512)),
         "bone": PBRMaterial(name="bone", baseColorFactor=_hex_factor("#e7dcc2"), metallicFactor=0.0, roughnessFactor=0.6),

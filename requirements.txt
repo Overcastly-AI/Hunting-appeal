@@ -16,3 +16,5 @@ scikit-image>=0.22    # huntkit.gendesign: marching cubes, skeleton (min member 
 manifold3d>=2.4       # huntkit.gendesign: exact boolean union/difference for printable STL
 threadpoolctl>=3.0    # huntkit.gendesign: pin BLAS threads (OpenBLAS thrash in AMG/CG)
 pypardiso>=0.4      # MKL PARDISO direct solver for huntkit.gendesign.frame_topopt (SuperLU fallback if absent)
+# optional: bpy==5.0.1   (huntkit.viz3d.cycles_render, Blender Cycles renders; CPython 3.11 only, ~1 GB;
+#                          install in a venv OUTSIDE the repo, see huntkit/viz3d/README.md)
