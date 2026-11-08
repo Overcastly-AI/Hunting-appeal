@@ -232,6 +232,7 @@ function visibleFor(name, torso) {
   if (p.variant === 'full' && !state.full) return false;
   if (p.variant === 'rolled' && state.full) return false;
   if (p.variant === 'lid' && !state.lid) return false;
+  if (p.variant === 'nolid' && state.lid) return false;
   if (p.gap != null && Math.abs(p.gap - curGap()) > 0.5) return false;
   if (p.group === 'mannequin') return state.mannequin && explodeT < 0.02;
   if (p.group === 'fea') return state.fea;
@@ -318,6 +319,10 @@ const VIEWS = {
   attach_low:{az:70, el:4, zoom:1, box:[-40, -10, 15, 215, 160, 380]},
   hood:    {az:-138, el:28, zoom:1, box:[-215, -40, 640, 215, 120, 780]},
   bow:     {az:62, el:8, zoom:1, box:[60, 40, 300, 240, 300, 680]},
+  // CORRIE (concept, 2026-11-08): door / pouch / wing close-ups
+  door:    {az:-24, el:12, zoom:1, box:[-230, 0, 20, 230, 330, 900]},
+  pouch:   {az:-34, el:34, zoom:1, box:[-200, -40, 950, 200, 280, 1230]},
+  wing:    {az:58, el:10, zoom:1, box:[-60, -20, 60, 260, 330, 980]},
   float:   {az:72,  el:12, zoom:1},
   float_links:{az:62, el:12, zoom:1, box:[-60, -20, 400, 215, 300, 620]},
   bagoff:  {az:48,  el:14, zoom:1},

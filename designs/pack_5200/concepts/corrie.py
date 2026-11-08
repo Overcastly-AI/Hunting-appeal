@@ -50,11 +50,27 @@ SLIDER8_G = 4.0          # ASSUMPTION (bag_weight_plan.md: #8 slider 4.0 g)
 CORD_PULL_G = 1.5        # ASSUMPTION: 3 mm Dyneema loop 120 mm + rubber sleeve, per slider
 
 
-def make() -> BC.Concept:
-    c = BC.Concept(key=SLUG, name=NAME, kind="box",
+# Revisions. A (2026-11-07): flat-panel rule volume 85.2 L (collar seam solved). The cloth sim (2026-11-08,
+# huntkit/clothsim/corrie_bag.py, scenarios corrie_PR15/19/23) showed a box of flat panels stuffs to ~97 L (fill) /
+# ~102 L (packed) because the flat faces bulge, against 86-87 L for SPINE, and pushes the 15 in meat-case CG to 198 mm
+# (rev C basis 190). B (2026-11-08, DEFAULT): same collar seam (z 736.3), depth scaled x 0.894 (bottom 190 -> 170,
+# shoulder nominal 302 -> 270 mm) so the SEWN (simulated) volume matches SPINE's sewn volume. The flat-panel rule
+# volume of rev B is then ~76 L: for a box, the rule under-counts the stuffed bag (R-01's +/-5 % assumption does not
+# hold for flat panels).
+REVS = {"A": {"d_bot": BC.D_BOT, "d_nom": BC.D_MAX, "z_c": None},
+        "B": {"d_bot": 170.0, "d_nom": 270.0, "z_c": 736.3}}
+REV = "B"
+
+
+def make(rev: str | None = None) -> BC.Concept:
+    r = REVS[rev or REV]
+    c = BC.Concept(key=SLUG, name=NAME, kind="box", d_bot=r["d_bot"], d_nom=r["d_nom"],
                    tagline="Box body, side compression wings, horseshoe door, roll-top, top pouch",
                    access="roll-top + horseshoe #10 door on the aft face z 110-650 + 4 L top pouch")
-    c.solve()
+    if r["z_c"] is None:
+        c.solve()
+    else:
+        c.z_c = r["z_c"]
     return c
 
 
@@ -202,10 +218,10 @@ def pouch_cg_shift(c, kg=1.0, rated=68.0):
     return {"pouch_centre_y": round(yc, 0), "pouch_centre_z": round(zc, 0), "kg": kg, "rated_kg": rated, "zc": zc, "yc": yc}
 
 
-def numbers():
-    c = make()
+def numbers(rev: str | None = None):
+    c = make(rev)
     v = BC.volumes(c)
-    opt, naive = build(c, True), build(make(), False)
+    opt, naive = build(c, True), build(make(rev), False)
     m, mn = BC.metrics(opt), BC.metrics(naive)
     return c, opt, naive, m, mn, v
 

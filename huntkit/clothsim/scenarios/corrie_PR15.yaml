@@ -1,0 +1,13 @@
+# CORRIE (owner's pick 2026-11-07; designs/pack_5200/analysis/corrie_body.md) on the 15 in setting:
+# the concept's flat pieces (huntkit/clothsim/corrie_bag.py), crown hood (pocket) on B-01 / the collar, fixed-length
+# top guys to the B-22 tabs at x +/-149, z 695 on the hinge band B-02h. Everything else as the SPINE PR15 run.
+extends: pack5200_v31_att_PR15.yaml
+name: corrie_PR15
+bag: corrie
+attachments:
+  pocket:
+    pieces: [B-01, B-06]
+  ties:
+    list:
+      - {id: TG_R, pieces: [B-02h, B-03R], at: [149.0, 695.0], anchor: [100.0, 22.7, 601.0], mode: elastic, pretension_n: 30.0}
+      - {id: TG_L, pieces: [B-02h, B-03L], at: [-149.0, 695.0], anchor: [-100.0, 22.7, 601.0], mode: elastic, pretension_n: 30.0}

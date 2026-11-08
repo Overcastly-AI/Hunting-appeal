@@ -1,0 +1,116 @@
+"""CORRIE renders in the viz3d pipeline (same materials, owner camo texture, lighting, frame, harness, mannequin and
+headless three.js renderer as the SPINE renders outputs/screens/2026110x_pack3d_*.png).
+
+    python designs/pack_5200/concepts/corrie_viz3d.py        # GLB + offline viewer + PNGs (~6 min)
+
+Writes outputs/pack3d_corrie/{corrie.glb, corrie_viewer.html} and outputs/screens/20261108_corrie_<n>.png:
+1 3/4 rear  2 side  3 door open  4 wing on a tripod  5 top pouch  6 float meat mode  7 SPINE vs CORRIE (same camera)
+"""
+from __future__ import annotations
+
+import json
+import shutil
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(ROOT))
+
+from huntkit.viz3d.cli import shrink_png  # noqa: E402
+from huntkit.viz3d.corrie import corrie_pack  # noqa: E402
+from huntkit.viz3d.export import build_materials, export_glb, manifest  # noqa: E402
+from huntkit.viz3d.params import load_params  # noqa: E402
+from huntkit.viz3d.viewer import build_html  # noqa: E402
+
+OUT = ROOT / "outputs" / "pack3d_corrie"
+SCREENS = ROOT / "outputs" / "screens"
+DOCS = ROOT / "docs" / "screens"
+DATE = "20261108"
+
+SHOTS = [
+    dict(n=1, view="hero", state={"mode": "pack", "mannequin": True},
+         caption="CORRIE: 3/4 rear, 19 in torso",
+         sub="Cloth-sim drape of the flat pieces at 68 kg; horseshoe door, side wings with G-hook straps, roll-top "
+             "clipped to the sides, 4 L top pouch"),
+    dict(n=2, view="side", state={"mode": "pack", "mannequin": True},
+         caption="CORRIE: side profile",
+         sub="Wing over the side gusset; guys from the crown hood to B-22 at z 695; pouch seated on the closed roll"),
+    dict(n=3, view="door", state={"mode": "pack", "full": True, "mannequin": True},
+         caption="CORRIE: horseshoe door open",
+         sub="Door hinged at z 650 swings up; IM1-IM3 (bone, 38 mm) and the floor reachable; wings stay cinched"),
+    dict(n=4, view="wing", state={"mode": "pack", "lid": True, "mannequin": True},
+         caption="CORRIE: tripod under the right wing",
+         sub="Two G-hook straps to webbing loops in the aft corner seam, outboard of the door zip"),
+    dict(n=5, view="pouch", state={"mode": "pack", "harness": False},
+         caption="CORRIE: top pouch on the roll",
+         sub="4.0 L boxed pouch, #8 zip on the aft edge with a glove pull, 2 rear + 2 front G-hook straps; roll clips"),
+    dict(n=6, view="float", state={"mode": "pack", "haul": True, "gap": 170.0, "mannequin": True},
+         caption="CORRIE: float meat mode (170 mm loop)",
+         sub="Quarter in the US1/US2 cradle under IM1-IM3; bag hung upright on the B-24 links; W1-W3 round both"),
+]
+
+
+def render(html: Path, shots: list, width=800, height=600, scale=2):
+    cfg = {"html": str(html.resolve()), "width": width, "height": height, "scale": scale, "shots": shots}
+    with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as tf:
+        json.dump(cfg, tf)
+    subprocess.run(["node", str(ROOT / "huntkit" / "viz3d" / "render.js"), tf.name], check=True,
+                   env={**__import__("os").environ, "NODE_PATH": "/opt/node22/lib/node_modules"})
+
+
+def side_by_side(spine_png: Path, corrie_png: Path, out: Path):
+    from PIL import Image, ImageDraw, ImageFont
+    a, b = Image.open(spine_png).convert("RGB"), Image.open(corrie_png).convert("RGB")
+    h = max(a.height, b.height)
+    im = Image.new("RGB", (a.width + b.width, h + 70), (244, 243, 239))
+    im.paste(a, (0, 70))
+    im.paste(b, (a.width, 70))
+    d = ImageDraw.Draw(im)
+    try:
+        f = ImageFont.truetype("DejaVuSans-Bold.ttf", 40)
+    except OSError:
+        f = ImageFont.load_default()
+    d.text((30, 14), "SPINE v3.1 (released)", fill=(30, 30, 30), font=f)
+    d.text((a.width + 30, 14), "CORRIE (same camera)", fill=(30, 30, 30), font=f)
+    im.save(out, optimize=True)
+    shrink_png(out)
+
+
+def main():
+    p = load_params(str(ROOT / "designs" / "pack_5200" / "spec.yaml"))
+    pack = corrie_pack(p)
+    OUT.mkdir(parents=True, exist_ok=True)
+    mats, info = build_materials(p)
+    glb, _ = export_glb(pack, OUT / "corrie.glb", mats=mats)
+    m = dict(pack.metrics)
+    m["torsos"] = {f"{k:.1f}": v for k, v in m["torsos"].items()}
+    html = build_html(glb, manifest(pack), m, info, OUT / "corrie_viewer.html", title="Pack 5200 CORRIE (concept)")
+    shots = []
+    for s in SHOTS:
+        shots.append({**s, "file": str((SCREENS / f"{DATE}_corrie_{s['n']}.png").resolve())})
+    shots.append(dict(n=7, view="hero", state={"mode": "pack"}, caption="CORRIE", sub="",
+                      file=str((OUT / "corrie_hero_compare.png").resolve())))
+    render(html, shots)
+    for s in shots[:-1]:
+        shrink_png(Path(s["file"]))
+    # SPINE at the same camera: the released viewer, same view / state
+    spine_html = ROOT / "outputs" / "pack3d" / "pack5200_viewer.html"
+    sp = OUT / "spine_hero_compare.png"
+    if spine_html.exists():
+        render(spine_html, [dict(view="hero", state={"mode": "pack"}, caption="SPINE v3.1", sub="", file=str(sp.resolve()))])
+        side_by_side(sp, OUT / "corrie_hero_compare.png", SCREENS / f"{DATE}_corrie_7.png")
+    for n in (1, 3, 4, 7):
+        f = SCREENS / f"{DATE}_corrie_{n}.png"
+        if f.exists():
+            shutil.copy2(f, DOCS / f.name)
+    print("GLB", glb, "HTML", html)
+    for n in range(1, 8):
+        f = SCREENS / f"{DATE}_corrie_{n}.png"
+        if f.exists():
+            print("PNG", f, f"{f.stat().st_size / 1e6:.2f} MB")
+
+
+if __name__ == "__main__":
+    main()

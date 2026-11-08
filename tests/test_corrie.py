@@ -19,7 +19,10 @@ def corrie():
 
 def test_volume_width_and_pouch(corrie):
     c, b, naive, m, mn, v = corrie
-    assert v["volume_L"] == pytest.approx(BC.TARGET_L, abs=0.05)
+    # rev B: depth scaled so the SEWN (cloth-sim) volume matches SPINE's; the flat-panel rule volume is ~76 L
+    assert CO.REV == "B"
+    assert 74.0 < v["volume_L"] < 78.0
+    assert BC.volumes(CO.make("A"))["volume_L"] == pytest.approx(BC.TARGET_L, abs=0.05)
     assert v["width_max_in"] == pytest.approx(15.5, abs=0.05)
     assert v["max_depth_in"] <= 12.0
     assert b.extra["pouch_L"] == pytest.approx(4.0, abs=0.1)
@@ -59,3 +62,13 @@ def test_optimised_beats_naive_and_keeps_interface(corrie):
 def test_cloth_sim_estimate_inside_rev_c(corrie):
     est = CO.cloth_sim_estimate(corrie[5]["cg_y"])
     assert est["inside_rev_c"]
+
+
+def test_clothsim_loader_pieces_weld_and_develop():
+    from huntkit.clothsim.corrie_bag import load_corrie_patterns
+    pat = load_corrie_patterns(verbose=False)
+    assert set(pat["dev_ids"]) == {"B-01", "B-03", "B-02u", "B-02door", "B-02h"}
+    for pid in pat["dev_ids"]:
+        assert pat["pieces"][pid]["strain_p99"] < 2.0            # planar facets develop ~exactly
+    assert pat["pieces"]["B-06"]["height_to_fill"] == pytest.approx(CO.make().dome_h)
+    assert pat["constants"]["Z_COLLAR"] == pytest.approx(736.3)

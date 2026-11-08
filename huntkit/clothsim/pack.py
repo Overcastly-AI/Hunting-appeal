@@ -173,7 +173,7 @@ def piece_specs(pat: dict, scen: dict) -> list[PieceSpec]:
         return f.scaled(**kw) if kw else f
 
     specs = []
-    for pid in DEV_IDS:
+    for pid in pat.get("dev_ids", DEV_IDS):
         d = pat["pieces"][pid]
         m3 = _tri_map(d["V2"], d["V3"], d["tris"])
         sides = [("R", False), ("L", True)] if pid == "B-03" else [("", False)]
@@ -362,7 +362,14 @@ class PackModel:
         self.verbose = verbose
         ms = scen["mesh"]
         self.h = float(ms["fine_h"] if fine else ms["h"])
-        self.pat = load_patterns(verbose)
+        bag = scen.get("bag", "spine")
+        if bag == "spine":
+            self.pat = load_patterns(verbose)
+        elif bag == "corrie":       # concept body (designs/pack_5200/concepts/corrie.py), 2026-11-08
+            from .corrie_bag import load_corrie_patterns
+            self.pat = load_corrie_patterns(verbose)
+        else:
+            raise KeyError(f"unknown bag {bag!r}")
         self.c = self.pat["constants"]
         specs = piece_specs(self.pat, scen)
         ref = np.array([0.0, 150.0, 450.0])
