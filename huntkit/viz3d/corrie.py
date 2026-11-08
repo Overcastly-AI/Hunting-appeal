@@ -758,13 +758,15 @@ def _pouch(S, P, line, clip_paths, yf_of):
         sag_top = 6.0 * (1 - (x / (L / 2)) ** 2).clip(0) * (1 - (y / (W / 2)) ** 2).clip(0)
         z = base + h - sag_top * (h / Hh)
         return np.column_stack([x, yr + y, z])
-    body = G.superellipsoid([0, 0, Hh / 2], [L / 2, W / 2, Hh / 2], e_ns=0.22, e_ew=0.16, nu=96, nv=30)
-    Vl = body.vertices.copy()
+    se = G.superellipsoid([0, 0, Hh / 2], [L / 2, W / 2, Hh / 2], e_ns=0.22, e_ew=0.16, nu=96, nv=30)
+    body = trimesh.Trimesh(se.vertices, se.faces, process=False)
+    body.merge_vertices(merge_tex=True, merge_norm=True)          # weld the u-seam: no shading line
+    Vl = np.asarray(body.vertices).copy()
     Vm = pmap(Vl)
     fn = trimesh.Trimesh(Vl, body.faces, process=False).face_normals
     topf = fn[:, 2] > 0.80
     uvp = np.column_stack([Vl[:, 0], Vl[:, 1]]) / G.TILE_MM
-    side_uv = body.metadata["uv"]
+    side_uv = np.column_stack([Vl[:, 0] + Vl[:, 1], Vl[:, 2]]) / G.TILE_MM
     pm = _sub(Vm, body.faces[~topf], side_uv)
     pc = _sub(Vm + np.array([0, 0, 0.6]), body.faces[topf], uvp)
     # seam piping round the top panel and the base
@@ -870,11 +872,12 @@ def _wing(S, sx, a_of, yf_of, yb_of, tri=None):
     clear = 3.0
     for _ in range(3):
         flat = S.push_out(flat, clear)
-        if tri is not None:
-            d = flat[:, :2] - [tri["x"], tri["y"]]
-            r = np.linalg.norm(d, axis=1)
-            m = (r < tri["R"] + 2.5) & (flat[:, 2] > tri["z0"]) & (flat[:, 2] < tri["z1"])
-            flat[m, :2] = np.array([tri["x"], tri["y"]]) + d[m] / r[m, None] * (tri["R"] + 2.5)
+        if tri is not None:     # the wing passes OUTBOARD of the leg bundle (push along x)
+            Rc = tri["R"] + 2.5
+            dy = flat[:, 1] - tri["y"]
+            m = (np.abs(dy) < Rc) & (flat[:, 2] > tri["z0"] - 20) & (flat[:, 2] < tri["z1"] + 20)
+            xneed = sx * (sx * tri["x"] + np.sqrt(np.clip(Rc ** 2 - dy[m] ** 2, 0, None)))
+            flat[m, 0] = np.where(sx * flat[m, 0] < sx * xneed, xneed, flat[m, 0])
     P = flat.reshape(nu + 1, nv + 1, 3)
     # light relaxation across the panel so the push-out reads as cloth over a bump, not a kink
     for _ in range(3):
@@ -882,6 +885,12 @@ def _wing(S, sx, a_of, yf_of, yb_of, tri=None):
         Q[1:-1] = 0.5 * P[1:-1] + 0.25 * (P[:-2] + P[2:])
         P = Q
         flat = S.push_out(P.reshape(-1, 3), clear)
+        if tri is not None:
+            Rc = tri["R"] + 2.5
+            dy = flat[:, 1] - tri["y"]
+            m = (np.abs(dy) < Rc) & (flat[:, 2] > tri["z0"] - 20) & (flat[:, 2] < tri["z1"] + 20)
+            xneed = sx * (sx * tri["x"] + np.sqrt(np.clip(Rc ** 2 - dy[m] ** 2, 0, None)))
+            flat[m, 0] = np.where(sx * flat[m, 0] < sx * xneed, xneed, flat[m, 0])
         P = flat.reshape(nu + 1, nv + 1, 3)
     du = np.gradient(P, axis=0)
     dv = np.gradient(P, axis=1)

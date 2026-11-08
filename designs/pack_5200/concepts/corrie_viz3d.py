@@ -9,6 +9,7 @@ Writes outputs/pack3d_corrie/{corrie.glb, corrie_viewer.html} and outputs/screen
 from __future__ import annotations
 
 import json
+import math
 import shutil
 import subprocess
 import sys
@@ -54,6 +55,11 @@ SHOTS = [
          caption="CORRIE: float meat mode (170 mm / 6.7 in loop)",
          sub="Quarter in the US1/US2 cradle under IM1-IM3; bag hung upright on the B-24 links; W1-W3 round both"),
 ]
+# shot 7: ONE fixed camera for both bags (hero angle az -38 / el 14, fov 30), so sizes compare 1:1
+_AZ, _EL, _D = math.radians(-38), math.radians(14), 3.05
+_T = [0.0, 0.56, 0.16]                      # glTF metres: x, z (up), y (aft)
+CAM7 = {"pos": [_T[0] + _D * math.sin(_AZ) * math.cos(_EL), _T[1] + _D * math.sin(_EL),
+                _T[2] + _D * math.cos(_AZ) * math.cos(_EL)], "tgt": _T, "fov": 30}
 ONLY = {int(x) for x in __import__("os").environ.get("CORRIE_SHOTS", "").split(",") if x.strip()}
 
 
@@ -69,16 +75,23 @@ def side_by_side(spine_png: Path, corrie_png: Path, out: Path):
     from PIL import Image, ImageDraw, ImageFont
     a, b = Image.open(spine_png).convert("RGB"), Image.open(corrie_png).convert("RGB")
     h = max(a.height, b.height)
-    im = Image.new("RGB", (a.width + b.width, h + 70), (244, 243, 239))
-    im.paste(a, (0, 70))
-    im.paste(b, (a.width, 70))
+    im = Image.new("RGB", (a.width + b.width, h + 120), (244, 243, 239))
+    im.paste(a, (0, 120))
+    im.paste(b, (a.width, 120))
     d = ImageDraw.Draw(im)
     try:
         f = ImageFont.truetype("DejaVuSans-Bold.ttf", 40)
     except OSError:
         f = ImageFont.load_default()
     d.text((30, 14), "SPINE v3.1 (released)", fill=(30, 30, 30), font=f)
-    d.text((a.width + 30, 14), "CORRIE (same camera)", fill=(30, 30, 30), font=f)
+    d.text((a.width + 30, 14), "CORRIE (same fixed camera)", fill=(30, 30, 30), font=f)
+    try:
+        fs = ImageFont.truetype("DejaVuSans.ttf", 26)
+    except OSError:
+        fs = ImageFont.load_default()
+    d.text((30, 66), "collar rolled down, 61 L (released render)", fill=(90, 90, 82), font=fs)
+    d.text((a.width + 30, 66), "cloth-sim packed case, 92 L closed (roll at the sim closure line) + 4 L pouch",
+           fill=(90, 90, 82), font=fs)
     im.save(out, optimize=True)
     shrink_png(out)
 
@@ -99,7 +112,7 @@ def main():
         shots.append({**s, "file": str((SCREENS / f"{DATE}_corrie_{s['n']}.png").resolve())})
     do7 = not ONLY or 7 in ONLY
     if do7:
-        shots.append(dict(n=7, view="hero", state={"mode": "pack"}, caption="CORRIE", sub="",
+        shots.append(dict(n=7, cam=CAM7, state={"mode": "pack"}, caption="CORRIE", sub="",
                           file=str((OUT / "corrie_hero_compare.png").resolve())))
     render(html, shots)
     for s in shots[:-1] if do7 else shots:
@@ -108,7 +121,7 @@ def main():
     spine_html = ROOT / "outputs" / "pack3d" / "pack5200_viewer.html"
     sp = OUT / "spine_hero_compare.png"
     if spine_html.exists() and do7:
-        render(spine_html, [dict(view="hero", state={"mode": "pack"}, caption="SPINE v3.1", sub="", file=str(sp.resolve()))])
+        render(spine_html, [dict(cam=CAM7, state={"mode": "pack"}, caption="SPINE v3.1", sub="", file=str(sp.resolve()))])
         side_by_side(sp, OUT / "corrie_hero_compare.png", SCREENS / f"{DATE}_corrie_7.png")
     for n in (1, 3, 4, 7):
         f = SCREENS / f"{DATE}_corrie_{n}.png"

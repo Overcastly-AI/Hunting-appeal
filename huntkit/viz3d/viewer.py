@@ -320,8 +320,8 @@ const VIEWS = {
   hood:    {az:-138, el:28, zoom:1, box:[-215, -40, 640, 215, 120, 780]},
   bow:     {az:62, el:8, zoom:1, box:[60, 40, 300, 240, 300, 680]},
   // CORRIE (concept, 2026-11-08): door / pouch / wing close-ups
-  door:    {az:-24, el:12, zoom:1, box:[-230, 0, 20, 230, 330, 900]},
-  pouch:   {az:-34, el:34, zoom:1, box:[-200, -40, 950, 200, 280, 1230]},
+  door:    {az:-22, el:10, zoom:1, box:[-240, 0, 20, 240, 340, 1060]},
+  pouch:   {az:-36, el:28, zoom:1, box:[-310, 20, 870, 320, 320, 1070]},
   wing:    {az:58, el:10, zoom:1, box:[-60, -20, 60, 260, 330, 980]},
   float:   {az:72,  el:12, zoom:1},
   float_links:{az:62, el:12, zoom:1, box:[-60, -20, 400, 215, 300, 620]},

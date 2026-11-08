@@ -101,16 +101,66 @@ lid. All from `corrie.build(optimised=False)`, same metric code.
 | Beginner hours | ~32 h | ASSUMPTION model (`bag_concepts.HOURS`) |
 | Uniform-fill CG | y 148.6 / z 557.7 mm (SPINE 148.2 / 592.5) | concept integrator |
 | With 1 kg in the pouch (68 kg rated) | y 147.5 / z 566 mm | lever sum (pouch centre y 76, z 1131) |
-| **Loaded CG, cloth sim** | **NOT RUN.** Estimate 189 / 179 / 170 mm (fill) and 181 / 174 / 166 mm (meat) at 15 / 19 / 23 in | SPINE sim peel added to CORRIE's geometric CG (`corrie.cloth_sim_estimate`). The shorter box should peel less |
+| **Loaded CG, cloth sim (rev B, 2026-11-08)** | **190.4 / 172.3 / 136.4 mm (fill) and 185.6 / 168.5 / 139.2 mm (meat)** at 15 / 19 / 23 in; inside rev C (205 / 190 mm). PROVISIONAL: 7 of 9 coarse cases did not converge | `huntkit/clothsim` scenarios `corrie_PR{15,19,23}`, table in §5a. Replaces the earlier estimate 189 / 179 / 170 and 181 / 174 / 166 mm |
 
-**Cloth sim feasibility.** `huntkit/clothsim/pack.py` loads the v3.1 release pieces by id (B-01, B-01b, B-01u,
-B-02a–d, B-03, B-05, B-06) from `patterns_v31.py`, and the hinge, hooks, hood and wraps hang off those ids. A box
-body needs a new pattern loader that maps CORRIE's pieces onto those roles. That is a code change to a shared module
-plus about 9 runs of roughly 15 min (3 torsos × fill / meat / packed), so it was not run in this pass (hand-off §8).
+### 5a. Cloth sim, rev B (depth ×0.894), run 2026-11-08
 
-**Rev C impact (flag).** The estimate sits inside HA-LS-1 rev C (bag cases 205 mm, meat cases 190 mm). The 15 in fill
-case is the tightest, at 189 against the 190 mm meat basis, exactly as SPINE is today. The guy angle change (D5) and
-the 1 kg pouch at z ~1131 have to be in the sim before rev C can be signed off for CORRIE.
+Box-body loader `huntkit/clothsim/corrie_bag.py` (pieces B-01, B-03R/L, B-02u, B-02door, B-02h, B-05, B-06 on the
+unchanged frame interface; door zip modelled as a closed sewn seam; wings, pouch, swells and binding not modelled).
+Outputs: `outputs/clothsim/corrie_PR{15,19,23}/` (h 40 mm), `outputs/clothsim/corrie_PR19_fine/` (h 25 mm, fill +
+packed only, the render drape). Rev A is archived as `corrie_revA_PR*`. Rev C limits from HA-LS-1: 205 mm bag
+(fill) cases, 190 mm meat cases.
+
+| Run | Case | Converged | Closed vol L (cu in) | Contents CG y mm (rev C limit) | e_max % (piece) | max warp / weft % | max shear deg | worst seam N/mm (SF) |
+|---|---|---|---|---|---|---|---|---|
+| 15 in | fill 68 kg | NO (res 1.58 N) | 88.9 (5424) | 190.4 (205, margin 14.6) | 17.0 (B-03R) | 1.89 / 1.31 | 35.7 | 1.42 B-03L/B-05 (14.5) |
+| 15 in | meat 38 kg | yes | 88.8 (5418) | 185.6 (190, margin **4.4**) | 14.3 (B-03R) | 1.74 / 1.23 | 27.2 | 1.68 B-03L/B-05 (12.2) |
+| 15 in | packed 0.5 kPa | NO (res 1.42 N) | 92.8 (5662) | 169.3 (n/a) | 3.7 (B-06) | 1.18 / 0.42 | 5.6 | 0.30 door/B-02u (68) |
+| 19 in | fill | NO (res 1.86 N) | 89.0 (5432) | 172.3 (205, margin 32.7) | 17.3 (B-03L) | 2.66 / 1.48 | 31.2 | 1.24 B-03L/B-05 (16.5) |
+| 19 in | meat | NO (res 1.73 N) | 88.7 (5410) | 168.5 (190, margin 21.5) | 13.2 (B-03R) | 2.13 / 1.37 | 24.5 | 1.52 B-03L/B-05 (13.5) |
+| 19 in | packed | NO (res 1.54 N) | 92.8 (5664) | 161.8 (n/a) | 4.2 (B-03R) | 1.36 / 0.45 | 6.6 | 0.32 door/B-02u (64) |
+| 23 in | fill | NO (res 1.90 N) | 87.2 (5324) | 136.4 (205, margin 68.6) | 16.9 (B-03L) | 2.33 / 1.38 | 27.5 | 1.18 B-03L/B-05 (17.4) |
+| 23 in | meat | NO (res 3.16 N) | 86.8 (5296) | 139.2 (190, margin 50.8) | 12.0 (B-05) | 2.21 / 1.38 | 22.9 | 1.42 B-03L/B-05 (14.4) |
+| 23 in | packed | yes | 91.3 (5571) | 142.1 (n/a) | 5.6 (B-03R) | 1.56 / 0.59 | 7.9 | 0.42 door/B-02u (48) |
+| 19 in fine | fill | NO (res 1.08 N) | 87.3 (5328) | 172.9 (205, margin 32.1) | 19.6 (B-02u) | 5.35 / 2.17 | 32.3 | **3.02 door/B-02u (6.8)** |
+| 19 in fine | packed | NO (res 2.44 N) | 92.2 (5623) | 156.4 (n/a) | 11.2 (B-02u) | 3.17 / 1.07 | 38.2 | 1.81 door/B-02u (11.3) |
+
+Volume: 87–89 L (5300–5430 cu in) loaded, 91–93 L (5570–5660 cu in) under the 0.5 kPa packed pressure, against
+SPINE's 86–87 L in the same sim and the 85.2 L (5199 cu in) R-01 design number. The pouch (4.0 L) is not in any of these.
+
+**How far to trust this (read before using any number above).**
+1. **Non-convergence.** Only 2 of 11 cases converged (15 in meat, 23 in packed). The others stopped at residuals of
+   1.1–3.2 N (stalled or max_iter). The CGs are therefore PROVISIONAL. They all pass rev C, and the margins are large
+   except **15 in meat at 4.4 mm**, the one converged case. That case decides rev C sign-off for CORRIE: it passes, but
+   4.4 mm is inside plausible model error. The 1 kg pouch does not eat the margin (by the §5 lever sum it moves y
+   ~1 mm toward the frame), but it adds height. Hold rev C sign-off for CORRIE until the
+   15 in fill / meat cases converge (smaller load steps, more iterations) and the pouch mass is in the sim.
+2. **The 12–20 % "strain" is not fabric stretch.** e_max is the principal Green strain including in-plane shear. In
+   the same cases warp and weft strain stay at 1.1–2.7 % (5.4 % fine mesh), but shear reaches 23–36° in the side
+   gussets and floor, and the gussets show 72–96 % wrinkle area. So the gussets are over-length and buckled under the
+   wings' footprint, and the shear sits at the B-03/B-05 corners, where the sim pinches the box corner into a few
+   triangles. Tensions there are low (0.5–2.9 N/mm). Read it as "excess cloth, folded", not "about to tear". Two
+   actions: (a) check whether the B-03 depth (d_bot 170 → d_nom 270) is longer than the filled shape needs (the box
+   rounds out, so the gusset has spare width), and (b) re-mesh the floor corners finer before quoting a strain.
+3. **Seam loads are not mesh-converged.** The door seam carries 0.89–0.96 N/mm (SF 21–23) at h 40 mm, but **3.02 N/mm
+   (SF 6.8)** at h 25 mm. A 3.4× change between meshes means the peak is a stress concentration at the door's R 60
+   corners that the mesh has not resolved. Use the fine value (SF 6.8) as the working number. It is still above the
+   seam requirement, but the PT-7 door-zip proof test (§6.1) stays mandatory.
+4. **Metadata.** Each `results.json` still names `patterns_v31.py build_body` as its pattern source (copied from the
+   SPINE scenario template). The pieces listed in `mesh.pieces` are CORRIE's (B-02door, B-02u, B-02h), so the runs
+   are CORRIE. The source tag is stale and needs fixing in `huntkit/clothsim` before release.
+5. The sim closes the collar flat at the fill line. It does not model the roll, the clips, the wings or the
+   pouch, so the side bulge under the wings is an upper bound.
+
+**Rev C impact.** Every rev B CG is inside HA-LS-1 rev C (205 mm bag, 190 mm meat). The tightest case is 15 in meat
+(185.6 mm, margin 4.4 mm), not 15 in fill as the estimate said. The estimate was close for 15 in (189 vs 190.4) and
+pessimistic for 19 and 23 in: the box peels less than SPINE at the longer torsos. Sign-off is held per item 1 above.
+
+**Render-vs-pattern conflict found while rendering (pattern-maker).** The chevron kick plate SH-01a, as drafted
+(peak 140 mm at the aft centre, `accents_common`), reaches z 175 at the centre. The door zip runs at z 110 there,
+so the plate would cross the zip and the door's R 60 corners. In the renders the plate stops 15 mm below the zip
+line. The pattern needs the same change: either a 60 mm peak, or a top edge that follows the door's U, 15 mm below the
+zip.
 
 ## 6. Risks and how they are handled
 
@@ -163,8 +213,8 @@ the 1 kg pouch at z ~1131 have to be in the sim before rev C can be signed off f
    - Boxed swell: window 90 × 50 in B-01 and a corner-box line 16 mm.
    - Tiled PDF + DXF and a cut list in the release format.
 2. **pack-designer / cloth sim**
-   - Add a box-body loader to `huntkit/clothsim/pack.py`.
-   - Run PR15 / PR19 / PR23 with the hood, the guys to B-22 at z 695 and 1 kg in the pouch.
+   - Done 2026-11-08: box-body loader (`huntkit/clothsim/corrie_bag.py`), rev B runs PR15 / PR19 / PR23 + PR19 fine (§5a).
+   - Open: converge the 15 in fill / meat cases; add the 1 kg pouch and the roll / clip loads; fix the stale pattern-source tag; finer floor-corner mesh.
    - Re-run R-28 on the CORRIE profile.
 3. **structural-fea-engineer:** confirm rev C with the sim CGs; nothing new on the frame.
 4. **materials-engineer:** a #10 coil 1.3 m door proof plan (PT-7); a rubber-sleeve pull record; a G-hook record (4 g is still an ASSUMPTION).
@@ -191,11 +241,18 @@ the 1 kg pouch at z ~1131 have to be in the sim before rev C can be signed off f
 
 ## Screenshots
 
-- `outputs/screens/20261107_corrie_1.png`: 3/4 rear
-- `outputs/screens/20261107_corrie_2.png`: side
-- `outputs/screens/20261107_corrie_3.png`: door open with IM1–IM3 inside
-- `outputs/screens/20261107_corrie_4.png`: wing cinched on a tripod
-- `outputs/screens/20261107_corrie_5.png`: top pouch close-up
-- `outputs/screens/20261107_corrie_6.png`: float meat mode (170 mm gap)
-- `outputs/screens/20261107_corrie_7.png`: pieces to scale and the numbers
-- Copied to `docs/screens/`: `_1`, `_3`, `_4`, `_6`
+3D renders (2026-11-08), viz3d pipeline (same materials, owner camo texture, lighting, frame, hood, harness and
+renderer as the accepted SPINE renders). The bag skin is the cloth-sim drape of the sewn flat pieces (PR19 fine,
+**packed** case). Wings, roll, pouch, straps and the open door are placed geometry on that surface (not simulated).
+Script: `designs/pack_5200/concepts/corrie_viz3d.py`; builder: `huntkit/viz3d/corrie.py`; viewer:
+`outputs/pack3d_corrie/corrie_viewer.html`.
+
+- `outputs/screens/20261108_corrie_1.png`: 3/4 rear (SPINE hero angle)
+- `outputs/screens/20261108_corrie_2.png`: side profile on the mannequin
+- `outputs/screens/20261108_corrie_3.png`: horseshoe door open, folded up, IM1–IM3 inside
+- `outputs/screens/20261108_corrie_4.png`: tripod under the right wing
+- `outputs/screens/20261108_corrie_5.png`: top pouch seated on the roll
+- `outputs/screens/20261108_corrie_6.png`: float meat mode, 170 mm (6.7 in) loop
+- `outputs/screens/20261108_corrie_7.png`: SPINE vs CORRIE, one fixed camera (SPINE rolled to 61 L, CORRIE packed 92 L)
+- Copied to `docs/screens/`: `_1`, `_3`, `_4`, `_7`
+- Superseded: `outputs/screens/20261107_corrie_*.png` (pyvista concept renders)
