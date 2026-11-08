@@ -30,26 +30,31 @@ DOCS = ROOT / "docs" / "screens"
 DATE = "20261108"
 
 SHOTS = [
-    dict(n=1, view="hero", state={"mode": "pack", "mannequin": True},
+    dict(n=1, view="hero", state={"mode": "pack"},
          caption="CORRIE: 3/4 rear, 19 in torso",
-         sub="Cloth-sim drape of the flat pieces at 68 kg; horseshoe door, side wings with G-hook straps, roll-top "
-             "clipped to the sides, 4 L top pouch"),
+         sub="Cloth-sim drape of the sewn flat pieces (packed case); horseshoe door zip with garages, side wings with "
+             "G-hook straps, roll-top clipped to the sides, 4 L pouch seated on the roll"),
     dict(n=2, view="side", state={"mode": "pack", "mannequin": True},
-         caption="CORRIE: side profile",
-         sub="Wing over the side gusset; guys from the crown hood to B-22 at z 695; pouch seated on the closed roll"),
-    dict(n=3, view="door", state={"mode": "pack", "full": True, "mannequin": True},
+         caption="CORRIE: side profile on the wearer",
+         sub="Wing taut over the side gusset, 2 G-hook straps to the aft corner seam; guys from the crown hood to "
+             "B-22 at z 695; pouch on the closed roll"),
+    dict(n=3, view="door", state={"mode": "pack", "full": True},
          caption="CORRIE: horseshoe door open",
-         sub="Door hinged at z 650 swings up; IM1-IM3 (bone, 38 mm) and the floor reachable; wings stay cinched"),
-    dict(n=4, view="wing", state={"mode": "pack", "lid": True, "mannequin": True},
+         sub="Door unzipped (1.26 m #10 coil, 2 sliders) and folded up over the hinge band; IM1-IM3 (bone, 38 mm) "
+             "and the floor in reach; wings stay cinched"),
+    dict(n=4, view="wing", state={"mode": "pack", "lid": True},
          caption="CORRIE: tripod under the right wing",
-         sub="Two G-hook straps to webbing loops in the aft corner seam, outboard of the door zip"),
-    dict(n=5, view="pouch", state={"mode": "pack", "harness": False},
-         caption="CORRIE: top pouch on the roll",
-         sub="4.0 L boxed pouch, #8 zip on the aft edge with a glove pull, 2 rear + 2 front G-hook straps; roll clips"),
-    dict(n=6, view="float", state={"mode": "pack", "haul": True, "gap": 170.0, "mannequin": True},
-         caption="CORRIE: float meat mode (170 mm loop)",
+         sub="Wing tensioned over the tripod legs by two G-hook straps to webbing loops in the aft corner seam, "
+             "outboard of the door zip"),
+    dict(n=5, view="pouch", state={"mode": "pack"},
+         caption="CORRIE: top pouch seated on the roll",
+         sub="4.0 L / 244 cu in pouch, camo top, #8 zip on the aft edge with a glove pull; 2 rear straps to the "
+             "hem loops, 2 front straps to the roll clips"),
+    dict(n=6, view="float", state={"mode": "pack", "haul": True, "gap": 170.0},
+         caption="CORRIE: float meat mode (170 mm / 6.7 in loop)",
          sub="Quarter in the US1/US2 cradle under IM1-IM3; bag hung upright on the B-24 links; W1-W3 round both"),
 ]
+ONLY = {int(x) for x in __import__("os").environ.get("CORRIE_SHOTS", "").split(",") if x.strip()}
 
 
 def render(html: Path, shots: list, width=800, height=600, scale=2):
@@ -89,16 +94,20 @@ def main():
     html = build_html(glb, manifest(pack), m, info, OUT / "corrie_viewer.html", title="Pack 5200 CORRIE (concept)")
     shots = []
     for s in SHOTS:
+        if ONLY and s["n"] not in ONLY:
+            continue
         shots.append({**s, "file": str((SCREENS / f"{DATE}_corrie_{s['n']}.png").resolve())})
-    shots.append(dict(n=7, view="hero", state={"mode": "pack"}, caption="CORRIE", sub="",
-                      file=str((OUT / "corrie_hero_compare.png").resolve())))
+    do7 = not ONLY or 7 in ONLY
+    if do7:
+        shots.append(dict(n=7, view="hero", state={"mode": "pack"}, caption="CORRIE", sub="",
+                          file=str((OUT / "corrie_hero_compare.png").resolve())))
     render(html, shots)
-    for s in shots[:-1]:
+    for s in shots[:-1] if do7 else shots:
         shrink_png(Path(s["file"]))
     # SPINE at the same camera: the released viewer, same view / state
     spine_html = ROOT / "outputs" / "pack3d" / "pack5200_viewer.html"
     sp = OUT / "spine_hero_compare.png"
-    if spine_html.exists():
+    if spine_html.exists() and do7:
         render(spine_html, [dict(view="hero", state={"mode": "pack"}, caption="SPINE v3.1", sub="", file=str(sp.resolve()))])
         side_by_side(sp, OUT / "corrie_hero_compare.png", SCREENS / f"{DATE}_corrie_7.png")
     for n in (1, 3, 4, 7):
