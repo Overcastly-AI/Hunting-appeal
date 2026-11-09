@@ -1,0 +1,1632 @@
+{
+ "size": "M",
+ "total_g": 4000.4,
+ "groups": {
+  "Frame (printed body + carbon crown)": 1062.6,
+  "Hipbelt B (body, load path, pad seat, pockets, holster)": 557.3,
+  "Meat haul + compression": 539.3,
+  "Bag body (CORRIE shell, collar, wings, door, roll-top)": 527.5,
+  "Back system (spreader + back panel)": 413.6,
+  "Bag-to-frame attachment": 303.3,
+  "Harness (J-straps, yoke, lifters, sternum)": 212.5,
+  "Bag pockets (IMP-1, -2, -4, -6, -8)": 142.9,
+  "Top pouch (4.0 L)": 87.9,
+  "Rain fly (fly + base pocket)": 68.4,
+  "Torso adjust": 41.7,
+  "Thread + labels": 41.4,
+  "Booking reconciliation": 2.0
+ },
+ "reconciliation_g": 2.0,
+ "parts": [
+  {
+   "group": "Frame (printed body + carbon crown)",
+   "part": "frame: PAHT-CF printed branch body (production raster)",
+   "g": 823.2,
+   "source": "analysis/frame_mass_production.json printed_body_g",
+   "zone": ""
+  },
+  {
+   "group": "Frame (printed body + carbon crown)",
+   "part": "frame: carbon crown as built, rack + pawl + guides, bushings, Ti hip-pivot mount, inserts",
+   "g": 217.4,
+   "source": "analysis/frame_mass_production.json non_body_g",
+   "zone": ""
+  },
+  {
+   "group": "Frame (printed body + carbon crown)",
+   "part": "frame: rev C crown inner plies (fix)",
+   "g": 22.0,
+   "source": "analysis/frame_mass_production.json crown_fix_g",
+   "zone": ""
+  },
+  {
+   "group": "Back system (spreader + back panel)",
+   "part": "back-system spreader: sheet, edge tubes, clips, pucks, pads, doublers, seal (installed)",
+   "g": 162.3,
+   "source": "analysis/spreader_results.json chosen.mass_g (sw110c7d; owner 2026-11-06, 7 mm core)",
+   "zone": ""
+  },
+  {
+   "group": "Torso adjust",
+   "part": "torso adjust: 3:1 pulley webbing 25 mm x 1.4 m, metal cam buckle, pawl release cord + strap toggle",
+   "g": 41.7,
+   "source": "records; cam 12 g + toggle 3 g ASSUMPTION",
+   "zone": ""
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "B-11 lash tabs (Hypalon, bow riser + muzzle keepers), released",
+   "g": 12.0,
+   "source": "panels.yaml B-11 (the rest of this row is the SPINE body, replaced by CORRIE's)",
+   "zone": ""
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "roll-top ROLL hardware: 2 x 25 mm side-release + 2 x 0.35 m webbing",
+   "g": 30.6,
+   "source": "geometry.yaml roll-top row minus its HDPE strip (CORRIE books B-07s in the body)",
+   "zone": ""
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "main bag: 6 haul-wrap keeper loops (25 mm webbing x 80 mm, sewn into the gore seams)",
+   "g": 8.6,
+   "source": "records",
+   "zone": ""
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "main bag: bow riser carry: 2 x 25 mm webbing loops through B-11 + 25 mm G-hook strap (owner freeze 2026-11-05)",
+   "g": 12.1,
+   "source": "poly_webbing_25mm record; G-hook 4 g ASSUMPTION (as the haul wraps); lengths ASSUMPTION",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "bag-side load spreaders: IM3 bag-hook tabs B-17 + hinge-eye doublers B-18 (Hypalon)",
+   "g": 27.8,
+   "source": "computed: cut area x gsm (analysis/bag_top_anchor.md)",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "attachment: printed fairleads (8)",
+   "g": 49.4,
+   "source": "analysis/bag_attachment_results.json parts_g",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "attachment: 7075 pins (8)",
+   "g": 19.3,
+   "source": "analysis/bag_attachment_results.json parts_g",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "attachment: UHMWPE sleeves (8)",
+   "g": 2.3,
+   "source": "analysis/bag_attachment_results.json parts_g",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "attachment: bag hooks, 38 mm Al (4)",
+   "g": 36.0,
+   "source": "analysis/bag_attachment_results.json parts_g",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "attachment: TPU hook sleeves (4)",
+   "g": 4.0,
+   "source": "analysis/bag_attachment_results.json parts_g",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "attachment: webbing eyes, net of old stubs",
+   "g": -6.7,
+   "source": "analysis/bag_attachment_results.json parts_g",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "attachment: bag-side straps",
+   "g": 17.9,
+   "source": "analysis/bag_attachment_results.json parts_g",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "attachment: B-01 swell patches",
+   "g": 12.3,
+   "source": "analysis/bag_attachment_results.json parts_g",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "attachment: elastic keepers",
+   "g": 3.6,
+   "source": "analysis/bag_attachment_results.json parts_g",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "attachment: lifter tri-glide keepers",
+   "g": 6.0,
+   "source": "analysis/bag_attachment_results.json parts_g",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "attachment system: crown hood B-19 (Hypalon blank + ears + hem)",
+   "g": 24.3,
+   "source": "analysis/attach_system_results.json mass.parts_g (attachment phase 2026-11-05)",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "attachment system: hood lip stiffener B-19s (HDPE 1.5)",
+   "g": 3.9,
+   "source": "analysis/attach_system_results.json mass.parts_g (attachment phase 2026-11-05)",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "attachment system: hood lining B-19L (XLPE 3)",
+   "g": 0.6,
+   "source": "analysis/attach_system_results.json mass.parts_g (attachment phase 2026-11-05)",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "attachment system: hood ladder strips B-20 x2",
+   "g": 20.0,
+   "source": "analysis/attach_system_results.json mass.parts_g (attachment phase 2026-11-05)",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "attachment system: hood tongues x2 + POM toggles",
+   "g": 10.3,
+   "source": "analysis/attach_system_results.json mass.parts_g (attachment phase 2026-11-05)",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "attachment system: hood grab tab (25 mm x 90)",
+   "g": 1.6,
+   "source": "analysis/attach_system_results.json mass.parts_g (attachment phase 2026-11-05)",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "attachment system: top side guys x2 (25 mm webbing)",
+   "g": 18.0,
+   "source": "analysis/attach_system_results.json mass.parts_g (attachment phase 2026-11-05)",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "attachment system: guy ladder locks + tri-glides + ladder-lock tabs",
+   "g": 16.5,
+   "source": "analysis/attach_system_results.json mass.parts_g (attachment phase 2026-11-05)",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "attachment system: guy corner tabs B-22 x2",
+   "g": 5.9,
+   "source": "analysis/attach_system_results.json mass.parts_g (attachment phase 2026-11-05)",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "attachment system: guy tail elastic keepers x2",
+   "g": 1.2,
+   "source": "analysis/attach_system_results.json mass.parts_g (attachment phase 2026-11-05)",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "attachment system: IM2 tongue backings B-23 x2",
+   "g": 7.1,
+   "source": "analysis/attach_system_results.json mass.parts_g (attachment phase 2026-11-05)",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "attachment system: bag hooks 1500 N -> 2200 N rated (4 x +5 g)",
+   "g": 20.0,
+   "source": "analysis/attach_system_results.json mass.parts_g (attachment phase 2026-11-05)",
+   "zone": ""
+  },
+  {
+   "group": "Bag-to-frame attachment",
+   "part": "attachment system: thread (box-X + perimeters)",
+   "g": 2.0,
+   "source": "analysis/attach_system_results.json mass.parts_g (attachment phase 2026-11-05)",
+   "zone": ""
+  },
+  {
+   "group": "Meat haul + compression",
+   "part": "under-straps US1/US2: printed anchors (4)",
+   "g": 22.8,
+   "source": "huntkit/gendesign/meat_haul.py cradle_parts_g (meat_haul_modes.md)",
+   "zone": ""
+  },
+  {
+   "group": "Meat haul + compression",
+   "part": "under-straps US1/US2: 7075 pins (4)",
+   "g": 9.6,
+   "source": "huntkit/gendesign/meat_haul.py cradle_parts_g (meat_haul_modes.md)",
+   "zone": ""
+  },
+  {
+   "group": "Meat haul + compression",
+   "part": "under-straps US1/US2: UHMWPE sleeves (4)",
+   "g": 1.2,
+   "source": "huntkit/gendesign/meat_haul.py cradle_parts_g (meat_haul_modes.md)",
+   "zone": ""
+  },
+  {
+   "group": "Meat haul + compression",
+   "part": "under-straps US1/US2: 38 mm cams (2)",
+   "g": 44.0,
+   "source": "huntkit/gendesign/meat_haul.py cradle_parts_g (meat_haul_modes.md)",
+   "zone": ""
+  },
+  {
+   "group": "Meat haul + compression",
+   "part": "under-straps US1/US2: tri-glide keepers (2)",
+   "g": 6.0,
+   "source": "huntkit/gendesign/meat_haul.py cradle_parts_g (meat_haul_modes.md)",
+   "zone": ""
+  },
+  {
+   "group": "Meat haul + compression",
+   "part": "under-straps US1/US2: 38 mm webbing, 1.10 m",
+   "g": 30.8,
+   "source": "huntkit/gendesign/meat_haul.py cradle_parts_g (meat_haul_modes.md)",
+   "zone": ""
+  },
+  {
+   "group": "Meat haul + compression",
+   "part": "under-straps US1/US2: bag-floor channels",
+   "g": 8.0,
+   "source": "huntkit/gendesign/meat_haul.py cradle_parts_g (meat_haul_modes.md)",
+   "zone": ""
+  },
+  {
+   "group": "Meat haul + compression",
+   "part": "float-mode stand-off links B-24: 38 mm webbing, 2 x 435 mm",
+   "g": 24.4,
+   "source": "huntkit/gendesign/meat_haul.py float_link_parts_g (meat_haul_modes.md C; hook 14 g, thread ASSUMPTION)",
+   "zone": ""
+  },
+  {
+   "group": "Meat haul + compression",
+   "part": "float-mode stand-off links B-24: rated 38 mm hooks (2), same part as the bag hooks",
+   "g": 28.0,
+   "source": "huntkit/gendesign/meat_haul.py float_link_parts_g (meat_haul_modes.md C; hook 14 g, thread ASSUMPTION)",
+   "zone": ""
+  },
+  {
+   "group": "Meat haul + compression",
+   "part": "float-mode stand-off links B-24: thread (box-X + loop box-X)",
+   "g": 2.0,
+   "source": "huntkit/gendesign/meat_haul.py float_link_parts_g (meat_haul_modes.md C; hook 14 g, thread ASSUMPTION)",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "SH-05 hipbelt wing-tip camo shards",
+   "g": 8.4,
+   "source": "panels.yaml SH-05 (SH-01..04 are SPINE body accents, replaced)",
+   "zone": ""
+  },
+  {
+   "group": "Rain fly (fly + base pocket)",
+   "part": "rain fly: fly + fly pocket",
+   "g": 52.6,
+   "source": "computed",
+   "zone": ""
+  },
+  {
+   "group": "Rain fly (fly + base pocket)",
+   "part": "rain fly: fly elastic hem 3.0 m, #5 pocket zip + slider, tether",
+   "g": 15.8,
+   "source": "elastic 3 g/m ASSUMPTION (no record); records",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "rifle tabs and belt trims not in belt_bom (released row - C0 body - HP-01/02)",
+   "g": 8.0,
+   "source": "geometry.yaml hipbelt row - hipbelt_results C0 165.0 - panels HP-01/02",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "50 mm belt webbing 0.9 m + 50 mm buckle + stabilizer straps + 2 ladder locks",
+   "g": 91.6,
+   "source": "geometry.yaml row minus the 0.4 m #8 zip (now in IMP-5)",
+   "zone": ""
+  },
+  {
+   "group": "Harness (J-straps, yoke, lifters, sternum)",
+   "part": "harness: J-straps (default set)",
+   "g": 91.0,
+   "source": "computed",
+   "zone": ""
+  },
+  {
+   "group": "Harness (J-straps, yoke, lifters, sternum)",
+   "part": "harness: yoke cover + shaped yoke plate (cfrp 1.5 mm, 0.0182 m2)",
+   "g": 55.9,
+   "source": "computed: yoke outline YOKE_OUTLINE (same polygon as huntkit.viz3d) x 1.5 mm x 1550 kg/m3 (cfrp_plate_quasi_iso)",
+   "zone": ""
+  },
+  {
+   "group": "Harness (J-straps, yoke, lifters, sternum)",
+   "part": "harness: load lifters 25 mm poly + ladders, sternum Fidlock (QUICK family) + POM rails",
+   "g": 65.6,
+   "source": "records; rails 12 g ASSUMPTION",
+   "zone": ""
+  },
+  {
+   "group": "Back system (spreader + back panel)",
+   "part": "back panel: mesh, stay-rail foam pair + carbon backer strips, rail sleeves, upper pad (spreader is its own line)",
+   "g": 251.3,
+   "source": "computed; rails and backers from analysis/back_rail.md (2026-11-06)",
+   "zone": ""
+  },
+  {
+   "group": "Meat haul + compression",
+   "part": "internal meat harness: 3 x 38 mm straps IM1-IM3 + 6 frame stubs, 6 sliding-gate hooks, 3 cams (MEAT family)",
+   "g": 240.3,
+   "source": "poly_webbing_38mm record x cut lengths (meat_harness); hook 9 g, cam 22 g ASSUMPTION. The stubs became fairlead eyes: net in the attachment line 'webbing eyes, net of old stubs'",
+   "zone": ""
+  },
+  {
+   "group": "Meat haul + compression",
+   "part": "internal meat harness: B-01 strap ports: 6 Hypalon patches (B-12)",
+   "g": 14.1,
+   "source": "computed",
+   "zone": ""
+  },
+  {
+   "group": "Meat haul + compression",
+   "part": "haul wraps: 3 frame-anchored wraps, 25 mm coyote poly webbing 4.67 m",
+   "g": 84.1,
+   "source": "records; lengths from the 3D teardrop (haul_wraps)",
+   "zone": ""
+  },
+  {
+   "group": "Meat haul + compression",
+   "part": "haul wraps: 3 aluminium G-hooks (HAUL family) + 3 ladder locks",
+   "g": 24.0,
+   "source": "G-hook 4 g ASSUMPTION (no record); ladder lock record",
+   "zone": ""
+  },
+  {
+   "group": "Thread + labels",
+   "part": "misc: thread (~3 % of soft goods) + labels",
+   "g": 41.4,
+   "source": "ASSUMPTION",
+   "zone": ""
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "B-01 frame-side panel (flat, Z-fold setback) (challenge_ultra_200)",
+   "g": 33.46,
+   "source": "corrie.build() piece: cut area x record gsm",
+   "zone": "shell"
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "B-03 side gusset (cordura_330d_nylon66, x2)",
+   "g": 64.27,
+   "source": "corrie.build() piece: cut area x record gsm",
+   "zone": "shell"
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "B-05 bottom (cordura_500d_nylon66)",
+   "g": 14.66,
+   "source": "corrie.build() piece: cut area x record gsm",
+   "zone": "shell"
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "B-06f roll-top collar, frame side (ULTRA) (challenge_ultra_200)",
+   "g": 25.55,
+   "source": "corrie.build() piece: cut area x record gsm",
+   "zone": "collar"
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "B-06 roll-top collar (robic_100d_ripstop)",
+   "g": 40.77,
+   "source": "corrie.build() piece: cut area x record gsm",
+   "zone": "collar"
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "B-07 roll-top hem (cordura_330d_nylon66)",
+   "g": 20.23,
+   "source": "corrie.build() piece: cut area x record gsm",
+   "zone": "collar"
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "B-07s roll-top HDPE strip (hdpe_sheet, x2)",
+   "g": 16.68,
+   "source": "corrie.build() piece: cut area x record gsm",
+   "zone": "collar"
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "B-13x boxed fairlead swell (challenge_ultra_200, x8)",
+   "g": 13.52,
+   "source": "corrie.build() piece: cut area x record gsm",
+   "zone": "swell"
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "B-02u U-surround (cordura_330d_nylon66)",
+   "g": 18.73,
+   "source": "corrie.build() piece: cut area x record gsm",
+   "zone": "shell"
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "B-02door horseshoe door (cordura_330d_nylon66)",
+   "g": 27.57,
+   "source": "corrie.build() piece: cut area x record gsm",
+   "zone": "shell"
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "B-02h hinge band (cordura_330d_nylon66)",
+   "g": 8.29,
+   "source": "corrie.build() piece: cut area x record gsm",
+   "zone": "shell"
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "SH-07 door zip garage (camo) (polyester_ht_630d_printable, x2)",
+   "g": 2.47,
+   "source": "corrie.build() piece: cut area x record gsm",
+   "zone": "accent"
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "M-01 side compression wing (hemmed edges) (cordura_330d_nylon66, x2)",
+   "g": 36.91,
+   "source": "corrie.build() piece: cut area x record gsm",
+   "zone": "wing"
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "SH-06 wing leading-edge bar (camo) (polyester_ht_630d_printable, x2)",
+   "g": 11.08,
+   "source": "corrie.build() piece: cut area x record gsm",
+   "zone": "accent"
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "SH-01a kick plate, aft (camo) (polyester_ht_630d_printable)",
+   "g": 10.03,
+   "source": "corrie.build() piece: cut area x record gsm",
+   "zone": "accent"
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "SH-01b kick plate, side (camo) (polyester_ht_630d_printable, x2)",
+   "g": 9.28,
+   "source": "corrie.build() piece: cut area x record gsm",
+   "zone": "accent"
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "SH-03 roll-top hem band (camo) (polyester_ht_630d_printable)",
+   "g": 15.84,
+   "source": "corrie.build() piece: cut area x record gsm",
+   "zone": "accent"
+  },
+  {
+   "group": "Top pouch (4.0 L)",
+   "part": "L-21 pouch top (camo) (polyester_ht_630d_printable)",
+   "g": 22.02,
+   "source": "corrie.build() piece: cut area x record gsm",
+   "zone": "pouch"
+  },
+  {
+   "group": "Top pouch (4.0 L)",
+   "part": "L-22 pouch base (cordura_330d_nylon66)",
+   "g": 13.67,
+   "source": "corrie.build() piece: cut area x record gsm",
+   "zone": "pouch"
+  },
+  {
+   "group": "Top pouch (4.0 L)",
+   "part": "L-23 pouch boxing strip (cordura_330d_nylon66)",
+   "g": 16.66,
+   "source": "corrie.build() piece: cut area x record gsm",
+   "zone": "pouch"
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "horseshoe door zip #10, 2 sliders",
+   "g": 38.29,
+   "source": "corrie.build() zip (records + slider ASSUMPTION)",
+   "zone": ""
+  },
+  {
+   "group": "Top pouch (4.0 L)",
+   "part": "pouch zip #8, 1 slider",
+   "g": 9.4,
+   "source": "corrie.build() zip (records + slider ASSUMPTION)",
+   "zone": ""
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "door: 2 cord pulls (3 mm Dyneema + rubber sleeve)",
+   "g": 3.0,
+   "source": "corrie.build() hardware (records / G-hook ASSUMPTION)",
+   "zone": ""
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "wing strap 1: 25 mm 0.22 m + G-hook + ladder lock + seam loop 0.08 m",
+   "g": 13.4,
+   "source": "corrie.build() hardware (records / G-hook ASSUMPTION)",
+   "zone": ""
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "wing strap 2: 25 mm 0.22 m + G-hook + ladder lock + seam loop 0.08 m",
+   "g": 13.4,
+   "source": "corrie.build() hardware (records / G-hook ASSUMPTION)",
+   "zone": ""
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "wing strap 3: 25 mm 0.22 m + G-hook + ladder lock + seam loop 0.08 m",
+   "g": 13.4,
+   "source": "corrie.build() hardware (records / G-hook ASSUMPTION)",
+   "zone": ""
+  },
+  {
+   "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+   "part": "wing strap 4: 25 mm 0.22 m + G-hook + ladder lock + seam loop 0.08 m",
+   "g": 13.4,
+   "source": "corrie.build() hardware (records / G-hook ASSUMPTION)",
+   "zone": ""
+  },
+  {
+   "group": "Top pouch (4.0 L)",
+   "part": "pouch: 4 x 25 mm 0.12 m straps + 4 G-hooks (2 rear to the hem loops, 2 front to the roll clips)",
+   "g": 24.64,
+   "source": "corrie.build() hardware (records / G-hook ASSUMPTION)",
+   "zone": ""
+  },
+  {
+   "group": "Top pouch (4.0 L)",
+   "part": "pouch zip cord pull",
+   "g": 1.5,
+   "source": "corrie.build() hardware (records / G-hook ASSUMPTION)",
+   "zone": ""
+  },
+  {
+   "group": "Bag pockets (IMP-1, -2, -4, -6, -8)",
+   "part": "IMP-1 padded scope sleeve inside the left wing",
+   "g": 56.4,
+   "source": "corrie.bag_pockets()",
+   "zone": ""
+  },
+  {
+   "group": "Bag pockets (IMP-1, -2, -4, -6, -8)",
+   "part": "IMP-2 hydration sleeve above IM3 + 2 hose ports (R-19)",
+   "g": 34.6,
+   "source": "corrie.bag_pockets()",
+   "zone": ""
+  },
+  {
+   "group": "Bag pockets (IMP-1, -2, -4, -6, -8)",
+   "part": "IMP-4 zipped kill-kit / first-aid pocket inside the top-hinged door",
+   "g": 17.7,
+   "source": "corrie.bag_pockets()",
+   "zone": ""
+  },
+  {
+   "group": "Bag pockets (IMP-1, -2, -4, -6, -8)",
+   "part": "IMP-6 shoulder-strap phone pocket (160 mm phone)",
+   "g": 23.6,
+   "source": "corrie.bag_pockets()",
+   "zone": ""
+  },
+  {
+   "group": "Bag pockets (IMP-1, -2, -4, -6, -8)",
+   "part": "IMP-8 bow cam / limb cup at the foot of the right wing",
+   "g": 10.6,
+   "source": "corrie.bag_pockets()",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B wing shell (cordura_330d_nylon66, x2)",
+   "g": 12.5,
+   "source": "hipbelt_concepts.belt_bom",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B wing face (spacer_mesh_3d, x2)",
+   "g": 26.4,
+   "source": "hipbelt_concepts.belt_bom",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B wing load foam (eva_foam_45c, x2)",
+   "g": 30.1,
+   "source": "hipbelt_concepts.belt_bom",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B wing comfort foam (eva_foam_30c, x2)",
+   "g": 8.9,
+   "source": "hipbelt_concepts.belt_bom",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B wing crest-relief foam (eva_foam_perforated, x2)",
+   "g": 6.9,
+   "source": "hipbelt_concepts.belt_bom",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B wing stiffener (hdpe_sheet, x2)",
+   "g": 41.0,
+   "source": "hipbelt_concepts.belt_bom",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B lumbar shell (cordura_330d_nylon66, x1)",
+   "g": 6.5,
+   "source": "hipbelt_concepts.belt_bom",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B lumbar face (spacer_mesh_3d, x1)",
+   "g": 13.7,
+   "source": "hipbelt_concepts.belt_bom",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B lumbar foam 1 (eva_foam_45c, x1)",
+   "g": 14.9,
+   "source": "hipbelt_concepts.belt_bom",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B lumbar foam 2 (eva_foam_30c, x1)",
+   "g": 8.8,
+   "source": "hipbelt_concepts.belt_bom",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B lumbar terraced wedge (3 steps, 120 wide) (eva_foam_45c, x1)",
+   "g": 19.7,
+   "source": "hipbelt_concepts.belt_bom",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B 2:1 pull: 25 mm poly webbing +0.6 m",
+   "g": 10.8,
+   "source": "hipbelt_concepts.belt_bom hardware_delta",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B 2:1 pull: 2 x 25 mm Al D-ring (no record, ASSUMPTION 5 g, $1)",
+   "g": 10.0,
+   "source": "hipbelt_concepts.belt_bom hardware_delta",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B silicone-dot grip print on lumbar + wing faces (ASSUMPTION 5 g, outsourced $3)",
+   "g": 5.0,
+   "source": "hipbelt_concepts.belt_bom hardware_delta",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B cant snap deleted (2 POM 3-position detents, ASSUMPTION -6 g)",
+   "g": -6.0,
+   "source": "hipbelt_concepts.belt_bom hardware_delta",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B correction: D-rings: record 2 x 6 g replaces 2 x 5 g ASSUMPTION",
+   "g": 2.0,
+   "source": "corrie.belt_b() (2026-11-09 records)",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B correction: grip print: record 46 g/m2 x 0.106 m2 replaces 5 g ASSUMPTION",
+   "g": -0.1,
+   "source": "corrie.belt_b() (2026-11-09 records)",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B correction: 2:1 lock legs: 2 x ladder_lock_25mm_heavy (ITW Superloc class)",
+   "g": 14.0,
+   "source": "corrie.belt_b() (2026-11-09 records)",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "IMP-5L hipbelt pocket (M)",
+   "g": 15.2,
+   "source": "corrie.hip_layout()",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "IMP-3 1 L bottle holster",
+   "g": 37.4,
+   "source": "corrie.holster()",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B load path: 6061-T6 1.5 mm bow-tie centre plate",
+   "g": 77.45,
+   "source": "analysis/hipbelt_structural_results.json mass",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B load path: PA66 hub bushing",
+   "g": 13.47,
+   "source": "analysis/hipbelt_structural_results.json mass",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B load path: pivot latch",
+   "g": 4.0,
+   "source": "analysis/hipbelt_structural_results.json mass",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B load path: 1000D root doublers (stitched ear)",
+   "g": 10.2,
+   "source": "analysis/hipbelt_structural_results.json mass",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B load path: 1000D tip doublers",
+   "g": 4.08,
+   "source": "analysis/hipbelt_structural_results.json mass",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B load path: ear saddle-stitch thread",
+   "g": 0.52,
+   "source": "analysis/hipbelt_structural_results.json mass",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "belt B load path: POM thrust washer",
+   "g": 1.0,
+   "source": "analysis/hipbelt_structural_results.json mass",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "lumbar pad seat: 2 EVA 45C standoff rails 55 x 140 x 6 mm (bonded to the pan face)",
+   "g": 10.2,
+   "source": "corrie.pad_seat()",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "lumbar pad seat: HDPE 1.0 mm pad backer 190 x 150",
+   "g": 27.2,
+   "source": "corrie.pad_seat()",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "lumbar pad seat: HDPE 0.5 mm slip liner 70 x 140 in the channel",
+   "g": 4.7,
+   "source": "corrie.pad_seat()",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "lumbar pad seat: Hypalon top sleeve 190 x 40 (over the pan's top return flange)",
+   "g": 7.6,
+   "source": "corrie.pad_seat()",
+   "zone": ""
+  },
+  {
+   "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
+   "part": "lumbar pad seat: 25 mm bottom strap 0.40 m + ladder lock",
+   "g": 11.2,
+   "source": "corrie.pad_seat()",
+   "zone": ""
+  },
+  {
+   "group": "Booking reconciliation",
+   "part": "SPINE body as booked in geometry.yaml (design panels, zip, SH-01..04, roll-top HDPE) vs the cut-set body metric (333.2 g) that corrie.weight_table() subtracts",
+   "g": 1.96,
+   "source": "balance to corrie.weight_table()",
+   "zone": ""
+  }
+ ],
+ "cuts": [
+  {
+   "id": "A-1",
+   "pkg": "A",
+   "zone": "hipbelt B",
+   "change": "Ship belt B with an unprinted face until test HB-2 passes (DECISIONS 2026-11-09: grip face only after HB-2, not counted before). If HB-2 passes and the owner adopts it, the grams come back.",
+   "g": 4.9,
+   "g_booked": 4.9,
+   "usd": -3.0,
+   "hours": 0.0,
+   "durability": "none",
+   "quiet": "none",
+   "ip": "none",
+   "look": "none",
+   "load_path": "no: friction is not credited before HB-2 (belt-B structural uses no grip)",
+   "confidence": "high",
+   "rec": "YES",
+   "status": "proposal"
+  },
+  {
+   "id": "A-2",
+   "pkg": "A",
+   "zone": "haul wraps W1-W3",
+   "change": "Wrap tail allowance 250 -> 150 mm (cut length = haul path + 150). The haul path, which sets the meat-mode girth, is unchanged.",
+   "g": 5.4,
+   "g_booked": 5.4,
+   "usd": -0.21,
+   "hours": 0.0,
+   "durability": "none (tail only)",
+   "quiet": "none",
+   "ip": "none",
+   "look": "none",
+   "load_path": "touches the wrap, not its capacity: strap and box-X unchanged; ladder-lock needs a gloved tail, 150 mm is still a full hand (ASSUMPTION)",
+   "confidence": "medium",
+   "rec": "YES",
+   "status": "proposal"
+  },
+  {
+   "id": "B-1",
+   "pkg": "B",
+   "zone": "bag body seams",
+   "change": "S-03 on CORRIE: drop grosgrain on the 7.28 m of bound body seams; second 301 row 6 mm into the allowance, trim, hot-knife sear. Gate: 3-cycle wash swatch (R-12), no fray past row 2.",
+   "g": 36.4,
+   "g_booked": 0.0,
+   "usd": -3.64,
+   "hours": -3.68,
+   "durability": "ULTRA 200 laminate edge may fray; rougher inside where game bags rub",
+   "quiet": "none",
+   "ip": "none",
+   "look": "none",
+   "load_path": "no: no seam capacity counts the binding; HE/B-18 seam governed by the B-05 strip (SF 2.31, unchanged)",
+   "confidence": "medium",
+   "rec": "YES (pending the wash swatch)",
+   "status": "proposal"
+  },
+  {
+   "id": "B-2",
+   "pkg": "B",
+   "zone": "camo accent",
+   "change": "Delete the SH-03 camo band on the roll-top hem (hem stays body solid). Camo stays on the kick plates, wing bars, door garages and pouch top.",
+   "g": 15.8,
+   "g_booked": 15.8,
+   "usd": -0.72,
+   "hours": -2.04,
+   "durability": "none (overlay only, no wear zone)",
+   "quiet": "none",
+   "ip": "none",
+   "look": "less camo at the top of the bag",
+   "load_path": "no",
+   "confidence": "high",
+   "rec": "YES",
+   "status": "proposal"
+  },
+  {
+   "id": "B-3",
+   "pkg": "B",
+   "zone": "top pouch",
+   "change": "Pouch base + boxing strip 330D Cordura -> 100D Robic (already in the BOM: collar, IMP-2, IMP-4). Top stays camo 630D.",
+   "g": 15.2,
+   "g_booked": 15.2,
+   "usd": 0.24,
+   "hours": 0.0,
+   "durability": "tear 90/80 -> 45/40 N warp/weft (records); the pouch rides on the roll and comes off, but gets set on rock",
+   "quiet": "same (3)",
+   "ip": "none",
+   "look": "none",
+   "load_path": "no",
+   "confidence": "high",
+   "rec": "YES",
+   "status": "proposal"
+  },
+  {
+   "id": "B-4",
+   "pkg": "B",
+   "zone": "top pouch",
+   "change": "Pouch top camo 630D -> body-solid 330D; a camo pull tab marks it.",
+   "g": 8.4,
+   "g_booked": 8.4,
+   "usd": -0.23,
+   "hours": 0.0,
+   "durability": "lower abrasion on the top face (Taber 1000 -> 800)",
+   "quiet": "same",
+   "ip": "none",
+   "look": "the pouch top loses its camo panel",
+   "load_path": "no",
+   "confidence": "high",
+   "rec": "owner (look)",
+   "status": "proposal"
+  },
+  {
+   "id": "B-5",
+   "pkg": "B",
+   "zone": "top pouch",
+   "change": "Pouch 320 x 210 x 70 -> 280 x 190 x 60 mm (4.0 -> 2.71 L). Loadout check: the snacks / GPS that miss on S-L ride in it, so it must still take 150 x 100 x 35 + a 160 mm GPS.",
+   "g": 11.2,
+   "g_booked": 11.2,
+   "usd": -0.55,
+   "hours": -0.1,
+   "durability": "none",
+   "quiet": "none",
+   "ip": "none",
+   "look": "smaller pouch",
+   "load_path": "no",
+   "confidence": "high",
+   "rec": "owner (DECISIONS 2026-11-09 set 4 L)",
+   "status": "proposal"
+  },
+  {
+   "id": "B-6",
+   "pkg": "B",
+   "zone": "IMP-1 scope sleeve",
+   "change": "Sleeve panel IMP1-a 330D -> 100D Robic (XLPE + facing kept). The panel sits under the wing, facing it, not the brush.",
+   "g": 13.9,
+   "g_booked": 13.9,
+   "usd": 0.22,
+   "hours": 0.0,
+   "durability": "tear 90/80 -> 45/40 N (records) on a panel the scope slides against",
+   "quiet": "same",
+   "ip": "none",
+   "look": "none",
+   "load_path": "no",
+   "confidence": "medium",
+   "rec": "YES",
+   "status": "proposal"
+  },
+  {
+   "id": "B-7",
+   "pkg": "B",
+   "zone": "IMP-6 phone pocket",
+   "change": "Sew the phone pocket to the LEFT J-strap (bartacked through the strap binding) instead of 2 wrap straps + 2 G-hooks. Loses moving it to the right strap and taking it off.",
+   "g": 13.4,
+   "g_booked": 13.4,
+   "usd": -3.21,
+   "hours": -0.2,
+   "durability": "none",
+   "quiet": "one less clinking hook pair",
+   "ip": "none",
+   "look": "none",
+   "load_path": "no (the strap carries it, ~0.3 kg)",
+   "confidence": "high",
+   "rec": "owner (feature detail)",
+   "status": "proposal"
+  },
+  {
+   "id": "B-8",
+   "pkg": "B",
+   "zone": "body fabric (O-4 on CORRIE)",
+   "change": "Gussets, U-surround, door, hinge band, wings 330D -> 210D UHMWPE grid (O-4). Still ON HOLD: the record has no abrasion value, and the owner has not seen a swatch.",
+   "g": 21.6,
+   "g_booked": 21.6,
+   "usd": 4.62,
+   "hours": 0.0,
+   "durability": "tear 90/80 -> 180/160 N (records, better); abrasion unknown (no record value)",
+   "quiet": "same (3)",
+   "ip": "none",
+   "look": "visible grid on the solid colour",
+   "load_path": "the wing roots and corner seams hold the wing-strap loops: tear goes up, so no SF falls; no seam check on file for the grid",
+   "confidence": "low (abrasion missing)",
+   "rec": "hold: evidence still missing",
+   "status": "held O-4"
+  },
+  {
+   "id": "B-9",
+   "pkg": "B",
+   "zone": "roll-top collar (O-3)",
+   "change": "Collar B-06 100D Robic -> 70D ripstop (O-3). Still ON HOLD: no 70D record (bag_weight_plan.MISSING, ASSUMPTION 70 gsm).",
+   "g": 9.1,
+   "g_booked": 9.1,
+   "usd": 0.69,
+   "hours": 0.0,
+   "durability": "tear 43 -> 35 N (ASSUMPTION)",
+   "quiet": "same",
+   "ip": "none",
+   "look": "none",
+   "load_path": "no (collar carries the roll, not the frame load)",
+   "confidence": "low (no record)",
+   "rec": "hold: record missing",
+   "status": "held O-3"
+  },
+  {
+   "id": "B-10",
+   "pkg": "B",
+   "zone": "trims",
+   "change": "Hypalon -> laser-cut TPU-coated 840D on the trims that carry no load: B-12 strap ports x6, IMP-2 hose-port frames x2, IMP-8 cam-cup base. One sheet material with O-15 if that is taken.",
+   "g": 12.8,
+   "g_booked": 12.8,
+   "usd": -0.29,
+   "hours": 0.0,
+   "durability": "Taber 5000 -> 4000 (records)",
+   "quiet": "WORSE: quietness 4 -> 2 (records), stiff edge can tick on webbing",
+   "ip": "none",
+   "look": "none",
+   "load_path": "no: B-12 ports carry no load (build_simplicity S-02 note); hose ports and cam base are trims",
+   "confidence": "high",
+   "rec": "owner (quiet trade, small grams)",
+   "status": "proposal"
+  },
+  {
+   "id": "C-1",
+   "pkg": "C",
+   "zone": "belt B centre plate",
+   "change": "Bow-tie 6061-T6 1.5 mm -> 7075-T6 1.2 mm (hipbelt_structural.md section 6.1). 7075-T6 cannot be cold-rolled: form in O temper and age (service) or machine the arc.",
+   "g": 13.0,
+   "g_booked": 13.0,
+   "usd": 25.35,
+   "hours": 0.0,
+   "durability": "none",
+   "quiet": "none",
+   "ip": "none",
+   "look": "none",
+   "load_path": "YES: plate today SF/req C2 1.21, walking fatigue 1.20 (6061); the structural note's model gives 1.77 (fatigue) at 1.2 mm 7075, not yet checked in the FE",
+   "confidence": "medium",
+   "rec": "C: structural-fea-engineer re-run + forming quote ($25 ASSUMPTION heat-treat service)",
+   "status": "proposal"
+  },
+  {
+   "id": "C-2",
+   "pkg": "C",
+   "zone": "belt B hub",
+   "change": "PA66 hub bushing D36 x 12 -> D28 x 10 (section 6.2).",
+   "g": 7.1,
+   "g_booked": 7.1,
+   "usd": -0.1,
+   "hours": 0.0,
+   "durability": "none",
+   "quiet": "none",
+   "ip": "none",
+   "look": "none",
+   "load_path": "YES: hub-bore bearing, walking 1.66 with H on the pin, 5.3 without (the pad seat keeps H off)",
+   "confidence": "medium",
+   "rec": "C: re-check bearing",
+   "status": "proposal"
+  },
+  {
+   "id": "C-3",
+   "pkg": "C",
+   "zone": "belt B centre plate",
+   "change": "Lightening holes in the bow-tie spine flanges, x 30-55 (section 6.3; -5 g is the structural note's estimate).",
+   "g": 5.0,
+   "g_booked": 5.0,
+   "usd": 0.0,
+   "hours": 0.0,
+   "durability": "none",
+   "quiet": "none",
+   "ip": "none",
+   "look": "none",
+   "load_path": "YES: the spine carries the C2 peak (SF/req 1.21 today)",
+   "confidence": "low",
+   "rec": "C: FE re-run",
+   "status": "proposal"
+  },
+  {
+   "id": "C-4",
+   "pkg": "C",
+   "zone": "lumbar pad seat",
+   "change": "HDPE pad backer 1.0 -> 0.8 mm (corrie_body.md 11.2: the backer bridges the 70 mm channel).",
+   "g": 5.4,
+   "g_booked": 5.4,
+   "usd": -0.05,
+   "hours": 0.0,
+   "durability": "none",
+   "quiet": "none",
+   "ip": "none",
+   "look": "none",
+   "load_path": "YES: the backer carries the lumbar push (413 N at 15 in, 1 g) across the 70 mm channel; NO SF on file",
+   "confidence": "medium",
+   "rec": "C: structural-fea-engineer (plate bending over the channel) + HB-1 fit",
+   "status": "proposal"
+  },
+  {
+   "id": "C-5",
+   "pkg": "C",
+   "zone": "bag bottom (O-5)",
+   "change": "Bottom B-05 500D -> Challenge ULTRA 200 (O-5): the records now carry the evidence (Taber 1500 -> 2000, tear 130 -> 250 N, waterproof floor). ULTRA is already 4 CORRIE pieces, and 500D then stays only on B-16 floor channels and the rifle boot.",
+   "g": 7.5,
+   "g_booked": 7.5,
+   "usd": 1.59,
+   "hours": 0.0,
+   "durability": "BETTER (records)",
+   "quiet": "quietness 3 -> 2 on the floor (not brushed)",
+   "ip": "none",
+   "look": "stock ULTRA colour on the floor",
+   "load_path": "YES: the HE / B-18 bag-on seam is governed by the B-05 fabric strip, 2355 N, SF 2.31 on 500D; ULTRA's grab strength is not in its record -> PT-3 strip test",
+   "confidence": "medium",
+   "rec": "YES if PT-3 holds (evidence for the held O-5)",
+   "status": "held O-5: evidence brought"
+  },
+  {
+   "id": "C-6",
+   "pkg": "C",
+   "zone": "lash tabs (O-15)",
+   "change": "B-11 lash tabs Hypalon -> laser-cut TPU-coated 840D (O-15).",
+   "g": 6.2,
+   "g_booked": 6.2,
+   "usd": -0.14,
+   "hours": 0.0,
+   "durability": "Taber 5000 -> 4000",
+   "quiet": "quietness 4 -> 2 (records)",
+   "ip": "none",
+   "look": "none",
+   "load_path": "YES: 25 x 5 slot to the 450 N buckle class; no SF on file -> 5-sample slot pull test",
+   "confidence": "medium",
+   "rec": "YES if the pull test holds (held O-15)",
+   "status": "held O-15"
+  },
+  {
+   "id": "C-7",
+   "pkg": "C",
+   "zone": "harness yoke plate",
+   "change": "CFRP yoke plate 1.5 -> 1.2 mm (0.0182 m2, cfrp_plate_quasi_iso).",
+   "g": 8.5,
+   "g_booked": 8.5,
+   "usd": -1.27,
+   "hours": 0.0,
+   "durability": "none",
+   "quiet": "none",
+   "ip": "none",
+   "look": "none",
+   "load_path": "YES: the lifters and straps anchor here (T1(c), 102 kg on straps + lifters); NO SF on file (build_simplicity X-1 flag)",
+   "confidence": "low",
+   "rec": "C: structural-fea-engineer",
+   "status": "proposal"
+  },
+  {
+   "id": "C-8",
+   "pkg": "C",
+   "zone": "back rails",
+   "change": "Stay rails 120 mm / 80 mm backer -> 130 mm / 70 mm backer (back_rail.md row r130_b70).",
+   "g": 7.2,
+   "g_booked": 7.2,
+   "usd": -1.86,
+   "hours": 0.0,
+   "durability": "none",
+   "quiet": "none",
+   "ip": "none",
+   "look": "none",
+   "load_path": "comfort: peak 13.89 kPa vs 13.76 today (limit 14, margin 1.008); air gutter 110 -> 100 mm and the rail edge moves onto the rib curve (x +/-180)",
+   "confidence": "medium",
+   "rec": "C: fit test on 3 backs",
+   "status": "proposal"
+  },
+  {
+   "id": "C-9",
+   "pkg": "C",
+   "zone": "printed frame body",
+   "change": "Re-run the generative body against the rev C envelope with a mass objective (ASSUMPTION: 5 % of the 823 g body is removable from low-stress ligaments).",
+   "g": 41.2,
+   "g_booked": 41.2,
+   "usd": 0.0,
+   "hours": 0.0,
+   "durability": "none",
+   "quiet": "none",
+   "ip": "none (original generative geometry)",
+   "look": "none",
+   "load_path": "YES: printed body strength 1.51, fatigue 1.04 (IM3 couple, C_im3 static_carry|15), creep 2.23 (rev C verification). Fatigue governs at 1.04, so any cut must come from regions far from the upper bar / pawl housing",
+   "confidence": "low",
+   "rec": "C: structural-fea-engineer (gendesign re-run), not run here",
+   "status": "proposal"
+  },
+  {
+   "id": "X-1",
+   "pkg": "X",
+   "zone": "door zip",
+   "change": "Door zip #10 -> #8 coil (O-13 precedent, owner said NO for the main zip).",
+   "g": 10.6,
+   "g_booked": 10.6,
+   "usd": -1.3,
+   "hours": 0.0,
+   "durability": "#8 under a meat load with gloves",
+   "quiet": "none",
+   "ip": "none",
+   "look": "none",
+   "load_path": "no",
+   "confidence": "high",
+   "rec": "NO",
+   "status": "proposal"
+  },
+  {
+   "id": "X-2",
+   "pkg": "X",
+   "zone": "door zip",
+   "change": "Door zip: one slider instead of two (O-14 precedent).",
+   "g": 6.0,
+   "g_booked": 6.0,
+   "usd": -1.0,
+   "hours": 0.0,
+   "durability": "none",
+   "quiet": "none",
+   "ip": "none",
+   "look": "none",
+   "load_path": "no",
+   "confidence": "high",
+   "rec": "NO (ambidextrous access)",
+   "status": "proposal"
+  },
+  {
+   "id": "X-3",
+   "pkg": "X",
+   "zone": "wing + pouch straps",
+   "change": "25 -> 20 mm webbing and hardware on wing and pouch straps (no 20 mm records; ASSUMPTION 14 g/m).",
+   "g": 6.7,
+   "g_booked": 6.7,
+   "usd": 0.0,
+   "hours": 0.0,
+   "durability": "smaller hardware with gloves",
+   "quiet": "none",
+   "ip": "none",
+   "look": "none",
+   "load_path": "wing straps compress the load; no rating on file",
+   "confidence": "low",
+   "rec": "NO (breaks the 25 mm HAUL family, R-25)",
+   "status": "proposal"
+  },
+  {
+   "id": "X-4",
+   "pkg": "X",
+   "zone": "meat harness (O-1)",
+   "change": "Meat straps 3 -> 2 (drop IM1).",
+   "g": 72.1,
+   "g_booked": 72.1,
+   "usd": -12.97,
+   "hours": 0.0,
+   "durability": "",
+   "quiet": "",
+   "ip": "",
+   "look": "none",
+   "load_path": "YES (IM3 hook SF 2.71 carries more)",
+   "confidence": "high (bag_weight_plan)",
+   "rec": "NO (primary mission)",
+   "status": "proposal"
+  },
+  {
+   "id": "X-5",
+   "pkg": "X",
+   "zone": "meat harness (O-2)",
+   "change": "Meat straps 38 -> 25 mm.",
+   "g": 84.8,
+   "g_booked": 84.8,
+   "usd": -0.92,
+   "hours": 0.0,
+   "durability": "",
+   "quiet": "",
+   "ip": "",
+   "look": "none",
+   "load_path": "YES (25 mm cam ratings too low for the cradle)",
+   "confidence": "high (bag_weight_plan)",
+   "rec": "NO",
+   "status": "proposal"
+  },
+  {
+   "id": "X-6",
+   "pkg": "X",
+   "zone": "rain fly (O-7)",
+   "change": "Fly 40D -> 20D silpoly (owner-frozen fly in a base pocket).",
+   "g": 8.6,
+   "g_booked": 8.6,
+   "usd": 1.89,
+   "hours": 0.0,
+   "durability": "tear 25 -> 15 N",
+   "quiet": "",
+   "ip": "",
+   "look": "none",
+   "load_path": "no",
+   "confidence": "low (no record)",
+   "rec": "NO",
+   "status": "proposal"
+  }
+ ],
+ "packages": {
+  "start_booked_g": 4000.4,
+  "gaps": [
+   {
+    "id": "G-1",
+    "what": "grosgrain binding on CORRIE's 7.28 m of bound body seams (never booked: SPINE's 3.96 m was not booked either)",
+    "g": 36.4,
+    "basis": "corrie.build() seam rows tagged 'bound' x 5.0 g/m (ASSUMPTION, build_simplicity S-03)",
+    "bound_m": 7.28
+   },
+   {
+    "id": "G-2",
+    "what": "rain fly re-cut for CORRIE's box shell (outer shell 0.718 m2 vs SPINE 0.630 m2); the table still carries SPINE's fly",
+    "g": 6.5,
+    "basis": "panels.yaml F-01 x outer-shell area ratio (ASSUMPTION: fly area scales with the shell it covers; wing cover not included)"
+   }
+  ],
+  "start_real_g": 4043.3,
+  "steps": [
+   {
+    "pkg": "A",
+    "items": [
+     "A-1",
+     "A-2"
+    ],
+    "saved_booked_g": 10.3,
+    "saved_real_g": 10.3,
+    "usd": -3.21,
+    "hours": 0.0,
+    "after_booked_g": 3990.1,
+    "after_real_g": 4033.0,
+    "vs_target_real_g": 1039.0
+   },
+   {
+    "pkg": "B",
+    "items": [
+     "B-1",
+     "B-2",
+     "B-3",
+     "B-4",
+     "B-5",
+     "B-6",
+     "B-7",
+     "B-8",
+     "B-9",
+     "B-10"
+    ],
+    "saved_booked_g": 116.5,
+    "saved_real_g": 152.9,
+    "usd": -2.87,
+    "hours": -6.0,
+    "after_booked_g": 3873.6,
+    "after_real_g": 3880.1,
+    "vs_target_real_g": 886.1
+   },
+   {
+    "pkg": "C",
+    "items": [
+     "C-1",
+     "C-2",
+     "C-3",
+     "C-4",
+     "C-5",
+     "C-6",
+     "C-7",
+     "C-8",
+     "C-9"
+    ],
+    "saved_booked_g": 101.1,
+    "saved_real_g": 101.1,
+    "usd": 23.52,
+    "hours": 0.0,
+    "after_booked_g": 3772.5,
+    "after_real_g": 3779.0,
+    "vs_target_real_g": 785.0
+   }
+  ],
+  "pouch_interaction_g": -4.9,
+  "take": [
+   {
+    "id": "T-1",
+    "what": "Lighter-frame variant: carbon-tube ladder (mass_cut.md winner: frame + 2 mm QI spreader 763 g, rev B, SF/req 1.04, fatigue 1.18) in place of the printed body + crown + Sandwich v2 (1225 g). Owner rejected the look on 2026-11-01 (must read as a generative print); predates rev C, the barrier rule and Sandwich v2, so the saving is an UPPER bound",
+    "g": 462.3
+   },
+   {
+    "id": "T-2",
+    "what": "Count the 4 L top pouch as an accessory (as the market does with lids: SG lid sold separately, Exo quotes with and without). Accounting only: the hunter still carries it",
+    "g": 87.9
+   },
+   {
+    "id": "T-3",
+    "what": "Drop IMP-1 scope sleeve (owner-frozen B.1 pocket)",
+    "g": 56.4
+   },
+   {
+    "id": "T-4",
+    "what": "Meat straps 3 -> 2 (O-1, rec NO)",
+    "g": 72.1
+   }
+  ],
+  "after_all_take_g": 3100.3,
+  "frame_plus_spreader_needed_g": 439.9,
+  "frame_plus_spreader_now_g": 1224.9,
+  "target_g": 2994.0,
+  "s12_corrie_g": 3.5
+ },
+ "pouch_combo": {
+  "g": 58.0,
+  "fabric_usd": 2.1468805900574766,
+  "volume_L": 2.71
+ },
+ "benchmarks": [
+  {
+   "class": "frame_susp",
+   "ours_g": 2287.7,
+   "groups": [
+    "Frame (printed body + carbon crown)",
+    "Torso adjust",
+    "Back system (spreader + back panel)",
+    "Harness (J-straps, yoke, lifters, sternum)",
+    "Hipbelt B (body, load path, pad seat, pockets, holster)"
+   ],
+   "bench": [
+    [
+     "SG Krux frame, M belt, harness (2 lb 12 oz)",
+     1247.0,
+     "https://www.gearfool.com/collections/gear/products/stone-glacier-krux-frame-1"
+    ],
+    [
+     "Exo K4 frame system (2 lb 15 oz)",
+     1332.0,
+     "https://exomtngear.com/collections/k4-pack-systems/products/k4-frame-system"
+    ],
+    [
+     "Seek Outside Revolution 24 in (2 lb 9 oz)",
+     1162.0,
+     "https://checkout.seekoutside.com/revolution-suspension-and-frame/"
+    ],
+    [
+     "Kifaru ARK frame, M belt (3 lb 1.4 oz)",
+     1400.0,
+     "https://shop.gohunt.com/products/kifaru-ark-frame"
+    ]
+   ]
+  },
+  {
+   "class": "frame_only",
+   "ours_g": 1062.6,
+   "groups": [
+    "Frame (printed body + carbon crown)"
+   ],
+   "bench": [
+    [
+     "KUIU ICON 6 frame sheet only, Tall (13.7 oz)",
+     388.0,
+     "https://www.kuiu.com/blogs/do-your-research/icon-6-pack-system-whitepaper"
+    ]
+   ]
+  },
+  {
+   "class": "bag",
+   "ours_g": 738.8,
+   "groups": [
+    "Bag body (CORRIE shell, collar, wings, door, roll-top)",
+    "Bag pockets (IMP-1, -2, -4, -6, -8)",
+    "Rain fly (fly + base pocket)"
+   ],
+   "bench": [
+    [
+     "SG Sky 5900 bag (2 lb 4 oz)",
+     1021.0,
+     "https://www.stoneglacier.com/products/sky-5900-xcurve-krux"
+    ],
+    [
+     "Exo K4 5000 bag (2 lb 6 oz)",
+     1077.0,
+     "https://exomtngear.com/4800"
+    ]
+   ]
+  },
+  {
+   "class": "lid",
+   "ours_g": 87.9,
+   "groups": [
+    "Top pouch (4.0 L)"
+   ],
+   "bench": [
+    [
+     "Exo K4 lid (8.1 oz)",
+     230.0,
+     "https://exomtngear.com/lid"
+    ]
+   ]
+  },
+  {
+   "class": "belt",
+   "ours_g": 443.8,
+   "groups": [
+    "Hipbelt B without IMP-5, IMP-3, pad seat"
+   ],
+   "bench": [
+    [
+     "SG 3-piece belt (12.8 oz)",
+     363.0,
+     "https://stoneglacier.com/collections/sg-products/products/sg-3-piece-belt"
+    ]
+   ]
+  },
+  {
+   "class": "system",
+   "ours_g": 4000.4,
+   "groups": [
+    "whole pack"
+   ],
+   "bench": [
+    [
+     "SG Sky 5900 + Krux, M belt (5 lb 1.4 oz)",
+     2308.0,
+     "https://www.stoneglacier.com/products/sky-5900-xcurve-krux"
+    ],
+    [
+     "Exo K4 5000 with lid (5 lb 13 oz)",
+     2637.0,
+     "https://exomtngear.com/4800"
+    ],
+    [
+     "Mystery Ranch Sawtooth 65, MYSTERIUM (5 lb 4 oz)",
+     2381.0,
+     "https://www.huntinfool.com/articles/type/staff-articles/mystery-ranch-mysterium-sawtooth-65"
+    ],
+    [
+     "KUIU ICON 6 6000 (6 lb 2.4 oz)",
+     2790.0,
+     "https://www.kuiu.com/blogs/do-your-research/icon-6-pack-system-whitepaper"
+    ],
+    [
+     "Mystery Ranch Beartooth 85, MYSTERIUM (6.2 lb)",
+     2812.0,
+     "https://www.mysteryranch.com/beartooth-85-mens-pack"
+    ],
+    [
+     "Kifaru ARK + Absaroka (6 lb 4 oz)",
+     2835.0,
+     "https://gearjunkie.com/outdoor/hunt-fish/best-hunting-backpack"
+    ]
+   ]
+  }
+ ],
+ "target_g": 2994.0,
+ "screens": [
+  "outputs/screens/20261109_weight_1.png",
+  "outputs/screens/20261109_weight_2.png",
+  "outputs/screens/20261109_weight_3.png"
+ ]
+}
