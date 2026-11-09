@@ -107,6 +107,10 @@ def test_b2_is_applied_from_the_corrie_table(run):
         assert r["b2_g"] == CO.weight_table(s, spec="B.2")["total_g"]
         assert r["b1_g"] == CO.weight_table(s, spec="B.1")["total_g"]
         assert r["with_c_g"] == pytest.approx(r["b2_g"] - b2["c_saving_g"], abs=0.05)
+        assert r["with_c_g"] == pytest.approx(CO.weight_table(s, spec="B.2")["with_c_g"], abs=0.1)
+    # package C as gated (weight_c_structural.md): C-1+2+3 -25.0, C-9 -45.6, C-4 / C-7 fixes +8.1 / +8.5 -> about -54 g
+    assert b2["c_saving_g"] == pytest.approx(54.0, abs=0.5)
+    assert {p["id"] for p in b2["c_pending"]} == {"C-5", "C-6", "C-8"}
     steps = {s["pkg"]: s for s in run["packages"]["steps"]}
     assert set(steps["B"]["items"]) == {i for i in CO.SPECS["B.2"]["items"] if i.startswith("B-")}
     # the B.2 booking and the package arithmetic agree within a few grams (pull tab, zip length)

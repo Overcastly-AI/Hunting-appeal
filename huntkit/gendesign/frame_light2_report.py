@@ -51,7 +51,7 @@ def plot_mass(ctx) -> str:
         g = dict(c["mass"]["groups"])
         g["spreader"] = L.TODAY["spreader_g"]
         rows.append((k + ("\n(fails rev C)" if not c["summary"]["pass"] else ""), g))
-    fig, ax = plt.subplots(figsize=(9.5, 5.6))
+    fig, ax = plt.subplots(figsize=(11.5, 5.6))
     keys = ["printed body (PAHT-CF)"] + list(COL)
     col = {**COL, "printed body (PAHT-CF)": "#b5651d"}
     for i, (lab, g) in enumerate(rows):
@@ -68,14 +68,14 @@ def plot_mass(ctx) -> str:
             x0 += v
         ax.text(x0 + 12, i, f"{x0:.0f} g", va="center", fontsize=9, fontweight="bold")
     ax.axvline(440, color="#b03030", ls="--", lw=1.2)
-    ax.text(445, len(rows) - 0.45, "440 g: frame + spreader\nfor a 6.6 lb pack", color="#b03030", fontsize=8,
-            va="top")
+    ax.text(448, -0.42, "440 g: frame + spreader for a 6.6 lb pack", color="#b03030", fontsize=8,
+            va="bottom")
     ax.set_yticks(range(len(rows)), [r[0] for r in rows], fontsize=9)
     ax.invert_yaxis()
     ax.set_xlabel("frame + spreader mass (g)")
     ax.set_xlim(0, 1400)
     handles = [plt.Rectangle((0, 0), 1, 1, color=col[k]) for k in keys]
-    ax.legend(handles, keys, fontsize=7, loc="lower right", frameon=False)
+    ax.legend(handles, keys, fontsize=7.5, loc="upper left", bbox_to_anchor=(1.0, 1.0), frameon=False)
     ax.set_title("Lighter frame study 2: where the grams are (frame + Sandwich v2 spreader)", fontsize=11)
     for s in ("top", "right"):
         ax.spines[s].set_visible(False)
@@ -156,10 +156,19 @@ def plot_deformed(ctx, best: str) -> str:
     req = c.required_sf
     U = res.u.reshape(-1, 6)[:, :3]
     idx = {n: i for i, n in enumerate(res.node_ids)}
+    # free-free (inertia relief): remove the best-fit rigid-body motion so only the elastic deformation shows
+    Pn = np.asarray(res.coords, float)
+    c0 = Pn.mean(0)
+    A_ = np.zeros((3 * len(Pn), 6))
+    for k_, p_ in enumerate(Pn - c0):
+        A_[3 * k_:3 * k_ + 3, :3] = np.eye(3)
+        A_[3 * k_:3 * k_ + 3, 3:] = np.array([[0, p_[2], -p_[1]], [-p_[2], 0, p_[0]], [p_[1], -p_[0], 0]])
+    sol = np.linalg.lstsq(A_, U.ravel(), rcond=None)[0]
+    U = U - (A_ @ sol).reshape(-1, 3)
     util = {mm["id"]: req / mm["sf"] if mm["sf"] > 0 else 0 for mm in res.members}
-    sc = 5.0
+    sc = 10.0
     fig, axs = plt.subplots(1, 2, figsize=(10, 7.4))
-    cmap = cm.get_cmap("plasma")
+    cmap = matplotlib.colormaps["plasma"]
     for ax, (i, j, lab) in zip(axs, ((0, 2, "rear view (x-z)"), (1, 2, "side view (y-z), aft to the right"))):
         for md in m["members"]:
             if md["group"] == "lumbar_plate_shear":
@@ -184,7 +193,7 @@ def plot_deformed(ctx, best: str) -> str:
     sm = cm.ScalarMappable(cmap=cmap, norm=matplotlib.colors.Normalize(0, 1))
     cb = fig.colorbar(sm, ax=axs, shrink=0.6, location="bottom", pad=0.08)
     cb.set_label("utilisation = factored stress / allowable (1 = limit), C5 meat 2.0 g x 1.5")
-    fig.suptitle(f"{best} at 19 in, C5 meat case (rev C, CG 190 mm): deformed x {sc:g}, orange = printed knuckles",
+    fig.suptitle(f"{best} at 19 in, C5 meat case (rev C, CG 190 mm): elastic deformation x {sc:g} (rigid motion removed), orange = printed knuckles",
                  fontsize=10.5)
     return _save(fig, 3)
 
@@ -308,7 +317,23 @@ def write_doc(ctx, shots: list[str]) -> Path:
       f"and the former, and a carbon wrap carries the joint load, as on the v2 frame.")
     A("- **Owner decisions:** pick a concept (NODE is not offered: it fails); accept a stiffer frame than today's; "
       "approve the T6 coupon programme for the printed-knuckle bonds before any frame is bonded; and choose whether "
-      "the published 6.6 lb target moves (see section 7).")
+      "the published 6.6 lb target moves (summary, second bullet).")
+    br = C["BRANCH"]
+    A(f"- **BRANCH (the lattice look) fails frame buckling ({br['summary']['min_strength'][0]:.2f}, "
+      f"{br['summary']['min_strength'][2]})** even with OD 18 branch tubes, and costs "
+      f"+{br['mass']['frame_g'] - b['mass']['frame_g']:.0f} g over {best}: the branches push on the thin formed pan, "
+      "and in-plane bracing does nothing for the out-of-plane bag loads (generative_design.md section 3 found the "
+      "same). **SKIN** passes (it is TENDON underneath) and looks exactly like today's frame, for "
+      f"+{C['SKIN']['mass']['frame_g'] - b['mass']['frame_g']:.0f} g: frame {C['SKIN']['mass']['frame_g']:.0f} g, "
+      f"still {L.TODAY['frame_g'] - C['SKIN']['mass']['frame_g']:.0f} g under today.")
+    A("- **Finding on today's frame (P-1):** the accessory extension-post socket at the crown corner has a Volkersen "
+      "peak margin of **0.96** in C6p (posts fitted) with its 0.5 mm bondline, on today's frame too "
+      "(`rev_c_verification_results.json` post_socket 0.957; the rev C summary table did not list this check). Giving "
+      "it the crown corners' 0.8 mm bondline (glass beads) lifts it to 1.20 here. Applied in every concept; proposed "
+      "for today's crown as well (no mass change).")
+    t24 = 3779.0 - 462.3 - 3100.0
+    A(f"- With the weight pass's accounting items T-2..T-4 as well (pouch as an accessory and the rest, about "
+      f"{t24:.0f} g), the pack would be about **{pk - t24:.0f} g ({_lb(pk - t24):.2f} lb)**.")
     A("")
     A("## 1. Concepts")
     A("")
@@ -331,7 +356,8 @@ def write_doc(ctx, shots: list[str]) -> Path:
           f"{c['summary']['min_strength'][0]:.2f} | {c['summary']['min_fatigue'][0]:.2f} | "
           f"{'yes' if c['summary']['pass'] else '**no**'} |")
     A(f"| today | printed PAHT-CF branch body + carbon crown | | | {L.TODAY['frame_g']:.0f} | "
-      f"{L.TODAY['frame_spreader_g']:.0f} | 1.18 (crown spine, rev_c_verification) | 1.04 | yes |")
+      f"{L.TODAY['frame_spreader_g']:.0f} | 1.12 (crown legs, IM3; rev_c_verification) | 1.04 (printed body) | "
+      f"yes (post socket 0.96, P-1) |")
     A("")
     A("Layup codes: RW0 = twill 0/90 + UD 0 core x k + twill; RW45 = +-45 twill wraps (huntkit.fea.sizing). SKIN has "
       "the TENDON structure; its skin is not credited, so its margins are TENDON's.")
@@ -391,7 +417,7 @@ def write_doc(ctx, shots: list[str]) -> Path:
     A("| check | margin | where |")
     A("|---|---:|---|")
     for k, (v, where) in sorted(b["summary"]["checks"].items(), key=lambda kv: kv[1][0]):
-        A(f"| {k} | {v:.2f} | {where} |")
+        A(f"| {k} | {v:.2f} | {where} |" if v < 100 else f"| {k} | > 100 | {where} |")
     A("")
     A("Joint checks, how:")
     A("")
@@ -562,6 +588,8 @@ def write_doc(ctx, shots: list[str]) -> Path:
 
 def write_all(ctx, render: bool = True) -> dict:
     shots = [plot_mass(ctx), plot_utilization(ctx, recommend(ctx)), plot_deformed(ctx, recommend(ctx))]
+    if not render:
+        shots += [str(p) for p in sorted(L.SCREENS.glob(f"{L.SHOT}_[4-6].png"))]
     if render:
         try:
             from .frame_light2_render import render_all

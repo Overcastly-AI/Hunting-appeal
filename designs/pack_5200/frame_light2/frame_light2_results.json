@@ -1,0 +1,2830 @@
+{
+ "date": "2026-11-09",
+ "standard": "HA-LS-1 rev C",
+ "tau_pa_design_mpa": 4.0,
+ "lug": {
+  "t": 2.4,
+  "ta": 0.5,
+  "end_mm": 35.0,
+  "spigot_mm": 30.0,
+  "spigot_t": 2.0,
+  "through_mm": 60.0,
+  "foot_mm": 40.0,
+  "collar_mm": 35.0,
+  "collar_t": 3.0,
+  "neck_mm": 12.0,
+  "flare": 0.3
+ },
+ "today": {
+  "printed_body_g": 823.2,
+  "non_body_g": 217.4,
+  "crown_fix_g": 22.0,
+  "frame_g": 1062.6,
+  "spreader_g": 162.3,
+  "frame_spreader_g": 1224.9,
+  "carry_dy_mm": 29.7,
+  "torsion_Nm_per_deg": 0.44
+ },
+ "v2_tube": {
+  "frame_g": 599.0,
+  "carry_dy_mm": 6.33,
+  "torsion_Nm_per_deg": 2.87
+ },
+ "concepts": {
+  "NODE": {
+   "label": "NODE: printed sockets on a carbon ladder",
+   "look": "Organic printed knuckles at every junction with root fingers flowing along the tubes; tubes bonded straight into the prints. The simplest build.",
+   "cand": {
+    "stay": [
+     20,
+     "RW0",
+     3
+    ],
+    "bar": [
+     18,
+     "RW45",
+     4
+    ],
+    "ubar": [
+     22,
+     "RW45",
+     6
+    ],
+    "pan_t": 1.5,
+    "branch": null,
+    "skin_t": 0.0,
+    "spigot": true,
+    "joint_mode": "printed",
+    "name": "NODE"
+   },
+   "summary": {
+    "checks": {
+     "member: stays": [
+      1.2213289743180422,
+      "hipbelt_off_abuse|15|IM3 SR520-SR530"
+     ],
+     "member: lumbar_plate": [
+      1.2090727770661556,
+      "drop_2p5g|15|bar plv32"
+     ],
+     "member: hip_pivot": [
+      4.985026876668884,
+      "drop_2p5g|15|bar pivot_doubler_1"
+     ],
+     "member: lug_neck": [
+      1.3139081517348932,
+      "side_hill_torsion|15|IM3 SR330-NKMR"
+     ],
+     "member: mid_bar": [
+      2.235299425711544,
+      "side_hill_torsion|15|bar NKMR-MB2"
+     ],
+     "member: upper_bar": [
+      1.3209672128156742,
+      "hipbelt_off_abuse|15|bar UB1-UB2"
+     ],
+     "member: crown legs": [
+      1.1156831903009865,
+      "hipbelt_off_abuse|23|IM3 CLbot-CL530"
+     ],
+     "member: crown_top_bar": [
+      1.2090051737710266,
+      "hipbelt_off_abuse|15|IM3 TB0-TB1"
+     ],
+     "member: crown_spine": [
+      1.1784251544875375,
+      "hipbelt_off_abuse|15|IM3 SP81-SP150"
+     ],
+     "frame buckling": [
+      1.8614145962616224,
+      "side_hill_torsion|15|bar"
+     ],
+     "bond avg: foot": [
+      5.026044107023147,
+      "single_stay_setdown|19|bar foot_L"
+     ],
+     "bond Volkersen peak: foot": [
+      0.7842480819030943,
+      "single_stay_setdown|19|bar foot_L"
+     ],
+     "bond avg: end": [
+      1.9100121628076783,
+      "side_hill_torsion|15|IM3 mid_hub_R_end"
+     ],
+     "bond Volkersen peak: end": [
+      0.33209144504513477,
+      "side_hill_torsion|15|IM3 mid_hub_R_end"
+     ],
+     "bond avg: through": [
+      1.5095502549505861,
+      "side_hill_torsion|23|bar upper_hub_R_through"
+     ],
+     "bond Volkersen peak: through": [
+      0.15695273961705455,
+      "side_hill_torsion|23|bar upper_hub_R_through"
+     ],
+     "bond avg: stay_top": [
+      342.62538341610775,
+      "hipbelt_off_abuse|15|IM3 stay_top_L"
+     ],
+     "bond Volkersen peak: stay_top": [
+      46.150522724952445,
+      "hipbelt_off_abuse|15|IM3 stay_top_L"
+     ],
+     "crown: crown_leg": [
+      1.1156831903009865,
+      "hipbelt_off_abuse|23|IM3 CLbot-CL530"
+     ],
+     "crown: crown_top_bar": [
+      1.2090051737710266,
+      "hipbelt_off_abuse|15|IM3 TB0-TB1"
+     ],
+     "crown: crown_spine": [
+      1.1784251544875375,
+      "hipbelt_off_abuse|15|IM3 SP81-SP150"
+     ],
+     "crown: crown_corner bond avg": [
+      2.388841956685123,
+      "tall_load_posts|15|bar"
+     ],
+     "crown: crown_corner bond peak": [
+      1.2405744616151406,
+      "tall_load_posts|15|bar"
+     ],
+     "crown: bushing_bearing": [
+      17.279820581160248,
+      "hipbelt_off_abuse|15|IM3"
+     ],
+     "crown: leg_ring_crush": [
+      2.2910656914800316,
+      "hipbelt_off_abuse|15|IM3"
+     ],
+     "lumbar pan: lumbar plate in-plane shear": [
+      9.100203163781378,
+      "drop_2p5g|19|IM3"
+     ],
+     "lumbar pan: lumbar plate shear buckling": [
+      1.3532884040517383,
+      "drop_2p5g|19|IM3"
+     ],
+     "lumbar pan: lumbar plate-to-stay bond avg": [
+      2.197416686337274,
+      "side_hill_torsion|15|IM3"
+     ],
+     "lumbar pan: lumbar plate-to-stay bond Volkersen peak": [
+      1.5140927376224298,
+      "side_hill_torsion|15|IM3"
+     ],
+     "lumbar pan: Ti pivot insert punching shear in lumbar plate": [
+      12.35597321144761,
+      "meat_straps|23|bar"
+     ],
+     "stay-top collar ring (PAHT, Z)": [
+      3.0422246754687117,
+      "hipbelt_off_abuse|15|IM3"
+     ],
+     "stay ring under the collar": [
+      1.9684060364464762,
+      "hipbelt_off_abuse|15|IM3"
+     ],
+     "hip node 4 x M5 inserts": [
+      3.0004031225624765,
+      "meat_straps|23|bar"
+     ],
+     "hip node flange bond": [
+      4.2489477670606774,
+      "meat_straps|23|bar"
+     ],
+     "torso adjust: rack (5328 N)": [
+      6.2664913018086095,
+      "hipbelt_off_abuse|19|IM3"
+     ],
+     "fatigue: stays": [
+      1.32259512564136,
+      "23|IM3 SL155-SL190"
+     ],
+     "fatigue: lumbar_plate": [
+      1.1335057284995207,
+      "15|bar plv32"
+     ],
+     "fatigue: hip_pivot": [
+      4.6734626968770785,
+      "15|bar pivot_doubler_1"
+     ],
+     "fatigue: lug_neck": [
+      4.658511130337655,
+      "15|IM3 SR520-NKUR"
+     ],
+     "fatigue: mid_bar": [
+      62.44508454933847,
+      "15|IM3 NKML-MB0"
+     ],
+     "fatigue: upper_bar": [
+      3.4613097202959424,
+      "15|IM3 UB1-UB2"
+     ],
+     "fatigue: crown legs": [
+      1.3577527591134049,
+      "23|IM3 CRbot-CR530"
+     ],
+     "fatigue: crown_top_bar": [
+      3.4314451042536778,
+      "23|IM3 TB1-TB2"
+     ],
+     "fatigue: crown_spine": [
+      3.1721862600576936,
+      "15|IM3 SP81-SP150"
+     ],
+     "fatigue: bond foot": [
+      301183767911.3701,
+      "19|IM3 foot_R"
+     ],
+     "fatigue: bond end": [
+      15.254770417359897,
+      "19|IM3 mid_hub_R_end"
+     ],
+     "fatigue: bond through": [
+      16.592472716516664,
+      "15|IM3 mid_hub_L_through"
+     ],
+     "fatigue: bond stay_top": [
+      398.3131100805382,
+      "23|IM3 stay_top_R"
+     ],
+     "fatigue: stay-top collar": [
+      2.829228888608951,
+      "23|IM3 bush_top"
+     ],
+     "fatigue: hip inserts": [
+      2.8582290792310348,
+      "15|bar HP"
+     ],
+     "fatigue: hip flange bond": [
+      3.035708595132037,
+      "15|bar HP"
+     ],
+     "fatigue: crown corner bond": [
+      6.114380614094859,
+      "23|IM3 crown_corner"
+     ],
+     "foot boot (PAHT)": [
+      2.491357694858333,
+      "single_stay_setdown|15|bar"
+     ],
+     "stay clip bond (PAHT)": [
+      20.23629776448409,
+      "meat_straps|15|bar"
+     ],
+     "member: ext_post": [
+      2.7229457064626263,
+      "tall_load_posts|15|bar post_L"
+     ],
+     "member: ext_post_bar": [
+      14.409027451734746,
+      "tall_load_posts|15|bar XB0-XB1"
+     ],
+     "crown: ext_post": [
+      2.7229457064626263,
+      "tall_load_posts|15|bar post_L"
+     ],
+     "crown: ext_post_bar": [
+      14.409027451734746,
+      "tall_load_posts|15|bar XB0-XB1"
+     ],
+     "crown: post_socket bond avg": [
+      2.3079308661593916,
+      "tall_load_posts|15|bar"
+     ],
+     "crown: post_socket bond peak": [
+      1.198525856277265,
+      "tall_load_posts|15|bar"
+     ]
+    },
+    "min_strength": [
+     0.15695273961705455,
+     "bond Volkersen peak: through",
+     "side_hill_torsion|23|bar upper_hub_R_through"
+    ],
+    "min_fatigue": [
+     1.1335057284995207,
+     "fatigue: lumbar_plate",
+     "15|bar plv32"
+    ],
+    "by_case": {
+     "static_carry|crown_bar": [
+      1.8136091655992332,
+      15.0
+     ],
+     "drop_2p5g|crown_bar": [
+      1.2090727770661556,
+      15.0
+     ],
+     "side_hill_torsion|crown_bar": [
+      0.15695273961705455,
+      23.0
+     ],
+     "single_stay_setdown|crown_bar": [
+      0.20704253423715474,
+      23.0
+     ],
+     "meat_straps|crown_bar": [
+      1.3025295523664815,
+      15.0
+     ],
+     "tall_load|crown_bar": [
+      1.3760439005324672,
+      15.0
+     ],
+     "overload_haul|crown_bar": [
+      1.2162578970723645,
+      15.0
+     ],
+     "tall_load_posts|crown_bar": [
+      1.198525856277265,
+      15.0
+     ],
+     "hipbelt_off_abuse|crown_bar": [
+      0.415778174857273,
+      23.0
+     ],
+     "static_carry|strap_upper": [
+      1.8223382782666302,
+      15.0
+     ],
+     "drop_2p5g|strap_upper": [
+      1.2148921855110868,
+      15.0
+     ],
+     "side_hill_torsion|strap_upper": [
+      0.15872077102672555,
+      23.0
+     ],
+     "single_stay_setdown|strap_upper": [
+      0.20704253423715474,
+      23.0
+     ],
+     "hipbelt_off_abuse|strap_upper": [
+      0.4178498075955292,
+      23.0
+     ]
+    },
+    "pass": false,
+    "hip_fraction_static": 0.8029049278401731
+   },
+   "tried": [],
+   "mass": {
+    "tubes": {
+     "stays (2)": 80.72055490578333,
+     "mid bar": 12.197462198073913,
+     "upper bar": 18.83569467753877
+    },
+    "nodes": [
+     {
+      "name": "foot node (boot + hinge-pin boss + stabiliser anchor + bumper)",
+      "qty": 2,
+      "vol_mm3": 12374.406736854222,
+      "feature_g": 6.0,
+      "bond_g": 1.6009556162693586,
+      "wrap_g": 0.0,
+      "kind": "node",
+      "g_each": 19.116871141065474
+     },
+     {
+      "name": "mid knuckle z 330 (stay through-sleeve + mid-bar socket, IM2 seat)",
+      "qty": 2,
+      "vol_mm3": 27410.722628206917,
+      "feature_g": 4.0,
+      "bond_g": 4.629963642250985,
+      "wrap_g": 0.0,
+      "kind": "node",
+      "g_each": 33.05536598589933
+     },
+     {
+      "name": "upper knuckle z 520 (stay through-sleeve + upper-bar socket, IM3 + B-24 eye)",
+      "qty": 2,
+      "vol_mm3": 30030.810901300807,
+      "feature_g": 5.0,
+      "bond_g": 5.120256299733476,
+      "wrap_g": 0.0,
+      "kind": "node",
+      "g_each": 36.832659555378854
+     },
+     {
+      "name": "stay-top collar (bushing seat)",
+      "qty": 2,
+      "vol_mm3": 11174.016750288176,
+      "feature_g": 2.0,
+      "bond_g": 1.4008361642356886,
+      "wrap_g": 0.0,
+      "kind": "node",
+      "g_each": 13.844457755305466
+     },
+     {
+      "name": "clip z80 wing lash",
+      "qty": 2,
+      "vol_mm3": 4696.681017116741,
+      "feature_g": 2.0,
+      "bond_g": 0.8805255889481473,
+      "wrap_g": 0.0,
+      "kind": "clip",
+      "g_each": 6.978481878143745
+     },
+     {
+      "name": "clip z110 shoulder-strap lower anchor",
+      "qty": 2,
+      "vol_mm3": 4696.681017116741,
+      "feature_g": 3.0,
+      "bond_g": 0.8805255889481473,
+      "wrap_g": 0.0,
+      "kind": "clip",
+      "g_each": 7.978481878143745
+     },
+     {
+      "name": "clip z190 IM1 fairlead seat",
+      "qty": 2,
+      "vol_mm3": 4696.681017116741,
+      "feature_g": 3.0,
+      "bond_g": 0.8805255889481473,
+      "wrap_g": 0.0,
+      "kind": "clip",
+      "g_each": 7.978481878143745
+     },
+     {
+      "name": "clip z250 wing lash",
+      "qty": 2,
+      "vol_mm3": 4696.681017116741,
+      "feature_g": 2.0,
+      "bond_g": 0.8805255889481473,
+      "wrap_g": 0.0,
+      "kind": "clip",
+      "g_each": 6.978481878143745
+     },
+     {
+      "name": "clip z420 wing lash",
+      "qty": 2,
+      "vol_mm3": 4696.681017116741,
+      "feature_g": 2.0,
+      "bond_g": 0.8805255889481473,
+      "wrap_g": 0.0,
+      "kind": "clip",
+      "g_each": 6.978481878143745
+     },
+     {
+      "name": "hip node (Ti-mount boss, 4 x M5, flange on the pan)",
+      "qty": 1,
+      "vol_mm3": 27161.94598712017,
+      "feature_g": 0.0,
+      "bond_g": 2.4696,
+      "wrap_g": 0.0,
+      "kind": "node",
+      "g_each": 28.791662746347377
+     }
+    ],
+    "pan": {
+     "lumbar pan (formed CF)": 110.4,
+     "pivot pad-up (CF)": 12.5,
+     "pan-to-stay bond": 1.7835999999999999
+    },
+    "crown": {
+     "crown legs (2, rev C +2 UD)": 102.36999999999999,
+     "crown top bar (rev C +1 UD)": 22.12,
+     "crown spine tube (rev C +1 UD)": 32.65,
+     "crown corner wraps + 0.8 mm bondline": 26.21,
+     "rack + pawl housing + pulley guides": 44.0,
+     "UHMWPE bushings (4)": 16.7,
+     "spine clamp": 6.0
+    },
+    "pivot": {
+     "Ti hip-pivot mount (SLM)": 20.2,
+     "4 x M5 heat-set inserts (ASSUMPTION 1.2 g)": 4.8
+    },
+    "groups": {
+     "tubes": 111.753711781396,
+     "printed nodes + clips": 308.27519040308306,
+     "carbon tendon wraps": 0.0,
+     "bonds (MMA)": 38.56247933446049,
+     "lumbar pan + pad-up": 122.9,
+     "crown + torso adjust (unchanged)": 250.04999999999998,
+     "Ti pivot mount + inserts": 25.0,
+     "printed skin (non-structural)": 0.0
+    },
+    "frame_g": 856.5413815189395,
+    "frame_spreader_g": 1018.8413815189394,
+    "printed_g": 308.27519040308306,
+    "printed_vol_cm3": 236.10867019158783
+   },
+   "print_h": 11.704075132184544,
+   "n_printed_parts": 19,
+   "cost": {
+    "lines": {
+     "tube: stays": 40.875,
+     "tube: mid bar": 6.75,
+     "tube: upper bar": 8.25,
+     "crown tubes (legs, top bar, spine; unchanged)": 44.272499999999994,
+     "PAHT-CF filament (nodes, clips, skin, rack/pawl) + 15 % failed prints": 32.409317517083636,
+     "lumbar pan material (record, scaled)": 6.2325,
+     "MMA cartridges (2) + glass beads + mixing tips (ASSUMPTION)": 80.0,
+     "SLM Ti hip mount (ASSUMPTION, mass_cut.md)": 35.0,
+     "M5 heat-set inserts + UHMWPE bushings (ASSUMPTION)": 12.0,
+     "printed bonding jig (PLA/PETG ~400 g) + plywood base (ASSUMPTION)": 25.0
+    },
+    "total": 290.78931751708365
+   },
+   "stiffness": {
+    "carry_dy_mm": -6.337726457967372,
+    "torsion_Nm_per_deg": 2.818991874471504
+   },
+   "cg": {
+    "cg": [
+     -1.0640379314906253e-15,
+     -12.110242702608067,
+     339.73547638120516
+    ],
+    "mass_g": 854.7577815189396,
+    "today_cg": [
+     0.1120717641202685,
+     -5.4309362766041565,
+     355.0403912691321
+    ],
+    "today_body_centroid": [
+     0.14951751086623527,
+     -5.78477376795495,
+     299.9211731187127
+    ]
+   },
+   "system_cg": {
+    "dy_mm": 0.5369547922469735,
+    "dz_mm": 0.3840696770123486,
+    "mass_saved_kg": 0.20605861848106055
+   },
+   "pack_g": 3572.9413815189396
+  },
+  "TENDON": {
+   "label": "TENDON: printed knuckles with carbon tendon wraps",
+   "look": "The NODE knuckles, with tapered carbon-twill 'tendons' laid from each knuckle onto its tubes: printed bone, carbon sinew. The wrap carries the joint load.",
+   "cand": {
+    "stay": [
+     20,
+     "RW0",
+     2
+    ],
+    "bar": [
+     16,
+     "RW45",
+     3
+    ],
+    "ubar": [
+     22,
+     "RW45",
+     5
+    ],
+    "pan_t": 1.5,
+    "branch": null,
+    "skin_t": 0.0,
+    "spigot": true,
+    "joint_mode": "wrap",
+    "name": "TENDON"
+   },
+   "summary": {
+    "checks": {
+     "member: stays": [
+      1.0378643727375843,
+      "hipbelt_off_abuse|15|IM3 SL520-SL530"
+     ],
+     "member: lumbar_plate": [
+      1.2118262613089492,
+      "drop_2p5g|15|bar plv32"
+     ],
+     "member: hip_pivot": [
+      4.995313770004908,
+      "drop_2p5g|15|bar pivot_doubler_1"
+     ],
+     "member: mid_bar": [
+      1.2570957231206414,
+      "side_hill_torsion|15|bar MB2-SR330"
+     ],
+     "member: upper_bar": [
+      1.1305350982830111,
+      "hipbelt_off_abuse|15|bar UB0-UB1"
+     ],
+     "member: crown legs": [
+      1.1156409351732368,
+      "hipbelt_off_abuse|23|IM3 CLbot-CL530"
+     ],
+     "member: crown_top_bar": [
+      1.2273584086746774,
+      "hipbelt_off_abuse|15|IM3 TB0-TB1"
+     ],
+     "member: crown_spine": [
+      1.1784227394716298,
+      "hipbelt_off_abuse|15|IM3 SP81-SP150"
+     ],
+     "frame buckling": [
+      1.722423033547934,
+      "hipbelt_off_abuse|23|bar"
+     ],
+     "bond avg: stay_top": [
+      345.755691569127,
+      "hipbelt_off_abuse|15|IM3 stay_top_L"
+     ],
+     "bond Volkersen peak: stay_top": [
+      47.43821646224142,
+      "hipbelt_off_abuse|15|IM3 stay_top_L"
+     ],
+     "bond avg: wrap foot": [
+      15.078132314803028,
+      "single_stay_setdown|19|bar foot_L"
+     ],
+     "bond Volkersen peak: wrap foot": [
+      7.026826471383236,
+      "single_stay_setdown|19|bar foot_L"
+     ],
+     "bond avg: wrap mid hub": [
+      2.4973062673807087,
+      "side_hill_torsion|15|IM3 mid_hub_R"
+     ],
+     "bond Volkersen peak: wrap mid hub": [
+      1.1564869729761333,
+      "side_hill_torsion|15|IM3 mid_hub_R"
+     ],
+     "bond avg: wrap upper hub": [
+      3.6911846043774923,
+      "side_hill_torsion|23|bar upper_hub_R"
+     ],
+     "bond Volkersen peak: wrap upper hub": [
+      1.5804892942901352,
+      "side_hill_torsion|23|bar upper_hub_R"
+     ],
+     "crown: crown_leg": [
+      1.1156409351732368,
+      "hipbelt_off_abuse|23|IM3 CLbot-CL530"
+     ],
+     "crown: crown_top_bar": [
+      1.2273584086746774,
+      "hipbelt_off_abuse|15|IM3 TB0-TB1"
+     ],
+     "crown: crown_spine": [
+      1.1784227394716298,
+      "hipbelt_off_abuse|15|IM3 SP81-SP150"
+     ],
+     "crown: crown_corner bond avg": [
+      2.3742250748729647,
+      "tall_load_posts|15|bar"
+     ],
+     "crown: crown_corner bond peak": [
+      1.2329836160868863,
+      "tall_load_posts|15|bar"
+     ],
+     "crown: bushing_bearing": [
+      17.435696642994174,
+      "hipbelt_off_abuse|15|IM3"
+     ],
+     "crown: leg_ring_crush": [
+      2.3117327056838763,
+      "hipbelt_off_abuse|15|IM3"
+     ],
+     "lumbar pan: lumbar plate in-plane shear": [
+      8.729723449516635,
+      "drop_2p5g|23|IM3"
+     ],
+     "lumbar pan: lumbar plate shear buckling": [
+      1.2981944800780076,
+      "drop_2p5g|23|IM3"
+     ],
+     "lumbar pan: lumbar plate-to-stay bond avg": [
+      2.3222894605674496,
+      "side_hill_torsion|15|IM3"
+     ],
+     "lumbar pan: lumbar plate-to-stay bond Volkersen peak": [
+      1.5403125834087004,
+      "side_hill_torsion|15|IM3"
+     ],
+     "lumbar pan: Ti pivot insert punching shear in lumbar plate": [
+      12.352890013070457,
+      "meat_straps|23|bar"
+     ],
+     "stay-top collar ring (PAHT, Z)": [
+      2.4414880011665034,
+      "hipbelt_off_abuse|15|IM3"
+     ],
+     "stay ring under the collar": [
+      2.0809316729877936,
+      "hipbelt_off_abuse|15|IM3"
+     ],
+     "hip node 4 x M5 inserts": [
+      2.999654429004367,
+      "meat_straps|23|bar"
+     ],
+     "hip node flange bond": [
+      4.247887522906519,
+      "meat_straps|23|bar"
+     ],
+     "torso adjust: rack (5328 N)": [
+      6.266491325877435,
+      "hipbelt_off_abuse|15|IM3"
+     ],
+     "fatigue: stays": [
+      1.0725638838521145,
+      "23|IM3 SL290-SL330"
+     ],
+     "fatigue: lumbar_plate": [
+      1.1360871199771398,
+      "15|bar plv32"
+     ],
+     "fatigue: hip_pivot": [
+      4.683106659379601,
+      "15|bar pivot_doubler_1"
+     ],
+     "fatigue: mid_bar": [
+      45.50274620407053,
+      "19|IM3 SL330-MB0"
+     ],
+     "fatigue: upper_bar": [
+      2.933403652405814,
+      "15|IM3 UB0-UB1"
+     ],
+     "fatigue: crown legs": [
+      1.361592431393237,
+      "23|IM3 CLbot-CL530"
+     ],
+     "fatigue: crown_top_bar": [
+      3.4305132768833126,
+      "23|IM3 TB0-TB1"
+     ],
+     "fatigue: crown_spine": [
+      3.1707216122409103,
+      "15|IM3 SP81-SP150"
+     ],
+     "fatigue: bond stay_top": [
+      399.40457440665,
+      "23|IM3 stay_top_L"
+     ],
+     "fatigue: bond wrap foot": [
+      1025652780889.9011,
+      "15|IM3 foot_R"
+     ],
+     "fatigue: bond wrap mid hub": [
+      26.35630242626029,
+      "19|IM3 mid_hub_L"
+     ],
+     "fatigue: bond wrap upper hub": [
+      119.172408252444,
+      "15|IM3 upper_hub_R"
+     ],
+     "fatigue: stay-top collar": [
+      2.256354852391501,
+      "23|IM3 bush_top"
+     ],
+     "fatigue: hip inserts": [
+      2.857988791861344,
+      "15|bar HP"
+     ],
+     "fatigue: hip flange bond": [
+      3.035453387308309,
+      "15|bar HP"
+     ],
+     "fatigue: crown corner bond": [
+      6.1139495640247,
+      "23|IM3 crown_corner"
+     ],
+     "foot boot (PAHT)": [
+      2.491357694858333,
+      "single_stay_setdown|15|bar"
+     ],
+     "stay clip bond (PAHT)": [
+      20.23629776448409,
+      "meat_straps|15|bar"
+     ],
+     "member: ext_post": [
+      2.722931195149748,
+      "tall_load_posts|15|bar post_L"
+     ],
+     "member: ext_post_bar": [
+      14.437112388032729,
+      "tall_load_posts|15|bar XB0-XB1"
+     ],
+     "crown: ext_post": [
+      2.722931195149748,
+      "tall_load_posts|15|bar post_L"
+     ],
+     "crown: ext_post_bar": [
+      14.437112388032729,
+      "tall_load_posts|15|bar XB0-XB1"
+     ],
+     "crown: post_socket bond avg": [
+      2.307789878470326,
+      "tall_load_posts|15|bar"
+     ],
+     "crown: post_socket bond peak": [
+      1.1984510181638361,
+      "tall_load_posts|15|bar"
+     ]
+    },
+    "min_strength": [
+     1.0378643727375843,
+     "member: stays",
+     "hipbelt_off_abuse|15|IM3 SL520-SL530"
+    ],
+    "min_fatigue": [
+     1.0725638838521145,
+     "fatigue: stays",
+     "23|IM3 SL290-SL330"
+    ],
+    "by_case": {
+     "static_carry|crown_bar": [
+      1.817739391963424,
+      15.0
+     ],
+     "drop_2p5g|crown_bar": [
+      1.2118262613089492,
+      15.0
+     ],
+     "side_hill_torsion|crown_bar": [
+      1.157726652011995,
+      15.0
+     ],
+     "single_stay_setdown|crown_bar": [
+      1.920218533791463,
+      19.0
+     ],
+     "meat_straps|crown_bar": [
+      1.1317309333597934,
+      23.0
+     ],
+     "tall_load|crown_bar": [
+      1.3780871101893606,
+      15.0
+     ],
+     "overload_haul|crown_bar": [
+      1.5935641437258103,
+      23.0
+     ],
+     "tall_load_posts|crown_bar": [
+      1.1984510181638361,
+      15.0
+     ],
+     "hipbelt_off_abuse|crown_bar": [
+      1.1305350982830111,
+      15.0
+     ],
+     "static_carry|strap_upper": [
+      1.7161022141633835,
+      23.0
+     ],
+     "drop_2p5g|strap_upper": [
+      1.144068142775589,
+      23.0
+     ],
+     "side_hill_torsion|strap_upper": [
+      1.1126533696038257,
+      23.0
+     ],
+     "single_stay_setdown|strap_upper": [
+      1.920218533791463,
+      19.0
+     ],
+     "hipbelt_off_abuse|strap_upper": [
+      1.0378643727375843,
+      15.0
+     ]
+    },
+    "pass": true,
+    "hip_fraction_static": 0.8029552771240294
+   },
+   "tried": [
+    {
+     "cand": {
+      "stay": [
+       20,
+       "RW0",
+       3
+      ],
+      "bar": [
+       18,
+       "RW45",
+       4
+      ],
+      "ubar": [
+       22,
+       "RW45",
+       6
+      ],
+      "pan_t": 1.5,
+      "branch": null,
+      "skin_t": 0.0,
+      "spigot": true,
+      "joint_mode": "wrap",
+      "name": "TENDON"
+     },
+     "min_strength": [
+      1.1156835967889285,
+      "member: crown legs",
+      "hipbelt_off_abuse|23|IM3 CLbot-CL530"
+     ],
+     "min_fatigue": [
+      1.133475673662535,
+      "fatigue: lumbar_plate",
+      "15|bar plv32"
+     ],
+     "pass": true
+    },
+    {
+     "cand": {
+      "stay": [
+       20,
+       "RW0",
+       2
+      ],
+      "bar": [
+       18,
+       "RW45",
+       4
+      ],
+      "ubar": [
+       22,
+       "RW45",
+       6
+      ],
+      "pan_t": 1.5,
+      "branch": null,
+      "skin_t": 0.0,
+      "spigot": true,
+      "joint_mode": "wrap",
+      "name": "TENDON"
+     },
+     "min_strength": [
+      1.0298129419930393,
+      "member: stays",
+      "hipbelt_off_abuse|15|IM3 SR520-SR530"
+     ],
+     "min_fatigue": [
+      1.0711033975361306,
+      "fatigue: stays",
+      "23|IM3 SR290-SR330"
+     ],
+     "pass": true
+    },
+    {
+     "cand": {
+      "stay": [
+       20,
+       "RW45",
+       2
+      ],
+      "bar": [
+       18,
+       "RW45",
+       4
+      ],
+      "ubar": [
+       22,
+       "RW45",
+       6
+      ],
+      "pan_t": 1.5,
+      "branch": null,
+      "skin_t": 0.0,
+      "spigot": true,
+      "joint_mode": "wrap",
+      "name": "TENDON"
+     },
+     "min_strength": [
+      0.6814394907266021,
+      "member: stays",
+      "meat_straps|23|bar SR290-SR330"
+     ],
+     "min_fatigue": [
+      0.6516235766318593,
+      "fatigue: stays",
+      "23|IM3 SR330-SR374.3"
+     ],
+     "pass": false
+    },
+    {
+     "cand": {
+      "stay": [
+       20,
+       "RW0",
+       2
+      ],
+      "bar": [
+       16,
+       "RW45",
+       4
+      ],
+      "ubar": [
+       22,
+       "RW45",
+       6
+      ],
+      "pan_t": 1.5,
+      "branch": null,
+      "skin_t": 0.0,
+      "spigot": true,
+      "joint_mode": "wrap",
+      "name": "TENDON"
+     },
+     "min_strength": [
+      1.0111068402463126,
+      "bond Volkersen peak: wrap mid hub",
+      "side_hill_torsion|15|IM3 mid_hub_R"
+     ],
+     "min_fatigue": [
+      1.0719263495353533,
+      "fatigue: stays",
+      "23|IM3 SR290-SR330"
+     ],
+     "pass": true
+    },
+    {
+     "cand": {
+      "stay": [
+       20,
+       "RW0",
+       2
+      ],
+      "bar": [
+       16,
+       "RW45",
+       3
+      ],
+      "ubar": [
+       22,
+       "RW45",
+       6
+      ],
+      "pan_t": 1.5,
+      "branch": null,
+      "skin_t": 0.0,
+      "spigot": true,
+      "joint_mode": "wrap",
+      "name": "TENDON"
+     },
+     "min_strength": [
+      1.02984524593971,
+      "member: stays",
+      "hipbelt_off_abuse|15|IM3 SR520-SR530"
+     ],
+     "min_fatigue": [
+      1.072492559264755,
+      "fatigue: stays",
+      "23|IM3 SL290-SL330"
+     ],
+     "pass": true
+    },
+    {
+     "cand": {
+      "stay": [
+       20,
+       "RW0",
+       2
+      ],
+      "bar": [
+       16,
+       "RW45",
+       3
+      ],
+      "ubar": [
+       22,
+       "RW45",
+       5
+      ],
+      "pan_t": 1.5,
+      "branch": null,
+      "skin_t": 0.0,
+      "spigot": true,
+      "joint_mode": "wrap",
+      "name": "TENDON"
+     },
+     "min_strength": [
+      1.0378643727375843,
+      "member: stays",
+      "hipbelt_off_abuse|15|IM3 SL520-SL530"
+     ],
+     "min_fatigue": [
+      1.0725638838521145,
+      "fatigue: stays",
+      "23|IM3 SL290-SL330"
+     ],
+     "pass": true
+    },
+    {
+     "cand": {
+      "stay": [
+       20,
+       "RW0",
+       2
+      ],
+      "bar": [
+       16,
+       "RW45",
+       3
+      ],
+      "ubar": [
+       22,
+       "RW45",
+       4
+      ],
+      "pan_t": 1.5,
+      "branch": null,
+      "skin_t": 0.0,
+      "spigot": true,
+      "joint_mode": "wrap",
+      "name": "TENDON"
+     },
+     "min_strength": [
+      0.9372686162421282,
+      "member: upper_bar",
+      "hipbelt_off_abuse|15|bar UB0-UB1"
+     ],
+     "min_fatigue": [
+      1.0726471929612142,
+      "fatigue: stays",
+      "23|IM3 SL290-SL330"
+     ],
+     "pass": false
+    },
+    {
+     "cand": {
+      "stay": [
+       20,
+       "RW0",
+       2
+      ],
+      "bar": [
+       16,
+       "RW45",
+       3
+      ],
+      "ubar": [
+       22,
+       "RW45",
+       5
+      ],
+      "pan_t": 1.2,
+      "branch": null,
+      "skin_t": 0.0,
+      "spigot": true,
+      "joint_mode": "wrap",
+      "name": "TENDON"
+     },
+     "min_strength": [
+      0.6873104558213473,
+      "lumbar pan: lumbar plate shear buckling",
+      "drop_2p5g|19|IM3"
+     ],
+     "min_fatigue": [
+      0.8533159141185804,
+      "fatigue: lumbar_plate",
+      "15|bar plv32"
+     ],
+     "pass": false
+    }
+   ],
+   "mass": {
+    "tubes": {
+     "stays (2)": 68.78537210398375,
+     "mid bar": 12.305796066253203,
+     "upper bar": 22.169703334867243
+    },
+    "nodes": [
+     {
+      "name": "foot node (boot + hinge-pin boss + stabiliser anchor + bumper)",
+      "qty": 2,
+      "vol_mm3": 8552.043521602134,
+      "feature_g": 6.0,
+      "bond_g": 0.6003583561010094,
+      "wrap_g": 3.717839286074501,
+      "kind": "node",
+      "g_each": 15.065166132898263
+     },
+     {
+      "name": "mid knuckle z 330 (stay through-sleeve + mid-bar socket, IM2 seat)",
+      "qty": 2,
+      "vol_mm3": 13199.715693322873,
+      "feature_g": 4.0,
+      "bond_g": 1.280764493015487,
+      "wrap_g": 7.685847522145174,
+      "kind": "node",
+      "g_each": 17.991698634922244
+     },
+     {
+      "name": "upper knuckle z 520 (stay through-sleeve + upper-bar socket, IM3 + B-24 eye)",
+      "qty": 2,
+      "vol_mm3": 14817.0075913909,
+      "feature_g": 5.0,
+      "bond_g": 1.4608719998457895,
+      "wrap_g": 8.853789568988617,
+      "kind": "node",
+      "g_each": 20.70602804687435
+     },
+     {
+      "name": "stay-top collar (bushing seat)",
+      "qty": 2,
+      "vol_mm3": 11174.016750288176,
+      "feature_g": 2.0,
+      "bond_g": 1.4008361642356886,
+      "wrap_g": 0.0,
+      "kind": "node",
+      "g_each": 13.844457755305466
+     },
+     {
+      "name": "clip z80 wing lash",
+      "qty": 2,
+      "vol_mm3": 4696.681017116741,
+      "feature_g": 2.0,
+      "bond_g": 0.8805255889481473,
+      "wrap_g": 0.0,
+      "kind": "clip",
+      "g_each": 6.978481878143745
+     },
+     {
+      "name": "clip z110 shoulder-strap lower anchor",
+      "qty": 2,
+      "vol_mm3": 4696.681017116741,
+      "feature_g": 3.0,
+      "bond_g": 0.8805255889481473,
+      "wrap_g": 0.0,
+      "kind": "clip",
+      "g_each": 7.978481878143745
+     },
+     {
+      "name": "clip z190 IM1 fairlead seat",
+      "qty": 2,
+      "vol_mm3": 4696.681017116741,
+      "feature_g": 3.0,
+      "bond_g": 0.8805255889481473,
+      "wrap_g": 0.0,
+      "kind": "clip",
+      "g_each": 7.978481878143745
+     },
+     {
+      "name": "clip z250 wing lash",
+      "qty": 2,
+      "vol_mm3": 4696.681017116741,
+      "feature_g": 2.0,
+      "bond_g": 0.8805255889481473,
+      "wrap_g": 0.0,
+      "kind": "clip",
+      "g_each": 6.978481878143745
+     },
+     {
+      "name": "clip z420 wing lash",
+      "qty": 2,
+      "vol_mm3": 4696.681017116741,
+      "feature_g": 2.0,
+      "bond_g": 0.8805255889481473,
+      "wrap_g": 0.0,
+      "kind": "clip",
+      "g_each": 6.978481878143745
+     },
+     {
+      "name": "hip node (Ti-mount boss, 4 x M5, flange on the pan)",
+      "qty": 1,
+      "vol_mm3": 27161.94598712017,
+      "feature_g": 0.0,
+      "bond_g": 2.4696,
+      "wrap_g": 0.0,
+      "kind": "node",
+      "g_each": 28.791662746347377
+     }
+    ],
+    "pan": {
+     "lumbar pan (formed CF)": 110.4,
+     "pivot pad-up (CF)": 12.5,
+     "pan-to-stay bond": 1.7835999999999999
+    },
+    "crown": {
+     "crown legs (2, rev C +2 UD)": 102.36999999999999,
+     "crown top bar (rev C +1 UD)": 22.12,
+     "crown spine tube (rev C +1 UD)": 32.65,
+     "crown corner wraps + 0.8 mm bondline": 26.21,
+     "rack + pawl housing + pulley guides": 44.0,
+     "UHMWPE bushings (4)": 16.7,
+     "spine clamp": 6.0
+    },
+    "pivot": {
+     "Ti hip-pivot mount (SLM)": 20.2,
+     "4 x M5 heat-set inserts (ASSUMPTION 1.2 g)": 4.8
+    },
+    "groups": {
+     "tubes": 103.26087150510419,
+     "printed nodes + clips": 237.79118266778548,
+     "carbon tendon wraps": 40.51495275441658,
+     "bonds (MMA)": 22.544117915877422,
+     "lumbar pan + pad-up": 122.9,
+     "crown + torso adjust (unchanged)": 250.04999999999998,
+     "Ti pivot mount + inserts": 25.0,
+     "printed skin (non-structural)": 0.0
+    },
+    "frame_g": 802.0611248431836,
+    "frame_spreader_g": 964.3611248431837,
+    "printed_g": 237.79118266778548,
+    "printed_vol_cm3": 169.61432327149575
+   },
+   "print_h": 9.210537122681092,
+   "n_printed_parts": 19,
+   "cost": {
+    "lines": {
+     "tube: stays": 40.875,
+     "tube: mid bar": 6.0,
+     "tube: upper bar": 8.25,
+     "crown tubes (legs, top bar, spine; unchanged)": 44.272499999999994,
+     "PAHT-CF filament (nodes, clips, skin, rack/pawl) + 15 % failed prints": 25.924788805436265,
+     "lumbar pan material (record, scaled)": 6.2325,
+     "MMA cartridges (2) + glass beads + mixing tips (ASSUMPTION)": 80.0,
+     "SLM Ti hip mount (ASSUMPTION, mass_cut.md)": 35.0,
+     "M5 heat-set inserts + UHMWPE bushings (ASSUMPTION)": 12.0,
+     "printed bonding jig (PLA/PETG ~400 g) + plywood base (ASSUMPTION)": 25.0
+    },
+    "total": 283.55478880543626
+   },
+   "stiffness": {
+    "carry_dy_mm": -7.278249737274578,
+    "torsion_Nm_per_deg": 2.684617082280171
+   },
+   "cg": {
+    "cg": [
+     5.682370637305764e-16,
+     -12.46684133968508,
+     338.0687288065756
+    ],
+    "mass_g": 800.2775248431836,
+    "today_cg": [
+     0.1120717641202685,
+     -5.4309362766041565,
+     355.0403912691321
+    ],
+    "today_body_centroid": [
+     0.14951751086623527,
+     -5.78477376795495,
+     299.9211731187127
+    ]
+   },
+   "system_cg": {
+    "dy_mm": 0.7025758567896503,
+    "dz_mm": 0.529064373027154,
+    "mass_saved_kg": 0.2605388751568164
+   },
+   "pack_g": 3518.461124843184
+  },
+  "BRANCH": {
+   "label": "BRANCH: TENDON plus a printed hip node and branch tubes",
+   "look": "TENDON plus a printed hip node at the pivot that branches into two OD 14 carbon tubes up to the z 330 knuckles: the Y-branch silhouette of today's body, as a lattice.",
+   "cand": {
+    "stay": [
+     20,
+     "RW0",
+     3
+    ],
+    "bar": [
+     18,
+     "RW45",
+     4
+    ],
+    "ubar": [
+     22,
+     "RW45",
+     6
+    ],
+    "pan_t": 1.5,
+    "branch": {
+     "sec": [
+      18,
+      "RW45",
+      4
+     ]
+    },
+    "skin_t": 0.0,
+    "spigot": true,
+    "joint_mode": "wrap",
+    "name": "BRANCH"
+   },
+   "summary": {
+    "checks": {
+     "member: stays": [
+      1.2200041948044829,
+      "hipbelt_off_abuse|15|IM3 SL520-SL530"
+     ],
+     "member: lumbar_plate": [
+      1.2350927124944282,
+      "drop_2p5g|15|bar plv32"
+     ],
+     "member: hip_pivot": [
+      5.071482233314764,
+      "drop_2p5g|15|bar pivot_doubler_1"
+     ],
+     "member: mid_bar": [
+      2.3277239453853835,
+      "side_hill_torsion|15|IM3 SL330-MB0"
+     ],
+     "member: upper_bar": [
+      1.3294160131411226,
+      "hipbelt_off_abuse|15|bar UB1-UB2"
+     ],
+     "member: crown legs": [
+      1.115686358753631,
+      "hipbelt_off_abuse|23|IM3 CLbot-CL530"
+     ],
+     "member: crown_top_bar": [
+      1.2072866500589765,
+      "hipbelt_off_abuse|15|IM3 TB1-TB2"
+     ],
+     "member: crown_spine": [
+      1.178425189642426,
+      "hipbelt_off_abuse|15|IM3 SP81-SP150"
+     ],
+     "member: branch tubes": [
+      1.911968482710404,
+      "side_hill_torsion|23|IM3 branch_L1"
+     ],
+     "frame buckling": [
+      0.8821289201672878,
+      "side_hill_torsion|15|bar"
+     ],
+     "bond avg: stay_top": [
+      342.2861444875004,
+      "hipbelt_off_abuse|15|IM3 stay_top_L"
+     ],
+     "bond Volkersen peak: stay_top": [
+      46.104828346655694,
+      "hipbelt_off_abuse|15|IM3 stay_top_L"
+     ],
+     "bond avg: wrap foot": [
+      15.078132320132324,
+      "single_stay_setdown|19|bar foot_L"
+     ],
+     "bond Volkersen peak: wrap foot": [
+      6.7404736471007105,
+      "single_stay_setdown|19|bar foot_L"
+     ],
+     "bond avg: wrap mid hub": [
+      3.3280784150748413,
+      "side_hill_torsion|23|IM3 mid_hub_L"
+     ],
+     "bond Volkersen peak: wrap mid hub": [
+      1.1223681914013648,
+      "side_hill_torsion|23|IM3 mid_hub_L"
+     ],
+     "bond avg: wrap upper hub": [
+      4.005488298609929,
+      "side_hill_torsion|23|bar upper_hub_R"
+     ],
+     "bond Volkersen peak: wrap upper hub": [
+      1.685478861137115,
+      "side_hill_torsion|23|bar upper_hub_R"
+     ],
+     "bond avg: wrap branch": [
+      2.9512458089503304,
+      "side_hill_torsion|23|IM3 branch_knuckle_L"
+     ],
+     "bond Volkersen peak: wrap branch": [
+      1.3157743581361763,
+      "hipbelt_off_abuse|23|IM3 branch_knuckle_L"
+     ],
+     "crown: crown_leg": [
+      1.115686358753631,
+      "hipbelt_off_abuse|23|IM3 CLbot-CL530"
+     ],
+     "crown: crown_top_bar": [
+      1.2072866500589765,
+      "hipbelt_off_abuse|15|IM3 TB1-TB2"
+     ],
+     "crown: crown_spine": [
+      1.178425189642426,
+      "hipbelt_off_abuse|15|IM3 SP81-SP150"
+     ],
+     "crown: crown_corner bond avg": [
+      2.3853986898753177,
+      "tall_load_posts|15|bar"
+     ],
+     "crown: crown_corner bond peak": [
+      1.238786302772394,
+      "tall_load_posts|15|bar"
+     ],
+     "crown: bushing_bearing": [
+      17.261907271535378,
+      "hipbelt_off_abuse|15|IM3"
+     ],
+     "crown: leg_ring_crush": [
+      2.2886906338855595,
+      "hipbelt_off_abuse|15|IM3"
+     ],
+     "lumbar pan: lumbar plate in-plane shear": [
+      15.728630092985403,
+      "side_hill_torsion|15|IM3"
+     ],
+     "lumbar pan: lumbar plate shear buckling": [
+      2.3389997270799086,
+      "side_hill_torsion|15|IM3"
+     ],
+     "lumbar pan: lumbar plate-to-stay bond avg": [
+      3.795309113472228,
+      "side_hill_torsion|23|IM3"
+     ],
+     "lumbar pan: lumbar plate-to-stay bond Volkersen peak": [
+      2.5826182924790975,
+      "single_stay_setdown|15|bar"
+     ],
+     "lumbar pan: Ti pivot insert punching shear in lumbar plate": [
+      12.36031619598041,
+      "meat_straps|23|bar"
+     ],
+     "stay-top collar ring (PAHT, Z)": [
+      3.0390709209314974,
+      "hipbelt_off_abuse|15|IM3"
+     ],
+     "stay ring under the collar": [
+      1.9663654674120505,
+      "hipbelt_off_abuse|15|IM3"
+     ],
+     "hip node 4 x M5 inserts": [
+      3.0014577303360688,
+      "meat_straps|23|bar"
+     ],
+     "hip node flange bond": [
+      4.250441224125458,
+      "meat_straps|23|bar"
+     ],
+     "torso adjust: rack (5328 N)": [
+      6.266491294895892,
+      "hipbelt_off_abuse|23|IM3"
+     ],
+     "fatigue: stays": [
+      1.373696133640746,
+      "23|IM3 SR330-SR374.3"
+     ],
+     "fatigue: lumbar_plate": [
+      1.1578994179635265,
+      "15|bar plv32"
+     ],
+     "fatigue: hip_pivot": [
+      4.754514593732591,
+      "15|bar pivot_doubler_1"
+     ],
+     "fatigue: mid_bar": [
+      25.828952905964496,
+      "23|IM3 SL330-MB0"
+     ],
+     "fatigue: upper_bar": [
+      3.4813012586221967,
+      "15|IM3 UB1-UB2"
+     ],
+     "fatigue: crown legs": [
+      1.353453292480233,
+      "23|IM3 CLbot-CL530"
+     ],
+     "fatigue: crown_top_bar": [
+      3.425870886179716,
+      "23|IM3 TB0-TB1"
+     ],
+     "fatigue: crown_spine": [
+      3.179027525333889,
+      "15|IM3 SP81-SP150"
+     ],
+     "fatigue: branch tubes": [
+      1.8610622022691492,
+      "23|IM3 branch_L1"
+     ],
+     "fatigue: bond stay_top": [
+      397.0869245071743,
+      "23|IM3 stay_top_R"
+     ],
+     "fatigue: bond wrap foot": [
+      512825755986.771,
+      "23|IM3 foot_R"
+     ],
+     "fatigue: bond wrap mid hub": [
+      3.6304997865964332,
+      "23|IM3 mid_hub_L"
+     ],
+     "fatigue: bond wrap upper hub": [
+      60.28637027222643,
+      "23|IM3 upper_hub_R"
+     ],
+     "fatigue: bond wrap branch": [
+      2.146843719456824,
+      "23|IM3 branch_knuckle_L"
+     ],
+     "fatigue: stay-top collar": [
+      2.8208349467258675,
+      "23|IM3 bush_top"
+     ],
+     "fatigue: hip inserts": [
+      2.8586659717045517,
+      "15|IM3 HP"
+     ],
+     "fatigue: hip flange bond": [
+      3.0361726160918225,
+      "15|IM3 HP"
+     ],
+     "fatigue: crown corner bond": [
+      6.126001540547488,
+      "23|IM3 crown_corner"
+     ],
+     "foot boot (PAHT)": [
+      2.491357694858333,
+      "single_stay_setdown|15|bar"
+     ],
+     "stay clip bond (PAHT)": [
+      20.23629776448409,
+      "meat_straps|15|bar"
+     ],
+     "member: ext_post": [
+      2.722930764343726,
+      "tall_load_posts|15|bar post_L"
+     ],
+     "member: ext_post_bar": [
+      14.421415619602088,
+      "tall_load_posts|15|bar XB1-XR"
+     ],
+     "crown: ext_post": [
+      2.722930764343726,
+      "tall_load_posts|15|bar post_L"
+     ],
+     "crown: ext_post_bar": [
+      14.421415619602088,
+      "tall_load_posts|15|bar XB1-XR"
+     ],
+     "crown: post_socket bond avg": [
+      2.307926635241077,
+      "tall_load_posts|15|bar"
+     ],
+     "crown: post_socket bond peak": [
+      1.1985230362568504,
+      "tall_load_posts|15|bar"
+     ]
+    },
+    "min_strength": [
+     0.8821289201672878,
+     "frame buckling",
+     "side_hill_torsion|15|bar"
+    ],
+    "min_fatigue": [
+     1.1578994179635265,
+     "fatigue: lumbar_plate",
+     "15|bar plv32"
+    ],
+    "by_case": {
+     "static_carry|crown_bar": [
+      1.8526390687416423,
+      15.0
+     ],
+     "drop_2p5g|crown_bar": [
+      1.2350927124944282,
+      15.0
+     ],
+     "side_hill_torsion|crown_bar": [
+      0.8821289201672878,
+      15.0
+     ],
+     "single_stay_setdown|crown_bar": [
+      2.215305746384449,
+      23.0
+     ],
+     "meat_straps|crown_bar": [
+      1.4486427802783381,
+      23.0
+     ],
+     "tall_load|crown_bar": [
+      1.3980828967910226,
+      15.0
+     ],
+     "overload_haul|crown_bar": [
+      1.4481054809480858,
+      23.0
+     ],
+     "tall_load_posts|crown_bar": [
+      1.1985230362568504,
+      15.0
+     ],
+     "hipbelt_off_abuse|crown_bar": [
+      1.178426182255191,
+      15.0
+     ],
+     "static_carry|strap_upper": [
+      1.8550612043807475,
+      15.0
+     ],
+     "drop_2p5g|strap_upper": [
+      1.236707469587165,
+      15.0
+     ],
+     "side_hill_torsion|strap_upper": [
+      1.1223681914013648,
+      23.0
+     ],
+     "single_stay_setdown|strap_upper": [
+      2.215305746384449,
+      23.0
+     ],
+     "hipbelt_off_abuse|strap_upper": [
+      1.115686358753631,
+      23.0
+     ]
+    },
+    "pass": false,
+    "hip_fraction_static": 0.8027480853512565
+   },
+   "tried": [
+    {
+     "cand": {
+      "stay": [
+       20,
+       "RW0",
+       3
+      ],
+      "bar": [
+       18,
+       "RW45",
+       4
+      ],
+      "ubar": [
+       22,
+       "RW45",
+       6
+      ],
+      "pan_t": 1.5,
+      "branch": {
+       "sec": [
+        18,
+        "RW45",
+        4
+       ]
+      },
+      "skin_t": 0.0,
+      "spigot": true,
+      "joint_mode": "wrap",
+      "name": "BRANCH"
+     },
+     "min_strength": [
+      0.8821289201672878,
+      "frame buckling",
+      "side_hill_torsion|15|bar"
+     ],
+     "min_fatigue": [
+      1.1578994179635265,
+      "fatigue: lumbar_plate",
+      "15|bar plv32"
+     ],
+     "pass": false
+    },
+    {
+     "cand": {
+      "stay": [
+       20,
+       "RW0",
+       2
+      ],
+      "bar": [
+       18,
+       "RW45",
+       4
+      ],
+      "ubar": [
+       22,
+       "RW45",
+       6
+      ],
+      "pan_t": 1.5,
+      "branch": {
+       "sec": [
+        18,
+        "RW45",
+        4
+       ]
+      },
+      "skin_t": 0.0,
+      "spigot": true,
+      "joint_mode": "wrap",
+      "name": "BRANCH"
+     },
+     "min_strength": [
+      0.8431669325097211,
+      "frame buckling",
+      "side_hill_torsion|15|bar"
+     ],
+     "min_fatigue": [
+      1.0851551141517157,
+      "fatigue: stays",
+      "23|IM3 SL330-SL374.3"
+     ],
+     "pass": false
+    },
+    {
+     "cand": {
+      "stay": [
+       20,
+       "RW45",
+       2
+      ],
+      "bar": [
+       18,
+       "RW45",
+       4
+      ],
+      "ubar": [
+       22,
+       "RW45",
+       6
+      ],
+      "pan_t": 1.5,
+      "branch": {
+       "sec": [
+        18,
+        "RW45",
+        4
+       ]
+      },
+      "skin_t": 0.0,
+      "spigot": true,
+      "joint_mode": "wrap",
+      "name": "BRANCH"
+     },
+     "min_strength": [
+      0.6820215690042984,
+      "member: stays",
+      "meat_straps|23|bar SL330-SL374.3"
+     ],
+     "min_fatigue": [
+      0.6467506053800883,
+      "fatigue: stays",
+      "23|IM3 SL330-SL374.3"
+     ],
+     "pass": false
+    },
+    {
+     "cand": {
+      "stay": [
+       20,
+       "RW0",
+       3
+      ],
+      "bar": [
+       16,
+       "RW45",
+       4
+      ],
+      "ubar": [
+       22,
+       "RW45",
+       6
+      ],
+      "pan_t": 1.5,
+      "branch": {
+       "sec": [
+        18,
+        "RW45",
+        4
+       ]
+      },
+      "skin_t": 0.0,
+      "spigot": true,
+      "joint_mode": "wrap",
+      "name": "BRANCH"
+     },
+     "min_strength": [
+      0.8674959430387006,
+      "frame buckling",
+      "side_hill_torsion|15|bar"
+     ],
+     "min_fatigue": [
+      1.158145970181251,
+      "fatigue: lumbar_plate",
+      "15|bar plv32"
+     ],
+     "pass": false
+    },
+    {
+     "cand": {
+      "stay": [
+       20,
+       "RW0",
+       3
+      ],
+      "bar": [
+       16,
+       "RW45",
+       3
+      ],
+      "ubar": [
+       22,
+       "RW45",
+       6
+      ],
+      "pan_t": 1.5,
+      "branch": {
+       "sec": [
+        18,
+        "RW45",
+        4
+       ]
+      },
+      "skin_t": 0.0,
+      "spigot": true,
+      "joint_mode": "wrap",
+      "name": "BRANCH"
+     },
+     "min_strength": [
+      0.8552575022412344,
+      "frame buckling",
+      "side_hill_torsion|15|bar"
+     ],
+     "min_fatigue": [
+      1.1582439528838362,
+      "fatigue: lumbar_plate",
+      "15|bar plv32"
+     ],
+     "pass": false
+    },
+    {
+     "cand": {
+      "stay": [
+       20,
+       "RW0",
+       3
+      ],
+      "bar": [
+       18,
+       "RW45",
+       4
+      ],
+      "ubar": [
+       22,
+       "RW45",
+       5
+      ],
+      "pan_t": 1.5,
+      "branch": {
+       "sec": [
+        18,
+        "RW45",
+        4
+       ]
+      },
+      "skin_t": 0.0,
+      "spigot": true,
+      "joint_mode": "wrap",
+      "name": "BRANCH"
+     },
+     "min_strength": [
+      0.8807711372259638,
+      "frame buckling",
+      "side_hill_torsion|15|bar"
+     ],
+     "min_fatigue": [
+      1.1580891958861028,
+      "fatigue: lumbar_plate",
+      "15|bar plv32"
+     ],
+     "pass": false
+    },
+    {
+     "cand": {
+      "stay": [
+       20,
+       "RW0",
+       3
+      ],
+      "bar": [
+       18,
+       "RW45",
+       4
+      ],
+      "ubar": [
+       22,
+       "RW45",
+       4
+      ],
+      "pan_t": 1.5,
+      "branch": {
+       "sec": [
+        18,
+        "RW45",
+        4
+       ]
+      },
+      "skin_t": 0.0,
+      "spigot": true,
+      "joint_mode": "wrap",
+      "name": "BRANCH"
+     },
+     "min_strength": [
+      0.8788619702601985,
+      "frame buckling",
+      "side_hill_torsion|15|bar"
+     ],
+     "min_fatigue": [
+      1.1583563773751482,
+      "fatigue: lumbar_plate",
+      "15|bar plv32"
+     ],
+     "pass": false
+    },
+    {
+     "cand": {
+      "stay": [
+       20,
+       "RW0",
+       3
+      ],
+      "bar": [
+       18,
+       "RW45",
+       4
+      ],
+      "ubar": [
+       22,
+       "RW45",
+       6
+      ],
+      "pan_t": 1.2,
+      "branch": {
+       "sec": [
+        18,
+        "RW45",
+        4
+       ]
+      },
+      "skin_t": 0.0,
+      "spigot": true,
+      "joint_mode": "wrap",
+      "name": "BRANCH"
+     },
+     "min_strength": [
+      0.8171391068472098,
+      "frame buckling",
+      "drop_2p5g|15|bar"
+     ],
+     "min_fatigue": [
+      0.8690156042298484,
+      "fatigue: lumbar_plate",
+      "15|bar plv32"
+     ],
+     "pass": false
+    },
+    {
+     "cand": {
+      "stay": [
+       20,
+       "RW0",
+       3
+      ],
+      "bar": [
+       18,
+       "RW45",
+       4
+      ],
+      "ubar": [
+       22,
+       "RW45",
+       6
+      ],
+      "pan_t": 1.0,
+      "branch": {
+       "sec": [
+        18,
+        "RW45",
+        4
+       ]
+      },
+      "skin_t": 0.0,
+      "spigot": true,
+      "joint_mode": "wrap",
+      "name": "BRANCH"
+     },
+     "min_strength": [
+      0.4845709583808102,
+      "frame buckling",
+      "drop_2p5g|15|bar"
+     ],
+     "min_fatigue": [
+      0.7017208176609514,
+      "fatigue: lumbar_plate",
+      "15|IM3 plv32"
+     ],
+     "pass": false
+    }
+   ],
+   "mass": {
+    "tubes": {
+     "stays (2)": 80.72055490578333,
+     "mid bar": 15.945722028467944,
+     "upper bar": 24.623872299317647,
+     "branch tubes (2)": 29.477528596801697
+    },
+    "nodes": [
+     {
+      "name": "foot node (boot + hinge-pin boss + stabiliser anchor + bumper)",
+      "qty": 2,
+      "vol_mm3": 8552.043521602134,
+      "feature_g": 6.0,
+      "bond_g": 0.6003583561010094,
+      "wrap_g": 3.717839286074501,
+      "kind": "node",
+      "g_each": 15.065166132898263
+     },
+     {
+      "name": "mid knuckle z 330 (stay through-sleeve + mid-bar socket, IM2 seat)",
+      "qty": 2,
+      "vol_mm3": 13738.812992678884,
+      "feature_g": 4.0,
+      "bond_g": 1.3408003286255878,
+      "wrap_g": 8.075161537759653,
+      "kind": "node",
+      "g_each": 18.563141772239618
+     },
+     {
+      "name": "upper knuckle z 520 (stay through-sleeve + upper-bar socket, IM3 + B-24 eye)",
+      "qty": 2,
+      "vol_mm3": 14817.0075913909,
+      "feature_g": 5.0,
+      "bond_g": 1.4608719998457895,
+      "wrap_g": 8.853789568988617,
+      "kind": "node",
+      "g_each": 20.70602804687435
+     },
+     {
+      "name": "stay-top collar (bushing seat)",
+      "qty": 2,
+      "vol_mm3": 11174.016750288176,
+      "feature_g": 2.0,
+      "bond_g": 1.4008361642356886,
+      "wrap_g": 0.0,
+      "kind": "node",
+      "g_each": 13.844457755305466
+     },
+     {
+      "name": "clip z80 wing lash",
+      "qty": 2,
+      "vol_mm3": 4696.681017116741,
+      "feature_g": 2.0,
+      "bond_g": 0.8805255889481473,
+      "wrap_g": 0.0,
+      "kind": "clip",
+      "g_each": 6.978481878143745
+     },
+     {
+      "name": "clip z110 shoulder-strap lower anchor",
+      "qty": 2,
+      "vol_mm3": 4696.681017116741,
+      "feature_g": 3.0,
+      "bond_g": 0.8805255889481473,
+      "wrap_g": 0.0,
+      "kind": "clip",
+      "g_each": 7.978481878143745
+     },
+     {
+      "name": "clip z190 IM1 fairlead seat",
+      "qty": 2,
+      "vol_mm3": 4696.681017116741,
+      "feature_g": 3.0,
+      "bond_g": 0.8805255889481473,
+      "wrap_g": 0.0,
+      "kind": "clip",
+      "g_each": 7.978481878143745
+     },
+     {
+      "name": "clip z250 wing lash",
+      "qty": 2,
+      "vol_mm3": 4696.681017116741,
+      "feature_g": 2.0,
+      "bond_g": 0.8805255889481473,
+      "wrap_g": 0.0,
+      "kind": "clip",
+      "g_each": 6.978481878143745
+     },
+     {
+      "name": "clip z420 wing lash",
+      "qty": 2,
+      "vol_mm3": 4696.681017116741,
+      "feature_g": 2.0,
+      "bond_g": 0.8805255889481473,
+      "wrap_g": 0.0,
+      "kind": "clip",
+      "g_each": 6.978481878143745
+     },
+     {
+      "name": "hip node (Ti-mount boss, 4 x M5, flange on the pan, 2 branch sockets)",
+      "qty": 1,
+      "vol_mm3": 38482.989273596344,
+      "feature_g": 0.0,
+      "bond_g": 3.5502450409818165,
+      "wrap_g": 7.264029803538488,
+      "kind": "node",
+      "g_each": 40.79196863001212
+     },
+     {
+      "name": "branch sockets on the mid knuckles",
+      "qty": 2,
+      "vol_mm3": 5660.52164323809,
+      "feature_g": 0.0,
+      "bond_g": 0.5403225204909085,
+      "wrap_g": 3.1170685959377074,
+      "kind": "node",
+      "g_each": 6.000152941832376
+     }
+    ],
+    "pan": {
+     "lumbar pan (formed CF)": 110.4,
+     "pivot pad-up (CF)": 12.5,
+     "pan-to-stay bond": 1.7835999999999999
+    },
+    "crown": {
+     "crown legs (2, rev C +2 UD)": 102.36999999999999,
+     "crown top bar (rev C +1 UD)": 22.12,
+     "crown spine tube (rev C +1 UD)": 32.65,
+     "crown corner wraps + 0.8 mm bondline": 26.21,
+     "rack + pawl housing + pulley guides": 44.0,
+     "UHMWPE bushings (4)": 16.7,
+     "spine clamp": 6.0
+    },
+    "pivot": {
+     "Ti hip-pivot mount (SLM)": 20.2,
+     "4 x M5 heat-set inserts (ASSUMPTION 1.2 g)": 4.8
+    },
+    "groups": {
+     "tubes": 150.76767783037062,
+     "printed nodes + clips": 262.9346807097497,
+     "carbon tendon wraps": 54.79174778105944,
+     "bonds (MMA)": 24.825479669061256,
+     "lumbar pan + pad-up": 122.9,
+     "crown + torso adjust (unchanged)": 250.04999999999998,
+     "Ti pivot mount + inserts": 25.0,
+     "printed skin (non-structural)": 0.0
+    },
+    "frame_g": 891.269585990241,
+    "frame_spreader_g": 1053.569585990241,
+    "printed_g": 262.9346807097497,
+    "printed_vol_cm3": 193.33460444316012
+   },
+   "print_h": 10.400047666618505,
+   "n_printed_parts": 21,
+   "cost": {
+    "lines": {
+     "tube: stays": 40.875,
+     "tube: mid bar": 6.75,
+     "tube: upper bar": 8.25,
+     "tube: branch tubes": 16.2,
+     "crown tubes (legs, top bar, spine; unchanged)": 44.272499999999994,
+     "PAHT-CF filament (nodes, clips, skin, rack/pawl) + 15 % failed prints": 28.237990625296977,
+     "lumbar pan material (record, scaled)": 6.2325,
+     "MMA cartridges (2) + glass beads + mixing tips (ASSUMPTION)": 80.0,
+     "SLM Ti hip mount (ASSUMPTION, mass_cut.md)": 35.0,
+     "M5 heat-set inserts + UHMWPE bushings (ASSUMPTION)": 12.0,
+     "printed bonding jig (PLA/PETG ~400 g) + plywood base (ASSUMPTION)": 25.0
+    },
+    "total": 302.81799062529694
+   },
+   "stiffness": {
+    "carry_dy_mm": -3.954505649687526,
+    "torsion_Nm_per_deg": 3.0884940992631833
+   },
+   "cg": {
+    "cg": [
+     -1.5337420421982457e-15,
+     -13.140768946235244,
+     328.6285799487451
+    ],
+    "mass_g": 889.485985990241,
+    "today_cg": [
+     0.1120717641202685,
+     -5.4309362766041565,
+     355.0403912691321
+    ],
+    "today_body_centroid": [
+     0.14951751086623527,
+     -5.78477376795495,
+     299.9211731187127
+    ]
+   },
+   "system_cg": {
+    "dy_mm": 0.4155383391590135,
+    "dz_mm": 0.13569983535467145,
+    "mass_saved_kg": 0.171330414009759
+   },
+   "pack_g": 3607.669585990241
+  },
+  "SKIN": {
+   "label": "SKIN: TENDON structure under a printed skin",
+   "look": "The TENDON ladder hidden under a 0.8 mm printed shell shaped like today's branch body: reads exactly like today's frame.",
+   "cand": {
+    "stay": [
+     20,
+     "RW0",
+     2
+    ],
+    "bar": [
+     16,
+     "RW45",
+     3
+    ],
+    "ubar": [
+     22,
+     "RW45",
+     5
+    ],
+    "pan_t": 1.5,
+    "branch": null,
+    "skin_t": 0.8,
+    "spigot": true,
+    "joint_mode": "wrap",
+    "name": "SKIN"
+   },
+   "summary": {
+    "checks": {
+     "member: stays": [
+      1.0378643727375843,
+      "hipbelt_off_abuse|15|IM3 SL520-SL530"
+     ],
+     "member: lumbar_plate": [
+      1.2118262613089492,
+      "drop_2p5g|15|bar plv32"
+     ],
+     "member: hip_pivot": [
+      4.995313770004908,
+      "drop_2p5g|15|bar pivot_doubler_1"
+     ],
+     "member: mid_bar": [
+      1.2570957231206414,
+      "side_hill_torsion|15|bar MB2-SR330"
+     ],
+     "member: upper_bar": [
+      1.1305350982830111,
+      "hipbelt_off_abuse|15|bar UB0-UB1"
+     ],
+     "member: crown legs": [
+      1.1156409351732368,
+      "hipbelt_off_abuse|23|IM3 CLbot-CL530"
+     ],
+     "member: crown_top_bar": [
+      1.2273584086746774,
+      "hipbelt_off_abuse|15|IM3 TB0-TB1"
+     ],
+     "member: crown_spine": [
+      1.1784227394716298,
+      "hipbelt_off_abuse|15|IM3 SP81-SP150"
+     ],
+     "frame buckling": [
+      1.722423033547934,
+      "hipbelt_off_abuse|23|bar"
+     ],
+     "bond avg: stay_top": [
+      345.755691569127,
+      "hipbelt_off_abuse|15|IM3 stay_top_L"
+     ],
+     "bond Volkersen peak: stay_top": [
+      47.43821646224142,
+      "hipbelt_off_abuse|15|IM3 stay_top_L"
+     ],
+     "bond avg: wrap foot": [
+      15.078132314803028,
+      "single_stay_setdown|19|bar foot_L"
+     ],
+     "bond Volkersen peak: wrap foot": [
+      7.026826471383236,
+      "single_stay_setdown|19|bar foot_L"
+     ],
+     "bond avg: wrap mid hub": [
+      2.4973062673807087,
+      "side_hill_torsion|15|IM3 mid_hub_R"
+     ],
+     "bond Volkersen peak: wrap mid hub": [
+      1.1564869729761333,
+      "side_hill_torsion|15|IM3 mid_hub_R"
+     ],
+     "bond avg: wrap upper hub": [
+      3.6911846043774923,
+      "side_hill_torsion|23|bar upper_hub_R"
+     ],
+     "bond Volkersen peak: wrap upper hub": [
+      1.5804892942901352,
+      "side_hill_torsion|23|bar upper_hub_R"
+     ],
+     "crown: crown_leg": [
+      1.1156409351732368,
+      "hipbelt_off_abuse|23|IM3 CLbot-CL530"
+     ],
+     "crown: crown_top_bar": [
+      1.2273584086746774,
+      "hipbelt_off_abuse|15|IM3 TB0-TB1"
+     ],
+     "crown: crown_spine": [
+      1.1784227394716298,
+      "hipbelt_off_abuse|15|IM3 SP81-SP150"
+     ],
+     "crown: crown_corner bond avg": [
+      2.3742250748729647,
+      "tall_load_posts|15|bar"
+     ],
+     "crown: crown_corner bond peak": [
+      1.2329836160868863,
+      "tall_load_posts|15|bar"
+     ],
+     "crown: bushing_bearing": [
+      17.435696642994174,
+      "hipbelt_off_abuse|15|IM3"
+     ],
+     "crown: leg_ring_crush": [
+      2.3117327056838763,
+      "hipbelt_off_abuse|15|IM3"
+     ],
+     "lumbar pan: lumbar plate in-plane shear": [
+      8.729723449516635,
+      "drop_2p5g|23|IM3"
+     ],
+     "lumbar pan: lumbar plate shear buckling": [
+      1.2981944800780076,
+      "drop_2p5g|23|IM3"
+     ],
+     "lumbar pan: lumbar plate-to-stay bond avg": [
+      2.3222894605674496,
+      "side_hill_torsion|15|IM3"
+     ],
+     "lumbar pan: lumbar plate-to-stay bond Volkersen peak": [
+      1.5403125834087004,
+      "side_hill_torsion|15|IM3"
+     ],
+     "lumbar pan: Ti pivot insert punching shear in lumbar plate": [
+      12.352890013070457,
+      "meat_straps|23|bar"
+     ],
+     "stay-top collar ring (PAHT, Z)": [
+      2.4414880011665034,
+      "hipbelt_off_abuse|15|IM3"
+     ],
+     "stay ring under the collar": [
+      2.0809316729877936,
+      "hipbelt_off_abuse|15|IM3"
+     ],
+     "hip node 4 x M5 inserts": [
+      2.999654429004367,
+      "meat_straps|23|bar"
+     ],
+     "hip node flange bond": [
+      4.247887522906519,
+      "meat_straps|23|bar"
+     ],
+     "torso adjust: rack (5328 N)": [
+      6.266491325877435,
+      "hipbelt_off_abuse|15|IM3"
+     ],
+     "fatigue: stays": [
+      1.0725638838521145,
+      "23|IM3 SL290-SL330"
+     ],
+     "fatigue: lumbar_plate": [
+      1.1360871199771398,
+      "15|bar plv32"
+     ],
+     "fatigue: hip_pivot": [
+      4.683106659379601,
+      "15|bar pivot_doubler_1"
+     ],
+     "fatigue: mid_bar": [
+      45.50274620407053,
+      "19|IM3 SL330-MB0"
+     ],
+     "fatigue: upper_bar": [
+      2.933403652405814,
+      "15|IM3 UB0-UB1"
+     ],
+     "fatigue: crown legs": [
+      1.361592431393237,
+      "23|IM3 CLbot-CL530"
+     ],
+     "fatigue: crown_top_bar": [
+      3.4305132768833126,
+      "23|IM3 TB0-TB1"
+     ],
+     "fatigue: crown_spine": [
+      3.1707216122409103,
+      "15|IM3 SP81-SP150"
+     ],
+     "fatigue: bond stay_top": [
+      399.40457440665,
+      "23|IM3 stay_top_L"
+     ],
+     "fatigue: bond wrap foot": [
+      1025652780889.9011,
+      "15|IM3 foot_R"
+     ],
+     "fatigue: bond wrap mid hub": [
+      26.35630242626029,
+      "19|IM3 mid_hub_L"
+     ],
+     "fatigue: bond wrap upper hub": [
+      119.172408252444,
+      "15|IM3 upper_hub_R"
+     ],
+     "fatigue: stay-top collar": [
+      2.256354852391501,
+      "23|IM3 bush_top"
+     ],
+     "fatigue: hip inserts": [
+      2.857988791861344,
+      "15|bar HP"
+     ],
+     "fatigue: hip flange bond": [
+      3.035453387308309,
+      "15|bar HP"
+     ],
+     "fatigue: crown corner bond": [
+      6.1139495640247,
+      "23|IM3 crown_corner"
+     ],
+     "foot boot (PAHT)": [
+      2.491357694858333,
+      "single_stay_setdown|15|bar"
+     ],
+     "stay clip bond (PAHT)": [
+      20.23629776448409,
+      "meat_straps|15|bar"
+     ],
+     "member: ext_post": [
+      2.722931195149748,
+      "tall_load_posts|15|bar post_L"
+     ],
+     "member: ext_post_bar": [
+      14.437112388032729,
+      "tall_load_posts|15|bar XB0-XB1"
+     ],
+     "crown: ext_post": [
+      2.722931195149748,
+      "tall_load_posts|15|bar post_L"
+     ],
+     "crown: ext_post_bar": [
+      14.437112388032729,
+      "tall_load_posts|15|bar XB0-XB1"
+     ],
+     "crown: post_socket bond avg": [
+      2.307789878470326,
+      "tall_load_posts|15|bar"
+     ],
+     "crown: post_socket bond peak": [
+      1.1984510181638361,
+      "tall_load_posts|15|bar"
+     ]
+    },
+    "min_strength": [
+     1.0378643727375843,
+     "member: stays",
+     "hipbelt_off_abuse|15|IM3 SL520-SL530"
+    ],
+    "min_fatigue": [
+     1.0725638838521145,
+     "fatigue: stays",
+     "23|IM3 SL290-SL330"
+    ],
+    "by_case": {
+     "static_carry|crown_bar": [
+      1.817739391963424,
+      15.0
+     ],
+     "drop_2p5g|crown_bar": [
+      1.2118262613089492,
+      15.0
+     ],
+     "side_hill_torsion|crown_bar": [
+      1.157726652011995,
+      15.0
+     ],
+     "single_stay_setdown|crown_bar": [
+      1.920218533791463,
+      19.0
+     ],
+     "meat_straps|crown_bar": [
+      1.1317309333597934,
+      23.0
+     ],
+     "tall_load|crown_bar": [
+      1.3780871101893606,
+      15.0
+     ],
+     "overload_haul|crown_bar": [
+      1.5935641437258103,
+      23.0
+     ],
+     "tall_load_posts|crown_bar": [
+      1.1984510181638361,
+      15.0
+     ],
+     "hipbelt_off_abuse|crown_bar": [
+      1.1305350982830111,
+      15.0
+     ],
+     "static_carry|strap_upper": [
+      1.7161022141633835,
+      23.0
+     ],
+     "drop_2p5g|strap_upper": [
+      1.144068142775589,
+      23.0
+     ],
+     "side_hill_torsion|strap_upper": [
+      1.1126533696038257,
+      23.0
+     ],
+     "single_stay_setdown|strap_upper": [
+      1.920218533791463,
+      19.0
+     ],
+     "hipbelt_off_abuse|strap_upper": [
+      1.0378643727375843,
+      15.0
+     ]
+    },
+    "pass": true,
+    "hip_fraction_static": 0.8029552771240294
+   },
+   "tried": [],
+   "mass": {
+    "tubes": {
+     "stays (2)": 68.78537210398375,
+     "mid bar": 12.305796066253203,
+     "upper bar": 22.169703334867243
+    },
+    "nodes": [
+     {
+      "name": "foot node (boot + hinge-pin boss + stabiliser anchor + bumper)",
+      "qty": 2,
+      "vol_mm3": 8552.043521602134,
+      "feature_g": 6.0,
+      "bond_g": 0.6003583561010094,
+      "wrap_g": 3.717839286074501,
+      "kind": "node",
+      "g_each": 15.065166132898263
+     },
+     {
+      "name": "mid knuckle z 330 (stay through-sleeve + mid-bar socket, IM2 seat)",
+      "qty": 2,
+      "vol_mm3": 13199.715693322873,
+      "feature_g": 4.0,
+      "bond_g": 1.280764493015487,
+      "wrap_g": 7.685847522145174,
+      "kind": "node",
+      "g_each": 17.991698634922244
+     },
+     {
+      "name": "upper knuckle z 520 (stay through-sleeve + upper-bar socket, IM3 + B-24 eye)",
+      "qty": 2,
+      "vol_mm3": 14817.0075913909,
+      "feature_g": 5.0,
+      "bond_g": 1.4608719998457895,
+      "wrap_g": 8.853789568988617,
+      "kind": "node",
+      "g_each": 20.70602804687435
+     },
+     {
+      "name": "stay-top collar (bushing seat)",
+      "qty": 2,
+      "vol_mm3": 11174.016750288176,
+      "feature_g": 2.0,
+      "bond_g": 1.4008361642356886,
+      "wrap_g": 0.0,
+      "kind": "node",
+      "g_each": 13.844457755305466
+     },
+     {
+      "name": "clip z80 wing lash",
+      "qty": 2,
+      "vol_mm3": 4696.681017116741,
+      "feature_g": 2.0,
+      "bond_g": 0.8805255889481473,
+      "wrap_g": 0.0,
+      "kind": "clip",
+      "g_each": 6.978481878143745
+     },
+     {
+      "name": "clip z110 shoulder-strap lower anchor",
+      "qty": 2,
+      "vol_mm3": 4696.681017116741,
+      "feature_g": 3.0,
+      "bond_g": 0.8805255889481473,
+      "wrap_g": 0.0,
+      "kind": "clip",
+      "g_each": 7.978481878143745
+     },
+     {
+      "name": "clip z190 IM1 fairlead seat",
+      "qty": 2,
+      "vol_mm3": 4696.681017116741,
+      "feature_g": 3.0,
+      "bond_g": 0.8805255889481473,
+      "wrap_g": 0.0,
+      "kind": "clip",
+      "g_each": 7.978481878143745
+     },
+     {
+      "name": "clip z250 wing lash",
+      "qty": 2,
+      "vol_mm3": 4696.681017116741,
+      "feature_g": 2.0,
+      "bond_g": 0.8805255889481473,
+      "wrap_g": 0.0,
+      "kind": "clip",
+      "g_each": 6.978481878143745
+     },
+     {
+      "name": "clip z420 wing lash",
+      "qty": 2,
+      "vol_mm3": 4696.681017116741,
+      "feature_g": 2.0,
+      "bond_g": 0.8805255889481473,
+      "wrap_g": 0.0,
+      "kind": "clip",
+      "g_each": 6.978481878143745
+     },
+     {
+      "name": "hip node (Ti-mount boss, 4 x M5, flange on the pan)",
+      "qty": 1,
+      "vol_mm3": 27161.94598712017,
+      "feature_g": 0.0,
+      "bond_g": 2.4696,
+      "wrap_g": 0.0,
+      "kind": "node",
+      "g_each": 28.791662746347377
+     }
+    ],
+    "pan": {
+     "lumbar pan (formed CF)": 110.4,
+     "pivot pad-up (CF)": 12.5,
+     "pan-to-stay bond": 1.7835999999999999
+    },
+    "crown": {
+     "crown legs (2, rev C +2 UD)": 102.36999999999999,
+     "crown top bar (rev C +1 UD)": 22.12,
+     "crown spine tube (rev C +1 UD)": 32.65,
+     "crown corner wraps + 0.8 mm bondline": 26.21,
+     "rack + pawl housing + pulley guides": 44.0,
+     "UHMWPE bushings (4)": 16.7,
+     "spine clamp": 6.0
+    },
+    "pivot": {
+     "Ti hip-pivot mount (SLM)": 20.2,
+     "4 x M5 heat-set inserts (ASSUMPTION 1.2 g)": 4.8
+    },
+    "groups": {
+     "tubes": 103.26087150510419,
+     "printed nodes + clips": 237.79118266778548,
+     "carbon tendon wraps": 40.51495275441658,
+     "bonds (MMA)": 22.544117915877422,
+     "lumbar pan + pad-up": 122.9,
+     "crown + torso adjust (unchanged)": 250.04999999999998,
+     "Ti pivot mount + inserts": 25.0,
+     "printed skin (non-structural)": 191.14038647644747
+    },
+    "frame_g": 993.2015113196311,
+    "frame_spreader_g": 1155.5015113196312,
+    "printed_g": 428.931569144233,
+    "printed_vol_cm3": 349.93544258889904
+   },
+   "print_h": 17.772579097083714,
+   "n_printed_parts": 31,
+   "cost": {
+    "lines": {
+     "tube: stays": 40.875,
+     "tube: mid bar": 6.0,
+     "tube: upper bar": 8.25,
+     "crown tubes (legs, top bar, spine; unchanged)": 44.272499999999994,
+     "PAHT-CF filament (nodes, clips, skin, rack/pawl) + 15 % failed prints": 43.509704361269435,
+     "lumbar pan material (record, scaled)": 6.2325,
+     "MMA cartridges (2) + glass beads + mixing tips (ASSUMPTION)": 80.0,
+     "SLM Ti hip mount (ASSUMPTION, mass_cut.md)": 35.0,
+     "M5 heat-set inserts + UHMWPE bushings (ASSUMPTION)": 12.0,
+     "printed bonding jig (PLA/PETG ~400 g) + plywood base (ASSUMPTION)": 25.0
+    },
+    "total": 301.1397043612694
+   },
+   "stiffness": {
+    "carry_dy_mm": -7.278249737274578,
+    "torsion_Nm_per_deg": 2.684617082280171
+   },
+   "cg": {
+    "cg": [
+     4.586838160722462e-16,
+     -11.02727188755967,
+     330.72926937813884
+    ],
+    "mass_g": 991.4179113196311,
+    "today_cg": [
+     0.1120717641202685,
+     -5.4309362766041565,
+     355.0403912691321
+    ],
+    "today_body_centroid": [
+     0.14951751086623527,
+     -5.78477376795495,
+     299.9211731187127
+    ]
+   },
+   "system_cg": {
+    "dy_mm": 0.12784750308696857,
+    "dz_mm": -0.15688665257130197,
+    "mass_saved_kg": 0.06939848868036891
+   },
+   "pack_g": 3709.6015113196313
+  }
+ },
+ "seconds": 291.7407593727112
+}

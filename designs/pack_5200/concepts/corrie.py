@@ -651,6 +651,27 @@ def b2_rows(c: BC.Concept, b: BC.Build, spec: str | None = None) -> list:
     return rows
 
 
+# ---- package C as gated (structural-fea-engineer, analysis/weight_c_structural.md; DECISIONS 2026-11-09 "Package C
+# adopted where it passes"). NOT applied to the B.2 build: a "B.2 + C" projection row, gated by prototype tests.
+C_GATES = "HB-5 (7075 plate proof + 1e5 cycles, with the holes), pad-seat sag test (413 N, 8 h), T1(c) yoke dial, T5"
+
+
+def package_c_rows() -> list:
+    """(item, g, source) of package C as adopted: C-1+C-2+C-3 on one plate and C-9 adopted; C-4 and C-7 failed and
+    are replaced by corrections to today's parts (they ADD mass)."""
+    import json
+    r = json.loads((HERE.parent / "analysis" / "weight_c_structural_results.json").read_text())
+    src = "analysis/weight_c_structural_results.json"
+    return [("C-1+C-2+C-3: belt plate 7075-T6 1.2 mm cold slip-rolled, D28 hub, 2 x D31 holes (SF/req 1.08)",
+             -float(r["C1_C2"]["package_saved_g"]), src + " C1_C2.package_saved_g"),
+            ("C-9: printed body, low-stress ligaments offset inward <= 1.75 mm (fatigue 1.020)",
+             -float(r["C9"]["best"]["saved_g"]), src + " C9.best.saved_g"),
+            ("C-4 FAIL -> correction: pad backer HDPE 1.0 -> CFRP quasi-iso 0.8 mm", +8.1,
+             "analysis/weight_c_structural.md section 0 (fix +8.1 g)"),
+            ("C-7 FAIL -> correction: yoke plate CFRP 1.5 -> 1.8 mm", +8.5,
+             "analysis/weight_c_structural.md section 0 (fix +8.5 g)")]
+
+
 def weight_table(size: str = "M", c: BC.Concept | None = None, spec: str | None = None) -> dict:
     c = c or make()
     sp_key = spec or SPEC
@@ -687,7 +708,16 @@ def weight_table(size: str = "M", c: BC.Concept | None = None, spec: str | None 
     return {"size": size, "spec": sp_key, "rows": [(n, round(g, 1), s) for n, g, s in rows], "total_g": round(tot, 1),
             "total_lb": round(tot / 453.592, 2), "vs_spine_g": round(tot - SPINE_TOTAL_G, 1),
             "vs_target_g": round(tot - TARGET_G, 1), "rev_b_total_g": round(SPINE_TOTAL_G + body - spine_body, 1),
-            "body_g": body}
+            "body_g": body, **_with_c(tot, sp_key)}
+
+
+def _with_c(tot: float, spec: str) -> dict:
+    if spec == "B.1":
+        return {}
+    rows = package_c_rows()
+    w = tot + sum(g for _, g, _ in rows)
+    return {"c_rows": [(n, round(g, 1), s) for n, g, s in rows], "c_net_g": round(sum(g for _, g, _ in rows), 1),
+            "with_c_g": round(w, 1), "with_c_lb": round(w / 453.592, 2), "c_gates": C_GATES}
 
 
 def integration(c: BC.Concept | None = None, spec: str | None = None) -> dict:
@@ -721,7 +751,8 @@ if __name__ == "__main__":
         assert SPEC in SPECS, SPEC
         POUCH = SPECS[SPEC]["pouch"]
     c, opt, naive, m, mn, v = numbers(spec=SPEC)
-    print("spec", SPEC, {s: weight_table(s, c, SPEC)["total_g"] for s in BELT_SIZES})
+    print("spec", SPEC, {s: (weight_table(s, c, SPEC)["total_g"], weight_table(s, c, SPEC).get("with_c_g"))
+                         for s in BELT_SIZES})
     print("volume", v["volume_L"], "pouch", opt.extra["pouch_L"], "fill in", v["fill_height_in"], "CG", v["cg_y"], v["cg_z"])
     print("optimised", m["mass_g"], m["cut_pieces"], m["seam_length_m"], m["curved_seams"], m["zip_length_m"], m["hours_total"])
     print("naive", mn["mass_g"], mn["cut_pieces"], mn["hours_total"])

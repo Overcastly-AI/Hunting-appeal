@@ -31,7 +31,7 @@ SHOTS = {
     "b2_side": {"view": {"az": 90, "el": 4, "zoom": 1.0}, "state": {"mannequin": True, "lid": True},
                 "caption": "CORRIE B.2: side, wearer's right",
                 "sub": "Tripod under the right wing, hose port and hose to the bite valve, bottle holster behind the crest"},
-    "b2_belt": {"view": {"az": 158, "el": 18, "zoom": 1.0, "box": [-280, -340, -40, 300, 80, 300]},
+    "b2_belt": {"view": {"az": 160, "el": 30, "zoom": 1.0, "box": [-270, -320, 10, 290, 40, 260]},
                 "state": {"mannequin": True, "lid": True},
                 "caption": "CORRIE B.2: hipbelt B, front 3/4",
                 "sub": "Padded cone-cut wings, bound edges, 2:1 pulls to D-rings, bottle holster (right), pocket (left)"},

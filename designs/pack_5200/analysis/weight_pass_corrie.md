@@ -4,13 +4,13 @@ Owner: pack-designer. Date 2026-11-09. The pass is computed on CORRIE **B.1** (`
 
 ## 0. Summary
 
-- **Applied (CORRIE B.2, belt M): 3964.5 g (8.74 lb)**, booked by `corrie.weight_table('M', spec='B.2')` with the binding and fly gaps G-1 / G-2 included. **Projected with package C: 3864 g (8.52 lb)**, against the ~3800 g (8.4 lb) the owner publishes (section 4a).
+- **Applied (CORRIE B.2, belt M): 3964.5 g (8.74 lb)**, booked by `corrie.weight_table('M', spec='B.2')` with the binding and fly gaps G-1 / G-2 included. **Projected with package C: 3910 g (8.62 lb)**, against the ~3800 g (8.4 lb) the owner publishes (section 4a).
 - Booked today (belt M): **4042.3 g (8.91 lb)**. Target **2994 g (6.6 lb)**, gap **1048 g**. The DECISIONS row of 2026-11-05 published 2976 g; `corrie.TARGET_G` (2994 g) is used here.
 - Booking gaps found: **+43 g** of real mass no table books (body binding, CORRIE-sized fly). Real estimate **4085 g**.
 - Package **A** (no-regret, applied): **-10 g** real (-10 g booked), -3.21 $/pack, +0.0 beginner h -> **4075 g (8.98 lb)**, +1081 g vs target (package arithmetic; the B.2 table is the booked number).
 - Package **B** (owner OK, applied without B-8 / B-9): **-112 g** real (-76 g booked), -8.18 $/pack, -6.0 beginner h -> **3963 g (8.74 lb)**, +969 g vs target (package arithmetic; the B.2 table is the booked number).
 - Package **C** (needs FEA / tests, not applied): **-101 g** real (-101 g booked), +23.96 $/pack, +0.0 beginner h -> **3862 g (8.51 lb)**, +868 g vs target (package arithmetic; the B.2 table is the booked number).
-- **The 6.6 lb target is not reachable with CORRIE's features on the printed frame.** After A+B+C the pack is about **3864 g (8.52 lb)** (B.2 table - C). Even with every 'what it would take' item (lighter frame, pouch as accessory, no scope sleeve, 2 meat straps) it is about **3211 g**. To hit 2994 g with A+B+C and all features, frame + spreader would have to weigh **355 g** (today 1225 g).
+- **The 6.6 lb target is not reachable with CORRIE's features on the printed frame.** After A+B+C the pack is about **3910 g (8.62 lb)** (B.2 table - C). Even with every 'what it would take' item (lighter frame, pouch as accessory, no scope sleeve, 2 meat straps) it is about **3257 g**. To hit 2994 g with A+B+C and all features, frame + spreader would have to weigh **308 g** (today 1225 g).
 - Recommendation (taken by the owner 2026-11-09): adopt A now, take B item by item, send C to the structural-fea-engineer, and **re-baseline the published weight for CORRIE on the printed frame to about 3800 g (8.4 lb)**. Keep 6.6 lb (and 5.0 lb) as targets for a lighter-frame variant (section 6).
 
 ## 1. Mass breakdown (size M), ranked
@@ -187,15 +187,15 @@ Waterfall: `outputs/screens/20261109_weight_3.png`. Package B is the owner's: wi
 
 ### 4a. Applied: CORRIE B.2 (A + B), per belt size, and the package-C projection
 
-Items applied in `corrie.py` (spec B.2): A-1, A-2, B-1, B-2, B-3, B-4, B-5, B-6, B-7, B-10, G-1, G-2. Package C (C-1, C-2, C-3, C-4, C-5, C-6, C-7, C-8, C-9, -100.6 g, size-independent) is projected on top, not applied. B.2 table minus the package arithmetic (belt M): +1.7 g (the B-4 camo pull tab the cut list did not book, and the pouch zip cut to L - 20 mm).
+Items applied in `corrie.py` (spec B.2): A-1, A-2, B-1, B-2, B-3, B-4, B-5, B-6, B-7, B-10, G-1, G-2. **Package C as gated** (`analysis/weight_c_structural.md`, `corrie.package_c_rows()`): C-1+C-2+C-3: belt plate 7075-T6 1.2 mm cold slip-rolled, D28 hub, 2 x D31 holes (SF/req 1.08) -25.0 g; C-9: printed body, low-stress ligaments offset inward <= 1.75 mm (fatigue 1.020) -45.6 g; C-4 FAIL -> correction: pad backer HDPE 1.0 -> CFRP quasi-iso 0.8 mm +8.1 g; C-7 FAIL -> correction: yoke plate CFRP 1.5 -> 1.8 mm +8.5 g = **-54.0 g**, size-independent, projected as 'B.2 + C', not applied; gates: HB-5 (7075 plate proof + 1e5 cycles, with the holes), pad-seat sag test (413 N, 8 h), T1(c) yoke dial, T5. Still pending and not counted: C-5 -7.0 g, C-6 -6.2 g, C-8 -7.2 g (PT-3 strip, slot pull test, 3-back rail fit). B.2 table minus the package arithmetic (belt M): +1.7 g (the B-4 camo pull tab the cut list did not book, and the pouch zip cut to L - 20 mm).
 
-| Belt | B.1 g | **B.2 g** | B.2 lb | B.2 vs B.1 | Projected with C g | lb | vs publish ~3800 g |
+| Belt | B.1 g | **B.2 g** | B.2 lb | B.2 vs B.1 | B.2 + C (gated) g | lb | vs publish ~3800 g |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| S | 4013.8 | **3936.6** | 8.68 | -77.2 | 3836.0 | 8.46 | +36 |
-| M | 4042.3 | **3964.5** | 8.74 | -77.8 | 3863.9 | 8.52 | +64 |
-| L | 4066.9 | **3988.6** | 8.79 | -78.3 | 3888.0 | 8.57 | +88 |
-| XL | 4103.4 | **4024.6** | 8.87 | -78.8 | 3924.0 | 8.65 | +124 |
-| XXL | 4132.0 | **4052.7** | 8.93 | -79.3 | 3952.1 | 8.71 | +152 |
+| S | 4013.8 | **3936.6** | 8.68 | -77.2 | 3882.6 | 8.56 | +83 |
+| M | 4042.3 | **3964.5** | 8.74 | -77.8 | 3910.5 | 8.62 | +110 |
+| L | 4066.9 | **3988.6** | 8.79 | -78.3 | 3934.6 | 8.67 | +135 |
+| XL | 4103.4 | **4024.6** | 8.87 | -78.8 | 3970.6 | 8.75 | +171 |
+| XXL | 4132.0 | **4052.7** | 8.93 | -79.3 | 3998.7 | 8.82 | +199 |
 
 B.2 rows that differ from B.1 (belt M, `corrie.weight_table('M', spec='B.2')`):
 
@@ -225,7 +225,7 @@ The 2994 g target dates from 2026-11-05, when the pack was 3030 g. Since then th
 | T-3 | Drop IMP-1 scope sleeve (owner-frozen B.1 pocket) | -54.5 |
 | T-4 | Meat straps 3 -> 2 (O-1, rec NO) | -72.1 |
 
-After A+B+C and T-1..T-4 together: about **3211 g** (7.08 lb). Only the frame line moves the number by hundreds of grams; for 2994 g with every CORRIE feature, frame + spreader must come in at about 355 g.
+After A+B+C and T-1..T-4 together: about **3257 g** (7.18 lb). Only the frame line moves the number by hundreds of grams; for 2994 g with every CORRIE feature, frame + spreader must come in at about 308 g.
 
 ## 6. Owner decisions (answered 2026-11-09: see DECISIONS; kept here as asked)
 

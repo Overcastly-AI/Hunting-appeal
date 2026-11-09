@@ -533,7 +533,11 @@ def applied_b2(cl: list, steps: list) -> dict:
     grams the B.2 booking adds that the cut list did not (e.g. the B-4 camo pull tab)."""
     c = C.make()
     c_items = [x for x in cl if x["pkg"] == "C"]
-    c_g = round(sum(x["g"] for x in c_items), 1)
+    # package C as gated (weight_c_structural.md): corrie.package_c_rows(); C-5 / C-6 / C-8 still wait on PT-3, the
+    # slot pull test and the 3-back rail fit, and are listed, not counted
+    c_rows = C.package_c_rows()
+    c_g = round(-sum(g for _, g, _ in c_rows), 1)
+    pending = [x for x in c_items if x["id"] in ("C-5", "C-6", "C-8")]
     rows = {}
     for s_ in C.BELT_SIZES:
         w = C.weight_table(s_, c, spec=APPLIED)
@@ -545,7 +549,9 @@ def applied_b2(cl: list, steps: list) -> dict:
     st = {x["pkg"]: x for x in steps}
     m = C.weight_table(SIZE, c, spec=APPLIED)
     return {"spec": APPLIED, "items": list(C.SPECS[APPLIED]["items"]), "sizes": rows, "rows_M": m["rows"],
-            "c_items": [x["id"] for x in c_items], "c_saving_g": c_g, "publish_g": C.PUBLISH_G,
+            "c_items": ["C-1", "C-2", "C-3", "C-9", "C-4 fix", "C-7 fix"], "c_saving_g": c_g, "publish_g": C.PUBLISH_G,
+            "c_rows": [(n, round(g, 1), s_) for n, g, s_ in c_rows], "c_gates": C.C_GATES,
+            "c_pending": [{"id": x["id"], "g": x["g"], "gate": x["rec"]} for x in pending],
             "recon_vs_packages_g": round(m["total_g"] - st["B"]["after_real_g"], 1)}
 
 
@@ -682,8 +688,8 @@ def charts(bd, cl, pk, bench) -> list:
     if abs(b2["recon_vs_packages_g"]) >= 0.05:
         steps.append(("B.2\nbooking", b2["recon_vs_packages_g"], "up" if b2["recon_vs_packages_g"] > 0 else "down"))
     steps.append((f"B.2 table\n(A+B, M)", b2["sizes"][SIZE]["b2_g"], "total"))
-    steps.append(("Package C\n(gated)", -b2["c_saving_g"], "pending"))
-    steps.append(("Projected\nwith C", b2["sizes"][SIZE]["with_c_g"], "total"))
+    steps.append(("Package C\n(gated, net)", -b2["c_saving_g"], "pending"))
+    steps.append(("B.2 + C", b2["sizes"][SIZE]["with_c_g"], "total"))
     for t in pk["take"]:
         steps.append((t["id"], -t["g"], "take"))
     steps.append(("With\nT-1..T-4", pk["after_all_take_g"], "total"))
@@ -881,11 +887,15 @@ def report(bd, cl, pk, bench, files) -> str:
     w("\nWaterfall: `outputs/screens/20261109_weight_3.png`. Package B is the owner's: without the held B-8 / B-9 "
       f"({', '.join(f'{h['id']} {h['g']:.1f} g' for h in pk['held_b'])}, not counted until their evidence arrives).\n")
     w("### 4a. Applied: CORRIE B.2 (A + B), per belt size, and the package-C projection\n")
-    w(f"Items applied in `corrie.py` (spec B.2): {', '.join(b2['items'])}. Package C ({', '.join(b2['c_items'])}, "
-      f"-{b2['c_saving_g']:.1f} g, size-independent) is projected on top, not applied. B.2 table minus the package "
+    w(f"Items applied in `corrie.py` (spec B.2): {', '.join(b2['items'])}. **Package C as gated** "
+      "(`analysis/weight_c_structural.md`, `corrie.package_c_rows()`): "
+      + "; ".join(f"{n} {g:+.1f} g" for n, g, _ in b2["c_rows"]) +
+      f" = **{-b2['c_saving_g']:+.1f} g**, size-independent, projected as 'B.2 + C', not applied; gates: {b2['c_gates']}. "
+      "Still pending and not counted: " + ", ".join(f"{p['id']} -{p['g']:.1f} g" for p in b2["c_pending"]) +
+      " (PT-3 strip, slot pull test, 3-back rail fit). B.2 table minus the package "
       f"arithmetic (belt {SIZE}): {b2['recon_vs_packages_g']:+.1f} g (the B-4 camo pull tab the cut list did not "
       "book, and the pouch zip cut to L - 20 mm).\n")
-    w("| Belt | B.1 g | **B.2 g** | B.2 lb | B.2 vs B.1 | Projected with C g | lb | vs publish ~3800 g |")
+    w("| Belt | B.1 g | **B.2 g** | B.2 lb | B.2 vs B.1 | B.2 + C (gated) g | lb | vs publish ~3800 g |")
     w("|---|---:|---:|---:|---:|---:|---:|---:|")
     for s_, r in b2["sizes"].items():
         w(f"| {s_} | {r['b1_g']:.1f} | **{r['b2_g']:.1f}** | {r['b2_lb']:.2f} | {r['b2_vs_b1_g']:+.1f} | "

@@ -1473,8 +1473,8 @@
     "g": 72.1
    }
   ],
-  "after_all_take_g": 3210.8,
-  "frame_plus_spreader_needed_g": 355.0,
+  "after_all_take_g": 3257.4,
+  "frame_plus_spreader_needed_g": 308.4,
   "frame_plus_spreader_now_g": 1224.9,
   "target_g": 2994.0,
   "s12_corrie_g": 3.5,
@@ -1512,45 +1512,45 @@
      "b2_g": 3936.6,
      "b2_lb": 8.68,
      "b2_vs_b1_g": -77.2,
-     "with_c_g": 3836.0,
-     "with_c_lb": 8.46,
-     "with_c_vs_publish_g": 36.0
+     "with_c_g": 3882.6,
+     "with_c_lb": 8.56,
+     "with_c_vs_publish_g": 82.6
     },
     "M": {
      "b1_g": 4042.3,
      "b2_g": 3964.5,
      "b2_lb": 8.74,
      "b2_vs_b1_g": -77.8,
-     "with_c_g": 3863.9,
-     "with_c_lb": 8.52,
-     "with_c_vs_publish_g": 63.9
+     "with_c_g": 3910.5,
+     "with_c_lb": 8.62,
+     "with_c_vs_publish_g": 110.5
     },
     "L": {
      "b1_g": 4066.9,
      "b2_g": 3988.6,
      "b2_lb": 8.79,
      "b2_vs_b1_g": -78.3,
-     "with_c_g": 3888.0,
-     "with_c_lb": 8.57,
-     "with_c_vs_publish_g": 88.0
+     "with_c_g": 3934.6,
+     "with_c_lb": 8.67,
+     "with_c_vs_publish_g": 134.6
     },
     "XL": {
      "b1_g": 4103.4,
      "b2_g": 4024.6,
      "b2_lb": 8.87,
      "b2_vs_b1_g": -78.8,
-     "with_c_g": 3924.0,
-     "with_c_lb": 8.65,
-     "with_c_vs_publish_g": 124.0
+     "with_c_g": 3970.6,
+     "with_c_lb": 8.75,
+     "with_c_vs_publish_g": 170.6
     },
     "XXL": {
      "b1_g": 4132.0,
      "b2_g": 4052.7,
      "b2_lb": 8.93,
      "b2_vs_b1_g": -79.3,
-     "with_c_g": 3952.1,
-     "with_c_lb": 8.71,
-     "with_c_vs_publish_g": 152.1
+     "with_c_g": 3998.7,
+     "with_c_lb": 8.82,
+     "with_c_vs_publish_g": 198.7
     }
    },
    "rows_M": [
@@ -1649,15 +1649,52 @@
     "C-1",
     "C-2",
     "C-3",
-    "C-4",
-    "C-5",
-    "C-6",
-    "C-7",
-    "C-8",
-    "C-9"
+    "C-9",
+    "C-4 fix",
+    "C-7 fix"
    ],
-   "c_saving_g": 100.6,
+   "c_saving_g": 54.0,
    "publish_g": 3800.0,
+   "c_rows": [
+    [
+     "C-1+C-2+C-3: belt plate 7075-T6 1.2 mm cold slip-rolled, D28 hub, 2 x D31 holes (SF/req 1.08)",
+     -25.0,
+     "analysis/weight_c_structural_results.json C1_C2.package_saved_g"
+    ],
+    [
+     "C-9: printed body, low-stress ligaments offset inward <= 1.75 mm (fatigue 1.020)",
+     -45.6,
+     "analysis/weight_c_structural_results.json C9.best.saved_g"
+    ],
+    [
+     "C-4 FAIL -> correction: pad backer HDPE 1.0 -> CFRP quasi-iso 0.8 mm",
+     8.1,
+     "analysis/weight_c_structural.md section 0 (fix +8.1 g)"
+    ],
+    [
+     "C-7 FAIL -> correction: yoke plate CFRP 1.5 -> 1.8 mm",
+     8.5,
+     "analysis/weight_c_structural.md section 0 (fix +8.5 g)"
+    ]
+   ],
+   "c_gates": "HB-5 (7075 plate proof + 1e5 cycles, with the holes), pad-seat sag test (413 N, 8 h), T1(c) yoke dial, T5",
+   "c_pending": [
+    {
+     "id": "C-5",
+     "g": 7.0,
+     "gate": "YES if PT-3 holds (evidence for the held O-5)"
+    },
+    {
+     "id": "C-6",
+     "g": 6.2,
+     "gate": "YES if the pull test holds (held O-15)"
+    },
+    {
+     "id": "C-8",
+     "g": 7.2,
+     "gate": "C: fit test on 3 backs"
+    }
+   ],
    "recon_vs_packages_g": 1.7
   }
  },
