@@ -128,7 +128,8 @@ def test_mass_delta_and_budget(res):
     # Later owner changes booked after this record was written (docs/DECISIONS.md):
     later_g = {"2026-11-06 orange flag sleeve F-03 removed": -6.5,
                "2026-11-06 float mode: B-24 stand-off links (own weight group)": 54.4,
-               "2026-11-06 float mode: IM1 meat strap cut +17 mm (220 mm float gap)": 0.5}
+               "2026-11-06 float mode: IM1 meat strap cut +17 mm (220 mm float gap)": 0.5,
+               "2026-11-09 materials records corrected (Robic 125 g/m2, ULTRA 200X, UltraGrid, shock cord)": 28.1}
     assert geo["weight"]["groups_g"]["float-mode stand-off links B-24"] == pytest.approx(54.4, abs=0.2)
     assert geo["weight"]["total_g"] == pytest.approx(res["pack_after_g"] + sum(later_g.values()), abs=1.0)
 

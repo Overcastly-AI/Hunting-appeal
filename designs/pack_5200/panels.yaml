@@ -37,7 +37,7 @@ panels:
   thickness_mm: null
   zone: frame side / meat contact (laminate on the HIDDEN face only)
   cut_area_m2_each: 0.3383
-  mass_g_total: 42.3
+  mass_g_total: 45.0
   notes: gore from the 3D teardrop; follows the stay S-curve. Fairlead swells, 6 meat-strap ports + hydration sleeve
     sewn flat first
   seam_line_mm:
@@ -588,7 +588,7 @@ panels:
   thickness_mm: null
   zone: roll-top
   cut_area_m2_each: 0.6203
-  mass_g_total: 55.8
+  mass_g_total: 77.5
   notes: one back seam; fill line 150 mm below the hem (3 rolls x 50 mm)
   seam_line_mm: null
 - id: B-07
@@ -630,7 +630,7 @@ panels:
   thickness_mm: null
   zone: interior
   cut_area_m2_each: 0.1215
-  mass_g_total: 10.9
+  mass_g_total: 15.2
   notes: sewn to B-01; hose ports at the collar seam BOTH sides
   seam_line_mm: null
 - id: B-11
@@ -892,7 +892,7 @@ panels:
   thickness_mm: null
   zone: side pockets
   cut_area_m2_each: 0.0684
-  mass_g_total: 21.2
+  mass_g_total: 18.1
   notes: tripod / trekking poles / bottle; 3 mm shock-cord hem; drain eyelet
   seam_line_mm: null
 - id: P-02
@@ -906,7 +906,7 @@ panels:
   thickness_mm: null
   zone: side pockets
   cut_area_m2_each: 0.0637
-  mass_g_total: 19.8
+  mass_g_total: 16.8
   notes: U-strip; bellows 50 mm
   seam_line_mm: null
 - id: P-03
@@ -920,7 +920,7 @@ panels:
   thickness_mm: null
   zone: side pockets
   cut_area_m2_each: 0.0684
-  mass_g_total: 12.3
+  mass_g_total: 17.1
   notes: sewn to the side gore on its frame-side edge + bottom only; wraps run between it and the gore so cinching
     the bag never crushes the pocket (fixes P5)
   seam_line_mm: null

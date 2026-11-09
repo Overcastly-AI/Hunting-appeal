@@ -731,14 +731,14 @@ weight:
   basis: 'PRODUCTION pack: printed branch frame + Sandwich v2 spreader + fairlead attachment + under-straps + soft
     goods; size M belt, J-straps, rain fly (owner: counts), meat harness'
   groups_g: {frame (printed branch body + carbon crown): 1062.6, 'back-system spreader (Sandwich v2, BP-06)': 162.3,
-    torso adjust (not in the frame line): 41.7, main bag: 365.5, bag-side load spreaders: 27.8, bag-to-frame attachment (fairleads): 144.1,
+    torso adjust (not in the frame line): 41.7, main bag: 394.1, bag-side load spreaders: 27.8, bag-to-frame attachment (fairleads): 144.1,
     bag-to-frame attachment system: 131.4, under-straps US1/US2 (cradle): 122.4, float-mode stand-off links B-24: 54.4,
-    accents: 52.7, rain fly: 68.4, pockets: 60.3, hipbelt (M): 334.3, harness: 212.5, back panel: 251.3, internal meat harness: 254.4,
-    haul wraps (= compression): 108.1, misc: 41.4}
-  total_g: 3495.6
-  total_lb: 7.71
+    accents: 52.7, rain fly: 68.4, pockets: 59.0, hipbelt (M): 334.3, harness: 212.5, back panel: 251.3, internal meat harness: 254.4,
+    haul wraps (= compression): 108.1, misc: 42.2}
+  total_g: 3523.7
+  total_lb: 7.77
   target_g: 2268
-  gap_g: 1227.6
+  gap_g: 1255.7
   weight_plan: analysis/bag_weight_plan.md (bag-side savings, owner choices)
   v31_tube_baseline: {total_g: 2224.1, frame_g: 569.2, back_panel_g: 75.2, misc_g: 36.1, source: 'geometry.yaml
       v3.1 (commit 6061796): carbon-tube frame v2, single 6 mm XLPE back sheet', used_by: huntkit/gendesign/frame_production.py
@@ -758,7 +758,7 @@ weight:
       7 mm core)'}
   - {group: torso adjust (not in the frame line), item: '3:1 pulley webbing 25 mm x 1.4 m, metal cam buckle, pawl
       release cord + strap toggle', mass_g: 41.7, basis: records; cam 12 g + toggle 3 g ASSUMPTION}
-  - {group: main bag, item: 'fabric panels (B-*, D-01, collar, tabs)', mass_g: 272.9, basis: 'computed: cut area
+  - {group: main bag, item: 'fabric panels (B-*, D-01, collar, tabs)', mass_g: 301.5, basis: 'computed: cut area
       x gsm'}
   - {group: main bag, item: '#10 coil diagonal zip + 2 sliders', mass_g: 23.4, basis: coil_zipper_10 g/m; sliders
       6 g ea ASSUMPTION}
@@ -841,7 +841,7 @@ weight:
   - {group: rain fly, item: fly + fly pocket, mass_g: 52.6, basis: computed}
   - {group: rain fly, item: 'fly elastic hem 3.0 m, #5 pocket zip + slider, tether', mass_g: 15.8, basis: elastic
       3 g/m ASSUMPTION (no record); records}
-  - {group: pockets, item: floating side pockets x2, mass_g: 60.3, basis: computed + records}
+  - {group: pockets, item: floating side pockets x2, mass_g: 59.0, basis: computed + records}
   - {group: hipbelt (M), item: 'wings, 2-stage lumbar, hipbelt pockets, rifle tabs', mass_g: 191.7, basis: computed
       (foams = area x t x rho)}
   - {group: hipbelt (M), item: '50 mm webbing + buckle (HIP family), 2 #8 pocket zips, stabilizer straps', mass_g: 97.6,
@@ -862,4 +862,4 @@ weight:
     basis: records; lengths from the 3D teardrop (haul_wraps)}
   - {group: haul wraps (= compression), item: 3 aluminium G-hooks (HAUL family) + 3 ladder locks, mass_g: 24, basis: G-hook
       4 g ASSUMPTION (no record); ladder lock record}
-  - {group: misc, item: thread (~3 % of soft goods) + labels, mass_g: 41.4, basis: ASSUMPTION}
+  - {group: misc, item: thread (~3 % of soft goods) + labels, mass_g: 42.2, basis: ASSUMPTION}

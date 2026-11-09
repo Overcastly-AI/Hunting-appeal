@@ -286,4 +286,7 @@ Greedy downsizing log (each step re-runs every rev C check at 15 / 19 / 23 in):
 - `outputs/screens/20261109_framelight_1.png`
 - `outputs/screens/20261109_framelight_2.png`
 - `outputs/screens/20261109_framelight_3.png`
+- `outputs/screens/20261109_framelight_4.png`
+- `outputs/screens/20261109_framelight_5.png`
+- `outputs/screens/20261109_framelight_6.png`
 

@@ -28,7 +28,7 @@ WING_R_NAMES = ("corrie_wing_R", "corrie_wing_bar_R", "corrie_wing_straps_R", "c
 
 def mannequin_display(params: dict) -> list:
     """Retail display form: the viz3d mannequin's torso section (model.Body RINGS), lofted in one piece through the
-    neck to a flat-domed neck cap (no seam, no intersecting primitives), hips closed with a rounded base, on a 25 mm
+    neck to a flat-domed neck cap (no seam, no intersecting primitives), cut flat just below the hips onto a black cap plate, on a 25 mm
     satin pole and a 340 mm round base whose underside is the old figure's foot level (same floor, same framing)."""
     from .model import DEFAULT_PARAMS, IN, Body, deep_merge
     p = deep_merge(DEFAULT_PARAMS, params or {})
