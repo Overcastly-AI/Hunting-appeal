@@ -49,8 +49,8 @@ OUT = ROOT / "outputs" / "loadout"
 # in the left wing sleeve, 6 mm contact rounding). Contents (volume) CG y of the deformed bag; the pouch / scope masses
 # are added by this model itself, so the volume centroid (not the mass-weighted sim CG) is the peel basis.
 SIM_FILL_L = (88.1, 88.4, 87.0)            # outputs/clothsim/corrie_PR{15,19,23}c/results.json fill closed_L
-SIM_FILL_CG = {15: 190.9, 19: 172.2, 23: 130.8}   # same, fill contents_cg_mm[1]
-SIM_MEAT_CG = {15: 184.0, 19: 166.9, 23: 134.0}   # same, meat contents_cg_mm[1]
+SIM_FILL_CG = {15: 190.9, 19: 172.0, 23: 130.8}   # same, fill contents_cg_mm[1]
+SIM_MEAT_CG = {15: 184.0, 19: 166.8, 23: 133.9}   # same, meat contents_cg_mm[1]
 REV_B_SIM = {"fill_L": (88.9, 89.0, 87.2), "fill_cg": {15: 190.4, 19: 172.3, 23: 136.4},   # rev B (2026-11-08,
              "meat_cg": {15: 185.6, 19: 168.5, 23: 139.2}}                                 # 7 of 9 not converged)
 REV_C = {"bag_y": 205.0, "meat_y": 190.0, "z_max": 590.0}  # load_standard.md §4.2 and T9 (z <= 590)

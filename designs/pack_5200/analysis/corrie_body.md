@@ -101,7 +101,7 @@ lid. All from `corrie.build(optimised=False)`, same metric code.
 | Beginner hours | ~32 h | ASSUMPTION model (`bag_concepts.HOURS`) |
 | Uniform-fill CG | y 148.6 / z 557.7 mm (SPINE 148.2 / 592.5) | concept integrator |
 | With 1 kg in the pouch (68 kg rated) | y 147.5 / z 566 mm | lever sum (pouch centre y 76, z 1131) |
-| **Loaded CG, cloth sim (rev B, 2026-11-08)** | **190.4 / 172.3 / 136.4 mm (fill) and 185.6 / 168.5 / 139.2 mm (meat)** at 15 / 19 / 23 in; inside rev C (205 / 190 mm). PROVISIONAL: 7 of 9 coarse cases did not converge | `huntkit/clothsim` scenarios `corrie_PR{15,19,23}`, table in §5a. Replaces the earlier estimate 189 / 179 / 170 and 181 / 174 / 166 mm |
+| **Loaded CG, cloth sim (rev B, 2026-11-08; superseded by rev B.1, section 11.4: all 9 converged)** | **190.4 / 172.3 / 136.4 mm (fill) and 185.6 / 168.5 / 139.2 mm (meat)** at 15 / 19 / 23 in; inside rev C (205 / 190 mm). PROVISIONAL: 7 of 9 coarse cases did not converge | `huntkit/clothsim` scenarios `corrie_PR{15,19,23}`, table in §5a. Replaces the earlier estimate 189 / 179 / 170 and 181 / 174 / 166 mm |
 
 ### 5a. Cloth sim, rev B (depth ×0.894), run 2026-11-08
 
@@ -214,7 +214,7 @@ zip.
    - Tiled PDF + DXF and a cut list in the release format.
 2. **pack-designer / cloth sim**
    - Done 2026-11-08: box-body loader (`huntkit/clothsim/corrie_bag.py`), rev B runs PR15 / PR19 / PR23 + PR19 fine (§5a).
-   - Open: converge the 15 in fill / meat cases; add the 1 kg pouch and the roll / clip loads; fix the stale pattern-source tag; finer floor-corner mesh.
+   - Done 2026-11-09 (section 11.4): all 9 converged, 1 kg pouch + 85 mm scope in, pattern-source tag fixed. Open: roll / clip loads, finer floor-corner mesh.
    - Re-run R-28 on the CORRIE profile.
 3. **structural-fea-engineer:** confirm rev C with the sim CGs; nothing new on the frame.
 4. **materials-engineer:** a #10 coil 1.3 m door proof plan (PT-7); a rubber-sleeve pull record; a G-hook record (4 g is still an ASSUMPTION).
@@ -239,7 +239,280 @@ zip.
 3. Should W1 and W2 be merged into the wing straps? It would save about 70 g, but the wings would then also have to wrap meat in float mode.
 4. Should the side gussets be in ULTRA 200 under the wings (−22 g, tougher, a little louder)? This is a fabric swap, so it stays on hold until you say.
 
+## 11. Rev B.1 (2026-11-09): pockets IMP-1..6, IMP-8 and hipbelt B integrated
+
+Source: DECISIONS 2026-11-09 ("Owner delegated the open choices"). Concept level, the released SPINE files are not
+changed. Code: `corrie.py` (section "Rev B.1": `bag_pockets()`, `hip_layout(size)`, `holster()`, `belt_b(size)`,
+`weight_table(size)`, `integration()`), `corrie_loadout.py` (config `integrated:<size>`), clothsim scenarios
+`corrie_PR{15,19,23}c` and the control `corrie_PR15s`, renders `corrie_b1_viz3d.py` + `huntkit/viz3d/corrie_b1.py`.
+Tests: `tests/test_corrie_b1.py`. Every piece below is a `huntkit.patterns` Piece with finished (seam-line) dims, SA
+8 mm (10 mm on B-09c), material from `data/materials/`; mass is cut area x record gsm plus the hardware listed.
+Hours are the `bag_concepts.HOURS` beginner model (ASSUMPTION: rank, not plan). All seams are straight.
+
+### 11.1 Pieces
+
+| Id | Piece | Size mm (in) | Material (record) | Mass g | Attachment |
+|---|---|---|---|---:|---|
+| **IMP-1** scope sleeve, left wing (M-01L inside) | IMP1-a panel 330 x 430; IMP1-b facing 300 x 420; 3 mm XLPE 300 x 420; top shock cord 0.5 m + cord lock | 13.0 x 16.9 | `cordura_330d_nylon66`, `robic_100d_ripstop`, `xlpe_foam` (33 kg/m3) | **56.4** (fab 40.2) | Panel sewn to the wing's inside face on 2 straight vertical lines 160 mm apart (20 mm in from each wing edge) before the wing is hemmed; bottom excess folded into 2 x 85 mm box pleats caught in the wing hem; XLPE faces the bag. Section perimeter 330 + 160 = 490 mm against ~430 mm needed by an 85 mm angled spotter (110 x 150 section + 5 %); 372 mm scope in a 430 mm sleeve (z 165-595) |
+| **IMP-2** hydration sleeve B-09c + 2 ports | tube 250 x 430 (cut 500 x 430, one side seam); 2 Hypalon port frames 40 x 60, slot 12 x 40 | 9.8 x 16.9 | `robic_100d_ripstop`, `hypalon_coated_nylon` | **34.6** (replaces SPINE B-09 10.9) | Hangs by a G-hook from a 25 mm tab bartacked on B-06f at x 0, z 985 (flat-work); bottom corners on 2 mm Dyneema loops to 2 webbing tabs on B-01 at z 560, x +/-100. Spans z 545-975: clear of IM3 (z 520 +/- 19), the IM ports are untouched. Ports in both B-03 gussets at z 700, 20 mm aft of the frame seam (R-19 both sides), above the wings (z 600), below the collar seam (z 736). ASSUMPTION: with a bladder in, the roll closes at or above z 990 |
+| **IMP-3** 1 L bottle holster, belt B right wing | IMP3-a mesh tube 290 x 240; IMP3-b base 95 x 95; IMP3-c back 105 x 210; 2 wing tabs + 2 straps with G-hooks; 0.4 m shock cord + cord lock | | `power_mesh_nylon_spandex`, `cordura_330d_nylon66` | **37.4** | 2 x 25 mm tabs bartacked to the wing shell HB-W1 (shell only, flat-work) inside the HDPE zone, 20 mm from the top and bottom edges; the holster's 2 G-hooks hook them. The lower hook is the lower tie hipbelt_fit.md section 7 asks for (a couple, so the bottle cannot roll the wing down and out). Bottle axis behind the crest on every size (S -22, M -46, L -70, XL -84, XXL -108 mm); the soft back panel runs 30 mm (S) and 6 mm (M) past the crest: check at fit test HB-1 |
+| **IMP-4** kill-kit / first-aid pocket, inside the door | IMP4-a face 200 x 280; IMP4-b bellows strip 760 x 60 (bottom + 2 sides); #5 zip 180 mm, slider, cord pull | 7.9 x 11.0, bellows 2.4 | `robic_100d_ripstop`, `coil_zipper_5` | **17.7** | Sewn flat to the door's inside face at z 350-630 before the door zip goes in. **Resized from the study's 300 x 340**: the door is only 246 mm wide at z 350 (304 at the hinge), so 200 mm leaves 23 mm a side to the zip line. Interior 192 x 272 x 58 mm (3.0 L): kill kit + first aid fit; elk game bags (55 mm) stay in the aft column above the sill (door class) |
+| **IMP-5** hipbelt pockets, belt B | Face cut to the developed cone-cut wing outline 10 mm inside the binding, gusset 55 mm, #8 zip, per size below | | `cordura_330d_nylon66`, `coil_zipper_8` | 13.2-20.7 per pocket | Pocket sub-assembly sewn to HB-W1 in flat-work, edges caught in the wing binding; clear of the 30 mm root zone and the soft tip / 2:1 D-ring. Each face is 2 straight runs + 1 pivot at the crest-zone station (max bow 0.8 mm, under the 5 mm curve rule) |
+| **IMP-6** phone pocket, left shoulder strap | IMP6-a power-mesh face 90 x 175; IMP6-b 330D back 90 x 175; 2 wrap straps 25 mm x 0.15 m + 2 G-hooks; 0.25 m shock cord + cord lock | 3.5 x 6.9 | `power_mesh_nylon_spandex`, `cordura_330d_nylon66` | **23.6** | Mesh over 330D, sewn on 3 sides, shock-cord top (no hook-and-loop); 2 wrap straps hook round the strap (moves to either strap). Interior 168 x 84 x 18 mm (ASSUMPTION: 18 mm mesh stretch): takes a 160 x 80 x 10 mm phone. The J-strap is 58-72 mm wide; the pocket overhangs ~13 mm a side |
+| **IMP-8** bow cam cup, foot of the right wing | IMP8-a 130 x 160 folded (65 x 160 cup); IMP8-b Hypalon base 60 x 100 | | `cordura_330d_nylon66`, `hypalon_coated_nylon` | **10.6** | Back edge caught in the B-03R / B-05 bound seam at the aft corner, below the wing (z 35-150). Restores SPINE SH-04's function |
+
+Shock cord has no record: the 2 mm Dyneema cord mass (2.5 g/m) is used as the proxy (ASSUMPTION). Beginner hours:
+IMP-1 2.4, IMP-2 1.7, IMP-3 2.0, IMP-4 2.0, IMP-6 1.1, IMP-8 0.8 h (= 10.0 h), IMP-5 1.3-1.8 h per pocket (it replaces
+today's HP-01/02, so roughly neutral), plus belt B +1.3 h (hipbelt_fit.md).
+
+**IMP-5 per size** (`hip_layout`; wing room = wing - 30 root - 35 tip, hipbelt_fit.md section 7):
+
+| Belt | Wing mm | Crest from root | Left pocket: length / interior mm / L (cu in) | Right wing | Phone (160) in a belt pocket |
+|---|---:|---:|---|---|---|
+| S 27-31 in | 157 | 105 | 72 / 57 x 103 x 50 / 0.29 (18) | holster only | no |
+| M 30-34 | 197 | 129 | 112 / 97 x 102 x 50 / 0.49 (30) | holster only | no |
+| L 33-37 | 232 | 153 | 147 / 132 x 102 x 50 / 0.67 (41) | holster only (52 mm left < 80 mm minimum) | no |
+| XL 36-40 | 266 | 167 | 181 / 166 x 101 x 50 / 0.84 (51) | holster + mini pocket 66 mm (51 x 90 x 50, 0.23 L) | **yes** |
+| XXL 39-44 | 304 | 191 | 219 / 204 x 101 x 50 / 1.03 (63) | holster + pocket 104 mm (89 x 92 x 50, 0.41 L) | **yes** |
+
+This confirms the decision's premise: the phone fits a belt pocket only on XL/XXL, hence IMP-6. DECISION (this
+revision): the holster takes the right wing's stiffened zone on every size, so the right pocket exists only where >= 80
+mm is left (XL, XXL). The study's IMP-5 "200/160 x 130" face is replaced by these per-size faces.
+
+### 11.2 Hipbelt B on CORRIE (concept) and the weight table
+
+Belt body per size (`belt_b`: `hipbelt_concepts.belt_bom` + the materials-engineer records of 2026-11-09, commit
+64e431c: D-ring `d_ring_25mm_aluminium` 6 g x 2 replaces 5 g x 2; grip print `silicone_grip_print` 46 g/m2 x the printed
+face (0.09-0.14 m2) replaces 5 g, booked but **not credited** in friction until HB-2; 2:1 lock legs 2 x
+`ladder_lock_25mm_heavy` 7 g added):
+
+| | S | M | L | XL | XXL |
+|---|---:|---:|---:|---:|---:|
+| belt_bom B (hipbelt_fit.md) g | 183.3 | 209.2 | 231.5 | 253.4 | 277.5 |
+| **Belt B body on CORRIE** g (oz) | **198.6** (7.0) | **225.1** (7.9) | **247.9** (8.7) | **270.3** (9.5) | **294.9** (10.4) |
+| vs today's belt body (165.0 g, size M) | +33.6 | +60.1 | +82.9 | +105.3 | +129.9 |
+
+Load path (structural-fea-engineer, `hipbelt_structural.md`, landed 2026-11-09): the flat PA66 centre plate FAILS
+(C2 SF/req 0.61, fatigue 0.20); the recommended curved 6061-T6 1.5 mm bow-tie + hub + latch, root/tip doublers,
+thrust washer is **110.4 g** (size M) against the 45 g plate + latch still booked: **+65.4 g** here (their "+59 g" is
+against 51 g, which counted the 6 g cant snap that `belt_bom` already deletes; same net). Their ~10 g ASSUMPTION
+for the frame-side pad interface is replaced by the designed pad seat, 60.9 g (11.2a). Also from that note and used here: HDPE floats (no fastener), stitched-ear wing
+joint, and the **2:1 routing fix** (anchor on the buckle half -> round the tip D-ring -> back through the lock on the
+buckle half -> tail; the render follows it). Their open flag on the 2 x M5 inserts (SF/req 0.995-1.14) stays theirs.
+
+
+### 11.2a Lumbar pad seat on the frame face and the belt-B load path (DECISIONS 2026-11-09, structural items 1-6)
+
+The lumbar push (413 N at 15 in, 1 g) must go pad -> frame lumbar pan, never through the centre plate or the Ti pivot
+(the frame FE already reacts it on the `lumbar_pad` springs P11..P33). `corrie.pad_seat()`:
+
+| Part | Size mm | Record | g |
+|---|---|---|---:|
+| 2 standoff rails, bonded to the pan face, either side of a 70 mm vertical channel | 55 x 140 x 6 | `eva_foam_45c` | 10.2 |
+| Pad backer (the pad's dual-density stack + wedge sit on it; it bridges the channel) | 190 x 150 x 1.0 | `hdpe_sheet` | 27.2 |
+| Slip liner on the backer's channel face | 70 x 140 x 0.5 | `hdpe_sheet` | 4.7 |
+| Top sleeve: slips over the pan's 25 mm top return flange (z 190) | 190 x 40 | `hypalon_coated_nylon` | 7.6 |
+| Bottom strap round the pan's lower edge (z 50) + ladder lock | 25 x 400 | webbing + `ladder_lock_25mm` | 11.2 |
+| **Seat total** | | | **60.9** |
+
+Stack from the body: spacer face, EVA 30C 6 + EVA 45C 6 + terraced wedge (belt B), HDPE backer, rails, frame pan
+(zone y -48..-27). The 6061-T6 bow-tie (1.5 mm, 210 wide, 60 mm spine, 140 mm ears, rolled R 420 / 14.6 deg end slope,
+PA66 hub on the 10 mm Ti pin, POM thrust washer; 94.6 g) runs in the channel: 10 mm side play, 4.5 mm depth play
+(>= 4 mm asked), so the belt rolls +/-8 deg on the pin (9.5 deg of side clearance at the spine edge) while the pad stays
+still. The pad seat fits inside the pan (250 x 140 mm). No hook-and-loop, nothing fastened into the printed body.
+Wing joint: stitched ear (plate ear inside the wing root, 1000D doubler each face, 2 rows of 22 x 2 mm holes, hand
+saddle-stitched tex 135), HDPE floats. 2:1 routing corrected (hipbelt_fit.md 4.1 updated). Ti mount to 4 x M5
+heat-set inserts (frame owner; no mass change booked here).
+
+**CORRIE B.1 weight table, belt M** (`corrie.weight_table("M")`):
+
+| Item | g | Source |
+|---|---:|---|
+| SPINE released pack (belt M) | 3495.6 | geometry.yaml weight.total_g |
+| CORRIE body group (rev B, 552.0 g) vs SPINE body group (333.2 g) | +218.8 | `corrie.build()`, same metric |
+| SPINE floating side pockets: CORRIE has none (the wings replace them) | -60.3 | geometry.yaml row. **Correction:** the rev B total carried them |
+| SPINE B-09 hydration sleeve (replaced by IMP-2) | -10.9 | panels.yaml |
+| IMP-2 / IMP-1 / IMP-4 / IMP-6 / IMP-8 | +34.6 / +56.4 / +17.7 / +23.6 / +10.6 | `bag_pockets()` |
+| Hipbelt body: today -> belt B (M) | +60.1 | above |
+| Hipbelt pockets: HP-01/02 + zip (24.7 g) -> IMP-5 left pocket (M) | -9.5 | `hip_layout("M")` |
+| IMP-3 bottle holster | +37.4 | `holster()` |
+| Belt B load path: 6061-T6 bow-tie + PA66 hub + latch, root/tip 1000D doublers, ear thread, POM washer (110.4 g) replacing the 45 g PA66 plate + latch | +65.4 | hipbelt_structural.md section 0; = their +59.4 g vs 51 g booked, because the 6 g cant snap is already deleted in the belt B row |
+| Lumbar pad seat on the frame face (`pad_seat()`, 11.2a) | +60.9 | records; replaces the structural note's ~10 g ASSUMPTION |
+| **CORRIE B.1 total, belt M** | **4000.4 g (8.82 lb)** | |
+
+| Belt size | S | M | L | XL | XXL |
+|---|---:|---:|---:|---:|---:|
+| Pack total g | 3971.9 | **4000.4** | 4025.0 | 4061.5 | 4090.1 |
+| lb | 8.76 | **8.82** | 8.87 | 8.95 | 9.02 |
+| vs SPINE 3496 g (7.71 lb) | +476 | **+505** | +529 | +566 | +595 |
+| vs the ~6.6 lb target (2994 g) | +978 | **+1006** | +1031 | +1068 | +1096 |
+
+Notes. The rev B "3725 g" in section 4 was the rev A body (563.0 g); rev B's own body is 552.0 g, so rev B was
+3714 g, and 3654 g without the side pockets it never had. The load-path row is size M for every size (ASSUMPTION).
+The weight is accepted for now (DECISIONS 2026-11-09); the whole-pack weight pass follows this integration.
+Biggest levers for it: pad seat (61 g: an 0.8 mm backer saves 5 g; a backer that is also the belt's lumbar shell stiffener would save more), centre plate (95 g; 7075 1.2 mm candidate -12.5 g, hipbelt_structural.md section 6), body
+group (+219 g vs SPINE), scope sleeve (56 g), held fabric swaps.
+
+### 11.3 Loadouts re-run (`corrie_loadout.py`, config `integrated:<size>`, all loadouts, all belt sizes)
+
+Changes to the model: the zones are the B.1 pieces above (real interiors, belt pocket per size, holster, strap pocket);
+two 1 L bottles are carried as two units; on a pack-out the bladder stays in its hung sleeve and the meat packs round it
+(overflow aft); the sim peel now comes from the converged rev B.1 runs (section 11.4).
+
+**Hourly / constant items that are NOT reachable with the pack on** (requirement: class <= 1):
+
+| Loadout | S | M | L | XL | XXL |
+|---|---|---|---|---|---|
+| Day hunt | snacks | snacks | snacks | **0** | **0** |
+| 6-day elk, rifle | snacks | snacks | snacks | **0** | **0** |
+| 6-day elk, archery | snacks | snacks | snacks | **0** | **0** |
+| 8-day sheep | GPS, 2nd bottle, snacks | GPS, 2nd bottle, snacks | GPS, 2nd bottle, snacks | 2nd bottle, snacks | 2nd bottle |
+
+Rev B (no pockets): 4-6 misses per loadout (loadout_study.md section 4). Now phone (IMP-6), bladder (IMP-2), bottle
+(IMP-3) and inReach (strap clip) are reachable on every size and loadout. **Residual misses, confirmed:**
+- **Snacks on S-L** (150 x 100 x 35 mm, 0.5 L): longer than the S/M/L pocket interior (57 / 97 / 132 mm) and more
+  volume than S/M hold. User-guide mitigation (not modelled): carry the day's snacks as 2 x 0.25 L stacks <= 95 mm
+  long; one fits the M/L pocket (97 / 132 x 102 x 50). It does not fit S.
+- **Sheep GPS on S-L** (160 mm): same pocket length limit; on XL the GPS takes the pocket and the snacks miss.
+- **Sheep 2nd bottle**: one holster; the second bottle rides in the bag (as the study predicted).
+- Pack-out days (meat in): glassing/weather layers above the door (puffy, mid layer, rain pants, pad) are class 5. Not
+  hourly; expected with 45 kg of meat in.
+
+**Bag-load CG** (belt M; hip, chest and hand items excluded as in rev C; +peel from the converged sims):
+
+| Case | Bag load kg | Main bag used / free L | CG y geo mm | **+15 in peel (limit)** | +19 in | CG z | Float? |
+|---|---:|---|---:|---:|---:|---:|---|
+| Day | 7.7 | 12.2 / 75.7 | 112 | **168 (205)** | 150 | 567 | no |
+| Day + 40 kg meat | 7.1 + 40 | 9.9 / 33.4 | 83 | **136 (190)** | 119 | 491 | no |
+| 6-day elk rifle | 16.2 | 44.7 / 43.2 | 105 | **161 (205)** | 143 | 470 | no |
+| Elk + 45 kg meat | 11.3 + 45 | 33.2 / 4.6 | 99 | **152 (190)** | 135 | 473 | no |
+| Elk archery | 14.8 | 44.7 / 43.2 | 104 | **161 (205)** | 142 | 478 | no |
+| 8-day sheep | 18.6 | 53.6 / 34.2 | 117 | **173 (205)** | 154 | 426 | no |
+| Sheep + 30 kg meat | 13.4 + 30 | 41.5 / 13.0 | 97 | **150 (190)** | 133 | 434 | no |
+
+All inside HA-LS-1 rev C (y 205 / 190, z <= 590). Tightest: sheep 173 mm (margin 32), elk pack-out 152 (margin 38).
+The hung bladder raises the day-load CG z to 567 (limit 590). The pockets move the gear CG by < 10 mm against rev B.
+Lateral x: day +26 mm right (tripod, head, poles and rain jacket on the right wing against a 709 g spotter on the left;
+the holster bottle is on the belt and is not in the bag CG), elk/sheep within +/-5 mm.
+
+### 11.4 Cloth sims at 15 / 19 / 23 in: converged (rev C sign-off gate)
+
+**Why rev B did not converge.** Diagnosed on 15 in fill (scratch diagnosis, then confirmed in the runs). The residual
+sits on 3-8 B-01 nodes at the lower spreader / frame plate edges (x -26..+13, y 15, z 87-156). The Levenberg-Marquardt
+damping climbs to 1e4 and the residual alternates 1.65 / 2.48 N. A linearised-contact polish cycles between the same
+two states (true residual 2.3 <-> 3.4 N). Cause: the trilinear gap field (`GapField`) has a gradient kink along plate
+edges, and a node on that crease has no smooth equilibrium. It is neither the step size (the 50 mm step cap is
+never active at the end), the load ramp (every ramp stage stalls the same way), nor damping.
+
+**Fix (additive in `huntkit/clothsim`; defaults leave SPINE runs unchanged):**
+1. `GapField.smoothed(sigma)`: Gaussian rounding of the sampled gap. A flat face is unchanged (a linear field is
+   invariant under a symmetric blur; tested). Scenario key `contact.smooth_mm` (default 0).
+2. Rounding continuation in `run_case`: ramp on the 6 mm rounded field, then `contact.smooth_continuation`
+   [4, 3, 2, 1, 0] mm, each stage from the last, straps not re-cinched. If a stage does not converge, the last
+   converged stage is kept and reported (`contact_rounding_mm` in results.json).
+3. `case.external`: dead loads for the 1 kg pouch (1.088 kg with the pouch, on the collar closure nodes) and the 85 mm
+   spotter in the left-wing sleeve (1.955 kg, half on the wing-root seam B-03L | B-01, half on the strap loops in
+   B-03L | B-02u, z 165-595, ASSUMPTION 50 / 50). They ramp with the fill. A mass-weighted CG including them is reported
+   (`cg_with_external_mm`).
+4. The stale pattern-source tag in results.json now names `concepts/corrie.py` for CORRIE runs.
+
+Bias of the rounding, measured. 15 in, continuation 6 -> 0 mm: fill CG y 188.5 / 189.8 / 190.0 / 190.7 / 191.6 /
+192.3 mm at 6 / 4 / 3 / 2 / 1 / 0 mm (scratch study; it re-cinched at each step, which over-tightens, so it
+over-states the trend). Rounding lowers the CG by about 2-4 mm, so a case reported at a rounding > 0 must be read with
++4 mm. The table below says which rounding each case converged at.
+
+| Run | Case | Converged (rounding of the reported stage) | Final residual N | Closed vol L (cu in) | Contents CG y mm | CG y incl. pouch + scope mm (rev C limit, margin) | CG z mm | e_max % (piece) | warp / weft % | worst seam N/mm (SF) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 15 in | packed | yes (3.0 mm) | 0.12 | 92.7 (5657) | 169.5 | n/a | 540 | 3.7 (B-06) | 1.20 / 0.42 | 0.23 B-02h/B-06 (49.2) |
+| 15 in | fill | yes (6.0 mm) | 0.27 | 88.1 (5374) | 190.9 | 191.3 (205, margin 13.7) | 497 | 17.4 (B-05) | 1.84 / 1.36 | 1.50 B-03L/B-05 (13.6) |
+| 15 in | meat | yes (6.0 mm) | 0.22 | 88.3 (5385) | 184.0 | 184.4 (190, margin 5.6) | 508 | 15.9 (B-05) | 1.80 / 1.18 | 1.99 B-03L/B-05 (10.3) |
+| 19 in | packed | yes (3.0 mm) | 0.48 | 92.9 (5668) | 158.5 | n/a | 546 | 4.3 (B-03R) | 1.33 / 0.45 | 0.32 door/B-02u (63.9) |
+| 19 in | fill | yes (3.0 mm) | 0.50 | 88.4 (5396) | 172.0 | 172.4 (205, margin 32.6) | 509 | 18.3 (B-03L) | 2.62 / 1.57 | 1.36 B-03L/B-05 (15.1) |
+| 19 in | meat | yes (3.0 mm) | 0.46 | 88.0 (5372) | 166.8 | 167.2 (190, margin 22.8) | 516 | 15.2 (B-05) | 2.09 / 1.38 | 1.83 B-03L/B-05 (11.2) |
+| 23 in | packed | yes (3.0 mm) | 0.50 | 91.2 (5567) | 140.0 | n/a | 550 | 5.8 (B-03R) | 1.48 / 0.45 | 0.33 door/B-02u (62.0) |
+| 23 in | fill | yes (6.0 mm) | 0.46 | 87.0 (5310) | 130.8 | 131.2 (205, margin 73.8) | 517 | 16.9 (B-03L) | 2.37 / 1.30 | 1.14 B-03L/B-05 (18.0) |
+| 23 in | meat | yes (4.0 mm) | 0.44 | 86.6 (5285) | 133.9 | 134.1 (190, margin 55.9) | 524 | 13.8 (B-05) | 1.97 / 1.37 | 1.59 B-03L/B-05 (12.8) |
+| 15 in control (rounding only, no pouch/scope) | packed | yes (3.0 mm) | 0.12 | 92.7 (5657) | 169.5 | n/a | 540 | 3.7 (B-06) | 1.20 / 0.42 | 0.23 B-02h/B-06 (49.2) |
+| 15 in control (rounding only, no pouch/scope) | fill | yes (6.0 mm) | 0.43 | 88.9 (5427) | 188.4 | 188.4 (205, margin 16.6) | 499 | 19.0 (B-05) | 1.88 / 1.31 | 1.55 B-03L/B-05 (13.2) |
+| 15 in control (rounding only, no pouch/scope) | meat | yes (6.0 mm) | 0.17 | 89.0 (5430) | 180.7 | 180.7 (190, margin 9.3) | 509 | 15.5 (B-05) | 1.64 / 1.28 | 1.89 B-03L/B-05 (10.8) |
+
+Runs: `outputs/clothsim/corrie_PR{15,19,23}c/` (h 40 mm, the rev B mesh) and the control `corrie_PR15s`. Sweep (15 in,
+gas only): 90.8 / 92.2 / 93.2 / 94.4 L at 0.25 / 0.5 / 1 / 2 kPa. **All 9 cases converged** (residual < 0.5 N),
+against 2 of 9 in rev B. Each case is reported at the lowest contact rounding that converged (3-6 mm); stepping
+further toward 0 mm stalled again on the same plate-edge crease. Volume: 87.0-88.4 L (5310-5396 cu in) loaded,
+91.2-92.9 L (5567-5668 cu in) packed, against the 85.2 L (5199 cu in) R-01 design number; the 4.0 L pouch is extra.
+Pouch + scope effect (15c vs the 15s control): fill CG y +2.9 mm, meat +3.7 mm, volume -0.8 / -0.7 L. Strain read
+as in 5a item 2: warp / weft <= 2.6 %, the 13-19 % e_max is shear in the buckled gussets and floor corners.
+
+**Rev C read-out.** **Pass on every case, marginal at 15 in meat.**
+
+| Torso | Fill CG y, mass-weighted with pouch + scope (limit 205) | + rounding bias <= 4 mm | Meat CG y (limit 190) | + bias |
+|---|---|---|---|---|
+| 15 in | 191.3 (margin 13.7) | <= 195.3 (margin >= 9.7) | **184.4 (margin 5.6)** | **<= 188.4 (margin >= 1.6)** |
+| 19 in | 172.4 (32.6) | <= 176.4 | 167.2 (22.8) | <= 171.2 |
+| 23 in | 131.2 (73.8) | <= 135.2 | 134.1 (55.9) | <= 138.1 |
+
+CG z 497-524 mm (rev C basis z 550, limit 590). The rev C sign-off gate (converged 15 in fill and meat with the
+pouch) is met. Recommendation to the owner / structural-fea-engineer: sign off rev C for CORRIE, recording that the 15 in
+meat case has 1.6-5.6 mm of margin. That is inside model error, so the prototype load test should measure the
+loaded-bag CG at 15 in with 30 kg on IM1-IM3 (a plumb-line / two-scale CG check). The lever that buys margin is the
+pouch: strapped to the frame-side hem as designed instead of riding the tipped collar closure, it is worth ~4 mm.
+
+Not modelled (unchanged from 5a): the roll itself (the collar closes flat at the fill line, roll clips off), the wings'
+squeeze, the tripod on the right wing, swells, the hydration sleeve. Sensitivity `corrie_PR15cr` (roll clips cinched):
+CG within 0.5 mm, volume +0.4 L. The pouch is carried on the collar closure. In the sim that closure tips aft (y ~330,
+z ~890) on every fill case, with or without the pouch, so the pouch's lever is an upper bound: strapped to the
+frame-side hem as designed (y ~76) it would bring the CG ~4 mm forward.
+
+### 11.5 Access table (6-day elk rifle, belt M; class 0 body, 1 pack on, 3 pack off outside, 4 door, 5 roll-top)
+
+| Item | Freq | Rev B zone (class) | B.1 zone (class) | OK |
+|---|---|---|---|---|
+| Phone 160 mm | hourly | top pouch (3) | **IMP-6 strap pocket (1)** | yes |
+| inReach | hourly | strap clip (1) | strap clip (1) | yes |
+| 2 L bladder | hourly | bag, frame half (5) | **IMP-2 sleeve, hose to the strap (1)** | yes |
+| 1 L bottle | hourly | wing / bag (3-5) | **IMP-3 holster (1)** | yes |
+| Snacks | hourly | top pouch (3) | top pouch (3) on S-L; left pocket (1) on XL/XXL | **S-L no** |
+| 65 mm spotter | glassing | under the left wing, loose (3) | **IMP-1 sleeve (3)** | yes |
+| Tripod, head, rain jacket, poles | glassing / weather | right wing (3) | right wing (3) | yes |
+| Kill kit, first aid | kill / emergency | aft column, under other gear (4-5) | **IMP-4 door pocket (4)** | yes |
+| Game bags | kill | aft column low (4) | aft column low (4) | yes |
+| Puffy, mid layer | glassing | aft column high (4) | aft column high (4) | yes |
+
+### 11.6 Renders (Blender Cycles, `huntkit/viz3d/cycles_render.py`)
+
+Model `huntkit/viz3d/corrie_b1.py` (GLB `outputs/pack3d_corrie_b1/corrie_b1.glb`, viewer next to it). Belt B is a
+real swept, padded body on the mannequin's own pelvis section: size L for the 34.6 in mannequin, lumbar 190 mm shell,
+wings with the B height profile (150 / 145 at 45 % / 105 mm), leaning in by the 5 deg cone, 30 -> 11 mm thick,
+bound edges, spacer face, quilting lines, 2:1 webbing to D-rings, heavy ladder locks, 50 mm buckle and stabilizers. The
+mannequin is in a relaxed A-pose for these renders, so the forearms do not hide the hips. The spotter is drawn 70 mm
+out of its sleeve to show it. New option `cycles_render.py --shots <json>` (custom named cameras, additive).
+
+| # | File | View |
+|---|---|---|
+| 1 | `outputs/screens/20261109_corrie_1.png` | hero 3/4 rear on the wearer: belt B, scope sleeve left, tripod right |
+| 2 | `outputs/screens/20261109_corrie_2.png` | side, wearer's right: hose port and hose to the bite valve, bottle holster |
+| 3 | `outputs/screens/20261109_corrie_3.png` | door open: IMP-4 kill-kit pocket with blaze pull, IM1-IM3 behind |
+| 4 | `outputs/screens/20261109_corrie_4.png` | rear: IMP-1 sleeve with the 85 mm spotter (left), tripod (right) |
+| 5 | `outputs/screens/20261109_corrie_5.png` | belt B front 3/4: cone-cut padded wings, 2:1 pulls, D-rings, holster + bottle, left pocket |
+| 6 | `outputs/screens/20261109_corrie_6.png` | left shoulder strap: IMP-6 phone pocket; hose on the right strap |
+| 7 | `outputs/screens/20261109_corrie_7.png` | cutaway from above, bag and straps off: lumbar pad seat (HDPE backer, sleeve) on the frame pan |
+
+Copied to `docs/screens/`: `_1`, `_3`, `_4`, `_5`. Superseded: `outputs/screens/20261108_cycles_*.png`,
+`20261108_hipbelt_6/7.png` (block belt).
+
+### 11.7 Open after B.1
+
+1. Rev C sign-off: see 11.4.
+2. pattern-maker: draft the B.1 pieces (all straight); IMP-5 faces per size from `hip_layout`.
+3. materials-engineer: a shock-cord record (3 mm) and a power-mesh stretch value for the IMP-6 18 mm depth.
+4. Weight pass (DECISIONS): the pack is 8.82 lb (4000 g) at belt M, 2.2 lb (1006 g) over the target.
+5. Snacks / GPS on S-L: user-guide packing rule, or a second strap pocket (+24 g) if the owner wants zero misses.
+6. structural-fea-engineer flags carried: the M5 insert record / test, the centre-plate pad-on-the-frame interface.
+
 ## Screenshots
+
+Rev B.1 renders (2026-11-09): section 11.6. The list below is rev B (2026-11-08).
 
 3D renders (2026-11-08), viz3d pipeline (same materials, owner camo texture, lighting, frame, hood, harness and
 renderer as the accepted SPINE renders). The bag skin is the cloth-sim drape of the sewn flat pieces (PR19 fine,

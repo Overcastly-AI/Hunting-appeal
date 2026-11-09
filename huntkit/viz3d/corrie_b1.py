@@ -26,7 +26,7 @@ from .corrie import (BAGM, Part, Skin, _block, _concept, _frame, _slab, _tripod_
                      corrie_pack, g_hook, ladder_lock, patch, sim_skin, smooth_line)
 from .params import REPO
 
-SUSP = ("pack", "pack_haul")
+SUSP = ("pack", "pack_haul", "frame", "frame_haul")   # belt + seat also in the frame-only (cutaway) mode
 
 
 def _hc():
@@ -194,12 +194,31 @@ def belt_b_parts(params: dict, size: str | None = None) -> tuple[list, dict]:
     info = {"size": size, "wing_len": L, "beta_deg": B.beta(size), "circ_in": round(pl["circ_in"], 1), "lw2": lw2,
             "half": half, "on_face": on_face, "s_all": s_all, "h": h, "t": t}
 
-    # ---- centre plate + Ti pivot (behind the lumbar)
+    # ---- lumbar pad seat (corrie.pad_seat) + 6061-T6 bow-tie centre plate (hipbelt_structural.md), behind the pad
     pv = pl["pv"]
-    back = rp(0.0, 1.0 + 30.0)
-    hw = [_block([0, (pv[1] + back[1]) / 2, hz], (96, max(abs(pv[1] - back[1]), 6) + 2, 74), e=0.25)]
-    parts.append(Part("beltB_centre_plate", G.concat(hw), "printed_cf", "suspension", modes=SUSP,
-                      label="Centre plate PA66-GF30 (fixed wing joint) on the Ti pivot"))
+    PS, CP = CO.PAD_SEAT, CO.CENTRE_PLATE
+    yb = float(rp(0.0, 1.0 + t[n // 2])[1])                  # outer (aft) face of the lumbar pad
+    bw, bh, bt = PS["backer"]
+    backer = _block([0, yb + 0.6 + bt / 2, hz], (bw, bt + 0.6, bh), e=0.12)
+    rw, rh, rt = PS["rail"]
+    rails = [_block([sx * (PS["channel_w"] / 2 + rw / 2), yb + 1.2 + bt + rt / 2, hz], (rw, rt, rh), e=0.2) for sx in (-1, 1)]
+    sleeve = _block([0, yb + 1.2 + bt + rt / 2, hz + bh / 2 + 6], (PS["sleeve"][0], rt + 5, 18), e=0.3)
+    # bow-tie: spine 60 tall in the channel, ears 140 tall at x +/-105, rolled R 420 (ears wrap toward the body)
+    xs = np.linspace(-CP["w"] / 2, CP["w"] / 2, 43)
+    hh = np.interp(np.abs(xs), [0, 30, CP["w"] / 2 - 25, CP["w"] / 2], [CP["spine_h"], CP["spine_h"], CP["ear_h"], CP["ear_h"]])
+    yc_ = yb + 1.2 + bt + 2.0
+    yy = yc_ - (CP["R"] - np.sqrt(CP["R"] ** 2 - xs ** 2))
+    zz = np.linspace(-0.5, 0.5, 9)
+    Bot = np.array([[[x, y, hz + h * z] for z in zz] for x, y, h in zip(xs, yy, hh)])
+    Top = Bot + np.array([0, CP["t"], 0])
+    plate = _slab(Bot, Top, np.repeat(xs[:, None], 9, 1) / G.TILE_MM, np.repeat(zz[None, :], 43, 0) / G.TILE_MM)
+    hub = G.capsule_between([0, yc_ - 2, hz], [0, float(pv[1]) + 4, hz], 18.0)
+    parts += [Part("beltB_pad_backer", backer, "hdpe", "suspension", modes=SUSP, label="Pad backer HDPE 1.0 (pad seat)"),
+              Part("beltB_pad_seat_rails", G.concat(rails + [sleeve]), "xlpe", "suspension", modes=SUSP,
+                   label="Pad seat: EVA standoff rails either side of the 70 mm spine channel + top sleeve"),
+              Part("beltB_centre_plate", plate, "aluminium", "suspension", modes=SUSP,
+                   label="Centre plate: 6061-T6 1.5 mm bow-tie, rolled R 420 (hipbelt_structural.md)"),
+              Part("beltB_hub", hub, "printed_cf", "suspension", modes=SUSP, label="PA66 hub bushing on the Ti pin")]
     # ---- front: 50 mm buckle + 2:1 pulls (25 mm webbing, D-ring at each tip, heavy ladder lock each side)
     web, hard, alu = [], [], []
     front = rp(pl["half_circ"] - 0.5, 16.0)

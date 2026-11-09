@@ -479,6 +479,43 @@ def belt_b(size: str) -> dict:
             "body_g": round(total, 1), "wing_len_mm": round(float(HC.B.wing_len(size)), 0)}
 
 
+# ---- lumbar pad seat on the frame face (DECISIONS 2026-11-09, structural item 1; hipbelt_structural.md section 3)
+PAD_SEAT = {"pan_x": (-125.0, 125.0), "pan_z": (50.0, 190.0), "zone_y": (-48.0, -27.0),     # geometry.yaml lumbar_plate
+            "channel_w": 70.0, "rail": (55.0, 140.0, 6.0), "backer": (190.0, 150.0, 1.0), "liner_t": 0.5,
+            "spine": (60.0, 1.5), "sleeve": (190.0, 40.0), "strap_m": 0.40}
+CENTRE_PLATE = {"w": 210.0, "ear_h": 140.0, "spine_h": 60.0, "t": 1.5, "end_slope_deg": 14.6, "R": 420.0,
+                "mass_g": 94.6}   # hipbelt_structural.md section 0 (6061-T6 bow-tie + PA66 hub + latch)
+
+
+def pad_seat() -> dict:
+    """Seat for belt B's lumbar pad on the frame's lumbar pan, so the fore-aft lumbar push (413 N at 15 in, 1 g) goes
+    pad -> pan (the frame model's lumbar_pad springs P11..P33) and never through the centre plate or the Ti pivot.
+
+    From the body out: spacer face + dual-density pad + terraced wedge (belt B, unchanged) -> HDPE 1.0 mm pad backer
+    190 x 150 -> 2 EVA 45C standoff rails 55 x 140 x 6 mm bonded to the pan face either side of a 70 mm vertical
+    channel -> the pan. The bow-tie's 60 mm spine (1.5 mm) runs in the channel with 70 - 60 = 10 mm side play and 6 - 1.5
+    = 4.5 mm depth play (structural note: >= 4 mm clear), on a 0.5 mm HDPE slip liner on the backer's channel face, so
+    the belt rolls +/-8 deg on the Ti pin while the pad stays still. Retention: a Hypalon sleeve on the backer's top
+    edge slips over the pan's 25 mm top return flange (z 190); a 25 mm strap with a ladder lock round the pan's bottom
+    edge (z 50). No hook-and-loop, no fastener into the printed body. Straight cuts only."""
+    P = PAD_SEAT
+    rho_eva = MAT.load("eva_foam_45c").require("density_kg_m3")
+    rho_hdpe = MAT.load("hdpe_sheet").require("density_kg_m3")
+    rw, rh, rt = P["rail"]
+    bw, bh, bt = P["backer"]
+    rows = [("2 EVA 45C standoff rails 55 x 140 x 6 mm (bonded to the pan face)", 2 * rw * rh * rt * 1e-9 * rho_eva * 1000),
+            ("HDPE 1.0 mm pad backer 190 x 150", bw * bh * bt * 1e-9 * rho_hdpe * 1000),
+            ("HDPE 0.5 mm slip liner 70 x 140 in the channel", P["channel_w"] * rh * P["liner_t"] * 1e-9 * rho_hdpe * 1000),
+            ("Hypalon top sleeve 190 x 40 (over the pan's top return flange)", P["sleeve"][0] * P["sleeve"][1] * 1e-6 * HYP_GSM),
+            ("25 mm bottom strap 0.40 m + ladder lock", P["strap_m"] * WEB25 + LADDER)]
+    side_play = (P["channel_w"] - P["spine"][0]) / 2
+    depth_play = rt - P["spine"][1]
+    x_ok = bw <= P["pan_x"][1] - P["pan_x"][0] and rh <= P["pan_z"][1] - P["pan_z"][0]
+    return {"rows": [(n, round(g, 1)) for n, g in rows], "mass_g": round(sum(g for _, g in rows), 1),
+            "side_play_mm": side_play, "depth_play_mm": depth_play, "fits_pan": x_ok,
+            "roll_clear_deg": round(math.degrees(math.atan2(side_play, P["spine"][0] / 2)), 1)}
+
+
 # ---- weight table
 SPINE_TOTAL_G = 3495.6          # geometry.yaml weight.total_g (released SPINE, belt M)
 SPINE_SIDE_POCKETS_G = 60.3     # geometry.yaml weight.rows "floating side pockets x2"
@@ -487,7 +524,6 @@ BELT_C0_BODY_G = 165.0          # hipbelt_results.json bom.C0.total_g (current b
 HP_TODAY_G = 8.0 + 10.7 + 0.4 * ZIP8_GM   # panels.yaml HP-01 + HP-02 mass_g_total + 0.4 m #8 zip (build_geometry row)
 SPINE_BODY_G = 333.2           # SPINE bag-body group, corrie_body.md section 4 (bag_concepts.spine_build, same metric)
 BELT_LOADPATH_G = 110.4         # hipbelt_structural.md section 0, size M (plate 94.6 + doublers 14.3 + thread + washer)
-BELT_PAD_IF_G = 10.0            # ASSUMPTION (hipbelt_structural.md): pad bears on the frame lumbar pan, interface parts
 TARGET_G = 2994.0               # ~6.6 lb published target (owner), 6.6 x 453.6
 
 
@@ -518,7 +554,8 @@ def weight_table(size: str = "M", c: BC.Concept | None = None) -> dict:
         ("belt B load path: 6061 bow-tie centre plate + hub + latch, root/tip doublers, thrust washer (110.4 g) "
          "replacing the 45 g PA66 plate + latch (the 6 g cant snap is already out above)", BELT_LOADPATH_G - 45.0,
          "hipbelt_structural.md section 0 (structural-fea-engineer 2026-11-09)"),
-        ("frame-side lumbar pad interface", BELT_PAD_IF_G, "ASSUMPTION ~10 g, hipbelt_structural.md section 0"),
+        ("lumbar pad seat on the frame face (replaces the ~10 g ASSUMPTION)", pad_seat()["mass_g"],
+         "corrie.pad_seat(): records eva_foam_45c, hdpe_sheet, hypalon_coated_nylon, webbing, ladder lock"),
     ]
     tot = sum(r[1] for r in rows)
     return {"size": size, "rows": [(n, round(g, 1), s) for n, g, s in rows], "total_g": round(tot, 1),

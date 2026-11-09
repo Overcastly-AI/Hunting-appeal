@@ -27,6 +27,10 @@ DATE = "20261109"
 
 # Cameras: az 0 = looking at the bag's aft face, +90 = from the wearer's right, 180 = from the front; boxes FCS mm.
 SHOTS = {
+    "b1_seat": {"view": {"az": 168, "el": 62, "zoom": 1.0, "box": [-150, -130, 90, 150, 30, 220]},
+                "state": {"mode": "frame", "lid": True, "bp": False},   # render with --torso 99 (straps hidden)
+                "caption": "CORRIE B.1: lumbar pad seat (cutaway, bag off)",
+                "sub": "Pad backer on 2 EVA rails either side of the channel; the 6061 bow-tie rolls in the channel on the Ti pin"},
     "b1_beltL": {"view": {"az": 205, "el": 20, "zoom": 1.0, "box": [-290, -330, -20, 270, 60, 280]},
                  "state": {"mannequin": True, "lid": True}, "caption": "x", "sub": "x"},
     "b1_hero": {"view": {"az": -38, "el": 12, "zoom": 1.0}, "state": {"mannequin": True, "lid": True},

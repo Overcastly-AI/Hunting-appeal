@@ -111,3 +111,13 @@ def test_corrie_rev_c_scenarios_carry_pouch_and_scope():
     assert ext["pouch_1kg"]["kg"] >= 1.0
     assert ext["scope85_left_wing"]["kg"] >= 1.91
     assert s["contact"]["smooth_continuation"][-1] == 0.0
+
+
+def test_pad_seat_clears_the_rolling_bow_tie_and_fits_the_pan():
+    ps = CO.pad_seat()
+    assert ps["fits_pan"]
+    assert ps["depth_play_mm"] >= 4.0                                   # hipbelt_structural.md: >= 4 mm clear channel
+    assert ps["roll_clear_deg"] >= 8.0                                  # belt free roll +/-8 deg on the Ti pin
+    w = CO.weight_table("M")
+    assert any("pad seat" in r[0] and r[1] == ps["mass_g"] for r in w["rows"])
+    assert any("load path" in r[0] and abs(r[1] - 65.4) < 0.1 for r in w["rows"])

@@ -219,9 +219,14 @@ stiffener; a thicker HDPE.
   plus a **removable terraced wedge**: three EVA 45C 5 mm steps, 120 wide, 150 / 99 / 50 mm tall, top-aligned. It
   fills the lumbar hollow (taper 0.10). The user can take it out or flip it (XXL: out). It replaces today's flat
   stage-2 piece.
-- **Joint.** Wing to centre plate is a fixed bolted tongue; the 3-position snap is deleted.
-- **Pull.** 50 mm buckle; each side 25 mm webbing anchored at the wing tip, out through the buckle-side ladder lock,
-  back to a D-ring on the tip, pulled forward (2:1, efficiency 0.85 ASSUMPTION).
+- **Joint.** Wing to centre plate is fixed; the 3-position snap is deleted. Updated 2026-11-09 (DECISIONS,
+  `hipbelt_structural.md`): a stitched ear (plate ear inside the wing root, 1000D doubler each face, 2 rows of 22 x 2 mm
+  holes, hand saddle-stitched tex 135); the HDPE floats; the lumbar pad bears on the frame lumbar pan
+  (`concepts/corrie.py pad_seat()`), not on the 6061-T6 bow-tie centre plate.
+- **Pull.** 50 mm buckle; each side 25 mm webbing anchored on the buckle half, round a D-ring on the wing tip, back
+  through the heavy ladder lock (`ladder_lock_25mm_heavy`) on the buckle half, then the pull tail (2:1, efficiency
+  0.85 ASSUMPTION). The lock must come after the D-ring: routed the other way it holds the full T (slip SF/req 1.01).
+  Corrected 2026-11-09 per `hipbelt_structural.md` section 0 item 4 and DECISIONS 2026-11-09.
 - **Sizes.** S 27–31 / M 30–34 / L 33–37 / XL 36–40 / XXL 39–44 in; cones 7/6/5/3/2 deg.
 
 ### 4.2 How the cones were chosen
