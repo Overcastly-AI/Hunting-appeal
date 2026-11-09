@@ -63,11 +63,27 @@ def summarize(pm, case_name: str, case: dict, x: np.ndarray, sim, infos) -> dict
            "solve": [{"stage": i.reason, "iterations": i.iterations, "residual_n": _f(i.residual_n, 4),
                       "seconds": _f(i.seconds, 1), "converged": bool(i.converged)} for i in infos],
            "converged": bool(infos[-1].converged), "mesh": {"nodes": m.n, "triangles": len(m.tris), "h_mm": pm.h}}
+    if getattr(sim, "contact_rounding_mm", None) is not None:      # 2026-11-09: rounding of the reported stage
+        out["contact_rounding_mm"] = sim.contact_rounding_mm
     out["volume"] = {"closed_L": _f(V / 1e6), "closed_cu_in": _f(V / 16387.064, 0),
                      "body_below_collar_seam_L": _f(Vb / 1e6), "body_as_drafted_L": _f(Vb0 / 1e6),
                      "collar_to_fill_line_L": _f((V - Vb) / 1e6),
                      "design_L": _f(pm.c["design_volume_L"]), "release_pattern_check_L": pm.c["pattern_volume_L_release"],
                      "contents_cg_mm": [_f(c, 1) for c in cg]}
+    ext = getattr(pm, "ext_info", None) if case.get("external") else None
+    if ext:   # mass-weighted CG: the contents (volume centroid x fill + meat mass) + the external masses (2026-11-09)
+        m_in = float(case.get("fill_kg", 0.0)) + float(case.get("meat_kg", 0.0))
+        S = m_in * np.asarray(cg, float)
+        M = m_in
+        rows = []
+        for e in ext:
+            p = x[e["nodes"]].mean(0) + e["offset_mm"]
+            S = S + e["kg"] * p
+            M += e["kg"]
+            rows.append({"label": e["label"], "kg": e["kg"], "pos_mm": [_f(v, 1) for v in p]})
+        out["volume"]["external"] = rows
+        out["volume"]["cg_with_external_mm"] = [_f(v, 1) for v in S / M]
+        out["volume"]["mass_with_external_kg"] = _f(M, 2)
     out["fill"] = dict(getattr(pm, "fill_info", {}))
     if case.get("meat_kg"):
         out["meat"] = dict(getattr(pm, "meat_info", {}))

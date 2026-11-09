@@ -568,6 +568,16 @@ class GapField:
             vals[s:s + step] = sub
         return cls(lo, spacing, vals.reshape(shape))
 
+    def smoothed(self, sigma_mm: float) -> "GapField":
+        """Gaussian-rounded copy (2026-11-09, CORRIE convergence). The trilinear gap has a gradient kink along
+        plate edges (spreader rim, frame members): a node sitting on that crease has no smooth equilibrium and the
+        damped Newton step chatters between the two faces (residual 1.5-5 N, LM lambda -> 1e4). Blurring the sampled
+        gap by ``sigma_mm`` rounds convex edges to a radius of order sigma; a flat face is unchanged (a linear field
+        is invariant under a symmetric blur). ASSUMPTION: a 6 mm edge rounding is inside the real parts' edge radii
+        plus the foam / mesh cover."""
+        from scipy.ndimage import gaussian_filter
+        return GapField(self.o, self.h, gaussian_filter(self.v, float(sigma_mm) / self.h, mode="nearest"))
+
     def __call__(self, x):
         """gap (n,) and gradient (n,3); points outside the grid get a large positive gap."""
         u = (np.asarray(x, float) - self.o) / self.h

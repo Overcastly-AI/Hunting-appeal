@@ -1,0 +1,9 @@
+# Control for corrie_PR15c: the rev B 15 in run with ONLY the 6 mm contact rounding (no pouch, no scope), to isolate
+# the effect of the smoothing on volume and CG against the rev B runs (corrie_body.md section 5b).
+extends: corrie_PR15.yaml
+name: corrie_PR15s
+contact:
+  smooth_mm: 6.0
+  smooth_continuation: [4.0, 3.0, 2.0, 1.0, 0.0]   # then step the rounding back to the raw field (reported stage)
+solver:
+  max_iter: 400

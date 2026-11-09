@@ -1,0 +1,6 @@
+# Sensitivity for corrie_PR15c (2026-11-09): the same, with the roll-top side clips cinched (roll_clips_enabled). The
+# baseline runs leave the clips off, so the closed collar tips aft under the fill (conservative for the CG).
+extends: corrie_PR15c.yaml
+name: corrie_PR15cr
+attachments:
+  roll_clips_enabled: true

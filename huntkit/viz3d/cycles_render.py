@@ -798,10 +798,20 @@ def main(argv=None):
     ap.add_argument("--camo", default=None, help="camo PNG (one 380 mm repeat); default: re-raster owner SVG")
     ap.add_argument("--threads", type=int, default=os.cpu_count() or 4)
     ap.add_argument("--no-caption", action="store_true")
+    ap.add_argument("--shots", default=None,
+                    help="JSON file of extra named shots {name: {view: {az, el, zoom, box?, fov?}, state, caption, sub}} "
+                         "(2026-11-09); they are added to SHOTS / VIEWS for this run")
     ap.add_argument("--before", default=None, help="three.js PNG of the 'hero' view -> before/after sheet")
     ap.add_argument("--before-out", default=None, help="before/after sheet path (default <out>/<prefix>_0.png)")
     a = ap.parse_args(argv)
     res = tuple(int(x) for x in a.res.lower().split("x"))
+    if a.shots:
+        for nm, sh in json.loads(Path(a.shots).read_text()).items():
+            v = sh["view"]
+            if isinstance(v, dict):
+                VIEWS[nm] = v
+                sh = {**sh, "view": nm}
+            SHOTS[nm] = {"state": {}, "caption": nm, "sub": "", **sh}
     glb = Path(a.glb).resolve()
     out = Path(a.out).resolve()
     work = REPO / "outputs" / "cycles_work"

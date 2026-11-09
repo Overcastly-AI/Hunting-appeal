@@ -385,6 +385,12 @@ class PackModel:
         self.fields = gap_fields(self.clouds, scen["contact"])
         if (scen["contact"].get("crown") or {}).get("enabled"):
             self.fields["crown"] = crown_field(scen["contact"]["crown"], scen["contact"])
+        smooth = float(scen["contact"].get("smooth_mm", 0.0) or 0.0)   # 0 = as before (SPINE runs)
+        self.fields_raw = dict(self.fields)
+        self._fcache = {}
+        if smooth > 0:
+            self.fields = {k: f.smoothed(smooth) for k, f in self.fields.items()}
+        self.ext_info = []
         self._attachments()
 
     # ---- nodes helpers
@@ -636,7 +642,54 @@ class PackModel:
             terms.append(Pressure(m.tris, p0=0.0, rho_g=rho * 9.81e-6, z_ref=float(case.get("z_ref", self.c["Z_FILL"]))))
         if case.get("meat_kg"):
             terms += self.meat_loads(case)
+        self.ext_info = []
+        if case.get("external"):
+            terms += self.external_loads(case)
         return Sim(m, terms)
+
+    def external_loads(self, case) -> list:
+        """Dead loads of things carried OUTSIDE the modelled cloth (2026-11-09, CORRIE): a top pouch on the
+        closed roll, a scope in a wing sleeve. Each entry of ``case['external']``:
+
+        * ``label``, ``kg``: the mass (static, ``case['g']`` or 1 g, vertical);
+        * ``piece``: the piece that carries it; ``z: [lo, hi]`` optional band;
+        * ``top_mm``: optional, only the nodes within this distance of the piece's highest node (pouch on the roll);
+        * ``seams: [[piece, share], ...]``: optional, split the load over the piece's nodes that are SHARED with each
+          named piece (a wing hangs from its root seam and its strap loops), shares sum to 1;
+        * ``offset_mm``: the mass centre relative to the loaded nodes' centroid (for the mass-weighted CG only).
+
+        Moments of an offset mass about the seam line are not applied (ASSUMPTION: carried by the wing / pouch
+        straps as a couple on the same seams; only the vertical weight loads the cloth)."""
+        m = self.mesh
+        X = m.X0
+        g = 9.81 * float(case.get("g", 1.0))
+        out = []
+        for e in case["external"]:
+            base = self.nodes_of(e["piece"])
+            if e.get("z"):
+                lo, hi = e["z"]
+                base = base[(X[base, 2] >= lo) & (X[base, 2] <= hi)]
+            if e.get("top_mm") is not None:
+                base = base[X[base, 2] >= X[base, 2].max() - float(e["top_mm"])]
+            groups = []
+            if e.get("seams"):
+                for other, share in e["seams"]:
+                    sel = np.array([i for i in base if other in self.node_pieces.get(int(i), set())], int)
+                    if len(sel) == 0:
+                        raise ValueError(f"external {e['label']}: no {e['piece']} nodes shared with {other}")
+                    groups.append((sel, float(share)))
+            else:
+                groups.append((base, 1.0))
+            W = float(e["kg"]) * g
+            nodes = []
+            for sel, share in groups:
+                F = np.zeros((len(sel), 3))
+                F[:, 2] = -W * share / len(sel)
+                out.append(DeadLoad(sel, F, label=f"ext_{e['label']}"))
+                nodes.append(sel)
+            self.ext_info.append({"label": e["label"], "kg": float(e["kg"]), "nodes": np.concatenate(nodes),
+                                  "offset_mm": np.asarray(e.get("offset_mm", [0, 0, 0]), float)})
+        return out
 
     def janssen(self, case, fill_kg, p0) -> list:
         """Granular gear fill (Janssen 1895, arXiv cond-mat/0511618): vertical stress
@@ -766,7 +819,7 @@ def run_case(pm: PackModel, case: dict, x0=None, verbose=False):
     sim = pm.build_sim(case, cinched=True)
     for s in (sv.get("ramp", [1.0]) if x0 is None else [1.0]):
         for t in sim.terms:
-            if t.name in LOADS:
+            if t.name in LOADS or str(t.name).startswith("ext_"):   # ext_*: external dead loads (2026-11-09)
                 t.scale = s
         x, info = sim.solve(x, tol=float(sv["tol_n"]), max_iter=int(sv["max_iter"]), time_cap=max(t_left, 20.0),
                             verbose=False)
@@ -786,4 +839,43 @@ def run_case(pm: PackModel, case: dict, x0=None, verbose=False):
         infos.append(info)
         if verbose:
             print(f"   {info.reason} in {info.iterations} it, residual {info.residual_n:.3g} N, {info.seconds:.1f} s")
+    # contact-rounding continuation (2026-11-09, CORRIE): solve on the rounded gap field first (contact.smooth_mm),
+    # then step the rounding down to the scenario's list, ending at 0 = the raw field, each stage from the last one.
+    # Straps are NOT re-cinched between stages. The case reports the LAST stage, so "converged" means converged on
+    # the unsmoothed contact if the list ends at 0.
+    cont = pm.scen["contact"].get("smooth_continuation") or []
+    sig_ok = float(pm.scen["contact"].get("smooth_mm", 0.0) or 0.0) if infos and infos[-1].converged else None
+    x_ok, info_ok = x.copy(), infos[-1] if infos else None
+    for sig in cont:
+        sig = float(sig)
+        if sig_ok is None:          # the smoothed solve itself did not converge: nothing to continue from
+            break
+        for t in sim.terms:
+            if isinstance(t, FieldContact) and str(t.name).startswith("contact_"):
+                k = str(t.name)[len("contact_"):]
+                if k not in pm.fields_raw:
+                    continue
+                if sig <= 0:
+                    t.f = pm.fields_raw[k]
+                else:
+                    if (k, sig) not in pm._fcache:
+                        pm._fcache[(k, sig)] = pm.fields_raw[k].smoothed(sig)
+                    t.f = pm._fcache[(k, sig)]
+        x, info = sim.solve(x, tol=float(sv["tol_n"]), max_iter=int(sv["max_iter"]), time_cap=max(t_left, 30.0))
+        t_left -= info.seconds
+        info.reason = f"contact rounding {sig:g} mm: {info.reason}"
+        infos.append(info)
+        if verbose:
+            print(f"   {info.reason} in {info.iterations} it, residual {info.residual_n:.3g} N, {info.seconds:.1f} s")
+        if info.converged:
+            sig_ok, x_ok, info_ok = sig, x.copy(), info
+        else:                       # keep the last converged stage (reported), stop stepping down
+            x = x_ok
+            import copy as _copy
+            kept = _copy.copy(info_ok)
+            kept.reason = f"kept the last converged stage: contact rounding {sig_ok:g} mm"
+            kept.iterations, kept.seconds = 0, 0.0
+            infos.append(kept)
+            break
+    sim.contact_rounding_mm = sig_ok if cont else float(pm.scen["contact"].get("smooth_mm", 0.0) or 0.0)
     return x, sim, infos

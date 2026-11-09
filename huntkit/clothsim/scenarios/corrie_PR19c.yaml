@@ -1,0 +1,21 @@
+# CORRIE rev B body, 2026-11-09 integration run (rev C sign-off gate, corrie_body.md section 5b). Same as corrie_PR19
+# plus: (1) contact gap fields rounded by 6 mm (GapField.smoothed): the rev B runs stalled on the spreader / frame
+# plate-edge crease; (2) the 4.0 L top pouch with 1 kg of loose goods on the closed roll (1.0 kg + 88 g pouch,
+# corrie.py); (3) the IMP-1 scope sleeve in the left wing with an 85 mm spotter (1910 g, loadouts.yaml spotter_85
+# + sleeve 45 g as estimated in loadout_study.md; the B.1 build is 56.4 g, +11 g, negligible), hung on the wing root seam (B-03L | B-01) and the strap loops in the aft corner
+# seam (B-03L | B-02u), 50 / 50 (ASSUMPTION). Tripod on the right wing is not in the sim (loadout study only).
+extends: corrie_PR19.yaml
+name: corrie_PR19c
+contact:
+  smooth_mm: 6.0
+  smooth_continuation: [4.0, 3.0, 2.0, 1.0, 0.0]   # then step the rounding back to the raw field (reported stage)
+solver:
+  max_iter: 400
+cases:
+  fill:
+    external: &ext
+      - {label: pouch_1kg, kg: 1.088, piece: B-06, top_mm: 15.0, offset_mm: [0.0, 0.0, 75.0]}
+      - {label: scope85_left_wing, kg: 1.955, piece: B-03L, z: [165.0, 595.0], seams: [[B-01, 0.5], [B-02u, 0.5]],
+         offset_mm: [-83.0, 0.0, 0.0]}
+  meat:
+    external: *ext

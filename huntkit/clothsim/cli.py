@@ -126,7 +126,10 @@ def cmd_run(a) -> dict:
                         "open_boundary_segments": len(pm.diag["free_segments"]),
                         "pieces": [p.name for p in m.pieces]},
                "cases": res, "volume_sweep": sweep, "seconds": time.time() - t0,
-               "source": {"patterns": "designs/pack_5200/patterns_v31.py build_body (= outputs/release/pack5200_v3.1_patterns)",
+               "source": {"patterns": ("designs/pack_5200/concepts/corrie.py via huntkit/clothsim/corrie_bag.py (concept)"
+                                       if scen.get("bag") == "corrie" else
+                                       "designs/pack_5200/patterns_v31.py build_body (= outputs/release/pack5200_v3.1_patterns)"),
+                          "contact_smooth_mm": float(scen["contact"].get("smooth_mm", 0.0) or 0.0),
                           "frame": "designs/pack_5200/print/frame/genframe_assembled.stl",
                           "spreader": "designs/pack_5200/print/frame/genframe_barrier.stl"}}
     (out / "results.json").write_text(json.dumps(to_json(summary), indent=1, default=float))

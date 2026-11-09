@@ -45,9 +45,14 @@ LOADOUT_YAML = ROOT / "designs" / "pack_5200" / "loadouts.yaml"
 OUT = ROOT / "outputs" / "loadout"
 
 # ----------------------------------------------------------------------------- constants (each traced)
-SIM_FILL_L = (88.9, 89.0, 87.2)            # corrie_body.md §5a, rev B fill cases 15 / 19 / 23 in
-SIM_FILL_CG = {15: 190.4, 19: 172.3, 23: 136.4}   # corrie_body.md §5a, contents CG y (fill 68 kg)
-SIM_MEAT_CG = {15: 185.6, 19: 168.5, 23: 139.2}
+# Rev B.1 (2026-11-09): CONVERGED cloth sims corrie_PR{15,19,23}c (corrie_body.md section 5b; pouch 1 kg + 85 mm scope
+# in the left wing sleeve, 6 mm contact rounding). Contents (volume) CG y of the deformed bag; the pouch / scope masses
+# are added by this model itself, so the volume centroid (not the mass-weighted sim CG) is the peel basis.
+SIM_FILL_L = (88.1, 88.4, 87.0)            # outputs/clothsim/corrie_PR{15,19,23}c/results.json fill closed_L
+SIM_FILL_CG = {15: 190.9, 19: 172.2, 23: 130.8}   # same, fill contents_cg_mm[1]
+SIM_MEAT_CG = {15: 184.0, 19: 166.9, 23: 134.0}   # same, meat contents_cg_mm[1]
+REV_B_SIM = {"fill_L": (88.9, 89.0, 87.2), "fill_cg": {15: 190.4, 19: 172.3, 23: 136.4},   # rev B (2026-11-08,
+             "meat_cg": {15: 185.6, 19: 168.5, 23: 139.2}}                                 # 7 of 9 not converged)
 REV_C = {"bag_y": 205.0, "meat_y": 190.0, "z_max": 590.0}  # load_standard.md §4.2 and T9 (z <= 590)
 RATED_KG = 68.0                             # DECISIONS 2026-11-01 (150 lb)
 FLOAT_MEAT_MAX_KG = 53.0                    # DECISIONS 2026-11-06 float FEA (US1 fatigue)
@@ -120,7 +125,48 @@ HIP_TODAY_ENV = (145, 92, 50)     # ASSUMPTION: HP-01 face 180/140 x 110 less 8 
 HIP_AFTER_ENV = (175, 112, 55)    # IMP-5: face 200/160 x 130, gusset 60
 
 
+ROLL_MIN_Z_BLADDER = 990.0   # ASSUMPTION (corrie.HYDRO): with a bladder in the IMP-2 sleeve (top z 975) the roll closes >= z 990
+
+
+def zones_integrated(size="M"):
+    """CORRIE rev B.1 (DECISIONS 2026-11-09): the adopted pockets as built in corrie.py, belt B of ``size``."""
+    hl = CO.hip_layout(size)
+    hy, dp, sp = CO.HYDRO, CO.DOOR_POCKET, CO.STRAP_POCKET
+    zw = 375.0
+    Z = [
+        Zone("chest", "chest harness (not ours)", "body", 0, None, None, False),
+        Zone("hands", "hands / sling", "body", 0, None, None, False),
+        Zone("strap_clip", "shoulder-strap webbing clip", "strap", 1, 0.20, (110, 60, 30), False),
+        Zone("strap_pocket", "IMP-6 shoulder-strap phone pocket", "strap", 1,
+             round(sp["h"] * sp["w"] * sp["stretch_depth"] / 1e6, 3), CO.bag_pockets()[3]["interior_mm"], False),
+        Zone("hip_L", f"IMP-5 hipbelt pocket L ({size})", "hip", 1, hl["L"]["volume_L"], hl["L"]["interior_mm"], False,
+             (-150, -60, 40)),
+        Zone("bottle_hip", "IMP-3 bottle holster, belt B right wing", "hip", 1, 2.0, CO.holster()["interior_mm"], False,
+             (150, -40, 70)),
+        Zone("wing_L", "under left wing", "wing", 3, 6.0, (600, 200, 150), True, (-1, None, zw)),
+        Zone("wing_R", "under right wing", "wing", 3, 6.0, (600, 200, 150), True, (1, None, zw)),
+        Zone("top_pouch", "top pouch 4.0 L", "pouch", 3, 4.0, (300, 195, 65), True),
+        Zone("scope_sleeve_L", "IMP-1 padded scope sleeve, left wing", "wing", 3, 5.0, (430, 160, 150), True, (-1, None, zw),
+             pool="wing_L"),
+        Zone("hydro_sleeve", "IMP-2 hydration sleeve (hung, z 545-975)", "fixed", 1, 3.0, (430, 240, 60), True,
+             (0, None, CO.bag_pockets()[1]["bladder_centre_z"])),
+        Zone("door_pocket", "IMP-4 zipped pocket inside the door", "fixed", 4,
+             round(sum([0]) + (dp["w"] - 8) * (dp["h"] - 8) * (dp["bellows"] - 2) / 1e6, 2), CO.bag_pockets()[2]["interior_mm"],
+             True, (0, "door", 0.5 * sum(dp["z"]))),
+    ]
+    if hl["R"]:
+        Z.append(Zone("hip_R", f"IMP-5 hipbelt pocket R ({size})", "hip", 1, hl["R"]["volume_L"], hl["R"]["interior_mm"],
+                      False, (150, -60, 40)))
+    for col in ("F", "A"):
+        for b, nm in enumerate(("low", "mid", "high")):
+            Z.append(Zone(f"bag_{col}_{nm}", f"main bag {'frame' if col == 'F' else 'aft'} half, {nm}", "bagcol",
+                          5, None, (900, 380, 260), True, col=col, band=b))
+    return {z.id: z for z in Z}
+
+
 def zones(config="today"):
+    if str(config).startswith("integrated"):
+        return zones_integrated(config.split(":")[1] if ":" in config else "M")
     after = config == "after"
     zw = 375.0                    # wing centre (M-01 z 150-600, corrie_body.md §4)
     Z = [
@@ -182,6 +228,21 @@ def expand(data, key, archery=False, meat_day=False):
     return rows
 
 
+def split_units(rows, ids=("bottle_1L",)):
+    """Rev B.1: carry each unit of a multi-unit item separately (two 1 L bottles go to two places)."""
+    out = []
+    for r in rows:
+        q = r["qty"]
+        if r["id"] in ids and q > 1 and float(q).is_integer():
+            for i in range(int(q)):
+                u = dict(r)
+                u.update(qty=1, mass_tot=r["mass_g"], vol_tot=r["vol_L"], id=r["id"] if i == 0 else f"{r['id']}#{i + 1}")
+                out.append(u)
+        else:
+            out.append(r)
+    return out
+
+
 def fits_env(dims, env):
     if env is None:
         return True
@@ -216,6 +277,7 @@ def pack(rows, config="today", force=None, meat_kg=0.0):
     meat = None
     col_cap = G["cum_L"][-1]
     reserve = {"F": 0.0, "A": 0.0}
+    fixedF = 0.0
     if meat_kg > 0:
         mv = meat_kg / MEAT_KG_PER_L / EFF_SOFT
         meat = {"kg": meat_kg, "vol_eff_L": mv}
@@ -248,9 +310,20 @@ def pack(rows, config="today", force=None, meat_kg=0.0):
             if z.cap_L is None or used[pool] + ev <= Z[pool].cap_L + 1e-9:
                 if z.kind == "fixed":   # sleeve / door pocket sit INSIDE the main bag: they take column volume
                     colk = "A" if z.pos[1] == "door" else "F"
-                    if sum(r["vol_eff"] for r in col_items[colk]) + reserve[colk] + ev > col_cap + 1e-9:
+                    hung = meat is not None and colk == "F" and str(config).startswith("integrated")
+                    if hung:
+                        # rev B.1: the bladder stays in its hung sleeve on the pack-out; the meat packs round it and its
+                        # overflow from the frame half moves aft (the total-volume check below still applies)
+                        fixedF += ev
+                        reserve["F"] += ev
+                        over = reserve["F"] - col_cap
+                        if over > 0:
+                            reserve["F"] -= over
+                            reserve["A"] += over
+                    elif sum(r["vol_eff"] for r in col_items[colk]) + reserve[colk] + ev > col_cap + 1e-9:
                         continue
-                    reserve[colk] += ev
+                    else:
+                        reserve[colk] += ev
                 used[pool] += ev
                 placed = p
                 it["vol_eff"] = ev
@@ -285,9 +358,10 @@ def pack(rows, config="today", force=None, meat_kg=0.0):
         v = 0.0
         if meat and not float_mode and colk == "F":
             v1 = meat["vol_eff_L"]
-            if v1 > col_cap:   # meat overflows F: the rest sits low in A (ASSUMPTION: cinched against the F stack)
-                meat["vol_F_L"], meat["vol_A_L"] = col_cap, v1 - col_cap
-                v1 = col_cap
+            capF = col_cap - fixedF
+            if v1 > capF:   # meat overflows F: the rest sits low in A (ASSUMPTION: cinched against the F stack)
+                meat["vol_F_L"], meat["vol_A_L"] = capF, v1 - capF
+                v1 = capF
             else:
                 meat["vol_F_L"], meat["vol_A_L"] = v1, 0.0
             meat["z_F"] = (col_z(0.0), col_z(v1))
@@ -303,6 +377,8 @@ def pack(rows, config="today", force=None, meat_kg=0.0):
             r["pos"] = (0.0, col_y(colk, zm), zm)
         cols[colk] = {"vol_eff_L": v, "z_top": col_z(min(v, col_cap)), "over_L": max(0.0, v - col_cap)}
     top = max(MIN_TOP_Z, cols["F"]["z_top"], cols["A"]["z_top"])
+    if any(r["zone"] == "hydro_sleeve" for r in out) and str(config).startswith("integrated"):
+        top = max(top, ROLL_MIN_Z_BLADDER)
     # ---- positions of external zones
     for r in out:
         z = Z.get(r["zone"])
@@ -408,7 +484,8 @@ def summary(P: Packed, label=""):
     m_bag, cg = bag_cg(P)
     tot = sum(r["mass_tot"] for r in P.rows if r["zone"] not in ("hands",))
     hand = sum(r["mass_tot"] for r in P.rows if r["zone"] == "hands")
-    bodyish = sum(r["mass_tot"] for r in P.rows if r["zone"] in ("chest", "hip_L", "hip_R", "strap_clip", "bottle_hip"))
+    bodyish = sum(r["mass_tot"] for r in P.rows if r["zone"] in ("chest", "hip_L", "hip_R", "strap_clip", "bottle_hip",
+                                                                    "strap_pocket"))
     vol_bag = sum(r["vol_eff"] for r in P.rows if r.get("slot") or P.zones.get(r["zone"], Zone("", "", "", 0)).kind == "fixed")
     cap = 2 * G["cum_L"][-1]
     by_cat = {}
@@ -604,6 +681,20 @@ def run(data=None):
             for cfg in ("today", "after"):
                 P = pack(expand(data, key, archery=arch, meat_day=True), cfg, meat_kg=mk)
                 res["loadouts"][f"{key}_{vname}_{cfg}_meat"] = summary(P, f"{lo['name']} pack-out {mk} kg [{cfg}]")
+    # rev B.1 (2026-11-09): the adopted pockets + belt B, every belt size (hip pocket room grades with the wing)
+    res["integrated"] = {}
+    for size in CO.BELT_SIZES:
+        cfg = f"integrated:{size}"
+        for key, lo in data["loadouts"].items():
+            variants = [("rifle", False)] + ([("archery", True)] if lo.get("archery_swap") else [])
+            for vname, arch in variants:
+                P = pack(split_units(expand(data, key, archery=arch)), cfg)
+                tag = f"{key}_{vname}_{size}"
+                res["integrated"][tag] = summary(P, f"{lo['name']} [{vname}, CORRIE B.1, belt {size}]")
+                res["integrated"][tag]["zones"] = {r["id"]: r["zone"] for r in P.rows}
+                mk = lo["meat_case"]["meat_kg"]
+                Pm = pack(split_units(expand(data, key, archery=arch, meat_day=True)), cfg, meat_kg=mk)
+                res["integrated"][tag + "_meat"] = summary(Pm, f"{lo['name']} pack-out {mk} kg [B.1, {size}]")
     res["spotter"] = spotter_study(data)
     res["improvements"] = improvements()
     rec = [i for i in res["improvements"] if i["id"] in RECOMMENDED]
