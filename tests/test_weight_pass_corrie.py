@@ -21,7 +21,7 @@ def run():
 
 
 def test_breakdown_reproduces_weight_table(run):
-    wt = CO.weight_table("M")
+    wt = CO.weight_table("M", spec="B.1")             # the pass is computed on B.1 (every cut is defined on it)
     assert run["total_g"] == wt["total_g"]
     assert sum(p["g"] for p in run["parts"]) == pytest.approx(wt["total_g"], abs=0.05)
     assert sum(run["groups"].values()) == pytest.approx(wt["total_g"], abs=0.2)
@@ -82,7 +82,7 @@ def test_packages_are_cumulative_and_honest(run):
 
 
 def test_pouch_variants_match_corrie_booking(run):
-    body = WP.C.build(WP.C.make(), True)
+    body = WP.C.build(WP.C.make(), True, spec="B.1")
     booked = sum(WP.BC.piece_mass_g(p) for p, g in body.pieces if g == "pouch")
     booked += next(WP.BC.zip_mass_g(z) for z in body.zips if "pouch" in z["name"])
     booked += sum(g for n, g in body.extra["hardware"] if n.startswith("pouch"))
@@ -94,3 +94,24 @@ def test_benchmarks_are_cited(run):
     for r in run["benchmarks"]:
         for _lab, g, url in r["bench"]:
             assert url.startswith("https://") and g > 0
+
+
+def test_b2_is_applied_from_the_corrie_table(run):
+    """Owner 2026-11-09: A + B (without held B-8 / B-9) = corrie spec B.2; the waterfall's after-A+B bar and the size
+    table are corrie.weight_table(size, spec="B.2"), C is a projection on top."""
+    b2 = run["packages"]["b2"]
+    assert b2["spec"] == "B.2" and set(b2["items"]) == set(CO.SPECS["B.2"]["items"])
+    assert {"B-8", "B-9"}.isdisjoint(b2["items"])
+    assert not any(i.startswith("C-") for i in b2["items"])
+    for s, r in b2["sizes"].items():
+        assert r["b2_g"] == CO.weight_table(s, spec="B.2")["total_g"]
+        assert r["b1_g"] == CO.weight_table(s, spec="B.1")["total_g"]
+        assert r["with_c_g"] == pytest.approx(r["b2_g"] - b2["c_saving_g"], abs=0.05)
+    steps = {s["pkg"]: s for s in run["packages"]["steps"]}
+    assert set(steps["B"]["items"]) == {i for i in CO.SPECS["B.2"]["items"] if i.startswith("B-")}
+    # the B.2 booking and the package arithmetic agree within a few grams (pull tab, zip length)
+    assert abs(b2["recon_vs_packages_g"]) < 5.0
+
+
+def test_stored_spine_outer_area_matches_the_cut_set():
+    assert CO.SPINE_OUTER_M2 == pytest.approx(WP._spine_outer_area(), abs=5e-4)

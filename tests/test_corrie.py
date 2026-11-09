@@ -25,7 +25,10 @@ def test_volume_width_and_pouch(corrie):
     assert BC.volumes(CO.make("A"))["volume_L"] == pytest.approx(BC.TARGET_L, abs=0.05)
     assert v["width_max_in"] == pytest.approx(15.5, abs=0.05)
     assert v["max_depth_in"] <= 12.0
-    assert b.extra["pouch_L"] == pytest.approx(4.0, abs=0.1)
+    # B.2 (default, weight pass B-5): 280 x 190 x 60 mm pouch, 2.7 L; B.1 (flag) keeps the 4.0 L pouch
+    assert CO.SPEC == "B.2"
+    assert b.extra["pouch_L"] == pytest.approx(2.71, abs=0.02)
+    assert CO.build(c, True, spec="B.1").extra["pouch_L"] == pytest.approx(4.0, abs=0.1)
 
 
 def test_seams_match(corrie):

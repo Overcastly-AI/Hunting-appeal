@@ -13,7 +13,7 @@ def _epp_moment(kappa, t, sy, E, n=4001):
     """Moment per unit width of an elastic-perfectly-plastic strip, by direct integration through the thickness."""
     y = np.linspace(-t / 2, t / 2, n)
     s = np.clip(E * kappa * y, -sy, sy)
-    return np.trapz(s * y, y), y, s
+    return np.trapezoid(s * y, y), y, s
 
 
 def test_springback_matches_direct_integration():
@@ -38,8 +38,8 @@ def test_residual_stress_profile_is_self_equilibrated_and_matches_surface_value(
     t, sy, E, Ri = 1.2, 503.0, 71700.0, 58.0
     M, y, s = _epp_moment(1 / Ri, t, sy, E)
     res = s - M * y / (t ** 3 / 12)
-    assert abs(np.trapz(res, y)) < 1e-6 * sy * t
-    assert abs(np.trapz(res * y, y)) < 1e-6 * sy * t * t
+    assert abs(np.trapezoid(res, y)) < 1e-6 * sy * t
+    assert abs(np.trapezoid(res * y, y)) < 1e-6 * sy * t * t
     assert abs(res[-1]) == pytest.approx(W.residual_surface_stress(Ri, t, sy, E), rel=2e-3)
 
 
@@ -77,8 +77,9 @@ def test_gridplate_clamp_patch_gives_cantilever_strip():
     f = np.zeros(pl.ndof)
     f[3 * tip] = P / len(tip)
     w = pl.solve(f)["w"]
-    Dc = D[0, 0]
-    assert w[tip].mean() == pytest.approx(P * L ** 3 / (3 * Dc * b), rel=0.06)
+    wide = P * L ** 3 / (3 * D[0, 0] * b)              # plate strip, anticlastic curvature suppressed
+    narrow = P * L ** 3 / (3 * E * t ** 3 * b / 12)     # beam, free anticlastic curvature
+    assert wide * 0.99 <= w[tip].mean() <= narrow * 1.01
 
 
 def test_laminate_fi_matches_repo_bending_fi_and_is_linear():
@@ -90,12 +91,17 @@ def test_laminate_fi_matches_repo_bending_fi_and_is_linear():
                                                                       rel=1e-9)
 
 
-def test_yoke_laminate_is_near_isotropic_in_bending():
+def test_yoke_laminate_is_qi_in_plane_and_orthotropic_in_bending():
     lam = W.yoke_laminate(1.5)
     D = lam.D
-    assert D[0, 0] / D[1, 1] == pytest.approx(1.0, abs=0.6)
-    E_eff = 12 * (1 - 0.3 ** 2) * D[0, 0] / 1.5 ** 3
-    assert 30000 < E_eff < 110000
+    # an 8-ply [0/45/-45/90]s is quasi-isotropic in-plane but NOT in bending: the outer 0 plies (along x, the
+    # yoke wing direction) dominate D. The yoke check relies on that orientation (ASSUMPTION in the doc).
+    assert D[0, 0] / D[1, 1] > 2.0
+    from huntkit.fea.composite import quasi_isotropic_modulus
+    A = lam.A / 1.5
+    assert A[0, 0] == pytest.approx(A[1, 1], rel=1e-6)
+    E_ip = 1 / np.linalg.inv(A)[0, 0]
+    assert E_ip == pytest.approx(quasi_isotropic_modulus(lam.plies[0]), rel=0.02)
 
 
 def test_backer_equilibrium_and_contact_logic():

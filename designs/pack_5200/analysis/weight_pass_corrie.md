@@ -4,37 +4,37 @@ Owner: pack-designer. Date 2026-11-09. The pass is computed on CORRIE **B.1** (`
 
 ## 0. Summary
 
-- **Applied (CORRIE B.2, belt M): 3912.5 g (8.63 lb)**, booked by `corrie.weight_table('M', spec='B.2')` with the binding and fly gaps G-1 / G-2 included. **Projected with package C: 3811 g (8.40 lb)**, against the ~3800 g (8.4 lb) the owner publishes (section 4a).
-- Booked today (belt M): **4000.4 g (8.82 lb)**. Target **2994 g (6.6 lb)**, gap **1006 g**. The DECISIONS row of 2026-11-05 published 2976 g; `corrie.TARGET_G` (2994 g) is used here.
-- Booking gaps found: **+43 g** of real mass no table books (body binding, CORRIE-sized fly). Real estimate **4043 g**.
-- Package **A** (no-regret, applied): **-10 g** real (-10 g booked), -3.21 $/pack, +0.0 beginner h -> **4033 g (8.89 lb)**, +1039 g vs target (package arithmetic; the B.2 table is the booked number).
-- Package **B** (owner OK, applied without B-8 / B-9): **-122 g** real (-86 g booked), -8.18 $/pack, -6.0 beginner h -> **3911 g (8.62 lb)**, +917 g vs target (package arithmetic; the B.2 table is the booked number).
-- Package **C** (needs FEA / tests, not applied): **-101 g** real (-101 g booked), +23.52 $/pack, +0.0 beginner h -> **3810 g (8.40 lb)**, +816 g vs target (package arithmetic; the B.2 table is the booked number).
-- **The 6.6 lb target is not reachable with CORRIE's features on the printed frame.** After A+B+C the pack is about **3811 g (8.40 lb)** (B.2 table - C). Even with every 'what it would take' item (lighter frame, pouch as accessory, no scope sleeve, 2 meat straps) it is about **3175 g**. To hit 2994 g with A+B+C and all features, frame + spreader would have to weigh **408 g** (today 1225 g).
+- **Applied (CORRIE B.2, belt M): 3964.5 g (8.74 lb)**, booked by `corrie.weight_table('M', spec='B.2')` with the binding and fly gaps G-1 / G-2 included. **Projected with package C: 3864 g (8.52 lb)**, against the ~3800 g (8.4 lb) the owner publishes (section 4a).
+- Booked today (belt M): **4042.3 g (8.91 lb)**. Target **2994 g (6.6 lb)**, gap **1048 g**. The DECISIONS row of 2026-11-05 published 2976 g; `corrie.TARGET_G` (2994 g) is used here.
+- Booking gaps found: **+43 g** of real mass no table books (body binding, CORRIE-sized fly). Real estimate **4085 g**.
+- Package **A** (no-regret, applied): **-10 g** real (-10 g booked), -3.21 $/pack, +0.0 beginner h -> **4075 g (8.98 lb)**, +1081 g vs target (package arithmetic; the B.2 table is the booked number).
+- Package **B** (owner OK, applied without B-8 / B-9): **-112 g** real (-76 g booked), -8.18 $/pack, -6.0 beginner h -> **3963 g (8.74 lb)**, +969 g vs target (package arithmetic; the B.2 table is the booked number).
+- Package **C** (needs FEA / tests, not applied): **-101 g** real (-101 g booked), +23.96 $/pack, +0.0 beginner h -> **3862 g (8.51 lb)**, +868 g vs target (package arithmetic; the B.2 table is the booked number).
+- **The 6.6 lb target is not reachable with CORRIE's features on the printed frame.** After A+B+C the pack is about **3864 g (8.52 lb)** (B.2 table - C). Even with every 'what it would take' item (lighter frame, pouch as accessory, no scope sleeve, 2 meat straps) it is about **3211 g**. To hit 2994 g with A+B+C and all features, frame + spreader would have to weigh **355 g** (today 1225 g).
 - Recommendation (taken by the owner 2026-11-09): adopt A now, take B item by item, send C to the structural-fea-engineer, and **re-baseline the published weight for CORRIE on the printed frame to about 3800 g (8.4 lb)**. Keep 6.6 lb (and 5.0 lb) as targets for a lighter-frame variant (section 6).
 
 ## 1. Mass breakdown (size M), ranked
 
-The breakdown re-books every part and is checked against `corrie.weight_table('M')` = 4000.4 g. The one balancing row, **+2.0 g**, is the difference between how SPINE's body is booked in `geometry.yaml` (design panels + diagonal zip + SH-01..04 + roll-top HDPE) and the cut-set body metric that `weight_table()` subtracts. Shared rows (frame, back system, harness, attachment, meat haul, fly, thread) are the released SPINE rows; CORRIE parts come from `corrie.py`.
+The breakdown re-books every part and is checked against `corrie.weight_table('M')` = 4042.3 g. The one balancing row, **+2.0 g**, is the difference between how SPINE's body is booked in `geometry.yaml` (design panels + diagonal zip + SH-01..04 + roll-top HDPE) and the cut-set body metric that `weight_table()` subtracts. Shared rows (frame, back system, harness, attachment, meat haul, fly, thread) are the released SPINE rows; CORRIE parts come from `corrie.py`.
 
 ### 1.1 By group (Pareto)
 
 | # | Group | g | oz | % | cum % |
 |---:|---|---:|---:|---:|---:|
-| 1 | Frame (printed body + carbon crown) | 1062.6 | 37.5 | 26.6 | 26.6 |
-| 2 | Hipbelt B (body, load path, pad seat, pockets, holster) | 557.3 | 19.7 | 13.9 | 40.5 |
-| 3 | Meat haul + compression | 539.3 | 19.0 | 13.5 | 54.0 |
-| 4 | Bag body (CORRIE shell, collar, wings, door, roll-top) | 527.5 | 18.6 | 13.2 | 67.2 |
-| 5 | Back system (spreader + back panel) | 413.6 | 14.6 | 10.3 | 77.5 |
-| 6 | Bag-to-frame attachment | 303.3 | 10.7 | 7.6 | 85.1 |
-| 7 | Harness (J-straps, yoke, lifters, sternum) | 212.5 | 7.5 | 5.3 | 90.4 |
-| 8 | Bag pockets (IMP-1, -2, -4, -6, -8) | 142.9 | 5.0 | 3.6 | 94.0 |
+| 1 | Frame (printed body + carbon crown) | 1062.6 | 37.5 | 26.3 | 26.3 |
+| 2 | Hipbelt B (body, load path, pad seat, pockets, holster) | 558.7 | 19.7 | 13.8 | 40.1 |
+| 3 | Bag body (CORRIE shell, collar, wings, door, roll-top) | 548.0 | 19.3 | 13.6 | 53.7 |
+| 4 | Meat haul + compression | 539.3 | 19.0 | 13.3 | 67.0 |
+| 5 | Back system (spreader + back panel) | 413.6 | 14.6 | 10.2 | 77.2 |
+| 6 | Bag-to-frame attachment | 303.3 | 10.7 | 7.5 | 84.7 |
+| 7 | Harness (J-straps, yoke, lifters, sternum) | 212.5 | 7.5 | 5.3 | 90.0 |
+| 8 | Bag pockets (IMP-1, -2, -4, -6, -8) | 162.9 | 5.7 | 4.0 | 94.0 |
 | 9 | Top pouch (4.0 L) | 87.9 | 3.1 | 2.2 | 96.2 |
 | 10 | Rain fly (fly + base pocket) | 68.4 | 2.4 | 1.7 | 97.9 |
 | 11 | Torso adjust | 41.7 | 1.5 | 1.0 | 98.9 |
 | 12 | Thread + labels | 41.4 | 1.5 | 1.0 | 100.0 |
 | 13 | Booking reconciliation | 2.0 | 0.1 | 0.0 | 100.0 |
-| | **Total** | **4000.4** | **141.1** | | |
+| | **Total** | **4042.3** | **142.6** | | |
 
 ### 1.2 By part: top 30 of the booked parts
 
@@ -51,27 +51,27 @@ The breakdown re-books every part and is checked against `corrie.weight_table('M
 | 9 | belt B load path: 6061-T6 1.5 mm bow-tie centre plate | Hipbelt B | 77.5 | analysis/hipbelt_structural_results.json mass |
 | 10 | harness: load lifters 25 mm poly + ladders, sternum Fidlock (QUICK family) + POM rails | Harness | 65.6 | records; rails 12 g ASSUMPTION |
 | 11 | B-03 side gusset (cordura_330d_nylon66, x2) | Bag body | 64.3 | corrie.build() piece: cut area x record gsm |
-| 12 | IMP-1 padded scope sleeve inside the left wing | Bag pockets | 56.4 | corrie.bag_pockets() |
-| 13 | harness: yoke cover + shaped yoke plate (cfrp 1.5 mm, 0.0182 m2) | Harness | 55.9 | computed: yoke outline YOKE_OUTLINE (same polygon as huntkit.viz3d) x 1.5 mm x 1550 kg/m3 (cfrp_plate_quasi_iso) |
-| 14 | rain fly: fly + fly pocket | Rain fly | 52.6 | computed |
-| 15 | attachment: printed fairleads (8) | Bag-to-frame attachment | 49.4 | analysis/bag_attachment_results.json parts_g |
-| 16 | under-straps US1/US2: 38 mm cams (2) | Meat haul + compression | 44.0 | huntkit/gendesign/meat_haul.py cradle_parts_g (meat_haul_modes.md) |
-| 17 | torso adjust: 3:1 pulley webbing 25 mm x 1.4 m, metal cam buckle, pawl release cord + strap toggle | Torso adjust | 41.7 | records; cam 12 g + toggle 3 g ASSUMPTION |
-| 18 | misc: thread (~3 % of soft goods) + labels | Thread + labels | 41.4 | ASSUMPTION |
-| 19 | belt B wing stiffener (hdpe_sheet, x2) | Hipbelt B | 41.0 | hipbelt_concepts.belt_bom |
-| 20 | B-06 roll-top collar (robic_100d_ripstop) | Bag body | 40.8 | corrie.build() piece: cut area x record gsm |
-| 21 | horseshoe door zip #10, 2 sliders | Bag body | 38.3 | corrie.build() zip (records + slider ASSUMPTION) |
-| 22 | IMP-3 1 L bottle holster | Hipbelt B | 37.4 | corrie.holster() |
-| 23 | M-01 side compression wing (hemmed edges) (cordura_330d_nylon66, x2) | Bag body | 36.9 | corrie.build() piece: cut area x record gsm |
-| 24 | attachment: bag hooks, 38 mm Al (4) | Bag-to-frame attachment | 36.0 | analysis/bag_attachment_results.json parts_g |
-| 25 | IMP-2 hydration sleeve above IM3 + 2 hose ports (R-19) | Bag pockets | 34.6 | corrie.bag_pockets() |
-| 26 | B-01 frame-side panel (flat, Z-fold setback) (challenge_ultra_200) | Bag body | 33.5 | corrie.build() piece: cut area x record gsm |
+| 12 | IMP-1 padded scope sleeve inside the left wing | Bag pockets | 63.0 | corrie.bag_pockets() |
+| 13 | B-06 roll-top collar (robic_100d_ripstop) | Bag body | 56.6 | corrie.build() piece: cut area x record gsm |
+| 14 | harness: yoke cover + shaped yoke plate (cfrp 1.5 mm, 0.0182 m2) | Harness | 55.9 | computed: yoke outline YOKE_OUTLINE (same polygon as huntkit.viz3d) x 1.5 mm x 1550 kg/m3 (cfrp_plate_quasi_iso) |
+| 15 | rain fly: fly + fly pocket | Rain fly | 52.6 | computed |
+| 16 | attachment: printed fairleads (8) | Bag-to-frame attachment | 49.4 | analysis/bag_attachment_results.json parts_g |
+| 17 | under-straps US1/US2: 38 mm cams (2) | Meat haul + compression | 44.0 | huntkit/gendesign/meat_haul.py cradle_parts_g (meat_haul_modes.md) |
+| 18 | IMP-2 hydration sleeve above IM3 + 2 hose ports (R-19) | Bag pockets | 42.8 | corrie.bag_pockets() |
+| 19 | torso adjust: 3:1 pulley webbing 25 mm x 1.4 m, metal cam buckle, pawl release cord + strap toggle | Torso adjust | 41.7 | records; cam 12 g + toggle 3 g ASSUMPTION |
+| 20 | misc: thread (~3 % of soft goods) + labels | Thread + labels | 41.4 | ASSUMPTION |
+| 21 | belt B wing stiffener (hdpe_sheet, x2) | Hipbelt B | 41.0 | hipbelt_concepts.belt_bom |
+| 22 | IMP-3 1 L bottle holster | Hipbelt B | 38.8 | corrie.holster() |
+| 23 | horseshoe door zip #10, 2 sliders | Bag body | 38.3 | corrie.build() zip (records + slider ASSUMPTION) |
+| 24 | M-01 side compression wing (hemmed edges) (cordura_330d_nylon66, x2) | Bag body | 36.9 | corrie.build() piece: cut area x record gsm |
+| 25 | attachment: bag hooks, 38 mm Al (4) | Bag-to-frame attachment | 36.0 | analysis/bag_attachment_results.json parts_g |
+| 26 | B-01 frame-side panel (flat, Z-fold setback) (challenge_ultra_200) | Bag body | 35.6 | corrie.build() piece: cut area x record gsm |
 | 27 | under-straps US1/US2: 38 mm webbing, 1.10 m | Meat haul + compression | 30.8 | huntkit/gendesign/meat_haul.py cradle_parts_g (meat_haul_modes.md) |
 | 28 | roll-top ROLL hardware: 2 x 25 mm side-release + 2 x 0.35 m webbing | Bag body | 30.6 | geometry.yaml roll-top row minus its HDPE strip (CORRIE books B-07s in the body) |
 | 29 | belt B wing load foam (eva_foam_45c, x2) | Hipbelt B | 30.1 | hipbelt_concepts.belt_bom |
 | 30 | float-mode stand-off links B-24: rated 38 mm hooks (2), same part as the bag hooks | Meat haul + compression | 28.0 | huntkit/gendesign/meat_haul.py float_link_parts_g (meat_haul_modes.md C; hook 14 g, thread ASSUMPTION) |
 
-Top 30 = 2928 g (73 %). The full list (123 parts + the reconciliation row) is in `analysis/weight_pass_corrie.json` (`parts`).
+Top 30 = 2962 g (73 %). The full list (123 parts + the reconciliation row) is in `analysis/weight_pass_corrie.json` (`parts`).
 
 ### 1.3 Benchmarks (cited)
 
@@ -79,21 +79,21 @@ Competitors publish system, frame-system, belt and bag numbers, not part lists; 
 
 | Class | Ours g | Benchmark | g | Ours minus benchmark | Source |
 |---|---:|---|---:|---:|---|
-| frame_susp | 2288 | SG Krux frame, M belt, harness (2 lb 12 oz) | 1247 | +1041 | https://www.gearfool.com/collections/gear/products/stone-glacier-krux-frame-1 |
-| frame_susp | 2288 | Exo K4 frame system (2 lb 15 oz) | 1332 | +956 | https://exomtngear.com/collections/k4-pack-systems/products/k4-frame-system |
-| frame_susp | 2288 | Seek Outside Revolution 24 in (2 lb 9 oz) | 1162 | +1126 | https://checkout.seekoutside.com/revolution-suspension-and-frame/ |
-| frame_susp | 2288 | Kifaru ARK frame, M belt (3 lb 1.4 oz) | 1400 | +888 | https://shop.gohunt.com/products/kifaru-ark-frame |
+| frame_susp | 2289 | SG Krux frame, M belt, harness (2 lb 12 oz) | 1247 | +1042 | https://www.gearfool.com/collections/gear/products/stone-glacier-krux-frame-1 |
+| frame_susp | 2289 | Exo K4 frame system (2 lb 15 oz) | 1332 | +957 | https://exomtngear.com/collections/k4-pack-systems/products/k4-frame-system |
+| frame_susp | 2289 | Seek Outside Revolution 24 in (2 lb 9 oz) | 1162 | +1127 | https://checkout.seekoutside.com/revolution-suspension-and-frame/ |
+| frame_susp | 2289 | Kifaru ARK frame, M belt (3 lb 1.4 oz) | 1400 | +889 | https://shop.gohunt.com/products/kifaru-ark-frame |
 | frame_only | 1063 | KUIU ICON 6 frame sheet only, Tall (13.7 oz) | 388 | +675 | https://www.kuiu.com/blogs/do-your-research/icon-6-pack-system-whitepaper |
-| bag | 739 | SG Sky 5900 bag (2 lb 4 oz) | 1021 | -282 | https://www.stoneglacier.com/products/sky-5900-xcurve-krux |
-| bag | 739 | Exo K4 5000 bag (2 lb 6 oz) | 1077 | -338 | https://exomtngear.com/4800 |
+| bag | 779 | SG Sky 5900 bag (2 lb 4 oz) | 1021 | -242 | https://www.stoneglacier.com/products/sky-5900-xcurve-krux |
+| bag | 779 | Exo K4 5000 bag (2 lb 6 oz) | 1077 | -298 | https://exomtngear.com/4800 |
 | lid | 88 | Exo K4 lid (8.1 oz) | 230 | -142 | https://exomtngear.com/lid |
 | belt | 444 | SG 3-piece belt (12.8 oz) | 363 | +81 | https://stoneglacier.com/collections/sg-products/products/sg-3-piece-belt |
-| system | 4000 | SG Sky 5900 + Krux, M belt (5 lb 1.4 oz) | 2308 | +1692 | https://www.stoneglacier.com/products/sky-5900-xcurve-krux |
-| system | 4000 | Exo K4 5000 with lid (5 lb 13 oz) | 2637 | +1363 | https://exomtngear.com/4800 |
-| system | 4000 | Mystery Ranch Sawtooth 65, MYSTERIUM (5 lb 4 oz) | 2381 | +1619 | https://www.huntinfool.com/articles/type/staff-articles/mystery-ranch-mysterium-sawtooth-65 |
-| system | 4000 | KUIU ICON 6 6000 (6 lb 2.4 oz) | 2790 | +1210 | https://www.kuiu.com/blogs/do-your-research/icon-6-pack-system-whitepaper |
-| system | 4000 | Mystery Ranch Beartooth 85, MYSTERIUM (6.2 lb) | 2812 | +1188 | https://www.mysteryranch.com/beartooth-85-mens-pack |
-| system | 4000 | Kifaru ARK + Absaroka (6 lb 4 oz) | 2835 | +1165 | https://gearjunkie.com/outdoor/hunt-fish/best-hunting-backpack |
+| system | 4042 | SG Sky 5900 + Krux, M belt (5 lb 1.4 oz) | 2308 | +1734 | https://www.stoneglacier.com/products/sky-5900-xcurve-krux |
+| system | 4042 | Exo K4 5000 with lid (5 lb 13 oz) | 2637 | +1405 | https://exomtngear.com/4800 |
+| system | 4042 | Mystery Ranch Sawtooth 65, MYSTERIUM (5 lb 4 oz) | 2381 | +1661 | https://www.huntinfool.com/articles/type/staff-articles/mystery-ranch-mysterium-sawtooth-65 |
+| system | 4042 | KUIU ICON 6 6000 (6 lb 2.4 oz) | 2790 | +1252 | https://www.kuiu.com/blogs/do-your-research/icon-6-pack-system-whitepaper |
+| system | 4042 | Mystery Ranch Beartooth 85, MYSTERIUM (6.2 lb) | 2812 | +1230 | https://www.mysteryranch.com/beartooth-85-mens-pack |
+| system | 4042 | Kifaru ARK + Absaroka (6 lb 4 oz) | 2835 | +1207 | https://gearjunkie.com/outdoor/hunt-fish/best-hunting-backpack |
 
 Classes: frame_susp = frame + torso adjust + back system + harness + hipbelt group; frame_only = our frame line (printed body + crown; DECISIONS 2026-11-01 frame target 550-700 g); bag = body + pockets + fly (we also carry the attachment and meat systems the leaders fold into frame and bag); lid = our top pouch; belt = belt B body + load path, without pockets, holster and pad seat. **Read-out:** the bag side is at or under the leaders; the frame + suspension is roughly twice theirs. That is where the gap is.
 
@@ -123,13 +123,13 @@ g = real grams saved (booked grams differ only for B-1, which removes unbooked b
 |---|---|---|---:|---:|---:|---|---|---|---|---|---|---|
 | B-1 | bag body seams | S-03 on CORRIE: drop grosgrain on the 7.28 m of bound body seams; second 301 row 6 mm into the allowance, trim, hot-knife sear. Gate: 3-cycle wash swatch (R-12), no fray past row 2. | 36.4 | -3.64 | -3.68 | ULTRA 200 laminate edge may fray; rougher inside where game bags rub | none | none | none | no: no seam capacity counts the binding; HE/B-18 seam governed by the B-05 strip (SF 2.31, unchanged) | medium | YES (pending the wash swatch) |
 | B-2 | camo accent | Delete the SH-03 camo band on the roll-top hem (hem stays body solid). Camo stays on the kick plates, wing bars, door garages and pouch top. | 15.8 | -0.72 | -2.04 | none (overlay only, no wear zone) | none | none | less camo at the top of the bag | no | high | YES |
-| B-3 | top pouch | Pouch base + boxing strip 330D Cordura -> 100D Robic (already in the BOM: collar, IMP-2, IMP-4). Top stays camo 630D. | 15.2 | +0.24 | +0.00 | tear 90/80 -> 45/40 N warp/weft (records); the pouch rides on the roll and comes off, but gets set on rock | same (3) | none | none | no | high | YES |
+| B-3 | top pouch | Pouch base + boxing strip 330D Cordura -> 100D Robic (already in the BOM: collar, IMP-2, IMP-4). Top stays camo 630D. | 9.3 | +0.24 | +0.00 | tear 90/80 -> 45/40 N warp/weft (records); the pouch rides on the roll and comes off, but gets set on rock | same (3) | none | none | no | high | YES |
 | B-4 | top pouch | Pouch top camo 630D -> body-solid 330D; a camo pull tab marks it. | 8.4 | -0.23 | +0.00 | lower abrasion on the top face (Taber 1000 -> 800) | same | none | the pouch top loses its camo panel | no | high | owner (look) |
 | B-5 | top pouch | Pouch 320 x 210 x 70 -> 280 x 190 x 60 mm (4.0 -> 2.71 L). Loadout check: the snacks / GPS that miss on S-L ride in it, so it must still take 150 x 100 x 35 + a 160 mm GPS. | 11.2 | -0.55 | -0.10 | none | none | none | smaller pouch | no | high | owner (DECISIONS 2026-11-09 set 4 L) |
-| B-6 | IMP-1 scope sleeve | Sleeve panel IMP1-a 330D -> 100D Robic (XLPE + facing kept). The panel sits under the wing, facing it, not the brush. | 13.9 | +0.22 | +0.00 | tear 90/80 -> 45/40 N (records) on a panel the scope slides against | same | none | none | no | medium | YES |
+| B-6 | IMP-1 scope sleeve | Sleeve panel IMP1-a 330D -> 100D Robic (XLPE + facing kept). The panel sits under the wing, facing it, not the brush. | 8.5 | +0.22 | +0.00 | tear 90/80 -> 45/40 N (records) on a panel the scope slides against | same | none | none | no | medium | YES |
 | B-7 | IMP-6 phone pocket | Sew the phone pocket to the LEFT J-strap (bartacked through the strap binding) instead of 2 wrap straps + 2 G-hooks. Loses moving it to the right strap and taking it off. | 13.4 | -3.21 | -0.20 | none | one less clinking hook pair | none | none | no (the strap carries it, ~0.3 kg) | high | owner (feature detail) |
-| B-8 | body fabric (O-4 on CORRIE) | Gussets, U-surround, door, hinge band, wings 330D -> 210D UHMWPE grid (O-4). Still ON HOLD: the record has no abrasion value, and the owner has not seen a swatch. | 21.6 | +4.62 | +0.00 | tear 90/80 -> 180/160 N (records, better); abrasion unknown (no record value) | same (3) | none | visible grid on the solid colour | the wing roots and corner seams hold the wing-strap loops: tear goes up, so no SF falls; no seam check on file for the grid | low (abrasion missing) | hold: evidence still missing |
-| B-9 | roll-top collar (O-3) | Collar B-06 100D Robic -> 70D ripstop (O-3). Still ON HOLD: no 70D record (bag_weight_plan.MISSING, ASSUMPTION 70 gsm). | 9.1 | +0.69 | +0.00 | tear 43 -> 35 N (ASSUMPTION) | same | none | none | no (collar carries the roll, not the frame load) | low (no record) | hold: record missing |
+| B-8 | body fabric (O-4 on CORRIE) | Gussets, U-surround, door, hinge band, wings 330D -> 210D UHMWPE grid (O-4). Still ON HOLD: the record has no abrasion value, and the owner has not seen a swatch. | 41.5 | +3.92 | +0.00 | tear 90/80 -> 180/160 N (records, better); abrasion unknown (no record value) | same (3) | none | visible grid on the solid colour | the wing roots and corner seams hold the wing-strap loops: tear goes up, so no SF falls; no seam check on file for the grid | low (abrasion missing) | hold: evidence still missing |
+| B-9 | roll-top collar (O-3) | Collar B-06 100D Robic -> 70D ripstop (O-3). Still ON HOLD: no 70D record (bag_weight_plan.MISSING, ASSUMPTION 70 gsm). | 24.9 | +0.69 | +0.00 | tear 43 -> 35 N (ASSUMPTION) | same | none | none | no (collar carries the roll, not the frame load) | low (no record) | hold: record missing |
 | B-10 | trims | Hypalon -> laser-cut TPU-coated 840D on the trims that carry no load: B-12 strap ports x6, IMP-2 hose-port frames x2, IMP-8 cam-cup base. One sheet material with O-15 if that is taken. | 12.8 | -0.29 | +0.00 | Taber 5000 -> 4000 (records) | WORSE: quietness 4 -> 2 (records), stiff edge can tick on webbing | none | none | no: B-12 ports carry no load (build_simplicity S-02 note); hose ports and cam base are trims | high | owner (quiet trade, small grams) |
 
 ### 3.3 Package C: aggressive, needs the structural-fea-engineer and / or a test
@@ -140,7 +140,7 @@ g = real grams saved (booked grams differ only for B-1, which removes unbooked b
 | C-2 | belt B hub | PA66 hub bushing D36 x 12 -> D28 x 10 (section 6.2). | 7.1 | -0.10 | +0.00 | none | none | none | none | YES: hub-bore bearing, walking 1.66 with H on the pin, 5.3 without (the pad seat keeps H off) | medium | C: re-check bearing |
 | C-3 | belt B centre plate | Lightening holes in the bow-tie spine flanges, x 30-55 (section 6.3; -5 g is the structural note's estimate). | 5.0 | +0.00 | +0.00 | none | none | none | none | YES: the spine carries the C2 peak (SF/req 1.21 today) | low | C: FE re-run |
 | C-4 | lumbar pad seat | HDPE pad backer 1.0 -> 0.8 mm (corrie_body.md 11.2: the backer bridges the 70 mm channel). | 5.4 | -0.05 | +0.00 | none | none | none | none | YES: the backer carries the lumbar push (413 N at 15 in, 1 g) across the 70 mm channel; NO SF on file | medium | C: structural-fea-engineer (plate bending over the channel) + HB-1 fit |
-| C-5 | bag bottom (O-5) | Bottom B-05 500D -> Challenge ULTRA 200 (O-5): the records now carry the evidence (Taber 1500 -> 2000, tear 130 -> 250 N, waterproof floor). ULTRA is already 4 CORRIE pieces, and 500D then stays only on B-16 floor channels and the rifle boot. | 7.5 | +1.59 | +0.00 | BETTER (records) | quietness 3 -> 2 on the floor (not brushed) | none | stock ULTRA colour on the floor | YES: the HE / B-18 bag-on seam is governed by the B-05 fabric strip, 2355 N, SF 2.31 on 500D; ULTRA's grab strength is not in its record -> PT-3 strip test | medium | YES if PT-3 holds (evidence for the held O-5) |
+| C-5 | bag bottom (O-5) | Bottom B-05 500D -> Challenge ULTRA 200 (O-5): the records now carry the evidence (Taber 1500 -> 2000, tear 130 -> 250 N, waterproof floor). ULTRA is already 4 CORRIE pieces, and 500D then stays only on B-16 floor channels and the rifle boot. | 7.0 | +2.03 | +0.00 | BETTER (records) | quietness 3 -> 2 on the floor (not brushed) | none | stock ULTRA colour on the floor | YES: the HE / B-18 bag-on seam is governed by the B-05 fabric strip, 2355 N, SF 2.31 on 500D; ULTRA's grab strength is not in its record -> PT-3 strip test | medium | YES if PT-3 holds (evidence for the held O-5) |
 | C-6 | lash tabs (O-15) | B-11 lash tabs Hypalon -> laser-cut TPU-coated 840D (O-15). | 6.2 | -0.14 | +0.00 | Taber 5000 -> 4000 | quietness 4 -> 2 (records) | none | none | YES: 25 x 5 slot to the 450 N buckle class; no SF on file -> 5-sample slot pull test | medium | YES if the pull test holds (held O-15) |
 | C-7 | harness yoke plate | CFRP yoke plate 1.5 -> 1.2 mm (0.0182 m2, cfrp_plate_quasi_iso). | 8.5 | -1.27 | +0.00 | none | none | none | none | YES: the lifters and straps anchor here (T1(c), 102 kg on straps + lifters); NO SF on file (build_simplicity X-1 flag) | low | C: structural-fea-engineer |
 | C-8 | back rails | Stay rails 120 mm / 80 mm backer -> 130 mm / 70 mm backer (back_rail.md row r130_b70). | 7.2 | -1.86 | +0.00 | none | none | none | none | comfort: peak 13.89 kPa vs 13.76 today (limit 14, margin 1.008); air gutter 110 -> 100 mm and the rail edge moves onto the rib curve (x +/-180) | medium | C: fit test on 3 backs |
@@ -157,7 +157,7 @@ g = real grams saved (booked grams differ only for B-1, which removes unbooked b
 | X-5 | meat harness (O-2) | Meat straps 38 -> 25 mm. | 84.8 | -0.92 | +0.00 |  |  |  | none | YES (25 mm cam ratings too low for the cradle) | high (bag_weight_plan) | NO |
 | X-6 | rain fly (O-7) | Fly 40D -> 20D silpoly (owner-frozen fly in a base pocket). | 8.6 | +1.89 | +0.00 | tear 25 -> 15 N |  |  | none | no | low (no record) | NO |
 
-Pouch interaction: B-3, B-4 and B-5 together save 29.9 g, not the sum of the three (-4.9 g): the package uses the combined pouch (58.0 g, 2.71 L).
+Pouch interaction: B-3, B-4 and B-5 together save 25.2 g, not the sum of the three (-3.7 g): the package uses the combined pouch (62.7 g, 2.71 L).
 
 **Held fabric swaps (bag_weight_plan.md):** O-5 now has its evidence in the records (ULTRA 200 beats 500D on abrasion and tear); it is C-5 because the B-05 strip governs the HE / B-18 seam (PT-3). O-15 has a method (C-6). O-4 still lacks an abrasion value and O-3 / O-6 still lack records (`nylon_ripstop_70d`, `polyester_300d_printable`): no new evidence, they stay on hold (B-8, B-9 are counted in package B only if it arrives). O-6 on CORRIE would only touch the pouch top and the hem band, which B-2 / B-4 already remove.
 
@@ -178,37 +178,37 @@ S-12 on CORRIE (hem in camo 630D, SH-03 deleted) saves less than B-2 (hem solid,
 
 | Package | Items | Saved real g | Saved booked g | $ / pack | Beginner h | Pack after (real) | lb | vs 2994 g |
 |---|---|---:|---:|---:|---:|---:|---:|---:|
-| start | booked 4000.4 + gaps | | | | | 4043 | 8.91 | +1049 |
-| A | A-1, A-2 | 10.3 | 10.3 | -3.21 | +0.0 | 4033 | 8.89 | +1039 |
-| B | B-1, B-2, B-3, B-4, B-5, B-6, B-7, B-10 | 122.2 | 85.8 | -8.18 | -6.0 | 3911 | 8.62 | +917 |
-| C | C-1, C-2, C-3, C-4, C-5, C-6, C-7, C-8, C-9 | 101.1 | 101.1 | +23.52 | +0.0 | 3810 | 8.40 | +816 |
+| start | booked 4042.3 + gaps | | | | | 4085 | 9.01 | +1091 |
+| A | A-1, A-2 | 10.3 | 10.3 | -3.21 | +0.0 | 4075 | 8.98 | +1081 |
+| B | B-1, B-2, B-3, B-4, B-5, B-6, B-7, B-10 | 112.1 | 75.7 | -8.18 | -6.0 | 3963 | 8.74 | +969 |
+| C | C-1, C-2, C-3, C-4, C-5, C-6, C-7, C-8, C-9 | 100.6 | 100.6 | +23.96 | +0.0 | 3862 | 8.51 | +868 |
 
-Waterfall: `outputs/screens/20261109_weight_3.png`. Package B is the owner's: without the held B-8 / B-9 (B-8 21.6 g, B-9 9.1 g, not counted until their evidence arrives).
+Waterfall: `outputs/screens/20261109_weight_3.png`. Package B is the owner's: without the held B-8 / B-9 (B-8 41.5 g, B-9 24.9 g, not counted until their evidence arrives).
 
 ### 4a. Applied: CORRIE B.2 (A + B), per belt size, and the package-C projection
 
-Items applied in `corrie.py` (spec B.2): A-1, A-2, B-1, B-2, B-3, B-4, B-5, B-6, B-7, B-10, G-1, G-2. Package C (C-1, C-2, C-3, C-4, C-5, C-6, C-7, C-8, C-9, -101.1 g, size-independent) is projected on top, not applied. B.2 table minus the package arithmetic (belt M): +1.7 g (the B-4 camo pull tab the cut list did not book, and the pouch zip cut to L - 20 mm).
+Items applied in `corrie.py` (spec B.2): A-1, A-2, B-1, B-2, B-3, B-4, B-5, B-6, B-7, B-10, G-1, G-2. Package C (C-1, C-2, C-3, C-4, C-5, C-6, C-7, C-8, C-9, -100.6 g, size-independent) is projected on top, not applied. B.2 table minus the package arithmetic (belt M): +1.7 g (the B-4 camo pull tab the cut list did not book, and the pouch zip cut to L - 20 mm).
 
 | Belt | B.1 g | **B.2 g** | B.2 lb | B.2 vs B.1 | Projected with C g | lb | vs publish ~3800 g |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| S | 3971.9 | **3884.6** | 8.56 | -87.3 | 3783.5 | 8.34 | -16 |
-| M | 4000.4 | **3912.5** | 8.63 | -87.9 | 3811.4 | 8.40 | +11 |
-| L | 4025.0 | **3936.6** | 8.68 | -88.4 | 3835.5 | 8.46 | +36 |
-| XL | 4061.5 | **3972.6** | 8.76 | -88.9 | 3871.5 | 8.54 | +72 |
-| XXL | 4090.1 | **4000.7** | 8.82 | -89.4 | 3899.6 | 8.60 | +100 |
+| S | 4013.8 | **3936.6** | 8.68 | -77.2 | 3836.0 | 8.46 | +36 |
+| M | 4042.3 | **3964.5** | 8.74 | -77.8 | 3863.9 | 8.52 | +64 |
+| L | 4066.9 | **3988.6** | 8.79 | -78.3 | 3888.0 | 8.57 | +88 |
+| XL | 4103.4 | **4024.6** | 8.87 | -78.8 | 3924.0 | 8.65 | +124 |
+| XXL | 4132.0 | **4052.7** | 8.93 | -79.3 | 3952.1 | 8.71 | +152 |
 
 B.2 rows that differ from B.1 (belt M, `corrie.weight_table('M', spec='B.2')`):
 
 | Row | g |
 |---|---:|
-| CORRIE body group vs SPINE body group | +174.7 |
-| IMP-2 hydration sleeve + ports | +32.1 |
-| IMP-1 scope sleeve | +42.5 |
-| IMP-4 door pocket | +17.7 |
-| IMP-6 strap phone pocket | +10.2 |
+| CORRIE body group vs SPINE body group | +199.9 |
+| IMP-2 hydration sleeve + ports | +40.3 |
+| IMP-1 scope sleeve | +54.5 |
+| IMP-4 door pocket | +22.0 |
+| IMP-6 strap phone pocket | +11.1 |
 | IMP-8 cam cup | +7.5 |
 | hipbelt body: current -> belt B (M) | +55.2 |
-| IMP-3 bottle holster | +37.4 |
+| IMP-3 bottle holster | +38.8 |
 | A-2 haul-wrap tails W1-W3 250 -> 150 mm (haul path unchanged) | -5.4 |
 | B-10 B-12 strap ports x6: Hypalon -> tpu_coated_nylon_840d (no load) | -7.2 |
 | G-1 grosgrain binding on the bound body seams left after B-1 (0.00 m) | +0.0 |
@@ -216,20 +216,20 @@ B.2 rows that differ from B.1 (belt M, `corrie.weight_table('M', spec='B.2')`):
 
 ## 5. Why the target is out of reach, and what it would take
 
-The 2994 g target dates from 2026-11-05, when the pack was 3030 g. Since then the owner and the gates added the crown-hood attachment (+136 g), the back-panel booking with the rail backers (+161 g), float links (+54 g), CORRIE's box body, wings, door and pouch, the B.1 pockets, belt B, its aluminium load path and the pad seat (+505 g vs SPINE, `weight_table`). Those are frozen features or safety gates (history: DECISIONS 2026-11-05 / -06 rows). What is left to cut without touching them, packages A+B+C, is 234 g, about 22 % of the real gap.
+The 2994 g target dates from 2026-11-05, when the pack was 3030 g. Since then the owner and the gates added the crown-hood attachment (+136 g), the back-panel booking with the rail backers (+161 g), float links (+54 g), CORRIE's box body, wings, door and pouch, the B.1 pockets, belt B, its aluminium load path and the pad seat (+547 g vs SPINE, `weight_table`). Those are frozen features or safety gates (history: DECISIONS 2026-11-05 / -06 rows). What is left to cut without touching them, packages A+B+C, is 223 g, about 20 % of the real gap.
 
 | Id | What it would take | g |
 |---|---|---:|
 | T-1 | Lighter-frame variant: carbon-tube ladder (mass_cut.md winner: frame + 2 mm QI spreader 763 g, rev B, SF/req 1.04, fatigue 1.18) in place of the printed body + crown + Sandwich v2 (1225 g). Owner rejected the look on 2026-11-01 (must read as a generative print); predates rev C, the barrier rule and Sandwich v2, so the saving is an UPPER bound | -462.3 |
-| T-2 | Count the top pouch (B.2: 2.7 L) as an accessory (as the market does with lids: SG lid sold separately, Exo quotes with and without). Accounting only: the hunter still carries it | -59.6 |
-| T-3 | Drop IMP-1 scope sleeve (owner-frozen B.1 pocket) | -42.5 |
+| T-2 | Count the top pouch (B.2: 2.7 L) as an accessory (as the market does with lids: SG lid sold separately, Exo quotes with and without). Accounting only: the hunter still carries it | -64.2 |
+| T-3 | Drop IMP-1 scope sleeve (owner-frozen B.1 pocket) | -54.5 |
 | T-4 | Meat straps 3 -> 2 (O-1, rec NO) | -72.1 |
 
-After A+B+C and T-1..T-4 together: about **3175 g** (7.00 lb). Only the frame line moves the number by hundreds of grams; for 2994 g with every CORRIE feature, frame + spreader must come in at about 408 g.
+After A+B+C and T-1..T-4 together: about **3211 g** (7.08 lb). Only the frame line moves the number by hundreds of grams; for 2994 g with every CORRIE feature, frame + spreader must come in at about 355 g.
 
 ## 6. Owner decisions (answered 2026-11-09: see DECISIONS; kept here as asked)
 
-1. **Re-baseline the published weight** for CORRIE on the printed frame (recommend about 3850 g after A+B+C, or 4050 g with A only), and keep 6.6 / 5.0 lb for a lighter-frame variant.
+1. **Re-baseline the published weight** for CORRIE on the printed frame (recommend about 3900 g after A+B+C, or 4100 g with A only), and keep 6.6 / 5.0 lb for a lighter-frame variant.
 2. **Lighter-frame variant** (T-1): commission a rev C study from the structural-fea-engineer of a tube / hybrid frame that still reads as a generative print (printed nodes on carbon tubes). This is the only lever of the right size.
 3. **Package B**, item by item: B-1 (binding, after a wash swatch), B-2 (SH-03 off) or S-12, B-3/B-4/B-5 (pouch fabric, top, 3 L), B-6 (scope panel 100D), B-7 (phone pocket sewn on), B-10 (TPU trims, louder).
 4. **Accounting**: count the top pouch as an accessory in the published base weight (T-2), as Exo and SG do with lids? The fly stays in (owner 2026-11-01).

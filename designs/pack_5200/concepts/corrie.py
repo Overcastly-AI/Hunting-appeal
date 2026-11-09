@@ -299,7 +299,8 @@ HYP_GSM = MAT.load("hypalon_coated_nylon").require("areal_density_gsm")
 LADDER_HEAVY_G = MAT.load("ladder_lock_25mm_heavy").require("mass_g")   # 7 g, materials-engineer 2026-11-09 (64e431c)
 DRING_G = MAT.load("d_ring_25mm_aluminium").require("mass_g")           # 6 g, same commit
 GRIP_GSM = float(MAT.load("silicone_grip_print").get("areal_density_g_m2"))   # 46 g/m2, same commit
-SHOCK_NOTE = "no shock-cord record: 2 mm Dyneema cord mass used as the proxy (ASSUMPTION, same g/m)"
+SHOCK_GM = MAT.load("shock_cord_3mm").require("mass_g_m")             # 6 g/m, materials-engineer 2026-11-09 (ec18d6d)
+SHOCK_NOTE = "shock_cord_3mm record, 6 g/m"
 
 
 def _P(pid, name, w, h, mid, qty=1, sa=SA_P):
@@ -346,7 +347,7 @@ def bag_pockets(c: BC.Concept | None = None, spec: str | None = None) -> list:
     out.append(_imp(
         "IMP-1", "padded scope sleeve inside the left wing", "M-01L inside face, z 165-595",
         sl, [("XLPE 3 mm liner 300 x 420 (xlpe_foam density)", round(xlpe, 1)),
-             ("top cinch: 3 mm shock cord 0.5 m + cord lock (" + SHOCK_NOTE + ")", 0.5 * CORD2_GM + CORDLOCK_G)],
+             ("top cinch: 3 mm shock cord 0.5 m + cord lock (" + SHOCK_NOTE + ")", 0.5 * SHOCK_GM + CORDLOCK_G)],
         seam_m=2 * S["h"] / 1000 + S["w"] / 1000 + 2 * (S["w"] + S["h"]) / 1000, tacks=2, extra_h=0.3,
         attach=(f"Sleeve panel ({'330D' if sp['imp1_panel'].startswith('cordura') else '100D Robic'}, XLPE 300 x 420 sandwiched under a 100D facing, edge-stitched) sewn to the wing's inside "
                 "face on two straight vertical lines 160 mm apart (20 mm in from each wing edge), before the wing is hemmed. "
@@ -393,7 +394,7 @@ def bag_pockets(c: BC.Concept | None = None, spec: str | None = None) -> list:
     Sp = STRAP_POCKET
     pieces = [_P("IMP6-a", "phone pocket face (power mesh)", Sp["w"], Sp["h"], "power_mesh_nylon_spandex"),
               _P("IMP6-b", "phone pocket back", Sp["w"], Sp["h"], "cordura_330d_nylon66")]
-    cinch = ("top cinch 0.25 m 3 mm shock cord + cord lock (" + SHOCK_NOTE + ")", 0.25 * CORD2_GM + CORDLOCK_G)
+    cinch = ("top cinch 0.25 m 3 mm shock cord + cord lock (" + SHOCK_NOTE + ")", 0.25 * SHOCK_GM + CORDLOCK_G)
     if sp["imp6_sewn"]:     # B-7 (B.2): sewn to the LEFT J-strap, 4 bartacks through the strap binding, no wraps
         hw6, h6 = [cinch], 0.3
         att6 = ("Mesh face over a 330D back, sewn on 3 sides (straight), top edge in a shock-cord channel with a cord lock "
@@ -527,7 +528,7 @@ def holster() -> dict:
     return _imp("IMP-3", "1 L bottle holster on belt B, right wing, behind the crest", "belt B right wing, stiffened zone",
                 pieces, [("2 wing tabs 25 mm x 0.06 m (bartacked to HB-W1 shell)", 0.12 * WEB25),
                          ("2 holster straps 25 mm x 0.09 m + 2 G-hooks", 0.18 * WEB25 + 2 * G_HOOK),
-                         ("top cinch 0.4 m 3 mm shock cord + cord lock (" + SHOCK_NOTE + ")", 0.4 * CORD2_GM + CORDLOCK_G)],
+                         ("top cinch 0.4 m 3 mm shock cord + cord lock (" + SHOCK_NOTE + ")", 0.4 * SHOCK_GM + CORDLOCK_G)],
                 seam_m=(Hs["mesh"][1] + 4 * Hs["base"] + 2 * sum(Hs["back"])) / 1000, tacks=6, extra_h=0.3,
                 attach=("Two 25 mm tabs are bartacked to the right wing shell HB-W1 in flat-work, through the shell only, inside the "
                         "HDPE stiffened zone: one 20 mm below the top edge, one 20 mm above the bottom edge. The holster back "

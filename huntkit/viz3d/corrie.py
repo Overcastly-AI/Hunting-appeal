@@ -887,18 +887,15 @@ def _wing_clean(S, sx, a_of, yf_of, yb_of, tri, z0, z1, W, nu, nv):
     def obstacle(F):
         if tri is None:
             return F
+        # the wing passes OUTBOARD of the bundle (as B.1), but over a capsule: rounded at its z ends, not a hard step
         Rc = tri["R"] + 3.0
-        a = np.array([tri["x"], tri["y"], 0.0])
-        zc = np.clip(F[:, 2], tri["z0"], tri["z1"])
-        A = np.column_stack([np.full(len(F), a[0]), np.full(len(F), a[1]), zc])
-        d = F - A
-        r = np.linalg.norm(d, axis=1)
-        m = r < Rc
-        # inside the capsule: radial push, biased outboard (+sx) so the wing never folds behind the obstacle
-        dd = d[m] + np.array([sx * 1e-3, 0, 0])
-        dd[:, 0] = np.where(dd[:, 0] * sx < 0, 0.25 * dd[:, 0], dd[:, 0])
+        dz = np.maximum(tri["z0"] - F[:, 2], 0) + np.maximum(F[:, 2] - tri["z1"], 0)
+        Re = np.sqrt(np.clip(Rc ** 2 - dz ** 2, 0, None))
+        dy = F[:, 1] - tri["y"]
+        m = np.abs(dy) < Re
+        xneed = sx * (sx * tri["x"] + np.sqrt(np.clip(Re[m] ** 2 - dy[m] ** 2, 0, None)))
         F = F.copy()
-        F[m] = A[m] + _unit(dd) * Rc
+        F[m, 0] = np.where(sx * F[m, 0] < sx * xneed, xneed, F[m, 0])
         return F
 
     def lap(P, w=0.5):
@@ -973,9 +970,23 @@ def _wing_finish(S, sx, a_of, yf_of, yb_of, P, us, zz, W, bar_off=(2.4, 3.2)):
     for path in (P[-1], P[:, 0], P[:, -1]):
         hem.append(G.tube(path, 2.3, n=8))
     hem.append(G.tube(P[0] - n[0] * 0.5, 2.6, n=8))
-    sel = Uu[:, 0] >= W - 27
-    i0 = int(np.argmax(sel))
-    bar = _slab(P[i0:] + n[i0:] * bar_off[0], P[i0:] + n[i0:] * bar_off[1], Uu[i0:] / G.TILE_MM, Zz[i0:] / G.TILE_MM)
+    if bar_off == (2.4, 3.2):        # B.1 as rendered: the last grid columns (they stretch where the panel is pushed)
+        sel = Uu[:, 0] >= W - 27
+        i0 = int(np.argmax(sel))
+        bar = _slab(P[i0:] + n[i0:] * bar_off[0], P[i0:] + n[i0:] * bar_off[1], Uu[i0:] / G.TILE_MM,
+                    Zz[i0:] / G.TILE_MM)
+    else:                            # clean: the true 25 mm from the free edge, by arc length along each column
+        nb = 7
+        Pb, Nb = np.zeros((nb, nv + 1, 3)), np.zeros((nb, nv + 1, 3))
+        for j in range(nv + 1):
+            col = P[::-1, j]
+            s = np.r_[0, np.cumsum(np.linalg.norm(np.diff(col, axis=0), axis=1))]
+            sb = np.linspace(0, 25.0, nb)[::-1]
+            Pb[:, j] = np.column_stack([np.interp(sb, s, col[:, k]) for k in range(3)])
+            Nb[:, j] = _unit(np.column_stack([np.interp(sb, s, n[::-1, j][:, k]) for k in range(3)]))
+        Ub = np.linspace(W - 25, W, nb)[:, None] * np.ones((1, nv + 1))
+        Zb = np.ones((nb, 1)) * zz[None, :]
+        bar = _slab(Pb + Nb * bar_off[0], Pb + Nb * bar_off[1], Ub / G.TILE_MM, Zb / G.TILE_MM)
     straps, hw = [], []
     for zs in (260.0, 490.0):
         j = int(np.argmin(np.abs(zz - zs)))

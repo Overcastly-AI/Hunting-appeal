@@ -19,7 +19,7 @@ import corrie as CO  # noqa: E402
 
 @pytest.fixture(scope="module")
 def pockets():
-    return {d["id"]: d for d in CO.bag_pockets()}
+    return {d["id"]: d for d in CO.bag_pockets(spec="B.1")}
 
 
 def test_bag_pockets_present_with_mass_and_materials(pockets):
@@ -62,17 +62,18 @@ def test_hip_layout_follows_belt_b(size):
 
 
 def test_belt_b_mass_grows_with_size_and_uses_the_new_records():
-    m = [CO.belt_b(s)["body_g"] for s in CO.BELT_SIZES]
+    m = [CO.belt_b(s, spec="B.1")["body_g"] for s in CO.BELT_SIZES]
     assert all(b > a for a, b in zip(m, m[1:]))
     assert CO.DRING_G == 6 and CO.LADDER_HEAVY_G == 7 and CO.GRIP_GSM == 46
-    assert 200 < CO.belt_b("M")["body_g"] < 250
+    assert 200 < CO.belt_b("M", spec="B.1")["body_g"] < 250
 
 
 def test_weight_table_adds_up():
-    w = CO.weight_table("M")
+    w = CO.weight_table("M", spec="B.1")              # B.1 is reproduced behind the spec flag
+    assert w["spec"] == "B.1"
     assert math.isclose(sum(r[1] for r in w["rows"]), w["total_g"], abs_tol=0.5)
-    assert 3850 < w["total_g"] < 4050
-    assert w["rev_b_total_g"] == pytest.approx(3714.4, abs=1.0)
+    assert 3900 < w["total_g"] < 4100                  # 4042 g with the 2026-11-09 records (Robic 125 gsm, shock cord)
+    assert w["rev_b_total_g"] == pytest.approx(CO.SPINE_TOTAL_G + w["body_g"] - CO.SPINE_BODY_G, abs=0.1)
 
 
 def test_loadouts_with_the_adopted_pockets():
@@ -118,6 +119,6 @@ def test_pad_seat_clears_the_rolling_bow_tie_and_fits_the_pan():
     assert ps["fits_pan"]
     assert ps["depth_play_mm"] >= 4.0                                   # hipbelt_structural.md: >= 4 mm clear channel
     assert ps["roll_clear_deg"] >= 8.0                                  # belt free roll +/-8 deg on the Ti pin
-    w = CO.weight_table("M")
+    w = CO.weight_table("M", spec="B.1")
     assert any("pad seat" in r[0] and r[1] == ps["mass_g"] for r in w["rows"])
     assert any("load path" in r[0] and abs(r[1] - 65.4) < 0.1 for r in w["rows"])

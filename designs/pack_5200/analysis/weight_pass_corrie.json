@@ -1,15 +1,15 @@
 {
  "size": "M",
- "total_g": 4000.4,
+ "total_g": 4042.3,
  "groups": {
   "Frame (printed body + carbon crown)": 1062.6,
-  "Hipbelt B (body, load path, pad seat, pockets, holster)": 557.3,
+  "Hipbelt B (body, load path, pad seat, pockets, holster)": 558.7,
+  "Bag body (CORRIE shell, collar, wings, door, roll-top)": 548.0,
   "Meat haul + compression": 539.3,
-  "Bag body (CORRIE shell, collar, wings, door, roll-top)": 527.5,
   "Back system (spreader + back panel)": 413.6,
   "Bag-to-frame attachment": 303.3,
   "Harness (J-straps, yoke, lifters, sternum)": 212.5,
-  "Bag pockets (IMP-1, -2, -4, -6, -8)": 142.9,
+  "Bag pockets (IMP-1, -2, -4, -6, -8)": 162.9,
   "Top pouch (4.0 L)": 87.9,
   "Rain fly (fly + base pocket)": 68.4,
   "Torso adjust": 41.7,
@@ -420,7 +420,7 @@
   {
    "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
    "part": "B-01 frame-side panel (flat, Z-fold setback) (challenge_ultra_200)",
-   "g": 33.46,
+   "g": 35.6,
    "source": "corrie.build() piece: cut area x record gsm",
    "zone": "shell"
   },
@@ -441,14 +441,14 @@
   {
    "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
    "part": "B-06f roll-top collar, frame side (ULTRA) (challenge_ultra_200)",
-   "g": 25.55,
+   "g": 27.18,
    "source": "corrie.build() piece: cut area x record gsm",
    "zone": "collar"
   },
   {
    "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
    "part": "B-06 roll-top collar (robic_100d_ripstop)",
-   "g": 40.77,
+   "g": 56.62,
    "source": "corrie.build() piece: cut area x record gsm",
    "zone": "collar"
   },
@@ -469,7 +469,7 @@
   {
    "group": "Bag body (CORRIE shell, collar, wings, door, roll-top)",
    "part": "B-13x boxed fairlead swell (challenge_ultra_200, x8)",
-   "g": 13.52,
+   "g": 14.39,
    "source": "corrie.build() piece: cut area x record gsm",
    "zone": "swell"
   },
@@ -623,28 +623,28 @@
   {
    "group": "Bag pockets (IMP-1, -2, -4, -6, -8)",
    "part": "IMP-1 padded scope sleeve inside the left wing",
-   "g": 56.4,
+   "g": 63.0,
    "source": "corrie.bag_pockets()",
    "zone": ""
   },
   {
    "group": "Bag pockets (IMP-1, -2, -4, -6, -8)",
    "part": "IMP-2 hydration sleeve above IM3 + 2 hose ports (R-19)",
-   "g": 34.6,
+   "g": 42.8,
    "source": "corrie.bag_pockets()",
    "zone": ""
   },
   {
    "group": "Bag pockets (IMP-1, -2, -4, -6, -8)",
    "part": "IMP-4 zipped kill-kit / first-aid pocket inside the top-hinged door",
-   "g": 17.7,
+   "g": 22.0,
    "source": "corrie.bag_pockets()",
    "zone": ""
   },
   {
    "group": "Bag pockets (IMP-1, -2, -4, -6, -8)",
    "part": "IMP-6 shoulder-strap phone pocket (160 mm phone)",
-   "g": 23.6,
+   "g": 24.5,
    "source": "corrie.bag_pockets()",
    "zone": ""
   },
@@ -791,7 +791,7 @@
   {
    "group": "Hipbelt B (body, load path, pad seat, pockets, holster)",
    "part": "IMP-3 1 L bottle holster",
-   "g": 37.4,
+   "g": 38.8,
    "source": "corrie.holster()",
    "zone": ""
   },
@@ -882,7 +882,7 @@
   {
    "group": "Booking reconciliation",
    "part": "SPINE body as booked in geometry.yaml (design panels, zip, SH-01..04, roll-top HDPE) vs the cut-set body metric (333.2 g) that corrie.weight_table() subtracts",
-   "g": 1.96,
+   "g": 1.97,
    "source": "balance to corrie.weight_table()",
    "zone": ""
   }
@@ -965,8 +965,8 @@
    "pkg": "B",
    "zone": "top pouch",
    "change": "Pouch base + boxing strip 330D Cordura -> 100D Robic (already in the BOM: collar, IMP-2, IMP-4). Top stays camo 630D.",
-   "g": 15.2,
-   "g_booked": 15.2,
+   "g": 9.3,
+   "g_booked": 9.3,
    "usd": 0.24,
    "hours": 0.0,
    "durability": "tear 90/80 -> 45/40 N warp/weft (records); the pouch rides on the roll and comes off, but gets set on rock",
@@ -1019,8 +1019,8 @@
    "pkg": "B",
    "zone": "IMP-1 scope sleeve",
    "change": "Sleeve panel IMP1-a 330D -> 100D Robic (XLPE + facing kept). The panel sits under the wing, facing it, not the brush.",
-   "g": 13.9,
-   "g_booked": 13.9,
+   "g": 8.5,
+   "g_booked": 8.5,
    "usd": 0.22,
    "hours": 0.0,
    "durability": "tear 90/80 -> 45/40 N (records) on a panel the scope slides against",
@@ -1055,9 +1055,9 @@
    "pkg": "B",
    "zone": "body fabric (O-4 on CORRIE)",
    "change": "Gussets, U-surround, door, hinge band, wings 330D -> 210D UHMWPE grid (O-4). Still ON HOLD: the record has no abrasion value, and the owner has not seen a swatch.",
-   "g": 21.6,
-   "g_booked": 21.6,
-   "usd": 4.62,
+   "g": 41.5,
+   "g_booked": 41.5,
+   "usd": 3.92,
    "hours": 0.0,
    "durability": "tear 90/80 -> 180/160 N (records, better); abrasion unknown (no record value)",
    "quiet": "same (3)",
@@ -1073,8 +1073,8 @@
    "pkg": "B",
    "zone": "roll-top collar (O-3)",
    "change": "Collar B-06 100D Robic -> 70D ripstop (O-3). Still ON HOLD: no 70D record (bag_weight_plan.MISSING, ASSUMPTION 70 gsm).",
-   "g": 9.1,
-   "g_booked": 9.1,
+   "g": 24.9,
+   "g_booked": 24.9,
    "usd": 0.69,
    "hours": 0.0,
    "durability": "tear 43 -> 35 N (ASSUMPTION)",
@@ -1181,9 +1181,9 @@
    "pkg": "C",
    "zone": "bag bottom (O-5)",
    "change": "Bottom B-05 500D -> Challenge ULTRA 200 (O-5): the records now carry the evidence (Taber 1500 -> 2000, tear 130 -> 250 N, waterproof floor). ULTRA is already 4 CORRIE pieces, and 500D then stays only on B-16 floor channels and the rifle boot.",
-   "g": 7.5,
-   "g_booked": 7.5,
-   "usd": 1.59,
+   "g": 7.0,
+   "g_booked": 7.0,
+   "usd": 2.03,
    "hours": 0.0,
    "durability": "BETTER (records)",
    "quiet": "quietness 3 -> 2 on the floor (not brushed)",
@@ -1376,7 +1376,7 @@
   }
  ],
  "packages": {
-  "start_booked_g": 4000.4,
+  "start_booked_g": 4042.3,
   "gaps": [
    {
     "id": "G-1",
@@ -1392,7 +1392,7 @@
     "basis": "panels.yaml F-01 x outer-shell area ratio (ASSUMPTION: fly area scales with the shell it covers; wing cover not included)"
    }
   ],
-  "start_real_g": 4043.3,
+  "start_real_g": 4085.2,
   "steps": [
    {
     "pkg": "A",
@@ -1404,9 +1404,9 @@
     "saved_real_g": 10.3,
     "usd": -3.21,
     "hours": 0.0,
-    "after_booked_g": 3990.1,
-    "after_real_g": 4033.0,
-    "vs_target_real_g": 1039.0
+    "after_booked_g": 4032.0,
+    "after_real_g": 4074.9,
+    "vs_target_real_g": 1080.9
    },
    {
     "pkg": "B",
@@ -1420,13 +1420,13 @@
      "B-7",
      "B-10"
     ],
-    "saved_booked_g": 85.8,
-    "saved_real_g": 122.2,
+    "saved_booked_g": 75.7,
+    "saved_real_g": 112.1,
     "usd": -8.18,
     "hours": -6.0,
-    "after_booked_g": 3904.3,
-    "after_real_g": 3910.8,
-    "vs_target_real_g": 916.8
+    "after_booked_g": 3956.3,
+    "after_real_g": 3962.8,
+    "vs_target_real_g": 968.8
    },
    {
     "pkg": "C",
@@ -1441,16 +1441,16 @@
      "C-8",
      "C-9"
     ],
-    "saved_booked_g": 101.1,
-    "saved_real_g": 101.1,
-    "usd": 23.52,
+    "saved_booked_g": 100.6,
+    "saved_real_g": 100.6,
+    "usd": 23.96,
     "hours": 0.0,
-    "after_booked_g": 3803.2,
-    "after_real_g": 3809.7,
-    "vs_target_real_g": 815.7
+    "after_booked_g": 3855.7,
+    "after_real_g": 3862.2,
+    "vs_target_real_g": 868.2
    }
   ],
-  "pouch_interaction_g": -4.9,
+  "pouch_interaction_g": -3.7,
   "take": [
    {
     "id": "T-1",
@@ -1460,12 +1460,12 @@
    {
     "id": "T-2",
     "what": "Count the top pouch (B.2: 2.7 L) as an accessory (as the market does with lids: SG lid sold separately, Exo quotes with and without). Accounting only: the hunter still carries it",
-    "g": 59.6
+    "g": 64.2
    },
    {
     "id": "T-3",
     "what": "Drop IMP-1 scope sleeve (owner-frozen B.1 pocket)",
-    "g": 42.5
+    "g": 54.5
    },
    {
     "id": "T-4",
@@ -1473,20 +1473,20 @@
     "g": 72.1
    }
   ],
-  "after_all_take_g": 3174.9,
-  "frame_plus_spreader_needed_g": 407.5,
+  "after_all_take_g": 3210.8,
+  "frame_plus_spreader_needed_g": 355.0,
   "frame_plus_spreader_now_g": 1224.9,
   "target_g": 2994.0,
   "s12_corrie_g": 3.5,
   "held_b": [
    {
     "id": "B-8",
-    "g": 21.6,
+    "g": 41.5,
     "status": "held O-4"
    },
    {
     "id": "B-9",
-    "g": 9.1,
+    "g": 24.9,
     "status": "held O-3"
    }
   ],
@@ -1508,49 +1508,49 @@
    ],
    "sizes": {
     "S": {
-     "b1_g": 3971.9,
-     "b2_g": 3884.6,
-     "b2_lb": 8.56,
-     "b2_vs_b1_g": -87.3,
-     "with_c_g": 3783.5,
-     "with_c_lb": 8.34,
-     "with_c_vs_publish_g": -16.5
-    },
-    "M": {
-     "b1_g": 4000.4,
-     "b2_g": 3912.5,
-     "b2_lb": 8.63,
-     "b2_vs_b1_g": -87.9,
-     "with_c_g": 3811.4,
-     "with_c_lb": 8.4,
-     "with_c_vs_publish_g": 11.4
-    },
-    "L": {
-     "b1_g": 4025.0,
+     "b1_g": 4013.8,
      "b2_g": 3936.6,
      "b2_lb": 8.68,
-     "b2_vs_b1_g": -88.4,
-     "with_c_g": 3835.5,
+     "b2_vs_b1_g": -77.2,
+     "with_c_g": 3836.0,
      "with_c_lb": 8.46,
-     "with_c_vs_publish_g": 35.5
+     "with_c_vs_publish_g": 36.0
+    },
+    "M": {
+     "b1_g": 4042.3,
+     "b2_g": 3964.5,
+     "b2_lb": 8.74,
+     "b2_vs_b1_g": -77.8,
+     "with_c_g": 3863.9,
+     "with_c_lb": 8.52,
+     "with_c_vs_publish_g": 63.9
+    },
+    "L": {
+     "b1_g": 4066.9,
+     "b2_g": 3988.6,
+     "b2_lb": 8.79,
+     "b2_vs_b1_g": -78.3,
+     "with_c_g": 3888.0,
+     "with_c_lb": 8.57,
+     "with_c_vs_publish_g": 88.0
     },
     "XL": {
-     "b1_g": 4061.5,
-     "b2_g": 3972.6,
-     "b2_lb": 8.76,
-     "b2_vs_b1_g": -88.9,
-     "with_c_g": 3871.5,
-     "with_c_lb": 8.54,
-     "with_c_vs_publish_g": 71.5
+     "b1_g": 4103.4,
+     "b2_g": 4024.6,
+     "b2_lb": 8.87,
+     "b2_vs_b1_g": -78.8,
+     "with_c_g": 3924.0,
+     "with_c_lb": 8.65,
+     "with_c_vs_publish_g": 124.0
     },
     "XXL": {
-     "b1_g": 4090.1,
-     "b2_g": 4000.7,
-     "b2_lb": 8.82,
-     "b2_vs_b1_g": -89.4,
-     "with_c_g": 3899.6,
-     "with_c_lb": 8.6,
-     "with_c_vs_publish_g": 99.6
+     "b1_g": 4132.0,
+     "b2_g": 4052.7,
+     "b2_lb": 8.93,
+     "b2_vs_b1_g": -79.3,
+     "with_c_g": 3952.1,
+     "with_c_lb": 8.71,
+     "with_c_vs_publish_g": 152.1
     }
    },
    "rows_M": [
@@ -1561,7 +1561,7 @@
     ],
     [
      "CORRIE body group vs SPINE body group",
-     174.7,
+     199.9,
      "corrie.build() vs bag_concepts.spine_build(), same metric"
     ],
     [
@@ -1576,22 +1576,22 @@
     ],
     [
      "IMP-2 hydration sleeve + ports",
-     32.1,
+     40.3,
      "corrie.bag_pockets()"
     ],
     [
      "IMP-1 scope sleeve",
-     42.5,
+     54.5,
      "corrie.bag_pockets()"
     ],
     [
      "IMP-4 door pocket",
-     17.7,
+     22.0,
      "corrie.bag_pockets()"
     ],
     [
      "IMP-6 strap phone pocket",
-     10.2,
+     11.1,
      "corrie.bag_pockets()"
     ],
     [
@@ -1611,7 +1611,7 @@
     ],
     [
      "IMP-3 bottle holster",
-     37.4,
+     38.8,
      "corrie.holster()"
     ],
     [
@@ -1656,20 +1656,20 @@
     "C-8",
     "C-9"
    ],
-   "c_saving_g": 101.1,
+   "c_saving_g": 100.6,
    "publish_g": 3800.0,
    "recon_vs_packages_g": 1.7
   }
  },
  "pouch_combo": {
-  "g": 58.0,
+  "g": 62.7,
   "fabric_usd": 2.1468805900574766,
   "volume_L": 2.71
  },
  "benchmarks": [
   {
    "class": "frame_susp",
-   "ours_g": 2287.7,
+   "ours_g": 2289.1,
    "groups": [
     "Frame (printed body + carbon crown)",
     "Torso adjust",
@@ -1716,7 +1716,7 @@
   },
   {
    "class": "bag",
-   "ours_g": 738.8,
+   "ours_g": 779.3,
    "groups": [
     "Bag body (CORRIE shell, collar, wings, door, roll-top)",
     "Bag pockets (IMP-1, -2, -4, -6, -8)",
@@ -1765,7 +1765,7 @@
   },
   {
    "class": "system",
-   "ours_g": 4000.4,
+   "ours_g": 4042.3,
    "groups": [
     "whole pack"
    ],

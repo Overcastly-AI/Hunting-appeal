@@ -125,7 +125,22 @@ def mannequin_apose(params: dict) -> list:
 
 
 # ============================================================================================ belt B
-def belt_b_parts(params: dict, size: str | None = None) -> tuple[list, dict]:
+def _pillow(n=64, edge=0.28, crown=1.0, inner=0.12):
+    """Closed padded-belt section in a unit box: x = thickness (+x outward, crowned), y = height. The outer face is a
+    pillow (full thickness at mid height, ``edge`` of it at the bound edges); the body face is nearly flat (``inner``
+    camber). Rounded at the edges where the binding wraps."""
+    y = np.linspace(-0.5, 0.5, n // 2)
+    w = 1.0 - (2 * np.abs(y)) ** 2.4
+    xo = -0.5 + edge + (crown - edge) * np.sqrt(np.clip(w, 0, 1))
+    xi = -0.5 + inner * (1 - (2 * y) ** 2)
+    out = np.column_stack([xo, y])[::-1]
+    inn = np.column_stack([xi, y])
+    return np.vstack([inn, out[1:-1]])
+
+
+def belt_b_parts(params: dict, size: str | None = None, padded: bool = False) -> tuple[list, dict]:
+    """``padded`` (B.2 renders): pillow section (crowned outer face, thin bound edges), thicker binding, quilting that
+    follows the crown, so the belt reads as a padded belt rather than a flat band (geometry only)."""
     CO, HC = _hc()
     pl = pelvis(params)
     B = HC.B
@@ -149,22 +164,36 @@ def belt_b_parts(params: dict, size: str | None = None) -> tuple[list, dict]:
     upv = _unit(np.cos(bet)[:, None] * np.array([0, 0, 1.0]) - np.sin(bet)[:, None] * outw)
     mid = C + outw * (t / 2)[:, None]
     zc = 0.0                                             # belt centred on the crest datum (pivot height)
-    shell = G.sweep(mid, G.rounded_rect(1.0, 1.0, nexp=2.3, n=56), up=upv, scale=np.stack([t, h], -1))
     # check which side the profile x maps to (sweep frame S = up x T)
     _, Sm, _ = G.frames_along(mid, upv)
     sgn = float(np.sign(np.mean(np.einsum("ij,ij->i", Sm, outw))))
+    if padded:
+        t = t * 1.25 + 3.0                               # loft of the stack at the crown: 40 mm lumbar -> 17 mm tip
+        mid = C + outw * (t / 2)[:, None]
+        prof = _pillow()
+        prof[:, 0] *= sgn
+        shell = G.sweep(mid, prof, up=upv, scale=np.stack([t, h], -1))
+    else:
+        shell = G.sweep(mid, G.rounded_rect(1.0, 1.0, nexp=2.3, n=56), up=upv, scale=np.stack([t, h], -1))
     parts = [Part("beltB_shell", shell, "harness", "suspension", modes=SUSP,
                   label=f"Hipbelt B ({size}): cone-cut wings {B.beta(size):.0f} deg, 330D shell")]
     # bound top / bottom edges
     bind = []
+    rb = 3.0
+    if padded:   # the binding wraps the thin edge: centred on the edge's mid-thickness, 20 mm grosgrain -> r 4
+        rb = 4.5
+        edge_c = C + outw * (0.14 * t)[:, None]          # mid-thickness of the edge (-0.36 t from the centre)
     for sgn_u in (1, -1):
-        e = mid + upv * (sgn_u * (h / 2 - 1.5))[:, None]
-        bind.append(G.tube(smooth_line(e, 4.0, 3.0), 3.0, n=10))
+        base = edge_c if padded else mid
+        e = base + upv * (sgn_u * (h / 2 - 1.5))[:, None]
+        bind.append(G.tube(smooth_line(e, 4.0, 3.0), rb, n=12))
     # tip ends: vertical binding at each tip
     for k in (0, -1):
-        e = np.array([mid[k] + upv[k] * v for v in np.linspace(-h[k] / 2, h[k] / 2, 16)])
-        bind.append(G.tube(e, 3.0, n=10))
-    parts.append(Part("beltB_binding", G.concat(bind), "trim", "suspension", modes=SUSP, label="Bound edges"))
+        base = edge_c if padded else mid
+        e = np.array([base[k] + upv[k] * v for v in np.linspace(-h[k] / 2, h[k] / 2, 16)])
+        bind.append(G.tube(e, rb, n=12))
+    parts.append(Part("beltB_binding", G.concat(bind), "spacer" if padded else "trim", "suspension", modes=SUSP,
+                      label="Bound edges" + (" (black 20 mm grosgrain)" if padded else "")))
     # spacer-mesh body face, inset 9 mm top / bottom
     face = G.ribbon(C + outw * 0.4, 1.0, 1.4, -outw, step=4.0)
     fpath = C - outw * 0.2
@@ -175,9 +204,15 @@ def belt_b_parts(params: dict, size: str | None = None) -> tuple[list, dict]:
     for s0 in np.arange(lw2 + 30, half - 40, 45.0):
         for sg in (1, -1):
             k = int(np.argmin(np.abs(s_all - sg * s0)))
-            e = np.array([mid[k] + Sm[k] * sgn * (t[k] / 2 + 0.3) + upv[k] * v
-                          for v in np.linspace(-h[k] / 2 + 12, h[k] / 2 - 12, 10)])
-            q.append(G.tube(e, 0.7, n=6))
+            if padded:    # stitch channel that follows the crowned outer face (sunk 0.6 mm: reads as a quilt line)
+                vs = np.linspace(-h[k] / 2 + 14, h[k] / 2 - 14, 18)
+                xo = -0.5 + 0.28 + 0.72 * np.sqrt(np.clip(1 - (2 * np.abs(vs / h[k])) ** 2.4, 0, 1))
+                e = np.array([mid[k] + Sm[k] * sgn * (xo_ * t[k] - 0.4) + upv[k] * v for xo_, v in zip(xo, vs)])
+                q.append(G.tube(e, 1.0, n=6))
+            else:
+                e = np.array([mid[k] + Sm[k] * sgn * (t[k] / 2 + 0.3) + upv[k] * v
+                              for v in np.linspace(-h[k] / 2 + 12, h[k] / 2 - 12, 10)])
+                q.append(G.tube(e, 0.7, n=6))
     parts.append(Part("beltB_quilt", G.concat(q), "trim", "suspension", modes=SUSP))
 
     def on_face(s, v, lift=0.0):
@@ -392,7 +427,7 @@ def _at(run, s):
     return run["front"][i], run["t"][i], run["n"][i], run["w"][i]
 
 
-def bag_side_parts(pack, params: dict) -> list:
+def bag_side_parts(pack, params: dict, clean: bool = False) -> list:
     CO, HC = _hc()
     BC, CO2 = _concept()
     c = CO2.make()
@@ -404,7 +439,7 @@ def bag_side_parts(pack, params: dict) -> list:
     # ---- IMP-1: 85 mm spotter in the padded sleeve under the LEFT wing; the wing is re-laid over the sleeve
     tg = _tripod_axis(S, a_of, yf_of, yb_of, sx=-1, u=0.48, R=55.0)
     tg = dict(tg, z0=165.0, z1=600.0)
-    w, hem, bar, st, hw = _wing(S, -1, a_of, yf_of, yb_of, tg)
+    w, hem, bar, st, hw = _wing(S, -1, a_of, yf_of, yb_of, tg, clean=clean)
     ex = (-120, 200, 0)
     parts += [Part("corrie_wing_L", G.concat([w, hem]), "tpu", "bag", modes=BAGM, explode=ex, floats=True,
                    label="Left wing M-01L over the IMP-1 scope sleeve"),

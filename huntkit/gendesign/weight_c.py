@@ -470,7 +470,7 @@ class Backer:
         return BACKER_W * BACKER_H * self.t * float(load(self.material).require("density_kg_m3")) * 1e-6
 
 
-def backer_solve(bk: Backer, H: float, h: float = 2.5, contact: bool = True, k_body: float | None = None) -> dict:
+def backer_solve(bk: Backer, H: float, h: float = 5.0, contact: bool = True, k_body: float | None = None) -> dict:
     """Backer plate (x across, y = z up) between the body foundation and the EVA rails; w > 0 toward the frame.
     The body approaches by d0 (bisection to total force H): body pressure k_b (d0 - w), rails k_r w, unilateral contact
     with the bow-tie spine at w >= DEPTH_PLAY in the channel. Returns stresses, deflection and the contact force."""
@@ -504,16 +504,16 @@ def backer_solve(bk: Backer, H: float, h: float = 2.5, contact: bool = True, k_b
         F_body = float((p_body * trib).sum())
         F_spine = float(r["spring_force"][nfound:].sum()) if contact else 0.0
         return r, w, p_body, F_body, F_spine
-    lo, hi = 0.0, 4 * H / (k_b * BACKER_W * BACKER_H) + 50.0
-    for _ in range(40):
-        mid = 0.5 * (lo + hi)
+    # F_body(d0) is linear until contact, then piecewise linear and increasing: secant from the no-contact guess
+    r, w, pb, F1, Fs = run(1.0)
+    mid = H / F1
+    a, Fa = 1.0, F1
+    for _ in range(25):
         r, w, pb, Fb, Fs = run(mid)
-        if Fb < H:
-            lo = mid
-        else:
-            hi = mid
         if abs(Fb - H) < 1e-3 * H:
             break
+        nxt = mid + (H - Fb) * (mid - a) / (Fb - Fa) if abs(Fb - Fa) > 1e-12 else mid * H / Fb
+        a, Fa, mid = mid, Fb, max(nxt, 1e-6)
     M = pl.moments(r["u"])
     s = 6 * M / bk.t ** 2
     sx, sy, txy = s[..., 0], s[..., 1], s[..., 2]
@@ -698,7 +698,7 @@ def yoke_plate(t: float, F: np.ndarray, factor: float, h: float = 2.0, pad_model
             d0 = Fy / F1
             r = {"u": r1["u"] * d0, "w": w1 * d0}
     M = pl.moments(r["u"])                                 # (nx, ny, 4, 3)
-    h_root = float(np.ptp(xy[act_n & (np.abs(np.abs(xy[:, 0]) - SPINE_HALF_W) < h / 2), 1])) or 90.0
+    h_root = float(np.ptp(xy[act_n & (np.abs(np.abs(xy[:, 0]) - SPINE_HALF_W) <= h / 2 + 1e-6), 1]))
     lever = STRAP_PIN[0] - SPINE_HALF_W
     side = max(side_split)
     Fz_s, Fx_s = Fz * side, abs(Fx)
@@ -781,6 +781,8 @@ FAT_G = 1.6
 U_LO, U_HI = 0.30, 0.55   # ASSUMPTION: full offset where the smoothed utilisation is below 0.30, none above 0.55
 SMOOTH_MM = 8.0           # ASSUMPTION: utilisation max-filtered over 8 mm (protects the neighbours of a hot spot)
 R_FRAC = 0.30             # never remove more than 30 % of the local radius (no ligament vanishes)
+C9_FAT_KEEP = 1.02        # ASSUMPTION: keep >= 2 % fatigue margin (2 mm voxel / FI99 noise); the pass picks the
+#                           deepest offset that keeps every margin >= 1.0 and fatigue >= this
 
 
 def _verify_fields(dom, solid, sets, material="pa12_cf_fdm_paht", log=print) -> dict:
@@ -887,6 +889,14 @@ def offset_field(dom, solid, util: np.ndarray, delta_max: float) -> np.ndarray:
     depth = g.from_array(ndimage.maximum_filter(g.to_array(np.maximum(-sdf, 0.0)), size=2 * int(round(10.0 / g.h)) + 1))
     d = np.minimum(delta_max * ramp, R_FRAC * depth)
     d[dom.passive_solid | dom.passive_void] = 0.0
+    # functional surfaces keep their size: crown sleeve walls / bores (bushing fit), pawl housing, hip-pivot boss
+    # (inserts), load pads, spine channel; dilated 4 mm so the offset never reaches them
+    keep = np.zeros(g.ne, bool)
+    for k, m in dom.masks.items():
+        if k.startswith(("sleeve_", "bore_")) or k in ("pawl", "pivot", "pads", "spine_channel"):
+            keep |= np.asarray(m, bool)
+    keep = g.from_array(ndimage.binary_dilation(g.to_array(keep), iterations=max(1, int(round(4.0 / g.h)))))
+    d[keep] = 0.0
     return d, sdf
 
 
@@ -932,14 +942,18 @@ def c9(deltas=(0.0, 0.75, 1.25, 1.75, 2.5), log=print, save: bool = True) -> dic
     base_g = cands[0]["body_g"]
     for c in cands:
         c["saved_g"] = base_g - c["body_g"]
-    ok = [c for c in cands if c["margins"]["min"]["fatigue"] >= 1.0 and c["margins"]["min"]["strength"] >= 1.0
-          and c["margins"]["min"]["creep"] >= 1.0]
-    out["best"] = max(ok, key=lambda c: c["saved_g"]) if ok else None
+    out["best"] = c9_pick(cands)
     if save:
         C9_JSON.parent.mkdir(parents=True, exist_ok=True)
         C9_JSON.write_text(json.dumps(out, indent=1, default=float))
         np.savez_compressed(C9_JSON.with_suffix(".npz"), util=util0, idx=base["idx"])
     return out
+
+
+def c9_pick(cands: list) -> dict | None:
+    ok = [c for c in cands if c["margins"]["min"]["fatigue"] >= C9_FAT_KEEP and c["margins"]["min"]["strength"] >= 1.0
+          and c["margins"]["min"]["creep"] >= 1.0 and c["delta_max_mm"] > 0]
+    return max(ok, key=lambda c: c["saved_g"]) if ok else None
 
 
 # ============================================================================================== run all
@@ -960,6 +974,10 @@ def combined_plate() -> dict:
     cp = replace(BASE_CP, material="alu_7075_t6", t=1.2, hub_d=28.0, hub_len=10.0)
     r = cp_eval(cp, routes()["cold_roll"], "C1+C2")
     r["saved_vs_base_g"] = BASE_CP.mass_g()["total_g"] - cp.mass_g()["total_g"]
+    holes = [hole_check(cp, d, route=routes()["cold_roll"]) for d in (25.0, 28.0, 31.0)]
+    r["with_holes"] = holes
+    r["package_min_sf"] = min(r["min_sf"], holes[-1]["min_sf"])
+    r["package_saved_g"] = r["saved_vs_base_g"] + holes[-1]["saved_g"]
     return r
 
 
@@ -977,8 +995,12 @@ def run(c9_result: dict | None = None, log=print, write: bool = True) -> dict:
     res["C4"] = c4()
     log("C-7 yoke")
     res["C7"] = c7(ts=(1.5, 1.2), log=log)
+    fx = c7(ts=(1.8, 2.0), log=log)          # what the released yoke needs (baseline flag)
+    res["C7_fix"] = {k: {kk: vv for kk, vv in v.items() if kk != "rows"} for k, v in fx.items() if k in ("1.8", "2.0")}
     if c9_result is None and C9_JSON.exists():
         c9_result = json.loads(C9_JSON.read_text())
+    if c9_result:
+        c9_result["best"] = c9_pick(c9_result["candidates"])
     res["C9"] = c9_result
     res["verdicts"] = verdicts(res)
     res["seconds"] = time.time() - t0

@@ -123,7 +123,7 @@ def _spec(od, fam, k):
     return section_spec(("round", float(od)), fam, int(k))
 
 
-BASE = {"stay": (20, "RW0", 3), "bar": (18, "RW45", 4), "ubar": (22, "RW45", 4), "pan_t": 1.5,
+BASE = {"stay": (20, "RW0", 3), "bar": (18, "RW45", 4), "ubar": (22, "RW45", 6), "pan_t": 1.5,
         "branch": None, "skin_t": 0.0, "spigot": True, "joint_mode": "printed"}
 
 # joint_mode "printed": the tube is bonded straight into the printed PAHT-CF socket (double lap with a printed
@@ -141,9 +141,9 @@ CONCEPTS = {
                        "tubes: printed bone, carbon sinew. The wrap carries the joint load.",
                "joint_mode": "wrap"},
     "BRANCH": {"label": "BRANCH: TENDON plus a printed hip node and branch tubes",
-               "look": "TENDON plus a printed hip node at the pivot that branches into two OD 12 carbon tubes up "
+               "look": "TENDON plus a printed hip node at the pivot that branches into two OD 14 carbon tubes up "
                        "to the z 330 knuckles: the Y-branch silhouette of today's body, as a lattice.",
-               "joint_mode": "wrap", "branch": {"sec": (12, "RW45", 3)}},
+               "joint_mode": "wrap", "branch": {"sec": (14, "RW45", 4)}},
     "SKIN": {"label": "SKIN: TENDON structure under a printed skin",
              "look": "The TENDON ladder hidden under a 0.8 mm printed shell shaped like today's branch body: reads "
                      "exactly like today's frame.",
@@ -230,8 +230,14 @@ def build(cand: dict, torso: float, posts: bool = False) -> dict:
     joints = []
     for j in m["joints"]:
         jid = j["id"]
-        if jid.startswith("crown_corner") or jid.startswith("post_socket"):
+        if jid.startswith("crown_corner"):
             joints.append(j)
+            continue
+        if jid.startswith("post_socket"):
+            # P-1 (this study): the accessory extension-post socket gets the crown corners' 0.8 mm bondline. With the
+            # 0.5 mm line its Volkersen peak is 0.96 at C6p on TODAY's frame too (rev_c_verification_results.json
+            # post_socket 0.957, a check the rev C summary table did not list).
+            joints.append({**j, "params": {**(j.get("params") or {}), **_crown_joint()}})
             continue
         if cand.get("joint_mode") == "wrap" and not jid.startswith("stay_top"):
             joints.append({**j, "params": {**wrap_joint(), "kind": jid.rsplit("_", 1)[0]}})
@@ -592,7 +598,8 @@ def summarize(rows: list) -> dict:
     smin = min(strength.items(), key=lambda kv: kv[1][0])
     fmin = min(fatigue.items(), key=lambda kv: kv[1][0])
     hip = [r["hip_fraction"] for r in rows if r["case"] == "static_carry" and r["variant"] == "crown_bar"]
-    return {"checks": checks, "min_strength": (smin[0], *smin[1]), "min_fatigue": (fmin[0], *fmin[1]),
+    return {"checks": checks, "min_strength": (smin[1][0], smin[0], smin[1][1]),
+            "min_fatigue": (fmin[1][0], fmin[0], fmin[1][1]),
             "by_case": {f"{k[0]}|{k[1]}": v for k, v in by_case.items()},
             "pass": smin[1][0] >= 1.0 and fmin[1][0] >= 1.0,
             "hip_fraction_static": float(np.mean([h for h in hip if h is not None])) if hip else None}
@@ -886,11 +893,26 @@ def size(name: str, log=print, procs: int = 3) -> dict:
     fatigue still pass (>= 1.0) on 15 / 19 / 23 in."""
     base = candidate(name)
     best = evaluate(base, procs)
+    # repair: rev C loads the upper bar harder than rev B (v2 sized at 1.05 on rev B with UD x4); if the base
+    # fails, step the failing tube up before any downsizing
+    ups = {"upper_bar": ("ubar", [(22, "RW45", 7), (25, "RW45", 6)]), "stays": ("stay", [(20, "RW0", 4)]),
+           "frame buckling": (("branch", [{"sec": (16, "RW45", 4)}, {"sec": (18, "RW45", 4)}]) if base.get("branch")
+                              else ("stay", [(20, "RW0", 4)]))}
+    for _ in range(3):
+        if best["summary"]["pass"]:
+            break
+        name_fail = best["summary"]["min_strength"][1]
+        key = next((v for k, v in ups.items() if k in name_fail), None)
+        if not key or not key[1]:
+            break
+        trial = evaluate({**best["cand"], key[0]: key[1].pop(0)}, procs)
+        log(f"[{name}] repair {key[0]}: strength {trial['summary']['min_strength'][0]:.2f}")
+        best = trial
     log(f"[{name}] base: strength {best['summary']['min_strength'][0]:.2f} fatigue "
         f"{best['summary']['min_fatigue'][0]:.2f} ({best['seconds']:.0f} s)")
     tried = [best]
     steps = [("stay", (20, "RW0", 2)), ("stay", (20, "RW45", 2)), ("bar", (16, "RW45", 4)), ("bar", (16, "RW45", 3)),
-             ("ubar", (20, "RW45", 4)), ("ubar", (20, "RW45", 3)), ("pan_t", 1.2)]
+             ("ubar", (22, "RW45", 5)), ("ubar", (22, "RW45", 4)), ("pan_t", 1.2)]
     if base.get("branch"):
         steps.append(("pan_t", 1.0))
     for key, val in steps:
