@@ -873,12 +873,59 @@ def _tripod(tg):
     return G.concat(legs), G.concat(parts)
 
 
-def _wing(S, sx, a_of, yf_of, yb_of, tri=None):
+def _wing_clean(S, sx, a_of, yf_of, yb_of, tri, z0, z1, W, nu, nv):
+    """B.2 render fix: the wing as one smooth taut panel. Laplacian smoothing in BOTH directions (the B.1 panel was
+    relaxed across u only, so the hard z-ends of the tripod / sleeve push left steps and folds along z), interleaved
+    with the skin push-out and a CAPSULE obstacle (rounded ends, radial push) for the tripod or scope sleeve."""
+    us = np.linspace(0, 1, nu + 1)
+    zz = np.linspace(z0, z1, nv + 1)
+    root = np.array([S.on([sx * a_of(z), yf_of(z) + 4, z])[0][0] for z in zz])
+    edge0 = np.array([S.on([sx * a_of(z), min(yf_of(z) + W, yb_of(z) - 14), z])[0][0] for z in zz])
+    P = root[None, :, :] + us[:, None, None] * (edge0 - root)[None, :, :]
+    P = P + sx * np.array([1.0, 0, 0]) * (8.0 * np.sin(np.pi * us))[:, None, None]
+
+    def obstacle(F):
+        if tri is None:
+            return F
+        Rc = tri["R"] + 3.0
+        a = np.array([tri["x"], tri["y"], 0.0])
+        zc = np.clip(F[:, 2], tri["z0"], tri["z1"])
+        A = np.column_stack([np.full(len(F), a[0]), np.full(len(F), a[1]), zc])
+        d = F - A
+        r = np.linalg.norm(d, axis=1)
+        m = r < Rc
+        # inside the capsule: radial push, biased outboard (+sx) so the wing never folds behind the obstacle
+        dd = d[m] + np.array([sx * 1e-3, 0, 0])
+        dd[:, 0] = np.where(dd[:, 0] * sx < 0, 0.25 * dd[:, 0], dd[:, 0])
+        F = F.copy()
+        F[m] = A[m] + _unit(dd) * Rc
+        return F
+
+    def lap(P, w=0.5):
+        Q = P.copy()
+        Q[1:-1, 1:-1] = (1 - w) * P[1:-1, 1:-1] + w * 0.25 * (P[:-2, 1:-1] + P[2:, 1:-1] + P[1:-1, :-2] + P[1:-1, 2:])
+        Q[-1, 1:-1] = (1 - w) * P[-1, 1:-1] + w * 0.5 * (P[-1, :-2] + P[-1, 2:])     # free edge: along z only
+        Q[1:-1, 0] = (1 - w) * P[1:-1, 0] + w * 0.5 * (P[:-2, 0] + P[2:, 0])        # bottom hem: along u only
+        Q[1:-1, -1] = (1 - w) * P[1:-1, -1] + w * 0.5 * (P[:-2, -1] + P[2:, -1])    # top hem
+        return Q                                                                     # root row (u = 0) stays sewn
+    shape = P.shape
+    for k in range(14):
+        F = obstacle(S.push_out(P.reshape(-1, 3), 3.0)).reshape(shape)
+        P = lap(lap(F)) if k < 13 else F
+    return P, us, zz
+
+
+def _wing(S, sx, a_of, yf_of, yb_of, tri=None, clean=False):
     """M-01 wing 200 x 450, root in the frame-side seam, z 150-600: a taut panel from the root line to near the aft
     corner, laid over the bulge (and over the tripod), 2.2 mm thick, hem roll on the free edges, camo bar on the aft
-    25 mm, straps at z 260 / 490 from G-hooks on the wing edge to loops in the aft corner seam."""
+    25 mm, straps at z 260 / 490 from G-hooks on the wing edge to loops in the aft corner seam.
+    ``clean`` (B.2 renders): smooth 2D panel (``_wing_clean``) and the camo bar 0.6 mm proud of the wing face (B.1:
+    0.2 mm, which z-fought into a torn-looking bar where the panel folded)."""
     z0, z1, W = 150.0, 600.0, 200.0
     nu, nv = 22, 40
+    if clean:
+        return _wing_finish(S, sx, a_of, yf_of, yb_of, *_wing_clean(S, sx, a_of, yf_of, yb_of, tri, z0, z1, W, 36, 72),
+                            W, bar_off=(2.8, 3.6))
     us = np.linspace(0, 1, nu + 1)
     zz = np.linspace(z0, z1, nv + 1)
     root = np.array([S.on([sx * a_of(z), yf_of(z) + 4, z])[0][0] for z in zz])
