@@ -1,0 +1,1124 @@
+{
+ "loads": {
+  "C2": {
+   "name": "C2 stumble 2.0 g x 1.5",
+   "T": 1000.0,
+   "H": 1239.438670694864,
+   "V": 1600.9920000000002,
+   "factor": 3.0,
+   "kind": "strength"
+  },
+  "C1": {
+   "name": "C1 static 1.0 g x 2.0",
+   "T": 603.75,
+   "H": 826.2924471299093,
+   "V": 1067.3280000000002,
+   "factor": 2.0,
+   "kind": "strength"
+  },
+  "walk": {
+   "name": "walking 0 -> 1.6 g, 1e5 cycles",
+   "T": 483.0,
+   "H": 661.0339577039275,
+   "V": 853.8624000000002,
+   "factor": 1.0,
+   "kind": "fatigue"
+  },
+  "carry": {
+   "name": "carry 1 g sustained",
+   "T": 301.875,
+   "H": 413.14622356495465,
+   "V": 533.6640000000001,
+   "factor": 1.0,
+   "kind": "creep"
+  }
+ },
+ "cp_geometry": {
+  "half_w_body": 75.0,
+  "ear_w": 30.0,
+  "half_h": 70.0,
+  "t": 1.5,
+  "rib_h": 0.0,
+  "rib_w": 3.0,
+  "vrib_x": [],
+  "vrib_root": 14.0,
+  "vrib_tip": 4.0,
+  "vrib_w": 2.5,
+  "hub_d": 36.0,
+  "hub_len": 12.0,
+  "bore_d": 10.2,
+  "hub_mat": "pa66_gf30",
+  "latch_g": 4.0,
+  "material": "alu_6061_t6",
+  "kind": "bowtie",
+  "spine_half_h": 30.0,
+  "flare_x": 62.5,
+  "curve_deg": 14.6
+ },
+ "ear_geometry": {
+  "hole_d": 2.0,
+  "pitch": 6.0,
+  "rows": 2,
+  "row_x": [
+   87.0,
+   97.0
+  ],
+  "end_dist": 6.0,
+  "first_row_share": 0.6,
+  "end_hole_factor": 1.5,
+  "thread": "bonded_nylon_tex135",
+  "doubler": "cordura_1000d_nylon66",
+  "shell": "cordura_330d_nylon66"
+ },
+ "cp_mass": {
+  "plate_g": 77.45033637826059,
+  "ribs_g": 0.0,
+  "hub_g": 13.466707557819754,
+  "latch_g": 4.0,
+  "total_g": 94.58610699515488
+ },
+ "cp_material": {
+  "id": "alu_6061_t6",
+  "E": 68900.0,
+  "nu": 0.33,
+  "rho": 2700.0,
+  "uts_cond": 310.0,
+  "static": 241.0,
+  "fatigue": 237.29751404836907,
+  "creep": 241.0,
+  "basis": "alu_6061_t6: S-basis yield; 1e5-cycle R=0 max stress 237 MPa (Basquin + Goodman)"
+ },
+ "cp": {
+  "C2": {
+   "load": "C2 stumble 2.0 g x 1.5",
+   "kind": "strength",
+   "sigma1_mpa": 199.6079471831223,
+   "sigma_bend_mpa": 133.44754497057448,
+   "sigma_membrane_mpa": 66.16040221254781,
+   "membrane_at_x": 18.0,
+   "kt": 1.0,
+   "allow_mpa": 241.0,
+   "sf_over_req": 1.207366757691788,
+   "member": "x4_10",
+   "group": "strip_x",
+   "at": [
+    [
+     18.0,
+     0.0,
+     -0.0
+    ],
+    [
+     25.0,
+     0.0,
+     -0.0
+    ]
+   ],
+   "e_pad": 0.0,
+   "uy_max_mm": 6.190764544044816,
+   "reaction": [
+    0.0,
+    0.0,
+    0.0,
+    4.378088383445109e-08,
+    -0.0,
+    2.4030214262893423e-08
+   ],
+   "p_body_max_kpa": 13.385436851988791,
+   "p_body_min_kpa": 3.846947413675598
+  },
+  "C1": {
+   "load": "C1 static 1.0 g x 2.0",
+   "kind": "strength",
+   "sigma1_mpa": 123.99720688266129,
+   "sigma_bend_mpa": 80.56895527598681,
+   "sigma_membrane_mpa": 43.42825160667448,
+   "membrane_at_x": 18.0,
+   "kt": 1.0,
+   "allow_mpa": 241.0,
+   "sf_over_req": 1.9435921667821001,
+   "member": "x4_10",
+   "group": "strip_x",
+   "at": [
+    [
+     18.0,
+     0.0,
+     -0.0
+    ],
+    [
+     25.0,
+     0.0,
+     -0.0
+    ]
+   ],
+   "e_pad": 0.0,
+   "uy_max_mm": 3.7376740934970103,
+   "reaction": [
+    0.0,
+    0.0,
+    0.0,
+    2.5711430213308872e-08,
+    -0.0,
+    1.2319787856540643e-08
+   ],
+   "p_body_max_kpa": 8.081457499452995,
+   "p_body_min_kpa": 2.322594501006553
+  },
+  "walk": {
+   "load": "walking 0 -> 1.6 g, 1e5 cycles",
+   "kind": "fatigue",
+   "sigma1_mpa": 99.1977655072963,
+   "sigma_bend_mpa": 64.45516422195671,
+   "sigma_membrane_mpa": 34.74260128533959,
+   "membrane_at_x": 18.0,
+   "kt": 2.0,
+   "allow_mpa": 237.29751404836907,
+   "sf_over_req": 1.1960829603108103,
+   "member": "x4_7",
+   "group": "strip_x",
+   "at": [
+    [
+     -25.0,
+     0.0,
+     -0.0
+    ],
+    [
+     -18.0,
+     0.0,
+     -0.0
+    ]
+   ],
+   "e_pad": 0.0,
+   "uy_max_mm": 2.9901392750134783,
+   "reaction": [
+    0.0,
+    0.0,
+    0.0,
+    1.6475522039540584e-08,
+    -0.0,
+    3.8696725823683664e-09
+   ],
+   "p_body_max_kpa": 6.465166000029142,
+   "p_body_min_kpa": 1.8580756008058426
+  },
+  "carry": {
+   "load": "carry 1 g sustained",
+   "kind": "creep",
+   "sigma1_mpa": 61.998603441330644,
+   "sigma_bend_mpa": 40.284477637993405,
+   "sigma_membrane_mpa": 21.71412580333724,
+   "membrane_at_x": 18.0,
+   "kt": 1.0,
+   "allow_mpa": 241.0,
+   "sf_over_req": 3.8871843335642002,
+   "member": "x4_10",
+   "group": "strip_x",
+   "at": [
+    [
+     18.0,
+     0.0,
+     -0.0
+    ],
+    [
+     25.0,
+     0.0,
+     -0.0
+    ]
+   ],
+   "e_pad": 0.0,
+   "uy_max_mm": 1.8688370467485051,
+   "reaction": [
+    0.0,
+    0.0,
+    0.0,
+    1.2855715106654436e-08,
+    -0.0,
+    6.159893928270321e-09
+   ],
+   "p_body_max_kpa": 4.040728749726497,
+   "p_body_min_kpa": 1.1612972505032766
+  }
+ },
+ "ear": {
+  "n_per_row": 22,
+  "rows": 2,
+  "span_mm": 126.0,
+  "edge_mm": 8.0,
+  "hole_cap_n": 147.0,
+  "cases": {
+   "C2": {
+    "load": "C2 stumble 2.0 g x 1.5",
+    "kind": "strength",
+    "R_n": 1187.4797099109694,
+    "f_hole_n": 48.57871540544875,
+    "thread_sf": 3.026016615983057,
+    "bearing_mpa": 35.98423363366574,
+    "bearing_sf": 6.697377591905357,
+    "shear_out_mpa": 2.313272162164226,
+    "shear_out_sf": 52.090714603708335,
+    "net_mpa": 6.944444444444445,
+    "net_sf": 34.704,
+    "fabric_n_mm": 8.481997927935495,
+    "fabric_sf": 15.69441552933758
+   },
+   "C1": {
+    "load": "C1 static 1.0 g x 2.0",
+    "kind": "strength",
+    "R_n": 739.4486540885987,
+    "f_hole_n": 30.250172212715402,
+    "thread_sf": 4.859476467317757,
+    "bearing_mpa": 22.40753497238178,
+    "bearing_sf": 10.755310671032872,
+    "shear_out_mpa": 1.4404843910816858,
+    "shear_out_sf": 83.65241633025566,
+    "net_mpa": 4.192708333333333,
+    "net_sf": 57.48074534161491,
+    "fabric_n_mm": 5.281776100632848,
+    "fabric_sf": 25.20364314270155
+   },
+   "walk": {
+    "load": "walking 0 -> 1.6 g, 1e5 cycles",
+    "kind": "fatigue",
+    "R_n": 591.558923270879,
+    "f_hole_n": 24.20013777017232,
+    "thread_sf": 1.8223036752441588,
+    "bearing_mpa": 17.92602797790542,
+    "bearing_sf": 13.237595876836084,
+    "shear_out_mpa": 1.1523875128653485,
+    "shear_out_sf": 102.95907904205842,
+    "net_mpa": 3.3541666666666665,
+    "net_sf": 23.582361644558418,
+    "fabric_n_mm": 4.225420880506278,
+    "fabric_sf": 9.45136617851308
+   },
+   "carry": {
+    "load": "carry 1 g sustained",
+    "kind": "creep",
+    "R_n": 369.72432704429934,
+    "f_hole_n": 15.125086106357701,
+    "thread_sf": 2.915685880390654,
+    "bearing_mpa": 11.20376748619089,
+    "bearing_sf": 21.510621342065743,
+    "shear_out_mpa": 0.7202421955408429,
+    "shear_out_sf": 167.30483266051132,
+    "net_mpa": 2.0963541666666665,
+    "net_sf": 114.96149068322983,
+    "fabric_n_mm": 2.640888050316424,
+    "fabric_sf": 15.12218588562093
+   }
+  },
+  "min_sf": 1.8223036752441588
+ },
+ "wing": {
+  "shell": "cordura_330d_nylon66",
+  "strip_n_mm": 25.6,
+  "cap_n_mm": 20.480000000000004,
+  "q_factored_n_mm": 9.523809523809524,
+  "sf_strength": 2.1504000000000003,
+  "q_walk_n_mm": 4.6,
+  "walk_frac_of_strip": 0.17968749999999997,
+  "sf_fatigue": 1.6695652173913045,
+  "strain_walk": 0.029595588235294117,
+  "stretch_xxl_mm": 8.99705882352941,
+  "basis": "clothsim strip = grab / 31.25 mm, secant k = strip / 25 % (warp); textile 1e5 limit 0.3 x strip (ASSUMPTION)"
+ },
+ "tab": {
+  "box_x": {
+   "total_mm": 224.33981132056604,
+   "effective_mm": 112.16990566028302,
+   "per_mm_n": 42.0,
+   "cap_n": 4711.136037731887,
+   "sf": 4.711136037731887
+  },
+  "fabric_under_box": {
+   "w_eff_mm": 71.18802153517007,
+   "cap_n": 4738.27471338092,
+   "sf": 4.73827471338092
+  },
+  "d_ring": {
+   "break_n": 3080.0,
+   "sf": 3.08
+  },
+  "lock_leg_frac": 0.5882352941176471,
+  "ladder_lock_heavy": {
+   "slip_n": 490.0,
+   "break_n": 981.0,
+   "slip_sf_walk": 1.7246376811594202,
+   "slip_sf_stumble": 1.3797101449275362,
+   "break_sf": 1.6677
+  },
+  "ladder_lock_classic_slip_sf_walk": 1.0559006211180124,
+  "lock_if_routed_between_anchor_and_ring": {
+   "lock_leg_frac": 1.0,
+   "slip_sf_walk": 1.0144927536231885,
+   "note": "anchor on the wing, lock, then D-ring: once the hand lets go the D-ring legs go slack and the lock holds the full T (1:1 hold)"
+  },
+  "buckle_50": {
+   "break_n": 1500.0,
+   "sf": 1.5
+  },
+  "webbing_25": {
+   "break_n": 13344.0,
+   "sf": 22.6848
+  },
+  "T": {
+   "factored": 1000.0,
+   "walk": 483.0,
+   "stumble_limit": 603.75
+  }
+ },
+ "hdpe": {
+  "share_if_fixed": 0.8743220497475219,
+  "holes": 64,
+  "carry": {
+   "T": 301.875,
+   "f_hole_n": 8.247999023985411,
+   "bearing_mpa": 9.16444335998379,
+   "shear_out_mpa": 4.79883579577333
+  },
+  "walk": {
+   "T": 483.0,
+   "f_hole_n": 13.196798438376659,
+   "bearing_mpa": 14.663109375974065,
+   "shear_out_mpa": 7.678137273237328
+  },
+  "C2": {
+   "T": 1000.0,
+   "f_hole_n": 27.32256405461006,
+   "bearing_mpa": 30.358404505122287,
+   "shear_out_mpa": 15.896764540864034
+  },
+  "fixed_creep_sf": 0.5455868734845718,
+  "fixed_fatigue_sf": 0.6819835918557147,
+  "fixed_static_sf": 0.8564349946524065,
+  "fixed_shearout_creep_sf": 0.5209596882231153,
+  "floating": "net HDPE tension 0 (free body): no creep path; stitches through it are allowed"
+ },
+ "pivot": {
+  "C2": {
+   "load": "C2 stumble 2.0 g x 1.5",
+   "H_n": 0.0,
+   "V_n": 1600.9920000000002,
+   "pin_sigma_mpa": 97.84542360982263,
+   "pin_sf": 8.452107104138268,
+   "hub_bearing_mpa": 13.341600000000001,
+   "hub_bearing_sf": 7.4953528812136465,
+   "face_p_mpa": 0.004272759303114744,
+   "face_sf": 23404.07987108056,
+   "m5_tension_n": 1050.651,
+   "m5_tension_noH_n": 1050.651
+  },
+  "C1": {
+   "load": "C1 static 1.0 g x 2.0",
+   "H_n": 0.0,
+   "V_n": 1067.3280000000002,
+   "pin_sigma_mpa": 65.23028240654841,
+   "pin_sf": 12.678160656207403,
+   "hub_bearing_mpa": 8.894400000000001,
+   "hub_bearing_sf": 11.24302932182047,
+   "face_p_mpa": 0.004272759303114744,
+   "face_sf": 23404.07987108056,
+   "m5_tension_n": 700.4340000000001,
+   "m5_tension_noH_n": 700.4340000000001
+  },
+  "walk": {
+   "load": "walking 0 -> 1.6 g, 1e5 cycles",
+   "H_n": 0.0,
+   "V_n": 853.8624000000002,
+   "pin_sigma_mpa": 52.18422592523874,
+   "pin_sf": 9.773068220474265,
+   "hub_bearing_mpa": 7.115520000000002,
+   "hub_bearing_sf": 5.270169994603345,
+   "face_p_mpa": 0.004272759303114744,
+   "face_sf": 8776.529951655211,
+   "m5_tension_n": 560.3472000000002,
+   "m5_tension_noH_n": 560.3472000000002
+  },
+  "carry": {
+   "load": "carry 1 g sustained",
+   "H_n": 0.0,
+   "V_n": 533.6640000000001,
+   "pin_sigma_mpa": 32.615141203274206,
+   "pin_sf": 25.356321312414806,
+   "hub_bearing_mpa": 4.4472000000000005,
+   "hub_bearing_sf": 7.0268933261377935,
+   "face_p_mpa": 0.004272759303114744,
+   "face_sf": 7313.774959712676,
+   "m5_tension_n": 350.21700000000004,
+   "m5_tension_noH_n": 350.21700000000004
+  }
+ },
+ "m5": {
+  "C2": {
+   "T_n": 1050.651,
+   "T_noH_n": 1050.651,
+   "cap_n": 1200.0,
+   "sf": 1.1421490104706509,
+   "sf_noH": 1.1421490104706509
+  },
+  "C1": {
+   "T_n": 700.4340000000001,
+   "T_noH_n": 700.4340000000001,
+   "cap_n": 1200.0,
+   "sf": 1.7132235157059763,
+   "sf_noH": 1.7132235157059763
+  }
+ },
+ "pivot_with_H": {
+  "C2": {
+   "load": "C2 stumble 2.0 g x 1.5",
+   "H_n": 1239.438670694864,
+   "V_n": 1600.9920000000002,
+   "pin_sigma_mpa": 168.54440794018285,
+   "pin_sf": 4.906718710557908,
+   "hub_bearing_mpa": 42.261835649546825,
+   "hub_bearing_sf": 2.366201052629201,
+   "face_p_mpa": 5.295823110851652,
+   "face_sf": 18.882805922103095,
+   "m5_tension_n": 1205.5808338368581,
+   "m5_tension_noH_n": 1050.651
+  },
+  "C1": {
+   "load": "C1 static 1.0 g x 2.0",
+   "H_n": 826.2924471299093,
+   "V_n": 1067.3280000000002,
+   "pin_sigma_mpa": 112.36293862678856,
+   "pin_sf": 7.360078065836862,
+   "hub_bearing_mpa": 28.174557099697882,
+   "hub_bearing_sf": 3.549301578943802,
+   "face_p_mpa": 3.530548740567768,
+   "face_sf": 28.32420888315464,
+   "m5_tension_n": 803.7205558912387,
+   "m5_tension_noH_n": 700.4340000000001
+  },
+  "walk": {
+   "load": "walking 0 -> 1.6 g, 1e5 cycles",
+   "H_n": 661.0339577039275,
+   "V_n": 853.8624000000002,
+   "pin_sigma_mpa": 89.89035090143088,
+   "pin_sf": 5.673578920158402,
+   "hub_bearing_mpa": 22.53964567975831,
+   "hub_bearing_sf": 1.663735115129907,
+   "face_p_mpa": 2.8244389924542146,
+   "face_sf": 13.276972913978737,
+   "m5_tension_n": 642.976444712991,
+   "m5_tension_noH_n": 560.3472000000002
+  },
+  "carry": {
+   "load": "carry 1 g sustained",
+   "H_n": 413.14622356495465,
+   "V_n": 533.6640000000001,
+   "pin_sigma_mpa": 56.18146931339428,
+   "pin_sf": 14.720156131673724,
+   "hub_bearing_mpa": 14.087278549848941,
+   "hub_bearing_sf": 2.218313486839876,
+   "face_p_mpa": 1.765274370283884,
+   "face_sf": 17.702630551971648,
+   "m5_tension_n": 401.8602779456194,
+   "m5_tension_noH_n": 350.21700000000004
+  }
+ },
+ "m5_with_H": {
+  "C2": {
+   "T_n": 1205.5808338368581,
+   "T_noH_n": 1050.651,
+   "cap_n": 1200.0,
+   "sf": 0.9953708339746107,
+   "sf_noH": 1.1421490104706509
+  },
+  "C1": {
+   "T_n": 803.7205558912387,
+   "T_noH_n": 700.4340000000001,
+   "cap_n": 1200.0,
+   "sf": 1.493056250961916,
+   "sf_noH": 1.7132235157059763
+  }
+ },
+ "cp_variants": {
+  "as_drawn": {
+   "kind": "plate",
+   "material": "pa66_gf30",
+   "t": 3.0,
+   "curve_deg": 0.0,
+   "mass_g": 134.9048012510459,
+   "sf": {
+    "C2": 0.6063194481658182,
+    "C1": 0.8597608285093256,
+    "walk": 0.2015064441817266,
+    "carry": 0.5373505178183284
+   },
+   "sigma_bend": {
+    "C2": 156.5530244945921,
+    "C1": 110.85410257119685,
+    "walk": 88.68328205702515,
+    "carry": 55.427051285598424
+   },
+   "sigma_membrane": {
+    "C2": 8.376535826309341,
+    "C1": 5.457314143824309,
+    "walk": 4.365851315059448,
+    "carry": 2.7286570719121546
+   },
+   "p_body_walk_kpa": [
+    26.855652566204217,
+    41.21705372310412
+   ]
+  },
+  "pad_on_cp_7075": {
+   "kind": "plate",
+   "material": "alu_7075_t6",
+   "t": 0.8,
+   "curve_deg": 0.0,
+   "mass_g": 120.6863152061508,
+   "sf": {
+    "C2": 1.5917616254712452,
+    "C1": 2.164136992411895,
+    "walk": 1.25060299804191,
+    "carry": 4.32827398482379
+   },
+   "sigma_bend": {
+    "C2": 258.8324547765658,
+    "C1": 193.0150880686542,
+    "walk": 154.41207047538356,
+    "carry": 96.5075440343271
+   },
+   "sigma_membrane": {
+    "C2": 31.412009348660035,
+    "C1": 20.46492803934116,
+    "walk": 16.37194243147293,
+    "carry": 10.23246401967058
+   },
+   "p_body_walk_kpa": [
+    33.046548858873365,
+    34.81211406117334
+   ]
+  },
+  "recommended": {
+   "kind": "bowtie",
+   "material": "alu_6061_t6",
+   "t": 1.5,
+   "curve_deg": 14.6,
+   "mass_g": 94.58610699515488,
+   "sf": {
+    "C2": 1.207366757691788,
+    "C1": 1.9435921667821001,
+    "walk": 1.1960829603108103,
+    "carry": 3.8871843335642002
+   },
+   "sigma_bend": {
+    "C2": 133.44754497057448,
+    "C1": 80.56895527598681,
+    "walk": 64.45516422195671,
+    "carry": 40.284477637993405
+   },
+   "sigma_membrane": {
+    "C2": 66.16040221254781,
+    "C1": 43.42825160667448,
+    "walk": 34.74260128533959,
+    "carry": 21.71412580333724
+   },
+   "p_body_walk_kpa": [
+    1.8580756008058426,
+    6.465166000029142
+   ]
+  }
+ },
+ "pivot_fe": {
+  "what": "SLM Ti hip-pivot mount, fine-mesh re-verification with the lumbar push H on the pin (hipbelt B)",
+  "e_pad_mm": 20.0,
+  "volfrac": 0.025,
+  "n_solid_fine": 15549,
+  "h_fine": 0.6922457691000652,
+  "allow_mpa": 785.0,
+  "min_sf_over_req_original": 8.505015758764502,
+  "governing_original": "side_hill_torsion|23|HP",
+  "min_sf_over_req_with_H": 4.691390322233666,
+  "governing_with_H": "drop_2p5g|15|HP|Hup",
+  "fatigue_original": {
+   "key": "static_carry|15|HP",
+   "smax_mpa": 20.326680888655893,
+   "sf": 19.443275255832692
+  },
+  "fatigue_with_H": {
+   "key": "static_carry|15|HP|Hup",
+   "smax_mpa": 89.24149088224526,
+   "sf": 4.246925935442402
+  },
+  "record": {
+   "sf_static": 8.564546265236642,
+   "fatigue_sf": 19.673547024831187
+  },
+  "H_n": {
+   "static_carry|15": 413.1,
+   "static_carry|19": 315.8,
+   "static_carry|23": 256.1,
+   "drop_2p5g|15": 826.3,
+   "drop_2p5g|19": 631.6,
+   "drop_2p5g|23": 512.2,
+   "side_hill_torsion|15": 661.0,
+   "side_hill_torsion|19": 505.3,
+   "side_hill_torsion|23": 409.7,
+   "meat_shelf_heavy_low|15": 765.8,
+   "meat_shelf_heavy_low|19": 585.4,
+   "meat_shelf_heavy_low|23": 474.7,
+   "meat_straps|15": 765.8,
+   "meat_straps|19": 585.4,
+   "meat_straps|23": 474.7,
+   "tall_load|15": 745.7,
+   "tall_load|19": 570.0,
+   "tall_load|23": 462.2,
+   "tall_load_posts|15": 745.7,
+   "tall_load_posts|19": 570.0,
+   "tall_load_posts|23": 462.2,
+   "overload_haul|15": 819.9,
+   "overload_haul|19": 626.8,
+   "overload_haul|23": 508.2
+  },
+  "seconds": 280.1
+ },
+ "summary": [
+  {
+   "group": "Centre plate",
+   "item": "CP rec.: curved 6061-T6 1.5 bow-tie (95 g)",
+   "case": "C2",
+   "sf_over_req": 1.207366757691788,
+   "basis": "199.6 MPa x Kt 1.0 vs 241.0"
+  },
+  {
+   "group": "Centre plate",
+   "item": "CP rec.: curved 6061-T6 1.5 bow-tie (95 g)",
+   "case": "C1",
+   "sf_over_req": 1.9435921667821001,
+   "basis": "124.0 MPa x Kt 1.0 vs 241.0"
+  },
+  {
+   "group": "Centre plate",
+   "item": "CP rec.: curved 6061-T6 1.5 bow-tie (95 g)",
+   "case": "walk",
+   "sf_over_req": 1.1960829603108103,
+   "basis": "99.2 MPa x Kt 2.0 vs 237.3"
+  },
+  {
+   "group": "Centre plate",
+   "item": "CP rec.: curved 6061-T6 1.5 bow-tie (95 g)",
+   "case": "carry",
+   "sf_over_req": 3.8871843335642002,
+   "basis": "62.0 MPa x Kt 1.0 vs 241.0"
+  },
+  {
+   "group": "Rejected",
+   "item": "CP as drawn: flat PA66 3 mm under the pad (135 g)",
+   "case": "walk",
+   "sf_over_req": 0.2015064441817266,
+   "basis": "pa66_gf30 plate"
+  },
+  {
+   "group": "Centre plate",
+   "item": "CP pad on cp 7075 (121 g, fallback)",
+   "case": "walk",
+   "sf_over_req": 1.25060299804191,
+   "basis": "alu_7075_t6 plate"
+  },
+  {
+   "group": "Wing joint",
+   "item": "ear: thread per hole",
+   "case": "C2",
+   "sf_over_req": 3.026016615983057,
+   "basis": "48.6 N/hole"
+  },
+  {
+   "group": "Wing joint",
+   "item": "ear: plate bearing (thread)",
+   "case": "C2",
+   "sf_over_req": 6.697377591905357,
+   "basis": "36.0 MPa"
+  },
+  {
+   "group": "Wing joint",
+   "item": "ear: plate shear-out",
+   "case": "C2",
+   "sf_over_req": 52.090714603708335,
+   "basis": "2.3 MPa"
+  },
+  {
+   "group": "Wing joint",
+   "item": "ear: plate net section",
+   "case": "C2",
+   "sf_over_req": 34.704,
+   "basis": "6.9 MPa"
+  },
+  {
+   "group": "Wing joint",
+   "item": "ear: textile (shell + 1000D)",
+   "case": "C2",
+   "sf_over_req": 15.69441552933758,
+   "basis": "8.5 N/mm"
+  },
+  {
+   "group": "Wing joint",
+   "item": "ear: thread per hole",
+   "case": "C1",
+   "sf_over_req": 4.859476467317757,
+   "basis": "30.3 N/hole"
+  },
+  {
+   "group": "Wing joint",
+   "item": "ear: plate bearing (thread)",
+   "case": "C1",
+   "sf_over_req": 10.755310671032872,
+   "basis": "22.4 MPa"
+  },
+  {
+   "group": "Wing joint",
+   "item": "ear: plate shear-out",
+   "case": "C1",
+   "sf_over_req": 83.65241633025566,
+   "basis": "1.4 MPa"
+  },
+  {
+   "group": "Wing joint",
+   "item": "ear: plate net section",
+   "case": "C1",
+   "sf_over_req": 57.48074534161491,
+   "basis": "4.2 MPa"
+  },
+  {
+   "group": "Wing joint",
+   "item": "ear: textile (shell + 1000D)",
+   "case": "C1",
+   "sf_over_req": 25.20364314270155,
+   "basis": "5.3 N/mm"
+  },
+  {
+   "group": "Wing joint",
+   "item": "ear: thread per hole",
+   "case": "walk",
+   "sf_over_req": 1.8223036752441588,
+   "basis": "24.2 N/hole"
+  },
+  {
+   "group": "Wing joint",
+   "item": "ear: plate bearing (thread)",
+   "case": "walk",
+   "sf_over_req": 13.237595876836084,
+   "basis": "17.9 MPa"
+  },
+  {
+   "group": "Wing joint",
+   "item": "ear: plate shear-out",
+   "case": "walk",
+   "sf_over_req": 102.95907904205842,
+   "basis": "1.2 MPa"
+  },
+  {
+   "group": "Wing joint",
+   "item": "ear: plate net section",
+   "case": "walk",
+   "sf_over_req": 23.582361644558418,
+   "basis": "3.4 MPa"
+  },
+  {
+   "group": "Wing joint",
+   "item": "ear: textile (shell + 1000D)",
+   "case": "walk",
+   "sf_over_req": 9.45136617851308,
+   "basis": "4.2 N/mm"
+  },
+  {
+   "group": "Wing joint",
+   "item": "ear: thread per hole",
+   "case": "carry",
+   "sf_over_req": 2.915685880390654,
+   "basis": "15.1 N/hole"
+  },
+  {
+   "group": "Wing joint",
+   "item": "ear: plate bearing (thread)",
+   "case": "carry",
+   "sf_over_req": 21.510621342065743,
+   "basis": "11.2 MPa"
+  },
+  {
+   "group": "Wing joint",
+   "item": "ear: plate shear-out",
+   "case": "carry",
+   "sf_over_req": 167.30483266051132,
+   "basis": "0.7 MPa"
+  },
+  {
+   "group": "Wing joint",
+   "item": "ear: plate net section",
+   "case": "carry",
+   "sf_over_req": 114.96149068322983,
+   "basis": "2.1 MPa"
+  },
+  {
+   "group": "Wing joint",
+   "item": "ear: textile (shell + 1000D)",
+   "case": "carry",
+   "sf_over_req": 15.12218588562093,
+   "basis": "2.6 N/mm"
+  },
+  {
+   "group": "Wing",
+   "item": "wing shell 330D at the tip",
+   "case": "C2",
+   "sf_over_req": 2.1504000000000003,
+   "basis": "9.5 N/mm"
+  },
+  {
+   "group": "Wing",
+   "item": "wing shell 330D at the tip",
+   "case": "walk",
+   "sf_over_req": 1.6695652173913045,
+   "basis": "4.6 N/mm"
+  },
+  {
+   "group": "2:1 pull",
+   "item": "D-ring tab box-X (tex 135)",
+   "case": "C2",
+   "sf_over_req": 4.711136037731887,
+   "basis": "4711 N cap"
+  },
+  {
+   "group": "2:1 pull",
+   "item": "textile under the tab",
+   "case": "C2",
+   "sf_over_req": 4.73827471338092,
+   "basis": "4738 N cap"
+  },
+  {
+   "group": "2:1 pull",
+   "item": "D-ring 25 mm Al",
+   "case": "C2",
+   "sf_over_req": 3.08,
+   "basis": "break 3080 N"
+  },
+  {
+   "group": "2:1 pull",
+   "item": "heavy ladder lock slip",
+   "case": "walk",
+   "sf_over_req": 1.1497584541062802,
+   "basis": "slip / (1.5 x lock leg), test-qualified criterion"
+  },
+  {
+   "group": "2:1 pull",
+   "item": "heavy ladder lock break",
+   "case": "C2",
+   "sf_over_req": 1.6677,
+   "basis": "break / lock leg"
+  },
+  {
+   "group": "2:1 pull",
+   "item": "50 mm buckle",
+   "case": "C2",
+   "sf_over_req": 1.5,
+   "basis": "break 1500 N"
+  },
+  {
+   "group": "Rejected",
+   "item": "HDPE at tab, if fixed both ends: creep",
+   "case": "carry",
+   "sf_over_req": 0.5455868734845718,
+   "basis": "9.2 MPa vs 5.0"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "Ti pin bending",
+   "case": "C2",
+   "sf_over_req": 8.452107104138268,
+   "basis": "98 MPa"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "CP hub bore bearing",
+   "case": "C2",
+   "sf_over_req": 7.4953528812136465,
+   "basis": "13.3 MPa"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "Ti pin bending",
+   "case": "C1",
+   "sf_over_req": 12.678160656207403,
+   "basis": "65 MPa"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "CP hub bore bearing",
+   "case": "C1",
+   "sf_over_req": 11.24302932182047,
+   "basis": "8.9 MPa"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "Ti pin bending",
+   "case": "walk",
+   "sf_over_req": 9.773068220474265,
+   "basis": "52 MPa"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "CP hub bore bearing",
+   "case": "walk",
+   "sf_over_req": 5.270169994603345,
+   "basis": "7.1 MPa"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "Ti pin bending",
+   "case": "carry",
+   "sf_over_req": 25.356321312414806,
+   "basis": "33 MPa"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "CP hub bore bearing",
+   "case": "carry",
+   "sf_over_req": 7.0268933261377935,
+   "basis": "4.4 MPa"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "Ti pin bending, H on the pin (bound)",
+   "case": "C2",
+   "sf_over_req": 4.906718710557908,
+   "basis": "169 MPa"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "PA66 hub bore bearing, H on the pin",
+   "case": "C2",
+   "sf_over_req": 2.366201052629201,
+   "basis": "42.3 MPa"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "PA66 hub thrust face, H on the pin",
+   "case": "C2",
+   "sf_over_req": 18.882805922103095,
+   "basis": "5.3 MPa"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "Ti pin bending, H on the pin (bound)",
+   "case": "C1",
+   "sf_over_req": 7.360078065836862,
+   "basis": "112 MPa"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "PA66 hub bore bearing, H on the pin",
+   "case": "C1",
+   "sf_over_req": 3.549301578943802,
+   "basis": "28.2 MPa"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "PA66 hub thrust face, H on the pin",
+   "case": "C1",
+   "sf_over_req": 28.32420888315464,
+   "basis": "3.5 MPa"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "Ti pin bending, H on the pin (bound)",
+   "case": "walk",
+   "sf_over_req": 5.673578920158402,
+   "basis": "90 MPa"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "PA66 hub bore bearing, H on the pin",
+   "case": "walk",
+   "sf_over_req": 1.663735115129907,
+   "basis": "22.5 MPa"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "PA66 hub thrust face, H on the pin",
+   "case": "walk",
+   "sf_over_req": 13.276972913978737,
+   "basis": "2.8 MPa"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "Ti pin bending, H on the pin (bound)",
+   "case": "carry",
+   "sf_over_req": 14.720156131673724,
+   "basis": "56 MPa"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "PA66 hub bore bearing, H on the pin",
+   "case": "carry",
+   "sf_over_req": 2.218313486839876,
+   "basis": "14.1 MPa"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "PA66 hub thrust face, H on the pin",
+   "case": "carry",
+   "sf_over_req": 17.702630551971648,
+   "basis": "1.8 MPa"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "2 x M5 inserts, mount to frame, H on the pin",
+   "case": "C2",
+   "sf_over_req": 0.9953708339746107,
+   "basis": "1206 N vs 1200 (ASSUMPTION cap)"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "2 x M5 inserts, mount to frame, H on the pin",
+   "case": "C1",
+   "sf_over_req": 1.493056250961916,
+   "basis": "804 N vs 1200 (ASSUMPTION cap)"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "2 x M5 inserts, mount to frame, H on frame",
+   "case": "C2",
+   "sf_over_req": 1.1421490104706509,
+   "basis": "1051 N vs 1200 (ASSUMPTION cap)"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "2 x M5 inserts, mount to frame, H on frame",
+   "case": "C1",
+   "sf_over_req": 1.7132235157059763,
+   "basis": "700 N vs 1200 (ASSUMPTION cap)"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "SLM Ti mount FE (all cases + H)",
+   "case": "all",
+   "sf_over_req": 4.691390322233666,
+   "basis": "governing drop_2p5g|15|HP|Hup"
+  },
+  {
+   "group": "Ti pivot",
+   "item": "SLM Ti mount FE fatigue",
+   "case": "walk",
+   "sf_over_req": 4.246925935442402,
+   "basis": "89 MPa max"
+  }
+ ],
+ "mass": {
+  "centre_plate_g": 94.58610699515488,
+  "cp_breakdown": {
+   "plate_g": 77.45033637826059,
+   "ribs_g": 0.0,
+   "hub_g": 13.466707557819754,
+   "latch_g": 4.0,
+   "total_g": 94.58610699515488
+  },
+  "root_doublers_1000d_g": 10.2,
+  "tip_doublers_1000d_g": 4.08,
+  "ear_thread_g": 0.52272,
+  "thrust_washer_pom_g": 1.0,
+  "joint_total_g": 110.38882699515489,
+  "booked_g": 51.0,
+  "booked_basis": "centre plate + latch 45 g ASSUMPTION + cant snap 6 g (deleted in B)"
+ }
+}
