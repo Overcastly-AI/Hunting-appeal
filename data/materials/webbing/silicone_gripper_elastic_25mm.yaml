@@ -1,0 +1,29 @@
+id: silicone_gripper_elastic_25mm
+name: Silicone gripper elastic 25 mm (leg-gripper tape, silicone lines or waves on one face)
+category: webbing
+generic: true
+trade_names: []
+supplier_examples:
+- Bra & Corset Supplies (1 in gripper elastic by the metre)
+- Les Tissees (25 mm black silicone gripper band, sold per 0.5 m)
+- Amazon / marketplace rolls (SmiLife 1 in x 12 yd, Gorgecraft 1 in x 5 yd wave grip)
+properties:
+  width_mm: 25
+  mass_g_m: 10
+  stretch_pct: 80
+  quietness_1to5: 5
+confidence: estimate
+sources:
+- 'Bra & Corset Supplies, 1 in gripper elastic sold by the metre or part metre (search result 2026-11-09)'
+- 'Les Tissees, silicone gripper elastic band black 25 mm, 1 unit = 0.50 m (lestissees.com listing)'
+- 'SmiLife silicone gripper elastic 1 in x 12 yd; Gorgecraft 1 in x 5 yd wave silicone grip (marketplace listings)'
+- 'Friction of the silicone face: see silicone_grip_print sources (Zhang & Mak 1999; US 6,107,418)'
+cost_usd:
+  value: 1.5
+  per: m
+notes: 'ESTIMATE: mass_g_m and stretch_pct are ASSUMPTIONs (no listing gives a mass; typical 25 mm cycling-short
+  gripper is about 8-12 g/m); weigh 1 m on arrival. The easiest grip face for a home builder: sew 2-3 rows flat
+  (zig-zag 304, under no stretch) across the lumbar pad and the wing crest zone, about 0.6 m per belt = about 6 g.
+  Elastic, so it must not be stretched when sewn, or it puckers the cone-cut face. Lines across the belt (vertical
+  on the body) resist the vertical slip best. Sold for apparel and quilting, with inconsistent quality between lots:
+  buy one lot for the prototype and HB-2 test pieces.'

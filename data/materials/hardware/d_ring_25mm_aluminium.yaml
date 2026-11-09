@@ -1,0 +1,30 @@
+id: d_ring_25mm_aluminium
+name: D-ring 25 mm, aluminium, anodised (4 mm section)
+category: hardware
+generic: false
+trade_names:
+- Extremtextil D-Ring 25 mm with eyelet, aluminium anodised (art. 71719)
+supplier_examples:
+- Extremtextil (EUR 1.70 each, no MOQ, matt black / anthracite / olive colours)
+- 'AustriAlpin DA25DR-M-ELOX+L "Ring 22 kN D-shape" if a certified part is wanted (21 g, ANSI Z359.12, each ring proof-tested)'
+properties:
+  width_mm: 25
+  breaking_strength_n: 3080
+  mass_g: 6
+  section_thickness_mm: 4
+  quietness_1to5: 3
+  service_temp_low_c: -60
+confidence: datasheet
+sources:
+- 'Extremtextil product page, art. 71719: breaking strength 314 daN, 6 g/pc, material thickness 4 mm, 25 mm webbing, EUR 1.70/pc incl. VAT; "breaking load determined under defined laboratory conditions, a basic guide, not a guarantee". https://www.extremtextil.de/en/d-ring-25mm-with-eyelet-aluminium-anodised/71719.SILB'
+- 'AustriAlpin DA25DR-M-ELOX+L data: breaking load 22.2 kN (22 kN guaranteed), 21 g, 29 x 42 x 10 mm, ANSI Z359.12-2019. https://www.austrialpin.at/en/components/rings/detail/da25dr-m-elox-l-ring-22-kn-d-shape'
+cost_usd:
+  value: 1.85
+  per: unit
+notes: 'Vendor-published lab break (datasheet confidence, but not a guaranteed minimum). Cost converted at about
+  1.09 USD/EUR (ASSUMPTION). For the hipbelt concept B 2:1 turn it carries both legs = T: worst T 483 N (XXL, M42,
+  19 in torso, mu 0.3), so break / T = 6.4 and break / (2.0 x T limit, 966 N) = 3.2. Use it in place of the
+  "no record, 5 g, $1" ASSUMPTION in hipbelt_concepts.belt_bom (+1 g, +$0.85 per ring). The 4 mm round section is a
+  tight bend for webbing (it sets the 2:1 friction loss); keep the 0.85 efficiency ASSUMPTION until HB-3. Acetal
+  D-rings (ITW / Fastex 1 in) have no published rating and were not chosen for a load path. Anodised aluminium: order
+  matt black, sleeve or tab-wrap it so it does not tick against the ladder lock or buckle.'

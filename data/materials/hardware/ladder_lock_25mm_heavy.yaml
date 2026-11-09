@@ -1,0 +1,50 @@
+id: ladder_lock_25mm_heavy
+name: Heavy-duty ladder lock 25 mm, acetal (ITW Nexus Superloc / Super Ladderloc)
+category: hardware
+generic: false
+trade_names:
+- ITW Nexus Superloc 1 in (part 104-1100)
+- ITW Super Ladderloc 25 mm (reseller code SLL)
+- Liberty Mountain 1 in Super Ladderlock (retail 6-pack)
+supplier_examples:
+- Ace Supplies UK (ITW Super Ladderloc, from GBP 0.32 ex VAT in bulk)
+- Buckleguy (SLL 1 in heavy-duty ladderlock)
+- Liberty Mountain retail 6-pack via Zoro / bike shops (about USD 2 each)
+- ITW Nexus direct (box quantity 1000 = MOQ for direct purchase)
+properties:
+  width_mm: 25
+  tensile_rating_n: 981
+  breaking_strength_n: 981
+  slip_load_n: 490
+  mass_g: 7
+  outer_width_mm: 34.2
+  outer_length_mm: 49.9
+  thickness_mm: 10.3
+  polymer: acetal (POM)
+  service_temp_low_c: -40
+  service_temp_high_c: 60
+  quietness_1to5: 4
+confidence: estimate
+sources:
+- 'Ace Supplies UK, ITW Super Ladderloc listing: "Tensile Strength: 25mm - 100kg" (981 N), acetal, -40 F to 140 F. https://www.acesupplies.co.uk/products/super-ladder-loc/'
+- 'Ace Supplies UK, ITW Classic Ladderloc listing: "25mm - 70Kg" (687 N), so the Super Ladderloc is rated 1.43x the classic. https://www.acesupplies.co.uk/products/standard-ladderlock/'
+- 'ITW Nexus Superloc page: "an extension of the Ladderloc family for heavier loads", 1 in part 104-1100, dims 25.0 / 34.2 / 49.9 / 10.3, black acetal, box 1000. https://na.itwnexus.com/content/superloc'
+- 'Liberty Mountain 1 in Ladderlock & Super Ladderlock 6-pack, USD 12.45 (365cycles / Zoro listing)'
+- 'Buckleguy states that neither it nor the manufacturer (Duraflex) publishes strength test reports for plastic buckles; testing is the buyer''s job (search result, 2026-11-09)'
+cost_usd:
+  value: 2.1
+  per: unit
+notes: 'ESTIMATE. tensile_rating_n is the reseller-published ITW value (test method not stated). No maker publishes
+  a SLIP rating for any 25 mm plastic ladder lock (ITW, Duraflex, YKK searched 2026-11-09). ASSUMPTION: slip_load_n
+  = 0.5 x tensile rating, the same ratio basis as ladder_lock_25mm (300 / 600). mass_g is an ASSUMPTION scaled from
+  the ITW GTLL classic (0.136 oz = 3.9 g, Rockywoods) by the larger Superloc envelope (34 x 50 x 10 mm); weigh one.
+  For the hipbelt 2:1 forward pull (concept B) the lock leg carries pull_n = T / (2 x 0.85) during and after cinching:
+  worst 284 N at XXL (M42, 19 in torso), so 490 / 284 = 1.73 (S 2.31, M 2.55, L 2.26, XL 2.18). This must be
+  QUALIFIED BY TEST before release: 5 locks on the chosen 25 mm poly webbing, pull the loaded leg at 50 mm/min,
+  pass = no slip > 5 mm below 430 N (1.5 x 284 N) at 20 C and at -20 C, wet and dry. If it fails, the fallbacks in
+  order are (a) the 25 mm aluminium ladderlock (Extremtextil "ergonomic", 326 daN break, 9.2 g; slip unrated), (b)
+  the Austere Mfg aluminium ladderlock with stainless grip pins (11.9 g, about EUR 24; slip unrated, "makes it
+  difficult for the webbing to slip"), (c) a 1 in steel cam buckle (Trucking Depot 600 lbf assembly break, where the
+  WSTDA-style assembly rating includes slip, but 40-170 g and noisy: rejected for a hunting belt). Stepping to
+  38 mm does not help: the reseller lists the ITW classic 40 mm at 60 kg, below the 25 mm at 70 kg. Matte black, no
+  brightener. Wider and taller than the classic: check the clearance at the buckle-side tab.'

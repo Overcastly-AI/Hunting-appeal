@@ -1,0 +1,44 @@
+id: silicone_grip_print
+name: Silicone anti-slip print (dot or line pattern) on a textile face
+category: polymers
+generic: true
+trade_names:
+- Boston Industrial Solutions SilTex AS (anti-slip) / SilTex GR two-part silicone screen inks
+supplier_examples:
+- Boston Industrial Solutions (SilTex AS / GR inks and catalyst; ask for sample quantities)
+- Any screen-print shop that does sock and glove grip printing (outsource the printed face panels)
+- 'DIY: neutral-cure (oxime/alkoxy) 100 % silicone sealant through a stencil (NOT acetoxy: vinegar odour)'
+properties:
+  density_kg_m3: 1150
+  dot_diameter_mm: 3
+  dot_height_mm: 0.3
+  coverage_pct: 14
+  areal_density_g_m2: 46
+  skin_dry_cof: 0.61
+  polyester_fabric_dry_cof: 0.9
+  cure_temp_c: 110
+  cure_time_s: 60
+  service_temp_low_c: -50
+  quietness_1to5: 5
+confidence: estimate
+sources:
+- 'Zhang M, Mak AFT (1999) In vivo friction properties of human skin. Prosthet Orthot Int 23:135-141: silicone had the highest skin friction of 5 materials, mu 0.61 +/- 0.21 (nylon lowest 0.37 +/- 0.09)'
+- 'US 6,107,418 (Wacker, silicone coating composition): silicone-coated polyester vs uncoated fabric mu about 0.9 (ASTM D1894); coated vs coated about 1.4'
+- 'Derler S, Gerhardt L-C (2012) Tribology of skin: review and analysis of experimental results for the friction coefficient of human skin. Tribol Lett 45:1-27, doi 10.1007/s11249-011-9854-y: dry skin mu typically about 0.5; moist or wet skin typically > 1 against smooth polymers'
+- 'Gerhardt L-C et al. (2008) Influence of epidermal hydration on the friction of human skin against textiles. J R Soc Interface 5:1317-1328 (PMC2607440): 50/50 cotton-polyester plain weave on forearm, 3.4 kPa: natural skin 0.41-0.42, moist 0.53 (men) / 0.61 (women), max-hydrated skin 0.56 / 0.66, completely wet fabric 0.88 / 0.95'
+- 'Boston Industrial Solutions SilTex AS: two-part anti-slip silicone ink, 80-160 mesh screens, cure 100-121 C for 60 s. https://bostonindustrialsolutions.com/siltex-anti-slip-silicone-ink-for-socks/'
+- 'Silicone rubber density 1.1-1.2 g/cm3 (handbook, unfilled to lightly filled PDMS)'
+cost_usd:
+  value: 30
+  per: m2
+notes: 'ESTIMATE. Pattern basis: 3 mm dots, 0.3 mm high, 8 mm square pitch = 14 % cover, giving 46 g/m2 of silicone
+  (about 4 g on a belt-B wing + lumbar face of about 0.09 m2, matching the 5 g ASSUMPTION in hipbelt_concepts).
+  Cost is ASSUMPTION for an outsourced short run of printed face panels (screen + set-up dominate). FRICTION BASIS
+  FOR HB-2: the belt holds through two interfaces in series, grip-face/shirt and shirt/skin, and the lower one governs.
+  Silicone/fabric is about 0.9 (dry) but shirt/skin is only 0.41 dry and 0.53-0.66 moist (Gerhardt 2008), so with a
+  shirt on the silicone print can lift the effective mu from the fabric-on-fabric value (polyester on polyester, about
+  0.2-0.4, not measured here) up to the shirt/skin limit, not to 0.9. On bare skin the silicone gives about 0.6 dry and
+  more when sweaty. NO CITED VALUE FOUND for silicone against a WET or sweaty polyester or merino knit: that is what
+  HB-2 must measure. Print on a tight-face spacer or a 3-layer mesh: open spacer mesh soaks up ink and the dots tear
+  out. Dots or short dashes keep the face breathable. Silicone is quiet and odourless once cured (cure neutral-cure
+  sealant for 7 days before field use). No optical brighteners: use a matt pigmented ink that matches the face colour.'

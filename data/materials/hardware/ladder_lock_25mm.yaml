@@ -12,14 +12,17 @@ properties:
   width_mm: 25
   breaking_strength_n: 600
   slip_load_n: 300
+  tensile_rating_n: 687
   mass_g: 4
   polymer: acetal (POM)
   quietness_1to5: 4
 confidence: estimate
 sources:
 - Supplier listings for 1 in ladder locks (typical slip/break classes)
+- 'Ace Supplies UK, ITW Classic Ladderloc: "25mm - 70Kg" tensile (687 N), method not stated. https://www.acesupplies.co.uk/products/standard-ladderlock/'
 cost_usd:
   value: 0.4
   per: unit
 notes: ESTIMATE. Slip load depends strongly on webbing thickness and stiffness; test with the chosen webbing (thick
-  heavyweight webbing holds best).
+  heavyweight webbing holds best). Slip is not published by any maker (searched 2026-11-09); 300 N stays an
+  estimate. For the hipbelt B 2:1 forward pull use ladder_lock_25mm_heavy (margin 1.06 here at XXL on pull_n).
