@@ -1,0 +1,53 @@
+id: nylon_ripstop_70d
+name: 70D nylon ripstop, PU coated back, DWR face (1.9 oz class)
+category: textiles
+generic: false
+trade_names:
+- Ripstop by the Roll 1.9 oz Coated Ripstop Nylon (UV + FR + DWR)
+supplier_examples:
+- Ripstop by the Roll (cut yardage, no MOQ)
+- Extremtextil (C0 alternative, Robic 70den UTS, 100 g/sqm, no published tear)
+- Rockywoods (1.9 oz coated 70D ripstop)
+properties:
+  areal_density_gsm: 92
+  areal_density_base_gsm: 60
+  denier: 70
+  fiber: nylon
+  weave: ripstop, 3 x 3 mm box grid
+  thread_count_warp_per_10cm: 472
+  thread_count_weft_per_10cm: 354
+  thickness_mm: 0.14
+  coating: PU back coat (0.5 oz/yd2), DWR face (fluorinated), UV + FR finish
+  dwr: fluorinated (organic fluorine resin 17.5-18.5 %); C0 alternative from Extremtextil
+  tear_warp_n: 51.6
+  tear_weft_n: 37.4
+  grab_warp_n: 242
+  grab_weft_n: 174
+  seam_strength_warp_n: 233
+  seam_strength_weft_n: 266
+  abrasion_cycles_martindale: 10000
+  hydrostatic_head_mm: 8000
+  hydrostatic_head_after_10_washes_mm: 1000
+  quietness_1to5: 3
+  uv_brighteners: unknown (not on the data sheet; ask the supplier, or specify optical-brightener-free in the PO)
+  hydrolysis_resistance_1to5: 2
+  washability_1to5: 4
+  stain_odor_resistance_1to5: 3
+  roll_width_mm: 1473
+  usable_width_mm: 1473
+confidence: datasheet
+sources:
+- "areal_density_gsm, areal_density_base_gsm, denier, weave, thread counts (120 x 90 per in = 472 x 354 per 10 cm), thickness, coating, dwr, tear (ASTM D1424: 11.6 / 8.4 lbf), grab (ASTM D5034: 54.4 / 39.2 lbf), seam strength (ASTM D1683: 52.3 / 59.7 lbf), abrasion (ASTM D4966 Martindale: >10,000 rev), hydrostatic head (AATCC 127: ~8000 mm new, ~1000 mm after 10 washes AATCC 135): RBTR 1.9 oz Coated Ripstop Nylon data sheet, https://ripstopbytheroll.com/cdn/shop/products/1.9ozPUCoatedRipstopNylon-FabricDataSheeta_5000x.png?v=1631631608 (accessed 2026-11-09)"
+- "roll_width_mm / usable_width_mm (~58 in usable, selvedge removed, 147.3 cm), price $10.75/yd: https://ripstopbytheroll.com/products/1-9-oz-pu-coated-ripstop-nylon (accessed 2026-11-09)"
+- "C0 alternative (Robic Ocean 70den, UTS coated, 100 g/sqm, 2000 mm, 1490 mm roll, FC-free C0): https://www.extremtextil.de/en/diamond-ripstop-nylon-robic-ocean-recycling-70den-uts-coated-100g-sqm/73078 (accessed 2026-11-09)"
+- "ASSUMPTION: quietness_1to5, hydrolysis_resistance_1to5, washability_1to5, stain_odor_resistance_1to5 are the repo's 1-5 ratings carried over from robic_100d_ripstop (same PU-coated light nylon ripstop class); nothing is published"
+cost_usd:
+  value: 10.75
+  per: yd
+notes: 'Data-sheet values (RBTR states they are averages or estimates). Unit conversion 1 lbf = 4.448 N. ASTM D1424 is
+  an Elmendorf (falling-pendulum) tear; the repo''s CORDURA tear values are tongue tear (D2261), so compare tear only
+  within the same method. The D4966 Martindale value is an endpoint-limited ">" number (the 300D HyperD sheet gives
+  >8000), so it does not rank fabrics; do not use it against Taber cycles. Weight: 92 gsm finished, not the 70 gsm the
+  bag_weight_plan ASSUMPTION used. HUNTING: the RBTR stock has a fluorinated DWR and an FR finish; for a PFAS-free
+  build buy the Extremtextil C0 Robic 70den (100 gsm, no published tear: do a tongue-tear check on a swatch). Use:
+  roll-top collars, linings, pocket backs, stuff sacks.'

@@ -1,0 +1,53 @@
+id: polyester_300d_printable
+name: 300D polyester double-diamond ripstop, PU4000 back, custom digital print (HyperD 300 class)
+category: textiles
+generic: false
+trade_names:
+- Ripstop by the Roll HyperD 300 (Design Your Own Fabric / custom print)
+supplier_examples:
+- Ripstop by the Roll (custom digital print, 1 linear yard minimum, 8 x 8 in samples)
+properties:
+  areal_density_gsm: 133
+  areal_density_base_gsm: 111
+  denier: 300
+  fiber: polyester
+  weave: double diamond ripstop grid 3 x 3 mm
+  thread_count_warp_per_10cm: 331
+  thread_count_weft_per_10cm: 220
+  thickness_mm: 0.16
+  coating: PU4000 back coat, DWR face (fluorinated)
+  dwr: fluorinated (organic fluorine resin 17.5-18.5 %)
+  tear_warp_n: 31.6
+  tear_weft_n: 24.5
+  grab_warp_n: 351
+  grab_weft_n: 236
+  seam_strength_warp_n: 189
+  seam_strength_weft_n: 230
+  abrasion_cycles_martindale: 8000
+  hydrostatic_head_mm: 19000
+  hydrostatic_head_after_10_washes_mm: 1000
+  colorfastness_light_1to5: 4
+  print_shrinkage_pct: 1
+  printable: custom digital print by the supplier (any artwork, 1 yd minimum); process not named on the data sheet
+  quietness_1to5: 3
+  uv_brighteners: unknown (white print base; ask RBTR whether the base and inks are optical-brightener-free)
+  ir_notes: NIR reflectance of the print inks is not published; camo-designer must measure a printed swatch
+  hydrolysis_resistance_1to5: 2
+  washability_1to5: 4
+  stain_odor_resistance_1to5: 3
+  roll_width_mm: 1473
+  usable_width_mm: 1422
+confidence: datasheet
+sources:
+- "areal_density (base 3.27 / finished 3.9 oz/yd2 = 111 / 133 g/m2), denier, fiber, weave, thread count (84 x 56 per in = 331 x 220 per 10 cm), thickness, coating, dwr, tear (ASTM D1424: 7.1 / 5.5 lbf), grab (ASTM D5034: 79.0 / 53.0 lbf), seam strength (ASTM D1683: 42.4 / 51.7 lbf), abrasion (ASTM D4966: >8,000 rev), hydrostatic head (AATCC 127: ~19000 mm new, ~1000 mm after 10 washes), colourfastness to light (AATCC 16: 4.0), 'Digital Print: Yes': RBTR HyperD 300 data sheet, https://cdn.shopify.com/s/files/1/0261/6507/files/HyperD_300.pdf?v=1637101064 (accessed 2026-11-09)"
+- "roll_width_mm (58 in), usable_width_mm (56 in guaranteed usable), print shrinkage <1 %, printed price $30.25 per linear yard, 1 yd minimum, sample 8 x 8 in: https://ripstopbytheroll.com/collections/design-your-own-fabric/products/hyperd-300 (product JSON, accessed 2026-11-09)"
+- "ASSUMPTION: quietness_1to5, hydrolysis_resistance_1to5 (polyester base but PU back coat), washability_1to5, stain_odor_resistance_1to5 are repo 1-5 ratings by analogy with the other PU-coated light pack fabrics; nothing is published"
+cost_usd:
+  value: 30.25
+  per: yd
+notes: 'Data-sheet values (RBTR: averages or estimates); 1 lbf = 4.448 N. Replaces the 170 gsm ASSUMPTION in
+  bag_weight_plan.md (O-6): the real fabric is 133 gsm. Elmendorf tear (D1424) 32 / 25 N is low: use it for trim and
+  accent panels that carry no load, not as a reinforcement doubler (SH-01 stays polyester_ht_630d_printable). Martindale
+  ">8000" is endpoint-limited and does not rank against Taber. Small-batch friendly: original camo artwork is printed
+  per order with no mill MOQ. HUNTING: fluorinated DWR on the stock base; ask about C0. Print on a swatch first and have
+  the camo-designer check colour match, UV brightness and NIR reflectance.'

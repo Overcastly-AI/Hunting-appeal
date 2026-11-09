@@ -61,7 +61,8 @@ PACK_BASE_G = 3725.0                        # corrie_body.md §4 (CORRIE pack to
 EFF_SOFT, EFF_RIGID, EFF_POCKET = 0.90, 0.75, 0.85   # ASSUMPTION: fill efficiency (packed volume / space used)
 MEAT_KG_PER_L = 1.0                         # ASSUMPTION: boned meat in game bags incl. voids (~1.05 kg/L tissue)
 MIN_TOP_Z = CO.DOOR["z_hinge"]              # ASSUMPTION: the roll cannot close below the door hinge band (z 650)
-POUCH_ABOVE_TOP = 75.0                      # roll 22 + clip 18 + half pouch 35 (corrie.pouch_cg_shift)
+POUCH_ABOVE_TOP = 22.0 + 18.0 + CO.POUCH["H"] / 2   # roll 22 + clip 18 + half pouch (corrie.pouch_cg_shift); 75 mm
+                                                     # on B.1 (H 70), 70 mm on B.2 (H 60, weight pass B-5)
 ACCESS_NAMES = {0: "on body", 1: "pack on", 2: "pack on, behind", 3: "pack off, outside",
                 4: "pack off, door", 5: "pack off, roll-top / unpack"}
 REQUIRED = {"constant": 1, "hourly": 1, "glassing": 4, "weather": 4, "kill": 4, "emergency": 4,
@@ -145,7 +146,8 @@ def zones_integrated(size="M"):
              (150, -40, 70)),
         Zone("wing_L", "under left wing", "wing", 3, 6.0, (600, 200, 150), True, (-1, None, zw)),
         Zone("wing_R", "under right wing", "wing", 3, 6.0, (600, 200, 150), True, (1, None, zw)),
-        Zone("top_pouch", "top pouch 4.0 L", "pouch", 3, 4.0, (300, 195, 65), True),
+        Zone("top_pouch", f"top pouch {CO.pouch_volume_L():.1f} L (corrie {CO.SPEC})", "pouch", 3,
+             round(CO.pouch_volume_L(), 2), CO.pouch_interior_mm(), True),
         Zone("scope_sleeve_L", "IMP-1 padded scope sleeve, left wing", "wing", 3, 5.0, (430, 160, 150), True, (-1, None, zw),
              pool="wing_L"),
         Zone("hydro_sleeve", "IMP-2 hydration sleeve (hung, z 545-975)", "fixed", 1, 3.0, (430, 240, 60), True,

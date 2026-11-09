@@ -9,7 +9,7 @@ supplier_examples:
 - Extremtextil
 - Rockywoods
 properties:
-  areal_density_gsm: 90
+  areal_density_gsm: 125
   denier: 100
   weave: ripstop
   grab_warp_n: 550
@@ -20,7 +20,7 @@ properties:
   dwr: C0 DWR
   quietness_1to5: 3
   uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
-  coating: PU back coat
+  coating: UTS (PU) back coat, DWR face
   hydrolysis_resistance_1to5: 2
   washability_1to5: 4
   stain_odor_resistance_1to5: 3
@@ -28,9 +28,11 @@ properties:
   usable_width_mm: 1473
 confidence: estimate
 sources:
-- RBTR / Extremtextil product listings for 100D Robic ripstop (~2.6-2.8 oz/yd2)
+- "areal_density_gsm 125 (~3.7 oz/yd2 finished), coating UTS back + DWR face, 60 in incl. selvedge / ~58 in usable, $9.60-12.00/yd: https://ripstopbytheroll.com/products/100d-robic-ripstop-nylon (accessed 2026-11-09; was a 90 gsm estimate from older ~2.6-2.8 oz/yd2 listings)"
+- "ASSUMPTION grab_warp_n / grab_weft_n, tear_warp_n / tear_weft_n, hydrostatic_head_mm: not published for this fabric; earlier estimates kept. The 70D record (nylon_ripstop_70d, RBTR data sheet) tears at 51.6 / 37.4 N (D1424)"
 - "Ripstop by the Roll, 100D ROBIC listing: 60 in incl. selvedge, ~58 in usable, https://ripstopbytheroll.com/products/100d-robic-ripstop-nylon (accessed 2026-11-04)"
+- "ASSUMPTION quietness_1to5, hydrolysis_resistance_1to5, washability_1to5, stain_odor_resistance_1to5, uv/ir notes: repo 1-5 ratings and handling notes, nothing published"
 cost_usd:
   value: 16
   per: yd
-notes: ESTIMATE. Linings, internal dividers, bladder/meat-bag sleeves, light pockets.
+notes: Weight corrected to the RBTR listing 2026-11-09 (UTS-coated stock, 3.7 oz/yd2); strength values are still ESTIMATES. Linings, internal dividers, bladder/meat-bag sleeves, light pockets.

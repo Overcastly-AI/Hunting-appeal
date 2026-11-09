@@ -30,6 +30,7 @@ properties:                    # SI units in the key suffix, always
   # hardware/webbing/thread: breaking_strength_n, mass_g (per unit or per m), width_mm, tex
   # friction: <counterface>_<condition>_cof, dimensionless, e.g. skin_dry_cof, polyester_fabric_dry_cof
   #   (suffix _cof added 2026-11-09; slip-rated hardware also uses slip_load_n)
+  # torque: <name>_n_m in N.m, e.g. torque_out_n_m, tightening_torque_max_n_m (suffix _n_m added 2026-11-09)
 confidence: datasheet | handbook | estimate     # how much to trust the numbers
 sources: ["MMPDS-01 Table 3.7.6.0(b1)", "https://..."]
 cost_usd: {value: 0.0, per: "kg|m|m2|unit|yd"}   # approximate street price, optional

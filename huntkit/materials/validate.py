@@ -23,6 +23,7 @@ UNIT_SUFFIXES = (
     "_per_10cm", "_spi", "_ppm_c", "_w_mk", "_mm_s", "_n_mm", "_shore_c", "_asker_c", "_minutes",
     "_ratio", "_mm2", "_kj_m2", "_usd_per_g",
     "_cof",  # coefficient of friction against a named counterface, e.g. skin_dry_cof (dimensionless)
+    "_n_m",  # torque in N.m, e.g. torque_out_n_m (added 2026-11-09)
 )
 # ... or be one of these dimensionless/conventional keys.
 DIMENSIONLESS = {

@@ -1,5 +1,5 @@
 id: challenge_ultra_200
-name: Challenge ULTRA 200 (UHMWPE woven face laminate)
+name: Challenge ULTRA 200 / 200X (UHMWPE-polyester woven face, PET film laminate)
 category: laminates_membranes
 generic: false
 trade_names:
@@ -9,11 +9,14 @@ supplier_examples:
 - Ripstop by the Roll
 - Extremtextil
 properties:
-  areal_density_gsm: 125
-  construction: 200D UHMWPE (ULTRA) woven face + film + backer
-  tear_warp_n: 250
-  abrasion_taber_cycles: 2000
-  hydrostatic_head_mm: 20000
+  areal_density_gsm: 133
+  construction: 200D UHMWPE/HT-polyester blend plain-woven face + Ultra 45 deg CrossPly (200X) + 0.75 mil PET film
+  tear_warp_n: 458.6
+  tear_weft_n: 592.5
+  tensile_warp_n_50mm: 3000
+  tensile_weft_n_50mm: 3000
+  abrasion_taber_cycles: 4400
+  hydrostatic_head_mm: 140000
   quietness_1to5: 2
   uv_brighteners: n/a; face is undyed white/black/limited colors
   ir_notes: Limited colors; UHMWPE fiber is hard to dye so camo print options are restricted
@@ -23,13 +26,20 @@ properties:
   stain_odor_resistance_1to5: 4
   roll_width_mm: 1422
   usable_width_mm: 1397
-confidence: estimate
+confidence: datasheet
 sources:
-- Challenge Sailcloth ULTRA product sheets (ULTRA 200 ~3.6-3.8 oz/yd2)
-- RBTR product listing
+- "tear_warp_n / tear_weft_n (ASTM D2261 tongue tear 103.1 / 133.2 lb), abrasion_taber_cycles (ASTM D3884, 4,400 cycles), waterproof 200+ psi / 13.8+ bar, ULTRA200 119 gsm (no CrossPly) and ULTRA200TX 200 gsm: Challenge Outdoor 2023 EcoPak Outdoor Fabric Guide v3, https://static1.squarespace.com/static/62018e9b29f2cd0fc23c3a0c/t/63d8117224b90b2859f159a4/1675104626522/2023_EcoPak-Guide_v3.pdf (accessed 2026-11-09)"
+- "areal_density_gsm 133 (ULTRA 200 X, manufacturer spec, +/-5 %), construction (43 % UHMWPE / 57 % HT polyester, 0.75 mil PET film), tear 103.1 / 133.2 lb, abrasion 4,400 cycles, hydrostatic_head_mm 140,000 mm, roll 1470 mm, note to back point loads with an extra layer; ULTRA 200 (119 g/m2) listed as no longer manufactured: https://www.extremtextil.de/en/ultra-200-x-backpack-laminate-with-uhmwpe-133g-sqm/72682 and https://www.extremtextil.de/en/challengeultra (accessed 2026-11-09)"
+- "same tear and abrasion figures, 'Ultra 200' 5.0 oz/yd2 nominal: https://rockywoods.com/products/ultra-200-fabric-sold-per-foot ; RBTR lists ULTRA 200X at ~4.6 oz/yd2 (155 gsm), https://ripstopbytheroll.com/products/challenge-ultra-200 (accessed 2026-11-09) - weigh a swatch, listings disagree (119-155 gsm)"
+- "ASSUMPTION tensile_warp_n_50mm / tensile_weft_n_50mm = 3000 (60 N/mm, the huntkit/clothsim/fabrics.yaml value): no maker or retailer publishes a breaking/grab/strip strength for any ULTRA 200 variant (searched 2026-11-09). Basis: face ~90 gsm of 200D (22.2 tex) yarn = ~100 ends per 50 mm each way; blend ~2.3 N/tex (UHMWPE share) x 22.2 tex = ~51 N per end; x 0.6 weave translation = ~3000 N/50 mm. Confirm with PT-3 and a 50 mm strip test"
 - "Ripstop by the Roll, Challenge ULTRA 200 listing: 56 in (142.2 cm) wide, https://ripstopbytheroll.com/products/challenge-ultra-200 (accessed 2026-11-04); usable = roll - 25 mm selvedge ASSUMPTION"
+- "ASSUMPTION quietness_1to5, hydrolysis_resistance_1to5, washability_1to5, stain_odor_resistance_1to5, uv/ir notes: repo 1-5 ratings and handling notes, nothing published; cost_usd 60/yd = RBTR $30.00 per half yd (https://ripstopbytheroll.com/products/challenge-ultra-200)"
 cost_usd:
-  value: 50
+  value: 60
   per: yd
-notes: ESTIMATE. Best abrasion- and tear-per-gram pack fabric commercially available to small builders; waterproof.
-  Costly, limited colors (no original camo), louder than CORDURA. Pick for an UL premium variant.
+notes: 'Tear, abrasion, waterproofing and weight are Challenge data (2026-11-09; were 250 N / 2000 cycles / 125 gsm
+  estimates). Buy ULTRA 200X (ULTRA 200 is discontinued). Taber 4400 is on Challenge''s scale (500D CORDURA about
+  1800-2200 on the same scale, see ultragrid record notes). Tensile is NOT published: tensile_*_n_50mm is an
+  ASSUMPTION (see sources). Extremtextil advises backing point loads (strap roots, daisy chains) with an extra
+  layer. Best abrasion- and tear-per-gram pack fabric available to small builders; waterproof film. Costly, limited
+  colours (no original camo), louder than CORDURA.'

@@ -1,10 +1,14 @@
-"""CORRIE B.1 whole-pack weight pass (pack-designer, 2026-11-09). PROPOSALS ONLY: no released file and no default in
-concepts/corrie.py is changed.
+"""CORRIE B.1 whole-pack weight pass (pack-designer, 2026-11-09). The pass itself is computed on CORRIE B.1
+(``corrie.weight_table(size, spec="B.1")``): every cut is defined against B.1. The owner said "Yes" (DECISIONS
+2026-11-09): package A and package B without the held B-8 / B-9 are now CORRIE B.2, the default in concepts/corrie.py
+(``corrie.SPECS``). The "after A+B" bar and the per-size table come from ``corrie.weight_table(size, spec="B.2")``;
+package C is projected on top of that table (not applied: structural / test gates pending).
 
     python designs/pack_5200/weight_pass_corrie.py
 
 Every gram comes from the existing weight tables, never typed in as a total:
-  * corrie.weight_table(size)                  -> the 4000.4 g (belt M) CORRIE B.1 total this pass starts from;
+  * corrie.weight_table(size, spec="B.1")      -> the 4000.4 g (belt M) CORRIE B.1 total this pass starts from;
+  * corrie.weight_table(size, spec="B.2")      -> the applied A+B table (section 4a);
   * geometry.yaml weight.rows                  -> the shared frame / harness / attachment / meat-haul rows;
   * panels.yaml                                -> the released bill of panels (B-11, B-12, HP-01/02 ...);
   * corrie.build(), bag_pockets(), hip_layout(), holster(), belt_b(), pad_seat() -> the CORRIE-specific parts;
@@ -45,6 +49,8 @@ DATE = "20261109"
 LB = 453.592
 OZ = 28.3495
 SIZE = "M"
+BASE = "B.1"            # the spec every cut is defined against
+APPLIED = "B.2"         # the spec that carries the owner-approved A + B (DECISIONS 2026-11-09)
 
 GEO = yaml.safe_load((HERE / "geometry.yaml").read_text())
 PANELS = {r["id"]: r for r in yaml.safe_load((HERE / "panels.yaml").read_text())["panels"]}
@@ -101,9 +107,9 @@ def _rolltop_split():
 
 
 def breakdown(size: str = SIZE) -> dict:
-    wt = C.weight_table(size)
+    wt = C.weight_table(size, spec=BASE)
     c = C.make()
-    b = C.build(c, True)
+    b = C.build(c, True, spec=BASE)
     parts = []
 
     def add(group, part, g, src, zone=""):
@@ -163,7 +169,7 @@ def breakdown(size: str = SIZE) -> dict:
         add(G_POUCH if n.startswith("pouch") else BODY, n, g, "corrie.build() hardware (records / G-hook ASSUMPTION)")
 
     # ---- B.1 bag pockets
-    for d in C.bag_pockets(c):
+    for d in C.bag_pockets(c, spec=BASE):
         add(G_POCK, f"{d['id']} {d['name']}", d["mass_g"], "corrie.bag_pockets()")
 
     # ---- hipbelt B (belt_b body per piece + corrections), IMP-5, IMP-3, load path, pad seat
@@ -174,7 +180,7 @@ def breakdown(size: str = SIZE) -> dict:
         add(HB, f"belt B {r['piece']} ({r['material']}, x{r['qty']})", r["mass_g"], "hipbelt_concepts.belt_bom")
     for r in bom["hardware_delta"]:
         add(HB, f"belt B {r['item']}", r["mass_g"], "hipbelt_concepts.belt_bom hardware_delta")
-    for n, g in C.belt_b(size)["corrections"]:
+    for n, g in C.belt_b(size, spec=BASE)["corrections"]:
         add(HB, f"belt B correction: {n}", g, "corrie.belt_b() (2026-11-09 records)")
     hl = C.hip_layout(size)
     for side in ("L", "R"):
@@ -258,7 +264,7 @@ def _swap(pieces, new_mid):
 
 def pouch_mass(L=None, W=None, H=None, top="polyester_ht_630d_printable", body="cordura_330d_nylon66") -> dict:
     """The top pouch exactly as corrie.build() books it, with size and fabrics as parameters."""
-    P = C.POUCH
+    P = C.SPECS[BASE]["pouch"]
     L, W, H = L or P["L"], W or P["W"], H or P["H"]
     sa = BC.SA_FLAT
     pcs = [rect_panel("top", L, W, 0.0, seam_allowance_mm=sa, material_id=top),
@@ -274,7 +280,7 @@ def pouch_mass(L=None, W=None, H=None, top="polyester_ht_630d_printable", body="
 
 def cuts(bd: dict) -> list:
     b, c = bd["body"], bd["concept"]
-    bp = {d["id"]: d for d in C.bag_pockets(c)}
+    bp = {d["id"]: d for d in C.bag_pockets(c, spec=BASE)}
     out = []
 
     def cut(id_, pkg, zone, change, g, usd, hours, dur, quiet, ip, load, conf, rec, g_booked=None, look="none",
@@ -285,7 +291,7 @@ def cuts(bd: dict) -> list:
                     "load_path": load, "confidence": conf, "rec": rec, "status": status})
 
     # ---------------- A: no load path, durability or look impact
-    grip = next(g for n, g in C.belt_b(SIZE)["corrections"] if n.startswith("grip")) + 5.0
+    grip = next(g for n, g in C.belt_b(SIZE, spec=BASE)["corrections"] if n.startswith("grip")) + 5.0
     cut("A-1", "A", "hipbelt B", "Ship belt B with an unprinted face until test HB-2 passes (DECISIONS 2026-11-09: grip "
         "face only after HB-2, not counted before). If HB-2 passes and the owner adopts it, the grams come back.", grip,
         -3.0, 0.0, "none", "none", "none", "no: friction is not credited before HB-2 (belt-B structural uses no grip)",
@@ -463,6 +469,9 @@ def packages(bd: dict, cl: list) -> dict:
     gaps = booking_gaps(bd)
     real0 = total + sum(g["g"] for g in gaps)
     by = {k: [x for x in cl if x["pkg"] == k] for k in "ABC"}
+    # owner 2026-11-09: package B without the held fabric swaps (B-8 / B-9): B = the B items corrie.SPECS["B.2"] applies
+    held_b = [x for x in by["B"] if x["id"] not in C.SPECS[APPLIED]["items"]]
+    by["B"] = [x for x in by["B"] if x["id"] in C.SPECS[APPLIED]["items"]]
     # B pouch items interact (B-3 fabric, B-4 top, B-5 size): the package takes the combined pouch, not the sum
     combo = pouch_mass(L=280.0, W=190.0, H=60.0, top="cordura_330d_nylon66", body="robic_100d_ripstop")
     pouch_sum = sum(x["g"] for x in by["B"] if x["id"] in ("B-3", "B-4", "B-5"))
@@ -483,9 +492,15 @@ def packages(bd: dict, cl: list) -> dict:
     sp = next(r["mass_g"] for r in GEO["weight"]["rows"] if r["group"].startswith("back-system"))
     frame = next(r["mass_g"] for r in GEO["weight"]["rows"] if r["group"].startswith("frame"))
     bdg = {p["part"]: p["g"] for p in bd["parts"]}
-    pouch_now = sum(p["g"] for p in bd["parts"] if p["group"] == G_POUCH)
-    imp1 = next(p["g"] for p in bd["parts"] if p["part"].startswith("IMP-1"))
-    after_c = real
+    # T-2 / T-3 act on the applied B.2 pack (the chain below starts from the B.2 table): B.2 pouch and IMP-1 masses
+    c2 = C.make()
+    b2b = C.build(c2, True, spec=APPLIED)
+    pouch_now = (sum(BC.piece_mass_g(p) for p, g in b2b.pieces if g == "pouch")
+                 + sum(BC.zip_mass_g(z) for z in b2b.zips if "pouch" in z["name"])
+                 + sum(g for n, g in b2b.extra["hardware"] if n.startswith("pouch")))
+    imp1 = next(d["mass_g"] for d in C.bag_pockets(c2, spec=APPLIED) if d["id"] == "IMP-1")
+    b2 = applied_b2(cl, steps)
+    after_c = b2["sizes"][SIZE]["with_c_g"]      # B.2 table - C (the projection the owner publishes against)
     frame_back = frame + sp
     need = after_c - C.TARGET_G
     take = [
@@ -495,7 +510,7 @@ def packages(bd: dict, cl: list) -> dict:
                               "on 2026-11-01 (must read as a generative print); predates rev C, the barrier rule and Sandwich "
                               "v2, so the saving is an UPPER bound",
          "g": round(frame_back - mc["frame_g"], 1)},
-        {"id": "T-2", "what": "Count the 4 L top pouch as an accessory (as the market does with lids: SG lid sold "
+        {"id": "T-2", "what": "Count the top pouch (B.2: 2.7 L) as an accessory (as the market does with lids: SG lid sold "
                               "separately, Exo quotes with and without). Accounting only: the hunter still carries it",
          "g": round(pouch_now, 1)},
         {"id": "T-3", "what": "Drop IMP-1 scope sleeve (owner-frozen B.1 pocket)", "g": round(imp1, 1)},
@@ -506,7 +521,32 @@ def packages(bd: dict, cl: list) -> dict:
     return {"start_booked_g": total, "gaps": gaps, "start_real_g": round(real0, 1), "steps": steps,
             "pouch_interaction_g": pouch_inter, "pouch_combo": combo, "take": take,
             "after_all_take_g": round(t_all, 1), "frame_plus_spreader_needed_g": round(frame_needed, 1),
-            "frame_plus_spreader_now_g": round(frame_back, 1), "target_g": C.TARGET_G, "s12_corrie_g": s12_corrie(bd)}
+            "frame_plus_spreader_now_g": round(frame_back, 1), "target_g": C.TARGET_G, "s12_corrie_g": s12_corrie(bd),
+            "held_b": [{"id": x["id"], "g": x["g"], "status": x["status"]} for x in held_b],
+            "b2": b2}
+
+
+def applied_b2(cl: list, steps: list) -> dict:
+    """CORRIE B.2 = A + B (owner 2026-11-09), booked by corrie.weight_table(size, spec="B.2") per belt size, and the
+    package-C projection on top of it (C items are size-independent; the belt load path is size M for every size, as
+    in weight_table). ``recon_vs_packages_g`` = B.2 table minus the package arithmetic (start real - A - B): the few
+    grams the B.2 booking adds that the cut list did not (e.g. the B-4 camo pull tab)."""
+    c = C.make()
+    c_items = [x for x in cl if x["pkg"] == "C"]
+    c_g = round(sum(x["g"] for x in c_items), 1)
+    rows = {}
+    for s_ in C.BELT_SIZES:
+        w = C.weight_table(s_, c, spec=APPLIED)
+        w1 = C.weight_table(s_, c, spec=BASE)
+        rows[s_] = {"b1_g": w1["total_g"], "b2_g": w["total_g"], "b2_lb": round(w["total_g"] / LB, 2),
+                    "b2_vs_b1_g": round(w["total_g"] - w1["total_g"], 1),
+                    "with_c_g": round(w["total_g"] - c_g, 1), "with_c_lb": round((w["total_g"] - c_g) / LB, 2),
+                    "with_c_vs_publish_g": round(w["total_g"] - c_g - C.PUBLISH_G, 1)}
+    st = {x["pkg"]: x for x in steps}
+    m = C.weight_table(SIZE, c, spec=APPLIED)
+    return {"spec": APPLIED, "items": list(C.SPECS[APPLIED]["items"]), "sizes": rows, "rows_M": m["rows"],
+            "c_items": [x["id"] for x in c_items], "c_saving_g": c_g, "publish_g": C.PUBLISH_G,
+            "recon_vs_packages_g": round(m["total_g"] - st["B"]["after_real_g"], 1)}
 
 
 # =====================================================================================================================
@@ -636,9 +676,14 @@ def charts(bd, cl, pk, bench) -> list:
     for gp in pk["gaps"]:
         steps.append((f"{gp['id']}\n{'binding' if gp['id'] == 'G-1' else 'fly'}", gp["g"], "up"))
     steps.append(("Real\nestimate", pk["start_real_g"], "total"))
-    for s in pk["steps"]:
-        steps.append((f"Package {s['pkg']}", -s["saved_real_g"], "down"))
-    steps.append(("After\nA+B+C", pk["steps"][-1]["after_real_g"], "total"))
+    b2 = pk["b2"]
+    for s in pk["steps"][:2]:
+        steps.append((f"Pkg {s['pkg']}\n(applied)", -s["saved_real_g"], "down"))
+    if abs(b2["recon_vs_packages_g"]) >= 0.05:
+        steps.append(("B.2\nbooking", b2["recon_vs_packages_g"], "up" if b2["recon_vs_packages_g"] > 0 else "down"))
+    steps.append((f"B.2 table\n(A+B, M)", b2["sizes"][SIZE]["b2_g"], "total"))
+    steps.append(("Package C\n(gated)", -b2["c_saving_g"], "pending"))
+    steps.append(("Projected\nwith C", b2["sizes"][SIZE]["with_c_g"], "total"))
     for t in pk["take"]:
         steps.append((t["id"], -t["g"], "take"))
     steps.append(("With\nT-1..T-4", pk["after_all_take_g"], "total"))
@@ -652,9 +697,11 @@ def charts(bd, cl, pk, bench) -> list:
             ax.text(i, v + 25, f"{v:.0f}", ha="center", fontsize=9, color=INK)
         else:
             lo, hi = sorted((run, run + v))
-            col = ORANGE if v > 0 else (AQUA if kind == "down" else "#b9b8b1")
-            ax.bar(i, hi - lo, bottom=lo, color=col, width=0.66, edgecolor=SURF, linewidth=2,
-                   hatch=None if kind != "take" else "//")
+            col = ORANGE if v > 0 else (AQUA if kind in ("down", "pending") else "#b9b8b1")
+            h = max(hi - lo, 4.0)               # a few-gram step still shows as a sliver
+            ax.bar(i, h, bottom=lo if v > 0 else hi - h, color=col, width=0.66,
+                   edgecolor={"pending": INK2, "take": "#f4f3ef"}.get(kind, col), linewidth=1.0,
+                   hatch={"take": "//", "pending": ".."}.get(kind), alpha=0.55 if kind == "pending" else 1.0)
             ax.text(i, hi + 25, f"{v:+.0f}", ha="center", fontsize=9, color=INK2)
             run += v
     ax.axhline(C.TARGET_G, color=INK2, ls="--", lw=1.2)
@@ -667,13 +714,18 @@ def charts(bd, cl, pk, bench) -> list:
         ax.spines[s].set_visible(False)
     ax.grid(axis="y", color="#e6e5e0", lw=0.8)
     ax.set_axisbelow(True)
-    ax.set_title("CORRIE B.1 weight waterfall: packages A/B/C (aqua) and what it would take (hatched grey, owner calls)",
-                 color=INK, fontsize=11.5, loc="left")
+    ax.axhline(C.PUBLISH_G, color=AQUA, ls=":", lw=1.2)
+    ax.text(len(steps) - 0.6, C.PUBLISH_G + 20, f"publish ~{C.PUBLISH_G:.0f} g (8.4 lb)", ha="right", fontsize=9,
+            color=INK2)
+    ax.set_title("CORRIE weight: B.1 -> B.2 (A + B applied, the corrie.py table) -> C projected (gated); "
+                 "T items = owner calls", color=INK, fontsize=11, loc="left")
     from matplotlib.patches import Patch
-    ax.legend(handles=[Patch(color=BLUE, label="total"), Patch(color=ORANGE, label="booking gap (heavier)"),
-                       Patch(color=AQUA, label="proposed package"),
+    ax.legend(handles=[Patch(color=BLUE, label="total (from corrie.weight_table)"),
+                       Patch(color=ORANGE, label="booking gap / booking detail (heavier)"),
+                       Patch(color=AQUA, label="applied package"),
+                       Patch(facecolor=AQUA, alpha=0.55, hatch="..", edgecolor=INK2, label="package C, pending gates"),
                        Patch(facecolor="#b9b8b1", hatch="//", label="feature / frame decision")],
-              frameon=False, fontsize=9, loc="upper right")
+              frameon=False, fontsize=8.5, loc="upper right")
     fig.tight_layout()
     f = SCREENS / f"{DATE}_weight_3.png"
     fig.savefig(f, facecolor=SURF)
@@ -696,29 +748,40 @@ def report(bd, cl, pk, bench, files) -> str:
     w = L.append
     st = {s["pkg"]: s for s in pk["steps"]}
     w("# CORRIE B.1: whole-pack weight pass\n")
-    w("Owner: pack-designer. Date 2026-11-09. **Proposals only**: no released file and no `corrie.py` default changes. "
-      "Generated by `designs/pack_5200/weight_pass_corrie.py` from `corrie.weight_table()`, the `geometry.yaml` weight "
-      "rows, `panels.yaml`, the analysis JSONs and the material records. Re-run it; do not hand-edit numbers. Tests: "
-      "`tests/test_weight_pass_corrie.py`.\n")
+    b2 = pk["b2"]
+    bm = b2["sizes"][SIZE]
+    w("Owner: pack-designer. Date 2026-11-09. The pass is computed on CORRIE **B.1** (`corrie.weight_table(size, "
+      "spec=\"B.1\")`); every cut below is defined against B.1. **Owner decision 2026-11-09 (DECISIONS: \"Yes\" to the "
+      "weight-pass recommendation): package A and package B without the held B-8 / B-9 are applied as CORRIE B.2, now "
+      "the `corrie.py` default** (`corrie.SPECS`, flag `CORRIE_SPEC=B.1` / `spec=\"B.1\"` reproduces B.1). Package C is "
+      "projected, not applied. Generated by `designs/pack_5200/weight_pass_corrie.py` from `corrie.weight_table()`, the "
+      "`geometry.yaml` weight rows, `panels.yaml`, the analysis JSONs and the material records. Re-run it; do not "
+      "hand-edit numbers. Tests: `tests/test_weight_pass_corrie.py`. No released SPINE file is changed.\n")
     w("## 0. Summary\n")
+    w(f"- **Applied (CORRIE B.2, belt {SIZE}): {bm['b2_g']:.1f} g ({_lb(bm['b2_g'])})**, booked by "
+      f"`corrie.weight_table('{SIZE}', spec='B.2')` with the binding and fly gaps G-1 / G-2 included. **Projected with "
+      f"package C: {bm['with_c_g']:.0f} g ({_lb(bm['with_c_g'])})**, against the ~{b2['publish_g']:.0f} g (8.4 lb) the "
+      "owner publishes (section 4a).")
     w(f"- Booked today (belt {SIZE}): **{bd['total_g']:.1f} g ({_lb(bd['total_g'])})**. Target **{C.TARGET_G:.0f} g "
       f"(6.6 lb)**, gap **{bd['total_g'] - C.TARGET_G:.0f} g**. The DECISIONS row of 2026-11-05 published 2976 g; "
       "`corrie.TARGET_G` (2994 g) is used here.")
     w(f"- Booking gaps found: **+{sum(g['g'] for g in pk['gaps']):.0f} g** of real mass no table books (body binding, "
       f"CORRIE-sized fly). Real estimate **{pk['start_real_g']:.0f} g**.")
-    for k, nm in (("A", "no-regret"), ("B", "owner OK"), ("C", "needs FEA / tests")):
+    for k, nm in (("A", "no-regret, applied"), ("B", "owner OK, applied without B-8 / B-9"),
+                  ("C", "needs FEA / tests, not applied")):
         s = st[k]
         w(f"- Package **{k}** ({nm}): **-{s['saved_real_g']:.0f} g** real (-{s['saved_booked_g']:.0f} g booked), "
           f"{s['usd']:+.2f} $/pack, {s['hours']:+.1f} beginner h -> **{s['after_real_g']:.0f} g "
-          f"({_lb(s['after_real_g'])})**, {s['vs_target_real_g']:+.0f} g vs target.")
+          f"({_lb(s['after_real_g'])})**, {s['vs_target_real_g']:+.0f} g vs target (package arithmetic; the B.2 "
+          "table is the booked number).")
     w(f"- **The 6.6 lb target is not reachable with CORRIE's features on the printed frame.** After A+B+C the pack is "
-      f"about **{st['C']['after_real_g']:.0f} g ({_lb(st['C']['after_real_g'])})**. Even with every 'what it would take' "
+      f"about **{bm['with_c_g']:.0f} g ({_lb(bm['with_c_g'])})** (B.2 table - C). Even with every 'what it would take' "
       f"item (lighter frame, pouch as accessory, no scope sleeve, 2 meat straps) it is about "
       f"**{pk['after_all_take_g']:.0f} g**. To hit {C.TARGET_G:.0f} g with A+B+C and all features, frame + spreader "
       f"would have to weigh **{pk['frame_plus_spreader_needed_g']:.0f} g** (today {pk['frame_plus_spreader_now_g']:.0f} g).")
-    w("- Recommendation: adopt A now, take B item by item, send C to the structural-fea-engineer, and **re-baseline the "
-      f"published weight for CORRIE on the printed frame to about {math.ceil(st['C']['after_real_g'] / 50) * 50:.0f} g "
-      f"({math.ceil(st['C']['after_real_g'] / 50) * 50 / LB:.1f} lb)**. Keep 6.6 lb (and 5.0 lb) as targets for a "
+    w("- Recommendation (taken by the owner 2026-11-09): adopt A now, take B item by item, send C to the structural-fea-engineer, and **re-baseline the "
+      f"published weight for CORRIE on the printed frame to about {b2['publish_g']:.0f} g "
+      f"({b2['publish_g'] / LB:.1f} lb)**. Keep 6.6 lb (and 5.0 lb) as targets for a "
       "lighter-frame variant (section 6).\n")
 
     w("## 1. Mass breakdown (size M), ranked\n")
@@ -815,8 +878,25 @@ def report(bd, cl, pk, bench, files) -> str:
     for s in pk["steps"]:
         w(f"| {s['pkg']} | {', '.join(s['items'])} | {s['saved_real_g']:.1f} | {s['saved_booked_g']:.1f} | {s['usd']:+.2f} | "
           f"{s['hours']:+.1f} | {s['after_real_g']:.0f} | {s['after_real_g'] / LB:.2f} | {s['vs_target_real_g']:+.0f} |")
-    w("\nWaterfall: `outputs/screens/20261109_weight_3.png`. Package B includes the held B-8 / B-9; without them B is "
-      f"{sum(x['g'] for x in cl if x['id'] in ('B-8', 'B-9')):.0f} g smaller.\n")
+    w("\nWaterfall: `outputs/screens/20261109_weight_3.png`. Package B is the owner's: without the held B-8 / B-9 "
+      f"({', '.join(f'{h['id']} {h['g']:.1f} g' for h in pk['held_b'])}, not counted until their evidence arrives).\n")
+    w("### 4a. Applied: CORRIE B.2 (A + B), per belt size, and the package-C projection\n")
+    w(f"Items applied in `corrie.py` (spec B.2): {', '.join(b2['items'])}. Package C ({', '.join(b2['c_items'])}, "
+      f"-{b2['c_saving_g']:.1f} g, size-independent) is projected on top, not applied. B.2 table minus the package "
+      f"arithmetic (belt {SIZE}): {b2['recon_vs_packages_g']:+.1f} g (the B-4 camo pull tab the cut list did not "
+      "book, and the pouch zip cut to L - 20 mm).\n")
+    w("| Belt | B.1 g | **B.2 g** | B.2 lb | B.2 vs B.1 | Projected with C g | lb | vs publish ~3800 g |")
+    w("|---|---:|---:|---:|---:|---:|---:|---:|")
+    for s_, r in b2["sizes"].items():
+        w(f"| {s_} | {r['b1_g']:.1f} | **{r['b2_g']:.1f}** | {r['b2_lb']:.2f} | {r['b2_vs_b1_g']:+.1f} | "
+          f"{r['with_c_g']:.1f} | {r['with_c_lb']:.2f} | {r['with_c_vs_publish_g']:+.0f} |")
+    w(f"\nB.2 rows that differ from B.1 (belt {SIZE}, `corrie.weight_table('{SIZE}', spec='B.2')`):\n")
+    w("| Row | g |")
+    w("|---|---:|")
+    for n, g, _src in b2["rows_M"]:
+        if n.startswith(("CORRIE body", "IMP-", "hipbelt body", "A-2", "B-10", "G-1", "G-2")):
+            w(f"| {n} | {g:+.1f} |")
+    w("")
 
     w("## 5. Why the target is out of reach, and what it would take\n")
     w("The 2994 g target dates from 2026-11-05, when the pack was 3030 g. Since then the owner and the gates added the "
@@ -834,7 +914,7 @@ def report(bd, cl, pk, bench, files) -> str:
       f"({pk['after_all_take_g'] / LB:.2f} lb). Only the frame line moves the number by hundreds of grams; for 2994 g "
       f"with every CORRIE feature, frame + spreader must come in at about {pk['frame_plus_spreader_needed_g']:.0f} g.\n")
 
-    w("## 6. Owner decisions\n")
+    w("## 6. Owner decisions (answered 2026-11-09: see DECISIONS; kept here as asked)\n")
     w(f"1. **Re-baseline the published weight** for CORRIE on the printed frame (recommend about "
       f"{math.ceil(st['C']['after_real_g'] / 50) * 50:.0f} g after A+B+C, or {math.ceil(st['A']['after_real_g'] / 50) * 50:.0f} g "
       "with A only), and keep 6.6 / 5.0 lb for a lighter-frame variant.")

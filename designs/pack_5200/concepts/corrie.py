@@ -2,7 +2,11 @@
 the HATCH horseshoe (U) zip door + roll-top + a top pouch for loose goods. Engineered concept, the step before a
 pattern release. Study code: the released SPINE files are only read.
 
-    python designs/pack_5200/concepts/corrie.py        # numbers (naive merge vs optimised), seam check
+    python designs/pack_5200/concepts/corrie.py                 # numbers (naive merge vs optimised), seam check
+    python designs/pack_5200/concepts/corrie.py --spec B.1      # reproduce rev B.1 (or env CORRIE_SPEC=B.1)
+
+Specs (integration revisions on the rev B body): B.1 (2026-11-09, pockets + belt B) and B.2 (DEFAULT, 2026-11-09,
+the owner-approved weight cuts: DECISIONS row "Owner: 'Yes' to the weight-pass recommendation"; see SPECS below).
 
 Write-up: designs/pack_5200/analysis/corrie_body.md. Renders: corrie_render.py.
 
@@ -21,6 +25,7 @@ Key decisions (each traced in the write-up):
 from __future__ import annotations
 
 import math
+import os
 import sys
 from pathlib import Path
 
@@ -40,7 +45,8 @@ SLUG = "corrie"
 DOOR = {"inset": 45.0, "z_lo": 110.0, "z_hinge": 650.0, "r": 60.0}   # DECISION (this file docstring)
 B22_Z = 695.0           # guy corner tabs on the hinge band (were z 752 on SPINE's B-02d)
 B22_X = 149.0           # unchanged x (bag_attachment.md section 1)
-POUCH = {"L": 320.0, "W": 210.0, "H": 70.0}                         # ASSUMPTION: outer box, mm
+POUCH_B1 = {"L": 320.0, "W": 210.0, "H": 70.0}                      # ASSUMPTION: outer box, mm (B.1, 4.0 L)
+POUCH_B2 = {"L": 280.0, "W": 190.0, "H": 60.0}                      # weight pass B-5 (owner 2026-11-09), 2.7 L
 WEB25 = MAT.load("poly_webbing_25mm").require("mass_g_m")
 LADDER = MAT.load("ladder_lock_25mm").require("mass_g")
 G_HOOK = W.G_HOOK_G      # 4 g ASSUMPTION (HAUL family)
@@ -61,6 +67,38 @@ REVS = {"A": {"d_bot": BC.D_BOT, "d_nom": BC.D_MAX, "z_c": None},
         "B": {"d_bot": 170.0, "d_nom": 270.0, "z_c": 736.3}}
 REV = "B"
 
+# Integration specs on the rev B body. B.1 = DECISIONS 2026-11-09 "Owner delegated the open choices" (pockets IMP-1..8,
+# belt B). B.2 = DECISIONS 2026-11-09 "Owner: 'Yes' to the weight-pass recommendation": package A (A-1, A-2) and
+# package B without the held fabric swaps B-8 / B-9; B-2 chosen over S-12; B-1 gated on the wash-swatch fray test
+# (gate WP-1, corrie_body.md section 12). Package C is NOT applied (structural / test gates pending). Item ids and
+# grams: analysis/weight_pass_corrie.md. B.2 also books the two real masses no B.1 table carried (G-1, G-2).
+SPECS = {
+    "B.1": {"grip_print": True, "wrap_tail_mm": 250.0, "body_seam": "bound", "sh03": True, "pouch": POUCH_B1,
+            "pouch_top": "polyester_ht_630d_printable", "pouch_body": "cordura_330d_nylon66", "pouch_pull_tab": False,
+            "imp1_panel": "cordura_330d_nylon66", "imp6_sewn": False, "trim": "hypalon_coated_nylon",
+            "book_gaps": False, "items": ()},
+    "B.2": {"grip_print": False,                         # A-1: unprinted belt face until HB-2
+            "wrap_tail_mm": 150.0,                       # A-2: haul-wrap tails 250 -> 150 mm
+            "body_seam": "seared",                       # B-1: no grosgrain; 2nd 301 row 6 mm in, trim, hot-knife sear
+            "sh03": False,                               # B-2: SH-03 roll-hem camo band deleted (not S-12)
+            "pouch": POUCH_B2,                           # B-5: 280 x 190 x 60 mm
+            "pouch_top": "cordura_330d_nylon66",         # B-4: body-solid top, camo pull tab marks it
+            "pouch_body": "robic_100d_ripstop",          # B-3: base + boxing strip 100D
+            "pouch_pull_tab": True,
+            "imp1_panel": "robic_100d_ripstop",          # B-6
+            "imp6_sewn": True,                           # B-7: phone pocket sewn to the left J-strap
+            "trim": "tpu_coated_nylon_840d",             # B-10: B-12 ports, IMP-2 port frames, IMP-8 cam-cup base
+            "book_gaps": True,                           # G-1 (binding left after B-1), G-2 (CORRIE-sized fly)
+            "items": ("A-1", "A-2", "B-1", "B-2", "B-3", "B-4", "B-5", "B-6", "B-7", "B-10", "G-1", "G-2")},
+}
+SPEC = os.environ.get("CORRIE_SPEC", "B.2")      # the flag: CORRIE_SPEC=B.1 (or spec="B.1" / --spec B.1) gives B.1
+assert SPEC in SPECS, SPEC
+POUCH = SPECS[SPEC]["pouch"]                     # the default spec's pouch (renders, loadout)
+
+
+def spec_of(spec: str | None = None) -> dict:
+    return SPECS[spec or SPEC]
+
 
 def make(rev: str | None = None) -> BC.Concept:
     r = REVS[rev or REV]
@@ -74,14 +112,23 @@ def make(rev: str | None = None) -> BC.Concept:
     return c
 
 
-def pouch_volume_L(P=POUCH) -> float:
+def pouch_volume_L(P=None) -> float:
     """Boxed pouch, ASSUMPTION 15 % loss for rounded stuffed corners."""
+    P = P or POUCH
     return P["L"] * P["W"] * P["H"] * 0.85 / 1e6
 
 
-def build(c: BC.Concept, optimised=True) -> BC.Build:
+def pouch_interior_mm(P=None) -> tuple:
+    """Usable interior of the boxed pouch: outer less 20 / 15 / 5 mm (the B.1 loadout rule, 320 x 210 x 70 ->
+    300 x 195 x 65: zip run and seam allowances on the length, rounded corners on the width, base sag on the depth)."""
+    P = P or POUCH
+    return (P["L"] - 20.0, P["W"] - 15.0, P["H"] - 5.0)
+
+
+def build(c: BC.Concept, optimised=True, spec: str | None = None) -> BC.Build:
     """``optimised=False`` = the naive merge (MANTLE wings as drawn + HATCH door + the current 4.9 L optional lid with
-    4 magnetic buckles), the baseline for the savings table."""
+    4 magnetic buckles), the baseline for the savings table. ``spec`` = "B.1" / "B.2" (default ``SPEC``)."""
+    sp = spec_of(spec)
     b, per = W.box_body(c)
     # aft face -> U-surround + door + hinge band (HATCH construction, CORRIE door geometry)
     b.pieces = [(p, g) for p, g in b.pieces if p.piece_id != "B-02"]
@@ -139,34 +186,51 @@ def build(c: BC.Concept, optimised=True) -> BC.Build:
                 W.add_hw(b, f"wing {side} strap {i + 1}", 0.30 * WEB25 + G_HOOK + LADDER, 2)
     # ---- camo: chevron kick plate (wear line), roll-top hem band
     W.accents_common(b, c, per)
+    if optimised and not sp["sh03"]:          # B-2 (B.2): SH-03 roll-hem band deleted, the hem B-07 stays body solid
+        b.pieces = [(p, g) for p, g in b.pieces if p.piece_id != "SH-03"]
+        b.appliques = [p for p in b.appliques if p.piece_id != "SH-03"]
+    # ---- B-1 (B.2): body seams no longer bound. Each 'bound' seam becomes 'seared': 301 seam + a second 301 row 6 mm
+    # into the allowance, trimmed and hot-knife seared (build_simplicity S-03). Same hour rate as the bound seam.
+    if optimised and sp["body_seam"] != "bound":
+        b.seams = [(s_, (set(t) - {"bound"}) | {sp["body_seam"]} if "bound" in t else t) for s_, t in b.seams]
     # ---- top pouch
     if optimised:
-        P = POUCH
-        top = rect_panel("pouch top (camo)", P["L"], P["W"], 0.0, seam_allowance_mm=SA_FLAT,
-                         material_id="polyester_ht_630d_printable", piece_id="L-21")
+        P = sp["pouch"]
+        camo_top = sp["pouch_top"] == "polyester_ht_630d_printable"
+        top = rect_panel("pouch top (camo)" if camo_top else "pouch top (body solid)", P["L"], P["W"], 0.0,
+                         seam_allowance_mm=SA_FLAT, material_id=sp["pouch_top"], piece_id="L-21")
         base = rect_panel("pouch base", P["L"], P["W"], 0.0, seam_allowance_mm=SA_FLAT,
-                          material_id="cordura_330d_nylon66", piece_id="L-22")
+                          material_id=sp["pouch_body"], piece_id="L-22")
         box = rect_panel("pouch boxing strip", 2 * (P["L"] + P["W"]), P["H"], 0.0, seam_allowance_mm=SA_FLAT,
-                         material_id="cordura_330d_nylon66", piece_id="L-23")
+                         material_id=sp["pouch_body"], piece_id="L-23")
         b.pieces += [(top, "pouch"), (base, "pouch"), (box, "pouch")]
-        b.appliques.append(top)
+        if camo_top:
+            b.appliques.append(top)
         b.seams += [_seam([top.edge(e) for e in ("bottom", "right", "top", "left")], box.edge("top"),
                           "pouch top | boxing strip (#8 zip on the aft long side)", "ring"),
                     _seam([base.edge(e) for e in ("bottom", "right", "top", "left")], box.edge("bottom"),
                           "pouch base | boxing strip", "ring"),
                     _seam(box.edge("left"), box.edge("right").reversed(), "boxing strip end")]
-        # zip on the aft long edge: a straight run of the top | boxing seam, 300 mm, one slider + cord pull, garage
-        b.zips.append({"name": "pouch zip #8, 1 slider", "length_mm": 300.0, "corners": 0, "z": (0, 0),
-                       "where": "pouch aft edge", "mass_g": ZIP8_GM * (300.0 + 60) / 1000 + SLIDER8_G})
+        if sp["pouch_pull_tab"]:
+            # B-4: a camo pull tab marks the (now solid) pouch: 25 x 120 folded to a 25 x 60 loop, caught in the
+            # boxing-strip end seam at the zip's open end (ASSUMPTION: size; the zip keeps its cord pull)
+            tab = rect_panel("pouch pull tab (camo, folded loop)", 25.0, 120.0, 0.0, seam_allowance_mm=SA_FLAT,
+                             material_id="polyester_ht_630d_printable", piece_id="SH-08")
+            b.pieces.append((tab, "pouch"))
+        # zip on the aft long edge: a straight run of the top | boxing seam, L - 20 mm, one slider + cord pull
+        zl = P["L"] - 20.0
+        b.zips.append({"name": "pouch zip #8, 1 slider", "length_mm": zl, "corners": 0, "z": (0, 0),
+                       "where": "pouch aft edge", "mass_g": ZIP8_GM * (zl + 60) / 1000 + SLIDER8_G})
         W.add_hw(b, "pouch: 4 x 25 mm 0.12 m straps + 4 G-hooks (2 rear to the hem loops, 2 front to the roll clips)",
                  4 * (0.12 * WEB25 + G_HOOK), 4)
         W.add_hw(b, "pouch zip cord pull", CORD_PULL_G, 0)
-        b.extra["pouch_L"] = round(pouch_volume_L(), 2)
+        b.extra["pouch_L"] = round(pouch_volume_L(P), 2)
     else:   # the current optional lid L-01..L-03 (4.9 L, 141.2 g with 4 magnetic buckles; geometry.yaml)
         W.add_hw(b, "current optional lid / hip pack (4.9 L, geometry.yaml lid_accessory_g)", 141.2, 0)
         b.extra["pouch_L"] = 4.89
     b.extra["b22_z"] = B22_Z
     b.extra["optimised"] = optimised
+    b.extra["spec"] = spec or SPEC
     # no centre zip in CORRIE (the door replaces it)
     return b
 
@@ -213,7 +277,7 @@ def cloth_sim_estimate(geo_cg_y: float) -> dict:
 
 def pouch_cg_shift(c, kg=1.0, rated=68.0):
     """CG shift of the rated load if the pouch carries ``kg`` (ASSUMPTION 1 kg of loose goods) at its centre."""
-    zc = c.z_fill + 22 + 18 + POUCH["H"] / 2       # seated on the closed roll (as corrie_render.pouch_soup)
+    zc = c.z_fill + 22 + 18 + POUCH["H"] / 2       # seated on the closed roll (as corrie_render.pouch_soup), default spec
     yc = float(BC.y_frame([c.z_fill])[0]) + BC.D_TOP / 2 + 15
     return {"pouch_centre_y": round(yc, 0), "pouch_centre_z": round(zc, 0), "kg": kg, "rated_kg": rated, "zc": zc, "yc": yc}
 
@@ -267,12 +331,15 @@ def door_width(z: float, c: BC.Concept | None = None) -> float:
     return 2 * (float(c.a([z])[0]) - DOOR["inset"])
 
 
-def bag_pockets(c: BC.Concept | None = None) -> list:
+def bag_pockets(c: BC.Concept | None = None, spec: str | None = None) -> list:
     c = c or make()
+    sp = spec_of(spec)
+    trim = sp["trim"]
+    trim_nm = "Hypalon" if trim == "hypalon_coated_nylon" else "TPU-coated 840D, laser-cut"
     out = []
     # IMP-1 scope sleeve inside the left wing M-01L
     S = SCOPE_SLEEVE
-    sl = [_P("IMP1-a", "scope sleeve panel (bag side)", S["w"], S["h"], "cordura_330d_nylon66"),
+    sl = [_P("IMP1-a", "scope sleeve panel (bag side)", S["w"], S["h"], sp["imp1_panel"]),
           _P("IMP1-b", "scope sleeve liner facing", S["w"] - 30, S["h"] - 10, "robic_100d_ripstop")]
     xlpe = 0.300 * 0.420 * 0.003 * XLPE_RHO * 1000.0
     perim = S["w"] + S["lines_apart"]
@@ -281,7 +348,7 @@ def bag_pockets(c: BC.Concept | None = None) -> list:
         sl, [("XLPE 3 mm liner 300 x 420 (xlpe_foam density)", round(xlpe, 1)),
              ("top cinch: 3 mm shock cord 0.5 m + cord lock (" + SHOCK_NOTE + ")", 0.5 * CORD2_GM + CORDLOCK_G)],
         seam_m=2 * S["h"] / 1000 + S["w"] / 1000 + 2 * (S["w"] + S["h"]) / 1000, tacks=2, extra_h=0.3,
-        attach=("Sleeve panel (330D, XLPE 300 x 420 sandwiched under a 100D facing, edge-stitched) sewn to the wing's inside "
+        attach=(f"Sleeve panel ({'330D' if sp['imp1_panel'].startswith('cordura') else '100D Robic'}, XLPE 300 x 420 sandwiched under a 100D facing, edge-stitched) sewn to the wing's inside "
                 "face on two straight vertical lines 160 mm apart (20 mm in from each wing edge), before the wing is hemmed. "
                 "Bottom: the 170 mm excess folds into two 85 mm box pleats caught in the wing's bottom hem (straight). Top: "
                 "3 mm shock-cord channel with a cord lock. The XLPE faces the bag (scope cannot touch the gusset or hardware)."),
@@ -290,8 +357,8 @@ def bag_pockets(c: BC.Concept | None = None) -> list:
     # IMP-2 hydration sleeve, hung above IM3
     Hh = HYDRO
     pieces = [_P("B-09c", "hydration sleeve (folded tube, one side seam)", 2 * Hh["w"], Hh["h"], "robic_100d_ripstop", sa=10.0),
-              rect_panel("hose port binding (Hypalon, slot 12 x 40)", Hh["port"][0], Hh["port"][1], 0.0, seam_allowance_mm=0.0,
-                         material_id="hypalon_coated_nylon", quantity=2, piece_id="B-09p")]
+              rect_panel(f"hose port binding ({trim_nm}, slot 12 x 40)", Hh["port"][0], Hh["port"][1], 0.0,
+                         seam_allowance_mm=0.0, material_id=trim, quantity=2, piece_id="B-09p")]
     out.append(_imp(
         "IMP-2", "hydration sleeve above IM3 + 2 hose ports (R-19)", "inside, on B-01 / B-06f, z 545-975",
         pieces, [("hang tab 25 mm webbing 0.10 m on B-06f + G-hook on the sleeve", 0.10 * WEB25 + G_HOOK),
@@ -301,7 +368,7 @@ def bag_pockets(c: BC.Concept | None = None) -> list:
                 "frame-side collar strip at x 0, z 985 (flat-work, before the collar ring). Bottom corners are held by 2 mm Dyneema "
                 "loops to two webbing tabs on B-01 at z 560, x +/-100 (above the IM3 strap, z 520 +/- 19). Its bottom, z 545, "
                 "stays clear of IM3, so the meat straps and their ports are untouched. Hose ports: two 12 x 40 mm bound slots "
-                "(Hypalon frames, 40 x 60) in the B-03 gussets at z 700, 20 mm aft of the frame-side seam, both sides (R-19), "
+                f"({trim_nm} frames, 40 x 60) in the B-03 gussets at z 700, 20 mm aft of the frame-side seam, both sides (R-19), "
                 "above the wing tops (z 600) and below the collar seam (z 736). Roll rule: with a bladder in, the roll closes at or "
                 "above z 990 (ASSUMPTION)."),
         bladder_centre_z=Hh["z"][0] + 200.0 + 10.0))
@@ -326,26 +393,34 @@ def bag_pockets(c: BC.Concept | None = None) -> list:
     Sp = STRAP_POCKET
     pieces = [_P("IMP6-a", "phone pocket face (power mesh)", Sp["w"], Sp["h"], "power_mesh_nylon_spandex"),
               _P("IMP6-b", "phone pocket back", Sp["w"], Sp["h"], "cordura_330d_nylon66")]
-    out.append(_imp(
-        "IMP-6", "shoulder-strap phone pocket (160 mm phone)", "left J-strap, front face, top 120 mm below the yoke",
-        pieces, [("2 wrap straps 25 mm x 0.15 m + 2 G-hooks (HAUL family)", 0.30 * WEB25 + 2 * G_HOOK),
-                 ("top cinch 0.25 m 3 mm shock cord + cord lock (" + SHOCK_NOTE + ")", 0.25 * CORD2_GM + CORDLOCK_G)],
-        seam_m=2 * (Sp["w"] + Sp["h"]) / 1000, tacks=4, extra_h=0.1,
-        attach=("Mesh face over a 330D back, sewn on 3 sides (straight), top edge in a shock-cord channel with a cord lock (quiet, "
+    cinch = ("top cinch 0.25 m 3 mm shock cord + cord lock (" + SHOCK_NOTE + ")", 0.25 * CORD2_GM + CORDLOCK_G)
+    if sp["imp6_sewn"]:     # B-7 (B.2): sewn to the LEFT J-strap, 4 bartacks through the strap binding, no wraps
+        hw6, h6 = [cinch], 0.3
+        att6 = ("Mesh face over a 330D back, sewn on 3 sides (straight), top edge in a shock-cord channel with a cord lock "
+                "(quiet, no hook-and-loop). The back is bartacked to the LEFT J-strap at its 4 corners through the strap's "
+                "edge binding (harness assembly, before the strap is closed), so it no longer moves or comes off (weight "
+                "pass B-7). The J-strap is 72 -> 58 mm wide (geometry.yaml harness); the 90 mm pocket overhangs ~13 mm a "
+                "side at the mounting height, so the corner bartacks sit in the binding, not in the overhang.")
+    else:
+        hw6, h6 = [("2 wrap straps 25 mm x 0.15 m + 2 G-hooks (HAUL family)", 0.30 * WEB25 + 2 * G_HOOK), cinch], 0.1
+        att6 = ("Mesh face over a 330D back, sewn on 3 sides (straight), top edge in a shock-cord channel with a cord lock (quiet, "
                 "no hook-and-loop). Two 25 mm wrap straps sewn across the back hook round the strap with G-hooks, so it moves "
                 "to either strap and comes off. The J-strap is 72 -> 58 mm wide (geometry.yaml harness); the 90 mm pocket "
-                "overhangs ~13 mm a side at the mounting height."),
+                "overhangs ~13 mm a side at the mounting height.")
+    out.append(_imp(
+        "IMP-6", "shoulder-strap phone pocket (160 mm phone)", "left J-strap, front face, top 120 mm below the yoke",
+        pieces, hw6, seam_m=2 * (Sp["w"] + Sp["h"]) / 1000, tacks=4, extra_h=h6, attach=att6,
         interior_mm=(Sp["h"] - 7, Sp["w"] - 6, Sp["stretch_depth"])))
     # IMP-8 bow cam cup at the foot of the right wing
     Cc = CAM_CUP
     pieces = [_P("IMP8-a", "cam cup body (folded, 2 side seams)", Cc["w"], Cc["h"], "cordura_330d_nylon66"),
-              rect_panel("cam cup base (Hypalon)", Cc["base"][0], Cc["base"][1], 0.0, seam_allowance_mm=0.0,
-                         material_id="hypalon_coated_nylon", piece_id="IMP8-b")]
+              rect_panel(f"cam cup base ({trim_nm})", Cc["base"][0], Cc["base"][1], 0.0, seam_allowance_mm=0.0,
+                         material_id=trim, piece_id="IMP8-b")]
     out.append(_imp(
         "IMP-8", "bow cam / limb cup at the foot of the right wing", "B-03R | B-05 aft corner, below M-01R (z 35-150)",
         pieces, [], seam_m=0.5, tacks=2, extra_h=0.1,
-        attach=("Cup body folded in half (65 x 160 finished pocket, two straight side seams), the Hypalon base stitched across "
-                "the bottom fold as the wear face; the cup's back edge is caught in the B-03R | B-05 bound seam at the aft corner, "
+        attach=(f"Cup body folded in half (65 x 160 finished pocket, two straight side seams), the {trim_nm} base stitched across "
+                "the bottom fold as the wear face; the cup's back edge is caught in the B-03R | B-05 body seam at the aft corner, "
                 "below the wing (z 35-150), so the lower cam sits in it while the riser rides the B-11 loops. Restores SPINE SH-04's "
                 "function.")))
     return out
@@ -462,17 +537,20 @@ def holster() -> dict:
                 interior_mm=(230, 95, 95))
 
 
-def belt_b(size: str) -> dict:
+def belt_b(size: str, spec: str | None = None) -> dict:
     """Belt B body on CORRIE, per size: hipbelt_concepts.belt_bom with the 2026-11-09 records swapped in
     (D-ring 6 g x 2 instead of 5 g x 2; grip print 46 g/m2 x printed face area instead of 5 g) and the 2:1 lock legs
-    (2 x ladder_lock_25mm_heavy) added. The grip print is BOOKED in mass but not CREDITED in friction (HB-2)."""
+    (2 x ladder_lock_25mm_heavy) added. B.1: the grip print is BOOKED in mass but not CREDITED in friction (HB-2).
+    B.2 (A-1): the face ships unprinted until HB-2 passes, so belt_bom's 5 g grip line is taken out."""
     HC, hb = _hb()
+    sp = spec_of(spec)
     bom = HC.belt_bom(HC.B, size)
     face = 2 * next(r["area_mm2"] for r in bom["pieces"] if r["piece"] == "wing face") + \
         next(r["area_mm2"] for r in bom["pieces"] if r["piece"] == "lumbar face")
     grip = GRIP_GSM * face / 1e6
-    corr = [("D-rings: record 2 x 6 g replaces 2 x 5 g ASSUMPTION", 2 * DRING_G - 10.0),
-            (f"grip print: record 46 g/m2 x {face / 1e6:.3f} m2 replaces 5 g ASSUMPTION", grip - 5.0),
+    g_row = ((f"grip print: record 46 g/m2 x {face / 1e6:.3f} m2 replaces 5 g ASSUMPTION", grip - 5.0) if sp["grip_print"]
+             else ("grip print NOT applied (weight pass A-1: unprinted face until HB-2): belt_bom's 5 g line out", -5.0))
+    corr = [("D-rings: record 2 x 6 g replaces 2 x 5 g ASSUMPTION", 2 * DRING_G - 10.0), g_row,
             ("2:1 lock legs: 2 x ladder_lock_25mm_heavy (ITW Superloc class)", 2 * LADDER_HEAVY_G)]
     total = bom["total_g"] + sum(g for _, g in corr)
     return {"size": size, "bom_total_g": bom["total_g"], "corrections": [(n, round(g, 1)) for n, g in corr],
@@ -525,16 +603,63 @@ HP_TODAY_G = 8.0 + 10.7 + 0.4 * ZIP8_GM   # panels.yaml HP-01 + HP-02 mass_g_tot
 SPINE_BODY_G = 333.2           # SPINE bag-body group, corrie_body.md section 4 (bag_concepts.spine_build, same metric)
 BELT_LOADPATH_G = 110.4         # hipbelt_structural.md section 0, size M (plate 94.6 + doublers 14.3 + thread + washer)
 TARGET_G = 2994.0               # ~6.6 lb published target (owner), 6.6 x 453.6
+PUBLISH_G = 3800.0              # DECISIONS 2026-11-09 (owner "Yes"): publish ~3.8 kg (~8.4 lb) after A+B+C, printed frame
+
+# ---- B.2 bookings (weight pass A-2, B-10, G-1, G-2; analysis/weight_pass_corrie.md sections 2-3)
+WRAP_N = 3                      # haul wraps W1-W3 (geometry.yaml "haul wraps (= compression)" row)
+BINDING_GM = 5.0                # ASSUMPTION: 20 mm grosgrain, no record (build_simplicity.md S-03; weight pass G-1)
+SPINE_OUTER_M2 = 0.6298         # SPINE v3.1 outer shell B-02a..d + B-03 x2 + B-05 cut area, m2: weight_pass_corrie.
+                                # _spine_outer_area() (patterns_v31 cut set; ~30 s, so stored; a test re-checks it)
+OUTER_IDS = ("B-03", "B-02u", "B-02door", "B-02h", "B-05")   # CORRIE's outer shell (the fly covers it)
 
 
-def weight_table(size: str = "M", c: BC.Concept | None = None) -> dict:
+def _panels():
+    import yaml
+    return {r["id"]: r for r in yaml.safe_load((HERE.parent / "panels.yaml").read_text())["panels"]}
+
+
+def bound_body_m(b: BC.Build) -> float:
+    """Metres of body seam still finished with grosgrain binding (tag 'bound')."""
+    return sum(s.length_a for s, t in b.seams if "bound" in t) / 1000.0
+
+
+def b2_rows(c: BC.Concept, b: BC.Build, spec: str | None = None) -> list:
+    """Rows a spec books on top of the B.1 structure: shared-row deltas (A-2, B-10 on B-12) and the booking gaps
+    G-1 / G-2. B.1 books none of them (it is reproduced as it was)."""
+    sp = spec_of(spec)
+    rows = []
+    if sp["wrap_tail_mm"] != SPECS["B.1"]["wrap_tail_mm"]:
+        d = WRAP_N * (SPECS["B.1"]["wrap_tail_mm"] - sp["wrap_tail_mm"]) / 1000.0
+        rows.append((f"A-2 haul-wrap tails W1-W3 {SPECS['B.1']['wrap_tail_mm']:.0f} -> {sp['wrap_tail_mm']:.0f} mm "
+                     "(haul path unchanged)", -d * WEB25, "poly_webbing_25mm record x 3 x tail cut"))
+    if sp["trim"] != "hypalon_coated_nylon":
+        P = _panels()["B-12"]
+        a = P["cut_area_m2_each"] * P["qty_total"]
+        d_gsm = HYP_GSM - MAT.load(sp["trim"]).require("areal_density_gsm")
+        rows.append((f"B-10 B-12 strap ports x{P['qty_total']}: Hypalon -> {sp['trim']} (no load)", -a * d_gsm,
+                     "panels.yaml B-12 cut area x record gsm delta"))
+    if sp["book_gaps"]:
+        m = bound_body_m(b)
+        rows.append((f"G-1 grosgrain binding on the bound body seams left after B-1 ({m:.2f} m)", m * BINDING_GM,
+                     f"corrie.build() seams tagged 'bound' x {BINDING_GM} g/m (ASSUMPTION, build_simplicity S-03)"))
+        fly = sum(r["mass_g_total"] for k, r in _panels().items() if k.startswith("F-01"))
+        a_co = sum(p.area_mm2 * p.quantity for p, _ in b.pieces if p.piece_id in OUTER_IDS) / 1e6
+        rows.append((f"G-2 rain fly F-01 re-cut for CORRIE's box shell ({a_co:.3f} vs SPINE {SPINE_OUTER_M2:.3f} m2)",
+                     fly * (a_co / SPINE_OUTER_M2 - 1.0),
+                     "panels.yaml F-01 x outer-shell area ratio (ASSUMPTION: the fly scales with the shell it covers)"))
+    return rows
+
+
+def weight_table(size: str = "M", c: BC.Concept | None = None, spec: str | None = None) -> dict:
     c = c or make()
-    body = BC.metrics(build(c, True))["mass_g"]["total"]
+    sp_key = spec or SPEC
+    b = build(c, True, spec=sp_key)
+    body = BC.metrics(b)["mass_g"]["total"]
     spine_body = SPINE_BODY_G
-    bp = {d["id"]: d for d in bag_pockets(c)}
+    bp = {d["id"]: d for d in bag_pockets(c, spec=sp_key)}
     hl = hip_layout(size)
     hol = holster()
-    bb = belt_b(size)
+    bb = belt_b(size, spec=sp_key)
     hip_p = hl["L"]["mass_g"] + (hl["R"]["mass_g"] if hl["R"] else 0.0)
     rows = [
         ("SPINE released pack (belt M)", SPINE_TOTAL_G, "geometry.yaml weight.total_g"),
@@ -556,19 +681,20 @@ def weight_table(size: str = "M", c: BC.Concept | None = None) -> dict:
          "hipbelt_structural.md section 0 (structural-fea-engineer 2026-11-09)"),
         ("lumbar pad seat on the frame face (replaces the ~10 g ASSUMPTION)", pad_seat()["mass_g"],
          "corrie.pad_seat(): records eva_foam_45c, hdpe_sheet, hypalon_coated_nylon, webbing, ladder lock"),
-    ]
+    ] + b2_rows(c, b, sp_key)
     tot = sum(r[1] for r in rows)
-    return {"size": size, "rows": [(n, round(g, 1), s) for n, g, s in rows], "total_g": round(tot, 1),
+    return {"size": size, "spec": sp_key, "rows": [(n, round(g, 1), s) for n, g, s in rows], "total_g": round(tot, 1),
             "total_lb": round(tot / 453.592, 2), "vs_spine_g": round(tot - SPINE_TOTAL_G, 1),
-            "vs_target_g": round(tot - TARGET_G, 1), "rev_b_total_g": round(SPINE_TOTAL_G + body - spine_body, 1)}
+            "vs_target_g": round(tot - TARGET_G, 1), "rev_b_total_g": round(SPINE_TOTAL_G + body - spine_body, 1),
+            "body_g": body}
 
 
-def integration(c: BC.Concept | None = None) -> dict:
+def integration(c: BC.Concept | None = None, spec: str | None = None) -> dict:
     c = c or make()
-    bp = bag_pockets(c)
+    bp = bag_pockets(c, spec=spec)
     hips = {s: hip_layout(s) for s in BELT_SIZES}
-    belts = {s: belt_b(s) for s in BELT_SIZES}
-    wt = {s: weight_table(s, c) for s in BELT_SIZES}
+    belts = {s: belt_b(s, spec=spec) for s in BELT_SIZES}
+    wt = {s: weight_table(s, c, spec=spec) for s in BELT_SIZES}
     strip = lambda d: {k: v for k, v in d.items() if k != "pieces"} | {"pieces": [  # noqa: E731
         {"id": p.piece_id, "name": p.name, "material": p.material_id, "qty": p.quantity,
          "seam_bbox_mm": [round(v, 1) for v in np.ptp(np.asarray(p.outline), axis=0)], "cut_area_mm2": round(p.area_mm2, 0),
@@ -579,17 +705,22 @@ def integration(c: BC.Concept | None = None) -> dict:
     return {"bag_pockets": [strip(d) for d in bp], "holster": strip(holster()), "hip": hp, "belt_b": belts, "weight": wt}
 
 
-def numbers(rev: str | None = None):
+def numbers(rev: str | None = None, spec: str | None = None):
     c = make(rev)
     v = BC.volumes(c)
-    opt, naive = build(c, True), build(make(rev), False)
+    opt, naive = build(c, True, spec=spec), build(make(rev), False, spec=spec)
     m, mn = BC.metrics(opt), BC.metrics(naive)
     return c, opt, naive, m, mn, v
 
 
 if __name__ == "__main__":
     import json
-    c, opt, naive, m, mn, v = numbers()
+    if "--spec" in sys.argv:
+        SPEC = sys.argv[sys.argv.index("--spec") + 1]
+        assert SPEC in SPECS, SPEC
+        POUCH = SPECS[SPEC]["pouch"]
+    c, opt, naive, m, mn, v = numbers(spec=SPEC)
+    print("spec", SPEC, {s: weight_table(s, c, SPEC)["total_g"] for s in BELT_SIZES})
     print("volume", v["volume_L"], "pouch", opt.extra["pouch_L"], "fill in", v["fill_height_in"], "CG", v["cg_y"], v["cg_z"])
     print("optimised", m["mass_g"], m["cut_pieces"], m["seam_length_m"], m["curved_seams"], m["zip_length_m"], m["hours_total"])
     print("naive", mn["mass_g"], mn["cut_pieces"], mn["hours_total"])

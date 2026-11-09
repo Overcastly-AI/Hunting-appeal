@@ -503,8 +503,10 @@ def corrie_parts(p: dict, g: dict) -> tuple[list, dict]:
 
     # ---- roll-top: the collar's closure line rolled 3 turns, ends clipped down to the side gussets
     roll_line, roll, spiral, rstraps, rhw, clip_paths = _rolltop(S, c, a_of, yf_of, yb_of)
-    parts.append(Part("corrie_roll", roll, "camo", "bag", modes=BAGM, explode=BE, floats=True,
-                      label="Roll-top closed (3 turns), camo hem band SH-03 outermost"))
+    spec = CO.SPECS[CO.SPEC]          # B.1 or B.2 (corrie.SPEC; CORRIE_SPEC=B.1 reproduces the B.1 renders)
+    parts.append(Part("corrie_roll", roll, "camo" if spec["sh03"] else "body", "bag", modes=BAGM, explode=BE, floats=True,
+                      label="Roll-top closed (3 turns), camo hem band SH-03 outermost" if spec["sh03"] else
+                      "Roll-top closed (3 turns), hem B-07 body solid (SH-03 deleted, weight pass B-2)"))
     parts.append(Part("corrie_roll_ends", spiral, "trim", "bag", modes=BAGM, explode=BE, floats=True))
     parts.append(Part("corrie_roll_straps", G.concat(rstraps), "webbing", "bag", modes=BAGM, explode=BE, floats=True,
                       label="Roll clips (ROLL family) down to the side gussets"))
@@ -512,11 +514,16 @@ def corrie_parts(p: dict, g: dict) -> tuple[list, dict]:
 
     # ---- top pouch seated on the roll
     pe = (0, 200, 160)
-    pm, pcamo, ptrim, pzip, pzhw, pstr, phw = _pouch(S, CO.POUCH, roll_line, clip_paths, yf_of)
+    pm, pcamo, ptrim, pzip, pzhw, pstr, phw, ptab = _pouch(S, CO.POUCH, roll_line, clip_paths, yf_of,
+                                                           pull_tab=spec["pouch_pull_tab"])
+    camo_top = spec["pouch_top"] == "polyester_ht_630d_printable"
     parts.append(Part("corrie_pouch", pm, "body", "bag", modes=BAGM, explode=pe, floats=True,
-                      label="Top pouch 4.0 L (removable), seated on the roll"))
-    parts.append(Part("corrie_pouch_top", pcamo, "camo", "bag", modes=BAGM, explode=pe, floats=True,
-                      label="Pouch top L-21 (camo)"))
+                      label=f"Top pouch {CO.pouch_volume_L():.1f} L (removable), seated on the roll"))
+    parts.append(Part("corrie_pouch_top", pcamo, "camo" if camo_top else "body", "bag", modes=BAGM, explode=pe,
+                      floats=True, label="Pouch top L-21 (camo)" if camo_top else "Pouch top L-21 (body solid, B-4)"))
+    if ptab is not None:
+        parts.append(Part("corrie_pouch_tab", ptab, "camo", "bag", modes=BAGM, explode=pe, floats=True,
+                          label="Camo pull tab SH-08 (marks the solid pouch, B-4)"))
     parts.append(Part("corrie_pouch_seams", ptrim, "trim", "bag", modes=BAGM, explode=pe, floats=True))
     parts.append(Part("corrie_pouch_zip", pzip, "hardware", "bag", modes=BAGM, explode=pe, floats=True,
                       label="#8 coil zip, aft long edge"))
@@ -740,10 +747,15 @@ def _rolltop(S, c, a_of, yf_of, yb_of):
 
 
 # ---------------------------------------------------------------------------- pouch
-def _pouch(S, P, line, clip_paths, yf_of):
-    """4.0 L pouch draped over the roll: the base hugs the roll top (3 mm into it) and droops ~25 mm to its front
-    and rear edges; the 70 mm boxing keeps the thickness. Built in pouch-local coordinates, then mapped."""
+def _pouch(S, P, line, clip_paths, yf_of, pull_tab=False):
+    """Pouch (B.1 4.0 L 320 x 210 x 70, B.2 2.7 L 280 x 190 x 60) draped over the roll: the base hugs the roll top
+    (3 mm into it) and droops ~25 mm to its front and rear edges; the boxing keeps the thickness. Built in
+    pouch-local coordinates, then mapped. Zip, strap and tab stations are set from the pouch length (they reproduce
+    the B.1 positions at L 320). ``pull_tab``: the B.2 camo loop SH-08 at the zip's open end."""
     L, W, Hh = P["L"], P["W"], P["H"]
+    xz = L / 2 - 10.0          # zip run end (150 at L 320)
+    xr = L / 2 - 42.0          # rear straps (118)
+    xf = L / 2 - 20.0          # front straps (140)
     xs_line = line[:, 0]
     yr = float(np.interp(0.0, xs_line, line[:, 1]))
 
@@ -779,7 +791,7 @@ def _pouch(S, P, line, clip_paths, yf_of):
         if len(cc) > 8:
             pip.append(G.tube(smooth_line(Vm[cc], 3.0, 3.0, closed=True), 1.9, n=8))
     # zip on the aft long edge: just below the top seam on the boxing strip
-    zl = np.column_stack([np.linspace(-150, 150, 60), np.full(60, W / 2 + 0.4), np.full(60, Hh - 9)])
+    zl = np.column_stack([np.linspace(-xz, xz, 60), np.full(60, W / 2 + 0.4), np.full(60, Hh - 9)])
     zp = pmap(zl)
     zipm = G.concat([G.ribbon(zp, 9.0, 1.0, np.tile([0, 1.0, 0], (60, 1)), step=4.0),
                      G.tube(zp + [0, 1.2, 0], 1.4, n=6)])
@@ -790,8 +802,13 @@ def _pouch(S, P, line, clip_paths, yf_of):
                      G.capsule_between(sl + [6, 8, -30], sl + [9, 9, -52], 4.0)])
     # straps: 2 rear (frame side) down the collar to the hem loops, 2 front over the roll to the roll clips
     straps, hooks = [], []
+    tab = None
+    if pull_tab:     # SH-08: 25 x 60 folded camo loop caught in the boxing end seam at the zip's open end (+x)
+        e0 = pmap([[L / 2 - 1.0, W / 2 - 22.0, Hh - 16.0]])[0]
+        tp = np.array([e0, e0 + [12, 0, 4], e0 + [26, 0, -8], e0 + [30, 0, -30], e0 + [26, 0, -48]])
+        tab = G.ribbon(G.catmull_rom(tp, 8), 25.0, 2.6, np.tile([0, 1.0, 0], (33, 1)), step=3.0)
     for sx in (-1, 1):
-        x = sx * 118.0
+        x = sx * xr
         A = pmap([[x, -W / 2 + 4, 14]])[0]
         A_out = pmap([[x, -W / 2 - 3, 4]])[0]
         Bz = A[2] - 85
@@ -803,9 +820,9 @@ def _pouch(S, P, line, clip_paths, yf_of):
         # front: from the aft-bottom edge of the pouch, over the roll, to the roll-clip strap below the roll end
         cp = clip_paths[0] if sx < 0 else clip_paths[1]
         tgt = cp[int(len(cp) * 0.42)]
-        A2 = pmap([[sx * 140.0, W / 2 + 3, 6]])[0]
-        mid = pmap([[sx * 150.0, W / 2 + 12, -14]])[0]
-        pts2 = np.array([pmap([[sx * 140.0, W / 2 - 26, 2]])[0], A2, mid, 0.5 * (mid + tgt) + [0, 14, 0], tgt])
+        A2 = pmap([[sx * xf, W / 2 + 3, 6]])[0]
+        mid = pmap([[sx * xz, W / 2 + 12, -14]])[0]
+        pts2 = np.array([pmap([[sx * xf, W / 2 - 26, 2]])[0], A2, mid, 0.5 * (mid + tgt) + [0, 14, 0], tgt])
         rr = line
 
         def push_roll(Q, rr=rr):
@@ -818,7 +835,7 @@ def _pouch(S, P, line, clip_paths, yf_of):
         rib2, Pq, nq = strap(S, G.catmull_rom(pts2, 8), clear=2.5, extra_push=push_roll)
         straps.append(rib2)
         hooks.append(g_hook(Pq[-1] + nq[-1] * 4.5, nq[-1], Pq[-1] - Pq[-4]))
-    return pm, pc, G.concat(pip), zipm, pull, straps, hooks
+    return pm, pc, G.concat(pip), zipm, pull, straps, hooks, tab
 
 
 # ---------------------------------------------------------------------------- wings + tripod

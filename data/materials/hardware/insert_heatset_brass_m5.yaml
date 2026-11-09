@@ -1,0 +1,45 @@
+id: insert_heatset_brass_m5
+name: Brass heat-set threaded insert M5 (knurled, 9.5 mm long) for printed PA12 / PAHT-CF
+category: hardware
+generic: false
+trade_names:
+- ruthex M5 threaded insert (RX-M5x9.5, M5 x 9.5; short M5S x 5.8)
+supplier_examples:
+- 3DJake (ruthex, 50 pcs)
+- Prusa (heat-set inserts M5 standard, 50 pcs)
+- McMaster-Carr (brass heat-set inserts for plastic)
+properties:
+  thread: M5 x 0.8
+  outer_diameter_mm: 7.1
+  hole_diameter_mm: 6.4
+  length_mm: 9.5
+  min_wall_mm: 2.6
+  material: brass
+  pullout_strength_n: 1200
+  pullout_ref_pa12_mjf_n: 1800
+  pullout_ref_pem_iuta_m5_pc_n: 1691
+  pullout_ref_pem_iuta_m5_abs_n: 1197
+  torque_out_ref_pem_iuta_m5_pc_n_m: 7.7
+  torque_out_ref_pem_iuta_m5_abs_n_m: 5.4
+  torque_out_n_m: 5.4
+  tightening_torque_max_n_m: 2.5
+  mass_g: 1.5
+  quietness_1to5: 5
+confidence: estimate
+sources:
+- "outer_diameter_mm, hole_diameter_mm, length_mm, min_wall_mm (ruthex dimension table: D1 7.1, D3 6.4, L 9.5, W min 2.6), material brass, price $9.30 / 50 pcs: https://www.3djake.com/ruthex/threaded-inserts-m5-50-pieces?sai=15210 (accessed 2026-11-09); short M5S x 5.8 row: https://www.3djake.com/ruthex/threaded-inserts-m5s-50-pieces"
+- "pullout_ref_pa12_mjf_n: Sculpteo traction test of brass heat-set inserts M2-M6 in MJF PA12, 5 specimens per size, 'more than 1 800 N for M5 and M6' with the recommended housing, failure by insert pull-out: https://www.sculpteo.com/en/3d-learning-hub/design-guidelines/pull-out-resistance-of-threaded-inserts-testing-and-results/ (accessed 2026-11-09, read through the search index; the page blocks direct fetch)"
+- "pullout_ref_pem_iuta_m5_*, torque_out_ref_pem_iuta_m5_*: PEM IUTA-M5 heat-staking straight-wall insert, same envelope (hole 6.43 mm, length 9.52 mm), published performance 1691 N / 7.7 N.m in polycarbonate and 1197 N / 5.4 N.m in ABS: https://www.pemnet.com/products/product-finder/iuta-m5/ ; dimensions https://catalog.pemnet.com/cs/printitem/ht-wall-thru-threaded-inserts-types-iuta-iutb-iutc/-staking-insert-straight-wall-thru-threaded-metric/iuta-m5 (accessed 2026-11-09; performance tab read through the search index, the page renders by script)"
+- "ASSUMPTION pullout_strength_n = 1200: design value for an FDM PAHT-CF boss with no published data for this host; taken as the lowest published value for this insert envelope (PEM IUTA-M5 in ABS, 1197 N), below MJF PA12 (>1800 N). Room temperature; apply the PAHT-CF hot/wet knock-downs (pa12_cf_fdm_paht env_knockdown_ratio) on top"
+- "ASSUMPTION torque_out_n_m = 5.4 (PEM IUTA-M5 in ABS, as above); tightening_torque_max_n_m = 2.5 is about half of it, and the screw should use threadlocker, not torque, to stay put"
+- "ASSUMPTION mass_g = 1.5: computed brass volume pi/4 x (6.7^2 - 4.5^2) x 9.5 = 183 mm3 x 8.5 g/cm3 = 1.56 g; weigh 10 on receipt"
+cost_usd:
+  value: 0.19
+  per: unit
+notes: 'No insert maker publishes pull-out for FDM PAHT-CF. The design value (1200 N) is a conservative stand-in from
+  the same-envelope PEM ABS figure; MJF PA12 tested by Sculpteo exceeds 1800 N. Pull-out depends on hole size, wall
+  (>= 2.6 mm, ruthex), install temperature and print orientation: an insert pulled normal to the layers loads the
+  interlayer bond (PAHT-CF Z 47 MPa vs XY 88 MPa), so print the boss with its axis in the XY plane where possible.
+  Required test before release: hipbelt_structural HB-6, 5 inserts in printed PAHT-CF bosses as built, pass >= 1.5 kN
+  each, plus 5 torque-out samples. Brass in contact with carbon fibre: galvanic risk is low (brass is near the noble
+  end but the PA matrix isolates); keep the Ti mount from touching exposed carbon.'

@@ -1,0 +1,32 @@
+id: shock_cord_3mm
+name: Shock cord 3 mm (rubber/latex core, polyester braided cover)
+category: hardware
+generic: true
+trade_names:
+- Robline Minispools Shockcord 3 mm
+- LIROS Sandow 3 mm
+supplier_examples:
+- Ripstop by the Roll
+- Rockywoods
+- Extremtextil
+- marine chandlers (Robline, LIROS)
+properties:
+  diameter_mm: 3
+  mass_g_m: 6.0
+  breaking_strength_n: 280
+  breaking_strength_alt_n: 400
+  core: rubber / latex
+  cover: polyester
+  quietness_1to5: 4
+confidence: datasheet
+sources:
+- "diameter_mm, mass_g_m (6 g/m), breaking_strength_n (28 daN), core rubber, cover polyester: Robline Minispools Shockcord table, https://www.roblineropes.com/en/products/mini-spools/product/detail/minispools-shockcord/ (accessed 2026-11-09)"
+- "breaking_strength_alt_n (40 daN, 16-plait, premium latex core, polyester cover): LIROS Sandow 3 mm, https://www.liros.com/catalog/en/sandow-3-mm-p3369/ (accessed 2026-11-09)"
+- "ASSUMPTION quietness_1to5 = 4: soft braided cover, no published rating; a cord lock on it can click"
+cost_usd:
+  value: 0.5
+  per: m
+notes: 'Replaces the corrie.py SHOCK_NOTE proxy (2 mm Dyneema 2.5 g/m): real 3 mm shock cord is 6 g/m, so every
+  shock-cord metre books +3.5 g. Use the lower break (280 N) for design; shock cord is a closure, not a load path.
+  Latex cores age in UV and heat (expect sag after a few seasons); buy black or coyote, never with a reflective
+  tracer for hunting. cost_usd is an ASSUMPTION (typical small-roll retail, no single cited price).'

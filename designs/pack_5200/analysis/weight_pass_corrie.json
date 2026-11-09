@@ -1418,17 +1418,15 @@
      "B-5",
      "B-6",
      "B-7",
-     "B-8",
-     "B-9",
      "B-10"
     ],
-    "saved_booked_g": 116.5,
-    "saved_real_g": 152.9,
-    "usd": -2.87,
+    "saved_booked_g": 85.8,
+    "saved_real_g": 122.2,
+    "usd": -8.18,
     "hours": -6.0,
-    "after_booked_g": 3873.6,
-    "after_real_g": 3880.1,
-    "vs_target_real_g": 886.1
+    "after_booked_g": 3904.3,
+    "after_real_g": 3910.8,
+    "vs_target_real_g": 916.8
    },
    {
     "pkg": "C",
@@ -1447,9 +1445,9 @@
     "saved_real_g": 101.1,
     "usd": 23.52,
     "hours": 0.0,
-    "after_booked_g": 3772.5,
-    "after_real_g": 3779.0,
-    "vs_target_real_g": 785.0
+    "after_booked_g": 3803.2,
+    "after_real_g": 3809.7,
+    "vs_target_real_g": 815.7
    }
   ],
   "pouch_interaction_g": -4.9,
@@ -1461,13 +1459,13 @@
    },
    {
     "id": "T-2",
-    "what": "Count the 4 L top pouch as an accessory (as the market does with lids: SG lid sold separately, Exo quotes with and without). Accounting only: the hunter still carries it",
-    "g": 87.9
+    "what": "Count the top pouch (B.2: 2.7 L) as an accessory (as the market does with lids: SG lid sold separately, Exo quotes with and without). Accounting only: the hunter still carries it",
+    "g": 59.6
    },
    {
     "id": "T-3",
     "what": "Drop IMP-1 scope sleeve (owner-frozen B.1 pocket)",
-    "g": 56.4
+    "g": 42.5
    },
    {
     "id": "T-4",
@@ -1475,11 +1473,193 @@
     "g": 72.1
    }
   ],
-  "after_all_take_g": 3100.3,
-  "frame_plus_spreader_needed_g": 439.9,
+  "after_all_take_g": 3174.9,
+  "frame_plus_spreader_needed_g": 407.5,
   "frame_plus_spreader_now_g": 1224.9,
   "target_g": 2994.0,
-  "s12_corrie_g": 3.5
+  "s12_corrie_g": 3.5,
+  "held_b": [
+   {
+    "id": "B-8",
+    "g": 21.6,
+    "status": "held O-4"
+   },
+   {
+    "id": "B-9",
+    "g": 9.1,
+    "status": "held O-3"
+   }
+  ],
+  "b2": {
+   "spec": "B.2",
+   "items": [
+    "A-1",
+    "A-2",
+    "B-1",
+    "B-2",
+    "B-3",
+    "B-4",
+    "B-5",
+    "B-6",
+    "B-7",
+    "B-10",
+    "G-1",
+    "G-2"
+   ],
+   "sizes": {
+    "S": {
+     "b1_g": 3971.9,
+     "b2_g": 3884.6,
+     "b2_lb": 8.56,
+     "b2_vs_b1_g": -87.3,
+     "with_c_g": 3783.5,
+     "with_c_lb": 8.34,
+     "with_c_vs_publish_g": -16.5
+    },
+    "M": {
+     "b1_g": 4000.4,
+     "b2_g": 3912.5,
+     "b2_lb": 8.63,
+     "b2_vs_b1_g": -87.9,
+     "with_c_g": 3811.4,
+     "with_c_lb": 8.4,
+     "with_c_vs_publish_g": 11.4
+    },
+    "L": {
+     "b1_g": 4025.0,
+     "b2_g": 3936.6,
+     "b2_lb": 8.68,
+     "b2_vs_b1_g": -88.4,
+     "with_c_g": 3835.5,
+     "with_c_lb": 8.46,
+     "with_c_vs_publish_g": 35.5
+    },
+    "XL": {
+     "b1_g": 4061.5,
+     "b2_g": 3972.6,
+     "b2_lb": 8.76,
+     "b2_vs_b1_g": -88.9,
+     "with_c_g": 3871.5,
+     "with_c_lb": 8.54,
+     "with_c_vs_publish_g": 71.5
+    },
+    "XXL": {
+     "b1_g": 4090.1,
+     "b2_g": 4000.7,
+     "b2_lb": 8.82,
+     "b2_vs_b1_g": -89.4,
+     "with_c_g": 3899.6,
+     "with_c_lb": 8.6,
+     "with_c_vs_publish_g": 99.6
+    }
+   },
+   "rows_M": [
+    [
+     "SPINE released pack (belt M)",
+     3495.6,
+     "geometry.yaml weight.total_g"
+    ],
+    [
+     "CORRIE body group vs SPINE body group",
+     174.7,
+     "corrie.build() vs bag_concepts.spine_build(), same metric"
+    ],
+    [
+     "SPINE floating side pockets (CORRIE has wings instead)",
+     -60.3,
+     "geometry.yaml row; CORRECTION: the rev B 3725 g total still carried them"
+    ],
+    [
+     "SPINE B-09 hydration sleeve (replaced by IMP-2)",
+     -10.9,
+     "panels.yaml B-09"
+    ],
+    [
+     "IMP-2 hydration sleeve + ports",
+     32.1,
+     "corrie.bag_pockets()"
+    ],
+    [
+     "IMP-1 scope sleeve",
+     42.5,
+     "corrie.bag_pockets()"
+    ],
+    [
+     "IMP-4 door pocket",
+     17.7,
+     "corrie.bag_pockets()"
+    ],
+    [
+     "IMP-6 strap phone pocket",
+     10.2,
+     "corrie.bag_pockets()"
+    ],
+    [
+     "IMP-8 cam cup",
+     7.5,
+     "corrie.bag_pockets()"
+    ],
+    [
+     "hipbelt body: current -> belt B (M)",
+     55.2,
+     "hipbelt_concepts.belt_bom + 2026-11-09 records"
+    ],
+    [
+     "hipbelt pockets: HP-01/02 today -> IMP-5 (M, 1 pockets)",
+     -9.5,
+     "panels.yaml HP-01/02 + zip row; corrie.hip_layout()"
+    ],
+    [
+     "IMP-3 bottle holster",
+     37.4,
+     "corrie.holster()"
+    ],
+    [
+     "belt B load path: 6061 bow-tie centre plate + hub + latch, root/tip doublers, thrust washer (110.4 g) replacing the 45 g PA66 plate + latch (the 6 g cant snap is already out above)",
+     65.4,
+     "hipbelt_structural.md section 0 (structural-fea-engineer 2026-11-09)"
+    ],
+    [
+     "lumbar pad seat on the frame face (replaces the ~10 g ASSUMPTION)",
+     60.9,
+     "corrie.pad_seat(): records eva_foam_45c, hdpe_sheet, hypalon_coated_nylon, webbing, ladder lock"
+    ],
+    [
+     "A-2 haul-wrap tails W1-W3 250 -> 150 mm (haul path unchanged)",
+     -5.4,
+     "poly_webbing_25mm record x 3 x tail cut"
+    ],
+    [
+     "B-10 B-12 strap ports x6: Hypalon -> tpu_coated_nylon_840d (no load)",
+     -7.2,
+     "panels.yaml B-12 cut area x record gsm delta"
+    ],
+    [
+     "G-1 grosgrain binding on the bound body seams left after B-1 (0.00 m)",
+     0.0,
+     "corrie.build() seams tagged 'bound' x 5.0 g/m (ASSUMPTION, build_simplicity S-03)"
+    ],
+    [
+     "G-2 rain fly F-01 re-cut for CORRIE's box shell (0.718 vs SPINE 0.630 m2)",
+     6.5,
+     "panels.yaml F-01 x outer-shell area ratio (ASSUMPTION: the fly scales with the shell it covers)"
+    ]
+   ],
+   "c_items": [
+    "C-1",
+    "C-2",
+    "C-3",
+    "C-4",
+    "C-5",
+    "C-6",
+    "C-7",
+    "C-8",
+    "C-9"
+   ],
+   "c_saving_g": 101.1,
+   "publish_g": 3800.0,
+   "recon_vs_packages_g": 1.7
+  }
  },
  "pouch_combo": {
   "g": 58.0,

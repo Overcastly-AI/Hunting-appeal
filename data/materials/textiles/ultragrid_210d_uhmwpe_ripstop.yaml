@@ -1,21 +1,22 @@
 id: ultragrid_210d_uhmwpe_ripstop
-name: 210D nylon with UHMWPE gridstop (Ultragrid-class), PU coated
+name: Challenge ULTRAGrid, 210D recycled nylon with double UHMWPE (Ultra) ripstop grid, PU coated
 category: textiles
 generic: false
 trade_names:
-- EcoPak/Challenge-style 'Ultragrid' nylon-UHMWPE ripstop (trade class)
+- Challenge Sailcloth ULTRAGrid (EcoPak / Challenge Outdoor)
 supplier_examples:
 - Ripstop by the Roll
 - Extremtextil
 - Challenge Sailcloth
 properties:
-  areal_density_gsm: 155
+  areal_density_gsm: 132
   denier: 210
   weave: ripstop with UHMWPE grid yarns
   grab_warp_n: 1300
   grab_weft_n: 1100
   tear_warp_n: 180
   tear_weft_n: 160
+  abrasion_taber_cycles: 1100
   hydrostatic_head_mm: 1500
   quietness_1to5: 3
   uv_brighteners: none (specify optical-brightener-free dye and finish in PO)
@@ -23,14 +24,19 @@ properties:
   hydrolysis_resistance_1to5: 2
   washability_1to5: 4
   stain_odor_resistance_1to5: 3
-  roll_width_mm: 1422
-  usable_width_mm: 1397
-confidence: estimate
+  roll_width_mm: 1500
+  usable_width_mm: 1475
+confidence: datasheet
 sources:
-- Supplier listings for 210D nylon/UHMWPE gridstop fabrics (~4.5 oz/yd2)
-- "ASSUMPTION (pattern-maker 2026-11-04): 56 in, same as the RBTR Challenge ULTRA laminate class; confirm with the supplier"
+- "areal_density_gsm (3.9 oz/yd2, 132 gsm), abrasion_taber_cycles (ASTM D3884 Taber, 1,100 cycles), tear (ASTM D2261: 'does not tear'), waterproof (2.13 psi / 1.47 bar, 1500 mm PU backing), width 59 in / 150 cm, construction 210d recycled nylon + double Ultra ripstop, C0 DWR: Challenge Outdoor 2023 EcoPak Outdoor Fabric Guide v3, https://static1.squarespace.com/static/62018e9b29f2cd0fc23c3a0c/t/63d8117224b90b2859f159a4/1675104626522/2023_EcoPak-Guide_v3.pdf (accessed 2026-11-09)"
+- "areal_density_gsm 132 g/sqm, roll width 1500 mm, PU coating, 1500 mm water column, C0 FC-free, bluesign: https://www.extremtextil.de/en/ultragrid-210den-recycled-nylon-with-black-uhmw-pe-ripstop-132g-sqm/72602 (accessed 2026-11-09)"
+- "ASSUMPTION grab_warp_n / grab_weft_n (1300 / 1100) and tear_warp_n / tear_weft_n (180 / 160): no published number (the maker reports the tongue tear as 'does not tear', i.e. the UHMWPE grid arrests the tear); kept as the earlier estimates, about 2x plain 210D nylon; usable_width_mm = roll - 25 mm selvedge ASSUMPTION"
+- "ASSUMPTION quietness_1to5, hydrolysis_resistance_1to5, washability_1to5, stain_odor_resistance_1to5, uv/ir notes: repo 1-5 ratings and handling notes, nothing published"
 cost_usd:
   value: 20
   per: yd
-notes: ESTIMATE. UHMWPE grid raises tear strength ~2x over plain 210D nylon; UHMWPE yarns are slippery, so use a
-  tighter SPI and bartacks. Good body fabric for weight-focused builds; less abrasion than 500D CORDURA.
+notes: 'Weight, Taber abrasion, waterproofing and width are Challenge data (2026-11-09; weight was 155 gsm estimate).
+  Taber 1100 cycles is on Challenge''s own scale, where the same guide puts 500D CORDURA at about 1800-2000 cycles
+  (EPX600 2000 "comparable to 500d Cordura"; ULTRA100 3600 "twice 500d") - so ULTRAGrid is about 55-60 % of 500D and
+  about level with 330D CORDURA. Grab and tear are not published (ASSUMPTION, see sources). UHMWPE grid yarns are
+  slippery: use a tighter SPI and bartacks. Good body fabric for weight-focused builds.'
