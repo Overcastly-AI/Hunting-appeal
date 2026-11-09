@@ -956,6 +956,11 @@ def _wing(S, sx, a_of, yf_of, yb_of, tri=None, clean=False):
             xneed = sx * (sx * tri["x"] + np.sqrt(np.clip(Rc ** 2 - dy[m] ** 2, 0, None)))
             flat[m, 0] = np.where(sx * flat[m, 0] < sx * xneed, xneed, flat[m, 0])
         P = flat.reshape(nu + 1, nv + 1, 3)
+    return _wing_finish(S, sx, a_of, yf_of, yb_of, P, us, zz, W)
+
+
+def _wing_finish(S, sx, a_of, yf_of, yb_of, P, us, zz, W, bar_off=(2.4, 3.2)):
+    nu, nv = P.shape[0] - 1, P.shape[1] - 1
     du = np.gradient(P, axis=0)
     dv = np.gradient(P, axis=1)
     n = _unit(np.cross(du, dv))
@@ -970,7 +975,7 @@ def _wing(S, sx, a_of, yf_of, yb_of, tri=None, clean=False):
     hem.append(G.tube(P[0] - n[0] * 0.5, 2.6, n=8))
     sel = Uu[:, 0] >= W - 27
     i0 = int(np.argmax(sel))
-    bar = _slab(P[i0:] + n[i0:] * 2.4, P[i0:] + n[i0:] * 3.2, Uu[i0:] / G.TILE_MM, Zz[i0:] / G.TILE_MM)
+    bar = _slab(P[i0:] + n[i0:] * bar_off[0], P[i0:] + n[i0:] * bar_off[1], Uu[i0:] / G.TILE_MM, Zz[i0:] / G.TILE_MM)
     straps, hw = [], []
     for zs in (260.0, 490.0):
         j = int(np.argmin(np.abs(zz - zs)))
