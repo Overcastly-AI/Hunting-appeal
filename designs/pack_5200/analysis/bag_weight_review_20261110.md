@@ -7,6 +7,14 @@ Orchestrator review of the bag competition entries and the whole-pack mass, writ
 4042 g) and the five `bag_comp/*/result.json` files. I did not re-run the teams' tests or sims. Savings
 marked "estimate" are my estimates and are unverified; the tickets exist to prove or kill them.
 
+> **CORRECTION 2026-11-10 (BL-008, `docs/research/published_weight_definitions.md`):** the assumption in §2
+> is wrong for Stone Glacier and Exo. Both count their meat carry in the FRAME weight (SG: integrated load
+> shelf in the frame; Exo: compression straps built into the frame). Split their way, our bag side is about
+> 1080 g, level with their bags (1026–1077 g). **The whole gap is on the frame side: 2562 g (frame, back
+> system, belt, harness, meat straps) against 1247–1332 g.** The 842 g of straps and hardware is still real
+> mass and still worth cutting, but it is a frame-side problem, and the frame-side tickets (BL-003, BL-005,
+> BL-006, BL-007, BL-017) matter most. Like for like on published system weight we are 904–1337 g heavier.
+
 ## 1. Where the pack stands
 
 | Config (belt M) | Mass |

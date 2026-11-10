@@ -3,7 +3,7 @@
 Source: `designs/pack_5200/analysis/bag_weight_review_20261110.md`. Rules for every ticket: `RULES.md`.
 
 **Starting point:** CORRIE B.2 on the H1 frame, belt M: 3927 g (8.66 lb). Leaders: 2308–2790 g.
-**Main finding:** the excess is in straps and hardware (842 g) and suspension (2289 g), not bag fabric.
+**Main finding (corrected by BL-008):** the bag itself is level with the leaders (about 1080 g against 1026–1077 g). The whole gap is on the frame side: frame, back system, belt, harness and meat straps come to 2562 g against 1247–1332 g. Frame-side tickets (BL-003, 005, 006, 007, 017) matter most.
 
 ## Tickets
 

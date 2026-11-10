@@ -5,6 +5,8 @@
 ## Why
 Straps and their hardware weigh 539 g (meat haul + compression), plus wing, pouch and roll-top straps booked in the bag body. Five systems overlap: IM1–IM3 internal meat harness 254 g, under-strap cradle US1/US2 122 g, haul wraps W1–W3 108 g, float links B-24 54 g, and the wing straps. See `bag_weight_review_20261110.md` §2.1.
 
+**Benchmark note (BL-008):** Stone Glacier and Exo count their meat carry in the frame weight (integrated load shelf; compression straps built into the frame). Compare our IM / US / W / float parts against the leaders' frame-side mass, not their bags. See `docs/research/published_weight_definitions.md`.
+
 ## Goal
 A strap architecture that keeps every function with **at least 200 g less** than today (stretch 300 g), and is simpler to use and sew.
 
