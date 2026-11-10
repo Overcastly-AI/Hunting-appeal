@@ -1,0 +1,50 @@
+{
+ "team": "C",
+ "concept_name": "ROD",
+ "one_line": "Stock 20 mm roll-wrapped carbon stays + bars held in bolted PAHT-CF clamshell rails and knuckles by Ti cross-pins, end bearing and contact only (no glue, no friction credit); flat QI pan bolted on; crown, pivot and spreader unchanged.",
+ "frame_g": 947.6,
+ "frame_plus_spreader_g": 1109.9,
+ "pack_mass_corrie_b2_M_g": 3849.4,
+ "passes_rev_c": true,
+ "worst_strength_margin": 1.116,
+ "worst_fatigue_margin": 1.135,
+ "worst_joint_margin": 1.121,
+ "governing_case": "member: crown legs @ hipbelt_off_abuse|23|IM3 CRbot-CR530",
+ "torsion_stiffness_vs_today": 6.14,
+ "print_hours": 12.6,
+ "printer": "H2S home",
+ "cost_usd": {
+  "1": 477,
+  "10": 340,
+  "100": 321
+ },
+ "build_hours": 9.0,
+ "skill_level": "intermediate",
+ "looks_generative": false,
+ "patents_checked": [
+  "US 10,952,523 (Mystery Ranch, load lifter / crown guardrail): crown unchanged",
+  "US 10,668,965 (Divergent, node with adhesive injection): no adhesive, no injection ports, design-around",
+  "KUIU one-piece frame family: multi-part tube ladder, not one-piece",
+  "docs/DECISIONS.md patent guardrails: no change to crown, lifters, torso adjust"
+ ],
+ "governing_assumptions": [
+  "ASSUMPTION A1: CFRP pin bearing 300 MPa ultimate x 0.8 hot/wet on the 1 mm 0/90 roll-wrapped wall, M4 pin, no clamp-up (coupon RC-2)",
+  "ASSUMPTION A2: filled-hole / unnotched strength 0.55 at the 4 mm bar-pin holes and the 3 mm radial stay-pin holes (coupon RC-3)",
+  "ASSUMPTION A3: PAHT-CF pin bearing >= XY tensile 88 x 0.8; channel contact checked at Z 47 x 0.8 (coupon RC-4)",
+  "ASSUMPTION A4: bearing fatigue at 1e5 = 0.5 x static for CFRP, 0.3 x static for PAHT (record ratio) (coupon RC-2f)",
+  "ASSUMPTION A5: zero friction credit; Belleville-held M3 preload only keeps caps closed (coupon RC-5 creep hold)",
+  "ASSUMPTION A6: Rock West 46710 modelled at 0.845 mm with repo plies (vendor 1.0 mm); one 3-point bend coupon per batch (RC-1)",
+  "ASSUMPTION A7: printed neck = PAHT annulus t 4 mm around the bar line from the stay axis to the bar tip",
+  "ASSUMPTION A8: flat 1.5 mm QI pan with printed saddles replaces the formed pan + flanges at the same beam-model plate"
+ ],
+ "coupon_tests": [
+  "RC-1 tube 3-point bend + weigh, 1 per 2 m stick (accept >= modelled EI and strength)",
+  "RC-2 pin bearing: 20 mm tube, reamed 4.0 hole, M4 Ti pin in a printed boss, pull to failure, 5 pcs; pass mean >= 1.25 x 240 MPa design, min >= 240",
+  "RC-2f bearing fatigue: 1e5 cycles 0 -> 0.5 x static bearing, no hole elongation > 0.1 mm",
+  "RC-3 notched tube 4-point bend: 400 mm offcuts with (a) a 4 mm cross hole (bar) and (b) two 3 mm single-wall holes (stay stub) at mid-span, pinned, to failure, 3 pcs each; pass >= 0.55 x unnotched",
+  "RC-4 printed knuckle proof: mid + upper knuckle on tube offcuts, bar pulled / twisted to 1.5 x the largest factored end load, 3 pcs each, then to failure",
+  "RC-5 clamp creep hold: torqued M3 cap with Belleville pair, 40 C 8 h + 7 days RT, residual torque >= 50 %",
+  "RC-6 foot-saddle: stay end on the Al disc, 2 kN compression + 1 kN uplift on the foot pin, 3 pcs",
+  "then HA-LS-1 T9, T1-T5, T2u on frames P1/P2 as load_standard.md section 5"
+ ]
+}

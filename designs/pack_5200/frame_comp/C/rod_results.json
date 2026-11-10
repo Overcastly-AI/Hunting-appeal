@@ -1,0 +1,991 @@
+{
+ "date": "2026-11-10",
+ "standard": "HA-LS-1 rev C",
+ "geo": {
+  "shell_t": 2.4,
+  "gap": 0.15,
+  "neck_mm": 25.0,
+  "neck_t": 4.0,
+  "socket_mm": 55.0,
+  "bar_pin_from_tip": 12.0,
+  "stay_sleeve_mm": 70.0,
+  "stay_pin_dz": 5.0,
+  "radial_pin_d": 3.0,
+  "rail_top": 355.0,
+  "upper_sleeve_bot": 410.0,
+  "pin_d": 4.0,
+  "paht_bear_len": 6.0,
+  "saddle_mm": 205.0,
+  "saddle_fill": 0.5,
+  "foot_pin_z": 20.0,
+  "pan_bolts_per_side": 5,
+  "pan_tab_t": 9.0,
+  "cap_bolts": 3,
+  "flare": 0.25
+ },
+ "trials": [
+  {
+   "keys": {
+    "stay": "RW46710",
+    "bar": "RW46710",
+    "ubar": [
+     "rw45",
+     22,
+     5
+    ]
+   },
+   "min": {
+    "strength": [
+     1.1156428767829623,
+     "member: crown legs",
+     "hipbelt_off_abuse|23|IM3 CRbot-CR530"
+    ],
+    "joint": [
+     1.1212421925379288,
+     "joint: bar pin: CFRP wall bearing",
+     "side_hill_torsion|15|bar upper_hub_L"
+    ],
+    "fatigue": [
+     1.1352978152524305,
+     "fatigue: lumbar_plate",
+     "15|bar plv32"
+    ],
+    "creep": [
+     1.7411460468431494,
+     "creep-rupture 40 C: cap washer under preload",
+     "15"
+    ]
+   },
+   "pass": true,
+   "frame_g": 947.5612026151588
+  },
+  {
+   "keys": {
+    "stay": "RW46710",
+    "bar": "RW46710",
+    "ubar": "RW46710"
+   },
+   "min": {
+    "strength": [
+     0.8065171785089995,
+     "member: upper_bar",
+     "hipbelt_off_abuse|15|bar UB1-UB2"
+    ],
+    "joint": [
+     1.1827268093826266,
+     "crown: crown_corner bond peak",
+     "tall_load_posts|15|bar"
+    ],
+    "fatigue": [
+     1.135982318760125,
+     "fatigue: lumbar_plate",
+     "15|bar plv32"
+    ],
+    "creep": [
+     1.7411460468431494,
+     "creep-rupture 40 C: cap washer under preload",
+     "15"
+    ]
+   },
+   "pass": false,
+   "frame_g": 941.3438183831211
+  },
+  {
+   "keys": {
+    "stay": "RW46710",
+    "bar": "RW46710",
+    "ubar": [
+     "rw45",
+     20,
+     5
+    ]
+   },
+   "min": {
+    "strength": [
+     0.9567950565404878,
+     "member: upper_bar",
+     "hipbelt_off_abuse|15|bar UB1-UB2"
+    ],
+    "joint": [
+     1.154702474747238,
+     "joint: bar pin: CFRP wall bearing",
+     "side_hill_torsion|15|bar upper_hub_L"
+    ],
+    "fatigue": [
+     1.1356151901074938,
+     "fatigue: lumbar_plate",
+     "15|bar plv32"
+    ],
+    "creep": [
+     1.7411460468431494,
+     "creep-rupture 40 C: cap washer under preload",
+     "15"
+    ]
+   },
+   "pass": false,
+   "frame_g": 942.6572078988316
+  },
+  {
+   "keys": {
+    "stay": "RW46710",
+    "bar": "RW46710",
+    "ubar": [
+     "rw45",
+     22,
+     4
+    ]
+   },
+   "min": {
+    "strength": [
+     0.9404674083284487,
+     "member: upper_bar",
+     "hipbelt_off_abuse|15|bar UB0-UB1"
+    ],
+    "joint": [
+     1.00133189237954,
+     "joint: bar pin: CFRP wall bearing",
+     "side_hill_torsion|15|bar upper_hub_L"
+    ],
+    "fatigue": [
+     1.135480541514536,
+     "fatigue: lumbar_plate",
+     "15|bar plv32"
+    ],
+    "creep": [
+     1.7411460468431494,
+     "creep-rupture 40 C: cap washer under preload",
+     "15"
+    ]
+   },
+   "pass": false,
+   "frame_g": 945.3704895544988
+  }
+ ],
+ "best": {
+  "cand": {
+   "name": "ROD",
+   "stay_t": {
+    "spec": {
+     "type": "composite_tube",
+     "od": 20.0,
+     "layup": [
+      {
+       "angle": 0,
+       "material": "cfrp_t700_ud_epoxy_ply"
+      },
+      {
+       "angle": 0,
+       "material": "cfrp_t700_ud_epoxy_ply"
+      },
+      {
+       "angle": 0,
+       "material": "cfrp_t700_ud_epoxy_ply"
+      },
+      {
+       "angle": 90,
+       "material": "cfrp_t700_ud_epoxy_ply"
+      },
+      {
+       "angle": 90,
+       "material": "cfrp_t700_ud_epoxy_ply"
+      },
+      {
+       "angle": 0,
+       "material": "cfrp_t300_3k_woven_epoxy_ply"
+      }
+     ]
+    },
+    "g_per_m": 90.9,
+    "usd_per_m": 55.995,
+    "od": 20.0,
+    "wall": 1.0,
+    "label": "Rock West 46710, 20 x 18 mm roll-wrapped (0/0/0/90/90/twill), stock"
+   },
+   "bar_t": {
+    "spec": {
+     "type": "composite_tube",
+     "od": 20.0,
+     "layup": [
+      {
+       "angle": 0,
+       "material": "cfrp_t700_ud_epoxy_ply"
+      },
+      {
+       "angle": 0,
+       "material": "cfrp_t700_ud_epoxy_ply"
+      },
+      {
+       "angle": 0,
+       "material": "cfrp_t700_ud_epoxy_ply"
+      },
+      {
+       "angle": 90,
+       "material": "cfrp_t700_ud_epoxy_ply"
+      },
+      {
+       "angle": 90,
+       "material": "cfrp_t700_ud_epoxy_ply"
+      },
+      {
+       "angle": 0,
+       "material": "cfrp_t300_3k_woven_epoxy_ply"
+      }
+     ]
+    },
+    "g_per_m": 90.9,
+    "usd_per_m": 55.995,
+    "od": 20.0,
+    "wall": 1.0,
+    "label": "Rock West 46710, 20 x 18 mm roll-wrapped (0/0/0/90/90/twill), stock"
+   },
+   "ubar_t": {
+    "spec": {
+     "type": "composite_tube",
+     "od": 22.0,
+     "layup": [
+      {
+       "angle": 45,
+       "material": "cfrp_t300_3k_woven_epoxy_ply"
+      },
+      {
+       "angle": 0,
+       "material": "cfrp_t700_ud_epoxy_ply"
+      },
+      {
+       "angle": 0,
+       "material": "cfrp_t700_ud_epoxy_ply"
+      },
+      {
+       "angle": 0,
+       "material": "cfrp_t700_ud_epoxy_ply"
+      },
+      {
+       "angle": 0,
+       "material": "cfrp_t700_ud_epoxy_ply"
+      },
+      {
+       "angle": 0,
+       "material": "cfrp_t700_ud_epoxy_ply"
+      },
+      {
+       "angle": 45,
+       "material": "cfrp_t300_3k_woven_epoxy_ply"
+      }
+     ]
+    },
+    "g_per_m": 108.56857656644097,
+    "usd_per_m": 41.25,
+    "od": 22,
+    "wall": 1.065,
+    "label": "custom roll-wrapped OD 22 RW45 k5 (special order)"
+   },
+   "pan_t": 1.5,
+   "keys": {
+    "stay": "RW46710",
+    "bar": "RW46710",
+    "ubar": [
+     "rw45",
+     22,
+     5
+    ]
+   }
+  },
+  "summary": {
+   "checks": {
+    "member: stays": [
+     1.2382925595954106,
+     "meat_straps|23|bar SR290-SR330",
+     "strength"
+    ],
+    "member: lumbar_plate": [
+     1.2109843362692592,
+     "drop_2p5g|15|bar plv32",
+     "strength"
+    ],
+    "member: hip_pivot": [
+     4.99227393302022,
+     "drop_2p5g|15|bar pivot_doubler_1",
+     "strength"
+    ],
+    "member: lug_neck": [
+     2.3455703098284326,
+     "side_hill_torsion|15|IM3 SR330-NKMR",
+     "strength"
+    ],
+    "member: mid_bar": [
+     2.1844039105241517,
+     "side_hill_torsion|15|bar NKMR-MB2",
+     "strength"
+    ],
+    "member: upper_bar": [
+     1.134070621288187,
+     "hipbelt_off_abuse|15|bar UB1-UB2",
+     "strength"
+    ],
+    "member: crown legs": [
+     1.1156428767829623,
+     "hipbelt_off_abuse|23|IM3 CRbot-CR530",
+     "strength"
+    ],
+    "member: crown_top_bar": [
+     1.2272890068767797,
+     "hipbelt_off_abuse|15|IM3 TB0-TB1",
+     "strength"
+    ],
+    "member: crown_spine": [
+     1.1784228132019614,
+     "hipbelt_off_abuse|15|IM3 SP81-SP150",
+     "strength"
+    ],
+    "frame buckling": [
+     1.8198896035965353,
+     "side_hill_torsion|15|bar",
+     "strength"
+    ],
+    "crown: crown_leg": [
+     1.1156428767829623,
+     "hipbelt_off_abuse|23|IM3 CRbot-CR530",
+     "strength"
+    ],
+    "crown: crown_top_bar": [
+     1.2272890068767797,
+     "hipbelt_off_abuse|15|IM3 TB0-TB1",
+     "strength"
+    ],
+    "crown: crown_spine": [
+     1.1784228132019614,
+     "hipbelt_off_abuse|15|IM3 SP81-SP150",
+     "strength"
+    ],
+    "crown: crown_corner bond avg": [
+     2.3712423556044695,
+     "tall_load_posts|15|bar",
+     "joint"
+    ],
+    "crown: crown_corner bond peak": [
+     1.2314346289970088,
+     "tall_load_posts|15|bar",
+     "joint"
+    ],
+    "crown: bushing_bearing": [
+     17.437916982009803,
+     "hipbelt_off_abuse|15|IM3",
+     "joint"
+    ],
+    "crown: leg_ring_crush": [
+     2.3120270919894677,
+     "hipbelt_off_abuse|15|IM3",
+     "joint"
+    ],
+    "lumbar pan: lumbar plate in-plane shear": [
+     8.860677640518611,
+     "drop_2p5g|23|IM3",
+     "strength"
+    ],
+    "lumbar pan: lumbar plate shear buckling": [
+     1.317668637407844,
+     "drop_2p5g|23|IM3",
+     "strength"
+    ],
+    "lumbar pan: Ti pivot insert punching shear in lumbar plate": [
+     12.354398313799614,
+     "meat_straps|23|bar",
+     "strength"
+    ],
+    "joint: bar pin: CFRP wall bearing": [
+     1.1212421925379288,
+     "side_hill_torsion|15|bar upper_hub_L",
+     "joint"
+    ],
+    "joint: bar pin: PAHT boss bearing": [
+     1.8529448440063427,
+     "side_hill_torsion|15|bar upper_hub_L",
+     "joint"
+    ],
+    "joint: bar pin: Ti shear": [
+     7.2764973867967635,
+     "side_hill_torsion|15|bar upper_hub_L",
+     "joint"
+    ],
+    "joint: bar pin: tube shear-out": [
+     1.1679606172270092,
+     "side_hill_torsion|15|bar upper_hub_L",
+     "joint"
+    ],
+    "joint: bar net section at the pin (notched FPF)": [
+     2.359762948005271,
+     "side_hill_torsion|15|bar upper_hub_L",
+     "joint"
+    ],
+    "joint: bar socket contact (PAHT Z)": [
+     3.1789545863041977,
+     "hipbelt_off_abuse|15|bar upper_hub_L",
+     "joint"
+    ],
+    "joint: stay sleeve contact (PAHT Z)": [
+     4.2545017320415734,
+     "hipbelt_off_abuse|15|IM3 upper_hub_L",
+     "joint"
+    ],
+    "joint: cap M3 Ti bolt (preload + pull-off)": [
+     3.427575809951334,
+     "static_carry|15|IM3 upper_hub_R",
+     "joint"
+    ],
+    "joint: cap washer bearing (PAHT Z)": [
+     2.0223805141035505,
+     "static_carry|15|IM3 upper_hub_R",
+     "joint"
+    ],
+    "joint: rail splice 2 x M4 (mid knuckle to saddle)": [
+     9.659798404593936,
+     "single_stay_setdown|19|bar mid_hub_L",
+     "joint"
+    ],
+    "joint: stay-top radial pins: CFRP wall bearing": [
+     1.8202112527762067,
+     "side_hill_torsion|15|bar upper_hub_R",
+     "joint"
+    ],
+    "joint: stay-top radial pins: PAHT bearing": [
+     3.791209236551626,
+     "side_hill_torsion|15|bar upper_hub_R",
+     "joint"
+    ],
+    "joint: stay-top radial pins: Ti shear": [
+     11.166032892911582,
+     "side_hill_torsion|15|bar upper_hub_R",
+     "joint"
+    ],
+    "joint: stay stub net section at the radial pins": [
+     1.213356950955171,
+     "hipbelt_off_abuse|15|IM3 upper_hub_R",
+     "joint"
+    ],
+    "joint: foot pin (uplift + torque)": [
+     2.4288707505129454,
+     "side_hill_torsion|15|IM3 saddle/pan",
+     "joint"
+    ],
+    "joint: stay end on Al disc / boot floor": [
+     27.578826628900565,
+     "hipbelt_off_abuse|19|IM3 saddle/pan",
+     "joint"
+    ],
+    "joint: pan M4 bolt: QI pan bearing": [
+     2.047047158206,
+     "side_hill_torsion|15|IM3 saddle/pan",
+     "joint"
+    ],
+    "joint: pan M4 bolt: saddle tab bearing": [
+     2.1616817990655357,
+     "side_hill_torsion|15|IM3 saddle/pan",
+     "joint"
+    ],
+    "joint: hip node M4 through pan: pan bearing": [
+     5.866707127100824,
+     "meat_straps|23|bar saddle/pan",
+     "joint"
+    ],
+    "joint: hip node M4: printed bearing": [
+     6.195242726218471,
+     "meat_straps|23|bar saddle/pan",
+     "joint"
+    ],
+    "joint: hip node M4 Ti tension": [
+     2.3216283985641937,
+     "static_carry|15|bar saddle/pan",
+     "joint"
+    ],
+    "joint: printed rail / sleeve compatibility strain": [
+     2.4954487064850053,
+     "meat_straps|23|bar saddle/pan",
+     "joint"
+    ],
+    "joint: stay-top collar ring (PAHT, Z)": [
+     2.9663763035166424,
+     "hipbelt_off_abuse|15|IM3 upper knuckle",
+     "joint"
+    ],
+    "joint: stay ring under the collar": [
+     1.8774506904006438,
+     "hipbelt_off_abuse|15|IM3 stay top",
+     "joint"
+    ],
+    "joint: hip node 4 x M5 inserts": [
+     3.000020689930848,
+     "meat_straps|23|bar HP",
+     "joint"
+    ],
+    "joint: torso adjust: rack (5328 N)": [
+     6.266491321179929,
+     "hipbelt_off_abuse|23|bar rack",
+     "joint"
+    ],
+    "fatigue: stays": [
+     1.1755670293196334,
+     "23|IM3 SR290-SR330",
+     "fatigue"
+    ],
+    "fatigue: lumbar_plate": [
+     1.1352978152524305,
+     "15|bar plv32",
+     "fatigue"
+    ],
+    "fatigue: hip_pivot": [
+     4.680256812206456,
+     "15|bar pivot_doubler_1",
+     "fatigue"
+    ],
+    "fatigue: lug_neck": [
+     6.031827788721824,
+     "15|IM3 SR520-NKUR",
+     "fatigue"
+    ],
+    "fatigue: mid_bar": [
+     28.982255360787626,
+     "19|IM3 NKML-MB0",
+     "fatigue"
+    ],
+    "fatigue: upper_bar": [
+     2.9581984994091024,
+     "15|IM3 UB1-UB2",
+     "fatigue"
+    ],
+    "fatigue: crown legs": [
+     1.3601762550250809,
+     "23|IM3 CRbot-CR530",
+     "fatigue"
+    ],
+    "fatigue: crown_top_bar": [
+     3.4297790054597064,
+     "23|IM3 TB1-TB2",
+     "fatigue"
+    ],
+    "fatigue: crown_spine": [
+     3.1728790302308076,
+     "15|IM3 SP81-SP150",
+     "fatigue"
+    ],
+    "fatigue: bar pin: PAHT boss bearing": [
+     7.7651421395428155,
+     "23|IM3 mid_hub_L",
+     "fatigue"
+    ],
+    "fatigue: bar socket contact (PAHT Z)": [
+     4.9926445992759305,
+     "15|IM3 upper_hub_R",
+     "fatigue"
+    ],
+    "fatigue: stay sleeve contact (PAHT Z)": [
+     9.419343473892722,
+     "15|bar upper_hub_R",
+     "fatigue"
+    ],
+    "fatigue: cap washer, cyclic part (PAHT Z)": [
+     10.714499470901826,
+     "15|IM3 upper_hub_R",
+     "fatigue"
+    ],
+    "fatigue: rail splice 2 x M4 (mid knuckle to saddle)": [
+     11.337010030406836,
+     "23|bar mid_hub_L",
+     "fatigue"
+    ],
+    "fatigue: bar pin: CFRP wall bearing": [
+     6.213584382494013,
+     "23|IM3 mid_hub_L",
+     "fatigue"
+    ],
+    "fatigue: bar pin: tube shear-out": [
+     6.472483731764598,
+     "23|IM3 mid_hub_L",
+     "fatigue"
+    ],
+    "fatigue: bar net section at the pin (notched FPF)": [
+     14.364989058444916,
+     "15|IM3 upper_hub_R",
+     "fatigue"
+    ],
+    "fatigue: stay-top radial pins: PAHT bearing": [
+     12.946005537456694,
+     "15|IM3 upper_hub_R",
+     "fatigue"
+    ],
+    "fatigue: stay-top radial pins: CFRP wall bearing": [
+     10.359256324953511,
+     "15|IM3 upper_hub_R",
+     "fatigue"
+    ],
+    "fatigue: stay stub net section at the radial pins": [
+     1.8669318513092263,
+     "23|IM3 upper_hub_R",
+     "fatigue"
+    ],
+    "fatigue: pan M4 bolt: QI pan bearing": [
+     1.9240871631195016,
+     "23|IM3 pan",
+     "fatigue"
+    ],
+    "fatigue: hip node M4 through pan: pan bearing": [
+     5.589279035276025,
+     "15|bar pan",
+     "fatigue"
+    ],
+    "fatigue: pan M4 bolt: saddle tab bearing": [
+     1.219101626552516,
+     "23|IM3 saddle",
+     "fatigue"
+    ],
+    "fatigue: hip node M4: printed bearing": [
+     3.5413671967508895,
+     "15|bar saddle",
+     "fatigue"
+    ],
+    "fatigue: stay end on Al disc / boot floor": [
+     124.54021676590595,
+     "15|IM3 saddle",
+     "fatigue"
+    ],
+    "fatigue: printed rail / sleeve compatibility strain": [
+     1.4250248856179706,
+     "23|IM3 saddle",
+     "fatigue"
+    ],
+    "fatigue: foot pin": [
+     8.165190383328783,
+     "15|IM3 foot",
+     "fatigue"
+    ],
+    "fatigue: stay-top collar": [
+     2.7382937239816463,
+     "23|IM3 bush_top",
+     "fatigue"
+    ],
+    "fatigue: hip inserts": [
+     2.858154052084955,
+     "15|bar HP",
+     "fatigue"
+    ],
+    "fatigue: crown corner bond": [
+     6.110233550927536,
+     "23|IM3 crown_corner",
+     "fatigue"
+    ],
+    "creep-rupture 40 C: neck": [
+     12.867899282606558,
+     "15",
+     "creep"
+    ],
+    "creep-rupture 40 C: bar pin: PAHT boss bearing": [
+     16.56563656435801,
+     "23",
+     "creep"
+    ],
+    "creep-rupture 40 C: bar socket contact (PAHT Z)": [
+     10.650975145121986,
+     "15",
+     "creep"
+    ],
+    "creep-rupture 40 C: stay sleeve contact (PAHT Z)": [
+     20.094599410971142,
+     "15",
+     "creep"
+    ],
+    "creep-rupture 40 C: rail splice 2 x M4 (mid knuckle to saddle)": [
+     24.18562139820125,
+     "23",
+     "creep"
+    ],
+    "creep-rupture 40 C: stay-top radial pins: PAHT bearing": [
+     27.618145146574285,
+     "15",
+     "creep"
+    ],
+    "creep-rupture 40 C: cap washer under preload": [
+     1.7411460468431494,
+     "15",
+     "creep"
+    ],
+    "creep-rupture 40 C: pan M4 bolt: saddle tab bearing": [
+     2.6007501366453685,
+     "23",
+     "creep"
+    ],
+    "creep-rupture 40 C: hip node M4: printed bearing": [
+     7.554916686401899,
+     "15",
+     "creep"
+    ],
+    "creep-rupture 40 C: stay end on Al disc / boot floor": [
+     265.6857957672661,
+     "15",
+     "creep"
+    ],
+    "creep-rupture 40 C: printed rail / sleeve compatibility strain": [
+     3.0400530893183375,
+     "23",
+     "creep"
+    ],
+    "creep-rupture 40 C: stay-top collar": [
+     5.841693277827512,
+     "23",
+     "creep"
+    ],
+    "joint: foot boot (PAHT)": [
+     2.491357694858333,
+     "single_stay_setdown|15|bar SL0",
+     "joint"
+    ],
+    "member: ext_post": [
+     2.7229106238792338,
+     "tall_load_posts|15|bar post_L",
+     "strength"
+    ],
+    "member: ext_post_bar": [
+     14.446860530378865,
+     "tall_load_posts|15|bar XB0-XB1",
+     "strength"
+    ],
+    "crown: ext_post": [
+     2.7229106238792338,
+     "tall_load_posts|15|bar post_L",
+     "strength"
+    ],
+    "crown: ext_post_bar": [
+     14.446860530378865,
+     "tall_load_posts|15|bar XB0-XB1",
+     "strength"
+    ],
+    "crown: post_socket bond avg": [
+     2.3078482070063218,
+     "tall_load_posts|15|bar",
+     "joint"
+    ],
+    "crown: post_socket bond peak": [
+     1.1984808994078064,
+     "tall_load_posts|15|bar",
+     "joint"
+    ]
+   },
+   "min": {
+    "strength": [
+     1.1156428767829623,
+     "member: crown legs",
+     "hipbelt_off_abuse|23|IM3 CRbot-CR530"
+    ],
+    "joint": [
+     1.1212421925379288,
+     "joint: bar pin: CFRP wall bearing",
+     "side_hill_torsion|15|bar upper_hub_L"
+    ],
+    "fatigue": [
+     1.1352978152524305,
+     "fatigue: lumbar_plate",
+     "15|bar plv32"
+    ],
+    "creep": [
+     1.7411460468431494,
+     "creep-rupture 40 C: cap washer under preload",
+     "15"
+    ]
+   },
+   "by_case": {
+    "static_carry|crown_bar": [
+     1.8164765044038889,
+     15.0
+    ],
+    "drop_2p5g|crown_bar": [
+     1.2109843362692592,
+     15.0
+    ],
+    "side_hill_torsion|crown_bar": [
+     1.1212421925379288,
+     15.0
+    ],
+    "single_stay_setdown|crown_bar": [
+     2.491357694858333,
+     15.0
+    ],
+    "meat_straps|crown_bar": [
+     1.2382925595954106,
+     23.0
+    ],
+    "tall_load|crown_bar": [
+     1.377488972775138,
+     15.0
+    ],
+    "overload_haul|crown_bar": [
+     1.743616102973519,
+     23.0
+    ],
+    "tall_load_posts|crown_bar": [
+     1.1984808994078064,
+     15.0
+    ],
+    "hipbelt_off_abuse|crown_bar": [
+     1.134070621288187,
+     15.0
+    ],
+    "static_carry|strap_upper": [
+     1.8258461917780855,
+     15.0
+    ],
+    "drop_2p5g|strap_upper": [
+     1.2172307945187237,
+     15.0
+    ],
+    "side_hill_torsion|strap_upper": [
+     1.1236204983769755,
+     15.0
+    ],
+    "single_stay_setdown|strap_upper": [
+     2.491357694858333,
+     15.0
+    ],
+    "hipbelt_off_abuse|strap_upper": [
+     1.1156428767829623,
+     23.0
+    ]
+   },
+   "pass": true
+  },
+  "seconds": 20.595282077789307
+ },
+ "stiffness": {
+  "carry_dy_mm": -6.918723401827486,
+  "torsion_Nm_per_deg": 2.701206752775441
+ },
+ "mass": {
+  "tubes": {
+   "stays (2)": 96.37114941724003,
+   "mid bar": 16.362000000000002,
+   "upper bar": 19.542343781959374
+  },
+  "parts": [
+   {
+    "name": "mid knuckle z 205-355 (body + cap: bar socket, IM2 seat, z 250 wing lash, splice lap)",
+    "qty": 2,
+    "vol_mm3": 48951.8994088806,
+    "feature_g": 6.0,
+    "fasteners": {
+     "M4 Ti pin set (bolt 25 mm + nut + 2 washers)": 3,
+     "M3 Ti cap set (bolt 16 + nut + 2 penny washers + Belleville pair)": 4
+    },
+    "pieces": 2,
+    "printed_g": 57.889013373413434,
+    "fastener_g": 12.799999999999999
+   },
+   {
+    "name": "upper knuckle z 410-530 (body + cap: stay-top collar, bar socket, IM3 + B-24 eye, z 420 lash)",
+    "qty": 2,
+    "vol_mm3": 45649.45183233423,
+    "feature_g": 9.0,
+    "fasteners": {
+     "M4 Ti pin set (bolt 25 mm + nut + 2 washers)": 1,
+     "M3 Ti cap set (bolt 16 + nut + 2 penny washers + Belleville pair)": 5,
+     "Ti dowel 3 x 6 (radial stay pin)": 2
+    },
+    "pieces": 2,
+    "printed_g": 57.38841894227428,
+    "fastener_g": 9.8
+   },
+   {
+    "name": "foot-saddle z 0-205 (boot, Al end disc, foot pin, hinge pins z 60, US pins, z 80/110/190 hard points, pan tabs)",
+    "qty": 2,
+    "vol_mm3": 37291.70372772562,
+    "feature_g": 13.5,
+    "fasteners": {
+     "M4 Ti pin set (bolt 25 mm + nut + 2 washers)": 1,
+     "M4 Ti pan set (bolt 16 mm + nut + 2 washers)": 5,
+     "M3 Ti cap set (bolt 16 + nut + 2 penny washers + Belleville pair)": 4,
+     "Al end disc 20 x 1.5": 1
+    },
+    "pieces": 2,
+    "printed_g": 53.02920595138915,
+    "fastener_g": 17.8
+   },
+   {
+    "name": "hip node (Ti-mount boss, 4 x M5 inserts, bolted through the pan)",
+    "qty": 1,
+    "vol_mm3": 20893.804605477053,
+    "feature_g": 0.0,
+    "fasteners": {
+     "M4 Ti pan set (bolt 16 mm + nut + 2 washers)": 4
+    },
+    "pieces": 1,
+    "printed_g": 22.147432881805674,
+    "fastener_g": 6.8
+   }
+  ],
+  "groups": {
+   "tubes": 132.27549319919942,
+   "printed knuckles + saddles + hip node": 358.7607094159594,
+   "fasteners (Ti pins, M3 caps, Belleville, Al discs)": 87.6,
+   "lumbar pan (flat QI sheet) + pad-up": 93.875,
+   "crown + torso adjust (unchanged)": 250.04999999999998,
+   "Ti pivot mount + inserts": 25.0
+  },
+  "frame_g": 947.5612026151588,
+  "frame_spreader_g": 1109.8612026151588,
+  "printed_g": 358.7607094159594,
+  "printed_vol_cm3": 284.67991454335794,
+  "n_printed_pieces": 13
+ },
+ "print_h": 12.625496795375922,
+ "cost": {
+  "1": {
+   "lines": {
+    "tube: Rock West 46710, 20 x 18 mm roll-wrapped (0/0/0/90/90/twill), stock": 111.99,
+    "tube: custom roll-wrapped OD 22 RW45 k5 (special order)": 47.425,
+    "crown tubes (unchanged)": 44.272499999999994,
+    "PAHT-CF filament + 15 % failed prints": 37.05398526626826,
+    "QI CF sheet 1.5 mm, 250 x 140 (cfrp_plate_quasi_iso $350/m2) + waterjet (ASSUMPTION $15)": 30.12,
+    "Ti M3/M4 bolts, nuts, washers, Belleville (56 sets, ASSUMPTION $1.6/set)": 89.60000000000001,
+    "crown corner MMA + glass beads (fixed interface, 1 small cartridge)": 25.0,
+    "SLM Ti hip mount (ASSUMPTION, mass_cut.md)": 35.0,
+    "M5 heat-set inserts + UHMWPE bushings": 12.0,
+    "drill jig (printed) + 4.0 mm carbide drill + 4.0 H8 reamer (ASSUMPTION)": 45.0
+   },
+   "total": 477.46148526626826
+  },
+  "10": {
+   "lines": {
+    "tube: Rock West 46710, 20 x 18 mm roll-wrapped (0/0/0/90/90/twill), stock": 70.553,
+    "tube: custom roll-wrapped OD 22 RW45 k5 (special order)": 10.31125,
+    "crown tubes (unchanged)": 44.272499999999994,
+    "PAHT-CF filament + 15 % failed prints": 37.05398526626826,
+    "QI CF sheet 1.5 mm, 250 x 140 (cfrp_plate_quasi_iso $350/m2) + waterjet (ASSUMPTION $15)": 30.12,
+    "Ti M3/M4 bolts, nuts, washers, Belleville (56 sets, ASSUMPTION $1.6/set)": 71.68,
+    "crown corner MMA + glass beads (fixed interface, 1 small cartridge)": 25.0,
+    "SLM Ti hip mount (ASSUMPTION, mass_cut.md)": 35.0,
+    "M5 heat-set inserts + UHMWPE bushings": 12.0,
+    "drill jig (printed) + 4.0 mm carbide drill + 4.0 H8 reamer (ASSUMPTION)": 4.5
+   },
+   "total": 340.49073526626825
+  },
+  "100": {
+   "lines": {
+    "tube: Rock West 46710, 20 x 18 mm roll-wrapped (0/0/0/90/90/twill), stock": 59.7894,
+    "tube: custom roll-wrapped OD 22 RW45 k5 (special order)": 5.5975,
+    "crown tubes (unchanged)": 44.272499999999994,
+    "PAHT-CF filament + 15 % failed prints": 37.05398526626826,
+    "QI CF sheet 1.5 mm, 250 x 140 (cfrp_plate_quasi_iso $350/m2) + waterjet (ASSUMPTION $15)": 30.12,
+    "Ti M3/M4 bolts, nuts, washers, Belleville (56 sets, ASSUMPTION $1.6/set)": 71.68,
+    "crown corner MMA + glass beads (fixed interface, 1 small cartridge)": 25.0,
+    "SLM Ti hip mount (ASSUMPTION, mass_cut.md)": 35.0,
+    "M5 heat-set inserts + UHMWPE bushings": 12.0,
+    "drill jig (printed) + 4.0 mm carbide drill + 4.0 H8 reamer (ASSUMPTION)": 0.45
+   },
+   "total": 320.9633852662683
+  }
+ },
+ "preload_creep": {
+  "washer_stress_mpa": 8.637988770252122,
+  "creep_mm": 0.04483150135019451,
+  "loss_plain_frac": 1.0,
+  "loss_belleville_frac": 0.08732388839372443,
+  "friction_info_n": 492.84510026738883
+ },
+ "seconds": 86.87005805969238
+}

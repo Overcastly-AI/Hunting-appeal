@@ -11,9 +11,12 @@ one-piece BODY with open (180 deg) channels for the tubes plus a CAP closed by M
 washers. Load gets in and out of the smooth tubes by bearing and interlock only:
 
 - bending and shear: contact pressure of the tube on the channel walls (socket / sleeve couple),
-- axial force and torsion: one M4 titanium cross pin per tube end / per through-stay (drilled and reamed tube,
-  double bearing on the tube walls), placed where the beam moment has decayed (bar pin near the tube tip) or with
-  the hole on the fore-aft bending neutral axis (stay pins along x),
+- axial force and torsion of the bars: one M4 titanium cross pin per bar end (drilled + reamed, double bearing on
+  the tube walls) 12 mm from the bar tip, where the socket contact has taken out ~88 % of the mouth moment,
+- stays: the crown legs telescope INSIDE the stays above ~z 170, so no pin may cross the stay bore at the knuckles.
+  The mid knuckle is spliced to the foot-saddle (a printed rail z 0-355) and hands its axial load down the rail to
+  the stay end; the upper knuckle holds the stay stub by two 3 mm single-wall radial pins at z 525 (flush with the
+  bore, engaging the top crown bushing),
 - stay foot: the stay end bears on a 1.5 mm aluminium disc in the boot floor (compression); the foot pin takes
   uplift and torque,
 - lumbar pan: a flat bought QI CFRP plate bolted (M4, bearing) to the two printed foot-saddles; hip node bolted
@@ -800,9 +803,9 @@ def result_json(ctx) -> dict:
     return {
         "team": "C",
         "concept_name": "ROD",
-        "one_line": ("Stock 20 mm roll-wrapped carbon stays and bars pinned (M4 Ti) and captured in bolted PAHT-CF "
-                     "clamshell knuckles and foot-saddles, flat QI pan bolted on; no adhesive in the frame load "
-                     "path, friction never credited."),
+        "one_line": ("Stock 20 mm roll-wrapped carbon stays + bars held in bolted PAHT-CF clamshell rails and knuckles by "
+                     "Ti cross-pins, end bearing and contact only (no glue, no friction credit); flat QI pan bolted on; "
+                     "crown, pivot and spreader unchanged."),
         "frame_g": round(mr["frame_g"], 1),
         "frame_plus_spreader_g": round(fsg, 1),
         "pack_mass_corrie_b2_M_g": round(3964.5 - (1225.0 - fsg), 1),
@@ -817,7 +820,7 @@ def result_json(ctx) -> dict:
         "cost_usd": {k: round(v["total"]) for k, v in ctx["cost"].items()},
         "build_hours": 9.0,
         "skill_level": "intermediate",
-        "looks_generative": True,
+        "looks_generative": False,      # reads as a ladder with windowed printed sleeves, not the branch look
         "patents_checked": [
             "US 10,952,523 (Mystery Ranch, load lifter / crown guardrail): crown unchanged",
             "US 10,668,965 (Divergent, node with adhesive injection): no adhesive, no injection ports, design-around",
@@ -826,7 +829,7 @@ def result_json(ctx) -> dict:
         ],
         "governing_assumptions": [
             "ASSUMPTION A1: CFRP pin bearing 300 MPa ultimate x 0.8 hot/wet on the 1 mm 0/90 roll-wrapped wall, M4 pin, no clamp-up (coupon RC-2)",
-            "ASSUMPTION A2: filled-hole / unnotched strength 0.55 at a 4 mm hole in the 20 mm tube (coupon RC-3)",
+            "ASSUMPTION A2: filled-hole / unnotched strength 0.55 at the 4 mm bar-pin holes and the 3 mm radial stay-pin holes (coupon RC-3)",
             "ASSUMPTION A3: PAHT-CF pin bearing >= XY tensile 88 x 0.8; channel contact checked at Z 47 x 0.8 (coupon RC-4)",
             "ASSUMPTION A4: bearing fatigue at 1e5 = 0.5 x static for CFRP, 0.3 x static for PAHT (record ratio) (coupon RC-2f)",
             "ASSUMPTION A5: zero friction credit; Belleville-held M3 preload only keeps caps closed (coupon RC-5 creep hold)",
@@ -838,7 +841,7 @@ def result_json(ctx) -> dict:
             "RC-1 tube 3-point bend + weigh, 1 per 2 m stick (accept >= modelled EI and strength)",
             "RC-2 pin bearing: 20 mm tube, reamed 4.0 hole, M4 Ti pin in a printed boss, pull to failure, 5 pcs; pass mean >= 1.25 x 240 MPa design, min >= 240",
             "RC-2f bearing fatigue: 1e5 cycles 0 -> 0.5 x static bearing, no hole elongation > 0.1 mm",
-            "RC-3 notched stay 4-point bend: 600 mm stay with the knuckle pin hole at mid-span, to failure, 3 pcs; pass >= 0.55 x unnotched",
+            "RC-3 notched tube 4-point bend: 400 mm offcuts with (a) a 4 mm cross hole (bar) and (b) two 3 mm single-wall holes (stay stub) at mid-span, pinned, to failure, 3 pcs each; pass >= 0.55 x unnotched",
             "RC-4 printed knuckle proof: mid + upper knuckle on tube offcuts, bar pulled / twisted to 1.5 x the largest factored end load, 3 pcs each, then to failure",
             "RC-5 clamp creep hold: torqued M3 cap with Belleville pair, 40 C 8 h + 7 days RT, residual torque >= 50 %",
             "RC-6 foot-saddle: stay end on the Al disc, 2 kN compression + 1 kN uplift on the foot pin, 3 pcs",
@@ -881,3 +884,373 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# ============================================================================= visuals
+WORK = REPO_ROOT / "outputs" / "frame_comp_C" / "render"
+BPY = Path("/tmp/claude-0/-home-user-Hunting-appeal/4e7b6300-4974-5e9f-8ec3-7f9ff06a9ed6/scratchpad/bpyenv/bin/python")
+TODAY_DX = -420.0
+
+
+def _R():
+    from . import frame_light2_render as R
+    return R
+
+
+def _sdf_mesh(lo, hi, h, fn):
+    import trimesh
+    from skimage.measure import marching_cubes
+    lo, hi = np.asarray(lo, float), np.asarray(hi, float)
+    xs = [np.arange(lo[i], hi[i] + h, h) for i in range(3)]
+    X, Y, Z = np.meshgrid(*xs, indexing="ij")
+    P = np.c_[X.ravel(), Y.ravel(), Z.ravel()]
+    d = fn(P).reshape(X.shape)
+    v, f, _, _ = marching_cubes(d, 0.0, spacing=(h, h, h))
+    m = trimesh.Trimesh(v + lo, f, process=True)
+    comps = m.split(only_watertight=False)
+    big = max(len(c.faces) for c in comps)
+    m = trimesh.util.concatenate([c for c in comps if len(c.faces) > 0.02 * big])
+    trimesh.smoothing.filter_taubin(m, iterations=6)
+    return m
+
+
+def _shell_z(P, c, z0, z1, ri, ro, windows=0, wlen=26.0, wz=(0, 0)):
+    """Capped hollow sleeve along z at xy centre c, with staggered elliptical windows between wz[0]..wz[1]."""
+    r = np.hypot(P[:, 0] - c[0], P[:, 1] - c[1])
+    d = np.maximum(np.maximum(r - ro, ri - r), np.maximum(z0 - P[:, 2], P[:, 2] - z1))
+    if windows:
+        th = np.arctan2(P[:, 1] - c[1], P[:, 0] - c[0])
+        zs = np.arange(wz[0] + wlen / 2 + 4, wz[1] - wlen / 2 - 2, wlen + 7)
+        for i, zc in enumerate(zs):
+            for k in range(windows):
+                ph = 2 * np.pi * k / windows + (np.pi / windows if i % 2 else 0.0)
+                dth = np.angle(np.exp(1j * (th - ph)))
+                e = np.hypot(dth * ro / (np.pi * ro / windows * 0.36), (P[:, 2] - zc) / (wlen / 2)) - 1.0
+                d = np.maximum(d, -e * 4.0)
+    return d
+
+
+def _shell_seg(P, a, b, ri, ro):
+    dist, t = _R()._seg_dist(P, a, b)
+    L = np.linalg.norm(b - a)
+    s = (P - a) @ ((b - a) / L)
+    return np.maximum(np.maximum(dist - ro, ri - dist), np.maximum(-s, s - L))
+
+
+def build_meshes(cand: dict, out: Path = WORK) -> dict:
+    """STLs (mm, frame coordinates) of ROD at 19 in and today's frame 420 mm to the left."""
+    import trimesh
+    out.mkdir(parents=True, exist_ok=True)
+    m = build(cand, 19.0)
+    N = {k: np.array(v, float) for k, v in m["nodes"].items()}
+    ds, dbar, dub = cand["stay_t"]["od"], cand["bar_t"]["od"], cand["ubar_t"]["od"]
+    t = GEO["shell_t"]
+    ri_s, ro_s = ds / 2 + GEO["gap"], ds / 2 + GEO["gap"] + t
+    carbon, printed, ti, crown = [], [], [], []
+    cyl = L2_render_cyl
+    for tag in ("L", "R"):
+        carbon.append(cyl(N[f"S{tag}0"] + [0, 0, 1.5], N[f"S{tag}530"], ds / 2))
+        crown.append(cyl(N[f"C{tag}530"], N[f"C{tag}top"], 8.0))
+    for z, d in ((330.0, dbar), (520.0, dub)):
+        carbon.append(cyl(N[f"SL{z:g}"] + [GEO["neck_mm"], 0, 0], N[f"SR{z:g}"] - [GEO["neck_mm"], 0, 0], d / 2))
+    crown.append(cyl(N["CLtop"], N["CRtop"], 9.0))
+    lowest = min((n for n in N if n.startswith("SP")), key=lambda n: N[n][2])
+    crown.append(cyl(N["TB1"], N[lowest], 10.0))
+    yL = N["SL120"][1]
+    pan = trimesh.creation.box(extents=(236.0, cand["pan_t"] * 1.2, 140.0))
+    pan.apply_translation((0.0, yL - ds / 2 - t - 2.0, 120.0))
+    carbon.append(pan)
+    for tag, sx in (("L", -1.0), ("R", 1.0)):
+        c = N[f"S{tag}0"][:2]
+        inward = np.array([-sx, 0.0, 0.0])
+
+        def saddle(P, c=c, sx=sx):
+            d = _shell_z(P, c, -3.0, 205.0, ri_s, ro_s, windows=3, wz=(28, 200))
+            boot = _shell_z(P, c, -3.0, 25.0, 0.0, ro_s + 1.5)
+            d = _R()._smin(d, np.maximum(boot, -(_shell_z(P, c, 1.5, 40, 0, ri_s))), 4.0)
+            for z in (50.0, 90.0, 120.0, 155.0, 190.0):         # pan tabs toward the wearer + inward
+                a = np.array([c[0], c[1], z])
+                b = a + np.array([-sx * 16.0, -ro_s - 2.0, 0.0])
+                dd, _ = _R()._seg_dist(P, a, b)
+                d = _R()._smin(d, dd - 5.0, 4.0)
+            hz = np.array([c[0], c[1], 60.0])                    # hinge-pin boss aft
+            dd, _ = _R()._seg_dist(P, hz, hz + [sx * 4, 18.0, 0])
+            d = _R()._smin(d, dd - 5.5, 4.0)
+            return np.maximum(d, -(np.hypot(P[:, 0] - c[0], P[:, 1] - c[1]) - ri_s))
+        lo = np.array([c[0] - 40, c[1] - 40, -6]); hi = np.array([c[0] + 40, c[1] + 40, 212])
+        printed.append(_sdf_mesh(lo, hi, 1.0, saddle))
+        for z0, z1, zh, db, wz in ((205.0, 355.0, 330.0, dbar, (205, 300)), (410.0, 533.0, 520.0, dub, (410, 490))):
+            ri_b, ro_b = db / 2 + GEO["gap"], db / 2 + GEO["gap"] + t
+
+            def knuckle(P, c=c, z0=z0, z1=z1, zh=zh, ri_b=ri_b, ro_b=ro_b, wz=wz, inward=inward):
+                d = _shell_z(P, c, z0, z1, ri_s, ro_s, windows=3, wz=wz)
+                hub = np.array([c[0], c[1], zh])
+                a = hub + inward * (ro_s - 1.0)
+                b = hub + inward * (GEO["neck_mm"] + GEO["socket_mm"])
+                sock = _shell_seg(P, hub + inward * GEO["neck_mm"], b, ri_b, ro_b)
+                neck, _ = _R()._seg_dist(P, a, hub + inward * (GEO["neck_mm"] + 2))
+                d = _R()._smin(d, sock, 4.0)
+                d = _R()._smin(d, neck - (ro_b + 1.0), 6.0)
+                for up in (1.0, -1.0):                     # root fingers from the socket onto the sleeve
+                    f0 = hub + inward * (GEO["neck_mm"] + 20) + np.array([0, 0, up * (ro_b - 1)])
+                    f1 = hub + np.array([0, 0, up * 38.0]) + inward * (ro_s - 1)
+                    dd, tt = _R()._seg_dist(P, f0, f1)
+                    d = _R()._smin(d, dd - (2.6 * (1 - tt) + 1.2), 3.0)
+                d = np.maximum(d, -(np.hypot(P[:, 0] - c[0], P[:, 1] - c[1]) - ri_s))
+                dist_b, _ = _R()._seg_dist(P, hub + inward * (GEO["neck_mm"] - 1), b + inward * 2)
+                return np.maximum(d, -(dist_b - ri_b))
+            lo = np.array([min(c[0], c[0] - sx * 90) - 25, c[1] - 30, z0 - 5])
+            hi = np.array([max(c[0], c[0] - sx * 90) + 25, c[1] + 30, z1 + 5])
+            printed.append(_sdf_mesh(lo, hi, 1.0, knuckle))
+            # Ti hardware: bar pin (along y) and cap bolt heads
+            pp = np.array([c[0], c[1], zh]) + inward * (GEO["neck_mm"] + GEO["socket_mm"] - GEO["bar_pin_from_tip"])
+            ti.append(cyl(pp + [0, -ro_b - 2.5, 0], pp + [0, ro_b + 2.5, 0], 2.0))
+            ti.append(cyl(pp + [0, ro_b + 1.0, 0], pp + [0, ro_b + 3.5, 0], 3.5))
+            for zz in (zh - 30.0, zh + (8.0 if zh > 500 else 22.0)):
+                q = np.array([c[0], c[1], zz]) + inward * (ro_s + 3.0)
+                ti.append(cyl(q + [0, ro_s - 3, 0], q + [0, ro_s + 0.5, 0], 3.0))
+        ti.append(cyl(np.array([c[0] - 13, c[1], 20.0]), np.array([c[0] + 13, c[1], 20.0]), 2.0))
+    hp = N["HP"]
+    face = np.array([0.0, yL - ds / 2 - t - 4.0, 120.0])
+
+    def hipnode(P):
+        d = np.maximum(np.abs(P[:, 0]) - 35, np.maximum(np.abs(P[:, 1] - face[1]) - 1.8, np.abs(P[:, 2] - 120) - 30))
+        dd, _ = _R()._seg_dist(P, face, hp)
+        d = _R()._smin(d, dd - 9.0, 6.0)
+        for sx_, sz in ((-1, -1), (-1, 1), (1, -1), (1, 1)):
+            dd, tt = _R()._seg_dist(P, face + [sx_ * 30, 0, sz * 26], hp + [sx_ * 6, 0, sz * 6])
+            d = _R()._smin(d, dd - (3.0 - 1.2 * tt), 4.0)
+        return d
+    printed.append(_sdf_mesh(face + [-45, -40, -42], face + [45, 12, 42], 1.0, hipnode))
+    ti.append(cyl(hp + np.array([0, 3.0, 0]), hp - np.array([0, 6.0, 0]), 9.0))
+    files = {}
+    for name, parts_, dx in (("rod_carbon", carbon + crown, 0.0), ("rod_printed", printed, 0.0),
+                             ("rod_ti", ti, 0.0), ("today_carbon", crown, TODAY_DX)):
+        mm = trimesh.util.concatenate([p for p in parts_ if p is not None])
+        mm.apply_translation((dx, 0, 0))
+        f = out / f"{name}.stl"
+        mm.export(f)
+        files[name] = str(f)
+    body = trimesh.load(REPO_ROOT / "designs" / "pack_5200" / "print" / "frame" / "genframe_assembled.stl")
+    body.apply_translation((TODAY_DX, 0, 0))
+    f = out / "today_printed.stl"
+    body.export(f)
+    files["today_printed"] = str(f)
+    (out / "manifest.json").write_text(json.dumps({"files": files}, indent=1))
+    return files
+
+
+def L2_render_cyl(p0, p1, r):
+    from . import frame_light2_render as R
+    return R._cyl(p0, p1, r)
+
+
+def _bpy_main(work: Path, prefix: str, samples: int):
+    """Runs in the bpy venv. Two Cycles shots at 1200 x 900 (RULES: max 2 renders)."""
+    import bpy
+    from huntkit.viz3d import cycles_render as CR
+    man = json.loads((work / "manifest.json").read_text())
+    bpy.ops.wm.read_factory_settings(use_empty=True)
+    sc = CR.setup_scene(samples, (1200, 900), 4)
+    mats = {}
+    for key, base, rough, coat, bump in (("carbon", "#101112", 0.28, 0.9, 0.0), ("printed", "#4b4945", 0.72, 0.0, 0.35),
+                                         ("ti", "#8d8a84", 0.35, 0.0, 0.0)):
+        mt = bpy.data.materials.new(key)
+        mt.use_nodes = True
+        CR.solid(mt, CR.hexlin(base), rough, metallic=1.0 if key == "ti" else 0.0, coat=coat, noise_bump=bump)
+        mats[key] = mt
+    objs = []
+    for name, path in man["files"].items():
+        bpy.ops.wm.stl_import(filepath=path)
+        ob = bpy.context.selected_objects[0]
+        ob.name = name
+        ob.scale = (0.001, 0.001, 0.001)
+        mat = "carbon" if "carbon" in name else ("ti" if name.endswith("_ti") else "printed")
+        ob.data.materials.clear()
+        ob.data.materials.append(mats[mat])
+        for p in ob.data.polygons:
+            p.use_smooth = True
+        objs.append(ob)
+    bpy.context.view_layer.update()
+    bpy.ops.mesh.primitive_plane_add(size=12)
+    floor = bpy.context.active_object
+    floor.is_shadow_catcher = True
+    fm = bpy.data.materials.new("floor")
+    fm.use_nodes = True
+    CR.solid(fm, CR.hexlin("#d9d6cd"), 0.9, spec=0.2)
+    floor.data.materials.append(fm)
+    cd = bpy.data.cameras.new("cam")
+    cd.sensor_fit = "VERTICAL"
+    cd.sensor_height = 24.0
+    cam = bpy.data.objects.new("cam", cd)
+    sc.collection.objects.link(cam)
+    sc.camera = cam
+    key = CR._area("key", 120.0, 1.6, (1.0, 0.95, 0.88), 1.2)
+    fill = CR._area("fill", 22.0, 2.4, (0.88, 0.93, 1.0), 1.6)
+    rim = CR._area("rim", 60.0, 1.0, (1.0, 1.0, 1.0), 2.0)
+    shots = [("pair", -30.0, 14.0, None, 1.0, "Today's printed frame (left) vs ROD (right)",
+              "ROD: stock carbon tubes pinned in bolted PAHT-CF clamshells, no glue; same carbon crown"),
+             ("knuckle", 150.0, 18.0, ((0.02, -0.05, 0.19), (0.16, 0.06, 0.37)), 1.0,
+              "ROD: mid knuckle + rail, bag side",
+              "carbon visible through the printed windows; Ti pins and cap bolts; bar socket 55 mm")]
+    outs = []
+    for nm, az, el, box, zoom, cap, sub in shots:
+        for o in objs:
+            o.hide_render = nm != "pair" and o.name.startswith("today")
+        lo, hi = CR.visible_bounds([o for o in objs if not o.hide_render])
+        floor.location = (0.5 * (lo[0] + hi[0]), 0.5 * (lo[1] + hi[1]), lo[2] - 0.001)
+        bmin, bmax = (lo, hi) if box is None else box
+        cd.angle_y = math.radians(28.0)
+        pos, tgt = CR.fit_camera(bmin, bmax, az, el, 28.0, 1200 / 900, zoom)
+        cam.location = pos
+        CR._aim(cam, tgt)
+        dist = math.dist(pos, tgt)
+        cd.dof.use_dof = True
+        cd.dof.focus_distance = dist
+        cd.dof.aperture_fstop = 8.0
+        CR.place_rig((key, fill, rim), az, tgt, max(1.6, 0.75 * dist))
+        raw = work / f"_raw_{nm}.png"
+        sc.render.filepath = str(raw)
+        bpy.ops.render.render(write_still=True)
+        out = Path(f"{prefix}_{nm}.png")
+        CR.composite(raw, out, cap, sub)
+        CR.shrink_png(out)
+        outs.append(str(out))
+        print("RENDERED", out, flush=True)
+    return outs
+
+
+BPY_BOOT = ("import sys, types; sys.path.insert(0, {repo!r})\n"
+            "for n, p in (('huntkit.gendesign', 'huntkit/gendesign'), ('huntkit.fea', 'huntkit/fea')):\n"
+            "    m = types.ModuleType(n); m.__path__ = [{repo!r} + '/' + p]; sys.modules[n] = m\n"
+            "from pathlib import Path\n"
+            "import huntkit.gendesign.frame_comp_C as C\n"
+            "C._bpy_main(Path({work!r}), {prefix!r}, {samples})\n")
+
+
+def render(cand, samples: int = 32) -> list[str]:
+    import subprocess
+    build_meshes(cand)
+    prefix = str(WORK / "shot")
+    code = BPY_BOOT.format(repo=str(REPO_ROOT), work=str(WORK), prefix=prefix, samples=samples)
+    r = subprocess.run([str(BPY), "-c", code], capture_output=True, text=True, timeout=3600, cwd=str(REPO_ROOT))
+    if r.returncode != 0:
+        raise RuntimeError(r.stdout[-2000:] + r.stderr[-2000:])
+    out = []
+    for i, nm in enumerate(("pair", "knuckle"), start=1):
+        dst = SCREENS / f"{SHOT}_{i}.png"
+        dst.write_bytes(Path(f"{prefix}_{nm}.png").read_bytes())
+        out.append(str(dst))
+    return out
+
+
+# ----------------------------------------------------------------------------- 2D plots (matplotlib)
+def plot_margins(ctx, path) -> str:
+    """Worst margin of the 24 lowest checks (all rev C cases, torsos, couple variants), one hue, 1.0 line."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    ch = ctx["best"]["summary"]["checks"]
+    rows = sorted(((v[0], k, v[1], v[2]) for k, v in ch.items()), key=lambda r: r[0])[:24][::-1]
+    fig, ax = plt.subplots(figsize=(10, 9), dpi=110)
+    fam_ink = {"strength": "#2a5d8f", "joint": "#5b8fc4", "fatigue": "#8db6de", "creep": "#b9d3ec"}
+    y = np.arange(len(rows))
+    ax.barh(y, [min(r[0], 4) for r in rows], color=[fam_ink[r[3]] for r in rows], height=0.7, edgecolor="white")
+    ax.axvline(1.0, color="#222", lw=1.2)
+    ax.text(1.02, len(rows) - 0.4, "pass line 1.0", fontsize=9, color="#222")
+    ax.set_yticks(y)
+    ax.set_yticklabels([f"{r[1][:58]}" for r in rows], fontsize=8.5)
+    for yi, r in zip(y, rows):
+        ax.text(min(r[0], 4) + 0.03, yi, f"{r[0]:.2f}  {r[2][:34]}", va="center", fontsize=7.5, color="#333")
+    ax.set_xlim(0, 4.6)
+    ax.set_xlabel("margin = SF / requirement (HA-LS-1 rev C)")
+    from matplotlib.patches import Patch
+    ax.legend(handles=[Patch(color=c, label=f) for f, c in fam_ink.items()], loc="lower right", fontsize=9,
+              title="check family")
+    for s in ("top", "right"):
+        ax.spines[s].set_visible(False)
+    ax.grid(axis="x", color="#ddd", lw=0.6)
+    ax.set_axisbelow(True)
+    s = ctx["best"]["summary"]["min"]
+    ax.set_title("ROD (team C): 24 lowest margins, every rev C case, torso 15/19/23, both couple variants\n"
+                 f"strength {s['strength'][0]:.2f} | joint {s['joint'][0]:.2f} | fatigue {s['fatigue'][0]:.2f} | "
+                 f"creep {s['creep'][0]:.2f}  -> all >= 1.0", fontsize=10.5)
+    fig.tight_layout()
+    fig.savefig(path)
+    plt.close(fig)
+    return str(path)
+
+
+def plot_frame(cand, path) -> str:
+    """Front view coloured by member utilisation (1 / margin, worst over the governing cases at 15 / 23 in) and a
+    side view of the static-carry deflection (x 10) next to the undeformed frame."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib import cm, colors
+    from huntkit.fea.load_standard import ls1_envelope
+    util = {}
+    for torso in (15.0, 23.0):
+        for variant, cases in ls1_envelope("C").items():
+            for case in cases:
+                c = copy.copy(case)
+                c.params = dict(c.params)
+                c.buckling = False
+                m = build(cand, torso, posts=(c.name == "tall_load_posts"))
+                res = c.run(m)
+                for mm in res.members:
+                    if mm["group"] == "lumbar_plate_shear":
+                        continue
+                    u = float(c.required_sf) / max(float(mm["sf"]), 1e-9)
+                    util[mm["id"]] = max(util.get(mm["id"], 0.0), u)
+    m = build(cand, 19.0)
+    st = stiffness(cand)
+    N = m["nodes"]
+    fig, ax = plt.subplots(1, 2, figsize=(11, 8.5), dpi=110, gridspec_kw={"width_ratios": [2.2, 1]})
+    norm = colors.Normalize(0, 1.0)
+    cmap = matplotlib.colormaps["Blues"]
+    for md in m["members"]:
+        if md["group"] == "lumbar_plate_shear":
+            continue
+        a, b = (np.array(N[n]) for n in md["nodes"])
+        u = util.get(md["id"], 0.0)
+        lw = 1.2 if md["group"].startswith("lumbar") else (5 if md["group"] == "lug_neck" else 3.2)
+        ax[0].plot([a[0], b[0]], [a[2], b[2]], color=cmap(0.15 + 0.85 * norm(min(u, 1.0))), lw=lw,
+                   solid_capstyle="round")
+    for k in ("SL", "SR"):
+        for z, lab in ((0, "foot-saddle\n(pin z 20,\nAl disc)"), (330, "mid knuckle\n(rail, splice)"),
+                       (520, "upper knuckle\n(radial pins z 525)")):
+            p = N[f"{k}{z:g}"]
+            ax[0].plot(p[0], p[2], "o", ms=9, mfc="none", mec="#555")
+            if k == "SR":
+                ax[0].text(p[0] + 14, p[2], lab, fontsize=8, va="center", color="#333")
+    sm = cm.ScalarMappable(norm=norm, cmap=cmap)
+    cb = fig.colorbar(sm, ax=ax[0], fraction=0.04, pad=0.02)
+    cb.set_label("utilisation = required / SF (worst case, 1.0 = limit)")
+    ax[0].set_aspect("equal")
+    ax[0].set_xlim(-170, 230)
+    ax[0].set_title("Front view (from the wearer), beam model, 19 in geometry", fontsize=10)
+    ax[0].set_xlabel("x mm")
+    ax[0].set_ylabel("z mm")
+    ids = st["node_ids"]
+    U = st["u_carry"]
+    for md in m["members"]:
+        if md["group"] == "lumbar_plate_shear" or md["group"].startswith("lumbar"):
+            continue
+        a, b = md["nodes"]
+        pa, pb = np.array(N[a]), np.array(N[b])
+        ax[1].plot([pa[1], pb[1]], [pa[2], pb[2]], color="#bbb", lw=2)
+        da, db = U[ids.index(a)] * 10, U[ids.index(b)] * 10
+        ax[1].plot([pa[1] + da[1], pb[1] + db[1]], [pa[2] + da[2], pb[2] + db[2]], color="#2a5d8f", lw=2)
+    ax[1].set_aspect("equal")
+    ax[1].set_title(f"Side: static carry, deflection x 10\nstay top {abs(st['carry_dy_mm']):.1f} mm (today 29.7)\n"
+                    f"torsion {st['torsion_Nm_per_deg']:.2f} N m/deg (today 0.44)", fontsize=9)
+    ax[1].set_xlabel("y mm (aft +)")
+    for a_ in ax:
+        for s in ("top", "right"):
+            a_.spines[s].set_visible(False)
+    fig.suptitle("ROD: member utilisation and deformed shape (HA-LS-1 rev C)", fontsize=12)
+    fig.tight_layout()
+    fig.savefig(path)
+    plt.close(fig)
+    return str(path)
