@@ -447,7 +447,7 @@ def load_sets(log=print):
 
 # ------------------------------------------------------------------------------------------------ resizing loop
 TARGET_U = 1.0 / 1.04          # ASSUMPTION: aim each member at margin 1.04 (2 mm voxel / FI99 noise reserve)
-MIN_SCALE = {"foot": 0.70, "low": 0.80, "sleeve": 0.80, "top": 0.75, "branch": 0.81, "strut": 0.67, "mid": 0.77}
+MIN_SCALE = {"foot": 0.70, "low": 0.80, "sleeve": 0.80, "top": 0.75, "branch": 0.85, "strut": 0.67, "mid": 0.77}
 #   floors: printed radius >= 5 mm on branches, struts and the mid bar (2.5 voxels at 2 mm, 6 walls at 0.6 mm nozzle
 #   is 3.4 mm per side) and the foot ball >= 8.4 mm (hinge-pin boss and boot fit)
 MAX_STEP = 0.10                # at most 10 % radius change per iteration
@@ -848,3 +848,103 @@ def member_buckling(b: Body, sets, m: Mat, h: float = H, log=print) -> dict:
             log(f"  buckling {nm}: A {v['A_mm2']:.0f} mm2, P {P:.0f} N ({rows[nm]['set']}), Pcr {v['Pcr_n']:.0f} N, "
                 f"margin {out[nm]['margin']:.2f}")
     return out
+
+
+# ------------------------------------------------------------------------------------------------ the MONO pick
+# Fully stressed iterate it4 of fully_stressed(paht_rec) (outputs/frame_comp_A/fsd_paht_rec.json), with the branch at
+# the raised floor 0.85 so the lower branch passes the Euler check (member_buckling: 0.97 at 0.81).
+FINAL = Body(foot=0.851, low=1.143, sleeve=0.991, top=0.995, branch=0.85, strut=1.112, mid=0.770, sleeve_w=4.58,
+             name="MONO")
+
+
+# ------------------------------------------------------------------------------------------------ result file
+FIXED_MARGINS = {  # unchanged parts of the frame (rev_c_verification.md, frame_light2.md P-1); the body does not
+    #               change their loads (beam-model load path, ASSUMPTION as in every production check)
+    "crown legs FPF (IM3 couple)": 1.12, "crown spine FPF": 1.18, "crown corner bond Volkersen peak": 1.22,
+    "crown post socket bond peak with P-1": 1.20, "crown buckling": 1.85, "crown member fatigue (IM3)": 1.36,
+    "pawl cheek, 304 bushing": 1.40, "fairlead hinge cheek fatigue": 1.67, "spreader fatigue": 1.09,
+    "spreader FPF": 1.25, "hip pivot 4 x M5 inserts (TENDON hip node check, same insert spec)": 3.00,
+}
+
+
+def summary(final: dict, body_raster_today: float = 819.4) -> dict:
+    """Booked numbers of the MONO pick from the final evaluation JSON (outputs/frame_comp_A/final.json)."""
+    m = MATS["paht_rec"]
+    mono = final["mono"]
+    rb = mono["materials"]["paht_rec"]
+    body_g = TODAY["body_g"] - (body_raster_today - rb["body_g"])       # booked on today's 823.2 g basis
+    fm = frame_mass(body_g, m)
+    jm = joint_margins(mono["joint"], m)
+    buck = min(v["margin"] for v in mono["buckling"].values())
+    hours = print_hours(body_g, m)
+    mg = rb["n1"]["min"]
+    return {"body_g": body_g, **fm, "print_hours": hours, "cost": unit_cost(body_g, m, hours), "joint": jm,
+            "body": {"strength": mg["strength"], "fatigue": mg["fatigue"], "creep": mg["creep"],
+                     "strength_at": mg["strength_at"], "fatigue_at": mg["fatigue_at"], "buckling": buck},
+            "torsion_vs_today": mono["torsion_vs_today"]["paht_rec"],
+            "carry_dy_mm": abs(mono["stiff_unitE"]["carry_dy_mm"]) / m.E_xy}
+
+
+def write_result(final: dict) -> dict:
+    s = summary(final)
+    worst_strength = min([s["body"]["strength"], s["body"]["buckling"]] +
+                         [v for k, v in FIXED_MARGINS.items() if "fatigue" not in k])
+    worst_fatigue = min(s["body"]["fatigue"], s["joint"]["fatigue"], *[v for k, v in FIXED_MARGINS.items()
+                                                                       if "fatigue" in k])
+    worst_joint = min(s["joint"]["strength"], s["joint"]["fatigue"], s["joint"]["shear"], 1.40, 3.00)
+    r = {
+        "team": "A",
+        "concept_name": "MONO",
+        "one_line": ("Today's one-piece PAHT-CF branch body re-sized member by member (fully stressed to the rev C "
+                     "fatigue limit), printed face-down on the H2S in two segments, z 234 split made dry with "
+                     "4 Ti M5 bolts in nut traps instead of bonded dowels"),
+        "frame_g": round(s["frame_g"], 1),
+        "frame_plus_spreader_g": round(s["frame_plus_spreader_g"], 1),
+        "pack_mass_corrie_b2_M_g": round(s["pack_corrie_b2_M_g"], 1),
+        "passes_rev_c": bool(min(worst_strength, worst_fatigue, worst_joint, s["body"]["creep"]) >= 1.0),
+        "worst_strength_margin": round(worst_strength, 2),
+        "worst_fatigue_margin": round(worst_fatigue, 3),
+        "worst_joint_margin": round(worst_joint, 2),
+        "governing_case": (f"body fatigue {s['body']['fatigue']:.3f}: C1 static carry at 1.6 g, bag couple on the IM3 "
+                           f"hooks, 23 in, stay below the sleeve; frame strength 1.12 = unchanged crown legs "
+                           f"(C8 hipbelt-off, IM3); body strength {s['body']['strength']:.2f} at the upper bar / "
+                           f"pawl housing (C8, 15 in)"),
+        "torsion_stiffness_vs_today": round(s["torsion_vs_today"], 2),
+        "print_hours": round(s["print_hours"], 1),
+        "printer": "H2S home",
+        "cost_usd": s["cost"],
+        "build_hours": 5.0,
+        "skill_level": "beginner",
+        "looks_generative": True,
+        "patents_checked": ["US 10,952,523 B2 (Mystery Ranch, lifters stay on the crown top bar)",
+                            "USRE48,093 E1 / US 9,095,203 B2 / US 9,636,875 B2 (KUIU one-piece slotted sheet frames)",
+                            "US 10,668,965 (Divergent adhesive ports: none, the joint has no adhesive)",
+                            "US 10,605,285 / US 10,480,555 / US 11,174,884 (Divergent node-tube engagement: no tubes)"],
+        "governing_assumptions": [
+            "PAHT-CF 1e5-cycle fatigue = 0.30 x hot/wet strength (R 0.1); conservative published PA12-CF value is "
+            "about 0.29 x UTS at 1e6 (Siebert 2025), Stratasys Nylon 12CF gives 0.40 -> coupon CA-1",
+            "PAHT-CF Z strength 47 MPa and interlayer shear 0.6 x Z (FI rule), hot/wet 0.8 -> CA-1/CA-3",
+            "creep-rupture 8 h 40 C = 0.40 x knocked-down strength (no published data) -> CA-4",
+            "dry joint: M5 nut-trap bearing on the in-plane pocket floor at the knocked-down XY strength, fatigue 0.30 "
+            "of it; flange force |N|/2 + M/24 mm carried by the stay bolts alone -> CA-5",
+            "branch Euler buckling K = 1 with E x 0.6 (40 C wet) x 0.7 (8 h creep) -> covered by T4b on the frame",
+            "beam-model load path unchanged by the body (crown, spreader and fairlead loads as rev C) -> T1, T9",
+        ],
+        "coupon_tests": [
+            "CA-1 fatigue: 6 PAHT-CF ISO 527-1A bars printed flat on the owner's H2S (XY) + 6 upright (Z), annealed "
+            "90 C 6 h, conditioned 23 C 50 % RH 7 days; first 3+3 to UTS, then R 0.1 at 5 Hz, max 0.30 x 0.8 x UTS, "
+            "1e5 cycles: pass = no failure, stiffness drop <= 10 %; repeat at 0.40 x UTS (to earn the lighter body)",
+            "CA-2 anneal: 3 XY + 3 Z bars at 90 C 6 h vs 120 C 6 h, tensile; credit only a measured gain",
+            "CA-3 interlayer: 3 Z bars and 3 short-beam shear blocks after 40 C water soak 48 h: pass Z >= 0.8 x 47 MPa",
+            "CA-4 creep: 2 XY bars at 0.40 x 0.8 x UTS, 40 C oven, 8 h dead load (lever + water jug): no rupture, "
+            "creep strain recorded",
+            "CA-5 dry joint: 3 printed z 234 joint stubs (one stay each, both flanges, M5 Ti in nut traps), pulled to "
+            "failure (mean >= 1.5 x 2894 N, lowest >= 1.25 x) and 1 cycled 0 -> 1543 N x 1e5 on the T5 rig",
+            "then HA-LS-1 T9, T1-T5, T4c (-20 C) on the first MONO frame, with the pencil-mark check across z 234",
+        ],
+    }
+    TEAM_DIR.mkdir(parents=True, exist_ok=True)
+    RESULT_JSON.write_text(json.dumps(r, indent=1))
+    (TEAM_DIR / "frame_comp_A_summary.json").write_text(json.dumps({"summary": s, "fixed_margins": FIXED_MARGINS,
+                                                                    "final_body": asdict(FINAL)}, indent=1, default=float))
+    return r

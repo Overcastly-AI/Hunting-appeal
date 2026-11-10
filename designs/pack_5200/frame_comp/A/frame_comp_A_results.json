@@ -1,0 +1,2746 @@
+{
+ "today": {
+  "body": {
+   "foot": 1.05,
+   "low": 1.05,
+   "sleeve": 1.05,
+   "top": 1.05,
+   "branch": 1.05,
+   "strut": 1.05,
+   "mid": 1.05,
+   "sleeve_w": 4.41,
+   "name": "today"
+  },
+  "key": "fo1.050_lo1.050_sl1.050_to1.050_br1.050_st1.050_mi1.050_w4.41",
+  "volume_cm3": 772.992,
+  "n_vox": 96624,
+  "materials": {
+   "paht_rec": {
+    "body_g": 819.3715199999999,
+    "n1": {
+     "C": {
+      "strength": 1.5084773405188445,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.1482798504645133,
+      "creep": 2.4496636809909624,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 3.062079601238703,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 2.0413864010331273,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 2.317139799656265,
+        "torso": 15.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 3.4195505777062523,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "meat_straps": {
+        "sf": 2.3798035289898936,
+        "torso": 23.0,
+        "where": "stay R below the sleeve"
+       },
+       "tall_load": {
+        "sf": 2.927072562345707,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "overload_haul": {
+        "sf": 3.346673002366051,
+        "torso": 23.0,
+        "where": "stay R below the sleeve"
+       },
+       "tall_load_posts": {
+        "sf": 2.86768766509331,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.5084773405188445,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 1.5375436214751845,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.040368358236923,
+      "creep": 2.2194524975721026,
+      "fatigue_set": "C_im3:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 2.774315621965128,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 1.849543747782481,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 2.154583450641431,
+        "torso": 15.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 3.3688900882075203,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.5375436214751845,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "min": {
+      "strength": 1.5084773405188445,
+      "fatigue": 1.040368358236923,
+      "creep": 2.2194524975721026,
+      "strength_at": "C:hipbelt_off_abuse|15 (upper bar / pawl housing)",
+      "fatigue_at": "C_im3:static_carry|15"
+     }
+    }
+   }
+  },
+  "seconds": 55.928523540496826,
+  "joint_by_z": {
+   "234": {
+    "worst_flange_n": 2930.3754419455495,
+    "worst_set": "C_im3:drop_2p5g|23|L",
+    "worst_shear_n": 644.3642373410264,
+    "fatigue_flange_n_1p6g": 1562.8669023546418,
+    "fatigue_set": "C_im3:static_carry|23"
+   },
+   "262": {
+    "worst_flange_n": 3145.8600580904354,
+    "worst_set": "C_im3:drop_2p5g|23|L",
+    "worst_shear_n": 644.3642373588744,
+    "fatigue_flange_n_1p6g": 1677.7920309639057,
+    "fatigue_set": "C_im3:static_carry|23"
+   },
+   "290": {
+    "worst_flange_n": 3498.792341599694,
+    "worst_set": "C_im3:drop_2p5g|23|L",
+    "worst_shear_n": 661.1259505929563,
+    "fatigue_flange_n_1p6g": 1866.022582165268,
+    "fatigue_set": "C_im3:static_carry|23"
+   }
+  },
+  "joint": {
+   "worst_flange_n": 2930.3754419455495,
+   "worst_set": "C_im3:drop_2p5g|23|L",
+   "worst_shear_n": 644.3642373410264,
+   "fatigue_flange_n_1p6g": 1562.8669023546418,
+   "fatigue_set": "C_im3:static_carry|23"
+  },
+  "stiff_unitE": {
+   "carry_dy_mm": -69004.5700618333,
+   "carry_dz_mm": -3113.3909757177653,
+   "torsion_Nm_per_deg": 0.0011261212551592862,
+   "E_ref": 1.0
+  },
+  "torsion_vs_today": {
+   "paht_rec": 1.0
+  },
+  "torsion_hot_vs_today_hot": {
+   "paht_rec": 1.0
+  }
+ },
+ "mono_it4": {
+  "body": {
+   "foot": 0.8505,
+   "low": 1.142886687754512,
+   "sleeve": 0.9914993537197649,
+   "top": 0.9951549969710481,
+   "branch": 0.81,
+   "strut": 1.1122051080631041,
+   "mid": 0.77,
+   "sleeve_w": 4.584193908786585,
+   "name": "MONO"
+  },
+  "key": "fo0.851_lo1.143_sl0.991_to0.995_br0.810_st1.112_mi0.770_w4.58",
+  "volume_cm3": 715.296,
+  "n_vox": 89412,
+  "materials": {
+   "paht_rec": {
+    "body_g": 758.21376,
+    "n0": {
+     "C": {
+      "strength": 0.7044669718934727,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.0417072854704148,
+      "creep": 2.2223088756702185,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 2.777886094587773,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "drop_2p5g": {
+        "sf": 1.8519240633678584,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "side_hill_torsion": {
+        "sf": 1.3913944297267378,
+        "torso": 15.0,
+        "where": "mid bar z 330"
+       },
+       "single_stay_setdown": {
+        "sf": 1.8342853567567703,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "meat_straps": {
+        "sf": 1.5705113016085588,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       },
+       "tall_load": {
+        "sf": 2.0027078749840332,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "overload_haul": {
+        "sf": 2.200819586411605,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       },
+       "tall_load_posts": {
+        "sf": 1.8756240859435418,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 0.7044669718934727,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 0.7213940196570892,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 0.9747592257621012,
+      "creep": 2.0794863482924826,
+      "fatigue_set": "C_im3:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 2.5993579353656036,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "drop_2p5g": {
+        "sf": 1.732905290248111,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "side_hill_torsion": {
+        "sf": 1.3724056042947652,
+        "torso": 15.0,
+        "where": "mid bar z 330"
+       },
+       "single_stay_setdown": {
+        "sf": 1.8326693632226587,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 0.7213940196570892,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "min": {
+      "strength": 0.7044669718934727,
+      "fatigue": 0.9747592257621012,
+      "creep": 2.0794863482924826,
+      "strength_at": "C:hipbelt_off_abuse|15 (upper bar / pawl housing)",
+      "fatigue_at": "C_im3:static_carry|15"
+     }
+    },
+    "n1": {
+     "C": {
+      "strength": 1.2737854883286974,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.276367024940382,
+      "creep": 2.7229163198728155,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 3.403645399841019,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "drop_2p5g": {
+        "sf": 2.2690969335733255,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "side_hill_torsion": {
+        "sf": 2.2131448744119466,
+        "torso": 15.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 3.2083367449499125,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "meat_straps": {
+        "sf": 2.1613500541326536,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load": {
+        "sf": 3.047193023621357,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "overload_haul": {
+        "sf": 3.0386497556153955,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load_posts": {
+        "sf": 2.9184874492827815,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.2737854883286974,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 1.299392072113428,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.0391244003877298,
+      "creep": 2.2167987208271573,
+      "fatigue_set": "C_im3:static_carry|23",
+      "cases": {
+       "static_carry": {
+        "sf": 2.770998401033946,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 1.8473322672742187,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 2.0816055000080214,
+        "torso": 23.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 3.1761624883570305,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.299392072113428,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "min": {
+      "strength": 1.2737854883286974,
+      "fatigue": 1.0391244003877298,
+      "creep": 2.2167987208271573,
+      "strength_at": "C:hipbelt_off_abuse|15 (upper bar / pawl housing)",
+      "fatigue_at": "C_im3:static_carry|23"
+     }
+    },
+    "n2": {
+     "C": {
+      "strength": 1.1810457214775076,
+      "governing": "meat_straps|23",
+      "where": "stay L sleeve (crown bore wall)",
+      "fatigue": 0.8049470502426265,
+      "creep": 1.7172203738509368,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 2.146525467313671,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 1.4310169785320623,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 1.4384495124190755,
+        "torso": 15.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 2.464958880279883,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "meat_straps": {
+        "sf": 1.1810457214775076,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load": {
+        "sf": 1.990014658840042,
+        "torso": 23.0,
+        "where": "hip-pivot boss"
+       },
+       "overload_haul": {
+        "sf": 1.6615358343758833,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load_posts": {
+        "sf": 2.2243127523273047,
+        "torso": 23.0,
+        "where": "hip-pivot boss"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.296499826288283,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 1.0042950355357603,
+      "governing": "drop_2p5g|23",
+      "where": "stay L below the sleeve",
+      "fatigue": 0.5649159575299965,
+      "creep": 1.2051540427306595,
+      "fatigue_set": "C_im3:static_carry|23",
+      "cases": {
+       "static_carry": {
+        "sf": 1.5064425534133241,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 1.0042950355357603,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 1.2210231882686038,
+        "torso": 23.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 2.419522755785949,
+        "torso": 23.0,
+        "where": "stay R below the sleeve"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.3228768293456667,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "min": {
+      "strength": 1.0042950355357603,
+      "fatigue": 0.5649159575299965,
+      "creep": 1.2051540427306595,
+      "strength_at": "C_im3:drop_2p5g|23 (stay L below the sleeve)",
+      "fatigue_at": "C_im3:static_carry|23"
+     }
+    }
+   },
+   "paht_pub": {
+    "body_g": 758.21376,
+    "n0": {
+     "C": {
+      "strength": 0.7044669718934727,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.3889430472938864,
+      "creep": 2.2223088756702185,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 2.777886094587773,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "drop_2p5g": {
+        "sf": 1.8519240633678584,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "side_hill_torsion": {
+        "sf": 1.3913944297267378,
+        "torso": 15.0,
+        "where": "mid bar z 330"
+       },
+       "single_stay_setdown": {
+        "sf": 1.8342853567567703,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "meat_straps": {
+        "sf": 1.5705113016085588,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       },
+       "tall_load": {
+        "sf": 2.0027078749840332,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "overload_haul": {
+        "sf": 2.200819586411605,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       },
+       "tall_load_posts": {
+        "sf": 1.8756240859435418,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 0.7044669718934727,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 0.7213940196570892,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.2996789676828018,
+      "creep": 2.0794863482924826,
+      "fatigue_set": "C_im3:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 2.5993579353656036,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "drop_2p5g": {
+        "sf": 1.732905290248111,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "side_hill_torsion": {
+        "sf": 1.3724056042947652,
+        "torso": 15.0,
+        "where": "mid bar z 330"
+       },
+       "single_stay_setdown": {
+        "sf": 1.8326693632226587,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 0.7213940196570892,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "min": {
+      "strength": 0.7044669718934727,
+      "fatigue": 1.2996789676828018,
+      "creep": 2.0794863482924826,
+      "strength_at": "C:hipbelt_off_abuse|15 (upper bar / pawl housing)",
+      "fatigue_at": "C_im3:static_carry|15"
+     }
+    },
+    "n1": {
+     "C": {
+      "strength": 1.2737854883286974,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.7018226999205095,
+      "creep": 2.7229163198728155,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 3.403645399841019,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "drop_2p5g": {
+        "sf": 2.2690969335733255,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "side_hill_torsion": {
+        "sf": 2.2131448744119466,
+        "torso": 15.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 3.2083367449499125,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "meat_straps": {
+        "sf": 2.1613500541326536,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load": {
+        "sf": 3.047193023621357,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "overload_haul": {
+        "sf": 3.0386497556153955,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load_posts": {
+        "sf": 2.9184874492827815,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.2737854883286974,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 1.299392072113428,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.385499200516973,
+      "creep": 2.2167987208271573,
+      "fatigue_set": "C_im3:static_carry|23",
+      "cases": {
+       "static_carry": {
+        "sf": 2.770998401033946,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 1.8473322672742187,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 2.0816055000080214,
+        "torso": 23.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 3.1761624883570305,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.299392072113428,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "min": {
+      "strength": 1.2737854883286974,
+      "fatigue": 1.385499200516973,
+      "creep": 2.2167987208271573,
+      "strength_at": "C:hipbelt_off_abuse|15 (upper bar / pawl housing)",
+      "fatigue_at": "C_im3:static_carry|23"
+     }
+    },
+    "n2": {
+     "C": {
+      "strength": 1.1810457214775076,
+      "governing": "meat_straps|23",
+      "where": "stay L sleeve (crown bore wall)",
+      "fatigue": 1.0732627336568354,
+      "creep": 1.7172203738509368,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 2.146525467313671,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 1.4310169785320623,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 1.4384495124190755,
+        "torso": 15.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 2.464958880279883,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "meat_straps": {
+        "sf": 1.1810457214775076,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load": {
+        "sf": 1.990014658840042,
+        "torso": 23.0,
+        "where": "hip-pivot boss"
+       },
+       "overload_haul": {
+        "sf": 1.6615358343758833,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load_posts": {
+        "sf": 2.2243127523273047,
+        "torso": 23.0,
+        "where": "hip-pivot boss"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.296499826288283,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 1.0042950355357603,
+      "governing": "drop_2p5g|23",
+      "where": "stay L below the sleeve",
+      "fatigue": 0.7532212767066621,
+      "creep": 1.2051540427306595,
+      "fatigue_set": "C_im3:static_carry|23",
+      "cases": {
+       "static_carry": {
+        "sf": 1.5064425534133241,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 1.0042950355357603,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 1.2210231882686038,
+        "torso": 23.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 2.419522755785949,
+        "torso": 23.0,
+        "where": "stay R below the sleeve"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.3228768293456667,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "min": {
+      "strength": 1.0042950355357603,
+      "fatigue": 0.7532212767066621,
+      "creep": 1.2051540427306595,
+      "strength_at": "C_im3:drop_2p5g|23 (stay L below the sleeve)",
+      "fatigue_at": "C_im3:static_carry|23"
+     }
+    }
+   },
+   "ppa": {
+    "body_g": 894.1200000000001,
+    "n0": {
+     "C": {
+      "strength": 0.6154718092207601,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 0.9237077207947959,
+      "creep": 2.7095426476647355,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 2.4632205887861227,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "drop_2p5g": {
+        "sf": 1.6421470592311844,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "side_hill_torsion": {
+        "sf": 1.2178697162050416,
+        "torso": 15.0,
+        "where": "mid bar z 330"
+       },
+       "single_stay_setdown": {
+        "sf": 1.6025604779111677,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "meat_straps": {
+        "sf": 1.3721089430276903,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       },
+       "tall_load": {
+        "sf": 1.749706215245359,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "overload_haul": {
+        "sf": 1.9227905163197139,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       },
+       "tall_load_posts": {
+        "sf": 1.6386768942352485,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 0.6154718092207601,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 0.6302604666418985,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 0.896973476738251,
+      "creep": 2.6311221984322035,
+      "fatigue_set": "C_im3:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 2.391929271302003,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "drop_2p5g": {
+        "sf": 1.5946195142786526,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "side_hill_torsion": {
+        "sf": 1.2107976595833585,
+        "torso": 15.0,
+        "where": "mid bar z 330"
+       },
+       "single_stay_setdown": {
+        "sf": 1.6011486324963917,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 0.6302604666418985,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "min": {
+      "strength": 0.6154718092207601,
+      "fatigue": 0.896973476738251,
+      "creep": 2.6311221984322035,
+      "strength_at": "C:hipbelt_off_abuse|15 (upper bar / pawl housing)",
+      "fatigue_at": "C_im3:static_carry|15"
+     }
+    },
+    "n1": {
+     "C": {
+      "strength": 1.7144321635640214,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.477079857824559,
+      "creep": 4.33276758295204,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 3.938879620865491,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "drop_2p5g": {
+        "sf": 2.625919747738731,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "side_hill_torsion": {
+        "sf": 2.918455638396005,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "single_stay_setdown": {
+        "sf": 4.626617742088822,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall) at the top bushing"
+       },
+       "meat_straps": {
+        "sf": 3.22224824153085,
+        "torso": 23.0,
+        "where": "lumbar struts / pan"
+       },
+       "tall_load": {
+        "sf": 3.433348680998992,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "overload_haul": {
+        "sf": 4.529061238074602,
+        "torso": 23.0,
+        "where": "lumbar struts / pan"
+       },
+       "tall_load_posts": {
+        "sf": 3.357038063586404,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.7144321635640214,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 1.764003653177278,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.4607210773077828,
+      "creep": 4.284781826769496,
+      "fatigue_set": "C_im3:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 3.8952562061540874,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "drop_2p5g": {
+        "sf": 2.5968374711673294,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "side_hill_torsion": {
+        "sf": 2.899166214094257,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "single_stay_setdown": {
+        "sf": 4.609176288154471,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall) at the top bushing"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.764003653177278,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "min": {
+      "strength": 1.7144321635640214,
+      "fatigue": 1.4607210773077828,
+      "creep": 4.284781826769496,
+      "strength_at": "C:hipbelt_off_abuse|15 (upper bar / pawl housing)",
+      "fatigue_at": "C_im3:static_carry|15"
+     }
+    },
+    "n2": {
+     "C": {
+      "strength": 1.0318444667695779,
+      "governing": "meat_straps|23",
+      "where": "stay L sleeve (crown bore wall)",
+      "fatigue": 0.7032582606508053,
+      "creep": 2.0628908979090292,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 1.875355361735481,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 1.2502369081058045,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 1.2609838667059428,
+        "torso": 15.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 2.2086395071685407,
+        "torso": 19.0,
+        "where": "stay L below the sleeve"
+       },
+       "meat_straps": {
+        "sf": 1.0318444667695779,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load": {
+        "sf": 1.740046243173613,
+        "torso": 23.0,
+        "where": "hip-pivot boss"
+       },
+       "overload_haul": {
+        "sf": 1.4516343659374404,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load_posts": {
+        "sf": 1.948449548372595,
+        "torso": 23.0,
+        "where": "hip-pivot boss"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.911011592418737,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 0.8774226573763224,
+      "governing": "drop_2p5g|23",
+      "where": "stay L below the sleeve",
+      "fatigue": 0.49355024481011667,
+      "creep": 1.4477473847763425,
+      "fatigue_set": "C_im3:static_carry|23",
+      "cases": {
+       "static_carry": {
+        "sf": 1.3161339861603112,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 0.8774226573763224,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 1.066771588686799,
+        "torso": 23.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 2.1709352613063886,
+        "torso": 19.0,
+        "where": "stay R below the sleeve"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.3673287767219484,
+        "torso": 23.0,
+        "where": "stay R sleeve (crown bore wall)"
+       }
+      }
+     },
+     "min": {
+      "strength": 0.8774226573763224,
+      "fatigue": 0.49355024481011667,
+      "creep": 1.4477473847763425,
+      "strength_at": "C_im3:drop_2p5g|23 (stay L below the sleeve)",
+      "fatigue_at": "C_im3:static_carry|23"
+     }
+    }
+   },
+   "pa6": {
+    "body_g": 836.8963200000001,
+    "n0": {
+     "C": {
+      "strength": 0.9274232741682686,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.3000433840459387,
+      "creep": 2.7734258859646697,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 3.4667823574558367,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "drop_2p5g": {
+        "sf": 2.311188238690538,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "side_hill_torsion": {
+        "sf": 1.8130681528068857,
+        "torso": 15.0,
+        "where": "mid bar z 330"
+       },
+       "single_stay_setdown": {
+        "sf": 2.4127584156099053,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "meat_straps": {
+        "sf": 2.067561421000629,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       },
+       "tall_load": {
+        "sf": 2.635869484546164,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "overload_haul": {
+        "sf": 2.8973555725365543,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       },
+       "tall_load_posts": {
+        "sf": 2.46923915569695,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 0.9274232741682686,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 0.9497075524740936,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.1193992323226187,
+      "creep": 2.3880516956215874,
+      "fatigue_set": "C_im3:static_carry|23",
+      "cases": {
+       "static_carry": {
+        "sf": 2.985064619526984,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 1.9900430796011737,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 1.7832536989847505,
+        "torso": 15.0,
+        "where": "mid bar z 330"
+       },
+       "single_stay_setdown": {
+        "sf": 2.404284526899356,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 0.9497075524740936,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "min": {
+      "strength": 0.9274232741682686,
+      "fatigue": 1.1193992323226187,
+      "creep": 2.3880516956215874,
+      "strength_at": "C:hipbelt_off_abuse|15 (upper bar / pawl housing)",
+      "fatigue_at": "C_im3:static_carry|23"
+     }
+    },
+    "n1": {
+     "C": {
+      "strength": 1.3909360221365004,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.4583701164963532,
+      "creep": 3.1111895818588873,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 3.888986977323609,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "drop_2p5g": {
+        "sf": 2.5926579852180303,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "side_hill_torsion": {
+        "sf": 2.417702171002929,
+        "torso": 15.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 3.4870585676919306,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "meat_straps": {
+        "sf": 2.3693749918956346,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load": {
+        "sf": 3.465952869249323,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "overload_haul": {
+        "sf": 3.329769486320846,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load_posts": {
+        "sf": 3.3279326174528894,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.3909360221365004,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 1.419447049755509,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.13896221010732,
+      "creep": 2.42978604822895,
+      "fatigue_set": "C_im3:static_carry|23",
+      "cases": {
+       "static_carry": {
+        "sf": 3.0372325602861876,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 2.024821706762521,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 2.264718632589334,
+        "torso": 23.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 3.4520097958912124,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.419447049755509,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "min": {
+      "strength": 1.3909360221365004,
+      "fatigue": 1.13896221010732,
+      "creep": 2.42978604822895,
+      "strength_at": "C:hipbelt_off_abuse|15 (upper bar / pawl housing)",
+      "fatigue_at": "C_im3:static_carry|23"
+     }
+    },
+    "n2": {
+     "C": {
+      "strength": 1.4088385896456483,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.0565686028726224,
+      "creep": 2.2540130194615946,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 2.817516274326993,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 1.8783441832527112,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 1.8578917524627507,
+        "torso": 15.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 3.046794005048237,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "meat_straps": {
+        "sf": 1.5548341280089526,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load": {
+        "sf": 2.597420115323379,
+        "torso": 23.0,
+        "where": "hip-pivot boss"
+       },
+       "overload_haul": {
+        "sf": 2.1873942500427184,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load_posts": {
+        "sf": 2.895518151339535,
+        "torso": 23.0,
+        "where": "hip-pivot boss"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.4088385896456483,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 1.3221437302930885,
+      "governing": "drop_2p5g|23",
+      "where": "stay L below the sleeve",
+      "fatigue": 0.7437058483440113,
+      "creep": 1.5865724764672244,
+      "fatigue_set": "C_im3:static_carry|23",
+      "cases": {
+       "static_carry": {
+        "sf": 1.9832155955840305,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 1.3221437302930885,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 1.6004113102308866,
+        "torso": 23.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 3.0050982083744895,
+        "torso": 23.0,
+        "where": "stay R below the sleeve"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.43750110007022,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "min": {
+      "strength": 1.3221437302930885,
+      "fatigue": 0.7437058483440113,
+      "creep": 1.5865724764672244,
+      "strength_at": "C_im3:drop_2p5g|23 (stay L below the sleeve)",
+      "fatigue_at": "C_im3:static_carry|23"
+     }
+    }
+   }
+  },
+  "seconds": 64.56824898719788,
+  "joint_by_z": {
+   "234": {
+    "worst_flange_n": 2892.7007519623153,
+    "worst_set": "C_im3:drop_2p5g|23|L",
+    "worst_shear_n": 573.6067465604626,
+    "fatigue_flange_n_1p6g": 1542.7737342776118,
+    "fatigue_set": "C_im3:static_carry|23"
+   },
+   "262": {
+    "worst_flange_n": 2982.5255543300327,
+    "worst_set": "C_im3:drop_2p5g|23|L",
+    "worst_shear_n": 573.6067465789224,
+    "fatigue_flange_n_1p6g": 1590.680295549107,
+    "fatigue_set": "C_im3:static_carry|23"
+   },
+   "290": {
+    "worst_flange_n": 3187.796152810156,
+    "worst_set": "C_im3:drop_2p5g|23|L",
+    "worst_shear_n": 588.0146644538022,
+    "fatigue_flange_n_1p6g": 1700.1579480777064,
+    "fatigue_set": "C_im3:static_carry|23"
+   }
+  },
+  "joint": {
+   "worst_flange_n": 2892.7007519623153,
+   "worst_set": "C_im3:drop_2p5g|23|L",
+   "worst_shear_n": 573.6067465604626,
+   "fatigue_flange_n_1p6g": 1542.7737342776118,
+   "fatigue_set": "C_im3:static_carry|23"
+  },
+  "stiff_unitE": {
+   "carry_dy_mm": -66172.61503298432,
+   "carry_dz_mm": -3004.6967997999323,
+   "torsion_Nm_per_deg": 0.0011135568467338065,
+   "E_ref": 1.0
+  },
+  "torsion_vs_today": {
+   "paht_rec": 0.9888427570584284,
+   "paht_pub": 0.9888427570584284,
+   "ppa": 3.0228871847900143,
+   "pa6": 1.1348635786965902
+  },
+  "torsion_hot_vs_today_hot": {
+   "paht_rec": 0.9888427570584283,
+   "paht_pub": 0.9888427570584283,
+   "ppa": 4.282423511785853,
+   "pa6": 1.0402916138052076
+  }
+ },
+ "mono": {
+  "body": {
+   "foot": 0.851,
+   "low": 1.143,
+   "sleeve": 0.991,
+   "top": 0.995,
+   "branch": 0.85,
+   "strut": 1.112,
+   "mid": 0.77,
+   "sleeve_w": 4.58,
+   "name": "MONO"
+  },
+  "key": "fo0.851_lo1.143_sl0.991_to0.995_br0.850_st1.112_mi0.770_w4.58",
+  "volume_cm3": 720.0,
+  "n_vox": 90000,
+  "materials": {
+   "paht_rec": {
+    "body_g": 763.2,
+    "n0": {
+     "C": {
+      "strength": 0.7074394425742107,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.0443218413713058,
+      "creep": 2.2278865949254527,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 2.784858243656816,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "drop_2p5g": {
+        "sf": 1.856572162484485,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "side_hill_torsion": {
+        "sf": 1.3947812757400202,
+        "torso": 15.0,
+        "where": "mid bar z 330"
+       },
+       "single_stay_setdown": {
+        "sf": 1.839881168600449,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "meat_straps": {
+        "sf": 1.5743333698064412,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       },
+       "tall_load": {
+        "sf": 2.0143510681212407,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "overload_haul": {
+        "sf": 2.2059675617016095,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       },
+       "tall_load_posts": {
+        "sf": 1.8787858415912913,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 0.7074394425742107,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 0.7246717153516632,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 0.979859658103532,
+      "creep": 2.090367270620869,
+      "fatigue_set": "C_im3:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 2.612959088276086,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "drop_2p5g": {
+        "sf": 1.7419727254096562,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "side_hill_torsion": {
+        "sf": 1.3766706387724073,
+        "torso": 15.0,
+        "where": "mid bar z 330"
+       },
+       "single_stay_setdown": {
+        "sf": 1.8377595002557225,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 0.7246717153516632,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "min": {
+      "strength": 0.7074394425742107,
+      "fatigue": 0.979859658103532,
+      "creep": 2.090367270620869,
+      "strength_at": "C:hipbelt_off_abuse|15 (upper bar / pawl housing)",
+      "fatigue_at": "C_im3:static_carry|15"
+     }
+    },
+    "n1": {
+     "C": {
+      "strength": 1.277521586565594,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.2829557559865676,
+      "creep": 2.7369722794380116,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 3.421215349297514,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 2.2808102331371503,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 2.221925830088338,
+        "torso": 15.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 3.2218445704555276,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "meat_straps": {
+        "sf": 2.187114179979029,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load": {
+        "sf": 3.065250254054762,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "overload_haul": {
+        "sf": 3.072992313612001,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load_posts": {
+        "sf": 2.932214705236457,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.277521586565594,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 1.3030983831993526,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.0461590132614804,
+      "creep": 2.231805894957825,
+      "fatigue_set": "C_im3:static_carry|23",
+      "cases": {
+       "static_carry": {
+        "sf": 2.7897573686972814,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 1.8598382458362164,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 2.090447856021839,
+        "torso": 23.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 3.1782430242913247,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.3030983831993526,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "min": {
+      "strength": 1.277521586565594,
+      "fatigue": 1.0461590132614804,
+      "creep": 2.231805894957825,
+      "strength_at": "C:hipbelt_off_abuse|15 (upper bar / pawl housing)",
+      "fatigue_at": "C_im3:static_carry|23"
+     }
+    },
+    "n2": {
+     "C": {
+      "strength": 1.19058760344524,
+      "governing": "meat_straps|23",
+      "where": "stay L sleeve (crown bore wall)",
+      "fatigue": 0.8086534995432709,
+      "creep": 1.7251274656923117,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 2.1564093321153894,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 1.4376062214655398,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 1.4520080726839508,
+        "torso": 15.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 2.4765647004182605,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "meat_straps": {
+        "sf": 1.19058760344524,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load": {
+        "sf": 2.000224268354868,
+        "torso": 23.0,
+        "where": "hip-pivot boss"
+       },
+       "overload_haul": {
+        "sf": 1.6753874416451418,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load_posts": {
+        "sf": 2.237494600677803,
+        "torso": 23.0,
+        "where": "hip-pivot boss"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.3007750495978163,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 1.0099543571530487,
+      "governing": "drop_2p5g|23",
+      "where": "stay L below the sleeve",
+      "fatigue": 0.5680993258850227,
+      "creep": 1.2119452285547152,
+      "fatigue_set": "C_im3:static_carry|23",
+      "cases": {
+       "static_carry": {
+        "sf": 1.514931535693394,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 1.0099543571530487,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 1.2305310391953075,
+        "torso": 23.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 2.4256493846971225,
+        "torso": 23.0,
+        "where": "stay R below the sleeve"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.3264441092387729,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "min": {
+      "strength": 1.0099543571530487,
+      "fatigue": 0.5680993258850227,
+      "creep": 1.2119452285547152,
+      "strength_at": "C_im3:drop_2p5g|23 (stay L below the sleeve)",
+      "fatigue_at": "C_im3:static_carry|23"
+     }
+    }
+   },
+   "paht_pub": {
+    "body_g": 763.2,
+    "n0": {
+     "C": {
+      "strength": 0.7074394425742107,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.3924291218284077,
+      "creep": 2.2278865949254527,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 2.784858243656816,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "drop_2p5g": {
+        "sf": 1.856572162484485,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "side_hill_torsion": {
+        "sf": 1.3947812757400202,
+        "torso": 15.0,
+        "where": "mid bar z 330"
+       },
+       "single_stay_setdown": {
+        "sf": 1.839881168600449,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "meat_straps": {
+        "sf": 1.5743333698064412,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       },
+       "tall_load": {
+        "sf": 2.0143510681212407,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "overload_haul": {
+        "sf": 2.2059675617016095,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       },
+       "tall_load_posts": {
+        "sf": 1.8787858415912913,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 0.7074394425742107,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 0.7246717153516632,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.3064795441380428,
+      "creep": 2.090367270620869,
+      "fatigue_set": "C_im3:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 2.612959088276086,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "drop_2p5g": {
+        "sf": 1.7419727254096562,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "side_hill_torsion": {
+        "sf": 1.3766706387724073,
+        "torso": 15.0,
+        "where": "mid bar z 330"
+       },
+       "single_stay_setdown": {
+        "sf": 1.8377595002557225,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 0.7246717153516632,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "min": {
+      "strength": 0.7074394425742107,
+      "fatigue": 1.3064795441380428,
+      "creep": 2.090367270620869,
+      "strength_at": "C:hipbelt_off_abuse|15 (upper bar / pawl housing)",
+      "fatigue_at": "C_im3:static_carry|15"
+     }
+    },
+    "n1": {
+     "C": {
+      "strength": 1.277521586565594,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.710607674648757,
+      "creep": 2.7369722794380116,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 3.421215349297514,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 2.2808102331371503,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 2.221925830088338,
+        "torso": 15.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 3.2218445704555276,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "meat_straps": {
+        "sf": 2.187114179979029,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load": {
+        "sf": 3.065250254054762,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "overload_haul": {
+        "sf": 3.072992313612001,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load_posts": {
+        "sf": 2.932214705236457,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.277521586565594,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 1.3030983831993526,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.3948786843486407,
+      "creep": 2.231805894957825,
+      "fatigue_set": "C_im3:static_carry|23",
+      "cases": {
+       "static_carry": {
+        "sf": 2.7897573686972814,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 1.8598382458362164,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 2.090447856021839,
+        "torso": 23.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 3.1782430242913247,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.3030983831993526,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "min": {
+      "strength": 1.277521586565594,
+      "fatigue": 1.3948786843486407,
+      "creep": 2.231805894957825,
+      "strength_at": "C:hipbelt_off_abuse|15 (upper bar / pawl housing)",
+      "fatigue_at": "C_im3:static_carry|23"
+     }
+    },
+    "n2": {
+     "C": {
+      "strength": 1.19058760344524,
+      "governing": "meat_straps|23",
+      "where": "stay L sleeve (crown bore wall)",
+      "fatigue": 1.0782046660576947,
+      "creep": 1.7251274656923117,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 2.1564093321153894,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 1.4376062214655398,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 1.4520080726839508,
+        "torso": 15.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 2.4765647004182605,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "meat_straps": {
+        "sf": 1.19058760344524,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load": {
+        "sf": 2.000224268354868,
+        "torso": 23.0,
+        "where": "hip-pivot boss"
+       },
+       "overload_haul": {
+        "sf": 1.6753874416451418,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load_posts": {
+        "sf": 2.237494600677803,
+        "torso": 23.0,
+        "where": "hip-pivot boss"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.3007750495978163,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 1.0099543571530487,
+      "governing": "drop_2p5g|23",
+      "where": "stay L below the sleeve",
+      "fatigue": 0.757465767846697,
+      "creep": 1.2119452285547152,
+      "fatigue_set": "C_im3:static_carry|23",
+      "cases": {
+       "static_carry": {
+        "sf": 1.514931535693394,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 1.0099543571530487,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 1.2305310391953075,
+        "torso": 23.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 2.4256493846971225,
+        "torso": 23.0,
+        "where": "stay R below the sleeve"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.3264441092387729,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "min": {
+      "strength": 1.0099543571530487,
+      "fatigue": 0.757465767846697,
+      "creep": 1.2119452285547152,
+      "strength_at": "C_im3:drop_2p5g|23 (stay L below the sleeve)",
+      "fatigue_at": "C_im3:static_carry|23"
+     }
+    }
+   },
+   "ppa": {
+    "body_g": 900.0,
+    "n0": {
+     "C": {
+      "strength": 0.618068768312841,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 0.9264103386298908,
+      "creep": 2.7174703266476805,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 2.470427569679709,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "drop_2p5g": {
+        "sf": 1.6469517132601288,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "side_hill_torsion": {
+        "sf": 1.2192981094070827,
+        "torso": 15.0,
+        "where": "mid bar z 330"
+       },
+       "single_stay_setdown": {
+        "sf": 1.6074493720352327,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "meat_straps": {
+        "sf": 1.3754481701633405,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       },
+       "tall_load": {
+        "sf": 1.759878526270818,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "overload_haul": {
+        "sf": 1.9272881489866451,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       },
+       "tall_load_posts": {
+        "sf": 1.6414392259647317,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 0.618068768312841,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 0.633124091736759,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 0.9021452646548842,
+      "creep": 2.6462927763209945,
+      "fatigue_set": "C_im3:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 2.4057207057463583,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "drop_2p5g": {
+        "sf": 1.6038138041332757,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "side_hill_torsion": {
+        "sf": 1.2132049818760224,
+        "torso": 15.0,
+        "where": "mid bar z 330"
+       },
+       "single_stay_setdown": {
+        "sf": 1.6055957336010769,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 0.633124091736759,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "min": {
+      "strength": 0.618068768312841,
+      "fatigue": 0.9021452646548842,
+      "creep": 2.6462927763209945,
+      "strength_at": "C:hipbelt_off_abuse|15 (upper bar / pawl housing)",
+      "fatigue_at": "C_im3:static_carry|15"
+     }
+    },
+    "n1": {
+     "C": {
+      "strength": 1.7233541810157846,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.4885644414104988,
+      "creep": 4.366455694804131,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 3.969505177094664,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 2.6463367851017896,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 2.9265604301730503,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "single_stay_setdown": {
+        "sf": 4.6279440402098695,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "meat_straps": {
+        "sf": 3.254417792929465,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "tall_load": {
+        "sf": 3.4600416737154314,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "overload_haul": {
+        "sf": 4.564468362383514,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "tall_load_posts": {
+        "sf": 3.365796678854369,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.7233541810157846,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 1.7706028919799228,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.467528407649715,
+      "creep": 4.304749995772498,
+      "fatigue_set": "C_im3:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 3.913409087065907,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 2.6089393912667447,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 2.9099764198412688,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "single_stay_setdown": {
+        "sf": 4.610537519479232,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.7706028919799228,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "min": {
+      "strength": 1.7233541810157846,
+      "fatigue": 1.467528407649715,
+      "creep": 4.304749995772498,
+      "strength_at": "C:hipbelt_off_abuse|15 (upper bar / pawl housing)",
+      "fatigue_at": "C_im3:static_carry|15"
+     }
+    },
+    "n2": {
+     "C": {
+      "strength": 1.0401809248185143,
+      "governing": "meat_straps|23",
+      "where": "stay L sleeve (crown bore wall)",
+      "fatigue": 0.7064964749999055,
+      "creep": 2.072389659999723,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 1.8839905999997482,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 1.2559937333814626,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 1.2722250224695206,
+        "torso": 15.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 2.2245774300273404,
+        "torso": 19.0,
+        "where": "stay L below the sleeve"
+       },
+       "meat_straps": {
+        "sf": 1.0401809248185143,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load": {
+        "sf": 1.74916774450032,
+        "torso": 23.0,
+        "where": "hip-pivot boss"
+       },
+       "overload_haul": {
+        "sf": 1.4637361026075242,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load_posts": {
+        "sf": 1.962687588809271,
+        "torso": 23.0,
+        "where": "hip-pivot boss"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.9170125346198985,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 0.8823670380978098,
+      "governing": "drop_2p5g|23",
+      "where": "stay L below the sleeve",
+      "fatigue": 0.4963314589181647,
+      "creep": 1.4559056128266168,
+      "fatigue_set": "C_im3:static_carry|23",
+      "cases": {
+       "static_carry": {
+        "sf": 1.323550557115106,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 0.8823670380978098,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 1.0751833127965764,
+        "torso": 23.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 2.189998538286228,
+        "torso": 19.0,
+        "where": "stay R below the sleeve"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.3818633270917617,
+        "torso": 23.0,
+        "where": "stay R sleeve (crown bore wall)"
+       }
+      }
+     },
+     "min": {
+      "strength": 0.8823670380978098,
+      "fatigue": 0.4963314589181647,
+      "creep": 1.4559056128266168,
+      "strength_at": "C_im3:drop_2p5g|23 (stay L below the sleeve)",
+      "fatigue_at": "C_im3:static_carry|23"
+     }
+    }
+   },
+   "pa6": {
+    "body_g": 842.4,
+    "n0": {
+     "C": {
+      "strength": 0.9313365001974315,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.307110297579524,
+      "creep": 2.7885019681696512,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 3.485627460212064,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "drop_2p5g": {
+        "sf": 2.323751640356101,
+        "torso": 15.0,
+        "where": "lumbar struts / pan"
+       },
+       "side_hill_torsion": {
+        "sf": 1.8155422131363723,
+        "torso": 15.0,
+        "where": "mid bar z 330"
+       },
+       "single_stay_setdown": {
+        "sf": 2.4189443777547996,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "meat_straps": {
+        "sf": 2.0725931331228415,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       },
+       "tall_load": {
+        "sf": 2.650718554547956,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "overload_haul": {
+        "sf": 2.9041328272401503,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       },
+       "tall_load_posts": {
+        "sf": 2.473401573371514,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 0.9313365001974315,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 0.9540226039868971,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.12662385372895,
+      "creep": 2.4034642212884267,
+      "fatigue_set": "C_im3:static_carry|23",
+      "cases": {
+       "static_carry": {
+        "sf": 3.004330276610533,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 2.0028868511619,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 1.7874738265079702,
+        "torso": 15.0,
+        "where": "mid bar z 330"
+       },
+       "single_stay_setdown": {
+        "sf": 2.412381869785998,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 0.9540226039868971,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "min": {
+      "strength": 0.9313365001974315,
+      "fatigue": 1.12662385372895,
+      "creep": 2.4034642212884267,
+      "strength_at": "C:hipbelt_off_abuse|15 (upper bar / pawl housing)",
+      "fatigue_at": "C_im3:static_carry|23"
+     }
+    },
+    "n1": {
+     "C": {
+      "strength": 1.397970218943101,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.4672832338564183,
+      "creep": 3.1302042322270265,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 3.9127552902837825,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "drop_2p5g": {
+        "sf": 2.6085035270428945,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "side_hill_torsion": {
+        "sf": 2.424389473752677,
+        "torso": 15.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 3.5017006610988726,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "meat_straps": {
+        "sf": 2.390056573667263,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load": {
+        "sf": 3.4839395789488026,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "overload_haul": {
+        "sf": 3.3582686996711213,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load_posts": {
+        "sf": 3.338023887230468,
+        "torso": 15.0,
+        "where": "hip-pivot boss"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.397970218943101,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 1.4255013028417234,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.1466199515840616,
+      "creep": 2.446122563379332,
+      "fatigue_set": "C_im3:static_carry|23",
+      "cases": {
+       "static_carry": {
+        "sf": 3.057653204224165,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 2.0384354695314553,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 2.2752810906933183,
+        "torso": 23.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 3.453992203276954,
+        "torso": 23.0,
+        "where": "upper bar / pawl housing"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.4255013028417234,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "min": {
+      "strength": 1.397970218943101,
+      "fatigue": 1.1466199515840616,
+      "creep": 2.446122563379332,
+      "strength_at": "C:hipbelt_off_abuse|15 (upper bar / pawl housing)",
+      "fatigue_at": "C_im3:static_carry|23"
+     }
+    },
+    "n2": {
+     "C": {
+      "strength": 1.4134842513385362,
+      "governing": "hipbelt_off_abuse|15",
+      "where": "upper bar / pawl housing",
+      "fatigue": 1.0613274236182442,
+      "creep": 2.2641651703855876,
+      "fatigue_set": "C:static_carry|15",
+      "cases": {
+       "static_carry": {
+        "sf": 2.8302064629819847,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 1.8868043087934798,
+        "torso": 15.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 1.875908849894796,
+        "torso": 15.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 3.052737044135448,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "meat_straps": {
+        "sf": 1.56739591411009,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load": {
+        "sf": 2.614100499658291,
+        "torso": 23.0,
+        "where": "hip-pivot boss"
+       },
+       "overload_haul": {
+        "sf": 2.2056297436551735,
+        "torso": 23.0,
+        "where": "stay L sleeve (crown bore wall)"
+       },
+       "tall_load_posts": {
+        "sf": 2.9193891487433423,
+        "torso": 23.0,
+        "where": "hip-pivot boss"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.4134842513385362,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "C_im3": {
+      "strength": 1.3295941669966997,
+      "governing": "drop_2p5g|23",
+      "where": "stay L below the sleeve",
+      "fatigue": 0.7478967189177824,
+      "creep": 1.595513000357936,
+      "fatigue_set": "C_im3:static_carry|23",
+      "cases": {
+       "static_carry": {
+        "sf": 1.9943912504474202,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "drop_2p5g": {
+        "sf": 1.3295941669966997,
+        "torso": 23.0,
+        "where": "stay L below the sleeve"
+       },
+       "side_hill_torsion": {
+        "sf": 1.6115671863662915,
+        "torso": 23.0,
+        "where": "stay R below the sleeve"
+       },
+       "single_stay_setdown": {
+        "sf": 3.0108515682878636,
+        "torso": 23.0,
+        "where": "stay R below the sleeve"
+       },
+       "hipbelt_off_abuse": {
+        "sf": 1.4413774766586096,
+        "torso": 15.0,
+        "where": "upper bar / pawl housing"
+       }
+      }
+     },
+     "min": {
+      "strength": 1.3295941669966997,
+      "fatigue": 0.7478967189177824,
+      "creep": 1.595513000357936,
+      "strength_at": "C_im3:drop_2p5g|23 (stay L below the sleeve)",
+      "fatigue_at": "C_im3:static_carry|23"
+     }
+    }
+   }
+  },
+  "seconds": 44.19766569137573,
+  "joint_by_z": {
+   "234": {
+    "worst_flange_n": 2893.9596284567433,
+    "worst_set": "C_im3:drop_2p5g|23|L",
+    "worst_shear_n": 580.2263876300341,
+    "fatigue_flange_n_1p6g": 1543.4451352105061,
+    "fatigue_set": "C_im3:static_carry|23"
+   },
+   "262": {
+    "worst_flange_n": 3000.2473863646806,
+    "worst_set": "C_im3:drop_2p5g|23|L",
+    "worst_shear_n": 580.2263876484901,
+    "fatigue_flange_n_1p6g": 1600.1319394261116,
+    "fatigue_set": "C_im3:static_carry|23"
+   },
+   "290": {
+    "worst_flange_n": 3218.1963489382233,
+    "worst_set": "C_im3:drop_2p5g|23|L",
+    "worst_shear_n": 595.5239422672394,
+    "fatigue_flange_n_1p6g": 1716.3713861321023,
+    "fatigue_set": "C_im3:static_carry|23"
+   }
+  },
+  "joint": {
+   "worst_flange_n": 2893.9596284567433,
+   "worst_set": "C_im3:drop_2p5g|23|L",
+   "worst_shear_n": 580.2263876300341,
+   "fatigue_flange_n_1p6g": 1543.4451352105061,
+   "fatigue_set": "C_im3:static_carry|23"
+  },
+  "stiff_unitE": {
+   "carry_dy_mm": -65704.81312076,
+   "carry_dz_mm": -2979.349634474931,
+   "torsion_Nm_per_deg": 0.00111683289471285,
+   "E_ref": 1.0
+  },
+  "torsion_vs_today": {
+   "paht_rec": 0.9917519002470809,
+   "paht_pub": 0.9917519002470809,
+   "ppa": 3.031780420444444,
+   "pa6": 1.1382023103871939
+  },
+  "torsion_hot_vs_today_hot": {
+   "paht_rec": 0.9917519002470808,
+   "paht_pub": 0.9917519002470808,
+   "ppa": 4.295022262296295,
+   "pa6": 1.0433521178549279
+  },
+  "buckling": {
+   "branch lower (z 165-330) L": {
+    "A_mm2": 88.0,
+    "r_eq_mm": 5.292567428401227,
+    "L_mm": 180.0,
+    "Pcr_n": 304.3314326962827,
+    "max_factored_compression_n": 159.6792731831763,
+    "set": "C:single_stay_setdown|15",
+    "margin": 1.270594597238547
+   },
+   "branch lower (z 165-330) R": {
+    "A_mm2": 88.0,
+    "r_eq_mm": 5.292567428401227,
+    "L_mm": 180.0,
+    "Pcr_n": 304.3314326962827,
+    "max_factored_compression_n": 33.266464171213464,
+    "set": "C_im3:single_stay_setdown|23",
+    "margin": 6.098863430550187
+   },
+   "branch upper (z 330-495) L": {
+    "A_mm2": 88.0,
+    "r_eq_mm": 5.292567428401227,
+    "L_mm": 180.0,
+    "Pcr_n": 304.3314326962827,
+    "max_factored_compression_n": 92.587293454519,
+    "set": "C:single_stay_setdown|15",
+    "margin": 2.1913117256979207
+   },
+   "branch upper (z 330-495) R": {
+    "A_mm2": 88.0,
+    "r_eq_mm": 5.292567428401227,
+    "L_mm": 180.0,
+    "Pcr_n": 304.3314326962827,
+    "max_factored_compression_n": 112.14934371565074,
+    "set": "C_im3:single_stay_setdown|23",
+    "margin": 1.8090843430339958
+   },
+   "mid bar (x -115..115) all": {
+    "A_mm2": 72.0,
+    "r_eq_mm": 4.787307364817192,
+    "L_mm": 230.0,
+    "Pcr_n": 124.77736130358606,
+    "max_factored_compression_n": 37.26975213012304,
+    "set": "C:hipbelt_off_abuse|19",
+    "margin": 2.2319683598992968
+   }
+  }
+ }
+}

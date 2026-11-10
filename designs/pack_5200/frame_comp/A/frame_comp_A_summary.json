@@ -1,0 +1,69 @@
+{
+ "summary": {
+  "body_g": 767.0000000000001,
+  "joint_bosses_g": 25.57507747434379,
+  "joint_hw_delta_g": 10.899999999999999,
+  "frame_g": 1043.275077474344,
+  "frame_plus_spreader_g": 1205.575077474344,
+  "pack_corrie_b2_M_g": 3945.0750774743437,
+  "print_hours": 28.33921264649802,
+  "cost": {
+   "1": 291.0,
+   "10": 224.0,
+   "100": 193.0
+  },
+  "joint": {
+   "strength": 2.1733089952746645,
+   "fatigue": 1.2224863098154044,
+   "shear": 4.060819260248311,
+   "cap": {
+    "tension_n": 6289.468492486766,
+    "bearing_n": 6289.468492486766,
+    "shear_out_n": 13536.0,
+    "bolt_n": 6390.0,
+    "shear_per_stay_n": 2356.194490192345
+   },
+   "cap_fat": {
+    "tension_n": 1886.8405477460296,
+    "bearing_n": 1886.8405477460296,
+    "shear_out_n": 4060.7999999999997,
+    "bolt_n": 1917.0,
+    "shear_per_stay_n": 2356.194490192345
+   }
+  },
+  "body": {
+   "strength": 1.277521586565594,
+   "fatigue": 1.0461590132614804,
+   "creep": 2.231805894957825,
+   "strength_at": "C:hipbelt_off_abuse|15 (upper bar / pawl housing)",
+   "fatigue_at": "C_im3:static_carry|23",
+   "buckling": 1.270594597238547
+  },
+  "torsion_vs_today": 0.9917519002470809,
+  "carry_dy_mm": 17.021972311077718
+ },
+ "fixed_margins": {
+  "crown legs FPF (IM3 couple)": 1.12,
+  "crown spine FPF": 1.18,
+  "crown corner bond Volkersen peak": 1.22,
+  "crown post socket bond peak with P-1": 1.2,
+  "crown buckling": 1.85,
+  "crown member fatigue (IM3)": 1.36,
+  "pawl cheek, 304 bushing": 1.4,
+  "fairlead hinge cheek fatigue": 1.67,
+  "spreader fatigue": 1.09,
+  "spreader FPF": 1.25,
+  "hip pivot 4 x M5 inserts (TENDON hip node check, same insert spec)": 3.0
+ },
+ "final_body": {
+  "foot": 0.851,
+  "low": 1.143,
+  "sleeve": 0.991,
+  "top": 0.995,
+  "branch": 0.85,
+  "strut": 1.112,
+  "mid": 0.77,
+  "sleeve_w": 4.58,
+  "name": "MONO"
+ }
+}

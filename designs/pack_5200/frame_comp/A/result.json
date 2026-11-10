@@ -1,0 +1,46 @@
+{
+ "team": "A",
+ "concept_name": "MONO",
+ "one_line": "Today's one-piece PAHT-CF branch body re-sized member by member (fully stressed to the rev C fatigue limit), printed face-down on the H2S in two segments, z 234 split made dry with 4 Ti M5 bolts in nut traps instead of bonded dowels",
+ "frame_g": 1043.3,
+ "frame_plus_spreader_g": 1205.6,
+ "pack_mass_corrie_b2_M_g": 3945.1,
+ "passes_rev_c": true,
+ "worst_strength_margin": 1.12,
+ "worst_fatigue_margin": 1.046,
+ "worst_joint_margin": 1.22,
+ "governing_case": "body fatigue 1.046: C1 static carry at 1.6 g, bag couple on the IM3 hooks, 23 in, stay below the sleeve; frame strength 1.12 = unchanged crown legs (C8 hipbelt-off, IM3); body strength 1.28 at the upper bar / pawl housing (C8, 15 in)",
+ "torsion_stiffness_vs_today": 0.99,
+ "print_hours": 28.3,
+ "printer": "H2S home",
+ "cost_usd": {
+  "1": 291.0,
+  "10": 224.0,
+  "100": 193.0
+ },
+ "build_hours": 5.0,
+ "skill_level": "beginner",
+ "looks_generative": true,
+ "patents_checked": [
+  "US 10,952,523 B2 (Mystery Ranch, lifters stay on the crown top bar)",
+  "USRE48,093 E1 / US 9,095,203 B2 / US 9,636,875 B2 (KUIU one-piece slotted sheet frames)",
+  "US 10,668,965 (Divergent adhesive ports: none, the joint has no adhesive)",
+  "US 10,605,285 / US 10,480,555 / US 11,174,884 (Divergent node-tube engagement: no tubes)"
+ ],
+ "governing_assumptions": [
+  "PAHT-CF 1e5-cycle fatigue = 0.30 x hot/wet strength (R 0.1); conservative published PA12-CF value is about 0.29 x UTS at 1e6 (Siebert 2025), Stratasys Nylon 12CF gives 0.40 -> coupon CA-1",
+  "PAHT-CF Z strength 47 MPa and interlayer shear 0.6 x Z (FI rule), hot/wet 0.8 -> CA-1/CA-3",
+  "creep-rupture 8 h 40 C = 0.40 x knocked-down strength (no published data) -> CA-4",
+  "dry joint: M5 nut-trap bearing on the in-plane pocket floor at the knocked-down XY strength, fatigue 0.30 of it; flange force |N|/2 + M/24 mm carried by the stay bolts alone -> CA-5",
+  "branch Euler buckling K = 1 with E x 0.6 (40 C wet) x 0.7 (8 h creep) -> covered by T4b on the frame",
+  "beam-model load path unchanged by the body (crown, spreader and fairlead loads as rev C) -> T1, T9"
+ ],
+ "coupon_tests": [
+  "CA-1 fatigue: 6 PAHT-CF ISO 527-1A bars printed flat on the owner's H2S (XY) + 6 upright (Z), annealed 90 C 6 h, conditioned 23 C 50 % RH 7 days; first 3+3 to UTS, then R 0.1 at 5 Hz, max 0.30 x 0.8 x UTS, 1e5 cycles: pass = no failure, stiffness drop <= 10 %; repeat at 0.40 x UTS (to earn the lighter body)",
+  "CA-2 anneal: 3 XY + 3 Z bars at 90 C 6 h vs 120 C 6 h, tensile; credit only a measured gain",
+  "CA-3 interlayer: 3 Z bars and 3 short-beam shear blocks after 40 C water soak 48 h: pass Z >= 0.8 x 47 MPa",
+  "CA-4 creep: 2 XY bars at 0.40 x 0.8 x UTS, 40 C oven, 8 h dead load (lever + water jug): no rupture, creep strain recorded",
+  "CA-5 dry joint: 3 printed z 234 joint stubs (one stay each, both flanges, M5 Ti in nut traps), pulled to failure (mean >= 1.5 x 2894 N, lowest >= 1.25 x) and 1 cycled 0 -> 1543 N x 1e5 on the T5 rig",
+  "then HA-LS-1 T9, T1-T5, T4c (-20 C) on the first MONO frame, with the pencil-mark check across z 234"
+ ]
+}
