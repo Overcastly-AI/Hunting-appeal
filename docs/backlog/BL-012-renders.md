@@ -1,6 +1,6 @@
 # BL-012 Blender renders of the merged bag on the H1 frame
 
-**Wave:** 3 · **Agent:** pack-designer · **Size:** L · **Depends on:** BL-011
+**Wave:** 3 · **Agent:** pack-designer · **Size:** L · **Depends on:** BL-011, BL-018 (render through `huntkit.viz3d.studio`)
 
 ## Why
 The owner judges designs from renders and rejected crude ones once ("This looks like garbage"). The competition renders are acceptable but all show an over-stuffed sack, hide the frame, and the wing pods read as slabs.

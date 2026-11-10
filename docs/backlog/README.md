@@ -26,6 +26,7 @@ Source: `designs/pack_5200/analysis/bag_weight_review_20261110.md`. Rules for ev
 | BL-015 | Release delta register | manufacturing-engineer | M | — | one list of release changes |
 | BL-016 | One physical test plan | manufacturing-engineer | M | — | ordered, costed test plan |
 | BL-017 | Crown block diet (adjustable torso kept) | structural-fea-engineer | M | 007 | −60 g |
+| BL-018 | Better Blender models: asset library, fabric realism | pack-designer (Fable) | XL | — | product-photo models; BL-012 uses it |
 
 ## Run order
 
