@@ -834,9 +834,6 @@ def run(log=print) -> dict:
     return ctx
 
 
-if __name__ == "__main__":       # pragma: no cover
-    ctx = run()
-    print(json.dumps(_jsonable({"summary": ctx["summary"], "mass": ctx["mass"]}), indent=1))
 
 
 # ============================================================================ figures (phone-readable PNG)
@@ -930,7 +927,7 @@ def plot_utilization(ctx: dict, path=None, design: dict = DESIGN) -> str:
     path = Path(path or SCREENS / f"{SHOT}_2.png")
     U = member_utilization(design, 15.0)
     fig = plt.figure(figsize=(10, 7.2), dpi=120)
-    ax = fig.add_axes([0.03, 0.08, 0.38, 0.82])
+    ax = fig.add_axes([0.02, 0.08, 0.36, 0.82])
     norm = mcolors.Normalize(0, 1.0)
     cmap = matplotlib.colormaps["viridis"]
     _draw_frame(ax, U["model"], lambda mem: cmap(norm(min(U["fi"].get(mem["id"], 0), 1.0))), design, fibre=False)
@@ -954,7 +951,7 @@ def plot_utilization(ctx: dict, path=None, design: dict = DESIGN) -> str:
     for k in ("crown_leg", "crown_top_bar", "crown_spine", "post_socket Volkersen peak"):
         items.append((f"crown {k}", S["crown"][k]["margin"]))
     items.sort(key=lambda t: t[1])
-    ax2 = fig.add_axes([0.62, 0.08, 0.36, 0.82])
+    ax2 = fig.add_axes([0.70, 0.08, 0.28, 0.82])
     ys = np.arange(len(items))
     ax2.barh(ys, [t[1] for t in items], color=["#c0392b" if t[1] < 1 else "#2c7fb8" for t in items])
     ax2.axvline(1.0, color="k", lw=1)
@@ -967,3 +964,122 @@ def plot_utilization(ctx: dict, path=None, design: dict = DESIGN) -> str:
     fig.savefig(path)
     plt.close(fig)
     return str(path)
+
+
+# ============================================================================ cost, hours, result.json
+PRINTER_USD = 3199.0        # FibreSeeker 3 US pre-sale price (3dnatives 2026-09-11); Kickstarter $2,699 (3DPrint.com)
+FIBRE_USD_PER_M = 55.0 / 500.0       # X-CCF $55 / 500 m (record onyx_ccf_markforged, Fabbaloo)
+MATRIX_USD_PER_KG = 80.0             # ASSUMPTION: PA-CF matrix filament at the PAHT-CF record price
+FIBRE_LAY_MM_S = 10.0                # ASSUMPTION: continuous-fibre lay rate (no published FibreSeeker rate)
+MATRIX_MM3_S = 8.0                   # as the released H2S plan
+KEPT_HW_USD = 50.3 + 8.0 + 35.0 + 5.0 + 3.0     # crown tubes, 304 bushings, Ti hip mount, UHMWPE, XLPE (PRODUCTION.md)
+SPREADER_USD = 207.2
+
+
+def cost_and_hours(ms: dict) -> dict:
+    fibre_m = ms["fibre_m"] * 1.10                    # 10 % purge / cut waste (ASSUMPTION)
+    matrix_kg = ms["matrix_g"] * 1.08 / 1000
+    hrs = ms["fibre_m"] * 1000 / FIBRE_LAY_MM_S / 3600 + ms["matrix_g"] / (RHO_M / 1e6) * 1.08 / MATRIX_MM3_S / 3600
+    mat = fibre_m * FIBRE_USD_PER_M + matrix_kg * MATRIX_USD_PER_KG
+    unit = {"fibre": fibre_m * FIBRE_USD_PER_M, "matrix": matrix_kg * MATRIX_USD_PER_KG,
+            "reprint allowance 20 %": 0.20 * mat, "machine at $1/h": hrs * 1.0, "Ti splice bolts + nyloc": 20.0,
+            "inserts": 3.0, "kept hardware (crown, bushings, Ti mount, UHMWPE, XLPE)": KEPT_HW_USD,
+            "Sandwich v2 spreader": SPREADER_USD}
+    u = sum(unit.values())
+    return {"print_hours": hrs, "unit_items": unit, "unit_usd": u,
+            "cost_usd": {"1": u + PRINTER_USD, "10": u + PRINTER_USD / 10, "100": u + PRINTER_USD / 100}}
+
+
+def write_result(ctx: dict) -> dict:
+    S, ms = ctx["summary"], ctx["mass"]
+    ch = cost_and_hours(ms)
+    strength = [(v["margin"], f"{g} {v['mode']} {v['set']}") for g, v in S["strength"].items()]
+    strength += [(v["margin"], f"crown {k} {v['set']}") for k, v in S["crown"].items()
+                 if "Volkersen" not in k and "avg" not in k]
+    strength += [(v["margin"], f"{k} {v['set']}") for k, v in S["local"].items()
+                 if "fatigue" not in k and "creep" not in k and "sleeve" not in k and "pawl" not in k]
+    strength.append((S["buckling"]["margin"], f"buckling {S['buckling']['set']}"))
+    fatigue = [(v["margin"], f"{g} {v['mode']} {v['set']}") for g, v in S["fatigue"].items()]
+    fatigue += [(v["margin"], f"{k} {v['set']}") for k, v in S["local"].items() if "fatigue" in k]
+    fatigue.append((S["splice"]["fatigue"]["margin"], f"splice bearing fatigue {S['splice']['fatigue']['set']}"))
+    joint = [(S["splice"]["strength"]["margin"], "splice"), (S["splice"]["fatigue"]["margin"], "splice fatigue")]
+    joint += [(v["margin"], k) for k, v in S["local"].items() if "sleeve" in k or "pawl" in k]
+    joint += [(v["margin"], f"crown {k}") for k, v in S["crown"].items() if "Volkersen" in k or "avg" in k]
+    ws, wf, wj = min(strength), min(fatigue), min(joint)
+    passes = min(ws[0], wf[0], wj[0]) >= 1.0
+    res = {
+        "team": "E",
+        "concept_name": "LOOM",
+        "one_line": ("Flat-printed continuous-carbon ladder (fibre flanges + concentric rings round each window) on a "
+                     "home FibreSeeker 3, two segments bolted at z 290; passes rev C at beam level on assumed "
+                     "allowables but is HEAVIER than today (+61 g)"),
+        "frame_g": round(ms["frame_g"], 1),
+        "frame_plus_spreader_g": round(ms["frame_plus_spreader_g"], 1),
+        "pack_mass_corrie_b2_M_g": round(ms["pack_corrie_b2_M_g"], 1),
+        "passes_rev_c": bool(passes),
+        "worst_strength_margin": round(ws[0], 3),
+        "worst_fatigue_margin": round(wf[0], 3),
+        "worst_joint_margin": round(wj[0], 3),
+        "governing_case": f"fatigue: {wf[1]}; strength: {ws[1]}; joint: {wj[1]}",
+        "torsion_stiffness_vs_today": round(ctx["torsion"]["vs_today"], 2),
+        "print_hours": round(ch["print_hours"], 1),
+        "printer": "FibreSeeker 3 home (CFC continuous carbon, dual nozzle; pre-sale 2026)",
+        "cost_usd": {k: round(v) for k, v in ch["cost_usd"].items()},
+        "build_hours": 8.0,
+        "skill_level": "intermediate",
+        "looks_generative": False,
+        "patents_checked": [
+            "US 10,952,523 (Mystery Ranch, load lifters): crown, top bar and lifters unchanged; posts stay lash points",
+            "US 9,126,365 / US 9,579,851 / US 10,040,252 / US 9,156,205 (Markforged continuous-fibre printing "
+            "process family): process claims on the machine; owner uses a commercial machine, no claim on the frame",
+            "docs/DECISIONS.md 2026-11-01 IP guardrail (extension posts lash/flag only)",
+        ],
+        "governing_assumptions": [
+            "ASSUMPTION ILSS 14 MPa dry (half the 28 MPa published for printed CF/PA6; published range 2.8-34) x 0.6 "
+            "hot/wet -> coupon E-2",
+            "ASSUMPTION fibre-region strength = Markforged UD coupon (800 / 320 MPa, 60 GPa) x 0.85 part factor, "
+            "x 0.8 hot/wet, x 0.65 impact on compression -> coupon E-1 (FibreSeek X-CCF has no datasheet)",
+            "ASSUMPTION fatigue: fibre FI <= 0.5, matrix / interlayer <= 0.3 at 1e5 x 1.6 g (no published endurance "
+            "data for printed CCF; Pertuz 2020 short-life Basquin b = -0.039) -> coupon E-5 (1e5 cycles)",
+            "ASSUMPTION matrix (Onyx-class PA6-CF) 40 / 30 MPa XY / Z x 0.6 hot/wet; in-plane shear 20 MPa -> E-3",
+            "ASSUMPTION bolt bearing 60 MPa dry on a fibre-ringed M5 hole, no clamp-friction credit -> coupon E-4",
+            "ASSUMPTION sleeve ring: point-load ring moment, side-wall hoop across layers vs Z strength -> coupon E-6",
+            "ASSUMPTION beam model of frame.yaml is the load path (members re-sectioned, straight planar stays, "
+            "lumbar grid kept as an open lattice); no voxel FE of junctions -> T1/T5 first article",
+            "ASSUMPTION interface features (pawl housing, hip boss, fairlead cheeks, clip lands, feet, corners, "
+            "splice collars) 116 g Onyx allowance -> weigh first article",
+            "ASSUMPTION fibre lay rate 10 mm/s and matrix 8 mm3/s for print hours; FibreSeeker 3 ships as announced",
+        ],
+        "coupon_tests": [
+            "E-1 tension + compression (ASTM D3039 / D6641) of flat-printed X-CCF/PA-CF flange coupons, dry and "
+            "conditioned 40 C / 85 % RH to saturation; >= 6 each; B-basis vs 544 / 166 MPa design",
+            "E-2 short-beam shear ASTM D2344, 0.125 mm layers, dry + conditioned; pass >= 14 MPa dry, >= 8.4 wet",
+            "E-3 in-plane shear (Iosipescu ASTM D5379) and matrix Z tension of the PA-CF matrix; >= 20 / 30 MPa",
+            "E-4 pin bearing ASTM D5961 on an M5 hole with 3 fibre rings, plus 1e5-cycle bearing fatigue at "
+            "0.3 x static",
+            "E-5 4-point-bend fatigue of a 400 mm stay section (flanges + bore) at the 1.6 g C1 moment x 1.0, "
+            "R = 0.1, 1e5 cycles, then residual strength >= factored C2 moment",
+            "E-6 sleeve ring crush: 70 mm sleeve section, 18 mm UHMWPE bushing, diametral load to failure + 1e5 cycles "
+            "at 1.6 g bushing force",
+            "E-7 fibre corner coupon: ring round a 10 mm radius stay-bar corner, T-pull to failure",
+            "First article: HA-LS-1 T1-T5 + T9 (load_standard.md) with the splice pencil-mark check",
+        ],
+    }
+    OUT.mkdir(parents=True, exist_ok=True)
+    (OUT / "result.json").write_text(json.dumps(res, indent=2))
+    ctx["cost"] = ch
+    return res
+
+
+def main(log=print):
+    ctx = run(log=log)
+    res = write_result(ctx)
+    shots = [plot_concept(), plot_utilization(ctx)]
+    (OUT / "analysis_results.json").write_text(json.dumps(_jsonable({**ctx, "result": res, "screens": shots}),
+                                                          indent=1))
+    return ctx, res, shots
+
+
+if __name__ == "__main__":       # pragma: no cover
+    _ctx, _res, _shots = main()
+    print(json.dumps(_res, indent=1))

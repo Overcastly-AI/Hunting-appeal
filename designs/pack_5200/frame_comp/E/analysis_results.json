@@ -236,7 +236,7 @@
    }
   },
   "buckling": {
-   "margin": 1.2122032477767224,
+   "margin": 1.2122032565549494,
    "set": "C:side_hill_torsion|15"
   },
   "crown": {
@@ -432,5 +432,78 @@
    "fibre_mm2": 8.500000000000002
   }
  },
- "seconds": 19.516068935394287
+ "seconds": 19.66281008720398,
+ "cost": {
+  "print_hours": 76.55161643013952,
+  "unit_items": {
+   "fibre": 257.6616764588756,
+   "matrix": 48.10927479165598,
+   "reprint allowance 20 %": 61.154190250106325,
+   "machine at $1/h": 76.55161643013952,
+   "Ti splice bolts + nyloc": 20.0,
+   "inserts": 3.0,
+   "kept hardware (crown, bushings, Ti mount, UHMWPE, XLPE)": 101.3,
+   "Sandwich v2 spreader": 207.2
+  },
+  "unit_usd": 774.9767579307775,
+  "cost_usd": {
+   "1": 3973.9767579307772,
+   "10": 1094.8767579307773,
+   "100": 806.9667579307775
+  }
+ },
+ "result": {
+  "team": "E",
+  "concept_name": "LOOM",
+  "one_line": "Flat-printed continuous-carbon ladder (fibre flanges + concentric rings round each window) on a home FibreSeeker 3, two segments bolted at z 290; passes rev C at beam level on assumed allowables but is HEAVIER than today (+61 g)",
+  "frame_g": 1124.1,
+  "frame_plus_spreader_g": 1286.1,
+  "pack_mass_corrie_b2_M_g": 4025.6,
+  "passes_rev_c": true,
+  "worst_strength_margin": 1.073,
+  "worst_fatigue_margin": 1.006,
+  "worst_joint_margin": 1.063,
+  "governing_case": "fatigue: lumbar_tie fibre_c C_im3:static_carry|15; strength: lumbar_spine interlayer C_im3:side_hill_torsion|15; joint: sleeve ring fatigue (low bushing)",
+  "torsion_stiffness_vs_today": 1.32,
+  "print_hours": 76.6,
+  "printer": "FibreSeeker 3 home (CFC continuous carbon, dual nozzle; pre-sale 2026)",
+  "cost_usd": {
+   "1": 3974,
+   "10": 1095,
+   "100": 807
+  },
+  "build_hours": 8.0,
+  "skill_level": "intermediate",
+  "looks_generative": false,
+  "patents_checked": [
+   "US 10,952,523 (Mystery Ranch, load lifters): crown, top bar and lifters unchanged; posts stay lash points",
+   "US 9,126,365 / US 9,579,851 / US 10,040,252 / US 9,156,205 (Markforged continuous-fibre printing process family): process claims on the machine; owner uses a commercial machine, no claim on the frame",
+   "docs/DECISIONS.md 2026-11-01 IP guardrail (extension posts lash/flag only)"
+  ],
+  "governing_assumptions": [
+   "ASSUMPTION ILSS 14 MPa dry (half the 28 MPa published for printed CF/PA6; published range 2.8-34) x 0.6 hot/wet -> coupon E-2",
+   "ASSUMPTION fibre-region strength = Markforged UD coupon (800 / 320 MPa, 60 GPa) x 0.85 part factor, x 0.8 hot/wet, x 0.65 impact on compression -> coupon E-1 (FibreSeek X-CCF has no datasheet)",
+   "ASSUMPTION fatigue: fibre FI <= 0.5, matrix / interlayer <= 0.3 at 1e5 x 1.6 g (no published endurance data for printed CCF; Pertuz 2020 short-life Basquin b = -0.039) -> coupon E-5 (1e5 cycles)",
+   "ASSUMPTION matrix (Onyx-class PA6-CF) 40 / 30 MPa XY / Z x 0.6 hot/wet; in-plane shear 20 MPa -> E-3",
+   "ASSUMPTION bolt bearing 60 MPa dry on a fibre-ringed M5 hole, no clamp-friction credit -> coupon E-4",
+   "ASSUMPTION sleeve ring: point-load ring moment, side-wall hoop across layers vs Z strength -> coupon E-6",
+   "ASSUMPTION beam model of frame.yaml is the load path (members re-sectioned, straight planar stays, lumbar grid kept as an open lattice); no voxel FE of junctions -> T1/T5 first article",
+   "ASSUMPTION interface features (pawl housing, hip boss, fairlead cheeks, clip lands, feet, corners, splice collars) 116 g Onyx allowance -> weigh first article",
+   "ASSUMPTION fibre lay rate 10 mm/s and matrix 8 mm3/s for print hours; FibreSeeker 3 ships as announced"
+  ],
+  "coupon_tests": [
+   "E-1 tension + compression (ASTM D3039 / D6641) of flat-printed X-CCF/PA-CF flange coupons, dry and conditioned 40 C / 85 % RH to saturation; >= 6 each; B-basis vs 544 / 166 MPa design",
+   "E-2 short-beam shear ASTM D2344, 0.125 mm layers, dry + conditioned; pass >= 14 MPa dry, >= 8.4 wet",
+   "E-3 in-plane shear (Iosipescu ASTM D5379) and matrix Z tension of the PA-CF matrix; >= 20 / 30 MPa",
+   "E-4 pin bearing ASTM D5961 on an M5 hole with 3 fibre rings, plus 1e5-cycle bearing fatigue at 0.3 x static",
+   "E-5 4-point-bend fatigue of a 400 mm stay section (flanges + bore) at the 1.6 g C1 moment x 1.0, R = 0.1, 1e5 cycles, then residual strength >= factored C2 moment",
+   "E-6 sleeve ring crush: 70 mm sleeve section, 18 mm UHMWPE bushing, diametral load to failure + 1e5 cycles at 1.6 g bushing force",
+   "E-7 fibre corner coupon: ring round a 10 mm radius stay-bar corner, T-pull to failure",
+   "First article: HA-LS-1 T1-T5 + T9 (load_standard.md) with the splice pencil-mark check"
+  ]
+ },
+ "screens": [
+  "/home/user/Hunting-appeal/outputs/screens/20261110_compE_1.png",
+  "/home/user/Hunting-appeal/outputs/screens/20261110_compE_2.png"
+ ]
 }
