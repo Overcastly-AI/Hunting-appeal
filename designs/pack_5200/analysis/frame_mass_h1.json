@@ -1,0 +1,34 @@
+{
+ "date": "2026-11-10",
+ "basis": "frame_comp_verdict.md section 2: fixed interfaces 239.4 g, spreader 162.3 g, pack rest 2739.5 g; body booked as 823.2 - (today raster - H1 raster) on the same 2 mm raster",
+ "today_corrected": {
+  "body_g": 823.2,
+  "fixed_g": 239.4,
+  "z234_dowels_mma_g": 18.5,
+  "frame_g": 1081.1,
+  "frame_plus_spreader_g": 1243.4,
+  "corrie_b2_M_g": 3982.9,
+  "note": "frame_mass_production.json frame_g 1062.6 omits the 8 z 234 dowels + MMA"
+ },
+ "h1": {
+  "body_g": 757.7,
+  "body_incl_bosses_note": "the 4 bosses are inside the body raster",
+  "boss_g": 27.3,
+  "floors_added_g": 13.0,
+  "fixed_g": 239.4,
+  "joint_hardware_g": {
+   "4 Ti gr5 M5 x 45 DIN 7984 (ISO 4762 head mass, conservative)": 17.71,
+   "4 A2 M5 hex nuts ISO 4032": 4.52,
+   "8 A2 M5 x 12 x 1 washers": 5.75
+  },
+  "dowels_g": 0.0,
+  "frame_g": 1025.1,
+  "frame_plus_spreader_g": 1187.4,
+  "corrie_b2_M_g": 3926.9,
+  "delta_vs_today_g": -56.0,
+  "print_mesh_g": {
+   "lower": 293.5,
+   "upper": 470.9
+  }
+ }
+}

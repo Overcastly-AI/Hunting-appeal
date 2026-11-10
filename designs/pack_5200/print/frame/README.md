@@ -1,5 +1,8 @@
 # Generative printed frame - print package (Pack 5200)
 
+> **DO NOT PRINT FROM THIS FOLDER (2026-11-10).** These files are superseded by the H1 frame (`designs/pack_5200/print/frame_h1/`, pending release). They also have a known defect: the flat halves (441 cm3 together) do not match the assembled body (738 cm3), so they look like an older body. Other open corrections apply as well: the lumbar backer and yoke-plate fixes, and the P-1 bondline. See `designs/pack_5200/analysis/frame_h1.md` §7 for the release list.
+
+
 Production process, proof load, cost and the print-farm plan: `PRODUCTION.md` in this folder.
 The engineering record is `designs/pack_5200/analysis/production_frame.md`.
 

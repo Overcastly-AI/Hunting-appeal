@@ -1,0 +1,339 @@
+{
+ "date": "2026-11-10",
+ "material": "PAHT-CF (pa12_cf_fdm_paht), layer normal frame y",
+ "raster_g": 757.72192,
+ "today_raster_g": 823.2384,
+ "boss_raster_g": 27.3056,
+ "floor_added_g": 13.02528,
+ "family_g": {
+  "foot": 7.8,
+  "low": 113.3,
+  "sleeve": 262.7,
+  "top": 195.2,
+  "branch": 70.2,
+  "strut": 87.9,
+  "mid": 20.7
+ },
+ "min": {
+  "strength": 1.4531359257446115,
+  "fatigue": 1.2794731924250948,
+  "creep": 2.7295428105068695
+ },
+ "governing": "C_im3:C_im3:static_carry|23 (fatigue)",
+ "body": {
+  "C": {
+   "strength": 1.4531359257446115,
+   "governing": "hipbelt_off_abuse|15",
+   "where": "upper bar / pawl housing",
+   "fatigue": 1.6109600309879686,
+   "creep": 3.4367147327743335,
+   "fatigue_set": "C:static_carry|15",
+   "cases": {
+    "static_carry": 4.296,
+    "drop_2p5g": 2.864,
+    "side_hill_torsion": 2.09,
+    "single_stay_setdown": 2.469,
+    "meat_straps": 2.477,
+    "tall_load": 3.561,
+    "overload_haul": 3.482,
+    "tall_load_posts": 3.395,
+    "hipbelt_off_abuse": 1.453
+   }
+  },
+  "C_im3": {
+   "strength": 1.4705876268770937,
+   "governing": "hipbelt_off_abuse|15",
+   "where": "upper bar / pawl housing",
+   "fatigue": 1.2794731924250948,
+   "creep": 2.7295428105068695,
+   "fatigue_set": "C_im3:static_carry|23",
+   "cases": {
+    "static_carry": 3.412,
+    "drop_2p5g": 2.275,
+    "side_hill_torsion": 2.045,
+    "single_stay_setdown": 2.43,
+    "hipbelt_off_abuse": 1.471
+   }
+  }
+ },
+ "by_torso": {
+  "C|15": {
+   "strength": 1.453,
+   "fatigue": 1.611,
+   "creep": 3.437,
+   "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+  },
+  "C|19": {
+   "strength": 2.147,
+   "fatigue": 1.706,
+   "creep": 3.64,
+   "gov": "side_hill_torsion (mid bar z 330)"
+  },
+  "C|23": {
+   "strength": 2.17,
+   "fatigue": 1.768,
+   "creep": 3.772,
+   "gov": "side_hill_torsion (mid bar z 330)"
+  },
+  "C_im3|15": {
+   "strength": 1.471,
+   "fatigue": 1.524,
+   "creep": 3.25,
+   "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+  },
+  "C_im3|19": {
+   "strength": 2.103,
+   "fatigue": 1.474,
+   "creep": 3.144,
+   "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+  },
+  "C_im3|23": {
+   "strength": 2.135,
+   "fatigue": 1.279,
+   "creep": 2.73,
+   "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+  }
+ },
+ "fatigue_at_0.40": 1.7059642565667934,
+ "ca1_flip_ratio": 0.234,
+ "buckling": {
+  "branch lower (z 165-330) L": {
+   "A_mm2": 116.0,
+   "r_eq_mm": 6.08,
+   "L_mm": 180.0,
+   "Pcr_n": 529,
+   "P_factored_n": 239,
+   "set": "C:single_stay_setdown|15",
+   "margin": 1.476
+  },
+  "branch lower (z 165-330) R": {
+   "A_mm2": 116.0,
+   "r_eq_mm": 6.08,
+   "L_mm": 180.0,
+   "Pcr_n": 529,
+   "P_factored_n": 44,
+   "set": "C:single_stay_setdown|23",
+   "margin": 8.008
+  },
+  "branch upper (z 330-495) L": {
+   "A_mm2": 108.0,
+   "r_eq_mm": 5.86,
+   "L_mm": 180.0,
+   "Pcr_n": 458,
+   "P_factored_n": 58,
+   "set": "C:single_stay_setdown|15",
+   "margin": 5.303
+  },
+  "branch upper (z 330-495) R": {
+   "A_mm2": 108.0,
+   "r_eq_mm": 5.86,
+   "L_mm": 180.0,
+   "Pcr_n": 458,
+   "P_factored_n": 233,
+   "set": "C:single_stay_setdown|23",
+   "margin": 1.313
+  },
+  "mid bar (x -115..115) all": {
+   "A_mm2": 72.0,
+   "r_eq_mm": 4.79,
+   "L_mm": 230.0,
+   "Pcr_n": 125,
+   "P_factored_n": 0,
+   "set": "",
+   "margin": null
+  }
+ },
+ "buckling_min": 1.313,
+ "joint": {
+  "strength": {
+   "washer bearing (XY)": {
+    "margin": 2.224,
+    "set": "C_im3:side_hill_torsion|23 R"
+   },
+   "plug shear-out (interlayer)": {
+    "margin": 2.954,
+    "set": "C_im3:side_hill_torsion|23 R"
+   },
+   "bolt tension Ti (0.7 UTS)": {
+    "margin": 3.033,
+    "set": "C_im3:side_hill_torsion|23 R"
+   },
+   "fitted-bolt hole bearing (shear)": {
+    "margin": 7.512,
+    "set": "C_im3:side_hill_torsion|15 R"
+   },
+   "bolt shear Ti": {
+    "margin": 9.407,
+    "set": "C_im3:side_hill_torsion|15 R"
+   },
+   "dry-face contact bearing": {
+    "margin": 1.964,
+    "set": "C_im3:drop_2p5g|23 L"
+   },
+   "boss bending + prying (layer FI)": {
+    "margin": 2.037,
+    "set": "C_im3:side_hill_torsion|23 R"
+   }
+  },
+  "fatigue": {
+   "washer bearing (XY) at 1.6 g": {
+    "margin": 1.332,
+    "set": "C_im3:static_carry|23 L"
+   },
+   "plug shear-out (interlayer) at 1.6 g": {
+    "margin": 1.769,
+    "set": "C_im3:static_carry|23 L"
+   },
+   "fitted-bolt hole bearing (shear) at 1.6 g": {
+    "margin": 5.572,
+    "set": "C_im3:static_carry|15 R"
+   },
+   "bolt thread Ti at 1.6 g (0.25 UTS)": {
+    "margin": 2.163,
+    "set": "C_im3:static_carry|23 L"
+   },
+   "boss bending + prying at 1.6 g": {
+    "margin": 1.22,
+    "set": "C_im3:static_carry|23 L"
+   }
+  },
+  "max_bolt_force_n": {
+   "value": 2933,
+   "set": "C_im3:side_hill_torsion|23 R"
+  },
+  "min_strength": 1.964,
+  "min_fatigue": 1.22,
+  "capacities_n": {
+   "washer_bearing_n": 6523.9,
+   "plug_shear_out_n": 8663.0,
+   "bolt_tension_n": 8896.3,
+   "bolt_fatigue_n": 3177.2,
+   "hole_bearing_n": 5744.6,
+   "bolt_shear_n": 7193.9,
+   "contact_mpa": 70.4
+  },
+  "branch_axial_across_split": {
+   "max_tension_n": 483.8156404495239,
+   "set": "C_im3:side_hill_torsion|23 L"
+  },
+  "design": {
+   "z": 234.0,
+   "e": 19.0,
+   "theta_deg": 15.0,
+   "r_boss": 8.0,
+   "z_lo": 198.0,
+   "z_hi": 252.0,
+   "head_face": 250.0,
+   "nut_face": 212.0,
+   "hole_d": 5.1,
+   "washer_od": 12.0,
+   "washer_t": 1.0,
+   "nut_af": 8.0,
+   "nut_t": 4.0,
+   "tail_z": 202.0,
+   "bolt_len": 45.0,
+   "head_h": 3.5,
+   "head_d": 8.5,
+   "torque_nm": 1.0,
+   "xy": [
+    [
+     16.4,
+     10.0
+    ],
+    [
+     -19.0,
+     5.0
+    ]
+   ],
+   "trap_dirs": [
+    null,
+    [
+     0.0,
+     -1.0
+    ]
+   ]
+  },
+  "assumptions": [
+   "prying factor 1.25 (team B)",
+   "contact length 10.0 mm, hot E",
+   "no preload credited (snug 1 N m; PAHT creep relaxes it)",
+   "bolt-group from the real z 234 voxel cut (stay + bosses + branch) as a rigid face"
+  ]
+ },
+ "keepouts": {
+  "sleeve_R present": 1.0,
+  "sleeve_L present": 1.0,
+  "pawl present": 1.0,
+  "pivot present": 1.0,
+  "pads present": 1.0,
+  "bore_R empty": 1.0,
+  "bore_L empty": 1.0,
+  "spine_channel empty": 1.0,
+  "fairleads present": 1.0,
+  "outside envelope (voxels)": 0,
+  "boss wearer face flush (rails)": true,
+  "boss bag side outboard of spreader and inside envelope": true,
+  "boss inside x half-width 152": true,
+  "stay outer radius at z 234 mm": 13.41,
+  "bag envelope local y at z 234 mm": 18.490985022210744,
+  "boss local extents (x, y) mm": [
+   [
+    16.4,
+    2.0,
+    18.0
+   ],
+   [
+    -19.0,
+    -3.0,
+    13.0
+   ]
+  ],
+  "boss top z / next spreader clip bottom z": [
+   252.0,
+   255.0
+  ],
+  "boss clear of spreader clip": true,
+  "bolt head top z": 254.5,
+  "bolt head clear of spreader clip": true,
+  "boss max |x| mm (half-width limit 152)": 142.0
+ },
+ "bore": {
+  "bolt_hole_ligament_mm": 7.811900546935032,
+  "trap_ligament_mm": 3.9999999999996163,
+  "counterbore_ligament_mm": 3.8701204345579043,
+  "wall_floor_mm": 3.6,
+  "min_ligament_margin": 1.0750334540438622,
+  "legs": {
+   "15": {
+    "leg_bottom_z": 171.1,
+    "bushing_span_z": [
+     171.1,
+     241.1
+    ],
+    "leg_crosses_z234": true,
+    "bushing_over_joint": true
+   },
+   "19": {
+    "leg_bottom_z": 272.7,
+    "bushing_span_z": [
+     272.7,
+     342.7
+    ],
+    "leg_crosses_z234": false,
+    "bushing_over_joint": false
+   },
+   "23": {
+    "leg_bottom_z": 374.3,
+    "bushing_span_z": [
+     374.3,
+     444.3
+    ],
+    "leg_crosses_z234": false,
+    "bushing_over_joint": false
+   }
+  },
+  "alignment": "bolts in 5.1 mm reamed (fitted) holes locate the halves to about +-0.05 mm; the 18.0 mm bore is reamed THROUGH both halves after bolt-up, so the leg and its bushing see one continuous bore (step 0 by construction). Halves become a matched pair (mark them).",
+  "step_allowed_mm": 0.1
+ },
+ "torsion_vs_today": 0.7518006075024063
+}

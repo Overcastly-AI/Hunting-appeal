@@ -13,5 +13,9 @@
   "top_bar": 2.12,
   "corner_bondline": 2.21
  },
- "frame_g": 1062.6
+ "frame_g": 1062.6,
+ "z234_dowels_mma_g": 18.5,
+ "z234_dowels_basis": "correction 2026-11-10 (frame_comp_verdict.md section 2): the 8 x 5 x 70 mm carbon dowels of the z 234 splice (17.0 g) + MMA (1.5 g) were never booked; frame_branch.pack_numbers dropped them",
+ "frame_g_with_dowels": 1081.1,
+ "frame_g_note": "frame_g is kept at the released 1062.6 for the consumers (weight_pass_corrie, build_geometry); the honest figure for today's frame is frame_g_with_dowels. H1 booking: analysis/frame_mass_h1.json"
 }

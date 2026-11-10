@@ -1,5 +1,8 @@
 # Production frame — print, bond, proof, cost
 
+> **DO NOT PRINT FROM THIS FOLDER (2026-11-10).** These files are superseded by the H1 frame (`designs/pack_5200/print/frame_h1/`, pending release). They also have a known defect: the flat halves (441 cm3 together) do not match the assembled body (738 cm3), so they look like an older body. Other open corrections apply as well: the lumbar backer and yoke-plate fixes, and the P-1 bondline. See `designs/pack_5200/analysis/frame_h1.md` §7 for the release list.
+
+
 Pack 5200 frame. The product is the **branching PAHT-CF print** (`genframe_assembled.stl`), not the carbon-tube ladder and not the solid 34 mm ladder. The back system: the **Sandwich v2 spreader** (BP-06 **rev C**, owner 2026-11-06: 200 g twill carbon skins on **7 mm** ROHACELL 110, 162 g installed; rev B had a 6 mm core) clipped to the bag side of the stays, and **10 mm XLPE rails** on the stay lines, with mesh over the air gap. The print files in this folder are the **socket-free** body the sandwich was checked on. Records: `designs/pack_5200/analysis/generative_branch.md` (frame), `designs/pack_5200/analysis/spreader.md` (spreader). Units mm unless noted.
 
 ## What you are printing
