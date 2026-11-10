@@ -11,8 +11,9 @@ What changes against CORRIE B.2 (concepts/corrie.py, read only; everything not n
   The zip is never at the floor (meat weight, ground water, abrasion stay on a sewn seam).
 * Hoop load: three 25 mm LID STRAPS H1-H3 at the IM1-IM3 heights (z 190 / 330 / 520) span the lid from a webbing
   loop on the right gusset to one on the left gusset, 15 mm forward of the zip legs. The lid is cut 6 mm wider than
-  the strap path (DECISION: ease 3 mm a side, eased into the hinge-band seam), so the straps carry the lid's hoop
-  load and the zip runs slack. Procedure: cinch H1-H3 FIRST, then zip (the straps close the gap; the slider never
+  the strap path (DECISION: ease 3 mm a side, eased into the hinge-band seam). The cloth sim shows the zip carries
+  little hoop load either way (<= 0.45 N/mm, analysis/bag_comp_C.md section 3): the straps' job is the closing
+  procedure and the dynamic case. Procedure: cinch H1-H3 FIRST, then zip (the straps close the gap; the slider never
   pulls a loaded chain together).
 * Garages: the 2 sliders park closed at the top-right corner under a camo garage SH-07; the two zip feet end in
   500D boots under the kick plate; camo storm flaps SH-09 (630D, 35 mm, hot-cut) cover the two corner legs and frame

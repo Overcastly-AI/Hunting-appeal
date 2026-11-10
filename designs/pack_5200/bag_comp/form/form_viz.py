@@ -148,7 +148,7 @@ def recolour(pack, params):
 
 
 SHOTS = {
-    "e_hero": {"view": {"az": -34, "el": 12, "zoom": 1.1}, "state": {"mannequin": True, "lid": True},
+    "e_hero": {"view": {"az": -34, "el": 12, "zoom": 1.22}, "state": {"mannequin": True, "lid": True},
                "caption": "CHERT (Team E FORM): 3/4 rear on the display form",
                "sub": "Camo chamfer blades on the aft corners carry the door zip; solid faces; fang insets low on the gussets"},
     "e_side": {"view": {"az": 90, "el": 4, "zoom": 1.15}, "state": {"mannequin": True, "lid": True},

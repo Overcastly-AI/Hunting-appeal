@@ -133,7 +133,8 @@ CORRIE B.2's seared allowance (WP-1 wash-swatch gate applies, with ULTRAGrid swa
 6. **Sheep load** keeps 4 misses (section 4).
 7. **Model limits.** Coarse-mesh CG (h 40 mm), proxy fabric stiffness for ULTRAGrid / 70D, the 3 % shallower shell not
    yet checked against hood / B-20 fit on a prototype; renders place pods, straps and the open zip as geometry on the
-   drape (not simulated).
+   drape (not simulated). The A4 strap pod is modelled but sits on the front of the strap, hidden in all five
+   camera angles; the lid pod shows only in the side view.
 
 ## 8. Renders (Blender Cycles via huntkit/viz3d/cycles_render.py, 1600 x 1200, 64 samples)
 

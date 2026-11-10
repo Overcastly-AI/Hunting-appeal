@@ -274,7 +274,7 @@ def system(c=None) -> dict:
     v = volumes(c)
     return {
         "corrie_b2": {"body_g": mc["mass_g"]["total"], "pockets_g": pk, "fly_g": round(fly_g(bco), 1),
-                      "bag_system_g": round(sys_c, 1), "pieces": mc["cut_pieces"], "curved_seams": mc["curved_seams"],
+                      "bag_system_g": round(sys_c, 1), "pieces": mc["cut_pieces"] + POCKET_PIECES, "curved_seams": mc["curved_seams"],
                       "zip_mm": round(zip_c, 0), "hours": round(hours_c, 1), "seam_m": mc["seam_length_m"]},
         "corrie_e": {"body_g_corrie_build": m["mass_g"]["total"], "ledger": led, "pockets_g": pk,
                      "fly_g": round(fly_g(b, d_outer), 1), "bag_system_g": round(sys_e, 1),

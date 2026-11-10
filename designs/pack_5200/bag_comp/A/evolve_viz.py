@@ -242,7 +242,7 @@ def build(sim_dir=SIM_FINE, fine=True):
 
 
 SHOTS = {
-    "A_hero": {"view": {"az": 38, "el": 12, "zoom": 1.3, "box": [-240, 0, 60, 300, 400, 1110]}, "state": {"mannequin": True, "lid": True},
+    "A_hero": {"view": {"az": 38, "el": 12, "zoom": 1.15, "box": [-240, 0, -60, 300, 400, 1110]}, "state": {"mannequin": True, "lid": True},
                "caption": "CORRIE E: 3/4 rear on the display form",
                "sub": "Rounded aft corners, shoulder taper into the roll, camo tub base; poles in the right-wing quiver"},
     "A_side": {"view": {"az": 90, "el": 4, "zoom": 1.0, "box": [-200, -330, 0, 300, 440, 1150]}, "state": {"mannequin": True, "lid": True},

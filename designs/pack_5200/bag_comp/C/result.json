@@ -58,7 +58,11 @@
   "Sheep 8-day: the 2nd 1 L bottle still rides in the bag (one holster)",
   "Zip crosswise strength is a record ESTIMATE (900 N/in); get the YKK sheet. Patent search for a floor-hinged lid not done"
  ],
- "screenshots": [],
+ "screenshots": [
+  "outputs/screens/20261110_bagC_1.png",
+  "outputs/screens/20261110_bagC_2.png",
+  "outputs/screens/20261110_bagC_3.png"
+ ],
  "hoop": {
   "zip_crosswise_n_mm": 35.4,
   "zip_record": "coil_zipper_10 crosswise 900 N (ASTM D2061 1 in jaw), ESTIMATE",

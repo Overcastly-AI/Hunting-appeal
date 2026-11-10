@@ -55,8 +55,8 @@ def main():
         "team": "C (OPEN)",
         "name": "TAILGATE",
         "one_line": ("Full-face lid hinged at the floor seam: the whole aft face drops like a tailgate (floor to z 650, "
-                     "full width); 3 lid straps at the IM heights carry the hoop load so the #10 zip never pulls the bag "
-                     "shut; roll-top, pouch and the whole frame interface as CORRIE B.2."),
+                     "full width); 3 lid straps at the IM heights close the lid before the #10 zip does (the sim puts <= 0.45 "
+                     "N/mm on the zip, SF 79); roll-top, pouch and the whole frame interface as CORRIE B.2."),
         "bag_system_g": n["bag_system"]["total_g"],
         "pack_mass_M_g": n["pack_mass_M_g"],
         "corrie_b2_bag_system_g_used": n["corrie_b2_bag_system"]["total_g"],
@@ -80,7 +80,7 @@ def main():
             "Tailgate lid: one 330D panel, the whole aft face, hinged on a sewn floor seam (no zip at the floor)",
             "Opening 0.229 m2 vs CORRIE's door 0.153 m2; clear width 286/314/353 mm at IM1/IM2/IM3, 254 mm at the floor, no sill",
             "#10 coil inverted-U zip (1.59 m) in the aft corner seams, 2 sliders parked closed under a top-right camo garage, zip feet in 500D boots",
-            "Lid straps H1-H3 at z 190/330/520 (the IM heights), gusset loop to gusset loop over the zip; lid cut 6 mm full: straps-then-zip rule",
+            "Lid straps H1-H3 at z 190/330/520 (the IM heights), gusset loop to gusset loop over the zip: cinch first, zip second, so the slider never clamps a full bag",
             "Camo storm flaps over both zip legs frame the lid (owner camo as the accent edge); 330D flap on the top run",
             "No wings: 2 side straps a side (tripod right with the IMP-8 cup, pad/decoy left), IMP-1 spotter sleeve sewn to the left gusset",
             "IMP-4 kill kit on the inside of the lid: it comes to you when the lid drops",

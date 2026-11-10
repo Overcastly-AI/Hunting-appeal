@@ -1,0 +1,101 @@
+{
+ "team": "A",
+ "name": "CORRIE E (EVOLVE)",
+ "one_line": "CORRIE evolved: rounded aft corners, shoulder taper, wider base, one-layer camo tub base, forward hip-reach pockets on the wings and a pole quiver; zero access misses on every belt",
+ "bag_system_g": 734.6,
+ "pack_mass_M_g": 3967.0,
+ "pack_mass_basis": "3943 - 710.6 (CORRIE B.2 bag system, same code: body build + IMP-1/2/4/8 + fly) + 734.6",
+ "corrie_b2_bag_system_g": 710.6,
+ "volume_L": 85.0,
+ "volume_basis": "cloth sim, fill case (68 kg), mean of 15/19/23 in, main bag to the fill line; pouch 2.7 L and the hip-reach pockets NOT counted; per torso 85.2, 85.3, 84.5",
+ "fill_height_in": 40.2,
+ "pieces": 42,
+ "curved_seams": 2,
+ "zip_mm_total": 1476.0,
+ "beginner_hours": 38.3,
+ "cg_fill_mm": {
+  "15": 186.8,
+  "19": 165.3,
+  "23": 130.3
+ },
+ "cg_meat_mm": {
+  "15": 179.6,
+  "19": 160.1,
+  "23": 129.9
+ },
+ "cg_method": "clothsim",
+ "cg_converged": {
+  "15": {
+   "fill": true,
+   "meat": true
+  },
+  "19": {
+   "fill": true,
+   "meat": true
+  },
+  "23": {
+   "fill": true,
+   "meat": true
+  }
+ },
+ "access_misses": {
+  "day": 0,
+  "elk6": 0,
+  "sheep8": 0
+ },
+ "access_miss_detail": {
+  "day": {
+   "rifle_S": [],
+   "rifle_M": [],
+   "rifle_L": [],
+   "rifle_XL": [],
+   "rifle_XXL": []
+  },
+  "elk6": {
+   "rifle_S": [],
+   "archery_S": [],
+   "rifle_M": [],
+   "archery_M": [],
+   "rifle_L": [],
+   "archery_L": [],
+   "rifle_XL": [],
+   "archery_XL": [],
+   "rifle_XXL": [],
+   "archery_XXL": []
+  },
+  "sheep8": {
+   "rifle_S": [],
+   "rifle_M": [],
+   "rifle_L": [],
+   "rifle_XL": [],
+   "rifle_XXL": []
+  }
+ },
+ "features": [
+  "E-1 rounded aft corners R 40: the door wraps the corners, clear width 294/311/334 mm at IM1/IM2/IM3 (CORRIE 214/242/281)",
+  "E-2 shoulder taper 394 -> 370 mm into the roll",
+  "E-3 camo tub wall (60 mm, printed 500D) replaces the two-layer chevron kick plate and lifts the side | floor seam off the bulge corner",
+  "E-4 hip-reach pockets on both wings (power mesh, camo mouth band): snacks + GPS left, 2nd bottle right",
+  "E-5 pole quiver: boot in the right pocket's pleat + shock-cord grip loop",
+  "E-7 wider base (320 mm) keeps the collar at z 736.3",
+  "kept from CORRIE B.2: horseshoe #10 door, side compression wings, 2.7 L pouch, IMP-1/2/4/8, frame interface unchanged"
+ ],
+ "risks": [
+  "Mass: +24 g on CORRIE B.2 (bag system 734.6 vs 710.6 g); the hip-reach pockets (33.5 g) cost more than the corners and the tub save (-17.6 g)",
+  "Build: ~38.3 h vs 35.6 h and 2 curved seams vs 1 (the floor | tub ring now has two R 40 arcs)",
+  "Rounded corners on the curved frame line are not exactly developable: the hinge band B-02h needs up to 4.4 % p99 ease in the pattern, U-surround 1.7 %; the fine drape shows it as soft folds. Pattern-maker to ease / cut-and-check on the prototype",
+  "Wider base 320 mm (12.6 in, CORRIE 272) at hip level: elbow swing / rifle-butt clearance unproven; prototype walk test",
+  "Hip-reach pocket reach (class 1) is an ASSUMPTION backed by Exo's forward lower pocket; gate EV-3 (S/M/L testers, loaded, gloves). A full 1 L bottle (1.18 kg) in FP-R loads the wing root seam: bartack + 25 mm tape behind the pocket corners, pull test EV-4",
+  "Pockets ride on the wings: unclipping a wing to load the tripod swings the pocket out; contents stay (shock-cord top) but a snack wrapper can rustle (user rule: quiet wrappers)",
+  "Printed 500D for the tub has no material record (ASSUMPTION = 500D record gsm); print abrasion on the wear band is untested (materials-engineer record + Taber on the printed face)",
+  "Day-hunt kill kit reads class 5 in the loadout model (packing-order artifact inherited from CORRIE B.2: the toilet kit takes the door pocket); packed by the IMP-4 rule it is class 4",
+  "Cloth sim: worst seam is now B-02h | B-06 (0.83 N/mm at 15 in, SF 14) or B-01 | B-05 (1.18 N/mm, SF 23); e_max 21-24 % (shear in the buckled floor corners, CORRIE 14-19 %); 6 of 6 fill/meat cases converged at 4-6 mm contact rounding (read CG +<= 4 mm)"
+ ],
+ "screenshots": [
+  "outputs/screens/20261110_bagA_1.png",
+  "outputs/screens/20261110_bagA_2.png",
+  "outputs/screens/20261110_bagA_3.png",
+  "outputs/screens/20261110_bagA_4.png",
+  "outputs/screens/20261110_bagA_5.png"
+ ]
+}

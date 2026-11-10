@@ -482,7 +482,7 @@ SHOTS = {
     "fell_access": {"view": {"az": -14, "el": 10, "zoom": 1.0, "box": [-260, 60, 60, 260, 420, 760]},
                     "state": {"full": True, "lid": False},
                     "caption": "FELL: access, the straight centre zip open",
-                    "sub": "540 mm #10 coil zip, z 110-650: IM1-IM3 and low gear reached without unpacking the roll-top"},
+                    "sub": "540 mm #10 coil zip, z 110-650, IM1-IM3 inside; W1/W2 still hooked across it (unhook 2 G-hooks to clear it)"},
     "fell_feature": {"view": {"az": -62, "el": 14, "zoom": 1.0, "box": [-330, 40, 120, -60, 360, 720]},
                      "state": {"lid": False},
                      "caption": "FELL: the add-on hard points (best idea)",

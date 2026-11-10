@@ -166,7 +166,7 @@ sealed with silicone, not tape (record note).
 | MOD-4 | Module swap time at the kill site, gloves | slab to liner in under 3 min |
 | MOD-5 | 15 in plumb-line CG with 30 kg on IM1-IM3 in the liner (CORRIE 11.4 asks for the same) | <= 190 mm |
 
-## 10. Renders (Blender Cycles, `huntkit/viz3d/cycles_render.py`, 1600 x 1200, 48 samples)
+## 10. Renders (Blender Cycles, `huntkit/viz3d/cycles_render.py`, 1600 x 1200, 48 samples on 1-2, 40 on 3-5: shared CPU)
 
 How they are made: CORRIE B.2's render pack (the cloth-sim shell drape, frame, harness, belt B, display form). The
 drape is cut at z 800 and a gathered collar is lofted from that ring. The LID uses CORRIE's pouch builder. The modules

@@ -97,7 +97,28 @@ def main():
             "kept from CORRIE B.2: horseshoe #10 door, side compression wings, 2.7 L pouch, IMP-1/2/4/8, frame "
             "interface unchanged",
         ],
-        "risks": [],
+        "risks": [
+            "Mass: +24 g on CORRIE B.2 (bag system 734.6 vs 710.6 g); the hip-reach pockets (33.5 g) cost more than "
+            "the corners and the tub save (-17.6 g)",
+            "Build: ~38.3 h vs 35.6 h and 2 curved seams vs 1 (the floor | tub ring now has two R 40 arcs)",
+            "Rounded corners on the curved frame line are not exactly developable: the hinge band B-02h needs up to "
+            "4.4 % p99 ease in the pattern, U-surround 1.7 %; the fine drape shows it as soft folds. Pattern-maker "
+            "to ease / cut-and-check on the prototype",
+            "Wider base 320 mm (12.6 in, CORRIE 272) at hip level: elbow swing / rifle-butt clearance unproven; "
+            "prototype walk test",
+            "Hip-reach pocket reach (class 1) is an ASSUMPTION backed by Exo's forward lower pocket; gate EV-3 "
+            "(S/M/L testers, loaded, gloves). A full 1 L bottle (1.18 kg) in FP-R loads the wing root seam: bartack "
+            "+ 25 mm tape behind the pocket corners, pull test EV-4",
+            "Pockets ride on the wings: unclipping a wing to load the tripod swings the pocket out; contents stay "
+            "(shock-cord top) but a snack wrapper can rustle (user rule: quiet wrappers)",
+            "Printed 500D for the tub has no material record (ASSUMPTION = 500D record gsm); print abrasion on the "
+            "wear band is untested (materials-engineer record + Taber on the printed face)",
+            "Day-hunt kill kit reads class 5 in the loadout model (packing-order artifact inherited from CORRIE "
+            "B.2: the toilet kit takes the door pocket); packed by the IMP-4 rule it is class 4",
+            "Cloth sim: worst seam is now B-02h | B-06 (0.83 N/mm at 15 in, SF 14) or B-01 | B-05 (1.18 N/mm, SF "
+            "23); e_max 21-24 % (shear in the buckled floor corners, CORRIE 14-19 %); 6 of 6 fill/meat cases "
+            "converged at 4-6 mm contact rounding (read CG +<= 4 mm)",
+        ],
         "screenshots": SCREENS,
     }
     (HERE / "result.json").write_text(json.dumps(res, indent=1, default=float))

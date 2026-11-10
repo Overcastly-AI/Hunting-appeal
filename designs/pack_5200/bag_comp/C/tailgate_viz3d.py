@@ -40,17 +40,17 @@ OPEN_DEG = 165.0
 SHOTS = {
     "C_hero": {"view": {"az": -38, "el": 12, "zoom": 1.0}, "state": {"mannequin": True, "lid": True},
                "caption": "TAILGATE (team C): 3/4 rear on the display form",
-               "sub": "Full-face lid zipped, 3 lid straps H1-H3 at the IM heights carry the hoop load; camo storm flaps"},
+               "sub": "Full-face lid zipped; lid straps H1-H3 at the IM heights, cinched before the zip; camo storm flaps frame the lid"},
     "C_side": {"view": {"az": 90, "el": 4, "zoom": 1.0}, "state": {"mannequin": True, "lid": True},
                "caption": "TAILGATE: side, wearer's right",
                "sub": "Tripod under 2 side straps (cam cup at its foot); lid straps wrap to gusset loops"},
     "C_open": {"view": {"az": -14, "el": 16, "zoom": 1.0}, "state": {"mannequin": True, "full": True},
                "caption": "TAILGATE: lid down, the whole aft face open",
                "sub": "Hinged at the floor seam; floor to z 650 open full width (286-353 mm at IM1-IM3); kill kit on the lid"},
-    "C_zip": {"view": {"az": -42, "el": 10, "zoom": 1.0, "box": [80, 120, 380, 330, 460, 760]},
+    "C_zip": {"view": {"az": 38, "el": 12, "zoom": 0.92, "box": [40, 140, 380, 300, 420, 760]},
               "state": {"lid": True},
-              "caption": "TAILGATE: the zip never carries the bag",
-              "sub": "Sliders parked in the top-right garage; H3 bridges the corner zip from gusset loop to lid; camo flap over the leg"},
+              "caption": "TAILGATE: zip garage, flap and lid strap",
+              "sub": "#10 sliders parked closed under the camo garage; H3 bridges the corner zip, gusset loop to lid; camo flap over the leg"},
     "C_meat": {"view": {"az": -30, "el": 18, "zoom": 1.0}, "state": {"mannequin": True, "full": True, "lid": True},
                "caption": "TAILGATE: meat in the bag, loaded through the open face",
                "sub": "Boned quarter cinched to the frame panel by IM1-IM3, nothing to lift over a sill; then H1-H3, then zip"},
@@ -179,19 +179,18 @@ def tailgate_parts(params):
     zt = TG.LID["z_top"] - TG.LID["r"]
     flaps = []
     for side in (1, -1):
-        leg = zq[(np.sign(zq[:, 0]) == side) & (zq[:, 2] < zt - 4)]
+        # flap laps over the coil: centred on the zip leg, 4 mm proud of the skin (coil tube top at ~3.1 mm)
+        leg = zq[(np.sign(zq[:, 0]) == side) & (zq[:, 2] < zt - 8) & (zq[:, 2] > Z0 + 6)]
         leg = leg[np.argsort(leg[:, 2])]
         if len(leg) < 5:
             continue
-        leg = VC.smooth_line(leg, 4.0, 6.0)
-        q, n = S.project(leg)
-        # flap centre 12 mm onto the gusset (towards the frame), width 35, 2.4 mm proud
-        tdir = VC._unit(np.gradient(q, axis=0))
-        inward = VC._unit(np.cross(n, tdir) * side * -1)
-        inward = np.where((inward[:, 1:2] < 0), inward, -inward)        # points forward (-y): onto the gusset
-        Pq = q + inward * 9.0
-        Pq, nn = S.project(Pq, 2.6)
-        flaps.append(G.ribbon(Pq, TG.FLAP_W, 1.1, nn, step=4.0))
+        q = VC.smooth_line(leg, 4.0, 45.0)
+        q, nn = S.project(q, 0.0)
+        k = np.exp(-0.5 * (np.arange(-30, 31) / 10.0) ** 2)
+        k /= k.sum()
+        nn = VC._unit(np.stack([np.convolve(np.pad(nn[:, i], 30, mode="edge"), k, "valid") for i in range(3)], -1))
+        q = q + nn * 4.2
+        flaps.append(G.ribbon(q, TG.FLAP_W, 1.1, nn, step=4.0))
     parts.append(Part("tg_flaps", G.concat(flaps), "camo", "bag", modes=BAGM, explode=BE, floats=True,
                       label="Corner storm flaps SH-09 (camo, 35 mm) over the zip legs"))
     # ---- sliders parked closed at the top-right arc + garage + cord pulls
