@@ -1,0 +1,45 @@
+{
+ "team": "D",
+ "concept_name": "SERVICE: one-piece SLS PA12 branch body",
+ "one_line": "Today's branch body re-sized for isotropic laser-sintered PA12 and ordered as ONE part (630 x 330 x 550 mm SLS envelope): no split, no dowels, no printing, no anneal.",
+ "frame_g": 965.0,
+ "frame_plus_spreader_g": 1127.0,
+ "pack_mass_corrie_b2_M_g": 3866.5,
+ "passes_rev_c": true,
+ "worst_strength_margin": 1.12,
+ "worst_fatigue_margin": 1.09,
+ "worst_joint_margin": 1.43,
+ "governing_case": "body fatigue 1.12 (C_im3 static_carry|23 at 1.6 g); body strength 1.21 (C8 hipbelt_off|15, upper bar / pawl housing); frame-wide: crown legs FPF 1.12 (C8, unchanged) and spreader fatigue 1.09 (unchanged)",
+ "torsion_stiffness_vs_today": 0.45,
+ "print_hours": 0,
+ "printer": "service: SLS PA12 (Materialise PA 12 class, 630 x 330 x 550 mm envelope, one piece)",
+ "cost_usd": {
+  "1": 641.0,
+  "10": 614.0,
+  "100": 566.0
+ },
+ "build_hours": 5,
+ "skill_level": "beginner",
+ "looks_generative": true,
+ "patents_checked": [
+  "Mystery Ranch US 10,952,523 (crown/lifters, unchanged fixed interface)",
+  "docs/DECISIONS.md guardrails (topology unchanged from the released branch body)"
+ ],
+ "governing_assumptions": [
+  "Fatigue: MJF PA12 Basquin (Avanzini 2022, R 0.05) lower bound 21.9 MPa at 1e5 applies to SLS PA12; allowable 0.457 x 0.8 x 48 = 17.5 MPa (coupon D-F1)",
+  "Strength: 48 MPa isotropic x 0.8 hot/wet = 38.4 MPa von Mises (coupons D-C1, D-C2)",
+  "Creep-rupture at 40 C 8 h: 0.35 x strength; PA12 Tg onset 27 C (coupon D-K1)",
+  "Body loads from the frame.yaml beam model, as every release check (body modulus not in the load path)",
+  "Fairlead cheeks re-checked by scaling the release 1 mm results by the allowable ratio",
+  "M5 heat-set inserts hold in SLS PA12 as in PAHT (coupon D-I1)",
+  "Service price $0.40/g (UK SLS 30p/cm3 benchmark; Materialise quotes only online), -15 % at 100"
+ ],
+ "coupon_tests": [
+  "D-C1 tensile, same build (XY, Z)",
+  "D-C2 tensile after 40 C / 85 % RH, tested at 40 C",
+  "D-F1 R 0.05 fatigue to 1e5 at 24 / 20 / 17.5 MPa",
+  "D-K1 40 C 8 h creep-rupture",
+  "D-I1 M5 insert pull-out and torque-out",
+  "D-T1 frame torsion stiffness vs today (feel)"
+ ]
+}

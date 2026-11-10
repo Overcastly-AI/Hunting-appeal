@@ -453,9 +453,8 @@ def export_meshes(npz: Path, tag: str, split: bool) -> dict:
     out = {"whole": str(TEAM_DIR / f"body_{tag}.stl"), "extents_mm": [float(v) for v in mesh.extents]}
     mesh.export(out["whole"])
     if split:
-        try:
-            lo, hi = ft.split_mesh(mesh, 234.0)
-        except TypeError:          # upsampled surface not manifold for the trim: cut the plain voxel surface
+        lo, hi = ft.split_mesh(mesh, 234.0)
+        if lo.extents is None or hi.extents is None:   # upsampled surface not manifold: cut the voxel surface
             lo, hi = ft.split_mesh(ft.solid_to_mesh(dom, solid, smooth_iters=10), 234.0)
         for nm, m in (("lower", lo), ("upper", hi)):
             p = TEAM_DIR / f"body_{tag}_{nm}.stl"
@@ -513,7 +512,6 @@ def plot_summary(rows: list, out_png: Path):
     cols = ["#7a7a72" if r.get("ref") else ("#d9480f" if not r["pass"] else "#2b6cb0") for r in rows]
     ax[0].barh(y, [r["fps_g"] for r in rows], color=cols)
     ax[0].axvline(1225, color="k", lw=1, ls="--")
-    ax[0].text(1225, len(rows) - 0.4, " today 1225 g", fontsize=9, va="bottom")
     for k, r in enumerate(rows):
         ax[0].text(r["fps_g"] + 4, k, f"{r['fps_g']:.0f} g", va="center", fontsize=9)
     ax[0].set_yticks(y, names, fontsize=9)
@@ -527,7 +525,7 @@ def plot_summary(rows: list, out_png: Path):
     ax[1].set_yticks(y, [""] * len(rows))
     ax[1].invert_yaxis()
     ax[1].set_xlabel("body margin (SF / requirement), pass >= 1.0")
-    ax[1].legend(fontsize=9, loc="lower right")
+    ax[1].legend(fontsize=9, loc="center right")
     fig.suptitle("Team D SERVICE: printed body by a print service, HA-LS-1 rev C", fontsize=13)
     fig.tight_layout()
     fig.savefig(out_png, dpi=110)
@@ -584,3 +582,150 @@ def render_cycles(stl_today: str, stl_new: str, out_png: str, caption: str, sub:
     C.shrink_png(Path(out_png))
     raw.unlink(missing_ok=True)
     return out_png
+
+
+def restore_hardpoints(dom, solid0, solid, margin_mm: float = 2.0):
+    """Put back every voxel of today's body within ``margin_mm`` of a bag fairlead (fixed interface, checked
+    separately on its own 1 mm model in rev_c_verification.md section 4) or of a pad / hard point."""
+    from .bag_attach import attachment_field
+    from .spreader import SCALE
+    fl = attachment_field(dom.grid.elem_centers(), SCALE) <= margin_mm
+    hp = np.asarray(dom.masks["pads"], bool)
+    return solid | (solid0 & (fl | hp))
+
+
+def finalize(mat: str = "pa12_sls", log=print) -> dict:
+    """Chosen body: the run2 re-sized body with the fairleads and hard-point pads restored, re-verified on every
+    rev C set; torsion, pawl cheek, z 234 section resultants."""
+    from .spreader_layout import raster
+    sets, _ = load_sets(log=log)
+    dom, solid0 = raster(None, 2.0)
+    z = np.load(SCRATCH / f"{mat}_run2_best.npz")
+    solid = restore_hardpoints(dom, solid0, z["solid"])
+    fs = solve_fields(dom, solid, sets, sections=True, log=log)
+    ev = evaluate(fs, mat)
+    k_base = torsion_k(dom, solid0, sets, MATERIALS["paht_fdm"]["E"])
+    out = {"material": mat, "body_g": mass_g(solid, 2.0, MATERIALS[mat]["rho"]), "min": ev["min"],
+           "governing": ev["governing"], "body": ev["body"],
+           "torsion_rel": torsion_k(dom, solid, sets, MATERIALS[mat]["E"]) / k_base,
+           "pawl": split_joint(fs["sections"], mat, fs["meta"]),
+           "joints": [joint_design(fs["sections"], mat, fs["meta"], 2, 2, 40.0, 14.0)],
+           "restored_g": mass_g(solid & ~z["solid"], 2.0, MATERIALS[mat]["rho"])}
+    np.savez_compressed(SCRATCH / f"{mat}_final.npz", solid=solid, util=ev["util"])
+    (SCRATCH / f"final_{mat}.json").write_text(json.dumps(out, indent=1, default=float))
+    return out
+
+
+# ------------------------------------------------------------------------------------------------ result.json
+DOWELS_G = 8 * np.pi / 4 * 5.0 ** 2 * 70.0 * 1.55e-3 + 1.5   # 8 carbon dowels (1550 kg/m3) + MMA (ASSUMPTION 1.5 g)
+SPLIT_JOINT_G = 8 * 2.6 + 8 * 0.6 + 8 * 3.0   # 8 Ti M5x30 (ASSUMPTION 2.6 g), Ti nuts 0.6 g, printed bosses 3 g each
+RELEASE = {"crown_legs_fpf": 1.12, "spreader_fatigue": 1.09, "crown_fatigue": 1.36, "spreader_fpf": 1.25,
+           "fairlead_hinge": (2.97, 1.67, 3.57), "fairlead_im3": (3.60, 2.02, 4.31)}   # rev_c_verification.md
+
+
+def frame_mass(body_g: float, split: bool) -> dict:
+    f = BASE["frame_g"] - BASE["body_g"] + body_g - DOWELS_G + (SPLIT_JOINT_G if split else 0.0)
+    fps = f + (BASE["fps_g"] - BASE["frame_g"])
+    return {"frame_g": round(f, 1), "fps_g": round(fps, 1),
+            "pack_g": round(BASE["corrie_m"] - (BASE["fps_g"] - fps), 1)}
+
+
+def fairlead_scaled(mat: str) -> dict:
+    """Release fairlead cheek SFs (PAHT layer rule) scaled by the allowable ratio (ASSUMPTION: same stress state)."""
+    m, p = MATERIALS[mat], MATERIALS["paht_fdm"]
+    rs = m["s"] / p["s_xy"]
+    rf = (m["fat"] * m["s"]) / (p["fat"] * p["s_xy"])
+    rc = (m["rup"] * m["s"]) / (p["rup"] * p["s_xy"])
+    return {k: [round(v[0] * rs, 2), round(v[1] * rf, 2), round(v[2] * rc, 2)] for k, v in
+            (("hinge", RELEASE["fairlead_hinge"]), ("im3", RELEASE["fairlead_im3"]))}
+
+
+def stay_buckling(mat: str) -> float:
+    """Closed form: lower stay foot-to-strut (z 0-78), solid r 9.3 mm, pin-pin L 78 mm, hot/wet E; C4 limit
+    load 68 kg x 2 g on one foot. Margin = (Pcr / limit) / (1.5 x 1.5)."""
+    m = MATERIALS[mat]
+    E = m["E"] * 0.55
+    I = np.pi * 9.3 ** 4 / 4
+    pcr = np.pi ** 2 * E * I / 78.0 ** 2
+    return float(pcr / (68 * 9.81 * 2.0) / 2.25)
+
+
+def write_results() -> dict:
+    s1 = json.loads((SCRATCH / "study.json").read_text())
+    s2 = json.loads((SCRATCH / "study2.json").read_text())
+    fin = json.loads((SCRATCH / "final_pa12_sls.json").read_text())
+    f11 = json.loads((SCRATCH / "final_pa11_mjf.json").read_text())
+    fm = frame_mass(fin["body_g"], split=False)
+    cost = service_cost(fin["body_g"], "pa12_sls")
+    fl = fairlead_scaled("pa12_sls")
+    body = fin["min"]
+    worst_strength = min(body["strength"], RELEASE["crown_legs_fpf"], fl["hinge"][0], fl["im3"][0])
+    worst_fat = min(body["fatigue"], RELEASE["spreader_fatigue"], RELEASE["crown_fatigue"], fl["hinge"][1])
+    worst_joint = min(fin["pawl"]["pawl_cheek_8mm_sf"], stay_buckling("pa12_sls"))
+    res = {
+        "team": "D",
+        "concept_name": "SERVICE: one-piece SLS PA12 branch body",
+        "one_line": "Today's branch body re-sized for isotropic laser-sintered PA12 and ordered as ONE part "
+                    "(630 x 330 x 550 mm SLS envelope): no split, no dowels, no printing, no anneal.",
+        "frame_g": fm["frame_g"],
+        "frame_plus_spreader_g": fm["fps_g"],
+        "pack_mass_corrie_b2_M_g": fm["pack_g"],
+        "passes_rev_c": bool(min(body.values()) >= 1.0 and worst_strength >= 1.0 and worst_fat >= 1.0),
+        "worst_strength_margin": round(worst_strength, 2),
+        "worst_fatigue_margin": round(worst_fat, 2),
+        "worst_joint_margin": round(worst_joint, 2),
+        "governing_case": f"body fatigue {body['fatigue']:.2f} (C_im3 static_carry|23 at 1.6 g); body strength "
+                          f"{body['strength']:.2f} (C8 hipbelt_off|15, upper bar / pawl housing); frame-wide: crown "
+                          f"legs FPF 1.12 (C8, unchanged) and spreader fatigue 1.09 (unchanged)",
+        "torsion_stiffness_vs_today": round(fin["torsion_rel"], 2),
+        "print_hours": 0,
+        "printer": "service: SLS PA12 (Materialise PA 12 class, 630 x 330 x 550 mm envelope, one piece)",
+        "cost_usd": {k: v for k, v in cost.items() if not k.startswith("_")},
+        "build_hours": 5,
+        "skill_level": "beginner",
+        "looks_generative": True,
+        "patents_checked": ["Mystery Ranch US 10,952,523 (crown/lifters, unchanged fixed interface)",
+                            "docs/DECISIONS.md guardrails (topology unchanged from the released branch body)"],
+        "governing_assumptions": [
+            "Fatigue: MJF PA12 Basquin (Avanzini 2022, R 0.05) lower bound 21.9 MPa at 1e5 applies to SLS PA12; "
+            "allowable 0.457 x 0.8 x 48 = 17.5 MPa (coupon D-F1)",
+            "Strength: 48 MPa isotropic x 0.8 hot/wet = 38.4 MPa von Mises (coupons D-C1, D-C2)",
+            "Creep-rupture at 40 C 8 h: 0.35 x strength; PA12 Tg onset 27 C (coupon D-K1)",
+            "Body loads from the frame.yaml beam model, as every release check (body modulus not in the load path)",
+            "Fairlead cheeks re-checked by scaling the release 1 mm results by the allowable ratio",
+            "M5 heat-set inserts hold in SLS PA12 as in PAHT (coupon D-I1)",
+            "Service price $0.40/g (UK SLS 30p/cm3 benchmark; Materialise quotes only online), -15 % at 100",
+        ],
+        "coupon_tests": ["D-C1 tensile, same build (XY, Z)", "D-C2 tensile after 40 C / 85 % RH, tested at 40 C",
+                         "D-F1 R 0.05 fatigue to 1e5 at 24 / 20 / 17.5 MPa", "D-K1 40 C 8 h creep-rupture",
+                         "D-I1 M5 insert pull-out and torque-out", "D-T1 frame torsion stiffness vs today (feel)"],
+    }
+    TEAM_DIR.mkdir(parents=True, exist_ok=True)
+    (TEAM_DIR / "result.json").write_text(json.dumps(res, indent=1))
+    same = s1["same_geometry"]
+    rows = [{"name": "today PAHT-CF FDM (823 g body)", "fps_g": 1225.0, "strength": 1.51, "fatigue": 1.04,
+             "creep": 2.23, "pass": True, "ref": True}]
+    for k, nm in (("pa12_mjf", "MJF PA12, today's shape"), ("pa11_mjf", "MJF PA11, today's shape"),
+                  ("pa12cf_sls", "SLS PA12-CF, today's shape")):
+        v = same[k]
+        rows.append({"name": f"{nm} ({v['body_g']:.0f} g)", "fps_g": frame_mass(v["body_g"], False)["fps_g"] + DOWELS_G,
+                     **{q: v["min"][q] for q in ("strength", "fatigue", "creep")},
+                     "pass": min(v["min"].values()) >= 1.0})
+    rows.append({"name": f"MJF PA11 re-sized, split + bolted ({f11['body_g']:.0f} g)",
+                 "fps_g": frame_mass(f11["body_g"], True)["fps_g"], **f11["min"], "pass": True})
+    rows.append({"name": f"SLS PA12 re-sized, one piece ({fin['body_g']:.0f} g) CHOSEN",
+                 "fps_g": fm["fps_g"], **body, "pass": True})
+    pc = s2["resized"]["paht_fdm"]
+    rows.append({"name": f"control: PAHT-CF same tool ({pc['body_g']:.0f} g, not converged)",
+                 "fps_g": BASE["fps_g"] - BASE["body_g"] + pc["body_g"], **pc["min"], "pass": True, "ref": True})
+    plot_summary(rows, SCREENS / "20261110_compD_3.png")
+    plot_utilisation(SCRATCH / "pa12_sls_final.npz", f"SLS PA12 one-piece body, {fin['body_g']:.0f} g: utilisation "
+                     "(worst rev C set per voxel, both couple variants, torsos 15/19/23)", SCREENS / "20261110_compD_2.png")
+    (TEAM_DIR / "summary_rows.json").write_text(json.dumps({"rows": rows, "fairleads_scaled": fl,
+                                                           "stay_buckling_margin": stay_buckling("pa12_sls"),
+                                                           "pa11_split": {**frame_mass(f11["body_g"], True),
+                                                                          "joint": f11["joints"][0],
+                                                                          "cost": service_cost(f11["body_g"], "pa11_mjf", 6.0)},
+                                                           "final": {k: v for k, v in fin.items() if k != "body"},
+                                                           "body_cases": fin["body"]}, indent=1, default=float))
+    return res
