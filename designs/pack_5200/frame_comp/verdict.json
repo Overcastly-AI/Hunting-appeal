@@ -1,0 +1,289 @@
+{
+ "date": "2026-11-10",
+ "judge": "design-reviewer (independent)",
+ "standard": "HA-LS-1 rev C",
+ "doc": "designs/pack_5200/analysis/frame_comp_verdict.md",
+ "figure": "outputs/screens/20261110_comp_verdict.png",
+ "winner": "A MONO",
+ "runner_up": "C ROD",
+ "not_gated": {
+  "D SERVICE": "branch Euler buckling 0.47 (lower) / 0.76 (upper) under A's rule (K 1, E x 0.55 hot x 0.7 creep, Pcr >= 1.5 x factored), not checked by D; beam load path not re-run for 0.45x body stiffness"
+ },
+ "hybrid": {
+  "name": "H1",
+  "what": "PAHT-CF branch body re-sized locally (team D offset tool) with team A floors + branch buckling check, fairleads restored, H2S home print in 2 segments, A's dry 4 x Ti M5 nut-trap z 234 joint",
+  "body_g": 745,
+  "frame_g": 1040.9,
+  "frame_plus_spreader_g": 1203.2,
+  "pack_corrie_b2_M_g": 3942.7,
+  "body_margins": {
+   "strength": 1.45,
+   "fatigue": 1.25,
+   "creep": 2.67,
+   "branch_buckling_min": 1.16
+  },
+  "score": 7.47,
+  "basis": "judge run push_0.45_0.85 it6 734.1 g raster + ASSUMPTION 13 g floors"
+ },
+ "discrepancy_A_vs_D": {
+  "verdict": "same checker, loads, allowables and stress measure; no bug. A's 7-family uniform scaling cannot target the local fatigue hot spot (strut-stay junction z~150 / low sleeve wall at 23 in, IM3), D's local SDF offset can.",
+  "today_reproduced_D_pipeline": [
+   1.51,
+   1.044,
+   2.228
+  ],
+  "today_reproduced_A_pipeline": [
+   1.508,
+   1.04,
+   2.219
+  ],
+  "A_mono": {
+   "raster_g": 763.2,
+   "fatigue_own": 1.05,
+   "fatigue_union_excl": 1.048,
+   "fatigue_topN": 1.09
+  },
+  "D_control_restored": {
+   "raster_g": 769.3,
+   "strength": 1.53,
+   "fatigue": 1.26,
+   "fatigue_union_excl": 1.26,
+   "fatigue_topN": 1.29,
+   "creep": 2.69,
+   "branch_buckling": [
+    1.23,
+    1.12
+   ]
+  },
+  "judge_push_converged": {
+   "raster_g": 734.1,
+   "strength": 1.45,
+   "fatigue": 1.25,
+   "creep": 2.67,
+   "branch_buckling": [
+    1.42,
+    1.16
+   ],
+   "floors_violated": "mid bar r_eq 4.2 mm < 5; foot balls 6.8 g vs 15.7 today"
+  },
+  "correct_paht_resize_estimate_g": 745
+ },
+ "mass_basis": {
+  "fixed_parts_g": 239.4,
+  "spreader_g": 162.3,
+  "dowels_plus_mma_g": 18.5,
+  "pack_rest_g": 2739.5,
+  "note": "today's 1062.6 g omits the 8 z234 dowels (frame_branch.pack_numbers); A, D, E deducted dowels never booked; C used 275.0 g fixed parts"
+ },
+ "rows": [
+  {
+   "entry": "today",
+   "frame_g": 1081.1,
+   "fps_g": 1243.4,
+   "pack_g": 3982.9,
+   "delta_vs_today_true_g": 0.0,
+   "claimed_frame_g": 1063.0,
+   "worst_margin": 1.04,
+   "gate": true
+  },
+  {
+   "entry": "A MONO",
+   "frame_g": 1062.9,
+   "fps_g": 1225.2,
+   "pack_g": 3964.7,
+   "delta_vs_today_true_g": -18.2,
+   "claimed_frame_g": 1043.3,
+   "worst_margin": 1.046,
+   "gate": true,
+   "subscores": [
+    5.61,
+    8.5,
+    5.0,
+    9.32,
+    9
+   ],
+   "score": 6.95,
+   "score_mass25": 7.29,
+   "score_fat040": 8.18
+  },
+  {
+   "entry": "B SEG-2T",
+   "frame_g": 1136.2,
+   "fps_g": 1298.5,
+   "pack_g": 4038.0,
+   "delta_vs_today_true_g": 55.1,
+   "claimed_frame_g": 1136.2,
+   "worst_margin": 1.03,
+   "gate": true,
+   "subscores": [
+    3.16,
+    8.0,
+    6.0,
+    9.42,
+    7
+   ],
+   "score": 5.81,
+   "score_mass25": 6.47,
+   "score_fat040": 5.81
+  },
+  {
+   "entry": "C ROD",
+   "frame_g": 911.9,
+   "fps_g": 1074.2,
+   "pack_g": 3813.8,
+   "delta_vs_today_true_g": -169.2,
+   "claimed_frame_g": 947.6,
+   "worst_margin": 1.09,
+   "gate": true,
+   "subscores": [
+    10.0,
+    4.0,
+    5.0,
+    5.22,
+    2
+   ],
+   "score": 6.47,
+   "score_mass25": 5.59,
+   "score_fat040": 6.47
+  },
+  {
+   "entry": "D SERVICE (as submitted)",
+   "frame_g": 982.9,
+   "fps_g": 1145.2,
+   "pack_g": 3884.7,
+   "delta_vs_today_true_g": -98.2,
+   "claimed_frame_g": 965.0,
+   "worst_margin": 0.47,
+   "gate": false,
+   "subscores": [
+    8.27,
+    9.5,
+    3.0,
+    5.98,
+    8
+   ],
+   "score": 7.53,
+   "score_mass25": 7.35,
+   "score_fat040": 7.53
+  },
+  {
+   "entry": "D SERVICE + branch fix (est.)",
+   "frame_g": 1002.9,
+   "fps_g": 1165.2,
+   "pack_g": 3904.7,
+   "delta_vs_today_true_g": -78.2,
+   "claimed_frame_g": null,
+   "worst_margin": 1.0,
+   "gate": null,
+   "subscores": [
+    7.61,
+    9.5,
+    4.0,
+    5.85,
+    8
+   ],
+   "score": 7.4,
+   "score_mass25": 7.35,
+   "score_fat040": 7.4
+  },
+  {
+   "entry": "E LOOM",
+   "frame_g": 1145.0,
+   "fps_g": 1307.3,
+   "pack_g": 4046.8,
+   "delta_vs_today_true_g": 63.9,
+   "claimed_frame_g": 1124.1,
+   "worst_margin": 1.006,
+   "gate": true,
+   "subscores": [
+    2.87,
+    3.0,
+    2.0,
+    0.0,
+    1
+   ],
+   "score": 2.3,
+   "score_mass25": 2.16,
+   "score_fat040": 2.3
+  },
+  {
+   "entry": "HYBRID H1 (judge)",
+   "frame_g": 1040.9,
+   "fps_g": 1203.2,
+   "pack_g": 3942.7,
+   "delta_vs_today_true_g": -40.2,
+   "claimed_frame_g": null,
+   "worst_margin": 1.09,
+   "gate": null,
+   "subscores": [
+    6.34,
+    8.5,
+    6.5,
+    9.32,
+    9
+   ],
+   "score": 7.47,
+   "score_mass25": 7.75,
+   "score_fat040": 8.33
+  }
+ ],
+ "weights": {
+  "mass": 0.4,
+  "build": 0.25,
+  "risk": 0.15,
+  "cost": 0.1,
+  "look": 0.1
+ },
+ "subscore_rules": {
+  "mass": "5 + (1243.4 - frame_plus_spreader_g)/30, clip 0-10",
+  "cost": "10*(1000-usd_qty1)/600 incl. $207 spreader, clip 0-10",
+  "build_risk_look": "judge reading, see doc section 5"
+ },
+ "sensitivity": {
+  "fatigue_ratio_0.40": "A 8.18 / H1 8.33 lead; winner unchanged",
+  "fatigue_ratio_0.25": "A (0.87), B (0.86), E fail; C becomes gate-passing winner; H1 (1.04) still passes",
+  "mass_weight_25pct": "A 7.29 > C 5.59 among gate-passers; H1 7.75 top; winner unchanged",
+  "H1_vs_D_fixed": "7.47 vs 7.40, within scoring noise"
+ },
+ "pack_corrie_b2_M_g": {
+  "today_dowels_booked": 3982.9,
+  "winner_A": 3964.7,
+  "hybrid_H1": 3942.7,
+  "D_fixed_est": 3904.7,
+  "C": 3813.8
+ },
+ "coupon_order": [
+  {
+   "id": "CA-1",
+   "what": "PAHT-CF XY+Z fatigue R0.1 1e5 at 0.30 then 0.40 x 0.8 x UTS",
+   "usd": "20 filament + 250 DIY rig or 1500-3000 lab"
+  },
+  {
+   "id": "CA-5",
+   "what": "dry z234 joint stubs, 3 static + 1 x 1e5 at 1543 N, boss bending watched",
+   "usd": "40"
+  },
+  {
+   "id": "CA-3",
+   "what": "interlayer Z + short-beam shear after 40 C soak",
+   "usd": "20"
+  },
+  {
+   "id": "CA-4",
+   "what": "40 C 8 h creep dead load",
+   "usd": "10"
+  },
+  {
+   "id": "first article",
+   "what": "HA-LS-1 T9, T1-T5, T4b (branch dial), T4c -20 C",
+   "usd": "about 440 frame"
+  }
+ ],
+ "would_change_verdict": [
+  "CA-1 < 0.287 -> A and B fail, C wins among entries",
+  "CA-1 >= 0.40 -> PAHT home print ~686 g body, beats D",
+  "CA-5 fail or boss bending governs -> use B's 8-bolt flange (+17 g)",
+  "D resubmits with buckling >= 1 and the stiffness load-path check -> D can win on build simplicity",
+  "C proves RC-2 >= 268 MPa and CAD mass within +15 % and owner accepts intermediate build -> C ~130 g lighter"
+ ]
+}
