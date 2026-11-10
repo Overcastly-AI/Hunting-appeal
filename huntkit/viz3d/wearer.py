@@ -54,43 +54,43 @@ ILIAC_CREST_Z = 120.0              # geometry.yaml datums.iliac_crest_z (FCS mm)
 # cervicaleheight - iliocristaleheight: the vertical C7 to iliac-crest distance, which is how geometry.yaml and the
 # viz3d mannequin define the torso setting. weightkg is in units of 0.1 kg in the CSV; here it is kg.
 ANSUR = {
-    "male": {"n": 4082, "stature_mean": 1756.2, "stature_sd": 68.6, "stature_from_torso": (1014.4, 1.628), "reg": {
-        "cervicaleheight": (-34.95, 0.88484, 11.2), "iliocristaleheight": (-107.18, 0.66651, 21.6),
-        "torso": (72.23, 0.21833, 20.2), "waistheightomphalion": (-108.43, 0.66444, 21.8),
-        "crotchheight": (-161.04, 0.57372, 23.9), "trochanterionheight": (-134.59, 0.59045, 25.9),
-        "acromialheight": (-90.96, 0.87298, 16.2), "kneeheightmidpatella": (-65.08, 0.31625, 15.5),
-        "biacromialbreadth": (160.27, 0.14557, 16.2), "bideltoidbreadth": (228.58, 0.15999, 30.9),
-        "chestcircumference": (417.82, 0.36296, 84.7), "waistcircumference": (226.61, 0.40382, 109.3),
-        "buttockcircumference": (301.18, 0.40787, 72.1), "hipbreadth": (86.22, 0.1473, 22.3),
-        "waistbreadth": (85.2, 0.13578, 26.9), "waistdepth": (42.2, 0.11012, 34.3),
-        "chestdepth": (89.58, 0.09319, 25.6), "buttockdepth": (77.27, 0.09549, 25.8),
-        "headlength": (135.88, 0.03633, 6.5), "headbreadth": (131.76, 0.01262, 5.5),
-        "footlength": (19.61, 0.14301, 9.1), "weightkg": (-76.52, 0.092467, 12.56),
-        "sleevelengthspinewrist": (87.78, 0.45983, 25.6), "neckcircumference": (190.9, 0.11594, 25.3)}},
-    "female": {"n": 1986, "stature_mean": 1628.5, "stature_sd": 64.2, "stature_from_torso": (953.5, 1.6877), "reg": {
-        "cervicaleheight": (-46.6, 0.88629, 10.7), "iliocristaleheight": (-114.17, 0.68219, 19.1),
-        "torso": (67.57, 0.2041, 18.1), "waistheightomphalion": (-78.72, 0.63973, 21.6),
-        "crotchheight": (-137.29, 0.55729, 23.0), "trochanterionheight": (-128.76, 0.59117, 23.8),
-        "acromialheight": (-88.02, 0.87152, 14.9), "kneeheightmidpatella": (-66.89, 0.31656, 14.3),
-        "biacromialbreadth": (150.87, 0.13182, 14.2), "bideltoidbreadth": (232.36, 0.12915, 27.1),
-        "chestcircumference": (613.99, 0.20337, 81.5), "waistcircumference": (518.2, 0.20621, 99.0),
-        "buttockcircumference": (397.26, 0.38283, 69.9), "hipbreadth": (111.18, 0.14365, 23.3),
-        "waistbreadth": (134.48, 0.09405, 24.9), "waistdepth": (106.69, 0.06386, 31.1),
-        "chestdepth": (141.37, 0.05967, 26.0), "buttockdepth": (99.34, 0.08351, 25.8),
-        "headlength": (139.28, 0.02953, 6.6), "headbreadth": (124.17, 0.01274, 5.5),
-        "footlength": (27.57, 0.13455, 8.4), "weightkg": (-52.5, 0.073887, 9.93),
-        "sleevelengthspinewrist": (80.17, 0.45135, 23.0), "neckcircumference": (239.28, 0.0548, 17.4)}},
+    "male": {"n": 4082, "stature_mean": 1756.2, "stature_sd": 68.6,
+            "stature_from_torso": (1014.4, 1.628), "reg": {
+        "cervicaleheight": (-78.12, 0.90844, 11.2), "iliocristaleheight": (-150.35, 0.69011, 21.6), "torso":
+        (72.23, 0.21833, 20.2), "waistheightomphalion": (-157.37, 0.69117, 21.8), "crotchheight": (-176.32,
+        0.58208, 23.9), "trochanterionheight": (-169.93, 0.60976, 25.9), "acromialheight": (-126.89, 0.89261,
+        16.2), "kneeheightmidpatella": (-112.13, 0.34194, 15.5), "biacromialbreadth": (154.64, 0.14864, 16.2),
+        "bideltoidbreadth": (249.82, 0.14839, 30.9), "chestcircumference": (504.54, 0.31554, 84.7),
+        "waistcircumference": (345.64, 0.33876, 109.3), "buttockcircumference": (352.33, 0.3799, 72.1),
+        "hipbreadth": (108.34, 0.13517, 22.3), "waistbreadth": (104.74, 0.12624, 33.6), "waistdepth": (98.33,
+        0.0794, 34.3), "chestdepth": (105.82, 0.08429, 25.6), "buttockdepth": (100.38, 0.08283, 25.8),
+        "headlength": (133.08, 0.03782, 6.5), "headbreadth": (143.69, 0.00606, 5.5), "footlength": (30.13,
+        0.13725, 9.1), "weightkg": (-85.309, 0.097273, 12.56), "sleevelengthspinewrist": (101.93, 0.45206,
+        25.6), "neckcircumference": (268.79, 0.07337, 25.3)}},
+    "female": {"n": 1986, "stature_mean": 1628.5, "stature_sd": 64.2,
+              "stature_from_torso": (953.5, 1.6877), "reg": {
+        "cervicaleheight": (-90.41, 0.91256, 10.5), "iliocristaleheight": (-157.98, 0.70846, 20.0), "torso":
+        (67.57, 0.2041, 18.1), "waistheightomphalion": (-173.09, 0.70817, 20.9), "crotchheight": (-179.1,
+        0.59038, 23.6), "trochanterionheight": (-126.9, 0.59703, 23.0), "acromialheight": (-96.85, 0.87932,
+        13.7), "kneeheightmidpatella": (-106.94, 0.34142, 14.0), "biacromialbreadth": (102.82, 0.16121, 15.1),
+        "bideltoidbreadth": (189.14, 0.16038, 26.8), "chestcircumference": (402.37, 0.33436, 79.9),
+        "waistcircumference": (280.02, 0.35671, 97.3), "buttockcircumference": (291.94, 0.44785, 70.2),
+        "hipbreadth": (91.92, 0.16083, 24.6), "waistbreadth": (69.95, 0.1412, 31.7), "waistdepth": (89.34,
+        0.07596, 31.0), "chestdepth": (87.95, 0.09792, 26.6), "buttockdepth": (83.94, 0.09149, 23.6),
+        "headlength": (122.19, 0.04153, 7.0), "headbreadth": (127.19, 0.01264, 5.1), "footlength": (18.5,
+        0.13988, 8.6), "weightkg": (-80.886, 0.091278, 9.29), "sleevelengthspinewrist": (34.18, 0.47438, 22.6),
+        "neckcircumference": (186.11, 0.08823, 18.4)}},
 }
-# ANSUR II torso (cervicale - iliocristale) quantiles every 5 % from 0 to 100, and stature quantiles (mm), per sex.
+# ANSUR II torso (cervicale - iliocristale) and stature quantiles every 5 % from 0 to 100 (mm), per sex.
 ANSUR_Q = {
-    "male": {"torso": [361.0, 413.0, 423.1, 430.0, 435.0, 439.0, 443.0, 446.0, 450.0, 453.0, 456.0, 459.0, 462.0,
-                       465.0, 469.0, 472.0, 476.0, 480.0, 487.0, 496.0, 546.0],
-             "stature": [1491.0, 1646.0, 1669.0, 1685.0, 1698.0, 1710.0, 1720.0, 1730.0, 1739.0, 1747.0, 1755.0,
-                         1764.0, 1773.0, 1782.0, 1791.0, 1801.0, 1812.0, 1826.0, 1844.0, 1870.0, 1993.0]},
-    "female": {"torso": [330.0, 363.0, 371.0, 377.0, 382.0, 385.0, 388.0, 391.0, 394.0, 397.0, 400.0, 403.0, 405.0,
-                         408.0, 411.0, 415.0, 419.0, 423.0, 429.0, 437.0, 489.0],
-               "stature": [1409.0, 1525.0, 1547.0, 1562.0, 1574.0, 1585.0, 1594.0, 1602.0, 1611.0, 1619.0, 1626.0,
-                           1634.0, 1643.0, 1652.0, 1661.0, 1671.0, 1682.0, 1695.0, 1711.0, 1735.0, 1829.0]},
+    "male": {"torso": [361.0, 413.0, 423.1, 430.0, 435.0, 439.0, 443.0, 446.0, 450.0, 453.0, 456.0, 459.0, 462.0, 465.0,
+        469.0, 472.0, 476.0, 480.0, 487.0, 496.0, 546.0],
+        "stature": [1491.0, 1648.0, 1669.0, 1685.0, 1699.0, 1710.0, 1720.0, 1729.0, 1738.0, 1745.0, 1755.0, 1764.0, 1773.0,
+        1782.0, 1791.0, 1802.0, 1813.0, 1827.0, 1844.0, 1870.0, 1993.0]},
+    "female": {"torso": [330.0, 363.0, 371.0, 377.0, 382.0, 385.0, 388.0, 391.0, 394.0, 397.0, 400.0, 403.0, 405.0, 408.0,
+        411.0, 415.0, 419.0, 423.0, 429.0, 437.0, 489.0],
+        "stature": [1409.0, 1525.0, 1547.0, 1563.0, 1575.0, 1586.2, 1595.0, 1603.0, 1611.0, 1617.2, 1626.0, 1634.0, 1643.0,
+        1653.0, 1661.0, 1672.0, 1681.0, 1696.0, 1713.0, 1740.0, 1829.0]},
 }
 
 
