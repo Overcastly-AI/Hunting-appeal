@@ -85,9 +85,10 @@ The carbon-filled SLS grades come close along the recoater but are weaker across
 
 | service / process | max part mm | body fits whole? | source |
 |---|---|---|---|
-| JLC3DP MJF PA12-HP / PA11-HP | **370 × 276 × 360** | **no**: the body is about 300 × 100 × 546. Split at z 234 (lower 234 tall, upper 312 tall, each fits) | [PA12-HP](https://jlc3dp.com/help/article/pa12-hp-nylon), [PA11-HP](https://jlc3dp.com/help/article/PA11-HP-Nylon) |
+| JLC3DP MJF PA12-HP / PA11-HP | **370 × 276 × 360** | **no**: the body is 265 × 65 × 545 mm. Split at z 234 (lower 234 tall, upper 309 tall, each fits) | [PA12-HP](https://jlc3dp.com/help/article/pa12-hp-nylon), [PA11-HP](https://jlc3dp.com/help/article/PA11-HP-Nylon) |
 | JLC3DP PA12-CF | 580 × 480 × 480, but listed **under FDM**, not SLS | fits, but it is an FDM part (Z-weak, the same constraint as home) | [JLC3DP design guideline](https://jlc3dp.com/help/article/3d-printing-design-guideline) |
-| Materialise PA 12 (SLS) | **630 × 330 × 550** (a different page says 500 × 280 × 345) | **yes, one piece**, laid flat | [Materialise PA 12 SLS](https://www.materialise.com/en/manufacturing/materials/pa-12-sls), [laser sintering](https://www.materialise.com/en/manufacturing/3d-printing-technology/laser-sintering) |
+| JLC3DP SLS 3201PA-F nylon (44 MPa, $0.18/g in Nov 2024) | 350 × 350 × 400 | no (the 350 × 400 face diagonal is 531 mm, under 545) | [JLC3DP 3201PA-F](https://jlc3dp.com/help/article/3201pa-f-nylon), [price notice](https://jlc3dp.com/blog/3201pa-f-nylon-price-adjustment-notice-23off) |
+| Materialise PA 12 (SLS): 48 MPa, E 1650 MPa, 20 %, **0.95 g/cc** | **630 × 330 × 550** (a different page says 500 × 280 × 345) | **yes, one piece**, laid flat | [Materialise PA 12 SLS](https://www.materialise.com/en/manufacturing/materials/pa-12-sls), [laser sintering](https://www.materialise.com/en/manufacturing/3d-printing-technology/laser-sintering) |
 | HP 5200 / 5420W class (MJF) | 380 × 284 × 380 machine | split, as JLC | HP spec (same as the JLC envelope) |
 
 Cost:
@@ -97,6 +98,7 @@ Cost:
   ASSUMPTION $0.60/g (DB record).
 - No quantity breaks are published (per-gram instant quote). ASSUMPTION: the same rate at 10 units, −15 % at 100
   (volume quote), $30 shipping per order.
+- SLS benchmark: a UK SLS service prices part volume at **30p per cm³** (or 11p per cm³ of bounding box, whichever is cheaper) ([pricing page](https://felix-manley-n4jm.squarespace.com/pricing-information)). That is 0.30 / 0.95 = £0.32/g, about **$0.40/g** (ASSUMPTION 1.27 USD/GBP), used for the Materialise-class one-piece body. Materialise publishes no price (instant quote only).
 - MJF service cost comparison across five projects: [All3DP / RapidObject](https://all3dp.com/1/mjf-3d-printing-price-comparison-charts-5-sample-projects/).
 
 Turnaround and finishing:
@@ -106,6 +108,7 @@ Turnaround and finishing:
   is the costliest finish, about +30 % ([Xometry](https://xometry.pro/en/topic/vapor-smoothed-and-dyed-black-part-mjf-vs-sls/)).
   General post-processing: [Hubs](https://hubs.com/knowledge-base/post-processing-sls-and-mjf-printed-parts).
   Vapour smoothing seals the surface and may help fatigue (fewer surface pores). **No credit is taken.**
+- Materialise finishes: black dye only up to 400 × 330 × 360 mm (the body does not fit); vapour smoothing ("extra smooth") up to 560 × 360 × 330 mm (it fits) ([Materialise PA 12 SLS](https://www.materialise.com/en/manufacturing/materials/pa-12-sls)).
 - Ordering is simple: upload the 2 STLs, pick PA11-HP black, pay. No printer, drying, annealing or nozzle.
 
 ## 6. Patents checked
