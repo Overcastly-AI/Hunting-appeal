@@ -88,7 +88,7 @@ def _leg_len_mm(torso: float, variant: str) -> float:
     return float((cs["crown_top_z"] - (SOCKET_LOW_Z - SHIM_LEN / 2)) / uz)
 
 
-def modify_model(m: dict, variant: str, leg: dict | None = None) -> dict:
+def modify_model(m: dict, variant: str, leg: dict | None = None, e_scale: float = 1.0) -> dict:
     """Rev C beam model of frame.yaml with the crown-to-stay links of a fixed-crown variant.
 
     'fixed' (a, c): leg bottom moved to the stay node at z 470 (socket), radial shim links at z 470 and 530, axial
@@ -114,7 +114,7 @@ def modify_model(m: dict, variant: str, leg: dict | None = None) -> dict:
     if variant == "printed":
         leg = leg or PRINT_LEG
         sec = {"type": "tube_round", "od": float(leg["od"]), "t": float(leg["t"])}
-        mat = _paht_beam_material()
+        mat = _paht_beam_material(e_scale)
         for mem in m["members"]:
             if mem["group"].startswith("crown_leg"):
                 mem["section"] = sec
@@ -123,13 +123,18 @@ def modify_model(m: dict, variant: str, leg: dict | None = None) -> dict:
     return m
 
 
-def _paht_beam_material():
-    """PAHT-CF record for the beam solver (E XY 3860 MPa). The record has no yield; the solver's own von Mises SF
-    is not used (printed legs are checked by ``printed_leg_fi``), so a placeholder allowable 0.8 x 88 is set."""
+def _paht_beam_material(e_scale: float = 1.0):
+    """PAHT-CF record for the beam solver (E XY 3860 MPa x ``e_scale``). The record has no yield; the solver's own
+    von Mises SF is not used (printed legs are checked by ``printed_leg_fi``), so a placeholder allowable 0.8 x 88 is
+    set."""
     from huntkit.fea.materials_bridge import Mat, get_material
     m0 = get_material("pa12_cf_fdm_paht")
-    return Mat(id=m0.id, name=m0.name, category=m0.category,
-               props={**m0.props, "design_allowable_mpa": H1.PAHT["knock"] * H1.PAHT["s_xy"]}, source=m0.source)
+    props = {**m0.props, "design_allowable_mpa": H1.PAHT["knock"] * H1.PAHT["s_xy"]}
+    if e_scale != 1.0:
+        for k in ("youngs_modulus_mpa", "youngs_modulus_xy_mpa", "E_mpa"):
+            if k in props and props[k]:
+                props[k] = float(props[k]) * e_scale
+    return Mat(id=m0.id, name=m0.name, category=m0.category, props=props, source=m0.source)
 
 
 def _member(res, mid):
@@ -176,11 +181,12 @@ def beam_runs(variant: str, leg: dict | None = None, torsos=TORSOS, buckling: bo
     env = ls1_envelope("C")
     sets, rows = [], []
     for t in torsos:
-        def mk(posts):
+        def mk(posts, e_scale=1.0):
             base = R.split_top_bar(build_frame_from_yaml(ft.FRAME_YAML, torso_in=float(t), extension_posts=posts),
                                    95.0)
-            return modify_model(base, variant, leg)
+            return modify_model(base, variant, leg, e_scale)
         fm, fmp = mk(False), None
+        fm_kd = mk(False, BUCKLE_E_KD) if variant == "printed" else None
         for vname, cases in env.items():
             tag = TAGS[vname]
             for c in cases:
@@ -195,8 +201,15 @@ def beam_runs(variant: str, leg: dict | None = None, torsos=TORSOS, buckling: bo
                 ls = ft._extract(res, m, c, t, TABLE)
                 ls.key = f"{tag}:{ls.key}"
                 sets.append(ls)
-                rows.append({"scenario": tag, "case": c.name, "torso": float(t), "factor": float(c.required_sf),
-                             "g": float(c.g_factor), **R._crown_rows(res, m, c), "extra": _extra_rows(res, m, variant)})
+                row = {"scenario": tag, "case": c.name, "torso": float(t), "factor": float(c.required_sf),
+                       "g": float(c.g_factor), **R._crown_rows(res, m, c), "extra": _extra_rows(res, m, variant)}
+                if fm_kd is not None and c.buckling and c.name != "tall_load_posts":
+                    # A's rule for printed members: buckling with the printed-leg E x 0.6 hot x 0.7 creep
+                    c2 = copy.copy(c)
+                    r2 = c2.run(fm_kd)
+                    row["buckling"] = R._crown_rows(r2, fm_kd, c2)["buckling"]
+                    row["buckling_basis"] = "printed legs at E x 0.42 (A rule)"
+                rows.append(row)
         if log:
             log(f"  [{variant}] beam model torso {t} in")
     return sets, rows
@@ -371,9 +384,8 @@ def printed_leg_checks(rows: list, leg: dict) -> dict:
         b = min(bk) if bk else (None, "")
         out[tag_s] = {"strength": (round(st[0], 3), st[1]), "fatigue": (round(fat[0], 3), fat[1]),
                       "creep": (round(cr[0], 3), cr[1]),
-                      # beam eigenvalue with the full printed E; A's rule knocks E down by 0.6 x 0.7 (the leg mode
-                      # dominates, so the factor scales the eigenvalue: conservative for the carbon members)
-                      "buckling_A_rule": (round(b[0] * BUCKLE_E_KD, 3) if b[0] is not None else None, b[1])}
+                      # beam eigenvalue (>= 1.5 x factor) re-solved with the printed-leg E x 0.6 hot x 0.7 creep
+                      "buckling_A_rule": (round(b[0], 3) if b[0] is not None else None, b[1])}
     return out
 
 
@@ -487,7 +499,7 @@ def corner_socket_check(rows: list) -> dict:
     return out
 
 
-def sweep_printed_legs(log=print, cands=((26, 4), (30, 4), (34, 4), (38, 4), (34, 5), (38, 3.5), (42, 3.5))) -> list:
+def sweep_printed_legs(log=print, cands=((30, 4), (32, 4), (34, 3.5), (34, 4), (36, 3.5), (38, 3.5))) -> list:
     """Printed-leg size sweep on the beam model (rev C, 42 sets each): strength / fatigue / creep / buckling."""
     res = []
     for od, t in cands:

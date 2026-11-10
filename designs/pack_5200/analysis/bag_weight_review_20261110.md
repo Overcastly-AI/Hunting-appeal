@@ -15,6 +15,10 @@ marked "estimate" are my estimates and are unverified; the tickets exist to prov
 > mass and still worth cutting, but it is a frame-side problem, and the frame-side tickets (BL-003, BL-005,
 > BL-006, BL-007, BL-017) matter most. Like for like on published system weight we are 904–1337 g heavier.
 
+> **CORRECTION 2026-11-10 (BL-001, `analysis/mass_ledger.md`):** on the ledger, CORRIE B.2 on H1 with package C
+> is 3918.6 g, not "about 3873 g": package item C-9 thinned the old printed body, which H1 replaces. The
+> like-for-like bag side is 1625.7 g on the ledger basis (1709 g below is the B.1 booking).
+
 ## 1. Where the pack stands
 
 | Config (belt M) | Mass |
