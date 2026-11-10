@@ -300,18 +300,21 @@ def printed_section(b: float, h: float, tf: float, nr: int = 0, bore: float = 0.
 # ============================================================================ the design
 # local y = in-plane width (frame x for stays, frame z for bars / lumbar strips); local z = frame y (depth).
 DESIGN = {
-    # lower stays z 0-130: solid, deep enough to hold the lumbar panel lands and the hip-belt loads
-    "stay_lower": dict(b=18.0, h=26.0, tf=1.25, nr=2, rho_c=0.35),
-    # upper stays z 130-530: the crown-leg sleeve (18 mm bore over the whole leg travel, z 171-374 at
-    # torso 15-23 for the low bushing) with fibre flanges above / below the bore and rings in the side walls
-    "stay_upper": dict(b=26.0, h=26.0, tf=1.25, nr=3, bore=18.0),
-    "mid_bar": dict(b=16.0, h=16.0, tf=0.5, nr=1, rho_c=0.35),
-    "upper_bar": dict(b=26.0, h=24.0, tf=1.5, nr=3, rho_c=0.35),
+    # sized by :func:`size` (4 fully-stressed passes, target 1.05 on strength, fatigue, creep, sleeve ring)
+    # lower stays z 0-130: sparse (20 percent) core between fibre flanges
+    "stay_lower": dict(b=16.0, h=22.0, tf=1.0, nr=1, rho_c=0.2),
+    # upper stays z 130-520: the crown-leg sleeve (18 mm bore over the whole leg travel, low bushing z 171-374
+    # at torso 15-23), fibre flanges above / below the bore, rings in the side walls
+    "stay_upper": dict(b=26.0, h=23.0, tf=1.25, nr=2, bore=18.0, rho_c=1.0),
+    # stay top z 520-530 (upper bar to the top crown bushing): the top-bushing cuff
+    "stay_top": dict(b=30.0, h=22.0, tf=0.5, nr=1, bore=18.0, rho_c=1.0),
+    "mid_bar": dict(b=16.0, h=10.0, tf=0.25, nr=2, rho_c=0.2),
+    "upper_bar": dict(b=26.0, h=26.0, tf=2.5, nr=1, rho_c=0.2),
     # lumbar: an open lattice, not a panel. Three horizontal ribs (z 50 / 120 / 190) and a centre column carry
-    # the hip-pivot load to the stays; light ties close the grid (fixed nodes for the meat face loads).
-    "lumbar_rib": dict(b=14.0, h=14.0, tf=0.75, nr=2, rho_c=0.35),
-    "lumbar_spine": dict(b=16.0, h=14.0, tf=0.75, nr=2, rho_c=0.35),
-    "lumbar_tie": dict(b=6.0, h=6.0, tf=0.0, nr=1, rho_c=1.0),
+    # the hip-pivot load to the stays; light ties close the grid (fixed nodes for the lumbar-pad / meat loads).
+    "lumbar_rib": dict(b=20.0, h=16.0, tf=1.5, nr=1, rho_c=0.35),
+    "lumbar_spine": dict(b=20.0, h=16.0, tf=0.25, nr=1, rho_c=0.35),
+    "lumbar_tie": dict(b=6.0, h=5.0, tf=0.25, nr=1, rho_c=1.0),
     "lumbar_shear_scale": 0.02,      # the open lattice has no panel shear (diagonals kept, near zero)
 }
 LUMBAR_GROUPS = ("lumbar_rib", "lumbar_spine", "lumbar_tie")
@@ -319,7 +322,7 @@ LUMBAR_GROUPS = ("lumbar_rib", "lumbar_spine", "lumbar_tie")
 
 def sections(design: dict = DESIGN) -> dict:
     out = {}
-    for g in ("stay_lower", "stay_upper", "mid_bar", "upper_bar") + LUMBAR_GROUPS:
+    for g in ("stay_lower", "stay_upper", "stay_top", "mid_bar", "upper_bar") + LUMBAR_GROUPS:
         out[g] = printed_section(name=g, **design[g])
     return out
 
@@ -337,10 +340,17 @@ def model(torso: float, design: dict = DESIGN, posts: bool = False) -> dict:
     from . import frame_cg_recheck as R
     from . import frame_topopt as ft
     m = R.split_top_bar(build_frame_from_yaml(ft.FRAME_YAML, torso_in=float(torso), extension_posts=posts), 95.0)
+    # P-1 (fixed interface, frame_light2.md): the extension-post socket gets the crown corners' 0.8 mm bondline
+    cj = m["params"].get("crown_joint") or {}
+    m["joints"] = [({**j, "params": {**(j.get("params") or {}), **cj}} if j["id"].startswith("post_socket") else j)
+                   for j in m["joints"]]
     secs = sections(design)
     for mem in m["members"]:
         g = mem["group"]
         key = g[:-2] if g.endswith(("_L", "_R")) else g
+        if key == "stay_upper" and min(m["nodes"][n][2] for n in mem["nodes"]) >= 519.0:
+            key = "stay_top"
+            mem["group"] = f"stay_top_{g[-1]}"
         if key in secs:
             mem["section"] = secs[key]
             mem["material"] = None
@@ -356,7 +366,7 @@ def model(torso: float, design: dict = DESIGN, posts: bool = False) -> dict:
 
 
 # ============================================================================ runs
-GROUPS = ("stay_lower", "stay_upper", "mid_bar", "upper_bar") + LUMBAR_GROUPS
+GROUPS = ("stay_lower", "stay_upper", "stay_top", "mid_bar", "upper_bar") + LUMBAR_GROUPS
 
 
 def _key(g):
@@ -403,9 +413,12 @@ def run_cases(design: dict = DESIGN, torsos=TORSOS, buckling: bool = True, log=p
                                 cur["member"][k] = mr["id"]
                                 cur["fi_limit"][k] = float(f1[k])
                 splice = _splice_forces(res, m)
+                lf = res.meta.get("link_forces", {})
+                bush = {k: float(np.hypot(*np.asarray(v)[:2])) for k, v in lf.items() if k.startswith("bush")}
+                pawl = [float(v) for v in np.asarray(lf.get("pawl", np.zeros(6)))[:3]]
                 cr = R._crown_rows(res, _crown_view(m), c)
                 rows.append({"scenario": tag, "case": c.name, "torso": float(t), "factor": req,
-                             "g": float(c.g_factor), "groups": per, "splice": splice,
+                             "g": float(c.g_factor), "groups": per, "splice": splice, "bush": bush, "pawl": pawl,
                              "buckling": cr.get("buckling")})
                 crown.append({"scenario": tag, "case": c.name, "torso": float(t), "factor": req, **cr})
         if log:
@@ -415,8 +428,10 @@ def run_cases(design: dict = DESIGN, torsos=TORSOS, buckling: bool = True, log=p
 
 # ============================================================================ sizing (fully-stressed, discrete)
 CANDS = {
-    "stay_upper": dict(b=(21, 22, 23, 24, 26), h=(21, 22, 23, 24, 26), tf=(0.5, 0.75, 1.0, 1.25, 1.5, 2.0),
+    "stay_upper": dict(b=(22, 23, 24, 25, 26, 27, 28, 30), h=(21, 22, 23, 24, 26), tf=(0.5, 0.75, 1.0, 1.25, 1.5, 2.0),
                        nr=(1, 2, 3, 4), bore=(18.0,), rho_c=(1.0,)),
+    "stay_top": dict(b=(22, 24, 26, 28, 30, 34), h=(22, 24, 26, 28, 30, 34), tf=(0.5, 1.0, 1.5, 2.0),
+                     nr=(1, 2, 3, 4), bore=(18.0,), rho_c=(1.0,)),
     "stay_lower": dict(b=(12, 14, 16, 18, 20), h=(16, 18, 20, 22, 26), tf=(0.5, 0.75, 1.0, 1.25, 1.5),
                        nr=(1, 2, 3), rho_c=(0.2, 0.35, 0.6, 1.0)),
     "mid_bar": dict(b=(8, 10, 12, 14, 16), h=(8, 10, 12, 14, 16), tf=(0.25, 0.5, 0.75, 1.0),
@@ -427,7 +442,7 @@ CANDS = {
                        nr=(1, 2, 3), rho_c=(0.2, 0.35, 1.0)),
     "lumbar_spine": dict(b=(8, 10, 12, 14, 16, 20), h=(8, 10, 12, 14, 16, 18), tf=(0.25, 0.5, 0.75, 1.0, 1.5),
                          nr=(1, 2, 3), rho_c=(0.2, 0.35, 1.0)),
-    "lumbar_tie": dict(b=(4, 6, 8, 10), h=(4, 6, 8, 10), tf=(0.0, 0.25, 0.5), nr=(0, 1, 2), rho_c=(1.0,)),
+    "lumbar_tie": dict(b=(4, 6, 8, 10), h=(4, 5, 6, 8, 10), tf=(0.0, 0.25, 0.5), nr=(0, 1, 2), rho_c=(1.0,)),
 }
 TARGET = 1.05      # sizing target margin (5 % reserve on every check)
 
@@ -467,6 +482,29 @@ def _stack(rows: list, g: str):
     return _STACK[key]
 
 
+def sleeve_margins(kw: dict, rows: list, which: str) -> dict:
+    """Sleeve ring under the crown-leg bushing for a candidate sleeve section (see :func:`sleeve_check`)."""
+    des = {"stay_upper": kw, "stay_top": kw}
+    st, fa, cr = np.inf, np.inf, np.inf
+    for r in rows:
+        for k, F in r.get("bush", {}).items():
+            if ("top" in k) != (which == "top"):
+                continue
+            st = min(st, 1 / sleeve_check(F * r["factor"], which, des)["fi"])
+            if r["case"] == "static_carry":
+                fa = min(fa, ALLOW["fat_matrix"] / sleeve_check(F * G_WALK, which, des)["fi"])
+                cr = min(cr, ALLOW["creep_matrix"] / sleeve_check(F, which, des)["fi"])
+    return {"sleeve": st, "sleeve_fatigue": fa, "sleeve_creep": cr}
+
+
+def bore_fits(kw: dict) -> bool:
+    """Printability round a sleeve bore: >= 0.6 mm matrix liner between the reamed 18 mm bore and the fibre
+    (the ream must not cut fibre; ASSUMPTION) and the bore roof printed as a 45 deg teardrop."""
+    yb = (kw["h"] - kw["bore"]) / 2 - SKIN - kw["tf"]
+    xb = (kw["b"] - kw["bore"]) / 2 - WALL - kw["nr"] * FIBRE_W
+    return yb >= 0.6 and xb >= 0.6
+
+
 def size_group(g: str, rows: list, cands: dict | None = None, target: float = TARGET) -> tuple:
     """Lightest candidate of group g whose margins all reach ``target`` on the given force set."""
     import itertools
@@ -476,7 +514,7 @@ def size_group(g: str, rows: list, cands: dict | None = None, target: float = TA
     opts = []
     for vals in itertools.product(*(cands[k] for k in keys)):
         kw = dict(zip(keys, vals))
-        if kw.get("bore", 0) and (min(kw["b"], kw["h"]) - kw["bore"]) / 2 < 1.5:
+        if kw.get("bore", 0) and not bore_fits(kw):
             continue
         if kw["tf"] > kw["h"] / 2 - SKIN - 1.0:
             continue
@@ -485,6 +523,8 @@ def size_group(g: str, rows: list, cands: dict | None = None, target: float = TA
     opts.sort(key=lambda o: o[0])
     for gpm, kw, sec in opts:
         m = group_margins(sec, rows, g)
+        if g in ("stay_upper", "stay_top"):
+            m.update(sleeve_margins(kw, rows, "low" if g == "stay_upper" else "top"))
         if min(m.values()) >= target:
             return kw, m, gpm
         best = best or (kw, m, gpm)
@@ -557,6 +597,72 @@ def splice_check(F, factor: float, design: dict = DESIGN) -> dict:
             "fi_bolt": float(per_bolt / s["bolt_shear_n"]), "flange_n": float(flange)}
 
 
+# ============================================================================ local interface checks
+BUSH_LEN = 70.0          # frame.yaml bushing_len_mm (crown-leg bushings)
+PAWL = {"pin_bore": 8.0, "cheek_t": 6.0, "rings": 3, "fibre_layers": 16}
+# ASSUMPTION: each pawl cheek is 6 mm thick with 3 concentric fibre rings round the 8 mm 304 bushing in 16 of its
+# layers (2 mm of CCF), the rest Onyx. Same pawl geometry and 304 bushing as released (frame_cg_recheck.pawl_cheek).
+
+
+def sleeve_check(F_radial: float, which: str, design: dict = DESIGN) -> dict:
+    """Printed sleeve ring under a crown-leg bushing: diametral line load F over the bushing length, point-load
+    ring moment 0.318 F R / L (no T7 contact-land credit). The side-wall hoop stress acts ACROSS the layers
+    (flat print, bore axis in the layer plane), so it is checked against the matrix Z strength (hot/wet)."""
+    p = design["stay_top" if which == "top" else "stay_upper"]
+    d = p["bore"]
+    t = (p["b"] - d) / 2                      # side wall (x), hoop across layers there
+    R = d / 2 + t / 2
+    m = 0.318 * F_radial * R / BUSH_LEN
+    sig = 6 * m / t ** 2
+    allow = SM_Z * ALLOW["kd_matrix_hw"]
+    return {"sigma_mpa": float(sig), "allow_mpa": float(allow), "fi": float(sig / allow)}
+
+
+def pawl_check(F_yz) -> dict:
+    """Pawl cheek pair: pin load shared by 2 cheeks; fibre loop tension (2 legs) and bushing bearing on the cheek."""
+    F = float(np.hypot(*F_yz)) / 2
+    xt, _ = fibre_allow()
+    strands = 2 * PAWL["rings"] * PAWL["fibre_layers"]
+    loop = strands * float(M.require("fiber_strand_area_mm2")) * xt
+    bear = F / (PAWL["pin_bore"] * PAWL["cheek_t"])
+    ba = ALLOW["bearing_mpa"] * ALLOW["kd_matrix_hw"]
+    return {"per_cheek_n": F, "fi_loop": F / loop, "fi_bearing": bear / ba, "bearing_mpa": bear}
+
+
+def local_checks(rows: list, design: dict = DESIGN) -> dict:
+    out = {}
+    for r in rows:
+        tag = f"{r['scenario']}:{r['case']}|{r['torso']:g}"
+        for k, F in r.get("bush", {}).items():
+            which = "top" if "top" in k else "low"
+            c = sleeve_check(F * r["factor"], which, design)
+            key = f"sleeve ring ({which} bushing)"
+            if key not in out or 1 / c["fi"] < out[key]["margin"]:
+                out[key] = {"margin": 1 / c["fi"], "set": tag, **c}
+            if r["case"] == "static_carry":
+                cf = sleeve_check(F * G_WALK, which, design)
+                mf = ALLOW["fat_matrix"] / cf["fi"]
+                kf = f"sleeve ring fatigue ({which} bushing)"
+                if kf not in out or mf < out[kf]["margin"]:
+                    out[kf] = {"margin": mf, "set": tag}
+                mc = ALLOW["creep_matrix"] / sleeve_check(F, which, design)["fi"]
+                kc = f"sleeve ring creep ({which} bushing)"
+                if kc not in out or mc < out[kc]["margin"]:
+                    out[kc] = {"margin": mc, "set": tag}
+        pw = r.get("pawl")
+        if pw:
+            c = pawl_check(np.asarray(pw[1:3]) * r["factor"])
+            m_ = 1 / max(c["fi_loop"], c["fi_bearing"])
+            if "pawl cheek" not in out or m_ < out["pawl cheek"]["margin"]:
+                out["pawl cheek"] = {"margin": m_, "set": tag, **c}
+            if r["case"] == "static_carry":
+                cf = pawl_check(np.asarray(pw[1:3]) * G_WALK)
+                mf = min(ALLOW["fat_fibre"] / cf["fi_loop"], ALLOW["fat_matrix"] / cf["fi_bearing"])
+                if "pawl cheek fatigue" not in out or mf < out["pawl cheek fatigue"]["margin"]:
+                    out["pawl cheek fatigue"] = {"margin": mf, "set": tag}
+    return out
+
+
 # ============================================================================ summary
 def summarize(R_: dict, design: dict = DESIGN) -> dict:
     rows = R_["rows"]
@@ -601,6 +707,7 @@ def summarize(R_: dict, design: dict = DESIGN) -> dict:
                 if worst_f is None or mf < worst_f["margin"]:
                     worst_f = {"margin": mf, "set": f"{r['scenario']}:static_carry|{r['torso']:g}", **cf}
     out["splice"] = {"strength": worst, "fatigue": worst_f}
+    out["local"] = local_checks(rows, design)
     bk = [(r["buckling"], f"{r['scenario']}:{r['case']}|{r['torso']:g}") for r in rows if r.get("buckling")]
     if bk:
         b = min(bk)
@@ -671,26 +778,33 @@ def mass(design: dict = DESIGN, torso: float = 19.0) -> dict:
 
 
 # ============================================================================ stiffness vs today
+TODAY_TORSION_VS_TUBE = 1.51     # spreader_layout.md section 3: released printed body = 1.51 x the v2 tube frame
+
+
 def torsion_stiffness(design: dict | None = DESIGN, torso: float = 19.0) -> float:
-    """Frame twist stiffness, N m / deg: feet fixed (SL0 / SR0), equal and opposite y forces at the two stay
-    tops (z 530). design=None -> the released frame.yaml beam model (carbon stays)."""
+    """Twist stiffness, N m / deg, by the record's test (frame_topopt.tube_frame_stiffness): hip pivot clamped,
+    +-TORSION_F (y) at the two stay tops. design=None -> the released frame.yaml beam model (carbon tubes)."""
     from huntkit.fea.frame import solve
     from huntkit.fea.frames import build_frame_from_yaml
-    from . import frame_cg_recheck as R
     from . import frame_topopt as ft
-    m = model(torso, design) if design is not None else R.split_top_bar(
-        build_frame_from_yaml(ft.FRAME_YAML, torso_in=torso, extension_posts=False), 95.0)
-    m = copy.deepcopy({k: v for k, v in m.items()})
-    m["supports"] = {"SL0": [1] * 6, "SR0": [1] * 6}
-    P = 50.0
-    m["loads"] = {"SL530": [0, P, 0, 0, 0, 0], "SR530": [0, -P, 0, 0, 0, 0]}
-    res = solve(m, buckling=False, name="torsion")
-    d = res.displacements
-    dy = d["SL530"][1] - d["SR530"][1]
-    xL, xR = m["nodes"]["SL530"][0], m["nodes"]["SR530"][0]
-    twist = np.degrees(dy / abs(xR - xL))
-    T = P * abs(xR - xL) / 1000.0
-    return float(T / twist)
+    m = model(torso, design) if design is not None else build_frame_from_yaml(
+        ft.FRAME_YAML, torso_in=torso, extension_posts=False)
+    m = dict(m)
+    m["loads"] = {"SR530": [0, ft.TORSION_F, 0, 0, 0, 0], "SL530": [0, -ft.TORSION_F, 0, 0, 0, 0]}
+    m["supports"] = {"HP": "fixed"}
+    m["inertia_relief"] = False
+    r = solve(m, buckling=False)
+    i = {n: r.node_ids.index(n) for n in ("SL530", "SR530")}
+    dy = r.u[6 * i["SR530"] + 1] - r.u[6 * i["SL530"] + 1]
+    w = abs(m["nodes"]["SR530"][0] - m["nodes"]["SL530"][0])
+    return float(ft.TORSION_F * w / 1000.0 / np.degrees(dy / w))
+
+
+def torsion_vs_today(design: dict = DESIGN) -> dict:
+    k = torsion_stiffness(design)
+    k_tube = torsion_stiffness(None)
+    return {"Nm_per_deg": k, "tube_Nm_per_deg": k_tube, "vs_tube": k / k_tube,
+            "vs_today": k / k_tube / TODAY_TORSION_VS_TUBE}
 
 
 def _jsonable(o):
@@ -710,7 +824,7 @@ def run(log=print) -> dict:
     R_ = run_cases(log=log)
     S = summarize(R_)
     ms = mass()
-    ctx = {"design": DESIGN, "allow": ALLOW, "summary": S, "mass": ms,
+    ctx = {"design": DESIGN, "allow": ALLOW, "summary": S, "mass": ms, "torsion": torsion_vs_today(),
            "sections": {g: {"EA": s.EA, "EIy": s.EIy, "EIz": s.EIz, "GJ": s.GJ, "g_per_mm": s.mass_g_per_mm,
                             "fibre_mm2": s.fibre_mm2} for g, s in sections().items()},
            "seconds": time.time() - t0}
@@ -723,3 +837,133 @@ def run(log=print) -> dict:
 if __name__ == "__main__":       # pragma: no cover
     ctx = run()
     print(json.dumps(_jsonable({"summary": ctx["summary"], "mass": ctx["mass"]}), indent=1))
+
+
+# ============================================================================ figures (phone-readable PNG)
+def member_utilization(design: dict = DESIGN, torso: float = 15.0) -> dict:
+    """Max factored FI per printed member over every rev C set at one torso (both couple variants)."""
+    from huntkit.fea.load_standard import ls1_envelope
+    m = model(torso, design)
+    fi = {}
+    for variant, cases in ls1_envelope("C").items():
+        for c in cases:
+            if c.name == "tall_load_posts":
+                continue
+            c = copy.copy(c)
+            c.buckling = False
+            res = c.run(m)
+            for mr in res.members:
+                if _key(mr["group"]) in GROUPS:
+                    fi[mr["id"]] = max(fi.get(mr["id"], 0.0), float(mr["check"]["fi"]) * float(c.required_sf))
+    return {"model": m, "fi": fi}
+
+
+def _draw_frame(ax, m, color_of, design=DESIGN, fibre=True):
+    from matplotlib.patches import Polygon
+    N = m["nodes"]
+    for mem in m["members"]:
+        sec = mem["section"]
+        if not isinstance(sec, PrintedSection):
+            continue
+        a, b = (np.asarray(N[n])[[0, 2]] for n in mem["nodes"])
+        u = (b - a) / max(np.linalg.norm(b - a), 1e-9)
+        n = np.array([-u[1], u[0]])
+        w = sec.params["b"] / 2
+        ax.add_patch(Polygon([a + n * w, b + n * w, b - n * w, a - n * w], closed=True,
+                             fc=color_of(mem), ec="none", zorder=2))
+        if fibre:
+            off = w - WALL - 0.6
+            for sgn in (1, -1):
+                p, q = a + sgn * n * off, b + sgn * n * off
+                ax.plot([p[0], q[0]], [p[1], q[1]], color="#111111", lw=0.6, zorder=3)
+
+
+def plot_concept(path=None, design: dict = DESIGN) -> str:
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    import trimesh
+    path = Path(path or SCREENS / f"{SHOT}_1.png")
+    fig, axs = plt.subplots(1, 2, figsize=(9, 7.2), dpi=120)
+    # today: released PAHT-CF branch body, front view (x-z)
+    mesh = trimesh.load(REPO_ROOT / "designs/pack_5200/print/frame/genframe_assembled.stl")
+    tri = mesh.vertices[mesh.faces][:, :, [0, 2]]
+    from matplotlib.collections import PolyCollection
+    axs[0].add_collection(PolyCollection(tri, fc="#7a7f87", ec="none"))
+    axs[0].set_title(f"TODAY: PAHT-CF branch body\nbody {BASELINE['body_g']:.0f} g, frame {BASELINE['frame_g']:.0f} g",
+                     fontsize=11)
+    # LOOM
+    m = model(19.0, design)
+    colors = {"stay_lower": "#c9a96e", "stay_upper": "#b8925a", "stay_top": "#8c6a3c", "mid_bar": "#c9a96e",
+              "upper_bar": "#b8925a", "lumbar_rib": "#d8bd8a", "lumbar_spine": "#d8bd8a", "lumbar_tie": "#e9dcc0"}
+    _draw_frame(axs[1], m, lambda mem: colors.get(_key(mem["group"]), "#ccc"), design)
+    ax = axs[1]
+    ax.axhline(SPLICE_Z, color="#c0392b", lw=1.2, ls="--")
+    ax.text(0, SPLICE_Z + 6, "bolted splice z 290 (bed 300 mm)", color="#c0392b", ha="center", fontsize=8)
+    for x in (-115, 115):
+        ax.plot([x, x], [136, 530], color="white", lw=1.0, ls=(0, (3, 2)), zorder=4)
+    ms = mass(design)
+    ax.set_title(f"TEAM E LOOM: flat-printed CCF ladder\nbody {ms['body_g']:.0f} g, frame {ms['frame_g']:.0f} g",
+                 fontsize=11)
+    ax.text(0, -40, "black lines = continuous-fibre rings / flanges\ndashed white = 18 mm crown-leg sleeve bore",
+            ha="center", fontsize=8)
+    for a in axs:
+        a.set_aspect("equal")
+        a.set_xlim(-160, 160)
+        a.set_ylim(-60, 570)
+        a.set_xlabel("x mm")
+        a.grid(alpha=0.25)
+    axs[0].set_ylabel("z mm")
+    fig.suptitle("Printed-frame competition: today vs Team E (front view, wearer side)", fontsize=12)
+    fig.tight_layout()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(path)
+    plt.close(fig)
+    return str(path)
+
+
+def plot_utilization(ctx: dict, path=None, design: dict = DESIGN) -> str:
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib import cm, colors as mcolors
+    path = Path(path or SCREENS / f"{SHOT}_2.png")
+    U = member_utilization(design, 15.0)
+    fig = plt.figure(figsize=(10, 7.2), dpi=120)
+    ax = fig.add_axes([0.03, 0.08, 0.38, 0.82])
+    norm = mcolors.Normalize(0, 1.0)
+    cmap = matplotlib.colormaps["viridis"]
+    _draw_frame(ax, U["model"], lambda mem: cmap(norm(min(U["fi"].get(mem["id"], 0), 1.0))), design, fibre=False)
+    ax.set_aspect("equal"); ax.set_xlim(-150, 150); ax.set_ylim(-20, 560)
+    ax.set_title("max factored FI per member\n(torso 15 in, every rev C set)", fontsize=10)
+    fig.colorbar(cm.ScalarMappable(norm=norm, cmap=cmap), ax=ax, fraction=0.05, label="utilization (1.0 = limit)")
+    # margins bar chart
+    S = ctx["summary"]
+    items = []
+    for g, v in S["strength"].items():
+        items.append((f"{g} strength ({v['mode']})", v["margin"]))
+    for g, v in S["fatigue"].items():
+        if v["margin"] < 3:
+            items.append((f"{g} fatigue ({v['mode']})", v["margin"]))
+    for k, v in S["local"].items():
+        if v["margin"] < 3:
+            items.append((k, v["margin"]))
+    items.append(("splice bolts bearing", S["splice"]["strength"]["margin"]))
+    items.append(("splice fatigue", S["splice"]["fatigue"]["margin"]))
+    items.append(("buckling", S["buckling"]["margin"]))
+    for k in ("crown_leg", "crown_top_bar", "crown_spine", "post_socket Volkersen peak"):
+        items.append((f"crown {k}", S["crown"][k]["margin"]))
+    items.sort(key=lambda t: t[1])
+    ax2 = fig.add_axes([0.62, 0.08, 0.36, 0.82])
+    ys = np.arange(len(items))
+    ax2.barh(ys, [t[1] for t in items], color=["#c0392b" if t[1] < 1 else "#2c7fb8" for t in items])
+    ax2.axvline(1.0, color="k", lw=1)
+    ax2.set_yticks(ys, [t[0] for t in items], fontsize=7)
+    ax2.set_xlim(0, 2.6)
+    ax2.set_xlabel("margin = SF / requirement (pass >= 1.0)")
+    ax2.set_title("HA-LS-1 rev C, worst torso and couple variant", fontsize=10)
+    fig.suptitle(f"Team E LOOM utilization: passes at beam level on ASSUMED allowables (coupons E-1..E-7)",
+                 fontsize=11)
+    fig.savefig(path)
+    plt.close(fig)
+    return str(path)

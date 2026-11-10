@@ -1,0 +1,436 @@
+{
+ "design": {
+  "stay_lower": {
+   "b": 16.0,
+   "h": 22.0,
+   "tf": 1.0,
+   "nr": 1,
+   "rho_c": 0.2
+  },
+  "stay_upper": {
+   "b": 26.0,
+   "h": 23.0,
+   "tf": 1.25,
+   "nr": 2,
+   "bore": 18.0,
+   "rho_c": 1.0
+  },
+  "stay_top": {
+   "b": 30.0,
+   "h": 22.0,
+   "tf": 0.5,
+   "nr": 1,
+   "bore": 18.0,
+   "rho_c": 1.0
+  },
+  "mid_bar": {
+   "b": 16.0,
+   "h": 10.0,
+   "tf": 0.25,
+   "nr": 2,
+   "rho_c": 0.2
+  },
+  "upper_bar": {
+   "b": 26.0,
+   "h": 26.0,
+   "tf": 2.5,
+   "nr": 1,
+   "rho_c": 0.2
+  },
+  "lumbar_rib": {
+   "b": 20.0,
+   "h": 16.0,
+   "tf": 1.5,
+   "nr": 1,
+   "rho_c": 0.35
+  },
+  "lumbar_spine": {
+   "b": 20.0,
+   "h": 16.0,
+   "tf": 0.25,
+   "nr": 1,
+   "rho_c": 0.35
+  },
+  "lumbar_tie": {
+   "b": 6.0,
+   "h": 5.0,
+   "tf": 0.25,
+   "nr": 1,
+   "rho_c": 1.0
+  },
+  "lumbar_shear_scale": 0.02
+ },
+ "allow": {
+  "kd_fibre_hw": 0.8,
+  "kd_impact_comp": 0.65,
+  "kd_part": 0.85,
+  "kd_matrix_hw": 0.6,
+  "ilss_mpa": 14.0,
+  "s_inplane_mpa": 20.0,
+  "fat_fibre": 0.5,
+  "fat_matrix": 0.3,
+  "creep_matrix": 0.4,
+  "bearing_mpa": 60.0
+ },
+ "summary": {
+  "strength": {
+   "stay_lower": {
+    "fi": 0.8704120094734781,
+    "mode": "interlayer",
+    "set": "C_im3:side_hill_torsion|23",
+    "member": "SL120-SL130",
+    "margin": 1.1488812069641723
+   },
+   "stay_upper": {
+    "fi": 0.8306228584713615,
+    "mode": "fibre_c",
+    "set": "C_im3:drop_2p5g|23",
+    "member": "SL190-SL250",
+    "margin": 1.2039158202801594
+   },
+   "stay_top": {
+    "fi": 0.7999974592930295,
+    "mode": "interlayer",
+    "set": "C_im3:hipbelt_off_abuse|15",
+    "member": "SL520-SL530",
+    "margin": 1.2500039698672494
+   },
+   "lumbar_rib": {
+    "fi": 0.8265983278962348,
+    "mode": "fibre_c",
+    "set": "C_im3:drop_2p5g|15",
+    "member": "plh41",
+    "margin": 1.2097774290749992
+   },
+   "lumbar_tie": {
+    "fi": 0.9314546946305686,
+    "mode": "fibre_c",
+    "set": "C_im3:drop_2p5g|15",
+    "member": "plv31",
+    "margin": 1.0735895215994564
+   },
+   "lumbar_spine": {
+    "fi": 0.9320639017135404,
+    "mode": "interlayer",
+    "set": "C_im3:side_hill_torsion|15",
+    "member": "plv32",
+    "margin": 1.0728878118351795
+   },
+   "mid_bar": {
+    "fi": 0.8961410276588319,
+    "mode": "fibre_c",
+    "set": "C:side_hill_torsion|15",
+    "member": "MB2-SR330",
+    "margin": 1.1158957899879884
+   },
+   "upper_bar": {
+    "fi": 0.9209849899343096,
+    "mode": "fibre_c",
+    "set": "C:hipbelt_off_abuse|15",
+    "member": "UB1-UB2",
+    "margin": 1.0857940258845329
+   }
+  },
+  "fatigue": {
+   "stay_lower": {
+    "margin": 1.0778024155701222,
+    "mode": "interlayer",
+    "set": "C_im3:static_carry|23"
+   },
+   "stay_upper": {
+    "margin": 1.1286710815126495,
+    "mode": "fibre_c",
+    "set": "C_im3:static_carry|23"
+   },
+   "stay_top": {
+    "margin": 1.1948637774690676,
+    "mode": "interlayer",
+    "set": "C_im3:static_carry|23"
+   },
+   "lumbar_rib": {
+    "margin": 1.1341663397578114,
+    "mode": "fibre_c",
+    "set": "C_im3:static_carry|15"
+   },
+   "lumbar_tie": {
+    "margin": 1.0064901764994905,
+    "mode": "fibre_c",
+    "set": "C_im3:static_carry|15"
+   },
+   "lumbar_spine": {
+    "margin": 1.012682019533427,
+    "mode": "fibre_c",
+    "set": "C_im3:static_carry|15"
+   },
+   "mid_bar": {
+    "margin": 17.203594578313975,
+    "mode": "matrix",
+    "set": "C_im3:static_carry|15"
+   },
+   "upper_bar": {
+    "margin": 1.8926111056019905,
+    "mode": "interlayer",
+    "set": "C_im3:static_carry|15"
+   }
+  },
+  "creep": {
+   "stay_lower": {
+    "margin": 2.2993118198829277,
+    "mode": "interlayer",
+    "set": "C_im3:static_carry|23"
+   },
+   "stay_upper": {
+    "margin": 3.0293179077012633,
+    "mode": "interlayer",
+    "set": "C_im3:static_carry|23"
+   },
+   "stay_top": {
+    "margin": 2.549042725267344,
+    "mode": "interlayer",
+    "set": "C_im3:static_carry|23"
+   },
+   "lumbar_rib": {
+    "margin": 2.5188002166197188,
+    "mode": "inplane_shear",
+    "set": "C_im3:static_carry|23"
+   },
+   "lumbar_tie": {
+    "margin": 4.431046797114451,
+    "mode": "matrix",
+    "set": "C_im3:static_carry|15"
+   },
+   "lumbar_spine": {
+    "margin": 2.271030399982908,
+    "mode": "interlayer",
+    "set": "C_im3:static_carry|15"
+   },
+   "mid_bar": {
+    "margin": 36.70100176706982,
+    "mode": "matrix",
+    "set": "C_im3:static_carry|15"
+   },
+   "upper_bar": {
+    "margin": 4.037570358617581,
+    "mode": "interlayer",
+    "set": "C_im3:static_carry|15"
+   }
+  },
+  "splice": {
+   "strength": {
+    "margin": 2.4916546626989806,
+    "set": "C_im3:drop_2p5g|23",
+    "per_bolt_n": 939.1349592022889,
+    "bearing_mpa": 14.448230141573674,
+    "fi_bearing": 0.4013397261548243,
+    "fi_bolt": 0.2041242738659122,
+    "flange_n": 3698.1621237635636
+   },
+   "fatigue": {
+    "margin": 1.4015557477681764,
+    "set": "C_im3:static_carry|23",
+    "per_bolt_n": 500.87197824122075,
+    "bearing_mpa": 7.705722742172627,
+    "fi_bearing": 0.21404785394923964,
+    "fi_bolt": 0.10886627939515317,
+    "flange_n": 1972.3531326739007
+   }
+  },
+  "buckling": {
+   "margin": 1.2122032477767224,
+   "set": "C:side_hill_torsion|15"
+  },
+  "crown": {
+   "crown_leg": {
+    "margin": 1.1158277525122633,
+    "set": "C_im3:hipbelt_off_abuse|23"
+   },
+   "crown_top_bar": {
+    "margin": 1.1419379521484072,
+    "set": "C_im3:hipbelt_off_abuse|15"
+   },
+   "crown_spine": {
+    "margin": 1.1784330580660223,
+    "set": "C_im3:hipbelt_off_abuse|15"
+   },
+   "crown_corner avg": {
+    "margin": 2.4576980822335766,
+    "set": "C:tall_load_posts|15"
+   },
+   "crown_corner Volkersen peak": {
+    "margin": 1.2763328551924673,
+    "set": "C:tall_load_posts|15"
+   },
+   "bushing_bearing": {
+    "margin": 16.703925568134323,
+    "set": "C_im3:hipbelt_off_abuse|15"
+   },
+   "leg_ring_crush": {
+    "margin": 2.214709961972246,
+    "set": "C_im3:hipbelt_off_abuse|15"
+   },
+   "ext_post": {
+    "margin": 2.72308937912748,
+    "set": "C:tall_load_posts|15"
+   },
+   "ext_post_bar": {
+    "margin": 14.26284379583521,
+    "set": "C:tall_load_posts|15"
+   },
+   "post_socket avg": {
+    "margin": 2.3081016524949276,
+    "set": "C:tall_load_posts|15"
+   },
+   "post_socket Volkersen peak": {
+    "margin": 1.1986217059839366,
+    "set": "C:tall_load_posts|15"
+   }
+  },
+  "local": {
+   "sleeve ring (low bushing)": {
+    "margin": 1.46615608510897,
+    "set": "C_im3:hipbelt_off_abuse|23",
+    "sigma_mpa": 12.277001188902867,
+    "allow_mpa": 18.0,
+    "fi": 0.6820556216057149
+   },
+   "sleeve ring fatigue (low bushing)": {
+    "margin": 1.06306732363579,
+    "set": "C_im3:static_carry|23"
+   },
+   "sleeve ring creep (low bushing)": {
+    "margin": 2.267876957089685,
+    "set": "C_im3:static_carry|23"
+   },
+   "sleeve ring (top bushing)": {
+    "margin": 1.4070018167229046,
+    "set": "C_im3:hipbelt_off_abuse|15",
+    "sigma_mpa": 12.793160453711714,
+    "allow_mpa": 18.0,
+    "fi": 0.7107311363173174
+   },
+   "sleeve ring fatigue (top bushing)": {
+    "margin": 1.3448459106036885,
+    "set": "C_im3:static_carry|23"
+   },
+   "sleeve ring creep (top bushing)": {
+    "margin": 2.869004609287869,
+    "set": "C_im3:static_carry|23"
+   },
+   "pawl cheek": {
+    "margin": 1.407041436798272,
+    "set": "C:hipbelt_off_abuse|15",
+    "per_cheek_n": 1228.1088209683933,
+    "fi_loop": 0.21378342610997264,
+    "fi_bearing": 0.710711123245598,
+    "bearing_mpa": 25.585600436841528
+   },
+   "pawl cheek fatigue": {
+    "margin": 2.2811785762906567,
+    "set": "C_im3:static_carry|15"
+   }
+  }
+ },
+ "mass": {
+  "members_g": {
+   "stay_lower": 53.355254662351605,
+   "stay_upper": 342.06279068126884,
+   "stay_top": 9.991858068893677,
+   "lumbar_rib": 175.9607938437883,
+   "lumbar_tie": 39.24186948437848,
+   "lumbar_spine": 28.469026113771545,
+   "mid_bar": 25.629360000000002,
+   "upper_bar": 94.0424
+  },
+  "features_g": {
+   "pawl housing + rack guides on the upper bar (304 bushing cheeks)": 22.0,
+   "hip pivot boss, 4 x M5 heat-set inserts, lumbar pad seat": 16.0,
+   "8 fairlead cheeks + IM2/IM3 hook bosses + hinge-pin lugs + under-strap pins": 30.0,
+   "spreader clip lands (z 166 / 260 / 400) + bottom-tab pads": 10.0,
+   "stay feet (boot lands) + crown sleeve top cuffs": 14.0,
+   "corner fillets (fibre turn radius >= 10 mm) + splice collars (2)": 24.0
+  },
+  "features_total_g": 116.0,
+  "body_g": 884.7533528544525,
+  "splice_hw_g": 20.8,
+  "kept_hw_g": 218.5,
+  "frame_g": 1124.0533528544524,
+  "frame_plus_spreader_g": 1286.0533528544524,
+  "pack_corrie_b2_M_g": 4025.5533528544524,
+  "fibre_cm3": 234.23788768988692,
+  "fibre_m": 2129.4353426353355,
+  "matrix_g": 556.8203100886108
+ },
+ "torsion": {
+  "Nm_per_deg": 5.744657814028791,
+  "tube_Nm_per_deg": 2.887990068854133,
+  "vs_tube": 1.9891542827597388,
+  "vs_today": 1.3173207170594297
+ },
+ "sections": {
+  "stay_lower": {
+   "EA": 4013952.000000001,
+   "EIy": 245530511.0399983,
+   "EIz": 130490807.9999991,
+   "GJ": 14751668.56261083,
+   "g_per_mm": 0.20517600000000003,
+   "fibre_mm2": 63.000000000000014
+  },
+  "stay_upper": {
+   "EA": 8381568.000000002,
+   "EIy": 557626906.5599962,
+   "EIz": 760204100.1599946,
+   "GJ": 25967811.689607017,
+   "g_per_mm": 0.438464,
+   "fibre_mm2": 131.20000000000002
+  },
+  "stay_top": {
+   "EA": 4682688.000000001,
+   "EIy": 292534875.359998,
+   "EIz": 608557582.5599957,
+   "GJ": 26713043.478260864,
+   "g_per_mm": 0.4995040000000001,
+   "fibre_mm2": 64.4
+  },
+  "mid_bar": {
+   "EA": 2385024.0000000005,
+   "EIy": 20675384.639999866,
+   "EIz": 84075063.3599994,
+   "GJ": 2897809.9681712957,
+   "g_per_mm": 0.111432,
+   "fibre_mm2": 37.800000000000004
+  },
+  "upper_bar": {
+   "EA": 9855360.000000002,
+   "EIy": 1024618987.1999929,
+   "EIz": 689518007.9999952,
+   "GJ": 57206625.18518519,
+   "g_per_mm": 0.40888,
+   "fibre_mm2": 158.00000000000003
+  },
+  "lumbar_rib": {
+   "EA": 4880928.000000001,
+   "EIy": 173043868.5599988,
+   "EIz": 203504869.1999986,
+   "GJ": 12456772.190814814,
+   "g_per_mm": 0.24398400000000003,
+   "fibre_mm2": 76.80000000000001
+  },
+  "lumbar_spine": {
+   "EA": 2425788.0000000005,
+   "EIy": 64933006.229999594,
+   "EIz": 147128716.94999897,
+   "GJ": 12456772.190814814,
+   "g_per_mm": 0.20331400000000002,
+   "fibre_mm2": 35.300000000000004
+  },
+  "lumbar_tie": {
+   "EA": 561600.0000000001,
+   "EIy": 964821.600000002,
+   "EIz": 1555788.0000000033,
+   "GJ": 110244.1272290809,
+   "g_per_mm": 0.037700000000000004,
+   "fibre_mm2": 8.500000000000002
+  }
+ },
+ "seconds": 19.516068935394287
+}

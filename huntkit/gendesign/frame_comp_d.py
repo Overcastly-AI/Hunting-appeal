@@ -26,7 +26,7 @@ from pathlib import Path
 
 import numpy as np
 
-from huntkit.fea.materials_bridge import REPO_ROOT
+REPO_ROOT = Path(__file__).resolve().parents[2]   # (no huntkit.fea import: the bpy venv has no scipy)
 
 TEAM_DIR = REPO_ROOT / "designs" / "pack_5200" / "frame_comp" / "D"
 SCRATCH = REPO_ROOT / "outputs" / "frame_comp_d"
@@ -59,12 +59,19 @@ MATERIALS = {
     # MPa (ASSUMPTION: Salazar 2014 found SLS PA11 >= PA12 in fatigue, so the PA12 curve is conservative)
     "pa11_mjf": {"label": "MJF PA11 (HP 3D HR)", "rule": "iso", "rho": 1050.0, "E": 1800.0, "s": 50.0,
                  "knock": 0.8, "fat": None, "rup": 0.35, "usd_g": 0.30},
+    # SLS PA12 one-piece (Materialise PA 12 SLS page: 48 MPa, 1650 MPa, 0.95 g/cc, max 630 x 330 x 550 mm);
+    # ASSUMPTION: the MJF PA12 fatigue curve applies (SLS PA12 R=-1 18 MPa amplitude at 1e6 -> ~26 MPa Smax at R=0
+    # by Goodman, close to MJF 27.7), coupon D-F1 on the ordered parts
+    "pa12_sls": {"label": "SLS PA12 (Materialise PA 12, one piece)", "rule": "iso", "rho": 950.0, "E": 1650.0,
+                 "s": 48.0, "knock": 0.8, "fat": None, "rup": 0.35, "usd_g": 0.40},
+    # usd_g 0.40: UK SLS service "30p per cm3" part-volume pricing / 0.95 g/cc x 1.27 USD/GBP (ASSUMPTION rate);
+    # Materialise publishes no price (instant quote only)
     # SLS PA12-CF (Protolabs sheet 85 x / 55 y / 45 z). Recoat x = frame z (stays), y = frame x, build z = frame y
     "pa12cf_sls": {"label": "SLS PA12-CF (Protolabs class)", "rule": "ortho", "rho": 1100.0, "E": 7900.0,
                    "X": 85.0, "Y": 55.0, "Z": 45.0, "S": 30.0, "knock": 0.8, "fat": 0.30, "rup": 0.40,
                    "usd_g": 0.60},
 }
-for _k in ("pa12_mjf", "pa11_mjf"):
+for _k in ("pa12_mjf", "pa11_mjf", "pa12_sls"):
     MATERIALS[_k]["fat"] = round(fatigue_lower_bound(1e5) / MATERIALS[_k]["s"], 3)
 
 
@@ -338,17 +345,17 @@ def joint_design(sections: dict, mat: str, meta: list, n_rows: int = 2, per_row:
 
 
 # ------------------------------------------------------------------------------------------------ cost
-def service_cost(body_g: float, mat: str) -> dict:
-    """USD per frame at 1 / 10 / 100. Print at the JLC3DP per-gram rate (no quantity break published:
-    ASSUMPTION the same rate at 10; 100 at -15 % (ASSUMPTION, volume quote)), + shipping ASSUMPTION $30 / order
-    split over the units, + today's non-printed frame hardware (PRODUCTION.md unit cost minus filament, machine,
-    reprint and dowels) + bolts/inserts for the split joint $4 (ASSUMPTION)."""
+def service_cost(body_g: float, mat: str, joint_usd: float = 0.0) -> dict:
+    """USD per frame + spreader at 1 / 10 / 100. Print at the material's per-gram service rate (no quantity break
+    published: ASSUMPTION the same at 10, -15 % at 100), shipping ASSUMPTION $30 per order split over the units,
+    plus today's non-printed hardware and spreader (PRODUCTION.md unit cost minus filament, reprint, machine and
+    dowels: $313.3, spreader $207.2 included) plus ``joint_usd`` for a split joint."""
     usd_g = MATERIALS[mat]["usd_g"]
-    hardware = 427.0 - 71.1 - 10.7 - 27.4 - 4.5 - 207.2 + 4.0   # frame without spreader, hardware only
+    hardware = 427.0 - 71.1 - 10.7 - 27.4 - 4.5 + joint_usd
     out = {}
     for q, disc in ((1, 1.0), (10, 1.0), (100, 0.85)):
-        out[str(q)] = round(body_g * usd_g * disc + 30.0 / q + hardware + 207.2, 0)
-    out["_basis"] = {"print_usd_g": usd_g, "hardware_usd": round(hardware, 1), "spreader_usd": 207.2}
+        out[str(q)] = round(body_g * usd_g * disc + 30.0 / q + hardware, 0)
+    out["_basis"] = {"print_usd_g": usd_g, "hardware_incl_spreader_usd": round(hardware, 1)}
     return out
 
 
@@ -423,5 +430,157 @@ def run2(log=print, mats=("pa11_mjf", "paht_fdm"), iters: int = 6, u_lo: float =
             np.savez_compressed(SCRATCH / f"{mat}_run2_best.npz", solid=b["solid"], util=b["eval"]["util"],
                                 shift=b["shift"])
         out["resized"][mat] = entry
-        (SCRATCH / "study2.json").write_text(json.dumps(out, indent=1, default=float))
+        (SCRATCH / f"study2{'_' + '_'.join(mats) if mats != ('pa11_mjf', 'paht_fdm') else ''}.json").write_text(json.dumps(out, indent=1, default=float))
     return out
+
+
+# ------------------------------------------------------------------------------------------------ files + figures
+SCREENS = REPO_ROOT / "outputs" / "screens"
+TODAY_STL = REPO_ROOT / "designs" / "pack_5200" / "print" / "frame" / "genframe_assembled.stl"
+
+
+def export_meshes(npz: Path, tag: str, split: bool) -> dict:
+    """Body STL (2 mm voxel surface, smoothed) into the team folder; the MJF version is cut at z 234 because the
+    370 x 276 x 360 mm envelope does not take the 546 mm body."""
+    from . import frame_topopt as ft
+    from .spreader_layout import raster
+    dom, _ = raster(None, 2.0)
+    solid = np.load(npz)["solid"]
+    from .surface import field_to_mesh
+    mesh = field_to_mesh(dom.grid.to_array(solid.astype(float)), dom.h, dom.grid.x0, level=0.5, smooth_iters=15,
+                         upsample=2)
+    TEAM_DIR.mkdir(parents=True, exist_ok=True)
+    out = {"whole": str(TEAM_DIR / f"body_{tag}.stl"), "extents_mm": [float(v) for v in mesh.extents]}
+    mesh.export(out["whole"])
+    if split:
+        try:
+            lo, hi = ft.split_mesh(mesh, 234.0)
+        except TypeError:          # upsampled surface not manifold for the trim: cut the plain voxel surface
+            lo, hi = ft.split_mesh(ft.solid_to_mesh(dom, solid, smooth_iters=10), 234.0)
+        for nm, m in (("lower", lo), ("upper", hi)):
+            p = TEAM_DIR / f"body_{tag}_{nm}.stl"
+            m.export(p)
+            out[nm] = str(p)
+            out[f"{nm}_extents_mm"] = [float(v) for v in m.extents]
+    return out
+
+
+def plot_utilisation(npz: Path, title: str, out_png: Path, base_npz: Path | None = None):
+    """Front (x-z) and side (y-z) projections of the per-voxel utilisation (max of strength FI, fatigue, creep),
+    max along the view axis; voxels added / removed vs today in the third panel."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from .spreader_layout import raster
+    dom, solid0 = raster(None, 2.0)
+    z = np.load(npz)
+    solid, util = z["solid"], z["util"]
+    cen = dom.grid.elem_centers()[np.where(solid)[0]]
+    fig, ax = plt.subplots(1, 3, figsize=(12, 7.2), gridspec_kw={"width_ratios": [3.0, 1.3, 3.0]})
+    order = np.argsort(util)
+    for a, (i, j), nm in ((ax[0], (0, 2), "front (x-z)"), (ax[1], (1, 2), "side (y-z)")):
+        sc = a.scatter(cen[order, i], cen[order, j], c=np.clip(util[order], 0, 1.2), s=2.2, cmap="turbo",
+                       vmin=0, vmax=1.2, linewidths=0)
+        a.set_aspect("equal")
+        a.set_title(nm, fontsize=11)
+        a.set_xlabel("mm")
+    cb = fig.colorbar(sc, ax=ax[:2], fraction=0.03, pad=0.02)
+    cb.set_label("utilisation (1.0 = at the rev C limit)")
+    c0 = dom.grid.elem_centers()
+    add = c0[solid & ~solid0]
+    rem = c0[solid0 & ~solid]
+    keep = c0[solid & solid0]
+    ax[2].scatter(keep[:, 0], keep[:, 2], s=1.2, c="#c9c6bd", linewidths=0)
+    ax[2].scatter(rem[:, 0], rem[:, 2], s=2.0, c="#2b6cb0", linewidths=0, label=f"removed ({rem.shape[0]} vox)")
+    ax[2].scatter(add[:, 0], add[:, 2], s=2.0, c="#d9480f", linewidths=0, label=f"added ({add.shape[0]} vox)")
+    ax[2].set_aspect("equal")
+    ax[2].set_title("vs today's body", fontsize=11)
+    ax[2].legend(loc="lower center", fontsize=9, markerscale=4)
+    fig.suptitle(title, fontsize=13)
+    fig.savefig(out_png, dpi=110)
+    plt.close(fig)
+    return out_png
+
+
+def plot_summary(rows: list, out_png: Path):
+    """Mass and margins: today vs the service candidates vs the PAHT control on the same re-sizing tool."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    fig, ax = plt.subplots(1, 2, figsize=(12, 5.6))
+    names = [r["name"] for r in rows]
+    y = np.arange(len(rows))
+    cols = ["#7a7a72" if r.get("ref") else ("#d9480f" if not r["pass"] else "#2b6cb0") for r in rows]
+    ax[0].barh(y, [r["fps_g"] for r in rows], color=cols)
+    ax[0].axvline(1225, color="k", lw=1, ls="--")
+    ax[0].text(1225, len(rows) - 0.4, " today 1225 g", fontsize=9, va="bottom")
+    for k, r in enumerate(rows):
+        ax[0].text(r["fps_g"] + 4, k, f"{r['fps_g']:.0f} g", va="center", fontsize=9)
+    ax[0].set_yticks(y, names, fontsize=9)
+    ax[0].set_xlim(1000, 1330)
+    ax[0].set_xlabel("frame + spreader, g")
+    ax[0].invert_yaxis()
+    w = 0.26
+    for k, (key, c) in enumerate((("strength", "#2b6cb0"), ("fatigue", "#d9480f"), ("creep", "#5f8f3e"))):
+        ax[1].barh(y + (k - 1) * w, [r[key] for r in rows], height=w, color=c, label=key)
+    ax[1].axvline(1.0, color="k", lw=1)
+    ax[1].set_yticks(y, [""] * len(rows))
+    ax[1].invert_yaxis()
+    ax[1].set_xlabel("body margin (SF / requirement), pass >= 1.0")
+    ax[1].legend(fontsize=9, loc="lower right")
+    fig.suptitle("Team D SERVICE: printed body by a print service, HA-LS-1 rev C", fontsize=13)
+    fig.tight_layout()
+    fig.savefig(out_png, dpi=110)
+    plt.close(fig)
+    return out_png
+
+
+def render_cycles(stl_today: str, stl_new: str, out_png: str, caption: str, sub: str, samples: int = 32,
+                  res=(1200, 900)):
+    """Cycles side by side (run with the bpy venv): today's PAHT-CF body (left) and the service body (right).
+    Uses huntkit.viz3d.cycles_render scene, lights and compositor."""
+    import math
+    import bpy
+    from huntkit.viz3d import cycles_render as C
+    bpy.ops.wm.read_factory_settings(use_empty=True)
+    sc = C.setup_scene(samples, res, 4)
+    objs = []
+    for path, dx, colr, rough in ((stl_today, 0.19, "#2a2a2a", 0.55), (stl_new, -0.19, "#3b3f35", 0.85)):
+        try:
+            bpy.ops.wm.stl_import(filepath=path)
+        except AttributeError:
+            bpy.ops.import_mesh.stl(filepath=path)
+        ob = bpy.context.selected_objects[0]
+        ob.scale = (0.001, 0.001, 0.001)
+        ob.location = (dx, 0.0, 0.0)
+        bpy.ops.object.shade_smooth()
+        m = bpy.data.materials.new(f"m{len(objs)}")
+        C.solid(m, C.hexlin(colr), rough, noise_bump=0.15 if len(objs) else 0.05)
+        ob.data.materials.append(m)
+        objs.append(ob)
+    bpy.context.view_layer.update()
+    lo, hi = C.visible_bounds(objs)
+    bpy.ops.mesh.primitive_plane_add(size=12)
+    floor = bpy.context.active_object
+    floor.is_shadow_catcher = True
+    floor.location = (0, 0, lo[2] - 0.001)
+    cd = bpy.data.cameras.new("cam")
+    cd.sensor_fit = "VERTICAL"
+    cd.sensor_height = 24.0
+    cd.angle_y = math.radians(30)
+    cam = bpy.data.objects.new("cam", cd)
+    sc.collection.objects.link(cam)
+    sc.camera = cam
+    pos, tgt = C.fit_camera(lo, hi, 160.0, 12.0, 30.0, res[0] / res[1], 1.0)
+    cam.location = pos
+    C._aim(cam, tgt)
+    rig = (C._area("key", 120.0, 1.6, (1.0, 0.95, 0.88), 1.2), C._area("fill", 18.0, 2.4, (0.88, 0.93, 1.0), 1.6),
+           C._area("rim", 60.0, 1.0, (1.0, 1.0, 1.0), 2.0))
+    C.place_rig(rig, 160.0, tgt, max(2.2, 0.75 * math.dist(pos, tgt)))
+    raw = Path(out_png).with_name("_raw_" + Path(out_png).name)
+    sc.render.filepath = str(raw)
+    bpy.ops.render.render(write_still=True)
+    C.composite(raw, Path(out_png), caption, sub)
+    C.shrink_png(Path(out_png))
+    raw.unlink(missing_ok=True)
+    return out_png
