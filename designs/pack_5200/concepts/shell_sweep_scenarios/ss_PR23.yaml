@@ -1,0 +1,6 @@
+# BL-009 shell sweep at 23 in: CORRIE's converged scenario corrie_PR23c unchanged (6 mm contact rounding + the
+# 4/3/2/1/0 continuation, the 1 kg pouch on the closed roll, the 85 mm spotter in the left-wing sleeve, B-22 guys at
+# x +/-149, z 695 on the hinge band, crown hood). The shell is swapped in at run time by
+# designs/pack_5200/concepts/shell_sweep.py (install), so every row differs from CORRIE only in shape.
+extends: ../../../../huntkit/clothsim/scenarios/corrie_PR23c.yaml
+name: shell_sweep_PR23
