@@ -1,5 +1,8 @@
 # Spreader (BP-06 rev C, Sandwich v2, 7 mm core): build sheet
 
+> **Note (2026-11-10): re-fit needed for the H1 frame.** One stand-off pad changes thickness on H1, and this README (4.9 mm) and `analysis/frame_h1.md` (4.5 mm) disagree on today's value. Do not cut pads until that is resolved. The `spreader_v3_*` files are the rejected part: do not cut them. See `docs/release_delta_register.md`.
+
+
 **This is the production spreader** (owner decisions 2026-11-05 and 2026-11-06, `docs/DECISIONS.md`). **Rev C
 (2026-11-06): the core is 7 mm instead of 6 mm (+8.7 g)** so the part passes HA-LS-1 rev C with the meat CG at 190 mm
 (`designs/pack_5200/analysis/rev_c_verification.md` §5). Everything else is the rev B part. Do not cut a 6 mm core. It is the stiff carbon

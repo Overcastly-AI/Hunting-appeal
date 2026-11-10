@@ -1,5 +1,8 @@
 # Pack 5200 v3.1 patterns: beginner print set
 
+> **STOP: DO NOT BUILD FROM THIS PACKAGE (2026-11-10).** It no longer matches the design, and parts of it are unsafe as drawn. Known problems: the hipbelt here sits on a centre plate that fails the load checks; the back panel here has no rail backers, which gives about 49 kPa on the skin against a 14 kPa limit; the main bag has no attachment marks; piece F-03 was removed. The full list and the release order are in `docs/release_delta_register.md`.
+
+
 > **2026-11-06: do NOT cut F-03 (orange flag sleeve).** The owner removed it from the design. It is still in this set's cut list and the robic 210D DXF until the next pattern release.
 
 True-scale patterns for the Spine bag and every soft part (hipbelt S-XL, shoulder straps J and S, back

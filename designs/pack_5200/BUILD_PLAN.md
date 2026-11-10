@@ -1,5 +1,8 @@
 # Pack 5200: beginner builder plan
 
+> **STOP (2026-11-10): this build plan is out of date.** It still describes the PA66 centre plate, girth-hitched stubs and the hinge-back bay mode, all of which were replaced. Do not build from it. See `docs/release_delta_register.md`.
+
+
 **v3 "SPINE" update (2026-11-01).** The bag is now a teardrop roll-top built from 4 developed gores
 (frame-side B-01, outer face B-02a/b split by the diagonal zip, 2 side gores B-03), a flat oval bottom
 and a straight roll-top collar. There are no box corners, no side zips, no lid (optional accessory) and
