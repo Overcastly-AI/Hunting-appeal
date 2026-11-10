@@ -1,0 +1,105 @@
+{
+ "team": "E",
+ "name": "CHERT",
+ "one_line": "Chamfer-blade box: tapered camo blades cut the two aft corners and carry the door zip in their seam, so panel line = camo break = door; solid two-tone body, roll-top, CORRIE B.2 wings/pouch/pockets",
+ "bag_system_g": 739.3,
+ "corrie_b2_bag_system_g": 721.7,
+ "corrie_b2_bag_system_basis": "corrie.build() body group 533.1 + IMP-1/2/4/6/8 + fly F-01 x G-2 shell ratio (form.corrie_parts_g)",
+ "pack_mass_M_g": 3960.6,
+ "volume_L": 86.1,
+ "volume_basis": "cloth-sim fill case, closed to the fill line, mean of 15/19/23 in (pouch, wings, pockets not counted); design-rule volume 76.94 L",
+ "fill_height_in": 41.6,
+ "pieces": 32,
+ "curved_seams": 1,
+ "zip_mm_total": 1487.0,
+ "beginner_hours": 27.7,
+ "cg_fill_mm": {
+  "15": 194.9,
+  "19": 176.3,
+  "23": 135.9
+ },
+ "cg_meat_mm": {
+  "15": 187.4,
+  "19": 169.0,
+  "23": 133.3
+ },
+ "cg_method": "clothsim",
+ "cg_notes": {
+  "rounding_mm": {
+   "fill_15": 6.0,
+   "meat_15": 1.0,
+   "fill_19": 6.0,
+   "meat_19": 2.0,
+   "fill_23": 6.0,
+   "meat_23": 2.0
+  },
+  "converged": {
+   "fill_15": true,
+   "meat_15": true,
+   "fill_19": true,
+   "meat_19": true,
+   "fill_23": true,
+   "meat_23": true
+  },
+  "cg_z_mm": {
+   "fill_15": 533.3,
+   "meat_15": 541.4,
+   "fill_19": 542.1,
+   "meat_19": 548.8,
+   "fill_23": 550.0,
+   "meat_23": 555.2
+  },
+  "limits": "HA-LS-1 rev C: fill <= 205, meat <= 190 (y, mm, mass-weighted with 1 kg pouch + 85 mm spotter); rounding > 0 reads up to +4 mm (corrie_body.md 11.4)"
+ },
+ "access_misses": {
+  "day": 1,
+  "elk6": 0,
+  "sheep8": 3
+ },
+ "access_misses_detail_M": {
+  "day": {
+   "kill": [
+    "kill_kit"
+   ]
+  },
+  "elk6": {},
+  "sheep8": {
+   "hourly": [
+    "bottle_1L#2"
+   ],
+   "glassing": [
+    "beanie_gloves",
+    "trekking_poles"
+   ]
+  }
+ },
+ "features": [
+  "Chamfer blades: the two aft vertical corners cut by a camo facet tapering 60 x 55 mm (floor) to 32 x 26 mm (collar seam); one camo U piece (blades + kick strip), creased not seamed",
+  "Door zip in the blade | aft-face seam (#10 coil, 2 sliders, 1.23 m): the camo break, the panel line and the door are one line; door = the whole aft face z 110-650",
+  "Fang insets (camo) low on each gusset, one straight seam, joining the blades into a wrap-round lower corner",
+  "Two-tone solid blocking: olive faces, dark collar + hinge band + roll, camo only on the outline (disruptive edge placement, docs/research/bag_comp_form.md)",
+  "Hexagon boxed floor carries the chamfer into the base",
+  "IMP-6R right-strap snack / GPS stretch pocket (fixes the snack miss on S-L belts)",
+  "CORRIE B.2 kept: roll-top, 2.7 L pouch, wings with tripod right and scope sleeve left, hipbelt pockets, holster, hydration sleeve, door pocket, frame interface, rain fly",
+  "Uniform-fill CG 0.7 mm forward of CORRIE at a taller body (chamfers remove aft-corner volume)"
+ ],
+ "risks": [
+  "15 in meat CG 187.4 mm (limit 190, margin 2.6; reported at 1 mm contact rounding, so <= ~188 raw): tighter than CORRIE's 184.4 because the body is 36 mm taller to hold 85 L after the chamfers; prototype plumb CG check at 15 in with 30 kg on IM1-IM3 is mandatory",
+  "Door is narrower at the bottom: 163 mm at z 110 vs CORRIE 198 mm (wider at the top: 320 vs 304 mm)",
+  "The #10 door zip sits on a fold (blade | door seam at the chamfer crease): untested; it needs the loaded zip test and a sewing jig/notches so a beginner sets the zip straight before the facet folds",
+  "Camo blade U and fangs in 630D printable (290 g/m2) are stiffer and heavier than 330D; the sim models them as 330D (ASSUMPTION). The U-shaped cut wastes its centre on the marker unless the fangs and tabs nest there",
+  "Mass +17.6 g vs CORRIE B.2: shell +4.8 g (taller body, 630D camo blade U + fangs replacing the kick appliques), collar -3.2, door zip -0.5, fly -0.4, and the 17 g IMP-6R snack pocket (ASSUMPTION mass)",
+  "Access at belt M: sheep 8-day still misses bottle #2 (hourly) and beanie/gloves + poles at glassing (they end up above the z 650 door hinge in the taller body); day hunt kill kit is the CORRIE packing-order artifact",
+  "Fill line 41.6 in above the floor (CORRIE 40.2): roll-top 36 mm higher, check prone/head-tilt clearance",
+  "Wings, pouch, roll, tripod and pockets are placed render geometry on the simulated body (as CORRIE); the float-mode render bakes the 170 mm shift because the Cycles port does not apply it",
+  "Name CHERT and the chamfer-zip construction got a short search only, not a trademark or FTO clearance"
+ ],
+ "screenshots": [
+  "outputs/screens/20261110_bagE_1.png",
+  "outputs/screens/20261110_bagE_2.png",
+  "outputs/screens/20261110_bagE_3.png",
+  "outputs/screens/20261110_bagE_4.png",
+  "outputs/screens/20261110_bagE_5.png",
+  "outputs/screens/20261110_bagE_6.png"
+ ]
+}

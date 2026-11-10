@@ -1,0 +1,69 @@
+{
+ "team": "D",
+ "name": "CACHE",
+ "one_line": "Light CORRIE-derived shell with a drawcord collar under a lid; three removable roll-top modules and two hook-on side pods; the frame-zone SWAP slab carries the sleep kit and becomes the wipeable meat liner under IM1-IM3 on a pack-out.",
+ "bag_system_g": 991.0,
+ "pack_mass_M_g": 4041.9,
+ "corrie_b2_bag_system_g_used": 892.1,
+ "pack_mass_note": "3943 - 892.1 + 991.0 (CORRIE B.2 counted by the same metric in cache.corrie_b2_system(): body group, roll-top hardware, keeper loops, IMP-1/2/4/8, haul wraps, fly; IMP-6/IMP-3/IMP-5 and the fixed interface are out on both sides)",
+ "bag_system_without_modules_g": 853.8,
+ "volume_L": 87.9,
+ "volume_note": "cloth-sim closed volume of the fill case, mean of 15/19/23 in (CORRIE rev B shell, 85.2 L design number by the same R-01 basis as CORRIE); modules hold 20.3 + 17.2 + 6.6 L inside it; the LID module (2.7 L) and the pods ride outside and are not counted",
+ "fill_height_in": 40.2,
+ "pieces": 47,
+ "curved_seams": 1,
+ "zip_mm_total": 2294.0,
+ "beginner_hours": 37.9,
+ "cg_fill_mm": {
+  "15": 191.4,
+  "19": 174.1,
+  "23": 131.4
+ },
+ "cg_meat_mm": {
+  "15": 182.1,
+  "19": 167.2,
+  "23": 135.7
+ },
+ "cg_method": "clothsim",
+ "cg_note": "mass-weighted CG y incl. the lid module (1.08 kg) and the optics pod with an 85 mm spotter (1.99 kg), coarse h 40 mm, all 6 cases converged; read +<=4 mm for the contact-rounding bias",
+ "access_misses": {
+  "day": 0,
+  "elk6": 0,
+  "sheep8": 2
+ },
+ "access_miss_items": {
+  "day": [],
+  "elk6": [],
+  "sheep8": [
+   "gps",
+   "bottle_1L#2"
+  ]
+ },
+ "features": [
+  "SWAP slab module: sleep kit in camp, emptied and re-used as the wipeable meat liner under IM1-IM3",
+  "IM1-IM3 double as internal compression: they cinch the modules flat against the frame on small loads",
+  "Modules slide out through CORRIE's #10 horseshoe door like drawers (CAMP), KILL module at the sill",
+  "Drawcord collar + LID module (2.7 L) replace the roll-top; LID front straps are the top compression",
+  "Optics pod (85 mm spotter) and tripod kit hook on with G-hooks to the old wing loops; leave them home",
+  "SP snack pocket on the right shoulder strap: snacks reachable pack-on on every belt size",
+  "Quiet: modules close by roll + G-hook (no buckle clack), no hook-and-loop, coil zips only",
+  "Frame interface, IM straps, under-straps, hood, guys, hinge eyes, fly pocket: unchanged from CORRIE"
+ ],
+ "risks": [
+  "Heavier than CORRIE B.2 by 98.9 g as counted (the 3 modules are 137.2 g); lighter only if the hunter leaves stuff sacks home",
+  "Shell = CORRIE rev B shell: the cloth sim is effectively a re-run, not a new body; 15 in meat CG margin is 7.9 mm (>= 3.9 mm with the rounding bias)",
+  "No roll-top: the cinched collar is not waterproof; relies on the lid, the fly and the dry-bag modules",
+  "Module walls and corners cost usable volume (fill efficiency 0.90 -> 0.86 ASSUMPTION)",
+  "Silpoly modules on bone ends / brush: no abrasion data; SWAP frame face + floor in 70D (test MOD-2)",
+  "Sheep loadout: GPS (S-L belts) and the 2nd bottle still miss pack-on access; rain shell rides in the bag",
+  "Kill-site sequencing: the sleep kit has to go somewhere while the slab becomes the liner (aft column)",
+  "Snack pocket and lid straps were not drawn in every render; the pod cinch straps are drawn simplified"
+ ],
+ "screenshots": [
+  "outputs/screens/20261110_bagD_1.png",
+  "outputs/screens/20261110_bagD_2.png",
+  "outputs/screens/20261110_bagD_3.png",
+  "outputs/screens/20261110_bagD_4.png",
+  "outputs/screens/20261110_bagD_5.png"
+ ]
+}

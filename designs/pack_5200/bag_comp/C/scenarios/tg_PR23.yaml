@@ -1,0 +1,21 @@
+# TAILGATE (team C) on the 23 in setting: CORRIE's converged c-scenario (pouch 1 kg on the roll, contact rounding
+# continuation) with the tailgate aft face (tailgate_clothsim.py loader) and the lid straps H1-H3 at z 190/330/520 as
+# cinched wraps (W1-W3 stowed, as CORRIE D7 daily carry). Anchors on the frame plane at x = +/-0.76 a(z) (the sim's
+# wrap path starts there, q 1.88 / 3.12), y = y_frame - 2. The 85 mm spotter rides in IMP-1 on the LEFT GUSSET, hung
+# from the B-01 | B-03L seam (DECISION: not on the zip seam).
+extends: ../../../../../huntkit/clothsim/scenarios/corrie_PR23c.yaml
+name: tg_PR23
+attachments:
+  wraps:
+    list:
+      - {id: H1, anchor_R: [115.4, 14.4, 190.0], anchor_L: [-115.4, 14.4, 190.0]}
+      - {id: H2, anchor_R: [126.3, 11.8, 330.0], anchor_L: [-126.3, 11.8, 330.0]}
+      - {id: H3, anchor_R: [141.0, 8.2, 520.0], anchor_L: [-141.0, 8.2, 520.0]}
+cases:
+  fill:
+    external: &ext
+      - {label: pouch_1kg, kg: 1.088, piece: B-06, top_mm: 15.0, offset_mm: [0.0, 0.0, 75.0]}
+      - {label: scope85_left_gusset, kg: 1.955, piece: B-03L, z: [165.0, 595.0], seams: [[B-01, 1.0]],
+         offset_mm: [-83.0, 0.0, 0.0]}
+  meat:
+    external: *ext

@@ -1,0 +1,249 @@
+{
+ "calibration": "CHERT sims outputs/clothsim/chert_PR{15,19,23}c",
+ "geometry": {
+  "v_geo_L": 76.94,
+  "bulge": 1.119
+ },
+ "keys": {
+  "day": "day",
+  "elk6": "elk6",
+  "sheep8": "sheep8"
+ },
+ "by_size": {
+  "S": {
+   "day": {
+    "fails": {
+     "kill": [
+      "kill_kit"
+     ]
+    },
+    "cg_y_15": 174.1,
+    "cg_y_19": 155.5,
+    "cg_z": 523.9,
+    "main_used_L": 12.8,
+    "cap_L": 86.1,
+    "top_z": 318.0,
+    "unplaced": []
+   },
+   "elk6": {
+    "fails": {},
+    "cg_y_15": 167.1,
+    "cg_y_19": 148.5,
+    "cg_z": 475.4,
+    "main_used_L": 44.7,
+    "cap_L": 86.1,
+    "top_z": 591.0,
+    "unplaced": []
+   },
+   "sheep8": {
+    "fails": {
+     "hourly": [
+      "bottle_1L#2"
+     ],
+     "glassing": [
+      "beanie_gloves",
+      "trekking_poles"
+     ]
+    },
+    "cg_y_15": 179.5,
+    "cg_y_19": 160.9,
+    "cg_z": 436.7,
+    "main_used_L": 53.6,
+    "cap_L": 86.1,
+    "top_z": 677.0,
+    "unplaced": []
+   }
+  },
+  "M": {
+   "day": {
+    "fails": {
+     "kill": [
+      "kill_kit"
+     ]
+    },
+    "cg_y_15": 174.1,
+    "cg_y_19": 155.5,
+    "cg_z": 523.9,
+    "main_used_L": 12.8,
+    "cap_L": 86.1,
+    "top_z": 318.0,
+    "unplaced": []
+   },
+   "elk6": {
+    "fails": {},
+    "cg_y_15": 167.1,
+    "cg_y_19": 148.5,
+    "cg_z": 475.4,
+    "main_used_L": 44.7,
+    "cap_L": 86.1,
+    "top_z": 591.0,
+    "unplaced": []
+   },
+   "sheep8": {
+    "fails": {
+     "hourly": [
+      "bottle_1L#2"
+     ],
+     "glassing": [
+      "beanie_gloves",
+      "trekking_poles"
+     ]
+    },
+    "cg_y_15": 179.5,
+    "cg_y_19": 160.9,
+    "cg_z": 436.7,
+    "main_used_L": 53.6,
+    "cap_L": 86.1,
+    "top_z": 677.0,
+    "unplaced": []
+   }
+  },
+  "L": {
+   "day": {
+    "fails": {
+     "kill": [
+      "kill_kit"
+     ]
+    },
+    "cg_y_15": 174.1,
+    "cg_y_19": 155.5,
+    "cg_z": 523.9,
+    "main_used_L": 12.8,
+    "cap_L": 86.1,
+    "top_z": 318.0,
+    "unplaced": []
+   },
+   "elk6": {
+    "fails": {},
+    "cg_y_15": 167.1,
+    "cg_y_19": 148.5,
+    "cg_z": 475.4,
+    "main_used_L": 44.7,
+    "cap_L": 86.1,
+    "top_z": 591.0,
+    "unplaced": []
+   },
+   "sheep8": {
+    "fails": {
+     "hourly": [
+      "bottle_1L#2"
+     ],
+     "glassing": [
+      "beanie_gloves",
+      "trekking_poles"
+     ]
+    },
+    "cg_y_15": 179.5,
+    "cg_y_19": 160.9,
+    "cg_z": 436.7,
+    "main_used_L": 53.6,
+    "cap_L": 86.1,
+    "top_z": 677.0,
+    "unplaced": []
+   }
+  },
+  "XL": {
+   "day": {
+    "fails": {
+     "kill": [
+      "kill_kit"
+     ]
+    },
+    "cg_y_15": 174.1,
+    "cg_y_19": 155.5,
+    "cg_z": 523.9,
+    "main_used_L": 12.8,
+    "cap_L": 86.1,
+    "top_z": 318.0,
+    "unplaced": []
+   },
+   "elk6": {
+    "fails": {},
+    "cg_y_15": 167.1,
+    "cg_y_19": 148.5,
+    "cg_z": 475.4,
+    "main_used_L": 44.7,
+    "cap_L": 86.1,
+    "top_z": 591.0,
+    "unplaced": []
+   },
+   "sheep8": {
+    "fails": {
+     "hourly": [
+      "bottle_1L#2"
+     ],
+     "glassing": [
+      "beanie_gloves",
+      "trekking_poles"
+     ]
+    },
+    "cg_y_15": 179.5,
+    "cg_y_19": 160.9,
+    "cg_z": 436.7,
+    "main_used_L": 53.6,
+    "cap_L": 86.1,
+    "top_z": 677.0,
+    "unplaced": []
+   }
+  },
+  "XXL": {
+   "day": {
+    "fails": {
+     "kill": [
+      "kill_kit"
+     ]
+    },
+    "cg_y_15": 174.1,
+    "cg_y_19": 155.5,
+    "cg_z": 523.9,
+    "main_used_L": 12.8,
+    "cap_L": 86.1,
+    "top_z": 318.0,
+    "unplaced": []
+   },
+   "elk6": {
+    "fails": {},
+    "cg_y_15": 167.1,
+    "cg_y_19": 148.5,
+    "cg_z": 475.4,
+    "main_used_L": 44.7,
+    "cap_L": 86.1,
+    "top_z": 591.0,
+    "unplaced": []
+   },
+   "sheep8": {
+    "fails": {
+     "hourly": [
+      "bottle_1L#2"
+     ],
+     "glassing": [
+      "beanie_gloves",
+      "trekking_poles"
+     ],
+     "emergency": [
+      "fire_kit"
+     ]
+    },
+    "cg_y_15": 180.0,
+    "cg_y_19": 161.4,
+    "cg_z": 437.9,
+    "main_used_L": 53.7,
+    "cap_L": 86.1,
+    "top_z": 677.0,
+    "unplaced": []
+   }
+  }
+ },
+ "misses_M": {
+  "day": 1,
+  "elk6": 0,
+  "sheep8": 3
+ },
+ "hourly_misses_M": {
+  "day": [],
+  "elk6": [],
+  "sheep8": [
+   "bottle_1L#2"
+  ]
+ }
+}

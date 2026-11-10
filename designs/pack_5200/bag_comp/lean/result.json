@@ -1,0 +1,401 @@
+{
+ "team": "B",
+ "name": "FELL (LEAN)",
+ "one_line": "CORRIE's sim-proven box shell, 3 % shallower, in ULTRAGrid / 70D / ULTRA 200X: roll-top first, one straight 540 mm #10 zip, W1-W3 as compression, and G-hook add-on pods on 8 seam hard points that only go on when the loadout needs them.",
+ "bag_system_g": 583.1,
+ "bag_system_g_by_config": {
+  "day": 445.1,
+  "elk6": 528.8,
+  "sheep8": 583.1,
+  "max": 583.1
+ },
+ "corrie_b2_bag_system_g": 716.5,
+ "pack_mass_M_g": 3809.6,
+ "pack_mass_M_note": "3943 - 716.5 (CORRIE B.2 bag system, same code: body group + IMP-1/2/4/8 + re-cut fly + fly pocket) + 583.1 (FELL, max config: all 4 add-ons). Day config 3671.6 g.",
+ "volume_L": 87.2,
+ "volume_note": "cloth sim fill case (68 kg), mean of 15/19/23 in; lid pod 2.7 L extra, not counted",
+ "fill_height_in": 40.2,
+ "pieces": 39,
+ "curved_seams": 0,
+ "zip_mm_total": 800.0,
+ "beginner_hours": 27.9,
+ "cg_fill_mm": {
+  "15": 186.8,
+  "19": 167.2,
+  "23": 132.7
+ },
+ "cg_meat_mm": {
+  "15": 175.4,
+  "19": 158.8,
+  "23": 132.3
+ },
+ "cg_method": "clothsim",
+ "cg_note": "coarse (h 40 mm) cloth sims fell_PR15/19/23 on corrie_PR*c settings, with the 1 kg lid pod on the roll and the 85 mm spotter on the left side (mass-weighted CG incl. both). Rounding stage per case in analysis/bag_comp_lean.md; add <= 4 mm for rounding bias.",
+ "access_misses": {
+  "day": 0,
+  "elk6": 0,
+  "sheep8": 4
+ },
+ "access_misses_detail_M": {
+  "day": {
+   "all": [],
+   "hourly": []
+  },
+  "elk6": {
+   "all": [],
+   "hourly": []
+  },
+  "sheep8": {
+   "all": [
+    "beanie_gloves",
+    "bottle_1L#2",
+    "first_aid_light",
+    "trekking_poles"
+   ],
+   "hourly": [
+    "bottle_1L#2"
+   ]
+  }
+ },
+ "features": [
+  "Roll-top main closure (70D collar, ULTRAGrid hem, ULTRA 200 frame-side strip under the hood ladders)",
+  "One straight #10 coil zip, 540 mm, z 110-650 in the aft centre seam: IM1-IM3 and low gear; 1 slider, camo garage",
+  "No wings: W1/W2 haul wraps do the carry compression (their documented carry-mode job); unhook to open the zip",
+  "8 hard-point webbing loops in the corner seams (z 260 / 490) for G-hook add-ons",
+  "A1 glass pod: padded 85 mm spotter sleeve on its own panel, cinches like a wing (left)",
+  "A2 side strap pair: tripod / poles / jacket, tripod feet in the cam cup (right)",
+  "A3 lid pod 2.7 L on the roll (optional)",
+  "A4 strap pod (snacks / GPS) on the right J-strap: fixes CORRIE's S-L snack miss",
+  "Hydration sleeve (CORRIE IMP-2 geometry, 70D) + hose ports; cam / tripod-foot cup; fly in the base pocket",
+  "Owner camo: V-notch kick band, pod leading-edge bar, zip garage, lid-pod tab, strap-pod binding",
+  "Frame interface unchanged (hood B-19, B-20, B-22, IM hooks, hinge pins, B-24, US1/US2, IM1-IM3, fairleads)"
+ ],
+ "risks": [
+  "Fabric gates: ULTRAGrid needs the owner's swatch approval (visible grid); ULTRA 200X floor needs PT-3 + a 50 mm strip test (strip strength unpublished); 70D collar: weigh the Robic stock first",
+  "Durability: ULTRAGrid only matches 330D on abrasion (Taber 1100 vs ~950-1070) and is ~55-60 % of 500D; the 70D collar tears at 37-52 N; this is a lighter, not a tougher, bag",
+  "Noise: ULTRA 200X floor is a film laminate (quietness 2/5 in the record); the floor rarely brushes vegetation, but it can crinkle when set down or packed",
+  "Access: a straight slit opens narrower than CORRIE's horseshoe, and W1/W2 must be unhooked to open it (two G-hooks); no door pocket: the kill kit packs mid-aft behind the zip (packing rule)",
+  "Modules only save weight if they stay home; with every add-on fitted FELL saves 133 g, not 290 g",
+  "Sheep 8-day: 1 hourly miss (2nd bottle) and glassing misses (poles, beanie, first aid light) because there is no door pocket and the side straps are full",
+  "G-hook add-ons can be lost in the field; spare G-hooks are cheap but are one more thing",
+  "Coarse-mesh CG (h 40 mm); 3 % shallower shell not yet checked against the hood / B-20 fit on a prototype"
+ ],
+ "screenshots": [
+  "outputs/screens/20261110_bagB_1.png",
+  "outputs/screens/20261110_bagB_2.png",
+  "outputs/screens/20261110_bagB_3.png",
+  "outputs/screens/20261110_bagB_4.png",
+  "outputs/screens/20261110_bagB_5.png"
+ ],
+ "sims": {
+  "15": {
+   "packed": {
+    "converged": true,
+    "rounding_mm": 3.0,
+    "closed_L": 90.8,
+    "contents_cg_mm": [
+     -6.6,
+     158.8,
+     546.4
+    ],
+    "cg_with_external_mm": [
+     -6.6,
+     158.8,
+     546.4
+    ],
+    "e_max_pct": 8.8,
+    "seam": "B-03R | B-05",
+    "seam_n_mm": 0.3,
+    "seam_sf": 68.7
+   },
+   "fill": {
+    "converged": true,
+    "rounding_mm": 6.0,
+    "closed_L": 87.8,
+    "contents_cg_mm": [
+     -3.3,
+     186.4,
+     505.8
+    ],
+    "cg_with_external_mm": [
+     -10.1,
+     186.8,
+     508.5
+    ],
+    "e_max_pct": 13.6,
+    "seam": "B-03L | B-05",
+    "seam_n_mm": 1.16,
+    "seam_sf": 17.7
+   },
+   "meat": {
+    "converged": true,
+    "rounding_mm": 4.0,
+    "closed_L": 87.6,
+    "contents_cg_mm": [
+     -1.5,
+     175.2,
+     517.0
+    ],
+    "cg_with_external_mm": [
+     -8.3,
+     175.4,
+     519.7
+    ],
+    "e_max_pct": 10.9,
+    "seam": "B-03R | B-05",
+    "seam_n_mm": 1.13,
+    "seam_sf": 18.1
+   }
+  },
+  "19": {
+   "packed": {
+    "converged": true,
+    "rounding_mm": 4.0,
+    "closed_L": 90.6,
+    "contents_cg_mm": [
+     -6.4,
+     152.6,
+     549.9
+    ],
+    "cg_with_external_mm": [
+     -6.4,
+     152.6,
+     549.9
+    ],
+    "e_max_pct": 9.3,
+    "seam": "B-02R | B-06",
+    "seam_n_mm": 0.16,
+    "seam_sf": 71.6
+   },
+   "fill": {
+    "converged": true,
+    "rounding_mm": 6.0,
+    "closed_L": 87.6,
+    "contents_cg_mm": [
+     -5.6,
+     166.9,
+     515.6
+    ],
+    "cg_with_external_mm": [
+     -12.5,
+     167.2,
+     518.4
+    ],
+    "e_max_pct": 12.1,
+    "seam": "B-03L | B-05",
+    "seam_n_mm": 1.22,
+    "seam_sf": 16.8
+   },
+   "meat": {
+    "converged": true,
+    "rounding_mm": 2.0,
+    "closed_L": 87.4,
+    "contents_cg_mm": [
+     -1.1,
+     158.7,
+     524.6
+    ],
+    "cg_with_external_mm": [
+     -8.0,
+     158.8,
+     527.4
+    ],
+    "e_max_pct": 10.3,
+    "seam": "B-03R | B-05",
+    "seam_n_mm": 1.08,
+    "seam_sf": 19.0
+   }
+  },
+  "23": {
+   "packed": {
+    "converged": true,
+    "rounding_mm": 4.0,
+    "closed_L": 89.1,
+    "contents_cg_mm": [
+     -0.0,
+     135.4,
+     553.8
+    ],
+    "cg_with_external_mm": [
+     -0.0,
+     135.4,
+     553.8
+    ],
+    "e_max_pct": 6.6,
+    "seam": "B-02R | B-06",
+    "seam_n_mm": 0.16,
+    "seam_sf": 73.7
+   },
+   "fill": {
+    "converged": true,
+    "rounding_mm": 6.0,
+    "closed_L": 86.3,
+    "contents_cg_mm": [
+     3.5,
+     132.6,
+     524.3
+    ],
+    "cg_with_external_mm": [
+     -3.4,
+     132.7,
+     527.2
+    ],
+    "e_max_pct": 12.1,
+    "seam": "B-03L | B-05",
+    "seam_n_mm": 1.35,
+    "seam_sf": 15.2
+   },
+   "meat": {
+    "converged": true,
+    "rounding_mm": 2.0,
+    "closed_L": 85.8,
+    "contents_cg_mm": [
+     3.5,
+     132.2,
+     530.0
+    ],
+    "cg_with_external_mm": [
+     -3.5,
+     132.3,
+     532.9
+    ],
+    "e_max_pct": 10.2,
+    "seam": "B-03R | B-05",
+    "seam_n_mm": 1.24,
+    "seam_sf": 16.6
+   }
+  }
+ },
+ "corrie_sims": {
+  "15": {
+   "fill": {
+    "closed_L": 88.1,
+    "cg_with_external_mm": [
+     -10.7,
+     191.3,
+     497.3
+    ],
+    "rounding_mm": 6.0
+   },
+   "meat": {
+    "closed_L": 88.3,
+    "cg_with_external_mm": [
+     -3.8,
+     184.4,
+     507.8
+    ],
+    "rounding_mm": 6.0
+   }
+  },
+  "19": {
+   "fill": {
+    "closed_L": 88.4,
+    "cg_with_external_mm": [
+     -12.7,
+     172.4,
+     508.7
+    ],
+    "rounding_mm": 3.0
+   },
+   "meat": {
+    "closed_L": 88.0,
+    "cg_with_external_mm": [
+     -10.5,
+     167.2,
+     516.5
+    ],
+    "rounding_mm": 3.0
+   }
+  },
+  "23": {
+   "fill": {
+    "closed_L": 87.0,
+    "cg_with_external_mm": [
+     18.7,
+     131.2,
+     516.7
+    ],
+    "rounding_mm": 6.0
+   },
+   "meat": {
+    "closed_L": 86.6,
+    "cg_with_external_mm": [
+     4.8,
+     134.1,
+     524.3
+    ],
+    "rounding_mm": 4.0
+   }
+  }
+ },
+ "loadout": {
+  "misses_M": {
+   "day": {
+    "all": [],
+    "hourly": []
+   },
+   "elk6": {
+    "all": [],
+    "hourly": []
+   },
+   "sheep8": {
+    "all": [
+     "beanie_gloves",
+     "bottle_1L#2",
+     "first_aid_light",
+     "trekking_poles"
+    ],
+    "hourly": [
+     "bottle_1L#2"
+    ]
+   }
+  },
+  "misses_S": {
+   "day": {
+    "all": [],
+    "hourly": []
+   },
+   "elk6": {
+    "all": [],
+    "hourly": []
+   },
+   "sheep8": {
+    "all": [
+     "beanie_gloves",
+     "bottle_1L#2",
+     "first_aid_light",
+     "trekking_poles"
+    ],
+    "hourly": [
+     "bottle_1L#2"
+    ]
+   }
+  },
+  "misses_XL": {
+   "day": {
+    "all": [],
+    "hourly": []
+   },
+   "elk6": {
+    "all": [],
+    "hourly": []
+   },
+   "sheep8": {
+    "all": [
+     "bottle_1L#2",
+     "first_aid_light",
+     "trekking_poles"
+    ],
+    "hourly": [
+     "bottle_1L#2"
+    ]
+   }
+  },
+  "worst_loadout_cg_15in": 179.4,
+  "worst_packout_cg_15in": 145.4,
+  "geometry": {
+   "v_sewn_L": 87.23333333333333,
+   "bulge": 1.186
+  }
+ }
+}

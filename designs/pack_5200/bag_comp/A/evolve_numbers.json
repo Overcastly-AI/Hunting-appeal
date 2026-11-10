@@ -1,0 +1,137 @@
+{
+ "corrie_b2": {
+  "body_g": 533.1,
+  "pockets_g": {
+   "IMP-1": 54.5,
+   "IMP-2": 40.3,
+   "IMP-4": 22.0,
+   "IMP-8": 7.5
+  },
+  "fly_g": 53.2,
+  "bag_system_g": 710.6,
+  "pieces": 33,
+  "curved_seams": 1,
+  "zip_mm": 1514.0,
+  "hours": 35.6,
+  "seam_m": 13.41
+ },
+ "corrie_e": {
+  "body_g_corrie_build": 534.5,
+  "ledger": [
+   {
+    "id": "E-1",
+    "what": "rounded aft corners R 40: aft panels 34.3 mm narrower over 641 mm; floor corners rounded",
+    "g": -4.1,
+    "hours": 0.15,
+    "pieces": 0,
+    "seam_m": 0.0,
+    "curved_seams": 0,
+    "applique_m": 0.0,
+    "src": "cordura_330d / 500d records; +0.15 h clipping the 2 floor arcs (ASSUMPTION); the door zip bottom run is the same 34 mm shorter (coil_zipper_10)"
+   },
+   {
+    "id": "E-3",
+    "what": "camo tub wall 60 mm (500D printed, 626/653 mm long) replaces the bottom 60 mm of gussets + surround and the two-layer chevron kick plates SH-01a/b (19.3 g)",
+    "g": -13.5,
+    "hours": 0.13,
+    "pieces": -2,
+    "seam_m": 0.77,
+    "curved_seams": 1,
+    "applique_m": -1.68,
+    "src": "cordura_500d_nylon66 record (ASSUMPTION print), cordura_330d record, corrie.build kick plates"
+   },
+   {
+    "id": "E-7",
+    "what": "wider base: floor B-05 272 -> 320 mm wide (B-01, gussets, aft panels follow c.a(z) in corrie.build already)",
+    "g": 2.1,
+    "hours": 0.0,
+    "pieces": 0,
+    "seam_m": 0.0,
+    "curved_seams": 0,
+    "applique_m": 0.0,
+    "src": "cordura_500d_nylon66 record"
+   },
+   {
+    "id": "E-4",
+    "what": "hip-reach pockets FP-L / FP-R on the wings' lower front corners: power mesh 260 x 230 with 2 box pleats, shock-cord top in a 25 mm camo mouth band (630D printable), sewn to the wing before its hem",
+    "g": 33.5,
+    "hours": 2.01,
+    "pieces": 2,
+    "seam_m": 1.78,
+    "curved_seams": 0,
+    "applique_m": 0.0,
+    "src": "power_mesh_nylon_spandex, shock_cord_3mm records; +0.3 h pleats (ASSUMPTION)"
+   },
+   {
+    "id": "E-5",
+    "what": "pole quiver: 40 mm boot channel stitched in FP-R's front pleat; 3 mm shock-cord grip loop 0.30 m with a cord lock on a 25 mm webbing tab caught in the wing top hem",
+    "g": 5.4,
+    "hours": 0.45,
+    "pieces": 0,
+    "seam_m": 0.25,
+    "curved_seams": 0,
+    "applique_m": 0.0,
+    "src": "shock_cord_3mm, cord_lock_spring, poly_webbing_25mm records"
+   }
+  ],
+  "pockets_g": {
+   "IMP-1": 54.5,
+   "IMP-2": 40.3,
+   "IMP-4": 22.0,
+   "IMP-8": 7.5
+  },
+  "fly_g": 52.4,
+  "bag_system_g": 734.6,
+  "pieces": 42,
+  "curved_seams": 2,
+  "zip_mm": 1476.0,
+  "hours": 38.3,
+  "seam_m": 16.25
+ },
+ "delta_g": 23.9,
+ "volume": {
+  "rule_L": 76.55,
+  "corrie_rule_L": 75.87,
+  "z_collar": 736.3,
+  "z_fill": 1056.1,
+  "fill_height_in": 40.2,
+  "width_max_mm": 394.0,
+  "width_collar_mm": 370.0,
+  "depth_max_mm": 258.0,
+  "uniform_cg_y": 133.1,
+  "uniform_cg_z": 540.1,
+  "corrie_uniform_cg": [
+   134.7,
+   557.1
+  ]
+ },
+ "door": {
+  "inset": 45.0,
+  "z_lo": 130.0,
+  "z_hinge": 650.0,
+  "r": 60.0
+ },
+ "zips_e": [
+  {
+   "name": "horseshoe door zip #10, 2 sliders",
+   "length_mm": 1250.3580052380912,
+   "corners": 2,
+   "z": [
+    130.0,
+    650.0
+   ],
+   "where": "door | U-surround"
+  },
+  {
+   "name": "pouch zip #8, 1 slider",
+   "length_mm": 260.0,
+   "corners": 0,
+   "z": [
+    0,
+    0
+   ],
+   "where": "pouch aft edge",
+   "mass_g": 8.8
+  }
+ ]
+}

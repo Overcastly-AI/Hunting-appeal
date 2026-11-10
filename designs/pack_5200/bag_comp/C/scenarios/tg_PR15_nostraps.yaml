@@ -1,0 +1,6 @@
+# Control: tg_PR15 with the lid straps OFF (no wraps): the zip legs carry the lid's hoop load alone.
+extends: tg_PR15.yaml
+name: tg_PR15_nostraps
+attachments:
+  wraps:
+    list: []

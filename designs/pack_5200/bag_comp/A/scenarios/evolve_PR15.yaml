@@ -1,0 +1,8 @@
+# Team A EVOLVE (CORRIE E) at the 15 in setting: CORRIE's converged rev C run corrie_PR15c (pouch 1 kg on the
+# closure, 85 mm spotter in the left wing sleeve, contact rounding continuation) with the CORRIE E pieces
+# (evolve_bag.load_evolve_patterns: rounded aft corners, shoulder taper, camo tub wall B-05w, door sill z 130).
+extends: ../../../../../huntkit/clothsim/scenarios/corrie_PR15c.yaml
+name: bagA_evolve_PR15
+bag: corrie
+solver:
+  max_iter: 1200   # CORRIE's c-runs use 400; the first CORRIE E runs stalled in the re-cinch stage at 400

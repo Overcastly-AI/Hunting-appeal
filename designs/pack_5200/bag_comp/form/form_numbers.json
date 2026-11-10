@@ -1,0 +1,118 @@
+{
+ "name": "CHERT",
+ "z_collar": 771.9,
+ "z_fill": 1091.7,
+ "fill_height_mm": 1056.7,
+ "fill_height_in": 41.6,
+ "rule_volume_L": 76.94,
+ "rule_target_L": 76.94,
+ "corrie_rule_volume_L": 75.87,
+ "width_max_mm": 393.6,
+ "depth_max_mm": 257.8,
+ "uniform_cg": [
+  134.1,
+  582.8
+ ],
+ "corrie_uniform_cg": [
+  134.7,
+  557.1
+ ],
+ "door_width_mm": {
+  "110": 163.0,
+  "300": 220.0,
+  "500": 280.0,
+  "650": 320.0
+ },
+ "corrie_door_width_mm": {
+  "110": 198.0,
+  "300": 236.0,
+  "500": 277.0,
+  "650": 304.0
+ },
+ "strain_p99_pct": {
+  "B-01": 1.177,
+  "B-03": 0.761,
+  "B-02h": 0.0,
+  "B-02door": 0.434,
+  "B-02u": 1.51,
+  "B-05": 0.0
+ },
+ "piece_area_m2": {
+  "B-01": 0.2523,
+  "B-03": 0.1347,
+  "B-02h": 0.0396,
+  "B-02door": 0.1316,
+  "B-02u": 0.1047,
+  "B-05": 0.0409
+ },
+ "mass": {
+  "rows": [
+   [
+    "CORRIE B.2 bag system (body group + IMP-1/2/4/6/8 + fly)",
+    721.7
+   ],
+   [
+    "- CORRIE shell B-01/B-03x2/B-05/B-02u/door/B-02h + SH-01a/b kick plates",
+    -188.4
+   ],
+   [
+    "+ CHERT shell incl. camo blade U and SH-F fangs (developed flat pieces + 12 mm SA)",
+    193.2
+   ],
+   [
+    "collar B-06/B-06f/B-07/B-07s x perimeter 1234/1267 mm",
+    -3.2
+   ],
+   [
+    "#10 door zip 1227 vs 1254 mm",
+    -0.5
+   ],
+   [
+    "IMP-6R right-strap snack / GPS pocket (CHERT, form_loadout.SNACK)",
+    17.0
+   ],
+   [
+    "rain fly re-scaled to the CHERT outer shell (G-2 rule)",
+    -0.4
+   ]
+  ],
+  "bag_system_g": 739.3,
+  "shell": {
+   "rows": {
+    "B-01 frame-side panel (ULTRA 200)": 37.1,
+    "B-03 side gusset x2 (330D solid)": 50.3,
+    "SH-F gusset fang inset x2 (camo 630D)": 14.4,
+    "B-02u blade U (camo 630D)": 42.2,
+    "B-02door door (330D)": 27.1,
+    "B-02h hinge band (330D)": 9.2,
+    "B-05 hexagon floor (500D)": 13.0
+   },
+   "total_g": 193.2,
+   "fang_area_m2": 0.0164,
+   "fang_seam_mm": 255.8
+  },
+  "corrie_bag_system_g": 721.7,
+  "zip_door_mm": 1227.2,
+  "collar_perimeter_mm": 1233.7
+ },
+ "build": {
+  "pieces": 32,
+  "curved_seams": 1,
+  "zip_mm_total": 1487.0,
+  "beginner_hours": 27.7,
+  "delta_hours": {
+   "cutting": -0.12,
+   "straight seams": 0.4,
+   "pivots": 0.2,
+   "camo applique": -1.34,
+   "zips": -0.03
+  },
+  "corrie": {
+   "pieces": 33,
+   "curved_seams": 1,
+   "hours": 28.6,
+   "zip_mm": 1514.0
+  },
+  "applique_kick_m": 1.68
+ }
+}

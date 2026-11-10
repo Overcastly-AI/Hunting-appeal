@@ -1,0 +1,17 @@
+# Team D MODULE (CACHE) cloth-sim run, 19 in torso. The CACHE shell is CORRIE rev B's shell pieces unchanged
+# (B-01, B-03 x2, B-02u/door/h, B-05, collar B-06 to the same fill line), so the base scenario is corrie_PR19c
+# (converged 2026-11-09 settings: 6 mm contact rounding then continuation). Changes: (1) the lid module (2.9 L,
+# 1.0 kg loose goods + its own mass, cache.py) sits on the cinched drawcord closure, 40 mm above it (no roll + clips);
+# (2) the optics pod (85 mm spotter 1910 g + pod, cache.py) hooks to the same 4 loops CORRIE's left wing used
+# (B-03L | B-01 root seam loops and the aft-corner loops B-03L | B-02u), 50 / 50 ASSUMPTION as CORRIE.
+# Coarse mesh (h 40 mm) per RULES.md section 4.
+extends: /home/user/Hunting-appeal/huntkit/clothsim/scenarios/corrie_PR19c.yaml
+name: cache_PR19
+cases:
+  fill:
+    external: &ext
+      - {label: lid_module_1kg, kg: 1.079, piece: B-06, top_mm: 15.0, offset_mm: [0.0, 0.0, 40.0]}
+      - {label: optics_pod_left, kg: 1.985, piece: B-03L, z: [165.0, 595.0], seams: [[B-01, 0.5], [B-02u, 0.5]],
+         offset_mm: [-83.0, 0.0, 0.0]}
+  meat:
+    external: *ext

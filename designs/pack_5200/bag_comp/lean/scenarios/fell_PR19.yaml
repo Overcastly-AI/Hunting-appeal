@@ -1,0 +1,25 @@
+# FELL (Team B LEAN) at 19 in: CORRIE's converged scenario corrie_PR19c (6 mm contact rounding + continuation, the
+# 1 kg lid-pod load on the roll, the 85 mm spotter on the left side) with FELL's pieces: aft halves B-02R / B-02L
+# (centre zip modelled closed), ULTRAGrid / 70D modelled as scaled 330D / Robic (fell_clothsim.py docstring), ULTRA
+# 200X floor. The spotter hangs from the glass pod's loops: frame-corner (B-03L | B-01) and aft-corner (B-03L | B-02L)
+# seams, 50 / 50 as CORRIE's IMP-1 (ASSUMPTION). B-22 guy tabs on the aft halves at the same x / z as CORRIE.
+extends: ../../../../../huntkit/clothsim/scenarios/corrie_PR19c.yaml
+name: fell_PR19
+attachments:
+  ties:
+    list:
+      - {id: TG_R, pieces: [B-02R, B-03R], at: [149.0, 695.0], anchor: [100.0, 20.7, 702.6], mode: elastic, pretension_n: 30.0}
+      - {id: TG_L, pieces: [B-02L, B-03L], at: [-149.0, 695.0], anchor: [-100,20.7,702.6], mode: elastic, pretension_n: 30.0}
+panels:
+  B-03: {k_warp_scale: 1.30, k_weft_scale: 1.375, areal_kg_mm2_scale: 0.733}
+  B-02R: {k_warp_scale: 1.30, k_weft_scale: 1.375, areal_kg_mm2_scale: 0.733}
+  B-02L: {k_warp_scale: 1.30, k_weft_scale: 1.375, areal_kg_mm2_scale: 0.733}
+  B-06: {k_warp_scale: 0.44, k_weft_scale: 0.387, areal_kg_mm2_scale: 0.736}
+cases:
+  fill:
+    external: &ext
+      - {label: lidpod_1kg, kg: 1.054, piece: B-06, top_mm: 15.0, offset_mm: [0.0, 0.0, 75.0]}
+      - {label: scope85_glass_pod, kg: 1.995, piece: B-03L, z: [165.0, 595.0], seams: [[B-01, 0.5], [B-02L, 0.5]],
+         offset_mm: [-83.0, 0.0, 0.0]}
+  meat:
+    external: *ext

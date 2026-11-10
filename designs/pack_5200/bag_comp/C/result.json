@@ -1,0 +1,358 @@
+{
+ "team": "C (OPEN)",
+ "name": "TAILGATE",
+ "one_line": "Full-face lid hinged at the floor seam: the whole aft face drops like a tailgate (floor to z 650, full width); 3 lid straps at the IM heights carry the hoop load so the #10 zip never pulls the bag shut; roll-top, pouch and the whole frame interface as CORRIE B.2.",
+ "bag_system_g": 758.7,
+ "pack_mass_M_g": 3991.1,
+ "corrie_b2_bag_system_g_used": 710.6,
+ "mass_note": "bag_system = body group (bag_concepts.metrics: shell, collar, swells, accents, straps, pouch, zips, hardware) + bag pockets IMP-1/2/4/8 (+ IMP-C1 strap sleeve for TAILGATE) + fly F-01 scaled to the outer shell. CORRIE B.2 by the same definition: 710.6 g; pack_mass_M_g = 3943 - that + TAILGATE's.",
+ "volume_L": 88.1,
+ "volume_note": "cloth-sim closed volume, fill case, mean of 15/19/23 in (the flat-panel rule gives 75.9 L for this box, as CORRIE rev B); pouch 2.7 L not counted",
+ "fill_height_in": 40.2,
+ "pieces": 32,
+ "curved_seams": 1,
+ "zip_mm_total": 1848.0,
+ "beginner_hours": 25.7,
+ "cg_fill_mm": {
+  "15": 191.4,
+  "19": 170.0,
+  "23": 136.6
+ },
+ "cg_meat_mm": {
+  "15": 185.0,
+  "19": 165.3,
+  "23": 134.5
+ },
+ "cg_method": "clothsim",
+ "cg_note": "mass-weighted CG y incl. the 1 kg pouch and the 85 mm spotter, coarse h 40 runs bagC_tg_PR{15,19,23}; reported at contact rounding 3-6 mm, read +4 mm for the rounding bias (corrie_body.md 11.4)",
+ "access_misses": {
+  "day": 0,
+  "elk6": 0,
+  "sheep8": 1
+ },
+ "access_miss_items_M": {
+  "day": [],
+  "elk6": [],
+  "sheep8": [
+   "bottle_1L#2"
+  ]
+ },
+ "features": [
+  "Tailgate lid: one 330D panel, the whole aft face, hinged on a sewn floor seam (no zip at the floor)",
+  "Opening 0.229 m2 vs CORRIE's door 0.153 m2; clear width 286/314/353 mm at IM1/IM2/IM3, 254 mm at the floor, no sill",
+  "#10 coil inverted-U zip (1.59 m) in the aft corner seams, 2 sliders parked closed under a top-right camo garage, zip feet in 500D boots",
+  "Lid straps H1-H3 at z 190/330/520 (the IM heights), gusset loop to gusset loop over the zip; lid cut 6 mm full: straps-then-zip rule",
+  "Camo storm flaps over both zip legs frame the lid (owner camo as the accent edge); 330D flap on the top run",
+  "No wings: 2 side straps a side (tripod right with the IMP-8 cup, pad/decoy left), IMP-1 spotter sleeve sewn to the left gusset",
+  "IMP-4 kill kit on the inside of the lid: it comes to you when the lid drops",
+  "IMP-C1 snack/GPS stretch sleeve on the right J-strap: snacks reachable pack-on on every belt size",
+  "Roll-top, 2.7 L pouch, hood B-19, B-20/B-22, IM1-IM3, hinge pins, B-24 float, US1/US2, fly: CORRIE B.2 unchanged"
+ ],
+ "risks": [
+  "Heavier than CORRIE B.2 by 48 g (bag system), mostly the 0.33 m longer zip, the lid straps and the flaps",
+  "15 in meat CG 185.0 mm vs 190 (margin 5.0 before, 1.0 after the +4 mm rounding bias): as marginal as CORRIE",
+  "To open the lid, 3 G-hooks must be unhooked first (side carry stays put); a user who zips first and cinches second loads the zip",
+  "Zip legs sit on the box's aft corners, the most abraded line in brush: covered by the flaps, but a flap that rides up exposes the coil",
+  "The cloth sim models the zip as a closed seam and the R60 top corners as square; the lid straps are anchored on the frame plane, not on the gusset loops",
+  "With the lid down on a mannequin or a slope, the lid hangs into dirt / blood: needs the user habit of laying the pack frame-down first",
+  "Sheep 8-day: the 2nd 1 L bottle still rides in the bag (one holster)",
+  "Zip crosswise strength is a record ESTIMATE (900 N/in); get the YKK sheet. Patent search for a floor-hinged lid not done"
+ ],
+ "screenshots": [],
+ "hoop": {
+  "zip_crosswise_n_mm": 35.4,
+  "zip_record": "coil_zipper_10 crosswise 900 N (ASTM D2061 1 in jaw), ESTIMATE",
+  "straps_on": {
+   "fill": {
+    "zip_seams": {
+     "B-02L | B-02h": 0.451,
+     "B-02L | B-03R": 0.345,
+     "B-02L | B-03L": 0.325
+    },
+    "zip_max_n_mm": 0.451,
+    "zip_max_seam": "B-02L | B-02h",
+    "zip_p95_n_mm": 0.387,
+    "hinge_n_mm": 0.647,
+    "sf_static_1g": 78.6,
+    "sf_3g": 26.2,
+    "straps": {
+     "H1": 25.6,
+     "H2": 20.1,
+     "H3": 12.3
+    }
+   },
+   "meat": {
+    "zip_seams": {
+     "B-02L | B-02h": 0.307,
+     "B-02L | B-03R": 0.215,
+     "B-02L | B-03L": 0.194
+    },
+    "zip_max_n_mm": 0.307,
+    "zip_max_seam": "B-02L | B-02h",
+    "zip_p95_n_mm": 0.272,
+    "hinge_n_mm": 0.436,
+    "sf_static_1g": 115.4,
+    "sf_3g": 38.5,
+    "straps": {
+     "H1": 23.7,
+     "H2": 19.8,
+     "H3": 12.7
+    }
+   }
+  },
+  "straps_off": {
+   "fill": {
+    "zip_seams": {
+     "B-02L | B-02h": 0.423,
+     "B-02L | B-03R": 0.35,
+     "B-02L | B-03L": 0.333
+    },
+    "zip_max_n_mm": 0.423,
+    "zip_max_seam": "B-02L | B-02h",
+    "zip_p95_n_mm": 0.372,
+    "hinge_n_mm": 0.674,
+    "sf_static_1g": 83.8,
+    "sf_3g": 27.9,
+    "straps": {}
+   },
+   "meat": {
+    "zip_seams": {
+     "B-02L | B-02h": 0.287,
+     "B-02L | B-03R": 0.238,
+     "B-02L | B-03L": 0.23
+    },
+    "zip_max_n_mm": 0.287,
+    "zip_max_seam": "B-02L | B-02h",
+    "zip_p95_n_mm": 0.248,
+    "hinge_n_mm": 0.465,
+    "sf_static_1g": 123.5,
+    "sf_3g": 41.2,
+    "straps": {}
+   }
+  },
+  "reduction_pct": {
+   "fill": -6.6,
+   "meat": -7.0
+  },
+  "ease": {
+   "ease_mm": 6.0,
+   "strap_EA_n": 44480.0,
+   "lid_span_mm": 362.0,
+   "strap_tension_max_n": 25.6,
+   "strap_stretch_mm": 0.21,
+   "zip_unloaded": true,
+   "ladder_slip_sf": 11.72
+  }
+ },
+ "sims": {
+  "15": {
+   "packed": {
+    "converged": true,
+    "rounding_mm": 3.0,
+    "residual_n": 0.0476,
+    "closed_L": 93.67,
+    "cg_contents": [
+     -1.0,
+     162.1,
+     543.6
+    ],
+    "cg_ext": [
+     -1.0,
+     162.1,
+     543.6
+    ],
+    "critical": "B-02h | B-06",
+    "crit_n_mm": 0.203,
+    "crit_sf": 56.9
+   },
+   "fill": {
+    "converged": true,
+    "rounding_mm": 6.0,
+    "residual_n": 0.4157,
+    "closed_L": 88.536,
+    "cg_contents": [
+     -0.3,
+     193.6,
+     495.0
+    ],
+    "cg_ext": [
+     -6.9,
+     191.4,
+     499.0
+    ],
+    "critical": "B-03L | B-05",
+    "crit_n_mm": 1.484,
+    "crit_sf": 13.8
+   },
+   "meat": {
+    "converged": true,
+    "rounding_mm": 6.0,
+    "residual_n": 0.361,
+    "closed_L": 88.532,
+    "cg_contents": [
+     0.6,
+     187.3,
+     505.5
+    ],
+    "cg_ext": [
+     -6.1,
+     185.0,
+     509.4
+    ],
+    "critical": "B-03L | B-05",
+    "crit_n_mm": 1.738,
+    "crit_sf": 11.8
+   }
+  },
+  "19": {
+   "packed": {
+    "converged": true,
+    "rounding_mm": 3.0,
+    "residual_n": 0.1616,
+    "closed_L": 93.486,
+    "cg_contents": [
+     0.1,
+     158.5,
+     546.1
+    ],
+    "cg_ext": [
+     0.1,
+     158.5,
+     546.1
+    ],
+    "critical": "B-02h | B-06",
+    "crit_n_mm": 0.206,
+    "crit_sf": 55.8
+   },
+   "fill": {
+    "converged": true,
+    "rounding_mm": 4.0,
+    "residual_n": 0.2396,
+    "closed_L": 88.794,
+    "cg_contents": [
+     -2.2,
+     172.3,
+     509.5
+    ],
+    "cg_ext": [
+     -8.9,
+     170.0,
+     513.5
+    ],
+    "critical": "B-03L | B-05",
+    "crit_n_mm": 1.289,
+    "crit_sf": 15.9
+   },
+   "meat": {
+    "converged": true,
+    "rounding_mm": 6.0,
+    "residual_n": 0.3472,
+    "closed_L": 88.463,
+    "cg_contents": [
+     3.0,
+     167.7,
+     516.4
+    ],
+    "cg_ext": [
+     -3.8,
+     165.3,
+     520.2
+    ],
+    "critical": "B-03L | B-05",
+    "crit_n_mm": 1.606,
+    "crit_sf": 12.8
+   }
+  },
+  "23": {
+   "packed": {
+    "converged": true,
+    "rounding_mm": 3.0,
+    "residual_n": 0.3236,
+    "closed_L": 91.836,
+    "cg_contents": [
+     -2.0,
+     140.2,
+     550.6
+    ],
+    "cg_ext": [
+     -2.0,
+     140.2,
+     550.6
+    ],
+    "critical": "B-02h | B-06",
+    "crit_n_mm": 0.175,
+    "crit_sf": 65.9
+   },
+   "fill": {
+    "converged": true,
+    "rounding_mm": 4.0,
+    "residual_n": 0.3603,
+    "closed_L": 86.921,
+    "cg_contents": [
+     15.1,
+     139.0,
+     515.1
+    ],
+    "cg_ext": [
+     8.3,
+     136.6,
+     519.3
+    ],
+    "critical": "B-03L | B-05",
+    "crit_n_mm": 1.116,
+    "crit_sf": 18.3
+   },
+   "meat": {
+    "converged": true,
+    "rounding_mm": 6.0,
+    "residual_n": 0.3165,
+    "closed_L": 87.134,
+    "cg_contents": [
+     12.7,
+     137.1,
+     524.5
+    ],
+    "cg_ext": [
+     5.9,
+     134.5,
+     528.3
+    ],
+    "critical": "B-03L | B-05",
+    "crit_n_mm": 1.431,
+    "crit_sf": 14.3
+   }
+  }
+ },
+ "access_misses_all_belts": {
+  "day_rifle_S": [],
+  "elk6_rifle_S": [],
+  "elk6_archery_S": [],
+  "sheep8_rifle_S": [
+   "bottle_1L#2"
+  ],
+  "day_rifle_M": [],
+  "elk6_rifle_M": [],
+  "elk6_archery_M": [],
+  "sheep8_rifle_M": [
+   "bottle_1L#2"
+  ],
+  "day_rifle_L": [],
+  "elk6_rifle_L": [],
+  "elk6_archery_L": [],
+  "sheep8_rifle_L": [
+   "bottle_1L#2"
+  ],
+  "day_rifle_XL": [],
+  "elk6_rifle_XL": [],
+  "elk6_archery_XL": [],
+  "sheep8_rifle_XL": [
+   "bottle_1L#2"
+  ],
+  "day_rifle_XXL": [],
+  "elk6_rifle_XXL": [],
+  "elk6_archery_XXL": [],
+  "sheep8_rifle_XXL": [
+   "bottle_1L#2"
+  ]
+ }
+}
