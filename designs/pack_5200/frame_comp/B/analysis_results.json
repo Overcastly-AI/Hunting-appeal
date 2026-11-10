@@ -1,0 +1,747 @@
+{
+ "date": "2026-11-10",
+ "body_g": 823.2384,
+ "orientation": {
+  "x (stay on its side)": {
+   "cases": {
+    "static_carry": {
+     "sf": 2.4200775840675166,
+     "set": "C_im3:static_carry|15",
+     "factor": 2.0
+    },
+    "drop_2p5g": {
+     "sf": 1.613385113875031,
+     "set": "C_im3:drop_2p5g|15",
+     "factor": 1.5
+    },
+    "side_hill_torsion": {
+     "sf": 1.4974191878824856,
+     "set": "C_im3:side_hill_torsion|15",
+     "factor": 1.5
+    },
+    "single_stay_setdown": {
+     "sf": 2.131429577912687,
+     "set": "C_im3:single_stay_setdown|23",
+     "factor": 1.5
+    },
+    "meat_straps": {
+     "sf": 1.7071586401036452,
+     "set": "C:meat_straps|15",
+     "factor": 1.5
+    },
+    "tall_load": {
+     "sf": 2.045485956599517,
+     "set": "C:tall_load|15",
+     "factor": 1.5
+    },
+    "tall_load_posts": {
+     "sf": 1.9491291906394355,
+     "set": "C:tall_load_posts|15",
+     "factor": 1.5
+    },
+    "overload_haul": {
+     "sf": 2.3914834083310814,
+     "set": "C:overload_haul|15",
+     "factor": 1.0
+    },
+    "hipbelt_off_abuse": {
+     "sf": 0.8323473820900875,
+     "set": "C:hipbelt_off_abuse|15",
+     "factor": 1.0
+    }
+   },
+   "sf_min": 0.8323473820900875,
+   "governing": "hipbelt_off_abuse",
+   "sf_fatigue": 0.9075290940253187,
+   "sf_creep": 1.9360620672540134,
+   "fatigue_set": "C_im3:static_carry|15"
+  },
+  "y (flat, today)": {
+   "cases": {
+    "static_carry": {
+     "sf": 2.7845533594768623,
+     "set": "C_im3:static_carry|15",
+     "factor": 2.0
+    },
+    "drop_2p5g": {
+     "sf": 1.8563689381177513,
+     "set": "C_im3:drop_2p5g|15",
+     "factor": 1.5
+    },
+    "side_hill_torsion": {
+     "sf": 2.159515484037773,
+     "set": "C_im3:side_hill_torsion|15",
+     "factor": 1.5
+    },
+    "single_stay_setdown": {
+     "sf": 3.3707159655186603,
+     "set": "C_im3:single_stay_setdown|23",
+     "factor": 1.5
+    },
+    "meat_straps": {
+     "sf": 2.390541824877194,
+     "set": "C:meat_straps|23",
+     "factor": 1.5
+    },
+    "tall_load": {
+     "sf": 2.942118695256719,
+     "set": "C:tall_load|15",
+     "factor": 1.5
+    },
+    "tall_load_posts": {
+     "sf": 2.8518128786514043,
+     "set": "C:tall_load_posts|15",
+     "factor": 1.5
+    },
+    "overload_haul": {
+     "sf": 3.3576209074708903,
+     "set": "C:overload_haul|23",
+     "factor": 1.0
+    },
+    "hipbelt_off_abuse": {
+     "sf": 1.509607521207078,
+     "set": "C:hipbelt_off_abuse|15",
+     "factor": 1.0
+    }
+   },
+   "sf_min": 1.509607521207078,
+   "governing": "hipbelt_off_abuse",
+   "sf_fatigue": 1.0442075098038233,
+   "sf_creep": 2.22764268758149,
+   "fatigue_set": "C_im3:static_carry|15"
+  },
+  "z (stay upright)": {
+   "cases": {
+    "static_carry": {
+     "sf": 1.6024886397937417,
+     "set": "C_im3:static_carry|23",
+     "factor": 2.0
+    },
+    "drop_2p5g": {
+     "sf": 1.0683257702838005,
+     "set": "C_im3:drop_2p5g|23",
+     "factor": 1.5
+    },
+    "side_hill_torsion": {
+     "sf": 1.35626685324154,
+     "set": "C_im3:side_hill_torsion|23",
+     "factor": 1.5
+    },
+    "single_stay_setdown": {
+     "sf": 2.3151634661190204,
+     "set": "C_im3:single_stay_setdown|19",
+     "factor": 1.5
+    },
+    "meat_straps": {
+     "sf": 1.3249969175510643,
+     "set": "C:meat_straps|23",
+     "factor": 1.5
+    },
+    "tall_load": {
+     "sf": 2.1433990169666175,
+     "set": "C:tall_load|23",
+     "factor": 1.5
+    },
+    "tall_load_posts": {
+     "sf": 2.1778379922856272,
+     "set": "C:tall_load_posts|23",
+     "factor": 1.5
+    },
+    "overload_haul": {
+     "sf": 1.864132466951584,
+     "set": "C:overload_haul|23",
+     "factor": 1.0
+    },
+    "hipbelt_off_abuse": {
+     "sf": 1.5314928930392513,
+     "set": "C:hipbelt_off_abuse|15",
+     "factor": 1.0
+    }
+   },
+   "sf_min": 1.0683257702838005,
+   "governing": "drop_2p5g",
+   "sf_fatigue": 0.600933239922653,
+   "sf_creep": 1.2819909118349933,
+   "fatigue_set": "C_im3:static_carry|23"
+  },
+  "best per voxel (upper bound)": {
+   "cases": {
+    "static_carry": {
+     "sf": 2.8963204981298314,
+     "set": "C_im3:static_carry|23",
+     "factor": 2.0
+    },
+    "drop_2p5g": {
+     "sf": 1.9308803606630616,
+     "set": "C_im3:drop_2p5g|23",
+     "factor": 1.5
+    },
+    "side_hill_torsion": {
+     "sf": 2.20440507899544,
+     "set": "C_im3:side_hill_torsion|19",
+     "factor": 1.5
+    },
+    "single_stay_setdown": {
+     "sf": 3.4184290439981857,
+     "set": "C_im3:single_stay_setdown|23",
+     "factor": 1.5
+    },
+    "meat_straps": {
+     "sf": 2.4185317640087405,
+     "set": "C:meat_straps|23",
+     "factor": 1.5
+    },
+    "tall_load": {
+     "sf": 3.1007024998409873,
+     "set": "C:tall_load|15",
+     "factor": 1.5
+    },
+    "tall_load_posts": {
+     "sf": 3.0080377237870914,
+     "set": "C:tall_load_posts|15",
+     "factor": 1.5
+    },
+    "overload_haul": {
+     "sf": 3.4010509480467674,
+     "set": "C:overload_haul|23",
+     "factor": 1.0
+    },
+    "hipbelt_off_abuse": {
+     "sf": 1.5384374688145792,
+     "set": "C:hipbelt_off_abuse|15",
+     "factor": 1.0
+    }
+   },
+   "sf_min": 1.5384374688145792,
+   "governing": "hipbelt_off_abuse",
+   "sf_fatigue": 1.0861201867986867,
+   "sf_creep": 2.3170563985038655,
+   "fatigue_set": "C_im3:static_carry|23"
+  }
+ },
+ "seg7_orientation": {
+  "cases": {
+   "static_carry": {
+    "sf": 2.7845533594768623,
+    "set": "C_im3:static_carry|15",
+    "factor": 2.0
+   },
+   "drop_2p5g": {
+    "sf": 1.8563689381177513,
+    "set": "C_im3:drop_2p5g|15",
+    "factor": 1.5
+   },
+   "side_hill_torsion": {
+    "sf": 2.1428837561842533,
+    "set": "C_im3:side_hill_torsion|15",
+    "factor": 1.5
+   },
+   "single_stay_setdown": {
+    "sf": 3.307016530049949,
+    "set": "C_im3:single_stay_setdown|23",
+    "factor": 1.5
+   },
+   "meat_straps": {
+    "sf": 2.392098359188679,
+    "set": "C:meat_straps|23",
+    "factor": 1.5
+   },
+   "tall_load": {
+    "sf": 2.942118695256719,
+    "set": "C:tall_load|15",
+    "factor": 1.5
+   },
+   "tall_load_posts": {
+    "sf": 2.8518128786514043,
+    "set": "C:tall_load_posts|15",
+    "factor": 1.5
+   },
+   "overload_haul": {
+    "sf": 3.3608506330279675,
+    "set": "C:overload_haul|23",
+    "factor": 1.0
+   },
+   "hipbelt_off_abuse": {
+    "sf": 1.509607521207078,
+    "set": "C:hipbelt_off_abuse|15",
+    "factor": 1.0
+   }
+  },
+  "sf_min": 1.509607521207078,
+  "governing": "hipbelt_off_abuse",
+  "sf_fatigue": 1.0442075098038233,
+  "sf_creep": 2.22764268758149,
+  "fatigue_set": "C_im3:static_carry|15"
+ },
+ "section_z234": {
+  "geom": {
+   "L": {
+    "n": 143,
+    "area_mm2": 572.0,
+    "x": [
+     -128.0,
+     -86.0
+    ],
+    "y": [
+     -18.0,
+     10.0
+    ],
+    "centroid": [
+     -107.76923076923077,
+     -3.06993006993007,
+     219.0
+    ]
+   },
+   "R": {
+    "n": 143,
+    "area_mm2": 572.0,
+    "x": [
+     86.0,
+     128.0
+    ],
+    "y": [
+     -18.0,
+     10.0
+    ],
+    "centroid": [
+     107.76923076923077,
+     -3.06993006993007,
+     219.0
+    ]
+   }
+  },
+  "worst_Mx": {
+   "set": "C_im3:drop_2p5g|23",
+   "case": "drop_2p5g",
+   "torso": 23.0,
+   "factor": 1.5,
+   "side": "L",
+   "N": -202.56464862823486,
+   "Vx": 593.466098990757,
+   "Vy": 33.17401530593634,
+   "Mx": 66531.97817151697,
+   "My": 1395.201523725802,
+   "T": -3487.996181924228
+  }
+ },
+ "joint_insert": {
+  "strength": {
+   "insert pull-out (axis in print plane)": {
+    "margin": 1.5796778437653765,
+    "set": "C_im3:side_hill_torsion|19 R"
+   },
+   "bolt tension Ti Gr5 (0.7 UTS x As)": {
+    "margin": 14.638841668218664,
+    "set": "C_im3:side_hill_torsion|19 R"
+   },
+   "boss bending (interlayer, s_z)": {
+    "margin": 1.6365802177074624,
+    "set": "C_im3:side_hill_torsion|19 R"
+   },
+   "shear key bearing (XY)": {
+    "margin": 9.424639385900477,
+    "set": "C_im3:side_hill_torsion|15 R"
+   },
+   "bolt bearing, key lost (info)": {
+    "margin": 43.70199087364194,
+    "set": "C_im3:side_hill_torsion|15 R"
+   }
+  },
+  "fatigue": {
+   "insert pull-out at 1.6 g (0.3 x static)": {
+    "margin": 1.0812072042201384,
+    "set": "C_im3:static_carry|23 L"
+   },
+   "boss bending at 1.6 g (interlayer)": {
+    "margin": 1.120153915339896,
+    "set": "C_im3:static_carry|23 L"
+   },
+   "shear key bearing at 1.6 g": {
+    "margin": 5.6050379516708,
+    "set": "C_im3:static_carry|23 L"
+   },
+   "Ti bolt thread at 1.6 g (0.25 UTS)": {
+    "margin": 11.928005519473732,
+    "set": "C_im3:static_carry|23 L"
+   }
+  },
+  "geometry": {
+   "bore_ligament_mm": 1.728539695701763,
+   "boss_pitch_mm": 9.462499999999991,
+   "bore_ligament_margin": 0.6648229598852934,
+   "boss_pitch_margin": 0.7693089430894302
+  },
+  "min_margin": 0.6648229598852934,
+  "min_strength": 1.5796778437653765,
+  "min_fatigue": 1.0812072042201384,
+  "mass_g": {
+   "bosses": 26.512361828611837,
+   "shear_key": 1.3356,
+   "bolts_ti": 33.70585305605361,
+   "inserts_or_nuts": 15.0,
+   "per_stay": 76.55381488466546,
+   "both_stays": 153.1076297693309
+  },
+  "design": {
+   "n_row": 5,
+   "offset": 6.2,
+   "t_boss": 8.0,
+   "gusset_mm3": 300.0,
+   "key_h": 3.0,
+   "key_w": 3.0,
+   "prying": 1.25,
+   "fastening": "insert",
+   "bolt_len": 30.0,
+   "y_env": 14.8
+  }
+ },
+ "joint_insert_trials": [
+  {
+   "n_row": 2,
+   "t_boss": 8.0,
+   "min_margin": 0.44061274838091125,
+   "mass_both_g": 62.84577190773236
+  },
+  {
+   "n_row": 2,
+   "t_boss": 10.0,
+   "min_margin": 0.44061274838091125,
+   "mass_both_g": 66.87624427345472
+  },
+  {
+   "n_row": 2,
+   "t_boss": 12.0,
+   "min_margin": 0.44061274838091125,
+   "mass_both_g": 70.90671663917709
+  },
+  {
+   "n_row": 2,
+   "t_boss": 14.0,
+   "min_margin": 0.44061274838091125,
+   "mass_both_g": 74.93718900489947
+  },
+  {
+   "n_row": 3,
+   "t_boss": 8.0,
+   "min_margin": 0.6547649463549082,
+   "mass_both_g": 92.93305786159854
+  },
+  {
+   "n_row": 3,
+   "t_boss": 10.0,
+   "min_margin": 0.6547649463549082,
+   "mass_both_g": 98.97876641018209
+  },
+  {
+   "n_row": 3,
+   "t_boss": 12.0,
+   "min_margin": 0.6547649463549082,
+   "mass_both_g": 105.02447495876564
+  },
+  {
+   "n_row": 3,
+   "t_boss": 14.0,
+   "min_margin": 0.6547649463549082,
+   "mass_both_g": 111.07018350734918
+  },
+  {
+   "n_row": 4,
+   "t_boss": 8.0,
+   "min_margin": 0.5230751074206728,
+   "mass_both_g": 123.02034381546473
+  },
+  {
+   "n_row": 4,
+   "t_boss": 10.0,
+   "min_margin": 0.5230751074206728,
+   "mass_both_g": 131.08128854690943
+  },
+  {
+   "n_row": 4,
+   "t_boss": 12.0,
+   "min_margin": 0.5230751074206728,
+   "mass_both_g": 139.14223327835418
+  },
+  {
+   "n_row": 4,
+   "t_boss": 14.0,
+   "min_margin": 0.5230751074206728,
+   "mass_both_g": 147.20317800979893
+  },
+  {
+   "n_row": 5,
+   "t_boss": 8.0,
+   "min_margin": 0.6648229598852934,
+   "mass_both_g": 153.1076297693309,
+   "note": "no passing layout"
+  },
+  {
+   "n_row": 5,
+   "t_boss": 10.0,
+   "min_margin": 0.6648229598852934,
+   "mass_both_g": 163.1838106836368
+  },
+  {
+   "n_row": 5,
+   "t_boss": 12.0,
+   "min_margin": 0.6648229598852934,
+   "mass_both_g": 173.25999159794273
+  },
+  {
+   "n_row": 5,
+   "t_boss": 14.0,
+   "min_margin": 0.6648229598852934,
+   "mass_both_g": 183.33617251224865
+  }
+ ],
+ "joint_through": {
+  "strength": {
+   "washer bearing on boss (through-bolt)": {
+    "margin": 3.0698546433990215,
+    "set": "C_im3:side_hill_torsion|23 R"
+   },
+   "bolt tension Ti Gr5 (0.7 UTS x As)": {
+    "margin": 6.86871351203847,
+    "set": "C_im3:side_hill_torsion|23 R"
+   },
+   "boss bending (interlayer, s_z)": {
+    "margin": 1.7277802470150976,
+    "set": "C_im3:side_hill_torsion|23 R"
+   },
+   "shear key bearing (XY)": {
+    "margin": 9.424639385900477,
+    "set": "C_im3:side_hill_torsion|15 R"
+   },
+   "bolt bearing, key lost (info)": {
+    "margin": 26.221194524185165,
+    "set": "C_im3:side_hill_torsion|15 R"
+   }
+  },
+  "fatigue": {
+   "washer bearing at 1.6 g": {
+    "margin": 1.824894048350656,
+    "set": "C_im3:static_carry|23 L"
+   },
+   "boss bending at 1.6 g (interlayer)": {
+    "margin": 1.0270896364475997,
+    "set": "C_im3:static_carry|23 L"
+   },
+   "shear key bearing at 1.6 g": {
+    "margin": 5.6050379516708,
+    "set": "C_im3:static_carry|23 L"
+   },
+   "Ti bolt thread at 1.6 g (0.25 UTS)": {
+    "margin": 4.860891856921008,
+    "set": "C_im3:static_carry|23 L"
+   }
+  },
+  "geometry": {
+   "bore_ligament_mm": 8.062425000224296,
+   "boss_pitch_mm": 37.849999999999994,
+   "bore_ligament_margin": 3.10093269239396,
+   "boss_pitch_margin": 3.077235772357723
+  },
+  "min_margin": 1.0270896364475997,
+  "min_strength": 1.7277802470150976,
+  "min_fatigue": 1.0270896364475997,
+  "mass_g": {
+   "bosses": 14.635417097167101,
+   "shear_key": 1.3356,
+   "bolts_ti": 13.482341222421447,
+   "inserts_or_nuts": 7.368024660401293,
+   "per_stay": 36.821382979989835,
+   "both_stays": 73.64276595997967
+  },
+  "design": {
+   "n_row": 2,
+   "offset": 6.2,
+   "t_boss": 12.0,
+   "gusset_mm3": 300.0,
+   "key_h": 3.0,
+   "key_w": 3.0,
+   "prying": 1.25,
+   "fastening": "through",
+   "bolt_len": 30.0,
+   "y_env": 14.8
+  }
+ },
+ "joint_through_trials": [
+  {
+   "n_row": 2,
+   "t_boss": 8.0,
+   "min_margin": 0.45648428286559994,
+   "mass_both_g": 65.58182122853495
+  },
+  {
+   "n_row": 2,
+   "t_boss": 10.0,
+   "min_margin": 0.7132566919774999,
+   "mass_both_g": 69.61229359425731
+  },
+  {
+   "n_row": 2,
+   "t_boss": 12.0,
+   "min_margin": 1.0270896364475997,
+   "mass_both_g": 73.64276595997967
+  },
+  {
+   "n_row": 2,
+   "t_boss": 14.0,
+   "min_margin": 1.3979831162759,
+   "mass_both_g": 77.67323832570204
+  },
+  {
+   "n_row": 3,
+   "t_boss": 8.0,
+   "min_margin": 0.6648229598852934,
+   "mass_both_g": 97.03713184280242
+  },
+  {
+   "n_row": 3,
+   "t_boss": 10.0,
+   "min_margin": 0.6648229598852934,
+   "mass_both_g": 103.08284039138597
+  },
+  {
+   "n_row": 3,
+   "t_boss": 12.0,
+   "min_margin": 0.6648229598852934,
+   "mass_both_g": 109.12854893996952
+  },
+  {
+   "n_row": 3,
+   "t_boss": 14.0,
+   "min_margin": 0.6648229598852934,
+   "mass_both_g": 115.17425748855307
+  },
+  {
+   "n_row": 4,
+   "t_boss": 8.0,
+   "min_margin": 0.5230751074206728,
+   "mass_both_g": 128.4924424570699
+  },
+  {
+   "n_row": 4,
+   "t_boss": 10.0,
+   "min_margin": 0.5230751074206728,
+   "mass_both_g": 136.55338718851462
+  },
+  {
+   "n_row": 4,
+   "t_boss": 12.0,
+   "min_margin": 0.5230751074206728,
+   "mass_both_g": 144.61433191995934
+  },
+  {
+   "n_row": 4,
+   "t_boss": 14.0,
+   "min_margin": 0.5230751074206728,
+   "mass_both_g": 152.6752766514041
+  },
+  {
+   "n_row": 5,
+   "t_boss": 8.0,
+   "min_margin": 0.6648229598852934,
+   "mass_both_g": 159.94775307133736
+  },
+  {
+   "n_row": 5,
+   "t_boss": 10.0,
+   "min_margin": 0.6648229598852934,
+   "mass_both_g": 170.02393398564328
+  },
+  {
+   "n_row": 5,
+   "t_boss": 12.0,
+   "min_margin": 0.6648229598852934,
+   "mass_both_g": 180.10011489994918
+  },
+  {
+   "n_row": 5,
+   "t_boss": 14.0,
+   "min_margin": 0.6648229598852934,
+   "mass_both_g": 190.17629581425513
+  }
+ ],
+ "cut_scan": [
+  {
+   "z": 206.0,
+   "insert": [
+    4,
+    8.0,
+    0.7134257205150524,
+    122.94402381546473
+   ],
+   "through": [
+    2,
+    14.0,
+    1.2991236480056534,
+    77.59691832570203
+   ]
+  },
+  {
+   "z": 220.0,
+   "insert": [
+    5,
+    8.0,
+    0.6648229598852934,
+    153.1076297693309
+   ],
+   "through": [
+    2,
+    12.0,
+    1.0270896364475997,
+    73.64276595997967
+   ]
+  },
+  {
+   "z": 234.0,
+   "insert": [
+    5,
+    8.0,
+    0.7748403071619859,
+    153.33658976933089
+   ],
+   "through": [
+    2,
+    14.0,
+    1.2622776925448709,
+    77.90219832570205
+   ]
+  },
+  {
+   "z": 250.0,
+   "insert": [
+    5,
+    8.0,
+    0.7483989277585142,
+    153.7181897693309
+   ],
+   "through": [
+    2,
+    14.0,
+    1.160838416012797,
+    78.28379832570204
+   ]
+  }
+ ],
+ "z_cut": 220.0,
+ "seconds": 16.676294803619385,
+ "headline": {
+  "frame_g": 1136.2427659599796,
+  "frame_plus_spreader_g": 1298.5427659599795,
+  "joint_g": 73.64276595997967,
+  "joint_through_g": 73.64276595997967,
+  "pack_g": 4038.0427659599795,
+  "sf_min": 1.509607521207078,
+  "governing": "hipbelt_off_abuse",
+  "sf_fatigue": 1.0442075098038233,
+  "joint_min": 1.0270896364475997,
+  "joint_min_insert": 0.6648229598852934,
+  "joint_insert_g": 153.1076297693309
+ },
+ "screens": [
+  "/home/user/Hunting-appeal/outputs/screens/20261110_compB_1.png",
+  "/home/user/Hunting-appeal/outputs/screens/20261110_compB_2.png"
+ ]
+}

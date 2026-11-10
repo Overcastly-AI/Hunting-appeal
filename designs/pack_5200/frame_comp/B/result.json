@@ -1,0 +1,45 @@
+{
+ "team": "B",
+ "concept_name": "SEG-2T: two flat-printed segments, through-bolted printed flange at z 220",
+ "one_line": "Segmenting further buys at most +4 % (every voxel ideally oriented) because today's flat print already loads the stays in-plane; the H2S bed forces one cut, and replacing the bonded dowels with a no-adhesive bolted flange costs 74 g: passes rev C but is heavier than the baseline.",
+ "frame_g": 1136.2,
+ "frame_plus_spreader_g": 1298.5,
+ "pack_mass_corrie_b2_M_g": 4038.0,
+ "passes_rev_c": true,
+ "worst_strength_margin": 1.51,
+ "worst_fatigue_margin": 1.04,
+ "worst_joint_margin": 1.03,
+ "governing_case": "strength hipbelt_off_abuse|15 upper bar / pawl housing (body unchanged); fatigue C_im3:static_carry|15; joint boss bending at 1.6 g (interlayer) @ C_im3:static_carry|23 L",
+ "torsion_stiffness_vs_today": 0.97,
+ "print_hours": 27.9,
+ "printer": "H2S home",
+ "cost_usd": {
+  "1": 435,
+  "10": 404,
+  "100": 374
+ },
+ "build_hours": 5.0,
+ "skill_level": "beginner",
+ "looks_generative": true,
+ "patents_checked": [
+  "US 10,952,523 (Mystery Ranch, crown/lifter guardrail: crown untouched)",
+  "docs/DECISIONS.md patent guardrails (unchanged branch body, no new frame-to-bag feature)"
+ ],
+ "governing_assumptions": [
+  "PAHT-CF fatigue at 1e5 = 0.3 x static (record ASSUMPTION, applied to body and joint) -> CT-B1",
+  "Interlayer shear strength = 0.6 x Z tensile (frame_topopt rule) -> CT-B2",
+  "Boss bending with prying factor 1.25, stress across layers at 0.8 x 47 MPa; fatigue 0.3 x -> CT-B3",
+  "Washer bearing on the printed boss face (XY, 0.8 x 88 MPa; fatigue 0.3 x) -> CT-B3",
+  "Joint preload not credited; key + bolts rigid enough that the body FE (continuous) holds -> CT-B4",
+  "Torsion stiffness 0.97 x today (flange compliance, not modelled) -> CT-B4",
+  "Ti Gr5 M5 rolled-thread fatigue >= 0.25 UTS on As at R~0 -> CT-B4",
+  "Insert variant only: 1200 N pull-out (record ASSUMPTION) and insert fatigue 0.3 x static -> CT-B5"
+ ],
+ "coupon_tests": [
+  "CT-B1: PAHT-CF XY and Z (and +/-45 raster) tension-tension fatigue, R 0.1, 2 Hz, 23 C/50 % RH and 40 C wet, 5 per level, run-out 1e5 at 0.30 x UTS",
+  "CT-B2: short-beam / V-notch interlayer shear on annealed PAHT-CF, 5 dry + 5 wet, pass >= 0.6 x 47 MPa x 0.8",
+  "CT-B3: one-boss pull-through coupon (printed boss, Ti M5, washer, as the flange) static x5 and fatigue x3 at 1.6 g bolt load, 1e5 cycles",
+  "CT-B4: full z 220 joint segment (both stays' stubs, 250 mm each side) in 4-point bending to the factored Mx 66.5 N m, then 1e5 cycles at the 1.6 g Mx; record rotation stiffness, pencil-mark slip <= 0.5 mm, bolt preload loss",
+  "CT-B5 (insert variant only): 5 brass M5 inserts in printed PAHT-CF bosses, axis in the print plane, static >= 1.5 kN and 3 at 0.3 x 960 N for 1e5 cycles"
+ ]
+}
