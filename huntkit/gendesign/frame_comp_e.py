@@ -187,6 +187,49 @@ class PrintedSection(Section):
         tau = T / (alpha * a_ * c_ ** 2)
         return tau, tau                        # conservative: max on both plane families
 
+    def _hull(self, k: int):
+        key = f"_hull{k}"
+        if key not in self.params:
+            y, z, E, kind, dA, _ = self._grid
+            sel = kind == k
+            if not sel.any():
+                self.params[key] = (np.zeros((0, 2)), np.zeros(0))
+            else:
+                pts = np.c_[y[sel], z[sel]]
+                try:
+                    from scipy.spatial import ConvexHull
+                    v = ConvexHull(pts).vertices
+                except Exception:          # degenerate (one row of cells)
+                    v = np.arange(len(pts))
+                self.params[key] = (pts[v], E[sel][v])
+        return self.params[key]
+
+    def fi_batch(self, F: np.ndarray, factor) -> dict:
+        """Vectorised :meth:`fi` over an (n, 6) array of resultants; ``factor`` scalar or (n,)."""
+        F = np.atleast_2d(np.asarray(F, float))
+        fac = np.broadcast_to(np.asarray(factor, float), (F.shape[0],))
+        N, Vy, Vz, T, My, Mz = F.T
+        xt, xc = fibre_allow()
+        ma = matrix_allow()
+        out = {}
+        for k, nm in ((2, "fibre"), (1, "matrix")):
+            pts, Ek = self._hull(k)
+            if len(pts) == 0:
+                st = np.zeros(F.shape[0]); sc = st
+            else:
+                eps = N[:, None] / self.EA + My[:, None] * pts[None, :, 1] / self.EIy \
+                    - Mz[:, None] * pts[None, :, 0] / self.EIz
+                sig = eps * Ek[None, :]
+                st, sc = np.maximum(sig.max(1), 0), np.maximum(-sig.min(1), 0)
+            if k == 2:
+                out["fibre_t"], out["fibre_c"] = st / xt, sc / xc
+            else:
+                out["matrix"] = np.maximum(st, sc) / ma["sig"]
+        tz, ty = self._torsion(np.abs(T))
+        out["interlayer"] = (np.abs(Vz) * self._qmax("z") + tz) / ma["ilss"]
+        out["inplane_shear"] = (np.abs(Vy) * self._qmax("y") + ty) / ma["s_in"]
+        return {k: v * fac for k, v in out.items()}
+
     def fi(self, N, Vy, Vz, T, My, Mz, factor: float = 1.0) -> dict:
         """Failure indices at factor x the given resultants (knocked-down strengths)."""
         c = self.components(N, Vy, Vz, T, My, Mz)
@@ -378,8 +421,8 @@ CANDS = {
                        nr=(1, 2, 3), rho_c=(0.2, 0.35, 0.6, 1.0)),
     "mid_bar": dict(b=(8, 10, 12, 14, 16), h=(8, 10, 12, 14, 16), tf=(0.25, 0.5, 0.75, 1.0),
                     nr=(1, 2), rho_c=(0.2, 0.35, 1.0)),
-    "upper_bar": dict(b=(14, 16, 18, 20, 22, 24, 26), h=(14, 16, 18, 20, 22, 24), tf=(0.5, 0.75, 1.0, 1.5, 2.0, 2.5),
-                      nr=(1, 2, 3, 4), rho_c=(0.2, 0.35, 0.6, 1.0)),
+    "upper_bar": dict(b=(14, 18, 22, 26, 30), h=(14, 18, 22, 26), tf=(0.5, 1.0, 1.5, 2.0, 2.5),
+                      nr=(1, 2, 4), rho_c=(0.2, 0.35, 1.0)),
     "lumbar_rib": dict(b=(8, 10, 12, 14, 16, 20), h=(8, 10, 12, 14, 16, 18), tf=(0.25, 0.5, 0.75, 1.0, 1.5),
                        nr=(1, 2, 3), rho_c=(0.2, 0.35, 1.0)),
     "lumbar_spine": dict(b=(8, 10, 12, 14, 16, 20), h=(8, 10, 12, 14, 16, 18), tf=(0.25, 0.5, 0.75, 1.0, 1.5),
@@ -391,22 +434,37 @@ TARGET = 1.05      # sizing target margin (5 % reserve on every check)
 
 def group_margins(sec: "PrintedSection", rows: list, g: str) -> dict:
     """Strength / fatigue / creep margins of one candidate section on the stored member end forces of group g."""
-    st, fa, cr = np.inf, np.inf, np.inf
-    for r in rows:
-        d = r["groups"].get(g)
-        if not d:
-            continue
-        for F in d["F"]:
-            f = sec.fi(*F, factor=r["factor"])
-            st = min(st, 1 / max(max(f.values()), 1e-12))
-            if r["case"] == "static_carry":
-                f1 = sec.fi(*F)
-                for k, v in f1.items():
-                    ratio = ALLOW["fat_fibre"] if k.startswith("fibre") else ALLOW["fat_matrix"]
-                    fa = min(fa, ratio / max(v * G_WALK, 1e-12))
-                    if not k.startswith("fibre"):
-                        cr = min(cr, ALLOW["creep_matrix"] / max(v, 1e-12))
+    FF, fac, sc = _stack(rows, g)
+    if FF is None:
+        return {"strength": np.inf, "fatigue": np.inf, "creep": np.inf}
+    f = sec.fi_batch(FF, fac)
+    st = 1 / max(max(v.max() for v in f.values()), 1e-12)
+    f1 = sec.fi_batch(FF[sc], 1.0)
+    fa, cr = np.inf, np.inf
+    for k, v in f1.items():
+        ratio = ALLOW["fat_fibre"] if k.startswith("fibre") else ALLOW["fat_matrix"]
+        fa = min(fa, ratio / max(v.max() * G_WALK, 1e-12))
+        if not k.startswith("fibre"):
+            cr = min(cr, ALLOW["creep_matrix"] / max(v.max(), 1e-12))
     return {"strength": st, "fatigue": fa, "creep": cr}
+
+
+_STACK = {}
+
+
+def _stack(rows: list, g: str):
+    key = (id(rows), g)
+    if key not in _STACK:
+        F, fac, sc = [], [], []
+        for r in rows:
+            d = r["groups"].get(g)
+            if not d:
+                continue
+            F += d["F"]
+            fac += [r["factor"]] * len(d["F"])
+            sc += [r["case"] == "static_carry"] * len(d["F"])
+        _STACK[key] = (np.asarray(F) if F else None, np.asarray(fac), np.asarray(sc, bool))
+    return _STACK[key]
 
 
 def size_group(g: str, rows: list, cands: dict | None = None, target: float = TARGET) -> tuple:

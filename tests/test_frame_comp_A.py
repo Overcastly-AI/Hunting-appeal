@@ -68,7 +68,7 @@ def test_dry_joint_capacity_hand_calc():
     c = A.joint_capacity(m)
     ring = math.pi / 4 * (12.0 ** 2 - 5.5 ** 2)
     assert c["bearing_n"] == pytest.approx(ring * 0.8 * 88)
-    assert c["shear_out_n"] == pytest.approx(2 * 35 * 12 * 0.6 * 0.8 * 47)
+    assert c["shear_out_n"] == pytest.approx(2 * 25 * 12 * 0.6 * 0.8 * 47)
     assert c["bolt_n"] == pytest.approx(14.2 * 450)
     assert c["tension_n"] == pytest.approx(min(c["bearing_n"], c["shear_out_n"], c["bolt_n"]))
     cf = A.joint_capacity(m, fatigue=True)

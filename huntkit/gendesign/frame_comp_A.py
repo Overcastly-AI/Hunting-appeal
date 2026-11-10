@@ -250,7 +250,7 @@ def fi_layer(S: np.ndarray, normal: int, m: Mat) -> np.ndarray:
 
 
 def evaluate(b: Body, sets, mats=("paht_rec", "paht_pub", "ppa", "pa6"), normals=(1,), h: float = H,
-             sections: bool = True, stiffness: bool = True, keep_fields: bool = False, log=print) -> dict:
+             sections=(234.0,), stiffness: bool = True, keep_fields: bool = False, log=print) -> dict:
     """One voxel factorisation; per material and layer normal: FI99 per set, strength / fatigue / creep margins."""
     from . import frame_cg_recheck as R
     from . import frame_topopt as ft
@@ -299,9 +299,9 @@ def evaluate(b: Body, sets, mats=("paht_rec", "paht_pub", "ppa", "pa6"), normals
                         env[mk] = np.maximum(env[mk], np.where(ex, 0.0, fi))
                         if s.case == "static_carry":
                             fat_field[mk] = np.maximum(fat_field[mk], np.where(ex, 0.0, fi * 1.6 / s.factor / m.fat))
-            if sections:
-                sec = ft.section_resultants(dom, solid, U[:, k], 234.0, E=1.0)
-                secs.append({"set": s.key, "factor": s.factor, "case": s.case, "sec": sec})
+            for zc in (sections or ()):
+                sec = ft.section_resultants(dom, solid, U[:, k], float(zc), E=1.0)
+                secs.append({"set": s.key, "factor": s.factor, "case": s.case, "sec": sec, "z": float(zc)})
             if s.case == "static_carry" and s.torso == 19.0 and tg == "C" and keep_fields:
                 U_show = U[:, k].astype(np.float32)
         del U
@@ -321,7 +321,8 @@ def evaluate(b: Body, sets, mats=("paht_rec", "paht_pub", "ppa", "pa6"), normals
             mg = margins(rows[(mk, nrm)], m)
             out["materials"][mk][f"n{nrm}"] = mg
     if sections:
-        out["joint"] = joint_check(secs)
+        out["joint_by_z"] = {f"{zc:g}": joint_check([q for q in secs if q["z"] == float(zc)]) for zc in sections}
+        out["joint"] = out["joint_by_z"][f"{sections[0]:g}"]
     if stiffness:
         st = ft.stiffness_tests(dom, solid, E=1.0, sets=[s for s in sets if s.key.startswith("C:")])
         out["stiff_unitE"] = st
@@ -357,15 +358,15 @@ def margins(rows: list, m: Mat) -> dict:
 # ------------------------------------------------------------------------------------------------ dry z 234 joint
 # Released joint: 8 carbon dowels bonded with MMA (production_frame.md). Team A replaces it with a DRY joint:
 # per stay, one M5 through-bolt in each flange (fore and aft of the 18 mm crown bore), parallel to the stay, head in a
-# counterbored pocket of the upper segment and a nut in a side-access hex trap of the lower segment, 35 mm each side
-# of the split; plus one 5 mm carbon dowel per flange as a dry press-fit shear / alignment pin.
+# counterbored pocket of the upper segment and a nut in a side-access hex trap of the lower segment, 25 mm each side
+# of the split (25 mm pockets); plus one 5 mm carbon dowel per flange as a dry press-fit shear / alignment pin.
 JOINT = {
-    "bolt": "M5 A4-80 stainless (or Ti gr5) socket head, 70 mm, one per flange, preloaded 1.5 N m",
+    "bolt": "M5 x 50 Ti gr5 socket head (A4-80 stainless as the heavier fallback), one per flange, 1.5 N m",
     "bolt_As_mm2": 14.2,          # ISO 898 tensile stress area M5
     "bolt_proof_mpa": 450.0,      # A4-80 0.2 % proof (ISO 3506: Rp0.2 600; 450 used, ASSUMPTION margin for Ti gr5 at 828)
     "washer_od": 12.0,            # mm, bearing ring under the nut / head on the printed pocket floor (M5 x 12 washer)
     "hole_d": 5.5,
-    "pocket_len_mm": 35.0,        # printed material between the pocket floor and the split face
+    "pocket_len_mm": 25.0,        # printed material between the pocket floor and the split face
     "lever_mm": 24.0,             # flange bolt spacing about the bore (today's dowel lever)
     "dowel_shear_mpa": 60.0,      # pultruded rod transverse shear (frame_production.DOWEL_TAU)
     "dowel_d": 5.0,
@@ -418,11 +419,11 @@ def joint_boss_g(m: Mat, n_bolts: int = 4) -> float:
     """Printed bosses that carry the bolts and pockets beside the 4.4 mm sleeve wall: a cylinder of radius
     washer/2 + 2 mm over 70 mm, 60 % outside the existing wall (ASSUMPTION, hand-detailed on the STL)."""
     r = JOINT["washer_od"] / 2 + 2.0
-    return n_bolts * math.pi * r ** 2 * 70.0 * 0.6 * m.rho / 1e6
+    return n_bolts * math.pi * r ** 2 * 2 * JOINT["pocket_len_mm"] * 0.6 * m.rho / 1e6
 
 
 JOINT_HW_DELTA_G = {
-    "Ti gr5 M5 x 70 socket heads (4 x 7.0 g) + nuts (4 x 0.6 g)": 30.4,
+    "Ti gr5 M5 x 50 socket heads (4 x 5.0 g) + steel nuts (4 x 0.6 g)": 22.4,
     "4 of the 8 carbon dowels kept as dry press-fit pins (5 x 70 mm, 2.1 g each): 4 removed": -8.5,
     "MMA in the dowel holes removed (ASSUMPTION about 3 g)": -3.0,
 }
@@ -486,15 +487,16 @@ def passes(r: dict, mk: str) -> bool:
     return m["strength"] >= 1.0 and m["fatigue"] >= 1.0 and m["creep"] >= 1.0
 
 
-def fully_stressed(sets, mk: str = "paht_rec", iters: int = 5, keep: float = 1.03, log=print) -> list:
+def fully_stressed(sets, mk: str = "paht_rec", iters: int = 5, keep: float = 1.03, log=print,
+                   start: "Body | None" = None) -> list:
     """Resizing loop from today's body; every iterate verified with the full FI99 rule (all 42 rev C sets).
     The group target T is the group utilisation level at which the GLOBAL rule (FI99 over the body, fatigue and creep
     from static carry) sits at ``keep``: T_0 = max group util x (global margin / keep), then T_k = T_(k-1) x
     (global margin_k / keep). Every family is driven to the same T (fully stressed), within the size floors."""
-    b = Body(name="it0")
+    b = start or Body(name="it0")
     hist, T = [], None
     for it in range(iters + 1):
-        r = evaluate(b, sets, mats=(mk,), normals=(1,), sections=True, stiffness=True, keep_fields=True, log=None)
+        r = evaluate(b, sets, mats=(mk,), normals=(1,), sections=(234.0,), stiffness=True, keep_fields=True, log=None)
         f = r.pop("_fields")
         gu = group_util(f, b, mk)
         mg = r["materials"][mk]["n1"]["min"]
@@ -532,7 +534,7 @@ def print_hours(body_g: float, m: Mat) -> float:
 BOUGHT_USD = {     # per frame, from PRODUCTION.md "Unit cost" unless marked
     "two 304 pawl bushings": 8.0, "M5 heat-set inserts": 3.0, "carbon crown tubes (rev C)": 50.3,
     "SLM Ti hip mount (ASSUMPTION)": 35.0, "UHMWPE bushings (ASSUMPTION)": 5.0, "MMA for the crown corners": 2.0,
-    "4 Ti gr5 M5 x 70 + nuts + M5 x 12 washers (ASSUMPTION $4.5 each)": 18.0, "4 carbon dowels (half of today's)": 2.3,
+    "4 Ti gr5 M5 x 50 + nuts + M5 x 12 washers (ASSUMPTION $4.5 each)": 18.0, "4 carbon dowels (half of today's)": 2.3,
 }
 COUPON_ONE_OFF_USD = 60.0      # ASSUMPTION: filament + hardware for coupon tests CA-1..CA-5 (section 7 of the doc)
 
@@ -775,3 +777,74 @@ if __name__ == "__main__":
     import sys
     if len(sys.argv) > 1 and sys.argv[1] == "--bpy":
         _bpy_main(sys.argv[2:])
+
+
+# ------------------------------------------------------------------------------------------------ member buckling
+# The FI99 rule has no buckling check (frame_cg_recheck, printed_frame_study ASSUMPTION "compact sections"). MONO thins
+# the inboard branches and the mid bar to r 5 mm, so they are checked as Euler columns here: axial force from the voxel
+# stress field (sum of the normal stress over the member's elements in one layer), against
+# P_cr = pi^2 E_hot_creep I / (K L)^2 with K = 1 (pinned, conservative for members blended into the stays),
+# E = E_xy x 0.6 (40 C wet) x 0.7 (8 h creep) for every case (conservative for the short-duration ones).
+# HA-LS-1 rule: eigenvalue >= 1.5 x case factor, i.e. P_cr >= 1.5 x factored compression.
+BUCKLE_CUTS = {             # member: (group, axis of the cut normal, cut coordinate, unsupported length mm)
+    "branch lower (z 165-330)": ("branch", 2, 250.0, 180.0),
+    "branch upper (z 330-495)": ("branch", 2, 420.0, 180.0),
+    "mid bar (x -115..115)": ("mid", 0, 0.0, 230.0),
+}
+
+
+def member_buckling(b: Body, sets, m: Mat, h: float = H, log=print) -> dict:
+    from . import frame_topopt as ft
+    dom, solid = raster(b, h)
+    g = dom.grid
+    idx = np.where(solid)[0]
+    cen = g.elem_centers()[idx]
+    grp = group_of(cen, b)
+    _, fixed = ft.assemble_loads(dom, sets[:1], solid_mask=solid)
+    rs = ft.ReducedSystem(g, solid, fixed, ft.ke_h8(g.h, 1.0, ft.NU))
+    K = rs.assemble(np.full(rs.ae.size, 1.0))
+    K.sort_indices()
+    import pypardiso
+    solver = pypardiso.PyPardisoSolver(mtype=2)
+    solver.factorize(K)
+    E = m.E_xy * m.E_hot * 0.7
+    sel = {}
+    for name, (gname, ax, c, L) in BUCKLE_CUTS.items():
+        gi = GROUPS.index(gname)
+        lay = (grp == gi) & (np.abs(cen[:, ax] - (c + h / 2)) <= h / 2 + 1e-6)
+        sides = {"all": lay} if ax == 0 else {"L": lay & (cen[:, 0] < 0), "R": lay & (cen[:, 0] > 0)}
+        for sd, msk in sides.items():
+            A_ = msk.sum() * h * h
+            r = math.sqrt(A_ / math.pi)
+            I = math.pi * r ** 4 / 4
+            sel[f"{name} {sd}"] = {"mask": msk, "axis": ax, "A_mm2": A_, "r_mm": r, "L": L,
+                                  "Pcr_n": math.pi ** 2 * E * I / L ** 2}
+    rows = {k: {"N_min": 0.0, "set": ""} for k in sel}
+    tags = list(dict.fromkeys(s.key.split(":")[0] for s in sets))
+    for tg in tags:
+        tsets = [s for s in sets if s.key.split(":")[0] == tg]
+        F, _ = ft.assemble_loads(dom, tsets, solid_mask=solid)
+        Ur = solver.solve(K, np.ascontiguousarray(F[rs.free])).reshape(rs.free.size, -1)
+        U = np.zeros((g.ndof, len(tsets)))
+        U[rs.free] = Ur
+        for k, s in enumerate(tsets):
+            _, S = ft.element_stress(g, U[:, k], solid, 1.0)
+            for nm, v in sel.items():
+                N = float(S[v["mask"], v["axis"]].sum() * h * h)
+                if N < rows[nm]["N_min"]:
+                    rows[nm] = {"N_min": N, "set": s.key}
+        del U
+    try:
+        solver.free_memory(everything=True)
+    except Exception:
+        pass
+    out = {}
+    for nm, v in sel.items():
+        P = -rows[nm]["N_min"]
+        out[nm] = {"A_mm2": v["A_mm2"], "r_eq_mm": v["r_mm"], "L_mm": v["L"], "Pcr_n": v["Pcr_n"],
+                   "max_factored_compression_n": P, "set": rows[nm]["set"],
+                   "margin": v["Pcr_n"] / (1.5 * P) if P > 0 else float("inf")}
+        if log:
+            log(f"  buckling {nm}: A {v['A_mm2']:.0f} mm2, P {P:.0f} N ({rows[nm]['set']}), Pcr {v['Pcr_n']:.0f} N, "
+                f"margin {out[nm]['margin']:.2f}")
+    return out
