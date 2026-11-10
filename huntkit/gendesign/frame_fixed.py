@@ -6,7 +6,7 @@ bar and a 3:1 webbing pulley. The frame is printed per unit, so the torso length
 
 - **H1** reproduced first (same solid, same 42 rev C sets, same checks).
 - **(a) fixed crown:** the H1 body unchanged. Each carbon leg is cut to its unit's length and sits only in the top
-  94 mm of the sleeve (z 450-544, the socket): two 25 mm shims (z 457-482 and 519-544) take the radial couple and two
+  149 mm of the sleeve (z 395-544, the socket): two shims (40 mm at z 400-440, 60 mm at z 484-544) take the radial couple and two
   Ti M5 cross-bolts (z 480) take the axial load. No rack, pawl, pulley guides, 70 mm bushings, webbing or cam. The
   spine keeps the pawl housing as a lateral guide (slotted: no axial load), so the yoke and the lifters stay where
   they are; fine adjust at the yoke.
@@ -52,12 +52,16 @@ MAT = H1.MAT
 TORSOS = (15, 19, 23)
 
 # ------------------------------------------------------------------------------------------------ socket design
-SOCKET_Z0 = 450.0        # sleeve keep-out kept from here to the stay top (z 544): the fixed-leg socket
-SOCKET_LOW_Z = 470.0     # low contact band (beam stay node S470; shim z 457-482); the top band is the H1 z 530 node
-SHIM_LEN = 25.0          # ASSUMPTION: two bonded 25 mm UHMWPE shims per leg (cut from today's bushing stock)
+SOCKET_Z0 = 395.0        # sleeve keep-out kept from here to the stay top (z 544): the fixed-leg socket (149 mm)
+SOCKET_LOW_Z = 420.0     # low contact band (beam stay node S420; shim z 400-440); the top band is the H1 z 530 node
+SHIM_LEN = 40.0          # two bonded 40 mm UHMWPE shims per leg (cut from today's bushing stock); a 94 mm socket
+#                          with 25 mm shims fails leg ring crush (0.42, C8 hipbelt-off): see frame_fixed_torso.md 3.1
+TOP_SHIM_LEN = 60.0      # top shim z 484-544 (40 mm fails ring crush at 0.92, C8 IM3 15 in)
+TOP_SHIM_Z = 514.0       # its centre; the beam link sits at the S530 node, so the couple forces are scaled by
+LEVER_CORR = (530.0 - SOCKET_LOW_Z) / (TOP_SHIM_Z - SOCKET_LOW_Z)   # lever beam / lever real (1.17, conservative)
 K_SHIM = 2.0e4           # N/mm radial, as the H1 bushing (pack5200 default bushing_k_n_mm, ASSUMPTION)
 K_BOLT_AX = 5.0e4        # N/mm axial at the cross-bolts (as pack5200 pawl_k_n_mm, ASSUMPTION)
-CROSS_BOLT_Z = 480.0     # 2 Ti M5 cross-bolts per leg, 90 deg apart in plan, 10 mm above the low shim centre
+CROSS_BOLT_Z = 445.0     # 2 Ti M5 cross-bolts per leg, 90 deg apart in plan, 5 mm above the low shim
 CROSS_BOLT_L = 30.0      # M5 x 30 through the socket (stay OD 26.8)
 CFRP_BEARING = 300.0     # ASSUMPTION (team C A1): pin bearing of the UD-rich roll-wrapped leg wall, MPa ultimate
 OPEN_HOLE_KD = 0.55      # ASSUMPTION: open-hole / unnotched strength of the leg laminate at the cross-bolt hole
@@ -76,7 +80,7 @@ BUCKLE_E_KD = 0.6 * 0.7  # A's rule on printed members: hot x creep
 
 # ================================================================================================ beam model
 def _leg_len_mm(torso: float, variant: str) -> float:
-    """Carbon leg length along the axis for a fixed-crown unit: from the low shim (z 457) to the crown top."""
+    """Carbon leg length along the axis for a fixed-crown unit: from the low shim bottom (z 400) to the crown top."""
     from .frame_topopt import load_envelope
     env = load_envelope()
     cs = min(env.crown_settings, key=lambda c: abs(c["torso_in"] - torso))
@@ -110,12 +114,22 @@ def modify_model(m: dict, variant: str, leg: dict | None = None) -> dict:
     if variant == "printed":
         leg = leg or PRINT_LEG
         sec = {"type": "tube_round", "od": float(leg["od"]), "t": float(leg["t"])}
+        mat = _paht_beam_material()
         for mem in m["members"]:
             if mem["group"].startswith("crown_leg"):
                 mem["section"] = sec
-                mem["material"] = "pa12_cf_fdm_paht"
+                mem["material"] = mat
         m["joints"] = [j for j in m["joints"] if not j["id"].startswith("crown_corner")]
     return m
+
+
+def _paht_beam_material():
+    """PAHT-CF record for the beam solver (E XY 3860 MPa). The record has no yield; the solver's own von Mises SF
+    is not used (printed legs are checked by ``printed_leg_fi``), so a placeholder allowable 0.8 x 88 is set."""
+    from huntkit.fea.materials_bridge import Mat, get_material
+    m0 = get_material("pa12_cf_fdm_paht")
+    return Mat(id=m0.id, name=m0.name, category=m0.category,
+               props={**m0.props, "design_allowable_mpa": H1.PAHT["knock"] * H1.PAHT["s_xy"]}, source=m0.source)
 
 
 def _member(res, mid):
@@ -250,15 +264,16 @@ def socket_checks(rows: list) -> dict:
                 for nm, c_ in cap.items():
                     keep("strength", nm, c_ / max(ax, 1e-9), where)
                 for band in ("low", "top"):
-                    Fr = s[f"{band}_radial_n"] * fac
-                    pb = Fr / (od * SHIM_LEN)                       # projected bearing on the shim / bore
+                    Fr = s[f"{band}_radial_n"] * fac * LEVER_CORR
+                    Ls = TOP_SHIM_LEN if band == "top" else SHIM_LEN
+                    pb = Fr / (od * Ls)                             # projected bearing on the shim / bore
                     keep("strength", f"printed bore bearing under the {band} shim (across layers)", sig_bear_allow / max(pb, 1e-9), where)
                     # leg ring crush under the shim (Roark ring, 60 deg contact as the H1 bushing model)
                     from huntkit.fea.rings import ring_moment_coeff
                     cm = ring_moment_coeff(60.0)
                     Rm = od / 2 - t / 2
-                    mh = cm * (Fr / SHIM_LEN) * Rm
-                    sf = float(leg.laminate.first_ply_failure((0, -Fr / (2 * SHIM_LEN), 0), (0, mh, 0))["sf"])
+                    mh = cm * (Fr / Ls) * Rm
+                    sf = float(leg.laminate.first_ply_failure((0, -Fr / (2 * Ls), 0), (0, mh, 0))["sf"])
                     keep("strength", f"leg ring crush under the {band} shim", sf, where)
                 # leg net section at the cross-bolt hole
                 N, Vy, Vz, T, My, Mz = [v * fac for v in r["extra"]["leg_sections"][side]["at_bolt"]]
@@ -271,9 +286,14 @@ def socket_checks(rows: list) -> dict:
                     keep("fatigue", "cross-bolt Ti thread-free shank at 1.6 g (0.25 UTS shear)",
                          0.25 / 0.6 * cap["cross-bolt Ti double shear"] / max(ax * kf, 1e-9), where)
                     for band in ("low", "top"):
-                        Fr = s[f"{band}_radial_n"] * fac * kf
+                        Fr = s[f"{band}_radial_n"] * fac * kf * LEVER_CORR
+                        Ls = TOP_SHIM_LEN if band == "top" else SHIM_LEN
                         keep("fatigue", f"printed bore bearing ({band} shim) at 1.6 g",
-                             P["fat"] * sig_bear_allow / max(Fr / (od * SHIM_LEN), 1e-9), where)
+                             P["fat"] * sig_bear_allow / max(Fr / (od * Ls), 1e-9), where)
+                        # CFRP leg ring at the walking peak: FI <= 0.5 (HA-LS-1 composite fatigue rule)
+                        mh = cm * (Fr / Ls) * Rm
+                        sfr = float(leg.laminate.first_ply_failure((0, -Fr / (2 * Ls), 0), (0, mh, 0))["sf"])
+                        keep("fatigue", f"leg ring under the {band} shim at 1.6 g (FI <= 0.5)", 0.5 * sfr, where)
                     keep("fatigue", "leg at the cross-bolt hole at 1.6 g (CFRP FI <= 0.5)", 0.5 * sfb / kf, where)
         o = {"strength": {}, "fatigue": {}}
         for (kind, nm), (v, wh) in worst.items():
@@ -282,7 +302,7 @@ def socket_checks(rows: list) -> dict:
         o["min_fatigue"] = min(v["margin"] for v in o["fatigue"].values())
         out[tag_s] = o
     out["capacities_n"] = {k_: round(v, 1) for k_, v in cap.items()}
-    out["design"] = {"socket_z": [SOCKET_Z0, 544.0], "shims": f"2 x {SHIM_LEN:g} mm UHMWPE, z 457-482 and 519-544",
+    out["design"] = {"socket_z": [SOCKET_Z0, 544.0], "shims": f"UHMWPE {SHIM_LEN:g} mm at z 400-440 and {TOP_SHIM_LEN:g} mm at z 484-544", "lever_correction": LEVER_CORR,
                      "cross_bolts": f"2 x Ti gr5 M5 x {CROSS_BOLT_L:g} per leg at z {CROSS_BOLT_Z:g}, 90 deg apart in plan, "
                                     "reamed 5.1 through socket and leg, A2 nut",
                      "leg": {"od": od, "t": t}}
@@ -298,7 +318,7 @@ def spine_guide_checks(rows: list) -> dict:
         rs = [r for r in rows if r["scenario"] == tag_s]
         r = max(rs, key=lambda q: math.hypot(q["pawl_n"][1], q["pawl_n"][2]) * q["factor"])
         f = [0.0, r["pawl_n"][1] * r["factor"], r["pawl_n"][2] * r["factor"]]
-        ch = R.pawl_cheek(f[1:])
+        ch = R.pawl_cheek(f)
         out[tag_s] = {"sf": round(float(ch["sf_fi"]), 3), "set": f"{r['case']}|{r['torso']:g}",
                       "factored_yz_n": [round(f[1], 1), round(f[2], 1)]}
     return out

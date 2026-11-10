@@ -125,10 +125,10 @@ Ranking on the ledger basis (lightest first): B -133.4 g, E +0.6 g, A +24.0 g, C
 
 ## 7. Found, not fixed
 
-- The teams used 3943 g for CORRIE B.2 on H1 (bag_comp RULES.md); `frame_mass_h1.json` and the ledger give 3927.0 g. Every published `pack_mass_M_g` is 16.0 g high on that count alone.
+- The teams used 3943 g for CORRIE B.2 on H1 (bag_comp RULES.md, lean.fell.H1_PACK_M); `frame_mass_h1.json` and the ledger give 3927.0 g. Every published `pack_mass_M_g` is 16.0 g high on that count alone.
 - bag_weight_review_20261110.md section 1 gives 'about 3873 g' for H1 + package C; that applies C-9 (-45.6 g) to H1. The ledger gives 3918.6 g.
-- The review's like-for-like bag side (1709 g, section 2, from the B.1 weight-pass groups) is 1625.7 g on the ledger (B.2 parts; IMP-6 in harness; roll-top buckles, B-11, bow carry, keeper loops sorted by system).
-- D's `cache.corrie_b2_system()` counts the roll-top HDPE strip twice (B-07s in the body and again in the 48.5 g geometry.yaml roll-top row); corrected above.
+- The review's like-for-like bag side (quoted there as 1709 g, section 2, from the B.1 weight-pass groups) is 1625.7 g on the ledger (B.2 parts; IMP-6 in harness; roll-top buckles, B-11, bow carry, keeper loops sorted by system).
+- D's `cache.corrie_b2_system()` counts the roll-top HDPE strip twice (B-07s in the body and again in the geometry.yaml roll-top row, cache.CORRIE_ROLLTOP_HW_G); corrected above.
 - `frame_mass_production.json` `frame_g` (1062.6) still omits the dowels for its consumers (weight_pass_corrie, build_geometry), so `corrie.weight_table` is 18.5 g light for today's frame.
 
 ## 8. Screenshot

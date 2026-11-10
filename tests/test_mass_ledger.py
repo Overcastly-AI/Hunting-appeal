@@ -77,11 +77,17 @@ def test_reconciliation_row_is_spec_and_size_independent():
     """The only balancing row equals the weight pass's own B.1 reconciliation at every size: B.2 differs from B.1 only by
     rows the ledger itemizes (corrie.b2_rows + the B.2 part list)."""
     import weight_pass_corrie as WP
-    b1 = WP.breakdown("M")["reconciliation_g"]
+    b1 = next(p["g"] for p in WP.breakdown("M")["parts"] if p["group"] == WP.G_REC)
+    got = []
     for s in L.SIZES:
         rec = [r for r in L.parts("corrie_b2_h1", s) if r["group"] == L.WP.G_REC]
         assert len(rec) == 1 and rec[0]["system"] == "misc"
-        assert rec[0]["g"] == pytest.approx(b1, abs=0.1)
+        got.append(rec[0]["g"])
+    # weight_table totals are rounded to 0.1 g and ~100 part rows to 0.01 g: allow 0.2 g of rounding
+    assert max(got) - min(got) < 0.2
+    for g in got:
+        assert g == pytest.approx(b1, abs=0.2)
+        assert abs(g) < 5.0      # a balancing row, not a hidden part
 
 
 def test_frames_and_package_c():

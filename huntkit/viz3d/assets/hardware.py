@@ -179,6 +179,8 @@ def _side_release(sp):
     cav = _box(cav_L + 2, W - 2 * wall, T - 2 * wall, (xf0 + cav_L / 2 - 1, 0, 0))
     fem = fem - cav
     fem = fem - _box(4.6, slot, T + 2, (xf1 - bar - 2.3, 0, 0))                       # webbing slot
+    for sz in (1, -1):                                                                 # strap bar 0.6 T high
+        fem = fem - _box(bar + 6.0, slot, 0.2 * T + 1, (xf1 - bar / 2 + 0.6, 0, sz * (T / 2 + 0.5 - 0.1 * T)))
     win_L, win_x = 0.34 * Lf, xf0 + 0.50 * Lf
     for sy in (1, -1):                                                                 # pinch windows
         fem = fem - _round_extrude(_rrect(win_L, 2 * wall + 2, 1.0), (), T - 2 * wall - 0.6, 0.3).translate(
@@ -285,15 +287,14 @@ def _cam_buckle(sp):
 
 
 def _g_hook(sp):
-    """Flat aluminium plate: closed slot for the sewn webbing at +x, hook slot at -x opened to the -y end."""
+    """Flat aluminium plate: closed slot for the sewn webbing at -x, hook slot at +x opened to the -y end."""
     L, W, T, slot = sp["L"], sp["W"], sp["T"], sp["slot"]
     s = 5.0
-    closed = _rrect(s, slot, 1.6, cx=L / 2 - 4.0 - s / 2)
-    hx = -L / 2 + 4.0 + s / 2
+    closed = _rrect(s, slot, 1.6, cx=-L / 2 + 4.0 + s / 2)
+    hx = L / 2 - 4.0 - s / 2
     hook = _rrect(s, slot, 1.6, cx=hx)
     m = _round_extrude(_rrect(L, W, 5.0), (closed, hook), T, r=0.9)
-    m = m - _box(s + 3.0, (W - slot) / 2 + 3.0, T + 2, (hx - 2.2, -W / 2 + (W - slot) / 4 - 0.5, 0)) \
-        .rotate((0, 0, 0))
+    m = m - _box(s - 0.4, (W - slot) / 2 + 3.0, T + 2, (hx, -W / 2 + (W - slot) / 4 - 0.5, 0))
     return {"body": _to_mesh(m)}
 
 
@@ -324,18 +325,18 @@ def _d_ring(sp):
 
 
 def _bag_hook(sp):
-    """Rated bag hook: 4 mm plate, closed 38 mm webbing slot at +x, hook mouth at -x that drops over a 5 mm pin,
+    """Rated bag hook: 4 mm plate, closed 38 mm webbing slot at -x, hook mouth at +x that drops over a 5 mm pin,
     spring gate (thin plate with a thumb nub) closing the mouth."""
     L, W, T, slot, mouth = sp["L"], sp["W"], sp["T"], sp["slot"], sp["mouth"]
-    closed = _rrect(5.5, slot, 1.8, cx=L / 2 - 5.0 - 2.75)
-    eye_x = -L / 2 + 14.0
+    closed = _rrect(5.5, slot, 1.8, cx=-L / 2 + 5.0 + 2.75)
+    eye_x = L / 2 - 14.0
     eye = _rrect(mouth + 5.0, 20.0, 3.2, cx=eye_x)
     m = _round_extrude(_rrect(L, W, 7.0), (closed, eye), T, r=1.0)
-    m = m - _box(mouth, 16.0, T + 2, (eye_x - 1.5, -W / 2 + 6.0, 0))                 # mouth open to the -y edge
-    gate = _round_extrude(_rrect(mouth + 9.0, 15.0, 2.0, cx=eye_x - 1.0, cy=-W / 2 + 12.0), (), 1.2, r=0.4) \
+    m = m - _box(mouth, 16.0, T + 2, (eye_x + 1.5, -W / 2 + 6.0, 0))                 # mouth open to the -y edge
+    gate = _round_extrude(_rrect(mouth + 9.0, 15.0, 2.0, cx=eye_x + 1.0, cy=-W / 2 + 12.0), (), 1.2, r=0.4) \
         .translate((0, 0, T / 2 + 0.6))
-    nub = _rbox(4.0, 7.0, 2.2, 0.6, (eye_x - 1.0, -W / 2 + 12.0, T / 2 + 1.8), rp=1.5)
-    rivet = _cyl_y(1.6, 2.0, (0, 0, 0)).rotate((90.0, 0, 0)).translate((eye_x + mouth / 2 + 5.0, -W / 2 + 18.0,
+    nub = _rbox(4.0, 7.0, 2.2, 0.6, (eye_x + 1.0, -W / 2 + 12.0, T / 2 + 1.8), rp=1.5)
+    rivet = _cyl_y(1.6, 2.0, (0, 0, 0)).rotate((90.0, 0, 0)).translate((eye_x - mouth / 2 - 5.0, -W / 2 + 18.0,
                                                                          T / 2 + 1.0))
     return {"body": _to_mesh(m), "gate": _to_mesh(gate + nub + rivet)}
 
