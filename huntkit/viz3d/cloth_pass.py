@@ -531,8 +531,12 @@ def prepare(state: str, params: ClothParams | None = None, shell: str = "S15", t
     for i, (_, V, F) in enumerate(obstacles):
         arrays[f"obs{i}_V"], arrays[f"obs{i}_F"] = np.asarray(V, float), np.asarray(F, int)
     np.savez_compressed(npz, **arrays)
+    import hashlib
+    hsh = hashlib.sha1()
+    for k in sorted(arrays):
+        hsh.update(np.ascontiguousarray(np.round(np.asarray(arrays[k], float), 3)).tobytes())
     A = np.linalg.norm(np.cross(X0[T[:, 1]] - X0[T[:, 0]], X0[T[:, 2]] - X0[T[:, 0]]), axis=1).sum() / 2e6
-    job = {"kind": "bag", "state": state, "in": str(npz), "out": str(work / f"{stem}.out.npy"),
+    job = {"kind": "bag", "state": state, "hash": hsh.hexdigest(), "in": str(npz), "out": str(work / f"{stem}.out.npy"),
            "preview": str(work / f"{stem}.preview.png"), "params": asdict(p), "n_straps": len(straps),
            "n_obs": len(obstacles), "area_m2": float(A), "stem": stem}
     meta = {"state": state, "shell": shell, "torso": torso, "level": p.level, "n": int(n), "proxy": pinfo,
@@ -649,7 +653,7 @@ def run(state: str, params: ClothParams | None = None, shell: str = "S15", torso
     job, meta, sd = r["job"], r["meta"], r["seed"]
     out = Path(job["out"])
     stamp = out.with_suffix(".stamp.json")
-    key = json.dumps({"params": job["params"], "n_obs": len(obstacles), "n": meta["n"]}, sort_keys=True)
+    key = json.dumps({"params": job["params"], "inputs": job["hash"]}, sort_keys=True)
     if force or not out.exists() or not stamp.exists() or stamp.read_text() != key:
         solve(r["job_path"])
         stamp.write_text(key)
