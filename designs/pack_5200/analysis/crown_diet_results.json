@@ -237,6 +237,68 @@
    "bushing_mm": 70.0,
    "bushing_wall": 1.0
   },
+  "c17b19": {
+   "name": "c17b19",
+   "torsos": [
+    15.0,
+    19.0,
+    23.0
+   ],
+   "leg_mm": 430.0,
+   "spine_mm": 300.0,
+   "leg": [
+    17.0,
+    7
+   ],
+   "bushing_mm": 70.0,
+   "bushing_wall": 1.0
+  },
+  "acb_S": {
+   "name": "acb_S",
+   "torsos": [
+    15.0,
+    18.0
+   ],
+   "leg_mm": 303.0,
+   "spine_mm": 173.0,
+   "leg": [
+    17.0,
+    7
+   ],
+   "bushing_mm": 70.0,
+   "bushing_wall": 1.0
+  },
+  "acb_M": {
+   "name": "acb_M",
+   "torsos": [
+    17.5,
+    19.0,
+    20.5
+   ],
+   "leg_mm": 366.5,
+   "spine_mm": 236.5,
+   "leg": [
+    17.0,
+    7
+   ],
+   "bushing_mm": 70.0,
+   "bushing_wall": 1.0
+  },
+  "acb_L": {
+   "name": "acb_L",
+   "torsos": [
+    20.0,
+    23.0
+   ],
+   "leg_mm": 430.0,
+   "spine_mm": 300.0,
+   "leg": [
+    17.0,
+    7
+   ],
+   "bushing_mm": 70.0,
+   "bushing_wall": 1.0
+  },
   "c18n5": {
    "name": "c18n5",
    "torsos": [
@@ -838,6 +900,218 @@
    },
    "min_all": 1.107
   },
+  "c17b19": {
+   "min": {
+    "crown_leg": {
+     "sf": 1.127,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "crown_top_bar": {
+     "sf": 1.255,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "crown_spine": {
+     "sf": 1.178,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "corner_bond_avg": {
+     "sf": 2.62,
+     "set": "C:tall_load_posts|15"
+    },
+    "corner_bond_peak": {
+     "sf": 1.377,
+     "set": "C:tall_load_posts|15"
+    },
+    "bushing_bearing": {
+     "sf": 18.79,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "leg_ring_crush": {
+     "sf": 1.899,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "fatigue": {
+     "sf": 1.371,
+     "set": "C_im3:static_carry|23"
+    },
+    "buckling": {
+     "sf": 1.857,
+     "set": "C:hipbelt_off_abuse|23"
+    },
+    "rack": {
+     "sf": 6.266,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "pawl_cheek": {
+     "sf": 1.406,
+     "set": "C:hipbelt_off_abuse|15"
+    },
+    "corner_bond_fatigue_peak": {
+     "sf": 2.541,
+     "set": "C_im3:static_carry|23"
+    }
+   },
+   "min_all": 1.127
+  },
+  "acb_S": {
+   "min": {
+    "crown_leg": {
+     "sf": 1.161,
+     "set": "C_im3:hipbelt_off_abuse|18"
+    },
+    "crown_top_bar": {
+     "sf": 1.27,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "crown_spine": {
+     "sf": 1.178,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "corner_bond_avg": {
+     "sf": 2.575,
+     "set": "C:tall_load_posts|15"
+    },
+    "corner_bond_peak": {
+     "sf": 1.353,
+     "set": "C:tall_load_posts|15"
+    },
+    "bushing_bearing": {
+     "sf": 17.052,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "leg_ring_crush": {
+     "sf": 1.724,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "fatigue": {
+     "sf": 2.717,
+     "set": "C_im3:static_carry|18"
+    },
+    "buckling": {
+     "sf": 1.892,
+     "set": "C:side_hill_torsion|15"
+    },
+    "rack": {
+     "sf": 6.266,
+     "set": "C:hipbelt_off_abuse|15"
+    },
+    "pawl_cheek": {
+     "sf": 1.417,
+     "set": "C:hipbelt_off_abuse|15"
+    },
+    "corner_bond_fatigue_peak": {
+     "sf": 3.459,
+     "set": "C:static_carry|15"
+    }
+   },
+   "min_all": 1.161
+  },
+  "acb_M": {
+   "min": {
+    "crown_leg": {
+     "sf": 1.14,
+     "set": "C_im3:hipbelt_off_abuse|20.5"
+    },
+    "crown_top_bar": {
+     "sf": 2.388,
+     "set": "C_im3:side_hill_torsion|17.5"
+    },
+    "crown_spine": {
+     "sf": 1.749,
+     "set": "C_im3:hipbelt_off_abuse|20.5"
+    },
+    "corner_bond_avg": {
+     "sf": 3.061,
+     "set": "C:tall_load_posts|17.5"
+    },
+    "corner_bond_peak": {
+     "sf": 1.609,
+     "set": "C:tall_load_posts|17.5"
+    },
+    "bushing_bearing": {
+     "sf": 21.913,
+     "set": "C_im3:hipbelt_off_abuse|17.5"
+    },
+    "leg_ring_crush": {
+     "sf": 2.215,
+     "set": "C_im3:hipbelt_off_abuse|17.5"
+    },
+    "fatigue": {
+     "sf": 1.764,
+     "set": "C_im3:static_carry|20.5"
+    },
+    "buckling": {
+     "sf": 1.937,
+     "set": "C:hipbelt_off_abuse|20.5"
+    },
+    "rack": {
+     "sf": 6.266,
+     "set": "C_im3:hipbelt_off_abuse|17.5"
+    },
+    "pawl_cheek": {
+     "sf": 2.015,
+     "set": "C_im3:hipbelt_off_abuse|17.5"
+    },
+    "corner_bond_fatigue_peak": {
+     "sf": 3.914,
+     "set": "C_im3:static_carry|20.5"
+    }
+   },
+   "min_all": 1.14
+  },
+  "acb_L": {
+   "min": {
+    "crown_leg": {
+     "sf": 1.127,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "crown_top_bar": {
+     "sf": 2.368,
+     "set": "C_im3:side_hill_torsion|23"
+    },
+    "crown_spine": {
+     "sf": 1.2,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "corner_bond_avg": {
+     "sf": 3.248,
+     "set": "C:tall_load_posts|20"
+    },
+    "corner_bond_peak": {
+     "sf": 1.707,
+     "set": "C:tall_load_posts|20"
+    },
+    "bushing_bearing": {
+     "sf": 24.507,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "leg_ring_crush": {
+     "sf": 2.477,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "fatigue": {
+     "sf": 1.371,
+     "set": "C_im3:static_carry|23"
+    },
+    "buckling": {
+     "sf": 1.857,
+     "set": "C:hipbelt_off_abuse|23"
+    },
+    "rack": {
+     "sf": 6.266,
+     "set": "C:hipbelt_off_abuse|20"
+    },
+    "pawl_cheek": {
+     "sf": 2.791,
+     "set": "C_im3:hipbelt_off_abuse|20"
+    },
+    "corner_bond_fatigue_peak": {
+     "sf": 2.541,
+     "set": "C_im3:static_carry|23"
+    }
+   },
+   "min_all": 1.127
+  },
   "c18n5": {
    "min": {
     "crown_leg": {
@@ -893,7 +1167,7 @@
   }
  },
  "body": {
-  "h1": {
+  "h1_recorded_basis": {
    "name": "h1",
    "raster_g": 757.72192,
    "min": {
@@ -944,98 +1218,149 @@
    "joint_strength": 1.964,
    "joint_fatigue": 1.22
   },
+  "h1": {
+   "name": "h1",
+   "raster_g": 757.72192,
+   "min": {
+    "strength": 1.4739561426221504,
+    "fatigue": 1.1502260709981276,
+    "creep": 2.453815618129339
+   },
+   "governing": "C_im3@H23:C_im3@H23:static_carry|23 (fatigue)",
+   "by_torso": {
+    "C@H15|15": {
+     "strength": 1.474,
+     "fatigue": 1.633,
+     "creep": 3.484,
+     "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+    },
+    "C_im3@H15|15": {
+     "strength": 1.494,
+     "fatigue": 1.53,
+     "creep": 3.264,
+     "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+    },
+    "C@H19|19": {
+     "strength": 2.082,
+     "fatigue": 1.493,
+     "creep": 3.185,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@H19|19": {
+     "strength": 2.024,
+     "fatigue": 1.313,
+     "creep": 2.801,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@H23|23": {
+     "strength": 2.119,
+     "fatigue": 1.529,
+     "creep": 3.261,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@H23|23": {
+     "strength": 2.021,
+     "fatigue": 1.15,
+     "creep": 2.454,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    }
+   },
+   "buckling_min": 1.313,
+   "joint_strength": 1.964,
+   "joint_fatigue": 1.22
+  },
   "a": {
    "name": "a",
    "raster_g": 757.72192,
    "min": {
-    "strength": 1.4829857077529613,
-    "fatigue": 1.1554209988135555,
-    "creep": 2.4648981308022524
+    "strength": 1.491172275299688,
+    "fatigue": 1.1502260709981276,
+    "creep": 2.453815618129339
    },
-   "governing": "C_im3@L:C_im3@L:static_carry|23 (fatigue)",
+   "governing": "C_im3@L23:C_im3@L23:static_carry|23 (fatigue)",
    "by_torso": {
-    "C@S|15": {
-     "strength": 1.483,
-     "fatigue": 1.41,
-     "creep": 3.009,
+    "C@S15|15": {
+     "strength": 1.491,
+     "fatigue": 1.421,
+     "creep": 3.032,
      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
     },
-    "C@S|18": {
-     "strength": 2.053,
-     "fatigue": 1.464,
-     "creep": 3.123,
-     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
-    },
-    "C_im3@S|15": {
-     "strength": 1.501,
-     "fatigue": 1.348,
-     "creep": 2.877,
+    "C_im3@S15|15": {
+     "strength": 1.515,
+     "fatigue": 1.357,
+     "creep": 2.895,
      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
     },
-    "C_im3@S|18": {
-     "strength": 2.001,
-     "fatigue": 1.291,
-     "creep": 2.753,
+    "C@S18|18": {
+     "strength": 2.077,
+     "fatigue": 1.474,
+     "creep": 3.144,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C@M|17": {
-     "strength": 2.017,
-     "fatigue": 1.449,
-     "creep": 3.091,
+    "C_im3@S18|18": {
+     "strength": 2.016,
+     "fatigue": 1.298,
+     "creep": 2.769,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C@M|19": {
-     "strength": 2.038,
-     "fatigue": 1.47,
-     "creep": 3.136,
+    "C@M17.5|17": {
+     "strength": 2.06,
+     "fatigue": 1.469,
+     "creep": 3.133,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C@M|20": {
-     "strength": 2.052,
-     "fatigue": 1.484,
-     "creep": 3.166,
+    "C_im3@M17.5|17": {
+     "strength": 2.007,
+     "fatigue": 1.298,
+     "creep": 2.769,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C_im3@M|17": {
-     "strength": 1.976,
-     "fatigue": 1.281,
-     "creep": 2.733,
+    "C@M19|19": {
+     "strength": 2.077,
+     "fatigue": 1.488,
+     "creep": 3.174,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C_im3@M|19": {
-     "strength": 1.981,
-     "fatigue": 1.247,
-     "creep": 2.66,
+    "C_im3@M19|19": {
+     "strength": 2.013,
+     "fatigue": 1.259,
+     "creep": 2.686,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C_im3@M|20": {
-     "strength": 1.985,
-     "fatigue": 1.22,
-     "creep": 2.602,
+    "C@M20.5|20": {
+     "strength": 2.1,
+     "fatigue": 1.509,
+     "creep": 3.219,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C@L|20": {
-     "strength": 2.068,
-     "fatigue": 1.49,
-     "creep": 3.179,
+    "C_im3@M20.5|20": {
+     "strength": 2.03,
+     "fatigue": 1.225,
+     "creep": 2.614,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C@L|23": {
-     "strength": 2.099,
-     "fatigue": 1.513,
-     "creep": 3.228,
+    "C@L20|20": {
+     "strength": 2.091,
+     "fatigue": 1.503,
+     "creep": 3.206,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C_im3@L|20": {
-     "strength": 1.999,
-     "fatigue": 1.226,
-     "creep": 2.615,
+    "C_im3@L20|20": {
+     "strength": 2.013,
+     "fatigue": 1.233,
+     "creep": 2.629,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C_im3@L|23": {
-     "strength": 2.004,
-     "fatigue": 1.155,
-     "creep": 2.465,
+    "C@L23|23": {
+     "strength": 2.119,
+     "fatigue": 1.529,
+     "creep": 3.261,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@L23|23": {
+     "strength": 2.021,
+     "fatigue": 1.15,
+     "creep": 2.454,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     }
    },
@@ -1047,95 +1372,95 @@
    "name": "a_sleeve",
    "raster_g": 753.82112,
    "min": {
-    "strength": 1.4801323825339574,
-    "fatigue": 1.1184273431459493,
-    "creep": 2.3859783320446923
+    "strength": 1.4897855782892726,
+    "fatigue": 1.0811808575718869,
+    "creep": 2.3065191628200257
    },
-   "governing": "C_im3@L:C_im3@L:static_carry|23 (fatigue)",
+   "governing": "C_im3@L23:C_im3@L23:static_carry|23 (fatigue)",
    "by_torso": {
-    "C@S|15": {
-     "strength": 1.48,
-     "fatigue": 1.361,
-     "creep": 2.904,
+    "C@S15|15": {
+     "strength": 1.49,
+     "fatigue": 1.376,
+     "creep": 2.936,
      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
     },
-    "C@S|18": {
-     "strength": 2.028,
-     "fatigue": 1.415,
-     "creep": 3.019,
-     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
-    },
-    "C_im3@S|15": {
-     "strength": 1.5,
-     "fatigue": 1.305,
-     "creep": 2.784,
+    "C_im3@S15|15": {
+     "strength": 1.51,
+     "fatigue": 1.316,
+     "creep": 2.808,
      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
     },
-    "C_im3@S|18": {
-     "strength": 1.969,
-     "fatigue": 1.236,
-     "creep": 2.637,
+    "C@S18|18": {
+     "strength": 2.052,
+     "fatigue": 1.434,
+     "creep": 3.06,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C@M|17": {
-     "strength": 2.0,
-     "fatigue": 1.397,
-     "creep": 2.98,
+    "C_im3@S18|18": {
+     "strength": 1.986,
+     "fatigue": 1.234,
+     "creep": 2.633,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C@M|19": {
-     "strength": 2.024,
-     "fatigue": 1.416,
-     "creep": 3.02,
+    "C@M17.5|17": {
+     "strength": 2.043,
+     "fatigue": 1.428,
+     "creep": 3.046,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C@M|20": {
-     "strength": 2.032,
-     "fatigue": 1.431,
-     "creep": 3.052,
+    "C_im3@M17.5|17": {
+     "strength": 1.981,
+     "fatigue": 1.249,
+     "creep": 2.665,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C_im3@M|17": {
-     "strength": 1.946,
-     "fatigue": 1.232,
-     "creep": 2.628,
+    "C@M19|19": {
+     "strength": 2.055,
+     "fatigue": 1.441,
+     "creep": 3.074,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C_im3@M|19": {
-     "strength": 1.94,
-     "fatigue": 1.192,
-     "creep": 2.542,
+    "C_im3@M19|19": {
+     "strength": 1.973,
+     "fatigue": 1.185,
+     "creep": 2.528,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C_im3@M|20": {
-     "strength": 1.947,
-     "fatigue": 1.165,
-     "creep": 2.485,
+    "C@M20.5|20": {
+     "strength": 2.078,
+     "fatigue": 1.464,
+     "creep": 3.123,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C@L|20": {
-     "strength": 2.051,
-     "fatigue": 1.44,
-     "creep": 3.072,
+    "C_im3@M20.5|20": {
+     "strength": 1.976,
+     "fatigue": 1.148,
+     "creep": 2.45,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C@L|23": {
-     "strength": 2.086,
-     "fatigue": 1.467,
-     "creep": 3.13,
+    "C@L20|20": {
+     "strength": 2.07,
+     "fatigue": 1.458,
+     "creep": 3.109,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C_im3@L|20": {
-     "strength": 1.955,
-     "fatigue": 1.171,
-     "creep": 2.498,
+    "C_im3@L20|20": {
+     "strength": 1.972,
+     "fatigue": 1.185,
+     "creep": 2.527,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C_im3@L|23": {
-     "strength": 1.954,
-     "fatigue": 1.118,
-     "creep": 2.386,
+    "C@L23|23": {
+     "strength": 2.098,
+     "fatigue": 1.484,
+     "creep": 3.165,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@L23|23": {
+     "strength": 1.922,
+     "fatigue": 1.081,
+     "creep": 2.307,
+     "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
     }
    },
    "buckling_min": 1.316,
@@ -1143,50 +1468,200 @@
    "joint_fatigue": 1.22,
    "removed_g": 3.9008
   },
+  "ac": {
+   "name": "ac",
+   "raster_g": 757.72192,
+   "min": {
+    "strength": 1.497108493586876,
+    "fatigue": 1.1494002775864867,
+    "creep": 2.452053925517838
+   },
+   "governing": "C_im3@L23:C_im3@L23:static_carry|23 (fatigue)",
+   "by_torso": {
+    "C@S15|15": {
+     "strength": 1.497,
+     "fatigue": 1.421,
+     "creep": 3.032,
+     "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+    },
+    "C_im3@S15|15": {
+     "strength": 1.522,
+     "fatigue": 1.357,
+     "creep": 2.895,
+     "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+    },
+    "C@S18|18": {
+     "strength": 2.077,
+     "fatigue": 1.474,
+     "creep": 3.144,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@S18|18": {
+     "strength": 2.017,
+     "fatigue": 1.298,
+     "creep": 2.769,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@M17.5|17": {
+     "strength": 2.062,
+     "fatigue": 1.469,
+     "creep": 3.133,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@M17.5|17": {
+     "strength": 2.008,
+     "fatigue": 1.298,
+     "creep": 2.768,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@M19|19": {
+     "strength": 2.078,
+     "fatigue": 1.488,
+     "creep": 3.174,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@M19|19": {
+     "strength": 2.013,
+     "fatigue": 1.259,
+     "creep": 2.685,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@M20.5|20": {
+     "strength": 2.1,
+     "fatigue": 1.509,
+     "creep": 3.219,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@M20.5|20": {
+     "strength": 2.029,
+     "fatigue": 1.225,
+     "creep": 2.613,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@L20|20": {
+     "strength": 2.091,
+     "fatigue": 1.503,
+     "creep": 3.206,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@L20|20": {
+     "strength": 2.012,
+     "fatigue": 1.232,
+     "creep": 2.629,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@L23|23": {
+     "strength": 2.119,
+     "fatigue": 1.529,
+     "creep": 3.261,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@L23|23": {
+     "strength": 2.021,
+     "fatigue": 1.149,
+     "creep": 2.452,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    }
+   },
+   "buckling_min": 1.314,
+   "joint_strength": 1.963,
+   "joint_fatigue": 1.219
+  },
+  "c17n7": {
+   "name": "c17n7",
+   "raster_g": 757.72192,
+   "min": {
+    "strength": 1.4807765234596355,
+    "fatigue": 1.1494002775864867,
+    "creep": 2.452053925517838
+   },
+   "governing": "C_im3@23:C_im3@23:static_carry|23 (fatigue)",
+   "by_torso": {
+    "C@15|15": {
+     "strength": 1.481,
+     "fatigue": 1.634,
+     "creep": 3.485,
+     "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+    },
+    "C_im3@15|15": {
+     "strength": 1.5,
+     "fatigue": 1.53,
+     "creep": 3.264,
+     "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+    },
+    "C@19|19": {
+     "strength": 2.082,
+     "fatigue": 1.493,
+     "creep": 3.185,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@19|19": {
+     "strength": 2.025,
+     "fatigue": 1.313,
+     "creep": 2.8,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@23|23": {
+     "strength": 2.119,
+     "fatigue": 1.529,
+     "creep": 3.261,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@23|23": {
+     "strength": 2.021,
+     "fatigue": 1.149,
+     "creep": 2.452,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    }
+   },
+   "buckling_min": 1.314,
+   "joint_strength": 1.963,
+   "joint_fatigue": 1.219
+  },
   "c18n6": {
    "name": "c18n6",
    "raster_g": 719.46016,
    "min": {
-    "strength": 1.4478004634082349,
-    "fatigue": 1.1553843910165864,
-    "creep": 2.464820034168718
+    "strength": 1.4668330376006298,
+    "fatigue": 1.036310035984749,
+    "creep": 2.210794743434132
    },
-   "governing": "C_im3:C_im3:static_carry|23 (fatigue)",
+   "governing": "C_im3@23:C_im3@23:static_carry|23 (fatigue)",
    "by_torso": {
-    "C|15": {
-     "strength": 1.448,
-     "fatigue": 1.572,
-     "creep": 3.353,
-     "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
-    },
-    "C|19": {
-     "strength": 2.115,
-     "fatigue": 1.66,
-     "creep": 3.542,
-     "gov": "side_hill_torsion (mid bar z 330)"
-    },
-    "C|23": {
-     "strength": 2.141,
-     "fatigue": 1.718,
-     "creep": 3.666,
-     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
-    },
-    "C_im3|15": {
+    "C@15|15": {
      "strength": 1.467,
-     "fatigue": 1.484,
-     "creep": 3.165,
+     "fatigue": 1.569,
+     "creep": 3.348,
      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
     },
-    "C_im3|19": {
-     "strength": 2.065,
-     "fatigue": 1.389,
-     "creep": 2.963,
+    "C_im3@15|15": {
+     "strength": 1.485,
+     "fatigue": 1.464,
+     "creep": 3.122,
+     "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+    },
+    "C@19|19": {
+     "strength": 2.024,
+     "fatigue": 1.411,
+     "creep": 3.01,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C_im3|23": {
-     "strength": 2.054,
-     "fatigue": 1.155,
-     "creep": 2.465,
+    "C_im3@19|19": {
+     "strength": 1.959,
+     "fatigue": 1.233,
+     "creep": 2.63,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@23|23": {
+     "strength": 2.067,
+     "fatigue": 1.439,
+     "creep": 3.069,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@23|23": {
+     "strength": 1.842,
+     "fatigue": 1.036,
+     "creep": 2.211,
      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
     }
    },
@@ -1195,155 +1670,209 @@
    "joint_fatigue": 1.23,
    "removed_g": 38.261759999999995
   },
-  "c17n7": {
-   "name": "c17n7",
-   "raster_g": 757.72192,
+  "c17b19": {
+   "name": "c17b19",
+   "raster_g": 737.62432,
    "min": {
-    "strength": 1.4601628067918515,
-    "fatigue": 1.2786729765102758,
-    "creep": 2.727835683221922
+    "strength": 1.4734445768627003,
+    "fatigue": 1.1158786176297557,
+    "creep": 2.380541050943479
+   },
+   "governing": "C_im3@23:C_im3@23:static_carry|23 (fatigue)",
+   "by_torso": {
+    "C@15|15": {
+     "strength": 1.473,
+     "fatigue": 1.618,
+     "creep": 3.451,
+     "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+    },
+    "C_im3@15|15": {
+     "strength": 1.49,
+     "fatigue": 1.511,
+     "creep": 3.224,
+     "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+    },
+    "C@19|19": {
+     "strength": 2.057,
+     "fatigue": 1.47,
+     "creep": 3.135,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@19|19": {
+     "strength": 1.997,
+     "fatigue": 1.284,
+     "creep": 2.74,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@23|23": {
+     "strength": 2.092,
+     "fatigue": 1.505,
+     "creep": 3.21,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@23|23": {
+     "strength": 1.984,
+     "fatigue": 1.116,
+     "creep": 2.381,
+     "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+    }
+   },
+   "buckling_min": 1.315,
+   "joint_strength": 1.842,
+   "joint_fatigue": 1.228,
+   "removed_g": 20.0976
+  },
+  "c17b19_recorded_basis": {
+   "name": "c17b19_rec",
+   "raster_g": 737.62432,
+   "min": {
+    "strength": 1.449878972138727,
+    "fatigue": 1.2085192590412535,
+    "creep": 2.5781744192880076
    },
    "governing": "C_im3:C_im3:static_carry|23 (fatigue)",
    "by_torso": {
     "C|15": {
-     "strength": 1.46,
-     "fatigue": 1.612,
-     "creep": 3.438,
+     "strength": 1.45,
+     "fatigue": 1.592,
+     "creep": 3.396,
      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
     },
     "C|19": {
-     "strength": 2.148,
-     "fatigue": 1.706,
-     "creep": 3.64,
+     "strength": 2.131,
+     "fatigue": 1.689,
+     "creep": 3.603,
      "gov": "side_hill_torsion (mid bar z 330)"
     },
     "C|23": {
-     "strength": 2.169,
-     "fatigue": 1.768,
-     "creep": 3.772,
-     "gov": "side_hill_torsion (mid bar z 330)"
+     "strength": 2.151,
+     "fatigue": 1.743,
+     "creep": 3.718,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
     "C_im3|15": {
-     "strength": 1.478,
-     "fatigue": 1.524,
-     "creep": 3.251,
+     "strength": 1.47,
+     "fatigue": 1.507,
+     "creep": 3.214,
      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
     },
     "C_im3|19": {
-     "strength": 2.103,
-     "fatigue": 1.474,
-     "creep": 3.144,
+     "strength": 2.086,
+     "fatigue": 1.421,
+     "creep": 3.031,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
     "C_im3|23": {
-     "strength": 2.134,
-     "fatigue": 1.279,
-     "creep": 2.728,
+     "strength": 2.117,
+     "fatigue": 1.209,
+     "creep": 2.578,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     }
    },
-   "buckling_min": 1.314,
-   "joint_strength": 1.963,
-   "joint_fatigue": 1.219
+   "buckling_min": 1.315,
+   "joint_strength": 1.842,
+   "joint_fatigue": 1.228,
+   "removed_g": 20.0976
   },
-  "ac": {
-   "name": "ac",
-   "raster_g": 757.72192,
+  "acb19": {
+   "name": "acb19",
+   "raster_g": 737.62432,
    "min": {
-    "strength": 1.4884623740735923,
-    "fatigue": 1.1544750790951266,
-    "creep": 2.462880168736271
+    "strength": 1.4905083407675306,
+    "fatigue": 1.1158786176297557,
+    "creep": 2.380541050943479
    },
-   "governing": "C_im3@L:C_im3@L:static_carry|23 (fatigue)",
+   "governing": "C_im3@L23:C_im3@L23:static_carry|23 (fatigue)",
    "by_torso": {
-    "C@S|15": {
-     "strength": 1.488,
-     "fatigue": 1.41,
-     "creep": 3.009,
+    "C@S15|15": {
+     "strength": 1.491,
+     "fatigue": 1.4,
+     "creep": 2.987,
      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
     },
-    "C@S|18": {
-     "strength": 2.055,
-     "fatigue": 1.464,
-     "creep": 3.122,
-     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
-    },
-    "C_im3@S|15": {
-     "strength": 1.508,
-     "fatigue": 1.348,
-     "creep": 2.877,
+    "C_im3@S15|15": {
+     "strength": 1.51,
+     "fatigue": 1.334,
+     "creep": 2.846,
      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
     },
-    "C_im3@S|18": {
-     "strength": 2.002,
-     "fatigue": 1.29,
-     "creep": 2.753,
+    "C@S18|18": {
+     "strength": 2.043,
+     "fatigue": 1.455,
+     "creep": 3.103,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C@M|17": {
-     "strength": 2.017,
+    "C_im3@S18|18": {
+     "strength": 1.995,
+     "fatigue": 1.277,
+     "creep": 2.724,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@M17.5|17": {
+     "strength": 2.03,
      "fatigue": 1.449,
-     "creep": 3.091,
+     "creep": 3.092,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C@M|19": {
-     "strength": 2.038,
-     "fatigue": 1.47,
-     "creep": 3.136,
+    "C_im3@M17.5|17": {
+     "strength": 1.987,
+     "fatigue": 1.28,
+     "creep": 2.73,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C@M|20": {
-     "strength": 2.052,
-     "fatigue": 1.484,
-     "creep": 3.166,
+    "C@M19|19": {
+     "strength": 2.048,
+     "fatigue": 1.466,
+     "creep": 3.127,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C_im3@M|17": {
-     "strength": 1.976,
-     "fatigue": 1.281,
-     "creep": 2.732,
+    "C_im3@M19|19": {
+     "strength": 1.993,
+     "fatigue": 1.238,
+     "creep": 2.642,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C_im3@M|19": {
-     "strength": 1.981,
-     "fatigue": 1.247,
-     "creep": 2.659,
-     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
-    },
-    "C_im3@M|20": {
-     "strength": 1.985,
-     "fatigue": 1.22,
-     "creep": 2.602,
-     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
-    },
-    "C@L|20": {
+    "C@M20.5|20": {
      "strength": 2.069,
-     "fatigue": 1.49,
-     "creep": 3.179,
+     "fatigue": 1.487,
+     "creep": 3.172,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C@L|23": {
-     "strength": 2.099,
-     "fatigue": 1.513,
-     "creep": 3.228,
+    "C_im3@M20.5|20": {
+     "strength": 2.005,
+     "fatigue": 1.201,
+     "creep": 2.561,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C_im3@L|20": {
-     "strength": 1.999,
-     "fatigue": 1.225,
-     "creep": 2.614,
+    "C@L20|20": {
+     "strength": 2.064,
+     "fatigue": 1.479,
+     "creep": 3.156,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
     },
-    "C_im3@L|23": {
-     "strength": 2.004,
-     "fatigue": 1.154,
-     "creep": 2.463,
+    "C_im3@L20|20": {
+     "strength": 1.99,
+     "fatigue": 1.21,
+     "creep": 2.581,
      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@L23|23": {
+     "strength": 2.092,
+     "fatigue": 1.505,
+     "creep": 3.21,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@L23|23": {
+     "strength": 1.984,
+     "fatigue": 1.116,
+     "creep": 2.381,
+     "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
     }
    },
-   "buckling_min": 1.314,
-   "joint_strength": 1.963,
-   "joint_fatigue": 1.219
+   "buckling_min": 1.315,
+   "joint_strength": 1.842,
+   "joint_fatigue": 1.228,
+   "removed_g": 20.0976
   }
  },
  "leg_holes": {
@@ -1373,26 +1902,30 @@
     "frame_g": 1025.1,
     "pack_g": 3927.0,
     "delta_g": 0,
+    "soft_goods_delta_g": 0,
     "items": {}
    },
    "M": {
     "frame_g": 1025.1,
     "pack_g": 3927.0,
     "delta_g": 0,
+    "soft_goods_delta_g": 0,
     "items": {}
    },
    "L": {
     "frame_g": 1025.1,
     "pack_g": 3927.0,
     "delta_g": 0,
+    "soft_goods_delta_g": 0,
     "items": {}
    }
   },
   "(a) 3 crown kits": {
    "S": {
-    "frame_g": 971.4,
+    "frame_g": 978.2,
     "pack_g": 3873.3,
     "delta_g": -53.7,
+    "soft_goods_delta_g": -6.9,
     "items": {
      "crown legs": -26.03,
      "spine cut per size": -12.45,
@@ -1401,9 +1934,10 @@
     }
    },
    "M": {
-    "frame_g": 990.7,
+    "frame_g": 997.5,
     "pack_g": 3892.6,
     "delta_g": -34.4,
+    "soft_goods_delta_g": -6.9,
     "items": {
      "crown legs": -13.01,
      "spine cut per size": -6.22,
@@ -1412,20 +1946,22 @@
     }
    },
    "L": {
-    "frame_g": 1009.9,
+    "frame_g": 1016.7,
     "pack_g": 3911.8,
     "delta_g": -15.2,
+    "soft_goods_delta_g": -6.9,
     "items": {
      "rack cut per size (strip part)": -8.35,
      "pulley webbing shorter (3 x travel cut)": -6.86
     }
    }
   },
-  "(b) index plunger": {
+  "(b) plunger (no pulley, no cord)": {
    "S": {
-    "frame_g": 972.9,
+    "frame_g": 1014.6,
     "pack_g": 3874.8,
     "delta_g": -52.2,
+    "soft_goods_delta_g": -41.7,
     "items": {
      "pulley webbing 1.4 m": -25.2,
      "cam buckle": -12.0,
@@ -1435,9 +1971,10 @@
     }
    },
    "M": {
-    "frame_g": 972.9,
+    "frame_g": 1014.6,
     "pack_g": 3874.8,
     "delta_g": -52.2,
+    "soft_goods_delta_g": -41.7,
     "items": {
      "pulley webbing 1.4 m": -25.2,
      "cam buckle": -12.0,
@@ -1447,9 +1984,10 @@
     }
    },
    "L": {
-    "frame_g": 972.9,
+    "frame_g": 1014.6,
     "pack_g": 3874.8,
     "delta_g": -52.2,
+    "soft_goods_delta_g": -41.7,
     "items": {
      "pulley webbing 1.4 m": -25.2,
      "cam buckle": -12.0,
@@ -1464,6 +2002,7 @@
     "frame_g": 1016.8,
     "pack_g": 3918.7,
     "delta_g": -8.3,
+    "soft_goods_delta_g": 0,
     "items": {
      "crown legs": -1.56,
      "UHMWPE bushings": -6.79
@@ -1473,6 +2012,7 @@
     "frame_g": 1016.8,
     "pack_g": 3918.7,
     "delta_g": -8.3,
+    "soft_goods_delta_g": 0,
     "items": {
      "crown legs": -1.56,
      "UHMWPE bushings": -6.79
@@ -1482,49 +2022,89 @@
     "frame_g": 1016.8,
     "pack_g": 3918.7,
     "delta_g": -8.3,
+    "soft_goods_delta_g": 0,
     "items": {
      "crown legs": -1.56,
      "UHMWPE bushings": -6.79
     }
    }
   },
-  "(c) OD 18 x 6 UD legs": {
+  "(c) OD 17 x 7 UD legs, bore 19": {
    "S": {
-    "frame_g": 1022.4,
-    "pack_g": 3924.3,
-    "delta_g": -2.7,
+    "frame_g": 1004.3,
+    "pack_g": 3906.2,
+    "delta_g": -20.8,
+    "soft_goods_delta_g": 0,
     "items": {
-     "crown legs": -4.32,
-     "UHMWPE bushings": 1.64,
-     "printed sleeve: none if the wall drops to 3.41 mm (see body check c18)": 0.0
+     "crown legs": -1.56,
+     "UHMWPE bushings": 0.82,
+     "printed sleeve bore 18 -> 19 (H1 solid, z 160-544)": -20.1
     }
    },
    "M": {
-    "frame_g": 1022.4,
-    "pack_g": 3924.3,
-    "delta_g": -2.7,
+    "frame_g": 1004.3,
+    "pack_g": 3906.2,
+    "delta_g": -20.8,
+    "soft_goods_delta_g": 0,
     "items": {
-     "crown legs": -4.32,
-     "UHMWPE bushings": 1.64,
-     "printed sleeve: none if the wall drops to 3.41 mm (see body check c18)": 0.0
+     "crown legs": -1.56,
+     "UHMWPE bushings": 0.82,
+     "printed sleeve bore 18 -> 19 (H1 solid, z 160-544)": -20.1
     }
    },
    "L": {
-    "frame_g": 1022.4,
-    "pack_g": 3924.3,
-    "delta_g": -2.7,
+    "frame_g": 1004.3,
+    "pack_g": 3906.2,
+    "delta_g": -20.8,
+    "soft_goods_delta_g": 0,
+    "items": {
+     "crown legs": -1.56,
+     "UHMWPE bushings": 0.82,
+     "printed sleeve bore 18 -> 19 (H1 solid, z 160-544)": -20.1
+    }
+   }
+  },
+  "(c) OD 18 x 6 UD legs, bore 20": {
+   "S": {
+    "frame_g": 984.2,
+    "pack_g": 3886.1,
+    "delta_g": -40.9,
+    "soft_goods_delta_g": 0,
     "items": {
      "crown legs": -4.32,
      "UHMWPE bushings": 1.64,
-     "printed sleeve: none if the wall drops to 3.41 mm (see body check c18)": 0.0
+     "printed sleeve bore 18 -> 20 (H1 solid, z 160-544)": -38.26
+    }
+   },
+   "M": {
+    "frame_g": 984.2,
+    "pack_g": 3886.1,
+    "delta_g": -40.9,
+    "soft_goods_delta_g": 0,
+    "items": {
+     "crown legs": -4.32,
+     "UHMWPE bushings": 1.64,
+     "printed sleeve bore 18 -> 20 (H1 solid, z 160-544)": -38.26
+    }
+   },
+   "L": {
+    "frame_g": 984.2,
+    "pack_g": 3886.1,
+    "delta_g": -40.9,
+    "soft_goods_delta_g": 0,
+    "items": {
+     "crown legs": -4.32,
+     "UHMWPE bushings": 1.64,
+     "printed sleeve bore 18 -> 20 (H1 solid, z 160-544)": -38.26
     }
    }
   },
   "(d1) pawl only, no pulley": {
    "S": {
-    "frame_g": 979.9,
+    "frame_g": 1017.1,
     "pack_g": 3881.8,
     "delta_g": -45.2,
+    "soft_goods_delta_g": -37.2,
     "items": {
      "pulley webbing 1.4 m": -25.2,
      "cam buckle": -12.0,
@@ -1532,9 +2112,10 @@
     }
    },
    "M": {
-    "frame_g": 979.9,
+    "frame_g": 1017.1,
     "pack_g": 3881.8,
     "delta_g": -45.2,
+    "soft_goods_delta_g": -37.2,
     "items": {
      "pulley webbing 1.4 m": -25.2,
      "cam buckle": -12.0,
@@ -1542,9 +2123,10 @@
     }
    },
    "L": {
-    "frame_g": 979.9,
+    "frame_g": 1017.1,
     "pack_g": 3881.8,
     "delta_g": -45.2,
+    "soft_goods_delta_g": -37.2,
     "items": {
      "pulley webbing 1.4 m": -25.2,
      "cam buckle": -12.0,
@@ -1554,9 +2136,10 @@
   },
   "(d2) pawl + 1:1 strap": {
    "S": {
-    "frame_g": 990.7,
+    "frame_g": 1019.8,
     "pack_g": 3892.6,
     "delta_g": -34.4,
+    "soft_goods_delta_g": -29.1,
     "items": {
      "pulley webbing 1.4 m": -25.2,
      "cam buckle": -12.0,
@@ -1566,9 +2149,10 @@
     }
    },
    "M": {
-    "frame_g": 990.7,
+    "frame_g": 1019.8,
     "pack_g": 3892.6,
     "delta_g": -34.4,
+    "soft_goods_delta_g": -29.1,
     "items": {
      "pulley webbing 1.4 m": -25.2,
      "cam buckle": -12.0,
@@ -1578,9 +2162,10 @@
     }
    },
    "L": {
-    "frame_g": 990.7,
+    "frame_g": 1019.8,
     "pack_g": 3892.6,
     "delta_g": -34.4,
+    "soft_goods_delta_g": -29.1,
     "items": {
      "pulley webbing 1.4 m": -25.2,
      "cam buckle": -12.0,
@@ -1595,6 +2180,7 @@
     "frame_g": 1021.1,
     "pack_g": 3923.0,
     "delta_g": -4.0,
+    "soft_goods_delta_g": 0,
     "items": {
      "UHMWPE bushings": -3.99
     }
@@ -1603,6 +2189,7 @@
     "frame_g": 1021.1,
     "pack_g": 3923.0,
     "delta_g": -4.0,
+    "soft_goods_delta_g": 0,
     "items": {
      "UHMWPE bushings": -3.99
     }
@@ -1611,6 +2198,7 @@
     "frame_g": 1021.1,
     "pack_g": 3923.0,
     "delta_g": -4.0,
+    "soft_goods_delta_g": 0,
     "items": {
      "UHMWPE bushings": -3.99
     }
@@ -1618,9 +2206,10 @@
   },
   "(a)+(d2)": {
    "S": {
-    "frame_g": 943.8,
+    "frame_g": 972.9,
     "pack_g": 3845.7,
     "delta_g": -81.3,
+    "soft_goods_delta_g": -29.1,
     "items": {
      "crown legs": -26.03,
      "spine cut per size": -12.45,
@@ -1633,9 +2222,10 @@
     }
    },
    "M": {
-    "frame_g": 963.1,
+    "frame_g": 992.2,
     "pack_g": 3865.0,
     "delta_g": -62.0,
+    "soft_goods_delta_g": -29.1,
     "items": {
      "crown legs": -13.01,
      "spine cut per size": -6.22,
@@ -1648,9 +2238,10 @@
     }
    },
    "L": {
-    "frame_g": 982.3,
+    "frame_g": 1011.4,
     "pack_g": 3884.2,
     "delta_g": -42.8,
+    "soft_goods_delta_g": -29.1,
     "items": {
      "rack cut per size (strip part)": -8.35,
      "pulley webbing 1.4 m": -25.2,
@@ -1663,9 +2254,10 @@
   },
   "(a)+(d1)": {
    "S": {
-    "frame_g": 933.1,
+    "frame_g": 970.3,
     "pack_g": 3835.0,
     "delta_g": -92.0,
+    "soft_goods_delta_g": -37.2,
     "items": {
      "crown legs": -26.03,
      "spine cut per size": -12.45,
@@ -1676,9 +2268,10 @@
     }
    },
    "M": {
-    "frame_g": 952.3,
+    "frame_g": 989.5,
     "pack_g": 3854.2,
     "delta_g": -72.8,
+    "soft_goods_delta_g": -37.2,
     "items": {
      "crown legs": -13.01,
      "spine cut per size": -6.22,
@@ -1689,9 +2282,10 @@
     }
    },
    "L": {
-    "frame_g": 971.6,
+    "frame_g": 1008.8,
     "pack_g": 3873.5,
     "delta_g": -53.5,
+    "soft_goods_delta_g": -37.2,
     "items": {
      "rack cut per size (strip part)": -8.35,
      "pulley webbing 1.4 m": -25.2,
@@ -1702,9 +2296,10 @@
   },
   "(a)+(d1)+(e)": {
    "S": {
-    "frame_g": 929.1,
+    "frame_g": 966.3,
     "pack_g": 3831.0,
     "delta_g": -96.0,
+    "soft_goods_delta_g": -37.2,
     "items": {
      "crown legs": -26.03,
      "spine cut per size": -12.45,
@@ -1716,9 +2311,10 @@
     }
    },
    "M": {
-    "frame_g": 948.3,
+    "frame_g": 985.5,
     "pack_g": 3850.2,
     "delta_g": -76.8,
+    "soft_goods_delta_g": -37.2,
     "items": {
      "crown legs": -13.01,
      "spine cut per size": -6.22,
@@ -1730,9 +2326,10 @@
     }
    },
    "L": {
-    "frame_g": 967.6,
+    "frame_g": 1004.8,
     "pack_g": 3869.5,
     "delta_g": -57.5,
+    "soft_goods_delta_g": -37.2,
     "items": {
      "rack cut per size (strip part)": -8.35,
      "UHMWPE bushings": -3.99,
@@ -1744,9 +2341,10 @@
   },
   "(a)+(d1)+(c17)": {
    "S": {
-    "frame_g": 925.2,
+    "frame_g": 962.4,
     "pack_g": 3827.1,
     "delta_g": -99.9,
+    "soft_goods_delta_g": -37.2,
     "items": {
      "crown legs": -27.13,
      "spine cut per size": -12.45,
@@ -1758,9 +2356,10 @@
     }
    },
    "M": {
-    "frame_g": 944.2,
+    "frame_g": 981.4,
     "pack_g": 3846.1,
     "delta_g": -80.9,
+    "soft_goods_delta_g": -37.2,
     "items": {
      "crown legs": -14.35,
      "spine cut per size": -6.22,
@@ -1772,9 +2371,10 @@
     }
    },
    "L": {
-    "frame_g": 963.2,
+    "frame_g": 1000.4,
     "pack_g": 3865.1,
     "delta_g": -61.9,
+    "soft_goods_delta_g": -37.2,
     "items": {
      "crown legs": -1.56,
      "rack cut per size (strip part)": -8.35,
@@ -1787,9 +2387,10 @@
   },
   "(a)+(d2)+(c17)": {
    "S": {
-    "frame_g": 936.0,
+    "frame_g": 965.1,
     "pack_g": 3837.9,
     "delta_g": -89.1,
+    "soft_goods_delta_g": -29.1,
     "items": {
      "crown legs": -27.13,
      "spine cut per size": -12.45,
@@ -1803,9 +2404,10 @@
     }
    },
    "M": {
-    "frame_g": 955.0,
+    "frame_g": 984.1,
     "pack_g": 3856.9,
     "delta_g": -70.1,
+    "soft_goods_delta_g": -29.1,
     "items": {
      "crown legs": -14.35,
      "spine cut per size": -6.22,
@@ -1819,9 +2421,10 @@
     }
    },
    "L": {
-    "frame_g": 974.0,
+    "frame_g": 1003.1,
     "pack_g": 3875.9,
     "delta_g": -51.1,
+    "soft_goods_delta_g": -29.1,
     "items": {
      "crown legs": -1.56,
      "rack cut per size (strip part)": -8.35,
@@ -1833,7 +2436,111 @@
      "one guide kept (guide A)": 2.67
     }
    }
+  },
+  "(a)+(d1)+(c17 bore 19)": {
+   "S": {
+    "frame_g": 949.9,
+    "pack_g": 3814.6,
+    "delta_g": -112.4,
+    "soft_goods_delta_g": -37.2,
+    "items": {
+     "crown legs": -27.13,
+     "spine cut per size": -12.45,
+     "rack cut per size (strip part)": -8.35,
+     "UHMWPE bushings": 0.82,
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0,
+     "printed sleeve bore 18 -> 19 (H1 solid, z 160-544)": -20.1
+    }
+   },
+   "M": {
+    "frame_g": 968.9,
+    "pack_g": 3833.6,
+    "delta_g": -93.4,
+    "soft_goods_delta_g": -37.2,
+    "items": {
+     "crown legs": -14.35,
+     "spine cut per size": -6.22,
+     "rack cut per size (strip part)": -8.35,
+     "UHMWPE bushings": 0.82,
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0,
+     "printed sleeve bore 18 -> 19 (H1 solid, z 160-544)": -20.1
+    }
+   },
+   "L": {
+    "frame_g": 987.9,
+    "pack_g": 3852.6,
+    "delta_g": -74.4,
+    "soft_goods_delta_g": -37.2,
+    "items": {
+     "crown legs": -1.56,
+     "rack cut per size (strip part)": -8.35,
+     "UHMWPE bushings": 0.82,
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0,
+     "printed sleeve bore 18 -> 19 (H1 solid, z 160-544)": -20.1
+    }
+   }
+  },
+  "(a)+(d2)+(c17 bore 19)": {
+   "S": {
+    "frame_g": 952.6,
+    "pack_g": 3825.4,
+    "delta_g": -101.6,
+    "soft_goods_delta_g": -29.1,
+    "items": {
+     "crown legs": -27.13,
+     "spine cut per size": -12.45,
+     "rack cut per size (strip part)": -8.35,
+     "UHMWPE bushings": 0.82,
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0,
+     "1:1 pull-down strap 0.45 m": 8.1,
+     "one guide kept (guide A)": 2.67,
+     "printed sleeve bore 18 -> 19 (H1 solid, z 160-544)": -20.1
+    }
+   },
+   "M": {
+    "frame_g": 971.6,
+    "pack_g": 3844.4,
+    "delta_g": -82.6,
+    "soft_goods_delta_g": -29.1,
+    "items": {
+     "crown legs": -14.35,
+     "spine cut per size": -6.22,
+     "rack cut per size (strip part)": -8.35,
+     "UHMWPE bushings": 0.82,
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0,
+     "1:1 pull-down strap 0.45 m": 8.1,
+     "one guide kept (guide A)": 2.67,
+     "printed sleeve bore 18 -> 19 (H1 solid, z 160-544)": -20.1
+    }
+   },
+   "L": {
+    "frame_g": 990.6,
+    "pack_g": 3863.4,
+    "delta_g": -63.6,
+    "soft_goods_delta_g": -29.1,
+    "items": {
+     "crown legs": -1.56,
+     "rack cut per size (strip part)": -8.35,
+     "UHMWPE bushings": 0.82,
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0,
+     "1:1 pull-down strap 0.45 m": 8.1,
+     "one guide kept (guide A)": 2.67,
+     "printed sleeve bore 18 -> 19 (H1 solid, z 160-544)": -20.1
+    }
+   }
   }
  },
- "recommended": "(a)+(d1)+(c17)"
+ "recommended": "(a)+(d1)+(c17 bore 19)"
 }

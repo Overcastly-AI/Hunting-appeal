@@ -195,6 +195,10 @@ def specs() -> dict:
     out["c17n7"] = Spec("c17n7", leg=(17.0, 7), bushing_wall=0.5)
     out["c17n6"] = Spec("c17n6", leg=(17.0, 6), bushing_wall=0.5)
     out["c18n6"] = Spec("c18n6", leg=(18.0, 6))
+    out["c17b19"] = Spec("c17b19", leg=(17.0, 7), bushing_wall=1.0)
+    for sz in SIZES:
+        a_ = out[f"a_{sz}"]
+        out[f"acb_{sz}"] = Spec(f"acb_{sz}", a_.torsos, a_.leg_mm, a_.spine_mm, leg=(17.0, 7), bushing_wall=1.0)
     out["c18n5"] = Spec("c18n5", leg=(18.0, 5))
     return out
 
@@ -450,17 +454,21 @@ def option_mass(o: Option, size: str = "M") -> dict:
         d["rack -> perforated strip (holes)"] = -holes * math.pi / 4 * PLUNGER_D ** 2 * STRIP_T * PA66_RHO * 1e-6
         d["Ti pawl + spring -> index plunger"] = PLUNGER_G - PAWL_SPRING_G
         d["release cord + toggle (plunger pulled at the housing)"] = -(TORSO_ADJUST_ROW_G - WEBBING_G_M * PULLEY_WEB_M - CAM_G)
-    if o.leg[0] >= 18.0:
-        d["printed sleeve: none if the wall drops to 3.41 mm (see body check c18)"] = 0.0
-    d = {k: round(v, 2) for k, v in d.items() if abs(v) > 1e-9 or "printed" in k}
+    bore = o.leg[0] + 2.0 * o.bushing[1]
+    if bore > 18.0 + 1e-6:
+        d[f"printed sleeve bore 18 -> {bore:g} (H1 solid, z 160-544)"] = -bore_removed_g(bore / 2.0)
+    d = {k: round(v, 2) for k, v in d.items() if abs(v) > 1e-9}
     tot = round(sum(d.values()), 1)
     return {"items": d, "delta_g": tot}
 
 
 def pack_mass(o: Option, size: str = "M") -> dict:
+    """Frame (ledger frame rows, torso-adjust soft goods excluded as the ledger books them) and pack mass."""
     lb = ledger_basis()
-    dm = option_mass(o, size)["delta_g"]
-    return {"frame_g": round(lb["frame_g"] + dm, 1), "pack_g": round(lb["pack_g"] + dm, 1), "delta_g": dm}
+    om = option_mass(o, size)
+    soft = sum(v for k, v in om["items"].items() if any(w in k for w in ("webbing", "cam", "cord", "strap")))
+    return {"frame_g": round(lb["frame_g"] + om["delta_g"] - soft, 1), "pack_g": round(lb["pack_g"] + om["delta_g"], 1),
+            "delta_g": om["delta_g"], "soft_goods_delta_g": round(soft, 1)}
 
 
 # ================================================================================================ voxel body
@@ -484,8 +492,10 @@ def sleeve_open_solid(r_open: float = 10.0, z_top: float = 290.0) -> tuple:
     return s, float(cut.sum() * H1.H ** 3 * 1.06e-3)
 
 
-def bore20_solid() -> tuple:
-    """(c18) bore 18 -> 20 over the whole sleeve (z 160-544): H1 solid with r < 10 removed (wall 4.41 -> 3.41)."""
+def bore_open_solid(r_bore: float) -> tuple:
+    """Larger crown bore over the whole sleeve (z 160-544): H1 solid with r < ``r_bore`` removed. (c17, 1 mm
+    bushings) r 9.5: wall 4.41 -> 3.91 mm (A's 3.6 mm bushing-seat floor kept); (c18) r 10: wall 3.41 mm (below
+    A's floor). Nothing is added outside H1's stay (spreader-clip seats unchanged). Returns (solid, removed g)."""
     from . import frame_fixed as FF
     from . import frame_h1 as H1
     from .frame_topopt import SLEEVE_Z0
@@ -493,9 +503,13 @@ def bore20_solid() -> tuple:
     s = _h1_solid().copy()
     z = c["cen"][:, 2]
     r = FF._stay_r(c["cen"])
-    cut = (r < 10.0) & (z >= SLEEVE_Z0) & s
+    cut = (r < r_bore) & (z >= SLEEVE_Z0) & s
     s &= ~cut
     return s, float(cut.sum() * H1.H ** 3 * 1.06e-3)
+
+
+def bore_removed_g(r_bore: float) -> float:
+    return _cached(f"bore_removed_{r_bore:g}.pkl", lambda: bore_open_solid(r_bore)[1])
 
 
 def body_check(name: str, solid: np.ndarray, sets: list, log=print) -> dict:
@@ -545,9 +559,10 @@ def _retag(sets, label: str = ""):
 OPTIONS = (
     Option("H1 today"),
     Option("(a) 3 crown kits", kit=True),
-    Option("(b) index plunger", lock="plunger"),
+    Option("(b) plunger (no pulley, no cord)", lock="plunger"),
     Option("(c) OD 17 x 7 UD legs", leg=(17.0, 7), bushing=(70.0, 0.5)),
-    Option("(c) OD 18 x 6 UD legs", leg=(18.0, 6)),
+    Option("(c) OD 17 x 7 UD legs, bore 19", leg=(17.0, 7)),
+    Option("(c) OD 18 x 6 UD legs, bore 20", leg=(18.0, 6)),
     Option("(d1) pawl only, no pulley", lock="pawl"),
     Option("(d2) pawl + 1:1 strap", lock="pawl+strap"),
     Option("(e) bushings 50 mm", bushing=(50.0, 1.0)),
@@ -556,8 +571,10 @@ OPTIONS = (
     Option("(a)+(d1)+(e)", kit=True, lock="pawl", bushing=(50.0, 1.0)),
     Option("(a)+(d1)+(c17)", kit=True, lock="pawl", leg=(17.0, 7), bushing=(70.0, 0.5)),
     Option("(a)+(d2)+(c17)", kit=True, lock="pawl+strap", leg=(17.0, 7), bushing=(70.0, 0.5)),
+    Option("(a)+(d1)+(c17 bore 19)", kit=True, lock="pawl", leg=(17.0, 7)),
+    Option("(a)+(d2)+(c17 bore 19)", kit=True, lock="pawl+strap", leg=(17.0, 7)),
 )
-RECOMMENDED = "(a)+(d1)+(c17)"
+RECOMMENDED = "(a)+(d1)+(c17 bore 19)"
 
 
 def run_all(log=print) -> dict:
@@ -579,9 +596,16 @@ def run_all(log=print) -> dict:
                                                                   "removed_g": g_open})
     body["ac"] = _cached("body_ac_pt.pkl", lambda: body_check("ac", _h1_solid(), kit("ac"), log=log))
     body["c17n7"] = _cached("body_c17n7_pt.pkl", lambda: body_check("c17n7", _h1_solid(), pt("c17n7"), log=log))
-    s20, g20 = bore20_solid()
+    s20, g20 = bore_open_solid(10.0)
     body["c18n6"] = _cached("body_c18n6_pt.pkl", lambda: {**body_check("c18n6", s20, pt("c18n6"), log=log),
                                                             "removed_g": g20})
+    s19, g19 = bore_open_solid(9.5)
+    body["c17b19"] = _cached("body_c17b19_pt.pkl", lambda: {**body_check("c17b19", s19, pt("c17b19"), log=log),
+                                                              "removed_g": g19})
+    body["c17b19_recorded_basis"] = _cached("body_c17b19_rec.pkl", lambda: {
+        **body_check("c17b19_rec", s19, beams["c17b19"][0], log=log), "removed_g": g19})
+    body["acb19"] = _cached("body_acb19_pt.pkl", lambda: {**body_check("acb19", s19, kit("acb"), log=log),
+                                                            "removed_g": g19})
     # (e) needs no body run: the voxel model spreads each bushing force over +-20 mm of sleeve whatever the
     # bushing length (frame_topopt.assemble_loads), and the beam forces of e50 equal H1's (checked in the tests)
     holes = leg_hole_zone(beams["h1"][1])
@@ -634,13 +658,13 @@ def plot_summary(out: dict, path: Path) -> str:
     ax1.invert_yaxis()
     ax1.set_xlabel("saving on the crown + torso-adjust block, g (1 oz = 28.3 g)")
     ax1.set_title("Saving per option and size (H1 = 0)", loc="left", fontsize=11)
-    ax1.legend(fontsize=8, frameon=False, loc="lower right")
+    ax1.legend(fontsize=8, frameon=False, loc="upper right")
     # margins
     fams = [("crown_leg", "legs FPF"), ("crown_top_bar", "top bar FPF"), ("crown_spine", "spine FPF"),
             ("corner_bond_peak", "corner bond peak"), ("leg_ring_crush", "leg ring crush"), ("buckling", "frame buckling")]
-    keys = [("h1", "H1"), ("a_S", "(a) S"), ("a_M", "(a) M"), ("a_L", "(a) L"), ("e50", "(e) 50 mm"),
+    keys = [("h1", "H1 today"), ("a_S", "(a) kit S"), ("a_M", "(a) kit M"), ("a_L", "(a) kit L"), ("e50", "(e) 50 mm"),
             ("c17n7", "(c) 17x7"), ("c17n6", "(c) 17x6"), ("c18n6", "(c) 18x6"), ("c18n5", "(c) 18x5"),
-            ("ac_S", "(a)+(c17) S"), ("ac_M", "(a)+(c17) M"), ("ac_L", "(a)+(c17) L")]
+            ("acb_S", "(a)+(c17) S"), ("acb_M", "(a)+(c17) M"), ("acb_L", "(a)+(c17) L")]
     M = np.array([[out["crown"][k]["min"].get(f, {"sf": np.nan})["sf"] for f, _ in fams] for k, _ in keys])
     im = ax2.imshow(np.clip(M, 0.8, 2.0), cmap="RdYlGn", vmin=0.8, vmax=2.0, aspect="auto")
     for i in range(M.shape[0]):
@@ -651,8 +675,10 @@ def plot_summary(out: dict, path: Path) -> str:
     ax2.set_yticks(range(len(keys)), [k for _, k in keys], fontsize=8.5)
     b = out["body"]
     ax2.set_title("Crown margins, rev C (min of 2 couples, all cases)\n"
-                  f"body fatigue: H1 {b['h1']['min']['fatigue']:.2f}, (a) kits {b['a']['min']['fatigue']:.2f}, "
-                  f"(a)+sleeve cut {b['a_sleeve']['min']['fatigue']:.2f}", loc="left", fontsize=9.5)
+                  f"body fatigue (one tag per torso): H1 {b['h1']['min']['fatigue']:.2f}, (a) {b['a']['min']['fatigue']:.2f}, "
+                  f"(a)+sleeve cut {b['a_sleeve']['min']['fatigue']:.2f},\n(c17) bore 19 {b['c17b19']['min']['fatigue']:.2f}, "
+                  f"(c18) bore 20 {b['c18n6']['min']['fatigue']:.2f}  (recorded basis: H1 {b['h1_recorded_basis']['min']['fatigue']:.2f}, "
+                  f"bore 19 {b['c17b19_recorded_basis']['min']['fatigue']:.2f})", loc="left", fontsize=8.5)
     fig.colorbar(im, ax=ax2, fraction=0.04, pad=0.02, label="margin (SF / requirement)")
     rec = out["masses"][RECOMMENDED]
     fig.suptitle(f"BL-017 crown block diet: {RECOMMENDED} saves {-rec['S']['delta_g']:.0f} / {-rec['M']['delta_g']:.0f} / "
