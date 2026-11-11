@@ -371,11 +371,12 @@ def _delete(ob):
 
 
 FIGURE_LOOK = {   # MakeHuman macro sliders that are a styling choice, not anthropometry (0..1)
-    "male": {"gender": 1.0, "age": 0.58, "muscle": 0.62, "weight": 0.6, "proportions": 0.55, "cupsize": 0.5, "firmness": 0.5,
+    "male": {"gender": 1.0, "age": 0.58, "muscle": 0.62, "weight": 0.8, "proportions": 0.55, "cupsize": 0.5, "firmness": 0.5,
              "race": {"asian": 0.0, "caucasian": 1.0, "african": 0.0}},
-    "female": {"gender": 0.0, "age": 0.52, "muscle": 0.58, "weight": 0.55, "proportions": 0.55, "cupsize": 0.4, "firmness": 0.6,
+    "female": {"gender": 0.0, "age": 0.52, "muscle": 0.58, "weight": 0.7, "proportions": 0.55, "cupsize": 0.4, "firmness": 0.6,
                "race": {"asian": 0.0, "caucasian": 1.0, "african": 0.0}},
 }
+WAIST_MORPH_MAX = 0.35
 _TUNE_KEYS = ("cervicaleheight", "waistheightomphalion", "crotchheight", "waistcircumference")
 
 
@@ -404,7 +405,9 @@ def tune_figure(spec: dict, iters: int = 4, verbose=False) -> dict:
         return (np.array([m[k] / m["stature"] for k in _TUNE_KEYS]) - want) * wts, m
 
     p = np.zeros(4)
-    lo, hi = np.full(4, -2.0), np.full(4, 2.0)
+    # The waist-girth morph grows the waist radially and fills the lumbar hollow the belt's lumbar pad sits in, so it
+    # is capped at WAIST_MORPH_MAX; the girth that is then missing against ANSUR is reported, not hidden.
+    lo, hi = np.array([-2.0, -2.0, -2.0, -WAIST_MORPH_MAX]), np.array([2.0, 2.0, 2.0, WAIST_MORPH_MAX])
     r, m = res(p)
     for it in range(iters):
         J = np.empty((4, 4))
@@ -419,7 +422,7 @@ def tune_figure(spec: dict, iters: int = 4, verbose=False) -> dict:
         r, m = res(p)
         if verbose:
             print(f"tune {it}: p {p.round(3)} |r| {np.abs(r / wts).max() * st:.1f} mm", flush=True)
-        if np.abs(r / wts).max() * st < 1.5:
+        if np.abs((r / wts)[:3]).max() * st < 1.5 and (it > 0):
             break
     macro, details = build(p)
     scale = st / m["stature"]
@@ -967,7 +970,7 @@ def load_pack(glb: Path, torso_setting: float, state: dict | None = None) -> dic
     return {"parts": parts, "form": form, "manifest": man}
 
 
-def _profile_min_y(V, z_lo, z_hi, half_w, dz=0.01):
+def _profile_min_y(V, z_lo, z_hi, half_w, dz=0.02):
     """Most aft point (min y; the wearer faces +Y) per height bin over |x| < half_w: the back profile."""
     zs = np.arange(z_lo, z_hi, dz)
     out = np.full(len(zs), np.nan)
@@ -1359,6 +1362,12 @@ def build_wearer(torso_in: float | None = None, pose: str = "stand", outfit: str
     bpy = _bpy()
     from mathutils import Matrix  # noqa: PLC0415
     spec = figure_spec(torso_in, stature_mm, sex)
+    pk = None
+    if with_pack:          # first: cycles_render.build_materials repaints every material that exists when it runs
+        if pack_parts is None:
+            pk = load_pack(Path(glb or PACK_GLB), spec["torso_setting_in"])
+        else:
+            pk = {"parts": dict(pack_parts), "form": form}
     fig = build_figure(spec, outfit, verbose=verbose)
     rig, body, suit, boots = fig["rig"], fig["body"], fig["clothes"]["suit"], fig["clothes"]["boots"]
     cap = add_cap(fig, _hex(OUTFITS[outfit]["cap"]))
@@ -1380,10 +1389,6 @@ def build_wearer(torso_in: float | None = None, pose: str = "stand", outfit: str
     tag = f"@t{setting:g}"
     A = Matrix.Identity(4)
     if with_pack:
-        if pack_parts is None:
-            pk = load_pack(Path(glb or PACK_GLB), setting)
-        else:
-            pk = {"parts": {n: o for n, o in pack_parts.items()}, "form": form}
         # trunk surface in the rest frame (posed cloth carried back by P^-1): the back profile for the alignment
         Pi = np.array(P.inverted())
         Vs = _xf(Pi, _co(suit))
