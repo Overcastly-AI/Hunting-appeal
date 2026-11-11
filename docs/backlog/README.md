@@ -28,6 +28,9 @@ Source: `designs/pack_5200/analysis/bag_weight_review_20261110.md`. Rules for ev
 | BL-017 | Crown block diet (adjustable torso kept) | structural-fea-engineer | M | 007 | −60 g |
 | BL-018 | Better Blender models: asset library, fabric realism | pack-designer (Fable) | XL | — | product-photo models; BL-012 uses it |
 | BL-019 | A realistic hunter wearing the pack | pack-designer (Fable) | XL | — | clothed, posed figure; studio and outdoor |
+| BL-021 | IM3 eye and body on cloth-sim loads, fatigue ≥ 1.15 | structural-fea-engineer | M | 010, 011, 014 | review blocker B2 |
+| BL-022 | CORRIE F rev 1: fine-mesh R-28, guys-off, crown clash, side carry | pack-designer | M | 011, 014 | review blocker B3 |
+| BL-023 | Test plan and ledger sync, roll-up re-classification | manufacturing-engineer | M | 013, 014 | review blocker B1 |
 | BL-020 | Render realism: roll-top, pouch, part-full loads as cloth | pack-designer (Fable) | L | 018, 009 | full-pack shots that read as photographs |
 
 ## Run order
