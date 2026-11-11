@@ -272,12 +272,17 @@ def wraps(torso: int = 19) -> list:
             for w in sc["attachments"]["wraps"]["list"]]
 
 
-def _plane(w):
-    """The strap's plane: through both anchors, containing the fore-aft axis. Returns origin, normal, in-plane u."""
-    d = w["L"] - w["R"]
-    eu = _unit([d[0], 0.0, d[2]])                 # from the right anchor to the left one
-    n = np.cross(eu, [0.0, 1.0, 0.0])
-    return 0.5 * (w["R"] + w["L"]), _unit(n) * np.sign(np.cross(eu, [0.0, 1.0, 0.0])[2] or 1.0), eu
+def strap_z(w, x):
+    """Height of the strap at lateral position x: it climbs evenly from the right anchor to the left one (a helix
+    round the bag, not a plane: W1 runs from the z 80 lash point to the z 250 one)."""
+    half = 205.0                                   # where the strap turns the bag's side (S15 half width + cloth)
+    return np.interp(-np.asarray(x, float), [-half, half], [w["R"][2], w["L"][2]])
+
+
+def band_pts(V, w, tol=14.0):
+    """Vertices of a cloud that lie under the strap (within ``tol`` mm of its height at their x)."""
+    V = np.asarray(V, float)
+    return V[np.abs(V[:, 2] - strap_z(w, V[:, 0])) < tol]
 
 
 def section_pts(V, F, origin, normal):
@@ -286,33 +291,33 @@ def section_pts(V, F, origin, normal):
     return np.zeros((0, 3)) if len(seg) == 0 else np.asarray(seg).reshape(-1, 3)
 
 
-def taut_path(w, clouds, bite=0.0, step=6.0, y_keep=None):
-    """Taut strap line round ``clouds`` (3D section points) in the strap plane: convex hull, taken from the right
-    frame-side corner round the aft face to the left one. ``bite`` inflates the hull (cloth pile under the strap).
-    Returns points [n, 3] at ``step`` spacing (without the two frame anchors)."""
+def taut_path(w, clouds, bite=0.0, step=6.0):
+    """Taut strap line round ``clouds`` (vertex clouds; only what lies under the strap counts): convex hull in plan,
+    taken from the right frame-side corner round the aft face to the left one, climbing evenly from the right
+    anchor's height to the left one's. ``bite`` inflates the hull (the cloth pile under the strap).
+    Returns points [n, 3] at ``step`` spacing, without the two frame anchors."""
     from scipy.spatial import ConvexHull
-    o, n, eu = _plane(w)
-    P = np.vstack([c for c in clouds if len(c)])
-    Q = np.column_stack([(P - o) @ eu, P[:, 1]])
+    P = np.vstack([band_pts(c, w) for c in clouds if len(c)])
+    Q = P[:, :2]
     if bite > 0:
         a = np.linspace(0, 2 * np.pi, 9)[:-1]
         Q = (Q[:, None, :] + bite * np.column_stack([np.cos(a), np.sin(a)])[None]).reshape(-1, 2)
-    y0 = float(max(w["R"][1], w["L"][1])) if y_keep is None else y_keep
+    y0 = float(max(w["R"][1], w["L"][1]))
     Q = Q[Q[:, 1] >= y0]
-    H = Q[ConvexHull(Q).vertices]                                   # counter-clockwise in (u, y)
-    # u runs from the right anchor to the left one: start at the corner nearest the right anchor (u min, low y)
+    H = Q[ConvexHull(Q).vertices]                                   # counter-clockwise in (x, y)
     low = H[:, 1] < y0 + 0.25 * (H[:, 1].max() - y0)
-    i0 = np.where(low)[0][np.argmin(H[low, 0])]
-    i1 = np.where(low)[0][np.argmax(H[low, 0])]
+    i0 = np.where(low)[0][np.argmax(H[low, 0])]                     # right frame-side corner
+    i1 = np.where(low)[0][np.argmin(H[low, 0])]                     # left one
     H2 = np.vstack([H, H])
-    fwd = H2[i0:(i1 if i1 > i0 else i1 + len(H)) + 1]
-    bwd = H2[i1:(i0 if i0 > i1 else i0 + len(H)) + 1][::-1]
-    ch = fwd if fwd[:, 1].max() >= bwd[:, 1].max() else bwd         # the chain over the aft face
+    ch = H2[i0:(i1 if i1 > i0 else i1 + len(H)) + 1]                # ccw from the right corner = over the aft face
     s = np.r_[0, np.cumsum(np.linalg.norm(np.diff(ch, axis=0), axis=1))]
     k = max(int(s[-1] / step), 8)
     si = np.linspace(0, s[-1], k)
-    uy = np.column_stack([np.interp(si, s, ch[:, 0]), np.interp(si, s, ch[:, 1])])
-    return o[None] + uy[:, :1] * eu[None] + np.column_stack([np.zeros(k), uy[:, 1] - o[1], np.zeros(k)])
+    xy = np.column_stack([np.interp(si, s, ch[:, 0]), np.interp(si, s, ch[:, 1])])
+    lr = float(np.linalg.norm(xy[0] - w["R"][:2]))                  # anchor legs count in the even climb
+    ll = float(np.linalg.norm(xy[-1] - w["L"][:2]))
+    z = w["R"][2] + (w["L"][2] - w["R"][2]) * (lr + si) / (lr + s[-1] + ll)
+    return np.column_stack([xy, z])
 
 
 def resample(P, k):
@@ -321,27 +326,34 @@ def resample(P, k):
     return np.column_stack([np.interp(si, s, P[:, i]) for i in range(3)])
 
 
-def strap_slab(P, normal, width=25.0, depth=45.0):
-    """Collider for one strap: a slab whose inner face is the strap line ``P`` (in its plane), ``width`` across the
-    plane normal and ``depth`` thick outward. Returns V [4k, 3], F and the outward directions."""
+def strap_frames(P):
+    """Along a strap line: unit tangent, outward direction (level, away from the bag) and the across-strap axis."""
     P = np.asarray(P, float)
     t = _unit(np.gradient(P, axis=0))
-    o = _unit(np.cross(t, normal))
-    c = P.mean(0)
-    if np.mean(np.einsum("ij,ij->i", o, P - c)) < 0:
+    o = np.column_stack([t[:, 1], -t[:, 0], np.zeros(len(P))])
+    o = _unit(o)
+    if np.mean(np.einsum("ij,ij->i", o[:, :2], P[:, :2] - P[:, :2].mean(0))) < 0:
         o = -o
-    hw = 0.5 * width * np.asarray(normal)[None]
+    return t, o, _unit(np.cross(t, o))
+
+
+def strap_slab(P, width=25.0, depth=45.0):
+    """Collider for one strap: a slab whose inner face is the strap line ``P``, ``width`` across and ``depth`` thick
+    outward. Returns V [4k, 3], F."""
+    P = np.asarray(P, float)
+    _, o, a = strap_frames(P)
+    hw = 0.5 * width * a
     V = np.vstack([P + hw, P - hw, P + depth * o + hw, P + depth * o - hw])
     k = len(P)
     F = []
-    for a, b in ((0, 1), (1, 3), (3, 2), (2, 0)):
+    for i0, i1 in ((0, 1), (1, 3), (3, 2), (2, 0)):
         for i in range(k - 1):
-            q = [a * k + i, a * k + i + 1, b * k + i + 1, b * k + i]
+            q = [i0 * k + i, i0 * k + i + 1, i1 * k + i + 1, i1 * k + i]
             F += [[q[0], q[1], q[2]], [q[0], q[2], q[3]]]
     for i in (0, k - 1):
         q = [i, k + i, 3 * k + i, 2 * k + i]
         F += [[q[0], q[1], q[2]], [q[0], q[2], q[3]]]
-    return V, outward(V, np.asarray(F, int)), o
+    return V, outward(V, np.asarray(F, int))
 
 
 # ------------------------------------------------------------------------------------------------------- the roll
@@ -466,19 +478,14 @@ def prepare(state: str, params: ClothParams | None = None, shell: str = "S15", t
     straps = []
     pin_cloud_all = X[b01]
     for w in wraps(torso):
-        o, nrm, eu = _plane(w)
-        sec0 = section_pts(X, T, o, nrm)
-        secp = section_pts(Vp, Fp, o, nrm)
-        near = pin_cloud_all[np.abs((pin_cloud_all - o) @ nrm) < 14.0]
-        obs = [section_pts(V, F, o, nrm) for _, V, F in obstacles]
-        P0 = taut_path(w, [sec0, near] + obs, bite=1.0)
-        P1 = taut_path(w, [secp, near] + obs, bite=p.strap_bite[state])
+        obs = [np.asarray(V, float) for _, V, F in obstacles]
+        P0 = taut_path(w, [X, pin_cloud_all] + obs, bite=1.0)
+        P1 = taut_path(w, [Vp, pin_cloud_all] + obs, bite=p.strap_bite[state])
         k = max(len(P0), len(P1))
         P0, P1 = resample(P0, k), resample(P1, k)
-        V0, Fs, _ = strap_slab(P0, nrm, p.strap_w)
-        V1, _, _ = strap_slab(P1, nrm, p.strap_w)
-        straps.append({"id": w["id"], "P0": P0, "P1": P1, "V0": V0, "V1": V1, "F": Fs, "normal": nrm,
-                       "R": w["R"], "L": w["L"]})
+        V0, Fs = strap_slab(P0, p.strap_w)
+        V1, _ = strap_slab(P1, p.strap_w)
+        straps.append({"id": w["id"], "P0": P0, "P1": P1, "V0": V0, "V1": V1, "F": Fs, "R": w["R"], "L": w["L"]})
     work = Path(work or WORK / f"{shell}_PR{torso}")
     work.mkdir(parents=True, exist_ok=True)
     stem = f"{state}{tag}_L{p.level}"
@@ -498,7 +505,7 @@ def prepare(state: str, params: ClothParams | None = None, shell: str = "S15", t
             "lip": {"half": half, "y": y_lip, "z": z_lip}, "z_seam": z_seam, "dome_mm": dome,
             "collar_in_roll_mm": p.roll_closure + max(dome_full - dome, 0.0), "area_m2": float(A),
             "straps": [{k: (np.asarray(v).tolist() if not isinstance(v, str) else v) for k, v in s.items()
-                        if k in ("id", "P0", "P1", "normal", "R", "L")} for s in straps]}
+                        if k in ("id", "P0", "P1", "R", "L")} for s in straps]}
     (work / f"{stem}.job.json").write_text(json.dumps(job, indent=1))
     (work / f"{stem}.meta.json").write_text(json.dumps(meta))
     return {"job": job, "meta": meta, "seed": sd, "job_path": work / f"{stem}.job.json"}
