@@ -28,6 +28,7 @@ Source: `designs/pack_5200/analysis/bag_weight_review_20261110.md`. Rules for ev
 | BL-017 | Crown block diet (adjustable torso kept) | structural-fea-engineer | M | 007 | −60 g |
 | BL-018 | Better Blender models: asset library, fabric realism | pack-designer (Fable) | XL | — | product-photo models; BL-012 uses it |
 | BL-019 | A realistic hunter wearing the pack | pack-designer (Fable) | XL | — | clothed, posed figure; studio and outdoor |
+| BL-020 | Render realism: roll-top, pouch, part-full loads as cloth | pack-designer (Fable) | L | 018, 009 | full-pack shots that read as photographs |
 
 ## Run order
 
