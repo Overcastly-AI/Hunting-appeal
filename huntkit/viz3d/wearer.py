@@ -1335,6 +1335,10 @@ def add_cap(fig: dict, colour) -> object:
     for _ in range(3):
         bmesh.ops.smooth_vert(bm, verts=[v for v in bm.verts if not v.is_boundary], factor=0.5, use_axis_x=True,
                               use_axis_y=True, use_axis_z=True)
+    bm.normal_update()
+    for v in bm.verts:                                              # smoothing shrinks the crown: stand it off again
+        if not v.is_boundary:
+            v.co += v.normal * 0.0045
     me = bpy.data.meshes.new("wearer_cap")
     rim_pts = np.array([v.co[:] for v in rim])
     bm.to_mesh(me)
@@ -1661,10 +1665,9 @@ SHOTS = {
     "fit_back": {"pose": "stand", "scene": "studio", "az": 62, "el": 10, "box": (-0.30, -0.42, 0.85, 0.34, 0.25, 1.80),
                  "caption": "Fit detail: straps on the shoulders, belt on the hips",
                  "sub": "Pads pressed {press} mm into the cloth; no daylight under the straps. " + NOT_A_PHOTO},
-    "fit_front": {"pose": "front", "scene": "studio", "az": 205, "el": 12, "box": (-0.36, -0.30, 0.85, 0.36, 0.30, 1.62),
+    "fit_front": {"pose": "front", "scene": "studio", "az": 138, "el": 10, "box": (-0.40, -0.30, 0.80, 0.40, 0.30, 1.78),
                   "caption": "Fit detail: belt, bottle holster, sternum strap",
-                  "sub": "Front webbing between the wing tips is drawn by wearer.py (the viz3d belt is open). "
-                         + NOT_A_PHOTO},
+                  "sub": "Front belt webbing added by wearer.py (viz3d draws belt B open). " + NOT_A_PHOTO},
 }
 DEFAULT_SHOTS = ("hero", "front", "side", "walk", "kneel", "field", "fit_back", "fit_front")
 

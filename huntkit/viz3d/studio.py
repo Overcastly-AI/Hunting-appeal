@@ -198,7 +198,7 @@ class ConceptScene:
             self.add_part(f"{name}__thread", s["thread"], "thread", **kw)
 
     def add_seams_from_pieces(self, V, F, piece, normals, name="seams", material="body", skip=(), project=None,
-                              min_len=12.0, **kw):
+                              min_len=12.0, smooth=9.0, **kw):
         """Every boundary between two pattern pieces of a drape mesh becomes a seam. ``skip`` = pairs handled
         elsewhere (a zip). ``project(P) -> (P on the skin, normals)`` re-seats the smoothed line."""
         import numpy as np
@@ -209,7 +209,7 @@ class ConceptScene:
         for a, b, ch in SM.shared_seams(V, F, piece):
             if (a, b) in skip or len(ch) < 4:
                 continue
-            P = SM.smooth_path(np.asarray(V)[ch], 3.0, 9.0)
+            P = SM.smooth_path(np.asarray(V)[ch], 3.0, smooth)
             if arclen(P)[-1] < min_len:
                 continue
             if project is not None:
@@ -513,6 +513,19 @@ def corrie_b2_scene(name="corrie_b2", params=None) -> ConceptScene:
     # the lining is rebuilt 1.2 mm inside the displaced door instead
     drop = ("corrie_seams", "corrie_door_zip", "corrie_zip_sliders", "corrie_zip_pulls", "corrie_door_lining")
     drop += tuple(q.name for q in pack.parts if q.name.startswith("imp6_hw@"))     # floats off the strap (legacy)
+    import trimesh
+    for q in pack.parts:                       # legacy harness: strap-tip slivers that float off the straps
+        if q.name.startswith("shoulder_straps@"):
+            tm = trimesh.Trimesh(q.mesh.vertices, q.mesh.faces, process=False)
+            lab = trimesh.graph.connected_component_labels(tm.face_adjacency, node_count=len(tm.faces))
+            keep = np.ones(len(tm.faces), bool)
+            for k in np.unique(lab):
+                fm = lab == k
+                if np.ptp(tm.vertices[np.unique(tm.faces[fm])], axis=0).max() < 80.0:
+                    keep[fm] = False
+            if not keep.all():
+                from .assets import mesh as amesh
+                q.mesh = amesh(q.mesh.vertices, np.asarray(q.mesh.faces)[keep], q.mesh.metadata.get("uv"))
     sc.add_pack(pack, drape=drape, drop=drop)
     for q in sc.parts:                                              # display form: own materials
         if q.name.startswith("mannequin_stand@"):
@@ -524,7 +537,7 @@ def corrie_b2_scene(name="corrie_b2", params=None) -> ConceptScene:
     vis = dict(group="bag", modes=C.BAGM)
     zip_key = ("B-02door", "B-02u")
     sc.add_seams_from_pieces(S.V, S.F, S.piece, S.vn, name="corrie_seams", material="body", skip=[zip_key],
-                             project=lambda P: S.project(P, 0.0), **vis)
+                             project=lambda P: S.project(P, 0.0), smooth=24.0, **vis)
     ch = C.seam_chains(S.F, S.piece)
     ZP = C.smooth_line(C.join_chains([S.V[cc] for cc in ch[frozenset(zip_key)] if len(cc) > 5]), 3.0, 18.0)
     if ZP[0, 0] > ZP[-1, 0]:
@@ -617,7 +630,7 @@ def fabric_swatch_scene(name="fabric_swatches") -> ConceptScene:
     for k, (tag, comp) in enumerate((("taut", 1.03), ("slack", 0.94))):
         u, v = np.meshgrid(np.linspace(0, S0, n), np.linspace(0, S0, n))
         x0 = -S0 - 25 if k == 0 else 25.0
-        bow = 0.0 if k == 0 else 6.0 * np.sin(np.pi * u.ravel() / S0)          # the slack panel sags a little
+        bow = np.zeros(n * n) if k == 0 else 6.0 * np.sin(np.pi * u.ravel() / S0)   # the slack panel sags a little
         V = np.column_stack([x0 + u.ravel() * comp + (1 - comp) * S0 / 2, bow, 40 + v.ravel()])
         F = []
         for i in range(n - 1):

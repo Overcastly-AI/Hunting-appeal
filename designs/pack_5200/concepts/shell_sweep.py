@@ -431,7 +431,7 @@ def run_render_state(state: str, name: str | None = None, torso: int = 19, fine:
     return info
 
 
-SHOT_VIEW = {"view": {"az": -38, "el": 10, "zoom": 1.0, "box": [-330, -260, -260, 330, 520, 1400]},
+SHOT_VIEW = {"view": {"az": -38, "el": 10, "zoom": 1.2, "box": [-330, -320, -480, 330, 460, 1080]},
              "state": {"mannequin": True, "lid": True}}
 
 
@@ -460,6 +460,21 @@ def render_model(state: str, name: str | None = None, torso: int = 19) -> Path:
         uninstall()
         for m, f in saved.items():
             m.sim_skin = f
+    if st["dome_h"] is not None:
+        # collar rolled down: the B-20 ladders (drawn on B-01 / B-06f up to z 795) roll into the roll with the collar,
+        # so their faces above the roll centre are not drawn (render-only; otherwise they float above the bag)
+        import copy
+        import trimesh
+        ztop = float(np.asarray(sk["X"])[:, 2].max()) - 30.0
+        for i, part in enumerate(pack.parts):
+            if part.name == "hood_ladders":
+                M = part.mesh
+                keep = M.vertices[M.faces][:, :, 2].max(1) <= ztop
+                q = copy.copy(part)
+                q.mesh = trimesh.Trimesh(M.vertices, M.faces[keep], process=False)
+                q.mesh.metadata.update(M.metadata)
+                q.mesh.visual = M.visual
+                pack.parts[i] = q
     PACK3D.mkdir(parents=True, exist_ok=True)
     mats, info = build_materials(p)
     glb, _ = export_glb(pack, PACK3D / f"{name}_{state}.glb", mats=mats)

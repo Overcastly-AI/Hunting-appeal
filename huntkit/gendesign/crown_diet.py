@@ -527,12 +527,16 @@ def _cached(name, fn):
     return v
 
 
-def _retag(sets, size):
+def _retag(sets, label: str = ""):
+    """Give every torso its own scenario tag (``C@<label><torso>``). frame_comp_d.solve_fields excludes, per tag,
+    the elements under ANY load patch of that tag's sets (bushing bands, clamps). With all torsos under one tag a
+    set is credited with exclusions made for other torsos' bushing bands; per-torso tags exclude only the set's
+    own patches, so options with different torso lists are compared like for like (H1 is re-run this way too)."""
     out = []
     for s in sets:
         s2 = copy.copy(s)
         tg, rest = s.key.split(":", 1)
-        s2.key = f"{tg}@{size}:{rest}"
+        s2.key = f"{tg}@{label}{s.torso:g}:{rest}"
         out.append(s2)
     return out
 
@@ -563,20 +567,21 @@ def run_all(log=print) -> dict:
     crown = {k: crown_margins(rows) for k, (_, rows) in beams.items()}
     from . import frame_comp_d as D
     h1_sets, _ = D.load_sets(log=None)
-    # body: H1 reproduced on the cached rev C sets, then the crown-kit sets on the H1 body, the opened sleeve,
-    # the 20 mm bore (c18) and the 50 mm bushings (e)
-    body = {"h1": _cached("body_h1.pkl", lambda: body_check("h1", _h1_solid(), h1_sets, log=log))}
-    kit_sets = sum((_retag(beams[f"a_{z}"][0], z) for z in SIZES), [])
-    body["a"] = _cached("body_a.pkl", lambda: body_check("a", _h1_solid(), kit_sets, log=log))
+    # body: H1 reproduced on the cached rev C sets (recorded basis, one tag per couple), then every variant and
+    # H1 again with one tag per torso (like-for-like basis, see _retag)
+    body = {"h1_recorded_basis": _cached("body_h1.pkl", lambda: body_check("h1", _h1_solid(), h1_sets, log=log))}
+    pt = lambda k, lab="": _retag(beams[k][0], lab)                      # noqa: E731
+    kit = lambda pre: sum((pt(f"{pre}_{z}", z) for z in SIZES), [])     # noqa: E731
+    body["h1"] = _cached("body_h1_pt.pkl", lambda: body_check("h1", _h1_solid(), pt("h1", "H"), log=log))
+    body["a"] = _cached("body_a_pt.pkl", lambda: body_check("a", _h1_solid(), kit("a"), log=log))
     s_open, g_open = sleeve_open_solid()
-    body["a_sleeve"] = _cached("body_a_sleeve.pkl", lambda: {**body_check("a_sleeve", s_open, kit_sets, log=log),
-                                                               "removed_g": g_open})
+    body["a_sleeve"] = _cached("body_a_sleeve_pt.pkl", lambda: {**body_check("a_sleeve", s_open, kit("a"), log=log),
+                                                                  "removed_g": g_open})
+    body["ac"] = _cached("body_ac_pt.pkl", lambda: body_check("ac", _h1_solid(), kit("ac"), log=log))
+    body["c17n7"] = _cached("body_c17n7_pt.pkl", lambda: body_check("c17n7", _h1_solid(), pt("c17n7"), log=log))
     s20, g20 = bore20_solid()
-    body["c18n6"] = _cached("body_c18n6.pkl", lambda: {**body_check("c18n6", s20, beams["c18n6"][0], log=log),
-                                                         "removed_g": g20})
-    body["c17n7"] = _cached("body_c17n7.pkl", lambda: body_check("c17n7", _h1_solid(), beams["c17n7"][0], log=log))
-    ac_sets = sum((_retag(beams[f"ac_{z}"][0], z) for z in SIZES), [])
-    body["ac"] = _cached("body_ac.pkl", lambda: body_check("ac", _h1_solid(), ac_sets, log=log))
+    body["c18n6"] = _cached("body_c18n6_pt.pkl", lambda: {**body_check("c18n6", s20, pt("c18n6"), log=log),
+                                                            "removed_g": g20})
     # (e) needs no body run: the voxel model spreads each bushing force over +-20 mm of sleeve whatever the
     # bushing length (frame_topopt.assemble_loads), and the beam forces of e50 equal H1's (checked in the tests)
     holes = leg_hole_zone(beams["h1"][1])
