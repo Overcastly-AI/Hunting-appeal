@@ -14,7 +14,8 @@ The three load states now differ the way a real pack does. Full is a taut bag wi
 (five turns, a fatter roll) and the bag ends 190 mm (7.5 in) lower. The day load is slack cloth cinched flat to the
 frame by W1-W3, with long gathered folds, about 60 mm deep above the contents. The roll is no longer a tube with a
 spiral drawn on its end: it is the collar's own length wound flat round the 20 mm hem stiffener, bent down at the ends
-and clipped to the gussets. The pouch is draped cloth, but it still reads as a box (open defect 6). At the full load
+and clipped to the gussets. The pouch is draped cloth, but it still reads as a box (open defect 6), and the
+closure macro had to be taken at the day load, where the pouch is off. At the full load
 the cloth stays on the huntkit drape: mean 2.2 mm, 99 % of vertices within 9.9 mm, away from the roll and the strap
 lines; 0.24 % of those vertices are over the 15 mm limit (worst 21.6 mm), so the limit is **not met everywhere**
 (section 4).
@@ -31,7 +32,7 @@ bpy venv (`python -m huntkit.viz3d.cloth_pass --job <json>`).
 | Contents proxy | Full: the huntkit drape itself, 5 mm inside, cut flat 20 mm under the roll and narrowed there so the closure's ears are cloth, not contents: 83.8 L. Day and 6-day: a rounded block on the frame face from the floor up, its depth solved for the volume: 12.0 L (330 wide, to z 470, 114 mm deep) and 45.0 L (372 wide, to z 790, 187 mm deep). | `drape_proxy`, `block_proxy` |
 | Cinch W1-W3 | Each strap is a 25 mm wide slab collider. It starts on the taut line round the seed and closes, over 70 frames, to the taut line round the contents plus a cloth-pile allowance (2.5 / 4 / 12 mm for full / 6-day / day). The taut line is the convex hull in plan of whatever lies under the strap; the strap climbs evenly from its right frame anchor to its left one (W1 z 80 to 250, W2 z 250 to 420, W3 level at z 702.6, from the BL-009 scenario). The cloth under and between the straps is free and folds by itself. | `taut_path`, `strap_slab` |
 | Roll clips | The closure line (the top line of the collar, 555 mm long) is carried from where the huntkit drape has it to the line where the roll starts: level over the middle 300 mm, then bent down at R 60 toward the clip tabs on the gussets (60 mm below the collar seam). The bend is 75 deg at full, 45 deg at 6-day and 18 deg at day: the ends stop 45 mm above the tab. | `arch`, `bend_for_drop` |
-| Rolled collar | Not solved as cloth (section 6). The collar length that is not standing (175 mm at full = fabric height 494.8 less the 319.8 to the fill line; 405 and 425 mm part-full) is wound as a flat-folded spiral: flats of 20 mm (the HDPE hem stiffener), half-thickness 1 mm at the core, growing 2 mm a turn. That gives 2.8 turns, 31 x 11 mm at full; 5.2 turns, 41 x 21 mm at 6-day; 5.3 turns at day. The spiral is swept along the lip line, given cloth thickness, and goes through the fabric pass. | `roll_section`, `roll_mesh` |
+| Rolled collar | Not solved as cloth (section 6). The collar length that is not standing (175 mm at full = fabric height 494.8 less the 319.8 to the fill line; 405 and 425 mm part-full) is wound as a flat-folded spiral: flats of 20 mm (the HDPE hem stiffener), half-thickness 1 mm at the core, growing 2 mm a turn. That gives 2.8 turns, 33 x 13 mm (1.3 x 0.5 in) at full; 5.2 turns, 43 x 23 mm (1.7 x 0.9 in) at 6-day; 5.3 turns at day. The spiral is swept along the lip line, given cloth thickness, and goes through the fabric pass. | `roll_section`, `roll_mesh` |
 | Pouch on the roll | A second small solve: the pouch's six flat panels (280 x 190 x 60, `corrie.POUCH`) start as the drafted box and drape under gravity, with self collision, over a contents block (1.6 L) and a height field of the roll and collar under it. | `pouch`, `box_mesh` |
 | Fittings | The solved cloth goes back in vertex order, so it is handed to the existing CORRIE B.2 builders as their `sim_skin`: door, kick plate, floor, seams, zip, tabs and the open-door view are all built on the solved cloth. Wings, the lofted roll and the lofted pouch are dropped. W1-W3 are redrawn on the taut line round the solved cloth, with a ladder lock each. | `s15_scene` |
 
@@ -42,9 +43,9 @@ Solver settings (`ClothParams`, all picture choices): tension and compression 40
 
 | State | Contents proxy | Collar standing | Collar in the roll | Roll turns, section | Roll-end bend | Closed volume of the solved cloth | W1 / W2 / W3 taut length, seed to cinched | Solve time |
 |---|---|---|---|---|---|---|---|---|
-| Day | 12.0 L (732 cu in) | 70 mm (2.8 in) | 425 mm (16.7 in) | 5.3, 42 x 22 mm | 18 deg | 24.4 L | 700 to 504, 731 to 503, 736 to 540 mm | 149 s |
-| 6-day | 45.0 L (2746 cu in) | 90 mm (3.5 in) | 405 mm (15.9 in) | 5.2, 41 x 21 mm | 45 deg | 53.4 L | 700 to 648, 731 to 662, 736 to 773 mm | 173 s |
-| Full | 83.8 L (5114 cu in) | 320 mm (12.6 in) | 175 mm (6.9 in) | 2.8, 31 x 11 mm | 75 deg | 89.8 L (seed 91.3 L) | 700 to 711, 731 to 711, 736 to 755 mm | 492 s |
+| Day | 12.0 L (732 cu in) | 70 mm (2.8 in) | 425 mm (16.7 in) | 5.3, 43 x 23 mm | 18 deg | 24.4 L | 700 to 504, 731 to 503, 736 to 540 mm | 149 s |
+| 6-day | 45.0 L (2746 cu in) | 90 mm (3.5 in) | 405 mm (15.9 in) | 5.2, 43 x 23 mm | 45 deg | 53.4 L | 700 to 648, 731 to 662, 736 to 773 mm | 173 s |
+| Full | 83.8 L (5114 cu in) | 320 mm (12.6 in) | 175 mm (6.9 in) | 2.8, 33 x 13 mm | 75 deg | 89.8 L (seed 91.3 L) | 700 to 711, 731 to 711, 736 to 755 mm | 492 s |
 
 The closed volume of the solved cloth is larger than the contents because slack cloth holds air; it is a property of
 the picture, not a capacity. "Taut length" excludes the two legs to the frame anchors. At full the straps do not
@@ -105,12 +106,15 @@ vertices within 40 mm of a strap line and within 150 mm of the closure line (65 
 | 12 | carry | tripod and scope are the legacy shapes; the pod is a plain capsule sleeve; W3 does not touch the pod (it ends below it) | open, cosmetic |
 | 13 | all | W1-W3 tails (150 mm, in keeper loops) are not drawn beyond the 34 mm at the lock; the legs to the frame anchors are not drawn | open |
 | 14 | cache | a changed input was once reused from cache | fixed: the cache key is a hash of the job inputs |
+| 15 | roll macro, day | the roll-clip buckle lies flat under the roll end like a plank: the strap run is only 45 mm, so the buckle has nowhere to hang | OPEN. Needs the clip drawn cinched up against its tab, or the roll end ending higher. |
+| 16 | door open | regular horizontal ribbing on the left gusset, and the dents of the unhooked W1 / W2 stay in the cloth | open, cosmetic |
+| 17 | pouch | the top seam ridge of the pouch zigzags in the full macro (frame 12) | open: the seam follows the 7 mm pouch mesh; smooth the loop over 12 mm |
 
 ## 7. Honest limits
 
-- **The roll is not simulated.** Rolling a collar three to five turns with self contact is beyond what was stable in
-  the time. The roll's size comes from the collar length and three stated numbers; its ends are a clean spiral, where a
-  real one shows pinched gusset cloth.
+- **The roll is not simulated.** Rolling a collar three to five turns with self contact was not attempted: it was
+  judged too fragile for the time available. The roll's size comes from the collar length and three stated numbers;
+  its ends are a clean spiral, where a real one shows pinched gusset cloth.
 - **Part-full shapes are plausible, not validated.** They come from a contents block and a cloth stiffness chosen by
   eye. No number should be read off them.
 - **Blender's solver units are not SI.** Stiffness and vertex mass are tuning values. The areal mass (0.21 kg/m2, from
@@ -122,16 +126,19 @@ vertices within 40 mm of a strap line and within 150 mm of the closure line (65 
 
 ## 8. Shots
 
-`outputs/screens/20261111_BL020_<n>.png`; the five marked * are copied to `docs/screens/`.
+`outputs/screens/20261111_BL020_<n>.png`; the five marked * are copied to `docs/screens/`. Frames 1, 3, 4 and 6 are
+1600 x 1200 at 72 samples (134-183 s each); the rest are 1200 x 900 at 40 samples (40-68 s each).
 
 1. * hero, 3/4 rear, full
 2. side, full
-3. * hero, same camera, 6-day
-4. * hero, same camera, day
-5. door open, full
-6. * macro of the rolled closure, full
+3. hero, same camera, 6-day
+4. * hero, same camera, day (pouch off)
+5. door open, full (W1 and W2 unhooked)
+6. * macro of the rolled closure, day load: the wound roll, its layered end, the clip
 7. * side carry: tripod under W1-W3 (right)
 8. side carry: scope pod under W1-W2 (left)
-9. hipbelt front (buckle tabs)
+9. hipbelt front (buckle tabs, no shard)
 10. side, day
-11. the three load states side by side (sheet of 4, 3 and 1)
+11. * the three load states side by side (sheet of 4, 3 and 1)
+12. macro of the closure at the full load with the pouch on: kept as the record of open defect 6 (the pouch reads
+    as a box and hides the roll)

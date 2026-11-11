@@ -1,0 +1,5231 @@
+{
+ "date": "2026-11-11",
+ "ticket": "BL-013",
+ "size": "M",
+ "kit": "M",
+ "target_g": 2993.7,
+ "scenarios": {
+  "B.2": {
+   "base": 3700.5,
+   "as_hunted": 3872.6,
+   "meat_trip": 3927.0
+  },
+  "P": {
+   "base": 3414.4,
+   "as_hunted": 3659.9,
+   "meat_trip": 3792.0,
+   "by_system_base": {
+    "frame": 1035.5,
+    "back": 413.6,
+    "belt": 487.5,
+    "harness": 238.1,
+    "bag_shell": 381.5,
+    "bag_pockets": 108.7,
+    "pouch": 0,
+    "fly": 5.9,
+    "straps_meat": 266.6,
+    "straps_compression": 264.5,
+    "attachment": 169.0,
+    "misc": 43.5
+   },
+   "like_for_like_base": {
+    "bag_side": 1196.2,
+    "suspension": 2174.7,
+    "misc": 43.5
+   }
+  },
+  "A": {
+   "base": 3142.0,
+   "as_hunted": 3387.5,
+   "meat_trip": 3519.6,
+   "by_system_base": {
+    "frame": 1014.9,
+    "back": 369.0,
+    "belt": 442.8,
+    "harness": 238.1,
+    "bag_shell": 328.4,
+    "bag_pockets": 101.0,
+    "pouch": 0,
+    "fly": 5.9,
+    "straps_meat": 266.6,
+    "straps_compression": 162.9,
+    "attachment": 169.0,
+    "misc": 43.5
+   },
+   "like_for_like_base": {
+    "bag_side": 1033.8,
+    "suspension": 2064.7,
+    "misc": 43.5
+   }
+  },
+  "O": {
+   "base": 3144.9,
+   "as_hunted": 3390.4,
+   "meat_trip": 3522.5,
+   "by_system_base": {
+    "frame": 1017.8,
+    "back": 369.0,
+    "belt": 442.8,
+    "harness": 238.1,
+    "bag_shell": 328.4,
+    "bag_pockets": 101.0,
+    "pouch": 0,
+    "fly": 5.9,
+    "straps_meat": 266.6,
+    "straps_compression": 162.9,
+    "attachment": 169.0,
+    "misc": 43.5
+   },
+   "like_for_like_base": {
+    "bag_side": 1033.8,
+    "suspension": 2067.6,
+    "misc": 43.5
+   }
+  }
+ },
+ "by_size": {
+  "S": {
+   "B.2": {
+    "base": 3672.6,
+    "as_hunted": 3844.7,
+    "meat_trip": 3899.1
+   },
+   "P": {
+    "base": 3386.7,
+    "as_hunted": 3632.2,
+    "meat_trip": 3764.2
+   },
+   "A": {
+    "base": 3116.5,
+    "as_hunted": 3362.0,
+    "meat_trip": 3494.1
+   },
+   "O": {
+    "base": 3119.4,
+    "as_hunted": 3364.9,
+    "meat_trip": 3497.0
+   }
+  },
+  "M": {
+   "B.2": {
+    "base": 3700.5,
+    "as_hunted": 3872.6,
+    "meat_trip": 3927.0
+   },
+   "P": {
+    "base": 3414.4,
+    "as_hunted": 3659.9,
+    "meat_trip": 3792.0
+   },
+   "A": {
+    "base": 3142.0,
+    "as_hunted": 3387.5,
+    "meat_trip": 3519.6
+   },
+   "O": {
+    "base": 3144.9,
+    "as_hunted": 3390.4,
+    "meat_trip": 3522.5
+   }
+  },
+  "L": {
+   "B.2": {
+    "base": 3724.6,
+    "as_hunted": 3896.7,
+    "meat_trip": 3951.1
+   },
+   "P": {
+    "base": 3438.7,
+    "as_hunted": 3684.2,
+    "meat_trip": 3816.3
+   },
+   "A": {
+    "base": 3164.4,
+    "as_hunted": 3409.9,
+    "meat_trip": 3542.0
+   },
+   "O": {
+    "base": 3167.3,
+    "as_hunted": 3412.8,
+    "meat_trip": 3544.9
+   }
+  },
+  "XL": {
+   "B.2": {
+    "base": 3760.6,
+    "as_hunted": 3932.7,
+    "meat_trip": 3987.1
+   },
+   "P": {
+    "base": 3475.0,
+    "as_hunted": 3720.5,
+    "meat_trip": 3852.6
+   },
+   "A": {
+    "base": 3198.8,
+    "as_hunted": 3444.3,
+    "meat_trip": 3576.4
+   },
+   "O": {
+    "base": 3201.7,
+    "as_hunted": 3447.2,
+    "meat_trip": 3579.3
+   }
+  },
+  "XXL": {
+   "B.2": {
+    "base": 3788.7,
+    "as_hunted": 3960.8,
+    "meat_trip": 4015.2
+   },
+   "P": {
+    "base": 3504.1,
+    "as_hunted": 3749.6,
+    "meat_trip": 3881.7
+   },
+   "A": {
+    "base": 3225.7,
+    "as_hunted": 3471.2,
+    "meat_trip": 3603.3
+   },
+   "O": {
+    "base": 3228.6,
+    "as_hunted": 3474.1,
+    "meat_trip": 3606.2
+   }
+  }
+ },
+ "steps": {
+  "C1": {
+   "class": "P",
+   "ticket": "BL-004 flag",
+   "label": "fairleads booked twice",
+   "kind": "correction",
+   "gate": "-",
+   "delta_g": {
+    "base": -49.4,
+    "as_hunted": -49.4,
+    "meat_trip": -49.4
+   },
+   "rows": [
+    {
+     "system": "attachment",
+     "name": "REMOVED: attachment: printed fairleads (8)",
+     "g": -49.4,
+     "cfg": "base",
+     "source": "double-booked: frame_branch.frame_sdf adds bag_attach.attachment_field to the body SDF, so the 823.2 g production raster and the 757.7 g H1 raster already hold the 8 fairleads; ledger row"
+    }
+   ]
+  },
+  "C2": {
+   "class": "P",
+   "ticket": "BL-004 flag",
+   "label": "swell patches booked twice",
+   "kind": "correction",
+   "gate": "-",
+   "delta_g": {
+    "base": -12.3,
+    "as_hunted": -12.3,
+    "meat_trip": -12.3
+   },
+   "rows": [
+    {
+     "system": "attachment",
+     "name": "REMOVED: attachment: B-01 swell patches",
+     "g": -12.3,
+     "cfg": "base",
+     "source": "booked twice: bag_attach's 2-ply patch estimate (200 gsm ASSUMPTION) and the cut piece B-13x (corrie.build, 'replaces the cone caps') are the same 8 swells; ledger row"
+    }
+   ]
+  },
+  "C3": {
+   "class": "P",
+   "ticket": "BL-017 flag",
+   "label": "crown-corner wraps unbooked",
+   "kind": "correction",
+   "gate": "-",
+   "delta_g": {
+    "base": 24.2,
+    "as_hunted": 24.2,
+    "meat_trip": 24.2
+   },
+   "rows": [
+    {
+     "system": "frame",
+     "name": "crown-corner carbon wraps + CF gussets (2 corners), unbooked",
+     "g": 17.59,
+     "cfg": "base",
+     "source": "pack5200.hardware_mass crown_corner share (frame.yaml 0.75 mm wrap x 30 mm per tube)"
+    },
+    {
+     "system": "frame",
+     "name": "crown-corner MMA bond (0.8 mm, 2 corners) less the rev C line already booked",
+     "g": 6.63,
+     "cfg": "base",
+     "source": "pack5200.hardware_mass crown_corner adhesive - frame_mass_production corner_bondline"
+    }
+   ]
+  },
+  "C4": {
+   "class": "P",
+   "ticket": "BL-017 flag",
+   "label": "POM pawl housing booked twice",
+   "kind": "correction",
+   "gate": "weigh pawl + spring",
+   "delta_g": {
+    "base": -8.0,
+    "as_hunted": -8.0,
+    "meat_trip": -8.0
+   },
+   "rows": [
+    {
+     "system": "frame",
+     "name": "POM pawl housing double-booked (the printed body forms the housing and its cheeks)",
+     "g": -8.0,
+     "cfg": "base",
+     "source": "crown_diet.PAWL_HOUSING_G - PAWL_SPRING_G (both ASSUMPTION in pack5200.HW); print/frame/PRODUCTION.md step 2: pawl pin in the printed cheeks"
+    }
+   ]
+  },
+  "C5": {
+   "class": "P",
+   "ticket": "BL-017 flag",
+   "label": "non-body lump short",
+   "kind": "correction",
+   "gate": "-",
+   "delta_g": {
+    "base": 9.1,
+    "as_hunted": 9.1,
+    "meat_trip": 9.1
+   },
+   "rows": [
+    {
+     "system": "frame",
+     "name": "non-body lump short of its sources (M4 sets subtracted that frame_g never held)",
+     "g": 9.14,
+     "cfg": "base",
+     "source": "frame_eval.kept_g + crown_diet.PAWL_BUSH_G + frame_eval.INSERTS_G - frame_mass_production.non_body_g"
+    }
+   ]
+  },
+  "C6": {
+   "class": "P",
+   "ticket": "BL-004 flag",
+   "label": "lifter keepers -> harness",
+   "kind": "correction",
+   "gate": "-",
+   "delta_g": {
+    "base": 0.0,
+    "as_hunted": 0.0,
+    "meat_trip": 0.0
+   },
+   "rows": [
+    {
+     "system": "attachment",
+     "name": "REMOVED: attachment: lifter tri-glide keepers",
+     "g": -6.0,
+     "cfg": "base",
+     "source": "lifter keepers are a harness part (bag_attach: 'lifter backup'); ledger row"
+    },
+    {
+     "system": "harness",
+     "name": "lifter tri-glide keepers (moved from attachment)",
+     "g": 6.0,
+     "cfg": "base",
+     "source": "ledger row"
+    }
+   ]
+  },
+  "C7": {
+   "class": "P",
+   "ticket": "BL-006 e",
+   "label": "holster tabs stay on belt",
+   "kind": "correction",
+   "gate": "-",
+   "delta_g": {
+    "base": 2.2,
+    "as_hunted": 0.0,
+    "meat_trip": 0.0
+   },
+   "rows": [
+    {
+     "system": "belt",
+     "name": "IMP-3 holster: its 2 wing tabs stay sewn to the belt (base)",
+     "g": 2.16,
+     "cfg": "base",
+     "source": "hipbelt_diet.holster_split (corrie.holster hardware row)"
+    },
+    {
+     "system": "belt",
+     "name": "IMP-3 holster: wing tabs out of the as-hunted add-on",
+     "g": -2.16,
+     "cfg": "as_hunted",
+     "source": "hipbelt_diet.holster_split"
+    }
+   ]
+  },
+  "C8": {
+   "class": "P",
+   "ticket": "BL-006 a2",
+   "label": "belt webbing re-booked",
+   "kind": "correction",
+   "gate": "HB-7 (planned lock-slip test)",
+   "delta_g": {
+    "base": -12.7,
+    "as_hunted": -12.7,
+    "meat_trip": -12.7
+   },
+   "rows": [
+    {
+     "system": "belt",
+     "name": "old 0.9 m 50 mm belt strap (C0 1:1 relic) -> two 140 mm 50 mm buckle tabs",
+     "g": -23.56,
+     "cfg": "base",
+     "source": "hipbelt_diet.closure (BL-006 a2)"
+    },
+    {
+     "system": "belt",
+     "name": "25 mm 2:1 webbing re-booked 0.6 -> 1.20 m (routing geometry)",
+     "g": 10.82,
+     "cfg": "base",
+     "source": "hipbelt_diet.closure (BL-006 a2)"
+    }
+   ]
+  },
+  "P_pkgC": {
+   "class": "P",
+   "ticket": "package C (2026-11-09)",
+   "label": "7075 belt plate; C-4 / C-7 rev C fixes",
+   "kind": "safety",
+   "gate": "HB-5 plate, pad-seat sag test, T1(c) yoke dial (verification; the 6061 fallback fails rev C too)",
+   "delta_g": {
+    "base": -8.4,
+    "as_hunted": -8.4,
+    "meat_trip": -8.4
+   },
+   "rows": [
+    {
+     "system": "belt",
+     "name": "C-1+C-2+C-3: belt plate 7075-T6 1.2 mm cold slip-rolled, D28 hub, 2 x D31 holes (SF/req 1.08)",
+     "g": -25.03,
+     "cfg": "base",
+     "source": "ledger corrie_b2_h1_c: corrie.package_c_rows(): analysis/weight_c_structural_results.json C1_C2.package_saved_g"
+    },
+    {
+     "system": "frame",
+     "name": "C-9: printed body, low-stress ligaments offset inward <= 1.75 mm (fatigue 1.020)",
+     "g": 0.0,
+     "cfg": "base",
+     "source": "ledger corrie_b2_h1_c: corrie.package_c_rows(): analysis/weight_c_structural_results.json C9.best.saved_g"
+    },
+    {
+     "system": "belt",
+     "name": "C-4 FAIL -> correction: pad backer HDPE 1.0 -> CFRP quasi-iso 0.8 mm",
+     "g": 8.1,
+     "cfg": "base",
+     "source": "ledger corrie_b2_h1_c: corrie.package_c_rows(): analysis/weight_c_structural.md section 0 (fix +8.1 g)"
+    },
+    {
+     "system": "harness",
+     "name": "C-7 FAIL -> correction: yoke plate CFRP 1.5 -> 1.8 mm",
+     "g": 8.5,
+     "cfg": "base",
+     "source": "ledger corrie_b2_h1_c: corrie.package_c_rows(): analysis/weight_c_structural.md section 0 (fix +8.5 g)"
+    }
+   ]
+  },
+  "P_F": {
+   "class": "P",
+   "ticket": "BL-011/003/004/010",
+   "label": "CORRIE F D2, today's fabrics, wing parts kept",
+   "kind": "design",
+   "gate": "first-article: S15 elbow-swing / sling check (BL-009)",
+   "delta_g": {
+    "base": -174.1,
+    "as_hunted": -98.5,
+    "meat_trip": -20.8
+   },
+   "rows": [
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-11 lash tabs (Hypalon, bow riser + muzzle keepers), released",
+     "g": -12.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): roll-top ROLL hardware: 2 x 25 mm side-release + 2 x 0.35 m webbing",
+     "g": -30.6,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): main bag: 6 haul-wrap keeper loops (25 mm webbing x 80 mm, sewn into the gore seams)",
+     "g": -8.6,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): main bag: bow riser carry: 2 x 25 mm webbing loops through B-11 + 25 mm G-hook strap (owner freeze 2026-11-05)",
+     "g": -12.1,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): bag-side load spreaders: IM3 bag-hook tabs B-17 + hinge-eye doublers B-18 (Hypalon)",
+     "g": -27.8,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: printed fairleads (8)",
+     "g": -49.4,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: 7075 pins (8)",
+     "g": -19.3,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: UHMWPE sleeves (8)",
+     "g": -2.3,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: bag hooks, 38 mm Al (4)",
+     "g": -36.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: TPU hook sleeves (4)",
+     "g": -4.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: webbing eyes, net of old stubs",
+     "g": 6.7,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: bag-side straps",
+     "g": -17.9,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: B-01 swell patches",
+     "g": -12.3,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: elastic keepers",
+     "g": -3.6,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: lifter tri-glide keepers",
+     "g": -6.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: crown hood B-19 (Hypalon blank + ears + hem)",
+     "g": -24.3,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: hood lip stiffener B-19s (HDPE 1.5)",
+     "g": -3.9,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: hood lining B-19L (XLPE 3)",
+     "g": -0.6,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: hood ladder strips B-20 x2",
+     "g": -20.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: hood tongues x2 + POM toggles",
+     "g": -10.3,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: hood grab tab (25 mm x 90)",
+     "g": -1.6,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: top side guys x2 (25 mm webbing)",
+     "g": -18.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: guy ladder locks + tri-glides + ladder-lock tabs",
+     "g": -16.5,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: guy corner tabs B-22 x2",
+     "g": -5.9,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: guy tail elastic keepers x2",
+     "g": -1.2,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: IM2 tongue backings B-23 x2",
+     "g": -7.1,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: bag hooks 1500 N -> 2200 N rated (4 x +5 g)",
+     "g": -20.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: thread (box-X + perimeters)",
+     "g": -2.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): under-straps US1/US2: printed anchors (4)",
+     "g": -22.8,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): under-straps US1/US2: 7075 pins (4)",
+     "g": -9.6,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): under-straps US1/US2: UHMWPE sleeves (4)",
+     "g": -1.2,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): under-straps US1/US2: 38 mm cams (2)",
+     "g": -44.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): under-straps US1/US2: tri-glide keepers (2)",
+     "g": -6.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): under-straps US1/US2: 38 mm webbing, 1.10 m",
+     "g": -30.8,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): under-straps US1/US2: bag-floor channels",
+     "g": -8.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): float-mode stand-off links B-24: 38 mm webbing, 2 x 435 mm",
+     "g": -24.4,
+     "cfg": "meat_trip",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): float-mode stand-off links B-24: rated 38 mm hooks (2), same part as the bag hooks",
+     "g": -28.0,
+     "cfg": "meat_trip",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): float-mode stand-off links B-24: thread (box-X + loop box-X)",
+     "g": -2.0,
+     "cfg": "meat_trip",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "fly",
+     "name": "REMOVED (B.2): F-02 fly base pocket",
+     "g": -5.9,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "fly",
+     "name": "REMOVED (B.2): rain fly (F-01 part of the ledger row)",
+     "g": -46.7,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "fly",
+     "name": "REMOVED (B.2): rain fly: fly elastic hem 3.0 m, #5 pocket zip + slider, tether",
+     "g": -15.8,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): internal meat harness: 3 x 38 mm straps IM1-IM3 + 6 frame stubs, 6 sliding-gate hooks, 3 cams (MEAT family)",
+     "g": -240.3,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): internal meat harness: B-01 strap ports: 6 Hypalon patches (B-12)",
+     "g": -14.1,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): haul wraps: 3 frame-anchored wraps, 25 mm coyote poly webbing 4.67 m",
+     "g": -84.1,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): haul wraps: 3 aluminium G-hooks (HAUL family) + 3 ladder locks",
+     "g": -24.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-01 frame-side panel (flat, Z-fold setback) (challenge_ultra_200)",
+     "g": -35.6,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-03 side gusset (cordura_330d_nylon66, x2)",
+     "g": -64.27,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-05 bottom (cordura_500d_nylon66)",
+     "g": -14.66,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-06f roll-top collar, frame side (ULTRA) (challenge_ultra_200)",
+     "g": -27.18,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-06 roll-top collar (robic_100d_ripstop)",
+     "g": -56.62,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-07 roll-top hem (cordura_330d_nylon66)",
+     "g": -20.23,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-07s roll-top HDPE strip (hdpe_sheet, x2)",
+     "g": -16.68,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): B-13x boxed fairlead swell (challenge_ultra_200, x8)",
+     "g": -14.39,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-02u U-surround (cordura_330d_nylon66)",
+     "g": -18.73,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-02door horseshoe door (cordura_330d_nylon66)",
+     "g": -27.57,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-02h hinge band (cordura_330d_nylon66)",
+     "g": -8.29,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): SH-07 door zip garage (camo) (polyester_ht_630d_printable, x2)",
+     "g": -2.47,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): M-01 side compression wing (hemmed edges) (cordura_330d_nylon66, x2)",
+     "g": -36.91,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): SH-06 wing leading-edge bar (camo) (polyester_ht_630d_printable, x2)",
+     "g": -11.08,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): SH-01a kick plate, aft (camo) (polyester_ht_630d_printable)",
+     "g": -10.03,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): SH-01b kick plate, side (camo) (polyester_ht_630d_printable, x2)",
+     "g": -9.28,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "pouch",
+     "name": "REMOVED (B.2): L-21 pouch top (body solid) (cordura_330d_nylon66)",
+     "g": -10.98,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "pouch",
+     "name": "REMOVED (B.2): L-22 pouch base (robic_100d_ripstop)",
+     "g": -7.62,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "pouch",
+     "name": "REMOVED (B.2): L-23 pouch boxing strip (robic_100d_ripstop)",
+     "g": -9.08,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "pouch",
+     "name": "REMOVED (B.2): SH-08 pouch pull tab (camo, folded loop) (polyester_ht_630d_printable)",
+     "g": -1.62,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): horseshoe door zip #10, 2 sliders",
+     "g": -38.29,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "pouch",
+     "name": "REMOVED (B.2): pouch zip #8, 1 slider",
+     "g": -8.8,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): door: 2 cord pulls (3 mm Dyneema + rubber sleeve)",
+     "g": -3.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): wing strap 1: 25 mm 0.22 m + G-hook + ladder lock + seam loop 0.08 m",
+     "g": -13.4,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): wing strap 2: 25 mm 0.22 m + G-hook + ladder lock + seam loop 0.08 m",
+     "g": -13.4,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): wing strap 3: 25 mm 0.22 m + G-hook + ladder lock + seam loop 0.08 m",
+     "g": -13.4,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): wing strap 4: 25 mm 0.22 m + G-hook + ladder lock + seam loop 0.08 m",
+     "g": -13.4,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): pouch: 4 x 25 mm 0.12 m straps + 4 G-hooks (2 rear to the hem loops, 2 front to the roll clips)",
+     "g": -24.64,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "pouch",
+     "name": "REMOVED (B.2): pouch zip cord pull",
+     "g": -1.5,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "REMOVED (B.2): IMP-1 padded scope sleeve inside the left wing",
+     "g": -54.5,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "REMOVED (B.2): IMP-2 hydration sleeve above IM3 + 2 hose ports (R-19)",
+     "g": -40.3,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "REMOVED (B.2): IMP-4 zipped kill-kit / first-aid pocket inside the top-hinged door",
+     "g": -22.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "REMOVED (B.2): IMP-8 bow cam / limb cup at the foot of the right wing",
+     "g": -7.5,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): A-2 haul-wrap tails W1-W3 250 -> 150 mm (haul path unchanged)",
+     "g": 5.4,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): B-10 B-12 strap ports x6: Hypalon -> tpu_coated_nylon_840d (no load)",
+     "g": 7.18,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): G-1 grosgrain binding on the bound body seams left after B-1 (0.00 m)",
+     "g": -0.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "fly",
+     "name": "REMOVED (B.2): G-2 rain fly F-01 re-cut for CORRIE's box shell (0.718 vs SPINE 0.630 m2)",
+     "g": -6.53,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-11 lash tabs (Hypalon, bow riser + muzzle keepers), released",
+     "g": 12.0,
+     "cfg": "base",
+     "source": "ledger (unchanged)"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: main bag: bow riser carry: 2 x 25 mm webbing loops through B-11 + 25 mm G-hook strap (owner freeze 2026-11-05)",
+     "g": 12.1,
+     "cfg": "base",
+     "source": "ledger (unchanged)"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-01 frame-side panel (flat, Z-fold setback) (challenge_ultra_200)",
+     "g": 40.96,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-03 side gusset (cordura_330d_nylon66, x2)",
+     "g": 57.47,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-05 bottom (full S15 width) (cordura_500d_nylon66)",
+     "g": 19.6,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-02u D2 camo blade U (blades + 75 mm kick strip, one piece) (polyester_ht_630d_printable)",
+     "g": 31.96,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-02door D2 door (whole aft face z 110-650, R 55 corners) (cordura_330d_nylon66)",
+     "g": 35.07,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-02h D2 hinge band (z 650 to the collar seam) (cordura_330d_nylon66)",
+     "g": 7.45,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: SH-07 slider garage, top of the right blade (camo) (polyester_ht_630d_printable)",
+     "g": 1.23,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: SH-01b kick band, gusset (camo) (polyester_ht_630d_printable, x2)",
+     "g": 8.78,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-06f roll-top collar, frame side (ULTRA) (challenge_ultra_200)",
+     "g": 26.5,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-06 roll-top collar (robic_100d_ripstop)",
+     "g": 46.28,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-07 roll-top hem (cordura_330d_nylon66)",
+     "g": 18.17,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-07s roll-top HDPE strip (hdpe_sheet, x2)",
+     "g": 14.82,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: D2 door zip #10 in the blade | door seam, 2 sliders",
+     "g": 40.36,
+     "cfg": "base",
+     "source": "coil_zipper_10 record x (L + 60 mm) + 2 sliders (ASSUMPTION)"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: door: 2 cord pulls (3 mm Dyneema + rubber sleeve)",
+     "g": 3.0,
+     "cfg": "base",
+     "source": "records (webbing, cord pulls ASSUMPTION)"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: 4 hard-point loops: 25 mm webbing 0.08 m each, in the left gusset's corner seams at z 420 / 640 (scope pod)",
+     "g": 5.76,
+     "cfg": "base",
+     "source": "records (webbing, cord pulls ASSUMPTION)"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "CORRIE F: IMP-2 hydration sleeve above IM3 + 2 hose ports (R-19)",
+     "g": 40.3,
+     "cfg": "base",
+     "source": "corrie.bag_pockets"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "CORRIE F: IMP-4 IMP-4 zipped kill-kit / first-aid pocket, inside the D2 door",
+     "g": 22.0,
+     "cfg": "base",
+     "source": "corrie.bag_pockets (same part)"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "CORRIE F: IMP-8 IMP-8 bow cam / limb cup, right gusset foot (z 35-150)",
+     "g": 7.5,
+     "cfg": "base",
+     "source": "corrie.bag_pockets (same part)"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "CORRIE F: FP-L/R hip-reach pockets FP-L / FP-R (team A E-4): power mesh 260 x 230, 2 box pleats, shock-cord top in a 25 mm camo mouth band, sewn to each gusset's lower front corner (z 150-380)",
+     "g": 33.5,
+     "cfg": "base",
+     "source": "evolve.FP + power_mesh_nylon_spandex, shock_cord_3mm, polyester_ht_630d_printable records (A's recipe, cut + 8 mm SA)"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "CORRIE F: E-5 pole quiver: 40 mm boot in FP-R's front pleat + 3 mm shock-cord grip loop and cord lock on a 25 mm tab caught in the right B-01 | gusset seam at z 640",
+     "g": 5.4,
+     "cfg": "base",
+     "source": "evolve.POLE + shock_cord_3mm, cord_lock_spring, poly_webbing_25mm records"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "CORRIE F: add-on scope_pod: scope pod (team B glass pod), left gusset",
+     "g": 83.7,
+     "cfg": "as_hunted",
+     "source": "lean.fell.addons()['A1']"
+    },
+    {
+     "system": "pouch",
+     "name": "CORRIE F: add-on top_pouch: top pouch 2.7 L (team B lid pod), body",
+     "g": 29.66,
+     "cfg": "as_hunted",
+     "source": "lean.fell.addons()['A3'] minus its 4 straps"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: add-on top_pouch_straps: top pouch: 4 x 25 mm 0.12 m straps + 4 G-hooks",
+     "g": 24.64,
+     "cfg": "as_hunted",
+     "source": "poly_webbing_25mm record + G_HOOK ASSUMPTION (lean.fell A3 recipe)"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "CORRIE F: add-on meat_liner: meat liner (team D SWAP slab, wipeable silpoly / 70D, 330 x 110 x 560)",
+     "g": 61.7,
+     "cfg": "meat_trip",
+     "source": "D.cache.modules()[0] (pieces x gsm + hw)"
+    },
+    {
+     "system": "fly",
+     "name": "CORRIE F: F-01 rain fly re-cut to CORRIE F's outer shell",
+     "g": 55.06,
+     "cfg": "as_hunted",
+     "source": "panels.yaml F-01 x outer area 0.743 / SPINE 0.6298 m2 (G-2 rule)"
+    },
+    {
+     "system": "fly",
+     "name": "CORRIE F: F-02 fly base pocket (stays on the bag)",
+     "g": 5.9,
+     "cfg": "base",
+     "source": "panels.yaml F-02"
+    },
+    {
+     "system": "fly",
+     "name": "CORRIE F: rain fly: fly elastic hem 3.0 m, #5 pocket zip + slider, tether",
+     "g": 15.8,
+     "cfg": "as_hunted",
+     "source": "ledger row (unchanged)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: IM-web: IM1-IM3 straps, 25 mm webbing (same cuts; left end a sewn loop, girth-hitched on the left fairlead eye)",
+     "g": 55.73,
+     "cfg": "base",
+     "source": "strap_arch rec: geometry.yaml cuts x poly_webbing_25mm record; the sewn loop replaces the left hook loop (same cut)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: IM-eyes: 6 fairlead eyes (old stubs), 38 mm webbing 6 x 0.20 m",
+     "g": 33.6,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger IM row split: build_geometry.STUB_LEN x poly_webbing_38mm (eyes also take the bag hooks)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: IM-hooks: 3 x 25 mm rated Al G-hooks (right end only)",
+     "g": 24.0,
+     "cfg": "base",
+     "source": "strap_arch rec: ASSUMPTION G25R_G (AustriAlpin DY25K-G class, 8 g, 1.2 kN)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: IM-cams: 3 x 25 mm Al cams",
+     "g": 39.0,
+     "cfg": "base",
+     "source": "strap_arch rec: ASSUMPTION CAM25_G (Austere 25 mm class)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: B-12: B-12 ports x6, slot 45 x 12 mm (passes a 25 mm G-hook)",
+     "g": 6.92,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger rows B-12 + B-10"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: US-anchor: US1/US2 printed anchors, 7075 pins, UHMWPE sleeves (frame side)",
+     "g": 33.6,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger US rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: US-cams: US1/US2 25 mm Al cams (2)",
+     "g": 26.0,
+     "cfg": "base",
+     "source": "strap_arch rec: ASSUMPTION CAM25_G"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: US-tg: US1/US2 tri-glide keepers (2), 25 mm",
+     "g": 6.0,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: US-web: US1/US2 25 mm webbing 1.10 m",
+     "g": 19.8,
+     "cfg": "base",
+     "source": "strap_arch rec: poly_webbing_25mm record x the 1.10 m of the ledger row"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: US-chan: US bag-floor channels",
+     "g": 8.0,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: B-24-web: B-24 float links, 38 mm webbing 2 x 435 mm",
+     "g": 24.4,
+     "cfg": "meat_trip",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: B-24-hooks: B-24 rated 38 mm hooks (2), same part as the bag hooks",
+     "g": 28.0,
+     "cfg": "meat_trip",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: B-24-thr: B-24 thread",
+     "g": 2.0,
+     "cfg": "meat_trip",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: W-web: W1-W3 haul wraps, 25 mm coyote webbing 4.67 m",
+     "g": 84.1,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: W-hw: W1-W3 G-hooks (3) + ladder locks (3)",
+     "g": 24.0,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: A-2: A-2 wrap tails 250 -> 150 mm",
+     "g": -5.4,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: keepers: 6 haul-wrap keeper loops in the gore seams",
+     "g": 8.6,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: roll: roll-top: 2 x 25 mm side-release + 2 x 0.35 m",
+     "g": 30.6,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: BL-010 S2: IM3 free end G-hook -> wiregate carabiner",
+     "g": 14.0,
+     "cfg": "base",
+     "source": "loadpath_check.hooks_table (carabiner_wiregate_22kn record)"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-010 S9: W1-W3 rated 25 mm G-hooks (3) and heavy ladder locks (3)",
+     "g": 21.0,
+     "cfg": "base",
+     "source": "loadpath_check.hooks_table + ladder_lock_25mm_heavy record"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: BL-010 S12: B-24 hooks -> wiregate carabiners (2)",
+     "g": 16.0,
+     "cfg": "meat_trip",
+     "source": "loadpath_check.hooks_table"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: bag-side load spreaders: IM3 bag-hook tabs B-17 + hinge-eye doublers B-18 (Hypalon)",
+     "g": 27.8,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: printed fairleads (8)",
+     "g": 49.4,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: 7075 pins (8)",
+     "g": 19.3,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: UHMWPE sleeves (8)",
+     "g": 2.3,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: bag hooks, 38 mm Al (4)",
+     "g": 36.0,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: TPU hook sleeves (4)",
+     "g": 4.0,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: webbing eyes, net of old stubs",
+     "g": -6.7,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: bag-side straps",
+     "g": 17.9,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: B-01 swell patches",
+     "g": 12.3,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: elastic keepers",
+     "g": 3.6,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: lifter tri-glide keepers",
+     "g": 6.0,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: crown hood B-19 (Hypalon blank + ears + hem)",
+     "g": 24.3,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: hood lip stiffener B-19s (HDPE 1.5)",
+     "g": 3.9,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: hood lining B-19L (XLPE 3)",
+     "g": 0.6,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: hood ladder strips B-20 x2",
+     "g": 20.0,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: hood tongues x2 + POM toggles",
+     "g": 10.3,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: hood grab tab (25 mm x 90)",
+     "g": 1.6,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: top side guys x2 (25 mm webbing)",
+     "g": 18.0,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: guy ladder locks + tri-glides + ladder-lock tabs",
+     "g": 16.5,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: guy corner tabs B-22 x2",
+     "g": 5.9,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: guy tail elastic keepers x2",
+     "g": 1.2,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: IM2 tongue backings B-23 x2",
+     "g": 7.1,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: bag hooks 1500 N -> 2200 N rated (4 x +5 g)",
+     "g": 20.0,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: thread (box-X + perimeters)",
+     "g": 2.0,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: B-13x boxed fairlead swell (challenge_ultra_200, x8)",
+     "g": 14.39,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: IM2 bag hooks x2 (rated 38 mm)",
+     "g": -28.0,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: ledger hook rows / 4"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: IM2 TPU hook sleeves x2",
+     "g": -2.0,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: ledger row / 4"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: T2 tongues x2 (38 mm x 160)",
+     "g": -8.95,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: ledger 'bag-side straps' / 4"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: B-23 IM2 tongue backings x2",
+     "g": -7.1,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: ledger row"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: elastic keepers for the IM2 hooks x2",
+     "g": -1.2,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: ledger row / 6"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: hood B-19 + B-19s + B-19L + ladders B-20 + tongues/toggles + grab tab",
+     "g": -60.7,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: ledger rows"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
+     "g": 12.12,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: poly_webbing_25mm record; toggle ASSUMPTION (attach_system.TOGGLE_G)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: B-17 trimmed 110 -> 70 mm tall (pair)",
+     "g": -7.2,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: hypalon_coated_nylon record, cut area"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-010 A1: IM3 bag hooks -> wiregate carabiners (2)",
+     "g": 16.0,
+     "cfg": "base",
+     "source": "loadpath_check.hooks_table (carabiner_wiregate_22kn record)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-010 A3: guy ladder locks -> heavy (2)",
+     "g": 6.0,
+     "cfg": "base",
+     "source": "ladder_lock_25mm_heavy / ladder_lock_25mm records"
+    },
+    {
+     "system": "straps_compression",
+     "name": "wing part kept until FT-S2: M-01 M-01 side wings x2 (330D, hemmed)",
+     "g": 36.91,
+     "cfg": "base",
+     "source": "strap_arch: ledger"
+    },
+    {
+     "system": "straps_compression",
+     "name": "wing part kept until FT-S2: SH-06 SH-06 wing leading-edge bars x2",
+     "g": 11.08,
+     "cfg": "base",
+     "source": "strap_arch: ledger"
+    },
+    {
+     "system": "straps_compression",
+     "name": "wing part kept until FT-S2: wing-straps wing straps x4 (25 mm + G-hook + ladder lock + seam loop)",
+     "g": 53.6,
+     "cfg": "base",
+     "source": "strap_arch: ledger"
+    }
+   ]
+  },
+  "P_cheek": {
+   "class": "P",
+   "ticket": "BL-010 A1",
+   "label": "IM3 fairlead cheek 25 mm",
+   "kind": "safety",
+   "gate": "A1 re-run on CORRIE F loads in progress",
+   "delta_g": {
+    "base": 5.3,
+    "as_hunted": 5.3,
+    "meat_trip": 5.3
+   },
+   "rows": [
+    {
+     "system": "frame",
+     "name": "BL-010 A1: IM3 printed fairlead cheek 18 -> 25 mm (2 sides)",
+     "g": 5.34,
+     "cfg": "base",
+     "source": "loadpath_check.FROZEN fairlead_im3 added_g 12.5 vs 9.0 mm half-height"
+    }
+   ]
+  },
+  "P_d2": {
+   "class": "P",
+   "ticket": "BL-017 d2",
+   "label": "1:1 pull strap (no 3:1 pulley)",
+   "kind": "design",
+   "gate": "-",
+   "delta_g": {
+    "base": -34.4,
+    "as_hunted": -34.4,
+    "meat_trip": -34.4
+   },
+   "rows": [
+    {
+     "system": "frame",
+     "name": "BL-017 (d2): 3:1 pulley -> pawl + 1:1 pull strap",
+     "g": -34.4,
+     "cfg": "base",
+     "source": "crown_diet.option_mass('(d2) pawl + 1:1 strap')"
+    }
+   ]
+  },
+  "P_kits": {
+   "class": "P",
+   "ticket": "BL-017 a (owner)",
+   "label": "three crown kits, size M",
+   "kind": "design",
+   "gate": "-",
+   "delta_g": {
+    "base": -27.6,
+    "as_hunted": -27.6,
+    "meat_trip": -27.6
+   },
+   "rows": [
+    {
+     "system": "frame",
+     "name": "BL-017 (a): three crown kits, kit M",
+     "g": -27.6,
+     "cfg": "base",
+     "source": "crown_diet.option_mass('(a)+(d2)') - option_mass('(d2) ...')"
+    }
+   ]
+  },
+  "A_back": {
+   "class": "A",
+   "ticket": "BL-005",
+   "label": "sandwich backer strip",
+   "kind": "design",
+   "gate": "3-point bend coupon + pressure-film check",
+   "delta_g": {
+    "base": -44.6,
+    "as_hunted": -44.6,
+    "meat_trip": -44.6
+   },
+   "rows": [
+    {
+     "system": "back",
+     "name": "BL-005 BP-08 backer -> sandwich strip (backer)",
+     "g": -45.22,
+     "cfg": "base",
+     "source": "back_system2.mass_delta_g(RECOMMENDED)"
+    },
+    {
+     "system": "back",
+     "name": "BL-005 BP-08 backer -> sandwich strip (sleeve)",
+     "g": 0.59,
+     "cfg": "base",
+     "source": "back_system2.mass_delta_g(RECOMMENDED)"
+    }
+   ]
+  },
+  "A_b": {
+   "class": "A",
+   "ticket": "BL-006 b",
+   "label": "no belt stabilizers",
+   "kind": "design",
+   "gate": "HB-D1 side-hill stability",
+   "delta_g": {
+    "base": -22.4,
+    "as_hunted": -22.4,
+    "meat_trip": -22.4
+   },
+   "rows": [
+    {
+     "system": "belt",
+     "name": "BL-006 b: stabilizer straps deleted",
+     "g": -22.4,
+     "cfg": "base",
+     "source": "hipbelt_diet._mass_delta('b')"
+    }
+   ]
+  },
+  "A_c2": {
+   "class": "A",
+   "ticket": "BL-006 c2",
+   "label": "0.75 mm wing stiffener",
+   "kind": "design",
+   "gate": "HB-D2 wing roll-over (+ HB-1)",
+   "delta_g": {
+    "base": -9.8,
+    "as_hunted": -9.8,
+    "meat_trip": -9.8
+   },
+   "rows": [
+    {
+     "system": "belt",
+     "name": "BL-006 c2: HDPE wing stiffener 1.0 -> 0.75 mm",
+     "g": -9.75,
+     "cfg": "base",
+     "source": "hipbelt_diet._mass_delta('c2')"
+    }
+   ]
+  },
+  "A_f": {
+   "class": "A",
+   "ticket": "BL-006 f1+f2",
+   "label": "pad-seat cord tie + 1000D sleeve",
+   "kind": "design",
+   "gate": "HB-D3 pad-seat retention",
+   "delta_g": {
+    "base": -12.6,
+    "as_hunted": -12.6,
+    "meat_trip": -12.6
+   },
+   "rows": [
+    {
+     "system": "belt",
+     "name": "BL-006 f1",
+     "g": -7.6,
+     "cfg": "base",
+     "source": "hipbelt_diet._mass_delta('f1')"
+    },
+    {
+     "system": "belt",
+     "name": "BL-006 f2",
+     "g": -5.0,
+     "cfg": "base",
+     "source": "hipbelt_diet._mass_delta('f2')"
+    }
+   ]
+  },
+  "A_fab": {
+   "class": "A",
+   "ticket": "BL-011 swaps",
+   "label": "ULTRAGrid / 70D / ULTRA 200X fabrics",
+   "kind": "design",
+   "gate": "owner swatch look (ULTRAGrid) + PT-3 and 50 mm strip test (ULTRA 200X)",
+   "delta_g": {
+    "base": -60.8,
+    "as_hunted": -60.8,
+    "meat_trip": -60.8
+   },
+   "rows": [
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-11 lash tabs (Hypalon, bow riser + muzzle keepers), released",
+     "g": -12.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): roll-top ROLL hardware: 2 x 25 mm side-release + 2 x 0.35 m webbing",
+     "g": -30.6,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): main bag: 6 haul-wrap keeper loops (25 mm webbing x 80 mm, sewn into the gore seams)",
+     "g": -8.6,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): main bag: bow riser carry: 2 x 25 mm webbing loops through B-11 + 25 mm G-hook strap (owner freeze 2026-11-05)",
+     "g": -12.1,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): bag-side load spreaders: IM3 bag-hook tabs B-17 + hinge-eye doublers B-18 (Hypalon)",
+     "g": -27.8,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: printed fairleads (8)",
+     "g": -49.4,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: 7075 pins (8)",
+     "g": -19.3,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: UHMWPE sleeves (8)",
+     "g": -2.3,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: bag hooks, 38 mm Al (4)",
+     "g": -36.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: TPU hook sleeves (4)",
+     "g": -4.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: webbing eyes, net of old stubs",
+     "g": 6.7,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: bag-side straps",
+     "g": -17.9,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: B-01 swell patches",
+     "g": -12.3,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: elastic keepers",
+     "g": -3.6,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: lifter tri-glide keepers",
+     "g": -6.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: crown hood B-19 (Hypalon blank + ears + hem)",
+     "g": -24.3,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: hood lip stiffener B-19s (HDPE 1.5)",
+     "g": -3.9,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: hood lining B-19L (XLPE 3)",
+     "g": -0.6,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: hood ladder strips B-20 x2",
+     "g": -20.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: hood tongues x2 + POM toggles",
+     "g": -10.3,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: hood grab tab (25 mm x 90)",
+     "g": -1.6,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: top side guys x2 (25 mm webbing)",
+     "g": -18.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: guy ladder locks + tri-glides + ladder-lock tabs",
+     "g": -16.5,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: guy corner tabs B-22 x2",
+     "g": -5.9,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: guy tail elastic keepers x2",
+     "g": -1.2,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: IM2 tongue backings B-23 x2",
+     "g": -7.1,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: bag hooks 1500 N -> 2200 N rated (4 x +5 g)",
+     "g": -20.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: thread (box-X + perimeters)",
+     "g": -2.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): under-straps US1/US2: printed anchors (4)",
+     "g": -22.8,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): under-straps US1/US2: 7075 pins (4)",
+     "g": -9.6,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): under-straps US1/US2: UHMWPE sleeves (4)",
+     "g": -1.2,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): under-straps US1/US2: 38 mm cams (2)",
+     "g": -44.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): under-straps US1/US2: tri-glide keepers (2)",
+     "g": -6.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): under-straps US1/US2: 38 mm webbing, 1.10 m",
+     "g": -30.8,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): under-straps US1/US2: bag-floor channels",
+     "g": -8.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): float-mode stand-off links B-24: 38 mm webbing, 2 x 435 mm",
+     "g": -24.4,
+     "cfg": "meat_trip",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): float-mode stand-off links B-24: rated 38 mm hooks (2), same part as the bag hooks",
+     "g": -28.0,
+     "cfg": "meat_trip",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): float-mode stand-off links B-24: thread (box-X + loop box-X)",
+     "g": -2.0,
+     "cfg": "meat_trip",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "fly",
+     "name": "REMOVED (B.2): F-02 fly base pocket",
+     "g": -5.9,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "fly",
+     "name": "REMOVED (B.2): rain fly (F-01 part of the ledger row)",
+     "g": -46.7,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "fly",
+     "name": "REMOVED (B.2): rain fly: fly elastic hem 3.0 m, #5 pocket zip + slider, tether",
+     "g": -15.8,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): internal meat harness: 3 x 38 mm straps IM1-IM3 + 6 frame stubs, 6 sliding-gate hooks, 3 cams (MEAT family)",
+     "g": -240.3,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): internal meat harness: B-01 strap ports: 6 Hypalon patches (B-12)",
+     "g": -14.1,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): haul wraps: 3 frame-anchored wraps, 25 mm coyote poly webbing 4.67 m",
+     "g": -84.1,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): haul wraps: 3 aluminium G-hooks (HAUL family) + 3 ladder locks",
+     "g": -24.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-01 frame-side panel (flat, Z-fold setback) (challenge_ultra_200)",
+     "g": -35.6,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-03 side gusset (cordura_330d_nylon66, x2)",
+     "g": -64.27,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-05 bottom (cordura_500d_nylon66)",
+     "g": -14.66,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-06f roll-top collar, frame side (ULTRA) (challenge_ultra_200)",
+     "g": -27.18,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-06 roll-top collar (robic_100d_ripstop)",
+     "g": -56.62,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-07 roll-top hem (cordura_330d_nylon66)",
+     "g": -20.23,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-07s roll-top HDPE strip (hdpe_sheet, x2)",
+     "g": -16.68,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): B-13x boxed fairlead swell (challenge_ultra_200, x8)",
+     "g": -14.39,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-02u U-surround (cordura_330d_nylon66)",
+     "g": -18.73,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-02door horseshoe door (cordura_330d_nylon66)",
+     "g": -27.57,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-02h hinge band (cordura_330d_nylon66)",
+     "g": -8.29,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): SH-07 door zip garage (camo) (polyester_ht_630d_printable, x2)",
+     "g": -2.47,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): M-01 side compression wing (hemmed edges) (cordura_330d_nylon66, x2)",
+     "g": -36.91,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): SH-06 wing leading-edge bar (camo) (polyester_ht_630d_printable, x2)",
+     "g": -11.08,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): SH-01a kick plate, aft (camo) (polyester_ht_630d_printable)",
+     "g": -10.03,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): SH-01b kick plate, side (camo) (polyester_ht_630d_printable, x2)",
+     "g": -9.28,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "pouch",
+     "name": "REMOVED (B.2): L-21 pouch top (body solid) (cordura_330d_nylon66)",
+     "g": -10.98,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "pouch",
+     "name": "REMOVED (B.2): L-22 pouch base (robic_100d_ripstop)",
+     "g": -7.62,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "pouch",
+     "name": "REMOVED (B.2): L-23 pouch boxing strip (robic_100d_ripstop)",
+     "g": -9.08,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "pouch",
+     "name": "REMOVED (B.2): SH-08 pouch pull tab (camo, folded loop) (polyester_ht_630d_printable)",
+     "g": -1.62,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): horseshoe door zip #10, 2 sliders",
+     "g": -38.29,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "pouch",
+     "name": "REMOVED (B.2): pouch zip #8, 1 slider",
+     "g": -8.8,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): door: 2 cord pulls (3 mm Dyneema + rubber sleeve)",
+     "g": -3.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): wing strap 1: 25 mm 0.22 m + G-hook + ladder lock + seam loop 0.08 m",
+     "g": -13.4,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): wing strap 2: 25 mm 0.22 m + G-hook + ladder lock + seam loop 0.08 m",
+     "g": -13.4,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): wing strap 3: 25 mm 0.22 m + G-hook + ladder lock + seam loop 0.08 m",
+     "g": -13.4,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): wing strap 4: 25 mm 0.22 m + G-hook + ladder lock + seam loop 0.08 m",
+     "g": -13.4,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): pouch: 4 x 25 mm 0.12 m straps + 4 G-hooks (2 rear to the hem loops, 2 front to the roll clips)",
+     "g": -24.64,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "pouch",
+     "name": "REMOVED (B.2): pouch zip cord pull",
+     "g": -1.5,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "REMOVED (B.2): IMP-1 padded scope sleeve inside the left wing",
+     "g": -54.5,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "REMOVED (B.2): IMP-2 hydration sleeve above IM3 + 2 hose ports (R-19)",
+     "g": -40.3,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "REMOVED (B.2): IMP-4 zipped kill-kit / first-aid pocket inside the top-hinged door",
+     "g": -22.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "REMOVED (B.2): IMP-8 bow cam / limb cup at the foot of the right wing",
+     "g": -7.5,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): A-2 haul-wrap tails W1-W3 250 -> 150 mm (haul path unchanged)",
+     "g": 5.4,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): B-10 B-12 strap ports x6: Hypalon -> tpu_coated_nylon_840d (no load)",
+     "g": 7.18,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): G-1 grosgrain binding on the bound body seams left after B-1 (0.00 m)",
+     "g": -0.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "fly",
+     "name": "REMOVED (B.2): G-2 rain fly F-01 re-cut for CORRIE's box shell (0.718 vs SPINE 0.630 m2)",
+     "g": -6.53,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-11 lash tabs (Hypalon, bow riser + muzzle keepers), released",
+     "g": 12.0,
+     "cfg": "base",
+     "source": "ledger (unchanged)"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: main bag: bow riser carry: 2 x 25 mm webbing loops through B-11 + 25 mm G-hook strap (owner freeze 2026-11-05)",
+     "g": 12.1,
+     "cfg": "base",
+     "source": "ledger (unchanged)"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-01 frame-side panel (flat, Z-fold setback) (challenge_ultra_200)",
+     "g": 40.96,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-03 side gusset (ultragrid_210d_uhmwpe_ripstop, x2)",
+     "g": 42.14,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-05 bottom (full S15 width) (challenge_ultra_200)",
+     "g": 10.22,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-02u D2 camo blade U (blades + 75 mm kick strip, one piece) (polyester_ht_630d_printable)",
+     "g": 31.96,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-02door D2 door (whole aft face z 110-650, R 55 corners) (ultragrid_210d_uhmwpe_ripstop)",
+     "g": 25.72,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-02h D2 hinge band (z 650 to the collar seam) (ultragrid_210d_uhmwpe_ripstop)",
+     "g": 5.46,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: SH-07 slider garage, top of the right blade (camo) (polyester_ht_630d_printable)",
+     "g": 1.23,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: SH-01b kick band, gusset (camo) (polyester_ht_630d_printable, x2)",
+     "g": 8.78,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-06f roll-top collar, frame side (ULTRA) (challenge_ultra_200)",
+     "g": 26.5,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-06 roll-top collar (nylon_ripstop_70d)",
+     "g": 34.06,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-07 roll-top hem (ultragrid_210d_uhmwpe_ripstop)",
+     "g": 13.32,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-07s roll-top HDPE strip (hdpe_sheet, x2)",
+     "g": 14.82,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: D2 door zip #10 in the blade | door seam, 2 sliders",
+     "g": 40.36,
+     "cfg": "base",
+     "source": "coil_zipper_10 record x (L + 60 mm) + 2 sliders (ASSUMPTION)"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: door: 2 cord pulls (3 mm Dyneema + rubber sleeve)",
+     "g": 3.0,
+     "cfg": "base",
+     "source": "records (webbing, cord pulls ASSUMPTION)"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: 4 hard-point loops: 25 mm webbing 0.08 m each, in the left gusset's corner seams at z 420 / 640 (scope pod)",
+     "g": 5.76,
+     "cfg": "base",
+     "source": "records (webbing, cord pulls ASSUMPTION)"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "CORRIE F: IMP-2 hydration sleeve (CORRIE IMP-2 geometry) in 70D",
+     "g": 32.6,
+     "cfg": "base",
+     "source": "lean.fell.fixed_pockets (70D tube)"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "CORRIE F: IMP-4 IMP-4 zipped kill-kit / first-aid pocket, inside the D2 door",
+     "g": 22.0,
+     "cfg": "base",
+     "source": "corrie.bag_pockets (same part)"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "CORRIE F: IMP-8 IMP-8 bow cam / limb cup, right gusset foot (z 35-150)",
+     "g": 7.5,
+     "cfg": "base",
+     "source": "corrie.bag_pockets (same part)"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "CORRIE F: FP-L/R hip-reach pockets FP-L / FP-R (team A E-4): power mesh 260 x 230, 2 box pleats, shock-cord top in a 25 mm camo mouth band, sewn to each gusset's lower front corner (z 150-380)",
+     "g": 33.5,
+     "cfg": "base",
+     "source": "evolve.FP + power_mesh_nylon_spandex, shock_cord_3mm, polyester_ht_630d_printable records (A's recipe, cut + 8 mm SA)"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "CORRIE F: E-5 pole quiver: 40 mm boot in FP-R's front pleat + 3 mm shock-cord grip loop and cord lock on a 25 mm tab caught in the right B-01 | gusset seam at z 640",
+     "g": 5.4,
+     "cfg": "base",
+     "source": "evolve.POLE + shock_cord_3mm, cord_lock_spring, poly_webbing_25mm records"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "CORRIE F: add-on scope_pod: scope pod (team B glass pod), left gusset",
+     "g": 83.7,
+     "cfg": "as_hunted",
+     "source": "lean.fell.addons()['A1']"
+    },
+    {
+     "system": "pouch",
+     "name": "CORRIE F: add-on top_pouch: top pouch 2.7 L (team B lid pod), body",
+     "g": 29.66,
+     "cfg": "as_hunted",
+     "source": "lean.fell.addons()['A3'] minus its 4 straps"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: add-on top_pouch_straps: top pouch: 4 x 25 mm 0.12 m straps + 4 G-hooks",
+     "g": 24.64,
+     "cfg": "as_hunted",
+     "source": "poly_webbing_25mm record + G_HOOK ASSUMPTION (lean.fell A3 recipe)"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "CORRIE F: add-on meat_liner: meat liner (team D SWAP slab, wipeable silpoly / 70D, 330 x 110 x 560)",
+     "g": 61.7,
+     "cfg": "meat_trip",
+     "source": "D.cache.modules()[0] (pieces x gsm + hw)"
+    },
+    {
+     "system": "fly",
+     "name": "CORRIE F: F-01 rain fly re-cut to CORRIE F's outer shell",
+     "g": 55.06,
+     "cfg": "as_hunted",
+     "source": "panels.yaml F-01 x outer area 0.743 / SPINE 0.6298 m2 (G-2 rule)"
+    },
+    {
+     "system": "fly",
+     "name": "CORRIE F: F-02 fly base pocket (stays on the bag)",
+     "g": 5.9,
+     "cfg": "base",
+     "source": "panels.yaml F-02"
+    },
+    {
+     "system": "fly",
+     "name": "CORRIE F: rain fly: fly elastic hem 3.0 m, #5 pocket zip + slider, tether",
+     "g": 15.8,
+     "cfg": "as_hunted",
+     "source": "ledger row (unchanged)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: IM-web: IM1-IM3 straps, 25 mm webbing (same cuts; left end a sewn loop, girth-hitched on the left fairlead eye)",
+     "g": 55.73,
+     "cfg": "base",
+     "source": "strap_arch rec: geometry.yaml cuts x poly_webbing_25mm record; the sewn loop replaces the left hook loop (same cut)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: IM-eyes: 6 fairlead eyes (old stubs), 38 mm webbing 6 x 0.20 m",
+     "g": 33.6,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger IM row split: build_geometry.STUB_LEN x poly_webbing_38mm (eyes also take the bag hooks)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: IM-hooks: 3 x 25 mm rated Al G-hooks (right end only)",
+     "g": 24.0,
+     "cfg": "base",
+     "source": "strap_arch rec: ASSUMPTION G25R_G (AustriAlpin DY25K-G class, 8 g, 1.2 kN)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: IM-cams: 3 x 25 mm Al cams",
+     "g": 39.0,
+     "cfg": "base",
+     "source": "strap_arch rec: ASSUMPTION CAM25_G (Austere 25 mm class)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: B-12: B-12 ports x6, slot 45 x 12 mm (passes a 25 mm G-hook)",
+     "g": 6.92,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger rows B-12 + B-10"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: US-anchor: US1/US2 printed anchors, 7075 pins, UHMWPE sleeves (frame side)",
+     "g": 33.6,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger US rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: US-cams: US1/US2 25 mm Al cams (2)",
+     "g": 26.0,
+     "cfg": "base",
+     "source": "strap_arch rec: ASSUMPTION CAM25_G"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: US-tg: US1/US2 tri-glide keepers (2), 25 mm",
+     "g": 6.0,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: US-web: US1/US2 25 mm webbing 1.10 m",
+     "g": 19.8,
+     "cfg": "base",
+     "source": "strap_arch rec: poly_webbing_25mm record x the 1.10 m of the ledger row"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: US-chan: US bag-floor channels",
+     "g": 8.0,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: B-24-web: B-24 float links, 38 mm webbing 2 x 435 mm",
+     "g": 24.4,
+     "cfg": "meat_trip",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: B-24-hooks: B-24 rated 38 mm hooks (2), same part as the bag hooks",
+     "g": 28.0,
+     "cfg": "meat_trip",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: B-24-thr: B-24 thread",
+     "g": 2.0,
+     "cfg": "meat_trip",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: W-web: W1-W3 haul wraps, 25 mm coyote webbing 4.67 m",
+     "g": 84.1,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: W-hw: W1-W3 G-hooks (3) + ladder locks (3)",
+     "g": 24.0,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: A-2: A-2 wrap tails 250 -> 150 mm",
+     "g": -5.4,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: keepers: 6 haul-wrap keeper loops in the gore seams",
+     "g": 8.6,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: roll: roll-top: 2 x 25 mm side-release + 2 x 0.35 m",
+     "g": 30.6,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: BL-010 S2: IM3 free end G-hook -> wiregate carabiner",
+     "g": 14.0,
+     "cfg": "base",
+     "source": "loadpath_check.hooks_table (carabiner_wiregate_22kn record)"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-010 S9: W1-W3 rated 25 mm G-hooks (3) and heavy ladder locks (3)",
+     "g": 21.0,
+     "cfg": "base",
+     "source": "loadpath_check.hooks_table + ladder_lock_25mm_heavy record"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: BL-010 S12: B-24 hooks -> wiregate carabiners (2)",
+     "g": 16.0,
+     "cfg": "meat_trip",
+     "source": "loadpath_check.hooks_table"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: bag-side load spreaders: IM3 bag-hook tabs B-17 + hinge-eye doublers B-18 (Hypalon)",
+     "g": 27.8,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: printed fairleads (8)",
+     "g": 49.4,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: 7075 pins (8)",
+     "g": 19.3,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: UHMWPE sleeves (8)",
+     "g": 2.3,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: bag hooks, 38 mm Al (4)",
+     "g": 36.0,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: TPU hook sleeves (4)",
+     "g": 4.0,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: webbing eyes, net of old stubs",
+     "g": -6.7,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: bag-side straps",
+     "g": 17.9,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: B-01 swell patches",
+     "g": 12.3,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: elastic keepers",
+     "g": 3.6,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: lifter tri-glide keepers",
+     "g": 6.0,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: crown hood B-19 (Hypalon blank + ears + hem)",
+     "g": 24.3,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: hood lip stiffener B-19s (HDPE 1.5)",
+     "g": 3.9,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: hood lining B-19L (XLPE 3)",
+     "g": 0.6,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: hood ladder strips B-20 x2",
+     "g": 20.0,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: hood tongues x2 + POM toggles",
+     "g": 10.3,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: hood grab tab (25 mm x 90)",
+     "g": 1.6,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: top side guys x2 (25 mm webbing)",
+     "g": 18.0,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: guy ladder locks + tri-glides + ladder-lock tabs",
+     "g": 16.5,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: guy corner tabs B-22 x2",
+     "g": 5.9,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: guy tail elastic keepers x2",
+     "g": 1.2,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: IM2 tongue backings B-23 x2",
+     "g": 7.1,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: bag hooks 1500 N -> 2200 N rated (4 x +5 g)",
+     "g": 20.0,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: thread (box-X + perimeters)",
+     "g": 2.0,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: B-13x boxed fairlead swell (challenge_ultra_200, x8)",
+     "g": 14.39,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: IM2 bag hooks x2 (rated 38 mm)",
+     "g": -28.0,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: ledger hook rows / 4"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: IM2 TPU hook sleeves x2",
+     "g": -2.0,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: ledger row / 4"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: T2 tongues x2 (38 mm x 160)",
+     "g": -8.95,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: ledger 'bag-side straps' / 4"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: B-23 IM2 tongue backings x2",
+     "g": -7.1,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: ledger row"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: elastic keepers for the IM2 hooks x2",
+     "g": -1.2,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: ledger row / 6"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: hood B-19 + B-19s + B-19L + ladders B-20 + tongues/toggles + grab tab",
+     "g": -60.7,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: ledger rows"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
+     "g": 12.12,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: poly_webbing_25mm record; toggle ASSUMPTION (attach_system.TOGGLE_G)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: B-17 trimmed 110 -> 70 mm tall (pair)",
+     "g": -7.2,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: hypalon_coated_nylon record, cut area"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-010 A1: IM3 bag hooks -> wiregate carabiners (2)",
+     "g": 16.0,
+     "cfg": "base",
+     "source": "loadpath_check.hooks_table (carabiner_wiregate_22kn record)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-010 A3: guy ladder locks -> heavy (2)",
+     "g": 6.0,
+     "cfg": "base",
+     "source": "ladder_lock_25mm_heavy / ladder_lock_25mm records"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-11 lash tabs (Hypalon, bow riser + muzzle keepers), released",
+     "g": 12.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): roll-top ROLL hardware: 2 x 25 mm side-release + 2 x 0.35 m webbing",
+     "g": 30.6,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): main bag: 6 haul-wrap keeper loops (25 mm webbing x 80 mm, sewn into the gore seams)",
+     "g": 8.6,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): main bag: bow riser carry: 2 x 25 mm webbing loops through B-11 + 25 mm G-hook strap (owner freeze 2026-11-05)",
+     "g": 12.1,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): bag-side load spreaders: IM3 bag-hook tabs B-17 + hinge-eye doublers B-18 (Hypalon)",
+     "g": 27.8,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: printed fairleads (8)",
+     "g": 49.4,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: 7075 pins (8)",
+     "g": 19.3,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: UHMWPE sleeves (8)",
+     "g": 2.3,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: bag hooks, 38 mm Al (4)",
+     "g": 36.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: TPU hook sleeves (4)",
+     "g": 4.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: webbing eyes, net of old stubs",
+     "g": -6.7,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: bag-side straps",
+     "g": 17.9,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: B-01 swell patches",
+     "g": 12.3,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: elastic keepers",
+     "g": 3.6,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment: lifter tri-glide keepers",
+     "g": 6.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: crown hood B-19 (Hypalon blank + ears + hem)",
+     "g": 24.3,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: hood lip stiffener B-19s (HDPE 1.5)",
+     "g": 3.9,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: hood lining B-19L (XLPE 3)",
+     "g": 0.6,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: hood ladder strips B-20 x2",
+     "g": 20.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: hood tongues x2 + POM toggles",
+     "g": 10.3,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: hood grab tab (25 mm x 90)",
+     "g": 1.6,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: top side guys x2 (25 mm webbing)",
+     "g": 18.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: guy ladder locks + tri-glides + ladder-lock tabs",
+     "g": 16.5,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: guy corner tabs B-22 x2",
+     "g": 5.9,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: guy tail elastic keepers x2",
+     "g": 1.2,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: IM2 tongue backings B-23 x2",
+     "g": 7.1,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: bag hooks 1500 N -> 2200 N rated (4 x +5 g)",
+     "g": 20.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): attachment system: thread (box-X + perimeters)",
+     "g": 2.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): under-straps US1/US2: printed anchors (4)",
+     "g": 22.8,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): under-straps US1/US2: 7075 pins (4)",
+     "g": 9.6,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): under-straps US1/US2: UHMWPE sleeves (4)",
+     "g": 1.2,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): under-straps US1/US2: 38 mm cams (2)",
+     "g": 44.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): under-straps US1/US2: tri-glide keepers (2)",
+     "g": 6.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): under-straps US1/US2: 38 mm webbing, 1.10 m",
+     "g": 30.8,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): under-straps US1/US2: bag-floor channels",
+     "g": 8.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): float-mode stand-off links B-24: 38 mm webbing, 2 x 435 mm",
+     "g": 24.4,
+     "cfg": "meat_trip",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): float-mode stand-off links B-24: rated 38 mm hooks (2), same part as the bag hooks",
+     "g": 28.0,
+     "cfg": "meat_trip",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): float-mode stand-off links B-24: thread (box-X + loop box-X)",
+     "g": 2.0,
+     "cfg": "meat_trip",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "fly",
+     "name": "REMOVED (B.2): F-02 fly base pocket",
+     "g": 5.9,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "fly",
+     "name": "REMOVED (B.2): rain fly (F-01 part of the ledger row)",
+     "g": 46.7,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "fly",
+     "name": "REMOVED (B.2): rain fly: fly elastic hem 3.0 m, #5 pocket zip + slider, tether",
+     "g": 15.8,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): internal meat harness: 3 x 38 mm straps IM1-IM3 + 6 frame stubs, 6 sliding-gate hooks, 3 cams (MEAT family)",
+     "g": 240.3,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): internal meat harness: B-01 strap ports: 6 Hypalon patches (B-12)",
+     "g": 14.1,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): haul wraps: 3 frame-anchored wraps, 25 mm coyote poly webbing 4.67 m",
+     "g": 84.1,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): haul wraps: 3 aluminium G-hooks (HAUL family) + 3 ladder locks",
+     "g": 24.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-01 frame-side panel (flat, Z-fold setback) (challenge_ultra_200)",
+     "g": 35.6,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-03 side gusset (cordura_330d_nylon66, x2)",
+     "g": 64.27,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-05 bottom (cordura_500d_nylon66)",
+     "g": 14.66,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-06f roll-top collar, frame side (ULTRA) (challenge_ultra_200)",
+     "g": 27.18,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-06 roll-top collar (robic_100d_ripstop)",
+     "g": 56.62,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-07 roll-top hem (cordura_330d_nylon66)",
+     "g": 20.23,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-07s roll-top HDPE strip (hdpe_sheet, x2)",
+     "g": 16.68,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "attachment",
+     "name": "REMOVED (B.2): B-13x boxed fairlead swell (challenge_ultra_200, x8)",
+     "g": 14.39,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-02u U-surround (cordura_330d_nylon66)",
+     "g": 18.73,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-02door horseshoe door (cordura_330d_nylon66)",
+     "g": 27.57,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): B-02h hinge band (cordura_330d_nylon66)",
+     "g": 8.29,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): SH-07 door zip garage (camo) (polyester_ht_630d_printable, x2)",
+     "g": 2.47,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): M-01 side compression wing (hemmed edges) (cordura_330d_nylon66, x2)",
+     "g": 36.91,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): SH-06 wing leading-edge bar (camo) (polyester_ht_630d_printable, x2)",
+     "g": 11.08,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): SH-01a kick plate, aft (camo) (polyester_ht_630d_printable)",
+     "g": 10.03,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): SH-01b kick plate, side (camo) (polyester_ht_630d_printable, x2)",
+     "g": 9.28,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "pouch",
+     "name": "REMOVED (B.2): L-21 pouch top (body solid) (cordura_330d_nylon66)",
+     "g": 10.98,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "pouch",
+     "name": "REMOVED (B.2): L-22 pouch base (robic_100d_ripstop)",
+     "g": 7.62,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "pouch",
+     "name": "REMOVED (B.2): L-23 pouch boxing strip (robic_100d_ripstop)",
+     "g": 9.08,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "pouch",
+     "name": "REMOVED (B.2): SH-08 pouch pull tab (camo, folded loop) (polyester_ht_630d_printable)",
+     "g": 1.62,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): horseshoe door zip #10, 2 sliders",
+     "g": 38.29,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "pouch",
+     "name": "REMOVED (B.2): pouch zip #8, 1 slider",
+     "g": 8.8,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): door: 2 cord pulls (3 mm Dyneema + rubber sleeve)",
+     "g": 3.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): wing strap 1: 25 mm 0.22 m + G-hook + ladder lock + seam loop 0.08 m",
+     "g": 13.4,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): wing strap 2: 25 mm 0.22 m + G-hook + ladder lock + seam loop 0.08 m",
+     "g": 13.4,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): wing strap 3: 25 mm 0.22 m + G-hook + ladder lock + seam loop 0.08 m",
+     "g": 13.4,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): wing strap 4: 25 mm 0.22 m + G-hook + ladder lock + seam loop 0.08 m",
+     "g": 13.4,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): pouch: 4 x 25 mm 0.12 m straps + 4 G-hooks (2 rear to the hem loops, 2 front to the roll clips)",
+     "g": 24.64,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "pouch",
+     "name": "REMOVED (B.2): pouch zip cord pull",
+     "g": 1.5,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "REMOVED (B.2): IMP-1 padded scope sleeve inside the left wing",
+     "g": 54.5,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "REMOVED (B.2): IMP-2 hydration sleeve above IM3 + 2 hose ports (R-19)",
+     "g": 40.3,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "REMOVED (B.2): IMP-4 zipped kill-kit / first-aid pocket inside the top-hinged door",
+     "g": 22.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "REMOVED (B.2): IMP-8 bow cam / limb cup at the foot of the right wing",
+     "g": 7.5,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_compression",
+     "name": "REMOVED (B.2): A-2 haul-wrap tails W1-W3 250 -> 150 mm (haul path unchanged)",
+     "g": -5.4,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "REMOVED (B.2): B-10 B-12 strap ports x6: Hypalon -> tpu_coated_nylon_840d (no load)",
+     "g": -7.18,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "REMOVED (B.2): G-1 grosgrain binding on the bound body seams left after B-1 (0.00 m)",
+     "g": 0.0,
+     "cfg": "base",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "fly",
+     "name": "REMOVED (B.2): G-2 rain fly F-01 re-cut for CORRIE's box shell (0.718 vs SPINE 0.630 m2)",
+     "g": 6.53,
+     "cfg": "as_hunted",
+     "source": "corrie_f.corrie_b2_rows"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-11 lash tabs (Hypalon, bow riser + muzzle keepers), released",
+     "g": -12.0,
+     "cfg": "base",
+     "source": "ledger (unchanged)"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: main bag: bow riser carry: 2 x 25 mm webbing loops through B-11 + 25 mm G-hook strap (owner freeze 2026-11-05)",
+     "g": -12.1,
+     "cfg": "base",
+     "source": "ledger (unchanged)"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-01 frame-side panel (flat, Z-fold setback) (challenge_ultra_200)",
+     "g": -40.96,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-03 side gusset (cordura_330d_nylon66, x2)",
+     "g": -57.47,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-05 bottom (full S15 width) (cordura_500d_nylon66)",
+     "g": -19.6,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-02u D2 camo blade U (blades + 75 mm kick strip, one piece) (polyester_ht_630d_printable)",
+     "g": -31.96,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-02door D2 door (whole aft face z 110-650, R 55 corners) (cordura_330d_nylon66)",
+     "g": -35.07,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-02h D2 hinge band (z 650 to the collar seam) (cordura_330d_nylon66)",
+     "g": -7.45,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: SH-07 slider garage, top of the right blade (camo) (polyester_ht_630d_printable)",
+     "g": -1.23,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: SH-01b kick band, gusset (camo) (polyester_ht_630d_printable, x2)",
+     "g": -8.78,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-06f roll-top collar, frame side (ULTRA) (challenge_ultra_200)",
+     "g": -26.5,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-06 roll-top collar (robic_100d_ripstop)",
+     "g": -46.28,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-07 roll-top hem (cordura_330d_nylon66)",
+     "g": -18.17,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: B-07s roll-top HDPE strip (hdpe_sheet, x2)",
+     "g": -14.82,
+     "cfg": "base",
+     "source": "corrie_f.build(): cut area x record gsm"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: D2 door zip #10 in the blade | door seam, 2 sliders",
+     "g": -40.36,
+     "cfg": "base",
+     "source": "coil_zipper_10 record x (L + 60 mm) + 2 sliders (ASSUMPTION)"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: door: 2 cord pulls (3 mm Dyneema + rubber sleeve)",
+     "g": -3.0,
+     "cfg": "base",
+     "source": "records (webbing, cord pulls ASSUMPTION)"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: 4 hard-point loops: 25 mm webbing 0.08 m each, in the left gusset's corner seams at z 420 / 640 (scope pod)",
+     "g": -5.76,
+     "cfg": "base",
+     "source": "records (webbing, cord pulls ASSUMPTION)"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "CORRIE F: IMP-2 hydration sleeve above IM3 + 2 hose ports (R-19)",
+     "g": -40.3,
+     "cfg": "base",
+     "source": "corrie.bag_pockets"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "CORRIE F: IMP-4 IMP-4 zipped kill-kit / first-aid pocket, inside the D2 door",
+     "g": -22.0,
+     "cfg": "base",
+     "source": "corrie.bag_pockets (same part)"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "CORRIE F: IMP-8 IMP-8 bow cam / limb cup, right gusset foot (z 35-150)",
+     "g": -7.5,
+     "cfg": "base",
+     "source": "corrie.bag_pockets (same part)"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "CORRIE F: FP-L/R hip-reach pockets FP-L / FP-R (team A E-4): power mesh 260 x 230, 2 box pleats, shock-cord top in a 25 mm camo mouth band, sewn to each gusset's lower front corner (z 150-380)",
+     "g": -33.5,
+     "cfg": "base",
+     "source": "evolve.FP + power_mesh_nylon_spandex, shock_cord_3mm, polyester_ht_630d_printable records (A's recipe, cut + 8 mm SA)"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "CORRIE F: E-5 pole quiver: 40 mm boot in FP-R's front pleat + 3 mm shock-cord grip loop and cord lock on a 25 mm tab caught in the right B-01 | gusset seam at z 640",
+     "g": -5.4,
+     "cfg": "base",
+     "source": "evolve.POLE + shock_cord_3mm, cord_lock_spring, poly_webbing_25mm records"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "CORRIE F: add-on scope_pod: scope pod (team B glass pod), left gusset",
+     "g": -83.7,
+     "cfg": "as_hunted",
+     "source": "lean.fell.addons()['A1']"
+    },
+    {
+     "system": "pouch",
+     "name": "CORRIE F: add-on top_pouch: top pouch 2.7 L (team B lid pod), body",
+     "g": -29.66,
+     "cfg": "as_hunted",
+     "source": "lean.fell.addons()['A3'] minus its 4 straps"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: add-on top_pouch_straps: top pouch: 4 x 25 mm 0.12 m straps + 4 G-hooks",
+     "g": -24.64,
+     "cfg": "as_hunted",
+     "source": "poly_webbing_25mm record + G_HOOK ASSUMPTION (lean.fell A3 recipe)"
+    },
+    {
+     "system": "bag_pockets",
+     "name": "CORRIE F: add-on meat_liner: meat liner (team D SWAP slab, wipeable silpoly / 70D, 330 x 110 x 560)",
+     "g": -61.7,
+     "cfg": "meat_trip",
+     "source": "D.cache.modules()[0] (pieces x gsm + hw)"
+    },
+    {
+     "system": "fly",
+     "name": "CORRIE F: F-01 rain fly re-cut to CORRIE F's outer shell",
+     "g": -55.06,
+     "cfg": "as_hunted",
+     "source": "panels.yaml F-01 x outer area 0.743 / SPINE 0.6298 m2 (G-2 rule)"
+    },
+    {
+     "system": "fly",
+     "name": "CORRIE F: F-02 fly base pocket (stays on the bag)",
+     "g": -5.9,
+     "cfg": "base",
+     "source": "panels.yaml F-02"
+    },
+    {
+     "system": "fly",
+     "name": "CORRIE F: rain fly: fly elastic hem 3.0 m, #5 pocket zip + slider, tether",
+     "g": -15.8,
+     "cfg": "as_hunted",
+     "source": "ledger row (unchanged)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: IM-web: IM1-IM3 straps, 25 mm webbing (same cuts; left end a sewn loop, girth-hitched on the left fairlead eye)",
+     "g": -55.73,
+     "cfg": "base",
+     "source": "strap_arch rec: geometry.yaml cuts x poly_webbing_25mm record; the sewn loop replaces the left hook loop (same cut)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: IM-eyes: 6 fairlead eyes (old stubs), 38 mm webbing 6 x 0.20 m",
+     "g": -33.6,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger IM row split: build_geometry.STUB_LEN x poly_webbing_38mm (eyes also take the bag hooks)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: IM-hooks: 3 x 25 mm rated Al G-hooks (right end only)",
+     "g": -24.0,
+     "cfg": "base",
+     "source": "strap_arch rec: ASSUMPTION G25R_G (AustriAlpin DY25K-G class, 8 g, 1.2 kN)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: IM-cams: 3 x 25 mm Al cams",
+     "g": -39.0,
+     "cfg": "base",
+     "source": "strap_arch rec: ASSUMPTION CAM25_G (Austere 25 mm class)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: B-12: B-12 ports x6, slot 45 x 12 mm (passes a 25 mm G-hook)",
+     "g": -6.92,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger rows B-12 + B-10"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: US-anchor: US1/US2 printed anchors, 7075 pins, UHMWPE sleeves (frame side)",
+     "g": -33.6,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger US rows"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: US-cams: US1/US2 25 mm Al cams (2)",
+     "g": -26.0,
+     "cfg": "base",
+     "source": "strap_arch rec: ASSUMPTION CAM25_G"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: US-tg: US1/US2 tri-glide keepers (2), 25 mm",
+     "g": -6.0,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: US-web: US1/US2 25 mm webbing 1.10 m",
+     "g": -19.8,
+     "cfg": "base",
+     "source": "strap_arch rec: poly_webbing_25mm record x the 1.10 m of the ledger row"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: US-chan: US bag-floor channels",
+     "g": -8.0,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: B-24-web: B-24 float links, 38 mm webbing 2 x 435 mm",
+     "g": -24.4,
+     "cfg": "meat_trip",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: B-24-hooks: B-24 rated 38 mm hooks (2), same part as the bag hooks",
+     "g": -28.0,
+     "cfg": "meat_trip",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: B-24-thr: B-24 thread",
+     "g": -2.0,
+     "cfg": "meat_trip",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: W-web: W1-W3 haul wraps, 25 mm coyote webbing 4.67 m",
+     "g": -84.1,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: W-hw: W1-W3 G-hooks (3) + ladder locks (3)",
+     "g": -24.0,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: A-2: A-2 wrap tails 250 -> 150 mm",
+     "g": 5.4,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: keepers: 6 haul-wrap keeper loops in the gore seams",
+     "g": -8.6,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: roll: roll-top: 2 x 25 mm side-release + 2 x 0.35 m",
+     "g": -30.6,
+     "cfg": "base",
+     "source": "strap_arch rec: ledger"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: BL-010 S2: IM3 free end G-hook -> wiregate carabiner",
+     "g": -14.0,
+     "cfg": "base",
+     "source": "loadpath_check.hooks_table (carabiner_wiregate_22kn record)"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-010 S9: W1-W3 rated 25 mm G-hooks (3) and heavy ladder locks (3)",
+     "g": -21.0,
+     "cfg": "base",
+     "source": "loadpath_check.hooks_table + ladder_lock_25mm_heavy record"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: BL-010 S12: B-24 hooks -> wiregate carabiners (2)",
+     "g": -16.0,
+     "cfg": "meat_trip",
+     "source": "loadpath_check.hooks_table"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: bag-side load spreaders: IM3 bag-hook tabs B-17 + hinge-eye doublers B-18 (Hypalon)",
+     "g": -27.8,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: printed fairleads (8)",
+     "g": -49.4,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: 7075 pins (8)",
+     "g": -19.3,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: UHMWPE sleeves (8)",
+     "g": -2.3,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: bag hooks, 38 mm Al (4)",
+     "g": -36.0,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: TPU hook sleeves (4)",
+     "g": -4.0,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: webbing eyes, net of old stubs",
+     "g": 6.7,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: bag-side straps",
+     "g": -17.9,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: B-01 swell patches",
+     "g": -12.3,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: elastic keepers",
+     "g": -3.6,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment: lifter tri-glide keepers",
+     "g": -6.0,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: crown hood B-19 (Hypalon blank + ears + hem)",
+     "g": -24.3,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: hood lip stiffener B-19s (HDPE 1.5)",
+     "g": -3.9,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: hood lining B-19L (XLPE 3)",
+     "g": -0.6,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: hood ladder strips B-20 x2",
+     "g": -20.0,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: hood tongues x2 + POM toggles",
+     "g": -10.3,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: hood grab tab (25 mm x 90)",
+     "g": -1.6,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: top side guys x2 (25 mm webbing)",
+     "g": -18.0,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: guy ladder locks + tri-glides + ladder-lock tabs",
+     "g": -16.5,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: guy corner tabs B-22 x2",
+     "g": -5.9,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: guy tail elastic keepers x2",
+     "g": -1.2,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: IM2 tongue backings B-23 x2",
+     "g": -7.1,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: bag hooks 1500 N -> 2200 N rated (4 x +5 g)",
+     "g": -20.0,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: attachment system: thread (box-X + perimeters)",
+     "g": -2.0,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: B-13x boxed fairlead swell (challenge_ultra_200, x8)",
+     "g": -14.39,
+     "cfg": "base",
+     "source": "ledger"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: IM2 bag hooks x2 (rated 38 mm)",
+     "g": 28.0,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: ledger hook rows / 4"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: IM2 TPU hook sleeves x2",
+     "g": 2.0,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: ledger row / 4"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: T2 tongues x2 (38 mm x 160)",
+     "g": 8.95,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: ledger 'bag-side straps' / 4"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: B-23 IM2 tongue backings x2",
+     "g": 7.1,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: ledger row"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: elastic keepers for the IM2 hooks x2",
+     "g": 1.2,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: ledger row / 6"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: hood B-19 + B-19s + B-19L + ladders B-20 + tongues/toggles + grab tab",
+     "g": 60.7,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: ledger rows"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
+     "g": -12.12,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: poly_webbing_25mm record; toggle ASSUMPTION (attach_system.TOGGLE_G)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-004 REC: B-17 trimmed 110 -> 70 mm tall (pair)",
+     "g": 7.2,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes: hypalon_coated_nylon record, cut area"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-010 A1: IM3 bag hooks -> wiregate carabiners (2)",
+     "g": -16.0,
+     "cfg": "base",
+     "source": "loadpath_check.hooks_table (carabiner_wiregate_22kn record)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-010 A3: guy ladder locks -> heavy (2)",
+     "g": -6.0,
+     "cfg": "base",
+     "source": "ladder_lock_25mm_heavy / ladder_lock_25mm records"
+    }
+   ]
+  },
+  "A_wings": {
+   "class": "A",
+   "ticket": "BL-003 (owner)",
+   "label": "side wings deleted",
+   "kind": "design",
+   "gate": "FT-S2 5 km side-hill, pod shift <= 20 mm",
+   "delta_g": {
+    "base": -101.6,
+    "as_hunted": -101.6,
+    "meat_trip": -101.6
+   },
+   "rows": [
+    {
+     "system": "straps_compression",
+     "name": "BL-003 wings off: M-01 M-01 side wings x2 (330D, hemmed)",
+     "g": -36.91,
+     "cfg": "base",
+     "source": "strap_arch._delete_wings"
+    },
+    {
+     "system": "straps_compression",
+     "name": "BL-003 wings off: SH-06 SH-06 wing leading-edge bars x2",
+     "g": -11.08,
+     "cfg": "base",
+     "source": "strap_arch._delete_wings"
+    },
+    {
+     "system": "straps_compression",
+     "name": "BL-003 wings off: wing-straps wing straps x4 (25 mm + G-hook + ladder lock + seam loop)",
+     "g": -53.6,
+     "cfg": "base",
+     "source": "strap_arch._delete_wings"
+    }
+   ]
+  },
+  "A_c17": {
+   "class": "A",
+   "ticket": "BL-017 c17",
+   "label": "OD 17 legs, 19 mm bore",
+   "kind": "design",
+   "gate": "coupon CA-1 (body fatigue 1.150 -> lower)",
+   "delta_g": {
+    "base": -20.6,
+    "as_hunted": -20.6,
+    "meat_trip": -20.6
+   },
+   "rows": [
+    {
+     "system": "frame",
+     "name": "BL-017 (c17): OD 17 x 7 UD legs, sleeve bore reamed 18 -> 19 mm",
+     "g": -20.6,
+     "cfg": "base",
+     "source": "crown_diet.option_mass('(a)+(d2)+(c17 bore 19)') - option_mass('(a)+(d2)')"
+    }
+   ]
+  },
+  "O_fixed": {
+   "class": "O",
+   "ticket": "BL-007 (a)",
+   "label": "fixed torso instead of the kits",
+   "kind": "design",
+   "gate": "owner (narrows universal fit) + CA-1 + per-torso fatigue restatement",
+   "delta_g": {
+    "base": 2.9,
+    "as_hunted": 2.9,
+    "meat_trip": 2.9
+   },
+   "rows": [
+    {
+     "system": "frame",
+     "name": "BL-007 (a) fixed torso at 19 in (frame_fixed.frame_mass, vs H1)",
+     "g": -87.7,
+     "cfg": "base",
+     "source": "frame_fixed.frame_mass('a', 19)"
+    },
+    {
+     "system": "frame",
+     "name": "crown kits (a)+(d2)+(c17 bore 19) undone (fixed torso replaces them)",
+     "g": 82.6,
+     "cfg": "base",
+     "source": "crown_diet.option_mass"
+    },
+    {
+     "system": "frame",
+     "name": "BL-007 removes the full 14 g pawl row; its 8 g POM share is already out (C4)",
+     "g": 8.0,
+     "cfg": "base",
+     "source": "crown_diet.PAWL_HOUSING_G - PAWL_SPRING_G"
+    }
+   ]
+  }
+ },
+ "configs": {
+  "corrie_f_base": {
+   "total_g": 3317.1,
+   "by_system": {
+    "frame": 1092.1,
+    "back": 413.6,
+    "belt": 504.4,
+    "harness": 229.6,
+    "bag_shell": 328.4,
+    "bag_pockets": 101.0,
+    "pouch": 0,
+    "fly": 5.9,
+    "straps_meat": 266.6,
+    "straps_compression": 162.9,
+    "attachment": 169.0,
+    "misc": 43.5
+   },
+   "like_for_like": {
+    "bag_side": 1033.8,
+    "suspension": 2239.8,
+    "misc": 43.5
+   }
+  },
+  "corrie_f_as_hunted": {
+   "total_g": 3562.6,
+   "by_system": {
+    "frame": 1092.1,
+    "back": 413.6,
+    "belt": 541.1,
+    "harness": 229.6,
+    "bag_shell": 328.4,
+    "bag_pockets": 184.7,
+    "pouch": 29.7,
+    "fly": 76.8,
+    "straps_meat": 266.6,
+    "straps_compression": 187.5,
+    "attachment": 169.0,
+    "misc": 43.5
+   },
+   "like_for_like": {
+    "bag_side": 1242.7,
+    "suspension": 2276.4,
+    "misc": 43.5
+   }
+  },
+  "bl005_back": {
+   "total_g": 3655.9,
+   "by_system": {
+    "frame": 1066.8,
+    "back": 369.0,
+    "belt": 515.0,
+    "harness": 223.6,
+    "bag_shell": 377.0,
+    "bag_pockets": 124.3,
+    "pouch": 0,
+    "fly": 5.9,
+    "straps_meat": 369.6,
+    "straps_compression": 243.5,
+    "attachment": 317.7,
+    "misc": 43.5
+   },
+   "like_for_like": {
+    "bag_side": 1438.0,
+    "suspension": 2174.4,
+    "misc": 43.5
+   }
+  },
+  "bl006_belt": {
+   "total_g": 3643.1,
+   "by_system": {
+    "frame": 1066.8,
+    "back": 413.6,
+    "belt": 457.6,
+    "harness": 223.6,
+    "bag_shell": 377.0,
+    "bag_pockets": 124.3,
+    "pouch": 0,
+    "fly": 5.9,
+    "straps_meat": 369.6,
+    "straps_compression": 243.5,
+    "attachment": 317.7,
+    "misc": 43.5
+   },
+   "like_for_like": {
+    "bag_side": 1438.0,
+    "suspension": 2161.6,
+    "misc": 43.5
+   }
+  },
+  "bl007_a": {
+   "total_g": 3612.8,
+   "by_system": {
+    "frame": 979.1,
+    "back": 413.6,
+    "belt": 515.0,
+    "harness": 223.6,
+    "bag_shell": 377.0,
+    "bag_pockets": 124.3,
+    "pouch": 0,
+    "fly": 5.9,
+    "straps_meat": 369.6,
+    "straps_compression": 243.5,
+    "attachment": 317.7,
+    "misc": 43.5
+   },
+   "like_for_like": {
+    "bag_side": 1438.0,
+    "suspension": 2131.3,
+    "misc": 43.5
+   }
+  },
+  "bl007_c": {
+   "total_g": 3598.0,
+   "by_system": {
+    "frame": 964.3,
+    "back": 413.6,
+    "belt": 515.0,
+    "harness": 223.6,
+    "bag_shell": 377.0,
+    "bag_pockets": 124.3,
+    "pouch": 0,
+    "fly": 5.9,
+    "straps_meat": 369.6,
+    "straps_compression": 243.5,
+    "attachment": 317.7,
+    "misc": 43.5
+   },
+   "like_for_like": {
+    "bag_side": 1438.0,
+    "suspension": 2116.5,
+    "misc": 43.5
+   }
+  }
+ },
+ "corner_wraps": {
+  "wraps_g": 17.586766331970104,
+  "adhesive_g": 8.844211638385993,
+  "booked_line_g": 2.21,
+  "unbooked_g": 24.220977970356095
+ },
+ "non_body": {
+  "lump_g": 217.4,
+  "sources_g": 226.54,
+  "short_g": 9.139999999999986
+ },
+ "crown_kits_by_torso_size": {
+  "S": {
+   "(a)+(d2)": -81.3,
+   "(a)+(d2)+(c17 bore 19)": -101.6
+  },
+  "M": {
+   "(a)+(d2)": -62.0,
+   "(a)+(d2)+(c17 bore 19)": -82.6
+  },
+  "L": {
+   "(a)+(d2)": -42.8,
+   "(a)+(d2)+(c17 bore 19)": -63.6
+  }
+ },
+ "fixed_torso": {
+  "a": {
+   "pack_delta_g": -87.7,
+   "frame_g": 979.1,
+   "fatigue_old_basis": 1.084
+  },
+  "c": {
+   "pack_delta_g": -102.5,
+   "frame_g": 964.3,
+   "fatigue_old_basis": 1.037
+  }
+ },
+ "leaders": [
+  {
+   "leader": "Stone Glacier Sky 5900 + Krux, M belt",
+   "published_g": 2308.0,
+   "add": [],
+   "remove": [
+    "hip_pocket",
+    "hydration"
+   ],
+   "note": "no lid; SG sells hip pockets and sleeve",
+   "B.2": {
+    "ours_g": 3645.0,
+    "delta_g": 1337.0,
+    "pct": 58.0
+   },
+   "P": {
+    "ours_g": 3358.9,
+    "delta_g": 1050.9,
+    "pct": 46.0
+   },
+   "A": {
+    "ours_g": 3094.2,
+    "delta_g": 786.2,
+    "pct": 34.0
+   },
+   "O": {
+    "ours_g": 3097.1,
+    "delta_g": 789.1,
+    "pct": 34.0
+   }
+  },
+  {
+   "leader": "Stone Glacier Sky 5900 + Xcurve, M belt",
+   "published_g": 2396.0,
+   "add": [],
+   "remove": [
+    "hip_pocket",
+    "hydration"
+   ],
+   "note": "same basis",
+   "B.2": {
+    "ours_g": 3645.0,
+    "delta_g": 1249.0,
+    "pct": 52.0
+   },
+   "P": {
+    "ours_g": 3358.9,
+    "delta_g": 962.9,
+    "pct": 40.0
+   },
+   "A": {
+    "ours_g": 3094.2,
+    "delta_g": 698.2,
+    "pct": 29.0
+   },
+   "O": {
+    "ours_g": 3097.1,
+    "delta_g": 701.1,
+    "pct": 29.0
+   }
+  },
+  {
+   "leader": "Exo K4 5000 (bag + frame + lid)",
+   "published_g": 2637.0,
+   "add": [
+    "pouch"
+   ],
+   "remove": [
+    "hip_pocket"
+   ],
+   "note": "lid in",
+   "B.2": {
+    "ours_g": 3749.5,
+    "delta_g": 1112.5,
+    "pct": 42.0
+   },
+   "P": {
+    "ours_g": 3453.5,
+    "delta_g": 816.5,
+    "pct": 31.0
+   },
+   "A": {
+    "ours_g": 3181.1,
+    "delta_g": 544.1,
+    "pct": 21.0
+   },
+   "O": {
+    "ours_g": 3184.0,
+    "delta_g": 547.0,
+    "pct": 21.0
+   }
+  },
+  {
+   "leader": "KUIU ICON 6 6000 full kit",
+   "published_g": 2790.0,
+   "add": [],
+   "remove": [],
+   "note": "hip pockets supplied",
+   "B.2": {
+    "ours_g": 3700.5,
+    "delta_g": 910.5,
+    "pct": 33.0
+   },
+   "P": {
+    "ours_g": 3414.4,
+    "delta_g": 624.4,
+    "pct": 22.0
+   },
+   "A": {
+    "ours_g": 3142.0,
+    "delta_g": 352.0,
+    "pct": 13.0
+   },
+   "O": {
+    "ours_g": 3144.9,
+    "delta_g": 354.9,
+    "pct": 13.0
+   }
+  },
+  {
+   "leader": "KUIU PRO 6000 full kit (secondary)",
+   "published_g": 2639.0,
+   "add": [],
+   "remove": [],
+   "note": "incl. hip pouches",
+   "B.2": {
+    "ours_g": 3700.5,
+    "delta_g": 1061.5,
+    "pct": 40.0
+   },
+   "P": {
+    "ours_g": 3414.4,
+    "delta_g": 775.4,
+    "pct": 29.0
+   },
+   "A": {
+    "ours_g": 3142.0,
+    "delta_g": 503.0,
+    "pct": 19.0
+   },
+   "O": {
+    "ours_g": 3144.9,
+    "delta_g": 505.9,
+    "pct": 19.0
+   }
+  },
+  {
+   "leader": "Mystery Ranch Beartooth 85",
+   "published_g": 2812.0,
+   "add": [
+    "pouch"
+   ],
+   "remove": [],
+   "note": "inclusions not stated",
+   "B.2": {
+    "ours_g": 3764.7,
+    "delta_g": 952.7,
+    "pct": 34.0
+   },
+   "P": {
+    "ours_g": 3468.7,
+    "delta_g": 656.7,
+    "pct": 23.0
+   },
+   "A": {
+    "ours_g": 3196.3,
+    "delta_g": 384.3,
+    "pct": 14.0
+   },
+   "O": {
+    "ours_g": 3199.2,
+    "delta_g": 387.2,
+    "pct": 14.0
+   }
+  },
+  {
+   "leader": "Mystery Ranch Metcalf 100 (secondary)",
+   "published_g": 2708.0,
+   "add": [
+    "pouch"
+   ],
+   "remove": [],
+   "note": "workbook 'full'",
+   "B.2": {
+    "ours_g": 3764.7,
+    "delta_g": 1056.7,
+    "pct": 39.0
+   },
+   "P": {
+    "ours_g": 3468.7,
+    "delta_g": 760.7,
+    "pct": 28.0
+   },
+   "A": {
+    "ours_g": 3196.3,
+    "delta_g": 488.3,
+    "pct": 18.0
+   },
+   "O": {
+    "ours_g": 3199.2,
+    "delta_g": 491.2,
+    "pct": 18.0
+   }
+  },
+  {
+   "leader": "Kifaru ARK + Absaroka",
+   "published_g": 2835.0,
+   "add": [
+    "holster"
+   ],
+   "remove": [],
+   "note": "sewn Nalgene pockets",
+   "B.2": {
+    "ours_g": 3739.3,
+    "delta_g": 904.3,
+    "pct": 32.0
+   },
+   "P": {
+    "ours_g": 3451.0,
+    "delta_g": 616.0,
+    "pct": 22.0
+   },
+   "A": {
+    "ours_g": 3178.6,
+    "delta_g": 343.6,
+    "pct": 12.0
+   },
+   "O": {
+    "ours_g": 3181.5,
+    "delta_g": 346.5,
+    "pct": 12.0
+   }
+  },
+  {
+   "leader": "Seek Outside Unaweep 6300 (shipped)",
+   "published_g": 1673.0,
+   "add": [
+    "pouch"
+   ],
+   "remove": [
+    "hip_pocket"
+   ],
+   "note": "24 in frame, lid, shelf",
+   "B.2": {
+    "ours_g": 3749.5,
+    "delta_g": 2076.5,
+    "pct": 124.0
+   },
+   "P": {
+    "ours_g": 3453.5,
+    "delta_g": 1780.5,
+    "pct": 106.0
+   },
+   "A": {
+    "ours_g": 3181.1,
+    "delta_g": 1508.1,
+    "pct": 90.0
+   },
+   "O": {
+    "ours_g": 3184.0,
+    "delta_g": 1511.0,
+    "pct": 90.0
+   }
+  },
+  {
+   "leader": "Initial Ascent IA5K",
+   "published_g": 2722.0,
+   "add": [
+    "pouch"
+   ],
+   "remove": [],
+   "note": "frame, belt, straps, bag, lid",
+   "B.2": {
+    "ours_g": 3764.7,
+    "delta_g": 1042.7,
+    "pct": 38.0
+   },
+   "P": {
+    "ours_g": 3468.7,
+    "delta_g": 746.7,
+    "pct": 27.0
+   },
+   "A": {
+    "ours_g": 3196.3,
+    "delta_g": 474.3,
+    "pct": 17.0
+   },
+   "O": {
+    "ours_g": 3199.2,
+    "delta_g": 477.2,
+    "pct": 18.0
+   }
+  }
+ ],
+ "features": {
+  "owner_options_base_g": 3144.9,
+  "gap_g": 151.2,
+  "candidates": [
+   {
+    "item": "IMP-2",
+    "what": "hydration sleeve (SG sells it separately)",
+    "g": 32.6,
+    "frozen": false
+   },
+   {
+    "item": "FP-L/R",
+    "what": "hip-reach pockets (the BL-002 access fix for the sheep-load 2nd bottle)",
+    "g": 33.5,
+    "frozen": false
+   },
+   {
+    "item": "IMP-5L",
+    "what": "hipbelt pocket (SG, Exo, Seek sell them separately)",
+    "g": 15.2,
+    "frozen": false
+   },
+   {
+    "item": "IMP-4",
+    "what": "kill-kit / first-aid door pocket",
+    "g": 22.0,
+    "frozen": false
+   },
+   {
+    "item": "IMP-6",
+    "what": "shoulder-strap phone pocket",
+    "g": 11.1,
+    "frozen": false
+   },
+   {
+    "item": "B-11",
+    "what": "lash tabs + muzzle keepers (rifle carry)",
+    "g": 24.1,
+    "frozen": false
+   },
+   {
+    "item": "E-5",
+    "what": "pole quiver (trekking pole / tripod leg carry)",
+    "g": 5.4,
+    "frozen": false
+   },
+   {
+    "item": "IMP-8",
+    "what": "bow cam / limb cup (bow carry: owner-frozen)",
+    "g": 7.5,
+    "frozen": true
+   },
+   {
+    "item": "US-",
+    "what": "under-straps (owner-frozen)",
+    "g": 93.4,
+    "frozen": true
+   }
+  ],
+  "all_unfrozen_g": 143.9,
+  "greedy_take": [
+   "FP-L/R",
+   "IMP-2",
+   "B-11",
+   "IMP-4",
+   "IMP-5L",
+   "IMP-6",
+   "E-5"
+  ],
+  "greedy_g": 143.9,
+  "reaches": false,
+  "belt_foam_reserve_g": -31.9
+ },
+ "estimates": {
+  "P": {
+   "scenario": "P",
+   "cfg": "base",
+   "total_g": 3414.4,
+   "classes": {
+    "typed ASSUMPTION (no record, no drawing)": {
+     "g": 290.4,
+     "band_g": 102.9,
+     "n": 16,
+     "frac": 0.3
+    },
+    "printed PAHT-CF body (2 mm raster x density)": {
+     "g": 713.6,
+     "band_g": 40.6,
+     "n": 4,
+     "frac": 0.05
+    },
+    "frame lumps and carbon (beam model, frame_mass json)": {
+     "g": 514.3,
+     "band_g": 68.7,
+     "n": 14,
+     "frac": 0.1
+    },
+    "cut area x record gsm, length x record g/m": {
+     "g": 1896.0,
+     "band_g": 413.9,
+     "n": 249,
+     "frac": 0.08
+    }
+   },
+   "worst_g": 626.2,
+   "rss_g": 75.4,
+   "named": [
+    {
+     "name": "harness: load lifters 25 mm poly + ladders, sternum Fidlock (QUICK family) + POM rails",
+     "g": 65.6,
+     "band_g": 19.7
+    },
+    {
+     "name": "misc: thread (~3 % of soft goods) + labels",
+     "g": 42.2,
+     "band_g": 12.7
+    },
+    {
+     "name": "torso adjust: 3:1 pulley webbing 25 mm x 1.4 m, metal cam buckle, pawl release cord + stra",
+     "g": 41.7,
+     "band_g": 12.5
+    },
+    {
+     "name": "CORRIE F: D2 door zip #10 in the blade | door seam, 2 sliders",
+     "g": 40.36,
+     "band_g": 12.1
+    },
+    {
+     "name": "CORRIE F: IM-cams: 3 x 25 mm Al cams",
+     "g": 39.0,
+     "band_g": 11.7
+    },
+    {
+     "name": "CORRIE F: US-cams: US1/US2 25 mm Al cams (2)",
+     "g": 26.0,
+     "band_g": 7.8
+    },
+    {
+     "name": "CORRIE F: IM-hooks: 3 x 25 mm rated Al G-hooks (right end only)",
+     "g": 24.0,
+     "band_g": 7.2
+    },
+    {
+     "name": "REMOVED: attachment: B-01 swell patches",
+     "g": -12.3,
+     "band_g": 3.7
+    },
+    {
+     "name": "CORRIE F: BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
+     "g": 12.12,
+     "band_g": 3.6
+    },
+    {
+     "name": "belt B 2:1 pull: 2 x 25 mm Al D-ring (no record, ASSUMPTION 5 g, $1)",
+     "g": 10.0,
+     "band_g": 3.0
+    },
+    {
+     "name": "POM pawl housing double-booked (the printed body forms the housing and its cheeks)",
+     "g": -8.0,
+     "band_g": 2.4
+    },
+    {
+     "name": "belt B cant snap deleted (2 POM 3-position detents, ASSUMPTION -6 g)",
+     "g": -6.0,
+     "band_g": 1.8
+    },
+    {
+     "name": "CORRIE F: 4 hard-point loops: 25 mm webbing 0.08 m each, in the left gusset's corner seams",
+     "g": 5.76,
+     "band_g": 1.7
+    },
+    {
+     "name": "belt B silicone-dot grip print on lumbar + wing faces (ASSUMPTION 5 g, outsourced $3)",
+     "g": 5.0,
+     "band_g": 1.5
+    }
+   ]
+  },
+  "A": {
+   "scenario": "A",
+   "cfg": "base",
+   "total_g": 3142.0,
+   "classes": {
+    "typed ASSUMPTION (no record, no drawing)": {
+     "g": 290.4,
+     "band_g": 193.1,
+     "n": 30,
+     "frac": 0.3
+    },
+    "printed PAHT-CF body (2 mm raster x density)": {
+     "g": 713.6,
+     "band_g": 40.6,
+     "n": 4,
+     "frac": 0.05
+    },
+    "frame lumps and carbon (beam model, frame_mass json)": {
+     "g": 493.7,
+     "band_g": 80.5,
+     "n": 19,
+     "frac": 0.1
+    },
+    "cut area x record gsm, length x record g/m": {
+     "g": 1644.2,
+     "band_g": 855.6,
+     "n": 528,
+     "frac": 0.08
+    }
+   },
+   "worst_g": 1169.7,
+   "rss_g": 91.4,
+   "named": [
+    {
+     "name": "harness: load lifters 25 mm poly + ladders, sternum Fidlock (QUICK family) + POM rails",
+     "g": 65.6,
+     "band_g": 19.7
+    },
+    {
+     "name": "misc: thread (~3 % of soft goods) + labels",
+     "g": 42.2,
+     "band_g": 12.7
+    },
+    {
+     "name": "torso adjust: 3:1 pulley webbing 25 mm x 1.4 m, metal cam buckle, pawl release cord + stra",
+     "g": 41.7,
+     "band_g": 12.5
+    },
+    {
+     "name": "CORRIE F: D2 door zip #10 in the blade | door seam, 2 sliders",
+     "g": 40.36,
+     "band_g": 12.1
+    },
+    {
+     "name": "CORRIE F: D2 door zip #10 in the blade | door seam, 2 sliders",
+     "g": 40.36,
+     "band_g": 12.1
+    },
+    {
+     "name": "CORRIE F: D2 door zip #10 in the blade | door seam, 2 sliders",
+     "g": -40.36,
+     "band_g": 12.1
+    },
+    {
+     "name": "CORRIE F: IM-cams: 3 x 25 mm Al cams",
+     "g": 39.0,
+     "band_g": 11.7
+    },
+    {
+     "name": "CORRIE F: IM-cams: 3 x 25 mm Al cams",
+     "g": 39.0,
+     "band_g": 11.7
+    },
+    {
+     "name": "CORRIE F: IM-cams: 3 x 25 mm Al cams",
+     "g": -39.0,
+     "band_g": 11.7
+    },
+    {
+     "name": "CORRIE F: US-cams: US1/US2 25 mm Al cams (2)",
+     "g": 26.0,
+     "band_g": 7.8
+    },
+    {
+     "name": "CORRIE F: US-cams: US1/US2 25 mm Al cams (2)",
+     "g": 26.0,
+     "band_g": 7.8
+    },
+    {
+     "name": "CORRIE F: US-cams: US1/US2 25 mm Al cams (2)",
+     "g": -26.0,
+     "band_g": 7.8
+    },
+    {
+     "name": "CORRIE F: IM-hooks: 3 x 25 mm rated Al G-hooks (right end only)",
+     "g": 24.0,
+     "band_g": 7.2
+    },
+    {
+     "name": "CORRIE F: IM-hooks: 3 x 25 mm rated Al G-hooks (right end only)",
+     "g": 24.0,
+     "band_g": 7.2
+    },
+    {
+     "name": "CORRIE F: IM-hooks: 3 x 25 mm rated Al G-hooks (right end only)",
+     "g": -24.0,
+     "band_g": 7.2
+    },
+    {
+     "name": "REMOVED: attachment: B-01 swell patches",
+     "g": -12.3,
+     "band_g": 3.7
+    },
+    {
+     "name": "CORRIE F: BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
+     "g": 12.12,
+     "band_g": 3.6
+    },
+    {
+     "name": "CORRIE F: BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
+     "g": 12.12,
+     "band_g": 3.6
+    },
+    {
+     "name": "CORRIE F: BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
+     "g": -12.12,
+     "band_g": 3.6
+    },
+    {
+     "name": "belt B 2:1 pull: 2 x 25 mm Al D-ring (no record, ASSUMPTION 5 g, $1)",
+     "g": 10.0,
+     "band_g": 3.0
+    },
+    {
+     "name": "POM pawl housing double-booked (the printed body forms the housing and its cheeks)",
+     "g": -8.0,
+     "band_g": 2.4
+    },
+    {
+     "name": "belt B cant snap deleted (2 POM 3-position detents, ASSUMPTION -6 g)",
+     "g": -6.0,
+     "band_g": 1.8
+    },
+    {
+     "name": "CORRIE F: 4 hard-point loops: 25 mm webbing 0.08 m each, in the left gusset's corner seams",
+     "g": 5.76,
+     "band_g": 1.7
+    },
+    {
+     "name": "CORRIE F: 4 hard-point loops: 25 mm webbing 0.08 m each, in the left gusset's corner seams",
+     "g": 5.76,
+     "band_g": 1.7
+    },
+    {
+     "name": "CORRIE F: 4 hard-point loops: 25 mm webbing 0.08 m each, in the left gusset's corner seams",
+     "g": -5.76,
+     "band_g": 1.7
+    },
+    {
+     "name": "belt B silicone-dot grip print on lumbar + wing faces (ASSUMPTION 5 g, outsourced $3)",
+     "g": 5.0,
+     "band_g": 1.5
+    }
+   ]
+  },
+  "O": {
+   "scenario": "O",
+   "cfg": "base",
+   "total_g": 3144.9,
+   "classes": {
+    "typed ASSUMPTION (no record, no drawing)": {
+     "g": 290.4,
+     "band_g": 193.1,
+     "n": 30,
+     "frac": 0.3
+    },
+    "printed PAHT-CF body (2 mm raster x density)": {
+     "g": 713.6,
+     "band_g": 40.6,
+     "n": 4,
+     "frac": 0.05
+    },
+    "frame lumps and carbon (beam model, frame_mass json)": {
+     "g": 496.6,
+     "band_g": 98.3,
+     "n": 22,
+     "frac": 0.1
+    },
+    "cut area x record gsm, length x record g/m": {
+     "g": 1644.2,
+     "band_g": 855.6,
+     "n": 528,
+     "frac": 0.08
+    }
+   },
+   "worst_g": 1187.5,
+   "rss_g": 92.2,
+   "named": [
+    {
+     "name": "harness: load lifters 25 mm poly + ladders, sternum Fidlock (QUICK family) + POM rails",
+     "g": 65.6,
+     "band_g": 19.7
+    },
+    {
+     "name": "misc: thread (~3 % of soft goods) + labels",
+     "g": 42.2,
+     "band_g": 12.7
+    },
+    {
+     "name": "torso adjust: 3:1 pulley webbing 25 mm x 1.4 m, metal cam buckle, pawl release cord + stra",
+     "g": 41.7,
+     "band_g": 12.5
+    },
+    {
+     "name": "CORRIE F: D2 door zip #10 in the blade | door seam, 2 sliders",
+     "g": 40.36,
+     "band_g": 12.1
+    },
+    {
+     "name": "CORRIE F: D2 door zip #10 in the blade | door seam, 2 sliders",
+     "g": 40.36,
+     "band_g": 12.1
+    },
+    {
+     "name": "CORRIE F: D2 door zip #10 in the blade | door seam, 2 sliders",
+     "g": -40.36,
+     "band_g": 12.1
+    },
+    {
+     "name": "CORRIE F: IM-cams: 3 x 25 mm Al cams",
+     "g": 39.0,
+     "band_g": 11.7
+    },
+    {
+     "name": "CORRIE F: IM-cams: 3 x 25 mm Al cams",
+     "g": 39.0,
+     "band_g": 11.7
+    },
+    {
+     "name": "CORRIE F: IM-cams: 3 x 25 mm Al cams",
+     "g": -39.0,
+     "band_g": 11.7
+    },
+    {
+     "name": "CORRIE F: US-cams: US1/US2 25 mm Al cams (2)",
+     "g": 26.0,
+     "band_g": 7.8
+    },
+    {
+     "name": "CORRIE F: US-cams: US1/US2 25 mm Al cams (2)",
+     "g": 26.0,
+     "band_g": 7.8
+    },
+    {
+     "name": "CORRIE F: US-cams: US1/US2 25 mm Al cams (2)",
+     "g": -26.0,
+     "band_g": 7.8
+    },
+    {
+     "name": "CORRIE F: IM-hooks: 3 x 25 mm rated Al G-hooks (right end only)",
+     "g": 24.0,
+     "band_g": 7.2
+    },
+    {
+     "name": "CORRIE F: IM-hooks: 3 x 25 mm rated Al G-hooks (right end only)",
+     "g": 24.0,
+     "band_g": 7.2
+    },
+    {
+     "name": "CORRIE F: IM-hooks: 3 x 25 mm rated Al G-hooks (right end only)",
+     "g": -24.0,
+     "band_g": 7.2
+    },
+    {
+     "name": "REMOVED: attachment: B-01 swell patches",
+     "g": -12.3,
+     "band_g": 3.7
+    },
+    {
+     "name": "CORRIE F: BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
+     "g": 12.12,
+     "band_g": 3.6
+    },
+    {
+     "name": "CORRIE F: BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
+     "g": 12.12,
+     "band_g": 3.6
+    },
+    {
+     "name": "CORRIE F: BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
+     "g": -12.12,
+     "band_g": 3.6
+    },
+    {
+     "name": "belt B 2:1 pull: 2 x 25 mm Al D-ring (no record, ASSUMPTION 5 g, $1)",
+     "g": 10.0,
+     "band_g": 3.0
+    },
+    {
+     "name": "POM pawl housing double-booked (the printed body forms the housing and its cheeks)",
+     "g": -8.0,
+     "band_g": 2.4
+    },
+    {
+     "name": "belt B cant snap deleted (2 POM 3-position detents, ASSUMPTION -6 g)",
+     "g": -6.0,
+     "band_g": 1.8
+    },
+    {
+     "name": "CORRIE F: 4 hard-point loops: 25 mm webbing 0.08 m each, in the left gusset's corner seams",
+     "g": 5.76,
+     "band_g": 1.7
+    },
+    {
+     "name": "CORRIE F: 4 hard-point loops: 25 mm webbing 0.08 m each, in the left gusset's corner seams",
+     "g": 5.76,
+     "band_g": 1.7
+    },
+    {
+     "name": "CORRIE F: 4 hard-point loops: 25 mm webbing 0.08 m each, in the left gusset's corner seams",
+     "g": -5.76,
+     "band_g": 1.7
+    },
+    {
+     "name": "belt B silicone-dot grip print on lumbar + wing faces (ASSUMPTION 5 g, outsourced $3)",
+     "g": 5.0,
+     "band_g": 1.5
+    }
+   ]
+  }
+ },
+ "risks": [
+  {
+   "what": "BL-010 front-strap pad pair, booked only if HB-1 fails",
+   "g": 42.9
+  }
+ ],
+ "screenshots": [
+  "outputs/screens/20261111_BL013_1.png",
+  "outputs/screens/20261111_BL013_2.png"
+ ]
+}
