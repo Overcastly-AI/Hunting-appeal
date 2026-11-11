@@ -213,7 +213,11 @@ def corrie_f_step(size: str, fabrics: str, step: str) -> list:
 
 def fabric_step(size: str) -> list:
     """BL-011 fabric swaps: CORRIE F team-B fabrics minus CORRIE F today's fabrics (same pieces)."""
-    return corrie_f_step(size, "B", "A_fab") + [dict(r, g=-r["g"], step="A_fab") for r in corrie_f_step(size, "today", "A_fab")]
+    F = _F()
+    return ([_r(r["system"], f"CORRIE F: {r['name']}", r["g"], r["cfg"], r["source"], "A_fab")
+             for r in F.parts(size, "D2", "B")]
+            + [_r(r["system"], f"CORRIE F: {r['name']}", -r["g"], r["cfg"], r["source"], "A_fab")
+               for r in F.parts(size, "D2", "today")])
 
 
 def crown(option_name: str, size: str = KIT) -> float:
@@ -236,10 +240,17 @@ def fixed_torso(variant: str, torso: float = 19.0) -> dict:
 def package_c(size: str = "M") -> list:
     """Package C as the ledger books it on H1 (config corrie_b2_h1_c minus corrie_b2_h1): the adopted 7075 plate
     C-1+C-2+C-3 and the two rev C corrections C-4 (pad backer) and C-7 (yoke plate); C-9 is 0 g on H1 (ledger note).
-    BL-011's 3262 g left package C out; BL-006 used corrie_b2_h1_c as its baseline."""
+    BL-011's pack (corrie_f.pack_with_adopted) left package C out; BL-006 used corrie_b2_h1_c as its baseline."""
     plain = {r["id"] for r in L.parts(CONFIG, size)}
     return [_r(r["system"], r["name"], r["g"], "base", "ledger corrie_b2_h1_c: " + r["source"], "P_pkgC")
             for r in L.parts("corrie_b2_h1_c", size) if r["id"] not in plain]
+
+
+def h1_fatigue() -> dict:
+    """H1 body fatigue on the recorded and the per-torso basis (BL-017 crown_diet results)."""
+    b = json.loads(_CD().RESULT.read_text())["body"]
+    old, new = b["h1_recorded_basis"]["min"]["fatigue"], b["h1"]["min"]["fatigue"]
+    return {"old": old, "per_torso": new, "ratio": new / old}
 
 
 def cheek_g() -> float:
@@ -448,7 +459,7 @@ FEATURE_CANDIDATES = [   # (row-name needle, system, what the hunter loses, froz
     ("IMP-5L", "belt", "hipbelt pocket (SG, Exo, Seek sell them separately)", False),
     ("IMP-4", "bag_pockets", "kill-kit / first-aid door pocket", False),
     ("IMP-6", "harness", "shoulder-strap phone pocket", False),
-    ("B-11", "bag_shell", "lash tabs + muzzle keepers (rifle carry)", False),
+    ("B-11 lash", "bag_shell", "lash tabs + muzzle keepers (rifle carry)", False),
     ("E-5", "bag_pockets", "pole quiver (trekking pole / tripod leg carry)", False),
     ("IMP-8", "bag_pockets", "bow cam / limb cup (bow carry: owner-frozen)", True),
     ("US-", "straps_meat", "under-straps (owner-frozen)", True),
@@ -474,7 +485,9 @@ def feature_costs(size: str = "M") -> dict:
     reserve = sum(HD._mass_delta(k, size) for k in HD.NEXT_LEVER)
     return {"owner_options_base_g": base, "gap_g": round(need, 1), "candidates": items,
             "all_unfrozen_g": round(sum(i["g"] for i in free), 1), "greedy_take": take, "greedy_g": round(acc, 1),
-            "reaches": acc >= need, "belt_foam_reserve_g": round(reserve, 1)}
+            "reaches": acc >= need, "belt_foam_reserve_g": round(reserve, 1),
+            "with_reserve_g": round(sum(i["g"] for i in free) - reserve, 1),
+            "reaches_with_reserve": sum(i["g"] for i in free) - reserve >= need}
 
 
 UNC_CLASSES = [   # (class, test on name+source, +- fraction) - ASSUMPTION bands, each settled by weighing the part
@@ -489,7 +502,17 @@ UNC_CLASSES = [   # (class, test on name+source, +- fraction) - ASSUMPTION bands
 def estimates(scen: str = "A", size: str = "M", cfg: str = "base") -> dict:
     """Every row of a scenario is computed, none weighed: band each row by its source class (ASSUMPTION bands) and add
     the bands two ways (worst case and root-sum-square). Also the single estimates >= 5 g that are typed ASSUMPTIONs."""
-    rows = cfg_rows(scenario_rows(scen, size), cfg)
+    net: dict = {}
+    for r in cfg_rows(scenario_rows(scen, size), cfg):      # net out removed / re-added copies of the same part
+        n = r["name"]
+        for pre in ("REMOVED (B.2): ", "REMOVED: ", "CORRIE F: "):
+            n = n.replace(pre, "")
+        k = (r["system"], n)
+        if k in net:
+            net[k]["g"] += r["g"]
+        else:
+            net[k] = dict(r, name=n)
+    rows = [r for r in net.values() if abs(r["g"]) > 0.05]
     cls = {c[0]: {"g": 0.0, "band_g": 0.0, "rss2": 0.0, "n": 0, "frac": c[2]} for c in UNC_CLASSES}
     named = []
     for r in rows:
@@ -658,6 +681,8 @@ def compute(size: str = "M") -> dict:
         "fixed_torso": {v: {"pack_delta_g": round(d["pack_delta_g"], 1), "frame_g": d["frame_g"],
                             "fatigue_old_basis": round(d["fatigue_old_basis"], 3)} for v, d in fx.items()},
         "leaders": like_for_like_leaders(size), "features": feature_costs(size),
+        "bl011_headline_base_g": _F().pack_with_adopted(size)["base"]["with_adopted_g"],
+        "h1_fatigue": h1_fatigue(),
         "estimates": {s: estimates(s, size) for s in SCEN}, "risks": risks(),
     }
 
@@ -689,8 +714,9 @@ def report(res: dict, shots: list) -> str:
       + ", ".join(f"{c['item']} ({c['g']:.0f} g)" for c in fc["candidates"] if c["item"] in fc["greedy_take"])
       + f" = {fc['greedy_g']:.0f} g. " + ("That reaches it" if fc["reaches"] else
       f"Even every unfrozen candidate ({fc['all_unfrozen_g']:.0f} g) does not reach it") + "; see section 5.")
-    w(f"- The BL-011 headline (base 3262 g) was {3262 - P['base']:+.0f} g against proven now and "
-      f"{3262 - A['base']:+.0f} g against after tests: it took the gated BL-005/006 items and the fabric swaps as done, "
+    h = res["bl011_headline_base_g"]
+    w(f"- The BL-011 headline (base {h:.0f} g, `corrie_f.pack_with_adopted`) was {h - P['base']:+.0f} g against "
+      f"proven now and {h - A['base']:+.0f} g against after tests: it took the gated BL-005/006 items and the fabric swaps as done, "
       "left package C and the IM3 cheek out, and had the ledger's booking errors in it (section 2).\n")
     w("## 1. Rules\n")
     w("- **Start:** ledger `corrie_b2_h1`, belt M, every item booked: "
@@ -797,7 +823,10 @@ def report(res: dict, shots: list) -> str:
         w(f"| {c['item']} | {c['g']:.1f} | {c['what']} | {'yes' if c['frozen'] else 'no'} |")
     w(f"\n- Taking the largest unfrozen items first: {', '.join(fc['greedy_take'])} = {fc['greedy_g']:.0f} g "
       + ("reaches 6.6 lb only by stripping the pack of its pockets and hip-reach access." if fc["reaches"] else
-         f"does not reach it; all unfrozen candidates together are {fc['all_unfrozen_g']:.0f} g."))
+         f"does not reach it; all unfrozen candidates together are {fc['all_unfrozen_g']:.0f} g.")
+      + (f" With the belt-foam reserve as well, {fc['with_reserve_g']:.0f} g against the {fc['gap_g']:.0f} g gap: "
+         + ("6.6 lb is reached only by deleting every one of these features and softening the belt." if
+            fc["reaches_with_reserve"] else "still short.")))
     w(f"- Not in any scenario: the belt-foam reserve (BL-006 d2 + d4, {fc['belt_foam_reserve_g']:+.1f} g, gated by HB-1 "
       "and a compression-set check). Even with it, the gap stays.")
     fxa, fxc = res["fixed_torso"]["a"], res["fixed_torso"]["c"]
@@ -806,8 +835,9 @@ def report(res: dict, shots: list) -> str:
       f"took out: net {st['O_fixed']['delta_g']['base']:+.1f} g. (c) would be "
       f"{fxc['pack_delta_g'] - fxa['pack_delta_g']:+.1f} g more. **Neither has been restated on the per-torso "
       f"fatigue basis adopted in BL-017** (old basis (a) {fxa['fatigue_old_basis']}, (c) {fxc['fatigue_old_basis']}; "
-      "H1 dropped 1.279 -> 1.150 on restatement). Scaled the same way they would be below 1.0; that is an estimate, "
-      "not a result. The structural-fea-engineer should restate them before the owner is asked.")
+      f"H1 dropped {res['h1_fatigue']['old']:.3f} -> {res['h1_fatigue']['per_torso']:.3f} on restatement). Scaled by "
+      f"the same ratio they would be {fxa['fatigue_old_basis'] * res['h1_fatigue']['ratio']:.2f} and "
+      f"{fxc['fatigue_old_basis'] * res['h1_fatigue']['ratio']:.2f}, below 1.0; that is an estimate, not a result. The structural-fea-engineer should restate them before the owner is asked.")
     w("- The lever the 6.6 lb target needs is on the frame side (BL-008: frame side about double the leaders'), "
       f"which no open ticket reaches: after tests the suspension is {A['like_for_like_base']['suspension']:.0f} g.\n")
     w("## 6. Estimates and uncertainty\n")
