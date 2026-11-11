@@ -184,6 +184,63 @@ def sim_loads() -> dict:
     return out
 
 
+def corrie_f_loads() -> dict:
+    """BL-011 CORRIE F IM3 bag-hook force at 1 g per torso (worst case, R/L), read live when the untracked sim outputs
+    exist, else the frozen values."""
+    out = {}
+    for t, fr in FROZEN["corrie_f_im3_1g"].items():
+        f = REPO / "outputs" / "clothsim" / "corrie_f" / f"F_PR{t}" / "results.json"
+        if f.exists():
+            r = json.loads(f.read_text())
+            best = (0.0, "")
+            for cn, c in r["cases"].items():
+                att = c.get("attachments", {})
+                v = max([float(att[k]["tension_n"]) for k in ("hook_im520_R", "hook_im520_L") if k in att] or [0.0])
+                if v > best[0]:
+                    best = (v, cn)
+            out[t] = {"n_1g": round(best[0], 1), "case": best[1], "source": "live"}
+        else:
+            cn = max(fr, key=fr.get)
+            out[t] = {"n_1g": fr[cn], "case": cn, "source": "frozen"}
+    return out
+
+
+CF_STRENGTH_REQ = 1.5      # coordinator follow-up: strength >= 1.5 at the factored load for the A1-CF cheek
+
+
+def size_cheek_cf(cf: dict, misuse_n: float) -> dict:
+    """Smallest-mass cheek variant (FROZEN sweeps) with fatigue >= 1.0 at every torso (1.6 x the CORRIE F 1 g force)
+    and strength >= CF_STRENGTH_REQ at the factored load (max of the misuse envelope and 3.0 x CORRIE F)."""
+    nf = max(misuse_n, FACTOR * max(v["n_1g"] for v in cf.values()))
+    cands = {f"{hz}_8.0": v for hz, v in FROZEN["fairlead_im3"].items()}
+    cands.update(FROZEN["fairlead_im3_cheek"])
+    rows = []
+    for k, v in cands.items():
+        hz, ch = (float(x) for x in k.split("_"))
+        pn = v["fi99"] / 1415.1
+        fat = {t: PAHT_FAT / (pn * G_WALK * c["n_1g"]) for t, c in cf.items()}
+        rows.append({"key": k, "half_z": hz, "cheek": ch, "height_mm": 2 * hz, "fi99": v["fi99"],
+                     "added_g": v["added_g"], "fatigue": fat, "strength": 1.0 / (pn * nf),
+                     "creep": min(PAHT_RUPT / (pn * c["n_1g"]) for c in cf.values()),
+                     "ok": min(fat.values()) >= 1.0 and 1.0 / (pn * nf) >= CF_STRENGTH_REQ})
+    ok = [r for r in rows if r["ok"]]
+    best = min(ok, key=lambda r: (r["added_g"], r["height_mm"]))
+    return {"factored_n": nf, "rows": sorted(rows, key=lambda r: (r["cheek"], r["half_z"])), "chosen": best}
+
+
+def cheek_clearance(half_z: float, cheek: float) -> dict:
+    """Geometry of the grown IM3 eye (bag_attach constants): gap to the spreader top edge (spreader.Z_HI) against the
+    notch rule, the throat the hooks share (unchanged), and how far the cheek stands aft of the hole centre."""
+    from huntkit.gendesign import bag_attach as BA
+    from huntkit.gendesign import spreader as SPR
+    z_bot = 520.0 - half_z
+    gap = z_bot - SPR.Z_HI
+    return {"cheek_bottom_z": z_bot, "cheek_top_z": 520.0 + half_z, "spreader_top_z": SPR.Z_HI, "gap_mm": gap,
+            "notch_clear_mm": SPR.NOTCH_CLEAR, "spreader_ok": gap >= SPR.NOTCH_CLEAR, "throat_mm": BA.THROAT,
+            "outer_width_mm": BA.THROAT + 2 * cheek, "cheek_aft_of_hole_mm": BA.HOLE_D / 2.0 + BA.WALL_FRONT,
+            "half_height_mm": half_z}
+
+
 def float_loads() -> dict:
     f = json.loads((ANALYSIS / "float_fea_results.json").read_text())
     us1_36 = f["us1"]["record_36kg"]["force_n"]
@@ -200,19 +257,21 @@ def belt_loads() -> dict:
 
 
 # =============================================================================================== FEA
-def fairlead_im3(half_z: float = 9.0, force_n: float = 1415.1, h: float = 1.0) -> dict:
+def fairlead_im3(half_z: float = 9.0, force_n: float = 1415.1, h: float = 1.0, cheek: float | None = None) -> dict:
     """IM3 printed fairlead (bag_attach.solve_fairlead) at the bag-on vector of float_fea, with the cheek half-height
     ``half_z`` (released 9.0). FI is linear in force; the result is reported per newton."""
     from huntkit.gendesign import bag_attach as BA
     from huntkit.gendesign import float_fea as F
     v = F.bag_on_envelope_vector()
     v = v / np.linalg.norm(v) * force_n
-    old = BA.HALF_Z
+    old, oc = BA.HALF_Z, BA.CHEEK
     BA.HALF_Z = float(half_z)
+    if cheek is not None:
+        BA.CHEEK = float(cheek)
     try:
         r = BA.solve_fairlead(16.8, v, h=h, label=f"im3 half_z {half_z}")
     finally:
-        BA.HALF_Z = old
+        BA.HALF_Z, BA.CHEEK = old, oc
     return {"half_z": half_z, "force_n": force_n, "fi99": float(r["fi99"]), "fi_per_n": float(r["fi99"]) / force_n,
             "added_g": float(r["added_g"])}
 
@@ -250,7 +309,16 @@ FROZEN = {
                      12.0: {"fi99": 0.523921382004247, "added_g": 8.31888},
                      12.5: {"fi99": 0.5087, "added_g": 8.80},
                      13.0: {"fi99": 0.4886, "added_g": 9.05},
+                     13.5: {"fi99": 0.4636, "added_g": 9.53},
                      14.0: {"fi99": 0.4465, "added_g": 9.78}},
+    # cheek thickness variants (HALF_Z, CHEEK) for the A1-CF sizing (BL-011 follow-up); fi99 at 1415.1 N
+    "fairlead_im3_cheek": {"13.0_8.0": {"fi99": 0.4886, "added_g": 9.05}, "13.5_8.0": {"fi99": 0.4636, "added_g": 9.53},
+                           "12.5_9.0": {"fi99": 0.4630, "added_g": 9.65}, "13.0_9.0": {"fi99": 0.4507, "added_g": 9.93},
+                           "11.5_10.0": {"fi99": 0.4631, "added_g": 9.63}, "12.0_10.0": {"fi99": 0.4399, "added_g": 9.93},
+                           "13.25_8.0": {"fi99": 0.4884, "added_g": 9.05}},   # 13.25 voxelises to 13 at h 1 mm
+    # BL-011 CORRIE F (door D2) cloth sims, IM3 bag hook max(R, L) at 1 g, outputs/clothsim/corrie_f/F_PR*/results.json
+    "corrie_f_im3_1g": {15: {"meat": 552.4, "fill": 439.6}, 19: {"meat": 515.5, "fill": 363.6},
+                        23: {"meat": 460.1, "fill": 336.3}},
     "fairlead_record_fi99_1415": 0.6504503705966851,       # float_fea_results.json bag_on_1415 (released)
     "body_h1_per_torso": {"strength": 1.4739561426221504, "fatigue": 1.1502260709981276,
                           "creep": 2.453815618129339, "governing": "C_im3@H23 static_carry 23 in (fatigue)",
@@ -536,6 +604,45 @@ def build_rows(beam: dict, beam_rec: dict, sim: dict, fl: dict, belt: dict, fea:
               "rev_c fairlead_fea.hinge, linear"),
          _chk("hinge fairlead, creep 1 g", hw_1g, PAHT_RUPT / fh_pn, "creep", "rev_c fairlead_fea.hinge")])
 
+    # ------------------------------------------------------------------ A1-CF (BL-011 follow-up, additive)
+    cf = fea.get("corrie_f")
+    if cf:
+        sz = size_cheek_cf(cf, n_im3)
+        ch = sz["chosen"]
+        p25 = fipn[12.5]
+        chk = [_chk(f"25 mm cheek (A1 fix), fatigue {t} in, 1.6 x {c['n_1g']:.1f} N", G_WALK * c["n_1g"],
+                    PAHT_FAT / p25, "fatigue", "fairlead_im3(12.5)") for t, c in sorted(cf.items())]
+        chk.append(_chk(f"25 mm cheek, strength >= {CF_STRENGTH_REQ} at the factored load", sz["factored_n"],
+                        1.0 / p25 / CF_STRENGTH_REQ, "strength",
+                        f"fairlead_im3(12.5); capacity = 1 / FI per N / {CF_STRENGTH_REQ}"))
+        pn = ch["fi99"] / 1415.1
+        fchk = [_chk(f"{ch['height_mm']:.0f} mm cheek, fatigue {t} in", G_WALK * c["n_1g"], PAHT_FAT / pn, "fatigue",
+                     f"fairlead_im3({ch['half_z']}, cheek {ch['cheek']:g})") for t, c in sorted(cf.items())]
+        fchk.append(_chk(f"{ch['height_mm']:.0f} mm cheek, strength >= {CF_STRENGTH_REQ} at the factored load",
+                         sz["factored_n"], 1.0 / pn / CF_STRENGTH_REQ, "strength",
+                         f"fairlead_im3({ch['half_z']}); capacity / {CF_STRENGTH_REQ}", False,
+                         "IM3 eye pull (first frame)"))
+        fchk.append(_chk("creep at 1 g, worst torso", max(c["n_1g"] for c in cf.values()), PAHT_RUPT / pn, "creep",
+                         f"fairlead_im3({ch['half_z']})"))
+        clr = cheek_clearance(ch["half_z"], ch["cheek"])
+        fchk.append(_chk("cheek bottom to spreader top edge vs the 6 mm notch rule (mm, as N)", clr["notch_clear_mm"],
+                         clr["gap_mm"], "fit", "spreader.Z_HI, NOTCH_CLEAR"))
+        fchk.append(_chk("throat for bag-hook + meat carabiner rods side by side (mm, as N; 2 x 8.5 mm ASSUMPTION)",
+                         17.0, clr["throat_mm"], "fit", "bag_attach.THROAT (unchanged)", False,
+                         "carabiner fit (first delivery)"))
+        row("A1-CF", "BL-004", "IM3 eyes z 520, re-check on CORRIE F (BL-011) forces, per torso",
+            "IM3 printed fairlead with the A1 25 mm cheek", "aft-up along T3", 1702, sz["factored_n"],
+            "BL-011 CORRIE F cloth sims at 15 / 19 / 23 in (worst case each); factored = max(1702 misuse, 3.0 x "
+            f"{max(c['n_1g'] for c in cf.values()):.1f})", chk,
+            fix={"change": f"IM3 cheek {ch['height_mm']:.0f} mm tall (HALF_Z {ch['half_z']}, {ch['cheek']:g} mm "
+                           "thick) instead of A1's 25 mm",
+                 "mass_g": 2 * (ch["added_g"] - fea["fairlead_im3"][12.5]["added_g"]), "frame_change": True,
+                 "checks": fchk},
+            note="additive row (coordinator follow-up 2026-11-11); A1 stays as recorded on the S15 forces. Fix mass is "
+                 "on top of A1's fix.")
+        rows[-1]["sizing"] = sz
+        rows[-1]["clearance"] = clr
+
     # ------------------------------------------------------------------ BL-006 (hipbelt_diet.md 5)
     T, Tw, lf = belt["T_c2"], belt["T_walk"], belt["leg_frac"]
     leg = lf * T
@@ -597,7 +704,8 @@ def mass_summary(rows: list) -> dict:
             continue
         by[r["source"]] += f["mass_g"]
         if f.get("frame_change"):
-            frame += 2 * (FROZEN["fairlead_im3"][12.5]["added_g"] - FROZEN["fairlead_im3"][9.0]["added_g"])
+            frame += f.get("frame_g", f["mass_g"] if r["id"] == "A1-CF" else
+                           2 * (FROZEN["fairlead_im3"][12.5]["added_g"] - FROZEN["fairlead_im3"][9.0]["added_g"]))
     saved = {"BL-003": 218.5, "BL-004": 103.0, "BL-006": 500.3 - 442.9}    # ticket savings (source docs), g
     return {"fix_g": by, "meat_trip_kit_g": kit, "of_which_frame_g": frame,
             "saving_before_g": saved, "saving_after_g": {k: saved[k] - by[k] for k in by}}
@@ -649,9 +757,11 @@ def compute(fea_live: bool = False, log=print) -> dict:
         body = {**body, "strength": b["min"]["strength"], "fatigue": b["min"]["fatigue"], "creep": b["min"]["creep"]}
     beam, beam_r = beam_loads(False), beam_loads(True)
     sim, fl, belt = sim_loads(), float_loads(), belt_loads()
+    fea["corrie_f"] = corrie_f_loads()
     rows = build_rows(beam, beam_r, sim, fl, belt, fea)
     return {"date": "2026-11-11", "standard": "HA-LS-1 rev C", "rows": rows, "beam": beam, "beam_rec": beam_r,
             "sim": sim, "float": fl, "belt": belt, "fea": {str(k): v for k, v in fea["fairlead_im3"].items()},
+            "corrie_f": fea["corrie_f"],
             "fairlead_reproduce": {"record": FROZEN["fairlead_record_fi99_1415"],
                                    "this_run": fea["fairlead_im3"][9.0]["fi99"]},
             "body": {"h1_per_torso": FROZEN["body_h1_per_torso"], "rec_per_torso": body},
@@ -731,6 +841,13 @@ def write_md(res: dict) -> str:
       f"({res['sim']['im3_REC_S15']['n_1g']:.0f} N at 1 g on S15 REC; the fairlead was released on the beam model's "
       "605 N factored = 202 N at 1 g). Today's design fails too. Fix: cheek 18 -> 25 mm tall, +2.7 g a side, a frame "
       "print change.")
+    cfr0 = next((r for r in rows if r["id"] == "A1-CF"), None)
+    if cfr0:
+        c0 = cfr0["sizing"]["chosen"]
+        w(f"- **A1-CF (BL-011 follow-up):** on CORRIE F's measured IM3 forces (552 / 516 / 460 N at 15 / 19 / 23 in) the "
+          f"25 mm cheek gives fatigue {cfr0['min']:.2f} at 15 in. Smallest change that passes every torso with strength "
+          f">= 1.5: **{c0['height_mm']:.0f} mm cheek**, fatigue {min(c0['fatigue'].values()):.2f}, strength "
+          f"{c0['strength']:.2f}, **+{cfr0['fix']['mass_g']:.2f} g a pair over the 25 mm cheek** (section 4.1).")
     w(f"- **Net mass of the FAIL fixes:** BL-003 +{m['fix_g']['BL-003']:.1f} g (saving 218.5 -> "
       f"{m['saving_after_g']['BL-003']:.1f} g), BL-004 +{m['fix_g']['BL-004']:.1f} g (saving 103.0 -> "
       f"{m['saving_after_g']['BL-004']:.1f} g; {m['of_which_frame_g']:.1f} g of it is printed frame), BL-006 "
@@ -786,6 +903,38 @@ def write_md(res: dict) -> str:
     w("\n25 mm (HALF_Z 12.5) is the smallest tested step that passes on S15. CORRIE's 557 N would need 28 mm (14.0). "
       "The cheek grows along the stay at z 520, above the spreader (top edge z 430): no clash. It is an H1 print-file "
       "change (released files untouched here).\n")
+
+    cfr = next((r for r in rows if r["id"] == "A1-CF"), None)
+    if cfr:
+        sz, clr = cfr["sizing"], cfr["clearance"]
+        w("### 4.1 A1-CF: IM3 eye on the CORRIE F (BL-011) forces, per torso\n")
+        w("BL-011 measured the IM3 bag-hook force at 1 g on CORRIE F (door D2): " + ", ".join(
+            f"{t} in {c['n_1g']:.1f} N ({c['case']})" for t, c in sorted(res["corrie_f"].items(), key=lambda kv: int(kv[0])))
+          + f". A1's 25 mm cheek was sized on S15's 507 N. Factored load {sz['factored_n']:.0f} N (the misuse "
+          "envelope still governs over 3.0 x 552 N = 1657 N). Requirement for this row: fatigue >= 1.0 at every torso "
+          f"and strength >= {CF_STRENGTH_REQ} at the factored load.\n")
+        w("| cheek height x thickness mm | added g (one eye) | fatigue 15 / 19 / 23 in | strength at factored | passes |")
+        w("|---|---:|---|---:|---|")
+        for v in sz["rows"]:
+            ft = " / ".join(f"{v['fatigue'][t]:.2f}" for t in sorted(v["fatigue"], key=int))
+            w(f"| {v['height_mm']:.1f} x {v['cheek']:g} | {v['added_g']:.2f} | {ft} | {v['strength']:.2f} | "
+              f"{'yes' if v['ok'] else 'no'} |")
+        c = sz["chosen"]
+        w(f"\n**Smallest passing change: cheek {c['height_mm']:.0f} mm tall, 8 mm thick** (HALF_Z {c['half_z']}): "
+          f"fatigue {' / '.join(f'{c[chr(102)+chr(97)+chr(116)+chr(105)+chr(103)+chr(117)+chr(101)][t]:.2f}' for t in sorted(c['fatigue'], key=int))}, "
+          f"strength {c['strength']:.2f}, creep {c['creep']:.2f}. Mass {c['added_g']:.2f} g an eye: "
+          f"**+{cfr['fix']['mass_g'] / 2:.2f} g an eye, +{cfr['fix']['mass_g']:.2f} g a pair over A1's 25 mm cheek**, "
+          f"+{2 * (c['added_g'] - res['fea']['9.0']['added_g']):.2f} g a pair over the released 18 mm eye. The FEA "
+          "grid is 1 mm, so 26.5 mm voxelises to 26 mm (same FI as 26, which fails at 15 in, 0.98); 27 mm is the next "
+          "step. Thicker cheeks (9-10 mm) pass at 25 mm tall but weigh more.\n")
+        w(f"Clearances: cheek z {clr['cheek_bottom_z']:.1f}-{clr['cheek_top_z']:.1f}; spreader top edge z "
+          f"{clr['spreader_top_z']:.0f}, gap {clr['gap_mm']:.1f} mm against the {clr['notch_clear_mm']:.0f} mm notch rule "
+          "(pass). The throat stays 18 mm and the cheek still stands 7.6 mm aft of the hole centre, so the hook path is "
+          "unchanged: the cheek grows along the stay, beside the throat, not across the hook's swing. The throat takes "
+          "two carabiner rods side by side on the right eye (bag hook + IM3 meat free end): fits if each rod is "
+          "<= 8.5 mm (ASSUMPTION; Nano 22 rod section not published), check on first delivery. Left eye: bag hook + "
+          "girth hitch (2.8 mm). The cheek top (z 533.5) sits on the stay at the upper-bar node, which the 18 mm cheek "
+          "already overlaps; confirm on the H1 STL that the union adds no sliver (H1 files already have sliver defects).\n")
 
     w("## 5. Open items settled\n")
     w(f"- **IM3 bag hook:** the factored load is confirmed at **{next(r for r in res['rows'] if r['id'] == 'A1')['factored_n']:.0f} N** (guys-off "

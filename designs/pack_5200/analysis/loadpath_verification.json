@@ -1064,6 +1064,372 @@
    "note": ""
   },
   {
+   "id": "A1-CF",
+   "source": "BL-004",
+   "location": "IM3 eyes z 520, re-check on CORRIE F (BL-011) forces, per torso",
+   "part": "IM3 printed fairlead with the A1 25 mm cheek",
+   "direction": "aft-up along T3",
+   "ticket_factored_n": 1702,
+   "factored_n": 1702.1999999999998,
+   "load_basis": "BL-011 CORRIE F cloth sims at 15 / 19 / 23 in (worst case each); factored = max(1702 misuse, 3.0 x 552.4)",
+   "checks": [
+    {
+     "item": "25 mm cheek (A1 fix), fatigue 15 in, 1.6 x 552.4 N",
+     "demand_n": 883.84,
+     "capacity": 834.5390210340081,
+     "kind": "fatigue",
+     "ratio": 0.944219565796986,
+     "rated": true,
+     "basis": "fairlead_im3(12.5)",
+     "test": ""
+    },
+    {
+     "item": "25 mm cheek (A1 fix), fatigue 19 in, 1.6 x 515.5 N",
+     "demand_n": 824.8000000000001,
+     "capacity": 834.5390210340081,
+     "kind": "fatigue",
+     "ratio": 1.0118077364621825,
+     "rated": true,
+     "basis": "fairlead_im3(12.5)",
+     "test": ""
+    },
+    {
+     "item": "25 mm cheek (A1 fix), fatigue 23 in, 1.6 x 460.1 N",
+     "demand_n": 736.1600000000001,
+     "capacity": 834.5390210340081,
+     "kind": "fatigue",
+     "ratio": 1.1336380963839492,
+     "rated": true,
+     "basis": "fairlead_im3(12.5)",
+     "test": ""
+    },
+    {
+     "item": "25 mm cheek, strength >= 1.5 at the factored load",
+     "demand_n": 1702.1999999999998,
+     "capacity": 1854.5311578533513,
+     "kind": "strength",
+     "ratio": 1.089490751881889,
+     "rated": true,
+     "basis": "fairlead_im3(12.5); capacity = 1 / FI per N / 1.5",
+     "test": ""
+    }
+   ],
+   "verdict": "FAIL",
+   "min": 0.944219565796986,
+   "governs": "25 mm cheek (A1 fix), fatigue 15 in, 1.6 x 552.4 N",
+   "tests": [],
+   "note": "additive row (coordinator follow-up 2026-11-11); A1 stays as recorded on the S15 forces. Fix mass is on top of A1's fix.",
+   "fix": {
+    "change": "IM3 cheek 27 mm tall (HALF_Z 13.5, 8 mm thick) instead of A1's 25 mm",
+    "mass_g": 1.4599999999999973,
+    "frame_change": true,
+    "checks": [
+     {
+      "item": "27 mm cheek, fatigue 15 in",
+      "demand_n": 883.84,
+      "capacity": 915.7247627264883,
+      "kind": "fatigue",
+      "ratio": 1.0360752655757697,
+      "rated": true,
+      "basis": "fairlead_im3(13.5, cheek 8)",
+      "test": ""
+     },
+     {
+      "item": "27 mm cheek, fatigue 19 in",
+      "demand_n": 824.8000000000001,
+      "capacity": 915.7247627264883,
+      "kind": "fatigue",
+      "ratio": 1.1102385581067995,
+      "rated": true,
+      "basis": "fairlead_im3(13.5, cheek 8)",
+      "test": ""
+     },
+     {
+      "item": "27 mm cheek, fatigue 23 in",
+      "demand_n": 736.1600000000001,
+      "capacity": 915.7247627264883,
+      "kind": "fatigue",
+      "ratio": 1.2439208361313956,
+      "rated": true,
+      "basis": "fairlead_im3(13.5, cheek 8)",
+      "test": ""
+     },
+     {
+      "item": "27 mm cheek, strength >= 1.5 at the factored load",
+      "demand_n": 1702.1999999999998,
+      "capacity": 2034.943917169974,
+      "kind": "strength",
+      "ratio": 1.1954787434907614,
+      "rated": false,
+      "basis": "fairlead_im3(13.5); capacity / 1.5",
+      "test": "IM3 eye pull (first frame)"
+     },
+     {
+      "item": "creep at 1 g, worst torso",
+      "demand_n": 552.4,
+      "capacity": 1220.9663503019844,
+      "kind": "creep",
+      "ratio": 2.2102938998949755,
+      "rated": true,
+      "basis": "fairlead_im3(13.5)",
+      "test": ""
+     },
+     {
+      "item": "cheek bottom to spreader top edge vs the 6 mm notch rule (mm, as N)",
+      "demand_n": 6.0,
+      "capacity": 76.5,
+      "kind": "fit",
+      "ratio": 12.75,
+      "rated": true,
+      "basis": "spreader.Z_HI, NOTCH_CLEAR",
+      "test": ""
+     },
+     {
+      "item": "throat for bag-hook + meat carabiner rods side by side (mm, as N; 2 x 8.5 mm ASSUMPTION)",
+      "demand_n": 17.0,
+      "capacity": 18.0,
+      "kind": "fit",
+      "ratio": 1.0588235294117647,
+      "rated": false,
+      "basis": "bag_attach.THROAT (unchanged)",
+      "test": "carabiner fit (first delivery)"
+     }
+    ],
+    "after_verdict": "PASS after IM3 eye pull (first frame), carabiner fit (first delivery)",
+    "after_min": 1.0360752655757697,
+    "after_governs": "27 mm cheek, fatigue 15 in",
+    "after_tests": [
+     "IM3 eye pull (first frame)",
+     "carabiner fit (first delivery)"
+    ]
+   },
+   "sizing": {
+    "factored_n": 1702.1999999999998,
+    "rows": [
+     {
+      "key": "9.0_8.0",
+      "half_z": 9.0,
+      "cheek": 8.0,
+      "height_mm": 18.0,
+      "fi99": 0.6504503705966863,
+      "added_g": 6.13104,
+      "fatigue": {
+       "15": 0.7384491036269291,
+       "19": 0.7913080210349478,
+       "23": 0.8865883174168997
+      },
+      "strength": 1.278092773566806,
+      "creep": 1.575358087737449,
+      "ok": false
+     },
+     {
+      "key": "11.0_8.0",
+      "half_z": 11.0,
+      "cheek": 8.0,
+      "height_mm": 22.0,
+      "fi99": 0.5592151145174126,
+      "added_g": 7.5896,
+      "fatigue": {
+       "15": 0.8589261639242954,
+       "19": 0.9204089485000597,
+       "23": 1.03123410769785
+      },
+      "strength": 1.4866120329041819,
+      "creep": 1.8323758163718307,
+      "ok": false
+     },
+     {
+      "key": "12.0_8.0",
+      "half_z": 12.0,
+      "cheek": 8.0,
+      "height_mm": 24.0,
+      "fi99": 0.523921382004247,
+      "added_g": 8.31888,
+      "fatigue": {
+       "15": 0.9167873456194106,
+       "19": 0.9824118908247573,
+       "23": 1.1007027379268906
+      },
+      "strength": 1.5867569959508478,
+      "creep": 1.9558130039880761,
+      "ok": false
+     },
+     {
+      "key": "12.5_8.0",
+      "half_z": 12.5,
+      "cheek": 8.0,
+      "height_mm": 25.0,
+      "fi99": 0.5087,
+      "added_g": 8.8,
+      "fatigue": {
+       "15": 0.9442195657969861,
+       "19": 1.0118077364621827,
+       "23": 1.1336380963839494
+      },
+      "strength": 1.6342361278228337,
+      "creep": 2.014335073700237,
+      "ok": false
+     },
+     {
+      "key": "13.0_8.0",
+      "half_z": 13.0,
+      "cheek": 8.0,
+      "height_mm": 26.0,
+      "fi99": 0.4886,
+      "added_g": 9.05,
+      "fatigue": {
+       "15": 0.9830628185037389,
+       "19": 1.0534314276265089,
+       "23": 1.1802736382122698
+      },
+      "strength": 1.7014652440103881,
+      "creep": 2.097200679474643,
+      "ok": false
+     },
+     {
+      "key": "13.25_8.0",
+      "half_z": 13.25,
+      "cheek": 8.0,
+      "height_mm": 26.5,
+      "fi99": 0.4884,
+      "added_g": 9.05,
+      "fatigue": {
+       "15": 0.9834653831304809,
+       "19": 1.0538628082275028,
+       "23": 1.1807569607504405
+      },
+      "strength": 1.7021619947245612,
+      "creep": 2.098059484011693,
+      "ok": false
+     },
+     {
+      "key": "13.5_8.0",
+      "half_z": 13.5,
+      "cheek": 8.0,
+      "height_mm": 27.0,
+      "fi99": 0.4636,
+      "added_g": 9.53,
+      "fatigue": {
+       "15": 1.0360752655757697,
+       "19": 1.1102385581067995,
+       "23": 1.2439208361313956
+      },
+      "strength": 1.7932181152361424,
+      "creep": 2.2102938998949755,
+      "ok": true
+     },
+     {
+      "key": "14.0_8.0",
+      "half_z": 14.0,
+      "cheek": 8.0,
+      "height_mm": 28.0,
+      "fi99": 0.4465,
+      "added_g": 9.78,
+      "fatigue": {
+       "15": 1.0757547438318629,
+       "19": 1.1527583326725916,
+       "23": 1.291560357515151
+      },
+      "strength": 1.8618945536919944,
+      "creep": 2.2949434535079742,
+      "ok": true
+     },
+     {
+      "key": "12.5_9.0",
+      "half_z": 12.5,
+      "cheek": 9.0,
+      "height_mm": 25.0,
+      "fi99": 0.463,
+      "added_g": 9.65,
+      "fatigue": {
+       "15": 1.0374179117082654,
+       "19": 1.11167731217778,
+       "23": 1.2455328285756264
+      },
+      "strength": 1.7955419400075063,
+      "creep": 2.2131582116443,
+      "ok": true
+     },
+     {
+      "key": "13.0_9.0",
+      "half_z": 13.0,
+      "cheek": 9.0,
+      "height_mm": 26.0,
+      "fi99": 0.4507,
+      "added_g": 9.93,
+      "fatigue": {
+       "15": 1.0657299603304344,
+       "19": 1.1420159652503046,
+       "23": 1.2795245165975482
+      },
+      "strength": 1.8445438611570346,
+      "creep": 2.273557248704927,
+      "ok": true
+     },
+     {
+      "key": "11.5_10.0",
+      "half_z": 11.5,
+      "cheek": 10.0,
+      "height_mm": 23.0,
+      "fi99": 0.4631,
+      "added_g": 9.63,
+      "fatigue": {
+       "15": 1.0371938957480606,
+       "19": 1.1114372609335181,
+       "23": 1.2452638730954764
+      },
+      "strength": 1.7951542177142636,
+      "creep": 2.2126803109291964,
+      "ok": true
+     },
+     {
+      "key": "12.0_10.0",
+      "half_z": 12.0,
+      "cheek": 10.0,
+      "height_mm": 24.0,
+      "fi99": 0.4399,
+      "added_g": 9.93,
+      "fatigue": {
+       "15": 1.0918947331687359,
+       "19": 1.1700536384139857,
+       "23": 1.3109381669254718
+      },
+      "strength": 1.8898293208080827,
+      "creep": 2.32937543075997,
+      "ok": true
+     }
+    ],
+    "chosen": {
+     "key": "13.5_8.0",
+     "half_z": 13.5,
+     "cheek": 8.0,
+     "height_mm": 27.0,
+     "fi99": 0.4636,
+     "added_g": 9.53,
+     "fatigue": {
+      "15": 1.0360752655757697,
+      "19": 1.1102385581067995,
+      "23": 1.2439208361313956
+     },
+     "strength": 1.7932181152361424,
+     "creep": 2.2102938998949755,
+     "ok": true
+    }
+   },
+   "clearance": {
+    "cheek_bottom_z": 506.5,
+    "cheek_top_z": 533.5,
+    "spreader_top_z": 430.0,
+    "gap_mm": 76.5,
+    "notch_clear_mm": 6.0,
+    "spreader_ok": true,
+    "throat_mm": 18.0,
+    "outer_width_mm": 34.0,
+    "cheek_aft_of_hole_mm": 7.6,
+    "half_height_mm": 13.5
+   }
+  },
+  {
    "id": "H1",
    "source": "BL-006",
    "location": "BL006-1 50 mm buckle tabs, 25 mm anchor box-X and lock tab on them",
@@ -1387,9 +1753,30 @@
    "fi99": 0.4886,
    "added_g": 9.05
   },
+  "13.5": {
+   "fi99": 0.4636,
+   "added_g": 9.53
+  },
   "14.0": {
    "fi99": 0.4465,
    "added_g": 9.78
+  }
+ },
+ "corrie_f": {
+  "15": {
+   "n_1g": 552.4,
+   "case": "meat",
+   "source": "live"
+  },
+  "19": {
+   "n_1g": 515.5,
+   "case": "meat",
+   "source": "live"
+  },
+  "23": {
+   "n_1g": 460.1,
+   "case": "meat",
+   "source": "live"
   }
  },
  "fairlead_reproduce": {
@@ -1457,11 +1844,11 @@
  "mass": {
   "fix_g": {
    "BL-003": 35.0,
-   "BL-004": 21.337920000000004,
+   "BL-004": 22.79792,
    "BL-006": 0.0
   },
   "meat_trip_kit_g": 16.0,
-  "of_which_frame_g": 5.337920000000002,
+  "of_which_frame_g": 6.7979199999999995,
   "saving_before_g": {
    "BL-003": 218.5,
    "BL-004": 103.0,
@@ -1469,7 +1856,7 @@
   },
   "saving_after_g": {
    "BL-003": 183.5,
-   "BL-004": 81.66208,
+   "BL-004": 80.20208,
    "BL-006": 57.400000000000034
   }
  },

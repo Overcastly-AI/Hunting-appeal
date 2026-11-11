@@ -24,7 +24,8 @@ def test_every_table_row_has_a_verdict(res):
     ids = [r["id"] for r in res["rows"]]
     # strap_architecture.md 7: 12 rows; attachment_diet.md 5: 5 rows; hipbelt_diet.md 5: 4 rows
     assert sum(i.startswith("S") for i in ids) == 12
-    assert sum(i.startswith("A") for i in ids) == 5
+    assert sum(i.startswith("A") and i != "A1-CF" for i in ids) == 5
+    assert "A1-CF" in ids                         # additive BL-011 follow-up row
     assert sum(i.startswith("H") for i in ids) == 4
     for r in res["rows"]:
         assert r["verdict"].startswith(("PASS", "FAIL"))
@@ -89,7 +90,7 @@ def test_im3_fairlead_fatigue_and_fix(res):
 def test_masses(res):
     m = res["mass"]
     assert m["fix_g"]["BL-003"] == pytest.approx(35.0)          # 14 (IM3 free end) + 12 (hooks) + 9 (heavy locks)
-    assert m["fix_g"]["BL-004"] == pytest.approx(16.0 + 2 * (8.80 - 6.13104), abs=0.01)
+    assert m["fix_g"]["BL-004"] == pytest.approx(16.0 + 2 * (9.53 - 6.13104), abs=0.01)   # A1 + A1-CF cheek
     assert m["fix_g"]["BL-006"] == 0.0
     assert m["meat_trip_kit_g"] == pytest.approx(16.0)
     assert res["booked"]["bag_hook_g"] == pytest.approx(14.0) and res["booked"]["w_hook_g"] == pytest.approx(4.0)
@@ -107,3 +108,25 @@ def test_fairlead_reproduces_released_record():
     r2 = LP.fairlead_im3(12.5)
     assert r2["fi99"] == pytest.approx(LP.FROZEN["fairlead_im3"][12.5]["fi99"], rel=2e-3)
     assert math.isclose(r2["added_g"], LP.FROZEN["fairlead_im3"][12.5]["added_g"], rel_tol=1e-2)
+    r3 = LP.fairlead_im3(13.5)              # A1-CF chosen cheek, 27 mm
+    assert r3["fi99"] == pytest.approx(LP.FROZEN["fairlead_im3"][13.5]["fi99"], rel=2e-3)
+
+
+def test_a1_cf_per_torso_cheek(res):
+    r = next(x for x in res["rows"] if x["id"] == "A1-CF")
+    cf = res["corrie_f"]
+    assert {int(k) for k in cf} == {15, 19, 23}
+    assert cf[15 if 15 in cf else "15"]["n_1g"] == pytest.approx(552.4, abs=0.1)
+    # the A1 25 mm cheek fails at 15 in on CORRIE F (coordinator's pro-rata 0.94)
+    assert r["verdict"] == "FAIL" and r["min"] == pytest.approx(0.944, abs=0.005)
+    ch = r["sizing"]["chosen"]
+    assert ch["height_mm"] == 27.0 and ch["cheek"] == 8.0
+    assert min(ch["fatigue"].values()) >= 1.0 and ch["strength"] >= 1.5
+    # every lighter candidate fails one of the two rules
+    for v in r["sizing"]["rows"]:
+        if v["added_g"] < ch["added_g"]:
+            assert not v["ok"]
+    assert r["fix"]["mass_g"] == pytest.approx(2 * (9.53 - 8.80), abs=1e-6)
+    clr = r["clearance"]
+    assert clr["spreader_ok"] and clr["gap_mm"] == pytest.approx(76.5)
+    assert r["fix"]["after_verdict"].startswith("PASS")
