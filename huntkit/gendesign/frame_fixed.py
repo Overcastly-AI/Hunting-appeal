@@ -65,8 +65,8 @@ CROSS_BOLT_Z = 445.0     # 2 Ti M5 cross-bolts per leg, 90 deg apart in plan, 5 
 CROSS_BOLT_L = 30.0      # M5 x 30 through the socket (stay OD 26.8)
 CFRP_BEARING = 300.0     # ASSUMPTION (team C A1): pin bearing of the UD-rich roll-wrapped leg wall, MPa ultimate
 OPEN_HOLE_KD = 0.55      # ASSUMPTION: open-hole / unnotched strength of the leg laminate at the cross-bolt hole
-WALL_FLOOR = 2.4         # (c): printable wall round the channel below the socket (FDM min wall 2 mm, frame_topopt)
-C_BORE_R = 11.0          # (c): the empty channel below the socket is opened from r 9.0 to r 11.0 (wall 2.4 mm), except
+WALL_FLOOR = 3.4         # (c): wall kept round the opened channel below the socket (r 10.0 to the H1 outer r 13.4)
+C_BORE_R = 10.0          # (c): the empty channel below the socket is opened from r 9.0 to r 10.0 (wall 3.4 mm), except
 #                          in the frozen zones. With the 18 mm channel kept, the push removed 0.4 g in 3 iterates:
 #                          the free wall was only about 1 mm (outputs/frame_fixed/push_c_bore18.log)
 JOINT_FREEZE = (196.0, 256.0)   # (c): H1 material kept round the z 234 bolted joint (bosses z 198-252)
@@ -624,8 +624,9 @@ def c_base() -> dict:
     r = _stay_r(cen)
     z = cen[:, 2]
     from .frame_topopt import SLEEVE_BORE_R, SLEEVE_Z0
-    wall = (r >= C_BORE_R) & (r < C_BORE_R + WALL_FLOOR + H / 2) & (z >= SLEEVE_Z0) & (z < SOCKET_Z0)
     h1 = np.load(H1.OUT / "h1_final.npz")["solid"]
+    # wall floor: H1's own stay wall outside the opened channel (never adds material outside H1's stay)
+    wall = (r >= C_BORE_R) & (r < C_BORE_R + WALL_FLOOR) & (z >= SLEEVE_Z0) & (z < SOCKET_Z0) & h1
     jz = _freeze_z(z) & (r < 32.0)      # joint + spreader-clip sections stay as H1 (clips are not re-made)
     from .spreader import CLIP_Z
     clip = np.zeros_like(z, dtype=bool)

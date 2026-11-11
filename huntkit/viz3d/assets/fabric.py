@@ -33,9 +33,9 @@ class Look:
     limit: float = 5.0            # hard clamp on |displacement|
     hand: float = 0.45            # broad unevenness everywhere
     hand_mm: float = 55.0         # its wavelength
-    fold: float = 2.8             # wrinkle amplitude at full slack
-    fold_mm: tuple = (28.0, 62.0)  # wrinkle wavelength range
-    slack_gain: float = 9.0       # compression strain -> slack (1 at 11 % compression)
+    fold: float = 3.2             # wrinkle amplitude at full slack
+    fold_mm: tuple = (26.0, 58.0)  # wrinkle wavelength range
+    slack_gain: float = 12.0      # compression strain -> slack (1 at 8 % compression)
     slack: float | None = None    # override: constant slack 0..1 for parts without a pattern UV
     slack_dir: tuple | None = None  # with ``slack``: wrinkle ridges run ACROSS this 3D direction
     seam_dip: float = 1.1         # crease depth at a seam line
@@ -246,9 +246,11 @@ def displacement(V, F, uv_mm=None, seams=(), straps=(), blockers=None, look: Loo
         ok = np.isfinite(d)
         out_side[ok] = np.einsum("ij,ij->i", blockers[j[ok]] - V[ok], Nrm[ok]) > -0.5
         f = np.where(ok & out_side, np.clip((d - 3.0) / L.flat_reach, 0.0, 1.0), 1.0)
+        f = smooth_scalar(F, f, n, 4)                 # no patchy mask from the thinned blocker cloud
         f = f * f * (3 - 2 * f)
         h = np.where(h > 0, h * f, h * (0.35 + 0.65 * f))
         rep["blocked_frac"] = float((f < 0.99).mean())
+    h = 0.6 * h + 0.4 * smooth_scalar(F, h, n, 1)
     h = np.clip(h, -L.limit, L.limit)
     rep.update(max_abs_mm=float(np.abs(h).max()), rms_mm=float(np.sqrt((h * h).mean())), limit_mm=L.limit)
     return h, Nrm, rep

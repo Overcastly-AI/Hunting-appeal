@@ -785,7 +785,7 @@ def _leg_len(rig, s):
             + (b[f"foot_{s}"].head_local - b[f"calf_{s}"].head_local).length)
 
 
-def apply_pose(rig, pose: str) -> dict:
+def apply_pose(rig, pose: str, eye_rest=None) -> dict:
     """Pose the game_engine rig. The trunk (pelvis + spine) stays one rigid piece so the pack rides on it unchanged;
     only the pelvis leans. Returns {"slope_deg", "ground_z" (rig space, under the feet), "props": {...}}."""
     bpy = _bpy()
@@ -825,7 +825,18 @@ def apply_pose(rig, pose: str) -> dict:
         _aim_bone(rig, f"lowerarm_{s}", lower, twist_l)
         _aim_bone(rig, f"hand_{s}", hand if hand is not None else lower)
 
-    if pose in ("stand", "side", "front"):
+    if pose == "front":
+        lean_pelvis(3.0)
+        leg("l", 0.05, -0.04, ankle_h, foot_yaw=10)
+        leg("r", -0.03, 0.04, ankle_h, foot_yaw=12)
+        arm("l", _fru(0.10, -0.34, -1), _fru(1.0, -0.10, -0.12))     # both poles planted ahead, elbows clear of the belt
+        arm("r", _fru(0.06, 0.36, -1), _fru(1.0, 0.16, -0.22))
+        _curl_fingers(rig, "l", 0.92, thumb=0.7)
+        _curl_fingers(rig, "r", 0.92, thumb=0.7)
+        _aim_bone(rig, "neck_01", _fru(0.10, 0.0, 1))
+        _aim_bone(rig, "head", _fru(0.03, -0.12, 1), twist_deg=12.0)
+        info["props"]["poles"] = True
+    elif pose in ("stand", "side"):
         lean_pelvis(4.0)                                             # a loaded pack is carried with a slight lean
         leg("l", 0.03, -0.035, ankle_h, foot_yaw=8)
         leg("r", -0.02, 0.035, ankle_h, foot_yaw=10)
@@ -834,8 +845,8 @@ def apply_pose(rig, pose: str) -> dict:
         _curl_fingers(rig, "l", 0.35)
         _curl_fingers(rig, "r", 0.42)
         _aim_bone(rig, "neck_01", _fru(0.10, 0.0, 1))
-        hd = {"stand": _fru(0.02, 0.30, 1), "side": _fru(0.04, 0.0, 1), "front": _fru(0.03, -0.18, 1)}[pose]
-        _aim_bone(rig, "head", hd, twist_deg={"stand": -32.0, "side": 0.0, "front": 14.0}[pose])
+        hd = {"stand": _fru(0.02, 0.30, 1), "side": _fru(0.04, 0.0, 1)}[pose]
+        _aim_bone(rig, "head", hd, twist_deg={"stand": -32.0, "side": 0.0}[pose])
     elif pose == "walk":
         a = 14.0                                                     # uphill slope, deg
         t = math.tan(math.radians(a))
@@ -859,20 +870,29 @@ def apply_pose(rig, pose: str) -> dict:
         hz_ = pb["thigh_r"].head.z
         _ = hz_
         # right: thigh straight down, shin back along the ground, toes tucked
-        tgt = Vector((hip["r"].x, hip["r"].y, 0.0)) + _fru(-0.40, 0.02, 0.105)
+        tgt = Vector((hip["r"].x, hip["r"].y, 0.0)) + _fru(-0.43, 0.02, 0.075)
         _two_bone(rig, "thigh_r", "calf_r", tgt, _fru(0.6, 0.05, -1.0))
-        _aim_bone(rig, "foot_r", _fru(-0.25, 0.0, -1))
+        _aim_bone(rig, "foot_r", _fru(-1.0, 0.0, -0.42))              # instep on the ground, toes back
         # left: thigh forward, shin vertical, foot flat
         tgt = Vector((hip["l"].x, hip["l"].y, 0.0)) + _fru(0.36, -0.10, ankle_h)
         _two_bone(rig, "thigh_l", "calf_l", tgt, _fru(1.0, -0.25, 0.6))
         _aim_bone(rig, "foot_l", Matrix.Rotation(math.radians(10.0), 3, "Z") @ foot_rest["l"])
         # glassing: both hands at the binoculars in front of the eyes
-        arm("l", _fru(0.62, -0.42, -0.62), _fru(0.08, 0.62, 0.9), _fru(0.0, 0.5, 0.9), twist_l=0.0)
-        arm("r", _fru(0.62, 0.42, -0.62), _fru(0.08, -0.62, 0.9), _fru(0.0, -0.5, 0.9), twist_l=0.0)
-        _curl_fingers(rig, "l", 0.62, thumb=0.2)
-        _curl_fingers(rig, "r", 0.62, thumb=0.2)
         _aim_bone(rig, "neck_01", _fru(0.16, 0.0, 1))
-        _aim_bone(rig, "head", _fru(0.02, 0.0, 1))
+        head_rest = pb["head"].bone.matrix_local.copy()
+        _aim_bone(rig, "head", _fru(0.0, 0.0, 1))
+        Hd = pb["head"].matrix @ head_rest.inverted()                # head: rest -> posed
+        fwd = (Hd.to_3x3() @ _fru(1, 0, 0)).normalized()
+        info["head_fwd"] = tuple(fwd)
+        if eye_rest is not None:                                     # wrists beside the binocular barrels
+            eye = Hd @ Vector(eye_rest)
+            lat = (Hd.to_3x3() @ _fru(0, 1, 0)).normalized()
+            for s in "lr":
+                wrist = eye + fwd * 0.085 + lat * (sgn[s] * 0.085) + Vector((0, 0, -0.075))
+                _two_bone(rig, f"upperarm_{s}", f"lowerarm_{s}", wrist, _fru(0.2, sgn[s] * 0.7, -1.0))
+                _aim_bone(rig, f"hand_{s}", _fru(0.25, -sgn[s] * 0.75, 0.9))
+        _curl_fingers(rig, "l", 0.55, thumb=0.1)
+        _curl_fingers(rig, "r", 0.55, thumb=0.1)
         info["props"]["binoculars"] = True
     else:
         raise ValueError(f"pose {pose!r}: choose from {POSES}")
@@ -1101,6 +1121,22 @@ def _polys(ob):
     return [tuple(p.vertices) for p in ob.data.polygons]
 
 
+def _refine(ob, max_edge=0.012, passes=4):
+    """Split edges longer than ``max_edge`` (m) so a mesh can follow a curved surface when its vertices are moved."""
+    import bmesh  # noqa: PLC0415
+    bm = bmesh.new()
+    bm.from_mesh(ob.data)
+    for _ in range(passes):
+        long = [e for e in bm.edges if e.calc_length() > max_edge]
+        if not long:
+            break
+        bmesh.ops.subdivide_edges(bm, edges=long, cuts=1, use_grid_fill=True)
+    bmesh.ops.triangulate(bm, faces=[f for f in bm.faces if len(f.verts) > 4])
+    bm.to_mesh(ob.data)
+    bm.free()
+    ob.data.update()
+
+
 def fit_pack(pack: dict, cloth_objs: list, M_pack, torso_setting: float, z_crest: float, z_c7: float,
              verbose=False) -> dict:
     """Fit the harness and hipbelt to the clothed body and press them into the cloth.
@@ -1121,10 +1157,12 @@ def fit_pack(pack: dict, cloth_objs: list, M_pack, torso_setting: float, z_crest
     out = {}
     tag = f"@t{torso_setting:g}"
 
-    def run(ref_names, follow, yc, z_top, z_lo, z_hi, sink, back_fixed):
+    def run(ref_names, follow, yc, z_top, z_lo, z_hi, sink, back_fixed, close_front=False):
         refs = [o for n, o in parts.items() if n.split("@")[0].startswith(ref_names)]
         fol = [o for n, o in parts.items() if follow(n) and o not in refs]
         W = _Wrap(yc, z_top, z_lo, z_hi)
+        for o in refs + fol:                                  # long straight runs must be able to bend round the body
+            _refine(o, 0.012)
         solo = ("load_lifters", "imp2_hose", "corrie_top_guys")       # run free of the body: never pulled onto it
         union = refs + [o for o in fol if not o.name.startswith(solo)]
         r_pad = W.cast(_bvh([(_co(o), _polys(o)) for o in refs]), first=True)
@@ -1167,7 +1205,41 @@ def fit_pack(pack: dict, cloth_objs: list, M_pack, torso_setting: float, z_crest
             sel = (dd > 1e-5) & (np.abs(r - rb) < 0.02) & (u > W.u[0]) & (u < W.u[-1])
             if sel.any():
                 Vp[sel] -= dirs[sel] * dd[sel, None]
+        if close_front:
+            # The viz3d belt B is drawn open at the front (buckle on one tip, D-ring on the other, no webbing between).
+            # Close it with a 38 mm webbing band on the cloth between the wing tips, at the buckle height.
+            j = int(np.argmin(np.abs(W.u - z_crest)))
+            az_deg = np.degrees(W.az)
+            padded = pad[:, max(j - 3, 0):j + 4].any(axis=1)
+            free = np.where(~padded & (np.abs(az_deg) < 120))[0]
+            if len(free) > 4:
+                a0, a1 = az_deg[free].min() - 6.0, az_deg[free].max() + 6.0
+                azs = np.radians(np.arange(a0, a1 + 0.5, 2.0))
+                rb = _blur(_nanfill(r_body), 1)
+                hw = parts.get("beltB_hardware")
+                zb = z_crest
+                if hw is not None:
+                    Vh = _co(hw)
+                    fr = Vh[Vh[:, 1] > np.percentile(Vh[:, 1], 80)]
+                    zb = float(fr[:, 2].mean())
+                Vr, Fr = [], []
+                for a in azs:
+                    for dz in (-0.019, 0.019):
+                        for lift in (0.0006, 0.0026):
+                            r = float(W.sample(rb, np.array([a]), np.array([zb + dz]))[0]) + lift
+                            Vr.append((r * math.sin(a), W.yc + r * math.cos(a), zb + dz))
+                for i in range(len(azs) - 1):
+                    b0, b1 = 4 * i, 4 * (i + 1)
+                    Fr += [(b0 + 1, b0 + 3, b1 + 3, b1 + 1), (b0, b1, b1 + 2, b0 + 2), (b0, b0 + 1, b1 + 1, b1),
+                           (b0 + 2, b1 + 2, b1 + 3, b0 + 3)]
+                wb = parts.get("beltB_webbing")
+                band = _mesh_obj("beltB_front_webbing", np.array(Vr), Fr,
+                                 wb.data.materials[0] if wb is not None and wb.data.materials else None)
+                parts["beltB_front_webbing"] = band
         gap = r_in2 - r_body                                  # > 0: daylight between pad and cloth before the press
+        if os.environ.get("WEARER_DBG"):
+            np.savez(os.environ["WEARER_DBG"] + f"_{ref_names[0]}.npz", r_in=r_in, r_pad=r_pad, r_body=r_body, D=D,
+                     delta=delta, r_in2=r_in2, az=W.az, u=W.u)
         return {"cells": int(foot.sum()), "max_move_mm": round(1000 * max(moved), 1),
                 "press_mm_mean": round(1000 * float(depth[depth > 0].mean()) if (depth > 0).any() else 0.0, 1),
                 "gap_mm_max_after": round(1000 * float(np.nanmax(np.where(foot, gap, np.nan))), 1),
@@ -1178,7 +1250,7 @@ def fit_pack(pack: dict, cloth_objs: list, M_pack, torso_setting: float, z_crest
     out["harness"] = run(HARNESS_REF, lambda n: n.split("@")[0].startswith(HARNESS_FOLLOW) and n.endswith(tag),
                          yc_of(z_arm - 0.05, z_arm + 0.05), z_arm, z_crest + 0.02, z_c7 + 0.2, SINK_STRAP, yb)
     out["belt"] = run(BELT_REF, lambda n: n.startswith(BELT_PREFIX), yc_of(z_crest - 0.06, z_crest + 0.06),
-                      z_crest + 0.4, z_crest - 0.16, z_crest + 0.16, SINK_BELT, None)
+                      z_crest + 0.4, z_crest - 0.16, z_crest + 0.16, SINK_BELT, None, close_front=True)
     for o, Vp in cloth:
         _set_co(o, _xf(np.array(Matrix(o.matrix_world).inverted()) @ Mf, Vp))
     if verbose:
@@ -1354,9 +1426,9 @@ def _pack_measures(parts: dict, tag: str) -> dict:
             P = V[V[:, 0] * sx > 0]
             if len(P) < 8:
                 continue
-            c = P - P.mean(0)
-            ax = np.linalg.svd(c, full_matrices=False)[2][0]
-            angs.append(abs(math.degrees(math.atan2(ax[2], math.hypot(ax[0], ax[1])))))
+            lo_, hi_ = np.percentile(P[:, 1], [8, 92])      # aft end (frame lug) and forward end (strap), by y
+            a, b = P[P[:, 1] <= lo_].mean(0), P[P[:, 1] >= hi_].mean(0)
+            angs.append(abs(math.degrees(math.atan2(a[2] - b[2], math.hypot(a[0] - b[0], a[1] - b[1])))))
         out["lifter_angle_deg"] = [round(a, 1) for a in angs]
     return out
 
@@ -1390,7 +1462,8 @@ def build_wearer(torso_in: float | None = None, pose: str = "stand", outfit: str
     zr_crest = float(Vr[V_NAVEL, 2]) + CREST_ABOVE_NAVEL / 1000.0
     zr_c7 = float(0.5 * (Vr[V_C7[0], 2] + Vr[V_C7[1], 2]))
     rest_pelvis = rig.pose.bones["pelvis"].matrix.copy()
-    info = apply_pose(rig, pose)
+    eyes_ob = next(o for o in fig["extras"] if o.name == "wearer_eyes")
+    info = apply_pose(rig, pose, eye_rest=tuple(_co(eyes_ob).mean(0)))
     P = rig.pose.bones["pelvis"].matrix @ rest_pelvis.inverted()           # trunk: rest -> posed (rig space)
     figure = [body, suit, boots] + fig["extras"] + cap
     _bake(body, levels=1)
@@ -1519,14 +1592,11 @@ def add_props(w: Wearer, info: dict, X) -> list:
         E = _xf(np.array(eyes.matrix_world), _co(eyes))
         ec = E.mean(0)
         el, er = E[E[:, 0] < ec[0]].mean(0), E[E[:, 0] > ec[0]].mean(0)
-        hd = group_pts("head")
-        up = hd[hd[:, 2] > np.percentile(hd[:, 2], 97)].mean(0) - ec
+        Xr = np.array(X)[:3, :3]
+        fw = Xr @ np.array(info.get("head_fwd", (0.0, -1.0, 0.0)))
         lat = (er - el) / np.linalg.norm(er - el)
-        up = up - lat * up.dot(lat)
-        up /= np.linalg.norm(up)
-        fw = np.cross(up, lat)
-        if fw[1] < 0:
-            fw = -fw
+        fw = fw - lat * fw.dot(lat)
+        fw /= np.linalg.norm(fw)
         arm = _plain_material("bino_armour", (0.03, 0.035, 0.03), 0.75)
         glass = _plain_material("bino_glass", (0.01, 0.012, 0.02), 0.08, coat=1.0)
         for k, e in enumerate((el, er)):
@@ -1564,3 +1634,302 @@ def studio_wearer(torso_in=None, pose="stand", outfit="midlayer", **kw) -> dict:
         parts[o.name] = o
     w = build_wearer(torso_in, pose, outfit, pack_parts=parts, form=form, **kw)
     return {"objects": w.figure + w.props, "pack_on_torso": w.fit["pack_on_torso"], "wearer": w}
+
+
+# ------------------------------------------------------------------------------------------------ render stage
+# Shots: pose, scene ("studio" = BL-018's studio rig from huntkit.viz3d.studio; "outdoor" = CC0 HDRI + grass ground),
+# camera azimuth / elevation in the viewer convention (0 = looking at the bag's aft face, 90 = from the wearer's
+# right, 180 = from the front), optional close-up box in metres (wearer frame: x right, y forward, z up from ground).
+NOT_A_PHOTO = "Rendered 3D figure (Blender Cycles), not a photograph"
+SHOTS = {
+    "hero": {"pose": "stand", "scene": "studio", "az": -36, "el": 9,
+             "caption": "CORRIE B.2 on a 6 ft hunter: 3/4 rear", "sub": "{fit}. " + NOT_A_PHOTO},
+    "front": {"pose": "front", "scene": "studio", "az": 152, "el": 8,
+              "caption": "Front 3/4: belt, pocket, bottle, sternum strap",
+              "sub": "Belt B size {belt} on the iliac crest; poles in hand. " + NOT_A_PHOTO},
+    "side": {"pose": "side", "scene": "studio", "az": 90, "el": 4,
+             "caption": "Side profile: how tall and how deep it rides",
+             "sub": "Head gap {head} mm; lifters {lifter} deg (design 40.6). " + NOT_A_PHOTO},
+    "walk": {"pose": "walk", "scene": "outdoor", "az": -58, "el": 6,
+             "caption": "Walking uphill with trekking poles (14 deg slope)", "sub": NOT_A_PHOTO + ". HDRI: Poly Haven, CC0"},
+    "kneel": {"pose": "kneel", "scene": "outdoor", "az": 118, "el": 5,
+              "caption": "Kneeling and glassing with the pack on", "sub": NOT_A_PHOTO + ". HDRI: Poly Haven, CC0"},
+    "field": {"pose": "stand", "scene": "outdoor", "az": -40, "el": 7,
+              "caption": "In the field: 3/4 rear, sun from the side", "sub": NOT_A_PHOTO + ". HDRI: Poly Haven, CC0"},
+    "fit_back": {"pose": "stand", "scene": "studio", "az": 62, "el": 10, "box": (-0.30, -0.42, 0.85, 0.34, 0.25, 1.80),
+                 "caption": "Fit detail: straps on the shoulders, belt on the hips",
+                 "sub": "Pads pressed {press} mm into the cloth; no daylight under the straps. " + NOT_A_PHOTO},
+    "fit_front": {"pose": "front", "scene": "studio", "az": 205, "el": 12, "box": (-0.36, -0.30, 0.85, 0.36, 0.30, 1.62),
+                  "caption": "Fit detail: belt, bottle holster, sternum strap",
+                  "sub": "Front webbing between the wing tips is drawn by wearer.py (the viz3d belt is open). "
+                         + NOT_A_PHOTO},
+}
+DEFAULT_SHOTS = ("hero", "front", "side", "walk", "kneel", "field", "fit_back", "fit_front")
+
+
+def _ph(asset_id) -> Path:
+    m = {a["id"]: a for a in load_manifest()["assets"]}[asset_id]
+    return asset_dir() / m["dir"] / m["file"]
+
+
+def _outdoor(w: Wearer, cam_az: float, sun_off_deg: float = -70.0, exposure: float = -0.6):
+    """Mountain setting: Poly Haven HDRI as light and backdrop, a grass ground on the wearer's slope, dry-grass tufts
+    round the feet. The HDRI is turned so the sun stands ``sun_off_deg`` round from the camera (side light)."""
+    bpy = _bpy()
+    from . import cycles_render as CR  # noqa: PLC0415
+    sc = bpy.context.scene
+    wd = bpy.data.worlds.new("mountain")
+    sc.world = wd
+    wd.use_nodes = True
+    nt = wd.node_tree
+    nt.nodes.clear()
+    tc, mp = nt.nodes.new("ShaderNodeTexCoord"), nt.nodes.new("ShaderNodeMapping")
+    env = nt.nodes.new("ShaderNodeTexEnvironment")
+    env.image = bpy.data.images.load(str(_ph("ph_hdri")), check_existing=True)
+    bg, out = nt.nodes.new("ShaderNodeBackground"), nt.nodes.new("ShaderNodeOutputWorld")
+    nt.links.new(tc.outputs["Generated"], mp.inputs["Vector"])
+    nt.links.new(mp.outputs["Vector"], env.inputs["Vector"])
+    nt.links.new(env.outputs["Color"], bg.inputs["Color"])
+    nt.links.new(bg.outputs[0], out.inputs["Surface"])
+    d = CR.view_dir(cam_az + sun_off_deg, 0.0)                        # where the sun should stand (from the subject)
+    want = math.atan2(d[1], d[0])
+    have = math.atan2(math.sin(math.radians(HDRI_SUN_AZ_DEG)), math.cos(math.radians(HDRI_SUN_AZ_DEG)))
+    mp.inputs["Rotation"].default_value = (0.0, 0.0, have - want + math.pi)   # sign / half-turn set by test render
+    bg.inputs["Strength"].default_value = 1.0
+    sc.view_settings.exposure = exposure
+    sc.render.film_transparent = False
+    # ground
+    n = np.array(w.ground[1])
+    size = 120.0
+    bpy.ops.mesh.primitive_grid_add(x_subdivisions=2, y_subdivisions=2, size=size)
+    g = bpy.context.active_object
+    g.name = "ground"
+    from mathutils import Vector  # noqa: PLC0415
+    g.rotation_euler = Vector((0, 0, 1)).rotation_difference(Vector(n)).to_euler()
+    g.location = (0, 0, -0.004)
+    m = bpy.data.materials.new("grass_ground")
+    m.use_nodes = True
+    t = m.node_tree
+    b = t.nodes["Principled BSDF"]
+    tcn, mpn = t.nodes.new("ShaderNodeTexCoord"), t.nodes.new("ShaderNodeMapping")
+    mpn.inputs["Scale"].default_value = (size / 2.2, size / 2.2, 1.0)
+    t.links.new(tcn.outputs["UV"], mpn.inputs["Vector"])
+    base = asset_dir() / {a["id"]: a for a in load_manifest()["assets"]}["ph_grass_diff"]["dir"]
+
+    def tex(fn, noncolor):
+        ti = t.nodes.new("ShaderNodeTexImage")
+        ti.image = bpy.data.images.load(str(base / fn), check_existing=True)
+        if noncolor:
+            ti.image.colorspace_settings.name = "Non-Color"
+        t.links.new(mpn.outputs["Vector"], ti.inputs["Vector"])
+        return ti
+    t.links.new(tex("grass_ground_diff_2k.jpg", False).outputs["Color"], b.inputs["Base Color"])
+    t.links.new(tex("grass_ground_rough_2k.jpg", True).outputs["Color"], b.inputs["Roughness"])
+    nm = t.nodes.new("ShaderNodeNormalMap")
+    nm.inputs["Strength"].default_value = 1.5
+    t.links.new(tex("grass_ground_nor_gl_2k.jpg", True).outputs["Color"], nm.inputs["Color"])
+    t.links.new(nm.outputs[0], b.inputs["Normal"])
+    g.data.materials.append(m)
+    extra = [g]
+    # dry-grass tufts round the feet: a patch of thin curved blades (mesh, so it needs no particle system)
+    rng = np.random.default_rng(7)
+    V, F = [], []
+    nb = 70000
+    r = 11.0 * rng.random(nb) ** 1.15                               # dense at the feet, thinning with distance
+    a = rng.random(nb) * 2 * math.pi
+    px, py = r * np.cos(a), r * np.sin(a)
+    pz = -(n[0] * px + n[1] * py) / n[2]
+    hgt = 0.05 + 0.11 * rng.random(nb) ** 1.6
+    lean = rng.normal(0, 0.35, (nb, 2))
+    yaw = rng.random(nb) * math.pi
+    wdt = 0.0022 + 0.002 * rng.random(nb)
+    for i in range(nb):
+        c, s = math.cos(yaw[i]), math.sin(yaw[i])
+        k = len(V)
+        for j, f in enumerate((0.0, 0.5, 1.0)):
+            ww = wdt[i] * (1 - 0.85 * f)
+            ox, oy = lean[i, 0] * hgt[i] * f * f, lean[i, 1] * hgt[i] * f * f
+            V += [(px[i] + ox - c * ww, py[i] + oy - s * ww, pz[i] + hgt[i] * f),
+                  (px[i] + ox + c * ww, py[i] + oy + s * ww, pz[i] + hgt[i] * f)]
+        F += [(k, k + 1, k + 3, k + 2), (k + 2, k + 3, k + 5, k + 4)]
+    gm = bpy.data.materials.new("dry_grass")
+    gm.use_nodes = True
+    gb = gm.node_tree.nodes["Principled BSDF"]
+    oi, rp = gm.node_tree.nodes.new("ShaderNodeObjectInfo"), gm.node_tree.nodes.new("ShaderNodeValToRGB")
+    geo = gm.node_tree.nodes.new("ShaderNodeNewGeometry")
+    _ = oi
+    rp.color_ramp.elements[0].color = (0.16, 0.115, 0.05, 1)
+    rp.color_ramp.elements[1].color = (0.42, 0.33, 0.16, 1)
+    gm.node_tree.links.new(geo.outputs["Random Per Island"], rp.inputs["Fac"])
+    gm.node_tree.links.new(rp.outputs["Color"], gb.inputs["Base Color"])
+    gb.inputs["Roughness"].default_value = 0.7
+    tuft = _mesh_obj("grass_tufts", np.array(V), F, gm, smooth=False)
+    extra.append(tuft)
+    return extra
+
+
+HDRI_SUN_AZ_DEG = 0.0      # set by calibration below: azimuth (deg, atan2(y, x)) of the sun in the unrotated HDRI
+
+
+def _hdri_sun_az() -> float:
+    """Sun azimuth in Blender world axes of the unrotated HDRI: the brightest pixel. Blender's equirectangular
+    lookup is u = atan2(y, -x) / 2 pi + 0.5."""
+    bpy = _bpy()
+    im = bpy.data.images.load(str(_ph("ph_hdri")), check_existing=True)
+    wpx, hpx = im.size
+    a = np.array(im.pixels[:], dtype=np.float32).reshape(hpx, wpx, 4)[:, :, :3].sum(2)
+    j, i = np.unravel_index(int(np.argmax(a)), a.shape)
+    ang = ((i + 0.5) / wpx - 0.5) * 2 * math.pi            # = atan2(y, -x)
+    x, y = -math.cos(ang), math.sin(ang)
+    return math.degrees(math.atan2(y, x)), (j / hpx - 0.5) * 180.0
+
+
+def clear_scene():
+    """Empty the current file without a factory reset (a reset would unregister the MPFB extension)."""
+    bpy = _bpy()
+    for coll in (bpy.data.objects, bpy.data.meshes, bpy.data.materials, bpy.data.armatures, bpy.data.cameras,
+                 bpy.data.lights, bpy.data.worlds, bpy.data.node_groups, bpy.data.curves):
+        for b in list(coll):
+            coll.remove(b)
+
+
+def render_wearer(shots=DEFAULT_SHOTS, out_dir=None, prefix="20261110_BL019", quality="final", start=1,
+                  torso_in=None, outfit="midlayer", glb=None, samples=None, captions=True, verbose=True) -> list:
+    """Standalone render path (Blender Cycles): one build per pose, studio shots with BL-018's studio rig
+    (huntkit.viz3d.studio: setup_render, make_backdrop, make_lights, place_lights, finish), outdoor shots with the
+    HDRI scene. PNGs <= 1.5 MB to ``out_dir`` (default outputs/screens) as ``<prefix>_<n>.png``."""
+    global HDRI_SUN_AZ_DEG
+    bpy = _bpy()
+    from . import cycles_render as CR  # noqa: PLC0415
+    from . import studio as ST  # noqa: PLC0415
+    out_dir = Path(out_dir or REPO / "outputs" / "screens")
+    out_dir.mkdir(parents=True, exist_ok=True)
+    work = REPO / "outputs" / "cycles_work"
+    work.mkdir(parents=True, exist_ok=True)
+    q = dict(ST.QUALITY[quality])
+    if quality == "final":
+        q["samples"] = 96
+    if samples:
+        q["samples"] = samples
+    res = tuple(q["res"])
+    order = list(shots)
+    results = {}
+    for pose in dict.fromkeys(SHOTS[s]["pose"] for s in order):
+        t0 = time.time()
+        clear_scene()
+        w = build_wearer(torso_in, pose, outfit, glb=glb, verbose=False)
+        if verbose:
+            print(f"[{pose}] built in {time.time() - t0:.0f} s; fit "
+                  + json.dumps({k: v for k, v in w.fit.items() if k != 'pack_on_torso'}), flush=True)
+        sc = ST.setup_render(q["samples"], res, None)
+        studio_world = sc.world
+        cd = bpy.data.cameras.new("cam")
+        cd.sensor_fit = "VERTICAL"
+        cd.sensor_height = 24.0
+        cam = bpy.data.objects.new("cam", cd)
+        sc.collection.objects.link(cam)
+        sc.camera = cam
+        backdrop, lights, outdoor = None, None, None
+        meshes = [o for o in w.objects if o.type == "MESH"]
+        for name in [s for s in order if SHOTS[s]["pose"] == pose]:
+            sh = SHOTS[name]
+            if sh["scene"] == "studio":
+                if outdoor:
+                    for o in outdoor:
+                        o.hide_render = True
+                if backdrop is None:
+                    backdrop, lights = ST.make_backdrop(), ST.make_lights()
+                backdrop.hide_render = False
+                for o in lights:
+                    o.hide_render = False
+                sc.world = studio_world
+                sc.view_settings.exposure = 0.0
+            else:
+                if backdrop is not None:
+                    backdrop.hide_render = True
+                    for o in lights:
+                        o.hide_render = True
+                if not HDRI_SUN_AZ_DEG:
+                    HDRI_SUN_AZ_DEG = _hdri_sun_az()[0]
+                if outdoor:
+                    for o in outdoor:
+                        bpy.data.objects.remove(o, do_unlink=True)
+                outdoor = _outdoor(w, sh["az"])
+            lo, hi = CR.visible_bounds(meshes)
+            if "box" in sh:
+                bmin, bmax = tuple(sh["box"][:3]), tuple(sh["box"][3:])
+            else:
+                bmin, bmax = lo, hi
+            fov = 24.0
+            cd.angle_y = math.radians(fov)
+            pos, tgt = CR.fit_camera(bmin, bmax, sh["az"], sh["el"], fov, res[0] / res[1], 1.0, fill=0.93)
+            cam.location = pos
+            CR._aim(cam, tgt)
+            dist = math.dist(pos, tgt)
+            cd.dof.use_dof = True
+            cd.dof.focus_distance = dist
+            cd.dof.aperture_fstop = 11.0 if sh["scene"] == "studio" else 4.0
+            cd.clip_start, cd.clip_end = 0.01, 300.0
+            if sh["scene"] == "studio":
+                backdrop.location = (tgt[0], tgt[1], -0.0005)
+                d = CR.view_dir(sh["az"], 0.0)
+                backdrop.rotation_euler = (0.0, 0.0, math.atan2(-d[1], -d[0]) - math.pi / 2)
+                ST.place_lights(lights, sh["az"], tgt, max(1.6, 0.8 * dist) if "box" not in sh else max(1.2, dist))
+            raw = work / f"_raw_{prefix}_{name}.png"
+            sc.render.filepath = str(raw)
+            t1 = time.time()
+            bpy.ops.render.render(write_still=True)
+            n = start + order.index(name)
+            out = out_dir / f"{prefix}_{n}.png"
+            f = w.fit
+            sub = sh["sub"].format(
+                fit=f"1829 mm man, torso {f.get('torso_figure_mm', 0):.0f} mm, pack set to {f.get('torso_setting_in', 0):g} in",
+                belt="L", head=f"{f.get('head_gap_mm', 0):.0f}",
+                lifter="/".join(f"{a:.0f}" for a in f.get("lifter_angle_deg", [])),
+                press=f"{f.get('harness', {}).get('press_mm_mean', 0):.0f} to {f.get('belt', {}).get('press_mm_mean', 0):.0f}")
+            ST.finish(raw, out, sh["caption"] if captions else "", sub if captions else "")
+            CR.shrink_png(out)
+            results[name] = {"shot": name, "file": str(out), "seconds": round(time.time() - t1, 1),
+                             "mb": round(out.stat().st_size / 1e6, 2), "fit": {k: v for k, v in f.items()
+                                                                              if k != "pack_on_torso"}}
+            if verbose:
+                print(f"[{name}] {out} {time.time() - t1:.0f} s", flush=True)
+    res_list = [results[s] for s in order]
+    (work / f"{prefix}_wearer.json").write_text(json.dumps(res_list, indent=1))
+    return res_list
+
+
+def main(argv=None):
+    import argparse  # noqa: PLC0415
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    m = sub.add_parser("model", help="export the pack GLB with the wearer torso settings (repo Python)")
+    m.add_argument("--torsos", default="", help="extra settings, e.g. 15,23")
+    sub.add_parser("fetch", help="download and verify the human assets")
+    sub.add_parser("spec", help="print the default wearer's ANSUR-derived dimensions")
+    r = sub.add_parser("render", help="render shots (bpy venv)")
+    r.add_argument("--shots", default="all")
+    r.add_argument("--quick", action="store_true")
+    r.add_argument("--torso", type=float, default=None)
+    r.add_argument("--outfit", default="midlayer")
+    r.add_argument("--prefix", default="20261110_BL019")
+    r.add_argument("--out", default=None)
+    r.add_argument("--start", type=int, default=1)
+    a = ap.parse_args(argv)
+    if a.cmd == "model":
+        extra = [float(x) for x in a.torsos.split(",") if x]
+        print(build_pack_glb([figure_spec()["torso_setting_in"]] + extra))
+    elif a.cmd == "fetch":
+        print("\n".join(fetch_assets()))
+    elif a.cmd == "spec":
+        s = figure_spec()
+        print(json.dumps({k: (round(v, 1) if isinstance(v, float) else v) for k, v in s.items() if k != "dims"}))
+        print(json.dumps({k: round(v, 1) for k, v in s["dims"].items()}, indent=1))
+    else:
+        names = DEFAULT_SHOTS if a.shots == "all" else tuple(a.shots.split(","))
+        for x in render_wearer(names, a.out, a.prefix, "quick" if a.quick else "final", a.start, a.torso, a.outfit):
+            print(x["file"], x["seconds"], "s", x["mb"], "MB")
+
+
+if __name__ == "__main__":
+    main()

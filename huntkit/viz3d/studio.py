@@ -38,7 +38,7 @@ REPO = Path(__file__).resolve().parents[2]
 WORK = REPO / "outputs" / "studio_work"
 
 FABRIC_KEYS = ("body", "camo", "tpu", "harness", "pocket", "ultra", "lining")
-QUALITY = {"quick": {"res": (800, 600), "samples": 20}, "preview": {"res": (1200, 900), "samples": 40},
+QUALITY = {"quick": {"res": (800, 600), "samples": 16}, "preview": {"res": (1200, 900), "samples": 40},
            "final": {"res": (1600, 1200), "samples": 72}}
 
 # ------------------------------------------------------------------------------------------------ materials
@@ -606,7 +606,38 @@ def hardware_sheet_scene(name="hardware_sheet") -> ConceptScene:
     return sc
 
 
-CONCEPTS = {"corrie_b2": corrie_b2_scene, "hardware_sheet": hardware_sheet_scene}
+def fabric_swatch_scene(name="fabric_swatches") -> ConceptScene:
+    """Two 330D panels from the same flat pattern, one held 3 % taut (left), one let in 6 % slack (right), each with
+    a seam and a 25 mm strap: what the fabric pass does with the strain field."""
+    import numpy as np
+    from .assets import mesh
+    sc = ConceptScene(name)
+    n, S0 = 70, 360.0
+    nrm = np.array([0.0, 1.0, 0.0])
+    for k, (tag, comp) in enumerate((("taut", 1.03), ("slack", 0.94))):
+        u, v = np.meshgrid(np.linspace(0, S0, n), np.linspace(0, S0, n))
+        x0 = -S0 - 25 if k == 0 else 25.0
+        bow = 0.0 if k == 0 else 6.0 * np.sin(np.pi * u.ravel() / S0)          # the slack panel sags a little
+        V = np.column_stack([x0 + u.ravel() * comp + (1 - comp) * S0 / 2, bow, 40 + v.ravel()])
+        F = []
+        for i in range(n - 1):
+            for j in range(n - 1):
+                a = i * n + j
+                F += [[a, a + n + 1, a + 1], [a, a + n, a + n + 1]]
+        sc.add_fabric(f"panel_{tag}", mesh(V, np.array(F), np.column_stack([u.ravel(), v.ravel()]) / 500.0), "body",
+                      max_edge=2.6, thickness=0.6)
+        xs = x0 + (1 - comp) * S0 / 2
+        Ps = np.column_stack([np.linspace(xs + 10, xs + S0 * comp - 10, 90), np.zeros(90), np.full(90, 300.0)])
+        sc.add_seam(f"seam_{tag}", Ps, np.tile(nrm, (90, 1)))
+        Pw = np.column_stack([np.linspace(xs + 10, xs + S0 * comp - 10, 60), np.full(60, 1.0), np.full(60, 150.0)])
+        if k == 1:
+            Pw[:, 1] += 6.0 * np.sin(np.pi * (Pw[:, 0] - xs) / (S0 * comp))
+        sc.add_strap(f"strap_{tag}", Pw, nrm, 25.0)
+    return sc
+
+
+CONCEPTS = {"corrie_b2": corrie_b2_scene, "hardware_sheet": hardware_sheet_scene,
+            "fabric_swatches": fabric_swatch_scene}
 
 
 # ============================================================================================ entry point
@@ -633,7 +664,7 @@ def render(concept_scene, shots, out_dir, prefix=None, quality="final", start=1,
     concept_scene  a ``ConceptScene``, or the path of a ``*.scene.json`` an earlier ``build`` wrote.
     shots          {name: {"view": {...}, "state": {...}, "caption": str, "sub": str}} (``studio.shots(...)`` gives
                    the presets hero / side / front34 / macro), or a list of preset names.
-    quality        "quick" (800 x 600, 20 spp, under 60 s a frame), "preview", "final" (1600 x 1200, 72 spp).
+    quality        "quick" (800 x 600, 16 spp, under 60 s a frame), "preview", "final" (1600 x 1200, 72 spp).
     wearer         optional figure that replaces the display form (BL-019). Either
                    * "package.module:function" (works across the bpy subprocess): called inside Blender as
                      ``function(**wearer_kwargs)``; it must add its objects to the current scene and return them
@@ -1011,6 +1042,14 @@ def _fix_shading(ob, hard):
             me.set_sharp_from_angle(angle=math.radians(38))
         except Exception:  # noqa: BLE001
             pass
+
+
+def marker_wearer(height_m=1.829):
+    """Stand-in for the wearer hook (tests, framing checks): one post of the wearer's height standing where the
+    wearer stands (in front of the back panel). Not a figure; huntkit.viz3d.wearer builds the person."""
+    import bpy
+    bpy.ops.mesh.primitive_cylinder_add(radius=0.03, depth=height_m, location=(0.0, 0.12, height_m / 2 - 0.9))
+    return [bpy.context.active_object]
 
 
 def _resolve_wearer(wearer, wearer_kwargs):

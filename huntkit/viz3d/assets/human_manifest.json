@@ -39,6 +39,66 @@
     "clothes/male_casualsuit05 (jacket variant)",
     "clothes/shoes03 (boots; recoloured)"
    ]
+  },
+  {
+   "id": "ph_hdri",
+   "what": "Poly Haven HDRI 'Drakensberg Solitary Mountain' (Dimitrios Savva, Jarod Guest), 4k: outdoor light and backdrop",
+   "version": "published 2022-09-02",
+   "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/4k/drakensberg_solitary_mountain_4k.hdr",
+   "page": "https://polyhaven.com/a/drakensberg_solitary_mountain",
+   "file": "drakensberg_solitary_mountain_4k.hdr",
+   "dir": "polyhaven_hdri",
+   "probe": "drakensberg_solitary_mountain_4k.hdr",
+   "sha256": "3dc5e9ad61b1ad9e964c79220c1d95007b49a061188c0b3d03e22dae7c41d9a0",
+   "bytes": 24932350,
+   "licence": "CC0-1.0",
+   "commercial_use": true,
+   "retrieved": "2026-11-11"
+  },
+  {
+   "id": "ph_grass_diff",
+   "what": "Poly Haven texture 'Grass Ground' 2k (diff): outdoor ground",
+   "version": "2k jpg",
+   "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/grass_ground/grass_ground_diff_2k.jpg",
+   "page": "https://polyhaven.com/a/grass_ground",
+   "file": "grass_ground_diff_2k.jpg",
+   "dir": "polyhaven_grass_ground",
+   "probe": "grass_ground_diff_2k.jpg",
+   "sha256": "4272bddc71a7fa659d1deeb13a9df8c42e68a5ac8cde7523187e4a081e028258",
+   "bytes": 3787330,
+   "licence": "CC0-1.0",
+   "commercial_use": true,
+   "retrieved": "2026-11-11"
+  },
+  {
+   "id": "ph_grass_nor",
+   "what": "Poly Haven texture 'Grass Ground' 2k (nor_gl): outdoor ground",
+   "version": "2k jpg",
+   "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/grass_ground/grass_ground_nor_gl_2k.jpg",
+   "page": "https://polyhaven.com/a/grass_ground",
+   "file": "grass_ground_nor_gl_2k.jpg",
+   "dir": "polyhaven_grass_ground",
+   "probe": "grass_ground_nor_gl_2k.jpg",
+   "sha256": "effa95c06af273c974476d9a74a234668a1c9292f60fffb4fa40348d638ee7f3",
+   "bytes": 5968024,
+   "licence": "CC0-1.0",
+   "commercial_use": true,
+   "retrieved": "2026-11-11"
+  },
+  {
+   "id": "ph_grass_rough",
+   "what": "Poly Haven texture 'Grass Ground' 2k (rough): outdoor ground",
+   "version": "2k jpg",
+   "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/grass_ground/grass_ground_rough_2k.jpg",
+   "page": "https://polyhaven.com/a/grass_ground",
+   "file": "grass_ground_rough_2k.jpg",
+   "dir": "polyhaven_grass_ground",
+   "probe": "grass_ground_rough_2k.jpg",
+   "sha256": "afaed95537e894b8054db38c81712a6d9504b05b560274526621d91d5a95fbe7",
+   "bytes": 1525000,
+   "licence": "CC0-1.0",
+   "commercial_use": true,
+   "retrieved": "2026-11-11"
   }
  ]
 }
