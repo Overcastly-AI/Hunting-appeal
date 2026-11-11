@@ -1,0 +1,9 @@
+# BL-004 attachment diet, variant C_im2 at 23 in: (c) no IM2 bag hooks (hinge, IM3, hood + guys).
+# corrie_PR23c unchanged except the keys below. Shell S15 is swapped in at run time by
+# designs/pack_5200/concepts/attach_diet.py (shell_sweep.install), so this file serves CORRIE and S15.
+extends: ../../../../huntkit/clothsim/scenarios/corrie_PR23c.yaml
+name: attach_diet_C_im2_PR23
+attachments:
+  hooks:
+    stations:
+    - 520

@@ -1,0 +1,5 @@
+# BL-004 attachment diet, variant V0 at 15 in: today: hood + ladders + guys, IM2 + IM3 hooks, hinge.
+# corrie_PR15c unchanged except the keys below. Shell S15 is swapped in at run time by
+# designs/pack_5200/concepts/attach_diet.py (shell_sweep.install), so this file serves CORRIE and S15.
+extends: ../../../../huntkit/clothsim/scenarios/corrie_PR15c.yaml
+name: attach_diet_V0_PR15

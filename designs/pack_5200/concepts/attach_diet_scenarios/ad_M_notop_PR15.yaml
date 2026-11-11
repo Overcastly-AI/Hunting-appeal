@@ -1,0 +1,13 @@
+# BL-004 attachment diet, variant M_notop at 15 in: misuse of REC: guys not toggled on (no top anchor).
+# corrie_PR15c unchanged except the keys below. Shell S15 is swapped in at run time by
+# designs/pack_5200/concepts/attach_diet.py (shell_sweep.install), so this file serves CORRIE and S15.
+extends: ../../../../huntkit/clothsim/scenarios/corrie_PR15c.yaml
+name: attach_diet_M_notop_PR15
+attachments:
+  pocket:
+    enabled: false
+  hooks:
+    stations:
+    - 520
+  ties:
+    list: []

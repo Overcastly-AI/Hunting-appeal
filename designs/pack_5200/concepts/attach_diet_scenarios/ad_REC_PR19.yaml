@@ -1,0 +1,11 @@
+# BL-004 attachment diet, variant REC at 19 in: REC: (c) + (b) guys-only top + B-17 trim.
+# corrie_PR19c unchanged except the keys below. Shell S15 is swapped in at run time by
+# designs/pack_5200/concepts/attach_diet.py (shell_sweep.install), so this file serves CORRIE and S15.
+extends: ../../../../huntkit/clothsim/scenarios/corrie_PR19c.yaml
+name: attach_diet_REC_PR19
+attachments:
+  pocket:
+    enabled: false
+  hooks:
+    stations:
+    - 520

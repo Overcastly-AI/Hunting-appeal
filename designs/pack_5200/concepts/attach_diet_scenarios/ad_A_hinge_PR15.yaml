@@ -1,0 +1,8 @@
+# BL-004 attachment diet, variant A_hinge at 15 in: (a) no hinge eyes: floor held by the under-strap channels.
+# corrie_PR15c unchanged except the keys below. Shell S15 is swapped in at run time by
+# designs/pack_5200/concepts/attach_diet.py (shell_sweep.install), so this file serves CORRIE and S15.
+extends: ../../../../huntkit/clothsim/scenarios/corrie_PR15c.yaml
+name: attach_diet_A_hinge_PR15
+attachments:
+  hinge:
+    pin_stiffness_n_mm: 0.01

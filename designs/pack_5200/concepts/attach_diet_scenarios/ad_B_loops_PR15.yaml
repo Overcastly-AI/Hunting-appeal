@@ -1,0 +1,62 @@
+# BL-004 attachment diet, variant B_loops at 15 in: (b) two bar loops at x +/-60 + guys, no hood.
+# corrie_PR15c unchanged except the keys below. Shell S15 is swapped in at run time by
+# designs/pack_5200/concepts/attach_diet.py (shell_sweep.install), so this file serves CORRIE and S15.
+extends: ../../../../huntkit/clothsim/scenarios/corrie_PR15c.yaml
+name: attach_diet_B_loops_PR15
+attachments:
+  pocket:
+    enabled: false
+  ties:
+    list:
+    - id: TG_R
+      pieces:
+      - B-02h
+      - B-03R
+      at:
+      - 149.0
+      - 695.0
+      anchor:
+      - 100.0
+      - 22.7
+      - 601.0
+      mode: elastic
+      pretension_n: 30.0
+    - id: TG_L
+      pieces:
+      - B-02h
+      - B-03L
+      at:
+      - -149.0
+      - 695.0
+      anchor:
+      - -100.0
+      - 22.7
+      - 601.0
+      mode: elastic
+      pretension_n: 30.0
+    - id: CT_R
+      pieces:
+      - B-01
+      - B-06
+      at:
+      - 60.0
+      - 601.0
+      anchor:
+      - 60.0
+      - 23.7
+      - 601.0
+      mode: elastic
+      pretension_n: 30.0
+    - id: CT_L
+      pieces:
+      - B-01
+      - B-06
+      at:
+      - -60.0
+      - 601.0
+      anchor:
+      - -60.0
+      - 23.7
+      - 601.0
+      mode: elastic
+      pretension_n: 30.0
