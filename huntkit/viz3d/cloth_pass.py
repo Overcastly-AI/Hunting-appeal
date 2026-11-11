@@ -69,7 +69,7 @@ class ClothParams:
     #                                 under the strap. ASSUMPTION (day: aft face + folded gusset = 4+ layers and air)
     roll_fold: float = 20.0         # flat of each fold = the hem stiffener width (bag_concepts.HDPE_W)
     roll_core: float = 1.0          # half thickness of the first fold (stiffener 0.8 + cloth)
-    roll_pitch: float = 1.6         # ASSUMPTION: thickness added per turn per side (2 layers 330D laid loose)
+    roll_pitch: float = 2.0         # ASSUMPTION: thickness added per turn per side (2 layers 330D laid loose)
     roll_flat: float = 150.0        # half length of the roll's level middle before the ends bend down
     roll_bend_r: float = 60.0       # ASSUMPTION: bend radius of the roll ends
     roll_bend_deg: float = 75.0
@@ -251,15 +251,20 @@ def block_proxy(sd: dict, litres: float, w: float, z1: float, ex: float = 4.0, e
                     "z0_mm": round(z0, 1), "z1_mm": z1}
 
 
-def drape_proxy(sd: dict, inset: float, z_cap: float):
+def drape_proxy(sd: dict, inset: float, z_cap: float, x_top: float | None = None, taper: float = 90.0):
     """Full load: the contents are the huntkit drape itself, ``inset`` mm inside it, cut flat at ``z_cap`` (above
-    that the collar is closure, not contents)."""
+    that the collar is closure, not contents). Over the last ``taper`` mm below the cap the contents narrow to
+    ``x_top`` half width: the huntkit drape closes the collar as a flat line with ears, and the ears are cloth that
+    the roll bends down, not contents."""
     V = _smooth(sd["X"], sd["tris"], 6)
     n = _vnormals(V, sd["tris"])
     P = V - inset * n
     P[:, 2] = np.minimum(P[:, 2], z_cap)
+    if x_top is not None:
+        xm = np.interp(P[:, 2], [z_cap - taper, z_cap], [np.abs(P[:, 0]).max() + 1.0, x_top])
+        P[:, 0] = np.clip(P[:, 0], -xm, xm)
     return P, outward(P, sd["tris"]), {"litres": round(volume_L(P, sd["tris"]), 2), "inset_mm": inset,
-                                           "z_cap_mm": round(z_cap, 1)}
+                                       "z_cap_mm": round(z_cap, 1)}
 
 
 # ------------------------------------------------------------------------------------------------- W1-W3 straps
@@ -481,7 +486,7 @@ def prepare(state: str, params: ClothParams | None = None, shell: str = "S15", t
     if state == "full":
         z_lip = float(X[lip, 2].mean()) - 8.0
         y_lip = float(np.median(X[lip, 1]))
-        Vp, Fp, pinfo = drape_proxy(sd, p.proxy_inset, z_lip - 70.0)
+        Vp, Fp, pinfo = drape_proxy(sd, p.proxy_inset, z_lip - 20.0, p.roll_flat - 10.0)
     else:
         spec = SS.RENDER_STATES[state]
         pr = PROXY[state]
@@ -541,7 +546,7 @@ def prepare(state: str, params: ClothParams | None = None, shell: str = "S15", t
 # ================================================================================================ generic solve
 def cloth_job(name: str, X, T, X0=None, pin=None, target=None, colliders=(), params: ClothParams | None = None,
               pressure: float = 0.0, frames: tuple | None = None, work: Path | None = None, preview: bool = False,
-              areal_mass: float | None = None) -> np.ndarray:
+              areal_mass: float | None = None, vertex_mass: float | None = None) -> np.ndarray:
     """Solve one cloth object and return its vertices (same order). The reusable engine under ``run`` and ``apply``.
 
     X, T        start vertices [n, 3] mm and triangles
@@ -571,6 +576,8 @@ def cloth_job(name: str, X, T, X0=None, pin=None, target=None, colliders=(), par
     job = {"kind": "generic", "in": str(npz), "out": str(work / f"{name}.out.npy"), "params": pd, "n_straps": 0,
            "area_m2": float(A), "stem": name, "pressure": pressure, "self_dist_max": 0.4 * e,
            "preview": str(work / f"{name}.preview.png") if preview else None}
+    if vertex_mass:                     # solver units: heavier vertices = limper cloth under its own weight
+        job["vertex_mass"] = float(vertex_mass)
     if frames:
         job["frames_cinch"], job["frames_settle"] = int(frames[0]), int(frames[1])
     jp = work / f"{name}.job.json"
@@ -691,6 +698,9 @@ def box_mesh(L: float, W: float, H: float, h: float = 7.0):
     return V, outward(V, F), UV, {k: inv[g] for k, g in grids.items()}
 
 
+POUCH_VERTEX_MASS = 0.004   # ASSUMPTION (solver units): limp enough that the 100D/330D pouch sags onto its contents
+
+
 def pouch(res: dict, roll_C, roll_fr, colliders, dims: dict, params: ClothParams | None = None, name="pouch",
           h: float = 7.0) -> dict:
     """The top pouch as cloth: its six flat panels start as the drafted box over the roll and are draped (gravity,
@@ -701,11 +711,20 @@ def pouch(res: dict, roll_C, roll_fr, colliders, dims: dict, params: ClothParams
     V0, F, uv, grids = box_mesh(L, W, H, h)
     mid = len(roll_C) // 2
     top = roll_C[mid] + roll_fr["Up"][mid] * roll_fr["r_out"]
-    c = np.array([0.0, top[1], top[2] + 3.0 + H / 2])
-    blk = G.superellipsoid(c + [0, 0, 1.0], (L / 2 - 12.0, W / 2 - 12.0, H / 2 - 7.0), e_ns=0.45, e_ew=0.45, nu=48, nv=24)
-    X = V0 + c + [0, 0, 5.0]
+    hb = H / 2 - 11.0                                               # loose goods: the block is lower than the box
+    z_seat = float(top[2])                                          # highest thing under the pouch's footprint
+    for _, Vc, _ in colliders:
+        Vc = np.asarray(Vc, float)
+        m = (np.abs(Vc[:, 0]) < L / 2 - 20.0) & (np.abs(Vc[:, 1] - top[1]) < W / 2 - 20.0)
+        if m.any():
+            z_seat = max(z_seat, float(Vc[m, 2].max()))
+    cb = np.array([0.0, top[1], z_seat + 5.0 + hb])
+    blk = G.superellipsoid(cb, (L / 2 - 22.0, W / 2 - 22.0, hb), e_ns=0.7, e_ew=0.6, nu=48, nv=24)
+    c = cb + [0.0, 0.0, H / 2 - hb - 2.0]                           # the box starts with its base on the roll
+    X = V0 + c
     Vs = cloth_job(name, X, F, X0=V0, colliders=[("contents", np.asarray(blk.vertices), np.asarray(blk.faces))]
-                   + list(colliders), params=replace(p, bending=1.4), frames=(4, 46), work=WORK / "pouch")
+                   + list(colliders), params=replace(p, bending=0.35, air_damping=1.0), frames=(4, 76),
+                   work=WORK / "pouch", vertex_mass=POUCH_VERTEX_MASS)
     return {"V": Vs, "F": F, "uv": uv, "grids": grids, "centre": c, "rest": V0,
             "contents_L": round(volume_L(np.asarray(blk.vertices), np.asarray(blk.faces)), 2)}
 
@@ -713,6 +732,11 @@ def pouch(res: dict, roll_C, roll_fr, colliders, dims: dict, params: ClothParams
 
 
 # ============================================================================================ the S15 scene
+# BL-018 defect 10 (the "floating shard" on the chest): the legacy phone slab and its cord are drawn lying flat
+# below the phone pocket IMP-6 instead of inside it. Dropped; the pocket itself stays.
+FLOATERS = ("imp6_phone@", "imp6_cord@")
+
+
 class Surf:
     """Solved cloth as a surface to stand things on: nearest point and outward normal."""
 
@@ -799,6 +823,7 @@ def s15_scene(state: str = "full", carry: bool = False, params: ClothParams | No
             m.sim_skin = fn
     # ---- drop what the owner deleted (wings) and what this pass rebuilds as cloth (roll, pouch) or re-homes
     DROP = ("corrie_wing_", "corrie_roll", "corrie_pouch", "imp1_", "corrie_tripod", "corrie_float_wraps")
+    DROP += FLOATERS
     sc.parts = [x for x in sc.parts if not x.name.startswith(DROP)]
     if dome_h is not None:        # collar rolled down: the hood ladders above the roll go into it (as BL-009)
         ztop = float(sk["X"][:, 2].max()) - 30.0
@@ -920,7 +945,7 @@ def s15_scene(state: str = "full", carry: bool = False, params: ClothParams | No
 
 
 
-BOX = [-300.0, -150.0, -80.0, 300.0, 380.0, 1100.0]      # one camera box for every load state (FCS mm)
+BOX = [-290.0, -120.0, -40.0, 290.0, 360.0, 1090.0]      # one camera box for every load state (FCS mm)
 
 
 def SHOTS(state: str = "full", report: dict | None = None) -> dict:
@@ -930,11 +955,11 @@ def SHOTS(state: str = "full", report: dict | None = None) -> dict:
     pk = {"mannequin": True, "lid": True}
     sub = "Shell S15, wings deleted, W1-W3 the only outside straps. Render-only cloth pass on the huntkit drape"
     return {
-        "hero": {"view": {"az": -38, "el": 12, "fov": 24, "fstop": 11, "box": BOX}, "state": pk,
+        "hero": {"view": {"az": -38, "el": 12, "fov": 24, "fstop": 11, "box": BOX, "zoom": 1.55}, "state": pk,
                  "caption": f"3/4 rear, {lab}", "sub": sub},
-        "side": {"view": {"az": 90, "el": 4, "fov": 24, "fstop": 11, "box": BOX}, "state": pk,
+        "side": {"view": {"az": 90, "el": 4, "fov": 24, "fstop": 11, "box": BOX, "zoom": 1.45}, "state": pk,
                  "caption": f"Side, {lab}", "sub": sub},
-        "right": {"view": {"az": 40, "el": 12, "fov": 24, "fstop": 11, "box": BOX}, "state": pk,
+        "right": {"view": {"az": 40, "el": 12, "fov": 24, "fstop": 11, "box": BOX, "zoom": 1.55}, "state": pk,
                   "caption": f"3/4 rear from the right, {lab}", "sub": sub},
         "door": {"view": {"az": -22, "el": 8, "fov": 24, "fstop": 11, "box": [-260, 0, 40, 260, 380, 900]},
                  "state": {"mannequin": True, "lid": True, "full": True}, "caption": f"Door open, {lab}",
@@ -1046,7 +1071,7 @@ def _blender_job(job: dict) -> dict:
     md = ob.modifiers.new("Cloth", "CLOTH")
     cs = md.settings
     cs.quality = int(p["quality"])
-    cs.mass = float(job["area_m2"]) * p["areal_mass"] / len(X)
+    cs.mass = float(job.get("vertex_mass") or float(job["area_m2"]) * p["areal_mass"] / len(X))
     cs.tension_stiffness = cs.compression_stiffness = p["tension"]
     cs.compression_stiffness = p["compression"]
     cs.shear_stiffness = p["shear"]

@@ -15,7 +15,8 @@ pack-designer, 2026-11-11. Code: `designs/pack_5200/concepts/attach_diet.py`. Sc
 
 **Mass.** The attachment system goes from **317.7 g (11.2 oz) to 214.7 g (7.6 oz), −103.0 g**.
 - The basis is ledger system `attachment`, CORRIE B.2 on H1, belt M.
-- The **≤ 220 g goal is met. The 200 g stretch is not.**
+- The **≤ 220 g goal is met on today's hardware. The 200 g stretch is not.**
+- Caveat: the guys need the heavy ladder lock (+6 g) under the proof rule, in today's design too. Booked with it, REC is **220.7 g, 0.7 g over the goal**.
 
 **CG at 15 in, meat case** (both converged at the 6 mm rounding stage):
 
@@ -31,7 +32,7 @@ pack-designer, 2026-11-11. Code: `designs/pack_5200/concepts/attach_diet.py`. Sc
 
 **Times** (gloved, ASSUMPTION unit times as in BL-003): bag off **82 s** (today 85 s, R-08 limit 120 s), bag on 91 s, float 151 s.
 
-**Head clearance (R-28).** At 15 and 19 in, removing the hood gains 1–3° (bare bar). R-28_23_RESULT
+**Head clearance (R-28).** At 15 and 19 in, removing the hood gains 1–3° (bare bar). **At 23 in, R-28 still fails on S15**: first contact 21° fill / 19° meat with REC, against 22° / 20° for V0, and the requirement is over 30°. On CORRIE, deleting the hood turns the 23 in fail (V0 17° / 20°) into a pass (34° / 34°), because the wall above the bar moves toward the head 23 mm instead of 60 mm. **No attachment variant fixes R-28 on the merged bag (S15).** BL-010 still has to settle whether the failure is real or a frame-position mix-up.
 
 What the sims say about each part:
 - **The hood carries nothing at 15 in, on both shells** (0 N in fill and meat). Deleting it gives a CG identical to V0
@@ -44,7 +45,17 @@ What the sims say about each part:
     PT-1 were sized for (section 5).
   - Today's design has the same risk: the hood holds nothing at 15 in, so V0 with the guys not set is close to this case.
 
-TABLE_19_23
+**At 19 and 23 in** (REC on both shells, converged, every case 3–6 mm rounding):
+- Meat CG: 167.0 / 151.9 mm (CORRIE) and 152.5 / 128.5 mm (S15), all far inside rev C.
+- At 23 in, deleting the hood raises the CG: CORRIE meat 135.7 → 151.9, S15 120.8 → 128.5. The hood carries 55–65 N
+  at 23 in, and the guys pick it up: **82 N at 1 g, against 39–52 N with the hood**.
+- The V0 S15 fill case at 23 in does not converge (as in BL-009). REC's does.
+
+**Guy hardware.** 82 N × 3.0 = 244 N factored. On the standard 25 mm ladder lock (300 N slip) that is SF 1.23, and the
+1.5× proof rule asks for 366 N. Today's guys are already at 78 N (S15 19 in) → 234 N, so this is not new with the diet.
+The fix is the heavy ladder lock record `ladder_lock_25mm_heavy` (490 N slip, +3 g each). **Booked with it, REC is
+220.7 g: 0.7 g over the 220 g goal.** Today's design booked the same way is 323.7 g, so the saving stays 103.0 g.
+
 
 ## 2. Task 1: every attachment part, its load per rev C case, its margin
 
@@ -96,7 +107,7 @@ Columns:
 | hood ladders B-20 | 20.0 | top | 158 | 4.00 | > 2× | |
 | hood tongues + toggles | 10.3 | top | 158 | 8.51 | > 2× | |
 | hood grab tab | 1.6 | - | - | - | NO LOAD | |
-| top side guys | 18.0 | top | 104 (C5) | 2.68 | > 2× | **S15 sim: 64 N × 3 = 191 N, margin 1.57 on the 300 N ladder-lock slip** |
+| top side guys | 18.0 | top | 104 (C5) | 2.68 | > 2× | **sims today: up to 78 N × 3 = 234 N, margin 1.28 on the 300 N ladder-lock slip (under the 1.5 proof rule)** |
 | guy ladder locks + tri-glides + tabs | 16.5 | top | 104 | 2.68 | > 2× | as above |
 | guy corner tabs B-22 | 5.9 | top | 104 | 9.15 | > 2× | |
 | guy tail keepers | 1.2 | - | - | - | NO LOAD | |
@@ -127,7 +138,38 @@ Method:
 - R-28 is `attach_system.r28_loaded` with the simulated wall (+3 mm), using BL-009's drafted-face method. The hood
   term is applied only when the variant keeps the hood.
 
-STORED_TABLE
+All stored runs (`attach_diet.py table`). Anchor loads are N at 1 g; the hood is the sum across its width.
+
+| variant | shell | torso | fill CG mm (conv, rounding) | meat CG mm (conv, rounding) | fill L | hinge N | IM2 hook N | IM3 hook N | guy N | bar loop N | hood N | R-28 first contact deg fill / meat | wall to head above bar mm |
+|---|---|---:|---|---|---:|---:|---:|---:|---:|---:|---:|---|---:|
+| V0 | CORRIE | 15 | 191.5 (yes, 6 mm) | 182.3 (yes, 6 mm) | 88.2 | 261 | 184 | 445 | 59 | 0 | 0 | 33 / 31 pass | 28 |
+| V0 | CORRIE | 19 | 174.1 (yes, 4 mm) | 167.2 (yes, 3 mm) | 88.3 | 246 | 189 | 393 | 67 | 0 | 0 | 33 / 33 pass | 9 |
+| V0 | CORRIE | 23 | 131.3 (yes, 6 mm) | 135.7 (yes, 0 mm) | 87.1 | 209 | 156 | 393 | 39 | 0 | 55 | 17 / 20 FAIL | 60 |
+| V0 | S15 | 15 | 178.5 (yes, 3 mm) | 171.7 (yes, 6 mm) | 86.1 | 254 | 158 | 491 | 64 | 0 | 0 | 33 / 33 pass | 15 |
+| V0 | S15 | 19 | 156.5 (yes, 4 mm) | 152.6 (yes, 6 mm) | 86.4 | 233 | 168 | 459 | 78 | 0 | 0 | 33 / 33 pass | 7 |
+| V0 | S15 | 23 | 126.6 (NO) | 120.8 (yes, 6 mm) | 84.7 | 232 | 137 | 455 | 52 | 0 | 65 | 22 / 20 FAIL | 51 |
+| A_hinge | CORRIE | 15 | 192.0 (yes, 4 mm) | 162.5 (NO) | 88.2 | 2 | 346 | 338 | 60 | 0 | 0 | 33 / 33 pass | 3 |
+| A_hinge | S15 | 15 | 178.1 (yes, 4 mm) | 135.1 (NO) | 86.3 | 2 | 384 | 344 | 64 | 0 | 0 | 33 / 33 pass | 11 |
+| A_im3 | CORRIE | 15 | 188.1 (yes, 6 mm) | 187.8 (yes, 4 mm) | 84.9 | 191 | 552 | 0 | 57 | 0 | 0 | 33 / 33 pass | 16 |
+| A_im3 | S15 | 15 | 178.1 (yes, 6 mm) | 170.2 (yes, 6 mm) | 85.4 | 300 | 565 | 0 | 65 | 0 | 0 | 33 / 33 pass | 22 |
+| C_im2 | CORRIE | 15 | 192.1 (yes, 6 mm) | 184.0 (yes, 6 mm) | 88.2 | 250 | 0 | 557 | 59 | 0 | 0 | 33 / 33 pass | 21 |
+| C_im2 | S15 | 15 | 178.4 (yes, 4 mm) | 171.0 (yes, 6 mm) | 86.1 | 252 | 0 | 507 | 64 | 0 | 0 | 33 / 33 pass | 16 |
+| B_guys | CORRIE | 15 | 191.5 (yes, 6 mm) | 182.3 (yes, 6 mm) | 88.2 | 261 | 184 | 445 | 59 | 0 | 0 | 34 / 31 pass | 28 |
+| B_guys | CORRIE | 23 | 156.6 (yes, 4 mm) | 152.7 (yes, 4 mm) | 89.0 | 232 | 192 | 382 | 82 | 0 | 0 | 34 / 34 pass | 21 |
+| B_guys | S15 | 15 | 178.5 (yes, 3 mm) | 171.7 (yes, 6 mm) | 86.1 | 254 | 158 | 491 | 64 | 0 | 0 | 34 / 34 pass | 15 |
+| B_guys | S15 | 23 | 132.4 (yes, 4 mm) | 128.4 (yes, 6 mm) | 86.7 | 231 | 147 | 444 | 80 | 0 | 0 | 21 / 19 FAIL | 56 |
+| B_loops | CORRIE | 15 | 191.8 (yes, 6 mm) | 186.9 (yes, 6 mm) | 88.2 | 264 | 181 | 459 | 59 | 3 | 0 | 34 / 34 pass | 9 |
+| B_loops | CORRIE | 23 | 155.7 (yes, 4 mm) | 152.7 (yes, 4 mm) | 89.1 | 232 | 192 | 382 | 76 | 5 | 0 | 34 / 34 pass | 21 |
+| B_loops | S15 | 15 | 178.5 (yes, 3 mm) | 172.8 (yes, 6 mm) | 86.1 | 255 | 154 | 496 | 64 | 8 | 0 | 34 / 34 pass | 10 |
+| B_loops | S15 | 23 | 128.1 (yes, 3 mm) | 125.5 (yes, 6 mm) | 85.5 | 226 | 143 | 435 | 60 | 66 | 0 | 21 / 19 FAIL | 55 |
+| REC | CORRIE | 15 | 192.1 (yes, 6 mm) | 184.0 (yes, 6 mm) | 88.2 | 250 | 0 | 557 | 59 | 0 | 0 | 34 / 34 pass | 21 |
+| REC | CORRIE | 19 | 169.7 (yes, 4 mm) | 167.0 (yes, 4 mm) | 88.4 | 231 | 0 | 531 | 63 | 0 | 0 | 34 / 34 pass | 9 |
+| REC | CORRIE | 23 | 156.6 (yes, 4 mm) | 151.9 (yes, 4 mm) | 89.1 | 217 | 0 | 502 | 82 | 0 | 0 | 34 / 34 pass | 23 |
+| REC | S15 | 15 | 178.4 (yes, 4 mm) | 171.0 (yes, 6 mm) | 86.1 | 252 | 0 | 507 | 64 | 0 | 0 | 34 / 34 pass | 16 |
+| REC | S15 | 19 | 154.6 (yes, 3 mm) | 152.5 (yes, 6 mm) | 86.5 | 232 | 0 | 485 | 74 | 0 | 0 | 34 / 34 pass | 7 |
+| REC | S15 | 23 | 132.4 (yes, 4 mm) | 128.5 (yes, 6 mm) | 86.7 | 226 | 0 | 464 | 80 | 0 | 0 | 21 / 19 FAIL | 56 |
+| M_notop | CORRIE | 15 | 224.8 (yes, 6 mm) | 213.4 (yes, 6 mm) | 88.9 | 265 | 0 | 567 | 0 | 0 | 0 | 34 / 34 pass | -16 |
+| M_notop | S15 | 15 | 206.9 (yes, 4 mm) | 199.5 (yes, 6 mm) | 87.3 | 264 | 0 | 524 | 0 | 0 | 0 | 34 / 34 pass | -22 |
 
 How to read the trials:
 - **(a) Fewer anchor heights.**
@@ -138,7 +180,7 @@ How to read the trials:
   - **IM3 is the anchor that matters on CORRIE.** Without it (`A_im3`) the meat CG goes 182.3 → 187.8 mm.
   - **On S15, IM3 can go at 15 in** (170.2 against 171.7, with IM2 at 565 N). But T3 is the float-mode hanger: the
     B-24 links clip into T3. Removing it means redesigning float mode on the IM2 eye, and 19 / 23 in are not run.
-    Not recommended this round (section 7).
+    Not recommended this round; it is the next lever if the 200 g stretch matters (section 6).
   - **IM2 can go (`C_im2`):** 171.0 / 184.0 mm meat, fill unchanged.
   - **Anchor heights needed once the guys hold the top: hinge z 60, IM3 z 520, and the guys at the crown.** IM2 adds
     nothing measurable.
@@ -213,7 +255,7 @@ Factored = 3.0 × the worst 1 g cloth-sim force over both shells and every torso
 |---|---|---:|---|---|
 | IM3 eyes z 520, x ±115 | aft-up along T3 from the B-17 bridle to the eye | **1702** (guys-off misuse 567 N at 1 g, CORRIE 15 in; REC with guys 557 N → 1671) | rated 38 mm bag hook, T3 box-X, B-17 seam (80 mm loaded, tab 90 × 70) | hook 2200 (purchase spec); B-17 seam 3277; box-X 5256 |
 | IM2 eyes z 330 | bag load removed; meat strap IM2 unchanged | 0 | none (T2, B-23, IM2 hooks deleted) | - |
-| crown top bar, x ±(92–100), on the corner-wrap zone beside the leg | aft and outboard toward B-22 (x ±149, z 695); down-aft at 15 in, up-aft at 23 in | 191 (S15 15 in fill, 64 N) | 25 mm webbing loop + POM toggle; ladder lock + tri-glide on B-22 | toggle 670 (ASSUMPTION), ladder-lock slip 300, B-22 seam 1024 |
+| crown top bar, x ±(92–100), on the corner-wrap zone beside the leg | aft and outboard toward B-22 (x ±149, z 695); down-aft at 15 in, up-aft at 23 in | **244** (CORRIE 23 in fill, 82 N; today V0 234 N) | 25 mm webbing loop + POM toggle; **heavy** ladder lock + tri-glide on B-22 | toggle 670 (ASSUMPTION); heavy ladder-lock slip 490 (standard 300 fails the 1.5× proof); B-22 seam 1024 |
 | crown top bar centre x ±66 | hood capture removed | 0 | none | - |
 | hinge eyes z 60, x ±115 | down-aft into the pin, unchanged | 755 (3.0 × 252 N sim; beam 724) | HE on B-18, 5 mm 7075 pull-pin | B-18 seam 2355; bartack 2700 |
 
@@ -227,9 +269,9 @@ What BL-010 has to do with these:
 - **Beam model.** It books the bag cases' `strap_mid` share on the IM2 nodes (512 N, C3 side_hill_torsion@IM3, SR330).
   With no IM2 bag hook, that share must move to the IM3 and hinge nodes in the rev C frame re-check.
 - **Guy loops on the corner wraps.** They now bear on the bar at the corner-wrap / leg corner, as the lifters do,
-  instead of through the hood. The 191 N factored is above rev C's guy term (112 N). The 30 mm bare-bar wall check
-  (3.16 at 112 N) scales to about 1.85 at 191 N. That is ASSUMPTION-level; BL-010 checks it on the wrap.
-- **Hood terms.** Drop rev C's hood term (52.5 N/g) for REC. Raise the guy term to the S15 sim value (64 N at 1 g).
+  instead of through the hood. The 244 N factored is above rev C's guy term (112 N). The 30 mm bare-bar wall check
+  (3.16 at 112 N) scales to about 1.45 at 244 N. That is ASSUMPTION-level; BL-010 checks it on the wrap.
+- **Hood terms.** Drop rev C's hood term (52.5 N/g) for REC. Raise the guy term to the sim value (82 N at 1 g, 23 in).
 
 ## 6. Mass of REC (ledger rows, `attach_diet.mass_table()`)
 
@@ -244,6 +286,7 @@ What BL-010 has to do with these:
 | guy bar loops × 2 (25 mm × 170 mm + POM toggle) | +12.1 | poly_webbing_25mm record; toggle 3 g ASSUMPTION (attach_system) |
 | B-17 trimmed 110 → 70 mm (pair) | −7.2 | hypalon_coated_nylon record, cut area |
 | **attachment system** | **317.7 → 214.7 (−103.0)** | |
+| with the heavy guy ladder locks that today and REC both need (+6 g each) | 323.7 → 220.7 | ladder_lock_25mm_heavy record |
 
 Other variants: A_hinge 276.8, A_im3 257.8, C_im2 270.4, B_guys 269.1, B_loops 296.4, D_loops 184.5 (+28 g on B-24).
 
@@ -256,7 +299,7 @@ The 200 g stretch would need one of these:
 ## 7. ASSUMPTIONS that govern
 
 - ASSUMPTION: guy bar loop 170 mm of 25 mm webbing + 3 g POM toggle, 670 N pull-through. Test: weigh the first sewn guy;
-  pull the toggle loop on an 18 mm tube to 287 N (1.5 × 191).
+  pull the toggle loop on an 18 mm tube to 366 N (1.5 × 244).
 - ASSUMPTION: toggle 4 s off / 5 s on with gloves. Test: the glove timing trial already planned for the PROCEDURES
   times.
 - ASSUMPTION: B-17 at 70 mm keeps the 80 mm loaded seam strength. Test: PT-2 on the trimmed tab.
@@ -288,7 +331,8 @@ The 200 g stretch would need one of these:
   writes the summed bridle entry, and it would miss the load if that entry were dropped.
 - The S15 guys (64 N at 1 g) and IM3 hooks (491 N at 1 g) are above the values rev C and PT-1 were set from
   (SPINE-era sims). That needs an update in BL-010 whatever happens to this diet.
-- R-28 at 23 in (BL-009 open item): see section 1. CORRIE V0 fails at 17° / 20°.
+- R-28 at 23 in (BL-009 open item): see section 1. S15 fails with and without the hood (19–22°). CORRIE fails only with the hood (17° / 20°).
+- Guy ladder locks: today's 25 mm ladder lock (300 N slip) is below 1.5 × the simulated guy load (234 N factored today). Needs the heavy part regardless of BL-004.
 
 ## Screenshots
 

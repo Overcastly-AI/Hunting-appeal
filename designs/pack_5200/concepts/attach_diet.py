@@ -403,7 +403,11 @@ def mass_table() -> dict:
         if v == "D_loops":
             other.append(("B-24 link: a second rated hook per link (bag end), straps_meat", round(2 * u["bag_hook"], 1),
                           "ledger hook rows / 4"))
+        # guys at 3.0 x the sim peak (82 N, 23 in) need the heavy ladder lock under the 1.5 x proof rule, today and REC
+        # alike (V0 already 78 N): booked as a sensitivity, not in the variant, because it is not a diet change
+        heavy = 2 * (_mat("ladder_lock_25mm_heavy", "mass_g") - _mat("ladder_lock_25mm", "mass_g"))
         out["variants"][v] = {"changes": ch, "attachment_g": tot, "delta_g": round(tot - base, 1),
+                              "with_heavy_guy_locks_g": round(tot + heavy, 1),
                               "other_systems": other,
                               "net_pack_delta_g": round(tot - base + sum(o[1] for o in other), 1),
                               "meets_220": tot <= TARGET_G, "meets_200": tot <= STRETCH_G}

@@ -136,3 +136,20 @@ def test_load_paths_are_factored_sim_peaks():
     peak = max(AD.peak_1g("REC", ("hook_im520_R", "hook_im520_L"))[0],
                AD.peak_1g("M_notop", ("hook_im520_R", "hook_im520_L"))[0])
     assert im3["factored_n"] == pytest.approx(AD.FACTOR * peak, abs=1)
+
+
+def test_heavy_guy_lock_sensitivity_is_record_based(mt):
+    from huntkit.materials import load
+    d = 2 * (float(load("ladder_lock_25mm_heavy").require("mass_g")) - float(load("ladder_lock_25mm").require("mass_g")))
+    for v, r in mt["variants"].items():
+        assert r["with_heavy_guy_locks_g"] == pytest.approx(r["attachment_g"] + d, abs=0.06)
+    # honest edge: with the heavy locks REC misses 220 g by under a gram
+    assert mt["variants"]["REC"]["with_heavy_guy_locks_g"] > AD.TARGET_G
+
+
+@pytest.mark.skipif(not _RES, reason="no stored attach_diet sims")
+def test_r28_at_23in_s15_still_fails_with_rec():
+    assert not AD.get("V0", "S15", 23)["r28"]["meat"]["pass"]
+    assert not AD.get("REC", "S15", 23)["r28"]["meat"]["pass"]
+    assert not AD.get("V0", "CORRIE", 23)["r28"]["meat"]["pass"]
+    assert AD.get("REC", "CORRIE", 23)["r28"]["meat"]["pass"]
