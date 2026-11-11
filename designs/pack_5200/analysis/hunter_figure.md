@@ -72,9 +72,9 @@ Optional variants (not rendered in this ticket):
 | Torso setting | 0.5 in steps, 15 to 23 in | 18.5 in (469.9 mm) for a 471.6 mm torso | 1.7 mm apart |
 | Belt height | centred on the iliac crest, FCS z 120 mm | belt mid-height z 120.0 mm at the back, 119.3 mm at the sides | on the crest |
 | Belt size | S to XL by waist (L = 34 to 38 in) | L; figure waist 34.5 in | padded wings end at the side of the hip on this body (see defect 4) |
-| Lifter angle | 40.6° (requirement R-04: 35 to 50°) | **34° left and right** (34 to 35° in the other poses) | **below the design value; see below** |
+| Lifter angle | 40.6° (requirement R-04: 35 to 50°) | **33.8° left, 33.9° right** (34.0 to 35.3° in the other poses) | **below the design value; see below** |
 | Head gap, neutral | 67.5 mm (2D model, 50th percentile male head) | 92 mm standing (3D, nearest pack part); 55 mm walking with 13° lean; 87 mm kneeling | not the same measurement: 3D minimum distance against a 2D sagittal gap |
-| Strap and belt contact | pads touch the body | pads pressed 5 mm (straps) and 7 mm (belt) into the cloth; see section 6 for the contact fraction | by construction |
+| Strap and belt contact | pads touch the body | shoulder straps and yoke pad: 98.9 % of the pad footprint touches the cloth, largest gap 19 mm; belt: 99.4 %, largest gap 9 mm. Cloth pressed in 7 mm on average under both | measured on a 1° by 4 mm ray grid after the fit; the gaps are at pad edges |
 | Trunk lean | not specified | 4° standing, 13° uphill, 7° kneeling | pack rigid on the trunk |
 | Back offset | back panel on the back | body brought to the display form's back line less 4 mm | touches at the tightest height |
 
@@ -90,7 +90,7 @@ press − pad inner radius", so the pad keeps its thickness, its height and its 
 hardware beyond the pads are laid on the cloth. The cloth under the pads is pushed in by the same amount with a soft
 edge. Webbing that runs back to the frame is blended to stay fixed there.
 
-ASSUMPTION: press depths 5 mm (straps) and 7 mm (belt) are visual, with no pressure or tissue model. Settles with: a
+ASSUMPTION: the set press depths, 5 mm (straps) and 7 mm (belt), are visual, with no pressure or tissue model. Settles with: a
 pressure-mat fit on the prototype.
 
 ## 4. Images
@@ -108,7 +108,8 @@ pressure-mat fit on the prototype.
 
 Best five copied to `docs/screens/`: 1, 2, 4, 5, 6.
 
-1600 × 1200, 96 samples, OpenImageDenoise, CPU. Measured with other jobs sharing the 4 cores: 130 to 450 s a frame.
+1600 × 1200, 96 samples, OpenImageDenoise, CPU, 4 cores: 180 to 245 s a frame on a quiet machine (up to 900 s when
+other jobs shared the cores).
 Building the figure, dressing, posing and fitting the pack takes 11 to 13 s. The HDRI's sun stands 33° above the
 horizon: lower than midday, not a true low sun.
 
@@ -123,10 +124,11 @@ Fixed during the work:
 | 3 | Front belt webbing cut straight through the belly | strap meshes are subdivided to 12 mm before fitting |
 | 4 | The viz3d belt B is drawn open at the front (buckle on one tip, D-ring on the other) | `wearer.py` adds a 38 mm webbing band on the cloth between the wing tips; the model is unchanged |
 | 5 | Waist morph filled the lumbar hollow, a barrel-shaped trunk | morph capped; girth shortfall reported in section 2 |
-| 6 | Cap rim ragged; scalp showing through the crown | planar rim; crown stood off again after smoothing; frames 2, 3, 4, 5, 7, 8 re-rendered |
+| 6 | Cap rim ragged; scalp showing through the crown | planar rim; crown stood off again after smoothing |
 | 7 | Binoculars pointed at the sky, hands not on them | direction taken from the head bone; wrists placed by two-bone IK |
 | 8 | Outdoor subject backlit | HDRI sun azimuth measured with a shadow-stick render; sun now 35° round from the camera |
 | 9 | A Blender factory reset between poses broke MPFB | `clear_scene()` empties the file instead |
+| 10 | Left shoulder strap torn and lifted at the crest (up to 51 mm off the body): the phone pocket riding on the strap was setting the strap's reference surface | the pad's own inner face is the reference wherever there is a pad; all eight frames re-rendered |
 
 Open (visible if you look for them):
 
@@ -139,7 +141,7 @@ Open (visible if you look for them):
 | 5 | The cloth dent at pad edges is soft but there is no bulge beside the pad | frame 7 |
 | 6 | Hands: thumbs are not wrapped round the pole grips; fingers overlap the binocular barrels slightly | frames 2, 4, 5, 8 |
 | 7 | Outdoor ground beyond the grass blades is a flat textured plane and repeats | frames 4, 5, 6 |
-| 8 | Kneeling: the pack and hipbelt stay rigid on the trunk; the front thigh passes close under the belt wing with no contact modelled | frame 5 |
+| 8 | Kneeling: the pack and hipbelt stay rigid on the trunk. Where the raised thigh meets the belt the fit is poor: a third of the belt's pad cells have no valid body radius there and the largest computed gap is 134 mm (hidden behind the thigh in this camera) | frame 5 |
 | 9 | Pole tips and baskets are placed on the ground plane, not pushed into it | frames 2, 4 |
 | 10 | Lifter angle draws at 34° (section 3) | frames 3, 7 |
 

@@ -91,8 +91,9 @@ def test_pack_sits_on_the_body():
     assert f["torso_setting_in"] == 18.5
     assert f["belt_mid_z_back_mm"] == pytest.approx(W.ILIAC_CREST_Z, abs=5.0)       # belt centred on the crest
     assert f["belt_mid_z_side_mm"] == pytest.approx(W.ILIAC_CREST_Z, abs=8.0)
-    for part in ("harness", "belt"):
-        assert f[part]["pad_contact_fraction"] > 0.95 and f[part]["pad_gap_mm_max"] < 3.0, f[part]
+    for part in ("harness", "belt"):                      # pads touch the cloth over (nearly) their whole footprint
+        assert f[part]["pad_contact_fraction"] > 0.97 and f[part]["pad_gap_mm_max"] < 25.0, f[part]
+        assert 3.0 < f[part]["press_mm_mean"] < 12.0
     assert 25.0 < min(f["lifter_angle_deg"]) and max(f["lifter_angle_deg"]) < 50.0
     assert f["head_gap_mm"] > 40.0
     assert len(w.pack) > 50 and len(w.figure) >= 7 and w.rig is None

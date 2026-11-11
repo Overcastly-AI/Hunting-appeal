@@ -106,7 +106,7 @@ pattern. The 5.00 values are the clamp working. Taut against slack is shown in `
 | preview | 1200 x 900, 40 | 92-206 |
 | final | 1600 x 1200, 72 | hero 334, side 273, belt 421, door 437, buckle 301, zip 308 |
 
-Scene build (stage 1) 20-26 s; GLB 64.5 MB (scratch, `outputs/studio_work/`, not tracked). Final frames take 2 to 4
+The second pass of hero, belt and zip took 712, 709 and 424 s with other agents loading the same cores, so expect up to twice these times under load. Scene build (stage 1) 20-26 s; GLB 64.5 MB (scratch, `outputs/studio_work/`, not tracked). Final frames take 2 to 4
 times longer than the old path (100-150 s) because the scene has 1.3 M vertices and a real backdrop.
 
 ## 4. Proof set
@@ -136,8 +136,8 @@ times longer than the old path (100-150 s) because the scene has 1.3 M vertices 
 | 7 | test | slot test read degenerate triangles as hits | fixed in the test; slots are real openings |
 | 8 | BL-002 note | dark blotches on the folded-open door (legacy lining cut through the door) | fixed: legacy lining dropped, lining rebuilt 1.2 mm inside the displaced door |
 | 9 | BL-002 note | captions printed over the subject | fixed: caption band below the picture |
-| 10 | belt | grey shard floating under the phone pocket (legacy strap-tip slivers inside `shoulder_straps`) and the `imp6_hw` cord lock floating off the strap | fixed in the adapter: slivers under 80 mm and `imp6_hw` are not drawn |
-| 11 | zip macro, hero | zigzag seam left of the door zip (seam followed the mesh edges of a diagonal piece boundary) | fixed: seam lines smoothed over 24 mm |
+| 10 | belt (frame 4) | grey shard floating under the hose pocket on the form's chest | OPEN. The adapter now drops `imp6_hw` and strap-tip slivers under 80 mm, but the shard is still in the final frame, so it is another legacy harness piece; not traced |
+| 11 | zip macro (frame 7), faintly in hero | a saw-tooth band of mottled surface left of the door zip, and the same mottled band under the hinge-band strap in frame 6 | PARTLY. The seam ridge that followed the mesh edges is fixed (seam lines smoothed over 24 mm). The band itself remains: where the cloth is pressed in (seam crease, strap) an inner legacy surface about 1-2 mm inside the skin shows through. Not traced to a part |
 | 12 | door | three or four dark dimples high on the body left of the pouch | open: G-hook wraps of the pouch straps sit partly under the displaced cloth |
 | 13 | all full views | roll-top is a tube with a spiral end, pouch a soft box, wings hemmed slabs | open: legacy lofts, section 6 |
 | 14 | belt | 50 mm buckle and belt ladder locks have no webbing wrapped through them; pocket and pouch zips are still the legacy tube | open: those call sites give no strap frame |

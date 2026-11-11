@@ -1179,7 +1179,10 @@ def fit_pack(pack: dict, cloth_objs: list, M_pack, torso_setting: float, z_crest
         r_body = np.where(bad, np.nan, r_body)
         pad_soft = np.clip(_blur(pad.astype(float), 2), 0.0, 1.0)
         # pads press ``sink`` into the cloth; webbing and hardware beyond the pads lie on it
-        delta = np.where(foot, r_body - sink * pad_soft + 0.0012 * (1.0 - pad_soft) - r_in, np.nan)
+        # reference radius: the pad's own inner face wherever there is a pad (a pocket or clip riding on the pad
+        # must not set it), the innermost webbing / hardware elsewhere
+        r_ref = np.where(pad, r_pad, r_in)
+        delta = np.where(foot, r_body - sink * pad_soft + 0.0012 * (1.0 - pad_soft) - r_ref, np.nan)
         delta = np.where(np.abs(delta) > 0.12, np.nan, delta)
         D = _blur(_nanfill(delta), 3)
         D = np.where(foot & ~np.isnan(delta), 0.5 * D + 0.5 * np.nan_to_num(delta, nan=0.0), D)
@@ -1236,11 +1239,11 @@ def fit_pack(pack: dict, cloth_objs: list, M_pack, torso_setting: float, z_crest
                 band = _mesh_obj("beltB_front_webbing", np.array(Vr), Fr,
                                  wb.data.materials[0] if wb is not None and wb.data.materials else None)
                 parts["beltB_front_webbing"] = band
-        if os.environ.get("WEARER_DBG"):
-            np.savez(os.environ["WEARER_DBG"] + f"_{ref_names[0]}.npz", r_in=r_in, r_pad=r_pad, r_body=r_body, D=D,
-                     delta=delta, r_in2=r_in2, az=W.az, u=W.u)
         r_pad2 = W.cast(_bvh([(_co(o), _polys(o)) for o in refs]), first=True, need=pad)
         ok = pad & ~np.isnan(r_pad2) & ~np.isnan(r_body)
+        if os.environ.get("WEARER_DBG"):
+            np.savez(os.environ["WEARER_DBG"] + f"_{ref_names[0]}.npz", r_in=r_in, r_pad=r_pad, r_body=r_body, D=D,
+                     delta=delta, r_in2=r_in2, az=W.az, u=W.u, r_pad2=r_pad2)
         pgap = (r_pad2 - r_body)[ok]                          # pad inner face minus the undented cloth surface
         return {"pad_cells": int(ok.sum()), "max_move_mm": round(1000 * max(moved), 1),
                 "press_mm_mean": round(1000 * float(depth[depth > 0].mean()) if (depth > 0).any() else 0.0, 1),
@@ -1664,7 +1667,8 @@ SHOTS = {
               "caption": "In the field: 3/4 rear, sun from the side", "sub": NOT_A_PHOTO + ". HDRI: Poly Haven, CC0"},
     "fit_back": {"pose": "stand", "scene": "studio", "az": 62, "el": 10, "box": (-0.30, -0.42, 0.85, 0.34, 0.25, 1.80),
                  "caption": "Fit detail: straps on the shoulders, belt on the hips",
-                 "sub": "Pads pressed {press} mm into the cloth; no daylight under the straps. " + NOT_A_PHOTO},
+                 "sub": "Pads pressed about {press} mm into the cloth; {contact} % of the pad area touches. "
+                        "Rendered 3D figure, not a photograph"},
     "fit_front": {"pose": "front", "scene": "studio", "az": 138, "el": 10, "box": (-0.40, -0.30, 0.80, 0.40, 0.30, 1.78),
                   "caption": "Fit detail: belt, bottle holster, sternum strap",
                   "sub": "Front belt webbing added by wearer.py (viz3d draws belt B open). " + NOT_A_PHOTO},
@@ -1889,7 +1893,8 @@ def render_wearer(shots=DEFAULT_SHOTS, out_dir=None, prefix="20261110_BL019", qu
                 fit=f"1829 mm man, torso {f.get('torso_figure_mm', 0):.0f} mm, pack set to {f.get('torso_setting_in', 0):g} in",
                 belt="L", head=f"{f.get('head_gap_mm', 0):.0f}",
                 lifter="/".join(f"{a:.0f}" for a in f.get("lifter_angle_deg", [])),
-                press=f"{f.get('harness', {}).get('press_mm_mean', 0):.0f} to {f.get('belt', {}).get('press_mm_mean', 0):.0f}")
+                press=f"{0.5 * (f.get('harness', {}).get('press_mm_mean', 0) + f.get('belt', {}).get('press_mm_mean', 0)):.0f}",
+                contact=f"{100 * min(f.get('harness', {}).get('pad_contact_fraction') or 0, f.get('belt', {}).get('pad_contact_fraction') or 0):.0f}")
             ST.finish(raw, out, sh["caption"] if captions else "", sub if captions else "")
             CR.shrink_png(out)
             results[name] = {"shot": name, "file": str(out), "seconds": round(time.time() - t1, 1),
