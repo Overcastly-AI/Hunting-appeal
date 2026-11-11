@@ -13,8 +13,8 @@ Owner: pack-designer. Date: 2026-11-11. Code: `designs/pack_5200/weight_rollup_v
 | target (base) | 2993.7 (6.60 lb) | | |
 
 - **6.6 lb is not reachable with what is adopted or under test.** Proven now misses it by **421 g**, after tests by **148 g**, owner options by **151 g**.
-- Closing the last 151 g would take deleting or moving to add-ons: IMP-2 (33 g), FP-L/R (34 g), IMP-5L (15 g), IMP-4 (22 g), IMP-6 (11 g), B-11 (24 g), E-5 (5 g) = 144 g. Even every unfrozen candidate (144 g) does not reach it; see section 5.
-- The BL-011 headline (base 3262 g) was -152 g against proven now and +120 g against after tests: it took the gated BL-005/006 items and the fabric swaps as done, left package C and the IM3 cheek out, and had the ledger's booking errors in it (section 2).
+- Closing the last 151 g would take deleting or moving to add-ons: IMP-2 (33 g), FP-L/R (34 g), IMP-5L (15 g), IMP-4 (22 g), IMP-6 (11 g), B-11 lash (12 g), E-5 (5 g) = 132 g. Even every unfrozen candidate (132 g) does not reach it; only with the belt-foam reserve on top (164 g in all) does it, i.e. a pack with no pockets, no hip-reach access, no hydration sleeve and a softer belt; see section 5.
+- The BL-011 headline (base 3262 g, `corrie_f.pack_with_adopted`) was -152 g against proven now and +120 g against after tests: it took the gated BL-005/006 items and the fabric swaps as done, left package C and the IM3 cheek out, and had the ledger's booking errors in it (section 2).
 
 ## 1. Rules
 
@@ -122,16 +122,16 @@ What closing it would cost in features (CORRIE F base rows; frozen features cann
 | US- | 93.4 | under-straps (owner-frozen) | yes |
 | FP-L/R | 33.5 | hip-reach pockets (the BL-002 access fix for the sheep-load 2nd bottle) | no |
 | IMP-2 | 32.6 | hydration sleeve (SG sells it separately) | no |
-| B-11 | 24.1 | lash tabs + muzzle keepers (rifle carry) | no |
 | IMP-4 | 22.0 | kill-kit / first-aid door pocket | no |
 | IMP-5L | 15.2 | hipbelt pocket (SG, Exo, Seek sell them separately) | no |
+| B-11 lash | 12.0 | lash tabs + muzzle keepers (rifle carry) | no |
 | IMP-6 | 11.1 | shoulder-strap phone pocket | no |
 | IMP-8 | 7.5 | bow cam / limb cup (bow carry: owner-frozen) | yes |
 | E-5 | 5.4 | pole quiver (trekking pole / tripod leg carry) | no |
 
-- Taking the largest unfrozen items first: FP-L/R, IMP-2, B-11, IMP-4, IMP-5L, IMP-6, E-5 = 144 g does not reach it; all unfrozen candidates together are 144 g.
-- Not in any scenario: the belt-foam reserve (BL-006 d2 + d4, -31.9 g, gated by HB-1 and a compression-set check). Even with it, the gap stays.
-- BL-007 fixed torso does not help once the kits are in: (a) -87.7 g against H1, kits with OD 17 legs -82.6 g, and BL-007 removes a pawl housing that C4 already took out: net +2.9 g. (c) would be -14.8 g more. **Neither has been restated on the per-torso fatigue basis adopted in BL-017** (old basis (a) 1.084, (c) 1.037; H1 dropped 1.279 -> 1.150 on restatement). Scaled the same way they would be below 1.0; that is an estimate, not a result. The structural-fea-engineer should restate them before the owner is asked.
+- Taking the largest unfrozen items first: FP-L/R, IMP-2, IMP-4, IMP-5L, B-11 lash, IMP-6, E-5 = 132 g does not reach it; all unfrozen candidates together are 132 g. With the belt-foam reserve as well, 164 g against the 151 g gap: 6.6 lb is reached only by deleting every one of these features and softening the belt.
+- Not in any scenario: the belt-foam reserve (BL-006 d2 + d4, -31.9 g, gated by HB-1 and a compression-set check). On its own it does not close the gap.
+- BL-007 fixed torso does not help once the kits are in: (a) -87.7 g against H1, kits with OD 17 legs -82.6 g, and BL-007 removes a pawl housing that C4 already took out: net +2.9 g. (c) would be -14.8 g more. **Neither has been restated on the per-torso fatigue basis adopted in BL-017** (old basis (a) 1.084, (c) 1.037; H1 dropped 1.279 -> 1.150 on restatement). Scaled by the same ratio they would be 0.97 and 0.93, below 1.0; that is an estimate, not a result. The structural-fea-engineer should restate them before the owner is asked.
 - The lever the 6.6 lb target needs is on the frame side (BL-008: frame side about double the leaders'), which no open ticket reaches: after tests the suspension is 2065 g.
 
 ## 6. Estimates and uncertainty
@@ -140,9 +140,9 @@ Nothing in the roll-up has been weighed. Each row is banded by its source class.
 
 | scenario (base) | total g | typed ASSUMPTION | printed body | frame lumps / carbon | area x gsm, records | worst case | RSS |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| proven now | 3414 | 290 +- 103 (30%) | 714 +- 41 (5%) | 514 +- 69 (10%) | 1896 +- 414 (8%) | +- 626 | +- 75 |
-| after tests | 3142 | 290 +- 193 (30%) | 714 +- 41 (5%) | 494 +- 80 (10%) | 1644 +- 856 (8%) | +- 1170 | +- 91 |
-| owner options | 3145 | 290 +- 193 (30%) | 714 +- 41 (5%) | 497 +- 98 (10%) | 1644 +- 856 (8%) | +- 1188 | +- 92 |
+| proven now | 3414 | 300 +- 98 (30%) | 763 +- 38 (5%) | 514 +- 64 (10%) | 1837 +- 176 (8%) | +- 376 | +- 66 |
+| after tests | 3142 | 300 +- 98 (30%) | 763 +- 38 (5%) | 494 +- 66 (10%) | 1586 +- 186 (8%) | +- 389 | +- 66 |
+| owner options | 3145 | 300 +- 98 (30%) | 763 +- 38 (5%) | 497 +- 84 (10%) | 1586 +- 186 (8%) | +- 407 | +- 68 |
 
 Single typed ASSUMPTION masses >= 5 g in after tests (base):
 
@@ -151,28 +151,15 @@ Single typed ASSUMPTION masses >= 5 g in after tests (base):
 | harness: load lifters 25 mm poly + ladders, sternum Fidlock (QUICK family) + POM rails | 65.6 | 19.7 |
 | misc: thread (~3 % of soft goods) + labels | 42.2 | 12.7 |
 | torso adjust: 3:1 pulley webbing 25 mm x 1.4 m, metal cam buckle, pawl release cord + stra | 41.7 | 12.5 |
-| CORRIE F: D2 door zip #10 in the blade | door seam, 2 sliders | 40.4 | 12.1 |
-| CORRIE F: D2 door zip #10 in the blade | door seam, 2 sliders | 40.4 | 12.1 |
-| CORRIE F: D2 door zip #10 in the blade | door seam, 2 sliders | -40.4 | 12.1 |
-| CORRIE F: IM-cams: 3 x 25 mm Al cams | 39.0 | 11.7 |
-| CORRIE F: IM-cams: 3 x 25 mm Al cams | 39.0 | 11.7 |
-| CORRIE F: IM-cams: 3 x 25 mm Al cams | -39.0 | 11.7 |
-| CORRIE F: US-cams: US1/US2 25 mm Al cams (2) | 26.0 | 7.8 |
-| CORRIE F: US-cams: US1/US2 25 mm Al cams (2) | 26.0 | 7.8 |
-| CORRIE F: US-cams: US1/US2 25 mm Al cams (2) | -26.0 | 7.8 |
-| CORRIE F: IM-hooks: 3 x 25 mm rated Al G-hooks (right end only) | 24.0 | 7.2 |
-| CORRIE F: IM-hooks: 3 x 25 mm rated Al G-hooks (right end only) | 24.0 | 7.2 |
-| CORRIE F: IM-hooks: 3 x 25 mm rated Al G-hooks (right end only) | -24.0 | 7.2 |
-| REMOVED: attachment: B-01 swell patches | -12.3 | 3.7 |
-| CORRIE F: BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle | 12.1 | 3.6 |
-| CORRIE F: BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle | 12.1 | 3.6 |
-| CORRIE F: BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle | -12.1 | 3.6 |
+| D2 door zip #10 in the blade | door seam, 2 sliders | 40.4 | 12.1 |
+| IM-cams: 3 x 25 mm Al cams | 39.0 | 11.7 |
+| US-cams: US1/US2 25 mm Al cams (2) | 26.0 | 7.8 |
+| IM-hooks: 3 x 25 mm rated Al G-hooks (right end only) | 24.0 | 7.2 |
+| BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle | 12.1 | 3.6 |
 | belt B 2:1 pull: 2 x 25 mm Al D-ring (no record, ASSUMPTION 5 g, $1) | 10.0 | 3.0 |
 | POM pawl housing double-booked (the printed body forms the housing and its cheeks) | -8.0 | 2.4 |
 | belt B cant snap deleted (2 POM 3-position detents, ASSUMPTION -6 g) | -6.0 | 1.8 |
-| CORRIE F: 4 hard-point loops: 25 mm webbing 0.08 m each, in the left gusset's corner seams | 5.8 | 1.7 |
-| CORRIE F: 4 hard-point loops: 25 mm webbing 0.08 m each, in the left gusset's corner seams | 5.8 | 1.7 |
-| CORRIE F: 4 hard-point loops: 25 mm webbing 0.08 m each, in the left gusset's corner seams | -5.8 | 1.7 |
+| 4 hard-point loops: 25 mm webbing 0.08 m each, in the left gusset's corner seams at z 420  | 5.8 | 1.7 |
 | belt B silicone-dot grip print on lumbar + wing faces (ASSUMPTION 5 g, outsourced $3) | 5.0 | 1.5 |
 
 Other open estimates:

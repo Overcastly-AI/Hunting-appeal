@@ -713,7 +713,10 @@ def report(res: dict, shots: list) -> str:
     w(f"- Closing the last {fc['gap_g']:.0f} g would take deleting or moving to add-ons: "
       + ", ".join(f"{c['item']} ({c['g']:.0f} g)" for c in fc["candidates"] if c["item"] in fc["greedy_take"])
       + f" = {fc['greedy_g']:.0f} g. " + ("That reaches it" if fc["reaches"] else
-      f"Even every unfrozen candidate ({fc['all_unfrozen_g']:.0f} g) does not reach it") + "; see section 5.")
+      f"Even every unfrozen candidate ({fc['all_unfrozen_g']:.0f} g) does not reach it")
+      + (f"; only with the belt-foam reserve on top ({fc['with_reserve_g']:.0f} g in all) does it, i.e. a pack with "
+         "no pockets, no hip-reach access, no hydration sleeve and a softer belt" if fc["reaches_with_reserve"] else "")
+      + "; see section 5.")
     h = res["bl011_headline_base_g"]
     w(f"- The BL-011 headline (base {h:.0f} g, `corrie_f.pack_with_adopted`) was {h - P['base']:+.0f} g against "
       f"proven now and {h - A['base']:+.0f} g against after tests: it took the gated BL-005/006 items and the fabric swaps as done, "
@@ -828,7 +831,7 @@ def report(res: dict, shots: list) -> str:
          + ("6.6 lb is reached only by deleting every one of these features and softening the belt." if
             fc["reaches_with_reserve"] else "still short.")))
     w(f"- Not in any scenario: the belt-foam reserve (BL-006 d2 + d4, {fc['belt_foam_reserve_g']:+.1f} g, gated by HB-1 "
-      "and a compression-set check). Even with it, the gap stays.")
+      "and a compression-set check). On its own it does not close the gap.")
     fxa, fxc = res["fixed_torso"]["a"], res["fixed_torso"]["c"]
     w(f"- BL-007 fixed torso does not help once the kits are in: (a) {fxa['pack_delta_g']:+.1f} g against H1, kits with "
       f"OD 17 legs {ck['M']['(a)+(d2)+(c17 bore 19)']:+.1f} g, and BL-007 removes a pawl housing that C4 already "
