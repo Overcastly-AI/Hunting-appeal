@@ -472,6 +472,43 @@ def render_model(state: str, name: str | None = None, torso: int = 19) -> Path:
     return glb
 
 
+# ---------------------------------------------------------------------------------------------------------- table
+CHOSEN = "S15"      # DECISION (analysis/shell_sweep.md section 4)
+
+
+def table_md(torsos=(15,)) -> str:
+    """The sweep table for shell_sweep.md, straight from the stored rows."""
+    d = load_results()["rows"]
+    h = ("| Shell | Torso | d_bot / d_sh / d_col | base / top width | z_c (fill height) | Case | Converged (rounding) | "
+         "Closed L (cu in) | CG y / z mm | warp / weft % | gusset wrinkle % | worst seam N/mm (SF) | "
+         "mushroom / lean mm |\n|" + "---|" * 13)
+    out = [h]
+    for k, r in d.items():
+        if r["torso"] not in torsos or r["tag"]:
+            continue
+        p, g = r["params"], r["geometry"]
+        for cn in ("fill", "meat"):
+            c = r["cases"][cn]
+            conv = f"yes ({c['rounding_mm']:g} mm)" if c["converged"] else f"NO (res {c['residual_n']:.2f} N)"
+            sil = c["silhouette"]
+            out.append(f"| {r['shell']} | {r['torso']} | {p['d_bot']:.0f} / {p['d_sh']:.0f} / {p['d_col']:.0f} | "
+                       f"{2 * p['a_bot']:.0f} / {2 * p['a_top']:.0f} | {g['z_c']:.1f} ({g['fill_height_in']:.1f} in) | "
+                       f"{cn} | {conv} | {c['closed_L']:.1f} ({c['closed_cu_in']:.0f}) | {c['cg_y']:.1f} / "
+                       f"{c['cg_z']:.0f} | {c['warp_max_pct']:.1f} / {c['weft_max_pct']:.1f} | "
+                       f"{c['gusset_wrinkle_pct']:.0f} | {c['seam_n_mm']:.2f} {c['seam'].replace(' | ', '/')} ({c['seam_sf']:.0f}) | "
+                       f"{sil['mushroom_mm']:.0f} / {sil['lean_mm']:.0f} |")
+    return "\n".join(out)
+
+
+def mark_chosen():
+    d = load_results()
+    g = meets_goal(d["rows"][f"{CHOSEN}_PR15"])
+    d["chosen"] = CHOSEN
+    d["chosen_meets_goal"] = bool(g["meat"] and g["fill"])
+    RESULTS.write_text(json.dumps(d, indent=1, default=float))
+    return g
+
+
 # ---------------------------------------------------------------------------------------------------------- plot
 def plot(path: Path | None = None) -> Path:
     import matplotlib
@@ -529,7 +566,7 @@ def _cmd_list():
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=["list", "run", "sweep", "r28", "plot", "dims", "render-sim", "render-model",
-                                    "reextract"])
+                                    "reextract", "table", "choose"])
     ap.add_argument("shell", nargs="?")
     ap.add_argument("--torso", type=int, default=15)
     ap.add_argument("--cases", default="packed,fill,meat")
@@ -567,6 +604,10 @@ def main(argv=None):
         print(render_model(a.state, a.shell))
     elif a.cmd == "reextract":
         reextract()
+    elif a.cmd == "table":
+        print(table_md(tuple(int(t) for t in (a.shell or "15").split(","))))
+    elif a.cmd == "choose":
+        print(mark_chosen())
 
 
 if __name__ == "__main__":

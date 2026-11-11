@@ -1236,14 +1236,16 @@ def fit_pack(pack: dict, cloth_objs: list, M_pack, torso_setting: float, z_crest
                 band = _mesh_obj("beltB_front_webbing", np.array(Vr), Fr,
                                  wb.data.materials[0] if wb is not None and wb.data.materials else None)
                 parts["beltB_front_webbing"] = band
-        gap = r_in2 - r_body                                  # > 0: daylight between pad and cloth before the press
         if os.environ.get("WEARER_DBG"):
             np.savez(os.environ["WEARER_DBG"] + f"_{ref_names[0]}.npz", r_in=r_in, r_pad=r_pad, r_body=r_body, D=D,
                      delta=delta, r_in2=r_in2, az=W.az, u=W.u)
-        return {"cells": int(foot.sum()), "max_move_mm": round(1000 * max(moved), 1),
+        r_pad2 = W.cast(_bvh([(_co(o), _polys(o)) for o in refs]), first=True, need=pad)
+        ok = pad & ~np.isnan(r_pad2) & ~np.isnan(r_body)
+        pgap = (r_pad2 - r_body)[ok]                          # pad inner face minus the undented cloth surface
+        return {"pad_cells": int(ok.sum()), "max_move_mm": round(1000 * max(moved), 1),
                 "press_mm_mean": round(1000 * float(depth[depth > 0].mean()) if (depth > 0).any() else 0.0, 1),
-                "gap_mm_max_after": round(1000 * float(np.nanmax(np.where(foot, gap, np.nan))), 1),
-                "contact_fraction": round(float(((gap < 0.0005) & foot).sum() / max(foot.sum(), 1)), 3)}
+                "pad_gap_mm_max": round(1000 * float(pgap.max()), 1) if len(pgap) else None,
+                "pad_contact_fraction": round(float((pgap < 0.0005).mean()), 3) if len(pgap) else None}
 
     z_arm = z_c7 - 0.19
     yb = float(np.nanmin(trunk[(trunk[:, 2] > z_crest + 0.1) & (trunk[:, 2] < z_c7 - 0.1), 1]))
@@ -1672,7 +1674,7 @@ def _ph(asset_id) -> Path:
     return asset_dir() / m["dir"] / m["file"]
 
 
-def _outdoor(w: Wearer, cam_az: float, sun_off_deg: float = -55.0, exposure: float = -0.9):
+def _outdoor(w: Wearer, cam_az: float, sun_off_deg: float = 35.0, exposure: float = -0.9):
     """Mountain setting: Poly Haven HDRI as light and backdrop, a grass ground on the wearer's slope, dry-grass tufts
     round the feet. The HDRI is turned so the sun stands ``sun_off_deg`` round from the camera (side light)."""
     bpy = _bpy()

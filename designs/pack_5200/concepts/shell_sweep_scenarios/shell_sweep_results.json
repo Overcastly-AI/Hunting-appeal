@@ -13127,5 +13127,7 @@
    "closed_L": 84.7,
    "note": "retry with OMP_NUM_THREADS=1: still stalls above the 0.5 N tolerance"
   }
- }
+ },
+ "chosen": "S15",
+ "chosen_meets_goal": true
 }

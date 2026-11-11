@@ -1,0 +1,1839 @@
+{
+ "date": "2026-11-11",
+ "ticket": "BL-017",
+ "ledger": {
+  "pack_g": 3927.0,
+  "torso_adjust_g": 41.7,
+  "crown_lump_g": 239.4,
+  "frame_g": 1025.0800000000002
+ },
+ "block_g": {
+  "crown legs 2 x 430 mm (OD 16, rev C)": 88.12,
+  "crown top bar 214 mm (rev C)": 20.16,
+  "crown spine 300 mm (rev C)": 29.4,
+  "crown-corner bondlines 0.8 mm (rev C line)": 2.21,
+  "spine clamp": 6.0,
+  "UHMWPE bushings 4 x 70 mm": 16.75,
+  "rack PA66-GF30 300 mm": 22.0,
+  "pawl housing + spring + Ti pawl": 14.0,
+  "pawl 304 bushings + pin": 9.94,
+  "pulley guides (3)": 8.0,
+  "pulley webbing 25 mm x 1.4 m": 25.2,
+  "cam buckle": 12.0,
+  "release cord + toggle": 4.5
+ },
+ "block_total_g": 258.3,
+ "sizes": {
+  "S": {
+   "torso_in": [
+    15.0,
+    18.0
+   ],
+   "leg_mm": 303.0,
+   "spine_mm": 173.0,
+   "rack_mm": 173.0,
+   "travel_mm": 76.2,
+   "overlap_top_mm": 155.8,
+   "overlap_bottom_mm": 232.0,
+   "leg_bottom_z_lowest": 298.1
+  },
+  "M": {
+   "torso_in": [
+    17.5,
+    20.5
+   ],
+   "leg_mm": 366.5,
+   "spine_mm": 236.5,
+   "rack_mm": 173.0,
+   "travel_mm": 76.2,
+   "overlap_top_mm": 155.8,
+   "overlap_bottom_mm": 232.0,
+   "leg_bottom_z_lowest": 298.1
+  },
+  "L": {
+   "torso_in": [
+    20.0,
+    23.0
+   ],
+   "leg_mm": 430.0,
+   "spine_mm": 300.0,
+   "rack_mm": 173.0,
+   "travel_mm": 76.2,
+   "overlap_top_mm": 155.8,
+   "overlap_bottom_mm": 232.0,
+   "leg_bottom_z_lowest": 298.1
+  }
+ },
+ "specs": {
+  "h1": {
+   "name": "h1",
+   "torsos": [
+    15.0,
+    19.0,
+    23.0
+   ],
+   "leg_mm": 430.0,
+   "spine_mm": 300.0,
+   "leg": [
+    16.0,
+    8
+   ],
+   "bushing_mm": 70.0,
+   "bushing_wall": 1.0
+  },
+  "a_S": {
+   "name": "a_S",
+   "torsos": [
+    15.0,
+    18.0
+   ],
+   "leg_mm": 303.0,
+   "spine_mm": 173.0,
+   "leg": [
+    16.0,
+    8
+   ],
+   "bushing_mm": 70.0,
+   "bushing_wall": 1.0
+  },
+  "ac_S": {
+   "name": "ac_S",
+   "torsos": [
+    15.0,
+    18.0
+   ],
+   "leg_mm": 303.0,
+   "spine_mm": 173.0,
+   "leg": [
+    17.0,
+    7
+   ],
+   "bushing_mm": 70.0,
+   "bushing_wall": 0.5
+  },
+  "a_M": {
+   "name": "a_M",
+   "torsos": [
+    17.5,
+    19.0,
+    20.5
+   ],
+   "leg_mm": 366.5,
+   "spine_mm": 236.5,
+   "leg": [
+    16.0,
+    8
+   ],
+   "bushing_mm": 70.0,
+   "bushing_wall": 1.0
+  },
+  "ac_M": {
+   "name": "ac_M",
+   "torsos": [
+    17.5,
+    19.0,
+    20.5
+   ],
+   "leg_mm": 366.5,
+   "spine_mm": 236.5,
+   "leg": [
+    17.0,
+    7
+   ],
+   "bushing_mm": 70.0,
+   "bushing_wall": 0.5
+  },
+  "a_L": {
+   "name": "a_L",
+   "torsos": [
+    20.0,
+    23.0
+   ],
+   "leg_mm": 430.0,
+   "spine_mm": 300.0,
+   "leg": [
+    16.0,
+    8
+   ],
+   "bushing_mm": 70.0,
+   "bushing_wall": 1.0
+  },
+  "ac_L": {
+   "name": "ac_L",
+   "torsos": [
+    20.0,
+    23.0
+   ],
+   "leg_mm": 430.0,
+   "spine_mm": 300.0,
+   "leg": [
+    17.0,
+    7
+   ],
+   "bushing_mm": 70.0,
+   "bushing_wall": 0.5
+  },
+  "e50": {
+   "name": "e50",
+   "torsos": [
+    15.0,
+    19.0,
+    23.0
+   ],
+   "leg_mm": 430.0,
+   "spine_mm": 300.0,
+   "leg": [
+    16.0,
+    8
+   ],
+   "bushing_mm": 50.0,
+   "bushing_wall": 1.0
+  },
+  "c17n7": {
+   "name": "c17n7",
+   "torsos": [
+    15.0,
+    19.0,
+    23.0
+   ],
+   "leg_mm": 430.0,
+   "spine_mm": 300.0,
+   "leg": [
+    17.0,
+    7
+   ],
+   "bushing_mm": 70.0,
+   "bushing_wall": 0.5
+  },
+  "c17n6": {
+   "name": "c17n6",
+   "torsos": [
+    15.0,
+    19.0,
+    23.0
+   ],
+   "leg_mm": 430.0,
+   "spine_mm": 300.0,
+   "leg": [
+    17.0,
+    6
+   ],
+   "bushing_mm": 70.0,
+   "bushing_wall": 0.5
+  },
+  "c18n6": {
+   "name": "c18n6",
+   "torsos": [
+    15.0,
+    19.0,
+    23.0
+   ],
+   "leg_mm": 430.0,
+   "spine_mm": 300.0,
+   "leg": [
+    18.0,
+    6
+   ],
+   "bushing_mm": 70.0,
+   "bushing_wall": 1.0
+  },
+  "c18n5": {
+   "name": "c18n5",
+   "torsos": [
+    15.0,
+    19.0,
+    23.0
+   ],
+   "leg_mm": 430.0,
+   "spine_mm": 300.0,
+   "leg": [
+    18.0,
+    5
+   ],
+   "bushing_mm": 70.0,
+   "bushing_wall": 1.0
+  }
+ },
+ "crown": {
+  "h1": {
+   "min": {
+    "crown_leg": {
+     "sf": 1.116,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "crown_top_bar": {
+     "sf": 1.246,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "crown_spine": {
+     "sf": 1.178,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "corner_bond_avg": {
+     "sf": 2.344,
+     "set": "C:tall_load_posts|15"
+    },
+    "corner_bond_peak": {
+     "sf": 1.217,
+     "set": "C:tall_load_posts|15"
+    },
+    "bushing_bearing": {
+     "sf": 17.604,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "leg_ring_crush": {
+     "sf": 2.334,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "fatigue": {
+     "sf": 1.358,
+     "set": "C_im3:static_carry|23"
+    },
+    "buckling": {
+     "sf": 1.854,
+     "set": "C:hipbelt_off_abuse|23"
+    },
+    "rack": {
+     "sf": 6.266,
+     "set": "C_im3:hipbelt_off_abuse|19"
+    },
+    "pawl_cheek": {
+     "sf": 1.399,
+     "set": "C:hipbelt_off_abuse|15"
+    },
+    "corner_bond_fatigue_peak": {
+     "sf": 2.107,
+     "set": "C_im3:static_carry|23"
+    }
+   },
+   "min_all": 1.116
+  },
+  "a_S": {
+   "min": {
+    "crown_leg": {
+     "sf": 1.149,
+     "set": "C_im3:hipbelt_off_abuse|18"
+    },
+    "crown_top_bar": {
+     "sf": 1.262,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "crown_spine": {
+     "sf": 1.178,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "corner_bond_avg": {
+     "sf": 2.301,
+     "set": "C:tall_load_posts|15"
+    },
+    "corner_bond_peak": {
+     "sf": 1.195,
+     "set": "C:tall_load_posts|15"
+    },
+    "bushing_bearing": {
+     "sf": 15.993,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "leg_ring_crush": {
+     "sf": 2.12,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "fatigue": {
+     "sf": 2.691,
+     "set": "C_im3:static_carry|18"
+    },
+    "buckling": {
+     "sf": 1.884,
+     "set": "C:side_hill_torsion|15"
+    },
+    "rack": {
+     "sf": 6.266,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "pawl_cheek": {
+     "sf": 1.411,
+     "set": "C:hipbelt_off_abuse|15"
+    },
+    "corner_bond_fatigue_peak": {
+     "sf": 3.079,
+     "set": "C:static_carry|15"
+    }
+   },
+   "min_all": 1.149
+  },
+  "ac_S": {
+   "min": {
+    "crown_leg": {
+     "sf": 1.161,
+     "set": "C_im3:hipbelt_off_abuse|18"
+    },
+    "crown_top_bar": {
+     "sf": 1.27,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "crown_spine": {
+     "sf": 1.178,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "corner_bond_avg": {
+     "sf": 2.575,
+     "set": "C:tall_load_posts|15"
+    },
+    "corner_bond_peak": {
+     "sf": 1.353,
+     "set": "C:tall_load_posts|15"
+    },
+    "bushing_bearing": {
+     "sf": 17.052,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "leg_ring_crush": {
+     "sf": 1.724,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "fatigue": {
+     "sf": 2.717,
+     "set": "C_im3:static_carry|18"
+    },
+    "buckling": {
+     "sf": 1.892,
+     "set": "C:side_hill_torsion|15"
+    },
+    "rack": {
+     "sf": 6.266,
+     "set": "C:hipbelt_off_abuse|15"
+    },
+    "pawl_cheek": {
+     "sf": 1.417,
+     "set": "C:hipbelt_off_abuse|15"
+    },
+    "corner_bond_fatigue_peak": {
+     "sf": 3.459,
+     "set": "C:static_carry|15"
+    }
+   },
+   "min_all": 1.161
+  },
+  "a_M": {
+   "min": {
+    "crown_leg": {
+     "sf": 1.128,
+     "set": "C_im3:hipbelt_off_abuse|20.5"
+    },
+    "crown_top_bar": {
+     "sf": 2.378,
+     "set": "C_im3:side_hill_torsion|17.5"
+    },
+    "crown_spine": {
+     "sf": 1.738,
+     "set": "C_im3:hipbelt_off_abuse|20.5"
+    },
+    "corner_bond_avg": {
+     "sf": 2.748,
+     "set": "C:tall_load_posts|17.5"
+    },
+    "corner_bond_peak": {
+     "sf": 1.427,
+     "set": "C:tall_load_posts|17.5"
+    },
+    "bushing_bearing": {
+     "sf": 20.559,
+     "set": "C_im3:hipbelt_off_abuse|17.5"
+    },
+    "leg_ring_crush": {
+     "sf": 2.726,
+     "set": "C_im3:hipbelt_off_abuse|17.5"
+    },
+    "fatigue": {
+     "sf": 1.747,
+     "set": "C_im3:static_carry|20.5"
+    },
+    "buckling": {
+     "sf": 1.934,
+     "set": "C:hipbelt_off_abuse|20.5"
+    },
+    "rack": {
+     "sf": 6.266,
+     "set": "C:hipbelt_off_abuse|17.5"
+    },
+    "pawl_cheek": {
+     "sf": 2.004,
+     "set": "C_im3:hipbelt_off_abuse|17.5"
+    },
+    "corner_bond_fatigue_peak": {
+     "sf": 3.244,
+     "set": "C_im3:static_carry|20.5"
+    }
+   },
+   "min_all": 1.128
+  },
+  "ac_M": {
+   "min": {
+    "crown_leg": {
+     "sf": 1.14,
+     "set": "C_im3:hipbelt_off_abuse|20.5"
+    },
+    "crown_top_bar": {
+     "sf": 2.388,
+     "set": "C_im3:side_hill_torsion|17.5"
+    },
+    "crown_spine": {
+     "sf": 1.749,
+     "set": "C_im3:hipbelt_off_abuse|20.5"
+    },
+    "corner_bond_avg": {
+     "sf": 3.061,
+     "set": "C:tall_load_posts|17.5"
+    },
+    "corner_bond_peak": {
+     "sf": 1.609,
+     "set": "C:tall_load_posts|17.5"
+    },
+    "bushing_bearing": {
+     "sf": 21.913,
+     "set": "C_im3:hipbelt_off_abuse|17.5"
+    },
+    "leg_ring_crush": {
+     "sf": 2.215,
+     "set": "C_im3:hipbelt_off_abuse|17.5"
+    },
+    "fatigue": {
+     "sf": 1.764,
+     "set": "C_im3:static_carry|20.5"
+    },
+    "buckling": {
+     "sf": 1.937,
+     "set": "C:hipbelt_off_abuse|20.5"
+    },
+    "rack": {
+     "sf": 6.266,
+     "set": "C_im3:hipbelt_off_abuse|17.5"
+    },
+    "pawl_cheek": {
+     "sf": 2.015,
+     "set": "C_im3:hipbelt_off_abuse|17.5"
+    },
+    "corner_bond_fatigue_peak": {
+     "sf": 3.914,
+     "set": "C_im3:static_carry|20.5"
+    }
+   },
+   "min_all": 1.14
+  },
+  "a_L": {
+   "min": {
+    "crown_leg": {
+     "sf": 1.116,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "crown_top_bar": {
+     "sf": 2.325,
+     "set": "C_im3:side_hill_torsion|23"
+    },
+    "crown_spine": {
+     "sf": 1.191,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "corner_bond_avg": {
+     "sf": 2.922,
+     "set": "C:tall_load_posts|20"
+    },
+    "corner_bond_peak": {
+     "sf": 1.517,
+     "set": "C:tall_load_posts|20"
+    },
+    "bushing_bearing": {
+     "sf": 23.005,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "leg_ring_crush": {
+     "sf": 3.05,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "fatigue": {
+     "sf": 1.358,
+     "set": "C_im3:static_carry|23"
+    },
+    "buckling": {
+     "sf": 1.854,
+     "set": "C:hipbelt_off_abuse|23"
+    },
+    "rack": {
+     "sf": 6.266,
+     "set": "C:hipbelt_off_abuse|20"
+    },
+    "pawl_cheek": {
+     "sf": 2.774,
+     "set": "C_im3:hipbelt_off_abuse|20"
+    },
+    "corner_bond_fatigue_peak": {
+     "sf": 2.107,
+     "set": "C_im3:static_carry|23"
+    }
+   },
+   "min_all": 1.116
+  },
+  "ac_L": {
+   "min": {
+    "crown_leg": {
+     "sf": 1.127,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "crown_top_bar": {
+     "sf": 2.368,
+     "set": "C_im3:side_hill_torsion|23"
+    },
+    "crown_spine": {
+     "sf": 1.2,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "corner_bond_avg": {
+     "sf": 3.248,
+     "set": "C:tall_load_posts|20"
+    },
+    "corner_bond_peak": {
+     "sf": 1.707,
+     "set": "C:tall_load_posts|20"
+    },
+    "bushing_bearing": {
+     "sf": 24.507,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "leg_ring_crush": {
+     "sf": 2.477,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "fatigue": {
+     "sf": 1.371,
+     "set": "C_im3:static_carry|23"
+    },
+    "buckling": {
+     "sf": 1.857,
+     "set": "C:hipbelt_off_abuse|23"
+    },
+    "rack": {
+     "sf": 6.266,
+     "set": "C:hipbelt_off_abuse|20"
+    },
+    "pawl_cheek": {
+     "sf": 2.791,
+     "set": "C_im3:hipbelt_off_abuse|20"
+    },
+    "corner_bond_fatigue_peak": {
+     "sf": 2.541,
+     "set": "C_im3:static_carry|23"
+    }
+   },
+   "min_all": 1.127
+  },
+  "e50": {
+   "min": {
+    "crown_leg": {
+     "sf": 1.116,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "crown_top_bar": {
+     "sf": 1.246,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "crown_spine": {
+     "sf": 1.178,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "corner_bond_avg": {
+     "sf": 2.344,
+     "set": "C:tall_load_posts|15"
+    },
+    "corner_bond_peak": {
+     "sf": 1.217,
+     "set": "C:tall_load_posts|15"
+    },
+    "bushing_bearing": {
+     "sf": 12.574,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "leg_ring_crush": {
+     "sf": 1.667,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "fatigue": {
+     "sf": 1.358,
+     "set": "C_im3:static_carry|23"
+    },
+    "buckling": {
+     "sf": 1.854,
+     "set": "C:hipbelt_off_abuse|23"
+    },
+    "rack": {
+     "sf": 6.266,
+     "set": "C_im3:hipbelt_off_abuse|19"
+    },
+    "pawl_cheek": {
+     "sf": 1.399,
+     "set": "C:hipbelt_off_abuse|15"
+    },
+    "corner_bond_fatigue_peak": {
+     "sf": 2.107,
+     "set": "C_im3:static_carry|23"
+    }
+   },
+   "min_all": 1.116
+  },
+  "c17n7": {
+   "min": {
+    "crown_leg": {
+     "sf": 1.127,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "crown_top_bar": {
+     "sf": 1.255,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "crown_spine": {
+     "sf": 1.178,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "corner_bond_avg": {
+     "sf": 2.62,
+     "set": "C:tall_load_posts|15"
+    },
+    "corner_bond_peak": {
+     "sf": 1.377,
+     "set": "C:tall_load_posts|15"
+    },
+    "bushing_bearing": {
+     "sf": 18.79,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "leg_ring_crush": {
+     "sf": 1.899,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "fatigue": {
+     "sf": 1.371,
+     "set": "C_im3:static_carry|23"
+    },
+    "buckling": {
+     "sf": 1.857,
+     "set": "C:hipbelt_off_abuse|23"
+    },
+    "rack": {
+     "sf": 6.266,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "pawl_cheek": {
+     "sf": 1.406,
+     "set": "C:hipbelt_off_abuse|15"
+    },
+    "corner_bond_fatigue_peak": {
+     "sf": 2.541,
+     "set": "C_im3:static_carry|23"
+    }
+   },
+   "min_all": 1.127
+  },
+  "c17n6": {
+   "min": {
+    "crown_leg": {
+     "sf": 0.98,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "crown_top_bar": {
+     "sf": 1.243,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "crown_spine": {
+     "sf": 1.178,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "corner_bond_avg": {
+     "sf": 2.654,
+     "set": "C:tall_load_posts|15"
+    },
+    "corner_bond_peak": {
+     "sf": 1.416,
+     "set": "C:tall_load_posts|15"
+    },
+    "bushing_bearing": {
+     "sf": 18.675,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "leg_ring_crush": {
+     "sf": 1.584,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "fatigue": {
+     "sf": 1.194,
+     "set": "C_im3:static_carry|23"
+    },
+    "buckling": {
+     "sf": 1.853,
+     "set": "C:hipbelt_off_abuse|23"
+    },
+    "rack": {
+     "sf": 6.266,
+     "set": "C_im3:hipbelt_off_abuse|19"
+    },
+    "pawl_cheek": {
+     "sf": 1.397,
+     "set": "C:hipbelt_off_abuse|15"
+    },
+    "corner_bond_fatigue_peak": {
+     "sf": 2.401,
+     "set": "C_im3:static_carry|23"
+    }
+   },
+   "min_all": 0.98
+  },
+  "c18n6": {
+   "min": {
+    "crown_leg": {
+     "sf": 1.107,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "crown_top_bar": {
+     "sf": 1.261,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "crown_spine": {
+     "sf": 1.178,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "corner_bond_avg": {
+     "sf": 2.919,
+     "set": "C:tall_load_posts|15"
+    },
+    "corner_bond_peak": {
+     "sf": 1.557,
+     "set": "C:tall_load_posts|15"
+    },
+    "bushing_bearing": {
+     "sf": 19.951,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "leg_ring_crush": {
+     "sf": 1.512,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "fatigue": {
+     "sf": 1.345,
+     "set": "C_im3:static_carry|23"
+    },
+    "buckling": {
+     "sf": 1.859,
+     "set": "C:hipbelt_off_abuse|23"
+    },
+    "rack": {
+     "sf": 6.266,
+     "set": "C:hipbelt_off_abuse|15"
+    },
+    "pawl_cheek": {
+     "sf": 1.41,
+     "set": "C:hipbelt_off_abuse|15"
+    },
+    "corner_bond_fatigue_peak": {
+     "sf": 2.993,
+     "set": "C_im3:static_carry|23"
+    }
+   },
+   "min_all": 1.107
+  },
+  "c18n5": {
+   "min": {
+    "crown_leg": {
+     "sf": 0.937,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "crown_top_bar": {
+     "sf": 1.246,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "crown_spine": {
+     "sf": 1.178,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "corner_bond_avg": {
+     "sf": 2.963,
+     "set": "C:tall_load_posts|15"
+    },
+    "corner_bond_peak": {
+     "sf": 1.613,
+     "set": "C:tall_load_posts|15"
+    },
+    "bushing_bearing": {
+     "sf": 19.809,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "leg_ring_crush": {
+     "sf": 1.221,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "fatigue": {
+     "sf": 1.141,
+     "set": "C_im3:static_carry|23"
+    },
+    "buckling": {
+     "sf": 1.854,
+     "set": "C:hipbelt_off_abuse|23"
+    },
+    "rack": {
+     "sf": 6.266,
+     "set": "C:hipbelt_off_abuse|19"
+    },
+    "pawl_cheek": {
+     "sf": 1.4,
+     "set": "C:hipbelt_off_abuse|15"
+    },
+    "corner_bond_fatigue_peak": {
+     "sf": 2.802,
+     "set": "C_im3:static_carry|23"
+    }
+   },
+   "min_all": 0.937
+  }
+ },
+ "body": {
+  "h1": {
+   "name": "h1",
+   "raster_g": 757.72192,
+   "min": {
+    "strength": 1.4531359257446115,
+    "fatigue": 1.2794731924250948,
+    "creep": 2.7295428105068695
+   },
+   "governing": "C_im3:C_im3:static_carry|23 (fatigue)",
+   "by_torso": {
+    "C|15": {
+     "strength": 1.453,
+     "fatigue": 1.611,
+     "creep": 3.437,
+     "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+    },
+    "C|19": {
+     "strength": 2.147,
+     "fatigue": 1.706,
+     "creep": 3.64,
+     "gov": "side_hill_torsion (mid bar z 330)"
+    },
+    "C|23": {
+     "strength": 2.17,
+     "fatigue": 1.768,
+     "creep": 3.772,
+     "gov": "side_hill_torsion (mid bar z 330)"
+    },
+    "C_im3|15": {
+     "strength": 1.471,
+     "fatigue": 1.524,
+     "creep": 3.25,
+     "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+    },
+    "C_im3|19": {
+     "strength": 2.103,
+     "fatigue": 1.474,
+     "creep": 3.144,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3|23": {
+     "strength": 2.135,
+     "fatigue": 1.279,
+     "creep": 2.73,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    }
+   },
+   "buckling_min": 1.313,
+   "joint_strength": 1.964,
+   "joint_fatigue": 1.22
+  },
+  "a": {
+   "name": "a",
+   "raster_g": 757.72192,
+   "min": {
+    "strength": 1.4829857077529613,
+    "fatigue": 1.1554209988135555,
+    "creep": 2.4648981308022524
+   },
+   "governing": "C_im3@L:C_im3@L:static_carry|23 (fatigue)",
+   "by_torso": {
+    "C@S|15": {
+     "strength": 1.483,
+     "fatigue": 1.41,
+     "creep": 3.009,
+     "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+    },
+    "C@S|18": {
+     "strength": 2.053,
+     "fatigue": 1.464,
+     "creep": 3.123,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@S|15": {
+     "strength": 1.501,
+     "fatigue": 1.348,
+     "creep": 2.877,
+     "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+    },
+    "C_im3@S|18": {
+     "strength": 2.001,
+     "fatigue": 1.291,
+     "creep": 2.753,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@M|17": {
+     "strength": 2.017,
+     "fatigue": 1.449,
+     "creep": 3.091,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@M|19": {
+     "strength": 2.038,
+     "fatigue": 1.47,
+     "creep": 3.136,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@M|20": {
+     "strength": 2.052,
+     "fatigue": 1.484,
+     "creep": 3.166,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@M|17": {
+     "strength": 1.976,
+     "fatigue": 1.281,
+     "creep": 2.733,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@M|19": {
+     "strength": 1.981,
+     "fatigue": 1.247,
+     "creep": 2.66,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@M|20": {
+     "strength": 1.985,
+     "fatigue": 1.22,
+     "creep": 2.602,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@L|20": {
+     "strength": 2.068,
+     "fatigue": 1.49,
+     "creep": 3.179,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@L|23": {
+     "strength": 2.099,
+     "fatigue": 1.513,
+     "creep": 3.228,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@L|20": {
+     "strength": 1.999,
+     "fatigue": 1.226,
+     "creep": 2.615,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@L|23": {
+     "strength": 2.004,
+     "fatigue": 1.155,
+     "creep": 2.465,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    }
+   },
+   "buckling_min": 1.313,
+   "joint_strength": 1.964,
+   "joint_fatigue": 1.22
+  },
+  "a_sleeve": {
+   "name": "a_sleeve",
+   "raster_g": 753.82112,
+   "min": {
+    "strength": 1.4801323825339574,
+    "fatigue": 1.1184273431459493,
+    "creep": 2.3859783320446923
+   },
+   "governing": "C_im3@L:C_im3@L:static_carry|23 (fatigue)",
+   "by_torso": {
+    "C@S|15": {
+     "strength": 1.48,
+     "fatigue": 1.361,
+     "creep": 2.904,
+     "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+    },
+    "C@S|18": {
+     "strength": 2.028,
+     "fatigue": 1.415,
+     "creep": 3.019,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@S|15": {
+     "strength": 1.5,
+     "fatigue": 1.305,
+     "creep": 2.784,
+     "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+    },
+    "C_im3@S|18": {
+     "strength": 1.969,
+     "fatigue": 1.236,
+     "creep": 2.637,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@M|17": {
+     "strength": 2.0,
+     "fatigue": 1.397,
+     "creep": 2.98,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@M|19": {
+     "strength": 2.024,
+     "fatigue": 1.416,
+     "creep": 3.02,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@M|20": {
+     "strength": 2.032,
+     "fatigue": 1.431,
+     "creep": 3.052,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@M|17": {
+     "strength": 1.946,
+     "fatigue": 1.232,
+     "creep": 2.628,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@M|19": {
+     "strength": 1.94,
+     "fatigue": 1.192,
+     "creep": 2.542,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@M|20": {
+     "strength": 1.947,
+     "fatigue": 1.165,
+     "creep": 2.485,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@L|20": {
+     "strength": 2.051,
+     "fatigue": 1.44,
+     "creep": 3.072,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@L|23": {
+     "strength": 2.086,
+     "fatigue": 1.467,
+     "creep": 3.13,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@L|20": {
+     "strength": 1.955,
+     "fatigue": 1.171,
+     "creep": 2.498,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@L|23": {
+     "strength": 1.954,
+     "fatigue": 1.118,
+     "creep": 2.386,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    }
+   },
+   "buckling_min": 1.316,
+   "joint_strength": 1.964,
+   "joint_fatigue": 1.22,
+   "removed_g": 3.9008
+  },
+  "c18n6": {
+   "name": "c18n6",
+   "raster_g": 719.46016,
+   "min": {
+    "strength": 1.4478004634082349,
+    "fatigue": 1.1553843910165864,
+    "creep": 2.464820034168718
+   },
+   "governing": "C_im3:C_im3:static_carry|23 (fatigue)",
+   "by_torso": {
+    "C|15": {
+     "strength": 1.448,
+     "fatigue": 1.572,
+     "creep": 3.353,
+     "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+    },
+    "C|19": {
+     "strength": 2.115,
+     "fatigue": 1.66,
+     "creep": 3.542,
+     "gov": "side_hill_torsion (mid bar z 330)"
+    },
+    "C|23": {
+     "strength": 2.141,
+     "fatigue": 1.718,
+     "creep": 3.666,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3|15": {
+     "strength": 1.467,
+     "fatigue": 1.484,
+     "creep": 3.165,
+     "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+    },
+    "C_im3|19": {
+     "strength": 2.065,
+     "fatigue": 1.389,
+     "creep": 2.963,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3|23": {
+     "strength": 2.054,
+     "fatigue": 1.155,
+     "creep": 2.465,
+     "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+    }
+   },
+   "buckling_min": 1.309,
+   "joint_strength": 1.838,
+   "joint_fatigue": 1.23,
+   "removed_g": 38.261759999999995
+  },
+  "c17n7": {
+   "name": "c17n7",
+   "raster_g": 757.72192,
+   "min": {
+    "strength": 1.4601628067918515,
+    "fatigue": 1.2786729765102758,
+    "creep": 2.727835683221922
+   },
+   "governing": "C_im3:C_im3:static_carry|23 (fatigue)",
+   "by_torso": {
+    "C|15": {
+     "strength": 1.46,
+     "fatigue": 1.612,
+     "creep": 3.438,
+     "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+    },
+    "C|19": {
+     "strength": 2.148,
+     "fatigue": 1.706,
+     "creep": 3.64,
+     "gov": "side_hill_torsion (mid bar z 330)"
+    },
+    "C|23": {
+     "strength": 2.169,
+     "fatigue": 1.768,
+     "creep": 3.772,
+     "gov": "side_hill_torsion (mid bar z 330)"
+    },
+    "C_im3|15": {
+     "strength": 1.478,
+     "fatigue": 1.524,
+     "creep": 3.251,
+     "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+    },
+    "C_im3|19": {
+     "strength": 2.103,
+     "fatigue": 1.474,
+     "creep": 3.144,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3|23": {
+     "strength": 2.134,
+     "fatigue": 1.279,
+     "creep": 2.728,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    }
+   },
+   "buckling_min": 1.314,
+   "joint_strength": 1.963,
+   "joint_fatigue": 1.219
+  },
+  "ac": {
+   "name": "ac",
+   "raster_g": 757.72192,
+   "min": {
+    "strength": 1.4884623740735923,
+    "fatigue": 1.1544750790951266,
+    "creep": 2.462880168736271
+   },
+   "governing": "C_im3@L:C_im3@L:static_carry|23 (fatigue)",
+   "by_torso": {
+    "C@S|15": {
+     "strength": 1.488,
+     "fatigue": 1.41,
+     "creep": 3.009,
+     "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+    },
+    "C@S|18": {
+     "strength": 2.055,
+     "fatigue": 1.464,
+     "creep": 3.122,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@S|15": {
+     "strength": 1.508,
+     "fatigue": 1.348,
+     "creep": 2.877,
+     "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+    },
+    "C_im3@S|18": {
+     "strength": 2.002,
+     "fatigue": 1.29,
+     "creep": 2.753,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@M|17": {
+     "strength": 2.017,
+     "fatigue": 1.449,
+     "creep": 3.091,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@M|19": {
+     "strength": 2.038,
+     "fatigue": 1.47,
+     "creep": 3.136,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@M|20": {
+     "strength": 2.052,
+     "fatigue": 1.484,
+     "creep": 3.166,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@M|17": {
+     "strength": 1.976,
+     "fatigue": 1.281,
+     "creep": 2.732,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@M|19": {
+     "strength": 1.981,
+     "fatigue": 1.247,
+     "creep": 2.659,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@M|20": {
+     "strength": 1.985,
+     "fatigue": 1.22,
+     "creep": 2.602,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@L|20": {
+     "strength": 2.069,
+     "fatigue": 1.49,
+     "creep": 3.179,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C@L|23": {
+     "strength": 2.099,
+     "fatigue": 1.513,
+     "creep": 3.228,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@L|20": {
+     "strength": 1.999,
+     "fatigue": 1.225,
+     "creep": 2.614,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    },
+    "C_im3@L|23": {
+     "strength": 2.004,
+     "fatigue": 1.154,
+     "creep": 2.463,
+     "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+    }
+   },
+   "buckling_min": 1.314,
+   "joint_strength": 1.963,
+   "joint_fatigue": 1.219
+  }
+ },
+ "leg_holes": {
+  "z_hole_fails_above": 413.4,
+  "set": "C_im3:hipbelt_off_abuse|15 L",
+  "low_bushing_top_at_highest_setting": 444.3,
+  "max_travel_mm": 0.0
+ },
+ "plunger": {
+  "factored_axial_n": 850.2,
+  "strip_bearing_sf": 2.94,
+  "strip_shear_out_sf": 4.85,
+  "plunger_bending_sf": 4.23,
+  "resolution_mm": 12.7,
+  "rack_resolution_mm": 4.0
+ },
+ "strap_d2": {
+  "crown_force_static_n": 32.4,
+  "tail_hoist_static_n": 44.4,
+  "tail_hoist_walk_1p6g_n": 71.0,
+  "limit_n": 200.0,
+  "ok": true
+ },
+ "masses": {
+  "H1 today": {
+   "S": {
+    "frame_g": 1025.1,
+    "pack_g": 3927.0,
+    "delta_g": 0,
+    "items": {}
+   },
+   "M": {
+    "frame_g": 1025.1,
+    "pack_g": 3927.0,
+    "delta_g": 0,
+    "items": {}
+   },
+   "L": {
+    "frame_g": 1025.1,
+    "pack_g": 3927.0,
+    "delta_g": 0,
+    "items": {}
+   }
+  },
+  "(a) 3 crown kits": {
+   "S": {
+    "frame_g": 971.4,
+    "pack_g": 3873.3,
+    "delta_g": -53.7,
+    "items": {
+     "crown legs": -26.03,
+     "spine cut per size": -12.45,
+     "rack cut per size (strip part)": -8.35,
+     "pulley webbing shorter (3 x travel cut)": -6.86
+    }
+   },
+   "M": {
+    "frame_g": 990.7,
+    "pack_g": 3892.6,
+    "delta_g": -34.4,
+    "items": {
+     "crown legs": -13.01,
+     "spine cut per size": -6.22,
+     "rack cut per size (strip part)": -8.35,
+     "pulley webbing shorter (3 x travel cut)": -6.86
+    }
+   },
+   "L": {
+    "frame_g": 1009.9,
+    "pack_g": 3911.8,
+    "delta_g": -15.2,
+    "items": {
+     "rack cut per size (strip part)": -8.35,
+     "pulley webbing shorter (3 x travel cut)": -6.86
+    }
+   }
+  },
+  "(b) index plunger": {
+   "S": {
+    "frame_g": 972.9,
+    "pack_g": 3874.8,
+    "delta_g": -52.2,
+    "items": {
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0,
+     "rack -> perforated strip (holes)": -2.47,
+     "release cord + toggle (plunger pulled at the housing)": -4.5
+    }
+   },
+   "M": {
+    "frame_g": 972.9,
+    "pack_g": 3874.8,
+    "delta_g": -52.2,
+    "items": {
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0,
+     "rack -> perforated strip (holes)": -2.47,
+     "release cord + toggle (plunger pulled at the housing)": -4.5
+    }
+   },
+   "L": {
+    "frame_g": 972.9,
+    "pack_g": 3874.8,
+    "delta_g": -52.2,
+    "items": {
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0,
+     "rack -> perforated strip (holes)": -2.47,
+     "release cord + toggle (plunger pulled at the housing)": -4.5
+    }
+   }
+  },
+  "(c) OD 17 x 7 UD legs": {
+   "S": {
+    "frame_g": 1016.8,
+    "pack_g": 3918.7,
+    "delta_g": -8.3,
+    "items": {
+     "crown legs": -1.56,
+     "UHMWPE bushings": -6.79
+    }
+   },
+   "M": {
+    "frame_g": 1016.8,
+    "pack_g": 3918.7,
+    "delta_g": -8.3,
+    "items": {
+     "crown legs": -1.56,
+     "UHMWPE bushings": -6.79
+    }
+   },
+   "L": {
+    "frame_g": 1016.8,
+    "pack_g": 3918.7,
+    "delta_g": -8.3,
+    "items": {
+     "crown legs": -1.56,
+     "UHMWPE bushings": -6.79
+    }
+   }
+  },
+  "(c) OD 18 x 6 UD legs": {
+   "S": {
+    "frame_g": 1022.4,
+    "pack_g": 3924.3,
+    "delta_g": -2.7,
+    "items": {
+     "crown legs": -4.32,
+     "UHMWPE bushings": 1.64,
+     "printed sleeve: none if the wall drops to 3.41 mm (see body check c18)": 0.0
+    }
+   },
+   "M": {
+    "frame_g": 1022.4,
+    "pack_g": 3924.3,
+    "delta_g": -2.7,
+    "items": {
+     "crown legs": -4.32,
+     "UHMWPE bushings": 1.64,
+     "printed sleeve: none if the wall drops to 3.41 mm (see body check c18)": 0.0
+    }
+   },
+   "L": {
+    "frame_g": 1022.4,
+    "pack_g": 3924.3,
+    "delta_g": -2.7,
+    "items": {
+     "crown legs": -4.32,
+     "UHMWPE bushings": 1.64,
+     "printed sleeve: none if the wall drops to 3.41 mm (see body check c18)": 0.0
+    }
+   }
+  },
+  "(d1) pawl only, no pulley": {
+   "S": {
+    "frame_g": 979.9,
+    "pack_g": 3881.8,
+    "delta_g": -45.2,
+    "items": {
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0
+    }
+   },
+   "M": {
+    "frame_g": 979.9,
+    "pack_g": 3881.8,
+    "delta_g": -45.2,
+    "items": {
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0
+    }
+   },
+   "L": {
+    "frame_g": 979.9,
+    "pack_g": 3881.8,
+    "delta_g": -45.2,
+    "items": {
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0
+    }
+   }
+  },
+  "(d2) pawl + 1:1 strap": {
+   "S": {
+    "frame_g": 990.7,
+    "pack_g": 3892.6,
+    "delta_g": -34.4,
+    "items": {
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0,
+     "1:1 pull-down strap 0.45 m": 8.1,
+     "one guide kept (guide A)": 2.67
+    }
+   },
+   "M": {
+    "frame_g": 990.7,
+    "pack_g": 3892.6,
+    "delta_g": -34.4,
+    "items": {
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0,
+     "1:1 pull-down strap 0.45 m": 8.1,
+     "one guide kept (guide A)": 2.67
+    }
+   },
+   "L": {
+    "frame_g": 990.7,
+    "pack_g": 3892.6,
+    "delta_g": -34.4,
+    "items": {
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0,
+     "1:1 pull-down strap 0.45 m": 8.1,
+     "one guide kept (guide A)": 2.67
+    }
+   }
+  },
+  "(e) bushings 50 mm": {
+   "S": {
+    "frame_g": 1021.1,
+    "pack_g": 3923.0,
+    "delta_g": -4.0,
+    "items": {
+     "UHMWPE bushings": -3.99
+    }
+   },
+   "M": {
+    "frame_g": 1021.1,
+    "pack_g": 3923.0,
+    "delta_g": -4.0,
+    "items": {
+     "UHMWPE bushings": -3.99
+    }
+   },
+   "L": {
+    "frame_g": 1021.1,
+    "pack_g": 3923.0,
+    "delta_g": -4.0,
+    "items": {
+     "UHMWPE bushings": -3.99
+    }
+   }
+  },
+  "(a)+(d2)": {
+   "S": {
+    "frame_g": 943.8,
+    "pack_g": 3845.7,
+    "delta_g": -81.3,
+    "items": {
+     "crown legs": -26.03,
+     "spine cut per size": -12.45,
+     "rack cut per size (strip part)": -8.35,
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0,
+     "1:1 pull-down strap 0.45 m": 8.1,
+     "one guide kept (guide A)": 2.67
+    }
+   },
+   "M": {
+    "frame_g": 963.1,
+    "pack_g": 3865.0,
+    "delta_g": -62.0,
+    "items": {
+     "crown legs": -13.01,
+     "spine cut per size": -6.22,
+     "rack cut per size (strip part)": -8.35,
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0,
+     "1:1 pull-down strap 0.45 m": 8.1,
+     "one guide kept (guide A)": 2.67
+    }
+   },
+   "L": {
+    "frame_g": 982.3,
+    "pack_g": 3884.2,
+    "delta_g": -42.8,
+    "items": {
+     "rack cut per size (strip part)": -8.35,
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0,
+     "1:1 pull-down strap 0.45 m": 8.1,
+     "one guide kept (guide A)": 2.67
+    }
+   }
+  },
+  "(a)+(d1)": {
+   "S": {
+    "frame_g": 933.1,
+    "pack_g": 3835.0,
+    "delta_g": -92.0,
+    "items": {
+     "crown legs": -26.03,
+     "spine cut per size": -12.45,
+     "rack cut per size (strip part)": -8.35,
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0
+    }
+   },
+   "M": {
+    "frame_g": 952.3,
+    "pack_g": 3854.2,
+    "delta_g": -72.8,
+    "items": {
+     "crown legs": -13.01,
+     "spine cut per size": -6.22,
+     "rack cut per size (strip part)": -8.35,
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0
+    }
+   },
+   "L": {
+    "frame_g": 971.6,
+    "pack_g": 3873.5,
+    "delta_g": -53.5,
+    "items": {
+     "rack cut per size (strip part)": -8.35,
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0
+    }
+   }
+  },
+  "(a)+(d1)+(e)": {
+   "S": {
+    "frame_g": 929.1,
+    "pack_g": 3831.0,
+    "delta_g": -96.0,
+    "items": {
+     "crown legs": -26.03,
+     "spine cut per size": -12.45,
+     "rack cut per size (strip part)": -8.35,
+     "UHMWPE bushings": -3.99,
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0
+    }
+   },
+   "M": {
+    "frame_g": 948.3,
+    "pack_g": 3850.2,
+    "delta_g": -76.8,
+    "items": {
+     "crown legs": -13.01,
+     "spine cut per size": -6.22,
+     "rack cut per size (strip part)": -8.35,
+     "UHMWPE bushings": -3.99,
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0
+    }
+   },
+   "L": {
+    "frame_g": 967.6,
+    "pack_g": 3869.5,
+    "delta_g": -57.5,
+    "items": {
+     "rack cut per size (strip part)": -8.35,
+     "UHMWPE bushings": -3.99,
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0
+    }
+   }
+  },
+  "(a)+(d1)+(c17)": {
+   "S": {
+    "frame_g": 925.2,
+    "pack_g": 3827.1,
+    "delta_g": -99.9,
+    "items": {
+     "crown legs": -27.13,
+     "spine cut per size": -12.45,
+     "rack cut per size (strip part)": -8.35,
+     "UHMWPE bushings": -6.79,
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0
+    }
+   },
+   "M": {
+    "frame_g": 944.2,
+    "pack_g": 3846.1,
+    "delta_g": -80.9,
+    "items": {
+     "crown legs": -14.35,
+     "spine cut per size": -6.22,
+     "rack cut per size (strip part)": -8.35,
+     "UHMWPE bushings": -6.79,
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0
+    }
+   },
+   "L": {
+    "frame_g": 963.2,
+    "pack_g": 3865.1,
+    "delta_g": -61.9,
+    "items": {
+     "crown legs": -1.56,
+     "rack cut per size (strip part)": -8.35,
+     "UHMWPE bushings": -6.79,
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0
+    }
+   }
+  },
+  "(a)+(d2)+(c17)": {
+   "S": {
+    "frame_g": 936.0,
+    "pack_g": 3837.9,
+    "delta_g": -89.1,
+    "items": {
+     "crown legs": -27.13,
+     "spine cut per size": -12.45,
+     "rack cut per size (strip part)": -8.35,
+     "UHMWPE bushings": -6.79,
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0,
+     "1:1 pull-down strap 0.45 m": 8.1,
+     "one guide kept (guide A)": 2.67
+    }
+   },
+   "M": {
+    "frame_g": 955.0,
+    "pack_g": 3856.9,
+    "delta_g": -70.1,
+    "items": {
+     "crown legs": -14.35,
+     "spine cut per size": -6.22,
+     "rack cut per size (strip part)": -8.35,
+     "UHMWPE bushings": -6.79,
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0,
+     "1:1 pull-down strap 0.45 m": 8.1,
+     "one guide kept (guide A)": 2.67
+    }
+   },
+   "L": {
+    "frame_g": 974.0,
+    "pack_g": 3875.9,
+    "delta_g": -51.1,
+    "items": {
+     "crown legs": -1.56,
+     "rack cut per size (strip part)": -8.35,
+     "UHMWPE bushings": -6.79,
+     "pulley webbing 1.4 m": -25.2,
+     "cam buckle": -12.0,
+     "pulley guides": -8.0,
+     "1:1 pull-down strap 0.45 m": 8.1,
+     "one guide kept (guide A)": 2.67
+    }
+   }
+  }
+ },
+ "recommended": "(a)+(d1)+(c17)"
+}
