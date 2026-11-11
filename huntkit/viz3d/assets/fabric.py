@@ -33,9 +33,9 @@ class Look:
     limit: float = 5.0            # hard clamp on |displacement|
     hand: float = 0.45            # broad unevenness everywhere
     hand_mm: float = 55.0         # its wavelength
-    fold: float = 3.4             # wrinkle amplitude at full slack
-    fold_mm: tuple = (22.0, 46.0)  # wrinkle wavelength range
-    slack_gain: float = 14.0      # compression strain -> slack (1 at 7 % compression)
+    fold: float = 2.8             # wrinkle amplitude at full slack
+    fold_mm: tuple = (28.0, 62.0)  # wrinkle wavelength range
+    slack_gain: float = 9.0       # compression strain -> slack (1 at 11 % compression)
     slack: float | None = None    # override: constant slack 0..1 for parts without a pattern UV
     slack_dir: tuple | None = None  # with ``slack``: wrinkle ridges run ACROSS this 3D direction
     seam_dip: float = 1.1         # crease depth at a seam line
@@ -155,8 +155,8 @@ def _oriented_waves(X, dirs, lam_lo, lam_hi, sharp=6.0, chunk=20000):
         c = np.cos(x @ (d * (2 * np.pi / lam)[:, None]).T + ph[None, :])
         h = (w * c).sum(1) / np.sqrt(np.maximum((w * w).sum(1), 1e-9)) * 0.75
         out[a:a + chunk] = h
-    out = np.tanh(out * 1.1)
-    return out - 0.25 * (1 - out * out)                                # sharper valleys, rounder crests
+    out = np.tanh(out * 1.0)
+    return out - 0.12 * (1 - out * out)                                # sharper valleys, rounder crests
 
 
 def _iso_noise(X, lam, seed=0):

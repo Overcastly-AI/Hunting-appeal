@@ -627,7 +627,12 @@ def c_base() -> dict:
     wall = (r >= C_BORE_R) & (r < C_BORE_R + WALL_FLOOR + H / 2) & (z >= SLEEVE_Z0) & (z < SOCKET_Z0)
     h1 = np.load(H1.OUT / "h1_final.npz")["solid"]
     jz = _freeze_z(z) & (r < 32.0)      # joint + spreader-clip sections stay as H1 (clips are not re-made)
-    _C.update(pad_zone=pads & c["solid0"], wall_floor=wall & ~dom.passive_void, joint_keep=h1 & jz, h1=h1)
+    from .spreader import CLIP_Z
+    clip = np.zeros_like(z, dtype=bool)
+    for zc in CLIP_Z:
+        clip |= (np.abs(z - zc) <= 8.0) & (np.abs(cen[:, 0]) > 85.0)
+    _C.update(pad_zone=pads & c["solid0"], wall_floor=wall & ~dom.passive_void, joint_keep=h1 & jz, h1=h1,
+              clip_zone=clip)
     return _C
 
 
@@ -643,6 +648,8 @@ def assemble_c(shift: np.ndarray) -> np.ndarray:
     s = (s | c["boss"]) & ~c["holes"]
     s &= ~dom.passive_void
     s |= dom.passive_solid & ~c["holes"]
+    # spreader-clip seats exactly as H1 (growth there would stop the clips snapping on; first run: +560 voxels)
+    s = (s & ~cc["clip_zone"]) | (cc["h1"] & cc["clip_zone"])
     return prod._largest_with_pivot(dom, s)
 
 

@@ -841,122 +841,122 @@
   "c": {
    "body": {
     "variant": "c",
-    "raster_g": 740.83824,
+    "raster_g": 734.54608,
     "min": {
-     "strength": 1.593757442291419,
-     "fatigue": 1.0458984293880629,
-     "creep": 2.2312499826945347
+     "strength": 1.5888897299596187,
+     "fatigue": 1.0022627068681738,
+     "creep": 2.1381604413187705
     },
     "governing": "C_im3:C_im3:static_carry|23 (fatigue)",
     "by_torso": {
      "C|15": {
-      "strength": 1.594,
-      "fatigue": 1.475,
-      "creep": 3.146,
+      "strength": 1.589,
+      "fatigue": 1.392,
+      "creep": 2.97,
       "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
      },
      "C|19": {
-      "strength": 2.348,
-      "fatigue": 1.568,
-      "creep": 3.344,
+      "strength": 2.266,
+      "fatigue": 1.473,
+      "creep": 3.142,
       "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
      },
      "C|23": {
-      "strength": 1.96,
-      "fatigue": 1.622,
-      "creep": 3.46,
+      "strength": 1.908,
+      "fatigue": 1.512,
+      "creep": 3.225,
       "gov": "meat_straps (stay L sleeve (crown bore wall))"
      },
      "C_im3|15": {
-      "strength": 1.625,
-      "fatigue": 1.415,
-      "creep": 3.018,
+      "strength": 1.614,
+      "fatigue": 1.327,
+      "creep": 2.832,
       "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
      },
      "C_im3|19": {
-      "strength": 2.175,
-      "fatigue": 1.244,
-      "creep": 2.653,
+      "strength": 2.091,
+      "fatigue": 1.19,
+      "creep": 2.539,
       "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
      },
      "C_im3|23": {
-      "strength": 1.859,
-      "fatigue": 1.046,
-      "creep": 2.231,
+      "strength": 1.782,
+      "fatigue": 1.002,
+      "creep": 2.138,
       "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
      }
     },
     "cases": {
-     "static_carry": 2.789,
-     "drop_2p5g": 1.859,
-     "side_hill_torsion": 2.063,
-     "single_stay_setdown": 2.82,
-     "meat_straps": 1.96,
-     "tall_load": 3.101,
-     "overload_haul": 2.753,
-     "tall_load_posts": 2.873,
-     "hipbelt_off_abuse": 1.594
+     "static_carry": 2.673,
+     "drop_2p5g": 1.782,
+     "side_hill_torsion": 1.978,
+     "single_stay_setdown": 2.767,
+     "meat_straps": 1.908,
+     "tall_load": 2.889,
+     "overload_haul": 2.682,
+     "tall_load_posts": 2.766,
+     "hipbelt_off_abuse": 1.589
     },
-    "buckling_min": 1.396,
+    "buckling_min": 1.341,
     "joint": {
      "strength": {
       "washer bearing (XY)": {
-       "margin": 2.23,
+       "margin": 2.274,
        "set": "C_im3:side_hill_torsion|23 R"
       },
       "plug shear-out (interlayer)": {
-       "margin": 2.961,
+       "margin": 3.02,
        "set": "C_im3:side_hill_torsion|23 R"
       },
       "bolt tension Ti (0.7 UTS)": {
-       "margin": 3.041,
+       "margin": 3.101,
        "set": "C_im3:side_hill_torsion|23 R"
       },
       "fitted-bolt hole bearing (shear)": {
-       "margin": 8.204,
+       "margin": 8.239,
        "set": "C_im3:side_hill_torsion|15 R"
       },
       "bolt shear Ti": {
-       "margin": 10.274,
+       "margin": 10.318,
        "set": "C_im3:side_hill_torsion|15 R"
       },
       "dry-face contact bearing": {
-       "margin": 2.008,
+       "margin": 2.0,
        "set": "C_im3:drop_2p5g|23 L"
       },
       "boss bending + prying (layer FI)": {
-       "margin": 2.043,
+       "margin": 2.083,
        "set": "C_im3:side_hill_torsion|23 R"
       }
      },
      "fatigue": {
       "washer bearing (XY) at 1.6 g": {
-       "margin": 1.295,
+       "margin": 1.31,
        "set": "C_im3:static_carry|23 L"
       },
       "plug shear-out (interlayer) at 1.6 g": {
-       "margin": 1.719,
+       "margin": 1.739,
        "set": "C_im3:static_carry|23 L"
       },
       "fitted-bolt hole bearing (shear) at 1.6 g": {
-       "margin": 5.594,
+       "margin": 5.604,
        "set": "C_im3:static_carry|15 L"
       },
       "bolt thread Ti at 1.6 g (0.25 UTS)": {
-       "margin": 2.101,
+       "margin": 2.126,
        "set": "C_im3:static_carry|23 L"
       },
       "boss bending + prying at 1.6 g": {
-       "margin": 1.186,
+       "margin": 1.2,
        "set": "C_im3:static_carry|23 L"
       }
      },
      "max_bolt_force_n": {
-      "value": 2926,
+      "value": 2869,
       "set": "C_im3:side_hill_torsion|23 R"
      },
-     "min_strength": 2.008,
-     "min_fatigue": 1.186,
+     "min_strength": 2.0,
+     "min_fatigue": 1.2,
      "capacities_n": {
       "washer_bearing_n": 6523.9,
       "plug_shear_out_n": 8663.0,
@@ -967,7 +967,7 @@
       "contact_mpa": 70.4
      },
      "branch_axial_across_split": {
-      "max_tension_n": 448.8801107406616,
+      "max_tension_n": 454.643367767334,
       "set": "C_im3:side_hill_torsion|23 L"
      },
      "design": {
@@ -1024,26 +1024,26 @@
      "spine_channel empty": 1.0,
      "fairleads present": 1.0,
      "outside envelope (voxels)": 0,
-     "spreader clip sections identical to H1": false
+     "spreader clip sections identical to H1": true
     },
     "family_g": {
      "foot": 7.8,
-     "low": 112.8,
-     "sleeve": 251.1,
+     "low": 112.4,
+     "sleeve": 245.8,
      "top": 191.5,
      "branch": 69.8,
-     "strut": 87.9,
+     "strut": 87.4,
      "mid": 19.8
     },
-    "torsion_Nm_deg": 3.189395393031454,
+    "torsion_Nm_deg": 3.1425870506761835,
     "buckling": {
-     "branch lower (z 165-330) L": 1.396,
+     "branch lower (z 165-330) L": 1.341,
      "branch lower (z 165-330) R": null,
-     "branch upper (z 330-495) L": 2.866,
-     "branch upper (z 330-495) R": 3.142,
+     "branch upper (z 330-495) L": 2.718,
+     "branch upper (z 330-495) R": 3.488,
      "mid bar (x -115..115) all": null
     },
-    "torsion_vs_h1": 0.9759627225597081
+    "torsion_vs_h1": 0.9616392563179964
    },
    "beam": {
     "crown": {
@@ -1369,7 +1369,7 @@
    "mass": {
     "15": {
      "items": {
-      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "printed body (ledger H1 row, raster change applied)": 734.5,
       "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
       "z 234 joint parts (ledger rows)": 28.0,
       "crown legs cut to the unit (2 x 201 mm instead of 430)": -46.9,
@@ -1378,14 +1378,14 @@
       "4 Ti M5 x 30 cross-bolts + nuts + washers": 20.9,
       "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
      },
-     "frame_g": 941.4,
-     "frame_plus_spreader_g": 1103.7,
-     "pack_g": 3801.6,
+     "frame_g": 935.1,
+     "frame_plus_spreader_g": 1097.4,
+     "pack_g": 3795.3,
      "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "16": {
      "items": {
-      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "printed body (ledger H1 row, raster change applied)": 734.5,
       "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
       "z 234 joint parts (ledger rows)": 28.0,
       "crown legs cut to the unit (2 x 226 mm instead of 430)": -41.7,
@@ -1394,14 +1394,14 @@
       "4 Ti M5 x 30 cross-bolts + nuts + washers": 20.9,
       "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
      },
-     "frame_g": 946.6,
-     "frame_plus_spreader_g": 1108.9,
-     "pack_g": 3806.8,
+     "frame_g": 940.3,
+     "frame_plus_spreader_g": 1102.6,
+     "pack_g": 3800.5,
      "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "18": {
      "items": {
-      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "printed body (ledger H1 row, raster change applied)": 734.5,
       "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
       "z 234 joint parts (ledger rows)": 28.0,
       "crown legs cut to the unit (2 x 277 mm instead of 430)": -31.3,
@@ -1410,14 +1410,14 @@
       "4 Ti M5 x 30 cross-bolts + nuts + washers": 20.9,
       "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
      },
-     "frame_g": 957.0,
-     "frame_plus_spreader_g": 1119.3,
-     "pack_g": 3817.2,
+     "frame_g": 950.7,
+     "frame_plus_spreader_g": 1113.0,
+     "pack_g": 3810.9,
      "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "19": {
      "items": {
-      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "printed body (ledger H1 row, raster change applied)": 734.5,
       "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
       "z 234 joint parts (ledger rows)": 28.0,
       "crown legs cut to the unit (2 x 303 mm instead of 430)": -26.1,
@@ -1426,14 +1426,14 @@
       "4 Ti M5 x 30 cross-bolts + nuts + washers": 20.9,
       "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
      },
-     "frame_g": 962.2,
-     "frame_plus_spreader_g": 1124.5,
-     "pack_g": 3822.4,
+     "frame_g": 955.9,
+     "frame_plus_spreader_g": 1118.2,
+     "pack_g": 3816.1,
      "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "20": {
      "items": {
-      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "printed body (ledger H1 row, raster change applied)": 734.5,
       "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
       "z 234 joint parts (ledger rows)": 28.0,
       "crown legs cut to the unit (2 x 328 mm instead of 430)": -20.9,
@@ -1442,14 +1442,14 @@
       "4 Ti M5 x 30 cross-bolts + nuts + washers": 20.9,
       "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
      },
-     "frame_g": 967.4,
-     "frame_plus_spreader_g": 1129.7,
-     "pack_g": 3827.6,
+     "frame_g": 961.1,
+     "frame_plus_spreader_g": 1123.4,
+     "pack_g": 3821.3,
      "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "22": {
      "items": {
-      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "printed body (ledger H1 row, raster change applied)": 734.5,
       "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
       "z 234 joint parts (ledger rows)": 28.0,
       "crown legs cut to the unit (2 x 379 mm instead of 430)": -10.5,
@@ -1458,14 +1458,14 @@
       "4 Ti M5 x 30 cross-bolts + nuts + washers": 20.9,
       "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
      },
-     "frame_g": 977.8,
-     "frame_plus_spreader_g": 1140.1,
-     "pack_g": 3838.0,
+     "frame_g": 971.5,
+     "frame_plus_spreader_g": 1133.8,
+     "pack_g": 3831.7,
      "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "23": {
      "items": {
-      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "printed body (ledger H1 row, raster change applied)": 734.5,
       "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
       "z 234 joint parts (ledger rows)": 28.0,
       "crown legs cut to the unit (2 x 404 mm instead of 430)": -5.3,
@@ -1474,146 +1474,146 @@
       "4 Ti M5 x 30 cross-bolts + nuts + washers": 20.9,
       "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
      },
-     "frame_g": 983.0,
-     "frame_plus_spreader_g": 1145.3,
-     "pack_g": 3843.2,
+     "frame_g": 976.7,
+     "frame_plus_spreader_g": 1139.0,
+     "pack_g": 3836.9,
      "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     }
    },
-   "print_g_19": 747.5,
-   "print_h_19": 26.4,
+   "print_g_19": 741.1,
+   "print_h_19": 26.2,
    "cost_19": {
     "H1 unit cost incl. spreader": 437.0,
-    "filament + reprint (print mass change)": -1.7,
-    "machine time ($1/h)": -0.6,
+    "filament + reprint (print mass change)": -2.3,
+    "machine time ($1/h)": -0.8,
     "rack + pawl + guides (ASSUMPTION $6 printed PA66-GF + pawl)": -6.0,
     "pulley webbing, cam buckle, cord, toggle (ASSUMPTION $15)": -15.0,
     "yoke strip (ASSUMPTION $2)": 2.0,
     "carbon legs cut to length": -8.7,
     "UHMWPE bushings -> shims": -1.4,
     "4 Ti M5 cross-bolts ($4.50, A's figure) + nuts": 19.0,
-    "total": 424.6
+    "total": 423.8
    }
   },
   "b": {
    "body": {
     "variant": "b",
-    "raster_g": 740.83824,
+    "raster_g": 734.54608,
     "min": {
-     "strength": 1.584216385068524,
-     "fatigue": 1.0474080942992807,
-     "creep": 2.2344706011717994
+     "strength": 1.5794053414008544,
+     "fatigue": 1.0035533147963842,
+     "creep": 2.1409137382322867
     },
     "governing": "C_im3:C_im3:static_carry|23 (fatigue)",
     "by_torso": {
      "C|15": {
-      "strength": 1.584,
-      "fatigue": 1.475,
-      "creep": 3.146,
+      "strength": 1.579,
+      "fatigue": 1.393,
+      "creep": 2.971,
       "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
      },
      "C|19": {
-      "strength": 2.334,
-      "fatigue": 1.568,
-      "creep": 3.344,
+      "strength": 2.252,
+      "fatigue": 1.473,
+      "creep": 3.142,
       "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
      },
      "C|23": {
-      "strength": 1.962,
-      "fatigue": 1.622,
-      "creep": 3.46,
+      "strength": 1.911,
+      "fatigue": 1.512,
+      "creep": 3.226,
       "gov": "meat_straps (stay L sleeve (crown bore wall))"
      },
      "C_im3|15": {
-      "strength": 1.615,
-      "fatigue": 1.409,
-      "creep": 3.006,
+      "strength": 1.603,
+      "fatigue": 1.324,
+      "creep": 2.825,
       "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
      },
      "C_im3|19": {
-      "strength": 2.166,
-      "fatigue": 1.245,
-      "creep": 2.655,
+      "strength": 2.085,
+      "fatigue": 1.191,
+      "creep": 2.541,
       "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
      },
      "C_im3|23": {
-      "strength": 1.862,
-      "fatigue": 1.047,
-      "creep": 2.234,
+      "strength": 1.784,
+      "fatigue": 1.004,
+      "creep": 2.141,
       "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
      }
     },
     "cases": {
-     "static_carry": 2.793,
-     "drop_2p5g": 1.862,
-     "side_hill_torsion": 2.06,
-     "single_stay_setdown": 2.813,
-     "meat_straps": 1.962,
-     "tall_load": 3.102,
-     "overload_haul": 2.756,
-     "tall_load_posts": 2.87,
-     "hipbelt_off_abuse": 1.584
+     "static_carry": 2.676,
+     "drop_2p5g": 1.784,
+     "side_hill_torsion": 1.978,
+     "single_stay_setdown": 2.763,
+     "meat_straps": 1.911,
+     "tall_load": 2.889,
+     "overload_haul": 2.685,
+     "tall_load_posts": 2.761,
+     "hipbelt_off_abuse": 1.579
     },
-    "buckling_min": 1.415,
+    "buckling_min": 1.359,
     "joint": {
      "strength": {
       "washer bearing (XY)": {
-       "margin": 2.228,
+       "margin": 2.273,
        "set": "C_im3:side_hill_torsion|23 R"
       },
       "plug shear-out (interlayer)": {
-       "margin": 2.959,
+       "margin": 3.018,
        "set": "C_im3:side_hill_torsion|23 R"
       },
       "bolt tension Ti (0.7 UTS)": {
-       "margin": 3.038,
+       "margin": 3.099,
        "set": "C_im3:side_hill_torsion|23 R"
       },
       "fitted-bolt hole bearing (shear)": {
-       "margin": 8.17,
+       "margin": 8.206,
        "set": "C_im3:side_hill_torsion|15 R"
       },
       "bolt shear Ti": {
-       "margin": 10.231,
+       "margin": 10.276,
        "set": "C_im3:side_hill_torsion|15 R"
       },
       "dry-face contact bearing": {
-       "margin": 2.01,
+       "margin": 2.002,
        "set": "C_im3:drop_2p5g|23 L"
       },
       "boss bending + prying (layer FI)": {
-       "margin": 2.041,
+       "margin": 2.082,
        "set": "C_im3:side_hill_torsion|23 R"
       }
      },
      "fatigue": {
       "washer bearing (XY) at 1.6 g": {
-       "margin": 1.296,
+       "margin": 1.311,
        "set": "C_im3:static_carry|23 L"
       },
       "plug shear-out (interlayer) at 1.6 g": {
-       "margin": 1.721,
+       "margin": 1.741,
        "set": "C_im3:static_carry|23 L"
       },
       "fitted-bolt hole bearing (shear) at 1.6 g": {
-       "margin": 5.586,
+       "margin": 5.595,
        "set": "C_im3:static_carry|15 L"
       },
       "bolt thread Ti at 1.6 g (0.25 UTS)": {
-       "margin": 2.104,
+       "margin": 2.128,
        "set": "C_im3:static_carry|23 L"
       },
       "boss bending + prying at 1.6 g": {
-       "margin": 1.187,
+       "margin": 1.201,
        "set": "C_im3:static_carry|23 L"
       }
      },
      "max_bolt_force_n": {
-      "value": 2928,
+      "value": 2871,
       "set": "C_im3:side_hill_torsion|23 R"
      },
-     "min_strength": 2.01,
-     "min_fatigue": 1.187,
+     "min_strength": 2.002,
+     "min_fatigue": 1.201,
      "capacities_n": {
       "washer_bearing_n": 6523.9,
       "plug_shear_out_n": 8663.0,
@@ -1624,7 +1624,7 @@
       "contact_mpa": 70.4
      },
      "branch_axial_across_split": {
-      "max_tension_n": 450.4826726913452,
+      "max_tension_n": 456.21583557128906,
       "set": "C_im3:side_hill_torsion|23 L"
      },
      "design": {
@@ -1681,26 +1681,26 @@
      "spine_channel empty": 1.0,
      "fairleads present": 1.0,
      "outside envelope (voxels)": 0,
-     "spreader clip sections identical to H1": false
+     "spreader clip sections identical to H1": true
     },
     "family_g": {
      "foot": 7.8,
-     "low": 112.8,
-     "sleeve": 251.1,
+     "low": 112.4,
+     "sleeve": 245.8,
      "top": 191.5,
      "branch": 69.8,
-     "strut": 87.9,
+     "strut": 87.4,
      "mid": 19.8
     },
-    "torsion_Nm_deg": 3.189395393031454,
+    "torsion_Nm_deg": 3.1425870506761835,
     "buckling": {
-     "branch lower (z 165-330) L": 1.415,
+     "branch lower (z 165-330) L": 1.359,
      "branch lower (z 165-330) R": null,
-     "branch upper (z 330-495) L": 3.006,
-     "branch upper (z 330-495) R": 3.069,
+     "branch upper (z 330-495) L": 2.843,
+     "branch upper (z 330-495) R": 3.4,
      "mid bar (x -115..115) all": null
     },
-    "torsion_vs_h1": 0.9759627225597081
+    "torsion_vs_h1": 0.9616392563179964
    },
    "beam": {
     "crown": {
@@ -1902,7 +1902,7 @@
    "mass": {
     "15": {
      "items": {
-      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "printed body (ledger H1 row, raster change applied)": 734.5,
       "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
       "z 234 joint parts (ledger rows)": 28.0,
       "carbon crown legs removed (2 x 430 mm)": -88.1,
@@ -1917,14 +1917,14 @@
       "corner sockets: 4 Ti M5 x 30 + nuts": 18.0,
       "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
      },
-     "frame_g": 1157.1,
-     "frame_plus_spreader_g": 1319.4,
-     "pack_g": 4017.3,
+     "frame_g": 1150.8,
+     "frame_plus_spreader_g": 1313.1,
+     "pack_g": 4011.0,
      "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "16": {
      "items": {
-      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "printed body (ledger H1 row, raster change applied)": 734.5,
       "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
       "z 234 joint parts (ledger rows)": 28.0,
       "carbon crown legs removed (2 x 430 mm)": -88.1,
@@ -1939,14 +1939,14 @@
       "corner sockets: 4 Ti M5 x 30 + nuts": 18.0,
       "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
      },
-     "frame_g": 1175.2,
-     "frame_plus_spreader_g": 1337.5,
-     "pack_g": 4035.4,
+     "frame_g": 1168.9,
+     "frame_plus_spreader_g": 1331.2,
+     "pack_g": 4029.1,
      "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "18": {
      "items": {
-      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "printed body (ledger H1 row, raster change applied)": 734.5,
       "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
       "z 234 joint parts (ledger rows)": 28.0,
       "carbon crown legs removed (2 x 430 mm)": -88.1,
@@ -1961,14 +1961,14 @@
       "corner sockets: 4 Ti M5 x 30 + nuts": 18.0,
       "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
      },
-     "frame_g": 1211.3,
-     "frame_plus_spreader_g": 1373.6,
-     "pack_g": 4071.5,
+     "frame_g": 1205.0,
+     "frame_plus_spreader_g": 1367.3,
+     "pack_g": 4065.2,
      "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "19": {
      "items": {
-      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "printed body (ledger H1 row, raster change applied)": 734.5,
       "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
       "z 234 joint parts (ledger rows)": 28.0,
       "carbon crown legs removed (2 x 430 mm)": -88.1,
@@ -1983,14 +1983,14 @@
       "corner sockets: 4 Ti M5 x 30 + nuts": 18.0,
       "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
      },
-     "frame_g": 1229.4,
-     "frame_plus_spreader_g": 1391.7,
-     "pack_g": 4089.6,
+     "frame_g": 1223.1,
+     "frame_plus_spreader_g": 1385.4,
+     "pack_g": 4083.3,
      "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "20": {
      "items": {
-      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "printed body (ledger H1 row, raster change applied)": 734.5,
       "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
       "z 234 joint parts (ledger rows)": 28.0,
       "carbon crown legs removed (2 x 430 mm)": -88.1,
@@ -2005,14 +2005,14 @@
       "corner sockets: 4 Ti M5 x 30 + nuts": 18.0,
       "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
      },
-     "frame_g": 1247.4,
-     "frame_plus_spreader_g": 1409.7,
-     "pack_g": 4107.6,
+     "frame_g": 1241.1,
+     "frame_plus_spreader_g": 1403.4,
+     "pack_g": 4101.3,
      "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "22": {
      "items": {
-      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "printed body (ledger H1 row, raster change applied)": 734.5,
       "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
       "z 234 joint parts (ledger rows)": 28.0,
       "carbon crown legs removed (2 x 430 mm)": -88.1,
@@ -2027,14 +2027,14 @@
       "corner sockets: 4 Ti M5 x 30 + nuts": 18.0,
       "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
      },
-     "frame_g": 1283.6,
-     "frame_plus_spreader_g": 1445.9,
-     "pack_g": 4143.8,
+     "frame_g": 1277.3,
+     "frame_plus_spreader_g": 1439.6,
+     "pack_g": 4137.5,
      "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "23": {
      "items": {
-      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "printed body (ledger H1 row, raster change applied)": 734.5,
       "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
       "z 234 joint parts (ledger rows)": 28.0,
       "carbon crown legs removed (2 x 430 mm)": -88.1,
@@ -2049,18 +2049,18 @@
       "corner sockets: 4 Ti M5 x 30 + nuts": 18.0,
       "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
      },
-     "frame_g": 1301.6,
-     "frame_plus_spreader_g": 1463.9,
-     "pack_g": 4161.8,
+     "frame_g": 1295.3,
+     "frame_plus_spreader_g": 1457.6,
+     "pack_g": 4155.5,
      "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     }
    },
-   "print_g_19": 971.3,
-   "print_h_19": 34.3,
+   "print_g_19": 964.9,
+   "print_h_19": 34.1,
    "cost_19": {
     "H1 unit cost incl. spreader": 437.0,
-    "filament + reprint (print mass change)": 20.5,
-    "machine time ($1/h)": 7.3,
+    "filament + reprint (print mass change)": 19.9,
+    "machine time ($1/h)": 7.1,
     "rack + pawl + guides (ASSUMPTION $6 printed PA66-GF + pawl)": -6.0,
     "pulley webbing, cam buckle, cord, toggle (ASSUMPTION $15)": -15.0,
     "yoke strip (ASSUMPTION $2)": 2.0,
@@ -2068,7 +2068,7 @@
     "UHMWPE bushings removed": -5.0,
     "8 Ti M5 x 45 + 4 Ti M5 x 30 + nuts, washers": 58.0,
     "2 x 7075 bar-end plugs (ASSUMPTION $4)": 4.0,
-    "total": 473.5
+    "total": 472.7
    }
   },
   "h1": {

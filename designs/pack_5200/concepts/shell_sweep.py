@@ -52,7 +52,7 @@ SCEN_DIR = HERE / "shell_sweep_scenarios"
 RESULTS = SCEN_DIR / "shell_sweep_results.json"
 OUT = ROOT / "outputs" / "clothsim" / "shell_sweep"
 SCREENS = ROOT / "outputs" / "screens"
-PREFIX = "20261110_BL009_"
+PREFIX = "20261111_BL009_"
 
 A_MAX = float(BC.A_MAX)                    # 196.8 mm: 15.5 in overall, owner freeze
 Z0, Z_SH = float(BC.Z0), float(BC.Z_SH)
@@ -479,28 +479,36 @@ def plot(path: Path | None = None) -> Path:
     import matplotlib.pyplot as plt
     d = load_results()["rows"]
     rows = [r for k, r in d.items() if r["torso"] == 15 and not r["tag"]]
-    fig, axs = plt.subplots(1, 2, figsize=(11, 5.6), dpi=110)
+    fig, axs = plt.subplots(1, 2, figsize=(12, 5.8), dpi=110)
+    zcs = [r["geometry"]["z_c"] for r in rows]
+    norm = matplotlib.colors.Normalize(min(zcs), max(zcs))
+    cmap = matplotlib.colormaps["viridis"]
     for ax, case in zip(axs, ("meat", "fill")):
         for r in rows:
             c = r["cases"].get(case)
             if not c:
                 continue
             x = r["geometry"]["depth_max"]
-            conv = c["converged"]
-            col = "#2f6f4f" if conv else "#b0b0b0"
-            ax.scatter([x], [c["cg_y"]], s=46, color=col, edgecolor="k" if conv else "none", zorder=3,
-                       marker="o" if c["rounding_mm"] in (None, 0, 0.0) or c["rounding_mm"] <= 4 else "s")
-            ax.annotate(r["shell"], (x, c["cg_y"]), textcoords="offset points", xytext=(5, 3), fontsize=8)
+            col = cmap(norm(r["geometry"]["z_c"]))
+            inband = VOL_BAND[0] <= r["cases"]["fill"]["closed_L"] <= VOL_BAND[1]
+            if inband:
+                ax.scatter([x], [c["cg_y"]], s=70, marker="o", facecolor=col if c["converged"] else "none",
+                           edgecolor="k", zorder=3)
+            else:
+                ax.scatter([x], [c["cg_y"]], s=45, marker="x", color=col, zorder=3)
+            ax.annotate(f"{r['shell']} ({r['cases']['fill']['closed_L']:.0f} L)", (x, c["cg_y"]),
+                        textcoords="offset points", xytext=(5, 3), fontsize=7)
         ax.axhline(GOAL[case], color="#c0392b", lw=1.2, ls="--", label=f"BL-009 goal {GOAL[case]:.0f} mm")
         ax.axhline(REV_C[case], color="#555", lw=1.0, ls=":", label=f"rev C limit {REV_C[case]:.0f} mm")
-        ax.set_xlabel("max shell depth, drafted (mm)")
+        ax.set_xlabel("max shell depth as drafted (mm)")
         ax.set_ylabel(f"{case} CG y incl. pouch + scope (mm aft)")
-        ax.set_title(f"15 in torso, {case} case (68 kg), coarse h 40")
+        ax.set_title(f"15 in torso, {case} case (68 kg), coarse h 40 mm")
         ax.grid(alpha=0.3)
         ax.legend(fontsize=8, loc="upper left")
-    fig.suptitle("BL-009 shell sweep: loaded CG vs shell depth (green = converged; square = reported at 6 mm rounding)",
-                 fontsize=10)
-    fig.tight_layout()
+    sm = matplotlib.cm.ScalarMappable(norm=norm, cmap=cmap)
+    fig.colorbar(sm, ax=axs, shrink=0.85, label="collar seam height z_c (mm): taller = higher CG")
+    fig.suptitle("BL-009 shell sweep: loaded CG vs depth. Filled circle = converged and 82-88 L simulated; "
+                 "x = volume out of band", fontsize=10)
     path = path or SCREENS / f"{PREFIX}1.png"
     path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(path)

@@ -71,7 +71,8 @@ def test_every_row_states_convergence_and_rounding():
         for cn in ("fill", "meat"):
             c = r["cases"][cn]
             assert isinstance(c["converged"], bool), k
-            assert c["rounding_mm"] is not None, k
+            # a converged case names its rounding stage; an unconverged one (no stage converged) has none
+            assert (c["rounding_mm"] is not None) == c["converged"], k
             assert c["closed_L"] > 50 and 80 < c["cg_y"] < 260, k
 
 

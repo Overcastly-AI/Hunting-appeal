@@ -828,14 +828,15 @@ def plot_sections(res: dict) -> str:
         ax.add_patch(mp.Circle((cx, y + 14.07), 14.07, fc="#5b6068", ec="k"))
         ys = y + 28.1
         ax.add_patch(mp.Rectangle((0, ys), 121, 7.44, fc="#f2e6a0", ec="k", alpha=0.6))
-        ax.text(10, ys + 9, "spreader sw110c7d (bag side, unchanged)", fontsize=9)
+        ax.text(130, ys + 2, "spreader sw110c7d\n(bag side, unchanged)", fontsize=8.5)
         ax.plot([0, 200], [-3, -3], color="#e3a08a", lw=6)
         ax.text(2, -10, "back", color="#a0533b", fontsize=9)
         ax.text(cx + v.rail_w / 2 + 3, 2, f"rail {v.rail_w:.0f} x {v.foam_t:.0f} L200", fontsize=9)
         ax.text(cx + b.width / 2 + 3, v.foam_t + 0.5, b.name, fontsize=8.5)
         r = rows[v.key]
-        ax.set_title(f"{ttl}: half section at the stay (x 0 = spine). Skin {r['peak_kpa']:.1f} kPa, backer SF "
-                     f"{min(r['backer_sf_fpf'], 99):.2f} / fatigue {min(r['backer_sf_fatigue'], 99):.2f}", fontsize=10.5)
+        ax.set_title(f"{ttl} (half section, x 0 = spine)\nskin {r['peak_kpa']:.1f} kPa, backer SF "
+                     f"{min(r['backer_sf_fpf'], 99):.2f}, fatigue {min(r['backer_sf_fatigue'], 99):.2f}, "
+                     f"pair {r['variant']['backer'] and (102.8 + r['mass_delta']['backer']):.0f} g", fontsize=10.5, loc="left")
         ax.set_xlim(-2, 200)
         ax.set_ylim(-14, 52)
         ax.set_aspect("equal")

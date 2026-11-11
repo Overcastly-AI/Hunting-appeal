@@ -48,7 +48,7 @@ QUALITY = {"quick": {"res": (800, 600), "samples": 20}, "preview": {"res": (1200
 # shader family: data/materials/textiles/<record>.yaml named in ``record``.
 MATERIALS = {
     "body": {"shader": "fabric", "record": "cordura_330d_nylon66", "color": "body", "weave_mm": 0.42, "grid_mm": 0,
-             "rough": 0.80, "sheen": 0.5},
+             "rough": 0.80, "sheen": 0.22},
     "camo": {"shader": "fabric", "record": "polyester_ht_630d_printable", "color": "camo", "weave_mm": 0.55,
              "grid_mm": 0, "rough": 0.82, "sheen": 0.4},
     "tpu": {"shader": "fabric", "record": "tpu_coated_nylon_840d", "color": "harness", "weave_mm": 1.2, "basket": 1,
@@ -493,7 +493,7 @@ def corrie_b2_scene(name="corrie_b2", params=None) -> ConceptScene:
         "corrie_kick": dict(max_edge=3.2, uv_is_pattern=True, look=L(fold=2.0)),
         "corrie_door": dict(max_edge=3.2, uv_is_pattern=True),
         "corrie_bottom": dict(max_edge=4.0, uv_is_pattern=True, look=L(fold=1.5)),
-        "corrie_door_open": dict(max_edge=4.0, uv_is_pattern=False, look=L(slack=0.45, fold=2.6), lining="lining"),
+        "corrie_door_open": dict(max_edge=4.0, uv_is_pattern=False, look=L(slack=0.18, fold=2.2), lining="lining"),
         "corrie_roll": dict(max_edge=3.5, uv_is_pattern=False,
                             look=L(slack=0.75, slack_dir=(1, 0, 0), fold=2.6, fold_mm=(14.0, 34.0), hand=0.6)),
         "corrie_pouch": dict(max_edge=3.5, uv_is_pattern=False, look=L(slack=0.30, fold=1.8, hand=0.5)),
@@ -980,7 +980,7 @@ def make_backdrop():
 
 def make_lights():
     CR = _CR()
-    key = CR._area("key", 300.0, 1.5, (1.0, 0.96, 0.90), 1.2)
+    key = CR._area("key", 210.0, 1.5, (1.0, 0.96, 0.90), 1.2)
     fill = CR._area("fill", 14.0, 2.6, (0.90, 0.94, 1.0), 1.8)
     rim = CR._area("rim", 85.0, 0.7, (1.0, 1.0, 1.0), 2.2)
     top = CR._area("top", 22.0, 2.4, (1.0, 0.98, 0.95), 0.9)

@@ -1047,7 +1047,7 @@ class _Wrap:
         D = np.stack([np.sin(A) * np.cos(el), np.cos(A) * np.cos(el), np.sin(el)], -1)
         return C, D
 
-    def cast(self, bvh, first=True, rmax=0.6, need=None):
+    def cast(self, bvh, first=True, rmax=0.6, need=None, layers=0.0):
         """Radius of the first (or last) hit of every grid ray on a BVH; NaN where there is none."""
         from mathutils import Vector  # noqa: PLC0415
         C, D = self.rays()
@@ -1058,7 +1058,13 @@ class _Wrap:
             if first:
                 hit = bvh.ray_cast(o, d, rmax)
                 if hit[0] is not None:
-                    R[i, j] = hit[3]
+                    r = hit[3]
+                    while layers:                     # an outer garment layer just beyond (shirt hem over trousers)
+                        h2 = bvh.ray_cast(o + d * (r + 0.0008), d, layers)
+                        if h2[0] is None:
+                            break
+                        r += 0.0008 + h2[3]
+                    R[i, j] = r
             else:                                    # outermost surface: cast back in from outside
                 hit = bvh.ray_cast(o + d * rmax, -d, rmax)
                 if hit[0] is not None:
@@ -1119,19 +1125,24 @@ def fit_pack(pack: dict, cloth_objs: list, M_pack, torso_setting: float, z_crest
         refs = [o for n, o in parts.items() if n.split("@")[0].startswith(ref_names)]
         fol = [o for n, o in parts.items() if follow(n) and o not in refs]
         W = _Wrap(yc, z_top, z_lo, z_hi)
-        ref_bvh = _bvh([(_co(o), _polys(o)) for o in refs])
-        r_in = W.cast(ref_bvh, first=True)
+        solo = ("load_lifters", "imp2_hose", "corrie_top_guys")       # run free of the body: never pulled onto it
+        union = refs + [o for o in fol if not o.name.startswith(solo)]
+        r_pad = W.cast(_bvh([(_co(o), _polys(o)) for o in refs]), first=True)
+        r_in = W.cast(_bvh([(_co(o), _polys(o)) for o in union]), first=True)
         foot = ~np.isnan(r_in)
+        pad = ~np.isnan(r_pad)
         need = foot.copy()
         for _ in range(10):                                   # body radius on the footprint and a margin around it
             need = need | np.roll(need, 1, 0) | np.roll(need, -1, 0) | np.roll(need, 1, 1) | np.roll(need, -1, 1)
-        r_body = W.cast(body_bvh, first=True, need=need)
+        r_body = W.cast(body_bvh, first=True, need=need, layers=0.022)
         # a ray that leaves through an armhole or misses: use the neighbours
         med = _blur(_nanfill(r_body), 2)
         bad = np.isnan(r_body) | (np.abs(r_body - med) > 0.03)
         r_body = np.where(bad, np.nan, r_body)
-        delta = np.where(foot, r_body - sink - r_in, np.nan)
-        delta = np.where(np.abs(delta) > 0.09, np.nan, delta)
+        pad_soft = np.clip(_blur(pad.astype(float), 2), 0.0, 1.0)
+        # pads press ``sink`` into the cloth; webbing and hardware beyond the pads lie on it
+        delta = np.where(foot, r_body - sink * pad_soft + 0.0012 * (1.0 - pad_soft) - r_in, np.nan)
+        delta = np.where(np.abs(delta) > 0.12, np.nan, delta)
         D = _blur(_nanfill(delta), 3)
         D = np.where(foot & ~np.isnan(delta), 0.5 * D + 0.5 * np.nan_to_num(delta, nan=0.0), D)
         moved = []
@@ -1146,8 +1157,7 @@ def fit_pack(pack: dict, cloth_objs: list, M_pack, torso_setting: float, z_crest
             _set_co(o, P + dirs * (d * w)[:, None])
             moved.append(float(np.abs(d * w).max()))
         # inner face of the fitted pads, then press the cloth under it
-        ref_bvh2 = _bvh([(_co(o), _polys(o)) for o in refs])
-        r_in2 = W.cast(ref_bvh2, first=True, need=need)
+        r_in2 = W.cast(_bvh([(_co(o), _polys(o)) for o in union]), first=True, need=need)
         depth = np.where(~np.isnan(r_in2) & ~np.isnan(r_body), np.maximum(r_body - (r_in2 - 0.0012), 0.0), 0.0)
         soft = np.maximum(depth, _blur(depth, 3))
         for o, Vp in cloth:
@@ -1246,6 +1256,11 @@ def add_cap(fig: dict, colour) -> object:
         v.co += v.normal * (0.004 + 0.003 * k)
     bmesh.ops.smooth_vert(bm, verts=bm.verts, factor=0.5, use_axis_x=True, use_axis_y=True, use_axis_z=True)
     rim = [v for v in bm.verts if v.is_boundary]
+    for v in rim:                                                   # a clean, planar rim
+        v.co.z = zf + slope * (v.co.y - yf) - 0.004
+    for _ in range(3):
+        bmesh.ops.smooth_vert(bm, verts=[v for v in bm.verts if not v.is_boundary], factor=0.5, use_axis_x=True,
+                              use_axis_y=True, use_axis_z=True)
     me = bpy.data.meshes.new("wearer_cap")
     rim_pts = np.array([v.co[:] for v in rim])
     bm.to_mesh(me)
