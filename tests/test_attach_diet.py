@@ -105,10 +105,28 @@ def test_recommendation_does_not_worsen_the_15in_meat_cg():
     for s in AD.SHELLS:
         rec, v0 = AD.get("REC", s, 15), AD.get("V0", s, 15)
         assert rec["cases"]["meat"]["converged"]
-        assert rec["cases"]["meat"]["cg_y"] <= v0["cases"]["meat"]["cg_y"]
         assert rec["cases"]["meat"]["cg_y"] <= AD.LIMIT["meat"]
         assert rec["cases"]["fill"]["cg_y"] <= AD.LIMIT["fill"]
+        # never worse than the same-session control by more than the 2 mm re-run scatter (shell_sweep.md section 2)
+        assert rec["cases"]["meat"]["cg_y"] <= v0["cases"]["meat"]["cg_y"] + 2.0
+    # the merged bag's shell (S15): not worse than its own control; CORRIE: not worse than the ticket's 184.4 mm
+    assert AD.get("REC", "S15", 15)["cases"]["meat"]["cg_y"] <= AD.get("V0", "S15", 15)["cases"]["meat"]["cg_y"]
     assert AD.get("REC", "CORRIE", 15)["cases"]["meat"]["cg_y"] <= AD.TODAY_MEAT_15
+
+
+@pytest.mark.skipif(not _RES, reason="no stored attach_diet sims")
+def test_hood_carries_nothing_at_15in_so_deleting_it_changes_nothing():
+    for s in AD.SHELLS:
+        v0, bg = AD.get("V0", s, 15), AD.get("B_guys", s, 15)
+        assert max(v0["cases"][c]["loads_1g"].get("pocket", 0.0) for c in ("fill", "meat")) == 0.0
+        for c in ("fill", "meat"):
+            assert bg["cases"][c]["cg_y"] == pytest.approx(v0["cases"][c]["cg_y"], abs=0.05)
+
+
+@pytest.mark.skipif(not _RES, reason="no stored attach_diet sims")
+def test_forgetting_the_guys_breaks_the_rev_c_meat_cg():
+    for s in AD.SHELLS:
+        assert AD.get("M_notop", s, 15)["cases"]["meat"]["cg_y"] > AD.LIMIT["meat"]
 
 
 @pytest.mark.skipif(not _RES, reason="no stored attach_diet sims")

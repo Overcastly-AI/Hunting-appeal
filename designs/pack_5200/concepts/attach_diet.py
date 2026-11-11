@@ -696,7 +696,8 @@ def plot_cg_mass(path: Path | None = None) -> Path:
     ax.axvline(LIMIT["fill"], color="#555", lw=1.2, ls=":")
     ax.text(LIMIT["fill"] + 0.5, len(vs) - 0.6, "rev C fill 205", color="#555", fontsize=8)
     ax.set_yticks(y)
-    ax.set_yticklabels([f"{v}\n{VARIANTS[v]['label'][:44]}" for v in vs], fontsize=7.5)
+    import textwrap
+    ax.set_yticklabels([f"{v}\n" + "\n".join(textwrap.wrap(VARIANTS[v]["label"], 34)[:2]) for v in vs], fontsize=7)
     ax.invert_yaxis()
     ax.set_xlabel("load CG aft of the stay datum, mm (15 in torso, 68 kg, coarse h 40)")
     ax.set_title("15 in CG per variant: circle = meat, square = fill\nbrown = CORRIE, green = S15; open = not converged; "
@@ -710,7 +711,7 @@ def plot_cg_mass(path: Path | None = None) -> Path:
     ax2.axvline(TARGET_G, color="#c0392b", ls="--", lw=1.2)
     ax2.axvline(STRETCH_G, color="#c0392b", ls=":", lw=1.0)
     ax2.text(TARGET_G + 2, -0.6, "goal 220", color="#c0392b", fontsize=8)
-    ax2.text(STRETCH_G - 40, -0.6, "stretch 200", color="#c0392b", fontsize=8)
+    ax2.text(STRETCH_G - 75, -0.6, "stretch 200", color="#c0392b", fontsize=8)
     ax2.set_yticks(y)
     ax2.set_yticklabels(vs, fontsize=8)
     ax2.invert_yaxis()
