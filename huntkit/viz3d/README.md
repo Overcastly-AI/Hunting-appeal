@@ -116,6 +116,51 @@ in-process.
   hero,side --quality quick` renders it. Other registered concepts: `hardware_sheet`, `fabric_swatches`.
 - `studio.sheet([(before, after), ...], out_png)` makes a before/after sheet.
 
+### Cloth pass (BL-020): `studio.render(..., cloth_pass=True)` and `cloth_pass.py`
+
+Render-only. The huntkit cloth sim stays the source of every engineering number; `huntkit/viz3d/cloth_pass.py` uses
+Blender's cloth solver (in the same bpy venv) to make the folds a photograph shows and the huntkit solver cannot reach:
+a part-full bag cinched onto its contents, a rolled collar clipped down, a soft pouch.
+
+Two ways in:
+
+```python
+from huntkit.viz3d import cloth_pass as CP, studio
+
+# 1. any ConceptScene: mark cloth parts, then render with cloth_pass=True (or ClothParams / a dict of its fields)
+sc.add_fabric("flap", mesh, "body")
+CP.register(sc, "flap", X0=rest_vertices, pin=weights_0_to_1, target=where_pinned_vertices_go,
+            colliders=[("contents", V, F)], frames=(40, 25), vertex_mass=0.005)
+studio.render(sc, shots, "outputs/screens", cloth_pass=True)
+
+# 2. the merged bag's shell S15 at a load state ("day" 12 L, "sixday" 45 L, "full"), wings deleted
+sc = CP.s15_scene("sixday", carry=False, params=CP.ClothParams(level=2))
+studio.render(sc, {k: CP.SHOTS("sixday", sc.report["cloth_pass"])[k] for k in ("hero", "side")}, "outputs/screens")
+```
+
+`CP.run(state)` solves and caches one load state (`outputs/cloth_pass/`, untracked) and returns a `sim_skin`-style dict
+(same vertex order as the seed, so pattern UVs, piece names and seams survive) plus the departure from the huntkit
+drape. `CP.cloth_job(name, X, T, ...)` is the bare engine. A bag built from another shell (CORRIE F, BL-012) uses the
+same functions: `prepare` / `run` take `shell=` (any `shell_sweep.SHELLS` key) and `torso=`.
+
+`ClothParams` (all lengths mm):
+
+| Field | Default | Meaning |
+|---|---|---|
+| `level` | 2 | seed subdivisions: 1 = 12.5 mm edges (about 40 s a state), 2 = 6.3 mm (5-8 min a state on 4 shared cores) |
+| `frames_cinch`, `frames_settle` | 70, 25 | frames over which straps close and the lip travels; then settling |
+| `tension`, `compression`, `shear`, `bending` | 40, 40, 12, 0.9 | Blender cloth stiffness (solver units); higher bending = bigger, fewer folds |
+| `self_dist`, `coll_dist` | 1.6, 2.0 | cloth-to-cloth and cloth-to-collider clearance |
+| `proxy_inset` | 5 | full load: the contents are the huntkit drape this far inside it |
+| `strap_bite` | full 2.5, sixday 4, day 12 | clearance between the taut strap line and what it closes on (the cloth pile) |
+| `roll_fold`, `roll_core`, `roll_pitch` | 20, 1.0, 2.0 | the roll: flat of each fold (hem stiffener width), first half-thickness, growth per turn |
+| `roll_flat`, `roll_bend_r`, `roll_bend_deg` | 150, 60, 75 | the roll's level middle, and how its ends bend down to the clips |
+
+Seed: `outputs/clothsim/shell_sweep_render/S15_PR19_fine/skin_full.pkl` (the converged BL-009 full drape; `CP.run`
+regenerates it with `shell_sweep.run_render_state("full")`, about 2 min, when it is missing).
+
+Tests: `tests/test_viz3d_cloth_pass.py` (geometry anywhere; the solver tests need `HUNTKIT_BPY` and skip without it).
+
 ### Wearer hook (BL-019)
 
 `studio.render(..., wearer=, wearer_kwargs=, pack_on_torso=, torso=)` puts a figure in place of the display form:

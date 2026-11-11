@@ -1,0 +1,234 @@
+{
+ "team": "BL-011",
+ "name": "CORRIE F",
+ "one_line": "S15 box in team B's fabrics with A's hip-reach pockets, BL-003/004/010 straps and attachment, a 30 mm top setback for R-28, and two door options (D1 tailgate, D2 camo-blade door).",
+ "door_headline": "D2",
+ "bag_system_g": 868.8,
+ "bag_system_note": "ledger BAG_SYSTEM (bag_shell + bag_pockets + pouch + fly + straps_compression), every add-on booked; CORRIE B.2 884.0",
+ "bag_side_g": 1442.6,
+ "bag_side_g_base": 1101.5,
+ "bag_side_g_as_hunted": 1310.4,
+ "corrie_b2_bag_side_g": {
+  "base": 1438.0,
+  "as_hunted": 1571.2,
+  "meat_trip": 1625.6
+ },
+ "goal": {
+  "basis": "ledger bag_side, every configuration item booked (meat trip), CORRIE F without the meat liner (a new add-on CORRIE B.2 does not have)",
+  "corrie_b2_g": 1625.6,
+  "corrie_f_g": 1380.9,
+  "saving_g": 244.7,
+  "with_liner_saving_g": 183.0,
+  "target_g": 350.0,
+  "met": false
+ },
+ "pack_mass_M_g": 3743.9,
+ "pack_mass_M_note": "ledger corrie_b2_h1 total at belt M - CORRIE B.2 bag side + CORRIE F bag side (meat trip, all items); suspension as the ledger books it today (BL-005/006/017 diets not yet in the ledger: BL-013)",
+ "pack_mass_M_by_config_g": {
+  "base": 3364.0,
+  "as_hunted": 3611.7,
+  "meat_trip": 3743.9
+ },
+ "volume_L": 84.49,
+ "volume_note": "cloth-sim fill case (68 kg) closed volume, mean of 15/19/23 in; pouch, pockets and pod not counted",
+ "fill_height_in": 40.5,
+ "pieces": 35,
+ "curved_seams": 1,
+ "zip_mm_total": 1618.0,
+ "beginner_hours": 37.7,
+ "cg_fill_mm": {
+  "15": 177.2,
+  "19": 155.2,
+  "23": 135.9
+ },
+ "cg_meat_mm": {
+  "15": 173.8,
+  "19": 145.5,
+  "23": 132.5
+ },
+ "cg_fill_biased_mm": {
+  "15": 181.2,
+  "19": 159.2,
+  "23": 138.6
+ },
+ "cg_meat_biased_mm": {
+  "15": 177.8,
+  "19": 149.5,
+  "23": 133.8
+ },
+ "cg_method": "clothsim",
+ "r28": {
+  "15": {
+   "fill": {
+    "worst_contact_deg": 34.0,
+    "as_coded_deg": 34.0,
+    "pass": true,
+    "wall_toward_head_above_bar_mm": 5.1
+   },
+   "meat": {
+    "worst_contact_deg": 34.0,
+    "as_coded_deg": 34.0,
+    "pass": true,
+    "wall_toward_head_above_bar_mm": 9.1
+   }
+  },
+  "19": {
+   "fill": {
+    "worst_contact_deg": 34.0,
+    "as_coded_deg": 30.0,
+    "pass": true,
+    "wall_toward_head_above_bar_mm": 31.5
+   },
+   "meat": {
+    "worst_contact_deg": 34.0,
+    "as_coded_deg": 24.0,
+    "pass": true,
+    "wall_toward_head_above_bar_mm": 45.3
+   }
+  },
+  "23": {
+   "fill": {
+    "worst_contact_deg": 33.0,
+    "as_coded_deg": 13.0,
+    "pass": true,
+    "wall_toward_head_above_bar_mm": 66.9
+   },
+   "meat": {
+    "worst_contact_deg": 32.0,
+    "as_coded_deg": 13.0,
+    "pass": true,
+    "wall_toward_head_above_bar_mm": 67.3
+   }
+  }
+ },
+ "access_misses": {
+  "day": 0,
+  "elk6": 0,
+  "sheep8": 0
+ },
+ "access_misses_by_door": {
+  "D1": {
+   "day": 0,
+   "elk6": 0,
+   "sheep8": 0
+  },
+  "D1_all_M": {
+   "day": [],
+   "elk6": [],
+   "sheep8": []
+  },
+  "D2": {
+   "day": 0,
+   "elk6": 0,
+   "sheep8": 0
+  },
+  "D2_all_M": {
+   "day": [
+    "kill_kit"
+   ],
+   "elk6": [],
+   "sheep8": []
+  }
+ },
+ "doors": {
+  "D1": {
+   "zip_mm": 1584.0,
+   "clear_width_mm": {
+    "IM1": 376.0,
+    "IM2": 376.0,
+    "IM3": 376.0
+   },
+   "beginner_hours_base": 28.6,
+   "pieces_base": 40,
+   "curved_seams": 1,
+   "bag_side_g": {
+    "base": 1182.8,
+    "as_hunted": 1389.6,
+    "meat_trip": 1521.8
+   },
+   "goal": {
+    "basis": "ledger bag_side, every configuration item booked (meat trip), CORRIE F without the meat liner (a new add-on CORRIE B.2 does not have)",
+    "corrie_b2_g": 1625.6,
+    "corrie_f_g": 1460.1,
+    "saving_g": 165.5,
+    "with_liner_saving_g": 103.8,
+    "target_g": 350.0,
+    "met": false
+   }
+  },
+  "D2": {
+   "zip_mm": 1358.0,
+   "clear_width_mm": {
+    "IM1": 302.0,
+    "IM2": 308.0,
+    "IM3": 316.0
+   },
+   "beginner_hours_base": 27.2,
+   "pieces_base": 35,
+   "curved_seams": 1,
+   "bag_side_g": {
+    "base": 1101.5,
+    "as_hunted": 1310.4,
+    "meat_trip": 1442.6
+   },
+   "goal": {
+    "basis": "ledger bag_side, every configuration item booked (meat trip), CORRIE F without the meat liner (a new add-on CORRIE B.2 does not have)",
+    "corrie_b2_g": 1625.6,
+    "corrie_f_g": 1380.9,
+    "saving_g": 244.7,
+    "with_liner_saving_g": 183.0,
+    "target_g": 350.0,
+    "met": false
+   }
+  }
+ },
+ "today_fabrics_bag_side_g": {
+  "D1": {
+   "base": 1249.1,
+   "as_hunted": 1455.9,
+   "meat_trip": 1588.1
+  },
+  "D2": {
+   "base": 1162.3,
+   "as_hunted": 1371.2,
+   "meat_trip": 1503.4
+  }
+ },
+ "corrie_b2_metrics": {
+  "pieces": 42,
+  "hours": 35.6,
+  "zip_mm": 1514.0,
+  "curved_seams": 1,
+  "clear_width_mm": {
+   "IM1": 196.0,
+   "IM2": 224.0,
+   "IM3": 263.0
+  }
+ },
+ "features": [
+  "Shell S15 (BL-009): 394 mm full-width box tapering to 360 mm at the collar seam, depth 160 / 205 mm, collar seam z 745; plus a 30 mm top setback (second Z-fold in B-01, z 631-745) that holds the bag top back for R-28 at 23 in",
+  "Team B fabrics: ULTRAGrid body and hem, 70D collar, ULTRA 200X floor, ULTRA 200 frame panel; each swap carries its fabric_swap_evidence gate",
+  "Two door options to the same level: D1 floor-hinged full-face tailgate (team C, lid straps H1-H3) and D2 camo-blade door (team E rule on S15's square corners: panel line = camo break = zip)",
+  "Team A hip-reach pockets FP-L / FP-R on the gussets (snacks + GPS left, 2nd bottle right) and the pole quiver",
+  "Straps BL-003 REC: IM1-IM3 and US1/US2 at 25 mm, sewn loops girth-hitched on the IM eyes; no wings: W1-W3 are the only external straps (compression, tripod, float wrap)",
+  "Attachment BL-004 REC: no crown hood, no ladders, no IM2 bag hooks; guys toggled round the top bar (bright toggle + hang-tag: 'guys on' is a carry rule); B-17 70 mm",
+  "BL-010 hardware: 22 g wiregate carabiners at the IM3 bag hooks, IM3 meat free end and B-24; rated G-hooks and heavy ladder locks on W1-W3 and the guys",
+  "Add-ons outside base: scope pod (left gusset), top pouch 2.7 L, rain fly (base pocket stays), meat liner (team D SWAP slab), float kit B-24; bottle holster is a belt add-on",
+  "Quiet: no hook-and-loop, coil zips, solid colours with camo on the blades / flaps, kick bands and FP mouth bands"
+ ],
+ "risks": [
+  "Mass goal missed: like-for-like saving 245 g (D2) against the 350 g target; base-to-base 336 g (section 2 of the write-up names each shortfall)",
+  "Fabric gates: ULTRAGrid swatch (owner), ULTRA 200X PT-3 + 50 mm strip test, 70D stock weighed; with today's fabrics the saving drops by about 60 g",
+  "Hip-reach pocket reach on S15 is an ASSUMPTION (team A's EV-3): the mouth sits on the gusset at x +/-197, outside A's 320 mm base; FP-R, the tripod under W1/W2 and the bow cam cup IMP-8 share the right gusset (fit check)",
+  "S15 is 16-17 in wide loaded at hip and elbow height (BL-009 gate: elbow swing and rifle-sling check)",
+  "R-28 at 23 in rests on the 30 mm top setback (sim) and the corrected method (attach_system design_face); protractor check on the first prototype at the L crown kit",
+  "'Guys on' is a carry rule: without them the 15 in meat CG exceeds rev C (BL-004)",
+  "D2: the zip runs beside a 630D camo blade on a square corner (no fold, unlike E's chamfer) - untested; D1: the lid drops to the ground and needs H1-H3 cinched before zipping (procedure)",
+  "Coarse-mesh CG (h 40 mm); the closed door is modelled on CORRIE's cut lines for both options (ASSUMPTION DOOR-SIM)"
+ ],
+ "screenshots": [
+  "outputs/screens/20261111_BL011_1.png",
+  "outputs/screens/20261111_BL011_2.png",
+  "outputs/screens/20261111_BL011_3.png"
+ ]
+}

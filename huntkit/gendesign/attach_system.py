@@ -123,10 +123,17 @@ HOOD_FRONT_MM = 1.0   # hood lip on the head side of the bar: one Hypalon ply (n
 HOOD_TOP_MM = 4.0     # hood crown over the bar: Hypalon 1 mm + XLPE lining 3 mm
 
 
-def r28_loaded(torso_in: int, move: list | None, bulge: float | None = None, hood: bool = True) -> dict:
+def r28_loaded(torso_in: int, move: list | None, bulge: float | None = None, hood: bool = True,
+               design_face: list | None = None) -> dict:
     """The DESIGN 4.7 head model (build_geometry.head_clearance) at one torso, with the frame-side wall above the crown
     taken as the drafted face moved toward the head by the SIMULATED ``move`` (+ R28_ALLOW), instead of the
-    15 mm bulge assumption. ``move=None`` with ``bulge`` reproduces the design check (bulge = 15)."""
+    15 mm bulge assumption. ``move=None`` with ``bulge`` reproduces the design check (bulge = 15).
+
+    ``design_face`` (BL-011, additive): ``[(z, y), ...]`` of the CALLER's own drafted frame-side face, the face its
+    ``move`` was measured from (e.g. ``shell_sweep.r28`` / ``attach_diet.r28`` bin the drafted sim mesh). When given,
+    the wall is that face minus ``move`` (= the loaded face). ``None`` keeps the old behaviour: SPINE's design face
+    ``build_geometry.y_frame`` for every shell, which BL-010 found puts a non-SPINE wall 5-25 mm too close to the head
+    (loadpath_verification.md, R-28 note)."""
     from shapely.geometry import LineString, Point
     from shapely.geometry import Polygon as SPoly
     from shapely.ops import unary_union
@@ -155,7 +162,14 @@ def r28_loaded(torso_in: int, move: list | None, bulge: float | None = None, hoo
     else:
         mz = np.array([m[0] for m in move])
         mv = np.array([m[1] for m in move])
-        face = [(float(bg.y_frame(z)[0]) - max(float(np.interp(z, mz, mv)), 0.0) - R28_ALLOW, float(z)) for z in zz]
+        if design_face is None:
+            yd = lambda z: float(bg.y_frame(z)[0])  # noqa: E731
+        else:
+            fz = np.array([f[0] for f in design_face], float)
+            fy = np.array([f[1] for f in design_face], float)
+            o = np.argsort(fz)
+            yd = lambda z: float(np.interp(z, fz[o], fy[o]))  # noqa: E731
+        face = [(yd(z) - max(float(np.interp(z, mz, mv)), 0.0) - R28_ALLOW, float(z)) for z in zz]
     g.append(LineString(face).buffer(1.0))
     obs = unary_union(g)
     rows = []

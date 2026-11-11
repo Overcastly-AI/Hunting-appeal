@@ -1,0 +1,166 @@
+"""BL-011 CORRIE F (merged bag): geometry, ledger booking, door options, sims, access, and the R-28 method fix.
+
+    python -m pytest -q tests/test_corrie_f.py
+"""
+import json
+import sys
+from pathlib import Path
+
+import numpy as np
+import pytest
+
+ROOT = Path(__file__).resolve().parents[1]
+CONCEPTS = ROOT / "designs" / "pack_5200" / "concepts"
+for p in (str(ROOT), str(CONCEPTS), str(CONCEPTS / "corrie_f_sim")):
+    if p not in sys.path:
+        sys.path.insert(0, p)
+
+import corrie_f as F  # noqa: E402
+
+
+@pytest.fixture(scope="module")
+def summ():
+    return F.summary("M")
+
+
+# ------------------------------------------------------------------------------------------- R-28 method fix
+def test_r28_design_face_default_is_unchanged_and_own_face_is_used():
+    """attach_system.r28_loaded(design_face=...) is additive: SPINE's own face given explicitly reproduces the default,
+    and a face set back 40 mm above the crown reads a later (or equal) first contact for the same move."""
+    from huntkit.gendesign import attach_system as AS
+    bg = AS._bg()
+    zz = np.arange(560.0, 1150.0, 25.0)
+    move = [(float(z), 70.0) for z in zz]           # a wall bulging 70 mm toward the head fails at 23 in
+    spine = [(float(z), float(bg.y_frame(z)[0])) for z in zz]
+    a = AS.r28_loaded(23, move, hood=False)
+    b = AS.r28_loaded(23, move, hood=False, design_face=spine)
+    assert a["worst_contact_deg"] == b["worst_contact_deg"]
+    assert a["worst_gap_30_mm"] == pytest.approx(b["worst_gap_30_mm"], abs=0.05)
+    back = [(z, y + 40.0) for z, y in spine]
+    c = AS.r28_loaded(23, move, hood=False, design_face=back)
+    assert c["worst_contact_deg"] > a["worst_contact_deg"]
+
+
+# ------------------------------------------------------------------------------------------- shell
+def test_shell_is_s15_with_a_top_setback():
+    g = F.geometry()
+    assert g["width_max_mm"] <= 394.0                        # owner freeze 15.5 in
+    assert g["width_collar_mm"] == pytest.approx(360.0, abs=0.5)
+    assert g["z_c"] == pytest.approx(745.0)
+    assert g["depth_collar_mm"] == pytest.approx(195.0 - F.TOP_SETBACK_MM, abs=0.5)
+    c0, c = F.make(0.0), F.make()
+    zs = np.linspace(40.0, 620.0, 30)                        # below the shoulder crease nothing moves
+    assert np.allclose(c.frame_y(zs), c0.frame_y(zs))
+    assert np.allclose(c.y_front(np.linspace(40, 745, 40)), c0.y_front(np.linspace(40, 745, 40)))
+    assert float(c.frame_y([745.0])[0] - c0.frame_y([745.0])[0]) == pytest.approx(F.TOP_SETBACK_MM)
+
+
+# ------------------------------------------------------------------------------------------- ledger booking
+def test_corrie_b2_rows_reconcile_to_the_ledger():
+    from huntkit.mass import ledger as L
+    rows = F.corrie_b2_rows("M")
+    tot = sum(r["g"] for r in rows if r["system"] in F.BAG_SIDE)
+    assert tot == pytest.approx(L.like_for_like("corrie_b2_h1", "M")["bag_side"], abs=0.2)
+    # BL-008 configs of CORRIE B.2: as hunted moves pouch + its straps + the fly (not F-02); meat trip = B-24
+    mt = sum(r["g"] for r in rows if r["cfg"] == "meat_trip")
+    assert mt == pytest.approx(24.4 + 28.0 + 2.0, abs=0.1)
+
+
+def test_corrie_f_rows_are_booked_once_on_ledger_systems():
+    rows = F.parts("M", "D2")
+    assert {r["system"] for r in rows} <= set(F.BAG_SIDE)
+    assert {r["cfg"] for r in rows} <= set(F.CFGS)
+    # the crown hood family leaves completely (ledger rows + the BL-004 removal net to zero)
+    hood = sum(r["g"] for r in rows if any(k in r["name"] for k in ("crown hood B-19", "lip stiffener B-19s", "hood lining",
+                                                                       "hood ladder strips", "hood tongues", "hood grab tab",
+                                                                       "BL-004 REC: hood B-19")))
+    assert hood == pytest.approx(0.0, abs=0.05)
+    # IM2 bag hooks: 2 of the 4 rated hooks removed, IM3 pair upgraded to carabiners (+8 g each)
+    assert any("IM3 bag hooks -> wiregate" in r["name"] and r["g"] == pytest.approx(16.0) for r in rows)
+    # no wings, no wing straps, no tripod straps (W1-W3 are the only external set)
+    assert not any(k in r["name"] for r in rows for k in ("M-01", "SH-06", "wing strap", "tripod_straps"))
+    # the shell is CORRIE F's own build, not CORRIE B.2's door / U-surround
+    assert not any(r["name"].startswith(("horseshoe door zip", "B-02u U-surround")) for r in rows)
+
+
+def test_strap_rows_are_bl003_rec_plus_bl010_fixes():
+    import strap_arch as SA
+    rec = sum(p.g for p in SA.architectures()["rec"] if p.id != "pouch-straps")
+    rows = F.strap_rows()
+    fixes = sum(g for s, n, g, c, src in rows if n.startswith("BL-010"))
+    assert fixes == pytest.approx(14.0 + 21.0 + 16.0, abs=0.01)        # loadpath_verification S2 + S9 + S12
+    assert sum(g for s, n, g, c, src in rows) == pytest.approx(rec + fixes, abs=0.05)
+
+
+def test_goal_is_reported_honestly(summ):
+    for d in F.DOORS:
+        g = summ["doors"][d]["goal"]
+        assert g["met"] == (g["saving_g"] >= 350.0)
+        mt = summ["doors"][d]["configs"]["meat_trip"]
+        assert g["corrie_b2_g"] == mt["corrie_b2_bag_side_g"]
+        # every configuration is lighter than CORRIE B.2 on the same rule
+        for cfg in F.CFGS:
+            assert summ["doors"][d]["configs"][cfg]["delta_g"] < 0
+    # D2 is the lighter door; B fabrics save against today's fabrics
+    assert summ["doors"]["D2"]["goal"]["saving_g"] > summ["doors"]["D1"]["goal"]["saving_g"]
+    for d in F.DOORS:
+        assert summ["doors"][d]["configs"]["base"]["bag_side_g"] < summ["doors"][d]["today_fabrics"]["base"]["bag_side_g"]
+
+
+def test_weight_configs_nest(summ):
+    for d in F.DOORS:
+        c = summ["doors"][d]["configs"]
+        assert c["base"]["bag_side_g"] < c["as_hunted"]["bag_side_g"] < c["meat_trip"]["bag_side_g"]
+        assert c["base"]["by_system"]["pouch"] == 0.0           # the top pouch is an add-on
+
+
+# ------------------------------------------------------------------------------------------- doors and build
+def test_both_doors_complete_and_wider_than_corrie(summ):
+    b2 = summ["corrie_b2_metrics"]["clear_width_mm"]
+    for d in F.DOORS:
+        m = summ["doors"][d]["metrics"]
+        assert m["curved_seams"] <= 1                           # ticket: zero or one curved seam
+        assert m["door_zip_mm"] > 1000
+        for k in ("IM1", "IM2", "IM3"):
+            assert m["clear_width_mm"][k] > b2[k] + 35
+    assert all(v == pytest.approx(376.0, abs=1) for v in summ["doors"]["D1"]["metrics"]["clear_width_mm"].values())
+    assert min(summ["doors"]["D2"]["metrics"]["clear_width_mm"].values()) >= 294.0   # team A's narrowest door width
+
+
+# ------------------------------------------------------------------------------------------- sims (stored rows)
+def _rows():
+    import corrie_f_sim as S
+    return {t: S.get("F", t) for t in S.TORSOS}
+
+
+def test_sims_converged_in_band_and_under_rev_c():
+    rows = _rows()
+    if any(r is None for r in rows.values()):
+        pytest.skip("CORRIE F sims not run in this checkout (outputs/ is untracked; corrie_f_sim.py run F --torso N)")
+    for t, r in rows.items():
+        for cn, lim in (("fill", 205.0), ("meat", 190.0)):
+            c = r["cases"][cn]
+            assert c["converged"]
+            assert c["cg_y_biased"] <= lim
+        assert 82.0 <= r["cases"]["fill"]["closed_L"] <= 88.0          # 85 L +/- 3
+    assert rows[15]["cases"]["meat"]["cg_y"] <= 180.0                    # ticket acceptance: 15 in meat <= 180 simulated
+
+
+def test_r28_passes_at_15_19_23_with_the_setback():
+    rows = _rows()
+    if any(r is None for r in rows.values()):
+        pytest.skip("CORRIE F sims not run")
+    for t, r in rows.items():
+        for cn in ("fill", "meat"):
+            assert r["r28"][cn]["pass"], (t, cn, r["r28"][cn]["worst_contact_deg"])
+
+
+# ------------------------------------------------------------------------------------------- access
+def test_access_hourly_items_on_every_belt():
+    import corrie_f_loadout as CFL
+    for door in F.DOORS:
+        res = CFL.run(door, sizes=("S", "M", "XXL"))
+        for sz, m in res["misses"].items():
+            assert m["day"]["hourly"] == [] and m["elk6"]["hourly"] == []
+            assert len(m["sheep8"]["hourly"]) <= 1
+            assert "bottle_1L#2" not in m["sheep8"]["all"]               # the 2nd bottle is reachable (FP-R)

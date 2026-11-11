@@ -52,7 +52,7 @@ class ClothParams:
     frames_cinch: int = 70          # straps close and the lip travels over these frames
     frames_settle: int = 25         # then everything is held and the cloth settles
     quality: int = 8                # solver substeps per frame
-    areal_mass: float = 0.21        # ASSUMPTION: 330D nylon + PU coat, kg/m2 (record nylon_330d_* areal mass class)
+    areal_mass: float = 0.21        # ASSUMPTION: record cordura_330d_nylon66 180 g/m2 + about 30 g/m2 of PU coat, kg/m2
     tension: float = 40.0           # Blender cloth stiffnesses (dimensionless solver units): stiff in plane,
     compression: float = 40.0
     shear: float = 12.0
@@ -705,7 +705,7 @@ def box_mesh(L: float, W: float, H: float, h: float = 7.0):
     return V, outward(V, F), UV, {k: inv[g] for k, g in grids.items()}
 
 
-POUCH_VERTEX_MASS = 0.004   # ASSUMPTION (solver units): limp enough that the 100D/330D pouch sags onto its contents
+POUCH_VERTEX_MASS = 0.005   # ASSUMPTION (solver units): limp enough that the 100D/330D pouch sags onto its contents
 
 
 def pouch(res: dict, roll_C, roll_fr, colliders, dims: dict, params: ClothParams | None = None, name="pouch",
@@ -719,7 +719,7 @@ def pouch(res: dict, roll_C, roll_fr, colliders, dims: dict, params: ClothParams
     mid = len(roll_C) // 2
     top = roll_C[mid] + roll_fr["Up"][mid] * roll_fr["r_out"]
     top = np.array([top[0], max(float(top[1]), W / 2 + 5.0), top[2]])   # never forward of the frame plane (the head)
-    hb = H / 2 - 11.0                                               # loose goods: the block is lower than the box
+    hb = H / 2 - 12.0                                               # loose goods: the heap is lower than the box
     # seat: one clean height field of everything under the footprint (roll, collar cloth), so the pouch drapes on
     # the bag's top without being thrown about by single cloth folds
     from scipy.ndimage import gaussian_filter, maximum_filter
@@ -754,7 +754,7 @@ def pouch(res: dict, roll_C, roll_fr, colliders, dims: dict, params: ClothParams
     np.savez_compressed(work / f"{name}.in.npz", **arr)
     A = np.linalg.norm(np.cross(V0[F[:, 1]] - V0[F[:, 0]], V0[F[:, 2]] - V0[F[:, 0]]), axis=1).sum() / 2e6
     job = {"kind": "pouch", "in": str(work / f"{name}.in.npz"), "out": str(work / f"{name}.out.npy"),
-           "params": asdict(replace(p, bending=0.35, air_damping=1.0)), "n_straps": 0, "area_m2": float(A),
+           "params": asdict(replace(p, bending=0.3, air_damping=1.0)), "n_straps": 0, "area_m2": float(A),
            "stem": name, "self_dist_max": 0.4 * h, "vertex_mass": POUCH_VERTEX_MASS, "frames_cinch": 4,
            "frames_settle": 66, "preview": None}
     (work / f"{name}.job.json").write_text(json.dumps(job, indent=1))
@@ -995,11 +995,13 @@ def s15_scene(state: str = "full", carry: bool = False, params: ClothParams | No
         P = taut_path(w, [sk["X"], sk["X"][b01]] + obs_clouds, bite=1.6, step=3.0)
         P = _smooth_path(P, 3.0, 5.0)
         _, o, _ = strap_frames(P)
-        sc.add_strap(f"s15_{w['id']}", P, o, 25.0, label=f"{w['id']} haul / compression wrap (25 mm)", **vis)
+        # W1 / W2 cross the door: they are unhooked to open it (strap_architecture.md), so hidden in the door shot
+        wv = dict(vis, variant="rolled") if w["id"] in ("W1", "W2") else vis
+        sc.add_strap(f"s15_{w['id']}", P, o, 25.0, label=f"{w['id']} haul / compression wrap (25 mm)", **wv)
         t = _unit(np.gradient(P, axis=0))
         right = np.where(P[:, 0] > 0.6 * P[:, 0].max())[0]
         i = int(right[np.argmin(np.abs(P[right, 1] - np.median(P[right, 1])))])
-        sc.add_hardware(f"s15_{w['id']}_lock", "ladder_lock_25", P[i], o[i], -t[i], **vis)
+        sc.add_hardware(f"s15_{w['id']}_lock", "ladder_lock_25", P[i], o[i], -t[i], **wv)
     belt_tabs(sc)
     with_pouch = (state != "day") if with_pouch is None else with_pouch
     pz = {"contents_L": None}
@@ -1030,7 +1032,7 @@ def s15_scene(state: str = "full", carry: bool = False, params: ClothParams | No
 
 
 
-BOX = [-290.0, -120.0, -40.0, 290.0, 360.0, 1090.0]      # one camera box for every load state (FCS mm)
+BOX = [-290.0, -120.0, -100.0, 290.0, 360.0, 1140.0]      # one camera box for every load state (FCS mm)
 
 
 def SHOTS(state: str = "full", report: dict | None = None) -> dict:
@@ -1040,17 +1042,17 @@ def SHOTS(state: str = "full", report: dict | None = None) -> dict:
     pk = {"mannequin": True, "lid": True}
     sub = "Shell S15, wings deleted, W1-W3 the only outside straps. Render-only cloth pass on the huntkit drape"
     return {
-        "hero": {"view": {"az": -38, "el": 12, "fov": 24, "fstop": 11, "box": BOX, "zoom": 1.55}, "state": pk,
+        "hero": {"view": {"az": -38, "el": 12, "fov": 24, "fstop": 11, "box": BOX, "zoom": 1.4}, "state": pk,
                  "caption": f"3/4 rear, {lab}", "sub": sub},
-        "side": {"view": {"az": 90, "el": 4, "fov": 24, "fstop": 11, "box": BOX, "zoom": 1.45}, "state": pk,
+        "side": {"view": {"az": 90, "el": 4, "fov": 24, "fstop": 11, "box": BOX, "zoom": 1.35}, "state": pk,
                  "caption": f"Side, {lab}", "sub": sub},
-        "right": {"view": {"az": 40, "el": 12, "fov": 24, "fstop": 11, "box": BOX, "zoom": 1.55}, "state": pk,
+        "right": {"view": {"az": 40, "el": 12, "fov": 24, "fstop": 11, "box": BOX, "zoom": 1.4}, "state": pk,
                   "caption": f"3/4 rear from the right, {lab}", "sub": sub},
         "door": {"view": {"az": -22, "el": 8, "fov": 24, "fstop": 11, "box": [-260, 0, 40, 260, 380, 900]},
                  "state": {"mannequin": True, "lid": True, "full": True}, "caption": f"Door open, {lab}",
-                 "sub": "Horseshoe door folded down; IM1-IM3 inside"},
-        "roll": {"view": {"az": -32, "el": 24, "fov": 16, "fstop": 6.3, "at": [-150.0, lip["y"] + 20.0, lip["z"] - 30.0],
-                          "span": 330}, "state": pk, "caption": f"Rolled closure, {lab}",
+                 "sub": "Horseshoe door open (W1 and W2 unhooked); IM1-IM3 inside"},
+        "roll": {"view": {"az": -32, "el": 24, "fov": 16, "fstop": 6.3, "at": [-190.0, lip["y"] + 10.0, lip["z"] - 45.0],
+                          "span": 280}, "state": pk, "caption": f"Rolled closure, {lab}",
                  "sub": "Collar wound flat round the hem stiffener, end clipped down to the gusset; pouch on the roll"},
         "belt": {"view": {"az": 162, "el": 6, "fov": 20, "fstop": 8, "box": [-230, -330, -160, 230, 60, 120]},
                  "state": pk, "caption": "Hipbelt front", "sub": "50 mm buckle and 2:1 pulls"},

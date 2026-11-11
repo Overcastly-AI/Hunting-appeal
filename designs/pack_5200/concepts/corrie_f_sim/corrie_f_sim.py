@@ -1,0 +1,280 @@
+"""BL-011 CORRIE F in the cloth sim (huntkit.clothsim): pattern loader, scenarios, runner, extraction, R-28.
+
+    python designs/pack_5200/concepts/corrie_f_sim/corrie_f_sim.py scenarios               # write cf_PR{15,19,23}.yaml
+    python designs/pack_5200/concepts/corrie_f_sim/corrie_f_sim.py run F --torso 15         # one coarse sim (fill, meat)
+    python designs/pack_5200/concepts/corrie_f_sim/corrie_f_sim.py run F0 --torso 23        # S15 without the top setback
+    python designs/pack_5200/concepts/corrie_f_sim/corrie_f_sim.py fine --torso 19          # one fine drape (packed)
+    python designs/pack_5200/concepts/corrie_f_sim/corrie_f_sim.py table                    # stored rows
+
+huntkit is not edited. The scenario keeps ``bag: corrie``; ``install`` swaps, for the duration of a run:
+* ``corrie.make`` -> ``corrie_f.make(setback)`` (shell S15 + the BL-011 top setback), as BL-009 / BL-004 swapped S15 in;
+* ``bag_concepts.y_frame`` -> the shell's own frame face (the setback is a second Z-fold in B-01);
+* ``corrie_bag.load_corrie_patterns`` -> a wrapper that books the floor B-05 in ULTRA 200X (team B's floor), which the
+  sim's fabric table models directly. ULTRAGrid and 70D have no sim model: as team B did (fell_clothsim.py), they are
+  the nearest modelled fabric scaled by the record ratios through the scenario's ``panels`` keys.
+The door is modelled closed (a sewn seam) on CORRIE's piece layout for both door options (ASSUMPTION DOOR-SIM: a
+closed coil zip carries <= 0.45 N/mm, team C's sim, so the cut line of a closed door does not move the CG; settled by
+the 15 in plumb-line CG test on the chosen door's prototype).
+
+Variants: ``F`` = CORRIE F (setback corrie_f.TOP_SETBACK_MM); ``F0`` = the same with no setback (S15's frame face), to
+size the setback for R-28 at 23 in. Attachment = BL-004 REC (no hood, no IM2 hooks, guys toggled round the bar), the
+scenario keys attach_diet used. External loads (add-ons on): the top pouch with 1 kg of goods on the closed roll and
+the 85 mm spotter in the scope pod on the left gusset, hung from the hard points z 420 / 640. The tripod (under W1/W2)
+and the hip-reach pocket contents are not in the sim, as for CORRIE B.2 (the pockets sit forward: leaving them out is
+conservative for the CG).
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import sys
+from pathlib import Path
+
+import numpy as np
+import yaml
+
+HERE = Path(__file__).resolve().parent
+CONCEPTS = HERE.parent
+ROOT = CONCEPTS.parents[2]
+for _p in (str(ROOT), str(CONCEPTS)):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
+
+import corrie_f as F  # noqa: E402
+
+RESULTS = HERE / "corrie_f_sim_results.json"
+OUT = ROOT / "outputs" / "clothsim" / "corrie_f"
+TORSOS = (15, 19, 23)
+LIMIT = {"meat": 190.0, "fill": 205.0}       # HA-LS-1 rev C (load_standard.md 4.2)
+BIAS_MM = 4.0                                # corrie_body.md 11.4 / BL-002: +4 mm at 6 mm rounding, scaled by the stage
+VARIANTS = {"F": None, "F0": 0.0}            # setback mm (None = corrie_f.TOP_SETBACK_MM)
+
+# fabric models (team B, fell_clothsim.py docstring; record ratios)
+UG_SCALE = {"k_warp_scale": 1.30, "k_weft_scale": 1.375, "areal_kg_mm2_scale": 0.733}   # ULTRAGrid on the 330D model
+R70_SCALE = {"k_warp_scale": 0.44, "k_weft_scale": 0.387, "areal_kg_mm2_scale": 0.736}  # 70D on the Robic model
+CAMO_SCALE = {"areal_kg_mm2_scale": round(290.0 / 180.0, 3)}   # D2 blade U, 630D printable on the 330D model (mass
+#                                                               only; stiffness kept: ASSUMPTION CAMO-K, no record)
+
+
+def bias(rounding_mm) -> float:
+    """BL-002 rule: the rounding bias scales with the stage (+4 mm at 6 mm rounding)."""
+    return BIAS_MM * float(rounding_mm or 0.0) / 6.0
+
+
+def externals() -> list:
+    ad = F.addons()
+    pouch_kg = 1.0 + (ad["top_pouch"]["mass_g"] + ad["top_pouch_straps"]["mass_g"]) / 1000.0
+    import corrie_loadout as CL
+    spot = CL.load_yaml()["items"]["spotter_85"]["mass_g"] / 1000.0
+    pod_kg = spot + ad["scope_pod"]["mass_g"] / 1000.0
+    return [{"label": "top_pouch_1kg", "kg": round(pouch_kg, 3), "piece": "B-06", "top_mm": 15.0,
+             "offset_mm": [0.0, 0.0, 75.0]},
+            {"label": "scope85_scope_pod_left_gusset", "kg": round(pod_kg, 3), "piece": "B-03L",
+             "z": list(F.SCOPE_POD_Z), "seams": [["B-01", 0.5], ["B-02u", 0.5]], "offset_mm": [-83.0, 0.0, 0.0]}]
+
+
+def scenario_path(torso: int) -> Path:
+    return HERE / f"cf_PR{torso}.yaml"
+
+
+def write_scenarios() -> list:
+    out = []
+    ext = externals()
+    for t in TORSOS:
+        body = {"extends": f"../../../../huntkit/clothsim/scenarios/corrie_PR{t}c.yaml", "name": f"corrie_f_PR{t}",
+                "attachments": {"pocket": {"enabled": False}, "hooks": {"stations": [520]}},
+                "panels": {"B-03": dict(UG_SCALE), "B-02h": dict(UG_SCALE), "B-02door": dict(UG_SCALE),
+                           "B-02u": dict(CAMO_SCALE), "B-06": dict(R70_SCALE)},
+                "cases": {"fill": {"external": ext}, "meat": {"external": ext}}}
+        head = (f"# BL-011 CORRIE F at {t} in (generated by corrie_f_sim.py; do not edit). corrie_PR{t}c (6 mm rounding +\n"
+                "# continuation) with BL-004 REC attachment (no hood, IM3 hooks only, guys round the bar), team B fabrics\n"
+                "# (ULTRAGrid / 70D scaled models, ULTRA 200X floor set by the loader), shell S15 + top setback swapped in at\n"
+                "# run time, add-ons on: top pouch 1 kg on the roll, 85 mm spotter in the scope pod on the left gusset.\n")
+        p = scenario_path(t)
+        p.write_text(head + yaml.safe_dump(body, sort_keys=False))
+        out.append(p)
+    return out
+
+
+# ------------------------------------------------------------------------------------------------- install
+_SAVED = {}
+
+
+def install(setback: float | None = None):
+    import bag_concepts as BC
+    import corrie as CO
+    from huntkit.clothsim import corrie_bag as CB
+    c = F.make(setback)
+    if not _SAVED:
+        _SAVED.update(make=CO.make, yf=BC.y_frame, load=CB.load_corrie_patterns)
+    CO.make = lambda rev=None, _c=c: _c
+    BC.y_frame = c.frame_y
+    orig = _SAVED["load"]
+
+    def load(verbose=True):
+        pat = orig(verbose)
+        pat["pieces"]["B-05"]["material_id"] = "challenge_ultra_200"
+        pat["pieces"]["B-05"]["name"] = "bottom (ULTRA 200X)"
+        pat["release"] = "concept: designs/pack_5200/concepts/corrie_f.py (CORRIE F, BL-011)"
+        return pat
+    CB.load_corrie_patterns = load
+    return c
+
+
+def uninstall():
+    if not _SAVED:
+        return
+    import bag_concepts as BC
+    import corrie as CO
+    from huntkit.clothsim import corrie_bag as CB
+    CO.make, BC.y_frame, CB.load_corrie_patterns = _SAVED["make"], _SAVED["yf"], _SAVED["load"]
+
+
+def run_dir(variant: str, torso: int, tag: str = "") -> Path:
+    return OUT / f"{variant}_PR{torso}{tag}"
+
+
+def run(variant: str, torso: int, cases="fill,meat", fine=False, tag="") -> dict:
+    os.environ.setdefault("OMP_NUM_THREADS", "2")
+    write_scenarios()
+    install(VARIANTS[variant])
+    try:
+        from huntkit.clothsim import cli
+        a = argparse.Namespace(scenario=str(scenario_path(torso)), time_cap=None, out=str(run_dir(variant, torso, tag)),
+                               fine=fine, cases=cases, verbose=False, no_render=True, no_sweep=True, screens=None, date=None)
+        cli.cmd_run(a)
+    finally:
+        uninstall()
+    if fine:
+        return {"fine": str(run_dir(variant, torso, tag))}
+    row = extract(variant, torso, tag)
+    store(row)
+    return row
+
+
+# ------------------------------------------------------------------------------------------------- extraction
+GROUPS = ("hinge_R", "hinge_L", "doubler_R", "doubler_L", "hook_im520_R", "hook_im520_L", "TG_R", "TG_L",
+          "under_strap_US1", "under_strap_US2", "W1", "W2", "W3")
+
+
+def drafted_face(variant: str, torso: int) -> dict:
+    """Drafted frame-side face of THIS shell's sim mesh per 50 mm z band (attach_diet._drafted binning)."""
+    from huntkit.clothsim.pack import PackModel, load_scenario
+    install(VARIANTS[variant])
+    try:
+        pm = PackModel(load_scenario(str(scenario_path(torso))), verbose=False)
+    finally:
+        uninstall()
+    X = pm.mesh.X0
+    d = {}
+    for z in np.arange(pm.c["Z0"], X[:, 2].max(), 50.0):
+        s_ = np.abs(X[:, 2] - z) < 25
+        if s_.sum() > 3:
+            d[int(round(z))] = float(X[s_, 1].min())
+    return d
+
+
+def r28(variant: str, torso: int, r: dict) -> dict:
+    """R-28 head clearance on the simulated wall, with the method fix (attach_system.r28_loaded ``design_face`` =
+    this shell's own drafted face, so the wall is the loaded face). No hood (BL-004 REC). Also the old (as-coded)
+    reading, for the record."""
+    from huntkit.gendesign.attach_system import r28_loaded
+    dr = drafted_face(variant, torso)
+    face = sorted((float(z), y) for z, y in dr.items())
+    out = {}
+    for cn in ("fill", "meat"):
+        move = [(float(w[0]), float(dr[int(round(w[0]))] - w[1])) for w in r["cases"][cn]["profile"]["depth_by_z"]
+                if int(round(w[0])) in dr]
+        res = r28_loaded(torso, move, hood=False, design_face=face)
+        old = r28_loaded(torso, move, hood=False)
+        zt = res["top_z"]
+        res["wall_toward_head_above_bar_mm"] = round(max([m[1] for m in move if m[0] - 25 >= zt], default=0.0), 1)
+        res["as_coded_deg"] = old["worst_contact_deg"]
+        res["loaded_face_above_bar"] = [(float(w[0]), round(float(w[1]), 1)) for w in r["cases"][cn]["profile"]["depth_by_z"]
+                                        if w[0] - 25 >= zt]
+        out[cn] = res
+    return out
+
+
+def extract(variant: str, torso: int, tag: str = "") -> dict:
+    r = json.loads((run_dir(variant, torso, tag) / "results.json").read_text())
+    row = {"variant": variant, "torso": torso, "tag": tag, "setback_mm": F.make(VARIANTS[variant]).setback,
+           "seconds": round(r["seconds"]), "mesh_h": r["mesh"]["h_mm"], "cases": {}}
+    for cn, c in r["cases"].items():
+        v = c["volume"]
+        cg = v.get("cg_with_external_mm", v["contents_cg_mm"])
+        att = c["attachments"]
+        rnd = c.get("contact_rounding_mm")
+        row["cases"][cn] = {
+            "converged": bool(c["converged"]), "rounding_mm": rnd, "residual_n": c["solve"][-1].get("residual_n"),
+            "closed_L": round(v["closed_L"], 2), "closed_cu_in": v["closed_cu_in"],
+            "cg_y": round(float(cg[1]), 1), "cg_z": round(float(cg[2]), 1), "cg_x": round(float(cg[0]), 1),
+            "contents_cg_y": round(float(v["contents_cg_mm"][1]), 1),
+            "cg_y_biased": round(float(cg[1]) + bias(rnd), 1),
+            "loads_1g": {k: round(float(att[k]["tension_n"]), 1) for k in GROUPS if k in att},
+            "seam": c["seam_critical"]["seam"], "seam_n_mm": c["seam_critical"]["max_n_mm"],
+            "seam_sf": c["seam_critical"]["sf"], "aft_depth": c["profile"]["max_depth_aft_mm"],
+            "e_max_pct": max(q["e_max_pct"] for q in c["pieces"].values()),
+            "profile": c["profile"]["depth_by_z"]}
+    if "fill" in r["cases"] and "meat" in r["cases"]:
+        row["r28"] = r28(variant, torso, r)
+    return row
+
+
+def load_results() -> dict:
+    return json.loads(RESULTS.read_text()) if RESULTS.exists() else {"rows": {}}
+
+
+def store(row: dict):
+    d = load_results()
+    d["rows"][f"{row['variant']}_PR{row['torso']}{row['tag']}"] = row
+    RESULTS.write_text(json.dumps(d, indent=1, default=float))
+
+
+def get(variant: str, torso: int) -> dict | None:
+    return load_results()["rows"].get(f"{variant}_PR{torso}")
+
+
+def table() -> list:
+    out = []
+    for k, r in load_results()["rows"].items():
+        for cn in ("fill", "meat"):
+            c = r["cases"].get(cn)
+            if not c:
+                continue
+            rr = r.get("r28", {}).get(cn, {})
+            out.append({"run": k, "case": cn, "conv": c["converged"], "rounding": c["rounding_mm"], "L": c["closed_L"],
+                        "cg_y": c["cg_y"], "cg_y_biased": c["cg_y_biased"], "cg_z": c["cg_z"],
+                        "limit": LIMIT[cn], "im3_max_n": max(c["loads_1g"].get("hook_im520_R", 0), c["loads_1g"].get("hook_im520_L", 0)),
+                        "seam_n_mm": c["seam_n_mm"], "seam_sf": c["seam_sf"], "r28_deg": rr.get("worst_contact_deg"),
+                        "r28_as_coded_deg": rr.get("as_coded_deg"), "r28_pass": rr.get("pass")})
+    return out
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser()
+    ap.add_argument("cmd", choices=["scenarios", "run", "fine", "table", "reextract"])
+    ap.add_argument("variant", nargs="?", default="F")
+    ap.add_argument("--torso", type=int, default=15)
+    ap.add_argument("--cases", default="fill,meat")
+    a = ap.parse_args(argv)
+    if a.cmd == "scenarios":
+        print(write_scenarios())
+    elif a.cmd == "run":
+        row = run(a.variant, a.torso, a.cases)
+        print(json.dumps({k: {kk: vv for kk, vv in v.items() if kk != "profile"} for k, v in row["cases"].items()}, indent=1))
+        print(json.dumps({k: {kk: row["r28"][k][kk] for kk in ("worst_contact_deg", "as_coded_deg", "pass",
+                                                                "wall_toward_head_above_bar_mm")} for k in row.get("r28", {})}))
+    elif a.cmd == "fine":
+        print(run(a.variant, a.torso, "packed", fine=True, tag="_fine"))
+    elif a.cmd == "reextract":
+        st = store(extract(a.variant, a.torso))
+        print(st)
+    elif a.cmd == "table":
+        for t in table():
+            print(t)
+
+
+if __name__ == "__main__":
+    main()
