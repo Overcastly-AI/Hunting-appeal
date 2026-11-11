@@ -103,9 +103,11 @@ def test_leg_joint_pure_tension_shares_bolts():
 
 
 def test_mass_booking_items():
+    from huntkit.mass import ledger as L
     h1 = F.frame_mass("h1", 19.0, 757.0, 757.0)
-    assert h1["frame_g"] == pytest.approx(1025.1, abs=0.2)
-    assert h1["pack_g"] == pytest.approx(3926.9, abs=0.2)
+    assert h1["frame_g"] == pytest.approx(1025.1, abs=0.2)            # frame_mass_h1.json, via the ledger rows
+    assert h1["pack_g"] == pytest.approx(L.total("corrie_b2_h1", "M"), abs=0.1)
+    lb = F.ledger_basis()
     a = F.frame_mass("a", 19.0, 757.0, 757.0)
     gpm = F.leg_g_per_mm()
     assert gpm == pytest.approx(88.1166 / 860.0, rel=1e-3)
@@ -115,7 +117,8 @@ def test_mass_booking_items():
     expect += -F.BUSHINGS_G * (1 - 200.0 / 280.0) + 4 * (bolt_mass_g(30.0) + nut + washer) + F.YOKE_STRIP_G
     assert a["frame_g"] == pytest.approx(expect, abs=0.3)
     assert a["frame_g"] == pytest.approx(sum(a["items"].values()), abs=0.05)
-    assert a["pack_g"] == pytest.approx(a["frame_g"] + 162.3 + 2739.5 - 41.7, abs=0.2)
+    assert a["pack_g"] == pytest.approx(h1["pack_g"] + (a["frame_g"] - h1["frame_g"]) - lb["torso_adjust_g"], abs=0.2)
+    assert lb["torso_adjust_g"] == pytest.approx(41.7, abs=0.05)
     assert F.frame_mass("a", 15.0, 757.0, 757.0)["frame_g"] < a["frame_g"] < F.frame_mass("a", 23.0, 757.0, 757.0)["frame_g"]
 
 
@@ -141,3 +144,13 @@ def test_results_if_present():
         assert np.isfinite(V["body"]["buckling_min"]) and np.isfinite(V["body"]["joint"]["min_fatigue"])
         assert "crown" in V["beam"]
     assert r["variants"]["c"]["mass"]["19"]["frame_g"] <= r["variants"]["a"]["mass"]["19"]["frame_g"]
+
+
+def test_clean_mesh_drops_islands():
+    import trimesh
+    big = trimesh.creation.box((40, 40, 40))
+    small = trimesh.creation.box((5, 5, 5))
+    small.apply_translation((100, 0, 0))
+    out = F.clean_mesh(trimesh.util.concatenate([big, small]))
+    assert len(out.split(only_watertight=False)) == 1
+    assert out.volume == pytest.approx(64000.0, rel=1e-6)

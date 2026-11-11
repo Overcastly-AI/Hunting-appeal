@@ -699,7 +699,14 @@ def today_full() -> dict:
     return json.loads((ANALYSIS / "back_rail_results.json").read_text())["confirm"]
 
 
+# Recommendation rule (ASSUMPTIONS, stated in the doc): passes every check with >= 0.2 kPa margin, a core sold as
+# stock sheet (ROHACELL 71 IG-F starts at 3 mm), rail foam, sleeve and mesh unchanged (released v3.1 patterns, only
+# BP-08 changes), full 420 mm rail (the uniform-along-rail model cannot credit a shorter rail; see the lumbar shadow).
+RECOMMENDED = "b_swR71c3_70"
+
+
 def choose(rows: list[dict]) -> dict:
+    """The lightest passing row (for the record) and the recommended row."""
     ok = [r for r in rows if r["passes"] and r["family"] != "today"]
     return min(ok, key=lambda r: r["mass_delta"]["total"]) if ok else None
 
@@ -723,12 +730,14 @@ def study(log=print) -> dict:
         log(f"  a2 framesheet core {ct:g} half-width {hw:.0f}: FPF {fr['sf_fpf']:.2f} fat {fr['sf_fatigue']:.2f} local "
             f"{min(fr['core_shear_sf'], fr['crush_patch_sf'], fr['crush_tie_sf']):.2f} skin {fr['skin_kpa']:.1f} "
             f"foam {fr['foam_new_needed']:.1f} mm  dm {fr['mass']['delta']:+.1f} g")
-    ch = choose(rows)
+    light = choose(rows)
+    ch = next(r for r in rows if r["key"] == RECOMMENDED)
+    assert ch["passes"], "recommended row must pass"
     led = ledger_layers()
     shadow = {k: skin(v, E_REVC, side, length=280.0)["peak_kpa"] for k, v in
               (("today", TODAY), ("chosen", _variant(ch["key"])))}
     return {"date": "2026-11-10", "bone_side_n": side, "today_full": tf, "today_walk": _strip(t_w), "rows": rows,
-            "framesheet": fsh, "chosen": ch["key"] if ch else None, "ledger": led, "shadow_280_kpa": shadow}
+            "framesheet": fsh, "chosen": ch["key"], "lightest_passing": light["key"] if light else None, "ledger": led, "shadow_280_kpa": shadow}
 
 
 def _strip(s: dict) -> dict:

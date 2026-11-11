@@ -562,11 +562,11 @@
      "seam_n_mm": 0.202,
      "seam_sf": 57.0,
      "silhouette": {
-      "half_width_max": 285.4,
-      "half_width_shoulder": 221.3,
-      "half_width_above_735": 285.4,
-      "mushroom_width_ratio": 1.289,
-      "aft_overhang_above_735_mm": 1.9,
+      "half_width_upper": 228.5,
+      "half_width_mid": 187.1,
+      "mushroom_mm": 41.4,
+      "aft_top_mm": 352.1,
+      "lean_mm": 47.5,
       "top_z": 1020.0
      },
      "wall_profile": [
@@ -730,11 +730,11 @@
      "seam_n_mm": 0.685,
      "seam_sf": 16.8,
      "silhouette": {
-      "half_width_max": 291.3,
-      "half_width_shoulder": 228.1,
-      "half_width_above_735": 291.3,
-      "mushroom_width_ratio": 1.277,
-      "aft_overhang_above_735_mm": 6.9,
+      "half_width_upper": 236.1,
+      "half_width_mid": 182.2,
+      "mushroom_mm": 54.0,
+      "aft_top_mm": 415.6,
+      "lean_mm": 91.1,
       "top_z": 920.0
      },
      "wall_profile": [
@@ -884,11 +884,11 @@
      "seam_n_mm": 1.297,
      "seam_sf": 21.1,
      "silhouette": {
-      "half_width_max": 300.5,
-      "half_width_shoulder": 225.2,
-      "half_width_above_735": 300.5,
-      "mushroom_width_ratio": 1.334,
-      "aft_overhang_above_735_mm": 8.4,
+      "half_width_upper": 231.1,
+      "half_width_mid": 184.0,
+      "mushroom_mm": 47.1,
+      "aft_top_mm": 398.7,
+      "lean_mm": 86.0,
       "top_z": 941.0
      },
      "wall_profile": [
@@ -1080,11 +1080,11 @@
      "seam_n_mm": 0.267,
      "seam_sf": 43.2,
      "silhouette": {
-      "half_width_max": 276.6,
-      "half_width_shoulder": 213.1,
-      "half_width_above_735": 276.6,
-      "mushroom_width_ratio": 1.299,
-      "aft_overhang_above_735_mm": 0.5,
+      "half_width_upper": 222.6,
+      "half_width_mid": 202.6,
+      "mushroom_mm": 20.0,
+      "aft_top_mm": 347.6,
+      "lean_mm": 39.8,
       "top_z": 1023.0
      },
      "wall_profile": [
@@ -1248,11 +1248,11 @@
      "seam_n_mm": 1.518,
      "seam_sf": 13.5,
      "silhouette": {
-      "half_width_max": 286.4,
-      "half_width_shoulder": 224.0,
-      "half_width_above_735": 286.4,
-      "mushroom_width_ratio": 1.278,
-      "aft_overhang_above_735_mm": 13.5,
+      "half_width_upper": 229.1,
+      "half_width_mid": 195.4,
+      "mushroom_mm": 33.6,
+      "aft_top_mm": 420.7,
+      "lean_mm": 93.7,
       "top_z": 916.0
      },
      "wall_profile": [
@@ -1402,11 +1402,11 @@
      "seam_n_mm": 0.908,
      "seam_sf": 22.6,
      "silhouette": {
-      "half_width_max": 293.8,
-      "half_width_shoulder": 216.2,
-      "half_width_above_735": 293.8,
-      "mushroom_width_ratio": 1.359,
-      "aft_overhang_above_735_mm": 9.3,
+      "half_width_upper": 221.8,
+      "half_width_mid": 198.6,
+      "mushroom_mm": 23.1,
+      "aft_top_mm": 390.6,
+      "lean_mm": 78.7,
       "top_z": 949.0
      },
      "wall_profile": [
@@ -1598,11 +1598,11 @@
      "seam_n_mm": 0.517,
      "seam_sf": 39.6,
      "silhouette": {
-      "half_width_max": 285.1,
-      "half_width_shoulder": 213.2,
-      "half_width_above_735": 285.1,
-      "mushroom_width_ratio": 1.338,
-      "aft_overhang_above_735_mm": 0.9,
+      "half_width_upper": 219.5,
+      "half_width_mid": 201.9,
+      "mushroom_mm": 17.6,
+      "aft_top_mm": 344.9,
+      "lean_mm": 42.3,
       "top_z": 1044.0
      },
      "wall_profile": [
@@ -1773,11 +1773,11 @@
      "seam_n_mm": 1.698,
      "seam_sf": 12.1,
      "silhouette": {
-      "half_width_max": 272.5,
-      "half_width_shoulder": 223.2,
-      "half_width_above_735": 272.5,
-      "mushroom_width_ratio": 1.221,
-      "aft_overhang_above_735_mm": 17.8,
+      "half_width_upper": 223.2,
+      "half_width_mid": 195.0,
+      "mushroom_mm": 28.1,
+      "aft_top_mm": 430.5,
+      "lean_mm": 104.5,
       "top_z": 932.0
      },
      "wall_profile": [
@@ -1927,11 +1927,11 @@
      "seam_n_mm": 1.1,
      "seam_sf": 18.6,
      "silhouette": {
-      "half_width_max": 289.5,
-      "half_width_shoulder": 220.8,
-      "half_width_above_735": 289.5,
-      "mushroom_width_ratio": 1.311,
-      "aft_overhang_above_735_mm": 24.6,
+      "half_width_upper": 221.3,
+      "half_width_mid": 196.9,
+      "mushroom_mm": 24.4,
+      "aft_top_mm": 414.8,
+      "lean_mm": 103.1,
       "top_z": 950.0
      },
      "wall_profile": [
@@ -2123,11 +2123,11 @@
      "seam_n_mm": 0.41,
      "seam_sf": 49.9,
      "silhouette": {
-      "half_width_max": 275.3,
-      "half_width_shoulder": 205.2,
-      "half_width_above_735": 275.3,
-      "mushroom_width_ratio": 1.342,
-      "aft_overhang_above_735_mm": 4.5,
+      "half_width_upper": 210.8,
+      "half_width_mid": 198.8,
+      "mushroom_mm": 12.0,
+      "aft_top_mm": 340.5,
+      "lean_mm": 46.8,
       "top_z": 1108.0
      },
      "wall_profile": [
@@ -2305,11 +2305,11 @@
      "seam_n_mm": 1.636,
      "seam_sf": 12.5,
      "silhouette": {
-      "half_width_max": 266.6,
-      "half_width_shoulder": 212.9,
-      "half_width_above_735": 266.6,
-      "mushroom_width_ratio": 1.252,
-      "aft_overhang_above_735_mm": 48.9,
+      "half_width_upper": 212.9,
+      "half_width_mid": 192.0,
+      "mushroom_mm": 20.9,
+      "aft_top_mm": 457.9,
+      "lean_mm": 138.2,
       "top_z": 983.0
      },
      "wall_profile": [
@@ -2466,11 +2466,11 @@
      "seam_n_mm": 0.95,
      "seam_sf": 21.6,
      "silhouette": {
-      "half_width_max": 273.5,
-      "half_width_shoulder": 207.6,
-      "half_width_above_735": 273.5,
-      "mushroom_width_ratio": 1.318,
-      "aft_overhang_above_735_mm": 36.6,
+      "half_width_upper": 210.4,
+      "half_width_mid": 193.8,
+      "mushroom_mm": 16.6,
+      "aft_top_mm": 412.7,
+      "lean_mm": 113.8,
       "top_z": 1019.0
      },
      "wall_profile": [
@@ -2669,11 +2669,11 @@
      "seam_n_mm": 0.223,
      "seam_sf": 51.8,
      "silhouette": {
-      "half_width_max": 276.7,
-      "half_width_shoulder": 210.1,
-      "half_width_above_735": 276.7,
-      "mushroom_width_ratio": 1.317,
-      "aft_overhang_above_735_mm": -0.7,
+      "half_width_upper": 216.7,
+      "half_width_mid": 214.2,
+      "mushroom_mm": 2.5,
+      "aft_top_mm": 342.3,
+      "lean_mm": 38.7,
       "top_z": 1033.0
      },
      "wall_profile": [
@@ -2837,11 +2837,11 @@
      "seam_n_mm": 0.613,
      "seam_sf": 18.8,
      "silhouette": {
-      "half_width_max": 273.9,
-      "half_width_shoulder": 217.1,
-      "half_width_above_735": 273.9,
-      "mushroom_width_ratio": 1.262,
-      "aft_overhang_above_735_mm": 11.7,
+      "half_width_upper": 220.5,
+      "half_width_mid": 205.4,
+      "mushroom_mm": 15.1,
+      "aft_top_mm": 413.1,
+      "lean_mm": 89.7,
       "top_z": 934.0
      },
      "wall_profile": [
@@ -2991,11 +2991,11 @@
      "seam_n_mm": 0.467,
      "seam_sf": 24.6,
      "silhouette": {
-      "half_width_max": 286.9,
-      "half_width_shoulder": 213.2,
-      "half_width_above_735": 286.9,
-      "mushroom_width_ratio": 1.345,
-      "aft_overhang_above_735_mm": 15.0,
+      "half_width_upper": 218.8,
+      "half_width_mid": 208.0,
+      "mushroom_mm": 10.8,
+      "aft_top_mm": 394.9,
+      "lean_mm": 84.7,
       "top_z": 952.0
      },
      "wall_profile": [
@@ -3187,11 +3187,11 @@
      "seam_n_mm": 0.197,
      "seam_sf": 58.6,
      "silhouette": {
-      "half_width_max": 283.8,
-      "half_width_shoulder": 215.9,
-      "half_width_above_735": 283.8,
-      "mushroom_width_ratio": 1.314,
-      "aft_overhang_above_735_mm": 6.0,
+      "half_width_upper": 220.3,
+      "half_width_mid": 183.0,
+      "mushroom_mm": 37.4,
+      "aft_top_mm": 349.5,
+      "lean_mm": 53.8,
       "top_z": 1090.0
      },
      "wall_profile": [
@@ -3369,11 +3369,11 @@
      "seam_n_mm": 1.42,
      "seam_sf": 14.4,
      "silhouette": {
-      "half_width_max": 288.3,
-      "half_width_shoulder": 216.1,
-      "half_width_above_735": 288.3,
-      "mushroom_width_ratio": 1.334,
-      "aft_overhang_above_735_mm": 38.2,
+      "half_width_upper": 216.1,
+      "half_width_mid": 179.8,
+      "mushroom_mm": 36.3,
+      "aft_top_mm": 433.0,
+      "lean_mm": 120.0,
       "top_z": 992.0
      },
      "wall_profile": [
@@ -3537,11 +3537,11 @@
      "seam_n_mm": 1.098,
      "seam_sf": 18.6,
      "silhouette": {
-      "half_width_max": 283.6,
-      "half_width_shoulder": 210.1,
-      "half_width_above_735": 283.6,
-      "mushroom_width_ratio": 1.35,
-      "aft_overhang_above_735_mm": 17.4,
+      "half_width_upper": 211.1,
+      "half_width_mid": 182.5,
+      "mushroom_mm": 28.5,
+      "aft_top_mm": 401.6,
+      "lean_mm": 103.7,
       "top_z": 1024.0
      },
      "wall_profile": [
@@ -3740,11 +3740,11 @@
      "seam_n_mm": 0.189,
      "seam_sf": 61.1,
      "silhouette": {
-      "half_width_max": 264.4,
-      "half_width_shoulder": 211.1,
-      "half_width_above_735": 264.4,
-      "mushroom_width_ratio": 1.252,
-      "aft_overhang_above_735_mm": -0.2,
+      "half_width_upper": 209.3,
+      "half_width_mid": 215.1,
+      "mushroom_mm": -5.8,
+      "aft_top_mm": 350.5,
+      "lean_mm": 42.0,
       "top_z": 1041.0
      },
      "wall_profile": [
@@ -3915,11 +3915,11 @@
      "seam_n_mm": 0.41,
      "seam_sf": 28.1,
      "silhouette": {
-      "half_width_max": 253.2,
-      "half_width_shoulder": 202.6,
-      "half_width_above_735": 253.2,
-      "mushroom_width_ratio": 1.25,
-      "aft_overhang_above_735_mm": 22.1,
+      "half_width_upper": 202.6,
+      "half_width_mid": 205.6,
+      "mushroom_mm": -3.0,
+      "aft_top_mm": 428.5,
+      "lean_mm": 102.1,
       "top_z": 932.0
      },
      "wall_profile": [
@@ -4069,11 +4069,11 @@
      "seam_n_mm": 1.033,
      "seam_sf": 26.6,
      "silhouette": {
-      "half_width_max": 264.5,
-      "half_width_shoulder": 197.8,
-      "half_width_above_735": 264.5,
-      "mushroom_width_ratio": 1.337,
-      "aft_overhang_above_735_mm": 17.1,
+      "half_width_upper": 198.6,
+      "half_width_mid": 208.4,
+      "mushroom_mm": -9.8,
+      "aft_top_mm": 400.7,
+      "lean_mm": 78.3,
       "top_z": 961.0
      },
      "wall_profile": [
@@ -4265,11 +4265,11 @@
      "seam_n_mm": 0.193,
      "seam_sf": 59.6,
      "silhouette": {
-      "half_width_max": 238.9,
-      "half_width_shoulder": 215.4,
-      "half_width_above_735": 238.9,
-      "mushroom_width_ratio": 1.109,
-      "aft_overhang_above_735_mm": -1.9,
+      "half_width_upper": 213.2,
+      "half_width_mid": 215.6,
+      "mushroom_mm": -2.3,
+      "aft_top_mm": 345.0,
+      "lean_mm": 38.1,
       "top_z": 1078.0
      },
      "wall_profile": [
@@ -4440,11 +4440,11 @@
      "seam_n_mm": 0.424,
      "seam_sf": 27.1,
      "silhouette": {
-      "half_width_max": 246.2,
-      "half_width_shoulder": 200.1,
-      "half_width_above_735": 246.2,
-      "mushroom_width_ratio": 1.231,
-      "aft_overhang_above_735_mm": 54.7,
+      "half_width_upper": 200.1,
+      "half_width_mid": 206.2,
+      "mushroom_mm": -6.1,
+      "aft_top_mm": 445.3,
+      "lean_mm": 120.3,
       "top_z": 959.0
      },
      "wall_profile": [
@@ -4601,11 +4601,11 @@
      "seam_n_mm": 1.043,
      "seam_sf": 26.3,
      "silhouette": {
-      "half_width_max": 238.6,
-      "half_width_shoulder": 197.4,
-      "half_width_above_735": 238.6,
-      "mushroom_width_ratio": 1.208,
-      "aft_overhang_above_735_mm": 40.4,
+      "half_width_upper": 197.4,
+      "half_width_mid": 207.7,
+      "mushroom_mm": -10.3,
+      "aft_top_mm": 425.1,
+      "lean_mm": 102.2,
       "top_z": 978.0
      },
      "wall_profile": [
@@ -4797,11 +4797,11 @@
      "seam_n_mm": 0.182,
      "seam_sf": 63.2,
      "silhouette": {
-      "half_width_max": 251.2,
-      "half_width_shoulder": 210.9,
-      "half_width_above_735": 251.2,
-      "mushroom_width_ratio": 1.191,
-      "aft_overhang_above_735_mm": -5.1,
+      "half_width_upper": 209.1,
+      "half_width_mid": 215.5,
+      "mushroom_mm": -6.4,
+      "aft_top_mm": 344.2,
+      "lean_mm": 36.5,
       "top_z": 1085.0
      },
      "wall_profile": [
@@ -4979,11 +4979,11 @@
      "seam_n_mm": 0.807,
      "seam_sf": 25.4,
      "silhouette": {
-      "half_width_max": 254.6,
-      "half_width_shoulder": 197.8,
-      "half_width_above_735": 254.6,
-      "mushroom_width_ratio": 1.287,
-      "aft_overhang_above_735_mm": 39.0,
+      "half_width_upper": 197.8,
+      "half_width_mid": 206.8,
+      "mushroom_mm": -9.1,
+      "aft_top_mm": 418.1,
+      "lean_mm": 94.2,
       "top_z": 988.0
      },
      "wall_profile": [
@@ -5147,11 +5147,11 @@
      "seam_n_mm": 1.044,
      "seam_sf": 26.3,
      "silhouette": {
-      "half_width_max": 254.0,
-      "half_width_shoulder": 197.2,
-      "half_width_above_735": 254.0,
-      "mushroom_width_ratio": 1.288,
-      "aft_overhang_above_735_mm": 27.5,
+      "half_width_upper": 197.2,
+      "half_width_mid": 208.4,
+      "mushroom_mm": -11.1,
+      "aft_top_mm": 405.7,
+      "lean_mm": 83.7,
       "top_z": 1001.0
      },
      "wall_profile": [
@@ -5350,11 +5350,11 @@
      "seam_n_mm": 0.18,
      "seam_sf": 63.9,
      "silhouette": {
-      "half_width_max": 238.1,
-      "half_width_shoulder": 212.1,
-      "half_width_above_735": 238.1,
-      "mushroom_width_ratio": 1.122,
-      "aft_overhang_above_735_mm": -11.1,
+      "half_width_upper": 209.9,
+      "half_width_mid": 218.6,
+      "mushroom_mm": -8.7,
+      "aft_top_mm": 343.9,
+      "lean_mm": 29.2,
       "top_z": 1080.0
      },
      "wall_profile": [
@@ -5525,11 +5525,11 @@
      "seam_n_mm": 0.918,
      "seam_sf": 22.3,
      "silhouette": {
-      "half_width_max": 238.2,
-      "half_width_shoulder": 199.1,
-      "half_width_above_735": 238.2,
-      "mushroom_width_ratio": 1.197,
-      "aft_overhang_above_735_mm": 43.5,
+      "half_width_upper": 198.7,
+      "half_width_mid": 207.8,
+      "mushroom_mm": -9.1,
+      "aft_top_mm": 429.1,
+      "lean_mm": 97.8,
       "top_z": 976.0
      },
      "wall_profile": [
@@ -5686,11 +5686,11 @@
      "seam_n_mm": 1.121,
      "seam_sf": 24.5,
      "silhouette": {
-      "half_width_max": 241.1,
-      "half_width_shoulder": 199.3,
-      "half_width_above_735": 241.1,
-      "mushroom_width_ratio": 1.21,
-      "aft_overhang_above_735_mm": 37.1,
+      "half_width_upper": 196.7,
+      "half_width_mid": 209.7,
+      "mushroom_mm": -13.0,
+      "aft_top_mm": 411.8,
+      "lean_mm": 82.8,
       "top_z": 993.0
      },
      "wall_profile": [
@@ -5889,11 +5889,11 @@
      "seam_n_mm": 0.165,
      "seam_sf": 69.8,
      "silhouette": {
-      "half_width_max": 273.2,
-      "half_width_shoulder": 207.5,
-      "half_width_above_735": 273.2,
-      "mushroom_width_ratio": 1.317,
-      "aft_overhang_above_735_mm": -0.1,
+      "half_width_upper": 211.9,
+      "half_width_mid": 216.2,
+      "mushroom_mm": -4.3,
+      "aft_top_mm": 335.9,
+      "lean_mm": 28.4,
       "top_z": 1049.0
      },
      "wall_profile": [
@@ -6064,11 +6064,11 @@
      "seam_n_mm": 0.745,
      "seam_sf": 27.5,
      "silhouette": {
-      "half_width_max": 268.1,
-      "half_width_shoulder": 211.6,
-      "half_width_above_735": 268.1,
-      "mushroom_width_ratio": 1.267,
-      "aft_overhang_above_735_mm": 21.8,
+      "half_width_upper": 211.6,
+      "half_width_mid": 206.0,
+      "mushroom_mm": 5.6,
+      "aft_top_mm": 419.9,
+      "lean_mm": 100.5,
       "top_z": 928.0
      },
      "wall_profile": [
@@ -6218,11 +6218,11 @@
      "seam_n_mm": 1.101,
      "seam_sf": 24.9,
      "silhouette": {
-      "half_width_max": 275.9,
-      "half_width_shoulder": 209.7,
-      "half_width_above_735": 275.9,
-      "mushroom_width_ratio": 1.316,
-      "aft_overhang_above_735_mm": 17.3,
+      "half_width_upper": 209.7,
+      "half_width_mid": 209.0,
+      "mushroom_mm": 0.7,
+      "aft_top_mm": 390.0,
+      "lean_mm": 83.4,
       "top_z": 965.0
      },
      "wall_profile": [
@@ -6414,11 +6414,11 @@
      "seam_n_mm": 0.179,
      "seam_sf": 64.4,
      "silhouette": {
-      "half_width_max": 246.4,
-      "half_width_shoulder": 212.1,
-      "half_width_above_735": 246.4,
-      "mushroom_width_ratio": 1.162,
-      "aft_overhang_above_735_mm": -6.9,
+      "half_width_upper": 209.4,
+      "half_width_mid": 220.5,
+      "mushroom_mm": -11.0,
+      "aft_top_mm": 336.1,
+      "lean_mm": 18.5,
       "top_z": 1057.0
      },
      "wall_profile": [
@@ -6589,11 +6589,11 @@
      "seam_n_mm": 0.803,
      "seam_sf": 25.5,
      "silhouette": {
-      "half_width_max": 248.4,
-      "half_width_shoulder": 199.2,
-      "half_width_above_735": 248.4,
-      "mushroom_width_ratio": 1.247,
-      "aft_overhang_above_735_mm": 27.6,
+      "half_width_upper": 199.2,
+      "half_width_mid": 208.7,
+      "mushroom_mm": -9.5,
+      "aft_top_mm": 447.3,
+      "lean_mm": 115.8,
       "top_z": 905.0
      },
      "wall_profile": [
@@ -6743,11 +6743,11 @@
      "seam_n_mm": 1.082,
      "seam_sf": 25.3,
      "silhouette": {
-      "half_width_max": 248.6,
-      "half_width_shoulder": 198.3,
-      "half_width_above_735": 248.6,
-      "mushroom_width_ratio": 1.253,
-      "aft_overhang_above_735_mm": 42.2,
+      "half_width_upper": 198.3,
+      "half_width_mid": 211.3,
+      "mushroom_mm": -13.0,
+      "aft_top_mm": 415.0,
+      "lean_mm": 88.8,
       "top_z": 953.0
      },
      "wall_profile": [
@@ -6939,11 +6939,11 @@
      "seam_n_mm": 0.205,
      "seam_sf": 56.3,
      "silhouette": {
-      "half_width_max": 284.7,
-      "half_width_shoulder": 212.3,
-      "half_width_above_735": 284.7,
-      "mushroom_width_ratio": 1.341,
-      "aft_overhang_above_735_mm": 0.7,
+      "half_width_upper": 221.1,
+      "half_width_mid": 212.2,
+      "mushroom_mm": 8.8,
+      "aft_top_mm": 346.4,
+      "lean_mm": 45.7,
       "top_z": 1039.0
      },
      "wall_profile": [
@@ -7114,11 +7114,11 @@
      "seam_n_mm": 0.966,
      "seam_sf": 28.4,
      "silhouette": {
-      "half_width_max": 290.7,
-      "half_width_shoulder": 222.2,
-      "half_width_above_735": 290.7,
-      "mushroom_width_ratio": 1.308,
-      "aft_overhang_above_735_mm": 27.0,
+      "half_width_upper": 222.2,
+      "half_width_mid": 203.1,
+      "mushroom_mm": 19.1,
+      "aft_top_mm": 416.4,
+      "lean_mm": 95.0,
       "top_z": 943.0
      },
      "wall_profile": [
@@ -7275,11 +7275,11 @@
      "seam_n_mm": 1.048,
      "seam_sf": 26.2,
      "silhouette": {
-      "half_width_max": 290.1,
-      "half_width_shoulder": 223.9,
-      "half_width_above_735": 290.1,
-      "mushroom_width_ratio": 1.296,
-      "aft_overhang_above_735_mm": 22.6,
+      "half_width_upper": 223.9,
+      "half_width_mid": 204.7,
+      "mushroom_mm": 19.1,
+      "aft_top_mm": 412.1,
+      "lean_mm": 91.9,
       "top_z": 946.0
      },
      "wall_profile": [
@@ -7415,6 +7415,517 @@
        356.9,
        -302.5,
        277.7
+      ]
+     ]
+    }
+   }
+  },
+  "S14_PR15": {
+   "shell": "S14",
+   "torso": 15,
+   "tag": "",
+   "params": {
+    "name": "S14",
+    "d_bot": 150,
+    "d_sh": 200,
+    "d_col": 200,
+    "a_bot": 196.82,
+    "a_top": 196.82,
+    "z_c": 745.0,
+    "note": "R2: full-width box, z_c 745"
+   },
+   "geometry": {
+    "z_c": 745.0,
+    "z_fill": 1064.8,
+    "fill_height_in": 40.54330708661417,
+    "rule_L": 71.74,
+    "rule_cg_y": 116.8,
+    "rule_cg_z": 530.4,
+    "pred_sim_L": 83.3,
+    "depth_max": 220.4,
+    "width_max_mm": 393.6,
+    "b22_below_collar_mm": 20.0,
+    "b22_above_door_mm": 15.0,
+    "b22_corner_clear_mm": 22.8,
+    "ladder_on_laminate": true,
+    "ladder_top_on": "B-06f (ULTRA collar quarter)"
+   },
+   "mesh_h": 40.0,
+   "seconds": 169,
+   "cases": {
+    "packed": {
+     "converged": true,
+     "rounding_mm": 3.0,
+     "residual_n": 0.0146,
+     "closed_L": 92.59,
+     "closed_cu_in": 5651.0,
+     "cg_y": 150.9,
+     "cg_z": 521.5,
+     "cg_x": -2.3,
+     "contents_cg_y": 150.9,
+     "warp_max_pct": 0.51,
+     "weft_max_pct": 0.28,
+     "e_max_pct": 4.22,
+     "gusset_wrinkle_pct": 36.8,
+     "seam": "B-02h | B-06",
+     "seam_n_mm": 0.221,
+     "seam_sf": 52.1,
+     "silhouette": {
+      "half_width_upper": 215.6,
+      "half_width_mid": 212.4,
+      "mushroom_mm": 3.2,
+      "aft_top_mm": 339.5,
+      "lean_mm": 39.0,
+      "top_z": 1028.0
+     },
+     "wall_profile": [
+      [
+       35.0,
+       19.4,
+       168.0,
+       -195.4,
+       194.9
+      ],
+      [
+       85.0,
+       13.2,
+       224.1,
+       -213.1,
+       206.6
+      ],
+      [
+       135.0,
+       14.3,
+       247.4,
+       -216.1,
+       212.2
+      ],
+      [
+       185.0,
+       15.1,
+       260.2,
+       -215.7,
+       212.0
+      ],
+      [
+       235.0,
+       13.6,
+       279.0,
+       -215.1,
+       211.3
+      ],
+      [
+       285.0,
+       12.2,
+       287.2,
+       -214.1,
+       210.1
+      ],
+      [
+       335.0,
+       13.3,
+       300.5,
+       -214.0,
+       210.0
+      ],
+      [
+       385.0,
+       10.8,
+       305.8,
+       -213.5,
+       209.6
+      ],
+      [
+       435.0,
+       6.3,
+       316.4,
+       -213.7,
+       208.6
+      ],
+      [
+       485.0,
+       -0.4,
+       321.7,
+       -214.3,
+       208.7
+      ],
+      [
+       535.0,
+       -5.4,
+       330.3,
+       -210.1,
+       204.5
+      ],
+      [
+       585.0,
+       -10.0,
+       333.6,
+       -208.6,
+       200.3
+      ],
+      [
+       635.0,
+       -12.4,
+       337.9,
+       -213.2,
+       207.4
+      ],
+      [
+       685.0,
+       -8.6,
+       339.5,
+       -219.2,
+       212.1
+      ],
+      [
+       735.0,
+       1.5,
+       337.6,
+       -219.5,
+       211.4
+      ],
+      [
+       785.0,
+       8.7,
+       332.0,
+       -220.8,
+       209.5
+      ],
+      [
+       835.0,
+       18.1,
+       326.3,
+       -225.5,
+       216.9
+      ],
+      [
+       885.0,
+       31.9,
+       308.2,
+       -241.6,
+       231.8
+      ],
+      [
+       935.0,
+       67.3,
+       291.5,
+       -254.2,
+       243.0
+      ],
+      [
+       985.0,
+       124.6,
+       243.9,
+       -283.8,
+       269.3
+      ]
+     ]
+    },
+    "fill": {
+     "converged": true,
+     "rounding_mm": 3.0,
+     "residual_n": 0.4779,
+     "closed_L": 87.15,
+     "closed_cu_in": 5318.0,
+     "cg_y": 180.6,
+     "cg_z": 472.3,
+     "cg_x": -8.6,
+     "contents_cg_y": 179.6,
+     "warp_max_pct": 1.39,
+     "weft_max_pct": 1.21,
+     "e_max_pct": 14.04,
+     "gusset_wrinkle_pct": 98.9,
+     "seam": "B-02h | B-06",
+     "seam_n_mm": 0.66,
+     "seam_sf": 17.4,
+     "silhouette": {
+      "half_width_upper": 220.9,
+      "half_width_mid": 204.6,
+      "mushroom_mm": 16.4,
+      "aft_top_mm": 418.8,
+      "lean_mm": 97.6,
+      "top_z": 913.0
+     },
+     "wall_profile": [
+      [
+       35.0,
+       -12.4,
+       200.5,
+       -205.8,
+       198.1
+      ],
+      [
+       85.0,
+       -10.2,
+       217.7,
+       -210.1,
+       204.0
+      ],
+      [
+       135.0,
+       -4.6,
+       248.2,
+       -212.0,
+       215.8
+      ],
+      [
+       185.0,
+       -0.4,
+       262.6,
+       -206.6,
+       213.7
+      ],
+      [
+       235.0,
+       2.0,
+       288.6,
+       -208.7,
+       209.8
+      ],
+      [
+       285.0,
+       5.1,
+       299.5,
+       -206.6,
+       202.1
+      ],
+      [
+       335.0,
+       5.2,
+       321.2,
+       -201.3,
+       198.8
+      ],
+      [
+       385.0,
+       5.4,
+       331.9,
+       -194.0,
+       196.1
+      ],
+      [
+       435.0,
+       4.7,
+       349.3,
+       -196.3,
+       199.4
+      ],
+      [
+       485.0,
+       -1.4,
+       345.0,
+       -197.2,
+       198.4
+      ],
+      [
+       535.0,
+       1.9,
+       363.5,
+       -199.9,
+       192.0
+      ],
+      [
+       585.0,
+       9.9,
+       377.5,
+       -218.1,
+       208.3
+      ],
+      [
+       635.0,
+       28.8,
+       400.4,
+       -222.2,
+       214.5
+      ],
+      [
+       685.0,
+       42.1,
+       416.6,
+       -222.4,
+       214.6
+      ],
+      [
+       735.0,
+       77.5,
+       418.8,
+       -224.6,
+       217.3
+      ],
+      [
+       785.0,
+       97.4,
+       415.2,
+       -241.0,
+       233.4
+      ],
+      [
+       835.0,
+       147.8,
+       403.8,
+       -266.5,
+       258.3
+      ],
+      [
+       885.0,
+       206.4,
+       371.1,
+       -285.7,
+       274.5
+      ]
+     ]
+    },
+    "meat": {
+     "converged": true,
+     "rounding_mm": 6.0,
+     "residual_n": 0.2134,
+     "closed_L": 86.89,
+     "closed_cu_in": 5302.0,
+     "cg_y": 173.7,
+     "cg_z": 482.0,
+     "cg_x": -10.8,
+     "contents_cg_y": 172.9,
+     "warp_max_pct": 1.13,
+     "weft_max_pct": 1.06,
+     "e_max_pct": 14.9,
+     "gusset_wrinkle_pct": 97.0,
+     "seam": "B-02h | B-06",
+     "seam_n_mm": 0.524,
+     "seam_sf": 22.0,
+     "silhouette": {
+      "half_width_upper": 220.4,
+      "half_width_mid": 205.9,
+      "mushroom_mm": 14.4,
+      "aft_top_mm": 403.2,
+      "lean_mm": 94.4,
+      "top_z": 934.0
+     },
+     "wall_profile": [
+      [
+       35.0,
+       -9.5,
+       168.6,
+       -205.4,
+       189.6
+      ],
+      [
+       85.0,
+       -11.1,
+       215.3,
+       -209.8,
+       199.3
+      ],
+      [
+       135.0,
+       -8.2,
+       231.9,
+       -211.7,
+       215.4
+      ],
+      [
+       185.0,
+       -2.0,
+       260.3,
+       -212.3,
+       214.7
+      ],
+      [
+       235.0,
+       -1.1,
+       270.6,
+       -209.3,
+       212.8
+      ],
+      [
+       285.0,
+       2.8,
+       297.1,
+       -207.6,
+       202.3
+      ],
+      [
+       335.0,
+       1.8,
+       308.8,
+       -202.6,
+       200.9
+      ],
+      [
+       385.0,
+       3.7,
+       329.1,
+       -195.2,
+       199.2
+      ],
+      [
+       435.0,
+       3.2,
+       337.7,
+       -197.7,
+       200.0
+      ],
+      [
+       485.0,
+       -8.1,
+       343.7,
+       -198.7,
+       200.3
+      ],
+      [
+       535.0,
+       -4.0,
+       358.7,
+       -200.9,
+       189.8
+      ],
+      [
+       585.0,
+       5.1,
+       372.4,
+       -220.6,
+       199.8
+      ],
+      [
+       635.0,
+       22.2,
+       378.2,
+       -223.6,
+       208.9
+      ],
+      [
+       685.0,
+       33.2,
+       399.3,
+       -225.0,
+       209.7
+      ],
+      [
+       735.0,
+       65.0,
+       403.2,
+       -231.3,
+       209.4
+      ],
+      [
+       785.0,
+       82.9,
+       402.8,
+       -239.7,
+       218.9
+      ],
+      [
+       835.0,
+       128.4,
+       384.2,
+       -261.2,
+       238.3
+      ],
+      [
+       885.0,
+       155.2,
+       366.2,
+       -292.8,
+       250.2
       ]
      ]
     }

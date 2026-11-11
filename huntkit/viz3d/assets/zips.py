@@ -22,7 +22,7 @@ def dims(size: int) -> dict:
             "coil_h": 0.30 * cw}
 
 
-def _coil(P, N, d, side, s_lo, s_hi, lift, per=6):
+def _coil(P, N, d, side, s_lo, s_hi, lift, per=6, gap=0.0):
     """One coil: a flattened helix of monofilament, its heads reaching just past the centre line."""
     s0 = arclen(P)
     n_turn = int((s_hi - s_lo) / d["pitch"])
@@ -36,7 +36,7 @@ def _coil(P, N, d, side, s_lo, s_hi, lift, per=6):
     T = tangents(C)
     B = np.cross(Nn, T) * side
     half = d["chain"] / 2
-    across = half * 0.42 - (half * 0.58) * np.cos(ph)          # from the tape edge (+) to past the centre (-)
+    across = gap + half * 0.42 - (half * 0.58) * np.cos(ph)    # from the tape edge (+) to past the centre (-)
     up = d["coil_h"] * 0.5 * np.sin(ph) + d["coil_h"] * 0.5
     lead = 0.18 * d["pitch"] * np.sin(ph)                      # heads lean so the two coils mesh
     Q = C + B * across[:, None] + Nn * (up + lift)[:, None] + T * lead[:, None]
@@ -133,9 +133,14 @@ def coil_zip(P, N, size=10, sliders=(), closed=(0.0, 1.0), lift=0.6, pulls=True,
     Ltot = s0[-1]
     out = {k: [] for k in ("tape", "coil", "slider", "cord", "grip", "thread")}
     for side in ((1, -1) if half is None else (half,)):
-        tp, Pr, Nr, B = _tape(P, N, d, side, lift)
+        tp, Pr, Nr, B = _tape(P, N, d, side, lift, open_gap=0.3 * d["chain"] if closed[1] <= closed[0] else 0.0)
         out["tape"].append(tp)
-        out["coil"].append(_coil(P, N, d, side, closed[0] * Ltot + 1.0, closed[1] * Ltot - 1.0, lift + d["tape_t"] * 0.6))
+        zl = lift + d["tape_t"] * 0.6
+        out["coil"].append(_coil(P, N, d, side, closed[0] * Ltot + 1.0, closed[1] * Ltot - 1.0, zl))
+        for a, b in ((0.0, closed[0]), (closed[1], 1.0)):          # parted halves: each coil on its own tape edge
+            if (b - a) * Ltot > 4 * d["pitch"] and closed[1] > closed[0] or (closed[1] <= closed[0] and a == 0.0):
+                b = 1.0 if closed[1] <= closed[0] else b
+                out["coil"].append(_coil(P, N, d, side, a * Ltot + 1.0, b * Ltot - 1.0, zl, gap=0.45 * d["chain"]))
         if stitch:
             for off in (d["tape"] * 0.55, d["tape"] * 0.88):
                 out["thread"].append(seams.stitch_row(Pr + B * off + Nr * (lift + 0.36), Nr))

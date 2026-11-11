@@ -712,9 +712,9 @@
    "mass": {
     "15": {
      "items": {
-      "printed body (H1 basis)": 757.7,
-      "fixed interfaces as H1": 239.4,
-      "z 234 joint hardware": 28.0,
+      "printed body (ledger H1 row, raster change applied)": 757.7,
+      "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
+      "z 234 joint parts (ledger rows)": 28.0,
       "crown legs cut to the unit (2 x 201 mm instead of 430)": -46.9,
       "rack + pawl + pulley guides removed": -44.0,
       "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
@@ -723,14 +723,14 @@
      },
      "frame_g": 958.3,
      "frame_plus_spreader_g": 1120.6,
-     "pack_g": 3818.4,
-     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+     "pack_g": 3818.5,
+     "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "16": {
      "items": {
-      "printed body (H1 basis)": 757.7,
-      "fixed interfaces as H1": 239.4,
-      "z 234 joint hardware": 28.0,
+      "printed body (ledger H1 row, raster change applied)": 757.7,
+      "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
+      "z 234 joint parts (ledger rows)": 28.0,
       "crown legs cut to the unit (2 x 226 mm instead of 430)": -41.7,
       "rack + pawl + pulley guides removed": -44.0,
       "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
@@ -739,14 +739,14 @@
      },
      "frame_g": 963.5,
      "frame_plus_spreader_g": 1125.8,
-     "pack_g": 3823.6,
-     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+     "pack_g": 3823.7,
+     "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "18": {
      "items": {
-      "printed body (H1 basis)": 757.7,
-      "fixed interfaces as H1": 239.4,
-      "z 234 joint hardware": 28.0,
+      "printed body (ledger H1 row, raster change applied)": 757.7,
+      "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
+      "z 234 joint parts (ledger rows)": 28.0,
       "crown legs cut to the unit (2 x 277 mm instead of 430)": -31.3,
       "rack + pawl + pulley guides removed": -44.0,
       "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
@@ -755,14 +755,14 @@
      },
      "frame_g": 973.9,
      "frame_plus_spreader_g": 1136.2,
-     "pack_g": 3834.0,
-     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+     "pack_g": 3834.1,
+     "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "19": {
      "items": {
-      "printed body (H1 basis)": 757.7,
-      "fixed interfaces as H1": 239.4,
-      "z 234 joint hardware": 28.0,
+      "printed body (ledger H1 row, raster change applied)": 757.7,
+      "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
+      "z 234 joint parts (ledger rows)": 28.0,
       "crown legs cut to the unit (2 x 303 mm instead of 430)": -26.1,
       "rack + pawl + pulley guides removed": -44.0,
       "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
@@ -771,14 +771,14 @@
      },
      "frame_g": 979.1,
      "frame_plus_spreader_g": 1141.4,
-     "pack_g": 3839.2,
-     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+     "pack_g": 3839.3,
+     "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "20": {
      "items": {
-      "printed body (H1 basis)": 757.7,
-      "fixed interfaces as H1": 239.4,
-      "z 234 joint hardware": 28.0,
+      "printed body (ledger H1 row, raster change applied)": 757.7,
+      "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
+      "z 234 joint parts (ledger rows)": 28.0,
       "crown legs cut to the unit (2 x 328 mm instead of 430)": -20.9,
       "rack + pawl + pulley guides removed": -44.0,
       "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
@@ -787,14 +787,14 @@
      },
      "frame_g": 984.3,
      "frame_plus_spreader_g": 1146.6,
-     "pack_g": 3844.4,
-     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+     "pack_g": 3844.5,
+     "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "22": {
      "items": {
-      "printed body (H1 basis)": 757.7,
-      "fixed interfaces as H1": 239.4,
-      "z 234 joint hardware": 28.0,
+      "printed body (ledger H1 row, raster change applied)": 757.7,
+      "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
+      "z 234 joint parts (ledger rows)": 28.0,
       "crown legs cut to the unit (2 x 379 mm instead of 430)": -10.5,
       "rack + pawl + pulley guides removed": -44.0,
       "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
@@ -803,14 +803,14 @@
      },
      "frame_g": 994.7,
      "frame_plus_spreader_g": 1157.0,
-     "pack_g": 3854.8,
-     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+     "pack_g": 3854.9,
+     "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "23": {
      "items": {
-      "printed body (H1 basis)": 757.7,
-      "fixed interfaces as H1": 239.4,
-      "z 234 joint hardware": 28.0,
+      "printed body (ledger H1 row, raster change applied)": 757.7,
+      "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
+      "z 234 joint parts (ledger rows)": 28.0,
       "crown legs cut to the unit (2 x 404 mm instead of 430)": -5.3,
       "rack + pawl + pulley guides removed": -44.0,
       "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
@@ -819,8 +819,8 @@
      },
      "frame_g": 999.9,
      "frame_plus_spreader_g": 1162.2,
-     "pack_g": 3860.0,
-     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+     "pack_g": 3860.1,
+     "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     }
    },
    "print_g_19": 764.5,
@@ -1369,9 +1369,9 @@
    "mass": {
     "15": {
      "items": {
-      "printed body (H1 basis)": 740.8,
-      "fixed interfaces as H1": 239.4,
-      "z 234 joint hardware": 28.0,
+      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
+      "z 234 joint parts (ledger rows)": 28.0,
       "crown legs cut to the unit (2 x 201 mm instead of 430)": -46.9,
       "rack + pawl + pulley guides removed": -44.0,
       "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
@@ -1380,14 +1380,14 @@
      },
      "frame_g": 941.4,
      "frame_plus_spreader_g": 1103.7,
-     "pack_g": 3801.5,
-     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+     "pack_g": 3801.6,
+     "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "16": {
      "items": {
-      "printed body (H1 basis)": 740.8,
-      "fixed interfaces as H1": 239.4,
-      "z 234 joint hardware": 28.0,
+      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
+      "z 234 joint parts (ledger rows)": 28.0,
       "crown legs cut to the unit (2 x 226 mm instead of 430)": -41.7,
       "rack + pawl + pulley guides removed": -44.0,
       "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
@@ -1396,14 +1396,14 @@
      },
      "frame_g": 946.6,
      "frame_plus_spreader_g": 1108.9,
-     "pack_g": 3806.7,
-     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+     "pack_g": 3806.8,
+     "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "18": {
      "items": {
-      "printed body (H1 basis)": 740.8,
-      "fixed interfaces as H1": 239.4,
-      "z 234 joint hardware": 28.0,
+      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
+      "z 234 joint parts (ledger rows)": 28.0,
       "crown legs cut to the unit (2 x 277 mm instead of 430)": -31.3,
       "rack + pawl + pulley guides removed": -44.0,
       "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
@@ -1412,14 +1412,14 @@
      },
      "frame_g": 957.0,
      "frame_plus_spreader_g": 1119.3,
-     "pack_g": 3817.1,
-     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+     "pack_g": 3817.2,
+     "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "19": {
      "items": {
-      "printed body (H1 basis)": 740.8,
-      "fixed interfaces as H1": 239.4,
-      "z 234 joint hardware": 28.0,
+      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
+      "z 234 joint parts (ledger rows)": 28.0,
       "crown legs cut to the unit (2 x 303 mm instead of 430)": -26.1,
       "rack + pawl + pulley guides removed": -44.0,
       "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
@@ -1428,14 +1428,14 @@
      },
      "frame_g": 962.2,
      "frame_plus_spreader_g": 1124.5,
-     "pack_g": 3822.3,
-     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+     "pack_g": 3822.4,
+     "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "20": {
      "items": {
-      "printed body (H1 basis)": 740.8,
-      "fixed interfaces as H1": 239.4,
-      "z 234 joint hardware": 28.0,
+      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
+      "z 234 joint parts (ledger rows)": 28.0,
       "crown legs cut to the unit (2 x 328 mm instead of 430)": -20.9,
       "rack + pawl + pulley guides removed": -44.0,
       "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
@@ -1444,14 +1444,14 @@
      },
      "frame_g": 967.4,
      "frame_plus_spreader_g": 1129.7,
-     "pack_g": 3827.5,
-     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+     "pack_g": 3827.6,
+     "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "22": {
      "items": {
-      "printed body (H1 basis)": 740.8,
-      "fixed interfaces as H1": 239.4,
-      "z 234 joint hardware": 28.0,
+      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
+      "z 234 joint parts (ledger rows)": 28.0,
       "crown legs cut to the unit (2 x 379 mm instead of 430)": -10.5,
       "rack + pawl + pulley guides removed": -44.0,
       "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
@@ -1460,14 +1460,14 @@
      },
      "frame_g": 977.8,
      "frame_plus_spreader_g": 1140.1,
-     "pack_g": 3837.9,
-     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+     "pack_g": 3838.0,
+     "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "23": {
      "items": {
-      "printed body (H1 basis)": 740.8,
-      "fixed interfaces as H1": 239.4,
-      "z 234 joint hardware": 28.0,
+      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
+      "z 234 joint parts (ledger rows)": 28.0,
       "crown legs cut to the unit (2 x 404 mm instead of 430)": -5.3,
       "rack + pawl + pulley guides removed": -44.0,
       "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
@@ -1476,8 +1476,8 @@
      },
      "frame_g": 983.0,
      "frame_plus_spreader_g": 1145.3,
-     "pack_g": 3843.1,
-     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+     "pack_g": 3843.2,
+     "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     }
    },
    "print_g_19": 747.5,
@@ -1902,9 +1902,9 @@
    "mass": {
     "15": {
      "items": {
-      "printed body (H1 basis)": 740.8,
-      "fixed interfaces as H1": 239.4,
-      "z 234 joint hardware": 28.0,
+      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
+      "z 234 joint parts (ledger rows)": 28.0,
       "carbon crown legs removed (2 x 430 mm)": -88.1,
       "crown corner bondlines removed": -2.21,
       "rack + pawl + pulley guides removed": -44.0,
@@ -1919,14 +1919,14 @@
      },
      "frame_g": 1157.1,
      "frame_plus_spreader_g": 1319.4,
-     "pack_g": 4017.2,
-     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+     "pack_g": 4017.3,
+     "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "16": {
      "items": {
-      "printed body (H1 basis)": 740.8,
-      "fixed interfaces as H1": 239.4,
-      "z 234 joint hardware": 28.0,
+      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
+      "z 234 joint parts (ledger rows)": 28.0,
       "carbon crown legs removed (2 x 430 mm)": -88.1,
       "crown corner bondlines removed": -2.21,
       "rack + pawl + pulley guides removed": -44.0,
@@ -1941,14 +1941,14 @@
      },
      "frame_g": 1175.2,
      "frame_plus_spreader_g": 1337.5,
-     "pack_g": 4035.3,
-     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+     "pack_g": 4035.4,
+     "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "18": {
      "items": {
-      "printed body (H1 basis)": 740.8,
-      "fixed interfaces as H1": 239.4,
-      "z 234 joint hardware": 28.0,
+      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
+      "z 234 joint parts (ledger rows)": 28.0,
       "carbon crown legs removed (2 x 430 mm)": -88.1,
       "crown corner bondlines removed": -2.21,
       "rack + pawl + pulley guides removed": -44.0,
@@ -1963,14 +1963,14 @@
      },
      "frame_g": 1211.3,
      "frame_plus_spreader_g": 1373.6,
-     "pack_g": 4071.4,
-     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+     "pack_g": 4071.5,
+     "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "19": {
      "items": {
-      "printed body (H1 basis)": 740.8,
-      "fixed interfaces as H1": 239.4,
-      "z 234 joint hardware": 28.0,
+      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
+      "z 234 joint parts (ledger rows)": 28.0,
       "carbon crown legs removed (2 x 430 mm)": -88.1,
       "crown corner bondlines removed": -2.21,
       "rack + pawl + pulley guides removed": -44.0,
@@ -1985,14 +1985,14 @@
      },
      "frame_g": 1229.4,
      "frame_plus_spreader_g": 1391.7,
-     "pack_g": 4089.5,
-     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+     "pack_g": 4089.6,
+     "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "20": {
      "items": {
-      "printed body (H1 basis)": 740.8,
-      "fixed interfaces as H1": 239.4,
-      "z 234 joint hardware": 28.0,
+      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
+      "z 234 joint parts (ledger rows)": 28.0,
       "carbon crown legs removed (2 x 430 mm)": -88.1,
       "crown corner bondlines removed": -2.21,
       "rack + pawl + pulley guides removed": -44.0,
@@ -2007,14 +2007,14 @@
      },
      "frame_g": 1247.4,
      "frame_plus_spreader_g": 1409.7,
-     "pack_g": 4107.5,
-     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+     "pack_g": 4107.6,
+     "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "22": {
      "items": {
-      "printed body (H1 basis)": 740.8,
-      "fixed interfaces as H1": 239.4,
-      "z 234 joint hardware": 28.0,
+      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
+      "z 234 joint parts (ledger rows)": 28.0,
       "carbon crown legs removed (2 x 430 mm)": -88.1,
       "crown corner bondlines removed": -2.21,
       "rack + pawl + pulley guides removed": -44.0,
@@ -2029,14 +2029,14 @@
      },
      "frame_g": 1283.6,
      "frame_plus_spreader_g": 1445.9,
-     "pack_g": 4143.7,
-     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+     "pack_g": 4143.8,
+     "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     },
     "23": {
      "items": {
-      "printed body (H1 basis)": 740.8,
-      "fixed interfaces as H1": 239.4,
-      "z 234 joint hardware": 28.0,
+      "printed body (ledger H1 row, raster change applied)": 740.8,
+      "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
+      "z 234 joint parts (ledger rows)": 28.0,
       "carbon crown legs removed (2 x 430 mm)": -88.1,
       "crown corner bondlines removed": -2.21,
       "rack + pawl + pulley guides removed": -44.0,
@@ -2051,8 +2051,8 @@
      },
      "frame_g": 1301.6,
      "frame_plus_spreader_g": 1463.9,
-     "pack_g": 4161.7,
-     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+     "pack_g": 4161.8,
+     "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change - torso-adjust row 41.7 g"
     }
    },
    "print_g_19": 971.3,
@@ -2075,14 +2075,14 @@
    "mass": {
     "19": {
      "items": {
-      "printed body (H1 basis)": 757.7,
-      "fixed interfaces as H1": 239.4,
-      "z 234 joint hardware": 28.0
+      "printed body (ledger H1 row, raster change applied)": 757.7,
+      "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": 239.4,
+      "z 234 joint parts (ledger rows)": 28.0
      },
      "frame_g": 1025.1,
      "frame_plus_spreader_g": 1187.4,
-     "pack_g": 3926.9,
-     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5"
+     "pack_g": 3927.0,
+     "pack_note": "ledger corrie_b2_h1 belt M 3927.0 g + frame change"
     }
    },
    "print_h_19": 27.0

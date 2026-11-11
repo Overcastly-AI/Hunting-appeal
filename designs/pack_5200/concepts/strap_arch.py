@@ -11,7 +11,14 @@ check for today's five overlapping strap systems and the candidate architectures
              wings deleted. FAILS F3 (a bag-anchored strap cannot close bag + meat to the frame; section 4 of the doc).
 * ``b2``     one external set that works: W1-W3 (frame-anchored, unchanged) become the only external straps; the wings,
              their bars and their 4 straps are deleted (team B's move, ``bag_comp/lean``).
-* ``c``      meat-trip kit: the B-24 float links leave the base pack (BL-008 proposal row B24).
+* ``c``      meat-trip kit: the B-24 float links leave the base pack. Owner decision DECISIONS 2026-11-10 adopted the
+             base / as-hunted / meat-trip configurations with B-24 in meat trip, so (c) is now today's booking and
+             saves nothing on its own; the cradle-to-kit extension (c+) is assessed and rejected.
+
+Weight configurations (owner decision DECISIONS 2026-11-10, ``analysis/weight_configs_proposal.md`` rule): every part
+carries ``cfg`` = base / as_hunted / meat_trip. Strap parts: pouch straps are as-hunted (they go with the pouch),
+B-24 is meat-trip, the rest is base. The pack totals add the non-strap add-ons from the ledger: IMP-3 holster and the
+pouch (as hunted), the rain fly minus its F-02 base pocket (as hunted).
 * ``rec``    the recommendation: (a) on IM and US + (b2) + (c), B-24 kept as built (same part as the bag hooks).
 
 Every mass of a part that exists today is read from ``huntkit.mass.ledger`` (RULES.md rule 5). New parts take their
@@ -47,7 +54,8 @@ import build_geometry as BG  # noqa: E402
 
 CONFIG, SIZE = "corrie_b2_h1", "M"
 LB, OZ = 453.592, 28.3495
-DATE = "20261110"
+DATE = "20261111"
+CFGS = ("base", "as_hunted", "meat_trip")
 FUNCS = ("F1", "F2", "F3", "F4", "F5", "F6", "F7")
 FUNC_NAMES = {"F1": "meat in the bag", "F2": "bag-off haul", "F3": "float", "F4": "carry compression",
               "F5": "side carry", "F6": "door zip unloaded", "F7": "roll-top + pouch"}
@@ -75,6 +83,7 @@ G_HOOK_HAUL_G = 4.0   # corrie.G_HOOK (weight_pass W.G_HOOK_G): 4 g ASSUMPTION, 
 #   deformation up to 0.9 kN (maker page). Settled by: proof-test 5 hooks on 25 mm webbing to 900 N (no set) and
 #   pull 5 to break (>= 1200 N), plus field test FT-S1 (hook stays on a slack eye through 1 km of brush).
 G25R_G, G25R_N, G25R_YIELD_N = 8.0, 1200.0, 900.0
+PROOF_MEAT_N = 910.0   # meat-strap proof load, DECISIONS 2026-11-10 (BL-016, tests_physical/TEST_PLAN.md)
 # ASSUMPTION: 25 mm aluminium cam buckle: 13 g (Austere Mfg 25 mm cam 12.2 g, maker-reseller listing, + 1 g glove
 #   pull tab); slip >= 1100 N, the same slip ASSUMPTION the 38 mm cam carries today (meat_haul.CAM_N). No maker
 #   publishes a slip rating; a 25 mm alloy cam is listed at 450 kg break (Jimmy Green, secondary). Settled by: the
@@ -103,6 +112,7 @@ BAG_ON_S = sum(t for _, t in AS.PROCEDURES["bag_on"]["steps"])     # 59 s
 
 MH_JSON = json.loads((ANALYSIS / "meat_haul_modes.json").read_text())
 FF_JSON = json.loads((ANALYSIS / "float_fea_results.json").read_text())
+MEAT_LIMIT_KG = float(MH_JSON["float"]["meat_limit_kg"])   # 53 kg (float_fea.md)
 HOOP = json.loads((PACK / "bag_comp" / "C" / "result.json").read_text())["hoop"]
 
 
@@ -136,9 +146,19 @@ class Part:
     funcs: tuple                # functions it serves
     hw: dict = field(default_factory=dict)   # hardware type -> count (moving hardware the user handles)
     ops: int = 0                # sewing operations (rule below)
-    base: bool = True           # in the base pack (False = meat-trip kit)
+    cfg: object = "base"        # base / as_hunted / meat_trip (True = base, for the positional calls)
     source: str = ""
     change: str = ""
+
+    def __post_init__(self):
+        if self.cfg is True:
+            object.__setattr__(self, "cfg", "base")
+        if self.cfg not in CFGS:
+            raise ValueError(f"cfg {self.cfg!r}")
+
+    @property
+    def base(self) -> bool:
+        return self.cfg == "base"
 
 
 # Sewing-operation rule (same for every architecture): 1 op per hot-cut piece + 1 per sewn join (box-X, sewn loop,
@@ -208,6 +228,8 @@ def today_parts() -> list:
         Part("pouch-straps", "pouch: 4 x 25 mm 0.12 m straps + 4 G-hooks", "straps_compression",
              _lg("pouch: 4 x 25 mm", rows), ("F7",), {"25 mm G-hook (HAUL)": 4}, _strap_ops(4, 1), True, "ledger"),
     ]
+    P = [replace(p, cfg="meat_trip") if p.id.startswith("B-24") else
+         replace(p, cfg="as_hunted") if p.id == "pouch-straps" else p for p in P]
     tot = sum(p.g for p in P)
     if abs(tot - ledger_baseline()["total"]) > 0.1:
         raise ValueError(f"today parts {tot:.2f} != ledger straps_meat + straps_compression {ledger_baseline()['total']}")
@@ -289,9 +311,10 @@ def architectures() -> dict:
            Part("S-loops", "S1-S3 seam loops (6 x 25 x 80 mm)", "straps_compression", 6 * 0.08 * WEB25,
                 ("F4", "F5", "F6"), {}, 6, True, "poly_webbing_25mm", "new")]
     b2 = _delete_wings(T)
-    c = [replace(p, base=False, change="meat-trip kit (BL-008 row B24)") if p.id.startswith("B-24") else p for p in T]
+    c = [replace(p, change="meat-trip kit (owner decision 2026-11-10; already today's booking)")
+         if p.id.startswith("B-24") else p for p in T]
     rec = _delete_wings(_lighten_im_us(T))
-    rec = [replace(p, base=False, change="meat-trip kit (BL-008 row B24), part unchanged") if p.id.startswith("B-24")
+    rec = [replace(p, change="meat-trip kit, part unchanged (2200 N bag-hook part)") if p.id.startswith("B-24")
            else p for p in rec]
     return {"today": T, "a": a, "b1": b1, "b2": b2, "c": c, "rec": rec}
 
@@ -304,11 +327,13 @@ ARCH_NAMES = {"today": "Today (CORRIE B.2)", "a": "(a) lighten in place", "b1": 
 def summary(parts: list) -> dict:
     tot = sum(p.g for p in parts)
     base = sum(p.g for p in parts if p.base)
+    ah = sum(p.g for p in parts if p.cfg == "as_hunted")
     hw = {}
     for p in parts:
         for k, n in p.hw.items():
             hw[k] = hw.get(k, 0) + n
-    return {"total_g": round(tot, 1), "base_g": round(base, 1), "kit_g": round(tot - base, 1),
+    return {"total_g": round(tot, 1), "base_g": round(base, 1), "as_hunted_add_g": round(ah, 1),
+            "kit_g": round(tot - base - ah, 1),
             "meat_g": round(sum(p.g for p in parts if p.system == "straps_meat" and p.base), 1),
             "comp_g": round(sum(p.g for p in parts if p.system == "straps_compression" and p.base), 1),
             "hw_count": sum(hw.values()), "hw_types": len(hw), "hw": hw, "ops": sum(p.ops for p in parts)}
@@ -321,8 +346,31 @@ def savings() -> dict:
     for k, P in A.items():
         s = summary(P)
         out[k] = {**s, "saved_removed_g": round(t["total_g"] - s["total_g"], 1),
-                  "saved_base_g": round(t["base_g"] - s["base_g"], 1)}
+                  "saved_base_g": round(t["base_g"] - s["base_g"], 1), "pack": pack_configs(P)}
     return out
+
+
+def nonstrap_addons() -> dict:
+    """The non-strap add-ons of the owner's weight configurations, read from ledger rows (CORRIE B.2 on H1, belt M):
+    as hunted = IMP-3 holster + pouch system + rain fly without its F-02 base pocket (panels.yaml)."""
+    rows = L.parts(CONFIG, SIZE)
+    imp3 = sum(r["g"] for r in rows if r["name"].startswith("IMP-3"))
+    pouch = sum(r["g"] for r in rows if r["system"] == "pouch")
+    fly = sum(r["g"] for r in rows if r["system"] == "fly")
+    panels = yaml.safe_load((PACK / "panels.yaml").read_text())["panels"]
+    f02 = float(next(p["mass_g_total"] for p in panels if p["id"] == "F-02"))
+    return {"IMP-3": round(imp3, 2), "pouch": round(pouch, 2), "fly_less_F-02": round(fly - f02, 2),
+            "as_hunted_g": round(imp3 + pouch + fly - f02, 2)}
+
+
+def pack_configs(parts: list) -> dict:
+    """Pack mass (H1, belt M) in the owner's three configurations with this strap architecture in place of today's."""
+    pack = L.total(CONFIG, SIZE) - ledger_baseline()["total"] + sum(p.g for p in parts)
+    ns = nonstrap_addons()["as_hunted_g"]
+    s_ah = sum(p.g for p in parts if p.cfg == "as_hunted")
+    s_mt = sum(p.g for p in parts if p.cfg == "meat_trip")
+    base = pack - ns - s_ah - s_mt
+    return {"base_g": round(base, 1), "as_hunted_g": round(base + ns + s_ah, 1), "meat_trip_g": round(pack, 1)}
 
 
 def by_function(parts: list, base_only: bool = True) -> dict:
@@ -340,8 +388,7 @@ def by_function(parts: list, base_only: bool = True) -> dict:
 def today_margins() -> list:
     """Rated / required for every strap part with a load case. ``over2`` marks rated > 2 x the factored requirement."""
     us_d = MH_JSON["bag_off"]["cradle_tension_n"]
-    us_lim = us_d * MH.QUARTER_KG and us_d * FF_JSON.get("meat_limit_kg", 53.0) / MH.QUARTER_KG \
-        if "meat_limit_kg" in FF_JSON else us_d * 53.0 / MH.QUARTER_KG
+    us_lim = us_d * MEAT_LIMIT_KG / MH.QUARTER_KG       # linear in the meat mass (float_fea.md section 2)
     link = MH_JSON["float"]["link"]
     comp_n = max(max(v["straps"].values()) for v in HOOP["straps_on"].values()) * 3.0
     wrap_n = 150.0 * 1.5                    # float clamp: the 150 N hand-cinch ASSUMPTION x 1.5 (bag-off rule)
@@ -433,7 +480,7 @@ def load_paths() -> list:
     rated part. Strength is NOT certified here."""
     us_d = MH_JSON["bag_off"]["cradle_tension_n"]
     us_on = MH_JSON["bag_on"]["cradle_tension_n"]
-    us_lim = us_d * 53.0 / MH.QUARTER_KG
+    us_lim = us_d * MEAT_LIMIT_KG / MH.QUARTER_KG
     link = MH_JSON["float"]["link"]
     comp_n = max(max(v["straps"].values()) for v in HOOP["straps_on"].values()) * 3.0
     return [
@@ -442,7 +489,9 @@ def load_paths() -> list:
          "note": "hook -> girth hitch: same force and direction at the eye; the hitch pinches the eye at the pin; "
                  "check the IM2 hitch in the spreader's 30 mm edge notch (thickness)"},
         {"loc": "IM1-IM3 right eyes, free-end hook", "dir": "aft", "n": IM_REQ_N, "part": "25 mm rated Al G-hook",
-         "rated_n": G25R_N, "note": f"yield (no-set) {G25R_YIELD_N:.0f} N; today 1500 N ASSUMPTION"},
+         "rated_n": G25R_N, "note": f"no-set {G25R_YIELD_N:.0f} N is BELOW the {PROOF_MEAT_N:.0f} N meat-strap proof load (BL-016): the "
+                 "proof would set the hook; buy a 25 mm hook with no-set >= 910 N or BL-010 re-sets the proof for "
+                 "this part; today's 38 mm hook is a 1500 N ASSUMPTION"},
         {"loc": "IM1-IM3 cam", "dir": "along the strap", "n": IM_REQ_N, "part": "25 mm Al cam (slip)",
          "rated_n": CAM25_N, "note": "slip ASSUMPTION carried over from the 38 mm cam; proof test"},
         {"loc": "IM1-IM3 webbing", "dir": "along the strap", "n": IM_REQ_N, "part": "poly_webbing_25mm",
@@ -531,7 +580,7 @@ def _side_panel(ax, arch: str, mode: str):
     lw = 3.0 if arch in ("today", "b2", "c") else 2.0     # 38 vs 25 mm IM/US
     meat_c, bag_c = "#c97b7b", "#d9d4c5"
     wings = arch in ("today", "a", "c")
-    kit = arch in ("c", "rec")
+    kit = True                                  # B-24 is meat-trip in every option (owner 2026-11-10)
     if mode == "carry":
         ax.add_patch(mp.FancyBboxPatch((20, 40), 290, 760, boxstyle="round,pad=2,rounding_size=30", fc=bag_c, ec="#777"))
         ax.add_patch(mp.Ellipse((95, 320), 140, 330, fc=meat_c, ec="none", alpha=0.9))
@@ -562,8 +611,9 @@ def _side_panel(ax, arch: str, mode: str):
             bx = 19 + gap + 20
             ax.add_patch(mp.FancyBboxPatch((bx, 60), 280, 740, boxstyle="round,pad=2,rounding_size=30", fc=bag_c,
                                            ec="#777"))
-            ax.plot([0, bx], [520, 520 - math.tan(math.radians(30)) * 0 - 5], color=COL["kit"] if kit else
-                    COL["straps_meat"], lw=2.5, ls="--" if kit else "-")
+            ax.plot([0, bx + 4], [520, 520 - math.tan(math.radians(30)) * (bx + 4)], color="#444" if kit else
+                    COL["straps_meat"], lw=2.8, ls="--" if kit else "-", zorder=5)
+            ax.text(bx / 2, 545, "B-24", fontsize=7, ha="center", color="#444")
             for z in (165, 335, 703):
                 ax.plot([0, bx + 285], [z, z], color=COL["straps_compression"], lw=2.0)
             if wings:
@@ -584,16 +634,19 @@ def chart_sideviews(path: Path) -> Path:
     for i, k in enumerate(keys):
         for j, m in enumerate(("carry", "off", "float")):
             _side_panel(axes[i, j], k, m)
-        s = S[k]
-        axes[i, 0].text(-60, 900, f"{ARCH_NAMES[k]}   base {s['base_g']:.0f} g, saves {s['saved_base_g']:.0f} g "
-                        f"(removed {s['saved_removed_g']:.0f} g)", fontsize=10, weight="bold", va="bottom")
+
     h = [Line2D([], [], color=COL["straps_meat"], lw=3, label="meat straps IM / US (thick = 38 mm, thin = 25 mm)"),
          Line2D([], [], color=COL["straps_compression"], lw=2, label="W1-W3 / wing straps (dotted = on keepers)"),
-         Line2D([], [], color=COL["kit"], lw=2.5, ls="--", label="B-24 link from the meat-trip kit"),
+         Line2D([], [], color="#444", lw=2.5, ls="--", label="B-24 link from the meat-trip kit"),
          Line2D([], [], color="#4a6fa5", lw=8, alpha=0.25, label="side wing M-01")]
     fig.legend(handles=h, loc="lower center", ncol=2, fontsize=8, frameon=False)
-    fig.suptitle("BL-003 strap architectures, side view (frame left, aft right; schematic)", fontsize=11)
-    fig.tight_layout(rect=(0, 0.04, 1, 0.97))
+    fig.suptitle("BL-003 strap architectures, side view (frame left, aft right; schematic)", fontsize=12, y=0.995)
+    fig.subplots_adjust(left=0.02, right=0.98, top=0.95, bottom=0.05, hspace=0.45, wspace=0.05)
+    for i, k in enumerate(keys):
+        s = S[k]
+        y = axes[i, 0].get_position().y1 + 0.022
+        fig.text(0.02, y, f"{ARCH_NAMES[k]}: pack base {s['pack']['base_g']:.0f} g, strap saving "
+                 f"{s['saved_removed_g']:.0f} g", fontsize=10.5, weight="bold", va="bottom")
     path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(path, dpi=85)
     plt.close(fig)
@@ -608,25 +661,26 @@ def chart_mass(path: Path) -> Path:
     A = architectures()
     keys = ("today", "a", "b1", "b2", "c", "rec")
     cols = ["#7f3c10", "#b5651d", "#e0a96d", "#2f4b7c", "#4a6fa5", "#8fb0d9", "#9a9a9a"]
-    fig, ax = plt.subplots(figsize=(9, 6))
+    fig, ax = plt.subplots(figsize=(9, 7))
     x = np.arange(len(keys))
     bottom = np.zeros(len(keys))
     for f, c in zip(FUNCS, cols):
         v = np.array([by_function(A[k])[f] for k in keys])
         ax.bar(x, v, bottom=bottom, color=c, label=f"{f} {FUNC_NAMES[f]}", edgecolor="white", lw=0.5)
         bottom += v
-    kit = np.array([summary(A[k])["kit_g"] for k in keys])
-    ax.bar(x, kit, bottom=bottom, color="none", edgecolor="#555", hatch="//", label="meat-trip kit (not base)")
+    kit = np.array([summary(A[k])["kit_g"] + summary(A[k])["as_hunted_add_g"] for k in keys])
+    ax.bar(x, kit, bottom=bottom, color="none", edgecolor="#555", hatch="//",
+           label="as-hunted + meat-trip add-ons (pouch straps, B-24)")
     for i, k in enumerate(keys):
         ax.text(i, bottom[i] + kit[i] + 8, f"{bottom[i]:.0f} g", ha="center", fontsize=9, weight="bold")
     base0 = summary(A["today"])["base_g"]
     ax.axhline(base0 - 200, color="#c00", ls="--", lw=1)
-    ax.text(len(keys) - 0.5, base0 - 196, "target: today - 200 g", color="#c00", fontsize=8, ha="right", va="bottom")
+    ax.text(-0.45, base0 - 196, "target: today - 200 g", color="#c00", fontsize=8, ha="left", va="bottom")
     ax.set_xticks(x, ["today", "(a)", "(b1)\nfails F3", "(b2)", "(c)", "REC"])
-    ax.set_ylabel("g (base weight, ledger straps_meat + straps_compression)")
+    ax.set_ylabel("g, straps in the base configuration (ledger systems)")
     ax.set_title("Strap mass by function (a part serving n functions books g/n to each)", fontsize=11)
-    ax.legend(fontsize=8, loc="upper right", ncol=2)
-    ax.set_ylim(0, base0 * 1.25)
+    ax.legend(fontsize=8, loc="upper center", bbox_to_anchor=(0.5, -0.12), ncol=3, frameon=False)
+    ax.set_ylim(0, base0 * 1.22)
     fig.tight_layout()
     fig.savefig(path, dpi=110)
     plt.close(fig)
@@ -653,21 +707,30 @@ def report(shots: list) -> str:
     L_ = []
     a = L_.append
     a("# Strap architecture: meat haul + compression (BL-003)\n")
-    a("pack-designer, 2026-11-10. Generated by `python designs/pack_5200/concepts/strap_arch.py --write`; do not edit "
+    a("pack-designer, 2026-11-11. Generated by `python designs/pack_5200/concepts/strap_arch.py --write`; do not edit "
       "by hand. Masses of existing parts come from `huntkit/mass/ledger.py` (CORRIE B.2 on H1, belt M); new parts "
       "from a record or an ASSUMPTION in `strap_arch.py`. Research: `docs/research/strap_systems.md`. Nothing here "
       "certifies strength: section 7 lists the changed load paths for BL-010.\n")
+    pt, pr_ = S["today"]["pack"], r["pack"]
     a(f"**Result.** Ledger `straps_meat + straps_compression` = {base['straps_meat']:.1f} + "
       f"{base['straps_compression']:.1f} = **{base['total']:.1f} g ({_lboz(base['total'])})**. The recommended "
-      f"architecture REC books **{r['base_g']:.1f} g** in the base pack: **{r['saved_base_g']:.1f} g "
-      f"({_lboz(r['saved_base_g'])}) less**, of which **{r['saved_removed_g']:.1f} g is hardware and fabric that no "
-      f"longer exists** and {r['kit_g']:.1f} g (the B-24 links, unchanged) moves to the meat-trip kit. Target "
-      f"(>= 200 g) **met on both counts**; stretch (300 g) **not met** ({r['saved_base_g']:.0f} g base, "
-      f"{r['saved_removed_g']:.0f} g removed). Hardware the user handles: {S['today']['hw_count']} -> "
-      f"{r['hw_count']} pieces, {S['today']['hw_types']} -> {r['hw_types']} part types; sewing operations "
-      f"{S['today']['ops']} -> {r['ops']}.\n")
+      f"architecture REC removes **{r['saved_removed_g']:.1f} g ({_lboz(r['saved_removed_g'])})** of straps, "
+      f"hardware and wing fabric that no longer exist, so the saving is the same in all three weight "
+      f"configurations (owner decision 2026-11-10). Target (>= 200 g) **met**; stretch (300 g) **not met**. The B-24 "
+      f"links ({r['kit_g']:.1f} g) stay as built in the meat-trip kit, where the owner decision already put them; "
+      f"that move is not counted as a saving here.\n")
+    a("| configuration (H1, belt M) | today | REC | saved |\n|---|---:|---:|---:|")
+    for c_, n_ in (("base_g", "base"), ("as_hunted_g", "as hunted (+ pouch, holster, fly)"),
+                   ("meat_trip_g", "meat trip (+ B-24)")):
+        a(f"| {n_} | {pt[c_]:.1f} g ({pt[c_] / LB:.2f} lb) | {pr_[c_]:.1f} g ({pr_[c_] / LB:.2f} lb) | "
+          f"{pt[c_] - pr_[c_]:.1f} g |")
+    a(f"\nHardware the user handles: {S['today']['hw_count']} -> {r['hw_count']} pieces, {S['today']['hw_types']} -> "
+      f"{r['hw_types']} part types; sewing operations {S['today']['ops']} -> {r['ops']}. Configuration totals are "
+      "the ledger pack (3927.0 g) with the strap parts swapped; non-strap add-ons from ledger rows (IMP-3, pouch, "
+      "fly less its F-02 base pocket from `panels.yaml`). The 0.2 g difference from the BL-008 proposal's "
+      "3700.4 g base is that proposal's rounding; the ledger governs.\n")
     a("REC = (a) on IM and US (38 -> 25 mm, 25 mm Al cams, IM left end a sewn loop girth-hitched on the left eye) + "
-      "(b2) the wings go and W1-W3 become the one external strap set + (c) the B-24 links ride in the kill kit. Two "
+      "(b2) the wings go and W1-W3 become the one external strap set; B-24 unchanged in the meat-trip kit. Two "
       "owner decisions gate it (section 9).\n")
 
     a("## 1. Today's parts, loads and margins\n")
@@ -708,16 +771,20 @@ def report(shots: list) -> str:
       "Nobody runs 38 mm webbing for meat straps, and nobody carries side wings and wrap straps together.\n")
 
     a("## 3. Architectures\n")
-    a("| architecture | base g | kit g | saved, base | saved, removed | hardware pieces / types | sewing ops | "
-      "F1-F7 |\n|---|---:|---:|---:|---:|---|---:|---|")
+    a("| architecture | straps base g | straps as-hunted add-on g | straps meat-trip add-on g | saved g (all configs) "
+      "| pack base g | pack as hunted g | pack meat trip g | hardware pieces / types | sewing ops | F1-F7 |\n"
+      "|---|---:|---:|---:|---:|---:|---:|---:|---|---:|---|")
     ok = {"today": "all", "a": "all", "b1": "**F3 fails**", "b2": "all", "c": "all (F3 needs the kit)",
           "rec": "all (F3 needs the kit)"}
     for k in ("today", "a", "b1", "b2", "c", "rec"):
         s = S[k]
-        a(f"| {ARCH_NAMES[k]} | {s['base_g']:.1f} | {s['kit_g']:.1f} | {s['saved_base_g']:.1f} | "
-          f"{s['saved_removed_g']:.1f} | {s['hw_count']} / {s['hw_types']} | {s['ops']} | {ok[k]} |")
-    a("\n*saved, base* = against the ledger's base booking; *saved, removed* = mass that no longer exists (the kit "
-      "still exists). Function split rule for the bar chart: a part serving n functions books g/n to each.\n")
+        pk = s["pack"]
+        a(f"| {ARCH_NAMES[k]} | {s['base_g']:.1f} | {s['as_hunted_add_g']:.1f} | {s['kit_g']:.1f} | "
+          f"{s['saved_removed_g']:.1f} | {pk['base_g']:.1f} | {pk['as_hunted_g']:.1f} | {pk['meat_trip_g']:.1f} | "
+          f"{s['hw_count']} / {s['hw_types']} | {s['ops']} | {ok[k]} |")
+    a("\nStrap columns: the pouch straps are as-hunted (they go with the pouch), B-24 is meat-trip. *Saved* = mass that "
+      "no longer exists; it is the same in base, as hunted and meat trip because no option moves a part between "
+      "configurations. Function split rule for the bar chart: a part serving n functions books g/n to each.\n")
     a("### (a) lighten in place\n")
     a(f"IM1-IM3: 38 -> 25 mm webbing (same cuts), 25 mm Al cam (ASSUMPTION {CAM25_G:.0f} g, slip {CAM25_N:.0f} N), left "
       f"end a sewn loop girth-hitched on the left fairlead eye, so 3 rated 25 mm G-hooks ({G25R_G:.0f} g, "
@@ -746,19 +813,19 @@ def report(shots: list) -> str:
       "(scope sleeve, inside the left wing today) re-anchors on the left gusset B-03L, as team C did; IMP-8 "
       "(bow cam cup) is already sewn in the corner seam below the wing and stays.\n")
     a("### (c) meat-trip kit\n")
-    a(f"The only parts used in F3 and nowhere else are the B-24 links ({S['c']['kit_g']:.1f} g). BL-008 already "
-      "proposed them as a meat-trip kit. The cradle (US1/US2) is not F2/F3-only: in F1 it cinches the floor and "
-      "takes 55 % of the floor vertical (`meat_haul.CRADLE_SHARE`), and F2 is a day-of-kill mode, so the cradle "
-      "stays on the pack. Honest note: the kill kit rides in the pack on hunt days, so (c) lowers the base-weight "
-      "booking, not what the hunter carries, unless the links stay in camp until a planned pack-out (the loadout "
-      "study found float is never needed in its six loadouts).\n")
+    a(f"The only parts used in F3 and nowhere else are the B-24 links ({S['c']['kit_g']:.1f} g). The owner decision of "
+      "2026-11-10 already books them in the meat-trip configuration, so (c) is today's booking and saves nothing "
+      "further. Extension (c+), the cradle US1/US2 straps to the kit as well, is rejected: the cradle is not "
+      "F2/F3-only (in F1 it cinches the floor and takes 55 % of the floor vertical, `meat_haul.CRADLE_SHARE`), and "
+      "F2 is the day-of-kill mode, so a cradle left in camp fails the required mode when it matters.\n")
     a("### REC\n")
     a("| part | g | change | functions |\n|---|---:|---|---|")
     for p in A["rec"]:
-        tag = "" if p.base else " (kit)"
+        tag = "" if p.base else f" ({p.cfg.replace('_', ' ')})"
         a(f"| {p.name}{tag} | {p.g:.1f} | {p.change or '-'} | {' '.join(p.funcs)} |")
     a(f"| **base total** | **{r['base_g']:.1f}** | | |")
-    a(f"| kit | {r['kit_g']:.1f} | | |\n")
+    a(f"| as-hunted add-on (pouch straps) | {r['as_hunted_add_g']:.1f} | | |")
+    a(f"| meat-trip add-on (B-24) | {r['kit_g']:.1f} | | |\n")
     a("Hardware, today vs REC:\n")
     a("| part type | today | REC |\n|---|---:|---:|")
     for k in sorted(set(S["today"]["hw"]) | set(r["hw"])):
@@ -836,13 +903,18 @@ def report(shots: list) -> str:
     a("## 9. Owner decisions\n")
     a("1. **Delete the side wings** (M-01, SH-06, 4 wing straps): W1-W3 do carry compression and side carry; door "
       "access then costs 16 s more through the door (not through the roll-top). IMP-1 moves to the left gusset.\n"
-      "2. **B-24 float links as a meat-trip kit** outside the base weight (BL-008 already proposes it).\n"
+      "2. **B-24 float links as a meat-trip kit**: already decided (DECISIONS 2026-11-10); REC keeps the parts as "
+      "built. Nothing to decide unless the owner wants (c+), which this ticket advises against.\n"
       "3. **IM and US straps 38 -> 25 mm** with a rated 25 mm cam; the MEAT family is told apart by colour and cam, "
       "not width (changes the R-25 wording). Gated by the cam/hook proof tests below.\n")
 
     a("## 10. Assumptions that govern (each with the test that settles it)\n")
     a(f"- ASSUMPTION: 25 mm Al cam {CAM25_G:.0f} g, slip >= {CAM25_N:.0f} N. Test: 5 cams on the chosen 25 mm webbing, "
       "wet and at -20 C, no slip > 5 mm below 1100 N (the open IM/US hardware proof test, now on 25 mm).\n"
+      f"- CONFLICT: the meat-strap proof load is {PROOF_MEAT_N:.0f} N (DECISIONS 2026-11-10, BL-016); the 25 mm G-hook's "
+      f"published no-set load is {G25R_YIELD_N:.0f} N. Either a 25 mm hook rated >= 910 N no-set is sourced "
+      "(materials-engineer) or BL-010 decides the proof load for the hook. The IM hook mass saving (30 g) depends on it; "
+      "with the 38 mm 2200 N bag-hook part on the 3 IM free ends instead (14 g each) the REC saving drops by 18 g.\n"
       f"- ASSUMPTION: 25 mm rated Al G-hook {G25R_G:.0f} g, {G25R_N:.0f} N break, {G25R_YIELD_N:.0f} N no-set "
       "(maker data, no record yet). Test: 5 hooks to 900 N with no set, 5 to break; FT-S1: a slack IM hook stays on "
       "its eye through 1 km of brush.\n"
@@ -886,8 +958,8 @@ def main(argv=None):
     b = ledger_baseline()
     print(f"ledger straps_meat + straps_compression = {b['total']:.1f} g")
     for k, s in savings().items():
-        print(f"{k:6s} base {s['base_g']:7.1f}  kit {s['kit_g']:5.1f}  saved base {s['saved_base_g']:6.1f}  "
-              f"removed {s['saved_removed_g']:6.1f}  hw {s['hw_count']}/{s['hw_types']}  ops {s['ops']}")
+        print(f"{k:6s} straps base {s['base_g']:6.1f}  removed {s['saved_removed_g']:6.1f}  pack {s['pack']}  "
+              f"hw {s['hw_count']}/{s['hw_types']}  ops {s['ops']}")
     print(procedures()["seconds"])
     if "--write" in argv:
         print(write())

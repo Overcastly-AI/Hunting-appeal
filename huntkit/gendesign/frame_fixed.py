@@ -46,7 +46,7 @@ OUT = REPO / "outputs" / "frame_fixed"
 DOC = REPO / "designs" / "pack_5200" / "analysis" / "frame_fixed_torso.md"
 RESULT = REPO / "designs" / "pack_5200" / "analysis" / "frame_fixed_results.json"
 SCREENS = REPO / "outputs" / "screens"
-SHOT = "20261110_BL007"
+SHOT = "20261111_BL007"
 H = H1.H
 MAT = H1.MAT
 TORSOS = (15, 19, 23)
@@ -759,7 +759,6 @@ def push_c(sets, iters: int = 5, log=print) -> dict:
 LEG_G_PER_MM = None      # set from the beam model's rev C crown-leg mass (2 legs x 430 mm)
 RACK_PAWL_GUIDES_G = 44.0     # frame.yaml mass_g "crown rack + pawl housing + pulley guides" (frame_eval.KEPT_G)
 BUSHINGS_G = 16.748942889953792   # frame.yaml mass_g "UHMWPE bushings (4)", 4 x 70 mm
-TORSO_ADJUST_SOFT_G = 41.7    # weight_pass_corrie.json "Torso adjust": webbing 1.4 m, cam buckle, release cord + toggle
 CORNER_BONDLINE_G = 2.21      # frame_mass_production.json crown_fix_lines_g corner_bondline (gone with printed corners)
 SIZES_IN = (16.0, 18.0, 20.0, 22.0)   # 4 printed sizes, +-1 in at the yoke: 15-17, 17-19, 19-21, 21-23
 FIL_USD_KG = 80.0 * 1.08 * 1.15       # H1 basis (frame_h1.md section 5): $80/kg, 8 % waste, 15 % reprint
@@ -794,16 +793,17 @@ LEG_FLANGE_G = 2 * 4 * math.pi * 8.0 ** 2 * 16.0 * 1.06e-3                     #
 
 
 def frame_mass(variant: str, torso: float, body_raster_g: float, h1_raster_g: float) -> dict:
-    """Frame mass on the H1 booking basis (frame_mass_h1.json): fixed 239.4 g, body booked as 757.7 g minus the
-    raster difference, z 234 joint hardware 28.0 g. Items removed / added are each sourced."""
+    """Frame and pack mass from the mass ledger (huntkit.mass.ledger, config corrie_b2_h1, belt M): the H1 frame
+    rows (body, crown + rack + pawl + bushings + Ti mount + inserts, crown fix, z 234 joint parts) as booked, the
+    body changed by the raster difference on the same 2 mm raster. Items removed / added are each sourced. The
+    pack is the ledger total plus the frame change, less the ledger's torso-adjust row for the fixed variants."""
     from .frame_comp_B import bolt_mass_g
-    base = json.loads(H1.MASS_JSON.read_text())["h1"]
-    jhw = sum(base["joint_hardware_g"].values())
-    body = base["body_g"] - (h1_raster_g - body_raster_g)
+    lg = ledger_basis()
     gpm = leg_g_per_mm()
     nut, washer = nut_washer_g()
-    items = {"printed body (H1 basis)": round(body, 1), "fixed interfaces as H1": base["fixed_g"],
-             "z 234 joint hardware": round(jhw, 1)}
+    items = {"printed body (ledger H1 row, raster change applied)": round(lg["body_g"] - (h1_raster_g - body_raster_g), 1),
+             "crown, rack, pawl, bushings, Ti mount, inserts, crown fix (ledger rows)": round(lg["fixed_g"], 1),
+             "z 234 joint parts (ledger rows)": round(lg["joint_g"], 1)}
     if variant == "h1":
         pass
     elif variant in ("a", "c"):
@@ -830,11 +830,30 @@ def frame_mass(variant: str, torso: float, body_raster_g: float, h1_raster_g: fl
         items["corner sockets: 4 Ti M5 x 30 + nuts"] = round(4 * bolt_mass_g(30.0) + 4 * nut, 1)
         items["yoke fine-adjust strip + pin (ASSUMPTION)"] = YOKE_STRIP_G
     frame = sum(items.values())
-    pack_rest = H1.PACK_REST_G - (TORSO_ADJUST_SOFT_G if variant != "h1" else 0.0)
+    h1_frame = lg["body_g"] + lg["fixed_g"] + lg["joint_g"]
+    pack = lg["pack_g"] + (frame - h1_frame) - (lg["torso_adjust_g"] if variant != "h1" else 0.0)
     return {"items": items, "frame_g": round(frame, 1), "frame_plus_spreader_g": round(frame + H1.SPREADER_G, 1),
-            "pack_g": round(frame + H1.SPREADER_G + pack_rest, 1),
-            "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest "
-                         "2739.5" + ("" if variant == "h1" else " - torso-adjust soft goods 41.7")}
+            "pack_g": round(pack, 1),
+            "pack_note": f"ledger corrie_b2_h1 belt M {lg['pack_g']:.1f} g + frame change"
+                         + ("" if variant == "h1" else f" - torso-adjust row {lg['torso_adjust_g']:.1f} g")}
+
+
+_LEDGER: dict = {}
+
+
+def ledger_basis() -> dict:
+    """H1 frame rows and the pack total from huntkit.mass.ledger (RULES.md rule 5)."""
+    if _LEDGER:
+        return _LEDGER
+    from huntkit.mass import ledger as L
+    rows = L.parts("corrie_b2_h1", "M")
+    fr = [r for r in rows if r["system"] == "frame"]
+    body = sum(r["g"] for r in fr if "printed body" in r["name"])
+    joint = sum(r["g"] for r in fr if "z 234 joint" in r["name"])
+    ta = sum(r["g"] for r in fr if r["name"].startswith("torso adjust"))
+    fixed = sum(r["g"] for r in fr) - body - joint - ta
+    _LEDGER.update(body_g=body, joint_g=joint, torso_adjust_g=ta, fixed_g=fixed, pack_g=L.total("corrie_b2_h1", "M"))
+    return _LEDGER
 
 
 def cost_usd(variant: str, torso: float, print_g: float) -> dict:
@@ -1051,6 +1070,16 @@ def plot_summary(out: dict, path: Path) -> str:
     return str(path)
 
 
+def clean_mesh(m, min_cm3: float = 5.0):
+    """Drop loose islands and slivers (< ``min_cm3``) from a mesh before it is exported. The released
+    print/frame_h1 STLs carry them (h1_assembled: 4 slivers; h1_lower_flat: a 0.57 cm3 island + 3 slivers, BL-015);
+    they are not fixed here, only not inherited."""
+    import trimesh
+    parts = m.split(only_watertight=False)
+    keep = [q for q in parts if abs(q.volume) >= min_cm3 * 1000.0]
+    return trimesh.util.concatenate(keep) if keep else m
+
+
 def render_compare(sc: np.ndarray, out: dict) -> str:
     """Cycles: H1 with the telescoping crown at 19 in (left), (c) with the fixed crown (middle), (b) with
     printed legs (right)."""
@@ -1062,10 +1091,14 @@ def render_compare(sc: np.ndarray, out: dict) -> str:
     work.mkdir(parents=True, exist_ok=True)
     dom = fixed_domain("c")
     dx = 360.0
-    h1 = trimesh.load(H1.PRINT_DIR / "h1_assembled.stl")
+    # the camera (az 160) looks at the frames from the bag side, so +x is image-left: H1 at +2 dx, (c) at +dx,
+    # (b) at 0 reads H1 | (c) | (b) from left to right
+    OX = {"h1": 2 * dx, "c": dx, "b": 0.0}
+    h1 = clean_mesh(trimesh.load(H1.PRINT_DIR / "h1_assembled.stl"))
+    h1.apply_translation((OX["h1"], 0, 0))
     h1.export(work / "h1.stl")
-    mc = solid_to_mesh(dom, sc)
-    for nm, off in (("c", dx), ("b", 2 * dx)):
+    mc = clean_mesh(solid_to_mesh(dom, sc))
+    for nm, off in (("c", OX["c"]), ("b", OX["b"])):
         m = mc.copy()
         m.apply_translation((off, 0, 0))
         m.export(work / f"{nm}.stl")
@@ -1074,16 +1107,17 @@ def render_compare(sc: np.ndarray, out: dict) -> str:
     files = [{"path": str(work / f"{n}.stl"), "mat": "printed"} for n in ("h1", "c", "b")]
     carbon = []
     # H1: telescoping legs (visible part from the stay top), top bar, spine
-    for off, z0 in ((0.0, 420.0), (dx, 420.0)):
+    for off, z0 in ((OX["h1"], 420.0), (OX["c"], 420.0)):
         carbon += [tcyl((sx * 115 + off, y_top, z0), (sx * 113 + off, y_top + 4, zt), 8.0) for sx in (-1, 1)]
-    for off in (0.0, dx, 2 * dx):
+    for off in OX.values():
         carbon.append(tcyl((-113 + off, y_top + 4, zt), (113 + off, y_top + 4, zt), 9.0))
         carbon.append(tcyl((off, y_top - 18, zt - 300.0 + 150.0), (off, y_top - 2, zt), 10.0))
     trimesh.util.concatenate(carbon).export(work / "carbon.stl")
     files.append({"path": str(work / "carbon.stl"), "mat": "carbon"})
     r = PRINT_LEG["od"] / 2
-    pl = [tcyl((sx * 115 + 2 * dx, y_top, 540.0), (sx * 113 + 2 * dx, y_top + 4, zt + 15.0), r) for sx in (-1, 1)]
-    pl += [tcyl((sx * 113 + 2 * dx, y_top + 4, zt - 20.0), (sx * 95 + 2 * dx, y_top + 4, zt), 15.0) for sx in (-1, 1)]
+    ob = OX["b"]
+    pl = [tcyl((sx * 115 + ob, y_top, 540.0), (sx * 113 + ob, y_top + 4, zt + 15.0), r) for sx in (-1, 1)]
+    pl += [tcyl((sx * 113 + ob, y_top + 4, zt), (sx * 75 + ob, y_top + 4, zt), 15.0) for sx in (-1, 1)]
     trimesh.util.concatenate(pl).export(work / "printed_legs.stl")
     files.append({"path": str(work / "printed_legs.stl"), "mat": "printed"})
     V = out["variants"]

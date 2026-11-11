@@ -286,6 +286,13 @@ def solidify(m, thick=0.6):
     return mesh(V2, np.vstack(F2), np.vstack([uv, uv]))
 
 
+def offset_copy(m, d):
+    """Copy of a cloth mesh moved d mm along its normals (d < 0 = inside) with the faces turned over: a lining that
+    follows every wrinkle of the face cloth and so cannot cut through it."""
+    V, F = np.asarray(m.vertices, float), np.asarray(m.faces, int)
+    return mesh(V + vertex_normals(V, F) * d, F[:, ::-1], m.metadata.get("uv"))
+
+
 def deviation(V_ref, V_new):
     """Max and RMS distance (mm) from the displaced vertices to the reference drape vertices."""
     d, _ = cKDTree(V_ref).query(V_new)

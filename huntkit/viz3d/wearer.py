@@ -1315,3 +1315,232 @@ def _tube(name, a, b, r, mat, n=16, r2=None):
         j = (i + 1) % n
         F += [(i, j, n + j, n + i), (2 * n, j, i), (2 * n + 1, n + i, n + j)]
     return _mesh_obj(name, np.array(V), F, mat)
+
+
+def _pack_measures(parts: dict, tag: str) -> dict:
+    """Fit numbers read off the fitted pack meshes (pack space, m): belt mid-height at the sides and lifter angle."""
+    out = {}
+    sh = parts.get("beltB_shell")
+    if sh is not None:
+        V = _co(sh)
+        side = V[np.abs(V[:, 0]) > 0.8 * np.abs(V[:, 0]).max()]
+        back = V[np.abs(V[:, 0]) < 0.05]
+        out["belt_mid_z_side_mm"] = round(500.0 * float(side[:, 2].min() + side[:, 2].max()), 1)
+        out["belt_mid_z_back_mm"] = round(500.0 * float(back[:, 2].min() + back[:, 2].max()), 1)
+        out["belt_top_z_back_mm"] = round(1000.0 * float(back[:, 2].max()), 1)
+    ll = parts.get("load_lifters" + tag)
+    if ll is not None:
+        V = _co(ll)
+        angs = []
+        for sx in (-1, 1):
+            P = V[V[:, 0] * sx > 0]
+            if len(P) < 8:
+                continue
+            c = P - P.mean(0)
+            ax = np.linalg.svd(c, full_matrices=False)[2][0]
+            angs.append(abs(math.degrees(math.atan2(ax[2], math.hypot(ax[0], ax[1])))))
+        out["lifter_angle_deg"] = [round(a, 1) for a in angs]
+    return out
+
+
+def build_wearer(torso_in: float | None = None, pose: str = "stand", outfit: str = "midlayer", glb=None,
+                 pack_parts: dict | None = None, form=None, stature_mm: float | None = None, sex: str | None = None,
+                 with_pack: bool = True, verbose: bool = False) -> Wearer:
+    """Build the posed, dressed hunter in the current Blender scene and put the pack on him.
+
+    torso_in    None = the default hunter (1829 mm man; the torso setting follows from ANSUR II). 15 / 23 = variants.
+    pose        "stand" (hero), "walk" (uphill, trekking poles), "side", "kneel" (glassing), "front".
+    outfit      key of OUTFITS.
+    glb         pack GLB to import (default outputs/pack3d_wearer/corrie_b2_wearer.glb, see build_pack_glb), or
+    pack_parts  {name: object} of pack meshes already in the scene, mesh data in pack space (FCS x, -y, z metres,
+                identity object transforms), with ``form`` = the display-form mesh they were built on (optional).
+    Result: a ``Wearer``; ``fit["pack_on_torso"]`` is the 4x4 that carries pack space onto the posed torso (already
+    applied to ``pack_parts`` unless they are parented, see ``studio_wearer``)."""
+    bpy = _bpy()
+    from mathutils import Matrix  # noqa: PLC0415
+    spec = figure_spec(torso_in, stature_mm, sex)
+    fig = build_figure(spec, outfit, verbose=verbose)
+    rig, body, suit, boots = fig["rig"], fig["body"], fig["clothes"]["suit"], fig["clothes"]["boots"]
+    cap = add_cap(fig, _hex(OUTFITS[outfit]["cap"]))
+    Vr = _body_coords(body)
+    zr_crest = float(Vr[V_NAVEL, 2]) + CREST_ABOVE_NAVEL / 1000.0
+    zr_c7 = float(0.5 * (Vr[V_C7[0], 2] + Vr[V_C7[1], 2]))
+    rest_pelvis = rig.pose.bones["pelvis"].matrix.copy()
+    info = apply_pose(rig, pose)
+    P = rig.pose.bones["pelvis"].matrix @ rest_pelvis.inverted()           # trunk: rest -> posed (rig space)
+    figure = [body, suit, boots] + fig["extras"] + cap
+    _bake(body, levels=1)
+    _bake(suit, levels=2)
+    _bake(boots, levels=1)
+    for o in fig["extras"] + cap:
+        _bake(o, levels=1)
+    w = Wearer(figure=figure, rig=rig, pose=pose, outfit=outfit)
+    w.spec = {**spec, "tuned": fig["tuned"]}
+    setting = spec["torso_setting_in"]
+    tag = f"@t{setting:g}"
+    A = Matrix.Identity(4)
+    if with_pack:
+        if pack_parts is None:
+            pk = load_pack(Path(glb or PACK_GLB), setting)
+        else:
+            pk = {"parts": {n: o for n, o in pack_parts.items()}, "form": form}
+        # trunk surface in the rest frame (posed cloth carried back by P^-1): the back profile for the alignment
+        Pi = np.array(P.inverted())
+        Vs = _xf(Pi, _co(suit))
+        tz = zr_crest - ILIAC_CREST_Z / 1000.0
+        if pk["form"] is not None:
+            Vf = _co(pk["form"])
+            zs, yf = _profile_min_y(Vf, 0.08, 0.12 + spec["torso_mm"] / 1000.0 - 0.09, 0.09)
+        else:                                                    # no form: the viz3d mannequin back plane
+            zs = np.arange(0.08, 0.5, 0.01)
+            yf = np.full(len(zs), 0.065)
+        Vh = np.c_[-Vs[:, 0], -Vs[:, 1], Vs[:, 2] - tz]           # rest figure seen in pack axes, before ty
+        _, yh = _profile_min_y(Vh, zs[0] - 0.005, zs[-1] + 0.005, 0.09)
+        n = min(len(yf), len(yh))
+        ty = float(np.nanmax(yf[:n] - yh[:n])) - 0.004            # touch at the tightest height, 4 mm compression
+        if verbose:
+            print("back profile z, form y, figure y (mm):",
+                  [(round(1000 * a), round(1000 * b), round(1000 * c)) for a, b, c in zip(zs[:n], yf[:n], yh[:n])])
+        A = Matrix.Translation((0.0, ty, tz)) @ Matrix.Rotation(math.pi, 4, "Z")   # pack space -> rig rest space
+        M = P @ A
+        fit = fit_pack(pk, [suit, body], M, setting, ILIAC_CREST_Z / 1000.0,
+                       ILIAC_CREST_Z / 1000.0 + spec["torso_mm"] / 1000.0, verbose=verbose)
+        fit.update(_pack_measures(pk["parts"], tag))
+        # head clearance: the smallest distance from the head to any pack part that is not harness
+        Mi = np.array(M.inverted())
+        Vb = _xf(Mi, _co(body))
+        zc7p = ILIAC_CREST_Z / 1000.0 + spec["torso_mm"] / 1000.0
+        head = Vb[Vb[:, 2] > zc7p + 0.06]
+        gap = 9.0
+        for nme, o in pk["parts"].items():
+            if nme.split("@")[0].startswith(HARNESS_REF + HARNESS_FOLLOW + (BELT_PREFIX,)):
+                continue
+            Vp = _co(o)
+            Vp = Vp[Vp[:, 2] > zc7p]
+            if not len(Vp):
+                continue
+            hs = head[:: max(1, len(head) // 600)]
+            ps = Vp[:: max(1, len(Vp) // 4000)]
+            d = np.sqrt(((hs[:, None, :] - ps[None, :, :]) ** 2).sum(-1)).min()
+            gap = min(gap, float(d))
+        fit["head_gap_mm"] = round(1000.0 * gap, 1)
+        fit["torso_figure_mm"] = round(spec["torso_mm"], 1)
+        fit["torso_setting_in"] = setting
+        fit["torso_setting_mm"] = round(setting * IN, 1)
+        fit["iliac_crest_z_design_mm"] = ILIAC_CREST_Z
+        fit["back_offset_ty_mm"] = round(1000 * ty, 1)
+        w.fit = fit
+        w.pack = list(pk["parts"].values())
+        if pk["form"] is not None and pack_parts is None:
+            bpy.data.objects.remove(pk["form"], do_unlink=True)
+    # world: the wearer faces +Y (the pack's own axes when he stands erect), ground under the soles at z = 0
+    Vb_ = _co(boots)
+    slope = math.radians(info["slope_deg"])
+    # ground plane in rig space: z = z0 + tan(slope) * f, f = -y; z0 from the lowest sole point against that plane
+    z0 = float((Vb_[:, 2] - math.tan(slope) * (-Vb_[:, 1])).min())
+    piv = np.array(rig.pose.bones["pelvis"].head)
+    X = Matrix.Rotation(math.pi, 4, "Z") @ Matrix.Translation((-piv[0], -piv[1], -z0))
+    for o in figure:
+        o.matrix_world = X @ o.matrix_world
+    M_world = X @ P @ A
+    for o in w.pack:
+        if o.parent is None and pack_parts is None:
+            o.matrix_world = M_world
+    w.fit["pack_on_torso"] = [list(r) for r in M_world]
+    w.ground = ((0.0, 0.0, 0.0), (0.0, -math.sin(slope), math.cos(slope)))
+    w.fit["lean_deg"] = info["lean_deg"]
+    w.fit["slope_deg"] = info["slope_deg"]
+    w.props = add_props(w, info, X)
+    bpy.data.objects.remove(rig, do_unlink=True)
+    w.rig = None
+    w.objects = w.figure + w.pack + w.props
+    hb = _xf(np.array(X), _co(body)) if False else np.array([o.matrix_world.translation[:] for o in figure[:1]])
+    _ = hb
+    return w
+
+
+def add_props(w: Wearer, info: dict, X) -> list:
+    """Pose props: trekking poles through the fists down to the slope, binoculars in front of the eyes."""
+    props = []
+    body = w.figure[0]
+    V = _xf(np.array(body.matrix_world), _co(body))
+    gi = {g.name: g.index for g in body.vertex_groups}
+    wts = {}
+
+    def group_pts(name, thr=0.5):
+        if name not in gi:
+            return np.zeros((0, 3))
+        if name not in wts:
+            k = gi[name]
+            wts[name] = np.array([any(g.group == k and g.weight > thr for g in v.groups) for v in body.data.vertices])
+        return V[wts[name]]
+    n = np.array(w.ground[1])
+    if info["props"].get("poles"):
+        alu = _plain_material("pole_shaft", (0.02, 0.02, 0.022), 0.35, metallic=0.9)
+        grip = _plain_material("pole_grip", (0.035, 0.03, 0.025), 0.9)
+        for s, fwd in (("l", 0.02), ("r", 0.20)):
+            pts = np.vstack([group_pts(f"{f}_0{k}_{s}") for f in ("index", "middle", "ring", "pinky") for k in (1, 2)])
+            if not len(pts):
+                continue
+            hand = pts.mean(0)
+            palm = group_pts(f"hand_{s}").mean(0)
+            c = 0.5 * (hand + palm)
+            tip = np.array([c[0] + (0.05 if s == "r" else -0.05), c[1] + fwd, 0.0])
+            tip[2] = -(n[0] * tip[0] + n[1] * tip[1]) / n[2]          # on the slope
+            ax = (c - tip) / np.linalg.norm(c - tip)
+            top = c + ax * 0.075
+            props += [_tube(f"pole_{s}_shaft", tip + ax * 0.03, c - ax * 0.07, 0.0065, alu, r2=0.008),
+                      _tube(f"pole_{s}_tip", tip - ax * 0.005, tip + ax * 0.03, 0.002, alu, r2=0.0065),
+                      _tube(f"pole_{s}_basket", tip + ax * 0.045, tip + ax * 0.05, 0.022, grip),
+                      _tube(f"pole_{s}_grip", c - ax * 0.07, top, 0.0145, grip, r2=0.016),
+                      _tube(f"pole_{s}_knob", top, top + ax * 0.012, 0.016, grip, r2=0.011)]
+    if info["props"].get("binoculars"):
+        eyes = next(o for o in w.figure if o.name == "wearer_eyes")
+        E = _xf(np.array(eyes.matrix_world), _co(eyes))
+        ec = E.mean(0)
+        el, er = E[E[:, 0] < ec[0]].mean(0), E[E[:, 0] > ec[0]].mean(0)
+        hd = group_pts("head")
+        up = hd[hd[:, 2] > np.percentile(hd[:, 2], 97)].mean(0) - ec
+        lat = (er - el) / np.linalg.norm(er - el)
+        up = up - lat * up.dot(lat)
+        up /= np.linalg.norm(up)
+        fw = np.cross(up, lat)
+        if fw[1] < 0:
+            fw = -fw
+        arm = _plain_material("bino_armour", (0.03, 0.035, 0.03), 0.75)
+        glass = _plain_material("bino_glass", (0.01, 0.012, 0.02), 0.08, coat=1.0)
+        for k, e in enumerate((el, er)):
+            a = e + fw * 0.034
+            props += [_tube(f"bino_{k}_eyecup", a, a + fw * 0.022, 0.019, arm, r2=0.02),
+                      _tube(f"bino_{k}_body", a + fw * 0.022, a + fw * 0.12, 0.021, arm, r2=0.026, n=24),
+                      _tube(f"bino_{k}_obj", a + fw * 0.12, a + fw * 0.15, 0.027, arm, n=24),
+                      _tube(f"bino_{k}_lens", a + fw * 0.146, a + fw * 0.151, 0.0235, glass, n=24)]
+        m = 0.5 * (el + er) + fw * 0.09
+        props.append(_tube("bino_bridge", m - lat * 0.02, m + lat * 0.02, 0.012, arm))
+    return props
+
+
+def studio_wearer(torso_in=None, pose="stand", outfit="midlayer", **kw) -> dict:
+    """Hook for ``huntkit.viz3d.studio.render(..., wearer="huntkit.viz3d.wearer:studio_wearer", wearer_kwargs={...})``.
+    studio has already imported the concept's GLB into the scene: the harness and belt meshes found there by name are
+    fitted to the body in place, and the rigid pack-to-torso transform is returned for studio to apply to the pack.
+    The concept's scene must be rendered with ``state.torso`` = ``figure_spec(torso_in)["torso_setting_in"]``."""
+    bpy = _bpy()
+    setting = figure_spec(torso_in, kw.get("stature_mm"), kw.get("sex"))["torso_setting_in"]
+    tag = f"@t{setting:g}"
+    parts, form = {}, None
+    for o in bpy.data.objects:
+        if o.type != "MESH":
+            continue
+        if o.name.startswith("mannequin@") or "display_form" in o.name:
+            form = o if (o.name.endswith(tag) or form is None) else form
+            continue
+        if "@t" in o.name and not o.name.endswith(tag):
+            continue
+        mw = o.matrix_world.copy()
+        if o.parent is None:
+            o.data.transform(mw)
+            o.matrix_world.identity()
+        parts[o.name] = o
+    w = build_wearer(torso_in, pose, outfit, pack_parts=parts, form=form, **kw)
+    return {"objects": w.figure + w.props, "pack_on_torso": w.fit["pack_on_torso"], "wearer": w}

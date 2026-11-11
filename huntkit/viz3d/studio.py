@@ -138,6 +138,7 @@ class SPart:
     max_edge: float | None = None      # refine target, mm
     thickness: float = 0.0             # cloth thickness to add at free edges, mm
     uv_is_pattern: bool = False        # UVs are the flat pattern (strain field is meaningful)
+    lining: str | None = None          # material of a lining built 1.2 mm inside the (displaced) cloth
 
     def vis(self) -> dict:
         return {"group": self.group, "modes": list(self.modes), "torso": self.torso, "variant": self.variant,
@@ -310,6 +311,7 @@ class ConceptScene:
             V = np.asarray(p.mesh.vertices)
             if len(V):
                 clouds[p.name] = V[:: max(1, len(V) // 6000)]
+        linings = []
         for p in self.parts:
             if not p.drape or not len(p.mesh.faces):
                 continue
@@ -327,6 +329,9 @@ class ConceptScene:
             out, rep = FB.displace(m, **kw)
             rep["dev_max_mm"], rep["dev_rms_mm"] = FB.deviation(np.asarray(m.vertices), np.asarray(out.vertices))
             rep["verts"] = int(len(out.vertices))
+            if p.lining:
+                linings.append(dataclasses.replace(p, name=f"{p.name}__lining", mesh=FB.offset_copy(out, -1.2),
+                                                   material=p.lining, drape=False, lining=None, label=""))
             if p.thickness > 0:
                 out = FB.solidify(out, p.thickness)
             p.mesh = out
@@ -334,6 +339,7 @@ class ConceptScene:
             if verbose:
                 print(f"  fabric {p.name}: {rep['verts']} verts, |h| max {rep['max_abs_mm']:.2f} mm "
                       f"(limit {rep['limit_mm']}), slack {rep['slack_mean']:.2f}", flush=True)
+        self.parts += linings
         # GLB
         cw = EX.colorway({"colorway": self.colorway})
         scene = trimesh.Scene()
@@ -487,7 +493,7 @@ def corrie_b2_scene(name="corrie_b2", params=None) -> ConceptScene:
         "corrie_kick": dict(max_edge=3.2, uv_is_pattern=True, look=L(fold=2.0)),
         "corrie_door": dict(max_edge=3.2, uv_is_pattern=True),
         "corrie_bottom": dict(max_edge=4.0, uv_is_pattern=True, look=L(fold=1.5)),
-        "corrie_door_open": dict(max_edge=4.0, uv_is_pattern=False, look=L(slack=0.45, fold=2.6), thickness=0.7),
+        "corrie_door_open": dict(max_edge=4.0, uv_is_pattern=False, look=L(slack=0.45, fold=2.6), lining="lining"),
         "corrie_roll": dict(max_edge=3.5, uv_is_pattern=False,
                             look=L(slack=0.75, slack_dir=(1, 0, 0), fold=2.6, fold_mm=(14.0, 34.0), hand=0.6)),
         "corrie_pouch": dict(max_edge=3.5, uv_is_pattern=False, look=L(slack=0.30, fold=1.8, hand=0.5)),
@@ -503,7 +509,10 @@ def corrie_b2_scene(name="corrie_b2", params=None) -> ConceptScene:
                                                                        hand=0.5))
         if nm.startswith("shoulder_straps@"):
             drape[nm] = dict(max_edge=4.0, uv_is_pattern=False, look=L(slack=0.08, fold=1.0, hand=0.3))
-    drop = ("corrie_seams", "corrie_door_zip", "corrie_zip_sliders", "corrie_zip_pulls")
+    # corrie_door_lining: the inherited door builder's lining cuts through the folded door (dark blotches, BL-002);
+    # the lining is rebuilt 1.2 mm inside the displaced door instead
+    drop = ("corrie_seams", "corrie_door_zip", "corrie_zip_sliders", "corrie_zip_pulls", "corrie_door_lining")
+    drop += tuple(q.name for q in pack.parts if q.name.startswith("imp6_hw@"))     # floats off the strap (legacy)
     sc.add_pack(pack, drape=drape, drop=drop)
     for q in sc.parts:                                              # display form: own materials
         if q.name.startswith("mannequin_stand@"):
@@ -618,7 +627,7 @@ def _has_bpy() -> bool:
 
 def render(concept_scene, shots, out_dir, prefix=None, quality="final", start=1, captions=True, wearer=None,
            wearer_kwargs=None, pack_on_torso=None, bpy_python=None, work_dir=None, title=None, threads=None,
-           camo=None) -> list[dict]:
+           camo=None, torso=19.0) -> list[dict]:
     """Render ``shots`` of a concept to ``out_dir/<prefix>_<n>.png`` (PNG <= 1.5 MB each).
 
     concept_scene  a ``ConceptScene``, or the path of a ``*.scene.json`` an earlier ``build`` wrote.
@@ -647,7 +656,7 @@ def render(concept_scene, shots, out_dir, prefix=None, quality="final", start=1,
         raise ValueError("a callable / object-list wearer needs bpy in this interpreter; pass 'module:function'")
     if in_process:
         return render_scene(scene_json, shots, out_dir, prefix, quality, start, captions, wearer, wearer_kwargs,
-                            pack_on_torso, threads, title, camo)
+                            pack_on_torso, threads, title, camo, torso)
     py = find_bpy_python(bpy_python)
     if py is None:
         raise RuntimeError("bpy is not importable here: set HUNTKIT_BPY (or bpy_python=) to the Python of the "
@@ -656,7 +665,7 @@ def render(concept_scene, shots, out_dir, prefix=None, quality="final", start=1,
     job.write_text(json.dumps({"scene": str(scene_json), "shots": shots, "out": str(out_dir), "prefix": prefix,
                                "quality": quality, "start": start, "captions": captions, "wearer": wearer,
                                "wearer_kwargs": wearer_kwargs, "pack_on_torso": pack_on_torso, "threads": threads,
-                               "title": title, "camo": str(camo) if camo else None}))
+                               "title": title, "camo": str(camo) if camo else None, "torso": torso}))
     env = dict(os.environ, HUNTKIT_PY=os.environ.get("HUNTKIT_PY", sys.executable))
     subprocess.run([py, "-m", "huntkit.viz3d.studio", "--job", str(job)], cwd=REPO, check=True, env=env)
     return json.loads(job.with_suffix(".result.json").read_text())
@@ -935,7 +944,7 @@ def setup_render(samples, res, threads):
     sc.cycles.max_bounces, sc.cycles.diffuse_bounces, sc.cycles.glossy_bounces = 6, 3, 3
     sc.cycles.transparent_max_bounces = 6
     sc.view_settings.look = "AgX - Medium High Contrast"
-    sc.world.node_tree.nodes["Background"].inputs["Strength"].default_value = 0.22
+    sc.world.node_tree.nodes["Background"].inputs["Strength"].default_value = 0.10
     return sc
 
 
@@ -971,17 +980,17 @@ def make_backdrop():
 
 def make_lights():
     CR = _CR()
-    key = CR._area("key", 150.0, 1.8, (1.0, 0.96, 0.90), 1.4)
-    fill = CR._area("fill", 26.0, 2.6, (0.90, 0.94, 1.0), 1.8)
+    key = CR._area("key", 300.0, 1.5, (1.0, 0.96, 0.90), 1.2)
+    fill = CR._area("fill", 14.0, 2.6, (0.90, 0.94, 1.0), 1.8)
     rim = CR._area("rim", 85.0, 0.7, (1.0, 1.0, 1.0), 2.2)
-    top = CR._area("top", 42.0, 2.4, (1.0, 0.98, 0.95), 0.9)
+    top = CR._area("top", 22.0, 2.4, (1.0, 0.98, 0.95), 0.9)
     return key, fill, rim, top
 
 
 def place_lights(rig, cam_az, tgt, radius):
     CR = _CR()
     key, fill, rim, top = rig
-    for ob, (daz, el, r_mul) in zip((key, fill, rim), ((-42, 38, 1.0), (58, 12, 1.25), (150, 42, 1.05))):
+    for ob, (daz, el, r_mul) in zip((key, fill, rim), ((-52, 34, 1.0), (58, 12, 1.25), (150, 42, 1.05))):
         ob.data.energy = ob["e0"] * (radius * r_mul / CR.RIG_R0) ** 2
         d = CR.view_dir(cam_az + daz, el)
         ob.location = tuple(t + radius * r_mul * x for t, x in zip(tgt, d))
@@ -1014,11 +1023,20 @@ def _resolve_wearer(wearer, wearer_kwargs):
     res = wearer(**(wearer_kwargs or {})) if callable(wearer) else wearer
     if isinstance(res, dict):
         return list(res.get("objects", [])), res.get("pack_on_torso")
+    if hasattr(res, "figure") or hasattr(res, "objects"):          # wearer.Wearer: take the person, not its own pack
+        objs = list(getattr(res, "figure", None) or []) + list(getattr(res, "props", None) or [])
+        if not objs:
+            objs = list(res.objects)
+        else:
+            for o in getattr(res, "pack", None) or []:
+                o.hide_render = True
+        return objs, getattr(res, "pack_on_torso", None)
     return list(res), None
 
 
 def render_scene(scene_json, shots, out_dir, prefix, quality="final", start=1, captions=True, wearer=None,
-                 wearer_kwargs=None, pack_on_torso=None, threads=None, title=None, camo=None) -> list[dict]:
+                 wearer_kwargs=None, pack_on_torso=None, threads=None, title=None, camo=None,
+                 torso=19.0) -> list[dict]:
     """Stage 2 (needs bpy)."""
     import bpy
     from mathutils import Matrix, Vector
@@ -1063,7 +1081,7 @@ def render_scene(scene_json, shots, out_dir, prefix, quality="final", start=1, c
     out_dir.mkdir(parents=True, exist_ok=True)
     results = []
     for k, (vname, shot) in enumerate(shots.items()):
-        state = {"torso": 19, **shot.get("state", {})}
+        state = {"torso": torso, **shot.get("state", {})}
         if w_objs is not None:
             state["mannequin"] = False
         vis = []
@@ -1127,21 +1145,25 @@ def render_scene(scene_json, shots, out_dir, prefix, quality="final", start=1, c
 
 
 def finish(raw_png, out_png, caption="", sub=""):
-    """Caption strip (small, bottom-left) on the rendered frame."""
+    """Write the frame with its caption in a paper-coloured band BELOW the picture (never over the subject)."""
     from PIL import Image, ImageDraw, ImageFont
     im = Image.open(raw_png).convert("RGB")
     w, h = im.size
     if caption:
-        d = ImageDraw.Draw(im)
+        band = int(h * (0.105 if sub else 0.07))
+        out = Image.new("RGB", (w, h + band), (238, 236, 230))
+        out.paste(im, (0, 0))
+        d = ImageDraw.Draw(out)
         try:
-            f1 = ImageFont.truetype("DejaVuSans-Bold.ttf", int(h * 0.026))
-            f2 = ImageFont.truetype("DejaVuSans.ttf", int(h * 0.018))
+            f1 = ImageFont.truetype("DejaVuSans-Bold.ttf", int(h * 0.030))
+            f2 = ImageFont.truetype("DejaVuSans.ttf", int(h * 0.021))
         except OSError:
             f1 = f2 = ImageFont.load_default()
-        x0, y0 = int(w * 0.025), int(h * 0.925)
-        d.text((x0, y0), caption, fill=(40, 40, 36), font=f1)
+        x0 = int(w * 0.02)
+        d.text((x0, h + int(h * 0.014)), caption, fill=(40, 40, 36), font=f1)
         if sub:
-            d.text((x0, y0 + int(h * 0.034)), sub, fill=(96, 95, 88), font=f2)
+            d.text((x0, h + int(h * 0.058)), sub, fill=(96, 95, 88), font=f2)
+        im = out
     im.save(out_png, optimize=True)
     return out_png
 
@@ -1200,7 +1222,7 @@ def main(argv=None):
         j = json.loads(Path(a.job).read_text())
         res = render_scene(j["scene"], j["shots"], j["out"], j["prefix"], j["quality"], j["start"], j["captions"],
                            j.get("wearer"), j.get("wearer_kwargs"), j.get("pack_on_torso"), j.get("threads"),
-                           j.get("title"), j.get("camo"))
+                           j.get("title"), j.get("camo"), j.get("torso", 19.0))
         Path(a.job).with_suffix(".result.json").write_text(json.dumps(res))
         return res
     scene = Path(a.scene) if a.scene else None
