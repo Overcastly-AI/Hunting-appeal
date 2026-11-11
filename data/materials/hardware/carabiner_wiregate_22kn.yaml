@@ -1,0 +1,34 @@
+id: carabiner_wiregate_22kn
+name: Wiregate carabiner, 7000-series aluminium, EN 12275 class (CAMP Nano 22)
+category: hardware
+generic: false
+trade_names:
+- CAMP Nano 22
+supplier_examples:
+- CAMP USA dealers (REI, EMS, Neptune Mountaineering, GearX, Treestuff); rack packs of 6
+properties:
+  breaking_strength_n: 21000
+  minor_axis_strength_n: 8000
+  gate_open_strength_n: 9000
+  gate_opening_mm: 21
+  mass_g: 22
+  quietness_1to5: 3
+confidence: estimate
+sources:
+- 'Neptune Mountaineering, CAMP Nano 22: weight 22 g, major axis 21 kN, minor axis 8 kN, open gate 9 kN, gate opening
+  21 mm. Fetched 2026-11-11. https://www.neptunemountaineering.com/products/nano-22-carabiner'
+- 'EMS / Treestuff listings give 22 g, 21 kN major, 9 kN gate open; several listings cite EN 12275 (search
+  2026-11-11). https://ems.com/camp-usa-nano-22-carabiner/2058794.html ; https://treestuff.com/camp-nano-22-carabiner'
+- 'Two listings give a 17 mm gate opening instead of 21 mm (Climb On Equipment, Mountain Shop): check on the first
+  delivery. https://climbonequipment.com/products/camp-nano-22-carabiner-s26'
+cost_usd:
+  value: 10.0
+  per: unit
+notes: 'ESTIMATE, sources secondary (retailer copies of the maker figures; the maker page was not fetched). A certified climbing
+  carabiner: EN 12275 requires every type to meet its marked strengths, so the margin does not rest on a reseller
+  lab figure. No no-set load is published; BL-010 takes 0.5 x the minor-axis rating (4000 N) as the proof limit
+  (ASSUMPTION, conservative: the proof loads the major axis). Chosen by BL-010 (2026-11-11) for the two IM3 bag hooks
+  (factored 1702 N, proof 2553 N), the IM3 meat-strap free end (proof 908 N) and, as the same spare part, the two
+  B-24 float links (misuse 941 N). The tongue loop (38 mm) bunches in the basket: the proof test PT-1 must use the
+  sewn tongue, not a pin. Wiregate: quieter than a solid gate and does not freeze shut; tape or sleeve it (TPU hook
+  sleeve) against ticking on the fairlead. cost_usd is an ASSUMPTION.'

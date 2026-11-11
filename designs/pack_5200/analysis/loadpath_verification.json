@@ -1,0 +1,1577 @@
+{
+ "date": "2026-11-11",
+ "standard": "HA-LS-1 rev C",
+ "rows": [
+  {
+   "id": "S1",
+   "source": "BL-003",
+   "location": "IM1-IM3 left fairlead eyes (z 190/330/520), girth hitch",
+   "part": "25 mm sewn loop on a 38 mm webbing eye; box-X 25 mm",
+   "direction": "aft, across the meat",
+   "ticket_factored_n": 605,
+   "factored_n": 605.0318208669462,
+   "load_basis": "rev C C5 meat_straps SL520 (beam, x 1.5 on 2.0 g)",
+   "checks": [
+    {
+     "item": "box-X 25 mm, strength",
+     "demand_n": 605.0318208669462,
+     "capacity": 1776.3157894736842,
+     "kind": "strength",
+     "ratio": 2.9359047379167804,
+     "rated": false,
+     "basis": "ASSUMPTION BOX25",
+     "test": "MT-1 (25 mm, 908 N)"
+    },
+    {
+     "item": "box-X 25 mm, proof 1.5x",
+     "demand_n": 907.5477313004193,
+     "capacity": 1776.3157894736842,
+     "kind": "proof",
+     "ratio": 1.9572698252778538,
+     "rated": false,
+     "basis": "ASSUMPTION BOX25",
+     "test": "MT-1 (25 mm, 908 N)"
+    },
+    {
+     "item": "box-X 25 mm, stitch-path model (cross-check)",
+     "demand_n": 907.5477313004193,
+     "capacity": 3457.8993658286563,
+     "kind": "proof",
+     "ratio": 3.8101570270842444,
+     "rated": true,
+     "basis": "attach_system.box_x",
+     "test": ""
+    },
+    {
+     "item": "girth hitch, 25 mm webbing pinched on the eye (kd 0.5)",
+     "demand_n": 605.0318208669462,
+     "capacity": 6672.0,
+     "kind": "strength",
+     "ratio": 11.027519164925465,
+     "rated": true,
+     "basis": "poly_webbing_25mm x WEB_PIN_KD",
+     "test": ""
+    },
+    {
+     "item": "box-X fatigue, 1.6 g",
+     "demand_n": 322.68363779570467,
+     "capacity": 710.5263157894738,
+     "kind": "fatigue",
+     "ratio": 2.2019285534375856,
+     "rated": false,
+     "basis": "ASSUMPTION SEW_FAT",
+     "test": "SEW-F (lever rig)"
+    },
+    {
+     "item": "IM3 printed fairlead (frame), strength, unchanged force",
+     "demand_n": 605.0318208669462,
+     "capacity": 2175.5695191654263,
+     "kind": "strength",
+     "ratio": 3.5957935502434677,
+     "rated": true,
+     "basis": "rev_c_verification fairlead_fea.im3 SF",
+     "test": ""
+    },
+    {
+     "item": "IM3 printed fairlead, fatigue",
+     "demand_n": 322.68363779570467,
+     "capacity": 652.6708557496279,
+     "kind": "fatigue",
+     "ratio": 2.0226338720119506,
+     "rated": true,
+     "basis": "rev_c_verification fairlead_fea.im3 sf_fatigue",
+     "test": ""
+    },
+    {
+     "item": "IM3 printed fairlead, creep",
+     "demand_n": 201.6772736223154,
+     "capacity": 870.2278076661706,
+     "kind": "creep",
+     "ratio": 4.314952260292162,
+     "rated": true,
+     "basis": "rev_c_verification fairlead_fea.im3 sf_creep",
+     "test": ""
+    },
+    {
+     "item": "IM2 hitch thickness in the spreader notch (mm, as N)",
+     "demand_n": 2.8,
+     "capacity": 6.0,
+     "kind": "fit",
+     "ratio": 2.142857142857143,
+     "rated": false,
+     "basis": "ASSUMPTION THICK25",
+     "test": "IM2 notch fit"
+    }
+   ],
+   "verdict": "PASS after IM2 notch fit, MT-1 (25 mm, 908 N), SEW-F (lever rig)",
+   "min": 1.9572698252778538,
+   "governs": "box-X 25 mm, proof 1.5x",
+   "tests": [
+    "IM2 notch fit",
+    "MT-1 (25 mm, 908 N)",
+    "SEW-F (lever rig)"
+   ],
+   "note": "hook -> girth hitch: same force and direction at the eye; frame side unchanged."
+  },
+  {
+   "id": "S2",
+   "source": "BL-003",
+   "location": "IM1-IM3 right eyes, free-end hook",
+   "part": "25 mm rated Al G-hook (g_hook_25mm_aluminium)",
+   "direction": "aft",
+   "ticket_factored_n": 605,
+   "factored_n": 605.0318208669462,
+   "load_basis": "as S1; IM1 273 N, IM2 430 N, IM3 605 N",
+   "checks": [
+    {
+     "item": "G-hook break, IM3",
+     "demand_n": 605.0318208669462,
+     "capacity": 1200.0,
+     "kind": "strength",
+     "ratio": 1.9833667562815585,
+     "rated": true,
+     "basis": "record",
+     "test": ""
+    },
+    {
+     "item": "G-hook no-set vs proof, IM1",
+     "demand_n": 409.5654622933646,
+     "capacity": 900.0,
+     "kind": "proof",
+     "ratio": 2.197450915319968,
+     "rated": true,
+     "basis": "record",
+     "test": ""
+    },
+    {
+     "item": "G-hook no-set vs proof, IM2",
+     "demand_n": 644.3202010582313,
+     "capacity": 900.0,
+     "kind": "proof",
+     "ratio": 1.3968210193035082,
+     "rated": true,
+     "basis": "record",
+     "test": ""
+    },
+    {
+     "item": "G-hook no-set vs proof, IM3 (MT-2 910 N)",
+     "demand_n": 907.5477313004193,
+     "capacity": 900.0,
+     "kind": "proof",
+     "ratio": 0.9916833781407792,
+     "rated": true,
+     "basis": "record",
+     "test": ""
+    },
+    {
+     "item": "G-hook fatigue, 1.6 g",
+     "demand_n": 322.68363779570467,
+     "capacity": 360.0,
+     "kind": "fatigue",
+     "ratio": 1.1156438004083764,
+     "rated": true,
+     "basis": "ASSUMPTION AL_FAT",
+     "test": ""
+    }
+   ],
+   "verdict": "FAIL",
+   "min": 0.9916833781407792,
+   "governs": "G-hook no-set vs proof, IM3 (MT-2 910 N)",
+   "tests": [],
+   "note": "MT-2's 910 N is 1.5 x 605 N (TEST_PLAN.md line 330): it is the IM3 strap's own qualification proof and is kept. Per strap: IM1 410 N and IM2 645 N proofs pass the 900 N no-set load.",
+   "fix": {
+    "change": "IM3 free end only: rated wiregate carabiner (carabiner_wiregate_22kn) instead of the G-hook; IM1 / IM2 keep the 25 mm G-hook",
+    "mass_g": 14.0,
+    "checks": [
+     {
+      "item": "carabiner break, IM3",
+      "demand_n": 605.0318208669462,
+      "capacity": 21000.0,
+      "kind": "strength",
+      "ratio": 34.708918234927275,
+      "rated": true,
+      "basis": "record",
+      "test": ""
+     },
+     {
+      "item": "carabiner minor axis, IM3",
+      "demand_n": 605.0318208669462,
+      "capacity": 8000.0,
+      "kind": "strength",
+      "ratio": 13.222445041877057,
+      "rated": true,
+      "basis": "record",
+      "test": ""
+     },
+     {
+      "item": "carabiner proof 908 N (0.5 x minor)",
+      "demand_n": 907.5477313004193,
+      "capacity": 4000.0,
+      "kind": "proof",
+      "ratio": 4.407481680625685,
+      "rated": true,
+      "basis": "ASSUMPTION CARA_PROOF",
+      "test": ""
+     }
+    ],
+    "after_verdict": "PASS",
+    "after_min": 4.407481680625685,
+    "after_governs": "carabiner proof 908 N (0.5 x minor)",
+    "after_tests": []
+   }
+  },
+  {
+   "id": "S3",
+   "source": "BL-003",
+   "location": "IM1-IM3 cam",
+   "part": "25 mm Al cam (slip), no record",
+   "direction": "along the strap",
+   "ticket_factored_n": 605,
+   "factored_n": 605.0318208669462,
+   "load_basis": "as S1",
+   "checks": [
+    {
+     "item": "cam slip, strength",
+     "demand_n": 605.0318208669462,
+     "capacity": 1100.0,
+     "kind": "strength",
+     "ratio": 1.8180861932580952,
+     "rated": false,
+     "basis": "ASSUMPTION CAM25",
+     "test": "MT-3 (25 mm cam, 908 N)"
+    },
+    {
+     "item": "cam slip, proof",
+     "demand_n": 907.5477313004193,
+     "capacity": 1100.0,
+     "kind": "proof",
+     "ratio": 1.2120574621720634,
+     "rated": false,
+     "basis": "ASSUMPTION CAM25",
+     "test": "MT-3 (25 mm cam, 908 N)"
+    }
+   ],
+   "verdict": "PASS after MT-3 (25 mm cam, 908 N)",
+   "min": 1.2120574621720634,
+   "governs": "cam slip, proof",
+   "tests": [
+    "MT-3 (25 mm cam, 908 N)"
+   ],
+   "note": ""
+  },
+  {
+   "id": "S4",
+   "source": "BL-003",
+   "location": "IM1-IM3 webbing",
+   "part": "poly_webbing_25mm",
+   "direction": "along the strap",
+   "ticket_factored_n": 605,
+   "factored_n": 605.0318208669462,
+   "load_basis": "as S1",
+   "checks": [
+    {
+     "item": "webbing on a hook bed (kd 0.5)",
+     "demand_n": 605.0318208669462,
+     "capacity": 6672.0,
+     "kind": "strength",
+     "ratio": 11.027519164925465,
+     "rated": true,
+     "basis": "record x WEB_PIN_KD",
+     "test": ""
+    }
+   ],
+   "verdict": "PASS",
+   "min": 11.027519164925465,
+   "governs": "webbing on a hook bed (kd 0.5)",
+   "tests": [],
+   "note": "contact width on the meat 38 -> 25 mm: 1.5 x the strap-line pressure on the game bag (not structural)."
+  },
+  {
+   "id": "S5",
+   "source": "BL-003",
+   "location": "US1 cradle (z 95), 53 kg float limit",
+   "part": "25 mm Al cam (slip)",
+   "direction": "along the strap",
+   "ticket_factored_n": 720,
+   "factored_n": 719.7306691273549,
+   "load_basis": "float_fea us1 489 N at 36 kg x 53/36 (1.6 g x 1.5)",
+   "checks": [
+    {
+     "item": "cam slip, strength",
+     "demand_n": 719.7306691273549,
+     "capacity": 1100.0,
+     "kind": "strength",
+     "ratio": 1.5283494884742188,
+     "rated": false,
+     "basis": "ASSUMPTION CAM25",
+     "test": "MT-3 (25 mm cam, 1080 N)"
+    },
+    {
+     "item": "cam slip, proof 1.5x",
+     "demand_n": 1079.5960036910324,
+     "capacity": 1100.0,
+     "kind": "proof",
+     "ratio": 1.0188996589828125,
+     "rated": false,
+     "basis": "ASSUMPTION CAM25",
+     "test": "MT-3 (25 mm cam, 1080 N)"
+    },
+    {
+     "item": "webbing creep, sustained 1 g (2 % of break)",
+     "demand_n": 299.88777880306446,
+     "capacity": 1334.4,
+     "kind": "creep",
+     "ratio": 4.449664488916359,
+     "rated": true,
+     "basis": "polyester: sustained < 10 % of break, no creep rupture (ASSUMPTION, standard practice)",
+     "test": ""
+    }
+   ],
+   "verdict": "PASS after MT-3 (25 mm cam, 1080 N)",
+   "min": 1.0188996589828125,
+   "governs": "cam slip, proof 1.5x",
+   "tests": [
+    "MT-3 (25 mm cam, 1080 N)"
+   ],
+   "note": "US1 anchor fatigue (printed frame part) unchanged; it sets the 53 kg limit."
+  },
+  {
+   "id": "S6",
+   "source": "BL-003",
+   "location": "US1/US2 sewn eye on the left pin",
+   "part": "25 mm box-X; 7075 pin; UHMWPE sleeve",
+   "direction": "along the strap",
+   "ticket_factored_n": 720,
+   "factored_n": 719.7306691273549,
+   "load_basis": "as S5",
+   "checks": [
+    {
+     "item": "box-X 25 mm, strength",
+     "demand_n": 719.7306691273549,
+     "capacity": 1776.3157894736842,
+     "kind": "strength",
+     "ratio": 2.468028480191621,
+     "rated": false,
+     "basis": "ASSUMPTION BOX25",
+     "test": "MT-1 (25 mm, 1080 N)"
+    },
+    {
+     "item": "box-X 25 mm, proof",
+     "demand_n": 1079.5960036910324,
+     "capacity": 1776.3157894736842,
+     "kind": "proof",
+     "ratio": 1.6453523201277473,
+     "rated": false,
+     "basis": "ASSUMPTION BOX25",
+     "test": "MT-1 (25 mm, 1080 N)"
+    },
+    {
+     "item": "box-X fatigue, 1.6 g",
+     "demand_n": 479.82044608490327,
+     "capacity": 710.5263157894738,
+     "kind": "fatigue",
+     "ratio": 1.4808170881149727,
+     "rated": false,
+     "basis": "ASSUMPTION SEW_FAT",
+     "test": "SEW-F (lever rig)"
+    },
+    {
+     "item": "UHMWPE sleeve bearing (18 mm throat governs either width)",
+     "demand_n": 719.7306691273549,
+     "capacity": 1679.99443183438,
+     "kind": "strength",
+     "ratio": 2.334198755030555,
+     "rated": true,
+     "basis": "rev_c pin.sleeve_sf at 724 N, scaled",
+     "test": ""
+    },
+    {
+     "item": "UHMWPE sleeve creep, sustained 1 g",
+     "demand_n": 3.7486096593712994,
+     "capacity": 5.25,
+     "kind": "creep",
+     "ratio": 1.400519253018333,
+     "rated": false,
+     "basis": "ASSUMPTION UHMW_CREEP",
+     "test": "float hang 24 h"
+    }
+   ],
+   "verdict": "PASS after MT-1 (25 mm, 1080 N), SEW-F (lever rig), float hang 24 h",
+   "min": 1.400519253018333,
+   "governs": "UHMWPE sleeve creep, sustained 1 g",
+   "tests": [
+    "MT-1 (25 mm, 1080 N)",
+    "SEW-F (lever rig)",
+    "float hang 24 h"
+   ],
+   "note": "the eye necks to the 18 mm fairlead throat for 25 and 38 mm webbing alike, so the sleeve bearing length does not change; units of the creep row are MPa."
+  },
+  {
+   "id": "S7",
+   "source": "BL-003",
+   "location": "US1/US2 webbing",
+   "part": "poly_webbing_25mm",
+   "direction": "along the strap",
+   "ticket_factored_n": 720,
+   "factored_n": 719.7306691273549,
+   "load_basis": "as S5",
+   "checks": [
+    {
+     "item": "webbing on a pin (kd 0.5)",
+     "demand_n": 719.7306691273549,
+     "capacity": 6672.0,
+     "kind": "strength",
+     "ratio": 9.27013435190908,
+     "rated": true,
+     "basis": "record x WEB_PIN_KD",
+     "test": ""
+    }
+   ],
+   "verdict": "PASS",
+   "min": 9.27013435190908,
+   "governs": "webbing on a pin (kd 0.5)",
+   "tests": [],
+   "note": ""
+  },
+  {
+   "id": "S8",
+   "source": "BL-003",
+   "location": "W1/W2 frame anchors (z 80/250/420 lash points), carry compression",
+   "part": "25 mm ladder lock",
+   "direction": "aft + inboard",
+   "ticket_factored_n": 77,
+   "factored_n": 77.0,
+   "load_basis": "team C hoop strap 25.6 N at 1 g x 3.0 (strap_arch, bag_comp C result.json)",
+   "checks": [
+    {
+     "item": "ladder lock slip",
+     "demand_n": 77.0,
+     "capacity": 300.0,
+     "kind": "strength",
+     "ratio": 3.896103896103896,
+     "rated": false,
+     "basis": "ladder_lock_25mm record (estimate)",
+     "test": "LL-slip (5 locks)"
+    },
+    {
+     "item": "ladder lock slip, proof",
+     "demand_n": 115.5,
+     "capacity": 300.0,
+     "kind": "proof",
+     "ratio": 2.5974025974025974,
+     "rated": false,
+     "basis": "record",
+     "test": "LL-slip (5 locks)"
+    },
+    {
+     "item": "lash point: carry load inside the float-clamp duty it already has",
+     "demand_n": 77.0,
+     "capacity": 225.0,
+     "kind": "strength",
+     "ratio": 2.9220779220779223,
+     "rated": false,
+     "basis": "same lash points carry the 225 N float clamp",
+     "test": "W-pull (first frame)"
+    }
+   ],
+   "verdict": "PASS after LL-slip (5 locks), W-pull (first frame)",
+   "min": 2.5974025974025974,
+   "governs": "ladder lock slip, proof",
+   "tests": [
+    "LL-slip (5 locks)",
+    "W-pull (first frame)"
+   ],
+   "note": ""
+  },
+  {
+   "id": "S9",
+   "source": "BL-003",
+   "location": "W1-W3 float clamp",
+   "part": "25 mm ladder lock + 4 g HAUL G-hook (no rating)",
+   "direction": "round bag + meat",
+   "ticket_factored_n": 225,
+   "factored_n": 225.0,
+   "load_basis": "load_standard.md 4.3: 150 N hand cinch x 1.5, no friction credited",
+   "checks": [
+    {
+     "item": "ladder lock slip",
+     "demand_n": 225.0,
+     "capacity": 300.0,
+     "kind": "strength",
+     "ratio": 1.3333333333333333,
+     "rated": false,
+     "basis": "record",
+     "test": "LL-slip (5 locks)"
+    },
+    {
+     "item": "ladder lock slip, proof 1.5x",
+     "demand_n": 337.5,
+     "capacity": 300.0,
+     "kind": "proof",
+     "ratio": 0.8888888888888888,
+     "rated": true,
+     "basis": "record",
+     "test": ""
+    },
+    {
+     "item": "HAUL G-hook (no rating on file)",
+     "demand_n": 225.0,
+     "capacity": 1e-09,
+     "kind": "strength",
+     "ratio": 4.444444444444445e-12,
+     "rated": true,
+     "basis": "no record",
+     "test": ""
+    }
+   ],
+   "verdict": "FAIL",
+   "min": 4.444444444444445e-12,
+   "governs": "HAUL G-hook (no rating on file)",
+   "tests": [
+    "LL-slip (5 locks)"
+   ],
+   "note": "the cinch is held, so the polymer lock sees sustained load: the slip test holds the proof 1 h (creep).",
+   "fix": {
+    "change": "3 x g_hook_25mm_aluminium (rated) and 3 x ladder_lock_25mm_heavy",
+    "mass_g": 21.0,
+    "checks": [
+     {
+      "item": "G-hook no-set vs proof",
+      "demand_n": 337.5,
+      "capacity": 900.0,
+      "kind": "proof",
+      "ratio": 2.6666666666666665,
+      "rated": true,
+      "basis": "record",
+      "test": ""
+     },
+     {
+      "item": "heavy lock slip vs proof",
+      "demand_n": 337.5,
+      "capacity": 490.0,
+      "kind": "proof",
+      "ratio": 1.451851851851852,
+      "rated": false,
+      "basis": "ladder_lock_25mm_heavy record (slip = 0.5 x tensile, ASSUMPTION there)",
+      "test": "LL-slip heavy (5 locks, 338 N, 1 h hold)"
+     }
+    ],
+    "after_verdict": "PASS after LL-slip heavy (5 locks, 338 N, 1 h hold)",
+    "after_min": 1.451851851851852,
+    "after_governs": "heavy lock slip vs proof",
+    "after_tests": [
+     "LL-slip heavy (5 locks, 338 N, 1 h hold)"
+    ]
+   }
+  },
+  {
+   "id": "S10",
+   "source": "BL-003",
+   "location": "W1/W2 G-hooks across the door (side carry, tripod)",
+   "part": "25 mm G-hook",
+   "direction": "aft + inboard",
+   "ticket_factored_n": 77,
+   "factored_n": 77.0,
+   "load_basis": "as S8",
+   "checks": [
+    {
+     "item": "G-hook no-set vs proof (same rated part as the S9 fix)",
+     "demand_n": 115.5,
+     "capacity": 900.0,
+     "kind": "proof",
+     "ratio": 7.792207792207792,
+     "rated": true,
+     "basis": "record",
+     "test": ""
+    }
+   ],
+   "verdict": "PASS",
+   "min": 7.792207792207792,
+   "governs": "G-hook no-set vs proof (same rated part as the S9 fix)",
+   "tests": [],
+   "note": "needs the S9 fix (rated hook); no extra mass."
+  },
+  {
+   "id": "S11",
+   "source": "BL-003",
+   "location": "B-03 frame-side corner seams (wing roots)",
+   "part": "none (wings deleted)",
+   "direction": "removed",
+   "ticket_factored_n": 0,
+   "factored_n": 0.0,
+   "load_basis": "load removed",
+   "checks": [],
+   "verdict": "PASS",
+   "min": Infinity,
+   "governs": "no load",
+   "tests": [],
+   "note": "the owner deleted the wings 2026-11-11."
+  },
+  {
+   "id": "S12",
+   "source": "BL-003",
+   "location": "B-24 link, option a 25 mm G-hook (not in REC)",
+   "part": "25 mm rated Al G-hook",
+   "direction": "aft + down 30 deg",
+   "ticket_factored_n": 941,
+   "factored_n": 941.0,
+   "load_basis": "float misuse link 941 N (bag_attachment.md, float rows)",
+   "checks": [
+    {
+     "item": "G-hook no-set vs proof",
+     "demand_n": 1411.5,
+     "capacity": 900.0,
+     "kind": "proof",
+     "ratio": 0.6376195536663124,
+     "rated": true,
+     "basis": "record",
+     "test": ""
+    }
+   ],
+   "verdict": "FAIL",
+   "min": 0.6376195536663124,
+   "governs": "G-hook no-set vs proof",
+   "tests": [],
+   "note": "option a is not adopted, so the verdict is on what REC carries: the 2 B-24 hooks. The mass change is a booked-mass correction in the meat-trip kit, not part of BL-003's saving.",
+   "fix": {
+    "change": "REC keeps the bag-hook part; with BL-010 that part is carabiner_wiregate_22kn (booked 14 g)",
+    "mass_g": 16.0,
+    "meat_trip_only": true,
+    "checks": [
+     {
+      "item": "carabiner proof (0.5 x minor)",
+      "demand_n": 1411.5,
+      "capacity": 4000.0,
+      "kind": "proof",
+      "ratio": 2.8338646829613885,
+      "rated": true,
+      "basis": "ASSUMPTION CARA_PROOF",
+      "test": ""
+     }
+    ],
+    "after_verdict": "PASS",
+    "after_min": 2.8338646829613885,
+    "after_governs": "carabiner proof (0.5 x minor)",
+    "after_tests": []
+   }
+  },
+  {
+   "id": "A1",
+   "source": "BL-004",
+   "location": "IM3 eyes z 520, x +/-115 (bag hook)",
+   "part": "38 mm bag hook 2200 N purchase spec (no record); T3 box-X; B-17 seam",
+   "direction": "aft-up along T3",
+   "ticket_factored_n": 1702,
+   "factored_n": 1702.1999999999998,
+   "load_basis": "cloth sim x 3.0: guys-off misuse 567.4 N (M_notop_CORRIE_PR15 meat) governs over both shells; S15 misuse 1573, S15 REC 1522",
+   "checks": [
+    {
+     "item": "hook 2200 N (purchase spec), proof 1.5x",
+     "demand_n": 2553.2999999999997,
+     "capacity": 2200.0,
+     "kind": "proof",
+     "ratio": 0.8616300473896527,
+     "rated": true,
+     "basis": "bag_attachment.md purchase spec",
+     "test": ""
+    },
+    {
+     "item": "T3 box-X 38 (bartack ASSUMPTION 2700), proof",
+     "demand_n": 2553.2999999999997,
+     "capacity": 2700.0,
+     "kind": "proof",
+     "ratio": 1.0574550581600284,
+     "rated": false,
+     "basis": "bag_attach.BARTACK_N",
+     "test": "PT-1 raised to 2553 N"
+    },
+    {
+     "item": "T3 box-X 38, stitch-path model (cross-check)",
+     "demand_n": 2553.2999999999997,
+     "capacity": 5256.007036059557,
+     "kind": "proof",
+     "ratio": 2.0585152688910657,
+     "rated": true,
+     "basis": "attach_system.box_x",
+     "test": ""
+    },
+    {
+     "item": "T3 webbing on the hook bed (kd 0.5)",
+     "demand_n": 1702.1999999999998,
+     "capacity": 10008.0,
+     "kind": "strength",
+     "ratio": 5.879450123369757,
+     "rated": true,
+     "basis": "record",
+     "test": ""
+    },
+    {
+     "item": "B-17 seam, 80 mm loaded, proof",
+     "demand_n": 2553.2999999999997,
+     "capacity": 3277.0,
+     "kind": "proof",
+     "ratio": 1.2834371205890418,
+     "rated": false,
+     "basis": "attach_system patch_seam (bag_attachment.md)",
+     "test": "PT-2 on the 70 mm tab at 2553 N"
+    },
+    {
+     "item": "IM3 printed fairlead, strength at the misuse load",
+     "demand_n": 1702.1999999999998,
+     "capacity": 2175.5695191654168,
+     "kind": "strength",
+     "ratio": 1.278092773566806,
+     "rated": false,
+     "basis": "fairlead_im3(9.0): FI linear in force",
+     "test": "IM3 eye pull (first frame)"
+    },
+    {
+     "item": "IM3 printed fairlead, fatigue 1.6 g x S15 REC 1 g force",
+     "demand_n": 811.84,
+     "capacity": 652.6708557496249,
+     "kind": "fatigue",
+     "ratio": 0.8039402539288837,
+     "rated": true,
+     "basis": "PAHT fatigue_1e5_ratio / FI99 per N",
+     "test": ""
+    },
+    {
+     "item": "IM3 printed fairlead, creep at 1 g",
+     "demand_n": 507.4,
+     "capacity": 870.2278076661668,
+     "kind": "creep",
+     "ratio": 1.7150725417149524,
+     "rated": true,
+     "basis": "PAHT creep_rupture ratio / FI99 per N",
+     "test": ""
+    }
+   ],
+   "verdict": "FAIL",
+   "min": 0.8039402539288837,
+   "governs": "IM3 printed fairlead, fatigue 1.6 g x S15 REC 1 g force",
+   "tests": [
+    "IM3 eye pull (first frame)",
+    "PT-1 raised to 2553 N",
+    "PT-2 on the 70 mm tab at 2553 N"
+   ],
+   "note": "The fairlead fatigue failure is not caused by the diet: today's V0 on S15 (491 N at 1 g) gives 0.83. The IM3 fairlead was released on the beam model's 605 N; the cloth sim puts 2.5x that on it at 1 g and nobody had checked its fatigue there.",
+   "fix": {
+    "change": "(1) the 2 IM3 bag hooks become carabiner_wiregate_22kn; (2) the IM3 fairlead cheek grows from 18 to 25 mm tall along the stay (bag_attach.HALF_Z 9.0 -> 12.5) on H1's print",
+    "mass_g": 21.337920000000004,
+    "frame_change": true,
+    "checks": [
+     {
+      "item": "carabiner break",
+      "demand_n": 1702.1999999999998,
+      "capacity": 21000.0,
+      "kind": "strength",
+      "ratio": 12.336975678533664,
+      "rated": true,
+      "basis": "record",
+      "test": ""
+     },
+     {
+      "item": "carabiner minor axis",
+      "demand_n": 1702.1999999999998,
+      "capacity": 8000.0,
+      "kind": "strength",
+      "ratio": 4.699800258489015,
+      "rated": true,
+      "basis": "record",
+      "test": ""
+     },
+     {
+      "item": "carabiner proof (0.5 x minor)",
+      "demand_n": 2553.2999999999997,
+      "capacity": 4000.0,
+      "kind": "proof",
+      "ratio": 1.566600086163005,
+      "rated": false,
+      "basis": "ASSUMPTION CARA_PROOF",
+      "test": "PT-1 raised to 2553 N"
+     },
+     {
+      "item": "T3 box-X 38, proof",
+      "demand_n": 2553.2999999999997,
+      "capacity": 2700.0,
+      "kind": "proof",
+      "ratio": 1.0574550581600284,
+      "rated": false,
+      "basis": "bag_attach.BARTACK_N",
+      "test": "PT-1 raised to 2553 N"
+     },
+     {
+      "item": "B-17 seam, proof",
+      "demand_n": 2553.2999999999997,
+      "capacity": 3277.0,
+      "kind": "proof",
+      "ratio": 1.2834371205890418,
+      "rated": false,
+      "basis": "patch_seam",
+      "test": "PT-2 on the 70 mm tab"
+     },
+     {
+      "item": "fairlead 25 mm cheek, strength",
+      "demand_n": 1702.1999999999998,
+      "capacity": 2781.796736780027,
+      "kind": "strength",
+      "ratio": 1.6342361278228337,
+      "rated": false,
+      "basis": "fairlead_im3(12.5)",
+      "test": "IM3 eye pull (first frame)"
+     },
+     {
+      "item": "fairlead 25 mm cheek, fatigue",
+      "demand_n": 811.84,
+      "capacity": 834.5390210340081,
+      "kind": "fatigue",
+      "ratio": 1.027959968754937,
+      "rated": true,
+      "basis": "fairlead_im3(12.5)",
+      "test": ""
+     },
+     {
+      "item": "fairlead 25 mm cheek, creep",
+      "demand_n": 507.4,
+      "capacity": 1112.718694712011,
+      "kind": "creep",
+      "ratio": 2.1929812666771995,
+      "rated": true,
+      "basis": "fairlead_im3(12.5)",
+      "test": ""
+     }
+    ],
+    "after_verdict": "PASS after IM3 eye pull (first frame), PT-1 raised to 2553 N, PT-2 on the 70 mm tab",
+    "after_min": 1.027959968754937,
+    "after_governs": "fairlead 25 mm cheek, fatigue",
+    "after_tests": [
+     "IM3 eye pull (first frame)",
+     "PT-1 raised to 2553 N",
+     "PT-2 on the 70 mm tab"
+    ]
+   }
+  },
+  {
+   "id": "A2",
+   "source": "BL-004",
+   "location": "IM2 eyes z 330",
+   "part": "none (T2, B-23, IM2 bag hooks deleted)",
+   "direction": "bag load removed",
+   "ticket_factored_n": 0,
+   "factored_n": 429.5468007054875,
+   "load_basis": "beam REC: IM2 governed by C5 meat straps only (was side-hill bag 512 N)",
+   "checks": [
+    {
+     "item": "IM2 fairlead, meat strap only (inside the IM3 rev C check, same part)",
+     "demand_n": 429.5468007054875,
+     "capacity": 2175.5695191654263,
+     "kind": "strength",
+     "ratio": 5.064802055543824,
+     "rated": true,
+     "basis": "rev_c fairlead_fea.im3 (larger force, same geometry)",
+     "test": ""
+    }
+   ],
+   "verdict": "PASS",
+   "min": 5.064802055543824,
+   "governs": "IM2 fairlead, meat strap only (inside the IM3 rev C check, same part)",
+   "tests": [],
+   "note": "the beam's IM2 bag share moves to IM3: IM3 bag cases 429 -> 569 N, still below the 605 N meat case; H1 body re-checked (section 4)."
+  },
+  {
+   "id": "A3",
+   "source": "BL-004",
+   "location": "crown top bar x +/-(92-100), guy loops",
+   "part": "25 mm loop + POM toggle; heavy ladder lock + tri-glide on B-22",
+   "direction": "aft and outboard to B-22",
+   "ticket_factored_n": 244,
+   "factored_n": 244.5,
+   "load_basis": "cloth sim x 3.0, REC_CORRIE_PR23 fill",
+   "checks": [
+    {
+     "item": "crown bar wall under a 25 mm loop (bare bar)",
+     "demand_n": 244.5,
+     "capacity": 294.9840377277372,
+     "kind": "strength",
+     "ratio": 1.2064786819130355,
+     "rated": false,
+     "basis": "frame_cg_recheck.bar_local",
+     "test": "toggle-loop pull 366 N"
+    },
+    {
+     "item": "crown bar CFRP fatigue (FI at 1.6 g <= 0.5)",
+     "demand_n": 0.4420578177872659,
+     "capacity": 0.5,
+     "kind": "fatigue",
+     "ratio": 1.1310737642934707,
+     "rated": true,
+     "basis": "HA-LS-1 CFRP rule; units FI",
+     "test": ""
+    },
+    {
+     "item": "POM toggle pull-through, proof",
+     "demand_n": 366.75,
+     "capacity": 670.0,
+     "kind": "proof",
+     "ratio": 1.8268575323790048,
+     "rated": false,
+     "basis": "ASSUMPTION attach_system",
+     "test": "toggle-loop pull 366 N"
+    },
+    {
+     "item": "heavy ladder lock slip, proof",
+     "demand_n": 366.75,
+     "capacity": 490.0,
+     "kind": "proof",
+     "ratio": 1.3360599863667348,
+     "rated": false,
+     "basis": "record",
+     "test": "LL-slip heavy (5 locks, 366 N, 1 h hold)"
+    },
+    {
+     "item": "B-22 seam",
+     "demand_n": 366.75,
+     "capacity": 1024.0,
+     "kind": "proof",
+     "ratio": 2.7920927062031358,
+     "rated": true,
+     "basis": "attachment_diet.md 5",
+     "test": ""
+    },
+    {
+     "item": "loop webbing on the 18 mm bar (kd 0.5)",
+     "demand_n": 244.5,
+     "capacity": 6672.0,
+     "kind": "strength",
+     "ratio": 27.288343558282207,
+     "rated": true,
+     "basis": "record",
+     "test": ""
+    }
+   ],
+   "verdict": "PASS after LL-slip heavy (5 locks, 366 N, 1 h hold), toggle-loop pull 366 N",
+   "min": 1.1310737642934707,
+   "governs": "crown bar CFRP fatigue (FI at 1.6 g <= 0.5)",
+   "tests": [
+    "LL-slip heavy (5 locks, 366 N, 1 h hold)",
+    "toggle-loop pull 366 N"
+   ],
+   "note": "bare-bar check; the corner wrap under the loop adds wall (not credited)."
+  },
+  {
+   "id": "A4",
+   "source": "BL-004",
+   "location": "crown top bar centre x +/-66",
+   "part": "none (hood deleted)",
+   "direction": "hood capture removed",
+   "ticket_factored_n": 0,
+   "factored_n": 0.0,
+   "load_basis": "load removed",
+   "checks": [],
+   "verdict": "PASS",
+   "min": Infinity,
+   "governs": "no load",
+   "tests": [],
+   "note": ""
+  },
+  {
+   "id": "A5",
+   "source": "BL-004",
+   "location": "hinge eyes z 60, x +/-115",
+   "part": "HE on B-18, 5 mm 7075 pull-pin",
+   "direction": "down-aft into the pin",
+   "ticket_factored_n": 755,
+   "factored_n": 794.6999999999999,
+   "load_basis": "max of the cloth sims x 3.0 (guys-off misuse included) and the beam C6 724 N",
+   "checks": [
+    {
+     "item": "B-18 seam, proof",
+     "demand_n": 1192.05,
+     "capacity": 2355.0,
+     "kind": "proof",
+     "ratio": 1.9755882723040141,
+     "rated": true,
+     "basis": "attachment_diet.md 5",
+     "test": ""
+    },
+    {
+     "item": "bartack, proof",
+     "demand_n": 1192.05,
+     "capacity": 2700.0,
+     "kind": "proof",
+     "ratio": 2.2650056625141564,
+     "rated": false,
+     "basis": "bag_attach.BARTACK_N",
+     "test": "PT-3 hinge eye"
+    },
+    {
+     "item": "7075 pin yield",
+     "demand_n": 794.6999999999999,
+     "capacity": 10468.301804385448,
+     "kind": "strength",
+     "ratio": 13.172646035466778,
+     "rated": true,
+     "basis": "rev_c pin, scaled",
+     "test": ""
+    },
+    {
+     "item": "UHMWPE sleeve",
+     "demand_n": 794.6999999999999,
+     "capacity": 1679.99443183438,
+     "kind": "strength",
+     "ratio": 2.113998278387291,
+     "rated": true,
+     "basis": "rev_c pin, scaled",
+     "test": ""
+    },
+    {
+     "item": "hinge fairlead, strength",
+     "demand_n": 794.6999999999999,
+     "capacity": 2154.002705212977,
+     "kind": "strength",
+     "ratio": 2.710460180210114,
+     "rated": true,
+     "basis": "rev_c fairlead_fea.hinge, linear",
+     "test": ""
+    },
+    {
+     "item": "hinge fairlead, fatigue 1.6 g x sim 1 g",
+     "demand_n": 402.72,
+     "capacity": 646.2008115638931,
+     "kind": "fatigue",
+     "ratio": 1.6045908113922653,
+     "rated": true,
+     "basis": "rev_c fairlead_fea.hinge, linear",
+     "test": ""
+    },
+    {
+     "item": "hinge fairlead, creep 1 g",
+     "demand_n": 251.7,
+     "capacity": 861.6010820851909,
+     "kind": "creep",
+     "ratio": 3.4231270643035,
+     "rated": true,
+     "basis": "rev_c fairlead_fea.hinge",
+     "test": ""
+    }
+   ],
+   "verdict": "PASS after PT-3 hinge eye",
+   "min": 1.6045908113922653,
+   "governs": "hinge fairlead, fatigue 1.6 g x sim 1 g",
+   "tests": [
+    "PT-3 hinge eye"
+   ],
+   "note": ""
+  },
+  {
+   "id": "H1",
+   "source": "BL-006",
+   "location": "BL006-1 50 mm buckle tabs, 25 mm anchor box-X and lock tab on them",
+   "part": "2 x 140 mm 50 mm nylon tabs round the buckle bars; 25 mm anchor and lock tab box-X tex 135",
+   "direction": "along the belt",
+   "ticket_factored_n": 1000,
+   "factored_n": 1000.0,
+   "load_basis": "hipbelt_structure.load_sets C2 (T per side); each 25 mm leg <= T/(2 x 0.85)",
+   "checks": [
+    {
+     "item": "50 mm buckle",
+     "demand_n": 1000.0,
+     "capacity": 1500.0,
+     "kind": "strength",
+     "ratio": 1.5,
+     "rated": false,
+     "basis": "buckle_side_release_50mm (estimate)",
+     "test": "HB-T (tab + buckle pull)"
+    },
+    {
+     "item": "50 mm tab doubled round the buckle bar (kd 0.5)",
+     "demand_n": 1000.0,
+     "capacity": 15568.0,
+     "kind": "strength",
+     "ratio": 15.568,
+     "rated": true,
+     "basis": "nylon_webbing_50mm x WEB_PIN_KD",
+     "test": ""
+    },
+    {
+     "item": "25 mm anchor box-X onto the tab, strength",
+     "demand_n": 588.2352941176471,
+     "capacity": 1776.3157894736842,
+     "kind": "strength",
+     "ratio": 3.019736842105263,
+     "rated": false,
+     "basis": "ASSUMPTION BOX25",
+     "test": "HB-T (tab + buckle pull)"
+    },
+    {
+     "item": "25 mm anchor box-X, proof 1.5x",
+     "demand_n": 882.3529411764706,
+     "capacity": 1776.3157894736842,
+     "kind": "proof",
+     "ratio": 2.013157894736842,
+     "rated": false,
+     "basis": "ASSUMPTION BOX25",
+     "test": "HB-T (tab + buckle pull)"
+    },
+    {
+     "item": "25 x 40 box-X stitch-path model (cross-check)",
+     "demand_n": 882.3529411764706,
+     "capacity": 4544.206020646899,
+     "kind": "proof",
+     "ratio": 5.150100156733152,
+     "rated": true,
+     "basis": "attach_system.box_x",
+     "test": ""
+    },
+    {
+     "item": "lock tab box-X onto the tab, proof",
+     "demand_n": 882.3529411764706,
+     "capacity": 1776.3157894736842,
+     "kind": "proof",
+     "ratio": 2.013157894736842,
+     "rated": false,
+     "basis": "ASSUMPTION BOX25",
+     "test": "HB-T (tab + buckle pull)"
+    },
+    {
+     "item": "box-X fatigue, walking T",
+     "demand_n": 284.11764705882354,
+     "capacity": 710.5263157894738,
+     "kind": "fatigue",
+     "ratio": 2.5008172605426613,
+     "rated": false,
+     "basis": "ASSUMPTION SEW_FAT",
+     "test": "SEW-F (lever rig)"
+    }
+   ],
+   "verdict": "PASS after HB-T (tab + buckle pull), SEW-F (lever rig)",
+   "min": 1.5,
+   "governs": "50 mm buckle",
+   "tests": [
+    "HB-T (tab + buckle pull)",
+    "SEW-F (lever rig)"
+   ],
+   "note": "the buckle itself stays at 1.50 on an estimate record (hipbelt_structural.md 5), unchanged by a2."
+  },
+  {
+   "id": "H2",
+   "source": "BL-006",
+   "location": "BL006-2 25 mm 2:1 webbing (length re-booked)",
+   "part": "same webbing, routing, lock, D-ring",
+   "direction": "along the strap",
+   "ticket_factored_n": 1000,
+   "factored_n": 1000.0,
+   "load_basis": "unchanged (hipbelt_structural.md 5)",
+   "checks": [
+    {
+     "item": "webbing",
+     "demand_n": 588.2352941176471,
+     "capacity": 13344.0,
+     "kind": "strength",
+     "ratio": 22.6848,
+     "rated": true,
+     "basis": "record",
+     "test": ""
+    },
+    {
+     "item": "heavy lock slip at the walking peak, 1.5 criterion",
+     "demand_n": 426.1764705882353,
+     "capacity": 490.0,
+     "kind": "proof",
+     "ratio": 1.1497584541062802,
+     "rated": false,
+     "basis": "record",
+     "test": "HB-3 lock slip (already planned)"
+    }
+   ],
+   "verdict": "PASS after HB-3 lock slip (already planned)",
+   "min": 1.1497584541062802,
+   "governs": "heavy lock slip at the walking peak, 1.5 criterion",
+   "tests": [
+    "HB-3 lock slip (already planned)"
+   ],
+   "note": "routed length only; lock leg = T / (2 x 0.85), as hipbelt_structural.md."
+  },
+  {
+   "id": "H3",
+   "source": "BL-006",
+   "location": "BL006-3 stabilizer straps deleted",
+   "part": "none",
+   "direction": "none",
+   "ticket_factored_n": 0,
+   "factored_n": 0.0,
+   "load_basis": "no rev C case, frame spring or fit term uses hip_stabilizer_anchor (grep: only frame_topopt / sizing5200v2 keep-out geometry and viz3d)",
+   "checks": [],
+   "verdict": "PASS",
+   "min": Infinity,
+   "governs": "no load",
+   "tests": [],
+   "note": "side-hill roll is a fit test (HB-D1), not strength."
+  },
+  {
+   "id": "H4",
+   "source": "BL-006",
+   "location": "BL006-4 wing HDPE 1.0 -> 0.75 mm",
+   "part": "HDPE floats, no net tension",
+   "direction": "none",
+   "ticket_factored_n": 0,
+   "factored_n": 0.0,
+   "load_basis": "hipbelt_structure.tab_check credits shell + 1000D only",
+   "checks": [],
+   "verdict": "PASS",
+   "min": Infinity,
+   "governs": "no load",
+   "tests": [],
+   "note": "no creep path while the HDPE floats (hipbelt_structural.md 5 rule)."
+  }
+ ],
+ "beam": {
+  "hinge_bag": {
+   "n": 535.064730366187,
+   "case": "side_hill_torsion@IM3",
+   "node": "SR60"
+  },
+  "im2_bag": {
+   "n": 511.9155527294445,
+   "case": "side_hill_torsion",
+   "node": "SR330"
+  },
+  "hinge_meat": {
+   "n": 724.1624001524879,
+   "case": "tall_load",
+   "node": "SL60"
+  },
+  "im1_meat": {
+   "n": 273.04364152890975,
+   "case": "meat_straps",
+   "node": "SL190"
+  },
+  "im2_meat": {
+   "n": 429.5468007054875,
+   "case": "meat_straps",
+   "node": "SL330"
+  },
+  "im3_meat": {
+   "n": 605.0318208669462,
+   "case": "meat_straps",
+   "node": "SL520"
+  },
+  "im3_bag": {
+   "n": 429.43885130890044,
+   "case": "drop_2p5g@IM3",
+   "node": "SL520"
+  }
+ },
+ "beam_rec": {
+  "hinge_bag": {
+   "n": 500.57277165329816,
+   "case": "side_hill_torsion@IM3",
+   "node": "SR60"
+  },
+  "im3_bag": {
+   "n": 568.5800712189163,
+   "case": "side_hill_torsion@IM3",
+   "node": "SR520"
+  },
+  "hinge_meat": {
+   "n": 724.1624001524879,
+   "case": "tall_load",
+   "node": "SL60"
+  },
+  "im1_meat": {
+   "n": 273.04364152890975,
+   "case": "meat_straps",
+   "node": "SL190"
+  },
+  "im2_meat": {
+   "n": 429.5468007054875,
+   "case": "meat_straps",
+   "node": "SL330"
+  },
+  "im3_meat": {
+   "n": 605.0318208669462,
+   "case": "meat_straps",
+   "node": "SL520"
+  }
+ },
+ "sim": {
+  "im3_REC_S15": {
+   "n_1g": 507.4,
+   "factored": 1522.1999999999998,
+   "run": "REC_S15_PR15 meat"
+  },
+  "im3_M_notop_S15": {
+   "n_1g": 524.3,
+   "factored": 1572.8999999999999,
+   "run": "M_notop_S15_PR15 meat"
+  },
+  "im3_REC_CORRIE": {
+   "n_1g": 556.7,
+   "factored": 1670.1000000000001,
+   "run": "REC_CORRIE_PR15 meat"
+  },
+  "im3_M_notop_CORRIE": {
+   "n_1g": 567.4,
+   "factored": 1702.1999999999998,
+   "run": "M_notop_CORRIE_PR15 meat"
+  },
+  "hinge_REC_S15": {
+   "n_1g": 251.7,
+   "factored": 755.0999999999999,
+   "run": "REC_S15_PR15 meat"
+  },
+  "hinge_M_notop_S15": {
+   "n_1g": 263.5,
+   "factored": 790.5,
+   "run": "M_notop_S15_PR15 meat"
+  },
+  "hinge_REC_CORRIE": {
+   "n_1g": 249.6,
+   "factored": 748.8,
+   "run": "REC_CORRIE_PR15 meat"
+  },
+  "hinge_M_notop_CORRIE": {
+   "n_1g": 264.9,
+   "factored": 794.6999999999999,
+   "run": "M_notop_CORRIE_PR15 meat"
+  },
+  "guy_REC_S15": {
+   "n_1g": 79.6,
+   "factored": 238.79999999999998,
+   "run": "REC_S15_PR23 fill"
+  },
+  "guy_REC_CORRIE": {
+   "n_1g": 81.5,
+   "factored": 244.5,
+   "run": "REC_CORRIE_PR23 fill"
+  }
+ },
+ "float": {
+  "us1_limit_n": 719.7306691273549,
+  "limit_kg": 53.0,
+  "us1_36_n": 488.8736620487694,
+  "clamp_n": 225.0,
+  "bag_on_1415": {
+   "fy": 1395.6266390414728,
+   "fz": -233.95361591093635,
+   "n": 1415.0999999999997,
+   "fi99": 0.6504503705966851,
+   "sf": 1.5373963106249882,
+   "bearing_sf": 3.0609285562857758,
+   "basis": "attach_system_results.json factored_n.im3 along rev C gov_c.im3 direction"
+  }
+ },
+ "belt": {
+  "T_c2": 1000.0,
+  "T_walk": 483.0,
+  "leg_frac": 0.5882352941176471
+ },
+ "fea": {
+  "9.0": {
+   "fi99": 0.6504503705966863,
+   "added_g": 6.13104
+  },
+  "11.0": {
+   "fi99": 0.5592151145174126,
+   "added_g": 7.5896
+  },
+  "12.0": {
+   "fi99": 0.523921382004247,
+   "added_g": 8.31888
+  },
+  "12.5": {
+   "fi99": 0.5087,
+   "added_g": 8.8
+  },
+  "13.0": {
+   "fi99": 0.4886,
+   "added_g": 9.05
+  },
+  "14.0": {
+   "fi99": 0.4465,
+   "added_g": 9.78
+  }
+ },
+ "fairlead_reproduce": {
+  "record": 0.6504503705966851,
+  "this_run": 0.6504503705966863
+ },
+ "body": {
+  "h1_per_torso": {
+   "strength": 1.4739561426221504,
+   "fatigue": 1.1502260709981276,
+   "creep": 2.453815618129339,
+   "governing": "C_im3@H23 static_carry 23 in (fatigue)",
+   "source": "outputs/crown_diet/body_h1_pt.pkl (BL-017)"
+  },
+  "rec_per_torso": {
+   "strength": 1.4790029162775065,
+   "fatigue": 1.1440812797002529,
+   "creep": 2.4407067300272063,
+   "governing": "C_im3rec@H23 static_carry 23 in (fatigue)",
+   "worst_by_torso": {
+    "15": 1.527,
+    "19": 1.311,
+    "23": 1.144
+   }
+  }
+ },
+ "r28": {
+  "S15_23_fill": {
+   "as_coded": 21.0,
+   "abs_face": 28.0,
+   "x0_section": 28.0
+  },
+  "S15_23_meat": {
+   "as_coded": 19.0,
+   "abs_face": 25.0,
+   "x0_section": 26.0
+  },
+  "CORRIE_23_fill": {
+   "as_coded": 34.0,
+   "abs_face": 34.0,
+   "x0_section": 34.0
+  },
+  "CORRIE_23_meat": {
+   "as_coded": 34.0,
+   "abs_face": 33.0,
+   "x0_section": 34.0
+  },
+  "S15_19_meat": {
+   "as_coded": 34.0,
+   "abs_face": 34.0,
+   "x0_section": 34.0
+  },
+  "S15_15_meat": {
+   "as_coded": 34.0,
+   "abs_face": 34.0,
+   "x0_section": 34.0
+  },
+  "S15_23_wall_x0_mm_head_side_of_bar_face": {
+   "785": -17.2,
+   "835": -6.4,
+   "885": 24.3
+  },
+  "bar_face_y": 0.8
+ },
+ "mass": {
+  "fix_g": {
+   "BL-003": 35.0,
+   "BL-004": 21.337920000000004,
+   "BL-006": 0.0
+  },
+  "meat_trip_kit_g": 16.0,
+  "of_which_frame_g": 5.337920000000002,
+  "saving_before_g": {
+   "BL-003": 218.5,
+   "BL-004": 103.0,
+   "BL-006": 57.400000000000034
+  },
+  "saving_after_g": {
+   "BL-003": 183.5,
+   "BL-004": 81.66208,
+   "BL-006": 57.400000000000034
+  }
+ },
+ "hooks": [
+  {
+   "where": "IM3 bag hooks (2)",
+   "booked_g": 14.0,
+   "rated_part": "carabiner_wiregate_22kn",
+   "rated_g": 22.0
+  },
+  {
+   "where": "B-24 float-link hooks (2, meat-trip kit)",
+   "booked_g": 14.0,
+   "rated_part": "carabiner_wiregate_22kn",
+   "rated_g": 22.0
+  },
+  {
+   "where": "IM3 meat-strap free end (1)",
+   "booked_g": 8.0,
+   "rated_part": "carabiner_wiregate_22kn",
+   "rated_g": 22.0
+  },
+  {
+   "where": "IM1 / IM2 meat-strap free ends (2)",
+   "booked_g": 8.0,
+   "rated_part": "g_hook_25mm_aluminium",
+   "rated_g": 8.0
+  },
+  {
+   "where": "W1-W3 haul-wrap hooks (3)",
+   "booked_g": 4.0,
+   "rated_part": "g_hook_25mm_aluminium",
+   "rated_g": 8.0
+  }
+ ],
+ "booked": {
+  "bag_hook_g": 14.0,
+  "b24_hook_g": 14.0,
+  "w_hook_g": 4.0,
+  "pack_g": 3927.0
+ },
+ "front_pad": {
+  "limit_kpa": 48.6,
+  "p_at_50mm": {
+   "median": 79.0,
+   "worst": 103.0
+  },
+  "width_needed_mm": 105.96707818930041,
+  "pad_w_mm": 110.0,
+  "pad_l_mm": 120.0,
+  "p_with_pad": {
+   "median": 35.90909090909091,
+   "worst": 46.81818181818182
+  },
+  "g_each": 21.4665,
+  "g_pair": 42.933,
+  "parts_g": {
+   "eva": 7.260000000000001,
+   "hdpe": 9.4545,
+   "cover": 4.752
+  }
+ },
+ "assumptions": {
+  "SEW_FAT": [
+   "A sewn box-X / bartack keeps 40 % of its static strength at 1e5 cycles (0 -> peak).",
+   "Lever rig (BL-016 kit): 3 box-X coupons, 1e5 cycles 0 -> the row's 1.6 g load, then pull to the proof load; pass = no broken stitch and residual >= proof."
+  ],
+  "AL_FAT": [
+   "An aluminium hook keeps 30 % of its rated break at 1e5 cycles (Kt included).",
+   "Not needed where the walking load is under 10 % of break (every hook row here)."
+  ],
+  "BOX25": [
+   "25 mm box-X bartack = 2700 N x 25/38 = 1776 N (strap_arch.BARTACK25_N); the stitch-path model (attach_system.box_x) gives more and is shown as a cross-check only.",
+   "MT-1 at the row's proof load on 25 mm webbing, 5 of 5."
+  ],
+  "CAM25": [
+   "25 mm aluminium cam slips at 1100 N (strap_arch.CAM25_N, carried over from the 38 mm cam).",
+   "MT-3 on 5 cams at the row's proof (IM 908 N, US 1080 N); mark moves < 3 mm."
+  ],
+  "CARA_PROOF": [
+   "A rated carabiner takes a proof up to 0.5 x its minor-axis rating (4000 N) without set.",
+   "PT-1 on the sewn T3 tongue at 2553 N: 5 of 5 hold, gate closes, no visible set."
+  ],
+  "THICK25": [
+   "25 mm webbing is 1.4 mm thick: a girth hitch adds 2 x 1.4 = 2.8 mm round the IM eye.",
+   "Prototype fit: the IM2 hitch passes the spreader notch (6 mm air, spreader.NOTCH_CLEAR) at 3 mm feeler."
+  ],
+  "FAIRLEAD_DIR": [
+   "The IM3 bag-hook vector acts along the rev C governing IM3 direction (as float_fea does).",
+   "PT on the first printed frame: pull the IM3 eye through a sewn T3 tongue at 1.5 x 1702 N."
+  ],
+  "GUY_DIR": [
+   "The guy loop bears on the bare OD 18 bar over 25 mm (the 0.75 mm corner wrap is not credited).",
+   "Toggle loop pull on an 18 mm tube to 366 N (attachment_diet.md 7)."
+  ],
+  "PAD": [
+   "A front-strap pad spreads the two-leg line load over its full width only with a stiffener (HDPE 0.75 mm).",
+   "HB-1 with a sensor just in front of the wing tip, with and without the pad."
+  ],
+  "UHMW_CREEP": [
+   "UHMWPE sleeve sustained bearing limit = 0.25 x yield (21 MPa record) = 5.25 MPa.",
+   "Float hang test: 53 kg on the cradle 24 h, sleeve wall measured before / after (< 0.1 mm)."
+  ]
+ }
+}

@@ -413,7 +413,7 @@ def arch(s, z_mid: float, p: ClothParams):
 
 
 CLIP_BELOW_SEAM = 60.0      # roll-clip buckle on the side gusset (scenario attachments.roll_clips.below_collar_seam_mm)
-CLIP_RUN = 85.0             # ASSUMPTION: least height from the clip tab to the roll end (62 mm buckle + strap)
+CLIP_RUN = 45.0             # ASSUMPTION: least height from the clip tab to the roll end (clip cinched right up)
 
 
 def end_drop(deg: float, half: float, p: ClothParams) -> float:
@@ -521,7 +521,10 @@ def prepare(state: str, params: ClothParams | None = None, shell: str = "S15", t
     work.mkdir(parents=True, exist_ok=True)
     stem = f"{state}{tag}_L{p.level}"
     npz = work / f"{stem}.in.npz"
-    arrays = {"X": X, "X0": X0, "T": T, "tgt": tgt, "pin": (b01 | np.isin(np.arange(n), lip)).astype(np.float32),
+    pinm = b01 | np.isin(np.arange(n), lip)
+    if state == "full":           # full: the floor sits in the under-strap cradle exactly as the huntkit drape has it
+        pinm[np.unique(T[piece == "B-05"])] = True
+    arrays = {"X": X, "X0": X0, "T": T, "tgt": tgt, "pin": pinm.astype(np.float32),
               "proxy_V": Vp, "proxy_F": Fp}
     for i, s in enumerate(straps):
         arrays[f"strap{i}_V0"], arrays[f"strap{i}_V1"], arrays[f"strap{i}_F"] = s["V0"], s["V1"], s["F"]
@@ -711,20 +714,48 @@ def pouch(res: dict, roll_C, roll_fr, colliders, dims: dict, params: ClothParams
     V0, F, uv, grids = box_mesh(L, W, H, h)
     mid = len(roll_C) // 2
     top = roll_C[mid] + roll_fr["Up"][mid] * roll_fr["r_out"]
+    top = np.array([top[0], max(float(top[1]), W / 2 + 5.0), top[2]])   # never forward of the frame plane (the head)
     hb = H / 2 - 11.0                                               # loose goods: the block is lower than the box
-    z_seat = float(top[2])                                          # highest thing under the pouch's footprint
+    # seat: one clean height field of everything under the footprint (roll, collar cloth), so the pouch drapes on
+    # the bag's top without being thrown about by single cloth folds
+    from scipy.ndimage import gaussian_filter, maximum_filter
+    cell, mar = 6.0, 36.0
+    gx = np.arange(-L / 2 - mar, L / 2 + mar + cell, cell)
+    gy = np.arange(top[1] - W / 2 - mar, top[1] + W / 2 + mar + cell, cell)
+    Hf = np.full((len(gx), len(gy)), -np.inf)
     for _, Vc, _ in colliders:
         Vc = np.asarray(Vc, float)
-        m = (np.abs(Vc[:, 0]) < L / 2 - 20.0) & (np.abs(Vc[:, 1] - top[1]) < W / 2 - 20.0)
-        if m.any():
-            z_seat = max(z_seat, float(Vc[m, 2].max()))
-    cb = np.array([0.0, top[1], z_seat + 5.0 + hb])
+        i = np.round((Vc[:, 0] - gx[0]) / cell).astype(int)
+        j = np.round((Vc[:, 1] - gy[0]) / cell).astype(int)
+        m = (i >= 0) & (i < len(gx)) & (j >= 0) & (j < len(gy)) & (Vc[:, 2] > top[2] - 160.0)
+        np.maximum.at(Hf, (i[m], j[m]), Vc[m, 2])
+    Hf = maximum_filter(Hf, size=3)
+    floor = float(Hf[np.isfinite(Hf)].min()) - 20.0
+    Hf = gaussian_filter(np.where(np.isfinite(Hf), Hf, floor), 1.0) + 1.5
+    GX, GY = np.meshgrid(gx, gy, indexing="ij")
+    seatV = np.column_stack([GX.ravel(), GY.ravel(), Hf.ravel()])
+    idx = np.arange(len(gx) * len(gy)).reshape(len(gx), len(gy))
+    qd = np.stack([idx[:-1, :-1], idx[1:, :-1], idx[1:, 1:], idx[:-1, 1:]], -1).reshape(-1, 4)
+    seatF = np.vstack([qd[:, [0, 1, 2]], qd[:, [0, 2, 3]]])
+    inner = (np.abs(GX) < L / 2 - 20.0) & (np.abs(GY - top[1]) < W / 2 - 20.0)
+    z_seat = float(Hf[inner].max())
+    cb = np.array([0.0, top[1], z_seat + 6.0 + hb])
     blk = G.superellipsoid(cb, (L / 2 - 22.0, W / 2 - 22.0, hb), e_ns=0.7, e_ew=0.6, nu=48, nv=24)
-    c = cb + [0.0, 0.0, H / 2 - hb - 2.0]                           # the box starts with its base on the roll
+    c = cb + [0.0, 0.0, H / 2 - hb + 2.0]                           # the box starts just clear of the seat
     X = V0 + c
-    Vs = cloth_job(name, X, F, X0=V0, colliders=[("contents", np.asarray(blk.vertices), np.asarray(blk.faces))]
-                   + list(colliders), params=replace(p, bending=0.35, air_damping=1.0), frames=(4, 76),
-                   work=WORK / "pouch", vertex_mass=POUCH_VERTEX_MASS)
+    work = WORK / "pouch"
+    work.mkdir(parents=True, exist_ok=True)
+    arr = {"X": X, "X0": V0, "T": F, "pin": np.zeros(len(X), np.float32), "col0_V": np.asarray(blk.vertices),
+           "col0_F": outward(np.asarray(blk.vertices), np.asarray(blk.faces)), "col1_V": seatV, "col1_F": seatF}
+    np.savez_compressed(work / f"{name}.in.npz", **arr)
+    A = np.linalg.norm(np.cross(V0[F[:, 1]] - V0[F[:, 0]], V0[F[:, 2]] - V0[F[:, 0]]), axis=1).sum() / 2e6
+    job = {"kind": "pouch", "in": str(work / f"{name}.in.npz"), "out": str(work / f"{name}.out.npy"),
+           "params": asdict(replace(p, bending=0.35, air_damping=1.0)), "n_straps": 0, "area_m2": float(A),
+           "stem": name, "self_dist_max": 0.4 * h, "vertex_mass": POUCH_VERTEX_MASS, "frames_cinch": 4,
+           "frames_settle": 66, "preview": None}
+    (work / f"{name}.job.json").write_text(json.dumps(job, indent=1))
+    solve(work / f"{name}.job.json")
+    Vs = np.load(job["out"])
     return {"V": Vs, "F": F, "uv": uv, "grids": grids, "centre": c, "rest": V0,
             "contents_L": round(volume_L(np.asarray(blk.vertices), np.asarray(blk.faces)), 2)}
 
@@ -788,8 +819,89 @@ def carry_obstacles(sd: dict) -> tuple[list, dict]:
     return out, geo
 
 
+def _pouch_parts(sc, res, sk, roll, C, fr, POUCH, q, clip_pts, vis, name) -> dict:
+    from . import geom as G
+    from .assets import fabric as FB
+    from .assets import mesh as amesh
+    L = FB.Look
+    cols = [("bag", sk["X"], sk["tris"]), ("roll", np.asarray(roll.vertices), np.asarray(roll.faces))]
+    pz = pouch(res, C, fr, cols, POUCH, q, name=name)
+    pm = amesh(pz["V"], pz["F"], pz["uv"] / 500.0)
+    sc.add_fabric("s15_pouch", pm, "body", look=L(fold=2.0, hand=0.5), max_edge=3.5, uv_is_pattern=True,
+                  label=f"Top pouch {POUCH['L']:.0f} x {POUCH['W']:.0f} x {POUCH['H']:.0f} on the roll", **vis)
+    PS = Surf(pz["V"], pz["F"])
+    g = pz["grids"]
+    for nm, loop in (("top", np.r_[g["top"][:, 0], g["top"][-1, 1:], g["top"][::-1, -1][1:], g["top"][0, ::-1][1:]]),
+                     ("base", np.r_[g["bottom"][:, 0], g["bottom"][-1, 1:], g["bottom"][::-1, -1][1:],
+                                    g["bottom"][0, ::-1][1:]])):
+        Pl = _smooth_path(pz["V"][loop], 3.0, 4.0)
+        ql, nl = PS.near(Pl, 0.0)
+        sc.add_seam(f"s15_pouch_seam_{nm}", ql, nl, material="body", **vis)
+    zrow = g["aft"][:, -3]                                          # #8 zip along the aft long edge, 14 mm down
+    zq, zn = PS.near(_smooth_path(pz["V"][zrow[2:-2]], 3.0, 5.0), 0.3)
+    sc.add_zip("s15_pouch_zip", zq, zn, size=8, sliders=(0.07,), **vis)
+    # pouch straps (G-hooks proud of the cloth, no dent): 2 aft ends -> the roll clips, 2 fore -> the hem under the roll
+    for sx, side in ((1, "R"), (-1, "L")):
+        col = g["aft"][-3 if sx > 0 else 2, 1]
+        a0, na = PS.near(pz["V"][col], 1.2)
+        tgt = clip_pts[side]
+        pth = np.array([a0[0], a0[0] + na[0] * 6 + [sx * 20.0, 0, -6.0], 0.5 * (a0[0] + tgt) + [sx * 10.0, 6.0, 0], tgt])
+        pth = G.catmull_rom(pth, 8)
+        tt = _unit(np.gradient(pth, axis=0))
+        Nn = _unit(np.cross(tt, [0.0, -1.0, 0.0]) * sx)
+        sc.add_strap(f"s15_pouch_strap_a{side}", pth, Nn, 25.0, dent=False, **vis)
+        sc.add_hardware(f"s15_pouch_hook_a{side}", "g_hook_25", pth[-3], Nn[-3], tt[-3], **vis)
+        col = g["fore"][int(round((0.5 + sx * 0.33) * (g["fore"].shape[0] - 1))), 1]
+        f0, nf = PS.near(pz["V"][col], 1.2)
+        k = int(np.argmin(np.abs(fr["L0"][:, 0] - f0[0, 0])))
+        end = fr["L0"][k] + np.array([0, -4.0, 2.0])
+        pth = np.array([f0[0], f0[0] + nf[0] * 5 + [0, -3.0, -8.0], end])
+        pth = G.catmull_rom(pth, 8)
+        tt = _unit(np.gradient(pth, axis=0))
+        sc.add_strap(f"s15_pouch_strap_f{side}", pth, np.tile([0.0, -1.0, 0.0], (len(pth), 1)), 25.0, dent=False, **vis)
+        sc.add_hardware(f"s15_pouch_hook_f{side}", "g_hook_25", pth[-3], [0.0, -1.0, 0.0], tt[-3], **vis)
+    sc.report.setdefault("pouch", {}).update(contents_L=pz["contents_L"])
+    return pz
+
+
+def belt_tabs(sc) -> int:
+    """BL-018 defect 14: webbing into the 50 mm belt buckle. The legacy belt draws the buckle and the two heavy
+    ladder locks but the 38 mm tab between them is missing on one side; a tab is laid from each lock into the
+    buckle's end, so both halves of the buckle are on webbing. Returns the number of tabs added."""
+    import trimesh
+    part = next((x for x in sc.parts if x.name == "beltB_hardware"), None)
+    if part is None:
+        return 0
+    tm = trimesh.Trimesh(np.asarray(part.mesh.vertices), np.asarray(part.mesh.faces), process=False)
+    lab = trimesh.graph.connected_component_labels(tm.face_adjacency, node_count=len(tm.faces))
+    comps = []
+    for k in np.unique(lab):
+        Q = tm.vertices[np.unique(tm.faces[lab == k])]
+        comps.append((Q.mean(0), Q.min(0), Q.max(0)))
+    b = max(comps, key=lambda c: c[2][0] - c[1][0])
+    if b[2][0] - b[1][0] < 70.0:
+        return 0
+    n = 0
+    for sx in (1, -1):
+        cand = [c for c in comps if c is not b and sx * c[0][0] > 35.0 and abs(c[0][2] - b[0][2]) < 22.0
+                and c[0][1] < b[0][1] + 45.0 and (c[2] - c[1]).max() > 25.0]
+        if not cand:
+            continue
+        lk = min(cand, key=lambda c: abs(c[0][0]))
+        x1 = (b[2][0] - 14.0) if sx > 0 else (b[1][0] + 14.0)
+        yb = float(b[1][1]) + 4.0                                   # just behind the buckle's front face
+        P = np.array([[lk[0][0], lk[1][1] + 3.0, lk[0][2]], [0.5 * (lk[0][0] + x1), min(yb, lk[1][1] + 3.0) - 1.0, b[0][2]],
+                      [x1, yb + 3.0, b[0][2]]])
+        from . import geom as G
+        P = G.catmull_rom(P, 8)
+        sc.add_strap(f"beltB_tab_{'R' if sx > 0 else 'L'}", P, np.tile([0.0, -1.0, 0.0], (len(P), 1)), 38.0,
+                     dent=False, group=part.group, modes=part.modes, label="50 mm buckle tab")
+        n += 1
+    return n
+
+
 def s15_scene(state: str = "full", carry: bool = False, params: ClothParams | None = None, name: str | None = None,
-              shell: str = "S15", torso: int = 19, force: bool = False):
+              shell: str = "S15", torso: int = 19, force: bool = False, with_pouch: bool | None = None):
     """The merged bag's shell (S15, wings deleted) at one load state, built through the studio layer on the
     cloth-pass skin: body, door, kick plate and floor are the solved cloth; the roll, its clips, W1-W3, the pouch and
     its straps are rebuilt on it. ``carry`` adds the tripod (right) and the scope pod (left) under W1-W3.
@@ -884,43 +996,12 @@ def s15_scene(state: str = "full", carry: bool = False, params: ClothParams | No
         right = np.where(P[:, 0] > 0.6 * P[:, 0].max())[0]
         i = int(right[np.argmin(np.abs(P[right, 1] - np.median(P[right, 1])))])
         sc.add_hardware(f"s15_{w['id']}_lock", "ladder_lock_25", P[i], o[i], -t[i], **vis)
-    # ---- the pouch on the roll, as cloth
-    cols = [("bag", sk["X"], sk["tris"]), ("roll", np.asarray(roll.vertices), np.asarray(roll.faces))]
-    pz = pouch(res, C, fr, cols, POUCH, q, name=f"pouch_{state}{'_carry' if carry else ''}_L{q.level}")
-    pm = amesh(pz["V"], pz["F"], pz["uv"] / 500.0)
-    sc.add_fabric("s15_pouch", pm, "body", look=L(fold=2.0, hand=0.5), max_edge=3.5, uv_is_pattern=True,
-                  label=f"Top pouch {POUCH['L']:.0f} x {POUCH['W']:.0f} x {POUCH['H']:.0f} on the roll", **vis)
-    PS = Surf(pz["V"], pz["F"])
-    g = pz["grids"]
-    for nm, loop in (("top", np.r_[g["top"][:, 0], g["top"][-1, 1:], g["top"][::-1, -1][1:], g["top"][0, ::-1][1:]]),
-                     ("base", np.r_[g["bottom"][:, 0], g["bottom"][-1, 1:], g["bottom"][::-1, -1][1:],
-                                    g["bottom"][0, ::-1][1:]])):
-        Pl = _smooth_path(pz["V"][loop], 3.0, 4.0)
-        ql, nl = PS.near(Pl, 0.0)
-        sc.add_seam(f"s15_pouch_seam_{nm}", ql, nl, material="body", **vis)
-    zrow = g["aft"][:, -3]                                          # #8 zip along the aft long edge, 14 mm down
-    zq, zn = PS.near(_smooth_path(pz["V"][zrow[2:-2]], 3.0, 5.0), 0.3)
-    sc.add_zip("s15_pouch_zip", zq, zn, size=8, sliders=(0.07,), **vis)
-    # pouch straps (G-hooks proud of the cloth, no dent): 2 aft ends -> the roll clips, 2 fore -> the hem under the roll
-    for sx, side in ((1, "R"), (-1, "L")):
-        col = g["aft"][-3 if sx > 0 else 2, 1]
-        a0, na = PS.near(pz["V"][col], 1.2)
-        tgt = clip_pts[side]
-        pth = np.array([a0[0], a0[0] + na[0] * 6 + [sx * 20.0, 0, -6.0], 0.5 * (a0[0] + tgt) + [sx * 10.0, 6.0, 0], tgt])
-        pth = G.catmull_rom(pth, 8)
-        tt = _unit(np.gradient(pth, axis=0))
-        Nn = _unit(np.cross(tt, [0.0, -1.0, 0.0]) * sx)
-        sc.add_strap(f"s15_pouch_strap_a{side}", pth, Nn, 25.0, dent=False, **vis)
-        sc.add_hardware(f"s15_pouch_hook_a{side}", "g_hook_25", pth[-3], Nn[-3], tt[-3], **vis)
-        col = g["fore"][int(round((0.5 + sx * 0.33) * (g["fore"].shape[0] - 1))), 1]
-        f0, nf = PS.near(pz["V"][col], 1.2)
-        k = int(np.argmin(np.abs(fr["L0"][:, 0] - f0[0, 0])))
-        end = fr["L0"][k] + np.array([0, -4.0, 2.0])
-        pth = np.array([f0[0], f0[0] + nf[0] * 5 + [0, -3.0, -8.0], end])
-        pth = G.catmull_rom(pth, 8)
-        tt = _unit(np.gradient(pth, axis=0))
-        sc.add_strap(f"s15_pouch_strap_f{side}", pth, np.tile([0.0, -1.0, 0.0], (len(pth), 1)), 25.0, dent=False, **vis)
-        sc.add_hardware(f"s15_pouch_hook_f{side}", "g_hook_25", pth[-3], [0.0, -1.0, 0.0], tt[-3], **vis)
+    belt_tabs(sc)
+    with_pouch = (state != "day") if with_pouch is None else with_pouch
+    pz = {"contents_L": None}
+    # ---- the pouch on the roll, as cloth (day load: pouch off; it is removable and overhangs the flattened top)
+    if with_pouch:
+        _pouch_parts(sc, res, sk, roll, C, fr, POUCH, q, clip_pts, vis, f"pouch_{state}{'_carry' if carry else ''}_L{q.level}")
     # ---- carried gear for the side-carry shot
     if carry:
         tm, tr = VC._tripod(geo["tripod"])
@@ -937,7 +1018,7 @@ def s15_scene(state: str = "full", carry: bool = False, params: ClothParams | No
     sc.report["cloth_pass"] = {"state": state, "carry": carry, "departure": res["departure"],
                                "volume_L": res["volume_L"], "seed_volume_L": res["seed_volume_L"],
                                "proxy": res["proxy"], "roll": rinfo, "bend_deg": res["bend_deg"],
-                               "pouch_contents_L": pz["contents_L"], "lip": res["lip"], "solve_s": res["seconds"], "verts": res["verts"]}
+                               "pouch": bool(with_pouch), "lip": res["lip"], "solve_s": res["seconds"], "verts": res["verts"]}
     sc.report["source"] = {"sim": f"huntkit drape {shell} PR{torso} full (seed) + viz3d.cloth_pass", "case": state,
                            "spec": "S15, wings deleted"}
     return sc

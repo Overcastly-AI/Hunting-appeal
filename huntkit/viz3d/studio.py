@@ -513,6 +513,8 @@ def corrie_b2_scene(name="corrie_b2", params=None) -> ConceptScene:
     # the lining is rebuilt 1.2 mm inside the displaced door instead
     drop = ("corrie_seams", "corrie_door_zip", "corrie_zip_sliders", "corrie_zip_pulls", "corrie_door_lining")
     drop += tuple(q.name for q in pack.parts if q.name.startswith("imp6_hw@"))     # floats off the strap (legacy)
+    # BL-020: the "floating shard" of defect 10 is the legacy phone slab (and its cord), drawn flat below the pocket
+    drop += tuple(q.name for q in pack.parts if q.name.startswith(("imp6_phone@", "imp6_cord@")))
     import trimesh
     for q in pack.parts:                       # legacy harness: strap-tip slivers that float off the straps
         if q.name.startswith("shoulder_straps@"):
@@ -671,7 +673,7 @@ def _has_bpy() -> bool:
 
 def render(concept_scene, shots, out_dir, prefix=None, quality="final", start=1, captions=True, wearer=None,
            wearer_kwargs=None, pack_on_torso=None, bpy_python=None, work_dir=None, title=None, threads=None,
-           camo=None, torso=19.0) -> list[dict]:
+           camo=None, torso=19.0, cloth_pass=False) -> list[dict]:
     """Render ``shots`` of a concept to ``out_dir/<prefix>_<n>.png`` (PNG <= 1.5 MB each).
 
     concept_scene  a ``ConceptScene``, or the path of a ``*.scene.json`` an earlier ``build`` wrote.
@@ -686,10 +688,17 @@ def render(concept_scene, shots, out_dir, prefix=None, quality="final", start=1,
     pack_on_torso  4x4 rigid transform (row-major nested lists, Blender world metres, Z up) applied to every pack
                    object so the pack sits on the wearer's torso. Identity = the pack stays in its own frame
                    (FCS x, -y, z in metres), which is where the display form stands.
+    cloth_pass     BL-020 render-only cloth pass: True, a ``cloth_pass.ClothParams`` or a dict of its fields. Every
+                   part marked with ``cloth_pass.register(scene, part, ...)`` is solved in Blender's cloth solver
+                   (real folds, contact with its colliders) before the fabric pass. Presentation geometry only;
+                   see ``huntkit/viz3d/cloth_pass.py`` and README "Cloth pass".
     Returns one dict per frame: view, file, seconds, mb."""
     if isinstance(shots, (list, tuple)):
         shots = globals()["shots"](*shots)
     out_dir = Path(out_dir)
+    if cloth_pass and isinstance(concept_scene, ConceptScene):
+        from . import cloth_pass as CP
+        CP.apply(concept_scene, None if cloth_pass is True else cloth_pass)
     if isinstance(concept_scene, ConceptScene):
         scene_json = concept_scene.build(work_dir)
     else:
