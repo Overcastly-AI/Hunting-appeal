@@ -1,0 +1,44 @@
+{
+ "note": "Downloaded human-figure assets for huntkit.viz3d.wearer (BL-019). Nothing here is stored in the repo; fetch_assets() rebuilds the cache and verifies SHA-256. Licences are quoted in docs/research/human_figure_sources.md.",
+ "assets": [
+  {
+   "id": "mpfb",
+   "what": "MPFB 2 (MakeHuman Plugin For Blender) extension: base mesh hm08, morph targets, rigs, skin shaders",
+   "version": "2.0.18",
+   "url": "https://extensions.blender.org/download/sha256:c075b3e9b94b8e5556a5f03f4653602d02ea306de08126e8f55ed6dee28a2dad/add-on-mpfb-v2.0.18.zip",
+   "page": "https://extensions.blender.org/add-ons/mpfb/",
+   "file": "add-on-mpfb-v2.0.18.zip",
+   "dir": "mpfb_addon",
+   "probe": "x/blender_manifest.toml",
+   "sha256": "c075b3e9b94b8e5556a5f03f4653602d02ea306de08126e8f55ed6dee28a2dad",
+   "bytes": 45956992,
+   "licence": "code GPL-3.0-or-later (a tool, not distributed by us); bundled base mesh, targets, rigs and other assets CC0-1.0",
+   "commercial_use": true,
+   "retrieved": "2026-11-10"
+  },
+  {
+   "id": "mh_system_assets",
+   "what": "MakeHuman system assets pack: skins, eyes, eyebrows, eyelashes, clothes, shoes",
+   "version": "2024-04-14 (server last-modified)",
+   "url": "https://files.makehumancommunity.org/asset_packs/makehuman_system_assets/makehuman_system_assets_cc0.zip",
+   "page": "http://static.makehumancommunity.org/assets/assetpacks/makehuman_system_assets.html",
+   "file": "makehuman_system_assets_cc0.zip",
+   "dir": "mh_system_assets",
+   "probe": "x/packs/makehuman_system_assets.json",
+   "sha256": "b542127a8e25547c7c29c19f2d1d2adb9a664c80396ecd694095dbc8028a0107",
+   "bytes": 280737770,
+   "licence": "CC0-1.0 (every asset in the pack; stated in each file header and in packs/makehuman_system_assets.json)",
+   "commercial_use": true,
+   "retrieved": "2026-11-10",
+   "used": [
+    "skins/middleage_caucasian_male",
+    "eyes/high-poly + eyes/materials/brown",
+    "eyebrows/eyebrow001",
+    "eyelashes/eyelashes01",
+    "clothes/male_casualsuit02 (top + trousers mesh and normal map; recoloured)",
+    "clothes/male_casualsuit05 (jacket variant)",
+    "clothes/shoes03 (boots; recoloured)"
+   ]
+  }
+ ]
+}

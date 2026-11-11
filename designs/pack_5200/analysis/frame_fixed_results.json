@@ -1,0 +1,2206 @@
+{
+ "date": "2026-11-10",
+ "ticket": "BL-007",
+ "h1_reproduced": {
+  "raster_g": 757.72192,
+  "min": {
+   "strength": 1.4531359257446115,
+   "fatigue": 1.2794731924250948,
+   "creep": 2.7295428105068695
+  },
+  "body": {
+   "C": {
+    "strength": 1.4531359257446115,
+    "governing": "hipbelt_off_abuse|15",
+    "where": "upper bar / pawl housing",
+    "fatigue": 1.6109600309879686,
+    "creep": 3.4367147327743335,
+    "fatigue_set": "C:static_carry|15",
+    "cases": {
+     "static_carry": 4.296,
+     "drop_2p5g": 2.864,
+     "side_hill_torsion": 2.09,
+     "single_stay_setdown": 2.469,
+     "meat_straps": 2.477,
+     "tall_load": 3.561,
+     "overload_haul": 3.482,
+     "tall_load_posts": 3.395,
+     "hipbelt_off_abuse": 1.453
+    }
+   },
+   "C_im3": {
+    "strength": 1.4705876268770937,
+    "governing": "hipbelt_off_abuse|15",
+    "where": "upper bar / pawl housing",
+    "fatigue": 1.2794731924250948,
+    "creep": 2.7295428105068695,
+    "fatigue_set": "C_im3:static_carry|23",
+    "cases": {
+     "static_carry": 3.412,
+     "drop_2p5g": 2.275,
+     "side_hill_torsion": 2.045,
+     "single_stay_setdown": 2.43,
+     "hipbelt_off_abuse": 1.471
+    }
+   }
+  },
+  "by_torso": {
+   "C|15": {
+    "strength": 1.453,
+    "fatigue": 1.611,
+    "creep": 3.437,
+    "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+   },
+   "C|19": {
+    "strength": 2.147,
+    "fatigue": 1.706,
+    "creep": 3.64,
+    "gov": "side_hill_torsion (mid bar z 330)"
+   },
+   "C|23": {
+    "strength": 2.17,
+    "fatigue": 1.768,
+    "creep": 3.772,
+    "gov": "side_hill_torsion (mid bar z 330)"
+   },
+   "C_im3|15": {
+    "strength": 1.471,
+    "fatigue": 1.524,
+    "creep": 3.25,
+    "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+   },
+   "C_im3|19": {
+    "strength": 2.103,
+    "fatigue": 1.474,
+    "creep": 3.144,
+    "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+   },
+   "C_im3|23": {
+    "strength": 2.135,
+    "fatigue": 1.279,
+    "creep": 2.73,
+    "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+   }
+  },
+  "buckling_min": 1.313,
+  "joint_strength": 1.964,
+  "joint_fatigue": 1.22,
+  "torsion_Nm_deg": 3.2679479649247885,
+  "recorded": {
+   "min": {
+    "strength": 1.4531359257446115,
+    "fatigue": 1.2794731924250948,
+    "creep": 2.7295428105068695
+   },
+   "buckling_min": 1.313,
+   "joint": [
+    1.964,
+    1.22
+   ]
+  },
+  "reproduced": true
+ },
+ "push_c": [
+  {
+   "it": 0,
+   "raster_g": 742.61056,
+   "min": {
+    "strength": 1.6261368238020086,
+    "fatigue": 1.0266099835207565,
+    "creep": 2.190101298177614
+   },
+   "buckling_min": 1.189,
+   "gov": "C_im3:C_im3:static_carry|23 (fatigue)",
+   "s": 47,
+   "pass": true
+  },
+  {
+   "it": 1,
+   "raster_g": 741.12656,
+   "min": {
+    "strength": 1.599706448209763,
+    "fatigue": 1.0361381880474565,
+    "creep": 2.2104281345012406
+   },
+   "buckling_min": 1.323,
+   "gov": "C_im3:C_im3:static_carry|23 (fatigue)",
+   "s": 38,
+   "pass": true
+  },
+  {
+   "it": 2,
+   "raster_g": 740.83824,
+   "min": {
+    "strength": 1.593757442291419,
+    "fatigue": 1.0458984293880629,
+    "creep": 2.2312499826945347
+   },
+   "buckling_min": 1.396,
+   "gov": "C_im3:C_im3:static_carry|23 (fatigue)",
+   "s": 34,
+   "pass": true
+  },
+  {
+   "it": 3,
+   "raster_g": 740.97392,
+   "min": {
+    "strength": 1.5877379866976624,
+    "fatigue": 1.0516767507477116,
+    "creep": 2.243577068261785
+   },
+   "buckling_min": 1.491,
+   "gov": "C_im3:C_im3:static_carry|23 (fatigue)",
+   "s": 36,
+   "pass": true
+  },
+  {
+   "it": 4,
+   "raster_g": 741.00784,
+   "min": {
+    "strength": 1.5801684436720427,
+    "fatigue": 1.068050015265481,
+    "creep": 2.2785066992330263
+   },
+   "buckling_min": 1.568,
+   "gov": "C_im3:C_im3:static_carry|23 (fatigue)",
+   "s": 35,
+   "pass": true
+  },
+  {
+   "it": 5,
+   "raster_g": 740.94,
+   "min": {
+    "strength": 1.574587151179026,
+    "fatigue": 1.0822610497349048,
+    "creep": 2.308823572767797
+   },
+   "buckling_min": 1.628,
+   "gov": "C_im3:C_im3:static_carry|23 (fatigue)",
+   "s": 37,
+   "pass": true
+  }
+ ],
+ "variants": {
+  "a": {
+   "body": {
+    "variant": "a",
+    "raster_g": 757.72192,
+    "min": {
+     "strength": 1.6366435374806079,
+     "fatigue": 1.0835289197611693,
+     "creep": 2.311528362157161
+    },
+    "governing": "C_im3:C_im3:static_carry|23 (fatigue)",
+    "by_torso": {
+     "C|15": {
+      "strength": 1.637,
+      "fatigue": 1.42,
+      "creep": 3.029,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "C|19": {
+      "strength": 2.399,
+      "fatigue": 1.491,
+      "creep": 3.181,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "C|23": {
+      "strength": 2.11,
+      "fatigue": 1.532,
+      "creep": 3.268,
+      "gov": "meat_straps (stay L sleeve (crown bore wall))"
+     },
+     "C_im3|15": {
+      "strength": 1.669,
+      "fatigue": 1.345,
+      "creep": 2.87,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "C_im3|19": {
+      "strength": 2.217,
+      "fatigue": 1.247,
+      "creep": 2.66,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "C_im3|23": {
+      "strength": 1.926,
+      "fatigue": 1.084,
+      "creep": 2.312,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "cases": {
+     "static_carry": 2.889,
+     "drop_2p5g": 1.926,
+     "side_hill_torsion": 2.138,
+     "single_stay_setdown": 2.871,
+     "meat_straps": 2.11,
+     "tall_load": 2.976,
+     "overload_haul": 2.966,
+     "tall_load_posts": 2.842,
+     "hipbelt_off_abuse": 1.637
+    },
+    "buckling_min": 1.232,
+    "joint": {
+     "strength": {
+      "washer bearing (XY)": {
+       "margin": 2.351,
+       "set": "C_im3:side_hill_torsion|23 R"
+      },
+      "plug shear-out (interlayer)": {
+       "margin": 3.122,
+       "set": "C_im3:side_hill_torsion|23 R"
+      },
+      "bolt tension Ti (0.7 UTS)": {
+       "margin": 3.206,
+       "set": "C_im3:side_hill_torsion|23 R"
+      },
+      "fitted-bolt hole bearing (shear)": {
+       "margin": 8.287,
+       "set": "C_im3:side_hill_torsion|15 R"
+      },
+      "bolt shear Ti": {
+       "margin": 10.378,
+       "set": "C_im3:side_hill_torsion|15 R"
+      },
+      "dry-face contact bearing": {
+       "margin": 1.96,
+       "set": "C_im3:drop_2p5g|23 L"
+      },
+      "boss bending + prying (layer FI)": {
+       "margin": 2.154,
+       "set": "C_im3:side_hill_torsion|23 R"
+      }
+     },
+     "fatigue": {
+      "washer bearing (XY) at 1.6 g": {
+       "margin": 1.343,
+       "set": "C_im3:static_carry|23 L"
+      },
+      "plug shear-out (interlayer) at 1.6 g": {
+       "margin": 1.783,
+       "set": "C_im3:static_carry|23 L"
+      },
+      "fitted-bolt hole bearing (shear) at 1.6 g": {
+       "margin": 5.574,
+       "set": "C_im3:static_carry|15 R"
+      },
+      "bolt thread Ti at 1.6 g (0.25 UTS)": {
+       "margin": 2.18,
+       "set": "C_im3:static_carry|23 L"
+      },
+      "boss bending + prying at 1.6 g": {
+       "margin": 1.23,
+       "set": "C_im3:static_carry|23 L"
+      }
+     },
+     "max_bolt_force_n": {
+      "value": 2775,
+      "set": "C_im3:side_hill_torsion|23 R"
+     },
+     "min_strength": 1.96,
+     "min_fatigue": 1.23,
+     "capacities_n": {
+      "washer_bearing_n": 6523.9,
+      "plug_shear_out_n": 8663.0,
+      "bolt_tension_n": 8896.3,
+      "bolt_fatigue_n": 3177.2,
+      "hole_bearing_n": 5744.6,
+      "bolt_shear_n": 7193.9,
+      "contact_mpa": 70.4
+     },
+     "branch_axial_across_split": {
+      "max_tension_n": 433.6868724822998,
+      "set": "C_im3:side_hill_torsion|23 L"
+     },
+     "design": {
+      "z": 234.0,
+      "e": 19.0,
+      "theta_deg": 15.0,
+      "r_boss": 8.0,
+      "z_lo": 198.0,
+      "z_hi": 252.0,
+      "head_face": 250.0,
+      "nut_face": 212.0,
+      "hole_d": 5.1,
+      "washer_od": 12.0,
+      "washer_t": 1.0,
+      "nut_af": 8.0,
+      "nut_t": 4.0,
+      "tail_z": 202.0,
+      "bolt_len": 45.0,
+      "head_h": 3.5,
+      "head_d": 8.5,
+      "torque_nm": 1.0,
+      "xy": [
+       [
+        16.4,
+        10.0
+       ],
+       [
+        -19.0,
+        5.0
+       ]
+      ],
+      "trap_dirs": [
+       null,
+       [
+        0.0,
+        -1.0
+       ]
+      ]
+     },
+     "assumptions": [
+      "prying factor 1.25 (team B)",
+      "contact length 10.0 mm, hot E",
+      "no preload credited (snug 1 N m; PAHT creep relaxes it)",
+      "bolt-group from the real z 234 voxel cut (stay + bosses + branch) as a rigid face"
+     ]
+    },
+    "keepouts": {
+     "sleeve_R present": 1.0,
+     "sleeve_L present": 1.0,
+     "pawl present": 1.0,
+     "pivot present": 1.0,
+     "bore_R empty": 1.0,
+     "bore_L empty": 1.0,
+     "spine_channel empty": 1.0,
+     "fairleads present": 1.0,
+     "outside envelope (voxels)": 0,
+     "spreader clip sections identical to H1": true
+    },
+    "family_g": {
+     "foot": 7.8,
+     "low": 113.3,
+     "sleeve": 262.7,
+     "top": 195.2,
+     "branch": 70.2,
+     "strut": 87.9,
+     "mid": 20.7
+    },
+    "torsion_Nm_deg": 3.2679479649247885,
+    "buckling": {
+     "branch lower (z 165-330) L": 1.232,
+     "branch lower (z 165-330) R": null,
+     "branch upper (z 330-495) L": 2.348,
+     "branch upper (z 330-495) R": 4.443,
+     "mid bar (x -115..115) all": null
+    },
+    "torsion_vs_h1": 1.0
+   },
+   "beam": {
+    "crown": {
+     "C": {
+      "crown_leg": {
+       "sf": 1.4108575141980955,
+       "set": "hipbelt_off_abuse|15",
+       "member": "CR530-CRmid"
+      },
+      "crown_top_bar": {
+       "sf": 1.3481433720875706,
+       "set": "hipbelt_off_abuse|15",
+       "member": "TB1-TB2"
+      },
+      "crown_spine": {
+       "sf": 1.1762368718570075,
+       "set": "hipbelt_off_abuse|15",
+       "member": "SP75-SP81"
+      },
+      "corner_bond_avg": {
+       "sf": 2.2051839263399375,
+       "set": "tall_load_posts|15"
+      },
+      "corner_bond_peak": {
+       "sf": 1.1231121312120274,
+       "set": "hipbelt_off_abuse|15"
+      },
+      "fatigue": {
+       "sf": 3.2272380994923835,
+       "set": "static_carry|15",
+       "member": "crown_spine"
+      },
+      "buckling": {
+       "sf": 1.8345786739530068,
+       "set": "side_hill_torsion|15"
+      },
+      "leg_ring_crush_pack5200_40mm_info": {
+       "sf": 1.0793031486424673,
+       "set": "hipbelt_off_abuse|15"
+      },
+      "shim_bearing_uhmwpe": {
+       "sf": 8.140388479727587,
+       "set": "hipbelt_off_abuse|15"
+      },
+      "corner_bond_fatigue": {
+       "static_carry": {
+        "avg": {
+         "set": "static_carry|15",
+         "sf_avg": 7.281363402111202,
+         "sf_peak": 2.520907241859577,
+         "member": "CRmid-CRtop"
+        },
+        "peak": {
+         "set": "static_carry|15",
+         "sf_avg": 7.281363402111202,
+         "sf_peak": 2.520907241859577,
+         "member": "CRmid-CRtop"
+        }
+       },
+       "meat_straps": {
+        "avg": {
+         "set": "meat_straps|15",
+         "sf_avg": 4.431898763986226,
+         "sf_peak": 1.5343837509994342,
+         "member": "CLmid-CLtop"
+        },
+        "peak": {
+         "set": "meat_straps|15",
+         "sf_avg": 4.431898763986226,
+         "sf_peak": 1.5343837509994342,
+         "member": "CLmid-CLtop"
+        }
+       }
+      }
+     },
+     "C_im3": {
+      "crown_leg": {
+       "sf": 1.1326481294834305,
+       "set": "hipbelt_off_abuse|23",
+       "member": "CLbot-CL530"
+      },
+      "crown_top_bar": {
+       "sf": 1.2376153272407655,
+       "set": "hipbelt_off_abuse|15",
+       "member": "TB1-TB2"
+      },
+      "crown_spine": {
+       "sf": 1.1460466460321639,
+       "set": "hipbelt_off_abuse|23",
+       "member": "SP75-SP150"
+      },
+      "corner_bond_avg": {
+       "sf": 3.1762117708797097,
+       "set": "hipbelt_off_abuse|15"
+      },
+      "corner_bond_peak": {
+       "sf": 1.0996478012028237,
+       "set": "hipbelt_off_abuse|15"
+      },
+      "fatigue": {
+       "sf": 1.361558451950831,
+       "set": "static_carry|23",
+       "member": "crown_leg"
+      },
+      "leg_ring_crush_pack5200_40mm_info": {
+       "sf": 0.9183555630530842,
+       "set": "hipbelt_off_abuse|15"
+      },
+      "shim_bearing_uhmwpe": {
+       "sf": 6.9264794188490875,
+       "set": "hipbelt_off_abuse|15"
+      },
+      "corner_bond_fatigue": {
+       "static_carry": {
+        "avg": {
+         "set": "static_carry|23",
+         "sf_avg": 5.705253483222988,
+         "sf_peak": 1.9752365083620584,
+         "member": "CLmid-CLtop"
+        },
+        "peak": {
+         "set": "static_carry|23",
+         "sf_avg": 5.705253483222988,
+         "sf_peak": 1.9752365083620584,
+         "member": "CLmid-CLtop"
+        }
+       }
+      }
+     }
+    },
+    "spine_guide": {
+     "C": {
+      "sf": 1.525,
+      "set": "hipbelt_off_abuse|15",
+      "factored_yz_n": [
+       2136.4,
+       0.0
+      ]
+     },
+     "C_im3": {
+      "sf": 1.538,
+      "set": "hipbelt_off_abuse|15",
+      "factored_yz_n": [
+       2117.2,
+       0.0
+      ]
+     }
+    },
+    "socket": {
+     "C": {
+      "strength": {
+       "cross-bolt Ti double shear": {
+        "margin": 67.688,
+        "set": "hipbelt_off_abuse|23"
+       },
+       "leg wall pin bearing (CFRP 300 MPa x 0.8)": {
+        "margin": 16.259,
+        "set": "hipbelt_off_abuse|23"
+       },
+       "socket bearing on the bolt (in-layer)": {
+        "margin": 14.573,
+        "set": "hipbelt_off_abuse|23"
+       },
+       "socket shear-out (interlayer, 2 planes)": {
+        "margin": 46.699,
+        "set": "hipbelt_off_abuse|23"
+       },
+       "printed bore bearing under the low shim (across layers)": {
+        "margin": 27.862,
+        "set": "hipbelt_off_abuse|15"
+       },
+       "leg ring crush under the low shim": {
+        "margin": 2.063,
+        "set": "hipbelt_off_abuse|15"
+       },
+       "printed bore bearing under the top shim (across layers)": {
+        "margin": 18.683,
+        "set": "hipbelt_off_abuse|15"
+       },
+       "leg ring crush under the top shim": {
+        "margin": 1.383,
+        "set": "hipbelt_off_abuse|15"
+       },
+       "leg at the cross-bolt hole (FPF x open-hole 0.55)": {
+        "margin": 2.221,
+        "set": "hipbelt_off_abuse|15"
+       }
+      },
+      "fatigue": {
+       "socket bearing on the bolt (in-layer) at 1.6 g": {
+        "margin": 71.466,
+        "set": "static_carry|23"
+       },
+       "socket shear-out (interlayer, 2 planes) at 1.6 g": {
+        "margin": 229.015,
+        "set": "static_carry|23"
+       },
+       "cross-bolt Ti thread-free shank at 1.6 g (0.25 UTS shear)": {
+        "margin": 461.036,
+        "set": "static_carry|23"
+       },
+       "printed bore bearing (low shim) at 1.6 g": {
+        "margin": 70.552,
+        "set": "static_carry|15"
+       },
+       "leg ring under the low shim at 1.6 g (FI <= 0.5)": {
+        "margin": 8.707,
+        "set": "static_carry|15"
+       },
+       "printed bore bearing (top shim) at 1.6 g": {
+        "margin": 50.928,
+        "set": "static_carry|15"
+       },
+       "leg ring under the top shim at 1.6 g (FI <= 0.5)": {
+        "margin": 6.285,
+        "set": "static_carry|15"
+       },
+       "leg at the cross-bolt hole at 1.6 g (CFRP FI <= 0.5)": {
+        "margin": 9.512,
+        "set": "static_carry|15"
+       }
+      },
+      "min_strength": 1.383,
+      "min_fatigue": 6.285
+     },
+     "C_im3": {
+      "strength": {
+       "cross-bolt Ti double shear": {
+        "margin": 67.688,
+        "set": "hipbelt_off_abuse|23"
+       },
+       "leg wall pin bearing (CFRP 300 MPa x 0.8)": {
+        "margin": 16.259,
+        "set": "hipbelt_off_abuse|23"
+       },
+       "socket bearing on the bolt (in-layer)": {
+        "margin": 14.573,
+        "set": "hipbelt_off_abuse|23"
+       },
+       "socket shear-out (interlayer, 2 planes)": {
+        "margin": 46.699,
+        "set": "hipbelt_off_abuse|23"
+       },
+       "printed bore bearing under the low shim (across layers)": {
+        "margin": 22.34,
+        "set": "hipbelt_off_abuse|23"
+       },
+       "leg ring crush under the low shim": {
+        "margin": 1.654,
+        "set": "hipbelt_off_abuse|23"
+       },
+       "printed bore bearing under the top shim (across layers)": {
+        "margin": 15.897,
+        "set": "hipbelt_off_abuse|15"
+       },
+       "leg ring crush under the top shim": {
+        "margin": 1.177,
+        "set": "hipbelt_off_abuse|15"
+       },
+       "leg at the cross-bolt hole (FPF x open-hole 0.55)": {
+        "margin": 1.783,
+        "set": "hipbelt_off_abuse|23"
+       }
+      },
+      "fatigue": {
+       "socket bearing on the bolt (in-layer) at 1.6 g": {
+        "margin": 69.398,
+        "set": "static_carry|15"
+       },
+       "socket shear-out (interlayer, 2 planes) at 1.6 g": {
+        "margin": 222.388,
+        "set": "static_carry|15"
+       },
+       "cross-bolt Ti thread-free shank at 1.6 g (0.25 UTS shear)": {
+        "margin": 447.695,
+        "set": "static_carry|15"
+       },
+       "printed bore bearing (low shim) at 1.6 g": {
+        "margin": 16.219,
+        "set": "static_carry|23"
+       },
+       "leg ring under the low shim at 1.6 g (FI <= 0.5)": {
+        "margin": 2.002,
+        "set": "static_carry|23"
+       },
+       "printed bore bearing (top shim) at 1.6 g": {
+        "margin": 16.803,
+        "set": "static_carry|23"
+       },
+       "leg ring under the top shim at 1.6 g (FI <= 0.5)": {
+        "margin": 2.074,
+        "set": "static_carry|23"
+       },
+       "leg at the cross-bolt hole at 1.6 g (CFRP FI <= 0.5)": {
+        "margin": 2.168,
+        "set": "static_carry|23"
+       }
+      },
+      "min_strength": 1.177,
+      "min_fatigue": 2.002
+     },
+     "capacities_n": {
+      "cross-bolt Ti double shear": 28775.6,
+      "leg wall pin bearing (CFRP 300 MPa x 0.8)": 6912.0,
+      "socket bearing on the bolt (in-layer)": 6195.2,
+      "socket shear-out (interlayer, 2 planes)": 19852.8
+     },
+     "design": {
+      "socket_z": [
+       395.0,
+       544.0
+      ],
+      "shims": "UHMWPE 40 mm at z 400-440 and 60 mm at z 484-544",
+      "lever_correction": 1.1702127659574468,
+      "cross_bolts": "2 x Ti gr5 M5 x 30 per leg at z 445, 90 deg apart in plan, reamed 5.1 through socket and leg, A2 nut",
+      "leg": {
+       "od": 16.0,
+       "t": 1.44
+      }
+     }
+    }
+   },
+   "mass": {
+    "15": {
+     "items": {
+      "printed body (H1 basis)": 757.7,
+      "fixed interfaces as H1": 239.4,
+      "z 234 joint hardware": 28.0,
+      "crown legs cut to the unit (2 x 201 mm instead of 430)": -46.9,
+      "rack + pawl + pulley guides removed": -44.0,
+      "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
+      "4 Ti M5 x 30 cross-bolts + nuts + washers": 20.9,
+      "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
+     },
+     "frame_g": 958.3,
+     "frame_plus_spreader_g": 1120.6,
+     "pack_g": 3818.4,
+     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+    },
+    "16": {
+     "items": {
+      "printed body (H1 basis)": 757.7,
+      "fixed interfaces as H1": 239.4,
+      "z 234 joint hardware": 28.0,
+      "crown legs cut to the unit (2 x 226 mm instead of 430)": -41.7,
+      "rack + pawl + pulley guides removed": -44.0,
+      "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
+      "4 Ti M5 x 30 cross-bolts + nuts + washers": 20.9,
+      "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
+     },
+     "frame_g": 963.5,
+     "frame_plus_spreader_g": 1125.8,
+     "pack_g": 3823.6,
+     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+    },
+    "18": {
+     "items": {
+      "printed body (H1 basis)": 757.7,
+      "fixed interfaces as H1": 239.4,
+      "z 234 joint hardware": 28.0,
+      "crown legs cut to the unit (2 x 277 mm instead of 430)": -31.3,
+      "rack + pawl + pulley guides removed": -44.0,
+      "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
+      "4 Ti M5 x 30 cross-bolts + nuts + washers": 20.9,
+      "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
+     },
+     "frame_g": 973.9,
+     "frame_plus_spreader_g": 1136.2,
+     "pack_g": 3834.0,
+     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+    },
+    "19": {
+     "items": {
+      "printed body (H1 basis)": 757.7,
+      "fixed interfaces as H1": 239.4,
+      "z 234 joint hardware": 28.0,
+      "crown legs cut to the unit (2 x 303 mm instead of 430)": -26.1,
+      "rack + pawl + pulley guides removed": -44.0,
+      "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
+      "4 Ti M5 x 30 cross-bolts + nuts + washers": 20.9,
+      "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
+     },
+     "frame_g": 979.1,
+     "frame_plus_spreader_g": 1141.4,
+     "pack_g": 3839.2,
+     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+    },
+    "20": {
+     "items": {
+      "printed body (H1 basis)": 757.7,
+      "fixed interfaces as H1": 239.4,
+      "z 234 joint hardware": 28.0,
+      "crown legs cut to the unit (2 x 328 mm instead of 430)": -20.9,
+      "rack + pawl + pulley guides removed": -44.0,
+      "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
+      "4 Ti M5 x 30 cross-bolts + nuts + washers": 20.9,
+      "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
+     },
+     "frame_g": 984.3,
+     "frame_plus_spreader_g": 1146.6,
+     "pack_g": 3844.4,
+     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+    },
+    "22": {
+     "items": {
+      "printed body (H1 basis)": 757.7,
+      "fixed interfaces as H1": 239.4,
+      "z 234 joint hardware": 28.0,
+      "crown legs cut to the unit (2 x 379 mm instead of 430)": -10.5,
+      "rack + pawl + pulley guides removed": -44.0,
+      "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
+      "4 Ti M5 x 30 cross-bolts + nuts + washers": 20.9,
+      "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
+     },
+     "frame_g": 994.7,
+     "frame_plus_spreader_g": 1157.0,
+     "pack_g": 3854.8,
+     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+    },
+    "23": {
+     "items": {
+      "printed body (H1 basis)": 757.7,
+      "fixed interfaces as H1": 239.4,
+      "z 234 joint hardware": 28.0,
+      "crown legs cut to the unit (2 x 404 mm instead of 430)": -5.3,
+      "rack + pawl + pulley guides removed": -44.0,
+      "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
+      "4 Ti M5 x 30 cross-bolts + nuts + washers": 20.9,
+      "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
+     },
+     "frame_g": 999.9,
+     "frame_plus_spreader_g": 1162.2,
+     "pack_g": 3860.0,
+     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+    }
+   },
+   "print_g_19": 764.5,
+   "print_h_19": 27.0,
+   "cost_19": {
+    "H1 unit cost incl. spreader": 437.0,
+    "filament + reprint (print mass change)": 0.0,
+    "machine time ($1/h)": 0.0,
+    "rack + pawl + guides (ASSUMPTION $6 printed PA66-GF + pawl)": -6.0,
+    "pulley webbing, cam buckle, cord, toggle (ASSUMPTION $15)": -15.0,
+    "yoke strip (ASSUMPTION $2)": 2.0,
+    "carbon legs cut to length": -8.7,
+    "UHMWPE bushings -> shims": -1.4,
+    "4 Ti M5 cross-bolts ($4.50, A's figure) + nuts": 19.0,
+    "total": 426.9
+   }
+  },
+  "c": {
+   "body": {
+    "variant": "c",
+    "raster_g": 740.83824,
+    "min": {
+     "strength": 1.593757442291419,
+     "fatigue": 1.0458984293880629,
+     "creep": 2.2312499826945347
+    },
+    "governing": "C_im3:C_im3:static_carry|23 (fatigue)",
+    "by_torso": {
+     "C|15": {
+      "strength": 1.594,
+      "fatigue": 1.475,
+      "creep": 3.146,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "C|19": {
+      "strength": 2.348,
+      "fatigue": 1.568,
+      "creep": 3.344,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "C|23": {
+      "strength": 1.96,
+      "fatigue": 1.622,
+      "creep": 3.46,
+      "gov": "meat_straps (stay L sleeve (crown bore wall))"
+     },
+     "C_im3|15": {
+      "strength": 1.625,
+      "fatigue": 1.415,
+      "creep": 3.018,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "C_im3|19": {
+      "strength": 2.175,
+      "fatigue": 1.244,
+      "creep": 2.653,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "C_im3|23": {
+      "strength": 1.859,
+      "fatigue": 1.046,
+      "creep": 2.231,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "cases": {
+     "static_carry": 2.789,
+     "drop_2p5g": 1.859,
+     "side_hill_torsion": 2.063,
+     "single_stay_setdown": 2.82,
+     "meat_straps": 1.96,
+     "tall_load": 3.101,
+     "overload_haul": 2.753,
+     "tall_load_posts": 2.873,
+     "hipbelt_off_abuse": 1.594
+    },
+    "buckling_min": 1.396,
+    "joint": {
+     "strength": {
+      "washer bearing (XY)": {
+       "margin": 2.23,
+       "set": "C_im3:side_hill_torsion|23 R"
+      },
+      "plug shear-out (interlayer)": {
+       "margin": 2.961,
+       "set": "C_im3:side_hill_torsion|23 R"
+      },
+      "bolt tension Ti (0.7 UTS)": {
+       "margin": 3.041,
+       "set": "C_im3:side_hill_torsion|23 R"
+      },
+      "fitted-bolt hole bearing (shear)": {
+       "margin": 8.204,
+       "set": "C_im3:side_hill_torsion|15 R"
+      },
+      "bolt shear Ti": {
+       "margin": 10.274,
+       "set": "C_im3:side_hill_torsion|15 R"
+      },
+      "dry-face contact bearing": {
+       "margin": 2.008,
+       "set": "C_im3:drop_2p5g|23 L"
+      },
+      "boss bending + prying (layer FI)": {
+       "margin": 2.043,
+       "set": "C_im3:side_hill_torsion|23 R"
+      }
+     },
+     "fatigue": {
+      "washer bearing (XY) at 1.6 g": {
+       "margin": 1.295,
+       "set": "C_im3:static_carry|23 L"
+      },
+      "plug shear-out (interlayer) at 1.6 g": {
+       "margin": 1.719,
+       "set": "C_im3:static_carry|23 L"
+      },
+      "fitted-bolt hole bearing (shear) at 1.6 g": {
+       "margin": 5.594,
+       "set": "C_im3:static_carry|15 L"
+      },
+      "bolt thread Ti at 1.6 g (0.25 UTS)": {
+       "margin": 2.101,
+       "set": "C_im3:static_carry|23 L"
+      },
+      "boss bending + prying at 1.6 g": {
+       "margin": 1.186,
+       "set": "C_im3:static_carry|23 L"
+      }
+     },
+     "max_bolt_force_n": {
+      "value": 2926,
+      "set": "C_im3:side_hill_torsion|23 R"
+     },
+     "min_strength": 2.008,
+     "min_fatigue": 1.186,
+     "capacities_n": {
+      "washer_bearing_n": 6523.9,
+      "plug_shear_out_n": 8663.0,
+      "bolt_tension_n": 8896.3,
+      "bolt_fatigue_n": 3177.2,
+      "hole_bearing_n": 5744.6,
+      "bolt_shear_n": 7193.9,
+      "contact_mpa": 70.4
+     },
+     "branch_axial_across_split": {
+      "max_tension_n": 448.8801107406616,
+      "set": "C_im3:side_hill_torsion|23 L"
+     },
+     "design": {
+      "z": 234.0,
+      "e": 19.0,
+      "theta_deg": 15.0,
+      "r_boss": 8.0,
+      "z_lo": 198.0,
+      "z_hi": 252.0,
+      "head_face": 250.0,
+      "nut_face": 212.0,
+      "hole_d": 5.1,
+      "washer_od": 12.0,
+      "washer_t": 1.0,
+      "nut_af": 8.0,
+      "nut_t": 4.0,
+      "tail_z": 202.0,
+      "bolt_len": 45.0,
+      "head_h": 3.5,
+      "head_d": 8.5,
+      "torque_nm": 1.0,
+      "xy": [
+       [
+        16.4,
+        10.0
+       ],
+       [
+        -19.0,
+        5.0
+       ]
+      ],
+      "trap_dirs": [
+       null,
+       [
+        0.0,
+        -1.0
+       ]
+      ]
+     },
+     "assumptions": [
+      "prying factor 1.25 (team B)",
+      "contact length 10.0 mm, hot E",
+      "no preload credited (snug 1 N m; PAHT creep relaxes it)",
+      "bolt-group from the real z 234 voxel cut (stay + bosses + branch) as a rigid face"
+     ]
+    },
+    "keepouts": {
+     "sleeve_R present": 1.0,
+     "sleeve_L present": 1.0,
+     "pawl present": 1.0,
+     "pivot present": 1.0,
+     "bore_R empty": 1.0,
+     "bore_L empty": 1.0,
+     "spine_channel empty": 1.0,
+     "fairleads present": 1.0,
+     "outside envelope (voxels)": 0,
+     "spreader clip sections identical to H1": false
+    },
+    "family_g": {
+     "foot": 7.8,
+     "low": 112.8,
+     "sleeve": 251.1,
+     "top": 191.5,
+     "branch": 69.8,
+     "strut": 87.9,
+     "mid": 19.8
+    },
+    "torsion_Nm_deg": 3.189395393031454,
+    "buckling": {
+     "branch lower (z 165-330) L": 1.396,
+     "branch lower (z 165-330) R": null,
+     "branch upper (z 330-495) L": 2.866,
+     "branch upper (z 330-495) R": 3.142,
+     "mid bar (x -115..115) all": null
+    },
+    "torsion_vs_h1": 0.9759627225597081
+   },
+   "beam": {
+    "crown": {
+     "C": {
+      "crown_leg": {
+       "sf": 1.4108575141980955,
+       "set": "hipbelt_off_abuse|15",
+       "member": "CR530-CRmid"
+      },
+      "crown_top_bar": {
+       "sf": 1.3481433720875706,
+       "set": "hipbelt_off_abuse|15",
+       "member": "TB1-TB2"
+      },
+      "crown_spine": {
+       "sf": 1.1762368718570075,
+       "set": "hipbelt_off_abuse|15",
+       "member": "SP75-SP81"
+      },
+      "corner_bond_avg": {
+       "sf": 2.2051839263399375,
+       "set": "tall_load_posts|15"
+      },
+      "corner_bond_peak": {
+       "sf": 1.1231121312120274,
+       "set": "hipbelt_off_abuse|15"
+      },
+      "fatigue": {
+       "sf": 3.2272380994923835,
+       "set": "static_carry|15",
+       "member": "crown_spine"
+      },
+      "buckling": {
+       "sf": 1.8345786739530068,
+       "set": "side_hill_torsion|15"
+      },
+      "leg_ring_crush_pack5200_40mm_info": {
+       "sf": 1.0793031486424673,
+       "set": "hipbelt_off_abuse|15"
+      },
+      "shim_bearing_uhmwpe": {
+       "sf": 8.140388479727587,
+       "set": "hipbelt_off_abuse|15"
+      },
+      "corner_bond_fatigue": {
+       "static_carry": {
+        "avg": {
+         "set": "static_carry|15",
+         "sf_avg": 7.281363402111202,
+         "sf_peak": 2.520907241859577,
+         "member": "CRmid-CRtop"
+        },
+        "peak": {
+         "set": "static_carry|15",
+         "sf_avg": 7.281363402111202,
+         "sf_peak": 2.520907241859577,
+         "member": "CRmid-CRtop"
+        }
+       },
+       "meat_straps": {
+        "avg": {
+         "set": "meat_straps|15",
+         "sf_avg": 4.431898763986226,
+         "sf_peak": 1.5343837509994342,
+         "member": "CLmid-CLtop"
+        },
+        "peak": {
+         "set": "meat_straps|15",
+         "sf_avg": 4.431898763986226,
+         "sf_peak": 1.5343837509994342,
+         "member": "CLmid-CLtop"
+        }
+       }
+      }
+     },
+     "C_im3": {
+      "crown_leg": {
+       "sf": 1.1326481294834305,
+       "set": "hipbelt_off_abuse|23",
+       "member": "CLbot-CL530"
+      },
+      "crown_top_bar": {
+       "sf": 1.2376153272407655,
+       "set": "hipbelt_off_abuse|15",
+       "member": "TB1-TB2"
+      },
+      "crown_spine": {
+       "sf": 1.1460466460321639,
+       "set": "hipbelt_off_abuse|23",
+       "member": "SP75-SP150"
+      },
+      "corner_bond_avg": {
+       "sf": 3.1762117708797097,
+       "set": "hipbelt_off_abuse|15"
+      },
+      "corner_bond_peak": {
+       "sf": 1.0996478012028237,
+       "set": "hipbelt_off_abuse|15"
+      },
+      "fatigue": {
+       "sf": 1.361558451950831,
+       "set": "static_carry|23",
+       "member": "crown_leg"
+      },
+      "leg_ring_crush_pack5200_40mm_info": {
+       "sf": 0.9183555630530842,
+       "set": "hipbelt_off_abuse|15"
+      },
+      "shim_bearing_uhmwpe": {
+       "sf": 6.9264794188490875,
+       "set": "hipbelt_off_abuse|15"
+      },
+      "corner_bond_fatigue": {
+       "static_carry": {
+        "avg": {
+         "set": "static_carry|23",
+         "sf_avg": 5.705253483222988,
+         "sf_peak": 1.9752365083620584,
+         "member": "CLmid-CLtop"
+        },
+        "peak": {
+         "set": "static_carry|23",
+         "sf_avg": 5.705253483222988,
+         "sf_peak": 1.9752365083620584,
+         "member": "CLmid-CLtop"
+        }
+       }
+      }
+     }
+    },
+    "spine_guide": {
+     "C": {
+      "sf": 1.525,
+      "set": "hipbelt_off_abuse|15",
+      "factored_yz_n": [
+       2136.4,
+       0.0
+      ]
+     },
+     "C_im3": {
+      "sf": 1.538,
+      "set": "hipbelt_off_abuse|15",
+      "factored_yz_n": [
+       2117.2,
+       0.0
+      ]
+     }
+    },
+    "socket": {
+     "C": {
+      "strength": {
+       "cross-bolt Ti double shear": {
+        "margin": 67.688,
+        "set": "hipbelt_off_abuse|23"
+       },
+       "leg wall pin bearing (CFRP 300 MPa x 0.8)": {
+        "margin": 16.259,
+        "set": "hipbelt_off_abuse|23"
+       },
+       "socket bearing on the bolt (in-layer)": {
+        "margin": 14.573,
+        "set": "hipbelt_off_abuse|23"
+       },
+       "socket shear-out (interlayer, 2 planes)": {
+        "margin": 46.699,
+        "set": "hipbelt_off_abuse|23"
+       },
+       "printed bore bearing under the low shim (across layers)": {
+        "margin": 27.862,
+        "set": "hipbelt_off_abuse|15"
+       },
+       "leg ring crush under the low shim": {
+        "margin": 2.063,
+        "set": "hipbelt_off_abuse|15"
+       },
+       "printed bore bearing under the top shim (across layers)": {
+        "margin": 18.683,
+        "set": "hipbelt_off_abuse|15"
+       },
+       "leg ring crush under the top shim": {
+        "margin": 1.383,
+        "set": "hipbelt_off_abuse|15"
+       },
+       "leg at the cross-bolt hole (FPF x open-hole 0.55)": {
+        "margin": 2.221,
+        "set": "hipbelt_off_abuse|15"
+       }
+      },
+      "fatigue": {
+       "socket bearing on the bolt (in-layer) at 1.6 g": {
+        "margin": 71.466,
+        "set": "static_carry|23"
+       },
+       "socket shear-out (interlayer, 2 planes) at 1.6 g": {
+        "margin": 229.015,
+        "set": "static_carry|23"
+       },
+       "cross-bolt Ti thread-free shank at 1.6 g (0.25 UTS shear)": {
+        "margin": 461.036,
+        "set": "static_carry|23"
+       },
+       "printed bore bearing (low shim) at 1.6 g": {
+        "margin": 70.552,
+        "set": "static_carry|15"
+       },
+       "leg ring under the low shim at 1.6 g (FI <= 0.5)": {
+        "margin": 8.707,
+        "set": "static_carry|15"
+       },
+       "printed bore bearing (top shim) at 1.6 g": {
+        "margin": 50.928,
+        "set": "static_carry|15"
+       },
+       "leg ring under the top shim at 1.6 g (FI <= 0.5)": {
+        "margin": 6.285,
+        "set": "static_carry|15"
+       },
+       "leg at the cross-bolt hole at 1.6 g (CFRP FI <= 0.5)": {
+        "margin": 9.512,
+        "set": "static_carry|15"
+       }
+      },
+      "min_strength": 1.383,
+      "min_fatigue": 6.285
+     },
+     "C_im3": {
+      "strength": {
+       "cross-bolt Ti double shear": {
+        "margin": 67.688,
+        "set": "hipbelt_off_abuse|23"
+       },
+       "leg wall pin bearing (CFRP 300 MPa x 0.8)": {
+        "margin": 16.259,
+        "set": "hipbelt_off_abuse|23"
+       },
+       "socket bearing on the bolt (in-layer)": {
+        "margin": 14.573,
+        "set": "hipbelt_off_abuse|23"
+       },
+       "socket shear-out (interlayer, 2 planes)": {
+        "margin": 46.699,
+        "set": "hipbelt_off_abuse|23"
+       },
+       "printed bore bearing under the low shim (across layers)": {
+        "margin": 22.34,
+        "set": "hipbelt_off_abuse|23"
+       },
+       "leg ring crush under the low shim": {
+        "margin": 1.654,
+        "set": "hipbelt_off_abuse|23"
+       },
+       "printed bore bearing under the top shim (across layers)": {
+        "margin": 15.897,
+        "set": "hipbelt_off_abuse|15"
+       },
+       "leg ring crush under the top shim": {
+        "margin": 1.177,
+        "set": "hipbelt_off_abuse|15"
+       },
+       "leg at the cross-bolt hole (FPF x open-hole 0.55)": {
+        "margin": 1.783,
+        "set": "hipbelt_off_abuse|23"
+       }
+      },
+      "fatigue": {
+       "socket bearing on the bolt (in-layer) at 1.6 g": {
+        "margin": 69.398,
+        "set": "static_carry|15"
+       },
+       "socket shear-out (interlayer, 2 planes) at 1.6 g": {
+        "margin": 222.388,
+        "set": "static_carry|15"
+       },
+       "cross-bolt Ti thread-free shank at 1.6 g (0.25 UTS shear)": {
+        "margin": 447.695,
+        "set": "static_carry|15"
+       },
+       "printed bore bearing (low shim) at 1.6 g": {
+        "margin": 16.219,
+        "set": "static_carry|23"
+       },
+       "leg ring under the low shim at 1.6 g (FI <= 0.5)": {
+        "margin": 2.002,
+        "set": "static_carry|23"
+       },
+       "printed bore bearing (top shim) at 1.6 g": {
+        "margin": 16.803,
+        "set": "static_carry|23"
+       },
+       "leg ring under the top shim at 1.6 g (FI <= 0.5)": {
+        "margin": 2.074,
+        "set": "static_carry|23"
+       },
+       "leg at the cross-bolt hole at 1.6 g (CFRP FI <= 0.5)": {
+        "margin": 2.168,
+        "set": "static_carry|23"
+       }
+      },
+      "min_strength": 1.177,
+      "min_fatigue": 2.002
+     },
+     "capacities_n": {
+      "cross-bolt Ti double shear": 28775.6,
+      "leg wall pin bearing (CFRP 300 MPa x 0.8)": 6912.0,
+      "socket bearing on the bolt (in-layer)": 6195.2,
+      "socket shear-out (interlayer, 2 planes)": 19852.8
+     },
+     "design": {
+      "socket_z": [
+       395.0,
+       544.0
+      ],
+      "shims": "UHMWPE 40 mm at z 400-440 and 60 mm at z 484-544",
+      "lever_correction": 1.1702127659574468,
+      "cross_bolts": "2 x Ti gr5 M5 x 30 per leg at z 445, 90 deg apart in plan, reamed 5.1 through socket and leg, A2 nut",
+      "leg": {
+       "od": 16.0,
+       "t": 1.44
+      }
+     }
+    }
+   },
+   "mass": {
+    "15": {
+     "items": {
+      "printed body (H1 basis)": 740.8,
+      "fixed interfaces as H1": 239.4,
+      "z 234 joint hardware": 28.0,
+      "crown legs cut to the unit (2 x 201 mm instead of 430)": -46.9,
+      "rack + pawl + pulley guides removed": -44.0,
+      "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
+      "4 Ti M5 x 30 cross-bolts + nuts + washers": 20.9,
+      "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
+     },
+     "frame_g": 941.4,
+     "frame_plus_spreader_g": 1103.7,
+     "pack_g": 3801.5,
+     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+    },
+    "16": {
+     "items": {
+      "printed body (H1 basis)": 740.8,
+      "fixed interfaces as H1": 239.4,
+      "z 234 joint hardware": 28.0,
+      "crown legs cut to the unit (2 x 226 mm instead of 430)": -41.7,
+      "rack + pawl + pulley guides removed": -44.0,
+      "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
+      "4 Ti M5 x 30 cross-bolts + nuts + washers": 20.9,
+      "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
+     },
+     "frame_g": 946.6,
+     "frame_plus_spreader_g": 1108.9,
+     "pack_g": 3806.7,
+     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+    },
+    "18": {
+     "items": {
+      "printed body (H1 basis)": 740.8,
+      "fixed interfaces as H1": 239.4,
+      "z 234 joint hardware": 28.0,
+      "crown legs cut to the unit (2 x 277 mm instead of 430)": -31.3,
+      "rack + pawl + pulley guides removed": -44.0,
+      "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
+      "4 Ti M5 x 30 cross-bolts + nuts + washers": 20.9,
+      "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
+     },
+     "frame_g": 957.0,
+     "frame_plus_spreader_g": 1119.3,
+     "pack_g": 3817.1,
+     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+    },
+    "19": {
+     "items": {
+      "printed body (H1 basis)": 740.8,
+      "fixed interfaces as H1": 239.4,
+      "z 234 joint hardware": 28.0,
+      "crown legs cut to the unit (2 x 303 mm instead of 430)": -26.1,
+      "rack + pawl + pulley guides removed": -44.0,
+      "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
+      "4 Ti M5 x 30 cross-bolts + nuts + washers": 20.9,
+      "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
+     },
+     "frame_g": 962.2,
+     "frame_plus_spreader_g": 1124.5,
+     "pack_g": 3822.3,
+     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+    },
+    "20": {
+     "items": {
+      "printed body (H1 basis)": 740.8,
+      "fixed interfaces as H1": 239.4,
+      "z 234 joint hardware": 28.0,
+      "crown legs cut to the unit (2 x 328 mm instead of 430)": -20.9,
+      "rack + pawl + pulley guides removed": -44.0,
+      "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
+      "4 Ti M5 x 30 cross-bolts + nuts + washers": 20.9,
+      "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
+     },
+     "frame_g": 967.4,
+     "frame_plus_spreader_g": 1129.7,
+     "pack_g": 3827.5,
+     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+    },
+    "22": {
+     "items": {
+      "printed body (H1 basis)": 740.8,
+      "fixed interfaces as H1": 239.4,
+      "z 234 joint hardware": 28.0,
+      "crown legs cut to the unit (2 x 379 mm instead of 430)": -10.5,
+      "rack + pawl + pulley guides removed": -44.0,
+      "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
+      "4 Ti M5 x 30 cross-bolts + nuts + washers": 20.9,
+      "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
+     },
+     "frame_g": 977.8,
+     "frame_plus_spreader_g": 1140.1,
+     "pack_g": 3837.9,
+     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+    },
+    "23": {
+     "items": {
+      "printed body (H1 basis)": 740.8,
+      "fixed interfaces as H1": 239.4,
+      "z 234 joint hardware": 28.0,
+      "crown legs cut to the unit (2 x 404 mm instead of 430)": -5.3,
+      "rack + pawl + pulley guides removed": -44.0,
+      "4 x 70 mm UHMWPE bushings -> 2 shims per leg (40 + 60 mm)": -4.8,
+      "4 Ti M5 x 30 cross-bolts + nuts + washers": 20.9,
+      "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
+     },
+     "frame_g": 983.0,
+     "frame_plus_spreader_g": 1145.3,
+     "pack_g": 3843.1,
+     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+    }
+   },
+   "print_g_19": 747.5,
+   "print_h_19": 26.4,
+   "cost_19": {
+    "H1 unit cost incl. spreader": 437.0,
+    "filament + reprint (print mass change)": -1.7,
+    "machine time ($1/h)": -0.6,
+    "rack + pawl + guides (ASSUMPTION $6 printed PA66-GF + pawl)": -6.0,
+    "pulley webbing, cam buckle, cord, toggle (ASSUMPTION $15)": -15.0,
+    "yoke strip (ASSUMPTION $2)": 2.0,
+    "carbon legs cut to length": -8.7,
+    "UHMWPE bushings -> shims": -1.4,
+    "4 Ti M5 cross-bolts ($4.50, A's figure) + nuts": 19.0,
+    "total": 424.6
+   }
+  },
+  "b": {
+   "body": {
+    "variant": "b",
+    "raster_g": 740.83824,
+    "min": {
+     "strength": 1.584216385068524,
+     "fatigue": 1.0474080942992807,
+     "creep": 2.2344706011717994
+    },
+    "governing": "C_im3:C_im3:static_carry|23 (fatigue)",
+    "by_torso": {
+     "C|15": {
+      "strength": 1.584,
+      "fatigue": 1.475,
+      "creep": 3.146,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "C|19": {
+      "strength": 2.334,
+      "fatigue": 1.568,
+      "creep": 3.344,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "C|23": {
+      "strength": 1.962,
+      "fatigue": 1.622,
+      "creep": 3.46,
+      "gov": "meat_straps (stay L sleeve (crown bore wall))"
+     },
+     "C_im3|15": {
+      "strength": 1.615,
+      "fatigue": 1.409,
+      "creep": 3.006,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "C_im3|19": {
+      "strength": 2.166,
+      "fatigue": 1.245,
+      "creep": 2.655,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "C_im3|23": {
+      "strength": 1.862,
+      "fatigue": 1.047,
+      "creep": 2.234,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "cases": {
+     "static_carry": 2.793,
+     "drop_2p5g": 1.862,
+     "side_hill_torsion": 2.06,
+     "single_stay_setdown": 2.813,
+     "meat_straps": 1.962,
+     "tall_load": 3.102,
+     "overload_haul": 2.756,
+     "tall_load_posts": 2.87,
+     "hipbelt_off_abuse": 1.584
+    },
+    "buckling_min": 1.415,
+    "joint": {
+     "strength": {
+      "washer bearing (XY)": {
+       "margin": 2.228,
+       "set": "C_im3:side_hill_torsion|23 R"
+      },
+      "plug shear-out (interlayer)": {
+       "margin": 2.959,
+       "set": "C_im3:side_hill_torsion|23 R"
+      },
+      "bolt tension Ti (0.7 UTS)": {
+       "margin": 3.038,
+       "set": "C_im3:side_hill_torsion|23 R"
+      },
+      "fitted-bolt hole bearing (shear)": {
+       "margin": 8.17,
+       "set": "C_im3:side_hill_torsion|15 R"
+      },
+      "bolt shear Ti": {
+       "margin": 10.231,
+       "set": "C_im3:side_hill_torsion|15 R"
+      },
+      "dry-face contact bearing": {
+       "margin": 2.01,
+       "set": "C_im3:drop_2p5g|23 L"
+      },
+      "boss bending + prying (layer FI)": {
+       "margin": 2.041,
+       "set": "C_im3:side_hill_torsion|23 R"
+      }
+     },
+     "fatigue": {
+      "washer bearing (XY) at 1.6 g": {
+       "margin": 1.296,
+       "set": "C_im3:static_carry|23 L"
+      },
+      "plug shear-out (interlayer) at 1.6 g": {
+       "margin": 1.721,
+       "set": "C_im3:static_carry|23 L"
+      },
+      "fitted-bolt hole bearing (shear) at 1.6 g": {
+       "margin": 5.586,
+       "set": "C_im3:static_carry|15 L"
+      },
+      "bolt thread Ti at 1.6 g (0.25 UTS)": {
+       "margin": 2.104,
+       "set": "C_im3:static_carry|23 L"
+      },
+      "boss bending + prying at 1.6 g": {
+       "margin": 1.187,
+       "set": "C_im3:static_carry|23 L"
+      }
+     },
+     "max_bolt_force_n": {
+      "value": 2928,
+      "set": "C_im3:side_hill_torsion|23 R"
+     },
+     "min_strength": 2.01,
+     "min_fatigue": 1.187,
+     "capacities_n": {
+      "washer_bearing_n": 6523.9,
+      "plug_shear_out_n": 8663.0,
+      "bolt_tension_n": 8896.3,
+      "bolt_fatigue_n": 3177.2,
+      "hole_bearing_n": 5744.6,
+      "bolt_shear_n": 7193.9,
+      "contact_mpa": 70.4
+     },
+     "branch_axial_across_split": {
+      "max_tension_n": 450.4826726913452,
+      "set": "C_im3:side_hill_torsion|23 L"
+     },
+     "design": {
+      "z": 234.0,
+      "e": 19.0,
+      "theta_deg": 15.0,
+      "r_boss": 8.0,
+      "z_lo": 198.0,
+      "z_hi": 252.0,
+      "head_face": 250.0,
+      "nut_face": 212.0,
+      "hole_d": 5.1,
+      "washer_od": 12.0,
+      "washer_t": 1.0,
+      "nut_af": 8.0,
+      "nut_t": 4.0,
+      "tail_z": 202.0,
+      "bolt_len": 45.0,
+      "head_h": 3.5,
+      "head_d": 8.5,
+      "torque_nm": 1.0,
+      "xy": [
+       [
+        16.4,
+        10.0
+       ],
+       [
+        -19.0,
+        5.0
+       ]
+      ],
+      "trap_dirs": [
+       null,
+       [
+        0.0,
+        -1.0
+       ]
+      ]
+     },
+     "assumptions": [
+      "prying factor 1.25 (team B)",
+      "contact length 10.0 mm, hot E",
+      "no preload credited (snug 1 N m; PAHT creep relaxes it)",
+      "bolt-group from the real z 234 voxel cut (stay + bosses + branch) as a rigid face"
+     ]
+    },
+    "keepouts": {
+     "sleeve_R present": 1.0,
+     "sleeve_L present": 1.0,
+     "pawl present": 1.0,
+     "pivot present": 1.0,
+     "bore_R empty": 1.0,
+     "bore_L empty": 1.0,
+     "spine_channel empty": 1.0,
+     "fairleads present": 1.0,
+     "outside envelope (voxels)": 0,
+     "spreader clip sections identical to H1": false
+    },
+    "family_g": {
+     "foot": 7.8,
+     "low": 112.8,
+     "sleeve": 251.1,
+     "top": 191.5,
+     "branch": 69.8,
+     "strut": 87.9,
+     "mid": 19.8
+    },
+    "torsion_Nm_deg": 3.189395393031454,
+    "buckling": {
+     "branch lower (z 165-330) L": 1.415,
+     "branch lower (z 165-330) R": null,
+     "branch upper (z 330-495) L": 3.006,
+     "branch upper (z 330-495) R": 3.069,
+     "mid bar (x -115..115) all": null
+    },
+    "torsion_vs_h1": 0.9759627225597081
+   },
+   "beam": {
+    "crown": {
+     "C": {
+      "crown_leg": {
+       "sf": 1.8605882544576682,
+       "set": "hipbelt_off_abuse|15",
+       "member": "CR530-CRmid"
+      },
+      "crown_top_bar": {
+       "sf": 1.3346368188983893,
+       "set": "hipbelt_off_abuse|15",
+       "member": "TB0-TB1"
+      },
+      "crown_spine": {
+       "sf": 1.167066918558556,
+       "set": "hipbelt_off_abuse|23",
+       "member": "SP75-SP150"
+      },
+      "fatigue": {
+       "sf": 3.230591649000814,
+       "set": "static_carry|15",
+       "member": "crown_spine"
+      },
+      "buckling": {
+       "sf": 1.8194382764718364,
+       "set": "side_hill_torsion|15"
+      },
+      "shim_bearing_uhmwpe": {
+       "sf": 17.239852395960707,
+       "set": "hipbelt_off_abuse|15"
+      },
+      "corner_bond_fatigue": {}
+     },
+     "C_im3": {
+      "crown_leg": {
+       "sf": 1.5269683997934256,
+       "set": "hipbelt_off_abuse|23",
+       "member": "CLbot-CL530"
+      },
+      "crown_top_bar": {
+       "sf": 1.2251151618087386,
+       "set": "hipbelt_off_abuse|15",
+       "member": "TB0-TB1"
+      },
+      "crown_spine": {
+       "sf": 1.1332839091768516,
+       "set": "hipbelt_off_abuse|23",
+       "member": "SP75-SP150"
+      },
+      "fatigue": {
+       "sf": 1.9067054263339538,
+       "set": "static_carry|23",
+       "member": "crown_leg"
+      },
+      "shim_bearing_uhmwpe": {
+       "sf": 14.670435147036669,
+       "set": "hipbelt_off_abuse|15"
+      },
+      "corner_bond_fatigue": {}
+     }
+    },
+    "spine_guide": {
+     "C": {
+      "sf": 1.516,
+      "set": "hipbelt_off_abuse|15",
+      "factored_yz_n": [
+       2149.2,
+       0.0
+      ]
+     },
+     "C_im3": {
+      "sf": 1.528,
+      "set": "hipbelt_off_abuse|15",
+      "factored_yz_n": [
+       2131.7,
+       0.0
+      ]
+     }
+    },
+    "printed_legs": {
+     "C": {
+      "strength": [
+       1.816,
+       "hipbelt_off_abuse|15 R"
+      ],
+      "fatigue": [
+       4.835,
+       "static_carry|15 L"
+      ],
+      "creep": [
+       10.314,
+       "static_carry|15 L"
+      ],
+      "buckling_A_rule": [
+       1.819,
+       "side_hill_torsion|15"
+      ]
+     },
+     "C_im3": {
+      "strength": [
+       1.54,
+       "hipbelt_off_abuse|23 L"
+      ],
+      "fatigue": [
+       1.162,
+       "static_carry|23 L"
+      ],
+      "creep": [
+       2.48,
+       "static_carry|23 L"
+      ],
+      "buckling_A_rule": [
+       null,
+       ""
+      ]
+     }
+    },
+    "leg_joint_z544": {
+     "strength": {
+      "washer bearing (XY)": {
+       "margin": 3.034,
+       "set": "C_im3:hipbelt_off_abuse|23 L"
+      },
+      "plug shear-out (interlayer)": {
+       "margin": 4.029,
+       "set": "C_im3:hipbelt_off_abuse|23 L"
+      },
+      "bolt tension Ti (0.7 UTS)": {
+       "margin": 4.137,
+       "set": "C_im3:hipbelt_off_abuse|23 L"
+      },
+      "dry-face contact bearing": {
+       "margin": 6.221,
+       "set": "C_im3:hipbelt_off_abuse|23 L"
+      },
+      "boss bending + prying": {
+       "margin": 3.725,
+       "set": "C_im3:hipbelt_off_abuse|23 L"
+      },
+      "fitted-bolt hole bearing (shear)": {
+       "margin": 20.936,
+       "set": "hipbelt_off_abuse|15 R"
+      }
+     },
+     "fatigue": {
+      "washer bearing at 1.6 g": {
+       "margin": 2.388,
+       "set": "C_im3:static_carry|23 L"
+      },
+      "boss bending + prying at 1.6 g": {
+       "margin": 2.931,
+       "set": "C_im3:static_carry|23 L"
+      },
+      "bolt thread Ti at 1.6 g (0.25 UTS)": {
+       "margin": 3.876,
+       "set": "C_im3:static_carry|23 L"
+      }
+     },
+     "min_strength": 3.034,
+     "min_fatigue": 2.388,
+     "design": {
+      "n": 4,
+      "r_b": 23.0,
+      "r_boss": 8.0,
+      "plug": 16.0,
+      "washer_od": 12.0,
+      "hole_d": 5.1
+     }
+    },
+    "corner_socket": {
+     "corner socket bore bearing (across layers)": {
+      "margin": 12.44,
+      "set": "C_im3:hipbelt_off_abuse|15"
+     },
+     "info: bare top bar ring crush in the socket (FPF, no plug)": {
+      "margin": 0.428,
+      "set": "C_im3:hipbelt_off_abuse|15"
+     },
+     "7075 bar-end plug ring bending (S-basis yield 462)": {
+      "margin": 6.278,
+      "set": "C_im3:hipbelt_off_abuse|15"
+     },
+     "top bar ring with the plug (FPF)": {
+      "margin": 1.93,
+      "set": "C_im3:hipbelt_off_abuse|15"
+     },
+     "top bar pin bearing (2 x M5, CFRP 300 x 0.8)": {
+      "margin": 2.031,
+      "set": "C_im3:hipbelt_off_abuse|15"
+     },
+     "min_strength": 1.93
+    },
+    "leg": {
+     "od": 34.0,
+     "t": 3.5
+    }
+   },
+   "mass": {
+    "15": {
+     "items": {
+      "printed body (H1 basis)": 740.8,
+      "fixed interfaces as H1": 239.4,
+      "z 234 joint hardware": 28.0,
+      "carbon crown legs removed (2 x 430 mm)": -88.1,
+      "crown corner bondlines removed": -2.21,
+      "rack + pawl + pulley guides removed": -44.0,
+      "UHMWPE bushings removed": -16.7,
+      "printed legs PAHT-CF OD 34 x 3.5, 2 x 57 mm": 40.5,
+      "printed corner sockets (ASSUMPTION ring OD 30 x 80 + gusset)": 83.8,
+      "7075 plugs bonded in the bar ends (15.8 x 2 x 80)": 39.0,
+      "z 544 joint bosses (4 per leg, both sides)": 54.6,
+      "z 544 joint: 8 Ti M5 x 45 + nuts + washers": 56.0,
+      "corner sockets: 4 Ti M5 x 30 + nuts": 18.0,
+      "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
+     },
+     "frame_g": 1157.1,
+     "frame_plus_spreader_g": 1319.4,
+     "pack_g": 4017.2,
+     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+    },
+    "16": {
+     "items": {
+      "printed body (H1 basis)": 740.8,
+      "fixed interfaces as H1": 239.4,
+      "z 234 joint hardware": 28.0,
+      "carbon crown legs removed (2 x 430 mm)": -88.1,
+      "crown corner bondlines removed": -2.21,
+      "rack + pawl + pulley guides removed": -44.0,
+      "UHMWPE bushings removed": -16.7,
+      "printed legs PAHT-CF OD 34 x 3.5, 2 x 82 mm": 58.6,
+      "printed corner sockets (ASSUMPTION ring OD 30 x 80 + gusset)": 83.8,
+      "7075 plugs bonded in the bar ends (15.8 x 2 x 80)": 39.0,
+      "z 544 joint bosses (4 per leg, both sides)": 54.6,
+      "z 544 joint: 8 Ti M5 x 45 + nuts + washers": 56.0,
+      "corner sockets: 4 Ti M5 x 30 + nuts": 18.0,
+      "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
+     },
+     "frame_g": 1175.2,
+     "frame_plus_spreader_g": 1337.5,
+     "pack_g": 4035.3,
+     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+    },
+    "18": {
+     "items": {
+      "printed body (H1 basis)": 740.8,
+      "fixed interfaces as H1": 239.4,
+      "z 234 joint hardware": 28.0,
+      "carbon crown legs removed (2 x 430 mm)": -88.1,
+      "crown corner bondlines removed": -2.21,
+      "rack + pawl + pulley guides removed": -44.0,
+      "UHMWPE bushings removed": -16.7,
+      "printed legs PAHT-CF OD 34 x 3.5, 2 x 133 mm": 94.7,
+      "printed corner sockets (ASSUMPTION ring OD 30 x 80 + gusset)": 83.8,
+      "7075 plugs bonded in the bar ends (15.8 x 2 x 80)": 39.0,
+      "z 544 joint bosses (4 per leg, both sides)": 54.6,
+      "z 544 joint: 8 Ti M5 x 45 + nuts + washers": 56.0,
+      "corner sockets: 4 Ti M5 x 30 + nuts": 18.0,
+      "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
+     },
+     "frame_g": 1211.3,
+     "frame_plus_spreader_g": 1373.6,
+     "pack_g": 4071.4,
+     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+    },
+    "19": {
+     "items": {
+      "printed body (H1 basis)": 740.8,
+      "fixed interfaces as H1": 239.4,
+      "z 234 joint hardware": 28.0,
+      "carbon crown legs removed (2 x 430 mm)": -88.1,
+      "crown corner bondlines removed": -2.21,
+      "rack + pawl + pulley guides removed": -44.0,
+      "UHMWPE bushings removed": -16.7,
+      "printed legs PAHT-CF OD 34 x 3.5, 2 x 159 mm": 112.8,
+      "printed corner sockets (ASSUMPTION ring OD 30 x 80 + gusset)": 83.8,
+      "7075 plugs bonded in the bar ends (15.8 x 2 x 80)": 39.0,
+      "z 544 joint bosses (4 per leg, both sides)": 54.6,
+      "z 544 joint: 8 Ti M5 x 45 + nuts + washers": 56.0,
+      "corner sockets: 4 Ti M5 x 30 + nuts": 18.0,
+      "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
+     },
+     "frame_g": 1229.4,
+     "frame_plus_spreader_g": 1391.7,
+     "pack_g": 4089.5,
+     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+    },
+    "20": {
+     "items": {
+      "printed body (H1 basis)": 740.8,
+      "fixed interfaces as H1": 239.4,
+      "z 234 joint hardware": 28.0,
+      "carbon crown legs removed (2 x 430 mm)": -88.1,
+      "crown corner bondlines removed": -2.21,
+      "rack + pawl + pulley guides removed": -44.0,
+      "UHMWPE bushings removed": -16.7,
+      "printed legs PAHT-CF OD 34 x 3.5, 2 x 184 mm": 130.8,
+      "printed corner sockets (ASSUMPTION ring OD 30 x 80 + gusset)": 83.8,
+      "7075 plugs bonded in the bar ends (15.8 x 2 x 80)": 39.0,
+      "z 544 joint bosses (4 per leg, both sides)": 54.6,
+      "z 544 joint: 8 Ti M5 x 45 + nuts + washers": 56.0,
+      "corner sockets: 4 Ti M5 x 30 + nuts": 18.0,
+      "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
+     },
+     "frame_g": 1247.4,
+     "frame_plus_spreader_g": 1409.7,
+     "pack_g": 4107.5,
+     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+    },
+    "22": {
+     "items": {
+      "printed body (H1 basis)": 740.8,
+      "fixed interfaces as H1": 239.4,
+      "z 234 joint hardware": 28.0,
+      "carbon crown legs removed (2 x 430 mm)": -88.1,
+      "crown corner bondlines removed": -2.21,
+      "rack + pawl + pulley guides removed": -44.0,
+      "UHMWPE bushings removed": -16.7,
+      "printed legs PAHT-CF OD 34 x 3.5, 2 x 235 mm": 167.0,
+      "printed corner sockets (ASSUMPTION ring OD 30 x 80 + gusset)": 83.8,
+      "7075 plugs bonded in the bar ends (15.8 x 2 x 80)": 39.0,
+      "z 544 joint bosses (4 per leg, both sides)": 54.6,
+      "z 544 joint: 8 Ti M5 x 45 + nuts + washers": 56.0,
+      "corner sockets: 4 Ti M5 x 30 + nuts": 18.0,
+      "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
+     },
+     "frame_g": 1283.6,
+     "frame_plus_spreader_g": 1445.9,
+     "pack_g": 4143.7,
+     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+    },
+    "23": {
+     "items": {
+      "printed body (H1 basis)": 740.8,
+      "fixed interfaces as H1": 239.4,
+      "z 234 joint hardware": 28.0,
+      "carbon crown legs removed (2 x 430 mm)": -88.1,
+      "crown corner bondlines removed": -2.21,
+      "rack + pawl + pulley guides removed": -44.0,
+      "UHMWPE bushings removed": -16.7,
+      "printed legs PAHT-CF OD 34 x 3.5, 2 x 260 mm": 185.0,
+      "printed corner sockets (ASSUMPTION ring OD 30 x 80 + gusset)": 83.8,
+      "7075 plugs bonded in the bar ends (15.8 x 2 x 80)": 39.0,
+      "z 544 joint bosses (4 per leg, both sides)": 54.6,
+      "z 544 joint: 8 Ti M5 x 45 + nuts + washers": 56.0,
+      "corner sockets: 4 Ti M5 x 30 + nuts": 18.0,
+      "yoke fine-adjust strip + pin (ASSUMPTION)": 8.0
+     },
+     "frame_g": 1301.6,
+     "frame_plus_spreader_g": 1463.9,
+     "pack_g": 4161.7,
+     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5 - torso-adjust soft goods 41.7"
+    }
+   },
+   "print_g_19": 971.3,
+   "print_h_19": 34.3,
+   "cost_19": {
+    "H1 unit cost incl. spreader": 437.0,
+    "filament + reprint (print mass change)": 20.5,
+    "machine time ($1/h)": 7.3,
+    "rack + pawl + guides (ASSUMPTION $6 printed PA66-GF + pawl)": -6.0,
+    "pulley webbing, cam buckle, cord, toggle (ASSUMPTION $15)": -15.0,
+    "yoke strip (ASSUMPTION $2)": 2.0,
+    "carbon legs removed": -29.3,
+    "UHMWPE bushings removed": -5.0,
+    "8 Ti M5 x 45 + 4 Ti M5 x 30 + nuts, washers": 58.0,
+    "2 x 7075 bar-end plugs (ASSUMPTION $4)": 4.0,
+    "total": 473.5
+   }
+  },
+  "h1": {
+   "mass": {
+    "19": {
+     "items": {
+      "printed body (H1 basis)": 757.7,
+      "fixed interfaces as H1": 239.4,
+      "z 234 joint hardware": 28.0
+     },
+     "frame_g": 1025.1,
+     "frame_plus_spreader_g": 1187.4,
+     "pack_g": 3926.9,
+     "pack_note": "CORRIE B.2 belt M on the ledger basis 3926.9 g = H1 frame 1025.1 + spreader 162.3 + rest 2739.5"
+    }
+   },
+   "print_h_19": 27.0
+  }
+ },
+ "fit": {
+  "fine_adjust_mm": [
+   -25.4,
+   25.4
+  ],
+  "fine_adjust_in": [
+   -1.0,
+   1.0
+  ],
+  "sizes_for_15_23_in": 4,
+  "sizes": [
+   {
+    "size": "15-17 in",
+    "nominal_in": 16.0,
+    "printed_leg_carbon_mm": 226,
+    "printed_leg_pa_mm": 82
+   },
+   {
+    "size": "17-19 in",
+    "nominal_in": 18.0,
+    "printed_leg_carbon_mm": 277,
+    "printed_leg_pa_mm": 133
+   },
+   {
+    "size": "19-21 in",
+    "nominal_in": 20.0,
+    "printed_leg_carbon_mm": 328,
+    "printed_leg_pa_mm": 184
+   },
+   {
+    "size": "21-23 in",
+    "nominal_in": 22.0,
+    "printed_leg_carbon_mm": 379,
+    "printed_leg_pa_mm": 235
+   }
+  ],
+  "hood_ladder_B20": "one rung per size: the 17-rung ladder (B-20, 250 mm) becomes a 3-rung strip of about 70 mm per side (the hood follows the fixed bar; fine adjust is at the yoke, the bar does not move), about -2.5 g ASSUMPTION (Hypalon 40 x 180 mm x 2 removed)"
+ },
+ "build": {
+  "h1": {
+   "printed parts": 2,
+   "hardware parts": "carbon legs 2, top bar, spine, rack, pawl + pin, pulley guides 3, UHMWPE bushings 4, 304 bushings 2, z 234 bolts 4 + nuts + washers, webbing, cam buckle, release cord + toggle",
+   "count": 37,
+   "steps": [
+    "print 2 halves (27 h)",
+    "anneal with a rod through both bores",
+    "bolt z 234, ream 18.0 through",
+    "press 304 pawl bushings, fit pawl + spring",
+    "bond rack to spine",
+    "bond bushings on leg ends",
+    "build crown (2 corner wraps)",
+    "thread 3:1 pulley through 3 guides, fit cam + release cord",
+    "slide crown in, set torso on the wearer"
+   ]
+  },
+  "a": {
+   "printed parts": 2,
+   "count": 42,
+   "hardware parts": "carbon legs 2 (cut per size), top bar, spine, guide pin, 304 bushings 2, shims 4, z 234 bolts 4 + nuts + washers, cross-bolts 4 + nuts + washers, yoke strip",
+   "steps": [
+    "print 2 halves (27 h)",
+    "anneal",
+    "bolt z 234, ream the socket 18.0 (z 395-544 only)",
+    "press 304 guide bushings",
+    "cut legs to the size table, bond 2 shims per leg",
+    "build crown (2 corner wraps)",
+    "insert legs, drill + ream 5.1 through socket and leg on a jig, fit 4 cross-bolts",
+    "set the yoke strip at the wearer's fine position"
+   ]
+  },
+  "b": {
+   "printed parts": 4,
+   "count": 58,
+   "hardware parts": "top bar, spine, guide pin, 304 bushings 2, z 234 bolts 4 + nuts + washers, z 544 bolts 8 + nuts + 16 washers, corner cross-bolts 4 + nuts, yoke strip",
+   "steps": [
+    "print 2 body halves + 2 legs (legs about 3 h more)",
+    "anneal 4 parts",
+    "bolt z 234 and both z 544 joints (8 bolts)",
+    "press 304 guide bushings",
+    "bond-free corners: insert the top bar, drill + ream 2 cross-bolts per corner",
+    "fit spine + yoke strip"
+   ]
+  },
+  "c": {
+   "printed parts": 2,
+   "count": 42,
+   "hardware parts": "carbon legs 2 (cut per size), top bar, spine, guide pin, 304 bushings 2, shims 4, z 234 bolts 4 + nuts + washers, cross-bolts 4 + nuts + washers, yoke strip",
+   "steps": [
+    "print 2 halves (27 h)",
+    "anneal",
+    "bolt z 234, ream the socket 18.0 (z 395-544 only)",
+    "press 304 guide bushings",
+    "cut legs to the size table, bond 2 shims per leg",
+    "build crown (2 corner wraps)",
+    "insert legs, drill + ream 5.1 through socket and leg on a jig, fit 4 cross-bolts",
+    "set the yoke strip at the wearer's fine position"
+   ]
+  }
+ },
+ "socket_design": {
+  "z": [
+   395.0,
+   544.0
+  ],
+  "shim_low": [
+   400.0,
+   440.0
+  ],
+  "shim_top": [
+   484.0,
+   544.0
+  ],
+  "cross_bolt_z": 445.0,
+  "lever_correction": 1.1702127659574468
+ }
+}

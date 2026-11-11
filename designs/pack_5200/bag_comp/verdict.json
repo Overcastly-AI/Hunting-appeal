@@ -1,0 +1,716 @@
+{
+ "ticket": "BL-002",
+ "date": "2026-11-10",
+ "corrie_b2_bag_system_g": 884.0,
+ "corrie_b2_hours": 35.6,
+ "rounding_bias_mm": 4.0,
+ "limits": {
+  "fill_mm": 205.0,
+  "meat_mm": 190.0,
+  "volume_L": [
+   82.0,
+   88.0
+  ],
+  "width_mm": 394.0,
+  "depth_mm": 305.0
+ },
+ "weights": {
+  "base (RULES)": {
+   "function": 0.25,
+   "look": 0.2,
+   "weight": 0.2,
+   "build": 0.2,
+   "carry": 0.15
+  },
+  "mass 30 %": {
+   "weight": 0.3,
+   "function": 0.21874999999999997,
+   "look": 0.17499999999999996,
+   "build": 0.17499999999999996,
+   "carry": 0.13124999999999998
+  },
+  "build 30 %": {
+   "build": 0.3,
+   "function": 0.21874999999999997,
+   "look": 0.17499999999999996,
+   "weight": 0.17499999999999996,
+   "carry": 0.13124999999999998
+  },
+  "BL-008 lens (weight 10 %)": {
+   "weight": 0.1,
+   "function": 0.28125,
+   "look": 0.225,
+   "build": 0.225,
+   "carry": 0.16875
+  }
+ },
+ "teams": {
+  "A": {
+   "folder": "A",
+   "name": "CORRIE E",
+   "brief": "EVOLVE",
+   "mass": {
+    "ledger_bag_system_g": 908.0,
+    "vs_corrie_g": 24.0,
+    "published_g": 734.6,
+    "pack_M_h1_g_ledger": 3951.0,
+    "strap_pocket_consistent_g": 908.0,
+    "source": "huntkit.mass.ledger.teams()"
+   },
+   "build": {
+    "hours_norm": 38.3,
+    "hours_source": "evolve.system(): body + IMP-1/2/4/8 (CORRIE B.2 same code 35.6 h)",
+    "hours_published": 38.3,
+    "pieces_published": 42,
+    "curved_seams": 2,
+    "zip_mm_total": 1476.0,
+    "adj": [
+     -0.5,
+     "second curved seam (floor | tub ring) and up to 4.4 % ease on B-02h, cut-and-check (bag_comp_A.md s3, s6 item 3)"
+    ]
+   },
+   "volume_L_mean_fill": 84.99,
+   "volume_published_L": 85.0,
+   "cg_y_mm": {
+    "fill_15": 186.8,
+    "meat_15": 179.6,
+    "fill_19": 165.3,
+    "meat_19": 160.1,
+    "fill_23": 130.3,
+    "meat_23": 129.9
+   },
+   "cg_y_plus_bias_mm": {
+    "fill_15": 190.8,
+    "meat_15": 183.6,
+    "fill_19": 169.3,
+    "meat_19": 164.1,
+    "fill_23": 134.3,
+    "meat_23": 133.9
+   },
+   "rounding_mm": {
+    "fill_15": 4.0,
+    "meat_15": 6.0,
+    "fill_19": 4.0,
+    "meat_19": 6.0,
+    "fill_23": 6.0,
+    "meat_23": 4.0
+   },
+   "cg_z_mm": {
+    "fill_15": 484.9,
+    "meat_15": 494.4,
+    "fill_19": 497.7,
+    "meat_19": 504.6,
+    "fill_23": 504.3,
+    "meat_23": 514.1
+   },
+   "margin_meat_mm": 6.4,
+   "margin_fill_mm": 14.2,
+   "access": {
+    "belt_M": {
+     "day": {
+      "kill": [
+       "kill_kit"
+      ]
+     }
+    },
+    "hourly_any_belt": [],
+    "n_hourly_M": 0,
+    "n_glass_weather_M": 0,
+    "n_kill_emerg_M": 1
+   },
+   "access_source": "evolve_loadout.run() (re-run 2026-11-10)",
+   "func_adj": [
+    0.5,
+    "door clear width 294/311/334 mm at IM1-IM3 vs CORRIE 214/242/281 (bag_comp_A.md s2)"
+   ],
+   "look": {
+    "score": 7.5,
+    "defects": [
+     "_1/_2/_4/_5: caption text overprints the bag, bottle and stand",
+     "_3: dark irregular shading blotches on the folded door (left of the IMP-4 pocket)",
+     "_3: door shown as a rigid folded panel, top of the bag cropped",
+     "good: all 5 shots, own fine drape, pockets/quiver/tripod read clearly, camo tub reads as an accent"
+    ]
+   },
+   "gate_fails": [],
+   "gate_pass": true,
+   "scores": {
+    "function": 10.0,
+    "look": 7.5,
+    "weight": 4.04,
+    "build": 2.7,
+    "carry": 6.4
+   },
+   "totals": {
+    "base (RULES)": 6.31,
+    "mass 30 %": 6.02,
+    "build 30 %": 5.86,
+    "BL-008 lens (weight 10 %)": 6.59
+   }
+  },
+  "B": {
+   "folder": "lean",
+   "name": "FELL",
+   "brief": "LEAN",
+   "mass": {
+    "ledger_bag_system_g": 750.6,
+    "vs_corrie_g": -133.4,
+    "published_g": 583.1,
+    "pack_M_h1_g_ledger": 3793.6,
+    "strap_pocket_consistent_g": 722.6,
+    "source": "huntkit.mass.ledger.teams()"
+   },
+   "build": {
+    "hours_norm": 27.9,
+    "hours_source": "fell.comparison()['max']: body + kept pockets + A1-A4 (CORRIE 35.6 h)",
+    "hours_published": 27.9,
+    "pieces_published": 39,
+    "curved_seams": 0,
+    "zip_mm_total": 800.0,
+    "adj": [
+     0.0,
+     "0 curved seams, one straight zip; fabric gates are a materials risk, not a sewing one (bag_comp_lean.md s5, s7)"
+    ]
+   },
+   "volume_L_mean_fill": 87.21,
+   "volume_published_L": 87.2,
+   "cg_y_mm": {
+    "fill_15": 186.8,
+    "meat_15": 175.4,
+    "fill_19": 167.2,
+    "meat_19": 158.8,
+    "fill_23": 132.7,
+    "meat_23": 132.3
+   },
+   "cg_y_plus_bias_mm": {
+    "fill_15": 190.8,
+    "meat_15": 179.4,
+    "fill_19": 171.2,
+    "meat_19": 162.8,
+    "fill_23": 136.7,
+    "meat_23": 136.3
+   },
+   "rounding_mm": {
+    "fill_15": 6.0,
+    "meat_15": 4.0,
+    "fill_19": 6.0,
+    "meat_19": 2.0,
+    "fill_23": 6.0,
+    "meat_23": 2.0
+   },
+   "cg_z_mm": {
+    "fill_15": 508.5,
+    "meat_15": 519.7,
+    "fill_19": 518.4,
+    "meat_19": 527.4,
+    "fill_23": 527.2,
+    "meat_23": 532.9
+   },
+   "margin_meat_mm": 10.6,
+   "margin_fill_mm": 14.2,
+   "access": {
+    "belt_M": {
+     "sheep8": {
+      "hourly": [
+       "bottle_1L#2"
+      ],
+      "glassing": [
+       "beanie_gloves",
+       "trekking_poles"
+      ],
+      "emergency": [
+       "first_aid_light"
+      ]
+     }
+    },
+    "hourly_any_belt": [
+     "sheep8_rifle_L:bottle_1L#2",
+     "sheep8_rifle_M:bottle_1L#2",
+     "sheep8_rifle_S:bottle_1L#2",
+     "sheep8_rifle_XL:bottle_1L#2",
+     "sheep8_rifle_XXL:bottle_1L#2"
+    ],
+    "n_hourly_M": 1,
+    "n_glass_weather_M": 2,
+    "n_kill_emerg_M": 1
+   },
+   "access_source": "outputs/loadout/fell_loadout_results.json (= fell_results.py re-run)",
+   "func_adj": [
+    -2.0,
+    "-1.0 straight slit ~210 mm lens, W1/W2 must be unhooked to open it, no door pocket (bag_comp_lean.md s7 item 4); -1.0 durability and noise: ULTRAGrid ~55-60 % of 500D abrasion, 70D collar tears at 37-52 N, film-laminate floor quietness 2/5 (s7 items 1, 3)"
+   ],
+   "look": {
+    "score": 6.5,
+    "defects": [
+     "_3: the open zip reads as a ragged lens-shaped hole: no zip tape or teeth on the opening edges",
+     "_4: harness webbing ends float in the air (cut J-strap / loose strap left of the pod)",
+     "_4: caption overprints the glass pod",
+     "_2: lid pod barely visible; the A4 strap pod is not visible in any shot (write-up s7 item 7)",
+     "good: clean hero, true-scale camo, real buckles and webbing"
+    ]
+   },
+   "gate_fails": [
+    "hourly items not reachable pack-on: sheep8_rifle_L:bottle_1L#2, sheep8_rifle_M:bottle_1L#2, sheep8_rifle_S:bottle_1L#2, sheep8_rifle_XL:bottle_1L#2, sheep8_rifle_XXL:bottle_1L#2"
+   ],
+   "gate_pass": false,
+   "scores": {
+    "function": 3.5,
+    "look": 6.5,
+    "weight": 10.0,
+    "build": 10.0,
+    "carry": 10.0
+   },
+   "totals": {
+    "base (RULES)": 7.67,
+    "mass 30 %": 7.97,
+    "build 30 %": 7.97,
+    "BL-008 lens (weight 10 %)": 7.38
+   }
+  },
+  "C": {
+   "folder": "C",
+   "name": "TAILGATE",
+   "brief": "OPEN",
+   "mass": {
+    "ledger_bag_system_g": 932.1,
+    "vs_corrie_g": 48.1,
+    "published_g": 758.7,
+    "pack_M_h1_g_ledger": 3975.1,
+    "strap_pocket_consistent_g": 916.3,
+    "source": "huntkit.mass.ledger.teams()"
+   },
+   "build": {
+    "hours_norm": 33.8,
+    "hours_source": "tailgate.numbers() body 25.7 h + IMP-C1 1.1 h + kept IMP-1/2/4/8 6.95 h (evolve.POCKET_HOURS)",
+    "hours_published": 25.7,
+    "pieces_published": 32,
+    "curved_seams": 1,
+    "zip_mm_total": 1848.0,
+    "adj": [
+     -0.5,
+     "1.59 m inverted-U zip with storm flaps caught in the same row (bag_comp_C.md s7)"
+    ]
+   },
+   "volume_L_mean_fill": 88.08,
+   "volume_published_L": 88.1,
+   "cg_y_mm": {
+    "fill_15": 191.4,
+    "meat_15": 185.0,
+    "fill_19": 170.0,
+    "meat_19": 165.3,
+    "fill_23": 136.6,
+    "meat_23": 134.5
+   },
+   "cg_y_plus_bias_mm": {
+    "fill_15": 195.4,
+    "meat_15": 189.0,
+    "fill_19": 174.0,
+    "meat_19": 169.3,
+    "fill_23": 140.6,
+    "meat_23": 138.5
+   },
+   "rounding_mm": {
+    "fill_15": 6.0,
+    "meat_15": 6.0,
+    "fill_19": 4.0,
+    "meat_19": 6.0,
+    "fill_23": 4.0,
+    "meat_23": 6.0
+   },
+   "cg_z_mm": {
+    "fill_15": 499.0,
+    "meat_15": 509.4,
+    "fill_19": 513.5,
+    "meat_19": 520.2,
+    "fill_23": 519.3,
+    "meat_23": 528.3
+   },
+   "margin_meat_mm": 1.0,
+   "margin_fill_mm": 9.6,
+   "access": {
+    "belt_M": {
+     "sheep8": {
+      "hourly": [
+       "bottle_1L#2"
+      ]
+     }
+    },
+    "hourly_any_belt": [
+     "sheep8_rifle_L:bottle_1L#2",
+     "sheep8_rifle_M:bottle_1L#2",
+     "sheep8_rifle_S:bottle_1L#2",
+     "sheep8_rifle_XL:bottle_1L#2",
+     "sheep8_rifle_XXL:bottle_1L#2"
+    ],
+    "n_hourly_M": 1,
+    "n_glass_weather_M": 0,
+    "n_kill_emerg_M": 0
+   },
+   "access_source": "outputs/bag_comp_C/loadout_C.json (= tailgate_loadout.py re-run)",
+   "func_adj": [
+    0.5,
+    "+1.0 whole aft face opens, 286-353 mm clear, no sill (bag_comp_C.md s2); -0.5 three G-hooks before the lid opens and the lid lies in dirt/blood (s8 items 4, 6)"
+   ],
+   "look": {
+    "score": 4.5,
+    "defects": [
+     "required shot 5 (meat haul) is missing: 4 of 5 renders (outputs/screens has no 20261110_bagC_5.png)",
+     "_3: the lid is a rigid plate rotated 165 deg, hanging below the floor into empty space, wavy edges",
+     "_4: framing puts the bag in the left half and the caption (dark on dark) is unreadable",
+     "_1 and _4 captions claim the straps carry the hoop load / the zip never carries the bag; C's own sim says the straps do not (bag_comp_C.md s3 item 2)",
+     "good: _1 and _2 clean, camo storm flaps read as an accent edge"
+    ]
+   },
+   "gate_fails": [
+    "volume 88.08 L outside 82.0-88.0 L (mean fill closed_L, 15/19/23 in)",
+    "hourly items not reachable pack-on: sheep8_rifle_L:bottle_1L#2, sheep8_rifle_M:bottle_1L#2, sheep8_rifle_S:bottle_1L#2, sheep8_rifle_XL:bottle_1L#2, sheep8_rifle_XXL:bottle_1L#2",
+    "renders: 4 of 5 required shots"
+   ],
+   "gate_pass": false,
+   "scores": {
+    "function": 8.5,
+    "look": 4.5,
+    "weight": 3.08,
+    "build": 5.73,
+    "carry": 1.0
+   },
+   "totals": {
+    "base (RULES)": 4.94,
+    "mass 30 %": 4.7,
+    "build 30 %": 5.04,
+    "BL-008 lens (weight 10 %)": 5.17
+   }
+  },
+  "D": {
+   "folder": "D",
+   "name": "CACHE",
+   "brief": "MODULE",
+   "mass": {
+    "ledger_bag_system_g": 981.1,
+    "vs_corrie_g": 97.1,
+    "published_g": 991.0,
+    "pack_M_h1_g_ledger": 4024.1,
+    "strap_pocket_consistent_g": 981.1,
+    "source": "huntkit.mass.ledger.teams()"
+   },
+   "build": {
+    "hours_norm": 36.6,
+    "hours_source": "cache.system() 37.9 h incl. modules/pods - SP strap pocket 1.32 h (harness, as the ledger)",
+    "hours_published": 37.9,
+    "pieces_published": 47,
+    "curved_seams": 1,
+    "zip_mm_total": 2294.0,
+    "adj": [
+     -0.5,
+     "silpoly modules: slippery fabric, silicone-sealed seams, 47 pieces (bag_comp_D.md s6)"
+    ]
+   },
+   "volume_L_mean_fill": 87.89,
+   "volume_published_L": 87.9,
+   "cg_y_mm": {
+    "fill_15": 191.4,
+    "meat_15": 182.1,
+    "fill_19": 174.1,
+    "meat_19": 167.2,
+    "fill_23": 131.4,
+    "meat_23": 135.7
+   },
+   "cg_y_plus_bias_mm": {
+    "fill_15": 195.4,
+    "meat_15": 186.1,
+    "fill_19": 178.1,
+    "meat_19": 171.2,
+    "fill_23": 135.4,
+    "meat_23": 135.7
+   },
+   "rounding_mm": {
+    "fill_15": 6.0,
+    "meat_15": 6.0,
+    "fill_19": 4.0,
+    "meat_19": 3.0,
+    "fill_23": 6.0,
+    "meat_23": 0.0
+   },
+   "cg_z_mm": {
+    "fill_15": 496.3,
+    "meat_15": 507.4,
+    "fill_19": 507.3,
+    "meat_19": 515.3,
+    "fill_23": 515.7,
+    "meat_23": 523.2
+   },
+   "margin_meat_mm": 3.9,
+   "margin_fill_mm": 9.6,
+   "access": {
+    "belt_M": {
+     "sheep8": {
+      "hourly": [
+       "bottle_1L#2",
+       "gps"
+      ],
+      "weather": [
+       "rain_jacket",
+       "rain_pants"
+      ]
+     }
+    },
+    "hourly_any_belt": [
+     "sheep8_rifle_L:bottle_1L#2",
+     "sheep8_rifle_L:gps",
+     "sheep8_rifle_M:bottle_1L#2",
+     "sheep8_rifle_M:gps",
+     "sheep8_rifle_S:bottle_1L#2",
+     "sheep8_rifle_S:gps",
+     "sheep8_rifle_XL:bottle_1L#2",
+     "sheep8_rifle_XXL:bottle_1L#2"
+    ],
+    "n_hourly_M": 2,
+    "n_glass_weather_M": 2,
+    "n_kill_emerg_M": 0
+   },
+   "access_source": "outputs/loadout/bagD_cache_loadout.json (= cache_loadout.py re-run)",
+   "func_adj": [
+    -0.5,
+    "+0.5 SWAP slab liner and drawer modules; -1.0 no roll-top (collar not waterproof) and one more kill-site step (bag_comp_D.md s8 items 3, 5)"
+   ],
+   "look": {
+    "score": 6.0,
+    "defects": [
+     "_3/_4/_5: bag on the floor without the display form or harness (RULES item 3 asks for the form with frame and harness)",
+     "_3/_4/_5: light irregular blotch on the folded door",
+     "SP snack pocket not drawn (bag_comp_D.md s8 item 8)",
+     "good: modules are real Blender cloth, drawcord collar reads, _1/_2 clean"
+    ]
+   },
+   "gate_fails": [
+    "hourly items not reachable pack-on: sheep8_rifle_L:bottle_1L#2, sheep8_rifle_L:gps, sheep8_rifle_M:bottle_1L#2, sheep8_rifle_M:gps, sheep8_rifle_S:bottle_1L#2, sheep8_rifle_S:gps, sheep8_rifle_XL:bottle_1L#2, sheep8_rifle_XXL:bottle_1L#2"
+   ],
+   "gate_pass": false,
+   "scores": {
+    "function": 3.5,
+    "look": 6.0,
+    "weight": 1.12,
+    "build": 3.85,
+    "carry": 3.9
+   },
+   "totals": {
+    "base (RULES)": 3.65,
+    "mass 30 %": 3.34,
+    "build 30 %": 3.68,
+    "BL-008 lens (weight 10 %)": 3.97
+   }
+  },
+  "E": {
+   "folder": "form",
+   "name": "CHERT",
+   "brief": "FORM",
+   "mass": {
+    "ledger_bag_system_g": 884.6,
+    "vs_corrie_g": 0.6,
+    "published_g": 739.3,
+    "pack_M_h1_g_ledger": 3927.6,
+    "strap_pocket_consistent_g": 884.6,
+    "source": "huntkit.mass.ledger.teams()"
+   },
+   "build": {
+    "hours_norm": 34.6,
+    "hours_source": "form build_metrics body 27.7 h + kept IMP-1/2/4/8 6.95 h; IMP-6R not booked (harness)",
+    "hours_published": 27.7,
+    "pieces_published": 32,
+    "curved_seams": 1,
+    "zip_mm_total": 1487.0,
+    "adj": [
+     -1.0,
+     "#10 door zip set on a crease fold, needs a jig and notches; 630D camo pieces (bag_comp_form.md s6, s8)"
+    ]
+   },
+   "volume_L_mean_fill": 86.13,
+   "volume_published_L": 86.1,
+   "cg_y_mm": {
+    "fill_15": 194.9,
+    "meat_15": 187.4,
+    "fill_19": 176.3,
+    "meat_19": 169.0,
+    "fill_23": 135.9,
+    "meat_23": 133.3
+   },
+   "cg_y_plus_bias_mm": {
+    "fill_15": 198.9,
+    "meat_15": 191.4,
+    "fill_19": 180.3,
+    "meat_19": 173.0,
+    "fill_23": 139.9,
+    "meat_23": 137.3
+   },
+   "rounding_mm": {
+    "fill_15": 6.0,
+    "meat_15": 1.0,
+    "fill_19": 6.0,
+    "meat_19": 2.0,
+    "fill_23": 6.0,
+    "meat_23": 2.0
+   },
+   "cg_z_mm": {
+    "fill_15": 533.3,
+    "meat_15": 541.4,
+    "fill_19": 542.1,
+    "meat_19": 548.8,
+    "fill_23": 550.0,
+    "meat_23": 555.2
+   },
+   "margin_meat_mm": -1.4,
+   "margin_fill_mm": 6.1,
+   "access": {
+    "belt_M": {
+     "day": {
+      "kill": [
+       "kill_kit"
+      ]
+     },
+     "sheep8": {
+      "hourly": [
+       "bottle_1L#2"
+      ],
+      "glassing": [
+       "beanie_gloves",
+       "trekking_poles"
+      ]
+     }
+    },
+    "hourly_any_belt": [
+     "sheep8_rifle_L:bottle_1L#2",
+     "sheep8_rifle_M:bottle_1L#2",
+     "sheep8_rifle_S:bottle_1L#2",
+     "sheep8_rifle_XL:bottle_1L#2",
+     "sheep8_rifle_XXL:bottle_1L#2"
+    ],
+    "n_hourly_M": 1,
+    "n_glass_weather_M": 2,
+    "n_kill_emerg_M": 1
+   },
+   "access_source": "bag_comp/form/loadout.json (= form_loadout.py re-run)",
+   "func_adj": [
+    -0.5,
+    "door 163 mm at z 110 vs CORRIE 198 (bag_comp_form.md s8)"
+   ],
+   "look": {
+    "score": 8.0,
+    "defects": [
+     "_4 (and _1 lower corner): camo texture stretched / smeared at the fang-blade corner (UV stretch)",
+     "_3: door shown as a rigid panel folded over the hinge band",
+     "_1/_3/_4: caption overprints the stand or bag",
+     "good: the most original silhouette; two-tone blocking with camo on the outline is the strongest 'mostly solid, camo accent' read; adds a true-scale pattern sheet (_6)"
+    ]
+   },
+   "gate_fails": [
+    "meat CG 191.4 mm with +4.0 mm bias > 190.0 mm",
+    "hourly items not reachable pack-on: sheep8_rifle_L:bottle_1L#2, sheep8_rifle_M:bottle_1L#2, sheep8_rifle_S:bottle_1L#2, sheep8_rifle_XL:bottle_1L#2, sheep8_rifle_XXL:bottle_1L#2"
+   ],
+   "gate_pass": false,
+   "scores": {
+    "function": 5.0,
+    "look": 8.0,
+    "weight": 4.98,
+    "build": 4.63,
+    "carry": 0.0
+   },
+   "totals": {
+    "base (RULES)": 4.77,
+    "mass 30 %": 4.8,
+    "build 30 %": 4.75,
+    "BL-008 lens (weight 10 %)": 4.75
+   }
+  }
+ },
+ "rank": {
+  "base (RULES)": [
+   "B",
+   "A",
+   "C",
+   "E",
+   "D"
+  ],
+  "mass 30 %": [
+   "B",
+   "A",
+   "E",
+   "C",
+   "D"
+  ],
+  "build 30 %": [
+   "B",
+   "A",
+   "C",
+   "E",
+   "D"
+  ],
+  "BL-008 lens (weight 10 %)": [
+   "B",
+   "A",
+   "C",
+   "E",
+   "D"
+  ]
+ },
+ "verification": {
+  "tests": {
+   "A": "tests/test_bag_comp_A.py 7 passed",
+   "B": "tests/test_bag_comp_lean.py 6 passed",
+   "C": "tests/test_bag_comp_C.py 6 passed",
+   "D": "tests/test_bag_comp_D.py 7 passed",
+   "E": "tests/test_bag_comp_form.py 6 passed"
+  },
+  "result_json_regenerated": {
+   "A": "make_result.py: result.json and result_detail.json identical (0 diffs)",
+   "B": "fell_results.py: result.json and outputs/loadout/fell_loadout_results.json identical (0 diffs)",
+   "C": "make_result.py: all numbers identical; 3 text diffs: saved one_line and features[3] still say the lid straps 'carry the hoop load' (the script now says the sim puts <= 0.45 N/mm on the zip); saved screenshots lists 3 files, regenerated lists 4 (bagC_1..4); no bagC_5 exists",
+   "D": "result.py: identical (0 diffs)",
+   "E": "form_result.py: identical (0 diffs)"
+  },
+  "loadout_regenerated": {
+   "A": "evolve_loadout.py: access misses identical to result.json, but outputs/loadout/bagA_loadout.json is stale (main_bag_cap_L 87.8 saved vs 85.0 now; CGs differ 1-7 mm); result.json does not read that file",
+   "B": "fell_loadout.py __main__ gives the same misses as the saved file but different CG/volume numbers (the saved file is written by fell_results.py with the sim peel)",
+   "C": "tailgate_loadout.py: identical",
+   "D": "cache_loadout.py: identical",
+   "E": "form_loadout.py: identical"
+  },
+  "method": "result scripts re-run with every file write redirected to the scratchpad (no team file touched), then compared key by key"
+ },
+ "missing_items": {
+  "A": [],
+  "B": [
+   "A4 strap pod not visible in any render (team's own note)"
+  ],
+  "C": [
+   "required render 5 (meat haul) missing: 4 of 5 (bag_comp_C.md s9 lists _5 but the file does not exist)",
+   "result.json is stale text (see verification)",
+   "depth 11.4 in (bag_comp_C.md s2) has no source in tailgate.numbers()"
+  ],
+  "D": [
+   "SP snack pocket not drawn in any render (team's own note)"
+  ],
+  "E": [
+   "write-up s8 defers its risks to result.json instead of listing them"
+  ]
+ },
+ "gate_notes": [
+  "Hourly gate (RULES fixed list, loadouts.yaml: bottle_1L and gps are access: hourly): only A reaches every hourly item on every loadout and belt. B, C, D, E miss the sheep-load 2nd bottle on all belts; D also misses the GPS on S-L. CORRIE B.2 misses more (GPS, 2nd bottle, snacks on sheep; snacks on day/elk at S-L: bag_comp_C.md s5, bag_comp_lean.md s4).",
+  "Volume gate: C 88.08 L mean (88.54/88.79/86.92 at 15/19/23 in) is 0.08 L over 88.0. Same sim basis gives CORRIE B.2 87.84 L, so C is CORRIE's shell + 0.24 L.",
+  "CG gate with the flat +4 mm bias: E 15 in meat 187.4 + 4 = 191.4 mm > 190 (fails by 1.4 mm). E's case converged at 1 mm rounding; corrie_body.md 11.4 measured +0.7 mm from 1 to 0 mm rounding, which reads 188.1 mm (pass). C passes with 1.0 mm margin.",
+  "Render gate: only a missing required shot is treated as a gate fail (C). Every entry has at least one listed render defect; under a zero-defect reading of RULES item 3 all five would fail, so defects go into the look score instead."
+ ],
+ "verdict": {
+  "winner": "A",
+  "winner_why": "only entry through the gate; best function/access (0 hourly misses on every loadout x belt, door 294-334 mm clear), 15 in meat CG margin 6.4 mm with bias; costs +24 g and the most build hours (38.3 h)",
+  "runner_up": "B",
+  "runner_up_why": "highest weighted score under every weighting (7.67 base) on weight, build hours and CG margin; fails the hourly gate by one item (sheep 2nd bottle) and has the weakest access and durability",
+  "if_bottle2_not_hourly": "if the owner rules the sheep 2nd bottle a reserve (not hourly), B passes the gate and wins on points; C still fails (volume, missing render) and E still fails on the flat-bias CG",
+  "keep_from_each": {
+   "A": "E-4/E-5 hip-reach pockets on the wings with the pole quiver: snacks/GPS/2nd bottle/poles reachable on every belt",
+   "B": "seam hard points for G-hook add-on pods that stay home when not needed; one straight centre zip; the 3 % shallower shell (15 in meat CG 175.4 mm)",
+   "C": "the floor-hinged full-face lid with no sill, and its finding that the box zip carries <= 0.45 N/mm (SF 79), so the zip is not the hoop-load path",
+   "D": "the SWAP slab: sleep-kit module that becomes the wipeable meat liner under IM1-IM3",
+   "E": "panel line = camo break = door seam, with two-tone solid blocking and camo only on the outline (the strongest 'mostly solid, camo accent' look)"
+  }
+ }
+}

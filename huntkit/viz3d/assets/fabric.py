@@ -100,9 +100,7 @@ def strain_field(V, F, uv_mm):
     det = e1u[:, 0] * e2u[:, 1] - e1u[:, 1] * e2u[:, 0]
     ok = np.abs(det) > 1e-6
     det = np.where(ok, det, 1.0)
-    inv = np.stack([np.stack([e2u[:, 1], -e2u[:, 0]], -1), np.stack([-e1u[:, 1], e1u[:, 0]], -1)], 1) / det[:, None, None]
     # deformation gradient G (3x2): G @ [e1u e2u] = [e1 e2]
-    G = np.einsum("tik,tkj->tij", np.stack([e1, e2], -1), inv.transpose(0, 2, 1).transpose(0, 2, 1))
     G = np.einsum("tik,tkj->tij", np.stack([e1, e2], -1), np.linalg.inv(np.where(ok[:, None, None], np.stack([e1u, e2u], -1),
                                                                              np.eye(2)[None])))
     C = np.einsum("tki,tkj->tij", G, G)

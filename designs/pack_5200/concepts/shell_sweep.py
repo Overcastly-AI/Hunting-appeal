@@ -147,6 +147,13 @@ SHELLS = {p.name: p for p in [
     ShellParams("S11", 185, 185, 185, A_MAX, A_MAX, None, "uniform 185 deep slab, full width"),
     ShellParams("S12", 210, 190, 170, A_MAX, 175, None, "wedge: deep base, shallow top"),
     ShellParams("S13", 140, 210, 210, A_MAX, A_MAX, None, "shallow base, deep shoulder, full width"),
+    # Round 2 (after S00-S13): wide-base shells came out 88.8-89.7 L simulated (the full-width flat faces bulge more:
+    # sim / rule 1.20-1.21, not CORRIE's 1.161), and every extra mm of height cost CG. So: collar seam fixed low at
+    # z 745 (B-22 tab 20 mm clear) and depth sized for ~86 L at the round-1 wide-shell ratio 1.205.
+    ShellParams("S14", 150, 200, 200, A_MAX, A_MAX, 745.0, "R2: full-width box, z_c 745"),
+    ShellParams("S15", 160, 205, 195, A_MAX, 180, 745.0, "R2: full width, taper 180, gusset top 195, z_c 745"),
+    ShellParams("S16", 155, 205, 205, 175, A_MAX, 745.0, "R2: base 350 wide, z_c 745"),
+    ShellParams("S17", 155, 205, 205, A_MAX, 175, 745.0, "R2: full width, taper 175, z_c 745"),
 ]}
 
 
