@@ -13117,5 +13117,15 @@
     }
    }
   }
+ },
+ "retries": {
+  "S15_PR23_r": {
+   "case": "fill",
+   "converged": false,
+   "residual_n": 0.5383,
+   "cg_y": 126.6,
+   "closed_L": 84.7,
+   "note": "retry with OMP_NUM_THREADS=1: still stalls above the 0.5 N tolerance"
+  }
  }
 }

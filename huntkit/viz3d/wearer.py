@@ -1672,7 +1672,7 @@ def _ph(asset_id) -> Path:
     return asset_dir() / m["dir"] / m["file"]
 
 
-def _outdoor(w: Wearer, cam_az: float, sun_off_deg: float = -70.0, exposure: float = -0.6):
+def _outdoor(w: Wearer, cam_az: float, sun_off_deg: float = -55.0, exposure: float = -0.9):
     """Mountain setting: Poly Haven HDRI as light and backdrop, a grass ground on the wearer's slope, dry-grass tufts
     round the feet. The HDRI is turned so the sun stands ``sun_off_deg`` round from the camera (side light)."""
     bpy = _bpy()
@@ -1694,7 +1694,7 @@ def _outdoor(w: Wearer, cam_az: float, sun_off_deg: float = -70.0, exposure: flo
     d = CR.view_dir(cam_az + sun_off_deg, 0.0)                        # where the sun should stand (from the subject)
     want = math.atan2(d[1], d[0])
     have = math.atan2(math.sin(math.radians(HDRI_SUN_AZ_DEG)), math.cos(math.radians(HDRI_SUN_AZ_DEG)))
-    mp.inputs["Rotation"].default_value = (0.0, 0.0, have - want + math.pi)   # sign / half-turn set by test render
+    mp.inputs["Rotation"].default_value = (0.0, 0.0, have - want)
     bg.inputs["Strength"].default_value = 1.0
     sc.view_settings.exposure = exposure
     sc.render.film_transparent = False
@@ -1772,16 +1772,14 @@ HDRI_SUN_AZ_DEG = 0.0      # set by calibration below: azimuth (deg, atan2(y, x)
 
 
 def _hdri_sun_az() -> float:
-    """Sun azimuth in Blender world axes of the unrotated HDRI: the brightest pixel. Blender's equirectangular
-    lookup is u = atan2(y, -x) / 2 pi + 0.5."""
+    """(azimuth, elevation) in degrees of the sun in the unrotated HDRI, Blender world axes: the brightest pixel."""
     bpy = _bpy()
     im = bpy.data.images.load(str(_ph("ph_hdri")), check_existing=True)
     wpx, hpx = im.size
     a = np.array(im.pixels[:], dtype=np.float32).reshape(hpx, wpx, 4)[:, :, :3].sum(2)
     j, i = np.unravel_index(int(np.argmax(a)), a.shape)
-    ang = ((i + 0.5) / wpx - 0.5) * 2 * math.pi            # = atan2(y, -x)
-    x, y = -math.cos(ang), math.sin(ang)
-    return math.degrees(math.atan2(y, x)), (j / hpx - 0.5) * 180.0
+    ang = ((i + 0.5) / wpx - 0.5) * 2 * math.pi            # = atan2(y, x): checked with a shadow-stick render
+    return math.degrees(ang), (j / hpx - 0.5) * 180.0
 
 
 def clear_scene():

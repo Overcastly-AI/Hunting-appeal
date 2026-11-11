@@ -374,7 +374,7 @@ def flat_dims(name: str) -> dict:
 #   The wings, roll and pouch are placed geometry (huntkit/viz3d/corrie.py), as for every CORRIE render.
 # ASSUMPTION RS-1: day ~12 L / 6 kg, 6-day ~45 L / 22 kg (loadouts.yaml day / elk6 order of magnitude), full = the
 # packed case (0.5 kPa, 85 L class). Settled by: photographs of the prototype packed to the three loadouts.
-RENDER_SHELL = "S09"            # set to the chosen shell (analysis/shell_sweep.md section 4)
+RENDER_SHELL = "S15"            # the chosen shell (analysis/shell_sweep.md section 4)
 RENDER_STATES = {
     "day": {"label": "Day load (~12 L, roll fully down, wraps cinched)", "dome_h": 70.0,
             "case": {"p0_kpa": 0.5, "contents_L": 12.0, "fill_kg": 6.0, "fill_model": "janssen", "wraps": True},
