@@ -7929,6 +7929,58 @@
       ]
      ]
     }
+   },
+   "r28": {
+    "fill": {
+     "torso_in": 15,
+     "top_z": 601.0,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    },
+    "meat": {
+     "torso_in": 15,
+     "top_z": 601.0,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.9
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 33.0,
+       "gap_30_mm": 4.9
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 35.0,
+       "gap_30_mm": 9.2
+      }
+     ],
+     "worst_contact_deg": 33.0,
+     "worst_gap_30_mm": 4.9,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    }
    }
   },
   "S15_PR15": {
@@ -11259,6 +11311,58 @@
       ]
      ]
     }
+   },
+   "r28": {
+    "fill": {
+     "torso_in": 19,
+     "top_z": 702.6,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 35.0,
+       "gap_30_mm": 8.3
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 32.0,
+       "gap_30_mm": 3.7
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 34.0,
+       "gap_30_mm": 7.6
+      }
+     ],
+     "worst_contact_deg": 32.0,
+     "worst_gap_30_mm": 3.7,
+     "pass": true,
+     "basis": "simulated wall + 3 mm"
+    },
+    "meat": {
+     "torso_in": 19,
+     "top_z": 702.6,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 27.0,
+       "gap_30_mm": 0.0
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 26.0,
+       "gap_30_mm": 0.0
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 28.0,
+       "gap_30_mm": 0.0
+      }
+     ],
+     "worst_contact_deg": 26.0,
+     "worst_gap_30_mm": 0.0,
+     "pass": false,
+     "basis": "simulated wall + 3 mm"
+    }
    }
   },
   "S15_PR23": {
@@ -12958,6 +13062,58 @@
        285.8
       ]
      ]
+    }
+   },
+   "r28": {
+    "fill": {
+     "torso_in": 23,
+     "top_z": 804.2,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 5.0,
+       "gap_30_mm": 0.0
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 5.0,
+       "gap_30_mm": 0.0
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 9.0,
+       "gap_30_mm": 0.0
+      }
+     ],
+     "worst_contact_deg": 5.0,
+     "worst_gap_30_mm": 0.0,
+     "pass": false,
+     "basis": "simulated wall + 3 mm"
+    },
+    "meat": {
+     "torso_in": 23,
+     "top_z": 804.2,
+     "rows": [
+      {
+       "head": "female_p05",
+       "contact_deg": 18.0,
+       "gap_30_mm": 0.0
+      },
+      {
+       "head": "male_p50",
+       "contact_deg": 17.0,
+       "gap_30_mm": 0.0
+      },
+      {
+       "head": "male_p95",
+       "contact_deg": 19.0,
+       "gap_30_mm": 0.0
+      }
+     ],
+     "worst_contact_deg": 17.0,
+     "worst_gap_30_mm": 0.0,
+     "pass": false,
+     "basis": "simulated wall + 3 mm"
     }
    }
   }
