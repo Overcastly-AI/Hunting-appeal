@@ -186,10 +186,11 @@ def sim_loads() -> dict:
 
 def corrie_f_loads() -> dict:
     """BL-011 CORRIE F IM3 bag-hook force at 1 g per torso (worst case, R/L), read live when the untracked sim outputs
-    exist, else the frozen values."""
+    exist, else the frozen values. These are the REV 0 runs (guys at the bar ends x +/-100, scenarios cf_PR{t}.yaml),
+    stored since BL-025 in F_r0_PR{t}; the old F_PR{t} name now holds BL-022's rev 1 runs (F_r1_PR{t})."""
     out = {}
     for t, fr in FROZEN["corrie_f_im3_1g"].items():
-        f = REPO / "outputs" / "clothsim" / "corrie_f" / f"F_PR{t}" / "results.json"
+        f = REPO / "outputs" / "clothsim" / "corrie_f" / f"F_r0_PR{t}" / "results.json"
         if f.exists():
             r = json.loads(f.read_text())
             best = (0.0, "")
@@ -198,7 +199,7 @@ def corrie_f_loads() -> dict:
                 v = max([float(att[k]["tension_n"]) for k in ("hook_im520_R", "hook_im520_L") if k in att] or [0.0])
                 if v > best[0]:
                     best = (v, cn)
-            out[t] = {"n_1g": round(best[0], 1), "case": best[1], "source": "live"}
+            out[t] = {"n_1g": round(best[0], 1), "case": best[1], "source": "live", "run": f.parent.name}
         else:
             cn = max(fr, key=fr.get)
             out[t] = {"n_1g": fr[cn], "case": cn, "source": "frozen"}
@@ -316,7 +317,7 @@ FROZEN = {
                            "12.5_9.0": {"fi99": 0.4630, "added_g": 9.65}, "13.0_9.0": {"fi99": 0.4507, "added_g": 9.93},
                            "11.5_10.0": {"fi99": 0.4631, "added_g": 9.63}, "12.0_10.0": {"fi99": 0.4399, "added_g": 9.93},
                            "13.25_8.0": {"fi99": 0.4884, "added_g": 9.05}},   # 13.25 voxelises to 13 at h 1 mm
-    # BL-011 CORRIE F (door D2) cloth sims, IM3 bag hook max(R, L) at 1 g, outputs/clothsim/corrie_f/F_PR*/results.json
+    # BL-011 CORRIE F rev 0 (door D2) cloth sims, IM3 bag hook max(R, L) at 1 g, outputs/clothsim/corrie_f/F_r0_PR*/results.json
     "corrie_f_im3_1g": {15: {"meat": 552.4, "fill": 439.6}, 19: {"meat": 515.5, "fill": 363.6},
                         23: {"meat": 460.1, "fill": 336.3}},
     "fairlead_record_fi99_1415": 0.6504503705966851,       # float_fea_results.json bag_on_1415 (released)

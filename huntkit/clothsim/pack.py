@@ -804,6 +804,18 @@ def _find_hardpoints(geo) -> dict:
     return {k: [float(t) for t in v] for k, v in hp.items() if isinstance(v, list) and len(v) == 3}
 
 
+def _contact_fields(sim) -> dict:
+    """{term name: GapField} of every contact_* FieldContact term (BL-025 snapshot of a stage)."""
+    return {t.name: t.f for t in sim.terms if isinstance(t, FieldContact) and str(t.name).startswith("contact_")}
+
+
+def _restore_contact_fields(sim, fields: dict) -> None:
+    """Put the contact terms back on the gap fields of a snapshot from :func:`_contact_fields`."""
+    for t in sim.terms:
+        if isinstance(t, FieldContact) and t.name in fields:
+            t.f = fields[t.name]
+
+
 LOADS = ("gas", "pressure", "pressure_janssen", "meat_floor", "meat_face", "fill_wall_friction", "fill_floor")
 
 
@@ -846,6 +858,10 @@ def run_case(pm: PackModel, case: dict, x0=None, verbose=False):
     cont = pm.scen["contact"].get("smooth_continuation") or []
     sig_ok = float(pm.scen["contact"].get("smooth_mm", 0.0) or 0.0) if infos and infos[-1].converged else None
     x_ok, info_ok = x.copy(), infos[-1] if infos else None
+    # BL-025 (2026-11-12): the gap fields of the kept stage travel with x_ok. Before this fix a stopped
+    # continuation restored x but left every FieldContact on the field of the failed stage, so the reported
+    # contact_* forces and spreader pressures were evaluated on the wrong (sharper) field.
+    f_ok = _contact_fields(sim)
     for sig in cont:
         sig = float(sig)
         if sig_ok is None:          # the smoothed solve itself did not converge: nothing to continue from
@@ -868,9 +884,10 @@ def run_case(pm: PackModel, case: dict, x0=None, verbose=False):
         if verbose:
             print(f"   {info.reason} in {info.iterations} it, residual {info.residual_n:.3g} N, {info.seconds:.1f} s")
         if info.converged:
-            sig_ok, x_ok, info_ok = sig, x.copy(), info
+            sig_ok, x_ok, info_ok, f_ok = sig, x.copy(), info, _contact_fields(sim)
         else:                       # keep the last converged stage (reported), stop stepping down
             x = x_ok
+            _restore_contact_fields(sim, f_ok)      # BL-025: fields back to the kept stage too
             import copy as _copy
             kept = _copy.copy(info_ok)
             kept.reason = f"kept the last converged stage: contact rounding {sig_ok:g} mm"

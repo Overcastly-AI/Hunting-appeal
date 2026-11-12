@@ -184,8 +184,19 @@ def uninstall():
     CO.make, BC.y_frame, CB.load_corrie_patterns = _SAVED["make"], _SAVED["yf"], _SAVED["load"]
 
 
+REV_DIRS = {"Fr0": "F_r0"}     # BL-025: run folders carry the CORRIE F revision; "F" -> F_r<corrie_f.REVISION>
+RENDER_DRAPE_TAG = "_fine"     # packed-only fine drape for the renders (huntkit/viz3d/corrie_f.py reads F_PR{t}_fine)
+
+
 def run_dir(variant: str, torso: int, tag: str = "") -> Path:
-    return OUT / f"{variant}_PR{torso}{tag}"
+    """Run folder. BL-025: CORRIE F load runs are stored per revision, ``F_r0_PR{t}{tag}`` (rev 0, BL-011: guys at the
+    bar ends x +/-100) and ``F_r1_PR{t}{tag}`` (rev 1, BL-022: guys at corrie_f.GUY_X), because BL-022's rev 1 runs had
+    overwritten the rev 0 folders of the same name. Other variants (F0, S<mm>) keep their own prefix. The packed render
+    drape (tag "_fine") keeps its legacy name F_PR{t}_fine for the viz3d reader (F_r0_PR{t}_fine links to it)."""
+    if variant == "F" and tag == RENDER_DRAPE_TAG:
+        return OUT / f"F_PR{torso}{tag}"
+    pre = f"F_r{F.REVISION}" if variant == "F" else REV_DIRS.get(variant, variant)
+    return OUT / f"{pre}_PR{torso}{tag}"
 
 
 def run(variant: str, torso: int, cases="fill,meat", fine=False, tag="", guys=None, smooth=None) -> dict:
