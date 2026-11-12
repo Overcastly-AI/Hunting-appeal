@@ -83,7 +83,7 @@ def sheets() -> list:
     if png(NUMBER["addons_on"]).exists() and png(NUMBER["addons_off"]).exists():
         out.append(studio.sheet([(png(NUMBER["addons_on"]), png(NUMBER["addons_off"]))], png(SHEETS["addons"]),
                                 titles=("Add-ons on", "Add-ons off"),
-                                subs=("tripod, scope pod, top pouch", "base pack, same camera. Rendered 3D models")))
+                                subs=("tripod (right), scope pod (left)", "base pack with its top pouch, same camera. Rendered 3D models")))
     return out
 
 

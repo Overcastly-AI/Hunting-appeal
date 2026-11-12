@@ -48,3 +48,29 @@ def test_bl021_case_is_reproduced_and_corrected():
     assert m["kept"]["contact_spreader"] == pytest.approx(1115.5, abs=0.5)
     assert m["kept_detail"]["contact_spreader"]["force_n"][1] == pytest.approx(1086.8, abs=0.5)
     assert m["pass_through"]["nodes_through"] == 0
+
+
+def test_summarize_counts_stopped_cases_and_changes_over_threshold():
+    row = lambda stored, kept, stopped: {"stages": {"kept": 3.0, "used_by_report": 2.0 if stopped else 3.0,
+                                                    "start": 6.0, "stopped": stopped},
+                                         "stored": {"contact_spreader": stored}, "kept": {"contact_spreader": kept},
+                                         "reproduced_n": {"contact_spreader": stored + 0.05},
+                                         "change_pct": {"contact_spreader": round(100 * (kept - stored) / stored, 1)}}
+    res = [{"run": "outputs/clothsim/fam/A", "cases": {"meat": row(1331.8, 1115.5, True), "fill": row(200.0, 200.0, False)}},
+           {"run": "outputs/clothsim/fam/B", "cases": {"meat": row(1000.0, 985.0, True)}}]
+    s = R.summarize(res)["fam"]
+    assert (s["runs"], s["cases"], s["stopped"]) == (2, 3, 2)
+    assert s["repro_max_abs_n"] == pytest.approx(0.1)
+    # only A meat moves by more than 2 % (B meat -1.5 %, A fill 0 %)
+    assert s["n_changed"] == 1 and s["changed"][0]["run"] == "A" and s["changed"][0]["change_pct"] == pytest.approx(-16.2)
+
+
+@pytest.mark.skipif(not (CF / "F_r1_PR23_fineFM_sm8" / "x_meat.npy").exists(), reason="BL-025 fine run not in this checkout")
+def test_run_made_after_the_fix_reports_the_kept_field():
+    """End-to-end check of the pack.run_case fix on a real sim: F_r1_PR23_fineFM_sm8 meat stopped at 3 mm and kept
+    4 mm; its stored contact forces are the kept field's (and differ from the 3 mm field's)."""
+    m = R.recontact_run(CF / "F_r1_PR23_fineFM_sm8")["cases"]["meat"]
+    assert m["stages"]["stopped"] and m["stages"]["kept"] == 4.0 and m["stages"]["used_by_report"] == 3.0
+    assert m["report_field"] == "kept"
+    assert m["kept"]["contact_spreader"] == pytest.approx(m["stored"]["contact_spreader"], abs=0.15)
+    assert abs(m["reproduced_n"]["contact_spreader"] - m["stored"]["contact_spreader"]) > 5.0

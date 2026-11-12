@@ -219,8 +219,8 @@ def viz_params() -> dict:
 
 
 def frame_note() -> str:
-    return ("H1 printed body (outputs/pack3d_h1); IM3 fairlead cheek still the released 18 mm, not the 27 mm of "
-            "2026-11-11" if (H1_DIR / "genframe_assembled.stl").exists() else "released generative frame (H1 mesh missing)")
+    return ("H1 printed body (outputs/pack3d_h1); IM3 fairlead cheek still the released 18 mm, not the 28 mm of "
+            "2026-11-12 (BL-021)" if (H1_DIR / "genframe_assembled.stl").exists() else "released generative frame (H1 mesh missing)")
 
 
 def carabiner(c, long, nrm):
@@ -411,17 +411,18 @@ def _hunter(pose, state, az, el, caption, sub, scene_kind="studio", **view):
 
 
 HUNTER_BOX = [-300.0, -330.0, -1080.0, 300.0, 380.0, 1060.0]     # same camera for the three load states (FCS mm)
+HUNTER_ZOOM = 1.16       # 1.3 cut the full load's collar and pouch off at the top of the frame (defect D-2)
 
 SHOTS = {
     # --- on the 6 ft hunter, 19 in setting
     "hero": _hunter("stand", "sixday", -36, 9, "CORRIE F on a 6 ft hunter: 3/4 rear, 6-day load (45 L)",
-                    SUB + "1829 mm (6 ft) man, 19 in torso setting. ", box=HUNTER_BOX, zoom=1.3),
+                    SUB + "1829 mm (6 ft) man, 19 in torso setting. ", box=HUNTER_BOX, zoom=HUNTER_ZOOM),
     "side": _hunter("side", "sixday", 90, 4, "Side profile, 6-day load (45 L)",
-                    SUB + "How tall and how deep it rides. ", box=HUNTER_BOX, zoom=1.3),
+                    SUB + "How tall and how deep it rides. ", box=HUNTER_BOX, zoom=HUNTER_ZOOM),
     "day": _hunter("stand", "day", -36, 9, "Day load (12 L): rolled down and cinched, top pouch off",
-                   SUB + "Same camera as 6-day and full. ", box=HUNTER_BOX, zoom=1.3),
+                   SUB + "Same camera as 6-day and full. ", box=HUNTER_BOX, zoom=HUNTER_ZOOM),
     "full": _hunter("stand", "full", -36, 9, "Full: 85 L class, collar standing, pouch on the roll",
-                    SUB + "Same camera as day and 6-day. ", box=HUNTER_BOX, zoom=1.3),
+                    SUB + "Same camera as day and 6-day. ", box=HUNTER_BOX, zoom=HUNTER_ZOOM),
     "walk": _hunter("walk", "sixday", -58, 6, "Walking uphill with trekking poles, 6-day load",
                     "CORRIE F. HDRI and grass: Poly Haven, CC0. ", "outdoor"),
     "kneel": _hunter("kneel", "sixday", 118, 5, "Kneeling and glassing with the pack on, 6-day load",
@@ -444,7 +445,7 @@ SHOTS = {
     "frame_bare": {"scene": "full", "view": {"az": -38, "el": 10, "fov": 24, "fstop": 11, "frame": "pack"},
                    "state": {"mannequin": True, "mode": "frame"},
                    "caption": "Bag off: the H1 frame, crown, spreader and belt B",
-                   "sub": "Carbon crown at 19 in; IM3 fairlead cheek drawn at 18 mm (27 mm since 11-11)"},
+                   "sub": "Carbon crown at 19 in; IM3 fairlead cheek drawn at 18 mm (28 mm since 11-12)"},
     "addons_on": {"scene": "full_carry", "view": {"az": 38, "el": 12, "fov": 24, "fstop": 11, "box": BOX, "zoom": 1.4},
                   "state": PK, "caption": "Add-ons on: tripod under W1-W3 (right), scope pod (left), top pouch",
                   "sub": "CORRIE F, full load"},

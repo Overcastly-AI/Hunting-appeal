@@ -131,11 +131,55 @@ def recontact_run(run_dir) -> dict:
             row["reproduced_n"] = {k: v["force_total_n"] for k, v in used.items()}
             row["kept"] = {k: v["force_total_n"] for k, v in kept.items()}
             row["kept_detail"] = kept
+        # which field the stored numbers sit on: "tried" = the old (pre-BL-025) report, "kept" = a run made after the fix
+        # (the end-to-end check of pack.run_case on a real sim), "same" = no stopped stage, nothing to tell apart
+        if st["kept"] is None or st["kept"] == st["used_by_report"]:
+            row["report_field"] = "same"
+        elif all(abs(row["kept"][k] - v) <= 0.15 for k, v in rep.items() if k in row["kept"]):
+            row["report_field"] = "kept"
+        elif all(abs(row["reproduced_n"][k] - v) <= 0.15 for k, v in rep.items() if k in row["reproduced_n"]):
+            row["report_field"] = "tried"
+        else:
+            row["report_field"] = "neither"
         row["pass_through"] = pass_through(x, cs)
         row["change_pct"] = {k: (round(100.0 * (row["kept"][k] - v) / v, 1) if v and v > 1e-6 else None)
                              for k, v in rep.items() if k in row["kept"]}
         out["cases"][cn] = row
     return out
+
+
+def summarize(results: list, threshold_pct: float = 2.0) -> dict:
+    """Roll-up of :func:`recontact_run` rows (BL-025 task 2): per run family (the folder above the run), how many cases
+    were evaluated, how many ended on a stopped continuation, whether the stored numbers were reproduced on the field
+    the old report used (max abs difference over the pre-fix cases, N), which field each case's stored numbers sit on
+    (``report_field``: runs made after the fix report the kept field), the cases with spreader pass-through, and every
+    case/term whose corrected force differs from the stored one
+    by more than ``threshold_pct``. Cases whose kept stage is the stage the report used change by 0 % by construction."""
+    fam: dict = {}
+    for o in results:
+        parts = Path(o["run"]).parts
+        key = parts[-2] if len(parts) >= 2 else o["run"]
+        f = fam.setdefault(key, {"runs": 0, "cases": 0, "stopped": 0, "repro_max_abs_n": 0.0, "report_field": {},
+                                 "pass_through_cases": [], "changed": []})
+        f["runs"] += 1
+        for cn, c in o["cases"].items():
+            f["cases"] += 1
+            f["stopped"] += int(bool(c["stages"]["stopped"]))
+            rf = c.get("report_field", "tried")
+            f["report_field"][rf] = f["report_field"].get(rf, 0) + 1
+            if (c.get("pass_through") or {}).get("nodes_through"):
+                f["pass_through_cases"].append({"run": Path(o["run"]).name, "case": cn, **c["pass_through"]})
+            for k, v in ((c.get("reproduced_n") or {}).items() if rf == "tried" else ()):
+                if k in c["stored"]:
+                    f["repro_max_abs_n"] = max(f["repro_max_abs_n"], round(abs(v - c["stored"][k]), 1))
+            for k, p in c["change_pct"].items():
+                if p is not None and abs(p) > threshold_pct:
+                    f["changed"].append({"run": Path(o["run"]).name, "case": cn, "term": k[len("contact_"):],
+                                         "stored_n": c["stored"][k], "kept_n": c["kept"][k], "change_pct": p,
+                                         "kept_mm": c["stages"]["kept"], "used_mm": c["stages"]["used_by_report"]})
+    for f in fam.values():
+        f["n_changed"] = len(f["changed"])
+    return fam
 
 
 def main(argv=None):
