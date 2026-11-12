@@ -102,7 +102,9 @@ def test_ticket_steps_match_the_ticket_modules():
     assert W.CORRIE_F_REV == L.ADOPTED_BAG["revision"] == 3
     with F.revision(0):
         r0 = F.weight_table("M", "base", "D2", "today")["bag_side_g"]
-    assert wt["bag_side_g"] - r0 == pytest.approx(8.6 + F.guy_port()["mass_g"], abs=0.1)
+    import strap_tails as ST                       # BL-031 base strap changes ride on rev 3 (strap_tails.bag_rows)
+    bl031 = sum(g for s, n, g, c, src in ST.bag_rows() if c == "base")
+    assert wt["bag_side_g"] - r0 == pytest.approx(8.6 + F.guy_port()["mass_g"] + bl031, abs=0.1)
 
 
 def test_six_point_six_pounds_is_not_reached_and_the_gap_is_reported():
@@ -170,11 +172,14 @@ def test_gated_savings_are_not_proven_now():
     # the H1B raster) + CORRIE F rev 1 (+8.6 g, BL-022) + rev 3's B-27 ports in base (BL-030; lid and straps as hunted)
     bl023_p = 3414.4 - st["A_imus"]["base"] - st["A_att"]["base"] + 1.46
     assert bl023_p == pytest.approx(3635.9, abs=0.3)                             # weight_rollup_v2.md of BL-023
-    upd = st["H1B"]["base"] - 2 * (9.53 - 6.13104) + 8.6 + W._F().guy_port()["mass_g"]
+    import strap_tails as ST                       # + BL-031 (2026-11-12): bag-side base rows + the BL031 correction
+    bl031 = sum(g for s, n, g, c, src in ST.bag_rows() if c == "base") + st["BL031"]["base"]
+    upd = st["H1B"]["base"] - 2 * (9.53 - 6.13104) + 8.6 + W._F().guy_port()["mass_g"] + bl031
     assert t["P"]["base"] == pytest.approx(bl023_p + upd, abs=0.3)
-    assert 3660 < t["P"]["base"] < 3700
-    # after tests: BL-023's 3143.5 g + the same update + the retired OD 17 legs taken back out (they were -20.6 g)
-    assert t["A"]["base"] == pytest.approx(3143.5 + upd - st["A_c17"]["base"], abs=0.3)
+    assert 3610 < t["P"]["base"] < 3660                                        # BL-031: 3634.8 g (was 3683.4)
+    # after tests: BL-023's 3143.5 g + the same update + the retired OD 17 legs taken back out (they were -20.6 g); the
+    # A_b step also deletes BL-031's shortened stabilizers (its compensating row)
+    assert t["A"]["base"] == pytest.approx(3143.5 + upd - st["A_c17"]["base"] - ST.stabilizer_delta_g("M"), abs=0.3)
     assert st["A_c17"]["base"] == pytest.approx(-20.6, abs=0.1)
 
 

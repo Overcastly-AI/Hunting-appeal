@@ -47,7 +47,8 @@ def test_ledger_names_rev3_as_the_adopted_bag_and_books_it():
     cs = [r for r in rows if "crown_straps" in r["name"]]
     assert len(lid) == 1 and len(cs) == 1 and lid[0]["cfg"] == cs[0]["cfg"] == "as_hunted"
     assert any(r["name"].startswith("BL-028 rev 2: B-27") and r["cfg"] == "base" for r in rows)
-    assert cs[0]["g"] == pytest.approx(F.crown_strap_diet()["chosen"]["mass_g"], abs=0.01)
+    # BL-031: the adopted B-28 is 25 mm, cut for crown kit M (BL-030's 20 mm diet is history)
+    assert cs[0]["g"] == pytest.approx(F.crown_kit_straps("M")["mass_g"], abs=0.01)
     assert sum(r["g"] for r in rows) == pytest.approx(sum(r["g"] for r in F.parts("M")), abs=0.01)
 
 
@@ -91,7 +92,9 @@ def test_20mm_straps_are_lighter_by_the_target_and_rated_for_the_loads():
     assert F.LL20["tensile_n"] == pytest.approx(637.4, abs=0.1)
     assert w20["margin_slip"] == pytest.approx(0.5 * 637.4 / 288.0, abs=0.01) and w20["margin_slip"] >= 1.0
     assert w20["margin_webbing"] > 10.0
-    assert d["chosen"] is not None and d["chosen"]["width_mm"] == F.crown_strap_w() == 20.0 and d["pass"]
+    # BL-030 adopted 20 mm (``chosen``, kept as history); BL-031 put rev 3 back on 25 mm (owner 2026-11-12)
+    assert d["chosen"] is not None and d["chosen"]["width_mm"] == 20.0 and d["pass"]
+    assert F.crown_strap_w() == 25.0
 
 
 def test_extender_option_is_lighter_still_and_shortens_the_tail():

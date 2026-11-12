@@ -87,11 +87,15 @@ def test_rev3_swaps_the_pouch_for_the_lid_and_keeps_base_as_rev2():
     assert cs[0]["system"] == "straps_compression" and cs[0]["cfg"] == "as_hunted"
     base2 = sum(r["g"] for r in r2 if r["cfg"] == "base")
     base3 = sum(r["g"] for r in r3 if r["cfg"] == "base")
-    assert base3 == pytest.approx(base2, abs=0.01)                # the lid and its straps are as-hunted only
+    # the lid and its straps are as-hunted only; rev 3 also carries BL-031's base strap changes (W cut for carry,
+    # IM and roll-clip tail keepers; strap_tails.bag_rows)
+    import strap_tails as ST
+    bl031 = sum(g for s, n, g, c, src in ST.bag_rows() if c == "base")
+    assert base3 == pytest.approx(base2 + bl031, abs=0.02)
     hunted = lambda rows: sum(r["g"] for r in rows if r["cfg"] in ("base", "as_hunted"))  # noqa: E731
     d = hunted(r3) - hunted(r2)
     pouch = sum(r["g"] for n, r in n2.items() if "top_pouch" in n)
-    assert d == pytest.approx(lid[0]["g"] + cs[0]["g"] - pouch, abs=0.05)
+    assert d == pytest.approx(lid[0]["g"] + cs[0]["g"] - pouch + bl031, abs=0.05)
 
 
 def test_revs_0_to_2_are_unchanged_by_rev3():

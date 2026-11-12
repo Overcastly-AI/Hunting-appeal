@@ -98,9 +98,13 @@ def test_goal_is_reported_honestly(summ):
         assert g["met"] == (g["saving_g"] >= 350.0)
         mt = summ["doors"][d]["configs"]["meat_trip"]
         assert g["corrie_b2_g"] == mt["corrie_b2_bag_side_g"]
-        # every configuration is lighter than CORRIE B.2 on the same rule
+        # every configuration is lighter than CORRIE B.2 on the same rule; BL-031 (2026-11-12) adds the W1-W3 haul
+        # extenders to the meat-trip kit, which takes D1's meat trip 12 g over B.2 (reported in corrie_f_body.md 16)
+        import strap_tails as ST
+        ext = sum(g for s, n, g, c, src in ST.bag_rows() if c == "meat_trip")
         for cfg in F.CFGS:
-            assert summ["doors"][d]["configs"][cfg]["delta_g"] < 0
+            dg = summ["doors"][d]["configs"][cfg]["delta_g"]
+            assert (dg - ext if (cfg == "meat_trip" and d == "D1") else dg) < 0
     # D2 is the lighter door; B fabrics save against today's fabrics
     assert summ["doors"]["D2"]["goal"]["saving_g"] > summ["doors"]["D1"]["goal"]["saving_g"]
     for d in F.DOORS:

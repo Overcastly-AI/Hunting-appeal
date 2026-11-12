@@ -1,0 +1,26 @@
+{
+ "torso_in": 19,
+ "method": "huntkit.viz3d.cloth_pass roll clips (roll end to the gusset tab, taut quadratic path pushed off the cloth); cloth_pass ClothParams clip_run / clip_below_seam",
+ "level": 2,
+ "clip_below_seam_mm": 150.0,
+ "states": {
+  "day": {
+   "roll_clip_mm": {
+    "R": 165.53479550390227,
+    "L": 161.30332567102468
+   }
+  },
+  "sixday": {
+   "roll_clip_mm": {
+    "R": 170.489928682406,
+    "L": 179.7202120338733
+   }
+  },
+  "full": {
+   "roll_clip_mm": {
+    "R": 369.06227835278406,
+    "L": 374.8632885471971
+   }
+  }
+ }
+}

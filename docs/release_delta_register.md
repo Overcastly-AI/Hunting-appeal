@@ -16,7 +16,7 @@ safety_relevant, notes`).
 those rows name. Nothing was edited in any released or source file by this ticket; this is a list for a later release
 ticket. Units are mm, N, g, with inches / lb / oz in brackets where a builder needs them.
 
-**Counts.** 22 deltas from BL-015, plus RD-23 / RD-24 added by BL-030 (CORRIE F rev 3, 2026-11-12): 24 in all, 16 safety-relevant. BL-015's own count: **15 are safety-relevant** (a part built from today's files fails HA-LS-1 rev C, an
+**Counts.** 22 deltas from BL-015, plus RD-23 / RD-24 added by BL-030 (CORRIE F rev 3, 2026-11-12; RD-24 restated by BL-031): 24 in all, 16 safety-relevant. BL-015's own count: **15 are safety-relevant** (a part built from today's files fails HA-LS-1 rev C, an
 injury limit, or a load limit the user must know). Areas: frame 5, belt 3, back 2, harness 1, bag 4, attachment 1,
 meat haul 2, docs 4.
 
@@ -47,7 +47,7 @@ meat haul 2, docs 4.
 | RD-21 | docs | BUILD_PLAN.md describes retired parts (stubs, bay mode, PA66 plate) | 2026-11-06 to 2026-11-10 | **yes** | RD-04, RD-10, RD-16 released first |
 | RD-22 | docs | No user guide: float limit, belly rule, procedures, posts optional | 2026-11-06 / 2026-11-07 / 2026-11-09 | **yes** | none |
 | RD-23 | attachment | Top anchor: crown hood B-19 + 2 outside guys -> B-25 bridle + B-27 port guys inside the bag (CORRIE F rev 3) | 2026-11-12 | **yes** | B-27 port pattern; T9 rev 3 at the S kit; LL-H |
-| RD-24 | bag | Top pouch -> B-29 5.0 L crown lid on two 20 mm B-28 crown straps (CORRIE F rev 3) | 2026-11-12 | **no** | B-29 pattern (pattern-maker); B-28 slip gate at 288 N; T9 lid weigh/photo |
+| RD-24 | bag | Top pouch -> B-29 5.0 L crown lid on two 25 mm B-28 crown straps cut per crown kit; strap tail rule (CORRIE F rev 3, BL-031) | 2026-11-12 | **no** | B-29 pattern (pattern-maker); T9 lid weigh/photo, gloved cinch trial, free lengths |
 
 ## 2. Rows in full
 
@@ -260,13 +260,13 @@ Each row: released state, decided state, decision source (file and section or DE
 - **Blocked by:** CORRIE F pattern release (pattern-maker); T9 rev 3 at the S kit; LL-H heavy guy lock slip; attorney review of the strap paths before tooling (DECISIONS 2026-11-01)
 - **Safety-relevant:** yes. Safety: built from the released hood-and-outside-guy files, CORRIE F's 15 in meat CG is over rev C (194.9 mm BL-028, 198.1 mm with the eyelets in cable order, corrie_f_body.md 13.11).
 
-### RD-24 (bag): Top pouch -> B-29 5.0 L crown lid on two 20 mm B-28 crown straps (CORRIE F rev 3)
+### RD-24 (bag): Top pouch -> B-29 5.0 L crown lid on two 25 mm B-28 crown straps cut per crown kit; strap tail rule (CORRIE F rev 3, BL-031)
 
 - **Released state:** The v3.1 release has a box lid L-01 / L-02 / L-03 (cutlist.csv); CORRIE F up to rev 2 carried the 2.7 L top pouch (team B lid pod, 4 short G-hook straps), never released
-- **Decided state:** B-29 crown lid: 350 x 210 mm superellipse plan, 30 mm wall + 55 mm dome, 5.0 L (304 cu in) counted outside the 85 L bag, ULTRAGrid crown and wall, 70D base, two 630D camo corner caps over the D2 blades, #5 coil zip 470 mm on the aft wall, two strap channels on the crown at x +/-52; 45.9 g (1.62 oz). B-28 crown straps (pair): 20 mm polyester, cut 1138 mm, POM toggle into the second fold of each B-25 tab, ITW Classic Ladderloc 20 mm on a 60 mm tab in the hinge band at z 700; 49.1 g (1.73 oz). Both as hunted. Bag side belt M D2: base 1112.8 g, as hunted 1362.4 g, meat trip 1494.6 g
-- **Decision:** 2026-11-12. Source: docs/DECISIONS.md row 2026-11-12 'Owner adopts CORRIE F rev 3'; designs/pack_5200/analysis/corrie_f_body.md sections 14.2, 15.1-15.4; docs/research/top_anchor_and_lids.md
-- **Files that must change:** the CORRIE F pattern release (B-29 pieces: crown, base, front wall, aft wall upper / lower, 2 caps, 2 channels; B-28 cut list; hinge-band tabs); cutlist and BOM (20 mm webbing, 2 x 20 mm ladder locks, 2 POM toggles, #5 coil zip 530 mm with slider); designs/pack_5200/BUILD_PLAN.md; user guide (lid off: the straps come off with it)
-- **Blocked by:** B-29 pattern and the build-hours confirmation (pattern-maker; 8.9 h on the seam list, corrie_f_body.md 15.4); B-28 slip gate at 288 N on the 20 mm lock; T9 lid weigh and photo; owner choice tail keeper vs extender (15.6)
+- **Decided state:** B-29 crown lid: 350 x 210 mm superellipse plan, 30 mm wall + 55 mm dome, 5.0 L (304 cu in) counted outside the 85 L bag, ULTRAGrid crown and wall, 70D base, two 630D camo corner caps over the D2 blades, #5 coil zip 470 mm on the aft wall, two strap channels on the crown at x +/-52; 45.9 g (1.62 oz). B-28 crown straps (pair), BL-031 (owner 2026-11-12: 25 mm, sized per kit): 25 mm polyester cut per crown kit S 1028 / M 967 / L 908 mm (40.5 / 38.1 / 35.7 in), a heavy 25 mm ladder lock at each end (front on a 60 mm tab in the hinge band at z 700, rear on a 60 mm tab through the POM toggle in the second fold of each B-25 tab), a 25 mm elastic tail keeper at each lock; 77.7 g (2.74 oz) at kit M. Both as hunted. Strap tail rule (BL-031): free tail <= 100 mm at the 6-day / mid setting or a keeper; lifters 450 -> 340 mm, sternum 400 -> 170 mm a side, hip stabilizers 400 -> 260-330 mm by belt size, belt 2:1 tail 150 -> 50 mm + 2 keepers, W1-W3 cut for carry (750 / 822 / 987 mm at kit M) + three 740 mm haul extenders in the meat-trip kit, roll-clip straps 350 -> 510 mm + 2 keepers, IM1-IM3 keepers. Bag side belt M D2: base 1089.0 g, as hunted 1367.2 g, meat trip 1563.3 g
+- **Decision:** 2026-11-12. Source: docs/DECISIONS.md rows 2026-11-12 'Owner adopts CORRIE F rev 3' and 'Owner: crown straps stay 25 mm'; designs/pack_5200/analysis/corrie_f_body.md sections 14.2, 15.1-15.4, 16; docs/research/top_anchor_and_lids.md
+- **Files that must change:** the CORRIE F pattern release (B-29 pieces: crown, base, front wall, aft wall upper / lower, 2 caps, 2 channels; B-28 cut list per crown kit; hinge-band and B-25 lock tabs); cutlist and BOM (25 mm webbing per kit, 4 heavy 25 mm ladder locks, 2 POM toggles, 25 mm elastic keepers, #5 coil zip 530 mm with slider; harness, belt, W1-W3, roll-clip cut lengths and the 3 haul extenders); designs/pack_5200/BUILD_PLAN.md; user guide (lid off: the straps come off with it; roll tails into their keepers; extenders for the meat haul)
+- **Blocked by:** B-29 pattern and the build-hours confirmation (pattern-maker; 8.9 h on the seam list, corrie_f_body.md 15.4); T9 lid weigh and photo; T9 gloved cinch trial (50 mm grip) and free lengths (crown straps per kit, W1-W3, roll clips); R-06 fit trial (sternum); owner choices: crown strap keeper vs extender, W haul extenders (corrie_f_body.md 16.6). The 20 mm B-28 slip gate is dropped (25 mm heavy lock: LL-H)
 - **Safety-relevant:** no. The lid is a pocket, not a load path: the port guys (RD-23) hold the bag top. No hook-and-loop; coil zip; camo only on the caps.
 
 ## 3. Released files that are unsafe to build from today, and their warnings

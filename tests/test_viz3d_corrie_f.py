@@ -242,7 +242,8 @@ def test_scene_builds_as_corrie_f():
 
 @pytest.mark.skipif(not _has_solver(), reason="needs bpy (set HUNTKIT_BPY to the Blender venv's python)")
 def test_rev3_lid_and_crown_straps_are_native():
-    """BL-030: the 6-day scene draws rev 3 itself: crown lid (variant lid), 20 mm crown straps over it, no pouch."""
+    """BL-030: the 6-day scene draws rev 3 itself: crown lid (variant lid), crown straps over it (25 mm since BL-031), no
+    pouch."""
     BC, CO, F, CS = CF._mods()
     if not (CS.run_dir("F", CF.TORSO, "_fine") / "x_packed.npy").exists():
         pytest.skip("CORRIE F fine drape missing: run corrie_f_sim.py fine --torso 19")
@@ -255,10 +256,18 @@ def test_rev3_lid_and_crown_straps_are_native():
     assert by["cf3_lid"].variant == "lid" and by["cf3_crown_R"].variant == "lid"   # add-on: off when the lid is off
     assert by["cf3_lid_caps"].material == "camo"
     r = sc.report["rev3"]
-    assert r["strap_w_mm"] == F.crown_strap_w() == 20.0
+    assert r["strap_w_mm"] == F.crown_strap_w() == 25.0             # BL-031: 25 mm, cut for crown kit M
+    # BL-031: a lock at each end; both tails drawn at their real 6-day length, rolled in a keeper
+    want = F.crown_kit_straps("M")["tails_mm"]["sixday"]["mid_torso"]
+    for k in ("front_R", "front_L", "rear_R", "rear_L"):
+        assert r["tails"][k]["tail_mm"] == pytest.approx(want, abs=0.1)
+    for n in ("cf3_crown_lock_rear_R", "cf3_crown_tail_R__keeper", "cf_roll_clip_tail_R__keeper"):
+        assert n in by, n
+    assert by["cf3_crown_tail_R__keeper"].material == "elastic"
     for s in ("R", "L"):
         P = np.asarray(by[f"cf3_crown_{s}"].mesh.vertices)
-        assert np.abs(np.abs(P[:, 0]) - F.CROWN_X).max() < 12.0                  # stays in its x +/-52 line
+        # stays in its x +/-52 line: the mesh edge is half the strap width off it (25 mm since BL-031) + 1 mm
+        assert np.abs(np.abs(P[:, 0]) - F.CROWN_X).max() < r["strap_w_mm"] / 2 + 1.0
         assert P[:, 2].max() > r["lid_top_z"]                                     # over the lid, not through it
         assert 350.0 < r["straps"][s]["length_mm"] < 700.0
     Vl = np.asarray(by["cf3_lid"].mesh.vertices)

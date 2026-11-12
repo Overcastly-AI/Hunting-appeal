@@ -262,6 +262,8 @@ STEP_META = {   # id: (class, ticket, short label, kind, gate)
     "C8": ("P", "BL-006 a2", "belt webbing re-booked", "correction", "HB-7 (planned lock-slip test)"),
     "H1B": ("P", "BL-024/027/021", "H1 body (sleeve growth, buckling members, 28 mm IM3 cheeks)",
             "safety", "MT-1 cinch, CA-1 PAHT ratio >= 0.255, T1/T2 gauges (release R1; failing adds mass, never removes)"),
+    "BL031": ("P", "BL-031 (owner)", "strap tails: lifters, sternum, stabilizers cut to length; belt tail + keepers",
+              "design", "T9 gloved cinch trial (TAIL_GRIP 50 mm), R-06 fit trial (sternum), HB-D1 (stabilizers)"),
     "P_pkgC": ("P", "package C (2026-11-09)", "7075 belt plate; C-4 / C-7 rev C fixes", "safety",
                "HB-5 plate, pad-seat sag test, T1(c) yoke dial (verification; the 6061 fallback fails rev C too)"),
     "P_F": ("P", "BL-011/010/022/029/030", "CORRIE F rev 3, D2, today's fabrics; wings, 38 mm IM/US and hood kept",
@@ -319,8 +321,11 @@ def _steps_at(size: str) -> tuple:
     md = BS2.mass_delta_g(BS2._variant(BS2.RECOMMENDED))
     s["A_back"] = [_r("back", f"BL-005 BP-08 backer -> sandwich strip ({k})", g, "base",
                       "back_system2.mass_delta_g(RECOMMENDED)", "A_back") for k, g in md.items() if k != "total" and g]
+    import strap_tails as ST
     s["A_b"] = [_r("belt", "BL-006 b: stabilizer straps deleted", HD._mass_delta("b", size), "base",
-                   "hipbelt_diet._mass_delta('b')", "A_b")]
+                   "hipbelt_diet._mass_delta('b')", "A_b"),
+                _r("belt", "BL-006 b: the BL-031 stabilizer shortening goes with the straps", -ST.stabilizer_delta_g(size),
+                   "base", "strap_tails.stabilizer_delta_g (booked in the ledger's BL031 correction)", "A_b")]
     s["A_c2"] = [_r("belt", "BL-006 c2: HDPE wing stiffener 1.0 -> 0.75 mm", HD._mass_delta("c2", size), "base",
                     "hipbelt_diet._mass_delta('c2')", "A_c2")]
     s["A_f"] = [_r("belt", f"BL-006 {k}", HD._mass_delta(k, size), "base", f"hipbelt_diet._mass_delta('{k}')", "A_f")

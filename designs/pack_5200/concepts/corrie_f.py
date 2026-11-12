@@ -120,7 +120,10 @@ REVS = {0: {"setback": 30.0, "guy_x": 100.0, "guy_bridle": False, "tripod_keeper
         1: {"setback": 30.0, "guy_x": 52.0, "guy_bridle": True, "tripod_keeper": True},
         2: {"setback": 30.0, "guy_x": 52.0, "guy_bridle": True, "tripod_keeper": True, "guy_port": True},
         3: {"setback": 30.0, "guy_x": 52.0, "guy_bridle": True, "tripod_keeper": True, "guy_port": True, "crown_lid": True,
-            "crown_w": 20.0}}
+            "crown_w": 25.0, "crown_kits": True}}
+# BL-031 (owner 2026-11-12): rev 3's crown straps are 25 mm again and cut PER CROWN KIT (``crown_kit_straps``), with a
+# ladder lock at each end and the tail rule (``TAIL_RULE_MM``). BL-030's 20 mm diet stays as history in
+# ``crown_strap_diet`` (its ``chosen`` is the 20 mm option BL-030 adopted).
 # rev 3 = BL-029 (doc section 14), ADOPTED by the owner 2026-11-12 and the MODULE DEFAULT since BL-030 (doc section 15):
 # rev 2 + the B-29 crown lid on two B-28 crown straps (B-25 bridle -> over the roll and the lid -> the hinge band),
 # replacing the 2.7 L top pouch. BL-030 put the crown straps on a diet (``crown_w`` 20 mm, cut from the rolled top:
@@ -668,6 +671,11 @@ def parts(size: str = "M", door: str = DOOR_DEFAULT, fabrics: str = "B", c: Shel
     # BL-022 rev 1 parts
     for s, n, g, cfg, src in rev1_rows(c, door):
         add(s, n, g, cfg, src)
+    # BL-031 strap tails (rev 3 with crown kits): W1-W3 cut for carry + haul extenders, IM and roll-clip tail keepers
+    if REVS[REVISION].get("crown_kits"):
+        import strap_tails as ST
+        for s, n, g, cfg, src in ST.bag_rows(CROWN_KIT_DEFAULT):
+            add(s, n, g, cfg, src)
     return out
 
 
@@ -1720,18 +1728,12 @@ def crown_strap_length(rows=None) -> dict:
 CROWN_PATHS = HERE / "corrie_f_sim" / "corrie_f_crown_paths.json"
 
 
-def crown_straps(width: float | None = None) -> dict:
-    """B-28 crown straps (pair). ``width`` 25 mm = BL-029 as proposed: webbing cut from the sim paths
-    (``crown_strap_length``) + rear POM toggle loop into the B-25 bridle tab (attach_diet.TOGGLE_G ASSUMPTION; a
-    second 60 mm fold on each B-25 tab takes it, so the guy keeps its own tab) + heavy 25 mm ladder lock at the front
-    (ladder_lock_25mm_heavy record, BL-010 A3 rule) on a 60 mm webbing tab caught in the hinge band B-02h | B-06 seam
-    at x +/-CROWN_X. Default (None) = the current revision's ``crown_w``: rev 3 as adopted = 20 mm, the BL-030 diet
-    (``crown_strap_diet``)."""
+def crown_straps_bl029() -> dict:
+    """BL-029's B-28 as proposed (history): 25 mm, one cut from the sim paths (``crown_strap_length``) + rear POM
+    toggle loop into the B-25 bridle tab (attach_diet.TOGGLE_G ASSUMPTION; a second 60 mm fold on each B-25 tab takes
+    it, so the guy keeps its own tab) + heavy 25 mm ladder lock at the front (ladder_lock_25mm_heavy record, BL-010 A3
+    rule) on a 60 mm webbing tab caught in the hinge band B-02h | B-06 seam at x +/-CROWN_X."""
     import attach_diet as AD
-    w = crown_strap_w() if width is None else float(width)
-    if w != 25.0:
-        d = crown_strap_diet()
-        return {"id": "B-28", **d["chosen"], "source": d["chosen"]["source"]}
     L = crown_strap_length()
     if L.get("cut_mm") is None:
         raise FileNotFoundError(f"{CROWN_PATHS.name} missing: run corrie_f.py --bl029")
@@ -1741,6 +1743,23 @@ def crown_straps(width: float | None = None) -> dict:
     return {"id": "B-28", **L, "width_mm": 25.0, "mass_g": round(g, 2), "toggle_g": tog, "ladder_lock_g": llh,
             "source": "poly_webbing_25mm, ladder_lock_25mm_heavy records x cut length (taut path over the stored "
                       "drapes + lid height + tail + loop); TOGGLE_G ASSUMPTION (attach_diet)"}
+
+
+def crown_straps(width: float | None = None, kit: str | None = None) -> dict:
+    """B-28 crown straps (pair) at the current revision. Rev 3 (BL-031, owner 2026-11-12): **25 mm, cut per crown kit**
+    (``crown_kit_straps(kit)``, default kit ``CROWN_KIT_DEFAULT`` = M, the ledger's headline size), a heavy ladder
+    lock at each end, tail keepers where the rule asks. ``width`` 20 gives BL-030's 20 mm diet (history,
+    ``crown_strap_diet()["options"]["w20"]``); revs without ``crown_kits`` give BL-029's one cut (``crown_straps_bl029``)."""
+    w = crown_strap_w() if width is None else float(width)
+    if w == 20.0:
+        d = crown_strap_diet()
+        return {"id": "B-28", **d["options"]["w20"]}
+    if w != 25.0:
+        raise ValueError(f"no B-28 at {w} mm (25 mm per kit, or the 20 mm BL-030 history)")
+    if not REVS[REVISION].get("crown_kits"):
+        return crown_straps_bl029()
+    k = crown_kit_straps(kit or CROWN_KIT_DEFAULT)
+    return {"id": "B-28", **k}
 
 
 # ---- BL-030 crown strap diet (doc section 15.2). BL-029 cut the strap from the longest SIM path (818 mm, 15 in full),
@@ -1840,11 +1859,10 @@ def crown_strap_diet() -> dict:
                  tail_at_shortest_mm=round(cut_e - CROWN_LOOP - L_min, 1),
                  source=o["source"] + "; extender = full - part-full path + loop + lap (EXT_LAP ASSUMPTION)")
         opts["w20_ext"] = o
-    bl029 = crown_straps(25.0)
+    bl029 = crown_straps_bl029()
     for o in opts.values():
         o["delta_vs_bl029_g"] = round(o["mass_g"] - bl029["mass_g"], 2)
-    w = crown_strap_w()
-    chosen = opts[f"w{w:.0f}"]
+    chosen = opts["w20"]       # BL-030 adopted 20 mm (history since BL-031: rev 3 is 25 mm per kit, crown_kit_straps)
     return {"rolled_19in_mm": {k: round(v, 1) for k, v in Ls.items()}, "torso": td, "path_max_mm": round(L_max, 1),
             "path_min_mm": round(L_min, 1), "adjust_range_mm": round(L_max - L_min, 1), "cut_mm": round(cut, 1),
             "tail_at_shortest_mm": round(tail_short, 1), "loads": loads, "demand_n": demand, "options": opts,
@@ -1873,7 +1891,7 @@ def lid_hold(T_relaxed_n: float | None = None) -> dict:
                           if r.get("route") == REV3_ROUTE)
     m = crown_lid()["mass_g"] / 1000.0 + LID_FILL_KG
     k = 2.0 * math.sin(math.radians(min(th, 180.0)) / 2.0)   # wrap over 180 deg adds no more clamp than 180
-    slip = crown_strap_diet()["chosen"]["slip_n"]
+    slip = crown_straps()["slip_n"]            # the current B-28's ladder lock (BL-031: 25 mm heavy, 490 N)
     wraps = {k: round(min(v["straps"][s]["wrap_lid_deg"] for s in v["straps"]), 1) for k, v in rp["states"].items()
              if v.get("straps")}
     out = {"lid_kg": round(m, 3), "wrap_deg": round(th, 1), "clamp_factor": round(k, 3), "mu": MU_LID,
@@ -1896,11 +1914,126 @@ def lid_hold(T_relaxed_n: float | None = None) -> dict:
 
 
 def crown_strap_w() -> float:
-    """B-28 crown strap webbing width at the current revision (rev 3: BL-030 diet, 20 mm; BL-029 drew 25 mm)."""
+    """B-28 crown strap webbing width at the current revision (rev 3: 25 mm, owner 2026-11-12 / BL-031; BL-030 had put
+    it on a 20 mm diet, kept as history in ``crown_strap_diet``)."""
     return float(REVS[REVISION].get("crown_w", 25.0))
 
 
 CROWN_ROLLED = HERE / "corrie_f_sim" / "corrie_f_crown_rolled.json"   # huntkit.viz3d.corrie_f --crown-paths (BL-030)
+
+
+# ---- BL-031: B-28 cut per crown kit, 25 mm, a ladder lock at each end; the pack-wide tail rule (doc section 16).
+# Owner 2026-11-12: "Different sizes. We don't want straps hanging everywhere." and 25 mm crown straps.
+TAIL_RULE_MM = 100.0       # DECISION (BL-031): free tail <= 100 mm (4 in) at the most-used setting (6-day load, mid
+#                            torso of the crown kit / mid waist of the belt size), measured from the adjuster
+KEEPER_OVER_MM = 150.0     # DECISION (BL-031): a strap whose tail can pass 150 mm (6 in) at ANY setting gets a keeper
+#                            (a 6 in tail of 25 mm webbing lies along its strap; a longer one swings and snags)
+TAIL_GRIP_MM = 50.0        # ASSUMPTION: the shortest free tail a gloved hand pinches and pulls through a 25 mm ladder
+#                            lock (two gloved finger widths ~ 40 mm + 10 mm); settled by the gloved cinch trial in T9
+#                            (BL-031 addition: 5 users, winter gloves, each strap at its longest setting)
+CROWN_ADJ = 2              # BL-031 task 1: the slack range is shared by two adjusters, a heavy ladder lock at each end
+CROWN_TAB = 60.0           # front (hinge band) and rear (B-25 toggle) lock tabs, folded 2 x 30 mm (the B-25 tab rule)
+CROWN_KIT_DEFAULT = "M"    # the ledger's headline crown kit (weight_rollup_v2.KIT)
+CROWN_STATES = ("day", "sixday", "full")
+MOST_USED_STATE = "sixday"  # the tail rule's most-used load: 6-day, 45 L (loadouts.yaml), lid on
+
+
+TAIL_KEEPER_G = 0.6        # ASSUMPTION (attach_system.mass_delta "guy tail elastic keepers x2": 2 x 0.6 g): one 25 mm
+#                            elastic keeper, a closed loop that slides on the strap and holds the rolled tail. No
+#                            elastic-band record; settled by weighing 10 cut keepers (BL-031 addition to T9)
+
+
+def tail_keeper_g() -> float:
+    return TAIL_KEEPER_G
+
+
+def crown_kits() -> dict:
+    """BL-017 crown kits (owner 2026-11-11): torso range in inches, ``crown_diet.SIZES``."""
+    from huntkit.gendesign import crown_diet as CDI
+    return dict(CDI.SIZES)
+
+
+def _crown_delta_at(t_in: float) -> list:
+    """Change of the crown strap path with the torso setting at ``t_in`` (per side and case, mm), piecewise linear
+    between the stored rev 3 sims at 15 / 19 / 23 in (``_crown_torso_delta``; 0 at 19 in by definition). ASSUMPTION
+    TORSO-LIN: linear between the sim torsos; the bar height is linear in the torso setting (build_geometry
+    crown_settings), and the 15-19 and 19-23 deltas are near-symmetric (+59..+98 / -89..-92 mm). Settled with ROLL-PATH
+    by T9 (free length measured at both ends of each kit)."""
+    td = _crown_torso_delta()["all"]
+    return [float(np.interp(t_in, (15.0, 19.0, 23.0), (a, 0.0, b))) for a, b in zip(td[15], td[23])]
+
+
+def crown_kit_straps(kit: str = CROWN_KIT_DEFAULT, adjusters: int = CROWN_ADJ) -> dict:
+    """B-28 crown strap pair for one crown kit (BL-031), 25 mm, from the BL-030 rolled-top paths (``CROWN_ROLLED``,
+    19 in, day / 6-day / full with the collar standing) moved to the kit's own torso range (``_crown_delta_at``).
+
+    * longest path = full at the kit's shortest torso (largest delta); shortest = day at its longest torso;
+      most-used = 6-day at the kit's mid torso (mean of the two sides and cases).
+    * cut = longest + ``adjusters`` x TAIL_GRIP (each adjuster keeps a gloved grip at the longest path); the free tail
+      at each adjuster at path L is TAIL_GRIP + (longest - L) / adjusters (the user takes up evenly at both ends).
+    * hardware per strap: ``adjusters`` heavy ladder locks (ladder_lock_25mm_heavy, BL-010 A3), a 60 mm tab per lock
+      (front: hinge band at z 700; rear: the POM toggle into the second fold of the B-25 tab, which stays), the
+      toggle (attach_diet.TOGGLE_G), the B-25 second fold; a tail keeper per adjuster when a tail can pass
+      KEEPER_OVER_MM. ``adjusters`` 1 gives the one-lock comparison (rear end a sewn toggle loop, as BL-029)."""
+    import attach_diet as AD
+    lo, hi = crown_kits()[kit]
+    mid = 0.5 * (lo + hi)
+    rp = json.loads(CROWN_ROLLED.read_text())["states"]
+    Lmax_s = {k: max(v["straps"][s]["length_mm"] for s in v["straps"]) for k, v in rp.items() if v.get("straps")}
+    Lmin_s = {k: min(v["straps"][s]["length_mm"] for s in v["straps"]) for k, v in rp.items() if v.get("straps")}
+    Lmean_s = {k: float(np.mean([v["straps"][s]["length_mm"] for s in v["straps"]])) for k, v in rp.items()
+               if v.get("straps")}
+    d_lo, d_hi, d_mid = _crown_delta_at(lo), _crown_delta_at(hi), _crown_delta_at(mid)
+    dmax, dmin = max(d_lo + d_hi), min(d_lo + d_hi)
+    L_max = max(Lmax_s.values()) + dmax
+    L_min = min(Lmin_s.values()) + dmin
+    by = {}                                        # path at each state x (kit short end, mid, long end)
+    for st in CROWN_STATES:
+        by[st] = {"short_torso": round(Lmean_s[st] + float(np.mean(d_lo)), 1),
+                  "mid_torso": round(Lmean_s[st] + float(np.mean(d_mid)), 1),
+                  "long_torso": round(Lmean_s[st] + float(np.mean(d_hi)), 1)}
+    L_used = by[MOST_USED_STATE]["mid_torso"]
+    loop = 0.0 if adjusters == 2 else CROWN_LOOP
+    cut = L_max + adjusters * TAIL_GRIP_MM + loop
+
+    def tail(L):
+        return TAIL_GRIP_MM + (L_max - L) / adjusters
+
+    tails = {st: {k: round(tail(v), 1) for k, v in row.items()} for st, row in by.items()}
+    worst = tail(L_min)
+    keepers = adjusters if worst > KEEPER_OVER_MM else 0
+    tog, llh = AD.TOGGLE_G, _rec("ladder_lock_25mm_heavy", "mass_g")
+    tabs = (adjusters + 1) * CROWN_TAB             # a tab per lock (one-lock: the front tab) + the B-25 second fold
+    kg = tail_keeper_g()
+    g = 2 * (cut * WEB25 / 1000.0 + tabs * WEB25 / 1000.0 + tog + adjusters * llh + keepers * kg)
+    return {"kit": kit, "torso_in": (lo, hi), "width_mm": 25.0, "adjusters": adjusters,
+            "path_max_mm": round(L_max, 1), "path_min_mm": round(L_min, 1), "path_used_mm": round(L_used, 1),
+            "adjust_range_mm": round(L_max - L_min, 1), "cut_mm": round(cut, 1), "paths_mm": by, "tails_mm": tails,
+            "tail_used_mm": round(tail(L_used), 1), "tail_worst_mm": round(worst, 1),
+            "tail_rule_ok": tail(L_used) <= TAIL_RULE_MM, "keepers_per_strap": keepers,
+            "mass_g": round(g, 2), "toggle_g": tog, "ladder_lock": "ladder_lock_25mm_heavy", "ladder_lock_g": llh,
+            "keeper_g": kg, "slip_n": _rec("ladder_lock_25mm_heavy", "slip_load_n"),
+            "tensile_n": _rec("ladder_lock_25mm_heavy", "tensile_rating_n"),
+            "source": f"crown_kit_straps('{kit}'): rolled-top paths (CROWN_ROLLED, ROLL-PATH) + torso change "
+                      f"(TORSO-LIN) + {adjusters} x TAIL_GRIP (ASSUMPTION); poly_webbing_25mm, ladder_lock_25mm_heavy "
+                      "records; TOGGLE_G and the elastic keeper ASSUMPTIONS (attach_diet, attach_system)"}
+
+
+def crown_kit_table() -> dict:
+    """BL-031 table: B-28 per kit (two adjusters, as built) and the one-adjuster comparison, and the margins of the
+    25 mm heavy lock on BL-030's load envelope (``crown_strap_diet()['loads']``)."""
+    d = crown_strap_diet()
+    demand = d["demand_n"]
+    out = {"kits": {}, "one_lock": {}, "demand_n": demand, "loads": d["loads"]}
+    for k in crown_kits():
+        a = crown_kit_straps(k)
+        a["margin_slip"] = round(a["slip_n"] / demand, 2)
+        a["margin_tensile"] = round(a["tensile_n"] / demand, 2)
+        out["kits"][k] = a
+        out["one_lock"][k] = crown_kit_straps(k, adjusters=1)
+    out["bl030_single_cut"] = {"cut_mm": d["cut_mm"], "tail_at_shortest_mm": d["tail_at_shortest_mm"],
+                               "mass_g_25": d["options"]["w25"]["mass_g"], "mass_g_20": d["options"]["w20"]["mass_g"]}
+    return out
 
 
 def rev3_addons(ad: dict) -> dict:
@@ -1915,9 +2048,16 @@ def rev3_addons(ad: dict) -> dict:
                         "pieces": lid["pieces"], "zip_mm": LID["zip_mm"], "source": lid["source"]}
     cs = crown_straps()
     lock = "heavy ladder lock" if cs["width_mm"] == 25.0 else f"{cs['width_mm']:.0f} mm ladder lock"
-    out["crown_straps"] = {"name": f"B-28 crown straps (2): {cs['width_mm']:.0f} mm {cs['cut_mm'] / 1000:.2f} m, toggle at "
-                                   f"the B-25 bridle, {lock} on a hinge-band tab", "system": "straps_compression",
-                           "cfg": "as_hunted", "mass_g": cs["mass_g"], "hours": round(2 * 2 * BC.HOURS["bartack"], 2),
+    if cs.get("adjusters") == 2:      # BL-031: per kit, a lock at each end, tail keepers
+        nm = (f"B-28 crown straps (2), kit {cs['kit']}: {cs['width_mm']:.0f} mm {cs['cut_mm'] / 1000:.3f} m, heavy "
+              f"ladder lock at each end (B-25 toggle tab, hinge-band tab), {cs['keepers_per_strap']} tail keepers each")
+        bt = 2 * (2 + 1) * BC.HOURS["bartack"]     # tabs: front, rear (+ toggle), B-25 second fold
+    else:
+        nm = (f"B-28 crown straps (2): {cs['width_mm']:.0f} mm {cs['cut_mm'] / 1000:.2f} m, toggle at the B-25 bridle, "
+              f"{lock} on a hinge-band tab")
+        bt = 2 * 2 * BC.HOURS["bartack"]
+    out["crown_straps"] = {"name": nm, "system": "straps_compression",
+                           "cfg": "as_hunted", "mass_g": cs["mass_g"], "hours": round(bt, 2),
                            "pieces": 0, "source": cs["source"]}
     return out
 

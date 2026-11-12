@@ -1016,11 +1016,11 @@ mapped by perimeter and height. Picture note: the ladder locks are drawn with th
 - MU_LID 0.20 (low end of the MU_WEB_FAB band): only the friction rows of 15.3 depend on it. Settled by T9's cinch
   retention reading.
 
-**Gates (changed or new):**
+**Gates (changed or new):** *(BL-031: the B-28 20 mm slip gate is dropped; the crown straps are 25 mm again on the
+heavy lock, whose slip is covered by BL-010's LL-H qualification at 366 N, above the 288 N envelope; section 16.)*
 
 | gate | settles |
 |---|---|
-| B-28 slip: 5 ITW Classic Ladderloc 20 mm on the bought 20 mm webbing, 50 mm/min, no slip > 5 mm below 288 N, dry and wet, 20 °C and −20 °C (replaces BL-029's 25 mm lock at 300 N) | 15.2 ratings |
 | T9 rev 3 additions (TEST_PLAN, test register): port guys at the S kit, top full, lid on with 1 kg; crown strap cinch force with a spring scale, at cinch and after the carry; crown strap free length (S full, L 6-day); sewn lid weighed and photographed | LID-SIM, CROWN_PRE_N, ROLL-PATH, LID-SEAT, LID_SLIDER5_G, LID_THREAD |
 
 **Found, not fixed:**
@@ -1029,3 +1029,138 @@ mapped by perimeter and height. Picture note: the ladder locks are drawn with th
 - No 20 mm webbing or 20 mm ladder-lock record in `data/materials/` (materials-engineer).
 - The crown strap tail keeper and the extender are not drawn or booked.
 - The lid channels are 30 mm wide for a 20 mm strap (15.2).
+
+## 16. Crown straps per kit and the strap tail rule (BL-031)
+
+pack-designer, 2026-11-12. Ticket `docs/backlog/BL-031-strap-tails.md`. Owner: crown straps stay **25 mm**; "Different
+sizes. We don't want straps hanging everywhere." Code: `corrie_f.py` (`REVS[3]` `crown_w` 25 / `crown_kits`,
+`crown_straps(width, kit)`, `crown_kit_straps`, `crown_kit_table`, `crown_straps_bl029`, `_crown_delta_at`,
+`TAIL_RULE_MM`, `KEEPER_OVER_MM`, `TAIL_GRIP_MM`, `TAIL_KEEPER_G`); new `concepts/strap_tails.py` (the audit and its
+mass rows); `huntkit/mass/ledger.py` (correction `BL031`); `weight_rollup_v2.py` (step `BL031`, A_b compensation);
+`huntkit/viz3d/corrie_f.py` (`rolled_tail`, `roll_clip_tails`, `roll_clip_paths`, shot `tails`);
+`huntkit/viz3d/cloth_pass.py` (records each roll-clip path length). Data: `corrie_f_sim/corrie_f_roll_clips.json`
+(`python -m huntkit.viz3d.corrie_f --roll-clips`). Tests: `tests/test_strap_tails.py` (new) plus updated asserts in
+`test_corrie_f_adopt_rev3.py`, `test_corrie_f_top_anchor.py`, `test_corrie_f.py`, `test_mass_ledger.py`,
+`test_weight_rollup_v2.py`, `test_viz3d_corrie_f.py`. BL-030's 20 mm diet stays callable as history
+(`crown_straps(20.0)`, `crown_strap_diet()["chosen"]`).
+
+### 16.1 The rule
+
+- **TAIL RULE (DECISION):** the free tail past every adjuster is **≤ 100 mm (4 in) at the most-used setting**: 6-day
+  load (45 L), mid torso of the crown kit, mid waist of the belt size, tripod on (as hunted) for W1 / W2.
+- **KEEPER RULE (DECISION):** any strap whose tail can pass **150 mm (6 in)** at some setting carries a keeper (a
+  25 mm elastic loop that slides on the strap and holds the rolled tail, or the gore-seam keeper loops W1–W3
+  already have).
+- **Grip:** every cut leaves **50 mm (2 in)** of tail at its longest path (ASSUMPTION TAIL_GRIP: two gloved finger
+  widths + 10 mm; settled by a gloved cinch trial in T9).
+
+### 16.2 B-28 crown straps per crown kit (25 mm, a heavy ladder lock at each end)
+
+Paths from BL-030's rolled-top cloth pass (19 in, day / 6-day / full with the collar standing), moved to each kit's
+own torso range by the sim's torso change, interpolated linearly between 15 / 19 / 23 in (ASSUMPTION TORSO-LIN).
+Cut = longest path + 2 × 50 mm; the two locks (front on the hinge-band tab, rear on a tab through the POM toggle in
+the B-25 second fold) share the take-up, so each tail = 50 + (longest − path) / 2.
+
+| kit (torso) | longest path (full, short end) | shortest (day, long end) | 6-day mid torso | **cut** | tail 6-day mid (each end) | worst tail (day, long end) | pair mass |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| S (15–18 in) | 928.1 | 427.7 | 543.3 | **1028 mm (40.5 in)** | 242 mm (9.5 in) | 300 mm (11.8 in) | 79.9 g (2.82 oz) |
+| M (17.5–20.5 in) | 866.9 | 378.4 | 495.7 | **967 mm (38.1 in)** | 236 mm (9.3 in) | 294 mm (11.6 in) | **77.7 g (2.74 oz)** |
+| L (20–23 in) | 808.0 | 320.6 | 438.8 | **908 mm (35.7 in)** | 235 mm (9.2 in) | 294 mm (11.6 in) | 75.6 g (2.67 oz) |
+
+Tails at the other settings (kit M, each end): full 54 / 68 / 86 mm at the kit's short / mid / long torso; 6-day
+221 / 236 / 253 mm; day 263 / 277 / 294 mm. **The crown straps do not meet the 100 mm rule at the 6-day setting,
+in any kit.** The spread is the lid's own height range: the path over a full bag with the collar standing is 830 mm
+against 496 mm on a 6-day top (CROWN_ROLLED), and per-kit sizing only removes the torso part of the range (BL-030's
+single cut left 582 mm of tail at the 6-day, 700 mm worst). Two locks halve what is left; the rest is rolled into a
+keeper at each lock (drawn, 21 mm roll). The one-lock version (rear sewn toggle loop) is 17 g lighter (60.7 g at M)
+but leaves 421 mm at the 6-day and 539 mm worst at M. Load: the heavy lock's 490 N slip (record basis) on BL-030's
+288 N envelope gives **1.70** (same as BL-029's), webbing 46; the B-28 20 mm slip gate (15.6) is dropped.
+
+Against BL-030's 20 mm straps (49.1 g) the kit-M pair is **+28.6 g as hunted**; against BL-029's 25 mm single cut
+(67.5 g) +10.2 g (two more locks, two more tabs, four keepers, a shorter cut). Ledger books kit M.
+
+**Option that meets the rule outright (owner decision 16.6-1):** cut each kit for day and 6-day only and add a
+25 mm extender for a full load with the collar standing (as BL-030's 20 mm extender option, at 25 mm). Each tail is
+then ≤ 100 mm at the 6-day and no keeper is needed, at the cost of a loose part to carry.
+
+### 16.3 Audit of every adjustable strap (belt M, crown kit M; tail per adjuster, mm)
+
+| strap | path source | cut before → after | 6-day tail before → after | worst tail before → after | tail management after | rule |
+|---|---|---:|---:|---:|---|---|
+| B-28 crown straps (2) | cloth pass + sims | 1138 (20 mm) → 967 | 582 → 236 | 700 → 294 | elastic keeper at each lock | keeper |
+| load lifters (2) | crown settings: 140 / cos 40.6° = 184 mm; ±let-out / cinch (ASSUMPTION) | 450 → **340** | 206 → **96** | 236 → 126 | tri-glide keeper (kept) | **meets** |
+| sternum (each side) | strap gap 100 / 150 / 220 mm (ASSUMPTION) | 400 → **170** | 315 → **85** | 340 → 110 | none needed | **meets** |
+| hip stabilizers (2) | 140 mm at M ± 30, grades with the wing (ASSUMPTION) | 400 → **280** (S 260, L 295, XL 310, XXL 330) | 200 → **80** | 230 → 110 | none needed | **meets** |
+| hipbelt 2:1 pull (each side) | `hipbelt_diet.closure` | tail at max waist 150 → **50** | 201 → 101 | 252 → 152 | elastic keeper on the wing tip | keeper (1 mm over; the 2:1 doubles the 51 mm leg range; XXL 114 / 178) |
+| W1 | geometry.yaml carry / haul; tripod +70, day −200 (ASSUMPTIONS) | 1340 → **750** | 640 → **50** | 910 → 320 | 2 gore keeper loops (kept) | **meets** (bow hunt, no tripod: 120) |
+| W2 | same | 1412 → **822** | 640 → **50** | 910 → 320 | same | **meets** (no tripod: 120) |
+| W3 (kit M; S 1034, L 935) | same + crown torso change | 1618 → **987** | 710 → **79** | 944 → 313 | same | **meets** |
+| IM1 / IM2 / IM3 | geometry.yaml; most used = stowed port to port (280 mm) | 990 / 1023 / 1083 unchanged | 590 / 623 / 683 | same | elastic keeper at each cam | keeper |
+| US1 / US2 | meat_haul cradle 269 mm; bag-on path not modelled | 550 unchanged | 221 (cradle) | 221 | tri-glide keeper (kept) | keeper |
+| roll-top clips (2) | `corrie_f_roll_clips.json`: day 166, 6-day 180, full 375 mm | 350 → **510** | 85 → 245 | 99 → 259 | elastic keeper below each buckle | keeper |
+| port guys (inside) | attach_system | unchanged | 100 | 100 | elastic keeper (kept) | meets |
+| torso pull strap (d2) | ±1.5 in per kit on 1:1 | cut rule: grip at the kit's longest setting | 88 | 126 | none needed | meets |
+| B-24 links; B-25 bridle; B-26 cord; shoulder straps; bow riser strap | no adjuster / sewn loops | – | 20 / 0 | 20 / 0 | – | meets |
+
+**Every adjustable strap now meets the rule at the most-used setting or has a keeper** (`strap_tails.audit` →
+`all_pass`). Nine strap types meet the 100 mm rule outright; the crown straps, the belt 2:1, IM1–IM3, US1 / US2 and
+the roll clips rely on a keeper. **Found on the way:** the 350 mm roll-clip cut does not reach a full bag with the
+collar standing on the cloth-pass roll (375 mm path against 260 mm of webbing): the clip strap goes to 510 mm.
+W1–W3 were cut for the meat haul and carried 640–710 mm of tail on every hunt: they are now cut for carry, and the
+meat haul, float clamp and antler / cape lash take **three 740 mm haul extenders** in the meat-trip kit (25 mm, a
+sewn loop for the W's own G-hook and a rated 25 mm G-hook to the lash point; at the 225 N float clamp × 1.5 proof,
+the G-hook no-set 900 N and a 25 mm box-X 1776 N (strap_arch ASSUMPTION) hold with margin ≥ 2.6).
+
+### 16.4 Mass (belt M, crown kit M, D2, B fabrics; ledger basis)
+
+| change | cfg | g |
+|---|---|---:|
+| W1–W3 cut for carry | base | −32.6 |
+| W1–W3 haul extenders (3) | meat trip | +64.0 |
+| IM1–IM3 tail keepers (3) | base | +1.8 |
+| roll-clip straps 350 → 510 mm (2) | base | +5.8 |
+| roll-clip tail keepers (2) | base | +1.2 |
+| B-28 25 mm per kit vs BL-030 20 mm | as hunted | +28.6 |
+| lifters, sternum, stabilizers cut to length (ledger `BL031`) | base | −16.6 |
+| belt 2:1 tail 150 → 50 mm, 2 keepers (ledger `BL031`) | base | −2.4 |
+
+Bag side (D2): **base 1089.0 g (38.41 oz), as hunted 1367.2 g, meat trip 1563.3 g** (BL-030: 1112.8 / 1362.4 /
+1494.6). D1: 1171.4 / 1447.4 / 1643.5 g; D1's meat trip is now 17.9 g over CORRIE B.2's (the extenders).
+Whole pack (`weight_rollup_v2.md`, re-run): **proven now 3640.6 g base (8.03 lb), 3955.4 g as hunted, 4151.4 g meat
+trip; after tests 3173.1 / 3487.9 / 3684.0 g** (BL-030: 3683.4 / 3969.6 / 4101.6 and 3211.6 / 3497.8 / 3629.9). The
+after-tests stabilizer deletion (BL-006 b) takes the shortened straps, so BL-031's stabilizer saving is not counted
+twice.
+
+### 16.5 Assumptions that govern (new)
+
+- TAIL_GRIP 50 mm: T9 gloved cinch trial (5 users, winter gloves, each strap at its longest setting).
+- TORSO-LIN (crown path linear in torso between the sims): T9 free length at both ends of each kit.
+- TAIL_KEEPER_G 0.6 g (attach_system's guy keeper): weigh 10 cut keepers.
+- Lifter let-out 50 / cinch 30 mm, sternum gap 100–220 mm and buckle 60 mm, stabilizer path 140 ± 30 mm: T9 lifter
+  readings, the R-06 fit trial (≥ 3 men, ≥ 3 women), HB-D1.
+- W_DAY_SQUEEZE 100 mm and W_TRIPOD 70 mm (W paths on a day load and over the tripod): T9 W free lengths.
+- ROLL-CLIP-PATH (the cloth-pass roll stands in for the sewn roll): T9 clip free length at the three loads.
+- The W carry / haul paths are geometry.yaml's (v3.1 teardrop), as CORRIE F has always booked them; not re-measured
+  on S15.
+
+### 16.6 Owner decisions, renders, found not fixed
+
+**Owner decisions needed:**
+1. Crown straps: keep one cut per kit with a lock at each end and rolled tails in keepers (as built, 77.7 g at M), or
+   cut for day / 6-day and carry a 25 mm extender for the full-with-collar-standing load (meets the 100 mm rule with
+   no keeper; one more loose part).
+2. W1–W3 haul extenders in the meat-trip kit (−32.6 g base, +64.0 g meat trip), against today's one long cut with
+   640–710 mm of tail on every hunt.
+
+**Renders** (`huntkit/viz3d/corrie_f.py`, crown kit M at 19 in): `outputs/screens/20261112_BL031_1.png` hero on the
+6 ft hunter (6-day), `_2` lid close-up (25 mm straps, a lock at each end, tails rolled in keepers), `_3` the worst
+remaining tails (crown strap front lock and roll clip, both rolled in keepers). W1–W3 tails are not drawn (they never
+were); at the 6-day they are 50–79 mm.
+
+**Found, not fixed:**
+- D1's lid straps H1–H3, the lumbar pad-seat strap and cord-lock tails are not audited (D1 is not the default; the
+  pad-seat strap path is not modelled and BL-006 f1 replaces it after HB-D3).
+- The under-strap bag-on path is not modelled anywhere (meat_haul has only the cradle).
+- The shoulder straps have no lower webbing adjuster in any file (DESIGN.md 5.3: fixed to the z 110 anchor); fit
+  rides on the crown kit alone. Fine if intended; worth a line in the fit trial.
+- `corrie_f_result.json` is still BL-011's (as noted in 15.6).

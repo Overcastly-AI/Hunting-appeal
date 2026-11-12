@@ -12,50 +12,50 @@
    "meat_trip": 3927.0
   },
   "P": {
-   "base": 3683.4,
-   "as_hunted": 3969.6,
-   "meat_trip": 4101.6,
+   "base": 3640.6,
+   "as_hunted": 3955.4,
+   "meat_trip": 4151.4,
    "by_system_base": {
     "frame": 1073.1,
     "back": 413.6,
-    "belt": 487.5,
-    "harness": 238.1,
+    "belt": 480.8,
+    "harness": 225.9,
     "bag_shell": 381.5,
     "bag_pockets": 108.7,
     "pouch": 0,
     "fly": 5.9,
-    "straps_meat": 383.6,
-    "straps_compression": 265.7,
+    "straps_meat": 385.4,
+    "straps_compression": 240.0,
     "attachment": 282.2,
     "misc": 43.5
    },
    "like_for_like_base": {
-    "bag_side": 1427.6,
-    "suspension": 2212.3,
+    "bag_side": 1403.7,
+    "suspension": 2193.3,
     "misc": 43.5
    }
   },
   "A": {
-   "base": 3211.6,
-   "as_hunted": 3497.8,
-   "meat_trip": 3629.9,
+   "base": 3173.1,
+   "as_hunted": 3487.9,
+   "meat_trip": 3684.0,
    "by_system_base": {
     "frame": 1073.1,
     "back": 369.0,
-    "belt": 442.8,
-    "harness": 238.1,
+    "belt": 440.4,
+    "harness": 225.9,
     "bag_shell": 328.4,
     "bag_pockets": 101.0,
     "pouch": 0,
     "fly": 5.9,
-    "straps_meat": 266.6,
-    "straps_compression": 164.1,
+    "straps_meat": 268.4,
+    "straps_compression": 138.5,
     "attachment": 179.1,
     "misc": 43.5
    },
    "like_for_like_base": {
-    "bag_side": 1045.2,
-    "suspension": 2122.9,
+    "bag_side": 1021.3,
+    "suspension": 2108.3,
     "misc": 43.5
    }
   }
@@ -68,14 +68,14 @@
     "meat_trip": 3899.1
    },
    "P": {
-    "base": 3655.6,
-    "as_hunted": 3941.8,
-    "meat_trip": 4073.9
+    "base": 3612.1,
+    "as_hunted": 3926.9,
+    "meat_trip": 4122.9
    },
    "A": {
-    "base": 3186.1,
-    "as_hunted": 3472.3,
-    "meat_trip": 3604.4
+    "base": 3147.6,
+    "as_hunted": 3462.4,
+    "meat_trip": 3658.5
    }
   },
   "M": {
@@ -85,14 +85,14 @@
     "meat_trip": 3927.0
    },
    "P": {
-    "base": 3683.4,
-    "as_hunted": 3969.6,
-    "meat_trip": 4101.6
+    "base": 3640.6,
+    "as_hunted": 3955.4,
+    "meat_trip": 4151.4
    },
    "A": {
-    "base": 3211.6,
-    "as_hunted": 3497.8,
-    "meat_trip": 3629.9
+    "base": 3173.1,
+    "as_hunted": 3487.9,
+    "meat_trip": 3684.0
    }
   },
   "L": {
@@ -102,14 +102,14 @@
     "meat_trip": 3951.1
    },
    "P": {
-    "base": 3707.7,
-    "as_hunted": 3993.9,
-    "meat_trip": 4126.0
+    "base": 3665.4,
+    "as_hunted": 3980.2,
+    "meat_trip": 4176.3
    },
    "A": {
-    "base": 3234.0,
-    "as_hunted": 3520.2,
-    "meat_trip": 3652.3
+    "base": 3195.5,
+    "as_hunted": 3510.3,
+    "meat_trip": 3706.3
    }
   },
   "XL": {
@@ -119,14 +119,14 @@
     "meat_trip": 3987.1
    },
    "P": {
-    "base": 3744.0,
-    "as_hunted": 4030.2,
-    "meat_trip": 4162.3
+    "base": 3702.3,
+    "as_hunted": 4017.1,
+    "meat_trip": 4213.1
    },
    "A": {
-    "base": 3268.3,
-    "as_hunted": 3554.5,
-    "meat_trip": 3686.6
+    "base": 3229.9,
+    "as_hunted": 3544.7,
+    "meat_trip": 3740.7
    }
   },
   "XXL": {
@@ -136,14 +136,14 @@
     "meat_trip": 4015.2
    },
    "P": {
-    "base": 3773.0,
-    "as_hunted": 4059.2,
-    "meat_trip": 4191.3
+    "base": 3732.0,
+    "as_hunted": 4046.8,
+    "meat_trip": 4242.9
    },
    "A": {
-    "base": 3295.3,
-    "as_hunted": 3581.4,
-    "meat_trip": 3713.5
+    "base": 3256.8,
+    "as_hunted": 3571.6,
+    "meat_trip": 3767.6
    }
   }
  },
@@ -379,6 +379,55 @@
     }
    ]
   },
+  "BL031": {
+   "class": "P",
+   "ticket": "BL-031 (owner)",
+   "label": "strap tails: lifters, sternum, stabilizers cut to length; belt tail + keepers",
+   "kind": "design",
+   "gate": "T9 gloved cinch trial (TAIL_GRIP 50 mm), R-06 fit trial (sternum), HB-D1 (stabilizers)",
+   "delta_g": {
+    "base": -19.0,
+    "as_hunted": -19.0,
+    "meat_trip": -19.0
+   },
+   "rows": [
+    {
+     "system": "harness",
+     "name": "BL-031: load lifters cut 450 -> 340 mm (2)",
+     "g": -3.96,
+     "cfg": "base",
+     "source": "ledger correction BL031: strap_tails.lifter_row x poly_webbing_25mm record"
+    },
+    {
+     "system": "harness",
+     "name": "BL-031: sternum webbing cut 400 -> 170 mm a side (2)",
+     "g": -8.28,
+     "cfg": "base",
+     "source": "ledger correction BL031: strap_tails.sternum_row x poly_webbing_25mm record"
+    },
+    {
+     "system": "belt",
+     "name": "BL-031: hip stabilizers cut 400 -> 280 mm (2, belt M)",
+     "g": -4.32,
+     "cfg": "base",
+     "source": "ledger correction BL031: strap_tails.stabilizer_row x poly_webbing_25mm record"
+    },
+    {
+     "system": "belt",
+     "name": "BL-031: hipbelt 2:1 tail at the largest waist 150 -> 50 mm (2 sides)",
+     "g": -3.6,
+     "cfg": "base",
+     "source": "ledger correction BL031: strap_tails.belt_row x poly_webbing_25mm record"
+    },
+    {
+     "system": "belt",
+     "name": "BL-031: hipbelt tail keepers (2, 25 mm elastic)",
+     "g": 1.2,
+     "cfg": "base",
+     "source": "ledger correction BL031: TAIL_KEEPER_G ASSUMPTION (corrie_f)"
+    }
+   ]
+  },
   "P_pkgC": {
    "class": "P",
    "ticket": "package C (2026-11-09)",
@@ -428,9 +477,9 @@
    "kind": "design",
    "gate": "first-article: S15 elbow-swing / sling check (BL-009)",
    "delta_g": {
-    "base": 57.3,
-    "as_hunted": 173.5,
-    "meat_trip": 251.2
+    "base": 33.4,
+    "as_hunted": 178.3,
+    "meat_trip": 320.0
    },
    "rows": [
     {
@@ -1184,10 +1233,10 @@
     },
     {
      "system": "straps_compression",
-     "name": "CORRIE F: add-on crown_straps: B-28 crown straps (2): 20 mm 1.14 m, toggle at the B-25 bridle, 20 mm ladder lock on a hinge-band tab",
-     "g": 49.07,
+     "name": "CORRIE F: add-on crown_straps: B-28 crown straps (2), kit M: 25 mm 0.967 m, heavy ladder lock at each end (B-25 toggle tab, hinge-band tab), 2 tail keepers each",
+     "g": 77.69,
      "cfg": "as_hunted",
-     "source": "WEB20_GM, LL20 (cited tensile; slip and masses ASSUMPTIONS) x cut (crown_strap_diet: rolled path + torso change + tail + loop); TOGGLE_G ASSUMPTION (attach_diet)"
+     "source": "crown_kit_straps('M'): rolled-top paths (CROWN_ROLLED, ROLL-PATH) + torso change (TORSO-LIN) + 2 x TAIL_GRIP (ASSUMPTION); poly_webbing_25mm, ladder_lock_25mm_heavy records; TOGGLE_G and the elastic keeper ASSUMPTIONS (attach_diet, attach_system)"
     },
     {
      "system": "fly",
@@ -1622,6 +1671,41 @@
      "g": 2.74,
      "cfg": "base",
      "source": "challenge_ultra_200 record (B-01 fabric) x facing and turned-edge area (PORT_FACING_W, PORT_TURN ASSUMPTIONS)"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-031: W1-W3 cut for carry (1340->750, 1412->822, 1618->987 mm)",
+     "g": -32.61,
+     "cfg": "base",
+     "source": "strap_tails.wrap_rows x poly_webbing_25mm record"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-031: W1-W3 haul extenders (3, 2.22 m 25 mm + rated G-hook each; meat haul, float clamp, antler / cape lash)",
+     "g": 63.96,
+     "cfg": "meat_trip",
+     "source": "strap_tails.wrap_rows x poly_webbing_25mm + g_hook_25mm_aluminium record (loadpath_check.hw)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: BL-031: IM1-IM3 tail keepers (3, 25 mm elastic)",
+     "g": 1.8,
+     "cfg": "base",
+     "source": "TAIL_KEEPER_G ASSUMPTION (corrie_f)"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-031: roll-top clip straps cut 350 -> 510 mm (2)",
+     "g": 5.76,
+     "cfg": "base",
+     "source": "strap_tails.roll_row x poly_webbing_25mm record"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-031: roll-top clip tail keepers (2, 25 mm elastic)",
+     "g": 1.2,
+     "cfg": "base",
+     "source": "TAIL_KEEPER_G ASSUMPTION (corrie_f)"
     },
     {
      "system": "straps_compression",
@@ -1933,9 +2017,9 @@
    "kind": "design",
    "gate": "HB-D1 side-hill stability",
    "delta_g": {
-    "base": -22.4,
-    "as_hunted": -22.4,
-    "meat_trip": -22.4
+    "base": -18.1,
+    "as_hunted": -18.1,
+    "meat_trip": -18.1
    },
    "rows": [
     {
@@ -1944,6 +2028,13 @@
      "g": -22.4,
      "cfg": "base",
      "source": "hipbelt_diet._mass_delta('b')"
+    },
+    {
+     "system": "belt",
+     "name": "BL-006 b: the BL-031 stabilizer shortening goes with the straps",
+     "g": 4.32,
+     "cfg": "base",
+     "source": "strap_tails.stabilizer_delta_g (booked in the ledger's BL031 correction)"
     }
    ]
   },
@@ -2185,10 +2276,10 @@
     },
     {
      "system": "straps_compression",
-     "name": "CORRIE F: add-on crown_straps: B-28 crown straps (2): 20 mm 1.14 m, toggle at the B-25 bridle, 20 mm ladder lock on a hinge-band tab",
-     "g": 49.07,
+     "name": "CORRIE F: add-on crown_straps: B-28 crown straps (2), kit M: 25 mm 0.967 m, heavy ladder lock at each end (B-25 toggle tab, hinge-band tab), 2 tail keepers each",
+     "g": 77.69,
      "cfg": "as_hunted",
-     "source": "WEB20_GM, LL20 (cited tensile; slip and masses ASSUMPTIONS) x cut (crown_strap_diet: rolled path + torso change + tail + loop); TOGGLE_G ASSUMPTION (attach_diet)"
+     "source": "crown_kit_straps('M'): rolled-top paths (CROWN_ROLLED, ROLL-PATH) + torso change (TORSO-LIN) + 2 x TAIL_GRIP (ASSUMPTION); poly_webbing_25mm, ladder_lock_25mm_heavy records; TOGGLE_G and the elastic keeper ASSUMPTIONS (attach_diet, attach_system)"
     },
     {
      "system": "fly",
@@ -2625,6 +2716,41 @@
      "source": "challenge_ultra_200 record (B-01 fabric) x facing and turned-edge area (PORT_FACING_W, PORT_TURN ASSUMPTIONS)"
     },
     {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-031: W1-W3 cut for carry (1340->750, 1412->822, 1618->987 mm)",
+     "g": -32.61,
+     "cfg": "base",
+     "source": "strap_tails.wrap_rows x poly_webbing_25mm record"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-031: W1-W3 haul extenders (3, 2.22 m 25 mm + rated G-hook each; meat haul, float clamp, antler / cape lash)",
+     "g": 63.96,
+     "cfg": "meat_trip",
+     "source": "strap_tails.wrap_rows x poly_webbing_25mm + g_hook_25mm_aluminium record (loadpath_check.hw)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: BL-031: IM1-IM3 tail keepers (3, 25 mm elastic)",
+     "g": 1.8,
+     "cfg": "base",
+     "source": "TAIL_KEEPER_G ASSUMPTION (corrie_f)"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-031: roll-top clip straps cut 350 -> 510 mm (2)",
+     "g": 5.76,
+     "cfg": "base",
+     "source": "strap_tails.roll_row x poly_webbing_25mm record"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-031: roll-top clip tail keepers (2, 25 mm elastic)",
+     "g": 1.2,
+     "cfg": "base",
+     "source": "TAIL_KEEPER_G ASSUMPTION (corrie_f)"
+    },
+    {
      "system": "bag_shell",
      "name": "CORRIE F: B-11 lash tabs (Hypalon, bow riser + muzzle keepers), released",
      "g": -12.0,
@@ -2801,10 +2927,10 @@
     },
     {
      "system": "straps_compression",
-     "name": "CORRIE F: add-on crown_straps: B-28 crown straps (2): 20 mm 1.14 m, toggle at the B-25 bridle, 20 mm ladder lock on a hinge-band tab",
-     "g": -49.07,
+     "name": "CORRIE F: add-on crown_straps: B-28 crown straps (2), kit M: 25 mm 0.967 m, heavy ladder lock at each end (B-25 toggle tab, hinge-band tab), 2 tail keepers each",
+     "g": -77.69,
      "cfg": "as_hunted",
-     "source": "WEB20_GM, LL20 (cited tensile; slip and masses ASSUMPTIONS) x cut (crown_strap_diet: rolled path + torso change + tail + loop); TOGGLE_G ASSUMPTION (attach_diet)"
+     "source": "crown_kit_straps('M'): rolled-top paths (CROWN_ROLLED, ROLL-PATH) + torso change (TORSO-LIN) + 2 x TAIL_GRIP (ASSUMPTION); poly_webbing_25mm, ladder_lock_25mm_heavy records; TOGGLE_G and the elastic keeper ASSUMPTIONS (attach_diet, attach_system)"
     },
     {
      "system": "fly",
@@ -3239,6 +3365,41 @@
      "g": -2.74,
      "cfg": "base",
      "source": "challenge_ultra_200 record (B-01 fabric) x facing and turned-edge area (PORT_FACING_W, PORT_TURN ASSUMPTIONS)"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-031: W1-W3 cut for carry (1340->750, 1412->822, 1618->987 mm)",
+     "g": 32.61,
+     "cfg": "base",
+     "source": "strap_tails.wrap_rows x poly_webbing_25mm record"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-031: W1-W3 haul extenders (3, 2.22 m 25 mm + rated G-hook each; meat haul, float clamp, antler / cape lash)",
+     "g": -63.96,
+     "cfg": "meat_trip",
+     "source": "strap_tails.wrap_rows x poly_webbing_25mm + g_hook_25mm_aluminium record (loadpath_check.hw)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: BL-031: IM1-IM3 tail keepers (3, 25 mm elastic)",
+     "g": -1.8,
+     "cfg": "base",
+     "source": "TAIL_KEEPER_G ASSUMPTION (corrie_f)"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-031: roll-top clip straps cut 350 -> 510 mm (2)",
+     "g": -5.76,
+     "cfg": "base",
+     "source": "strap_tails.roll_row x poly_webbing_25mm record"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-031: roll-top clip tail keepers (2, 25 mm elastic)",
+     "g": -1.2,
+     "cfg": "base",
+     "source": "TAIL_KEEPER_G ASSUMPTION (corrie_f)"
     }
    ]
   },
@@ -3336,46 +3497,46 @@
  },
  "configs": {
   "corrie_f_base": {
-   "total_g": 3371.4,
+   "total_g": 3328.6,
    "by_system": {
     "frame": 1135.1,
     "back": 413.6,
-    "belt": 504.4,
-    "harness": 229.6,
+    "belt": 497.7,
+    "harness": 217.4,
     "bag_shell": 328.4,
     "bag_pockets": 101.0,
     "pouch": 0,
     "fly": 5.9,
-    "straps_meat": 266.6,
-    "straps_compression": 164.1,
+    "straps_meat": 268.4,
+    "straps_compression": 138.5,
     "attachment": 179.1,
     "misc": 43.5
    },
    "like_for_like": {
-    "bag_side": 1045.2,
-    "suspension": 2282.7,
+    "bag_side": 1021.3,
+    "suspension": 2263.8,
     "misc": 43.5
    }
   },
   "corrie_f_as_hunted": {
-   "total_g": 3657.6,
+   "total_g": 3643.4,
    "by_system": {
     "frame": 1135.1,
     "back": 413.6,
-    "belt": 541.1,
-    "harness": 229.6,
+    "belt": 534.4,
+    "harness": 217.4,
     "bag_shell": 328.4,
     "bag_pockets": 184.7,
     "pouch": 45.9,
     "fly": 76.8,
-    "straps_meat": 266.6,
-    "straps_compression": 213.2,
+    "straps_meat": 268.4,
+    "straps_compression": 216.2,
     "attachment": 179.1,
     "misc": 43.5
    },
    "like_for_like": {
-    "bag_side": 1294.7,
-    "suspension": 2319.4,
+    "bag_side": 1299.5,
+    "suspension": 2300.4,
     "misc": 43.5
    }
   },
@@ -3521,14 +3682,14 @@
     "pct": 58.0
    },
    "P": {
-    "ours_g": 3627.9,
-    "delta_g": 1319.9,
-    "pct": 57.0
+    "ours_g": 3585.1,
+    "delta_g": 1277.1,
+    "pct": 55.0
    },
    "A": {
-    "ours_g": 3163.8,
-    "delta_g": 855.8,
-    "pct": 37.0
+    "ours_g": 3125.3,
+    "delta_g": 817.3,
+    "pct": 35.0
    }
   },
   {
@@ -3546,14 +3707,14 @@
     "pct": 52.0
    },
    "P": {
-    "ours_g": 3627.9,
-    "delta_g": 1231.9,
-    "pct": 51.0
+    "ours_g": 3585.1,
+    "delta_g": 1189.1,
+    "pct": 50.0
    },
    "A": {
-    "ours_g": 3163.8,
-    "delta_g": 767.8,
-    "pct": 32.0
+    "ours_g": 3125.3,
+    "delta_g": 729.3,
+    "pct": 30.0
    }
   },
   {
@@ -3572,14 +3733,14 @@
     "pct": 42.0
    },
    "P": {
-    "ours_g": 3763.2,
-    "delta_g": 1126.2,
-    "pct": 43.0
+    "ours_g": 3749.0,
+    "delta_g": 1112.0,
+    "pct": 42.0
    },
    "A": {
-    "ours_g": 3291.4,
-    "delta_g": 654.4,
-    "pct": 25.0
+    "ours_g": 3281.5,
+    "delta_g": 644.5,
+    "pct": 24.0
    }
   },
   {
@@ -3594,14 +3755,14 @@
     "pct": 33.0
    },
    "P": {
-    "ours_g": 3683.4,
-    "delta_g": 893.4,
-    "pct": 32.0
+    "ours_g": 3640.6,
+    "delta_g": 850.6,
+    "pct": 30.0
    },
    "A": {
-    "ours_g": 3211.6,
-    "delta_g": 421.6,
-    "pct": 15.0
+    "ours_g": 3173.1,
+    "delta_g": 383.1,
+    "pct": 14.0
    }
   },
   {
@@ -3616,14 +3777,14 @@
     "pct": 40.0
    },
    "P": {
-    "ours_g": 3683.4,
-    "delta_g": 1044.4,
-    "pct": 40.0
+    "ours_g": 3640.6,
+    "delta_g": 1001.6,
+    "pct": 38.0
    },
    "A": {
-    "ours_g": 3211.6,
-    "delta_g": 572.6,
-    "pct": 22.0
+    "ours_g": 3173.1,
+    "delta_g": 534.1,
+    "pct": 20.0
    }
   },
   {
@@ -3640,14 +3801,14 @@
     "pct": 34.0
    },
    "P": {
-    "ours_g": 3778.4,
-    "delta_g": 966.4,
+    "ours_g": 3764.2,
+    "delta_g": 952.2,
     "pct": 34.0
    },
    "A": {
-    "ours_g": 3306.6,
-    "delta_g": 494.6,
-    "pct": 18.0
+    "ours_g": 3296.7,
+    "delta_g": 484.7,
+    "pct": 17.0
    }
   },
   {
@@ -3664,13 +3825,13 @@
     "pct": 39.0
    },
    "P": {
-    "ours_g": 3778.4,
-    "delta_g": 1070.4,
-    "pct": 40.0
+    "ours_g": 3764.2,
+    "delta_g": 1056.2,
+    "pct": 39.0
    },
    "A": {
-    "ours_g": 3306.6,
-    "delta_g": 598.6,
+    "ours_g": 3296.7,
+    "delta_g": 588.7,
     "pct": 22.0
    }
   },
@@ -3688,14 +3849,14 @@
     "pct": 32.0
    },
    "P": {
-    "ours_g": 3720.0,
-    "delta_g": 885.0,
-    "pct": 31.0
+    "ours_g": 3677.2,
+    "delta_g": 842.2,
+    "pct": 30.0
    },
    "A": {
-    "ours_g": 3248.2,
-    "delta_g": 413.2,
-    "pct": 15.0
+    "ours_g": 3209.7,
+    "delta_g": 374.7,
+    "pct": 13.0
    }
   },
   {
@@ -3714,14 +3875,14 @@
     "pct": 124.0
    },
    "P": {
-    "ours_g": 3763.2,
-    "delta_g": 2090.2,
-    "pct": 125.0
+    "ours_g": 3749.0,
+    "delta_g": 2076.0,
+    "pct": 124.0
    },
    "A": {
-    "ours_g": 3291.4,
-    "delta_g": 1618.4,
-    "pct": 97.0
+    "ours_g": 3281.5,
+    "delta_g": 1608.5,
+    "pct": 96.0
    }
   },
   {
@@ -3738,20 +3899,20 @@
     "pct": 38.0
    },
    "P": {
-    "ours_g": 3778.4,
-    "delta_g": 1056.4,
-    "pct": 39.0
+    "ours_g": 3764.2,
+    "delta_g": 1042.2,
+    "pct": 38.0
    },
    "A": {
-    "ours_g": 3306.6,
-    "delta_g": 584.6,
+    "ours_g": 3296.7,
+    "delta_g": 574.7,
     "pct": 21.0
    }
   }
  ],
  "features": {
-  "after_tests_base_g": 3211.6,
-  "gap_g": 217.9,
+  "after_tests_base_g": 3173.1,
+  "gap_g": 179.4,
   "candidates": [
    {
     "item": "IMP-2",
@@ -3824,7 +3985,7 @@
   "with_reserve_g": 163.7,
   "reaches_with_reserve": false
  },
- "bl011_headline_base_g": 3273.2,
+ "bl011_headline_base_g": 3249.4,
  "h1_fatigue": {
   "old": 1.2794731924250948,
   "per_torso": 1.1502260709981276,
@@ -3850,12 +4011,12 @@
   "P": {
    "scenario": "P",
    "cfg": "base",
-   "total_g": 3683.4,
+   "total_g": 3640.6,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
-     "g": 372.8,
-     "band_g": 127.5,
-     "n": 20,
+     "g": 377.0,
+     "band_g": 128.8,
+     "n": 23,
      "frac": 0.3
     },
     "printed PAHT-CF body (2 mm raster x density)": {
@@ -3871,14 +4032,14 @@
      "frac": 0.1
     },
     "cut area x record gsm, length x record g/m": {
-     "g": 2045.0,
-     "band_g": 195.5,
-     "n": 125,
+     "g": 1998.0,
+     "band_g": 200.1,
+     "n": 131,
      "frac": 0.08
     }
    },
-   "worst_g": 429.3,
-   "rss_g": 68.1,
+   "worst_g": 435.3,
+   "rss_g": 68.2,
    "named": [
     {
      "name": "harness: load lifters 25 mm poly + ladders, sternum Fidlock (QUICK family) + POM rails",
@@ -3975,12 +4136,12 @@
   "A": {
    "scenario": "A",
    "cfg": "base",
-   "total_g": 3211.6,
+   "total_g": 3173.1,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
-     "g": 309.9,
-     "band_g": 153.6,
-     "n": 23,
+     "g": 314.1,
+     "band_g": 154.9,
+     "n": 26,
      "frac": 0.3
     },
     "printed PAHT-CF body (2 mm raster x density)": {
@@ -3996,14 +4157,14 @@
      "frac": 0.1
     },
     "cut area x record gsm, length x record g/m": {
-     "g": 1636.1,
-     "band_g": 218.5,
-     "n": 136,
+     "g": 1593.4,
+     "band_g": 223.6,
+     "n": 143,
      "frac": 0.08
     }
    },
-   "worst_g": 478.5,
-   "rss_g": 70.5,
+   "worst_g": 484.8,
+   "rss_g": 70.6,
    "named": [
     {
      "name": "harness: load lifters 25 mm poly + ladders, sternum Fidlock (QUICK family) + POM rails",

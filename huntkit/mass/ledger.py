@@ -332,7 +332,10 @@ SUFFIX = "_v2"
 CONFIGS_V2 = tuple(c + SUFFIX for c in CONFIGS)
 ALL_CONFIGS = CONFIGS + CONFIGS_V2
 DEFAULT_CONFIG = "corrie_b2_h1" + SUFFIX
-CORRECTIONS = ("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "H1B")
+CORRECTIONS = ("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "H1B", "BL031")
+#   BL031 (2026-11-12, BL-031 strap tails, not a booking error): the harness and belt side of the tail rule
+#      (``strap_tails.suspension_rows``: lifters, sternum and hip stabilizers cut to length, the 2:1 belt tail to the
+#      gloved grip, two belt tail keepers). The bag side of BL-031 is booked by corrie_f.parts (adopted bag rows).
 # BL-030: the ADOPTED bag. Every config above books the CORRIE B.2 bag (their names are quoted in other documents and
 # stay); the adopted bag is CORRIE F at ADOPTED_BAG["revision"] (owner, DECISIONS 2026-11-12: rev 3 = B-27 port guys
 # inside + B-29 crown lid on B-28 crown straps, the top pouch out). ``adopted_bag_rows`` books it on this ledger's
@@ -433,7 +436,9 @@ def _correction_rows(config: str, size: str) -> list:
             ("H1B", "H1 body: IM3 fairlead cheeks 18 -> 28 mm (2 sides, BL-021), as rastered into the body", "frame",
              hb["im3_cheek_28_g"], src + "im3_cheek_added_g (cheek mask minus the body it overlaps)", "base"),
         ]
-    return h1b + [
+    import strap_tails as ST                        # BL-031 (lazy: it reads corrie_f, which reads this module)
+    bl031 = [("BL031", n, sys_, g, src, cfg) for n, sys_, g, src, cfg in ST.suspension_rows(size)]
+    return h1b + bl031 + [
         ("C1", f"REMOVED: {fl['name']} (already inside the printed body raster)", "attachment", -fl["g"],
          "frame_branch.frame_sdf adds bag_attach.attachment_field to the body SDF (frame_h1.md section 4: bag "
          "fairleads 100 % present); negative copy of ledger row " + fl["id"], "base"),

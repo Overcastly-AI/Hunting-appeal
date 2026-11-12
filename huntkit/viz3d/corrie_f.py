@@ -28,6 +28,7 @@ setting, and outdoor shots add ``wearer._outdoor`` (CC0 HDRI and grass) in place
 from __future__ import annotations
 
 import json
+import math
 import os
 import pickle
 import shutil
@@ -963,7 +964,39 @@ def _turn_deg(P) -> float:
     return float(np.degrees(abs(a[-1] - a[0])))
 
 
-def crown_lid(sc, bar, open_lid: bool = False) -> dict:
+ROLL_CORE_MM = 3.0         # picture: the rolled tail's first turn (a webbing end folded on itself)
+
+
+def rolled_tail(sc, name: str, p0, down, n_face, tail_mm: float, width: float = 25.0, lead: float = 18.0, **vis) -> dict:
+    """BL-031 tail keeper, drawn: ``tail_mm`` of free tail leaves the adjuster at ``p0`` along ``down`` (lying on the
+    face whose outward normal is ``n_face``), runs ``lead`` mm flat and is rolled up towards the adjuster (a spiral of
+    the real length, webbing thickness from assets.webbing) with a 25 mm elastic keeper round the roll."""
+    from .assets import webbing as WB
+    d, n = _unit(np.asarray(down, float)), _unit(np.asarray(n_face, float))
+    d = _unit(d - np.dot(d, n) * n)
+    t = WB.thickness(width)
+    p0 = np.asarray(p0, float) + n * (t + 0.6)
+    lead = min(lead, tail_mm)
+    Pl = p0 + np.outer(np.linspace(0.0, lead, max(int(lead / 3.0), 2)), d)
+    roll_len = max(tail_mm - lead, 0.0)
+    r0 = ROLL_CORE_MM
+    r_out = math.sqrt(roll_len * t / math.pi + r0 * r0)
+    c = Pl[-1] + n * r_out                                        # the roll sits on the strap / face
+    # spiral wound back towards the adjuster: theta 0 at the bottom of the roll (touching the lead's end)
+    turns = roll_len / (math.pi * (r_out + r0)) if roll_len > 0 else 0.0
+    th = np.linspace(0.0, 2 * math.pi * turns, max(int(roll_len / 2.0), 3))
+    r = r_out - (r_out - r0) * th / max(th[-1], 1e-9)
+    radial = -np.outer(np.cos(th), n) + np.outer(np.sin(th), d)
+    Ps = c + r[:, None] * radial
+    P = np.vstack([Pl, Ps[1:]])
+    N = np.vstack([np.tile(n, (len(Pl), 1)), radial[1:]])
+    sc.add_strap(name, P, N, width, dent=False, label=f"{tail_mm:.0f} mm tail, rolled, in its keeper (BL-031)", **vis)
+    sc.add_part(f"{name}__keeper", WB.keeper(c, n, d, width, stack=2 * r_out + t, band=10.0), "elastic",
+                label="25 mm elastic tail keeper (BL-031)", **vis)
+    return {"tail_mm": float(tail_mm), "roll_d_mm": round(2 * r_out, 1), "centre": c.tolist()}
+
+
+def crown_lid(sc, bar, open_lid: bool = False, state: str = "sixday") -> dict:
     """Rev 3: the B-29 crown lid seated on the roll and the B-28 crown straps over it (bar sleeve -> up the frame
     face -> over the lid in its channel -> ladder lock on the hinge-band tab). ``open_lid``: front locks unhooked, the
     lid turned back over the bar. Lid and straps are as-hunted add-ons: variant "lid" (off in an add-ons-off shot).
@@ -1128,10 +1161,24 @@ def crown_lid(sc, bar, open_lid: bool = False) -> dict:
                      **vis)
         tt = np.gradient(P, axis=0)
         tt /= np.linalg.norm(tt, axis=1)[:, None]
+        # BL-031: a heavy ladder lock at each end; each tail at its real length for this load state (crown kit M at
+        # the 19 in render setting), rolled into a 25 mm elastic keeper
+        kit = F.crown_kit_straps("M") if F.REVS[F.REVISION].get("crown_kits") else None
         i = len(P) - 18
         sc.add_hardware(f"cf3_crown_lock_{side}", "ladder_lock_25_heavy", P[i], N[i], tt[i], **vis)
-        tail = P[i] + np.outer(np.linspace(0, 1, 30), [0, 6.0, -95.0]) + N[i] * 3.0
-        sc.add_strap(f"cf3_crown_tail_{side}", tail, np.tile(N[i], (len(tail), 1)), W, dent=False, **vis)
+        if kit is None:
+            tail = P[i] + np.outer(np.linspace(0, 1, 30), [0, 6.0, -95.0]) + N[i] * 3.0
+            sc.add_strap(f"cf3_crown_tail_{side}", tail, np.tile(N[i], (len(tail), 1)), W, dent=False, **vis)
+        else:
+            tl = kit["tails_mm"].get(state, kit["tails_mm"]["sixday"])["mid_torso"]
+            dn = tt[i] if tt[i][2] < 0 else -tt[i]       # the tail leaves the lock downward, over the tab
+            out.setdefault("tails", {})[f"front_{side}"] = rolled_tail(
+                sc, f"cf3_crown_tail_{side}", P[i] + dn * 14.0, dn, N[i], tl, W, **vis)
+            s_arc = np.concatenate([[0.0], np.cumsum(np.linalg.norm(np.diff(P, axis=0), axis=1))])
+            k = int(np.searchsorted(s_arc, 75.0))          # rear lock 75 mm up the frame face from the B-25 tab
+            sc.add_hardware(f"cf3_crown_lock_rear_{side}", "ladder_lock_25_heavy", P[k], N[k], -tt[k], **vis)
+            out["tails"][f"rear_{side}"] = rolled_tail(
+                sc, f"cf3_crown_tail_rear_{side}", P[k] - tt[k] * 14.0, -tt[k], N[k], tl, W, **vis)
         on = (np.abs(P[:, 1] - yc) < L["D"] / 2 - 14) & (P[:, 2] > float(np.median(info["zwall"])) - 10)
         if on.sum() > 4:
             Pc = P[on] + N[on] * 1.6
@@ -1150,6 +1197,35 @@ def crown_lid(sc, bar, open_lid: bool = False) -> dict:
         togs.append(G.capsule_between(pt - [TOGGLE["L"] / 2, 0, 0], pt + [TOGGLE["L"] / 2, 0, 0], TOGGLE["d"] / 2))
     sc.add_part("cf3_crown_toggles", G.concat(togs), "hardware", label="Crown-strap toggles in the second bridle tab",
                 **vis)
+    return out
+
+
+def roll_clip_tails(sc, state: str) -> dict:
+    """BL-031: the roll-clip tails at their real length for the load state (``strap_tails.roll_row``), rolled into a
+    25 mm elastic keeper below each side-release buckle (the buckle's ladder side, tail pulled down the gusset)."""
+    from . import corrie as VC
+    _mods()
+    import strap_tails as STT
+    rr = STT.roll_row()
+    vis = dict(group="bag", modes=VC.BAGM)
+    out = {}
+    paths = sc.report.get("roll_clip_mm", {})
+    for side, sx in (("R", 1.0), ("L", -1.0)):
+        b = _part(sc, f"s15_roll_buckle_{side}")
+        if b is None or side not in paths:
+            continue
+        tl = max(rr["after"]["cut_mm"] - STT.ROLL_END_MM - paths[side], 0.0)   # this scene's own clip path
+        V = np.asarray(b.mesh.vertices, float)
+        c = V.mean(0)
+        p0 = np.array([c[0] + sx * 1.0, c[1], V[:, 2].min() - 2.0])
+        if rr["after"]["keeper"]:
+            out[side] = rolled_tail(sc, f"cf_roll_clip_tail_{side}", p0, [0.0, 0.0, -1.0], [sx, 0.0, 0.0], tl, 25.0,
+                                    lead=12.0, **vis)
+        else:
+            from .assets import webbing as WB
+            m = WB.tail(p0 + [sx * 1.6, 0, 0], np.array([0.0, 0.0, -1.0]), np.array([sx, 0.0, 0.0]), max(tl, 6.0), 25.0)
+            sc.add_part(f"cf_roll_clip_tail_{side}", m, "webbing", label=f"{tl:.0f} mm roll-clip tail (BL-031)", **vis)
+            out[side] = {"tail_mm": round(tl, 1)}
     return out
 
 
@@ -1227,7 +1303,9 @@ def finish(sc, state: str, meat: bool = True, lid: bool = False, open_lid: bool 
                 x.modes = ("pack",)
     r = F.REVS[F.REVISION]
     if r.get("crown_lid") and lid and rev["guys"].get("bar"):
-        sc.report["rev3"] = crown_lid(sc, rev["guys"]["bar"], open_lid)
+        sc.report["rev3"] = crown_lid(sc, rev["guys"]["bar"], open_lid, state)
+    if r.get("crown_kits"):
+        sc.report["bl031"] = roll_clip_tails(sc, state)
     rev["door"] = door_rev1(sc)              # last: the door lies on everything built above
     sc.report["rev1"] = rev
     top = ("crown lid B-29 on crown straps B-28" if lid else "crown lid off") if r.get("crown_lid") else "top pouch"
@@ -1368,7 +1446,12 @@ SHOTS = {
              "sub": "Roll ends bent down to clip tabs 150 mm below the collar seam; port guys inside"},
     "lid": {"scene": "sixday", "view": {"az": -34, "el": 20, "fov": 18, "fstop": 8, "box": LID_BOX, "zoom": 1.0},
             "state": PK, "caption": "Crown lid close-up: one strap line from the bar over the lid to the bag",
-            "sub": "B-29 5.0 L lid, camo caps over the D2 blades, #5 zip; 20 mm B-28 crown straps"},
+            "sub": "B-29 5.0 L lid; 25 mm B-28 crown straps, a lock at each end, tails in keepers"},
+    # BL-031: the worst remaining tails after the fixes: crown strap front lock and roll clip, both rolled in keepers
+    "tails": {"scene": "sixday", "view": {"az": -62, "el": 14, "fov": 18, "fstop": 8,
+                                          "box": [40.0, 60.0, 540.0, 280.0, 300.0, 820.0], "zoom": 1.0},
+              "state": PK, "caption": "Worst tails after BL-031: crown strap front locks, 6-day load",
+              "sub": "Each 236 mm tail rolled into a 25 mm elastic keeper (rule: 100 mm loose)"},
     "open": {"scene": "sixday_open", "view": {"az": -58, "el": 22, "fov": 20, "fstop": 8, "box": OPEN_BOX, "zoom": 1.0},
              "state": PK,
              "caption": "Lid open: front ladder locks unhooked, lid turned back over the bar",
@@ -1449,6 +1532,23 @@ def crown_rolled_paths(states=("day", "sixday", "full"), level: int = 2, write: 
     return out
 
 
+def roll_clip_paths(states=("day", "sixday", "full"), level: int = 2, write: bool = True) -> dict:
+    """BL-031: the roll-clip strap's path (roll end -> side-release on the gusset tab, ``cloth_pass`` roll model) at
+    each load state, 19 in, lid on (as the crown paths). ``strap_tails.roll_row`` sizes the tails from these. Written
+    to ``corrie_f_sim/corrie_f_roll_clips.json``."""
+    F = _mods()[2]
+    out = {"torso_in": TORSO, "method": "huntkit.viz3d.cloth_pass roll clips (roll end to the gusset tab, taut "
+           "quadratic path pushed off the cloth); cloth_pass ClothParams clip_run / clip_below_seam", "level": level,
+           "clip_below_seam_mm": CLIP_BELOW_SEAM_MM, "states": {}}
+    for st in states:
+        sc = scene(st, False, level, with_pouch=True)
+        out["states"][st] = {"roll_clip_mm": sc.report.get("roll_clip_mm", {})}
+        print(st, out["states"][st], flush=True)
+    if write:
+        (F.HERE / "corrie_f_sim" / "corrie_f_roll_clips.json").write_text(json.dumps(out, indent=1))
+    return out
+
+
 # ------------------------------------------------------------------------------------------- stage 2 (bpy)
 def _stage2(job: dict) -> list:
     from . import studio as ST
@@ -1497,9 +1597,13 @@ def main(argv=None):
     ap.add_argument("--prefix", default="20261112_BL030")
     ap.add_argument("--out", default=None)
     ap.add_argument("--crown-paths", action="store_true", help="BL-030: write corrie_f.CROWN_ROLLED (no render)")
+    ap.add_argument("--roll-clips", action="store_true", help="BL-031: write corrie_f_sim/corrie_f_roll_clips.json")
     a = ap.parse_args(argv)
     if a.crown_paths:
         crown_rolled_paths(level=a.level)
+        return
+    if a.roll_clips:
+        roll_clip_paths(level=a.level)
         return
     if a.job:
         job = json.loads(Path(a.job).read_text())

@@ -1068,6 +1068,8 @@ def s15_scene(state: str = "full", carry: bool = False, params: ClothParams | No
         N = _unit(np.cross(t, [0.0, 1.0, 0.0]))
         N *= np.sign(N[:, 0:1] * sx + 1e-9)
         sc.add_strap(f"s15_roll_clip_{side}", path, N, 25.0, dent=False, label="Roll clip (ROLL family)", **vis)
+        if hasattr(sc, "report"):          # BL-031: roll end to the gusset tab, for the tail audit (strap_tails)
+            sc.report.setdefault("roll_clip_mm", {})[side] = float(np.linalg.norm(np.diff(path, axis=0), axis=1).sum())
         i = int(np.argmin(np.linalg.norm(path - B, axis=1)))
         i = max(min(i - 12, len(path) - 2), 4)
         sc.add_hardware(f"s15_roll_buckle_{side}", "side_release_25", path[i], N[i], t[i], **vis)
