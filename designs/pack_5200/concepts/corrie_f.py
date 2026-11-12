@@ -113,14 +113,14 @@ G_HOOK = CO.G_HOOK                 # 4 g ASSUMPTION (HAUL family; add-on straps 
 S15 = SS.SHELLS["S15"]
 # ---------------------------------------------------------------------------------------------------------- revisions
 # rev 0 = BL-011 as released 2026-11-11 (30 mm top setback sized on the COARSE mesh; guys toggled round the bar ends at
-# x +/-100; tripod held by W1/W2 only). rev 1 = BL-022 (doc section 13): setback re-sized on the FINE mesh, guys moved
+# x +/-100; tripod held by W1/W2 only). rev 1 = BL-022 (doc section 12): setback checked on the FINE mesh (kept at 30 mm), guys moved
 # inboard to a bridle clear of the lifter lugs, a shock-cord tripod keeper on the right gusset. ``revision(0)`` gives
 # rev 0 back exactly (tests).
 REVS = {0: {"setback": 30.0, "guy_x": 100.0, "guy_bridle": False, "tripod_keeper": False},
         1: {"setback": 30.0, "guy_x": 52.0, "guy_bridle": True, "tripod_keeper": True}}
 REVISION = 1
-TOP_SETBACK_MM = REVS[REVISION]["setback"]   # DECISION (R-28, doc sections 5 / 13): sized by the corrie_f_sim R-28 runs
-GUY_X = REVS[REVISION]["guy_x"]               # DECISION (BL-022 S6, doc section 13.3): guy bar-end centre, x +/- mm
+TOP_SETBACK_MM = REVS[REVISION]["setback"]   # DECISION (R-28, doc sections 5 / 12): sized by the corrie_f_sim R-28 runs
+GUY_X = REVS[REVISION]["guy_x"]               # DECISION (BL-022 S6, doc section 12.3): guy bar-end centre, x +/- mm
 
 
 @contextlib.contextmanager
@@ -1332,20 +1332,38 @@ def bl022_table() -> dict:
         return {"converged": c["converged"], "rounding_mm": c["rounding_mm"], "cg_y": c["cg_y"], "cg_y_biased": c["cg_y_biased"],
                 "cg_z": c["cg_z"], "closed_L": c["closed_L"], "im3_1g_n": im3, "im3_factored_n": round(FACTOR * im3, 0),
                 "guy_1g_n": guy, "mesh_h": r["mesh_h"]}
-    goff = case("F_PR15_goff", "meat")
-    gon = case("F_PR15", "meat")
+    # Guys-off misuse (S11), 15 in meat. Three runs: coarse at the standard 6 mm rounding stalled (not converged);
+    # coarse from 8 mm rounding converged at 2 mm on a different equilibrium (hooks / hinges ~2-3x, closed volume
+    # +3 L); fine h 25 from 8 mm converged at 0 mm and agrees with the stalled coarse run. The fine run governs the
+    # CG (finest mesh, zero rounding, and the worse CG); the IM3 basis takes the WORST converged run (conservative).
+    goff_runs = {"coarse_sm6": case("F_PR15_goff", "meat"), "coarse_sm8": case("F_PR15_goff_sm8", "meat"),
+                 "fine_sm8": case("F_PR15_fineFM_goff_sm8", "meat")}
+    conv = {k: v for k, v in goff_runs.items() if v and v["converged"]}
+    gon = case("F_PR15_fineFM", "meat") if goff_runs["fine_sm8"] else case("F_PR15", "meat")
     misuse = None
-    if goff:
-        misuse = {"guys_off": goff, "guys_on": gon, "limit_meat_mm": 190.0,
-                  "exceeds_rev_c": goff["cg_y_biased"] > 190.0,
+    if conv:
+        gov = conv.get("fine_sm8") or max(conv.values(), key=lambda v: v["cg_y_biased"])
+        im3w = max(conv.values(), key=lambda v: v["im3_1g_n"])
+        misuse = {"runs": goff_runs, "guys_off": gov, "guys_on": gon, "limit_meat_mm": 190.0,
+                  "exceeds_rev_c": gov["cg_y_biased"] > 190.0,
+                  "over_limit_mm": round(gov["cg_y_biased"] - 190.0, 1),
+                  "im3_worst_1g_n": im3w["im3_1g_n"], "im3_worst_factored_n": im3w["im3_factored_n"],
                   "bl004_basis_factored_n": 1702.0,       # attachment_diet.md section 5 (CORRIE 15 in guys-off, 567 N x 3.0)
-                  "above_bl004_basis": goff["im3_factored_n"] > 1702.0}
+                  "above_bl004_basis": im3w["im3_factored_n"] > 1702.0,
+                  "governing_above_bl004_basis": gov["im3_factored_n"] > 1702.0}
     rev1 = {t: {cn: case(f"F_PR{t}", cn) for cn in ("fill", "meat")} for t in S.TORSOS}
+    for t in S.TORSOS:            # a stalled coarse case is retried from 8 mm rounding (tag _sm8); use it if it converged
+        for cn in ("fill", "meat"):
+            alt = case(f"F_PR{t}_sm8", cn)
+            if rev1[t][cn] and not rev1[t][cn]["converged"] and alt and alt["converged"]:
+                rev1[t][cn] = dict(alt, retried_from_8mm=True)
     rev0 = {t: {cn: case(f"Fr0_PR{t}", cn) for cn in ("fill", "meat")} for t in S.TORSOS}
     finec = {f"{v}_{t}": {cn: case(f"{v}_PR{t}_fineFM", cn) for cn in ("fill", "meat")}
              for v in ("Fr0", "F") for t in S.TORSOS if f"{v}_PR{t}_fineFM" in rows}
     guys = [c["guy_1g_n"] for d in list(rev1.values()) + list(finec.values()) for c in d.values() if c]
-    return {"r28": r28t, "acceptance": acc, "guys_off": misuse, "rev1_coarse": rev1, "rev0_coarse": rev0, "fine": finec,
+    sw = S.SWEEP
+    sweep = json.loads(sw.read_text()) if sw.exists() else None
+    return {"r28": r28t, "acceptance": acc, "r28_allow_sweep": sweep, "guys_off": misuse, "rev1_coarse": rev1, "rev0_coarse": rev0, "fine": finec,
             "guy_max_1g_n": max(guys) if guys else None,
             "guy_max_factored_n": round(FACTOR * max(guys), 0) if guys else None}
 
@@ -1369,7 +1387,7 @@ def plot_bl022(path: Path) -> Path:
     S = _sim()
     t = bl022_table()
     rows = S.load_results()["rows"]
-    fig, axs = plt.subplots(1, 2, figsize=(12.5, 5.6), dpi=100, gridspec_kw={"width_ratios": [1.15, 1]})
+    fig, axs = plt.subplots(1, 3, figsize=(17.5, 5.8), dpi=90, gridspec_kw={"width_ratios": [1.15, 1, 0.95]})
     ax = axs[0]
     series = (("rev 0 coarse (h 40)", "rev0_coarse", "#b9c6d6"), ("rev 0 fine (h 25)", "rev0_fine", "#6d8fb3"),
               ("rev 1 coarse (h 40)", "rev1_coarse", "#d9b48a"), ("rev 1 fine (h 25)", "rev1_fine", "#8a5a2b"))
@@ -1383,17 +1401,15 @@ def plot_bl022(path: Path) -> Path:
                 continue
             ax.bar(x, v, w, color=col, label=lab if j == 0 else None, edgecolor="white")
             ax.text(x, v + 0.5, f"{v:.0f}", ha="center", fontsize=8)
-    ax.axhline(30, color="#c0392b", ls="--", lw=1)
-    ax.axhline(31, color="#c0392b", ls=":", lw=1)
-    ax.text(-0.45, 30.3, "> 30 deg required", color="#c0392b", fontsize=8, va="bottom")
-    ax.text(1.55, 31.3, "BL-022 target 31 deg (1 deg margin)", color="#c0392b", fontsize=8, va="bottom")
+    ax.axhline(30, color="#c0392b", ls="--", lw=1, label="> 30 deg required")
+    ax.axhline(31, color="#c0392b", ls=":", lw=1, label="BL-022 target 31 deg")
     ax.set_xticks(range(len(S.TORSOS)), [f"{x} in" for x in S.TORSOS])
     ax.set_ylim(0, 42)
     ax.set_ylabel("first head contact, deg (worst of fill / meat)")
     ax.set_title(f"R-28 head clearance: rev 0 {REVS[0]['setback']:.0f} mm setback, guys x +/-{REVS[0]['guy_x']:.0f}; "
                  f"rev 1 {REVS[1]['setback']:.0f} mm, guys x +/-{REVS[1]['guy_x']:.0f}", fontsize=9.5)
-    ax.legend(fontsize=8, loc="upper center", ncol=2)
-    ax.set_ylim(0, 48)
+    ax.legend(fontsize=7.5, loc="upper center", ncol=3)
+    ax.set_ylim(0, 50)
     ax.grid(axis="y", alpha=0.25)
     ax = axs[1]
     bg = _bg()
@@ -1422,6 +1438,27 @@ def plot_bl022(path: Path) -> Path:
     ax.legend(fontsize=7, loc="upper left")
     ax.set_aspect("equal", adjustable="datalim")
     ax.grid(alpha=0.25)
+    ax = axs[2]
+    sw = t.get("r28_allow_sweep")
+    if sw:
+        sty = {"Fr0_PR23": ("rev 0 coarse 23 in", "#b9c6d6", "-"), "F_PR23": ("rev 1 coarse 23 in", "#d9b48a", "-"),
+               "Fr0_PR23_fineFM": ("rev 0 fine 23 in", "#6d8fb3", "--"), "F_PR15_fineFM": ("rev 1 fine 15 in", "#c49a6c", "--"),
+               "F_PR19_fineFM": ("rev 1 fine 19 in", "#a87443", "--"), "F_PR23_fineFM": ("rev 1 fine 23 in", "#8a5a2b", "--")}
+        for k, row in sw["rows"].items():
+            lab, col, ls = sty.get(k, (k, "#555", ":"))
+            xs = [float(a) for a in row]
+            ys = [min(v["fill"]["deg"], v["meat"]["deg"]) for v in row.values()]
+            ax.plot(xs, ys, ls, marker="o", ms=4, color=col, label=lab, lw=1.8)
+        ax.axhline(30, color="#c0392b", ls="--", lw=1)
+        ax.axhline(31, color="#c0392b", ls=":", lw=1)
+        ax.axvline(sw["as_coded_allow_mm"], color="#777", lw=0.8)
+        ax.text(sw["as_coded_allow_mm"] + 0.3, 24.3, "as coded 3 mm", fontsize=7.5, color="#555")
+        ax.set_xlabel("wall allowance R28_ALLOW, mm (fabric + mesh scatter)")
+        ax.set_ylabel("first head contact, deg (worst of fill / meat)")
+        ax.set_ylim(24, 36)
+        ax.set_title("Sensitivity (review B3): 34 deg = frame-only limit (bar + back pad, no bag)", fontsize=9)
+        ax.legend(fontsize=7.5, loc="lower left")
+        ax.grid(alpha=0.25)
     acc = t["acceptance"]
     fig.suptitle("BL-022 CORRIE F rev 1: R-28 on the fine mesh "
                  + ("meets 31 deg at 15 / 19 / 23 in" if acc["met"] else
@@ -1443,12 +1480,12 @@ def main(argv=None):
     ap.add_argument("--size", default="M")
     ap.add_argument("--rows", action="store_true")
     ap.add_argument("--json", action="store_true")
-    ap.add_argument("--bl022", action="store_true", help="BL-022 rev 1 summary + screenshot 20261111_BL022_1.png")
+    ap.add_argument("--bl022", action="store_true", help="BL-022 rev 1 summary + screenshot 20261112_BL022_1.png")
     a = ap.parse_args(argv)
     if a.bl022:
         SCREENS.mkdir(parents=True, exist_ok=True)
         print(json.dumps(bl022_summary(), indent=1, default=_j))
-        print(plot_bl022(SCREENS / "20261111_BL022_1.png"))
+        print(plot_bl022(SCREENS / "20261112_BL022_1.png"))
         return
     s = summary(a.size)
     print(json.dumps(s, indent=1, default=_j))

@@ -61,6 +61,11 @@ ASSUMPTIONS = {
     "LATERAL": ("The lateral (pin-axis) part of the hook pull bears on the inner face of one cheek, spread over "
                 "the face within one hole diameter of the hole centre.",
                 "Same eye pull as COMBINE, with the hook 10 deg off the stay plane."),
+    "DIR_SCATTER": ("The combined hook + strap pull on the eye may sit up to 10 deg further aft than computed (the 18 sim "
+                    "hook vectors spread 2-8 deg aft; the strap angle at the eye is rev C's, not measured). The cheek "
+                    "must keep fatigue >= 1.15 at the computed angle + 10 deg.",
+                    "IM3 eye pull test with the strap led aft at the measured hunting angle (first frame), or a "
+                    "protractor reading of the strap and hook angles in the T2 meat test."),
     "PAHT_FAT": ("PAHT CF fatigue_1e5_ratio 0.30 (record ASSUMPTION, no published data).",
                  "CA-1 coupon test (TEST_PLAN): the flip points in section 5 say what each part needs."),
     "SIM_BODY": ("Bag cases on the body: the sim's 1 g frame-side forces scaled by g x load / 68 kg; side-hill "
@@ -196,7 +201,7 @@ def _cheek_inner_nodes(nc, y_hole, side, h):
     return np.where((np.abs(nc[:, 0] - x_in) <= 0.6 * h) & (r >= BA.HOLE_D / 2.0) & (r <= BA.HOLE_D))[0]
 
 
-def eye_fea(half_z: float, cheek: float, loads: dict, h: float = 1.0) -> dict:
+def eye_fea(half_z: float, cheek: float, loads: dict, h: float = 1.0, field: bool = False) -> dict:
     """Printed IM3 fairlead (bag_attach geometry with HALF_Z / CHEEK swapped in) under each 3D force in ``loads``
     (name -> [fx, fy, fz] N, x = pin axis, y = aft toward the bag, z = up the stay). The (y, z) part goes on the
     bearing half of the hole facing it (solve_fairlead's rule); the x part on the inner face of the cheek it
@@ -273,13 +278,19 @@ def eye_fea(half_z: float, cheek: float, loads: dict, h: float = 1.0) -> dict:
                        "fi99_per_n": float(np.percentile(fu, 99)) / mag, "fi_max_per_n": float(fu.max()) / mag,
                        "peak_xyz": [float(v) for v in cc[use][int(np.argmax(fu))]],
                        "applied_n": float(np.linalg.norm([F[0::3, k].sum(), F[1::3, k].sum(), F[2::3, k].sum()]))}
+            if field and k == 0:
+                fld = {"xyz": cc.tolist(), "fi": fi.tolist(), "load": nm}
         added = float((yoke & ~stay).sum() * h ** 3 * pa["rho"] / 1e6)
     finally:
         BA.HALF_Z, BA.CHEEK = old
-    return {"half_z": half_z, "cheek": cheek, "h": h, "added_g": added, "n_elem": int(solid.sum()), "loads": out}
+    r = {"half_z": half_z, "cheek": cheek, "h": h, "added_g": added, "n_elem": int(solid.sum()), "loads": out}
+    if field:
+        r["field"] = fld
+    return r
 
 
 SWEEP_DEG = (0.0, 15.0, 30.0, 45.0, 60.0, 80.5)     # pull angle aft of straight down (80.5 = rev C IM3 vector)
+DIR_SCATTER_DEG = 10.0     # ASSUMPTION DIR_SCATTER: the combined pull may sit this much further aft than computed
 
 
 def eye_directions(hooks: dict, strap: np.ndarray, misuse_n: float) -> dict:
@@ -527,20 +538,15 @@ def _uninstall_sim_loads():
     _NOD_CACHE.clear()
 
 
-TORSO_RUN = {15: "F_PR15", 19: "F_PR19", 23: "F_PR23"}
-
-
-def sim_env(torso: float, sf: dict, cases=("fill", "meat"), fine15: bool = True) -> dict:
-    """Rev C envelope for one torso with the bag cases on the sim forces: one scenario per sim case (tags S_fill /
-    S_meat; the couple variants no longer apply). At 15 in the
-    meat case uses this ticket's fine run (``fine15``). The beam's non-bag cases (set-down, meat straps, tall, overload)
-    ride in the first scenario."""
+def sim_env(torso: float, sf: dict, runs: dict, cases=("fill", "meat")) -> dict:
+    """Rev C envelope for one torso with the bag cases on the sim forces of ``runs[torso]``: one scenario per sim
+    case (tags S_fill / S_meat; the beam's two couple variants no longer apply). The beam's non-bag cases
+    (set-down, meat straps, tall, overload) ride in the first scenario."""
     from huntkit.fea import load_standard as LS
     env0 = LS.ls1_envelope("C")
     env = {}
-    ti = int(round(torso))
+    run = runs[int(round(torso))]
     for cn in cases:
-        run = RUNS["15f"][0] if (fine15 and ti == 15 and cn == "meat") else TORSO_RUN[ti]
         ff = sf[f"{run}|{cn}"]
         lst = []
         for c in env0["crown_bar"]:
@@ -548,25 +554,26 @@ def sim_env(torso: float, sf: dict, cases=("fill", "meat"), fine15: bool = True)
                 c = copy.copy(c)
                 c.params = {**c.params, "sim_ff": (ff, sim_total_kg(run, cn))}
                 lst.append(c)
-        if cn == cases[0]:          # the beam's non-bag cases ride in the first scenario (each tag needs a carry set)
+        if cn == cases[0]:
             lst += [c for c in env0["crown_bar"] if c.name not in BAG_CASES]
         env[f"sim_{cn}"] = lst
     return env
 
 
-def sim_sets(runner, torsos=(15.0, 19.0, 23.0), sf: dict | None = None, **kw) -> list:
+def sim_sets(runner, torsos=(15.0, 19.0, 23.0), sf: dict | None = None, runs: dict | None = None, **kw) -> list:
     """LoadSets on the sim bag loads. ``runner(torso)`` runs the caller's beam_runs for one torso (it reads
     ls1_envelope and TAGS at call time, both swapped here) and returns its LoadSets."""
     from huntkit.fea import load_standard as LS
     from huntkit.gendesign import rev_c_verification as RV
-    sf = sf or sim_forces()
+    sf = sf or sim_forces(rev=1)
+    runs = runs or SIM_BASES["rev1_fine"]
     oe = LS.ls1_envelope
     sets = []
     _install_sim_loads()
     RV.TAGS.update({"sim_fill": "S_fill", "sim_meat": "S_meat"})
     try:
         for t in torsos:
-            env = sim_env(t, sf, **kw)
+            env = sim_env(t, sf, runs, **kw)
             LS.ls1_envelope = lambda rev="C", _e=env: _e
             sets += runner(t)
             LS.ls1_envelope = oe
@@ -594,3 +601,570 @@ def fixed_runner():
     def run(t):
         return FF.beam_runs("fixed", torsos=(t,), buckling=False, log=None)[0]
     return run, FF.TORSOS
+
+
+def spec_runner(spec_name: str):
+    return h1_runner(spec_name)
+
+
+# ======================================================================================= 3b. body solves
+def body_eval(name: str, dom_kind: str, solid: np.ndarray, sets: list, log=print) -> dict:
+    """H1's rev C body checks (crown_diet.body_check) on the H1 domain (``dom_kind`` 'h1') or a BL-007 fixed-crown
+    domain ('a' / 'c'). Fatigue / creep come from the static-carry sets (by_torso); strength from every set."""
+    from huntkit.gendesign import frame_comp_d as D
+    from huntkit.gendesign import frame_fixed as FF
+    from huntkit.gendesign import frame_h1 as H1
+    c = H1.base()
+    dom = c["dom"] if dom_kind == "h1" else FF.fixed_domain(dom_kind)
+    f, ev = FF._eval(dom, solid, sets)
+    bk = H1.buckling(f)
+    jc = H1.joint_check(f)
+    bt = H1.by_torso(ev)
+    out = {"name": name, "raster_g": float(D.mass_g(solid, H1.H, 1060.0)), "min": ev["min"],
+           "governing": ev["governing"], "by_torso": bt,
+           "buckling_min": float(min(v["margin"] for v in bk.values() if v["margin"] is not None)),
+           "joint_strength": float(jc["min_strength"]), "joint_fatigue": float(jc["min_fatigue"])}
+    # per torso: min over the scenarios of that torso
+    per_t: dict = {}
+    for k, v in bt.items():
+        t = k.split("|")[1]
+        o = per_t.setdefault(t, {"strength": 9e9, "fatigue": 9e9, "creep": 9e9})
+        for kk in ("strength", "fatigue", "creep"):
+            if v[kk] < o[kk]:
+                o[kk] = v[kk]
+                if kk == "fatigue":
+                    o["fatigue_gov"] = f"{k}: {v['gov']}"
+    out["per_torso"] = per_t
+    OUT.mkdir(parents=True, exist_ok=True)
+    np.savez_compressed(OUT / f"util_{name}.npz", util=np.asarray(ev["util"], np.float32))
+    # where the governing fatigue sits (static carry, worst torso): location label of the worst row
+    worst = None
+    for r in ev["rows"]:
+        if r["case"] == "static_carry":
+            fat = D.MATERIALS[H1.MAT]["fat"] / (r["fi99"] / r["factor"] * D.FAT_G)
+            if worst is None or fat < worst[0]:
+                worst = (fat, r["scenario"], r["torso"], r["where"])
+    out["fatigue_where"] = {"margin": worst[0], "scenario": worst[1], "torso": worst[2], "where": worst[3]}
+    if log:
+        log(f"body {name}: {json.dumps(out['min'], default=float)} per torso "
+            f"{ {t: round(v['fatigue'], 3) for t, v in per_t.items()} } at {worst[3]}")
+    return out
+
+
+def _body_cached(name: str, fn) -> dict:
+    p = OUT / f"body_{name}.json"
+    if p.exists():
+        return json.loads(p.read_text())
+    d = fn()
+    OUT.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(d, default=float))
+    return d
+
+
+def sim_sets_for(kind: str, rev_runs: dict, sf: dict, label: str) -> list:
+    """Per-torso-tagged LoadSets on the sim loads for frame ``kind`` ('h1', 'c17b19', 'fixed'), each torso's bag
+    cases from ``rev_runs`` (torso -> run folder) and ``sf`` (frame forces)."""
+    from huntkit.gendesign import crown_diet as CD
+    runner, torsos = (fixed_runner() if kind == "fixed" else h1_runner(kind))
+    sets = []
+    for t in torsos:
+        sets += sim_sets(runner, torsos=(float(t),), sf=sf, runs=rev_runs)
+    return CD._retag(sets, label)
+
+
+def beam_sets_for(kind: str, label: str) -> list:
+    """Per-torso-tagged rev C beam LoadSets (both couple variants) for frame ``kind``, from the BL-017 / BL-007 caches."""
+    from huntkit.gendesign import crown_diet as CD
+    if kind == "fixed":
+        from huntkit.gendesign import frame_fixed as FF
+        sets, _ = FF.load_beam("fixed", log=None)
+    else:
+        sets, _ = CD.load_beam(CD.specs()[kind], log=None)
+    return CD._retag(sets, label)
+
+
+def solids() -> dict:
+    """Bodies: H1 (frame_h1), BL-017 c17 bore 19 (crown_diet.bore_open_solid(9.5)), BL-007 (a) = H1 on the
+    fixed-crown domain, BL-007 (c) = frame_fixed c_solid."""
+    from huntkit.gendesign import crown_diet as CD
+    from huntkit.gendesign import frame_fixed as FF
+    h1 = CD._h1_solid()
+    return {"h1": ("h1", h1), "c17b19": ("h1", CD.bore_open_solid(9.5)[0]), "bl007a": ("a", h1),
+            "bl007c": ("c", np.load(FF.OUT / "c_solid.npz")["solid"])}
+
+
+FRAME_KIND = {"h1": "h1", "c17b19": "c17b19", "bl007a": "fixed", "bl007c": "fixed"}
+SIM_BASES = {
+    # name -> torso -> run (both cases fill + meat from that run)
+    "rev1_fine": {15: "F_PR15_fineFM", 19: "F_PR19_fineFM", 23: "F_PR23_fineFM"},
+    "rev1_coarse": {15: "F_PR15", 19: "F_PR19", 23: "F_PR23"},
+}
+
+
+def body_study(bodies=("h1", "c17b19", "bl007a", "bl007c"), bases=("beam", "rev1_fine", "rev1_coarse"),
+               log=print) -> dict:
+    """Every (body, load basis) pair, cached per pair under OUT (saved as it goes). 'beam' = rev C beam bag loads,
+    per-torso tags (BL-017 basis); the others the sim loads."""
+    sf1 = sim_forces(rev=1)
+    sol = solids()
+    out = {}
+    for b in bodies:
+        dk, solid = sol[b]
+        for base in bases:
+            nm = f"{b}__{base}"
+            if base == "beam":
+                fn = lambda b=b, dk=dk, solid=solid, nm=nm: body_eval(nm, dk, solid, beam_sets_for(FRAME_KIND[b], "B"),
+                                                                     log=log)
+            else:
+                fn = lambda b=b, dk=dk, solid=solid, nm=nm, base=base: body_eval(
+                    nm, dk, solid, sim_sets_for(FRAME_KIND[b], SIM_BASES[base], sf1, "S"), log=log)
+            out[nm] = _body_cached(nm, fn)
+    return out
+
+
+# ======================================================================================= 2b. eye on every hook
+FINAL_CANDS = ((12.5, 8.0), (13.5, 8.0), (14.0, 8.0), (15.0, 8.0))
+
+
+def all_hooks() -> dict:
+    """Every 1 g IM3 hook vector (meat case): rev 0 keys '15cR' ... '15fL', rev 1 keys '15c1R' ... '23f1L'."""
+    h = eye_hooks(sim_forces(rev=0), RUNS)
+    h.update(eye_hooks(sim_forces(rev=1), RUNS1))
+    return h
+
+
+def eye_study_rev1(cands=FINAL_CANDS, grids=GRIDS, log=print) -> dict:
+    """The rev 1 hook directions (and their combos with the strap) on the final candidates, cached with tag
+    '_rev1' (the rev 0 directions are in the untagged cache files)."""
+    hooks1 = eye_hooks(sim_forces(rev=1), RUNS1)
+    dirs, gov = eye_directions(hooks1, strap_vector_1g(), misuse_1g())
+    out = {}
+    for hz, ch in cands:
+        for h in grids:
+            r = eye_cached(hz, ch, h, dirs, tag="_rev1")
+            out[f"{hz:g}_{ch:g}_{h:g}"] = r
+            if log:
+                log(f"eye rev1 {2 * hz:g} x {ch:g} mm h {h:g}: n_elem {r['n_elem']}")
+    return {"dirs": dirs, "gov": gov, "runs": out}
+
+
+# ======================================================================================= 4. assembly of results
+def _eye_fi(hz: float, ch: float, h: float) -> dict:
+    """FI99 per newton per load name at one (cheek, grid): rev 0 cache (untagged) merged with the rev 1 cache."""
+    out = {}
+    for tag in ("", "_rev1"):
+        p = OUT / f"eye_{hz:g}_{ch:g}_{h:g}{tag}.json"
+        if p.exists():
+            d = json.loads(p.read_text())
+            for k, v in d["loads"].items():
+                kk = k if tag == "" or not k.startswith(("misuse", "strap", "dir_")) else f"{k}_r1"
+                out[kk] = v["fi99_per_n"]
+            out["_added_g"] = d["added_g"]
+            out["_n_elem"] = d["n_elem"]
+    return out
+
+
+def eye_summary(cands=FINAL_CANDS, grids=GRIDS) -> dict:
+    """Margins of every candidate at every grid on every hook (rev 0 + rev 1, coarse + fine, R + L), the design
+    value (FI = largest of the three grids, i.e. the smallest margin), and the sensitivities."""
+    pa = _paht()
+    hooks = all_hooks()
+    strap = strap_vector_1g()
+    mis = misuse_1g()
+    out = {"hooks": {}, "strap_1g": strap.tolist(), "misuse_1g_n": mis, "cands": {}}
+    for k, v in hooks.items():
+        v = np.asarray(v)
+        out["hooks"][k] = {"vec": [round(float(x), 1) for x in v], "mag": round(float(np.linalg.norm(v)), 1),
+                           "aft_of_down_deg": round(float(np.degrees(np.arctan2(v[1], -v[2]))), 1),
+                           "lateral_deg": round(float(np.degrees(np.arctan2(abs(v[0]), np.hypot(v[1], v[2])))), 1),
+                           "combo_mag": round(float(np.linalg.norm(v + strap)), 1)}
+    for hz, ch in cands:
+        per = {}
+        for h in grids:
+            fi = _eye_fi(hz, ch, h)
+            if not all(f"combo_{k}" in fi for k in hooks):
+                continue
+            rows = {}
+            for k, v in hooks.items():
+                v = np.asarray(v)
+                c = float(np.linalg.norm(v + strap))
+                hk = float(np.linalg.norm(v))
+                rows[k] = {"fatigue": pa["fat"] / (fi[f"combo_{k}"] * G_WALK * c),
+                           "fatigue_hook_only": pa["fat"] / (fi[f"hook_{k}"] * G_WALK * hk),
+                           "creep": pa["rupture"] / (fi[f"combo_{k}"] * c),
+                           "strength": 1.0 / (fi[f"combo_{k}"] * FACTOR * c)}
+            ms = []
+            for sfx, hk in (("", RUNS), ("_r1", RUNS1)):
+                hh = {k: hooks[k] for k in hooks if any(k[:-1] == r for r in hk)}
+                gov = max(hh, key=lambda k: np.linalg.norm(np.asarray(hh[k]) + strap))
+                mc = mis * np.asarray(hh[gov]) / np.linalg.norm(hh[gov]) + strap
+                ms.append(1.0 / (fi[f"misuse_combo{sfx}"] * FACTOR * np.linalg.norm(mc)))
+            sweep = {a: fi[f"dir_{a:g}"] for a in SWEEP_DEG}
+            per[f"{h:g}"] = {"rows": rows, "misuse_strength": float(min(ms)), "added_g": fi["_added_g"],
+                             "n_elem": fi["_n_elem"], "sweep_fi_per_kn": {f"{a:g}": 1e3 * v for a, v in sweep.items()},
+                             "strap_fi_per_kn": 1e3 * fi["strap"]}
+        if len(per) < len(grids):
+            continue
+        hk = list(hooks)
+        des = {}
+        for m in ("fatigue", "fatigue_hook_only", "creep", "strength"):
+            vals = {k: min(per[g]["rows"][k][m] for g in per) for k in hk}
+            gk = min(vals, key=vals.get)
+            des[m] = {"value": vals[gk], "hook": gk,
+                      "grid": min(per, key=lambda g, gk=gk, m=m: per[g]["rows"][gk][m])}
+        des["misuse_strength"] = {"value": min(per[g]["misuse_strength"] for g in per)}
+        gk = des["fatigue"]["hook"]
+        mesh = {g: per[g]["rows"][gk]["fatigue"] for g in per}
+        # direction: margin of the governing combo magnitude if it pulled at each sweep angle (design grid max FI)
+        cmag = float(np.linalg.norm(np.asarray(hooks[gk]) + strap))
+        dir_sens = {a: pa["fat"] / (max(per[g]["sweep_fi_per_kn"][f"{a:g}"] for g in per) / 1e3 * G_WALK * cmag)
+                    for a in SWEEP_DEG}
+        # direction scatter (ASSUMPTION DIR_SCATTER): the governing combo pulled DIR_SCATTER_DEG further aft, by the
+        # ratio of the in-plane sweep FIs (design grid = largest FI) at the two angles
+        cv = np.asarray(hooks[gk]) + strap
+        th = float(np.degrees(np.arctan2(cv[1], -cv[2])))
+        sw_a = np.array(SWEEP_DEG)
+        sw_f = np.array([max(per[g]["sweep_fi_per_kn"][f"{a:g}"] for g in per) for a in SWEEP_DEG])
+        fi_th, fi_th2 = np.interp(th, sw_a, sw_f), np.interp(th + DIR_SCATTER_DEG, sw_a, sw_f)
+        dir_plus = des["fatigue"]["value"] * fi_th / fi_th2
+        fine = [k for k in hk if k[2] == "f"]
+        coarse = [k for k in hk if k[2] == "c"]
+        sens = {"mesh_fatigue_by_grid": mesh,
+                "mesh_spread_pct": 100 * (max(mesh.values()) - min(mesh.values())) / min(mesh.values()),
+                "direction_fatigue_by_aft_deg": {f"{a:g}": v for a, v in dir_sens.items()},
+                "fatigue_coarse_cloth_only": min(min(per[g]["rows"][k]["fatigue"] for g in per) for k in coarse),
+                "fatigue_fine_cloth_only": min(min(per[g]["rows"][k]["fatigue"] for g in per) for k in fine),
+                "fatigue_rev0_only": min(min(per[g]["rows"][k]["fatigue"] for g in per) for k in hk
+                                         if k[:-1] in RUNS),
+                "fatigue_rev1_only": min(min(per[g]["rows"][k]["fatigue"] for g in per) for k in hk
+                                         if k[:-1] in RUNS1),
+                "fatigue_hook_only": des["fatigue_hook_only"]["value"],
+                "hook_force_at_fatigue_1p0_n": des["fatigue"]["value"] * cmag,
+                "governing_combo_1g_n": cmag, "governing_combo_aft_deg": th,
+                "fatigue_dir_plus_scatter": float(dir_plus)}
+        lp = __import__("huntkit.gendesign.loadpath_check", fromlist=["x"])
+        out["cands"][f"{hz:g}_{ch:g}"] = {
+            "half_z": hz, "cheek": ch, "height_mm": 2 * hz, "per_grid": per, "design": des, "sensitivity": sens,
+            "added_g_h1": per["1"]["added_g"], "pair_delta_vs_27mm_g": None,
+            "clearance": lp.cheek_clearance(hz, ch),
+            "ca1_flip_ratio": pa["fat"] / des["fatigue"]["value"],
+            "pass": bool(des["fatigue"]["value"] >= FAT_REQ and dir_plus >= FAT_REQ and des["strength"]["value"] >= STR_REQ
+                         and des["misuse_strength"]["value"] >= STR_REQ and des["creep"]["value"] >= 1.0)}
+    base = out["cands"].get("13.5_8")
+    for v in out["cands"].values():
+        if base:
+            v["pair_delta_vs_27mm_g"] = 2 * (v["added_g_h1"] - base["added_g_h1"])
+    ok = [k for k, v in out["cands"].items() if v["pass"]]
+    out["chosen"] = min(ok, key=lambda k: out["cands"][k]["added_g_h1"]) if ok else None
+    return out
+
+
+def body_summary(study: dict) -> dict:
+    pa = _paht()
+    out = {}
+    for nm, v in study.items():
+        b, base = nm.split("__")
+        out.setdefault(b, {})[base] = {"min": v["min"], "per_torso": v["per_torso"], "raster_g": v["raster_g"],
+                                       "fatigue_where": v["fatigue_where"], "joint_fatigue": v["joint_fatigue"],
+                                       "buckling_min": v["buckling_min"],
+                                       "ca1_flip_ratio": pa["fat"] / v["min"]["fatigue"]}
+    return out
+
+
+def compute(log=print) -> dict:
+    sf0, sf1 = sim_forces(rev=0), sim_forces(rev=1)
+    hv = {}
+    for sf, runs, rev in ((sf0, RUNS, 0), (sf1, RUNS1, 1)):
+        for key, (run, t) in runs.items():
+            ff = sf[f"{run}|meat"]
+            hv[key] = {"run": run, "rev": rev, "torso": t, "h_mm": ff["h_mm"], "converged": ff["converged"],
+                       **hook_vectors(ff)}
+    eye = eye_summary()
+    study = {}
+    for p in sorted(OUT.glob("body_*.json")):
+        study[p.stem[5:]] = json.loads(p.read_text())
+    body = body_summary(study)
+    return {"date": "2026-11-12", "ticket": "BL-021", "assumptions": ASSUMPTIONS,
+            "requirements": {"fatigue": FAT_REQ, "strength": STR_REQ, "g_walk": G_WALK, "factor": FACTOR},
+            "hook_vectors": hv, "eye": eye, "body": body}
+
+
+# ======================================================================================= 5. figures
+def plot_eye(res: dict, path: Path) -> str:
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    e = res["eye"]
+    fig, ax = plt.subplots(1, 2, figsize=(10, 4.6), dpi=110)
+    ks = sorted(e["cands"], key=lambda k: e["cands"][k]["height_mm"])
+    x = np.arange(len(ks))
+    for i, g in enumerate(GRIDS):
+        y = [min(r["fatigue"] for r in e["cands"][k]["per_grid"][f"{g:g}"]["rows"].values()) for k in ks]
+        ax[0].plot(x, y, "o-", color=("#1f5f8b", "#4f8fbf", "#8fbfdf")[i], label=f"FEA grid h {g:g} mm")
+    ax[0].axhline(FAT_REQ, color="#b03030", ls="--", lw=1.2, label=f"target {FAT_REQ}")
+    ax[0].axhline(1.0, color="#777", ls=":", lw=1)
+    ax[0].set_xticks(x, [f"{e['cands'][k]['height_mm']:g} mm\n+{e['cands'][k]['pair_delta_vs_27mm_g']:.1f} g/pair"
+                         for k in ks], fontsize=8)
+    ax[0].set_ylabel("fatigue margin (worst hook + strap, 1.6 g)")
+    ax[0].set_title("IM3 cheek height vs fatigue (8 mm thick)", fontsize=10)
+    if e["chosen"]:
+        ax[0].axvline(ks.index(e["chosen"]), color="#2a7a2a", lw=6, alpha=0.15)
+    ax[0].legend(fontsize=7, loc="lower right")
+    ch = e["cands"][e["chosen"] or ks[-1]]
+    ds = ch["sensitivity"]["direction_fatigue_by_aft_deg"]
+    ax[1].plot([float(a) for a in ds], list(ds.values()), "s-", color="#1f5f8b")
+    ax[1].axhline(FAT_REQ, color="#b03030", ls="--", lw=1.2)
+    ax[1].axhline(1.0, color="#777", ls=":", lw=1)
+    angs = [h["aft_of_down_deg"] for h in e["hooks"].values()]
+    ax[1].axvspan(min(angs), max(angs), color="#2a7a2a", alpha=0.15, label="cloth-sim hook directions")
+    ax[1].set_xlabel("pull angle aft of straight down (deg)")
+    ax[1].set_ylabel("fatigue margin at the governing force")
+    ax[1].set_title(f"{ch['height_mm']:g} mm cheek: load-direction sensitivity", fontsize=10)
+    ax[1].legend(fontsize=7)
+    fig.tight_layout()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(path)
+    plt.close(fig)
+    return str(path)
+
+
+def plot_body(res: dict, path: Path) -> str:
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    b = res["body"]
+    names = {"h1": "H1", "c17b19": "BL-017 c17", "bl007a": "BL-007 (a)", "bl007c": "BL-007 (c)"}
+    bases = [("beam", "beam bag loads", "#999999"), ("rev1_coarse", "cloth sim, coarse", "#8fbfdf"),
+             ("rev1_fine", "cloth sim, fine", "#1f5f8b")]
+    fig, ax = plt.subplots(figsize=(10, 4.8), dpi=110)
+    labels, xs = [], []
+    i = 0
+    for k in names:
+        if k not in b:
+            continue
+        for t in ("15", "19", "23"):
+            for j, (bs, lab, col) in enumerate(bases):
+                if bs in b[k] and t in b[k][bs]["per_torso"]:
+                    v = b[k][bs]["per_torso"][t]["fatigue"]
+                    ax.bar(i + (j - 1) * 0.27, v, 0.26, color=col, label=lab if (k == "h1" and t == "15") else None)
+            labels.append(f"{names[k]}\n{t} in")
+            xs.append(i)
+            i += 1
+        i += 0.5
+    ax.axhline(FAT_REQ, color="#b03030", ls="--", lw=1.2, label=f"BL-021 target {FAT_REQ}")
+    ax.axhline(1.0, color="#333", ls=":", lw=1, label="rev C 1.0")
+    ax.set_xticks(xs, labels, fontsize=7)
+    ax.set_ylabel("body fatigue margin (1e5 x 1.6 g, PAHT 0.30)")
+    ax.set_title("Frame body fatigue per torso: beam bag loads vs cloth-sim loads", fontsize=10)
+    ax.set_ylim(0.6, max(2.0, ax.get_ylim()[1]))
+    ax.legend(fontsize=7, ncol=3, loc="upper right")
+    fig.tight_layout()
+    fig.savefig(path)
+    plt.close(fig)
+    return str(path)
+
+
+def plot_eye_field(res: dict, path: Path, h: float = 0.8) -> str:
+    """FI99 field of the chosen cheek under the governing 1.6 g combo (hook + strap): the cheek seen from the side
+    (max FI through the thickness) and from above. Saved as a utilization picture (FI x 1.6 g / PAHT fat ratio)."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    e = res["eye"]
+    ch = e["cands"][e["chosen"]]
+    gk = ch["design"]["fatigue"]["hook"]
+    v = np.asarray(all_hooks()[gk]) + strap_vector_1g()
+    pa = _paht()
+    r = eye_fea(ch["half_z"], ch["cheek"], {"gov": (G_WALK * v).tolist()}, h=h, field=True)
+    X = np.asarray(r["field"]["xyz"])
+    U = np.asarray(r["field"]["fi"]) / pa["fat"]           # fatigue utilisation (1 / margin)
+    fig, ax = plt.subplots(1, 2, figsize=(10, 4.6), dpi=110)
+    for a, (i, j, ttl) in zip(ax, ((1, 2, "side view (y aft, z up the stay)"), (0, 1, "top view (x pin axis, y aft)"))):
+        keys = np.round(X[:, [i, j]] / h).astype(int)
+        order = np.lexsort((U, keys[:, 1], keys[:, 0]))
+        k2 = keys[order]
+        last = np.r_[np.any(k2[1:] != k2[:-1], axis=1), True]
+        sel = order[last]
+        sc = a.scatter(X[sel, i], X[sel, j], c=U[sel], s=6, marker="s", cmap="inferno", vmin=0, vmax=1.0)
+        a.set_aspect("equal")
+        a.set_title(ttl, fontsize=9)
+        a.set_xlabel("mm")
+    fig.colorbar(sc, ax=ax, label="fatigue utilisation (1 = fails 1e5 cycles)")
+    fig.suptitle(f"IM3 eye, {ch['height_mm']:g} mm cheek, governing hook {gk} + strap at 1.6 g "
+                 f"(h {h:g} mm; peak {U.max():.2f}, p99 {np.percentile(U, 99):.2f})", fontsize=10)
+    fig.savefig(path)
+    plt.close(fig)
+    return str(path)
+
+
+# ======================================================================================= 6. record
+def _lb(n):
+    return f"{n / 4.44822:.0f} lbf"
+
+
+def write_md(res: dict) -> str:
+    L = []
+    w = L.append
+    e, b, hv = res["eye"], res["body"], res["hook_vectors"]
+    ch = e["cands"].get(e["chosen"]) if e["chosen"] else None
+    w("# BL-021 IM3 eye and frame body on the cloth-sim loads\n")
+    w("Generated by `python -m huntkit.gendesign.im3_body_simloads` (data: `im3_body_simloads.json`). Date "
+      f"{res['date']}. Rev C (HA-LS-1, `load_standard.md`): fatigue 1e5 cycles at 0 to {G_WALK} g, strength at the "
+      f"factored load ({FACTOR:g} x the 1 g force), PAHT-CF fatigue ratio 0.30 (ASSUMPTION PAHT_FAT). BL-021 targets: "
+      f"**fatigue >= {FAT_REQ}** on the sim loads (to cover input scatter), cheek strength >= {STR_REQ}. "
+      "Units N, mm, g (lbf / oz alongside).\n")
+    w("## Summary\n")
+    w(res["summary_md"])
+    w("\n## 1. IM3 hook force vectors from the cloth sim (meat case, 1 g)\n")
+    w("Rebuilt from the saved node positions: each bridle leg gives T x unit(bag node - eye); the sum is the hook "
+      "vector. x = pin axis (+ = right), y = aft toward the bag, z = up. `leg sum` is the run's own scalar report "
+      "(sum of leg tensions; it is larger than the vector when the legs fan out).\n")
+    w("| run | rev | mesh h | side | vector (x, y, z) N | magnitude N | leg sum N | aft of down | lateral |")
+    w("|---|---|---|---|---|---|---|---|---|")
+    for k, v in hv.items():
+        for s in "RL":
+            h = v[s]
+            w(f"| {v['run']} | {v['rev']} | {v['h_mm']:g} | {s} | ({h['vec'][0]:.0f}, {h['vec'][1]:.0f}, "
+              f"{h['vec'][2]:.0f}) | {h['mag']:.0f} ({_lb(h['mag'])}) | {h['leg_sum']:.0f} | "
+              f"{h['aft_of_down_deg']:.1f} deg | {h['lateral_deg']:.1f} deg |")
+    w("\n" + res["coarse_fine_md"])
+    w("\n## 2. IM3 eye (printed fairlead) on the sim vectors + the IM3 meat strap\n")
+    w(f"Strap vector (rev C C5 IM3 strap, per 1 g): ({e['strap_1g'][0]:.0f}, {e['strap_1g'][1]:.0f}, "
+      f"{e['strap_1g'][2]:.0f}) N, {np.linalg.norm(e['strap_1g']):.0f} N. Worst combination (ASSUMPTION COMBINE): "
+      "hook vector + strap vector, both at full value, on the same eye. Misuse (BL-010 guys-off envelope "
+      f"{e['misuse_1g_n']:.0f} N at 1 g, in the governing hook's direction) + strap checked for strength.\n")
+    w("Mesh study: every load direction at h 1.0 / 0.8 / 0.7 mm (h 0.5 runs out of memory, BL-014). The FI99 does "
+      "not move monotonically with h (voxel steps of the 7.2 mm hole and the cheek edges); the spread between the "
+      "three grids is the mesh scatter, and the **design value takes the largest FI of the three grids** "
+      "(smallest margin). Converged is judged as: the three grids within +-10 % of each other, no trend with h.\n")
+    w("| cheek (tall x thick) | added g (h 1.0) | pair vs 27 mm | fatigue h1.0 / 0.8 / 0.7 | design fatigue | "
+      "hook-only fatigue | strength | misuse strength | creep | CA-1 flip | pass |")
+    w("|---|---|---|---|---|---|---|---|---|---|---|")
+    for k in sorted(e["cands"], key=lambda k: e["cands"][k]["height_mm"]):
+        c = e["cands"][k]
+        d = c["design"]
+        mg = " / ".join(f"{min(r['fatigue'] for r in c['per_grid'][f'{g:g}']['rows'].values()):.3f}" for g in GRIDS)
+        w(f"| {c['height_mm']:g} x {c['cheek']:g} mm | {c['added_g_h1']:.2f} | {c['pair_delta_vs_27mm_g']:+.2f} g | "
+          f"{mg} | **{d['fatigue']['value']:.3f}** ({d['fatigue']['hook']}) | {d['fatigue_hook_only']['value']:.3f} | "
+          f"{d['strength']['value']:.2f} | {d['misuse_strength']['value']:.2f} | {d['creep']['value']:.2f} | "
+          f"{c['ca1_flip_ratio']:.3f} | {'yes' if c['pass'] else 'no'} |")
+    if ch:
+        s = ch["sensitivity"]
+        w(f"\n### 2.1 Chosen: {ch['height_mm']:g} mm tall x {ch['cheek']:g} mm thick cheek, each margin with its "
+          "sensitivity\n")
+        w(f"- **Fatigue {ch['design']['fatigue']['value']:.3f}** (target {FAT_REQ}); governing hook "
+          f"{ch['design']['fatigue']['hook']} + strap = {s['governing_combo_1g_n']:.0f} N at 1 g "
+          f"({_lb(s['governing_combo_1g_n'])}). The eye reaches 1.0 at {s['hook_force_at_fatigue_1p0_n']:.0f} N "
+          f"combined (1 g basis).")
+        w(f"- Mesh (FEA): {' / '.join(f'{v:.3f}' for v in s['mesh_fatigue_by_grid'].values())} at h 1.0 / 0.8 / "
+          f"0.7 mm on the governing hook, spread {s['mesh_spread_pct']:.1f} %.")
+        w(f"- Cloth mesh: coarse-only hooks {s['fatigue_coarse_cloth_only']:.3f}, fine-only hooks "
+          f"{s['fatigue_fine_cloth_only']:.3f}.")
+        w(f"- CORRIE F revision: rev 0 hooks {s['fatigue_rev0_only']:.3f}, rev 1 hooks {s['fatigue_rev1_only']:.3f}.")
+        w(f"- Load combination: hook alone {s['fatigue_hook_only']:.3f}; hook + strap {ch['design']['fatigue']['value']:.3f}.")
+        w("- Load direction (governing force at other pull angles, same FEA): " + ", ".join(
+            f"{a} deg {v:.3f}" for a, v in s["direction_fatigue_by_aft_deg"].items())
+          + f". The sim hooks pull {min(h['aft_of_down_deg'] for h in e['hooks'].values()):.0f} to "
+          f"{max(h['aft_of_down_deg'] for h in e['hooks'].values()):.0f} deg aft of straight down.")
+        cl = ch["clearance"]
+        w(f"- Strength {ch['design']['strength']['value']:.2f} (factored hook + strap), misuse + strap "
+          f"{ch['design']['misuse_strength']['value']:.2f}, creep {ch['design']['creep']['value']:.2f}.")
+        w(f"- Mass: {ch['added_g_h1']:.2f} g per eye at h 1.0 (the ledger's basis), "
+          f"{ch['pair_delta_vs_27mm_g']:+.2f} g a pair over the adopted 27 mm.")
+        w(f"- Clearances: cheek z {cl['cheek_bottom_z']:g} to {cl['cheek_top_z']:g}; {cl['gap_mm']:.1f} mm above "
+          f"the spreader top edge (z {cl['spreader_top_z']:g}, rule >= {cl['notch_clear_mm']:g}); throat "
+          f"{cl['throat_mm']:g} mm unchanged (both carabiners / the hook and strap share it as today); outer width "
+          f"{cl['outer_width_mm']:g} mm; stands {cl['cheek_aft_of_hole_mm']:g} mm aft of the hole centre as today.")
+    w("\n## 3. H1 body on the cloth-sim loads, per torso setting\n")
+    w(res["body_method_md"])
+    w(res["body_table_md"])
+    w(res["body_text_md"])
+    w("\n## 4. Addendum: BL-007 (a) / (c) and BL-017 (c17, OD 17 legs, bore 19) restated per torso\n")
+    w(res["addendum_md"])
+    w("\n## 5. CA-1 flip points\n")
+    w("The PAHT-CF fatigue ratio (1e5 cycles, of static strength) at which each part's fatigue margin reaches 1.0: "
+      "flip = 0.30 / margin. CA-1 (coupon test) must show a ratio at or above the flip point of every part that "
+      "ships.\n")
+    w(res["flip_md"])
+    w("\n## 6. Assumptions\n")
+    for k, (a, t) in ASSUMPTIONS.items():
+        w(f"- ASSUMPTION {k}: {a} Settled by: {t}")
+    w("\n## 7. Screens\n")
+    for p in res.get("screens", []):
+        w(f"- `{Path(p).relative_to(REPO)}`")
+    return "\n".join(L) + "\n"
+
+
+BODY_NAMES = {"h1": "H1 (as released)", "c17b19": "BL-017 (c17): OD 17 x 7 UD legs, crown bore 19",
+              "bl007a": "BL-007 (a): fixed crown, H1 body", "bl007c": "BL-007 (c): fixed crown, stays re-sized"}
+BASE_NAMES = {"beam": "beam bag loads (rev C weight split + couple)", "rev1_fine": "cloth sim rev 1, fine (h 25)",
+              "rev1_coarse": "cloth sim rev 1, coarse (h 40)"}
+
+
+def coarse_fine_md(hv: dict) -> str:
+    L = ["Coarse (h 40 mm) vs fine (h 25 mm) cloth mesh, hook magnitude at 1 g (meat):", "",
+         "| torso | rev | side | coarse N | fine N | fine / coarse |", "|---|---|---|---|---|---|"]
+    pairs = [("15c", "15f", 0, 15), ("15c1", "15f1", 1, 15), ("19c1", "19f1", 1, 19), ("23c1", "23f1", 1, 23)]
+    rat = []
+    for c, f, rev, t in pairs:
+        for s in "RL":
+            a, b = hv[c][s]["mag"], hv[f][s]["mag"]
+            rat.append(b / a)
+            L.append(f"| {t} in | {rev} | {s} | {a:.0f} | {b:.0f} | {b / a:.3f} |")
+    hi = max(max(hv[k]["R"]["mag"], hv[k]["L"]["mag"]) for k in hv)
+    lr = [abs(hv[k]["L"]["mag"] - hv[k]["R"]["mag"]) / max(hv[k]["L"]["mag"], hv[k]["R"]["mag"]) for k in hv]
+    L += ["", f"Fine / coarse ranges {min(rat):.2f} to {max(rat):.2f} per hook: the fine mesh moves load between the "
+          "two hooks (and the hinge pins) rather than adding it. The highest single hook is "
+          f"{hi:.0f} N ({_lb(hi)}) at 1 g. Left vs right differ by up to {100 * max(lr):.0f} % in one run "
+          f"(median {100 * float(np.median(lr)):.0f} %), so the eye is sized on the worse side of every run. The hook "
+          "pulls 2 to 8 deg aft of straight down and up to 10 deg sideways (the lateral part loads the inner face of "
+          "one cheek and is in the FEA)."]
+    return "\n".join(L)
+
+
+def body_tables(res: dict) -> tuple:
+    b = res["body"]
+    L = ["| body | load basis | torso 15 in | 19 in | 23 in | min strength | min creep | governing (fatigue) |",
+         "|---|---|---|---|---|---|---|---|"]
+    for k in BODY_NAMES:
+        if k not in b:
+            continue
+        for bs in ("beam", "rev1_coarse", "rev1_fine"):
+            if bs not in b[k]:
+                continue
+            v = b[k][bs]
+            pt = v["per_torso"]
+            cells = " | ".join(f"{pt[t]['fatigue']:.3f}" if t in pt else "-" for t in ("15", "19", "23"))
+            fw = v["fatigue_where"]
+            L.append(f"| {BODY_NAMES[k]} | {BASE_NAMES[bs]} | {cells} | {v['min']['strength']:.2f} | "
+                     f"{v['min']['creep']:.2f} | {fw['torso']:g} in, {fw['where']} |")
+    return "\n".join(L)
+
+
+def _write(res: dict):
+    RESULTS.write_text(json.dumps(res, indent=1, default=float))
+    DOC.write_text(write_md(res))
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--run", action="store_true", help="run any missing eye / body solves (long)")
+    ap.add_argument("--no-plots", action="store_true")
+    a = ap.parse_args(argv)
+    os.environ.setdefault("OMP_NUM_THREADS", "2")
+    if a.run:
+        eye_study_rev1()
+        body_study()
+    res = compute()
+    res.update(narrative(res))
+    if not a.no_plots:
+        SCREENS.mkdir(parents=True, exist_ok=True)
+        res["screens"] = [plot_eye(res, SCREENS / f"{SHOT}1.png"), plot_body(res, SCREENS / f"{SHOT}2.png")]
+        if res["eye"]["chosen"]:
+            res["screens"].append(plot_eye_field(res, SCREENS / f"{SHOT}3.png"))
+    _write(res)
+    print(DOC)
+
+
+if __name__ == "__main__":
+    main()

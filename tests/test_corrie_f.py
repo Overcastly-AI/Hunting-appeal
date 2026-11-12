@@ -129,8 +129,20 @@ def test_both_doors_complete_and_wider_than_corrie(summ):
 
 # ------------------------------------------------------------------------------------------- sims (stored rows)
 def _rows():
+    """Current-rev rows; a stalled coarse case is replaced by its 8 mm-rounding retry (F_PR{t}_sm8, BL-022)."""
+    import copy
     import corrie_f_sim as S
-    return {t: S.get("F", t) for t in S.TORSOS}
+    st = S.load_results()["rows"]
+    out = {}
+    for t in S.TORSOS:
+        r = copy.deepcopy(st.get(f"F_PR{t}"))
+        alt = st.get(f"F_PR{t}_sm8")
+        if r and alt:
+            for cn, c in alt["cases"].items():
+                if cn in r["cases"] and not r["cases"][cn]["converged"] and c["converged"]:
+                    r["cases"][cn] = c
+        out[t] = r
+    return out
 
 
 def test_sims_converged_in_band_and_under_rev_c():
@@ -231,3 +243,35 @@ def test_bl022_sims_fine_r28_and_guys_off():
     assert go["guys_off"]["guy_1g_n"] == 0.0                     # no guys in the misuse case
     assert go["exceeds_rev_c"] == (go["guys_off"]["cg_y_biased"] > 190.0)
     assert go["guys_off"]["cg_y"] > go["guys_on"]["cg_y"]        # the guys pull the CG in
+
+
+def test_bl022_r28_fine_mesh_margin_against_wall_allowance():
+    t = F.bl022_table()
+    sw = t["r28_allow_sweep"]
+    if sw is None:
+        pytest.skip("corrie_f_sim.py r28sweep not run in this checkout")
+    worst = {k: {a: min(v["fill"]["deg"], v["meat"]["deg"]) for a, v in row.items()} for k, row in sw["rows"].items()}
+    for tor in (15, 19, 23):                                     # rev 1 fine: >= 31 deg even at 4x the coded allowance
+        assert all(worst[f"F_PR{tor}_fineFM"][a] >= 31.0 for a in ("3", "6", "9", "12"))
+    assert worst["Fr0_PR23"]["9"] <= 30.0                        # the coarse rev 0 margin the review flagged was real
+    assert worst["F_PR23_fineFM"]["3"] == 34.0                   # = the frame-only ceiling (bag wall not in contact)
+
+
+def test_r28_frame_only_ceiling_is_34_deg():
+    from huntkit.gendesign.attach_system import r28_loaded
+    zs = list(range(300, 1200, 50))
+    for tor in (15, 19, 23):                                     # bag wall placed far aft: bar + back pad only
+        r = r28_loaded(tor, [(z, 0.0) for z in zs], hood=False, design_face=[(z, 3000.0) for z in zs])
+        assert r["worst_contact_deg"] == 34.0
+
+
+def test_bl022_guys_off_misuse_exceeds_rev_c_and_is_a_carry_rule():
+    t = F.bl022_table()
+    go = t["guys_off"]
+    if go is None or go["runs"]["fine_sm8"] is None:
+        pytest.skip("guys-off fine run not in this checkout (finerun F --torso 15 --cases meat --guys off --smooth 8 --tag _goff_sm8)")
+    assert go["guys_off"] is go["runs"]["fine_sm8"] or go["guys_off"] == go["runs"]["fine_sm8"]
+    assert go["exceeds_rev_c"] and go["over_limit_mm"] > 0       # misuse: over the 190 mm meat limit
+    assert go["im3_worst_factored_n"] >= go["guys_off"]["im3_factored_n"]
+    doc = (F.ROOT / "designs" / "pack_5200" / "analysis" / "corrie_f_body.md").read_text()
+    assert "GUYS ON" in doc                                      # hang-tag wording is in the doc

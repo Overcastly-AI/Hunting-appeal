@@ -28,6 +28,8 @@ or a named ASSUMPTION. Units: g (1 oz = 28.35 g), mm (1 in = 25.4 mm), L (1 L = 
   becomes 834.5 / (1.6 × 552.4) = **0.94** (it was 1.03). See section 5.3.
 - **Doors:** both are complete. D2 is lighter, has fewer pieces and fewer hours. D1 opens 60–70 mm wider. The owner chooses (section 3).
 
+- **Rev 1 (BL-022, section 12):** fine-mesh R-28 is 34° at 15 / 19 / 23 in (the frame-only limit), so the 30 mm setback stays; guys moved to x ±52 on a B-25 bridle, clear of the lifters at every crown kit; B-26 tripod keeper; guys-off 15 in meat CG 201.7 mm (over rev C: "GUYS ON" carry rule); +8.6 g (D2).
+
 Screens: `outputs/screens/20261111_BL011_1.png` (mass), `_2.png` (doors and setback), `_3.png` (CG and R-28).
 
 ## 1. What CORRIE F is (ingredients)
@@ -289,3 +291,169 @@ in CG with the peel: 166.1 mm loaded, 144.9 mm pack-out.
 - IM3 bag-hook force 552 N > the 507 N BL-010 basis; cheek fatigue 0.94 (section 5.3; frame, structural-fea-engineer).
 - `pack_with_adopted` books IMP-3 as a whole as-hunted row (BL-008), whereas BL-006 keeps 2.16 g of wing tabs in base. Ledger detail for BL-013.
 - The like-for-like comparison still includes BL-004's ledger flags: fairleads possibly double-booked (49.4 g) and swell patches booked twice. If BL-013 confirms them, both packs drop equally.
+
+## 12. CORRIE F rev 1 (BL-022)
+
+pack-designer, 2026-11-12. Ticket `docs/backlog/BL-022-r28-guys-sidecarry.md` (review BL-014 items B3, S6, S7, S11).
+Code: `corrie_f.py` (`REVS`, `revision(n)`, `guy_lifter_check`, `guy_geometry`, `guy_bridle`, `tripod_keeper`,
+`top_bar_guy_moment`, `bl022_table`, `bl022_summary`; CLI `python designs/pack_5200/concepts/corrie_f.py --bl022`),
+`corrie_f_sim/corrie_f_sim.py` (`finerun`, `--guys`, `--smooth`, `r28sweep`), stored rows
+`corrie_f_sim/corrie_f_sim_results.json`, sweep `corrie_f_sim/corrie_f_r28_sweep.json`. Rev 0 (BL-011, sections 0–11)
+stays reproducible with `with corrie_f.revision(0):`. Owner decision 2026-11-12: the hood and the IM2 bag hooks stay
+removed, so every R-28 run here is hood-off.
+
+**Rev 1 in one line:** top setback unchanged at 30 mm (the fine mesh does not need more), guys moved inboard to
+x ±52 on a B-25 bridle (clear of the lifter lugs), and a B-26 shock-cord tripod keeper. +8.6 g (D2) / +9.7 g (D1)
+on the ledger basis (belt M: D2 1442.5 → 1451.1 g, D1 1521.7 → 1531.4 g, `corrie_f.parts`).
+
+### 12.1 R-28 on the fine mesh (B3)
+
+Rev 1 runs at h 25 mm (fill and meat, all converged) at 15, 19 and 23 in. The wall is measured from the fine
+mesh's own drafted face (`drafted_face(..., fine=True)`), so the wall in `r28_loaded(..., design_face=...)` is the
+fine loaded face itself.
+
+| Torso | rev 0 coarse | rev 0 fine | rev 1 coarse | **rev 1 fine** |
+|---|---:|---:|---:|---:|
+| 15 in | 34° | not run | 32° | **34°** |
+| 19 in | 34° | not run | 34° | **34°** |
+| 23 in | 32° | 34° | 34° | **34°** |
+
+(worst of fill / meat, wall allowance `R28_ALLOW` 3 mm as coded). **Target ≥ 31° met at all three torsos on the
+fine mesh, so the setback stays at 30 mm. Volume, CG and access do not change because of R-28.**
+
+Why the review's 30° did not happen: R7 compared the packed case at 19 in. In the loaded cases at 23 in the fine
+loaded face sits **4–11 mm further aft** (away from the head) than the coarse face at z 735–835 (meat −11.7 / −3.8 /
++9.0 mm coarse against −1.6 / +6.0 / +19.7 mm fine, rev 0). 34° is the **frame-only limit**: with the bag wall moved
+3 m aft, `r28_loaded` still gives 34° (male p50 head on the bare bar and back pad, gap 6.8 mm at 30°; test
+`test_r28_frame_only_ceiling_is_34_deg`). So on the fine mesh the bag wall is not the first contact.
+
+Sensitivity to the wall allowance (fabric thickness + mesh scatter; `corrie_f_sim.py r28sweep`, worst of fill / meat):
+
+| Row | 3 mm | 6 | 9 | 12 | 20 mm |
+|---|---:|---:|---:|---:|---:|
+| rev 0 coarse 23 in | 32 | 31 | **30** | 28 | 25 |
+| rev 1 coarse 23 in | 34 | 34 | 32 | 31 | 27 |
+| rev 0 fine 23 in | 34 | 34 | 34 | 33 | 29 |
+| rev 1 fine 15 in | 34 | 34 | 33 | 32 | 28 |
+| rev 1 fine 19 in | 34 | 34 | 34 | 34 | 34 |
+| rev 1 fine 23 in | 34 | 34 | 34 | 34 | 31 |
+
+The review was right that the rev 0 coarse margin was thin (30° at 9 mm). On the fine mesh rev 1 holds ≥ 31° up to
+a 12 mm allowance at every torso (4× the coded value) and up to 20 mm at 19 and 23 in. The 15 in meat case is the
+most sensitive (28° at 20 mm). The prototype protractor check (section 8) stays, now at all three crown kits.
+
+### 12.2 Guys-off misuse at 15 in, meat (S11)
+
+| Run (rev 1 bag, guys off) | converged | rounding | CG y | + bias | closed L | IM3 hook max, 1 g | × 3.0 factored |
+|---|---|---:|---:|---:|---:|---:|---:|
+| coarse h 40, 6 mm start (`F_PR15_goff`) | **no** (stalled) | – | 199.7 | – | 85.1 | 567 N | 1701 N |
+| coarse h 40, 8 mm start (`F_PR15_goff_sm8`) | yes | 2 mm | 186.6 | 187.9 | 87.5 | **970 N** | **2911 N** |
+| **fine h 25, 8 mm start (`F_PR15_fineFM_goff_sm8`)** | yes | 0 mm | **201.7** | 201.7 | 85.0 | 436 N | 1308 N |
+| guys on, fine h 25 (`F_PR15_fineFM`) | yes | 3 mm | 178.1 | 180.1 | 82.5 | 562 N | 1687 N |
+
+- **CG:** the fine run governs (finest mesh, zero rounding, and it agrees with the stalled coarse run). Guys off, the
+  15 in meat CG is **201.7 mm, 11.7 mm over the rev C 190 mm limit** (guys on: 178.1 mm). Like CORRIE B.2 and S15
+  (attachment_diet.md: 199.5 mm), CORRIE F stays inside rev C only with the guys on.
+- **IM3 load:** the two converged runs disagree. The coarse 8 mm run settled on a different equilibrium (bag swung
+  ~50 mm aft, hinges 970 N, closed volume +3 L, IM3 970 N at 1 g). The fine run reads 436 N, *lower* than guys on.
+  Until it is resolved, the conservative basis is the worst converged run: **2911 N factored, 71 % over the BL-004
+  1702 N basis** It stays under the B-17 seam (3277 N), the box-X (5256 N; attachment_diet.md section 5) and the BL-010
+  wiregate carabiner (minor-axis proof 4000 N, section 5.3). The fine run is below the basis (1308 N). Not resolved here: for the structural-fea-engineer (section 12.6).
+- **Carry rule and hang-tag.** Section 1 says "guys on is a carry rule (bright toggle + hang-tag)", but no wording was
+  written. Rev 1 wording, for the hang-tag on the right guy and the manual:
+
+  > **GUYS ON.** Clip both guys to the crown before you load meat. Without them the load sags away from your back
+  > and the pack is outside its rated carry. Check: both bright toggles through the bar tabs.
+
+  The rule covers the CG case. It does not cover the coarse-run IM3 load, because misuse must not overload a part:
+  that needs the structural answer in 12.6.
+
+### 12.3 Guy loops against the lifter lugs (S6)
+
+All three BL-017 crown kits (`crown_diet` specs acb_S / acb_M / acb_L, each checked at both ends of its torso
+range: S 15–18, M 17.5–20.5, L 20–23 in) put the legs at x ±115 on a straight top bar (z 601–804 mm). So one layout
+check covers every kit (`guy_lifter_check`, right half; the left mirrors it):
+
+| Band on the bar (x, mm) | from | rev 0 guys x ±92 | rev 0 guys x ±100 | **rev 1 guys x ±52** |
+|---|---|---|---|---|
+| lifter webbing 92.5–107 | LIFTER_X 105, 25 mm webbing, clipped at the leg face | **overlap 12 mm** | **overlap 14.5 mm** | clear **28 mm** |
+| crown-corner wrap 69–107 | frame.yaml wrap 30 mm + 8 mm scarf | inside the wrap | inside the wrap | clear 4.5 mm |
+| spine clamp 0–15 | ASSUMPTION ±15 | – | – | clear 24.5 mm |
+| guy band | 25 mm webbing | 79.5–104.5 | 87.5–112.5 | **39.5–64.5** |
+
+Rev 0 clashed at every kit. **Rev 1 moves the guys, not the lifters** (lifters stay on the crown top bar at x ±105,
+patent guardrail). The guy line also moves further from the lifter webbing in 3D: 59.7 mm against 36.8 mm
+(`guy_geometry`, at 15 / 19 / 23 in).
+
+An inboard loop on a smooth bar would slide outboard: the guy's outboard share of its tension is 0.37–0.41 against
+MU_WEB_BAR 0.30 (ASSUMPTION, settled by a pull test). So rev 1 uses the **B-25 guy bridle**: one 25 mm webbing piece
+sewn round the bar at x ±52 (two sleeves), joined along the bar and round the spine below its clamp, so the spine
+locates it and the two outboard pulls cancel in the webbing. A folded tab at each sleeve takes the guy's toggle loop.
+It is fitted on the bar before the crown corners are bonded (build step). 412.5 mm, **7.43 g** (poly_webbing_25mm
+record; BAR_WRAP_MM, SPINE_WRAP_MM, BRIDLE_TAB_MM are ASSUMPTIONs settled by the first bridle cut).
+
+**Re-run of the 15 in meat CG with the guys at x ±52** (coarse h 40, `F_PR15`): **174.0 mm** (178.0 with bias),
+against 173.8 mm at x ±100. Guy load 35 N against 40 N. The full rev 1 table:
+
+| Torso / case | rev 0 coarse CG y | **rev 1 coarse CG y (+bias)** | rev 1 fine CG y (+bias) | rev 1 fine L | rev 1 fine IM3 / guy, 1 g |
+|---|---:|---:|---:|---:|---:|
+| 15 fill | 177.2 | 180.2 (184.2) | 184.2 (186.2) | 83.2 | 402 / 53 N |
+| 15 meat | 173.8 | **174.0 (178.0)** | 178.1 (180.1) | 82.5 | 562 / 38 N |
+| 19 fill | 155.2 | 163.4 (167.4) | 170.0 (171.3) | 83.2 | 330 / 77 N |
+| 19 meat | 145.5 | 158.6 (162.6) | 163.4 (165.4) | 82.6 | 554 / 55 N |
+| 23 fill | 135.9 | 138.8 (142.8) ¹ | 141.3 (142.0) | 84.0 | 307 / 98 N |
+| 23 meat | 132.5 | 136.6 (138.6) | 135.7 (137.0) | 82.4 | 522 / 69 N |
+
+¹ the standard 6 mm start stalled; retried from 8 mm rounding (`F_PR23_sm8`, converged at 6 mm).
+
+All inside rev C (fill ≤ 205, meat ≤ 190). Moving the guys inboard costs CG at 19 in (+8 mm fill, +13 mm meat,
+coarse), because the guy line pulls the crown less directly forward; at 15 in, the governing torso, it is +0.2 mm.
+The fine mesh reads −1 to +7 mm further aft than the coarse mesh, and the fine 15 in meat CG (178.1 mm; 180.1 with bias)
+sits on the BL-011 180 mm acceptance. Fine volumes are 82.4–84.0 L, 1.0–1.7 L below coarse; the coarse fill mean is
+84.7 L (inside 85 ±3). Volume and access do not change because of rev 1's parts.
+
+**Top bar bending:** with the guys inboard the bar arm grows from 20 to 63 mm. At the largest factored guy load in
+any rev 1 run (104 N × 3.0 = 312 N, fine 23 in fill), fixed-fixed bar bending gives **69.9 MPa against 27.9 MPa** at
+x ±95 (`top_bar_guy_moment`, I = 1838 mm⁴ from frame.yaml bar_section). This adds to the lifter load case on the same
+bar: for the structural-fea-engineer (12.6).
+
+### 12.4 Side carry: the tripod keeper (S7)
+
+The scope pod hangs from its own 4 hard points (left gusset, z 420 / 640) and does not depend on W1/W2, so opening
+the door never frees it. The tripod did. Rev 1 adds **B-26: one 3 mm shock cord across the right gusset** at z 600
+(ASSUMPTION TRIPOD_KEEPER_Z, upper legs; feet on FP-R's top edge at z 380). The ends are caught 15 mm in the B-01 |
+gusset R seam and the aft corner seam (D2: blade U | gusset R). On D1 the aft corner seam carries the zip, so the aft
+end goes in a 25 × 60 mm webbing tab 20 mm forward of the zip.
+
+| | D2 | D1 |
+|---|---:|---:|
+| gusset span at z 600 | 214.2 mm | 214.2 mm |
+| cut (80 % of span + 2 × 15 mm catch) | 201.4 mm | 201.4 mm |
+| stretch with a 70 mm tripod bundle (ASSUMPTION TRIPOD_D) | 48 % | 48 % |
+| **mass** (shock_cord_3mm record 6 g/m; tab poly_webbing_25mm) | **1.21 g** | **2.29 g** (tab 1.08) |
+| glove time per door cycle | **0 s** (not touched) | 0 s |
+| glove time per packing (slide the tripod in head first) | 6 s (ASSUMPTION, FT-S2) | 6 s |
+
+Compared with team B's A2 tripod straps (32.2 g, 4 loops) this is 31 g lighter, and W1/W2 still compress the tripod
+when closed. A W-strap re-routing (0 g) was rejected: W1/W2 cross the door, so any routing that holds the tripod is
+also unhooked to open it. FT-S2 gains a step: **door open / close × 5 with the tripod loaded, tripod shift ≤ 20 mm.**
+
+### 12.5 New and changed gates
+
+| Gate | Settles |
+|---|---|
+| R-28 protractor check, loaded, at **all three crown kits** (was L only) | 12.1 |
+| Pull test, 25 mm poly loop on the clear-coated bar (MU_WEB_BAR) and B-25 bridle slip at 312 N | 12.3 |
+| Crown fit of B-25 at x ±52: 4.5 mm to the corner wrap, ≥ 10 mm (MIN_CLEAR_MM) gloved toggle room to the lifter | 12.3 |
+| FT-S2 + door open / close × 5 with the tripod under B-26 (shift ≤ 20 mm); time the packing (6 s ASSUMPTION) | 12.4 |
+| Right-gusset fit: B-26 height over the tripod legs (TRIPOD_KEEPER_Z, TRIPOD_D) | 12.4 |
+| Hang-tag "GUYS ON" printed and fitted to the right guy | 12.2 |
+
+### 12.6 For the structural-fea-engineer (found, not fixed here)
+
+1. **Guys-off IM3 load:** a converged coarse run gives 970 N at 1 g (2911 N factored, above the 1702 N basis; under the
+   B-17 seam 3277 N and the carabiner's 4000 N minor-axis proof); the fine run gives 436 N. Decide which equilibrium is real (a fine run from 6 mm rounding,
+   or a pull-down test with the guys off) before the misuse basis is closed.
+2. **Top bar with inboard guys:** 69.9 MPa from the guys alone at 312 N factored, x ±52; combine with the lifter
+   case in the frame model.
+3. IM3 at 1 g on the fine mesh: 562 N (15 in meat), slightly above the coarse 552 N used for the 27 mm cheek.

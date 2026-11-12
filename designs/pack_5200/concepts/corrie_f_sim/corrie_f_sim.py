@@ -309,9 +309,41 @@ def table() -> list:
     return out
 
 
+SWEEP = HERE / "corrie_f_r28_sweep.json"
+SWEEP_ALLOW = (3.0, 6.0, 9.0, 12.0, 20.0)
+SWEEP_ROWS = ("Fr0_PR23", "F_PR23", "Fr0_PR23_fineFM", "F_PR15_fineFM", "F_PR19_fineFM", "F_PR23_fineFM")
+
+
+def r28_sweep(rows=SWEEP_ROWS, allows=SWEEP_ALLOW) -> dict:
+    """BL-022 (review B3): R-28 against the wall allowance ``attach_system.R28_ALLOW`` (fabric thickness + mesh
+    scatter, 3 mm as coded) from the STORED rows (profile = loaded face), so a run directory is not needed. A row
+    whose result does not move as the allowance grows is not governed by the bag wall (the bare bar / back pad set
+    the first contact). Written to corrie_f_r28_sweep.json."""
+    from huntkit.gendesign import attach_system as AS
+    st = load_results()["rows"]
+    old = AS.R28_ALLOW
+    out = {"allow_mm": list(allows), "as_coded_allow_mm": old, "rows": {}}
+    try:
+        for k in rows:
+            r0 = st[k]
+            fine = float(r0["mesh_h"]) < 40.0
+            r = {"cases": {cn: {"profile": {"depth_by_z": r0["cases"][cn]["profile"]}} for cn in ("fill", "meat")}}
+            row = {}
+            for al in allows:
+                AS.R28_ALLOW = al
+                x = r28(r0["variant"], r0["torso"], r, fine)
+                row[f"{al:g}"] = {cn: {"deg": x[cn]["worst_contact_deg"], "gap30_mm": x[cn]["worst_gap_30_mm"]}
+                                  for cn in ("fill", "meat")}
+            out["rows"][k] = row
+    finally:
+        AS.R28_ALLOW = old
+    SWEEP.write_text(json.dumps(out, indent=1))
+    return out
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["scenarios", "run", "fine", "finerun", "table", "reextract"])
+    ap.add_argument("cmd", choices=["scenarios", "run", "fine", "finerun", "table", "reextract", "r28sweep"])
     ap.add_argument("variant", nargs="?", default="F")
     ap.add_argument("--torso", type=int, default=15)
     ap.add_argument("--cases", default="fill,meat")
@@ -330,13 +362,15 @@ def main(argv=None):
     elif a.cmd == "fine":
         print(run(a.variant, a.torso, "packed", fine=True, tag="_fine"))
     elif a.cmd == "finerun":   # BL-022: fine mesh (h 25) fill / meat with CG, loads and R-28 on the fine mesh
-        row = run(a.variant, a.torso, a.cases, fine=True, tag="_fineFM" + a.tag, guys=gz)
+        row = run(a.variant, a.torso, a.cases, fine=True, tag="_fineFM" + a.tag, guys=gz, smooth=a.smooth)
         print(json.dumps({k: {kk: vv for kk, vv in v.items() if kk != "profile"} for k, v in row["cases"].items()}, indent=1))
         print(json.dumps({k: {kk: row["r28"][k][kk] for kk in ("worst_contact_deg", "worst_gap_30_mm", "pass",
                                                                 "wall_toward_head_above_bar_mm")} for k in row.get("r28", {})}))
     elif a.cmd == "reextract":
         st = store(extract(a.variant, a.torso))
         print(st)
+    elif a.cmd == "r28sweep":
+        print(json.dumps(r28_sweep(), indent=1))
     elif a.cmd == "table":
         for t in table():
             print(t)
