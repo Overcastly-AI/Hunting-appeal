@@ -292,7 +292,8 @@ POD = {"drop": 75.0, "corner": 18.0, "mouth_z": 520.0, "r_mouth": 44.0, "zip": 5
 # there (hinge band, collar, roll, top pouch), with 14 mm of slack bellying out of the rise. Settled by a photograph
 # of the first sewn bag with the door open.
 DOOR_CLOTH = {"clear": 5.0, "sag": 14.0, "col": 10.0, "win": 30.0, "ds": 5.0}
-DOOR_LIES_ON = ("corrie_body", "s15_roll", "s15_pouch", "s15_W3", "corrie_b22", "cf_guy_", "corrie_zip_garages")
+DOOR_LIES_ON = ("corrie_body", "s15_roll", "s15_pouch", "s15_W3", "corrie_b22", "cf_guy_", "corrie_zip_garages",
+                "cf3_lid", "cf3_crown")          # rev 3: the crown lid and its straps
 H1_FINAL_STL = PACK / "print" / "frame_h1" / "h1_assembled.stl"       # BL-027 body H1-G0.55-B1/2.5, 28 mm cheeks
 H1_FINAL_DIR = REPO / "outputs" / "pack3d_h1_final"
 
@@ -434,6 +435,8 @@ def guys_rev1(sc, sk) -> dict:
         r = 0.5 * float(t[:, 1].max() - t[:, 1].min())
         return float(0.5 * (t[:, 1].min() + t[:, 1].max())), float(t[:, 2].max()) - r, r
     yb, zb, rb = bar(gx)
+    port = bool(F.REVS[F.REVISION].get("guy_port"))
+    ports = []
     recs = list(guys.mesh.metadata.get("straps", []))
     X = np.asarray(sk["X"], float)
     S = CP.Surf(X, sk["tris"])
@@ -454,6 +457,11 @@ def guys_rev1(sc, sk) -> dict:
         togs.append(G.capsule_between(pt - [TOGGLE["L"] / 2, 0, 0], pt + [TOGGLE["L"] / 2, 0, 0], TOGGLE["d"] / 2))
         # the guy: from its sleeve along the top of the bar to the crown corner, then round the bag's top corner to
         # the legacy B-22 end (a straight line from x 52 to B-22 would pass through the bag)
+        if port:                                     # rev 2/3: the guy runs inside; outside only sleeve -> port
+            d, rib = _port_stub(sc, sk, x, yb, zb)
+            info.update(d)
+            ports.append(rib)
+            continue
         rec = next((r for r in recs if np.asarray(r["P"])[0, 0] * sx > 0), None)
         if rec is None:
             continue
@@ -496,7 +504,31 @@ def guys_rev1(sc, sk) -> dict:
                 modes=("frame", "frame_haul"), label="B-25 bridle tabs (60 mm folded), hanging with the bag off")
     sc.add_part(f"cf_guy_toggles@t{TORSO}", G.concat(togs), "blaze", group="attach", torso=float(TORSO),
                 modes=("pack",), label="Guy toggles through the bridle tabs, bright ('guys on' is a carry rule)")
+    if ports:
+        sc.add_part("cf_ports", G.concat(ports), "hypalon", group="bag", modes=("pack", "pack_haul"),
+                    label="B-27 lapped guy ports in the frame face (x +/-52), the guys run inside (rev 2/3)")
     return info
+
+
+def _port_stub(sc, sk, x, yb, zb) -> dict:
+    """Rev 2/3 (BL-028 / BL-030): the port guy is outside only from its bridle sleeve to the B-27 slit in the frame
+    face; the slit is drawn as a lapped facing (6 mm, hypalon look) from the drape's frame face at the guy's x."""
+    from . import geom as G
+    BC, CO, F, CS = _mods()
+    X = np.asarray(sk["X"], float)
+    tris = np.asarray(sk["tris"])
+    b01 = np.unique(tris[np.char.startswith(sk["piece"].astype(str), "B-01")])
+    sel = b01[(np.abs(X[b01, 0] - x) < 12) & (np.abs(X[b01, 2] - min(zb, F.PORT_Z[1] - 10)) < 20)]
+    q = X[sel][np.argmin(X[sel][:, 1])] if len(sel) else np.array([x, yb + 15, zb])
+    P = np.array([[x, yb, zb + 9.0], [x, 0.5 * (yb + q[1]), zb + 6.0], [x, q[1] + 1.5, q[2]]])
+    P = _resample(G.catmull_rom(P, 8), 2.0)
+    side = "R" if x > 0 else "L"
+    sc.add_strap(f"cf_guy_stub_{side}@t{TORSO}", P, np.tile([0.0, 0.0, 1.0], (len(P), 1)), F.GUY_W, group="attach",
+                 torso=float(TORSO), modes=("pack", "pack_haul"), dent=False,
+                 label="Port guy B-27: outside only from the bridle sleeve to the port (rev 2/3)")
+    sl = np.array([[x, q[1] + 0.8, z] for z in np.linspace(q[2] - 40, min(q[2] + 70, F.PORT_Z[1]), 30)])
+    rib = G.ribbon(sl, 6.0, 0.8, np.tile([0.0, -1.0, 0.0], (len(sl), 1)), step=3.0)
+    return {f"stub_{side}_mm": float(np.linalg.norm(np.diff(P, axis=0), axis=1).sum())}, rib
 
 
 def _gauss_rows(A, sigma):
@@ -825,8 +857,305 @@ def door_rev1(sc) -> dict:
             "lies_on": len(clouds)}
 
 
-def finish(sc, state: str, meat: bool = True):
-    """Turn the BL-020 S15 scene (already built on CORRIE F's cloth with the aft face re-cut) into CORRIE F."""
+# ============================================================================================ rev 3 (BL-030)
+# CORRIE F rev 3 (BL-029, adopted 2026-11-12; native here since BL-030): the B-29 crown lid as cloth seated on the
+# roll, and the B-28 crown straps on their taut path (the convex hull of bag, roll and lid at the strap's x: a taut strap
+# over a convex top follows it). Lid dimensions from ``corrie_f.LID``, strap width from ``corrie_f.crown_strap_w()``.
+# ASSUMPTION LID-SEAT (picture choice): the lid base is a soft panel that bridges the roll's ridge like cloth: the seat
+# is the upper envelope closed over 45 mm and smoothed, and the crown follows the roll's ridge (the lid is stuffed over
+# the roll). Settled by a photograph of the sewn lid on a packed bag.
+SEAT_CLOSE_MM = 45.0
+STRAP_CLEAR = 2.0          # strap centre off the cloth / lid (as corrie_f.PATH_CLEAR)
+# lid-open shot: front straps unhooked, lid turned back over the bar about its rear edge until its far edge rests on
+# the form's shoulders (picture choice; on a hunter it rests on the head)
+OPEN_DEG = 196.0
+LID_PARTS = ("cf3_lid", "cf3_crown")       # names the opened door lies on
+
+
+def _resample(P, step=3.0):
+    s = np.r_[0, np.cumsum(np.linalg.norm(np.diff(P, axis=0), axis=1))]
+    si = np.linspace(0, s[-1], max(int(s[-1] / step), 4))
+    return np.column_stack([np.interp(si, s, P[:, k]) for k in range(P.shape[1])])
+
+
+def lid_mesh(seat_fn, xc: float, yc: float, nth: int = 160, top_fn=None):
+    """B-29 as one closed mesh in rings: top dome, a 10 mm rounded top edge, the wall, the base on the seat.
+    ``seat_fn(x, y)`` = base height; ``top_fn(x, y)`` = the smoothed seat the crown follows (wall + dome above it).
+    Returns (V, F, ring of face, theta of face, info)."""
+    F = _mods()[2]
+    L = F.LID
+    W, D, p = L["W"], L["D"], L["n"]
+    top_fn = top_fn or seat_fn
+    th = np.linspace(0, 2 * np.pi, nth, endpoint=False)
+    bx = W / 2 * np.sign(np.cos(th)) * np.abs(np.cos(th)) ** (2 / p)
+    by = D / 2 * np.sign(np.sin(th)) * np.abs(np.sin(th)) ** (2 / p)
+    base_edge = seat_fn(xc + bx, yc + by)
+    er = 10.0                                      # rounded top edge radius
+
+    def crown(rho):
+        x, y = xc + rho * bx, yc + rho * by
+        z = top_fn(x, y) + L["wall"] + L["dome"] * np.sqrt(np.clip(1 - rho ** 4, 0, 1))
+        return np.maximum(z, seat_fn(x, y) + 15.0)
+    rings = []                                     # (x, y, z) arrays, nth each, top centre first
+    for rho in np.linspace(0.04, 0.96, 18):
+        rings.append(np.column_stack([xc + rho * bx, yc + rho * by, crown(rho)]))
+    z96 = crown(0.96)
+    zwall = np.maximum(top_fn(xc + bx, yc + by) + L["wall"] - er, base_edge + 8.0)
+    for a in np.linspace(0, np.pi / 2, 6)[1:]:     # round over the edge
+        rho = 0.96 + (1 - 0.96) * np.sin(a)
+        z = z96 - (z96 - zwall) * (1 - np.cos(a))
+        rings.append(np.column_stack([xc + rho * bx, yc + rho * by, z]))
+    for f in np.linspace(0, 1, 7)[1:]:             # the wall down to the base edge
+        z = zwall + f * (base_edge - zwall)
+        rings.append(np.column_stack([xc + bx, yc + by, z]))
+    zw = float(np.median(zwall)) + er
+    nwall_end = len(rings) - 1
+    for rho in np.linspace(0.97, 0.04, 14):        # the base on the seat
+        x, y = xc + rho * bx, yc + rho * by
+        rings.append(np.column_stack([x, y, seat_fn(x, y) + 1.5]))
+    V = [np.array([[xc, yc, float(crown(np.zeros(1))[0])]])] + rings + \
+        [np.array([[xc, yc, float(seat_fn(np.array([xc]), np.array([yc]))[0]) + 1.5]])]
+    V = np.vstack(V)
+    Fs, fr, ft = [], [], []
+    idx = lambda r, i: 1 + r * nth + (i % nth)        # noqa: E731
+    for i in range(nth):
+        Fs.append([0, idx(0, i), idx(0, i + 1)])
+        fr.append(0)
+        ft.append(th[i])
+    for r in range(len(rings) - 1):
+        for i in range(nth):
+            a, b, c, d = idx(r, i), idx(r, i + 1), idx(r + 1, i + 1), idx(r + 1, i)
+            Fs += [[a, d, c], [a, c, b]]
+            fr += [r + 1, r + 1]
+            ft += [th[i], th[i]]
+    last = len(V) - 1
+    for i in range(nth):
+        Fs.append([last, idx(len(rings) - 1, i + 1), idx(len(rings) - 1, i)])
+        fr.append(len(rings))
+        ft.append(th[i])
+    return V, np.asarray(Fs), np.asarray(fr), np.asarray(ft), {"rings": rings, "th": th, "wall_top": 22,
+                                                                  "wall_end": nwall_end, "zw": zw, "bx": bx, "by": by,
+                                                                  "zwall": zwall + er}
+
+
+def _hull_path(cloud2, A, B):
+    """The taut strap over a convex top in one (y, z) plane: the upper hull chain of cloud + A + B from A to B."""
+    from scipy.spatial import ConvexHull
+    pts = np.vstack([cloud2, A, B])
+    h = ConvexHull(pts)
+    ring = list(h.vertices)                         # counter-clockwise
+    ia, ib = len(pts) - 2, len(pts) - 1
+    if ia not in ring or ib not in ring:
+        raise ValueError(f"strap end inside the hull: A {A} B {B}")
+    k = ring.index(ia)
+    ring = ring[k:] + ring[:k]
+    j = ring.index(ib)
+    c1, c2 = ring[:j + 1], [ring[0]] + ring[j:][::-1]
+    zmax = lambda c: pts[c][:, 1].max()             # noqa: E731
+    ch = c1 if zmax(c1) >= zmax(c2) else c2
+    return pts[ch]
+
+
+def _turn_deg(P) -> float:
+    """Total turning angle of a plane path (y, z columns 1, 2), degrees: how far the strap wraps what it passes over."""
+    t = np.diff(P[:, 1:3], axis=0)
+    a = np.unwrap(np.arctan2(t[:, 1], t[:, 0]))
+    return float(np.degrees(abs(a[-1] - a[0])))
+
+
+def crown_lid(sc, bar, open_lid: bool = False) -> dict:
+    """Rev 3: the B-29 crown lid seated on the roll and the B-28 crown straps over it (bar sleeve -> up the frame
+    face -> over the lid in its channel -> ladder lock on the hinge-band tab). ``open_lid``: front locks unhooked, the
+    lid turned back over the bar. Lid and straps are as-hunted add-ons: variant "lid" (off in an add-ons-off shot).
+    Returns the strap lengths and their wrap over the lid (read by ``crown_rolled_paths``)."""
+    from . import geom as G
+    from .assets import mesh as amesh
+    from .assets import seams as SM
+    from .assets.fabric import Look
+    from scipy.ndimage import gaussian_filter, grey_closing, map_coordinates
+    BC, CO, F, CS = _mods()
+    W = F.crown_strap_w()
+    yb, zb = float(bar[0]), float(bar[1])
+    vis = dict(group="bag", modes=("pack", "pack_haul"), variant="lid")
+    byname = {x.name: x for x in sc.parts}
+    sk = sc.cloth_skin
+    X = np.asarray(sk["X"], float)
+    pc = sk["piece"].astype(str)
+    tris = np.asarray(sk["tris"])
+    b01 = np.unique(tris[np.char.startswith(pc, "B-01")])
+    # ---- seat for the lid: upper envelope of the bag top and the roll, closed and smoothed (soft base panel)
+    seat_parts = [byname[n] for n in ("corrie_body", "s15_roll", "corrie_b22", "s15_W3") if n in byname]
+    C = np.vstack([np.asarray(p.mesh.vertices) for p in seat_parts])
+    L = F.LID
+    top = C[C[:, 2] > C[:, 2].max() - 160]
+    yfr = float(np.percentile(X[b01][X[b01][:, 2] > zb - 40][:, 1], 5)) if len(b01) else 0.0
+    aft = float(np.percentile(top[:, 1], 98))
+    yc = 0.5 * (yfr + aft) + 4.0
+    xc = 0.0
+    res = 5.0
+    gx = np.arange(-L["W"] / 2 - 40, L["W"] / 2 + 41, res)
+    gy = np.arange(yc - L["D"] / 2 - 40, yc + L["D"] / 2 + 41, res)
+    Hh = np.full((len(gy), len(gx)), np.nan)
+    ix = np.clip(np.round((top[:, 0] - gx[0]) / res).astype(int), 0, len(gx) - 1)
+    iy = np.clip(np.round((top[:, 1] - gy[0]) / res).astype(int), 0, len(gy) - 1)
+    for a, b, z in zip(iy, ix, top[:, 2]):
+        if np.isnan(Hh[a, b]) or z > Hh[a, b]:
+            Hh[a, b] = z
+    Hh = np.where(np.isnan(Hh), np.nanpercentile(Hh, 5), Hh)
+    k = int(SEAT_CLOSE_MM / res)
+    Hs = np.maximum(gaussian_filter(grey_closing(Hh, size=(k, k)), 2.0), Hh)
+    Ht = gaussian_filter(Hs, 60.0 / res)
+
+    def seat(x, y):
+        return map_coordinates(Hs, [(np.asarray(y) - gy[0]) / res, (np.asarray(x) - gx[0]) / res], order=1, mode="nearest")
+
+    def seat_top(x, y):
+        return map_coordinates(Ht, [(np.asarray(y) - gy[0]) / res, (np.asarray(x) - gx[0]) / res], order=1, mode="nearest")
+    if open_lid:          # off the roll the base panel relaxes flat: build it on a flat seat at the rear edge, then turn it
+        zc0 = float(seat(np.array([xc]), np.array([yc - L["D"] / 2 + 10.0]))[0])
+        flat = lambda x, y: np.full(np.shape(x), zc0)       # noqa: E731
+        V, Fc, fr, ft, info = lid_mesh(flat, xc, yc, top_fn=flat)
+    else:
+        V, Fc, fr, ft, info = lid_mesh(seat, xc, yc, top_fn=seat_top)
+    hinge_y = yc - L["D"] / 2
+    piv, R = np.zeros(3), np.eye(3)
+    if open_lid:                                  # turned back about its rear (frame-side) bottom edge
+        a = np.radians(OPEN_DEG)
+        piv = np.array([0.0, hinge_y, float(info["rings"][info["wall_end"]][int(np.argmin(info["by"])), 2])])
+        R = np.array([[1, 0, 0], [0, np.cos(a), np.sin(a)], [0, -np.sin(a), np.cos(a)]])
+        V = (V - piv) @ R.T + piv
+    # camo corner caps: the wall faces within cap_mm of each aft corner (aft = +y)
+    ring_wall = (fr > info["wall_top"]) & (fr <= info["wall_end"])
+    bx, by = info["bx"], info["by"]
+    per = np.r_[0, np.cumsum(np.hypot(np.diff(np.r_[bx, bx[0]]), np.diff(np.r_[by, by[0]])))]
+    s_face = np.interp(ft, np.r_[info["th"], 2 * np.pi], per)
+    corners = []
+    for cx in (1, -1):
+        i = int(np.argmin((bx - cx * L["W"] / 2 * 0.84) ** 2 + (by - L["D"] / 2 * 0.84) ** 2))
+        corners.append(per[i])
+    cap = np.zeros(len(Fc), bool)
+    for c in corners:
+        d = np.abs(s_face - c)
+        d = np.minimum(d, per[-1] - d)
+        cap |= ring_wall & (d < L["cap_mm"])
+    base = fr > info["wall_end"]
+    body = ~(cap | base)
+    rings = info["rings"]
+    uv = np.column_stack([V[:, 0], V[:, 1]]) / 380.0
+    nth = len(info["th"])                          # the wall is vertical: map it by (perimeter, height), not plan x, y,
+    for r in range(info["wall_top"], info["wall_end"] + 1):    # or the camo caps stretch into stripes
+        ii = 1 + r * nth + np.arange(nth)
+        uv[ii, 0] = per[:nth] / 380.0
+        uv[ii, 1] = (rings[r][:, 2] - rings[info["wall_end"]][:, 2]) / 380.0
+
+    def sub(mask):
+        f = Fc[mask]
+        u, inv = np.unique(f, return_inverse=True)
+        return amesh(V[u], inv.reshape(-1, 3), uv[u])
+    sc.add_fabric("cf3_lid", sub(body), "body", look=Look(slack=0.22, fold=1.4, hand=0.5), max_edge=4.0,
+                  uv_is_pattern=False, label=f"B-29 crown lid {F.crown_lid()['volume_L']:.1f} L", **vis)
+    sc.add_fabric("cf3_lid_caps", sub(cap), "camo", look=Look(slack=0.1, fold=1.0, hand=0.5), max_edge=4.0,
+                  uv_is_pattern=False, label="B-29 camo corner caps over the D2 blades", **vis)
+    sc.add_fabric("cf3_lid_base", sub(base), "body", look=Look(slack=0.3, fold=1.6, hand=0.5), max_edge=4.0,
+                  uv_is_pattern=False, label="B-29 base (70D)", **vis)
+    rings = info["rings"]
+
+    def ringpts(r):
+        return (rings[r] - piv) @ R.T + piv
+    cen = V.mean(0)
+    for nm, r in (("top", info["wall_top"]), ("base", info["wall_end"])):
+        P = ringpts(r)
+        P = np.vstack([P, P[:1]])
+        N = P - cen
+        N[:, 2] *= 0.3
+        N /= np.linalg.norm(N, axis=1)[:, None]
+        sc.add_seam(f"cf3_lid_seam_{nm}", P, N, material="body", **vis)
+    # zip along the aft wall, mid height, round both aft corners
+    rz = (info["wall_top"] + info["wall_end"]) // 2
+    aft_i = np.where(by > 0)[0]
+    mid = 0.5 * (corners[0] + corners[1])
+    keep = aft_i[np.abs(per[aft_i] - mid) < L["zip_mm"] / 2]
+    keep = keep[np.argsort(per[keep])]
+    Pz = ringpts(rz)[keep]
+    Nz = Pz - cen
+    Nz[:, 2] = 0
+    Nz /= np.linalg.norm(Nz, axis=1)[:, None]
+    sc.add_zip("cf3_lid_zip", Pz + 0.6 * Nz, Nz, size=5, sliders=(0.82,), pull_down=(0, 0, -1.0), **vis)
+    # ---- crown straps over the lid
+    out = {"lid_centre": [xc, yc], "lid_top_z": float(V[:, 2].max()), "strap_w_mm": W, "straps": {}}
+    aftv = np.unique(tris[np.char.startswith(pc, "B-02")])
+    for sx in (1, -1):
+        x = sx * F.CROWN_X
+        side = "R" if sx > 0 else "L"
+        cl = np.vstack([np.asarray(p.mesh.vertices) for p in seat_parts] + [V])
+        cl = cl[np.abs(cl[:, 0] - x) < 15.0]
+        A2 = np.array([yb + 9.0, zb + 2.0])
+        q = aftv[np.abs(X[aftv, 0] - x) < 12]
+        ia = int(np.argmin(np.abs(info["rings"][info["wall_end"]][:, 0] - x) + 1e3 * (info["by"] < 0)))
+        zt = (info["rings"][info["wall_end"]][ia, 2] if not open_lid else zb + 40) - 40.0
+        q = q[np.argmin(np.abs(X[q, 2] - zt))] if len(q) else None
+        B2 = np.array([X[q, 1] + 2.0, X[q, 2]]) if q is not None else np.array([yc + L["D"] / 2, zt])
+        if open_lid:                                # unhooked: from the bar to the lid's hinge edge; front ends hang
+            rear = (np.array([[x, hinge_y, piv[2]]]) - piv) @ R.T + piv
+            P = np.array([[x, A2[0], A2[1]], [x, 0.5 * (A2[0] + rear[0, 1]), 0.5 * (A2[1] + rear[0, 2]) + 5], rear[0]])
+            P = _resample(G.catmull_rom(P, 8), 3.0)
+            sc.add_strap(f"cf3_crown_{side}", P, np.tile([0.0, -0.3, 1.0], (len(P), 1)), W, dent=False,
+                         label="B-28 crown strap, front unhooked (lid open)", **vis)
+            fe = (np.array([[x, yc + L["D"] / 2 - 5, info["zw"]]]) - piv) @ R.T + piv
+            Ph = _resample(G.catmull_rom(np.array([fe[0], fe[0] + [0, -6, -60], fe[0] + [0, -4, -150]]), 6), 3.0)
+            sc.add_strap(f"cf3_crown_end_{side}", Ph, np.tile([0.0, -1.0, 0.0], (len(Ph), 1)), W, dent=False, **vis)
+            sc.add_hardware(f"cf3_crown_lock_{side}", "ladder_lock_25_heavy", Ph[-12], [0.0, -1.0, 0.0],
+                            [0.0, 0.0, -1.0], **vis)
+            continue
+        B2 = B2 + np.array([4.0, 0.0])
+        cl = cl[cl[:, 2] > max(A2[1], B2[1]) + 1.0]          # both strap ends lie under the cloud: they are on the hull
+        near = cl[cl[:, 2] < A2[1] + 60.0]
+        if len(near):                                       # the render's frame face sits 0-17 mm inside the bar (D-9)
+            A2[0] = min(A2[0], float(near[:, 1].min()) - 2.0)
+        H2 = _resample(_hull_path(cl[:, 1:], A2, B2), 2.0)
+        t = np.gradient(H2, axis=0)
+        t /= np.linalg.norm(t, axis=1)[:, None]
+        n2 = np.column_stack([-t[:, 1], t[:, 0]])
+        n2 *= np.sign(np.einsum("ij,ij->i", n2, H2 - H2.mean(0)))[:, None]
+        H2 = H2 + n2 * STRAP_CLEAR
+        P = SM.smooth_path(np.column_stack([np.full(len(H2), x), H2]), 3.0, 5.0)
+        u = np.linspace(0, 1, len(P))
+        v = np.linspace(0, 1, len(n2))
+        N = np.column_stack([np.zeros(len(P)), np.interp(u, v, n2[:, 0]), np.interp(u, v, n2[:, 1])])
+        N /= np.linalg.norm(N, axis=1)[:, None]
+        sc.add_strap(f"cf3_crown_{side}", P, N, W, tail=0.0, dent=True,
+                     label=f"B-28 crown strap ({W:.0f} mm): B-25 bridle -> over the roll and the lid -> hinge-band tab",
+                     **vis)
+        tt = np.gradient(P, axis=0)
+        tt /= np.linalg.norm(tt, axis=1)[:, None]
+        i = len(P) - 18
+        sc.add_hardware(f"cf3_crown_lock_{side}", "ladder_lock_25_heavy", P[i], N[i], tt[i], **vis)
+        tail = P[i] + np.outer(np.linspace(0, 1, 30), [0, 6.0, -95.0]) + N[i] * 3.0
+        sc.add_strap(f"cf3_crown_tail_{side}", tail, np.tile(N[i], (len(tail), 1)), W, dent=False, **vis)
+        on = (np.abs(P[:, 1] - yc) < L["D"] / 2 - 14) & (P[:, 2] > float(np.median(info["zwall"])) - 10)
+        if on.sum() > 4:
+            Pc = P[on] + N[on] * 1.6
+            sc.add_part(f"cf3_channel_{side}", G.ribbon(Pc, L["channel_w"], 1.2, N[on], step=3.0),
+                        "body", label="B-29 strap channel (the crown strap runs inside)", **vis)
+            for kk, j in enumerate((0, -1)):
+                sc.add_seam(f"cf3_channel_bt_{side}{kk}", Pc[[j, j]] + [[0, 0, 0], [0, 0.1, 0]],
+                            N[on][[j, j]], material="body", dent=False, **vis)
+        lid_run = P[np.abs(P[:, 1] - yc) <= L["D"] / 2 + 5]
+        out["straps"][side] = {"length_mm": float(np.linalg.norm(np.diff(P, axis=0), axis=1).sum()),
+                               "wrap_lid_deg": _turn_deg(lid_run) if len(lid_run) > 3 else None,
+                               "wrap_total_deg": _turn_deg(P)}
+    togs = []                                    # crown-strap toggles on the bridle (body colour)
+    for sx in (1, -1):
+        pt = np.array([sx * (F.CROWN_X + 14.0), yb - 14.0, zb - 4.0])
+        togs.append(G.capsule_between(pt - [TOGGLE["L"] / 2, 0, 0], pt + [TOGGLE["L"] / 2, 0, 0], TOGGLE["d"] / 2))
+    sc.add_part("cf3_crown_toggles", G.concat(togs), "hardware", label="Crown-strap toggles in the second bridle tab",
+                **vis)
+    return out
+
+
+def finish(sc, state: str, meat: bool = True, lid: bool = False, open_lid: bool = False):
+    """Turn the BL-020 S15 scene (already built on CORRIE F's cloth with the aft face re-cut) into CORRIE F at the
+    module's revision (rev 3 since BL-030). ``lid``: rev 3's crown lid and crown straps on (``open_lid``: turned back)."""
     from . import corrie as VC
     from . import geom as G
     from .assets import mesh as amesh
@@ -896,21 +1225,34 @@ def finish(sc, state: str, meat: bool = True):
         for x in sc.parts:                              # the bare IM straps and hooks show only without meat
             if x.name.startswith("corrie_im_"):
                 x.modes = ("pack",)
+    r = F.REVS[F.REVISION]
+    if r.get("crown_lid") and lid and rev["guys"].get("bar"):
+        sc.report["rev3"] = crown_lid(sc, rev["guys"]["bar"], open_lid)
     rev["door"] = door_rev1(sc)              # last: the door lies on everything built above
     sc.report["rev1"] = rev
+    top = ("crown lid B-29 on crown straps B-28" if lid else "crown lid off") if r.get("crown_lid") else "top pouch"
     sc.report["source"] = {"sim": "corrie_f_sim fine drape F_PR19 (seed) + viz3d.cloth_pass", "case": state,
-                           "spec": "CORRIE F rev 1, door D2, wings deleted, no crown hood", "frame": frame_note()}
+                           "spec": f"CORRIE F rev {F.REVISION}, door D2, wings deleted, no crown hood"
+                                   f"{', port guys B-27 inside' if r.get('guy_port') else ''}, {top}",
+                           "frame": frame_note()}
     return sc
 
 
 def scene(state: str = "sixday", carry: bool = False, level: int = 2, name: str | None = None,
-          with_pouch: bool | None = None, wraps: bool = True, force: bool = False):
-    """CORRIE F at a load state ("day" 12 L, pouch off; "sixday" 45 L; "full"). ``carry`` adds the tripod (right,
-    under W1-W3) and the scope pod (left gusset). Returns a ``studio.ConceptScene``."""
+          with_pouch: bool | None = None, wraps: bool = True, force: bool = False, open_lid: bool = False):
+    """CORRIE F at a load state ("day" 12 L, top off; "sixday" 45 L; "full"). ``carry`` adds the tripod (right,
+    under W1-W3) and the scope pod (left gusset). ``with_pouch`` = the top add-on on (default: off on the day load):
+    the 2.7 L pouch up to rev 2, the B-29 crown lid on its B-28 straps at rev 3 (``open_lid``: turned back over the
+    bar). Returns a ``studio.ConceptScene``."""
     from types import SimpleNamespace
     from . import corrie as VC
     from . import corrie_b1 as VB1
     from . import studio
+    F = _mods()[2]
+    top_on = (state != "day") if with_pouch is None else bool(with_pouch)
+    lid = bool(F.REVS[F.REVISION].get("crown_lid"))
+    if lid:
+        with_pouch = False                              # rev 3: no pouch; the crown lid is built in finish()
     PV.ensure(TORSO)
     p = CP.ClothParams(level=level, clip_below_seam=CLIP_BELOW_SEAM_MM)
     old = getattr(studio, "LEGACY_WRAPS", None)
@@ -947,13 +1289,13 @@ def scene(state: str = "sixday", carry: bool = False, level: int = 2, name: str 
         sc._hook_cache = cs
         zz = [c[0][2] for c in cs]
         sc._hook_zmid = 0.5 * (min(zz) + max(zz))
-    return finish(sc, state)
+    return finish(sc, state, lid=lid and top_on, open_lid=open_lid)
 
 
 # ================================================================================================== the shots
 BOX = [-290.0, -120.0, -100.0, 290.0, 360.0, 1140.0]
-STATE_LABEL = {"day": "day load, 12 L, top pouch off", "sixday": "6-day load, 45 L", "full": "full, 85 L class"}
-SUB = "CORRIE F rev 1 (D2), H1 frame, belt B. "
+STATE_LABEL = {"day": "day load, 12 L, crown lid off", "sixday": "6-day load, 45 L", "full": "full, 85 L class"}
+SUB = "CORRIE F rev 3 (D2), H1 frame, belt B. "
 MODEL = "Rendered 3D model, not a photograph"
 PK = {"mannequin": True, "lid": True}
 
@@ -969,16 +1311,20 @@ def _hunter(pose, state, az, el, caption, sub, scene_kind="studio", **view):
 
 HUNTER_BOX = [-300.0, -330.0, -1080.0, 300.0, 380.0, 1060.0]     # same camera for the three load states (FCS mm)
 HUNTER_ZOOM = 1.16       # 1.3 cut the full load's collar and pouch off at the top of the frame (defect D-2)
+# lid close-up (BL-030 fix): BL-029 aimed at z 790 with a 470 mm span, which left the bag low in the frame under empty
+# backdrop; the "box" framing fits the bag top (crown lid to the D2 door top) to the frame instead
+LID_BOX = [-220.0, -20.0, 590.0, 220.0, 320.0, 850.0]
+OPEN_BOX = [-240.0, -260.0, 520.0, 240.0, 330.0, 880.0]   # lid open: bag top + the lid turned back over the bar
 
 SHOTS = {
     # --- on the 6 ft hunter, 19 in setting
-    "hero": _hunter("stand", "sixday", -36, 9, "CORRIE F on a 6 ft hunter: 3/4 rear, 6-day load (45 L)",
+    "hero": _hunter("stand", "sixday", -36, 9, "CORRIE F rev 3 on a 6 ft hunter: crown lid, 6-day load (45 L)",
                     SUB + "1829 mm (6 ft) man, 19 in setting. ", box=HUNTER_BOX, zoom=HUNTER_ZOOM),
     "side": _hunter("side", "sixday", 90, 4, "Side profile, 6-day load (45 L)",
-                    SUB + "How tall and how deep it rides. ", box=HUNTER_BOX, zoom=HUNTER_ZOOM),
-    "day": _hunter("stand", "day", -36, 9, "Day load (12 L): rolled down and cinched, top pouch off",
+                    SUB + "Crown straps over the lid. ", box=HUNTER_BOX, zoom=HUNTER_ZOOM),
+    "day": _hunter("stand", "day", -36, 9, "Day load (12 L): rolled down and cinched, crown lid off",
                    SUB + "Same camera as 6-day and full. ", box=HUNTER_BOX, zoom=HUNTER_ZOOM),
-    "full": _hunter("stand", "full", -36, 9, "Full: 85 L class, collar standing, pouch on the roll",
+    "full": _hunter("stand", "full", -36, 9, "Full: 85 L class, collar standing, crown lid on the roll",
                     SUB + "Same camera as day and 6-day. ", box=HUNTER_BOX, zoom=HUNTER_ZOOM),
     "walk": _hunter("walk", "sixday", -58, 6, "Walking uphill with trekking poles, 6-day load",
                     "CORRIE F. HDRI and grass: Poly Haven, CC0. ", "outdoor"),
@@ -990,7 +1336,7 @@ SHOTS = {
     # --- on the display form
     "door": {"scene": "full", "view": {"az": -22, "el": 8, "fov": 24, "fstop": 11, "box": [-270, 0, 20, 270, 400, 1010]},
              "state": {"mannequin": True, "lid": True, "full": True}, "caption": "Door D2 open (full load)",
-             "sub": "Door laid up over the top pouch (cloth); W1, W2 unhooked; IM1-IM3 inside"},
+             "sub": "Door laid up over the crown lid (cloth); W1, W2 unhooked; IM1-IM3 inside"},
     "meat": {"scene": "full", "view": {"az": -18, "el": 6, "fov": 24, "fstop": 11, "box": [-270, 0, 20, 270, 400, 1010]},
              "state": {"mannequin": True, "lid": True, "full": True, "haul": True},
              "caption": "Meat inside the bag on IM1-IM3, door D2 open",
@@ -1004,39 +1350,47 @@ SHOTS = {
                    "caption": "Bag off: the H1 frame, crown, spreader and belt B",
                    "sub": "BL-027 body, 28 mm IM3 cheeks; B-25 guy bridle on the top bar; crown at 19 in"},
     "addons_on": {"scene": "full_carry", "view": {"az": 38, "el": 12, "fov": 24, "fstop": 11, "box": BOX, "zoom": 1.4},
-                  "state": PK, "caption": "Add-ons on: tripod under W1-W3 (right), scope pod (left), top pouch",
-                  "sub": "CORRIE F rev 1, full load; B-26 keeper cord over the tripod"},
+                  "state": PK, "caption": "Add-ons on: tripod under W1-W3 (right), scope pod (left), crown lid",
+                  "sub": "CORRIE F rev 3, full load; B-26 keeper cord over the tripod"},
     "addons_on_left": {"scene": "full_carry", "view": {"az": -38, "el": 12, "fov": 24, "fstop": 11, "box": BOX, "zoom": 1.4},
                        "state": PK, "caption": "Add-ons on, from the left: scope pod on the left gusset",
-                       "sub": "Rev 1, full load; W1, W2 over the pod's wall; W3 runs above the scope"},
+                       "sub": "Rev 3, full load; W1, W2 over the pod's wall; W3 runs above the scope"},
     "addons_off": {"scene": "full", "view": {"az": 38, "el": 12, "fov": 24, "fstop": 11, "box": BOX, "zoom": 1.4},
                    "state": {"mannequin": True, "lid": False}, "caption": "Add-ons off: base pack",
-                   "sub": "CORRIE F rev 1, full load, same camera; B-26 cord on the gusset"},
+                   "sub": "CORRIE F rev 3, full load, same camera; crown lid and its straps off"},
     "compare_f": {"scene": "full", "view": {"az": -38, "el": 12, "fov": 24, "fstop": 11, "box": BOX, "zoom": 1.4},
-                  "state": PK, "caption": "CORRIE F, full load", "sub": "S15 shell, door D2, no wings, no hood"},
+                  "state": PK, "caption": "CORRIE F rev 3, full load", "sub": "S15 shell, door D2, no wings, no hood, crown lid"},
     "compare_b2": {"scene": "b2", "view": {"az": -38, "el": 12, "fov": 24, "fstop": 11, "box": BOX, "zoom": 1.4},
                    "state": PK, "caption": "CORRIE B.2, full load", "sub": "Same camera"},
     "roll": {"scene": "sixday", "view": {"az": -32, "el": 22, "fov": 18, "fstop": 8, "at": [0.0, 150.0, 610.0],
-                                         "span": 560}, "state": PK, "caption": "Rolled closure and top pouch, 6-day load",
-             "sub": "Roll ends bent down to clip tabs 150 mm below the collar seam; soft pouch"},
+                                         "span": 560}, "state": {"mannequin": True, "lid": False},
+             "caption": "Rolled closure, crown lid off, 6-day load",
+             "sub": "Roll ends bent down to clip tabs 150 mm below the collar seam; port guys inside"},
+    "lid": {"scene": "sixday", "view": {"az": -34, "el": 20, "fov": 18, "fstop": 8, "box": LID_BOX, "zoom": 1.0},
+            "state": PK, "caption": "Crown lid close-up: one strap line from the bar over the lid to the bag",
+            "sub": "B-29 5.0 L lid, camo caps over the D2 blades, #5 zip; 20 mm B-28 crown straps"},
+    "open": {"scene": "sixday_open", "view": {"az": -58, "el": 22, "fov": 20, "fstop": 8, "box": OPEN_BOX, "zoom": 1.0},
+             "state": PK,
+             "caption": "Lid open: front ladder locks unhooked, lid turned back over the bar",
+             "sub": "The roll top is free to open; the port guys still hold the bag top to the bar"},
 }
 for _k, _s in SHOTS.items():                       # every caption says what the picture is (owner, 2026-11-12)
     if not _s.get("pose"):
         _s["sub"] = _s["sub"].rstrip(". ") + ". " + MODEL
 SUB_MAX = 116                                      # characters that fit the 1600 px caption band
 ORDER = ("hero", "side", "day", "full", "walk", "kneel", "door", "meat", "frame", "frame_bare", "addons_on",
-         "addons_on_left", "addons_off", "belt", "roll", "compare_f", "compare_b2")
+         "addons_on_left", "addons_off", "belt", "roll", "compare_f", "compare_b2", "lid", "open")
 
 
 def build_scene(key: str, level: int = 2):
     from . import studio
     if key == "b2":
         return studio.corrie_b2_scene("corrie_b2_bl012")
-    st, _, carry = key.partition("_")
-    return scene(st, carry == "carry", level)
+    st, *mods = key.split("_")
+    return scene(st, "carry" in mods, level, open_lid="open" in mods)
 
 
-def render(names=ORDER, out_dir=None, prefix="20261112_BL026", quality="final", level: int = 2, numbers=None,
+def render(names=ORDER, out_dir=None, prefix="20261112_BL030", quality="final", level: int = 2, numbers=None,
            bpy_python=None, threads=None) -> list:
     """Render the named shots. Stage 1 (this interpreter) builds each scene once; stage 2 runs one Blender process
     per (scene, pose, studio / outdoor) group. ``numbers`` = {shot: n} fixes the file numbers (default: position in
@@ -1074,6 +1428,25 @@ def render(names=ORDER, out_dir=None, prefix="20261112_BL026", quality="final", 
                 results += r
                 print(f"[{n}] {r[0]['file']} {r[0]['seconds']} s", flush=True)
     return results
+
+
+# ------------------------------------------------------------------------------------------- crown strap paths
+def crown_rolled_paths(states=("day", "sixday", "full"), level: int = 2, write: bool = True) -> dict:
+    """BL-030: the B-28 crown strap's taut path over the ROLLED top with the lid on, at the 19 in render setting, for
+    the day (lid on for this measurement), 6-day and full load states of the cloth pass: length and wrap over the lid,
+    each side. ``corrie_f.crown_strap_diet`` sizes the cut from these (ASSUMPTION ROLL-PATH there). Written to
+    ``corrie_f.CROWN_ROLLED``."""
+    F = _mods()[2]
+    out = {"torso_in": TORSO, "method": "huntkit.viz3d.corrie_f.crown_lid: convex hull of bag, roll and lid at x "
+           "+/-CROWN_X (cloth pass on the fine drape, rolled closure, LID-SEAT)", "level": level, "states": {}}
+    for st in states:
+        sc = scene(st, False, level, with_pouch=True)
+        r = sc.report.get("rev3", {})
+        out["states"][st] = {"lid_top_z": r.get("lid_top_z"), "straps": r.get("straps", {})}
+        print(st, out["states"][st], flush=True)
+    if write:
+        F.CROWN_ROLLED.write_text(json.dumps(out, indent=1))
+    return out
 
 
 # ------------------------------------------------------------------------------------------- stage 2 (bpy)
@@ -1121,9 +1494,13 @@ def main(argv=None):
     ap.add_argument("--shots", default="all")
     ap.add_argument("--quality", default="final")
     ap.add_argument("--level", type=int, default=2)
-    ap.add_argument("--prefix", default="20261112_BL026")
+    ap.add_argument("--prefix", default="20261112_BL030")
     ap.add_argument("--out", default=None)
+    ap.add_argument("--crown-paths", action="store_true", help="BL-030: write corrie_f.CROWN_ROLLED (no render)")
     a = ap.parse_args(argv)
+    if a.crown_paths:
+        crown_rolled_paths(level=a.level)
+        return
     if a.job:
         job = json.loads(Path(a.job).read_text())
         res = _stage2(job)

@@ -266,7 +266,7 @@ def _set_rest(pm, cb, pre: float, mode: str):
     cb.meta.update(L_init=L, pretension_n=pre, mode=mode)
 
 
-REV_DIRS = {"Fr0": "F_r0"}     # BL-025: run folders carry the CORRIE F revision; "F" -> F_r<corrie_f.REVISION>
+REV_DIRS = {"Fr0": "F_r0"}     # BL-025: run folders carry the CORRIE F revision; "F" -> F_r<corrie_f.sim_rev()>
 RENDER_DRAPE_TAG = "_fine"     # packed-only fine drape for the renders (huntkit/viz3d/corrie_f.py reads F_PR{t}_fine)
 
 
@@ -277,7 +277,7 @@ def run_dir(variant: str, torso: int, tag: str = "") -> Path:
     drape (tag "_fine") keeps its legacy name F_PR{t}_fine for the viz3d reader (F_r0_PR{t}_fine links to it)."""
     if variant == "F" and tag == RENDER_DRAPE_TAG:
         return OUT / f"F_PR{torso}{tag}"
-    pre = f"F_r{F.REVISION}" if variant == "F" else REV_DIRS.get(variant, variant)
+    pre = f"F_r{F.sim_rev()}" if variant == "F" else REV_DIRS.get(variant, variant)   # BL-030: revs 1-3 = the F_r1 shell
     return OUT / f"{pre}_PR{torso}{tag}"
 
 

@@ -333,6 +333,28 @@ CONFIGS_V2 = tuple(c + SUFFIX for c in CONFIGS)
 ALL_CONFIGS = CONFIGS + CONFIGS_V2
 DEFAULT_CONFIG = "corrie_b2_h1" + SUFFIX
 CORRECTIONS = ("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "H1B")
+# BL-030: the ADOPTED bag. Every config above books the CORRIE B.2 bag (their names are quoted in other documents and
+# stay); the adopted bag is CORRIE F at ADOPTED_BAG["revision"] (owner, DECISIONS 2026-11-12: rev 3 = B-27 port guys
+# inside + B-29 crown lid on B-28 crown straps, the top pouch out). ``adopted_bag_rows`` books it on this ledger's
+# basis by calling corrie_f.parts (corrie_f subtracts B.2's bag side from these configs and adds its own); the whole
+# pack with it is analysis/weight_rollup_v2.md, which reads the revision from here.
+ADOPTED_BAG = {"concept": "CORRIE F", "module": "designs/pack_5200/concepts/corrie_f.py", "revision": 3, "door": "D2",
+               "top": "B-29 crown lid + B-28 crown straps (as hunted); the top pouch out",
+               "decision": "DECISIONS 2026-11-12: owner adopts CORRIE F rev 3 (BL-029 / BL-030)"}
+
+
+def adopted_bag_rows(size: str = "M") -> list:
+    """The adopted bag's bag-side rows ({system, name, g, cfg, source}, BL-008 cfg tags) at belt ``size``:
+    ``corrie_f.parts`` at ``ADOPTED_BAG['revision']``. Lazy import (corrie_f reads this module)."""
+    import importlib
+    for p in (PACK / "concepts", PACK):
+        if str(p) not in sys.path:
+            sys.path.insert(0, str(p))
+    F = importlib.import_module("corrie_f")
+    with F.revision(ADOPTED_BAG["revision"]):
+        return F.parts(size, door=ADOPTED_BAG["door"])
+
+
 H1_ONLY = ("H1B",)          # corrections that apply to the H1 configs only (not to today's production raster)
 G_CORR = "BL-013 booking corrections (folded into the ledger by BL-023)"
 #   H1B (2026-11-12) the H1 printed body as adopted since frame_mass_h1.json was written: BL-024 H1-G0.55 grow-only

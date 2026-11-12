@@ -17,7 +17,7 @@ def _cfs():
 
 def test_run_dir_names_carry_the_revision():
     m = _cfs()
-    assert m.F.REVISION == 1
+    assert m.F.REVISION == 3 and m.F.sim_rev() == 1        # BL-030: revs 1-3 share the rev 1 simulated shell
     assert m.run_dir("Fr0", 15).name == "F_r0_PR15"
     assert m.run_dir("F", 23, "_fineFM").name == "F_r1_PR23_fineFM"
     assert m.run_dir("F", 15, "_fineFM_goff").name == "F_r1_PR15_fineFM_goff"

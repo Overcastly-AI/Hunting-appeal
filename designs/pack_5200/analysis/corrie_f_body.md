@@ -37,6 +37,11 @@ or a named ASSUMPTION. Units: g (1 oz = 28.35 g), mm (1 in = 25.4 mm), L (1 L = 
   the load: 15 in meat CG **194.0 mm, over rev C**. **Rev 3 (recommended) = rev 2's port guys + a 5.0 L B-29 crown lid
   on two B-28 crown straps**, replacing the 2.7 L pouch: **181.3 mm** (target 185), R-28 34°, lifter gap ≥ 57 mm,
   +59.0 g as hunted over rev 2 (base unchanged). BL-028's rev 1 wrap re-run with its eyelets in order: 198.1 mm.
+- **Rev 3 adopted (owner, 2026-11-12) and made the design of record by BL-030 (section 15):** rev 3 is the module
+  default, the ledger's adopted bag (`ledger.ADOPTED_BAG`) and the roll-up's CORRIE F. The B-28 crown straps go to
+  **20 mm, cut 1138 mm, 49.1 g the pair (−18.4 g)**, sized from the strap's path over the rolled top with the lid;
+  ladder-lock slip 319 N against the 288 N factored envelope (1.11, on an assumed slip ratio: B-28 slip gate). Bag
+  side belt M D2: **base 1112.8 g, as hunted 1362.4 g, meat trip 1494.6 g**.
 
 Screens: `outputs/screens/20261111_BL011_1.png` (mass), `_2.png` (doors and setback), `_3.png` (CG and R-28).
 
@@ -693,6 +698,16 @@ Rev 2 fine runs (`F_PR{t}_fineFM_port`, fill then meat, all converged):
 
 Screens: `outputs/screens/20261112_BL028_1.png` (paths, CG by routing, lifter gap), `_2.png` (B-27 port).
 
+### 13.11 Note added by BL-030: the `wrap` and `tie_wrap` eyelets were reversed
+
+BL-029 found (14.8) that the `wrap` route above passed its eyelets to the cable bar-first:
+`corrie_f_sim._install_route` builds the cable as [B-22] + vias + [bar], and `path_vias` lists the nodes from the bar,
+so the stored cable crossed the bag twice. `tie_wrap` used the same vias. **Corrected rev 1 (`wrapfix`, eyelets in cable
+order): 15 in meat CG 198.1 mm** (stored row `F_PR15_fineFM_wrapfix`), against the 194.9 mm in 13.2 and the table in
+13.7. **Rev 1 still fails rev C (190 mm)**, by more than 13.2 says; the conclusions of this section stand, its 194.9 mm
+does not. The port routes have one via and are not affected, so rev 2 (181.9 mm) and rev 3 (181.3 mm) stand.
+`corrie_f._vias_head_first` now orders vias for every new route. The text above is left as BL-028 wrote it.
+
 ## 14. Top anchor and lid: CORRIE F rev 3 (BL-029)
 
 pack-designer, 2026-11-12. Ticket `docs/backlog/BL-029-top-anchor-and-lid.md`. Owner: "Look at the exo bags. Our pouch
@@ -703,7 +718,7 @@ CLI `python designs/pack_5200/concepts/corrie_f.py --bl029`). `corrie_f_sim.py` 
 strap and a second frame-anchored cable (`_set_rest`, route keys `mode`, `pretension_n`, `anchor`, `extra`). Renders:
 `corrie_f_rev3_viz3d.py`. Stored rows `F_PR{t}_fineFM_over*`, `F_PR15_fineFM_wrapfix`; paths
 `corrie_f_sim/corrie_f_crown_paths.json`. Tests `tests/test_corrie_f_top_anchor.py`. All sims fine mesh (h 25 mm), one at
-a time. **Rev 1 stays the module default; rev 3 is `with corrie_f.revision(3):` and is a recommendation (14.7).**
+a time. **Rev 1 stays the module default; rev 3 is `with corrie_f.revision(3):` and is a recommendation (14.7).** *(BL-030: the owner adopted rev 3 on 2026-11-12 and it is now the module default, section 15.)*
 
 **In one paragraph.** Every peer that carries a lid holds it with straps from the frame side, over the load, to the bag's
 front, and three of them sell that strap path without the lid as top compression (Exo Packout Straps, Stone Glacier's
@@ -860,3 +875,157 @@ straps on their taut path (the hull of bag, roll and lid at x ±52), ladder lock
 | Crown strap ladder lock slip at 300 N on the hinge-band tab | B-28 |
 
 Screens: `outputs/screens/20261112_BL029_5.png` (concepts), `_6.png` (CG, sections, rev 3 table), `_1`–`_4` (renders).
+
+## 15. Rev 3 as the design of record (BL-030)
+
+pack-designer, 2026-11-12. Ticket `docs/backlog/BL-030-adopt-rev3.md` (owner adopted rev 3 on 2026-11-12, DECISIONS).
+Code: `corrie_f.py` (`REVISION = 3`, `sim_rev`, `crown_strap_w`, `crown_straps(width)`, `crown_strap_diet`,
+`lid_hold`, `lid_seam_list`, `CROWN_ROLLED`); `huntkit/mass/ledger.py` (`ADOPTED_BAG`, `adopted_bag_rows`);
+`weight_rollup_v2.py` (reads the revision from the ledger); `huntkit/viz3d/corrie_f.py` (rev 3 drawn natively:
+`_port_stub`, `lid_mesh`, `crown_lid`, `crown_rolled_paths`, shots `lid` / `open`); `corrie_f_sim.run_dir` (folders by
+`sim_rev`). Data: `concepts/corrie_f_sim/corrie_f_crown_rolled.json` (`python -m huntkit.viz3d.corrie_f --crown-paths`).
+Tests: `tests/test_corrie_f_adopt_rev3.py` (new) and the rev-default asserts in `test_corrie_f.py`,
+`test_corrie_f_guy.py`, `test_corrie_f_run_dirs.py`, `test_corrie_f_top_anchor.py`, `test_weight_rollup_v2.py`,
+`test_viz3d_corrie_f.py`.
+
+**What "default everywhere" means now.** `corrie_f.REVISION` is 3; `with revision(0 | 1 | 2):` gives the earlier revs
+back exactly (tested), and BL-029's 25 mm crown straps are `crown_straps(25.0)` (67.46 g, tested). The cloth-sim run
+folders follow `sim_rev()`: revs 1-3 share the rev 1 simulated shell (rev 2's port and rev 3's crown straps are
+ROUTES on it), so every stored `F_r1_*` run keeps its name and new rev 3 runs land beside them. The ledger's configs
+still book CORRIE B.2 (their names are quoted elsewhere); `ledger.ADOPTED_BAG` names the adopted bag (CORRIE F rev 3,
+D2) and `adopted_bag_rows` books it; the roll-up reads its revision from there.
+
+### 15.1 Weight statement (belt M, door D2, ULTRAGrid / 70D / 200X fabrics, ledger basis)
+
+| bag side, g (oz) | base | as hunted | meat trip | pack on H1, as hunted (ledger) |
+|---|---:|---:|---:|---:|
+| rev 1 (BL-022) | 1110.1 (39.16) | 1319.1 (46.53) | 1451.3 (51.19) | 3620.4 |
+| rev 2 (BL-028) | 1112.8 (39.25) | 1321.8 (46.62) | 1454.0 (51.29) | 3623.1 |
+| rev 3 as BL-029 proposed (25 mm crown straps, section 14.2) | 1112.8 | 1380.8 | 1513.0 | 3682.1 |
+| **rev 3 as adopted (20 mm crown straps)** | **1112.8 (39.25)** | **1362.4 (48.06)** | **1494.6 (52.72)** | **3663.7 (8.08 lb)** |
+
+Rev 3 against rev 1: base +2.7 g (the B-27 ports), as hunted +43.3 g (lid 45.9 g + crown straps 49.1 g − the
+2.7 L pouch and its straps). Today's fabrics: 1173.6 / 1423.2 / 1555.4 g. D1 door: 1195.2 / 1442.6 / 1574.8 g.
+Ledger bag system (BAG_SYSTEM) at rev 3: 599.4 / 849.0 / 910.7 g. With the BL-005 / BL-006 packages
+(`pack_with_adopted`): 3273.2 / 3561.6 / 3693.8 g.
+
+Whole pack (`analysis/weight_rollup_v2.md`, re-run with rev 3, belt M, crown kit M): **proven now 3683.4 g base
+(8.12 lb), 3969.6 g as hunted, 4101.6 g meat trip; after tests 3211.6 / 3497.8 / 3629.9 g** (rev 1 was
+3680.6 / 3926.1 / 4058.2 and 3208.9 / 3454.4 / 3586.5 g). The leaders' "lid in" basis now takes the crown lid and its
+straps (`weight_rollup_v2._item`, key `pouch`). 6.6 lb is still not reached (the roll-up says by how much).
+
+### 15.2 B-28 crown strap diet
+
+BL-029 cut the strap from the longest **sim** path (818 mm, 15 in full), but the sim never rolls the collar. With the
+lid on, the top is rolled, so the cut is sized here from the strap's path over the **rolled** top with the lid (cloth
+pass at 19 in, `crown_rolled_paths`), shifted by the torso change of the path from the sims (`_crown_torso_delta`:
+same bag, bar at z 601 / 703 / 804).
+
+| | day (lid on) | 6-day | full (collar standing) |
+|---|---:|---:|---:|
+| crown strap path, 19 in, rolled top over the lid (mm) | 413.8 | 495.7 | **830.2** |
+| wrap over the lid (min of R / L) | 178° | 203° | 151° |
+
+Torso change of the path (sims, R and L, fill and meat): +58.9 to **+97.9 mm at 15 in**, −88.8 to **−92.4 mm at
+23 in**. **Longest path 928.1 mm** (15 in, full), shortest 320.6 mm (23 in, day, lid on): **607.5 mm of adjustment**.
+Cut = 928.1 + 150 tail + 60 loop = **1138.1 mm (44.8 in)**, against BL-029's 1198.3 mm.
+
+**The ticket's premise only half holds.** The rolled 6-day path is the ~505 mm BL-029 measured (495.7 mm here), but a
+full bag with the collar standing puts the lid 182 mm higher (lid top z 1060 against 878) and its path is 830 mm,
+longer than the sim's. So a shorter cut alone saves only 2.2 g (60 mm of webbing). The saving is in the width:
+
+| option (pair) | cut mm | mass g | vs BL-029 | ladder lock | slip / tensile N | margin on 288 N (slip / tensile) | tail at the shortest path |
+|---|---:|---:|---:|---|---:|---:|---:|
+| 25 mm, rolled cut | 1138.1 | 65.29 | −2.17 | 25 mm heavy (record) | 490 / 981 | 1.70 / 3.41 | 758 mm |
+| **20 mm, rolled cut (adopted in rev 3)** | **1138.1** | **49.07** | **−18.39** | ITW Classic Ladderloc 20 mm | **319 / 637** | **1.11 / 2.21** | 758 mm |
+| 20 mm, cut for day / 6-day + 2 extenders for full loads | 803.6 | 39.43 (+18.91 extenders) | −28.03 (−9.12 with the extenders) | same | 319 / 637 | 1.11 / 2.21 | 423 mm |
+
+Mass = 2 × cut × webbing g/m + 2 × (POM toggle 3.0 g + ladder lock + 60 mm front tab + the second 60 mm fold on the
+25 mm B-25 tab). Loads on the strap (`crown_strap_diet()["loads"]`): crown strap at 1 g max 11.6 N on the rev 3 sims
+(× 3.0 = 34.8 N), hand cinch 80 N (ASSUMPTION, the W1-W3 value), the loaded lid at 3 g 30.8 N, and as the governing
+envelope the port guy's 96 N × 3.0 = **288 N**, in case a crown strap ever has to hold the top alone (it does not in
+rev 3: the port guys do). 20 mm webbing break (width-scaled ASSUMPTION) 10.7 kN: margin 37.
+
+- 20 mm passes the target (−15 to −25 g): **−18.4 g**. Its margin on the 288 N envelope is thin, **1.11 on slip**,
+  and that slip is the record basis's 0.5 × the reseller's 65 kg tensile, not a measured value. On the real rev 3
+  loads (80 N cinch, 35 N factored) the margin is 4.0. The B-28 slip gate (15.6) is at 288 N for that reason.
+- **Tail:** with one cut for every fill and torso, the tail is 758 mm on a lid-on day load at 23 in (484 mm on a
+  6-day load at 15 in). It needs managing: roll it and hold it with a webbing keeper on the strap, or take the
+  extender option (owner decision 15.5). Neither keeper nor extender is drawn.
+- The lid's 30 mm channels were drawn for 25 mm webbing; a 20 mm strap has 10 mm of side play in them. Left as drawn
+  (BL-029's lid); the pattern-maker can narrow them to 25 mm when the lid pattern is drafted (about −1 g).
+
+### 15.3 Lid hold on paper (`lid_hold`, loaded lid 45.9 g + 1 kg = 1.046 kg)
+
+| case | 1 g | 3 g |
+|---|---:|---:|
+| inertia of the loaded lid, N | 10.3 | 30.8 |
+| lid thrown outward (pack dropped on its top or swung): added tension per strap, N (wrap 203°, 2 sin(θ/2) capped at 2.0) | 2.6 | 7.7 |
+| ladder lock load with the 80 N cinch, N; margin on the 319 N slip | 82.6; 3.9 | 87.7; 3.6 |
+| fore-aft / side slide: friction hold μ 0.20 (m g + clamp) at the 80 N cinch, N | 66.1: **holds** | 66.1: **holds** |
+| same at the relaxed tension the sims show at 1 g (5.2 N at the bar), N | 6.2: **does not hold** | 6.2: **does not hold** |
+| drop on the base (3 g down) | lid bears on the roll; straps unloaded | same |
+
+On a 6-day (203°) or day (178°, marginal) top both strap runs leave the lid downward, so a fore-aft shift has to
+stretch the strap: the lid is captured, not held by friction. On a **full** top (151°) it is not: if the cinch relaxes
+to what the sims show (5-18 N), a 1 g jolt can slide the lid along the straps. It cannot leave the bag (the channels
+keep it on the straps, and the straps are anchored at both ends), but it can shift. Re-cinching after loading is part
+of the carry routine; T9 measures how much of the 80 N cinch survives (15.6). The sim's relaxed value is at the bar,
+after friction over the top, so it under-states the tension over the lid: the friction row is conservative.
+
+### 15.4 Lid build hours (`lid_seam_list`)
+
+A pattern-maker style check from the lid's seam list, operation by operation on the same `bag_concepts.HOURS` rates.
+**8.94 h, against BL-029's 7.76 h (+1.18 h)**, and 5.64 h more than the 2.7 L pouch (3.3 h). The difference: the two
+perimeter seams are closed rings and each takes the HOURS "ring" handling (2 × 0.5 h, left out in BL-029); the zip
+splits the aft wall into an upper and a lower strip (10 pieces, not 9: +0.12 h); the wall ring needs two short closing
+seams (+0.06 h). The two curved perimeters (989 mm each at 1.8 h/m, 3.56 h) are 40 % of the lid. This check was done
+by the pack-designer (no pattern-maker agent in this run, and no drafted lid pattern yet); `build_metrics` still books
+BL-029's 7.76 h until the pattern-maker confirms on the drafted B-29 pattern.
+
+### 15.5 Renders (rev 3 drawn natively)
+
+`huntkit/viz3d/corrie_f.py` draws rev 3 itself: outside, the port guy is only the stub from the B-25 sleeve to the B-27
+port (lapped slits drawn on the frame face); no outside guys, no pouch; the B-29 lid seated on the roll and the 20 mm
+B-28 straps on their taut path, ladder locks and tails at the hinge-band tabs, channels on the crown, toggles in the
+bridle tabs. Lid and straps are `variant="lid"` (as-hunted add-on: an add-ons-off shot drops them). The run-time swap in
+`corrie_f_rev3_viz3d.py` is retired; that script now only calls the module (and re-exports `lid_mesh`). Fixes: the lid
+close-up framed a 470 mm cube around z 790, which left the bag low under empty backdrop; it now frames the bag top
+(`LID_BOX`, z 590-850); the lid-open shot had the same fault and now frames the bag top and the turned-back lid (`OPEN_BOX`). The lid wall was UV-mapped from plan x, y, which stretched the camo caps into stripes; it is now
+mapped by perimeter and height. Picture note: the ladder locks are drawn with the 25 mm heavy lock model.
+`outputs/screens/20261112_BL030_1.png` hero (6 ft hunter, 6-day), `_2` side, `_3` lid close-up, `_4` lid open. Copies in `docs/screens/`. Whole-pack waterfall re-run: `docs/screens/20261112_rollup_1.png`.
+
+### 15.6 Owner decisions, assumptions, gates, found not fixed
+
+**Owner decisions needed:**
+1. **Crown strap tail or extender.** One 1138 mm cut works at every torso and fill but leaves up to 758 mm of tail
+   (day load, lid on, 23 in) to roll and keep. Or cut for day / 6-day loads (804 mm, 39.4 g) and carry two 435 mm
+   extenders (18.9 g) for a full load with the collar standing. Recommendation: the one cut plus a sewn tail keeper
+   (no part to lose in the field).
+2. **20 mm crown straps** rest on a 1.11 slip margin against a load case the crown straps do not carry in rev 3 (the
+   288 N guy envelope). If the owner wants the crown straps rated as a back-up top anchor, keep 25 mm (−2.2 g only).
+
+**Assumptions that govern (new):**
+- ROLL-PATH: the cloth pass's rolled top stands in for the sewn bag's, and the torso change on the rolled top equals the
+  sim's on the unrolled top. Settled by T9: the cinched crown strap's free length at the S kit full and at the L kit
+  6-day on the first sewn bag.
+- WEB20_GM 14.4 g/m and WEB20_BREAK_N 10.7 kN (25 mm record scaled by width); LL20 slip 0.5 × 637 N and mass 3.2 g.
+  Settled by weighing 1 m of the bought webbing and one lock, and by the B-28 slip gate. A materials-engineer record
+  for both parts is the clean fix.
+- EXT_LAP 40 mm (extender option only): settled by the pattern.
+- MU_LID 0.20 (low end of the MU_WEB_FAB band): only the friction rows of 15.3 depend on it. Settled by T9's cinch
+  retention reading.
+
+**Gates (changed or new):**
+
+| gate | settles |
+|---|---|
+| B-28 slip: 5 ITW Classic Ladderloc 20 mm on the bought 20 mm webbing, 50 mm/min, no slip > 5 mm below 288 N, dry and wet, 20 °C and −20 °C (replaces BL-029's 25 mm lock at 300 N) | 15.2 ratings |
+| T9 rev 3 additions (TEST_PLAN, test register): port guys at the S kit, top full, lid on with 1 kg; crown strap cinch force with a spring scale, at cinch and after the carry; crown strap free length (S full, L 6-day); sewn lid weighed and photographed | LID-SIM, CROWN_PRE_N, ROLL-PATH, LID-SEAT, LID_SLIDER5_G, LID_THREAD |
+
+**Found, not fixed:**
+- `concepts/corrie_f_result.json` (BL-011's result file) is not regenerated; its CG and R-28 rows are from the rev 0
+  / rev 1 straight-guy sims.
+- No 20 mm webbing or 20 mm ladder-lock record in `data/materials/` (materials-engineer).
+- The crown strap tail keeper and the extender are not drawn or booked.
+- The lid channels are 30 mm wide for a 20 mm strap (15.2).

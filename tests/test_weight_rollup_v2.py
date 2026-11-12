@@ -97,11 +97,12 @@ def test_ticket_steps_match_the_ticket_modules():
     assert st["H1B"]["base"] == pytest.approx(L.h1_body_update()["steps_sum_g"], abs=0.05)
     fx = W.fixed_torso("a")
     assert fx["pack_delta_g"] == pytest.approx(3839.3 - 3927.0, abs=0.15)    # BL-007's own result at 19 in
-    # CORRIE F rev 1 (BL-022): +8.6 g on rev 0 (DECISIONS 2026-11-12, "Rev 1 adds +8.6 g (D2)")
-    assert W.CORRIE_F_REV == 1
+    # CORRIE F rev 3 (BL-030, the ledger's adopted bag): rev 1's +8.6 g on rev 0 (DECISIONS 2026-11-12, "Rev 1 adds
+    # +8.6 g (D2)") + rev 2's B-27 ports in base; the rev 3 lid and crown straps are as hunted, not base
+    assert W.CORRIE_F_REV == L.ADOPTED_BAG["revision"] == 3
     with F.revision(0):
         r0 = F.weight_table("M", "base", "D2", "today")["bag_side_g"]
-    assert wt["bag_side_g"] - r0 == pytest.approx(8.6, abs=0.1)
+    assert wt["bag_side_g"] - r0 == pytest.approx(8.6 + F.guy_port()["mass_g"], abs=0.1)
 
 
 def test_six_point_six_pounds_is_not_reached_and_the_gap_is_reported():
@@ -166,10 +167,10 @@ def test_gated_savings_are_not_proven_now():
     st = W.step_deltas("M")
     # proven now = BL-013's 3414.4 g + the two gated savings + the 27 mm cheek (+1.46 g), i.e. BL-023's 3635.9 g
     # (BL-014 S1), then 2026-11-12: + H1B body (+42.9 g, h1_buckling.json) - the 27 mm cheek step (6.80 g, now inside
-    # the H1B raster) + CORRIE F rev 1 (+8.6 g, BL-022)
+    # the H1B raster) + CORRIE F rev 1 (+8.6 g, BL-022) + rev 3's B-27 ports in base (BL-030; lid and straps as hunted)
     bl023_p = 3414.4 - st["A_imus"]["base"] - st["A_att"]["base"] + 1.46
     assert bl023_p == pytest.approx(3635.9, abs=0.3)                             # weight_rollup_v2.md of BL-023
-    upd = st["H1B"]["base"] - 2 * (9.53 - 6.13104) + 8.6
+    upd = st["H1B"]["base"] - 2 * (9.53 - 6.13104) + 8.6 + W._F().guy_port()["mass_g"]
     assert t["P"]["base"] == pytest.approx(bl023_p + upd, abs=0.3)
     assert 3660 < t["P"]["base"] < 3700
     # after tests: BL-023's 3143.5 g + the same update + the retired OD 17 legs taken back out (they were -20.6 g)

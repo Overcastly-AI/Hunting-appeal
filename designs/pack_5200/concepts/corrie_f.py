@@ -119,16 +119,26 @@ S15 = SS.SHELLS["S15"]
 REVS = {0: {"setback": 30.0, "guy_x": 100.0, "guy_bridle": False, "tripod_keeper": False},
         1: {"setback": 30.0, "guy_x": 52.0, "guy_bridle": True, "tripod_keeper": True},
         2: {"setback": 30.0, "guy_x": 52.0, "guy_bridle": True, "tripod_keeper": True, "guy_port": True},
-        3: {"setback": 30.0, "guy_x": 52.0, "guy_bridle": True, "tripod_keeper": True, "guy_port": True, "crown_lid": True}}
-# rev 3 = BL-029 (doc section 14), RECOMMENDED, not yet the module default (it carries rev 2's port, which the owner has
-# not accepted): rev 2 + the B-29 crown lid on two B-28 crown straps (B-25 bridle -> over the roll and the lid -> the
-# hinge band), replacing the 2.7 L top pouch. ``with revision(3):`` gives its parts.
-# rev 2 = BL-028 (doc section 13), PROPOSED, not yet the module default: the guy goes through a lapped port B-27 in the
-# frame face and runs INSIDE the bag to B-22 (turned to the inside). ``with revision(2):`` gives its parts. Rev 1's
-# straight guy was a model artefact (it ran through the bag); its real path wraps the bag's side.
-REVISION = 1
+        3: {"setback": 30.0, "guy_x": 52.0, "guy_bridle": True, "tripod_keeper": True, "guy_port": True, "crown_lid": True,
+            "crown_w": 20.0}}
+# rev 3 = BL-029 (doc section 14), ADOPTED by the owner 2026-11-12 and the MODULE DEFAULT since BL-030 (doc section 15):
+# rev 2 + the B-29 crown lid on two B-28 crown straps (B-25 bridle -> over the roll and the lid -> the hinge band),
+# replacing the 2.7 L top pouch. BL-030 put the crown straps on a diet (``crown_w`` 20 mm, cut from the rolled top:
+# ``crown_strap_diet``); BL-029's 25 mm straps stay reproducible as ``crown_straps(25.0)``.
+# rev 2 = BL-028 (doc section 13): the guy goes through a lapped port B-27 in the frame face and runs INSIDE the bag to
+# B-22 (turned to the inside). ``with revision(2):`` gives its parts. Rev 1's straight guy was a model artefact (it ran
+# through the bag); its real path wraps the bag's side. Revs 0-2 stay reproducible with ``with revision(n):``.
+REVISION = 3
 TOP_SETBACK_MM = REVS[REVISION]["setback"]   # DECISION (R-28, doc sections 5 / 12): sized by the corrie_f_sim R-28 runs
 GUY_X = REVS[REVISION]["guy_x"]               # DECISION (BL-022 S6, doc section 12.3): guy bar-end centre, x +/- mm
+
+
+def sim_rev(n: int | None = None) -> int:
+    """The cloth-sim shell revision of rev ``n`` (default: the current one). Revs 1-3 share one simulated shell (30 mm
+    setback, guys at x +/-52 on the B-25 bridle): rev 2's port and rev 3's crown straps are corrie_f_sim ROUTES on the
+    rev 1 shell, so their runs live in the ``F_r1_*`` folders (BL-025 naming). Rev 0 has its own (guys at x +/-100)."""
+    n = REVISION if n is None else n
+    return 0 if n == 0 else 1
 
 
 @contextlib.contextmanager
@@ -1651,6 +1661,46 @@ def crown_lid(fabrics: str = "B") -> dict:
                       "LID_SLIDER5_G, LID_THREAD ASSUMPTIONS"}
 
 
+LID_WALL_CLOSE = 2          # DECISION (BL-030 seam list): the wall ring is closed with two short vertical seams, one at
+#                             each end of the zipped aft run (front run | aft run)
+
+
+def lid_seam_list() -> dict:
+    """BL-030 task 5: a pattern-maker style check of the B-29 build hours, operation by operation from the lid's seam
+    list, on the same bag_concepts.HOURS rates BL-029 used. Differences from ``crown_lid``'s one-line estimate:
+    the zip splits the aft wall into an upper and a lower strip (one more piece); crown | wall and wall | base are each
+    a CLOSED ring seam (HOURS 'ring' handling, which the BL-029 sum left out); the wall ring has two closing seams.
+    Lengths from ``lid_geometry`` and ``LID``."""
+    H = BC.HOURS
+    g = lid_geometry()
+    per, ch, L = g["perimeter_mm"] / 1000.0, g["channel_run_mm"] / 1000.0, LID
+    wall_h = (L["wall"] + 2 * SA_BODY) / 1000.0
+    ops = [
+        ("cut, mark, notch: crown, base, front wall run, aft wall upper + lower (split by the zip), 2 camo caps, "
+         "2 strap channels", 10, H["cut_piece"]),
+        ("strap channels topstitched to the crown, both edges (2 x 2 runs)", 4 * ch, H["straight_m"]),
+        ("bartacks at the 4 channel ends (strap entries)", 4, H["bartack"]),
+        ("camo caps turned and topstitched on the wall, short edges (4 x 2)", 8 * 0.05, H["applique_m"]),
+        ("#5 coil zip set between the aft wall strips: tape baste, stops, slider", 1, H["zip_fixed"]),
+        ("#5 coil zip sewn, both tapes", L["zip_mm"] / 1000.0, H["zip_m"]),
+        ("zip round the two aft corners", 2, H["zip_corner"]),
+        ("wall ring closed: two short vertical seams", LID_WALL_CLOSE * wall_h, H["straight_m"]),
+        ("crown | wall perimeter (curved, notch match, bind)", per, H["curved_m"]),
+        ("crown | wall: closed ring handling", 1, H["ring"]),
+        ("wall | base perimeter (curved, notch match, bind), turned through the zip", per, H["curved_m"]),
+        ("wall | base: closed ring handling", 1, H["ring"]),
+    ]
+    rows = [{"op": n, "qty": round(q, 3), "rate_h": r, "hours": round(q * r, 2)} for n, q, r in ops]
+    tot = round(sum(q * r for _, q, r in ops), 2)
+    est = crown_lid()["hours"]
+    with revision(1):
+        pouch_h = addons()["top_pouch"]["hours"]
+    return {"rows": rows, "hours": tot, "bl029_estimate_h": est, "delta_h": round(tot - est, 2),
+            "pieces": 10, "pouch_h": pouch_h, "vs_pouch_h": round(tot - pouch_h, 2),
+            "note": "pattern-maker style check by the pack-designer on the HOURS rates (no drafted lid pattern yet); "
+                    "the pattern-maker confirms on the drafted B-29 pattern"}
+
+
 CROWN_TAIL = 150.0         # tail past the ladder lock (the W1-W3 rule after A-2)
 CROWN_LOOP = 60.0          # rear toggle loop (folded 2 x 30 mm, the B-25 tab rule)
 
@@ -1670,21 +1720,187 @@ def crown_strap_length(rows=None) -> dict:
 CROWN_PATHS = HERE / "corrie_f_sim" / "corrie_f_crown_paths.json"
 
 
-def crown_straps() -> dict:
-    """B-28 crown straps (pair): webbing cut (crown_strap_length) + rear POM toggle loop into the B-25 bridle tab
-    (attach_diet.TOGGLE_G ASSUMPTION; a second 60 mm fold on each B-25 tab takes it, so the guy keeps its own tab) +
-    heavy ladder lock at the front (ladder_lock_25mm_heavy record, BL-010 A3 rule) on a 60 mm webbing tab caught in
-    the hinge band B-02h | B-06 seam at x +/-CROWN_X."""
+def crown_straps(width: float | None = None) -> dict:
+    """B-28 crown straps (pair). ``width`` 25 mm = BL-029 as proposed: webbing cut from the sim paths
+    (``crown_strap_length``) + rear POM toggle loop into the B-25 bridle tab (attach_diet.TOGGLE_G ASSUMPTION; a
+    second 60 mm fold on each B-25 tab takes it, so the guy keeps its own tab) + heavy 25 mm ladder lock at the front
+    (ladder_lock_25mm_heavy record, BL-010 A3 rule) on a 60 mm webbing tab caught in the hinge band B-02h | B-06 seam
+    at x +/-CROWN_X. Default (None) = the current revision's ``crown_w``: rev 3 as adopted = 20 mm, the BL-030 diet
+    (``crown_strap_diet``)."""
     import attach_diet as AD
+    w = crown_strap_w() if width is None else float(width)
+    if w != 25.0:
+        d = crown_strap_diet()
+        return {"id": "B-28", **d["chosen"], "source": d["chosen"]["source"]}
     L = crown_strap_length()
     if L.get("cut_mm") is None:
         raise FileNotFoundError(f"{CROWN_PATHS.name} missing: run corrie_f.py --bl029")
     tog, llh = AD.TOGGLE_G, _rec("ladder_lock_25mm_heavy", "mass_g")
     tab = 60.0 * WEB25 / 1000.0
     g = L["mass_g_pair"] + 2 * (tog + llh + 2 * tab)       # front tab on the hinge band + a 2nd fold on each B-25 tab
-    return {"id": "B-28", **L, "mass_g": round(g, 2), "toggle_g": tog, "ladder_lock_g": llh,
+    return {"id": "B-28", **L, "width_mm": 25.0, "mass_g": round(g, 2), "toggle_g": tog, "ladder_lock_g": llh,
             "source": "poly_webbing_25mm, ladder_lock_25mm_heavy records x cut length (taut path over the stored "
                       "drapes + lid height + tail + loop); TOGGLE_G ASSUMPTION (attach_diet)"}
+
+
+# ---- BL-030 crown strap diet (doc section 15.2). BL-029 cut the strap from the longest SIM path (818 mm, 15 in full),
+# but the sim never rolls the collar: with the lid on, the top is always rolled. The cut is sized here from the strap's
+# path over the ROLLED top with the lid (cloth pass, 19 in, day / 6-day / full: ``CROWN_ROLLED``) plus the change of the
+# path with the torso setting, taken from the sim paths (same bag, bar at z 601 / 703 / 804).
+# ASSUMPTION ROLL-PATH: the cloth pass's rolled top stands in for the sewn bag's (the render drape is seeded by the
+#   fine sim; LID-SEAT), and the torso change of the path on the rolled top equals the sim's on the unrolled top (the
+#   change is in the frame-face run, below the roll). Settled by T9: measure the crown strap's free length cinched at
+#   the S kit full and at the L kit 6-day on the first sewn bag.
+WEB20_GM = 18.0 * 20.0 / 25.0      # ASSUMPTION: 20 mm heavyweight polyester webbing, poly_webbing_25mm scaled by width
+#                                    (14.4 g/m; no 20 mm record). Settled by weighing 1 m of the bought 20 mm webbing
+WEB20_BREAK_N = 13344.0 * 20.0 / 25.0   # ASSUMPTION: same width scaling of the 25 mm record's break (10.7 kN)
+LL20 = {"tensile_n": 65.0 * 9.80665,    # ITW Classic Ladderloc 20 mm "20mm - 65Kg" (Ace Supplies UK listing, method not
+        #                                 stated, https://www.acesupplies.co.uk/products/standard-ladderlock/, read
+        #                                 2026-11-12); the Super Ladderloc is listed in 25 mm only
+        "slip_ratio": 0.5,              # ASSUMPTION: slip = 0.5 x tensile, the ladder_lock_25mm / _heavy record basis
+        "mass_g": 4.0 * 20.0 / 25.0}    # ASSUMPTION: ladder_lock_25mm record (4 g) scaled by width; weigh one
+#  -> settled by the B-28 slip gate (5 locks on the bought 20 mm webbing, 50 mm/min, no slip > 5 mm below 288 N,
+#     dry / wet, 20 C / -20 C) and by weighing; a materials-engineer record for both parts is the clean fix (section 15.6)
+GUY_1G_MAX_N = 96.0        # BL-029 table (bl029_table rev3 port guy 1 g max, 23 in fill); x CASE_FACTOR = 288 N
+CASE_FACTOR = 3.0          # HA-LS-1 rev C C5 limit factor (load_standard.md section 4)
+LID_FILL_KG = 1.0          # the 1 kg in the lid (LID-SIM, section 14.5)
+EXT_LAP = 40.0             # ASSUMPTION: extender webbing sewn round its ladder lock's bar (2 x 20 mm); settled by the pattern
+
+
+def _crown_torso_delta() -> dict:
+    """Change of the crown strap path with the torso setting, from the stored rev 3 sim paths (unrolled top):
+    L(t) - L(19 in), per side and case; max at 15 in, min at 23 in."""
+    gp = json.loads(CROWN_PATHS.read_text())["rows"]
+    out = {}
+    for t in (15, 23):
+        d = []
+        for cn in ("fill", "meat"):
+            a = gp.get(f"F_r1_PR{t}_fineFM_{REV3_ROUTE}:{cn}")
+            b = gp.get(f"F_r1_PR19_fineFM_{REV3_ROUTE}:{cn}")
+            if a and b:
+                d += [a[s]["length_mm"] - b[s]["length_mm"] for s in ("R", "L")]
+        out[t] = d
+    return {"d15_max_mm": round(max(out[15]), 1), "d23_min_mm": round(min(out[23]), 1), "all": out}
+
+
+def crown_strap_diet() -> dict:
+    """B-28 cut from the rolled-top path (ROLL-PATH): path range over day / 6-day / full at 19 in, shifted by the
+    15 in (longest) and 23 in (shortest) torso change; cut = longest + tail + rear loop. Mass at 25 mm and 20 mm, the
+    hardware ratings against the loads (crown strap 1 g max from the sims, the 80 N hand cinch, the port guy's 96 N
+    x 3.0 = 288 N as an envelope in case the crown strap ever has to hold the top alone, the loaded lid at 3 g)."""
+    import attach_diet as AD
+    if not CROWN_ROLLED.exists():
+        raise FileNotFoundError(f"{CROWN_ROLLED.name} missing: python -m huntkit.viz3d.corrie_f --crown-paths")
+    rp = json.loads(CROWN_ROLLED.read_text())
+    st = rp["states"]
+    Ls = {k: max(v["straps"][s]["length_mm"] for s in v["straps"]) for k, v in st.items() if v.get("straps")}
+    Lmin_s = {k: min(v["straps"][s]["length_mm"] for s in v["straps"]) for k, v in st.items() if v.get("straps")}
+    td = _crown_torso_delta()
+    L_max = max(Ls.values()) + td["d15_max_mm"]
+    L_min = min(Lmin_s.values()) + td["d23_min_mm"]
+    cut = L_max + CROWN_TAIL + CROWN_LOOP
+    tail_short = cut - CROWN_LOOP - L_min
+    tog = AD.TOGGLE_G
+    gp = json.loads(CROWN_PATHS.read_text())["rows"]
+    t1g = max(max(r[s].get("T_bar_n") or 0.0 for s in ("R", "L")) for r in gp.values()
+              if r.get("route") == REV3_ROUTE)
+    lid_kg = crown_lid()["mass_g"] / 1000.0 + LID_FILL_KG
+    loads = {"crown_1g_max_n": round(t1g, 1), "crown_factored_n": round(CASE_FACTOR * t1g, 1),
+             "hand_cinch_n": CROWN_PRE_N, "guy_envelope_factored_n": CASE_FACTOR * GUY_1G_MAX_N,
+             "lid_3g_n": round(3 * 9.80665 * lid_kg, 1)}
+    demand = max(loads["crown_factored_n"], loads["hand_cinch_n"], loads["guy_envelope_factored_n"])
+    opts = {}
+    for w, gm, brk, lock, lock_g, slip, ten, rec in (
+            (25.0, WEB25, _rec("poly_webbing_25mm", "breaking_strength_n"), "ladder_lock_25mm_heavy",
+             _rec("ladder_lock_25mm_heavy", "mass_g"), _rec("ladder_lock_25mm_heavy", "slip_load_n"),
+             _rec("ladder_lock_25mm_heavy", "tensile_rating_n"), "poly_webbing_25mm, ladder_lock_25mm_heavy records"),
+            (20.0, WEB20_GM, WEB20_BREAK_N, "ITW Classic Ladderloc 20 mm", LL20["mass_g"], LL20["slip_ratio"] * LL20["tensile_n"],
+             LL20["tensile_n"], "WEB20_GM, LL20 (cited tensile; slip and masses ASSUMPTIONS)")):
+        web = 2 * cut * gm / 1000.0
+        hw = 2 * (tog + lock_g + 60.0 * gm / 1000.0 + 60.0 * WEB25 / 1000.0)   # toggle, lock, front tab, B-25 2nd fold
+        opts[f"w{w:.0f}"] = {"width_mm": w, "cut_mm": round(cut, 1), "path_mm": round(L_max, 1),
+                             "mass_g": round(web + hw, 2), "webbing_g": round(web, 2), "toggle_g": tog,
+                             "ladder_lock": lock, "ladder_lock_g": round(lock_g, 2),
+                             "slip_n": round(slip, 1), "tensile_n": round(ten, 1), "webbing_break_n": round(brk, 0),
+                             "margin_slip": round(slip / demand, 2), "margin_tensile": round(ten / demand, 2),
+                             "margin_webbing": round(brk / demand, 1),
+                             "source": f"{rec} x cut (crown_strap_diet: rolled path + torso change + tail + loop); "
+                                       "TOGGLE_G ASSUMPTION (attach_diet)"}
+    # option: cut for the part-full states (day, 6-day) and a 20 mm extender (webbing + ladder lock, one a side) for the
+    # full load with the collar standing. Owner choice (doc section 15.2): lighter and a shorter tail, one more part.
+    part = [v for k, v in Ls.items() if k != "full"]
+    if part and "full" in Ls:
+        cut_e = max(part) + td["d15_max_mm"] + CROWN_TAIL + CROWN_LOOP
+        ext = Ls["full"] - max(part) + CROWN_LOOP + EXT_LAP
+        o = dict(opts["w20"])
+        web = 2 * cut_e * WEB20_GM / 1000.0
+        o.update(cut_mm=round(cut_e, 1), path_mm=round(max(part) + td["d15_max_mm"], 1),
+                 webbing_g=round(web, 2), mass_g=round(web + o["mass_g"] - o["webbing_g"], 2),
+                 extender_mm=round(ext, 1), extender_g_pair=round(2 * (ext * WEB20_GM / 1000.0 + LL20["mass_g"]), 2),
+                 tail_at_shortest_mm=round(cut_e - CROWN_LOOP - L_min, 1),
+                 source=o["source"] + "; extender = full - part-full path + loop + lap (EXT_LAP ASSUMPTION)")
+        opts["w20_ext"] = o
+    bl029 = crown_straps(25.0)
+    for o in opts.values():
+        o["delta_vs_bl029_g"] = round(o["mass_g"] - bl029["mass_g"], 2)
+    w = crown_strap_w()
+    chosen = opts[f"w{w:.0f}"]
+    return {"rolled_19in_mm": {k: round(v, 1) for k, v in Ls.items()}, "torso": td, "path_max_mm": round(L_max, 1),
+            "path_min_mm": round(L_min, 1), "adjust_range_mm": round(L_max - L_min, 1), "cut_mm": round(cut, 1),
+            "tail_at_shortest_mm": round(tail_short, 1), "loads": loads, "demand_n": demand, "options": opts,
+            "bl029_g": bl029["mass_g"], "bl029_cut_mm": bl029["cut_mm"], "chosen": chosen,
+            "pass": chosen["margin_slip"] >= 1.0 and chosen["margin_tensile"] >= 1.0}
+
+
+MU_LID = MU_SENS[0]        # lid base (70D) on the roll and strap in channel: the low end of the MU_WEB_FAB band (0.20)
+
+
+def lid_hold(T_relaxed_n: float | None = None) -> dict:
+    """Paper check of the lid's hold (doc section 15.3), loaded lid (B-29 + 1 kg) at 1 g and 3 g. Two crown straps
+    wrap the lid by theta (cloth-pass path, 6-day, CROWN_ROLLED); each presses it on the roll with 2 T sin(theta/2).
+    (a) lid thrown outward (pack dropped on its top, or swung): the straps must hold m a: tension added per strap
+        m a / (2 x 2 sin(theta/2)), on top of the cinch; against the ladder-lock slip.
+    (b) lid sliding fore-aft or sideways on the roll (fall on the side, snag): friction mu (m g + clamp) with T at the
+        hand cinch and at the relaxed 1 g value (sims: the cinch relaxes as the top settles). Sideways the channels
+        tie the lid to the straps, so the straps would have to slide on the bag: the same friction bound.
+    (c) drop on the base (pack set down hard, 3 g down): the lid bears on the roll; straps unloaded.
+    (d) geometric capture: see ``captured_by_state``."""
+    rp = json.loads(CROWN_ROLLED.read_text())
+    th = min(v["straps"][s]["wrap_lid_deg"] for k, v in rp["states"].items() if k == "sixday" for s in v["straps"])
+    gp = json.loads(CROWN_PATHS.read_text())["rows"]
+    if T_relaxed_n is None:
+        T_relaxed_n = min(min(r[s].get("T_bar_n") or 1e9 for s in ("R", "L")) for r in gp.values()
+                          if r.get("route") == REV3_ROUTE)
+    m = crown_lid()["mass_g"] / 1000.0 + LID_FILL_KG
+    k = 2.0 * math.sin(math.radians(min(th, 180.0)) / 2.0)   # wrap over 180 deg adds no more clamp than 180
+    slip = crown_strap_diet()["chosen"]["slip_n"]
+    wraps = {k: round(min(v["straps"][s]["wrap_lid_deg"] for s in v["straps"]), 1) for k, v in rp["states"].items()
+             if v.get("straps")}
+    out = {"lid_kg": round(m, 3), "wrap_deg": round(th, 1), "clamp_factor": round(k, 3), "mu": MU_LID,
+           "wrap_by_state_deg": wraps,
+           # (d) with >= 180 deg of wrap both strap runs leave the lid downward: a fore-aft shift must stretch the
+           #     strap (geometric capture, not friction). Under 180 deg (full, collar standing) only friction holds it
+           "captured_by_state": {k: v >= 180.0 for k, v in wraps.items()},
+           "T_cinch_n": CROWN_PRE_N, "T_relaxed_n": round(T_relaxed_n, 1), "slip_n": slip, "cases": {}}
+    for a in (1.0, 3.0):
+        Fa = m * a * 9.80665
+        dT = Fa / (2 * k)
+        hold = {lab: MU_LID * (m * 9.80665 + 2 * k * T) for lab, T in (("cinch", CROWN_PRE_N), ("relaxed", T_relaxed_n))}
+        out["cases"][f"{a:.0f}g"] = {
+            "inertia_n": round(Fa, 1),
+            "outward_added_T_per_strap_n": round(dT, 1),
+            "outward_lock_load_n": round(CROWN_PRE_N + dT, 1), "outward_margin_slip": round(slip / (CROWN_PRE_N + dT), 1),
+            "slide_hold_cinch_n": round(hold["cinch"], 1), "slide_hold_relaxed_n": round(hold["relaxed"], 1),
+            "slide_ok_cinch": hold["cinch"] >= Fa, "slide_ok_relaxed": hold["relaxed"] >= Fa}
+    return out
+
+
+def crown_strap_w() -> float:
+    """B-28 crown strap webbing width at the current revision (rev 3: BL-030 diet, 20 mm; BL-029 drew 25 mm)."""
+    return float(REVS[REVISION].get("crown_w", 25.0))
+
+
+CROWN_ROLLED = HERE / "corrie_f_sim" / "corrie_f_crown_rolled.json"   # huntkit.viz3d.corrie_f --crown-paths (BL-030)
 
 
 def rev3_addons(ad: dict) -> dict:
@@ -1698,8 +1914,9 @@ def rev3_addons(ad: dict) -> dict:
                         "system": "pouch", "cfg": "as_hunted", "mass_g": lid["mass_g"], "hours": lid["hours"],
                         "pieces": lid["pieces"], "zip_mm": LID["zip_mm"], "source": lid["source"]}
     cs = crown_straps()
-    out["crown_straps"] = {"name": f"B-28 crown straps (2): 25 mm {cs['cut_mm'] / 1000:.2f} m, toggle at the B-25 bridle, "
-                                   "heavy ladder lock on a hinge-band tab", "system": "straps_compression",
+    lock = "heavy ladder lock" if cs["width_mm"] == 25.0 else f"{cs['width_mm']:.0f} mm ladder lock"
+    out["crown_straps"] = {"name": f"B-28 crown straps (2): {cs['width_mm']:.0f} mm {cs['cut_mm'] / 1000:.2f} m, toggle at "
+                                   f"the B-25 bridle, {lock} on a hinge-band tab", "system": "straps_compression",
                            "cfg": "as_hunted", "mass_g": cs["mass_g"], "hours": round(2 * 2 * BC.HOURS["bartack"], 2),
                            "pieces": 0, "source": cs["source"]}
     return out

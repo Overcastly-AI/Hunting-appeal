@@ -191,8 +191,11 @@ def test_scene_builds_as_corrie_f():
     names = [p.name for p in sc.parts]
     assert not any(n.startswith(("corrie_wing_", "crown_hood", "hood_ladders", "hood_lining")) for n in names)
     assert not any("pouch" in n for n in names)                  # day mode: top pouch off
+    assert not any(n.startswith("cf3_") for n in names)          # BL-030 rev 3: crown lid and its straps off too
+    assert not any(n in ("cf_guy_R@t19", "cf_guy_L@t19") for n in names)    # rev 3: no outside guys
     for n in ("s15_W1", "s15_W2", "s15_W3", "s15_roll", "cf_guy_toggles@t19", "corrie_door", "corrie_kick",
-              "cf_guy_R@t19", "cf_guy_L@t19", "cf_guy_loops@t19", "cf_keeper_B26", "back_panel_binding"):
+              "cf_guy_stub_R@t19", "cf_guy_stub_L@t19", "cf_ports", "cf_guy_loops@t19", "cf_keeper_B26",
+              "back_panel_binding"):
         assert n in names, n
     assert "corrie_top_guys@t19" not in names                    # the rev 0 guys are replaced, not doubled
     by = {p.name: p for p in sc.parts}
@@ -213,8 +216,9 @@ def test_scene_builds_as_corrie_f():
     for sx in (1, -1):
         side = Vt[Vt[:, 0] * sx > 0]
         assert abs(0.5 * (side[:, 0].min() + side[:, 0].max()) - sx * gx) < 1.0
-        Vg = np.asarray(by[f"cf_guy_{'R' if sx > 0 else 'L'}@t19"].mesh.vertices)
-        assert np.abs(Vg[:, 0]).min() < gx + 1.0 and np.abs(Vg[:, 0]).max() > 150.0   # bar end to the bag's corner
+        Vg = np.asarray(by[f"cf_guy_stub_{'R' if sx > 0 else 'L'}@t19"].mesh.vertices)
+        # rev 3 (BL-030): outside, the port guy only runs from its sleeve to the B-27 port, inside the bar band
+        assert np.abs(np.abs(Vg[:, 0]) - gx).max() < F.GUY_W / 2 + 1.0
     Vkc = np.asarray(by["cf_keeper_B26"].mesh.vertices)
     # right gusset, seam to seam. At the day load the gusset is cinched to about half its drafted 214 mm depth
     # (95 mm measured at level 1); at full load the cord spans 200 mm
@@ -234,3 +238,28 @@ def test_scene_builds_as_corrie_f():
     assert abs(sc.cloth_meta["z_clip"] - (z_seam - CF.CLIP_BELOW_SEAM_MM)) < 1e-6
     assert CP.SHELL_PROVIDERS[CF.SHELL].viz_door is False        # the door swap is undone
     assert CO.DOOR["r"] == 60.0 and CO.DOOR["inset"] == 45.0
+
+
+@pytest.mark.skipif(not _has_solver(), reason="needs bpy (set HUNTKIT_BPY to the Blender venv's python)")
+def test_rev3_lid_and_crown_straps_are_native():
+    """BL-030: the 6-day scene draws rev 3 itself: crown lid (variant lid), 20 mm crown straps over it, no pouch."""
+    BC, CO, F, CS = CF._mods()
+    if not (CS.run_dir("F", CF.TORSO, "_fine") / "x_packed.npy").exists():
+        pytest.skip("CORRIE F fine drape missing: run corrie_f_sim.py fine --torso 19")
+    assert F.REVISION == 3
+    sc = CF.scene("sixday", level=1)
+    by = {p.name: p for p in sc.parts}
+    assert not any("pouch" in n for n in by)
+    for n in ("cf3_lid", "cf3_lid_caps", "cf3_lid_base", "cf3_crown_R", "cf3_crown_L", "cf3_crown_toggles", "cf_ports"):
+        assert n in by, n
+    assert by["cf3_lid"].variant == "lid" and by["cf3_crown_R"].variant == "lid"   # add-on: off when the lid is off
+    assert by["cf3_lid_caps"].material == "camo"
+    r = sc.report["rev3"]
+    assert r["strap_w_mm"] == F.crown_strap_w() == 20.0
+    for s in ("R", "L"):
+        P = np.asarray(by[f"cf3_crown_{s}"].mesh.vertices)
+        assert np.abs(np.abs(P[:, 0]) - F.CROWN_X).max() < 12.0                  # stays in its x +/-52 line
+        assert P[:, 2].max() > r["lid_top_z"]                                     # over the lid, not through it
+        assert 350.0 < r["straps"][s]["length_mm"] < 700.0
+    Vl = np.asarray(by["cf3_lid"].mesh.vertices)
+    assert np.ptp(Vl[:, 0]) <= F.LID["W"] + 2.0

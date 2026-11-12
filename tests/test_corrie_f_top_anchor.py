@@ -77,7 +77,7 @@ def test_rev3_swaps_the_pouch_for_the_lid_and_keeps_base_as_rev2():
     with F.revision(3):
         r3 = F.parts()
         assert F.REVISION == 3
-    assert F.REVISION == 1                                        # the module default is unchanged
+    assert F.REVISION == 3                                        # BL-030: rev 3 is the module default
     n2, n3 = _by_name(r2), _by_name(r3)
     assert any("top_pouch" in n for n in n2) and not any("top_pouch" in n for n in n3)
     lid = [r for n, r in n3.items() if "crown_lid" in n]

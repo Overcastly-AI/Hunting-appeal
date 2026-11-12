@@ -1,0 +1,52 @@
+{
+ "torso_in": 19,
+ "method": "huntkit.viz3d.corrie_f.crown_lid: convex hull of bag, roll and lid at x +/-CROWN_X (cloth pass on the fine drape, rolled closure, LID-SEAT)",
+ "level": 2,
+ "states": {
+  "day": {
+   "lid_top_z": 804.507353292721,
+   "straps": {
+    "R": {
+     "length_mm": 413.7751948081873,
+     "wrap_lid_deg": 181.41037182888672,
+     "wrap_total_deg": 181.41037182888672
+    },
+    "L": {
+     "length_mm": 413.0177239967624,
+     "wrap_lid_deg": 178.34025824118834,
+     "wrap_total_deg": 178.34025824118834
+    }
+   }
+  },
+  "sixday": {
+   "lid_top_z": 877.9208252553905,
+   "straps": {
+    "R": {
+     "length_mm": 495.6772741714432,
+     "wrap_lid_deg": 203.56883789934633,
+     "wrap_total_deg": 207.11497911822897
+    },
+    "L": {
+     "length_mm": 495.687727588567,
+     "wrap_lid_deg": 202.98439113229574,
+     "wrap_total_deg": 207.74046323692434
+    }
+   }
+  },
+  "full": {
+   "lid_top_z": 1060.1286812107664,
+   "straps": {
+    "R": {
+     "length_mm": 830.0579342253839,
+     "wrap_lid_deg": 151.4870344221358,
+     "wrap_total_deg": 166.78432004264548
+    },
+    "L": {
+     "length_mm": 830.2047370126631,
+     "wrap_lid_deg": 151.1688990336297,
+     "wrap_total_deg": 166.26379618386133
+    }
+   }
+  }
+ }
+}

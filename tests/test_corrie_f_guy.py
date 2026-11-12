@@ -142,12 +142,13 @@ def test_sim_routing_rebuilds_the_guy_through_eyelets_and_restores_huntkit():
     assert "TG_L" not in pm.cables and list(pm.cables["TI_R"].nodes) == [1204, 745]
 
 
-def test_rev2_adds_only_the_port_and_rev1_stays_the_default():
-    r1 = F.parts("M", "D2")
+def test_rev2_adds_only_the_port_and_revs_stay_reproducible():
+    with F.revision(1):
+        r1 = F.parts("M", "D2")
     with F.revision(2):
         assert F.REVISION == 2 and F.GUY_X == 52.0
         r2 = F.parts("M", "D2")
-    assert F.REVISION == 1
+    assert F.REVISION == 3                                              # BL-030: rev 3 is the module default
     new = [r for r in r2 if r["name"].startswith("BL-028")]
     assert len(new) == 1 and new[0]["system"] == "attachment"
     p = F.guy_port()

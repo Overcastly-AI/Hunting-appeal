@@ -1,7 +1,7 @@
 # Release delta register (BL-015)
 
 Owner: manufacturing-engineer, 2026-11-10. Ticket: `docs/backlog/BL-015-release-delta-register.md`.
-Machine-readable copy: `docs/release_delta_register.csv` (same 22 rows, same text, columns
+Machine-readable copy: `docs/release_delta_register.csv` (same rows, same text, columns
 `id, area, released_state, decided_state, decision_date, decision_source, files_that_must_change, blocked_by,
 safety_relevant, notes`).
 
@@ -16,7 +16,7 @@ safety_relevant, notes`).
 those rows name. Nothing was edited in any released or source file by this ticket; this is a list for a later release
 ticket. Units are mm, N, g, with inches / lb / oz in brackets where a builder needs them.
 
-**Counts.** 22 deltas. **15 are safety-relevant** (a part built from today's files fails HA-LS-1 rev C, an
+**Counts.** 22 deltas from BL-015, plus RD-23 / RD-24 added by BL-030 (CORRIE F rev 3, 2026-11-12): 24 in all, 16 safety-relevant. BL-015's own count: **15 are safety-relevant** (a part built from today's files fails HA-LS-1 rev C, an
 injury limit, or a load limit the user must know). Areas: frame 5, belt 3, back 2, harness 1, bag 4, attachment 1,
 meat haul 2, docs 4.
 
@@ -46,6 +46,8 @@ meat haul 2, docs 4.
 | RD-20 | frame | Crown rev C fix lives only in the DO-NOT-PRINT PRODUCTION.md | 2026-11-06 | **yes** | T6 coupons; BL-017 |
 | RD-21 | docs | BUILD_PLAN.md describes retired parts (stubs, bay mode, PA66 plate) | 2026-11-06 to 2026-11-10 | **yes** | RD-04, RD-10, RD-16 released first |
 | RD-22 | docs | No user guide: float limit, belly rule, procedures, posts optional | 2026-11-06 / 2026-11-07 / 2026-11-09 | **yes** | none |
+| RD-23 | attachment | Top anchor: crown hood B-19 + 2 outside guys -> B-25 bridle + B-27 port guys inside the bag (CORRIE F rev 3) | 2026-11-12 | **yes** | B-27 port pattern; T9 rev 3 at the S kit; LL-H |
+| RD-24 | bag | Top pouch -> B-29 5.0 L crown lid on two 20 mm B-28 crown straps (CORRIE F rev 3) | 2026-11-12 | **no** | B-29 pattern (pattern-maker); B-28 slip gate at 288 N; T9 lid weigh/photo |
 
 ## 2. Rows in full
 
@@ -248,6 +250,24 @@ Each row: released state, decided state, decision source (file and section or DE
 - **Files that must change:** new outputs/release/<next release>/USER_GUIDE.md (or equivalent)
 - **Blocked by:** none (content exists in the records)
 - **Safety-relevant:** yes. Load limits the user must know.
+
+### RD-23 (attachment): Top anchor: crown hood B-19 + 2 outside guys -> B-25 bridle + B-27 port guys inside the bag (CORRIE F rev 3)
+
+- **Released state:** The released attachment package designs/pack_5200/cut/attachment/ (README) anchors the bag top with the B-19 crown hood (lip over x +/-66 of the top bar) and two outside guys from the hood ears to B-22 corner tabs at x +/-149, z 752; the release patterns have no B-25, B-27 or inside guy
+- **Decided state:** CORRIE F rev 3: no crown hood; B-25 guy bridle (25 mm webbing sleeved round the top bar at x +/-52, joined round the spine below its clamp, a folded tab each side for the guy's toggle and a second fold for the B-28 crown strap's toggle); each guy runs from its bridle tab through a B-27 lapped port in the frame face B-01 (x +/-52, z 595-745, 50 mm facing, edges turned 6 mm, bartacked) and INSIDE the bag to B-22 turned to the inside; outside the bag the guy is only the stub from the sleeve to the port. 15 in meat CG 181.3 mm (rev C limit 190), R-28 34 deg at 15/19/23 in, lifter gap >= 57 mm; port guy up to 96 N at 1 g (288 N factored, inside the 312 N the bar was checked with, BL-021)
+- **Decision:** 2026-11-12. Source: docs/DECISIONS.md rows 2026-11-12 'BL-028 guy routing', 'BL-029 result', 'Owner adopts CORRIE F rev 3'; designs/pack_5200/analysis/corrie_f_body.md sections 13.5, 14.5, 14.7, 15
+- **Files that must change:** designs/pack_5200/cut/attachment/README.md (drop B-19 and the outside guys; add B-25, B-27, B-22 inside); the CORRIE F pattern release (B-01 with the B-27 slits and facings; B-22 turned in); designs/pack_5200/BUILD_PLAN.md top-anchor step; user guide (RD-22): the port guys are fitted for every carry
+- **Blocked by:** CORRIE F pattern release (pattern-maker); T9 rev 3 at the S kit; LL-H heavy guy lock slip; attorney review of the strap paths before tooling (DECISIONS 2026-11-01)
+- **Safety-relevant:** yes. Safety: built from the released hood-and-outside-guy files, CORRIE F's 15 in meat CG is over rev C (194.9 mm BL-028, 198.1 mm with the eyelets in cable order, corrie_f_body.md 13.11).
+
+### RD-24 (bag): Top pouch -> B-29 5.0 L crown lid on two 20 mm B-28 crown straps (CORRIE F rev 3)
+
+- **Released state:** The v3.1 release has a box lid L-01 / L-02 / L-03 (cutlist.csv); CORRIE F up to rev 2 carried the 2.7 L top pouch (team B lid pod, 4 short G-hook straps), never released
+- **Decided state:** B-29 crown lid: 350 x 210 mm superellipse plan, 30 mm wall + 55 mm dome, 5.0 L (304 cu in) counted outside the 85 L bag, ULTRAGrid crown and wall, 70D base, two 630D camo corner caps over the D2 blades, #5 coil zip 470 mm on the aft wall, two strap channels on the crown at x +/-52; 45.9 g (1.62 oz). B-28 crown straps (pair): 20 mm polyester, cut 1138 mm, POM toggle into the second fold of each B-25 tab, ITW Classic Ladderloc 20 mm on a 60 mm tab in the hinge band at z 700; 49.1 g (1.73 oz). Both as hunted. Bag side belt M D2: base 1112.8 g, as hunted 1362.4 g, meat trip 1494.6 g
+- **Decision:** 2026-11-12. Source: docs/DECISIONS.md row 2026-11-12 'Owner adopts CORRIE F rev 3'; designs/pack_5200/analysis/corrie_f_body.md sections 14.2, 15.1-15.4; docs/research/top_anchor_and_lids.md
+- **Files that must change:** the CORRIE F pattern release (B-29 pieces: crown, base, front wall, aft wall upper / lower, 2 caps, 2 channels; B-28 cut list; hinge-band tabs); cutlist and BOM (20 mm webbing, 2 x 20 mm ladder locks, 2 POM toggles, #5 coil zip 530 mm with slider); designs/pack_5200/BUILD_PLAN.md; user guide (lid off: the straps come off with it)
+- **Blocked by:** B-29 pattern and the build-hours confirmation (pattern-maker; 8.9 h on the seam list, corrie_f_body.md 15.4); B-28 slip gate at 288 N on the 20 mm lock; T9 lid weigh and photo; owner choice tail keeper vs extender (15.6)
+- **Safety-relevant:** no. The lid is a pocket, not a load path: the port guys (RD-23) hold the bag top. No hook-and-loop; coil zip; camo only on the caps.
 
 ## 3. Released files that are unsafe to build from today, and their warnings
 

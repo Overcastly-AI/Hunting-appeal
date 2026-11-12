@@ -184,8 +184,10 @@ def test_rev0_is_reproducible_and_rev1_adds_only_its_parts():
         assert F.TOP_SETBACK_MM == 30.0 and F.GUY_X == 100.0
         r0 = F.parts("M", "D2")
         assert not any(r["name"].startswith("BL-022") for r in r0)
-    r1 = F.parts("M", "D2")
-    assert F.REVISION == 1 and F.GUY_X == F.REVS[1]["guy_x"]
+    with F.revision(1):                                          # BL-030: rev 3 is the default; rev 1 on request
+        r1 = F.parts("M", "D2")
+        assert F.REVISION == 1 and F.GUY_X == F.REVS[1]["guy_x"]
+    assert F.REVISION == 3
     new = [r for r in r1 if r["name"].startswith("BL-022")]
     assert {r["system"] for r in new} == {"attachment", "straps_compression"}
     added = sum(r["g"] for r in r1) - sum(r["g"] for r in r0)

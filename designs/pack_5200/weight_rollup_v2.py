@@ -18,7 +18,8 @@ Steps are in two booked classes, kept apart everywhere (ticket acceptance), plus
   loads, BL-021). Kept only so the report can say what they would have been. The BL-013 "owner options" class held
   only the fixed torso and is gone with it.
 
-2026-11-12 update: CORRIE F is booked at rev 1 (BL-022, door D2); the H1 body is the ledger's H1B correction (800.7 g
+2026-11-12 update: CORRIE F is booked at the ledger's adopted revision (``ledger.ADOPTED_BAG``: rev 3 since BL-030,
+door D2: B-27 port guys, B-29 crown lid on B-28 crown straps in place of the top pouch); the H1 body is the ledger's H1B correction (800.7 g
 raster, BL-024 + BL-027 + the 28 mm IM3 cheeks, which are inside that raster, so there is no separate cheek step).
 
 Rule used to sort a gate (DECISION, analysis/weight_rollup_v2.md section 1): a test that, if failed, sends the change
@@ -70,11 +71,12 @@ def _F():
     return F
 
 
-CORRIE_F_REV = 1   # BL-022 rev 1 adopted (DECISIONS 2026-11-12): B-25 guy bridle + B-26 tripod keeper, guys at x +/-52.
+CORRIE_F_REV = L.ADOPTED_BAG["revision"]   # BL-030: rev 3 adopted (DECISIONS 2026-11-12), read from the ledger
 
 
 def rev():
-    """Context: corrie_f at CORRIE_F_REV (``corrie_f.revision``, BL-022); a no-op on a corrie_f without revisions."""
+    """Context: corrie_f at CORRIE_F_REV (``corrie_f.revision``; the ledger's adopted bag); a no-op on a corrie_f
+    without revisions."""
     import contextlib
     F = _F()
     return F.revision(CORRIE_F_REV) if hasattr(F, "revision") else contextlib.nullcontext()
@@ -262,7 +264,8 @@ STEP_META = {   # id: (class, ticket, short label, kind, gate)
             "safety", "MT-1 cinch, CA-1 PAHT ratio >= 0.255, T1/T2 gauges (release R1; failing adds mass, never removes)"),
     "P_pkgC": ("P", "package C (2026-11-09)", "7075 belt plate; C-4 / C-7 rev C fixes", "safety",
                "HB-5 plate, pad-seat sag test, T1(c) yoke dial (verification; the 6061 fallback fails rev C too)"),
-    "P_F": ("P", "BL-011/010/022", "CORRIE F rev 1, D2, today's fabrics; wings, 38 mm IM/US and hood kept", "design",
+    "P_F": ("P", "BL-011/010/022/029/030", "CORRIE F rev 3, D2, today's fabrics; wings, 38 mm IM/US and hood kept",
+            "design",
             "first-article: S15 elbow-swing / sling check (BL-009)"),
     "P_d2": ("P", "BL-017 d2", "1:1 pull strap (no 3:1 pulley)", "design", "-"),
     "P_kits": ("P", "BL-017 a (owner)", "three crown kits, size M", "design", "-"),
@@ -437,7 +440,8 @@ def _item(rows: list, key: str) -> float:
         if key == "hydration":
             return r["system"] == "bag_pockets" and "IMP-2" in n
         if key == "pouch":
-            return r["cfg"] == "as_hunted" and (r["system"] == "pouch" or "pouch" in n and r["system"] == "straps_compression")
+            return r["cfg"] == "as_hunted" and (r["system"] == "pouch" or ("pouch" in n or "crown_straps" in n)
+                                                 and r["system"] == "straps_compression")   # rev 3: lid + its straps
         if key == "holster":
             return r["cfg"] == "as_hunted" and "IMP-3" in n
         raise KeyError(key)
@@ -603,7 +607,7 @@ def plot_waterfall(path: Path, size: str = "M") -> Path:
     ax.set_ylim(-2.0, n)
     ax.set_yticks([])
     ax.set_xlabel("pack mass, base configuration, belt M (g)")
-    fig.suptitle("Weight roll-up v2, 2026-11-12: B.2 on H1 to proven now and after tests\n(base, belt M; CORRIE F rev 1, "
+    fig.suptitle(f"Weight roll-up v2, 2026-11-12: B.2 on H1 to proven now and after tests\n(base, belt M; CORRIE F rev {CORRIE_F_REV}, "
                  "H1 body 800.7 g)", x=0.02, ha="left", fontsize=11, fontweight="bold")
     ax.legend(handles=[Patch(color=COL["correction"], label="booking correction (no design change)"),
                        Patch(color=COL["P"], label="proven now"), Patch(color=COL["A"], label="after tests")],
@@ -714,14 +718,15 @@ def report(res: dict, shots: list) -> str:
       "Code: `designs/pack_5200/weight_rollup_v2.py` (tests `tests/test_weight_rollup_v2.py`); numbers: "
       "`analysis/weight_rollup_v2.json`. Every mass below is a ledger row (`huntkit.mass.ledger`, config "
       "`corrie_b2_h1`, plus the C1-C8 and H1B corrections that the ledger holds as config `corrie_b2_h1_v2`) or a row "
-      f"produced by the named ticket's own code, called live. CORRIE F is booked at rev {CORRIE_F_REV} (BL-022), door "
-      "D2. **Do not quote the numbers from this file after the code changes: re-run it.**\n")
+      f"produced by the named ticket's own code, called live. CORRIE F is booked at rev {CORRIE_F_REV} (the ledger's "
+      "`ADOPTED_BAG`, BL-030), door D2. **Do not quote the numbers from this file after the code changes: re-run it.**\n")
     w("**2026-11-12 changes (everything adopted since BL-013 / BL-023, DECISIONS rows of 2026-11-12):** "
       f"(1) **H1 body {hb['booked_g']} -> {hb['body_g']:.1f} g** ({hb['name']}), booked in the ledger as correction H1B "
       f"from `analysis/h1_buckling.json`: BL-024 grow-only offset {hb['bl024_g']:+.1f} g, BL-027 buckling members "
       f"{hb['bl027_members_g']:+.1f} g, BL-021 28 mm IM3 cheeks {hb['im3_cheek_28_g']:+.1f} g (as rastered into the "
       "body). (2) The separate cheek step (27 mm, +6.80 g) is gone: the 28 mm cheek is inside the H1B raster. "
-      "(3) **CORRIE F rev 1** (BL-022: B-25 guy bridle, B-26 tripod keeper), door D2. (4) **Retired, booked in no "
+      "(3) **CORRIE F rev 3** (BL-022 B-25 guy bridle and B-26 tripod keeper; BL-028 B-27 port guys inside; BL-029 / "
+      "BL-030 B-29 crown lid on 20 mm B-28 crown straps in place of the 2.7 L top pouch, as hunted), door D2. (4) **Retired, booked in no "
       "scenario:** BL-017 OD 17 legs and BL-007 fixed torso (both below 1.0 on the cloth-sim loads, BL-021); the "
       "'owner options' scenario held only the fixed torso and is dropped. Wings, hood and IM2 hooks stay deleted in "
       "after tests (owner decisions 2026-11-11 / 2026-11-12); proven now still books them, because each deletion "
@@ -753,7 +758,7 @@ def report(res: dict, shots: list) -> str:
       "it (section 2).\n")
     w("## 1. Rules\n")
     w("- **Start:** ledger `corrie_b2_h1`, belt M, every item booked: "
-      f"{B2['meat_trip']:.1f} g. BL-008 tags (owner-adopted 2026-11-10): add-ons (top pouch, scope pod, IMP-3 holster, "
+      f"{B2['meat_trip']:.1f} g. BL-008 tags (owner-adopted 2026-11-10): add-ons (top pouch / crown lid, scope pod, IMP-3 holster, "
       "rain fly) are as hunted; float links B-24 and the meat liner are meat trip. Taking the add-ons out of base is a "
       "reporting rule, not a saving; it is its own grey bar in the waterfall.")
     w("- **Proven now (P):** PASS verdicts with no open decision gate, plus every booking correction and safety "
@@ -771,7 +776,7 @@ def report(res: dict, shots: list) -> str:
       f"A, and P carries the wing parts. If FT-S2, PT-1 / TL-1 / LL-H were treated as first-article verification of "
       f"owner decisions, proven now would be "
       f"{P['base'] + st['A_wings']['delta_g']['base'] + st['A_att']['delta_g']['base']:.1f} g.")
-    w("- CORRIE F is door D2 (orchestrator call 2026-11-11), rev 1 (BL-022). P uses today's fabrics on CORRIE F's "
+    w(f"- CORRIE F is door D2 (orchestrator call 2026-11-11), rev {CORRIE_F_REV} (ledger `ADOPTED_BAG`). P uses today's fabrics on CORRIE F's "
       "pieces; A adds the swaps (owner swatch + strip test). P books the B-25 bridle even with the hood fallback "
       f"(conservative, {_F().guy_bridle()['mass_g']:.1f} g).\n")
     w("## 2. Steps (belt M; base / as hunted / meat trip deltas, g)\n")

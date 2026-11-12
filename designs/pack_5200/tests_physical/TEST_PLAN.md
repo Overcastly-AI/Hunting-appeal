@@ -214,7 +214,7 @@ Full steps, specimens, pass numbers and notes for every row are in `test_registe
 | 30 | **T6** | crown-corner bond coupons (0.8 mm bondline) | safety | carbon crown corners + extension-post socket (P-1) | – | A | 4 | 24 | 30 | designs/pack_5200/analysis/load_standard.md §5.3; designs/pack_5200/print/frame/PRODUCTION.md (T6 note) |
 | 31 | **T7** | bushing crush coupon | safety | crown bushing ring crush credit | – | A | 2 | – | 10 | designs/pack_5200/analysis/load_standard.md §5.3 |
 | 32 | **PT-4** | crown hood on an 18 mm tube, room and -10 C | safety | top anchor (B-19) | – | A | 3 | – | 10 | designs/pack_5200/analysis/bag_attachment.md §5 |
-| 33 | **T9** | loaded CG (+ 15 in, 30 kg meat check) | safety | HA-LS-1 rev C basis; before T1 | – | C | 4 | – | 0 | designs/pack_5200/analysis/load_standard.md §5.3; designs/pack_5200/analysis/corrie_body.md §11.4 |
+| 33 | **T9** (rev) | loaded CG (+ 15 in, 30 kg meat check; CORRIE F rev 3 items, BL-030) | safety | HA-LS-1 rev C basis; before T1; rev 3 LID-SIM, CROWN_PRE_N, ROLL-PATH, LID-SEAT | – | C | 5 | – | 0 | designs/pack_5200/analysis/load_standard.md §5.3; designs/pack_5200/analysis/corrie_body.md §11.4; designs/pack_5200/analysis/corrie_f_body.md §14.10, §15.6 |
 | 34 | **BP-3** (new) | back pressure on the rails, below and above z 190 | safety | back system release; BL-005 (A_back) skin model | – | D | 3 | – | 0 | designs/pack_5200/analysis/back_system_integration.md §6, §8; designs/pack_5200/analysis/review_20261111.md S4 |
 | 35 | **IM3-EP** (new) | IM3 eye pull on the first printed frame | safety | H1 release; P_cheek | – | A | 2 | – | 0 | designs/pack_5200/analysis/loadpath_verification.md §8 (FAIRLEAD_DIR), §4.1 |
 | 36 | **W-PULL** (new) | W1-W3 lash points on the first frame | safety | W1-W3 frame anchors (BL-003) | – | A | 1.5 | – | 0 | designs/pack_5200/analysis/loadpath_verification.md §3 S8, S9, §8 |
@@ -243,11 +243,20 @@ Full steps, specimens, pass numbers and notes for every row are in `test_registe
 | 59 | **FT-S2** (new) | no wings: 5 km side-hill + door cycles with the tripod loaded | grams | side wings deleted (A_wings) | 101.6 | E | 3 | – | 0 | designs/pack_5200/analysis/strap_architecture.md (ASSUMPTION W1/W2); designs/pack_5200/analysis/corrie_f_body.md; docs/DECISIONS.md 2026-11-11 owner row; designs/pack_5200/analysis/review_20261111.md S7 |
 | 60 | **T5f** | float US1 share 56 kg | safety | float meat limit 53 -> 56 kg | – | C | 4 | – | 0 | designs/pack_5200/analysis/float_fea.md §3; designs/pack_5200/analysis/load_standard.md §4.3 |
 | 61 | **T2u** | ultimate demo 450 lb on P1 (destroys P1) | safety | none after it (last test) | – | C | 3 | – | 437 | designs/pack_5200/analysis/load_standard.md §5.3 |
-| | | **total** | | | | | **129.7** | **498** | **964.0** | |
+| | | **total** | | | | | **130.7** | **498** | **964.0** | |
 
 Order inside phase 4 follows `load_standard.md` §5.3: T9 before T1, then T3, T2, T4a/b, T4c, T5 on P2, and T2u on P1
 last. BP-3 and RF-1 run in the T9 session (same FSR strips); IM3-EP and W-PULL run on P1 before T1 on P2, so a cracked
-eye stops the carry tests before they start. CR-1 (crown hang, `BUILD_PLAN.md` §5) and SP-1 (spreader bone end, `PRODUCTION.md` QC) go in the same sessions.
+eye stops the carry tests before they start.
+
+**T9 rev 3 additions (BL-030, CORRIE F rev 3 adopted 2026-11-12).** In the same session, on the sewn rev 3 bag:
+(a) S kit (15 in), top full, B-27 port guys fitted, B-29 lid on with 1 kg, 30 kg meat on IM1-IM3 and fill to 68 kg:
+plumb-line CG, recorded against the sim's 181.3 mm (limit 190). (b) Crown strap cinch: a 0-150 N spring scale on each
+B-28 strap's tail, pull to 80 N and lock; read again after 30 min of walking and after setting the pack down hard from
+0.5 m (the 3 g base drop of `corrie_f.lid_hold`). (c) Cinched crown strap free length, bar tab to ladder lock, at the S
+kit full and at the L kit 6-day (ROLL-PATH; the cut leaves 928 mm of path). (d) Weigh the sewn lid alone and
+photograph it seated on the packed 6-day and full bag (LID-SIM 45.9 g, LID_SLIDER5_G, LID_THREAD, LID-SEAT).
+Steps and pass numbers: `test_register.csv` row T9. CR-1 (crown hang, `BUILD_PLAN.md` §5) and SP-1 (spreader bone end, `PRODUCTION.md` QC) go in the same sessions.
 
 ### What each result unlocks (the big ones)
 
@@ -265,6 +274,7 @@ eye stops the carry tests before they start. CR-1 (crown hang, `BUILD_PLAN.md` �
 | CA-5 | print H1 with the bolted z 234 joint | B's 8-bolt flange, frame about 1058 g (+33 g, `frame_comp_verdict.md` §6) |
 | HB-5 (7075 1.2) | keep package C plate, −25.0 g | back to 6061 1.5 (fails at ±2° slope, 0.94; use the ribbed 7075 fallback, 121 g) |
 | T9 | rev C CG basis confirmed; > 10 mm below rev C lets the owner relax it | above rev C: stop, re-run `rev_c_verification` before T1 |
+| T9 rev 3 items (BL-030) | CORRIE F rev 3 top as drawn: port guys hold the S-kit top, 20 mm crown straps cut 1138 mm, lid 45.9 g | CG over 190 mm at the S kit: stop (port guy height or a higher S lash point, corrie_f_body.md 14.7); cinch lost on the full top: a re-cinch rule or a lid keeper; strap short: re-cut |
 | T1–T5 | first loaded carry | stop, send the log |
 | WP-1 / WP-3 / WP-5 | keep B-1 / A-2 / B-10 (54.6 g already taken in B.2) | add the grams back (binding, longer tails, Hypalon trims) |
 | FS-O5 + PT-3 on ULTRA 200X | C-5 floor swap, −7.0 g | keep 500D |

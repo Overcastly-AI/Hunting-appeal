@@ -2,7 +2,7 @@
  "date": "2026-11-12",
  "ticket": "BL-013, revised by BL-023, brought up to date 2026-11-12",
  "size": "M",
- "corrie_f_rev": 1,
+ "corrie_f_rev": 3,
  "kit": "M",
  "target_g": 2993.7,
  "scenarios": {
@@ -12,9 +12,9 @@
    "meat_trip": 3927.0
   },
   "P": {
-   "base": 3680.6,
-   "as_hunted": 3926.1,
-   "meat_trip": 4058.2,
+   "base": 3683.4,
+   "as_hunted": 3969.6,
+   "meat_trip": 4101.6,
    "by_system_base": {
     "frame": 1073.1,
     "back": 413.6,
@@ -26,19 +26,19 @@
     "fly": 5.9,
     "straps_meat": 383.6,
     "straps_compression": 265.7,
-    "attachment": 279.4,
+    "attachment": 282.2,
     "misc": 43.5
    },
    "like_for_like_base": {
-    "bag_side": 1424.8,
+    "bag_side": 1427.6,
     "suspension": 2212.3,
     "misc": 43.5
    }
   },
   "A": {
-   "base": 3208.9,
-   "as_hunted": 3454.4,
-   "meat_trip": 3586.5,
+   "base": 3211.6,
+   "as_hunted": 3497.8,
+   "meat_trip": 3629.9,
    "by_system_base": {
     "frame": 1073.1,
     "back": 369.0,
@@ -50,11 +50,11 @@
     "fly": 5.9,
     "straps_meat": 266.6,
     "straps_compression": 164.1,
-    "attachment": 176.4,
+    "attachment": 179.1,
     "misc": 43.5
    },
    "like_for_like_base": {
-    "bag_side": 1042.4,
+    "bag_side": 1045.2,
     "suspension": 2122.9,
     "misc": 43.5
    }
@@ -68,14 +68,14 @@
     "meat_trip": 3899.1
    },
    "P": {
-    "base": 3652.9,
-    "as_hunted": 3898.4,
-    "meat_trip": 4030.5
+    "base": 3655.6,
+    "as_hunted": 3941.8,
+    "meat_trip": 4073.9
    },
    "A": {
-    "base": 3183.4,
-    "as_hunted": 3428.9,
-    "meat_trip": 3561.0
+    "base": 3186.1,
+    "as_hunted": 3472.3,
+    "meat_trip": 3604.4
    }
   },
   "M": {
@@ -85,14 +85,14 @@
     "meat_trip": 3927.0
    },
    "P": {
-    "base": 3680.6,
-    "as_hunted": 3926.1,
-    "meat_trip": 4058.2
+    "base": 3683.4,
+    "as_hunted": 3969.6,
+    "meat_trip": 4101.6
    },
    "A": {
-    "base": 3208.9,
-    "as_hunted": 3454.4,
-    "meat_trip": 3586.5
+    "base": 3211.6,
+    "as_hunted": 3497.8,
+    "meat_trip": 3629.9
    }
   },
   "L": {
@@ -102,14 +102,14 @@
     "meat_trip": 3951.1
    },
    "P": {
-    "base": 3705.0,
-    "as_hunted": 3950.5,
-    "meat_trip": 4082.6
+    "base": 3707.7,
+    "as_hunted": 3993.9,
+    "meat_trip": 4126.0
    },
    "A": {
-    "base": 3231.2,
-    "as_hunted": 3476.8,
-    "meat_trip": 3608.8
+    "base": 3234.0,
+    "as_hunted": 3520.2,
+    "meat_trip": 3652.3
    }
   },
   "XL": {
@@ -119,14 +119,14 @@
     "meat_trip": 3987.1
    },
    "P": {
-    "base": 3741.3,
-    "as_hunted": 3986.8,
-    "meat_trip": 4118.9
+    "base": 3744.0,
+    "as_hunted": 4030.2,
+    "meat_trip": 4162.3
    },
    "A": {
-    "base": 3265.6,
-    "as_hunted": 3511.1,
-    "meat_trip": 3643.2
+    "base": 3268.3,
+    "as_hunted": 3554.5,
+    "meat_trip": 3686.6
    }
   },
   "XXL": {
@@ -136,14 +136,14 @@
     "meat_trip": 4015.2
    },
    "P": {
-    "base": 3770.3,
-    "as_hunted": 4015.8,
-    "meat_trip": 4147.9
+    "base": 3773.0,
+    "as_hunted": 4059.2,
+    "meat_trip": 4191.3
    },
    "A": {
-    "base": 3292.5,
-    "as_hunted": 3538.0,
-    "meat_trip": 3670.1
+    "base": 3295.3,
+    "as_hunted": 3581.4,
+    "meat_trip": 3713.5
    }
   }
  },
@@ -423,14 +423,14 @@
   },
   "P_F": {
    "class": "P",
-   "ticket": "BL-011/010/022",
-   "label": "CORRIE F rev 1, D2, today's fabrics; wings, 38 mm IM/US and hood kept",
+   "ticket": "BL-011/010/022/029/030",
+   "label": "CORRIE F rev 3, D2, today's fabrics; wings, 38 mm IM/US and hood kept",
    "kind": "design",
    "gate": "first-article: S15 elbow-swing / sling check (BL-009)",
    "delta_g": {
-    "base": 54.5,
-    "as_hunted": 130.1,
-    "meat_trip": 207.8
+    "base": 57.3,
+    "as_hunted": 173.5,
+    "meat_trip": 251.2
    },
    "rows": [
     {
@@ -1169,25 +1169,25 @@
      "source": "lean.fell.addons()['A1']"
     },
     {
-     "system": "pouch",
-     "name": "CORRIE F: add-on top_pouch: top pouch 2.7 L (team B lid pod), body",
-     "g": 29.66,
-     "cfg": "as_hunted",
-     "source": "lean.fell.addons()['A3'] minus its 4 straps"
-    },
-    {
-     "system": "straps_compression",
-     "name": "CORRIE F: add-on top_pouch_straps: top pouch: 4 x 25 mm 0.12 m straps + 4 G-hooks",
-     "g": 24.64,
-     "cfg": "as_hunted",
-     "source": "poly_webbing_25mm record + G_HOOK ASSUMPTION (lean.fell A3 recipe)"
-    },
-    {
      "system": "bag_pockets",
      "name": "CORRIE F: add-on meat_liner: meat liner (team D SWAP slab, wipeable silpoly / 70D, 330 x 110 x 560)",
      "g": 61.7,
      "cfg": "meat_trip",
      "source": "D.cache.modules()[0] (pieces x gsm + hw)"
+    },
+    {
+     "system": "pouch",
+     "name": "CORRIE F: add-on crown_lid: B-29 crown lid 5.0 L (350 x 210 x 85 mm, domed, camo corner caps, #5 coil zip)",
+     "g": 45.9,
+     "cfg": "as_hunted",
+     "source": "ultragrid_210d_uhmwpe_ripstop / nylon_ripstop_70d / polyester_ht_630d_printable records x cut area (lid_geometry) + coil_zipper_5 record; LID_SLIDER5_G, LID_THREAD ASSUMPTIONS"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: add-on crown_straps: B-28 crown straps (2): 20 mm 1.14 m, toggle at the B-25 bridle, 20 mm ladder lock on a hinge-band tab",
+     "g": 49.07,
+     "cfg": "as_hunted",
+     "source": "WEB20_GM, LL20 (cited tensile; slip and masses ASSUMPTIONS) x cut (crown_strap_diet: rolled path + torso change + tail + loop); TOGGLE_G ASSUMPTION (attach_diet)"
     },
     {
      "system": "fly",
@@ -1615,6 +1615,13 @@
      "g": 1.21,
      "cfg": "base",
      "source": "shock_cord_3mm record (6 g/m) x cut length; D1 tab poly_webbing_25mm record"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-028 rev 2: B-27 guy ports (2), lapped slits in B-01 at x +/-52, z 595-745",
+     "g": 2.74,
+     "cfg": "base",
+     "source": "challenge_ultra_200 record (B-01 fabric) x facing and turned-edge area (PORT_FACING_W, PORT_TURN ASSUMPTIONS)"
     },
     {
      "system": "straps_compression",
@@ -2163,25 +2170,25 @@
      "source": "lean.fell.addons()['A1']"
     },
     {
-     "system": "pouch",
-     "name": "CORRIE F: add-on top_pouch: top pouch 2.7 L (team B lid pod), body",
-     "g": 29.66,
-     "cfg": "as_hunted",
-     "source": "lean.fell.addons()['A3'] minus its 4 straps"
-    },
-    {
-     "system": "straps_compression",
-     "name": "CORRIE F: add-on top_pouch_straps: top pouch: 4 x 25 mm 0.12 m straps + 4 G-hooks",
-     "g": 24.64,
-     "cfg": "as_hunted",
-     "source": "poly_webbing_25mm record + G_HOOK ASSUMPTION (lean.fell A3 recipe)"
-    },
-    {
      "system": "bag_pockets",
      "name": "CORRIE F: add-on meat_liner: meat liner (team D SWAP slab, wipeable silpoly / 70D, 330 x 110 x 560)",
      "g": 61.7,
      "cfg": "meat_trip",
      "source": "D.cache.modules()[0] (pieces x gsm + hw)"
+    },
+    {
+     "system": "pouch",
+     "name": "CORRIE F: add-on crown_lid: B-29 crown lid 5.0 L (350 x 210 x 85 mm, domed, camo corner caps, #5 coil zip)",
+     "g": 45.9,
+     "cfg": "as_hunted",
+     "source": "ultragrid_210d_uhmwpe_ripstop / nylon_ripstop_70d / polyester_ht_630d_printable records x cut area (lid_geometry) + coil_zipper_5 record; LID_SLIDER5_G, LID_THREAD ASSUMPTIONS"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: add-on crown_straps: B-28 crown straps (2): 20 mm 1.14 m, toggle at the B-25 bridle, 20 mm ladder lock on a hinge-band tab",
+     "g": 49.07,
+     "cfg": "as_hunted",
+     "source": "WEB20_GM, LL20 (cited tensile; slip and masses ASSUMPTIONS) x cut (crown_strap_diet: rolled path + torso change + tail + loop); TOGGLE_G ASSUMPTION (attach_diet)"
     },
     {
      "system": "fly",
@@ -2611,6 +2618,13 @@
      "source": "shock_cord_3mm record (6 g/m) x cut length; D1 tab poly_webbing_25mm record"
     },
     {
+     "system": "attachment",
+     "name": "CORRIE F: BL-028 rev 2: B-27 guy ports (2), lapped slits in B-01 at x +/-52, z 595-745",
+     "g": 2.74,
+     "cfg": "base",
+     "source": "challenge_ultra_200 record (B-01 fabric) x facing and turned-edge area (PORT_FACING_W, PORT_TURN ASSUMPTIONS)"
+    },
+    {
      "system": "bag_shell",
      "name": "CORRIE F: B-11 lash tabs (Hypalon, bow riser + muzzle keepers), released",
      "g": -12.0,
@@ -2772,25 +2786,25 @@
      "source": "lean.fell.addons()['A1']"
     },
     {
-     "system": "pouch",
-     "name": "CORRIE F: add-on top_pouch: top pouch 2.7 L (team B lid pod), body",
-     "g": -29.66,
-     "cfg": "as_hunted",
-     "source": "lean.fell.addons()['A3'] minus its 4 straps"
-    },
-    {
-     "system": "straps_compression",
-     "name": "CORRIE F: add-on top_pouch_straps: top pouch: 4 x 25 mm 0.12 m straps + 4 G-hooks",
-     "g": -24.64,
-     "cfg": "as_hunted",
-     "source": "poly_webbing_25mm record + G_HOOK ASSUMPTION (lean.fell A3 recipe)"
-    },
-    {
      "system": "bag_pockets",
      "name": "CORRIE F: add-on meat_liner: meat liner (team D SWAP slab, wipeable silpoly / 70D, 330 x 110 x 560)",
      "g": -61.7,
      "cfg": "meat_trip",
      "source": "D.cache.modules()[0] (pieces x gsm + hw)"
+    },
+    {
+     "system": "pouch",
+     "name": "CORRIE F: add-on crown_lid: B-29 crown lid 5.0 L (350 x 210 x 85 mm, domed, camo corner caps, #5 coil zip)",
+     "g": -45.9,
+     "cfg": "as_hunted",
+     "source": "ultragrid_210d_uhmwpe_ripstop / nylon_ripstop_70d / polyester_ht_630d_printable records x cut area (lid_geometry) + coil_zipper_5 record; LID_SLIDER5_G, LID_THREAD ASSUMPTIONS"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: add-on crown_straps: B-28 crown straps (2): 20 mm 1.14 m, toggle at the B-25 bridle, 20 mm ladder lock on a hinge-band tab",
+     "g": -49.07,
+     "cfg": "as_hunted",
+     "source": "WEB20_GM, LL20 (cited tensile; slip and masses ASSUMPTIONS) x cut (crown_strap_diet: rolled path + torso change + tail + loop); TOGGLE_G ASSUMPTION (attach_diet)"
     },
     {
      "system": "fly",
@@ -3218,6 +3232,13 @@
      "g": -1.21,
      "cfg": "base",
      "source": "shock_cord_3mm record (6 g/m) x cut length; D1 tab poly_webbing_25mm record"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-028 rev 2: B-27 guy ports (2), lapped slits in B-01 at x +/-52, z 595-745",
+     "g": -2.74,
+     "cfg": "base",
+     "source": "challenge_ultra_200 record (B-01 fabric) x facing and turned-edge area (PORT_FACING_W, PORT_TURN ASSUMPTIONS)"
     }
    ]
   },
@@ -3315,7 +3336,7 @@
  },
  "configs": {
   "corrie_f_base": {
-   "total_g": 3368.7,
+   "total_g": 3371.4,
    "by_system": {
     "frame": 1135.1,
     "back": 413.6,
@@ -3327,17 +3348,17 @@
     "fly": 5.9,
     "straps_meat": 266.6,
     "straps_compression": 164.1,
-    "attachment": 176.4,
+    "attachment": 179.1,
     "misc": 43.5
    },
    "like_for_like": {
-    "bag_side": 1042.4,
+    "bag_side": 1045.2,
     "suspension": 2282.7,
     "misc": 43.5
    }
   },
   "corrie_f_as_hunted": {
-   "total_g": 3614.2,
+   "total_g": 3657.6,
    "by_system": {
     "frame": 1135.1,
     "back": 413.6,
@@ -3345,15 +3366,15 @@
     "harness": 229.6,
     "bag_shell": 328.4,
     "bag_pockets": 184.7,
-    "pouch": 29.7,
+    "pouch": 45.9,
     "fly": 76.8,
     "straps_meat": 266.6,
-    "straps_compression": 188.8,
-    "attachment": 176.4,
+    "straps_compression": 213.2,
+    "attachment": 179.1,
     "misc": 43.5
    },
    "like_for_like": {
-    "bag_side": 1251.3,
+    "bag_side": 1294.7,
     "suspension": 2319.4,
     "misc": 43.5
    }
@@ -3500,13 +3521,13 @@
     "pct": 58.0
    },
    "P": {
-    "ours_g": 3625.1,
-    "delta_g": 1317.1,
+    "ours_g": 3627.9,
+    "delta_g": 1319.9,
     "pct": 57.0
    },
    "A": {
-    "ours_g": 3161.1,
-    "delta_g": 853.1,
+    "ours_g": 3163.8,
+    "delta_g": 855.8,
     "pct": 37.0
    }
   },
@@ -3525,13 +3546,13 @@
     "pct": 52.0
    },
    "P": {
-    "ours_g": 3625.1,
-    "delta_g": 1229.1,
+    "ours_g": 3627.9,
+    "delta_g": 1231.9,
     "pct": 51.0
    },
    "A": {
-    "ours_g": 3161.1,
-    "delta_g": 765.1,
+    "ours_g": 3163.8,
+    "delta_g": 767.8,
     "pct": 32.0
    }
   },
@@ -3551,14 +3572,14 @@
     "pct": 42.0
    },
    "P": {
-    "ours_g": 3719.7,
-    "delta_g": 1082.7,
-    "pct": 41.0
+    "ours_g": 3763.2,
+    "delta_g": 1126.2,
+    "pct": 43.0
    },
    "A": {
-    "ours_g": 3248.0,
-    "delta_g": 611.0,
-    "pct": 23.0
+    "ours_g": 3291.4,
+    "delta_g": 654.4,
+    "pct": 25.0
    }
   },
   {
@@ -3573,13 +3594,13 @@
     "pct": 33.0
    },
    "P": {
-    "ours_g": 3680.6,
-    "delta_g": 890.6,
+    "ours_g": 3683.4,
+    "delta_g": 893.4,
     "pct": 32.0
    },
    "A": {
-    "ours_g": 3208.9,
-    "delta_g": 418.9,
+    "ours_g": 3211.6,
+    "delta_g": 421.6,
     "pct": 15.0
    }
   },
@@ -3595,13 +3616,13 @@
     "pct": 40.0
    },
    "P": {
-    "ours_g": 3680.6,
-    "delta_g": 1041.6,
-    "pct": 39.0
+    "ours_g": 3683.4,
+    "delta_g": 1044.4,
+    "pct": 40.0
    },
    "A": {
-    "ours_g": 3208.9,
-    "delta_g": 569.9,
+    "ours_g": 3211.6,
+    "delta_g": 572.6,
     "pct": 22.0
    }
   },
@@ -3619,14 +3640,14 @@
     "pct": 34.0
    },
    "P": {
-    "ours_g": 3734.9,
-    "delta_g": 922.9,
-    "pct": 33.0
+    "ours_g": 3778.4,
+    "delta_g": 966.4,
+    "pct": 34.0
    },
    "A": {
-    "ours_g": 3263.2,
-    "delta_g": 451.2,
-    "pct": 16.0
+    "ours_g": 3306.6,
+    "delta_g": 494.6,
+    "pct": 18.0
    }
   },
   {
@@ -3643,14 +3664,14 @@
     "pct": 39.0
    },
    "P": {
-    "ours_g": 3734.9,
-    "delta_g": 1026.9,
-    "pct": 38.0
+    "ours_g": 3778.4,
+    "delta_g": 1070.4,
+    "pct": 40.0
    },
    "A": {
-    "ours_g": 3263.2,
-    "delta_g": 555.2,
-    "pct": 21.0
+    "ours_g": 3306.6,
+    "delta_g": 598.6,
+    "pct": 22.0
    }
   },
   {
@@ -3667,14 +3688,14 @@
     "pct": 32.0
    },
    "P": {
-    "ours_g": 3717.2,
-    "delta_g": 882.2,
+    "ours_g": 3720.0,
+    "delta_g": 885.0,
     "pct": 31.0
    },
    "A": {
-    "ours_g": 3245.5,
-    "delta_g": 410.5,
-    "pct": 14.0
+    "ours_g": 3248.2,
+    "delta_g": 413.2,
+    "pct": 15.0
    }
   },
   {
@@ -3693,14 +3714,14 @@
     "pct": 124.0
    },
    "P": {
-    "ours_g": 3719.7,
-    "delta_g": 2046.7,
-    "pct": 122.0
+    "ours_g": 3763.2,
+    "delta_g": 2090.2,
+    "pct": 125.0
    },
    "A": {
-    "ours_g": 3248.0,
-    "delta_g": 1575.0,
-    "pct": 94.0
+    "ours_g": 3291.4,
+    "delta_g": 1618.4,
+    "pct": 97.0
    }
   },
   {
@@ -3717,20 +3738,20 @@
     "pct": 38.0
    },
    "P": {
-    "ours_g": 3734.9,
-    "delta_g": 1012.9,
-    "pct": 37.0
+    "ours_g": 3778.4,
+    "delta_g": 1056.4,
+    "pct": 39.0
    },
    "A": {
-    "ours_g": 3263.2,
-    "delta_g": 541.2,
-    "pct": 20.0
+    "ours_g": 3306.6,
+    "delta_g": 584.6,
+    "pct": 21.0
    }
   }
  ],
  "features": {
-  "after_tests_base_g": 3208.9,
-  "gap_g": 215.2,
+  "after_tests_base_g": 3211.6,
+  "gap_g": 217.9,
   "candidates": [
    {
     "item": "IMP-2",
@@ -3803,7 +3824,7 @@
   "with_reserve_g": 163.7,
   "reaches_with_reserve": false
  },
- "bl011_headline_base_g": 3270.5,
+ "bl011_headline_base_g": 3273.2,
  "h1_fatigue": {
   "old": 1.2794731924250948,
   "per_torso": 1.1502260709981276,
@@ -3829,12 +3850,12 @@
   "P": {
    "scenario": "P",
    "cfg": "base",
-   "total_g": 3680.6,
+   "total_g": 3683.4,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
-     "g": 370.1,
-     "band_g": 126.7,
-     "n": 19,
+     "g": 372.8,
+     "band_g": 127.5,
+     "n": 20,
      "frac": 0.3
     },
     "printed PAHT-CF body (2 mm raster x density)": {
@@ -3856,7 +3877,7 @@
      "frac": 0.08
     }
    },
-   "worst_g": 428.5,
+   "worst_g": 429.3,
    "rss_g": 68.1,
    "named": [
     {
@@ -3954,12 +3975,12 @@
   "A": {
    "scenario": "A",
    "cfg": "base",
-   "total_g": 3208.9,
+   "total_g": 3211.6,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
-     "g": 307.2,
-     "band_g": 152.8,
-     "n": 22,
+     "g": 309.9,
+     "band_g": 153.6,
+     "n": 23,
      "frac": 0.3
     },
     "printed PAHT-CF body (2 mm raster x density)": {
@@ -3981,7 +4002,7 @@
      "frac": 0.08
     }
    },
-   "worst_g": 477.7,
+   "worst_g": 478.5,
    "rss_g": 70.5,
    "named": [
     {
