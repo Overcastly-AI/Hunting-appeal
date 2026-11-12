@@ -1,4 +1,4 @@
-"""BL-012: CORRIE F studio scene (huntkit/viz3d/corrie_f.py).
+"""BL-012 / BL-026: CORRIE F rev 1 studio scene (huntkit/viz3d/corrie_f.py).
 
 The geometry tests run anywhere. The scene test needs Blender's Python (HUNTKIT_BPY, see huntkit/viz3d/README.md) and
 CORRIE F's fine drape in ``outputs/`` (not tracked); it skips without either.
@@ -99,6 +99,68 @@ def test_d2_fields_signs():
     assert d[4] < 0                                              # the rounded corner is cut off the door
 
 
+DAY_BLADE_U = {"z_low_max": 115.0, "width_min": 290.0}       # day-state bounds, see test_scene_builds_as_corrie_f
+
+
+def test_outboard_hull_is_the_taut_line():
+    # a to b round a half disc of radius 50 centred between them: two tangents (86.6 mm) and a 60 degree arc
+    a = np.linspace(0, np.pi, 400)
+    disc = np.column_stack([100.0 + 50.0 * np.cos(a), 50.0 * np.sin(a)])
+    ch = CF._outboard_hull(disc, [0.0, 0.0], [200.0, 0.0], 0.0, [100.0, 500.0])
+    L = float(np.linalg.norm(np.diff(ch, axis=0), axis=1).sum())
+    assert abs(L - (2 * np.sqrt(100.0 ** 2 - 50.0 ** 2) + 50.0 * np.pi / 3)) < 0.5
+    assert np.allclose(ch[0], [0, 0]) and np.allclose(ch[-1], [200, 0]) and ch[:, 1].min() >= 0.0
+    # points on the other side of a-b are ignored; with nothing on the asked side the line is straight
+    other = disc * [1.0, -1.0]
+    assert len(CF._outboard_hull(other, [0.0, 0.0], [200.0, 0.0], 0.0, [100.0, 500.0])) == 2
+    # lift stands the line off the cloud
+    up = CF._outboard_hull(disc, [0.0, 0.0], [200.0, 0.0], 3.0, [100.0, 500.0])
+    assert abs(up[:, 1].max() - 53.0) < 0.3
+
+
+def test_restrap_and_panel_binding_on_a_plain_scene():
+    import trimesh
+    from huntkit.viz3d import studio
+    from huntkit.viz3d.assets import webbing as WB
+    sc = studio.ConceptScene("bl026_parts")
+    P = np.column_stack([np.linspace(-100, 100, 60), np.zeros(60), np.full(60, 50.0)])
+    N = np.tile([0.0, 1.0, 0.0], (60, 1))
+    m = WB.strap(P, N, 38.0)
+    m.metadata["straps"] = [m.metadata["strap"]]
+    sc.add_part("under_straps", m, "webbing")
+    assert abs(np.ptp(np.asarray(m.vertices)[:, 2]) - 38.0) < 1.0
+    recs = CF.restrap(sc, "under_straps")
+    V = np.asarray(sc.parts[0].mesh.vertices)
+    assert len(recs) == 1 and recs[0]["width"] == CF.STRAP_W == 25.0
+    assert abs(np.ptp(V[:, 2]) - 25.0) < 1.0 and abs(np.ptp(V[:, 0]) - 200.0) < 1.0
+    assert CF.restrap(sc, "no_such_part") == []
+    # back panel: a 370 x 13 x 440 slab; the binding wraps its whole edge, BIND_W on each face, 1 mm proud
+    slab = trimesh.creation.box(extents=(370.0, 13.0, 440.0))
+    slab.apply_translation([0.0, -25.0, 260.0])
+    slab = slab.subdivide().subdivide().subdivide()
+    sc.add_part("back_panel", slab, "spacer", group="backpanel")
+    info = CF.panel_binding(sc)
+    b = next(x for x in sc.parts if x.name == "back_panel_binding")
+    Vb = np.asarray(b.mesh.vertices)
+    assert b.material == "body" and b.group == "backpanel"
+    assert abs(info["loop_mm"] - 2 * (370.0 + 440.0)) < 1.0
+    assert np.allclose(Vb.max(0), [186.15, -17.5, 481.15], atol=0.6) and np.allclose(Vb.min(0), [-186.15, -32.5, 38.85], atol=0.6)
+    inside = np.minimum(185.0 - np.abs(Vb[:, 0]), np.minimum(Vb[:, 2] - 40.0, 480.0 - Vb[:, 2]))
+    assert inside.max() <= CF.BIND_W + 0.5                       # nothing reaches further in than the band
+    fn = np.asarray(trimesh.Trimesh(Vb, np.asarray(b.mesh.faces), process=False).face_normals)
+    aft = np.asarray(b.mesh.faces)[fn[:, 1] > 0.9]
+    assert len(aft) and Vb[np.unique(aft)][:, 1].min() > -20.0    # the faces that look aft are the aft band
+
+
+def test_final_h1_body_is_the_frame():
+    if not CF.H1_FINAL_STL.exists():
+        pytest.skip("print/frame_h1/h1_assembled.stl missing")
+    d = CF.h1_dir()
+    assert (d / "genframe_assembled.stl").stat().st_size == CF.H1_FINAL_STL.stat().st_size
+    assert CF.viz_params()["generative_frame_dir"] == str(d)
+    assert "BL-027" in CF.frame_note() and "28 mm" in CF.frame_note()
+
+
 def test_carabiner_envelope():
     m = CF.carabiner([0, 0, 0], [0, 0, 1.0], [0, -1.0, 0])
     ext = np.ptp(np.asarray(m.vertices), axis=0)
@@ -129,14 +191,39 @@ def test_scene_builds_as_corrie_f():
     names = [p.name for p in sc.parts]
     assert not any(n.startswith(("corrie_wing_", "crown_hood", "hood_ladders", "hood_lining")) for n in names)
     assert not any("pouch" in n for n in names)                  # day mode: top pouch off
-    for n in ("s15_W1", "s15_W2", "s15_W3", "s15_roll", "cf_guy_toggles@t19", "corrie_door", "corrie_kick"):
+    for n in ("s15_W1", "s15_W2", "s15_W3", "s15_roll", "cf_guy_toggles@t19", "corrie_door", "corrie_kick",
+              "cf_guy_R@t19", "cf_guy_L@t19", "cf_guy_loops@t19", "cf_keeper_B26", "back_panel_binding"):
         assert n in names, n
+    assert "corrie_top_guys@t19" not in names                    # the rev 0 guys are replaced, not doubled
     by = {p.name: p for p in sc.parts}
     assert by["cf_guy_toggles@t19"].material == "blaze" and by["corrie_kick"].material == "camo"
-    # blade U: camo right up both corner seams to the collar seam, and across the floor edge
+    # blade U: camo right up both corner seams to the collar seam, and across the floor edge. Bounds for the DAY
+    # state (BL-026): at 12 L the solved floor lifts and the bag draws in, so the strip sits higher and narrower than
+    # at 6-day (81 mm, 365 mm) or full (44 mm, 377 mm). Measured at level 1: lowest point 105 mm, width 304 mm.
     Vk = np.asarray(by["corrie_kick"].mesh.vertices)
-    assert Vk[:, 2].max() > 700.0 and Vk[:, 2].min() < 80.0
-    assert np.ptp(Vk[:, 0]) > 330.0
+    assert Vk[:, 2].max() > 700.0 and Vk[:, 2].min() < DAY_BLADE_U["z_low_max"]
+    assert np.ptp(Vk[:, 0]) > DAY_BLADE_U["width_min"]
+    assert abs(Vk[:, 0].min() + Vk[:, 0].max()) < 40.0           # still about the centre line (crumpled, not skewed)
+    # rev 1 (BL-022): guys at x +/-52 on the bridle, clear of the lifters; keeper cord on the right gusset
+    BC, CO, F, CS = CF._mods()
+    gx = F.REVS[1]["guy_x"]
+    Vl = np.asarray(by["cf_guy_loops@t19"].mesh.vertices)
+    assert abs(np.abs(Vl[:, 0]).max() - (gx + F.GUY_W / 2)) < 2.0          # sleeves 25 mm wide centred on x 52
+    Vt = np.asarray(by["cf_guy_toggles@t19"].mesh.vertices)
+    for sx in (1, -1):
+        side = Vt[Vt[:, 0] * sx > 0]
+        assert abs(0.5 * (side[:, 0].min() + side[:, 0].max()) - sx * gx) < 1.0
+        Vg = np.asarray(by[f"cf_guy_{'R' if sx > 0 else 'L'}@t19"].mesh.vertices)
+        assert np.abs(Vg[:, 0]).min() < gx + 1.0 and np.abs(Vg[:, 0]).max() > 150.0   # bar end to the bag's corner
+    Vkc = np.asarray(by["cf_keeper_B26"].mesh.vertices)
+    assert Vkc[:, 0].min() > 100.0 and np.ptp(Vkc[:, 1]) > 120.0             # right gusset, seam to seam
+    assert sc.report["rev1"]["straps_25"]["under_straps"] == 2
+    for n in ("under_straps", "under_straps_slack", "cradle_straps", "meat_straps", "corrie_im_straps"):
+        assert {r["width"] for r in by[n].mesh.metadata["straps"]} == {CF.STRAP_W}, n
+    Vb, Vp = (np.asarray(by[n].mesh.vertices) for n in ("back_panel_binding", "back_panel"))
+    assert by["back_panel_binding"].material == "body"
+    assert np.all(np.abs(Vb.max(0) - Vp.max(0)) < 2.5) and np.all(np.abs(Vb.min(0) - Vp.min(0)) < 2.5)
+    assert "BL-027" in sc.report["source"]["frame"]
     # IM3 carabiners only (two), no IM2 hooks
     Vh = np.asarray(by["bag_hooks"].mesh.vertices)
     assert Vh[:, 2].min() > 400.0

@@ -98,3 +98,16 @@ def test_pack_sits_on_the_body():
     assert f["head_gap_mm"] > 40.0
     assert len(w.pack) > 50 and len(w.figure) >= 7 and w.rig is None
     json.dumps(f)                                                           # plain numbers only
+
+
+def test_dilate_wraps_in_azimuth_only():
+    """BL-026 (D-11): the grid that marks cells riding on a pad grows round the pad; azimuth wraps, u does not."""
+    import numpy as np
+    from huntkit.viz3d import wearer as WR
+    M = np.zeros((36, 20), bool)
+    M[0, 0] = True
+    D = WR._dilate(M, 3, 2)
+    assert D[[0, 1, 2, 3, 33, 34, 35], 0].all() and not D[4:33, 0].any()      # +/-3 cells, wrapping 35 -> 0
+    assert D[0, :3].all() and not D[0, 3:].any()                                # 2 cells up, none wrapped to the top
+    assert D.sum() == 7 * 3
+    assert WR._dilate(M, 0, 0).sum() == 1 and (WR.RIDE_AZ, WR.RIDE_U) == (14, 8)

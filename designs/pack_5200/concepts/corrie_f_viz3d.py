@@ -1,8 +1,10 @@
-"""BL-012: CORRIE F (door D2) renders through huntkit.viz3d.studio with the BL-020 cloth pass and the BL-019 hunter.
+"""BL-012 / BL-026: CORRIE F rev 1 (door D2) on the BL-027 H1 body, rendered through huntkit.viz3d.studio with the
+BL-020 cloth pass and the BL-019 hunter.
 
     export HUNTKIT_BPY=$SCRATCH/bpyenv/bin/python            # Blender venv (huntkit/viz3d/README.md)
     export HUNTKIT_HUMAN_ASSETS=$SCRATCH/human_assets        # MakeHuman / Poly Haven cache (analysis/hunter_figure.md)
     python designs/pack_5200/concepts/corrie_f_sim/corrie_f_sim.py fine --torso 19      # once: the fine drape (1 min)
+    python designs/pack_5200/concepts/corrie_f_viz3d.py --render bl026      # the BL-026 shot list (12 frames)
     python designs/pack_5200/concepts/corrie_f_viz3d.py --render            # every shot, 1600 x 1200 at 64 samples
     python designs/pack_5200/concepts/corrie_f_viz3d.py --render hero,door  # some shots
     python designs/pack_5200/concepts/corrie_f_viz3d.py --sheets            # the three sheets from the rendered frames
@@ -23,14 +25,17 @@ sys.path.insert(0, str(ROOT))
 
 SCREENS = ROOT / "outputs" / "screens"
 DOCS = ROOT / "docs" / "screens"
-PREFIX = "20261112_BL012"
+PREFIX = "20261112_BL026"
 
-# file number of each shot (outputs/screens/20261112_BL012_<n>.png); 16-18 are sheets, 19-20 the comparison frames
-NUMBER = {"hero": 1, "side": 2, "day": 3, "full": 4, "walk": 5, "kneel": 6, "door": 7, "meat": 8, "frame": 9,
-          "frame_bare": 10, "addons_on": 11, "addons_on_left": 12, "addons_off": 13, "belt": 14, "roll": 15,
-          "compare_f": 19, "compare_b2": 20}
-SHEETS = {"compare": 16, "loads": 17, "addons": 18}
-BEST = (1, 5, 6, 7, 16, 17)
+# file number of each shot (outputs/screens/20261112_BL026_<n>.png). 1-12 are the BL-026 shot list, 13-14 its sheets;
+# 15-19 are the BL-012 extras (not re-rendered for BL-026) and 20 their comparison sheet
+NUMBER = {"hero": 1, "side": 2, "day": 3, "full": 4, "door": 5, "meat": 6, "frame": 7, "frame_bare": 8,
+          "addons_on": 9, "addons_on_left": 10, "addons_off": 11, "belt": 12,
+          "walk": 15, "kneel": 16, "roll": 17, "compare_f": 18, "compare_b2": 19}
+SHEETS = {"loads": 13, "addons": 14, "compare": 20}
+BL026 = ("hero", "side", "day", "full", "door", "meat", "frame", "frame_bare", "addons_on", "addons_on_left",
+         "addons_off", "belt")
+BEST = (1, 5, 6, 8, 13, 14)
 
 
 def png(n: int) -> Path:
@@ -78,12 +83,13 @@ def sheets() -> list:
                                                                            "Rendered 3D models")))
     if all(png(NUMBER[k]).exists() for k in ("day", "hero", "full")):
         out.append(_row([png(NUMBER[k]) for k in ("day", "hero", "full")], png(SHEETS["loads"]),
-                        "CORRIE F: day 12 L, 6-day 45 L, full 85 L class",
+                        "CORRIE F rev 1: day 12 L, 6-day 45 L, full 85 L class",
                         "Same camera, 6 ft hunter at the 19 in torso setting. Rendered 3D figure, not a photograph"))
     if png(NUMBER["addons_on"]).exists() and png(NUMBER["addons_off"]).exists():
         out.append(studio.sheet([(png(NUMBER["addons_on"]), png(NUMBER["addons_off"]))], png(SHEETS["addons"]),
                                 titles=("Add-ons on", "Add-ons off"),
-                                subs=("tripod (right), scope pod (left)", "base pack with its top pouch, same camera. Rendered 3D models")))
+                                subs=("tripod under W1-W3 and the B-26 keeper cord (right), scope pod (left)",
+                                      "base pack with its top pouch, same camera. Rendered 3D models")))
     return out
 
 
@@ -105,7 +111,7 @@ def main(argv=None):
     ap.add_argument("--docs", action="store_true")
     a = ap.parse_args(argv)
     if a.render:
-        names = list(NUMBER) if a.render == "all" else a.render.split(",")
+        names = list(NUMBER) if a.render == "all" else list(BL026) if a.render == "bl026" else a.render.split(",")
         for r in render(names, a.quality, a.level):
             print(r["shot"], r["file"], r["seconds"], "s", r["mb"], "MB")
     if a.sheets:
