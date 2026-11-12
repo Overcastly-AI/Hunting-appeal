@@ -86,3 +86,10 @@ cases:
       - 0.0
   meat:
     external: *id001
+  sixday:
+    p0_kpa: 0.5
+    contents_L: 45.0
+    fill_kg: 22.0
+    fill_model: janssen
+    wraps: true
+    external: *id001

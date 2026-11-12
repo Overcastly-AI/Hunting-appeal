@@ -26,6 +26,7 @@ conservative for the CG).
 from __future__ import annotations
 
 import argparse
+import dataclasses
 import json
 import os
 import sys
@@ -122,6 +123,12 @@ def guy_ties(torso: int, guys) -> list:
     return out
 
 
+# BL-028: the 6-day load for the guy path, as shell_sweep.RENDER_STATES["sixday"] (ASSUMPTION RS-1: about 45 L / 22 kg,
+# loadouts.yaml elk6 order of magnitude), add-ons on. The sim cannot roll the collar down: the unfilled top stays as
+# soft cloth over 45 L of contents with the wraps cinched (closed volume follows the contents' gas law).
+SIXDAY = {"p0_kpa": 0.5, "contents_L": 45.0, "fill_kg": 22.0, "fill_model": "janssen", "wraps": True}
+
+
 def write_scenarios(guys=None, smooth=None) -> list:
     out = []
     ext = externals()
@@ -133,7 +140,7 @@ def write_scenarios(guys=None, smooth=None) -> list:
                 "attachments": att,
                 "panels": {"B-03": dict(UG_SCALE), "B-02h": dict(UG_SCALE), "B-02door": dict(UG_SCALE),
                            "B-02u": dict(CAMO_SCALE), "B-06": dict(R70_SCALE)},
-                "cases": {"fill": {"external": ext}, "meat": {"external": ext}}}
+                "cases": {"fill": {"external": ext}, "meat": {"external": ext}, "sixday": dict(SIXDAY, external=ext)}}
         if smooth is not None:   # BL-022: a retry with a wider first contact rounding (then stepped down to 0)
             body["contact"] = {"smooth_mm": float(smooth),
                                "smooth_continuation": [v for v in (6.0, 4.0, 3.0, 2.0, 1.0, 0.0) if v < float(smooth)]}
@@ -182,6 +189,60 @@ def uninstall():
     import corrie as CO
     from huntkit.clothsim import corrie_bag as CB
     CO.make, BC.y_frame, CB.load_corrie_patterns = _SAVED["make"], _SAVED["yf"], _SAVED["load"]
+    if "att" in _SAVED:
+        from huntkit.clothsim.pack import PackModel
+        PackModel._attachments = _SAVED.pop("att")
+
+
+# ------------------------------------------------------------------------------------------------- BL-028 routing
+# The scenario's ``ties`` draw each guy as one straight leg from B-22 to the bar. BL-028 re-routes the guy through
+# frictionless eyelets on the cloth (huntkit Cable via nodes) so the sim's strap follows its real path round the bag
+# corner, or through a guide loop. Swapped in at run time like the shell (huntkit not edited): after PackModel builds
+# its attachments, TG_R / TG_L get ``[bag end] + vias + [bar anchor]`` and a rest length from that drafted path (same
+# fixed-length rule as the straight tie: snug at the drafted shape, pretension 30 N).
+ROUTE = {}      # {"name": str, "R": {"vias": [node ids], "b22": node id or None}, "L": {...}} for the next run
+
+
+def route_spec(name: str, torso: int) -> dict:
+    """Via nodes for a named routing at ``torso`` (fine mesh): see corrie_f.ROUTES."""
+    return F.route_spec(name, torso)
+
+
+def _install_route():
+    from huntkit.clothsim.pack import PackModel
+    if not ROUTE or "att" in _SAVED:
+        return
+    orig = PackModel._attachments
+    _SAVED["att"] = orig
+
+    def att(self):
+        orig(self)
+        X = self.mesh.X0
+        for s in ("R", "L"):
+            cb = self.cables.get(f"TG_{s}")
+            r = ROUTE.get(s)
+            if cb is None or not r:
+                continue
+            pre = float(cb.meta["pretension_n"])
+            for nm, chain in r.get("internal", {}).items():     # internal ties: bag node to bag node, no frame end
+                ci = dataclasses.replace(cb, name=nm, nodes=np.asarray([int(k) for k in chain]),
+                                         fixed=np.full((len(chain), 3), np.nan), meta=dict(cb.meta))
+                L = ci.length(X)
+                ci.L0 = L / (1.0 + pre / ci.EA)
+                ci.meta.update(L_init=L, route=ROUTE.get("name"), internal=True)
+                self.cables[nm] = ci
+            if r.get("off"):                                    # the external guy deleted by this routing
+                del self.cables[f"TG_{s}"]
+                continue
+            head = int(r["b22"]) if r.get("b22") is not None else int(cb.nodes[0])
+            nodes = [head] + [int(k) for k in r.get("vias", [])] + [-1]
+            fixed = np.full((len(nodes), 3), np.nan)
+            fixed[-1] = cb.fixed[-1]
+            cb.nodes, cb.fixed = np.asarray(nodes), fixed
+            L = cb.length(X)
+            cb.L0 = L / (1.0 + pre / cb.EA)
+            cb.meta.update(L_init=L, route=ROUTE.get("name"), vias=[int(k) for k in r.get("vias", [])], b22_node=head)
+    PackModel._attachments = att
 
 
 REV_DIRS = {"Fr0": "F_r0"}     # BL-025: run folders carry the CORRIE F revision; "F" -> F_r<corrie_f.REVISION>
@@ -199,11 +260,16 @@ def run_dir(variant: str, torso: int, tag: str = "") -> Path:
     return OUT / f"{pre}_PR{torso}{tag}"
 
 
-def run(variant: str, torso: int, cases="fill,meat", fine=False, tag="", guys=None, smooth=None) -> dict:
+def run(variant: str, torso: int, cases="fill,meat", fine=False, tag="", guys=None, smooth=None, route=None) -> dict:
     os.environ.setdefault("OMP_NUM_THREADS", "2")
     g = guys_of(variant, guys)
     write_scenarios(g, smooth)
+    ROUTE.clear()
+    if route:                                   # BL-028: guy routing through eyelets (fine mesh only)
+        assert fine, "BL-028 routes carry fine-mesh node ids"
+        ROUTE.update(route_spec(route, torso), name=route)
     install(setback_of(variant))
+    _install_route()
     try:
         from huntkit.clothsim import cli
         a = argparse.Namespace(scenario=str(scenario_path(torso, g, smooth)), time_cap=None, out=str(run_dir(variant, torso, tag)),
@@ -215,12 +281,15 @@ def run(variant: str, torso: int, cases="fill,meat", fine=False, tag="", guys=No
         return {"fine": str(run_dir(variant, torso, tag))}
     row = extract(variant, torso, tag)
     row["guys"] = g
+    if route:
+        row["route"] = {"name": route, **{s: ROUTE[s] for s in ("R", "L") if s in ROUTE}}
+    ROUTE.clear()
     store(row)
     return row
 
 
 # ------------------------------------------------------------------------------------------------- extraction
-GROUPS = ("hinge_R", "hinge_L", "doubler_R", "doubler_L", "hook_im520_R", "hook_im520_L", "TG_R", "TG_L",
+GROUPS = ("hinge_R", "hinge_L", "doubler_R", "doubler_L", "hook_im520_R", "hook_im520_L", "TG_R", "TG_L", "TI_R", "TI_L",
           "under_strap_US1", "under_strap_US2", "W1", "W2", "W3")
 
 
@@ -361,6 +430,7 @@ def main(argv=None):
     ap.add_argument("--tag", default="")
     ap.add_argument("--guys", default=None, help="'off' or a bar-end x in mm (BL-022)")
     ap.add_argument("--smooth", type=float, default=None, help="first contact rounding, mm (retry of a stalled run)")
+    ap.add_argument("--route", default=None, help="BL-028 guy routing (corrie_f.ROUTES), fine runs only; tag _<route>")
     a = ap.parse_args(argv)
     gz = None if a.guys is None else (a.guys if a.guys == "off" else float(a.guys))
     if a.cmd == "scenarios":
@@ -373,7 +443,8 @@ def main(argv=None):
     elif a.cmd == "fine":
         print(run(a.variant, a.torso, "packed", fine=True, tag="_fine"))
     elif a.cmd == "finerun":   # BL-022: fine mesh (h 25) fill / meat with CG, loads and R-28 on the fine mesh
-        row = run(a.variant, a.torso, a.cases, fine=True, tag="_fineFM" + a.tag, guys=gz, smooth=a.smooth)
+        rt = f"_{a.route}" if a.route else ""
+        row = run(a.variant, a.torso, a.cases, fine=True, tag="_fineFM" + rt + a.tag, guys=gz, smooth=a.smooth, route=a.route)
         print(json.dumps({k: {kk: vv for kk, vv in v.items() if kk != "profile"} for k, v in row["cases"].items()}, indent=1))
         print(json.dumps({k: {kk: row["r28"][k][kk] for kk in ("worst_contact_deg", "worst_gap_30_mm", "pass",
                                                                 "wall_toward_head_above_bar_mm")} for k in row.get("r28", {})}))

@@ -29,6 +29,10 @@ or a named ASSUMPTION. Units: g (1 oz = 28.35 g), mm (1 in = 25.4 mm), L (1 L = 
 - **Doors:** both are complete. D2 is lighter, has fewer pieces and fewer hours. D1 opens 60–70 mm wider. The owner chooses (section 3).
 
 - **Rev 1 (BL-022, section 12):** fine-mesh R-28 is 34° at 15 / 19 / 23 in (the frame-only limit), so the 30 mm setback stays; guys moved to x ±52 on a B-25 bridle, clear of the lifters at every crown kit; B-26 tripod keeper; guys-off 15 in meat CG 201.7 mm (over rev C: "GUYS ON" carry rule); +8.6 g (D2).
+- **Guy routing (BL-028, section 13):** the straight guy in every sim passes through the bag. On its real path, round the
+  bag's side, rev 1's 15 in meat CG is **194.9 mm, over rev C**; the lifters are clear (≥ 48 mm). **Rev 2 (proposed):**
+  guy through a lapped port B-27 in B-01 and inside to B-22: 181.9 mm (1.9 mm over the 180 acceptance, inside rev C),
+  R-28 34°, +2.7 g.
 
 Screens: `outputs/screens/20261111_BL011_1.png` (mass), `_2.png` (doors and setback), `_3.png` (CG and R-28).
 
@@ -457,3 +461,230 @@ also unhooked to open it. FT-S2 gains a step: **door open / close × 5 with the 
 2. **Top bar with inboard guys:** 69.9 MPa from the guys alone at 312 N factored, x ±52; combine with the lifter
    case in the frame model.
 3. IM3 at 1 g on the fine mesh: 562 N (15 in meat), slightly above the coarse 552 N used for the 27 mm cheek.
+
+## 13. Guy routing: the real path and CORRIE F rev 2 (BL-028)
+
+pack-designer, 2026-11-12. Ticket `docs/backlog/BL-028-guy-routing.md`, from BL-026's 3D finding (`corrie_f_renders.md`
+§8.4). Code: `corrie_f.py` section BL-028 (`ClothSurface`, `taut_path`, `path_metrics`, `real_guy_path`, `path_vias`,
+`ROUTES`, `bl028_paths`, `bl028_table`, `guy_port`, `guy_length_check`, `plot_bl028`, `plot_bl028_port`, `REVS[2]`; CLI
+`python designs/pack_5200/concepts/corrie_f.py --bl028`). `corrie_f_sim.py` gains `--route` (the guy re-threaded
+through frictionless eyelets on the cloth, internal bag-to-bag ties, or a deleted guy; huntkit not edited, swapped in at
+run time like the shell) and a `sixday` case. Results: `corrie_f_sim/corrie_f_guy_paths.json` and the stored rows
+`F_PR{t}_fineFM_<route>` in `corrie_f_sim_results.json`. Tests: `tests/test_corrie_f_guy.py`. All runs fine mesh
+(h 25 mm), one at a time. **Rev 1 stays the module default; rev 2 is `with corrie_f.revision(2):` and is a proposal
+(13.7).**
+
+**In one paragraph.** The straight guy that every cloth sim has used since the attachment phase (2026-11-05: hood ears,
+then BL-004's bar loops, then BL-022's x ±52 bridle) passes through the packed bag. It is a model artefact. A real guy
+has to go round the bag's side to reach B-22, and on that path it pulls the bag sideways, not forward. With the guy
+re-threaded on its real path, **the 15 in meat CG is 194.9 mm (7.67 in), over the rev C limit of 190 mm (7.48 in)**
+(the straight model said 178.1 mm). The lifter clash that BL-026 drew does not happen on the real path: the strap
+leaves the bar aft, onto the bag's frame face, and stays **≥ 48 mm (1.9 in)** from the lifter webbing. The fix that
+works is to take the guy **inside**: through a lapped port (B-27) in the frame face B-01 where the bar meets it, then
+straight across the inside of the bag to B-22. That gives **181.9 mm (7.16 in) at 15 in meat: inside rev C, but 1.9 mm
+over the 180 mm (7.09 in) acceptance**. R-28 stays at 34° at 15 / 19 / 23 in. +2.7 g (0.10 oz).
+
+### 13.1 Method: the guy as a taut strap
+
+`taut_path` pulls a string tight from the bridle sleeve (x ±52 on the bar's bag face, where every scenario puts the
+guy's bar end) to B-22 (the scenario's tie node, at its loaded position), keeping it `PATH_CLEAR` = 2 mm outside the
+fine cloth drape and outside the crown tubes (`crown_tubes`: the bar with the corner wraps, both legs and the spine,
+placed as the cloth sim's crown field places them). It starts from a polyline round the bag's outboard side, then
+relaxes (each sweep moves a point toward its neighbours' mid-point and pushes it back out of the obstacles). Checked
+against the closed form for a strap round a cylinder (length within 1 %, wrap within 3°;
+`test_taut_path_round_a_cylinder_matches_the_closed_form`). Per path, `path_metrics` reports:
+
+- **wrap angle** = total turning where the strap bears on the cloth; **friction share** = 1 − e^(−μθ), the part of the
+  cinch tension the wrap holds back (capstan), μ = `MU_WEB_FAB` 0.30 (ASSUMPTION, band 0.20–0.40);
+- **pull on the bag** = along the first free run, from the bag toward the bar. The wrapped part and B-22 move with the
+  bag, so this direction is what holds the bag. Its forward (−y) part is what holds the CG;
+- **pull on B-22** = back along the last run, between T·e^(−μθ) (being cinched) and T (load creeping out), with T = the
+  run's simulated guy tension at 1 g;
+- **lifter gap** = edge-to-edge gap between the guy ribbon (25 mm, lying on the cloth) and the lifter ribbon (25 mm,
+  from the lug at x 105 on the crown corner toward the shoulder strap at the setting's lifter angle).
+
+### 13.2 Rev 1's real path (task 1)
+
+On the BL-022 fine drapes (`F_r1_PR{t}_fineFM`, guys as simulated), right / left:
+
+| Torso, load | length (straight) mm | wrap ° | friction share | forward pull share: real (straight) | B-22 pull, N at 1 g | lifter gap mm |
+|---|---|---|---|---|---|---|
+| 15 in full | 401 / 401 (250) | 199 / 186 | 0.65 / 0.62 | 0.39 / 0.29 (0.98) | 18.8–53.3 / 19.3–51.1 | 56 / 55 |
+| 15 in meat | 392 / 400 (250) | 183 / 208 | 0.62 / 0.66 | **0.22 / 0.03** (0.98) | 14.6–38.1 / 12.6–37.4 | 53 / **48** |
+| 19 in full | 370 / 387 (239) | 178 / 185 | 0.61 / 0.62 | 0.62 / 0.47 (0.88) | 30.3–77.0 / 28.9–75.9 | 60 / 60 |
+| 19 in meat | 359 / 363 (239) | 179 / 175 | 0.61 / 0.60 | 0.56 / 0.45 (0.89) | 20.8–53.3 / 21.9–54.8 | 60 / 60 |
+| 23 in full | 374 / 386 (269) | 171 / 181 | 0.59 / 0.61 | 0.28 / 0.14 (0.73) | 36.3–88.9 / 38.1–98.4 | 58 / 54 |
+| 23 in meat | 377 / 383 (269) | 184 / 179 | 0.62 / 0.61 | 0.20 / 0.14 (0.73) | 23.1–60.3 / 27.0–69.0 | 55 / 51 |
+| 15 in 6-day ¹ | 414 / 414 (311) | 163 / 109 | 0.57 / 0.43 | 0.56 / 0.53 (0.82) | – | 55 / 54 |
+
+¹ 6-day = 45 L / 22 kg (ASSUMPTION RS-1, `shell_sweep.RENDER_STATES`), wraps cinched, guys on their real path. The run
+did **not converge** in its 240 s cap (residual 7.8 N, closed 72 L: the sim cannot roll the collar down), so this row
+is geometry only. 19 and 23 in 6-day were not run (same set-up, same outcome expected; stopped to save time). The full
+and meat rows bracket the 6-day shape near the bar (the strap lies on the frame face at bar height in every case).
+
+What this means:
+
+- **Length** 359–414 mm (14.1–16.3 in) against the 239–269 mm straight line; BL-026's 3D model measured 363–375 mm.
+  Rev 1 booked the guy at the straight length: the real path needs **114–150 mm more webbing a side, +4.1–5.4 g a pair**
+  (`guy_length_check`). Moot if rev 2 is adopted (its inside path is the straight length).
+- **Wrap** 171–208° round the bag's side: 59–66 % of the cinch tension is held back by friction before it reaches
+  B-22. The strap cannot be cinched snug from the bar end.
+- **Pull.** At B-22 the pull now runs along the aft face toward the corner (outboard), not toward the bar. The bag as a
+  whole is pulled along the strap's first run, which leaves the bar outboard along the frame face: **75–98 % of it is
+  sideways** (left and right cancel), and the forward share at 15 in meat is 0.03–0.22 against 0.98 in the straight model.
+- **The bar end slides.** The strap leaves the sleeve with 0.75–0.98 of its tension along the bar (outboard), against
+  `MU_WEB_BAR` 0.30: the B-25 bridle still has to hold it (as BL-022 found for the straight line).
+
+### 13.3 Lifter clearance on the real path
+
+The strap leaves the sleeve aft, onto the bag's frame face just behind the bar (y 25–47 mm against the bar's bag face at
+y 19–23), runs outboard on the frame face to the bag's front corner and round the gusset. The lifter leaves its lug on
+the **wearer's** side of the crown corner (15 mm forward of the leg axis) and runs forward and down. The frame tube is
+between them. **Worst edge gap 48 mm (1.9 in), 15 in meat, left; ≥ 10 mm at every torso and load.** The three crown
+kits share the bar (BL-022 `guy_lifter_check`), and 15 / 19 / 23 in are both ends and the middle of the S–L range.
+
+BL-026's picture ran the guy along the top of the bar to the crown corner, because the render's frame face sits 0–17 mm
+inside the bar (defect D-9), so the strap could not pass between bag and bar there. On the sim drape the bag face is aft
+of the bar where the strap leaves. **There is no lifter clash to fix; the problem is the pull.** The prototype crown
+fit with the bag packed full (gate in §12.5) still settles it.
+
+### 13.4 What the real path does to the CG
+
+`corrie_f_sim.py finerun F --torso 15 --cases meat --route <name>` re-threads each guy through eyelets (sim via nodes,
+frictionless) on the nodes its real path bears on, every 40 mm (`path_vias`), same fixed-length rule as before (snug at
+the drafted shape, 30 N). 15 in meat, fine mesh, all converged:
+
+| Guy model / routing | CG y mm (in) | guy N at 1 g | IM3 N at 1 g |
+|---|---:|---:|---:|
+| straight line through the bag (BL-022, `F_PR15_fineFM`; 3 mm rounding, +2 bias) | 178.1 (7.01) | 38.1 | 562 |
+| **rev 1 real: round the bag (`_wrap`)** | **194.9 (7.67)** | 11.7 | 442 |
+| internal depth tie B-22 → B-01 plus the real wrap (`_tie_wrap`) | 194.8 | 10.4 + 13.5 | 435 |
+| no outside guy; internal guy B-22 → IM3 bag-hook eye (`_im3`) | 198.7 | 26.7 | 442 |
+| **rev 2: B-01 port at the bar, inside to B-22 (`_port`)** | **181.9 (7.16)** ² | 40.7 | 425 |
+| port, inside tab at the collar seam, x 149 (`_port_hi`) | 183.9 | 36.6 | 446 |
+| port, inside tab at the collar seam, x 100 (`_port_hi_in`) | 183.1 | 34.9 | 438 |
+| guys off (BL-022, `F_PR15_fineFM_goff_sm8`) | 201.7 (7.94) | 0 | 436 |
+
+² from the fill run's end state (stored row); the same routing started from the packed bag (meat only) gave 183.4 mm.
+Two starts, 1.5 mm apart: read 181.9–183.4 mm.
+
+- **Rev 1 as it would be built fails rev C at 15 in meat (194.9 > 190).** It recovers only 6.8 mm of the 23.6 mm the
+  straight model credited to the guys. Every "guys on" CG since 2026-11-05 carries this artefact (found, not fixed: the
+  older concepts are not re-run here).
+- The guy works by tying the bag's **upper aft corner to the bar**, against the top tipping aft. A tie that only
+  limits depth does nothing (194.8). A tie to the IM3 eye is worse (198.7), because IM3 sits low (z 520) and swings
+  with the bag. Only a line from the **bar** to the **aft top** does the job, and from outside the bag that line does
+  not exist.
+- Moving the inside tab higher or inboard does not help (183.1–183.9): the port is the limit, not the tab.
+- IM3 at 1 g, 15 in meat, is 425–446 N on every real routing against 562 N on the straight model. With rev 2 it is
+  425 / 393 / 517 N at 15 / 19 / 23 in meat, against 562 / 554 / 522 N on the straight model. Every rev 2 value is
+  under the basis BL-021 / BL-024 used (found, not fixed).
+
+### 13.5 Rev 2: the guy goes inside (B-27 guy port)
+
+- **B-27 guy port, one each side:** a vertical slit in B-01 at **x ±52**, **z 595–745** (150 mm, 5.9 in: from 6 mm
+  below the lowest bar, 15 in at z 601, to B-01's top edge at the collar seam). The outboard edge laps 20 mm over the
+  inboard edge, on a 50 × 170 mm facing of B-01 fabric sewn inside along the inboard edge. Both edges are turned 6 mm and
+  edge-stitched, with bartacks at both ends. It crosses the setback fold seam at z 631 (the facing follows the fold).
+  No hook-and-loop, no zip, fabric on fabric: quiet. **2.74 g (0.10 oz) the pair** (`guy_port`, challenge_ultra_200
+  record × area; `PORT_FACING_W`, `PORT_TURN` are ASSUMPTIONS).
+- **Guy:** from the B-25 bridle tab (toggle, unchanged) straight aft through the port, across the inside of the bag to
+  **B-22, turned to the inside** of the hinge band (same tab, same seam, same place, x ±149, z 695). The heavy ladder
+  lock sits just outside the port so the length is set from the frame side on the packed bag (the "fixed length"
+  rule). Bag-off: the toggle comes out of the bridle tab as in rev 1, and the guy stays with the bag.
+- **Bar heights:** S kit z 601–677 and M kit z 664–741 meet the slit. The L kit's bar (z 728–804) is above B-01's top
+  edge from about 20.5 in, so the guy comes down to the slit's top end. The 23 in run includes this.
+- **Lifters:** outside the bag the guy runs only from the sleeve to the port (8–23 mm at 15 and 19 in, 77–81 mm at 23 in
+  where it comes down to the slit's top), never outboard of the bridle band
+  x 39.5–64.5 (the lifter band starts at x 92.5; BL-022 `guy_lifter_check`, 28 mm). In 3D the gap is 58–64 mm on every
+  rev 2 drape. Patent guardrail: the lifters stay on the crown top bar at x ±105.
+
+Rev 2 fine runs (`F_PR{t}_fineFM_port`, fill then meat, all converged):
+
+| Torso | full CG y mm (+bias) | meat CG y mm (+bias) | R-28 ° (gap at 30°) | guy N at 1 g, max | IM3 N at 1 g |
+|---|---|---|---|---:|---:|
+| 15 in | 186.4 (188.4) | **181.9** (181.9) | **34** (6.8 mm) | 57.3 | 425 |
+| 19 in | 166.2 (167.5) | 160.1 (160.8) | **34** (6.8) | 77.5 | 393 |
+| 23 in | 154.8 (156.8) | 149.0 (151.0) | **34** (6.8) | 96.1 | 517 |
+
+- **Inside rev C everywhere** (full ≤ 205, meat ≤ 190). At 23 in it is 13 mm further aft than the straight model
+  (135.7), because the port is 59 mm below the bar there. That is far inside the limit.
+- **R-28 34° at all three torsos**, the frame-only limit. The bag wall moves 9–19 mm toward the head above the bar at
+  19 and 23 in, but the bare bar and back pad still make first contact.
+- **Top bar:** largest guy load 96.1 N at 1 g (23 in full), **288 N factored** (× 3.0) against the 312 N that BL-021
+  checked the bar with (strength 1.36): covered. The guy now pulls the bar aft (into the bag) instead of outboard along
+  it, so the bridle's outboard load drops.
+- **Volume:** closed 81.9–84.0 L on the fine mesh, as rev 1 (82.4–84.0).
+
+### 13.6 Options considered
+
+| Option (ticket list first) | Result | Kept? |
+|---|---|---|
+| Guide loop or channel on the bag's top corner, guy inboard of the lifters | The real path is already ≥ 48 mm from the lifters. A loop holds the strap on the bag but does not change the first run from the bar, so the pull stays sideways (geometry, 13.2). Not simulated | no |
+| Move B-22 so the straight path clears the bag | Every bag point the bar can see is on the frame face or its front corner, nearly in the bar's plane. Forward share is ≤ about 0.4 even with the top sagged aft (13.2). Not simulated | no |
+| Route the guy under the lifter with a sleeve | No clash to avoid, and the pull problem is the same | no |
+| Internal depth tie (B-22 to B-01, inside) | 194.8 mm | no |
+| Internal guy to the IM3 eye (no frame change) | 198.7 mm, and adds load to the IM3 cheek, the fatigue-critical part | no |
+| **Guy port B-27, guy inside (rev 2)** | **181.9 mm; R-28 34°; +2.7 g** | **proposed** |
+| Port with the inside tab higher or inboard | 183.1–183.9 mm | no |
+
+### 13.7 Acceptance and decisions
+
+| Acceptance | Rev 1 (real path) | Rev 2 |
+|---|---|---|
+| Guy to lifter webbing ≥ 10 mm at every crown kit, on the real path | 48 mm: **pass** | 58 mm: **pass** |
+| 15 in meat CG ≤ 180 mm, fine mesh | 194.9 mm: **fail** (over rev C 190) | 181.9 mm (183.4 from the other start): **fail by 1.9 mm**, inside rev C |
+| R-28 ≥ 31° | 34° (BL-022) | 34° at 15 / 19 / 23 in: **pass** |
+
+**Owner decisions needed:**
+1. **Rev 1 as drawn does not hold the 15 in meat load inside rev C** once the guy is on its real path (194.9 mm).
+   Something has to change before the bag is cut.
+2. **Adopt rev 2 (guy port, guy inside)?** It is the only routing tried that gets back inside rev C. It puts two 25 mm
+   straps across the top of the main compartment, from the frame face at x ±52 to the aft top corners at x ±149. Pack
+   under them, and the meat goes in through the door below them. It adds two lapped slits in the frame face.
+3. **Accept 182 mm at 15 in meat** (rev C 190 met, BL-011's 180 missed by 2 mm, inside the 1.5 mm start-to-start
+   scatter plus the ±4 % mesh scatter), or ask for more. The next lever is outside the guy, for example a lower scope
+   pod or top-pouch position at the S kit, which is a new ticket.
+
+### 13.8 Assumptions that govern (new)
+
+- ASSUMPTION `MU_WEB_FAB` 0.30, webbing on the PU face fabric (band 0.20–0.40). Only the friction share depends on it.
+  Settled by **GT-1**: 5 kg hung on the guy over the packed bag's corner, pull to start it moving.
+- ASSUMPTION `PATH_CLEAR` 2 mm, strap centre off the simulated cloth. Settled by the prototype crown fit (lifter gap).
+- ASSUMPTION INT-1: contents packed round the inside guy do not slacken it or bend it out of line. The sim's contents
+  are a pressure field, so the cable passes through them. Settled by the **T9 loaded-CG test at the S kit, rev 2,
+  with the top packed full above the guys**.
+- ASSUMPTION `PORT_FACING_W` 50 mm / `PORT_TURN` 6 mm (port construction). Settled by the first port mock-up: hose from
+  above for 1 min with the guy pulled at 45° through it, then look for water inside, and check that the lap does not open
+  under a 100 N guy pull.
+- The eyelets in the sim are frictionless (huntkit `Cable`). Wrap friction (13.2) is not in the CG runs. It would hold
+  the rev 1 wrap a little tighter, but it cannot turn a sideways pull into a forward one.
+- 6-day: ASSUMPTION RS-1 (45 L / 22 kg), geometry only (not converged).
+
+### 13.9 New gates
+
+| Gate | Settles |
+|---|---|
+| GT-1 capstan pull test, guy over the packed bag's corner | `MU_WEB_FAB` (13.2) |
+| Port mock-up: hose test, 100 N guy pull through the lap, glove use of the ladder lock at the port | B-27 construction |
+| T9 at the S kit (15 in), rev 2, meat load: plumb-line CG ≤ 190 mm; record against 182 mm | 13.5, INT-1 |
+| Crown fit with the bag packed full: guy at the port, no contact with the lifter or the corner wrap | 13.3 / 13.5 |
+
+### 13.10 Found, not fixed
+
+- Every guys-on CG since 2026-11-05 (attachment phase, BL-004, BL-011, BL-022, CORRIE B.2) modelled the guy as a
+  straight line through the bag, so the guys' benefit is over-credited by about 17 mm at 15 in meat (on CORRIE F). Only
+  CORRIE F is re-run here.
+- IM3 at 1 g: rev 2 gives 425 / 393 / 517 N (15 / 19 / 23 in meat) against the straight model's 562 / 554 / 522 N,
+  so BL-021's and BL-024's bases stay conservative. Not re-checked by the structural-fea-engineer.
+- Rev 1's guy webbing is booked at the straight length: short by 114–150 mm a side on the real path.
+- `REVISION` stays 1. Making rev 2 the default breaks `tests/test_corrie_f_run_dirs.py` (BL-025, asserts
+  `REVISION == 1`) and `tests/test_corrie_f.py::test_rev0_is_reproducible_and_rev1_adds_only_its_parts`; on adoption,
+  update both and the run-folder naming (rev 2 runs are stored as `F_r1_PR{t}_fineFM_port`, rev 1 bag + port routing).
+- The 3D model (`huntkit/viz3d/corrie_f.py` `guys_rev1`) draws the guy along the top of the bar. That is a picture
+  choice forced by D-9, and rev 2 needs a redraw (viz3d not edited here).
+- The 6-day sim case does not converge without the collar rolled down (it needs `shell_sweep`'s dome swap and wrap
+  take-up).
+- `write_scenarios` now writes a `sixday` case into the generated `cf_PR*.yaml`.
+
+Screens: `outputs/screens/20261112_BL028_1.png` (paths, CG by routing, lifter gap), `_2.png` (B-27 port).

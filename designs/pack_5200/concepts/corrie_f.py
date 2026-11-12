@@ -117,7 +117,11 @@ S15 = SS.SHELLS["S15"]
 # inboard to a bridle clear of the lifter lugs, a shock-cord tripod keeper on the right gusset. ``revision(0)`` gives
 # rev 0 back exactly (tests).
 REVS = {0: {"setback": 30.0, "guy_x": 100.0, "guy_bridle": False, "tripod_keeper": False},
-        1: {"setback": 30.0, "guy_x": 52.0, "guy_bridle": True, "tripod_keeper": True}}
+        1: {"setback": 30.0, "guy_x": 52.0, "guy_bridle": True, "tripod_keeper": True},
+        2: {"setback": 30.0, "guy_x": 52.0, "guy_bridle": True, "tripod_keeper": True, "guy_port": True}}
+# rev 2 = BL-028 (doc section 13), PROPOSED, not yet the module default: the guy goes through a lapped port B-27 in the
+# frame face and runs INSIDE the bag to B-22 (turned to the inside). ``with revision(2):`` gives its parts. Rev 1's
+# straight guy was a model artefact (it ran through the bag); its real path wraps the bag's side.
 REVISION = 1
 TOP_SETBACK_MM = REVS[REVISION]["setback"]   # DECISION (R-28, doc sections 5 / 12): sized by the corrie_f_sim R-28 runs
 GUY_X = REVS[REVISION]["guy_x"]               # DECISION (BL-022 S6, doc section 12.3): guy bar-end centre, x +/- mm
@@ -940,6 +944,10 @@ def rev1_rows(c: ShellF | None = None, door: str = DOOR_DEFAULT) -> list:
         k = tripod_keeper(c, door)
         rows.append(("straps_compression", f"BL-022 rev 1: {k['id']} tripod keeper (3 mm shock cord, right gusset)",
                      k["mass_g"], "base", k["source"]))
+    if r.get("guy_port"):
+        p = guy_port()
+        rows.append(("attachment", f"BL-028 rev 2: {p['id']} guy ports (2), lapped slits in B-01 at x +/-{p['x_mm']:.0f}, "
+                     f"z {p['z_mm'][0]:.0f}-{p['z_mm'][1]:.0f}", p["mass_g"], "base", p["source"]))
     return rows
 
 
@@ -980,6 +988,514 @@ def _walk(o):
     elif isinstance(o, list):
         for v in o:
             yield from _walk(v)
+
+
+# ---------------------------------------------------------------------------------------------------------- BL-028
+# The guy's REAL path. BL-022 (guy_geometry) and every cloth sim since 2026-11-05 drew the top guy as a straight line
+# from the crown bar to B-22; with a packed bag that line runs through the bag. Here the guy is a taut strap that
+# must stay outside the cloth (fine-mesh drape) and outside the crown tubes: a string pulled tight from the bridle
+# sleeve on the bar to B-22 (or through a guide loop on the way). Units mm, N.
+MU_WEB_FAB = 0.30         # ASSUMPTION: 25 mm poly webbing sliding on ULTRAGrid / 70D PU-coated face fabric (no record;
+#                           webbing-on-carbon MU_WEB_BAR uses the same value). Settled by GT-1, a capstan test: hang
+#                           5 kg on the guy over the packed bag's corner and read the pull to start it moving.
+MU_SENS = (0.20, 0.40)    # sensitivity band reported next to MU_WEB_FAB
+PATH_CLEAR = 2.0          # ASSUMPTION: strap centre 2 mm off the simulated cloth (0.6 mm half webbing + cloth and mesh
+#                           facet scatter); settled with the guy clearance check on the prototype (MIN_CLEAR_MM gate)
+CORNER_WRAP_OD = 19.5     # DECISIONS 2026-11-06: crown corner wraps x +/-77 to +/-107, OD about 19.5
+SIM_CROWN_AX = (0.0, -0.0189, 0.9998)    # huntkit.clothsim.pack.crown_field: frame axis through the crown legs
+SIM_LEG_BASE = (115.0, -10.0, 530.0)     # same source: leg axis from the stay top
+PATH_N = 60               # string points per free run (about 6 mm spacing on a 380 mm guy)
+PATH_ITERS = 8000         # relaxation sweeps (the length is stable to 0.1 mm from about 4000; test_guy_path_*)
+LIFTER_LEN = 150.0        # lifter webbing modelled from the lug toward the shoulder strap (as guy_geometry)
+
+
+def crown_tubes(top_z: float) -> list:
+    """Crown tubes near the guy as (a, b, r): the top bar (with the corner wraps), both legs and the spine, placed as
+    the cloth sim places them (pack.crown_field: bar 25 mm aft of the leg axis at top_z), real ODs from frame.yaml."""
+    ax = np.asarray(SIM_CROWN_AX, float)
+    ax = ax / np.linalg.norm(ax)
+    yb = SIM_LEG_BASE[1] + (top_z - SIM_LEG_BASE[2]) * ax[1] / ax[2] + 25.0
+    out = [(np.array([-115.0, yb, top_z]), np.array([115.0, yb, top_z]), BAR_OD / 2.0)]
+    for sx in (1, -1):
+        out.append((np.array([sx * 69.0, yb, top_z]), np.array([sx * 115.0, yb, top_z]), CORNER_WRAP_OD / 2.0))
+        a = np.array([sx * SIM_LEG_BASE[0], SIM_LEG_BASE[1], SIM_LEG_BASE[2]])
+        out.append((a, a + ax * (top_z - SIM_LEG_BASE[2]) / ax[2], LEG_OD / 2.0))
+    out.append((np.array([0.0, yb - 25.0, top_z]), np.array([0.0, yb - 25.0, top_z - 300.0]), SPINE_OD / 2.0))
+    return out
+
+
+def lifter_line(torso: float, side: int = 1) -> tuple:
+    """Lifter webbing centre line: from the lug on the crown corner (attach_system crown settings: x 105, 15 mm forward
+    of the leg axis, at the crown top) toward the shoulder strap at the setting's lifter angle (forward and down)."""
+    bg = _bg()
+    cs = min(bg.crown_settings(), key=lambda q: abs(q["torso_in"] - torso))
+    la = np.array(cs["lifter_anchor_R"], float) * np.array([side, 1.0, 1.0])
+    ang = math.radians(cs["lifter_angle_deg"])
+    return la, la + LIFTER_LEN * np.array([0.0, -math.cos(ang), -math.sin(ang)])
+
+
+class ClothSurface:
+    """Closed cloth mesh as dense surface samples with outward face normals (closest point by KD tree)."""
+
+    def __init__(self, X, tris, k: int = 7):
+        from scipy.spatial import cKDTree
+        X = np.asarray(X, float)
+        V = X[np.asarray(tris)]
+        fn = np.cross(V[:, 1] - V[:, 0], V[:, 2] - V[:, 0])
+        if np.einsum("ij,ij->i", V[:, 0], fn).sum() < 0:      # signed volume < 0: faces point in
+            fn = -fn
+        fn /= np.maximum(np.linalg.norm(fn, axis=1), 1e-12)[:, None]
+        bc = np.array([(1 - i / k - j / k, i / k, j / k) for i in range(k + 1) for j in range(k + 1 - i)])
+        self.S = np.einsum("bk,fkd->fbd", bc, V).reshape(-1, 3)
+        self.N = np.repeat(fn, len(bc), axis=0)
+        self.tree = cKDTree(self.S)
+
+    def closest(self, P):
+        _, j = self.tree.query(P)
+        return self.S[j], self.N[j]
+
+    def signed(self, P):
+        c, n = self.closest(P)
+        return np.einsum("ij,ij->i", np.asarray(P) - c, n)
+
+
+def _push_tubes(P, tubes, extra=1.0):
+    for a, b, r in tubes:
+        t = b - a
+        L = float(np.linalg.norm(t))
+        t = t / L
+        s = np.clip((P - a) @ t, 0.0, L)
+        C = a + s[:, None] * t
+        d = P - C
+        n = np.linalg.norm(d, axis=1)
+        m = n < r + extra
+        if m.any():
+            P[m] = C[m] + d[m] / np.maximum(n[m], 1e-9)[:, None] * (r + extra)
+    return P
+
+
+def taut_path(surf: ClothSurface | None, A, B, around, tubes=(), n: int = PATH_N, iters: int = PATH_ITERS,
+              clear: float = PATH_CLEAR) -> np.ndarray:
+    """Shortest strap from A to B that stays ``clear`` outside the cloth and outside the tubes, in the homotopy class
+    of the polyline A -> ``around`` -> B (``around`` is a point well outboard on the side the strap passes). String
+    relaxation: each sweep moves every inner point toward its neighbours' mid-point (shortens), then pushes it back
+    out of the obstacles; resampled to equal spacing every 25 sweeps."""
+    A, B, W = (np.asarray(v, float) for v in (A, B, around))
+    P = np.vstack([np.linspace(A, W, n // 2, endpoint=False), np.linspace(W, B, n - n // 2)])
+    for it in range(iters):
+        P[1:-1] += 0.6 * (0.5 * (P[:-2] + P[2:]) - P[1:-1])
+        if surf is not None and (it % 5 == 0 or it > iters - 50):
+            c, nr = surf.closest(P[1:-1])
+            sd = np.einsum("ij,ij->i", P[1:-1] - c, nr)
+            m = sd < clear
+            Q = P[1:-1]
+            Q[m] = c[m] + nr[m] * clear
+            P[1:-1] = Q
+        if len(tubes):
+            P[1:-1] = _push_tubes(P[1:-1], tubes)
+        if it % 25 == 0:
+            s = np.r_[0.0, np.cumsum(np.linalg.norm(np.diff(P, axis=0), axis=1))]
+            si = np.linspace(0.0, s[-1], n)
+            P = np.column_stack([np.interp(si, s, P[:, k]) for k in range(3)])
+    return P
+
+
+def _ribbon_gap(P, surf, la, lb, w=GUY_W) -> float:
+    """Edge-to-edge gap between the guy ribbon (width across the cloth, square to the path) and the lifter ribbon
+    (width along x at the lug, the lug's slot axis), both 25 mm, from 6 x 40 samples per ribbon."""
+    from scipy.spatial import cKDTree
+    u = np.diff(P, axis=0)
+    u /= np.maximum(np.linalg.norm(u, axis=1), 1e-9)[:, None]
+    mid = 0.5 * (P[:-1] + P[1:])
+    # no cloth (a strap through the vertical port slit): webbing on edge, width vertical
+    nr = surf.closest(mid)[1] if surf is not None else np.tile([1.0, 0.0, 0.0], (len(mid), 1))
+    wd = np.cross(nr, u)
+    wd /= np.maximum(np.linalg.norm(wd, axis=1), 1e-9)[:, None]
+    G = np.vstack([mid + k * wd for k in np.linspace(-w / 2, w / 2, 6)])
+    le = la + np.linspace(0, 1, 40)[:, None] * (lb - la)
+    Lr = np.vstack([le + np.array([k, 0.0, 0.0]) for k in np.linspace(-LIFTER_W / 2, LIFTER_W / 2, 6)])
+    return float(cKDTree(Lr).query(G)[0].min())
+
+
+def path_metrics(P, surf: ClothSurface | None, A, B, torso: float, side: int = 1, T_n: float | None = None,
+                 clear: float = PATH_CLEAR, loops=()) -> dict:
+    """Length, wrap, friction share, the force the guy puts on B-22 and on the bag as a whole, and the gap to the lifter.
+
+    * wrap angle theta = total turning of the (lightly smoothed) path where it bears on the cloth or a guide loop;
+      friction share = 1 - exp(-mu theta) = the part of the cinch tension the wrap holds back (capstan);
+    * u_bag = unit pull of the guy on the bag as a whole = from the bag toward the bar along the first free run (the
+      wrapped part and B-22 move with the bag; GT-1 / sim): its -y part is the forward pull that holds the CG;
+    * u_B22 = unit pull at B-22 itself (back along the last run); the straight-line model put it along B-22 -> bar.
+    ``T_n`` (the simulated guy tension at the bar end) turns shares into newtons; the B-22 range is T e^(-mu theta)
+    (guy being cinched) to T (load creeping out against friction is not credited)."""
+    from scipy.ndimage import gaussian_filter1d
+    A, B = np.asarray(A, float), np.asarray(B, float)
+    seg = np.diff(P, axis=0)
+    ln = np.linalg.norm(seg, axis=1)
+    u = seg / np.maximum(ln, 1e-9)[:, None]
+    if surf is not None:
+        con = surf.signed(P) < clear + 1.5
+    else:
+        con = np.zeros(len(P), bool)
+    for lp in loops:                                  # a guide loop is a bearing point too
+        con |= np.linalg.norm(P - np.asarray(lp, float), axis=1) < 15.0
+    Ps = P.copy()
+    Ps[1:-1] = gaussian_filter1d(P, 1.5, axis=0, mode="nearest")[1:-1]
+    us = np.diff(Ps, axis=0)
+    us /= np.maximum(np.linalg.norm(us, axis=1), 1e-9)[:, None]
+    turn = np.arccos(np.clip(np.einsum("ij,ij->i", us[:-1], us[1:]), -1.0, 1.0))
+    theta = float(turn[con[1:-1]].sum())
+    i0 = int(np.argmax(con[1:])) + 1 if con[1:].any() else len(P) - 1
+    d0 = P[i0] - A
+    uA = d0 / np.linalg.norm(d0) if np.linalg.norm(d0) > 5.0 else u[0]
+    u_bag = -uA                                       # pull on the bag: toward the bar
+    u_b22 = -u[-1]                                    # pull on B-22: back along the last run
+    u_str = (A - B) / np.linalg.norm(A - B)
+    la, lb = lifter_line(torso, side)
+    out = {"length_mm": round(float(ln.sum()), 1), "straight_mm": round(float(np.linalg.norm(B - A)), 1),
+           "wrap_deg": round(math.degrees(theta), 1),
+           "friction_share": round(1.0 - math.exp(-MU_WEB_FAB * theta), 3),
+           "friction_share_band": [round(1.0 - math.exp(-m * theta), 3) for m in MU_SENS],
+           "u_bag": [round(float(v), 3) for v in u_bag], "u_b22": [round(float(v), 3) for v in u_b22],
+           "fwd_share_bag": round(float(-u_bag[1]), 3), "fwd_share_b22": round(float(-u_b22[1]), 3),
+           "fwd_share_straight": round(float(-u_str[1]), 3),
+           "b22_along_straight": round(float(u_b22 @ u_str), 3),
+           "outboard_share_at_bar": round(float(side * uA[0]), 3),
+           "lifter_gap_mm": round(_ribbon_gap(P, surf, la, lb), 1),
+           "lifter_centre_mm": round(float(np.min(np.linalg.norm(
+               P[:, None, :] - (la + np.linspace(0, 1, 60)[:, None] * (lb - la))[None], axis=2))), 1),
+           "x_max_mm": round(float(np.max(side * P[:, 0])), 1)}
+    if T_n is not None:
+        e = math.exp(-MU_WEB_FAB * theta)
+        out["T_bar_n"] = round(float(T_n), 1)
+        out["b22_n"] = [round(float(T_n) * e, 1), round(float(T_n), 1)]
+        out["fwd_pull_bag_n"] = round(float(T_n) * out["fwd_share_bag"], 1)
+        out["fwd_pull_straight_model_n"] = round(float(T_n) * out["fwd_share_straight"], 1)
+    return out
+
+
+# fine drapes and their mesh (node order is fixed by the pattern, the same at every torso)
+FINE_DRAPE_DIR = ROOT / "outputs" / "clothsim" / "corrie_f"
+_MESH = {}
+
+
+def fine_mesh(torso: int) -> dict:
+    """Fine (h 25) sim mesh of the current shell: triangles, drafted nodes, piece of each node, B-22 nodes and the
+    guy bar anchors as the scenario places them. Built once per torso (PackModel, about 20 s)."""
+    if torso in _MESH:
+        return _MESH[torso]
+    S = _sim()
+    from huntkit.clothsim.pack import PackModel, load_scenario
+    S.install(None)
+    try:
+        pm = PackModel(load_scenario(str(S.scenario_path(torso, REVS[1]["guy_x"]))), fine=True, verbose=False)
+    finally:
+        S.uninstall()
+    X0 = pm.mesh.X0
+    m = {"X0": X0, "tris": np.asarray(pm.mesh.tris), "piece": [sorted(pm.node_pieces[j])[0] for j in range(len(X0))],
+         "b22": {s: int(pm.cables[f"TG_{s}"].nodes[0]) for s in ("R", "L")},
+         "anchor": {s: np.asarray(pm.cables[f"TG_{s}"].fixed[-1], float) for s in ("R", "L")}}
+    _MESH[torso] = m
+    return m
+
+
+def drape(run: str, case: str):
+    """Loaded node positions of a stored fine run (outputs/, not tracked: None when the run is not on disk)."""
+    p = FINE_DRAPE_DIR / run / f"x_{case}.npy"
+    return np.load(p) if p.exists() else None
+
+
+def real_guy_path(X, torso: int, side: str = "R", loops=(), anchor=None, b22=None, tubes=None):
+    """The taut guy on a loaded drape ``X``: bridle anchor (x +/-GUY_X on the bar's bag face, as the sim) -> optional
+    guide loops (3D points the strap passes through) -> B-22. Returns (path, surface, A, B)."""
+    m = fine_mesh(torso)
+    sx = 1 if side == "R" else -1
+    A = np.asarray(anchor if anchor is not None else m["anchor"][side], float)
+    B = np.asarray(b22 if b22 is not None else X[m["b22"][side]], float)
+    surf = ClothSurface(X, m["tris"])
+    tubes = crown_tubes(float(A[2])) if tubes is None else tubes
+    pts = [A] + [np.asarray(q, float) for q in loops] + [B]
+    parts = []
+    for p0, p1 in zip(pts[:-1], pts[1:]):
+        around = [sx * 330.0, 0.5 * (p0[1] + p1[1]), 0.5 * (p0[2] + p1[2])]
+        direct = taut_path(None, p0, p1, 0.5 * (p0 + p1), (), n=12, iters=10)
+        free = (surf.signed(direct[1:-1]) > PATH_CLEAR).all()
+        parts.append(direct if free else taut_path(surf, p0, p1, around, tubes))
+    P = np.vstack([parts[0]] + [q[1:] for q in parts[1:]])
+    return P, surf, A, B
+
+
+def path_vias(P, X, surf: ClothSurface, spacing: float = 40.0, end_keep: float = 25.0) -> list:
+    """Mesh nodes for the cloth sim's frictionless eyelets (huntkit Cable via nodes) along a real guy path: the nodes
+    nearest the points where the path bears on the cloth, every ``spacing`` mm of arc, ``end_keep`` mm clear of the
+    ends. The sim's straight runs between them then follow the wrap (chords on a 40 mm spacing)."""
+    from scipy.spatial import cKDTree
+    s = np.r_[0.0, np.cumsum(np.linalg.norm(np.diff(P, axis=0), axis=1))]
+    on = surf.signed(P) < PATH_CLEAR + 1.5
+    tr = cKDTree(np.asarray(X, float))
+    out, last = [], -1e9
+    for i in range(len(P)):
+        if not on[i] or s[i] < end_keep or s[i] > s[-1] - end_keep or s[i] - last < spacing:
+            continue
+        k = int(tr.query(P[i])[1])
+        if k not in out:
+            out.append(k)
+            last = s[i]
+    return out
+
+
+ROUTE_SEED = ("F_r1_PR{t}_fineFM", "meat")     # the drape each route's eyelets are picked on (rev 1, fine, meat)
+
+
+def _route_wrap(torso: int) -> dict:
+    """'wrap' = rev 1 as it would really sit: the guy round the bag's side corner to B-22 (eyelets on its real path on
+    the rev 1 fine meat drape)."""
+    X = drape(ROUTE_SEED[0].format(t=torso), ROUTE_SEED[1])
+    if X is None:
+        raise FileNotFoundError(f"{ROUTE_SEED[0].format(t=torso)} not on disk: run corrie_f_sim.py finerun F --torso {torso}")
+    out = {}
+    for s in ("R", "L"):
+        P, surf, A, B = real_guy_path(X, torso, s)
+        out[s] = {"vias": path_vias(P, X, surf), "b22": None}
+    return out
+
+
+def _b01_node(torso: int, x: float, z: float) -> int:
+    """B-01 (frame-face) node nearest drafted (x, z)."""
+    m = fine_mesh(torso)
+    X0 = m["X0"]
+    idx = np.array([j for j, p in enumerate(m["piece"]) if p == "B-01"])
+    return int(idx[np.argmin(np.hypot(X0[idx, 0] - x, X0[idx, 2] - z))])
+
+
+def _route_tie(torso: int, keep_guys: bool = True) -> dict:
+    """'tie' = an internal depth tie from B-22 straight across the inside of the bag to the frame face B-01 at the same
+    x and z (no frame end), with the external guys kept on their real wrap ('tie_wrap') or deleted ('tie')."""
+    m = fine_mesh(torso)
+    base = _route_wrap(torso) if keep_guys else {"R": {"off": True}, "L": {"off": True}}
+    for s, sx in (("R", 1), ("L", -1)):
+        b = m["b22"][s]
+        x, z = float(m["X0"][b, 0]), float(m["X0"][b, 2])
+        base[s]["internal"] = {f"TI_{s}": [b, _b01_node(torso, x, z)]}
+    return base
+
+
+GUY_PATHS = HERE / "corrie_f_sim" / "corrie_f_guy_paths.json"
+# stored fine runs whose drapes BL-028 measures: (row key, run folder, torso, routing; None = the straight tie)
+BL028_RUNS = [(f"F_PR{t}_fineFM", f"F_r1_PR{t}_fineFM", t, None) for t in (15, 19, 23)] + \
+             [(f"F_PR{t}_fineFM_wrap_6d", f"F_r1_PR{t}_fineFM_wrap_6d", t, "wrap") for t in (15, 19, 23)] + \
+             [("F_PR15_fineFM_wrap", "F_r1_PR15_fineFM_wrap", 15, "wrap")] + \
+             [(f"F_PR{t}_fineFM_port", f"F_r1_PR{t}_fineFM_port", t, "port") for t in (15, 19, 23)]
+
+
+def bl028_paths(runs=None, write: bool = True) -> dict:
+    """Real guy path (both sides) on every stored fine drape that is on disk: length, wrap, friction share, pull on
+    B-22 and on the bag, lifter gap. Tension = the run's simulated guy load at 1 g. Written to GUY_PATHS."""
+    S = _sim()
+    rows = S.load_results()["rows"]
+    old = json.loads(GUY_PATHS.read_text()) if GUY_PATHS.exists() else {"rows": {}}
+    out = {"method": "taut string outside the fine cloth drape (PATH_CLEAR) and the crown tubes; corrie_f.taut_path",
+           "mu": MU_WEB_FAB, "mu_band": list(MU_SENS), "min_clear_mm": MIN_CLEAR_MM, "rows": dict(old.get("rows", {}))}
+    for key, folder, t, route in (runs or BL028_RUNS):
+        for case in ("fill", "meat", "sixday"):
+            X = drape(folder, case)
+            if X is None:
+                continue
+            row = {"torso": t, "case": case, "route": route or "straight (as simulated)", "run": folder}
+            rj = FINE_DRAPE_DIR / folder / "results.json"
+            if rj.exists():                    # a drape that did not converge is kept, flagged (geometry only)
+                cc = json.loads(rj.read_text())["cases"].get(case, {})
+                row["converged"] = bool(cc.get("converged"))
+                row["residual_n"] = (cc.get("solve") or [{}])[-1].get("residual_n")
+            loads = rows.get(key, {}).get("cases", {}).get(case, {}).get("loads_1g", {})
+            spec = ROUTES[route](t) if route == FIX_ROUTE else None
+            for s, sx in (("R", 1), ("L", -1)):
+                if spec is not None:              # rev 2: bar -> port (outside) -> B-22 (inside the bag, straight)
+                    m = fine_mesh(t)
+                    A, Q = m["anchor"][s], X[spec[s]["vias"][0]]
+                    B = X[spec[s]["b22"] if spec[s].get("b22") is not None else m["b22"][s]]
+                    P = np.vstack([np.linspace(A, Q, 8, endpoint=False), np.linspace(Q, B, 40)])
+                    row[s] = path_metrics(P, None, A, B, t, sx, T_n=loads.get(f"TG_{s}"), loops=[Q])
+                    row[s]["outside_mm"] = round(float(np.linalg.norm(Q - A)), 1)
+                    continue
+                loops = ROUTE_LOOPS.get(route, lambda *_: [])(X, t, s)
+                P, surf, A, B = real_guy_path(X, t, s, loops=loops)
+                row[s] = path_metrics(P, surf, A, B, t, sx, T_n=loads.get(f"TG_{s}"), loops=loops)
+            out["rows"][f"{folder}:{case}"] = row
+    if write:
+        GUY_PATHS.write_text(json.dumps(out, indent=1, default=_j))
+    return out
+
+
+ROUTE_LOOPS = {}      # routing -> fn(X, torso, side) giving the guide-loop points the guy is held through
+
+
+def _hook_node(torso: int, side: str) -> int:
+    """Bag node of the IM3 bag hook (scenario hooks station 520) on ``side``."""
+    S = _sim()
+    from huntkit.clothsim.pack import PackModel, load_scenario
+    S.install(None)
+    try:
+        pm = PackModel(load_scenario(str(S.scenario_path(torso, REVS[1]["guy_x"]))), fine=True, verbose=False)
+    finally:
+        S.uninstall()
+    ks = sorted(int(c.nodes[0]) for c in pm.cables.values() if c.meta.get("group", c.name) == f"hook_im520_{side}")
+    X0 = pm.mesh.X0
+    return min(ks, key=lambda k: abs(X0[k, 0] - np.mean(X0[ks, 0])))     # the bridle's middle node (hook eye)
+
+
+def _route_im3(torso: int) -> dict:
+    """'im3' = no external guy; an internal guy from B-22 down to the IM3 bag-hook eye on the frame face (z 520), so
+    the frame end is the IM3 hook (torso independent, no port), at the price of more load on the IM3 cheek."""
+    m = fine_mesh(torso)
+    return {s: {"off": True, "internal": {f"TI_{s}": [m["b22"][s], _hook_node(torso, s)]}} for s in ("R", "L")}
+
+
+def _route_port(torso: int) -> dict:
+    """'port' = the guy passes through a lapped port in the frame face B-01 at x +/-GUY_X, where B-01 meets the bar,
+    and runs inside the bag to B-22 (its tab turned to the inside of the hinge band). The port is the B-01 node
+    nearest the bar crossing (drafted x GUY_X, z = bar, capped at the collar seam z 745)."""
+    m = fine_mesh(torso)
+    out = {}
+    for s, sx in (("R", 1), ("L", -1)):
+        zb = min(float(m["anchor"][s][2]), 745.0)
+        out[s] = {"vias": [_b01_node(torso, sx * REVS[1]["guy_x"], zb)], "b22": None}
+    return out
+
+
+def _piece_node(torso: int, piece: str, x: float, z: float) -> int:
+    m = fine_mesh(torso)
+    X0 = m["X0"]
+    idx = np.array([j for j, p in enumerate(m["piece"]) if p == piece])
+    return int(idx[np.argmin(np.hypot(X0[idx, 0] - x, X0[idx, 2] - z))])
+
+
+def _route_port_at(torso: int, x22: float, z22: float) -> dict:
+    """'port' with the inside guy tab moved to the hinge band at (x22, z22)."""
+    out = _route_port(torso)
+    for s, sx in (("R", 1), ("L", -1)):
+        out[s]["b22"] = _piece_node(torso, "B-02h", sx * x22, z22)
+    return out
+
+
+ROUTES = {"wrap": _route_wrap, "im3": _route_im3, "port": _route_port,
+          "port_hi": lambda t: _route_port_at(t, 149.0, 740.0), "port_hi_in": lambda t: _route_port_at(t, 100.0, 740.0), "tie_wrap": lambda t: _route_tie(t, True), "tie": lambda t: _route_tie(t, False)}
+
+
+def route_spec(name: str, torso: int) -> dict:
+    return ROUTES[name](torso)
+
+
+# rev 2 (BL-028, PROPOSED): the guy goes inside. Path, CG and R-28 are in section 13 of corrie_f_body.md.
+FIX_ROUTE = "port"            # the corrie_f_sim routing that models rev 2 (runs F_r1_PR{t}_fineFM_port: rev 1 bag + port)
+PORT_Z = (595.0, 745.0)       # DECISION: port slit from 6 mm under the lowest bar (15 in, z 601) to the collar seam z 745
+#                               (B-01's top edge). The L kit's bar (z 728-804) meets it at the top end (section 13.3)
+PORT_FACING_W = 50.0          # ASSUMPTION: lap facing 50 mm wide (20 mm lap + 2 x 15 mm stitch lines); settled by the
+#                               first port mock-up (water hose test from above, guy pulled at 45 deg through it)
+PORT_TURN = 6.0               # slit edges turned 6 mm and edge-stitched (both edges)
+PORT_END = 10.0               # facing runs 10 mm past each slit end (bartacked)
+
+
+def guy_port(fabrics: str = "B") -> dict:
+    """B-27 guy port (rev 2), one each side: a vertical lapped slit in the frame face B-01 at x +/-GUY_X from PORT_Z[0]
+    to PORT_Z[1]. The outboard edge laps 20 mm over the inboard edge on a B-01-fabric facing sewn inside; both edges
+    turned and edge-stitched; bartacks at the ends. The guy passes through it where the bar meets B-01, so it never
+    leaves the bar band x 39.5-64.5 outside the bag (lifter band starts at x 92.5). Mass = (facing + turned edges)
+    x the B-01 fabric record."""
+    c = make()
+    with frame_face(c):
+        mid = BC.frame_panel(c).material_id
+    h = PORT_Z[1] - PORT_Z[0]
+    area = (PORT_FACING_W * (h + 2 * PORT_END) + 2 * PORT_TURN * h) * 2      # two ports
+    return {"id": "B-27", "x_mm": REVS[1]["guy_x"], "z_mm": list(PORT_Z), "slit_mm": h, "material": mid,
+            "area_mm2": round(area, 0), "mass_g": round(area * _gsm(mid) / 1e6, 2),
+            "source": f"{mid} record (B-01 fabric) x facing and turned-edge area (PORT_FACING_W, PORT_TURN ASSUMPTIONS)"}
+
+
+def guy_length_check() -> dict:
+    """Guy webbing per side: what the straight model books (bar to B-22) against rev 1's real outside path and rev 2's
+    inside path (fine meat drapes; GUY_PATHS). Rev 1 never booked the extra outside length."""
+    gp = json.loads(GUY_PATHS.read_text()) if GUY_PATHS.exists() else {"rows": {}}
+    out = {}
+    for t in (15, 19, 23):
+        r = gp["rows"].get(f"F_r1_PR{t}_fineFM:meat")
+        if r:
+            ext = max(r["R"]["length_mm"], r["L"]["length_mm"])
+            st = max(r["R"]["straight_mm"], r["L"]["straight_mm"])
+            out[t] = {"straight_mm": st, "rev1_real_mm": ext, "extra_mm": round(ext - st, 1),
+                      "extra_g_pair": round(2 * (ext - st) * WEB25 / 1000.0, 2)}
+    return out
+
+
+BL028_CG_RUNS = {          # 15 in meat, fine mesh: what each guy model / routing gives (stored corrie_f_sim rows)
+    "straight model (BL-022, through the bag)": "F_PR15_fineFM",
+    "guys off (misuse)": "F_PR15_fineFM_goff_sm8",
+    "rev 1 real: round the bag (eyelets on its path)": "F_PR15_fineFM_wrap",
+    "internal depth tie + rev 1 wrap": "F_PR15_fineFM_tie_wrap",
+    "internal guy to the IM3 hook eye": "F_PR15_fineFM_im3",
+    "rev 2: B-01 port, inside to B-22 (z 695)": "F_PR15_fineFM_port",
+    "port, tab at the collar seam x 149": "F_PR15_fineFM_port_hi",
+    "port, tab at the collar seam x 100": "F_PR15_fineFM_port_hi_in",
+}
+
+
+def bl028_table() -> dict:
+    """BL-028 numbers from stored results: the real path on every fine drape, the 15 in meat CG of each routing, and
+    rev 2 (port) fill / meat CG and R-28 at 15 / 19 / 23 in. Acceptance: lifter gap >= MIN_CLEAR_MM on the real path,
+    15 in meat CG <= 180 mm (fine), R-28 >= 31 deg."""
+    S = _sim()
+    rows = S.load_results()["rows"]
+    gp = json.loads(GUY_PATHS.read_text()) if GUY_PATHS.exists() else {"rows": {}}
+
+    def cg(key, case="meat"):
+        c = rows.get(key, {}).get("cases", {}).get(case)
+        if not c:
+            return None
+        g = c["loads_1g"]
+        return {"converged": c["converged"], "rounding_mm": c["rounding_mm"], "cg_y": c["cg_y"], "cg_y_biased": c["cg_y_biased"],
+                "closed_L": c["closed_L"], "guy_1g_n": max(g.get("TG_R", 0.0), g.get("TG_L", 0.0)),
+                "tie_1g_n": max(g.get("TI_R", 0.0), g.get("TI_L", 0.0)),
+                "im3_1g_n": max(g.get("hook_im520_R", 0.0), g.get("hook_im520_L", 0.0))}
+    cg15 = {k: cg(v) for k, v in BL028_CG_RUNS.items()}
+    paths = {k: r for k, r in gp["rows"].items()}
+    gaps = [min(r["R"]["lifter_gap_mm"], r["L"]["lifter_gap_mm"]) for r in paths.values()
+            if r["case"] in ("fill", "meat", "sixday")]
+    fix = {}
+    for t in (15, 19, 23):
+        key = f"F_PR{t}_fineFM_{FIX_ROUTE}"
+        r = rows.get(key, {})
+        fix[t] = {cn: cg(key, cn) for cn in ("fill", "meat")}
+        fix[t]["r28_deg"] = (min(r["r28"]["fill"]["worst_contact_deg"], r["r28"]["meat"]["worst_contact_deg"])
+                             if "r28" in r else None)
+        fix[t]["r28_gap30_mm"] = (min(r["r28"]["fill"]["worst_gap_30_mm"], r["r28"]["meat"]["worst_gap_30_mm"])
+                                  if "r28" in r else None)
+    m15 = (fix[15].get("meat") or {}).get("cg_y")
+    r28s = [fix[t]["r28_deg"] for t in (15, 19, 23)]
+    acc = {"lifter_gap_min_mm": min(gaps) if gaps else None,
+           "lifter_ok": bool(gaps) and min(gaps) >= MIN_CLEAR_MM,
+           "cg15_meat_fix_mm": m15, "cg15_ok": m15 is not None and m15 <= 180.0,
+           "cg15_short_mm": None if m15 is None else round(max(0.0, m15 - 180.0), 1),
+           "r28_fix_deg": r28s, "r28_ok": all(v is not None and v >= 31.0 for v in r28s)}
+    return {"paths": paths, "cg15_meat": cg15, "fix_route": FIX_ROUTE, "fix": fix, "acceptance": acc,
+            "port": guy_port(), "guy_length": guy_length_check()}
+
+
+def BL028_NOTE_TEXT() -> str:
+    t = bl028_table()
+    a, c = t["acceptance"], t["cg15_meat"]
+
+    def v(k):
+        return "n/a" if not c.get(k) else f"{c[k]['cg_y']:.1f}"
+    return ("Read this first\n"
+            "- The straight guy in every sim since 2026-11-05 passes\n  through the full bag. It does not exist.\n"
+            "- Real path: round the bag's side, 360-420 mm, 170-210 deg\n  of wrap. It stays aft of the bar, clear of the\n"
+            f"  lifters (worst edge gap {a['lifter_gap_min_mm']:.0f} mm, need 10).\n"
+            "- But it pulls the bag sideways. 15 in meat CG:\n"
+            f"  straight model {v('straight model (BL-022, through the bag)')}, real {v('rev 1 real: round the bag (eyelets on its path)')} mm\n"
+            f"  (guys off {v('guys off (misuse)')}; rev C limit 190).\n"
+            f"- Rev 2: guy through a lapped port in B-01 at x 52,\n  inside to B-22: {a['cg15_meat_fix_mm']:.1f} mm "
+            f"({'meets' if a['cg15_ok'] else 'misses'} 180 by {abs((a['cg15_meat_fix_mm'] or 0) - 180):.1f}).\n"
+            f"- R-28 with rev 2: {', '.join('n/a' if x is None else f'{x:.0f}' for x in a['r28_fix_deg'])} deg at 15/19/23 in.")
 
 
 # ---------------------------------------------------------------------------------------------------------- results
@@ -1470,6 +1986,203 @@ def plot_bl022(path: Path) -> Path:
     return path
 
 
+def plot_bl028(path: Path, torso: int = 15) -> Path:
+    """BL-028 diagram: the guy on the 15 in meat drape (plan and rear) as BL-022 modelled it (straight, through the
+    bag), as it really lies (round the bag's side), and the rev 2 port routing; the 15 in meat CG of every routing
+    run on the fine mesh; and the lifter gap on every drape."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    S = _sim()
+    rows = S.load_results()["rows"]
+    gp = json.loads(GUY_PATHS.read_text()) if GUY_PATHS.exists() else {"rows": {}}
+    X = drape(f"F_r1_PR{torso}_fineFM", "meat")
+    Xp = drape(f"F_r1_PR{torso}_fineFM_{FIX_ROUTE}", "meat")
+    fig = plt.figure(figsize=(16.0, 10.0), dpi=80)
+    gs = fig.add_gridspec(2, 3, height_ratios=[1.05, 1.0])
+    C_STR, C_REAL, C_FIX, C_LIFT = "#c0392b", "#d98a1c", "#2e8b57", "#2b6cb0"
+    if X is not None:
+        m = fine_mesh(torso)
+        Pr, surf, A, B = real_guy_path(X, torso, "R")
+        tubes = crown_tubes(float(A[2]))
+        la, lb = lifter_line(torso)
+        band = np.abs(X[:, 2] - 0.5 * (A[2] + B[2])) < 45.0
+        for k, (i, j, title) in enumerate(((0, 1, f"Plan, {torso} in, meat load (fine drape): right guy"),
+                                           (0, 2, "Seen from behind (bag side), right half"))):
+            ax = fig.add_subplot(gs[0, k])
+            sel = band if k == 0 else (X[:, 0] > -20)
+            ax.scatter(X[sel, i], X[sel, j], s=3, c="#b8b8b8", lw=0, label="bag cloth (fine sim nodes)")
+            for a, b, r in tubes:
+                if k == 0 and abs(a[2] - b[2]) > 1:
+                    ax.add_patch(plt.Circle((a[0], a[1] + (b[1] - a[1]) * 0.98), r, color="#333"))
+                else:
+                    ax.plot([a[i], b[i]], [a[j], b[j]], color="#333", lw=2 * r * 0.55, solid_capstyle="butt")
+            ax.plot([la[i], lb[i]], [la[j], lb[j]], color=C_LIFT, lw=7, alpha=0.85, label="lifter webbing (lug x 105)")
+            ax.plot([A[i], B[i]], [A[j], B[j]], "--", color=C_STR, lw=2.2, label="BL-022 model: straight (through the bag)")
+            ax.plot(Pr[:, i], Pr[:, j], color=C_REAL, lw=3.2, label=f"rev 1 real path: {path_metrics(Pr, surf, A, B, torso)['length_mm']:.0f} mm")
+            if Xp is not None:
+                spec = ROUTES[FIX_ROUTE](torso)["R"]
+                hd = Xp[spec["b22"]] if spec.get("b22") is not None else Xp[m["b22"]["R"]]
+                pts = np.vstack([A] + [Xp[v] for v in spec["vias"]] + [hd])
+                ax.plot(pts[:, i], pts[:, j], color=C_FIX, lw=3.2, marker="o", ms=5,
+                        label="rev 2: B-01 port, then inside")
+            ax.plot(*A[[i, j]], "ks", ms=7)
+            ax.annotate("bridle sleeve\nx 52 on the bar", A[[i, j]], xytext=(8, -26 if k == 0 else 10), textcoords="offset points", fontsize=9)
+            ax.plot(*B[[i, j]], "k*", ms=13)
+            ax.annotate("B-22", B[[i, j]], xytext=(6, 6), textcoords="offset points", fontsize=10)
+            ax.set_aspect("equal")
+            ax.set_xlabel("x, mm (outboard ->)" if i == 0 else "")
+            ax.set_ylabel("y, mm (aft ->)" if j == 1 else "z, mm")
+            ax.set_title(title, fontsize=11)
+            ax.grid(alpha=0.2)
+            if k == 0:
+                ax.set_xlim(-30, 240)
+                ax.set_ylim(-160, 330)
+                ax.legend(fontsize=7.6, loc="lower right", framealpha=0.95)
+            else:
+                ax.set_xlim(-20, 240)
+                ax.set_ylim(440, 800)
+    # CG bars
+    ax = fig.add_subplot(gs[0, 2])
+    runs = [("straight model\n(BL-022, not real)", f"F_PR{torso}_fineFM", "#e4b5ae"), ("guys off", f"F_PR{torso}_fineFM_goff_sm8", "#999"),
+            ("real wrap\n(rev 1 as built)", f"F_PR{torso}_fineFM_wrap", C_REAL), ("internal depth\ntie + wrap", f"F_PR{torso}_fineFM_tie_wrap", "#c9a227"),
+            ("internal guy\nto IM3 eye", f"F_PR{torso}_fineFM_im3", "#8e6c8a"), ("port, tab\nz 695", f"F_PR{torso}_fineFM_port", "#7fbf9b"),
+            ("port, tab\nz 745 x 149", f"F_PR{torso}_fineFM_port_hi", "#4fa77a"), ("port, tab\nz 745 x 100", f"F_PR{torso}_fineFM_port_hi_in", C_FIX)]
+    xs, labs = [], []
+    for n, (lab, key, col) in enumerate(runs):
+        c = rows.get(key, {}).get("cases", {}).get("meat")
+        if not c:
+            continue
+        v = c["cg_y"]
+        ax.barh(len(xs), v, color=col, edgecolor="white")
+        ax.text(v + 1, len(xs), f"{v:.1f}" + ("" if c["rounding_mm"] in (0, 0.0) else f" (+{S.bias(c['rounding_mm']):.0f} bias)"),
+                va="center", fontsize=9)
+        xs.append(v)
+        labs.append(lab)
+    ax.axvline(180, color="#c0392b", ls=":", lw=1.4, label="BL-028 acceptance 180")
+    ax.axvline(190, color="#c0392b", ls="--", lw=1.2, label="rev C meat limit 190")
+    ax.set_yticks(range(len(labs)), labs, fontsize=8.5)
+    ax.invert_yaxis()
+    ax.set_xlim(150, 215)
+    ax.set_xlabel("15 in meat load CG, mm aft (fine mesh h 25, 1 g; (+n) = rounding bias)")
+    ax.set_title("What each guy routing does to the 15 in meat CG", fontsize=11)
+    ax.legend(fontsize=8, loc="lower right")
+    ax.grid(axis="x", alpha=0.25)
+    # forward pull and lifter gap
+    ax = fig.add_subplot(gs[1, 0:2])
+    keys = [k for k, r in gp["rows"].items() if r["case"] in ("fill", "meat", "sixday")]
+    tag = {"straight": (0, "rev 1 real"), "wrap": (1, "rev 1 real\n(wrap sim)"), "port": (2, "rev 2 port")}
+    keys.sort(key=lambda k: (tag[gp["rows"][k]["route"].split(" ")[0]][0], gp["rows"][k]["torso"], gp["rows"][k]["case"]))
+    labels = [f"{gp['rows'][k]['torso']} in {gp['rows'][k]['case'].replace('sixday', '6-day*')}\n"
+              f"{tag[gp['rows'][k]['route'].split(' ')[0]][1]}" for k in keys]
+    gap = [min(gp["rows"][k]["R"]["lifter_gap_mm"], gp["rows"][k]["L"]["lifter_gap_mm"]) for k in keys]
+    fs = [min(gp["rows"][k]["R"]["fwd_share_bag"], gp["rows"][k]["L"]["fwd_share_bag"]) for k in keys]
+    st = [min(gp["rows"][k]["R"]["fwd_share_straight"], gp["rows"][k]["L"]["fwd_share_straight"]) for k in keys]
+    xx = np.arange(len(keys))
+    ax.bar(xx - 0.2, gap, 0.4, color=C_LIFT, label="guy to lifter webbing, edge gap, mm (worse side)")
+    ax.axhline(MIN_CLEAR_MM, color=C_LIFT, ls=":", lw=1.2)
+    ax.text(len(keys) - 0.5, MIN_CLEAR_MM + 1.5, f"{MIN_CLEAR_MM:.0f} mm required", color=C_LIFT, fontsize=8.5, ha="right")
+    for x_, g_ in zip(xx, gap):
+        ax.text(x_ - 0.2, g_ + 1, f"{g_:.0f}", ha="center", fontsize=8)
+    ax.set_ylabel("gap, mm")
+    ax.set_ylim(0, 80)
+    ax2 = ax.twinx()
+    ax2.plot(xx + 0.2, st, "_", color=C_STR, ms=18, mew=2.5, label="forward pull share: straight model")
+    ax2.plot(xx + 0.2, fs, "o", color=C_REAL, ms=7, label="forward pull share: real path (worse side)")
+    ax2.set_ylim(-1.05, 1.05)
+    ax2.set_ylabel("share of guy tension pulling the bag forward")
+    ax.set_xticks(xx, labels, fontsize=8)
+    h1, l1 = ax.get_legend_handles_labels()
+    h2, l2 = ax2.get_legend_handles_labels()
+    ax.legend(h1 + h2, l1 + l2, fontsize=8.2, loc="upper left", ncol=3)
+    ax.set_title("Guy on every fine drape: always clear of the lifters; rev 1's real path pulls the bag sideways, not forward "
+                 "(* 6-day drape not converged, geometry only)", fontsize=10.5)
+    ax = fig.add_subplot(gs[1, 2])
+    ax.axis("off")
+    txt = BL028_NOTE_TEXT()
+    ax.text(0.0, 1.0, txt, va="top", fontsize=9.2, family="DejaVu Sans", wrap=True)
+    fig.suptitle("BL-028 CORRIE F guy routing: the straight guy was a model artefact; rev 2 takes the guy inside through a "
+                 "B-01 port", fontsize=13)
+    fig.tight_layout()
+    fig.savefig(path)
+    plt.close(fig)
+    return path
+
+
+def plot_bl028_port(path: Path) -> Path:
+    """Rev 2 construction sketch: the frame face B-01 seen from the frame side with the two B-27 port slits, where the
+    crown bar meets it for each crown kit, and a section through one lapped port with the guy passing."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib.patches import FancyArrowPatch, Rectangle
+    from huntkit.gendesign import crown_diet as CD
+    c = make()
+    fig, axs = plt.subplots(1, 2, figsize=(14.5, 8.0), dpi=80, gridspec_kw={"width_ratios": [1.25, 1]})
+    ax = axs[0]
+    zs = np.linspace(BC.Z0, 745.0, 60)
+    a = c.a(zs)
+    ax.fill(np.r_[a, -a[::-1]], np.r_[zs, zs[::-1]], color="#e9e4da", ec="#666", lw=1.2, label="B-01 frame face (to z 745)")
+    ax.axhline(631.0, color="#999", ls="--", lw=1)
+    ax.text(-190, 636, "setback fold z 631 (30 mm aft above)", fontsize=8.5, color="#555")
+    bands = {"S": "#7fb3d5", "M": "#76b7a0", "L": "#e0a96d"}
+    bg = _bg()
+    zt = {round(q["torso_in"], 1): q["crown_top_z"] for q in bg.crown_settings()}
+    for k, (lo, hi) in CD.SIZES.items():
+        z0, z1 = zt[round(lo, 1)], zt[round(hi, 1)]
+        ax.add_patch(Rectangle((-115, z0), 230, z1 - z0, color=bands[k], alpha=0.28, lw=0))
+        ax.text(118, 0.5 * (z0 + z1), f"{k} kit bar\n{lo:g}-{hi:g} in\nz {z0:.0f}-{z1:.0f}", fontsize=8.5, va="center")
+    for sx in (1, -1):
+        x = sx * REVS[2]["guy_x"]
+        ax.plot([x, x], PORT_Z, color="#2e8b57", lw=4, solid_capstyle="butt")
+        ax.add_patch(Rectangle((x - PORT_FACING_W / 2, PORT_Z[0] - PORT_END), PORT_FACING_W,
+                               PORT_Z[1] - PORT_Z[0] + 2 * PORT_END, fill=False, ec="#2e8b57", ls=":", lw=1.2))
+        ax.plot([x - 6, x + 6], [PORT_Z[0], PORT_Z[0]], color="k", lw=2.5)
+        ax.plot([x - 6, x + 6], [PORT_Z[1], PORT_Z[1]], color="k", lw=2.5)
+    ax.text(REVS[2]["guy_x"] + 30, PORT_Z[0] - 35, f"B-27 port slit x +/-{REVS[2]['guy_x']:.0f}, z {PORT_Z[0]:.0f}-{PORT_Z[1]:.0f}\n"
+            f"(facing {PORT_FACING_W:.0f} mm, dotted; bartacks black)", fontsize=8.5, color="#2e8b57")
+    for sx in (1, -1):
+        ax.plot([sx * (LIFTER_X - LIFTER_W / 2), sx * (LIFTER_X + LIFTER_W / 2)], [810, 810], color="#2b6cb0", lw=6)
+    ax.text(0, 822, "lifter lugs x +/-105 on the crown corners (unchanged)", ha="center", fontsize=8.5, color="#2b6cb0")
+    ax.set_xlim(-230, 230)
+    ax.set_ylim(450, 860)
+    ax.set_aspect("equal")
+    ax.set_xlabel("x, mm (seen from the frame side)")
+    ax.set_ylabel("z, mm")
+    ax.set_title("Rev 2: where the guy enters the bag (top of the frame face)", fontsize=11)
+    ax.grid(alpha=0.2)
+    ax = axs[1]                                                     # horizontal section through one port, at the bar
+    ax.add_patch(plt.Circle((0, -20), 9, color="#333"))
+    ax.text(14, -24, "crown top bar (OD 18)", fontsize=9)
+    ax.plot([-60, 10], [12, 12], color="#8a7f6a", lw=3)              # B-01 inboard part, its edge at x +10
+    ax.plot([-10, 10], [12.0 - 2.5, 12.0 - 2.5], color="#2e8b57", lw=3)  # facing sewn to it, the under-lap
+    ax.plot([-10, 75], [3, 3], color="#8a7f6a", lw=3)                 # B-01 outboard part, its edge at x -10
+    ax.text(-60, 17, "B-01, inboard side of the slit", fontsize=9)
+    ax.text(14, -6, "B-01, outboard side", fontsize=9)
+    ax.annotate("facing: 20 mm lap", (0, 9.5), xytext=(-62, -14), fontsize=9, color="#2e8b57",
+                arrowprops={"arrowstyle": "-", "color": "#2e8b57"})
+    gx = [0, -14, -14, 14, 14, 4]
+    gy = [-11, -4, 6.5, 6.5, 18, 120]
+    ax.plot(gx[:-1], gy[:-1], color="#d98a1c", lw=3)
+    ax.add_patch(FancyArrowPatch((gx[-2], gy[-2]), (gx[-1], gy[-1]), arrowstyle="-|>", mutation_scale=18, color="#d98a1c", lw=3))
+    ax.text(16, 62, "guy (25 mm, on edge)\nfrom the bridle tab,\nbetween the laps,\ninside to B-22\non the hinge band", fontsize=9,
+            color="#a35f00")
+    ax.text(-62, 112, "INSIDE THE BAG", fontsize=10, color="#555")
+    ax.text(-62, -60, "FRAME / WEARER SIDE", fontsize=10, color="#555")
+    ax.set_xlim(-70, 100)
+    ax.set_ylim(-70, 130)
+    ax.set_aspect("equal")
+    ax.axis("off")
+    ax.set_title("Section through one port (from above), not to scale across the lap", fontsize=11)
+    fig.suptitle(f"BL-028 rev 2 (proposed): B-27 guy port, two per bag, {guy_port()['mass_g']:.1f} g; outside the bag the guy "
+                 "stays in x 39.5-64.5 (lifter band from x 92.5)",
+                 fontsize=12.5)
+    fig.tight_layout()
+    fig.savefig(path)
+    plt.close(fig)
+    return path
+
+
 def all_plots() -> list:
     SCREENS.mkdir(parents=True, exist_ok=True)
     return [plot_mass(SCREENS / f"{PREFIX}1.png"), plot_doors(SCREENS / f"{PREFIX}2.png"), plot_cg(SCREENS / f"{PREFIX}3.png")]
@@ -1481,7 +2194,16 @@ def main(argv=None):
     ap.add_argument("--rows", action="store_true")
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--bl022", action="store_true", help="BL-022 rev 1 summary + screenshot 20261112_BL022_1.png")
+    ap.add_argument("--bl028", action="store_true", help="BL-028 real guy paths (writes corrie_f_guy_paths.json), "
+                                                         "table + screenshot 20261112_BL028_1.png")
     a = ap.parse_args(argv)
+    if a.bl028:
+        SCREENS.mkdir(parents=True, exist_ok=True)
+        bl028_paths()
+        print(json.dumps({k: v for k, v in bl028_table().items() if k != "paths"}, indent=1, default=_j))
+        print(plot_bl028(SCREENS / "20261112_BL028_1.png"))
+        print(plot_bl028_port(SCREENS / "20261112_BL028_2.png"))
+        return
     if a.bl022:
         SCREENS.mkdir(parents=True, exist_ok=True)
         print(json.dumps(bl022_summary(), indent=1, default=_j))
