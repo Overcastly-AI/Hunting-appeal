@@ -71,3 +71,6 @@ Nothing here is decided; the tickets produce the material.
 - Physical tests themselves (the owner runs them; BL-016 plans them).
 - The pattern release and manufacturing package for the new bag; they follow the owner's pick.
 - The apparel line.
+
+| BL-024 | H1 sleeve and crown-leg seat redesign, fatigue ≥ 1.15 on sim loads | structural-fea-engineer | L | 021, 025 | unblocks frame release R1 |
+| BL-025 | Cloth-sim contact-field fix and re-runs | pack-designer | M | — | correct contact forces; mesh scatter |

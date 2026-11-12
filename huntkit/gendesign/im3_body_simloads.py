@@ -69,13 +69,25 @@ ASSUMPTIONS = {
     "PAHT_FAT": ("PAHT CF fatigue_1e5_ratio 0.30 (record ASSUMPTION, no published data).",
                  "CA-1 coupon test (TEST_PLAN): the flip points in section 5 say what each part needs."),
     "SIM_BODY": ("Bag cases on the body: the sim's 1 g frame-side forces scaled by g x load / 68 kg; side-hill "
-                 "keeps the beam's lateral and downhill part, the upright part is replaced by the sim x cos 25 deg.",
+                 "keeps the beam's lateral and downhill part, the upright part is replaced by the sim x cos 25 deg. "
+                 "The set is closed on the payload weight at the sim's CG: the force left over (under-straps, W "
+                 "straps, doublers and fabric the extraction does not map: 67-96 N, 10-14 % of the weight) goes to "
+                 "the four under-strap pins, and the sagittal moment left over to a fore-aft couple between the IM3 "
+                 "hook and hinge nodes (-38 to +201 N).",
                  "T9 loaded CG + frame strain gauges at the stays z 450-550 in the T1 carry test."),
+    "CINCH_STATIC": ("The meat straps' cinch (rev C 150 N per strap, the sim's meat-face push) is a static preload "
+                     "set at the kill site: it is in every strength and creep set but does not cycle with the "
+                     "walking g, so it is left out of the static-carry set that gives fatigue. The bound with the "
+                     "cinch cycling is reported beside it.",
+                     "MT-1 strap tension readout over a 10 min loaded walk in the T2 meat test (amplitude of the "
+                     "strap tension against its mean)."),
     "SETDOWN_BEAM": ("The single-stay set-down keeps the beam's lumped bag masses (inertia relief through one "
                      "foot); it does not enter fatigue.", "T5 drop / set-down test."),
-    "STRAP_REACT": ("Meat case in the sim: the meat-face push (strap cinch + overturning) is reacted at the six "
-                    "IM anchors as aft pulls (150 N cinch each + the overturning share per level), and the 30 % "
-                    "of the meat weight the straps carry goes down equally at the six anchors.",
+    "STRAP_REACT": ("Meat case in the sim: the meat-face push is reacted at the six IM anchors: the overturning "
+                    "share per level and 30 % of the meat weight as in rev C, and the cinch loop (the spreader push "
+                    "it causes) by strap pulls at the three levels that balance that push in force AND moment (the "
+                    "meat bundle is in equilibrium), as near an equal split as that allows. The sim's push sits low "
+                    "(z 220-230), so the cinch goes almost all to IM1 (z 190).",
                     "MT-1 strap tension readout in the T2 meat test."),
 }
 
@@ -147,23 +159,36 @@ def frame_forces_from_run(run: str, torso: int, case: str = "meat", fine: bool |
         hn = pm.hinge_nodes[0 if side == "R" else 1]
         out[f"hinge_{side}"] = {"xyz": [float(v) for v in pm.mesh.X0[hn]], "f": [-float(v) for v in h["force_xyz_n"]],
                                 "kind": "hinge"}
+    sig = rj["cases"][case].get("contact_rounding_mm")
+    sig = float(pm.scen["contact"].get("smooth_mm", 0.0) or 0.0) if sig is None else float(sig)
+    from huntkit.clothsim.pack import FieldContact
     for t in sim.terms:
         nm = str(getattr(t, "name", ""))
+        if isinstance(t, FieldContact) and nm.startswith("contact_"):
+            # the run reports its LAST contact-rounding stage: evaluate the contact on that same field
+            k = nm[len("contact_"):]
+            if k in pm.fields_raw:
+                t.f = pm.fields_raw[k] if sig <= 0 else pm.fields_raw[k].smoothed(sig)
         if nm.startswith("contact_"):
-            r = t(x, hess=False)
-            g = np.asarray(r[1] if isinstance(r, tuple) else r).reshape(-1, 3)
-            fb = -g                          # force on the bag nodes
-            m = np.linalg.norm(fb, axis=1) > 1e-6
-            if not m.any():
+            idx, fb = t.forces(x)            # force on the bag nodes (the run's report uses the same call)
+            idx, fb = np.asarray(idx), np.asarray(fb, float).reshape(-1, 3)
+            if idx.size == 0:
                 continue
-            F = fb[m].sum(0)
-            w = np.linalg.norm(fb[m], axis=1)
-            cen = (x[m] * w[:, None]).sum(0) / w.sum()
+            xm = x[idx]
+            F = fb.sum(0)
+            w = np.linalg.norm(fb, axis=1)
+            cen = (xm * w[:, None]).sum(0) / max(w.sum(), 1e-12)
             out[nm] = {"xyz": [float(v) for v in cen], "f": [-float(v) for v in F], "kind": "contact",
-                       "z_lo": float(x[m, 2].min()), "z_hi": float(x[m, 2].max()),
-                       "node_f": [[float(v) for v in xx] + [-float(v) for v in ff] for xx, ff in zip(x[m], fb[m])]}
+                       "z_lo": float(xm[:, 2].min()), "z_hi": float(xm[:, 2].max()),
+                       "node_f": [[float(v) for v in xx] + [-float(v) for v in ff] for xx, ff in zip(xm, fb)]}
     meat = rj["cases"][case].get("meat") or {}
-    return {"run": run, "scenario": rj.get("scenario", ""), "torso": torso, "case": case, "h_mm": float(rj["mesh"]["h_mm"]),
+    rep_c = rj["cases"][case].get("contact", {})
+    for nm in list(out):
+        if nm.startswith("contact_") and nm in rep_c:
+            out[nm]["report_force_n"] = rep_c[nm]["force_n"]
+    vol = rj["cases"][case]["volume"]
+    cgm = vol.get("cg_with_external_mm", vol.get("contents_cg_mm"))
+    return {"run": run, "contact_rounding_mm": sig, "cg_mm": [float(v) for v in cgm] if cgm else None, "scenario": rj.get("scenario", ""), "torso": torso, "case": case, "h_mm": float(rj["mesh"]["h_mm"]),
             "converged": bool(rj["cases"][case]["converged"]), "forces": out,
             "meat": {k: meat[k] for k in ("P_n", "face_n", "overturning_pull_n", "to_strap_anchors_n") if k in meat}}
 
@@ -460,17 +485,61 @@ def sim_nodal_1g(model: dict, ff: dict, total_kg: float) -> tuple:
                 add(gp, _nearest(model, row[:3]), row[3:])
         elif a["kind"] in ("under_strap", "wrap", "tie"):
             add(gp, _nearest(model, a["xyz"]), f)
+    nodes = model["nodes"]
+
+    def moment(d):
+        return sum((np.cross(np.asarray(nodes[k], float), np.asarray(v, float)) for k, v in d.items()), np.zeros(3))
     if cinch > 0:
         dn = float(m.get("to_strap_anchors_n", 0.0)) / 6.0
         for z, o in zip(IM_Z, ot):
             for sd in (1.0, -1.0):
                 add(gp, _stay_node(model, sd, z), [0.0, o / 2.0, -dn])
-                add(fx, _stay_node(model, sd, z), [0.0, cinch, 0.0])
-    tot = sum(gp.values()) + (sum(fx.values()) if fx else 0.0)
-    resid = np.array([0.0, 0.0, -total_kg * G_ACC]) - tot
+        # cinch loop (ASSUMPTION STRAP_REACT): the strap pulls at the three IM levels balance the share of the
+        # spreader push moved to ``fx`` in force AND moment (the meat bundle is in equilibrium), as close to an
+        # equal split as the two equations allow, no level pushing
+        from scipy.optimize import lsq_linear
+        Fs = sum((np.asarray(v) for v in fx.values()), np.zeros(3))
+        Ms = moment(fx)
+        zs = np.array([float(nodes[_stay_node(model, 1.0, z)][2]) for z in IM_Z])
+        ys = np.array([float(nodes[_stay_node(model, 1.0, z)][1]) for z in IM_Z])
+        Ytot, Mx_t = -Fs[1], -Ms[0]               # the anchors must give +Ytot and Mx = -Ms_x (Mx = -z Fy)
+        W = 1e3
+        A = np.vstack([W * np.ones(3), W * (-zs), np.eye(3)])
+        bvec = np.r_[W * Ytot, W * Mx_t, np.full(3, Ytot / 3.0)]
+        c = lsq_linear(A, bvec, bounds=(0.0, np.inf)).x
+        for z, ci in zip(IM_Z, c):
+            for sd in (1.0, -1.0):
+                add(fx, _stay_node(model, sd, z), [0.0, ci / 2.0, 0.0])
+        info_cinch = {"level_n": c.tolist(), "net_f": (sum((np.asarray(v) for v in fx.values()), np.zeros(3))).tolist(),
+                      "net_m": moment(fx).tolist()}
+    else:
+        info_cinch = None
+    # balance: the frame-side set must carry the payload weight at the sim's CG (force and sagittal moment).
+    # Force residual -> the four under-strap pins; the sagittal moment left -> a fore-aft couple between the IM3
+    # hook nodes (z 520) and the hinge nodes (z 60), i.e. on the bag's two main attachments
+    Wv = np.array([0.0, 0.0, -total_kg * G_ACC])
+    tot = sum(gp.values()) + sum((np.asarray(v) for v in fx.values()), np.zeros(3))
+    resid = Wv - tot
     pins = [_stay_node(model, sd, z) for z in US_Z for sd in (1.0, -1.0)]
     for nid in pins:
         add(gp, nid, resid / len(pins))
+    cg = ff.get("cg_mm")
+    couple = 0.0
+    dM = np.zeros(3)
+    if cg is not None:
+        Mt = np.cross(np.asarray(cg, float), Wv)
+        dM = Mt - moment(gp) - moment(fx)
+        hi = [_stay_node(model, sd, EYE_STATION) for sd in (1.0, -1.0)]
+        lo = [_stay_node(model, sd, 60.0) for sd in (1.0, -1.0)]
+        zh = np.mean([nodes[n][2] for n in hi])
+        zl = np.mean([nodes[n][2] for n in lo])
+        couple = float(-dM[0] / (zh - zl))      # +couple aft at the hooks, forward at the hinges
+        for n in hi:
+            add(gp, n, [0.0, couple / 2.0, 0.0])
+        for n in lo:
+            add(gp, n, [0.0, -couple / 2.0, 0.0])
+    sim_nodal_1g.last = {"resid_force_n": resid.tolist(), "moment_fix_nmm": dM.tolist(), "couple_n": couple,
+                         "weight_n": float(-Wv[2]), "cinch": info_cinch}
     return ({k: v.tolist() for k, v in gp.items()}, {k: v.tolist() for k, v in fx.items()}, resid.tolist())
 
 
@@ -498,7 +567,8 @@ def _install_sim_loads():
         simp = self.params.get("sim_ff")
         if not simp or self.placement != "bag":
             return _ORIG_LOADS(self, model)
-        ff, kg = simp
+        ff, kg = simp[0], simp[1]
+        cyc = len(simp) > 2 and simp[2]
         ck = (id(model), ff["run"], ff["case"])
         if ck not in _NOD_CACHE:
             _NOD_CACHE[ck] = sim_nodal_1g(model, ff, kg)[:2]
@@ -521,7 +591,7 @@ def _install_sim_loads():
             a = out.get(k, np.zeros(6))
             a[:3] += s * ct * np.asarray(v, float)
             out[k] = a
-        for k, v in fixed.items():
+        for k, v in (fixed.items() if not (cyc and self.name == "static_carry") else ()):
             a = out.get(k, np.zeros(6))
             a[:3] += np.asarray(v, float)
             out[k] = a
@@ -538,6 +608,9 @@ def _uninstall_sim_loads():
     _NOD_CACHE.clear()
 
 
+CYCLIC_ONLY = False      # True: the meat-strap cinch loop (a static preload) is left out of the static-carry set
+
+
 def sim_env(torso: float, sf: dict, runs: dict, cases=("fill", "meat")) -> dict:
     """Rev C envelope for one torso with the bag cases on the sim forces of ``runs[torso]``: one scenario per sim
     case (tags S_fill / S_meat; the beam's two couple variants no longer apply). The beam's non-bag cases
@@ -552,7 +625,7 @@ def sim_env(torso: float, sf: dict, runs: dict, cases=("fill", "meat")) -> dict:
         for c in env0["crown_bar"]:
             if c.name in BAG_CASES:
                 c = copy.copy(c)
-                c.params = {**c.params, "sim_ff": (ff, sim_total_kg(run, cn))}
+                c.params = {**c.params, "sim_ff": (ff, sim_total_kg(run, cn), CYCLIC_ONLY)}
                 lst.append(c)
         if cn == cases[0]:
             lst += [c for c in env0["crown_bar"] if c.name not in BAG_CASES]
@@ -716,8 +789,14 @@ def body_study(bodies=("h1", "c17b19", "bl007a", "bl007c"), bases=("beam", "rev1
                 fn = lambda b=b, dk=dk, solid=solid, nm=nm: body_eval(nm, dk, solid, beam_sets_for(FRAME_KIND[b], "B"),
                                                                      log=log)
             else:
-                fn = lambda b=b, dk=dk, solid=solid, nm=nm, base=base: body_eval(
-                    nm, dk, solid, sim_sets_for(FRAME_KIND[b], SIM_BASES[base], sf1, "S"), log=log)
+                def fn(b=b, dk=dk, solid=solid, nm=nm, base=base):
+                    global CYCLIC_ONLY
+                    CYCLIC_ONLY = base.endswith("_cyc")
+                    try:
+                        sets = sim_sets_for(FRAME_KIND[b], SIM_BASES[base.replace("_cyc", "")], sf1, "S")
+                    finally:
+                        CYCLIC_ONLY = False
+                    return body_eval(nm, dk, solid, sets, log=log)
             out[nm] = _body_cached(nm, fn)
     return out
 
@@ -746,6 +825,90 @@ def eye_study_rev1(cands=FINAL_CANDS, grids=GRIDS, log=print) -> dict:
             if log:
                 log(f"eye rev1 {2 * hz:g} x {ch:g} mm h {h:g}: n_elem {r['n_elem']}")
     return {"dirs": dirs, "gov": gov, "runs": out}
+
+
+# ======================================================================================= 3c. crown top bar with the rev 1 guys
+def split_bar_at(model: dict, x_abs: float) -> dict:
+    """Insert top-bar nodes TBL<x> / TBR<x> at x = -/+ ``x_abs`` in whichever top-bar member spans it (the guys'
+    bridle sleeves, rev 1 x +/-52, sit inside TB0-TB1 / TB1-TB2, which frame_cg_recheck.split_top_bar can't split)."""
+    m = copy.deepcopy(model)
+    nodes = m["nodes"]
+    for tag, s in (("L", -1.0), ("R", 1.0)):
+        xt = s * x_abs
+        for mem in list(m["members"]):
+            if mem.get("group") != "crown_top_bar":
+                continue
+            a, b = mem["nodes"]
+            pa, pb = np.array(nodes[a], float), np.array(nodes[b], float)
+            lo, hi = sorted((pa[0], pb[0]))
+            if not (lo + 1.0 < xt < hi - 1.0):
+                continue
+            f = (xt - pa[0]) / (pb[0] - pa[0])
+            nid = f"TB{tag}{int(round(x_abs))}"
+            nodes[nid] = list(map(float, pa + f * (pb - pa)))
+            i = m["members"].index(mem)
+            m1 = {**mem, "id": f"{a}-{nid}", "nodes": [a, nid]}
+            m2 = {**mem, "id": f"{nid}-{b}", "nodes": [nid, b]}
+            m["members"][i:i + 1] = [m1, m2]
+            for j in m.get("joints", []):
+                j["members"] = [m1["id"] if q == mem["id"] else q for q in j["members"]]
+            break
+    return m
+
+
+def top_bar_check(guy_x: float = 52.0, log=print) -> dict:
+    """Crown top bar (and the other crown members) on the rev 1 sim loads, H1 at 15 / 19 / 23 in: the beam rev C
+    cases with the bag cases from the fine rev 1 sims, the guys applied at bar nodes split in at x +/-``guy_x``
+    (their sim anchors), the lifter reactions at the model's lifter nodes (TB0 / TB2) as in every crown check.
+    Strength = member FPF margin at the factored load; fatigue = CFRP FI <= 0.5 at 1.6 g (frame_cg_recheck rule).
+    Also the beam basis (no guys) for comparison."""
+    from huntkit.gendesign import crown_diet as CD
+    from huntkit.gendesign import frame_cg_recheck as R
+    sp = CD.specs()["h1"]
+    ob = CD.build
+
+    def build(spec, t, posts=False):
+        return split_bar_at(ob(spec, t, posts), guy_x)
+    import dataclasses
+    sf1 = sim_forces(rev=1)
+    out = {}
+    CD.build = build
+    try:
+        rows = []
+        for t in sp.torsos:
+            rows += sim_sets(lambda tt: CD.beam_runs(dataclasses.replace(sp, torsos=(tt,)), buckling=False,
+                                                     log=None)[1], torsos=(float(t),), sf=sf1,
+                             runs=SIM_BASES["rev1_fine"])
+    finally:
+        CD.build = ob
+    _, beam_rows = CD.load_beam(sp, log=None)
+
+    def summarize(rows, tags):
+        res = {}
+        for tg in tags:
+            rs = [r for r in rows if r["scenario"] == tg]
+            st = min(((r["members"]["crown_top_bar"][0], f"{r['case']}|{r['torso']:g}", r["members"]["crown_top_bar"][1])
+                      for r in rs if "crown_top_bar" in r["members"]), default=None)
+            fat = min(((0.5 * r["members"]["crown_top_bar"][0] * r["factor"] / G_WALK, f"static_carry|{r['torso']:g}")
+                       for r in rs if r["case"] == "static_carry" and "crown_top_bar" in r["members"]), default=None)
+            cs = R.crown_summary(rows, tg)
+            res[tg] = {"top_bar_strength": st[0], "top_bar_strength_set": st[1], "member": st[2],
+                       "top_bar_fatigue": fat[0], "top_bar_fatigue_set": fat[1],
+                       "crown_min": {k: round(float(v["sf"]), 3) for k, v in cs.items() if isinstance(v, dict) and "sf" in v}}
+        return res
+    out["sim_rev1_fine"] = summarize(rows, ("S_fill", "S_meat"))
+    out["beam"] = summarize(beam_rows, ("C", "C_im3"))
+    # the guy forces used (1 g, per torso and case)
+    gl = {}
+    for t, run in SIM_BASES["rev1_fine"].items():
+        for cn in ("fill", "meat"):
+            ff = sf1[f"{run}|{cn}"]["forces"]
+            gl[f"{t}_{cn}"] = {k: round(float(np.linalg.norm(ff[k]["f"])), 1) for k in ff if k.startswith("TG_")}
+    out["guy_1g_n"] = gl
+    out["guy_x"] = guy_x
+    if log:
+        log(json.dumps(out, default=float)[:800])
+    return out
 
 
 # ======================================================================================= 4. assembly of results
@@ -865,6 +1028,7 @@ def body_summary(study: dict) -> dict:
     for nm, v in study.items():
         b, base = nm.split("__")
         out.setdefault(b, {})[base] = {"min": v["min"], "per_torso": v["per_torso"], "raster_g": v["raster_g"],
+                                       "by_torso": v["by_torso"],
                                        "fatigue_where": v["fatigue_where"], "joint_fatigue": v["joint_fatigue"],
                                        "buckling_min": v["buckling_min"],
                                        "ca1_flip_ratio": pa["fat"] / v["min"]["fatigue"]}
@@ -882,9 +1046,34 @@ def compute(log=print) -> dict:
     eye = eye_summary()
     study = {}
     for p in sorted(OUT.glob("body_*.json")):
-        study[p.stem[5:]] = json.loads(p.read_text())
+        if not p.stem.startswith("body_h1fix_"):
+            study[p.stem[5:]] = json.loads(p.read_text())
     body = body_summary(study)
-    return {"date": "2026-11-12", "ticket": "BL-021", "assumptions": ASSUMPTIONS,
+    if "c17b19" in body and "beam" not in body["c17b19"]:
+        # BL-017 ran this exact basis (per-torso tags, crown_diet_results body 'c17b19'): taken from its record
+        v = json.loads((ANALYSIS / "crown_diet_results.json").read_text())["body"]["c17b19"]
+        pt = {}
+        for k, x in v["by_torso"].items():
+            t = k.split("|")[1]
+            o = pt.setdefault(t, {"strength": 9e9, "fatigue": 9e9, "creep": 9e9})
+            for kk in o:
+                o[kk] = min(o[kk], x[kk])
+        body["c17b19"]["beam"] = {"min": v["min"], "per_torso": pt, "by_torso": v["by_torso"], "raster_g": v["raster_g"],
+                                  "fatigue_where": {"torso": 23.0, "where": str(v["governing"]), "scenario": ""},
+                                  "joint_fatigue": v.get("joint_fatigue"), "buckling_min": v.get("buckling_min"),
+                                  "ca1_flip_ratio": _paht()["fat"] / v["min"]["fatigue"],
+                                  "source": "crown_diet_results.json body c17b19 (BL-017, same basis)"}
+    extra = {}
+    for nm in ("misuse_eye", "top_bar"):
+        p = OUT / f"{nm}.json"
+        if p.exists():
+            extra[nm] = json.loads(p.read_text())
+    if (OUT / "misuse_goff.json").exists():
+        extra["misuse_goff"] = misuse_goff()
+    fixes = {p.stem[5:].split("__")[0]: json.loads(p.read_text()) for p in sorted(OUT.glob("body_h1fix_*.json"))}
+    extra["fix"] = {k: {"min": v["min"], "per_torso": v["per_torso"], "added_g_one_frame": v.get("added_g_one_frame"),
+                        "fatigue_where": v["fatigue_where"]} for k, v in fixes.items()}
+    return {**extra, "date": "2026-11-12", "ticket": "BL-021", "assumptions": ASSUMPTIONS,
             "requirements": {"fatigue": FAT_REQ, "strength": STR_REQ, "g_walk": G_WALK, "factor": FACTOR},
             "hook_vectors": hv, "eye": eye, "body": body}
 
@@ -903,7 +1092,7 @@ def plot_eye(res: dict, path: Path) -> str:
         ax[0].plot(x, y, "o-", color=("#1f5f8b", "#4f8fbf", "#8fbfdf")[i], label=f"FEA grid h {g:g} mm")
     ax[0].axhline(FAT_REQ, color="#b03030", ls="--", lw=1.2, label=f"target {FAT_REQ}")
     ax[0].axhline(1.0, color="#777", ls=":", lw=1)
-    ax[0].set_xticks(x, [f"{e['cands'][k]['height_mm']:g} mm\n+{e['cands'][k]['pair_delta_vs_27mm_g']:.1f} g/pair"
+    ax[0].set_xticks(x, [f"{e['cands'][k]['height_mm']:g} mm\n{e['cands'][k]['pair_delta_vs_27mm_g']:+.1f} g/pair"
                          for k in ks], fontsize=8)
     ax[0].set_ylabel("fatigue margin (worst hook + strap, 1.6 g)")
     ax[0].set_title("IM3 cheek height vs fatigue (8 mm thick)", fontsize=10)
@@ -934,8 +1123,8 @@ def plot_body(res: dict, path: Path) -> str:
     import matplotlib.pyplot as plt
     b = res["body"]
     names = {"h1": "H1", "c17b19": "BL-017 c17", "bl007a": "BL-007 (a)", "bl007c": "BL-007 (c)"}
-    bases = [("beam", "beam bag loads", "#999999"), ("rev1_coarse", "cloth sim, coarse", "#8fbfdf"),
-             ("rev1_fine", "cloth sim, fine", "#1f5f8b")]
+    bases = [("beam", "beam bag loads", "#999999"), ("rev1_fine_cyc", "cloth sim fine, cinch static", "#1f5f8b"),
+             ("rev1_fine", "cloth sim fine, cinch cycled (bound)", "#c9a227")]
     fig, ax = plt.subplots(figsize=(10, 4.8), dpi=110)
     labels, xs = [], []
     i = 0
@@ -980,12 +1169,12 @@ def plot_eye_field(res: dict, path: Path, h: float = 0.8) -> str:
     U = np.asarray(r["field"]["fi"]) / pa["fat"]           # fatigue utilisation (1 / margin)
     fig, ax = plt.subplots(1, 2, figsize=(10, 4.6), dpi=110)
     for a, (i, j, ttl) in zip(ax, ((1, 2, "side view (y aft, z up the stay)"), (0, 1, "top view (x pin axis, y aft)"))):
-        keys = np.round(X[:, [i, j]] / h).astype(int)
-        order = np.lexsort((U, keys[:, 1], keys[:, 0]))
-        k2 = keys[order]
-        last = np.r_[np.any(k2[1:] != k2[:-1], axis=1), True]
-        sel = order[last]
-        sc = a.scatter(X[sel, i], X[sel, j], c=U[sel], s=6, marker="s", cmap="inferno", vmin=0, vmax=1.0)
+        ki = np.round((X[:, i] - X[:, i].min()) / h).astype(int)
+        kj = np.round((X[:, j] - X[:, j].min()) / h).astype(int)
+        img = np.full((kj.max() + 1, ki.max() + 1), np.nan)
+        np.fmax.at(img, (kj, ki), U)
+        sc = a.imshow(img, origin="lower", cmap="inferno", vmin=0, vmax=1.0, interpolation="nearest",
+                      extent=(X[:, i].min() - h / 2, X[:, i].max() + h / 2, X[:, j].min() - h / 2, X[:, j].max() + h / 2))
         a.set_aspect("equal")
         a.set_title(ttl, fontsize=9)
         a.set_xlabel("mm")
@@ -1075,10 +1264,55 @@ def write_md(res: dict) -> str:
           f"the spreader top edge (z {cl['spreader_top_z']:g}, rule >= {cl['notch_clear_mm']:g}); throat "
           f"{cl['throat_mm']:g} mm unchanged (both carabiners / the hook and strap share it as today); outer width "
           f"{cl['outer_width_mm']:g} mm; stands {cl['cheek_aft_of_hole_mm']:g} mm aft of the hole centre as today.")
+    mis = res.get("misuse_eye")
+    if mis:
+        g = res["misuse_goff"]
+        w("\n### 2.2 Guys-off misuse (BL-022 request)\n")
+        w("BL-022's two converged guys-off runs disagree: coarse `F_PR15_goff_sm8` puts "
+          f"{g['F_PR15_goff_sm8']['hooks']['L']['leg_sum']:.0f} N on the left IM3 hook at 1 g (vector "
+          f"{tuple(round(v) for v in g['F_PR15_goff_sm8']['hooks']['L']['vec'])} N, "
+          f"{-g['F_PR15_goff_sm8']['hooks']['L']['aft_of_down_deg']:.0f} deg forward of straight down), fine "
+          f"`F_PR15_fineFM_goff_sm8` {g['F_PR15_fineFM_goff_sm8']['hooks']['L']['leg_sum']:.0f} N. Not settled here (it is a "
+          "cloth-sim question); as asked, the eye is checked at the worst one: the coarse vector at its leg sum x 3.0 = "
+          f"**{mis['factored_n']:.0f} N factored**, alone and with the rev C strap (x 3.0) on the same eye. Strength = "
+          "1 / FI99, worst of h 1.0 / 0.8 / 0.7 mm.\n")
+        w("| cheek | hook alone h 1.0 / 0.8 / 0.7 | hook alone (design) | hook + strap (design) |")
+        w("|---|---|---|---|")
+        for k, v in mis["cands"].items():
+            w(f"| {2 * float(k.split('_')[0]):g} x 8 mm | {' / '.join(format(v['per_grid'][x]['goff'], '.2f') for x in ('1', '0.8', '0.7'))} | "
+              f"**{v['strength']['goff']:.2f}** | {v['strength']['goff_strap']:.2f} |")
+        w("\nRev C asks >= 1.0 at the factored load: both cheeks pass with margin. The coordinator's 1.5 cheek target is "
+          "met by 28 mm for the hook alone (1.57) and by neither for the stacked hook + full strap upper bound (1.45 / "
+          "1.36), which counts the meat twice. The B-17 seam (3277 N) and the carabiner minor-axis proof (4000 N) stay "
+          "above 2911 N (BL-022).\n")
     w("\n## 3. H1 body on the cloth-sim loads, per torso setting\n")
     w(res["body_method_md"])
     w(res["body_table_md"])
     w(res["body_text_md"])
+    tb = res.get("top_bar")
+    if tb:
+        w("\n### 3.2 Crown top bar with the rev 1 guy bridle at x +/-52 (BL-022 request)\n")
+        w("H1 beam model (rev C cases, torsos 15 / 19 / 23) with the bag cases from the fine rev 1 sims; the top bar is "
+          "split at x +/-52 so the guy forces from the sim (1 g: " + ", ".join(
+              f"{k.replace('_', ' in ')} {max(v.values()):.0f} N" for k, v in tb["guy_1g_n"].items()) +
+          ") load the bar at the bridle sleeves, combined in the same sets with the lifter reactions (the model's "
+          "lifter nodes TB0 / TB2, x +/-70) and every other bag load. Strength = member first-ply margin at the "
+          "factored load; fatigue = CFRP FI <= 0.5 at 1.6 g (frame_cg_recheck rule).\n")
+        w("| basis | scenario | top-bar strength (set, member) | top-bar fatigue | crown spine | crown legs | corner bond peak |")
+        w("|---|---|---|---|---|---|---|")
+        for bs, lab in (("sim_rev1_fine", "sim rev 1 fine, guys at x +/-52"), ("beam", "beam (rev C, no guys)")):
+            for tg, v in tb[bs].items():
+                cm = v["crown_min"]
+                w(f"| {lab} | {tg} | **{v['top_bar_strength']:.2f}** ({v['top_bar_strength_set']}, {v['member']}) | "
+                  f"{v['top_bar_fatigue']:.2f} | {cm.get('crown_spine', float('nan')):.2f} | {cm.get('crown_leg', float('nan')):.2f} | "
+                  f"{cm.get('corner_bond_peak', float('nan')):.2f} |")
+        w("\nThe inboard guys raise the bar's local bending (BL-022: 69.9 MPa against 27.9 MPa at 312 N factored, a "
+          "hand fixed-fixed check), but the bar's governing case stays the hipbelt-off abuse through the lifters, and "
+          "its first-ply margin on the sim loads (1.36) is above the beam basis's (1.25, which carries the whole bag "
+          "couple on the crown). Fatigue is far from governing (4.7). Note: the model's lifter reactions sit at x "
+          "+/-70, the lifters at x +/-105 (BL-022): with the lifter further out, the bar span between lifter and guy "
+          "loads grows; at 4.7 fatigue and 1.36 strength the bar has room for it, to be confirmed in the T1 bar strain "
+          "gauge.\n")
     w("\n## 4. Addendum: BL-007 (a) / (c) and BL-017 (c17, OD 17 legs, bore 19) restated per torso\n")
     w(res["addendum_md"])
     w("\n## 5. CA-1 flip points\n")
@@ -1097,8 +1331,12 @@ def write_md(res: dict) -> str:
 
 BODY_NAMES = {"h1": "H1 (as released)", "c17b19": "BL-017 (c17): OD 17 x 7 UD legs, crown bore 19",
               "bl007a": "BL-007 (a): fixed crown, H1 body", "bl007c": "BL-007 (c): fixed crown, stays re-sized"}
-BASE_NAMES = {"beam": "beam bag loads (rev C weight split + couple)", "rev1_fine": "cloth sim rev 1, fine (h 25)",
-              "rev1_coarse": "cloth sim rev 1, coarse (h 40)"}
+BASE_NAMES = {"beam": "beam bag loads (rev C weight split + couple)",
+              "rev1_fine_cyc": "**cloth sim rev 1, fine (h 25); cinch preload static**",
+              "rev1_coarse_cyc": "cloth sim rev 1, coarse (h 40); cinch preload static",
+              "rev1_fine": "cloth sim rev 1, fine; cinch preload cycled with g (bound)",
+              "rev1_coarse": "cloth sim rev 1, coarse; cinch preload cycled with g (bound)"}
+BASE_ORDER = ("beam", "rev1_fine_cyc", "rev1_coarse_cyc", "rev1_fine", "rev1_coarse")
 
 
 def coarse_fine_md(hv: dict) -> str:
@@ -1129,7 +1367,7 @@ def body_tables(res: dict) -> tuple:
     for k in BODY_NAMES:
         if k not in b:
             continue
-        for bs in ("beam", "rev1_coarse", "rev1_fine"):
+        for bs in BASE_ORDER:
             if bs not in b[k]:
                 continue
             v = b[k][bs]
@@ -1174,8 +1412,9 @@ def narrative(res: dict) -> dict:
     # body text
     T = []
     if "h1" in b:
-        hb, hs = b["h1"].get("beam"), b["h1"].get("rev1_fine")
-        hc = b["h1"].get("rev1_coarse")
+        hb, hs = b["h1"].get("beam"), b["h1"].get("rev1_fine_cyc")
+        hc = b["h1"].get("rev1_coarse_cyc")
+        hp = b["h1"].get("rev1_fine")
         if hb and hs:
             T.append(f"\n**H1 on the sim loads (fine): fatigue {hs['min']['fatigue']:.3f}, strength "
                      f"{hs['min']['strength']:.2f}, creep {hs['min']['creep']:.2f}** (beam basis {hb['min']['fatigue']:.3f} / "
@@ -1184,23 +1423,29 @@ def narrative(res: dict) -> dict:
                      f". Governing: {hs['fatigue_where']['where']} at {hs['fatigue_where']['torso']:g} in "
                      f"({hs['fatigue_where']['scenario']}). z 234 joint fatigue {hs['joint_fatigue']:.2f}, branch "
                      f"buckling {hs['buckling_min']:.2f}.")
-        if hc:
+        if hc and hs:
             T.append(f"Cloth-mesh sensitivity: coarse sim loads give fatigue {hc['min']['fatigue']:.3f} "
                      f"(fine {hs['min']['fatigue']:.3f}).")
+        if hp and hs:
+            T.append(f"Cinch-preload sensitivity (ASSUMPTION CINCH_STATIC): if the meat straps' cinch loop cycled with "
+                     f"the walking g instead of sitting as a static preload, H1's fatigue would be "
+                     f"{hp['min']['fatigue']:.3f} (strength {hp['min']['strength']:.2f}, creep {hp['min']['creep']:.2f} with "
+                     "the preload in every set).")
     out["body_text_md"] = "\n".join(T) + "\n" + res.get("body_fix_md", "")
     # addendum
-    A = ["| body | recorded (one tag per couple) | beam, per torso: 15 / 19 / 23 in | sim fine, per torso: 15 / 19 / 23 in | min on sim |",
-         "|---|---|---|---|---|"]
+    A = ["| body | recorded (one tag per couple) | beam, per torso: 15 / 19 / 23 in | sim fine (cinch static), per torso: 15 / 19 / 23 in | min on sim | sim, cinch cycled (bound) |",
+         "|---|---|---|---|---|---|"]
     for k in ("bl007a", "bl007c", "c17b19"):
         if k not in b:
             continue
         cells = []
-        for bs in ("beam", "rev1_fine"):
+        for bs in ("beam", "rev1_fine_cyc"):
             v = b[k].get(bs)
             cells.append(" / ".join(f"{v['per_torso'][t]['fatigue']:.3f}" for t in ("15", "19", "23")
                                     if t in v["per_torso"]) if v else "not run")
-        mn = b[k]["rev1_fine"]["min"]["fatigue"] if "rev1_fine" in b[k] else float("nan")
-        A.append(f"| {BODY_NAMES[k]} | {recorded_fatigue(k):.3f} | {cells[0]} | {cells[1]} | {mn:.3f} |")
+        mn = b[k]["rev1_fine_cyc"]["min"]["fatigue"] if "rev1_fine_cyc" in b[k] else float("nan")
+        bd = b[k]["rev1_fine"]["min"]["fatigue"] if "rev1_fine" in b[k] else float("nan")
+        A.append(f"| {BODY_NAMES[k]} | {recorded_fatigue(k):.3f} | {cells[0]} | {cells[1]} | {mn:.3f} | {bd:.3f} |")
     out["addendum_md"] = "\n".join(A) + "\n" + res.get("addendum_text_md", "")
     # flips
     F = ["| part | fatigue margin (basis) | CA-1 flip ratio |", "|---|---|---|"]
@@ -1211,13 +1456,116 @@ def narrative(res: dict) -> dict:
         F.append(f"| IM3 cheek 27 x 8 mm (adopted today) | {base27['design']['fatigue']['value']:.3f} | "
                  f"{base27['ca1_flip_ratio']:.3f} |")
     for k in BODY_NAMES:
-        for bs in ("rev1_fine", "beam"):
+        for bs in ("rev1_fine_cyc", "beam"):
             if k in b and bs in b[k]:
                 F.append(f"| {BODY_NAMES[k]} body | {b[k][bs]['min']['fatigue']:.3f} ({BASE_NAMES[bs]}) | "
                          f"{b[k][bs]['ca1_flip_ratio']:.3f} |")
     out["flip_md"] = "\n".join(F) + "\n" + res.get("flip_text_md", "")
     out["summary_md"] = res.get("summary_text_md", "")
     return out
+
+
+def fix_text(res: dict) -> dict:
+    """The H1 sleeve-wall trials (fix_study) as a table and the smallest passing one."""
+    fx = res.get("fix") or {}
+    if not fx:
+        return {"body_fix_md": ""}
+    L = ["\n### 3.1 Smallest local fix tried: grow the stay sleeve's outer wall\n",
+         "Trials on the governing basis (fine sim, cinch static), smallest first: the outer radius of both stays' "
+         "sleeves grown from 13.4 mm over a z band (spreader-clip sections and voids kept). Not an optimised shape: a "
+         "first sizing for the print team.\n",
+         "| trial (z band, outer r) | added g per frame | fatigue 15 / 19 / 23 in | min fatigue | strength | creep |",
+         "|---|---|---|---|---|---|"]
+    best = None
+    for k, v in fx.items():
+        _, z0, z1, ro = k.split("_")
+        pt = v["per_torso"]
+        L.append(f"| z {z0}-{z1}, r {ro} mm | {v['added_g_one_frame']:.1f} | "
+                 f"{' / '.join(format(pt[t]['fatigue'], '.3f') for t in ('15', '19', '23'))} | "
+                 f"{v['min']['fatigue']:.3f} | {v['min']['strength']:.2f} | {v['min']['creep']:.2f} |")
+        if v["min"]["fatigue"] >= FAT_REQ and (best is None or v["added_g_one_frame"] < best[1]["added_g_one_frame"]):
+            best = (k, v, z0, z1, ro)
+    if best is None:
+        L.append("\n**The 1.15 target cannot be reached by a small local fix.** Growing the sleeve wall outward barely "
+                 "moves the governing FI99 (it sits in the crown bore wall, where the carbon leg bears on the bushing "
+                 "seat, and is driven by the leg's couple, not by the stay's outer section): +18 g gives +0.010, the "
+                 "whole sleeve at +2 mm (+74 g) +0.069, +4 mm (+191 g) +0.130 and still 1.131. H1 passes rev C on "
+                 "the sim loads (fatigue 1.001 >= 1.0) but with no margin for scatter, and the result moves from 1.29 "
+                 "(coarse sim) to 1.00 (fine sim). What to do is in the report: settle the governing inputs (meat-case "
+                 "load split, cinch) with the T1 / T2 strain gauges before re-sizing the sleeve, and treat a bore-side "
+                 "change (longer or stiffer bushing seat, the 0.30 PAHT ratio from CA-1) as the design route, not wall "
+                 "mass.")
+    out = {"body_fix_md": "\n".join(L) + "\n"}
+    if best:
+        k, v, z0, z1, ro = best
+        out["fix_best"] = {"key": k, "text": f"grow both stay sleeves to r {ro} mm over z {z0}-{z1}: +{v['added_g_one_frame']:.1f} g "
+                           f"per frame, H1 fatigue {v['min']['fatigue']:.3f} on the sim loads."}
+    else:
+        worst = max(fx.values(), key=lambda v: v["min"]["fatigue"])
+        out["fix_best"] = {"key": None, "text": f"none of the sleeve-wall trials reached {FAT_REQ} (best "
+                           f"{worst['min']['fatigue']:.3f} at +{worst['added_g_one_frame']:.1f} g); see 3.1."}
+    return out
+
+
+def judgement(res: dict) -> dict:
+    """Data-driven text for the summary, the body fix, the misuse / top-bar sections and the addendum."""
+    e, b = res["eye"], res["body"]
+    ch = e["cands"][e["chosen"]] if e["chosen"] else None
+    c27 = e["cands"].get("13.5_8")
+    mis = res.get("misuse_eye")
+    tb = res.get("top_bar")
+    fx = res.get("fix", {})
+    h = b.get("h1", {})
+    hs, hb, hc, hp = (h.get(k) for k in ("rev1_fine_cyc", "beam", "rev1_coarse_cyc", "rev1_fine"))
+    S = []
+    hk = res["hook_vectors"]
+    f15 = max(hk["15f1"]["R"]["leg_sum"], hk["15f1"]["L"]["leg_sum"])
+    S.append(f"- **IM3 hook force (task 1):** fine 15 in meat, rev 1: {f15:.0f} N leg sum ({hk['15f1']['L']['mag']:.0f} N as a "
+             f"vector, {hk['15f1']['L']['aft_of_down_deg']:.0f} deg aft, {hk['15f1']['L']['lateral_deg']:.0f} deg sideways); "
+             f"coarse {max(hk['15c1']['R']['leg_sum'], hk['15c1']['L']['leg_sum']):.0f} N. Rev 0 fine (this ticket's run) "
+             f"{max(hk['15f']['R']['leg_sum'], hk['15f']['L']['leg_sum']):.0f} N. All 18 hook vectors (2 revs, 2 meshes, 3 torsos, "
+             "R/L) go into the eye check.")
+    if ch and c27:
+        S.append(f"- **IM3 eye (task 2):** the adopted 27 mm cheek reaches fatigue {c27['design']['fatigue']['value']:.3f} on the "
+                 f"worst hook + strap vector, but {c27['sensitivity']['fatigue_dir_plus_scatter']:.3f} if the pull sits 10 deg "
+                 f"further aft. **Recommended: {ch['height_mm']:g} mm tall x {ch['cheek']:g} mm thick "
+                 f"({ch['pair_delta_vs_27mm_g']:+.2f} g a pair over 27 mm): fatigue {ch['design']['fatigue']['value']:.3f}** "
+                 f"(worst of h 1.0 / 0.8 / 0.7 mm, all hooks; {ch['sensitivity']['fatigue_dir_plus_scatter']:.3f} with +10 deg), "
+                 f"strength {ch['design']['strength']['value']:.2f}, creep {ch['design']['creep']['value']:.2f}, CA-1 flip "
+                 f"{ch['ca1_flip_ratio']:.3f}. Spreader gap {ch['clearance']['gap_mm']:.1f} mm (rule >= 6).")
+    if mis:
+        m27, m28 = mis["cands"].get("13.5_8"), mis["cands"].get("14_8")
+        S.append(f"- **Guys-off misuse (BL-022 basis {mis['factored_n']:.0f} N factored):** printed eye strength "
+                 f"{m28['strength']['goff']:.2f} (28 mm) / {m27['strength']['goff']:.2f} (27 mm) for the hook alone; "
+                 f"{m28['strength']['goff_strap']:.2f} / {m27['strength']['goff_strap']:.2f} with the rev C strap at full "
+                 "value on the same eye. Rev C asks >= 1.0 at the factored load: pass; the 1.5 cheek target is met by "
+                 "28 mm for the hook alone and missed (1.45) only for the stacked upper bound.")
+    if tb:
+        t = tb["sim_rev1_fine"]
+        tmin = min(t.values(), key=lambda v: v["top_bar_strength"])
+        fmin = min(v["top_bar_fatigue"] for v in t.values())
+        bmin = min(v["top_bar_strength"] for v in tb["beam"].values())
+        S.append(f"- **Crown top bar with the rev 1 guys at x +/-52 (BL-022 request):** strength {tmin['top_bar_strength']:.2f} "
+                 f"({tmin['top_bar_strength_set']}, member {tmin['member']}), fatigue {fmin:.2f} (CFRP FI <= 0.5 at "
+                 f"1.6 g), against {bmin:.2f} on the beam basis. The guys do not govern the bar: the hipbelt-off abuse case "
+                 "through the lifters does, as before.")
+    if hs and hb:
+        S.append(f"- **H1 body on the sim loads (task 3):** strength {hs['min']['strength']:.2f}, **fatigue "
+                 f"{hs['min']['fatigue']:.3f}** (fine sim, 23 in meat; fill {min(v['fatigue'] for k, v in hs['by_torso'].items() if 'fill' in k):.2f}), "
+                 f"creep {hs['min']['creep']:.2f}. Beam basis {hb['min']['fatigue']:.3f}. Coarse sim {hc['min']['fatigue']:.3f}"
+                 f". **{'Below' if hs['min']['fatigue'] < FAT_REQ else 'At or above'} the {FAT_REQ} target.**" if hc else "")
+    if fx:
+        best = res.get("fix_best")
+        if best:
+            S.append(f"- **Body fix:** {best['text']}")
+    ad = []
+    for k in ("bl007a", "bl007c", "c17b19"):
+        if k in b and "rev1_fine_cyc" in b[k]:
+            ad.append(f"{BODY_NAMES[k].split(':')[0]} {b[k]['beam']['min']['fatigue']:.3f} beam / "
+                      f"{b[k]['rev1_fine_cyc']['min']['fatigue']:.3f} sim")
+    if ad:
+        S.append("- **Restated per torso (task 4):** " + "; ".join(ad) + ". None reaches 1.15 on the sim loads.")
+    return {"summary_text_md": "\n".join(x for x in S if x)}
 
 
 def _write(res: dict):
@@ -1235,6 +1583,8 @@ def main(argv=None):
         eye_study_rev1()
         body_study()
     res = compute()
+    res.update(fix_text(res))
+    res.update(judgement(res))
     res.update(narrative(res))
     if not a.no_plots:
         SCREENS.mkdir(parents=True, exist_ok=True)
@@ -1243,6 +1593,97 @@ def main(argv=None):
             res["screens"].append(plot_eye_field(res, SCREENS / f"{SHOT}3.png"))
     _write(res)
     print(DOC)
+
+
+
+# ======================================================================================= 2c. guys-off misuse (BL-022)
+MISUSE_RUN = "F_PR15_goff_sm8"         # BL-022: coarse, 8 mm start, converged; IM3 970.4 N leg sum at 1 g (governs)
+MISUSE_FINE_RUN = "F_PR15_fineFM_goff_sm8"
+
+
+def misuse_goff() -> dict:
+    """Guys-off IM3 hook vectors (meat, 15 in), cached by the extraction (OUT/misuse_goff.json)."""
+    return json.loads((OUT / "misuse_goff.json").read_text())
+
+
+def misuse_dirs() -> tuple:
+    """Load directions for the guys-off eye check: the governing coarse hook at its leg-sum magnitude (BL-022's
+    2911 N factored basis), alone and with the rev C strap (both factored x 3)."""
+    g = misuse_goff()[MISUSE_RUN]["hooks"]
+    side = max("RL", key=lambda s: g[s]["leg_sum"])
+    v = np.asarray(g[side]["vec"], float)
+    F = FACTOR * g[side]["leg_sum"] * v / np.linalg.norm(v)
+    loads = {"goff": F.tolist(), "goff_strap": (F + FACTOR * strap_vector_1g()).tolist()}
+    return loads, side, float(g[side]["leg_sum"])
+
+
+def misuse_eye(cands=((13.5, 8.0), (14.0, 8.0)), grids=GRIDS, log=print) -> dict:
+    loads, side, leg = misuse_dirs()
+    out = {"side": side, "leg_sum_1g_n": leg, "factored_n": FACTOR * leg, "loads_n": loads, "cands": {}}
+    for hz, ch in cands:
+        per = {}
+        for h in grids:
+            r = eye_cached(hz, ch, h, loads, tag="_goff")
+            per[f"{h:g}"] = {k: 1.0 / v["fi99"] for k, v in r["loads"].items()}
+        out["cands"][f"{hz:g}_{ch:g}"] = {"per_grid": per,
+                                          "strength": {k: min(per[g][k] for g in per) for k in loads}}
+        if log:
+            log(f"misuse eye {2 * hz:g} mm: {out['cands'][f'{hz:g}_{ch:g}']['strength']}")
+    return out
+
+
+# ======================================================================================= 3d. local fix trials (H1)
+def sleeve_wrap_solid(z0: float, z1: float, r_out: float = 15.5) -> tuple:
+    """H1 solid with the stay sleeve's outer wall grown to ``r_out`` (from H1's 13.4 mm) between z ``z0`` and ``z1``
+    on both stays, outside the passive voids and the spreader-clip sections (clips are not re-made). Returns
+    (solid, added g)."""
+    from huntkit.gendesign import crown_diet as CD
+    from huntkit.gendesign import frame_fixed as FF
+    from huntkit.gendesign import frame_h1 as H1
+    from huntkit.gendesign.spreader import CLIP_Z
+    c = H1.base()
+    dom = c["dom"]
+    cen = c["cen"]
+    s = CD._h1_solid().copy()
+    r = FF._stay_r(cen)
+    z = cen[:, 2]
+    clip = np.zeros(len(z), bool)
+    for zz in CLIP_Z:
+        clip |= np.abs(z - zz) <= 6.0
+    add = (r > 13.0) & (r <= r_out) & (z >= z0) & (z <= z1) & ~dom.passive_void & ~s & ~clip & (np.abs(cen[:, 0]) > 60)
+    s |= add
+    return s, float(add.sum() * H1.H ** 3 * 1.06e-3)
+
+
+FIX_TRIALS = ((400.0, 544.0, 15.5), (300.0, 544.0, 15.5), (160.0, 544.0, 15.5), (160.0, 544.0, 17.5))
+
+
+def fix_study(trials=FIX_TRIALS, log=print) -> dict:
+    """H1 + a grown sleeve wall (sleeve_wrap_solid) on the governing basis (sim rev 1 fine, cinch static), smallest
+    first; stops at the first trial reaching FAT_REQ. Cached per trial."""
+    global CYCLIC_ONLY
+    out = {}
+    sets = None
+    for z0, z1, ro in trials:
+        nm = f"h1fix_{z0:g}_{z1:g}_{ro:g}"
+        p = OUT / f"body_{nm}__rev1_fine_cyc.json"
+        if p.exists():
+            d = json.loads(p.read_text())
+        else:
+            if sets is None:
+                CYCLIC_ONLY = True
+                try:
+                    sets = sim_sets_for("h1", SIM_BASES["rev1_fine"], sim_forces(rev=1), "S")
+                finally:
+                    CYCLIC_ONLY = False
+            solid, g = sleeve_wrap_solid(z0, z1, ro)
+            d = body_eval(nm, "h1", solid, sets, log=log)
+            d["added_g_one_frame"] = g
+            p.write_text(json.dumps(d, default=float))
+        out[nm] = d
+        if d["min"]["fatigue"] >= FAT_REQ:
+            break
+    return out
 
 
 if __name__ == "__main__":

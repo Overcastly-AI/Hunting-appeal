@@ -1,0 +1,3977 @@
+{
+ "misuse_eye": {
+  "side": "L",
+  "leg_sum_1g_n": 970.4,
+  "factored_n": 2911.2,
+  "loads_n": {
+   "goff": [
+    273.54804700962467,
+    -303.60153199498706,
+    -2882.374544667559
+   ],
+   "goff_strap": [
+    273.54804700962467,
+    293.10437336129775,
+    -2982.402374667559
+   ]
+  },
+  "cands": {
+   "13.5_8": {
+    "per_grid": {
+     "1": {
+      "goff": 1.61672529114883,
+      "goff_strap": 1.4905249268579128
+     },
+     "0.8": {
+      "goff": 1.487780292040985,
+      "goff_strap": 1.3575300307914588
+     },
+     "0.7": {
+      "goff": 1.4945697610270703,
+      "goff_strap": 1.420239593925409
+     }
+    },
+    "strength": {
+     "goff": 1.487780292040985,
+     "goff_strap": 1.3575300307914588
+    }
+   },
+   "14_8": {
+    "per_grid": {
+     "1": {
+      "goff": 1.6953897087185952,
+      "goff_strap": 1.5640292365494644
+     },
+     "0.8": {
+      "goff": 1.5969916521003504,
+      "goff_strap": 1.451515711177686
+     },
+     "0.7": {
+      "goff": 1.5658488832630166,
+      "goff_strap": 1.4795002360824174
+     }
+    },
+    "strength": {
+     "goff": 1.5658488832630166,
+     "goff_strap": 1.451515711177686
+    }
+   }
+  }
+ },
+ "top_bar": {
+  "sim_rev1_fine": {
+   "S_fill": {
+    "top_bar_strength": 1.363664535924977,
+    "top_bar_strength_set": "hipbelt_off_abuse|15",
+    "member": "TBL52-TB1",
+    "top_bar_fatigue": 4.7705156580947055,
+    "top_bar_fatigue_set": "static_carry|15",
+    "crown_min": {
+     "crown_leg": 1.329,
+     "crown_top_bar": 1.364,
+     "crown_spine": 1.223,
+     "corner_bond_avg": 2.344,
+     "corner_bond_peak": 1.217,
+     "bushing_bearing": 19.571,
+     "leg_ring_crush": 2.595,
+     "fatigue": 3.327
+    }
+   },
+   "S_meat": {
+    "top_bar_strength": 1.3770066293879604,
+    "top_bar_strength_set": "hipbelt_off_abuse|15",
+    "member": "TBL52-TB1",
+    "top_bar_fatigue": 4.745690376598429,
+    "top_bar_fatigue_set": "static_carry|15",
+    "crown_min": {
+     "crown_leg": 1.337,
+     "crown_top_bar": 1.377,
+     "crown_spine": 1.26,
+     "corner_bond_avg": 4.48,
+     "corner_bond_peak": 1.762,
+     "bushing_bearing": 19.654,
+     "leg_ring_crush": 2.606,
+     "fatigue": 3.373
+    }
+   }
+  },
+  "beam": {
+   "C": {
+    "top_bar_strength": 1.3772886513151483,
+    "top_bar_strength_set": "hipbelt_off_abuse|15",
+    "member": "TB0-TB1",
+    "top_bar_fatigue": 4.848215424440146,
+    "top_bar_fatigue_set": "static_carry|15",
+    "crown_min": {
+     "crown_leg": 1.39,
+     "crown_top_bar": 1.377,
+     "crown_spine": 1.178,
+     "corner_bond_avg": 2.344,
+     "corner_bond_peak": 1.217,
+     "bushing_bearing": 20.944,
+     "leg_ring_crush": 2.777,
+     "fatigue": 3.275,
+     "buckling": 1.854
+    }
+   },
+   "C_im3": {
+    "top_bar_strength": 1.245972591573351,
+    "top_bar_strength_set": "hipbelt_off_abuse|15",
+    "member": "TB0-TB1",
+    "top_bar_fatigue": 3.428214795239062,
+    "top_bar_fatigue_set": "static_carry|23",
+    "crown_min": {
+     "crown_leg": 1.116,
+     "crown_top_bar": 1.246,
+     "crown_spine": 1.178,
+     "corner_bond_avg": 4.327,
+     "corner_bond_peak": 1.755,
+     "bushing_bearing": 17.604,
+     "leg_ring_crush": 2.334,
+     "fatigue": 1.358
+    }
+   }
+  },
+  "guy_1g_n": {
+   "15_fill": {
+    "TG_R": 53.3,
+    "TG_L": 51.1
+   },
+   "15_meat": {
+    "TG_R": 38.1,
+    "TG_L": 37.4
+   },
+   "19_fill": {
+    "TG_R": 77.0,
+    "TG_L": 75.9
+   },
+   "19_meat": {
+    "TG_R": 53.3,
+    "TG_L": 54.8
+   },
+   "23_fill": {
+    "TG_R": 88.9,
+    "TG_L": 98.4
+   },
+   "23_meat": {
+    "TG_R": 60.3,
+    "TG_L": 69.0
+   }
+  },
+  "guy_x": 52.0
+ },
+ "misuse_goff": {
+  "F_PR15_goff_sm8": {
+   "h_mm": 40.0,
+   "converged": true,
+   "hooks": {
+    "R": {
+     "vec": [
+      -32.1,
+      -72.6,
+      -902.7
+     ],
+     "mag": 906.2,
+     "leg_sum": 911.4,
+     "rebuilt_sum": 911.4,
+     "aft_of_down_deg": -4.6,
+     "lateral_deg": 2.0
+    },
+    "L": {
+     "vec": [
+      89.2,
+      -99.0,
+      -939.9
+     ],
+     "mag": 949.3,
+     "leg_sum": 970.4,
+     "rebuilt_sum": 970.4,
+     "aft_of_down_deg": -6.0,
+     "lateral_deg": 5.4
+    }
+   },
+   "hinges": {
+    "R": [
+     -531.7,
+     -489.4,
+     651.0
+    ],
+    "L": [
+     568.7,
+     -387.5,
+     586.8
+    ]
+   }
+  },
+  "F_PR15_fineFM_goff_sm8": {
+   "h_mm": 25.0,
+   "converged": true,
+   "hooks": {
+    "R": {
+     "vec": [
+      43.7,
+      62.4,
+      -361.4
+     ],
+     "mag": 369.3,
+     "leg_sum": 389.5,
+     "rebuilt_sum": 389.5,
+     "aft_of_down_deg": 9.8,
+     "lateral_deg": 6.8
+    },
+    "L": {
+     "vec": [
+      -34.8,
+      32.6,
+      -414.6
+     ],
+     "mag": 417.3,
+     "leg_sum": 436.0,
+     "rebuilt_sum": 436.0,
+     "aft_of_down_deg": 4.5,
+     "lateral_deg": 4.8
+    }
+   },
+   "hinges": {
+    "R": [
+     -189.9,
+     -77.5,
+     129.1
+    ],
+    "L": [
+     179.8,
+     -81.2,
+     155.7
+    ]
+   }
+  }
+ },
+ "fix": {
+  "h1fix_160_544_15.5": {
+   "min": {
+    "strength": 1.590967037728166,
+    "fatigue": 1.0699609064426616,
+    "creep": 2.2825832670776784
+   },
+   "per_torso": {
+    "15": {
+     "strength": 1.619,
+     "fatigue": 1.18,
+     "creep": 2.516,
+     "fatigue_gov": "S_meat@S15|15: drop_2p5g (hip-pivot boss)"
+    },
+    "19": {
+     "strength": 1.649,
+     "fatigue": 1.088,
+     "creep": 2.321,
+     "fatigue_gov": "S_meat@S19|19: drop_2p5g (stay L sleeve (crown bore wall))"
+    },
+    "23": {
+     "strength": 1.591,
+     "fatigue": 1.07,
+     "creep": 2.283,
+     "fatigue_gov": "S_meat@S23|23: drop_2p5g (stay L sleeve (crown bore wall))"
+    }
+   },
+   "added_g_one_frame": 74.22543999999999,
+   "fatigue_where": {
+    "margin": 1.0699609064426616,
+    "scenario": "S_meat@S23",
+    "torso": 23.0,
+    "where": "stay L sleeve (crown bore wall)"
+   }
+  },
+  "h1fix_160_544_17.5": {
+   "min": {
+    "strength": 1.6869432306593288,
+    "fatigue": 1.1314210640675468,
+    "creep": 2.4136982700107668
+   },
+   "per_torso": {
+    "15": {
+     "strength": 1.687,
+     "fatigue": 1.246,
+     "creep": 2.659,
+     "fatigue_gov": "S_meat@S15|15: drop_2p5g (hip-pivot boss)"
+    },
+    "19": {
+     "strength": 1.753,
+     "fatigue": 1.149,
+     "creep": 2.45,
+     "fatigue_gov": "S_meat@S19|19: drop_2p5g (stay L sleeve (crown bore wall))"
+    },
+    "23": {
+     "strength": 1.709,
+     "fatigue": 1.131,
+     "creep": 2.414,
+     "fatigue_gov": "S_meat@S23|23: drop_2p5g (stay L sleeve (crown bore wall))"
+    }
+   },
+   "added_g_one_frame": 191.1816,
+   "fatigue_where": {
+    "margin": 1.1314210640675468,
+    "scenario": "S_meat@S23",
+    "torso": 23.0,
+    "where": "stay L sleeve (crown bore wall)"
+   }
+  },
+  "h1fix_300_544_15.5": {
+   "min": {
+    "strength": 1.5271616993444765,
+    "fatigue": 1.0202343222580357,
+    "creep": 2.1764998874838097
+   },
+   "per_torso": {
+    "15": {
+     "strength": 1.604,
+     "fatigue": 1.143,
+     "creep": 2.438,
+     "fatigue_gov": "S_meat@S15|15: drop_2p5g (hip-pivot boss)"
+    },
+    "19": {
+     "strength": 1.569,
+     "fatigue": 1.036,
+     "creep": 2.211,
+     "fatigue_gov": "S_meat@S19|19: drop_2p5g (stay L sleeve (crown bore wall))"
+    },
+    "23": {
+     "strength": 1.527,
+     "fatigue": 1.02,
+     "creep": 2.176,
+     "fatigue_gov": "S_meat@S23|23: drop_2p5g (stay L sleeve (crown bore wall))"
+    }
+   },
+   "added_g_one_frame": 46.13968,
+   "fatigue_where": {
+    "margin": 1.0202343222580357,
+    "scenario": "S_meat@S23",
+    "torso": 23.0,
+    "where": "stay L sleeve (crown bore wall)"
+   }
+  },
+  "h1fix_400_544_15.5": {
+   "min": {
+    "strength": 1.5074505891928291,
+    "fatigue": 1.0110050085102953,
+    "creep": 2.1568106848219637
+   },
+   "per_torso": {
+    "15": {
+     "strength": 1.58,
+     "fatigue": 1.128,
+     "creep": 2.406,
+     "fatigue_gov": "S_meat@S15|15: drop_2p5g (hip-pivot boss)"
+    },
+    "19": {
+     "strength": 1.543,
+     "fatigue": 1.022,
+     "creep": 2.181,
+     "fatigue_gov": "S_meat@S19|19: drop_2p5g (stay L sleeve (crown bore wall))"
+    },
+    "23": {
+     "strength": 1.507,
+     "fatigue": 1.011,
+     "creep": 2.157,
+     "fatigue_gov": "S_meat@S23|23: drop_2p5g (stay L sleeve (crown bore wall))"
+    }
+   },
+   "added_g_one_frame": 18.232,
+   "fatigue_where": {
+    "margin": 1.0110050085102953,
+    "scenario": "S_meat@S23",
+    "torso": 23.0,
+    "where": "stay L sleeve (crown bore wall)"
+   }
+  }
+ },
+ "date": "2026-11-12",
+ "ticket": "BL-021",
+ "assumptions": {
+  "STAY_LOCAL": [
+   "The stay is vertical at z 520, so the sim's global (x, y, z) force is the fairlead's local (pin, aft, up) force, as bag_attach / float_fea / loadpath_check use it.",
+   "H1 STL: stay tangent at z 520 within 5 deg of vertical (read off the print file before R1)."
+  ],
+  "COMBINE": [
+   "Worst rev C combination on one eye: the sim bag-hook vector and the rev C C5 IM3 meat-strap vector both at full value and added as vectors. This counts the meat weight twice (the sim hangs all of it on the bag, rev C puts 30 % of it and the overturning on the straps): an upper bound.",
+   "IM3 eye pull with both carabiners in the throat, the strap pulled aft and the hook pulled down at the same time (first frame)."
+  ],
+  "LATERAL": [
+   "The lateral (pin-axis) part of the hook pull bears on the inner face of one cheek, spread over the face within one hole diameter of the hole centre.",
+   "Same eye pull as COMBINE, with the hook 10 deg off the stay plane."
+  ],
+  "DIR_SCATTER": [
+   "The combined hook + strap pull on the eye may sit up to 10 deg further aft than computed (the 18 sim hook vectors spread 2-8 deg aft; the strap angle at the eye is rev C's, not measured). The cheek must keep fatigue >= 1.15 at the computed angle + 10 deg.",
+   "IM3 eye pull test with the strap led aft at the measured hunting angle (first frame), or a protractor reading of the strap and hook angles in the T2 meat test."
+  ],
+  "PAHT_FAT": [
+   "PAHT CF fatigue_1e5_ratio 0.30 (record ASSUMPTION, no published data).",
+   "CA-1 coupon test (TEST_PLAN): the flip points in section 5 say what each part needs."
+  ],
+  "SIM_BODY": [
+   "Bag cases on the body: the sim's 1 g frame-side forces scaled by g x load / 68 kg; side-hill keeps the beam's lateral and downhill part, the upright part is replaced by the sim x cos 25 deg. The set is closed on the payload weight at the sim's CG: the force left over (under-straps, W straps, doublers and fabric the extraction does not map: 67-96 N, 10-14 % of the weight) goes to the four under-strap pins, and the sagittal moment left over to a fore-aft couple between the IM3 hook and hinge nodes (-38 to +201 N).",
+   "T9 loaded CG + frame strain gauges at the stays z 450-550 in the T1 carry test."
+  ],
+  "CINCH_STATIC": [
+   "The meat straps' cinch (rev C 150 N per strap, the sim's meat-face push) is a static preload set at the kill site: it is in every strength and creep set but does not cycle with the walking g, so it is left out of the static-carry set that gives fatigue. The bound with the cinch cycling is reported beside it.",
+   "MT-1 strap tension readout over a 10 min loaded walk in the T2 meat test (amplitude of the strap tension against its mean)."
+  ],
+  "SETDOWN_BEAM": [
+   "The single-stay set-down keeps the beam's lumped bag masses (inertia relief through one foot); it does not enter fatigue.",
+   "T5 drop / set-down test."
+  ],
+  "STRAP_REACT": [
+   "Meat case in the sim: the meat-face push is reacted at the six IM anchors: the overturning share per level and 30 % of the meat weight as in rev C, and the cinch loop (the spreader push it causes) by strap pulls at the three levels that balance that push in force AND moment (the meat bundle is in equilibrium), as near an equal split as that allows. The sim's push sits low (z 220-230), so the cinch goes almost all to IM1 (z 190).",
+   "MT-1 strap tension readout in the T2 meat test."
+  ]
+ },
+ "requirements": {
+  "fatigue": 1.15,
+  "strength": 1.5,
+  "g_walk": 1.6,
+  "factor": 3.0
+ },
+ "hook_vectors": {
+  "15c": {
+   "run": "F_PR15",
+   "rev": 0,
+   "torso": 15,
+   "h_mm": 40.0,
+   "converged": true,
+   "R": {
+    "vec": [
+     48.2,
+     40.1,
+     -515.9
+    ],
+    "mag": 519.7,
+    "leg_sum": 529.4,
+    "rebuilt_sum": 529.4,
+    "aft_of_down_deg": 4.4,
+    "lateral_deg": 5.3
+   },
+   "L": {
+    "vec": [
+     -14.0,
+     39.4,
+     -527.4
+    ],
+    "mag": 529.0,
+    "leg_sum": 552.4,
+    "rebuilt_sum": 552.4,
+    "aft_of_down_deg": 4.3,
+    "lateral_deg": 1.5
+   }
+  },
+  "15f": {
+   "run": "F_PR15_fine_meat_BL021",
+   "rev": 0,
+   "torso": 15,
+   "h_mm": 25.0,
+   "converged": true,
+   "R": {
+    "vec": [
+     -13.4,
+     43.0,
+     -503.1
+    ],
+    "mag": 505.1,
+    "leg_sum": 527.1,
+    "rebuilt_sum": 527.1,
+    "aft_of_down_deg": 4.9,
+    "lateral_deg": 1.5
+   },
+   "L": {
+    "vec": [
+     37.9,
+     43.3,
+     -557.9
+    ],
+    "mag": 560.9,
+    "leg_sum": 598.7,
+    "rebuilt_sum": 598.7,
+    "aft_of_down_deg": 4.4,
+    "lateral_deg": 3.9
+   }
+  },
+  "19c": {
+   "run": "F_PR19",
+   "rev": 0,
+   "torso": 19,
+   "h_mm": 40.0,
+   "converged": true,
+   "R": {
+    "vec": [
+     33.7,
+     29.6,
+     -505.3
+    ],
+    "mag": 507.2,
+    "leg_sum": 515.5,
+    "rebuilt_sum": 515.5,
+    "aft_of_down_deg": 3.4,
+    "lateral_deg": 3.8
+   },
+   "L": {
+    "vec": [
+     5.7,
+     28.1,
+     -451.3
+    ],
+    "mag": 452.2,
+    "leg_sum": 471.8,
+    "rebuilt_sum": 471.8,
+    "aft_of_down_deg": 3.6,
+    "lateral_deg": 0.7
+   }
+  },
+  "23c": {
+   "run": "F_PR23",
+   "rev": 0,
+   "torso": 23,
+   "h_mm": 40.0,
+   "converged": true,
+   "R": {
+    "vec": [
+     21.7,
+     21.5,
+     -415.2
+    ],
+    "mag": 416.3,
+    "leg_sum": 422.7,
+    "rebuilt_sum": 422.7,
+    "aft_of_down_deg": 3.0,
+    "lateral_deg": 3.0
+   },
+   "L": {
+    "vec": [
+     3.3,
+     39.2,
+     -440.0
+    ],
+    "mag": 441.8,
+    "leg_sum": 460.1,
+    "rebuilt_sum": 460.1,
+    "aft_of_down_deg": 5.1,
+    "lateral_deg": 0.4
+   }
+  },
+  "15c1": {
+   "run": "F_PR15",
+   "rev": 1,
+   "torso": 15,
+   "h_mm": 40.0,
+   "converged": true,
+   "R": {
+    "vec": [
+     42.9,
+     36.9,
+     -506.8
+    ],
+    "mag": 510.0,
+    "leg_sum": 519.1,
+    "rebuilt_sum": 519.1,
+    "aft_of_down_deg": 4.2,
+    "lateral_deg": 4.8
+   },
+   "L": {
+    "vec": [
+     -8.8,
+     37.5,
+     -523.5
+    ],
+    "mag": 525.0,
+    "leg_sum": 547.7,
+    "rebuilt_sum": 547.7,
+    "aft_of_down_deg": 4.1,
+    "lateral_deg": 1.0
+   }
+  },
+  "19c1": {
+   "run": "F_PR19",
+   "rev": 1,
+   "torso": 19,
+   "h_mm": 40.0,
+   "converged": true,
+   "R": {
+    "vec": [
+     28.5,
+     31.4,
+     -494.8
+    ],
+    "mag": 496.6,
+    "leg_sum": 504.3,
+    "rebuilt_sum": 504.3,
+    "aft_of_down_deg": 3.6,
+    "lateral_deg": 3.3
+   },
+   "L": {
+    "vec": [
+     1.4,
+     31.7,
+     -483.0
+    ],
+    "mag": 484.0,
+    "leg_sum": 502.8,
+    "rebuilt_sum": 502.8,
+    "aft_of_down_deg": 3.7,
+    "lateral_deg": 0.2
+   }
+  },
+  "23c1": {
+   "run": "F_PR23",
+   "rev": 1,
+   "torso": 23,
+   "h_mm": 40.0,
+   "converged": true,
+   "R": {
+    "vec": [
+     22.6,
+     21.5,
+     -423.2
+    ],
+    "mag": 424.3,
+    "leg_sum": 431.0,
+    "rebuilt_sum": 431.0,
+    "aft_of_down_deg": 2.9,
+    "lateral_deg": 3.1
+   },
+   "L": {
+    "vec": [
+     4.2,
+     43.2,
+     -454.1
+    ],
+    "mag": 456.1,
+    "leg_sum": 474.8,
+    "rebuilt_sum": 474.8,
+    "aft_of_down_deg": 5.4,
+    "lateral_deg": 0.5
+   }
+  },
+  "15f1": {
+   "run": "F_PR15_fineFM",
+   "rev": 1,
+   "torso": 15,
+   "h_mm": 25.0,
+   "converged": true,
+   "R": {
+    "vec": [
+     -10.1,
+     40.5,
+     -477.2
+    ],
+    "mag": 479.0,
+    "leg_sum": 499.3,
+    "rebuilt_sum": 499.3,
+    "aft_of_down_deg": 4.9,
+    "lateral_deg": 1.2
+   },
+   "L": {
+    "vec": [
+     45.2,
+     31.2,
+     -528.0
+    ],
+    "mag": 530.8,
+    "leg_sum": 562.3,
+    "rebuilt_sum": 562.3,
+    "aft_of_down_deg": 3.4,
+    "lateral_deg": 4.9
+   }
+  },
+  "19f1": {
+   "run": "F_PR19_fineFM",
+   "rev": 1,
+   "torso": 19,
+   "h_mm": 25.0,
+   "converged": true,
+   "R": {
+    "vec": [
+     -45.2,
+     33.1,
+     -443.8
+    ],
+    "mag": 447.4,
+    "leg_sum": 461.7,
+    "rebuilt_sum": 461.7,
+    "aft_of_down_deg": 4.3,
+    "lateral_deg": 5.8
+   },
+   "L": {
+    "vec": [
+     79.0,
+     51.0,
+     -512.4
+    ],
+    "mag": 521.0,
+    "leg_sum": 553.8,
+    "rebuilt_sum": 553.8,
+    "aft_of_down_deg": 5.7,
+    "lateral_deg": 8.7
+   }
+  },
+  "23f1": {
+   "run": "F_PR23_fineFM",
+   "rev": 1,
+   "torso": 23,
+   "h_mm": 25.0,
+   "converged": true,
+   "R": {
+    "vec": [
+     -55.5,
+     39.8,
+     -438.8
+    ],
+    "mag": 444.1,
+    "leg_sum": 457.4,
+    "rebuilt_sum": 457.4,
+    "aft_of_down_deg": 5.2,
+    "lateral_deg": 7.2
+   },
+   "L": {
+    "vec": [
+     86.1,
+     28.6,
+     -490.3
+    ],
+    "mag": 498.6,
+    "leg_sum": 522.2,
+    "rebuilt_sum": 522.2,
+    "aft_of_down_deg": 3.3,
+    "lateral_deg": 9.9
+   }
+  }
+ },
+ "eye": {
+  "hooks": {
+   "15cR": {
+    "vec": [
+     48.2,
+     40.1,
+     -515.9
+    ],
+    "mag": 519.7,
+    "aft_of_down_deg": 4.4,
+    "lateral_deg": 5.3,
+    "combo_mag": 601.0
+   },
+   "15cL": {
+    "vec": [
+     -14.0,
+     39.4,
+     -527.4
+    ],
+    "mag": 529.0,
+    "aft_of_down_deg": 4.3,
+    "lateral_deg": 1.5,
+    "combo_mag": 609.4
+   },
+   "15fR": {
+    "vec": [
+     -13.4,
+     43.0,
+     -503.1
+    ],
+    "mag": 505.1,
+    "aft_of_down_deg": 4.9,
+    "lateral_deg": 1.5,
+    "combo_mag": 588.6
+   },
+   "15fL": {
+    "vec": [
+     37.9,
+     43.3,
+     -557.9
+    ],
+    "mag": 560.9,
+    "aft_of_down_deg": 4.4,
+    "lateral_deg": 3.9,
+    "combo_mag": 640.1
+   },
+   "19cR": {
+    "vec": [
+     33.7,
+     29.6,
+     -505.3
+    ],
+    "mag": 507.2,
+    "aft_of_down_deg": 3.4,
+    "lateral_deg": 3.8,
+    "combo_mag": 586.0
+   },
+   "19cL": {
+    "vec": [
+     5.7,
+     28.1,
+     -451.3
+    ],
+    "mag": 452.2,
+    "aft_of_down_deg": 3.6,
+    "lateral_deg": 0.7,
+    "combo_mag": 535.2
+   },
+   "23cR": {
+    "vec": [
+     21.7,
+     21.5,
+     -415.2
+    ],
+    "mag": 416.3,
+    "aft_of_down_deg": 3.0,
+    "lateral_deg": 3.0,
+    "combo_mag": 500.3
+   },
+   "23cL": {
+    "vec": [
+     3.3,
+     39.2,
+     -440.0
+    ],
+    "mag": 441.8,
+    "aft_of_down_deg": 5.1,
+    "lateral_deg": 0.4,
+    "combo_mag": 529.9
+   },
+   "15c1R": {
+    "vec": [
+     42.9,
+     36.9,
+     -506.8
+    ],
+    "mag": 510.0,
+    "aft_of_down_deg": 4.2,
+    "lateral_deg": 4.8,
+    "combo_mag": 590.9
+   },
+   "15c1L": {
+    "vec": [
+     -8.8,
+     37.5,
+     -523.5
+    ],
+    "mag": 525.0,
+    "aft_of_down_deg": 4.1,
+    "lateral_deg": 1.0,
+    "combo_mag": 605.1
+   },
+   "19c1R": {
+    "vec": [
+     28.5,
+     31.4,
+     -494.8
+    ],
+    "mag": 496.6,
+    "aft_of_down_deg": 3.6,
+    "lateral_deg": 3.3,
+    "combo_mag": 576.9
+   },
+   "19c1L": {
+    "vec": [
+     1.4,
+     31.7,
+     -483.0
+    ],
+    "mag": 484.0,
+    "aft_of_down_deg": 3.7,
+    "lateral_deg": 0.2,
+    "combo_mag": 565.5
+   },
+   "23c1R": {
+    "vec": [
+     22.6,
+     21.5,
+     -423.2
+    ],
+    "mag": 424.3,
+    "aft_of_down_deg": 2.9,
+    "lateral_deg": 3.1,
+    "combo_mag": 507.4
+   },
+   "23c1L": {
+    "vec": [
+     4.2,
+     43.2,
+     -454.1
+    ],
+    "mag": 456.1,
+    "aft_of_down_deg": 5.4,
+    "lateral_deg": 0.5,
+    "combo_mag": 544.2
+   },
+   "15f1R": {
+    "vec": [
+     -10.1,
+     40.5,
+     -477.2
+    ],
+    "mag": 479.0,
+    "aft_of_down_deg": 4.9,
+    "lateral_deg": 1.2,
+    "combo_mag": 564.0
+   },
+   "15f1L": {
+    "vec": [
+     45.2,
+     31.2,
+     -528.0
+    ],
+    "mag": 530.8,
+    "aft_of_down_deg": 3.4,
+    "lateral_deg": 4.9,
+    "combo_mag": 608.3
+   },
+   "19f1R": {
+    "vec": [
+     -45.2,
+     33.1,
+     -443.8
+    ],
+    "mag": 447.4,
+    "aft_of_down_deg": 4.3,
+    "lateral_deg": 5.8,
+    "combo_mag": 532.5
+   },
+   "19f1L": {
+    "vec": [
+     79.0,
+     51.0,
+     -512.4
+    ],
+    "mag": 521.0,
+    "aft_of_down_deg": 5.7,
+    "lateral_deg": 8.7,
+    "combo_mag": 605.4
+   },
+   "23f1R": {
+    "vec": [
+     -55.5,
+     39.8,
+     -438.8
+    ],
+    "mag": 444.1,
+    "aft_of_down_deg": 5.2,
+    "lateral_deg": 7.2,
+    "combo_mag": 531.9
+   },
+   "23f1L": {
+    "vec": [
+     86.1,
+     28.6,
+     -490.3
+    ],
+    "mag": 498.6,
+    "aft_of_down_deg": 3.3,
+    "lateral_deg": 9.9,
+    "combo_mag": 577.3
+   }
+  },
+  "strap_1g": [
+   0.0,
+   198.90196845209493,
+   -33.34261
+  ],
+  "misuse_1g_n": 567.4,
+  "cands": {
+   "12.5_8": {
+    "half_z": 12.5,
+    "cheek": 8.0,
+    "height_mm": 25.0,
+    "per_grid": {
+     "1": {
+      "rows": {
+       "15cR": {
+        "fatigue": 1.2483910694097031,
+        "fatigue_hook_only": 1.493127472696871,
+        "creep": 2.6632342814073664,
+        "strength": 2.2193619011728054
+       },
+       "15cL": {
+        "fatigue": 1.2218947870563786,
+        "fatigue_hook_only": 1.4704284320945766,
+        "creep": 2.6067088790536084,
+        "strength": 2.1722573992113396
+       },
+       "15fR": {
+        "fatigue": 1.2606304280025722,
+        "fatigue_hook_only": 1.5363314380286697,
+        "creep": 2.6893449130721545,
+        "strength": 2.241120760893462
+       },
+       "15fL": {
+        "fatigue": 1.1755340483419494,
+        "fatigue_hook_only": 1.3850791502642332,
+        "creep": 2.5078059697961588,
+        "strength": 2.0898383081634657
+       },
+       "19cR": {
+        "fatigue": 1.283013221143823,
+        "fatigue_hook_only": 1.5354425723142808,
+        "creep": 2.737094871773489,
+        "strength": 2.280912393144574
+       },
+       "19cL": {
+        "fatigue": 1.3830721816130445,
+        "fatigue_hook_only": 1.725514569697158,
+        "creep": 2.950553987441162,
+        "strength": 2.4587949895343013
+       },
+       "23cR": {
+        "fatigue": 1.479929629236357,
+        "fatigue_hook_only": 1.8720784128105132,
+        "creep": 3.157183209037562,
+        "strength": 2.630986007531302
+       },
+       "23cL": {
+        "fatigue": 1.3991813191009008,
+        "fatigue_hook_only": 1.747552445814799,
+        "creep": 2.9849201474152554,
+        "strength": 2.4874334561793794
+       },
+       "15c1R": {
+        "fatigue": 1.2710261767205175,
+        "fatigue_hook_only": 1.5266583023637075,
+        "creep": 2.7115225103371046,
+        "strength": 2.259602091947587
+       },
+       "15c1L": {
+        "fatigue": 1.229583007835201,
+        "fatigue_hook_only": 1.4806585523531377,
+        "creep": 2.623110416715096,
+        "strength": 2.1859253472625797
+       },
+       "19c1R": {
+        "fatigue": 1.2984445924798058,
+        "fatigue_hook_only": 1.5729688538530135,
+        "creep": 2.770015130623586,
+        "strength": 2.3083459421863215
+       },
+       "19c1L": {
+        "fatigue": 1.3098425617623048,
+        "fatigue_hook_only": 1.6092891976868609,
+        "creep": 2.794330798426251,
+        "strength": 2.328608998688542
+       },
+       "23c1R": {
+        "fatigue": 1.4655282739223783,
+        "fatigue_hook_only": 1.8371924680168852,
+        "creep": 3.1264603177010737,
+        "strength": 2.605383598084228
+       },
+       "23c1L": {
+        "fatigue": 1.3638194587717414,
+        "fatigue_hook_only": 1.6897960896012478,
+        "creep": 2.909481512046382,
+        "strength": 2.4245679267053184
+       },
+       "15f1R": {
+        "fatigue": 1.3152377772711972,
+        "fatigue_hook_only": 1.6189492288673393,
+        "creep": 2.805840591511888,
+        "strength": 2.338200492926573
+       },
+       "15f1L": {
+        "fatigue": 1.2345110776929422,
+        "fatigue_hook_only": 1.4660589705985505,
+        "creep": 2.633623632411611,
+        "strength": 2.194686360343009
+       },
+       "19f1R": {
+        "fatigue": 1.4085404370420498,
+        "fatigue_hook_only": 1.7327828466831932,
+        "creep": 3.0048862656897066,
+        "strength": 2.5040718880747552
+       },
+       "19f1L": {
+        "fatigue": 1.237289403627399,
+        "fatigue_hook_only": 1.4934053949806108,
+        "creep": 2.6395507277384516,
+        "strength": 2.1996256064487096
+       },
+       "23f1R": {
+        "fatigue": 1.4113225304778494,
+        "fatigue_hook_only": 1.751046791131284,
+        "creep": 3.010821398352746,
+        "strength": 2.509017831960622
+       },
+       "23f1L": {
+        "fatigue": 1.3095137310260039,
+        "fatigue_hook_only": 1.5434949089425323,
+        "creep": 2.793629292855475,
+        "strength": 2.328024410712896
+       }
+      },
+      "misuse_strength": 2.067586630605553,
+      "added_g": 8.80224,
+      "n_elem": 45600,
+      "sweep_fi_per_kn": {
+       "0": 0.23752718888709648,
+       "15": 0.2581686642100218,
+       "30": 0.25686123232956043,
+       "45": 0.2933421237957841,
+       "60": 0.32520458894896015,
+       "80.5": 0.35947902413343263
+      },
+      "strap_fi_per_kn": 0.3594614087748301
+     },
+     "0.8": {
+      "rows": {
+       "15cR": {
+        "fatigue": 1.1218136460072834,
+        "fatigue_hook_only": 1.3595420901131925,
+        "creep": 2.3932024448155382,
+        "strength": 1.994335370679615
+       },
+       "15cL": {
+        "fatigue": 1.1070719498716706,
+        "fatigue_hook_only": 1.3306818611369704,
+        "creep": 2.361753493059564,
+        "strength": 1.9681279108829701
+       },
+       "15fR": {
+        "fatigue": 1.1301752862550511,
+        "fatigue_hook_only": 1.3879511801796833,
+        "creep": 2.4110406106774427,
+        "strength": 2.0092005088978686
+       },
+       "15fL": {
+        "fatigue": 1.057080058136163,
+        "fatigue_hook_only": 1.2589720440731094,
+        "creep": 2.255104124023814,
+        "strength": 1.8792534366865121
+       },
+       "19cR": {
+        "fatigue": 1.1559489771857296,
+        "fatigue_hook_only": 1.3992607142508513,
+        "creep": 2.4660244846628903,
+        "strength": 2.0550204038857416
+       },
+       "19cL": {
+        "fatigue": 1.2411108097873307,
+        "fatigue_hook_only": 1.5527262909235806,
+        "creep": 2.647703060879639,
+        "strength": 2.206419217399699
+       },
+       "23cR": {
+        "fatigue": 1.3426945714647032,
+        "fatigue_hook_only": 1.6936081958621356,
+        "creep": 2.8644150857913675,
+        "strength": 2.3870125714928063
+       },
+       "23cL": {
+        "fatigue": 1.2512732699691993,
+        "fatigue_hook_only": 1.5797939396689165,
+        "creep": 2.6693829759342917,
+        "strength": 2.2244858132785765
+       },
+       "15c1R": {
+        "fatigue": 1.1380292745431941,
+        "fatigue_hook_only": 1.3926090372610913,
+        "creep": 2.4277957856921475,
+        "strength": 2.023163154743456
+       },
+       "15c1L": {
+        "fatigue": 1.1115819060003624,
+        "fatigue_hook_only": 1.3380586941972128,
+        "creep": 2.3713747328007733,
+        "strength": 1.9761456106673112
+       },
+       "19c1R": {
+        "fatigue": 1.1614912486538065,
+        "fatigue_hook_only": 1.4234664465243525,
+        "creep": 2.4778479971281206,
+        "strength": 2.0648733309401006
+       },
+       "19c1L": {
+        "fatigue": 1.1720226152362765,
+        "fatigue_hook_only": 1.4485645124188948,
+        "creep": 2.500314912504057,
+        "strength": 2.0835957604200477
+       },
+       "23c1R": {
+        "fatigue": 1.317984031000684,
+        "fatigue_hook_only": 1.6632627345831021,
+        "creep": 2.8116992661347933,
+        "strength": 2.3430827217789942
+       },
+       "23c1L": {
+        "fatigue": 1.2233262347887144,
+        "fatigue_hook_only": 1.5296048030498133,
+        "creep": 2.6097626342159246,
+        "strength": 2.174802195179937
+       },
+       "15f1R": {
+        "fatigue": 1.1762560738106431,
+        "fatigue_hook_only": 1.4594698402440436,
+        "creep": 2.5093462907960395,
+        "strength": 2.0911219089966995
+       },
+       "15f1L": {
+        "fatigue": 1.1136218707303431,
+        "fatigue_hook_only": 1.3391571008995484,
+        "creep": 2.375726657558065,
+        "strength": 1.9797722146317207
+       },
+       "19f1R": {
+        "fatigue": 1.270177663783928,
+        "fatigue_hook_only": 1.578603274992438,
+        "creep": 2.709712349405713,
+        "strength": 2.2580936245047605
+       },
+       "19f1L": {
+        "fatigue": 1.123699654100422,
+        "fatigue_hook_only": 1.3430706005106705,
+        "creep": 2.3972259287475675,
+        "strength": 1.9976882739563058
+       },
+       "23f1R": {
+        "fatigue": 1.2696111125470528,
+        "fatigue_hook_only": 1.5911034405121245,
+        "creep": 2.708503706767046,
+        "strength": 2.2570864223058718
+       },
+       "23f1L": {
+        "fatigue": 1.1777448521813878,
+        "fatigue_hook_only": 1.3974481576639841,
+        "creep": 2.512522351320294,
+        "strength": 2.093768626100245
+       }
+      },
+      "misuse_strength": 1.860744148453335,
+      "added_g": 8.309043200000001,
+      "n_elem": 89298,
+      "sweep_fi_per_kn": {
+       "0": 0.2643592507786896,
+       "15": 0.2777448224171977,
+       "30": 0.2846261748931894,
+       "45": 0.311418262504872,
+       "60": 0.3389362888469201,
+       "80.5": 0.3456917706977374
+      },
+      "strap_fi_per_kn": 0.3457703738547778
+     },
+     "0.7": {
+      "rows": {
+       "15cR": {
+        "fatigue": 1.1719609761225918,
+        "fatigue_hook_only": 1.3823478036758048,
+        "creep": 2.5001834157281966,
+        "strength": 2.083486179773497
+       },
+       "15cL": {
+        "fatigue": 1.1398685240042907,
+        "fatigue_hook_only": 1.3522219923363015,
+        "creep": 2.4317195178758206,
+        "strength": 2.0264329315631837
+       },
+       "15fR": {
+        "fatigue": 1.1834253600395184,
+        "fatigue_hook_only": 1.417846473548553,
+        "creep": 2.5246407680843057,
+        "strength": 2.1038673067369213
+       },
+       "15fL": {
+        "fatigue": 1.0987586872136441,
+        "fatigue_hook_only": 1.277637074091157,
+        "creep": 2.3440185327224414,
+        "strength": 1.9533487772687008
+       },
+       "19cR": {
+        "fatigue": 1.1988179664078689,
+        "fatigue_hook_only": 1.411624075662898,
+        "creep": 2.5574783283367872,
+        "strength": 2.131231940280656
+       },
+       "19cL": {
+        "fatigue": 1.2941506180821905,
+        "fatigue_hook_only": 1.5833933518583405,
+        "creep": 2.760854651908673,
+        "strength": 2.3007122099238946
+       },
+       "23cR": {
+        "fatigue": 1.3849968006233182,
+        "fatigue_hook_only": 1.723314382397174,
+        "creep": 2.9546598413297462,
+        "strength": 2.4622165344414553
+       },
+       "23cL": {
+        "fatigue": 1.2833715729869943,
+        "fatigue_hook_only": 1.6195459630160687,
+        "creep": 2.7378593557055884,
+        "strength": 2.2815494630879902
+       },
+       "15c1R": {
+        "fatigue": 1.1900987272591521,
+        "fatigue_hook_only": 1.4066181195473928,
+        "creep": 2.538877284819525,
+        "strength": 2.115731070682937
+       },
+       "15c1L": {
+        "fatigue": 1.1469216512752831,
+        "fatigue_hook_only": 1.3624985974101878,
+        "creep": 2.4467661893872705,
+        "strength": 2.038971824489392
+       },
+       "19c1R": {
+        "fatigue": 1.2134334056102367,
+        "fatigue_hook_only": 1.4423522190712528,
+        "creep": 2.588657931968505,
+        "strength": 2.1572149433070877
+       },
+       "19c1L": {
+        "fatigue": 1.2241084592346578,
+        "fatigue_hook_only": 1.4783694492720325,
+        "creep": 2.6114313797006043,
+        "strength": 2.1761928164171698
+       },
+       "23c1R": {
+        "fatigue": 1.3659666856115331,
+        "fatigue_hook_only": 1.6915401784535795,
+        "creep": 2.9140622626379376,
+        "strength": 2.428385218864948
+       },
+       "23c1L": {
+        "fatigue": 1.2502967745645615,
+        "fatigue_hook_only": 1.570616081895448,
+        "creep": 2.667299785737731,
+        "strength": 2.2227498214481094
+       },
+       "15f1R": {
+        "fatigue": 1.229880095005647,
+        "fatigue_hook_only": 1.4962437588918864,
+        "creep": 2.623744202678714,
+        "strength": 2.1864535022322613
+       },
+       "15f1L": {
+        "fatigue": 1.1567482318906481,
+        "fatigue_hook_only": 1.3512971198250905,
+        "creep": 2.467729561366716,
+        "strength": 2.0564413011389298
+       },
+       "19f1R": {
+        "fatigue": 1.3122500203987746,
+        "fatigue_hook_only": 1.6071842886817416,
+        "creep": 2.799466710184053,
+        "strength": 2.332888925153377
+       },
+       "19f1L": {
+        "fatigue": 1.168747878719913,
+        "fatigue_hook_only": 1.3877097901352258,
+        "creep": 2.4933288079358142,
+        "strength": 2.0777740066131787
+       },
+       "23f1R": {
+        "fatigue": 1.3142745380084209,
+        "fatigue_hook_only": 1.6226658801276526,
+        "creep": 2.8037856810846313,
+        "strength": 2.3364880675705257
+       },
+       "23f1L": {
+        "fatigue": 1.233108530797466,
+        "fatigue_hook_only": 1.434073891631515,
+        "creep": 2.6306315323679286,
+        "strength": 2.1921929436399403
+       }
+      },
+      "misuse_strength": 1.939627243877373,
+      "added_g": 8.483775719999999,
+      "n_elem": 131934,
+      "sweep_fi_per_kn": {
+       "0": 0.2611228347555224,
+       "15": 0.26439129272910095,
+       "30": 0.278395006877166,
+       "45": 0.3007220567016855,
+       "60": 0.3267085806351526,
+       "80.5": 0.3241395610549021
+      },
+      "strap_fi_per_kn": 0.3241525717011131
+     }
+    },
+    "design": {
+     "fatigue": {
+      "value": 1.057080058136163,
+      "hook": "15fL",
+      "grid": "0.8"
+     },
+     "fatigue_hook_only": {
+      "value": 1.2589720440731094,
+      "hook": "15fL",
+      "grid": "0.8"
+     },
+     "creep": {
+      "value": 2.255104124023814,
+      "hook": "15fL",
+      "grid": "0.8"
+     },
+     "strength": {
+      "value": 1.8792534366865121,
+      "hook": "15fL",
+      "grid": "0.8"
+     },
+     "misuse_strength": {
+      "value": 1.860744148453335
+     }
+    },
+    "sensitivity": {
+     "mesh_fatigue_by_grid": {
+      "1": 1.1755340483419494,
+      "0.8": 1.057080058136163,
+      "0.7": 1.0987586872136441
+     },
+     "mesh_spread_pct": 11.205772854578653,
+     "direction_fatigue_by_aft_deg": {
+      "0": 1.1080820796480642,
+      "15": 1.0546794205835623,
+      "30": 1.029180638382896,
+      "45": 0.9406376685197506,
+      "60": 0.8642678816529926,
+      "80.5": 0.8148785567758834
+     },
+     "fatigue_coarse_cloth_only": 1.1070719498716706,
+     "fatigue_fine_cloth_only": 1.057080058136163,
+     "fatigue_rev0_only": 1.057080058136163,
+     "fatigue_rev1_only": 1.1115819060003624,
+     "fatigue_hook_only": 1.2589720440731094,
+     "hook_force_at_fatigue_1p0_n": 676.6166931329313,
+     "governing_combo_1g_n": 640.0808414889008,
+     "governing_combo_aft_deg": 22.277723189490107,
+     "fatigue_dir_plus_scatter": 1.0292118002890132
+    },
+    "added_g_h1": 8.80224,
+    "pair_delta_vs_27mm_g": -1.458560000000002,
+    "clearance": {
+     "cheek_bottom_z": 507.5,
+     "cheek_top_z": 532.5,
+     "spreader_top_z": 430.0,
+     "gap_mm": 77.5,
+     "notch_clear_mm": 6.0,
+     "spreader_ok": true,
+     "throat_mm": 18.0,
+     "outer_width_mm": 34.0,
+     "cheek_aft_of_hole_mm": 7.6,
+     "half_height_mm": 12.5
+    },
+    "ca1_flip_ratio": 0.28380064280936124,
+    "pass": false
+   },
+   "13.5_8": {
+    "half_z": 13.5,
+    "cheek": 8.0,
+    "height_mm": 27.0,
+    "per_grid": {
+     "1": {
+      "rows": {
+       "15cR": {
+        "fatigue": 1.3559338103694323,
+        "fatigue_hook_only": 1.6335127116832362,
+        "creep": 2.892658795454789,
+        "strength": 2.410548996212324
+       },
+       "15cL": {
+        "fatigue": 1.3222625444908889,
+        "fatigue_hook_only": 1.6031917273450413,
+        "creep": 2.8208267615805633,
+        "strength": 2.3506889679838023
+       },
+       "15fR": {
+        "fatigue": 1.3641989244720567,
+        "fatigue_hook_only": 1.673158293855727,
+        "creep": 2.9102910388737215,
+        "strength": 2.4252425323947673
+       },
+       "15fL": {
+        "fatigue": 1.2693832215112681,
+        "fatigue_hook_only": 1.5107343058841558,
+        "creep": 2.708017539224039,
+        "strength": 2.256681282686699
+       },
+       "19cR": {
+        "fatigue": 1.3855001452219915,
+        "fatigue_hook_only": 1.6784016505844288,
+        "creep": 2.955733643140249,
+        "strength": 2.4631113692835407
+       },
+       "19cL": {
+        "fatigue": 1.4962455458549395,
+        "fatigue_hook_only": 1.8733941141100898,
+        "creep": 3.191990497823871,
+        "strength": 2.6599920815198925
+       },
+       "23cR": {
+        "fatigue": 1.6046536160358447,
+        "fatigue_hook_only": 2.0444190795976063,
+        "creep": 3.4232610475431353,
+        "strength": 2.852717539619279
+       },
+       "23cL": {
+        "fatigue": 1.5109165008749403,
+        "fatigue_hook_only": 1.9144534800758428,
+        "creep": 3.2232885351998735,
+        "strength": 2.686073779333227
+       },
+       "15c1R": {
+        "fatigue": 1.3796752416712423,
+        "fatigue_hook_only": 1.6678056589467398,
+        "creep": 2.9433071822319845,
+        "strength": 2.45275598519332
+       },
+       "15c1L": {
+        "fatigue": 1.3266263933543396,
+        "fatigue_hook_only": 1.6135640617385585,
+        "creep": 2.8301363058225917,
+        "strength": 2.3584469215188264
+       },
+       "19c1R": {
+        "fatigue": 1.4120530488085221,
+        "fatigue_hook_only": 1.706724010562444,
+        "creep": 3.012379837458181,
+        "strength": 2.510316531215151
+       },
+       "19c1L": {
+        "fatigue": 1.420331466663172,
+        "fatigue_hook_only": 1.750317780091341,
+        "creep": 3.030040462214767,
+        "strength": 2.525033718512306
+       },
+       "23c1R": {
+        "fatigue": 1.5854873718173739,
+        "fatigue_hook_only": 2.0059903512959005,
+        "creep": 3.3823730598770645,
+        "strength": 2.8186442165642203
+       },
+       "23c1L": {
+        "fatigue": 1.4712303790814318,
+        "fatigue_hook_only": 1.8455953664354954,
+        "creep": 3.1386248087070547,
+        "strength": 2.615520673922546
+       },
+       "15f1R": {
+        "fatigue": 1.420772670161489,
+        "fatigue_hook_only": 1.7644703132724988,
+        "creep": 3.0309816963445098,
+        "strength": 2.5258180802870913
+       },
+       "15f1L": {
+        "fatigue": 1.3387787587369224,
+        "fatigue_hook_only": 1.6117780231704957,
+        "creep": 2.8560613519721016,
+        "strength": 2.380051126643418
+       },
+       "19f1R": {
+        "fatigue": 1.520798623498135,
+        "fatigue_hook_only": 1.9015730253779517,
+        "creep": 3.244370396796022,
+        "strength": 2.703641997330018
+       },
+       "19f1L": {
+        "fatigue": 1.3404656767531007,
+        "fatigue_hook_only": 1.629310892148681,
+        "creep": 2.8596601104066153,
+        "strength": 2.3830500920055124
+       },
+       "23f1R": {
+        "fatigue": 1.5339873429663033,
+        "fatigue_hook_only": 1.914666244413616,
+        "creep": 3.2725063316614476,
+        "strength": 2.727088609717873
+       },
+       "23f1L": {
+        "fatigue": 1.4293742837009207,
+        "fatigue_hook_only": 1.7126615544442192,
+        "creep": 3.0493318052286313,
+        "strength": 2.5411098376905263
+       }
+      },
+      "misuse_strength": 2.233968778894546,
+      "added_g": 9.53152,
+      "n_elem": 46288,
+      "sweep_fi_per_kn": {
+       "0": 0.21659631536593865,
+       "15": 0.23283904027231914,
+       "30": 0.24191433124912723,
+       "45": 0.27778001812004854,
+       "60": 0.3097481134611476,
+       "80.5": 0.3276752189570369
+      },
+      "strap_fi_per_kn": 0.327618338893893
+     },
+     "0.8": {
+      "rows": {
+       "15cR": {
+        "fatigue": 1.2208929303371914,
+        "fatigue_hook_only": 1.4824889411600592,
+        "creep": 2.604571584719342,
+        "strength": 2.1704763205994517
+       },
+       "15cL": {
+        "fatigue": 1.2046819468503964,
+        "fatigue_hook_only": 1.4540047903222508,
+        "creep": 2.5699881532808466,
+        "strength": 2.1416567944007054
+       },
+       "15fR": {
+        "fatigue": 1.2441783845275278,
+        "fatigue_hook_only": 1.519876746920129,
+        "creep": 2.6542472203253933,
+        "strength": 2.211872683604494
+       },
+       "15fL": {
+        "fatigue": 1.1529206130575989,
+        "fatigue_hook_only": 1.3737702555825904,
+        "creep": 2.459563974522878,
+        "strength": 2.0496366454357315
+       },
+       "19cR": {
+        "fatigue": 1.2598383098893693,
+        "fatigue_hook_only": 1.5179467674351024,
+        "creep": 2.6876550610973218,
+        "strength": 2.239712550914435
+       },
+       "19cL": {
+        "fatigue": 1.3575798828677828,
+        "fatigue_hook_only": 1.6906542634273212,
+        "creep": 2.896170416784604,
+        "strength": 2.413475347320503
+       },
+       "23cR": {
+        "fatigue": 1.46078588551276,
+        "fatigue_hook_only": 1.848086129496419,
+        "creep": 3.1163432224272216,
+        "strength": 2.5969526853560176
+       },
+       "23cL": {
+        "fatigue": 1.3637311297462629,
+        "fatigue_hook_only": 1.7261591549418627,
+        "creep": 2.9092930767920278,
+        "strength": 2.42441089732669
+       },
+       "15c1R": {
+        "fatigue": 1.241872892061019,
+        "fatigue_hook_only": 1.511276972430793,
+        "creep": 2.649328836396841,
+        "strength": 2.2077740303307007
+       },
+       "15c1L": {
+        "fatigue": 1.2094816972871736,
+        "fatigue_hook_only": 1.4570171539390988,
+        "creep": 2.5802276208793042,
+        "strength": 2.1501896840660866
+       },
+       "19c1R": {
+        "fatigue": 1.2686181130150573,
+        "fatigue_hook_only": 1.5516211364219217,
+        "creep": 2.706385307765456,
+        "strength": 2.255321089804546
+       },
+       "19c1L": {
+        "fatigue": 1.290457821021689,
+        "fatigue_hook_only": 1.5765135279387337,
+        "creep": 2.7529766848462702,
+        "strength": 2.294147237371892
+       },
+       "23c1R": {
+        "fatigue": 1.4382298230175348,
+        "fatigue_hook_only": 1.814332542207557,
+        "creep": 3.0682236224374075,
+        "strength": 2.5568530186978395
+       },
+       "23c1L": {
+        "fatigue": 1.33545216854554,
+        "fatigue_hook_only": 1.6705283216375626,
+        "creep": 2.8489646262304857,
+        "strength": 2.374137188525405
+       },
+       "15f1R": {
+        "fatigue": 1.2907478664482506,
+        "fatigue_hook_only": 1.5975806013164926,
+        "creep": 2.7535954484229355,
+        "strength": 2.294662873685779
+       },
+       "15f1L": {
+        "fatigue": 1.214758342544794,
+        "fatigue_hook_only": 1.4481540703025444,
+        "creep": 2.5914844640955605,
+        "strength": 2.1595703867463008
+       },
+       "19f1R": {
+        "fatigue": 1.373797117719373,
+        "fatigue_hook_only": 1.7205067158515222,
+        "creep": 2.9307671844679963,
+        "strength": 2.4423059870566632
+       },
+       "19f1L": {
+        "fatigue": 1.2231735239885377,
+        "fatigue_hook_only": 1.4662666405618834,
+        "creep": 2.609436851175548,
+        "strength": 2.1745307093129567
+       },
+       "23f1R": {
+        "fatigue": 1.3748051211656318,
+        "fatigue_hook_only": 1.7267145163273596,
+        "creep": 2.9329175918200145,
+        "strength": 2.4440979931833455
+       },
+       "23f1L": {
+        "fatigue": 1.282672215492365,
+        "fatigue_hook_only": 1.5329524016773328,
+        "creep": 2.7363673930503793,
+        "strength": 2.2803061608753157
+       }
+      },
+      "misuse_strength": 2.029460069185215,
+      "added_g": 8.912547840000002,
+      "n_elem": 90410,
+      "sweep_fi_per_kn": {
+       "0": 0.24181991351510831,
+       "15": 0.2554013612280981,
+       "30": 0.25961843781435207,
+       "45": 0.29636648523559433,
+       "60": 0.31897205964252184,
+       "80.5": 0.33117463222951726
+      },
+      "strap_fi_per_kn": 0.33128348022033327
+     },
+     "0.7": {
+      "rows": {
+       "15cR": {
+        "fatigue": 1.3153640772085566,
+        "fatigue_hook_only": 1.5483881494017684,
+        "creep": 2.806110031378254,
+        "strength": 2.338425026148545
+       },
+       "15cL": {
+        "fatigue": 1.279953667840889,
+        "fatigue_hook_only": 1.5138454872671314,
+        "creep": 2.7305678247272303,
+        "strength": 2.2754731872726914
+       },
+       "15fR": {
+        "fatigue": 1.3202461195719264,
+        "fatigue_hook_only": 1.5873658830405635,
+        "creep": 2.8165250550867773,
+        "strength": 2.347104212572314
+       },
+       "15fL": {
+        "fatigue": 1.230667276333113,
+        "fatigue_hook_only": 1.4347593049405232,
+        "creep": 2.6254235228439744,
+        "strength": 2.187852935703312
+       },
+       "19cR": {
+        "fatigue": 1.3388599035628406,
+        "fatigue_hook_only": 1.5795319855212768,
+        "creep": 2.85623446093406,
+        "strength": 2.3801953841117167
+       },
+       "19cL": {
+        "fatigue": 1.4397673919917153,
+        "fatigue_hook_only": 1.769316771189647,
+        "creep": 3.071503769582326,
+        "strength": 2.559586474651938
+       },
+       "23cR": {
+        "fatigue": 1.5560129106947522,
+        "fatigue_hook_only": 1.927072676884574,
+        "creep": 3.3194942094821385,
+        "strength": 2.7662451745684487
+       },
+       "23cL": {
+        "fatigue": 1.4399228339512389,
+        "fatigue_hook_only": 1.8103453217991192,
+        "creep": 3.0718353790959765,
+        "strength": 2.5598628159133137
+       },
+       "15c1R": {
+        "fatigue": 1.3360582502566736,
+        "fatigue_hook_only": 1.5776716775370132,
+        "creep": 2.8502576005475704,
+        "strength": 2.3752146671229757
+       },
+       "15c1L": {
+        "fatigue": 1.282933742203742,
+        "fatigue_hook_only": 1.5204782604903315,
+        "creep": 2.7369253167013166,
+        "strength": 2.280771097251097
+       },
+       "19c1R": {
+        "fatigue": 1.356951378686131,
+        "fatigue_hook_only": 1.6152241220532755,
+        "creep": 2.894829607863746,
+        "strength": 2.4123580065531214
+       },
+       "19c1L": {
+        "fatigue": 1.3603005883256496,
+        "fatigue_hook_only": 1.6474401535979812,
+        "creep": 2.901974588428053,
+        "strength": 2.418312157023377
+       },
+       "23c1R": {
+        "fatigue": 1.5404096338705129,
+        "fatigue_hook_only": 1.890595854779351,
+        "creep": 3.286207218923761,
+        "strength": 2.738506015769801
+       },
+       "23c1L": {
+        "fatigue": 1.402379326109396,
+        "fatigue_hook_only": 1.7521304976093968,
+        "creep": 2.991742562366712,
+        "strength": 2.4931188019722597
+       },
+       "15f1R": {
+        "fatigue": 1.3693913056844356,
+        "fatigue_hook_only": 1.6726653725770217,
+        "creep": 2.921368118793463,
+        "strength": 2.4344734323278856
+       },
+       "15f1L": {
+        "fatigue": 1.2975835968507459,
+        "fatigue_hook_only": 1.5125471211522004,
+        "creep": 2.7681783399482582,
+        "strength": 2.306815283290215
+       },
+       "19f1R": {
+        "fatigue": 1.4797051116488826,
+        "fatigue_hook_only": 1.801169028719474,
+        "creep": 3.156704238184284,
+        "strength": 2.6305868651535693
+       },
+       "19f1L": {
+        "fatigue": 1.3086639045059556,
+        "fatigue_hook_only": 1.5389705208249482,
+        "creep": 2.7918163296127063,
+        "strength": 2.3265136080105884
+       },
+       "23f1R": {
+        "fatigue": 1.481567750494579,
+        "fatigue_hook_only": 1.809161922124015,
+        "creep": 3.1606778677217693,
+        "strength": 2.6338982231014745
+       },
+       "23f1L": {
+        "fatigue": 1.3790823763088165,
+        "fatigue_hook_only": 1.5992824849254694,
+        "creep": 2.942042402792142,
+        "strength": 2.451702002326785
+       }
+      },
+      "misuse_strength": 2.1684727080401762,
+      "added_g": 9.409450399999999,
+      "n_elem": 134480,
+      "sweep_fi_per_kn": {
+       "0": 0.23459990400549027,
+       "15": 0.23640299601056472,
+       "30": 0.24933086108234473,
+       "45": 0.2731025308530242,
+       "60": 0.29932713201595246,
+       "80.5": 0.3040221929493701
+      },
+      "strap_fi_per_kn": 0.3041069982993135
+     }
+    },
+    "design": {
+     "fatigue": {
+      "value": 1.1529206130575989,
+      "hook": "15fL",
+      "grid": "0.8"
+     },
+     "fatigue_hook_only": {
+      "value": 1.3737702555825904,
+      "hook": "15fL",
+      "grid": "0.8"
+     },
+     "creep": {
+      "value": 2.459563974522878,
+      "hook": "15fL",
+      "grid": "0.8"
+     },
+     "strength": {
+      "value": 2.0496366454357315,
+      "hook": "15fL",
+      "grid": "0.8"
+     },
+     "misuse_strength": {
+      "value": 2.029460069185215
+     }
+    },
+    "sensitivity": {
+     "mesh_fatigue_by_grid": {
+      "1": 1.2693832215112681,
+      "0.8": 1.1529206130575989,
+      "0.7": 1.230667276333113
+     },
+     "mesh_spread_pct": 10.101528859372637,
+     "direction_fatigue_by_aft_deg": {
+      "0": 1.2113632170278352,
+      "15": 1.1469466997689106,
+      "30": 1.1283164279207476,
+      "45": 0.988410508510065,
+      "60": 0.91836177972876,
+      "80.5": 0.8845235107683038
+     },
+     "fatigue_coarse_cloth_only": 1.2046819468503964,
+     "fatigue_fine_cloth_only": 1.1529206130575989,
+     "fatigue_rev0_only": 1.1529206130575989,
+     "fatigue_rev1_only": 1.2094816972871736,
+     "fatigue_hook_only": 1.3737702555825904,
+     "hook_force_at_fatigue_1p0_n": 737.9623961758073,
+     "governing_combo_1g_n": 640.0808414889008,
+     "governing_combo_aft_deg": 22.277723189490107,
+     "fatigue_dir_plus_scatter": 1.119223351243909
+    },
+    "added_g_h1": 9.53152,
+    "pair_delta_vs_27mm_g": 0.0,
+    "clearance": {
+     "cheek_bottom_z": 506.5,
+     "cheek_top_z": 533.5,
+     "spreader_top_z": 430.0,
+     "gap_mm": 76.5,
+     "notch_clear_mm": 6.0,
+     "spreader_ok": true,
+     "throat_mm": 18.0,
+     "outer_width_mm": 34.0,
+     "cheek_aft_of_hole_mm": 7.6,
+     "half_height_mm": 13.5
+    },
+    "ca1_flip_ratio": 0.26020872261480876,
+    "pass": false
+   },
+   "14_8": {
+    "half_z": 14.0,
+    "cheek": 8.0,
+    "height_mm": 28.0,
+    "per_grid": {
+     "1": {
+      "rows": {
+       "15cR": {
+        "fatigue": 1.4071199734615678,
+        "fatigue_hook_only": 1.7195265528280212,
+        "creep": 3.0018559433846783,
+        "strength": 2.5015466194872316
+       },
+       "15cL": {
+        "fatigue": 1.374914426730197,
+        "fatigue_hook_only": 1.6884517641410026,
+        "creep": 2.933150777024421,
+        "strength": 2.444292314187017
+       },
+       "15fR": {
+        "fatigue": 1.4248814437678154,
+        "fatigue_hook_only": 1.7568873605680535,
+        "creep": 3.0397470800380066,
+        "strength": 2.533122566698339
+       },
+       "15fL": {
+        "fatigue": 1.3172098075735317,
+        "fatigue_hook_only": 1.59684405400412,
+        "creep": 2.8100475894902015,
+        "strength": 2.3417063245751684
+       },
+       "19cR": {
+        "fatigue": 1.4331544001801757,
+        "fatigue_hook_only": 1.7724232855202455,
+        "creep": 3.0573960537177087,
+        "strength": 2.547830044764757
+       },
+       "19cL": {
+        "fatigue": 1.5485348839494006,
+        "fatigue_hook_only": 1.9956546954189356,
+        "creep": 3.303541085758722,
+        "strength": 2.752950904798935
+       },
+       "23cR": {
+        "fatigue": 1.6726099257339173,
+        "fatigue_hook_only": 2.1707388860054464,
+        "creep": 3.568234508232357,
+        "strength": 2.973528756860297
+       },
+       "23cL": {
+        "fatigue": 1.5733485085690184,
+        "fatigue_hook_only": 2.006945906158367,
+        "creep": 3.3564768182805733,
+        "strength": 2.797064015233811
+       },
+       "15c1R": {
+        "fatigue": 1.4291713987165922,
+        "fatigue_hook_only": 1.7493582610340055,
+        "creep": 3.0488989839287304,
+        "strength": 2.5407491532739415
+       },
+       "15c1L": {
+        "fatigue": 1.3848186152655342,
+        "fatigue_hook_only": 1.7145612605558458,
+        "creep": 2.954279712566473,
+        "strength": 2.461899760472061
+       },
+       "19c1R": {
+        "fatigue": 1.4585607602984183,
+        "fatigue_hook_only": 1.8059185924631633,
+        "creep": 3.111596288636626,
+        "strength": 2.5929969071971883
+       },
+       "19c1L": {
+        "fatigue": 1.4735191675101018,
+        "fatigue_hook_only": 1.8620880799396629,
+        "creep": 3.1435075573548845,
+        "strength": 2.6195896311290703
+       },
+       "23c1R": {
+        "fatigue": 1.6470958736189838,
+        "fatigue_hook_only": 2.129029037944661,
+        "creep": 3.513804530387166,
+        "strength": 2.928170441989305
+       },
+       "23c1L": {
+        "fatigue": 1.5263968757017339,
+        "fatigue_hook_only": 1.9366370746575507,
+        "creep": 3.2563133348303666,
+        "strength": 2.713594445691972
+       },
+       "15f1R": {
+        "fatigue": 1.473207451515184,
+        "fatigue_hook_only": 1.8522360705363217,
+        "creep": 3.1428425632323935,
+        "strength": 2.619035469360328
+       },
+       "15f1L": {
+        "fatigue": 1.3976573530934824,
+        "fatigue_hook_only": 1.697688624610471,
+        "creep": 2.9816690199327627,
+        "strength": 2.484724183277302
+       },
+       "19f1R": {
+        "fatigue": 1.5789036078356422,
+        "fatigue_hook_only": 2.0077355374773975,
+        "creep": 3.368327696716037,
+        "strength": 2.8069397472633644
+       },
+       "19f1L": {
+        "fatigue": 1.4031662436560113,
+        "fatigue_hook_only": 1.7060595537121468,
+        "creep": 2.9934213197994914,
+        "strength": 2.494517766499576
+       },
+       "23f1R": {
+        "fatigue": 1.581117758320201,
+        "fatigue_hook_only": 2.019588145427842,
+        "creep": 3.373051217749763,
+        "strength": 2.810876014791469
+       },
+       "23f1L": {
+        "fatigue": 1.4851761913725943,
+        "fatigue_hook_only": 1.7924365731519525,
+        "creep": 3.1683758749282016,
+        "strength": 2.6403132291068343
+       }
+      },
+      "misuse_strength": 2.3227144799524315,
+      "added_g": 9.77744,
+      "n_elem": 46520,
+      "sweep_fi_per_kn": {
+       "0": 0.20522525513967155,
+       "15": 0.22123373579289562,
+       "30": 0.23432462392317935,
+       "45": 0.2664189420822737,
+       "60": 0.3000620203908315,
+       "80.5": 0.3154746994770724
+      },
+      "strap_fi_per_kn": 0.31550795085128974
+     },
+     "0.8": {
+      "rows": {
+       "15cR": {
+        "fatigue": 1.2867795678770069,
+        "fatigue_hook_only": 1.5711171610992878,
+        "creep": 2.7451297448042817,
+        "strength": 2.2876081206702343
+       },
+       "15cL": {
+        "fatigue": 1.2624653986525392,
+        "fatigue_hook_only": 1.537297837173306,
+        "creep": 2.693259517125417,
+        "strength": 2.244382930937848
+       },
+       "15fR": {
+        "fatigue": 1.3015397448142345,
+        "fatigue_hook_only": 1.6055356464410369,
+        "creep": 2.776618122270367,
+        "strength": 2.313848435225306
+       },
+       "15fL": {
+        "fatigue": 1.217678484062526,
+        "fatigue_hook_only": 1.4571553259932735,
+        "creep": 2.5977140993333894,
+        "strength": 2.164761749444491
+       },
+       "19cR": {
+        "fatigue": 1.323419481687978,
+        "fatigue_hook_only": 1.6201756680409796,
+        "creep": 2.823294894267687,
+        "strength": 2.3527457452230722
+       },
+       "19cL": {
+        "fatigue": 1.4267495505989782,
+        "fatigue_hook_only": 1.7993420003056781,
+        "creep": 3.043732374611154,
+        "strength": 2.536443645509295
+       },
+       "23cR": {
+        "fatigue": 1.5301980562768116,
+        "fatigue_hook_only": 1.9676374483505863,
+        "creep": 3.2644225200571984,
+        "strength": 2.720352100047666
+       },
+       "23cL": {
+        "fatigue": 1.4298283100376712,
+        "fatigue_hook_only": 1.8300818462767114,
+        "creep": 3.050300394747032,
+        "strength": 2.5419169956225263
+       },
+       "15c1R": {
+        "fatigue": 1.3075473585031672,
+        "fatigue_hook_only": 1.6053212598032853,
+        "creep": 2.789434364806757,
+        "strength": 2.324528637338964
+       },
+       "15c1L": {
+        "fatigue": 1.2705183179470967,
+        "fatigue_hook_only": 1.5435703108331777,
+        "creep": 2.7104390782871395,
+        "strength": 2.2586992319059496
+       },
+       "19c1R": {
+        "fatigue": 1.329559739861324,
+        "fatigue_hook_only": 1.649675304363902,
+        "creep": 2.836394111704158,
+        "strength": 2.3636617597534646
+       },
+       "19c1L": {
+        "fatigue": 1.342514837805218,
+        "fatigue_hook_only": 1.676120969269491,
+        "creep": 2.8640316539844655,
+        "strength": 2.3866930449870543
+       },
+       "23c1R": {
+        "fatigue": 1.5104807810163756,
+        "fatigue_hook_only": 1.9341854572531059,
+        "creep": 3.222358999501602,
+        "strength": 2.685299166251335
+       },
+       "23c1L": {
+        "fatigue": 1.3897262372439954,
+        "fatigue_hook_only": 1.7748080190352666,
+        "creep": 2.964749306120524,
+        "strength": 2.4706244217671034
+       },
+       "15f1R": {
+        "fatigue": 1.3586966287123519,
+        "fatigue_hook_only": 1.6910248820417513,
+        "creep": 2.8985528079196845,
+        "strength": 2.415460673266403
+       },
+       "15f1L": {
+        "fatigue": 1.2831420628032226,
+        "fatigue_hook_only": 1.5488091695521902,
+        "creep": 2.7373697339802088,
+        "strength": 2.2811414449835077
+       },
+       "19f1R": {
+        "fatigue": 1.4571580198625902,
+        "fatigue_hook_only": 1.828884928457912,
+        "creep": 3.1086037757068596,
+        "strength": 2.5905031464223827
+       },
+       "19f1L": {
+        "fatigue": 1.2883112431839085,
+        "fatigue_hook_only": 1.5713006739566093,
+        "creep": 2.748397318792339,
+        "strength": 2.2903310989936156
+       },
+       "23f1R": {
+        "fatigue": 1.4612158433694302,
+        "fatigue_hook_only": 1.842788290769489,
+        "creep": 3.117260465854785,
+        "strength": 2.5977170548789874
+       },
+       "23f1L": {
+        "fatigue": 1.3607843626621379,
+        "fatigue_hook_only": 1.6478220495279747,
+        "creep": 2.9030066403458945,
+        "strength": 2.4191722002882456
+       }
+      },
+      "misuse_strength": 2.1424653063088264,
+      "added_g": 9.444413440000003,
+      "n_elem": 91390,
+      "sweep_fi_per_kn": {
+       "0": 0.22819900529010206,
+       "15": 0.24171524842222505,
+       "30": 0.24874768304661932,
+       "45": 0.2850856234089569,
+       "60": 0.3014199038800801,
+       "80.5": 0.31475321449864974
+      },
+      "strap_fi_per_kn": 0.31467160803405325
+     },
+     "0.7": {
+      "rows": {
+       "15cR": {
+        "fatigue": 1.3641237597915719,
+        "fatigue_hook_only": 1.6113498913394562,
+        "creep": 2.910130687555354,
+        "strength": 2.4251089062961277
+       },
+       "15cL": {
+        "fatigue": 1.329274425844546,
+        "fatigue_hook_only": 1.5687493861524675,
+        "creep": 2.8357854418016983,
+        "strength": 2.3631545348347482
+       },
+       "15fR": {
+        "fatigue": 1.3701676132353497,
+        "fatigue_hook_only": 1.6436394189216241,
+        "creep": 2.923024241568747,
+        "strength": 2.435853534640622
+       },
+       "15fL": {
+        "fatigue": 1.2827880272349614,
+        "fatigue_hook_only": 1.4895877633196317,
+        "creep": 2.7366144581012515,
+        "strength": 2.2805120484177097
+       },
+       "19cR": {
+        "fatigue": 1.3968105382575766,
+        "fatigue_hook_only": 1.650771718412409,
+        "creep": 2.979862481616164,
+        "strength": 2.483218734680136
+       },
+       "19cL": {
+        "fatigue": 1.4922901598423843,
+        "fatigue_hook_only": 1.8356806631365226,
+        "creep": 3.183552340997087,
+        "strength": 2.6529602841642395
+       },
+       "23cR": {
+        "fatigue": 1.6131751137590353,
+        "fatigue_hook_only": 2.0120845550574225,
+        "creep": 3.4414402426859425,
+        "strength": 2.8678668689049522
+       },
+       "23cL": {
+        "fatigue": 1.501049096604846,
+        "fatigue_hook_only": 1.8736601290300055,
+        "creep": 3.2022380727570057,
+        "strength": 2.6685317272975047
+       },
+       "15c1R": {
+        "fatigue": 1.3854498803600725,
+        "fatigue_hook_only": 1.642223532373178,
+        "creep": 2.955626411434822,
+        "strength": 2.463022009529019
+       },
+       "15c1L": {
+        "fatigue": 1.332771762903701,
+        "fatigue_hook_only": 1.5785404997224277,
+        "creep": 2.8432464275278964,
+        "strength": 2.369372022939914
+       },
+       "19c1R": {
+        "fatigue": 1.411029278433235,
+        "fatigue_hook_only": 1.6879451987025393,
+        "creep": 3.0101957939909014,
+        "strength": 2.508496494992418
+       },
+       "19c1L": {
+        "fatigue": 1.4140440712535838,
+        "fatigue_hook_only": 1.7106097711918185,
+        "creep": 3.0166273520076454,
+        "strength": 2.513856126673038
+       },
+       "23c1R": {
+        "fatigue": 1.6022614608229746,
+        "fatigue_hook_only": 1.9755119933333376,
+        "creep": 3.418157783089013,
+        "strength": 2.8484648192408444
+       },
+       "23c1L": {
+        "fatigue": 1.4655490555966577,
+        "fatigue_hook_only": 1.8178355361362688,
+        "creep": 3.126504651939537,
+        "strength": 2.6054205432829476
+       },
+       "15f1R": {
+        "fatigue": 1.419429943975634,
+        "fatigue_hook_only": 1.731466529727258,
+        "creep": 3.028117213814686,
+        "strength": 2.5234310115122383
+       },
+       "15f1L": {
+        "fatigue": 1.3513897860084498,
+        "fatigue_hook_only": 1.5799126455384571,
+        "creep": 2.882964876818027,
+        "strength": 2.402470730681689
+       },
+       "19f1R": {
+        "fatigue": 1.5290907511019194,
+        "fatigue_hook_only": 1.8693607588797274,
+        "creep": 3.2620602690174287,
+        "strength": 2.718383557514524
+       },
+       "19f1L": {
+        "fatigue": 1.360160126038387,
+        "fatigue_hook_only": 1.6065700624877604,
+        "creep": 2.90167493554856,
+        "strength": 2.4180624462904663
+       },
+       "23f1R": {
+        "fatigue": 1.535038107277225,
+        "fatigue_hook_only": 1.8799034387744595,
+        "creep": 3.2747479621914137,
+        "strength": 2.728956635159511
+       },
+       "23f1L": {
+        "fatigue": 1.4270017173815213,
+        "fatigue_hook_only": 1.6744115276921312,
+        "creep": 3.0442703304139123,
+        "strength": 2.5368919420115934
+       }
+      },
+      "misuse_strength": 2.262537799039892,
+      "added_g": 9.739581039999997,
+      "n_elem": 135388,
+      "sweep_fi_per_kn": {
+       "0": 0.2256117651680479,
+       "15": 0.2273203710991156,
+       "30": 0.2375520016333781,
+       "45": 0.26435305576153595,
+       "60": 0.290674776161798,
+       "80.5": 0.2943298932520781
+      },
+      "strap_fi_per_kn": 0.2943296560328728
+     }
+    },
+    "design": {
+     "fatigue": {
+      "value": 1.217678484062526,
+      "hook": "15fL",
+      "grid": "0.8"
+     },
+     "fatigue_hook_only": {
+      "value": 1.4571553259932735,
+      "hook": "15fL",
+      "grid": "0.8"
+     },
+     "creep": {
+      "value": 2.5977140993333894,
+      "hook": "15fL",
+      "grid": "0.8"
+     },
+     "strength": {
+      "value": 2.164761749444491,
+      "hook": "15fL",
+      "grid": "0.8"
+     },
+     "misuse_strength": {
+      "value": 2.1424653063088264
+     }
+    },
+    "sensitivity": {
+     "mesh_fatigue_by_grid": {
+      "1": 1.3172098075735317,
+      "0.8": 1.217678484062526,
+      "0.7": 1.2827880272349614
+     },
+     "mesh_spread_pct": 8.173859094474627,
+     "direction_fatigue_by_aft_deg": {
+      "0": 1.2836679458995002,
+      "15": 1.2118877492799507,
+      "30": 1.1776260377153114,
+      "45": 1.0275219945301919,
+      "60": 0.9718394326527203,
+      "80.5": 0.9285427606797474
+     },
+     "fatigue_coarse_cloth_only": 1.2624653986525392,
+     "fatigue_fine_cloth_only": 1.217678484062526,
+     "fatigue_rev0_only": 1.217678484062526,
+     "fatigue_rev1_only": 1.2705183179470967,
+     "fatigue_hook_only": 1.4571553259932735,
+     "hook_force_at_fatigue_1p0_n": 779.4126687416707,
+     "governing_combo_1g_n": 640.0808414889008,
+     "governing_combo_aft_deg": 22.277723189490107,
+     "fatigue_dir_plus_scatter": 1.173915238534178
+    },
+    "added_g_h1": 9.77744,
+    "pair_delta_vs_27mm_g": 0.49183999999999983,
+    "clearance": {
+     "cheek_bottom_z": 506.0,
+     "cheek_top_z": 534.0,
+     "spreader_top_z": 430.0,
+     "gap_mm": 76.0,
+     "notch_clear_mm": 6.0,
+     "spreader_ok": true,
+     "throat_mm": 18.0,
+     "outer_width_mm": 34.0,
+     "cheek_aft_of_hole_mm": 7.6,
+     "half_height_mm": 14.0
+    },
+    "ca1_flip_ratio": 0.24637045322433027,
+    "pass": true
+   },
+   "15_8": {
+    "half_z": 15.0,
+    "cheek": 8.0,
+    "height_mm": 30.0,
+    "per_grid": {
+     "1": {
+      "rows": {
+       "15cR": {
+        "fatigue": 1.524850596447482,
+        "fatigue_hook_only": 1.8356049681885633,
+        "creep": 3.253014605754629,
+        "strength": 2.710845504795524
+       },
+       "15cL": {
+        "fatigue": 1.48621266089999,
+        "fatigue_hook_only": 1.801608902562968,
+        "creep": 3.170587009919979,
+        "strength": 2.642155841599983
+       },
+       "15fR": {
+        "fatigue": 1.524313056310701,
+        "fatigue_hook_only": 1.8838256132852427,
+        "creep": 3.2518678534628296,
+        "strength": 2.7098898778856912
+       },
+       "15fL": {
+        "fatigue": 1.4261178966709136,
+        "fatigue_hook_only": 1.7021402279989555,
+        "creep": 3.0423848462312826,
+        "strength": 2.5353207051927353
+       },
+       "19cR": {
+        "fatigue": 1.5506144163419604,
+        "fatigue_hook_only": 1.9075973448701153,
+        "creep": 3.307977421529516,
+        "strength": 2.756647851274596
+       },
+       "19cL": {
+        "fatigue": 1.6659499379669547,
+        "fatigue_hook_only": 2.129174403514652,
+        "creep": 3.554026534329504,
+        "strength": 2.9616887786079196
+       },
+       "23cR": {
+        "fatigue": 1.7813117925868776,
+        "fatigue_hook_only": 2.333739566013986,
+        "creep": 3.800131824185339,
+        "strength": 3.166776520154449
+       },
+       "23cL": {
+        "fatigue": 1.671621401808558,
+        "fatigue_hook_only": 2.1476540284638665,
+        "creep": 3.5661256571915914,
+        "strength": 2.971771380992992
+       },
+       "15c1R": {
+        "fatigue": 1.5453392036493891,
+        "fatigue_hook_only": 1.8810696247291765,
+        "creep": 3.2967236344520305,
+        "strength": 2.7472696953766924
+       },
+       "15c1L": {
+        "fatigue": 1.497162216054604,
+        "fatigue_hook_only": 1.8198152757321329,
+        "creep": 3.193946060916489,
+        "strength": 2.6616217174304078
+       },
+       "19c1R": {
+        "fatigue": 1.5705626603781493,
+        "fatigue_hook_only": 1.9379097315960985,
+        "creep": 3.3505336754733857,
+        "strength": 2.7921113962278215
+       },
+       "19c1L": {
+        "fatigue": 1.5874820957193438,
+        "fatigue_hook_only": 1.988025728616243,
+        "creep": 3.3866284708679344,
+        "strength": 2.8221903923899454
+       },
+       "23c1R": {
+        "fatigue": 1.757510971791286,
+        "fatigue_hook_only": 2.289941258286164,
+        "creep": 3.7493567398214114,
+        "strength": 3.1244639498511755
+       },
+       "23c1L": {
+        "fatigue": 1.6320585419063722,
+        "fatigue_hook_only": 2.07692783030826,
+        "creep": 3.4817248894002613,
+        "strength": 2.901437407833551
+       },
+       "15f1R": {
+        "fatigue": 1.5861559060613606,
+        "fatigue_hook_only": 1.9841341282125535,
+        "creep": 3.3837992662642367,
+        "strength": 2.8198327218868635
+       },
+       "15f1L": {
+        "fatigue": 1.5061497357619307,
+        "fatigue_hook_only": 1.8212349114854587,
+        "creep": 3.213119436292119,
+        "strength": 2.6775995302434326
+       },
+       "19f1R": {
+        "fatigue": 1.6832091058274286,
+        "fatigue_hook_only": 2.141059355240247,
+        "creep": 3.590846092431848,
+        "strength": 2.992371743693207
+       },
+       "19f1L": {
+        "fatigue": 1.502943092533521,
+        "fatigue_hook_only": 1.826644217792411,
+        "creep": 3.2062785974048453,
+        "strength": 2.6718988311707044
+       },
+       "23f1R": {
+        "fatigue": 1.6714935270406435,
+        "fatigue_hook_only": 2.16298967775922,
+        "creep": 3.5658528576867066,
+        "strength": 2.971544048072255
+       },
+       "23f1L": {
+        "fatigue": 1.604221473663586,
+        "fatigue_hook_only": 1.930480331863135,
+        "creep": 3.422339143815651,
+        "strength": 2.8519492865130425
+       }
+      },
+      "misuse_strength": 2.5098142333095947,
+      "added_g": 10.50672,
+      "n_elem": 48984,
+      "sweep_fi_per_kn": {
+       "0": 0.19138596722102313,
+       "15": 0.20560621532302245,
+       "30": 0.21969790850969945,
+       "45": 0.2532766273265332,
+       "60": 0.2748689425487803,
+       "80.5": 0.303410704836127
+      },
+      "strap_fi_per_kn": 0.30335129847700293
+     },
+     "0.8": {
+      "rows": {
+       "15cR": {
+        "fatigue": 1.4746644722307343,
+        "fatigue_hook_only": 1.7552135360809635,
+        "creep": 3.1459508740922333,
+        "strength": 2.6216257284101943
+       },
+       "15cL": {
+        "fatigue": 1.4350948925725264,
+        "fatigue_hook_only": 1.718274462218792,
+        "creep": 3.06153577082139,
+        "strength": 2.5512798090178253
+       },
+       "15fR": {
+        "fatigue": 1.4833496482543296,
+        "fatigue_hook_only": 1.7963155358108933,
+        "creep": 3.1644792496092373,
+        "strength": 2.6370660413410314
+       },
+       "15fL": {
+        "fatigue": 1.3813648865485615,
+        "fatigue_hook_only": 1.6207564063226836,
+        "creep": 2.946911757970265,
+        "strength": 2.455759798308554
+       },
+       "19cR": {
+        "fatigue": 1.5012823310692542,
+        "fatigue_hook_only": 1.7938700167285688,
+        "creep": 3.2027356396144095,
+        "strength": 2.6689463663453417
+       },
+       "19cL": {
+        "fatigue": 1.622363460333027,
+        "fatigue_hook_only": 2.008406961350897,
+        "creep": 3.461042048710458,
+        "strength": 2.884201707258715
+       },
+       "23cR": {
+        "fatigue": 1.7401732729737938,
+        "fatigue_hook_only": 2.177402970065361,
+        "creep": 3.712369649010761,
+        "strength": 3.093641374175634
+       },
+       "23cL": {
+        "fatigue": 1.6142120151519537,
+        "fatigue_hook_only": 2.055231948231997,
+        "creep": 3.443652298990835,
+        "strength": 2.869710249159029
+       },
+       "15c1R": {
+        "fatigue": 1.4994495095294846,
+        "fatigue_hook_only": 1.7853432645807765,
+        "creep": 3.1988256203295675,
+        "strength": 2.665688016941306
+       },
+       "15c1L": {
+        "fatigue": 1.4429663149022116,
+        "fatigue_hook_only": 1.7304136914776538,
+        "creep": 3.078328138458052,
+        "strength": 2.5652734487150433
+       },
+       "19c1R": {
+        "fatigue": 1.5296443018228263,
+        "fatigue_hook_only": 1.832039767445956,
+        "creep": 3.26324117722203,
+        "strength": 2.719367647685025
+       },
+       "19c1L": {
+        "fatigue": 1.5294631548845306,
+        "fatigue_hook_only": 1.8760210087214875,
+        "creep": 3.2628547304203317,
+        "strength": 2.7190456086836097
+       },
+       "23c1R": {
+        "fatigue": 1.7241404039600357,
+        "fatigue_hook_only": 2.136188157427148,
+        "creep": 3.6781661951147426,
+        "strength": 3.0651384959289527
+       },
+       "23c1L": {
+        "fatigue": 1.5664864367684908,
+        "fatigue_hook_only": 1.9875572978999716,
+        "creep": 3.341837731772781,
+        "strength": 2.7848647764773173
+       },
+       "15f1R": {
+        "fatigue": 1.5421954259784347,
+        "fatigue_hook_only": 1.8944363947367597,
+        "creep": 3.2900169087539943,
+        "strength": 2.741680757294995
+       },
+       "15f1L": {
+        "fatigue": 1.4547757387025555,
+        "fatigue_hook_only": 1.717204299282916,
+        "creep": 3.1035215758987853,
+        "strength": 2.5862679799156543
+       },
+       "19f1R": {
+        "fatigue": 1.6518462425253646,
+        "fatigue_hook_only": 2.0362281488279237,
+        "creep": 3.5239386507207784,
+        "strength": 2.9366155422673152
+       },
+       "19f1L": {
+        "fatigue": 1.4709015410417319,
+        "fatigue_hook_only": 1.7443844146775747,
+        "creep": 3.137923287555695,
+        "strength": 2.6149360729630793
+       },
+       "23f1R": {
+        "fatigue": 1.6528540408001924,
+        "fatigue_hook_only": 2.0378935945648977,
+        "creep": 3.5260886203737445,
+        "strength": 2.9384071836447867
+       },
+       "23f1L": {
+        "fatigue": 1.5476965903488935,
+        "fatigue_hook_only": 1.8185062800128995,
+        "creep": 3.30175272607764,
+        "strength": 2.7514606050647
+       }
+      },
+      "misuse_strength": 2.4405432364372133,
+      "added_g": 10.207477760000002,
+      "n_elem": 95588,
+      "sweep_fi_per_kn": {
+       "0": 0.20294341680910943,
+       "15": 0.2095995168436475,
+       "30": 0.2213935650658676,
+       "45": 0.26347647195828355,
+       "60": 0.29107976502970456,
+       "80.5": 0.2999524063717086
+      },
+      "strap_fi_per_kn": 0.2999948135683729
+     },
+     "0.7": {
+      "rows": {
+       "15cR": {
+        "fatigue": 1.4429852832454229,
+        "fatigue_hook_only": 1.6999589303495137,
+        "creep": 3.078368604256903,
+        "strength": 2.5653071702140853
+       },
+       "15cL": {
+        "fatigue": 1.3929412394008371,
+        "fatigue_hook_only": 1.6609245178415395,
+        "creep": 2.971607977388453,
+        "strength": 2.4763399811570443
+       },
+       "15fR": {
+        "fatigue": 1.438014555779303,
+        "fatigue_hook_only": 1.7373450782142927,
+        "creep": 3.0677643856625134,
+        "strength": 2.5564703213854276
+       },
+       "15fL": {
+        "fatigue": 1.346627483431346,
+        "fatigue_hook_only": 1.5760494240852414,
+        "creep": 2.8728052979868717,
+        "strength": 2.39400441498906
+       },
+       "19cR": {
+        "fatigue": 1.4723655042126684,
+        "fatigue_hook_only": 1.7430755420999566,
+        "creep": 3.1410464089870267,
+        "strength": 2.6175386741558553
+       },
+       "19cL": {
+        "fatigue": 1.5765495916941608,
+        "fatigue_hook_only": 1.9430172553700324,
+        "creep": 3.36330579561421,
+        "strength": 2.8027548296785083
+       },
+       "23cR": {
+        "fatigue": 1.6983905330568452,
+        "fatigue_hook_only": 2.1211693096695177,
+        "creep": 3.623233137187937,
+        "strength": 3.0193609476566134
+       },
+       "23cL": {
+        "fatigue": 1.5676953524969628,
+        "fatigue_hook_only": 1.9855143623469598,
+        "creep": 3.344416751993521,
+        "strength": 2.7870139599946007
+       },
+       "15c1R": {
+        "fatigue": 1.4649999687937232,
+        "fatigue_hook_only": 1.73226117233927,
+        "creep": 3.125333266759943,
+        "strength": 2.604444388966619
+       },
+       "15c1L": {
+        "fatigue": 1.4005201882488374,
+        "fatigue_hook_only": 1.6738665157436472,
+        "creep": 2.98777640159752,
+        "strength": 2.4898136679979332
+       },
+       "19c1R": {
+        "fatigue": 1.4914893152245303,
+        "fatigue_hook_only": 1.7809829308309562,
+        "creep": 3.1818438724789986,
+        "strength": 2.651536560399165
+       },
+       "19c1L": {
+        "fatigue": 1.485206290730843,
+        "fatigue_hook_only": 1.8113562334267674,
+        "creep": 3.168440086892466,
+        "strength": 2.640366739077055
+       },
+       "23c1R": {
+        "fatigue": 1.674137561726298,
+        "fatigue_hook_only": 2.082338215612406,
+        "creep": 3.571493465016103,
+        "strength": 2.9762445541800857
+       },
+       "23c1L": {
+        "fatigue": 1.5363045887890068,
+        "fatigue_hook_only": 1.9204368444914952,
+        "creep": 3.2774497894165484,
+        "strength": 2.7312081578471235
+       },
+       "15f1R": {
+        "fatigue": 1.4943904933852732,
+        "fatigue_hook_only": 1.831493078093505,
+        "creep": 3.18803305255525,
+        "strength": 2.6566942104627085
+       },
+       "15f1L": {
+        "fatigue": 1.4195606733016688,
+        "fatigue_hook_only": 1.6678396717469375,
+        "creep": 3.02839610304356,
+        "strength": 2.5236634192029666
+       },
+       "19f1R": {
+        "fatigue": 1.6156407620984679,
+        "fatigue_hook_only": 1.9721158264818957,
+        "creep": 3.4467002924767325,
+        "strength": 2.87225024373061
+       },
+       "19f1L": {
+        "fatigue": 1.4362967537829228,
+        "fatigue_hook_only": 1.6985375678307855,
+        "creep": 3.0640997414035693,
+        "strength": 2.5534164511696407
+       },
+       "23f1R": {
+        "fatigue": 1.6169167800874187,
+        "fatigue_hook_only": 1.9877590592885952,
+        "creep": 3.4494224641864935,
+        "strength": 2.874518720155411
+       },
+       "23f1L": {
+        "fatigue": 1.5072455335760389,
+        "fatigue_hook_only": 1.774585921806508,
+        "creep": 3.21545713829555,
+        "strength": 2.6795476152462916
+       }
+      },
+      "misuse_strength": 2.3667975521223945,
+      "added_g": 10.423838599999998,
+      "n_elem": 142700,
+      "sweep_fi_per_kn": {
+       "0": 0.21158048809158292,
+       "15": 0.21631590509728132,
+       "30": 0.2281933053162243,
+       "45": 0.24798717966988978,
+       "60": 0.2692664406970699,
+       "80.5": 0.29079745798295054
+      },
+      "strap_fi_per_kn": 0.2907699582213675
+     }
+    },
+    "design": {
+     "fatigue": {
+      "value": 1.346627483431346,
+      "hook": "15fL",
+      "grid": "0.7"
+     },
+     "fatigue_hook_only": {
+      "value": 1.5760494240852414,
+      "hook": "15fL",
+      "grid": "0.7"
+     },
+     "creep": {
+      "value": 2.8728052979868717,
+      "hook": "15fL",
+      "grid": "0.7"
+     },
+     "strength": {
+      "value": 2.39400441498906,
+      "hook": "15fL",
+      "grid": "0.7"
+     },
+     "misuse_strength": {
+      "value": 2.3667975521223945
+     }
+    },
+    "sensitivity": {
+     "mesh_fatigue_by_grid": {
+      "1": 1.4261178966709136,
+      "0.8": 1.3813648865485615,
+      "0.7": 1.346627483431346
+     },
+     "mesh_spread_pct": 5.902925212622107,
+     "direction_fatigue_by_aft_deg": {
+      "0": 1.384493206435267,
+      "15": 1.354184974263994,
+      "30": 1.2837000102659337,
+      "45": 1.111794712445651,
+      "60": 1.0063624599503196,
+      "80.5": 0.965462799129872
+     },
+     "fatigue_coarse_cloth_only": 1.3929412394008371,
+     "fatigue_fine_cloth_only": 1.346627483431346,
+     "fatigue_rev0_only": 1.346627483431346,
+     "fatigue_rev1_only": 1.4005201882488374,
+     "fatigue_hook_only": 1.5760494240852414,
+     "hook_force_at_fatigue_1p0_n": 861.9504527668167,
+     "governing_combo_1g_n": 640.0808414889008,
+     "governing_combo_aft_deg": 22.277723189490107,
+     "fatigue_dir_plus_scatter": 1.280479031558392
+    },
+    "added_g_h1": 10.50672,
+    "pair_delta_vs_27mm_g": 1.9503999999999984,
+    "clearance": {
+     "cheek_bottom_z": 505.0,
+     "cheek_top_z": 535.0,
+     "spreader_top_z": 430.0,
+     "gap_mm": 75.0,
+     "notch_clear_mm": 6.0,
+     "spreader_ok": true,
+     "throat_mm": 18.0,
+     "outer_width_mm": 34.0,
+     "cheek_aft_of_hole_mm": 7.6,
+     "half_height_mm": 15.0
+    },
+    "ca1_flip_ratio": 0.2227787593013986,
+    "pass": true
+   }
+  },
+  "chosen": "14_8"
+ },
+ "body": {
+  "bl007a": {
+   "beam": {
+    "min": {
+     "strength": 1.6380457757917088,
+     "fatigue": 1.0835289197611693,
+     "creep": 2.311528362157161
+    },
+    "per_torso": {
+     "15": {
+      "strength": 1.638,
+      "fatigue": 1.345,
+      "creep": 2.87,
+      "fatigue_gov": "C_im3@B15|15: hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "19": {
+      "strength": 2.217,
+      "fatigue": 1.247,
+      "creep": 2.66,
+      "fatigue_gov": "C_im3@B19|19: drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "23": {
+      "strength": 1.926,
+      "fatigue": 1.084,
+      "creep": 2.312,
+      "fatigue_gov": "C_im3@B23|23: drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "raster_g": 757.72192,
+    "by_torso": {
+     "C@B15|15": {
+      "strength": 1.638,
+      "fatigue": 1.42,
+      "creep": 3.029,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "C_im3@B15|15": {
+      "strength": 1.669,
+      "fatigue": 1.345,
+      "creep": 2.87,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "C@B19|19": {
+      "strength": 2.374,
+      "fatigue": 1.463,
+      "creep": 3.121,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "C_im3@B19|19": {
+      "strength": 2.217,
+      "fatigue": 1.247,
+      "creep": 2.66,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "C@B23|23": {
+      "strength": 2.09,
+      "fatigue": 1.502,
+      "creep": 3.204,
+      "gov": "meat_straps (stay L sleeve (crown bore wall))"
+     },
+     "C_im3@B23|23": {
+      "strength": 1.926,
+      "fatigue": 1.084,
+      "creep": 2.312,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "fatigue_where": {
+     "margin": 1.0835289197611693,
+     "scenario": "C_im3@B23",
+     "torso": 23.0,
+     "where": "stay L sleeve (crown bore wall)"
+    },
+    "joint_fatigue": 1.23,
+    "buckling_min": 1.232,
+    "ca1_flip_ratio": 0.2768730898905087
+   },
+   "rev1_fine": {
+    "min": {
+     "strength": 1.4700750296336487,
+     "fatigue": 0.6640351827561108,
+     "creep": 1.4166083898797033
+    },
+    "per_torso": {
+     "15": {
+      "strength": 1.504,
+      "fatigue": 0.681,
+      "creep": 1.453,
+      "fatigue_gov": "S_meat@S15|15: drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "19": {
+      "strength": 1.501,
+      "fatigue": 0.68,
+      "creep": 1.451,
+      "fatigue_gov": "S_meat@S19|19: drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "23": {
+      "strength": 1.47,
+      "fatigue": 0.664,
+      "creep": 1.417,
+      "fatigue_gov": "S_meat@S23|23: drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "raster_g": 757.72192,
+    "by_torso": {
+     "S_fill@S15|15": {
+      "strength": 1.819,
+      "fatigue": 1.489,
+      "creep": 3.176,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "S_meat@S15|15": {
+      "strength": 1.504,
+      "fatigue": 0.681,
+      "creep": 1.453,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "S_fill@S19|19": {
+      "strength": 2.497,
+      "fatigue": 1.471,
+      "creep": 3.138,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "S_meat@S19|19": {
+      "strength": 1.501,
+      "fatigue": 0.68,
+      "creep": 1.451,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "S_fill@S23|23": {
+      "strength": 2.089,
+      "fatigue": 1.419,
+      "creep": 3.027,
+      "gov": "meat_straps (stay L sleeve (crown bore wall))"
+     },
+     "S_meat@S23|23": {
+      "strength": 1.47,
+      "fatigue": 0.664,
+      "creep": 1.417,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "fatigue_where": {
+     "margin": 0.6640351827561108,
+     "scenario": "S_meat@S23",
+     "torso": 23.0,
+     "where": "stay L sleeve (crown bore wall)"
+    },
+    "joint_fatigue": 1.027,
+    "buckling_min": 1.087,
+    "ca1_flip_ratio": 0.45178329069076606
+   },
+   "rev1_fine_cyc": {
+    "min": {
+     "strength": 1.4700750296336487,
+     "fatigue": 0.9844422441889282,
+     "creep": 2.100143454269714
+    },
+    "per_torso": {
+     "15": {
+      "strength": 1.504,
+      "fatigue": 0.985,
+      "creep": 2.101,
+      "fatigue_gov": "S_meat@S15|15: drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "19": {
+      "strength": 1.501,
+      "fatigue": 0.99,
+      "creep": 2.111,
+      "fatigue_gov": "S_meat@S19|19: drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "23": {
+      "strength": 1.47,
+      "fatigue": 0.984,
+      "creep": 2.1,
+      "fatigue_gov": "S_meat@S23|23: drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "raster_g": 757.72192,
+    "by_torso": {
+     "S_fill@S15|15": {
+      "strength": 1.819,
+      "fatigue": 1.489,
+      "creep": 3.176,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "S_meat@S15|15": {
+      "strength": 1.504,
+      "fatigue": 0.985,
+      "creep": 2.101,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "S_fill@S19|19": {
+      "strength": 2.497,
+      "fatigue": 1.471,
+      "creep": 3.138,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "S_meat@S19|19": {
+      "strength": 1.501,
+      "fatigue": 0.99,
+      "creep": 2.111,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "S_fill@S23|23": {
+      "strength": 2.089,
+      "fatigue": 1.419,
+      "creep": 3.027,
+      "gov": "meat_straps (stay L sleeve (crown bore wall))"
+     },
+     "S_meat@S23|23": {
+      "strength": 1.47,
+      "fatigue": 0.984,
+      "creep": 2.1,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "fatigue_where": {
+     "margin": 0.9844422441889282,
+     "scenario": "S_meat@S23",
+     "torso": 23.0,
+     "where": "stay L sleeve (crown bore wall)"
+    },
+    "joint_fatigue": 1.717,
+    "buckling_min": 1.087,
+    "ca1_flip_ratio": 0.304741087423739
+   }
+  },
+  "bl007c": {
+   "beam": {
+    "min": {
+     "strength": 1.5949990664157987,
+     "fatigue": 1.0369910112231735,
+     "creep": 2.212247490609437
+    },
+    "per_torso": {
+     "15": {
+      "strength": 1.595,
+      "fatigue": 1.337,
+      "creep": 2.853,
+      "fatigue_gov": "C_im3@B15|15: hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "19": {
+      "strength": 2.158,
+      "fatigue": 1.216,
+      "creep": 2.594,
+      "fatigue_gov": "C_im3@B19|19: side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "23": {
+      "strength": 1.844,
+      "fatigue": 1.037,
+      "creep": 2.212,
+      "fatigue_gov": "C_im3@B23|23: drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "raster_g": 742.89888,
+    "by_torso": {
+     "C@B15|15": {
+      "strength": 1.595,
+      "fatigue": 1.411,
+      "creep": 3.01,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "C_im3@B15|15": {
+      "strength": 1.623,
+      "fatigue": 1.337,
+      "creep": 2.853,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "C@B19|19": {
+      "strength": 2.291,
+      "fatigue": 1.455,
+      "creep": 3.105,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "C_im3@B19|19": {
+      "strength": 2.158,
+      "fatigue": 1.216,
+      "creep": 2.594,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "C@B23|23": {
+      "strength": 1.967,
+      "fatigue": 1.498,
+      "creep": 3.195,
+      "gov": "meat_straps (stay L sleeve (crown bore wall))"
+     },
+     "C_im3@B23|23": {
+      "strength": 1.844,
+      "fatigue": 1.037,
+      "creep": 2.212,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "fatigue_where": {
+     "margin": 1.0369910112231735,
+     "scenario": "C_im3@B23",
+     "torso": 23.0,
+     "where": "stay L sleeve (crown bore wall)"
+    },
+    "joint_fatigue": 1.227,
+    "buckling_min": 1.321,
+    "ca1_flip_ratio": 0.2892985539442021
+   },
+   "rev1_fine": {
+    "min": {
+     "strength": 1.4466257468930546,
+     "fatigue": 0.6514244803138565,
+     "creep": 1.389705558002894
+    },
+    "per_torso": {
+     "15": {
+      "strength": 1.483,
+      "fatigue": 0.667,
+      "creep": 1.424,
+      "fatigue_gov": "S_meat@S15|15: drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "19": {
+      "strength": 1.473,
+      "fatigue": 0.671,
+      "creep": 1.431,
+      "fatigue_gov": "S_meat@S19|19: drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "23": {
+      "strength": 1.447,
+      "fatigue": 0.651,
+      "creep": 1.39,
+      "fatigue_gov": "S_meat@S23|23: drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "raster_g": 742.89888,
+    "by_torso": {
+     "S_fill@S15|15": {
+      "strength": 1.763,
+      "fatigue": 1.475,
+      "creep": 3.147,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "S_meat@S15|15": {
+      "strength": 1.483,
+      "fatigue": 0.667,
+      "creep": 1.424,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "S_fill@S19|19": {
+      "strength": 2.422,
+      "fatigue": 1.454,
+      "creep": 3.101,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "S_meat@S19|19": {
+      "strength": 1.473,
+      "fatigue": 0.671,
+      "creep": 1.431,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "S_fill@S23|23": {
+      "strength": 1.966,
+      "fatigue": 1.405,
+      "creep": 2.997,
+      "gov": "meat_straps (stay L sleeve (crown bore wall))"
+     },
+     "S_meat@S23|23": {
+      "strength": 1.447,
+      "fatigue": 0.651,
+      "creep": 1.39,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "fatigue_where": {
+     "margin": 0.6514244803138565,
+     "scenario": "S_meat@S23",
+     "torso": 23.0,
+     "where": "stay L sleeve (crown bore wall)"
+    },
+    "joint_fatigue": 1.021,
+    "buckling_min": 0.962,
+    "ca1_flip_ratio": 0.4605292080141967
+   },
+   "rev1_fine_cyc": {
+    "min": {
+     "strength": 1.4466257468930546,
+     "fatigue": 0.9691763509419069,
+     "creep": 2.067576215342735
+    },
+    "per_torso": {
+     "15": {
+      "strength": 1.483,
+      "fatigue": 0.973,
+      "creep": 2.076,
+      "fatigue_gov": "S_meat@S15|15: drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "19": {
+      "strength": 1.473,
+      "fatigue": 0.974,
+      "creep": 2.078,
+      "fatigue_gov": "S_meat@S19|19: drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "23": {
+      "strength": 1.447,
+      "fatigue": 0.969,
+      "creep": 2.068,
+      "fatigue_gov": "S_meat@S23|23: drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "raster_g": 742.89888,
+    "by_torso": {
+     "S_fill@S15|15": {
+      "strength": 1.763,
+      "fatigue": 1.475,
+      "creep": 3.147,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "S_meat@S15|15": {
+      "strength": 1.483,
+      "fatigue": 0.973,
+      "creep": 2.076,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "S_fill@S19|19": {
+      "strength": 2.422,
+      "fatigue": 1.454,
+      "creep": 3.101,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "S_meat@S19|19": {
+      "strength": 1.473,
+      "fatigue": 0.974,
+      "creep": 2.078,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "S_fill@S23|23": {
+      "strength": 1.966,
+      "fatigue": 1.405,
+      "creep": 2.997,
+      "gov": "meat_straps (stay L sleeve (crown bore wall))"
+     },
+     "S_meat@S23|23": {
+      "strength": 1.447,
+      "fatigue": 0.969,
+      "creep": 2.068,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "fatigue_where": {
+     "margin": 0.9691763509419069,
+     "scenario": "S_meat@S23",
+     "torso": 23.0,
+     "where": "stay L sleeve (crown bore wall)"
+    },
+    "joint_fatigue": 1.699,
+    "buckling_min": 0.962,
+    "ca1_flip_ratio": 0.30954118897808536
+   }
+  },
+  "c17b19": {
+   "rev1_fine": {
+    "min": {
+     "strength": 1.4729551811512853,
+     "fatigue": 0.6605422993468025,
+     "creep": 1.409156905273179
+    },
+    "per_torso": {
+     "15": {
+      "strength": 1.556,
+      "fatigue": 0.705,
+      "creep": 1.505,
+      "fatigue_gov": "S_meat@S15|15: drop_2p5g (hip-pivot boss)"
+     },
+     "19": {
+      "strength": 1.507,
+      "fatigue": 0.681,
+      "creep": 1.453,
+      "fatigue_gov": "S_meat@S19|19: drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "23": {
+      "strength": 1.473,
+      "fatigue": 0.661,
+      "creep": 1.409,
+      "fatigue_gov": "S_meat@S23|23: drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "raster_g": 737.62432,
+    "by_torso": {
+     "S_fill@S15|15": {
+      "strength": 1.556,
+      "fatigue": 1.717,
+      "creep": 3.663,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "S_meat@S15|15": {
+      "strength": 1.613,
+      "fatigue": 0.705,
+      "creep": 1.505,
+      "gov": "drop_2p5g (hip-pivot boss)"
+     },
+     "S_fill@S19|19": {
+      "strength": 2.134,
+      "fatigue": 1.495,
+      "creep": 3.189,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "S_meat@S19|19": {
+      "strength": 1.507,
+      "fatigue": 0.681,
+      "creep": 1.453,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "S_fill@S23|23": {
+      "strength": 2.185,
+      "fatigue": 1.418,
+      "creep": 3.025,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "S_meat@S23|23": {
+      "strength": 1.473,
+      "fatigue": 0.661,
+      "creep": 1.409,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "fatigue_where": {
+     "margin": 0.6605422993468025,
+     "scenario": "S_meat@S23",
+     "torso": 23.0,
+     "where": "stay L sleeve (crown bore wall)"
+    },
+    "joint_fatigue": 1.065,
+    "buckling_min": 0.434,
+    "ca1_flip_ratio": 0.45417227677419625
+   },
+   "rev1_fine_cyc": {
+    "min": {
+     "strength": 1.4729551811512853,
+     "fatigue": 0.9876741722239486,
+     "creep": 2.1070382340777574
+    },
+    "per_torso": {
+     "15": {
+      "strength": 1.556,
+      "fatigue": 1.108,
+      "creep": 2.363,
+      "fatigue_gov": "S_meat@S15|15: drop_2p5g (hip-pivot boss)"
+     },
+     "19": {
+      "strength": 1.507,
+      "fatigue": 1.002,
+      "creep": 2.138,
+      "fatigue_gov": "S_meat@S19|19: drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "23": {
+      "strength": 1.473,
+      "fatigue": 0.988,
+      "creep": 2.107,
+      "fatigue_gov": "S_meat@S23|23: drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "raster_g": 737.62432,
+    "by_torso": {
+     "S_fill@S15|15": {
+      "strength": 1.556,
+      "fatigue": 1.717,
+      "creep": 3.663,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "S_meat@S15|15": {
+      "strength": 1.613,
+      "fatigue": 1.108,
+      "creep": 2.363,
+      "gov": "drop_2p5g (hip-pivot boss)"
+     },
+     "S_fill@S19|19": {
+      "strength": 2.134,
+      "fatigue": 1.495,
+      "creep": 3.189,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "S_meat@S19|19": {
+      "strength": 1.507,
+      "fatigue": 1.002,
+      "creep": 2.138,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "S_fill@S23|23": {
+      "strength": 2.185,
+      "fatigue": 1.418,
+      "creep": 3.025,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "S_meat@S23|23": {
+      "strength": 1.473,
+      "fatigue": 0.988,
+      "creep": 2.107,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "fatigue_where": {
+     "margin": 0.9876741722239486,
+     "scenario": "S_meat@S23",
+     "torso": 23.0,
+     "where": "stay L sleeve (crown bore wall)"
+    },
+    "joint_fatigue": 1.762,
+    "buckling_min": 0.434,
+    "ca1_flip_ratio": 0.30374389493702075
+   },
+   "beam": {
+    "min": {
+     "strength": 1.4734445768627003,
+     "fatigue": 1.1158786176297557,
+     "creep": 2.380541050943479
+    },
+    "per_torso": {
+     "15": {
+      "strength": 1.473,
+      "fatigue": 1.511,
+      "creep": 3.224
+     },
+     "19": {
+      "strength": 1.997,
+      "fatigue": 1.284,
+      "creep": 2.74
+     },
+     "23": {
+      "strength": 1.984,
+      "fatigue": 1.116,
+      "creep": 2.381
+     }
+    },
+    "by_torso": {
+     "C@15|15": {
+      "strength": 1.473,
+      "fatigue": 1.618,
+      "creep": 3.451,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "C_im3@15|15": {
+      "strength": 1.49,
+      "fatigue": 1.511,
+      "creep": 3.224,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "C@19|19": {
+      "strength": 2.057,
+      "fatigue": 1.47,
+      "creep": 3.135,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "C_im3@19|19": {
+      "strength": 1.997,
+      "fatigue": 1.284,
+      "creep": 2.74,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "C@23|23": {
+      "strength": 2.092,
+      "fatigue": 1.505,
+      "creep": 3.21,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "C_im3@23|23": {
+      "strength": 1.984,
+      "fatigue": 1.116,
+      "creep": 2.381,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "raster_g": 737.62432,
+    "fatigue_where": {
+     "torso": 23.0,
+     "where": "C_im3@23:C_im3@23:static_carry|23 (fatigue)",
+     "scenario": ""
+    },
+    "joint_fatigue": 1.228,
+    "buckling_min": 1.315,
+    "ca1_flip_ratio": 0.26884644553655107,
+    "source": "crown_diet_results.json body c17b19 (BL-017, same basis)"
+   }
+  },
+  "h1": {
+   "beam": {
+    "min": {
+     "strength": 1.4739561426221504,
+     "fatigue": 1.1502260709981276,
+     "creep": 2.453815618129339
+    },
+    "per_torso": {
+     "15": {
+      "strength": 1.474,
+      "fatigue": 1.53,
+      "creep": 3.264,
+      "fatigue_gov": "C_im3@B15|15: hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "19": {
+      "strength": 2.024,
+      "fatigue": 1.313,
+      "creep": 2.801,
+      "fatigue_gov": "C_im3@B19|19: side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "23": {
+      "strength": 2.021,
+      "fatigue": 1.15,
+      "creep": 2.454,
+      "fatigue_gov": "C_im3@B23|23: side_hill_torsion (stay R sleeve (crown bore wall))"
+     }
+    },
+    "raster_g": 757.72192,
+    "by_torso": {
+     "C@B15|15": {
+      "strength": 1.474,
+      "fatigue": 1.633,
+      "creep": 3.484,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "C_im3@B15|15": {
+      "strength": 1.494,
+      "fatigue": 1.53,
+      "creep": 3.264,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "C@B19|19": {
+      "strength": 2.082,
+      "fatigue": 1.493,
+      "creep": 3.185,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "C_im3@B19|19": {
+      "strength": 2.024,
+      "fatigue": 1.313,
+      "creep": 2.801,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "C@B23|23": {
+      "strength": 2.119,
+      "fatigue": 1.529,
+      "creep": 3.261,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "C_im3@B23|23": {
+      "strength": 2.021,
+      "fatigue": 1.15,
+      "creep": 2.454,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     }
+    },
+    "fatigue_where": {
+     "margin": 1.1502260709981276,
+     "scenario": "C_im3@B23",
+     "torso": 23.0,
+     "where": "stay L sleeve (crown bore wall)"
+    },
+    "joint_fatigue": 1.22,
+    "buckling_min": 1.313,
+    "ca1_flip_ratio": 0.26081829265065265
+   },
+   "rev1_coarse": {
+    "min": {
+     "strength": 1.5905075847561727,
+     "fatigue": 0.8052193909493354,
+     "creep": 1.7178013673585824
+    },
+    "per_torso": {
+     "15": {
+      "strength": 1.591,
+      "fatigue": 0.849,
+      "creep": 1.812,
+      "fatigue_gov": "S_meat@S15|15: hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "19": {
+      "strength": 1.865,
+      "fatigue": 0.823,
+      "creep": 1.755,
+      "fatigue_gov": "S_meat@S19|19: side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "23": {
+      "strength": 1.852,
+      "fatigue": 0.805,
+      "creep": 1.718,
+      "fatigue_gov": "S_meat@S23|23: side_hill_torsion (stay R sleeve (crown bore wall))"
+     }
+    },
+    "raster_g": 757.72192,
+    "by_torso": {
+     "S_fill@S15|15": {
+      "strength": 1.591,
+      "fatigue": 1.646,
+      "creep": 3.511,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "S_meat@S15|15": {
+      "strength": 1.732,
+      "fatigue": 0.849,
+      "creep": 1.812,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "S_fill@S19|19": {
+      "strength": 2.239,
+      "fatigue": 1.425,
+      "creep": 3.039,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "S_meat@S19|19": {
+      "strength": 1.865,
+      "fatigue": 0.823,
+      "creep": 1.755,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "S_fill@S23|23": {
+      "strength": 2.268,
+      "fatigue": 1.365,
+      "creep": 2.913,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "S_meat@S23|23": {
+      "strength": 1.852,
+      "fatigue": 0.805,
+      "creep": 1.718,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     }
+    },
+    "fatigue_where": {
+     "margin": 0.8052193909493354,
+     "scenario": "S_meat@S23",
+     "torso": 23.0,
+     "where": "stay L sleeve (crown bore wall)"
+    },
+    "joint_fatigue": 1.104,
+    "buckling_min": 0.311,
+    "ca1_flip_ratio": 0.37256926916067784
+   },
+   "rev1_coarse_cyc": {
+    "min": {
+     "strength": 1.5905075847561727,
+     "fatigue": 1.2886760161587762,
+     "creep": 2.749175501138723
+    },
+    "per_torso": {
+     "15": {
+      "strength": 1.591,
+      "fatigue": 1.396,
+      "creep": 2.978,
+      "fatigue_gov": "S_meat@S15|15: hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "19": {
+      "strength": 1.865,
+      "fatigue": 1.289,
+      "creep": 2.749,
+      "fatigue_gov": "S_meat@S19|19: side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "23": {
+      "strength": 1.852,
+      "fatigue": 1.321,
+      "creep": 2.819,
+      "fatigue_gov": "S_meat@S23|23: side_hill_torsion (stay R sleeve (crown bore wall))"
+     }
+    },
+    "raster_g": 757.72192,
+    "by_torso": {
+     "S_fill@S15|15": {
+      "strength": 1.591,
+      "fatigue": 1.646,
+      "creep": 3.511,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "S_meat@S15|15": {
+      "strength": 1.732,
+      "fatigue": 1.396,
+      "creep": 2.978,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "S_fill@S19|19": {
+      "strength": 2.239,
+      "fatigue": 1.425,
+      "creep": 3.039,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "S_meat@S19|19": {
+      "strength": 1.865,
+      "fatigue": 1.289,
+      "creep": 2.749,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "S_fill@S23|23": {
+      "strength": 2.268,
+      "fatigue": 1.365,
+      "creep": 2.913,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "S_meat@S23|23": {
+      "strength": 1.852,
+      "fatigue": 1.321,
+      "creep": 2.819,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     }
+    },
+    "fatigue_where": {
+     "margin": 1.2886760161587762,
+     "scenario": "S_meat@S19",
+     "torso": 19.0,
+     "where": "stay L sleeve (crown bore wall)"
+    },
+    "joint_fatigue": 1.94,
+    "buckling_min": 0.311,
+    "ca1_flip_ratio": 0.23279706942496348
+   },
+   "rev1_fine": {
+    "min": {
+     "strength": 1.4932765151013032,
+     "fatigue": 0.671291885313436,
+     "creep": 1.4320893553353304
+    },
+    "per_torso": {
+     "15": {
+      "strength": 1.563,
+      "fatigue": 0.715,
+      "creep": 1.526,
+      "fatigue_gov": "S_meat@S15|15: drop_2p5g (hip-pivot boss)"
+     },
+     "19": {
+      "strength": 1.526,
+      "fatigue": 0.691,
+      "creep": 1.473,
+      "fatigue_gov": "S_meat@S19|19: drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "23": {
+      "strength": 1.493,
+      "fatigue": 0.671,
+      "creep": 1.432,
+      "fatigue_gov": "S_meat@S23|23: drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "raster_g": 757.72192,
+    "by_torso": {
+     "S_fill@S15|15": {
+      "strength": 1.563,
+      "fatigue": 1.737,
+      "creep": 3.706,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "S_meat@S15|15": {
+      "strength": 1.631,
+      "fatigue": 0.715,
+      "creep": 1.526,
+      "gov": "drop_2p5g (hip-pivot boss)"
+     },
+     "S_fill@S19|19": {
+      "strength": 2.162,
+      "fatigue": 1.519,
+      "creep": 3.24,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "S_meat@S19|19": {
+      "strength": 1.526,
+      "fatigue": 0.691,
+      "creep": 1.473,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "S_fill@S23|23": {
+      "strength": 2.204,
+      "fatigue": 1.436,
+      "creep": 3.063,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "S_meat@S23|23": {
+      "strength": 1.493,
+      "fatigue": 0.671,
+      "creep": 1.432,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "fatigue_where": {
+     "margin": 0.671291885313436,
+     "scenario": "S_meat@S23",
+     "torso": 23.0,
+     "where": "stay L sleeve (crown bore wall)"
+    },
+    "joint_fatigue": 1.059,
+    "buckling_min": 0.43,
+    "ca1_flip_ratio": 0.4468994882307055
+   },
+   "rev1_fine_cyc": {
+    "min": {
+     "strength": 1.4932765151013032,
+     "fatigue": 1.0014172457033308,
+     "creep": 2.1363567908337724
+    },
+    "per_torso": {
+     "15": {
+      "strength": 1.563,
+      "fatigue": 1.119,
+      "creep": 2.387,
+      "fatigue_gov": "S_meat@S15|15: drop_2p5g (hip-pivot boss)"
+     },
+     "19": {
+      "strength": 1.526,
+      "fatigue": 1.016,
+      "creep": 2.168,
+      "fatigue_gov": "S_meat@S19|19: drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "23": {
+      "strength": 1.493,
+      "fatigue": 1.001,
+      "creep": 2.136,
+      "fatigue_gov": "S_meat@S23|23: drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "raster_g": 757.72192,
+    "by_torso": {
+     "S_fill@S15|15": {
+      "strength": 1.563,
+      "fatigue": 1.737,
+      "creep": 3.706,
+      "gov": "hipbelt_off_abuse (upper bar / pawl housing)"
+     },
+     "S_meat@S15|15": {
+      "strength": 1.631,
+      "fatigue": 1.119,
+      "creep": 2.387,
+      "gov": "drop_2p5g (hip-pivot boss)"
+     },
+     "S_fill@S19|19": {
+      "strength": 2.162,
+      "fatigue": 1.519,
+      "creep": 3.24,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "S_meat@S19|19": {
+      "strength": 1.526,
+      "fatigue": 1.016,
+      "creep": 2.168,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     },
+     "S_fill@S23|23": {
+      "strength": 2.204,
+      "fatigue": 1.436,
+      "creep": 3.063,
+      "gov": "side_hill_torsion (stay R sleeve (crown bore wall))"
+     },
+     "S_meat@S23|23": {
+      "strength": 1.493,
+      "fatigue": 1.001,
+      "creep": 2.136,
+      "gov": "drop_2p5g (stay L sleeve (crown bore wall))"
+     }
+    },
+    "fatigue_where": {
+     "margin": 1.0014172457033308,
+     "scenario": "S_meat@S23",
+     "torso": 23.0,
+     "where": "stay L sleeve (crown bore wall)"
+    },
+    "joint_fatigue": 1.752,
+    "buckling_min": 0.43,
+    "ca1_flip_ratio": 0.29957542801182674
+   }
+  }
+ },
+ "body_fix_md": "\n### 3.1 Smallest local fix tried: grow the stay sleeve's outer wall\n\nTrials on the governing basis (fine sim, cinch static), smallest first: the outer radius of both stays' sleeves grown from 13.4 mm over a z band (spreader-clip sections and voids kept). Not an optimised shape: a first sizing for the print team.\n\n| trial (z band, outer r) | added g per frame | fatigue 15 / 19 / 23 in | min fatigue | strength | creep |\n|---|---|---|---|---|---|\n| z 160-544, r 15.5 mm | 74.2 | 1.180 / 1.088 / 1.070 | 1.070 | 1.59 | 2.28 |\n| z 160-544, r 17.5 mm | 191.2 | 1.246 / 1.149 / 1.131 | 1.131 | 1.69 | 2.41 |\n| z 300-544, r 15.5 mm | 46.1 | 1.143 / 1.036 / 1.020 | 1.020 | 1.53 | 2.18 |\n| z 400-544, r 15.5 mm | 18.2 | 1.128 / 1.022 / 1.011 | 1.011 | 1.51 | 2.16 |\n\n**The 1.15 target cannot be reached by a small local fix.** Growing the sleeve wall outward barely moves the governing FI99 (it sits in the crown bore wall, where the carbon leg bears on the bushing seat, and is driven by the leg's couple, not by the stay's outer section): +18 g gives +0.010, the whole sleeve at +2 mm (+74 g) +0.069, +4 mm (+191 g) +0.130 and still 1.131. H1 passes rev C on the sim loads (fatigue 1.001 >= 1.0) but with no margin for scatter, and the result moves from 1.29 (coarse sim) to 1.00 (fine sim). What to do is in the report: settle the governing inputs (meat-case load split, cinch) with the T1 / T2 strain gauges before re-sizing the sleeve, and treat a bore-side change (longer or stiffer bushing seat, the 0.30 PAHT ratio from CA-1) as the design route, not wall mass.\n",
+ "fix_best": {
+  "key": null,
+  "text": "none of the sleeve-wall trials reached 1.15 (best 1.131 at +191.2 g); see 3.1."
+ },
+ "summary_text_md": "- **IM3 hook force (task 1):** fine 15 in meat, rev 1: 562 N leg sum (531 N as a vector, 3 deg aft, 5 deg sideways); coarse 548 N. Rev 0 fine (this ticket's run) 599 N. All 18 hook vectors (2 revs, 2 meshes, 3 torsos, R/L) go into the eye check.\n- **IM3 eye (task 2):** the adopted 27 mm cheek reaches fatigue 1.153 on the worst hook + strap vector, but 1.119 if the pull sits 10 deg further aft. **Recommended: 28 mm tall x 8 mm thick (+0.49 g a pair over 27 mm): fatigue 1.218** (worst of h 1.0 / 0.8 / 0.7 mm, all hooks; 1.174 with +10 deg), strength 2.16, creep 2.60, CA-1 flip 0.246. Spreader gap 76.0 mm (rule >= 6).\n- **Guys-off misuse (BL-022 basis 2911 N factored):** printed eye strength 1.57 (28 mm) / 1.49 (27 mm) for the hook alone; 1.45 / 1.36 with the rev C strap at full value on the same eye. Rev C asks >= 1.0 at the factored load: pass; the 1.5 cheek target is met by 28 mm for the hook alone and missed (1.45) only for the stacked upper bound.\n- **Crown top bar with the rev 1 guys at x +/-52 (BL-022 request):** strength 1.36 (hipbelt_off_abuse|15, member TBL52-TB1), fatigue 4.75 (CFRP FI <= 0.5 at 1.6 g), against 1.25 on the beam basis. The guys do not govern the bar: the hipbelt-off abuse case through the lifters does, as before.\n- **H1 body on the sim loads (task 3):** strength 1.49, **fatigue 1.001** (fine sim, 23 in meat; fill 1.44), creep 2.14. Beam basis 1.150. Coarse sim 1.289. **Below the 1.15 target.**\n- **Body fix:** none of the sleeve-wall trials reached 1.15 (best 1.131 at +191.2 g); see 3.1.\n- **Restated per torso (task 4):** BL-007 (a) 1.084 beam / 0.984 sim; BL-007 (c) 1.037 beam / 0.969 sim; BL-017 (c17) 1.116 beam / 0.988 sim. None reaches 1.15 on the sim loads.",
+ "coarse_fine_md": "Coarse (h 40 mm) vs fine (h 25 mm) cloth mesh, hook magnitude at 1 g (meat):\n\n| torso | rev | side | coarse N | fine N | fine / coarse |\n|---|---|---|---|---|---|\n| 15 in | 0 | R | 520 | 505 | 0.972 |\n| 15 in | 0 | L | 529 | 561 | 1.060 |\n| 15 in | 1 | R | 510 | 479 | 0.939 |\n| 15 in | 1 | L | 525 | 531 | 1.011 |\n| 19 in | 1 | R | 497 | 447 | 0.901 |\n| 19 in | 1 | L | 484 | 521 | 1.076 |\n| 23 in | 1 | R | 424 | 444 | 1.047 |\n| 23 in | 1 | L | 456 | 499 | 1.093 |\n\nFine / coarse ranges 0.90 to 1.09 per hook: the fine mesh moves load between the two hooks (and the hinge pins) rather than adding it. The highest single hook is 561 N (126 lbf) at 1 g. Left vs right differ by up to 14 % in one run (median 8 %), so the eye is sized on the worse side of every run. The hook pulls 2 to 8 deg aft of straight down and up to 10 deg sideways (the lateral part loads the inner face of one cheek and is in the FEA).",
+ "body_table_md": "| body | load basis | torso 15 in | 19 in | 23 in | min strength | min creep | governing (fatigue) |\n|---|---|---|---|---|---|---|---|\n| H1 (as released) | beam bag loads (rev C weight split + couple) | 1.530 | 1.313 | 1.150 | 1.47 | 2.45 | 23 in, stay L sleeve (crown bore wall) |\n| H1 (as released) | **cloth sim rev 1, fine (h 25); cinch preload static** | 1.119 | 1.016 | 1.001 | 1.49 | 2.14 | 23 in, stay L sleeve (crown bore wall) |\n| H1 (as released) | cloth sim rev 1, coarse (h 40); cinch preload static | 1.396 | 1.289 | 1.321 | 1.59 | 2.75 | 19 in, stay L sleeve (crown bore wall) |\n| H1 (as released) | cloth sim rev 1, fine; cinch preload cycled with g (bound) | 0.715 | 0.691 | 0.671 | 1.49 | 1.43 | 23 in, stay L sleeve (crown bore wall) |\n| H1 (as released) | cloth sim rev 1, coarse; cinch preload cycled with g (bound) | 0.849 | 0.823 | 0.805 | 1.59 | 1.72 | 23 in, stay L sleeve (crown bore wall) |\n| BL-017 (c17): OD 17 x 7 UD legs, crown bore 19 | beam bag loads (rev C weight split + couple) | 1.511 | 1.284 | 1.116 | 1.47 | 2.38 | 23 in, C_im3@23:C_im3@23:static_carry|23 (fatigue) |\n| BL-017 (c17): OD 17 x 7 UD legs, crown bore 19 | **cloth sim rev 1, fine (h 25); cinch preload static** | 1.108 | 1.002 | 0.988 | 1.47 | 2.11 | 23 in, stay L sleeve (crown bore wall) |\n| BL-017 (c17): OD 17 x 7 UD legs, crown bore 19 | cloth sim rev 1, fine; cinch preload cycled with g (bound) | 0.705 | 0.681 | 0.661 | 1.47 | 1.41 | 23 in, stay L sleeve (crown bore wall) |\n| BL-007 (a): fixed crown, H1 body | beam bag loads (rev C weight split + couple) | 1.345 | 1.247 | 1.084 | 1.64 | 2.31 | 23 in, stay L sleeve (crown bore wall) |\n| BL-007 (a): fixed crown, H1 body | **cloth sim rev 1, fine (h 25); cinch preload static** | 0.985 | 0.990 | 0.984 | 1.47 | 2.10 | 23 in, stay L sleeve (crown bore wall) |\n| BL-007 (a): fixed crown, H1 body | cloth sim rev 1, fine; cinch preload cycled with g (bound) | 0.681 | 0.680 | 0.664 | 1.47 | 1.42 | 23 in, stay L sleeve (crown bore wall) |\n| BL-007 (c): fixed crown, stays re-sized | beam bag loads (rev C weight split + couple) | 1.337 | 1.216 | 1.037 | 1.59 | 2.21 | 23 in, stay L sleeve (crown bore wall) |\n| BL-007 (c): fixed crown, stays re-sized | **cloth sim rev 1, fine (h 25); cinch preload static** | 0.973 | 0.974 | 0.969 | 1.45 | 2.07 | 23 in, stay L sleeve (crown bore wall) |\n| BL-007 (c): fixed crown, stays re-sized | cloth sim rev 1, fine; cinch preload cycled with g (bound) | 0.667 | 0.671 | 0.651 | 1.45 | 1.39 | 23 in, stay L sleeve (crown bore wall) |",
+ "body_method_md": "The H1 voxel body (frame_h1 solid, D's solver, FI99 rule, crown_diet.body_check) with the rev C bag cases (static carry, 2.5 g drop, side-hill torsion, hipbelt-off abuse) re-loaded from the cloth sim: per torso, the sim's frame-side forces at 1 g (both IM3 hooks as vectors at the z 520 stay nodes, both hinge pins at z 60, the guys at the crown top bar, the spreader / frame / crown contact node by node, under-straps and wraps at their anchors, the meat-face push reacted at the six IM anchors; ASSUMPTION STRAP_REACT), scaled by g x load / 68 kg (ASSUMPTION SIM_BODY). Whatever the sim does not put on a frame node (fabric self-weight, solver residual) goes to the four under-strap pins so each set carries the full bag weight. Fill and meat are separate scenarios (tags S_fill / S_meat); the non-bag rev C cases (set-down, meat straps, tall load, overload) are unchanged. Every torso is its own tag (BL-017's like-for-like basis). Fatigue and creep come from the static-carry sets (1.6 g / factor), strength from every set.\n\nThe beam basis (rev C weight split and the bag couple on the crown bar or on the IM3 hooks) is re-run on the same per-torso tags as the check of the method: it must reproduce BL-017's H1 per-torso body (fatigue 1.150).\n",
+ "body_text_md": "\n**H1 on the sim loads (fine): fatigue 1.001, strength 1.49, creep 2.14** (beam basis 1.150 / 1.47 / 2.45). Per torso fatigue on the sim: 15 in 1.119, 19 in 1.016, 23 in 1.001. Governing: stay L sleeve (crown bore wall) at 23 in (S_meat@S23). z 234 joint fatigue 1.75, branch buckling 0.43.\nCloth-mesh sensitivity: coarse sim loads give fatigue 1.289 (fine 1.001).\nCinch-preload sensitivity (ASSUMPTION CINCH_STATIC): if the meat straps' cinch loop cycled with the walking g instead of sitting as a static preload, H1's fatigue would be 0.671 (strength 1.49, creep 1.43 with the preload in every set).\n\n### 3.1 Smallest local fix tried: grow the stay sleeve's outer wall\n\nTrials on the governing basis (fine sim, cinch static), smallest first: the outer radius of both stays' sleeves grown from 13.4 mm over a z band (spreader-clip sections and voids kept). Not an optimised shape: a first sizing for the print team.\n\n| trial (z band, outer r) | added g per frame | fatigue 15 / 19 / 23 in | min fatigue | strength | creep |\n|---|---|---|---|---|---|\n| z 160-544, r 15.5 mm | 74.2 | 1.180 / 1.088 / 1.070 | 1.070 | 1.59 | 2.28 |\n| z 160-544, r 17.5 mm | 191.2 | 1.246 / 1.149 / 1.131 | 1.131 | 1.69 | 2.41 |\n| z 300-544, r 15.5 mm | 46.1 | 1.143 / 1.036 / 1.020 | 1.020 | 1.53 | 2.18 |\n| z 400-544, r 15.5 mm | 18.2 | 1.128 / 1.022 / 1.011 | 1.011 | 1.51 | 2.16 |\n\n**The 1.15 target cannot be reached by a small local fix.** Growing the sleeve wall outward barely moves the governing FI99 (it sits in the crown bore wall, where the carbon leg bears on the bushing seat, and is driven by the leg's couple, not by the stay's outer section): +18 g gives +0.010, the whole sleeve at +2 mm (+74 g) +0.069, +4 mm (+191 g) +0.130 and still 1.131. H1 passes rev C on the sim loads (fatigue 1.001 >= 1.0) but with no margin for scatter, and the result moves from 1.29 (coarse sim) to 1.00 (fine sim). What to do is in the report: settle the governing inputs (meat-case load split, cinch) with the T1 / T2 strain gauges before re-sizing the sleeve, and treat a bore-side change (longer or stiffer bushing seat, the 0.30 PAHT ratio from CA-1) as the design route, not wall mass.\n",
+ "addendum_md": "| body | recorded (one tag per couple) | beam, per torso: 15 / 19 / 23 in | sim fine (cinch static), per torso: 15 / 19 / 23 in | min on sim | sim, cinch cycled (bound) |\n|---|---|---|---|---|---|\n| BL-007 (a): fixed crown, H1 body | 1.084 | 1.345 / 1.247 / 1.084 | 0.985 / 0.990 / 0.984 | 0.984 | 0.664 |\n| BL-007 (c): fixed crown, stays re-sized | 1.037 | 1.337 / 1.216 / 1.037 | 0.973 / 0.974 / 0.969 | 0.969 | 0.651 |\n| BL-017 (c17): OD 17 x 7 UD legs, crown bore 19 | 1.209 | 1.511 / 1.284 / 1.116 | 1.108 / 1.002 / 0.988 | 0.988 | 0.661 |\n",
+ "flip_md": "| part | fatigue margin (basis) | CA-1 flip ratio |\n|---|---|---|\n| IM3 cheek 28 x 8 mm (recommended) | 1.218 (sim hook + strap, worst grid) | **0.246** |\n| IM3 cheek 27 x 8 mm (adopted today) | 1.153 | 0.260 |\n| H1 (as released) body | 1.001 (**cloth sim rev 1, fine (h 25); cinch preload static**) | 0.300 |\n| H1 (as released) body | 1.150 (beam bag loads (rev C weight split + couple)) | 0.261 |\n| BL-017 (c17): OD 17 x 7 UD legs, crown bore 19 body | 0.988 (**cloth sim rev 1, fine (h 25); cinch preload static**) | 0.304 |\n| BL-017 (c17): OD 17 x 7 UD legs, crown bore 19 body | 1.116 (beam bag loads (rev C weight split + couple)) | 0.269 |\n| BL-007 (a): fixed crown, H1 body body | 0.984 (**cloth sim rev 1, fine (h 25); cinch preload static**) | 0.305 |\n| BL-007 (a): fixed crown, H1 body body | 1.084 (beam bag loads (rev C weight split + couple)) | 0.277 |\n| BL-007 (c): fixed crown, stays re-sized body | 0.969 (**cloth sim rev 1, fine (h 25); cinch preload static**) | 0.310 |\n| BL-007 (c): fixed crown, stays re-sized body | 1.037 (beam bag loads (rev C weight split + couple)) | 0.289 |\n",
+ "summary_md": "- **IM3 hook force (task 1):** fine 15 in meat, rev 1: 562 N leg sum (531 N as a vector, 3 deg aft, 5 deg sideways); coarse 548 N. Rev 0 fine (this ticket's run) 599 N. All 18 hook vectors (2 revs, 2 meshes, 3 torsos, R/L) go into the eye check.\n- **IM3 eye (task 2):** the adopted 27 mm cheek reaches fatigue 1.153 on the worst hook + strap vector, but 1.119 if the pull sits 10 deg further aft. **Recommended: 28 mm tall x 8 mm thick (+0.49 g a pair over 27 mm): fatigue 1.218** (worst of h 1.0 / 0.8 / 0.7 mm, all hooks; 1.174 with +10 deg), strength 2.16, creep 2.60, CA-1 flip 0.246. Spreader gap 76.0 mm (rule >= 6).\n- **Guys-off misuse (BL-022 basis 2911 N factored):** printed eye strength 1.57 (28 mm) / 1.49 (27 mm) for the hook alone; 1.45 / 1.36 with the rev C strap at full value on the same eye. Rev C asks >= 1.0 at the factored load: pass; the 1.5 cheek target is met by 28 mm for the hook alone and missed (1.45) only for the stacked upper bound.\n- **Crown top bar with the rev 1 guys at x +/-52 (BL-022 request):** strength 1.36 (hipbelt_off_abuse|15, member TBL52-TB1), fatigue 4.75 (CFRP FI <= 0.5 at 1.6 g), against 1.25 on the beam basis. The guys do not govern the bar: the hipbelt-off abuse case through the lifters does, as before.\n- **H1 body on the sim loads (task 3):** strength 1.49, **fatigue 1.001** (fine sim, 23 in meat; fill 1.44), creep 2.14. Beam basis 1.150. Coarse sim 1.289. **Below the 1.15 target.**\n- **Body fix:** none of the sleeve-wall trials reached 1.15 (best 1.131 at +191.2 g); see 3.1.\n- **Restated per torso (task 4):** BL-007 (a) 1.084 beam / 0.984 sim; BL-007 (c) 1.037 beam / 0.969 sim; BL-017 (c17) 1.116 beam / 0.988 sim. None reaches 1.15 on the sim loads.",
+ "screens": [
+  "/home/user/Hunting-appeal/outputs/screens/20261111_BL021_1.png",
+  "/home/user/Hunting-appeal/outputs/screens/20261111_BL021_2.png",
+  "/home/user/Hunting-appeal/outputs/screens/20261111_BL021_3.png"
+ ]
+}
