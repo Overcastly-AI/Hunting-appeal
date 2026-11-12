@@ -79,3 +79,4 @@ Nothing here is decided; the tickets produce the material.
 | BL-028 | Guy routing on rev 1: real path, lifter clearance, CG | pack-designer | M | 022, 026 | confirm or fix the guy/lifter clash |
 | BL-029 | Top anchor and lid redesign, informed by Exo and peers | pack-designer | L | 028 | owner: pouch looks wrong; rev 1 guys fail at 15 in |
 | BL-030 | Adopt CORRIE F rev 3 as design of record; crown strap diet; native viz | pack-designer | M | 029 | owner adopted rev 3 |
+| BL-031 | Crown straps 25 mm sized per kit; no hanging tails | pack-designer | M | 030 | owner: no straps hanging everywhere |
