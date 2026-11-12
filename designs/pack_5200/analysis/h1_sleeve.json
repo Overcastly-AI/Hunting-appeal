@@ -1,0 +1,1282 @@
+{
+ "date": "2026-11-12",
+ "targets": {
+  "fatigue": 1.15,
+  "strength": 1.4
+ },
+ "forces": {
+  "F_r1_PR15_fineFM": {
+   "im3_R_n": 499.3,
+   "im3_L_n": 562.3,
+   "hinge_R_n": 241.87095733055673,
+   "hinge_L_n": 250.24492002835942,
+   "cg_mm": [
+    -13.9,
+    178.1,
+    459.0
+   ],
+   "total_kg": 71.05
+  },
+  "F_r1_PR19_fineFM": {
+   "im3_R_n": 461.7,
+   "im3_L_n": 553.8,
+   "hinge_R_n": 198.927750703616,
+   "hinge_L_n": 209.62495080500315,
+   "cg_mm": [
+    -14.0,
+    163.4,
+    468.8
+   ],
+   "total_kg": 71.05
+  },
+  "F_r1_PR23_fineFM": {
+   "im3_R_n": 457.4,
+   "im3_L_n": 522.2,
+   "hinge_R_n": 181.59341948429736,
+   "hinge_L_n": 192.24346542860698,
+   "cg_mm": [
+    -9.0,
+    135.7,
+    486.8
+   ],
+   "total_kg": 71.05
+  },
+  "F_r1_PR23_fineFM_sm8": {
+   "im3_R_n": 500.7,
+   "im3_L_n": 561.8,
+   "hinge_R_n": 202.24766994949533,
+   "hinge_L_n": 204.7893796074396,
+   "cg_mm": [
+    -11.7,
+    132.4,
+    488.2
+   ],
+   "total_kg": 71.05
+  }
+ },
+ "reproduce": {
+  "fatigue": 1.0014172457033308,
+  "strength": 1.4932765151013032,
+  "tag": "S_meat@h1_fine_23",
+  "torso": 23,
+  "per_setting": {
+   "h1_fine|15": {
+    "strength": 1.5633981900774054,
+    "fatigue": 1.1190436732529452,
+    "creep": 2.3872931696062833,
+    "fatigue_tag": "S_meat@h1_fine_15"
+   },
+   "h1_fine|19": {
+    "strength": 1.5264662222893073,
+    "fatigue": 1.0163481411836246,
+    "creep": 2.1682093678583994,
+    "fatigue_tag": "S_meat@h1_fine_19"
+   },
+   "h1_fine|23": {
+    "strength": 1.4932765151013032,
+    "fatigue": 1.0014172457033308,
+    "creep": 2.1363567908337724,
+    "fatigue_tag": "S_meat@h1_fine_23"
+   }
+  },
+  "bl021_label": "stay L sleeve (crown bore wall)",
+  "peak_xyz": [
+   -103.0,
+   -9.0,
+   167.0
+  ]
+ },
+ "location": {
+  "fine": {
+   "lumbar struts / pan": {
+    "n_top": 385,
+    "share_top": 0.5295735900962861,
+    "fatigue_p99_region": 0.673160479638225,
+    "fatigue_peak_region": 0.526544485855163
+   },
+   "hip-pivot boss": {
+    "n_top": 96,
+    "share_top": 0.13204951856946354,
+    "fatigue_p99_region": 0.7582731975425175,
+    "fatigue_peak_region": 0.5314052229495697
+   },
+   "stay foot": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 722.0433846096661,
+    "fatigue_peak_region": 317.1360439925366
+   },
+   "stay below the sleeve": {
+    "n_top": 57,
+    "share_top": 0.07840440165061899,
+    "fatigue_p99_region": 1.2242293270367859,
+    "fatigue_peak_region": 0.556853706517897
+   },
+   "stay sleeve z 160-240": {
+    "n_top": 187,
+    "share_top": 0.25722145804676755,
+    "fatigue_p99_region": 0.8874206519272788,
+    "fatigue_peak_region": 0.3536571690052214
+   },
+   "stay sleeve z 240-470": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 1.5495588508187015,
+    "fatigue_peak_region": 1.2465098019652388
+   },
+   "stay top z 470-544": {
+    "n_top": 1,
+    "share_top": 0.001375515818431912,
+    "fatigue_p99_region": 1.9310634449230624,
+    "fatigue_peak_region": 0.9838150814428201
+   },
+   "inboard branch": {
+    "n_top": 1,
+    "share_top": 0.001375515818431912,
+    "fatigue_p99_region": 3.2695743456694077,
+    "fatigue_peak_region": 0.9664771960085348
+   },
+   "mid bar / upper bar": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 2.502631839964534,
+    "fatigue_peak_region": 1.9321739660700017
+   }
+  },
+  "fine_sm8": {
+   "lumbar struts / pan": {
+    "n_top": 386,
+    "share_top": 0.5294924554183813,
+    "fatigue_p99_region": 0.6570610288719219,
+    "fatigue_peak_region": 0.5200266093710101
+   },
+   "hip-pivot boss": {
+    "n_top": 97,
+    "share_top": 0.13305898491083676,
+    "fatigue_p99_region": 0.7285852580160527,
+    "fatigue_peak_region": 0.5229599065614738
+   },
+   "stay foot": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 687.6025625601128,
+    "fatigue_peak_region": 319.3049190694707
+   },
+   "stay below the sleeve": {
+    "n_top": 59,
+    "share_top": 0.08093278463648834,
+    "fatigue_p99_region": 1.194278822207931,
+    "fatigue_peak_region": 0.5506040079169219
+   },
+   "stay sleeve z 160-240": {
+    "n_top": 185,
+    "share_top": 0.25377229080932784,
+    "fatigue_p99_region": 0.8714821445256195,
+    "fatigue_peak_region": 0.34665225982751147
+   },
+   "stay sleeve z 240-470": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 1.520243585641257,
+    "fatigue_peak_region": 1.2155686866470623
+   },
+   "stay top z 470-544": {
+    "n_top": 1,
+    "share_top": 0.0013717421124828531,
+    "fatigue_p99_region": 1.8102984234676978,
+    "fatigue_peak_region": 0.9457403526296517
+   },
+   "inboard branch": {
+    "n_top": 1,
+    "share_top": 0.0013717421124828531,
+    "fatigue_p99_region": 3.2024904070508886,
+    "fatigue_peak_region": 0.9322035724616899
+   },
+   "mid bar / upper bar": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 2.5438410857894587,
+    "fatigue_peak_region": 1.930801406131695
+   }
+  },
+  "fine_cyc": {
+   "lumbar struts / pan": {
+    "n_top": 471,
+    "share_top": 0.6478679504814305,
+    "fatigue_p99_region": 0.46238440250455093,
+    "fatigue_peak_region": 0.3752149306472578
+   },
+   "hip-pivot boss": {
+    "n_top": 131,
+    "share_top": 0.18019257221458046,
+    "fatigue_p99_region": 0.49423305550343904,
+    "fatigue_peak_region": 0.33780583985656326
+   },
+   "stay foot": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 722.0687840508745,
+    "fatigue_peak_region": 317.0315599749888
+   },
+   "stay below the sleeve": {
+    "n_top": 25,
+    "share_top": 0.0343878954607978,
+    "fatigue_p99_region": 0.988474469200381,
+    "fatigue_peak_region": 0.3882997057555942
+   },
+   "stay sleeve z 160-240": {
+    "n_top": 78,
+    "share_top": 0.10729023383768914,
+    "fatigue_p99_region": 0.7195852565504832,
+    "fatigue_peak_region": 0.31870269383840844
+   },
+   "stay sleeve z 240-470": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 1.1743242205277769,
+    "fatigue_peak_region": 0.7982517159893338
+   },
+   "stay top z 470-544": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 1.4110828318844955,
+    "fatigue_peak_region": 0.7310121408922876
+   },
+   "inboard branch": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 2.3292784321474733,
+    "fatigue_peak_region": 0.7360439153331191
+   },
+   "mid bar / upper bar": {
+    "n_top": 22,
+    "share_top": 0.030261348005502064,
+    "fatigue_p99_region": 1.0605406429728026,
+    "fatigue_peak_region": 0.6431786995316635
+   }
+  },
+  "beam_kits": {
+   "lumbar struts / pan": {
+    "n_top": 5,
+    "share_top": 0.006693440428380187,
+    "fatigue_p99_region": 1.3759442072756445,
+    "fatigue_peak_region": 1.0691697125791175
+   },
+   "hip-pivot boss": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 1.8275512669997804,
+    "fatigue_peak_region": 1.556408082487374
+   },
+   "stay foot": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 2.8733843603680405,
+    "fatigue_peak_region": 1.3933431834334475
+   },
+   "stay below the sleeve": {
+    "n_top": 45,
+    "share_top": 0.060240963855421686,
+    "fatigue_p99_region": 1.2718819550481808,
+    "fatigue_peak_region": 0.9330312180724251
+   },
+   "stay sleeve z 160-240": {
+    "n_top": 292,
+    "share_top": 0.3908969210174029,
+    "fatigue_p99_region": 0.9570811464922063,
+    "fatigue_peak_region": 0.5206841814370898
+   },
+   "stay sleeve z 240-470": {
+    "n_top": 405,
+    "share_top": 0.5421686746987951,
+    "fatigue_p99_region": 1.0761147553695634,
+    "fatigue_peak_region": 0.7777794877482858
+   },
+   "stay top z 470-544": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 4.2792168902324335,
+    "fatigue_peak_region": 3.2199469201403734
+   },
+   "inboard branch": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 1.7236296687416752,
+    "fatigue_peak_region": 1.3856061178764116
+   },
+   "mid bar / upper bar": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 1.9976548495489244,
+    "fatigue_peak_region": 1.4027808959039232
+   }
+  },
+  "top_regions": {
+   "lumbar struts / pan": {
+    "n_top": 386,
+    "share_top": 0.5294924554183813,
+    "fatigue_p99_region": 0.6570610288719219,
+    "fatigue_peak_region": 0.5200266093710101
+   },
+   "hip-pivot boss": {
+    "n_top": 97,
+    "share_top": 0.13305898491083676,
+    "fatigue_p99_region": 0.7285852580160527,
+    "fatigue_peak_region": 0.5229599065614738
+   },
+   "stay foot": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 687.6025625601128,
+    "fatigue_peak_region": 319.3049190694707
+   },
+   "stay below the sleeve": {
+    "n_top": 59,
+    "share_top": 0.08093278463648834,
+    "fatigue_p99_region": 1.194278822207931,
+    "fatigue_peak_region": 0.5506040079169219
+   },
+   "stay sleeve z 160-240": {
+    "n_top": 185,
+    "share_top": 0.25377229080932784,
+    "fatigue_p99_region": 0.8714821445256195,
+    "fatigue_peak_region": 0.34665225982751147
+   },
+   "stay sleeve z 240-470": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 1.520243585641257,
+    "fatigue_peak_region": 1.2155686866470623
+   },
+   "stay top z 470-544": {
+    "n_top": 1,
+    "share_top": 0.0013717421124828531,
+    "fatigue_p99_region": 1.8102984234676978,
+    "fatigue_peak_region": 0.9457403526296517
+   },
+   "inboard branch": {
+    "n_top": 1,
+    "share_top": 0.0013717421124828531,
+    "fatigue_p99_region": 3.2024904070508886,
+    "fatigue_peak_region": 0.9322035724616899
+   },
+   "mid bar / upper bar": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 2.5438410857894587,
+    "fatigue_peak_region": 1.930801406131695
+   }
+  }
+ },
+ "baseline": {
+  "fine": {
+   "min": {
+    "strength": 1.4932765151013032,
+    "fatigue": 1.0014172457033308,
+    "creep": 2.1363567908337724
+   },
+   "per_kit": {
+    "a_S": {
+     "fatigue": 1.0127717956014373,
+     "strength": 1.5131342296724437,
+     "creep": 2.1605798306164,
+     "settings": {
+      "15": 1.0136962224286845,
+      "18": 1.0127717956014373
+     },
+     "fatigue_at": "18 in (other-neighbour sim)"
+    },
+    "a_M": {
+     "fatigue": 1.0076678855162164,
+     "strength": 1.5126570382628306,
+     "creep": 2.1496914891012615,
+     "settings": {
+      "17.5": 1.010322649869106,
+      "19": 1.0170843681080435,
+      "20.5": 1.0076678855162164
+     },
+     "fatigue_at": "20.5 in"
+    },
+    "a_L": {
+     "fatigue": 1.0014172457033308,
+     "strength": 1.4932765151013032,
+     "creep": 2.1363567908337724,
+     "settings": {
+      "20": 1.0102449534765532,
+      "23": 1.0014172457033308
+     },
+     "fatigue_at": "23 in"
+    }
+   },
+   "per_setting": {
+    "a_S_fine|15": {
+     "strength": 1.539811738007728,
+     "fatigue": 1.0136962224286845,
+     "creep": 2.162551941181194,
+     "fatigue_tag": "S_meat@a_S_fine_15"
+    },
+    "a_S_fine|18": {
+     "strength": 1.5406127564735477,
+     "fatigue": 1.0240678325729833,
+     "creep": 2.184678042822365,
+     "fatigue_tag": "S_meat@a_S_fine_18"
+    },
+    "a_S_fine_alt|18": {
+     "strength": 1.5131342296724437,
+     "fatigue": 1.0127717956014373,
+     "creep": 2.1605798306164,
+     "fatigue_tag": "S_meat@a_S_fine_alt_18"
+    },
+    "a_M_fine|17.5": {
+     "strength": 1.5389575849228672,
+     "fatigue": 1.0184470399682315,
+     "creep": 2.1726870185988942,
+     "fatigue_tag": "S_meat@a_M_fine_17.5"
+    },
+    "a_M_fine|19": {
+     "strength": 1.5244415284346355,
+     "fatigue": 1.0170843681080435,
+     "creep": 2.16977998529716,
+     "fatigue_tag": "S_meat@a_M_fine_19"
+    },
+    "a_M_fine|20.5": {
+     "strength": 1.5126570382628306,
+     "fatigue": 1.0076678855162164,
+     "creep": 2.1496914891012615,
+     "fatigue_tag": "S_meat@a_M_fine_20.5"
+    },
+    "a_M_fine_alt|17.5": {
+     "strength": 1.5158551723407714,
+     "fatigue": 1.010322649869106,
+     "creep": 2.1553549863874264,
+     "fatigue_tag": "S_meat@a_M_fine_alt_17.5"
+    },
+    "a_M_fine_alt|20.5": {
+     "strength": 1.5149876539315137,
+     "fatigue": 1.015744691699694,
+     "creep": 2.1669220089593475,
+     "fatigue_tag": "S_meat@a_M_fine_alt_20.5"
+    },
+    "a_L_fine|20": {
+     "strength": 1.5150457405355968,
+     "fatigue": 1.0102449534765532,
+     "creep": 2.1551892340833136,
+     "fatigue_tag": "S_meat@a_L_fine_20"
+    },
+    "a_L_fine|23": {
+     "strength": 1.4932765151013032,
+     "fatigue": 1.0014172457033308,
+     "creep": 2.1363567908337724,
+     "fatigue_tag": "S_meat@a_L_fine_23"
+    },
+    "a_L_fine_alt|20": {
+     "strength": 1.5159387124763353,
+     "fatigue": 1.0139348032924569,
+     "creep": 2.163060913690575,
+     "fatigue_tag": "S_meat@a_L_fine_alt_20"
+    }
+   },
+   "buckling_min": 0.418,
+   "joint": [
+    1.972,
+    1.673
+   ],
+   "raster_g": 757.72192
+  },
+  "fine_sm8": {
+   "min": {
+    "strength": 1.4786990671844162,
+    "fatigue": 0.982275340446412,
+    "creep": 2.095520726285679
+   },
+   "per_kit": {
+    "a_S": {
+     "fatigue": 1.0127717956014373,
+     "strength": 1.5131342296724437,
+     "creep": 2.1605798306164,
+     "settings": {
+      "15": 1.0136962224286845,
+      "18": 1.0127717956014373
+     },
+     "fatigue_at": "18 in (other-neighbour sim)"
+    },
+    "a_M": {
+     "fatigue": 0.9933528682871053,
+     "strength": 1.5018759051650703,
+     "creep": 2.1191527856791583,
+     "settings": {
+      "17.5": 1.010322649869106,
+      "19": 1.0170843681080435,
+      "20.5": 0.9933528682871053
+     },
+     "fatigue_at": "20.5 in (other-neighbour sim)"
+    },
+    "a_L": {
+     "fatigue": 0.982275340446412,
+     "strength": 1.4786990671844162,
+     "creep": 2.095520726285679,
+     "settings": {
+      "20": 0.9921087138534326,
+      "23": 0.982275340446412
+     },
+     "fatigue_at": "23 in"
+    }
+   },
+   "per_setting": {
+    "a_S_fine_sm8|15": {
+     "strength": 1.539811738007728,
+     "fatigue": 1.0136962224286845,
+     "creep": 2.162551941181194,
+     "fatigue_tag": "S_meat@a_S_fine_sm8_15"
+    },
+    "a_S_fine_sm8|18": {
+     "strength": 1.5406127564735477,
+     "fatigue": 1.0240678325729833,
+     "creep": 2.184678042822365,
+     "fatigue_tag": "S_meat@a_S_fine_sm8_18"
+    },
+    "a_S_fine_sm8_alt|18": {
+     "strength": 1.5131342296724437,
+     "fatigue": 1.0127717956014373,
+     "creep": 2.1605798306164,
+     "fatigue_tag": "S_meat@a_S_fine_sm8_alt_18"
+    },
+    "a_M_fine_sm8|17.5": {
+     "strength": 1.5389575849228672,
+     "fatigue": 1.0184470399682315,
+     "creep": 2.1726870185988942,
+     "fatigue_tag": "S_meat@a_M_fine_sm8_17.5"
+    },
+    "a_M_fine_sm8|19": {
+     "strength": 1.5244415284346355,
+     "fatigue": 1.0170843681080435,
+     "creep": 2.16977998529716,
+     "fatigue_tag": "S_meat@a_M_fine_sm8_19"
+    },
+    "a_M_fine_sm8|20.5": {
+     "strength": 1.5126570382628306,
+     "fatigue": 1.0076678855162164,
+     "creep": 2.1496914891012615,
+     "fatigue_tag": "S_meat@a_M_fine_sm8_20.5"
+    },
+    "a_M_fine_sm8_alt|17.5": {
+     "strength": 1.5158551723407714,
+     "fatigue": 1.010322649869106,
+     "creep": 2.1553549863874264,
+     "fatigue_tag": "S_meat@a_M_fine_sm8_alt_17.5"
+    },
+    "a_M_fine_sm8_alt|20.5": {
+     "strength": 1.5018759051650703,
+     "fatigue": 0.9933528682871053,
+     "creep": 2.1191527856791583,
+     "fatigue_tag": "S_meat@a_M_fine_sm8_alt_20.5"
+    },
+    "a_L_fine_sm8|20": {
+     "strength": 1.5150457405355968,
+     "fatigue": 1.0102449534765532,
+     "creep": 2.1551892340833136,
+     "fatigue_tag": "S_meat@a_L_fine_sm8_20"
+    },
+    "a_L_fine_sm8|23": {
+     "strength": 1.4786990671844162,
+     "fatigue": 0.982275340446412,
+     "creep": 2.095520726285679,
+     "fatigue_tag": "S_meat@a_L_fine_sm8_23"
+    },
+    "a_L_fine_sm8_alt|20": {
+     "strength": 1.5024709328130734,
+     "fatigue": 0.9921087138534326,
+     "creep": 2.11649858955399,
+     "fatigue_tag": "S_meat@a_L_fine_sm8_alt_20"
+    }
+   },
+   "buckling_min": 0.426,
+   "joint": [
+    1.974,
+    1.673
+   ],
+   "raster_g": 757.72192
+  },
+  "fine_sm8_cyc": {
+   "min": {
+    "strength": 1.4786990671844162,
+    "fatigue": 0.6692755894945775,
+    "creep": 1.427787924255099
+   },
+   "per_kit": {
+    "a_S": {
+     "fatigue": 0.692987345900511,
+     "strength": 1.539811738007728,
+     "creep": 1.478373004587757,
+     "settings": {
+      "15": 0.692987345900511,
+      "18": 0.6957133751099758
+     },
+     "fatigue_at": "15 in"
+    },
+    "a_M": {
+     "fatigue": 0.682555694275314,
+     "strength": 1.5126570382628306,
+     "creep": 1.4561188144540036,
+     "settings": {
+      "17.5": 0.6956332039870857,
+      "19": 0.6895919722584668,
+      "20.5": 0.682555694275314
+     },
+     "fatigue_at": "20.5 in"
+    },
+    "a_L": {
+     "fatigue": 0.6692755894945775,
+     "strength": 1.4786990671844162,
+     "creep": 1.427787924255099,
+     "settings": {
+      "20": 0.6859836126304767,
+      "23": 0.6692755894945775
+     },
+     "fatigue_at": "23 in"
+    }
+   },
+   "per_setting": {
+    "a_S_fine_sm8_cyc|15": {
+     "strength": 1.539811738007728,
+     "fatigue": 0.692987345900511,
+     "creep": 1.478373004587757,
+     "fatigue_tag": "S_meat@a_S_fine_sm8_cyc_15"
+    },
+    "a_S_fine_sm8_cyc|18": {
+     "strength": 1.5406127564735477,
+     "fatigue": 0.6957133751099758,
+     "creep": 1.4841885335679486,
+     "fatigue_tag": "S_meat@a_S_fine_sm8_cyc_18"
+    },
+    "a_M_fine_sm8_cyc|17.5": {
+     "strength": 1.5389575849228672,
+     "fatigue": 0.6956332039870857,
+     "creep": 1.4840175018391164,
+     "fatigue_tag": "S_meat@a_M_fine_sm8_cyc_17.5"
+    },
+    "a_M_fine_sm8_cyc|19": {
+     "strength": 1.5244415284346355,
+     "fatigue": 0.6895919722584668,
+     "creep": 1.4711295408180627,
+     "fatigue_tag": "S_meat@a_M_fine_sm8_cyc_19"
+    },
+    "a_M_fine_sm8_cyc|20.5": {
+     "strength": 1.5126570382628306,
+     "fatigue": 0.682555694275314,
+     "creep": 1.4561188144540036,
+     "fatigue_tag": "S_meat@a_M_fine_sm8_cyc_20.5"
+    },
+    "a_L_fine_sm8_cyc|20": {
+     "strength": 1.5150457405355968,
+     "fatigue": 0.6859836126304767,
+     "creep": 1.4634317069450171,
+     "fatigue_tag": "S_meat@a_L_fine_sm8_cyc_20"
+    },
+    "a_L_fine_sm8_cyc|23": {
+     "strength": 1.4786990671844162,
+     "fatigue": 0.6692755894945775,
+     "creep": 1.427787924255099,
+     "fatigue_tag": "S_meat@a_L_fine_sm8_cyc_23"
+    }
+   },
+   "buckling_min": 0.442,
+   "joint": [
+    2.003,
+    1.053
+   ],
+   "raster_g": 757.72192
+  },
+  "beam": {
+   "min": {
+    "strength": 1.491172275299688,
+    "fatigue": 1.1502260709981276,
+    "creep": 2.453815618129339
+   },
+   "per_kit": {
+    "a_S": {
+     "fatigue": 1.298134999868371,
+     "strength": 1.491172275299688,
+     "creep": 2.7693546663858584,
+     "settings": {
+      "15": 1.3570833468908063,
+      "18": 1.298134999868371
+     },
+     "fatigue_at": "18 in"
+    },
+    "a_M": {
+     "fatigue": 1.225197952755263,
+     "strength": 2.0074293675328336,
+     "creep": 2.613755632544561,
+     "settings": {
+      "17.5": 1.2979450938271804,
+      "19": 1.2589864995479563,
+      "20.5": 1.225197952755263
+     },
+     "fatigue_at": "20.5 in"
+    },
+    "a_L": {
+     "fatigue": 1.1502260709981276,
+     "strength": 2.012567508850808,
+     "creep": 2.453815618129339,
+     "settings": {
+      "20": 1.2325532286030603,
+      "23": 1.1502260709981276
+     },
+     "fatigue_at": "23 in"
+    }
+   },
+   "per_setting": {
+    "a_S_beam|15": {
+     "strength": 1.491172275299688,
+     "fatigue": 1.3570833468908063,
+     "creep": 2.8951111400337206,
+     "fatigue_tag": "C_im3@a_S_beam_15"
+    },
+    "a_S_beam|18": {
+     "strength": 2.0159875038062607,
+     "fatigue": 1.298134999868371,
+     "creep": 2.7693546663858584,
+     "fatigue_tag": "C_im3@a_S_beam_18"
+    },
+    "a_M_beam|17.5": {
+     "strength": 2.0074293675328336,
+     "fatigue": 1.2979450938271804,
+     "creep": 2.768949533497985,
+     "fatigue_tag": "C_im3@a_M_beam_17.5"
+    },
+    "a_M_beam|19": {
+     "strength": 2.0132933954961154,
+     "fatigue": 1.2589864995479563,
+     "creep": 2.685837865702307,
+     "fatigue_tag": "C_im3@a_M_beam_19"
+    },
+    "a_M_beam|20.5": {
+     "strength": 2.0296093763302023,
+     "fatigue": 1.225197952755263,
+     "creep": 2.613755632544561,
+     "fatigue_tag": "C_im3@a_M_beam_20.5"
+    },
+    "a_L_beam|20": {
+     "strength": 2.012567508850808,
+     "fatigue": 1.2325532286030603,
+     "creep": 2.629446887686529,
+     "fatigue_tag": "C_im3@a_L_beam_20"
+    },
+    "a_L_beam|23": {
+     "strength": 2.0207375960769864,
+     "fatigue": 1.1502260709981276,
+     "creep": 2.453815618129339,
+     "fatigue_tag": "C_im3@a_L_beam_23"
+    }
+   },
+   "buckling_min": 1.313,
+   "joint": [
+    1.964,
+    1.22
+   ],
+   "raster_g": 757.72192
+  },
+  "h1_fine": {
+   "min": {
+    "strength": 1.4932765151013032,
+    "fatigue": 1.0014172457033308,
+    "creep": 2.1363567908337724
+   },
+   "per_kit": null,
+   "per_setting": {
+    "h1_fine|15": {
+     "strength": 1.5633981900774054,
+     "fatigue": 1.1190436732529452,
+     "creep": 2.3872931696062833,
+     "fatigue_tag": "S_meat@h1_fine_15"
+    },
+    "h1_fine|19": {
+     "strength": 1.5264662222893073,
+     "fatigue": 1.0163481411836246,
+     "creep": 2.1682093678583994,
+     "fatigue_tag": "S_meat@h1_fine_19"
+    },
+    "h1_fine|23": {
+     "strength": 1.4932765151013032,
+     "fatigue": 1.0014172457033308,
+     "creep": 2.1363567908337724,
+     "fatigue_tag": "S_meat@h1_fine_23"
+    }
+   },
+   "buckling_min": 0.43,
+   "joint": [
+    1.998,
+    1.752
+   ],
+   "raster_g": 757.72192
+  },
+  "h1_fine_sm8": {
+   "min": {
+    "strength": 1.4786990671844162,
+    "fatigue": 0.982275340446412,
+    "creep": 2.095520726285679
+   },
+   "per_kit": null,
+   "per_setting": {
+    "h1_fine_sm8|15": {
+     "strength": 1.5633981900774054,
+     "fatigue": 1.1190436732529452,
+     "creep": 2.3872931696062833,
+     "fatigue_tag": "S_meat@h1_fine_sm8_15"
+    },
+    "h1_fine_sm8|19": {
+     "strength": 1.5264662222893073,
+     "fatigue": 1.0163481411836246,
+     "creep": 2.1682093678583994,
+     "fatigue_tag": "S_meat@h1_fine_sm8_19"
+    },
+    "h1_fine_sm8|23": {
+     "strength": 1.4786990671844162,
+     "fatigue": 0.982275340446412,
+     "creep": 2.095520726285679,
+     "fatigue_tag": "S_meat@h1_fine_sm8_23"
+    }
+   },
+   "buckling_min": 0.442,
+   "joint": [
+    1.998,
+    1.752
+   ],
+   "raster_g": 757.72192
+  }
+ },
+ "trials": [
+  {
+   "name": "h1__kits.fine_sm8",
+   "label": "H1 as released (crown kits S/M/L)",
+   "kind": "-",
+   "added_g": 0.0,
+   "fatigue": 0.982275340446412,
+   "strength": 1.4786990671844162,
+   "creep": 2.095520726285679,
+   "per_kit": {
+    "a_S": 1.0127717956014373,
+    "a_M": 0.9933528682871053,
+    "a_L": 0.982275340446412
+   },
+   "lumbar_p99": 0.6570610288719219,
+   "buckling_min": 0.426,
+   "top_shares": {
+    "lumbar struts / pan": 0.5294924554183813,
+    "hip-pivot boss": 0.13305898491083676,
+    "stay below the sleeve": 0.08093278463648834,
+    "stay sleeve z 160-240": 0.25377229080932784,
+    "stay top z 470-544": 0.0013717421124828531,
+    "inboard branch": 0.0013717421124828531
+   }
+  },
+  {
+   "name": "trial_leg127.fine_sm8",
+   "label": "bore side: crown legs +127 mm (more leg in the stay)",
+   "kind": "bore",
+   "added_g": 26.035,
+   "fatigue": 0.9722277540233752,
+   "strength": 1.4700801704211932,
+   "creep": 2.0740858752498674,
+   "per_kit": {
+    "a_S": 1.0043989702660474,
+    "a_M": 0.9838507745962367,
+    "a_L": 0.9722277540233752
+   },
+   "lumbar_p99": 0.6518104931509277,
+   "buckling_min": 0.326,
+   "top_shares": {
+    "lumbar struts / pan": 0.5290055248618785,
+    "hip-pivot boss": 0.13121546961325967,
+    "stay below the sleeve": 0.07734806629834254,
+    "stay sleeve z 160-240": 0.25828729281767954,
+    "stay top z 470-544": 0.0013812154696132596,
+    "inboard branch": 0.0027624309392265192
+   }
+  },
+  {
+   "name": "trial_liner_al.fine_sm8",
+   "label": "bore side: bonded 6061 liner 20 x 1 mm, z 160-544",
+   "kind": "bore",
+   "added_g": 75.18107680193891,
+   "fatigue": 1.0824528843959018,
+   "strength": 1.6101148910801812,
+   "creep": 2.3092328200445906,
+   "per_kit": {
+    "a_S": 1.1124904688752824,
+    "a_M": 1.0941536143111712,
+    "a_L": 1.0824528843959018
+   },
+   "lumbar_p99": 0.7107233882112538,
+   "buckling_min": 0.385,
+   "top_shares": {
+    "lumbar struts / pan": 0.627172195892575,
+    "hip-pivot boss": 0.1406003159557662,
+    "stay below the sleeve": 0.13744075829383887,
+    "stay sleeve z 160-240": 0.09004739336492891,
+    "stay top z 470-544": 0.004739336492890996
+   }
+  },
+  {
+   "name": "grow_a0.3.fine_sm8",
+   "label": "load path: lower-body growth x 0.30",
+   "kind": "path",
+   "added_g": 8.785280000000057,
+   "fatigue": 1.0664408887442236,
+   "strength": 1.5928385052858522,
+   "creep": 2.2750738959876773,
+   "per_kit": {
+    "a_S": 1.0895760079354737,
+    "a_M": 1.0768758061235797,
+    "a_L": 1.0664408887442236
+   },
+   "lumbar_p99": 0.7275348067094368,
+   "buckling_min": 0.433,
+   "top_shares": {
+    "lumbar struts / pan": 0.5561569688768606,
+    "hip-pivot boss": 0.10825439783491204,
+    "stay below the sleeve": 0.04871447902571042,
+    "stay sleeve z 160-240": 0.28010825439783493,
+    "stay top z 470-544": 0.0040595399188092015,
+    "inboard branch": 0.0027063599458728013
+   }
+  },
+  {
+   "name": "grow_a0.45.fine_sm8",
+   "label": "load path: lower-body growth x 0.45",
+   "kind": "path",
+   "added_g": 14.772160000000099,
+   "fatigue": 1.109385377944388,
+   "strength": 1.631319226342961,
+   "creep": 2.3666888062813616,
+   "per_kit": {
+    "a_S": 1.139921012197845,
+    "a_M": 1.123144994528453,
+    "a_L": 1.109385377944388
+   },
+   "lumbar_p99": 0.7807444408722067,
+   "buckling_min": 0.439,
+   "top_shares": {
+    "lumbar struts / pan": 0.5570469798657718,
+    "hip-pivot boss": 0.09932885906040269,
+    "stay below the sleeve": 0.04429530201342282,
+    "stay sleeve z 160-240": 0.29261744966442954,
+    "stay top z 470-544": 0.004026845637583893,
+    "inboard branch": 0.0026845637583892616
+   }
+  },
+  {
+   "name": "grow_a0.55.fine_sm8",
+   "label": "load path: lower-body growth x 0.55",
+   "kind": "path",
+   "added_g": 18.76624000000004,
+   "fatigue": 1.1567045989268983,
+   "strength": 1.6368327426454583,
+   "creep": 2.467636477710717,
+   "per_kit": {
+    "a_S": 1.1833488116827853,
+    "a_M": 1.1699874136214887,
+    "a_L": 1.1567045989268983
+   },
+   "lumbar_p99": 0.8125307454205744,
+   "buckling_min": 0.439,
+   "top_shares": {
+    "lumbar struts / pan": 0.5453333333333333,
+    "hip-pivot boss": 0.10933333333333334,
+    "stay below the sleeve": 0.04666666666666667,
+    "stay sleeve z 160-240": 0.28933333333333333,
+    "stay top z 470-544": 0.006666666666666667,
+    "inboard branch": 0.0026666666666666666
+   }
+  },
+  {
+   "name": "grow_a0.6.fine_sm8",
+   "label": "load path: lower-body growth x 0.60",
+   "kind": "path",
+   "added_g": 20.92016000000001,
+   "fatigue": 1.1709044995366271,
+   "strength": 1.6395285475672292,
+   "creep": 2.4979295990114716,
+   "per_kit": {
+    "a_S": 1.1973605542694403,
+    "a_M": 1.1842948336999424,
+    "a_L": 1.1709044995366271
+   },
+   "lumbar_p99": 0.8245877574763126,
+   "buckling_min": 0.44,
+   "top_shares": {
+    "lumbar struts / pan": 0.5465425531914894,
+    "hip-pivot boss": 0.10904255319148937,
+    "stay below the sleeve": 0.043882978723404256,
+    "stay sleeve z 160-240": 0.2898936170212766,
+    "stay top z 470-544": 0.007978723404255319,
+    "inboard branch": 0.0026595744680851063
+   }
+  },
+  {
+   "name": "grow_1",
+   "label": "load path: full grow step (x 1.0)",
+   "kind": "path",
+   "added_g": 38.753600000000006,
+   "fatigue": 1.326683382994753,
+   "strength": 1.6718221682357826,
+   "creep": 2.83025788372214,
+   "per_kit": {
+    "a_S": 1.350687863769445,
+    "a_M": 1.3439424893226453,
+    "a_L": 1.326683382994753
+   },
+   "lumbar_p99": 0.9610302309105176,
+   "buckling_min": 0.668,
+   "top_shares": {
+    "lumbar struts / pan": 0.5058214747736093,
+    "hip-pivot boss": 0.1203104786545925,
+    "stay below the sleeve": 0.028460543337645538,
+    "stay sleeve z 160-240": 0.31047865459249674,
+    "stay sleeve z 240-470": 0.01034928848641656,
+    "stay top z 470-544": 0.02199223803363519,
+    "inboard branch": 0.00258732212160414
+   }
+  }
+ ],
+ "assumptions": {
+  "SIM_TORSO": [
+   "A crown-kit setting between the simulated torsos (15 / 19 / 23 in) takes the bag forces of the nearest simulated torso (17.5, 18, 20, 20.5 -> 19 in); the other neighbour is run as a check and the worse of the two is reported. The crown (legs, bushings, top bar) is the kit's own at the setting's torso.",
+   "A CORRIE F fine meat run at 18 and 20.5 in (corrie_f_sim.py finerun F --torso 18 / 20.5)."
+  ],
+  "SIM_BODY": [
+   "As BL-021 (im3_body_simloads ASSUMPTION SIM_BODY): the sim's 1 g frame-side forces scaled by g x load / 68 kg, closed on the payload weight at the sim CG.",
+   "T9 loaded CG + frame strain gauges at the stays and the lumbar struts in the T1 carry test."
+  ],
+  "CINCH_STATIC": [
+   "As BL-021: the meat-strap cinch is a static preload, in every strength and creep set but not in the static-carry set that gives fatigue; the cycled bound is reported beside it.",
+   "MT-1 strap tension readout over a 10 min loaded walk in the T2 meat test."
+  ],
+  "PAHT_FAT": [
+   "PAHT-CF fatigue_1e5_ratio 0.30 (record ASSUMPTION).",
+   "CA-1 coupon test (flip point in section 6)."
+  ],
+  "FI99": [
+   "The body margin is H1's FI99 rule (99th percentile of the failure index over the non-load-patch voxels, 2 mm grid, frame_comp_d.evaluate). A change that adds material is credited only through the stresses it lowers; the governing region's own percentile is reported beside it so the body number is not raised by diluting the population.",
+   "T1 frame strain gauges at the lumbar struts / stay feet (z 100-200) against the voxel model's strain."
+  ],
+  "LINER": [
+   "Sleeve liner trial: a bonded tube in the bore is modelled as the bore ring r 9-11 mm with its Young's modulus scaled so the ring's bending stiffness EI equals the tube's (6061-T6 20 x 1 mm; voxel ring I from the 2 mm grid). Bond assumed perfect; the liner's own stress is not part of the body FI.",
+   "Only needed if a liner is adopted: a bonded-liner coupon (push-out) and a stay 3-point bend."
+  ],
+  "LEG_ENGAGE": [
+   "Longer-leg trial: each kit's legs are lengthened so that at the kit's lowest setting the leg bottom sits at H1's 15 in depth (z 171): +127 mm each (crown_diet deepest leg bottom z 298).",
+   "Only needed if adopted: crown legs FPF re-run (crown_diet.crown_margins) at the new length."
+  ]
+ },
+ "recommended": {
+  "name": "H1-G0.55",
+  "alpha": 0.55,
+  "added_g": 18.76624000000004,
+  "body_raster_g": 776.48816,
+  "fatigue_min_sim": 1.1567045989268983,
+  "fatigue_fine": 1.178340930500661,
+  "fatigue_fine_sm8": 1.1567045989268983,
+  "fatigue_beam": 1.1878036089093043,
+  "fatigue_cinch_cycled": 0.7509447352124987,
+  "strength_min": 1.5417955425816392,
+  "creep_min": 2.467636477710717,
+  "per_kit": {
+   "fine_sm8": {
+    "a_S": {
+     "fatigue": 1.1833488116827853,
+     "strength": 1.6368327426454583,
+     "creep": 2.5244774649232755,
+     "settings": {
+      "15": 1.1942971276572376,
+      "18": 1.1833488116827853
+     },
+     "fatigue_at": "18 in (other-neighbour sim)"
+    },
+    "a_M": {
+     "fatigue": 1.1699874136214887,
+     "strength": 1.7196858306835499,
+     "creep": 2.495973149059176,
+     "settings": {
+      "17.5": 1.1823559347033432,
+      "19": 1.1930098720793383,
+      "20.5": 1.1699874136214887
+     },
+     "fatigue_at": "20.5 in (other-neighbour sim)"
+    },
+    "a_L": {
+     "fatigue": 1.1567045989268983,
+     "strength": 1.6916610744244605,
+     "creep": 2.467636477710717,
+     "settings": {
+      "20": 1.1699480006495728,
+      "23": 1.1567045989268983
+     },
+     "fatigue_at": "23 in"
+    }
+   },
+   "fine": {
+    "a_S": {
+     "fatigue": 1.1833488116827853,
+     "strength": 1.6368327426454583,
+     "creep": 2.5244774649232755,
+     "settings": {
+      "15": 1.1942971276572376,
+      "18": 1.1833488116827853
+     },
+     "fatigue_at": "18 in (other-neighbour sim)"
+    },
+    "a_M": {
+     "fatigue": 1.1823559347033432,
+     "strength": 1.7294556441507898,
+     "creep": 2.5223593273671328,
+     "settings": {
+      "17.5": 1.1823559347033432,
+      "19": 1.1930098720793383,
+      "20.5": 1.1855821072903237
+     },
+     "fatigue_at": "17.5 in (other-neighbour sim)"
+    },
+    "a_L": {
+     "fatigue": 1.178340930500661,
+     "strength": 1.710417023235006,
+     "creep": 2.513793985068077,
+     "settings": {
+      "20": 1.1882820757341508,
+      "23": 1.178340930500661
+     },
+     "fatigue_at": "23 in"
+    }
+   },
+   "beam": {
+    "a_S": {
+     "fatigue": 1.3873067183753645,
+     "strength": 1.5417955425816392,
+     "creep": 2.9595876658674447,
+     "settings": {
+      "15": 1.5009466944497432,
+      "18": 1.3873067183753645
+     },
+     "fatigue_at": "18 in"
+    },
+    "a_M": {
+     "fatigue": 1.280406236825793,
+     "strength": 2.153394041317797,
+     "creep": 2.7315333052283584,
+     "settings": {
+      "17.5": 1.4039327416479346,
+      "19": 1.3320306097161076,
+      "20.5": 1.280406236825793
+     },
+     "fatigue_at": "20.5 in"
+    },
+    "a_L": {
+     "fatigue": 1.1878036089093043,
+     "strength": 2.111650770123067,
+     "creep": 2.5339810323398497,
+     "settings": {
+      "20": 1.3083397824473835,
+      "23": 1.1878036089093043
+     },
+     "fatigue_at": "23 in"
+    }
+   },
+   "cyc": {
+    "a_S": {
+     "fatigue": 0.7765584541520806,
+     "strength": 1.6368327426454583,
+     "creep": 1.6566580355244387,
+     "settings": {
+      "15": 0.7765584541520806,
+      "18": 0.783526333152764
+     },
+     "fatigue_at": "15 in"
+    },
+    "a_M": {
+     "fatigue": 0.7680107488206512,
+     "strength": 1.7406356059714418,
+     "creep": 1.6384229308173894,
+     "settings": {
+      "17.5": 0.7845317809216562,
+      "19": 0.7756222942991268,
+      "20.5": 0.7680107488206512
+     },
+     "fatigue_at": "20.5 in"
+    },
+    "a_L": {
+     "fatigue": 0.7509447352124987,
+     "strength": 1.6916610744244605,
+     "creep": 1.6020154351199976,
+     "settings": {
+      "20": 0.7712158135456608,
+      "23": 0.7509447352124987
+     },
+     "fatigue_at": "23 in"
+    }
+   }
+  },
+  "buckling_min_sim": 0.432,
+  "buckling_min_beam": 1.268,
+  "joint_sim": [
+   1.985,
+   1.681
+  ],
+  "joint_beam": [
+   1.967,
+   1.211
+  ],
+  "ca1_flip": 0.25935748874718484,
+  "ca1_flip_beam": 0.2525670049743945,
+  "print_h": 27.6695002243632,
+  "passes": true,
+  "lumbar_p99": 0.8125307454205744,
+  "added_by_region": {
+   "lumbar struts / pan": 6.3,
+   "stay below the sleeve": 4.1,
+   "stay sleeve z 160-240": 2.9,
+   "stay foot": 2.2,
+   "hip-pivot boss": 1.8,
+   "mid bar / upper bar": 1.5,
+   "stay top z 470-544": 0.1,
+   "stay sleeve z 240-470": 0.0,
+   "_lower_half_share": 0.914
+  },
+  "full_step_cyc": {
+   "added_g": 38.753600000000006,
+   "fatigue": 0.8337054167129445
+  },
+  "footprint": {
+   "lower": [
+    280.0,
+    234.0,
+    64.0
+   ],
+   "upper": [
+    280.0,
+    310.0,
+    52.0
+   ],
+   "fits_h2s": true,
+   "h1_lower": [
+    280.0,
+    234.0,
+    64.0
+   ],
+   "h1_upper": [
+    280.0,
+    310.0,
+    52.0
+   ]
+  }
+ },
+ "ca1_h1": {
+  "sim_fine_sm8": 0.3054133476095,
+  "beam": 0.26081829265065265
+ },
+ "screens": [
+  "/home/user/Hunting-appeal/outputs/screens/20261112_BL024_1.png",
+  "/home/user/Hunting-appeal/outputs/screens/20261112_BL024_2.png",
+  "/home/user/Hunting-appeal/outputs/screens/20261112_BL024_3.png"
+ ]
+}
