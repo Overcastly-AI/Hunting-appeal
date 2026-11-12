@@ -1106,6 +1106,23 @@ class _Wrap:
                 + (1 - ta) * tu * G[i0, j1] + ta * tu * G[i1, j1])
 
 
+RIDE_AZ, RIDE_U = 14, 8     # grid cells (1 deg x 4 mm): about 36 mm round a pad at a 150 mm body radius (BL-026)
+
+
+def _dilate(M, n_az: int, n_u: int):
+    """Grow a boolean (azimuth, u) grid by ``n_az`` cells in azimuth (which wraps) and ``n_u`` cells in u (which
+    does not)."""
+    M = np.asarray(M, bool)
+    out = M.copy()
+    for k in range(1, int(n_az) + 1):
+        out |= np.roll(M, k, 0) | np.roll(M, -k, 0)
+    base = out.copy()
+    for k in range(1, int(n_u) + 1):
+        out[:, k:] |= base[:, :-k]
+        out[:, :-k] |= base[:, k:]
+    return out
+
+
 def _bvh(objs_V_F):
     from mathutils.bvhtree import BVHTree  # noqa: PLC0415
     V, F, off = [], [], 0
@@ -1182,7 +1199,12 @@ def fit_pack(pack: dict, cloth_objs: list, M_pack, torso_setting: float, z_crest
         # reference radius: the pad's own inner face wherever there is a pad (a pocket or clip riding on the pad
         # must not set it), the innermost webbing / hardware elsewhere
         r_ref = np.where(pad, r_pad, r_in)
-        delta = np.where(foot, r_body - sink * pad_soft + 0.0012 * (1.0 - pad_soft) - r_ref, np.nan)
+        # BL-026 (defect D-11): a pocket or clip that rides on a pad and overhangs its edge must move with the pad.
+        # Before, the overhanging cells were pulled down onto the body on their own (by the pad's thickness), which
+        # tore the pocket's edge into a sawtooth. Cells within RIDE_AZ x RIDE_U of a pad now take the pad's move
+        # (filled in from the pad cells below); webbing further away still lies on the cloth.
+        ride = _dilate(pad, RIDE_AZ, RIDE_U) & ~pad
+        delta = np.where(foot & ~ride, r_body - sink * pad_soft + 0.0012 * (1.0 - pad_soft) - r_ref, np.nan)
         delta = np.where(np.abs(delta) > 0.12, np.nan, delta)
         D = _blur(_nanfill(delta), 3)
         D = np.where(foot & ~np.isnan(delta), 0.5 * D + 0.5 * np.nan_to_num(delta, nan=0.0), D)

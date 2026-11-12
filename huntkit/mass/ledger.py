@@ -25,7 +25,9 @@ Configs (every belt size S, M, L, XL, XXL)
 * ``corrie_b2_h1_c``:  ``corrie_b2_h1`` + package C. C-9 (ligament offset of today's body raster) does not
   transfer to H1, whose body is a different raster: it is booked at 0 g with a note (DECISION, mass_ledger.md).
 * ``<config>_v2`` (BL-023): the same config plus the BL-013 booking corrections C1-C8 as signed rows with sources
-  (``corrections()``). The names above reproduce the BL-001 booking unchanged; ``corrected=True`` on ``parts`` /
+  (``corrections()``), and on the two H1 configs H1B (2026-11-12): the H1 body as adopted by BL-024 / BL-027 with the
+  BL-021 28 mm IM3 cheeks, 757.7 -> 800.7 g, from ``analysis/h1_buckling.json`` (``h1_body_update()``).
+  The names above reproduce the BL-001 booking unchanged; ``corrected=True`` on ``parts`` /
   ``total`` / ``by_system`` / ``like_for_like`` / ``bag_system`` selects the ``_v2`` rows. New tickets use
   ``DEFAULT_CONFIG`` (``corrie_b2_h1_v2``), which is also the default of those functions.
 
@@ -330,8 +332,14 @@ SUFFIX = "_v2"
 CONFIGS_V2 = tuple(c + SUFFIX for c in CONFIGS)
 ALL_CONFIGS = CONFIGS + CONFIGS_V2
 DEFAULT_CONFIG = "corrie_b2_h1" + SUFFIX
-CORRECTIONS = ("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8")
+CORRECTIONS = ("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "H1B")
+H1_ONLY = ("H1B",)          # corrections that apply to the H1 configs only (not to today's production raster)
 G_CORR = "BL-013 booking corrections (folded into the ledger by BL-023)"
+#   H1B (2026-11-12) the H1 printed body as adopted since frame_mass_h1.json was written: BL-024 H1-G0.55 grow-only
+#      offset, the BL-027 buckling members and the BL-021 28 mm IM3 cheeks, all on the same 2 mm raster
+#      (analysis/h1_buckling.json ``chosen``). frame_mass_h1.json is left as BL-007's record of the H1 body; the ledger
+#      adds the three steps as signed rows, so the H1 _v2 configs book the adopted body. The 28 mm cheek is inside this
+#      raster (cheek mask minus the body it overlaps), so the roll-up no longer adds a separate cheek row.
 
 
 @functools.lru_cache(maxsize=None)
@@ -365,6 +373,21 @@ def non_body_sources() -> dict:
     return {"lump_g": lump, "sources_g": src, "short_g": src - lump}
 
 
+@functools.lru_cache(maxsize=None)
+def h1_body_update() -> dict:
+    """H1B: the H1 body raster as adopted (BL-024 + BL-027 + BL-021 28 mm IM3 cheeks), from analysis/h1_buckling.json
+    ``chosen`` (written by ``huntkit.gendesign.h1_buckling``). Raises if that file's H1 base is not the body the ledger
+    books (frame_mass_h1.json h1.body_g), so the steps can never be added to a different body."""
+    c = _json("h1_buckling.json")["chosen"]
+    booked = _json("frame_mass_h1.json")["h1"]["body_g"]
+    if abs(c["h1_raster_g"] - booked) > 0.05:
+        raise ValueError(f"h1_buckling.json H1 base {c['h1_raster_g']:.2f} g != ledger H1 body {booked} g")
+    steps = {"bl024_g": c["g055_raster_g"] - c["h1_raster_g"], "bl027_members_g": c["members_added_g"],
+             "im3_cheek_28_g": c["im3_cheek_added_g"]}
+    return {**steps, "name": c["name"], "d_mid": c["d_mid"], "d_up": c["d_up"], "body_g": c["body_raster_g"], "booked_g": booked,
+            "added_g": c["body_raster_g"] - booked, "steps_sum_g": sum(steps.values())}
+
+
 def _correction_rows(config: str, size: str) -> list:
     """The C1-C8 rows for a BL-001 config: ``(tag, name, system, g, source, cfg)``. A removed part is a negative copy of
     its ledger row; ``cfg`` is BL-008's tag (base / as_hunted)."""
@@ -376,7 +399,19 @@ def _correction_rows(config: str, size: str) -> list:
     lk = led["attachment: lifter tri-glide keepers"]
     cw, nb = corner_wraps(), non_body_sources()
     hs, cl = HD.holster_split(), HD.closure(size)
-    return [
+    h1b = []
+    if config != "corrie_b2_today":
+        hb, src = h1_body_update(), "analysis/h1_buckling.json chosen."
+        h1b = [
+            ("H1B", "H1 body: BL-024 H1-G0.55 grow-only offset (lumbar struts, sleeve bottom, hip-pivot boss)", "frame",
+             hb["bl024_g"], src + "g055_raster_g - h1_raster_g (2 mm raster x PAHT-CF density; h1_sleeve.md)", "base"),
+            ("H1B", f"H1 body: BL-027 buckling members ({hb['name']}: mid bar +{hb['d_mid']:g} mm, upper branches "
+             f"+{hb['d_up']:g} mm)",
+             "frame", hb["bl027_members_g"], src + "members_added_g (h1_buckling.md, member mass table)", "base"),
+            ("H1B", "H1 body: IM3 fairlead cheeks 18 -> 28 mm (2 sides, BL-021), as rastered into the body", "frame",
+             hb["im3_cheek_28_g"], src + "im3_cheek_added_g (cheek mask minus the body it overlaps)", "base"),
+        ]
+    return h1b + [
         ("C1", f"REMOVED: {fl['name']} (already inside the printed body raster)", "attachment", -fl["g"],
          "frame_branch.frame_sdf adds bag_attach.attachment_field to the body SDF (frame_h1.md section 4: bag "
          "fairleads 100 % present); negative copy of ledger row " + fl["id"], "base"),
@@ -801,6 +836,32 @@ def report(team_rows: list, shot: str) -> str:
     w(f"- `frame_mass_production.json` `frame_g` ({fmp['frame_g']}) still omits the dowels for its consumers "
       f"(weight_pass_corrie, build_geometry), so `corrie.weight_table` is {fmp['z234_dowels_mma_g']} g light for "
       "today's frame.")
+    w("")
+    w("## 7a. Corrected configs (`_v2`, the default for new tickets)")
+    w("")
+    w("BL-023 folded BL-013's booking corrections C1-C8 into the ledger; on 2026-11-12 the H1 configs gained **H1B**, "
+      "the H1 body as adopted (BL-024 + BL-027 + the BL-021 28 mm IM3 cheeks), read from `analysis/h1_buckling.json` "
+      "`chosen` (`ledger.h1_body_update`). `frame_mass_h1.json` stays BL-007's record of the H1 body; the "
+      "ledger raises if h1_buckling.json was computed on a different H1 base. The BL-001 config names above are "
+      "unchanged (other documents quote them); `DEFAULT_CONFIG` = `corrie_b2_h1_v2`. These are the CORRIE B.2 bag "
+      "on each frame; the whole-pack scenarios (CORRIE F, gated changes) are `analysis/weight_rollup_v2.md`.")
+    w("")
+    hb = h1_body_update()
+    w(f"H1B (belt-size independent): body {hb['booked_g']} -> {hb['body_g']:.1f} g raster ({hb['steps_sum_g']:+.1f} g booked, "
+      f"{_lboz(hb['steps_sum_g'])}) = BL-024 {hb['bl024_g']:+.1f} + BL-027 members {hb['bl027_members_g']:+.1f} + "
+      f"28 mm IM3 cheeks {hb['im3_cheek_28_g']:+.1f} g ({hb['name']}).")
+    w("")
+    w("| correction | " + " | ".join(CONFIGS_V2) + " |")
+    w("|---|" + "---:|" * len(CONFIGS_V2))
+    cor = {c: corrections(c, "M") for c in CONFIGS}
+    for k in CORRECTIONS:
+        w(f"| {k} | " + " | ".join(f"{sum(r['g'] for r in cor[c][k]):+.1f}" if cor[c][k] else "-" for c in CONFIGS)
+          + " |")
+    w("")
+    w("| config | " + " | ".join(SIZES) + " |")
+    w("|---|" + "---:|" * len(SIZES))
+    for c in CONFIGS_V2:
+        w(f"| `{c}` | " + " | ".join(f"{total(c, s):.1f}" for s in SIZES) + " |")
     w("")
     w("## 8. Screenshot")
     w("")

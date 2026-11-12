@@ -173,7 +173,8 @@ def test_v2_rows_valid_and_add_up(config, size):
     for r in rows:
         assert KEYS <= set(r) and r["system"] in L.SYSTEMS and r["source"]
     corr = [r for r in rows if r["group"] == L.G_CORR]
-    assert {r["correction"] for r in corr} == set(L.CORRECTIONS)
+    want = set(L.CORRECTIONS) - (set(L.H1_ONLY) if config == "corrie_b2_today_v2" else set())
+    assert {r["correction"] for r in corr} == want                            # H1B applies to the H1 bodies only
     assert all(r["note"].startswith("CORRECTION") for r in corr)
     bs = L.by_system(rows)
     assert sum(bs.values()) == pytest.approx(L.total(rows), abs=0.35)       # 12 systems, each rounded to 0.1 g
@@ -210,16 +211,39 @@ def test_corrections_match_their_sources():
     assert sorted(r["cfg"] for r in c7) == ["as_hunted", "base"] and sum(r["g"] for r in c7 if r["base"]) > 0
     import hipbelt_diet as HD
     assert c["C8"] == pytest.approx(HD.closure("M")["delta_g"], abs=0.05)
-    # net effect on the whole H1 pack (every item booked), belt M: the C1..C8 meat-trip deltas of BL-013 sum to -49.1 g
+    # net effect on the whole H1 pack (every item booked), belt M: the C1..C8 meat-trip deltas of BL-013 sum to -49.1 g,
+    # and H1B adds the 2026-11-12 body (+42.9 g, h1_buckling.md / DECISIONS BL-027 row)
     assert L.total("corrie_b2_h1_v2", "M") - L.total("corrie_b2_h1", "M") == pytest.approx(sum(c.values()), abs=0.15)
-    assert sum(c.values()) == pytest.approx(-49.1, abs=0.5)
+    assert sum(v for k, v in c.items() if k != "H1B") == pytest.approx(-49.1, abs=0.5)
+    assert c["H1B"] == pytest.approx(42.9, abs=0.1)
+
+
+def test_h1_body_correction_traces_to_h1_buckling():
+    """H1B: the H1 body as adopted (BL-024 +18.8 g, BL-027 members +22.2 g, 28 mm IM3 cheeks +2.0 g; 800.7 g raster),
+    read from analysis/h1_buckling.json, on top of the 757.7 g that frame_mass_h1.json books. Not on today's frame."""
+    hb = L.h1_body_update()
+    hj = _j("h1_buckling.json")["chosen"]
+    assert hb["booked_g"] == _j("frame_mass_h1.json")["h1"]["body_g"] == pytest.approx(757.7)
+    assert hb["body_g"] == hj["body_raster_g"] == pytest.approx(800.7, abs=0.05)          # DECISIONS BL-027 row
+    assert hb["bl024_g"] == pytest.approx(18.8, abs=0.05)                                  # DECISIONS BL-024 row
+    assert hb["bl027_members_g"] == pytest.approx(22.2, abs=0.05)                          # DECISIONS BL-027 row
+    assert hb["im3_cheek_28_g"] == pytest.approx(2.0, abs=0.05)                            # h1_buckling.md line 13
+    assert hb["steps_sum_g"] == pytest.approx(hj["added_vs_h1_g"], abs=1e-6)
+    for cfg in ("corrie_b2_h1", "corrie_b2_h1_c"):
+        rows = L.corrections(cfg, "M")["H1B"]
+        assert len(rows) == 3 and all(r["system"] == "frame" and r["base"] and r["load_path"] for r in rows)
+        assert all("h1_buckling.json" in r["source"] for r in rows)
+        body = sum(r["g"] for r in L.parts(cfg + L.SUFFIX, "M") if r["name"].startswith(("frame: H1 PAHT", "H1 body")))
+        assert body == pytest.approx(800.7, abs=0.1)
+    assert L.corrections("corrie_b2_today", "M")["H1B"] == []
+    assert "H1B" in L.H1_ONLY
 
 
 def test_v2_shifts_systems_as_booked():
     old, new = L.by_system("corrie_b2_h1", "M"), L.by_system("corrie_b2_h1_v2", "M")
     assert new["attachment"] < old["attachment"] and new["harness"] > old["harness"]
     assert new["frame"] - old["frame"] == pytest.approx(
-        sum(r["g"] for k in ("C3", "C4", "C5") for r in L.corrections("corrie_b2_h1", "M")[k]), abs=0.15)
+        sum(r["g"] for k in ("C3", "C4", "C5", "H1B") for r in L.corrections("corrie_b2_h1", "M")[k]), abs=0.15)
     assert L.bag_system("corrie_b2_h1_v2", "M") == L.corrie_bag_system()      # C1/C2/C6 are outside the bag system
     assert L.DEFAULT_CONFIG == "corrie_b2_h1_v2" and L.total() == L.total("corrie_b2_h1_v2", "M")
     with pytest.raises(KeyError):

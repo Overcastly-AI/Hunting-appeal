@@ -57,7 +57,40 @@ def test_cloth_sim_surface_is_continuous():
         assert np.max(np.linalg.norm(a[1:] - b[1:], axis=1)) < 0.5     # gusset | aft | gusset | frame join
 
 
-def test_loadout_no_access_miss():
+@pytest.fixture
+def restore_corrie_modules():
+    """evolve_loadout.install() re-points the shared ``corrie_loadout`` module at CORRIE E (G, zones, MIN_TOP_Z, the
+    sim CG / peel tables, mutated in place) and sets ``corrie.DOOR = E.DOOR`` for good. Every later test that builds
+    CORRIE (ledger, weight table, CORRIE F, the other teams' baselines, loadouts) then ran on CORRIE E's door (BL-025
+    found 8 failures in a full run; the CORRIE B.2 total read 0.8 g light). Snapshot both modules' globals, shallow-copy
+    the mutable containers, and put everything back after the test."""
+    import copy
+
+    import corrie as CO
+    import corrie_loadout as CL
+    snaps = []
+    for mod in (CO, CL):
+        g = vars(mod)
+        saved = {k: v for k, v in g.items() if not k.startswith("__")}
+        inner = {k: copy.copy(v) for k, v in saved.items() if isinstance(v, (dict, list, set))}
+        snaps.append((g, saved, inner))
+    try:
+        yield
+    finally:
+        for g, saved, inner in snaps:
+            for k in [k for k in g if not k.startswith("__") and k not in saved]:
+                del g[k]
+            g.update(saved)
+            for k, v in inner.items():          # undo in-place mutation (e.g. _MEAT_PEEL.clear(), SIM_FILL_CG[t] = ...)
+                obj = g[k]
+                if isinstance(obj, (dict, set)):
+                    obj.clear()
+                    obj.update(v)
+                else:
+                    obj[:] = v
+
+
+def test_loadout_no_access_miss(restore_corrie_modules):
     import evolve_loadout as LO
     res = LO.run()
     assert all(not f for f in res["misses"].values()), {k: v for k, v in res["misses"].items() if v}

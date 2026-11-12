@@ -1,4 +1,4 @@
-"""BL-013: whole-pack weight roll-up, version 2 (pack-designer, 2026-11-11).
+"""BL-013: whole-pack weight roll-up, version 2 (pack-designer, 2026-11-11; brought up to date 2026-11-12).
 
     python designs/pack_5200/weight_rollup_v2.py            # print the scenario table, belt M
     python designs/pack_5200/weight_rollup_v2.py --write    # also write analysis/weight_rollup_v2.{md,json} + 2 PNGs
@@ -9,12 +9,17 @@ typed here. Every change is a STEP: a list of ledger-schema rows ``{system, name
 the CORRIE B.2-on-H1 rows. A removed part is a negative copy of its ledger row. ``cfg`` is BL-008's rule (base /
 as_hunted / meat_trip; owner-adopted 2026-11-10, the 6.6 lb target applies to base).
 
-Steps are in three classes, kept apart everywhere (ticket acceptance):
+Steps are in two booked classes, kept apart everywhere (ticket acceptance), plus a list of retired steps:
 
 * ``P`` proven now: a PASS verdict and no open decision gate. Booking corrections (resolved against their sources)
-  and safety additions (BL-010) are in P.
+  and safety additions (BL-010, BL-021 / BL-024 / BL-027 H1 body) are in P.
 * ``A`` after tests: a change whose own named test decides whether it stays (the test is listed with the step).
-* ``O`` owner options: needs an owner decision that has not been made (BL-007 fixed torso instead of the kits).
+* ``R`` retired: not adopted, in no scenario (BL-017 OD 17 legs and BL-007 fixed torso, both below 1.0 on the cloth-sim
+  loads, BL-021). Kept only so the report can say what they would have been. The BL-013 "owner options" class held
+  only the fixed torso and is gone with it.
+
+2026-11-12 update: CORRIE F is booked at rev 1 (BL-022, door D2); the H1 body is the ledger's H1B correction (800.7 g
+raster, BL-024 + BL-027 + the 28 mm IM3 cheeks, which are inside that raster, so there is no separate cheek step).
 
 Rule used to sort a gate (DECISION, analysis/weight_rollup_v2.md section 1): a test that, if failed, sends the change
 back to a known heavier part is a decision gate (class A). A first-article check of the whole prototype with no mass
@@ -47,11 +52,11 @@ SIZES = L.SIZES
 CFGS = ("base", "as_hunted", "meat_trip")
 _INCL = {"base": ("base",), "as_hunted": ("base", "as_hunted"), "meat_trip": CFGS}
 TARGET_G = 6.6 * LB                       # 2993.7 g, owner target, applies to base (DECISIONS 2026-11-10)
-SCEN = ("P", "A", "O")
-SCEN_NAME = {"P": "proven now", "A": "after tests", "O": "owner options"}
+SCEN = ("P", "A")
+SCEN_NAME = {"P": "proven now", "A": "after tests", "R": "retired (not booked)"}
 SCREENS = ROOT / "outputs" / "screens"
-PREFIX = "20261111_BL023_"
-DOC_SCREEN = ROOT / "docs" / "screens" / "20261111_BL023_1.png"   # waterfall, git-tracked copy
+PREFIX = "20261112_rollup_"
+DOC_SCREEN = ROOT / "docs" / "screens" / "20261112_rollup_1.png"   # waterfall, git-tracked copy
 DOC = ANALYSIS / "weight_rollup_v2.md"
 RESULT = ANALYSIS / "weight_rollup_v2.json"
 KIT = "M"                                 # crown kit at the pack's headline size (torso 17.5-20.5 in); torso, not belt
@@ -65,8 +70,7 @@ def _F():
     return F
 
 
-CORRIE_F_REV = 0   # DECISION (BL-023): book CORRIE F as adopted (BL-011, rev 0). BL-022's rev 1 is not adopted yet;
-                   # the orchestrator sets this to 1 when it is, and re-runs the roll-up.
+CORRIE_F_REV = 1   # BL-022 rev 1 adopted (DECISIONS 2026-11-12): B-25 guy bridle + B-26 tripod keeper, guys at x +/-52.
 
 
 def rev():
@@ -210,12 +214,14 @@ def h1_fatigue() -> dict:
     return {"old": old, "per_torso": new, "ratio": new / old}
 
 
-CHEEK_HALF_Z = 13.5      # adopted IM3 cheek 27 mm tall (DECISIONS 2026-11-11, loadpath_verification.md 4.1); BL-014 S2
+CHEEK_HALF_Z = 14.0      # adopted IM3 cheek 28 x 8 mm (DECISIONS 2026-11-12, BL-021; supersedes 27 mm)
 
 
 def cheek_g(half_z: float = CHEEK_HALF_Z) -> float:
-    """BL-010 A1 / A1-CF fix: IM3 printed fairlead cheek 18 -> 27 mm (adopted), both sides (loadpath_check.FROZEN
-    fine-mesh runs). BL-013 booked 25 mm (half 12.5); BL-023 books the adopted 27 mm (BL-014 S2)."""
+    """Cross-check only (not booked since 2026-11-12): IM3 printed fairlead cheek 18 mm -> ``half_z`` x 2, both sides,
+    as stand-alone fairlead volume (loadpath_check.FROZEN fine-mesh runs). The booked cheek is in the ledger's H1B body
+    raster (``ledger.h1_body_update()['im3_cheek_28_g']``), which counts only the cheek volume outside the body it
+    overlaps; the difference is listed under estimates (ASSUMPTION, settled by weighing the printed halves)."""
     from huntkit.gendesign import loadpath_check as LP
     f = LP.FROZEN["fairlead_im3"]
     return 2 * (f[half_z]["added_g"] - f[9.0]["added_g"])
@@ -252,19 +258,19 @@ STEP_META = {   # id: (class, ticket, short label, kind, gate)
     "C6": ("P", "BL-004 flag", "lifter keepers -> harness", "correction", "-"),
     "C7": ("P", "BL-006 e", "holster tabs stay on belt", "correction", "-"),
     "C8": ("P", "BL-006 a2", "belt webbing re-booked", "correction", "HB-7 (planned lock-slip test)"),
+    "H1B": ("P", "BL-024/027/021", "H1 body (sleeve growth, buckling members, 28 mm IM3 cheeks)",
+            "safety", "MT-1 cinch, CA-1 PAHT ratio >= 0.255, T1/T2 gauges (release R1; failing adds mass, never removes)"),
     "P_pkgC": ("P", "package C (2026-11-09)", "7075 belt plate; C-4 / C-7 rev C fixes", "safety",
                "HB-5 plate, pad-seat sag test, T1(c) yoke dial (verification; the 6061 fallback fails rev C too)"),
-    "P_F": ("P", "BL-011/010", "CORRIE F D2, today's fabrics; wings, 38 mm IM/US and hood kept", "design",
+    "P_F": ("P", "BL-011/010/022", "CORRIE F rev 1, D2, today's fabrics; wings, 38 mm IM/US and hood kept", "design",
             "first-article: S15 elbow-swing / sling check (BL-009)"),
-    "P_cheek": ("P", "BL-010 A1-CF", "IM3 fairlead cheek 27 mm", "safety",
-                "IM3-EP eye pull 2553 N + IM3-EC 3 coupons at 1017 N; BL-021 (eye and body on sim loads)"),
     "P_d2": ("P", "BL-017 d2", "1:1 pull strap (no 3:1 pulley)", "design", "-"),
     "P_kits": ("P", "BL-017 a (owner)", "three crown kits, size M", "design", "-"),
     "A_imus": ("A", "BL-003 (a)", "IM/US straps 38 -> 25 mm, 25 mm cams + rated hooks", "design",
                "MT-1 / MT-2 / MT-3 at the BL-010 per-row loads; fallback 38 mm webbing, cams and hooks"),
     "A_att": ("A", "BL-004 REC", "hood + IM2 bag hooks deleted, guy toggle loops", "design",
               "PT-1 / PT-2 at 2553 N, TL-1 toggle loop 366 N, LL-H heavy lock 366 N; fallback hood + IM2 hooks "
-              "(also an owner decision, BL-014 B4)"),
+              "(owner kept them removed 2026-11-12)"),
     "A_back": ("A", "BL-005", "sandwich backer strip", "design",
                "BP-1 3-point bend coupon + BP-2 stay contact width; BP-3 back pressure below z 190"),
     "A_b": ("A", "BL-006 b", "no belt stabilizers", "design", "HB-D1 side-hill stability"),
@@ -274,10 +280,10 @@ STEP_META = {   # id: (class, ticket, short label, kind, gate)
               "owner swatch look (ULTRAGrid) + PT-3 and 50 mm strip test (ULTRA 200X)"),
     "A_wings": ("A", "BL-003 (owner)", "side wings deleted", "design",
                 "FT-S2 5 km side-hill + door open/close x 5, pod shift <= 20 mm"),
-    "A_c17": ("A", "BL-017 c17", "OD 17 legs, 19 mm bore", "design",
-              "CA-1 at the governing flip point + 0.02 (body fatigue 1.150 -> lower; per-torso flip open, BL-021)"),
-    "O_fixed": ("O", "BL-007 (a)", "fixed torso instead of the kits", "design",
-                "owner (narrows universal fit) + CA-1 + per-torso fatigue restatement"),
+    "A_c17": ("R", "BL-017 c17", "OD 17 legs, 19 mm bore", "design",
+              "retired: body fatigue 0.97-0.99 on the cloth-sim loads (BL-021 (4)); not booked"),
+    "O_fixed": ("R", "BL-007 (a)", "fixed torso instead of the kits", "design",
+                "retired: body fatigue below 1.0 on the cloth-sim loads (BL-021 (4)); adjustable torso kept; not booked"),
 }
 ORDER = list(STEP_META)
 
@@ -300,8 +306,6 @@ def _steps_at(size: str) -> tuple:
         + attach_rec_rows("P_F", -1.0, "hood + IM2 hooks kept until PT-1/TL-1/LL-H (BL-004 REC undone)"))
     s["A_imus"] = imus_a_rows("A_imus")
     s["A_att"] = attach_rec_rows("A_att")
-    s["P_cheek"] = [_r("frame", "BL-010 A1-CF: IM3 printed fairlead cheek 18 -> 27 mm (2 sides)", cheek_g(), "base",
-                       f"loadpath_check.FROZEN fairlead_im3 added_g {CHEEK_HALF_Z} vs 9.0 mm half-height", "P_cheek")]
     d2 = crown("(d2) pawl + 1:1 strap")
     s["P_d2"] = [_r("frame", "BL-017 (d2): 3:1 pulley -> pawl + 1:1 pull strap", d2, "base",
                     "crown_diet.option_mass('(d2) pawl + 1:1 strap')", "P_d2")]
@@ -390,7 +394,7 @@ def configs(size: str = "M") -> dict:
     bl005_back / bl006_belt / bl007_a / bl007_c: CORRIE B.2 on H1 (base) with that one ticket's package."""
     st = steps(size)
     b2 = b2_rows(size)
-    corr = [r for k in ORDER if k.startswith("C") for r in st[k]]
+    corr = [r for k in ORDER if k in L.CORRECTIONS for r in st[k]]
     with rev():
         f_rows = b2 + corr + corrie_f_step(size, "B", "corrie_f")
     HD = _HD()
@@ -469,7 +473,7 @@ FEATURE_CANDIDATES = [   # (row-name needle, system, what the hunter loses, froz
 
 
 def feature_costs(size: str = "M") -> dict:
-    rows = cfg_rows(scenario_rows("O", size), "base")
+    rows = cfg_rows(scenario_rows(SCEN[-1], size), "base")
     base = cfg_total(rows, "base")
     need = base - TARGET_G
     items = []
@@ -485,7 +489,7 @@ def feature_costs(size: str = "M") -> dict:
         take.append(i["item"])
     HD = _HD()
     reserve = sum(HD._mass_delta(k, size) for k in HD.NEXT_LEVER)
-    return {"owner_options_base_g": base, "gap_g": round(need, 1), "candidates": items,
+    return {"after_tests_base_g": base, "gap_g": round(need, 1), "candidates": items,
             "all_unfrozen_g": round(sum(i["g"] for i in free), 1), "greedy_take": take, "greedy_g": round(acc, 1),
             "reaches": acc >= need, "belt_foam_reserve_g": round(reserve, 1),
             "with_reserve_g": round(sum(i["g"] for i in free) - reserve, 1),
@@ -494,7 +498,8 @@ def feature_costs(size: str = "M") -> dict:
 
 UNC_CLASSES = [   # (class, test on name+source, +- fraction) - ASSUMPTION bands, each settled by weighing the part
     ("typed ASSUMPTION (no record, no drawing)", lambda t: "assumption" in t, 0.30),
-    ("printed PAHT-CF body (2 mm raster x density)", lambda t: "printed body" in t or "raster" in t or "cheek" in t, 0.05),
+    ("printed PAHT-CF body (2 mm raster x density)", lambda t: "printed body" in t or "raster" in t or "cheek" in t
+     or "h1 body" in t, 0.05),
     ("frame lumps and carbon (beam model, frame_mass json)", lambda t: "frame_mass" in t or "crown" in t or "carbon" in t
      or "pack5200" in t or "frame_fixed" in t or "pawl" in t, 0.10),
     ("cut area x record gsm, length x record g/m", lambda t: True, 0.08),
@@ -589,20 +594,20 @@ def plot_waterfall(path: Path, size: str = "M") -> Path:
             ax.text(max(b, b + d) + 12, y, f"{d:+.1f}", va="center", fontsize=8)
         ax.text(1985, y, t, va="center", ha="right", fontsize=7.6)
     ax.axvline(TARGET_G, color="#b22222", lw=1.6, ls="--")
-    ax.text(TARGET_G + 6, -0.9, "6.6 lb target\n(base) 2994 g", color="#b22222", fontsize=8, va="bottom")
+    ax.text(TARGET_G + 6, -1.9, "6.6 lb target (base) 2994 g", color="#b22222", fontsize=8, va="bottom")
     lead = [g for _, g, *_ in LEADERS]
     ax.axvspan(min(g for g in lead if g > 2000), max(lead), color="#7a7a7a", alpha=0.12)
     ax.text(min(g for g in lead if g > 2000) + 6, n - 3.5, "leaders' published\nsystems 2308-2835 g\n(Seek 1673 g "
             "off-chart)", fontsize=7.4, ha="left", va="top", color="#555")
-    ax.set_xlim(2000, 4450)
-    ax.set_ylim(-1.2, n)
+    ax.set_xlim(2000, 4650)
+    ax.set_ylim(-2.0, n)
     ax.set_yticks([])
     ax.set_xlabel("pack mass, base configuration, belt M (g)")
-    fig.suptitle("Weight roll-up v2 (BL-023): B.2 on H1 to three scenarios (base, belt M)", x=0.02, ha="left",
-                 fontsize=11, fontweight="bold")
+    fig.suptitle("Weight roll-up v2, 2026-11-12: B.2 on H1 to proven now and after tests\n(base, belt M; CORRIE F rev 1, "
+                 "H1 body 800.7 g)", x=0.02, ha="left", fontsize=11, fontweight="bold")
     ax.legend(handles=[Patch(color=COL["correction"], label="booking correction (no design change)"),
-                       Patch(color=COL["P"], label="proven now"), Patch(color=COL["A"], label="after tests"),
-                       Patch(color=COL["O"], label="owner options")], loc="upper center", fontsize=8, frameon=False,
+                       Patch(color=COL["P"], label="proven now"), Patch(color=COL["A"], label="after tests")],
+              loc="upper center", fontsize=8, frameon=False,
               bbox_to_anchor=(0.45, -0.045), ncol=2)
     for s in ("top", "right", "left"):
         ax.spines[s].set_visible(False)
@@ -620,13 +625,13 @@ def plot_leaders(path: Path, size: str = "M") -> Path:
     rows = like_for_like_leaders(size)
     fig, ax = plt.subplots(figsize=(8.6, 11.0), dpi=100)
     keys = [("published", "#7a7a7a", "leader, published"), ("B.2", "#3b3b3b", "ours: CORRIE B.2 on H1"),
-            ("P", COL["P"], "ours: proven now"), ("A", COL["A"], "ours: after tests"), ("O", COL["O"], "ours: owner options")]
+            ("P", COL["P"], "ours: proven now"), ("A", COL["A"], "ours: after tests")]
     h = 0.16
     for i, r in enumerate(rows):
         y0 = len(rows) - 1 - i
         for j, (k, c, _) in enumerate(keys):
             g = r["published_g"] if k == "published" else r[k]["ours_g"]
-            y = y0 + (2 - j) * h
+            y = y0 + (1.5 - j) * h
             ax.barh(y, g, height=h * 0.92, color=c)
             if k in ("published", "A"):
                 ax.text(g + 15, y, f"{g:.0f}" + ("" if k == "published" else f"  ({r[k]['delta_g']:+.0f}, {r[k]['pct']:+.0f} %)"),
@@ -674,7 +679,7 @@ def compute(size: str = "M") -> dict:
     fx = {v: fixed_torso(v) for v in ("a", "c")}
     cfgs = configs(size)
     return {
-        "date": "2026-11-11", "ticket": "BL-013, revised by BL-023", "size": size, "corrie_f_rev": CORRIE_F_REV, "kit": KIT, "target_g": round(TARGET_G, 1),
+        "date": "2026-11-12", "ticket": "BL-013, revised by BL-023, brought up to date 2026-11-12", "size": size, "corrie_f_rev": CORRIE_F_REV, "kit": KIT, "target_g": round(TARGET_G, 1),
         "scenarios": t, "by_size": by_size(),
         "steps": {k: {"class": STEP_META[k][0], "ticket": STEP_META[k][1], "label": STEP_META[k][2],
                       "kind": STEP_META[k][3], "gate": STEP_META[k][4], "delta_g": st[k],
@@ -689,34 +694,39 @@ def compute(size: str = "M") -> dict:
                             "fatigue_old_basis": round(d["fatigue_old_basis"], 3)} for v, d in fx.items()},
         "leaders": like_for_like_leaders(size), "features": feature_costs(size),
         "bl011_headline_base_g": _bl011_headline(size),
-        "h1_fatigue": h1_fatigue(),
+        "h1_fatigue": h1_fatigue(), "h1_body": L.h1_body_update(),
+        "cheek_cross_check": {"frozen_pair_28_g": round(cheek_g(), 2),
+                              "raster_g": round(L.h1_body_update()["im3_cheek_28_g"], 2)},
         "estimates": {s: estimates(s, size) for s in SCEN}, "risks": risks(),
     }
 
 
 def report(res: dict, shots: list) -> str:
     t, st, sz = res["scenarios"], res["steps"], res["size"]
-    P, A, O, B2 = t["P"], t["A"], t["O"], t["B.2"]
+    P, A, B2 = t["P"], t["A"], t["B.2"]
     tg = res["target_g"]
     fc = res["features"]
+    hb = res["h1_body"]
     L_ = []
     w = L_.append
-    w("# Whole-pack weight roll-up, version 2 (BL-013, revised by BL-023)\n")
-    w("Owner: pack-designer (BL-013); revision: manufacturing-engineer (BL-023). Date: 2026-11-11. Code: "
-      "`designs/pack_5200/weight_rollup_v2.py` (tests `tests/test_weight_rollup_v2.py`); numbers: "
+    w("# Whole-pack weight roll-up, version 2 (BL-013, revised by BL-023, brought up to date 2026-11-12)\n")
+    w("Owner: pack-designer (BL-013, 2026-11-12 update); revision: manufacturing-engineer (BL-023). Date: 2026-11-12. "
+      "Code: `designs/pack_5200/weight_rollup_v2.py` (tests `tests/test_weight_rollup_v2.py`); numbers: "
       "`analysis/weight_rollup_v2.json`. Every mass below is a ledger row (`huntkit.mass.ledger`, config "
-      "`corrie_b2_h1`, plus the C1-C8 corrections that the ledger now holds as config `corrie_b2_h1_v2`) or a row "
-      "produced by the named ticket's own code, called live. CORRIE F is booked at rev "
-      f"{CORRIE_F_REV} (as adopted, BL-011); BL-022's rev 1 is not in it. "
-      "**Do not quote the numbers from this file after the code changes: re-run it.**\n")
-    w("**BL-023 changes (from BL-014 S1, S2, S9):** (1) BL-003 (a) on the IM/US straps "
-      f"({st['A_imus']['delta_g']['base']:+.1f} g) and BL-004 REC ({st['A_att']['delta_g']['base']:+.1f} g) pass only "
-      "after named tests with a heavier fallback, so they moved from proven now to after tests; P now books the 38 mm "
-      "IM/US set and the hood + IM2 hooks. (2) The IM3 cheek is booked at the adopted 27 mm "
-      f"({st['P_cheek']['delta_g']['base']:+.2f} g a pair, +1.46 g over the 25 mm of BL-013). (3) C1-C8 are now ledger "
-      "rows (`ledger.corrections`); the roll-up reads them from there, and `ledger.total('corrie_b2_h1_v2')` equals "
-      "the start plus C1-C8 to 0.5 g at every belt size (tested). Every gate named in section 2 is a row in "
-      "`tests_physical/TEST_PLAN.md`.\n")
+      "`corrie_b2_h1`, plus the C1-C8 and H1B corrections that the ledger holds as config `corrie_b2_h1_v2`) or a row "
+      f"produced by the named ticket's own code, called live. CORRIE F is booked at rev {CORRIE_F_REV} (BL-022), door "
+      "D2. **Do not quote the numbers from this file after the code changes: re-run it.**\n")
+    w("**2026-11-12 changes (everything adopted since BL-013 / BL-023, DECISIONS rows of 2026-11-12):** "
+      f"(1) **H1 body {hb['booked_g']} -> {hb['body_g']:.1f} g** ({hb['name']}), booked in the ledger as correction H1B "
+      f"from `analysis/h1_buckling.json`: BL-024 grow-only offset {hb['bl024_g']:+.1f} g, BL-027 buckling members "
+      f"{hb['bl027_members_g']:+.1f} g, BL-021 28 mm IM3 cheeks {hb['im3_cheek_28_g']:+.1f} g (as rastered into the "
+      "body). (2) The separate cheek step (27 mm, +6.80 g) is gone: the 28 mm cheek is inside the H1B raster. "
+      "(3) **CORRIE F rev 1** (BL-022: B-25 guy bridle, B-26 tripod keeper), door D2. (4) **Retired, booked in no "
+      "scenario:** BL-017 OD 17 legs and BL-007 fixed torso (both below 1.0 on the cloth-sim loads, BL-021); the "
+      "'owner options' scenario held only the fixed torso and is dropped. Wings, hood and IM2 hooks stay deleted in "
+      "after tests (owner decisions 2026-11-11 / 2026-11-12); proven now still books them, because each deletion "
+      "passes only after a named test with the part as its fallback (BL-014 S1). (5) The fabric swaps stay in after "
+      "tests.\n")
     w("## 0. Answer\n")
     w(f"| Belt {sz}, crown kit {res['kit']} | base | as hunted | meat trip |")
     w("|---|---:|---:|---:|")
@@ -727,37 +737,43 @@ def report(res: dict, shots: list) -> str:
           f"({_lb(v['as_hunted'])}) | {v['meat_trip']:.1f} ({_lb(v['meat_trip'])}) |")
     w(f"| target (base) | {tg:.1f} (6.60 lb) | | |\n")
     w(f"- **6.6 lb is not reachable with what is adopted or under test.** Proven now misses it by "
-      f"**{P['base'] - tg:.0f} g**, after tests by **{A['base'] - tg:.0f} g**, owner options by **{O['base'] - tg:.0f} g**.")
+      f"**{P['base'] - tg:.0f} g**, after tests by **{A['base'] - tg:.0f} g**.")
     w(f"- Closing the last {fc['gap_g']:.0f} g would take deleting or moving to add-ons: "
       + ", ".join(f"{c['item']} ({c['g']:.0f} g)" for c in fc["candidates"] if c["item"] in fc["greedy_take"])
       + f" = {fc['greedy_g']:.0f} g. " + ("That reaches it" if fc["reaches"] else
       f"Even every unfrozen candidate ({fc['all_unfrozen_g']:.0f} g) does not reach it")
       + (f"; only with the belt-foam reserve on top ({fc['with_reserve_g']:.0f} g in all) does it, i.e. a pack with "
-         "no pockets, no hip-reach access, no hydration sleeve and a softer belt" if fc["reaches_with_reserve"] else "")
+         "no pockets, no hip-reach access, no hydration sleeve and a softer belt" if fc["reaches_with_reserve"] else
+         f"; with the belt-foam reserve on top ({fc['with_reserve_g']:.0f} g in all) it is still short")
       + "; see section 5.")
     h = res["bl011_headline_base_g"]
-    w(f"- The BL-011 headline (base {h:.0f} g, `corrie_f.pack_with_adopted`) was {h - P['base']:+.0f} g against "
-      f"proven now and {h - A['base']:+.0f} g against after tests: it took the gated BL-005/006 items and the fabric swaps as done, "
-      "left package C and the IM3 cheek out, and had the ledger's booking errors in it (section 2).\n")
+    w(f"- The BL-011 headline (`corrie_f.pack_with_adopted`, rev {CORRIE_F_REV}: base {h:.0f} g) is {h - P['base']:+.0f} g "
+      f"against proven now and {h - A['base']:+.0f} g against after tests: it takes the gated BL-005/006 items and the "
+      "fabric swaps as done, leaves package C out, books the H1 body at 757.7 g and has the ledger's booking errors in "
+      "it (section 2).\n")
     w("## 1. Rules\n")
     w("- **Start:** ledger `corrie_b2_h1`, belt M, every item booked: "
       f"{B2['meat_trip']:.1f} g. BL-008 tags (owner-adopted 2026-11-10): add-ons (top pouch, scope pod, IMP-3 holster, "
       "rain fly) are as hunted; float links B-24 and the meat liner are meat trip. Taking the add-ons out of base is a "
       "reporting rule, not a saving; it is its own grey bar in the waterfall.")
     w("- **Proven now (P):** PASS verdicts with no open decision gate, plus every booking correction and safety "
-      "addition. **After tests (A):** each change has its own named test, and failing it sends the part back to a "
-      "known heavier part. A change that passes only after a named test is in A even when its fallback is known "
-      "(BL-014 S1); its safety hardware (BL-010) stays in P (ASSUMPTION: conservative, settled when the gate passes). **Owner options (O):** needs an owner decision not yet made. A scenario includes the ones "
-      "before it (P, then P + A, then P + A + O).")
-    w("- DECISION: a first-article check of the whole prototype with no mass fallback (the lifter protractor check, the "
-      "IM3 eye pull and coupon, which can only add mass) does not move a change out of P; it is listed in the gate "
-      "column. BL-014 notes that the S15 elbow-swing check does have a fallback shell (S16 / CORRIE); CORRIE F's shell "
-      "is kept in P here because P_F also carries today's fabrics and every part a failed gate would restore. "
-      "The owner's wing removal has its own field test FT-S2 with a known fallback (the wing parts), so the "
-      f"wing saving ({-st['A_wings']['delta_g']['base']:.1f} g) is in A, and P carries the wing parts. If FT-S2 were "
-      f"treated as first-article verification, proven now would be {P['base'] + st['A_wings']['delta_g']['base']:.1f} g.")
-    w("- CORRIE F is door D2 (orchestrator call 2026-11-11). P uses today's fabrics on CORRIE F's pieces; A adds the "
-      "swaps (owner swatch + strip test). BL-007's fixed torso is only in O, and replaces the crown kits there.\n")
+      "addition. **After tests (A):** BL-014's rule: a change gated by a named test, where failing the test sends the "
+      "part back to a known heavier part, is in A even when its fallback is known (BL-014 S1); its safety hardware "
+      "(BL-010) stays in P (ASSUMPTION: conservative, settled when the gate passes). A scenario includes the one "
+      "before it (P, then P + A). **Retired (R):** not adopted; in no scenario.")
+    w("- DECISION: a named test that can only add mass (the H1 release tests MT-1 / CA-1 / T1 / T2, the IM3 eye pull and "
+      "coupon, the lifter protractor check, HB-7 lock slip) does not move a change out of P: there is no lighter "
+      "outcome to wait for. BL-014 notes that the S15 elbow-swing check does have a fallback shell (S16 / CORRIE); "
+      "CORRIE F's shell is kept in P here because P_F also carries today's fabrics and every part a failed gate would "
+      f"restore (P_F is {st['P_F']['delta_g']['base']:+.1f} g on base: moving the whole of it to A would make proven "
+      f"now {P['base'] - st['P_F']['delta_g']['base']:.1f} g). The owner's wing removal has its own field test FT-S2 "
+      f"with a known fallback (the wing parts), so the wing saving ({-st['A_wings']['delta_g']['base']:.1f} g) is in "
+      f"A, and P carries the wing parts. If FT-S2, PT-1 / TL-1 / LL-H were treated as first-article verification of "
+      f"owner decisions, proven now would be "
+      f"{P['base'] + st['A_wings']['delta_g']['base'] + st['A_att']['delta_g']['base']:.1f} g.")
+    w("- CORRIE F is door D2 (orchestrator call 2026-11-11), rev 1 (BL-022). P uses today's fabrics on CORRIE F's "
+      "pieces; A adds the swaps (owner swatch + strip test). P books the B-25 bridle even with the hood fallback "
+      f"(conservative, {_F().guy_bridle()['mass_g']:.1f} g).\n")
     w("## 2. Steps (belt M; base / as hunted / meat trip deltas, g)\n")
     w("| # | class | ticket | change | base | as hunted | meat trip | gate (test or check) |")
     w("|---|---|---|---|---:|---:|---:|---|")
@@ -799,27 +815,35 @@ def report(res: dict, shots: list) -> str:
       "BL-011 had the whole 38.8 g holster in as hunted.")
     w("- **C8 old 50 mm belt strap and the under-booked 25 mm 2:1 webbing: re-booked** (`hipbelt_diet.closure`, BL-006 "
       "a2): 0.9 m 50 mm strap -> two 140 mm buckle tabs; 25 mm webbing 0.6 -> 1.20 m. Net -12.7 g at M.")
+    cc = res["cheek_cross_check"]
+    w(f"- **H1B H1 body ({hb['steps_sum_g']:+.1f} g), a ledger correction since 2026-11-12.** `frame_mass_h1.json` still "
+      f"books BL-007's {hb['booked_g']} g H1 raster; `ledger.h1_body_update()` reads `h1_buckling.json` `chosen` and "
+      f"adds three signed rows: BL-024 {hb['bl024_g']:+.2f}, BL-027 members {hb['bl027_members_g']:+.2f}, 28 mm IM3 "
+      f"cheeks {hb['im3_cheek_28_g']:+.2f} g (sum {hb['steps_sum_g']:.2f} g on the {hb['booked_g']} g base; the json's "
+      f"own raster total is {hb['body_g']:.2f} g). The cheek is the 28 mm cheek mask minus the body it overlaps; the "
+      f"stand-alone fairlead volume (`loadpath_check.FROZEN`, 18 -> 28 mm, both sides) is {cc['frozen_pair_28_g']:.1f} "
+      "g, so up to the difference may be printed mass the 2 mm raster does not see (estimate list).")
     w("- **Package C was missing from BL-011's pack.** The ledger books it as config `corrie_b2_h1_c` (7075 plate "
       "-25.0 g; C-4 pad backer +8.1 g and C-7 yoke +8.5 g, both fixes for parts that fail rev C as released). It is "
       "adopted (DECISIONS 2026-11-09) and in P here.\n")
     w("## 3. Scenarios by belt size (crown kit M; base / as hunted / meat trip, g)\n")
-    w("| belt | B.2 | proven now | after tests | owner options |")
-    w("|---|---|---|---|---|")
+    w("| belt | B.2 | proven now | after tests |")
+    w("|---|---|---|---|")
     for z, v in res["by_size"].items():
         f = lambda k: f"{v[k]['base']:.0f} / {v[k]['as_hunted']:.0f} / {v[k]['meat_trip']:.0f}"  # noqa: E731
-        w(f"| {z} | {f('B.2')} | {f('P')} | {f('A')} | {f('O')} |")
+        w(f"| {z} | {f('B.2')} | {f('P')} | {f('A')} |")
     w("")
     ck = res["crown_kits_by_torso_size"]
     w("Crown kit by torso size (change against H1, g): " + "; ".join(
-        f"{z}: kits {v['(a)+(d2)']:+.1f}, with OD 17 legs {v['(a)+(d2)+(c17 bore 19)']:+.1f}" for z, v in ck.items())
-      + ". Kit S is lighter and kit L heavier than the M figures used above.\n")
+        f"{z}: kits {v['(a)+(d2)']:+.1f}" for z, v in ck.items())
+      + ". Kit S is lighter and kit L heavier than the M figures used above (today's 16 x 8 legs; the OD 17 legs are "
+      "retired).\n")
     w("### 3.1 Base by system (belt M)\n")
-    w("| system | B.2 base | proven now | after tests | owner options |")
-    w("|---|---:|---:|---:|---:|")
+    w("| system | B.2 base | proven now | after tests |")
+    w("|---|---:|---:|---:|")
     b2s = L.by_system(cfg_rows(b2_rows(sz), "base"))
     for s in L.SYSTEMS:
-        w(f"| {s} | {b2s[s]:.1f} | {P['by_system_base'][s]:.1f} | {A['by_system_base'][s]:.1f} | "
-          f"{O['by_system_base'][s]:.1f} |")
+        w(f"| {s} | {b2s[s]:.1f} | {P['by_system_base'][s]:.1f} | {A['by_system_base'][s]:.1f} |")
     w("")
     w("Like-for-like split (BL-001 groups, base): " + "; ".join(
         f"{SCEN_NAME[k]} bag side {t[k]['like_for_like_base']['bag_side']:.0f} g, suspension "
@@ -827,18 +851,18 @@ def report(res: dict, shots: list) -> str:
     w("## 4. Against the leaders (BL-008 like-for-like basis)\n")
     w("Leader figures and inclusions: `docs/research/published_weight_definitions.md` section 2.1 (a URL on every "
       "figure there); the basis rule per leader: `weight_configs_proposal.md` section 4.\n")
-    w("| leader | published g | our basis | B.2 | proven now | after tests | owner options |")
-    w("|---|---:|---|---:|---:|---:|---:|")
+    w("| leader | published g | our basis | B.2 | proven now | after tests |")
+    w("|---|---:|---|---:|---:|---:|")
     for r in res["leaders"]:
         basis = "base" + "".join(f" + {a}" for a in r["add"]) + "".join(f" - {b}" for b in r["remove"])
         cell = lambda k: f"{r[k]['ours_g']:.0f} ({r[k]['delta_g']:+.0f}, {r[k]['pct']:+.0f} %)"  # noqa: E731
-        w(f"| {r['leader']} | {r['published_g']:.0f} | {basis} | {cell('B.2')} | {cell('P')} | {cell('A')} | {cell('O')} |")
+        w(f"| {r['leader']} | {r['published_g']:.0f} | {basis} | {cell('B.2')} | {cell('P')} | {cell('A')} |")
     lo = min(r["A"]["delta_g"] for r in res["leaders"] if r["published_g"] > 2000)
     hi = max(r["A"]["delta_g"] for r in res["leaders"] if r["published_g"] > 2000)
     w(f"\nAfter tests, we are {lo:+.0f} to {hi:+.0f} g against the framed leaders (Seek Outside excluded: a 1.7 kg "
       "system is another class).\n")
     w("## 5. Is 6.6 lb (2994 g, base) reachable?\n")
-    w(f"**No.** The lightest scenario is {min(P['base'], A['base'], O['base']):.0f} g. Gap after owner options: "
+    w(f"**No.** The lightest scenario is {min(P['base'], A['base']):.0f} g. Gap after tests: "
       f"**{fc['gap_g']:.0f} g ({fc['gap_g'] / OZ:.1f} oz)**.\n")
     w("What closing it would cost in features (CORRIE F base rows; frozen features cannot be traded, RULES.md rule 9):\n")
     w("| item | g | what the hunter loses | owner-frozen |")
@@ -854,14 +878,10 @@ def report(res: dict, shots: list) -> str:
     w(f"- Not in any scenario: the belt-foam reserve (BL-006 d2 + d4, {fc['belt_foam_reserve_g']:+.1f} g, gated by HB-1 "
       "and a compression-set check). On its own it does not close the gap.")
     fxa, fxc = res["fixed_torso"]["a"], res["fixed_torso"]["c"]
-    w(f"- BL-007 fixed torso does not help once the kits are in: (a) {fxa['pack_delta_g']:+.1f} g against H1, kits with "
-      f"OD 17 legs {ck['M']['(a)+(d2)+(c17 bore 19)']:+.1f} g, and BL-007 removes a pawl housing that C4 already "
-      f"took out: net {st['O_fixed']['delta_g']['base']:+.1f} g. (c) would be "
-      f"{fxc['pack_delta_g'] - fxa['pack_delta_g']:+.1f} g more. **Neither has been restated on the per-torso "
-      f"fatigue basis adopted in BL-017** (old basis (a) {fxa['fatigue_old_basis']}, (c) {fxc['fatigue_old_basis']}; "
-      f"H1 dropped {res['h1_fatigue']['old']:.3f} -> {res['h1_fatigue']['per_torso']:.3f} on restatement). Scaled by "
-      f"the same ratio they would be {fxa['fatigue_old_basis'] * res['h1_fatigue']['ratio']:.2f} and "
-      f"{fxc['fatigue_old_basis'] * res['h1_fatigue']['ratio']:.2f}, below 1.0; that is an estimate, not a result. The structural-fea-engineer should restate them before the owner is asked.")
+    w(f"- Retired, not booked: BL-007 fixed torso ((a) {fxa['pack_delta_g']:+.1f} g against H1 on its own, "
+      f"{st['O_fixed']['delta_g']['base']:+.1f} g once the kits it replaces are undone) and the BL-017 OD 17 legs "
+      f"({st['A_c17']['delta_g']['base']:+.1f} g). Both fall below fatigue 1.0 on the cloth-sim loads (BL-021 (4), "
+      "0.97-0.99), so neither is a lever.")
     w("- The lever the 6.6 lb target needs is on the frame side (BL-008: frame side about double the leaders'), "
       f"which no open ticket reaches: after tests the suspension is {A['like_for_like_base']['suspension']:.0f} g.\n")
     w("## 6. Estimates and uncertainty\n")
@@ -880,9 +900,16 @@ def report(res: dict, shots: list) -> str:
     for n in res["estimates"]["A"]["named"]:
         w(f"| {n['name']} | {n['g']:.1f} | {n['band_g']:.1f} |")
     w("\nOther open estimates:\n")
-    w(f"- IM3 fairlead cheek booked at the adopted 27 mm ({st['P_cheek']['delta_g']['base']:+.1f} g a pair; fatigue "
-      "1.04 at 15 in, BL-010 A1-CF). BL-014 B2: the margin is inside its input scatter; BL-021 may size it to about "
-      "1.25 (about 1-3 g a pair more, `loadpath_check.FROZEN`).")
+    w(f"- IM3 fairlead cheek 28 mm: booked inside the H1B raster at {cc['raster_g']:.1f} g; the stand-alone "
+      f"fairlead volume is {cc['frozen_pair_28_g']:.1f} g a pair, so up to {cc['frozen_pair_28_g'] - cc['raster_g']:+.1f} g "
+      "may be unbooked (ASSUMPTION: the raster overlap is right; settled by weighing the two printed halves against "
+      "the slicer).")
+    pr = json.loads((ANALYSIS / "h1_buckling.json").read_text())["print"]
+    pm = pr["lower"]["g"] + pr["upper"]["g"]
+    w(f"- H1 body on the 2 mm raster ({hb['body_g']:.1f} g); BL-027's print halves (lower {pr['lower']['g']} g, upper "
+      f"{pr['upper']['g']} g, `h1_buckling.json` print) are {pm - hb['body_g']:+.1f} g against the raster, as BL-007's "
+      "H1 mesh was heavier than its raster; the ledger keeps the raster basis for every body (ASSUMPTION MESH, "
+      "h1_buckling.md; settled by weighing the printed halves).")
     for r in res["risks"]:
         w(f"- Risk not in any scenario: {r['what']}: +{r['g']:.1f} g.")
     w("- Misc (thread ~3 % of soft goods, ASSUMPTION in geometry.yaml) is kept at the B.2 figure; the lighter bag "
@@ -890,9 +917,10 @@ def report(res: dict, shots: list) -> str:
     w("- Crown kit masses are for kit M (torso 17.5-20.5 in); belt sizes S-XXL keep kit M (torso and belt are separate).\n")
     w("## 7. Configs added to the ledger basis (task 1)\n")
     w("`weight_rollup_v2.configs(size)` returns ledger-schema rows; `ledger.total / by_system / like_for_like` take them. "
-      "BL-023 folded the C1-C8 corrections into `huntkit/mass/ledger.py` (configs `corrie_b2_today_v2`, "
-      "`corrie_b2_h1_v2`, `corrie_b2_h1_c_v2`; `DEFAULT_CONFIG` = `corrie_b2_h1_v2`; the BL-001 names stay "
-      "unchanged). The design configs below are still roll-up row sets.\n")
+      "BL-023 folded the C1-C8 corrections into `huntkit/mass/ledger.py`, and the H1 configs carry H1B since "
+      "2026-11-12 (configs `corrie_b2_today_v2`, `corrie_b2_h1_v2`, `corrie_b2_h1_c_v2`; `DEFAULT_CONFIG` = "
+      "`corrie_b2_h1_v2`; the BL-001 names stay unchanged). The design configs below are still roll-up row sets; "
+      "bl007_a / bl007_c are retired designs, kept for reference.\n")
     w("| config | total g (belt M) | bag side | suspension |")
     w("|---|---:|---:|---:|")
     for k, v in res["configs"].items():

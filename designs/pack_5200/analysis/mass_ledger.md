@@ -131,6 +131,30 @@ Ranking on the ledger basis (lightest first): B -133.4 g, E +0.6 g, A +24.0 g, C
 - D's `cache.corrie_b2_system()` counts the roll-top HDPE strip twice (B-07s in the body and again in the geometry.yaml roll-top row, cache.CORRIE_ROLLTOP_HW_G); corrected above.
 - `frame_mass_production.json` `frame_g` (1062.6) still omits the dowels for its consumers (weight_pass_corrie, build_geometry), so `corrie.weight_table` is 18.5 g light for today's frame.
 
+## 7a. Corrected configs (`_v2`, the default for new tickets)
+
+BL-023 folded BL-013's booking corrections C1-C8 into the ledger; on 2026-11-12 the H1 configs gained **H1B**, the H1 body as adopted (BL-024 + BL-027 + the BL-021 28 mm IM3 cheeks), read from `analysis/h1_buckling.json` `chosen` (`ledger.h1_body_update`). `frame_mass_h1.json` stays BL-007's record of the H1 body; the ledger raises if h1_buckling.json was computed on a different H1 base. The BL-001 config names above are unchanged (other documents quote them); `DEFAULT_CONFIG` = `corrie_b2_h1_v2`. These are the CORRIE B.2 bag on each frame; the whole-pack scenarios (CORRIE F, gated changes) are `analysis/weight_rollup_v2.md`.
+
+H1B (belt-size independent): body 757.7 -> 800.7 g raster (+42.9 g booked, 0 lb 1.5 oz) = BL-024 +18.8 + BL-027 members +22.2 + 28 mm IM3 cheeks +2.0 g (H1-G0.55-B1/2.5).
+
+| correction | corrie_b2_today_v2 | corrie_b2_h1_v2 | corrie_b2_h1_c_v2 |
+|---|---:|---:|---:|
+| C1 | -49.4 | -49.4 | -49.4 |
+| C2 | -12.3 | -12.3 | -12.3 |
+| C3 | +24.2 | +24.2 | +24.2 |
+| C4 | -8.0 | -8.0 | -8.0 |
+| C5 | +9.1 | +9.1 | +9.1 |
+| C6 | +0.0 | +0.0 | +0.0 |
+| C7 | +0.0 | +0.0 | +0.0 |
+| C8 | -12.7 | -12.7 | -12.7 |
+| H1B | - | +42.9 | +42.9 |
+
+| config | S | M | L | XL | XXL |
+|---|---:|---:|---:|---:|---:|
+| `corrie_b2_today_v2` | 3906.2 | 3933.9 | 3958.2 | 3994.5 | 4023.6 |
+| `corrie_b2_h1_v2` | 3893.1 | 3920.8 | 3945.2 | 3981.5 | 4010.5 |
+| `corrie_b2_h1_c_v2` | 3884.7 | 3912.4 | 3936.7 | 3973.0 | 4002.1 |
+
 ## 8. Screenshot
 
 `outputs/screens/20261110_BL001_1.png`: stacked bars by system, three configs, belt M.
