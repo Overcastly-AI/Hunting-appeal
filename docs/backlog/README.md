@@ -77,3 +77,4 @@ Nothing here is decided; the tickets produce the material.
 | BL-026 | Renders: CORRIE F rev 1 on the final H1 frame | pack-designer (Fable) | M | 024, 012 | render set matches the adopted design |
 | BL-027 | H1 buckling on sim loads; clean print files with 28 mm cheek | structural-fea-engineer | M | 024 | unblocks frame release R1 (with MT-1) |
 | BL-028 | Guy routing on rev 1: real path, lifter clearance, CG | pack-designer | M | 022, 026 | confirm or fix the guy/lifter clash |
+| BL-029 | Top anchor and lid redesign, informed by Exo and peers | pack-designer | L | 028 | owner: pouch looks wrong; rev 1 guys fail at 15 in |
