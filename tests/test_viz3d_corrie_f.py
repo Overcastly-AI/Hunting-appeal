@@ -111,6 +111,9 @@ def test_shot_list_covers_the_ticket_and_labels_the_figure():
     for k, s in CF.SHOTS.items():
         if s.get("pose"):
             assert CF.NOT_A_PHOTO in s["sub"], k                 # every shot with the hunter says it is a render
+        else:
+            assert CF.MODEL in s["sub"], k                       # display-form shots say so too
+        assert len(s["sub"]) <= CF.SUB_MAX, (k, len(s["sub"]))   # the caption band does not cut the line off
     cams = [tuple(CF.SHOTS[k]["view"][a] for a in ("az", "el", "fov")) + tuple(CF.SHOTS[k]["view"]["box"])
             for k in ("hero", "day", "full")]
     assert cams[0] == cams[1] == cams[2]                         # the three load states share one camera

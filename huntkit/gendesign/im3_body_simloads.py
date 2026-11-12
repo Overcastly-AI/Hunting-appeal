@@ -101,7 +101,8 @@ def frame_forces_from_run(run: str, torso: int, case: str = "meat", fine: bool |
         fine = float(rj["mesh"]["h_mm"]) < 40.0
     S.install(None)
     try:
-        pm = PackModel(load_scenario(str(S.scenario_path(torso))), fine=fine, verbose=False)
+        scen = Path(rj.get("scenario_file") or S.scenario_path(torso))      # the run's own scenario (rev 0 or rev 1)
+        pm = PackModel(load_scenario(str(scen)), fine=fine, verbose=False)
         cdef = dict(pm.scen["cases"][case])
         if cdef.get("contents_L") == "auto":
             cdef["contents_L"] = rj["cases"][case]["inputs"]["contents_L"]
@@ -157,7 +158,7 @@ def frame_forces_from_run(run: str, torso: int, case: str = "meat", fine: bool |
                        "z_lo": float(x[m, 2].min()), "z_hi": float(x[m, 2].max()),
                        "node_f": [[float(v) for v in xx] + [-float(v) for v in ff] for xx, ff in zip(x[m], fb[m])]}
     meat = rj["cases"][case].get("meat") or {}
-    return {"run": run, "torso": torso, "case": case, "h_mm": float(rj["mesh"]["h_mm"]),
+    return {"run": run, "scenario": rj.get("scenario", ""), "torso": torso, "case": case, "h_mm": float(rj["mesh"]["h_mm"]),
             "converged": bool(rj["cases"][case]["converged"]), "forces": out,
             "meat": {k: meat[k] for k in ("P_n", "face_n", "overturning_pull_n", "to_strap_anchors_n") if k in meat}}
 
@@ -330,31 +331,41 @@ def eye_margins(fi_pn: dict, hooks: dict, strap: np.ndarray, misuse_n: float, go
     return out
 
 
-# runs used (outputs/clothsim/corrie_f/<run>, meat case unless named); F_PR15_fine_meat_BL021 is this ticket's
-# fine (h 25 mm) run of CORRIE F 15 in meat (corrie_f_sim scenario cf_PR15, own runner, nothing else written)
+# Runs used (outputs/clothsim/corrie_f/<run>). Two CORRIE F revisions, same 30 mm top setback:
+# * rev 0 (BL-011, guys round the bar ends x +/-100; scenarios cf_PR{t}.yaml): coarse F_PR{15,19,23} as they stood at
+#   2026-11-11 21:55 and this ticket's fine (h 25) 15 in meat run F_PR15_fine_meat_BL021. BL-022 later re-ran the coarse
+#   folders on rev 1, so the rev 0 coarse forces exist only in the frozen cache OUT/sim_frame_forces.json (extracted
+#   from the node positions before they were overwritten).
+# * rev 1 (BL-022, guys at x +/-52; scenarios cf_PR{t}_gx52.yaml, BL-022's runs, read only): coarse F_PR{15,19,23}
+#   and fine F_PR{15,19,23}_fineFM (fill + meat). Rev 1 is corrie_f.REVISION, the current design.
 RUNS = {"15c": ("F_PR15", 15), "15f": ("F_PR15_fine_meat_BL021", 15), "19c": ("F_PR19", 19), "23c": ("F_PR23", 23)}
-SIMFORCES = OUT / "sim_frame_forces.json"
+RUNS1 = {"15c1": ("F_PR15", 15), "19c1": ("F_PR19", 19), "23c1": ("F_PR23", 23),
+         "15f1": ("F_PR15_fineFM", 15), "19f1": ("F_PR19_fineFM", 19), "23f1": ("F_PR23_fineFM", 23)}
+SIMFORCES = OUT / "sim_frame_forces.json"           # rev 0 (frozen)
+SIMFORCES1 = OUT / "sim_frame_forces_rev1.json"     # rev 1
 CANDIDATES = ((12.5, 8.0), (13.5, 8.0), (14.0, 8.0), (15.0, 8.0), (16.0, 8.0), (13.5, 9.0), (13.5, 10.0),
               (12.5, 10.0), (15.0, 9.0), (14.0, 10.0))
 
 
-def sim_forces(refresh: bool = False) -> dict:
-    """Frame-side 1 g forces of the four runs (meat; fill too for the coarse runs), cached in OUT."""
-    if SIMFORCES.exists() and not refresh:
-        return json.loads(SIMFORCES.read_text())
+def sim_forces(refresh: bool = False, rev: int = 0) -> dict:
+    """Frame-side 1 g forces (meat; fill too except the rev 0 fine run), cached in OUT. Rev 0 is frozen (its
+    coarse node files were overwritten by BL-022's rev 1 runs): refresh only rebuilds rev 1."""
+    path, runs = (SIMFORCES, RUNS) if rev == 0 else (SIMFORCES1, RUNS1)
+    if path.exists() and not (refresh and rev == 1):
+        return json.loads(path.read_text())
     res = {}
-    for key, (run, t) in RUNS.items():
+    for key, (run, t) in runs.items():
         for case in (("meat",) if key == "15f" else ("fill", "meat")):
             res[f"{run}|{case}"] = frame_forces_from_run(run, t, case)
     OUT.mkdir(parents=True, exist_ok=True)
-    SIMFORCES.write_text(json.dumps(res, default=float))
+    path.write_text(json.dumps(res, default=float))
     return res
 
 
-def eye_hooks(sf: dict) -> dict:
+def eye_hooks(sf: dict, runs: dict = RUNS) -> dict:
     """1 g IM3 hook vectors per run and side (meat case), from the frame forces."""
     out = {}
-    for key, (run, _t) in RUNS.items():
+    for key, (run, _t) in runs.items():
         ff = sf[f"{run}|meat"]
         for side in "RL":
             out[f"{key}{side}"] = ff["forces"][f"hook_im520_{side}"]["f"]

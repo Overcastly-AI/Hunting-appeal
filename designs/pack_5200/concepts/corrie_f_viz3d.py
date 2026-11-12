@@ -23,9 +23,9 @@ sys.path.insert(0, str(ROOT))
 
 SCREENS = ROOT / "outputs" / "screens"
 DOCS = ROOT / "docs" / "screens"
-PREFIX = "20261111_BL012"
+PREFIX = "20261112_BL012"
 
-# file number of each shot (outputs/screens/20261111_BL012_<n>.png); 16-18 are sheets, 19-20 the comparison frames
+# file number of each shot (outputs/screens/20261112_BL012_<n>.png); 16-18 are sheets, 19-20 the comparison frames
 NUMBER = {"hero": 1, "side": 2, "day": 3, "full": 4, "walk": 5, "kneel": 6, "door": 7, "meat": 8, "frame": 9,
           "frame_bare": 10, "addons_on": 11, "addons_on_left": 12, "addons_off": 13, "belt": 14, "roll": 15,
           "compare_f": 19, "compare_b2": 20}
@@ -74,16 +74,16 @@ def sheets() -> list:
     if png(NUMBER["compare_b2"]).exists() and png(NUMBER["compare_f"]).exists():
         out.append(studio.sheet([(png(NUMBER["compare_b2"]), png(NUMBER["compare_f"]))], png(SHEETS["compare"]),
                                 titles=("CORRIE B.2", "CORRIE F (door D2)"),
-                                subs=("wings, crown hood, horseshoe door", "S15 shell, no wings, no hood; same camera, "
-                                                                           "full load")))
+                                subs=("wings, crown hood, horseshoe door", "no wings, no hood; same camera, full load. "
+                                                                           "Rendered 3D models")))
     if all(png(NUMBER[k]).exists() for k in ("day", "hero", "full")):
         out.append(_row([png(NUMBER[k]) for k in ("day", "hero", "full")], png(SHEETS["loads"]),
                         "CORRIE F: day 12 L, 6-day 45 L, full 85 L class",
-                        "Same camera, 6 ft hunter at the 19 in setting. Rendered 3D figure, not a photograph"))
+                        "Same camera, 6 ft hunter at the 19 in torso setting. Rendered 3D figure, not a photograph"))
     if png(NUMBER["addons_on"]).exists() and png(NUMBER["addons_off"]).exists():
         out.append(studio.sheet([(png(NUMBER["addons_on"]), png(NUMBER["addons_off"]))], png(SHEETS["addons"]),
                                 titles=("Add-ons on", "Add-ons off"),
-                                subs=("tripod, scope pod, top pouch", "base pack, same camera")))
+                                subs=("tripod, scope pod, top pouch", "base pack, same camera. Rendered 3D models")))
     return out
 
 

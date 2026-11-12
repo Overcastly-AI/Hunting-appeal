@@ -44,10 +44,10 @@ WORK = REPO / "outputs" / "corrie_f_viz"
 # seam (CORRIE B.2: 60 mm). Settled by rolling the first prototype at the day and 6-day loads and marking where the
 # roll ends land.
 CLIP_BELOW_SEAM_MM = 150.0
-# ASSUMPTION POUCH-1 (picture choice): the top pouch as a limp, part-full bag: rounded heap of goods 16 mm high at
-# the edge of a 60 mm box, the four strap points held. Settled by a photograph of the sewn pouch with 1 kg in it.
-POUCH_SOFT = {"vertex_mass": 0.010, "bending": 0.12, "heap": 20.0, "round": 0.95, "pin": True, "pillow": 0.55,
-              "relax": 10}
+# ASSUMPTION POUCH-1 (picture choice): the top pouch as a limp, part-full bag: rounded heap of goods (half height 26 mm) in
+# a 60 mm box whose top seam slumps 75 % at the rim, the four strap points held. Settled by a photograph of the sewn pouch with 1 kg in it.
+POUCH_SOFT = {"vertex_mass": 0.010, "bending": 0.12, "heap": 26.0, "round": 0.95, "pin": True, "pillow": 0.75,
+              "relax": 16}
 TOGGLE = {"d": 9.0, "L": 34.0}      # ASSUMPTION: POM toggle 9 x 34 mm (no record yet; BL-004 names the part only)
 BINER = {"L": 58.0, "W": 36.0, "rod": 4.6, "gate": 1.9}   # ASSUMPTION: 22 g wiregate envelope (BL-010 names the rating)
 NOT_A_PHOTO = "Rendered 3D figure, not a photograph"
@@ -396,7 +396,8 @@ def scene(state: str = "sixday", carry: bool = False, level: int = 2, name: str 
 # ================================================================================================== the shots
 BOX = [-290.0, -120.0, -100.0, 290.0, 360.0, 1140.0]
 STATE_LABEL = {"day": "day load, 12 L, top pouch off", "sixday": "6-day load, 45 L", "full": "full, 85 L class"}
-SUB = "CORRIE F, door D2, on the H1 frame with belt B. "
+SUB = "CORRIE F door D2, H1 frame, belt B. "
+MODEL = "Rendered 3D model, not a photograph"
 PK = {"mannequin": True, "lid": True}
 
 
@@ -414,38 +415,36 @@ HUNTER_BOX = [-300.0, -330.0, -1080.0, 300.0, 380.0, 1060.0]     # same camera f
 SHOTS = {
     # --- on the 6 ft hunter, 19 in setting
     "hero": _hunter("stand", "sixday", -36, 9, "CORRIE F on a 6 ft hunter: 3/4 rear, 6-day load (45 L)",
-                    SUB + "1829 mm man, pack at the 19 in setting. ", box=HUNTER_BOX, zoom=1.3),
+                    SUB + "1829 mm (6 ft) man, 19 in torso setting. ", box=HUNTER_BOX, zoom=1.3),
     "side": _hunter("side", "sixday", 90, 4, "Side profile, 6-day load (45 L)",
                     SUB + "How tall and how deep it rides. ", box=HUNTER_BOX, zoom=1.3),
     "day": _hunter("stand", "day", -36, 9, "Day load (12 L): rolled down and cinched, top pouch off",
-                   SUB + "Same camera as the 6-day and full shots. ", box=HUNTER_BOX, zoom=1.3),
+                   SUB + "Same camera as 6-day and full. ", box=HUNTER_BOX, zoom=1.3),
     "full": _hunter("stand", "full", -36, 9, "Full: 85 L class, collar standing, pouch on the roll",
-                    SUB + "Same camera as the day and 6-day shots. ", box=HUNTER_BOX, zoom=1.3),
+                    SUB + "Same camera as day and 6-day. ", box=HUNTER_BOX, zoom=1.3),
     "walk": _hunter("walk", "sixday", -58, 6, "Walking uphill with trekking poles, 6-day load",
                     "CORRIE F. HDRI and grass: Poly Haven, CC0. ", "outdoor"),
     "kneel": _hunter("kneel", "sixday", 118, 5, "Kneeling and glassing with the pack on, 6-day load",
                      "CORRIE F. HDRI and grass: Poly Haven, CC0. ", "outdoor"),
     "belt": _hunter("front", "sixday", 150, 8, "Hipbelt B and pockets from the front 3/4",
-                    "Belt pocket left, bottle holster right, 50 mm buckle with 2:1 pulls, sternum strap. ",
+                    "Belt pocket left, bottle holster right, 50 mm buckle, sternum strap. ",
                     box=[-330.0, -420.0, -120.0, 330.0, 140.0, 600.0]),
     # --- on the display form
     "door": {"scene": "full", "view": {"az": -22, "el": 8, "fov": 24, "fstop": 11, "box": [-270, 0, 20, 270, 400, 1010]},
              "state": {"mannequin": True, "lid": True, "full": True}, "caption": "Door D2 open (full load)",
-             "sub": "Whole aft face between the camo blades hinges up at z 650; W1 and W2 unhooked; IM1-IM3 inside"},
+             "sub": "Aft face between the camo blades hinges up; W1, W2 unhooked; IM1-IM3 inside"},
     "meat": {"scene": "full", "view": {"az": -18, "el": 6, "fov": 24, "fstop": 11, "box": [-270, 0, 20, 270, 400, 1010]},
              "state": {"mannequin": True, "lid": True, "full": True, "haul": True},
              "caption": "Meat inside the bag on IM1-IM3, door D2 open",
-             "sub": "Boned meat in a game bag strapped to the frame face by the three 25 mm internal meat straps"},
+             "sub": "Game bag on the frame face under the three 25 mm internal meat straps"},
     "frame": {"scene": "full", "view": {"az": -72, "el": 6, "fov": 24, "fstop": 11, "frame": "pack", "zoom": 1.0},
               "state": {"mannequin": True, "mode": "frame", "haul": True},
               "caption": "Bag off: meat on the H1 frame",
-              "sub": "Game bag in the under-strap cradle, held to the frame by the meat straps (drawn at the "
-                     "legacy 38 mm; BL-003 makes them 25 mm)"},
+              "sub": "Game bag in the under-strap cradle; straps drawn 38 mm (now 25 mm, BL-003)"},
     "frame_bare": {"scene": "full", "view": {"az": -38, "el": 10, "fov": 24, "fstop": 11, "frame": "pack"},
                    "state": {"mannequin": True, "mode": "frame"},
                    "caption": "Bag off: the H1 frame, crown, spreader and belt B",
-                   "sub": "H1 printed body with the carbon crown at 19 in; IM3 fairlead cheek drawn at the released "
-                          "18 mm (27 mm since 2026-11-11, not yet in the mesh)"},
+                   "sub": "Carbon crown at 19 in; IM3 fairlead cheek drawn at 18 mm (27 mm since 11-11)"},
     "addons_on": {"scene": "full_carry", "view": {"az": 38, "el": 12, "fov": 24, "fstop": 11, "box": BOX, "zoom": 1.4},
                   "state": PK, "caption": "Add-ons on: tripod under W1-W3 (right), scope pod (left), top pouch",
                   "sub": "CORRIE F, full load"},
@@ -459,10 +458,14 @@ SHOTS = {
                   "state": PK, "caption": "CORRIE F, full load", "sub": "S15 shell, door D2, no wings, no hood"},
     "compare_b2": {"scene": "b2", "view": {"az": -38, "el": 12, "fov": 24, "fstop": 11, "box": BOX, "zoom": 1.4},
                    "state": PK, "caption": "CORRIE B.2, full load", "sub": "Same camera"},
-    "roll": {"scene": "sixday", "view": {"az": -32, "el": 22, "fov": 18, "fstop": 8, "at": [-150.0, 110.0, 800.0],
-                                         "span": 420}, "state": PK, "caption": "Rolled closure and top pouch, 6-day load",
-             "sub": "Roll ends bent down to the clip tabs, now 150 mm below the collar seam; pouch as limp cloth"},
+    "roll": {"scene": "sixday", "view": {"az": -32, "el": 22, "fov": 18, "fstop": 8, "at": [0.0, 150.0, 610.0],
+                                         "span": 560}, "state": PK, "caption": "Rolled closure and top pouch, 6-day load",
+             "sub": "Roll ends bent down to clip tabs 150 mm below the collar seam; soft pouch"},
 }
+for _k, _s in SHOTS.items():                       # every caption says what the picture is (owner, 2026-11-12)
+    if not _s.get("pose"):
+        _s["sub"] = _s["sub"].rstrip(". ") + ". " + MODEL
+SUB_MAX = 116                                      # characters that fit the 1600 px caption band
 ORDER = ("hero", "side", "day", "full", "walk", "kneel", "door", "meat", "frame", "frame_bare", "addons_on",
          "addons_on_left", "addons_off", "belt", "roll", "compare_f", "compare_b2")
 
@@ -475,7 +478,7 @@ def build_scene(key: str, level: int = 2):
     return scene(st, carry == "carry", level)
 
 
-def render(names=ORDER, out_dir=None, prefix="20261111_BL012", quality="final", level: int = 2, numbers=None,
+def render(names=ORDER, out_dir=None, prefix="20261112_BL012", quality="final", level: int = 2, numbers=None,
            bpy_python=None, threads=None) -> list:
     """Render the named shots. Stage 1 (this interpreter) builds each scene once; stage 2 runs one Blender process
     per (scene, pose, studio / outdoor) group. ``numbers`` = {shot: n} fixes the file numbers (default: position in
@@ -560,7 +563,7 @@ def main(argv=None):
     ap.add_argument("--shots", default="all")
     ap.add_argument("--quality", default="final")
     ap.add_argument("--level", type=int, default=2)
-    ap.add_argument("--prefix", default="20261111_BL012")
+    ap.add_argument("--prefix", default="20261112_BL012")
     ap.add_argument("--out", default=None)
     a = ap.parse_args(argv)
     if a.job:
