@@ -1,7 +1,9 @@
 # Pack 5200 physical test plan (one plan for every coupon and prototype test)
 
-Owner: manufacturing-engineer, 2026-11-10, backlog ticket BL-016. Frame **H1** (owner adopted 2026-11-10), bag
-**CORRIE B.2**, hipbelt **B** with the 7075 plate (package C), load standard **HA-LS-1 rev C**.
+Owner: manufacturing-engineer, 2026-11-10, backlog ticket BL-016; **revised 2026-11-11 by BL-023** (BL-014 review
+B1, S4, S5, S7, S8): CA-1 release rule on the governing flip point, 13 new gates that the weight roll-up relies on, and
+the BL-010 per-row proof loads. Frame **H1** (owner adopted 2026-11-10), bag **CORRIE F** (BL-011, door D2) with the
+CORRIE B.2 parts as fallbacks, hipbelt **B** with the 7075 plate (package C), load standard **HA-LS-1 rev C**.
 
 - Register (one row per test, every column the ticket asks for): [`test_register.csv`](test_register.csv)
 - One-page ranking for the phone: `outputs/screens/20261111_BL016_1.png` (same image as `20261110_BL016_1.png`)
@@ -12,22 +14,29 @@ Units: N, kg, mm, with lb and in in brackets. The crane scale reads kg: **N = kg
 
 ## 0. The plan in one screen
 
-1. **83 test IDs** were found across the analysis, build and research documents listed in §10. **48 are active.** 35 are retired (they belong to a frame or bag
-   entry that was not adopted, or to a superseded part) or merged into another test (§6, §7).
-2. **Four kits** cover all 48 tests: **A** pull bench, **B** lever fatigue rig, **C** frame test stand, **D** measuring
+1. **96 test IDs** were found across the analysis, build and research documents listed in §10. **61 are active**
+   (13 added by BL-023, marked "new" in §3). 35 are retired (they belong to a frame or bag entry that was not adopted, or to a
+   superseded part) or merged into another test (§6, §7).
+2. **Four kits** cover all 61 tests: **A** pull bench, **B** lever fatigue rig, **C** frame test stand, **D** measuring
    tools, plus **E** (things you already own: washing machine, gloves, freezer). Kits cost about **$875** in all
-   (§4). Test samples add about **$409**, plus the sacrificial P1 frame for T2u ($437, `frame_h1.md` §5).
+   (§4). Test samples add about **$527**, plus the sacrificial P1 frame for T2u and IM3-EP ($437, `frame_h1.md` §5).
 3. **Order: safety first.** Nothing gets carried until the hooks, bartacks, cams and seams have held their proof
-   load (weekend 1), the frame material and joint coupons have passed (CA-1, CA-5), and the first-article frame has
-   passed T9, T1, T3, T2 and T4.
+   load (weekend 1), the frame material, joint and IM3 eye coupons have passed (CA-1 at the release level, CA-5,
+   IM3-EC), and the first-article frame has passed T9, IM3-EP, T1, T3, T2 and T4.
+   **H1 is released only if CA-1 measures a ratio ≥ 0.310** (governing flip point 0.290 + 0.02; `CA1_fatigue_rig.md` §1, §6). A pass at the
+   record's 0.30 is **not** enough on today's design.
 4. **Then grams.** Eight tests unlock or protect mass. Ranked by grams per dollar (parts + $15 per owner hour,
    ASSUMPTION): WP-3, WP-1, WP-5, CA-1, WP-2, HB-5, RF-1, FS-O5 (§5). Together they are worth **160 g** (if CA-1
    proves 0.40; 100 g without it). WP-1, WP-3 and WP-5 protect 54.6 g that CORRIE B.2 already took.
-5. **First weekend:** build the pull bench and run 11 tests in about **13 h hands-on, $116 of samples** (§2). They
-   gate every sewn load point on the bag and harness. Start printing the CA-1 coupons the same weekend, because they
+   BL-023 adds the gates behind the roll-up's "after tests" savings: FT-S2, BP-1 + BP-2, HB-D1, HB-D2, HB-D3 hold
+   **191.0 g** (101.6 + 44.6 + 22.4 + 9.8 + 12.6), and the weekend-1 pulls plus TL-1 hold BL-003 (a) 116.9 g and
+   BL-004 103.0 g (§5).
+5. **First weekend:** build the pull bench and run 12 tests in about **14 h hands-on, $201 of samples**
+   (§2). They gate every sewn load point on the bag and harness, and the BL-010 per-row loads
+   (PT-1 2553 N, MT-1/MT-3 908 / 1080 N) are the gates for BL-003 (a) and BL-004 in the weight roll-up. Start printing the CA-1 coupons the same weekend, because they
    need 7 days of conditioning before the fatigue rig can use them.
-6. **Hours:** about **108 h hands-on** and about **409 h of unattended machine time** (mostly CA-1 at 1 Hz) for the
-   whole plan.
+6. **Hours:** about **130 h hands-on** and about **498 h of unattended machine time** (mostly CA-1 and IM3-EC at
+   1 Hz) for the whole plan.
 
 ## 1. Safety rules (read before every session)
 
@@ -44,7 +53,7 @@ Units: N, kg, mm, with lb and in in brackets. The crane scale reads kg: **N = kg
 - **If anything fails: stop, photograph it, write it in the log and send the log.** Do not repair and continue.
   A failure is a result, not a mistake.
 
-## 2. First weekend (beginner, about 13 h hands-on)
+## 2. First weekend (beginner, about 14 h hands-on)
 
 Everything here uses kit A (pull bench), kit E and three items from kit D (caliper, phyphox, loupe). Each test cites
 the document that defined it; the numbers here are copied from those documents.
@@ -55,19 +64,22 @@ the document that defined it; the numbers here are copied from those documents.
 
 | sample | qty | for |
 |---|---:|---|
-| rated 38 mm bag hooks (the production part, ≥ 2200 N) | 5 | PT-1 |
-| meat-strap 38 mm hooks | 5 | MT-2 |
-| 38 mm cam buckles (the IM cam and the under-strap cam) | 5 | MT-3 |
+| rated wiregate carabiners (CAMP Nano 22 class, record `carabiner_wiregate_22kn`) | 10 | PT-1 (5), MT-2 IM3 (5) |
+| 25 mm rated G-hooks (record `g_hook_25mm_aluminium`) | 5 | MT-2 IM1/IM2 |
+| 25 mm aluminium cam buckles (IM and US cam) | 5 | MT-3 |
+| heavy 25 mm ladder locks (record `ladder_lock_25mm_heavy`) + tri-glides | 5 + 5 | LL-H |
 | heavy 25 mm ladder locks + 25 mm D-rings | 5 + 5 | HB-7 |
 | 25 mm ladder lock + tri-glide keeper | 1 + 1 | PT-5 |
 | 38 mm ladder lock (W1-W3 type) | 1 | WP-3 |
-| 38 mm poly webbing, 25 mm webbing | about 4 m + 3 m | all |
+| 38 mm poly webbing, 25 mm webbing | about 3 m + 6 m | all |
+| sand bags for a 37.3 kg hang (LL-H) | 5 × 37.3 kg, or one at a time | LL-H |
 | Hypalon, B-01 laminate, B-05 500D, 330D, ULTRA 200, 100D Robic offcuts | scraps | PT-2, PT-3, WP-1 |
 
-**Sew (about 5 h, counted in the 13 h)** on the same machine, thread and needle as the pack:
-- **MT-1:** 5 loops of 38 mm webbing, each end folded into a 20 mm loop and closed with a 38 × 38 box-X, stitch 301,
-  7 SPI, bonded nylon tex 135 (`bag_attachment.md` §5 sewn-side spec).
-- **PT-2:** 5 × T3 tongue on a B-17 tab on a B-01 swatch about 200 × 200 mm, exactly as `bag_attachment.md` §5 T3.
+**Sew (about 5 h, counted in the 14 h)** on the same machine, thread and needle as the pack:
+- **MT-1:** 10 loops of **25 mm** webbing (BL-003 (a)), each end folded into a 20 mm loop and closed with a 25 × 25
+  box-X, stitch 301, 7 SPI, bonded nylon tex 135 (`bag_attachment.md` §5 sewn-side spec).
+- **PT-2:** 5 × T3 tongue on a **70 mm** B-17 tab (BL-004 trim) on a B-01 swatch about 200 × 200 mm, as
+  `bag_attachment.md` §5 T3.
 - **PT-3:** 5 × HE eye on B-18 + B-01 + B-05 seam swatch, **without binding** (CORRIE B.2 as sewn,
   `corrie_body.md` §12.4).
 - **WP-1:** one 200 mm seam swatch per pairing: 330D|330D, 330D|ULTRA 200, 500D|330D, 100D|ULTRA. Stitch 301, then a
@@ -104,16 +116,20 @@ stated time, re-tension if the reading drops (webbing stretches), then release. 
 
 | order | test | set-up | target on the scale | hold | pass | defined in |
 |---:|---|---|---|---|---|---|
-| 1 | **PT-1** rated bag hook | hook over the 5 mm pin; 38 mm webbing loop on the hook bed | **216 kg** (2120 N) | 60 s | 5 of 5 hold, **gate closes** after release | `bag_attachment.md` §3, §5 |
-| 2 | **MT-2** meat-strap hook | as PT-1 | **92.8 kg** (910 N) | 1 min | 5 of 5 hold, gate closes | `BUILD_PLAN.md` §5a.0 |
-| 3 | **MT-3** cam buckle | webbing threaded as in the pack; paint-pen mark at the cam mouth | **92.8 kg** (910 N) | 1 min | mark moved **< 3 mm**, 5 of 5 | `BUILD_PLAN.md` §5a.0 |
+| 1 | **PT-1** IM3 bag carabiner | carabiner over the 5 mm pin; sewn T3 tongue on the carabiner | **260.2 kg** (2553 N) | 60 s | 5 of 5 hold, **gate closes** after release, no set | `loadpath_verification.md` §5, §8 |
+| 2 | **MT-2** meat-strap hooks | as PT-1: G-hooks, then carabiners | G-hook **65.7 kg** (645 N); carabiner **92.8 kg** (910 N) | 1 min | 5 of 5 each hold, gate closes | `loadpath_verification.md` §5, §8 |
+| 3 | **MT-3** 25 mm cam | webbing threaded as in the pack; paint-pen mark at the cam mouth | **92.6 kg** (908 N), then **110.1 kg** (1080 N) | 1 min each | mark moved **< 3 mm** at both, 5 of 5 | `loadpath_verification.md` §8 (CAM25) |
 | 4 | **HB-7** belt ladder lock | anchor on the buckle half → round the D-ring → back through the lock (corrected routing, `hipbelt_structural.md` §5); mark the webbing | **43.4 kg** (426 N), then keep pulling until it slips | 1 min at 43.4 kg | no slip at 43.4 kg; slip load ≥ **50.0 kg** (490 N) keeps the record | `hipbelt_structural.md` §5, §8 |
 | 5 | **PT-5** guy ladder lock + keeper | 25 mm webbing; mark at the lock | 0 → **17.3 kg** (170 N) → 0, **10 times** | – | total slip **< 5 mm** | `bag_attachment.md` §5 |
-| 6 | **WP-3** gloved tail | 38 mm ladder lock, 150 mm tail, 10 kg hanging | – | – | winter gloves on: release and re-tension **in one grab**, 5 of 5, loaded and slack | `corrie_body.md` §12.4 |
+| 6 | **LL-H** heavy ladder lock | 25 mm webbing + tri-glide as on B-22; mark at the lock; sand bags hanging 50 mm off the floor | **37.3 kg** (366 N) | **1 h** | slip **< 5 mm**, 5 of 5 | `loadpath_verification.md` S9, A3 |
+| 7 | **WP-3** gloved tail | 38 mm ladder lock, 150 mm tail, 10 kg hanging | – | – | winter gloves on: release and re-tension **in one grab**, 5 of 5, loaded and slack | `corrie_body.md` §12.4 |
 
 Notes:
-- MT-2 and MT-3: `meat_haul_modes.md` says 830 N; `BUILD_PLAN.md` says 910 N. This plan uses **910 N** (the higher,
-  = 1.5 × the 605 N meat-leg load). See §6.
+- MT-2 and MT-3: `meat_haul_modes.md` says 830 N; `BUILD_PLAN.md` says 910 N. This plan keeps **910 N** for IM3 (the
+  higher, = 1.5 × the 605 N meat-leg load) and uses the BL-010 per-row proofs for the rest (IM1 410, IM2 645 N; IM
+  908 N and US 1080 N on the cams and box-X). See §6.
+- PT-1 at 260.2 kg is the heaviest pull of the weekend: below the 280 kg scale stop, come-along only, blanket over the
+  sample. LL-H hangs a dead load: nobody under it, and keep it 50 mm off the floor so a slip ends on the floor.
 - HB-7: the source only says "as the record notes". The 426 N number is derived here: 1.5 (the doc's slip
   criterion) × 284 N (walking-peak lock load, `hipbelt_structural.md` §5).
 
@@ -121,8 +137,9 @@ Notes:
 
 - **WP-1:** put the 4 seam swatches in a mesh laundry bag with a towel. Normal cycle, cold (ASSUMPTION: the R-12 wash
   is a normal cold cycle), dry on a line. **3 cycles** across the weekend (about 1.5 h machine time each).
-- **CA-1 coupons:** print the 12 XY + 4 Z + 3 spare bars, the 3 Z bars and 3 short-beam blocks for CA-3 and 5 insert
-  blocks for HB-6, from the same dried spool and profile as the frame (`CA1_fatigue_rig.md` §2). Sunday: anneal
+- **CA-1 coupons:** print the 12 XY + 4 Z + 3 spare bars, the 3 Z bars and 3 short-beam blocks for CA-3, 5 insert
+  blocks for HB-6 and the **3 IM3 eye coupons for IM3-EC** (27 mm cheek, from the H1 STL), from the same dried spool and
+  profile as the frame (`CA1_fatigue_rig.md` §2, §6a). Sunday: anneal
   90 °C 6 h, then into the conditioning box (saturated magnesium nitrate, about 53 % RH, ASSUMPTION in
   `CA1_fatigue_rig.md` §2) for **7 days**. This is the critical path for the frame, which is why it starts now.
 
@@ -130,11 +147,11 @@ Notes:
 
 | order | test | set-up | target on the scale | hold | pass | defined in |
 |---:|---|---|---|---|---|---|
-| 7 | **MT-1** 38 mm box-X | loop over the 5 mm pin, other loop over a second pin on the anchor side | **92.8 kg** (910 N) | 1 min | 5 of 5 hold, no broken stitch | `BUILD_PLAN.md` §5a.0 |
-| 8 | **PT-2** T3 tongue on B-17 | B-01 swatch clamped 120 mm wide in the bar clamps; tongue loop on the pin | **216 kg** (2120 N) | 60 s | 5 of 5 hold, no stitch break, no laminate tear | `bag_attachment.md` §5 |
-| 9 | **PT-3** HE eye, no binding | 5 mm pin through the eye; swatch clamped | **156 kg** (1530 N) | 60 s | 5 of 5 hold | `bag_attachment.md` §5, `corrie_body.md` §12.4 |
-| 10 | **WP-1** wash fray | after the third wash, look at each seared edge with the loupe | – | – | **no fray past the second row** on any swatch | `corrie_body.md` §12.4 |
-| 11 | **HB-2** belt-face friction | see below | – | – | μ ≥ 0.45 credits the grip print | `hipbelt_fit.md` §10 |
+| 8 | **MT-1** 25 mm box-X | loop over the 5 mm pin, other loop over a second pin on the anchor side | 5 loops **92.6 kg** (908 N), 5 loops **110.1 kg** (1080 N) | 1 min | 5 of 5 at each, no broken stitch | `loadpath_verification.md` §8 (BOX25) |
+| 9 | **PT-2** T3 tongue on 70 mm B-17 | B-01 swatch clamped 120 mm wide in the bar clamps; tongue loop on the pin | **260.2 kg** (2553 N) | 60 s | 5 of 5 hold, no stitch break, no laminate tear | `loadpath_verification.md` §8 |
+| 10 | **PT-3** HE eye, no binding | 5 mm pin through the eye; swatch clamped | **156 kg** (1530 N) | 60 s | 5 of 5 hold | `bag_attachment.md` §5, `corrie_body.md` §12.4 |
+| 11 | **WP-1** wash fray | after the third wash, look at each seared edge with the loupe | – | – | **no fray past the second row** on any swatch | `corrie_body.md` §12.4 |
+| 12 | **HB-2** belt-face friction | see below | – | – | μ ≥ 0.45 credits the grip print | `hipbelt_fit.md` §10 |
 
 **HB-2 without a force gauge** (ASSUMPTION: a tilt-board static μ stands in for the ASTM D1894-style sled pull).
 Tape the base layer (polyester, then merino) flat on a smooth board. Wrap the belt face fabric round a 500 g sled
@@ -146,11 +163,13 @@ grip print, both base layers, dry and sprayed damp (sweaty). Pass to credit the 
 ### 2.5 After the weekend
 
 - Write the log (§8 template) and send it with photos of every failed or doubtful sample.
-- **Any failure in PT-1, MT-1, MT-2, MT-3 or PT-2/PT-3: change the hardware or the sewing and re-test 5 new samples
-  before you cut the bag.** These parts carry the meat.
+- **Any failure in PT-1, MT-1, MT-2, MT-3, LL-H or PT-2/PT-3: change the hardware or the sewing and re-test 5 new
+  samples before you cut the bag.** These parts carry the meat. A fail on the 25 mm parts (MT-1/MT-3 at 1080 N, MT-2)
+  sends the IM/US straps back to 38 mm (BL-003 fallback, +116.9 g); a fail on PT-1/PT-2/LL-H sends the top anchor back
+  to the hood and IM2 hooks (BL-004 fallback, +103.0 g). Tell the orchestrator: the weight roll-up moves.
 - Order kit B parts (lever rig) for weekend 2: the coupons will be ready on day 8.
 
-## 3. Full run order (all 48 active tests)
+## 3. Full run order (all 61 active tests)
 
 Tiers: **safety** = a strength, fatigue or retention margin depends on it; **grams** = it protects or unlocks a
 mass saving; **function** = fit, comfort, noise or a user procedure. Gram tests that cost under an hour are run in
@@ -158,70 +177,91 @@ the same session as the safety tests on the same kit (WP-3, WP-1 on weekend 1).
 
 Phases: **1** weekend 1 (bench); **2** coupons and lever rig (weeks 2–4); **3** sewn parts; **4** first-article
 frames P1 / P2 (only after CA-1 and CA-5 pass: `print/frame_h1/README.md`); **5** complete pack and field.
-Full steps, specimens, pass numbers and notes for every row are in `test_register.csv`.
+Full steps, specimens, pass numbers and notes for every row are in `test_register.csv`. **New** = added by BL-023;
+**rev** = pass load or rule changed by BL-023.
 
 | # | id | test | tier | gates | g at stake | kit | hands-on h | machine h | samples $ | defined in |
 |---:|---|---|---|---|---:|---|---:|---:|---:|---|
-| 1 | **PT-1** | 38 mm rated bag hook proof | safety | all 4 bag hooks (IM2/IM3, B-24 links) | – | A | 1.0 | – | 30 | analysis/bag_attachment.md §3, §5 |
-| 2 | **MT-2** | meat-strap hook proof (R-29) | safety | IM1-IM3 meat straps, under-straps (R-29) | – | A | 0.5 | – | 15 | BUILD_PLAN.md §5a.0; analysis/meat_haul_modes.md (assumptions) |
-| 3 | **MT-3** | cam buckle slip on 38 mm webbing (R-29) | safety | IM cams and the under-strap cam | – | A | 0.7 | – | 20 | BUILD_PLAN.md §5a.0; analysis/meat_haul_modes.md |
-| 4 | **HB-7** | hipbelt heavy ladder-lock slip, corrected 2:1 routing | safety | belt B 2:1 pull | – | A | 0.7 | – | 7.5 | analysis/hipbelt_structural.md §5, §8 |
-| 5 | **PT-5** | guy ladder lock + tri-glide keeper slip | safety | TG guys (top anchor) | – | A | 0.5 | – | 5 | analysis/bag_attachment.md §5 |
-| 6 | **WP-3** | gloved tail on W1-W3 ladder locks | grams | A-2 wrap tails 250 -> 150 mm | 5.4 | E | 0.3 | – | 0 | analysis/corrie_body.md §12.4 |
-| 7 | **MT-1** | 38 mm box-X bartack proof (R-29) | safety | every 38 mm box-X on the meat harness | – | A | 1.0 | – | 3 | BUILD_PLAN.md §5a.0 |
-| 8 | **PT-2** | T3 tongue on B-17 on a B-01 swatch | safety | IM3 bag attachment | – | A | 2.5 | – | 15 | analysis/bag_attachment.md §5 |
-| 9 | **PT-3** | HE eye on B-18 + B-01 + B-05 seam, built without binding | safety | hinge eyes; B-1 (no binding); C-5 if on ULTRA 200X | – | A | 2.5 | – | 15 | analysis/bag_attachment.md §5; analysis/corrie_body.md §12.4 (rebuilt); analysis/fabric_swap_evidence.md O-5 |
-| 10 | **WP-1** | wash-swatch fray, seams without binding | grams | B-1 (no binding on body seams) | 36.4 | E | 2.0 | 4.5 | 5 | analysis/corrie_body.md §12.4; analysis/weight_pass_corrie.md B-1; analysis/build_simplicity.md S-03 |
-| 11 | **HB-2** | belt face friction | function | silicone grip print (A-1; OD-HB4) | – | D | 1.5 | – | 0 | analysis/hipbelt_fit.md §10 |
-| 12 | **CA-1** | PAHT-CF fatigue coupons, 0.30 then 0.40 | safety | H1 print release; body re-size at 0.40 | 60 | B | 6 | 222 | 15 | tests_physical/CA1_fatigue_rig.md; analysis/frame_comp_verdict.md §6 |
-| 13 | **PT-6** | B-24 float stand-off link | safety | float mode (D-33) | – | A | 2.0 | – | 33 | analysis/bag_attachment.md §5 |
-| 14 | **WP-2** | TPU 840D lash-tab slot pull (C-6 / O-15) | grams | C-6 lash tabs Hypalon -> TPU 840D | 6.2 | A | 0.7 | – | 5 | analysis/corrie_body.md §12.4; analysis/weight_pass_corrie.md C-6 |
-| 15 | **FS-O5** | ULTRA 200X 50 mm strip tensile (C-5 / O-5) | grams | C-5 bag bottom 500D -> ULTRA 200X | 7.0 | A | 3.5 | – | 35 | analysis/fabric_swap_evidence.md O-5 |
-| 16 | **HB-6** | M5 heat-set insert pull-out in printed PAHT-CF | safety | hip pivot mount on H1 | – | A | 1.5 | – | 5 | analysis/hipbelt_structural.md §8; analysis/fabric_swap_evidence.md (release gate) |
-| 17 | **CA-5** | dry z 234 joint stub pulls + 1e5 cycle | safety | H1 print release | – | B | 4 | 27.8 | 40 | tests_physical/CA1_fatigue_rig.md §7; analysis/frame_h1.md §8; analysis/frame_comp_verdict.md §6 |
-| 18 | **CA-3** | interlayer after 40 C water soak | safety | FI interlayer term; plug shear-out | – | B | 3 | 48 | 5 | tests_physical/CA1_fatigue_rig.md §7; analysis/frame_comp_A.md |
-| 19 | **CA-4** | creep-rupture 40 C 8 h | safety | creep margin | – | B | 2 | 8 | 10 | tests_physical/CA1_fatigue_rig.md §7 |
-| 20 | **CA-2** | anneal 90 C vs 120 C | function | nothing until a gain is measured | – | B | 3 | – | 10 | analysis/frame_comp_A.md; docs/research/frame_comp_A.md |
-| 21 | **HB-4** | hipbelt stitched-ear joint | safety | belt B wing joint | – | A | 2 | – | 15 | analysis/hipbelt_structural.md §8 |
-| 22 | **HB-5** | 7075-T6 1.2 bow-tie plate proof + 1e5 cycles | safety | C-1 + C-2 + C-3 | 25.0 | B | 4 | 27.8 | 45 | analysis/weight_c_structural.md §7 (supersedes analysis/hipbelt_structural.md §8 6061 version) |
-| 23 | **PS-1** | pad-seat backer sag | safety | C-4 correction (pad seat) | – | D | 2 | 8 | 5 | analysis/weight_c_structural.md §7; analysis/corrie_body.md §12.4 |
-| 24 | **T6** | crown-corner bond coupons (0.8 mm bondline) | safety | carbon crown corners + extension-post socket (P-1) | – | A | 4 | 24 | 30 | analysis/load_standard.md §5.3; print/frame/PRODUCTION.md (T6 note) |
-| 25 | **T7** | bushing crush coupon | safety | crown bushing ring crush credit | – | A | 2 | – | 10 | analysis/load_standard.md §5.3 |
-| 26 | **PT-4** | crown hood on an 18 mm tube, room and -10 C | safety | top anchor (B-19) | – | A | 3 | – | 10 | analysis/bag_attachment.md §5 |
-| 27 | **T9** | loaded CG (+ 15 in, 30 kg meat check) | safety | HA-LS-1 rev C basis; before T1 | – | C | 4 | – | 0 | analysis/load_standard.md §5.3; analysis/corrie_body.md §11.4 |
-| 28 | **T1** | static proof 150 / 300 / 225 lb (+ joint marks, yoke dial) | safety | first loaded carry | – | C | 4 | – | 0 | analysis/load_standard.md §5.3; analysis/frame_h1.md §8; analysis/weight_c_structural.md §7 |
-| 29 | **CR-1** | crown retention hang 136 kg | safety | torso adjust | – | C | 1 | – | 0 | BUILD_PLAN.md §5 |
-| 30 | **T3** | side-hill 240 lb at 25 deg | safety | first loaded carry | – | C | 3 | – | 0 | analysis/load_standard.md §5.3 |
-| 31 | **T2** | meat / tall-load proof 300 lb | safety | first meat haul | – | C | 3 | – | 0 | analysis/load_standard.md §5.3 |
-| 32 | **SP-1** | spreader bone-end proof 400 N | safety | spreader release | – | C | 1.5 | – | 5 | print/frame/PRODUCTION.md (QC proof load) |
-| 33 | **T4a** | drop-step 2.0 g, 20 drops | safety | HA-LS-1 stumble level | – | C | 3 | – | 0 | analysis/load_standard.md §5.3 |
-| 34 | **T4b** | single-foot set-down (+ dial on the branch) | safety | branch buckling | – | C | 2 | – | 0 | analysis/load_standard.md §5.3; analysis/frame_h1.md §8 |
-| 35 | **T4c** | empty abuse drop 122 cm at -20 C | safety | cold-weather use | – | C | 2 | 4 | 0 | analysis/load_standard.md §5.3; analysis/frame_comp_verdict.md §6; analysis/printed_frame_study.md |
-| 36 | **T5** | cycle 0.4 -> 1.6 g, 1e5 cycles (H1 body) | safety | frame release | – | C | 6 | 33 | 0 | analysis/load_standard.md §5.3; analysis/weight_c_structural.md §7 |
-| 37 | **HB-1** | hipbelt pressure map, 3 testers | function | belt B fit (OD-HB1) | – | D | 4 | – | 0 | analysis/hipbelt_fit.md §10 |
-| 38 | **RF-1** | back rail fit 130/70 on 3 backs (C-8) | grams | C-8 | 7.2 | D | 3 | – | 10 | analysis/corrie_body.md §12.4; analysis/weight_pass_corrie.md C-8 |
-| 39 | **PT-7** | door zip proof | safety | CORRIE door | – | C | 2 | – | 0 | analysis/corrie_body.md §6 |
-| 40 | **WP-4** | rain-fly fit | function | G-2 | – | E | 1 | – | 0 | analysis/corrie_body.md §12.4 |
-| 41 | **WP-5** | TPU trim tick | grams | B-10 trims Hypalon -> TPU 840D | 12.8 | E | 0.5 | – | 5 | analysis/corrie_body.md §12.4 |
-| 42 | **MH-1** | bag-on meat mode walk | function | R-09 | – | E | 1.5 | – | 0 | BUILD_PLAN.md §5a.2 |
-| 43 | **MH-2** | frame-only meat haul (float / bag-off) | function | R-08, float meat limit 53 kg | – | E | 1.5 | – | 0 | BUILD_PLAN.md §5a.4 |
-| 44 | **MH-3** | meat strap wash | function | R-12 | – | E | 0.5 | 2 | 0 | BUILD_PLAN.md §5a.5; DESIGN.md R-12 |
-| 45 | **R28-1** | head-clearance photo | function | R-28 | – | E | 0.3 | – | 0 | BUILD_PLAN.md §5a.6; DESIGN.md R-28 |
-| 46 | **HB-3** | hipbelt slip / settle hike | function | belt B | – | E | 1.5 | – | 0 | analysis/hipbelt_fit.md §10 |
-| 47 | **T5f** | float US1 share 56 kg | safety | float meat limit 53 -> 56 kg | – | C | 4 | – | 0 | analysis/float_fea.md §3; analysis/load_standard.md §4.3 |
-| 48 | **T2u** | ultimate demo 450 lb on P1 (destroys P1) | safety | none after it (last test) | – | C | 3 | – | 437 | analysis/load_standard.md §5.3 |
-| | | **total** | | | | | **108.2** | **409** | **845.5** | |
+| 1 | **PT-1** (rev) | IM3 bag carabiner on the sewn T3 tongue, per-row proof (BL-010) | safety | IM3 bag hooks; BL-004 REC (A_att, IM2 hooks deleted so IM3 carries the top couple) | 103.0 | A | 1.0 | – | 50 | designs/pack_5200/analysis/loadpath_verification.md §5, §8 (CARA_PROOF); designs/pack_5200/analysis/bag_attachment.md §5 |
+| 2 | **MT-2** (rev) | meat-strap hook proof per strap (BL-010) | safety | IM1-IM3 free-end hooks; BL-003 (a) (A_imus) | 116.9 | A | 0.5 | – | 70 | designs/pack_5200/analysis/loadpath_verification.md §5, §8; designs/pack_5200/BUILD_PLAN.md §5a.0 |
+| 3 | **MT-3** (rev) | 25 mm cam buckle slip at the BL-010 per-row loads | safety | IM and US cams; BL-003 (a) (A_imus) | 116.9 | A | 0.7 | – | 20 | designs/pack_5200/analysis/loadpath_verification.md §8 (CAM25); designs/pack_5200/BUILD_PLAN.md §5a.0 |
+| 4 | **HB-7** | hipbelt heavy ladder-lock slip, corrected 2:1 routing | safety | belt B 2:1 pull | – | A | 0.7 | – | 7.5 | designs/pack_5200/analysis/hipbelt_structural.md §5, §8 |
+| 5 | **PT-5** | guy ladder lock + tri-glide keeper slip | safety | TG guys (top anchor) | – | A | 0.5 | – | 5 | designs/pack_5200/analysis/bag_attachment.md §5 |
+| 6 | **LL-H** (new) | heavy 25 mm ladder lock slip, 1 h hold (guys and W1-W3) | safety | guy ladder locks on B-22 (BL-004 REC, A_att); W1-W3 float clamp locks | 103.0 | A | 0.8 | 1 | 10.5 | designs/pack_5200/analysis/loadpath_verification.md §3 S9, A3, §5; designs/pack_5200/analysis/attachment_diet.md (guys 366 N) |
+| 7 | **WP-3** | gloved tail on W1-W3 ladder locks | grams | A-2 wrap tails 250 -> 150 mm | 5.4 | E | 0.3 | – | 0 | designs/pack_5200/analysis/corrie_body.md §12.4 |
+| 8 | **MT-1** (rev) | 25 mm box-X bartack proof at the BL-010 per-row loads | safety | every 25 mm box-X on IM1-IM3 and US1/US2; BL-003 (a) (A_imus) | 116.9 | A | 1.0 | – | 3 | designs/pack_5200/analysis/loadpath_verification.md §8 (BOX25); designs/pack_5200/BUILD_PLAN.md §5a.0 |
+| 9 | **PT-2** (rev) | T3 tongue on the 70 mm B-17 tab on a B-01 swatch (BL-010 load) | safety | IM3 bag attachment; BL-004 REC B-17 trim (A_att) | 103.0 | A | 2.5 | – | 15 | designs/pack_5200/analysis/loadpath_verification.md §8; designs/pack_5200/analysis/bag_attachment.md §5; designs/pack_5200/analysis/attachment_diet.md (B-17 110 -> 70 mm) |
+| 10 | **PT-3** | HE eye on B-18 + B-01 + B-05 seam, built without binding | safety | hinge eyes; B-1 (no binding); C-5 if on ULTRA 200X | – | A | 2.5 | – | 15 | designs/pack_5200/analysis/bag_attachment.md §5; designs/pack_5200/analysis/corrie_body.md §12.4 (rebuilt); designs/pack_5200/analysis/fabric_swap_evidence.md O-5 |
+| 11 | **WP-1** | wash-swatch fray, seams without binding | grams | B-1 (no binding on body seams) | 36.4 | E | 2.0 | 4.5 | 5 | designs/pack_5200/analysis/corrie_body.md §12.4; designs/pack_5200/analysis/weight_pass_corrie.md B-1; designs/pack_5200/analysis/build_simplicity.md S-03 |
+| 12 | **HB-2** | belt face friction | function | silicone grip print (A-1; OD-HB4) | – | D | 1.5 | – | 0 | designs/pack_5200/analysis/hipbelt_fit.md §10 |
+| 13 | **CA-1** (rev) | PAHT-CF fatigue coupons, 0.30 then 0.40 | safety | H1 print release (governing flip point + 0.02); body re-size at 0.40; A_c17 OD 17 legs | 60 | B | 6 | 222 | 15 | designs/pack_5200/tests_physical/CA1_fatigue_rig.md; designs/pack_5200/analysis/frame_comp_verdict.md §6 |
+| 14 | **IM3-EC** (new) | IM3 eye cycle coupons, 3 x 1e5 at >= 1.15 x 884 N | safety | H1 print release (IM3 eye); P_cheek | – | B | 3 | 83.4 | 10 | designs/pack_5200/analysis/loadpath_verification.md §4.1, §8; designs/pack_5200/analysis/review_20261111.md B2 (d) |
+| 15 | **PT-6** | B-24 float stand-off link | safety | float mode (D-33) | – | A | 2.0 | – | 33 | designs/pack_5200/analysis/bag_attachment.md §5 |
+| 16 | **WP-2** | TPU 840D lash-tab slot pull (C-6 / O-15) | grams | C-6 lash tabs Hypalon -> TPU 840D | 6.2 | A | 0.7 | – | 5 | designs/pack_5200/analysis/corrie_body.md §12.4; designs/pack_5200/analysis/weight_pass_corrie.md C-6 |
+| 17 | **FS-O5** | ULTRA 200X 50 mm strip tensile (C-5 / O-5) | grams | C-5 bag bottom 500D -> ULTRA 200X | 7.0 | A | 3.5 | – | 35 | designs/pack_5200/analysis/fabric_swap_evidence.md O-5 |
+| 18 | **HB-6** | M5 heat-set insert pull-out in printed PAHT-CF | safety | hip pivot mount on H1 | – | A | 1.5 | – | 5 | designs/pack_5200/analysis/hipbelt_structural.md §8; designs/pack_5200/analysis/fabric_swap_evidence.md (release gate) |
+| 19 | **CA-5** | dry z 234 joint stub pulls + 1e5 cycle | safety | H1 print release | – | B | 4 | 27.8 | 40 | designs/pack_5200/tests_physical/CA1_fatigue_rig.md §7; designs/pack_5200/analysis/frame_h1.md §8; designs/pack_5200/analysis/frame_comp_verdict.md §6 |
+| 20 | **CA-3** | interlayer after 40 C water soak | safety | FI interlayer term; plug shear-out | – | B | 3 | 48 | 5 | designs/pack_5200/tests_physical/CA1_fatigue_rig.md §7; designs/pack_5200/analysis/frame_comp_A.md |
+| 21 | **CA-4** | creep-rupture 40 C 8 h | safety | creep margin | – | B | 2 | 8 | 10 | designs/pack_5200/tests_physical/CA1_fatigue_rig.md §7 |
+| 22 | **CA-2** | anneal 90 C vs 120 C | function | nothing until a gain is measured | – | B | 3 | – | 10 | designs/pack_5200/analysis/frame_comp_A.md; docs/research/frame_comp_A.md |
+| 23 | **HB-4** | hipbelt stitched-ear joint | safety | belt B wing joint | – | A | 2 | – | 15 | designs/pack_5200/analysis/hipbelt_structural.md §8 |
+| 24 | **HB-T** (new) | 50 mm buckle tab + 25 mm anchor and lock-tab box-X pull | safety | belt B 50 mm buckle tabs (C8 booking) | – | A | 1.5 | – | 5 | designs/pack_5200/analysis/loadpath_verification.md §3 H1, §8 |
+| 25 | **TL-1** (new) | guy toggle loop on an 18 mm tube | safety | BL-004 REC guy loops (A_att) | 103.0 | A | 1.0 | 4 | 8 | designs/pack_5200/analysis/loadpath_verification.md §3 A3, §8 (GUY_DIR); designs/pack_5200/analysis/attachment_diet.md §7 |
+| 26 | **HB-5** | 7075-T6 1.2 bow-tie plate proof + 1e5 cycles | safety | C-1 + C-2 + C-3 | 25.0 | B | 4 | 27.8 | 45 | designs/pack_5200/analysis/weight_c_structural.md §7 (supersedes designs/pack_5200/analysis/hipbelt_structural.md §8 6061 version) |
+| 27 | **PS-1** | pad-seat backer sag | safety | C-4 correction (pad seat) | – | D | 2 | 8 | 5 | designs/pack_5200/analysis/weight_c_structural.md §7; designs/pack_5200/analysis/corrie_body.md §12.4 |
+| 28 | **BP-1** (new) | sandwich backer strip 3-point bend coupon | grams | BL-005 sandwich strip (A_back) | 44.6 | D | 1 | – | 0 | designs/pack_5200/analysis/back_system_integration.md §6 |
+| 29 | **BP-2** (new) | stay contact width on the backer strip (pressure film) | grams | BL-005 sandwich strip (A_back) | 44.6 | D | 0.7 | – | 5 | designs/pack_5200/analysis/back_system_integration.md §6 |
+| 30 | **T6** | crown-corner bond coupons (0.8 mm bondline) | safety | carbon crown corners + extension-post socket (P-1) | – | A | 4 | 24 | 30 | designs/pack_5200/analysis/load_standard.md §5.3; designs/pack_5200/print/frame/PRODUCTION.md (T6 note) |
+| 31 | **T7** | bushing crush coupon | safety | crown bushing ring crush credit | – | A | 2 | – | 10 | designs/pack_5200/analysis/load_standard.md §5.3 |
+| 32 | **PT-4** | crown hood on an 18 mm tube, room and -10 C | safety | top anchor (B-19) | – | A | 3 | – | 10 | designs/pack_5200/analysis/bag_attachment.md §5 |
+| 33 | **T9** | loaded CG (+ 15 in, 30 kg meat check) | safety | HA-LS-1 rev C basis; before T1 | – | C | 4 | – | 0 | designs/pack_5200/analysis/load_standard.md §5.3; designs/pack_5200/analysis/corrie_body.md §11.4 |
+| 34 | **BP-3** (new) | back pressure on the rails, below and above z 190 | safety | back system release; BL-005 (A_back) skin model | – | D | 3 | – | 0 | designs/pack_5200/analysis/back_system_integration.md §6, §8; designs/pack_5200/analysis/review_20261111.md S4 |
+| 35 | **IM3-EP** (new) | IM3 eye pull on the first printed frame | safety | H1 release; P_cheek | – | A | 2 | – | 0 | designs/pack_5200/analysis/loadpath_verification.md §8 (FAIRLEAD_DIR), §4.1 |
+| 36 | **W-PULL** (new) | W1-W3 lash points on the first frame | safety | W1-W3 frame anchors (BL-003) | – | A | 1.5 | – | 0 | designs/pack_5200/analysis/loadpath_verification.md §3 S8, S9, §8 |
+| 37 | **T1** | static proof 150 / 300 / 225 lb (+ joint marks, yoke dial) | safety | first loaded carry | – | C | 4 | – | 0 | designs/pack_5200/analysis/load_standard.md §5.3; designs/pack_5200/analysis/frame_h1.md §8; designs/pack_5200/analysis/weight_c_structural.md §7 |
+| 38 | **CR-1** | crown retention hang 136 kg | safety | torso adjust | – | C | 1 | – | 0 | designs/pack_5200/BUILD_PLAN.md §5 |
+| 39 | **T3** | side-hill 240 lb at 25 deg | safety | first loaded carry | – | C | 3 | – | 0 | designs/pack_5200/analysis/load_standard.md §5.3 |
+| 40 | **T2** | meat / tall-load proof 300 lb | safety | first meat haul | – | C | 3 | – | 0 | designs/pack_5200/analysis/load_standard.md §5.3 |
+| 41 | **SP-1** | spreader bone-end proof 400 N | safety | spreader release | – | C | 1.5 | – | 5 | designs/pack_5200/print/frame/PRODUCTION.md (QC proof load) |
+| 42 | **T4a** | drop-step 2.0 g, 20 drops | safety | HA-LS-1 stumble level | – | C | 3 | – | 0 | designs/pack_5200/analysis/load_standard.md §5.3 |
+| 43 | **T4b** | single-foot set-down (+ dial on the branch) | safety | branch buckling | – | C | 2 | – | 0 | designs/pack_5200/analysis/load_standard.md §5.3; designs/pack_5200/analysis/frame_h1.md §8 |
+| 44 | **T4c** | empty abuse drop 122 cm at -20 C | safety | cold-weather use | – | C | 2 | 4 | 0 | designs/pack_5200/analysis/load_standard.md §5.3; designs/pack_5200/analysis/frame_comp_verdict.md §6; designs/pack_5200/analysis/printed_frame_study.md |
+| 45 | **T5** | cycle 0.4 -> 1.6 g, 1e5 cycles (H1 body) | safety | frame release | – | C | 6 | 33 | 0 | designs/pack_5200/analysis/load_standard.md §5.3; designs/pack_5200/analysis/weight_c_structural.md §7 |
+| 46 | **HB-1** (rev) | hipbelt pressure map, 3 testers, + front-strap sensor | function | belt B fit (OD-HB1); BL-006 c2 (with HB-D2); front-strap pad (+42.9 g if it fails) | 42.9 | D | 4 | – | 0 | designs/pack_5200/analysis/hipbelt_fit.md §10; designs/pack_5200/analysis/hipbelt_diet.md (front strap); designs/pack_5200/analysis/loadpath_verification.md §5 (front-strap pad), §8 (PAD); docs/DECISIONS.md 2026-11-10 BL-016 and BL-006 rows |
+| 47 | **HB-D2** (new) | wing stiffener 0.75 mm roll-over (one wing each) | grams | BL-006 c2 (A_c2) | 9.8 | E | 2 | – | 5 | designs/pack_5200/analysis/hipbelt_diet.md (c2, HB-D2) |
+| 48 | **RF-1** | back rail fit 130/70 on 3 backs (C-8) | grams | C-8 | 7.2 | D | 3 | – | 10 | designs/pack_5200/analysis/corrie_body.md §12.4; designs/pack_5200/analysis/weight_pass_corrie.md C-8 |
+| 49 | **PT-7** | door zip proof | safety | CORRIE door | – | C | 2 | – | 0 | designs/pack_5200/analysis/corrie_body.md §6 |
+| 50 | **WP-4** | rain-fly fit | function | G-2 | – | E | 1 | – | 0 | designs/pack_5200/analysis/corrie_body.md §12.4 |
+| 51 | **WP-5** | TPU trim tick | grams | B-10 trims Hypalon -> TPU 840D | 12.8 | E | 0.5 | – | 5 | designs/pack_5200/analysis/corrie_body.md §12.4 |
+| 52 | **MH-1** | bag-on meat mode walk | function | R-09 | – | E | 1.5 | – | 0 | designs/pack_5200/BUILD_PLAN.md §5a.2 |
+| 53 | **MH-2** | frame-only meat haul (float / bag-off) | function | R-08, float meat limit 53 kg | – | E | 1.5 | – | 0 | designs/pack_5200/BUILD_PLAN.md §5a.4 |
+| 54 | **MH-3** | meat strap wash | function | R-12 | – | E | 0.5 | 2 | 0 | designs/pack_5200/BUILD_PLAN.md §5a.5; designs/pack_5200/DESIGN.md R-12 |
+| 55 | **R28-1** | head-clearance photo | function | R-28 | – | E | 0.3 | – | 0 | designs/pack_5200/BUILD_PLAN.md §5a.6; designs/pack_5200/DESIGN.md R-28 |
+| 56 | **HB-3** | hipbelt slip / settle hike | function | belt B | – | E | 1.5 | – | 0 | designs/pack_5200/analysis/hipbelt_fit.md §10 |
+| 57 | **HB-D1** (new) | no stabilizer straps: side-hill stability | grams | BL-006 b (A_b) | 22.4 | E | 1.5 | – | 0 | designs/pack_5200/analysis/hipbelt_diet.md (b, HB-D1) |
+| 58 | **HB-D3** (new) | pad-seat cord tie and 1000D sleeve retention | grams | BL-006 f1 + f2 (A_f) | 12.6 | E | 0.5 | – | 0 | designs/pack_5200/analysis/hipbelt_diet.md (f1, f2, HB-D3) |
+| 59 | **FT-S2** (new) | no wings: 5 km side-hill + door cycles with the tripod loaded | grams | side wings deleted (A_wings) | 101.6 | E | 3 | – | 0 | designs/pack_5200/analysis/strap_architecture.md (ASSUMPTION W1/W2); designs/pack_5200/analysis/corrie_f_body.md; docs/DECISIONS.md 2026-11-11 owner row; designs/pack_5200/analysis/review_20261111.md S7 |
+| 60 | **T5f** | float US1 share 56 kg | safety | float meat limit 53 -> 56 kg | – | C | 4 | – | 0 | designs/pack_5200/analysis/float_fea.md §3; designs/pack_5200/analysis/load_standard.md §4.3 |
+| 61 | **T2u** | ultimate demo 450 lb on P1 (destroys P1) | safety | none after it (last test) | – | C | 3 | – | 437 | designs/pack_5200/analysis/load_standard.md §5.3 |
+| | | **total** | | | | | **129.7** | **498** | **964.0** | |
 
 Order inside phase 4 follows `load_standard.md` §5.3: T9 before T1, then T3, T2, T4a/b, T4c, T5 on P2, and T2u on P1
-last. CR-1 (crown hang, `BUILD_PLAN.md` §5) and SP-1 (spreader bone end, `PRODUCTION.md` QC) go in the same sessions.
+last. BP-3 and RF-1 run in the T9 session (same FSR strips); IM3-EP and W-PULL run on P1 before T1 on P2, so a cracked
+eye stops the carry tests before they start. CR-1 (crown hang, `BUILD_PLAN.md` §5) and SP-1 (spreader bone end, `PRODUCTION.md` QC) go in the same sessions.
 
 ### What each result unlocks (the big ones)
 
 | test | pass unlocks | fail means |
 |---|---|---|
-| PT-1, PT-2, PT-3, PT-6, MT-1..3 | sew the bag and harness as drawn | change the part or the sewing; re-test |
-| CA-1 at 0.30 | print H1 as designed (body fatigue 1.28) | ratio ≥ 0.234: H1 still passes; < 0.234: re-size, about +20 g per −0.02 (`CA1_fatigue_rig.md` §6) |
-| CA-1 at 0.40 | re-run the push: body about −50 to −70 g (`frame_h1.md` §6) | stay at 0.30 |
+| PT-1, PT-2, PT-3, PT-6, MT-1..3, LL-H | sew the bag and harness as drawn; keeps BL-003 (a) −116.9 g and BL-004 −103.0 g | change the part or the sewing; re-test; the 38 mm set or the hood comes back |
+| CA-1 at the release level (**0.310** = governing flip 0.290 + 0.02; BL-021 placeholder) | print H1 as designed | measured ratio < 0.310: **H1 is not released**. BL-021 re-sizes the governing part (IM3 cheek first) to the measured ratio; about +20 g per −0.02 for the body (`CA1_fatigue_rig.md` §6) |
+| CA-1 at 0.40 | re-run the push: body about −50 to −70 g (`frame_h1.md` §6) | stay at the measured ratio |
+| IM3-EC + IM3-EP | IM3 eye released at 27 mm | cheek grows (BL-021); re-print the coupons |
+| BP-1 + BP-2 | keep the sandwich backer strip, −44.6 g | BP-08 twill backer back |
+| BP-3 | rails ≤ 14 kPa; tells whether they bear below z 190 | lumbar-pad shim, re-test (structural sizes it) |
+| HB-1 front-strap sensor | no front-strap pad | book the pad pair, +42.9 g, re-test with it |
+| HB-D1 / HB-D2 / HB-D3 | keep BL-006 b / c2 / f (−22.4 / −9.8 / −12.6 g) | stabilizers / 1.0 mm stiffener / strap tie back |
+| FT-S2 | keep the wings off, −101.6 g | gusset tripod keeper (32.2 g) or the wings back |
 | CA-5 | print H1 with the bolted z 234 joint | B's 8-bolt flange, frame about 1058 g (+33 g, `frame_comp_verdict.md` §6) |
 | HB-5 (7075 1.2) | keep package C plate, −25.0 g | back to 6061 1.5 (fails at ±2° slope, 0.94; use the ribbed 7075 fallback, 121 g) |
 | T9 | rev C CG basis confirmed; > 10 mm below rev C lets the owner relax it | above rev C: stop, re-run `rev_c_verification` before T1 |
@@ -283,13 +323,14 @@ about $224 (§6, conflict 11).
 |---|---:|---|
 | dial indicator 0–1 in with magnetic base | 39.95 | [Penn Tool, iGaging 34-101][dial] |
 | digital caliper 6 in | 9.99 | [Harbor Freight 63586][caliper] |
-| 8 force-sensitive resistors (HB-1, RF-1 pressure strips; read with the kit B Arduino) | 31.60 | [Adafruit 166][fsr] ($3.95 each) |
+| 8 force-sensitive resistors (HB-1, RF-1, BP-3 pressure strips; read with the kit B Arduino) | 31.60 | [Adafruit 166][fsr] ($3.95 each) |
 | 10× loupe | 8.00 | ASSUMPTION |
 | conditioning box + magnesium nitrate | 15.00 | ASSUMPTION |
 | **kit D total** | **104.54** | |
 
 Pressure film instead of FSRs (Fujifilm Prescale LLLW) is about **€1275 per roll** ([listing][film]); not recommended
-for a one-off.
+for a one-off. BP-2 (stay contact width) uses carbon paper instead (ASSUMPTION, §9); one Prescale sheet only if the
+imprint lands within 2 mm of the 8 mm limit.
 
 ### 4.5 Totals
 
@@ -300,8 +341,8 @@ for a one-off.
 | C frame test stand | 227.39 | phase 4 (first-article frames) |
 | D measuring | 104.54 | caliper + loupe weekend 1; the rest phase 2 |
 | **all kits** | **874.61** | |
-| test samples (48 active tests, from the register) | 408.50 | spread over all phases |
-| sacrificial P1 frame (T2u) | 437.00 | `frame_h1.md` §5 |
+| test samples (61 active tests, from the register) | 527.00 | spread over all phases |
+| sacrificial P1 frame (IM3-EP, W-PULL, then T2u) | 437.00 | `frame_h1.md` §5 |
 
 ## 5. Value ranking of the gram tests
 
@@ -319,6 +360,20 @@ WP-5 moves to 1st). The bottom four keep their places except RF-1 / HB-5 swappin
 | 6 | HB-5 7075 plate | 25.0 | 45 | 4 | 0.24 | also a safety gate |
 | 7 | RF-1 rail fit | 7.2 | 10 | 3 | 0.13 | C-8 rails |
 | 8 | FS-O5 ULTRA strip | 7.0 | 35 | 3.5 | 0.08 | C-5 floor; needs PT-3 on ULTRA too |
+
+**BL-023 gram gates** (after-tests savings in `analysis/weight_rollup_v2.md`, same score rule; they are field or
+first-article tests, so they run when the pack exists, whatever their score):
+
+| test | grams | samples $ | hands-on h | g per $-eq | note |
+|---|---:|---:|---:|---:|---|
+| FT-S2 no wings | 101.6 | 0 | 3.0 | 2.26 | owner's wing removal |
+| BP-1 + BP-2 backer strip | 44.6 | 5 | 1.7 | 1.46 | BL-005; both must pass |
+| HB-D3 pad-seat tie | 12.6 | 0 | 0.5 | 1.68 | BL-006 f1 + f2 |
+| HB-D1 no stabilizers | 22.4 | 0 | 1.5 | 1.00 | BL-006 b |
+| HB-D2 0.75 mm stiffener | 9.8 | 5 | 2.0 | 0.28 | BL-006 c2 |
+
+BL-003 (a) (116.9 g) and BL-004 (103.0 g) are unlocked by the weekend-1 safety pulls (MT-1..3, PT-1, PT-2, LL-H) and
+TL-1; they are not ranked because those tests run anyway.
 
 Grams are from `weight_pass_corrie.md` (package rows A-2, B-1, B-10, C-5, C-6, C-8), `weight_c_structural.md`
 (C-1+C-2+C-3 = 25.0 g) and `frame_h1.md` §6 (CA-1, midpoint of −50 to −70 g).
@@ -338,10 +393,15 @@ Grams are from `weight_pass_corrie.md` (package rows A-2, B-1, B-10, C-5, C-6, C
 | 9 | T6 joint types | `load_standard.md` §5.3 | (a) bar coped to a stay, (b) collar on a stay end | only the **crown corner** (0.8 mm bondline, incl. the P-1 post socket); (b) retired |
 | 10 | T5 article | `weight_c_structural.md` §7 | "on the C-9 body" | **H1 body** (H1 replaced C-9) |
 | 11 | S-14 bench cost | `build_simplicity.md` | $60 ASSUMPTION | about **$224** (§4.1, $119 cited) |
-| 12 | HB-1 pass | `hipbelt_fit.md` §10 | "B peak ≤ current − 15 %" needs the old belt built too | kept; flagged (owner decision, §9) |
+| 12 | HB-1 pass | `hipbelt_fit.md` §10 | "B peak ≤ current − 15 %" needs the old belt built too | superseded by row 21 (absolute pass) |
 | 13 | HB-4 sample count | `hipbelt_structural.md` §8 | one ear | kept at 1; 3 recommended for scatter |
 | 14 | 15 in CG check | `corrie_body.md` §11.4, `bag_comp_D.md` MOD-5, `load_standard.md` T9 | same measurement, 30 kg vs 68 kg | **merged into T9**: add a 30 kg IM1-IM3 run at 15 in |
 | 15 | WP-1 / R-12 / S-03 gate | `corrie_body.md`, `weight_pass_corrie.md`, `build_simplicity.md` | same wash-swatch test under three names | **WP-1** |
+| 17 | PT-1 / PT-2 proof | `bag_attachment.md` §5 vs `loadpath_verification.md` §5, §8 | 2120 N on a 38 mm hook vs 2553 N on the IM3 carabiner | **2553 N** (BL-010: 1.5 × 1702 N factored) |
+| 18 | MT-1..3 loads | `BUILD_PLAN.md` §5a.0 vs `loadpath_verification.md` §8 | 910 N on 38 mm parts vs per-row 410 / 645 / 908 / 910 / 1080 N on 25 mm parts | **per row** (BL-003 (a) is the design); 910 N on 38 mm only if the fallback comes back |
+| 19 | CA-1 release | `CA1_fatigue_rig.md` §1, §6 vs `review_20261111.md` B1 | old flip point on the superseded body basis (0.30 / 1.28) vs body 0.261 and IM3 27 mm cheek 0.290 | **release at ≥ 0.310** (governing 0.290 + 0.02); BL-021 sets the final value |
+| 20 | IM3 eye coupon | `loadpath_verification.md` §8 vs `review_20261111.md` B2 (d) | 1 coupon, 0 → 812 N vs ≥ 1.15 × 884 N or 3 coupons | **3 coupons at 1017 N** (both asks) |
+| 21 | HB-1 pass | `hipbelt_fit.md` §10 vs DECISIONS 2026-11-10 (BL-016 row) | relative (needs the old belt) vs absolute 48.6 kPa | **absolute**; front-strap sensor added (BL-006, BL-010) |
 | 16 | fatigue, interlayer, boss and insert coupons | `frame_comp_B.md` CT-B1/2/3/5, `frame_comp_d.md` D-I1, `frame_comp_A.md` CA list | same quantities as CA-1, CA-3, CA-5, HB-6 | **merged** (§7) |
 
 ## 7. Retired and merged tests (not to be run)
@@ -409,6 +469,13 @@ For frame tests use the `load_standard.md` §5.4 template. For CA coupons, the r
 | HB-7 pass 426 N = 1.5 × 284 N | §2.2 | structural-fea-engineer to confirm |
 | CA-5 cycle force 1543 N (team A value) | §6 | structural-fea-engineer to state the H1 value |
 | sample prices ($3–6 per hook, $4 per cam, offcuts) | register | receipts |
+| CA-1 release level 0.310 = governing flip 0.290 (IM3 27 mm cheek, fatigue 1.036) + 0.02 | §0, CA-1 | BL-021 (eye and body on the cloth-sim loads) sets the final flip point; replace the placeholder |
+| LL-H slip limit 5 mm in 1 h (as PT-5) | §2.2 | none in the source; structural-fea-engineer to confirm |
+| carbon-paper imprint width stands in for pressure film (BP-2) | §4.4 | one Prescale LW sheet if the imprint is within 2 mm of 8 mm |
+| FSR scatter about 10 % after puck calibration (BP-3, HB-1) | register | repeat any reading within 10 % of its limit |
+| BP-3 fallback is a lumbar-pad shim (mass not booked) | register | structural-fea-engineer sizes it if BP-3 fails |
+| IM3-EP on P1 (sacrificial) is representative of P2 | register | same print job and settings; T5 on P2 covers the eye in fatigue |
+| TL-1 cold repeat at −10 °C (added; not in the source) | register | none; drop it if the owner prefers |
 
 ## 10. Sources
 
@@ -416,7 +483,10 @@ Test definitions (internal): `designs/pack_5200/tests_physical/CA1_fatigue_rig.m
 `load_standard.md`, `frame_h1.md`, `frame_comp_verdict.md`, `frame_comp_A.md`, `frame_comp_B.md`, `frame_comp_C.md`,
 `frame_comp_d.md`, `hipbelt_fit.md`, `hipbelt_structural.md`, `weight_c_structural.md`, `weight_pass_corrie.md`,
 `corrie_body.md`, `float_fea.md`, `bag_attachment.md`, `meat_haul_modes.md`, `fabric_swap_evidence.md`,
-`build_simplicity.md`, `spreader_layout.md`, `printed_frame_study.md`, `bag_comp_C.md`, `bag_comp_D.md`;
+`build_simplicity.md`, `spreader_layout.md`, `printed_frame_study.md`, `bag_comp_C.md`, `bag_comp_D.md`,
+`loadpath_verification.md` (BL-010), `attachment_diet.md` (BL-004), `hipbelt_diet.md` (BL-006),
+`back_system_integration.md` (BL-005), `strap_architecture.md` (BL-003), `corrie_f_body.md` (BL-011),
+`review_20261111.md` (BL-014), `weight_rollup_v2.md` (BL-013 / BL-023);
 `docs/research/frame_comp_E.md`; `designs/pack_5200/BUILD_PLAN.md`; `designs/pack_5200/print/frame/PRODUCTION.md`;
 `designs/pack_5200/print/frame_h1/README.md`.
 

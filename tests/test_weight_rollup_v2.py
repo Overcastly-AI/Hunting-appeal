@@ -75,16 +75,23 @@ def test_ticket_steps_match_the_ticket_modules():
     F = W._F()
     st = W.step_deltas("M")
     wings = sum(p.g for p in W.wing_parts())
-    # P: CORRIE F, today's fabrics, with the wing parts kept; A: wings off and the fabric swaps
-    wt, wb = F.weight_table("M", "base", "D2", "today"), F.weight_table("M", "base", "D2", "B")
-    assert st["P_F"]["base"] == pytest.approx(wt["bag_side_g"] - wt["corrie_b2_bag_side_g"] + wings, abs=0.3)
+    # P: CORRIE F, today's fabrics, with the wing parts, the 38 mm IM/US set and the hood + IM2 hooks kept (BL-023);
+    # A: BL-003 (a) IM/US, BL-004 REC, wings off and the fabric swaps
+    with W.rev():
+        wt, wb = F.weight_table("M", "base", "D2", "today"), F.weight_table("M", "base", "D2", "B")
+    imus, att = st["A_imus"]["base"], st["A_att"]["base"]
+    assert imus == pytest.approx(-116.96, abs=0.05)                            # BL-014 S1 / DECISIONS BL-014 row
+    assert att == pytest.approx(-103.0, abs=0.05)                              # attachment_diet.md REC
+    assert st["P_F"]["base"] == pytest.approx(wt["bag_side_g"] - wt["corrie_b2_bag_side_g"] + wings - imus - att,
+                                              abs=0.3)
     assert st["A_wings"]["base"] == pytest.approx(-wings, abs=0.05)
     assert st["A_fab"]["base"] == pytest.approx(wb["bag_side_g"] - wt["bag_side_g"], abs=0.3)
     assert st["A_back"]["base"] == pytest.approx(-44.6, abs=0.1)              # BL-005 record
     assert st["P_pkgC"]["base"] == pytest.approx(L.total("corrie_b2_h1_c", "M") - L.total("corrie_b2_h1", "M"), abs=0.05)
     assert st["P_d2"]["base"] + st["P_kits"]["base"] == pytest.approx(W.crown("(a)+(d2)"), abs=0.05)
     assert st["A_c17"]["base"] < 0
-    assert W.cheek_g() == pytest.approx(2 * (8.8 - 6.13104), abs=0.01)          # loadpath_check.FROZEN
+    assert W.cheek_g() == pytest.approx(2 * (9.53 - 6.13104), abs=0.01)         # 27 mm cheek, loadpath_check.FROZEN
+    assert W.cheek_g() - W.cheek_g(12.5) == pytest.approx(1.46, abs=0.01)      # BL-014 S2: +1.46 g over 25 mm
     assert st["P_cheek"]["base"] == pytest.approx(W.cheek_g(), abs=0.05)
     fx = W.fixed_torso("a")
     assert fx["pack_delta_g"] == pytest.approx(3839.3 - 3927.0, abs=0.15)    # BL-007's own result at 19 in
@@ -123,3 +130,35 @@ def test_screenshots_are_phone_sized_if_written():
         p = W.SCREENS / f"{W.PREFIX}{n}.png"
         if p.exists():
             assert p.stat().st_size <= 1.5 * 1024 * 1024
+
+
+# =====================================================================================================================
+# BL-023: the ledger holds the corrections; re-classification per BL-014
+# =====================================================================================================================
+@pytest.mark.parametrize("size", L.SIZES)
+def test_ledger_and_rollup_agree(size):
+    """B.2 start + the roll-up's C1-C8 steps == ledger corrie_b2_h1_v2, to 0.5 g, in total and system by system."""
+    st = W.steps(size)
+    rows = W.b2_rows(size) + [r for k in W.ORDER if W.STEP_META[k][3] == "correction" for r in st[k]]
+    assert W.cfg_total(rows, "meat_trip") == pytest.approx(L.total("corrie_b2_h1_v2", size), abs=0.5)
+    a, b = L.by_system(W.cfg_rows(rows, "meat_trip")), L.by_system("corrie_b2_h1_v2", size)
+    for s in L.SYSTEMS:
+        assert a[s] == pytest.approx(b[s], abs=0.5), s
+    # the roll-up reads its corrections from the ledger, not its own copy
+    led = L.corrections("corrie_b2_h1", size)
+    for k in L.CORRECTIONS:
+        assert sum(r["g"] for r in st[k]) == pytest.approx(sum(r["g"] for r in led[k]), abs=0.01), k
+
+
+def test_gated_savings_are_not_proven_now():
+    """BL-014 S1: changes that pass only after a named test are in A, with the heavier part booked in P."""
+    assert W.STEP_META["A_imus"][0] == "A" and W.STEP_META["A_att"][0] == "A"
+    p_rows = W.scenario_rows("P")
+    assert not any(r["step"] in ("A_imus", "A_att") for r in p_rows)
+    t = W.scenario_table("M")
+    st = W.step_deltas("M")
+    # proven now = BL-013's 3414.4 g + the two gated savings + the 27 mm cheek (+1.46 g): about 3634 g (BL-014 S1)
+    assert t["P"]["base"] == pytest.approx(3414.4 - st["A_imus"]["base"] - st["A_att"]["base"] + 1.46, abs=0.3)
+    assert 3600 < t["P"]["base"] < 3660
+    assert t["A"]["base"] == pytest.approx(3142.0 + 1.46, abs=0.3)            # after tests moves only by the cheek
+    assert "27 mm" in W.STEP_META["P_cheek"][2]

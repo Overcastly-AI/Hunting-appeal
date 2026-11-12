@@ -111,7 +111,28 @@ G_HOOK = CO.G_HOOK                 # 4 g ASSUMPTION (HAUL family; add-on straps 
 
 # ---------------------------------------------------------------------------------------------------------- shell
 S15 = SS.SHELLS["S15"]
-TOP_SETBACK_MM = 30.0    # DECISION (R-28 at 23 in, doc section 5): sized by the corrie_f_sim R-28 runs
+# ---------------------------------------------------------------------------------------------------------- revisions
+# rev 0 = BL-011 as released 2026-11-11 (30 mm top setback sized on the COARSE mesh; guys toggled round the bar ends at
+# x +/-100; tripod held by W1/W2 only). rev 1 = BL-022 (doc section 13): setback re-sized on the FINE mesh, guys moved
+# inboard to a bridle clear of the lifter lugs, a shock-cord tripod keeper on the right gusset. ``revision(0)`` gives
+# rev 0 back exactly (tests).
+REVS = {0: {"setback": 30.0, "guy_x": 100.0, "guy_bridle": False, "tripod_keeper": False},
+        1: {"setback": 30.0, "guy_x": 52.0, "guy_bridle": True, "tripod_keeper": True}}
+REVISION = 1
+TOP_SETBACK_MM = REVS[REVISION]["setback"]   # DECISION (R-28, doc sections 5 / 13): sized by the corrie_f_sim R-28 runs
+GUY_X = REVS[REVISION]["guy_x"]               # DECISION (BL-022 S6, doc section 13.3): guy bar-end centre, x +/- mm
+
+
+@contextlib.contextmanager
+def revision(n: int):
+    """Temporarily switch the module to CORRIE F rev ``n`` (setback, guy x, rev-1 parts); restored after."""
+    g = globals()
+    old = (g["REVISION"], g["TOP_SETBACK_MM"], g["GUY_X"])
+    g["REVISION"], g["TOP_SETBACK_MM"], g["GUY_X"] = n, REVS[n]["setback"], REVS[n]["guy_x"]
+    try:
+        yield REVS[n]
+    finally:
+        g["REVISION"], g["TOP_SETBACK_MM"], g["GUY_X"] = old
 
 
 class ShellF(SS.Shell):
@@ -624,6 +645,9 @@ def parts(size: str = "M", door: str = DOOR_DEFAULT, fabrics: str = "B", c: Shel
     # attachment
     for s, n, g, cfg, src in attachment_rows(led):
         add(s, n, g, cfg, src)
+    # BL-022 rev 1 parts
+    for s, n, g, cfg, src in rev1_rows(c, door):
+        add(s, n, g, cfg, src)
     return out
 
 
@@ -763,6 +787,201 @@ def _j(o):
     raise TypeError(type(o))
 
 
+# ---------------------------------------------------------------------------------------------------------- BL-022
+# Crown-bar layout (all three BL-017 crown kits share H1's top bar: crown_diet.build changes only the legs, spine,
+# rack and bushings, checked in guy_lifter_check()).
+LIFTER_X = 105.0          # build_geometry.LIFTER_X: lifter lugs on the crown-corner wraps (owner-frozen, patent guardrail)
+LIFTER_W = 25.0           # panels.yaml: load lifters poly_webbing_25mm
+LEG_OD = 16.0             # frame.yaml / crown_diet leg_section: crown leg OD 16
+WRAP_ON_BAR = 30.0        # frame.yaml wrap_overlap_mm (30 mm on each tube)
+WRAP_SCARF = 8.0          # frame.yaml: wrap ends scarfed over 8 mm
+BAR_OD = 18.0             # frame.yaml bar_section od
+SPINE_OD = 20.0           # frame.yaml spine_section od
+SPINE_CLAMP_HALF = 15.0   # ASSUMPTION: spine-to-bar clamp half-width (OD 20 + 5 mm collar a side); settled by the clamp drawing
+GUY_W = 25.0              # guy bar loop / bridle webbing (poly_webbing_25mm)
+GUY_X_REV0 = (92.0, 100.0)    # attachment_diet.md section 5: guy loops at x +/-(92-100) "beside the leg"
+MIN_CLEAR_MM = 10.0       # ASSUMPTION: gloved toggle handling + +/-5 mm webbing wander; settled by the prototype crown fit
+MU_WEB_BAR = 0.30         # ASSUMPTION: 25 mm poly webbing loop on clear-coated carbon (no record); settled by a pull test
+BAR_WRAP_MM = math.pi * (BAR_OD + 2 * 1.2) + 15.0      # webbing (t 1.2 mm ASSUMPTION) round the bar + 15 mm bartack lap
+SPINE_WRAP_MM = math.pi * (SPINE_OD + 2 * 1.2) + 15.0
+BRIDLE_TAB_MM = 60.0      # ASSUMPTION: 25 mm tab folded 2 x 30 mm for the guy's toggle loop to pass through
+TRIPOD_KEEPER_Z = 600.0   # ASSUMPTION: upper tripod legs (feet on FP-R's top edge z 380); settled by the right-gusset fit check
+TRIPOD_D = 70.0           # ASSUMPTION: folded tripod leg bundle (3 x ~25 mm legs + head); settled by the same fit check
+KEEPER_PRE = 0.80         # DECISION: shock cord cut to 80 % of the gusset span (snug with no tripod)
+SEAM_CATCH = 15.0         # cord end caught in a seam, each end (same rule as the FP mouth cords)
+
+
+def _bands(x0: float, w: float) -> tuple:
+    return (x0 - w / 2.0, x0 + w / 2.0)
+
+
+def guy_lifter_check() -> dict:
+    """S6: guy bar loops against the lifter lugs on the crown top bar, for each BL-017 crown kit (recommended
+    (a)+(d1)+(c17 bore 19) = specs acb_S / acb_M / acb_L) at both ends of its torso range. x bands on the bar (right
+    half; the left mirrors it). The lifter webbing band is clipped by the leg's inner face."""
+    from huntkit.gendesign import crown_diet as CD
+    sp = CD.specs()
+    kits = {}
+    for size, (lo, hi) in CD.SIZES.items():
+        rows = []
+        for t in (lo, hi):
+            m = CD.build(sp[f"acb_{size}"], t)
+            n = m["nodes"]
+            leg_x = float(n["CRtop"][0])
+            bar_ok = all(abs(float(n[k][2]) - float(n["CRtop"][2])) < 1e-6 for k in ("TB0", "TB1", "TB2"))
+            rows.append({"torso_in": t, "leg_x": leg_x, "bar_z": float(n["CRtop"][2]), "bar_straight": bar_ok})
+        kits[size] = rows
+    leg_x = {r["leg_x"] for rr in kits.values() for r in rr}
+    assert len(leg_x) == 1, leg_x
+    leg_x = leg_x.pop()
+    leg_in = leg_x - LEG_OD / 2.0
+    lift = (max(LIFTER_X - LIFTER_W / 2.0, 0.0), min(LIFTER_X + LIFTER_W / 2.0, leg_in))
+    wrap = (leg_in - WRAP_ON_BAR - WRAP_SCARF, leg_in)
+    clamp = (0.0, SPINE_CLAMP_HALF)
+
+    def judge(x0):
+        g = _bands(x0, GUY_W)
+        return {"guy_band": [round(v, 1) for v in g], "overlap_lifter_mm": round(max(0.0, min(g[1], lift[1]) - max(g[0], lift[0])), 1),
+                "clear_to_lifter_mm": round(lift[0] - g[1], 1), "clear_to_wrap_mm": round(wrap[0] - g[1], 1),
+                "clear_to_clamp_mm": round(g[0] - clamp[1], 1)}
+    rev0 = {f"x{x:.0f}": judge(x) for x in GUY_X_REV0}
+    rev1 = judge(REVS[1]["guy_x"])
+    return {"kits": kits, "leg_x": leg_x, "lifter_band": [round(v, 1) for v in lift], "wrap_band": [round(v, 1) for v in wrap],
+            "clamp_band": list(clamp), "rev0": rev0, "rev1": rev1, "min_clear_mm": MIN_CLEAR_MM,
+            "rev0_clash": any(v["overlap_lifter_mm"] > 0 for v in rev0.values()),
+            "rev1_ok": rev1["overlap_lifter_mm"] == 0 and min(rev1["clear_to_lifter_mm"], rev1["clear_to_wrap_mm"],
+                                                              rev1["clear_to_clamp_mm"]) >= 0
+                       and rev1["clear_to_lifter_mm"] >= MIN_CLEAR_MM}
+
+
+def _seg_dist(p1, p2, q1, q2, n=200) -> float:
+    a = np.linspace(0, 1, n)[:, None]
+    P = p1 + a * (p2 - p1)
+    Q = q1 + a * (q2 - q1)
+    return float(np.min(np.linalg.norm(P[:, None, :] - Q[None, :, :], axis=2)))
+
+
+def guy_geometry(c: ShellF | None = None) -> dict:
+    """Guy line from its bar end to the B-22 tab (x +/-149, z 695 on the aft face) at each torso: the outboard share
+    of the guy tension (does a plain loop slide along the bar? it does when share > MU_WEB_BAR) and the 3D distance
+    from the guy line to the lifter webbing (lug to shoulder-strap point, same x: ASSUMPTION lifter in a vertical
+    plane). Bar-end y, z = the cloth sim's tie anchors (corrie_PR{t}.yaml: bar centre + 25 mm sweep + bar radius)."""
+    from huntkit.clothsim.pack import load_scenario
+    c = c or make()
+    bg = _bg()
+    out = {}
+    for t in (15, 19, 23):
+        sc = load_scenario(str(ROOT / "huntkit" / "clothsim" / "scenarios" / f"corrie_PR{t}c.yaml"))
+        tie = next(q for q in sc["attachments"]["ties"]["list"] if q["id"] == "TG_R")
+        _, ay, az = (float(v) for v in tie["anchor"])
+        tab = np.array([149.0, float(c.y_front([695.0])[0]), 695.0])
+        cs = min(bg.crown_settings(), key=lambda q: abs(q["torso_in"] - t))
+        la = np.array(cs["lifter_anchor_R"], float)
+        ang = math.radians(cs["lifter_angle_deg"])
+        lend = la + 150.0 * np.array([0.0, -math.cos(ang), -math.sin(ang)])
+        row = {}
+        for k, x in (("rev0", 100.0), ("rev1", REVS[1]["guy_x"])):
+            a = np.array([x, ay, az])
+            d = tab - a
+            row[k] = {"outboard_share": round(float(d[0] / np.linalg.norm(d)), 3),
+                      "slides_without_bridle": bool(d[0] / np.linalg.norm(d) > MU_WEB_BAR),
+                      "dist_to_lifter_mm": round(_seg_dist(a, tab, la, lend) - GUY_W / 2.0, 1)}
+        out[t] = row
+    return out
+
+
+def _bg():
+    from huntkit.gendesign import attach_system as AS
+    return AS._bg()
+
+
+def guy_bridle() -> dict:
+    """B-25 guy bridle (rev 1): one 25 mm webbing piece sewn round the top bar at x +/-GUY_X (two sleeves), joined
+    along the bar and round the spine below its clamp (so the spine locates it and the guys' outboard pulls cancel in
+    the webbing), with a folded tab at each sleeve for the guy's toggle loop. Fitted on the bar before the crown corners
+    are bonded (build step). Permanent: no handling in use."""
+    x = REVS[1]["guy_x"]
+    run = 2.0 * (x - GUY_W / 2.0 - SPINE_CLAMP_HALF)
+    mm = 2 * BAR_WRAP_MM + run + SPINE_WRAP_MM + 2 * BRIDLE_TAB_MM
+    return {"id": "B-25", "length_mm": round(mm, 1), "mass_g": round(mm * WEB25 / 1000.0, 2),
+            "source": "poly_webbing_25mm record x length (BAR_WRAP_MM, SPINE_WRAP_MM, BRIDLE_TAB_MM ASSUMPTIONS)"}
+
+
+def tripod_keeper(c: ShellF | None = None, door: str = DOOR_DEFAULT) -> dict:
+    """B-26 tripod keeper (rev 1, S7): one 3 mm shock cord across the right gusset at TRIPOD_KEEPER_Z, ends caught in
+    the B-01 | gusset R seam and the aft corner seam (D2: blade U | gusset R). D1's aft corner seam holds the zip leg,
+    so its aft end goes in a 25 x 60 mm webbing tab on the gusset 20 mm forward of the zip. The tripod slides under
+    it head first when packed; W1/W2 still compress it. Unhooking W1/W2 for the door does not touch it."""
+    c = c or make()
+    span = float(c.depth([TRIPOD_KEEPER_Z])[0])
+    free = KEEPER_PRE * span
+    cut = free + 2 * SEAM_CATCH
+    path = span + (math.pi - 2.0) * TRIPOD_D / 2.0      # cord over a round bundle lying on the gusset
+    strain = path / free - 1.0
+    g = cut * SHOCK_GM / 1000.0
+    tab = 60.0 * WEB25 / 1000.0 if door == "D1" else 0.0
+    return {"id": "B-26", "span_mm": round(span, 1), "cut_mm": round(cut, 1), "strain_with_tripod": round(strain, 3),
+            "mass_g": round(g + tab, 2), "tab_g": round(tab, 2),
+            "glove_s_per_door_cycle": 0.0,
+            "glove_s_per_packing": 6.0,          # ASSUMPTION: slide the tripod head-first under one cord; settled by FT-S2
+            "compare": {"team B A2 tripod straps g": 32.2, "W-strap re-routing g": 0.0},
+            "source": "shock_cord_3mm record (6 g/m) x cut length; D1 tab poly_webbing_25mm record"}
+
+
+def rev1_rows(c: ShellF | None = None, door: str = DOOR_DEFAULT) -> list:
+    """Bag-side rows rev 1 adds (none at rev 0)."""
+    r = REVS[REVISION]
+    rows = []
+    if r["guy_bridle"]:
+        b = guy_bridle()
+        rows.append(("attachment", f"BL-022 rev 1: {b['id']} guy bridle on the top bar at x +/-{r['guy_x']:.0f}",
+                     b["mass_g"], "base", b["source"]))
+    if r["tripod_keeper"]:
+        k = tripod_keeper(c, door)
+        rows.append(("straps_compression", f"BL-022 rev 1: {k['id']} tripod keeper (3 mm shock cord, right gusset)",
+                     k["mass_g"], "base", k["source"]))
+    return rows
+
+
+def top_bar_guy_moment(guy_n_factored: float) -> dict:
+    """Bar bending from the two guy loads (fixed-fixed between the corner nodes, symmetric point loads at x +/-xg):
+    end moment M = P a (L - a) / L, mid moment P a^2 / L, a = leg_x - xg. Rev 0 node x 95 (crown_diet split_top_bar)
+    against rev 1 x GUY_X. Stress on the 18 mm bar tube section (frame.yaml bar_section through fea.sections)."""
+    from huntkit.fea.sections import from_spec
+    import yaml as _y
+    fr = _y.safe_load((PACK / "frame.yaml").read_text())
+    sec = None
+    for k in ("bar_section",):
+        for v in _walk(fr):
+            if isinstance(v, dict) and k in v:
+                sec = from_spec(v[k])
+                break
+    L = 230.0
+    out = {}
+    for k, xg in (("rev0_x95", 95.0), ("rev1", REVS[1]["guy_x"])):
+        a = 115.0 - xg
+        m_end = guy_n_factored * a * (L - a) / L
+        m_mid = guy_n_factored * a * a / L
+        row = {"a_mm": a, "m_end_nmm": round(m_end, 0), "m_mid_nmm": round(m_mid, 0)}
+        if sec is not None:
+            I = float(getattr(sec, "Iy", getattr(sec, "I", 0.0)) or 0.0)
+            if I > 0:
+                row["sigma_mpa"] = round(max(m_end, m_mid) * (BAR_OD / 2.0) / I, 1)
+                row["I_mm4"] = round(I, 0)
+        out[k] = row
+    return out
+
+
+def _walk(o):
+    yield o
+    if isinstance(o, dict):
+        for v in o.values():
+            yield from _walk(v)
+    elif isinstance(o, list):
+        for v in o:
+            yield from _walk(v)
+
+
 # ---------------------------------------------------------------------------------------------------------- results
 RESULT = HERE / "corrie_f_result.json"
 SCREENS = ROOT / "outputs" / "screens"
@@ -802,8 +1021,11 @@ FEATURES = [
     "Team A hip-reach pockets FP-L / FP-R on the gussets (snacks + GPS left, 2nd bottle right) and the pole quiver",
     "Straps BL-003 REC: IM1-IM3 and US1/US2 at 25 mm, sewn loops girth-hitched on the IM eyes; no wings: W1-W3 are the "
     "only external straps (compression, tripod, float wrap)",
-    "Attachment BL-004 REC: no crown hood, no ladders, no IM2 bag hooks; guys toggled round the top bar (bright toggle + "
-    "hang-tag: 'guys on' is a carry rule); B-17 70 mm",
+    "Attachment BL-004 REC: no crown hood, no ladders, no IM2 bag hooks; guys toggled on (bright toggle + hang-tag: "
+    "'guys on' is a carry rule); B-17 70 mm. Rev 1 (BL-022): the guys toggle through the B-25 bridle tabs at x +/-52 on "
+    "the top bar, clear of the lifter lugs at x +/-105",
+    "Rev 1 (BL-022): B-26 tripod keeper, one 3 mm shock cord across the right gusset, so opening the door (W1/W2 "
+    "unhooked) never frees the tripod",
     "BL-010 hardware: 22 g wiregate carabiners at the IM3 bag hooks, IM3 meat free end and B-24; rated G-hooks and heavy "
     "ladder locks on W1-W3 and the guys",
     "Add-ons outside base: scope pod (left gusset), top pouch 2.7 L, rain fly (base pocket stays), meat liner (team D "
@@ -1074,6 +1296,143 @@ def plot_cg(path: Path) -> Path:
     return path
 
 
+def bl022_table() -> dict:
+    """BL-022 numbers from the stored sim rows: R-28 coarse / fine for rev 0 and rev 1, the guys-off misuse case, and
+    rev 1's coarse CG / volume / loads. Rows that are not run yet are None."""
+    S = _sim()
+    rows = S.load_results()["rows"]
+    FACTOR = 3.0                      # attach_diet.FACTOR: HA-LS-1 C5 / C2 2.0 g x 1.5 on the 1 g simulated force
+
+    def r28(k):
+        r = rows.get(k)
+        if not r or "r28" not in r:
+            return None
+        return {cn: {"deg": r["r28"][cn]["worst_contact_deg"], "gap30_mm": r["r28"][cn]["worst_gap_30_mm"],
+                     "pass": r["r28"][cn]["pass"]} for cn in ("fill", "meat")}
+
+    def worst(x):
+        return None if x is None else min(x["fill"]["deg"], x["meat"]["deg"])
+    r28t = {}
+    for t in S.TORSOS:
+        r28t[t] = {"rev0_coarse": r28(f"Fr0_PR{t}"), "rev0_fine": r28(f"Fr0_PR{t}_fineFM"),
+                   "rev1_coarse": r28(f"F_PR{t}"), "rev1_fine": r28(f"F_PR{t}_fineFM")}
+        r28t[t]["worst"] = {k: worst(v) for k, v in list(r28t[t].items())}
+    fine = [r28t[t]["worst"]["rev1_fine"] for t in S.TORSOS]
+    acc = {"target_deg": 31.0, "rev1_fine_deg": fine,
+           "met": all(v is not None and v >= 31.0 for v in fine),
+           "shortfall_deg": {t: round(31.0 - v, 1) for t, v in zip(S.TORSOS, fine) if v is not None and v < 31.0}}
+
+    def case(k, cn):
+        r = rows.get(k)
+        if not r or cn not in r["cases"]:
+            return None
+        c = r["cases"][cn]
+        im3 = max(c["loads_1g"].get("hook_im520_R", 0.0), c["loads_1g"].get("hook_im520_L", 0.0))
+        guy = max(c["loads_1g"].get("TG_R", 0.0), c["loads_1g"].get("TG_L", 0.0))
+        return {"converged": c["converged"], "rounding_mm": c["rounding_mm"], "cg_y": c["cg_y"], "cg_y_biased": c["cg_y_biased"],
+                "cg_z": c["cg_z"], "closed_L": c["closed_L"], "im3_1g_n": im3, "im3_factored_n": round(FACTOR * im3, 0),
+                "guy_1g_n": guy, "mesh_h": r["mesh_h"]}
+    goff = case("F_PR15_goff", "meat")
+    gon = case("F_PR15", "meat")
+    misuse = None
+    if goff:
+        misuse = {"guys_off": goff, "guys_on": gon, "limit_meat_mm": 190.0,
+                  "exceeds_rev_c": goff["cg_y_biased"] > 190.0,
+                  "bl004_basis_factored_n": 1702.0,       # attachment_diet.md section 5 (CORRIE 15 in guys-off, 567 N x 3.0)
+                  "above_bl004_basis": goff["im3_factored_n"] > 1702.0}
+    rev1 = {t: {cn: case(f"F_PR{t}", cn) for cn in ("fill", "meat")} for t in S.TORSOS}
+    rev0 = {t: {cn: case(f"Fr0_PR{t}", cn) for cn in ("fill", "meat")} for t in S.TORSOS}
+    finec = {f"{v}_{t}": {cn: case(f"{v}_PR{t}_fineFM", cn) for cn in ("fill", "meat")}
+             for v in ("Fr0", "F") for t in S.TORSOS if f"{v}_PR{t}_fineFM" in rows}
+    guys = [c["guy_1g_n"] for d in list(rev1.values()) + list(finec.values()) for c in d.values() if c]
+    return {"r28": r28t, "acceptance": acc, "guys_off": misuse, "rev1_coarse": rev1, "rev0_coarse": rev0, "fine": finec,
+            "guy_max_1g_n": max(guys) if guys else None,
+            "guy_max_factored_n": round(FACTOR * max(guys), 0) if guys else None}
+
+
+def bl022_summary() -> dict:
+    t = bl022_table()
+    g = t["guy_max_factored_n"] or 244.0
+    with revision(1):
+        k2, k1 = tripod_keeper(door="D2"), tripod_keeper(door="D1")
+        geo = geometry()
+    return {"revision": REVISION, "revs": REVS, "sims": t, "guy_lifter": guy_lifter_check(), "guy_lines": guy_geometry(),
+            "bridle": guy_bridle(), "tripod_keeper": {"D2": k2, "D1": k1}, "top_bar_guy_moment": top_bar_guy_moment(g),
+            "geometry_rev1": {k: v for k, v in geo.items() if k != "profile"}}
+
+
+def plot_bl022(path: Path) -> Path:
+    """R-28 coarse vs fine, rev 0 (before) and rev 1 (after), plus the loaded frame-side face above the bar at 23 in."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    S = _sim()
+    t = bl022_table()
+    rows = S.load_results()["rows"]
+    fig, axs = plt.subplots(1, 2, figsize=(12.5, 5.6), dpi=100, gridspec_kw={"width_ratios": [1.15, 1]})
+    ax = axs[0]
+    series = (("rev 0 coarse (h 40)", "rev0_coarse", "#b9c6d6"), ("rev 0 fine (h 25)", "rev0_fine", "#6d8fb3"),
+              ("rev 1 coarse (h 40)", "rev1_coarse", "#d9b48a"), ("rev 1 fine (h 25)", "rev1_fine", "#8a5a2b"))
+    w = 0.2
+    for i, (lab, key, col) in enumerate(series):
+        for j, tor in enumerate(S.TORSOS):
+            v = t["r28"][tor]["worst"][key]
+            x = j + (i - 1.5) * w
+            if v is None:
+                ax.text(x, 1.0, "not\nrun", ha="center", fontsize=6.5, color="#777")
+                continue
+            ax.bar(x, v, w, color=col, label=lab if j == 0 else None, edgecolor="white")
+            ax.text(x, v + 0.5, f"{v:.0f}", ha="center", fontsize=8)
+    ax.axhline(30, color="#c0392b", ls="--", lw=1)
+    ax.axhline(31, color="#c0392b", ls=":", lw=1)
+    ax.text(-0.45, 30.3, "> 30 deg required", color="#c0392b", fontsize=8, va="bottom")
+    ax.text(1.55, 31.3, "BL-022 target 31 deg (1 deg margin)", color="#c0392b", fontsize=8, va="bottom")
+    ax.set_xticks(range(len(S.TORSOS)), [f"{x} in" for x in S.TORSOS])
+    ax.set_ylim(0, 42)
+    ax.set_ylabel("first head contact, deg (worst of fill / meat)")
+    ax.set_title(f"R-28 head clearance: rev 0 {REVS[0]['setback']:.0f} mm setback, guys x +/-{REVS[0]['guy_x']:.0f}; "
+                 f"rev 1 {REVS[1]['setback']:.0f} mm, guys x +/-{REVS[1]['guy_x']:.0f}", fontsize=9.5)
+    ax.legend(fontsize=8, loc="upper center", ncol=2)
+    ax.set_ylim(0, 48)
+    ax.grid(axis="y", alpha=0.25)
+    ax = axs[1]
+    bg = _bg()
+    cs = min(bg.crown_settings(), key=lambda q: abs(q["torso_in"] - 23))
+    zt = cs["crown_top_z"]
+    for key, lab, col, ls in (("Fr0_PR23", "rev 0 coarse", "#b9c6d6", "-"), ("Fr0_PR23_fineFM", "rev 0 fine", "#6d8fb3", "-"),
+                              ("F_PR23", "rev 1 coarse", "#d9b48a", "--"), ("F_PR23_fineFM", "rev 1 fine", "#8a5a2b", "--")):
+        r = rows.get(key)
+        if not r:
+            continue
+        for cn, mk in (("meat", "o"),):
+            pr = [(w[0], w[1]) for w in r["cases"][cn]["profile"] if w[0] >= zt - 150]
+            if pr:
+                ax.plot([q[1] for q in pr], [q[0] for q in pr], ls, marker=mk, ms=3, color=col, label=f"{lab}, meat: loaded face")
+    for var, lab, col in (("Fr0", "rev 0 drafted face (sim mesh)", "#999"), ("F", "rev 1 drafted face (sim mesh)", "#333")):
+        if var == "F" and REVS[1]["setback"] == REVS[0]["setback"]:
+            continue
+        dr = sorted((z, y) for z, y in S.drafted_face(var, 23).items() if z >= zt - 150)
+        ax.plot([q[1] for q in dr], [q[0] for q in dr], color=col, lw=1.2, label=lab)
+    yb = float(bg.y_on_axis(zt) + bg.TOP_BAR_AFT)
+    ax.add_patch(plt.Circle((yb, zt), 9.0, color="#222"))
+    ax.text(yb + 12, zt - 8, "crown top bar (23 in)", fontsize=8)
+    ax.set_xlabel("y, mm (head side <- -> aft)")
+    ax.set_ylabel("z, mm")
+    ax.set_title("23 in: frame-side face above the crown bar, as simulated", fontsize=9.5)
+    ax.legend(fontsize=7, loc="upper left")
+    ax.set_aspect("equal", adjustable="datalim")
+    ax.grid(alpha=0.25)
+    acc = t["acceptance"]
+    fig.suptitle("BL-022 CORRIE F rev 1: R-28 on the fine mesh "
+                 + ("meets 31 deg at 15 / 19 / 23 in" if acc["met"] else
+                    (f"short by {acc['shortfall_deg']} deg" if acc["shortfall_deg"] else "pending (runs missing)")),
+                 fontsize=12)
+    fig.tight_layout()
+    fig.savefig(path)
+    plt.close(fig)
+    return path
+
+
 def all_plots() -> list:
     SCREENS.mkdir(parents=True, exist_ok=True)
     return [plot_mass(SCREENS / f"{PREFIX}1.png"), plot_doors(SCREENS / f"{PREFIX}2.png"), plot_cg(SCREENS / f"{PREFIX}3.png")]
@@ -1084,7 +1443,13 @@ def main(argv=None):
     ap.add_argument("--size", default="M")
     ap.add_argument("--rows", action="store_true")
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--bl022", action="store_true", help="BL-022 rev 1 summary + screenshot 20261111_BL022_1.png")
     a = ap.parse_args(argv)
+    if a.bl022:
+        SCREENS.mkdir(parents=True, exist_ok=True)
+        print(json.dumps(bl022_summary(), indent=1, default=_j))
+        print(plot_bl022(SCREENS / "20261111_BL022_1.png"))
+        return
     s = summary(a.size)
     print(json.dumps(s, indent=1, default=_j))
     if a.rows:

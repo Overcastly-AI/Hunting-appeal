@@ -1,7 +1,8 @@
 {
  "date": "2026-11-11",
- "ticket": "BL-013",
+ "ticket": "BL-013, revised by BL-023",
  "size": "M",
+ "corrie_f_rev": 0,
  "kit": "M",
  "target_g": 2993.7,
  "scenarios": {
@@ -11,11 +12,11 @@
    "meat_trip": 3927.0
   },
   "P": {
-   "base": 3414.4,
-   "as_hunted": 3659.9,
-   "meat_trip": 3792.0,
+   "base": 3635.9,
+   "as_hunted": 3881.4,
+   "meat_trip": 4013.5,
    "by_system_base": {
-    "frame": 1035.5,
+    "frame": 1036.9,
     "back": 413.6,
     "belt": 487.5,
     "harness": 238.1,
@@ -23,23 +24,23 @@
     "bag_pockets": 108.7,
     "pouch": 0,
     "fly": 5.9,
-    "straps_meat": 266.6,
+    "straps_meat": 383.6,
     "straps_compression": 264.5,
-    "attachment": 169.0,
+    "attachment": 272.0,
     "misc": 43.5
    },
    "like_for_like_base": {
-    "bag_side": 1196.2,
-    "suspension": 2174.7,
+    "bag_side": 1416.2,
+    "suspension": 2176.2,
     "misc": 43.5
    }
   },
   "A": {
-   "base": 3142.0,
-   "as_hunted": 3387.5,
-   "meat_trip": 3519.6,
+   "base": 3143.5,
+   "as_hunted": 3389.0,
+   "meat_trip": 3521.1,
    "by_system_base": {
-    "frame": 1014.9,
+    "frame": 1016.3,
     "back": 369.0,
     "belt": 442.8,
     "harness": 238.1,
@@ -54,16 +55,16 @@
    },
    "like_for_like_base": {
     "bag_side": 1033.8,
-    "suspension": 2064.7,
+    "suspension": 2066.2,
     "misc": 43.5
    }
   },
   "O": {
-   "base": 3144.9,
-   "as_hunted": 3390.4,
-   "meat_trip": 3522.5,
+   "base": 3146.4,
+   "as_hunted": 3391.9,
+   "meat_trip": 3524.0,
    "by_system_base": {
-    "frame": 1017.8,
+    "frame": 1019.2,
     "back": 369.0,
     "belt": 442.8,
     "harness": 238.1,
@@ -78,7 +79,7 @@
    },
    "like_for_like_base": {
     "bag_side": 1033.8,
-    "suspension": 2067.6,
+    "suspension": 2069.1,
     "misc": 43.5
    }
   }
@@ -91,19 +92,19 @@
     "meat_trip": 3899.1
    },
    "P": {
-    "base": 3386.7,
-    "as_hunted": 3632.2,
-    "meat_trip": 3764.2
+    "base": 3608.1,
+    "as_hunted": 3853.6,
+    "meat_trip": 3985.7
    },
    "A": {
-    "base": 3116.5,
-    "as_hunted": 3362.0,
-    "meat_trip": 3494.1
+    "base": 3118.0,
+    "as_hunted": 3363.5,
+    "meat_trip": 3495.6
    },
    "O": {
-    "base": 3119.4,
-    "as_hunted": 3364.9,
-    "meat_trip": 3497.0
+    "base": 3120.9,
+    "as_hunted": 3366.4,
+    "meat_trip": 3498.5
    }
   },
   "M": {
@@ -113,19 +114,19 @@
     "meat_trip": 3927.0
    },
    "P": {
-    "base": 3414.4,
-    "as_hunted": 3659.9,
-    "meat_trip": 3792.0
+    "base": 3635.9,
+    "as_hunted": 3881.4,
+    "meat_trip": 4013.5
    },
    "A": {
-    "base": 3142.0,
-    "as_hunted": 3387.5,
-    "meat_trip": 3519.6
+    "base": 3143.5,
+    "as_hunted": 3389.0,
+    "meat_trip": 3521.1
    },
    "O": {
-    "base": 3144.9,
-    "as_hunted": 3390.4,
-    "meat_trip": 3522.5
+    "base": 3146.4,
+    "as_hunted": 3391.9,
+    "meat_trip": 3524.0
    }
   },
   "L": {
@@ -135,19 +136,19 @@
     "meat_trip": 3951.1
    },
    "P": {
-    "base": 3438.7,
-    "as_hunted": 3684.2,
-    "meat_trip": 3816.3
+    "base": 3660.2,
+    "as_hunted": 3905.7,
+    "meat_trip": 4037.8
    },
    "A": {
-    "base": 3164.4,
-    "as_hunted": 3409.9,
-    "meat_trip": 3542.0
+    "base": 3165.9,
+    "as_hunted": 3411.4,
+    "meat_trip": 3543.5
    },
    "O": {
-    "base": 3167.3,
-    "as_hunted": 3412.8,
-    "meat_trip": 3544.9
+    "base": 3168.8,
+    "as_hunted": 3414.3,
+    "meat_trip": 3546.4
    }
   },
   "XL": {
@@ -157,19 +158,19 @@
     "meat_trip": 3987.1
    },
    "P": {
-    "base": 3475.0,
-    "as_hunted": 3720.5,
-    "meat_trip": 3852.6
+    "base": 3696.5,
+    "as_hunted": 3942.0,
+    "meat_trip": 4074.1
    },
    "A": {
-    "base": 3198.8,
-    "as_hunted": 3444.3,
-    "meat_trip": 3576.4
+    "base": 3200.2,
+    "as_hunted": 3445.7,
+    "meat_trip": 3577.8
    },
    "O": {
-    "base": 3201.7,
-    "as_hunted": 3447.2,
-    "meat_trip": 3579.3
+    "base": 3203.1,
+    "as_hunted": 3448.6,
+    "meat_trip": 3580.7
    }
   },
   "XXL": {
@@ -179,19 +180,19 @@
     "meat_trip": 4015.2
    },
    "P": {
-    "base": 3504.1,
-    "as_hunted": 3749.6,
-    "meat_trip": 3881.7
+    "base": 3725.5,
+    "as_hunted": 3971.0,
+    "meat_trip": 4103.1
    },
    "A": {
-    "base": 3225.7,
-    "as_hunted": 3471.2,
-    "meat_trip": 3603.3
+    "base": 3227.2,
+    "as_hunted": 3472.7,
+    "meat_trip": 3604.8
    },
    "O": {
-    "base": 3228.6,
-    "as_hunted": 3474.1,
-    "meat_trip": 3606.2
+    "base": 3230.1,
+    "as_hunted": 3475.6,
+    "meat_trip": 3607.7
    }
   }
  },
@@ -210,10 +211,10 @@
    "rows": [
     {
      "system": "attachment",
-     "name": "REMOVED: attachment: printed fairleads (8)",
+     "name": "REMOVED: attachment: printed fairleads (8) (already inside the printed body raster)",
      "g": -49.4,
      "cfg": "base",
-     "source": "double-booked: frame_branch.frame_sdf adds bag_attach.attachment_field to the body SDF, so the 823.2 g production raster and the 757.7 g H1 raster already hold the 8 fairleads; ledger row"
+     "source": "ledger correction C1: frame_branch.frame_sdf adds bag_attach.attachment_field to the body SDF (frame_h1.md section 4: bag fairleads 100 % present); negative copy of ledger row attachment:attachment_printed_fairleads_8"
     }
    ]
   },
@@ -231,10 +232,10 @@
    "rows": [
     {
      "system": "attachment",
-     "name": "REMOVED: attachment: B-01 swell patches",
+     "name": "REMOVED: attachment: B-01 swell patches (same 8 swells as cut piece B-13x)",
      "g": -12.3,
      "cfg": "base",
-     "source": "booked twice: bag_attach's 2-ply patch estimate (200 gsm ASSUMPTION) and the cut piece B-13x (corrie.build, 'replaces the cone caps') are the same 8 swells; ledger row"
+     "source": "ledger correction C2: corrie.build B-13x 'replaces the cone caps'; negative copy of ledger row attachment:attachment_b_01_swell_patches"
     }
    ]
   },
@@ -255,14 +256,14 @@
      "name": "crown-corner carbon wraps + CF gussets (2 corners), unbooked",
      "g": 17.59,
      "cfg": "base",
-     "source": "pack5200.hardware_mass crown_corner share (frame.yaml 0.75 mm wrap x 30 mm per tube)"
+     "source": "ledger correction C3: ledger.corner_wraps(): pack5200.hardware_mass crown_corner share (frame.yaml wrap per tube)"
     },
     {
      "system": "frame",
-     "name": "crown-corner MMA bond (0.8 mm, 2 corners) less the rev C line already booked",
+     "name": "crown-corner MMA bond (2 corners) less the rev C corner line already booked",
      "g": 6.63,
      "cfg": "base",
-     "source": "pack5200.hardware_mass crown_corner adhesive - frame_mass_production corner_bondline"
+     "source": "ledger correction C3: ledger.corner_wraps(): pack5200.hardware_mass crown_corner adhesive - frame_mass_production corner_bondline"
     }
    ]
   },
@@ -283,7 +284,7 @@
      "name": "POM pawl housing double-booked (the printed body forms the housing and its cheeks)",
      "g": -8.0,
      "cfg": "base",
-     "source": "crown_diet.PAWL_HOUSING_G - PAWL_SPRING_G (both ASSUMPTION in pack5200.HW); print/frame/PRODUCTION.md step 2: pawl pin in the printed cheeks"
+     "source": "ledger correction C4: crown_diet.PAWL_HOUSING_G - PAWL_SPRING_G (ASSUMPTION there; settled by weighing pawl + spring); print/frame/PRODUCTION.md step 2"
     }
    ]
   },
@@ -304,7 +305,7 @@
      "name": "non-body lump short of its sources (M4 sets subtracted that frame_g never held)",
      "g": 9.14,
      "cfg": "base",
-     "source": "frame_eval.kept_g + crown_diet.PAWL_BUSH_G + frame_eval.INSERTS_G - frame_mass_production.non_body_g"
+     "source": "ledger correction C5: ledger.non_body_sources(): frame_eval.kept_g + crown_diet.PAWL_BUSH_G + frame_eval.INSERTS_G - frame_mass_production.non_body_g"
     }
    ]
   },
@@ -322,17 +323,17 @@
    "rows": [
     {
      "system": "attachment",
-     "name": "REMOVED: attachment: lifter tri-glide keepers",
+     "name": "REMOVED: attachment: lifter tri-glide keepers (moved to harness)",
      "g": -6.0,
      "cfg": "base",
-     "source": "lifter keepers are a harness part (bag_attach: 'lifter backup'); ledger row"
+     "source": "ledger correction C6: bag_attach: 'lifter backup' is a harness part; negative copy of ledger row attachment:attachment_lifter_tri_glide_keepers"
     },
     {
      "system": "harness",
      "name": "lifter tri-glide keepers (moved from attachment)",
      "g": 6.0,
      "cfg": "base",
-     "source": "ledger row"
+     "source": "ledger correction C6: ledger row attachment:attachment_lifter_tri_glide_keepers"
     }
    ]
   },
@@ -353,14 +354,14 @@
      "name": "IMP-3 holster: its 2 wing tabs stay sewn to the belt (base)",
      "g": 2.16,
      "cfg": "base",
-     "source": "hipbelt_diet.holster_split (corrie.holster hardware row)"
+     "source": "ledger correction C7: hipbelt_diet.holster_split (corrie.holster hardware row)"
     },
     {
      "system": "belt",
      "name": "IMP-3 holster: wing tabs out of the as-hunted add-on",
      "g": -2.16,
      "cfg": "as_hunted",
-     "source": "hipbelt_diet.holster_split"
+     "source": "ledger correction C7: hipbelt_diet.holster_split"
     }
    ]
   },
@@ -378,17 +379,17 @@
    "rows": [
     {
      "system": "belt",
-     "name": "old 0.9 m 50 mm belt strap (C0 1:1 relic) -> two 140 mm 50 mm buckle tabs",
+     "name": "old 50 mm belt strap (C0 1:1 relic) -> two 50 mm buckle tabs",
      "g": -23.56,
      "cfg": "base",
-     "source": "hipbelt_diet.closure (BL-006 a2)"
+     "source": "ledger correction C8: hipbelt_diet.closure (BL-006 a2) x nylon_webbing_50mm"
     },
     {
      "system": "belt",
-     "name": "25 mm 2:1 webbing re-booked 0.6 -> 1.20 m (routing geometry)",
+     "name": "25 mm 2:1 webbing re-booked to 1.20 m (routing geometry)",
      "g": 10.82,
      "cfg": "base",
-     "source": "hipbelt_diet.closure (BL-006 a2)"
+     "source": "ledger correction C8: hipbelt_diet.closure (BL-006 a2) x poly_webbing_25mm"
     }
    ]
   },
@@ -436,14 +437,14 @@
   },
   "P_F": {
    "class": "P",
-   "ticket": "BL-011/003/004/010",
-   "label": "CORRIE F D2, today's fabrics, wing parts kept",
+   "ticket": "BL-011/010",
+   "label": "CORRIE F D2, today's fabrics; wings, 38 mm IM/US and hood kept",
    "kind": "design",
    "gate": "first-article: S15 elbow-swing / sling check (BL-009)",
    "delta_g": {
-    "base": -174.1,
-    "as_hunted": -98.5,
-    "meat_trip": -20.8
+    "base": 45.9,
+    "as_hunted": 121.5,
+    "meat_trip": 199.2
    },
    "rows": [
     {
@@ -1635,27 +1636,118 @@
      "g": 53.6,
      "cfg": "base",
      "source": "strap_arch: ledger"
+    },
+    {
+     "system": "straps_meat",
+     "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): IM-web IM1-IM3 straps, 25 mm webbing (same cuts; left end a sewn loop, girth-hitched on the left fairlead eye)",
+     "g": 30.96,
+     "cfg": "base",
+     "source": "strap_arch._lighten_im_us(today_parts) - today_parts: geometry.yaml cuts x poly_webbing_25mm record; the sewn loop replaces the left hook loop (same cut)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): IM-hooks 3 x 25 mm rated Al G-hooks (right end only)",
+     "g": 30.0,
+     "cfg": "base",
+     "source": "strap_arch._lighten_im_us(today_parts) - today_parts: ASSUMPTION G25R_G (AustriAlpin DY25K-G class, 8 g, 1.2 kN)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): IM-cams 3 x 25 mm Al cams",
+     "g": 27.0,
+     "cfg": "base",
+     "source": "strap_arch._lighten_im_us(today_parts) - today_parts: ASSUMPTION CAM25_G (Austere 25 mm class)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): US-cams US1/US2 25 mm Al cams (2)",
+     "g": 18.0,
+     "cfg": "base",
+     "source": "strap_arch._lighten_im_us(today_parts) - today_parts: ASSUMPTION CAM25_G"
+    },
+    {
+     "system": "straps_meat",
+     "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): US-web US1/US2 25 mm webbing 1.10 m",
+     "g": 11.0,
+     "cfg": "base",
+     "source": "strap_arch._lighten_im_us(today_parts) - today_parts: poly_webbing_25mm record x the 1.10 m of the ledger row"
+    },
+    {
+     "system": "attachment",
+     "name": "hood + IM2 hooks kept until PT-1/TL-1/LL-H (BL-004 REC undone): IM2 bag hooks x2 (rated 38 mm)",
+     "g": 28.0,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes('REC'): ledger hook rows / 4"
+    },
+    {
+     "system": "attachment",
+     "name": "hood + IM2 hooks kept until PT-1/TL-1/LL-H (BL-004 REC undone): IM2 TPU hook sleeves x2",
+     "g": 2.0,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes('REC'): ledger row / 4"
+    },
+    {
+     "system": "attachment",
+     "name": "hood + IM2 hooks kept until PT-1/TL-1/LL-H (BL-004 REC undone): T2 tongues x2 (38 mm x 160)",
+     "g": 8.95,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes('REC'): ledger 'bag-side straps' / 4"
+    },
+    {
+     "system": "attachment",
+     "name": "hood + IM2 hooks kept until PT-1/TL-1/LL-H (BL-004 REC undone): B-23 IM2 tongue backings x2",
+     "g": 7.1,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes('REC'): ledger row"
+    },
+    {
+     "system": "attachment",
+     "name": "hood + IM2 hooks kept until PT-1/TL-1/LL-H (BL-004 REC undone): elastic keepers for the IM2 hooks x2",
+     "g": 1.2,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes('REC'): ledger row / 6"
+    },
+    {
+     "system": "attachment",
+     "name": "hood + IM2 hooks kept until PT-1/TL-1/LL-H (BL-004 REC undone): hood B-19 + B-19s + B-19L + ladders B-20 + tongues/toggles + grab tab",
+     "g": 60.7,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes('REC'): ledger rows"
+    },
+    {
+     "system": "attachment",
+     "name": "hood + IM2 hooks kept until PT-1/TL-1/LL-H (BL-004 REC undone): guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
+     "g": -12.12,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes('REC'): poly_webbing_25mm record; toggle ASSUMPTION (attach_system.TOGGLE_G)"
+    },
+    {
+     "system": "attachment",
+     "name": "hood + IM2 hooks kept until PT-1/TL-1/LL-H (BL-004 REC undone): B-17 trimmed 110 -> 70 mm tall (pair)",
+     "g": 7.2,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes('REC'): hypalon_coated_nylon record, cut area"
     }
    ]
   },
   "P_cheek": {
    "class": "P",
-   "ticket": "BL-010 A1",
-   "label": "IM3 fairlead cheek 25 mm",
+   "ticket": "BL-010 A1-CF",
+   "label": "IM3 fairlead cheek 27 mm",
    "kind": "safety",
-   "gate": "A1 re-run on CORRIE F loads in progress",
+   "gate": "IM3-EP eye pull 2553 N + IM3-EC 3 coupons at 1017 N; BL-021 (eye and body on sim loads)",
    "delta_g": {
-    "base": 5.3,
-    "as_hunted": 5.3,
-    "meat_trip": 5.3
+    "base": 6.8,
+    "as_hunted": 6.8,
+    "meat_trip": 6.8
    },
    "rows": [
     {
      "system": "frame",
-     "name": "BL-010 A1: IM3 printed fairlead cheek 18 -> 25 mm (2 sides)",
-     "g": 5.34,
+     "name": "BL-010 A1-CF: IM3 printed fairlead cheek 18 -> 27 mm (2 sides)",
+     "g": 6.8,
      "cfg": "base",
-     "source": "loadpath_check.FROZEN fairlead_im3 added_g 12.5 vs 9.0 mm half-height"
+     "source": "loadpath_check.FROZEN fairlead_im3 added_g 13.5 vs 9.0 mm half-height"
     }
    ]
   },
@@ -1701,12 +1793,131 @@
     }
    ]
   },
+  "A_imus": {
+   "class": "A",
+   "ticket": "BL-003 (a)",
+   "label": "IM/US straps 38 -> 25 mm, 25 mm cams + rated hooks",
+   "kind": "design",
+   "gate": "MT-1 / MT-2 / MT-3 at the BL-010 per-row loads; fallback 38 mm webbing, cams and hooks",
+   "delta_g": {
+    "base": -117.0,
+    "as_hunted": -117.0,
+    "meat_trip": -117.0
+   },
+   "rows": [
+    {
+     "system": "straps_meat",
+     "name": "BL-003 (a) IM/US: IM-web IM1-IM3 straps, 25 mm webbing (same cuts; left end a sewn loop, girth-hitched on the left fairlead eye)",
+     "g": -30.96,
+     "cfg": "base",
+     "source": "strap_arch._lighten_im_us(today_parts) - today_parts: geometry.yaml cuts x poly_webbing_25mm record; the sewn loop replaces the left hook loop (same cut)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "BL-003 (a) IM/US: IM-hooks 3 x 25 mm rated Al G-hooks (right end only)",
+     "g": -30.0,
+     "cfg": "base",
+     "source": "strap_arch._lighten_im_us(today_parts) - today_parts: ASSUMPTION G25R_G (AustriAlpin DY25K-G class, 8 g, 1.2 kN)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "BL-003 (a) IM/US: IM-cams 3 x 25 mm Al cams",
+     "g": -27.0,
+     "cfg": "base",
+     "source": "strap_arch._lighten_im_us(today_parts) - today_parts: ASSUMPTION CAM25_G (Austere 25 mm class)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "BL-003 (a) IM/US: US-cams US1/US2 25 mm Al cams (2)",
+     "g": -18.0,
+     "cfg": "base",
+     "source": "strap_arch._lighten_im_us(today_parts) - today_parts: ASSUMPTION CAM25_G"
+    },
+    {
+     "system": "straps_meat",
+     "name": "BL-003 (a) IM/US: US-web US1/US2 25 mm webbing 1.10 m",
+     "g": -11.0,
+     "cfg": "base",
+     "source": "strap_arch._lighten_im_us(today_parts) - today_parts: poly_webbing_25mm record x the 1.10 m of the ledger row"
+    }
+   ]
+  },
+  "A_att": {
+   "class": "A",
+   "ticket": "BL-004 REC",
+   "label": "hood + IM2 bag hooks deleted, guy toggle loops",
+   "kind": "design",
+   "gate": "PT-1 / PT-2 at 2553 N, TL-1 toggle loop 366 N, LL-H heavy lock 366 N; fallback hood + IM2 hooks (also an owner decision, BL-014 B4)",
+   "delta_g": {
+    "base": -103.0,
+    "as_hunted": -103.0,
+    "meat_trip": -103.0
+   },
+   "rows": [
+    {
+     "system": "attachment",
+     "name": "BL-004 REC: IM2 bag hooks x2 (rated 38 mm)",
+     "g": -28.0,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes('REC'): ledger hook rows / 4"
+    },
+    {
+     "system": "attachment",
+     "name": "BL-004 REC: IM2 TPU hook sleeves x2",
+     "g": -2.0,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes('REC'): ledger row / 4"
+    },
+    {
+     "system": "attachment",
+     "name": "BL-004 REC: T2 tongues x2 (38 mm x 160)",
+     "g": -8.95,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes('REC'): ledger 'bag-side straps' / 4"
+    },
+    {
+     "system": "attachment",
+     "name": "BL-004 REC: B-23 IM2 tongue backings x2",
+     "g": -7.1,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes('REC'): ledger row"
+    },
+    {
+     "system": "attachment",
+     "name": "BL-004 REC: elastic keepers for the IM2 hooks x2",
+     "g": -1.2,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes('REC'): ledger row / 6"
+    },
+    {
+     "system": "attachment",
+     "name": "BL-004 REC: hood B-19 + B-19s + B-19L + ladders B-20 + tongues/toggles + grab tab",
+     "g": -60.7,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes('REC'): ledger rows"
+    },
+    {
+     "system": "attachment",
+     "name": "BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
+     "g": 12.12,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes('REC'): poly_webbing_25mm record; toggle ASSUMPTION (attach_system.TOGGLE_G)"
+    },
+    {
+     "system": "attachment",
+     "name": "BL-004 REC: B-17 trimmed 110 -> 70 mm tall (pair)",
+     "g": -7.2,
+     "cfg": "base",
+     "source": "attach_diet.mass_changes('REC'): hypalon_coated_nylon record, cut area"
+    }
+   ]
+  },
   "A_back": {
    "class": "A",
    "ticket": "BL-005",
    "label": "sandwich backer strip",
    "kind": "design",
-   "gate": "3-point bend coupon + pressure-film check",
+   "gate": "BP-1 3-point bend coupon + BP-2 stay contact width; BP-3 back pressure below z 190",
    "delta_g": {
     "base": -44.6,
     "as_hunted": -44.6,
@@ -1755,7 +1966,7 @@
    "ticket": "BL-006 c2",
    "label": "0.75 mm wing stiffener",
    "kind": "design",
-   "gate": "HB-D2 wing roll-over (+ HB-1)",
+   "gate": "HB-D2 wing roll-over (+ HB-1 front-strap sensor)",
    "delta_g": {
     "base": -9.8,
     "as_hunted": -9.8,
@@ -3008,7 +3219,7 @@
    "ticket": "BL-003 (owner)",
    "label": "side wings deleted",
    "kind": "design",
-   "gate": "FT-S2 5 km side-hill, pod shift <= 20 mm",
+   "gate": "FT-S2 5 km side-hill + door open/close x 5, pod shift <= 20 mm",
    "delta_g": {
     "base": -101.6,
     "as_hunted": -101.6,
@@ -3043,7 +3254,7 @@
    "ticket": "BL-017 c17",
    "label": "OD 17 legs, 19 mm bore",
    "kind": "design",
-   "gate": "coupon CA-1 (body fatigue 1.150 -> lower)",
+   "gate": "CA-1 at the governing flip point + 0.02 (body fatigue 1.150 -> lower; per-torso flip open, BL-021)",
    "delta_g": {
     "base": -20.6,
     "as_hunted": -20.6,
@@ -3282,18 +3493,18 @@
     "pct": 58.0
    },
    "P": {
-    "ours_g": 3358.9,
-    "delta_g": 1050.9,
-    "pct": 46.0
+    "ours_g": 3580.4,
+    "delta_g": 1272.4,
+    "pct": 55.0
    },
    "A": {
-    "ours_g": 3094.2,
-    "delta_g": 786.2,
+    "ours_g": 3095.7,
+    "delta_g": 787.7,
     "pct": 34.0
    },
    "O": {
-    "ours_g": 3097.1,
-    "delta_g": 789.1,
+    "ours_g": 3098.6,
+    "delta_g": 790.6,
     "pct": 34.0
    }
   },
@@ -3312,18 +3523,18 @@
     "pct": 52.0
    },
    "P": {
-    "ours_g": 3358.9,
-    "delta_g": 962.9,
-    "pct": 40.0
+    "ours_g": 3580.4,
+    "delta_g": 1184.4,
+    "pct": 49.0
    },
    "A": {
-    "ours_g": 3094.2,
-    "delta_g": 698.2,
+    "ours_g": 3095.7,
+    "delta_g": 699.7,
     "pct": 29.0
    },
    "O": {
-    "ours_g": 3097.1,
-    "delta_g": 701.1,
+    "ours_g": 3098.6,
+    "delta_g": 702.6,
     "pct": 29.0
    }
   },
@@ -3343,18 +3554,18 @@
     "pct": 42.0
    },
    "P": {
-    "ours_g": 3453.5,
-    "delta_g": 816.5,
-    "pct": 31.0
+    "ours_g": 3675.0,
+    "delta_g": 1038.0,
+    "pct": 39.0
    },
    "A": {
-    "ours_g": 3181.1,
-    "delta_g": 544.1,
+    "ours_g": 3182.6,
+    "delta_g": 545.6,
     "pct": 21.0
    },
    "O": {
-    "ours_g": 3184.0,
-    "delta_g": 547.0,
+    "ours_g": 3185.5,
+    "delta_g": 548.5,
     "pct": 21.0
    }
   },
@@ -3370,18 +3581,18 @@
     "pct": 33.0
    },
    "P": {
-    "ours_g": 3414.4,
-    "delta_g": 624.4,
-    "pct": 22.0
+    "ours_g": 3635.9,
+    "delta_g": 845.9,
+    "pct": 30.0
    },
    "A": {
-    "ours_g": 3142.0,
-    "delta_g": 352.0,
+    "ours_g": 3143.5,
+    "delta_g": 353.5,
     "pct": 13.0
    },
    "O": {
-    "ours_g": 3144.9,
-    "delta_g": 354.9,
+    "ours_g": 3146.4,
+    "delta_g": 356.4,
     "pct": 13.0
    }
   },
@@ -3397,18 +3608,18 @@
     "pct": 40.0
    },
    "P": {
-    "ours_g": 3414.4,
-    "delta_g": 775.4,
-    "pct": 29.0
+    "ours_g": 3635.9,
+    "delta_g": 996.9,
+    "pct": 38.0
    },
    "A": {
-    "ours_g": 3142.0,
-    "delta_g": 503.0,
+    "ours_g": 3143.5,
+    "delta_g": 504.5,
     "pct": 19.0
    },
    "O": {
-    "ours_g": 3144.9,
-    "delta_g": 505.9,
+    "ours_g": 3146.4,
+    "delta_g": 507.4,
     "pct": 19.0
    }
   },
@@ -3426,18 +3637,18 @@
     "pct": 34.0
    },
    "P": {
-    "ours_g": 3468.7,
-    "delta_g": 656.7,
-    "pct": 23.0
+    "ours_g": 3690.2,
+    "delta_g": 878.2,
+    "pct": 31.0
    },
    "A": {
-    "ours_g": 3196.3,
-    "delta_g": 384.3,
+    "ours_g": 3197.8,
+    "delta_g": 385.8,
     "pct": 14.0
    },
    "O": {
-    "ours_g": 3199.2,
-    "delta_g": 387.2,
+    "ours_g": 3200.7,
+    "delta_g": 388.7,
     "pct": 14.0
    }
   },
@@ -3455,18 +3666,18 @@
     "pct": 39.0
    },
    "P": {
-    "ours_g": 3468.7,
-    "delta_g": 760.7,
-    "pct": 28.0
+    "ours_g": 3690.2,
+    "delta_g": 982.2,
+    "pct": 36.0
    },
    "A": {
-    "ours_g": 3196.3,
-    "delta_g": 488.3,
+    "ours_g": 3197.8,
+    "delta_g": 489.8,
     "pct": 18.0
    },
    "O": {
-    "ours_g": 3199.2,
-    "delta_g": 491.2,
+    "ours_g": 3200.7,
+    "delta_g": 492.7,
     "pct": 18.0
    }
   },
@@ -3484,18 +3695,18 @@
     "pct": 32.0
    },
    "P": {
-    "ours_g": 3451.0,
-    "delta_g": 616.0,
-    "pct": 22.0
+    "ours_g": 3672.5,
+    "delta_g": 837.5,
+    "pct": 30.0
    },
    "A": {
-    "ours_g": 3178.6,
-    "delta_g": 343.6,
+    "ours_g": 3180.1,
+    "delta_g": 345.1,
     "pct": 12.0
    },
    "O": {
-    "ours_g": 3181.5,
-    "delta_g": 346.5,
+    "ours_g": 3183.0,
+    "delta_g": 348.0,
     "pct": 12.0
    }
   },
@@ -3515,18 +3726,18 @@
     "pct": 124.0
    },
    "P": {
-    "ours_g": 3453.5,
-    "delta_g": 1780.5,
-    "pct": 106.0
+    "ours_g": 3675.0,
+    "delta_g": 2002.0,
+    "pct": 120.0
    },
    "A": {
-    "ours_g": 3181.1,
-    "delta_g": 1508.1,
+    "ours_g": 3182.6,
+    "delta_g": 1509.6,
     "pct": 90.0
    },
    "O": {
-    "ours_g": 3184.0,
-    "delta_g": 1511.0,
+    "ours_g": 3185.5,
+    "delta_g": 1512.5,
     "pct": 90.0
    }
   },
@@ -3544,25 +3755,25 @@
     "pct": 38.0
    },
    "P": {
-    "ours_g": 3468.7,
-    "delta_g": 746.7,
-    "pct": 27.0
+    "ours_g": 3690.2,
+    "delta_g": 968.2,
+    "pct": 36.0
    },
    "A": {
-    "ours_g": 3196.3,
-    "delta_g": 474.3,
+    "ours_g": 3197.8,
+    "delta_g": 475.8,
     "pct": 17.0
    },
    "O": {
-    "ours_g": 3199.2,
-    "delta_g": 477.2,
+    "ours_g": 3200.7,
+    "delta_g": 478.7,
     "pct": 18.0
    }
   }
  ],
  "features": {
-  "owner_options_base_g": 3144.9,
-  "gap_g": 151.2,
+  "owner_options_base_g": 3146.4,
+  "gap_g": 152.7,
   "candidates": [
    {
     "item": "IMP-2",
@@ -3645,18 +3856,18 @@
   "P": {
    "scenario": "P",
    "cfg": "base",
-   "total_g": 3414.4,
+   "total_g": 3635.9,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
-     "g": 299.7,
-     "band_g": 98.3,
-     "n": 14,
+     "g": 362.6,
+     "band_g": 124.5,
+     "n": 18,
      "frac": 0.3
     },
     "printed PAHT-CF body (2 mm raster x density)": {
-     "g": 763.0,
-     "band_g": 38.2,
-     "n": 2,
+     "g": 715.1,
+     "band_g": 40.7,
+     "n": 3,
      "frac": 0.05
     },
     "frame lumps and carbon (beam model, frame_mass json)": {
@@ -3666,14 +3877,14 @@
      "frac": 0.1
     },
     "cut area x record gsm, length x record g/m": {
-     "g": 1837.3,
-     "band_g": 175.9,
-     "n": 110,
+     "g": 2043.8,
+     "band_g": 195.4,
+     "n": 124,
      "frac": 0.08
     }
    },
-   "worst_g": 376.2,
-   "rss_g": 66.2,
+   "worst_g": 424.4,
+   "rss_g": 68.1,
    "named": [
     {
      "name": "harness: load lifters 25 mm poly + ladders, sternum Fidlock (QUICK family) + POM rails",
@@ -3701,6 +3912,16 @@
      "band_g": 11.7
     },
     {
+     "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): IM-hooks 3 x 25 mm rated Al G-h",
+     "g": 30.0,
+     "band_g": 9.0
+    },
+    {
+     "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): IM-cams 3 x 25 mm Al cams",
+     "g": 27.0,
+     "band_g": 8.1
+    },
+    {
      "name": "US-cams: US1/US2 25 mm Al cams (2)",
      "g": 26.0,
      "band_g": 7.8
@@ -3711,8 +3932,18 @@
      "band_g": 7.2
     },
     {
+     "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): US-cams US1/US2 25 mm Al cams (",
+     "g": 18.0,
+     "band_g": 5.4
+    },
+    {
      "name": "BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
      "g": 12.12,
+     "band_g": 3.6
+    },
+    {
+     "name": "hood + IM2 hooks kept until PT-1/TL-1/LL-H (BL-004 REC undone): guy bar loops x2: 25 mm we",
+     "g": -12.12,
      "band_g": 3.6
     },
     {
@@ -3745,18 +3976,18 @@
   "A": {
    "scenario": "A",
    "cfg": "base",
-   "total_g": 3142.0,
+   "total_g": 3143.5,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
      "g": 299.7,
-     "band_g": 98.3,
-     "n": 14,
+     "band_g": 150.6,
+     "n": 21,
      "frac": 0.3
     },
     "printed PAHT-CF body (2 mm raster x density)": {
-     "g": 763.0,
-     "band_g": 38.2,
-     "n": 2,
+     "g": 715.1,
+     "band_g": 40.7,
+     "n": 3,
      "frac": 0.05
     },
     "frame lumps and carbon (beam model, frame_mass json)": {
@@ -3766,14 +3997,14 @@
      "frac": 0.1
     },
     "cut area x record gsm, length x record g/m": {
-     "g": 1585.5,
-     "band_g": 186.4,
-     "n": 119,
+     "g": 1634.9,
+     "band_g": 218.4,
+     "n": 135,
      "frac": 0.08
     }
    },
-   "worst_g": 388.8,
-   "rss_g": 66.4,
+   "worst_g": 475.6,
+   "rss_g": 70.5,
    "named": [
     {
      "name": "harness: load lifters 25 mm poly + ladders, sternum Fidlock (QUICK family) + POM rails",
@@ -3801,9 +4032,34 @@
      "band_g": 11.7
     },
     {
+     "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): IM-hooks 3 x 25 mm rated Al G-h",
+     "g": 30.0,
+     "band_g": 9.0
+    },
+    {
+     "name": "BL-003 (a) IM/US: IM-hooks 3 x 25 mm rated Al G-hooks (right end only)",
+     "g": -30.0,
+     "band_g": 9.0
+    },
+    {
+     "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): IM-cams 3 x 25 mm Al cams",
+     "g": 27.0,
+     "band_g": 8.1
+    },
+    {
+     "name": "BL-003 (a) IM/US: IM-cams 3 x 25 mm Al cams",
+     "g": -27.0,
+     "band_g": 8.1
+    },
+    {
      "name": "US-cams: US1/US2 25 mm Al cams (2)",
      "g": 26.0,
      "band_g": 7.8
+    },
+    {
+     "name": "BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
+     "g": 24.240000000000002,
+     "band_g": 7.3
     },
     {
      "name": "IM-hooks: 3 x 25 mm rated Al G-hooks (right end only)",
@@ -3811,8 +4067,18 @@
      "band_g": 7.2
     },
     {
-     "name": "BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
-     "g": 12.12,
+     "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): US-cams US1/US2 25 mm Al cams (",
+     "g": 18.0,
+     "band_g": 5.4
+    },
+    {
+     "name": "BL-003 (a) IM/US: US-cams US1/US2 25 mm Al cams (2)",
+     "g": -18.0,
+     "band_g": 5.4
+    },
+    {
+     "name": "hood + IM2 hooks kept until PT-1/TL-1/LL-H (BL-004 REC undone): guy bar loops x2: 25 mm we",
+     "g": -12.12,
      "band_g": 3.6
     },
     {
@@ -3845,18 +4111,18 @@
   "O": {
    "scenario": "O",
    "cfg": "base",
-   "total_g": 3144.9,
+   "total_g": 3146.4,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
      "g": 299.7,
-     "band_g": 98.3,
-     "n": 14,
+     "band_g": 150.6,
+     "n": 21,
      "frac": 0.3
     },
     "printed PAHT-CF body (2 mm raster x density)": {
-     "g": 763.0,
-     "band_g": 38.2,
-     "n": 2,
+     "g": 715.1,
+     "band_g": 40.7,
+     "n": 3,
      "frac": 0.05
     },
     "frame lumps and carbon (beam model, frame_mass json)": {
@@ -3866,14 +4132,14 @@
      "frac": 0.1
     },
     "cut area x record gsm, length x record g/m": {
-     "g": 1585.5,
-     "band_g": 186.4,
-     "n": 119,
+     "g": 1634.9,
+     "band_g": 218.4,
+     "n": 135,
      "frac": 0.08
     }
    },
-   "worst_g": 406.6,
-   "rss_g": 67.5,
+   "worst_g": 493.5,
+   "rss_g": 71.5,
    "named": [
     {
      "name": "harness: load lifters 25 mm poly + ladders, sternum Fidlock (QUICK family) + POM rails",
@@ -3901,9 +4167,34 @@
      "band_g": 11.7
     },
     {
+     "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): IM-hooks 3 x 25 mm rated Al G-h",
+     "g": 30.0,
+     "band_g": 9.0
+    },
+    {
+     "name": "BL-003 (a) IM/US: IM-hooks 3 x 25 mm rated Al G-hooks (right end only)",
+     "g": -30.0,
+     "band_g": 9.0
+    },
+    {
+     "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): IM-cams 3 x 25 mm Al cams",
+     "g": 27.0,
+     "band_g": 8.1
+    },
+    {
+     "name": "BL-003 (a) IM/US: IM-cams 3 x 25 mm Al cams",
+     "g": -27.0,
+     "band_g": 8.1
+    },
+    {
      "name": "US-cams: US1/US2 25 mm Al cams (2)",
      "g": 26.0,
      "band_g": 7.8
+    },
+    {
+     "name": "BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
+     "g": 24.240000000000002,
+     "band_g": 7.3
     },
     {
      "name": "IM-hooks: 3 x 25 mm rated Al G-hooks (right end only)",
@@ -3911,8 +4202,18 @@
      "band_g": 7.2
     },
     {
-     "name": "BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
-     "g": 12.12,
+     "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): US-cams US1/US2 25 mm Al cams (",
+     "g": 18.0,
+     "band_g": 5.4
+    },
+    {
+     "name": "BL-003 (a) IM/US: US-cams US1/US2 25 mm Al cams (2)",
+     "g": -18.0,
+     "band_g": 5.4
+    },
+    {
+     "name": "hood + IM2 hooks kept until PT-1/TL-1/LL-H (BL-004 REC undone): guy bar loops x2: 25 mm we",
+     "g": -12.12,
      "band_g": 3.6
     },
     {
@@ -3950,7 +4251,8 @@
   }
  ],
  "screenshots": [
-  "outputs/screens/20261111_BL013_1.png",
-  "outputs/screens/20261111_BL013_2.png"
+  "docs/screens/20261111_BL023_1.png",
+  "outputs/screens/20261111_BL023_1.png",
+  "outputs/screens/20261111_BL023_2.png"
  ]
 }

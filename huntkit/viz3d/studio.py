@@ -375,6 +375,9 @@ class ConceptScene:
 
 
 # ------------------------------------------------------------------------------- legacy viz3d -> new assets
+LEGACY_WRAPS = False      # BL-012: True = webbing wraps on the legacy belt ladder locks and the sternum buckle too
+
+
 @contextmanager
 def upgraded_legacy(belt_heavy=True):
     """While active, the legacy viz3d builders (``corrie.py``, ``corrie_b1.py``, ``model.py``) emit the new assets:
@@ -441,7 +444,7 @@ def upgraded_legacy(belt_heavy=True):
     def superellipsoid(center, radii, *a, **kw):
         if tuple(np.round(radii, 1)) == (26.0, 5.0, 16.0):            # model.py sternum buckle
             return hw("side_release_25", np.asarray(center, float), [0, -1.0, 0], [1.0, 0, 0], legacy_lift=4.0,
-                      kit=False)
+                      kit=LEGACY_WRAPS)
         return orig_sup(center, radii, *a, **kw)
 
     def block_b1(c, size, e=0.3, R=None):
@@ -462,7 +465,7 @@ def upgraded_legacy(belt_heavy=True):
         patch(mod, "side_release", lambda p, n, t: hw("side_release_25", p, n, t))
     patch(C, "ladder_lock", lambda p, n, t: hw("ladder_lock_25", p, n, t))
     patch(C1, "ladder_lock", lambda p, n, t: hw("ladder_lock_25_heavy" if belt_heavy else "ladder_lock_25", p, n, t,
-                                                kit=False))
+                                                kit=LEGACY_WRAPS))
     patch(C1, "_block", block_b1)
     try:
         yield

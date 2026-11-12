@@ -1,6 +1,7 @@
 # CA-1: PAHT-CF fatigue coupon and a DIY fatigue rig
 
-Owner: structural-fea-engineer, 2026-11-10. Frame: **H1** (`designs/pack_5200/analysis/frame_h1.md`).
+Owner: structural-fea-engineer, 2026-11-10; release rule and IM3 eye coupon revised 2026-11-11 by BL-023
+(manufacturing-engineer, from BL-014 B1 / B2). Frame: **H1** (`designs/pack_5200/analysis/frame_h1.md`).
 Judge's order of tests: `analysis/frame_comp_verdict.md` §6. Units mm, N, MPa (imperial in brackets).
 
 ## 1. Why this test comes first
@@ -13,9 +14,28 @@ divided by the hot/wet-knocked-down strength (0.8 × UTS), at R = 0.1.
 - Published PA12-CF data disagree. FFF PA12-CF15 survived 1e6 cycles at about 0.25–0.32 × UTS (Siebert et al.,
   TU Sofia 2025, [paper][sofia]). Stratasys FDM Nylon 12CF had 3/3 run-outs to 1e6 at 0.40 × UTS, R 0.1, in-plane
   and across the layers ([white paper][ss-fat]). Neither is Bambu PAHT-CF from the owner's H2S.
-- **H1 fatigue margin at 0.30 is 1.28** (`frame_h1_results.json`). H1 still passes if the measured ratio is
-  ≥ **0.234** (the flip point: 0.30 / 1.28).
-- At 0.40 the same H1 body has a fatigue margin of **1.71**, and the body can be re-sized lighter (§6).
+- **Flip points on the adopted bases** (flip = 0.30 / fatigue margin at 0.30; the lowest governs):
+
+  | part | fatigue margin at 0.30 | flip point | source |
+  |---|---:|---:|---|
+  | H1 body, per-torso basis (BL-017) | 1.150 (1.144 with BL-004 loads) | 0.261 (0.262) | `crown_diet_results.json` body.h1; `review_20261111.md` B1 |
+  | **IM3 fairlead eye, 27 mm cheek** (BL-010 A1-CF, 15 in, 1.6 × 552.4 N) | **1.036** | **0.290** | `loadpath_verification.md` §4.1; `review_20261111.md` R3 |
+  | z 234 joint | 1.22 | 0.246 | `frame_h1.md` §3 (CA-5 tests the joint itself) |
+  | **governing** | | **0.290** | IM3 eye |
+
+  The earlier rule on the H1 body alone (margin 1.28 on the recorded basis) is superseded: it would release an H1
+  whose IM3 eye is below 1.0 in fatigue (BL-014 B1).
+- **Release rule: H1 is released only if the measured ratio ≥ the governing flip point + 0.02 = 0.310.**
+  `FLIP_GOV = 0.290` and `RELEASE = 0.310` are **placeholders until BL-021** (IM3 eye and body re-checked on the
+  cloth-sim forces, target fatigue ≥ 1.15) sets the final flip point; replace both numbers here, in `TEST_PLAN.md` and in
+  `test_register.csv` when it lands. With BL-021's target of 1.15 on every part, the flip would be 0.261 and the
+  release level 0.281.
+- The record's assumed 0.30 is **below** today's release level: on today's design H1 needs a material better than the
+  record, or BL-021's re-size, before it prints.
+- The OD 17 legs (BL-017 c17) and the fixed-torso variants (BL-007) have no per-torso flip point yet (BL-014 S3); they
+  are not released by this test until the structural-fea-engineer states one.
+- At 0.40 the body margin becomes 1.150 × 0.40 / 0.30 = **1.53** and the IM3 eye 1.38, and the body can be re-sized
+  lighter (§6).
 
 ## 2. Coupons
 
@@ -115,24 +135,43 @@ The cited items total $107. The rest are ASSUMPTION shop prices; check them at p
    it slowly, about 1 turn every 10 s. Record the peak link force × 4 / area. UTS_meas = mean.
    - Pass: XY ≥ 0.9 × 88 MPa and Z ≥ 0.9 × 47 MPa.
    - Otherwise stop and report: the analysis allowables are too high for this printer and spool.
-2. **0.30 level.** 3 XY bars at S_max = 0.30 × 0.8 × UTS_meas, R 0.1, 1 Hz, to 1e5 cycles. Then 2 Z bars at
-   0.30 × 0.8 × UTS_Z.
-3. **0.40 level** (only if every 0.30 bar passed). 3 XY bars at 0.40 × 0.8 × UTS_meas.
+2. **Release level (0.310, placeholder).** 3 XY bars at S_max = 0.310 × 0.8 × UTS_meas, R 0.1, 1 Hz, to 1e5
+   cycles. Then 2 Z bars at 0.310 × 0.8 × UTS_Z. (Use the release level in force when you start: BL-021 may lower it.)
+3. **0.40 level** (only if every release-level bar passed). 3 XY bars at 0.40 × 0.8 × UTS_meas.
 4. After each run-out, look at the gauge and the fillets with a 10× loupe. Pull the run-out bar to failure: a
    residual strength of at least 0.9 × UTS_meas confirms that no damage was hidden.
 
 | outcome | rule | what it unlocks |
 |---|---|---|
-| **pass at 0.30** | 3/3 run-outs to 1e5, stiffness loss ≤ 10 %, no crack | The H1 print files are released as designed (body fatigue margin 1.28). The judge's flip points for A and B are cleared. |
+| **pass at the release level (0.310)** | 3/3 run-outs to 1e5, stiffness loss ≤ 10 %, no crack | The H1 print files are released as designed, **together with IM3-EC (§6a) and CA-5**. Governing margin ≥ 0.310 / 0.290 = 1.07 at the IM3 eye. |
 | **pass at 0.40** | as above at 0.40 | Credit 0.40 in `pa12_cf_fdm_paht.yaml` and re-run `frame_h1.push` with the higher ratio. Team A's estimate is a **≈ 686 g body** (about −72 g vs H1, frame ≈ 953 g), unconverged and without a buckling re-check. The A floors and the branch buckling rule then govern, so expect 690–710 g. Re-check the joint, which does not get lighter. |
 | 2/3 at a level | | inconclusive: test 3 more. A level passes only with ≥ 5/6 run-outs. |
-| fail at 0.30, but the ratio ≥ 0.234 | find the level by testing 3 bars at 0.25 | H1 still passes. Release it with the measured ratio in the record. |
-| ratio < 0.234 | | H1 fails fatigue. Re-run `frame_h1.push` with the measured ratio; the body grows (about +20 g for each −0.02 of ratio, ASSUMPTION from the push history). |
+| fail at the release level | find the level by testing 3 bars at 0.27, then 0.25 | **H1 is not released.** Credit the measured ratio in the record; BL-021 re-sizes the IM3 cheek (first: it governs) and, below 0.281, the body. Sizing the cheek to fatigue about 1.25 costs about 1-3 g a pair (BL-014 B2, `loadpath_check.FROZEN`). |
+| ratio below the body flip (0.261) | | the body fails fatigue as well. Re-run `frame_h1.push` with the measured ratio; the body grows (about +20 g for each −0.02 of ratio, ASSUMPTION from the push history). |
 | Z fails at 0.30 | | the interlayer term governs locally: run CA-3 first and re-check the boss bending (B-style, across the layers). |
 
-## 7. Order after CA-1: CA-5, then CA-3, then CA-4
+## 6a. IM3-EC: IM3 eye cycle coupons (BL-023, from BL-014 B2 (d))
 
-All four use the same rig, so build it once.
+The IM3 fairlead eye governs the release (fatigue 1.036 at the 27 mm cheek, 15 in). One coupon at the demand × 1.00
+(BL-010's 0 → 812 N) cannot show a margin above 1.0, so the coupon count and load are raised:
+
+- **Specimens: 3** eye coupons. A 120 mm stay segment round z 520 with the IM3 eye and the 27 mm cheek, cut from the
+  H1 STL, printed in the same job, spool and profile as the CA-1 bars, annealed and conditioned with them.
+- **Load: ≥ 1.15 × 884 N = 1017 N** (884 N = 1.6 g × 552.4 N, the CORRIE F 15 in cloth-sim IM3 force,
+  `loadpath_verification.md` §4.1). R 0.1 like the bars: 102 → 1017 N, 1 Hz, 1e5 cycles. The force goes in through a
+  sewn T3 tongue and the IM3 carabiner on the eye, the coupon clamped by its stay ends; 1017 N is 104 kg at the eye,
+  about 26 kg at the 100 kg cell through the 4:1 lever.
+- Loupe check every 25,000 cycles. After the run-out, pull each coupon to 2553 N (IM3-EP's proof) on the pull bench.
+- **Pass:** 3/3 run-outs, no crack at 10×, and each holds 2553 N with no crack. **Fail:** the cheek grows (BL-021)
+  and the coupons are re-printed at the new size. If BL-021 changes the force or the cheek, the load and geometry
+  here follow it.
+- The same coupons carry the throat check: two carabiner rods side by side, each ≤ 8.5 mm (ASSUMPTION,
+  `loadpath_verification.md` §4.1).
+- Machine time 3 × 27.8 h. Run them after the release-level CA-1 bars, on the same rig.
+
+## 7. Order after CA-1: IM3-EC, CA-5, then CA-3, then CA-4
+
+All five use the same rig, so build it once.
 
 1. **CA-5, dry z 234 joint stubs** (next, because it now governs H1; see `frame_h1.md` §3).
    - Print 4 stub pairs: one stay, 60 mm each side of z 234, with the H1 bosses, traps and bolts. Use the same

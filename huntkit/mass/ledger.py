@@ -24,6 +24,10 @@ Configs (every belt size S, M, L, XL, XXL)
 * ``corrie_b2_h1``:    CORRIE B.2 on the H1 frame.
 * ``corrie_b2_h1_c``:  ``corrie_b2_h1`` + package C. C-9 (ligament offset of today's body raster) does not
   transfer to H1, whose body is a different raster: it is booked at 0 g with a note (DECISION, mass_ledger.md).
+* ``<config>_v2`` (BL-023): the same config plus the BL-013 booking corrections C1-C8 as signed rows with sources
+  (``corrections()``). The names above reproduce the BL-001 booking unchanged; ``corrected=True`` on ``parts`` /
+  ``total`` / ``by_system`` / ``like_for_like`` / ``bag_system`` selects the ``_v2`` rows. New tickets use
+  ``DEFAULT_CONFIG`` (``corrie_b2_h1_v2``), which is also the default of those functions.
 
 Systems (each row belongs to exactly one)
 -----------------------------------------
@@ -264,8 +268,19 @@ def _row(rid, name, group, system, g, source, zone="", note=""):
 
 @functools.lru_cache(maxsize=None)
 def _parts(config: str, size: str) -> tuple:
+    if config in CONFIGS_V2:
+        base = config[: -len(SUFFIX)]
+        out = list(_parts(base, size))
+        n = {}
+        for tag, name, system, g, src, cfg in _correction_rows(base, size):
+            n[tag] = n.get(tag, 0) + 1
+            r = _row(f"correction:{tag}#{n[tag]}", name, G_CORR, system, g, src,
+                     note=f"CORRECTION {tag} (BL-013, folded into the ledger by BL-023)")
+            r.update(correction=tag, cfg=cfg, base=cfg == "base")
+            out.append(r)
+        return tuple(out)
     if config not in CONFIGS:
-        raise KeyError(f"config {config!r}; one of {CONFIGS}")
+        raise KeyError(f"config {config!r}; one of {ALL_CONFIGS}")
     if size not in SIZES:
         raise KeyError(f"belt size {size!r}; one of {SIZES}")
     rows, _ = _b2_rows(size)
@@ -290,9 +305,131 @@ def _parts(config: str, size: str) -> tuple:
     return tuple(out)
 
 
-def parts(config: str = "corrie_b2_h1", size: str = "M") -> list:
-    """Ledger rows ``{id, name, group, system, g, source, load_path, base}`` for a config at a belt size."""
-    return [dict(r) for r in _parts(config, size)]
+# =====================================================================================================================
+# BL-013 booking corrections, folded into the ledger (BL-023, manufacturing-engineer, 2026-11-11)
+# =====================================================================================================================
+# BL-013 (weight_rollup_v2.py) resolved eight booking errors against their source files, but kept them as roll-up
+# steps, so every ticket reading the ledger inherited the errors (BL-014 S9). They now live here, as signed rows with a
+# source each. The BL-001 config names reproduce the BL-001 booking unchanged (other tickets' code and documents
+# quote them); the corrected configs carry the suffix ``_v2`` (or pass ``corrected=True``). New tickets use
+# ``DEFAULT_CONFIG`` = ``corrie_b2_h1_v2``.
+#   C1 printed fairleads (8) double-booked: frame_branch.frame_sdf adds bag_attach.attachment_field to the body SDF,
+#      so both the production raster and the H1 raster already hold them.
+#   C2 B-01 swell patches booked twice: bag_attach's 2-ply patch estimate and CORRIE's cut piece B-13x are the
+#      same 8 swells; B-13x stays.
+#   C3 crown-corner carbon wraps + gussets and their bond: frame_eval.REPLACED_G drops all of them as replaced by
+#      the printed body, but the two crown corners stay carbon (frame.yaml joints.crown_corner).
+#   C4 POM pawl housing double-booked: the printed body forms the housing and its cheeks.
+#   C5 non-body lump short of its own sources (M4 sets subtracted that frame_g never held).
+#   C6 lifter tri-glide keepers: attachment -> harness (a move, 0 g).
+#   C7 IMP-3 holster wing tabs stay sewn to the belt: base, out of the as-hunted add-on (0 g on the total).
+#   C8 belt B webbing re-booked to the 2:1 routing (hipbelt_diet.closure, BL-006 a2).
+# Every correction applies to all three frame configs: the production raster and H1 both carry the fairleads and the
+# pawl housing in the printed body, and both inherit the same non-body lump and crown corners.
+SUFFIX = "_v2"
+CONFIGS_V2 = tuple(c + SUFFIX for c in CONFIGS)
+ALL_CONFIGS = CONFIGS + CONFIGS_V2
+DEFAULT_CONFIG = "corrie_b2_h1" + SUFFIX
+CORRECTIONS = ("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8")
+G_CORR = "BL-013 booking corrections (folded into the ledger by BL-023)"
+
+
+@functools.lru_cache(maxsize=None)
+def corner_wraps() -> dict:
+    """C3: crown-corner wraps + gussets and their bond, from the beam model's own hardware formula
+    (``pack5200.hardware_mass``) run with and without the two crown_corner joints, less the rev C 0.8 mm corner line
+    already booked (frame_mass_production.json crown_fix_lines_g.corner_bondline)."""
+    from huntkit.fea import pack5200 as P5
+    from huntkit.fea.frames import build_frame_from_yaml
+    from huntkit.gendesign import frame_topopt as ft
+    m = build_frame_from_yaml(ft.FRAME_YAML, torso_in=19)   # 19 in, as BL-013
+    full = P5.hardware_mass(m)["items"]
+    m2 = dict(m)
+    m2["joints"] = [j for j in m["joints"] if not j["id"].startswith("crown_corner")]
+    no = P5.hardware_mass(m2)["items"]
+    wk = "carbon wraps (sleeves/hubs) + gussets"
+    ak = "adhesive (incl. lumbar-plate bond)"
+    booked = _json("frame_mass_production.json")["crown_fix_lines_g"]["corner_bondline"]
+    return {"wraps_g": full[wk] - no[wk], "adhesive_g": full[ak] - no[ak], "booked_line_g": booked,
+            "unbooked_g": full[wk] - no[wk] + full[ak] - no[ak] - booked}
+
+
+@functools.lru_cache(maxsize=None)
+def non_body_sources() -> dict:
+    """C5: the non-body lump (frame_mass_production.json non_body_g) against its own named sources:
+    frame_eval.kept_g() + crown_diet.PAWL_BUSH_G + frame_eval.INSERTS_G."""
+    from huntkit.gendesign import crown_diet as CD
+    from huntkit.gendesign import frame_eval as FE
+    lump = _json("frame_mass_production.json")["non_body_g"]
+    src = FE.kept_g() + CD.PAWL_BUSH_G + FE.INSERTS_G
+    return {"lump_g": lump, "sources_g": src, "short_g": src - lump}
+
+
+def _correction_rows(config: str, size: str) -> list:
+    """The C1-C8 rows for a BL-001 config: ``(tag, name, system, g, source, cfg)``. A removed part is a negative copy of
+    its ledger row; ``cfg`` is BL-008's tag (base / as_hunted)."""
+    import hipbelt_diet as HD                       # imports this module; lazy so the ledger loads first
+    from huntkit.gendesign import crown_diet as CD
+    led = {r["name"]: r for r in _parts(config, size)}
+    fl = led["attachment: printed fairleads (8)"]
+    sw = led["attachment: B-01 swell patches"]
+    lk = led["attachment: lifter tri-glide keepers"]
+    cw, nb = corner_wraps(), non_body_sources()
+    hs, cl = HD.holster_split(), HD.closure(size)
+    return [
+        ("C1", f"REMOVED: {fl['name']} (already inside the printed body raster)", "attachment", -fl["g"],
+         "frame_branch.frame_sdf adds bag_attach.attachment_field to the body SDF (frame_h1.md section 4: bag "
+         "fairleads 100 % present); negative copy of ledger row " + fl["id"], "base"),
+        ("C2", f"REMOVED: {sw['name']} (same 8 swells as cut piece B-13x)", "attachment", -sw["g"],
+         "corrie.build B-13x 'replaces the cone caps'; negative copy of ledger row " + sw["id"], "base"),
+        ("C3", "crown-corner carbon wraps + CF gussets (2 corners), unbooked", "frame", cw["wraps_g"],
+         "ledger.corner_wraps(): pack5200.hardware_mass crown_corner share (frame.yaml wrap per tube)", "base"),
+        ("C3", "crown-corner MMA bond (2 corners) less the rev C corner line already booked", "frame",
+         cw["adhesive_g"] - cw["booked_line_g"],
+         "ledger.corner_wraps(): pack5200.hardware_mass crown_corner adhesive - frame_mass_production corner_bondline",
+         "base"),
+        ("C4", "POM pawl housing double-booked (the printed body forms the housing and its cheeks)", "frame",
+         -(CD.PAWL_HOUSING_G - CD.PAWL_SPRING_G),
+         "crown_diet.PAWL_HOUSING_G - PAWL_SPRING_G (ASSUMPTION there; settled by weighing pawl + spring); "
+         "print/frame/PRODUCTION.md step 2", "base"),
+        ("C5", "non-body lump short of its sources (M4 sets subtracted that frame_g never held)", "frame",
+         nb["short_g"], "ledger.non_body_sources(): frame_eval.kept_g + crown_diet.PAWL_BUSH_G + frame_eval.INSERTS_G"
+         " - frame_mass_production.non_body_g", "base"),
+        ("C6", f"REMOVED: {lk['name']} (moved to harness)", "attachment", -lk["g"],
+         "bag_attach: 'lifter backup' is a harness part; negative copy of ledger row " + lk["id"], "base"),
+        ("C6", "lifter tri-glide keepers (moved from attachment)", "harness", lk["g"], "ledger row " + lk["id"], "base"),
+        ("C7", "IMP-3 holster: its 2 wing tabs stay sewn to the belt (base)", "belt", hs["tabs_g"],
+         "hipbelt_diet.holster_split (corrie.holster hardware row)", "base"),
+        ("C7", "IMP-3 holster: wing tabs out of the as-hunted add-on", "belt", -hs["tabs_g"],
+         "hipbelt_diet.holster_split", "as_hunted"),
+        ("C8", "old 50 mm belt strap (C0 1:1 relic) -> two 50 mm buckle tabs", "belt",
+         (cl["need_50_m"] - HD.BOOKED_50_M) * HD.WEB50, "hipbelt_diet.closure (BL-006 a2) x nylon_webbing_50mm", "base"),
+        ("C8", f"25 mm 2:1 webbing re-booked to {cl['need_25_m']:.2f} m (routing geometry)", "belt",
+         (cl["need_25_m"] - HD.BOOKED_25_M) * HD.WEB25, "hipbelt_diet.closure (BL-006 a2) x poly_webbing_25mm", "base"),
+    ]
+
+
+def corrections(config: str = "corrie_b2_h1", size: str = "M") -> dict:
+    """{tag: [ledger rows]} of the C1-C8 corrections for a BL-001 config (or its ``_v2`` name)."""
+    base = config[: -len(SUFFIX)] if config.endswith(SUFFIX) else config
+    out: dict = {t: [] for t in CORRECTIONS}
+    for r in _parts(base + SUFFIX, size):
+        if r["group"] == G_CORR:
+            out[r["correction"]].append(dict(r))
+    return out
+
+
+def _resolve(config: str, corrected: bool) -> str:
+    if corrected and not config.endswith(SUFFIX):
+        return config + SUFFIX
+    return config
+
+
+def parts(config: str = DEFAULT_CONFIG, size: str = "M", corrected: bool = False) -> list:
+    """Ledger rows ``{id, name, group, system, g, source, load_path, base}`` for a config at a belt size.
+    ``corrected=True`` (or a ``_v2`` config name) adds the BL-013 corrections C1-C8; correction rows also carry
+    ``correction`` (tag), ``cfg`` (BL-008 tag) and ``note``."""
+    return [dict(r) for r in _parts(_resolve(config, corrected), size)]
 
 
 def weight_table_total(size: str = "M") -> float:
@@ -303,32 +440,32 @@ def weight_table_total(size: str = "M") -> float:
 # =====================================================================================================================
 # totals and the fixed group definitions
 # =====================================================================================================================
-def _rows_of(rows_or_config, size="M"):
-    return parts(rows_or_config, size) if isinstance(rows_or_config, str) else rows_or_config
+def _rows_of(rows_or_config, size="M", corrected=False):
+    return parts(rows_or_config, size, corrected) if isinstance(rows_or_config, str) else rows_or_config
 
 
-def total(rows_or_config="corrie_b2_h1", size: str = "M") -> float:
-    return round(sum(r["g"] for r in _rows_of(rows_or_config, size)), 1)
+def total(rows_or_config=DEFAULT_CONFIG, size: str = "M", corrected: bool = False) -> float:
+    return round(sum(r["g"] for r in _rows_of(rows_or_config, size, corrected)), 1)
 
 
-def by_system(rows_or_config="corrie_b2_h1", size: str = "M") -> dict:
-    rows = _rows_of(rows_or_config, size)
+def by_system(rows_or_config=DEFAULT_CONFIG, size: str = "M", corrected: bool = False) -> dict:
+    rows = _rows_of(rows_or_config, size, corrected)
     return {s: round(sum(r["g"] for r in rows if r["system"] == s), 1) for s in SYSTEMS}
 
 
-def like_for_like(rows_or_config="corrie_b2_h1", size: str = "M") -> dict:
+def like_for_like(rows_or_config=DEFAULT_CONFIG, size: str = "M", corrected: bool = False) -> dict:
     """``bag_side`` (bag_shell + bag_pockets + pouch + fly + straps_meat + straps_compression + attachment) and
     ``suspension`` (frame + back + belt + harness); ``misc`` (thread, labels, reconciliation) is returned on its own.
     bag_side + suspension + misc = total."""
-    rows = _rows_of(rows_or_config, size)
+    rows = _rows_of(rows_or_config, size, corrected)
     s = lambda keys: round(sum(r["g"] for r in rows if r["system"] in keys), 1)  # noqa: E731
     return {"bag_side": s(BAG_SIDE), "suspension": s(SUSPENSION), "misc": s(("misc",))}
 
 
-def bag_system(rows_or_config="corrie_b2_h1", size: str = "M") -> float:
+def bag_system(rows_or_config=DEFAULT_CONFIG, size: str = "M", corrected: bool = False) -> float:
     """THE bag-system definition for comparing bag entries: bag_shell + bag_pockets + pouch + fly +
     straps_compression (meat straps, attachment, belt, harness and misc out)."""
-    rows = _rows_of(rows_or_config, size)
+    rows = _rows_of(rows_or_config, size, corrected)
     return round(sum(r["g"] for r in rows if r["system"] in BAG_SYSTEM), 1)
 
 
@@ -682,7 +819,7 @@ def write(date: str = "20261110") -> dict:
 
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
-    for c in CONFIGS:
+    for c in ALL_CONFIGS:
         print(c, {s: total(c, s) for s in SIZES})
     print("systems M (H1):", by_system("corrie_b2_h1", "M"))
     print("like_for_like M (H1):", like_for_like("corrie_b2_h1", "M"))

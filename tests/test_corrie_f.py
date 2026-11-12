@@ -164,3 +164,70 @@ def test_access_hourly_items_on_every_belt():
             assert m["day"]["hourly"] == [] and m["elk6"]["hourly"] == []
             assert len(m["sheep8"]["hourly"]) <= 1
             assert "bottle_1L#2" not in m["sheep8"]["all"]               # the 2nd bottle is reachable (FP-R)
+
+
+# ------------------------------------------------------------------------------------------- BL-022 (rev 1)
+def test_rev0_is_reproducible_and_rev1_adds_only_its_parts():
+    with F.revision(0):
+        assert F.TOP_SETBACK_MM == 30.0 and F.GUY_X == 100.0
+        r0 = F.parts("M", "D2")
+        assert not any(r["name"].startswith("BL-022") for r in r0)
+    r1 = F.parts("M", "D2")
+    assert F.REVISION == 1 and F.GUY_X == F.REVS[1]["guy_x"]
+    new = [r for r in r1 if r["name"].startswith("BL-022")]
+    assert {r["system"] for r in new} == {"attachment", "straps_compression"}
+    added = sum(r["g"] for r in r1) - sum(r["g"] for r in r0)
+    if F.REVS[1]["setback"] == F.REVS[0]["setback"]:          # same shell: the difference is the two new parts only
+        assert added == pytest.approx(F.guy_bridle()["mass_g"] + F.tripod_keeper(door="D2")["mass_g"], abs=0.05)
+    assert added < 15.0                                          # far lighter than team B's tripod straps (32.2 g)
+
+
+def test_guys_clash_with_lifters_at_rev0_and_clear_at_rev1_on_every_crown_kit():
+    g = F.guy_lifter_check()
+    # all three BL-017 kits share H1's bar: legs at x +/-115, straight bar, at both ends of every kit's range
+    assert set(g["kits"]) == {"S", "M", "L"}
+    assert all(r["leg_x"] == pytest.approx(115.0) and r["bar_straight"] for rr in g["kits"].values() for r in rr)
+    assert g["rev0_clash"]                                       # x +/-(92-100) loops overlap the lifter webbing band
+    assert all(v["overlap_lifter_mm"] > 10 for v in g["rev0"].values())
+    r1 = g["rev1"]
+    assert g["rev1_ok"] and r1["overlap_lifter_mm"] == 0
+    assert r1["clear_to_lifter_mm"] >= F.MIN_CLEAR_MM
+    assert r1["clear_to_wrap_mm"] >= 0 and r1["clear_to_clamp_mm"] >= 0   # on bare bar, clear of the spine clamp
+    assert F.LIFTER_X == 105.0                                   # the lifters did not move (patent guardrail)
+
+
+def test_inboard_guys_need_the_bridle():
+    geo = F.guy_geometry()
+    for t, r in geo.items():
+        assert not r["rev0"]["slides_without_bridle"]           # at the bar end the leg stops it anyway
+        assert r["rev1"]["slides_without_bridle"]               # inboard: outboard pull > friction -> bridle B-25
+        assert r["rev1"]["dist_to_lifter_mm"] > r["rev0"]["dist_to_lifter_mm"]
+    b = F.guy_bridle()
+    assert 4.0 < b["mass_g"] < 10.0
+
+
+def test_tripod_keeper_is_light_and_needs_no_handling_at_the_door():
+    k2, k1 = F.tripod_keeper(door="D2"), F.tripod_keeper(door="D1")
+    assert k2["mass_g"] == pytest.approx(k2["cut_mm"] * F.SHOCK_GM / 1000.0, abs=0.01)
+    assert k2["mass_g"] < 3.0 and k1["mass_g"] > k2["mass_g"]  # D1 needs a tab (zip in the corner seam)
+    assert k2["glove_s_per_door_cycle"] == 0.0
+    assert 0.2 < k2["strain_with_tripod"] < 1.0                  # snug when empty, inside shock-cord stretch with a tripod
+
+
+def test_bl022_sims_fine_r28_and_guys_off():
+    t = F.bl022_table()
+    if t["guys_off"] is None or any(t["r28"][x]["worst"]["rev1_fine"] is None for x in (15, 19, 23)):
+        pytest.skip("BL-022 sims not run in this checkout (corrie_f_sim.py finerun F --torso N; run F --torso 15 "
+                    "--cases meat --guys off --tag _goff)")
+    acc = t["acceptance"]
+    assert acc["met"] == all(v >= 31.0 for v in acc["rev1_fine_deg"])
+    assert acc["met"] or acc["shortfall_deg"]                    # either met or the shortfall is stated
+    for tor in (15, 19, 23):
+        for cn in ("fill", "meat"):
+            c = t["fine"][f"F_{tor}"][cn]
+            assert c["converged"] and c["mesh_h"] == 25.0
+    go = t["guys_off"]
+    assert go["guys_off"]["converged"]
+    assert go["guys_off"]["guy_1g_n"] == 0.0                     # no guys in the misuse case
+    assert go["exceeds_rev_c"] == (go["guys_off"]["cg_y_biased"] > 190.0)
+    assert go["guys_off"]["cg_y"] > go["guys_on"]["cg_y"]        # the guys pull the CG in

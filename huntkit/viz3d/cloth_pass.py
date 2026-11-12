@@ -73,6 +73,8 @@ class ClothParams:
     roll_flat: float = 150.0        # half length of the roll's level middle before the ends bend down
     roll_bend_r: float = 60.0       # ASSUMPTION: bend radius of the roll ends
     roll_bend_deg: float = 75.0
+    clip_below_seam: float = 60.0   # roll-clip tab on the side gusset, below the collar seam (scenario roll_clips)
+    clip_run: float = 45.0          # ASSUMPTION: least height from the clip tab to the roll end (clip cinched up)
     seed: int = 3
 
 
@@ -93,6 +95,39 @@ def _ss():
     return SS
 
 
+# Shells other than the BL-009 sweep's register a provider here (BL-012: CORRIE F, ``huntkit/viz3d/corrie_f.py``):
+# an object with install(dome_h), uninstall(), scenario(torso) -> Path, skin_file(state, torso) -> Path and
+# ensure_full(torso) (writes skin_file("full", torso) from that shell's own converged huntkit drape).
+SHELL_PROVIDERS: dict = {}
+
+
+class _SweepShell:
+    """Default provider: a ``shell_sweep.SHELLS`` key (S15 and the other BL-009 shells)."""
+
+    def __init__(self, shell):
+        self.shell = shell
+
+    def install(self, dome_h=None):
+        SS = _ss()
+        SS.install(SS.SHELLS[self.shell], dome_h)
+
+    def uninstall(self):
+        _ss().uninstall()
+
+    def scenario(self, torso):
+        return _ss().scenario(torso)
+
+    def skin_file(self, state, torso):
+        return _ss().RENDER_DIR / f"{self.shell}_PR{torso}_fine" / f"skin_{state}.pkl"
+
+    def ensure_full(self, torso):
+        _ss().run_render_state("full", self.shell, torso)           # the engineering drape (about 2 min)
+
+
+def provider(shell: str):
+    return SHELL_PROVIDERS.get(shell) or _SweepShell(shell)
+
+
 def _unit(v):
     v = np.asarray(v, float)
     return v / np.maximum(np.linalg.norm(v, axis=-1, keepdims=True), 1e-12)
@@ -104,19 +139,20 @@ def state_mesh(state: str, shell: str = "S15", torso: int = 19) -> dict:
     for the full state, the converged huntkit drape X. The part-full meshes only differ in collar height
     (``dome_h``: the rest of the collar is in the roll)."""
     SS = _ss()
-    f = SS.RENDER_DIR / f"{shell}_PR{torso}_fine" / f"skin_{state}.pkl"
+    pv = provider(shell)
+    f = pv.skin_file(state, torso)
     if f.exists():
         sk = pickle.loads(f.read_bytes())
     elif state == "full":
-        SS.run_render_state("full", shell, torso)                 # the engineering drape (about 2 min)
+        pv.ensure_full(torso)
         sk = pickle.loads(f.read_bytes())
     else:                                                         # mesh only; the part-full huntkit drape diverges
         from huntkit.clothsim.pack import PackModel, load_scenario
-        SS.install(SS.SHELLS[shell], SS.RENDER_STATES[state]["dome_h"])
+        pv.install(SS.RENDER_STATES[state]["dome_h"])
         try:
-            pm = PackModel(load_scenario(str(SS.scenario(torso))), fine=True, verbose=False)
+            pm = PackModel(load_scenario(str(pv.scenario(torso))), fine=True, verbose=False)
         finally:
-            SS.uninstall()
+            pv.uninstall()
         m = pm.mesh
         uv = np.zeros((m.n, 2))
         for p in m.pieces:
@@ -268,10 +304,10 @@ def drape_proxy(sd: dict, inset: float, z_cap: float, x_top: float | None = None
 
 
 # ------------------------------------------------------------------------------------------------- W1-W3 straps
-def wraps(torso: int = 19) -> list:
-    """W1-W3 frame anchors from the BL-009 scenario (attachments.wraps), FCS mm."""
+def wraps(torso: int = 19, shell: str = "S15") -> list:
+    """W1-W3 frame anchors from the shell's scenario (attachments.wraps), FCS mm."""
     from huntkit.clothsim.pack import load_scenario
-    sc = load_scenario(str(_ss().scenario(torso)))
+    sc = load_scenario(str(provider(shell).scenario(torso)))
     return [{"id": w["id"], "R": np.asarray(w["anchor_R"], float), "L": np.asarray(w["anchor_L"], float)}
             for w in sc["attachments"]["wraps"]["list"]]
 
@@ -500,15 +536,15 @@ def prepare(state: str, params: ClothParams | None = None, shell: str = "S15", t
             y_lip = float(0.5 * (top[:, 1].min() + top[:, 1].max()))
     half = float(np.abs(X0[lip, 0]).max())
     # the roll ends bend down toward the side clips, but stop CLIP_RUN above them (room for the strap and buckle)
-    z_clip = z_seam - CLIP_BELOW_SEAM
-    p = replace(p, roll_bend_deg=bend_for_drop(max(z_lip - z_clip - CLIP_RUN, 6.0), half, p))
+    z_clip = z_seam - p.clip_below_seam
+    p = replace(p, roll_bend_deg=bend_for_drop(max(z_lip - z_clip - p.clip_run, 6.0), half, p))
     lx, lz, _, _ = arch(X0[lip, 0], z_lip, p)
     tgt = X.copy()
     tgt[lip] = np.column_stack([lx, np.full(len(lip), y_lip), lz])
     # ---- straps: from the seed's girth to the taut line round the contents (+ anything carried)
     straps = []
     pin_cloud_all = X[b01]
-    for w in wraps(torso):
+    for w in wraps(torso, shell):
         obs = [np.asarray(V, float) for _, V, F in obstacles]
         P0 = taut_path(w, [X, pin_cloud_all] + obs, bite=1.0)
         P1 = taut_path(w, [Vp, pin_cloud_all] + obs, bite=p.strap_bite[state])
@@ -645,6 +681,9 @@ def departure(X, V, T, meta, strap_mm: float = 40.0, roll_mm: float = 150.0) -> 
             "strap_band_mm": strap_mm, "roll_band_mm": roll_mm}
 
 
+_NEW_FIELDS = {"clip_below_seam": 60.0, "clip_run": 45.0}       # added by BL-012 (defaults = the BL-020 constants)
+
+
 def run(state: str, params: ClothParams | None = None, shell: str = "S15", torso: int = 19, obstacles=(),
         tag: str = "", force: bool = False) -> dict:
     """Seed, solve and cache one load state. Returns {"skin": a ``sim_skin``-style dict on the solved cloth,
@@ -653,7 +692,8 @@ def run(state: str, params: ClothParams | None = None, shell: str = "S15", torso
     job, meta, sd = r["job"], r["meta"], r["seed"]
     out = Path(job["out"])
     stamp = out.with_suffix(".stamp.json")
-    key = json.dumps({"params": job["params"], "inputs": job["hash"]}, sort_keys=True)
+    kp = {k: v for k, v in job["params"].items() if not (k in _NEW_FIELDS and v == _NEW_FIELDS[k])}
+    key = json.dumps({"params": kp, "inputs": job["hash"]}, sort_keys=True)
     if force or not out.exists() or not stamp.exists() or stamp.read_text() != key:
         solve(r["job_path"])
         stamp.write_text(key)
@@ -709,7 +749,7 @@ POUCH_VERTEX_MASS = 0.005   # ASSUMPTION (solver units): limp enough that the 10
 
 
 def pouch(res: dict, roll_C, roll_fr, colliders, dims: dict, params: ClothParams | None = None, name="pouch",
-          h: float = 7.0) -> dict:
+          h: float = 7.0, soft: dict | None = None) -> dict:
     """The top pouch as cloth: its six flat panels start as the drafted box over the roll and are draped (gravity,
     self collision) over a contents block and whatever lies under it. ``dims`` = {"L", "W", "H"} (corrie.POUCH)."""
     from . import geom as G
@@ -719,7 +759,12 @@ def pouch(res: dict, roll_C, roll_fr, colliders, dims: dict, params: ClothParams
     mid = len(roll_C) // 2
     top = roll_C[mid] + roll_fr["Up"][mid] * roll_fr["r_out"]
     top = np.array([top[0], max(float(top[1]), W / 2 + 5.0), top[2]])   # never forward of the frame plane (the head)
-    hb = H / 2 - 12.0                                               # loose goods: the heap is lower than the box
+    soft = dict(soft or {})
+    # ``soft`` (BL-012, "the pouch reads as a box"): {"vertex_mass", "bending", "heap" (contents half height, mm),
+    # "round" (contents roundness 0.6 box .. 1.0 ellipsoid), "pin" (hold the four strap points so a limp pouch
+    # cannot tip), "pillow" (0..1: how far the top seam slumps at the rim, with the plan corners rounded),
+    # "relax" (Laplacian passes on the solved cloth: rounds the boxed edges)}. None = the BL-020 pouch.
+    hb = float(soft.get("heap", H / 2 - 12.0))                      # loose goods: the heap is lower than the box
     # seat: one clean height field of everything under the footprint (roll, collar cloth), so the pouch drapes on
     # the bag's top without being thrown about by single cloth folds
     from scipy.ndimage import gaussian_filter, maximum_filter
@@ -744,22 +789,52 @@ def pouch(res: dict, roll_C, roll_fr, colliders, dims: dict, params: ClothParams
     inner = (np.abs(GX) < L / 2 - 20.0) & (np.abs(GY - top[1]) < W / 2 - 20.0)
     z_seat = float(Hf[inner].max())
     cb = np.array([0.0, top[1], z_seat + 6.0 + hb])
-    blk = G.superellipsoid(cb, (L / 2 - 22.0, W / 2 - 22.0, hb), e_ns=0.7, e_ew=0.6, nu=48, nv=24)
+    rd = float(soft.get("round", 0.6))
+    blk = G.superellipsoid(cb, (L / 2 - 22.0, W / 2 - 22.0, hb), e_ns=0.1 + rd, e_ew=rd, nu=48, nv=24)
     c = cb + [0.0, 0.0, H / 2 - hb + 2.0]                           # the box starts just clear of the seat
     X = V0 + c
     work = WORK / "pouch"
     work.mkdir(parents=True, exist_ok=True)
-    arr = {"X": X, "X0": V0, "T": F, "pin": np.zeros(len(X), np.float32), "col0_V": np.asarray(blk.vertices),
+    pinw = np.zeros(len(X), np.float32)
+    if soft.get("pin"):           # the four strap points on the base seam (aft corners, fore thirds) stay put
+        gb = grids["bottom"]
+        ia, ib = int(round(0.17 * (gb.shape[0] - 1))), int(round(0.83 * (gb.shape[0] - 1)))
+        for i in (ia, ib):
+            for jj in (0, -1):
+                pinw[gb[max(i - 1, 0):i + 2, jj]] = 1.0
+        X = X - [0.0, 0.0, 5.0]                                     # start seated: base 3 mm above the seat's crown
+    arr = {"X": X, "X0": V0, "T": F, "pin": pinw, "col0_V": np.asarray(blk.vertices),
            "col0_F": outward(np.asarray(blk.vertices), np.asarray(blk.faces)), "col1_V": seatV, "col1_F": seatF}
     np.savez_compressed(work / f"{name}.in.npz", **arr)
     A = np.linalg.norm(np.cross(V0[F[:, 1]] - V0[F[:, 0]], V0[F[:, 2]] - V0[F[:, 0]]), axis=1).sum() / 2e6
     job = {"kind": "pouch", "in": str(work / f"{name}.in.npz"), "out": str(work / f"{name}.out.npy"),
-           "params": asdict(replace(p, bending=0.3, air_damping=1.0)), "n_straps": 0, "area_m2": float(A),
-           "stem": name, "self_dist_max": 0.4 * h, "vertex_mass": POUCH_VERTEX_MASS, "frames_cinch": 4,
+           "params": asdict(replace(p, bending=float(soft.get("bending", 0.3)), air_damping=1.0)), "n_straps": 0,
+           "area_m2": float(A), "pressure": float(soft.get("pressure", 0.0)),
+           "stem": name, "self_dist_max": 0.4 * h, "vertex_mass": float(soft.get("vertex_mass", POUCH_VERTEX_MASS)),
+           "frames_cinch": 4,
            "frames_settle": 66, "preview": None}
     (work / f"{name}.job.json").write_text(json.dumps(job, indent=1))
     solve(work / f"{name}.job.json")
     Vs = np.load(job["out"])
+    if soft.get("pillow"):        # a part-full zipped pouch: boxing strip slumps toward the edges, corners round
+        k = float(soft["pillow"])
+        u, v = V0[:, 0] / (L / 2), V0[:, 1] / (W / 2)
+        m = np.maximum(np.abs(u), np.abs(v))
+        e = (np.abs(u) ** 5 + np.abs(v) ** 5) ** 0.2
+        sc_ = np.where(m > 1e-6, m / np.maximum(e, 1e-6), 1.0)        # square -> superellipse in plan
+        cx, cy = float(Vs[:, 0].mean()), float(Vs[:, 1].mean())
+        zb = float(np.median(Vs[grids["bottom"].ravel(), 2]))
+        w01 = np.clip((V0[:, 2] + H / 2) / H, 0.0, 1.0)             # 0 at the base seam, 1 at the top seam
+        Vs = Vs.copy()
+        Vs[:, 0] = cx + (Vs[:, 0] - cx) * (1 - (1 - sc_) * (0.35 + 0.65 * w01))
+        Vs[:, 1] = cy + (Vs[:, 1] - cy) * (1 - (1 - sc_) * (0.35 + 0.65 * w01))
+        drop = k * np.clip(e, 0, 1) ** 3 * w01                      # the top seam sinks most at the rim
+        Vs[:, 2] = zb + (Vs[:, 2] - zb) * (1 - drop)
+        rim_in = 0.10 * k * np.clip(e, 0, 1) ** 6 * np.sin(np.pi * w01)   # boxing strip bellies out a little
+        Vs[:, 0] += (Vs[:, 0] - cx) * rim_in * 0.5
+        Vs[:, 1] += (Vs[:, 1] - cy) * rim_in * 0.5
+    if soft.get("relax"):
+        Vs = _smooth(Vs, F, int(soft["relax"]))
     return {"V": Vs, "F": F, "uv": uv, "grids": grids, "centre": c, "rest": V0,
             "contents_L": round(volume_L(np.asarray(blk.vertices), np.asarray(blk.faces)), 2)}
 
@@ -823,13 +898,13 @@ def carry_obstacles(sd: dict) -> tuple[list, dict]:
     return out, geo
 
 
-def _pouch_parts(sc, res, sk, roll, C, fr, POUCH, q, clip_pts, vis, name) -> dict:
+def _pouch_parts(sc, res, sk, roll, C, fr, POUCH, q, clip_pts, vis, name, soft=None) -> dict:
     from . import geom as G
     from .assets import fabric as FB
     from .assets import mesh as amesh
     L = FB.Look
     cols = [("bag", sk["X"], sk["tris"]), ("roll", np.asarray(roll.vertices), np.asarray(roll.faces))]
-    pz = pouch(res, C, fr, cols, POUCH, q, name=name)
+    pz = pouch(res, C, fr, cols, POUCH, q, name=name, soft=soft)
     pm = amesh(pz["V"], pz["F"], pz["uv"] / 500.0)
     sc.add_fabric("s15_pouch", pm, "body", look=L(fold=2.0, hand=0.5), max_edge=3.5, uv_is_pattern=True,
                   label=f"Top pouch {POUCH['L']:.0f} x {POUCH['W']:.0f} x {POUCH['H']:.0f} on the roll", **vis)
@@ -905,11 +980,17 @@ def belt_tabs(sc) -> int:
 
 
 def s15_scene(state: str = "full", carry: bool = False, params: ClothParams | None = None, name: str | None = None,
-              shell: str = "S15", torso: int = 19, force: bool = False, with_pouch: bool | None = None):
+              shell: str = "S15", torso: int = 19, force: bool = False, with_pouch: bool | None = None,
+              skin_hook=None, scene_params: dict | None = None, pouch_soft: dict | None = None):
     """The merged bag's shell (S15, wings deleted) at one load state, built through the studio layer on the
     cloth-pass skin: body, door, kick plate and floor are the solved cloth; the roll, its clips, W1-W3, the pouch and
     its straps are rebuilt on it. ``carry`` adds the tripod (right) and the scope pod (left) under W1-W3.
-    Returns a ``studio.ConceptScene`` (``scene.report["cloth_pass"]`` has the numbers)."""
+    Returns a ``studio.ConceptScene`` (``scene.report["cloth_pass"]`` has the numbers).
+
+    BL-012 parameters (defaults = the BL-020 S15 scene): ``shell`` may be a ``SHELL_PROVIDERS`` key; ``skin_hook``
+    (skin dict -> skin dict) edits the solved cloth before the fittings are built on it (CORRIE F re-cuts the aft
+    face to door D2 there); ``scene_params`` are the viz3d params (frame folder); ``pouch_soft`` see ``pouch``;
+    ``params.clip_below_seam`` moves the roll-clip tabs."""
     from . import corrie as VC
     from . import corrie_b1 as VB1
     from . import corrie_b2 as VB2
@@ -924,17 +1005,20 @@ def s15_scene(state: str = "full", carry: bool = False, params: ClothParams | No
         obstacles, geo = carry_obstacles(seed(state, shell, torso, p.level))
     res = run(state, p, shell, torso, obstacles, tag="_carry" if carry else "", force=force)
     sk, meta = res["skin"], res["meta"]
+    if skin_hook is not None:
+        sk = res["skin"] = skin_hook(sk)
     q = ClothParams(**meta["params"])
     dome_h = None if state == "full" else SS.RENDER_STATES[state]["dome_h"]
+    pv = provider(shell)
     saved = {m: m.sim_skin for m in (VC, VB1, VB2)}
     for m in saved:
         m.sim_skin = lambda *a, _sk=sk, **k: _sk
-    SS.install(SS.SHELLS[shell], dome_h)
+    pv.install(dome_h)
     try:
-        sc = studio.corrie_b2_scene(name or f"s15_{state}{'_carry' if carry else ''}")
+        sc = studio.corrie_b2_scene(name or f"s15_{state}{'_carry' if carry else ''}", params=scene_params)
         POUCH = dict(SS.CO.POUCH)
     finally:
-        SS.uninstall()
+        pv.uninstall()
         for m, fn in saved.items():
             m.sim_skin = fn
     # ---- drop what the owner deleted (wings) and what this pass rebuilds as cloth (roll, pouch) or re-homes
@@ -991,7 +1075,7 @@ def s15_scene(state: str = "full", carry: bool = False, params: ClothParams | No
     # ---- W1-W3: the taut line round the solved cloth (and what is carried), frame anchor to frame anchor
     obs_clouds = [np.asarray(V, float) for _, V, F in obstacles]
     b01 = np.unique(sk["tris"][np.char.startswith(piece, "B-01")])
-    for w in wraps(torso):
+    for w in wraps(torso, shell):
         P = taut_path(w, [sk["X"], sk["X"][b01]] + obs_clouds, bite=1.6, step=3.0)
         P = _smooth_path(P, 3.0, 5.0)
         _, o, _ = strap_frames(P)
@@ -1007,7 +1091,9 @@ def s15_scene(state: str = "full", carry: bool = False, params: ClothParams | No
     pz = {"contents_L": None}
     # ---- the pouch on the roll, as cloth (day load: pouch off; it is removable and overhangs the flattened top)
     if with_pouch:
-        _pouch_parts(sc, res, sk, roll, C, fr, POUCH, q, clip_pts, vis, f"pouch_{state}{'_carry' if carry else ''}_L{q.level}")
+        _pouch_parts(sc, res, sk, roll, C, fr, POUCH, q, clip_pts, vis,
+                     f"pouch_{shell + '_' if shell != 'S15' else ''}{state}{'_carry' if carry else ''}_L{q.level}",
+                     soft=pouch_soft)
     # ---- carried gear for the side-carry shot
     if carry:
         tm, tr = VC._tripod(geo["tripod"])
@@ -1027,6 +1113,8 @@ def s15_scene(state: str = "full", carry: bool = False, params: ClothParams | No
                                "pouch": bool(with_pouch), "lip": res["lip"], "solve_s": res["seconds"], "verts": res["verts"]}
     sc.report["source"] = {"sim": f"huntkit drape {shell} PR{torso} full (seed) + viz3d.cloth_pass", "case": state,
                            "spec": "S15, wings deleted"}
+    sc.cloth_skin = sk            # the solved cloth and its meta, for callers that add their own fittings
+    sc.cloth_meta = meta
     return sc
 
 

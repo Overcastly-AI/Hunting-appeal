@@ -159,3 +159,68 @@ def test_teams_on_one_basis():
     assert rows["E"]["adj_g"] < -10 and rows["D"]["ledger_delta_g"] < rows["D"]["published_delta_g"]
     # FELL stays the lightest entry on the ledger basis
     assert min((t for k, t in rows.items() if k != "B day"), key=lambda t: t["ledger_g"])["team"] == "B"
+
+
+# =====================================================================================================================
+# BL-023: the BL-013 booking corrections folded into the ledger
+# =====================================================================================================================
+@pytest.mark.parametrize("config", L.CONFIGS_V2)
+@pytest.mark.parametrize("size", ("S", "M", "XXL"))
+def test_v2_rows_valid_and_add_up(config, size):
+    rows = L.parts(config, size)
+    ids = [r["id"] for r in rows]
+    assert len(ids) == len(set(ids))
+    for r in rows:
+        assert KEYS <= set(r) and r["system"] in L.SYSTEMS and r["source"]
+    corr = [r for r in rows if r["group"] == L.G_CORR]
+    assert {r["correction"] for r in corr} == set(L.CORRECTIONS)
+    assert all(r["note"].startswith("CORRECTION") for r in corr)
+    bs = L.by_system(rows)
+    assert sum(bs.values()) == pytest.approx(L.total(rows), abs=0.35)       # 12 systems, each rounded to 0.1 g
+
+
+@pytest.mark.parametrize("config", L.CONFIGS)
+def test_legacy_configs_reproducible_behind_the_flag(config):
+    """The BL-001 names are unchanged; corrected=True is the _v2 config; v2 = legacy + the correction rows."""
+    legacy = L.parts(config, "M")
+    assert not any(r["group"] == L.G_CORR for r in legacy)
+    v2 = L.parts(config + L.SUFFIX, "M")
+    assert L.parts(config, "M", corrected=True) == v2
+    assert v2[: len(legacy)] == legacy
+    corr = sum(r["g"] for rs in L.corrections(config, "M").values() for r in rs)
+    assert L.total(config + L.SUFFIX, "M") == pytest.approx(L.total(config, "M") + corr, abs=0.15)
+    assert L.total(config, "M", corrected=True) == L.total(config + L.SUFFIX, "M")
+
+
+def test_corrections_match_their_sources():
+    led = {r["name"]: r["g"] for r in L.parts("corrie_b2_h1", "M")}
+    c = {k: sum(r["g"] for r in v) for k, v in L.corrections("corrie_b2_h1", "M").items()}
+    assert c["C1"] == pytest.approx(-led["attachment: printed fairleads (8)"])
+    assert c["C2"] == pytest.approx(-led["attachment: B-01 swell patches"])
+    cw = L.corner_wraps()
+    assert 15.0 < cw["wraps_g"] < 20.0
+    assert c["C3"] == pytest.approx(cw["unbooked_g"], abs=0.02)
+    assert c["C4"] == pytest.approx(-8.0)
+    assert c["C5"] == pytest.approx(L.non_body_sources()["short_g"], abs=0.02)
+    assert c["C5"] == pytest.approx(9.1, abs=0.1)
+    assert c["C6"] == pytest.approx(0.0) and c["C7"] == pytest.approx(0.0)        # a move and a cfg split
+    c6 = L.corrections("corrie_b2_h1", "M")["C6"]
+    assert {r["system"] for r in c6} == {"attachment", "harness"}
+    c7 = L.corrections("corrie_b2_h1", "M")["C7"]
+    assert sorted(r["cfg"] for r in c7) == ["as_hunted", "base"] and sum(r["g"] for r in c7 if r["base"]) > 0
+    import hipbelt_diet as HD
+    assert c["C8"] == pytest.approx(HD.closure("M")["delta_g"], abs=0.05)
+    # net effect on the whole H1 pack (every item booked), belt M: the C1..C8 meat-trip deltas of BL-013 sum to -49.1 g
+    assert L.total("corrie_b2_h1_v2", "M") - L.total("corrie_b2_h1", "M") == pytest.approx(sum(c.values()), abs=0.15)
+    assert sum(c.values()) == pytest.approx(-49.1, abs=0.5)
+
+
+def test_v2_shifts_systems_as_booked():
+    old, new = L.by_system("corrie_b2_h1", "M"), L.by_system("corrie_b2_h1_v2", "M")
+    assert new["attachment"] < old["attachment"] and new["harness"] > old["harness"]
+    assert new["frame"] - old["frame"] == pytest.approx(
+        sum(r["g"] for k in ("C3", "C4", "C5") for r in L.corrections("corrie_b2_h1", "M")[k]), abs=0.15)
+    assert L.bag_system("corrie_b2_h1_v2", "M") == L.corrie_bag_system()      # C1/C2/C6 are outside the bag system
+    assert L.DEFAULT_CONFIG == "corrie_b2_h1_v2" and L.total() == L.total("corrie_b2_h1_v2", "M")
+    with pytest.raises(KeyError):
+        L.parts("corrie_b2_h1_v3", "M")
