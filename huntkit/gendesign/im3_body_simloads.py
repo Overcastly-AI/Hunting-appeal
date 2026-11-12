@@ -1141,6 +1141,85 @@ def body_tables(res: dict) -> tuple:
     return "\n".join(L)
 
 
+RECORDED = {  # single-tag (recorded-basis) body fatigue as each ticket published it
+    "bl007a": ("frame_fixed_results.json", "a"), "bl007c": ("frame_fixed_results.json", "c"),
+    "c17b19": ("crown_diet_results.json", "c17b19_recorded_basis"), "h1": ("crown_diet_results.json", "h1_recorded_basis")}
+
+
+def recorded_fatigue(k: str) -> float:
+    f, key = RECORDED[k]
+    d = json.loads((ANALYSIS / f).read_text())
+    return float(d["variants"][key]["body"]["min"]["fatigue"] if f.startswith("frame_fixed") else d["body"][key]["min"]["fatigue"])
+
+
+def narrative(res: dict) -> dict:
+    e, b, hv = res["eye"], res["body"], res["hook_vectors"]
+    ch = e["cands"].get(e["chosen"]) if e["chosen"] else None
+    base27 = e["cands"].get("13.5_8")
+    out = {"coarse_fine_md": coarse_fine_md(hv), "body_table_md": body_tables(res)}
+    out["body_method_md"] = (
+        "The H1 voxel body (frame_h1 solid, D's solver, FI99 rule, crown_diet.body_check) with the rev C bag cases "
+        "(static carry, 2.5 g drop, side-hill torsion, hipbelt-off abuse) re-loaded from the cloth sim: per torso, "
+        "the sim's frame-side forces at 1 g (both IM3 hooks as vectors at the z 520 stay nodes, both hinge pins at "
+        "z 60, the guys at the crown top bar, the spreader / frame / crown contact node by node, under-straps and "
+        "wraps at their anchors, the meat-face push reacted at the six IM anchors; ASSUMPTION STRAP_REACT), scaled by "
+        "g x load / 68 kg (ASSUMPTION SIM_BOX below: SIM_BODY). Whatever the sim does not put on a frame node (fabric "
+        "self-weight, solver residual) goes to the four under-strap pins so each set carries the full bag weight. "
+        "Fill and meat are separate scenarios (tags S_fill / S_meat); the non-bag rev C cases (set-down, meat straps, "
+        "tall load, overload) are unchanged. Every torso is its own tag (BL-017's like-for-like basis). Fatigue and "
+        "creep come from the static-carry sets (1.6 g / factor), strength from every set.\n\n"
+        "The beam basis (rev C weight split and the bag couple on the crown bar or on the IM3 hooks) is re-run on the "
+        "same per-torso tags as the check of the method: it must reproduce BL-017's H1 per-torso body (fatigue 1.150)."
+        "\n").replace("SIM_BOX below: ", "")
+    # body text
+    T = []
+    if "h1" in b:
+        hb, hs = b["h1"].get("beam"), b["h1"].get("rev1_fine")
+        hc = b["h1"].get("rev1_coarse")
+        if hb and hs:
+            T.append(f"\n**H1 on the sim loads (fine): fatigue {hs['min']['fatigue']:.3f}, strength "
+                     f"{hs['min']['strength']:.2f}, creep {hs['min']['creep']:.2f}** (beam basis {hb['min']['fatigue']:.3f} / "
+                     f"{hb['min']['strength']:.2f} / {hb['min']['creep']:.2f}). Per torso fatigue on the sim: " +
+                     ", ".join(f"{t} in {v['fatigue']:.3f}" for t, v in sorted(hs["per_torso"].items())) +
+                     f". Governing: {hs['fatigue_where']['where']} at {hs['fatigue_where']['torso']:g} in "
+                     f"({hs['fatigue_where']['scenario']}). z 234 joint fatigue {hs['joint_fatigue']:.2f}, branch "
+                     f"buckling {hs['buckling_min']:.2f}.")
+        if hc:
+            T.append(f"Cloth-mesh sensitivity: coarse sim loads give fatigue {hc['min']['fatigue']:.3f} "
+                     f"(fine {hs['min']['fatigue']:.3f}).")
+    out["body_text_md"] = "\n".join(T) + "\n" + res.get("body_fix_md", "")
+    # addendum
+    A = ["| body | recorded (one tag per couple) | beam, per torso: 15 / 19 / 23 in | sim fine, per torso: 15 / 19 / 23 in | min on sim |",
+         "|---|---|---|---|---|"]
+    for k in ("bl007a", "bl007c", "c17b19"):
+        if k not in b:
+            continue
+        cells = []
+        for bs in ("beam", "rev1_fine"):
+            v = b[k].get(bs)
+            cells.append(" / ".join(f"{v['per_torso'][t]['fatigue']:.3f}" for t in ("15", "19", "23")
+                                    if t in v["per_torso"]) if v else "not run")
+        mn = b[k]["rev1_fine"]["min"]["fatigue"] if "rev1_fine" in b[k] else float("nan")
+        A.append(f"| {BODY_NAMES[k]} | {recorded_fatigue(k):.3f} | {cells[0]} | {cells[1]} | {mn:.3f} |")
+    out["addendum_md"] = "\n".join(A) + "\n" + res.get("addendum_text_md", "")
+    # flips
+    F = ["| part | fatigue margin (basis) | CA-1 flip ratio |", "|---|---|---|"]
+    if ch:
+        F.append(f"| IM3 cheek {ch['height_mm']:g} x {ch['cheek']:g} mm (recommended) | {ch['design']['fatigue']['value']:.3f} "
+                 f"(sim hook + strap, worst grid) | **{ch['ca1_flip_ratio']:.3f}** |")
+    if base27:
+        F.append(f"| IM3 cheek 27 x 8 mm (adopted today) | {base27['design']['fatigue']['value']:.3f} | "
+                 f"{base27['ca1_flip_ratio']:.3f} |")
+    for k in BODY_NAMES:
+        for bs in ("rev1_fine", "beam"):
+            if k in b and bs in b[k]:
+                F.append(f"| {BODY_NAMES[k]} body | {b[k][bs]['min']['fatigue']:.3f} ({BASE_NAMES[bs]}) | "
+                         f"{b[k][bs]['ca1_flip_ratio']:.3f} |")
+    out["flip_md"] = "\n".join(F) + "\n" + res.get("flip_text_md", "")
+    out["summary_md"] = res.get("summary_text_md", "")
+    return out
+
+
 def _write(res: dict):
     RESULTS.write_text(json.dumps(res, indent=1, default=float))
     DOC.write_text(write_md(res))
