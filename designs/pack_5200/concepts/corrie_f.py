@@ -118,7 +118,11 @@ S15 = SS.SHELLS["S15"]
 # rev 0 back exactly (tests).
 REVS = {0: {"setback": 30.0, "guy_x": 100.0, "guy_bridle": False, "tripod_keeper": False},
         1: {"setback": 30.0, "guy_x": 52.0, "guy_bridle": True, "tripod_keeper": True},
-        2: {"setback": 30.0, "guy_x": 52.0, "guy_bridle": True, "tripod_keeper": True, "guy_port": True}}
+        2: {"setback": 30.0, "guy_x": 52.0, "guy_bridle": True, "tripod_keeper": True, "guy_port": True},
+        3: {"setback": 30.0, "guy_x": 52.0, "guy_bridle": True, "tripod_keeper": True, "guy_port": True, "crown_lid": True}}
+# rev 3 = BL-029 (doc section 14), RECOMMENDED, not yet the module default (it carries rev 2's port, which the owner has
+# not accepted): rev 2 + the B-29 crown lid on two B-28 crown straps (B-25 bridle -> over the roll and the lid -> the
+# hinge band), replacing the 2.7 L top pouch. ``with revision(3):`` gives its parts.
 # rev 2 = BL-028 (doc section 13), PROPOSED, not yet the module default: the guy goes through a lapped port B-27 in the
 # frame face and runs INSIDE the bag to B-22 (turned to the inside). ``with revision(2):`` gives its parts. Rev 1's
 # straight guy was a model artefact (it ran through the bag); its real path wraps the bag's side.
@@ -521,6 +525,8 @@ def addons() -> dict:
     out["meat_liner"] = {"name": "meat liner (team D SWAP slab, wipeable silpoly / 70D, 330 x 110 x 560)",
                          "system": "bag_pockets", "cfg": "meat_trip", "mass_g": round(g, 1), "hours": round(hrs, 2),
                          "pieces": sum(p.quantity for p in sw["pieces"]), "source": "D.cache.modules()[0] (pieces x gsm + hw)"}
+    if REVS[REVISION].get("crown_lid"):          # BL-029 rev 3: crown lid + crown straps replace the top pouch
+        out = rev3_addons(out)
     return out
 
 
@@ -743,12 +749,12 @@ def build_metrics(door: str = DOOR_DEFAULT, fabrics: str = "B") -> dict:
            "body_hours": m["hours"], "pieces_base": pieces,
            "pieces_with_addons": pieces + sum(d["pieces"] for d in ad.values()) + 1,
            "curved_seams": m["curved_seams"], "seam_length_m": m["seam_length_m"],
-           "zip_mm_base": round(zip_mm, 0), "zip_mm_with_pouch": round(zip_mm + ad["top_pouch"]["zip_mm"], 0),
+           "zip_mm_base": round(zip_mm, 0), "zip_mm_with_pouch": round(zip_mm + ad.get("top_pouch", ad.get("crown_lid"))["zip_mm"], 0),
            "door_zip_mm": round(b.extra["zip_door_mm"], 0),
            "beginner_hours_base": round(base_h, 1), "beginner_hours_with_addons": round(base_h + addon_h, 1),
            # CORRIE B.2's 35.6 h basis (lean.fell.corrie_bag_system: body incl. pouch + IMP-1/2/4/8, no fly)
-           "beginner_hours_b2_basis": round(base_h - 0.3 + ad["top_pouch"]["hours"] + ad["scope_pod"]["hours"], 1),
-           "pieces_b2_basis": pieces - 1 + ad["top_pouch"]["pieces"] + ad["scope_pod"]["pieces"],
+           "beginner_hours_b2_basis": round(base_h - 0.3 + ad.get("top_pouch", ad.get("crown_lid"))["hours"] + ad["scope_pod"]["hours"], 1),
+           "pieces_b2_basis": pieces - 1 + ad.get("top_pouch", ad.get("crown_lid"))["pieces"] + ad["scope_pod"]["pieces"],
            "seam_rows": m["seam_rows"]}
     out["clear_width_mm"] = {k: round(clear_width(c, door, z), 0) for k, z in STATIONS.items()}
     return out
@@ -1498,6 +1504,298 @@ def BL028_NOTE_TEXT() -> str:
             f"- R-28 with rev 2: {', '.join('n/a' if x is None else f'{x:.0f}' for x in a['r28_fix_deg'])} deg at 15/19/23 in.")
 
 
+# ---------------------------------------------------------------------------------------------------------- BL-029
+# Top anchor and lid (doc section 14). BL-028 showed that only a line from the BAR toward the bag's aft top holds the
+# 15 in meat CG, and that outside the bag the guy's line runs sideways. BL-029 takes the line OVER the roll: two crown
+# straps B-28 from the B-25 bridle tabs (x +/-52, unchanged) up the frame face, over the closed roll and the lid, and
+# down to tabs on the hinge band at the same x. The lid B-29 rides under them in two channels. The straps are the bag's
+# (they close the roll); the lid comes off them. Units mm, N, g.
+CROWN_X = 52.0             # DECISION: the crown straps run at the bridle x (B-25 sleeves, lifter band starts x 92.5)
+CROWN_FRONT_Z = 700.0      # DECISION: front tab on the hinge band B-02h (z 650-745 drafted), above the D2 door top
+#                            (z 650), so the crown straps never cross the door
+CROWN_PRE_N = 80.0         # ASSUMPTION: hand-cinched 25 mm ladder lock, the W1-W3 value (pack5200_v31 wraps); settled
+#                            by the T9 loaded-CG test at the S kit with a spring scale on the cinched strap
+CROWN_CAP_N = 300.0        # 25 mm ladder-lock slip (meat_haul_modes.md, the W1-W3 value)
+ROUTE_SEED_OVER = ("F_r1_PR{t}_fineFM", "meat")   # drape the crown-strap eyelets are picked on (rev 1, fine, meat)
+
+
+def _vias_head_first(vias: list) -> list:
+    """corrie_f_sim._install_route builds the cable as [bag end] + vias + [bar]: path_vias lists the nodes from the
+    bar, so they are reversed here (BL-029 found that the BL-028 'wrap' route passed them bar-first; section 14.8)."""
+    return list(reversed(vias))
+
+
+def crown_path(X, torso: int, side: str = "R", front_node: int | None = None):
+    """The taut crown strap on a drape ``X``: bridle anchor (x +/-CROWN_X on the bar) -> up the frame face, over the
+    top -> the front tab node on the hinge band. Returns (path, surface, A, B, front node)."""
+    m = fine_mesh(torso)
+    sx = 1 if side == "R" else -1
+    k = front_node if front_node is not None else _piece_node(torso, "B-02h", sx * CROWN_X, CROWN_FRONT_Z)
+    A = np.asarray(m["anchor"][side], float).copy()
+    A[0] = sx * CROWN_X
+    B = np.asarray(X[k], float)
+    surf = ClothSurface(X, m["tris"])
+    P = taut_path(surf, A, B, [sx * CROWN_X, 0.5 * (A[1] + B[1]), 1150.0], crown_tubes(float(A[2])))
+    return P, surf, A, B, k
+
+
+def _route_over(torso: int, keep_port: bool = False) -> dict:
+    """'over' = BL-029 crown straps: the guy cable re-threaded from the bar over the top to the hinge-band tab
+    (eyelets on its taut path over the rev 1 fine meat drape), hand-cinched (ladder lock) on the loaded bag.
+    ``keep_port``: rev 2's inside guy stays as well (an extra frame-anchored cable through the B-27 port)."""
+    X = drape(ROUTE_SEED_OVER[0].format(t=torso), ROUTE_SEED_OVER[1])
+    if X is None:
+        raise FileNotFoundError(f"{ROUTE_SEED_OVER[0].format(t=torso)} not on disk: run corrie_f_sim.py finerun F --torso {torso}")
+    out = {}
+    port = _route_port(torso) if keep_port else {}
+    m = fine_mesh(torso)
+    for s in ("R", "L"):
+        P, surf, A, B, k = crown_path(X, torso, s)
+        out[s] = {"vias": _vias_head_first(path_vias(P, X, surf)), "b22": k, "anchor": [float(v) for v in A],
+                  "mode": "cinched", "pretension_n": CROWN_PRE_N}
+        if keep_port:
+            out[s]["extra"] = {f"TP_{s}": {"nodes": [m["b22"][s]] + port[s]["vias"], "anchor": [float(v) for v in m["anchor"][s]],
+                                           "mode": "elastic", "pretension_n": 30.0}}
+    return out
+
+
+def _route_wrap_fixed(torso: int) -> dict:
+    """BL-028's 'wrap' with its eyelets in cable order (B-22 first). A check run for section 14.8, not a design."""
+    r = _route_wrap(torso)
+    for s in ("R", "L"):
+        r[s]["vias"] = _vias_head_first(r[s]["vias"])
+    return r
+
+
+ROUTES.update({"over": _route_over, "over_port": lambda t: _route_over(t, True), "wrapfix": _route_wrap_fixed})
+
+
+# ---- the crown lid B-29 (BL-029 look rules, docs/research/top_anchor_and_lids.md section 7)
+# The lid is the bag's cap, not a box on the roll: plan = the closed top's footprint (a rounded square, superellipse
+# n 4, the bag's corner language), a low boxing wall and a domed crown, base on the roll. Two channels on the crown at
+# x +/-52 carry the B-28 crown straps, so the strap line runs unbroken from the bar over the lid to the hinge band.
+# The boxing wall is solid body fabric except two camo corner caps at the aft corners, in line with the D2 camo
+# blades below them (O-6 accents only). A #5 coil zip runs along the aft wall under the straps' front runs.
+LID = {"W": 350.0,          # DECISION: plan width, 10 mm inside the 360 mm collar seam (flush with the closed roll)
+       "D": 210.0,          # DECISION: collar depth 165 + 25 mm aft overhang (the lid's aft wall sits over the hinge
+       #                      band seam, so lid edge and panel break line up) + 20 mm over the roll's frame side
+       "wall": 30.0,        # DECISION: boxing wall height
+       "dome": 55.0,        # DECISION: crown rise above the wall
+       "n": 4.0,            # superellipse exponent of the plan (rounded square)
+       "cap_mm": 90.0,      # camo corner cap: 90 mm of perimeter each side of each aft corner (blade cap)
+       "zip_mm": 470.0,     # #5 coil zip along the aft wall and round both aft corners (W + 2 x 60)
+       "channel_w": 30.0}   # strap channel width (25 mm webbing + 5 mm ease)
+LID_SLIDER5_G = 3.0         # ASSUMPTION: #5 coil slider with a cord pull loop (bag_weight_plan.md gives 4.0 g for #8)
+LID_THREAD = 0.03           # ASSUMPTION: thread and bartacks 3 % of the lid's fabric mass (no record; weigh the 1st lid)
+
+
+def _lid_grid(n: int = 241):
+    W, D, p = LID["W"], LID["D"], LID["n"]
+    x = np.linspace(-W / 2, W / 2, n)
+    y = np.linspace(-D / 2, D / 2, n)
+    Xg, Yg = np.meshgrid(x, y)
+    r = (np.abs(2 * Xg / W) ** p + np.abs(2 * Yg / D) ** p) ** (1.0 / p)
+    inside = r <= 1.0
+    h = np.where(inside, LID["wall"] + LID["dome"] * np.sqrt(np.clip(1.0 - r ** p, 0.0, 1.0)), 0.0)
+    return x, y, h, inside
+
+
+def lid_geometry() -> dict:
+    """Plan area, perimeter, crown surface area and volume of B-29 (numerical, from LID). The volume is counted
+    OUTSIDE the 85 L main bag (as every peer lid: docs/research/top_anchor_and_lids.md section 8)."""
+    x, y, h, inside = _lid_grid()
+    dx, dy = x[1] - x[0], y[1] - y[0]
+    area = float(inside.sum() * dx * dy)
+    vol = float(h[inside].sum() * dx * dy) / 1e6
+    dom = np.where(inside, h - LID["wall"], 0.0)
+    gy, gx = np.gradient(dom, dy, dx)
+    crown = float((np.sqrt(1 + gx ** 2 + gy ** 2)[inside]).sum() * dx * dy)
+    t = np.linspace(0, 2 * np.pi, 2000)
+    W, D, p = LID["W"], LID["D"], LID["n"]
+    px = W / 2 * np.sign(np.cos(t)) * np.abs(np.cos(t)) ** (2 / p)
+    py = D / 2 * np.sign(np.sin(t)) * np.abs(np.sin(t)) ** (2 / p)
+    per = float(np.hypot(np.diff(px), np.diff(py)).sum())
+    # channel run over the crown at x = CROWN_X (front-back arc length of the dome along y)
+    j = int(np.argmin(np.abs(x - CROWN_X)))
+    col = dom[:, j]
+    ch = float(np.hypot(np.diff(y), np.diff(col))[inside[1:, j]].sum())
+    return {"plan_W_mm": W, "plan_D_mm": D, "height_mm": LID["wall"] + LID["dome"], "plan_area_mm2": round(area),
+            "perimeter_mm": round(per, 1), "crown_area_mm2": round(crown), "volume_L": round(vol, 2),
+            "volume_cu_in": round(vol * 61.0237, 0), "channel_run_mm": round(ch, 1)}
+
+
+def crown_lid(fabrics: str = "B") -> dict:
+    """B-29 crown lid: pieces x record gsm + zip record + ASSUMPTION slider / thread. Crown and wall in the body
+    fabric, base in the collar fabric (70D: it lies on the roll), camo corner caps in the 630D printable."""
+    g = lid_geometry()
+    body, base_f = fab("body", fabrics), fab("collar", fabrics)
+    SA = SA_BODY
+    per = g["perimeter_mm"]
+    crown = (g["crown_area_mm2"] + per * SA) * _gsm(body)
+    base = (g["plan_area_mm2"] + per * SA) * _gsm(base_f)
+    cap = 4 * LID["cap_mm"]
+    wall_h = LID["wall"] + 2 * SA
+    wall = ((per - cap) * _gsm(body) + cap * _gsm(CAMO)) * wall_h
+    chan = 2 * (g["channel_run_mm"] + 2 * SA) * (LID["channel_w"] + 2 * SA) * _gsm(body)
+    fabric_g = (crown + base + wall + chan) / 1e6
+    zip_g = _rec("coil_zipper_5", "mass_g_m") * (LID["zip_mm"] + 60.0) / 1000.0 + LID_SLIDER5_G + CORD_PULL_G
+    mass = fabric_g * (1 + LID_THREAD) + zip_g
+    H = BC.HOURS
+    pieces = 9                      # crown, base, 3 body wall runs, 2 camo corner caps, 2 strap channels
+    hours = (pieces * H["cut_piece"] + 2 * per / 1000 * H["curved_m"] + H["zip_fixed"] + LID["zip_mm"] / 1000 * H["zip_m"]
+             + 2 * H["zip_corner"] + 2 * 2 * g["channel_run_mm"] / 1000 * H["straight_m"] + 4 * H["bartack"]
+             + 4 * 2 * 0.05 * H["applique_m"])
+    return {"id": "B-29", **g, "mass_g": round(mass, 1), "fabric_g": round(fabric_g, 1), "zip_g": round(zip_g, 1),
+            "hours": round(hours, 2), "pieces": pieces,
+            "source": f"{body} / {base_f} / {CAMO} records x cut area (lid_geometry) + coil_zipper_5 record; "
+                      "LID_SLIDER5_G, LID_THREAD ASSUMPTIONS"}
+
+
+CROWN_TAIL = 150.0         # tail past the ladder lock (the W1-W3 rule after A-2)
+CROWN_LOOP = 60.0          # rear toggle loop (folded 2 x 30 mm, the B-25 tab rule)
+
+
+def crown_strap_length(rows=None) -> dict:
+    """B-28 webbing per strap = longest taut path over the simulated tops (stored 'over' drapes, both sides) + the
+    lid's crown height (the lid lies between strap and roll; the sim models it as a load, not a solid) + tail + loop."""
+    gp = json.loads(CROWN_PATHS.read_text()) if CROWN_PATHS.exists() else {"rows": {}}
+    L = [max(r["R"]["length_mm"], r["L"]["length_mm"]) for r in gp["rows"].values()]
+    Lmax = max(L) if L else None
+    if Lmax is None:
+        return {"path_mm": None}
+    cut = Lmax + 2 * (LID["wall"] + LID["dome"]) + CROWN_TAIL + CROWN_LOOP
+    return {"path_mm": round(Lmax, 1), "cut_mm": round(cut, 1), "mass_g_pair": round(2 * cut * WEB25 / 1000, 2)}
+
+
+CROWN_PATHS = HERE / "corrie_f_sim" / "corrie_f_crown_paths.json"
+
+
+def crown_straps() -> dict:
+    """B-28 crown straps (pair): webbing cut (crown_strap_length) + rear POM toggle loop into the B-25 bridle tab
+    (attach_diet.TOGGLE_G ASSUMPTION; a second 60 mm fold on each B-25 tab takes it, so the guy keeps its own tab) +
+    heavy ladder lock at the front (ladder_lock_25mm_heavy record, BL-010 A3 rule) on a 60 mm webbing tab caught in
+    the hinge band B-02h | B-06 seam at x +/-CROWN_X."""
+    import attach_diet as AD
+    L = crown_strap_length()
+    if L.get("cut_mm") is None:
+        raise FileNotFoundError(f"{CROWN_PATHS.name} missing: run corrie_f.py --bl029")
+    tog, llh = AD.TOGGLE_G, _rec("ladder_lock_25mm_heavy", "mass_g")
+    tab = 60.0 * WEB25 / 1000.0
+    g = L["mass_g_pair"] + 2 * (tog + llh + 2 * tab)       # front tab on the hinge band + a 2nd fold on each B-25 tab
+    return {"id": "B-28", **L, "mass_g": round(g, 2), "toggle_g": tog, "ladder_lock_g": llh,
+            "source": "poly_webbing_25mm, ladder_lock_25mm_heavy records x cut length (taut path over the stored "
+                      "drapes + lid height + tail + loop); TOGGLE_G ASSUMPTION (attach_diet)"}
+
+
+def rev3_addons(ad: dict) -> dict:
+    """Rev 3 (BL-029): the 2.7 L top pouch and its 4 straps leave; the B-29 crown lid and the B-28 crown straps come in.
+    Both as hunted (BL-008 rule): lid off, the straps come off with it and the roll's own side clips close the bag;
+    the B-27 port guys (base) hold the top either way."""
+    out = {k: v for k, v in ad.items() if k not in ("top_pouch", "top_pouch_straps")}
+    lid = crown_lid()
+    out["crown_lid"] = {"name": f"B-29 crown lid {lid['volume_L']:.1f} L ({lid['plan_W_mm']:.0f} x {lid['plan_D_mm']:.0f}"
+                                f" x {lid['height_mm']:.0f} mm, domed, camo corner caps, #5 coil zip)",
+                        "system": "pouch", "cfg": "as_hunted", "mass_g": lid["mass_g"], "hours": lid["hours"],
+                        "pieces": lid["pieces"], "zip_mm": LID["zip_mm"], "source": lid["source"]}
+    cs = crown_straps()
+    out["crown_straps"] = {"name": f"B-28 crown straps (2): 25 mm {cs['cut_mm'] / 1000:.2f} m, toggle at the B-25 bridle, "
+                                   "heavy ladder lock on a hinge-band tab", "system": "straps_compression",
+                           "cfg": "as_hunted", "mass_g": cs["mass_g"], "hours": round(2 * 2 * BC.HOURS["bartack"], 2),
+                           "pieces": 0, "source": cs["source"]}
+    return out
+
+
+# ---- BL-029 results: crown-strap paths, lifter gaps, CG table
+BL029_RUNS = [("F_PR15_fineFM_over", "F_r1_PR15_fineFM_over", 15, "over")] + \
+             [(f"F_PR{t}_fineFM_over_port", f"F_r1_PR{t}_fineFM_over_port", t, "over_port") for t in (15, 19, 23)]
+
+
+def bl029_paths(runs=None, write: bool = True) -> dict:
+    """The crown strap's taut path (bar -> over the top -> hinge-band tab) on every stored BL-029 drape: length, wrap,
+    forward share of the pull at the bar, lifter gap (both sides). For 'over_port' also the port guy's outside run
+    (bar -> B-27) and its lifter gap. Written to CROWN_PATHS."""
+    S = _sim()
+    rows = S.load_results()["rows"]
+    out = {"method": "corrie_f.crown_path: taut string over the fine drape (PATH_CLEAR) and the crown tubes",
+           "min_clear_mm": MIN_CLEAR_MM, "rows": {}}
+    for key, folder, t, route in (runs or BL029_RUNS):
+        rr = rows.get(key, {})
+        spec = rr.get("route", {})
+        for case in ("fill", "meat"):
+            X = drape(folder, case)
+            if X is None:
+                continue
+            loads = rr.get("cases", {}).get(case, {}).get("loads_1g", {})
+            row = {"torso": t, "case": case, "route": route, "run": folder}
+            for s, sx in (("R", 1), ("L", -1)):
+                k = spec.get(s, {}).get("b22")
+                P, surf, A, B, k = crown_path(X, t, s, front_node=k)
+                row[s] = path_metrics(P, surf, A, B, t, sx, T_n=loads.get(f"TG_{s}"))
+                if route == "over_port":
+                    m = fine_mesh(t)
+                    Q = X[_route_port(t)[s]["vias"][0]]
+                    Pp = np.linspace(m["anchor"][s], Q, 12)
+                    row[s]["port_outside_mm"] = round(float(np.linalg.norm(Q - m["anchor"][s])), 1)
+                    row[s]["port_lifter_gap_mm"] = round(_ribbon_gap(Pp, None, *lifter_line(t, sx)), 1)
+            out["rows"][f"{folder}:{case}"] = row
+    if write:
+        CROWN_PATHS.write_text(json.dumps(out, indent=1, default=_j))
+    return out
+
+
+BL029_CG_RUNS = {     # 15 in, fine mesh, stored corrie_f_sim rows
+    "rev 1 straight guy (model artefact, BL-022)": "F_PR15_fineFM",
+    "rev 1 real wrap (BL-028, eyelets bar-first)": "F_PR15_fineFM_wrap",
+    "rev 1 real wrap, eyelets in cable order (BL-029 check)": "F_PR15_fineFM_wrapfix",
+    "guys off (misuse)": "F_PR15_fineFM_goff_sm8",
+    "T1/T2: crown straps over the roll, no guy": "F_PR15_fineFM_over",
+    "rev 2: B-27 port guy (BL-028)": "F_PR15_fineFM_port",
+    "T3 = rev 3: port guy + crown straps + crown lid": "F_PR15_fineFM_over_port",
+}
+REV3_ROUTE = "over_port"
+CG_TARGET = 185.0           # BL-029 acceptance: 15 in meat CG on the fine mesh (rev C limit 190)
+
+
+def bl029_table() -> dict:
+    S = _sim()
+    rows = S.load_results()["rows"]
+    gp = json.loads(CROWN_PATHS.read_text()) if CROWN_PATHS.exists() else {"rows": {}}
+
+    def cg(key, case):
+        c = rows.get(key, {}).get("cases", {}).get(case)
+        if not c:
+            return None
+        g = c["loads_1g"]
+        return {"converged": c["converged"], "rounding_mm": c["rounding_mm"], "cg_y": c["cg_y"],
+                "cg_y_biased": c["cg_y_biased"], "closed_L": c["closed_L"],
+                "crown_or_guy_1g_n": max(g.get("TG_R", 0.0), g.get("TG_L", 0.0)),
+                "port_guy_1g_n": max(g.get("TP_R", 0.0), g.get("TP_L", 0.0)),
+                "im3_1g_n": max(g.get("hook_im520_R", 0.0), g.get("hook_im520_L", 0.0))}
+    cg15 = {k: {cn: cg(v, cn) for cn in ("fill", "meat")} for k, v in BL029_CG_RUNS.items()}
+    rev3 = {}
+    for t in (15, 19, 23):
+        key = f"F_PR{t}_fineFM_{REV3_ROUTE}"
+        r = rows.get(key, {})
+        rev3[t] = {cn: cg(key, cn) for cn in ("fill", "meat")}
+        rev3[t]["r28_deg"] = (min(r["r28"]["fill"]["worst_contact_deg"], r["r28"]["meat"]["worst_contact_deg"])
+                              if "r28" in r else None)
+        p = [gp["rows"].get(f"F_r1_PR{t}_fineFM_{REV3_ROUTE}:{cn}") for cn in ("fill", "meat")]
+        p = [q for q in p if q]
+        rev3[t]["lifter_gap_crown_mm"] = min((min(q["R"]["lifter_gap_mm"], q["L"]["lifter_gap_mm"]) for q in p), default=None)
+        rev3[t]["lifter_gap_port_mm"] = min((min(q["R"].get("port_lifter_gap_mm", 1e9), q["L"].get("port_lifter_gap_mm", 1e9))
+                                             for q in p), default=None)
+        rev3[t]["crown_fwd_share"] = [q[s]["fwd_share_bag"] for q in p for s in ("R", "L")]
+    m15 = (rev3[15].get("meat") or {}).get("cg_y")
+    r28s = [rev3[t]["r28_deg"] for t in (15, 19, 23)]
+    gaps = [g for t in (15, 19, 23) for g in (rev3[t]["lifter_gap_crown_mm"], rev3[t]["lifter_gap_port_mm"]) if g is not None]
+    acc = {"cg15_meat_mm": m15, "cg15_ok": m15 is not None and m15 <= CG_TARGET,
+           "r28_deg": r28s, "r28_ok": all(v is not None and v >= 31.0 for v in r28s),
+           "lifter_gap_min_mm": min(gaps) if gaps else None, "lifter_ok": bool(gaps) and min(gaps) >= MIN_CLEAR_MM,
+           "rev_c_ok": all((rev3[t].get(cn) or {}).get("cg_y_biased", 1e9) <= S.LIMIT[cn]
+                           for t in (15, 19, 23) for cn in ("fill", "meat"))}
+    return {"cg15": cg15, "rev3": rev3, "acceptance": acc, "lid": lid_geometry(), "paths": gp["rows"]}
+
+
 # ---------------------------------------------------------------------------------------------------------- results
 RESULT = HERE / "corrie_f_result.json"
 SCREENS = ROOT / "outputs" / "screens"
@@ -2183,6 +2481,199 @@ def plot_bl028_port(path: Path) -> Path:
     return path
 
 
+# ---- BL-029 concepts: mass on the ledger basis, gloved steps, patent check (doc section 14.3)
+GUY_ROWS = ("attachment system: top side guys x2", "attachment system: guy ladder locks", "attachment system: guy tail",
+            "BL-010 A3: guy ladder locks", "BL-004 REC: guy bar loops", "attachment system: guy corner tabs B-22")
+# ASSUMPTION GLOVE-T: gloved hand actions counted from the parts (one action = one buckle, lock, hook, zip or flip);
+# settled by the FT glove test (timed, winter gloves) on the prototype
+GLOVE_STEPS = {
+    "rev 1 pouch": {"pouch pocket": 1, "open main bag": 7, "note": "4 pouch G-hooks, 2 roll buckles, unroll"},
+    "T1 anchor lid": {"pouch pocket": 1, "open main bag": 6, "note": "2 front ladder locks, flip lid, 2 roll buckles, "
+                      "unroll; lid off = top anchor off"},
+    "T2 crown straps": {"pouch pocket": 1, "open main bag": 6, "note": "as T1; the straps stay on the bag when the lid "
+                        "comes off"},
+    "T3 rev 3": {"pouch pocket": 1, "open main bag": 6, "note": "as T2; the port guys are inside and never touched"},
+}
+
+
+def bl029_concepts() -> dict:
+    """The three integrated top systems on the ledger basis (belt M, D2, as hunted unless stated), against rev 1:
+    T1 = the lid IS the anchor (its 4 straps: rear to the B-25 tabs, front to the hinge band; guys deleted);
+    T2 = the B-28 crown straps belong to the bag (base, they are the anchor), the B-29 lid rides in their channels;
+    T3 = rev 3: rev 2's port guys (base) + B-28 / B-29 as hunted. CG from the stored 15 in fine runs."""
+    with revision(1):
+        r1 = parts()
+    with revision(3):
+        r3 = parts()
+    guys = sum(r["g"] for r in r1 if r["name"].startswith(GUY_ROWS))
+    pouch = sum(r["g"] for r in r1 if "top_pouch" in r["name"])
+    lid, cs = crown_lid()["mass_g"], crown_straps()["mass_g"]
+
+    def tot(rows, cfgs):
+        return sum(r["g"] for r in rows if r["cfg"] in cfgs)
+    b1, h1 = tot(r1, ("base",)), tot(r1, ("base", "as_hunted"))
+    b3, h3 = tot(r3, ("base",)), tot(r3, ("base", "as_hunted"))
+    t = bl029_table()["cg15"]
+    cg = lambda k: (t.get(k, {}).get("meat") or {}).get("cg_y")   # noqa: E731
+    return {
+        "guys_rev1_g": round(guys, 1), "pouch_rev1_g": round(pouch, 1), "lid_g": lid, "crown_straps_g": cs,
+        "T1": {"base_delta_g": round(-guys, 1), "as_hunted_delta_g": round(-guys - pouch + lid + cs, 1),
+               "cg15_meat_mm": cg("T1/T2: crown straps over the roll, no guy"), "glove": GLOVE_STEPS["T1 anchor lid"],
+               "lid_off_cg15_meat_mm": cg("guys off (misuse)")},
+        "T2": {"base_delta_g": round(-guys + cs, 1), "as_hunted_delta_g": round(-guys - pouch + lid + cs, 1),
+               "cg15_meat_mm": cg("T1/T2: crown straps over the roll, no guy"), "glove": GLOVE_STEPS["T2 crown straps"]},
+        "T3": {"base_delta_g": round(b3 - b1, 1), "as_hunted_delta_g": round(h3 - h1, 1),
+               "cg15_meat_mm": cg("T3 = rev 3: port guy + crown straps + crown lid"), "glove": GLOVE_STEPS["T3 rev 3"]},
+        "rev1": {"glove": GLOVE_STEPS["rev 1 pouch"]},
+        "patent": "all three: no strap from the bag top to the lifters or shoulder straps; lifters stay on the crown top "
+                  "bar (x +/-105); no pop-up pole (US 10,952,523 claim 1); strap over the closure = expired US 4,213,549; "
+                  "no frame-top pocket (US 8,579,171). Attorney review before tooling (DECISIONS 2026-11-01)",
+    }
+
+
+def plot_bl029(path: Path) -> Path:
+    """BL-029 results: the three concepts in section on the 15 in meat drapes (crown strap and port guy), the 15 in meat
+    CG of every guy / strap model, and rev 3 at 15 / 19 / 23 in."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    tb = bl029_table()
+    fig = plt.figure(figsize=(16, 8.6), dpi=80)
+    gs = fig.add_gridspec(2, 3, height_ratios=[1.25, 1])
+    secs = [("T1 / T2: crown straps over the roll\n(no guy; T1 = the lid's own straps)", "F_r1_PR15_fineFM_over", False),
+            ("T3 = rev 3: crown straps + lid\n+ rev 2 port guys inside", "F_r1_PR15_fineFM_over_port", True)]
+    for k, (title, run, port) in enumerate(secs):
+        ax = fig.add_subplot(gs[0, k])
+        X = drape(run, "meat")
+        if X is None:
+            ax.text(0.5, 0.5, f"{run} not on disk", ha="center", transform=ax.transAxes)
+            continue
+        m = fine_mesh(15)
+        s = np.abs(X[:, 0] - CROWN_X) < 14
+        ax.scatter(X[s, 1], X[s, 2], s=3, c="#9a9a8a")
+        S = _sim()
+        spec = S.load_results()["rows"][run.replace("F_r1_", "F_")].get("route", {}).get("R", {})
+        P, surf, A, B, kk = crown_path(X, 15, "R", front_node=spec.get("b22"))
+        ax.plot(P[:, 1], P[:, 2], color="#3a3a3a", lw=3, label="B-28 crown strap (taut path)")
+        if port:
+            Q = X[_route_port(15)["R"]["vias"][0]]
+            Bq = X[m["b22"]["R"]]
+            ax.plot([A[1], Q[1], Bq[1]], [A[2], Q[2], Bq[2]], color="#2e8b57", lw=3, label="B-27 port guy (inside)")
+        ax.plot(A[1], A[2], "ko", ms=9)
+        ax.text(A[1] - 8, A[2] - 28, "bar, S kit\nz 601", fontsize=8.5, ha="right")
+        cg = (tb["cg15"]["T3 = rev 3: port guy + crown straps + crown lid" if port else
+                          "T1/T2: crown straps over the roll, no guy"]["meat"] or {}).get("cg_y")
+        ax.set_title(f"{title}\n15 in meat CG {cg:.1f} mm ({'pass' if cg <= CG_TARGET else 'FAIL'})", fontsize=10)
+        ax.set_aspect("equal")
+        ax.set_xlim(-60, 460)
+        ax.set_ylim(300, 960)
+        ax.grid(alpha=0.25)
+        ax.set_xlabel("y, mm (aft ->)")
+        ax.legend(fontsize=8, loc="lower right")
+    ax = fig.add_subplot(gs[0, 2])
+    ks = list(tb["cg15"].keys())
+    vals = [(tb["cg15"][k]["meat"] or {}).get("cg_y") for k in ks]
+    cols = ["#2e8b57" if (v or 999) <= CG_TARGET else ("#d98a1c" if (v or 999) <= 190 else "#c0392b") for v in vals]
+    ax.barh(range(len(ks)), [v or 0 for v in vals], color=cols)
+    for i, v in enumerate(vals):
+        ax.text((v or 0) + 1, i, f"{v:.1f}" if v else "n/a", va="center", fontsize=9)
+    ax.axvline(CG_TARGET, color="#2e8b57", ls="--", lw=1.2)
+    ax.axvline(190.0, color="#c0392b", ls="--", lw=1.2)
+    ax.text(CG_TARGET - 1, len(ks) - 0.4, "target 185", ha="right", fontsize=8.5, color="#2e8b57")
+    ax.text(191, len(ks) - 0.4, "rev C 190", fontsize=8.5, color="#c0392b")
+    ax.set_yticks(range(len(ks)))
+    ax.set_yticklabels([k.replace(" (", "\n(") for k in ks], fontsize=8)
+    ax.set_xlim(160, 210)
+    ax.set_title("15 in meat CG y, fine mesh (mm from the frame)", fontsize=10)
+    ax = fig.add_subplot(gs[1, :])
+    ax.axis("off")
+    r3 = tb["rev3"]
+    con = bl029_concepts()
+    lines = ["Rev 3 (T3), fine mesh h 25, real strap paths (eyelets on the cloth):",
+             "torso | fill CG (+bias) | meat CG (+bias) | R-28 | crown strap / port guy N at 1 g (max) | IM3 N | lifter gap crown / port",
+             ]
+    for t in (15, 19, 23):
+        f, mm = r3[t]["fill"], r3[t]["meat"]
+        lines.append(f"{t} in | {f['cg_y']:.1f} ({f['cg_y_biased']:.1f}) | {mm['cg_y']:.1f} ({mm['cg_y_biased']:.1f}) | "
+                     f"{r3[t]['r28_deg']:.0f} deg | {max(f['crown_or_guy_1g_n'], mm['crown_or_guy_1g_n']):.0f} / "
+                     f"{max(f['port_guy_1g_n'], mm['port_guy_1g_n']):.0f} | {max(f['im3_1g_n'], mm['im3_1g_n']):.0f} | "
+                     f"{r3[t]['lifter_gap_crown_mm']:.0f} / {r3[t]['lifter_gap_port_mm']:.0f} mm")
+    lines += ["",
+              f"Mass vs rev 1 (belt M, D2):  T1 base {con['T1']['base_delta_g']:+.1f} g, as hunted {con['T1']['as_hunted_delta_g']:+.1f} g"
+              f"  |  T2 base {con['T2']['base_delta_g']:+.1f}, as hunted {con['T2']['as_hunted_delta_g']:+.1f}"
+              f"  |  T3 base {con['T3']['base_delta_g']:+.1f}, as hunted {con['T3']['as_hunted_delta_g']:+.1f} g",
+              f"B-29 lid {tb['lid']['volume_L']:.1f} L ({tb['lid']['volume_cu_in']:.0f} cu in), {con['lid_g']:.1f} g; "
+              f"B-28 crown straps {con['crown_straps_g']:.1f} g the pair; top pouch it replaces {con['pouch_rev1_g']:.1f} g",
+              "Why T1 / T2 fail: an outside strap pulls the bag only along its first run from the bar. At the S kit the bar",
+              "(z 601) is 130+ mm below the bag top, so that run climbs the frame face: mostly down, not forward."]
+    ax.text(0.0, 1.0, "\n".join(lines), va="top", family="monospace", fontsize=9.6, transform=ax.transAxes)
+    fig.suptitle("BL-029 top anchor and lid: only the inside (port) guy holds the 15 in meat load; the crown lid rides on top",
+                 fontsize=13)
+    fig.tight_layout()
+    fig.savefig(path)
+    plt.close(fig)
+    return path
+
+
+def plot_bl029_concepts(path: Path) -> Path:
+    """Concept sketches (side and rear schematics, to scale on the 6-day render geometry's lid): T1 anchor lid, T2 crown
+    straps with a captured lid, T3 = rev 3 (T2's look + the port guys inside)."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib.patches import FancyBboxPatch
+    c = make()
+    fig, axs = plt.subplots(1, 3, figsize=(16, 7.4), dpi=80)
+    zs = np.linspace(BC.Z0, c.z_c, 80)
+    yf, ya = c.frame_y(zs), c.y_front(zs)
+    L = LID
+    con = bl029_concepts()
+    for ax, key, title in zip(axs, ("T1", "T2", "T3"),
+                              ("T1 anchor lid: the lid's own 4 straps\nare the top anchor (Exo-style float)",
+                               "T2 crown straps on the bag,\nlid captured in two channels",
+                               "T3 = rev 3: T2's look + rev 2's\nport guys inside (recommended)")):
+        ax.fill(np.r_[yf, ya[::-1]], np.r_[zs, zs[::-1]], color="#b9c4a4", ec="#555", lw=1.2)
+        ax.add_patch(FancyBboxPatch((c.frame_y([c.z_c])[0] + 2, c.z_c), 160, 45, boxstyle="round,pad=0,rounding_size=20",
+                                    color="#a7b38f", ec="#555"))                          # the closed roll
+        y0 = float(c.frame_y([c.z_c])[0]) - 15
+        ax.add_patch(FancyBboxPatch((y0, c.z_c + 40), L["D"], L["wall"] + L["dome"], boxstyle="round,pad=0,rounding_size=35",
+                                    color="#8f9d74", ec="#333", lw=1.4))                  # the lid
+        ax.add_patch(FancyBboxPatch((y0 + L["D"] - 28, c.z_c + 40), 28, L["wall"], boxstyle="round,pad=0,rounding_size=8",
+                                    color="#c8b48a", ec="#333", lw=0.8))                  # camo corner cap
+        zb = 601.0
+        ax.plot([-5, 25], [zb, zb], color="k", lw=7, solid_capstyle="round")
+        ax.text(-12, zb - 30, "bar (S kit)", fontsize=8.5, ha="right")
+        top = c.z_c + 40 + L["wall"] + L["dome"]
+        ys = [20, 6, y0 + 20, y0 + L["D"] - 25, ya[-1] + 4, ya[-1] + 4]
+        zz = [zb, c.z_c - 40, top + 3, top + 3, c.z_c + 30, 700]
+        col = "#3a3a3a" if key != "T1" else "#6b4f2a"
+        ax.plot(ys, zz, color=col, lw=3.2)
+        ax.plot(ya[-1] + 4, 700, "s", color="#222", ms=8)
+        if key == "T1":
+            ax.text(250, 905, "straps sewn to the lid:\nlid off = anchor off", fontsize=9, color="#6b4f2a")
+        else:
+            ax.text(250, 905, "straps sewn to the bag:\nlid slides off them", fontsize=9, color="#333")
+        if key == "T3":
+            ax.plot([20, 32, ya[-1] - 40], [zb, zb + 2, 695], color="#2e8b57", lw=3)
+            ax.text(70, 610, "B-27 port guy\n(inside)", color="#2e8b57", fontsize=9)
+        d = con[key]
+        cgv = d["cg15_meat_mm"]
+        ax.set_title(f"{title}\n15 in meat CG {cgv:.1f} mm ({'pass' if cgv <= CG_TARGET else 'FAIL rev C'}); "
+                     f"as hunted {d['as_hunted_delta_g']:+.0f} g vs rev 1", fontsize=10)
+        ax.text(-40, 330, f"gloved steps to open the main bag: {d['glove']['open main bag']}\n({d['glove']['note']})",
+                fontsize=8.3)
+        ax.set_xlim(-80, 420)
+        ax.set_ylim(300, 960)
+        ax.set_aspect("equal")
+        ax.axis("off")
+    fig.suptitle("BL-029 concepts (side schematics, to scale): one strap line from the bar, over the lid, to the bag",
+                 fontsize=13)
+    fig.tight_layout()
+    fig.savefig(path)
+    plt.close(fig)
+    return path
+
+
 def all_plots() -> list:
     SCREENS.mkdir(parents=True, exist_ok=True)
     return [plot_mass(SCREENS / f"{PREFIX}1.png"), plot_doors(SCREENS / f"{PREFIX}2.png"), plot_cg(SCREENS / f"{PREFIX}3.png")]
@@ -2196,7 +2687,17 @@ def main(argv=None):
     ap.add_argument("--bl022", action="store_true", help="BL-022 rev 1 summary + screenshot 20261112_BL022_1.png")
     ap.add_argument("--bl028", action="store_true", help="BL-028 real guy paths (writes corrie_f_guy_paths.json), "
                                                          "table + screenshot 20261112_BL028_1.png")
+    ap.add_argument("--bl029", action="store_true", help="BL-029 crown-strap paths (writes corrie_f_crown_paths.json), "
+                                                         "concepts, table + screenshots 20261112_BL029_5/6.png")
     a = ap.parse_args(argv)
+    if a.bl029:
+        SCREENS.mkdir(parents=True, exist_ok=True)
+        bl029_paths()
+        print(json.dumps({k: v for k, v in bl029_table().items() if k != "paths"}, indent=1, default=_j))
+        print(json.dumps(bl029_concepts(), indent=1, default=_j))
+        print(plot_bl029_concepts(SCREENS / "20261112_BL029_5.png"))
+        print(plot_bl029(SCREENS / "20261112_BL029_6.png"))
+        return
     if a.bl028:
         SCREENS.mkdir(parents=True, exist_ok=True)
         bl028_paths()

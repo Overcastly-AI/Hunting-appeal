@@ -86,7 +86,8 @@ def bias(rounding_mm) -> float:
 
 def externals() -> list:
     ad = F.addons()
-    pouch_kg = 1.0 + (ad["top_pouch"]["mass_g"] + ad["top_pouch_straps"]["mass_g"]) / 1000.0
+    top = ("top_pouch", "top_pouch_straps") if "top_pouch" in ad else ("crown_lid", "crown_straps")   # BL-029 rev 3
+    pouch_kg = 1.0 + (ad[top[0]]["mass_g"] + ad[top[1]]["mass_g"]) / 1000.0
     import corrie_loadout as CL
     spot = CL.load_yaml()["items"]["spotter_85"]["mass_g"] / 1000.0
     pod_kg = spot + ad["scope_pod"]["mass_g"] / 1000.0
@@ -234,15 +235,35 @@ def _install_route():
             if r.get("off"):                                    # the external guy deleted by this routing
                 del self.cables[f"TG_{s}"]
                 continue
+            for nm, e in r.get("extra", {}).items():           # BL-029: a second frame-anchored cable (e.g. the port guy)
+                ce = dataclasses.replace(cb, name=nm, nodes=np.asarray([int(k) for k in e["nodes"]] + [-1]),
+                                         fixed=np.vstack([np.full((len(e["nodes"]), 3), np.nan), [e["anchor"]]]),
+                                         meta=dict(cb.meta))
+                _set_rest(self, ce, float(e.get("pretension_n", pre)), e.get("mode", "elastic"))
+                ce.meta.update(route=ROUTE.get("name"), extra=True)
+                self.cables[nm] = ce
             head = int(r["b22"]) if r.get("b22") is not None else int(cb.nodes[0])
             nodes = [head] + [int(k) for k in r.get("vias", [])] + [-1]
             fixed = np.full((len(nodes), 3), np.nan)
-            fixed[-1] = cb.fixed[-1]
+            fixed[-1] = r["anchor"] if r.get("anchor") is not None else cb.fixed[-1]
             cb.nodes, cb.fixed = np.asarray(nodes), fixed
-            L = cb.length(X)
-            cb.L0 = L / (1.0 + pre / cb.EA)
-            cb.meta.update(L_init=L, route=ROUTE.get("name"), vias=[int(k) for k in r.get("vias", [])], b22_node=head)
+            _set_rest(self, cb, float(r.get("pretension_n", pre)), r.get("mode", "elastic"))
+            cb.meta.update(route=ROUTE.get("name"), vias=[int(k) for k in r.get("vias", [])], b22_node=head)
     PackModel._attachments = att
+
+
+def _set_rest(pm, cb, pre: float, mode: str):
+    """Rest length of a routed cable on the drafted mesh, as pack._attachments sets a tie: ``elastic`` = snug at the
+    drafted shape (fixed length); ``cinched`` (BL-029 crown straps, ladder lock) = soft cinch compliance
+    (attachments.cinch_strain), re-cinched to ``pre`` on the loaded bag by run_case."""
+    from huntkit.clothsim.fabric import webbing
+    L = cb.length(pm.mesh.X0)
+    if mode == "cinched":
+        eps = float(pm.scen["attachments"].get("cinch_strain", 0.03))
+        cb.EA = min(webbing(cb.material_id)["EA_n"], pre / eps)
+        cb.meta["EA_eff_n"] = cb.EA
+    cb.L0 = L / (1.0 + pre / cb.EA)
+    cb.meta.update(L_init=L, pretension_n=pre, mode=mode)
 
 
 REV_DIRS = {"Fr0": "F_r0"}     # BL-025: run folders carry the CORRIE F revision; "F" -> F_r<corrie_f.REVISION>
@@ -289,7 +310,7 @@ def run(variant: str, torso: int, cases="fill,meat", fine=False, tag="", guys=No
 
 
 # ------------------------------------------------------------------------------------------------- extraction
-GROUPS = ("hinge_R", "hinge_L", "doubler_R", "doubler_L", "hook_im520_R", "hook_im520_L", "TG_R", "TG_L", "TI_R", "TI_L",
+GROUPS = ("hinge_R", "hinge_L", "doubler_R", "doubler_L", "hook_im520_R", "hook_im520_L", "TG_R", "TG_L", "TI_R", "TI_L", "TP_R", "TP_L",
           "under_strap_US1", "under_strap_US2", "W1", "W2", "W3")
 
 

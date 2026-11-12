@@ -1,0 +1,638 @@
+{
+ "method": "corrie_f.crown_path: taut string over the fine drape (PATH_CLEAR) and the crown tubes",
+ "min_clear_mm": 10.0,
+ "rows": {
+  "F_r1_PR15_fineFM_over:fill": {
+   "torso": 15,
+   "case": "fill",
+   "route": "over",
+   "run": "F_r1_PR15_fineFM_over",
+   "R": {
+    "length_mm": 794.7,
+    "straight_mm": 392.2,
+    "wrap_deg": 137.3,
+    "friction_share": 0.513,
+    "friction_share_band": [
+     0.381,
+     0.617
+    ],
+    "u_bag": [
+     -0.019,
+     -0.663,
+     -0.748
+    ],
+    "u_b22": [
+     0.246,
+     0.346,
+     0.905
+    ],
+    "fwd_share_bag": 0.663,
+    "fwd_share_b22": -0.346,
+    "fwd_share_straight": 0.987,
+    "b22_along_straight": -0.201,
+    "outboard_share_at_bar": 0.019,
+    "lifter_gap_mm": 61.3,
+    "lifter_centre_mm": 72.2,
+    "x_max_mm": 85.6,
+    "T_bar_n": 17.7,
+    "b22_n": [
+     8.6,
+     17.7
+    ],
+    "fwd_pull_bag_n": 11.7,
+    "fwd_pull_straight_model_n": 17.5
+   },
+   "L": {
+    "length_mm": 818.3,
+    "straight_mm": 392.7,
+    "wrap_deg": 99.9,
+    "friction_share": 0.407,
+    "friction_share_band": [
+     0.294,
+     0.502
+    ],
+    "u_bag": [
+     0.022,
+     -0.65,
+     -0.759
+    ],
+    "u_b22": [
+     -0.195,
+     0.338,
+     0.921
+    ],
+    "fwd_share_bag": 0.65,
+    "fwd_share_b22": -0.338,
+    "fwd_share_straight": 0.985,
+    "b22_along_straight": -0.187,
+    "outboard_share_at_bar": 0.022,
+    "lifter_gap_mm": 61.7,
+    "lifter_centre_mm": 72.2,
+    "x_max_mm": 79.9,
+    "T_bar_n": 15.7,
+    "b22_n": [
+     9.3,
+     15.7
+    ],
+    "fwd_pull_bag_n": 10.2,
+    "fwd_pull_straight_model_n": 15.5
+   }
+  },
+  "F_r1_PR15_fineFM_over:meat": {
+   "torso": 15,
+   "case": "meat",
+   "route": "over",
+   "run": "F_r1_PR15_fineFM_over",
+   "R": {
+    "length_mm": 778.0,
+    "straight_mm": 383.0,
+    "wrap_deg": 145.6,
+    "friction_share": 0.533,
+    "friction_share_band": [
+     0.398,
+     0.638
+    ],
+    "u_bag": [
+     0.023,
+     -0.626,
+     -0.779
+    ],
+    "u_b22": [
+     0.198,
+     0.321,
+     0.926
+    ],
+    "fwd_share_bag": 0.626,
+    "fwd_share_b22": -0.321,
+    "fwd_share_straight": 0.992,
+    "b22_along_straight": -0.199,
+    "outboard_share_at_bar": -0.023,
+    "lifter_gap_mm": 62.0,
+    "lifter_centre_mm": 72.2,
+    "x_max_mm": 67.7,
+    "T_bar_n": 14.9,
+    "b22_n": [
+     7.0,
+     14.9
+    ],
+    "fwd_pull_bag_n": 9.3,
+    "fwd_pull_straight_model_n": 14.8
+   },
+   "L": {
+    "length_mm": 800.6,
+    "straight_mm": 381.9,
+    "wrap_deg": 137.6,
+    "friction_share": 0.514,
+    "friction_share_band": [
+     0.381,
+     0.617
+    ],
+    "u_bag": [
+     0.034,
+     -0.591,
+     -0.806
+    ],
+    "u_b22": [
+     -0.148,
+     0.375,
+     0.915
+    ],
+    "fwd_share_bag": 0.591,
+    "fwd_share_b22": -0.375,
+    "fwd_share_straight": 0.987,
+    "b22_along_straight": -0.241,
+    "outboard_share_at_bar": 0.034,
+    "lifter_gap_mm": 61.4,
+    "lifter_centre_mm": 72.2,
+    "x_max_mm": 94.7,
+    "T_bar_n": 13.9,
+    "b22_n": [
+     6.8,
+     13.9
+    ],
+    "fwd_pull_bag_n": 8.2,
+    "fwd_pull_straight_model_n": 13.7
+   }
+  },
+  "F_r1_PR15_fineFM_over_port:fill": {
+   "torso": 15,
+   "case": "fill",
+   "route": "over_port",
+   "run": "F_r1_PR15_fineFM_over_port",
+   "R": {
+    "length_mm": 782.7,
+    "straight_mm": 328.1,
+    "wrap_deg": 144.8,
+    "friction_share": 0.531,
+    "friction_share_band": [
+     0.397,
+     0.636
+    ],
+    "u_bag": [
+     -0.028,
+     -0.573,
+     -0.819
+    ],
+    "u_b22": [
+     0.285,
+     0.671,
+     0.685
+    ],
+    "fwd_share_bag": 0.573,
+    "fwd_share_b22": -0.671,
+    "fwd_share_straight": 0.995,
+    "b22_along_straight": -0.597,
+    "outboard_share_at_bar": 0.028,
+    "lifter_gap_mm": 61.4,
+    "lifter_centre_mm": 72.2,
+    "x_max_mm": 80.5,
+    "T_bar_n": 11.6,
+    "b22_n": [
+     5.4,
+     11.6
+    ],
+    "fwd_pull_bag_n": 6.6,
+    "fwd_pull_straight_model_n": 11.5,
+    "port_outside_mm": 10.8,
+    "port_lifter_gap_mm": 63.7
+   },
+   "L": {
+    "length_mm": 815.3,
+    "straight_mm": 330.7,
+    "wrap_deg": 187.0,
+    "friction_share": 0.624,
+    "friction_share_band": [
+     0.479,
+     0.729
+    ],
+    "u_bag": [
+     0.028,
+     -0.544,
+     -0.838
+    ],
+    "u_b22": [
+     -0.369,
+     0.92,
+     -0.127
+    ],
+    "fwd_share_bag": 0.544,
+    "fwd_share_b22": -0.92,
+    "fwd_share_straight": 0.989,
+    "b22_along_straight": -0.936,
+    "outboard_share_at_bar": 0.028,
+    "lifter_gap_mm": 60.3,
+    "lifter_centre_mm": 72.2,
+    "x_max_mm": 83.0,
+    "T_bar_n": 8.9,
+    "b22_n": [
+     3.3,
+     8.9
+    ],
+    "fwd_pull_bag_n": 4.8,
+    "fwd_pull_straight_model_n": 8.8,
+    "port_outside_mm": 9.4,
+    "port_lifter_gap_mm": 60.4
+   }
+  },
+  "F_r1_PR15_fineFM_over_port:meat": {
+   "torso": 15,
+   "case": "meat",
+   "route": "over_port",
+   "run": "F_r1_PR15_fineFM_over_port",
+   "R": {
+    "length_mm": 767.0,
+    "straight_mm": 328.8,
+    "wrap_deg": 153.6,
+    "friction_share": 0.553,
+    "friction_share_band": [
+     0.415,
+     0.658
+    ],
+    "u_bag": [
+     0.006,
+     -0.528,
+     -0.849
+    ],
+    "u_b22": [
+     0.386,
+     0.401,
+     0.831
+    ],
+    "fwd_share_bag": 0.528,
+    "fwd_share_b22": -0.401,
+    "fwd_share_straight": 0.998,
+    "b22_along_straight": -0.338,
+    "outboard_share_at_bar": -0.006,
+    "lifter_gap_mm": 61.0,
+    "lifter_centre_mm": 72.2,
+    "x_max_mm": 76.9,
+    "T_bar_n": 11.1,
+    "b22_n": [
+     5.0,
+     11.1
+    ],
+    "fwd_pull_bag_n": 5.9,
+    "fwd_pull_straight_model_n": 11.1,
+    "port_outside_mm": 9.3,
+    "port_lifter_gap_mm": 63.9
+   },
+   "L": {
+    "length_mm": 792.7,
+    "straight_mm": 324.8,
+    "wrap_deg": 173.8,
+    "friction_share": 0.597,
+    "friction_share_band": [
+     0.455,
+     0.703
+    ],
+    "u_bag": [
+     0.021,
+     -0.505,
+     -0.863
+    ],
+    "u_b22": [
+     -0.21,
+     0.79,
+     0.576
+    ],
+    "fwd_share_bag": 0.505,
+    "fwd_share_b22": -0.79,
+    "fwd_share_straight": 0.997,
+    "b22_along_straight": -0.748,
+    "outboard_share_at_bar": 0.021,
+    "lifter_gap_mm": 60.1,
+    "lifter_centre_mm": 72.2,
+    "x_max_mm": 84.0,
+    "T_bar_n": 8.6,
+    "b22_n": [
+     3.5,
+     8.6
+    ],
+    "fwd_pull_bag_n": 4.3,
+    "fwd_pull_straight_model_n": 8.6,
+    "port_outside_mm": 8.5,
+    "port_lifter_gap_mm": 59.5
+   }
+  },
+  "F_r1_PR19_fineFM_over_port:fill": {
+   "torso": 19,
+   "case": "fill",
+   "route": "over_port",
+   "run": "F_r1_PR19_fineFM_over_port",
+   "R": {
+    "length_mm": 721.7,
+    "straight_mm": 306.3,
+    "wrap_deg": 203.2,
+    "friction_share": 0.655,
+    "friction_share_band": [
+     0.508,
+     0.758
+    ],
+    "u_bag": [
+     -0.028,
+     -0.607,
+     -0.794
+    ],
+    "u_b22": [
+     0.77,
+     0.42,
+     -0.481
+    ],
+    "fwd_share_bag": 0.607,
+    "fwd_share_b22": -0.42,
+    "fwd_share_straight": 0.946,
+    "b22_along_straight": -0.532,
+    "outboard_share_at_bar": 0.028,
+    "lifter_gap_mm": 61.4,
+    "lifter_centre_mm": 72.2,
+    "x_max_mm": 76.5,
+    "T_bar_n": 5.2,
+    "b22_n": [
+     1.8,
+     5.2
+    ],
+    "fwd_pull_bag_n": 3.2,
+    "fwd_pull_straight_model_n": 4.9,
+    "port_outside_mm": 22.6,
+    "port_lifter_gap_mm": 61.4
+   },
+   "L": {
+    "length_mm": 717.4,
+    "straight_mm": 308.6,
+    "wrap_deg": 194.1,
+    "friction_share": 0.638,
+    "friction_share_band": [
+     0.492,
+     0.742
+    ],
+    "u_bag": [
+     0.005,
+     -0.585,
+     -0.811
+    ],
+    "u_b22": [
+     -0.663,
+     0.565,
+     0.491
+    ],
+    "fwd_share_bag": 0.585,
+    "fwd_share_b22": -0.565,
+    "fwd_share_straight": 0.927,
+    "b22_along_straight": -0.344,
+    "outboard_share_at_bar": 0.005,
+    "lifter_gap_mm": 60.3,
+    "lifter_centre_mm": 72.2,
+    "x_max_mm": 74.6,
+    "T_bar_n": 7.0,
+    "b22_n": [
+     2.5,
+     7.0
+    ],
+    "fwd_pull_bag_n": 4.1,
+    "fwd_pull_straight_model_n": 6.5,
+    "port_outside_mm": 22.1,
+    "port_lifter_gap_mm": 60.9
+   }
+  },
+  "F_r1_PR19_fineFM_over_port:meat": {
+   "torso": 19,
+   "case": "meat",
+   "route": "over_port",
+   "run": "F_r1_PR19_fineFM_over_port",
+   "R": {
+    "length_mm": 708.1,
+    "straight_mm": 301.0,
+    "wrap_deg": 196.8,
+    "friction_share": 0.643,
+    "friction_share_band": [
+     0.497,
+     0.747
+    ],
+    "u_bag": [
+     -0.025,
+     -0.561,
+     -0.827
+    ],
+    "u_b22": [
+     0.77,
+     0.529,
+     -0.356
+    ],
+    "fwd_share_bag": 0.561,
+    "fwd_share_b22": -0.529,
+    "fwd_share_straight": 0.947,
+    "b22_along_straight": -0.612,
+    "outboard_share_at_bar": 0.025,
+    "lifter_gap_mm": 60.3,
+    "lifter_centre_mm": 72.2,
+    "x_max_mm": 79.7,
+    "T_bar_n": 5.5,
+    "b22_n": [
+     2.0,
+     5.5
+    ],
+    "fwd_pull_bag_n": 3.1,
+    "fwd_pull_straight_model_n": 5.2,
+    "port_outside_mm": 25.0,
+    "port_lifter_gap_mm": 58.7
+   },
+   "L": {
+    "length_mm": 705.5,
+    "straight_mm": 295.1,
+    "wrap_deg": 193.7,
+    "friction_share": 0.637,
+    "friction_share_band": [
+     0.491,
+     0.741
+    ],
+    "u_bag": [
+     -0.02,
+     -0.545,
+     -0.838
+    ],
+    "u_b22": [
+     -0.727,
+     0.612,
+     0.312
+    ],
+    "fwd_share_bag": 0.545,
+    "fwd_share_b22": -0.612,
+    "fwd_share_straight": 0.942,
+    "b22_along_straight": -0.46,
+    "outboard_share_at_bar": -0.02,
+    "lifter_gap_mm": 61.1,
+    "lifter_centre_mm": 72.2,
+    "x_max_mm": 70.0,
+    "T_bar_n": 6.1,
+    "b22_n": [
+     2.2,
+     6.1
+    ],
+    "fwd_pull_bag_n": 3.3,
+    "fwd_pull_straight_model_n": 5.7,
+    "port_outside_mm": 26.4,
+    "port_lifter_gap_mm": 58.6
+   }
+  },
+  "F_r1_PR23_fineFM_over_port:fill": {
+   "torso": 23,
+   "case": "fill",
+   "route": "over_port",
+   "run": "F_r1_PR23_fineFM_over_port",
+   "R": {
+    "length_mm": 629.7,
+    "straight_mm": 330.5,
+    "wrap_deg": 162.5,
+    "friction_share": 0.573,
+    "friction_share_band": [
+     0.433,
+     0.678
+    ],
+    "u_bag": [
+     -0.021,
+     -0.743,
+     -0.669
+    ],
+    "u_b22": [
+     0.414,
+     0.74,
+     0.53
+    ],
+    "fwd_share_bag": 0.743,
+    "fwd_share_b22": -0.74,
+    "fwd_share_straight": 0.839,
+    "b22_along_straight": -0.333,
+    "outboard_share_at_bar": 0.021,
+    "lifter_gap_mm": 61.0,
+    "lifter_centre_mm": 72.1,
+    "x_max_mm": 72.4,
+    "T_bar_n": 6.6,
+    "b22_n": [
+     2.8,
+     6.6
+    ],
+    "fwd_pull_bag_n": 4.9,
+    "fwd_pull_straight_model_n": 5.5,
+    "port_outside_mm": 78.2,
+    "port_lifter_gap_mm": 57.6
+   },
+   "L": {
+    "length_mm": 628.6,
+    "straight_mm": 329.3,
+    "wrap_deg": 175.8,
+    "friction_share": 0.602,
+    "friction_share_band": [
+     0.459,
+     0.707
+    ],
+    "u_bag": [
+     0.014,
+     -0.738,
+     -0.675
+    ],
+    "u_b22": [
+     -0.505,
+     0.74,
+     0.444
+    ],
+    "fwd_share_bag": 0.738,
+    "fwd_share_b22": -0.74,
+    "fwd_share_straight": 0.836,
+    "b22_along_straight": -0.375,
+    "outboard_share_at_bar": 0.014,
+    "lifter_gap_mm": 60.9,
+    "lifter_centre_mm": 72.1,
+    "x_max_mm": 67.5,
+    "T_bar_n": 6.8,
+    "b22_n": [
+     2.7,
+     6.8
+    ],
+    "fwd_pull_bag_n": 5.0,
+    "fwd_pull_straight_model_n": 5.7,
+    "port_outside_mm": 81.0,
+    "port_lifter_gap_mm": 57.7
+   }
+  },
+  "F_r1_PR23_fineFM_over_port:meat": {
+   "torso": 23,
+   "case": "meat",
+   "route": "over_port",
+   "run": "F_r1_PR23_fineFM_over_port",
+   "R": {
+    "length_mm": 617.1,
+    "straight_mm": 322.1,
+    "wrap_deg": 163.4,
+    "friction_share": 0.575,
+    "friction_share_band": [
+     0.435,
+     0.68
+    ],
+    "u_bag": [
+     -0.012,
+     -0.711,
+     -0.703
+    ],
+    "u_b22": [
+     0.528,
+     0.74,
+     0.417
+    ],
+    "fwd_share_bag": 0.711,
+    "fwd_share_b22": -0.74,
+    "fwd_share_straight": 0.845,
+    "b22_along_straight": -0.391,
+    "outboard_share_at_bar": 0.012,
+    "lifter_gap_mm": 61.1,
+    "lifter_centre_mm": 72.1,
+    "x_max_mm": 66.1,
+    "T_bar_n": 6.3,
+    "b22_n": [
+     2.7,
+     6.3
+    ],
+    "fwd_pull_bag_n": 4.5,
+    "fwd_pull_straight_model_n": 5.3,
+    "port_outside_mm": 79.1,
+    "port_lifter_gap_mm": 57.5
+   },
+   "L": {
+    "length_mm": 613.1,
+    "straight_mm": 324.7,
+    "wrap_deg": 133.5,
+    "friction_share": 0.503,
+    "friction_share_band": [
+     0.373,
+     0.606
+    ],
+    "u_bag": [
+     0.006,
+     -0.703,
+     -0.711
+    ],
+    "u_b22": [
+     -0.337,
+     0.781,
+     0.526
+    ],
+    "fwd_share_bag": 0.703,
+    "fwd_share_b22": -0.781,
+    "fwd_share_straight": 0.84,
+    "b22_along_straight": -0.375,
+    "outboard_share_at_bar": 0.006,
+    "lifter_gap_mm": 60.5,
+    "lifter_centre_mm": 72.1,
+    "x_max_mm": 70.0,
+    "T_bar_n": 6.5,
+    "b22_n": [
+     3.2,
+     6.5
+    ],
+    "fwd_pull_bag_n": 4.6,
+    "fwd_pull_straight_model_n": 5.5,
+    "port_outside_mm": 82.3,
+    "port_lifter_gap_mm": 57.4
+   }
+  }
+ }
+}
