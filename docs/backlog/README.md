@@ -80,3 +80,4 @@ Nothing here is decided; the tickets produce the material.
 | BL-029 | Top anchor and lid redesign, informed by Exo and peers | pack-designer | L | 028 | owner: pouch looks wrong; rev 1 guys fail at 15 in |
 | BL-030 | Adopt CORRIE F rev 3 as design of record; crown strap diet; native viz | pack-designer | M | 029 | owner adopted rev 3 |
 | BL-031 | Crown straps 25 mm sized per kit; no hanging tails | pack-designer | M | 030 | owner: no straps hanging everywhere |
+| BL-032 | CORRIE F rev 3 cut and sew package (patterns, markers, BOM, ops, QC, tech pack) | pattern-maker → manufacturing-engineer | XL | 031 | build-ready rev 3 |
