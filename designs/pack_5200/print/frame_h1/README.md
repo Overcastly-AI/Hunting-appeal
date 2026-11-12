@@ -5,6 +5,12 @@ today, re-sized locally (about 65 g lighter on the printed body), split at z = 2
 **bolted, not glued**: 4 titanium M5 bolts in printed bosses. Engineering record:
 `designs/pack_5200/analysis/frame_h1.md`. Source code: `huntkit/gendesign/frame_h1.py`.
 
+> **Rev BL-027 (2026-11-12):** these files are now body **H1-G0.55-B1/2.5**: H1 + BL-024's lower-body growth
+> (fatigue on the cloth-sim loads) + BL-027's thicker mid bar and upper inboard branches (Euler buckling on the
+> cloth-sim loads) + the **28 mm IM3 cheeks** (BL-021). Each flat half is one closed shell (BL-015's loose island and
+> slivers removed). Record: `designs/pack_5200/analysis/h1_buckling.md` (`huntkit/gendesign/h1_buckling.py`,
+> `python -m huntkit.gendesign.h1_buckling --export`). R1 is still held for MT-1 (meat-strap cinch, BL-024).
+>
 > Status: **engineering release candidate.** These files are not yet the released frame
 > (`designs/pack_5200/print/frame/` is still today's body). Print the first article only after coupon CA-1
 > (`designs/pack_5200/tests_physical/CA1_fatigue_rig.md`) and the joint stubs CA-5 pass.
@@ -13,25 +19,31 @@ today, re-sized locally (about 65 g lighter on the printed body), split at z = 2
 
 | file | what | mass | print time |
 |---|---|---:|---:|
-| `h1_lower_flat.stl` / `.3mf` | lower half (feet to z 234), laid flat: wearer face on the plate | 293.5 g (0.65 lb) | about 10.4 h |
-| `h1_upper_flat.stl` / `.3mf` | upper half (z 234 to the top), laid flat | 470.9 g (1.04 lb) | about 16.7 h |
-| `h1_assembled.stl` | the whole body in frame coordinates (x right, y aft toward the bag, z up from the feet), for checks and renders | 764.5 g | |
+| `h1_lower_flat.stl` / `.3mf` | lower half (feet to z 234), laid flat: wearer face on the plate | 310.5 g (0.68 lb) | about 11.0 h |
+| `h1_upper_flat.stl` / `.3mf` | upper half (z 234 to the top), laid flat | 497.4 g (1.10 lb) | about 17.6 h |
+| `h1_assembled.stl` | the whole body in frame coordinates (x right, y aft toward the bag, z up from the feet), for checks and renders | 808.5 g | |
 
-- Masses are from the mesh volume × 1.06 g/cm³. The booked body mass is 757.7 g on the 2 mm analysis raster.
+- Masses are from the mesh volume × 1.06 g/cm³. The analysis raster (2 mm) of this body is 800.7 g; the ledger still
+  books H1's 757.7 g until the orchestrator updates `analysis/frame_mass_h1.json`.
 - Print time is volume / 8 mm³/s + 8 % waste.
 - The meshes are smooth, re-meshed surfaces, not voxels. Exact features are cut in with Boolean geometry:
   - bores printed at Ø17.4, reamed to 18.0;
   - bolt holes printed at Ø4.8, reamed to 5.1;
   - head counterbores Ø12.4;
-  - washer slots and hex nut traps.
-- Both halves are watertight and fit the H2S bed: 279 × 235 × 64 mm (11.0 × 9.2 × 2.5 in) and 279 × 309 × 52 mm
-  (11.0 × 12.2 × 2.1 in).
+  - washer slots and hex nut traps;
+  - **IM3 eye holes (z 520, both stays) printed at Ø7.0, reamed to 7.2** for the UHMWPE pin sleeve. The IM3 cheeks
+    are now 28 mm tall along the stay (were 18), 8 mm thick, throat 18 mm unchanged.
+- Each file is one closed, watertight shell. Footprints 279 × 234 × 64 mm and
+  279 × 309 × 52 mm fit the H2S bed.
+- What changed against the 2026-11-10 files you can see: the mid bar (z 330) is about 2 mm fuller across, the two
+  upper inboard branches (z 330 to the crown) about 5 mm fuller, the lumbar struts / pan and stay feet slightly
+  fuller (BL-024), and the IM3 eyes taller.
 
 ## Shopping list for one frame (besides the parts you already have for today's frame)
 
 | part | qty | note |
 |---|---:|---|
-| Bambu PAHT-CF | 0.85 kg | about 764 g of part + 8 % waste |
+| Bambu PAHT-CF | 0.90 kg | about 808 g of part + 8 % waste |
 | Ti gr5 **low-head** socket cap screw M5 × 45 (DIN 7984, 3.5 mm head) | 4 | Not M5 × 40: it does not reach through the nut. Not a standard ISO 4762 head (5 mm): it stands 1 mm into the band of the z 260 spreader clip. An ISO 7380 button head M5 × 45 also fits. |
 | M5 hex nut A2 (ISO 4032, 8 mm across flats, 4 mm thick) | 4 | thin nuts do not fit the trap |
 | M5 washer, 12 mm OD × 1.0 mm, A2 | 8 | **12 mm OD is load-bearing**. A standard 10 mm washer is not enough. |
@@ -97,6 +109,7 @@ bottom reaches z 171). So the bore must be one continuous hole.
 ## 6. Inserts, bushings and crown (same as today)
 
 1. Pawl: ream each cheek to **8.0 mm** and press in the 304 sleeve (OD 8.0, ID 4.2, length 8).
+   IM3 eyes (z 520): ream each to **7.2 mm** and press in the UHMWPE pin sleeve.
 2. Hip mount: press the M5 heat-set inserts and fit the SLM Ti pivot mount.
 3. Press the UHMWPE bushings into the 18.0 mm bores.
 4. Fit the carbon crown (rev C), the rack, the pawl and the pulley guides, as in `../frame/PRODUCTION.md`.
@@ -108,8 +121,8 @@ bottom reaches z 171). So the bore must be one continuous hole.
 
 ## 7. Check before use
 
-1. Weigh the body after annealing and reaming. Expect about 760 g (1.68 lb). More than 790 g means over-extrusion;
-   check the flow.
+1. Weigh the body after annealing and reaming. Expect about 808 g (1.78 lb). More than 840 g means
+   over-extrusion; check the flow.
 2. First article: HA-LS-1 T9, T1–T5, T4b with a dial on the branch, T4c at −20 °C
    (`designs/pack_5200/analysis/load_standard.md`).
    - Pencil marks across z 234 must not step more than 0.5 mm after unloading. The joint must not open visibly

@@ -273,8 +273,13 @@ def region_label(p) -> str:
         return "stay foot"
     if abs(x) > 95.0:
         side = "R" if x > 0 else "L"
-        if z >= 160.0:
+        if z >= 240.0:
             return f"stay {side} sleeve (crown bore wall)" + (" at the top bushing" if z > 470 else "")
+        if z >= 160.0:
+            # BL-027: the sleeve's lower band holds no crown leg at the long settings (leg bottom z 247-374), and
+            # its peak voxels sit on the inboard face where the lower branch and the lumbar strut join the stay
+            # (BL-024 peak x -103 z 167: 6-7 mm from both roots), not on the bore wall the leg bears on
+            return f"stay {side} lower sleeve z 160-240 (branch / strut root)"
         return f"stay {side} below the sleeve"
     if z > 480.0:
         return "upper bar / pawl housing"
@@ -804,3 +809,27 @@ def final_attachment_check(log=print) -> dict:
     out["spreader_190"] = spreader_at(190.0)
     out["spreader_181"] = spreader_at(181.0)
     return out
+
+
+def governing_region(cen: np.ndarray, fi: np.ndarray, ex: np.ndarray | None = None, q: float = 99.0,
+                     label=None) -> dict:
+    """BL-027: the region that holds the governing voxels of an FI99-type margin, not the single peak voxel.
+    The voxels at or above the ``q``-th percentile of ``fi`` (``ex`` = excluded load-patch voxels) are counted per
+    ``label`` (default region_label); returns {"region": the largest share, "share": its fraction, "shares": all
+    regions by share, "n": voxels counted, "peak_region": the label of the single highest voxel}."""
+    label = label or region_label
+    fi = np.asarray(fi, float)
+    keep = np.ones(fi.size, bool) if ex is None else ~np.asarray(ex, bool)
+    if not keep.any():
+        raise ValueError("governing_region: every voxel is excluded")
+    thr = float(np.percentile(fi[keep], q))
+    top = keep & (fi >= thr)
+    labs = [label(p) for p in np.asarray(cen)[top]]
+    cnt: dict = {}
+    for k in labs:
+        cnt[k] = cnt.get(k, 0) + 1
+    n = int(top.sum())
+    shares = {k: v / n for k, v in sorted(cnt.items(), key=lambda kv: -kv[1])}
+    reg = next(iter(shares))
+    pk = np.where(keep)[0][int(np.argmax(fi[keep]))]
+    return {"region": reg, "share": shares[reg], "shares": shares, "n": n, "peak_region": label(np.asarray(cen)[pk])}

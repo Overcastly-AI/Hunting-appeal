@@ -1,0 +1,2564 @@
+{
+ "date": "2026-11-12",
+ "targets": {
+  "buckling": 1.0,
+  "buckling_abuse_goal": 1.2,
+  "fatigue": 1.15,
+  "strength": 1.4
+ },
+ "assumptions": {
+  "SIM_BODY": [
+   "As BL-021 / BL-024: the sim's 1 g frame-side forces scaled by g x load / 68 kg, closed on the payload weight at the sim CG (force -> 4 under-strap pins, sagittal moment -> hook / hinge couple).",
+   "T9 loaded CG + frame strain gauges at the stays, the mid bar and the lumbar struts in the T1 carry test."
+  ],
+  "FLOOR_SPAN": [
+   "The hinge-pin lateral pull (the bag floor spanning pin to pin like a hammock, 62-208 N a side at 1 g in the meat case over every converged CORRIE F run) is taken as real: the sim pins the bag at both hinge nodes, and the real bag floor is cut to the same width.",
+   "T2 meat test: a load pin (or strain-gauged hinge pin) at one stay foot, lateral component, 23 in torso, 68 kg meat."
+  ],
+  "EULER_RULE": [
+   "Team A's Euler rule unchanged (frame_comp_A.member_buckling: pinned-pinned K 1, the member's voxel area at the cut as a solid round section, E_xy x 0.6 hot x 0.7 creep, margin = P_cr / (1.5 x factored compression)). Stays and the mid-bar junctions give some end fixity, so K 1 is conservative.",
+   "Optional: a linear eigenvalue (buckling) run of the voxel body under the governing set, or a printed-frame side-squeeze test (T1 rig, 2 x 1.5 x the factored load at the stay feet)."
+  ],
+  "PAHT_FAT": [
+   "PAHT-CF fatigue_1e5_ratio 0.30 (record ASSUMPTION).",
+   "CA-1 coupon test."
+  ],
+  "CINCH_STATIC": [
+   "As BL-021 / BL-024: the meat-strap cinch is a static preload (fatigue on the static-carry set without the cinch loop).",
+   "MT-1 strap tension readout over a 10 min loaded walk."
+  ],
+  "MESH": [
+   "2 mm voxel grid (the FI99 rule, KEEP 1.02 and the cut areas are calibrated on it); a member area is a whole number of 4 mm2 voxel faces, so growth is judged on the cut area actually rastered.",
+   "Slicer cross-section of the printed mid bar / upper branches against the rastered areas."
+  ]
+ },
+ "baseline": {
+  "fine_sm8": {
+   "branch lower (z 165-330) L": {
+    "A_mm2": 116.0,
+    "Pcr_n": 528.8,
+    "P_factored_n": 227.9,
+    "set": "S_meat@a_S_fine_sm8_15:drop_2p5g|15",
+    "margin": 1.547
+   },
+   "branch lower (z 165-330) R": {
+    "A_mm2": 116.0,
+    "Pcr_n": 528.8,
+    "P_factored_n": 274.7,
+    "set": "S_meat@a_L_fine_sm8_23:side_hill_torsion|23",
+    "margin": 1.283
+   },
+   "branch upper (z 330-495) L": {
+    "A_mm2": 108.0,
+    "Pcr_n": 458.4,
+    "P_factored_n": 116.0,
+    "set": "S_meat@a_S_fine_sm8_15:drop_2p5g|15",
+    "margin": 2.634
+   },
+   "branch upper (z 330-495) R": {
+    "A_mm2": 108.0,
+    "Pcr_n": 458.4,
+    "P_factored_n": 426.1,
+    "set": "S_meat@a_L_fine_sm8_23:side_hill_torsion|23",
+    "margin": 0.717
+   },
+   "mid bar (x -115..115) all": {
+    "A_mm2": 72.0,
+    "Pcr_n": 124.8,
+    "P_factored_n": 189.4,
+    "set": "S_meat@a_L_fine_sm8_alt_20:hipbelt_off_abuse|20",
+    "margin": 0.439
+   }
+  },
+  "fine": {
+   "branch lower (z 165-330) L": {
+    "A_mm2": 116.0,
+    "Pcr_n": 528.8,
+    "P_factored_n": 227.9,
+    "set": "S_meat@a_S_fine_15:drop_2p5g|15",
+    "margin": 1.547
+   },
+   "branch lower (z 165-330) R": {
+    "A_mm2": 116.0,
+    "Pcr_n": 528.8,
+    "P_factored_n": 285.8,
+    "set": "S_meat@a_L_fine_23:side_hill_torsion|23",
+    "margin": 1.234
+   },
+   "branch upper (z 330-495) L": {
+    "A_mm2": 108.0,
+    "Pcr_n": 458.4,
+    "P_factored_n": 116.0,
+    "set": "S_meat@a_S_fine_15:drop_2p5g|15",
+    "margin": 2.634
+   },
+   "branch upper (z 330-495) R": {
+    "A_mm2": 108.0,
+    "Pcr_n": 458.4,
+    "P_factored_n": 425.4,
+    "set": "S_meat@a_L_fine_23:side_hill_torsion|23",
+    "margin": 0.718
+   },
+   "mid bar (x -115..115) all": {
+    "A_mm2": 72.0,
+    "Pcr_n": 124.8,
+    "P_factored_n": 192.6,
+    "set": "S_meat@a_L_fine_alt_20:hipbelt_off_abuse|20",
+    "margin": 0.432
+   }
+  },
+  "beam": {
+   "branch lower (z 165-330) L": {
+    "A_mm2": 116.0,
+    "Pcr_n": 528.8,
+    "P_factored_n": 175.5,
+    "set": "C@a_S_beam_15:single_stay_setdown|15",
+    "margin": 2.009
+   },
+   "branch lower (z 165-330) R": {
+    "A_mm2": 116.0,
+    "Pcr_n": 528.8,
+    "P_factored_n": 62.0,
+    "set": "C@a_L_beam_23:single_stay_setdown|23",
+    "margin": 5.687
+   },
+   "branch upper (z 330-495) L": {
+    "A_mm2": 108.0,
+    "Pcr_n": 458.4,
+    "P_factored_n": 8.6,
+    "set": "C@a_S_beam_15:single_stay_setdown|15",
+    "margin": 35.399
+   },
+   "branch upper (z 330-495) R": {
+    "A_mm2": 108.0,
+    "Pcr_n": 458.4,
+    "P_factored_n": 241.0,
+    "set": "C@a_L_beam_23:single_stay_setdown|23",
+    "margin": 1.268
+   },
+   "mid bar (x -115..115) all": {
+    "A_mm2": 72.0,
+    "Pcr_n": 124.8,
+    "P_factored_n": -29.0,
+    "set": "C@a_L_beam_20:hipbelt_off_abuse|20",
+    "margin": null
+   }
+  }
+ },
+ "baseline_by_case": {
+  "fine_sm8": {
+   "drop_2p5g": {
+    "margin": 1.547,
+    "member": "branch lower (z 165-330) L",
+    "set": "S_meat@a_S_fine_sm8_15:drop_2p5g|15"
+   },
+   "hipbelt_off_abuse": {
+    "margin": 0.439,
+    "member": "mid bar (x -115..115) all",
+    "set": "S_meat@a_L_fine_sm8_alt_20:hipbelt_off_abuse|20"
+   },
+   "side_hill_torsion": {
+    "margin": 0.717,
+    "member": "branch upper (z 330-495) R",
+    "set": "S_meat@a_L_fine_sm8_23:side_hill_torsion|23"
+   },
+   "single_stay_setdown": {
+    "margin": 1.268,
+    "member": "branch upper (z 330-495) R",
+    "set": "S_fill@a_L_fine_sm8_23:single_stay_setdown|23"
+   }
+  },
+  "fine": {
+   "drop_2p5g": {
+    "margin": 1.547,
+    "member": "branch lower (z 165-330) L",
+    "set": "S_meat@a_S_fine_15:drop_2p5g|15"
+   },
+   "hipbelt_off_abuse": {
+    "margin": 0.432,
+    "member": "mid bar (x -115..115) all",
+    "set": "S_meat@a_L_fine_alt_20:hipbelt_off_abuse|20"
+   },
+   "side_hill_torsion": {
+    "margin": 0.718,
+    "member": "branch upper (z 330-495) R",
+    "set": "S_meat@a_L_fine_23:side_hill_torsion|23"
+   },
+   "single_stay_setdown": {
+    "margin": 1.268,
+    "member": "branch upper (z 330-495) R",
+    "set": "S_fill@a_L_fine_23:single_stay_setdown|23"
+   }
+  },
+  "beam": {
+   "single_stay_setdown": {
+    "margin": 1.268,
+    "member": "branch upper (z 330-495) R",
+    "set": "C@a_L_beam_23:single_stay_setdown|23"
+   }
+  }
+ },
+ "baseline_mirrored": {
+  "fine_sm8": {
+   "branch lower (z 165-330)": 1.283,
+   "branch upper (z 330-495)": 0.717
+  },
+  "fine": {
+   "branch lower (z 165-330)": 1.234,
+   "branch upper (z 330-495)": 0.718
+  },
+  "beam": {
+   "branch lower (z 165-330)": 2.009,
+   "branch upper (z 330-495)": 1.268
+  }
+ },
+ "task1": {
+  "decomposition": {
+   "S_meat@a_L_fine_sm8_alt_20:hipbelt_off_abuse|20": {
+    "basis": "fine_sm8",
+    "case": "hipbelt_off_abuse",
+    "torso": 20.0,
+    "factor": 1.0,
+    "members": {
+     "branch lower (z 165-330) L": {
+      "N_full": -109.16865642368793,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": -68.91855205968022,
+       "IM3-hook lateral (sim, x at z 520)": 14.882075443863869,
+       "other sim lateral (x)": -12.782895468175411,
+       "sim bag force y / z": -113.05250138044357,
+       "closure: under-strap pins + hook / hinge couple": 7.042637875303626,
+       "meat-strap cinch loop": -157.63049578666687,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.0,
+       "beam-case part y / z and body side": 0.0,
+       "crown interface (bushings + pawl)": 221.29107636213303
+      },
+      "sum_check": -1.4100223779678345e-06,
+      "N_cinch_via_stays": 57.68492718040943,
+      "A_mm2": 116.0,
+      "Pcr_n": 528.807303507384
+     },
+     "branch lower (z 165-330) R": {
+      "N_full": -138.75692981481552,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": -69.16813718155026,
+       "IM3-hook lateral (sim, x at z 520)": -20.837306886911392,
+       "other sim lateral (x)": 15.456015981733799,
+       "sim bag force y / z": -106.09482848644257,
+       "closure: under-strap pins + hook / hinge couple": 8.563338616862893,
+       "meat-strap cinch loop": -155.842325091362,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.0,
+       "beam-case part y / z and body side": 0.0,
+       "crown interface (bushings + pawl)": 189.16631386429071
+      },
+      "sum_check": -6.314367055892944e-07,
+      "N_cinch_via_stays": 30.60226845368743,
+      "A_mm2": 116.0,
+      "Pcr_n": 528.807303507384
+     },
+     "branch upper (z 330-495) L": {
+      "N_full": -72.43456194549799,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": -54.35106801986694,
+       "IM3-hook lateral (sim, x at z 520)": -8.665929667651653,
+       "other sim lateral (x)": -6.106785248499364,
+       "sim bag force y / z": -106.48235443234444,
+       "closure: under-strap pins + hook / hinge couple": 21.15641298890114,
+       "meat-strap cinch loop": -158.6766213774681,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.0,
+       "beam-case part y / z and body side": 0.0,
+       "crown interface (bushings + pawl)": 240.69178438186646
+      },
+      "sum_check": -5.704350769519806e-07,
+      "N_cinch_via_stays": 93.34970235824585,
+      "A_mm2": 108.0,
+      "Pcr_n": 458.3835008999793
+     },
+     "branch upper (z 330-495) R": {
+      "N_full": -71.55931854248047,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": -54.81556993722916,
+       "IM3-hook lateral (sim, x at z 520)": 0.8310158252716064,
+       "other sim lateral (x)": 8.690191641449928,
+       "sim bag force y / z": -100.0789371393621,
+       "closure: under-strap pins + hook / hinge couple": 20.119528852403164,
+       "meat-strap cinch loop": -153.76521687209606,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.0,
+       "beam-case part y / z and body side": 0.0,
+       "crown interface (bushings + pawl)": 207.4596683382988
+      },
+      "sum_check": 7.487833499908447e-07,
+      "N_cinch_via_stays": 91.81012722849846,
+      "A_mm2": 108.0,
+      "Pcr_n": 458.3835008999793
+     },
+     "mid bar (x -115..115) all": {
+      "N_full": -189.39349567890167,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 8.904341220855713,
+       "IM3-hook lateral (sim, x at z 520)": 3.265033043920994,
+       "other sim lateral (x)": -1.718796070665121,
+       "sim bag force y / z": -29.718630239367485,
+       "closure: under-strap pins + hook / hinge couple": 69.54291370883584,
+       "meat-strap cinch loop": -138.01021349430084,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.0,
+       "beam-case part y / z and body side": 0.0,
+       "crown interface (bushings + pawl)": -101.65814471244812
+      },
+      "sum_check": 8.642673492431641e-07,
+      "N_cinch_via_stays": -46.02931855618954,
+      "A_mm2": 72.0,
+      "Pcr_n": 124.77736130358606
+     }
+    }
+   },
+   "S_meat@a_L_fine_sm8_23:hipbelt_off_abuse|23": {
+    "basis": "fine_sm8",
+    "case": "hipbelt_off_abuse",
+    "torso": 23.0,
+    "factor": 1.0,
+    "members": {
+     "branch lower (z 165-330) L": {
+      "N_full": -83.7894614348188,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": -68.91855205968022,
+       "IM3-hook lateral (sim, x at z 520)": 14.882075443863869,
+       "other sim lateral (x)": -12.209261484444141,
+       "sim bag force y / z": -113.86638009548187,
+       "closure: under-strap pins + hook / hinge couple": 7.042637875303626,
+       "meat-strap cinch loop": -160.68442821502686,
+       "beam-case part x (tilt, downhill bias, beam bag)": -0.5578086264431477,
+       "beam-case part y / z and body side": 9.760580226778984,
+       "crown interface (bushings + pawl)": 240.76167368888855
+      },
+      "sum_check": 1.8114224076271057e-06,
+      "N_cinch_via_stays": 83.06412278767675,
+      "A_mm2": 116.0,
+      "Pcr_n": 528.807303507384
+     },
+     "branch lower (z 165-330) R": {
+      "N_full": -116.60372621566057,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": -69.16813718155026,
+       "IM3-hook lateral (sim, x at z 520)": -20.837306886911392,
+       "other sim lateral (x)": 14.836526864208281,
+       "sim bag force y / z": -107.42270988225937,
+       "closure: under-strap pins + hook / hinge couple": 8.563338616862893,
+       "meat-strap cinch loop": -160.78520393371582,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.6008908115327358,
+       "beam-case part y / z and body side": 12.57702499628067,
+       "crown interface (bushings + pawl)": 205.03185126185417
+      },
+      "sum_check": -8.819624781608582e-07,
+      "N_cinch_via_stays": 52.75547398906201,
+      "A_mm2": 116.0,
+      "Pcr_n": 528.807303507384
+     },
+     "branch upper (z 330-495) L": {
+      "N_full": -38.96631300449371,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": -54.35106801986694,
+       "IM3-hook lateral (sim, x at z 520)": -8.665929667651653,
+       "other sim lateral (x)": -5.749824526137672,
+       "sim bag force y / z": -107.57127285096794,
+       "closure: under-strap pins + hook / hinge couple": 21.15641298890114,
+       "meat-strap cinch loop": -162.6917004585266,
+       "beam-case part x (tilt, downhill bias, beam bag)": -0.3451560781977605,
+       "beam-case part y / z and body side": 13.921690414659679,
+       "crown interface (bushings + pawl)": 265.3305360674858
+      },
+      "sum_check": -8.741917554289103e-07,
+      "N_cinch_via_stays": 126.81794991903007,
+      "A_mm2": 108.0,
+      "Pcr_n": 458.3835008999793
+     },
+     "branch upper (z 330-495) R": {
+      "N_full": -44.218987226486206,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": -54.81556993722916,
+       "IM3-hook lateral (sim, x at z 520)": 0.8310158252716064,
+       "other sim lateral (x)": 8.292299784719944,
+       "sim bag force y / z": -101.43776074424386,
+       "closure: under-strap pins + hook / hinge couple": 20.119528852403164,
+       "meat-strap cinch loop": -158.77794206514955,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.38362897047773004,
+       "beam-case part y / z and body side": 14.932846607640386,
+       "crown interface (bushings + pawl)": 226.25296330451965
+      },
+      "sum_check": 2.17510387301445e-06,
+      "N_cinch_via_stays": 119.15045883134007,
+      "A_mm2": 108.0,
+      "Pcr_n": 458.3835008999793
+     },
+     "mid bar (x -115..115) all": {
+      "N_full": -180.72073397040367,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 8.904341220855713,
+       "IM3-hook lateral (sim, x at z 520)": 3.265033043920994,
+       "other sim lateral (x)": -1.7385353883728385,
+       "sim bag force y / z": -31.742189273238182,
+       "closure: under-strap pins + hook / hinge couple": 69.54291370883584,
+       "meat-strap cinch loop": -145.29583728313446,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.018582702847197652,
+       "beam-case part y / z and body side": 27.306050419807434,
+       "crown interface (bushings + pawl)": -110.98108831048012
+      },
+      "sum_check": -4.811445251107216e-06,
+      "N_cinch_via_stays": -37.35655725374818,
+      "A_mm2": 72.0,
+      "Pcr_n": 124.77736130358606
+     }
+    }
+   },
+   "S_fill@a_L_fine_sm8_23:hipbelt_off_abuse|23": {
+    "basis": "fine_sm8",
+    "case": "hipbelt_off_abuse",
+    "torso": 23.0,
+    "factor": 1.0,
+    "members": {
+     "branch lower (z 165-330) L": {
+      "N_full": 78.45990950614214,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": -23.16265599313192,
+       "IM3-hook lateral (sim, x at z 520)": 3.9808233082294464,
+       "other sim lateral (x)": 1.4746757885441184,
+       "sim bag force y / z": 23.985841929912567,
+       "closure: under-strap pins + hook / hinge couple": -97.32514303550124,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": -0.025783842720557004,
+       "beam-case part y / z and body side": 11.390535086393356,
+       "crown interface (bushings + pawl)": 158.14161545038223
+      },
+      "sum_check": 8.140341378748417e-07,
+      "N_cinch_via_stays": 78.45990950614214,
+      "A_mm2": 116.0,
+      "Pcr_n": 528.807303507384
+     },
+     "branch lower (z 165-330) R": {
+      "N_full": 31.8348956881091,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": -26.1825869679451,
+       "IM3-hook lateral (sim, x at z 520)": -5.491191655397415,
+       "other sim lateral (x)": -6.2962600365281105,
+       "sim bag force y / z": 18.176258832216263,
+       "closure: under-strap pins + hook / hinge couple": -102.12280568480492,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.03144666421576403,
+       "beam-case part y / z and body side": 17.49807718396187,
+       "crown interface (bushings + pawl)": 136.22195757180452
+      },
+      "sum_check": -2.194137778133154e-07,
+      "N_cinch_via_stays": 31.8348956881091,
+      "A_mm2": 116.0,
+      "Pcr_n": 528.807303507384
+     },
+     "branch upper (z 330-495) L": {
+      "N_full": 116.10900098085403,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": -18.523063987493515,
+       "IM3-hook lateral (sim, x at z 520)": -1.5043965317308903,
+       "other sim lateral (x)": 0.6211161031387746,
+       "sim bag force y / z": 67.11422480642796,
+       "closure: under-strap pins + hook / hinge couple": -120.87330532073975,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": -0.0017927121371030807,
+       "beam-case part y / z and body side": 17.869233928620815,
+       "crown interface (bushings + pawl)": 171.40698289871216
+      },
+      "sum_check": 1.7960555851459503e-06,
+      "N_cinch_via_stays": 116.10900098085403,
+      "A_mm2": 108.0,
+      "Pcr_n": 458.3835008999793
+     },
+     "branch upper (z 330-495) R": {
+      "N_full": 88.7600908651948,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": -20.501792550086975,
+       "IM3-hook lateral (sim, x at z 520)": 0.34171734005212784,
+       "other sim lateral (x)": -5.9307770654559135,
+       "sim bag force y / z": 61.61842119693756,
+       "closure: under-strap pins + hook / hinge couple": -118.57854557037354,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.00735382767743431,
+       "beam-case part y / z and body side": 20.6804426163435,
+       "crown interface (bushings + pawl)": 151.1232697814703
+      },
+      "sum_check": 1.2886303011327982e-06,
+      "N_cinch_via_stays": 88.7600908651948,
+      "A_mm2": 108.0,
+      "Pcr_n": 458.3835008999793
+     },
+     "mid bar (x -115..115) all": {
+      "N_full": -125.86354231834412,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 3.130533754825592,
+       "IM3-hook lateral (sim, x at z 520)": -1.038199968636036,
+       "other sim lateral (x)": -4.69217022228986,
+       "sim bag force y / z": 211.9120633006096,
+       "closure: under-strap pins + hook / hinge couple": -187.74086141586304,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.004906197864329442,
+       "beam-case part y / z and body side": 38.40352475643158,
+       "crown interface (bushings + pawl)": -185.8433357179165
+      },
+      "sum_check": -3.0033697839826345e-06,
+      "N_cinch_via_stays": -125.86354231834412,
+      "A_mm2": 72.0,
+      "Pcr_n": 124.77736130358606
+     }
+    }
+   },
+   "S_meat@a_L_fine_sm8_23:side_hill_torsion|23": {
+    "basis": "fine_sm8",
+    "case": "side_hill_torsion",
+    "torso": 23.0,
+    "factor": 1.5,
+    "members": {
+     "branch lower (z 165-330) L": {
+      "N_full": -23.52461075782776,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": -99.93827349878848,
+       "IM3-hook lateral (sim, x at z 520)": 21.580386221408844,
+       "other sim lateral (x)": -17.704558089375496,
+       "sim bag force y / z": -165.11677885055542,
+       "closure: under-strap pins + hook / hinge couple": 10.21247798204422,
+       "meat-strap cinch loop": -241.02664017677307,
+       "beam-case part x (tilt, downhill bias, beam bag)": 81.72963700443506,
+       "beam-case part y / z and body side": 171.3888949751854,
+       "crown interface (bushings + pawl)": 215.35025207698345
+      },
+      "sum_check": -8.402392268180847e-06,
+      "N_cinch_via_stays": 226.7557634115219,
+      "A_mm2": 116.0,
+      "Pcr_n": 528.807303507384
+     },
+     "branch lower (z 165-330) R": {
+      "N_full": -274.730455994606,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": -100.30019414797425,
+       "IM3-hook lateral (sim, x at z 520)": -30.216021180152893,
+       "other sim lateral (x)": 21.514335811138153,
+       "sim bag force y / z": -155.77286291122437,
+       "closure: under-strap pins + hook / hinge couple": 12.417633024044335,
+       "meat-strap cinch loop": -241.17780351638794,
+       "beam-case part x (tilt, downhill bias, beam bag)": -60.6778978779912,
+       "beam-case part y / z and body side": -220.9928059130907,
+       "crown interface (bushings + pawl)": 500.4751776456833
+      },
+      "sum_check": -1.6928650438785553e-05,
+      "N_cinch_via_stays": -20.691658129915595,
+      "A_mm2": 116.0,
+      "Pcr_n": 528.807303507384
+     },
+     "branch upper (z 330-495) L": {
+      "N_full": 286.44853883981705,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": -78.81407415866852,
+       "IM3-hook lateral (sim, x at z 520)": -12.56639914214611,
+       "other sim lateral (x)": -8.337777457549237,
+       "sim bag force y / z": -155.98829082213342,
+       "closure: under-strap pins + hook / hinge couple": 30.678755775094032,
+       "meat-strap cinch loop": -244.03755354881287,
+       "beam-case part x (tilt, downhill bias, beam bag)": 54.48153458535671,
+       "beam-case part y / z and body side": 98.61710512638092,
+       "crown interface (bushings + pawl)": 602.4152369499207
+      },
+      "sum_check": 1.532374881207943e-06,
+      "N_cinch_via_stays": 535.12493606098,
+      "A_mm2": 108.0,
+      "Pcr_n": 458.3835008999793
+     },
+     "branch upper (z 330-495) R": {
+      "N_full": -426.11540722846985,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": -79.4876446723938,
+       "IM3-hook lateral (sim, x at z 520)": 1.2050505876541138,
+       "other sim lateral (x)": 12.024601113051176,
+       "sim bag force y / z": -147.0941329859197,
+       "closure: under-strap pins + hook / hinge couple": 29.175177067518234,
+       "meat-strap cinch loop": -238.16691303998232,
+       "beam-case part x (tilt, downhill bias, beam bag)": -41.48056618869305,
+       "beam-case part y / z and body side": -135.86665534973145,
+       "crown interface (bushings + pawl)": 173.57567393779755
+      },
+      "sum_check": 2.302229404449463e-06,
+      "N_cinch_via_stays": -181.06123817712069,
+      "A_mm2": 108.0,
+      "Pcr_n": 458.3835008999793
+     },
+     "mid bar (x -115..115) all": {
+      "N_full": 281.0395555496216,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 12.91211712360382,
+       "IM3-hook lateral (sim, x at z 520)": 4.734599839895964,
+       "other sim lateral (x)": -2.5210371264256537,
+       "sim bag force y / z": -46.02910956740379,
+       "closure: under-strap pins + hook / hinge couple": 100.84365446865559,
+       "meat-strap cinch loop": -217.9437494277954,
+       "beam-case part x (tilt, downhill bias, beam bag)": 12.166389122605324,
+       "beam-case part y / z and body side": 5.795287981629372,
+       "crown interface (bushings + pawl)": 411.0814152956009
+      },
+      "sum_check": -1.216074451804161e-05,
+      "N_cinch_via_stays": 496.08581414073706,
+      "A_mm2": 72.0,
+      "Pcr_n": 124.77736130358606
+     }
+    }
+   },
+   "S_meat@a_L_fine_sm8_23:static_carry|23": {
+    "basis": "fine_sm8",
+    "case": "static_carry",
+    "torso": 23.0,
+    "factor": 2.0,
+    "members": {
+     "branch lower (z 165-330) L": {
+      "N_full": 33.22116286307573,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": -91.89140308275819,
+       "IM3-hook lateral (sim, x at z 520)": 19.84276819229126,
+       "other sim lateral (x)": -16.279015362262726,
+       "sim bag force y / z": -151.82184106111526,
+       "closure: under-strap pins + hook / hinge couple": 9.390184935182333,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": -0.7437448338605464,
+       "beam-case part y / z and body side": -15.003423515707254,
+       "crown interface (bushings + pawl)": 279.72763419151306
+      },
+      "sum_check": 3.3997930586338043e-06,
+      "N_cinch_via_stays": 33.22116286307573,
+      "A_mm2": 116.0,
+      "Pcr_n": 528.807303507384
+     },
+     "branch lower (z 165-330) R": {
+      "N_full": 37.9090296626091,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": -92.22418303601444,
+       "IM3-hook lateral (sim, x at z 520)": -27.78307580947876,
+       "other sim lateral (x)": 19.78203585371375,
+       "sim bag force y / z": -143.2302806377411,
+       "closure: under-strap pins + hook / hinge couple": 11.41778548527509,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.8011877397075295,
+       "beam-case part y / z and body side": -14.306362111121416,
+       "crown interface (bushings + pawl)": 283.4519214630127
+      },
+      "sum_check": 7.152557373046875e-07,
+      "N_cinch_via_stays": 37.9090296626091,
+      "A_mm2": 116.0,
+      "Pcr_n": 528.807303507384
+     },
+     "branch upper (z 330-495) L": {
+      "N_full": 113.23943614959717,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": -72.46809148788452,
+       "IM3-hook lateral (sim, x at z 520)": -11.5545724183321,
+       "other sim lateral (x)": -7.66643294977257,
+       "sim bag force y / z": -143.42836588062346,
+       "closure: under-strap pins + hook / hinge couple": 28.20855113863945,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": -0.46020810629124753,
+       "beam-case part y / z and body side": -10.264329568482935,
+       "crown interface (bushings + pawl)": 330.87288441322744
+      },
+      "sum_check": 1.0091171134263277e-06,
+      "N_cinch_via_stays": 113.23943614959717,
+      "A_mm2": 108.0,
+      "Pcr_n": 458.3835008999793
+     },
+     "branch upper (z 330-495) R": {
+      "N_full": 116.34647579491138,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": -73.08742690086365,
+       "IM3-hook lateral (sim, x at z 520)": 1.1080219745635986,
+       "other sim lateral (x)": 11.056399580091238,
+       "sim bag force y / z": -135.25035009533167,
+       "closure: under-strap pins + hook / hinge couple": 26.826038889586926,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.5115052979381289,
+       "beam-case part y / z and body side": -10.03713714890182,
+       "crown interface (bushings + pawl)": 295.21942615509033
+      },
+      "sum_check": -1.9572617020457983e-06,
+      "N_cinch_via_stays": 116.34647579491138,
+      "A_mm2": 108.0,
+      "Pcr_n": 458.3835008999793
+     },
+     "mid bar (x -115..115) all": {
+      "N_full": 414.54987651109695,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 11.872456192970276,
+       "IM3-hook lateral (sim, x at z 520)": 4.35337745025754,
+       "other sim lateral (x)": -2.3180471607483923,
+       "sim bag force y / z": -42.32291868329048,
+       "closure: under-strap pins + hook / hinge couple": 92.72388507425785,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.024776937207207084,
+       "beam-case part y / z and body side": 8.979979991912842,
+       "crown interface (bushings + pawl)": 341.2363748550415
+      },
+      "sum_check": -8.146511390805244e-06,
+      "N_cinch_via_stays": 414.54987651109695,
+      "A_mm2": 72.0,
+      "Pcr_n": 124.77736130358606
+     }
+    }
+   },
+   "C@a_L_beam_23:single_stay_setdown|23": {
+    "basis": "beam",
+    "case": "single_stay_setdown",
+    "torso": 23.0,
+    "factor": 1.5,
+    "members": {
+     "branch lower (z 165-330) L": {
+      "N_full": -30.056935504078865,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 0.0,
+       "IM3-hook lateral (sim, x at z 520)": 0.0,
+       "other sim lateral (x)": 0.0,
+       "sim bag force y / z": 0.0,
+       "closure: under-strap pins + hook / hinge couple": 0.0,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": -202.8264865502715,
+       "beam-case part y / z and body side": 121.5031546652317,
+       "crown interface (bushings + pawl)": 51.266398787498474
+      },
+      "sum_check": -2.4065375328063965e-06,
+      "N_cinch_via_stays": -30.056935504078865,
+      "A_mm2": 116.0,
+      "Pcr_n": 528.807303507384
+     },
+     "branch lower (z 165-330) R": {
+      "N_full": -61.992581844329834,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 0.0,
+       "IM3-hook lateral (sim, x at z 520)": 0.0,
+       "other sim lateral (x)": 0.0,
+       "sim bag force y / z": 0.0,
+       "closure: under-strap pins + hook / hinge couple": 0.0,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": 125.63371089845896,
+       "beam-case part y / z and body side": -191.8970786035061,
+       "crown interface (bushings + pawl)": 4.27078390866518
+      },
+      "sum_check": 1.952052116394043e-06,
+      "N_cinch_via_stays": -61.992581844329834,
+      "A_mm2": 116.0,
+      "Pcr_n": 528.807303507384
+     },
+     "branch upper (z 330-495) L": {
+      "N_full": 173.12562201917171,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 0.0,
+       "IM3-hook lateral (sim, x at z 520)": 0.0,
+       "other sim lateral (x)": 0.0,
+       "sim bag force y / z": 0.0,
+       "closure: under-strap pins + hook / hinge couple": 0.0,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": -122.0753506720066,
+       "beam-case part y / z and body side": 54.01563282683492,
+       "crown interface (bushings + pawl)": 241.1853450536728
+      },
+      "sum_check": -5.189329385757446e-06,
+      "N_cinch_via_stays": 173.12562201917171,
+      "A_mm2": 108.0,
+      "Pcr_n": 458.3835008999793
+     },
+     "branch upper (z 330-495) R": {
+      "N_full": -241.0425892174244,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 0.0,
+       "IM3-hook lateral (sim, x at z 520)": 0.0,
+       "other sim lateral (x)": 0.0,
+       "sim bag force y / z": 0.0,
+       "closure: under-strap pins + hook / hinge couple": 0.0,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": 85.52646258473396,
+       "beam-case part y / z and body side": -133.06288235541433,
+       "crown interface (bushings + pawl)": -193.50617122650146
+      },
+      "sum_check": 1.7797574400901794e-06,
+      "N_cinch_via_stays": -241.0425892174244,
+      "A_mm2": 108.0,
+      "Pcr_n": 458.3835008999793
+     },
+     "mid bar (x -115..115) all": {
+      "N_full": 128.4201459288597,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 0.0,
+       "IM3-hook lateral (sim, x at z 520)": 0.0,
+       "other sim lateral (x)": 0.0,
+       "sim bag force y / z": 0.0,
+       "closure: under-strap pins + hook / hinge couple": 0.0,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": 69.62897139787674,
+       "beam-case part y / z and body side": -66.91656989604235,
+       "crown interface (bushings + pawl)": 125.70774567127228
+      },
+      "sum_check": -1.2442469596862793e-06,
+      "N_cinch_via_stays": 128.4201459288597,
+      "A_mm2": 72.0,
+      "Pcr_n": 124.77736130358606
+     }
+    }
+   },
+   "C@a_L_beam_20:hipbelt_off_abuse|20": {
+    "basis": "beam",
+    "case": "hipbelt_off_abuse",
+    "torso": 20.0,
+    "factor": 1.0,
+    "members": {
+     "branch lower (z 165-330) L": {
+      "N_full": 320.3518662452698,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 0.0,
+       "IM3-hook lateral (sim, x at z 520)": 0.0,
+       "other sim lateral (x)": 0.0,
+       "sim bag force y / z": 0.0,
+       "closure: under-strap pins + hook / hinge couple": 0.0,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.0,
+       "beam-case part y / z and body side": 171.84864409267902,
+       "crown interface (bushings + pawl)": 148.50322193838656
+      },
+      "sum_check": 2.1420419216156006e-07,
+      "N_cinch_via_stays": 320.3518662452698,
+      "A_mm2": 116.0,
+      "Pcr_n": 528.807303507384
+     },
+     "branch lower (z 165-330) R": {
+      "N_full": 319.99976539611816,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 0.0,
+       "IM3-hook lateral (sim, x at z 520)": 0.0,
+       "other sim lateral (x)": 0.0,
+       "sim bag force y / z": 0.0,
+       "closure: under-strap pins + hook / hinge couple": 0.0,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.0,
+       "beam-case part y / z and body side": 178.6730653345585,
+       "crown interface (bushings + pawl)": 141.3266974836588
+      },
+      "sum_check": 2.5779008865356445e-06,
+      "N_cinch_via_stays": 319.99976539611816,
+      "A_mm2": 116.0,
+      "Pcr_n": 528.807303507384
+     },
+     "branch upper (z 330-495) L": {
+      "N_full": 342.8218483328819,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 0.0,
+       "IM3-hook lateral (sim, x at z 520)": 0.0,
+       "other sim lateral (x)": 0.0,
+       "sim bag force y / z": 0.0,
+       "closure: under-strap pins + hook / hinge couple": 0.0,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.0,
+       "beam-case part y / z and body side": 189.49295616149902,
+       "crown interface (bushings + pawl)": 153.32888977229595
+      },
+      "sum_check": 2.3990869522094727e-06,
+      "N_cinch_via_stays": 342.8218483328819,
+      "A_mm2": 108.0,
+      "Pcr_n": 458.3835008999793
+     },
+     "branch upper (z 330-495) R": {
+      "N_full": 341.41012489795685,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 0.0,
+       "IM3-hook lateral (sim, x at z 520)": 0.0,
+       "other sim lateral (x)": 0.0,
+       "sim bag force y / z": 0.0,
+       "closure: under-strap pins + hook / hinge couple": 0.0,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.0,
+       "beam-case part y / z and body side": 187.0818977355957,
+       "crown interface (bushings + pawl)": 154.3282268345356
+      },
+      "sum_check": 3.2782554626464844e-07,
+      "N_cinch_via_stays": 341.41012489795685,
+      "A_mm2": 108.0,
+      "Pcr_n": 458.3835008999793
+     },
+     "mid bar (x -115..115) all": {
+      "N_full": 28.996188402175903,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 0.0,
+       "IM3-hook lateral (sim, x at z 520)": 0.0,
+       "other sim lateral (x)": 0.0,
+       "sim bag force y / z": 0.0,
+       "closure: under-strap pins + hook / hinge couple": 0.0,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.0,
+       "beam-case part y / z and body side": 222.45218801498413,
+       "crown interface (bushings + pawl)": -193.45600074529648
+      },
+      "sum_check": 1.1324882507324219e-06,
+      "N_cinch_via_stays": 28.996188402175903,
+      "A_mm2": 72.0,
+      "Pcr_n": 124.77736130358606
+     }
+    }
+   },
+   "C@a_L_beam_23:side_hill_torsion|23": {
+    "basis": "beam",
+    "case": "side_hill_torsion",
+    "torso": 23.0,
+    "factor": 1.5,
+    "members": {
+     "branch lower (z 165-330) L": {
+      "N_full": 506.02414831519127,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 0.0,
+       "IM3-hook lateral (sim, x at z 520)": 0.0,
+       "other sim lateral (x)": 0.0,
+       "sim bag force y / z": 0.0,
+       "closure: under-strap pins + hook / hinge couple": 0.0,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": 82.53851098567247,
+       "beam-case part y / z and body side": 374.8545858860016,
+       "crown interface (bushings + pawl)": 48.63104885816574
+      },
+      "sum_check": 2.5853514671325684e-06,
+      "N_cinch_via_stays": 506.02414831519127,
+      "A_mm2": 116.0,
+      "Pcr_n": 528.807303507384
+     },
+     "branch lower (z 165-330) R": {
+      "N_full": 298.188982129097,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 0.0,
+       "IM3-hook lateral (sim, x at z 520)": 0.0,
+       "other sim lateral (x)": 0.0,
+       "sim bag force y / z": 0.0,
+       "closure: under-strap pins + hook / hinge couple": 0.0,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": -61.5492435246706,
+       "beam-case part y / z and body side": -11.865244448184967,
+       "crown interface (bushings + pawl)": 371.603462100029
+      },
+      "sum_check": 8.001923561096191e-06,
+      "N_cinch_via_stays": 298.188982129097,
+      "A_mm2": 116.0,
+      "Pcr_n": 528.807303507384
+     },
+     "branch upper (z 330-495) L": {
+      "N_full": 790.8641275167465,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 0.0,
+       "IM3-hook lateral (sim, x at z 520)": 0.0,
+       "other sim lateral (x)": 0.0,
+       "sim bag force y / z": 0.0,
+       "closure: under-strap pins + hook / hinge couple": 0.0,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": 54.982042983174324,
+       "beam-case part y / z and body side": 323.6814224720001,
+       "crown interface (bushings + pawl)": 412.20065569877625
+      },
+      "sum_check": 6.362795829772949e-06,
+      "N_cinch_via_stays": 790.8641275167465,
+      "A_mm2": 108.0,
+      "Pcr_n": 458.3835008999793
+     },
+     "branch upper (z 330-495) R": {
+      "N_full": 78.21051180362701,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 0.0,
+       "IM3-hook lateral (sim, x at z 520)": 0.0,
+       "other sim lateral (x)": 0.0,
+       "sim bag force y / z": 0.0,
+       "closure: under-strap pins + hook / hinge couple": 0.0,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": -42.0368636995554,
+       "beam-case part y / z and body side": 84.65966460108757,
+       "crown interface (bushings + pawl)": 35.58771324157715
+      },
+      "sum_check": -2.339482307434082e-06,
+      "N_cinch_via_stays": 78.21051180362701,
+      "A_mm2": 108.0,
+      "Pcr_n": 458.3835008999793
+     },
+     "mid bar (x -115..115) all": {
+      "N_full": 531.0481177568436,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 0.0,
+       "IM3-hook lateral (sim, x at z 520)": 0.0,
+       "other sim lateral (x)": 0.0,
+       "sim bag force y / z": 0.0,
+       "closure: under-strap pins + hook / hinge couple": 0.0,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": 12.139442659914494,
+       "beam-case part y / z and body side": 271.3935854434967,
+       "crown interface (bushings + pawl)": 247.5150943994522
+      },
+      "sum_check": -4.7460198402404785e-06,
+      "N_cinch_via_stays": 531.0481177568436,
+      "A_mm2": 72.0,
+      "Pcr_n": 124.77736130358606
+     }
+    }
+   },
+   "C_im3@a_L_beam_23:static_carry|23": {
+    "basis": "beam",
+    "case": "static_carry",
+    "torso": 23.0,
+    "factor": 2.0,
+    "members": {
+     "branch lower (z 165-330) L": {
+      "N_full": 526.1677691787481,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 0.0,
+       "IM3-hook lateral (sim, x at z 520)": 0.0,
+       "other sim lateral (x)": 0.0,
+       "sim bag force y / z": 0.0,
+       "closure: under-strap pins + hook / hinge couple": 0.0,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.0,
+       "beam-case part y / z and body side": -168.67907452583313,
+       "crown interface (bushings + pawl)": 694.8468462228775
+      },
+      "sum_check": -2.518296241760254e-06,
+      "N_cinch_via_stays": 526.1677691787481,
+      "A_mm2": 116.0,
+      "Pcr_n": 528.807303507384
+     },
+     "branch lower (z 165-330) R": {
+      "N_full": 542.0844563804567,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 0.0,
+       "IM3-hook lateral (sim, x at z 520)": 0.0,
+       "other sim lateral (x)": 0.0,
+       "sim bag force y / z": 0.0,
+       "closure: under-strap pins + hook / hinge couple": 0.0,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.0,
+       "beam-case part y / z and body side": -176.5392051935196,
+       "crown interface (bushings + pawl)": 718.6236519813538
+      },
+      "sum_check": 9.592622518539429e-06,
+      "N_cinch_via_stays": 542.0844563804567,
+      "A_mm2": 116.0,
+      "Pcr_n": 528.807303507384
+     },
+     "branch upper (z 330-495) L": {
+      "N_full": 573.5779212713242,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 0.0,
+       "IM3-hook lateral (sim, x at z 520)": 0.0,
+       "other sim lateral (x)": 0.0,
+       "sim bag force y / z": 0.0,
+       "closure: under-strap pins + hook / hinge couple": 0.0,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.0,
+       "beam-case part y / z and body side": -216.74153190851212,
+       "crown interface (bushings + pawl)": 790.3194509148598
+      },
+      "sum_check": 2.2649765014648438e-06,
+      "N_cinch_via_stays": 573.5779212713242,
+      "A_mm2": 108.0,
+      "Pcr_n": 458.3835008999793
+     },
+     "branch upper (z 330-495) R": {
+      "N_full": 567.7666914463043,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 0.0,
+       "IM3-hook lateral (sim, x at z 520)": 0.0,
+       "other sim lateral (x)": 0.0,
+       "sim bag force y / z": 0.0,
+       "closure: under-strap pins + hook / hinge couple": 0.0,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.0,
+       "beam-case part y / z and body side": -211.86026859283447,
+       "crown interface (bushings + pawl)": 779.6269517540932
+      },
+      "sum_check": 8.285045623779297e-06,
+      "N_cinch_via_stays": 567.7666914463043,
+      "A_mm2": 108.0,
+      "Pcr_n": 458.3835008999793
+     },
+     "mid bar (x -115..115) all": {
+      "N_full": 552.3345131874084,
+      "N_groups": {
+       "hinge-pin lateral (sim, x at z 60)": 0.0,
+       "IM3-hook lateral (sim, x at z 520)": 0.0,
+       "other sim lateral (x)": 0.0,
+       "sim bag force y / z": 0.0,
+       "closure: under-strap pins + hook / hinge couple": 0.0,
+       "meat-strap cinch loop": 0.0,
+       "beam-case part x (tilt, downhill bias, beam bag)": 0.0,
+       "beam-case part y / z and body side": -359.57779026031494,
+       "crown interface (bushings + pawl)": 911.9123001098633
+      },
+      "sum_check": 3.337860107421875e-06,
+      "N_cinch_via_stays": 552.3345131874084,
+      "A_mm2": 72.0,
+      "Pcr_n": 124.77736130358606
+     }
+    }
+   }
+  },
+  "closure": [
+   {
+    "run": "F_r1_PR19_fineFM|fill",
+    "weight_n": 696.7624824999999,
+    "resid_force_n": [
+     -3.7339989944595366,
+     60.870176103469895,
+     -83.54936476291061
+    ],
+    "resid_share": 0.14845655116925718,
+    "couple_n": 134.21994731885542,
+    "moment_fix_nmm": [
+     -61741.17576667349,
+     -12105.654217070698,
+     521.6122452986117
+    ],
+    "open_moment_nmm": [
+     -12105.654217070698,
+     521.6122452986117
+    ]
+   },
+   {
+    "run": "F_r1_PR19_fineFM|meat",
+    "weight_n": 696.7624824999999,
+    "resid_force_n": [
+     -3.88269699108207,
+     34.02241172278256,
+     -67.42690934055292
+    ],
+    "resid_share": 0.10853625503043464,
+    "couple_n": -20.655081791442683,
+    "moment_fix_nmm": [
+     9501.337624063633,
+     -11840.0076616622,
+     -2511.8348292551245
+    ],
+    "open_moment_nmm": [
+     -11840.0076616622,
+     -2511.8348292551245
+    ]
+   },
+   {
+    "run": "F_r1_PR23_fineFM_sm8|meat",
+    "weight_n": 696.7624824999999,
+    "resid_force_n": [
+     -3.770186077359905,
+     26.467660864710588,
+     -64.07622041623847
+    ],
+    "resid_share": 0.09964646333406998,
+    "couple_n": -46.195522521628725,
+    "moment_fix_nmm": [
+     21249.940359949214,
+     -9855.285083705325,
+     -2814.052713082104
+    ],
+    "open_moment_nmm": [
+     -9855.285083705325,
+     -2814.052713082104
+    ]
+   },
+   {
+    "run": "F_r1_PR23_fineFM|fill",
+    "weight_n": 696.7624824999999,
+    "resid_force_n": [
+     -1.4663534338788038,
+     63.982624769149965,
+     -75.3554354404896
+    ],
+    "resid_share": 0.14189254806186258,
+    "couple_n": 129.01493299080258,
+    "moment_fix_nmm": [
+     -59346.86917576919,
+     -7518.503467749503,
+     308.38218054533786
+    ],
+    "open_moment_nmm": [
+     -7518.503467749503,
+     308.38218054533786
+    ]
+   }
+  ],
+  "survey": [
+   {
+    "run": "F0_PR23",
+    "case": "fill",
+    "h_mm": 40.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 87.8,
+    "hinge_in_L": 76.3,
+    "hinge_up_R": 21.6,
+    "hinge_up_L": 33.1
+   },
+   {
+    "run": "F0_PR23",
+    "case": "meat",
+    "h_mm": 40.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 61.5,
+    "hinge_in_L": 64.4,
+    "hinge_up_R": 218.1,
+    "hinge_up_L": 177.8
+   },
+   {
+    "run": "F_PR15",
+    "case": "fill",
+    "h_mm": 40.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 83.6,
+    "hinge_in_L": 80.3,
+    "hinge_up_R": 109.3,
+    "hinge_up_L": 117.0
+   },
+   {
+    "run": "F_PR15",
+    "case": "meat",
+    "h_mm": 40.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 141.1,
+    "hinge_in_L": 156.6,
+    "hinge_up_R": 206.3,
+    "hinge_up_L": 242.0
+   },
+   {
+    "run": "F_PR15_fineFM",
+    "case": "fill",
+    "h_mm": 25.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 39.0,
+    "hinge_in_L": 42.9,
+    "hinge_up_R": 76.6,
+    "hinge_up_L": 56.8
+   },
+   {
+    "run": "F_PR15_fineFM",
+    "case": "meat",
+    "h_mm": 25.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 194.6,
+    "hinge_in_L": 196.2,
+    "hinge_up_R": 126.2,
+    "hinge_up_L": 131.8
+   },
+   {
+    "run": "F_PR15_fineFM_goff_sm8",
+    "case": "meat",
+    "h_mm": 25.0,
+    "converged": true,
+    "guys_off": true,
+    "hinge_in_R": 189.9,
+    "hinge_in_L": 179.8,
+    "hinge_up_R": 129.1,
+    "hinge_up_L": 155.7
+   },
+   {
+    "run": "F_PR15_fine_meat_BL021",
+    "case": "meat",
+    "h_mm": 25.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 197.3,
+    "hinge_in_L": 194.6,
+    "hinge_up_R": 129.5,
+    "hinge_up_L": 138.2
+   },
+   {
+    "run": "F_PR15_goff",
+    "case": "meat",
+    "h_mm": 40.0,
+    "converged": false,
+    "guys_off": true,
+    "hinge_in_R": 185.6,
+    "hinge_in_L": 208.8,
+    "hinge_up_R": 239.8,
+    "hinge_up_L": 177.2
+   },
+   {
+    "run": "F_PR15_goff_sm8",
+    "case": "meat",
+    "h_mm": 40.0,
+    "converged": true,
+    "guys_off": true,
+    "hinge_in_R": 531.7,
+    "hinge_in_L": 568.7,
+    "hinge_up_R": 651.0,
+    "hinge_up_L": 586.8
+   },
+   {
+    "run": "F_PR19",
+    "case": "fill",
+    "h_mm": 40.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 84.3,
+    "hinge_in_L": 75.2,
+    "hinge_up_R": 121.6,
+    "hinge_up_L": 55.6
+   },
+   {
+    "run": "F_PR19",
+    "case": "meat",
+    "h_mm": 40.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 110.9,
+    "hinge_in_L": 118.5,
+    "hinge_up_R": 223.0,
+    "hinge_up_L": 206.3
+   },
+   {
+    "run": "F_PR19_fineFM",
+    "case": "fill",
+    "h_mm": 25.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 55.0,
+    "hinge_in_L": 52.4,
+    "hinge_up_R": 45.8,
+    "hinge_up_L": 38.2
+   },
+   {
+    "run": "F_PR19_fineFM",
+    "case": "meat",
+    "h_mm": 25.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 158.8,
+    "hinge_in_L": 156.7,
+    "hinge_up_R": 101.6,
+    "hinge_up_L": 119.3
+   },
+   {
+    "run": "F_PR23",
+    "case": "fill",
+    "h_mm": 40.0,
+    "converged": false,
+    "guys_off": false,
+    "hinge_in_R": 94.7,
+    "hinge_in_L": 79.8,
+    "hinge_up_R": 41.8,
+    "hinge_up_L": 37.6
+   },
+   {
+    "run": "F_PR23",
+    "case": "meat",
+    "h_mm": 40.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 98.9,
+    "hinge_in_L": 95.6,
+    "hinge_up_R": 179.6,
+    "hinge_up_L": 208.9
+   },
+   {
+    "run": "F_PR23_fineFM",
+    "case": "fill",
+    "h_mm": 25.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 60.2,
+    "hinge_in_L": 49.5,
+    "hinge_up_R": 42.8,
+    "hinge_up_L": 8.8
+   },
+   {
+    "run": "F_PR23_fineFM",
+    "case": "meat",
+    "h_mm": 25.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 143.7,
+    "hinge_in_L": 138.9,
+    "hinge_up_R": 98.2,
+    "hinge_up_L": 120.3
+   },
+   {
+    "run": "F_PR23_sm8",
+    "case": "fill",
+    "h_mm": 40.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 97.6,
+    "hinge_in_L": 79.0,
+    "hinge_up_R": 44.2,
+    "hinge_up_L": 50.5
+   },
+   {
+    "run": "F_r0_PR15",
+    "case": "fill",
+    "h_mm": 40.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 78.0,
+    "hinge_in_L": 74.0,
+    "hinge_up_R": 93.9,
+    "hinge_up_L": 107.4
+   },
+   {
+    "run": "F_r0_PR15",
+    "case": "meat",
+    "h_mm": 40.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 142.4,
+    "hinge_in_L": 157.6,
+    "hinge_up_R": 210.6,
+    "hinge_up_L": 242.9
+   },
+   {
+    "run": "F_r0_PR15_fine_meat_BL021",
+    "case": "meat",
+    "h_mm": 25.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 197.3,
+    "hinge_in_L": 194.6,
+    "hinge_up_R": 129.5,
+    "hinge_up_L": 138.2
+   },
+   {
+    "run": "F_r0_PR19",
+    "case": "fill",
+    "h_mm": 40.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 83.4,
+    "hinge_in_L": 67.6,
+    "hinge_up_R": 108.6,
+    "hinge_up_L": 45.8
+   },
+   {
+    "run": "F_r0_PR19",
+    "case": "meat",
+    "h_mm": 40.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 178.6,
+    "hinge_in_L": 207.9,
+    "hinge_up_R": 230.2,
+    "hinge_up_L": 201.0
+   },
+   {
+    "run": "F_r0_PR23",
+    "case": "fill",
+    "h_mm": 40.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 93.5,
+    "hinge_in_L": 76.1,
+    "hinge_up_R": 30.3,
+    "hinge_up_L": 35.7
+   },
+   {
+    "run": "F_r0_PR23",
+    "case": "meat",
+    "h_mm": 40.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 109.0,
+    "hinge_in_L": 96.8,
+    "hinge_up_R": 171.1,
+    "hinge_up_L": 207.2
+   },
+   {
+    "run": "F_r1_PR15",
+    "case": "fill",
+    "h_mm": 40.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 83.6,
+    "hinge_in_L": 80.3,
+    "hinge_up_R": 109.3,
+    "hinge_up_L": 117.0
+   },
+   {
+    "run": "F_r1_PR15",
+    "case": "meat",
+    "h_mm": 40.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 141.1,
+    "hinge_in_L": 156.6,
+    "hinge_up_R": 206.3,
+    "hinge_up_L": 242.0
+   },
+   {
+    "run": "F_r1_PR15_fineFM",
+    "case": "fill",
+    "h_mm": 25.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 39.0,
+    "hinge_in_L": 42.9,
+    "hinge_up_R": 76.6,
+    "hinge_up_L": 56.8
+   },
+   {
+    "run": "F_r1_PR15_fineFM",
+    "case": "meat",
+    "h_mm": 25.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 194.6,
+    "hinge_in_L": 196.2,
+    "hinge_up_R": 126.2,
+    "hinge_up_L": 131.8
+   },
+   {
+    "run": "F_r1_PR15_fineFM_goff",
+    "case": "meat",
+    "h_mm": 25.0,
+    "converged": true,
+    "guys_off": true,
+    "hinge_in_R": 189.2,
+    "hinge_in_L": 177.8,
+    "hinge_up_R": 128.9,
+    "hinge_up_L": 162.2
+   },
+   {
+    "run": "F_r1_PR15_fineFM_goff_sm8",
+    "case": "meat",
+    "h_mm": 25.0,
+    "converged": true,
+    "guys_off": true,
+    "hinge_in_R": 189.9,
+    "hinge_in_L": 179.8,
+    "hinge_up_R": 129.1,
+    "hinge_up_L": 155.7
+   },
+   {
+    "run": "F_r1_PR15_goff",
+    "case": "meat",
+    "h_mm": 40.0,
+    "converged": false,
+    "guys_off": true,
+    "hinge_in_R": 185.6,
+    "hinge_in_L": 208.8,
+    "hinge_up_R": 239.8,
+    "hinge_up_L": 177.2
+   },
+   {
+    "run": "F_r1_PR15_goff_sm8",
+    "case": "meat",
+    "h_mm": 40.0,
+    "converged": true,
+    "guys_off": true,
+    "hinge_in_R": 531.7,
+    "hinge_in_L": 568.7,
+    "hinge_up_R": 651.0,
+    "hinge_up_L": 586.8
+   },
+   {
+    "run": "F_r1_PR19",
+    "case": "fill",
+    "h_mm": 40.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 84.3,
+    "hinge_in_L": 75.2,
+    "hinge_up_R": 121.6,
+    "hinge_up_L": 55.6
+   },
+   {
+    "run": "F_r1_PR19",
+    "case": "meat",
+    "h_mm": 40.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 110.9,
+    "hinge_in_L": 118.5,
+    "hinge_up_R": 223.0,
+    "hinge_up_L": 206.3
+   },
+   {
+    "run": "F_r1_PR19_fineFM",
+    "case": "fill",
+    "h_mm": 25.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 55.0,
+    "hinge_in_L": 52.4,
+    "hinge_up_R": 45.8,
+    "hinge_up_L": 38.2
+   },
+   {
+    "run": "F_r1_PR19_fineFM",
+    "case": "meat",
+    "h_mm": 25.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 158.8,
+    "hinge_in_L": 156.7,
+    "hinge_up_R": 101.6,
+    "hinge_up_L": 119.3
+   },
+   {
+    "run": "F_r1_PR23",
+    "case": "fill",
+    "h_mm": 40.0,
+    "converged": false,
+    "guys_off": false,
+    "hinge_in_R": 94.7,
+    "hinge_in_L": 79.8,
+    "hinge_up_R": 41.8,
+    "hinge_up_L": 37.6
+   },
+   {
+    "run": "F_r1_PR23",
+    "case": "meat",
+    "h_mm": 40.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 98.9,
+    "hinge_in_L": 95.6,
+    "hinge_up_R": 179.6,
+    "hinge_up_L": 208.9
+   },
+   {
+    "run": "F_r1_PR23_fineFM",
+    "case": "fill",
+    "h_mm": 25.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 60.2,
+    "hinge_in_L": 49.5,
+    "hinge_up_R": 42.8,
+    "hinge_up_L": 8.8
+   },
+   {
+    "run": "F_r1_PR23_fineFM",
+    "case": "meat",
+    "h_mm": 25.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 143.7,
+    "hinge_in_L": 138.9,
+    "hinge_up_R": 98.2,
+    "hinge_up_L": 120.3
+   },
+   {
+    "run": "F_r1_PR23_fineFM_sm8",
+    "case": "meat",
+    "h_mm": 25.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 155.0,
+    "hinge_in_L": 152.3,
+    "hinge_up_R": 113.4,
+    "hinge_up_L": 120.6
+   },
+   {
+    "run": "F_r1_PR23_sm8",
+    "case": "fill",
+    "h_mm": 40.0,
+    "converged": true,
+    "guys_off": false,
+    "hinge_in_R": 97.6,
+    "hinge_in_L": 79.0,
+    "hinge_up_R": 44.2,
+    "hinge_up_L": 50.5
+   }
+  ]
+ },
+ "sizing": [
+  {
+   "name": "m0.6_u1.4",
+   "d_mid": 0.6,
+   "d_up": 1.4,
+   "added_g": 7.911839999999984,
+   "areas": {
+    "branch lower (z 165-330) L": 116.0,
+    "branch lower (z 165-330) R": 116.0,
+    "branch upper (z 330-495) L": 116.0,
+    "branch upper (z 330-495) R": 128.0,
+    "mid bar (x -115..115) all": 112.0
+   },
+   "margins": {
+    "branch lower (z 165-330) L": 1.384,
+    "branch lower (z 165-330) R": 1.514,
+    "branch upper (z 330-495) L": 2.978,
+    "branch upper (z 330-495) R": 0.859,
+    "mid bar (x -115..115) all": 1.021
+   },
+   "min": 0.859,
+   "mirrored": {
+    "branch lower (z 165-330)": 1.384,
+    "branch upper (z 330-495)": 0.706
+   },
+   "by_case": {
+    "drop_2p5g": {
+     "margin": 1.453,
+     "member": "branch lower (z 165-330) L",
+     "set": "S_meat@a_S_fine_sm8_15:drop_2p5g|15"
+    },
+    "hipbelt_off_abuse": {
+     "margin": 1.021,
+     "member": "mid bar (x -115..115) all",
+     "set": "S_meat@a_L_fine_sm8_alt_20:hipbelt_off_abuse|20"
+    },
+    "side_hill_torsion": {
+     "margin": 0.859,
+     "member": "branch upper (z 330-495) R",
+     "set": "S_meat@a_L_fine_sm8_23:side_hill_torsion|23"
+    },
+    "single_stay_setdown": {
+     "margin": 1.441,
+     "member": "branch upper (z 330-495) R",
+     "set": "S_fill@a_L_fine_sm8_23:single_stay_setdown|23"
+    },
+    "static_carry": {
+     "margin": 139.223,
+     "member": "branch lower (z 165-330) R",
+     "set": "S_fill@a_L_fine_sm8_23:static_carry|23"
+    }
+   }
+  },
+  {
+   "name": "m0.8_u1.6",
+   "d_mid": 0.8,
+   "d_up": 1.6,
+   "added_g": 9.955519999999979,
+   "areas": {
+    "branch lower (z 165-330) L": 116.0,
+    "branch lower (z 165-330) R": 116.0,
+    "branch upper (z 330-495) L": 124.0,
+    "branch upper (z 330-495) R": 128.0,
+    "mid bar (x -115..115) all": 112.0
+   },
+   "margins": {
+    "branch lower (z 165-330) L": 1.325,
+    "branch lower (z 165-330) R": 1.558,
+    "branch upper (z 330-495) L": 3.442,
+    "branch upper (z 330-495) R": 0.843,
+    "mid bar (x -115..115) all": 1.018
+   },
+   "min": 0.843,
+   "mirrored": {
+    "branch lower (z 165-330)": 1.325,
+    "branch upper (z 330-495)": 0.791
+   },
+   "by_case": {
+    "drop_2p5g": {
+     "margin": 1.461,
+     "member": "branch lower (z 165-330) L",
+     "set": "S_meat@a_S_fine_sm8_15:drop_2p5g|15"
+    },
+    "hipbelt_off_abuse": {
+     "margin": 1.018,
+     "member": "mid bar (x -115..115) all",
+     "set": "S_meat@a_L_fine_sm8_alt_20:hipbelt_off_abuse|20"
+    },
+    "side_hill_torsion": {
+     "margin": 0.843,
+     "member": "branch upper (z 330-495) R",
+     "set": "S_meat@a_L_fine_sm8_23:side_hill_torsion|23"
+    },
+    "single_stay_setdown": {
+     "margin": 1.396,
+     "member": "branch upper (z 330-495) R",
+     "set": "S_fill@a_L_fine_sm8_23:single_stay_setdown|23"
+    },
+    "static_carry": {
+     "margin": 202.326,
+     "member": "branch lower (z 165-330) R",
+     "set": "S_fill@a_L_fine_sm8_23:static_carry|23"
+    }
+   }
+  },
+  {
+   "name": "m1_u1.8",
+   "d_mid": 1.0,
+   "d_up": 1.8,
+   "added_g": 14.695839999999976,
+   "areas": {
+    "branch lower (z 165-330) L": 116.0,
+    "branch lower (z 165-330) R": 116.0,
+    "branch upper (z 330-495) L": 128.0,
+    "branch upper (z 330-495) R": 128.0,
+    "mid bar (x -115..115) all": 128.0
+   },
+   "margins": {
+    "branch lower (z 165-330) L": 1.22,
+    "branch lower (z 165-330) R": 1.548,
+    "branch upper (z 330-495) L": 3.943,
+    "branch upper (z 330-495) R": 0.813,
+    "mid bar (x -115..115) all": 1.329
+   },
+   "min": 0.813,
+   "mirrored": {
+    "branch lower (z 165-330)": 1.22,
+    "branch upper (z 330-495)": 0.813
+   },
+   "by_case": {
+    "drop_2p5g": {
+     "margin": 1.548,
+     "member": "branch lower (z 165-330) L",
+     "set": "S_meat@a_S_fine_sm8_15:drop_2p5g|15"
+    },
+    "hipbelt_off_abuse": {
+     "margin": 1.329,
+     "member": "mid bar (x -115..115) all",
+     "set": "S_meat@a_L_fine_sm8_alt_20:hipbelt_off_abuse|20"
+    },
+    "side_hill_torsion": {
+     "margin": 0.813,
+     "member": "branch upper (z 330-495) R",
+     "set": "S_meat@a_L_fine_sm8_23:side_hill_torsion|23"
+    },
+    "single_stay_setdown": {
+     "margin": 1.297,
+     "member": "branch upper (z 330-495) R",
+     "set": "S_fill@a_L_fine_sm8_23:single_stay_setdown|23"
+    },
+    "static_carry": {
+     "margin": 275.863,
+     "member": "branch lower (z 165-330) R",
+     "set": "S_fill@a_L_fine_sm8_23:static_carry|23"
+    }
+   }
+  },
+  {
+   "name": "m0.6_u2.5",
+   "d_mid": 0.6,
+   "d_up": 2.5,
+   "added_g": 18.978240000000028,
+   "areas": {
+    "branch lower (z 165-330) L": 116.0,
+    "branch lower (z 165-330) R": 116.0,
+    "branch upper (z 330-495) L": 152.0,
+    "branch upper (z 330-495) R": 160.0,
+    "mid bar (x -115..115) all": 112.0
+   },
+   "margins": {
+    "branch lower (z 165-330) L": 1.383,
+    "branch lower (z 165-330) R": 1.386,
+    "branch upper (z 330-495) L": 4.855,
+    "branch upper (z 330-495) R": 1.305,
+    "mid bar (x -115..115) all": 0.994
+   },
+   "min": 0.994,
+   "mirrored": {
+    "branch lower (z 165-330)": 1.383,
+    "branch upper (z 330-495)": 1.177
+   },
+   "by_case": {
+    "drop_2p5g": {
+     "margin": 1.396,
+     "member": "branch lower (z 165-330) L",
+     "set": "S_meat@a_S_fine_sm8_15:drop_2p5g|15"
+    },
+    "hipbelt_off_abuse": {
+     "margin": 0.994,
+     "member": "mid bar (x -115..115) all",
+     "set": "S_meat@a_L_fine_sm8_alt_20:hipbelt_off_abuse|20"
+    },
+    "side_hill_torsion": {
+     "margin": 1.305,
+     "member": "branch upper (z 330-495) R",
+     "set": "S_meat@a_L_fine_sm8_23:side_hill_torsion|23"
+    },
+    "single_stay_setdown": {
+     "margin": 1.519,
+     "member": "branch lower (z 165-330) L",
+     "set": "S_fill@a_S_fine_sm8_15:single_stay_setdown|15"
+    }
+   }
+  },
+  {
+   "name": "m1.5_u2",
+   "d_mid": 1.5,
+   "d_up": 2.0,
+   "added_g": 20.487679999999955,
+   "areas": {
+    "branch lower (z 165-330) L": 116.0,
+    "branch lower (z 165-330) R": 116.0,
+    "branch upper (z 330-495) L": 128.0,
+    "branch upper (z 330-495) R": 128.0,
+    "mid bar (x -115..115) all": 144.0
+   },
+   "margins": {
+    "branch lower (z 165-330) L": 0.994,
+    "branch lower (z 165-330) R": 1.519,
+    "branch upper (z 330-495) L": 3.933,
+    "branch upper (z 330-495) R": 0.734,
+    "mid bar (x -115..115) all": 1.647
+   },
+   "min": 0.734,
+   "mirrored": {
+    "branch lower (z 165-330)": 0.994,
+    "branch upper (z 330-495)": 0.734
+   },
+   "by_case": {
+    "drop_2p5g": {
+     "margin": 1.499,
+     "member": "branch lower (z 165-330) L",
+     "set": "S_meat@a_S_fine_sm8_15:drop_2p5g|15"
+    },
+    "hipbelt_off_abuse": {
+     "margin": 1.647,
+     "member": "mid bar (x -115..115) all",
+     "set": "S_meat@a_L_fine_sm8_alt_20:hipbelt_off_abuse|20"
+    },
+    "side_hill_torsion": {
+     "margin": 0.734,
+     "member": "branch upper (z 330-495) R",
+     "set": "S_meat@a_L_fine_sm8_23:side_hill_torsion|23"
+    },
+    "single_stay_setdown": {
+     "margin": 1.151,
+     "member": "branch upper (z 330-495) R",
+     "set": "S_fill@a_L_fine_sm8_23:single_stay_setdown|23"
+    },
+    "static_carry": {
+     "margin": 190.132,
+     "member": "branch lower (z 165-330) R",
+     "set": "S_fill@a_L_fine_sm8_23:static_carry|23"
+    }
+   }
+  },
+  {
+   "name": "m1_u2.5",
+   "d_mid": 1.0,
+   "d_up": 2.5,
+   "added_g": 22.166720000000055,
+   "areas": {
+    "branch lower (z 165-330) L": 116.0,
+    "branch lower (z 165-330) R": 116.0,
+    "branch upper (z 330-495) L": 152.0,
+    "branch upper (z 330-495) R": 160.0,
+    "mid bar (x -115..115) all": 128.0
+   },
+   "margins": {
+    "branch lower (z 165-330) L": 1.223,
+    "branch lower (z 165-330) R": 1.504,
+    "branch upper (z 330-495) L": 5.404,
+    "branch upper (z 330-495) R": 1.247,
+    "mid bar (x -115..115) all": 1.304
+   },
+   "min": 1.223,
+   "mirrored": {
+    "branch lower (z 165-330)": 1.223,
+    "branch upper (z 330-495)": 1.126
+   },
+   "by_case": {
+    "drop_2p5g": {
+     "margin": 1.504,
+     "member": "branch lower (z 165-330) R",
+     "set": "S_meat@a_L_fine_sm8_alt_20:drop_2p5g|20"
+    },
+    "hipbelt_off_abuse": {
+     "margin": 1.304,
+     "member": "mid bar (x -115..115) all",
+     "set": "S_meat@a_L_fine_sm8_alt_20:hipbelt_off_abuse|20"
+    },
+    "side_hill_torsion": {
+     "margin": 1.223,
+     "member": "branch lower (z 165-330) L",
+     "set": "S_meat@a_S_fine_sm8_15:side_hill_torsion|15"
+    },
+    "single_stay_setdown": {
+     "margin": 1.359,
+     "member": "branch lower (z 165-330) L",
+     "set": "S_fill@a_S_fine_sm8_15:single_stay_setdown|15"
+    }
+   }
+  }
+ ],
+ "chosen": {
+  "name": "H1-G0.55-B1/2.5",
+  "d_mid": 1.0,
+  "d_up": 2.5,
+  "body_raster_g": 800.65616,
+  "added_vs_g055_g": 24.168000000000006,
+  "added_vs_h1_g": 42.934240000000045,
+  "h1_raster_g": 757.72192,
+  "g055_raster_g": 776.48816,
+  "im3_cheek_added_g": 2.00128,
+  "members_added_g": 22.166720000000005,
+  "buckling": {
+   "fine_sm8": {
+    "branch lower (z 165-330) L": {
+     "A_mm2": 116.0,
+     "Pcr_n": 528.8,
+     "P_factored_n": 288.2,
+     "set": "S_meat@a_S_fine_sm8_15:side_hill_torsion|15",
+     "margin": 1.223
+    },
+    "branch lower (z 165-330) R": {
+     "A_mm2": 116.0,
+     "Pcr_n": 528.8,
+     "P_factored_n": 234.3,
+     "set": "S_meat@a_L_fine_sm8_alt_20:drop_2p5g|20",
+     "margin": 1.505
+    },
+    "branch upper (z 330-495) L": {
+     "A_mm2": 152.0,
+     "Pcr_n": 908.0,
+     "P_factored_n": 111.9,
+     "set": "S_meat@a_S_fine_sm8_15:drop_2p5g|15",
+     "margin": 5.41
+    },
+    "branch upper (z 330-495) R": {
+     "A_mm2": 160.0,
+     "Pcr_n": 1006.1,
+     "P_factored_n": 537.5,
+     "set": "S_meat@a_L_fine_sm8_23:side_hill_torsion|23",
+     "margin": 1.248
+    },
+    "mid bar (x -115..115) all": {
+     "A_mm2": 128.0,
+     "Pcr_n": 394.4,
+     "P_factored_n": 201.6,
+     "set": "S_meat@a_L_fine_sm8_alt_20:hipbelt_off_abuse|20",
+     "margin": 1.304
+    }
+   },
+   "fine": {
+    "branch lower (z 165-330) L": {
+     "A_mm2": 116.0,
+     "Pcr_n": 528.8,
+     "P_factored_n": 288.2,
+     "set": "S_meat@a_S_fine_15:side_hill_torsion|15",
+     "margin": 1.223
+    },
+    "branch lower (z 165-330) R": {
+     "A_mm2": 116.0,
+     "Pcr_n": 528.8,
+     "P_factored_n": 243.0,
+     "set": "S_meat@a_L_fine_alt_20:drop_2p5g|20",
+     "margin": 1.451
+    },
+    "branch upper (z 330-495) L": {
+     "A_mm2": 152.0,
+     "Pcr_n": 908.0,
+     "P_factored_n": 111.9,
+     "set": "S_meat@a_S_fine_15:drop_2p5g|15",
+     "margin": 5.41
+    },
+    "branch upper (z 330-495) R": {
+     "A_mm2": 160.0,
+     "Pcr_n": 1006.1,
+     "P_factored_n": 534.4,
+     "set": "S_meat@a_L_fine_23:side_hill_torsion|23",
+     "margin": 1.255
+    },
+    "mid bar (x -115..115) all": {
+     "A_mm2": 128.0,
+     "Pcr_n": 394.4,
+     "P_factored_n": 203.8,
+     "set": "S_meat@a_L_fine_alt_20:hipbelt_off_abuse|20",
+     "margin": 1.29
+    }
+   },
+   "beam": {
+    "branch lower (z 165-330) L": {
+     "A_mm2": 116.0,
+     "Pcr_n": 528.8,
+     "P_factored_n": 259.6,
+     "set": "C@a_S_beam_15:single_stay_setdown|15",
+     "margin": 1.358
+    },
+    "branch lower (z 165-330) R": {
+     "A_mm2": 116.0,
+     "Pcr_n": 528.8,
+     "P_factored_n": -6.7,
+     "set": "C@a_L_beam_23:single_stay_setdown|23",
+     "margin": null
+    },
+    "branch upper (z 330-495) L": {
+     "A_mm2": 152.0,
+     "Pcr_n": 908.0,
+     "P_factored_n": -35.4,
+     "set": "C@a_S_beam_15:single_stay_setdown|15",
+     "margin": null
+    },
+    "branch upper (z 330-495) R": {
+     "A_mm2": 160.0,
+     "Pcr_n": 1006.1,
+     "P_factored_n": 334.5,
+     "set": "C@a_L_beam_23:single_stay_setdown|23",
+     "margin": 2.005
+    },
+    "mid bar (x -115..115) all": {
+     "A_mm2": 128.0,
+     "Pcr_n": 394.4,
+     "P_factored_n": -47.1,
+     "set": "C@a_L_beam_20:hipbelt_off_abuse|20",
+     "margin": null
+    }
+   },
+   "fine_sm8.cyc": {
+    "branch lower (z 165-330) L": {
+     "A_mm2": 116.0,
+     "Pcr_n": 528.8,
+     "P_factored_n": 338.8,
+     "set": "S_meat@a_S_fine_sm8_cyc_15:static_carry|15",
+     "margin": 1.041
+    },
+    "branch lower (z 165-330) R": {
+     "A_mm2": 116.0,
+     "Pcr_n": 528.8,
+     "P_factored_n": 340.5,
+     "set": "S_meat@a_S_fine_sm8_cyc_15:static_carry|15",
+     "margin": 1.035
+    },
+    "branch upper (z 330-495) L": {
+     "A_mm2": 152.0,
+     "Pcr_n": 908.0,
+     "P_factored_n": 266.1,
+     "set": "S_meat@a_S_fine_sm8_cyc_15:static_carry|15",
+     "margin": 2.275
+    },
+    "branch upper (z 330-495) R": {
+     "A_mm2": 160.0,
+     "Pcr_n": 1006.1,
+     "P_factored_n": 537.5,
+     "set": "S_meat@a_L_fine_sm8_cyc_23:side_hill_torsion|23",
+     "margin": 1.248
+    },
+    "mid bar (x -115..115) all": {
+     "A_mm2": 128.0,
+     "Pcr_n": 394.4,
+     "P_factored_n": 191.2,
+     "set": "S_meat@a_L_fine_sm8_cyc_23:hipbelt_off_abuse|23",
+     "margin": 1.375
+    }
+   }
+  },
+  "buckling_by_case": {
+   "fine_sm8": {
+    "drop_2p5g": {
+     "margin": 1.505,
+     "member": "branch lower (z 165-330) R",
+     "set": "S_meat@a_L_fine_sm8_alt_20:drop_2p5g|20"
+    },
+    "hipbelt_off_abuse": {
+     "margin": 1.304,
+     "member": "mid bar (x -115..115) all",
+     "set": "S_meat@a_L_fine_sm8_alt_20:hipbelt_off_abuse|20"
+    },
+    "side_hill_torsion": {
+     "margin": 1.223,
+     "member": "branch lower (z 165-330) L",
+     "set": "S_meat@a_S_fine_sm8_15:side_hill_torsion|15"
+    },
+    "single_stay_setdown": {
+     "margin": 1.358,
+     "member": "branch lower (z 165-330) L",
+     "set": "S_fill@a_S_fine_sm8_15:single_stay_setdown|15"
+    }
+   },
+   "fine": {
+    "drop_2p5g": {
+     "margin": 1.451,
+     "member": "branch lower (z 165-330) R",
+     "set": "S_meat@a_L_fine_alt_20:drop_2p5g|20"
+    },
+    "hipbelt_off_abuse": {
+     "margin": 1.29,
+     "member": "mid bar (x -115..115) all",
+     "set": "S_meat@a_L_fine_alt_20:hipbelt_off_abuse|20"
+    },
+    "side_hill_torsion": {
+     "margin": 1.223,
+     "member": "branch lower (z 165-330) L",
+     "set": "S_meat@a_S_fine_15:side_hill_torsion|15"
+    },
+    "single_stay_setdown": {
+     "margin": 1.358,
+     "member": "branch lower (z 165-330) L",
+     "set": "S_fill@a_S_fine_15:single_stay_setdown|15"
+    }
+   },
+   "beam": {
+    "single_stay_setdown": {
+     "margin": 1.358,
+     "member": "branch lower (z 165-330) L",
+     "set": "C@a_S_beam_15:single_stay_setdown|15"
+    }
+   },
+   "fine_sm8.cyc": {
+    "drop_2p5g": {
+     "margin": 1.508,
+     "member": "branch lower (z 165-330) L",
+     "set": "S_meat@a_S_fine_sm8_cyc_15:drop_2p5g|15"
+    },
+    "hipbelt_off_abuse": {
+     "margin": 1.375,
+     "member": "mid bar (x -115..115) all",
+     "set": "S_meat@a_L_fine_sm8_cyc_23:hipbelt_off_abuse|23"
+    },
+    "side_hill_torsion": {
+     "margin": 1.223,
+     "member": "branch lower (z 165-330) L",
+     "set": "S_meat@a_S_fine_sm8_cyc_15:side_hill_torsion|15"
+    },
+    "single_stay_setdown": {
+     "margin": 1.358,
+     "member": "branch lower (z 165-330) L",
+     "set": "S_fill@a_S_fine_sm8_cyc_15:single_stay_setdown|15"
+    },
+    "static_carry": {
+     "margin": 1.035,
+     "member": "branch lower (z 165-330) R",
+     "set": "S_meat@a_S_fine_sm8_cyc_15:static_carry|15"
+    }
+   }
+  },
+  "buckling_mirrored": {
+   "fine_sm8": {
+    "branch lower (z 165-330)": 1.223,
+    "branch upper (z 330-495)": 1.126
+   },
+   "fine": {
+    "branch lower (z 165-330)": 1.223,
+    "branch upper (z 330-495)": 1.133
+   },
+   "beam": {
+    "branch lower (z 165-330)": 1.358,
+    "branch upper (z 330-495)": 1.81
+   },
+   "fine_sm8.cyc": {
+    "branch lower (z 165-330)": 1.035,
+    "branch upper (z 330-495)": 1.126
+   }
+  },
+  "buckling_min_sim": 1.223,
+  "buckling_min_beam": 1.358,
+  "mirrored_min": 1.126,
+  "abuse_margin_sim": 1.29,
+  "fatigue_min_sim": 1.1750902718703553,
+  "fatigue_beam": 1.204972803402047,
+  "fatigue_cinch_cycled": 0.781806529058487,
+  "strength_min": 1.5777015732823223,
+  "creep_min": 2.5068592466567585,
+  "per_kit": {
+   "fine_sm8": {
+    "a_S": {
+     "fatigue": 1.202485858934378,
+     "strength": 1.67670659086256,
+     "creep": 2.5653031657266734,
+     "settings": {
+      "15": 1.213633775370629,
+      "18": 1.202485858934378
+     },
+     "fatigue_at": "18 in (other-neighbour sim)"
+    },
+    "a_M": {
+     "fatigue": 1.188885465697356,
+     "strength": 1.7596141959623457,
+     "creep": 2.5362889934876933,
+     "settings": {
+      "17.5": 1.199516764822761,
+      "19": 1.2117436051052612,
+      "20.5": 1.188885465697356
+     },
+     "fatigue_at": "20.5 in (other-neighbour sim)"
+    },
+    "a_L": {
+     "fatigue": 1.1750902718703553,
+     "strength": 1.7339519474567553,
+     "creep": 2.5068592466567585,
+     "settings": {
+      "20": 1.1871032461936082,
+      "23": 1.1750902718703553
+     },
+     "fatigue_at": "23 in"
+    }
+   },
+   "fine": {
+    "a_S": {
+     "fatigue": 1.202485858934378,
+     "strength": 1.67670659086256,
+     "creep": 2.5653031657266734,
+     "settings": {
+      "15": 1.213633775370629,
+      "18": 1.202485858934378
+     },
+     "fatigue_at": "18 in (other-neighbour sim)"
+    },
+    "a_M": {
+     "fatigue": 1.199516764822761,
+     "strength": 1.7664964796299492,
+     "creep": 2.558969098288557,
+     "settings": {
+      "17.5": 1.199516764822761,
+      "19": 1.2117436051052612,
+      "20.5": 1.2027949164408043
+     },
+     "fatigue_at": "17.5 in (other-neighbour sim)"
+    },
+    "a_L": {
+     "fatigue": 1.1958529131443882,
+     "strength": 1.7521580990851024,
+     "creep": 2.551152881374695,
+     "settings": {
+      "20": 1.2064608706417639,
+      "23": 1.1958529131443882
+     },
+     "fatigue_at": "23 in"
+    }
+   },
+   "beam": {
+    "a_S": {
+     "fatigue": 1.4005868613778072,
+     "strength": 1.5777015732823223,
+     "creep": 2.987918637605989,
+     "settings": {
+      "15": 1.5226581331234026,
+      "18": 1.4005868613778072
+     },
+     "fatigue_at": "18 in"
+    },
+    "a_M": {
+     "fatigue": 1.2948200422724077,
+     "strength": 2.2296561719104573,
+     "creep": 2.7622827568478034,
+     "settings": {
+      "17.5": 1.4184206962534116,
+      "19": 1.3490031208689723,
+      "20.5": 1.2948200422724077
+     },
+     "fatigue_at": "20.5 in"
+    },
+    "a_L": {
+     "fatigue": 1.204972803402047,
+     "strength": 2.14217378414556,
+     "creep": 2.5706086472577008,
+     "settings": {
+      "20": 1.3238435457624513,
+      "23": 1.204972803402047
+     },
+     "fatigue_at": "23 in"
+    }
+   },
+   "fine_sm8.cyc": {
+    "a_S": {
+     "fatigue": 0.8102987775367472,
+     "strength": 1.67670659086256,
+     "creep": 1.7286373920783944,
+     "settings": {
+      "15": 0.8102987775367472,
+      "18": 0.8163138325915911
+     },
+     "fatigue_at": "15 in"
+    },
+    "a_M": {
+     "fatigue": 0.7994685333272668,
+     "strength": 1.7797784285568488,
+     "creep": 1.7055328710981694,
+     "settings": {
+      "17.5": 0.8166137240551644,
+      "19": 0.8077909688759919,
+      "20.5": 0.7994685333272668
+     },
+     "fatigue_at": "20.5 in"
+    },
+    "a_L": {
+     "fatigue": 0.781806529058487,
+     "strength": 1.7339519474567553,
+     "creep": 1.667853928658106,
+     "settings": {
+      "20": 0.8025487651796361,
+      "23": 0.781806529058487
+     },
+     "fatigue_at": "23 in"
+    }
+   }
+  },
+  "joint": {
+   "fine_sm8": [
+    2.082,
+    1.728
+   ],
+   "fine": [
+    2.08,
+    1.728
+   ],
+   "beam": [
+    1.947,
+    1.246
+   ],
+   "fine_sm8.cyc": [
+    2.113,
+    1.075
+   ]
+  },
+  "keepouts": {
+   "sleeve_R present": 1.0,
+   "sleeve_L present": 1.0,
+   "pawl present": 1.0,
+   "pivot present": 1.0,
+   "pads present": 1.0,
+   "bore_R empty": 1.0,
+   "bore_L empty": 1.0,
+   "spine_channel empty": 1.0,
+   "fairleads present": 1.0,
+   "outside envelope (voxels)": 0,
+   "boss wearer face flush (rails)": true,
+   "boss bag side outboard of spreader and inside envelope": true,
+   "boss inside x half-width 152": true,
+   "stay outer radius at z 234 mm": 13.41,
+   "bag envelope local y at z 234 mm": 18.490985022210744,
+   "boss local extents (x, y) mm": [
+    [
+     16.4,
+     2.0,
+     18.0
+    ],
+    [
+     -19.0,
+     -3.0,
+     13.0
+    ]
+   ],
+   "boss top z / next spreader clip bottom z": [
+    252.0,
+    255.0
+   ],
+   "boss clear of spreader clip": true,
+   "bolt head top z": 254.5,
+   "bolt head clear of spreader clip": true,
+   "boss max |x| mm (half-width limit 152)": 142.0
+  },
+  "keepouts_present": {
+   "sleeve_R present": 1.0,
+   "sleeve_L present": 1.0,
+   "pawl present": 1.0,
+   "pivot present": 1.0,
+   "pads present": 1.0,
+   "fairleads present": 1.0
+  },
+  "keepouts_empty": {
+   "bore_R empty": 1.0,
+   "bore_L empty": 1.0,
+   "spine_channel empty": 1.0
+  },
+  "governing_region": {
+   "set": "S_meat@a_L_fine_sm8_23:static_carry|23",
+   "region": "lumbar struts / pan",
+   "share": 0.5462724935732648,
+   "shares": {
+    "lumbar struts / pan": 0.5462724935732648,
+    "stay L lower sleeve z 160-240 (branch / strut root)": 0.15424164524421594,
+    "stay R lower sleeve z 160-240 (branch / strut root)": 0.14524421593830333,
+    "hip-pivot boss": 0.10668380462724936,
+    "stay R below the sleeve": 0.02442159383033419,
+    "stay L below the sleeve": 0.02056555269922879,
+    "inboard branch": 0.002570694087403599
+   },
+   "n": 778,
+   "peak_region": "stay L lower sleeve z 160-240 (branch / strut root)",
+   "peak_where": [
+    -101.0,
+    -11.0,
+    167.0
+   ]
+  },
+  "member_mass_g": {
+   "foot": 8.4,
+   "low": 117.9,
+   "sleeve": 264.9,
+   "top": 198.6,
+   "branch": 84.1,
+   "strut": 97.5,
+   "mid": 29.2,
+   "other (pivot boss, pads, bosses, passive)": 0.1
+  },
+  "member_mass_g055_g": {
+   "foot": 8.4,
+   "low": 117.9,
+   "sleeve": 264.9,
+   "top": 196.6,
+   "branch": 70.2,
+   "strut": 97.5,
+   "mid": 20.9,
+   "other (pivot boss, pads, bosses, passive)": 0.1
+  },
+  "ca1_flip": 0.255299535007212,
+  "print_h_est": 28.530706506532926,
+  "passes": true
+ },
+ "ledger_h1_body_g": 757.7,
+ "print": {
+  "d_mid": 1.0,
+  "d_up": 2.5,
+  "im3_half_z": 14.0,
+  "assembled": {
+   "faces": 268496,
+   "volume_cm3": 762.71,
+   "g": 808.5,
+   "watertight": true,
+   "shells": 1,
+   "dropped": [
+    [
+     12,
+     0.0006058699029572595
+    ],
+    [
+     4,
+     0.00012046198522700872
+    ],
+    [
+     4,
+     1.4475469142941991e-05
+    ]
+   ]
+  },
+  "lower": {
+   "faces": 142842,
+   "volume_cm3": 292.93,
+   "g": 310.5,
+   "footprint_mm": [
+    278.8,
+    234.5,
+    64.0
+   ],
+   "watertight": true,
+   "shells": 1,
+   "dropped": [
+    [
+     1244,
+     570.9677420539459
+    ]
+   ],
+   "dropped_centre_frame_mm": [
+    [
+     84.4,
+     -0.4,
+     225.5
+    ]
+   ],
+   "print_h": 11.0,
+   "fits_h2s_340x320x340": true
+  },
+  "upper": {
+   "faces": 128710,
+   "volume_cm3": 469.21,
+   "g": 497.4,
+   "footprint_mm": [
+    278.8,
+    309.4,
+    52.4
+   ],
+   "watertight": true,
+   "shells": 1,
+   "dropped": [],
+   "dropped_centre_frame_mm": [],
+   "print_h": 17.6,
+   "fits_h2s_340x320x340": true
+  }
+ },
+ "screens": [
+  "/home/user/Hunting-appeal/outputs/screens/20261112_BL027_1.png",
+  "/home/user/Hunting-appeal/outputs/screens/20261112_BL027_2.png",
+  "/home/user/Hunting-appeal/outputs/screens/20261112_BL027_3.png",
+  "/home/user/Hunting-appeal/outputs/screens/20261112_BL027_4.png"
+ ]
+}

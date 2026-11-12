@@ -247,6 +247,14 @@ Cost, quantity 1, PRODUCTION.md basis: about $437 against $427 today.
 
 Not done here (owner rule: released print files and `geometry.yaml` are not edited by this task). On release:
 
+> **Update BL-027 (2026-11-12):** `print/frame_h1/` now holds body **H1-G0.55-B1/2.5** (H1 + BL-024 lower-body
+> growth + BL-027 mid bar +1.0 mm / upper branches +2.5 mm + 28 mm IM3 cheeks), each flat half one closed shell
+> (`analysis/h1_buckling.md` section 6). Release numbers change accordingly: printed body **800.7 g** raster
+> (808.5 g mesh) instead of 757.7 g, so in items 2 and 4 use the frame_mass_h1.json value once the orchestrator
+> re-books it (body +42.9 g over H1); print time about 28.6 h; the body row in item 6 becomes the BL-024 / BL-027 sim
+> numbers (strength 1.58, fatigue 1.175 sim / 1.205 beam, creep 2.51), the joint row 1.95 / 1.25 beam, and the
+> buckling row **1.22 sim / 1.36 beam**. R1 is still held for MT-1 (CINCH_STATIC, BL-024).
+
 1. **`designs/pack_5200/print/frame/`**
    - Replace `genframe_assembled.stl`, `genframe_lower_flat.stl/.3mf` and `genframe_upper_flat.stl/.3mf` with
      `print/frame_h1/h1_assembled.stl`, `h1_lower_flat.*` and `h1_upper_flat.*` (renamed). Keep
