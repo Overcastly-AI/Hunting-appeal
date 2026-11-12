@@ -74,3 +74,4 @@ Nothing here is decided; the tickets produce the material.
 
 | BL-024 | H1 sleeve and crown-leg seat redesign, fatigue ≥ 1.15 on sim loads | structural-fea-engineer | L | 021, 025 | unblocks frame release R1 |
 | BL-025 | Cloth-sim contact-field fix and re-runs | pack-designer | M | — | correct contact forces; mesh scatter |
+| BL-026 | Renders: CORRIE F rev 1 on the final H1 frame | pack-designer (Fable) | M | 024, 012 | render set matches the adopted design |
