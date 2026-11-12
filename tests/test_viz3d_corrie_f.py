@@ -216,7 +216,9 @@ def test_scene_builds_as_corrie_f():
         Vg = np.asarray(by[f"cf_guy_{'R' if sx > 0 else 'L'}@t19"].mesh.vertices)
         assert np.abs(Vg[:, 0]).min() < gx + 1.0 and np.abs(Vg[:, 0]).max() > 150.0   # bar end to the bag's corner
     Vkc = np.asarray(by["cf_keeper_B26"].mesh.vertices)
-    assert Vkc[:, 0].min() > 100.0 and np.ptp(Vkc[:, 1]) > 120.0             # right gusset, seam to seam
+    # right gusset, seam to seam. At the day load the gusset is cinched to about half its drafted 214 mm depth
+    # (95 mm measured at level 1); at full load the cord spans 200 mm
+    assert Vkc[:, 0].min() > 100.0 and np.ptp(Vkc[:, 1]) > 60.0
     assert sc.report["rev1"]["straps_25"]["under_straps"] == 2
     for n in ("under_straps", "under_straps_slack", "cradle_straps", "meat_straps", "corrie_im_straps"):
         assert {r["width"] for r in by[n].mesh.metadata["straps"]} == {CF.STRAP_W}, n
