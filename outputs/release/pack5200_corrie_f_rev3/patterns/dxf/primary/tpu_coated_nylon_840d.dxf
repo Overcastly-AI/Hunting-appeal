@@ -445,7 +445,7 @@ $SKPOLY
   9
 $TDCREATE
  40
-2461358.1190046296
+2461358.226365741
   9
 $TDUCREATE
  40
@@ -453,7 +453,7 @@ $TDUCREATE
   9
 $TDUPDATE
  40
-2461358.1190046296
+2461358.226365741
   9
 $TDUUPDATE
  40
@@ -505,7 +505,7 @@ $SPLINESEGS
   9
 $HANDSEED
   5
-D6
+D7
   9
 $SURFTAB1
  70
@@ -885,11 +885,11 @@ $PSTYLEMODE
   9
 $FINGERPRINTGUID
   2
-{E1BC68E1-9079-4A43-8862-618FBD46979E}
+{9AAF0A47-CBCE-441C-97BE-CAB0D7F97C32}
   9
 $VERSIONGUID
   2
-{9790A96F-429F-463C-825D-02E0B7F259BA}
+{2137D4E8-FE97-409E-969D-35D406F2F004}
   9
 $EXTNAMES
 290
@@ -3057,7 +3057,7 @@ AcAecLayerStandard
   0
 APPID
   5
-D3
+D4
 330
 3
 100
@@ -3071,7 +3071,7 @@ HATCHBACKGROUNDCOLOR
   0
 APPID
   5
-D4
+D5
 330
 3
 100
@@ -4827,7 +4827,7 @@ B-09p_1
   0
 BLOCK_RECORD
   5
-BD
+BE
 330
 9
 100
@@ -6017,6 +6017,40 @@ A7
 100
 AcDbEntity
   8
+CUT
+  6
+CONTINUOUS
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+14.0
+ 20
+10.0
+ 10
+26.0
+ 20
+10.0
+ 10
+26.0
+ 20
+50.0
+ 10
+14.0
+ 20
+50.0
+  0
+LWPOLYLINE
+  5
+AD
+330
+A7
+100
+AcDbEntity
+  8
 NOTCH
 100
 AcDbPolyline
@@ -6039,7 +6073,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-AD
+AE
 330
 A7
 100
@@ -6067,7 +6101,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-AE
+AF
 330
 A7
 100
@@ -6095,7 +6129,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-AF
+B0
 330
 A7
 100
@@ -6123,7 +6157,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-B0
+B1
 330
 A7
 100
@@ -6147,7 +6181,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-B1
+B2
 330
 A7
 100
@@ -6175,7 +6209,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-B2
+B3
 330
 A7
 100
@@ -6203,7 +6237,7 @@ AcDbPolyline
   0
 TEXT
   5
-B3
+B4
 330
 A7
 100
@@ -6233,7 +6267,7 @@ AcDbText
   0
 TEXT
   5
-B4
+B5
 330
 A7
 100
@@ -6263,7 +6297,7 @@ AcDbText
   0
 TEXT
   5
-B5
+B6
 330
 A7
 100
@@ -6293,7 +6327,7 @@ AcDbText
   0
 TEXT
   5
-B6
+B7
 330
 A7
 100
@@ -6323,7 +6357,7 @@ AcDbText
   0
 TEXT
   5
-B7
+B8
 330
 A7
 100
@@ -6353,7 +6387,7 @@ AcDbText
   0
 TEXT
   5
-B8
+B9
 330
 A7
 100
@@ -6383,7 +6417,7 @@ AcDbText
   0
 TEXT
   5
-B9
+BA
 330
 A7
 100
@@ -6413,7 +6447,7 @@ AcDbText
   0
 TEXT
   5
-BA
+BB
 330
 A7
 100
@@ -6455,9 +6489,9 @@ AcDbBlockEnd
   0
 BLOCK
   5
-BE
+BF
 330
-BD
+BE
 100
 AcDbEntity
   8
@@ -6481,9 +6515,9 @@ IMP8-b_2
   0
 LWPOLYLINE
   5
-C0
+C1
 330
-BD
+BE
 100
 AcDbEntity
   8
@@ -6513,9 +6547,9 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-C1
+C2
 330
-BD
+BE
 100
 AcDbEntity
   8
@@ -6547,9 +6581,9 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-C2
+C3
 330
-BD
+BE
 100
 AcDbEntity
   8
@@ -6575,9 +6609,9 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-C3
+C4
 330
-BD
+BE
 100
 AcDbEntity
   8
@@ -6603,9 +6637,9 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-C4
+C5
 330
-BD
+BE
 100
 AcDbEntity
   8
@@ -6631,9 +6665,9 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-C5
+C6
 330
-BD
+BE
 100
 AcDbEntity
   8
@@ -6659,9 +6693,9 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-C6
+C7
 330
-BD
+BE
 100
 AcDbEntity
   8
@@ -6683,9 +6717,9 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-C7
+C8
 330
-BD
+BE
 100
 AcDbEntity
   8
@@ -6711,9 +6745,9 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-C8
+C9
 330
-BD
+BE
 100
 AcDbEntity
   8
@@ -6739,9 +6773,9 @@ AcDbPolyline
   0
 TEXT
   5
-C9
+CA
 330
-BD
+BE
 100
 AcDbEntity
   8
@@ -6769,9 +6803,9 @@ AcDbText
   0
 TEXT
   5
-CA
+CB
 330
-BD
+BE
 100
 AcDbEntity
   8
@@ -6799,9 +6833,9 @@ AcDbText
   0
 TEXT
   5
-CB
+CC
 330
-BD
+BE
 100
 AcDbEntity
   8
@@ -6829,9 +6863,9 @@ AcDbText
   0
 TEXT
   5
-CC
+CD
 330
-BD
+BE
 100
 AcDbEntity
   8
@@ -6859,9 +6893,9 @@ AcDbText
   0
 TEXT
   5
-CD
+CE
 330
-BD
+BE
 100
 AcDbEntity
   8
@@ -6889,9 +6923,9 @@ AcDbText
   0
 TEXT
   5
-CE
+CF
 330
-BD
+BE
 100
 AcDbEntity
   8
@@ -6919,9 +6953,9 @@ AcDbText
   0
 TEXT
   5
-CF
+D0
 330
-BD
+BE
 100
 AcDbEntity
   8
@@ -6949,9 +6983,9 @@ AcDbText
   0
 TEXT
   5
-D0
+D1
 330
-BD
+BE
 100
 AcDbEntity
   8
@@ -6979,9 +7013,9 @@ AcDbText
   0
 ENDBLK
   5
-BF
+C0
 330
-BD
+BE
 100
 AcDbEntity
   8
@@ -7017,7 +7051,7 @@ B-12_0
   0
 INSERT
   5
-BB
+BC
 330
 17
 100
@@ -7037,7 +7071,7 @@ B-09p_1
   0
 INSERT
   5
-D1
+D2
 330
 17
 100
@@ -8145,7 +8179,7 @@ CREATED_BY_EZDXF
   3
 WRITTEN_BY_EZDXF
 350
-D5
+D6
   0
 DICTIONARYVAR
   5
@@ -8157,7 +8191,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-11-13T02:51:22.835194+00:00
+1.4.5 @ 2026-11-13T05:25:58.550459+00:00
   0
 VISUALSTYLE
   5
@@ -8861,7 +8895,7 @@ X-Ray
   0
 DICTIONARYVAR
   5
-D5
+D6
 330
 2D
 100
@@ -8869,7 +8903,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-11-13T02:51:22.840442+00:00
+1.4.5 @ 2026-11-13T05:25:58.555857+00:00
   0
 ENDSEC
   0

@@ -24,16 +24,36 @@ MT-2-07,MT-2,G2,BAG-CUT,C#2,"carabiner held 92.8 kg (910 N) 1 min, gate closes",
 MT-2-08,MT-2,G2,BAG-CUT,C#3,"carabiner held 92.8 kg (910 N) 1 min, gate closes",Y/N,yes,Y,,,,,
 MT-2-09,MT-2,G2,BAG-CUT,C#4,"carabiner held 92.8 kg (910 N) 1 min, gate closes",Y/N,yes,Y,,,,,
 MT-2-10,MT-2,G2,BAG-CUT,C#5,"carabiner held 92.8 kg (910 N) 1 min, gate closes",Y/N,yes,Y,,,,,
-MT-3-01,MT-3,G2,BAG-CUT,a#1,mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
-MT-3-02,MT-3,G2,BAG-CUT,a#2,mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
-MT-3-03,MT-3,G2,BAG-CUT,a#3,mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
-MT-3-04,MT-3,G2,BAG-CUT,a#4,mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
-MT-3-05,MT-3,G2,BAG-CUT,a#5,mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
-MT-3-06,MT-3,G2,BAG-CUT,b#1,mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
-MT-3-07,MT-3,G2,BAG-CUT,b#2,mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
-MT-3-08,MT-3,G2,BAG-CUT,b#3,mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
-MT-3-09,MT-3,G2,BAG-CUT,b#4,mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
-MT-3-10,MT-3,G2,BAG-CUT,b#5,mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
+MT-3-01,MT-3,G2,BAG-CUT,dry-a#1,dry: mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
+MT-3-02,MT-3,G2,BAG-CUT,dry-a#2,dry: mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
+MT-3-03,MT-3,G2,BAG-CUT,dry-a#3,dry: mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
+MT-3-04,MT-3,G2,BAG-CUT,dry-a#4,dry: mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
+MT-3-05,MT-3,G2,BAG-CUT,dry-a#5,dry: mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
+MT-3-06,MT-3,G2,BAG-CUT,dry-b#1,dry: mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
+MT-3-07,MT-3,G2,BAG-CUT,dry-b#2,dry: mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
+MT-3-08,MT-3,G2,BAG-CUT,dry-b#3,dry: mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
+MT-3-09,MT-3,G2,BAG-CUT,dry-b#4,dry: mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
+MT-3-10,MT-3,G2,BAG-CUT,dry-b#5,dry: mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
+MT-3-11,MT-3,G2,BAG-CUT,wet-a#1,wet: mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
+MT-3-12,MT-3,G2,BAG-CUT,wet-a#2,wet: mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
+MT-3-13,MT-3,G2,BAG-CUT,wet-a#3,wet: mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
+MT-3-14,MT-3,G2,BAG-CUT,wet-a#4,wet: mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
+MT-3-15,MT-3,G2,BAG-CUT,wet-a#5,wet: mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
+MT-3-16,MT-3,G2,BAG-CUT,wet-b#1,wet: mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
+MT-3-17,MT-3,G2,BAG-CUT,wet-b#2,wet: mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
+MT-3-18,MT-3,G2,BAG-CUT,wet-b#3,wet: mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
+MT-3-19,MT-3,G2,BAG-CUT,wet-b#4,wet: mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
+MT-3-20,MT-3,G2,BAG-CUT,wet-b#5,wet: mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
+MT-3-21,MT-3,G2,BAG-CUT,cold-a#1,cold: mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
+MT-3-22,MT-3,G2,BAG-CUT,cold-a#2,cold: mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
+MT-3-23,MT-3,G2,BAG-CUT,cold-a#3,cold: mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
+MT-3-24,MT-3,G2,BAG-CUT,cold-a#4,cold: mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
+MT-3-25,MT-3,G2,BAG-CUT,cold-a#5,cold: mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
+MT-3-26,MT-3,G2,BAG-CUT,cold-b#1,cold: mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
+MT-3-27,MT-3,G2,BAG-CUT,cold-b#2,cold: mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
+MT-3-28,MT-3,G2,BAG-CUT,cold-b#3,cold: mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
+MT-3-29,MT-3,G2,BAG-CUT,cold-b#4,cold: mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
+MT-3-30,MT-3,G2,BAG-CUT,cold-b#5,cold: mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
 US-BS-01,US-BS,G2,BAG-CUT,#1,strap stopped within,mm,max,10,,,,,US-BS
 US-BS-02,US-BS,G2,BAG-CUT,#2,strap stopped within,mm,max,10,,,,,US-BS
 US-BS-03,US-BS,G2,BAG-CUT,#3,strap stopped within,mm,max,10,,,,,US-BS
@@ -45,26 +65,37 @@ PT-2-02,PT-2,G2,BAG-CUT,#2,"held 260.2 kg (2553 N) 60 s, no stitch break, no tea
 PT-2-03,PT-2,G2,BAG-CUT,#3,"held 260.2 kg (2553 N) 60 s, no stitch break, no tear",Y/N,yes,Y,,,,,
 PT-2-04,PT-2,G2,BAG-CUT,#4,"held 260.2 kg (2553 N) 60 s, no stitch break, no tear",Y/N,yes,Y,,,,,
 PT-2-05,PT-2,G2,BAG-CUT,#5,"held 260.2 kg (2553 N) 60 s, no stitch break, no tear",Y/N,yes,Y,,,,,
-PT-3-01,PT-3,G2,BAG-CUT,#1,held 156 kg (1530 N) 60 s,Y/N,yes,Y,,,,,
-PT-3-02,PT-3,G2,BAG-CUT,#2,held 156 kg (1530 N) 60 s,Y/N,yes,Y,,,,,
-PT-3-03,PT-3,G2,BAG-CUT,#3,held 156 kg (1530 N) 60 s,Y/N,yes,Y,,,,,
-PT-3-04,PT-3,G2,BAG-CUT,#4,held 156 kg (1530 N) 60 s,Y/N,yes,Y,,,,,
-PT-3-05,PT-3,G2,BAG-CUT,#5,held 156 kg (1530 N) 60 s,Y/N,yes,Y,,,,,
+PT-3-01,PT-3,G2,BAG-CUT,#1,"held 156 kg (1530 N) 60 s, B-18 still in the floor seam (sewn as op 4.05)",Y/N,yes,Y,,,,,HE-ONE; HE-GAP
+PT-3-02,PT-3,G2,BAG-CUT,#2,"held 156 kg (1530 N) 60 s, B-18 still in the floor seam (sewn as op 4.05)",Y/N,yes,Y,,,,,HE-ONE; HE-GAP
+PT-3-03,PT-3,G2,BAG-CUT,#3,"held 156 kg (1530 N) 60 s, B-18 still in the floor seam (sewn as op 4.05)",Y/N,yes,Y,,,,,HE-ONE; HE-GAP
+PT-3-04,PT-3,G2,BAG-CUT,#4,"held 156 kg (1530 N) 60 s, B-18 still in the floor seam (sewn as op 4.05)",Y/N,yes,Y,,,,,HE-ONE; HE-GAP
+PT-3-05,PT-3,G2,BAG-CUT,#5,"held 156 kg (1530 N) 60 s, B-18 still in the floor seam (sewn as op 4.05)",Y/N,yes,Y,,,,,HE-ONE; HE-GAP
 PT-5-01,PT-5,G2,BAG-CUT,#1,total slip after 10 cycles to 17.3 kg,mm,max,5,,,,,
 PT-6-01,PT-6,G2,BAG-CUT,#1,"held 143.7 kg (1410 N) 60 s, no box-X break, gate closes",Y/N,yes,Y,,,,,
 PT-6-02,PT-6,G2,BAG-CUT,#2,"held 143.7 kg (1410 N) 60 s, no box-X break, gate closes",Y/N,yes,Y,,,,,
 PT-6-03,PT-6,G2,BAG-CUT,#3,"held 143.7 kg (1410 N) 60 s, no box-X break, gate closes",Y/N,yes,Y,,,,,
 PT-6-04,PT-6,G2,BAG-CUT,#4,"held 143.7 kg (1410 N) 60 s, no box-X break, gate closes",Y/N,yes,Y,,,,,
 PT-6-05,PT-6,G2,BAG-CUT,#5,"held 143.7 kg (1410 N) 60 s, no box-X break, gate closes",Y/N,yes,Y,,,,,
-LL-H-01,LL-H,G2,BAG-CUT,#1,slip after 1 h at 37.3 kg (366 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
-LL-H-02,LL-H,G2,BAG-CUT,#2,slip after 1 h at 37.3 kg (366 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
-LL-H-03,LL-H,G2,BAG-CUT,#3,slip after 1 h at 37.3 kg (366 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
-LL-H-04,LL-H,G2,BAG-CUT,#4,slip after 1 h at 37.3 kg (366 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
-LL-H-05,LL-H,G2,BAG-CUT,#5,slip after 1 h at 37.3 kg (366 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
+LL-H-01,LL-H,G2,BAG-CUT,dry-#1,dry: slip after 1 h at 44.0 kg (432 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
+LL-H-02,LL-H,G2,BAG-CUT,dry-#2,dry: slip after 1 h at 44.0 kg (432 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
+LL-H-03,LL-H,G2,BAG-CUT,dry-#3,dry: slip after 1 h at 44.0 kg (432 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
+LL-H-04,LL-H,G2,BAG-CUT,dry-#4,dry: slip after 1 h at 44.0 kg (432 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
+LL-H-05,LL-H,G2,BAG-CUT,dry-#5,dry: slip after 1 h at 44.0 kg (432 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
+LL-H-06,LL-H,G2,BAG-CUT,wet-#1,wet: slip after 1 h at 44.0 kg (432 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
+LL-H-07,LL-H,G2,BAG-CUT,wet-#2,wet: slip after 1 h at 44.0 kg (432 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
+LL-H-08,LL-H,G2,BAG-CUT,wet-#3,wet: slip after 1 h at 44.0 kg (432 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
+LL-H-09,LL-H,G2,BAG-CUT,wet-#4,wet: slip after 1 h at 44.0 kg (432 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
+LL-H-10,LL-H,G2,BAG-CUT,wet-#5,wet: slip after 1 h at 44.0 kg (432 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
+LL-H-11,LL-H,G2,BAG-CUT,cold-#1,cold: slip after 10 min at 44.0 kg (432 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
+LL-H-12,LL-H,G2,BAG-CUT,cold-#2,cold: slip after 10 min at 44.0 kg (432 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
+LL-H-13,LL-H,G2,BAG-CUT,cold-#3,cold: slip after 10 min at 44.0 kg (432 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
+LL-H-14,LL-H,G2,BAG-CUT,cold-#4,cold: slip after 10 min at 44.0 kg (432 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
+LL-H-15,LL-H,G2,BAG-CUT,cold-#5,cold: slip after 10 min at 44.0 kg (432 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
+LL-H-16,LL-H,G2,BAG-CUT,cold,freezer reading,C,record,,,,,,LL-SLIP
 PORT-1-01,PORT-1,G2,BAG-CUT,1,towel dry after 1 min hose,Y/N,yes,Y,,,,,PORT_FACING_W; PORT_TURN
 PORT-1-02,PORT-1,G2,BAG-CUT,1,lap gap at 10.2 kg (100 N),mm,max,2,,,,,PORT_FACING_W; PORT_TURN
 PORT-1-03,PORT-1,G2,BAG-CUT,1,gloved lock adjustments OK out of 5,count,min,5,,,,,GLOVE-T
-TL-1-01,TL-1,G2,BAG-CUT,1,"passes the register criterion: 5 of 5 hold 366 N, toggle does not pull through or crack; cold sample holds; no crush mark on the tube",Y/N,yes,Y,,,,,GUY-TOGGLE
+TL-1-01,TL-1,G2,BAG-CUT,1,"passes the register criterion: 5 of 5 hold 432 N, toggle does not pull through or crack; cold sample holds; no crush mark on the tube",Y/N,yes,Y,,,,,GUY-TOGGLE
 FS-O5-01,FS-O5,G2,BAG-CUT,1,"passes the register criterion: mean >= 1840 N/50 mm, minimum >= 1195 N/50 mm",Y/N,yes,Y,,,,,ULTRA-200X STRIP
 WP-3-01,WP-3,G2,BAG-BATCH,1,passes the register criterion: release and re-tension in one grab every time,Y/N,yes,Y,,,,,A-2 TAIL
 SL-1-01,SL-1,G2,BL037,#1,slider + cord pull mass,g,max,15.0,,,,,SLIDER-CORD
@@ -122,6 +153,12 @@ CA-5-03,CA-5,G4,R1,#3,static stub peak,N,min,3666,,,,,PRYING-1.25
 CA-5-04,CA-5,G4,R1,mean,mean of the 3 static peaks,N,min,4400,,,,,PRYING-1.25
 CA-5-05,CA-5,G4,R1,cyc,joint step after 1e5 cycles at 1543 N,mm,max,0.1,,,,,BOSS-BENDING
 CA-5-06,CA-5,G4,R1,cyc,no crack at the boss root after 1e5 cycles,Y/N,yes,Y,,,,,BOSS-BENDING
+SEW-F-01,SEW-F,G4,BAG-BATCH,#1,cycles at 38 -> 384 N (run-out 100000),cycles,min,100000,,,,,SEW_FAT
+SEW-F-02,SEW-F,G4,BAG-BATCH,#2,cycles at 38 -> 384 N (run-out 100000),cycles,min,100000,,,,,SEW_FAT
+SEW-F-03,SEW-F,G4,BAG-BATCH,#3,cycles at 38 -> 384 N (run-out 100000),cycles,min,100000,,,,,SEW_FAT
+SEW-F-04,SEW-F,G4,BAG-BATCH,p#1,no broken stitch at run-out and held 1080 N 1 min after,Y/N,yes,Y,,,,,SEW_FAT
+SEW-F-05,SEW-F,G4,BAG-BATCH,p#2,no broken stitch at run-out and held 1080 N 1 min after,Y/N,yes,Y,,,,,SEW_FAT
+SEW-F-06,SEW-F,G4,BAG-BATCH,p#3,no broken stitch at run-out and held 1080 N 1 min after,Y/N,yes,Y,,,,,SEW_FAT
 CS-1-01,CS-1,G4,BL037,6mm#1,"compression set, 6 mm disc",%,max,15,,,,,XLPE-SET
 CS-1-02,CS-1,G4,BL037,6mm#2,"compression set, 6 mm disc",%,max,15,,,,,XLPE-SET
 CS-1-03,CS-1,G4,BL037,6mm#3,"compression set, 6 mm disc",%,max,15,,,,,XLPE-SET
@@ -190,6 +227,11 @@ T9-R3d-02,T9-R3d,G7,BAG-BATCH,lid,lid seated as drawn (photo),Y/N,yes,Y,,,,,LID-
 GT-1-01,GT-1,G7,BAG-BATCH,#1,mu = ln(T / 49 N) / wrap angle (rad),-,band,0.20..0.40,,,,,MU_WEB_FAB
 GT-1-02,GT-1,G7,BAG-BATCH,#2,mu = ln(T / 49 N) / wrap angle (rad),-,band,0.20..0.40,,,,,MU_WEB_FAB
 GT-1-03,GT-1,G7,BAG-BATCH,#3,mu = ln(T / 49 N) / wrap angle (rad),-,band,0.20..0.40,,,,,MU_WEB_FAB
+FIT-R3-01,FIT-R3,G7,BAG-BATCH,lid,"LID-DART: 5.0 L rice, height 85 +/- 5 mm, no pucker",Y/N,yes,Y,,,,,LID-DART
+FIT-R3-02,FIT-R3,G7,BAG-BATCH,bow,B11-PLACE: bow in IMP-8 + BRL loops sits clear of the frame,Y/N,yes,Y,,,,,B11-PLACE
+FIT-R3-03,FIT-R3,G7,BAG-BATCH,rifle,"B11-PLACE: rifle muzzle keeper holds, clear of the frame",Y/N,yes,Y,,,,,B11-PLACE
+FIT-R3-04,FIT-R3,G7,BAG-BATCH,IM2,IM2 strap seats in the fairlead notch,Y/N,yes,Y,,,,,IM2 NOTCH FIT
+FIT-R3-05,FIT-R3,G7,BAG-BATCH,gate,"IM3 carabiner gate closes on the T3 loop, out of 5",count,min,5,,,,,CARA-GATE
 PT-7-01,PT-7,G7,BAG-BATCH,1,passes the register criterion: no tooth separation,Y/N,yes,Y,,,,,
 WP-4-01,WP-4,G7,BAG-BATCH,1,"passes the register criterion: covers to the B-05 seam, no gap at the hinge band",Y/N,yes,Y,,,,,
 WP-5-01,WP-5,G7,BAG-BATCH,1,passes the register criterion: no audible tick at 1 m,Y/N,yes,Y,,,,,B-10 TPU TRIM

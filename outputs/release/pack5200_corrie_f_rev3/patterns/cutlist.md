@@ -62,7 +62,7 @@ Nested at the record's roll width. 1 bag = single-bag marker; 10 / 50 / 100 = th
 | primary | cordura_330d_nylon66 | 60 (57.0) | 14 | 62 % | 1.24 | 1.13 | 88 % | 9.0 | 45.0 | 90.1 |
 | primary | cordura_500d_nylon66 | 60 (57.0) | 3 | 33 % | 0.24 | 0.22 | 81 % | 1.0 | 5.0 | 10.0 |
 | primary | hdpe_sheet | 48 (48.0) | 4 | 62 % | 0.05 | 0.04 | 62 % | 0.5 | 2.4 | 4.8 |
-| primary | hypalon_coated_nylon | 54 (53.1) | 14 | 41 % | 0.08 | 0.07 | 41 % | 0.8 | 3.9 | 7.9 |
+| primary | hypalon_coated_nylon | 54 (53.1) | 14 | 44 % | 0.08 | 0.07 | 44 % | 0.8 | 3.9 | 7.9 |
 | primary | polyester_ht_630d_printable | 59 (57.1) | 9 | 19 % | 0.81 | 0.74 | 47 % | 3.3 | 16.7 | 33.4 |
 | primary | power_mesh_nylon_spandex | 59 (57.1) | 2 | 38 % | 0.27 | 0.25 | 38 % | 2.8 | 13.9 | 27.7 |
 | primary | robic_100d_ripstop | 60 (58.0) | 8 | 70 % | 1.32 | 1.21 | 90 % | 10.5 | 52.4 | 104.8 |
@@ -72,7 +72,7 @@ Nested at the record's roll width. 1 bag = single-bag marker; 10 / 50 / 100 = th
 | alternate | challenge_ultra_200 | 56 (55.0) | 13 | 68 % | 0.81 | 0.74 | 68 % | 8.4 | 41.8 | 83.7 |
 | alternate | cordura_330d_nylon66 | 60 (57.0) | 2 | 23 % | 0.19 | 0.18 | 23 % | 2.0 | 9.9 | 19.8 |
 | alternate | hdpe_sheet | 48 (48.0) | 4 | 62 % | 0.05 | 0.04 | 62 % | 0.5 | 2.4 | 4.8 |
-| alternate | hypalon_coated_nylon | 54 (53.1) | 14 | 41 % | 0.08 | 0.07 | 41 % | 0.8 | 3.9 | 7.9 |
+| alternate | hypalon_coated_nylon | 54 (53.1) | 14 | 44 % | 0.08 | 0.07 | 44 % | 0.8 | 3.9 | 7.9 |
 | alternate | nylon_ripstop_70d | 58 (58.0) | 6 | 67 % | 1.23 | 1.13 | 67 % | 12.7 | 63.6 | 127.2 |
 | alternate | polyester_ht_630d_printable | 59 (57.1) | 9 | 19 % | 0.81 | 0.74 | 19 % | 8.3 | 41.6 | 83.1 |
 | alternate | power_mesh_nylon_spandex | 59 (57.1) | 2 | 38 % | 0.27 | 0.25 | 38 % | 2.8 | 13.9 | 27.7 |
@@ -122,6 +122,7 @@ Knife: CW from the grain-arrow head; cut windows and slits first. Notches 6 mm d
 | WX | W haul extender (meat-trip kit) | poly_webbing_25mm | 740 (29.1) | 3 | meat_trip | strap_tails.wrap_rows haul extender_mm |
 | K-W | W gore keeper loop (6, in the gore seams) | poly_webbing_25mm | 80 (3.1) | 6 | base | ledger 'keepers: 6 haul-wrap keeper loops' (ASSUMPTION 80 mm cut) |
 | RT | roll-top side clip strap | poly_webbing_25mm | 510 (20.1) | 2 | base | strap_tails.roll_row |
+| RTM | roll-clip buckle tab on the gusset (female half) | poly_webbing_25mm | 70 (2.8) | 2 | base | BL-040 DECISION RT-MATE (cloth-pass clip_below_seam 150 mm; LLT tab rule) |
 | K-RT | roll clip tail keeper (25 mm elastic) | elastic_25mm | 90 (3.5) | 2 | base | BL-031 |
 | IM1 | internal meat strap IM1 | poly_webbing_25mm | 990 (39.0) | 1 | base | strap_tails.im_rows (unchanged) |
 | IM2 | internal meat strap IM2 | poly_webbing_25mm | 1023 (40.3) | 1 | base | strap_tails.im_rows (unchanged) |
@@ -130,7 +131,7 @@ Knife: CW from the grain-arrow head; cut windows and slits first. Notches 6 mm d
 | IME | IM fairlead eye (38 mm) | poly_webbing_38mm | 200 (7.9) | 6 | base | ledger IM-eyes 6 x 0.20 m |
 | US | under-strap US1 / US2 | poly_webbing_25mm | 550 (21.7) | 2 | base | ledger US-web 1.10 m |
 | B-24 | float stand-off link (38 mm, meat-trip) | poly_webbing_38mm | 435 (17.1) | 2 | meat_trip | attach_system.link_piece; ledger B-24-web 2 x 435 mm |
-| HE | hinge eye (38 mm) | poly_webbing_38mm | 150 (5.9) | 2 | base | attach_system.drawing_pieces HE |
+| HE | hinge eye (38 mm) | poly_webbing_38mm | 150 (5.9) | 2 | base | BL-040 DECISION HE-ONE (cut 38 x 150 as attach_system.drawing_pieces HE) |
 | T3 | IM3 bag-hook tongue (38 mm) | poly_webbing_38mm | 160 (6.3) | 2 | base | attach_system.drawing_pieces T2/T3 (IM2 hooks removed by BL-004: 2 left) |
 | B-25 | guy bridle on the crown top bar | poly_webbing_25mm | 412 (16.2) | 1 | base | corrie_f.guy_bridle |
 | TG | port guy (B-25 toggle -> B-27 port -> B-22 inside) | poly_webbing_25mm | 500 (19.7) | 2 | base | attach_system.GUY cut_mm |
@@ -151,6 +152,8 @@ Knife: CW from the grain-arrow head; cut windows and slits first. Notches 6 mm d
 
 ## Hardware
 
+Purchase quantities with waste and prices: `../manufacturing/bom.csv`.
+
 | Item | Record | Length mm | Qty |
 |---|---|---:|---:|
 | #10 coil zip, door, 2 sliders + 2 cord pulls | coil_zipper_10 | 1418 | 1 |
@@ -160,7 +163,11 @@ Knife: CW from the grain-arrow head; cut windows and slits first. Notches 6 mm d
 | heavy 25 mm ladder locks: B-28 (4) + guys (2) + W1-W3 (3) | ladder_lock_25mm_heavy |  | 9 |
 | POM toggles: B-28 rear (2) + guy loops (2) | pom_toggle |  | 4 |
 | rated 25 mm G-hooks: W1-W3 (3) + extenders (3) | g_hook_25mm_aluminium |  | 6 |
-| 25 mm side-release buckles (roll top) | - |  | 2 |
+| 25 mm side-release buckles (roll top): male on RT, female on RTM | buckle_side_release_25mm |  | 2 |
+| rated 25 mm G-hooks: IM1, IM2 (2) + bow riser (1) | g_hook_25mm_aluminium |  | 3 |
+| wiregate carabiners 22 kN: IM3 bag hooks (2) + IM3 free end (1) + B-24 links (2, meat trip) | carabiner_wiregate_22kn |  | 5 |
+| 25 mm aluminium cam buckles: IM1-IM3 (3) + US1/US2 (2) | cam_25mm_al |  | 5 |
+| 25 mm tri-glides: US backstop, STAINLESS (2) + guy tail keepers, nylon (2) | triglide_25mm |  | 4 |
 | cord lock (E-5) | cord_lock_spring |  | 1 |
 | cord locks: rifle muzzle keepers (2, BL-035) | cord_lock_spring |  | 2 |
 
@@ -183,7 +190,7 @@ Knife: CW from the grain-arrow head; cut windows and slits first. Notches 6 mm d
 | B-13x | boxed fairlead swell, IM1-IM3 (with port) | challenge_ultra_200 |  | 6 |  | UP | 0.01352 | 0.08114 | 472.0 | 8 | 10.8 |
 | B-12 | strap-port patch | tpu_coated_nylon_840d |  | 6 |  | UP | 0.00239 | 0.01432 | 193.1 | 0 | 6.9 |
 | B-17 | IM3 bag-hook tab (trimmed) | hypalon_coated_nylon |  | 2 |  | UP | 0.00627 | 0.01254 | 309.6 | 0 | 12.5 |
-| B-18 | hinge-eye doubler | hypalon_coated_nylon |  | 2 |  | UP | 0.00402 | 0.00804 | 259.6 | 0 | 8.0 |
+| B-18 | hinge-eye doubler | hypalon_coated_nylon |  | 2 |  | UP | 0.00555 | 0.0111 | 293.6 | 0 | 11.1 |
 | B-22 | guy corner tab | hypalon_coated_nylon |  | 2 |  | UP | 0.00297 | 0.00594 | 209.6 | 0 | 5.9 |
 | B-11 | lash tab | hypalon_coated_nylon |  | 8 |  | UP | 0.00149 | 0.01189 | 153.1 | 0 | 11.9 |
 | B-27f | guy port facing | challenge_ultra_200 |  | 2 |  | UP | 0.00881 | 0.01762 | 452.4 | 0 | 2.3 |
@@ -214,4 +221,4 @@ Knife: CW from the grain-arrow head; cut windows and slits first. Notches 6 mm d
 | MS-c | SWAP slab (sleep kit / meat liner) floor | robic_100d_ripstop |  | 1 |  | UP | 0.0436 | 0.0436 | 944.0 | 8 | 5.4 |
 | MS-s | SWAP slab (sleep kit / meat liner) roll stiffener (HDPE, x2 faces) | hdpe_sheet |  | 2 |  | UP | 0.0066 | 0.0132 | 700.0 | 0 |  |
 
-**Net piece area by material** (before marker waste): challenge_ultra_200: 0.6059 m² (6.522 ft²), cordura_330d_nylon66: 1.0151 m² (10.926 ft²), cordura_500d_nylon66: 0.1037 m² (1.116 ft²), polyester_ht_630d_printable: 0.2010 m² (2.163 ft²), robic_100d_ripstop: 1.2395 m² (13.341 ft²), hdpe_sheet: 0.0326 m² (0.351 ft²), tpu_coated_nylon_840d: 0.0251 m² (0.270 ft²), hypalon_coated_nylon: 0.0384 m² (0.413 ft²), power_mesh_nylon_spandex: 0.1358 m² (1.462 ft²), silicone_coated_poly_ripstop_40d: 1.4983 m² (16.127 ft²)
+**Net piece area by material** (before marker waste): challenge_ultra_200: 0.6059 m² (6.522 ft²), cordura_330d_nylon66: 1.0151 m² (10.926 ft²), cordura_500d_nylon66: 0.1037 m² (1.116 ft²), polyester_ht_630d_printable: 0.2010 m² (2.163 ft²), robic_100d_ripstop: 1.2395 m² (13.341 ft²), hdpe_sheet: 0.0326 m² (0.351 ft²), tpu_coated_nylon_840d: 0.0251 m² (0.270 ft²), hypalon_coated_nylon: 0.0415 m² (0.446 ft²), power_mesh_nylon_spandex: 0.1358 m² (1.462 ft²), silicone_coated_poly_ripstop_40d: 1.4983 m² (16.127 ft²)

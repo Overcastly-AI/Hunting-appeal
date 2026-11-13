@@ -445,7 +445,7 @@ $SKPOLY
   9
 $TDCREATE
  40
-2461358.1190046296
+2461358.226365741
   9
 $TDUCREATE
  40
@@ -453,7 +453,7 @@ $TDUCREATE
   9
 $TDUPDATE
  40
-2461358.1190046296
+2461358.226365741
   9
 $TDUUPDATE
  40
@@ -505,7 +505,7 @@ $SPLINESEGS
   9
 $HANDSEED
   5
-127
+139
   9
 $SURFTAB1
  70
@@ -885,11 +885,11 @@ $PSTYLEMODE
   9
 $FINGERPRINTGUID
   2
-{E755412E-163B-4D01-8836-04725B3DAC98}
+{75EDFB49-A8E7-49A5-A252-A50A236D8182}
   9
 $VERSIONGUID
   2
-{D2D0DDD2-8DC4-4EF4-A87D-858793CFCFE0}
+{9C437766-8E60-4CE1-B59F-32F9763CB746}
   9
 $EXTNAMES
 290
@@ -3057,7 +3057,7 @@ AcAecLayerStandard
   0
 APPID
   5
-124
+136
 330
 3
 100
@@ -3071,7 +3071,7 @@ HATCHBACKGROUNDCOLOR
   0
 APPID
   5
-125
+137
 330
 3
 100
@@ -4841,7 +4841,7 @@ HE_2
   0
 BLOCK_RECORD
   5
-FA
+10C
 330
 9
 100
@@ -6847,7 +6847,7 @@ AcDbText
  40
 5.0
   1
-NOTE: hot-knife cut; hot-knife cut, heat-seal both ends; rated 38 mm hook (same part as the bag hooks) on the hook-end fold; 301 tex135 7 SPI
+NOTE: hot-knife cut; hot-knife cut, heat-seal both ends; wiregate carabiner (carabiner_wiregate_22kn, as the IM3 bag hook) on the hook-end fold; 301 tex135 7 SPI
  11
 31.0
  21
@@ -7041,41 +7041,15 @@ AcDbPolyline
  10
 0.0
  20
-50.0
+75.0
  10
 38.0
  20
-50.0
+75.0
   0
 LWPOLYLINE
   5
 E0
-330
-DA
-100
-AcDbEntity
-  8
-INTERNAL
-  6
-DASHDOT
-100
-AcDbPolyline
- 90
-2
- 70
-0
- 10
-0.0
- 20
-100.0
- 10
-38.0
- 20
-100.0
-  0
-LWPOLYLINE
-  5
-E1
 330
 DA
 100
@@ -7093,19 +7067,45 @@ AcDbPolyline
  10
 2.0
  20
-108.0
+16.0
  10
 36.0
  20
-108.0
+16.0
  10
 36.0
  20
-142.0
+50.0
  10
 2.0
  20
-142.0
+50.0
+  0
+LWPOLYLINE
+  5
+E1
+330
+DA
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+2.0
+ 20
+16.0
+ 10
+36.0
+ 20
+50.0
   0
 LWPOLYLINE
   5
@@ -7125,17 +7125,77 @@ AcDbPolyline
  70
 0
  10
-2.0
- 20
-108.0
- 10
 36.0
  20
-142.0
+16.0
+ 10
+2.0
+ 20
+50.0
   0
 LWPOLYLINE
   5
 E3
+330
+DA
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+2.0
+ 20
+100.0
+ 10
+36.0
+ 20
+100.0
+ 10
+36.0
+ 20
+134.0
+ 10
+2.0
+ 20
+134.0
+  0
+LWPOLYLINE
+  5
+E4
+330
+DA
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+2.0
+ 20
+100.0
+ 10
+36.0
+ 20
+134.0
+  0
+LWPOLYLINE
+  5
+E5
 330
 DA
 100
@@ -7153,51 +7213,13 @@ AcDbPolyline
  10
 36.0
  20
-108.0
+100.0
  10
 2.0
  20
-142.0
+134.0
   0
-POINT
-  5
-E4
-330
-DA
-100
-AcDbEntity
-  8
-DRILL
-100
-AcDbPoint
- 10
-2.0
- 20
-108.0
- 30
-0.0
-  0
-CIRCLE
-  5
-E5
-330
-DA
-100
-AcDbEntity
-  8
-DRILL
-100
-AcDbCircle
- 10
-2.0
- 20
-108.0
- 30
-0.0
- 40
-1.5
-  0
-POINT
+LWPOLYLINE
   5
 E6
 330
@@ -7205,17 +7227,25 @@ DA
 100
 AcDbEntity
   8
-DRILL
+INTERNAL
+  6
+CONTINUOUS
 100
-AcDbPoint
+AcDbPolyline
+ 90
+2
+ 70
+0
  10
-36.0
- 20
-108.0
- 30
 0.0
+ 20
+12.0
+ 10
+38.0
+ 20
+12.0
   0
-CIRCLE
+LWPOLYLINE
   5
 E7
 330
@@ -7223,19 +7253,25 @@ DA
 100
 AcDbEntity
   8
-DRILL
+INTERNAL
+  6
+CONTINUOUS
 100
-AcDbCircle
+AcDbPolyline
+ 90
+2
+ 70
+0
  10
-36.0
- 20
-108.0
- 30
 0.0
- 40
-1.5
+ 20
+138.0
+ 10
+38.0
+ 20
+138.0
   0
-POINT
+LWPOLYLINE
   5
 E8
 330
@@ -7243,17 +7279,25 @@ DA
 100
 AcDbEntity
   8
-DRILL
+INTERNAL
+  6
+CONTINUOUS
 100
-AcDbPoint
+AcDbPolyline
+ 90
+2
+ 70
+0
  10
-36.0
- 20
-142.0
- 30
 0.0
+ 20
+50.0
+ 10
+38.0
+ 20
+50.0
   0
-CIRCLE
+LWPOLYLINE
   5
 E9
 330
@@ -7261,21 +7305,131 @@ DA
 100
 AcDbEntity
   8
-DRILL
+INTERNAL
+  6
+CONTINUOUS
 100
-AcDbCircle
+AcDbPolyline
+ 90
+2
+ 70
+0
  10
-36.0
- 20
-142.0
- 30
 0.0
- 40
-1.5
+ 20
+100.0
+ 10
+38.0
+ 20
+100.0
+  0
+LWPOLYLINE
+  5
+EA
+330
+DA
+100
+AcDbEntity
+  8
+INTERNAL
+  6
+DASHDOT
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+10.0
+ 20
+50.0
+ 10
+10.0
+ 20
+100.0
+  0
+LWPOLYLINE
+  5
+EB
+330
+DA
+100
+AcDbEntity
+  8
+INTERNAL
+  6
+DASHDOT
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+28.0
+ 20
+50.0
+ 10
+28.0
+ 20
+100.0
+  0
+LWPOLYLINE
+  5
+EC
+330
+DA
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+11.0
+ 20
+56.0
+ 10
+27.0
+ 20
+56.0
+  0
+LWPOLYLINE
+  5
+ED
+330
+DA
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+11.0
+ 20
+94.0
+ 10
+27.0
+ 20
+94.0
   0
 POINT
   5
-EA
+EE
 330
 DA
 100
@@ -7287,13 +7441,13 @@ AcDbPoint
  10
 2.0
  20
-142.0
+16.0
  30
 0.0
   0
 CIRCLE
   5
-EB
+EF
 330
 DA
 100
@@ -7305,7 +7459,273 @@ AcDbCircle
  10
 2.0
  20
-142.0
+16.0
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+F0
+330
+DA
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+36.0
+ 20
+16.0
+ 30
+0.0
+  0
+CIRCLE
+  5
+F1
+330
+DA
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+36.0
+ 20
+16.0
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+F2
+330
+DA
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+36.0
+ 20
+50.0
+ 30
+0.0
+  0
+CIRCLE
+  5
+F3
+330
+DA
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+36.0
+ 20
+50.0
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+F4
+330
+DA
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+2.0
+ 20
+50.0
+ 30
+0.0
+  0
+CIRCLE
+  5
+F5
+330
+DA
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+2.0
+ 20
+50.0
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+F6
+330
+DA
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+2.0
+ 20
+100.0
+ 30
+0.0
+  0
+CIRCLE
+  5
+F7
+330
+DA
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+2.0
+ 20
+100.0
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+F8
+330
+DA
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+36.0
+ 20
+100.0
+ 30
+0.0
+  0
+CIRCLE
+  5
+F9
+330
+DA
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+36.0
+ 20
+100.0
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+FA
+330
+DA
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+36.0
+ 20
+134.0
+ 30
+0.0
+  0
+CIRCLE
+  5
+FB
+330
+DA
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+36.0
+ 20
+134.0
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+FC
+330
+DA
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+2.0
+ 20
+134.0
+ 30
+0.0
+  0
+CIRCLE
+  5
+FD
+330
+DA
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+2.0
+ 20
+134.0
  30
 0.0
  40
@@ -7313,7 +7733,7 @@ AcDbCircle
   0
 LWPOLYLINE
   5
-EC
+FE
 330
 DA
 100
@@ -7337,7 +7757,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-ED
+FF
 330
 DA
 100
@@ -7365,7 +7785,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-EE
+100
 330
 DA
 100
@@ -7393,7 +7813,7 @@ AcDbPolyline
   0
 TEXT
   5
-EF
+101
 330
 DA
 100
@@ -7423,7 +7843,7 @@ AcDbText
   0
 TEXT
   5
-F0
+102
 330
 DA
 100
@@ -7453,7 +7873,7 @@ AcDbText
   0
 TEXT
   5
-F1
+103
 330
 DA
 100
@@ -7483,7 +7903,7 @@ AcDbText
   0
 TEXT
   5
-F2
+104
 330
 DA
 100
@@ -7513,7 +7933,7 @@ AcDbText
   0
 TEXT
   5
-F3
+105
 330
 DA
 100
@@ -7543,7 +7963,7 @@ AcDbText
   0
 TEXT
   5
-F4
+106
 330
 DA
 100
@@ -7573,7 +7993,7 @@ AcDbText
   0
 TEXT
   5
-F5
+107
 330
 DA
 100
@@ -7591,7 +8011,7 @@ AcDbText
  40
 5.0
   1
-NOTE: hot-knife cut
+NOTE: hot-knife cut; fold in half at 75 mm, both raw ends to the B-01 cut edge; neck: long edges folded 10 mm in between the neck lines, one BT-M per leg, sewn flat BEFORE the fold
  11
 31.0
  21
@@ -7603,7 +8023,7 @@ AcDbText
   0
 TEXT
   5
-F6
+108
 330
 DA
 100
@@ -7633,7 +8053,7 @@ AcDbText
   0
 TEXT
   5
-F7
+109
 330
 DA
 100
@@ -7675,9 +8095,9 @@ AcDbBlockEnd
   0
 BLOCK
   5
-FB
+10D
 330
-FA
+10C
 100
 AcDbEntity
   8
@@ -7701,9 +8121,9 @@ T3_3
   0
 LWPOLYLINE
   5
-FD
+10F
 330
-FA
+10C
 100
 AcDbEntity
   8
@@ -7733,9 +8153,9 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-FE
+110
 330
-FA
+10C
 100
 AcDbEntity
   8
@@ -7767,9 +8187,9 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-FF
+111
 330
-FA
+10C
 100
 AcDbEntity
   8
@@ -7793,485 +8213,485 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-100
-330
-FA
-100
-AcDbEntity
-  8
-SEW
-  6
-DASHED
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
-2.0
- 20
-7.0
- 10
-36.0
- 20
-7.0
- 10
-36.0
- 20
-37.0
- 10
-2.0
- 20
-37.0
-  0
-LWPOLYLINE
-  5
-101
-330
-FA
-100
-AcDbEntity
-  8
-SEW
-  6
-DASHED
-100
-AcDbPolyline
- 90
-2
- 70
-0
- 10
-2.0
- 20
-7.0
- 10
-36.0
- 20
-37.0
-  0
-LWPOLYLINE
-  5
-102
-330
-FA
-100
-AcDbEntity
-  8
-SEW
-  6
-DASHED
-100
-AcDbPolyline
- 90
-2
- 70
-0
- 10
-36.0
- 20
-7.0
- 10
-2.0
- 20
-37.0
-  0
-LWPOLYLINE
-  5
-103
-330
-FA
-100
-AcDbEntity
-  8
-SEW
-  6
-DASHED
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
-2.0
- 20
-113.0
- 10
-36.0
- 20
-113.0
- 10
-36.0
- 20
-147.0
- 10
-2.0
- 20
-147.0
-  0
-LWPOLYLINE
-  5
-104
-330
-FA
-100
-AcDbEntity
-  8
-SEW
-  6
-DASHED
-100
-AcDbPolyline
- 90
-2
- 70
-0
- 10
-2.0
- 20
-113.0
- 10
-36.0
- 20
-147.0
-  0
-LWPOLYLINE
-  5
-105
-330
-FA
-100
-AcDbEntity
-  8
-SEW
-  6
-DASHED
-100
-AcDbPolyline
- 90
-2
- 70
-0
- 10
-36.0
- 20
-113.0
- 10
-2.0
- 20
-147.0
-  0
-POINT
-  5
-106
-330
-FA
-100
-AcDbEntity
-  8
-DRILL
-100
-AcDbPoint
- 10
-2.0
- 20
-7.0
- 30
-0.0
-  0
-CIRCLE
-  5
-107
-330
-FA
-100
-AcDbEntity
-  8
-DRILL
-100
-AcDbCircle
- 10
-2.0
- 20
-7.0
- 30
-0.0
- 40
-1.5
-  0
-POINT
-  5
-108
-330
-FA
-100
-AcDbEntity
-  8
-DRILL
-100
-AcDbPoint
- 10
-36.0
- 20
-7.0
- 30
-0.0
-  0
-CIRCLE
-  5
-109
-330
-FA
-100
-AcDbEntity
-  8
-DRILL
-100
-AcDbCircle
- 10
-36.0
- 20
-7.0
- 30
-0.0
- 40
-1.5
-  0
-POINT
-  5
-10A
-330
-FA
-100
-AcDbEntity
-  8
-DRILL
-100
-AcDbPoint
- 10
-36.0
- 20
-37.0
- 30
-0.0
-  0
-CIRCLE
-  5
-10B
-330
-FA
-100
-AcDbEntity
-  8
-DRILL
-100
-AcDbCircle
- 10
-36.0
- 20
-37.0
- 30
-0.0
- 40
-1.5
-  0
-POINT
-  5
-10C
-330
-FA
-100
-AcDbEntity
-  8
-DRILL
-100
-AcDbPoint
- 10
-2.0
- 20
-37.0
- 30
-0.0
-  0
-CIRCLE
-  5
-10D
-330
-FA
-100
-AcDbEntity
-  8
-DRILL
-100
-AcDbCircle
- 10
-2.0
- 20
-37.0
- 30
-0.0
- 40
-1.5
-  0
-POINT
-  5
-10E
-330
-FA
-100
-AcDbEntity
-  8
-DRILL
-100
-AcDbPoint
- 10
-2.0
- 20
-113.0
- 30
-0.0
-  0
-CIRCLE
-  5
-10F
-330
-FA
-100
-AcDbEntity
-  8
-DRILL
-100
-AcDbCircle
- 10
-2.0
- 20
-113.0
- 30
-0.0
- 40
-1.5
-  0
-POINT
-  5
-110
-330
-FA
-100
-AcDbEntity
-  8
-DRILL
-100
-AcDbPoint
- 10
-36.0
- 20
-113.0
- 30
-0.0
-  0
-CIRCLE
-  5
-111
-330
-FA
-100
-AcDbEntity
-  8
-DRILL
-100
-AcDbCircle
- 10
-36.0
- 20
-113.0
- 30
-0.0
- 40
-1.5
-  0
-POINT
-  5
 112
 330
-FA
+10C
 100
 AcDbEntity
   8
-DRILL
+SEW
+  6
+DASHED
 100
-AcDbPoint
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+2.0
+ 20
+7.0
  10
 36.0
  20
-147.0
- 30
-0.0
+7.0
+ 10
+36.0
+ 20
+37.0
+ 10
+2.0
+ 20
+37.0
   0
-CIRCLE
+LWPOLYLINE
   5
 113
 330
-FA
+10C
 100
 AcDbEntity
   8
-DRILL
+SEW
+  6
+DASHED
 100
-AcDbCircle
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+2.0
+ 20
+7.0
+ 10
+36.0
+ 20
+37.0
+  0
+LWPOLYLINE
+  5
+114
+330
+10C
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+36.0
+ 20
+7.0
+ 10
+2.0
+ 20
+37.0
+  0
+LWPOLYLINE
+  5
+115
+330
+10C
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+2.0
+ 20
+113.0
+ 10
+36.0
+ 20
+113.0
  10
 36.0
  20
 147.0
- 30
-0.0
- 40
-1.5
-  0
-POINT
-  5
-114
-330
-FA
-100
-AcDbEntity
-  8
-DRILL
-100
-AcDbPoint
  10
 2.0
  20
 147.0
- 30
-0.0
-  0
-CIRCLE
-  5
-115
-330
-FA
-100
-AcDbEntity
-  8
-DRILL
-100
-AcDbCircle
- 10
-2.0
- 20
-147.0
- 30
-0.0
- 40
-1.5
   0
 LWPOLYLINE
   5
 116
 330
-FA
+10C
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+2.0
+ 20
+113.0
+ 10
+36.0
+ 20
+147.0
+  0
+LWPOLYLINE
+  5
+117
+330
+10C
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+36.0
+ 20
+113.0
+ 10
+2.0
+ 20
+147.0
+  0
+POINT
+  5
+118
+330
+10C
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+2.0
+ 20
+7.0
+ 30
+0.0
+  0
+CIRCLE
+  5
+119
+330
+10C
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+2.0
+ 20
+7.0
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+11A
+330
+10C
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+36.0
+ 20
+7.0
+ 30
+0.0
+  0
+CIRCLE
+  5
+11B
+330
+10C
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+36.0
+ 20
+7.0
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+11C
+330
+10C
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+36.0
+ 20
+37.0
+ 30
+0.0
+  0
+CIRCLE
+  5
+11D
+330
+10C
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+36.0
+ 20
+37.0
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+11E
+330
+10C
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+2.0
+ 20
+37.0
+ 30
+0.0
+  0
+CIRCLE
+  5
+11F
+330
+10C
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+2.0
+ 20
+37.0
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+120
+330
+10C
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+2.0
+ 20
+113.0
+ 30
+0.0
+  0
+CIRCLE
+  5
+121
+330
+10C
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+2.0
+ 20
+113.0
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+122
+330
+10C
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+36.0
+ 20
+113.0
+ 30
+0.0
+  0
+CIRCLE
+  5
+123
+330
+10C
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+36.0
+ 20
+113.0
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+124
+330
+10C
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+36.0
+ 20
+147.0
+ 30
+0.0
+  0
+CIRCLE
+  5
+125
+330
+10C
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+36.0
+ 20
+147.0
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+126
+330
+10C
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+2.0
+ 20
+147.0
+ 30
+0.0
+  0
+CIRCLE
+  5
+127
+330
+10C
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+2.0
+ 20
+147.0
+ 30
+0.0
+ 40
+1.5
+  0
+LWPOLYLINE
+  5
+128
+330
+10C
 100
 AcDbEntity
   8
@@ -8293,9 +8713,9 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-117
+129
 330
-FA
+10C
 100
 AcDbEntity
   8
@@ -8321,9 +8741,9 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-118
+12A
 330
-FA
+10C
 100
 AcDbEntity
   8
@@ -8349,9 +8769,9 @@ AcDbPolyline
   0
 TEXT
   5
-119
+12B
 330
-FA
+10C
 100
 AcDbEntity
   8
@@ -8379,9 +8799,9 @@ AcDbText
   0
 TEXT
   5
-11A
+12C
 330
-FA
+10C
 100
 AcDbEntity
   8
@@ -8409,9 +8829,9 @@ AcDbText
   0
 TEXT
   5
-11B
+12D
 330
-FA
+10C
 100
 AcDbEntity
   8
@@ -8439,9 +8859,9 @@ AcDbText
   0
 TEXT
   5
-11C
+12E
 330
-FA
+10C
 100
 AcDbEntity
   8
@@ -8469,9 +8889,9 @@ AcDbText
   0
 TEXT
   5
-11D
+12F
 330
-FA
+10C
 100
 AcDbEntity
   8
@@ -8499,9 +8919,9 @@ AcDbText
   0
 TEXT
   5
-11E
+130
 330
-FA
+10C
 100
 AcDbEntity
   8
@@ -8529,9 +8949,9 @@ AcDbText
   0
 TEXT
   5
-11F
+131
 330
-FA
+10C
 100
 AcDbEntity
   8
@@ -8559,9 +8979,9 @@ AcDbText
   0
 TEXT
   5
-120
+132
 330
-FA
+10C
 100
 AcDbEntity
   8
@@ -8589,9 +9009,9 @@ AcDbText
   0
 TEXT
   5
-121
+133
 330
-FA
+10C
 100
 AcDbEntity
   8
@@ -8619,9 +9039,9 @@ AcDbText
   0
 ENDBLK
   5
-FC
+10E
 330
-FA
+10C
 100
 AcDbEntity
   8
@@ -8677,7 +9097,7 @@ B-24_1
   0
 INSERT
   5
-F8
+10A
 330
 17
 100
@@ -8697,7 +9117,7 @@ HE_2
   0
 INSERT
   5
-122
+134
 330
 17
 100
@@ -9805,7 +10225,7 @@ CREATED_BY_EZDXF
   3
 WRITTEN_BY_EZDXF
 350
-126
+138
   0
 DICTIONARYVAR
   5
@@ -9817,7 +10237,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-11-13T02:51:22.685147+00:00
+1.4.5 @ 2026-11-13T05:25:58.305803+00:00
   0
 VISUALSTYLE
   5
@@ -10521,7 +10941,7 @@ X-Ray
   0
 DICTIONARYVAR
   5
-126
+138
 330
 2D
 100
@@ -10529,7 +10949,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-11-13T02:51:22.691620+00:00
+1.4.5 @ 2026-11-13T05:25:58.312175+00:00
   0
 ENDSEC
   0

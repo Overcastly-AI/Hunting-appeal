@@ -1,6 +1,6 @@
 # Shopping list (BL-038)
 
-Total **USD 2,342.64**. Prices from material records, cited shop pages (links), or marked ASSUMPTION (check at purchase). Cited or record-priced: USD 1,028.64; ASSUMPTION: USD 1,314.00. Prices checked 2026-11-10 (TEST_PLAN §4) and 2026-11-13.
+Total **USD 2,354.04**. Prices from material records, cited shop pages (links), or marked ASSUMPTION (check at purchase). Cited or record-priced: USD 1,037.04; ASSUMPTION: USD 1,317.00. Prices checked 2026-11-10 (TEST_PLAN §4) and 2026-11-13.
 
 **Order these first (long lead):**
 
@@ -17,8 +17,8 @@ Total **USD 2,342.64**. Prices from material records, cited shop pages (links), 
 | Kit B lever rig | 317.50 |
 | Kit C frame stand | 227.39 |
 | Kit D measuring | 140.46 |
-| Specimens and lab | 1,433.21 |
-| **total** | **2,342.64** |
+| Specimens and lab | 1,444.61 |
+| **total** | **2,354.04** |
 
 Not in this list: the bag, harness and belt materials themselves (pack BOM, `outputs/release/pack5200_corrie_f_rev3/manufacturing/bom.csv`). Swatches are cut from that fabric order, so buy the bag fabric with the kit. You already own (kit E): washing machine, winter gloves, freezer, hose, tape, paint pen, phone.
 
@@ -100,7 +100,7 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | Dyneema cord 3 mm (slider pulls) | 1 m | 0.90 | Ripstop by the Roll; record dyneema_cord_3mm | SL-1 |
 | printed label (one, heat transfer) | 1 each | 5.00 | label printer; ASSUMPTION (shop price, check at purchase) | SL-1 |
 | side-release buckle 25 mm | 2 each | 1.60 | Strapworks; record buckle_side_release_25mm | ST-1 |
-| poly webbing 25 mm | 20 m | 14.00 | Strapworks; record poly_webbing_25mm | MT-1, MT-3, US-BS, LL-H, HB-7, PT-5, PT-6, PORT-1, GT-1 |
+| poly webbing 25 mm | 32 m | 22.40 | Strapworks; record poly_webbing_25mm | MT-1, MT-3 (dry/wet/cold), US-BS, LL-H (dry/wet/cold), SEW-F, HB-7, PT-5, PT-6, PORT-1, GT-1 |
 | poly webbing 38 mm | 3 m | 3.00 | Strapworks; record poly_webbing_38mm | PT-6 links, WP-3 |
 | XLPE L200 foam 5 + 6 mm | 0.35 m2 | 5.25 | Foam By Mail; record xlpe_foam_l200 | CS-1 (0.25), HS-1 (0.1) |
 | EVA 45C foam 5 mm | 0.1 m2 | 2.50 | Seattle Fabrics; record eva_foam_45c | HS-1 |
@@ -110,7 +110,7 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | HyperD 300 printable, custom camo print **LONG LEAD** | 1 yd | 30.25 | Ripstop by the Roll (custom print, 1 yd min); record polyester_300d_printable | AB-1, FRAY-1 |
 | Martindale abrasion test, accredited lab (2 samples + order fee) **LONG LEAD** | 1 order | 249.61 | [Measurlabs (EUR 66 / sample + EUR 97 fee)](https://measurlabs.com/products/textile-abrasion-resistance-martindale) | AB-1 |
 | specimens for PT-2: 5 swatches built like the pack, B-17 cut 70 mm tall | 1 lot | 15.00 | see register; test_register.csv PT-2: ASSUMPTION Hypalon + laminate offcuts | PT-2 |
-| specimens for PT-3: 5 swatches without binding (B.2 as sewn) | 1 lot | 15.00 | see register; test_register.csv PT-3: ASSUMPTION offcuts | PT-3 |
+| specimens for PT-3: 5 swatches sewn exactly as op 4.05 / SK-8: B-01 (primary ULTRA 200) 150 x 120 mm | 1 lot | 15.00 | see register; test_register.csv PT-3: ASSUMPTION offcuts | PT-3 |
 | specimens for WP-1: 4 seam pairings 330D|330D, 330D|ULTRA 200, 500D|330D, 100D|ULTRA; 301 + 2nd row  | 1 lot | 5.00 | see register; test_register.csv WP-1: offcuts | WP-1 |
 | specimens for CA-1: 12 XY + 4 Z + 3 spare bars, printed and annealed like the frame, 7 days at 23 C  | 1 lot | 15.00 | see register; test_register.csv CA-1: CA1_fatigue_rig.md §5 (filament $80/kg) | CA-1 |
 | specimens for IM3-EC: 3 eye coupons: 120 mm stay segment round z 520 with the IM3 eye and the 28 mm ch | 1 lot | 10.00 | see register; test_register.csv IM3-EC: ASSUMPTION: filament + 3 tongues | IM3-EC |
@@ -135,3 +135,5 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | specimens for WP-5: ports, hose frames, cam-cup base | 1 lot | 5.00 | see register; test_register.csv WP-5: ASSUMPTION | WP-5 |
 | sacrificial P1 frame (IM3-EP, W-PULL, then T2u) **LONG LEAD** | 1 each | 437.00 | owner's print + parts; frame_h1.md 5 unit cost | IM3-EP, W-PULL, T2u |
 | specimens for BU-1: 2 UHMWPE crown bushings cut 50 mm from the 70 mm stock, on P2 | 1 lot | 10.00 | see register; test_register.csv BU-1: ASSUMPTION spare UHMWPE tube length $10 (uhmwpe_sheet record has no tube price) | BU-1 |
+| specimens for SEW-F: 3 x 25 mm poly webbing loops, box-X 21 x 25 mm (the IM / US box as drawn), 301,  | 1 lot | 1.00 | see register; test_register.csv SEW-F: 25 mm webbing offcuts + thread (kit A stock) | SEW-F |
+| specimens for FIT-R3: first sewn bag + lid on P2; 5.0 L of dry rice in a bag; the owner's bow (in IMP- | 1 lot | 2.00 | see register; test_register.csv FIT-R3: 5 L of rice | FIT-R3 |

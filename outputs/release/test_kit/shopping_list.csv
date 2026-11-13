@@ -53,7 +53,7 @@ S,#10 coil zipper chain,0.4,m,4.0,1.6,Ripstop by the Roll,record coil_zipper_10,
 S,Dyneema cord 3 mm (slider pulls),1,m,0.9,0.9,Ripstop by the Roll,record dyneema_cord_3mm,SL-1,,
 S,"printed label (one, heat transfer)",1,each,5.0,5.0,label printer,"ASSUMPTION (shop price, check at purchase)",SL-1,,
 S,side-release buckle 25 mm,2,each,0.8,1.6,Strapworks,record buckle_side_release_25mm,ST-1,,
-S,poly webbing 25 mm,20,m,0.7,14.0,Strapworks,record poly_webbing_25mm,"MT-1, MT-3, US-BS, LL-H, HB-7, PT-5, PT-6, PORT-1, GT-1",,
+S,poly webbing 25 mm,32,m,0.7,22.4,Strapworks,record poly_webbing_25mm,"MT-1, MT-3 (dry/wet/cold), US-BS, LL-H (dry/wet/cold), SEW-F, HB-7, PT-5, PT-6, PORT-1, GT-1",,BL-040: +12 m for the MT-3 and LL-H wet and cold sets (fresh webbing per condition)
 S,poly webbing 38 mm,3,m,1.0,3.0,Strapworks,record poly_webbing_38mm,"PT-6 links, WP-3",,
 S,XLPE L200 foam 5 + 6 mm,0.35,m2,15.0,5.25,Foam By Mail,record xlpe_foam_l200,"CS-1 (0.25), HS-1 (0.1)",,minimum order not known
 S,EVA 45C foam 5 mm,0.1,m2,25.0,2.5,Seattle Fabrics,record eva_foam_45c,HS-1,,
@@ -63,7 +63,7 @@ S,200 g 2x2 carbon twill + epoxy for the 2 mm BP-1 coupon skins,0.028,m2,45.0,1.
 S,"HyperD 300 printable, custom camo print",1,yd,30.25,30.25,"Ripstop by the Roll (custom print, 1 yd min)",record polyester_300d_printable,"AB-1, FRAY-1","LONG LEAD: custom print, lead time not published",
 S,"Martindale abrasion test, accredited lab (2 samples + order fee)",1,order,249.61,249.61,Measurlabs (EUR 66 / sample + EUR 97 fee),https://measurlabs.com/products/textile-abrasion-resistance-martindale,AB-1,LONG LEAD: about 4 weeks after the samples arrive,the listed price is the ISO 12947-2 Martindale method; ask for ASTM D4966 to 8000 rev
 S,"specimens for PT-2: 5 swatches built like the pack, B-17 cut 70 mm tall",1,lot,15.0,15.0,see register,test_register.csv PT-2: ASSUMPTION Hypalon + laminate offcuts,PT-2,,
-S,specimens for PT-3: 5 swatches without binding (B.2 as sewn),1,lot,15.0,15.0,see register,test_register.csv PT-3: ASSUMPTION offcuts,PT-3,,
+S,specimens for PT-3: 5 swatches sewn exactly as op 4.05 / SK-8: B-01 (primary ULTRA 200) 150 x 120 mm,1,lot,15.0,15.0,see register,test_register.csv PT-3: ASSUMPTION offcuts,PT-3,,
 S,"specimens for WP-1: 4 seam pairings 330D|330D, 330D|ULTRA 200, 500D|330D, 100D|ULTRA; 301 + 2nd row ",1,lot,5.0,5.0,see register,test_register.csv WP-1: offcuts,WP-1,,
 S,"specimens for CA-1: 12 XY + 4 Z + 3 spare bars, printed and annealed like the frame, 7 days at 23 C ",1,lot,15.0,15.0,see register,test_register.csv CA-1: CA1_fatigue_rig.md §5 (filament $80/kg),CA-1,,
 S,specimens for IM3-EC: 3 eye coupons: 120 mm stay segment round z 520 with the IM3 eye and the 28 mm ch,1,lot,10.0,10.0,see register,test_register.csv IM3-EC: ASSUMPTION: filament + 3 tongues,IM3-EC,,
@@ -88,3 +88,5 @@ S,"specimens for RF-1: rails on P2, 3 testers",1,lot,10.0,10.0,see register,test
 S,"specimens for WP-5: ports, hose frames, cam-cup base",1,lot,5.0,5.0,see register,test_register.csv WP-5: ASSUMPTION,WP-5,,
 S,"sacrificial P1 frame (IM3-EP, W-PULL, then T2u)",1,each,437.0,437.0,owner's print + parts,frame_h1.md 5 unit cost,"IM3-EP, W-PULL, T2u",print time: allow 2 weeks with P2,
 S,"specimens for BU-1: 2 UHMWPE crown bushings cut 50 mm from the 70 mm stock, on P2",1,lot,10.0,10.0,see register,test_register.csv BU-1: ASSUMPTION spare UHMWPE tube length $10 (uhmwpe_sheet record has no tube price),BU-1,,
+S,"specimens for SEW-F: 3 x 25 mm poly webbing loops, box-X 21 x 25 mm (the IM / US box as drawn), 301, ",1,lot,1.0,1.0,see register,test_register.csv SEW-F: 25 mm webbing offcuts + thread (kit A stock),SEW-F,,
+S,specimens for FIT-R3: first sewn bag + lid on P2; 5.0 L of dry rice in a bag; the owner's bow (in IMP-,1,lot,2.0,2.0,see register,test_register.csv FIT-R3: 5 L of rice,FIT-R3,,

@@ -45,7 +45,7 @@ B-24-thr: B-24 thread,straps_meat,meat_trip,2.0,hardware,,,thread
 W-hw: W1-W3 G-hooks (3) + ladder locks (3),straps_compression,base,24.0,hardware,,,
 A-2: A-2 wrap tails 250 -> 150 mm,straps_compression,base,-5.4,webbing,,W1 W2 W3,"tail trim, in the cut"
 keepers: 6 haul-wrap keeper loops in the gore seams,straps_compression,base,8.6,webbing,,K-W,
-roll: roll-top: 2 x 25 mm side-release + 2 x 0.35 m,straps_compression,base,30.6,webbing,,RT,+ 2 buckles
+roll: roll-top: 2 x 25 mm side-release + 2 x 0.35 m,straps_compression,base,30.6,webbing,,RT RTM,+ 2 buckles; RTM gusset tabs added by BL-040 (not booked)
 BL-010 S2: IM3 free end G-hook -> wiregate carabiner,straps_meat,base,14.0,hardware,,,
 BL-010 S9: W1-W3 rated 25 mm G-hooks (3) and heavy ladder locks (3),straps_compression,base,21.0,hardware,,,
 BL-010 S12: B-24 hooks -> wiregate carabiners (2),straps_meat,meat_trip,16.0,hardware,,,

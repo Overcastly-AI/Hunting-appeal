@@ -445,7 +445,7 @@ $SKPOLY
   9
 $TDCREATE
  40
-2461358.1192013887
+2461358.226574074
   9
 $TDUCREATE
  40
@@ -453,7 +453,7 @@ $TDUCREATE
   9
 $TDUPDATE
  40
-2461358.1192013887
+2461358.226574074
   9
 $TDUUPDATE
  40
@@ -505,7 +505,7 @@ $SPLINESEGS
   9
 $HANDSEED
   5
-12C
+12E
   9
 $SURFTAB1
  70
@@ -885,11 +885,11 @@ $PSTYLEMODE
   9
 $FINGERPRINTGUID
   2
-{1DA03630-BA7F-4298-AD7B-86252B2B1E70}
+{5F9DDC07-7E23-4901-9C15-D6E70643A1F1}
   9
 $VERSIONGUID
   2
-{04049B16-93AE-43CE-8BD9-789360449FF7}
+{A8BED25A-F0F0-43F9-80D5-EA431C6F3B8A}
   9
 $EXTNAMES
 290
@@ -3057,7 +3057,7 @@ AcAecLayerStandard
   0
 APPID
   5
-129
+12B
 330
 3
 100
@@ -3071,7 +3071,7 @@ HATCHBACKGROUNDCOLOR
   0
 APPID
   5
-12A
+12C
 330
 3
 100
@@ -5759,6 +5759,40 @@ A8
 100
 AcDbEntity
   8
+CUT
+  6
+CONTINUOUS
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+14.0
+ 20
+138.0
+ 10
+26.0
+ 20
+138.0
+ 10
+26.0
+ 20
+178.0
+ 10
+14.0
+ 20
+178.0
+  0
+LWPOLYLINE
+  5
+A9
+330
+17
+100
+AcDbEntity
+  8
 NOTCH
 100
 AcDbPolyline
@@ -5781,7 +5815,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-A9
+AA
 330
 17
 100
@@ -5809,7 +5843,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-AA
+AB
 330
 17
 100
@@ -5837,7 +5871,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-AB
+AC
 330
 17
 100
@@ -5865,7 +5899,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-AC
+AD
 330
 17
 100
@@ -5889,7 +5923,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-AD
+AE
 330
 17
 100
@@ -5917,7 +5951,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-AE
+AF
 330
 17
 100
@@ -5945,7 +5979,7 @@ AcDbPolyline
   0
 TEXT
   5
-AF
+B0
 330
 17
 100
@@ -5975,7 +6009,7 @@ AcDbText
   0
 TEXT
   5
-B0
+B1
 330
 17
 100
@@ -6005,7 +6039,7 @@ AcDbText
   0
 TEXT
   5
-B1
+B2
 330
 17
 100
@@ -6035,7 +6069,7 @@ AcDbText
   0
 TEXT
   5
-B2
+B3
 330
 17
 100
@@ -6065,7 +6099,7 @@ AcDbText
   0
 TEXT
   5
-B3
+B4
 330
 17
 100
@@ -6095,7 +6129,7 @@ AcDbText
   0
 TEXT
   5
-B4
+B5
 330
 17
 100
@@ -6125,7 +6159,7 @@ AcDbText
   0
 TEXT
   5
-B5
+B6
 330
 17
 100
@@ -6155,7 +6189,7 @@ AcDbText
   0
 TEXT
   5
-B6
+B7
 330
 17
 100
@@ -6185,47 +6219,13 @@ AcDbText
   0
 LWPOLYLINE
   5
-B7
-330
-17
-100
-AcDbEntity
-  8
-CUT
-100
-AcDbPolyline
- 90
-4
- 70
-1
- 10
-0.0
- 20
-191.0
- 10
-40.0
- 20
-191.0
- 10
-40.0
- 20
-251.0
- 10
-0.0
- 20
-251.0
-  0
-LWPOLYLINE
-  5
 B8
 330
 17
 100
 AcDbEntity
   8
-SEW
-  6
-DASHED
+CUT
 100
 AcDbPolyline
  90
@@ -6257,6 +6257,74 @@ B9
 100
 AcDbEntity
   8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+0.0
+ 20
+191.0
+ 10
+40.0
+ 20
+191.0
+ 10
+40.0
+ 20
+251.0
+ 10
+0.0
+ 20
+251.0
+  0
+LWPOLYLINE
+  5
+BA
+330
+17
+100
+AcDbEntity
+  8
+CUT
+  6
+CONTINUOUS
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+14.0
+ 20
+201.0
+ 10
+26.0
+ 20
+201.0
+ 10
+26.0
+ 20
+241.0
+ 10
+14.0
+ 20
+241.0
+  0
+LWPOLYLINE
+  5
+BB
+330
+17
+100
+AcDbEntity
+  8
 NOTCH
 100
 AcDbPolyline
@@ -6279,7 +6347,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-BA
+BC
 330
 17
 100
@@ -6307,7 +6375,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-BB
+BD
 330
 17
 100
@@ -6335,7 +6403,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-BC
+BE
 330
 17
 100
@@ -6363,7 +6431,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-BD
+BF
 330
 17
 100
@@ -6387,7 +6455,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-BE
+C0
 330
 17
 100
@@ -6415,7 +6483,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-BF
+C1
 330
 17
 100
@@ -6443,7 +6511,7 @@ AcDbPolyline
   0
 TEXT
   5
-C0
+C2
 330
 17
 100
@@ -6473,7 +6541,7 @@ AcDbText
   0
 TEXT
   5
-C1
+C3
 330
 17
 100
@@ -6503,7 +6571,7 @@ AcDbText
   0
 TEXT
   5
-C2
+C4
 330
 17
 100
@@ -6533,7 +6601,7 @@ AcDbText
   0
 TEXT
   5
-C3
+C5
 330
 17
 100
@@ -6563,7 +6631,7 @@ AcDbText
   0
 TEXT
   5
-C4
+C6
 330
 17
 100
@@ -6586,66 +6654,6 @@ FACE UP
 32.0
  21
 214.59999999999997
- 31
-0.0
-100
-AcDbText
-  0
-TEXT
-  5
-C5
-330
-17
-100
-AcDbEntity
-  8
-TEXT
-100
-AcDbText
- 10
-32.0
- 20
-208.19999999999996
- 30
-0.0
- 40
-4.0
-  1
-KNIFE: CW from the grain-arrow head; cut windows and slits first
- 11
-32.0
- 21
-208.19999999999996
- 31
-0.0
-100
-AcDbText
-  0
-TEXT
-  5
-C6
-330
-17
-100
-AcDbEntity
-  8
-TEXT
-100
-AcDbText
- 10
-32.0
- 20
-201.79999999999995
- 30
-0.0
- 40
-4.0
-  1
-PACK: 5200 CORRIE F rev 3
- 11
-32.0
- 21
-201.79999999999995
  31
 0.0
 100
@@ -6665,6 +6673,66 @@ AcDbText
  10
 32.0
  20
+208.19999999999996
+ 30
+0.0
+ 40
+4.0
+  1
+KNIFE: CW from the grain-arrow head; cut windows and slits first
+ 11
+32.0
+ 21
+208.19999999999996
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+C8
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+32.0
+ 20
+201.79999999999995
+ 30
+0.0
+ 40
+4.0
+  1
+PACK: 5200 CORRIE F rev 3
+ 11
+32.0
+ 21
+201.79999999999995
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+C9
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+32.0
+ 20
 195.39999999999995
  30
 0.0
@@ -6683,7 +6751,7 @@ AcDbText
   0
 LWPOLYLINE
   5
-C8
+CA
 330
 17
 100
@@ -6843,7 +6911,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-C9
+CB
 330
 17
 100
@@ -7005,7 +7073,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-CA
+CC
 330
 17
 100
@@ -7039,7 +7107,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-CB
+CD
 330
 17
 100
@@ -7073,7 +7141,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-CC
+CE
 330
 17
 100
@@ -7097,7 +7165,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-CD
+CF
 330
 17
 100
@@ -7125,7 +7193,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-CE
+D0
 330
 17
 100
@@ -7153,7 +7221,7 @@ AcDbPolyline
   0
 TEXT
   5
-CF
+D1
 330
 17
 100
@@ -7176,66 +7244,6 @@ ID: B-12
 32.0
  21
 306.40000000000003
- 31
-0.0
-100
-AcDbText
-  0
-TEXT
-  5
-D0
-330
-17
-100
-AcDbEntity
-  8
-TEXT
-100
-AcDbText
- 10
-32.0
- 20
-300.00000000000006
- 30
-0.0
- 40
-4.0
-  1
-PIECE: strap-port patch
- 11
-32.0
- 21
-300.00000000000006
- 31
-0.0
-100
-AcDbText
-  0
-TEXT
-  5
-D1
-330
-17
-100
-AcDbEntity
-  8
-TEXT
-100
-AcDbText
- 10
-32.0
- 20
-293.6000000000001
- 30
-0.0
- 40
-4.0
-  1
-MATERIAL: tpu_coated_nylon_840d
- 11
-32.0
- 21
-293.6000000000001
  31
 0.0
 100
@@ -7255,17 +7263,17 @@ AcDbText
  10
 32.0
  20
-287.2000000000001
+300.00000000000006
  30
 0.0
  40
 4.0
   1
-CUT 6
+PIECE: strap-port patch
  11
 32.0
  21
-287.2000000000001
+300.00000000000006
  31
 0.0
 100
@@ -7285,17 +7293,17 @@ AcDbText
  10
 32.0
  20
-280.8000000000001
+293.6000000000001
  30
 0.0
  40
 4.0
   1
-FACE UP
+MATERIAL: tpu_coated_nylon_840d
  11
 32.0
  21
-280.8000000000001
+293.6000000000001
  31
 0.0
 100
@@ -7315,17 +7323,17 @@ AcDbText
  10
 32.0
  20
-274.40000000000015
+287.2000000000001
  30
 0.0
  40
 4.0
   1
-KNIFE: CW from the grain-arrow head; cut windows and slits first
+CUT 6
  11
 32.0
  21
-274.40000000000015
+287.2000000000001
  31
 0.0
 100
@@ -7345,17 +7353,17 @@ AcDbText
  10
 32.0
  20
-268.00000000000017
+280.8000000000001
  30
 0.0
  40
 4.0
   1
-NOTE: laser-cut; on the swell crest (outside), slot through patch + swell; edge-stitch slot and perimeter; no load
+FACE UP
  11
 32.0
  21
-268.00000000000017
+280.8000000000001
  31
 0.0
 100
@@ -7375,17 +7383,17 @@ AcDbText
  10
 32.0
  20
-261.6000000000002
+274.40000000000015
  30
 0.0
  40
 4.0
   1
-PACK: 5200 CORRIE F rev 3
+KNIFE: CW from the grain-arrow head; cut windows and slits first
  11
 32.0
  21
-261.6000000000002
+274.40000000000015
  31
 0.0
 100
@@ -7405,6 +7413,66 @@ AcDbText
  10
 32.0
  20
+268.00000000000017
+ 30
+0.0
+ 40
+4.0
+  1
+NOTE: laser-cut; on the swell crest (outside), slot through patch + swell; edge-stitch slot and perimeter; no load
+ 11
+32.0
+ 21
+268.00000000000017
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+D8
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+32.0
+ 20
+261.6000000000002
+ 30
+0.0
+ 40
+4.0
+  1
+PACK: 5200 CORRIE F rev 3
+ 11
+32.0
+ 21
+261.6000000000002
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+D9
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+32.0
+ 20
 255.2000000000002
  30
 0.0
@@ -7423,7 +7491,7 @@ AcDbText
   0
 LWPOLYLINE
   5
-D8
+DA
 330
 17
 100
@@ -7583,7 +7651,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-D9
+DB
 330
 17
 100
@@ -7745,7 +7813,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-DA
+DC
 330
 17
 100
@@ -7779,7 +7847,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-DB
+DD
 330
 17
 100
@@ -7813,7 +7881,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-DC
+DE
 330
 17
 100
@@ -7837,7 +7905,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-DD
+DF
 330
 17
 100
@@ -7865,7 +7933,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-DE
+E0
 330
 17
 100
@@ -7893,7 +7961,7 @@ AcDbPolyline
   0
 TEXT
   5
-DF
+E1
 330
 17
 100
@@ -7916,66 +7984,6 @@ ID: B-12
 32.0
  21
 369.40000000000003
- 31
-0.0
-100
-AcDbText
-  0
-TEXT
-  5
-E0
-330
-17
-100
-AcDbEntity
-  8
-TEXT
-100
-AcDbText
- 10
-32.0
- 20
-363.00000000000006
- 30
-0.0
- 40
-4.0
-  1
-PIECE: strap-port patch
- 11
-32.0
- 21
-363.00000000000006
- 31
-0.0
-100
-AcDbText
-  0
-TEXT
-  5
-E1
-330
-17
-100
-AcDbEntity
-  8
-TEXT
-100
-AcDbText
- 10
-32.0
- 20
-356.6000000000001
- 30
-0.0
- 40
-4.0
-  1
-MATERIAL: tpu_coated_nylon_840d
- 11
-32.0
- 21
-356.6000000000001
  31
 0.0
 100
@@ -7995,17 +8003,17 @@ AcDbText
  10
 32.0
  20
-350.2000000000001
+363.00000000000006
  30
 0.0
  40
 4.0
   1
-CUT 6
+PIECE: strap-port patch
  11
 32.0
  21
-350.2000000000001
+363.00000000000006
  31
 0.0
 100
@@ -8025,17 +8033,17 @@ AcDbText
  10
 32.0
  20
-343.8000000000001
+356.6000000000001
  30
 0.0
  40
 4.0
   1
-FACE UP
+MATERIAL: tpu_coated_nylon_840d
  11
 32.0
  21
-343.8000000000001
+356.6000000000001
  31
 0.0
 100
@@ -8055,17 +8063,17 @@ AcDbText
  10
 32.0
  20
-337.40000000000015
+350.2000000000001
  30
 0.0
  40
 4.0
   1
-KNIFE: CW from the grain-arrow head; cut windows and slits first
+CUT 6
  11
 32.0
  21
-337.40000000000015
+350.2000000000001
  31
 0.0
 100
@@ -8085,17 +8093,17 @@ AcDbText
  10
 32.0
  20
-331.00000000000017
+343.8000000000001
  30
 0.0
  40
 4.0
   1
-NOTE: laser-cut; on the swell crest (outside), slot through patch + swell; edge-stitch slot and perimeter; no load
+FACE UP
  11
 32.0
  21
-331.00000000000017
+343.8000000000001
  31
 0.0
 100
@@ -8115,17 +8123,17 @@ AcDbText
  10
 32.0
  20
-324.6000000000002
+337.40000000000015
  30
 0.0
  40
 4.0
   1
-PACK: 5200 CORRIE F rev 3
+KNIFE: CW from the grain-arrow head; cut windows and slits first
  11
 32.0
  21
-324.6000000000002
+337.40000000000015
  31
 0.0
 100
@@ -8145,6 +8153,66 @@ AcDbText
  10
 32.0
  20
+331.00000000000017
+ 30
+0.0
+ 40
+4.0
+  1
+NOTE: laser-cut; on the swell crest (outside), slot through patch + swell; edge-stitch slot and perimeter; no load
+ 11
+32.0
+ 21
+331.00000000000017
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+E8
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+32.0
+ 20
+324.6000000000002
+ 30
+0.0
+ 40
+4.0
+  1
+PACK: 5200 CORRIE F rev 3
+ 11
+32.0
+ 21
+324.6000000000002
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+E9
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+32.0
+ 20
 318.2000000000002
  30
 0.0
@@ -8163,7 +8231,7 @@ AcDbText
   0
 LWPOLYLINE
   5
-E8
+EA
 330
 17
 100
@@ -8323,7 +8391,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-E9
+EB
 330
 17
 100
@@ -8485,7 +8553,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-EA
+EC
 330
 17
 100
@@ -8519,7 +8587,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-EB
+ED
 330
 17
 100
@@ -8553,7 +8621,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-EC
+EE
 330
 17
 100
@@ -8577,7 +8645,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-ED
+EF
 330
 17
 100
@@ -8605,7 +8673,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-EE
+F0
 330
 17
 100
@@ -8633,7 +8701,7 @@ AcDbPolyline
   0
 TEXT
   5
-EF
+F1
 330
 17
 100
@@ -8656,66 +8724,6 @@ ID: B-12
 32.0
  21
 432.40000000000003
- 31
-0.0
-100
-AcDbText
-  0
-TEXT
-  5
-F0
-330
-17
-100
-AcDbEntity
-  8
-TEXT
-100
-AcDbText
- 10
-32.0
- 20
-426.00000000000006
- 30
-0.0
- 40
-4.0
-  1
-PIECE: strap-port patch
- 11
-32.0
- 21
-426.00000000000006
- 31
-0.0
-100
-AcDbText
-  0
-TEXT
-  5
-F1
-330
-17
-100
-AcDbEntity
-  8
-TEXT
-100
-AcDbText
- 10
-32.0
- 20
-419.6000000000001
- 30
-0.0
- 40
-4.0
-  1
-MATERIAL: tpu_coated_nylon_840d
- 11
-32.0
- 21
-419.6000000000001
  31
 0.0
 100
@@ -8735,17 +8743,17 @@ AcDbText
  10
 32.0
  20
-413.2000000000001
+426.00000000000006
  30
 0.0
  40
 4.0
   1
-CUT 6
+PIECE: strap-port patch
  11
 32.0
  21
-413.2000000000001
+426.00000000000006
  31
 0.0
 100
@@ -8765,17 +8773,17 @@ AcDbText
  10
 32.0
  20
-406.8000000000001
+419.6000000000001
  30
 0.0
  40
 4.0
   1
-FACE UP
+MATERIAL: tpu_coated_nylon_840d
  11
 32.0
  21
-406.8000000000001
+419.6000000000001
  31
 0.0
 100
@@ -8795,17 +8803,17 @@ AcDbText
  10
 32.0
  20
-400.40000000000015
+413.2000000000001
  30
 0.0
  40
 4.0
   1
-KNIFE: CW from the grain-arrow head; cut windows and slits first
+CUT 6
  11
 32.0
  21
-400.40000000000015
+413.2000000000001
  31
 0.0
 100
@@ -8825,17 +8833,17 @@ AcDbText
  10
 32.0
  20
-394.00000000000017
+406.8000000000001
  30
 0.0
  40
 4.0
   1
-NOTE: laser-cut; on the swell crest (outside), slot through patch + swell; edge-stitch slot and perimeter; no load
+FACE UP
  11
 32.0
  21
-394.00000000000017
+406.8000000000001
  31
 0.0
 100
@@ -8855,17 +8863,17 @@ AcDbText
  10
 32.0
  20
-387.6000000000002
+400.40000000000015
  30
 0.0
  40
 4.0
   1
-PACK: 5200 CORRIE F rev 3
+KNIFE: CW from the grain-arrow head; cut windows and slits first
  11
 32.0
  21
-387.6000000000002
+400.40000000000015
  31
 0.0
 100
@@ -8885,6 +8893,66 @@ AcDbText
  10
 32.0
  20
+394.00000000000017
+ 30
+0.0
+ 40
+4.0
+  1
+NOTE: laser-cut; on the swell crest (outside), slot through patch + swell; edge-stitch slot and perimeter; no load
+ 11
+32.0
+ 21
+394.00000000000017
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+F8
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+32.0
+ 20
+387.6000000000002
+ 30
+0.0
+ 40
+4.0
+  1
+PACK: 5200 CORRIE F rev 3
+ 11
+32.0
+ 21
+387.6000000000002
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+F9
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+32.0
+ 20
 381.2000000000002
  30
 0.0
@@ -8903,7 +8971,7 @@ AcDbText
   0
 LWPOLYLINE
   5
-F8
+FA
 330
 17
 100
@@ -9063,7 +9131,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-F9
+FB
 330
 17
 100
@@ -9225,7 +9293,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-FA
+FC
 330
 17
 100
@@ -9259,7 +9327,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-FB
+FD
 330
 17
 100
@@ -9293,7 +9361,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-FC
+FE
 330
 17
 100
@@ -9317,7 +9385,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-FD
+FF
 330
 17
 100
@@ -9345,7 +9413,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-FE
+100
 330
 17
 100
@@ -9373,7 +9441,7 @@ AcDbPolyline
   0
 TEXT
   5
-FF
+101
 330
 17
 100
@@ -9396,66 +9464,6 @@ ID: B-12
 32.0
  21
 495.40000000000003
- 31
-0.0
-100
-AcDbText
-  0
-TEXT
-  5
-100
-330
-17
-100
-AcDbEntity
-  8
-TEXT
-100
-AcDbText
- 10
-32.0
- 20
-489.00000000000006
- 30
-0.0
- 40
-4.0
-  1
-PIECE: strap-port patch
- 11
-32.0
- 21
-489.00000000000006
- 31
-0.0
-100
-AcDbText
-  0
-TEXT
-  5
-101
-330
-17
-100
-AcDbEntity
-  8
-TEXT
-100
-AcDbText
- 10
-32.0
- 20
-482.6000000000001
- 30
-0.0
- 40
-4.0
-  1
-MATERIAL: tpu_coated_nylon_840d
- 11
-32.0
- 21
-482.6000000000001
  31
 0.0
 100
@@ -9475,17 +9483,17 @@ AcDbText
  10
 32.0
  20
-476.2000000000001
+489.00000000000006
  30
 0.0
  40
 4.0
   1
-CUT 6
+PIECE: strap-port patch
  11
 32.0
  21
-476.2000000000001
+489.00000000000006
  31
 0.0
 100
@@ -9505,17 +9513,17 @@ AcDbText
  10
 32.0
  20
-469.8000000000001
+482.6000000000001
  30
 0.0
  40
 4.0
   1
-FACE UP
+MATERIAL: tpu_coated_nylon_840d
  11
 32.0
  21
-469.8000000000001
+482.6000000000001
  31
 0.0
 100
@@ -9535,17 +9543,17 @@ AcDbText
  10
 32.0
  20
-463.40000000000015
+476.2000000000001
  30
 0.0
  40
 4.0
   1
-KNIFE: CW from the grain-arrow head; cut windows and slits first
+CUT 6
  11
 32.0
  21
-463.40000000000015
+476.2000000000001
  31
 0.0
 100
@@ -9565,17 +9573,17 @@ AcDbText
  10
 32.0
  20
-457.00000000000017
+469.8000000000001
  30
 0.0
  40
 4.0
   1
-NOTE: laser-cut; on the swell crest (outside), slot through patch + swell; edge-stitch slot and perimeter; no load
+FACE UP
  11
 32.0
  21
-457.00000000000017
+469.8000000000001
  31
 0.0
 100
@@ -9595,17 +9603,17 @@ AcDbText
  10
 32.0
  20
-450.6000000000002
+463.40000000000015
  30
 0.0
  40
 4.0
   1
-PACK: 5200 CORRIE F rev 3
+KNIFE: CW from the grain-arrow head; cut windows and slits first
  11
 32.0
  21
-450.6000000000002
+463.40000000000015
  31
 0.0
 100
@@ -9625,6 +9633,66 @@ AcDbText
  10
 32.0
  20
+457.00000000000017
+ 30
+0.0
+ 40
+4.0
+  1
+NOTE: laser-cut; on the swell crest (outside), slot through patch + swell; edge-stitch slot and perimeter; no load
+ 11
+32.0
+ 21
+457.00000000000017
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+108
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+32.0
+ 20
+450.6000000000002
+ 30
+0.0
+ 40
+4.0
+  1
+PACK: 5200 CORRIE F rev 3
+ 11
+32.0
+ 21
+450.6000000000002
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+109
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+32.0
+ 20
 444.2000000000002
  30
 0.0
@@ -9643,7 +9711,7 @@ AcDbText
   0
 LWPOLYLINE
   5
-108
+10A
 330
 17
 100
@@ -9803,7 +9871,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-109
+10B
 330
 17
 100
@@ -9965,7 +10033,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-10A
+10C
 330
 17
 100
@@ -9999,7 +10067,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-10B
+10D
 330
 17
 100
@@ -10033,7 +10101,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-10C
+10E
 330
 17
 100
@@ -10057,7 +10125,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-10D
+10F
 330
 17
 100
@@ -10085,7 +10153,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-10E
+110
 330
 17
 100
@@ -10113,7 +10181,7 @@ AcDbPolyline
   0
 TEXT
   5
-10F
+111
 330
 17
 100
@@ -10136,66 +10204,6 @@ ID: B-12
 32.0
  21
 558.4
- 31
-0.0
-100
-AcDbText
-  0
-TEXT
-  5
-110
-330
-17
-100
-AcDbEntity
-  8
-TEXT
-100
-AcDbText
- 10
-32.0
- 20
-552.0
- 30
-0.0
- 40
-4.0
-  1
-PIECE: strap-port patch
- 11
-32.0
- 21
-552.0
- 31
-0.0
-100
-AcDbText
-  0
-TEXT
-  5
-111
-330
-17
-100
-AcDbEntity
-  8
-TEXT
-100
-AcDbText
- 10
-32.0
- 20
-545.6
- 30
-0.0
- 40
-4.0
-  1
-MATERIAL: tpu_coated_nylon_840d
- 11
-32.0
- 21
-545.6
  31
 0.0
 100
@@ -10215,6 +10223,66 @@ AcDbText
  10
 32.0
  20
+552.0
+ 30
+0.0
+ 40
+4.0
+  1
+PIECE: strap-port patch
+ 11
+32.0
+ 21
+552.0
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+113
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+32.0
+ 20
+545.6
+ 30
+0.0
+ 40
+4.0
+  1
+MATERIAL: tpu_coated_nylon_840d
+ 11
+32.0
+ 21
+545.6
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+114
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+32.0
+ 20
 539.2
  30
 0.0
@@ -10233,7 +10301,7 @@ AcDbText
   0
 TEXT
   5
-113
+115
 330
 17
 100
@@ -10263,7 +10331,7 @@ AcDbText
   0
 TEXT
   5
-114
+116
 330
 17
 100
@@ -10293,7 +10361,7 @@ AcDbText
   0
 TEXT
   5
-115
+117
 330
 17
 100
@@ -10323,7 +10391,7 @@ AcDbText
   0
 TEXT
   5
-116
+118
 330
 17
 100
@@ -10353,7 +10421,7 @@ AcDbText
   0
 TEXT
   5
-117
+119
 330
 17
 100
@@ -10383,7 +10451,7 @@ AcDbText
   0
 LWPOLYLINE
   5
-118
+11A
 330
 17
 100
@@ -10543,7 +10611,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-119
+11B
 330
 17
 100
@@ -10705,7 +10773,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-11A
+11C
 330
 17
 100
@@ -10739,7 +10807,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-11B
+11D
 330
 17
 100
@@ -10773,7 +10841,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-11C
+11E
 330
 17
 100
@@ -10797,7 +10865,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-11D
+11F
 330
 17
 100
@@ -10825,7 +10893,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-11E
+120
 330
 17
 100
@@ -10853,7 +10921,7 @@ AcDbPolyline
   0
 TEXT
   5
-11F
+121
 330
 17
 100
@@ -10883,7 +10951,7 @@ AcDbText
   0
 TEXT
   5
-120
+122
 330
 17
 100
@@ -10913,7 +10981,7 @@ AcDbText
   0
 TEXT
   5
-121
+123
 330
 17
 100
@@ -10943,7 +11011,7 @@ AcDbText
   0
 TEXT
   5
-122
+124
 330
 17
 100
@@ -10973,7 +11041,7 @@ AcDbText
   0
 TEXT
   5
-123
+125
 330
 17
 100
@@ -11003,7 +11071,7 @@ AcDbText
   0
 TEXT
   5
-124
+126
 330
 17
 100
@@ -11033,7 +11101,7 @@ AcDbText
   0
 TEXT
   5
-125
+127
 330
 17
 100
@@ -11063,7 +11131,7 @@ AcDbText
   0
 TEXT
   5
-126
+128
 330
 17
 100
@@ -11093,7 +11161,7 @@ AcDbText
   0
 TEXT
   5
-127
+129
 330
 17
 100
@@ -11123,7 +11191,7 @@ AcDbText
   0
 TEXT
   5
-128
+12A
 330
 17
 100
@@ -12241,7 +12309,7 @@ CREATED_BY_EZDXF
   3
 WRITTEN_BY_EZDXF
 350
-12B
+12D
   0
 DICTIONARYVAR
   5
@@ -12253,7 +12321,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-11-13T02:51:39.800332+00:00
+1.4.5 @ 2026-11-13T05:26:16.247203+00:00
   0
 VISUALSTYLE
   5
@@ -12957,7 +13025,7 @@ X-Ray
   0
 DICTIONARYVAR
   5
-12B
+12D
 330
 2D
 100
@@ -12965,7 +13033,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-11-13T02:51:39.810016+00:00
+1.4.5 @ 2026-11-13T05:26:16.257532+00:00
   0
 ENDSEC
   0

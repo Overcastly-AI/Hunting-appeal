@@ -53,10 +53,10 @@
   }
  },
  "totals": {
-  "usd": 2342.64,
-  "hands_on_h": 144.5,
-  "machine_h": 548.2,
-  "results_rows": 223
+  "usd": 2354.04,
+  "hands_on_h": 149.0,
+  "machine_h": 631.6,
+  "results_rows": 265
  },
  "files": [
   "README.md",
@@ -98,7 +98,7 @@
   "active tests not in the order of work: none",
   "first run per release: {'R1': 8, 'BAG-CUT': 9, 'BAG-BATCH': 22, 'BL037': 23, 'CARRY': 24}",
   "CA-1 release level 0.276 (cycled 0.404)",
-  "shopping list 89 lines, USD 2,342.64; long lead: 6",
-  "results template 223 rows, 76 tests"
+  "shopping list 91 lines, USD 2,354.04; long lead: 6",
+  "results template 265 rows, 78 tests"
  ]
 }
