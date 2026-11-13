@@ -112,7 +112,17 @@ DOOR_LOADOUT = {"D1": {"inset": 0.0, "z_lo": float(BC.Z0), "z_hinge": F.D1["z_to
                 "D2": {"inset": float(F.D2["blade_bot"]), "z_lo": F.D2["z_lo"], "z_hinge": F.D2["z_hinge"], "r": F.D2["r"]}}
 
 
+def _import_team_a():
+    """Import team A's modules BEFORE install() re-points the shared modules. ``evolve`` (and ``A.evolve``) build
+    ``DOOR = dict(CO.DOOR, z_lo=130)`` and ``evolve_loadout`` captures ``_ZONES_ORIG = L.zones`` at import time; first
+    imported inside install() (``_prefs()``, ``zones_f`` -> ``F._A()``) they froze CORRIE F's loadout door and
+    ``zones_f`` for the rest of the process, so a later ``ledger.teams()`` built team A's bag on the wrong door."""
+    _prefs()
+    F._A()
+
+
 def install(door: str = F.DOOR_DEFAULT, sim=None) -> dict:
+    _import_team_a()
     sim = sim if sim is not None else sim_results()
     fillL = [sim[t]["fill"]["L"] for t in sim if "fill" in sim[t]] or list(L.SIM_FILL_L)
     L.G = geom(fillL)
