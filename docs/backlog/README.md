@@ -96,3 +96,4 @@ Nothing here is decided; the tickets produce the material.
 | BL-045 | Crown tube with mitre; spine clamp; IM/US fairleads; loose island | structural-fea-engineer | M | 042, 043 | |
 | BL-046 | H1 spine channel for OD 20 tube; spine offset in model | structural-fea-engineer | M | 045 | printable H1 |
 | BL-047 | Crown frame buckling with real top-bar offset; pawl pivot and window | structural-fea-engineer | L | 046 | printable H1 |
+| BL-048 | Fourth review fixes, bag side (US route, webbing spec, fixture pin, TL-1 text) | pack-designer | M | 044 | |
