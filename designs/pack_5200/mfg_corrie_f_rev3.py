@@ -2524,7 +2524,13 @@ def techpack_design(pk: dict, sk: dict) -> MF.TechPack:
         ["Thread", f"{ck['thread_bag_g']} g in the bag from the op lengths (no cone waste); ledger books "
                    f"{ck['thread_ledger_g']} g; purchase quantities in the BOM include {THREAD_WASTE:.0%} cone waste"],
         ["Operations", f"{ck['ops']} ops; beginner {c['proto_hours']} h; factory SAM {c['sam_min']:.0f} min"],
-        ["Cost a bag", f"materials ${c['material_usd_primary']:.0f} primary / ${c['material_usd_alternate']:.0f} "
+        ["One bag to buy (prototype)", f"${c['prototype_usd']:.0f} (1-bag markers, shop increments; costing section)"],
+        ["Mass targets, PRIMARY fabrics (QC-14)", f"base {pk['mass']['primary_base_g']:.0f} g / as hunted "
+                                                   f"{pk['mass']['primary_as_hunted_g']:.0f} g / meat trip "
+                                                   f"{pk['mass']['primary_meat_trip_g']:.0f} g, +/- {QC14_TOL_PCT:.0f} %"],
+        ["Pre-cut review (BL-040)", ("0 blockers, 0 majors open: ready to cut after the G2 / G3 gates" if ready_to_cut()
+                                     else "blockers or majors open: NOT ready to cut")],
+        ["Cost a bag (production)", f"materials ${c['material_usd_primary']:.0f} primary / ${c['material_usd_alternate']:.0f} "
                        f"alternate; + CMT: US ${c['landed_usd']['us_contract_usd_min']:.0f}, Asia "
                        f"${c['landed_usd']['asia_contract_usd_min']:.0f} (ASSUMPTIONS)"],
         ["Load points", f"{ck['load_points']}; lowest SF {ck['min_sf']} ({ck['min_sf_point']}); every load point "
