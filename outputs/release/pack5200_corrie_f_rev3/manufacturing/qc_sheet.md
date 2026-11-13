@@ -29,7 +29,7 @@
 
 | ID | Test | Gates | Pass / fail | Source |
 |---|---|---|---|---|
-| MT-1 | 25 mm box-X bartack proof at the BL-010 per-row loads | every 25 mm box-X on IM1-IM3 and US1/US2 | 5 of 5 hold 908 N (IM) and 5 of 5 hold 1080 N (US) for 1 min, 2 of 2 IMC hold 908 N, no broken stitch | test_register.csv |
+| MT-1 | 25 mm box-X bartack proof at the BL-010 per-row loads | every 25 mm box-X on IM1-IM3 and US1/US2 | 5 of 5 hold 908 N (IM) and 5 of 5 hold 1080 N (US) for 1 min, 2 of 2 IMC hold 908 N, 2 of 2 USA hold 1080 N, no broken stitch | test_register.csv |
 | MT-2 | meat-strap hook proof per strap (BL-010) | IM free-end hooks | 5 of 5 G-hooks hold 645 N and 5 of 5 carabiners hold 910 N for 1 min, gates close | test_register.csv |
 | MT-3 | 25 mm cam buckle slip at the BL-010 per-row loads, dry, wet and cold | IM / US cams | mark moves < 3 mm at 908 N and at 1080 N, 5 of 5, in each of dry / wet / cold | test_register.csv |
 | PT-1 | IM3 bag carabiner on the sewn T3 tongue, per-row proof (BL-010) | IM3 carabiner on T3 | 5 of 5 hold 2553 N for 60 s, gate closes after, no visible set | test_register.csv |

@@ -685,20 +685,10 @@ def h1_reproduce(log=print) -> dict:
     return out
 
 
-def body_verify(variant: str, solid: np.ndarray, sets, log=print) -> dict:
-    """All rev C body checks of H1's verify on one solve: strength / fatigue / creep per couple variant and torso,
-    per case, A's branch buckling, the z 234 joint, keep-outs, torsion, member families."""
-    dom = fixed_domain("a" if variant == "a" else "c")
+def keepouts_fixed(dom, solid: np.ndarray) -> dict:
+    """The fixed-torso study's keep-outs on its own domain (``body_verify``; BL-046 split it out so the stored record's
+    keep-outs can be re-run without the solve, ``h1_spine_channel.refresh_records``)."""
     c = H1.base()
-    f, ev = _eval(dom, solid, sets)
-    bk = H1.buckling(f)
-    jc = H1.joint_check(f)
-    grp = c["grp"]
-    fam = {gn: round(float(((grp == i) & solid).sum() * H ** 3 * 1.06e-3), 1) for i, gn in enumerate(A.GROUPS)}
-    cases: dict = {}
-    for tg, b in ev["body"].items():
-        for cs, v in b["cases"].items():
-            cases[cs] = min(cases.get(cs, 9e9), v)
     ko = {}
     for k in ("sleeve_R", "sleeve_L", "pawl", "pivot"):
         m = np.asarray(dom.masks[k], bool) & ~c["holes"]
@@ -720,6 +710,24 @@ def body_verify(variant: str, solid: np.ndarray, sets, log=print) -> dict:
     zc = c["cen"][:, 2]
     ko["spreader clip sections identical to H1"] = bool(all(
         ((solid != h1) & (np.abs(zc - zz) <= 6.0) & (np.abs(c["cen"][:, 0]) > 90)).sum() == 0 for zz in CLIP_Z))
+    return ko
+
+
+def body_verify(variant: str, solid: np.ndarray, sets, log=print) -> dict:
+    """All rev C body checks of H1's verify on one solve: strength / fatigue / creep per couple variant and torso,
+    per case, A's branch buckling, the z 234 joint, keep-outs, torsion, member families."""
+    dom = fixed_domain("a" if variant == "a" else "c")
+    c = H1.base()
+    f, ev = _eval(dom, solid, sets)
+    bk = H1.buckling(f)
+    jc = H1.joint_check(f)
+    grp = c["grp"]
+    fam = {gn: round(float(((grp == i) & solid).sum() * H ** 3 * 1.06e-3), 1) for i, gn in enumerate(A.GROUPS)}
+    cases: dict = {}
+    for tg, b in ev["body"].items():
+        for cs, v in b["cases"].items():
+            cases[cs] = min(cases.get(cs, 9e9), v)
+    ko = keepouts_fixed(dom, solid)
     out = {"variant": variant, "raster_g": D.mass_g(solid, H, 1060.0), "min": ev["min"], "governing": ev["governing"],
            "body": ev["body"], "by_torso": H1.by_torso(ev), "cases": cases, "buckling": bk,
            "buckling_min": min(v["margin"] for v in bk.values() if v["margin"] is not None),

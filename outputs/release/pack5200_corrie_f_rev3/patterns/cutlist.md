@@ -131,11 +131,11 @@ Knife: CW from the grain-arrow head; cut windows and slits first. Notches 6 mm d
 | K-IM | IM tail keeper (25 mm elastic) | elastic_25mm | 90 (3.5) | 3 | base | BL-031 |
 | IME | IM fairlead eye (38 mm) | poly_webbing_38mm | 200 (7.9) | 6 | base | ledger IM-eyes 6 x 0.20 m |
 | US | under-strap US1 / US2 | poly_webbing_25mm | 550 (21.7) | 2 | base | ledger US-web 1.10 m |
-| USA | US cam anchor (right pin <-> cam bar) | poly_webbing_25mm | 192 (7.6) | 2 | base | BL-044 (BL-045: the US cam had no sewn anchor); IMC construction |
+| USA | US cam anchor (right pin <-> cam bar) | poly_webbing_25mm | 202 (8.0) | 2 | base | BL-044 (BL-045: the US cam had no sewn anchor); IMC construction |
 | B-24 | float stand-off link (38 mm, meat-trip) | poly_webbing_38mm | 435 (17.1) | 2 | meat_trip | attach_system.link_piece; ledger B-24-web 2 x 435 mm |
 | HE | hinge eye (38 mm) | poly_webbing_38mm | 96 (3.8) | 2 | base | BL-040 DECISION HE-ONE + BL-041 HE-PIN + BL-044 DECISION HE-ENV (cut 38 x 96; eye solved by he_geometry on bag_attach.HINGE_EYE_ENVELOPE) |
 | T3 | IM3 bag-hook tongue (38 mm) | poly_webbing_38mm | 160 (6.3) | 2 | base | attach_system.drawing_pieces T2/T3 (IM2 hooks removed by BL-004: 2 left) |
-| B-25 | guy bridle on the crown top bar (38 mm, BL-041 / BL-043 topology) | poly_webbing_38mm | 515 (20.3) | 1 | base | corrie_f.b25_topology (BL-043 B25-TOPO) on corrie_f.guy_bridle(wide=True) (crown_tube_guy_loop.md 5, 8.1) |
+| B-25 | guy bridle on the crown top bar (38 mm, BL-041 / BL-043 topology) | poly_webbing_38mm | 512 (20.2) | 1 | base | corrie_f.b25_topology (BL-043 B25-TOPO) on corrie_f.guy_bridle(wide=True) (crown_tube_guy_loop.md 5, 8.1) |
 | TG | port guy (B-25 toggle -> B-27 port -> B-22 inside) | poly_webbing_25mm | 500 (19.7) | 2 | base | attach_system.GUY cut_mm |
 | LLT | guy ladder-lock tab on B-22 | poly_webbing_25mm | 70 (2.8) | 2 | base | attach_system.drawing_pieces LLT |
 | K-G | guy tail keeper (25 mm elastic) | elastic_25mm | 90 (3.5) | 2 | base | ledger 'guy tail elastic keepers x2' |

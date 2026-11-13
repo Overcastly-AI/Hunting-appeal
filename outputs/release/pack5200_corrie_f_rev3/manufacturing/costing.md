@@ -1,6 +1,6 @@
 # CORRIE F rev 3 (door D2) - 5200 cu in hunting pack bag: costing and hours
 
-Material cost a bag, record prices (production quantities): **primary $380.30**, alternate $380.14 (fabric $88.03 / $87.87).
+Material cost a bag, record prices (production quantities): **primary $380.32**, alternate $380.16 (fabric $88.03 / $87.87).
 
 Beginner hours (bag_concepts.HOURS model, every op): **74.4 h**, of which one-off set-up 4.1 h. Lid on the drafted pattern 9.53 h (booked 7.76 h).
 
@@ -22,12 +22,12 @@ Factory SAM 506 min (8.4 h) a bag (ASSUMPTION SAM-RATIO 0.12).
 
 | Scenario | Labour $ | CMT incl. overhead $ | + materials $ |
 |---|---:|---:|---:|
-| us_contract_usd_min | 430.33 | 537.91 | 918.21 |
-| asia_contract_usd_min | 60.75 | 75.94 | 456.24 |
+| us_contract_usd_min | 430.33 | 537.91 | 918.23 |
+| asia_contract_usd_min | 60.75 | 75.94 | 456.26 |
 
 ## One bag (prototype buy) vs production (BL-040 M-11)
 
-Production a bag (10-bag markers + waste): **$380.30**. Buying for ONE bag (1-bag markers, shop increments): **$501.49**. SHOP-INCR: roll goods in 0.5 yd steps at full width, webbing whole yards, HDPE one 0.25 m2 sheet; hardware as production (whole units); thread by the 4 oz cone, basting tape and seam sealer by the smallest pack (SHOP-UNIT, BL-041 n-10); no camo print (CAMO-FIRST, BL-041 Y-5).
+Production a bag (10-bag markers + waste): **$380.32**. Buying for ONE bag (1-bag markers, shop increments): **$501.49**. SHOP-INCR: roll goods in 0.5 yd steps at full width, webbing whole yards, HDPE one 0.25 m2 sheet; hardware as production (whole units); thread by the 4 oz cone, basting tape and seam sealer by the smallest pack (SHOP-UNIT, BL-041 n-10); no camo print (CAMO-FIRST, BL-041 Y-5).
 
 | Section | Item | Unit | Production qty | Production $ | Prototype qty | Prototype $ | How |
 |---|---|---|---:|---:|---:|---:|---|
@@ -44,8 +44,8 @@ Production a bag (10-bag markers + waste): **$380.30**. Buying for ONE bag (1-ba
 | fabric_print | camo print, Owner Base accent 380, placed (3 sets/yd) -- see camo/READ | yd | 0.4 | 12.10 | 0 | 0.00 | NOT in the first build (DECISION CAMO-FIRST): solid 630D (polyester_ht_630d_printable, unprinted) on B-02u, SH-07, SH-01b, FP-b, B-29f and A1-d; the HyperD print yard + shipping is bought by the test kit (AB-1 / FRAY-1 specimen) |
 | webbing | elastic_25mm: K-28 K-G K-IM K-RT | m | 1.04 | 1.14 | 1.829 | 2.01 | 1.04 m -> 2 yd |
 | webbing | elastic_6mm: F-EL | m | 2.558 | 1.53 | 2.743 | 1.65 | 2.558 m -> 3 yd |
-| webbing | poly_webbing_25mm: B-28 B-28s B-28t BRL BRS E5 HPL I2K I2T IM1 IM2 IM3 | m | 16.935 | 11.85 | 17.374 | 12.16 | 16.935 m -> 19 yd |
-| webbing | poly_webbing_38mm: B-24 B-25 HE IME T3 | m | 3.252 | 3.25 | 3.658 | 3.66 | 3.252 m -> 4 yd |
+| webbing | poly_webbing_25mm: B-28 B-28s B-28t BRL BRS E5 HPL I2K I2T IM1 IM2 IM3 | m | 16.956 | 11.87 | 17.374 | 12.16 | 16.956 m -> 19 yd |
+| webbing | poly_webbing_38mm: B-24 B-25 HE IME T3 | m | 3.249 | 3.25 | 3.658 | 3.66 | 3.249 m -> 4 yd |
 | webbing | shock_cord_3mm: B-26 E5-cord FP-cord MK-cord | m | 1.826 | 0.91 | 1.829 | 0.91 | 1.826 m -> 2 yd |
 | hardware | #10 coil zip chain, door D2 (2 sliders) | m | 1.418 | 5.67 | 1.418 | 5.67 | as production (whole units / cones) |
 | hardware | #10 coil slider, metal pull (door) | unit | 2 | 3.98 | 2 | 3.98 | as production (whole units / cones) |
@@ -77,9 +77,9 @@ Production a bag (10-bag markers + waste): **$380.30**. Buying for ONE bag (1-ba
 
 | Kit | Ledger, team B fabrics (g) | Primary pattern delta (g) | PRIMARY target (g) | lb |
 |---|---:|---:|---:|---:|
-| base | 1152.8 | +64.1 | 1216.9 | 2.68 |
-| as hunted | 1434.7 | +86.1 | 1520.8 | 3.35 |
-| meat trip | 1630.7 | +95.3 | 1726.0 | 3.81 |
+| base | 1153.1 | +64.0 | 1217.1 | 2.68 |
+| as hunted | 1434.9 | +86.2 | 1521.1 | 3.35 |
+| meat trip | 1630.9 | +95.4 | 1726.3 | 3.81 |
 
 One-off tooling (not a bag): J1-J8 jigs; LK-1900 / AMS-210EN programs; laser files are the part A DXFs; dies only above ~500 bags a year.
 

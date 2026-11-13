@@ -1102,13 +1102,15 @@ def bl044_rows() -> list:
          "patterns_corrie_f_rev3.HE_CUT - HE_CUT_BL041, x 2 x poly_webbing_38mm mass_g_m (record)"),
         ("attachment", f"BL-044: hinge pins +{pin['delta_mm']:.0f} mm for the 20 mm throat (x2)", 2 * pin["delta_g"],
          "corrie_f.hinge_pin: bag_attach.HINGE_EYE_ENVELOPE throat - bag_attach.THROAT, 5 mm x alu_7075_t6 density (record)"),
-        ("attachment", f"BL-044: B-25 on the BL-045 clamp and the printed spine (15.85 mm fore of the bar) "
+        ("attachment", f"BL-044: B-25 on the sized spine clamp and the printed spine ({_CSC.SPINE_AXIS_FORE_MM:g} mm fore of "
+         f"the bar) "
          f"{b25['cut_bl043_mm']:.1f} -> {b25['cut_mm']:.1f} mm", (b25["cut_mm"] - b25["cut_bl043_mm"]) / 1000.0 * w38,
-         "corrie_f.b25_topology with crown_spine_clamp constants (+34.1 run, collar 12 -> 12.8) x poly_webbing_38mm "
+         f"corrie_f.b25_topology with crown_spine_clamp constants (+{_CSC.B25_CUT_CHANGE_MM:g} run, collar 12 -> "
+         f"{_CSC.SPINE_CLAMP_COLLAR:g}) x poly_webbing_38mm "
          "mass_g_m (record)"),
-        ("straps_meat", f"BL-044: US cam anchors USA (2 x {4 * P.IMC_FOLD:.0f} mm, 25 mm; the US cam's sewn anchor on the "
-         "right pin, BL-045)", 2 * 4 * P.IMC_FOLD / 1000.0 * WEB25,
-         "patterns_corrie_f_rev3 USA (4 x IMC_FOLD) x poly_webbing_25mm mass_g_m (record)"),
+        ("straps_meat", f"BL-044: US cam anchors USA (2 x {P.USA_CUT:.0f} mm, 25 mm; the US cam's sewn anchor on the "
+         "right pin, BL-045; DECISION USA-LOOP)", 2 * P.USA_CUT / 1000.0 * WEB25,
+         "patterns_corrie_f_rev3.USA_CUT (2 x USA_PIN_FOLD + 2 x IMC_FOLD) x poly_webbing_25mm mass_g_m (record)"),
         ("straps_compression", f"BL-044: W3 K-W keeper loops deleted (2 x {P.KW_CUT:.0f} mm, DECISION KW-W3-OFF)",
          -2 * P.KW_CUT / 1000.0 * WEB25, "patterns_corrie_f_rev3.KW_CUT x poly_webbing_25mm mass_g_m (record), negative"),
     ]

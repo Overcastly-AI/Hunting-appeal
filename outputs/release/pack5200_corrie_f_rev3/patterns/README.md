@@ -60,7 +60,7 @@ diamonds. Tape on the back, then check the test square again.
   (DECISION W3-OVER: W3 is the outer layer, slacken it to open the top); the RTM buckle tab moves 10 mm under W3's
   lowest edge (z 544, flat x 50), the hose slots too (z 558, DECISION HOSE-LOW); the RT strap is
   sewn at the roll end again (DECISION RT-ORIGIN; 'roll end' and 'B-07s strip end' notches on B-07; RT cut 560);
-  muzzle tabs 113 / 173 mm; B-25 drawn with its mitre turns and 25 mm neck (SK-12, cut 515); IMC 192 mm;
+  muzzle tabs 113 / 173 mm; B-25 drawn with its mitre turns and 25 mm neck (SK-12, cut 512); IMC 192 mm;
   webbing pages carry a leader label on every line, with B-25 and RT added.
 
 ## 5. Build order and what to print

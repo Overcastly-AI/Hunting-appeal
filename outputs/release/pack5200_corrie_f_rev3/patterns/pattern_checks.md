@@ -155,8 +155,8 @@ Rows 115; unmatched 0; matched twice 0; drafted ids without a row 0; row ids not
 | BL-043: IMC tabs 180 -> 192 mm (m-4, 5 mm raw-end margin, x3) | straps_meat | base | 0.7 | webbing | IMC | m-4 |
 | BL-044: HE hinge eyes 86 -> 96 mm (DECISION HE-ENV, x2) | attachment | base | 0.6 | webbing | HE | HE-ENV length change |
 | BL-044: hinge pins +2 mm for the 20 mm throat (x2) | attachment | base | 0.2 | hardware |  | frame-side pins, 20 mm throat |
-| BL-044: B-25 on the BL-045 clamp and the printed spine (15.85 mm fore of the bar) 479.4 -> | attachment | base | 1.0 | webbing | B-25 | BL-045 run_plan |
-| BL-044: US cam anchors USA (2 x 192 mm, 25 mm; the US cam's sewn anchor on the right pin,  | straps_meat | base | 6.9 | webbing | USA | BL-045 found-not-fixed |
+| BL-044: B-25 on the sized spine clamp and the printed spine (25.02 mm fore of the bar) 479 | attachment | base | 0.9 | webbing | B-25 | crown_spine_clamp run_plan |
+| BL-044: US cam anchors USA (2 x 202 mm, 25 mm; the US cam's sewn anchor on the right pin,  | straps_meat | base | 7.3 | webbing | USA | BL-045 found-not-fixed; USA-LOOP |
 | BL-044: W3 K-W keeper loops deleted (2 x 80 mm, DECISION KW-W3-OFF) | straps_compression | base | -2.9 | removed |  | DECISION KW-W3-OFF |
 
 ## 3. Mass from the pattern areas (team B fabrics = the ledger's basis)

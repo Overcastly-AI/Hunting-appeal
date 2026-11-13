@@ -479,19 +479,20 @@ def published() -> dict:
             "B25": b25_clearances(c, g)}
 
 
-# Constants for corrie_f (BL-045 values; tests/test_bl045_crown_fairleads.py asserts each against the functions above).
-SPINE_CLAMP_HALF_X = 12.0          # size_clamp half_x_mm: saddle 24 mm along the bar (>= the 23.2 mm socket OD; the
-#                                    bar bond alone needs 19 mm). Replaces corrie_f.SPINE_CLAMP_HALF 15 (ASSUMPTION)
-SPINE_CLAMP_COLLAR = 12.8          # size_clamp collar_below_bar_underside_mm: socket bonded from s 6.84 (spine clear of
-#                                    the bar) for 15 mm. Replaces corrie_f.SPINE_CLAMP_COLLAR 12 (ASSUMPTION B25-CLAMP)
-SPINE_AXIS_FORE_MM = 15.85         # spine_axis: spine axis fore (wearer side) of the bar axis
-SPINE_CLAMP_MASS_G = 10.4          # size_clamp mass_g (frame.yaml books 6.0)
-PAWL_HOUSING_UP = 15.62            # h1_crown_interfaces: housing top z 535.62 above the pawl line z 520 (was 20 ASSUMED)
-PAWL_HOUSING_HALF_W = 24.82        # h1_crown_interfaces: housing max |x| above the upper bar (was 18 ASSUMED)
+# Constants for corrie_f. BL-046 values (the real crown: top bar 25 mm aft of the legs' plane, the spine in the legs'
+# plane through the re-made channel); tests/test_bl045_crown_fairleads.py and test_bl046_spine_channel.py assert each
+# against the functions above. BL-045 values in brackets.
+SPINE_CLAMP_HALF_X = 12.0          # size_clamp half_x_mm: saddle 24 mm along the bar (>= the 23.2 mm socket OD) [12.0]
+SPINE_CLAMP_COLLAR = 6.0           # size_clamp collar_below_bar_underside_mm: the spine clears the bar (25 mm fore), so
+#                                    the 15 mm socket starts at the bar's centre height [12.8]
+SPINE_AXIS_FORE_MM = 25.02         # spine_axis: spine axis fore (wearer side) of the top bar's real axis [15.85]
+SPINE_CLAMP_MASS_G = 15.9          # size_clamp mass_g: 25 mm offset, two 2.5 mm webs (frame.yaml books 6.0) [10.4]
+PAWL_HOUSING_UP = 15.62            # h1_crown_interfaces: housing top z 535.62 above the pawl line z 520 (kept in BL-046)
+PAWL_HOUSING_HALF_W = 24.82        # h1_crown_interfaces: housing max |x| above the upper bar (kept in BL-046)
 BODY_TOP_Z_IN_B25_BAND = 519.18    # h1_crown_interfaces: printed body top under the sleeve band (corrie_f modelled the
 #                                    upper bar as OD 22 centred on z 520, top 531)
-B25_RUN_EXTRA_PER_SIDE_MM = 17.0   # b25_clearances run_plan: the run reaches the spine 15.85 mm fore of the bar plane
-B25_CUT_CHANGE_MM = 34.1           # b25_clearances run_plan cut_change_mm (both sides)
+B25_RUN_EXTRA_PER_SIDE_MM = 22.25  # b25_clearances run_plan: the run reaches the spine 25 mm fore of the bar [17.0]
+B25_CUT_CHANGE_MM = 44.5           # b25_clearances run_plan cut_change_mm (both sides) [34.1]
 
 
 def main(argv=None):

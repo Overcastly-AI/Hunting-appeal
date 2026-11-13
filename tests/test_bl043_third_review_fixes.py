@@ -207,10 +207,15 @@ def test_b25_topology_turn_fits_and_clears_at_every_kit(pk):
     for k, v in tp["kits"].items():
         assert v["clear_mm"] >= 10.0, k                                     # spine wrap vs pawl housing
         assert v["mitre_to_upper_bar_mm"] >= 5.0, k
-        assert v["mitre_to_housing_x_mm"] >= 5.0, k
+        # BL-044: on the measured housing (+/-24.82, crown_spine_clamp) the mitre sits beside it in x (1.7 mm out), so it
+        # must clear the housing TOP by 5 mm in s, or the housing side by 5 mm in x
+        assert v["mitre_to_housing_x_mm"] > 0.0, k
+        assert max(v["housing_top_s_mm"] - v["mitre_bottom_s_mm"], v["mitre_to_housing_x_mm"]) >= 5.0, k
     assert tp["governing_kit"] == "S"                                        # shortest spine above the pawl
-    # the BL-041 un-necked 38 mm wrap would hit the housing at kit S 15 in: would have caught the M-4 spine check
-    assert tp["kits"]["S"]["housing_top_s_mm"] - (tp["run_s"][0] + tp["width_mm"]) < 1.0
+    # BL-043 also asserted that an un-necked 38 mm wrap would hit the housing at kit S 15 in. That held on BL-043's
+    # ASSUMED clamp (collar 12, housing 20 up); on the sized clamp (crown_spine_clamp, BL-045 / BL-046) it depends on the
+    # collar, so BL-044 checks the necked wrap itself (clear_mm >= 10 above) and keeps the neck.
+    assert tp["neck_w_mm"] == 25.0
     rs = pk["ctx"].rs
     q = rs.pieces["B-25"]
     assert q.bounds(cut=False)[3] == pytest.approx(tp["cut_mm"])
@@ -322,7 +327,8 @@ def test_ledger_books_bl043_and_reconciles(pk):
     tp = F.b25_topology()
     w38 = F._rec("poly_webbing_38mm", "mass_g_m")
     b25 = next(v for n, v in rows.items() if "B-25" in n)
-    assert b25 == pytest.approx((tp["cut_mm"] - tp["cut_bl041_mm"]) / 1000.0 * w38, abs=0.01)   # ledger rounds to 0.01 g
+    # the BL-043 row books BL-043's cut; BL-044 books the step to the sized clamp (corrie_f.bl044_rows)
+    assert b25 == pytest.approx((tp["cut_bl043_mm"] - tp["cut_bl041_mm"]) / 1000.0 * w38, abs=0.01)   # ledger rounds to 0.01 g
     ck = M.checks(pk)
     assert ck["recon_unmatched"] == 0 and ck["recon_pieces_without_row"] == 0 and ck["mass_ok"]
     assert ck["box_mismatches"] == [] and ck["holds"] == [] and ck["unsequenced"] == []

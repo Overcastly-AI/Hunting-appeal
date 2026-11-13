@@ -365,7 +365,7 @@
      "bore_R empty": 1.0,
      "bore_L empty": 1.0,
      "spine_channel empty": 1.0,
-     "fairleads present": 1.0,
+     "fairlead stubs inside the envelope present (voxel)": 1.0,
      "outside envelope (voxels)": 0,
      "spreader clip sections identical to H1": true
     },
@@ -386,7 +386,8 @@
      "branch upper (z 330-495) R": 4.443,
      "mid bar (x -115..115) all": null
     },
-    "torsion_vs_h1": 1.0
+    "torsion_vs_h1": 1.0,
+    "keepouts_note": "keepouts re-run 2026-11-13 (BL-046, h1_spine_channel.refresh_records) on the record's stored body; FEA numbers as of the record's date"
    },
    "beam": {
     "crown": {
@@ -1022,7 +1023,7 @@
      "bore_R empty": 1.0,
      "bore_L empty": 1.0,
      "spine_channel empty": 1.0,
-     "fairleads present": 1.0,
+     "fairlead stubs inside the envelope present (voxel)": 1.0,
      "outside envelope (voxels)": 0,
      "spreader clip sections identical to H1": true
     },
@@ -1043,7 +1044,8 @@
      "branch upper (z 330-495) R": 3.451,
      "mid bar (x -115..115) all": null
     },
-    "torsion_vs_h1": 0.9696903589786093
+    "torsion_vs_h1": 0.9696903589786093,
+    "keepouts_note": "keepouts re-run 2026-11-13 (BL-046, h1_spine_channel.refresh_records) on the record's stored body; FEA numbers as of the record's date"
    },
    "beam": {
     "crown": {
@@ -1679,7 +1681,7 @@
      "bore_R empty": 1.0,
      "bore_L empty": 1.0,
      "spine_channel empty": 1.0,
-     "fairleads present": 1.0,
+     "fairlead stubs inside the envelope present (voxel)": 1.0,
      "outside envelope (voxels)": 0,
      "spreader clip sections identical to H1": true
     },
@@ -1700,7 +1702,8 @@
      "branch upper (z 330-495) R": 3.364,
      "mid bar (x -115..115) all": null
     },
-    "torsion_vs_h1": 0.9696903589786093
+    "torsion_vs_h1": 0.9696903589786093,
+    "keepouts_note": "keepouts re-run 2026-11-13 (BL-046, h1_spine_channel.refresh_records) on the record's stored body; FEA numbers as of the record's date"
    },
    "beam": {
     "crown": {

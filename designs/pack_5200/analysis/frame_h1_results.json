@@ -269,7 +269,9 @@
   "bore_R empty": 1.0,
   "bore_L empty": 1.0,
   "spine_channel empty": 1.0,
-  "fairleads present": 1.0,
+  "spine channel BL-046 (tube + rack, h1_spine_channel) empty": 0.6377906976744185,
+  "fairlead stubs inside the envelope present (voxel)": 1.0,
+  "fairleads complete on the print STL (h1_fairleads.check_stl)": true,
   "outside envelope (voxels)": 0,
   "boss wearer face flush (rails)": true,
   "boss bag side outboard of spreader and inside envelope": true,
@@ -335,5 +337,6 @@
   "alignment": "bolts in 5.1 mm reamed (fitted) holes locate the halves to about +-0.05 mm; the 18.0 mm bore is reamed THROUGH both halves after bolt-up, so the leg and its bushing see one continuous bore (step 0 by construction). Halves become a matched pair (mark them).",
   "step_allowed_mm": 0.1
  },
- "torsion_vs_today": 0.7518006075024063
+ "torsion_vs_today": 0.7518006075024063,
+ "keepouts_note": "keepouts re-run 2026-11-13 (BL-046, h1_spine_channel.refresh_records) on the record's stored body; FEA numbers as of the record's date"
 }

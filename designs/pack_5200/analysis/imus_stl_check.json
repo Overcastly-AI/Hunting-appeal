@@ -1,0 +1,1993 @@
+{
+ "pieces": {
+  "im3ec": "designs/pack_5200/print/frame_h1/test_pieces/im3ec_cheek_R_frame_coords.stl",
+  "print": "designs/pack_5200/print/frame_h1/h1_assembled.stl"
+ },
+ "stations": {
+  "us1_L@print": {
+   "station": "us1_L",
+   "piece": "US",
+   "src": "print",
+   "worst_under_pin_clear_mm": 1.021,
+   "min_clear_off_corner_mm": 1.257,
+   "floor_depth_centre_mm": 5.478,
+   "throat_min_mm": 20.0,
+   "throat_clear_side_mm": 0.5,
+   "under_pin": {
+    "1.2": {
+     "t": 1.2,
+     "worst": {
+      "clear_mm": 1.445,
+      "x_from_throat_cl": -9.99,
+      "neck_w": 19.0,
+      "shift": -0.5
+     },
+     "clear_off_corner_mm": 1.738,
+     "floor_depth_centre_mm": 5.478
+    },
+    "1.5": {
+     "t": 1.5,
+     "worst": {
+      "clear_mm": 1.126,
+      "x_from_throat_cl": -9.99,
+      "neck_w": 18.0,
+      "shift": -1.0
+     },
+     "clear_off_corner_mm": 1.376,
+     "floor_depth_centre_mm": 5.478
+    },
+    "1.6": {
+     "t": 1.6,
+     "worst": {
+      "clear_mm": 1.021,
+      "x_from_throat_cl": -9.99,
+      "neck_w": 19.0,
+      "shift": -0.5
+     },
+     "clear_off_corner_mm": 1.257,
+     "floor_depth_centre_mm": 5.478
+    }
+   },
+   "sweep": {
+    "rows": [
+     {
+      "theta": -90,
+      "eye_overlap_mm2": 3.239,
+      "eye_clear_mm": 0.0,
+      "box_overlap_mm2": 36.807,
+      "box_clear_mm": 0.0,
+      "box_from_pin_mm": 14.5,
+      "pass": false
+     },
+     {
+      "theta": -75,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 18.134,
+      "box_clear_mm": 0.0,
+      "box_from_pin_mm": 14.5,
+      "pass": false
+     },
+     {
+      "theta": -60,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 2.98,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": -45,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 2.85,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": -30,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 4.13,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": -15,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 5.96,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": 0,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 6.86,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": 15,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 5.96,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": 30,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 4.13,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": 45,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 2.82,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     }
+    ],
+    "clear_thetas": [
+     -60,
+     -45,
+     -30,
+     -15,
+     0,
+     15,
+     30,
+     45
+    ],
+    "eye_ok_all": false
+   },
+   "eye_pass": true,
+   "required_thetas": [
+    -50.9
+   ],
+   "route_ok": true
+  },
+  "us1_R@print": {
+   "station": "us1_R",
+   "piece": "USA",
+   "src": "print",
+   "worst_under_pin_clear_mm": 1.021,
+   "min_clear_off_corner_mm": 1.344,
+   "floor_depth_centre_mm": 5.5,
+   "throat_min_mm": 19.98,
+   "throat_clear_side_mm": 0.49,
+   "under_pin": {
+    "1.2": {
+     "t": 1.2,
+     "worst": {
+      "clear_mm": 1.445,
+      "x_from_throat_cl": -9.99,
+      "neck_w": 19.0,
+      "shift": -0.5
+     },
+     "clear_off_corner_mm": 1.825,
+     "floor_depth_centre_mm": 5.5
+    },
+    "1.5": {
+     "t": 1.5,
+     "worst": {
+      "clear_mm": 1.126,
+      "x_from_throat_cl": -9.99,
+      "neck_w": 18.0,
+      "shift": -1.0
+     },
+     "clear_off_corner_mm": 1.463,
+     "floor_depth_centre_mm": 5.5
+    },
+    "1.6": {
+     "t": 1.6,
+     "worst": {
+      "clear_mm": 1.021,
+      "x_from_throat_cl": -9.99,
+      "neck_w": 19.0,
+      "shift": -0.5
+     },
+     "clear_off_corner_mm": 1.344,
+     "floor_depth_centre_mm": 5.5
+    }
+   },
+   "sweep": {
+    "rows": [
+     {
+      "theta": -90,
+      "eye_overlap_mm2": 3.25,
+      "eye_clear_mm": 0.0,
+      "box_overlap_mm2": 36.794,
+      "box_clear_mm": 0.0,
+      "box_from_pin_mm": 14.5,
+      "pass": false
+     },
+     {
+      "theta": -75,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 18.135,
+      "box_clear_mm": 0.0,
+      "box_from_pin_mm": 14.5,
+      "pass": false
+     },
+     {
+      "theta": -60,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 2.98,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": -45,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 2.85,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": -30,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 4.13,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": -15,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 5.96,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": 0,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 6.86,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": 15,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 5.96,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": 30,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 4.13,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": 45,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 2.82,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     }
+    ],
+    "clear_thetas": [
+     -60,
+     -45,
+     -30,
+     -15,
+     0,
+     15,
+     30,
+     45
+    ],
+    "eye_ok_all": false
+   },
+   "eye_pass": true,
+   "required_thetas": [
+    -50.9
+   ],
+   "route_ok": true
+  },
+  "us2_L@print": {
+   "station": "us2_L",
+   "piece": "US",
+   "src": "print",
+   "worst_under_pin_clear_mm": 1.012,
+   "min_clear_off_corner_mm": 1.343,
+   "floor_depth_centre_mm": 5.5,
+   "throat_min_mm": 19.96,
+   "throat_clear_side_mm": 0.48,
+   "under_pin": {
+    "1.2": {
+     "t": 1.2,
+     "worst": {
+      "clear_mm": 1.436,
+      "x_from_throat_cl": -9.99,
+      "neck_w": 18.0,
+      "shift": -1.0
+     },
+     "clear_off_corner_mm": 1.824,
+     "floor_depth_centre_mm": 5.5
+    },
+    "1.5": {
+     "t": 1.5,
+     "worst": {
+      "clear_mm": 1.118,
+      "x_from_throat_cl": -9.99,
+      "neck_w": 18.0,
+      "shift": -1.0
+     },
+     "clear_off_corner_mm": 1.462,
+     "floor_depth_centre_mm": 5.5
+    },
+    "1.6": {
+     "t": 1.6,
+     "worst": {
+      "clear_mm": 1.012,
+      "x_from_throat_cl": -9.99,
+      "neck_w": 18.0,
+      "shift": -1.0
+     },
+     "clear_off_corner_mm": 1.343,
+     "floor_depth_centre_mm": 5.5
+    }
+   },
+   "sweep": {
+    "rows": [
+     {
+      "theta": -90,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 78.376,
+      "box_clear_mm": 0.0,
+      "box_from_pin_mm": 14.5,
+      "pass": false
+     },
+     {
+      "theta": -75,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.05,
+      "box_clear_mm": 0.0,
+      "box_from_pin_mm": 14.5,
+      "pass": false
+     },
+     {
+      "theta": -60,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 2.99,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": -45,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 2.85,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": -30,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 4.13,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": -15,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 5.96,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": 0,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 6.86,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": 15,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 5.96,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": 30,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 4.13,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": 45,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 2.81,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     }
+    ],
+    "clear_thetas": [
+     -60,
+     -45,
+     -30,
+     -15,
+     0,
+     15,
+     30,
+     45
+    ],
+    "eye_ok_all": true
+   },
+   "eye_pass": true,
+   "required_thetas": [
+    -45.6
+   ],
+   "route_ok": true
+  },
+  "us2_R@print": {
+   "station": "us2_R",
+   "piece": "USA",
+   "src": "print",
+   "worst_under_pin_clear_mm": 0.928,
+   "min_clear_off_corner_mm": 1.342,
+   "floor_depth_centre_mm": 5.5,
+   "throat_min_mm": 19.96,
+   "throat_clear_side_mm": 0.48,
+   "under_pin": {
+    "1.2": {
+     "t": 1.2,
+     "worst": {
+      "clear_mm": 1.352,
+      "x_from_throat_cl": -9.99,
+      "neck_w": 19.0,
+      "shift": -0.5
+     },
+     "clear_off_corner_mm": 1.823,
+     "floor_depth_centre_mm": 5.5
+    },
+    "1.5": {
+     "t": 1.5,
+     "worst": {
+      "clear_mm": 1.033,
+      "x_from_throat_cl": -9.99,
+      "neck_w": 18.0,
+      "shift": -1.0
+     },
+     "clear_off_corner_mm": 1.461,
+     "floor_depth_centre_mm": 5.5
+    },
+    "1.6": {
+     "t": 1.6,
+     "worst": {
+      "clear_mm": 0.928,
+      "x_from_throat_cl": -9.99,
+      "neck_w": 19.0,
+      "shift": -0.5
+     },
+     "clear_off_corner_mm": 1.342,
+     "floor_depth_centre_mm": 5.5
+    }
+   },
+   "sweep": {
+    "rows": [
+     {
+      "theta": -90,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 78.423,
+      "box_clear_mm": 0.0,
+      "box_from_pin_mm": 14.5,
+      "pass": false
+     },
+     {
+      "theta": -75,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.05,
+      "box_clear_mm": 0.0,
+      "box_from_pin_mm": 14.5,
+      "pass": false
+     },
+     {
+      "theta": -60,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 2.99,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": -45,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 2.85,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": -30,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 4.13,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": -15,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 5.96,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": 0,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 6.86,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": 15,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 5.96,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": 30,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 4.13,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     },
+     {
+      "theta": 45,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 1.54,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 2.81,
+      "box_from_pin_mm": 14.5,
+      "pass": true
+     }
+    ],
+    "clear_thetas": [
+     -60,
+     -45,
+     -30,
+     -15,
+     0,
+     15,
+     30,
+     45
+    ],
+    "eye_ok_all": true
+   },
+   "eye_pass": true,
+   "required_thetas": [
+    -45.6
+   ],
+   "route_ok": true
+  },
+  "im1_L@print": {
+   "station": "im1_L",
+   "piece": "IME",
+   "src": "print",
+   "worst_under_pin_clear_mm": 0.685,
+   "min_clear_off_corner_mm": 0.685,
+   "floor_depth_centre_mm": 5.491,
+   "throat_min_mm": 20.0,
+   "throat_clear_side_mm": 0.5,
+   "under_pin": {
+    "1.2": {
+     "t": 1.2,
+     "worst": {
+      "clear_mm": 1.415,
+      "x_from_throat_cl": -9.99,
+      "neck_w": 18.0,
+      "shift": -1.0
+     },
+     "clear_off_corner_mm": 1.807,
+     "floor_depth_centre_mm": 5.491
+    },
+    "1.5": {
+     "t": 1.5,
+     "worst": {
+      "clear_mm": 0.985,
+      "x_from_throat_cl": -2.89,
+      "neck_w": 18.0,
+      "shift": -1.0
+     },
+     "clear_off_corner_mm": 0.985,
+     "floor_depth_centre_mm": 5.491
+    },
+    "1.6": {
+     "t": 1.6,
+     "worst": {
+      "clear_mm": 0.685,
+      "x_from_throat_cl": -2.89,
+      "neck_w": 18.0,
+      "shift": -1.0
+     },
+     "clear_off_corner_mm": 0.685,
+     "floor_depth_centre_mm": 5.491
+    }
+   },
+   "sweep": {
+    "rows": [
+     {
+      "theta": -90,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 37.746,
+      "box_clear_mm": 0.0,
+      "box_from_pin_mm": 44.3,
+      "pass": false
+     },
+     {
+      "theta": -75,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 6.52,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -60,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 17.37,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -45,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 27.65,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -30,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 33.39,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -15,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 35.04,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 0,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 36.71,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 15,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 35.03,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 30,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 33.35,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 45,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 32.63,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     }
+    ],
+    "clear_thetas": [
+     -75,
+     -60,
+     -45,
+     -30,
+     -15,
+     0,
+     15,
+     30,
+     45
+    ],
+    "eye_ok_all": true
+   },
+   "eye_pass": true,
+   "required_thetas": [
+    -21.5
+   ],
+   "route_ok": true
+  },
+  "im1_R@print": {
+   "station": "im1_R",
+   "piece": "IME",
+   "src": "print",
+   "worst_under_pin_clear_mm": 0.687,
+   "min_clear_off_corner_mm": 0.687,
+   "floor_depth_centre_mm": 5.507,
+   "throat_min_mm": 20.0,
+   "throat_clear_side_mm": 0.5,
+   "under_pin": {
+    "1.2": {
+     "t": 1.2,
+     "worst": {
+      "clear_mm": 1.435,
+      "x_from_throat_cl": -9.99,
+      "neck_w": 18.0,
+      "shift": -1.0
+     },
+     "clear_off_corner_mm": 1.807,
+     "floor_depth_centre_mm": 5.507
+    },
+    "1.5": {
+     "t": 1.5,
+     "worst": {
+      "clear_mm": 0.987,
+      "x_from_throat_cl": 2.06,
+      "neck_w": 19.0,
+      "shift": 0.5
+     },
+     "clear_off_corner_mm": 0.987,
+     "floor_depth_centre_mm": 5.507
+    },
+    "1.6": {
+     "t": 1.6,
+     "worst": {
+      "clear_mm": 0.687,
+      "x_from_throat_cl": 2.06,
+      "neck_w": 19.0,
+      "shift": 0.5
+     },
+     "clear_off_corner_mm": 0.687,
+     "floor_depth_centre_mm": 5.507
+    }
+   },
+   "sweep": {
+    "rows": [
+     {
+      "theta": -90,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 37.747,
+      "box_clear_mm": 0.0,
+      "box_from_pin_mm": 44.3,
+      "pass": false
+     },
+     {
+      "theta": -75,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 6.52,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -60,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 17.37,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -45,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 27.65,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -30,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 33.39,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -15,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 35.04,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 0,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 36.71,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 15,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 35.03,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 30,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 33.35,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 45,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 32.63,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     }
+    ],
+    "clear_thetas": [
+     -75,
+     -60,
+     -45,
+     -30,
+     -15,
+     0,
+     15,
+     30,
+     45
+    ],
+    "eye_ok_all": true
+   },
+   "eye_pass": true,
+   "required_thetas": [
+    -21.5
+   ],
+   "route_ok": true
+  },
+  "im2_L@print": {
+   "station": "im2_L",
+   "piece": "IME",
+   "src": "print",
+   "worst_under_pin_clear_mm": 0.7,
+   "min_clear_off_corner_mm": 0.7,
+   "floor_depth_centre_mm": 5.5,
+   "throat_min_mm": 20.0,
+   "throat_clear_side_mm": 0.5,
+   "under_pin": {
+    "1.2": {
+     "t": 1.2,
+     "worst": {
+      "clear_mm": 1.5,
+      "x_from_throat_cl": -9.99,
+      "neck_w": 19.0,
+      "shift": -0.5
+     },
+     "clear_off_corner_mm": 1.796,
+     "floor_depth_centre_mm": 5.5
+    },
+    "1.5": {
+     "t": 1.5,
+     "worst": {
+      "clear_mm": 1.0,
+      "x_from_throat_cl": -2.99,
+      "neck_w": 18.0,
+      "shift": -1.0
+     },
+     "clear_off_corner_mm": 1.0,
+     "floor_depth_centre_mm": 5.5
+    },
+    "1.6": {
+     "t": 1.6,
+     "worst": {
+      "clear_mm": 0.7,
+      "x_from_throat_cl": -2.99,
+      "neck_w": 18.0,
+      "shift": -1.0
+     },
+     "clear_off_corner_mm": 0.7,
+     "floor_depth_centre_mm": 5.5
+    }
+   },
+   "sweep": {
+    "rows": [
+     {
+      "theta": -90,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 3.47,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -75,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 15.47,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -60,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 26.37,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -45,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 32.66,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -30,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 33.39,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -15,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 35.04,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 0,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 36.71,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 15,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 35.03,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 30,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 33.35,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 45,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 32.63,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     }
+    ],
+    "clear_thetas": [
+     -90,
+     -75,
+     -60,
+     -45,
+     -30,
+     -15,
+     0,
+     15,
+     30,
+     45
+    ],
+    "eye_ok_all": true
+   },
+   "eye_pass": true,
+   "required_thetas": [
+    -90.0
+   ],
+   "route_ok": true
+  },
+  "im2_R@print": {
+   "station": "im2_R",
+   "piece": "IME",
+   "src": "print",
+   "worst_under_pin_clear_mm": 0.7,
+   "min_clear_off_corner_mm": 0.7,
+   "floor_depth_centre_mm": 5.5,
+   "throat_min_mm": 20.0,
+   "throat_clear_side_mm": 0.5,
+   "under_pin": {
+    "1.2": {
+     "t": 1.2,
+     "worst": {
+      "clear_mm": 1.5,
+      "x_from_throat_cl": -9.99,
+      "neck_w": 19.0,
+      "shift": -0.5
+     },
+     "clear_off_corner_mm": 1.814,
+     "floor_depth_centre_mm": 5.5
+    },
+    "1.5": {
+     "t": 1.5,
+     "worst": {
+      "clear_mm": 1.0,
+      "x_from_throat_cl": -2.99,
+      "neck_w": 18.0,
+      "shift": -1.0
+     },
+     "clear_off_corner_mm": 1.0,
+     "floor_depth_centre_mm": 5.5
+    },
+    "1.6": {
+     "t": 1.6,
+     "worst": {
+      "clear_mm": 0.7,
+      "x_from_throat_cl": -2.99,
+      "neck_w": 18.0,
+      "shift": -1.0
+     },
+     "clear_off_corner_mm": 0.7,
+     "floor_depth_centre_mm": 5.5
+    }
+   },
+   "sweep": {
+    "rows": [
+     {
+      "theta": -90,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 5.14,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -75,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 19.62,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -60,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 30.54,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -45,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 32.66,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -30,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 33.39,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -15,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 35.04,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 0,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 36.71,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 15,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 35.03,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 30,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 33.35,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 45,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 32.63,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     }
+    ],
+    "clear_thetas": [
+     -90,
+     -75,
+     -60,
+     -45,
+     -30,
+     -15,
+     0,
+     15,
+     30,
+     45
+    ],
+    "eye_ok_all": true
+   },
+   "eye_pass": true,
+   "required_thetas": [
+    -90.0
+   ],
+   "route_ok": true
+  },
+  "im3_L@print": {
+   "station": "im3_L",
+   "piece": "IME",
+   "src": "print",
+   "worst_under_pin_clear_mm": 0.686,
+   "min_clear_off_corner_mm": 0.686,
+   "floor_depth_centre_mm": 5.5,
+   "throat_min_mm": 20.0,
+   "throat_clear_side_mm": 0.5,
+   "under_pin": {
+    "1.2": {
+     "t": 1.2,
+     "worst": {
+      "clear_mm": 1.411,
+      "x_from_throat_cl": -9.99,
+      "neck_w": 18.0,
+      "shift": -1.0
+     },
+     "clear_off_corner_mm": 1.804,
+     "floor_depth_centre_mm": 5.5
+    },
+    "1.5": {
+     "t": 1.5,
+     "worst": {
+      "clear_mm": 0.986,
+      "x_from_throat_cl": -2.99,
+      "neck_w": 18.0,
+      "shift": -1.0
+     },
+     "clear_off_corner_mm": 0.986,
+     "floor_depth_centre_mm": 5.5
+    },
+    "1.6": {
+     "t": 1.6,
+     "worst": {
+      "clear_mm": 0.686,
+      "x_from_throat_cl": -2.99,
+      "neck_w": 18.0,
+      "shift": -1.0
+     },
+     "clear_off_corner_mm": 0.686,
+     "floor_depth_centre_mm": 5.5
+    }
+   },
+   "sweep": {
+    "rows": [
+     {
+      "theta": -90,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 7.66,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -75,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 19.18,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -60,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 28.48,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -45,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 29.27,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -30,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 31.51,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -15,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 34.79,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 0,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 36.71,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 15,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 34.79,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 30,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 31.48,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 45,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.69,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 29.23,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     }
+    ],
+    "clear_thetas": [
+     -90,
+     -75,
+     -60,
+     -45,
+     -30,
+     -15,
+     0,
+     15,
+     30,
+     45
+    ],
+    "eye_ok_all": true
+   },
+   "eye_pass": true,
+   "required_thetas": [
+    -88.2,
+    -81.6,
+    -9.5
+   ],
+   "route_ok": true
+  },
+  "im3_R@im3ec": {
+   "station": "im3_R",
+   "piece": "IME",
+   "src": "im3ec",
+   "worst_under_pin_clear_mm": 0.442,
+   "min_clear_off_corner_mm": 0.682,
+   "floor_depth_centre_mm": 5.485,
+   "throat_min_mm": 19.99,
+   "throat_clear_side_mm": 0.49,
+   "under_pin": {
+    "1.2": {
+     "t": 1.2,
+     "worst": {
+      "clear_mm": 0.866,
+      "x_from_throat_cl": -9.99,
+      "neck_w": 18.0,
+      "shift": -1.0
+     },
+     "clear_off_corner_mm": 1.771,
+     "floor_depth_centre_mm": 5.485
+    },
+    "1.5": {
+     "t": 1.5,
+     "worst": {
+      "clear_mm": 0.548,
+      "x_from_throat_cl": -9.99,
+      "neck_w": 19.0,
+      "shift": -0.5
+     },
+     "clear_off_corner_mm": 0.982,
+     "floor_depth_centre_mm": 5.485
+    },
+    "1.6": {
+     "t": 1.6,
+     "worst": {
+      "clear_mm": 0.442,
+      "x_from_throat_cl": -9.99,
+      "neck_w": 19.0,
+      "shift": -0.5
+     },
+     "clear_off_corner_mm": 0.682,
+     "floor_depth_centre_mm": 5.485
+    }
+   },
+   "sweep": {
+    "rows": [
+     {
+      "theta": -90,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.68,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 7.66,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -75,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.68,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 19.18,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -60,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.68,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 28.48,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -45,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.68,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 29.27,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -30,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.68,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 31.51,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -15,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.68,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 34.79,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 0,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.68,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 36.71,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 15,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.68,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 34.79,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 30,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.68,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 31.48,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 45,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.68,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 29.23,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     }
+    ],
+    "clear_thetas": [
+     -90,
+     -75,
+     -60,
+     -45,
+     -30,
+     -15,
+     0,
+     15,
+     30,
+     45
+    ],
+    "eye_ok_all": true
+   },
+   "eye_pass": true,
+   "required_thetas": [
+    -88.2,
+    -81.6,
+    -9.5
+   ],
+   "route_ok": true
+  },
+  "im3_R@print": {
+   "station": "im3_R",
+   "piece": "IME",
+   "src": "print",
+   "worst_under_pin_clear_mm": 0.7,
+   "min_clear_off_corner_mm": 0.7,
+   "floor_depth_centre_mm": 5.5,
+   "throat_min_mm": 20.0,
+   "throat_clear_side_mm": 0.5,
+   "under_pin": {
+    "1.2": {
+     "t": 1.2,
+     "worst": {
+      "clear_mm": 1.411,
+      "x_from_throat_cl": -9.99,
+      "neck_w": 18.0,
+      "shift": -1.0
+     },
+     "clear_off_corner_mm": 1.805,
+     "floor_depth_centre_mm": 5.5
+    },
+    "1.5": {
+     "t": 1.5,
+     "worst": {
+      "clear_mm": 1.0,
+      "x_from_throat_cl": 2.46,
+      "neck_w": 19.0,
+      "shift": 0.5
+     },
+     "clear_off_corner_mm": 1.0,
+     "floor_depth_centre_mm": 5.5
+    },
+    "1.6": {
+     "t": 1.6,
+     "worst": {
+      "clear_mm": 0.7,
+      "x_from_throat_cl": 2.46,
+      "neck_w": 19.0,
+      "shift": 0.5
+     },
+     "clear_off_corner_mm": 0.7,
+     "floor_depth_centre_mm": 5.5
+    }
+   },
+   "sweep": {
+    "rows": [
+     {
+      "theta": -90,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 7.65,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -75,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 19.18,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -60,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 28.48,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -45,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 29.27,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -30,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 31.51,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": -15,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 34.79,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 0,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 36.71,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 15,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 34.79,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 30,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 31.48,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     },
+     {
+      "theta": 45,
+      "eye_overlap_mm2": 0.0,
+      "eye_clear_mm": 0.7,
+      "box_overlap_mm2": 0.0,
+      "box_clear_mm": 29.23,
+      "box_from_pin_mm": 44.3,
+      "pass": true
+     }
+    ],
+    "clear_thetas": [
+     -90,
+     -75,
+     -60,
+     -45,
+     -30,
+     -15,
+     0,
+     15,
+     30,
+     45
+    ],
+    "eye_ok_all": true
+   },
+   "eye_pass": true,
+   "required_thetas": [
+    -88.2,
+    -81.6,
+    -9.5
+   ],
+   "route_ok": true
+  }
+ },
+ "pulls": {
+  "revC": {
+   "im2": -90.0,
+   "im1": -21.5,
+   "im3": -9.5
+  },
+  "sim_im3": {
+   "F_PR15|fill|R": {
+    "theta": -85.7,
+    "lateral_deg": 10.4
+   },
+   "F_PR15|fill|L": {
+    "theta": -84.8,
+    "lateral_deg": 9.1
+   },
+   "F_PR15|meat|R": {
+    "theta": -85.8,
+    "lateral_deg": 4.8
+   },
+   "F_PR15|meat|L": {
+    "theta": -85.9,
+    "lateral_deg": 1.0
+   },
+   "F_PR19|fill|R": {
+    "theta": -87.5,
+    "lateral_deg": 6.6
+   },
+   "F_PR19|fill|L": {
+    "theta": -85.3,
+    "lateral_deg": 6.0
+   },
+   "F_PR19|meat|R": {
+    "theta": -86.4,
+    "lateral_deg": 3.3
+   },
+   "F_PR19|meat|L": {
+    "theta": -86.3,
+    "lateral_deg": 0.2
+   },
+   "F_PR23|fill|R": {
+    "theta": -87.6,
+    "lateral_deg": 1.9
+   },
+   "F_PR23|fill|L": {
+    "theta": -84.2,
+    "lateral_deg": 2.5
+   },
+   "F_PR23|meat|R": {
+    "theta": -87.1,
+    "lateral_deg": 3.1
+   },
+   "F_PR23|meat|L": {
+    "theta": -84.6,
+    "lateral_deg": 0.5
+   },
+   "F_PR15_fineFM|fill|R": {
+    "theta": -83.2,
+    "lateral_deg": 9.7
+   },
+   "F_PR15_fineFM|fill|L": {
+    "theta": -81.6,
+    "lateral_deg": 5.8
+   },
+   "F_PR15_fineFM|meat|R": {
+    "theta": -85.1,
+    "lateral_deg": 1.2
+   },
+   "F_PR15_fineFM|meat|L": {
+    "theta": -86.6,
+    "lateral_deg": 4.9
+   },
+   "F_PR19_fineFM|fill|R": {
+    "theta": -84.9,
+    "lateral_deg": 5.5
+   },
+   "F_PR19_fineFM|fill|L": {
+    "theta": -82.2,
+    "lateral_deg": 1.8
+   },
+   "F_PR19_fineFM|meat|R": {
+    "theta": -85.7,
+    "lateral_deg": 5.8
+   },
+   "F_PR19_fineFM|meat|L": {
+    "theta": -84.3,
+    "lateral_deg": 8.7
+   },
+   "F_PR23_fineFM|fill|R": {
+    "theta": -85.0,
+    "lateral_deg": 1.8
+   },
+   "F_PR23_fineFM|fill|L": {
+    "theta": -88.2,
+    "lateral_deg": 0.4
+   },
+   "F_PR23_fineFM|meat|R": {
+    "theta": -84.8,
+    "lateral_deg": 7.2
+   },
+   "F_PR23_fineFM|meat|L": {
+    "theta": -86.7,
+    "lateral_deg": 9.9
+   }
+  },
+  "kit_ends": {
+   "a_S 15 in": 15,
+   "a_S 18 in": 19,
+   "a_M 17.5 in": 19,
+   "a_M 20.5 in": 19,
+   "a_L 20 in": 19,
+   "a_L 23 in": 23
+  }
+ },
+ "required_pulls": {
+  "im1": [
+   -21.5
+  ],
+  "im2": [
+   -90.0
+  ],
+  "im3": [
+   -88.2,
+   -81.6,
+   -9.5
+  ],
+  "us1": [
+   -50.9
+  ],
+  "us2": [
+   -45.6
+  ]
+ },
+ "eye_pass_all": true,
+ "box_clear_thetas": {
+  "us1_L@print": [
+   -60,
+   -45,
+   -30,
+   -15,
+   0,
+   15,
+   30,
+   45
+  ],
+  "us1_R@print": [
+   -60,
+   -45,
+   -30,
+   -15,
+   0,
+   15,
+   30,
+   45
+  ],
+  "us2_L@print": [
+   -60,
+   -45,
+   -30,
+   -15,
+   0,
+   15,
+   30,
+   45
+  ],
+  "us2_R@print": [
+   -60,
+   -45,
+   -30,
+   -15,
+   0,
+   15,
+   30,
+   45
+  ],
+  "im1_L@print": [
+   -75,
+   -60,
+   -45,
+   -30,
+   -15,
+   0,
+   15,
+   30,
+   45
+  ],
+  "im1_R@print": [
+   -75,
+   -60,
+   -45,
+   -30,
+   -15,
+   0,
+   15,
+   30,
+   45
+  ],
+  "im2_L@print": [
+   -90,
+   -75,
+   -60,
+   -45,
+   -30,
+   -15,
+   0,
+   15,
+   30,
+   45
+  ],
+  "im2_R@print": [
+   -90,
+   -75,
+   -60,
+   -45,
+   -30,
+   -15,
+   0,
+   15,
+   30,
+   45
+  ],
+  "im3_L@print": [
+   -90,
+   -75,
+   -60,
+   -45,
+   -30,
+   -15,
+   0,
+   15,
+   30,
+   45
+  ],
+  "im3_R@im3ec": [
+   -90,
+   -75,
+   -60,
+   -45,
+   -30,
+   -15,
+   0,
+   15,
+   30,
+   45
+  ],
+  "im3_R@print": [
+   -90,
+   -75,
+   -60,
+   -45,
+   -30,
+   -15,
+   0,
+   15,
+   30,
+   45
+  ]
+ },
+ "assumptions": [
+  "HE-STACK / HE-FOLD-R as he_stl_check (IME); US / USA booked at 2 plies across",
+  "SIM_TORSO (h1_sleeve): a kit end takes the pull direction of the nearest simulated torso",
+  "IMUS-TAUT: the eye is a taut teardrop from the pin to its box; a slack eye lies inside it"
+ ]
+}

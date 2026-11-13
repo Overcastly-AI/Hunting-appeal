@@ -310,6 +310,11 @@ def keepouts(solid: np.ndarray) -> dict:
     for k in ("bore_R", "bore_L", "spine_channel"):
         m = np.asarray(dom.masks[k], bool)
         out[f"{k} empty"] = float(1.0 - (solid & m).sum() / max(m.sum(), 1))
+    # BL-046: 'spine_channel' above is the domain's old plate-spine channel; the OD 20 tube + 6 mm rack channel is
+    # h1_spine_channel.channel_section (bodies before BL-046 fill part of it)
+    from .h1_spine_channel import channel_mask
+    m = channel_mask(cen)
+    out["spine channel BL-046 (tube + rack, h1_spine_channel) empty"] = float(1.0 - (solid & m).sum() / max(m.sum(), 1))
     fl = (attachment_field(cen, SCALE) <= 0.0) & ~dom.passive_void
     # BL-042: this is only the part of each fairlead inside the voxel envelope (y <= y_hi, 16 mm); the voxel model
     # cannot hold a whole fairlead. The fairleads themselves are added exactly by print_mesh and checked on the

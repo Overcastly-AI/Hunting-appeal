@@ -1425,8 +1425,10 @@ def ops(ctx: Ctx) -> list[SewingOp]:
                     "one BT-M tack across each leg at the 'neck tack' lines " + step_spec("bt", "304") + ". ")
             if pid == "USA":
                 how = (neck + "HARDWARE FIRST: thread the US CAM's anchor bar into the 'fold round the CAM anchor bar' "
-                       "loop before its box is sewn; the necked 'RIGHT PIN' loop is sewn closed round the right pin's "
-                       "UHMWPE sleeve (no pin in it: the pin goes through cheek, sleeve, cheek at frame-kit assembly). "
+                       f"loop before its box is sewn; the necked 'RIGHT PIN' loop ({P.USA_PIN_LOOP:.0f} mm clear, DECISION USA-LOOP) "
+                       "is sewn closed "
+                       "EMPTY (no pin in it: at frame-kit assembly the pin goes through the cheek sleeve, the loop and "
+                       "the other cheek sleeve). "
                        "Hardware for this op: 2 cams. Then: " + how)
             else:
                 how = neck + how
@@ -2016,9 +2018,11 @@ ASSUMPTIONS = [
      "toggle tab at the sleeve centre x 45.5; the 25 mm tab pull spreads over the 38 mm sleeve.",
      "TL-1 at 494 N on real bar stock, specimen WITH the mitre turn and run (BL-043)"),
     ("B25-TOPO / CLAMP (BL-045)", "BL-043 M-4: B-25 = tab | sleeve | 45 deg mitre under the sleeve | run necked to "
-     "25 mm | one wrap round the spine under the clamp. BL-044: on the BL-045 sized clamp (half 12.0 along the bar, "
-     "collar 12.8) and the measured pawl housing (15.62 up, +/-24.82); the run reaches the printed spine 15.85 mm fore "
-     "of the bar (+34.1 mm cut). Was ASSUMED (B25-CLAMP / PAWL-TOP / SPINE_CLAMP_HALF).",
+     f"25 mm | one wrap round the spine under the clamp. BL-044: on the sized clamp (crown_spine_clamp: half "
+     f"{P.F._CSC.SPINE_CLAMP_HALF_X:g} along the bar, collar {P.F._CSC.SPINE_CLAMP_COLLAR:g}) and the measured pawl "
+     f"housing ({P.F._CSC.PAWL_HOUSING_UP:g} up, +/-{P.F._CSC.PAWL_HOUSING_HALF_W:g}); the run reaches the printed spine "
+     f"{P.F._CSC.SPINE_AXIS_FORE_MM:g} mm fore of the bar (+{P.F._CSC.B25_CUT_CHANGE_MM:g} mm run). Was ASSUMED "
+     "(B25-CLAMP / PAWL-TOP / SPINE_CLAMP_HALF).",
      "BL-045 clamp T6 coupon (CLAMP-TYPE); op 7.17 gate B25-FIT at kit S 15 in; TL-1 specimen"),
     ("GUY-LOCK-IN", "BL-040 M-5: the guy ladder lock stays on its LLT tab at B-22 inside the hinge band; the guy length is "
      "set with the roll top open (per crown kit / load), not on the move.", "PORT-1 gloved adjustment at B-22"),
@@ -2971,7 +2975,7 @@ def sk_bridle(pk, path):
     ax.add_patch(Rectangle((-110, -rb), 220, 2 * rb, fc="#cfcfcf", ec="#333"))                     # bar
     ax.add_patch(Rectangle((-rsp, -kS["s_pawl_mm"] - 10), 2 * rsp, kS["s_pawl_mm"] + 10 - rb, fc="#e2e2e2", ec="#333"))
     ax.add_patch(Rectangle((-ch, -rb - cc), 2 * ch, cc + 2 * rb, fc="#9aa7b8", ec="#333", alpha=0.8))  # clamp
-    ax.text(0, rb + 3, f"spine clamp (BL-045 sized: half {ch:.1f}, collar {cc:.1f})\nspine axis "
+    ax.text(0, rb + 3, f"spine clamp (crown_spine_clamp sized: half {ch:.1f}, collar {cc:.1f})\nspine axis "
                        f"{tp['spine_fore_mm']:.2f} mm FORE of the bar plane", ha="center", fontsize=8)
     ht = -kS["housing_top_s_mm"]
     hw = F_.PAWL_HOUSING_HALF_W
@@ -3040,7 +3044,7 @@ def sk_bridle(pk, path):
                    % (tp["cut_mm"], tp["cut_bl043_mm"], tp["cut_bl041_mm"]))
     ax3.set_yticks([])
     ax3.set_title("(c) B-25 flat, 38 mm: folds blue dash-dot, boxes green (op 7.17)", fontsize=10, loc="left")
-    fig.suptitle("SK-12  B-25 guy bridle on the crown (BL-043 B25-TOPO, BL-044 on the BL-045 clamp): the turn sits UNDER each sleeve; "
+    fig.suptitle("SK-12  B-25 guy bridle on the crown (BL-043 B25-TOPO, BL-044 on the sized crown_spine_clamp): the turn sits UNDER each sleeve; "
                  "gate B25-FIT dry-fits it before the laps are tacked", fontsize=12, x=0.01, ha="left")
     fig.savefig(path, dpi=100)
     plt.close(fig)

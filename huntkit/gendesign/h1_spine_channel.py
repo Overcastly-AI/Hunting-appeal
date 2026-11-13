@@ -255,6 +255,17 @@ def voxel_channel(solid: np.ndarray, cen: np.ndarray | None = None) -> tuple:
                  "channel": int(ch.sum()), "ring": int(ring.sum())}
 
 
+def channel_mask(cen: np.ndarray) -> np.ndarray:
+    """Voxels (centres ``cen``) inside the BL-046 channel section over the housing's height (frame_h1.keepouts)."""
+    from shapely import contains_xy
+    x, y, z = np.asarray(cen, float).T
+    h = housing_dims()
+    out = np.zeros(len(x), bool)
+    near = (np.abs(x) < 30.0) & (z >= h["z"][0]) & (z <= h["z"][1])
+    out[near] = contains_xy(channel_section(), x[near], y[near] - axis_y(z[near]))
+    return out
+
+
 # ================================================================================== spine axis decision
 def axis_decision() -> dict:
     """Where the tube axis can sit: from the fixed housing fore face (YOKE-PATH), wall, pawl zone, rack, tube."""
@@ -416,19 +427,20 @@ def guide_b_clear(mesh, s: dict) -> dict:
 
 
 def check_stl_channel(path_or_mesh, step: float = 0.5) -> dict:
-    """Slice check of the spine channel on an H1 STL (frame coordinates): every 0.5 mm from 6 mm below the housing to
-    6 mm above it; then per crown kit and 0.5 in torso setting, the slices the tube passes (its bottom up) and guide B.
+    """Slice check of the spine channel on an H1 STL (frame coordinates): every 0.5 mm from 6 mm below the lowest guide
+    B (kit S 15 in, tube end z 428) to 6 mm above the housing; then per crown kit and 0.5 in torso setting, the slices the tube passes (its bottom up) and guide B.
     Returns {'slices': [...], 'settings': [...], 'min': {...}, 'all_pass'}."""
     import trimesh
     mesh = trimesh.load(path_or_mesh) if isinstance(path_or_mesh, (str, Path)) else path_or_mesh
     h = housing_dims()
-    zs = np.arange(h["z"][0] - 6.0, h["z"][1] + 6.0 + 1e-6, step)
+    # from below the lowest guide B (kit S 15 in) to 6 mm above the housing: the tube's whole path through the body
+    z0 = min(s["bottom_z"] for s in settings()) - GUIDE_B_H - 6.0
+    zs = np.arange(math.floor(z0), h["z"][1] + 6.0 + 1e-6, step)
     sl = [slice_channel(mesh, z) for z in zs]
     sets = []
     for s in settings():
         mine = [q for q in sl if q["z"] >= s["bottom_z"]]
-        gb = guide_b_clear(mesh, s) if s["bottom_z"] - GUIDE_B_H < h["z"][1] and s["bottom_z"] > h["z"][0] - GUIDE_B_H - 6 \
-            else {"clear_mm": None, "pass": True, "note": "guide B below the housing"}
+        gb = guide_b_clear(mesh, s)
         sets.append({"kit": s["kit"], "torso_in": s["torso_in"], "bottom_z": s["bottom_z"],
                      "slices": len(mine), "min_clear_mm": min(q["clear_mm"] for q in mine),
                      "pawl_zone_empty": all(q["pawl_zone_empty"] for q in mine), "pawl_on_rack": s["pawl_on_rack"],
@@ -491,16 +503,17 @@ def body_check(real: bool, log=print) -> dict:
 
 
 # ================================================================================== record
-BEFORE_STL_NOTE = "git HEAD designs/pack_5200/print/frame_h1/h1_assembled.stl (BL-045 export)"
+BEFORE_REV = "370bc8f"                     # the BL-045 commit (its H1 export, the plate channel)
+BEFORE_STL_NOTE = f"git {BEFORE_REV} designs/pack_5200/print/frame_h1/h1_assembled.stl (BL-045 export)"
 
 
 def before_stl() -> Path:
-    """BL-045's H1 STL from git HEAD (scratch copy in OUT)."""
+    """BL-045's H1 STL from git (commit BEFORE_REV; scratch copy in OUT)."""
     import subprocess
-    p = OUT / "h1_assembled_bl045.stl"
+    p = OUT / f"h1_assembled_{BEFORE_REV}.stl"
     if not p.exists():
         OUT.mkdir(parents=True, exist_ok=True)
-        data = subprocess.run(["git", "-C", str(REPO), "show", "HEAD:designs/pack_5200/print/frame_h1/h1_assembled.stl"],
+        data = subprocess.run(["git", "-C", str(REPO), "show", f"{BEFORE_REV}:designs/pack_5200/print/frame_h1/h1_assembled.stl"],
                               check=True, capture_output=True).stdout
         p.write_bytes(data)
     return p
@@ -580,3 +593,501 @@ def _np(o):
     if isinstance(o, np.bool_):
         return bool(o)
     raise TypeError(type(o))
+
+
+# ================================================================================== stale records (ticket item 3)
+def refresh_records(log=print) -> dict:
+    """``frame_h1_results.json`` (H1 verify, 2026-11-10) and ``frame_fixed_results.json`` (BL-007 study) still carried
+    BL-042's stale 'fairleads present' key. Their keep-outs are re-run here on each record's own stored body (the
+    keep-out functions as they are now: voxel fairlead stubs, the print-STL fairlead check, the BL-046 channel); the
+    FEA numbers in them are left as dated (no solve is repeated: those bodies are superseded studies)."""
+    from . import frame_fixed as FF
+    from . import frame_h1 as H1
+    note = ("keepouts re-run 2026-11-13 (BL-046, h1_spine_channel.refresh_records) on the record's stored body; "
+            "FEA numbers as of the record's date")
+    out = {}
+    p = H1.RESULT
+    d = json.loads(p.read_text())
+    sol = np.load(H1.OUT / "h1_final.npz")["solid"]
+    d["keepouts"] = H1.keepouts(sol)
+    d["keepouts_note"] = note
+    p.write_text(json.dumps(d, indent=1, default=float))
+    out["frame_h1_results"] = d["keepouts"]
+    p = FF.RESULT
+    d = json.loads(p.read_text())
+    sols = {"a": np.load(H1.OUT / "h1_final.npz")["solid"], "c": np.load(FF.OUT / "c_solid.npz")["solid"]}
+    sols["b"] = sols["c"]
+    for v in ("a", "c", "b"):
+        dom = FF.fixed_domain("a" if v == "a" else "c")
+        ko = FF.keepouts_fixed(dom, sols[v])
+        d["variants"][v]["body"]["keepouts"] = ko
+        d["variants"][v]["body"]["keepouts_note"] = note
+        out[f"frame_fixed_{v}"] = ko
+    p.write_text(json.dumps(d, indent=1, default=float))
+    if log:
+        log(json.dumps(out, default=float)[:600])
+    return out
+
+
+# ================================================================================== crown records on the real crown
+def crown_compare() -> dict:
+    """crown_diet.crown_margins (crown legs, top bar, spine, corner bonds, bushings, rack, pawl cheek, frame buckling)
+    on the beam rows as recorded (crown_diet caches) and on the real crown (the rows ``body_check(real=True)`` made)."""
+    from . import crown_diet as CD
+    out = {}
+    for kit in ("a_S", "a_M", "a_L"):
+        sp = CD.specs()[kit]
+        _, rows0 = CD.load_beam(sp, log=None)
+        with real_crown_models(), _real_caches():
+            _, rows1 = CD.load_beam(sp, log=None)
+        m0, m1 = CD.crown_margins(rows0), CD.crown_margins(rows1)
+        out[kit] = {"recorded": m0["min"], "real": m1["min"], "recorded_min": m0["min_all"], "real_min": m1["min_all"]}
+    return out
+
+
+# ================================================================================== figures
+def _sec_polys(mesh, z):
+    P = _body_section(mesh, z)
+    from shapely.geometry import box
+    return P.intersection(box(-45, -50, 45, 35))
+
+
+def _draw(ax, geom, **kw):
+    from shapely.geometry import MultiPolygon, Polygon
+    gs = [geom] if isinstance(geom, Polygon) else list(getattr(geom, "geoms", []))
+    for g in gs:
+        if not isinstance(g, Polygon) or g.is_empty:
+            continue
+        x, y = g.exterior.xy
+        ax.fill(x, y, **kw)
+        for r in g.interiors:
+            xi, yi = r.xy
+            ax.fill(xi, yi, color="white", lw=0)
+    return MultiPolygon
+
+
+def plot_sections(before, after, path: Path) -> str:
+    """Before (BL-045 STL) / after (BL-046 STL) at the pawl line: the body, the tube + rack, the pawl zone."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    fig, axs = plt.subplots(1, 2, figsize=(10, 6.2), dpi=110)
+    y0 = float(axis_y(PAWL_Z))
+    for ax, mesh, title in ((axs[0], before, "BL-045 print (plate channel)"), (axs[1], after, "BL-046 print (tube channel)")):
+        _draw(ax, _sec_polys(mesh, PAWL_Z), color="#9aa3ad", lw=0)
+        mv = moving_envelope()
+        x, y = mv.exterior.xy
+        ax.fill(x, y, color="#c0392b", alpha=0.55, lw=0)
+        ax.plot(x, y, color="#7b241c", lw=1.2)
+        x, y = pawl_zone().exterior.xy
+        ax.fill(x, y, color="#f1c40f", alpha=0.45, lw=0)
+        ax.axhline(0.0, color="k", lw=0.6, ls=":")
+        ax.axhline(TOP_BAR_AFT_MM, color="#2e86c1", lw=1.4, ls="--")
+        ax.text(-43, TOP_BAR_AFT_MM + 1.0, "top bar axis (25 mm aft, z 600+)", fontsize=8.5, color="#2e86c1")
+        ax.text(-43, 1.0, "legs' plane = spine axis", fontsize=8.5)
+        ax.set_xlim(-45, 45)
+        ax.set_ylim(-50, 35)
+        ax.set_aspect("equal")
+        ax.invert_yaxis()
+        ax.set_title(title, fontsize=12)
+        ax.set_xlabel("x across the frame, mm")
+        ax.grid(alpha=0.25)
+    axs[0].set_ylabel(f"y from the spine axis, mm (wearer up; axis at frame y {y0:.1f})")
+    axs[0].text(-43, -46, "OD 20 tube + 6 mm rack (red)\noverlaps the body: does not fit", fontsize=9, color="#7b241c")
+    c = channel_dims()
+    h = housing_dims()
+    axs[1].text(-43, -46, f"channel {c['width']:.0f} x {c['depth']:.1f} mm, clearance {RUN_CLEAR:.0f} mm\n"
+                f"walls fore {h['fore_wall']:.1f} / aft {h['aft_wall']:.1f} / side {h['side_wall']:.1f} mm",
+                fontsize=9, color="#1d4d1d")
+    fig.suptitle(f"H1 section at the pawl line z {PAWL_Z:.0f} (sliced from the exported STLs); yellow = pawl swing",
+                 fontsize=11)
+    fig.tight_layout()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(path)
+    plt.close(fig)
+    return str(path)
+
+
+def buckling_mode(model: dict, case_name: str = "hipbelt_off_abuse") -> tuple:
+    """First eigen-buckling mode of ``case_name`` on a beam model (huntkit.fea.frame.buckling_factors re-run with
+    eigenvectors). Returns (Result, lambda, {node: mode translation})."""
+    import scipy.sparse.linalg as spla
+    import huntkit.fea.frame as F
+    from huntkit.fea.load_standard import ls1_envelope
+    got = {}
+    orig = F.buckling_factors
+
+    def bf(K, Kg, free, n_modes=3):
+        mu, v = spla.eigsh(-Kg[free][:, free].tocsc(), k=6, M=K[free][:, free].tocsc(), which="LA")
+        i = int(np.argmax(mu))
+        phi = np.zeros(K.shape[0])
+        phi[free] = v[:, i]
+        got["phi"], got["lam"] = phi, float(1.0 / mu[i])
+        return [got["lam"]]
+    case = copy.copy(next(c for c in ls1_envelope("C")["crown_bar"] if c.name == case_name))
+    case.params = dict(case.params)
+    case.buckling = True
+    F.buckling_factors = bf
+    try:
+        res = case.run(model)
+    finally:
+        F.buckling_factors = orig
+    U = got["phi"].reshape(-1, 6)[:, :3]
+    U = U / np.abs(U).max()
+    return res, got["lam"] / (1.5 * case.required_sf), {nid: U[i] for i, nid in enumerate(res.node_ids[: res.n_user_nodes])}
+
+
+def plot_real_crown(path: Path) -> str:
+    """Kit S 18 in, hipbelt_off_abuse: first buckling mode of the beam model as recorded and of the real crown (top bar
+    25 mm aft, clamp member), front and side views, and the corner dog-leg forces."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from . import crown_diet as CD
+    m0 = CD.build(CD.specs()["a_S"], 18.0)
+    fig, axs = plt.subplots(1, 4, figsize=(12, 6.6), dpi=100, gridspec_kw={"width_ratios": [1.6, 0.6, 1.6, 0.6]})
+    for k, (m, lab) in enumerate(((m0, "beam model (bar in the legs' plane)"), (real_crown(m0), "real crown (bar 25 mm aft)"))):
+        res, marg, U = buckling_mode(m)
+        n = m["nodes"]
+        dl = next(q for q in res.members if q["id"].startswith("CLtop-"))["end_forces"][0][0]
+        for v, (i, j) in enumerate(((0, 2), (1, 2))):
+            ax = axs[2 * k + v]
+            for q in m["members"]:
+                a, b = q["nodes"]
+                pa, pb = np.asarray(n[a], float), np.asarray(n[b], float)
+                col = "#c0392b" if q["group"] == "spine_clamp" else "#7f8c8d"
+                ax.plot([pa[i], pb[i]], [pa[j], pb[j]], color=col, lw=1.0)
+                if a in U and b in U:
+                    da, db = pa + 60.0 * U[a], pb + 60.0 * U[b]
+                    ax.plot([da[i], db[i]], [da[j], db[j]], color="#e67e22", lw=1.0)
+            ax.set_aspect("equal")
+            ax.grid(alpha=0.25)
+            ax.set_xlabel("x, mm" if i == 0 else "y, mm")
+            if v == 0:
+                ax.set_title(f"{lab}\nbuckling margin {marg:.2f}; dog-leg axial {dl:+.0f} N", fontsize=10)
+                ax.set_ylabel("z, mm")
+    fig.suptitle("Kit S 18 in, hipbelt_off_abuse: first buckling mode (orange, 60 mm max), front and side views. "
+                 "Grey = frame; red = spine clamp", fontsize=10)
+    fig.tight_layout()
+    fig.savefig(path)
+    plt.close(fig)
+    return str(path)
+
+
+def plot_margins(res: dict, path: Path) -> str:
+    """Margins (pass >= 1): clamp bonds and webs on the real crown; the H1 body per basis, BL-045 / BL-046 (loads as
+    recorded) / BL-046 (real crown)."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    c = res["clamp"]["margins"]
+    cl = [("socket avg", c["socket"]["avg"]["sf"]), ("socket peak", c["socket"]["peak"]["sf"]),
+          ("socket fatigue", c["socket"]["fat_avg"]["sf"]), ("saddle avg", c["saddle"]["avg"]["sf"]),
+          ("saddle peak", c["saddle"]["peak"]["sf"]), ("saddle peak +V*", c["saddle_with_shear"]["peak"]["sf"]),
+          ("socket bending", c["socket_bending"]["sf_yield"]), ("webs yield", c["webs"]["sf_yield"]),
+          ("webs fatigue", c["webs"]["sf_fatigue_kt2"])]
+    fig, axs = plt.subplots(1, 2, figsize=(11, 6.4), dpi=105, gridspec_kw={"width_ratios": [1, 1.5]})
+    ax = axs[0]
+    v = [q[1] for q in cl]
+    ax.barh([q[0] for q in cl], v, color=["#27ae60" if x >= 1 else "#c0392b" for x in v])
+    for i, x in enumerate(v):
+        ax.text(min(x, 4.6) + 0.05, i, f"{x:.2f}", va="center", fontsize=9)
+    ax.axvline(1.0, color="k", lw=1)
+    ax.set_xlim(0, 5)
+    ax.invert_yaxis()
+    ax.set_title("Spine clamp (real crown)\n* transverse shear in the bond: T6 coupon", fontsize=10)
+    ax = axs[1]
+    bases = ["fine_sm8", "fine", "beam", "fine_sm8.cyc"]
+    fams = [("strength", "strength"), ("fatigue", "fatigue"), ("buckling", "buckling")]
+    runs = [("bl045", "BL-045", "#95a5a6"), ("loads_as_recorded", "BL-046 body", "#2e86c1"),
+            ("loads_real_crown", "BL-046 body, real crown", "#8e44ad")]
+    labels, ypos = [], 0
+    for b in bases:
+        for fk, fl in fams:
+            for k, (rk, rl, col) in enumerate(runs):
+                val = res["body"].get(rk, {}).get(b, {}).get(fk)
+                if val is None:
+                    continue
+                ax.barh(ypos + k * 0.27, val, height=0.25, color=col, label=rl if (b, fk) == ("fine_sm8", "strength") else None)
+                ax.text(val + 0.02, ypos + k * 0.27, f"{val:.2f}", va="center", fontsize=7)
+            labels.append((ypos + 0.27, f"{b} {fl}"))
+            ypos += 1
+    ax.set_yticks([q[0] for q in labels])
+    ax.set_yticklabels([q[1] for q in labels], fontsize=8)
+    ax.axvline(1.0, color="k", lw=1)
+    ax.set_xlim(0, 3.0)
+    ax.invert_yaxis()
+    ax.legend(fontsize=8, loc="lower right")
+    ax.set_title("H1 body margins (pass >= 1; cinch-cycled fatigue is MT-1's open bound)", fontsize=10)
+    fig.tight_layout()
+    fig.savefig(path)
+    plt.close(fig)
+    return str(path)
+
+
+def figures(res: dict) -> list:
+    import trimesh
+    SCREENS.mkdir(parents=True, exist_ok=True)
+    before, after = trimesh.load(before_stl()), trimesh.load(PRINT_DIR / "h1_assembled.stl")
+    shots = [plot_sections(before, after, SCREENS / f"{SHOT}1.png"), plot_real_crown(SCREENS / f"{SHOT}2.png"),
+             plot_margins(res, SCREENS / f"{SHOT}3.png")]
+    return shots
+
+
+# ================================================================================== record
+def _lb(g: float) -> str:
+    return f"{g / 28.3495:.2f} oz"
+
+
+def write_doc(res: dict, shots: list | None = None) -> str:
+    c, h, ax, cl = res["channel"], res["housing"], res["axis"], res["clamp"]
+    st, m, b = res["stl_check"], res["mass"], res["body"]
+    mg = cl["margins"]
+    L = []
+    a = L.append
+    a("# BL-046 H1 spine channel and spine offset\n")
+    a("Generated by `python -m huntkit.gendesign.h1_spine_channel` (data `h1_spine_channel.json`). Date "
+      f"{res['date']}. Units mm, N, g (in, lbf, oz alongside). Loads and factors: HA-LS-1 rev C "
+      "(`load_standard.md`), unchanged.\n")
+    a("## Summary\n")
+    a(f"- **Channel re-made for the OD 20 spine tube + 6 mm rack** (`add_channel`, called by `frame_h1.print_mesh`): "
+      f"{c['width']:.0f} x {c['depth']:.1f} mm (was 40.2 x 18.3 for the 30 x 3 plate): tube r 10 + "
+      f"{RUN_CLEAR:.0f} mm running clearance aft, rack 6 + pawl swing {PAWL_ZONE} fore, {c['width']:.0f} mm wide for the "
+      f"20 mm rack and the 16 mm pawl. Housing z {h['z'][0]:.0f}-{h['z'][1]:.2f} (top and half-width kept, so B-25's "
+      f"BL-045 clearances to it stand); walls fore {h['fore_wall']:.1f}, aft {h['aft_wall']:.1f}, side "
+      f"{h['side_wall']:.1f} mm (>= {MIN_WALL:.0f}).")
+    a(f"- **Slice check on the exported STL** (`check_stl_channel`, {st['slices_checked']} slices at 0.5 mm, every crown "
+      f"kit S/M/L at every 0.5 in setting = {len(st['settings'])} settings, guide B at the top settings): "
+      f"**{'PASS' if st['all_pass'] else 'FAIL'}**. Least clearance tube + rack to the body {st['min']['clear_mm']:.2f} mm "
+      f"(>= {RUN_CLEAR - MESH_TOL:.2f}), walls fore {st['min']['fore_wall_mm']:.1f} / aft {st['min']['aft_wall_mm']:.1f} / "
+      f"side {st['min']['side_wall_mm']:.1f} mm. The same check on BL-045's STL fails "
+      f"{res['stl_check_before']['slices_fail']} slices and passes {res['stl_check_before']['settings_pass']} of 21 "
+      "settings (it is the check that catches the old channel).")
+    a(f"- **Print files closed:** assembled {res['print']['assembled_g']:.1f} g (BL-045 {res['print']['assembled_g_before']:.1f}), "
+      f"watertight {res['print']['watertight']}, {res['print']['shells']} shell; lower "
+      f"{res['print']['halves']['lower']['g']:.1f} g / upper {res['print']['halves']['upper']['g']:.1f} g, each one closed "
+      f"shell; every fairlead still passes `h1_fairleads.check_stl` ({res['fairleads_check_all_pass']}).")
+    a(f"- **Spine offset decided: the spine sits in the legs' plane**, where the beam model has it; the print now agrees "
+      f"(STL axis y {res['spine_axis']['spine_axis_y_at_pawl_mm']:.2f} vs model {res['spine_axis']['model_spine_y_at_pawl_mm']:.2f}). "
+      f"BL-045's 15.85 mm fore cannot hold tube + rack + pawl in front of the yoke path ({ax['why']}).")
+    a(f"- **But the clamp still spans 25 mm.** The crown top bar is 25 mm *aft* of the legs' plane "
+      "(geometry.yaml `top_bar_aft_offset_mm`, the corner dog-legs), which neither BL-045 nor the beam model carried. "
+      "`real_crown` adds the dog-legs and a 25 mm clamp member to the beam model; the clamp, the H1 body and buckling are "
+      "re-run on it. The roughly 12 N m BL-045 estimated becomes the real crown's own load path: factored spine-top "
+      f"moment {cl['loads_max_factored']['spine_M_max_nm']:.1f} N m (BL-045 model 55.1, the offset member now carries the "
+      f"rest), bar torsion jump {cl['loads_max_factored']['bar_T_jump_max_nm']:.1f} N m.")
+    a(f"- **Clamp on the real crown passes** (7075 T-fitting, saddle {cl['saddle_len_mm']:.0f} / socket {cl['socket_len_mm']:.0f} mm, "
+      f"two {mg['webs']['web_t_mm']} mm webs): socket avg / peak / fatigue {mg['socket']['avg']['sf']:.2f} / "
+      f"{mg['socket']['peak']['sf']:.2f} / {mg['socket']['fat_avg']['sf']:.2f}; saddle {mg['saddle']['avg']['sf']:.2f} / "
+      f"{mg['saddle']['peak']['sf']:.2f} / {mg['saddle']['fat_avg']['sf']:.2f}; webs yield {mg['webs']['sf_yield']:.2f}, "
+      f"fatigue {mg['webs']['sf_fatigue_kt2']:.2f}; socket bending {mg['socket_bending']['sf_yield']:.2f}. With the "
+      f"transverse shear added to the saddle bond the peak is **{mg['saddle_with_shear']['peak']['sf']:.2f}** (BL-045 0.78): "
+      "the T6 coupon must cover it, as before.")
+    a(f"- **Mass:** clamp {m['clamp_g']:.1f} g (BL-045 {m['clamp_bl045_g']}, booked {m['clamp_booked_g']}) = "
+      f"**{m['clamp_g'] - m['clamp_booked_g']:+.1f} g** in every config; channel + housing **{m['channel_net_g']:+.1f} g** "
+      f"(housing +{m['housing_added_g']:.1f}, channel and bay -{m['channel_cut_g']:.1f}) on the H1 configs. Booked as "
+      f"ledger correction BL046: **{m['clamp_g'] - m['clamp_booked_g'] + m['channel_net_g']:+.1f} g "
+      f"({_lb(m['clamp_g'] - m['clamp_booked_g'] + m['channel_net_g'])})** on `corrie_b2_h1_v2`.")
+    rr = b.get("loads_real_crown", {})
+    rec = b.get("loads_as_recorded", {})
+    if rr and rec:
+        worst = min(((v["fatigue"], k) for k, v in rr.items() if k != "fine_sm8.cyc"))
+        bk = min(((v["buckling"], k) for k, v in rr.items() if k != "fine_sm8.cyc"))
+        a(f"- **Body (all four R1 bases):** on the real crown the least fatigue is {worst[0]:.3f} ({worst[1]}), "
+          f"buckling {bk[0]:.3f} ({bk[1]}), strength {min(v['strength'] for v in rr.values()):.2f}; BL-045 "
+          f"{min(v['fatigue'] for k, v in b['bl045'].items() if k != 'fine_sm8.cyc'):.3f} / "
+          f"{min(v['buckling'] for k, v in b['bl045'].items() if k != 'fine_sm8.cyc'):.3f}. "
+          f"Cinch-cycled bound: fatigue {rr['fine_sm8.cyc']['fatigue']:.3f}, buckling {rr['fine_sm8.cyc']['buckling']:.3f} "
+          f"(BL-045 {b['bl045']['fine_sm8.cyc']['fatigue']:.3f} / {b['bl045']['fine_sm8.cyc']['buckling']:.3f}). "
+          "Table in section 5.")
+    if "crown" in res:
+        cr = res["crown"]
+        rb = min((v["real"]["buckling"]["sf"], k, v["real"]["buckling"]["set"]) for k, v in cr.items())
+        r0 = min((v["recorded"]["buckling"]["sf"], k) for k, v in cr.items())
+        a(f"- **Not held: crown frame buckling on the real crown.** The beam model's eigen-buckling margin "
+          f"(P_cr / (1.5 x factored)) falls from {r0[0]:.2f} (model, kit {r0[1]}) to **{rb[0]:.2f}** (kit {rb[1]}, "
+          f"{rb[2]}); only hipbelt_off_abuse drops (every other case within 0.1 of the model). Mechanism: with the "
+          "top bar 25 mm aft, the lifter springs (TB0 / TB2) pull the bar fore and each 32 mm corner dog-leg carries "
+          "about 408 N compression (model: 12 N tension); its P-delta softens a global sway mode (stay feet "
+          "fore-aft, antisymmetric) of the frame hanging on the shoulder and lifter springs. This is the top bar's "
+          "offset (geometry since v3.1), not the channel: it exists with or without BL-046. Every crown member, "
+          "bond and the H1 body still pass on the real crown (section 5). See OWNER DECISIONS / next step.")
+    a("")
+    a("## 1. Channel and housing\n")
+    a("| item | value | source |\n|---|---:|---|")
+    a(f"| spine tube OD | {SPINE_OD:.0f} | frame.yaml spine_section |")
+    a(f"| rack thickness x width | {RACK_T:.0f} x {RACK_W:.0f} | print/crown_rack_fdm_pacf.stl (test) |")
+    a(f"| pawl width (FDM) | {PAWL_W:.0f} | print/crown_pawl_fdm_pacf.stl (test) |")
+    a(f"| running clearance (radial / each side) | {RUN_CLEAR:.1f} | ASSUMPTION RUN-CLEAR |")
+    a(f"| pawl swing zone fore of the tooth tips | {PAWL_ZONE} | ASSUMPTION PAWL-ZONE |")
+    a(f"| channel width x depth | {c['width']:.1f} x {c['depth']:.2f} ({c['width'] / 25.4:.2f} x {c['depth'] / 25.4:.2f} in) | channel_dims |")
+    a(f"| housing y from the axis (fore / aft) | {h['fore_rel']:.2f} / {h['aft_rel']:.2f} | fore face kept (YOKE-PATH), aft in the bag envelope |")
+    a(f"| housing z | {h['z'][0]:.1f} - {h['z'][1]:.2f} | upper bar underside to BL-045's housing top |")
+    a(f"| walls fore / aft / side | {h['fore_wall']:.2f} / {h['aft_wall']:.2f} / {h['side_wall']:.2f} | >= {MIN_WALL:.0f} (FDM min wall) |")
+    gb = res["guide_bay"]
+    a(f"| guide B bay (x half, top z) | {gb['half_x']:.1f}, z {gb['z_top']:.2f} | ASSUMPTION GUIDE-B |")
+    a("")
+    a("## 2. Slice check on the exported STL\n")
+    zs = [q["z"] for q in st["slices"]]
+    a(f"`check_stl_channel(print/frame_h1/h1_assembled.stl)`: body sections every 0.5 mm from z {min(zs):.0f} (below the "
+      f"lowest guide B, kit S 15 in) to z {max(zs):.1f} (above the housing), y taken from the spine axis at each z (the legs lean). Per slice: the tube + rack envelope's "
+      f"clearance to the body (>= {RUN_CLEAR} - {MESH_TOL} simplify tolerance), the pawl zone empty, walls. Per setting: "
+      "the slices the tube passes, the pawl on the rack, and guide B's 39 x 8 x 18 mm block below the tube end.\n")
+    a("| kit | torso in | tube bottom z | slices | least clearance mm | pawl zone empty | pawl on rack | guide B clear mm | pass |")
+    a("|---|---:|---:|---:|---:|---|---|---:|---|")
+    for s in st["settings"]:
+        g = s["guide_b"]["clear_mm"]
+        a(f"| {s['kit']} | {s['torso_in']:g} | {s['bottom_z']:.1f} | {s['slices']} | {s['min_clear_mm']:.2f} | "
+          f"{s['pawl_zone_empty']} | {s['pawl_on_rack']} | {'-' if g is None else f'{g:.2f}'} | {s['pass']} |")
+    a("")
+    a(f"Before (BL-045 STL, {res['stl_check_before']['source']}): least clearance "
+      f"{res['stl_check_before']['min']['clear_mm']:.2f} mm, {res['stl_check_before']['slices_fail']} slices fail.\n")
+    ko = res.get("keepouts_bl046", {})
+    if ko:
+        a("Voxel keep-outs on the BL-046 body (`frame_h1.keepouts`, read in the body check): new channel empty "
+          f"{ko.get('spine channel BL-046 (tube + rack, h1_spine_channel) empty')}; 'pawl present' "
+          f"{ko.get('pawl present'):.2f}, 'spine_channel empty' {ko.get('spine_channel empty'):.2f} and 'outside envelope' "
+          f"{ko.get('outside envelope (voxels)')} voxels are the voxel domain's OLD plate-channel masks (x +-19, y -33..-17): "
+          "the new housing fills the old slot and the new channel cuts the old pawl cheeks. They are not bag-envelope "
+          "violations (the housing's aft face is inside y_hi, test `test_housing_walls_and_envelope`).\n")
+    a("## 3. Where the spine axis sits\n")
+    a("| quantity | y at the pawl line (mm) |\n|---|---:|")
+    a(f"| housing fore face (kept: the yoke passes it) | {ax['housing_fore_y']:.2f} |")
+    a(f"| most-fore tube axis with a {MIN_WALL:.0f} mm fore wall | {ax['axis_y_most_fore_mm']:.2f} |")
+    a(f"| BL-045 printed axis (channel centre) | {ax['printed_bl045_axis_y_mm']:.2f} |")
+    a(f"| legs' plane = beam model spine = **chosen axis** | **{ax['chosen_axis_y_mm']:.2f}** |")
+    a(f"| STL tube axis after BL-046 (aft face - 11) | {res['spine_axis']['spine_axis_y_at_pawl_mm']:.2f} |")
+    a(f"| crown top bar axis (legs' plane + 25 aft) | {ax['legs_plane_y_mm'] + TOP_BAR_AFT_MM:.2f} |")
+    a("")
+    a("The stack fore of the tube axis (tube r + rack + pawl zone = "
+      f"{ax['stack_fore_of_axis_mm']:.1f} mm) plus a wall does not fit between the fixed fore face and BL-045's axis, so "
+      "the axis goes to the legs' plane. The spine is then 25 mm fore of the top bar, carried by the clamp's webs.\n")
+    a("## 4. Spine clamp on the real crown\n")
+    a("`crown_spine_clamp.joint_loads(real=True)`: the crown_diet beam model of each kit at both ends of its range with "
+      "`real_crown` (top-bar nodes inside the corners moved 25 mm aft, the corners becoming the dog-legs; the spine's top "
+      "SPC in the legs' plane joined to TB1 by a 25 mm 7075 member with the two webs' section), every rev C set, both "
+      "couple variants. Hand check (test): a pull P along the spine gives P at the spine's top with no moment, and "
+      "P x 25 mm at TB1.\n")
+    lm, l0 = cl["loads_max_factored"], res["clamp_loads_model_basis"]
+    a("| factored load | BL-045 model (spine on TB1) | real crown |\n|---|---:|---:|")
+    for k, lab in (("spine_N_max_n", "spine axial N"), ("spine_V_max_n", "spine shear N"), ("spine_M_max_nm", "spine moment N m"),
+                   ("bar_T_jump_max_nm", "bar torsion jump N m"), ("bar_M_jump_max_nm", "bar bending jump N m")):
+        a(f"| {lab} | {l0[k]} | {lm[k]} |")
+    a("")
+    a("| check | margin | set |\n|---|---:|---|")
+    for k, lab in (("socket", "socket bond"), ("saddle", "saddle bond"), ("socket_with_shear", "socket + transverse shear"),
+                   ("saddle_with_shear", "saddle + transverse shear")):
+        for q in ("avg", "peak", "fat_avg", "fat_peak"):
+            a(f"| {lab} {q} | {mg[k][q]['sf']:.2f} | {mg[k][q]['set']} |")
+    a(f"| socket bending yield / fatigue | {mg['socket_bending']['sf_yield']:.2f} / {mg['socket_bending']['sf_fatigue_kt2']:.2f} | max set |")
+    a(f"| webs yield / fatigue (Kt 2) | {mg['webs']['sf_yield']:.2f} / {mg['webs']['sf_fatigue_kt2']:.2f} | {mg['webs']['set']} |")
+    a("")
+    a(f"Clamp: saddle {cl['saddle_len_mm']:.0f} mm, socket {cl['socket_len_mm']:.0f} mm, collar {cl['collar_below_bar_underside_mm']} "
+      f"mm below the bar's underside (BL-045 12.8: the spine now clears the bar, so the socket starts at its centre "
+      f"height), spine {cl['spine_axis_offset_fore_mm']:.2f} mm fore of the bar, {cl['mass_g']:.1f} g ({_lb(cl['mass_g'])}).\n")
+    bw = res["b25"]
+    a(f"B-25 on it: band to clamp {bw['band_to_clamp_x_mm']} mm, every kit ok {bw['all_ok']}; the run reaches the spine "
+      f"{bw['run_plan_mm']['spine_axis_fore_of_bar_mm']:.1f} mm fore of the bar, plan run {bw['run_plan_mm']['run_real_mm']} mm "
+      f"(BL-043 drew {bw['run_plan_mm']['run_bl043_mm']}): **cut +{bw['run_plan_mm']['cut_change_mm']} mm** (BL-045 +34.1). "
+      "Published in `crown_spine_clamp` (constants); corrie_f picks them up on its next run (BL-044's files, not edited here).\n")
+    a("## 5. H1 body, all R1 bases\n")
+    a("`h1_buckling.full_check` on the BL-046 voxel body (`body_solid`: BL-027 release body, BL-042/045 fairlead "
+      "clearances, this housing / channel / bay). 'As recorded' = the load sets as BL-045 ran them; 'real crown' = sets "
+      "rebuilt with `real_crown_models` (cached apart). Margins: FI99 strength / fatigue (1.6 g, PAHT 0.30) / creep per "
+      "kit and setting, Euler margin P_cr / (1.5 x factored), z 234 joint.\n")
+    a("| basis | run | strength | fatigue | creep | buckling (member) | joint s / f |\n|---|---|---:|---:|---:|---|---|")
+    for bs in ("fine_sm8", "fine", "beam", "fine_sm8.cyc"):
+        for rk, rl in (("bl045", "BL-045"), ("loads_as_recorded", "BL-046, loads as recorded"),
+                       ("loads_real_crown", "BL-046, real crown")):
+            v = b.get(rk, {}).get(bs)
+            if v:
+                a(f"| {bs} | {rl} | {v['strength']:.3f} | {v['fatigue']:.3f} | {v['creep']:.3f} | {v['buckling']:.3f} "
+                  f"({v['buckling_member']}) | {v['joint_s']:.2f} / {v['joint_f']:.2f} |")
+    a("")
+    if "crown" in res:
+        a("Crown members on the beam model (`crown_diet.crown_margins`, least over both couple variants):\n")
+        a("| kit | recorded min | real crown min | real: top bar | spine | corner bond peak | frame buckling |")
+        a("|---|---:|---:|---:|---:|---:|---:|")
+        for k, v in res["crown"].items():
+            r = v["real"]
+            g = lambda q: f"{r[q]['sf']:.2f}" if q in r else "-"  # noqa: E731
+            a(f"| {k} | {v['recorded_min']:.3f} | {v['real_min']:.3f} | {g('crown_top_bar')} | {g('crown_spine')} | "
+              f"{g('corner_bond_peak')} | {g('buckling')} |")
+        a("")
+    a("The frame-buckling drop on the real crown is a linear eigen check with dead loads and the model's body "
+      "springs. A strap is a tension-only follower, and the corner wrap is a bonded lug, not a straight OD 18 tube, "
+      "so the check is probably conservative, but nothing here proves it. It needs its own ticket: a geometric "
+      "non-linear run of hipbelt_off_abuse on the real crown with follower lifter / shoulder loads, and the T1(c) "
+      "hipbelt-off frame test (PRODUCTION.md) watched for sway. The design fix if it is real is to bring the top "
+      "bar into the legs' plane (the clamp offset goes too) or to stiffen the corner wraps. ASSUMPTION "
+      "TOP-BAR-AFT governs.\n")
+    a("## 6. Mass\n")
+    a("| item | g | oz | source |\n|---|---:|---:|---|")
+    a(f"| spine clamp as sized | {m['clamp_g']:.1f} | {m['clamp_g'] / 28.3495:.2f} | size_clamp (real crown) |")
+    a(f"| booked before | {m['clamp_booked_g']:.1f} | {m['clamp_booked_g'] / 28.3495:.2f} | pack5200.HW |")
+    a(f"| housing added | {m['housing_added_g']:+.1f} | {m['housing_added_g'] / 28.3495:+.2f} | print mesh |")
+    a(f"| channel + bay cut | {-m['channel_cut_g']:+.1f} | {-m['channel_cut_g'] / 28.3495:+.2f} | print mesh |")
+    a(f"| **BL046 correction (H1 configs)** | **{m['clamp_g'] - m['clamp_booked_g'] + m['channel_net_g']:+.1f}** | "
+      f"{(m['clamp_g'] - m['clamp_booked_g'] + m['channel_net_g']) / 28.3495:+.2f} | huntkit.mass.ledger BL046 |")
+    a(f"| voxel body (FEA) | {m['voxel_body_g']:.1f} | {m['voxel_body_g'] / 28.3495:.2f} | 2 mm raster |")
+    a("")
+    a("Mass reductions that keep the margins (not applied): clamp webs 2.5 -> 2.0 mm (yield 1.81, fatigue 2.37 by "
+      "`web_check`) saves about 1.5 g; the housing's aft wall (7+ mm where the envelope allows) could thin to 3 mm, about "
+      "3 g, after the crown dry fit settles YOKE-PATH and GUIDE-B.\n")
+    a("## 7. Records re-run\n")
+    a("`frame_h1_results.json` and `frame_fixed_results.json`: keep-outs re-run on each record's stored body "
+      "(`refresh_records`); the 'fairleads present' key is gone (voxel stubs + the print-STL fairlead check + the "
+      "BL-046 channel). Their FEA numbers are left as dated: both are superseded studies.\n")
+    a("## 8. Assumptions\n")
+    for k, (t, s) in ASSUMPTIONS.items():
+        a(f"- ASSUMPTION {k}: {t} Settled by: {s}")
+    a("")
+    a("## 9. Found, not fixed\n")
+    a("- **Pawl pivot and the pawl's tang / cord eye.** Neither the BL-045 nor the BL-046 H1 print has the pawl's pivot "
+      "bore through the housing side walls (no 8 mm hole in x-sections at |x| 14 / 18 / 22, z 495-540), though "
+      "`print/frame/PRODUCTION.md` op 2 says \"ream each cheek to 8.0 mm\". And the FDM pawl (`printables.spring_pawl`: "
+      "arm 8 + hub r 5, spring tang to 14 mm and cord eye to 13.5 mm off the tooth face) is deeper than the 9.3 mm swing "
+      f"zone kept from BL-045 (ASSUMPTION PAWL-ZONE): the tang and the eye need a window in the fore wall "
+      f"({h['fore_wall']:.1f} mm). Both need the pawl's pivot position fixed on the rack line; a ticket of its own.")
+    if "crown" in res:
+        a(f"- **Crown frame buckling on the real crown** (section 5): {min(v['real']['buckling']['sf'] for v in res['crown'].values()):.2f}"
+          f"-{max(v['real']['buckling']['sf'] for v in res['crown'].values()):.2f} in hipbelt_off_abuse on the linear beam check.")
+    a("")
+    if shots:
+        a("## Screenshots\n")
+        for s in shots:
+            a(f"- `{Path(s).relative_to(REPO)}`")
+        a("")
+    DOC.write_text("\n".join(L))
+    return str(DOC)
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--export", action="store_true", help="re-export the H1 print files (h1_buckling.export_print)")
+    ap.add_argument("--body", choices=("recorded", "real", "both"), help="run the body checks (heavy)")
+    ap.add_argument("--records", action="store_true", help="re-run the keep-outs of frame_h1 / frame_fixed records")
+    a = ap.parse_args(argv)
+    if a.export:
+        from . import h1_buckling as B
+        B.export_print(*B.CHOSEN)
+    if a.body in ("recorded", "both"):
+        body_check(False)
+    if a.body in ("real", "both"):
+        body_check(True)
+    if a.records:
+        refresh_records()
+    if a.export or a.body or a.records:
+        return
+    res = compute()
+    res["crown"] = crown_compare()
+    res["keepouts_bl046"] = json.loads((__import__("huntkit.gendesign.h1_buckling", fromlist=["OUT"]).OUT /
+                                        f"check_{BODY_CHECK}.json").read_text()).get("keepouts", {})
+    RESULTS.write_text(json.dumps(res, indent=1, default=_np))
+    shots = figures(res)
+    print(write_doc(res, shots))
+    print("\n".join(shots))
+
+
+if __name__ == "__main__":
+    main()

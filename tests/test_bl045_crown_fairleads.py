@@ -73,7 +73,9 @@ def test_joint_loads_cover_every_set(clamp):
     kits = {r["kit"] for r in rows}
     assert kits == {"a_S", "a_M", "a_L"}
     assert len({r["case"] for r in rows}) >= 9
-    assert c["loads_max_factored"]["spine_M_max_nm"] > 40.0      # the joint carries real moment (never checked before)
+    assert c["loads_max_factored"]["spine_M_max_nm"] > 20.0      # the joint carries real moment (never checked before)
+    # BL-045's model basis (spine rigid on TB1 in the bar's plane): 55 N m at the spine's top
+    assert C._load_summary(C.joint_loads(real=False))["spine_M_max_nm"] > 40.0
 
 
 def test_clamp_passes_the_frame_joint_rule(clamp):
@@ -109,10 +111,11 @@ def test_b25_clear_of_real_clamp_and_housing(clamp):
 
 
 def test_spine_channel_finding(clamp):
-    """The printed spine channel (sized for the old 30 x 3 plate) is shallower than the OD 20 spine tube."""
+    """BL-045 found the printed channel (40.2 x 18.3, sized for the old 30 x 3 plate) shallower than the OD 20 tube;
+    BL-046 re-made it (h1_spine_channel): the tube + 6 mm rack now fit the printed channel."""
     C, _, _, g = clamp
-    assert g["spine_channel_depth_y_mm"] < 20.0
-    assert not C.spine_axis()["tube_fits_channel"]
+    assert g["spine_channel_depth_y_mm"] >= 20.0 + 6.0
+    assert C.spine_axis()["tube_fits_channel"] and C.spine_axis()["tube_plus_rack_fits"]
 
 
 # ------------------------------------------------------------------------------------------- 3. IM / US fairleads

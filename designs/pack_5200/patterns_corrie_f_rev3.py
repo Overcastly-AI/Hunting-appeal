@@ -1541,7 +1541,14 @@ IME_NECK_EDGE = 10.0
 US_NECK_EDGE = 3.5
 IME_NECK = (45.0, 155.0)           # IME: box 155-185 (and 15-45 on the other leg) -> free loop 45..155 round the fold at 100
 US_NECK = (100.0 - (2 * US_EYE - BOX_TIP_GAP - 25.0), 2 * US_EYE - BOX_TIP_GAP - 25.0)   # US: tail and strap between box and fold
-USA_NECK = (2 * IMC_FOLD - (IMC_FOLD + IMC_LOOP), IMC_FOLD + IMC_LOOP)                   # USA pin loop: 30..66 round fold 48
+# USA pin loop: BL-044 imus_stl_check. With the IMC's 18 mm loop the 25 mm box sits 8.9 mm from the pin, 1.3 mm in
+# front of the cheek tips, and the printed US cheeks cut it at any pull steeper than 15 deg off +y (sliced: US1 / US2 R,
+# overlap 0.5-37 mm2 at -30..-90 deg). DECISION USA-LOOP: the pin loop is the US eye's (fold to box edge US_EYE -
+# BOX_TIP_GAP - 25 = 23 mm): box 14.5 mm from the pin, the same clear pull range as the left eye (-60..+45 deg).
+USA_PIN_LOOP = US_EYE - BOX_TIP_GAP - 25.0                                  # 23
+USA_PIN_FOLD = USA_PIN_LOOP + 25.0 + IMC_TIP_GAP                            # 53 (cam end keeps IMC_FOLD 48)
+USA_CUT = 2.0 * USA_PIN_FOLD + 2.0 * IMC_FOLD                               # 202 (BL-044 first draw: 192)
+USA_NECK = (USA_PIN_FOLD - USA_PIN_LOOP, USA_PIN_FOLD + USA_PIN_LOOP)         # pin loop 30..76 round the fold at 53
 
 
 def _neck(p, w, edge, span, tack=4.0):
@@ -1669,20 +1676,20 @@ def build_webbing(rs: RevSet, c):
                note=f"neck: long edges folded {IME_NECK_EDGE:.0f} mm in between the neck lines, one BT-M per leg, sewn "
                     "flat BEFORE the fold (BL-044, bag_attach.imus_eye_envelope)")
     _neck(ime, 38.0, IME_NECK_EDGE, IME_NECK)
-    us = _web(rs, "US", "under-strap US1 / US2", 550.0, 2, folds=[(US_EYE, "eye fold (round the left pin sleeve)")],
+    us = _web(rs, "US", "under-strap US1 / US2", 550.0, 2, folds=[(US_EYE, "eye fold (round the left pin)")],
               boxes=[(_tip_box_y(US_EYE, 25.0), 25.0, "sewn eye (MT-1)")], source="ledger US-web 1.10 m",
               note=f"eye neck: long edges folded {US_NECK_EDGE:.1f} mm in between the neck lines (BL-044)")
     _neck(us, 25.0, US_NECK_EDGE, US_NECK)
     # BL-044 (BL-045 found-not-fixed): the US cam on the RIGHT pin had no drawn anchor (BOM 'US-anchor' only). USA = a
-    # 25 mm dog-bone as IMC: one loop round the right pin's sleeve (necked to 18 mm where it passes the throat), the
+    # 25 mm dog-bone as IMC: one loop round the right pin (necked to 18 mm where it passes the throat), the
     # other round the US cam's anchor bar, each closed by a 21 x 25 box. Path: left eye (US) - US strap - cam - cam bar
     # = USA = right pin.
-    usa = _web(rs, "USA", "US cam anchor (right pin <-> cam bar)", 4.0 * IMC_FOLD, 2,
-               folds=[(IMC_FOLD, "fold round the RIGHT PIN sleeve"), (3.0 * IMC_FOLD, "fold round the CAM anchor bar")],
-               boxes=[(IMC_FOLD + IMC_LOOP + 12.5, 25.0, "pin end box-X (MT-1)"),
-                      (3.0 * IMC_FOLD - IMC_LOOP - 12.5, 25.0, "cam end box-X (MT-1)")],
-               note=f"one per under-strap; both raw ends meet in the middle; pin loop necked to 18 mm (edges folded "
-                    f"{US_NECK_EDGE:.1f} mm in); clear loop {IMC_LOOP:.0f} mm each end",
+    usa = _web(rs, "USA", "US cam anchor (right pin <-> cam bar)", USA_CUT, 2,
+               folds=[(USA_PIN_FOLD, "fold round the RIGHT PIN"), (USA_CUT - IMC_FOLD, "fold round the CAM anchor bar")],
+               boxes=[(USA_PIN_FOLD + USA_PIN_LOOP + 12.5, 25.0, "pin end box-X (MT-1)"),
+                      (USA_CUT - IMC_FOLD - IMC_LOOP - 12.5, 25.0, "cam end box-X (MT-1)")],
+               note=f"one per under-strap; both raw ends meet in the middle; pin loop {USA_PIN_LOOP:.0f} mm clear, necked "
+                    f"to 18 mm (edges folded {US_NECK_EDGE:.1f} mm in; DECISION USA-LOOP); cam loop {IMC_LOOP:.0f} mm",
                source="BL-044 (BL-045: the US cam had no sewn anchor); IMC construction")
     _neck(usa, 25.0, US_NECK_EDGE, USA_NECK)
     # BL-034: B-24 drawn by attach_system.link_piece (folds at the real loop stations, hook box + 3 loop boxes 34 x 20)
@@ -2011,8 +2018,8 @@ RECON = [
     ("BL-044: HE hinge eyes", "webbing", [], ["HE"], "HE-ENV length change"),
     ("BL-044: hinge pins", "hardware", [], [], "frame-side pins, 20 mm throat"),
     ("BL-044: W3 K-W keeper loops deleted", "removed", [], [], "DECISION KW-W3-OFF"),
-    ("BL-044: B-25 on the BL-045 clamp", "webbing", [], ["B-25"], "BL-045 run_plan"),
-    ("BL-044: US cam anchors USA", "webbing", [], ["USA"], "BL-045 found-not-fixed"),
+    ("BL-044: B-25 on the sized spine clamp", "webbing", [], ["B-25"], "crown_spine_clamp run_plan"),
+    ("BL-044: US cam anchors USA", "webbing", [], ["USA"], "BL-045 found-not-fixed; USA-LOOP"),
 ]
 
 

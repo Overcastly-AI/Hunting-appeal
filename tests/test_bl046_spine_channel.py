@@ -102,8 +102,10 @@ def test_print_stl_channel_slice_check(C, stl_check):
     assert r["min"]["clear_mm"] >= C.RUN_CLEAR - C.MESH_TOL
     assert r["min"]["walls_ok"]
     assert len(r["settings"]) == 21 and all(s["pass"] for s in r["settings"])
-    top = [s for s in r["settings"] if s["bottom_z"] > 500]
-    assert len(top) == 3 and all(s["guide_b"]["clear_mm"] is not None and s["guide_b"]["pass"] for s in top)
+    assert all(s["guide_b"]["clear_mm"] is not None and s["guide_b"]["pass"] for s in r["settings"])
+    zs = [q["z"] for q in r["slices"]]
+    assert min(zs) <= min(s["bottom_z"] for s in r["settings"]) - C.GUIDE_B_H      # the tube's whole path is sliced
+    assert max(zs) >= C.HOUSING_TOP_Z
 
 
 def test_slice_check_catches_the_old_channel(C):
@@ -210,3 +212,29 @@ def test_body_margins_recorded_for_every_r1_basis(res):
         assert set(b) >= {"fine_sm8", "fine", "beam", "fine_sm8.cyc"}
         for v in b.values():
             assert v["strength"] > 0 and v["fatigue"] > 0 and v["buckling"] > 0
+
+
+# ------------------------------------------------------------------------------------------- 5. records and constants
+def test_stale_records_have_no_fairleads_present_key():
+    for f in ("frame_h1_results.json", "frame_fixed_results.json"):
+        t = (ANALYSIS / f).read_text()
+        assert '"fairleads present"' not in t, f
+    d = json.loads((ANALYSIS / "frame_h1_results.json").read_text())
+    assert "fairlead stubs inside the envelope present (voxel)" in d["keepouts"]
+    assert "spine channel BL-046 (tube + rack, h1_spine_channel) empty" in d["keepouts"]
+
+
+def test_channel_mask_is_empty_on_the_bl046_body(C):
+    """The voxel body as printed after BL-046 leaves the whole tube + rack channel empty (keep-out)."""
+    from huntkit.gendesign import frame_h1 as H1
+    solid, _ = C.body_solid()
+    m = C.channel_mask(H1.base()["cen"])
+    assert m.sum() > 100 and not (solid & m).any()
+
+
+def test_b25_constants_follow_the_real_offset(res):
+    from huntkit.gendesign import crown_spine_clamp as CSC
+    b = res["b25"]["run_plan_mm"]
+    assert CSC.B25_CUT_CHANGE_MM == pytest.approx(b["cut_change_mm"], abs=0.05)
+    assert CSC.B25_RUN_EXTRA_PER_SIDE_MM == pytest.approx(b["cut_change_mm"] / 2, abs=0.05)
+    assert res["b25"]["all_ok"]

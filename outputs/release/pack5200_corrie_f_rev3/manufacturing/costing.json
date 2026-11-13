@@ -1,5 +1,5 @@
 {
- "material_usd_primary": 380.3,
+ "material_usd_primary": 380.32,
  "prototype_buy": {
   "rows": [
    {
@@ -150,22 +150,22 @@
     "item": "poly_webbing_25mm: B-28 B-28s B-28t BRL BRS E5 HPL I2K I2T IM1 IM2 IM3",
     "material_id": "poly_webbing_25mm",
     "unit": "m",
-    "production_qty": 16.935,
-    "production_usd": 11.85,
+    "production_qty": 16.956,
+    "production_usd": 11.87,
     "prototype_qty": 17.374,
     "prototype_usd": 12.16,
-    "how": "16.935 m -> 19 yd"
+    "how": "16.956 m -> 19 yd"
    },
    {
     "section": "webbing",
     "item": "poly_webbing_38mm: B-24 B-25 HE IME T3",
     "material_id": "poly_webbing_38mm",
     "unit": "m",
-    "production_qty": 3.252,
+    "production_qty": 3.249,
     "production_usd": 3.25,
     "prototype_qty": 3.658,
     "prototype_usd": 3.66,
-    "how": "3.252 m -> 4 yd"
+    "how": "3.249 m -> 4 yd"
    },
    {
     "section": "webbing",
@@ -459,7 +459,7 @@
   "assumption": "SHOP-INCR: roll goods in 0.5 yd steps at full width, webbing whole yards, HDPE one 0.25 m2 sheet; hardware as production (whole units); thread by the 4 oz cone, basting tape and seam sealer by the smallest pack (SHOP-UNIT, BL-041 n-10); no camo print (CAMO-FIRST, BL-041 Y-5)"
  },
  "prototype_usd": 501.49,
- "material_usd_alternate": 380.14,
+ "material_usd_alternate": 380.16,
  "fabric_usd_primary": 88.03,
  "fabric_usd_alternate": 87.87,
  "missing_cost": [],
@@ -487,8 +487,8 @@
   "asia_contract_usd_min": 75.94
  },
  "landed_usd": {
-  "us_contract_usd_min": 918.21,
-  "asia_contract_usd_min": 456.24
+  "us_contract_usd_min": 918.23,
+  "asia_contract_usd_min": 456.26
  },
  "lid_hours_drafted": 9.53,
  "lid_hours_booked": 7.76,

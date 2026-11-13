@@ -299,3 +299,55 @@ def test_b25_on_the_bl045_clamp():
     assert t["pawl_ok"] and t["band_to_clamp_ok"]
     assert t["clamp_half_x"] <= t["clamp_envelope"]["half_x_max_mm"]
     assert P.F.guy_bridle(wide=True)["length_mm"] == pytest.approx(386.5)       # the booked BL-041 part is unchanged
+
+
+# ---------------------------------------------------------------- 10 IME / US eyes sliced on the print (orchestrator)
+@pytest.fixture(scope="module")
+def imus():
+    import imus_stl_check as C
+    if not (C.IM3EC.exists() and C.PRINT.exists()):
+        pytest.skip("H1 print / IM3-EC test piece not on disk")
+    return C, C.check()
+
+
+def test_imus_eyes_sliced_on_the_print_and_the_im3ec_piece(imus):
+    C, r = imus
+    st = r["stations"]
+    assert len(st) == 11 and "im3_R@im3ec" in st                                     # 10 stations + the IM3-EC piece
+    for k, v in st.items():
+        assert v["worst_under_pin_clear_mm"] > 0.0, k                                 # no touch, even in the fillet
+        assert v["min_clear_off_corner_mm"] >= 0.5, k                                 # the HE rule off the corner band
+        assert v["throat_clear_side_mm"] >= 0.45, k
+        assert v["route_ok"] and v["eye_pass"], k
+    assert r["eye_pass_all"]
+    # IME is the 3-ply necked eye: 0.5-1.0 mm under the pin; the 2-ply US eye has about 1 mm
+    assert 0.5 <= st["im3_R@im3ec"]["min_clear_off_corner_mm"] < 1.0
+    assert st["us1_L@print"]["min_clear_off_corner_mm"] > 1.0
+
+
+def test_imus_pull_directions_cover_every_kit_end(imus):
+    C, r = imus
+    req = r["required_pulls"]
+    assert min(req["im3"]) < -80.0                                                   # the sim IM3 hook hangs nearly straight down
+    assert set(r["pulls"]["kit_ends"].values()) == {15, 19, 23}                      # every kit end maps to a simulated torso
+    for k in ("im3_R@im3ec", "im3_L@print", "im2_R@print"):
+        assert -90 in r["stations"][k]["sweep"]["clear_thetas"]
+    # straight down the stay a US strap meets the fairlead below (found, not fixed): the cradle line clears
+    for k in ("us1_L@print", "us1_R@print"):
+        ok = r["stations"][k]["sweep"]["clear_thetas"]
+        assert -60 in ok and -90 not in ok and -75 not in ok
+
+
+def test_usa_pin_loop_clears_the_cheeks_like_the_us_eye(imus):
+    C, r = imus
+    assert P.USA_PIN_LOOP == P.US_EYE - P.BOX_TIP_GAP - 25.0 == 23.0
+    assert P.USA_CUT == 2 * P.USA_PIN_FOLD + 2 * P.IMC_FOLD == 202.0
+    rs = P.build("today")
+    usa = rs.pieces["USA"]
+    assert usa.bounds(cut=False)[3] == pytest.approx(P.USA_CUT)
+    st = r["stations"]
+    for side_us, side_usa in (("us1_L@print", "us1_R@print"), ("us2_L@print", "us2_R@print")):
+        assert st[side_usa]["sweep"]["clear_thetas"] == st[side_us]["sweep"]["clear_thetas"]
+    # the IMC's 18 mm loop would put the box 8.9 mm from the pin: inside the cheeks' reach at the cradle pull
+    spec = dict(C.eye_spec("us1", "R"), leg=P.IMC_LOOP)
+    assert C.box_distance(spec, P.HE_T_RANGE[1]) < 10.0 < C.box_distance(C.eye_spec("us1", "R"), P.HE_T_RANGE[1])

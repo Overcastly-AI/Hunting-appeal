@@ -1,0 +1,3758 @@
+{
+ "date": "2026-11-13",
+ "ticket": "BL-046",
+ "channel": {
+  "half_x": 11.0,
+  "aft_r": 11.0,
+  "rack_tips_rel": -16.0,
+  "fore_rel": -25.3,
+  "depth": 36.3,
+  "width": 22.0
+ },
+ "housing": {
+  "fore_rel": -28.98903780756151,
+  "aft_rel": 17.810962192438488,
+  "half_w": 24.82,
+  "fore_wall": 3.6890378075615082,
+  "aft_wall": 6.810962192438488,
+  "side_wall": 13.82,
+  "z": [
+   496.0,
+   535.62
+  ]
+ },
+ "guide_bay": {
+  "half_x": 20.5,
+  "y_rel": [
+   -5.0,
+   5.0
+  ],
+  "z_top": 505.25
+ },
+ "axis": {
+  "housing_fore_y": -38.8,
+  "stack_fore_of_axis_mm": 25.3,
+  "axis_y_most_fore_mm": -11.5,
+  "legs_plane_y_mm": -9.81,
+  "printed_bl045_axis_y_mm": -25.65,
+  "printed_bl045_fore_of_legs_mm": 15.85,
+  "chosen_axis_y_mm": -9.81,
+  "chosen_offset_from_legs_mm": 0.0,
+  "fore_wall_mm": 3.69,
+  "aft_wall_mm": 6.81,
+  "side_wall_mm": 13.82,
+  "printed_axis_possible": false,
+  "why": "the stack (pawl zone + rack + tube + clearance) puts the most-fore axis at -11.5 with a 2 mm fore wall; the printed BL-045 axis (-25.65) would need the fore face 15.9 mm further toward the wearer, where the yoke passes. The legs' plane (-9.81) leaves a 3.7 mm fore wall and a 6.8 mm aft wall inside the bag envelope, and is where the beam model already has the spine."
+ },
+ "settings": [
+  {
+   "kit": "S",
+   "torso_in": 15.0,
+   "top_z": 601.0,
+   "bottom_z": 428.05,
+   "s_pawl_mm": 81.0,
+   "spine_mm": 173.0,
+   "rack_mm": 173.0,
+   "pawl_on_rack": true,
+   "pawl_to_tube_end_mm": 92.0,
+   "yoke_z": 451.0,
+   "in_housing_z": [
+    496.0,
+    535.62
+   ]
+  },
+  {
+   "kit": "S",
+   "torso_in": 15.5,
+   "top_z": 613.7,
+   "bottom_z": 440.75,
+   "s_pawl_mm": 93.7,
+   "spine_mm": 173.0,
+   "rack_mm": 173.0,
+   "pawl_on_rack": true,
+   "pawl_to_tube_end_mm": 79.3,
+   "yoke_z": 463.7,
+   "in_housing_z": [
+    496.0,
+    535.62
+   ]
+  },
+  {
+   "kit": "S",
+   "torso_in": 16.0,
+   "top_z": 626.4,
+   "bottom_z": 453.45,
+   "s_pawl_mm": 106.4,
+   "spine_mm": 173.0,
+   "rack_mm": 173.0,
+   "pawl_on_rack": true,
+   "pawl_to_tube_end_mm": 66.6,
+   "yoke_z": 476.4,
+   "in_housing_z": [
+    496.0,
+    535.62
+   ]
+  },
+  {
+   "kit": "S",
+   "torso_in": 16.5,
+   "top_z": 639.1,
+   "bottom_z": 466.15,
+   "s_pawl_mm": 119.1,
+   "spine_mm": 173.0,
+   "rack_mm": 173.0,
+   "pawl_on_rack": true,
+   "pawl_to_tube_end_mm": 53.9,
+   "yoke_z": 489.1,
+   "in_housing_z": [
+    496.0,
+    535.62
+   ]
+  },
+  {
+   "kit": "S",
+   "torso_in": 17.0,
+   "top_z": 651.8,
+   "bottom_z": 478.85,
+   "s_pawl_mm": 131.8,
+   "spine_mm": 173.0,
+   "rack_mm": 173.0,
+   "pawl_on_rack": true,
+   "pawl_to_tube_end_mm": 41.2,
+   "yoke_z": 501.8,
+   "in_housing_z": [
+    496.0,
+    535.62
+   ]
+  },
+  {
+   "kit": "S",
+   "torso_in": 17.5,
+   "top_z": 664.5,
+   "bottom_z": 491.55,
+   "s_pawl_mm": 144.5,
+   "spine_mm": 173.0,
+   "rack_mm": 173.0,
+   "pawl_on_rack": true,
+   "pawl_to_tube_end_mm": 28.5,
+   "yoke_z": 514.5,
+   "in_housing_z": [
+    496.0,
+    535.62
+   ]
+  },
+  {
+   "kit": "S",
+   "torso_in": 18.0,
+   "top_z": 677.2,
+   "bottom_z": 504.25,
+   "s_pawl_mm": 157.2,
+   "spine_mm": 173.0,
+   "rack_mm": 173.0,
+   "pawl_on_rack": true,
+   "pawl_to_tube_end_mm": 15.7,
+   "yoke_z": 527.2,
+   "in_housing_z": [
+    504.25,
+    535.62
+   ]
+  },
+  {
+   "kit": "M",
+   "torso_in": 17.5,
+   "top_z": 664.5,
+   "bottom_z": 428.05,
+   "s_pawl_mm": 144.5,
+   "spine_mm": 236.5,
+   "rack_mm": 173.0,
+   "pawl_on_rack": true,
+   "pawl_to_tube_end_mm": 92.0,
+   "yoke_z": 514.5,
+   "in_housing_z": [
+    496.0,
+    535.62
+   ]
+  },
+  {
+   "kit": "M",
+   "torso_in": 18.0,
+   "top_z": 677.2,
+   "bottom_z": 440.75,
+   "s_pawl_mm": 157.2,
+   "spine_mm": 236.5,
+   "rack_mm": 173.0,
+   "pawl_on_rack": true,
+   "pawl_to_tube_end_mm": 79.3,
+   "yoke_z": 527.2,
+   "in_housing_z": [
+    496.0,
+    535.62
+   ]
+  },
+  {
+   "kit": "M",
+   "torso_in": 18.5,
+   "top_z": 689.9,
+   "bottom_z": 453.45,
+   "s_pawl_mm": 169.9,
+   "spine_mm": 236.5,
+   "rack_mm": 173.0,
+   "pawl_on_rack": true,
+   "pawl_to_tube_end_mm": 66.6,
+   "yoke_z": 539.9,
+   "in_housing_z": [
+    496.0,
+    535.62
+   ]
+  },
+  {
+   "kit": "M",
+   "torso_in": 19.0,
+   "top_z": 702.6,
+   "bottom_z": 466.15,
+   "s_pawl_mm": 182.6,
+   "spine_mm": 236.5,
+   "rack_mm": 173.0,
+   "pawl_on_rack": true,
+   "pawl_to_tube_end_mm": 53.9,
+   "yoke_z": 552.6,
+   "in_housing_z": [
+    496.0,
+    535.62
+   ]
+  },
+  {
+   "kit": "M",
+   "torso_in": 19.5,
+   "top_z": 715.3,
+   "bottom_z": 478.85,
+   "s_pawl_mm": 195.3,
+   "spine_mm": 236.5,
+   "rack_mm": 173.0,
+   "pawl_on_rack": true,
+   "pawl_to_tube_end_mm": 41.2,
+   "yoke_z": 565.3,
+   "in_housing_z": [
+    496.0,
+    535.62
+   ]
+  },
+  {
+   "kit": "M",
+   "torso_in": 20.0,
+   "top_z": 728.0,
+   "bottom_z": 491.55,
+   "s_pawl_mm": 208.0,
+   "spine_mm": 236.5,
+   "rack_mm": 173.0,
+   "pawl_on_rack": true,
+   "pawl_to_tube_end_mm": 28.5,
+   "yoke_z": 578.0,
+   "in_housing_z": [
+    496.0,
+    535.62
+   ]
+  },
+  {
+   "kit": "M",
+   "torso_in": 20.5,
+   "top_z": 740.7,
+   "bottom_z": 504.25,
+   "s_pawl_mm": 220.7,
+   "spine_mm": 236.5,
+   "rack_mm": 173.0,
+   "pawl_on_rack": true,
+   "pawl_to_tube_end_mm": 15.7,
+   "yoke_z": 590.7,
+   "in_housing_z": [
+    504.25,
+    535.62
+   ]
+  },
+  {
+   "kit": "L",
+   "torso_in": 20.0,
+   "top_z": 728.0,
+   "bottom_z": 428.05,
+   "s_pawl_mm": 208.0,
+   "spine_mm": 300.0,
+   "rack_mm": 173.0,
+   "pawl_on_rack": true,
+   "pawl_to_tube_end_mm": 92.0,
+   "yoke_z": 578.0,
+   "in_housing_z": [
+    496.0,
+    535.62
+   ]
+  },
+  {
+   "kit": "L",
+   "torso_in": 20.5,
+   "top_z": 740.7,
+   "bottom_z": 440.75,
+   "s_pawl_mm": 220.7,
+   "spine_mm": 300.0,
+   "rack_mm": 173.0,
+   "pawl_on_rack": true,
+   "pawl_to_tube_end_mm": 79.3,
+   "yoke_z": 590.7,
+   "in_housing_z": [
+    496.0,
+    535.62
+   ]
+  },
+  {
+   "kit": "L",
+   "torso_in": 21.0,
+   "top_z": 753.4,
+   "bottom_z": 453.45,
+   "s_pawl_mm": 233.4,
+   "spine_mm": 300.0,
+   "rack_mm": 173.0,
+   "pawl_on_rack": true,
+   "pawl_to_tube_end_mm": 66.6,
+   "yoke_z": 603.4,
+   "in_housing_z": [
+    496.0,
+    535.62
+   ]
+  },
+  {
+   "kit": "L",
+   "torso_in": 21.5,
+   "top_z": 766.1,
+   "bottom_z": 466.15,
+   "s_pawl_mm": 246.1,
+   "spine_mm": 300.0,
+   "rack_mm": 173.0,
+   "pawl_on_rack": true,
+   "pawl_to_tube_end_mm": 53.9,
+   "yoke_z": 616.1,
+   "in_housing_z": [
+    496.0,
+    535.62
+   ]
+  },
+  {
+   "kit": "L",
+   "torso_in": 22.0,
+   "top_z": 778.8,
+   "bottom_z": 478.85,
+   "s_pawl_mm": 258.8,
+   "spine_mm": 300.0,
+   "rack_mm": 173.0,
+   "pawl_on_rack": true,
+   "pawl_to_tube_end_mm": 41.2,
+   "yoke_z": 628.8,
+   "in_housing_z": [
+    496.0,
+    535.62
+   ]
+  },
+  {
+   "kit": "L",
+   "torso_in": 22.5,
+   "top_z": 791.5,
+   "bottom_z": 491.55,
+   "s_pawl_mm": 271.5,
+   "spine_mm": 300.0,
+   "rack_mm": 173.0,
+   "pawl_on_rack": true,
+   "pawl_to_tube_end_mm": 28.5,
+   "yoke_z": 641.5,
+   "in_housing_z": [
+    496.0,
+    535.62
+   ]
+  },
+  {
+   "kit": "L",
+   "torso_in": 23.0,
+   "top_z": 804.2,
+   "bottom_z": 504.25,
+   "s_pawl_mm": 284.3,
+   "spine_mm": 300.0,
+   "rack_mm": 173.0,
+   "pawl_on_rack": true,
+   "pawl_to_tube_end_mm": 15.7,
+   "yoke_z": 654.2,
+   "in_housing_z": [
+    504.25,
+    535.62
+   ]
+  }
+ ],
+ "stl_check": {
+  "min": {
+   "clear_mm": 0.964,
+   "fore_wall_mm": 3.67,
+   "aft_wall_mm": 6.79,
+   "side_wall_mm": 13.8,
+   "walls_ok": true
+  },
+  "all_pass": true,
+  "settings": [
+   {
+    "kit": "S",
+    "torso_in": 15.0,
+    "bottom_z": 428.05,
+    "slices": 227,
+    "min_clear_mm": 0.964,
+    "pawl_zone_empty": true,
+    "pawl_on_rack": true,
+    "guide_b": {
+     "clear_mm": 99.0,
+     "pass": true
+    },
+    "pass": true
+   },
+   {
+    "kit": "S",
+    "torso_in": 15.5,
+    "bottom_z": 440.75,
+    "slices": 202,
+    "min_clear_mm": 0.964,
+    "pawl_zone_empty": true,
+    "pawl_on_rack": true,
+    "guide_b": {
+     "clear_mm": 99.0,
+     "pass": true
+    },
+    "pass": true
+   },
+   {
+    "kit": "S",
+    "torso_in": 16.0,
+    "bottom_z": 453.45,
+    "slices": 177,
+    "min_clear_mm": 0.964,
+    "pawl_zone_empty": true,
+    "pawl_on_rack": true,
+    "guide_b": {
+     "clear_mm": 99.0,
+     "pass": true
+    },
+    "pass": true
+   },
+   {
+    "kit": "S",
+    "torso_in": 16.5,
+    "bottom_z": 466.15,
+    "slices": 151,
+    "min_clear_mm": 0.964,
+    "pawl_zone_empty": true,
+    "pawl_on_rack": true,
+    "guide_b": {
+     "clear_mm": 99.0,
+     "pass": true
+    },
+    "pass": true
+   },
+   {
+    "kit": "S",
+    "torso_in": 17.0,
+    "bottom_z": 478.85,
+    "slices": 126,
+    "min_clear_mm": 0.964,
+    "pawl_zone_empty": true,
+    "pawl_on_rack": true,
+    "guide_b": {
+     "clear_mm": 99.0,
+     "pass": true
+    },
+    "pass": true
+   },
+   {
+    "kit": "S",
+    "torso_in": 17.5,
+    "bottom_z": 491.55,
+    "slices": 100,
+    "min_clear_mm": 0.964,
+    "pawl_zone_empty": true,
+    "pawl_on_rack": true,
+    "guide_b": {
+     "clear_mm": 99.0,
+     "pass": true
+    },
+    "pass": true
+   },
+   {
+    "kit": "S",
+    "torso_in": 18.0,
+    "bottom_z": 504.25,
+    "slices": 75,
+    "min_clear_mm": 0.964,
+    "pawl_zone_empty": true,
+    "pawl_on_rack": true,
+    "guide_b": {
+     "clear_mm": 1.0,
+     "pass": true
+    },
+    "pass": true
+   },
+   {
+    "kit": "M",
+    "torso_in": 17.5,
+    "bottom_z": 428.05,
+    "slices": 227,
+    "min_clear_mm": 0.964,
+    "pawl_zone_empty": true,
+    "pawl_on_rack": true,
+    "guide_b": {
+     "clear_mm": 99.0,
+     "pass": true
+    },
+    "pass": true
+   },
+   {
+    "kit": "M",
+    "torso_in": 18.0,
+    "bottom_z": 440.75,
+    "slices": 202,
+    "min_clear_mm": 0.964,
+    "pawl_zone_empty": true,
+    "pawl_on_rack": true,
+    "guide_b": {
+     "clear_mm": 99.0,
+     "pass": true
+    },
+    "pass": true
+   },
+   {
+    "kit": "M",
+    "torso_in": 18.5,
+    "bottom_z": 453.45,
+    "slices": 177,
+    "min_clear_mm": 0.964,
+    "pawl_zone_empty": true,
+    "pawl_on_rack": true,
+    "guide_b": {
+     "clear_mm": 99.0,
+     "pass": true
+    },
+    "pass": true
+   },
+   {
+    "kit": "M",
+    "torso_in": 19.0,
+    "bottom_z": 466.15,
+    "slices": 151,
+    "min_clear_mm": 0.964,
+    "pawl_zone_empty": true,
+    "pawl_on_rack": true,
+    "guide_b": {
+     "clear_mm": 99.0,
+     "pass": true
+    },
+    "pass": true
+   },
+   {
+    "kit": "M",
+    "torso_in": 19.5,
+    "bottom_z": 478.85,
+    "slices": 126,
+    "min_clear_mm": 0.964,
+    "pawl_zone_empty": true,
+    "pawl_on_rack": true,
+    "guide_b": {
+     "clear_mm": 99.0,
+     "pass": true
+    },
+    "pass": true
+   },
+   {
+    "kit": "M",
+    "torso_in": 20.0,
+    "bottom_z": 491.55,
+    "slices": 100,
+    "min_clear_mm": 0.964,
+    "pawl_zone_empty": true,
+    "pawl_on_rack": true,
+    "guide_b": {
+     "clear_mm": 99.0,
+     "pass": true
+    },
+    "pass": true
+   },
+   {
+    "kit": "M",
+    "torso_in": 20.5,
+    "bottom_z": 504.25,
+    "slices": 75,
+    "min_clear_mm": 0.964,
+    "pawl_zone_empty": true,
+    "pawl_on_rack": true,
+    "guide_b": {
+     "clear_mm": 1.0,
+     "pass": true
+    },
+    "pass": true
+   },
+   {
+    "kit": "L",
+    "torso_in": 20.0,
+    "bottom_z": 428.05,
+    "slices": 227,
+    "min_clear_mm": 0.964,
+    "pawl_zone_empty": true,
+    "pawl_on_rack": true,
+    "guide_b": {
+     "clear_mm": 99.0,
+     "pass": true
+    },
+    "pass": true
+   },
+   {
+    "kit": "L",
+    "torso_in": 20.5,
+    "bottom_z": 440.75,
+    "slices": 202,
+    "min_clear_mm": 0.964,
+    "pawl_zone_empty": true,
+    "pawl_on_rack": true,
+    "guide_b": {
+     "clear_mm": 99.0,
+     "pass": true
+    },
+    "pass": true
+   },
+   {
+    "kit": "L",
+    "torso_in": 21.0,
+    "bottom_z": 453.45,
+    "slices": 177,
+    "min_clear_mm": 0.964,
+    "pawl_zone_empty": true,
+    "pawl_on_rack": true,
+    "guide_b": {
+     "clear_mm": 99.0,
+     "pass": true
+    },
+    "pass": true
+   },
+   {
+    "kit": "L",
+    "torso_in": 21.5,
+    "bottom_z": 466.15,
+    "slices": 151,
+    "min_clear_mm": 0.964,
+    "pawl_zone_empty": true,
+    "pawl_on_rack": true,
+    "guide_b": {
+     "clear_mm": 99.0,
+     "pass": true
+    },
+    "pass": true
+   },
+   {
+    "kit": "L",
+    "torso_in": 22.0,
+    "bottom_z": 478.85,
+    "slices": 126,
+    "min_clear_mm": 0.964,
+    "pawl_zone_empty": true,
+    "pawl_on_rack": true,
+    "guide_b": {
+     "clear_mm": 99.0,
+     "pass": true
+    },
+    "pass": true
+   },
+   {
+    "kit": "L",
+    "torso_in": 22.5,
+    "bottom_z": 491.55,
+    "slices": 100,
+    "min_clear_mm": 0.964,
+    "pawl_zone_empty": true,
+    "pawl_on_rack": true,
+    "guide_b": {
+     "clear_mm": 99.0,
+     "pass": true
+    },
+    "pass": true
+   },
+   {
+    "kit": "L",
+    "torso_in": 23.0,
+    "bottom_z": 504.25,
+    "slices": 75,
+    "min_clear_mm": 0.964,
+    "pawl_zone_empty": true,
+    "pawl_on_rack": true,
+    "guide_b": {
+     "clear_mm": 1.0,
+     "pass": true
+    },
+    "pass": true
+   }
+  ],
+  "slices_checked": 276,
+  "slices": [
+   {
+    "z": 404.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 404.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 405.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 405.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 406.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 406.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 407.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 407.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 408.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 408.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 409.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 409.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 410.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 410.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 411.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 411.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 412.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 412.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 413.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 413.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 414.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 414.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 415.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 415.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 416.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 416.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 417.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 417.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 418.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 418.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 419.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 419.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 420.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 420.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 421.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 421.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 422.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 422.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 423.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 423.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 424.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 424.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 425.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 425.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 426.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 426.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 427.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 427.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 428.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 428.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 429.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 429.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 430.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 430.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 431.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 431.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 432.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 432.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 433.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 433.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 434.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 434.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 435.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 435.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 436.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 436.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 437.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 437.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 438.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 438.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 439.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 439.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 440.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 440.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 441.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 441.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 442.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 442.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 443.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 443.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 444.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 444.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 445.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 445.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 446.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 446.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 447.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 447.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 448.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 448.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 449.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 449.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 450.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 450.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 451.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 451.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 452.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 452.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 453.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 453.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 454.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 454.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 455.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 455.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 456.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 456.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 457.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 457.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 458.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 458.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 459.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 459.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 460.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 460.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 461.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 461.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 462.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 462.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 463.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 463.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 464.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 464.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 465.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 465.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 466.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 466.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 467.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 467.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 468.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 468.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 469.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 469.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 470.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 470.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 471.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 471.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 472.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 472.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 473.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 473.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 474.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 474.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 475.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 475.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 476.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 476.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 477.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 477.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 478.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 478.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 479.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 479.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 480.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 480.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 481.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 481.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 482.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 482.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 483.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 483.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 484.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 484.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 485.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 485.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 486.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 486.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 487.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 487.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 488.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 488.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 489.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 489.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 490.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 490.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 491.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 491.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 492.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 492.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 493.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 493.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 494.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 494.5,
+    "clear_mm": 1.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 495.0,
+    "clear_mm": 1.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 495.5,
+    "clear_mm": 1.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 496.0,
+    "clear_mm": 0.971,
+    "fore_wall_mm": 3.66,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.81,
+    "pass": true
+   },
+   {
+    "z": 496.5,
+    "clear_mm": 0.971,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.81,
+    "pass": true
+   },
+   {
+    "z": 497.0,
+    "clear_mm": 0.971,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.85,
+    "pass": true
+   },
+   {
+    "z": 497.5,
+    "clear_mm": 0.971,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 14.89,
+    "pass": true
+   },
+   {
+    "z": 498.0,
+    "clear_mm": 0.971,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 16.15,
+    "pass": true
+   },
+   {
+    "z": 498.5,
+    "clear_mm": 0.971,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 22.42,
+    "pass": true
+   },
+   {
+    "z": 499.0,
+    "clear_mm": 0.971,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 24.53,
+    "pass": true
+   },
+   {
+    "z": 499.5,
+    "clear_mm": 0.971,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 26.04,
+    "pass": true
+   },
+   {
+    "z": 500.0,
+    "clear_mm": 0.971,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 500.5,
+    "clear_mm": 0.971,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 501.0,
+    "clear_mm": 0.971,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 501.5,
+    "clear_mm": 0.971,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 502.0,
+    "clear_mm": 0.971,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 502.5,
+    "clear_mm": 0.971,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 503.0,
+    "clear_mm": 0.971,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 503.5,
+    "clear_mm": 0.971,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 504.0,
+    "clear_mm": 0.971,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 504.5,
+    "clear_mm": 0.971,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 505.0,
+    "clear_mm": 0.971,
+    "fore_wall_mm": 3.68,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 505.5,
+    "clear_mm": 0.968,
+    "fore_wall_mm": 3.68,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 506.0,
+    "clear_mm": 0.966,
+    "fore_wall_mm": 3.68,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 506.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.68,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 507.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.68,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 507.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.68,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 508.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.68,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 508.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.72,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 509.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.8,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 509.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.84,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 510.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.88,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 510.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.87,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 511.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.87,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 511.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.86,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 512.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.85,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 512.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.84,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 513.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.83,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 513.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.82,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 514.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.82,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 514.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.81,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 515.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.8,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 28.99,
+    "pass": true
+   },
+   {
+    "z": 515.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.79,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 25.21,
+    "pass": true
+   },
+   {
+    "z": 516.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.78,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 14.74,
+    "pass": true
+   },
+   {
+    "z": 516.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.77,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.81,
+    "pass": true
+   },
+   {
+    "z": 517.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.76,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.81,
+    "pass": true
+   },
+   {
+    "z": 517.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.75,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.81,
+    "pass": true
+   },
+   {
+    "z": 518.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.74,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.81,
+    "pass": true
+   },
+   {
+    "z": 518.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.74,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.81,
+    "pass": true
+   },
+   {
+    "z": 519.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.73,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.81,
+    "pass": true
+   },
+   {
+    "z": 519.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.72,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.81,
+    "pass": true
+   },
+   {
+    "z": 520.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.71,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.81,
+    "pass": true
+   },
+   {
+    "z": 520.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.7,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.81,
+    "pass": true
+   },
+   {
+    "z": 521.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.69,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.81,
+    "pass": true
+   },
+   {
+    "z": 521.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.69,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.81,
+    "pass": true
+   },
+   {
+    "z": 522.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.69,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.81,
+    "pass": true
+   },
+   {
+    "z": 522.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.68,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.81,
+    "pass": true
+   },
+   {
+    "z": 523.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.68,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.81,
+    "pass": true
+   },
+   {
+    "z": 523.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.68,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.81,
+    "pass": true
+   },
+   {
+    "z": 524.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.68,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.81,
+    "pass": true
+   },
+   {
+    "z": 524.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.68,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.81,
+    "pass": true
+   },
+   {
+    "z": 525.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.68,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.8,
+    "pass": true
+   },
+   {
+    "z": 525.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.68,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.8,
+    "pass": true
+   },
+   {
+    "z": 526.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.68,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.8,
+    "pass": true
+   },
+   {
+    "z": 526.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.8,
+    "pass": true
+   },
+   {
+    "z": 527.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.8,
+    "pass": true
+   },
+   {
+    "z": 527.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.8,
+    "pass": true
+   },
+   {
+    "z": 528.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.8,
+    "pass": true
+   },
+   {
+    "z": 528.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.8,
+    "pass": true
+   },
+   {
+    "z": 529.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.8,
+    "pass": true
+   },
+   {
+    "z": 529.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.8,
+    "pass": true
+   },
+   {
+    "z": 530.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.8,
+    "pass": true
+   },
+   {
+    "z": 530.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.8,
+    "pass": true
+   },
+   {
+    "z": 531.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.8,
+    "pass": true
+   },
+   {
+    "z": 531.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.8,
+    "pass": true
+   },
+   {
+    "z": 532.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.8,
+    "pass": true
+   },
+   {
+    "z": 532.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.8,
+    "pass": true
+   },
+   {
+    "z": 533.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.8,
+    "pass": true
+   },
+   {
+    "z": 533.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.8,
+    "pass": true
+   },
+   {
+    "z": 534.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.8,
+    "pass": true
+   },
+   {
+    "z": 534.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.8,
+    "pass": true
+   },
+   {
+    "z": 535.0,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.8,
+    "pass": true
+   },
+   {
+    "z": 535.5,
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.66,
+    "aft_wall_mm": 6.79,
+    "side_wall_R_mm": 13.8,
+    "pass": true
+   },
+   {
+    "z": 536.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 536.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 537.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 537.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 538.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 538.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 539.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 539.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 540.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 540.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 541.0,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   },
+   {
+    "z": 541.5,
+    "clear_mm": 99.0,
+    "fore_wall_mm": 0.0,
+    "aft_wall_mm": 0.0,
+    "side_wall_R_mm": 0.0,
+    "pass": true
+   }
+  ]
+ },
+ "stl_check_before": {
+  "min": {
+   "clear_mm": 0.0,
+   "fore_wall_mm": 0.0,
+   "aft_wall_mm": 0.0,
+   "side_wall_mm": 0.96,
+   "walls_ok": false
+  },
+  "all_pass": false,
+  "settings_pass": 0,
+  "slices_fail": 83,
+  "source": "git 370bc8f designs/pack_5200/print/frame_h1/h1_assembled.stl (BL-045 export)"
+ },
+ "fairleads_check_all_pass": true,
+ "print": {
+  "assembled_g": 887.6,
+  "assembled_g_before": 861.6,
+  "watertight": true,
+  "shells": 1,
+  "halves": {
+   "lower": {
+    "g": 343.0,
+    "watertight": true,
+    "shells": 1,
+    "extents_mm": [
+     279.7,
+     234.5,
+     76.7
+    ]
+   },
+   "upper": {
+    "g": 544.6,
+    "watertight": true,
+    "shells": 1,
+    "extents_mm": [
+     280.1,
+     309.4,
+     64.4
+    ]
+   }
+  },
+  "export": {
+   "assembled": {
+    "faces": 305772,
+    "volume_cm3": 837.34,
+    "g": 887.6,
+    "watertight": true,
+    "shells": 1,
+    "dropped": [
+     [
+      20,
+      0.00369625566442681
+     ]
+    ]
+   },
+   "lower": {
+    "faces": 164682,
+    "volume_cm3": 323.6,
+    "g": 343.0,
+    "footprint_mm": [
+     279.7,
+     234.5,
+     76.7
+    ],
+    "watertight": true,
+    "shells": 1,
+    "dropped": [],
+    "dropped_centre_frame_mm": [],
+    "print_h": 12.1,
+    "fits_h2s_340x320x340": true
+   },
+   "upper": {
+    "faces": 145472,
+    "volume_cm3": 513.74,
+    "g": 544.6,
+    "footprint_mm": [
+     280.1,
+     309.4,
+     64.4
+    ],
+    "watertight": true,
+    "shells": 1,
+    "dropped": [],
+    "dropped_centre_frame_mm": [],
+    "print_h": 19.3,
+    "fits_h2s_340x320x340": true
+   }
+  }
+ },
+ "mass": {
+  "channel_net_g": 25.96,
+  "housing_added_g": 59.71,
+  "channel_cut_g": 33.75,
+  "clamp_g": 15.9,
+  "clamp_booked_g": 6.0,
+  "clamp_bl045_g": 10.4,
+  "voxel_body_g": 835.2,
+  "voxel_counts": {
+   "added": 4502,
+   "removed": 1542,
+   "channel": 7236,
+   "ring": 11106
+  },
+  "basis": "channel: print-mesh volume with / without add_channel x 1.06 g/cm3 (pre-simplify); clamp: crown_spine_clamp.size_clamp (real crown)"
+ },
+ "clamp": {
+  "socket_len_mm": 15.0,
+  "socket_len_bond_min_mm": 8.0,
+  "saddle_len_mm": 24.0,
+  "saddle_len_bond_min_mm": 8.0,
+  "half_x_mm": 12.0,
+  "socket_od_mm": 23.2,
+  "saddle_od_mm": 21.2,
+  "s_full_circumference_mm": 0.0,
+  "collar_below_bar_underside_mm": 6.0,
+  "spine_axis_offset_fore_mm": 25.02,
+  "fore_face_from_bar_axis_mm": 36.6,
+  "aft_face_from_bar_axis_mm": 10.6,
+  "wall_mm": 0.8,
+  "material": "alu_7075_t6",
+  "adhesive": "adhesive_methacrylate_ma",
+  "bondline_mm": 0.8,
+  "mass_g": 15.9,
+  "mass_booked_g": 6.0,
+  "margins": {
+   "socket": {
+    "avg": {
+     "sf": 2.389,
+     "set": "a_S 15 in hipbelt_off_abuse (strap_upper)"
+    },
+    "peak": {
+     "sf": 1.381,
+     "set": "a_S 15 in hipbelt_off_abuse (strap_upper)"
+    },
+    "fat_avg": {
+     "sf": 3.071,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    },
+    "fat_peak": {
+     "sf": 1.776,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    }
+   },
+   "saddle": {
+    "avg": {
+     "sf": 5.211,
+     "set": "a_S 15 in side_hill_torsion (crown_bar)"
+    },
+    "peak": {
+     "sf": 1.139,
+     "set": "a_S 15 in hipbelt_off_abuse (strap_upper)"
+    },
+    "fat_avg": {
+     "sf": 6.136,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    },
+    "fat_peak": {
+     "sf": 1.287,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    }
+   },
+   "socket_with_shear": {
+    "avg": {
+     "sf": 2.315,
+     "set": "a_S 15 in hipbelt_off_abuse (strap_upper)"
+    },
+    "peak": {
+     "sf": 1.264,
+     "set": "a_S 15 in hipbelt_off_abuse (strap_upper)"
+    },
+    "fat_avg": {
+     "sf": 3.026,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    },
+    "fat_peak": {
+     "sf": 1.701,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    }
+   },
+   "saddle_with_shear": {
+    "avg": {
+     "sf": 3.843,
+     "set": "a_S 15 in hipbelt_off_abuse (strap_upper)"
+    },
+    "peak": {
+     "sf": 0.806,
+     "set": "a_S 15 in hipbelt_off_abuse (strap_upper)"
+    },
+    "fat_avg": {
+     "sf": 4.647,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    },
+    "fat_peak": {
+     "sf": 0.975,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    }
+   },
+   "socket_bending": {
+    "sigma_factored_mpa": 103.8,
+    "sf_yield": 4.45,
+    "sigma_walk_mpa": 24.3,
+    "sf_fatigue_kt2": 3.27
+   },
+   "webs": {
+    "web_t_mm": 2.5,
+    "web_h_mm": 21.2,
+    "sigma_vm_factored_mpa": 167.1,
+    "sf_yield": 2.77,
+    "set": "a_S 15 in side_hill_torsion (crown_bar)",
+    "sigma_vm_walk_mpa": 26.8,
+    "sf_fatigue_kt2": 2.97
+   }
+  },
+  "loads_max_factored": {
+   "spine_N_max_n": 577.0,
+   "spine_V_max_n": 811.0,
+   "spine_M_max_nm": 30.6,
+   "spine_M_set": "a_S 15 in hipbelt_off_abuse (strap_upper)",
+   "bar_T_jump_max_nm": 36.0,
+   "bar_M_jump_max_nm": 15.9
+  },
+  "source": "crown_spine_clamp.size_clamp: frame model TB1 forces (crown_diet kits, rev C), huntkit.fea.joints.bond_check, H1 STL spine channel; ASSUMPTIONS CLAMP-TYPE, CLAMP-WALL, SPINE-AXIS, TRANSVERSE-SHEAR"
+ },
+ "clamp_loads_model_basis": {
+  "spine_N_max_n": 749.0,
+  "spine_V_max_n": 735.0,
+  "spine_M_max_nm": 55.1,
+  "spine_M_set": "a_S 15 in side_hill_torsion (crown_bar)",
+  "bar_T_jump_max_nm": 39.6,
+  "bar_M_jump_max_nm": 54.9
+ },
+ "clamp_published": {
+  "SPINE_CLAMP_HALF_X": 12.0,
+  "SPINE_CLAMP_COLLAR": 6.0,
+  "SPINE_AXIS_FORE_MM": 25.02,
+  "SPINE_CLAMP_MASS_G": 15.9,
+  "PAWL_HOUSING_UP": 15.62,
+  "PAWL_HOUSING_HALF_W": 24.82,
+  "BODY_TOP_Z_IN_B25_BAND": 519.18,
+  "B25_RUN_EXTRA_PER_SIDE_MM": 22.25,
+  "B25_CUT_CHANGE_MM": 44.5
+ },
+ "interfaces": {
+  "pawl_housing_top_z": 535.62,
+  "pawl_housing_half_w_mm": 24.82,
+  "pawl_housing_y_mm": [
+   -39.1,
+   8.0
+  ],
+  "spine_channel_x_mm": [
+   -11.0,
+   11.0
+  ],
+  "spine_channel_y_mm": [
+   -35.3,
+   1.35
+  ],
+  "spine_channel_z_mm": [
+   510.0,
+   530.0
+  ],
+  "body_top_z_in_b25_band": 519.18,
+  "body_top_z_under_run": 535.62,
+  "pawl_z": 520.0,
+  "source": "designs/pack_5200/print/frame_h1/h1_assembled.stl sections (z 500-545, 0.25 mm) and vertices",
+  "spine_channel_depth_y_mm": 36.65,
+  "spine_channel_width_x_mm": 22.0,
+  "spine_channel_centre": [
+   0.0,
+   -16.97
+  ],
+  "pawl_housing_up_mm": 15.62,
+  "spine_axis_y_at_pawl": -9.83,
+  "spine_axis_rule": "aft face - (tube r + running clearance) (BL-046 tube channel)"
+ },
+ "spine_axis": {
+  "spine_axis_y_at_pawl_mm": -9.83,
+  "model_spine_y_at_pawl_mm": -9.81,
+  "spine_axis_minus_legs_plane_y_mm": -0.02,
+  "top_bar_aft_of_legs_plane_mm": 25.0,
+  "spine_axis_minus_bar_axis_y_mm": -25.02,
+  "channel_depth_y_mm": 36.65,
+  "channel_width_x_mm": 22.0,
+  "spine_od_mm": 20.0,
+  "rack_mm": {
+   "thickness_mm": 6.0,
+   "width_mm": 20.0,
+   "length_mm": 230.0
+  },
+  "tube_fits_channel": true,
+  "tube_plus_rack_fits": true
+ },
+ "b25": {
+  "clamp_half_x_mm": 12.0,
+  "band_to_clamp_x_mm": 14.5,
+  "band_to_clamp_ok": true,
+  "run_top_s_mm": 17.0,
+  "mitre_s_mm": [
+   17.0,
+   55.0
+  ],
+  "wrap_s_mm": [
+   17.0,
+   42.0
+  ],
+  "kits": {
+   "S": {
+    "torso_in": 15.0,
+    "bar_z": 601.0,
+    "housing_top_s_mm": 65.4,
+    "wrap_bottom_s_mm": 42.0,
+    "wrap_to_housing_mm": 23.4,
+    "run_to_body_mm": 23.4,
+    "mitre_bottom_s_mm": 55.0,
+    "mitre_to_body_in_band_mm": 26.8,
+    "mitre_to_housing_side_x_mm": 1.68,
+    "mitre_to_housing_xs_mm": 10.5,
+    "ok": true
+   },
+   "M": {
+    "torso_in": 17.5,
+    "bar_z": 664.5,
+    "housing_top_s_mm": 128.9,
+    "wrap_bottom_s_mm": 42.0,
+    "wrap_to_housing_mm": 86.9,
+    "run_to_body_mm": 86.9,
+    "mitre_bottom_s_mm": 55.0,
+    "mitre_to_body_in_band_mm": 90.3,
+    "mitre_to_housing_side_x_mm": 1.68,
+    "mitre_to_housing_xs_mm": 73.9,
+    "ok": true
+   },
+   "L": {
+    "torso_in": 20.0,
+    "bar_z": 728.0,
+    "housing_top_s_mm": 192.4,
+    "wrap_bottom_s_mm": 42.0,
+    "wrap_to_housing_mm": 150.4,
+    "run_to_body_mm": 150.4,
+    "mitre_bottom_s_mm": 55.0,
+    "mitre_to_body_in_band_mm": 153.9,
+    "mitre_to_housing_side_x_mm": 1.68,
+    "mitre_to_housing_xs_mm": 137.4,
+    "ok": true
+   }
+  },
+  "governing_kit": "S",
+  "all_ok": true,
+  "run_plan_mm": {
+   "spine_axis_fore_of_bar_mm": 25.02,
+   "run_bl043_mm": 34.3,
+   "run_real_mm": 56.6,
+   "cut_change_mm": 44.5,
+   "note": "run = plan length from the mitre centre (aft face of the bar) to its tangent on the spine wrap; the spine wrap (one full turn) is unchanged"
+  },
+  "source": "crown_spine_clamp.b25_clearances (corrie_f.b25_topology checks; real clamp + H1 STL)"
+ },
+ "body": {
+  "bl045": {
+   "fine_sm8": {
+    "strength": 1.682,
+    "fatigue": 1.194,
+    "creep": 2.546,
+    "buckling": 1.227,
+    "buckling_member": "branch lower (z 165-330) L",
+    "joint_s": 2.073,
+    "joint_f": 1.716
+   },
+   "fine": {
+    "strength": 1.682,
+    "fatigue": 1.212,
+    "creep": 2.585,
+    "buckling": 1.227,
+    "buckling_member": "branch lower (z 165-330) L",
+    "joint_s": 2.072,
+    "joint_f": 1.716
+   },
+   "beam": {
+    "strength": 1.581,
+    "fatigue": 1.204,
+    "creep": 2.568,
+    "buckling": 1.349,
+    "buckling_member": "branch lower (z 165-330) L",
+    "joint_s": 1.948,
+    "joint_f": 1.245
+   },
+   "fine_sm8.cyc": {
+    "strength": 1.682,
+    "fatigue": 0.787,
+    "creep": 1.679,
+    "buckling": 1.024,
+    "buckling_member": "branch lower (z 165-330) R",
+    "joint_s": 2.104,
+    "joint_f": 1.071
+   }
+  },
+  "loads_as_recorded": {
+   "fine_sm8": {
+    "strength": 1.684,
+    "fatigue": 1.206,
+    "creep": 2.572,
+    "buckling": 1.189,
+    "buckling_member": "mid bar (x -115..115) all",
+    "joint_s": 2.078,
+    "joint_f": 1.732
+   },
+   "fine": {
+    "strength": 1.684,
+    "fatigue": 1.228,
+    "creep": 2.62,
+    "buckling": 1.176,
+    "buckling_member": "mid bar (x -115..115) all",
+    "joint_s": 2.074,
+    "joint_f": 1.732
+   },
+   "beam": {
+    "strength": 1.613,
+    "fatigue": 1.211,
+    "creep": 2.583,
+    "buckling": 1.368,
+    "buckling_member": "branch lower (z 165-330) L",
+    "joint_s": 1.95,
+    "joint_f": 1.246
+   },
+   "fine_sm8.cyc": {
+    "strength": 1.684,
+    "fatigue": 0.797,
+    "creep": 1.701,
+    "buckling": 1.063,
+    "buckling_member": "branch lower (z 165-330) R",
+    "joint_s": 2.108,
+    "joint_f": 1.077
+   }
+  },
+  "loads_real_crown": {
+   "fine_sm8": {
+    "strength": 1.671,
+    "fatigue": 1.205,
+    "creep": 2.57,
+    "buckling": 1.143,
+    "buckling_member": "mid bar (x -115..115) all",
+    "joint_s": 2.075,
+    "joint_f": 1.726
+   },
+   "fine": {
+    "strength": 1.671,
+    "fatigue": 1.227,
+    "creep": 2.618,
+    "buckling": 1.129,
+    "buckling_member": "mid bar (x -115..115) all",
+    "joint_s": 2.075,
+    "joint_f": 1.726
+   },
+   "beam": {
+    "strength": 1.595,
+    "fatigue": 1.219,
+    "creep": 2.601,
+    "buckling": 1.175,
+    "buckling_member": "branch lower (z 165-330) L",
+    "joint_s": 1.962,
+    "joint_f": 1.252
+   },
+   "fine_sm8.cyc": {
+    "strength": 1.671,
+    "fatigue": 0.797,
+    "creep": 1.699,
+    "buckling": 1.045,
+    "buckling_member": "branch lower (z 165-330) R",
+    "joint_s": 2.112,
+    "joint_f": 1.08
+   }
+  }
+ },
+ "assumptions": {
+  "PAWL-ZONE": [
+   "The pawl's swing zone is 9.3 mm deep fore of the rack's tooth tips, the room it had in the printed channel (18.3 = 3 plate + 6 rack + 9.3); the pawl pivots on a 4 mm pin through the side walls.",
+   "Pawl dry fit on the first print: pawl fully lifted (2 mm tooth depth + 0.5) clears the fore wall."
+  ],
+  "RUN-CLEAR": [
+   "1.0 mm running clearance on the tube (radial) and each side of the rack: FDM hole tolerance 0.3 + tube OD tolerance 0.1 + 0.6 for grit and ice.",
+   "Slide the bonded spine + rack through the printed housing by hand over the full travel, dry and with grit, before bonding the clamp."
+  ],
+  "RACK-SADDLE": [
+   "The flat rack sits on the tube's fore face on a filled-adhesive saddle (MMA with glass beads), so the moving envelope is the tube plus a 20 x 16 mm block from the tube axis to the tooth tips.",
+   "Bond trial on a spine offcut; the rack's base must seat flat."
+  ],
+  "YOKE-PATH": [
+   "The housing's fore face stays at today's y -38.8 (at the pawl line): the yoke on the spine passes it at S 16.8-18 in and M 17.5-18.3 in (geometry.yaml yoke anchors y -38.5..-42.3).",
+   "Crown dry fit at kit S 18 in: the yoke slides past the housing."
+  ],
+  "GUIDE-B": [
+   "Moving pulley guide B hangs from the tube's lower end, centred on the tube axis, its 39 mm across x; at each kit's top setting it enters the housing from below (tube end 15.8 mm below the pawl line).",
+   "Crown dry fit at each kit's top setting."
+  ],
+  "TOP-BAR-AFT": [
+   "The crown top bar runs 25 mm aft of the legs' plane at x 0 (geometry.yaml top_bar_aft_offset_mm, corner dog-legs from x 103 to the leg); the beam model's top bar lies in the legs' plane. real_crown moves the top bar and models the dog-legs as straight members from the leg top to x 95 (the existing split node).",
+   "T6 coupon of the clamp fitting on the real offset; crown dry fit."
+  ],
+  "CLAMP-OFFSET": [
+   "The clamp's T-fitting spans the 25 mm from the top-bar axis to the spine axis as a solid machined block (saddle, socket and two webs); modelled as a 25 mm 7075 beam with the webs' section.",
+   "T6 coupon of the fitting."
+  ]
+ },
+ "crown": {
+  "a_S": {
+   "recorded": {
+    "crown_leg": {
+     "sf": 1.149,
+     "set": "C_im3:hipbelt_off_abuse|18"
+    },
+    "crown_top_bar": {
+     "sf": 1.262,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "crown_spine": {
+     "sf": 1.178,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "corner_bond_avg": {
+     "sf": 2.301,
+     "set": "C:tall_load_posts|15"
+    },
+    "corner_bond_peak": {
+     "sf": 1.195,
+     "set": "C:tall_load_posts|15"
+    },
+    "bushing_bearing": {
+     "sf": 15.993,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "leg_ring_crush": {
+     "sf": 2.12,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "fatigue": {
+     "sf": 2.691,
+     "set": "C_im3:static_carry|18"
+    },
+    "buckling": {
+     "sf": 1.884,
+     "set": "C:side_hill_torsion|15"
+    },
+    "rack": {
+     "sf": 6.266,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "pawl_cheek": {
+     "sf": 1.411,
+     "set": "C:hipbelt_off_abuse|15"
+    },
+    "corner_bond_fatigue_peak": {
+     "sf": 3.079,
+     "set": "C:static_carry|15"
+    }
+   },
+   "real": {
+    "crown_leg": {
+     "sf": 1.149,
+     "set": "C_im3:hipbelt_off_abuse|18"
+    },
+    "crown_top_bar": {
+     "sf": 1.3,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "crown_spine": {
+     "sf": 1.217,
+     "set": "C:hipbelt_off_abuse|15"
+    },
+    "corner_bond_avg": {
+     "sf": 2.322,
+     "set": "C:tall_load_posts|15"
+    },
+    "corner_bond_peak": {
+     "sf": 1.206,
+     "set": "C:tall_load_posts|15"
+    },
+    "bushing_bearing": {
+     "sf": 15.324,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "leg_ring_crush": {
+     "sf": 2.032,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "fatigue": {
+     "sf": 2.829,
+     "set": "C_im3:static_carry|18"
+    },
+    "buckling": {
+     "sf": 0.569,
+     "set": "C:hipbelt_off_abuse|18"
+    },
+    "rack": {
+     "sf": 6.266,
+     "set": "C_im3:hipbelt_off_abuse|15"
+    },
+    "pawl_cheek": {
+     "sf": 1.387,
+     "set": "C:hipbelt_off_abuse|15"
+    },
+    "corner_bond_fatigue_peak": {
+     "sf": 2.936,
+     "set": "C:static_carry|15"
+    }
+   },
+   "recorded_min": 1.149,
+   "real_min": 0.569
+  },
+  "a_M": {
+   "recorded": {
+    "crown_leg": {
+     "sf": 1.128,
+     "set": "C_im3:hipbelt_off_abuse|20.5"
+    },
+    "crown_top_bar": {
+     "sf": 2.378,
+     "set": "C_im3:side_hill_torsion|17.5"
+    },
+    "crown_spine": {
+     "sf": 1.738,
+     "set": "C_im3:hipbelt_off_abuse|20.5"
+    },
+    "corner_bond_avg": {
+     "sf": 2.748,
+     "set": "C:tall_load_posts|17.5"
+    },
+    "corner_bond_peak": {
+     "sf": 1.427,
+     "set": "C:tall_load_posts|17.5"
+    },
+    "bushing_bearing": {
+     "sf": 20.559,
+     "set": "C_im3:hipbelt_off_abuse|17.5"
+    },
+    "leg_ring_crush": {
+     "sf": 2.726,
+     "set": "C_im3:hipbelt_off_abuse|17.5"
+    },
+    "fatigue": {
+     "sf": 1.747,
+     "set": "C_im3:static_carry|20.5"
+    },
+    "buckling": {
+     "sf": 1.934,
+     "set": "C:hipbelt_off_abuse|20.5"
+    },
+    "rack": {
+     "sf": 6.266,
+     "set": "C:hipbelt_off_abuse|17.5"
+    },
+    "pawl_cheek": {
+     "sf": 2.004,
+     "set": "C_im3:hipbelt_off_abuse|17.5"
+    },
+    "corner_bond_fatigue_peak": {
+     "sf": 3.244,
+     "set": "C_im3:static_carry|20.5"
+    }
+   },
+   "real": {
+    "crown_leg": {
+     "sf": 1.128,
+     "set": "C_im3:hipbelt_off_abuse|20.5"
+    },
+    "crown_top_bar": {
+     "sf": 2.517,
+     "set": "C_im3:side_hill_torsion|17.5"
+    },
+    "crown_spine": {
+     "sf": 1.763,
+     "set": "C_im3:hipbelt_off_abuse|20.5"
+    },
+    "corner_bond_avg": {
+     "sf": 2.74,
+     "set": "C:tall_load_posts|17.5"
+    },
+    "corner_bond_peak": {
+     "sf": 1.423,
+     "set": "C:tall_load_posts|17.5"
+    },
+    "bushing_bearing": {
+     "sf": 20.525,
+     "set": "C_im3:hipbelt_off_abuse|17.5"
+    },
+    "leg_ring_crush": {
+     "sf": 2.721,
+     "set": "C_im3:hipbelt_off_abuse|17.5"
+    },
+    "fatigue": {
+     "sf": 1.799,
+     "set": "C_im3:static_carry|20.5"
+    },
+    "buckling": {
+     "sf": 0.556,
+     "set": "C:hipbelt_off_abuse|20.5"
+    },
+    "rack": {
+     "sf": 6.266,
+     "set": "C_im3:hipbelt_off_abuse|17.5"
+    },
+    "pawl_cheek": {
+     "sf": 2.006,
+     "set": "C_im3:hipbelt_off_abuse|17.5"
+    },
+    "corner_bond_fatigue_peak": {
+     "sf": 3.236,
+     "set": "C_im3:static_carry|20.5"
+    }
+   },
+   "recorded_min": 1.128,
+   "real_min": 0.556
+  },
+  "a_L": {
+   "recorded": {
+    "crown_leg": {
+     "sf": 1.116,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "crown_top_bar": {
+     "sf": 2.325,
+     "set": "C_im3:side_hill_torsion|23"
+    },
+    "crown_spine": {
+     "sf": 1.191,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "corner_bond_avg": {
+     "sf": 2.922,
+     "set": "C:tall_load_posts|20"
+    },
+    "corner_bond_peak": {
+     "sf": 1.517,
+     "set": "C:tall_load_posts|20"
+    },
+    "bushing_bearing": {
+     "sf": 23.005,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "leg_ring_crush": {
+     "sf": 3.05,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "fatigue": {
+     "sf": 1.358,
+     "set": "C_im3:static_carry|23"
+    },
+    "buckling": {
+     "sf": 1.854,
+     "set": "C:hipbelt_off_abuse|23"
+    },
+    "rack": {
+     "sf": 6.266,
+     "set": "C:hipbelt_off_abuse|20"
+    },
+    "pawl_cheek": {
+     "sf": 2.774,
+     "set": "C_im3:hipbelt_off_abuse|20"
+    },
+    "corner_bond_fatigue_peak": {
+     "sf": 2.107,
+     "set": "C_im3:static_carry|23"
+    }
+   },
+   "real": {
+    "crown_leg": {
+     "sf": 1.115,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "crown_top_bar": {
+     "sf": 2.366,
+     "set": "C_im3:side_hill_torsion|23"
+    },
+    "crown_spine": {
+     "sf": 1.204,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "corner_bond_avg": {
+     "sf": 2.915,
+     "set": "C:tall_load_posts|20"
+    },
+    "corner_bond_peak": {
+     "sf": 1.514,
+     "set": "C:tall_load_posts|20"
+    },
+    "bushing_bearing": {
+     "sf": 23.033,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "leg_ring_crush": {
+     "sf": 3.054,
+     "set": "C_im3:hipbelt_off_abuse|23"
+    },
+    "fatigue": {
+     "sf": 1.386,
+     "set": "C_im3:static_carry|23"
+    },
+    "buckling": {
+     "sf": 0.543,
+     "set": "C:hipbelt_off_abuse|23"
+    },
+    "rack": {
+     "sf": 6.266,
+     "set": "C_im3:hipbelt_off_abuse|20"
+    },
+    "pawl_cheek": {
+     "sf": 2.784,
+     "set": "C_im3:hipbelt_off_abuse|20"
+    },
+    "corner_bond_fatigue_peak": {
+     "sf": 2.087,
+     "set": "C_im3:static_carry|23"
+    }
+   },
+   "recorded_min": 1.116,
+   "real_min": 0.543
+  }
+ },
+ "keepouts_bl046": {
+  "sleeve_R present": 1.0,
+  "sleeve_L present": 1.0,
+  "pawl present": 0.7929292929292929,
+  "pivot present": 1.0,
+  "pads present": 0.8822984244670992,
+  "bore_R empty": 1.0,
+  "bore_L empty": 1.0,
+  "spine_channel empty": 0.9193548387096774,
+  "spine channel BL-046 (tube + rack, h1_spine_channel) empty": 1.0,
+  "fairlead stubs inside the envelope present (voxel)": 0.98851308232291,
+  "fairleads complete on the print STL (h1_fairleads.check_stl)": true,
+  "outside envelope (voxels)": 1800,
+  "boss wearer face flush (rails)": true,
+  "boss bag side outboard of spreader and inside envelope": true,
+  "boss inside x half-width 152": true,
+  "stay outer radius at z 234 mm": 13.41,
+  "bag envelope local y at z 234 mm": 18.490985022210744,
+  "boss local extents (x, y) mm": [
+   [
+    16.4,
+    2.0,
+    18.0
+   ],
+   [
+    -19.0,
+    -3.0,
+    13.0
+   ]
+  ],
+  "boss top z / next spreader clip bottom z": [
+   252.0,
+   255.0
+  ],
+  "boss clear of spreader clip": true,
+  "bolt head top z": 254.5,
+  "bolt head clear of spreader clip": true,
+  "boss max |x| mm (half-width limit 152)": 142.0
+ }
+}
