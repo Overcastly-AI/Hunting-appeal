@@ -320,7 +320,7 @@ def unit_masses(rows=None) -> dict:
 
 
 # New parts (ASSUMPTIONs named; settled on the first sewn joint by weighing)
-TOGGLE_G = 3.0           # attach_system.TOGGLE_G: the existing hood-tongue POM toggle (ASSUMPTION there)
+TOGGLE_G = _mat("pom_toggle", "mass_g")   # 1.7 g: pom_toggle record (BL-034; was 3.0 g, attach_system.TOGGLE_G ASSUMPTION)
 TOGGLE_N = 670.0         # attach_system.TOGGLE_N: bending pull-through (ASSUMPTION there)
 BAR_LOOP_MM = 170.0      # ASSUMPTION: 25 mm webbing for the bar wrap (pi x ~20 mm OD incl. webbing = 63) + 2 x 40 mm
                          # toggle-loop / sewn eye + 30 mm toggle pocket; settled by the first sewn guy

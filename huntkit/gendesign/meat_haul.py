@@ -389,7 +389,9 @@ def cradle_parts_g(cradle_fea: dict | None = None) -> dict:
         "7075 pins (4)": 4 * 2.41,
         "UHMWPE sleeves (4)": 4 * 0.29,
         "38 mm cams (2)": 2 * 22.0,
-        "tri-glide keepers (2)": 2 * 3.0,
+        # BL-034 (orchestrator): the backstop behind each cam is the stainless 25 mm tri-glide (triglide_25mm record
+        # stainless_alt: 11 g, 3.75 kN break) so a cam slip cannot lengthen the cradle; was 2 x 3.0 g nylon ASSUMPTION
+        "tri-glide keepers (2)": 2 * float(load("triglide_25mm").require("stainless_alt_mass_g")),
         "38 mm webbing, 1.10 m": 1.10 * float(web_m.require("mass_g_m")),
         "bag-floor channels": 8.0,
     }
@@ -539,7 +541,8 @@ the vertical load with the hinge pins. With the bag off they are the cradle, so 
 does not hang on friction alone. IM1–IM3 still cinch the meat against the spreader.
 
 Each strap is a sewn eye on the left pin, under the floor, and a 38 mm cam on the right pin.
-A tri-glide sits behind the cam so a slip cannot lengthen the cradle. The belly under the
+A stainless tri-glide (11 g, 3.75 kN break, `triglide_25mm` record) sits behind the cam so a slip
+cannot lengthen the cradle. The belly under the
 anchor line is specified at **{BELLY_MM:.0f} mm**, which keeps the side legs at
 **{modes['cradle']['theta_deg']:.0f}°** and the cam inside its assumed slip rating.
 25 mm webbing was set aside: its ladder lock slips at 300 N and its side-release breaks at

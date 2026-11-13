@@ -88,9 +88,30 @@ HOSE_SLOT = (12.0, 40.0)
 IMP2_TAB = (0.0, 985.0)          # IMP-2 hang tab on B-06f at x 0, z 985 (lean.fell IMP-2L attach note)
 IMP2_KEEP = (100.0, 560.0)       # IMP-2 bottom keeper tabs on B-01 at x +/-100, z 560
 IMP4_Z = (350.0, 630.0)          # corrie.bag_pockets IMP-4 "B-02door inside face, z 350-630"
-ELASTIC = "elastic_25mm (no record: ASSUMPTION)"
-KEEPER_CUT = 90.0                # ASSUMPTION: 25 mm elastic keeper cut 90 mm, lapped 15 mm into a 75 mm loop (fits 25 mm
-#                                  webbing + a 21 mm rolled tail); settled with TAIL_KEEPER_G by weighing 10 cut keepers
+ELASTIC = "elastic_25mm"     # record (BL-034 part B, 15 g/m)
+# ---- BL-034 placements (pack-designer)
+B28_BOX = (21.0, 20.0)           # DECISION B28-FACE (BL-034): the B-28 front lock tab is box-X'd on the OUTSIDE of the
+#                                  hinge band: the crown strap's taut path (corrie_f.crown_path, T9) comes over the lid and
+#                                  down the band's aft (outer) face to the lock at z 700, so an inside tab would pull the
+#                                  strap through the band. Box = the B-28t box (25 mm webbing less 2 mm a side, x the 20 mm
+#                                  of the 2 x 30 fold), sewn through tab + band in one pass; a 25 x 25 box would run off a
+#                                  25 mm tab. Centre 15 mm under the lock bar (mid of the 30 mm doubled tab).
+B28_BAR_DROP = F.CROWN_TAB / 4.0  # 15 mm
+B11_W, B11_H = 30.0, 50.0        # panels.yaml B-11
+B11_BOW_Z = (470.0, 560.0)       # ASSUMPTION B11-PLACE: bow riser tabs, stacked on the riser line 40 mm forward of the aft
+B11_BOW_IN = 40.0                #   corner seam (the cam sits in IMP-8 at the right gusset's aft foot, z 35-150; a 30-33 in
+#                                  ATA bow puts the grip ~400 mm above the cam), above FP (top z 380) and W2, below the B-26
+#                                  cord (z 600). Same marks on the left gusset = antler / cape lash points (gusset is one
+#                                  pattern). Settled by the archery loadout fit (bow in IMP-8, two BRL loops round the riser)
+B11_MUZ_Z = 650.0                # ASSUMPTION B11-PLACE: muzzle keeper tabs side by side at z 650 (a keeper loop runs
+B11_MUZ_X = (60.0, 130.0)        #   between them round the barrel), 60 / 130 mm aft of the frame seam: clear of the B-26 cord
+#                                  (z 600), the IMP-2 hose slot (frame seam + 20-32 mm, z 680-720), W3 (z ~690-715) and the
+#                                  hard-point loops in the seams (z 640). Settled by the rifle fit (butt boot on the belt wing,
+#                                  both sides)
+F02_OUT = "OUTSIDE"              # F02-PLACE (BL-034): F-02 centred on the outside of B-05 across its width; fore-aft on
+#                                  the floor depth (ASSUMPTION F02-CENTRE, as the US channel stations), zip on the aft edge
+KEEPER_CUT = F.TAIL_KEEPER_CUT_MM  # ASSUMPTION (corrie_f): 25 mm elastic keeper cut 90 mm, lapped 15 mm into a 75 mm loop
+#                                  (fits 25 mm webbing + a 21 mm rolled tail); settled by weighing 10 cut keepers
 
 MATERIAL_FACE = {
     "challenge_ultra_200": ("film side DOWN (inside)", "non-directional, keep grain"),
@@ -235,6 +256,40 @@ class RevSet:
         return out
 
 
+# ============================================================================ BL-034 placement helpers
+def kw_heights(c) -> dict:
+    """Height z at which each haul wrap W1-W3 crosses the two aft corner seams (where its K-W keeper loop is caught).
+    Anchors from geometry.yaml haul_wraps (19 in) and frame.hard_points. ASSUMPTION KW-PATH: the wrap runs from its R
+    anchor round the frame face, R gusset, aft face, L gusset to its L anchor with z linear in the path length (a
+    straight line on the developed surface); a and depth taken at the wrap's mid height. Settled by the first fitting
+    (T9 W free lengths): the keeper notch must sit within +/-15 mm of the wrap's edge."""
+    hp = BC.GEOM["frame"]["hard_points"]
+    out = {}
+    with F.frame_face(c):
+        for w in BC.GEOM["haul_wraps"]:
+            zR, zL = float(w["z_R_at_19in"]), float(w["z_L_at_19in"])
+            xa = abs(float(hp[w["anchor_R"]][0])) if w["anchor_R"] in hp else 0.0
+            zm = 0.5 * (zR + zL)
+            a, d = float(c.a([zm])[0]), float(c.depth([zm])[0])
+            run = max(a - xa, 0.0) if xa else 0.0
+            T = 2 * run + 2 * d + 2 * a
+            fR, fL = (run + d) / T, (run + d + 2 * a) / T
+            out[w["id"]] = {"R": round(zR + (zL - zR) * fR, 1), "L": round(zR + (zL - zR) * fL, 1)}
+    return out
+
+
+def _b11_marks(G, xc, yc, label):
+    """B-11 lash tab on the gusset: 30 x 50 outline (slot end up), its sew-down box (the B-11 piece's 24 x 19 box at the
+    lower end) and the box corners as drill marks."""
+    x0, y0 = xc - B11_W / 2, yc - B11_H / 2
+    G.add_internal_line(_rect(x0, y0, x0 + B11_W, y0 + B11_H), "placement", f"B-11 lash tab: {label} (both gussets)",
+                        closed=True)
+    G.add_internal_line(_rect(x0 + 3, y0 + 3, x0 + 27, y0 + 22), "stitch", "B-11 sew-down box", closed=True)
+    G.add_internal_line(_rect(x0 + 2.5, y0 + 30, x0 + 27.5, y0 + 35), "placement", "B-11 slot (on the tab)", closed=True)
+    for x, y in ((x0 + 3, y0 + 3), (x0 + 27, y0 + 3), (x0 + 27, y0 + 22), (x0 + 3, y0 + 22)):
+        G.add_drill_hole(x, y, 3.0, "B-11 box corner")
+
+
 # ============================================================================ shell + door + collar
 def _maps(c):
     """Flat coordinate maps of the S15 shell pieces (the same formulas corrie_f / bag_concepts draft them with)."""
@@ -374,6 +429,23 @@ def build_shell(rs: RevSet, c):
                               sig(HOSE_Z) + HOSE_SLOT[1] / 2), "cut_inside", "IMP-2 hose port slot (both)", closed=True)
     G.add_internal_line([(gf(BC.Z0), sig(BC.Z0) + 70.0), (ga(BC.Z0), sig(BC.Z0) + 70.0)], "placement",
                         "SH-01b kick band top")
+    # BL-034: B-11 lash tabs, 4 per gusset (ASSUMPTION B11-PLACE): 2 bow riser / lash tabs, 2 muzzle keeper tabs
+    b11 = []
+    for z in B11_BOW_Z:
+        _b11_marks(G, ga(z) - B11_BOW_IN, sig(z), f"bow riser (R) / lash (L), z {z:.0f}")
+        b11.append(("bow riser / lash", z, round(ga(z) - B11_BOW_IN - gf(z), 1)))
+    for dx in B11_MUZ_X:
+        _b11_marks(G, gf(B11_MUZ_Z) + dx, sig(B11_MUZ_Z), f"muzzle keeper, z {B11_MUZ_Z:.0f}")
+        b11.append(("muzzle keeper", B11_MUZ_Z, dx))
+    rs.geo["b11"] = {"per_gusset": len(b11), "tabs": b11}
+    # BL-034: K-W keeper loops at the W1-W3 crossings of the aft corner seams (ASSUMPTION KW-PATH)
+    kw = kw_heights(c)
+    rs.geo["kw_z"] = kw
+    for wid, zz in kw.items():
+        for side, sx in (("R", 1), ("L", -1)):
+            z = zz[side]
+            G.add_notch(ga(z), sig(z), "v", f"K-W keeper {wid} ({side} only)")
+            U.add_notch(sx * M["A"](z), M["S"](z), "v", f"K-W keeper {wid}")
     # ---- D2 face marks
     S, A, inner_f = M["S"], M["A"], M["inner"]
     pl = F.b22_placement(c)              # BL-033: one source with the sim route (corrie_f.over_port_b22in)
@@ -384,7 +456,11 @@ def build_shell(rs: RevSet, c):
         HB.add_internal_line(_rect(sx * x22 - B22_WH[0] / 2, S(B22_XZ[1]) - B22_WH[1] / 2, sx * x22 + B22_WH[0] / 2,
                                    S(B22_XZ[1]) + B22_WH[1] / 2), "placement", "B-22 guy anchor (INSIDE)", closed=True)
         _box_x(HB, sx * x22, S(B22_XZ[1]), 25, 25, "B-22 / guy LLT")
-        _box_x(HB, sx * F.CROWN_X, S(B28_TAB_Z), 25, 25, "B-28 front tab")
+        # BL-034 DECISION B28-FACE: OUTSIDE, 21 x 20 box (the B-28t box), lock bar at z 700
+        yb = S(B28_TAB_Z)
+        HB.add_internal_line(_rect(sx * F.CROWN_X - 12.5, yb - 2 * B28_BAR_DROP, sx * F.CROWN_X + 12.5, yb), "placement",
+                             "B-28 front lock tab (OUTSIDE, lock bar at the top line)", closed=True)
+        _box_x(HB, sx * F.CROWN_X, yb - B28_BAR_DROP, B28_BOX[0], B28_BOX[1], "B-28 front tab (OUTSIDE)")
     di = (S(IMP4_Z[0]), S(IMP4_Z[1]))
     w4 = 200.0      # IMP4-a 216 cut = 200 finished (8 mm SA)
     DR.add_internal_line(_rect(-w4 / 2, di[0], w4 / 2, di[1]), "placement", "IMP-4 pocket (INSIDE face)", closed=True)
@@ -396,6 +472,15 @@ def build_shell(rs: RevSet, c):
     _edge_notch_at_z(U, "outer_right", lambda z: (A(z), S(z)), (F.TRIPOD_KEEPER_Z,), "B-26 tripod keeper")
     # B-05: hinge eye centre lines
     a0 = a(BC.Z0)
+    # BL-034 F02-PLACE: F-02 on the OUTSIDE of B-05, centred across, ASSUMPTION F02-CENTRE fore-aft; zip edge aft
+    W2, H2 = F.F02_WH
+    bx0, by0, bx1, by1 = BOT.bounds(cut=False)
+    fx0, fy0 = 0.5 * (bx0 + bx1) - W2 / 2, 0.5 * (by0 + by1) - H2 / 2
+    BOT.add_internal_line(_rect(fx0, fy0, fx0 + W2, fy0 + H2), "placement",
+                          f"F-02 fly pocket ({F02_OUT}), #5 zip on the aft edge (top line)", closed=True)
+    for x, y in ((fx0 + 3, fy0 + 3), (fx0 + W2 - 3, fy0 + 3), (fx0 + W2 - 3, fy0 + H2 - 3), (fx0 + 3, fy0 + H2 - 3)):
+        BOT.add_drill_hole(x, y, 3.0, "F-02 corner")
+    rs.geo["f02_on_b05"] = {"x0": round(fx0, 1), "y0": round(fy0, 1), "w": W2, "h": H2, "face": F02_OUT}
     for sx in (-1, 1):
         BOT.add_notch(a0 + sx * STAY_X, 0.0, "v", "hinge eye CL")
         B01.add_notch(sx * STAY_X, 0.0, "v", "hinge eye CL")
@@ -850,10 +935,25 @@ def _web(rs, pid, name, length, qty, mat="poly_webbing_25mm", folds=(), boxes=()
     return p
 
 
+IM_LOOP = 60.0         # strap_tails / mfg IM-BOX: 60 mm end-loop fold
+US_EYE = 50.0          # ASSUMPTION US-EYE: 50 mm eye fold round the left pin's UHMWPE sleeve (the HE eye fold); settled
+#                        by the MT-1 specimens, sewn this way
+B25_BOX = (21.0, 15.0)  # DECISION B25-BOX (BL-034): 21 x 15 at the tip end of the 2 x 30 tab leaves a 13 mm clear loop,
+#                        the least that passes the 30 x 8 x 5 POM toggle (2 x (8 + 5) = 26 mm perimeter); a 21 x 20 box
+#                        leaves 8 mm (no pass). attach_system.box_x 2504 N against the 288 N guy load (SF 8.7)
+BOX_TIP_GAP = 2.0      # box edge 2 mm from the folded tip (heat-sealed end)
+
+
+def _tip_box_y(fold, h):
+    """Flat y of a box sewn in the doubled zone of an end folded at ``fold`` (tip lands at 2 x fold), its edge
+    BOX_TIP_GAP from the tip: leaves the largest loop at the fold."""
+    return 2 * fold - BOX_TIP_GAP - h / 2
+
+
 def build_webbing(rs: RevSet, c):
     import strap_tails as ST
     import attach_diet as AD  # noqa: F401  (TOGGLE_G is booked as hardware)
-    from huntkit.gendesign import attach_system as AS
+    from huntkit.gendesign import attach_system as AS  # noqa: F811
     # B-28 crown straps per crown kit (BL-031): cut, a 60 mm tab per lock + the B-25 second fold
     g = {}
     for k in CROWN_KITS:
@@ -889,6 +989,7 @@ def build_webbing(rs: RevSet, c):
                                labels={"note": "hot-knife; G-hook end folded 2 x 30 and box-X'd; ladder lock on the "
                                                "gusset side"})
                 q.add_internal_line([(0, 30), (25, 30)], "fold", "G-hook fold")
+                _box_x(q, 12.5, 45.0, 21.0, 25.0, "G-hook end")      # BL-034: W3-BOX drawn (as W1 / W2)
                 gw[k] = q
                 rs.webbing.append({"id": "W3", "use": f"haul wrap W3, kit {k}", "material_id": "poly_webbing_25mm",
                                    "length_mm": round(rk["after"]["cut_mm"], 1), "qty": 1, "kit": f"crown kit {k}",
@@ -915,23 +1016,36 @@ def build_webbing(rs: RevSet, c):
          folds=[(15.0, "lap 15 mm, zigzag")], source="BL-031")
     for r in ST.im_rows():
         _web(rs, r["id"], f"internal meat strap {r['id']}", r["after"]["cut_mm"], 1,
-             folds=[(60.0, "left end loop (girth-hitched on the eye)")], source="strap_tails.im_rows (unchanged)")
+             folds=[(IM_LOOP, "left end loop (girth-hitched on the eye)")],
+             boxes=[(_tip_box_y(IM_LOOP, 25.0), 25.0, "end loop (MT-1)")], source="strap_tails.im_rows (unchanged)")
     _web(rs, "K-IM", "IM tail keeper (25 mm elastic)", KEEPER_CUT, 3, mat=ELASTIC, folds=[(15.0, "lap 15 mm")],
          source="BL-031")
     _web(rs, "IME", "IM fairlead eye (38 mm)", 200.0, 6, mat="poly_webbing_38mm", folds=[(100.0, "fold (eye)")],
          boxes=[(170.0, 30, "box-X")], source="ledger IM-eyes 6 x 0.20 m")
-    _web(rs, "US", "under-strap US1 / US2", 550.0, 2, source="ledger US-web 1.10 m")
-    _web(rs, "B-24", "float stand-off link (38 mm, meat-trip)", 435.0, 2, mat="poly_webbing_38mm",
-         folds=[(120.0, "T3 bag hook loop 120"), (170.0, "loop 170"), (220.0, "loop 220")], kit="meat_trip",
-         source="ledger B-24-web 2 x 435 mm")
+    _web(rs, "US", "under-strap US1 / US2", 550.0, 2, folds=[(US_EYE, "eye fold (round the left pin sleeve)")],
+         boxes=[(_tip_box_y(US_EYE, 25.0), 25.0, "sewn eye (MT-1)")], source="ledger US-web 1.10 m")
+    # BL-034: B-24 drawn by attach_system.link_piece (folds at the real loop stations, hook box + 3 loop boxes 34 x 20)
+    lk = AS.link_piece()
+    lk.labels["note"] = "hot-knife cut; " + lk.labels.get("note", "")
+    rs.add(lk, "webbing", "13 straps + webbing", kit="meat_trip", notes="attach_system.link_piece (meat_haul.LINK)")
+    rs.webbing.append({"id": "B-24", "use": "float stand-off link (38 mm, meat-trip)", "material_id": "poly_webbing_38mm",
+                       "length_mm": round(lk.edge_length("left"), 1), "qty": lk.quantity, "kit": "meat_trip",
+                       "source": "attach_system.link_piece; ledger B-24-web 2 x 435 mm"})
     _web(rs, "HE", "hinge eye (38 mm)", 150.0, 2, mat="poly_webbing_38mm", folds=[(50.0, "fold back (eye)"), (100.0, "fold")],
          boxes=[(125.0, 34, "box-X through B-18 + B-01")], source="attach_system.drawing_pieces HE")
     _web(rs, "T3", "IM3 bag-hook tongue (38 mm)", 160.0, 2, mat="poly_webbing_38mm",
          folds=[(45.0, "fold round the hook bed")], boxes=[(22.0, 30, "loop box-X"), (130.0, 34, "box-X to B-17")],
          source="attach_system.drawing_pieces T2/T3 (IM2 hooks removed by BL-004: 2 left)")
     gb = F.guy_bridle()
-    _web(rs, "B-25", "guy bridle on the crown top bar", gb["length_mm"], 1,
-         folds=[(F.BAR_WRAP_MM, "bar sleeve R"), (gb["length_mm"] - F.BAR_WRAP_MM, "bar sleeve L")],
+    # BL-034 B25-LAYOUT: tab R | bar sleeve R | run + spine wrap | bar sleeve L | tab L (corrie_f.guy_bridle sum order);
+    # each end tab folds 2 x 30 into a loop for the guy's POM toggle, closed by a box at the tip end (B25-BOX)
+    Lb, tb, bw = gb["length_mm"], F.BRIDLE_TAB_MM, F.BAR_WRAP_MM
+    _web(rs, "B-25", "guy bridle on the crown top bar", Lb, 1,
+         folds=[(tb / 2, "tab fold R (toggle loop)"), (tb, "bar sleeve R start"), (tb + bw, "bar sleeve R lap (bartack)"),
+                (Lb - tb - bw, "bar sleeve L lap (bartack)"), (Lb - tb, "bar sleeve L start"),
+                (Lb - tb / 2, "tab fold L (toggle loop)")],
+         boxes=[(_tip_box_y(tb / 2, B25_BOX[1]), B25_BOX[1], "toggle tab R"),
+                (Lb - _tip_box_y(tb / 2, B25_BOX[1]), B25_BOX[1], "toggle tab L")],
          note="fitted on the bar before the crown corners are bonded; 2 toggle tabs + second folds",
          source="corrie_f.guy_bridle")
     _web(rs, "TG", "port guy (B-25 toggle -> B-27 port -> B-22 inside)", AS.GUY["cut_mm"], 2,
@@ -972,7 +1086,7 @@ def build_webbing(rs: RevSet, c):
         {"item": "#5 coil zip, F-02 fly pocket", "material_id": "coil_zipper_5", "length_mm": 230.0, "qty": 1},
         {"item": "heavy 25 mm ladder locks: B-28 (4) + guys (2) + W1-W3 (3)", "material_id": "ladder_lock_25mm_heavy",
          "length_mm": None, "qty": 9},
-        {"item": "POM toggles: B-28 rear (2) + guy loops (2)", "material_id": "ASSUMPTION (attach_diet.TOGGLE_G)",
+        {"item": "POM toggles: B-28 rear (2) + guy loops (2)", "material_id": "pom_toggle",
          "length_mm": None, "qty": 4},
         {"item": "rated 25 mm G-hooks: W1-W3 (3) + extenders (3)", "material_id": "g_hook_25mm_aluminium",
          "length_mm": None, "qty": 6},
@@ -1009,7 +1123,7 @@ def build_fly(rs: RevSet, c):
     _dedupe_notches(sp)
     _dedupe_notches(sd)
     rs.webbing.append({"id": "F-EL", "use": "fly hem elastic, 6 mm (spine top + bottom, sides bottom + frame)",
-                       "material_id": "elastic_6mm (no record: ASSUMPTION)", "length_mm": round(fp["elastic_m"] * 1000.0),
+                       "material_id": "elastic_6mm", "length_mm": round(fp["elastic_m"] * 1000.0),
                        "qty": 1, "kit": "as_hunted", "source": "corrie_f.fly_pieces (FLY_ELASTIC_RATIO x hem channels)"})
     rs.geo["fly"] = {"area_m2": round(fp["area_m2"], 3), "mass_B_g": round(fp["mass_g"], 1), "hem_mm": round(fp["hem_mm"]),
                      "elastic_mm": round(fp["elastic_m"] * 1000.0), "lid_top_z": round(g["lid_top_z"], 1),
@@ -1056,8 +1170,8 @@ def pattern_mass_g(p: Piece) -> float:
     holes = sum(Polygon(ln.points).area for ln in p.internal_lines if ln.kind == "cut_inside" and ln.closed
                 and len(ln.points) >= 3)
     if p.material_id in WEBBING:
-        m = MAT.load(p.material_id) if not p.material_id.startswith("elastic") else None
-        return (p.edge_length("left") / 1000.0 * float(m.require("mass_g_m")) if m else 0.0) * p.quantity
+        m = MAT.load(p.material_id)          # BL-034: elastic_25mm has a record now
+        return p.edge_length("left") / 1000.0 * float(m.require("mass_g_m")) * p.quantity
     g_full = BC.piece_mass_g(p)
     return g_full * (1.0 - holes / max(p.area_mm2, 1.0)) if holes else g_full
 
@@ -1134,6 +1248,8 @@ RECON = [
     ("BL-031: IM1-IM3 tail keepers", "webbing", [], ["K-IM"], ""),
     ("BL-031: roll-top clip straps", "webbing", [], ["RT"], ""),
     ("BL-031: roll-top clip tail keepers", "webbing", [], ["K-RT"], ""),
+    ("BL-034 records:", "hardware", [], [], "hardware / elastic re-booked on the BL-034 records"),
+    ("BL-034 thread:", "hardware", [], [], "thread from the op lengths (build_effort_rev3)"),
 ]
 
 

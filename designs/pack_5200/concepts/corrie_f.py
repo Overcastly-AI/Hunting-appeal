@@ -106,7 +106,7 @@ ZIP10_GM = _rec("coil_zipper_10", "mass_g_m")
 CHAIN10 = _rec("coil_zipper_10", "chain_width_mm")
 SHOCK_GM = _rec("shock_cord_3mm", "mass_g_m")
 CORDLOCK_G = _rec("cord_lock_spring", "mass_g")
-SLIDER10_G = BC.SLIDER_G           # 6 g ASSUMPTION (build_geometry rule)
+SLIDER10_G = BC.SLIDER_G           # slider_10 record, 19.0 g (BL-034; was 6 g ASSUMPTION)
 CORD_PULL_G = CO.CORD_PULL_G       # 1.5 g ASSUMPTION
 G_HOOK = CO.G_HOOK                 # 4 g ASSUMPTION (HAUL family; add-on straps only, never a load path)
 
@@ -345,6 +345,21 @@ def d2_inner_split(c, U) -> dict:
     return {"hiR": inner[:iR + 1], "mid": inner[iR:iL + 1], "hiL": inner[iL:]}
 
 
+def d1_aft_split(c, G, lid: dict) -> dict:
+    """BL-034: the gusset aft edge split at the D1 zip's corner tangent zr = z_top - r (team C lid_face): 'lo' (floor
+    -> zr, the zip leg) and 'hi' (zr -> collar seam, the band tongue). Same flat coords as BC.gusset (sigma of z)."""
+    zr = float(lid["z_top"] - lid["r"])
+    zk = BC._kinks(c)
+    sig = BC.unroll_xz(zk, c.a(zk))
+    s_r = float(np.interp(zr, zk, sig))
+    aft = G.edge_points("aft")
+    ys = [y for _, y in aft]
+    xr = float(np.interp(s_r, ys, [x for x, _ in aft]))
+    lo = [p for p in aft if p[1] < s_r - 1e-6] + [(xr, s_r)]
+    hi = [(xr, s_r)] + [p for p in aft if p[1] > s_r + 1e-6]
+    return {"zr": zr, "sigma_r": s_r, "lo": lo, "hi": hi}
+
+
 def d1_pieces(c, fabrics="B"):
     """D1 aft face: team C's lid (floor hinge, R 60 top corners, 3 mm ease a side) and hinge band with corner
     tongues, on this shell (tailgate.lid_face is concept-generic)."""
@@ -422,11 +437,19 @@ def build(c: ShellF | None = None, door: str = DOOR_DEFAULT, fabrics: str = "B")
             P = d1_pieces(c, fabrics)
             LID, HB = P["lid"], P["band"]
             b.pieces += [(LID, "shell"), (HB, "shell")]
+            # BL-034 task A4: the real pairs (were three self-paired placeholders). The gusset aft edge is split at the
+            # zip corner tangent zr = z_top - r: below it the lid zip legs, above it the band tongues.
+            sp = d1_aft_split(c, G, P["TG"].LID)
+            b.extra["d1_aft_split"] = sp
             b.seams += [
                 _seam(LID.edge("hinge"), BOT.edge("top").reversed(), "lid hinge | floor (sewn, 2 rows)", "seared"),
-                _seam(LID.edge("zip"), LID.edge("zip"), "lid | gussets + hinge band (#10 zip, inverted U, R 60)", "zip"),
-                _seam(HB.edge("right"), HB.edge("right"), "hinge band R | gusset R (above the zip)", "seared"),
-                _seam(HB.edge("left"), HB.edge("left"), "hinge band L | gusset L (above the zip)", "seared"),
+                _seam(LID.edge("zip"), [PolyEdge(G, sp["lo"], "aft lo (zip leg R)"), HB.edge("zip"),
+                                        PolyEdge(G, sp["lo"][::-1], "aft lo (zip leg L)")],
+                      "lid | gussets + hinge band (#10 zip, inverted U, R 60)", "zip"),
+                _seam(HB.edge("right"), [PolyEdge(G, sp["hi"][::-1], "aft hi (band tongue R)")],
+                      "hinge band R | gusset R (above the zip)", "seared"),
+                _seam(HB.edge("left"), [PolyEdge(G, sp["hi"], "aft hi (band tongue L)")],
+                      "hinge band L | gusset L (above the zip)", "seared"),
             ]
             b.zips.append({"name": "D1 tailgate zip #10, inverted U, 2 sliders", "length_mm": P["zip_mm"], "corners": 2,
                            "z": (BC.Z0, D1["z_top"]), "where": "lid | gussets + hinge band"})
@@ -746,7 +769,7 @@ FLY_HEM = 20.0        # patterns_v31.build_fly: 20 mm channel hems, 6 mm elastic
 FLY_SA = 10.0         # patterns_v31 SA_301
 FLY_STATE = "full"    # CROWN_ROLLED state the fly is cut for (largest)
 FLY_ELASTIC_RATIO = 0.75  # ASSUMPTION: elastic cut to 75 % of its channel (gathers the fly on the day load); same test
-FLY_ELASTIC_GM = 3.0  # build_geometry.py fly row: "elastic 3 g/m ASSUMPTION (no record)"
+FLY_ELASTIC_GM = _rec("elastic_6mm", "mass_g_m")  # 3.0 g/m: elastic_6mm record (BL-034; was the build_geometry ASSUMPTION)
 
 
 def _matched_edge(xs_a, xs_b, L_seg):
@@ -991,6 +1014,70 @@ def parts(size: str = "M", door: str = DOOR_DEFAULT, fabrics: str = "B", c: Shel
         import strap_tails as ST
         for s, n, g, cfg, src in ST.bag_rows(CROWN_KIT_DEFAULT):
             add(s, n, g, cfg, src)
+    # BL-034: hardware records (materials-engineer, 2026-11-13) on the rows that still carry the old ASSUMPTION masses
+    # (rows computed here from SLIDER_G / SLIDER5_G / TOGGLE_G / TAIL_KEEPER_G already read the records)
+    for s, n, g, cfg, src in record_rows(out):
+        add(s, n, g, cfg, src)
+    return out
+
+
+def build_effort() -> dict | None:
+    """BL-034: thread and beginner hours from the rev 3 operation sequence (``build_effort_rev3.py --write``); None when
+    the cache is missing (then nothing is re-booked)."""
+    f = Path(__file__).resolve().parents[1] / "analysis" / "build_effort_rev3.json"
+    return json.loads(f.read_text()) if f.exists() else None
+
+
+BOOKED_TRIGLIDE_G = 3.0     # history: the tri-glide mass inside the ledger rows (bag_attach / attach_system ASSUMPTION)
+BOOKED_FLY_SLIDER5_G = 3.0  # history: build_geometry fly row "#5 pocket zip + slider" (slider 3 g ASSUMPTION)
+
+
+def record_rows(rows: list) -> list:
+    """BL-034: signed rows that move ledger rows still booked on the old hardware ASSUMPTIONS to the new records
+    (triglide_25mm, elastic_25mm, slider_5). Where a row is the part alone, the row is replaced (target - row g), so
+    the delta stays right if the row is re-generated from the updated constants; inside a mixed row, the booked
+    ASSUMPTION is swapped (record - BOOKED_*)."""
+    from huntkit.gendesign import attach_system as AS
+    by = {r["name"]: r for r in rows}
+
+    def row(prefix):
+        hits = [r for n, r in by.items() if n.startswith(prefix)]
+        return hits[0] if len(hits) == 1 else None
+
+    tg, tg_ss = AS.TRIGLIDE_G, _rec("triglide_25mm", "stainless_alt_mass_g")
+    out = []
+    r = row("US-tg:")
+    if r:
+        out.append(("straps_meat", "BL-034 records: US1/US2 backstop tri-glides -> stainless 25 mm (2 x "
+                    f"{tg_ss:.0f} g, 3.75 kN; orchestrator 2026-11-13: stops cradle slip)", 2 * tg_ss - r["g"], r["cfg"],
+                    "triglide_25mm record stainless_alt_mass_g, less the US-tg row"))
+    r = row("attachment: lifter tri-glide keepers")
+    if r:
+        out.append(("attachment", f"BL-034 records: lifter tri-glide keepers (2 x {tg:.1f} g nylon)", 2 * tg - r["g"],
+                    r["cfg"], "triglide_25mm record mass_g, less the ledger row"))
+    r = row("attachment system: guy ladder locks + tri-glides")
+    if r:
+        out.append(("attachment", f"BL-034 records: guy tri-glides in the guy lock row (2 x {tg:.1f} g, booked "
+                    f"{BOOKED_TRIGLIDE_G:.1f} g)", 2 * (tg - BOOKED_TRIGLIDE_G), r["cfg"], "triglide_25mm record"))
+    r = row("attachment system: guy tail elastic keepers")
+    if r:
+        out.append(("attachment", f"BL-034 records: guy tail elastic keepers (2 x {TAIL_KEEPER_G:.2f} g)",
+                    2 * TAIL_KEEPER_G - r["g"], r["cfg"], "elastic_25mm record x TAIL_KEEPER_CUT_MM, less the row"))
+    # BL-034 task A2: bag thread from the sewing operations (build_effort_rev3, no cone waste) replaces the two 2 g rows
+    eff = build_effort()
+    if eff:
+        th = eff["thread_g"]
+        ra, rb = row("attachment system: thread"), row("B-24-thr:")
+        booked = {"base": ra["g"] if ra else 0.0, "as_hunted": 0.0, "meat_trip": rb["g"] if rb else 0.0}
+        for cfg_ in ("base", "as_hunted", "meat_trip"):
+            out.append(("straps_meat" if cfg_ == "meat_trip" else "attachment",
+                        f"BL-034 thread: {cfg_} ops, {th[cfg_]:.1f} g from the op stitch lengths (booked {booked[cfg_]:.1f} g)",
+                        th[cfg_] - booked[cfg_], cfg_, "build_effort_rev3.json: mfg_corrie_f_rev3 op lengths x THREAD_FACTOR "
+                        "2.75 (ASSUMPTION) x bonded_nylon_tex70/90/135 records"))
+    r = row("rain fly: fly elastic hem")
+    if r:
+        out.append(("fly", f"BL-034 records: F-02 fly pocket #5 slider ({CO.SLIDER5_G:.1f} g, booked "
+                    f"{BOOKED_FLY_SLIDER5_G:.1f} g)", CO.SLIDER5_G - BOOKED_FLY_SLIDER5_G, r["cfg"], "slider_5 record"))
     return out
 
 
@@ -1090,6 +1177,24 @@ def build_metrics(door: str = DOOR_DEFAULT, fabrics: str = "B") -> dict:
            "pieces_b2_basis": pieces - 1 + ad.get("top_pouch", ad.get("crown_lid"))["pieces"] + ad["scope_pod"]["pieces"],
            "seam_rows": m["seam_rows"]}
     out["clear_width_mm"] = {k: round(clear_width(c, door, z), 0) for k, z in STATIONS.items()}
+    # BL-034 task A2: the booked beginner hours are the rev 3 operation sequence (every op, incl. the webbing parts, the
+    # drafted lid and fly, prep and finish; build_effort_rev3), not the HOURS body model + pockets + add-ons, which left
+    # those out (kept as beginner_hours_hours_model for the competition comparisons). The other door is the D2 sequence
+    # plus the HOURS-model difference of its shell (doors differ only in the shell / door group).
+    out["beginner_hours_hours_model"] = out["beginner_hours_with_addons"]
+    out["beginner_hours_base_hours_model"] = out["beginner_hours_base"]
+    eff = build_effort()
+    if eff:
+        d_door = 0.0
+        if door != "D2":
+            m2 = BC.metrics(build(c, "D2", fabrics))
+            d_door = m["hours_total"] - m2["hours_total"]
+        hb = eff["hours_per_bag"]
+        out["beginner_hours_base"] = round(hb["base"] + d_door, 1)
+        out["beginner_hours_with_addons"] = round(eff["hours_per_bag_total"] + d_door, 1)
+        out["beginner_hours_one_off"] = eff["hours_one_off"]
+        out["beginner_hours_source"] = ("build_effort_rev3 (mfg_corrie_f_rev3 op sequence, D2)" +
+                                        (f" + HOURS-model shell delta {d_door:+.1f} h ({door})" if door != "D2" else ""))
     return out
 
 
@@ -2013,7 +2118,7 @@ LID = {"W": 350.0,          # DECISION: plan width, 10 mm inside the 360 mm coll
        "cap_mm": 90.0,      # camo corner cap: 90 mm of perimeter each side of each aft corner (blade cap)
        "zip_mm": 470.0,     # #5 coil zip along the aft wall and round both aft corners (W + 2 x 60)
        "channel_w": 30.0}   # strap channel width (25 mm webbing + 5 mm ease)
-LID_SLIDER5_G = 3.0         # ASSUMPTION: #5 coil slider with a cord pull loop (bag_weight_plan.md gives 4.0 g for #8)
+LID_SLIDER5_G = CO.SLIDER5_G       # slider_5 record, 4.9 g (BL-034; was 3.0 g ASSUMPTION)
 LID_THREAD = 0.03           # ASSUMPTION: thread and bartacks 3 % of the lid's fabric mass (no record; weigh the 1st lid)
 
 
@@ -2366,9 +2471,10 @@ CROWN_STATES = ("day", "sixday", "full")
 MOST_USED_STATE = "sixday"  # the tail rule's most-used load: 6-day, 45 L (loadouts.yaml), lid on
 
 
-TAIL_KEEPER_G = 0.6        # ASSUMPTION (attach_system.mass_delta "guy tail elastic keepers x2": 2 x 0.6 g): one 25 mm
-#                            elastic keeper, a closed loop that slides on the strap and holds the rolled tail. No
-#                            elastic-band record; settled by weighing 10 cut keepers (BL-031 addition to T9)
+TAIL_KEEPER_CUT_MM = 90.0  # ASSUMPTION (patterns_corrie_f_rev3 KEEPER_CUT): 25 mm elastic cut 90 mm, lapped 15 mm into a
+#                            75 mm loop; settled by weighing 10 cut keepers (BL-031 addition to T9)
+TAIL_KEEPER_G = _rec("elastic_25mm", "mass_g_m") * TAIL_KEEPER_CUT_MM / 1000.0   # 15 g/m x 90 mm = 1.35 g (BL-034;
+#                            was 0.6 g ASSUMPTION): one 25 mm elastic keeper, a closed loop on the strap over the tail
 
 
 def tail_keeper_g() -> float:

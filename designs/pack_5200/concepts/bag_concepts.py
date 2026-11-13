@@ -1019,7 +1019,8 @@ def piece_mass_g(p: Piece) -> float:
     return a * m.require("areal_density_gsm") * p.quantity
 
 
-SLIDER_G = 6.0   # ASSUMPTION (build_geometry zip row: sliders 6 g each)
+SLIDER_G = float(MAT.load("slider_10").require("mass_g"))   # 19.0 g: slider_10 record (YKK #10 CN, metal pull; BL-034,
+#                                                               was 6 g ASSUMPTION from the build_geometry zip row)
 
 
 def zip_mass_g(z) -> float:

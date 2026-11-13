@@ -311,11 +311,11 @@ def wrap_clearance() -> dict:
 LADDER = {"w": 40.0, "h": 250.0, "slot": (27.0, 5.0), "pitch": 12.7, "rungs": 17, "x": 60.0, "z_lo": 545.0,
           "slot0_z": 601.0 - 40.0}
 TONGUE_25 = 120.0      # hood tongue cut length (25 mm webbing), toggle sewn in the end
-TOGGLE_G = 3.0         # ASSUMPTION: POM toggle 30 x 8 x 5 mm (DESIGN 4.5 LINK toggle mass)
+TOGGLE_G = float(load("pom_toggle").require("mass_g"))   # 1.7 g: pom_toggle record, POM 30 x 8 x 5 mm (BL-034; was 3.0)
 TOGGLE_N = 670.0       # ASSUMPTION: POM toggle bending across a 27 mm slot (pom_acetal ~65 MPa, Z 33 mm3)
 GUY = {"free_mm": 314.0, "cut_mm": 500.0, "bag_xz": (149.0, 752.0), "hood_x": 95.0}
 LADDER_LOCK = "ladder_lock_25mm"
-TRIGLIDE_G = 3.0       # ASSUMPTION (bag_attachment.md lifter keeper)
+TRIGLIDE_G = float(load("triglide_25mm").require("mass_g"))   # 2.6 g: triglide_25mm record, nylon (BL-034; was 3.0)
 HOOK_RATED_N = 2200.0  # purchase requirement for the four bag hooks (set from the C5 hood-off case, below)
 HOOK_RATED_G = 14.0    # ASSUMPTION: 38 mm forged 7075 sliding-gate hook in that class (old 1500 N part: 9 g)
 PIN = {"d": 5.0, "L": 50.0}
@@ -505,7 +505,7 @@ def mass_delta(P: list) -> dict:
         "top side guys x2 (25 mm webbing)": 2 * g25 * GUY["cut_mm"],
         "guy ladder locks + tri-glides + ladder-lock tabs": 2 * (float(load(LADDER_LOCK).require("mass_g")) + TRIGLIDE_G + g25 * 70.0),
         "guy corner tabs B-22 x2": hyp * area["B-22"],
-        "guy tail elastic keepers x2": 2 * 0.6,
+        "guy tail elastic keepers x2": 2 * 0.6,          # history (BL-034 books 1.35 g each: corrie_f.TAIL_KEEPER_G)
         "IM2 tongue backings B-23 x2": hyp * area["B-23"],
         "bag hooks 1500 N -> 2200 N rated (4 x +5 g)": 4 * (HOOK_RATED_G - 9.0),
         "thread (box-X + perimeters)": 2.0,

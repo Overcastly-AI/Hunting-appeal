@@ -1,9 +1,0 @@
-piece,size,unit,rotation_deg,mirrored,x_min_mm,y_min_mm,area_m2
-roll-top collar,,0,270.0,False,-0.0,25.5,0.37026
-"hydration sleeve (folded tube, one side seam)",,0,270.0,False,-0.0,742.2,0.234
-SWAP slab (sleep kit / meat liner) frame face,,0,270.0,False,453.0,742.2,0.2339
-glass pod sleeve face (2 box pleats at the base),,0,270.0,False,453.0,1091.2,0.15432
-crown lid: base (lies on the roll),,0,0.0,False,521.8,25.5,0.08046
-door pocket face,,0,270.0,False,-0.0,1265.2,0.06394
-"door pocket bellows (bottom + 2 sides, one strip)",,0,270.0,False,1132.0,25.5,0.05898
-SWAP slab (sleep kit / meat liner) floor,,0,270.0,False,521.8,262.5,0.0436

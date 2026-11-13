@@ -4,7 +4,7 @@
 
 Writes the beginner print set and the production files to outputs/release/pack5200_corrie_f_rev3/patterns/
 (git-tracked deliverable), scratch copies to outputs/patterns_corrie_f_rev3/, and phone-readable PNG previews to
-outputs/screens/20261113_BL033_<n>.png (BL-033 re-export; BL-032's own screenshots keep their names). Reuses the v3.1 exporter's drawing helpers (patterns_v31_export, read only).
+outputs/screens/20261113_BL034_<n>.png (BL-034 re-export; BL-032 / BL-033 screenshots keep their names). Reuses the v3.1 exporter's drawing helpers (patterns_v31_export, read only).
 """
 from __future__ import annotations
 
@@ -32,7 +32,7 @@ REL = ROOT / "outputs" / "release" / "pack5200_corrie_f_rev3" / "patterns"
 OUT = ROOT / "outputs" / "patterns_corrie_f_rev3"
 SCREENS = ROOT / "outputs" / "screens"
 DATE = "20261113"
-SHOT_TAG = "BL033"                 # ticket BL-033 task 6: screenshot prefix 20261113_BL033_
+SHOT_TAG = "BL034"                 # BL-034 part A re-export: screenshot prefix 20261113_BL034_ (BL-033 kept its own)
 YD = 914.4
 WASTE_PROD = PVX.WASTE_PROD        # 3 % lay loss ASSUMPTION (v3.1 rule)
 NEST_UNITS = 10
@@ -173,6 +173,36 @@ def write_cutlist(rsP, rsA, mkP, mkA, mk10, path_md: Path, path_csv: Path):
     return tot
 
 
+def bl034_section(rsP) -> list:
+    """BL-034 part A marks, every number from the pattern module."""
+    g = rsP.geo
+    kw = g["kw_z"]
+    md = ["## 8. BL-034 marks (pack-designer)", "",
+          "### 8.1 B-11 lash tabs (releases op 4.07)", "",
+          f"{g['b11']['per_gusset']} per gusset, drawn on B-03 (one pattern, cut as a pair) = 8 a bag (ASSUMPTION B11-PLACE):", "",
+          "| Use | z mm | from the frame seam mm |", "|---|---:|---:|"]
+    md += [f"| {u} | {z:.0f} | {x:.0f} |" for u, z, x in g["b11"]["tabs"]]
+    md += ["", "Bow riser tabs stack on the riser line 40 mm forward of the aft seam (right gusset; the cam sits in IMP-8); "
+           "the same marks on the left gusset are antler / cape lash points. The two muzzle-keeper tabs sit side by side "
+           "so a keeper loop runs between them round the barrel (rifle in a butt boot on either belt wing). Each mark: the "
+           "30 x 50 outline (slot end up), the sew-down box 24 x 19 and its corners.", "",
+           "### 8.2 Box-X marks drawn on the webbing", "",
+           "| Part | Box | Where |", "|---|---|---|",
+           "| W3 (per kit) | 21 x 25 | G-hook end, as W1 / W2 |",
+           f"| IM1-IM3 | 21 x 25 | end loop, fold {PR.IM_LOOP:.0f} mm, box at the tip end |",
+           f"| US1/US2 | 21 x 25 | sewn eye, fold {PR.US_EYE:.0f} mm (ASSUMPTION US-EYE) |",
+           "| B-24 | 34 x 30 hook + 3 x 34 x 20 loops | attach_system.link_piece (the loop stations at 120 / 170 / 220 mm) |",
+           f"| B-25 | {PR.B25_BOX[0]:.0f} x {PR.B25_BOX[1]:.0f} each tab | DECISION B25-BOX: leaves the 13 mm loop the POM toggle needs |",
+           f"| B-02h B-28 front tab | {PR.B28_BOX[0]:.0f} x {PR.B28_BOX[1]:.0f}, OUTSIDE | DECISION B28-FACE |", "",
+           "### 8.3 K-W keeper notches and F-02", "",
+           "K-W keepers are caught in the aft corner seams where each wrap crosses it (ASSUMPTION KW-PATH, geometry.yaml "
+           "anchors): " + "; ".join(f"{k} R z {v['R']:.0f} / L z {v['L']:.0f}" for k, v in kw.items()) +
+           ". V-notches on B-03 (R only / L only) and on the blade U outer edges.", "",
+           f"F-02 on B-05: outside, {g['f02_on_b05']['w']:.0f} x {g['f02_on_b05']['h']:.0f} mm, x {g['f02_on_b05']['x0']} / "
+           f"y {g['f02_on_b05']['y0']} on the B-05 seam rectangle, zip edge aft.", ""]
+    return md
+
+
 def bl033_section(rsP) -> list:
     """BL-033 fixes, every number from its code."""
     import corrie_f as F
@@ -293,6 +323,7 @@ def write_checks(rsP, rsB, rep, mc, rec, hours, path: Path):
     md += [f"- FP hip-reach pocket (BL-033): face {PR.F.fp_spec()['w']:.0f} mm, a plain rectangle; inner edge "
            f"{rsP.geo['fp_min_margin_mm']} mm off the frame seam at its tightest (BL-032 clamped the 180 mm face).", ""]
     md += bl033_section(rsP)
+    md += bl034_section(rsP)
     path.write_text("\n".join(md) + "\n")
 
 
@@ -342,6 +373,16 @@ def make_screens(rsP, mkP, mk10, log=print):
     if m:
         shots.append(PVX.render_marker(m, f"Production marker {m.units} bags: cordura_330d_nylon66, "
                                           f"{m.length_mm / YD:.1f} yd, efficiency {m.efficiency * 100:.0f} %", nxt()))
+    # BL-034 marks
+    g3 = rsP.pieces["B-03"]
+    shots.append(PVX.render_pieces([g3], "BL-034: gusset B-03 - B-11 lash tabs (bow riser / lash, muzzle keepers), "
+                                         "K-W keeper notches", nxt(), max_row=600.0))
+    shots.append(PVX.render_pieces([rsP.pieces[k] for k in ("B-02h", "B-05")],
+                                   "BL-034: hinge band B-28 front tabs OUTSIDE (21 x 20 box-X); F-02 on B-05", nxt(),
+                                   max_row=900.0))
+    web = [rsP.pieces[k] for k in ("B-25", "US", "IM1", "W3", "B-24", "B-28t", "W1")]
+    shots.append(PVX.render_pieces(web, "BL-034: webbing box-X marks (B-25 toggle tabs, US eye, IM loop, W3, B-24)",
+                                   nxt(), max_row=1400.0))
     for s in shots:
         assert s.stat().st_size <= 1.5e6, s
     log(f"screens {len(shots)}")
@@ -395,7 +436,7 @@ diamonds. Tape on the back, then check the test square again.
 - **Solid black inside a piece** = cut it out (swell windows, port slots, hose slots, guy port slits). Cut these first.
 - Label: ID, name, material, how many (L+R = one normal, one flipped), face up.
 - Marks that say **L only** / **R only** go on that side's gusset only (the gusset is one pattern cut as a pair).
-- BL-033: no hinge swell window in B-01 (B-18 doublers sit on whole fabric); B-16 under-strap channels on F-02.
+- BL-033: no hinge swell window in B-01 (B-18 doublers sit on whole fabric); B-16 under-strap channels on F-02.\n- BL-034: B-11 lash tabs (4 per gusset), K-W keeper notches, F-02 placement on B-05, every webbing box-X drawn.
 
 ## 5. Build order and what to print
 
@@ -407,7 +448,7 @@ diamonds. Tape on the back, then check the test square again.
 2. **Small parts**: set one B-13x swell into a scrap window before cutting B-01. Sew B-12 on the swell crest and
    cut the slot through both. B-27 facings go inside B-01 under each slit.
 3. **Door D2**: door + #10 zip into the blade U (notch at each corner tangent), hinge band. B-22 anchors and the
-   B-28 front tabs go on the hinge band INSIDE before it is joined.
+   B-28 front tabs go on the hinge band OUTSIDE (21 x 20 box-X) before it is joined.
 4. **Main bag**: B-01 flat work first (swells, B-27 slits, B-17 outside, B-18 inside, IMP-2 keeper tabs), then
    the gussets (FP pockets, IMP-8, hose slots, kick bands), then the box seams, then the floor.
 5. **Collar**: B-06f + B-06 + B-07 + HDPE strips; collar ring matched at every panel-corner V-notch.
