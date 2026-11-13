@@ -1,3 +1,0 @@
-piece,size,unit,rotation_deg,mirrored,x_min_mm,y_min_mm,area_m2
-fly base pocket,,0,270.0,False,-0.0,38.0,0.0336
-"cam cup body (folded, 2 side seams)",,0,270.0,False,-0.0,251.0,0.0257
