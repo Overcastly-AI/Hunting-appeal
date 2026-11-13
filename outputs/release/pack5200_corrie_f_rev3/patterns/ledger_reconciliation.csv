@@ -63,10 +63,10 @@ attachment system: crown hood B-19 (Hypalon blank + ears + hem),attachment,base,
 attachment system: hood lip stiffener B-19s (HDPE 1.5),attachment,base,3.9,removed,,,BL-004 REC
 attachment system: hood lining B-19L (XLPE 3),attachment,base,0.6,removed,,,BL-004 REC
 attachment system: hood ladder strips B-20 x2,attachment,base,20.0,removed,,,BL-004 REC
-attachment system: hood tongues x2 + POM toggles,attachment,base,10.3,removed,,,BL-004 REC
+attachment system: hood tongues x2 + POM toggles,attachment,base,7.7,removed,,,BL-004 REC
 attachment system: hood grab tab (25 mm x 90),attachment,base,1.6,removed,,,BL-004 REC
 attachment system: top side guys x2 (25 mm webbing),attachment,base,18.0,webbing,,TG,
-attachment system: guy ladder locks + tri-glides + ladder-lock tabs,attachment,base,16.5,webbing,,LLT,+ locks
+attachment system: guy ladder locks + tri-glides + ladder-lock tabs,attachment,base,15.7,webbing,,LLT,+ locks
 attachment system: guy corner tabs B-22 x2,attachment,base,5.9,pattern,B-22,,
 attachment system: guy tail elastic keepers x2,attachment,base,1.2,webbing,,K-G,
 attachment system: IM2 tongue backings B-23 x2,attachment,base,7.1,removed,,,BL-004 REC
@@ -79,7 +79,7 @@ BL-004 REC: IM2 TPU hook sleeves x2,attachment,base,-2.0,removed,,,
 BL-004 REC: T2 tongues x2 (38 mm x 160),attachment,base,-8.95,removed,,,
 BL-004 REC: B-23 IM2 tongue backings x2,attachment,base,-7.1,removed,,,
 BL-004 REC: elastic keepers for the IM2 hooks x2,attachment,base,-2.7,removed,,,
-BL-004 REC: hood B-19 + B-19s + B-19L + ladders B-20 + tongues/toggles + grab tab,attachment,base,-60.7,removed,,,
+BL-004 REC: hood B-19 + B-19s + B-19L + ladders B-20 + tongues/toggles + grab tab,attachment,base,-58.1,removed,,,
 BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle,attachment,base,9.52,webbing,,GBL,
 BL-004 REC: B-17 trimmed 110 -> 70 mm tall (pair),attachment,base,-7.2,pattern,B-17,,B-17 drawn 90 x 70
 BL-010 A1: IM3 bag hooks -> wiregate carabiners (2),attachment,base,16.0,hardware,,,
@@ -94,7 +94,7 @@ BL-031: roll-top clip straps cut 350 -> 510 mm (2),straps_compression,base,5.76,
 "BL-031: roll-top clip tail keepers (2, 25 mm elastic)",straps_compression,base,2.7,webbing,,K-RT,
 "BL-034 records: US1/US2 backstop tri-glides -> stainless 25 mm (2 x 11 g, 3.75 kN; orchestrator 2026-11-13: stops cradle slip)",straps_meat,base,0.0,hardware,,,hardware / elastic re-booked on the BL-034 records
 BL-034 records: lifter tri-glide keepers (2 x 2.6 g nylon),attachment,base,0.0,hardware,,,hardware / elastic re-booked on the BL-034 records
-"BL-034 records: guy tri-glides in the guy lock row (2 x 2.6 g, booked 3.0 g)",attachment,base,-0.8,hardware,,,hardware / elastic re-booked on the BL-034 records
+"BL-034 records: guy tri-glides in the guy lock row (2 x 2.6 g, booked 2.6 g)",attachment,base,0.0,hardware,,,hardware / elastic re-booked on the BL-034 records
 BL-034 records: guy tail elastic keepers (2 x 1.35 g),attachment,base,1.5,hardware,,,hardware / elastic re-booked on the BL-034 records
 "BL-034 thread: base ops, 11.7 g from the op stitch lengths (booked 2.0 g)",attachment,base,9.7,hardware,,,thread from the op lengths (build_effort_rev3)
 "BL-034 thread: as_hunted ops, 4.6 g from the op stitch lengths (booked 0.0 g)",attachment,as_hunted,4.63,hardware,,,thread from the op lengths (build_effort_rev3)

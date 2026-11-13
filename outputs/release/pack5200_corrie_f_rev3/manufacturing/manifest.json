@@ -19,12 +19,12 @@
   "proto_hours": 74.6,
   "sam_min": 507.5,
   "volatile": [
-   "BL-033 B-22 x",
-   "BL-033 F-01",
-   "BL-033 FP width",
-   "BL-033 hinge window vs B-18",
-   "BL-033 ledger",
-   "BL-033 ledger (US-chan)"
+   "pattern: B-22 x",
+   "pattern: F-01",
+   "pattern: FP width",
+   "pattern: hinge window vs B-18",
+   "pattern: ledger",
+   "pattern: ledger (US-chan)"
   ]
  },
  "mass": {

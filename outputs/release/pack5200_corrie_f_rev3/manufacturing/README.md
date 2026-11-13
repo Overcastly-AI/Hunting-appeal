@@ -27,14 +27,14 @@ Generated 20261113 by `designs/pack_5200/mfg_corrie_f_rev3.py` from `patterns_co
 
 ## Volatile operations (re-run when the pattern changes)
 
-These ops read their numbers from the pattern; re-run `python designs/pack_5200/mfg_corrie_f_rev3.py` after the pattern module changes and they update (tags name the ticket that last moved them):
+These ops read their numbers from the pattern; re-run `python designs/pack_5200/mfg_corrie_f_rev3.py` after the pattern module changes and they update (tags name the pattern value each op reads; BL-033, which last moved them, has landed):
 
-- **BL-033 B-22 x**: ops 3.04, 3.05; load points port guy, bag end
-- **BL-033 F-01**: ops 1.06, 9.01, 9.02
-- **BL-033 FP width**: ops 1.01, 1.02, 4.09
-- **BL-033 hinge window vs B-18**: ops 2.02, 4.01, 4.02, 4.05; load points hinge eye
-- **BL-033 ledger**: ops 7.16
-- **BL-033 ledger (US-chan)**: ops 4.13
+- **pattern: B-22 x**: ops 3.04, 3.05; load points port guy, bag end
+- **pattern: F-01**: ops 1.06, 9.01, 9.02
+- **pattern: FP width**: ops 1.01, 1.02, 4.09
+- **pattern: hinge window vs B-18**: ops 2.02, 4.01, 4.02, 4.05; load points hinge eye
+- **pattern: ledger**: ops 7.16
+- **pattern: ledger (US-chan)**: ops 4.13
 
 Current values: B-22 at x +/-130.3 mm (drawn 149.0); FP flat width 260.0 mm (finished 165.0); 6 swell windows; F-01 drafted: True; B-11 tabs on the gussets: 8; K-W keeper z: {'W1': {'R': 128.2, 'L': 201.8}, 'W2': {'R': 299.9, 'L': 370.1}, 'W3': {'R': 702.6, 'L': 702.6}}.
 

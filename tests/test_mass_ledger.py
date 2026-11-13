@@ -39,11 +39,13 @@ def test_cross_check_frame_mass_h1_json():
     #   +1.9 IMP-4 #5 slider (slider_5 4.9 g, was 3 g)                                    [BL-034 records]
     #   +4.5 elastic hook keepers (6 x 1.35 g, was 6 x 0.6), -0.8 lifter tri-glides (2 x 2.6, was 2 x 3),
     #   -1.1 torso adjust (cam 12.2 + toggle 1.7, was 12 + 3)                              [BL-035 records]
-    rebook = 26.0 + 16.0 + 1.9 + 4.5 - 0.8 - 1.1
+    #   -2.6 hood POM toggles (2 x 1.7, was 2 x 3), -0.8 guy tri-glides (attach_system phase rows on the records),
+    #   -2.7 misc thread no longer counts the S-strap set                              [BL-036]
+    rebook = 26.0 + 16.0 + 1.9 + 4.5 - 0.8 - 1.1 - 2.6 - 0.8 - 2.7
     assert L.total("corrie_b2_today", "M") == pytest.approx(h["today_corrected"]["corrie_b2_M_g"] + rebook, abs=0.5)
     assert L.total("corrie_b2_h1", "M") == pytest.approx(h["h1"]["corrie_b2_M_g"] + rebook, abs=0.5)
-    assert L.total("corrie_b2_today", "M") == pytest.approx(4029.5, abs=0.1)
-    assert L.total("corrie_b2_h1", "M") == pytest.approx(3973.5, abs=0.1)
+    assert L.total("corrie_b2_today", "M") == pytest.approx(4023.4, abs=0.1)   # BL-036 (was 4029.5)
+    assert L.total("corrie_b2_h1", "M") == pytest.approx(3967.4, abs=0.1)   # BL-036 (was 3973.5)
     fr = lambda c: sum(r["g"] for r in L.parts(c, "M") if r["system"] == "frame" and not r["name"].startswith("torso"))  # noqa: E731
     assert fr("corrie_b2_today") == pytest.approx(h["today_corrected"]["frame_g"], abs=0.2)
     assert fr("corrie_b2_h1") == pytest.approx(h["h1"]["frame_g"], abs=0.2)

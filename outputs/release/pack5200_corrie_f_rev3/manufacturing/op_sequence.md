@@ -32,11 +32,11 @@ Beginner rules: all flat work before the bag becomes 3D; clips, never pins, in c
 
 ## Step 1 Pockets
 
-**1.01 FP hip-reach pocket: pleats**  _(volatile: BL-033 FP width)_
+**1.01 FP hip-reach pocket: pleats**  _(volatile: pattern: FP width)_
 - How: Fold the 2 box pleats on each FP-a (flat 260 mm wide, finished 165 mm), baste across top and bottom at 6 mm. Do not stretch the mesh.
 - Machine WF1; needle Nm 90/14 DPx17, medium ball SUK (knit mesh); thread bonded_nylon_tex70; SPI 10; stitch 301; seam SSa
 - stitching 1040 mm (41 in); sketch SK-5; beginner 1.02 h, SAM 7.4 min
-**1.02 FP mouth band and shock-cord channel**  _(volatile: BL-033 FP width)_
+**1.02 FP mouth band and shock-cord channel**  _(volatile: pattern: FP width)_
 - How: Sew FP-b to the FP-a top (260 mm), fold the band on its fold line over the seam, edge-stitch 2 mm to form the channel; thread the shock cord (FP-cord) and bar it at both ends inside the side allowance.
 - Machine WF1; needle Nm 90/14 DPx17, medium ball SUK (knit mesh); thread bonded_nylon_tex70; SPI 10; stitch 301; seam SSa + EFa channel
 - stitching 1040 mm (41 in); sketch SK-2; beginner 0.62 h, SAM 4.5 min
@@ -52,7 +52,7 @@ Beginner rules: all flat work before the bag becomes 3D; clips, never pins, in c
 - How: Fold B-09c into a tube, one side seam; turn the top edge 10 mm and edge-stitch; I2T hang tab goes in later (op 5.01).
 - Machine WF1; needle Nm 90/14 DPx17, round point R; thread bonded_nylon_tex70; SPI 10; stitch 301; seam SSa + EFa
 - stitching 930 mm (37 in); beginner 0.56 h, SAM 4.0 min
-**1.06 F-02 fly base pocket**  _(volatile: BL-033 F-01)_
+**1.06 F-02 fly base pocket**  _(volatile: pattern: F-01)_
 - How: Set the #5 zip (230 mm), turn the edges 10 mm. It is sewn to the floor B-05 in step 4 on the drawn 'F-02 fly pocket' placement (190 x 140 mm, OUTSIDE, zip on the aft edge, corners drilled; pattern ASSUMPTION F02-CENTRE fore-aft).
 - Machine WF1; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI 8; stitch 301; seam ZIP + EFa
 - stitching 1120 mm (44 in); beginner 1.13 h, SAM 8.1 min
@@ -63,7 +63,7 @@ Beginner rules: all flat work before the bag becomes 3D; clips, never pins, in c
 - How: Lay a B-12 (TPU face out) on the crest of each B-13x (6, not the hinge swells), sew the 3 mm perimeter, then cut the 45 x 12 slot through both and edge-stitch the slot.
 - Machine WF2; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI 8; stitch 301; seam LSd
 - stitching 1843 mm (73 in); sketch SK-2; beginner 1.47 h, SAM 10.6 min
-**2.02 Box the swells**  _(volatile: BL-033 hinge window vs B-18)_
+**2.02 Box the swells**  _(volatile: pattern: hinge window vs B-18)_
 - How: Sew the 4 corner folds of every swell (B-13x x6): fold on 'box the corner', sew across. Practice: set one swell into a scrap window before touching B-01.
 - Machine WF1; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI 8; stitch 301; seam SSa
 - beginner 1.50 h, SAM 10.8 min
@@ -90,11 +90,11 @@ Beginner rules: all flat work before the bag becomes 3D; clips, never pins, in c
 - How: Basting-tape the #10 zip to the door edge and to the blade U inner edge (1358 mm, 53.5 in), notch to notch, corner tangent notches at each R 55 corner; 2 sliders head to head; sew each tape at 5 mm, turn, edge-stitch 3 mm; zip stops at the hinge band.
 - Machine WF1; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI 8; stitch 301; seam ZIP; attachment zipper foot (left / right)
 - stitching 5432 mm (214 in); sketch SK-2; QC QC-09; beginner 2.66 h, SAM 19.1 min
-**3.04 B-22 guy anchors INSIDE the hinge band**  _(volatile: BL-033 B-22 x)_
+**3.04 B-22 guy anchors INSIDE the hinge band**  _(volatile: pattern: B-22 x)_
 - How: Place each B-22 (coated face down on the band's inside) at x +/-130.3 mm (5.13 in) on the drawn placement (drawn x +/-149, moved 18.7 mm inboard, ASSUMPTION B22-IN). Double-row perimeter 3 / 9 mm.
 - Machine WF2; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI 8; stitch 301; seam LSd (2 rows)
 - stitching 839 mm (33 in); sketch SK-4; QC QC-07; beginner 0.67 h, SAM 4.8 min
-**3.05 Guy ladder-lock tabs LLT through B-22**  _(volatile: BL-033 B-22 x)_
+**3.05 Guy ladder-lock tabs LLT through B-22**  _(volatile: pattern: B-22 x)_
 - How: Fold each LLT round the bar of a heavy 25 mm ladder lock, box-X through LLT + B-22 + B-02h at the drawn 'B-22 / guy LLT box' (drill corners). Box 21 x 25 mm (LLT piece).
 - Machine BT / PS (prototype WF2 + J1); needle Nm 140/22 DPx17, round point R; thread bonded_nylon_tex135; SPI 7; stitch 301 box-X path; seam BOX
 - stitching 315 mm (12 in); load table: LLT + B-22 + B-02h; sketch SK-1, SK-4; QC QC-07; beginner 0.20 h, SAM 1.4 min
@@ -113,11 +113,11 @@ Beginner rules: all flat work before the bag becomes 3D; clips, never pins, in c
 
 ## Step 4 Main bag
 
-**4.01 Check the B-01 cut-outs**  _(volatile: BL-033 hinge window vs B-18)_
+**4.01 Check the B-01 cut-outs**  _(volatile: pattern: hinge window vs B-18)_
 - How: 6 swell windows, 2 B-27 slits (156 mm at x +/-52), IMP-2 keeper drill marks. All cut, corners awled.
 - Machine bench; needle -; thread -; SPI -; stitch -; seam -
 - QC QC-03; beginner 0.10 h, SAM 0.7 min
-**4.02 Set the 6 swells into the B-01 windows**  _(volatile: BL-033 hinge window vs B-18)_
+**4.02 Set the 6 swells into the B-01 windows**  _(volatile: pattern: hinge window vs B-18)_
 - How: Swell base to window edge, INSIDE B-01, notch to notch (6 windows, 1680 mm of window edge in all; hinge windows: 0). Sew from the swell side, needle down at every corner.
 - Machine WF1; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI 8; stitch 301; seam SSa
 - stitching 1680 mm (66 in); sketch SK-3; QC QC-08; beginner 1.50 h, SAM 10.8 min
@@ -129,7 +129,7 @@ Beginner rules: all flat work before the bag becomes 3D; clips, never pins, in c
 - How: Place each B-17 (with its T3) OUTSIDE B-01 at x +/-115, z 385-455 (placement). Double-row perimeter 3 / 9 mm, 8 SPI, tex 90; the 90 mm top edge carries the load: no gaps, backtack 10 mm.
 - Machine WF2; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI 8; stitch 301; seam LSd (2 rows)
 - stitching 1239 mm (49 in); load table: B-17 perimeter; sketch SK-3; QC QC-07; beginner 0.99 h, SAM 7.1 min
-**4.05 B-18 doublers + HE hinge eyes**  _(volatile: BL-033 hinge window vs B-18)_
+**4.05 B-18 doublers + HE hinge eyes**  _(volatile: pattern: hinge window vs B-18)_
 - How: Lay each B-18 INSIDE B-01 at the placement (lower edge to the floor seam line). Fold the HE eye (50 mm back, 25 mm eye; first 30 mm tri-folded to an 18 mm neck, 304 bartack across the neck), box-X 34 x 34 through HE + B-18 + B-01, then the B-18 perimeter rows on 3 sides (the 4th goes in the floor seam).
 - Machine BT / PS (prototype WF2 + J1); needle Nm 140/22 DPx17, round point R; thread bonded_nylon_tex135; SPI 7; stitch 301 box-X path; seam BOX + LSd
 - stitching 1243 mm (49 in); load table: HE + B-18 + B-01; sketch SK-1, SK-3; QC QC-07; beginner 1.02 h, SAM 7.4 min
@@ -145,7 +145,7 @@ Beginner rules: all flat work before the bag becomes 3D; clips, never pins, in c
 - How: SH-01b on each gusset foot at the 'kick band top' line, top edge turned 8 mm, topstitched; bottom and sides go in the seams.
 - Machine WF1; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI 8; stitch 301; seam LSd
 - stitching 320 mm (13 in); beginner 0.26 h, SAM 1.9 min
-**4.09 Gusset flat work: FP pockets (both)**  _(volatile: BL-033 FP width)_
+**4.09 Gusset flat work: FP pockets (both)**  _(volatile: pattern: FP width)_
 - How: Sew each FP to its gusset at the placement, z 150-380, 165 mm face; inner edge >= 9 mm off the frame seam (9.5 mm at the tightest point, pattern fp_min_margin_mm). Bottom and sides 301, box pleats laid flat, bartack the 2 mouth corners.
 - Machine WF1; needle Nm 90/14 DPx17, medium ball SUK (knit mesh); thread bonded_nylon_tex70; SPI 10; stitch 301; seam LSd
 - stitching 1250 mm (49 in); load table: FP corners (BT-S); sketch SK-5; beginner 1.15 h, SAM 8.3 min
@@ -161,7 +161,7 @@ Beginner rules: all flat work before the bag becomes 3D; clips, never pins, in c
 - How: R and L (715 / 715 mm): 2 HPL loops in the L seam at the hard-point notches; 3 K-W keeper loops in each seam, raw ends in the seam, at the W1-W3 crossings: R seam z 128 / 300 / 703; L seam z 202 / 370 / 703 (W1, W2, W3; the drawn 'K-W keeper' notches on B-03 and B-02u, pattern ASSUMPTION KW-PATH). SSa2.
 - Machine WF1; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI 8; stitch 301; seam SSa-ins + SSa2
 - stitching 2861 mm (113 in); sketch SK-5; QC QC-08; beginner 1.66 h, SAM 11.9 min
-**4.13 US floor channels B-16 on F-02**  _(volatile: BL-033 ledger (US-chan))_
+**4.13 US floor channels B-16 on F-02**  _(volatile: pattern: ledger (US-chan))_
 - How: Turn both ends of each B-16 15 mm (left OPEN: the 25 mm under-strap passes through), lay it across F-02's outer face on the drawn 'B-16 channel' lines (stations [48.0, 104.0] mm), topstitch both long edges, bartack the 4 corners.
 - Machine WF1; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI 8; stitch 301; seam LSd
 - stitching 760 mm (30 in); beginner 1.01 h, SAM 7.2 min
@@ -298,7 +298,7 @@ Beginner rules: all flat work before the bag becomes 3D; clips, never pins, in c
 - How: Cut 90 mm, lap 15 mm into a loop round its strap, zigzag the lap (3 passes).
 - Machine ZZ; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI 8; stitch 304; seam BT (zigzag lap)
 - beginner 0.30 h, SAM 2.2 min
-**7.16 US: under-strap US1 / US2 x2**  _(volatile: BL-033 ledger)_
+**7.16 US: under-strap US1 / US2 x2**  _(volatile: pattern: ledger)_
 - How: 550 mm (21.7 in). Folds: eye fold (round the left pin sleeve). Box-X: 21 x 25 at the drawn marks.
 - Machine BT / PS (prototype WF2 + J1); needle Nm 140/22 DPx17, round point R; thread bonded_nylon_tex135; SPI 7; stitch 301 box-X path; seam BOX
 - stitching 315 mm (12 in); load table: US; sketch SK-1, SK-7; QC QC-07; beginner 0.20 h, SAM 1.4 min
@@ -372,11 +372,11 @@ Beginner rules: all flat work before the bag becomes 3D; clips, never pins, in c
 
 ## Step 9 Rain fly F-01
 
-**9.01 F-01 fly: panel seams**  _(volatile: BL-033 F-01)_
+**9.01 F-01 fly: panel seams**  _(volatile: pattern: F-01)_
 - How: Join the fly panels (F-01a spine R | F-01b side 1271 mm; F-01a spine L | F-01b side 1271 mm). Silpoly: weights and clips, no pins; 301 then flat-fell; seam-seal the felled seams (piece note: silpoly: seams 301 then flat-felled + seam-sealed; 20 mm elastic channel hems top + bottom)
 - Machine WF1; needle Nm 90/14 DPx17, round point R; thread bonded_nylon_tex70; SPI 10; stitch 301; seam SSa then LSc flat-fell (ISO 4916 class 2)
 - stitching 7628 mm (300 in); beginner 3.05 h, SAM 22.0 min
-**9.02 F-01 fly: elastic channel hems**  _(volatile: BL-033 F-01)_
+**9.02 F-01 fly: elastic channel hems**  _(volatile: pattern: F-01)_
 - How: Turn the hems 20 mm on the drawn hem lines (3249 mm of hem); thread 2436 mm of 6 mm elastic (F-EL), bar each end.
 - Machine WF1; needle Nm 90/14 DPx17, round point R; thread bonded_nylon_tex70; SPI 10; stitch 301; seam EFb channel
 - stitching 3248 mm (128 in); beginner 2.35 h, SAM 16.9 min

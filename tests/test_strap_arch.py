@@ -42,8 +42,9 @@ def test_configs_today_match_owner_rule(SV):
     # BL-008 / DECISIONS 2026-11-10: base 3700.4 g, as hunted 3872.4 g (proposal rounding). BL-035: +46.5 g on every
     # config from the record re-booking of CORRIE B.2 and the shared rows (+26.0 #10 door sliders, +16.0 stainless US
     # tri-glides, +1.9 IMP-4 #5 slider, +4.5 elastic hook keepers, -0.8 lifter tri-glides, -1.1 torso adjust)
-    assert pk["base_g"] == pytest.approx(3747.1, abs=0.5)
-    assert pk["as_hunted_g"] == pytest.approx(3919.1, abs=0.5)
+    # BL-036: -6.1 g (hood toggles -2.6, guy tri-glides -0.8 on the records; S-strap thread out of misc -2.7)
+    assert pk["base_g"] == pytest.approx(3747.1 - 6.1, abs=0.5)
+    assert pk["as_hunted_g"] == pytest.approx(3919.1 - 6.1, abs=0.5)
     assert pk["meat_trip_g"] - pk["as_hunted_g"] == pytest.approx(54.4, abs=0.1)   # B-24
 
 
