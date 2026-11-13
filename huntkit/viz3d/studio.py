@@ -149,7 +149,7 @@ class ConceptScene:
     """What a concept hands to the studio: meshes with materials, plus the things the modelling layer builds for it
     (fabric realism, seams, straps, hardware, zips). All coordinates FCS mm."""
 
-    def __init__(self, name: str, colorway: str = "talus", camo_repeat_mm: float = 380.0, seed: float = 0.0):
+    def __init__(self, name: str, colorway: str = "krummholz", camo_repeat_mm: float = 380.0, seed: float = 0.0):
         self.name = name
         self.parts: list[SPart] = []
         self.seam_lines: list = []
@@ -489,7 +489,7 @@ def corrie_b2_scene(name="corrie_b2", params=None) -> ConceptScene:
     p = params or load_params(str(REPO / "designs" / "pack_5200" / "spec.yaml"))
     with upgraded_legacy():
         pack = corrie_b2_pack(p)
-    sc = ConceptScene(name, colorway=p.get("colorway", "talus"), camo_repeat_mm=p.get("camo_repeat_mm", 380.0))
+    sc = ConceptScene(name, colorway=p.get("colorway", "krummholz"), camo_repeat_mm=p.get("camo_repeat_mm", 380.0))
     L = FB.Look
     drape = {
         "corrie_body": dict(max_edge=3.2, uv_is_pattern=True),

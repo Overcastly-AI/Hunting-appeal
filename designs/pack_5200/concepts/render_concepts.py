@@ -77,7 +77,7 @@ def _np(o):
 def colours():
     from huntkit.viz3d import textures as TX
     from huntkit.viz3d.export import colorway
-    cw = colorway({"colorway": "talus"})
+    cw = colorway({"colorway": "krummholz"})
     camo, src = TX.owner_base_camo(512)
     return {"body": _rgb(cw["body"]), "frame_panel": _rgb(cw["body"]) * 0.78, "trim": _rgb(cw["trim"]),
             "harness": _rgb(cw["harness"]), "zip": np.array([0.10, 0.10, 0.09]), "band": _rgb(cw["harness"]) * 1.1,

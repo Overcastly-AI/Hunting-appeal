@@ -574,6 +574,34 @@ def consumables_bom(g: dict) -> list[BOMLine]:
 
 
 CAMO_DIR = REL / "camo"         # BL-040 M-10: the camo-designer's release folder (separate ticket)
+PACK_COLORWAY = "krummholz"     # BL-040 (orchestrator 2026-11-13): named primary pairing in designs/apparel/colorways.yaml
+SUBLIMATION_CAVEAT = ("630D printable base is TPU-coated and sublimation transfer runs at about 200 C: print BEFORE the "
+                      "coating is applied (mill print), or order a strike-off and check the coat survives, before buying "
+                      "yardage")
+
+
+def colour_spec() -> dict:
+    """Body / trim / accent of the pack colourway, read from designs/apparel/colorways.yaml (no fallback: raises if the
+    pairing is missing, so the BOM never names a colour the colour standard does not hold)."""
+    import yaml
+    cw = yaml.safe_load((ROOT / "designs" / "apparel" / "colorways.yaml").read_text())
+    solids = {x["key"]: x for x in cw["solids"]}
+    pr = next(a for a in cw["accent_pairings"] if a["id"] == PACK_COLORWAY)
+    f = lambda k: f"{solids[k]['name']} {solids[k]['hex']} ({solids[k]['code']})"  # noqa: E731
+    return {"pairing": PACK_COLORWAY, "name": pr["display_name"], "body": f(pr["body"]), "trim": f(pr["trim"]),
+            "harness": f(pr.get("harness", pr["trim"])), "accent": pr["accent_pattern"],
+            "ref": f"designs/apparel/colorways.yaml accent_pairings id '{PACK_COLORWAY}'"}
+
+
+def colour_note(section: str, mid: str) -> str:
+    c = colour_spec()
+    if mid in ("polyester_ht_630d_printable", "polyester_300d_printable") or section == "fabric_print":
+        return f"colour: {c['accent']} camo accent print ({c['ref']})"
+    if mid in P.WEBBING or mid.startswith(("coil_zipper", "poly_webbing", "elastic", "shock_cord")) or section == "webbing":
+        return f"colour: trim {c['trim']} ({c['ref']})"
+    if section in ("fabric", "fabric_alternate") and mid not in P.FREE_ROTATION and mid != "power_mesh_nylon_spandex":
+        return f"colour: body {c['body']} ({c['ref']})"
+    return ""
 
 
 def camo_bom(ctx: Ctx) -> list[BOMLine]:
@@ -596,7 +624,8 @@ def camo_bom(ctx: Ctx) -> list[BOMLine]:
                                alt_material_id="polyester_ht_630d_printable (unprinted, fabric line)", kit="base",
                                source=f"camo/bom_print_line_proposed.csv: {r['source']}",
                                notes=f"{r['notes']}; prototype (1 bag) {q1:g} {r['unit']} = ${float(r['cost_1bag_usd']):.2f}; "
-                                     "costs ON TOP of the unprinted camo fabric line until the owner picks the print base",
+                                     "costs ON TOP of the unprinted camo fabric line until the owner picks the print base; "
+                                     f"CAVEAT: {SUBLIMATION_CAVEAT}",
                                proto_qty=q1))
     return out
 
@@ -1106,7 +1135,8 @@ def ops(ctx: Ctx) -> list[SewingOp]:
         op(f"B-11 lash tabs ({n11}) on the gussets", f"Gusset flat work, before the gusset seams: {b11['per_gusset']} "
            f"tabs on each B-03 at the drawn 'B-11 lash tab' placements ({tabs}). Tab coated face out, slot end UP; awl "
            f"the 4 'B-11 box corner' drill marks; sew the {bw:.0f} x {bh:.0f} mm 'B-11 sew-down box' (rectangle + both "
-           "diagonals, 301) through tab + gusset. Right gusset: bow riser; left: antler / cape lash; muzzle keepers both "
+           "diagonals, 301) through tab + gusset. Right gusset: bow riser; left: LIGHT LASH ONLY, no load rating "
+           "(BL-040 m-12); muzzle keepers both "
            "sides (pattern ASSUMPTION B11-PLACE, settled by the archery and rifle loadout fits).", "hyp",
            pieces=f"B-11 x{n11}, B-03 x2", seam="LSd (box-X sew-down)", length=n11 * AS.box_x(bw, bh)["path_mm"],
            hours=n11 * H["bartack"], sketch="SK-5", qc="QC-07")
@@ -1712,6 +1742,10 @@ def package(ctx: Ctx | None = None) -> dict:
     oplist = ops(ctx)
     bom = (fabric_bom(ctx) + camo_bom(ctx) + webbing_bom(ctx) + hardware_bom(ctx) + thread_bom(oplist, ledger_thread_g())
            + consumables_bom(g))
+    for b in bom:                                   # BL-040: every coloured line names the colorways.yaml standard
+        cn = colour_note(b.section, b.material_id)
+        if cn:
+            b.notes = (b.notes + "; " if b.notes else "") + cn
     lpts = load_points(ctx)
     lm = ledger_mass(ctx)
     return {"ctx": ctx, "geo": g, "ops": oplist, "bom": bom, "load_points": lpts, "cutting": cutting_plan(ctx),
@@ -1791,6 +1825,46 @@ JIGS = [
     ("J7", "Lid dart template (B-29a, 4 darts, apex drill marks)"),
     ("J8", "Hot-knife length fence with a scale in mm and in (cut lengths in cutting_plan.csv)"),
 ]
+
+
+# ============================================================================ BL-040 review status
+# design-reviewer pre-cut review (analysis/review_20261113_rev3_release.md): id, class, status, how
+REVIEW_STATUS = [
+    ("B-1", "blocker", "fixed", "DECISION HE-ONE: one hinge eye on HE / B-18 / B-01 / op 4.05 / load table / PT-3; SK-8; box_mismatches covers every stack"),
+    ("B-2", "blocker", "fixed", "RTM buckle tabs on both gussets (op 4.08) + RT strap placements on the flat hem (op 5.02); SK-10; load rows (unrated)"),
+    ("B-3", "blocker", "fixed", "op 4.13 states the keeper / mesh stack; SK-9; FP aft edge basted only; W1/W2 over FP confirmed"),
+    ("M-1", "major", "fixed", "B-26: one end in op 4.12, the free end caught in op 4.13"),
+    ("M-2", "major", "fixed", "B-17 box 34 x 34"),
+    ("M-3", "major", "fixed", "collar ring one way round; one notch set on the gusset (test)"),
+    ("M-4", "major", "fixed", "B-22 label: INSIDE B-02h, x placed, z 695, coated face to the band"),
+    ("M-5", "major", "fixed", "DECISION GUY-LOCK-IN: lock at B-22 inside; corrie_f_body 13.5 and PORT-1 updated"),
+    ("M-6", "major", "fixed", "QC-14 on the primary fabrics per kit; costing.md + README publish them"),
+    ("M-7", "major", "fixed", "LL-H 432 N; load_points.csv hardware columns"),
+    ("M-8", "major", "fixed", "MT-3 and LL-H dry / wet / cold"),
+    ("M-9", "major", "fixed", "SEW-F in the kit (G4 lever rig)"),
+    ("M-10", "major", "fixed", "camo/ referenced; BOM fabric_print line from camo/bom_print_line_proposed.csv; sublimation caveat"),
+    ("M-11", "major", "fixed", "prototype buy vs production in costing.md / README"),
+    ("M-12", "major", "fixed", "minimum prototype machine stated (README, tech pack section 2, BUILD_PLAN pointer)"),
+    ("M-13", "major", "fixed", "op 1.01 bastes the bottom only"),
+    ("m-1", "minor", "fixed", "already three-way max since BL-039 (test + README)"),
+    ("m-2", "minor", "fixed", "hinge 1019 N"), ("m-3", "minor", "fixed", "B-17 perimeter SF labelled pending PT-2"),
+    ("m-4", "minor", "fixed", "B-09p slot drawn"), ("m-5", "minor", "accepted",
+     "IMP-4 / F-02 zip-construction sketch not drawn this ticket: pockets are sewn first on cheap fabric and do not gate any load or other step; next pattern ticket"),
+    ("m-6", "minor", "fixed", "fly elastic per channel, lap text removed"), ("m-7", "minor", "fixed", "swell slot is a mark; cut through the B-12 slot"),
+    ("m-8", "minor", "fixed", "lid presets / cap turn / seam label"), ("m-9", "minor", "fixed", "QC-12..QC-20"),
+    ("m-10", "minor", "fixed", "seam-inserted loops folded in step 2"), ("m-11", "minor", "fixed", "B-11 slot 27 x 5"),
+    ("m-12", "minor", "fixed", "left-gusset B-11: light lash only, no load rating"), ("m-13", "minor", "fixed", "seam table pipes escaped"),
+    ("m-14", "minor", "fixed", "piece-type split; cut-list hardware = BOM quantities"),
+    ("m-15", "minor", "fixed", "B-24 label, SK-3 caption"),
+    ("m-16", "minor", "accepted", "test square placement is in the shared huntkit/patterns/export_pdf (pattern-maker); it already picks a free corner when one exists"),
+    ("m-17", "minor", "fixed", "QC-13 records the expected 81.9-84.0 L"), ("m-18", "minor", "fixed", "FIT-R3 in G7"),
+    ("m-19", "minor", "accepted", "IM strap assembly views (SK per strap) need the strap topology drawn by the pack-designer; next ticket; the fitting op names each part"),
+    ("m-20", "minor", "fixed", "op 3.08 turns the allowances away from B-22"), ("m-21", "minor", "fixed", "previews 110 dpi"),
+]
+
+
+def ready_to_cut() -> bool:
+    return not any(c in ("blocker", "major") and st != "fixed" for _, c, st, _ in REVIEW_STATUS)
 
 
 # ============================================================================ writers
@@ -1881,8 +1955,12 @@ def write_files(pk: dict, out: Path = OUT) -> list[Path]:
           f"trip {pk['mass']['primary_meat_trip_g']:.0f} g** (QC-14, +/- {QC14_TOL_PCT:.0f} %); ledger (team B basis) "
           f"{pk['mass']['base_g']:.0f} / {pk['mass']['as_hunted_g']:.0f} / {pk['mass']['meat_trip_g']:.0f} g.",
           f"- **Sewing machine:** {PROTO_MACHINE_MIN}",
-          "- **Camo:** the print comes from the camo-designer's release, `../camo/` (README, print file, colours, "
-          "placement, vendors, 1- and 10-bag costs). BOM section `fabric_print`. Solid 630D is the no-camo fallback.",
+          "- **Camo:** the print comes from the camo-designer's release: read `../camo/README.md` first (print file "
+          "`../camo/print/`, colours, placement, vendors, 1- and 10-bag costs). BOM section `fabric_print`. "
+          f"**Caveat:** {SUBLIMATION_CAVEAT}. Solid 630D is the no-camo fallback.",
+          f"- **Colourway:** {colour_spec()['name']} = body {colour_spec()['body']}, trim {colour_spec()['trim']}, "
+          f"harness {colour_spec()['harness']}, {colour_spec()['accent']} camo accents ({colour_spec()['ref']}); the "
+          "BOM notes name it on every coloured line.",
           f"- Load points: {len(pk['load_points'])}; lowest SF {checks(pk)['min_sf']} ({checks(pk)['min_sf_point']}).", "",
           "## Volatile operations (re-run when the pattern changes)", "",
           "These ops read their numbers from the pattern; re-run `python designs/pack_5200/mfg_corrie_f_rev3.py` after "
@@ -1905,6 +1983,14 @@ def write_files(pk: dict, out: Path = OUT) -> list[Path]:
            f"- Box-X mismatches between a panel and its tab: {'; '.join(ck_['box_mismatches']) or 'none'}.",
            f"- Ledger hardware rows mapped by keyword (confirm): {'; '.join(ck_['hardware_rows_by_keyword']) or 'none'}.",
            f"- Unmapped ledger hardware rows: {'; '.join(ck_['unmapped_hardware']) or 'none'}."]
+    nb = sum(1 for _, c, st, _ in REVIEW_STATUS if c == "blocker" and st != "fixed")
+    nm = sum(1 for _, c, st, _ in REVIEW_STATUS if c == "major" and st != "fixed")
+    md += ["", "## Pre-cut review status (BL-040)", "",
+           f"Open after BL-040: {nb} blockers, {nm} majors. " + (
+               "**Ready to cut** the bag fabric once the G2 proof tests and the G3 wash have passed (the physical "
+               "gates in qc_sheet.md still apply)." if ready_to_cut() else "**NOT ready to cut.**"), "",
+           "| Finding | Class | Status | How |", "|---|---|---|---|"]
+    md += [f"| {i} | {c} | {st} | {h.replace('|', '/')} |" for i, c, st, h in REVIEW_STATUS]
     md += ["", "## Assumptions that govern", "", "| ID | Assumption | Settled by |", "|---|---|---|"]
     md += [f"| {a} | {t} | {s} |" for a, t, s in ASSUMPTIONS]
     md += ["", "## Packaging", ""] + [f"{i + 1}. {t}" for i, t in enumerate(PACKAGING)]
@@ -2577,7 +2663,7 @@ def screenshots(pdf: Path, sk: dict) -> list[Path]:
     op_page = next((i + 1 for i, pg in enumerate(rd.pages) if "6. Sewing operation sequence" in (pg.extract_text() or "")), 2)
     subprocess.run(["pdftoppm", "-png", "-r", "110", "-f", str(op_page + 2), "-l", str(op_page + 2), str(pdf),
                     str(tmp / "ops")], check=True)
-    srcs = [sorted(tmp.glob("cover*.png"))[0], sorted(tmp.glob("ops*.png"))[0], sk["SK-1"], sk["SK-5"]]
+    srcs = [sorted(tmp.glob("cover*.png"))[0], sk["SK-8"], sk["SK-9"], sk["SK-10"], sorted(tmp.glob("ops*.png"))[0]]
     out = []
     for i, s_ in enumerate(srcs, 1):
         dst = SCREENS / f"{DATE}_{TOPIC}_{i}.png"

@@ -26,7 +26,7 @@ DEFAULT_PARAMS: dict = {
     "target_volume_l": 5200 * CU_IN_TO_L,   # spec volume.main_bag_cu_in -> 85.2 L
     "torsos_in": [15.0, 19.0, 23.0],
     "default_torso_in": 19.0,
-    "colorway": "talus",                    # colorways.yaml accent_pairings id
+    "colorway": "krummholz",                    # colorways.yaml accent_pairings id
     "geometry_yaml": str(REPO / "designs" / "pack_5200" / "geometry.yaml"),
     "frame_yaml": "auto",                   # <spec dir>/frame.yaml if present (tube sizes)
     "frame_type": "generative",             # production frame: the branching PAHT print. "tube" is the rejected carbon ladder.

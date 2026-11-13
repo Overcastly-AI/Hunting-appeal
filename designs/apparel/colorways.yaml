@@ -96,6 +96,19 @@ solids:
     suits: ['insulated jacket & vest shells', 'late-season softshell', 'pack body (talus/late-season build)']
     shared_with_camo: []
 
+  - key: krummholz_sage
+    name: "Krummholz Sage"
+    code: "HA 17-0312"
+    hex: "#6E745B"
+    srgb: [110, 116, 91]
+    cielab_d65: [47.7, -7.0, 13.1]
+    qc_tolerance: {dE00: 1.0}
+    optical_brightener: "none — no FWA/OBA anywhere in the colour chain (see header)"
+    derivation: "carried over from the alternate line (same key, hex and code); orchestrator call 2026-11-13 (BL-040): keep it as the 5200 pack body. Not an owner ink: the Owner Base accents share Deadfall Shadow across the seam via the trim"
+    description: "muted grey-green mid tone; the 5200 pack body colour (what every pack render shows)"
+    suits: ['pack body & lid', 'softshell jacket & pant']
+    shared_with_camo: []
+
 # Owner-base inks that are NOT solids: Bleached Tine #C6B497 (light tan, L* 74) is a camo
 # highlight only — too light and too low in chroma contrast to carry a whole garment.
 
@@ -104,6 +117,16 @@ solids:
 # hipbelt wings + trim (zips, binding, webbing) + thread. Panel geometry is unchanged from
 # the Cirquefall system (huntkit/camo/export.py JACKET / PACK).
 accent_pairings:
+  - id: krummholz
+    display_name: "Krummholz"
+    body: krummholz_sage
+    accent_pattern: owner_base
+    accent_scale: accent
+    trim: deadfall_shadow
+    harness: elk_wallow           # pack harness & hipbelt (elk_wallow 'suits'); huntkit.viz3d.export reads it
+    thread: krummholz_sage
+    shared_inks: [deadfall_shadow]
+    use: "5200 pack PRIMARY body (orchestrator 2026-11-13, BL-040): Krummholz Sage body, Owner Base camo accents, Deadfall Shadow trim"
   - id: sidehill
     display_name: "Sidehill"
     body: sidehill_olive

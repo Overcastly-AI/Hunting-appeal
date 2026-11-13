@@ -30,16 +30,28 @@ def to_gltf(v):
     return np.asarray(v, float) @ M_FCS_TO_GLTF.T
 
 
+DEFAULT_COLORWAY = "krummholz"   # BL-040: the 5200 pack's named primary pairing (Krummholz Sage body, colorways.yaml)
+LEGACY_COLORWAY = {"talus": DEFAULT_COLORWAY}   # 'talus' is an ALTERNATE pairing id; renders that asked for it meant this
+
+
 def colorway(p: dict) -> dict:
-    """Body / trim / harness hex from designs/apparel/colorways.yaml (accent pairing id)."""
-    out = {"body": "#6E745B", "trim": "#2D2B27", "harness": "#4A4B3C", "name": p.get("colorway", "talus")}
+    """Body / trim / harness hex from designs/apparel/colorways.yaml (accent pairing id, primary section first, then
+    the alternate section). BL-040: no silent fallback: ``fallback`` is True only if the YAML could not be read."""
+    name = p.get("colorway", DEFAULT_COLORWAY)
+    name = LEGACY_COLORWAY.get(name, name)
+    out = {"body": "#6E745B", "trim": "#2D2B27", "harness": "#4A4B3C", "name": name, "pairing": name, "fallback": True}
     try:
         import yaml
         cw = yaml.safe_load((REPO / "designs" / "apparel" / "colorways.yaml").read_text())
-        solids = {s["key"]: s["hex"] for s in cw["solids"]}
-        pair = next(a for a in cw["accent_pairings"] if a["id"] == p.get("colorway", "talus"))
-        out.update(body=solids[pair["body"]], trim=solids[pair["trim"]], name=pair["display_name"])
-        out["harness"] = solids.get("spruce_shadow", out["harness"])   # colorways.yaml: pack harness & hipbelt
+        for sec in (cw, cw.get("alternate", {})):
+            solids = {s["key"]: s["hex"] for s in sec.get("solids", [])}
+            pair = next((a for a in sec.get("accent_pairings", []) if a["id"] == name), None)
+            if pair is None:
+                continue
+            harness = pair.get("harness") or ("spruce_shadow" if "spruce_shadow" in solids else pair["trim"])
+            out.update(body=solids[pair["body"]], trim=solids[pair["trim"]], harness=solids[harness],
+                       name=pair["display_name"], fallback=False)
+            break
     except Exception:  # noqa: BLE001
         pass
     return out

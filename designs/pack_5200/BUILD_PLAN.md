@@ -34,8 +34,8 @@ Print the PDFs at 100 %, then check the square with a ruler before cutting anyth
 
 | Item | Why | Approx. |
 |---|---|---|
-| Walking-foot machine, or a heavy-duty domestic machine that handles tex 90–135 thread and a 110/18–120/19 needle | 840D TPU plus webbing layers stall light machines. A walking foot stops the TPU fabric from creeping | $300–900 |
-| Needles: 100/16 (body), 110/18 (webbing), 120/19 (bartacks); round point for coated fabric | | $15 |
+| Walking-foot (compound or upper-and-lower feed) lockstitch that takes **135x17 / DPx17 needles up to 140/22**, sews **tex 135** top and bobbin and clears at least 6 mm under the raised foot. A domestic or "heavy-duty domestic" machine (130/705H needles) cannot sew the rev 3 load points as specified (BL-040; `outputs/release/pack5200_corrie_f_rev3/manufacturing/README.md`) | 840D TPU plus webbing layers stall light machines; every box-X and proof specimen is specified on Nm 140/22 + tex 135 | $300–900 |
+| Needles (DPx17, round point R): Nm 90/14 (light), 110/18 (body), 140/22 (box-X); ball point SUK 90/14 for the mesh | per the rev 3 op sequence | $15 |
 | Thread: `bonded_nylon_tex90`, `bonded_nylon_tex135`, `bonded_poly_tex90` | Per the material picks | $40 |
 | Rotary cutter (45 mm + 60 mm), self-healing mat 600×900, quilting rulers 6×24 in | Accurate straight cuts on slippery nylon | $90 |
 | Hot knife (or a soldering iron with a blade tip) | Seals webbing, Cordura and cord ends | $40 |

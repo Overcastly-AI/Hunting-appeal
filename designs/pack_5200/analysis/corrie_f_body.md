@@ -599,8 +599,9 @@ Two starts, 1.5 mm apart: read 181.9–183.4 mm.
   record × area; `PORT_FACING_W`, `PORT_TURN` are ASSUMPTIONS).
 - **Guy:** from the B-25 bridle tab (toggle, unchanged) straight aft through the port, across the inside of the bag to
   **B-22, turned to the inside** of the hinge band (same tab, same seam, same place, x ±149, z 695). The heavy ladder
-  lock sits just outside the port so the length is set from the frame side on the packed bag (the "fixed length"
-  rule). Bag-off: the toggle comes out of the bridle tab as in rev 1, and the guy stays with the bag.
+  lock sits on its LLT tab at B-22, INSIDE the hinge band (BL-040 DECISION GUY-LOCK-IN, section 20; this line said
+  "just outside the port", which the pattern, the ops and the load table never drew). The guy length is set with the
+  roll top open, per crown kit and load (the "fixed length" rule), not on the move. Bag-off: the toggle comes out of the bridle tab as in rev 1, and the guy stays with the bag.
 - **Bar heights:** S kit z 601–677 and M kit z 664–741 meet the slit. The L kit's bar (z 728–804) is above B-01's top
   edge from about 20.5 in, so the guy comes down to the slit's top end. The 23 in run includes this.
 - **Lifters:** outside the bag the guy runs only from the sleeve to the port (8–23 mm at 15 and 19 in, 77–81 mm at 23 in
@@ -1369,3 +1370,42 @@ The 6.6 lb (2993.7 g) base target is **218 g** away after tests (686 g proven no
 - `crown_diet_results.json` re-run on the new ledger; `crown_diet.md` notes that its table masses are superseded.
 - `mfg_corrie_f_rev3.py`: the volatile op tags read `pattern: <value>` (was `BL-033 <value>`), RD-16 / RD-23 texts no
   longer cite BL-033 as pending, two unused locals and one placeholder-free f-string removed.
+
+## 20. BL-040: pre-cut review fixes (pack-designer, 2026-11-13)
+
+Source: `review_20261113_rev3_release.md` (3 blockers, 13 majors, 21 minors). Code: `patterns_corrie_f_rev3.py`,
+`mfg_corrie_f_rev3.py`, `physical_test_kit.py`; sketches SK-8 (hinge eye), SK-9 (aft corner keeper stack), SK-10
+(roll-top clip) in the manufacturing release.
+
+- **DECISION HE-ONE (B-1).** One hinge eye: HE 38 x 150 mm folded in half (eye fold at 75 mm), both raw ends on the
+  B-01 cut edge, so the floor seam catches both plies; box-X 34 x 34 mm (38 mm webbing less 2 mm a side), its lower
+  edge 4 mm above the floor seam line (ASSUMPTION HE-GAP), through HE (2 plies) + B-01 + B-18. Free eye 25 mm. Neck:
+  each long edge folded 10 mm in (18 mm, the fairlead throat), one BT-M per leg, sewn flat before the fold. B-18 is
+  90 x 62 mm (was 90 x 45), z -12 to +50 about the floor seam line, rows on the top and sides only. The same box is
+  drawn on HE, B-18 and B-01, and `box_mismatches` now checks every webbing / panel stack. Load 1019 N factored
+  (load_standard rev C), SF 2.31 on the B-18 seam; PT-3 1530 N on specimens sewn as op 4.05.
+  ASSUMPTION HE-REACH: the 25 mm free eye (box top 38 mm, fold 63 mm above the seam line) reaches the z 60 pin
+  (25 mm above the floor seam line, frame z); settled by QC-20. Alternative not taken: the eye pointing down past the
+  floor (needs the tail out of the floor seam).
+- **DECISION RT-MATE (B-2).** RTM tab (25 mm x 70, folded round the female buckle bar, box-X 21 x 25) on each gusset
+  at mid depth, 150 mm under the collar seam (the cloth-pass roll model's clip tab, `corrie_f_roll_clips.json`); the
+  RT strap's first 60 mm box-X'd (25 x 21) on the flat hem B-07 on the frame-side half of each gusset, free end
+  through the adjustable male half. Unrated (hand cinch). ASSUMPTION RT-HEM (strap height on the hem). New ledger
+  gap: 2 RTM tabs (2 x 70 mm of 25 mm webbing) are not booked.
+- **B-3 / KW-OVER-FP.** Keepers L z 202 (W1), R z 300 (W2), L z 370 (W2) sit on the FP aft edge. Op 4.13 states the
+  stack (gusset, FP mesh edge, K-W loop, blade U), sketch SK-9; the FP aft edge is basted in the allowance only. The
+  pack-designer confirms W1 / W2 are meant to cinch OVER the hip pockets in haul mode (the pocket mouth stays
+  reachable under a strap); moving FP 10 mm forward was rejected because it eats the 9 mm frame-seam clearance.
+- **DECISION GUY-LOCK-IN (M-5, option a).** The guy ladder lock stays on LLT at B-22 inside the hinge band; PORT-1's
+  gloved check is done there. Option b (lock outside at the port, LLT deleted) was not taken: it needs a new
+  B-01 tab and a re-run of the guy-path sim.
+- **Collar ring (M-3).** The ring now runs one way round the bag; the gusset carries one notch set (50 / 100 mm from
+  the frame end + the two corners).
+- **Levels (M-7, M-8, M-9).** LL-H 432 N (1.5 x 288 N) dry, wet and cold; MT-3 dry, wet and cold; SEW-F (box-X
+  fatigue, 3 loops, 38 -> 384 N, 1e5) added to the G4 lever rig.
+- **Mass (M-6).** QC-14 is now on the primary fabrics: ledger + the primary pattern delta per kit (base +64.1 g).
+  B-18's growth adds 3.1 g of Hypalon the ledger does not yet book.
+- **Colourway (orchestrator 2026-11-13).** The pack body is Krummholz Sage #6E745B, now the named primary pairing
+  `krummholz` in `designs/apparel/colorways.yaml` (Owner Base accents, Deadfall Shadow trim, Elk Wallow harness);
+  `huntkit.viz3d.export.colorway` reads it (no hard-coded fallback in use) and the BOM names it on every coloured line.
+
