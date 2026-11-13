@@ -140,7 +140,7 @@ Rows 102; unmatched 0; matched twice 0; drafted ids without a row 0; row ids not
 | BL-034 records: lifter tri-glide keepers (2 x 2.6 g nylon) | attachment | base | 0.0 | hardware |  | hardware / elastic re-booked on the BL-034 records |
 | BL-034 records: guy tri-glides in the guy lock row (2 x 2.6 g, booked 2.6 g) | attachment | base | 0.0 | hardware |  | hardware / elastic re-booked on the BL-034 records |
 | BL-034 records: guy tail elastic keepers (2 x 1.35 g) | attachment | base | 1.5 | hardware |  | hardware / elastic re-booked on the BL-034 records |
-| BL-034 thread: base ops, 11.7 g from the op stitch lengths (booked 2.0 g) | attachment | base | 9.7 | hardware |  | thread from the op lengths (build_effort_rev3) |
+| BL-034 thread: base ops, 11.8 g from the op stitch lengths (booked 2.0 g) | attachment | base | 9.8 | hardware |  | thread from the op lengths (build_effort_rev3) |
 | BL-034 thread: as_hunted ops, 4.6 g from the op stitch lengths (booked 0.0 g) | attachment | as_hunted | 4.6 | hardware |  | thread from the op lengths (build_effort_rev3) |
 | BL-034 thread: meat_trip ops, 1.9 g from the op stitch lengths (booked 2.0 g) | straps_meat | meat_trip | -0.1 | hardware |  | thread from the op lengths (build_effort_rev3) |
 | BL-034 records: F-02 fly pocket #5 slider (4.9 g, booked 3.0 g) | fly | as_hunted | 1.9 | hardware |  | hardware / elastic re-booked on the BL-034 records |

@@ -75,7 +75,9 @@ def test_load_points_cover_the_ticket_and_pass(pk):
             w, h = (float(v) for v in r["pattern"].split("box-X ")[1].split(" mm")[0].split(" x "))
             assert r["stitches"] == math.ceil(M.AS.box_x(w, h)["path_mm"] / st) + 4
             assert r["thread"] == "bonded_nylon_tex135"
-        assert any(g in r["proof"] for g in gates | {"port mock-up"}), r["point"]
+        # BL-040: an UNRATED row (no load case, e.g. the roll-top clip, a hand cinch) is checked by a QC hand pull
+        ok = gates | {"port mock-up"} | ({"QC-11"} if r["load_n"] is None else set())
+        assert any(g in r["proof"] for g in ok), r["point"]
 
 
 def test_every_sewing_op_names_machine_needle_thread_spi_and_seam(pk):

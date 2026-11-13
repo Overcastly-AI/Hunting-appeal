@@ -26,7 +26,7 @@ Tests: SL-1, CS-1, BP-1, AB-1, BU-1, HS-1, ST-1, HB-1, HB-D2
 **Field release and the rest**: first loaded carry, meat haul, belt and comfort tests.  
 Tests: HB-7, HB-6, CA-3, CA-4, HB-5, T6, T7, CA-2, HB-4, HB-T, PS-1, BP-2, HB-2, BP-3, RF-1, T3, CR-1, SP-1, T4a, T4b, T4c, T5, T5f, T2u, HB-3, HB-D1, HB-D3, FT-S2, MH-1, MH-2, MH-3, R28-1
 
-Frame release R1 needs, in order: CA-1 at the release level **0.276** (governing flip 0.2556 + 0.02, from the BL-027 body and the 28 mm IM3 cheek; confirmed by BL-039), IM3-EC and CA-5 on the coupons; MT-1 on the bench; then on the first frames IM3-EP and W-PULL (P1), T9, T1, T2 and MT-1c (P2). MT-1c's measured cinch swing sets the CA-1 level R1 needs (BL-039): swing <= 0.4 %: 0.276; up to 70 %: the 0.40 pass as well; above: **0.404** (H1's fatigue with the cinch fully cycling is 0.782 against 1.175 static).
+Frame release R1 needs, in order: CA-1 at **0.40** (3/3 run-outs), IM3-EC and CA-5 on the coupons; MT-1 on the bench; then on the first frames IM3-EP and W-PULL (P1), T9, T1, T2 and MT-1c (P2). R1 = CA-1 passes 0.40 with 3/3 run-outs AND MT-1c shows a cinch swing <= 117 % (peak-to-peak / mean) at a mean <= 150 N per anchor (structural countersign, adopted 2026-11-13, analysis/ca1_mt1c_confirm.md); if 0.40 fails: 3 XY bars at the table level for the measured swing, >= 0.313 (<= 0 %: 0.313; <= 5 %: 0.316; <= 10 %: 0.319; <= 20 %: 0.325; <= 30 %: 0.331; <= 50 %: 0.345; <= 70 %: 0.361; <= 100 %: 0.386; <= 115 %: 0.398; <= 150 %: 0.429; <= 200 %: 0.469). The 0.276 / 0.404 levels are retired.
 
 ## Sessions
 
@@ -162,7 +162,7 @@ Full list: `order_of_work.csv`. Inside each session the R1 tests run first, then
 
 ## Results sheet
 
-`results_template.csv` has 265 rows over 78 tests. Each row says how it is judged (`check`: max, min, band, yes, record) against `limit`. Type numbers in the unit shown; type Y or N for yes/no rows. Do not change the other columns. Read back with:
+`results_template.csv` has 266 rows over 78 tests. Each row says how it is judged (`check`: max, min, band, yes, record) against `limit`. Type numbers in the unit shown; type Y or N for yes/no rows. Do not change the other columns. Read back with:
 
 ```
 python -m huntkit.manufacturing.test_results outputs/release/test_kit/results_template.csv --md report.md

@@ -32,11 +32,10 @@ Units: N, kg, mm, with lb and in in brackets. The crane scale reads kg: **N = kg
 3. **Order: safety first.** Nothing gets carried until the hooks, bartacks, cams and seams have held their proof
    load (weekend 1), the frame material, joint and IM3 eye coupons have passed (CA-1 at the release level, CA-5,
    IM3-EC), and the first-article frame has passed T9, IM3-EP, T1, T3, T2 and T4.
-   **H1 is released only if CA-1 measures a ratio ≥ 0.276** (governing flip 0.2556 + 0.02: the 28 mm IM3 cheek at
-   DIR_SCATTER 0.2556, the BL-027 body 0.2553; confirmed by BL-039 in `analysis/ca1_mt1c_confirm.md`, now also in
-   `CA1_fatigue_rig.md` §1). That level assumes the meat-strap cinch is static. **MT-1c's measured swing sets the
-   level R1 needs** (BL-039): swing ≤ 0.4 %: 0.276; up to 70 %: CA-1 must also pass its 0.40 run; above: **0.404**
-   (cinch fully cycling, body flip 0.384).
+   **R1 rule (structural countersign, adopted 2026-11-13; supersedes the BL-038 / BL-039 0.276 / 0.404 levels):
+   CA-1 passes 0.40 with 3/3 run-outs AND MT-1c shows a cinch swing ≤ 117 % at a mean ≤ 150 N per anchor.** If 0.40
+   fails: 3 bars at the countersign table level for the measured swing (≥ 0.313). IM3-EC runs at 32° aft, 1178 N,
+   R ≤ 0.02 (`CA1_fatigue_rig.md` §1, §6, §6a; `analysis/ca1_mt1c_confirm.md` countersign section).
 4. **Then grams.** Eight tests unlock or protect mass. Ranked by grams per dollar (parts + $15 per owner hour,
    ASSUMPTION): WP-3, WP-1, WP-5, WP-2, HB-5, RF-1, FS-O5, CA-1 (§5, re-scored by BL-038). Together they are worth
    **110 g** (100 g booked; CA-1 at 0.40 adds at most 9.9 g as BL-037 option F-1, not 60 g). WP-1, WP-3 and WP-5 protect 54.6 g that CORRIE B.2 already took.
@@ -281,8 +280,8 @@ Steps and pass numbers: `test_register.csv` rows T9-R3a..d (BL-038 split). CR-1 
 | test | pass unlocks | fail means |
 |---|---|---|
 | PT-1, PT-2, PT-3, PT-6, MT-1..3, LL-H | sew the bag and harness as drawn; keeps BL-003 (a) −116.9 g and BL-004 −103.0 g | change the part or the sewing; re-test; the 38 mm set or the hood comes back |
-| CA-1 at the release level (**0.276** = governing flip 0.2556 + 0.02, BL-038, confirmed BL-039; with an MT-1c swing over 0.4 % the 0.40 pass is needed, over 70 % 0.404) | print H1 as designed | measured ratio < 0.276: **H1 is not released**. The IM3 cheek and the body flip within 0.0003 of each other, so both are re-sized to the measured ratio; about +20 g per −0.02 for the body (`CA1_fatigue_rig.md` §6) |
-| CA-1 at 0.40 | re-run the push: body about −50 to −70 g (`frame_h1.md` §6). **BL-037 correction:** on H1 as adopted the release is BL-024's G0.55 growth only (−24.9 g gross); that body fails Euler buckling (0.965–0.982), and one member re-growth step gives −9.9 g net with a lower branch still at 0.95, so the lever is under 10 g; it also needs MT-1 to show the cinch static (cycled 0.92 at 0.40) (`weight_push.md` §3, option F-1) | stay at the measured ratio |
+| CA-1 at **0.40**, 3/3 run-outs, with MT-1c swing ≤ 117 % at mean ≤ 150 N per anchor (R1 rule, structural countersign adopted 2026-11-13; the BL-038/039 0.276 / 0.404 levels are retired) | print H1 as designed (body margin 1.367 static, 1.095 at 100 % swing, Goodman basis) | 0.40 fails: 3 bars at the countersign table level for the measured swing (≥ 0.313); below that **H1 is not released** and the body (Goodman flip 0.2926) and IM3 cheek are re-sized (`CA1_fatigue_rig.md` §6) |
+| CA-1 at 0.40 (mass) | re-run the push: body about −50 to −70 g (`frame_h1.md` §6). **BL-037 correction:** on H1 as adopted the release is BL-024's G0.55 growth only (−24.9 g gross); that body fails Euler buckling (0.965–0.982), and one member re-growth step gives −9.9 g net with a lower branch still at 0.95, so the lever is under 10 g; it also needs MT-1 to show the cinch static (cycled 0.92 at 0.40) (`weight_push.md` §3, option F-1) | stay at the measured ratio |
 | IM3-EC + IM3-EP | IM3 eye released at 28 mm | cheek grows (BL-021); re-print the coupons |
 | BP-1 + BP-2 | keep the sandwich backer strip, −44.6 g | BP-08 twill backer back |
 | BP-3 | rails ≤ 14 kPa; tells whether they bear below z 190 | lumbar-pad shim, re-test (structural sizes it) |
@@ -521,7 +520,7 @@ For frame tests use the `load_standard.md` §5.4 template. For CA coupons, the r
 | HB-7 pass 426 N = 1.5 × 284 N | §2.2 | structural-fea-engineer to confirm |
 | CA-5 cycle force 1543 N (team A value) | §6 | structural-fea-engineer to state the H1 value |
 | sample prices ($3–6 per hook, $4 per cam, offcuts) | register | receipts |
-| CA-1 release level 0.276 = governing flip 0.2556 (28 mm IM3 cheek at DIR_SCATTER; BL-027 body 0.2553, fatigue 1.175, cinch static) + 0.02 (BL-038, confirmed BL-039 `analysis/ca1_mt1c_confirm.md`) | §0, CA-1 | CA-1 itself; MT-1c's swing sets the level (≤ 0.4 %: 0.276, ≤ 70 %: 0.40, above: 0.404; ASSUMPTION CINCH-K, worst bracket) |
+| R1 rule: CA-1 at 0.40 + MT-1c swing ≤ 117 % at ≤ 150 N per anchor; fallback ≥ 0.313 by swing (structural countersign 2026-11-13, `analysis/ca1_mt1c_confirm.md`; supersedes BL-038/039's 0.276) | §0, CA-1 | CA-1 and MT-1c themselves; linear Goodman for the cinch mean (countersign ASSUMPTION) |
 | LL-H slip limit 5 mm in 1 h (as PT-5) | §2.2 | none in the source; structural-fea-engineer to confirm |
 | carbon-paper imprint width stands in for pressure film (BP-2) | §4.4 | one Prescale LW sheet if the imprint is within 2 mm of 8 mm |
 | FSR scatter about 10 % after puck calibration (BP-3, HB-1) | register | repeat any reading within 10 % of its limit |

@@ -29,13 +29,13 @@ def test_register_has_every_gate_the_ticket_names(kit):
 
 def test_ca1_release_level_from_the_adopted_results(kit):
     lv = kit["levels"]
-    # BL-039: the cheek at its DIR_SCATTER angle joins the governing flip
+    # BL-039 flips kept (history); BL-040: the R1 level is the adopted countersign's 0.40, fallback >= 0.313
     assert lv["flip_gov"] == pytest.approx(max(lv["flip_body"], lv["flip_cheek"], lv["flip_cheek_dir"]))
     assert lv["flip_body"] == pytest.approx(0.30 / lv["fatigue_static"], abs=2e-3)
-    assert lv["release"] >= lv["flip_gov"] + 0.02 - 1e-9
-    assert lv["release"] < 0.310                        # the BL-023 placeholder is replaced
-    assert lv["release_cycled"] >= 0.30 / lv["fatigue_cycled"] + 0.02 - 1e-9
-    assert str(lv["release"]) in kit["register"]["CA-1"]["pass_fail"]
+    assert lv["release"] == pytest.approx(0.40)
+    assert lv["fallback_min"] > lv["flip_goodman_static"] + 0.02 - 1e-9
+    assert lv["release_bl039"] < lv["fallback_min"] <= lv["release"]
+    assert "0.40" in kit["register"]["CA-1"]["pass_fail"]
 
 
 def test_ca1_is_rescored_to_bl037(kit):

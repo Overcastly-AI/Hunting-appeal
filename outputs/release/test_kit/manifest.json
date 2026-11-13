@@ -7,14 +7,65 @@
   "flip_cheek": 0.2464,
   "flip_cheek_dir": 0.2556,
   "flip_gov": 0.2556,
-  "release": 0.276,
-  "flip_cycled": 0.3837,
+  "release": 0.4,
+  "release_bl039": 0.276,
   "release_cycled": 0.404,
+  "flip_cycled": 0.3837,
   "fatigue_static": 1.175,
   "fatigue_cycled": 0.782,
-  "swing_ok_release_pct": 0.4,
-  "swing_ok_040_pct": 69.9,
-  "swing_margin1_release_pct": 11.6
+  "flip_goodman_static": 0.2926,
+  "margin_040_static": 1.367,
+  "margin_040_p100": 1.095,
+  "fallback_min": 0.313,
+  "fallback_table": [
+   [
+    0,
+    0.313
+   ],
+   [
+    5,
+    0.316
+   ],
+   [
+    10,
+    0.319
+   ],
+   [
+    20,
+    0.325
+   ],
+   [
+    30,
+    0.331
+   ],
+   [
+    50,
+    0.345
+   ],
+   [
+    70,
+    0.361
+   ],
+   [
+    100,
+    0.386
+   ],
+   [
+    115,
+    0.398
+   ],
+   [
+    150,
+    0.429
+   ],
+   [
+    200,
+    0.469
+   ]
+  ],
+  "swing_max_pct": 117,
+  "swing_max_pct_exact": 117.4,
+  "cinch_mean_max_n": 150.0
  },
  "lid_g": 47.8,
  "crown_cut": {
@@ -56,7 +107,7 @@
   "usd": 2354.04,
   "hands_on_h": 149.0,
   "machine_h": 631.6,
-  "results_rows": 265
+  "results_rows": 266
  },
  "files": [
   "README.md",
@@ -97,8 +148,8 @@
   "release_tests.csv ids without a register row (ALT-* are alternate-set checks): none",
   "active tests not in the order of work: none",
   "first run per release: {'R1': 8, 'BAG-CUT': 9, 'BAG-BATCH': 22, 'BL037': 23, 'CARRY': 24}",
-  "CA-1 release level 0.276 (cycled 0.404)",
+  "R1: CA-1 at 0.40 + MT-1c swing <= 117 % at <= 150 N (fallback >= 0.313)",
   "shopping list 91 lines, USD 2,354.04; long lead: 6",
-  "results template 265 rows, 78 tests"
+  "results template 266 rows, 78 tests"
  ]
 }

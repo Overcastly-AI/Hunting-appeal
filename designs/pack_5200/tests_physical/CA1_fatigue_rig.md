@@ -29,20 +29,21 @@ divided by the hot/wet-knocked-down strength (0.8 × UTS), at R = 0.1.
   | **governing** | | **0.2556** | | IM3 cheek at DIR_SCATTER, 0.0003 above the body |
 
   The older tables (H1 body 1.150 / IM3 eye 27 mm 1.036, flip 0.290) are superseded by BL-021 / BL-024 / BL-027.
-- **Release rule: H1 is released only if the measured ratio ≥ the governing flip point + 0.02 = 0.276**
-  (0.2556 + 0.02 rounded up to 0.001; confirmed by BL-039, `analysis/ca1_mt1c_confirm.md`). The 0.310 / 0.290
-  placeholders of BL-023 are retired. Every part keeps a fatigue margin ≥ 1.08 at 0.276 (HA-LS-1 asks ≥ 1.0); it is
-  not the 1.15 analysis-scatter goal (that would need 0.294), so T5 (1e5 cycles on P2) stays the frame fatigue
-  check before field use.
-- **The meat-strap cinch (MT-1c) moves the level.** 0.276 assumes the cinch is a static preload (CINCH_STATIC). The
-  measured cinch swing (peak-to-peak / mean) raises the body flip: swing ≤ 0.4 %: 0.276; up to 70 %: the 0.40 run
-  must pass as well; above: **0.404** (cinch fully cycling, body fatigue 0.782 at 0.30). Table per swing in
-  `analysis/ca1_mt1c_confirm.md` §2. So run the 0.40 bars (step 3) whenever the 0.276 bars pass.
+- **R1 rule (structural countersign, adopted 2026-11-13, `docs/DECISIONS.md`; supersedes the BL-038 / BL-039
+  0.276 / 0.404 levels): H1 is released only if CA-1 passes 0.40 with 3/3 run-outs AND MT-1c shows a cinch swing
+  ≤ 117 % (peak-to-peak / mean) at a mean ≤ 150 N per anchor.** The flip table above is the BL-039 basis. It left out
+  the mean stress from the cinch preload and compared the frame's 0 → 1.6 g cycle (R 0) with the R 0.1 coupon at
+  equal max stress. On linear Goodman the static-cinch body flip is **0.2926**, so the body margin at 0.276 is only
+  0.943. At 0.40 the body margin is 1.367 with the cinch static and 1.095 at 100 % swing
+  (`analysis/ca1_mt1c_confirm.md`, countersign section; `ca1_mt1c_confirm.countersign()`).
+- **If 0.40 fails:** 3 XY bars at the countersign table level for MT-1c's measured swing, at least **0.313** (swing
+  0 %: 0.313; 10 %: 0.319; 30 %: 0.331; 50 %: 0.345; 100 %: 0.386; 115 %: 0.398; table in the countersign section).
+  T5 (1e5 cycles on P2) stays the frame fatigue check before field use.
 - The record's assumed 0.30 is above the release level: on today's design H1 prints if the material is at least
   about 92 % of the record.
 - The OD 17 legs (BL-017 c17) and the fixed-torso variants (BL-007) have no flip point on the BL-027 basis; they
   are not released by this test until the structural-fea-engineer states one.
-- At 0.40 the body margin becomes 1.175 × 0.40 / 0.30 = **1.57** and the IM3 eye 1.62 (1.57 at DIR_SCATTER). BL-037
+- On the BL-039 basis 0.40 gave a body margin of 1.57 (1.367 on the countersign's Goodman basis). BL-037
   found that this releases at most about 10 g on H1 as adopted (option F-1, `weight_push.md` §3), not 50–70 g (§6).
 
 ## 2. Coupons
@@ -71,10 +72,9 @@ capped at the 88 MPa TDS value used in the analysis. Nominal values at the 40 mm
 
 | level | XY S_max MPa (ksi) | XY F_max N (lbf) | F_min N | link force (÷ 4) N | Z S_max (47 MPa basis) | Z F_max at 60 mm² |
 |---|---:|---:|---:|---:|---:|---:|
-| **0.276 (release level, BL-039)** | **19.4 (2.82)** | **777 (175)** | **78** | **194** | **10.4 MPa** | **623 N** |
 | 0.30 (record) | 21.1 (3.06) | 845 (190) | 84 | 211 | 11.3 MPa | 677 N |
-| 0.40 | 28.2 (4.09) | 1126 (253) | 113 | 282 | (not needed) | |
-| 0.404 (only if MT-1c shows the cinch fully cycling) | 28.4 (4.13) | 1138 (256) | 114 | 284 | 15.2 MPa | 911 N |
+| 0.313 (lowest fallback level, only if 0.40 fails) | 22.0 (3.19) | 881 (198) | 88 | 220 | 11.8 MPa | 706 N |
+| **0.40 (R1 level, countersign 2026-11-13)** | **28.2 (4.09)** | **1126 (253)** | **113** | **282** | **15.0 MPa** | **902 N** |
 | static UTS | 88 (12.8) | ≈ 3520 (791) | | ≈ 880 | 47 MPa | ≈ 2820 N |
 
 ## 4. The rig: motor, eccentric, spring and lever (about one weekend to build)
@@ -145,23 +145,23 @@ The cited items total $107. The rest are ASSUMPTION shop prices; check them at p
    it slowly, about 1 turn every 10 s. Record the peak link force × 4 / area. UTS_meas = mean.
    - Pass: XY ≥ 0.9 × 88 MPa and Z ≥ 0.9 × 47 MPa.
    - Otherwise stop and report: the analysis allowables are too high for this printer and spool.
-2. **Release level (0.276).** 3 XY bars at S_max = 0.276 × 0.8 × UTS_meas, R 0.1, 1 Hz, to 1e5 cycles. Then
-   2 Z bars at 0.276 × 0.8 × UTS_Z. (Use the release level in force when you start; the test kit prints it.)
-3. **0.40 level** (only if every release-level bar passed). 3 XY bars at 0.40 × 0.8 × UTS_meas. Run it even if no
-   grams ride on it: it is the level R1 needs when MT-1c finds the cinch swinging (§1).
+2. **R1 level (0.40).** 3 XY bars at S_max = 0.40 × 0.8 × UTS_meas, R 0.1, 1 Hz, to 1e5 cycles. Then 2 Z bars at
+   0.40 × 0.8 × UTS_Z.
+3. **Fallback level** (only if a 0.40 bar failed). 3 XY bars at the countersign table level for MT-1c's measured
+   swing (≥ 0.313, §1). If MT-1c has not run yet, wait for it.
 4. After each run-out, look at the gauge and the fillets with a 10× loupe. Pull the run-out bar to failure: a
    residual strength of at least 0.9 × UTS_meas confirms that no damage was hidden.
 
 | outcome | rule | what it unlocks |
 |---|---|---|
-| **pass at the release level (0.276)** | 3/3 run-outs to 1e5, stiffness loss ≤ 10 %, no crack | The H1 print files are released as designed, **together with IM3-EC (§6a), CA-5 and MT-1c showing the cinch static** (swing ≤ 0.4 %, else the 0.40 row). Governing margin ≥ 0.276 / 0.2556 = 1.08 (IM3 cheek at DIR_SCATTER; body 1.081). |
-| **pass at 0.40** | as above at 0.40 | Releases H1 for an MT-1c swing up to 70 %. Credit 0.40 in `pa12_cf_fdm_paht.yaml`. Mass: BL-037 (`weight_push.md` §3, option F-1) found at most about −10 g net on H1 as adopted, and only with MT-1c static and a converged buckling re-size (the −50 to −70 g of team A's estimate does not apply to H1). |
+| **pass at 0.40** | 3/3 run-outs to 1e5, stiffness loss ≤ 10 %, no crack | The H1 print files are released as designed, **together with IM3-EC (§6a), CA-5 and MT-1c showing swing ≤ 117 % at mean ≤ 150 N per anchor**. Body margin 1.367 (cinch static) to 1.095 (100 % swing). Credit 0.40 in `pa12_cf_fdm_paht.yaml`. Mass: BL-037 option F-1, at most about −10 g net (`weight_push.md` §3). |
+| pass at the fallback level only | 3/3 at the table level for the measured swing (≥ 0.313) | H1 released for that swing only; the structural-fea-engineer confirms before prints carry load. |
 | 2/3 at a level | | inconclusive: test 3 more. A level passes only with ≥ 5/6 run-outs. |
-| fail at the release level | find the level by testing 3 bars at 0.26, then 0.24 | **H1 is not released.** Credit the measured ratio in the record; the structural-fea-engineer re-sizes the IM3 cheek and the body together (they flip within 0.0003 of each other, so both need it below 0.276). Cheek growth is about 0.5 g a pair per mm of cheek height (`im3_body_simloads.md`, 27 -> 28 mm +0.49 g). |
+| fail at 0.40 and at the fallback level | find the level by testing 3 bars at 0.30, then 0.28 | **H1 is not released.** Credit the measured ratio in the record; the structural-fea-engineer re-sizes the body (Goodman flip 0.2926 with the cinch static) and the IM3 cheek. Cheek growth is about 0.5 g a pair per mm of cheek height (`im3_body_simloads.md`, 27 -> 28 mm +0.49 g). |
 | ratio below the body flip (0.255) | | the body fails fatigue at the measured ratio. Re-size the BL-027 body with the measured ratio; it grows (about +20 g for each −0.02 of ratio, ASSUMPTION from the push history; BL-024's sleeve study gives the scale). |
 | Z fails at 0.30 | | the interlayer term governs locally: run CA-3 first and re-check the boss bending (B-style, across the layers). |
 
-## 6a. IM3-EC: IM3 eye cycle coupons (BL-023, from BL-014 B2 (d); load and cheek updated by BL-039)
+## 6a. IM3-EC: IM3 eye cycle coupons (BL-023, from BL-014 B2 (d); load and cheek by BL-039, angle and R by the countersign 2026-11-13)
 
 The IM3 fairlead eye is co-governing (28 mm cheek: fatigue 1.218 at the design angle, 1.174 with the pull 10° further
 aft). One coupon at the demand × 1.00 cannot show a margin above 1.0, so the coupon count and load are raised:
@@ -172,8 +172,11 @@ aft). One coupon at the demand × 1.00 cannot show a margin above 1.0, so the co
 - **Load: ≥ 1.15 × 1024 N = 1178 N** (265 lbf). 1024 N = 1.6 g × 640.1 N, the governing hook + IM3 strap
   combination on the 28 mm cheek at 1 g (hook 15fL, 22° aft of the stay axis, BL-021 `im3_body_simloads.json`). It
   replaces BL-010's 884 N (1.6 × 552.4 N, the 15 in cloth-sim hook force alone on the 27 mm cheek): the 1017 N
-  coupon load was below today's demand. R 0.1 like the bars: **118 → 1178 N**, 1 Hz, 1e5 cycles. The force goes in
-  through a sewn T3 tongue and the IM3 carabiner on the eye, led 22° aft of the stay axis, the coupon clamped by its
+  coupon load was below today's demand. **Countersign (adopted 2026-11-13): pull at 32° aft** (the DIR_SCATTER angle,
+  22.3° + 10°, the angle the release flip is set at; at 22° the 1.15 coupon proves only 1.109 at DIR_SCATTER) and
+  **R ≤ 0.02: 24 → 1178 N** (F_min only keeps the rig taut), 1 Hz, 1e5 cycles. Equivalent alternative: 1272 N at
+  R 0.1. The force goes in through a sewn T3 tongue and the IM3 carabiner on the eye, led 32° aft of the stay axis,
+  the coupon clamped by its
   stay ends; 1178 N is 120 kg at the eye, about 30 kg (294 N) at the 100 kg cell through the 4:1 lever. The lever then sees
   51 × 294 / 282 = 53 MPa, still below the 96 MPa aluminium endurance value used in §4.
 - Loupe check every 25,000 cycles. After the run-out, pull each coupon to 2553 N (IM3-EP's proof) on the pull bench.
@@ -182,7 +185,7 @@ aft). One coupon at the demand × 1.00 cannot show a margin above 1.0, so the co
   the test kit (`physical_test_kit.im3_ec_load`, which reads it from the analysis).
 - The same coupons carry the throat check: two carabiner rods side by side, each ≤ 8.5 mm (ASSUMPTION,
   `loadpath_verification.md` §4.1).
-- Machine time 3 × 27.8 h. Run them after the release-level CA-1 bars, on the same rig.
+- Machine time 3 × 27.8 h. Run them after the 0.40 CA-1 bars, on the same rig.
 
 ## 7. Order after CA-1: IM3-EC, CA-5, then CA-3, then CA-4
 

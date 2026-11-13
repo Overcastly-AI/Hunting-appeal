@@ -77,9 +77,9 @@ Production a bag (10-bag markers + waste): **$379.76**. Buying for ONE bag (1-ba
 
 | Kit | Ledger, team B fabrics (g) | Primary pattern delta (g) | PRIMARY target (g) | lb |
 |---|---:|---:|---:|---:|
-| base | 1132.6 | +64.0 | 1196.6 | 2.64 |
-| as hunted | 1414.4 | +86.2 | 1500.6 | 3.31 |
-| meat trip | 1610.4 | +95.4 | 1705.8 | 3.76 |
+| base | 1132.7 | +64.0 | 1196.7 | 2.64 |
+| as hunted | 1414.6 | +86.1 | 1500.7 | 3.31 |
+| meat trip | 1610.6 | +95.3 | 1705.9 | 3.76 |
 
 One-off tooling (not a bag): J1-J8 jigs; LK-1900 / AMS-210EN programs; laser files are the part A DXFs; dies only above ~500 bags a year.
 

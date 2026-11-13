@@ -15,7 +15,7 @@
   "hardware_rows_by_keyword": [],
   "box_mismatches": [],
   "thread_bag_g": 18.38,
-  "thread_ledger_g": 18.27,
+  "thread_ledger_g": 18.38,
   "proto_hours": 73.6,
   "sam_min": 500.7,
   "volatile": [
@@ -28,9 +28,9 @@
   ]
  },
  "mass": {
-  "base_g": 1132.6,
-  "as_hunted_g": 1414.4,
-  "meat_trip_g": 1610.4,
+  "base_g": 1132.7,
+  "as_hunted_g": 1414.6,
+  "meat_trip_g": 1610.6,
   "pattern_fabric_alt_g": 570.2,
   "ledger_fabric_g": 567.7,
   "mass_delta_pct": 0.44,
@@ -42,9 +42,9 @@
    "as_hunted": 22.1,
    "meat_trip": 9.2
   },
-  "primary_base_g": 1196.6,
-  "primary_as_hunted_g": 1500.6,
-  "primary_meat_trip_g": 1705.8,
+  "primary_base_g": 1196.7,
+  "primary_as_hunted_g": 1500.7,
+  "primary_meat_trip_g": 1705.9,
   "qc14_tol_pct": 3.0
  },
  "geo": {

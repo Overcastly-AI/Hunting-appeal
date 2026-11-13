@@ -15,4 +15,4 @@ For the orchestrator to merge into `docs/release_delta_register.md` (not edited 
 | RD-21 | closed (pointer) | this op sequence supersedes BUILD_PLAN.md step 9 for the bag; BUILD_PLAN.md points at the rev 3 release: True | BUILD_PLAN.md body still describes the SPINE bag (its banner says so) |
 | RD-22 | open | the packaging card (README Packaging) carries the load limits | the user guide itself |
 | RD-23 | restated | B-25, B-27f, B-22 inside, TG, LLT drafted and sequenced (ops 3.04-3.05, 4.03): True | T9 rev 3 at the S kit; LL-H; PORT-1; attorney review; B-22 placed at x +/-130.3 vs drawn 149 (ASSUMPTION B22-IN) |
-| RD-24 | restated | B-29 (7 piece types) + B-28 per kit + keepers sequenced; lid 9.53 h on the drafted pattern; build_metrics books the op-sequence hours (build_effort_rev3.json: 70.49 h a bag) | T9 lid weigh / photo, cinch, free lengths |
+| RD-24 | restated | B-29 (7 piece types) + B-28 per kit + keepers sequenced; lid 9.53 h on the drafted pattern; build_metrics books the op-sequence hours (build_effort_rev3.json: 69.54 h a bag) | T9 lid weigh / photo, cinch, free lengths |

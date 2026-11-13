@@ -19,7 +19,8 @@ def c():
 
 def test_release_rule_reproduces_the_kit_level(c):
     i = c["inputs"]
-    assert c["release_matches_kit"]
+    # BL-039's level is kept in the kit as history (release_bl039); the kit's R1 level is the countersign's 0.40
+    assert c["kit_levels"]["release_bl039"] == pytest.approx(c["release"])
     assert c["release"] == pytest.approx(0.276)
     # flip = record / margin, and the release = governing flip + 0.02 rounded up to 0.001
     assert c["flips"]["body (cinch static)"] == pytest.approx(i["record_ratio"] / i["m_body"], abs=1e-4)
@@ -54,17 +55,29 @@ def test_swing_bound_chord_and_brackets(c):
 
 
 def test_kit_uses_the_graded_rule(c):
+    """BL-040: the kit reads the adopted countersign: R1 = CA-1 at 0.40 (3/3) AND MT-1c swing <= 117 % at a mean
+    <= 150 N per anchor; fallback = the table level for the measured swing (>= 0.313). 0.276 / 0.404 are retired."""
+    s = c["countersign"]
     lv = K.release_levels()
-    w = c["swing_worst"]
-    assert lv["swing_ok_release_pct"] == pytest.approx(100 * w["p_rule_at_release"], abs=0.1)
-    assert lv["swing_ok_040_pct"] == pytest.approx(100 * w["p_rule_at_040"], abs=0.1)
+    assert lv["release"] == pytest.approx(0.40)
+    assert lv["swing_max_pct"] == round(s["p_040_pct"]) == 117
+    assert lv["cinch_mean_max_n"] == pytest.approx(CC.CINCH_MEAN_N) == 150.0
+    assert lv["fallback_min"] == pytest.approx(s["release_static"]) == pytest.approx(0.313)
+    assert lv["fallback_table"] == [(r["swing_pct"], r["level"]) for r in s["table"]]
+    assert K.fallback_level(10, lv) == pytest.approx(0.319)
     kit = K.build(write=False)
-    mt = kit["register"]["MT-1c"]["pass_fail"]
-    assert "0.40" in mt and str(lv["release_cycled"]) in mt and "<= 10 %" not in mt
+    reg = kit["register"]
+    mt = reg["MT-1c"]["pass_fail"]
+    assert "117 %" in mt and "150 N" in mt and "mean" in mt and "0.404" not in mt and "10 % pass bound" not in mt
+    assert "MEAN" in reg["MT-1c"]["steps"]
+    ca = reg["CA-1"]
+    assert "0.40" in ca["steps"] and "0.313" in ca["steps"] and "0.276" not in ca["steps"]
     g4 = next(g for g in K.GROUPS if g["id"] == "G4")
-    txt = K.guide_md(g4, kit["register"], lv, K.loads(lv), kit["results"], kit["order"])
-    # the CA-1 guide no longer says the 0.40 run covers a fully cycling cinch (0.404 > 0.40)
-    assert "covers it if it passes" not in txt and "does not cover it" in txt
+    txt = K.guide_md(g4, reg, lv, K.loads(lv), kit["results"], kit["order"])
+    assert "117 %" in txt and "retired" in txt
+    assert "Release level today: **0.276**" not in txt
+    res = {r["test_id"] for r in kit["results"]}
+    assert "CA-1@fallback" in res and "CA-1@0.40" not in res
 
 
 def test_bl039_register_fixes():
@@ -89,16 +102,20 @@ def test_bl039_register_fixes():
 
 
 def test_im3_ec_load_from_the_bl021_demand():
+    """BL-040: countersign adopted: 1178 N at 32 deg aft (DIR_SCATTER), F_min about 24 N (R <= 0.02)."""
     ec = K.im3_ec_load()
     import json
     e = json.loads((ROOT / "designs/pack_5200/analysis/im3_body_simloads.json").read_text())
-    f1 = e["eye"]["cands"]["14_8"]["sensitivity"]["governing_combo_1g_n"]
-    assert ec["peak_n"] == round(1.15 * 1.6 * f1) and ec["peak_n"] > 1017       # BL-010's 1017 N was below demand
-    assert ec["min_n"] == round(0.1 * ec["peak_n"])
+    sens = e["eye"]["cands"]["14_8"]["sensitivity"]
+    f1 = sens["governing_combo_1g_n"]
+    assert ec["peak_n"] == round(1.15 * 1.6 * f1) == 1178
+    assert ec["aft_deg"] == round(sens["governing_combo_aft_deg"] + 10.0) == 32
+    assert ec["min_n"] == round(CC.EC_R_MAX * 1.15 * 1.6 * f1) == 24 and ec["min_n"] / ec["peak_n"] == pytest.approx(0.02, abs=0.001)
     reg = K.build(write=False)["register"]["IM3-EC"]
     assert f"{ec['peak_n']} N" in reg["pass_fail"] and "1017 N" not in reg["pass_fail"]
+    assert "32 deg" in reg["steps"] and "24 -> 1178 N" in reg["steps"]
     doc = (ROOT / "designs/pack_5200/tests_physical/CA1_fatigue_rig.md").read_text()
-    assert f"{ec['peak_n']} N" in doc and "0.276" in doc
+    assert "1178 N" in doc and "32° aft" in doc and "24 → 1178 N" in doc and "117 %" in doc
 
 
 # ---------------------------------------------------------------- structural countersign (2026-11-13)
