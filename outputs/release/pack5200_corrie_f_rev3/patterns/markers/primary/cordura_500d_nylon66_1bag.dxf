@@ -445,7 +445,7 @@ $SKPOLY
   9
 $TDCREATE
  40
-2461358.0132291666
+2461358.029872685
   9
 $TDUCREATE
  40
@@ -453,7 +453,7 @@ $TDUCREATE
   9
 $TDUPDATE
  40
-2461358.0132291666
+2461358.029872685
   9
 $TDUUPDATE
  40
@@ -505,7 +505,7 @@ $SPLINESEGS
   9
 $HANDSEED
   5
-BA
+DE
   9
 $SURFTAB1
  70
@@ -885,11 +885,11 @@ $PSTYLEMODE
   9
 $FINGERPRINTGUID
   2
-{34640E47-1B90-4E2F-9C67-B5C561F5FD72}
+{D68AA755-4368-4917-B0EB-266F132A261D}
   9
 $VERSIONGUID
   2
-{FF6F88D9-3426-4DC1-82ED-A17DA07D747A}
+{FF2CC533-9576-4364-A7FE-EF0F68638A32}
   9
 $EXTNAMES
 290
@@ -3057,7 +3057,7 @@ AcAecLayerStandard
   0
 APPID
   5
-B7
+DB
 330
 3
 100
@@ -3071,7 +3071,7 @@ HATCHBACKGROUNDCOLOR
   0
 APPID
   5
-B8
+DC
 330
 3
 100
@@ -5123,11 +5123,11 @@ AcDbPolyline
  20
 0.0
  10
-184.0
+220.0
  20
 0.0
  10
-184.0
+220.0
  20
 1524.0
  10
@@ -5155,7 +5155,7 @@ AcDbLine
  30
 0.0
  11
-184.0
+220.0
  21
 38.0
  31
@@ -5181,7 +5181,7 @@ AcDbLine
  30
 0.0
  11
-184.0
+220.0
  21
 1486.0
  31
@@ -6061,9 +6061,1065 @@ FACE: PU coat DOWN (inside)
 100
 AcDbText
   0
-TEXT
+LWPOLYLINE
   5
 B6
+330
+17
+100
+AcDbEntity
+  8
+CUT
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+0.0
+ 20
+519.64
+ 10
+0.0
+ 20
+458.64
+ 10
+220.0
+ 20
+458.64
+ 10
+220.0
+ 20
+519.64
+  0
+LWPOLYLINE
+  5
+B7
+330
+17
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+15.0
+ 20
+470.64
+ 10
+205.0
+ 20
+470.64
+ 10
+205.0
+ 20
+507.64
+ 10
+15.0
+ 20
+507.64
+  0
+LWPOLYLINE
+  5
+B8
+330
+17
+100
+AcDbEntity
+  8
+NOTCH
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+113.0
+ 20
+458.64
+ 10
+110.0
+ 20
+464.64
+ 10
+107.0
+ 20
+458.64
+  0
+LWPOLYLINE
+  5
+B9
+330
+17
+100
+AcDbEntity
+  8
+NOTCH
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+220.0
+ 20
+492.14
+ 10
+214.0
+ 20
+489.14
+ 10
+220.0
+ 20
+486.14
+  0
+LWPOLYLINE
+  5
+BA
+330
+17
+100
+AcDbEntity
+  8
+NOTCH
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+107.0
+ 20
+519.64
+ 10
+110.0
+ 20
+513.64
+ 10
+113.0
+ 20
+519.64
+  0
+LWPOLYLINE
+  5
+BB
+330
+17
+100
+AcDbEntity
+  8
+NOTCH
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+0.0
+ 20
+486.14
+ 10
+6.0
+ 20
+489.14
+ 10
+0.0
+ 20
+492.14
+  0
+LWPOLYLINE
+  5
+BC
+330
+17
+100
+AcDbEntity
+  8
+GRAIN
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+53.0
+ 20
+489.14
+ 10
+167.0
+ 20
+489.14
+  0
+LWPOLYLINE
+  5
+BD
+330
+17
+100
+AcDbEntity
+  8
+GRAIN
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+159.6315120479769
+ 20
+486.0246532615308
+ 10
+167.0
+ 20
+489.14
+ 10
+159.6315120479769
+ 20
+492.2553467384692
+  0
+LWPOLYLINE
+  5
+BE
+330
+17
+100
+AcDbEntity
+  8
+GRAIN
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+60.36848795202308
+ 20
+492.2553467384692
+ 10
+53.0
+ 20
+489.14
+ 10
+60.36848795202308
+ 20
+486.0246532615308
+  0
+TEXT
+  5
+BF
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+122.0
+ 20
+511.53999999999996
+ 30
+0.0
+ 40
+4.0
+  1
+ID: B-16
+ 11
+122.0
+ 21
+511.53999999999996
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+C0
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+122.0
+ 20
+505.14
+ 30
+0.0
+ 40
+4.0
+  1
+PIECE: under-strap floor channel (US1 / US2)
+ 11
+122.0
+ 21
+505.14
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+C1
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+122.0
+ 20
+498.74
+ 30
+0.0
+ 40
+4.0
+  1
+MATERIAL: cordura_500d_nylon66
+ 11
+122.0
+ 21
+498.74
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+C2
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+122.0
+ 20
+492.34000000000003
+ 30
+0.0
+ 40
+4.0
+  1
+CUT 2
+ 11
+122.0
+ 21
+492.34000000000003
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+C3
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+122.0
+ 20
+485.94000000000005
+ 30
+0.0
+ 40
+4.0
+  1
+FACE UP
+ 11
+122.0
+ 21
+485.94000000000005
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+C4
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+122.0
+ 20
+479.5400000000001
+ 30
+0.0
+ 40
+4.0
+  1
+KNIFE: CW from the grain-arrow head; cut windows and slits first
+ 11
+122.0
+ 21
+479.5400000000001
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+C5
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+122.0
+ 20
+473.1400000000001
+ 30
+0.0
+ 40
+4.0
+  1
+NOTE: ends turned 15 mm and left OPEN (the 25 mm under-strap passes through); topstitch both long edges
+ 11
+122.0
+ 21
+473.1400000000001
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+C6
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+122.0
+ 20
+466.7400000000001
+ 30
+0.0
+ 40
+4.0
+  1
+PACK: 5200 CORRIE F rev 3
+ 11
+122.0
+ 21
+466.7400000000001
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+C7
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+122.0
+ 20
+460.34000000000015
+ 30
+0.0
+ 40
+4.0
+  1
+FACE: PU coat DOWN (inside)
+ 11
+122.0
+ 21
+460.34000000000015
+ 31
+0.0
+100
+AcDbText
+  0
+LWPOLYLINE
+  5
+C8
+330
+17
+100
+AcDbEntity
+  8
+CUT
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+0.0
+ 20
+583.64
+ 10
+0.0
+ 20
+522.64
+ 10
+220.0
+ 20
+522.64
+ 10
+220.0
+ 20
+583.64
+  0
+LWPOLYLINE
+  5
+C9
+330
+17
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+15.0
+ 20
+534.64
+ 10
+205.0
+ 20
+534.64
+ 10
+205.0
+ 20
+571.64
+ 10
+15.0
+ 20
+571.64
+  0
+LWPOLYLINE
+  5
+CA
+330
+17
+100
+AcDbEntity
+  8
+NOTCH
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+113.0
+ 20
+522.64
+ 10
+110.0
+ 20
+528.64
+ 10
+107.0
+ 20
+522.64
+  0
+LWPOLYLINE
+  5
+CB
+330
+17
+100
+AcDbEntity
+  8
+NOTCH
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+220.0
+ 20
+556.14
+ 10
+214.0
+ 20
+553.14
+ 10
+220.0
+ 20
+550.14
+  0
+LWPOLYLINE
+  5
+CC
+330
+17
+100
+AcDbEntity
+  8
+NOTCH
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+107.0
+ 20
+583.64
+ 10
+110.0
+ 20
+577.64
+ 10
+113.0
+ 20
+583.64
+  0
+LWPOLYLINE
+  5
+CD
+330
+17
+100
+AcDbEntity
+  8
+NOTCH
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+0.0
+ 20
+550.14
+ 10
+6.0
+ 20
+553.14
+ 10
+0.0
+ 20
+556.14
+  0
+LWPOLYLINE
+  5
+CE
+330
+17
+100
+AcDbEntity
+  8
+GRAIN
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+53.0
+ 20
+553.14
+ 10
+167.0
+ 20
+553.14
+  0
+LWPOLYLINE
+  5
+CF
+330
+17
+100
+AcDbEntity
+  8
+GRAIN
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+159.6315120479769
+ 20
+550.0246532615308
+ 10
+167.0
+ 20
+553.14
+ 10
+159.6315120479769
+ 20
+556.2553467384691
+  0
+LWPOLYLINE
+  5
+D0
+330
+17
+100
+AcDbEntity
+  8
+GRAIN
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+60.36848795202308
+ 20
+556.2553467384691
+ 10
+53.0
+ 20
+553.14
+ 10
+60.36848795202308
+ 20
+550.0246532615308
+  0
+TEXT
+  5
+D1
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+122.0
+ 20
+575.54
+ 30
+0.0
+ 40
+4.0
+  1
+ID: B-16
+ 11
+122.0
+ 21
+575.54
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+D2
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+122.0
+ 20
+569.14
+ 30
+0.0
+ 40
+4.0
+  1
+PIECE: under-strap floor channel (US1 / US2)
+ 11
+122.0
+ 21
+569.14
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+D3
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+122.0
+ 20
+562.74
+ 30
+0.0
+ 40
+4.0
+  1
+MATERIAL: cordura_500d_nylon66
+ 11
+122.0
+ 21
+562.74
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+D4
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+122.0
+ 20
+556.34
+ 30
+0.0
+ 40
+4.0
+  1
+CUT 2
+ 11
+122.0
+ 21
+556.34
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+D5
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+122.0
+ 20
+549.94
+ 30
+0.0
+ 40
+4.0
+  1
+FACE UP
+ 11
+122.0
+ 21
+549.94
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+D6
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+122.0
+ 20
+543.5400000000001
+ 30
+0.0
+ 40
+4.0
+  1
+KNIFE: CW from the grain-arrow head; cut windows and slits first
+ 11
+122.0
+ 21
+543.5400000000001
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+D7
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+122.0
+ 20
+537.1400000000001
+ 30
+0.0
+ 40
+4.0
+  1
+NOTE: ends turned 15 mm and left OPEN (the 25 mm under-strap passes through); topstitch both long edges
+ 11
+122.0
+ 21
+537.1400000000001
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+D8
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+122.0
+ 20
+530.7400000000001
+ 30
+0.0
+ 40
+4.0
+  1
+PACK: 5200 CORRIE F rev 3
+ 11
+122.0
+ 21
+530.7400000000001
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+D9
+330
+17
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+122.0
+ 20
+524.3400000000001
+ 30
+0.0
+ 40
+4.0
+  1
+FACE: PU coat DOWN (inside)
+ 11
+122.0
+ 21
+524.3400000000001
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+DA
 330
 17
 100
@@ -6081,7 +7137,7 @@ AcDbText
  40
 8.0
   1
-Marker cordura_500d_nylon66: fabric 1524 mm (60.0 in) wide, selvedge 38 mm, 1 pieces, 1 unit(s); length 184 mm (0.20 yd), efficiency 28.8 %, yield 0.184 m/unit (0.201 yd/unit), 0.280 m2 fabric
+Marker cordura_500d_nylon66: fabric 1524 mm (60.0 in) wide, selvedge 38 mm, 3 pieces, 1 unit(s); length 220 mm (0.24 yd), efficiency 32.5 %, yield 0.220 m/unit (0.241 yd/unit), 0.335 m2 fabric
  11
 0.0
  21
@@ -7181,7 +8237,7 @@ CREATED_BY_EZDXF
   3
 WRITTEN_BY_EZDXF
 350
-B9
+DD
   0
 DICTIONARYVAR
   5
@@ -7193,7 +8249,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-11-13T00:19:03.042655+00:00
+1.4.5 @ 2026-11-13T00:43:01.471496+00:00
   0
 VISUALSTYLE
   5
@@ -7897,7 +8953,7 @@ X-Ray
   0
 DICTIONARYVAR
   5
-B9
+DD
 330
 2D
 100
@@ -7905,7 +8961,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-11-13T00:19:03.047944+00:00
+1.4.5 @ 2026-11-13T00:43:01.480926+00:00
   0
 ENDSEC
   0

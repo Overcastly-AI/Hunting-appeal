@@ -1,0 +1,21 @@
+id,stage,check,method,pass,frequency
+QC-01,Print,Test square,ruler on 00_PRINT_FIRST and on one page per print run,100.0 +/- 1.0 mm both ways,every print run
+QC-02,Incoming,Fabric weight and width,"cut 100 x 100 mm, weigh 0.01 g; tape the roll width",gsm within +/- 5 % of the record; width >= usable_width_mm,every roll
+QC-03,Cutting,Piece size and cut-outs,lay the pattern on the cut piece,"+/- 1 mm on pieces < 300 mm, +/- 2 mm on larger; windows / slots / slits present and clean",first piece of each lay + 1 in 10
+QC-04,Cutting,"Notches, grain, webbing length",visual; tape,"notch 6 mm (never past the seam line); grain within 2 deg of the arrow; webbing +/- 2 mm, ends sealed",first of each + 1 in 10
+QC-05,Sewing,Stitch density,count stitches over 25.4 mm,"body 8, light 10, box-X 7 SPI; +/- 1",start of each shift / each op set-up
+QC-06,Sewing,Tension balance,cut a swatch seam open,"lock mid-stack, no loops on either face",each set-up
+QC-07,Load points,Box-X and bartacks,visual against SK-1; count,"full rectangle + both diagonals, start / end overlap >= 10 mm, stitch count >= load table, no skipped stitch, needle hole not torn",100 %
+QC-08,Assembly,Seam match,notches at both ends of every 50 mm,notch offset <= 2 mm; seam end mismatch <= 3 mm; allowance 12 +/- 1 mm,100 %
+QC-09,Assembly,Door zip,run both sliders 10 x end to end; look at the corners,"no snag, no wave > 3 mm at the R 55 corners, tape not caught, stops at the hinge band",100 %
+QC-10,Assembly,B-27 ports,pull the guy through at 45 deg; look inside,20 mm lap closes flat; both ends bartacked; facing follows the crease at z 631,100 %
+QC-11,Hardware,Hardware fitted,count against the BOM; threading as SK-7,"every lock threaded the right way (pull test by hand), carabiners gate-in, cord lock holds",100 %
+QC-12,Final,Width,"tape across the widest point, bag packed full",<= 394 mm (15.5 in) (owner limit),first article + 1 in 10
+QC-13,Final,Volume,"fill with 10 mm foam balls / litre jug method, collar rolled 3 times",85 L +/- 3 L (5200 cu in) (owner limit),first article
+QC-14,Final,"Mass, bag base",1 g scale,"within +/- 3 % of the ledger base bag (1065 g on the ledger basis; primary fabrics are heavier, see costing.md)",every bag
+QC-15,Final,"No hook-and-loop, coil zips only",visual,zero hook-and-loop anywhere (owner: quiet bag),100 %
+QC-16,Final,Camo use,visual,"camo only on B-02u, SH-07, SH-01b, FP-b, B-29f, A1-d (accents)",100 %
+QC-17,Final,"Thread ends, seals",visual,"ends <= 3 mm, no open webbing ends, no burnt fabric",100 %
+QC-18,Final,Labels,visual,"ID label with rev 3 + date, size / crown kit, load-limit card (53 kg frame meat, RD-02)",100 %
+QC-19,Final,Kits complete,count,"base / as-hunted (lid, B-28 per kit, scope pod) / meat-trip (WX, B-24, liner) bags each complete",100 %
+QC-20,Final,Fit on the frame,"hook to a frame or the fit jig: hinge pins, IM eyes through B-12 ports, guys through B-27",every eye reaches its port without strain; door opens fully,first article + 1 in 25

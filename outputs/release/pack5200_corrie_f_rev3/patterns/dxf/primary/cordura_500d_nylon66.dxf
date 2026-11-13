@@ -445,7 +445,7 @@ $SKPOLY
   9
 $TDCREATE
  40
-2461358.0130092595
+2461358.029664352
   9
 $TDUCREATE
  40
@@ -453,7 +453,7 @@ $TDUCREATE
   9
 $TDUPDATE
  40
-2461358.0130092595
+2461358.029664352
   9
 $TDUUPDATE
  40
@@ -505,7 +505,7 @@ $SPLINESEGS
   9
 $HANDSEED
   5
-BB
+D2
   9
 $SURFTAB1
  70
@@ -885,11 +885,11 @@ $PSTYLEMODE
   9
 $FINGERPRINTGUID
   2
-{722934B3-CB81-4BD0-AC94-B822E08BFD74}
+{1E5942EA-8D76-4A4B-9096-D8E1CBC4AEC1}
   9
 $VERSIONGUID
   2
-{F5552C2B-A7FC-4998-BE69-654B70506F26}
+{2AC978C1-06F2-456E-85E7-770205DC93A8}
   9
 $EXTNAMES
 290
@@ -3057,7 +3057,7 @@ AcAecLayerStandard
   0
 APPID
   5
-B8
+CF
 330
 3
 100
@@ -3071,7 +3071,7 @@ HATCHBACKGROUNDCOLOR
   0
 APPID
   5
-B9
+D0
 330
 3
 100
@@ -4725,7 +4725,7 @@ BLOCK_RECORD
 100
 AcDbSymbolTable
  70
-6
+7
   0
 BLOCK_RECORD
   5
@@ -4808,6 +4808,20 @@ AcDbSymbolTableRecord
 AcDbBlockTableRecord
   2
 B-05_0
+340
+0
+  0
+BLOCK_RECORD
+  5
+B8
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+B-16_1
 340
 0
   0
@@ -6023,6 +6037,572 @@ AcDbEntity
 100
 AcDbBlockEnd
   0
+BLOCK
+  5
+B9
+330
+B8
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+B-16_1
+ 70
+0
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+B-16_1
+  1
+
+  0
+LWPOLYLINE
+  5
+BB
+330
+B8
+100
+AcDbEntity
+  8
+CUT
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-15.0
+ 20
+49.0
+ 10
+-15.0
+ 20
+-12.0
+ 10
+205.0
+ 20
+-12.0
+ 10
+205.0
+ 20
+49.0
+  0
+LWPOLYLINE
+  5
+BC
+330
+B8
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 10
+190.0
+ 20
+0.0
+ 10
+190.0
+ 20
+37.0
+ 10
+0.0
+ 20
+37.0
+  0
+LWPOLYLINE
+  5
+BD
+330
+B8
+100
+AcDbEntity
+  8
+NOTCH
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+98.0
+ 20
+-12.0
+ 10
+95.0
+ 20
+-6.0
+ 10
+92.0
+ 20
+-12.0
+  0
+LWPOLYLINE
+  5
+BE
+330
+B8
+100
+AcDbEntity
+  8
+NOTCH
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+205.0
+ 20
+21.5
+ 10
+199.0
+ 20
+18.5
+ 10
+205.0
+ 20
+15.5
+  0
+LWPOLYLINE
+  5
+BF
+330
+B8
+100
+AcDbEntity
+  8
+NOTCH
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+92.0
+ 20
+49.0
+ 10
+95.0
+ 20
+43.0
+ 10
+98.0
+ 20
+49.0
+  0
+LWPOLYLINE
+  5
+C0
+330
+B8
+100
+AcDbEntity
+  8
+NOTCH
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+-15.0
+ 20
+15.5
+ 10
+-9.0
+ 20
+18.5
+ 10
+-15.0
+ 20
+21.5
+  0
+LWPOLYLINE
+  5
+C1
+330
+B8
+100
+AcDbEntity
+  8
+GRAIN
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+38.0
+ 20
+18.5
+ 10
+152.0
+ 20
+18.5
+  0
+LWPOLYLINE
+  5
+C2
+330
+B8
+100
+AcDbEntity
+  8
+GRAIN
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+144.6315120479769
+ 20
+15.384653261530797
+ 10
+152.0
+ 20
+18.5
+ 10
+144.6315120479769
+ 20
+21.615346738469203
+  0
+LWPOLYLINE
+  5
+C3
+330
+B8
+100
+AcDbEntity
+  8
+GRAIN
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+45.36848795202308
+ 20
+21.615346738469203
+ 10
+38.0
+ 20
+18.5
+ 10
+45.36848795202308
+ 20
+15.384653261530795
+  0
+TEXT
+  5
+C4
+330
+B8
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+107.0
+ 20
+46.5
+ 30
+0.0
+ 40
+5.0
+  1
+ID: B-16
+ 11
+107.0
+ 21
+46.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+C5
+330
+B8
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+107.0
+ 20
+38.5
+ 30
+0.0
+ 40
+5.0
+  1
+PIECE: under-strap floor channel (US1 / US2)
+ 11
+107.0
+ 21
+38.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+C6
+330
+B8
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+107.0
+ 20
+30.5
+ 30
+0.0
+ 40
+5.0
+  1
+MATERIAL: cordura_500d_nylon66
+ 11
+107.0
+ 21
+30.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+C7
+330
+B8
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+107.0
+ 20
+22.5
+ 30
+0.0
+ 40
+5.0
+  1
+CUT 2
+ 11
+107.0
+ 21
+22.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+C8
+330
+B8
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+107.0
+ 20
+14.5
+ 30
+0.0
+ 40
+5.0
+  1
+FACE UP
+ 11
+107.0
+ 21
+14.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+C9
+330
+B8
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+107.0
+ 20
+6.5
+ 30
+0.0
+ 40
+5.0
+  1
+KNIFE: CW from the grain-arrow head; cut windows and slits first
+ 11
+107.0
+ 21
+6.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+CA
+330
+B8
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+107.0
+ 20
+-1.5
+ 30
+0.0
+ 40
+5.0
+  1
+NOTE: ends turned 15 mm and left OPEN (the 25 mm under-strap passes through); topstitch both long edges
+ 11
+107.0
+ 21
+-1.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+CB
+330
+B8
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+107.0
+ 20
+-9.5
+ 30
+0.0
+ 40
+5.0
+  1
+PACK: 5200 CORRIE F rev 3
+ 11
+107.0
+ 21
+-9.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+CC
+330
+B8
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+107.0
+ 20
+-17.5
+ 30
+0.0
+ 40
+5.0
+  1
+FACE: PU coat DOWN (inside)
+ 11
+107.0
+ 21
+-17.5
+ 31
+0.0
+100
+AcDbText
+  0
+ENDBLK
+  5
+BA
+330
+B8
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
 ENDSEC
   0
 SECTION
@@ -6046,6 +6626,26 @@ B-05_0
 12.0
  20
 12.000000000000002
+ 30
+0.0
+  0
+INSERT
+  5
+CD
+330
+17
+100
+AcDbEntity
+  8
+CUT
+100
+AcDbBlockReference
+  2
+B-16_1
+ 10
+462.64
+ 20
+12.0
  30
 0.0
   0
@@ -7139,7 +7739,7 @@ CREATED_BY_EZDXF
   3
 WRITTEN_BY_EZDXF
 350
-BA
+D1
   0
 DICTIONARYVAR
   5
@@ -7151,7 +7751,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-11-13T00:18:44.925029+00:00
+1.4.5 @ 2026-11-13T00:42:43.875143+00:00
   0
 VISUALSTYLE
   5
@@ -7855,7 +8455,7 @@ X-Ray
   0
 DICTIONARYVAR
   5
-BA
+D1
 330
 2D
 100
@@ -7863,7 +8463,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-11-13T00:18:44.929932+00:00
+1.4.5 @ 2026-11-13T00:42:43.881247+00:00
   0
 ENDSEC
   0

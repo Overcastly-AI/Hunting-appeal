@@ -468,6 +468,84 @@ def build(c: ShellF | None = None, door: str = DOOR_DEFAULT, fabrics: str = "B")
     return b
 
 
+# ---- B-01 fairlead swell windows (BL-033). Windows 50 wide centred on the stay x (bag_concepts.STAY_X), (crest z,
+# lower, upper) = patterns_v31.SWELLS. DECISION H-1 (BL-033 task 1): no hinge window. The hinge window (z 40-130)
+# lay over the B-18 hinge-eye doubler (z 35-80), whose lower edge in the floor seam IS the hinge load path (A5:
+# HE box-X through B-18 + B-01, B-18 seam 80 mm into the B-05 strip): a window there cuts B-01 from under the box-X.
+# The hinge cleat bears on B-18 instead (``hinge_standoff``: 3.5 mm into the 20 mm B-01 offset, the same as the
+# under-strap cleat US2, which the v3.1 patterns accepted with no swell).
+SWELL_W = 50.0
+SWELL_WINDOWS = {"im1": (BC.STATIONS["im1"], 45.0, 45.0), "im2": (BC.STATIONS["im2"], 45.0, 45.0),
+                 "im3": (BC.STATIONS["im3"], 58.0, 32.0)}
+SWELL_WINDOWS_DROPPED = {"hinge": (62.0, 22.0, 68.0)}     # patterns_v31.SWELLS hinge (BL-032 drew it; H-1 removes it)
+B18_RECT = (90.0, 45.0)                                  # attach_system.drawing_pieces B-18 90 x 45, lower edge at BC.Z0
+
+
+def b01_flat_s(c: ShellF | None = None):
+    """B-01 flat length coordinate s(z) (the unrolled frame face, as ``bag_concepts.frame_panel`` drafts it)."""
+    c = c or make()
+    with frame_face(c):
+        zk = BC._kinks(c)
+        s01 = BC.unroll(zk, BC.y_frame(zk))
+    return lambda z: float(np.interp(z, zk, s01))
+
+
+def swell_windows(c: ShellF | None = None) -> list:
+    """The B-01 swell windows as cut: [{station, side, x0, x1, y0, y1 (flat), area_mm2}]."""
+    s01 = b01_flat_s(c)
+    out = []
+    for st, (zc, lo, hi) in SWELL_WINDOWS.items():
+        for sx in (-1, 1):
+            y0, y1 = s01(zc - lo), s01(zc + hi)
+            out.append({"station": st, "side": "R" if sx > 0 else "L", "x0": sx * BC.STAY_X - SWELL_W / 2,
+                        "x1": sx * BC.STAY_X + SWELL_W / 2, "y0": y0, "y1": y1, "z": (zc - lo, zc + hi),
+                        "area_mm2": SWELL_W * (y1 - y0)})
+    return out
+
+
+def hinge_standoff() -> dict:
+    """BL-033 task 1: what the hinge cleat does to B-01 with no swell, against US2 (no swell since v3.1). Fairlead proud
+    of the stay = bag_attach HOLE_PROUD + HOLE_D / 2 + WALL_FRONT; stay radius frame_branch.stay_radius (attachment.yaml
+    scale); B-01 at bag_attach.PANEL_OFFSET from the stay centre; B-18 thickness from the hypalon record."""
+    import yaml
+    from huntkit.gendesign import bag_attach as BA
+    from huntkit.gendesign.frame_branch import stay_radius
+    sc = float(yaml.safe_load((PACK / "attachment.yaml").read_text())["scale"])
+    proud = BA.HOLE_PROUD + BA.HOLE_D / 2 + BA.WALL_FRONT
+    out = {"proud_mm": round(proud, 2), "panel_offset_mm": BA.PANEL_OFFSET, "scale": sc,
+           "b18_t_mm": _rec("hypalon_coated_nylon", "thickness_mm")}
+    for k, z in (("hinge", 60.0), ("us2", 142.0)):
+        r = float(stay_radius(z, sc))
+        out[k] = {"z": z, "stay_r_mm": round(r, 2), "top_mm": round(r + proud, 2),
+                  "push_mm": round(max(0.0, r + proud - BA.PANEL_OFFSET), 2)}
+    out["hinge"]["push_with_b18_mm"] = round(out["hinge"]["push_mm"] + out["b18_t_mm"], 2)
+    z0 = BC.Z0
+    out["b18_z"] = (z0, z0 + B18_RECT[1])
+    lo = SWELL_WINDOWS_DROPPED["hinge"]
+    out["dropped_window_z"] = (lo[0] - lo[1], lo[0] + lo[2])
+    out["overlap_z_mm"] = round(max(0.0, min(out["b18_z"][1], out["dropped_window_z"][1])
+                                    - max(out["b18_z"][0], out["dropped_window_z"][0])), 1)
+    win = swell_windows()
+    out["b18_window_overlap_mm2"] = round(sum(max(0.0, min(w["x1"], sx * BC.STAY_X + B18_RECT[0] / 2)
+                                                  - max(w["x0"], sx * BC.STAY_X - B18_RECT[0] / 2))
+                                              * max(0.0, min(w["z"][1], z0 + B18_RECT[1]) - max(w["z"][0], z0))
+                                              for w in win for sx in (-1, 1)), 1)
+    out["nearest_window_above_b18_mm"] = round(min(w["z"][0] for w in win) - (z0 + B18_RECT[1]), 1)
+    return out
+
+
+def b01_net_g(c: ShellF | None = None, fabrics: str = "B", b01=None) -> dict:
+    """B-01 booked net of its swell windows (BL-033: the windows are cut out; each swell B-13x is its own row)."""
+    c = c or make()
+    if b01 is None:
+        with frame_face(c):
+            b01 = BC.frame_panel(c)
+    full = BC.piece_mass_g(b01)
+    win = sum(w["area_mm2"] for w in swell_windows(c))
+    return {"full_g": full, "windows": len(SWELL_WINDOWS) * 2, "window_mm2": win,
+            "net_g": full - win * _gsm(b01.material_id) / 1e6}
+
+
 def lid_straps(c) -> list:
     """D1 lid straps H1-H3 at the IM heights: span + round the corners + 150 mm tail, G-hook (R) + ladder lock (L)
     (tailgate.build rule). Booked in straps_compression (they are straps)."""
@@ -490,13 +568,49 @@ def _B():
     return importlib.import_module("lean.fell")
 
 
+FP_FACE_W = 165.0     # DECISION (BL-033 task 3): hip-reach pocket face 180 -> 165 mm. BL-032's pattern found the 180 mm
+#                       face does not fit the gusset depth over z 150-380 with its inner edge 10 mm off the frame seam
+#                       (clamped up to 15.5 mm); 165 fits at every height, so the pocket is a plain rectangle again.
+FP_KEEP_MESH = True   # DECISION (BL-033): the mesh keeps team A's 260 mm width; the 15 mm the face loses goes into the two
+#                       box pleats (2 x 40 -> 2 x 47.5). With the pleats unchanged (mesh 245) the arc model below gives
+#                       1.78 L and the sheep8 2nd bottle misses FP-R (corrie_f_loadout, every belt size).
+
+
+def _mesh_arc_area(w: float, L: float) -> float:
+    """Cross-section of a stretch-mesh pocket: a mesh of width L sewn over a chord w, taken as a circular arc."""
+    lo, hi = 1e-6, 2 * math.pi - 1e-6
+    for _ in range(200):                      # bisection on L sin(th/2) / (th/2) = w
+        th = 0.5 * (lo + hi)
+        if L * math.sin(th / 2) / (th / 2) > w:
+            lo = th
+        else:
+            hi = th
+    R = L / th
+    return R * R / 2 * (th - math.sin(th))
+
+
+def fp_spec() -> dict:
+    """Team A's evolve.FP on CORRIE F's 165 mm face. ASSUMPTION FP-ARC: the pocket's stretch capacity scales with its
+    cross-section (mesh width over the sewn face as a circular arc, ``_mesh_arc_area``), never above team A's 2.0 L;
+    the envelope's width dimension scales the same way. Settled by EV-3 on the prototype (1 L bottle + GPS + snacks,
+    gloved, pack on)."""
+    E = _A()
+    fp = dict(E.FP)
+    mesh = fp["w"] + fp["pleat"] if FP_KEEP_MESH else FP_FACE_W + fp["pleat"]
+    k = min(1.0, _mesh_arc_area(FP_FACE_W, mesh) / _mesh_arc_area(fp["w"], fp["w"] + fp["pleat"]))
+    env = fp["env_mm"]
+    fp.update(w=FP_FACE_W, pleat=mesh - FP_FACE_W, cap_L=round(fp["cap_L"] * k, 2), cap_ratio=round(k, 3),
+              env_mm=tuple(sorted((env[0], round(env[1] * k, 1), env[2]), reverse=True)), team_a_w=E.FP["w"])
+    return fp
+
+
 def hip_reach_pockets() -> list:
     """Team A's E-4 hip-reach pockets FP-L / FP-R, the same part (evolve.FP) moved from the wings' lower front corners
     to the gussets' lower front corners (the wings are deleted), z 150-380 (A's write-up height; IMP-8 stays below on
     the right, z 35-150). Plus E-5, the pole quiver (boot in FP-R's front pleat, grip loop at the gusset's top hard
     point). Mass by A's recipe from the records."""
     E = _A()
-    FP, POLE, H = E.FP, E.POLE, BC.HOURS
+    FP, POLE, H = fp_spec(), E.POLE, BC.HOURS
     mesh = 2 * (FP["w"] + FP["pleat"] + 2 * SA_FLAT) * (FP["h"] + 2 * SA_FLAT) * 1e-6 * _gsm(MESH)
     cord = 2 * (FP["w"] + FP["pleat"] + 60) / 1000 * SHOCK_GM
     band = 2 * (FP["w"] + FP["pleat"] + 2 * SA_FLAT) * (25.0 + 2 * SA_FLAT) * 1e-6 * _gsm(CAMO)
@@ -505,12 +619,13 @@ def hip_reach_pockets() -> list:
     pole_g = POLE["cord_m"] * SHOCK_GM + CORDLOCK_G + POLE["tab_m"] * WEB25
     pole_h = 0.25 * H["straight_m"] + 2 * H["bartack"] + 0.1
     return [
-        {"id": "FP-L/R", "name": "hip-reach pockets FP-L / FP-R (team A E-4): power mesh 260 x 230, 2 box pleats, "
+        {"id": "FP-L/R", "name": f"hip-reach pockets FP-L / FP-R (team A E-4): power mesh {FP['w'] + FP['pleat']:.0f} x "
+         f"{FP['h']:.0f} ({FP['w']:.0f} mm face), 2 box pleats, "
          "shock-cord top in a 25 mm camo mouth band, sewn to each gusset's lower front corner (z 150-380)",
          "mass_g": round(mesh + cord + band, 1), "hours": round(fp_h, 2), "pieces": 4, "seam_m": round(
              2 * (2 * FP["h"] + FP["w"] + 250) / 1000, 2), "z": (150.0, 380.0), "cap_L": FP["cap_L"], "env_mm": FP["env_mm"],
-         "source": "evolve.FP + power_mesh_nylon_spandex, shock_cord_3mm, polyester_ht_630d_printable records (A's recipe, "
-                   "cut + 8 mm SA)"},
+         "source": "evolve.FP at FP_FACE_W (fp_spec) + power_mesh_nylon_spandex, shock_cord_3mm, "
+                   "polyester_ht_630d_printable records (A's recipe, cut + 8 mm SA)"},
         {"id": "E-5", "name": "pole quiver: 40 mm boot in FP-R's front pleat + 3 mm shock-cord grip loop and cord lock on "
          "a 25 mm tab caught in the right B-01 | gusset seam at z 640", "mass_g": round(pole_g, 1), "hours": round(pole_h, 2),
          "pieces": 0, "seam_m": 0.25, "cap_L": POLE["cap_L"], "env_mm": POLE["env_mm"],
@@ -617,6 +732,134 @@ def _is_shell_row(r) -> bool:
                                                or r["name"] == k for k in SHELL_ROWS)
 
 
+# ---- F-01 rain fly for rev 3 (BL-033 task 5). A three-piece box cover: one spine strip (under the floor edge, up the
+# aft face, up the rolled collar and the lid wall, over the lid to the frame side) and two side panels (gusset profile,
+# then the roll and lid). Girths get FLY_EASE; lengths follow the bag's corner line, so the two seams match by
+# construction. Free edges get a 20 mm elastic channel (v3.1 fly rule). Sized for the FULL rolled state (lid top
+# z 1060, CROWN_ROLLED); smaller loads gather on the elastic.
+FLY_MAT = "silicone_coated_poly_ripstop_40d"     # panels.yaml F-01
+FLY_EASE = 1.10       # ASSUMPTION (patterns_v31.build_fly, 10 % ring ease over pockets and wraps); settled by the 1st fly
+FLY_TUCK = 40.0       # ASSUMPTION: the hem tucks 40 mm under the floor edge (holds the fly down); same test
+FLY_WRAP = 25.0       # ASSUMPTION: the side panels and the top wrap 25 mm round onto the frame side (v31: 0.08 of the
+#                       frame half); same test
+FLY_HEM = 20.0        # patterns_v31.build_fly: 20 mm channel hems, 6 mm elastic
+FLY_SA = 10.0         # patterns_v31 SA_301
+FLY_STATE = "full"    # CROWN_ROLLED state the fly is cut for (largest)
+FLY_ELASTIC_RATIO = 0.75  # ASSUMPTION: elastic cut to 75 % of its channel (gathers the fly on the day load); same test
+FLY_ELASTIC_GM = 3.0  # build_geometry.py fly row: "elastic 3 g/m ASSUMPTION (no record)"
+
+
+def _matched_edge(xs_a, xs_b, L_seg):
+    """Two seam sides with the same segment lengths: horizontal offsets xs_* (per point) and target 3D segment
+    lengths L_seg; each side's vertical step is sqrt(L^2 - dx^2), so both sides measure sum(L_seg)."""
+    ya, yb = [0.0], [0.0]
+    for k, L in enumerate(L_seg):
+        for xs, ys in ((xs_a, ya), (xs_b, yb)):
+            dx = xs[k + 1] - xs[k]
+            ys.append(ys[-1] + math.sqrt(max(L * L - dx * dx, 0.0)))
+    return np.array(ya), np.array(yb)
+
+
+def fly_geometry(c: ShellF | None = None) -> dict:
+    """F-01 outline points (flat, mm). Spine: x across the bag (centred), y along the run from the under-floor hem.
+    Side: x = depth from the frame face (the frame line at x 0), y = height along the aft corner line."""
+    c = c or make()
+    rp = json.loads(CROWN_ROLLED.read_text())["states"][FLY_STATE]
+    z_wall = float(rp["lid_top_z"]) - LID["dome"]          # lid wall top (the dome is taken by the ease and the cord)
+    zc = float(c.z_c)
+    with frame_face(c):
+        G = BC.gusset(c)
+        _, S, A = _face_xy(c)
+    aft, frm = np.asarray(G.edge_points("aft"), float), np.asarray(G.edge_points("frame"), float)[::-1]
+    # aft corner line: N stations by fraction of its length (gusset aft edge = blade outer edge, 715.3 mm)
+    N = 48
+    la = np.r_[0.0, np.cumsum(np.hypot(*np.diff(aft, axis=0).T))]
+    t = np.linspace(0.0, la[-1], N + 1)
+    ax_, ay_ = np.interp(t, la, aft[:, 0]), np.interp(t, la, aft[:, 1])
+    fx_ = np.interp(ay_, frm[:, 1], frm[:, 0])
+    depth = ax_ - fx_                                    # gusset depth at each station
+    zst = np.interp(t / la[-1], [0.0, 1.0], [BC.Z0, zc])  # station z (for the aft-face half width)
+    # map each station to its z through the aft-face flat length (S is the aft-face analogue of the gusset sigma)
+    zz = np.linspace(BC.Z0, zc, 400)
+    Sz = np.array([S(z) for z in zz])
+    zst = np.interp(t / la[-1] * Sz[-1], Sz, zz)
+    half = np.array([A(z) for z in zst])
+    seg = np.diff(t)
+    # roll + lid wall rise: half width -> lid W/2, depth -> lid D, over the rise (straight, ASSUMPTION)
+    M = 12
+    rise = z_wall - zc
+    hr = np.linspace(half[-1], LID["W"] / 2, M + 1)
+    dr = np.linspace(depth[-1], LID["D"], M + 1)
+    xs_sp = np.r_[half, hr[1:]] * FLY_EASE
+    xs_sd = np.r_[depth, dr[1:]] * FLY_EASE
+    L_seg = np.r_[seg, np.full(M, rise / M)]
+    fx_all = np.r_[fx_, np.full(M, fx_[-1])]
+    y_sp, y_sd = _matched_edge(xs_sp, fx_all + xs_sd, L_seg)
+    y_sp, y_sd = y_sp + FLY_TUCK, y_sd + FLY_TUCK
+    top = LID["D"] * FLY_EASE + FLY_WRAP                 # over the lid, aft edge to past the frame face
+    y_end = y_sp[-1] + top
+    W_top = LID["W"] / 2 * FLY_EASE
+    spine_R = [(xs_sp[0], 0.0)] + list(zip(xs_sp, y_sp)) + [(W_top, y_end)]
+    # side: frame line at x = -FLY_WRAP (follows the frame face fx_, offset), aft edge at fx_ + ease x depth
+    side_aft = [(fx_all[0] + xs_sd[0], 0.0)] + [(fx_all[k] + xs_sd[k], y_sd[k]) for k in range(len(xs_sd))]
+    side_top = [(fx_all[-1] + xs_sd[-1], y_sd[-1]), (fx_all[-1] + xs_sd[-1] - top, y_sd[-1])]
+    side_frm = [(side_top[-1][0], y_sd[-1])] + [(fx_all[k] - FLY_WRAP, y_sd[k]) for k in range(len(xs_sd) - 1, -1, -1)] \
+        + [(fx_all[0] - FLY_WRAP, 0.0)]
+    return {"spine_R": spine_R, "side_aft": side_aft, "side_top": side_top, "side_frame": side_frm, "y_end": y_end,
+            "z_wall": z_wall, "rise_mm": rise, "top_mm": top, "seam_mm": float(np.sum(L_seg)) + FLY_TUCK + top,
+            "state": FLY_STATE, "lid_top_z": float(rp["lid_top_z"])}
+
+
+def fly_pieces(c: ShellF | None = None) -> dict:
+    """F-01a spine strip and F-01b side panel (pair) as pieces, with their two seams (spine R / L | side)."""
+    g = fly_geometry(c)
+    R = g["spine_R"]
+    L = [(-x, y) for x, y in R]
+    sp = Piece.from_edges("rain fly: spine (under-floor hem, aft face, roll, over the lid)",
+                          [("bottom", [L[0], R[0]]), ("right", R), ("top", [R[-1], L[-1]]), ("left", L[::-1])],
+                          seam_allowance_mm={"default": FLY_SA, "bottom": FLY_HEM, "top": FLY_HEM}, material_id=FLY_MAT,
+                          piece_id="F-01a", grain=90.0)
+    sa, st, sf = g["side_aft"], g["side_top"], g["side_frame"]
+    sd = Piece.from_edges("rain fly: side panel (gusset, roll, lid)",
+                          [("bottom", [sf[-1], sa[0]]), ("aft", sa), ("top", st), ("frame", sf)],
+                          seam_allowance_mm={"default": FLY_SA, "bottom": FLY_HEM, "frame": FLY_HEM},
+                          material_id=FLY_MAT, piece_id="F-01b", quantity=2, mirror=True, grain=90.0)
+    from huntkit.patterns import Seam
+    seams = [Seam(sp.edge("right"), [sd.edge("aft"), sd.edge("top")], name="F-01a spine R | F-01b side"),
+             Seam(sp.edge("left").reversed(), [sd.edge("aft"), sd.edge("top")], name="F-01a spine L | F-01b side")]
+    hem = (sp.edge_length("bottom") + sp.edge_length("top")
+           + 2 * (sd.edge_length("bottom") + sd.edge_length("frame")))
+    mass = BC.piece_mass_g(sp) + BC.piece_mass_g(sd)
+    return {"pieces": [sp, sd], "seams": seams, "geo": g, "hem_mm": hem, "mass_g": mass,
+            "area_m2": (sp.area_mm2 + 2 * sd.area_mm2) / 1e6,
+            "elastic_m": FLY_ELASTIC_RATIO * hem / 1000.0}
+
+
+# ---- US1/US2 bag-floor channels (BL-033 task 4). The under-straps run frame pin to frame pin UNDER the bag floor and
+# take about 55 % of the floor's vertical in bag-on (meat_haul_modes.md); open channels on the floor hold them at fixed
+# fore-aft stations (bag_attachment.md section 2: "B-16 floor channels"). v3.1 drew them (patterns_v31 B-16); CORRIE F
+# had no geometry. Same design on CORRIE F's floor, sized for the 25 mm webbing the REC strap set uses.
+US_CHANNEL_Y = (0.30, 0.65)   # patterns_v31.CHANNEL_Y: ASSUMPTION there (channel centres at 30 / 65 % of floor depth from
+#                               the frame edge); settled by the US cradle fit on the prototype
+US_CHANNEL_PLAY = 12.0        # patterns_v31.CHANNEL_W 50 = 38 mm webbing + 12 mm play; the same play on 25 mm webbing
+US_CHANNEL_END = 15.0         # patterns_v31 B-16: ends turned 15 mm, open
+F02_WH = (190.0, 140.0)       # panels.yaml F-02 (finished): the channels are topstitched across its outer face
+
+
+def us_channels(c: ShellF | None = None, fabrics: str = "B") -> dict:
+    """B-16 x2: open channels across the floor (on the F-02 fly pocket's outer face, which covers the floor's middle),
+    channel length = F-02 width, in the floor fabric. Returns the piece, the stations and the mass."""
+    c = c or make()
+    d0 = float(c.depth([BC.Z0])[0])
+    w = 25.0 + US_CHANNEL_PLAY
+    p = rect_panel("under-strap floor channel (US1 / US2)", F02_WH[0], w, 0.0, piece_id="B-16",
+                   material_id=fab("floor", fabrics), quantity=2, grain=0.0,
+                   seam_allowance_mm={"default": SA_BODY, "left": US_CHANNEL_END, "right": US_CHANNEL_END})
+    st = [round(f * d0, 1) for f in US_CHANNEL_Y]
+    return {"piece": p, "width_mm": w, "stations_mm": st, "floor_depth_mm": d0, "mass_g": BC.piece_mass_g(p),
+            "source": f"{p.material_id} record x cut area (patterns_v31 B-16 rule, 25 mm webbing)"}
+
+
 def fly_rows(b: BC.Build, ledger_rows: list) -> list:
     """Rain fly: F-01 scaled to this shell's outer area (CORRIE's G-2 rule), F-02 base pocket (base: it stays sewn
     on), the ledger's hem / zip / tether row unchanged (ASSUMPTION: the hem length follows the outer perimeter within
@@ -627,6 +870,15 @@ def fly_rows(b: BC.Build, ledger_rows: list) -> list:
     ids = ("B-03", "B-02u", "B-02door", "B-02h", "B-02L", "B-05")    # B-02L = the D1 lid
     a = sum(p.area_mm2 * p.quantity for p, _ in b.pieces if p.piece_id in ids) / 1e6
     hem = next(r for r in ledger_rows if r["system"] == "fly" and "elastic hem" in r["name"])
+    if REVS[REVISION].get("crown_lid"):          # BL-033: the drafted rev 3 fly (shell + roll + lid), not a scaled area
+        fp = fly_pieces(b.concept)
+        el0 = 3.0                                 # the hem row's elastic length (build_geometry: "fly elastic hem 3.0 m")
+        return [("fly", f"F-01 rain fly, drafted for CORRIE F rev 3 (spine F-01a + sides F-01b x2, {fp['area_m2']:.3f} m2 cut)",
+                 fp["mass_g"], "as_hunted", f"corrie_f.fly_pieces: cut area x {FLY_MAT} record gsm"),
+                ("fly", "F-02 fly base pocket (stays on the bag)", f02, "base", "panels.yaml F-02"),
+                ("fly", f"rain fly: fly elastic hem {fp['elastic_m']:.2f} m (drafted), #5 pocket zip + slider, tether",
+                 hem["g"] + (fp["elastic_m"] - el0) * FLY_ELASTIC_GM, "as_hunted",
+                 "ledger row with the elastic re-booked: FLY_ELASTIC_RATIO x the drafted hem channels x FLY_ELASTIC_GM")]
     return [("fly", "F-01 rain fly re-cut to CORRIE F's outer shell", f01 * a / CO.SPINE_OUTER_M2, "as_hunted",
              f"panels.yaml F-01 x outer area {a:.3f} / SPINE {CO.SPINE_OUTER_M2} m2 (G-2 rule)"),
             ("fly", "F-02 fly base pocket (stays on the bag)", f02, "base", "panels.yaml F-02"),
@@ -639,6 +891,11 @@ def strap_rows() -> list:
     from huntkit.gendesign import loadpath_check as LP
     rows = [(p.system, f"{p.id}: {p.name}", p.g, p.cfg, f"strap_arch rec: {p.source}") for p in SA.architectures()["rec"]
             if p.id != "pouch-straps"]           # the pouch straps are booked with the top pouch add-on
+    # BL-033: the US floor channels drafted (B-16), not the B.2 estimate (floor geometry: the same in every revision)
+    uc = us_channels()                       # (floor geometry: the same in every revision)
+    rows = [(s_, f"US-chan: US bag-floor channels B-16 x2 ({uc['width_mm']:.0f} x {F02_WH[0]:.0f} mm on F-02, at "
+                 f"{uc['stations_mm'][0]:.0f} / {uc['stations_mm'][1]:.0f} mm from the frame edge)", uc["mass_g"], cfg,
+             uc["source"]) if n.startswith("US-chan:") else (s_, n, g, cfg, src) for s_, n, g, cfg, src in rows]
     H = {h["where"]: h for h in LP.hooks_table()}
     hw = LP.hw()
     im3 = H["IM3 meat-strap free end (1)"]
@@ -660,7 +917,13 @@ def attachment_rows(ledger_rows: list) -> list:
     sensitivity, 220.7 g)."""
     import attach_diet as AD
     from huntkit.gendesign import loadpath_check as LP
-    rows = [("attachment", r["name"], r["g"], "base", "ledger") for r in ledger_rows if r["system"] == "attachment"]
+    # BL-033: the ledger's C2 correction (B-01 swell patches = the same 8 swells as cut piece B-13x) applied to the
+    # adopted bag too; and DECISION H-1: the two hinge swells go (no hinge window, section above SWELL_WINDOWS)
+    rows = [("attachment", r["name"], r["g"], "base", "ledger") for r in ledger_rows if r["system"] == "attachment"
+            and r["name"] != "attachment: B-01 swell patches"]
+    b13 = next(r for r in ledger_rows if r["name"].startswith("B-13x boxed fairlead swell"))
+    rows.append(("attachment", "BL-033 H-1: hinge swells B-13xh x2 deleted (no hinge window; B-18 takes the cleat)",
+                 -len(SWELL_WINDOWS_DROPPED) * 2 * b13["g"] / 8.0, "base", "ledger B-13x row / 8 x 2"))
     for n, g, src in AD.mass_changes("REC"):
         rows.append(("attachment", f"BL-004 REC: {n}", g, "base", f"attach_diet.mass_changes: {src}"))
     H = {h["where"]: h for h in LP.hooks_table()}
@@ -690,6 +953,11 @@ def parts(size: str = "M", door: str = DOOR_DEFAULT, fabrics: str = "B", c: Shel
     for p, grp in b.pieces:
         if grp == "swell":
             continue                                   # B-13x stays the ledger's attachment row
+        if p.piece_id == "B-01":                       # BL-033: net of its swell windows (cut out; B-13x is its own row)
+            nb = b01_net_g(c, fabrics, p)
+            add("bag_shell", f"B-01 {p.name} ({p.material_id}), net of {nb['windows']} swell windows", nb["net_g"], "base",
+                f"corrie_f.build(): cut area less {nb['window_mm2']:.0f} mm2 of windows (corrie_f.swell_windows) x record gsm")
+            continue
         add("bag_shell", f"{p.piece_id} {p.name} ({p.material_id}{', x%d' % p.quantity if p.quantity > 1 else ''})",
             BC.piece_mass_g(p), "base", "corrie_f.build(): cut area x record gsm")
     for z in b.zips:
@@ -1476,9 +1744,11 @@ def guy_port(fabrics: str = "B") -> dict:
     c = make()
     with frame_face(c):
         mid = BC.frame_panel(c).material_id
-    h = PORT_Z[1] - PORT_Z[0]
+    s01 = b01_flat_s(c)
+    h = s01(PORT_Z[1]) - s01(PORT_Z[0])       # BL-033: the slit on the fabric (B-01's Z-fold sits in z 631-745), not dz
     area = (PORT_FACING_W * (h + 2 * PORT_END) + 2 * PORT_TURN * h) * 2      # two ports
-    return {"id": "B-27", "x_mm": REVS[1]["guy_x"], "z_mm": list(PORT_Z), "slit_mm": h, "material": mid,
+    return {"id": "B-27", "x_mm": REVS[1]["guy_x"], "z_mm": list(PORT_Z), "slit_mm": round(h, 1),
+            "slit_dz_mm": PORT_Z[1] - PORT_Z[0], "material": mid,
             "area_mm2": round(area, 0), "mass_g": round(area * _gsm(mid) / 1e6, 2),
             "source": f"{mid} record (B-01 fabric) x facing and turned-edge area (PORT_FACING_W, PORT_TURN ASSUMPTIONS)"}
 
@@ -1684,6 +1954,49 @@ def _route_over_port_b22in(torso: int) -> dict:
 ROUTES.update({"over_port_b22in": _route_over_port_b22in,
                "over_port_b22fb": lambda t: _route_over_port_at(t, B22_FALLBACK["x"], B22_DRAWN[1])})
 
+B22_CHECK = HERE / "corrie_f_sim" / "corrie_f_b22in.json"
+B22_RUN = ("F_PR15_fineFM_over_port_b22in", "F_r1_PR15_fineFM_over_port_b22in")
+B22_BASE = ("F_PR15_fineFM_over_port", "F_r1_PR15_fineFM_over_port")
+
+
+def bl033_b22_check(write: bool = True) -> dict:
+    """BL-033 task 2: rev 3 (crown straps + port guy) at 15 in, fine mesh, with B-22 on the hinge band where the pattern
+    puts it (``b22_placement``; sim node ``_row_node``), against the stored rev 3 run with B-22 at x 149. Acceptance
+    (ticket): meat CG <= CG_TARGET, lifter gap >= MIN_CLEAR_MM (crown strap and port guy outside run), R-28 >= 31 deg.
+    Needs the run (``corrie_f_sim.py finerun F --torso 15 --route over_port_b22in``) and both drapes on disk; the
+    result is written to B22_CHECK (tracked) so it can be read without them."""
+    S = _sim()
+    rows = S.load_results()["rows"]
+    out = {"placement": b22_placement(), "runs": {}, "cg_target_mm": CG_TARGET, "min_clear_mm": MIN_CLEAR_MM,
+           "r28_min_deg": 31.0, "fallback": B22_FALLBACK}
+    m = fine_mesh(15)
+    for tag, (key, folder) in (("moved", B22_RUN), ("drawn_149", B22_BASE)):
+        r = rows.get(key)
+        if r is None:
+            raise FileNotFoundError(f"{key} not in corrie_f_sim_results.json")
+        spec = r.get("route", {})
+        node = {s: (spec.get(s, {}).get("extra", {}).get(f"TP_{s}", {}).get("nodes") or [m["b22"][s]])[0] for s in "RL"}
+        p = bl029_paths(runs=[(key, folder, 15, "over_port")], write=False)["rows"]
+        gaps = [v[s][k] for v in p.values() for s in "RL" for k in ("lifter_gap_mm", "port_lifter_gap_mm") if k in v[s]]
+        c = r["cases"]
+        out["runs"][tag] = {
+            "run": key, "b22_node_x_mm": {s: round(float(m["X0"][node[s], 0]), 1) for s in "RL"},
+            "b22_node_z_mm": {s: round(float(m["X0"][node[s], 2]), 1) for s in "RL"},
+            "meat_cg_y_mm": c["meat"]["cg_y"], "fill_cg_y_mm": c["fill"]["cg_y"],
+            "meat_converged": c["meat"]["converged"], "fill_converged": c["fill"]["converged"],
+            "r28_deg": min(r["r28"]["fill"]["worst_contact_deg"], r["r28"]["meat"]["worst_contact_deg"]),
+            "lifter_gap_min_mm": round(min(gaps), 1),
+            "port_guy_1g_n": max(c[cn]["loads_1g"].get(f"TP_{s}", 0.0) for cn in ("fill", "meat") for s in "RL"),
+            "im3_1g_n": max(c[cn]["loads_1g"].get(f"hook_im520_{s}", 0.0) for cn in ("fill", "meat") for s in "RL")}
+    mv = out["runs"]["moved"]
+    out["acceptance"] = {"cg_ok": mv["meat_cg_y_mm"] <= CG_TARGET and mv["meat_converged"],
+                         "lifter_ok": mv["lifter_gap_min_mm"] >= MIN_CLEAR_MM, "r28_ok": mv["r28_deg"] >= 31.0}
+    out["pass"] = all(out["acceptance"].values())
+    out["use_fallback"] = not out["pass"]
+    if write:
+        B22_CHECK.write_text(json.dumps(out, indent=1, default=_j))
+    return out
+
 
 # ---- the crown lid B-29 (BL-029 look rules, docs/research/top_anchor_and_lids.md section 7)
 # The lid is the bag's cap, not a box on the roll: plan = the closed top's footprint (a rounded square, superellipse
@@ -1739,6 +2052,23 @@ def lid_geometry() -> dict:
             "volume_cu_in": round(vol * 61.0237, 0), "channel_run_mm": round(ch, 1)}
 
 
+_LID_H = {}
+
+
+def lid_hours_drafted() -> dict:
+    """BL-033: the lid's build hours on the DRAFTED B-29 pattern (patterns_corrie_f_rev3.lid_hours_ops: BL-030's seam
+    list on the drafted pieces, plus the four crown darts the dome needs). Lazy import: the pattern module reads this
+    one. Cached per LID (the pattern is drawn from LID alone)."""
+    key = tuple(sorted(LID.items()))
+    if key not in _LID_H:
+        import importlib
+        PR = importlib.import_module("patterns_corrie_f_rev3")
+        ops = PR.lid_hours_ops()
+        _LID_H[key] = {"hours": ops["hours"], "pieces_cut": ops["pieces_cut"],
+                       "source": "patterns_corrie_f_rev3.lid_hours_ops (drafted B-29, bag_concepts.HOURS rates)"}
+    return _LID_H[key]
+
+
 def crown_lid(fabrics: str = "B") -> dict:
     """B-29 crown lid: pieces x record gsm + zip record + ASSUMPTION slider / thread. Crown and wall in the body
     fabric, base in the collar fabric (70D: it lies on the roll), camo corner caps in the 630D printable."""
@@ -1760,8 +2090,9 @@ def crown_lid(fabrics: str = "B") -> dict:
     hours = (pieces * H["cut_piece"] + 2 * per / 1000 * H["curved_m"] + H["zip_fixed"] + LID["zip_mm"] / 1000 * H["zip_m"]
              + 2 * H["zip_corner"] + 2 * 2 * g["channel_run_mm"] / 1000 * H["straight_m"] + 4 * H["bartack"]
              + 4 * 2 * 0.05 * H["applique_m"])
+    dr = lid_hours_drafted()
     return {"id": "B-29", **g, "mass_g": round(mass, 1), "fabric_g": round(fabric_g, 1), "zip_g": round(zip_g, 1),
-            "hours": round(hours, 2), "pieces": pieces,
+            "hours": dr["hours"], "hours_bl029": round(hours, 2), "hours_source": dr["source"], "pieces": pieces,
             "source": f"{body} / {base_f} / {CAMO} records x cut area (lid_geometry) + coil_zipper_5 record; "
                       "LID_SLIDER5_G, LID_THREAD ASSUMPTIONS"}
 
@@ -1797,7 +2128,7 @@ def lid_seam_list() -> dict:
     ]
     rows = [{"op": n, "qty": round(q, 3), "rate_h": r, "hours": round(q * r, 2)} for n, q, r in ops]
     tot = round(sum(q * r for _, q, r in ops), 2)
-    est = crown_lid()["hours"]
+    est = crown_lid()["hours_bl029"]
     with revision(1):
         pouch_h = addons()["top_pouch"]["hours"]
     return {"rows": rows, "hours": tot, "bl029_estimate_h": est, "delta_h": round(tot - est, 2),

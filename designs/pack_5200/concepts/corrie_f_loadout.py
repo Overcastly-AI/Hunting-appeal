@@ -99,10 +99,11 @@ def zones_f(config="integrated:M"):
     Z["wing_R"].name = "under W1/W2, right gusset: tripod / jacket (no wing)"
     Z["scope_sleeve_L"].name = "scope pod (add-on) sleeve, left gusset"
     E = F._A()
+    FP = F.fp_spec()                 # BL-033: 165 mm face (corrie_f.FP_FACE_W)
     a = L.a_at(FP_Z)
     yf = float(np.interp(FP_Z, L.G["z"], L.G["yf"]))
     for zid, side, nm in (("fp_L", -1, "FP-L hip-reach pocket, left gusset"), ("fp_R", 1, "FP-R hip-reach pocket, right gusset")):
-        Z[zid] = L.Zone(zid, nm, "hip", 1, E.FP["cap_L"], E.FP["env_mm"], True, (side * (a + 45.0), yf + 70.0, FP_Z))
+        Z[zid] = L.Zone(zid, nm, "hip", 1, FP["cap_L"], FP["env_mm"], True, (side * (a + 45.0), yf + 70.0, FP_Z))
     Z["pole_quiver"] = L.Zone("pole_quiver", "E-5 pole quiver (FP-R boot + grip loop at z 640)", "hip", 1, E.POLE["cap_L"],
                               E.POLE["env_mm"], True, (a + 40.0, yf + 40.0, 400.0))
     return Z

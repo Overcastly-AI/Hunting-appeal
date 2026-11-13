@@ -1,0 +1,16 @@
+defect,where,cause,prevent_fix,class
+Skipped stitches in a box-X,load points,"needle too small / wrong point, flagging on Hypalon","Nm 140 R, tex 135, walking foot pressure; re-sew the whole box offset 1 mm",critical
+Box-X short (stitch count under the table),load points,"early stop, wrong program",count against the load table; re-sew,critical
+"Hardware threaded backwards (ladder lock, cam)",straps,assembly,QC-11 hand pull; SK-7,critical
+"Load tab on the wrong face (B-17 out, B-18 / B-22 in)","B-01, B-02h",face mix-up,placement labels say INSIDE / OUTSIDE; check before sewing,critical
+Needle-cut Hypalon / laminate (perforation line),"B-17, B-18, B-22, B-01",cutting point needle or SPI too high,R point only; 8 SPI max on Hypalon,critical
+Swell puckered or twisted in its window,B-01,window not notch-matched,"unpick, re-clip at the corners",major
+B-27 port gapes (lap < 20 mm),B-01,facing sewn on the wrong line,re-sew on the drawn stitch line,major
+Door zip waves / snakes at the corners,door,zip stretched while sewing,"basting tape, corner notches, ease into the corner",major
+Seam allowance frayed past the 2nd row,body seams,straight-knife cut nylon,laser / hot-knife cut or bind (FRAY-1),major
+Notch mismatch > 2 mm / seam end mismatch > 3 mm,"box seams, collar ring",pieces stretched,"re-clip notch to notch, walking foot",major
+Mesh pocket over-stretched,FP,mesh pulled while sewing,"baste the pleats first, sew with the mesh on top",minor
+Thread tension loops on the underside,any,tension / bobbin,QC-06 swatch at each set-up,minor
+Burn marks / hard beads on webbing ends,webbing,hot knife too hot / slow,"J8 stop, steady cut",minor
+Camo piece cut against the print direction,"B-02u, SH-*",lay error,ONE WAY lay rule,minor
+Hook-and-loop or a non-coil zip fitted,any,substitution,BOM check (owner: quiet bag),critical

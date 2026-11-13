@@ -1,0 +1,86 @@
+{
+ "checks": {
+  "recon_unmatched": 0,
+  "recon_pieces_without_row": 0,
+  "recon_rows": 93,
+  "mass_delta_pct": -0.08,
+  "mass_ok": true,
+  "ops": 92,
+  "load_points": 23,
+  "min_sf": 1.93,
+  "min_sf_point": "B-17 IM3 tab perimeter (double row)",
+  "holds": [
+   "4.07 B-11 lash tabs (8)"
+  ],
+  "unsequenced": [],
+  "unmapped_hardware": [],
+  "proto_hours": 75.2,
+  "sam_min": 511.6,
+  "volatile": [
+   "BL-033 B-22 x",
+   "BL-033 F-01",
+   "BL-033 FP width",
+   "BL-033 hinge window vs B-18",
+   "BL-033 ledger",
+   "BL-033 ledger (US-chan)"
+  ]
+ },
+ "mass": {
+  "base_g": 1065.2,
+  "as_hunted_g": 1336.8,
+  "meat_trip_g": 1532.9,
+  "pattern_fabric_alt_g": 567.2,
+  "ledger_fabric_g": 567.7,
+  "mass_delta_pct": -0.08,
+  "mass_ok": true,
+  "pattern_fabric_primary_g": 662.1,
+  "primary_minus_alt_g": 94.9
+ },
+ "geo": {
+  "b22_x": 130.3,
+  "b22_drawn_x": 149.0,
+  "b22_moved": 18.7,
+  "fp_flat_w": 260.0,
+  "fp_h": 230.0,
+  "fp_finished_w": 165.0,
+  "fp_z": [
+   150.0,
+   380.0
+  ],
+  "fp_clamped": 0.0,
+  "fp_margin": 9.5,
+  "swell_ids": [
+   "B-13x"
+  ],
+  "swell_n": 6,
+  "hinge_windows": 0,
+  "b16": true,
+  "port_z": [
+   595.0,
+   745.0
+  ],
+  "port_turn": 6.0,
+  "port_facing_w": 50.0,
+  "port_slit_mm": 156.2,
+  "windows": 6,
+  "window_perim_mm": 1680.2,
+  "hose_z": 700.0,
+  "hard_z": [
+   420.0,
+   640.0
+  ],
+  "pole_tab_z": 640.0,
+  "zip_door_mm": 1357.9,
+  "lid_zip_mm": 470.0,
+  "crown_tab": 60.0,
+  "z_collar": 745.0,
+  "fly_drafted": true,
+  "fly_ids": [
+   "F-01a",
+   "F-01b"
+  ]
+ },
+ "generator": "designs/pack_5200/mfg_corrie_f_rev3.py",
+ "pattern_module": "designs/pack_5200/patterns_corrie_f_rev3.py",
+ "date": "20261113"
+}

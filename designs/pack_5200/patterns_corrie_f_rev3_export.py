@@ -1,10 +1,10 @@
-"""BL-032 part A exports: CORRIE F rev 3 cut set (see patterns_corrie_f_rev3.py).
+"""BL-032 part A exports (+ BL-033 fixes): CORRIE F rev 3 cut set (see patterns_corrie_f_rev3.py).
 
     python designs/pack_5200/patterns_corrie_f_rev3_export.py [--no-nest10]
 
 Writes the beginner print set and the production files to outputs/release/pack5200_corrie_f_rev3/patterns/
 (git-tracked deliverable), scratch copies to outputs/patterns_corrie_f_rev3/, and phone-readable PNG previews to
-outputs/screens/20261113_BL032_<n>.png. Reuses the v3.1 exporter's drawing helpers (patterns_v31_export, read only).
+outputs/screens/20261113_BL033_<n>.png (BL-033 re-export; BL-032's own screenshots keep their names). Reuses the v3.1 exporter's drawing helpers (patterns_v31_export, read only).
 """
 from __future__ import annotations
 
@@ -32,6 +32,7 @@ REL = ROOT / "outputs" / "release" / "pack5200_corrie_f_rev3" / "patterns"
 OUT = ROOT / "outputs" / "patterns_corrie_f_rev3"
 SCREENS = ROOT / "outputs" / "screens"
 DATE = "20261113"
+SHOT_TAG = "BL033"                 # ticket BL-033 task 6: screenshot prefix 20261113_BL033_
 YD = 914.4
 WASTE_PROD = PVX.WASTE_PROD        # 3 % lay loss ASSUMPTION (v3.1 rule)
 NEST_UNITS = 10
@@ -39,16 +40,17 @@ NEST_TIME_S = 90.0                 # per production marker; the rest is placed g
 TITLE = "CORRIE F rev 3"
 
 STEPS = [   # (file, title, piece ids) in the build order of the release README
-    ("step1_pockets", "Step 1: pockets (FP hip-reach, IMP-4, IMP-8, IMP-2 sleeve, F-02)",
-     ["FP-a", "FP-b", "IMP4-a", "IMP4-b", "IMP8-a", "IMP8-b", "B-09c", "B-09p", "F-02"]),
+    ("step1_pockets", "Step 1: pockets (FP hip-reach, IMP-4, IMP-8, IMP-2 sleeve, F-02 + B-16 floor channels)",
+     ["FP-a", "FP-b", "IMP4-a", "IMP4-b", "IMP8-a", "IMP8-b", "B-09c", "B-09p", "F-02", "B-16"]),
     ("step2_small_parts", "Step 2: swells, port patches, guy-port facings, Hypalon tabs",
-     ["B-13x", "B-13xh", "B-12", "B-27f", "B-11", "B-17", "B-18", "B-22"]),
+     ["B-13x", "B-12", "B-27f", "B-11", "B-17", "B-18", "B-22"]),
     ("step3_door_blade", "Step 3: door D2, camo blade U, hinge band, accents",
      ["B-02u", "B-02door", "B-02h", "SH-07", "SH-01b"]),
     ("step4_main_bag", "Step 4: frame panel B-01, gussets B-03, floor B-05", ["B-01", "B-03", "B-05"]),
     ("step5_collar", "Step 5: roll-top collar, hem, HDPE strips", ["B-06f", "B-06", "B-07", "B-07s"]),
     ("step6_crown_lid", "Step 6: B-29 crown lid", ["B-29a", "B-29b", "B-29c", "B-29d", "B-29e", "B-29f", "B-29g"]),
     ("step7_addons", "Step 7: add-ons (scope pod, meat liner)", ["A1-a", "A1-b", "A1-d", "MS-a", "MS-b", "MS-c", "MS-s"]),
+    ("step8_rain_fly", "Step 8: F-01 rain fly (spine + 2 sides, silpoly)", ["F-01a", "F-01b"]),
 ]
 
 
@@ -171,10 +173,83 @@ def write_cutlist(rsP, rsA, mkP, mkA, mk10, path_md: Path, path_csv: Path):
     return tot
 
 
+def bl033_section(rsP) -> list:
+    """BL-033 fixes, every number from its code."""
+    import corrie_f as F
+    from huntkit.gendesign import loadpath_check as LP
+    hs = F.hinge_standoff()
+    a5 = next(r for r in LP.compute(fea_live=False, log=lambda *a: None)["rows"] if r["id"] == "A5")
+    b22 = json.loads(F.B22_CHECK.read_text()) if F.B22_CHECK.exists() else None
+    fp = F.fp_spec()
+    g = rsP.geo
+    gp = F.guy_port()
+    nb = F.b01_net_g()
+    md = ["## 7. BL-033 fixes", "",
+          "### 7.1 Hinge swell window vs B-18 (DECISION H-1)", "",
+          f"The BL-032 hinge window (x +/-115, z {hs['dropped_window_z'][0]:.0f}-{hs['dropped_window_z'][1]:.0f}) lay over "
+          f"the B-18 doubler (z {hs['b18_z'][0]:.0f}-{hs['b18_z'][1]:.0f}) for {hs['overlap_z_mm']:.0f} mm of its height: the "
+          "window cut B-01 out from under the HE box-X. **The hinge window and its swell B-13xh are deleted.** B-01 now has "
+          f"{nb['windows']} windows (IM1-IM3); B-18 overlaps none of them ({hs['b18_window_overlap_mm2']:.0f} mm2), the "
+          f"nearest starts {hs['nearest_window_above_b18_mm']:.0f} mm above its top edge.", "",
+          f"The hinge cleat now bears on B-18: it stands {hs['hinge']['top_mm']:.1f} mm from the stay centre against B-01's "
+          f"{hs['panel_offset_mm']:.0f} mm, so it lifts B-01 {hs['hinge']['push_mm']:.1f} mm "
+          f"({hs['hinge']['push_with_b18_mm']:.1f} mm with the {hs['b18_t_mm']:.1f} mm Hypalon) over z 51-69. The US2 cleat "
+          f"has carried the same {hs['us2']['push_mm']:.1f} mm with no swell since v3.1.", "",
+          f"Hinge load path (BL-010 A5, `loadpath_check`), factored {a5['factored_n']:.0f} N, verdict **{a5['verdict']}**, "
+          f"governs {a5['governs']} (ratio {a5['min']:.2f}):", "", "| Check | Demand | Capacity | Ratio |", "|---|---:|---:|---:|"]
+    for ck in a5["checks"]:
+        md.append(f"| {ck['item']} | {ck['demand_n']:.0f} | {ck['capacity']:.0f} | {ck['ratio']:.2f} |")
+    md += ["", "With the window gone the joint is built the way A5 checks it (box-X through eye plies + B-18 + B-01, "
+           "B-18's lower edge in the B-01 | B-05 seam). With the window it was not: B-01 was cut away under 40 of B-18's "
+           "45 mm.", ""]
+    if b22:
+        mv, d0 = b22["runs"]["moved"], b22["runs"]["drawn_149"]
+        md += ["### 7.2 B-22 at x +/-130.3 (port guy path, 15 in, meat, fine mesh)", "",
+               f"Run `{mv['run']}` (B-22 sim node x {mv['b22_node_x_mm']['R']} / {mv['b22_node_x_mm']['L']}, z "
+               f"{mv['b22_node_z_mm']['R']}: the nearest fine-mesh node on the drawn tab's row, 5 mm inboard of 130.3, "
+               f"ASSUMPTION B22-NODE) against `{d0['run']}` (x 149):", "",
+               "| | B-22 x 130.3 | B-22 x 149 | Limit |", "|---|---:|---:|---|",
+               f"| 15 in meat CG y mm | {mv['meat_cg_y_mm']} | {d0['meat_cg_y_mm']} | <= {b22['cg_target_mm']:.0f} |",
+               f"| 15 in fill CG y mm | {mv['fill_cg_y_mm']} | {d0['fill_cg_y_mm']} | - |",
+               f"| lifter gap min mm (crown strap + port guy outside) | {mv['lifter_gap_min_mm']} | {d0['lifter_gap_min_mm']} "
+               f"| >= {b22['min_clear_mm']:.0f} |",
+               f"| R-28 deg | {mv['r28_deg']} | {d0['r28_deg']} | >= {b22['r28_min_deg']:.0f} |",
+               f"| port guy 1 g N (max) | {mv['port_guy_1g_n']} | {d0['port_guy_1g_n']} | - |", "",
+               f"**{'PASS' if b22['pass'] else 'FAIL'}**: B-22 stays at x +/-{b22['placement']['x_mm']} (50 mm tab)"
+               + ("." if b22["pass"] else f"; use the fallback {b22['fallback']['tab_w']:.0f} mm tab at x "
+                                           f"+/-{b22['fallback']['x']:.0f}."), ""]
+    md += ["### 7.3 FP hip-reach pockets", "",
+           f"Face {fp['w']:.0f} mm (was {fp['team_a_w']:.0f}), mesh kept at {fp['w'] + fp['pleat']:.0f} mm: the two box "
+           f"pleats take {fp['pleat']:.0f} mm (2 x {fp['pleat'] / 2:.1f}). Plain rectangle on the gusset, inner edge "
+           f"{g['fp_min_margin_mm']} mm off the frame seam at its tightest (ASSUMPTION FP-CLEAR >= "
+           f"{g['fp_clear_req_mm']:.0f}). Capacity {fp['cap_L']} L by the mesh-arc model (ratio {fp['cap_ratio']}, "
+           "ASSUMPTION FP-ARC). Access check: `corrie_f_loadout.run('D2')`, see the BL-033 report.", "",
+           "### 7.4 Ledger fixes (adopted bag rows)", "",
+           "- 'attachment: B-01 swell patches' no longer in `adopted_bag_rows` (C2: the same swells as B-13x).",
+           f"- B-01 booked net of its {nb['windows']} windows: {nb['net_g']:.2f} g ({nb['full_g']:.2f} g less "
+           f"{nb['window_mm2']:.0f} mm2).",
+           f"- B-27: slit {gp['slit_mm']} mm on the fabric (z {gp['z_mm'][0]:.0f}-{gp['z_mm'][1]:.0f} = "
+           f"{gp['slit_dz_mm']:.0f} mm in height; the top setback Z-fold is in it); facing {gp['slit_mm'] + 2 * F.PORT_END:.1f}"
+           f" mm; row {gp['mass_g']} g.",
+           "- `corrie_f.build`: the door zip and the two band | blade seams are real pairs (blade U inner edge split at "
+           "z 650); no self-paired seam is left in D2.",
+           f"- US floor channels: B-16 x2, {g['us_channels']['width_mm']:.0f} x {F.F02_WH[0]:.0f} mm on F-02, centres "
+           f"{g['us_channels']['stations_mm'][0]:.0f} / {g['us_channels']['stations_mm'][1]:.0f} mm from the floor's frame "
+           "edge (the under-straps carry about 55 % of the floor vertical in bag-on; meat_haul_modes.md).",
+           f"- Lid hours: {F.crown_lid()['hours']} h booked (drafted B-29), was {F.crown_lid()['hours_bl029']} h.",
+           f"- H-1: hinge swells x2 removed ({next(r['g'] for r in F.parts() if r['name'].startswith('BL-033 H-1'))} g).", "",
+           "### 7.5 F-01 rain fly", "",
+           f"Spine F-01a + sides F-01b x2 in silpoly 40D, cut for the full rolled state (lid top z {g['fly']['lid_top_z']}): "
+           f"{g['fly']['area_m2']} m2 cut, {g['fly']['mass_B_g']} g; seams {g['fly']['seam_mm']} mm a side, 0 mm error; "
+           f"elastic channels {g['fly']['hem_mm']} mm, elastic {g['fly']['elastic_mm']} mm (75 %, ASSUMPTION). Ease, tuck "
+           "and wrap: corrie_f FLY_* ASSUMPTIONS, settled by the first fly.", ""]
+    return md
+
+
 def write_checks(rsP, rsB, rep, mc, rec, hours, path: Path):
     s = PR.summary(rsP)
     L = rsP.lid
-    md = [f"# {TITLE} pattern checks (BL-032 part A)", "",
+    md = [f"# {TITLE} pattern checks (BL-032 part A, BL-033 fixes)", "",
           f"Generated by `designs/pack_5200/patterns_corrie_f_rev3.py`. {s['piece_types']} piece types "
           f"({s['pieces_cut_all_fabric']} fabric / sheet pieces cut for the full build at crown kit M), "
           f"{s['webbing_lines']} webbing / cord lines.", "",
@@ -215,8 +290,9 @@ def write_checks(rsP, rsB, rep, mc, rec, hours, path: Path):
            f"channel line {L['channel_mm'][0]} mm on the flat against {L['channel_3d_mm']} mm over the 3D dome.", "",
            "## 6. Placement changes the pattern had to make", ""]
     md += [f"- {n}" for n in rsP.notes]
-    md += [f"- FP hip-reach pocket: 180 mm finished width does not fit the gusset depth over z 150-380 at every height; "
-           f"its inner edge is held 10 mm off the frame seam (up to {rsP.geo['fp_clamped_mm']} mm narrower there).", ""]
+    md += [f"- FP hip-reach pocket (BL-033): face {PR.F.fp_spec()['w']:.0f} mm, a plain rectangle; inner edge "
+           f"{rsP.geo['fp_min_margin_mm']} mm off the frame seam at its tightest (BL-032 clamped the 180 mm face).", ""]
+    md += bl033_section(rsP)
     path.write_text("\n".join(md) + "\n")
 
 
@@ -234,23 +310,30 @@ def make_screens(rsP, mkP, mk10, log=print):
 
     def nxt():
         n[0] += 1
-        return SCREENS / f"{DATE}_BL032_{n[0]}.png"
+        return SCREENS / f"{DATE}_{SHOT_TAG}_{n[0]}.png"
     shell = [rsP.pieces[k] for k in ("B-01", "B-03", "B-05", "B-02u", "B-02door", "B-02h", "B-06f", "B-06", "B-07")]
     shots.append(PVX.render_pieces(shell, f"{TITLE}: shell + door D2 + collar (primary fabrics, seam + cut lines, "
                                           "notches, windows, slits)", nxt()))
-    small = [rsP.pieces[k] for k in ("B-13x", "B-13xh", "B-12", "B-27f", "B-11", "B-17", "B-18", "B-22", "SH-07",
+    small = [rsP.pieces[k] for k in ("B-13x", "B-12", "B-27f", "B-11", "B-17", "B-18", "B-22", "SH-07",
                                      "SH-01b", "FP-a", "FP-b", "IMP4-a", "IMP4-b", "IMP8-a", "IMP8-b", "B-09c",
-                                     "B-09p", "F-02")]
+                                     "B-09p", "F-02", "B-16")]
     shots.append(PVX.render_pieces(small, f"{TITLE}: pockets, swells, ports, Hypalon tabs", nxt(), max_row=1400.0))
     lid = [rsP.pieces[k] for k in ("B-29a", "B-29b", "B-29c", "B-29d", "B-29e", "B-29f", "B-29g")]
     shots.append(PVX.render_pieces(lid, f"{TITLE}: B-29 crown lid (crown with 4 corner darts, base, zipped wall, "
                                         "camo caps, channels)", nxt(), max_row=1100.0))
+    fly = [rsP.pieces[k] for k in ("F-01a", "F-01b")]
+    shots.append(PVX.render_pieces(fly, f"{TITLE}: F-01 rain fly (spine over the lid + 2 sides), silpoly 40D", nxt(),
+                                   max_row=1400.0))
     b01 = rsP.pieces["B-01"]
     x0, y0, x1, y1 = b01.bounds()
     shots.append(PVX.render_closeup(b01, (x0 - 5, y0 + 0.55 * (y1 - y0), x1 + 5, y1 + 5),
                                     "Close-up B-01 top: B-27 guy port slits + facings, IM3 swell windows, creases",
                                     nxt(), fs=6))
-    for mid in ("cordura_330d_nylon66", "challenge_ultra_200", "polyester_ht_630d_printable"):
+    shots.append(PVX.render_closeup(b01, (x0 - 5, y0 - 5, x1 + 5, y0 + 0.32 * (y1 - y0)),
+                                    "Close-up B-01 bottom (BL-033 H-1): B-18 doublers clear, no hinge window; IM1 windows",
+                                    nxt(), fs=6))
+    for mid in ("cordura_330d_nylon66", "challenge_ultra_200", "polyester_ht_630d_printable",
+                "silicone_coated_poly_ripstop_40d"):
         mk = mkP.get(mid)
         if mk:
             shots.append(PVX.render_marker(mk, f"Marker 1 bag: {mid}, roll {mk.fabric_width_mm / 25.4:.0f} in, "
@@ -312,6 +395,7 @@ diamonds. Tape on the back, then check the test square again.
 - **Solid black inside a piece** = cut it out (swell windows, port slots, hose slots, guy port slits). Cut these first.
 - Label: ID, name, material, how many (L+R = one normal, one flipped), face up.
 - Marks that say **L only** / **R only** go on that side's gusset only (the gusset is one pattern cut as a pair).
+- BL-033: no hinge swell window in B-01 (B-18 doublers sit on whole fabric); B-16 under-strap channels on F-02.
 
 ## 5. Build order and what to print
 
@@ -329,6 +413,8 @@ diamonds. Tape on the back, then check the test square again.
 5. **Collar**: B-06f + B-06 + B-07 + HDPE strips; collar ring matched at every panel-corner V-notch.
 6. **Crown lid B-29**: darts, channels, zip between the aft strips, caps, then the two ring seams.
 7. **Straps** (`cutlist.md` webbing table): B-28 per crown kit, W1-W3 cut for carry, extenders, keepers.
+8. **Rain fly F-01**: spine to both sides (notch to notch, the top aft corner is a V-notch), flat-fell and seam-seal,
+   then the elastic channels. It packs into F-02.
 
 ## 6. Files
 

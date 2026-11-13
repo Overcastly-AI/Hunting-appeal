@@ -82,7 +82,9 @@ def test_ticket_steps_match_the_ticket_modules():
     imus, att = st["A_imus"]["base"], st["A_att"]["base"]
     assert imus == pytest.approx(-116.96, abs=0.05)                            # BL-014 S1 / DECISIONS BL-014 row
     assert att == pytest.approx(-103.0, abs=0.05)                              # attachment_diet.md REC
-    assert st["P_F"]["base"] == pytest.approx(wt["bag_side_g"] - wt["corrie_b2_bag_side_g"] + wings - imus - att,
+    patch = L.parts(L.CONFIGS[0], "M")                 # BL-033: C2 took the B.2 swell-patch row; P_F leaves it alone
+    patch = next(r["g"] for r in patch if r["name"] == "attachment: B-01 swell patches")
+    assert st["P_F"]["base"] == pytest.approx(wt["bag_side_g"] - wt["corrie_b2_bag_side_g"] + patch + wings - imus - att,
                                               abs=0.3)
     assert st["A_wings"]["base"] == pytest.approx(-wings, abs=0.05)
     assert st["A_fab"]["base"] == pytest.approx(wb["bag_side_g"] - wt["bag_side_g"], abs=0.3)

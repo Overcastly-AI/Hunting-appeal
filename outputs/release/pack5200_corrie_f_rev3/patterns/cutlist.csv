@@ -12,13 +12,12 @@ B-06,roll-top collar,robic_100d_ripstop,,1,,UP,0.37026,0.37026,2465.0,12,46.3
 B-07,roll-top hem,cordura_330d_nylon66,,1,,UP,0.10093,0.10093,2335.4,12,18.2
 B-07s,roll-top HDPE strip,hdpe_sheet,,2,,UP,0.0097,0.01939,1009.7,0,
 B-13x,"boxed fairlead swell, IM1-IM3 (with port)",challenge_ultra_200,,6,,UP,0.01352,0.08114,472.0,8,10.8
-B-13xh,"boxed fairlead swell, hinge (no port)",challenge_ultra_200,,2,,UP,0.01352,0.02705,472.0,8,3.6
 B-12,strap-port patch,tpu_coated_nylon_840d,,6,,UP,0.00239,0.01432,193.1,0,6.9
 B-17,IM3 bag-hook tab (trimmed),hypalon_coated_nylon,,2,,UP,0.00627,0.01254,309.6,0,12.5
 B-18,hinge-eye doubler,hypalon_coated_nylon,,2,,UP,0.00402,0.00804,259.6,0,8.0
 B-22,guy corner tab,hypalon_coated_nylon,,2,,UP,0.00297,0.00594,209.6,0,5.9
 B-11,lash tab,hypalon_coated_nylon,,8,,UP,0.00149,0.01189,153.1,0,11.9
-B-27f,guy port facing,challenge_ultra_200,,2,,UP,0.0085,0.017,440.0,0,2.3
+B-27f,guy port facing,challenge_ultra_200,,2,,UP,0.00881,0.01762,452.4,0,2.3
 B-09c,"hydration sleeve (folded tube, one side seam)",robic_100d_ripstop,,1,,UP,0.234,0.234,1940.0,10,29.2
 B-09p,"hose port binding (TPU-coated 840D, laser-cut, slot 12 x 40)",tpu_coated_nylon_840d,,2,,UP,0.0024,0.0048,200.0,0,2.3
 IMP4-a,door pocket face,robic_100d_ripstop,,1,,UP,0.06394,0.06394,1024.0,8,8.0
@@ -28,6 +27,7 @@ IMP8-b,"cam cup base (TPU-coated 840D, laser-cut)",tpu_coated_nylon_840d,,1,,UP,
 FP-a,hip-reach pocket body (power mesh),power_mesh_nylon_spandex,,2,,UP,0.0679,0.13579,1044.0,8,23.1
 FP-b,hip-reach pocket mouth band (camo),polyester_ht_630d_printable,,2,,UP,0.01132,0.02263,634.0,8,6.6
 F-02,fly base pocket,cordura_330d_nylon66,,1,,UP,0.0336,0.0336,740.0,10,6.0
+B-16,under-strap floor channel (US1 / US2),cordura_500d_nylon66,,2,,UP,0.01342,0.02684,562.0,default=12; left=15; right=15,6.8
 B-29a,crown lid: crown (4 corner darts),cordura_330d_nylon66,,1,,UP,0.10618,0.10618,1590.6,default=12; dart1a=10; dart1b=10; dart2a=10; dart2b=10; dart3a=10; dart3b=10; dart4a=10; dart4b=10,19.1
 B-29b,crown lid: base (lies on the roll),robic_100d_ripstop,,1,,UP,0.08046,0.08046,1064.6,12,10.1
 B-29c,crown lid: front wall run,cordura_330d_nylon66,,1,,UP,0.02933,0.02933,1194.5,12,5.3
@@ -35,6 +35,8 @@ B-29d,"crown lid: aft wall, upper (zip)",cordura_330d_nylon66,,1,,UP,0.01828,0.0
 B-29e,"crown lid: aft wall, lower (zip)",cordura_330d_nylon66,,1,,UP,0.01828,0.01828,1062.0,default=12; top=10,3.3
 B-29f,crown lid: camo corner cap (overlay),polyester_ht_630d_printable,,2,,UP,0.00725,0.0145,466.0,default=8; top=10; bottom=12,4.2
 B-29g,crown lid: strap channel,cordura_330d_nylon66,,2,,UP,0.01332,0.02663,670.9,default=8; bottom=12; top=12,4.8
+F-01a,"rain fly: spine (under-floor hem, aft face, roll, over the lid)",silicone_coated_poly_ripstop_40d,,1,,UP,0.56701,0.56701,3480.8,default=10; bottom=20; top=20,25.5
+F-01b,"rain fly: side panel (gusset, roll, lid)",silicone_coated_poly_ripstop_40d,,2,L+R,UP,0.27433,0.54866,2609.0,default=10; bottom=20; frame=20,24.7
 A1-a,glass pod back panel (hooks to 4 loops),cordura_330d_nylon66,,1,,UP,0.10066,0.10066,1364.0,8,18.1
 A1-b,glass pod sleeve face (2 box pleats at the base),robic_100d_ripstop,,1,,UP,0.15432,0.15432,1584.0,8,19.3
 A1-d,glass pod leading-edge bar (camo),polyester_ht_630d_printable,,1,,UP,0.01911,0.01911,1014.0,8,5.5

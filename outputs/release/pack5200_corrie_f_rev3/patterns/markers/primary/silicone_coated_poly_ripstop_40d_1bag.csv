@@ -1,2 +1,5 @@
 piece,size,unit,rotation_deg,mirrored,x_min_mm,y_min_mm,area_m2
-SWAP slab (sleep kit / meat liner) tube (sides + aft),,0,270.0,False,-0.0,25.5,0.38262
+"rain fly: spine (under-floor hem, aft face, roll, over the lid)",,0,270.0,False,-0.0,25.5,0.56701
+SWAP slab (sleep kit / meat liner) tube (sides + aft),,0,270.0,False,-0.0,481.5,0.38262
+"rain fly: side panel (gusset, roll, lid)",,0,270.0,False,-0.0,1015.0,0.27433
+"rain fly: side panel (gusset, roll, lid)",,0,270.0,True,679.0,469.0,0.27433

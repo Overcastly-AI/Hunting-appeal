@@ -1,4 +1,4 @@
-"""BL-032 part A: CORRIE F rev 3 production patterns (designs/pack_5200/patterns_corrie_f_rev3.py)."""
+"""BL-032 part A + BL-033 fixes: CORRIE F rev 3 production patterns (designs/pack_5200/patterns_corrie_f_rev3.py)."""
 import math
 import sys
 from pathlib import Path
@@ -44,8 +44,9 @@ def test_ledger_reconciles_one_to_one(rsB):
     assert rec["pieces_without_row"] == [] and rec["row_ids_not_drafted"] == []
     st = {o["status"] for o in rec["rows"]}
     assert st <= {"pattern", "webbing", "hardware", "removed", "not_drafted", "double_booked"}
-    nd = [o["row"] for o in rec["rows"] if o["status"] == "not_drafted"]
-    assert len(nd) == 3          # F-01 fly, its hem row, the US floor channels: reported, not hidden
+    nd = [o["row"] for o in rec["rows"] if o["status"] in ("not_drafted", "double_booked")]
+    assert nd == []              # BL-033: the fly, its hem, the US channels drafted; the swell-patch double booking gone
+    assert not any(r["name"] == "attachment: B-01 swell patches" for r in rows)
 
 
 def test_pattern_mass_within_3pct_of_ledger(rsB):
@@ -53,7 +54,9 @@ def test_pattern_mass_within_3pct_of_ledger(rsB):
     assert mc["ok"] and abs(mc["delta_pct"]) <= 3.0, mc
     rows = {r["row"][:6]: r for r in mc["rows"]}
     assert abs(rows["B-05 b"]["delta_g"]) < 0.05           # unchanged shell pieces weigh exactly what the ledger books
-    assert rows["B-01 f"]["delta_g"] < -4.0                # B-01 loses its eight swell windows (ledger books them)
+    assert abs(rows["B-01 f"]["delta_g"]) < 0.05           # BL-033: the ledger books B-01 net of its windows too
+    assert abs(rows["F-01 r"]["delta_g"]) < 0.05           # the fly is booked from its drafted pieces
+    assert abs(rows["US-cha"]["delta_g"]) < 0.05
 
 
 def test_fabric_maps_share_geometry(rsP, rsB):
@@ -81,7 +84,19 @@ def test_every_piece_is_marked(rsP):
 def test_b01_windows_slits_and_creases(rsP):
     b01 = rsP.pieces["B-01"]
     win = [ln for ln in b01.internal_lines if ln.kind == "cut_inside" and ln.closed]
-    assert len(win) == 8
+    assert len(win) == 6         # BL-033 H-1: IM1-IM3 only, no hinge window
+    # no window crosses a B-18 doubler (the hinge load path)
+    b18 = [ln for ln in b01.internal_lines if ln.kind == "placement" and ln.label.startswith("B-18")]
+    assert len(b18) == 2
+    for d in b18:
+        dx0, dx1 = min(x for x, _ in d.points), max(x for x, _ in d.points)
+        dy0, dy1 = min(y for _, y in d.points), max(y for _, y in d.points)
+        for w in win:
+            wx0, wx1 = min(x for x, _ in w.points), max(x for x, _ in w.points)
+            wy0, wy1 = min(y for _, y in w.points), max(y for _, y in w.points)
+            assert wx1 <= dx0 or wx0 >= dx1 or wy1 <= dy0 or wy0 >= dy1
+        assert min(wy0 for w in win for wy0 in [min(y for _, y in w.points)]) - dy1 > 50.0
+    assert "B-13xh" not in rsP.pieces and rsP.pieces["B-13x"].quantity == 6
     slits = [ln for ln in b01.internal_lines if ln.kind == "cut_inside" and not ln.closed]
     assert len(slits) == 2
     xs = sorted(round(ln.points[0][0]) for ln in slits)
@@ -128,6 +143,7 @@ def test_lid_hours_on_drafted_pattern(rsP):
     assert h["hours"] == pytest.approx(sum(r["hours"] for r in h["rows"]), abs=0.02)
     assert h["bl030_h"] == pytest.approx(8.94, abs=0.01) and h["bl029_booked_h"] == pytest.approx(7.76, abs=0.01)
     assert h["hours"] > h["bl030_h"]          # four darts, one cut piece fewer
+    assert h["booked_now_h"] == pytest.approx(h["hours"], abs=0.005)   # BL-033: corrie_f books the drafted hours
 
 
 def test_crown_straps_and_w3_per_kit(rsP):
@@ -155,3 +171,51 @@ def test_notch_pair_matches_positions():
     xb = sorted(round(k.x) for k in b.notches)
     assert xa == [100, 200] and xb == [100, 200]
     assert np.allclose([k.y for k in a.notches + b.notches], 0.0)
+
+
+# ---------------------------------------------------------------------------- BL-033
+def test_fp_pocket_165_face_fits_the_gusset(rsP):
+    fp = PR.F.fp_spec()
+    assert fp["w"] == 165.0 and fp["w"] + fp["pleat"] == pytest.approx(260.0)    # mesh kept, pleats take the 15 mm
+    assert rsP.pieces["FP-a"].edge_length("top") == pytest.approx(260.0)
+    assert rsP.geo["fp_min_margin_mm"] >= rsP.geo["fp_clear_req_mm"]          # plain rectangle, no clamp
+    assert rsP.geo["fp_clamped_mm"] == 0.0
+    G = rsP.pieces["B-03"]
+    fp_line = [ln for ln in G.internal_lines if ln.label.startswith("FP hip-reach")][0]
+    xs = sorted({round(x, 3) for x, _ in fp_line.points})
+    widths = [max(x for x, _ in fp_line.points) - min(x for x, _ in fp_line.points)]
+    assert widths[0] >= 165.0 - 1e-6 and len(xs) >= 2
+
+
+def test_rain_fly_drafted_and_sewn(rsP):
+    sp, sd = rsP.pieces["F-01a"], rsP.pieces["F-01b"]
+    assert sp.material_id == sd.material_id == "silicone_coated_poly_ripstop_40d"
+    assert sd.quantity == 2 and sd.mirror
+    rep = PR.seam_report(rsP)
+    fly = [r for r in rep.results if r.seam.name.startswith("F-01a spine")]
+    assert len(fly) == 2 and all(abs(r.error_mm) < 0.5 for r in fly)
+    g = rsP.geo["fly"]
+    # covers the full rolled state: the side panel reaches the lid wall top
+    assert g["lid_top_z"] > 1000.0 and g["seam_mm"] > 1200.0
+    # the fly fits one width of its roll (60 in silpoly, usable 1473 mm)
+    x0, y0, x1, y1 = sp.bounds()
+    assert min(x1 - x0, y1 - y0) < 1473.0
+    assert any(w["id"] == "F-EL" for w in rsP.webbing)
+
+
+def test_us_floor_channels(rsP):
+    b16 = rsP.pieces["B-16"]
+    assert b16.quantity == 2
+    f02 = rsP.pieces["F-02"]
+    ch = [ln for ln in f02.internal_lines if ln.label.startswith("B-16 channel")]
+    assert len(ch) == 4
+    x0, y0, x1, y1 = f02.bounds(cut=False)
+    for ln in ch:
+        for x, y in ln.points:
+            assert y0 < y < y1
+
+
+def test_b27_facing_on_the_fabric_slit(rsP):
+    gp = PR.F.guy_port()
+    assert gp["slit_mm"] == pytest.approx(156.2, abs=0.05)
+    assert rsP.pieces["B-27f"].edge_length("left") == pytest.approx(gp["slit_mm"] + 2 * PR.F.PORT_END, abs=0.05)

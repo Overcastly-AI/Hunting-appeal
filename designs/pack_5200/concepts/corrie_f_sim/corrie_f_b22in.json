@@ -1,0 +1,65 @@
+{
+ "placement": {
+  "z": 695.0,
+  "band_half_w_mm": 161.3,
+  "x_max_mm": 130.3,
+  "x_mm": 130.3,
+  "moved_mm": 18.7,
+  "tab_w_mm": 50.0,
+  "fits_at_want": false
+ },
+ "runs": {
+  "moved": {
+   "run": "F_PR15_fineFM_over_port_b22in",
+   "b22_node_x_mm": {
+    "R": 125.3,
+    "L": -124.7
+   },
+   "b22_node_z_mm": {
+    "R": 682.3,
+    "L": 682.2
+   },
+   "meat_cg_y_mm": 179.3,
+   "fill_cg_y_mm": 184.5,
+   "meat_converged": true,
+   "fill_converged": true,
+   "r28_deg": 34.0,
+   "lifter_gap_min_mm": 57.5,
+   "port_guy_1g_n": 54.3,
+   "im3_1g_n": 426.0
+  },
+  "drawn_149": {
+   "run": "F_PR15_fineFM_over_port",
+   "b22_node_x_mm": {
+    "R": 150.3,
+    "L": -149.7
+   },
+   "b22_node_z_mm": {
+    "R": 682.3,
+    "L": 682.2
+   },
+   "meat_cg_y_mm": 181.3,
+   "fill_cg_y_mm": 184.1,
+   "meat_converged": true,
+   "fill_converged": true,
+   "r28_deg": 34.0,
+   "lifter_gap_min_mm": 59.5,
+   "port_guy_1g_n": 51.3,
+   "im3_1g_n": 428.4
+  }
+ },
+ "cg_target_mm": 185.0,
+ "min_clear_mm": 10.0,
+ "r28_min_deg": 31.0,
+ "fallback": {
+  "x": 149.0,
+  "tab_w": 38.0
+ },
+ "acceptance": {
+  "cg_ok": true,
+  "lifter_ok": true,
+  "r28_ok": true
+ },
+ "pass": true,
+ "use_fallback": false
+}

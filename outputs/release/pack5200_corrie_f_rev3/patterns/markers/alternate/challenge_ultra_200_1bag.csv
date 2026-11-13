@@ -8,7 +8,7 @@ bottom (full S15 width),,0,270.0,False,-0.0,820.1,0.07685
 "boxed fairlead swell, IM1-IM3 (with port)",,0,270.0,False,187.0,961.1,0.01352
 "boxed fairlead swell, IM1-IM3 (with port)",,0,270.0,False,202.0,1102.1,0.01352
 "boxed fairlead swell, IM1-IM3 (with port)",,0,270.0,False,202.0,1243.1,0.01352
-"boxed fairlead swell, hinge (no port)",,0,270.0,False,288.0,820.1,0.01352
-"boxed fairlead swell, hinge (no port)",,0,270.0,False,288.0,961.1,0.01352
-guy port facing,,0,270.0,False,303.0,1102.1,0.0085
-guy port facing,,0,270.0,False,303.0,1155.1,0.0085
+under-strap floor channel (US1 / US2),,0,0.0,False,288.0,820.1,0.01342
+under-strap floor channel (US1 / US2),,0,0.0,False,288.0,884.1,0.01342
+guy port facing,,0,270.0,False,288.0,948.1,0.00881
+guy port facing,,0,270.0,False,288.0,1001.1,0.00881

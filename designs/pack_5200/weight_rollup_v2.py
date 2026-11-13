@@ -165,10 +165,12 @@ def wing_parts() -> list:
 
 def corrie_f_step(size: str, fabrics: str, step: str) -> list:
     """B.2 bag side out, CORRIE F (door D2) in (BL-011; carries BL-003 REC straps, BL-004 REC attachment, BL-010
-    hardware). The fairlead and swell rows CORRIE F inherits from the ledger stay in both, so C1/C2 apply once."""
+    hardware). The fairlead rows CORRIE F inherits from the ledger stay in both, so C1 applies once. BL-033: CORRIE F's
+    rows no longer carry the B-01 swell patches (C2 applied in corrie_f.attachment_rows), so the B.2 patch row C2 already
+    took out is not removed a second time here."""
     F = _F()
     out = [_r(r["system"], f"REMOVED (B.2): {r['name']}", -r["g"], r["cfg"], "corrie_f.corrie_b2_rows", step)
-           for r in F.corrie_b2_rows(size) if r["system"] in F.BAG_SIDE]
+           for r in F.corrie_b2_rows(size) if r["system"] in F.BAG_SIDE and r["name"] != "attachment: B-01 swell patches"]
     out += [_r(r["system"], f"CORRIE F: {r['name']}", r["g"], r["cfg"], r["source"], step)
             for r in F.parts(size, "D2", fabrics)]
     return out

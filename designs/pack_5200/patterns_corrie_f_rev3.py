@@ -64,17 +64,18 @@ KIT = F.CROWN_KIT_DEFAULT  # "M": the ledger's crown kit
 
 # fairlead swells: (crest z, lower, upper) = patterns_v31.SWELLS (hinge pushed up 5 mm over the floor seam; IM3 tip
 # 8 mm under the z 560 crease); window 50 wide (patterns_v31.SWELL_W) centred on the stay x (bag_concepts.STAY_X)
-SWELLS = {"hinge": (62.0, 22.0, 68.0), "im1": (190.0, 45.0, 45.0), "im2": (330.0, 45.0, 45.0), "im3": (520.0, 58.0, 32.0)}
-SWELL_W = 50.0
+# BL-033 DECISION H-1 (corrie_f.SWELL_WINDOWS): no hinge window, it lay over the B-18 doubler (the hinge load path)
+SWELLS = F.SWELL_WINDOWS
+SWELL_W = F.SWELL_W
 STAY_X = BC.STAY_X
 B12 = (40.0, 60.0, 12.0, 45.0)   # panels.yaml B-12 40 x 60; slot 12 x 45 (ledger row "slot 45 x 12 mm")
 B17 = (90.0, 70.0)               # BL-004 REC "B-17 trimmed 110 -> 70 mm tall" (corrie_f_body.md section 9.7: 90 x 70)
 B17_Z = 420.0                    # ASSUMPTION B17-Z: the trimmed 70 mm tab sits z 385-455, its top 7 mm under the IM3
 #                                  swell window (z 462): the 110 mm tab centred z 450 overlapped that window by 43 mm.
 #                                  T3 box-X at the tab centre, z 420; settled by the PT-2 swatch pull
-B22_XZ = (149.0, 695.0)          # corrie_body.md section 4 B-02h row / guy_geometry: B-22 at x +/-149, z 695
-B22_WH = (50.0, 60.0)            # attach_system.drawing_pieces B-22 50 x 60
-B22_EDGE_CLEAR = 6.0             # ASSUMPTION: tab edge >= 6 mm inside the hinge band | blade seam line (presser foot)
+B22_XZ = F.B22_DRAWN              # corrie_body.md section 4 B-02h row / guy_geometry: B-22 at x +/-149, z 695
+B22_WH = (F.B22_W, 60.0)          # attach_system.drawing_pieces B-22 50 x 60
+B22_EDGE_CLEAR = F.B22_EDGE_CLEAR  # ASSUMPTION (corrie_f): tab edge >= 6 mm inside the hinge band | blade seam line
 B28_TAB_Z = F.CROWN_FRONT_Z      # 700: front crown-strap tab on the hinge band at x +/-CROWN_X
 PORT_LAP_IN = 30.0               # ASSUMPTION: the 50 mm facing sits 30 mm inboard / 20 mm outboard of the slit (the
 #                                  20 mm lap of corrie_f.guy_port); settled by the port mock-up (hose test)
@@ -354,11 +355,14 @@ def build_shell(rs: RevSet, c):
     for z in (F.TRIPOD_KEEPER_Z,):
         G.add_notch(gf(z), sig(z), "v", "B-26 keeper (R only)")
         G.add_notch(ga(z), sig(z), "v", "B-26 keeper (R only)")
-    E_ = F._A()
-    fpw = E_.FP["w"]
+    fpw = F.fp_spec()["w"]               # BL-033: 165 mm face (corrie_f.FP_FACE_W)
     zs = np.linspace(*FP_Z, 12)
-    inn = [max(ga(z) - fpw, gf(z) + 10.0) for z in zs]
-    rs.geo["fp_clamped_mm"] = round(max(fpw - (ga(z) - gf(z) - 10.0) for z in zs), 1)
+    inn = [ga(z) - fpw for z in zs]      # BL-033: a plain 165 mm face, no clamp (BL-032 clamped the 180 mm face)
+    rs.geo["fp_min_margin_mm"] = round(min(ga(z) - gf(z) - fpw for z in zs), 1)   # face inner edge to the frame seam
+    # ASSUMPTION FP-CLEAR: >= 9 mm between the pocket's inner edge stitch and the B-01 | gusset seam line (presser foot
+    # 6 mm + 3 mm); BL-032 held 10 mm. Settled by sewing FP-L on the first gusset.
+    rs.geo["fp_clear_req_mm"] = 9.0
+    rs.geo["fp_clamped_mm"] = 0.0         # kept for readers of BL-032's key (mfg_corrie_f_rev3): nothing is clamped now
     G.add_internal_line([(ga(z), sig(z)) for z in zs] + [(x, sig(z)) for x, z in zip(inn[::-1], zs[::-1])], "placement",
                         "FP hip-reach pocket (both gussets)", closed=True)
     G.add_drill_hole(ga(FP_Z[0]) - 3, sig(FP_Z[0]) + 3, 3.0, "FP corner")
@@ -372,10 +376,10 @@ def build_shell(rs: RevSet, c):
                         "SH-01b kick band top")
     # ---- D2 face marks
     S, A, inner_f = M["S"], M["A"], M["inner"]
-    hb_w = inner_f(B22_XZ[1])
-    x22 = min(B22_XZ[0], hb_w - B22_EDGE_CLEAR - B22_WH[0] / 2)
-    rs.geo["b22"] = {"drawn_x": round(B22_XZ[0], 1), "band_half_w_at_z": round(hb_w, 1), "placed_x": round(x22, 1),
-                     "moved_mm": round(B22_XZ[0] - x22, 1)}
+    pl = F.b22_placement(c)              # BL-033: one source with the sim route (corrie_f.over_port_b22in)
+    x22 = pl["x_mm"]
+    rs.geo["b22"] = {"drawn_x": round(B22_XZ[0], 1), "band_half_w_at_z": pl["band_half_w_mm"], "placed_x": x22,
+                     "moved_mm": pl["moved_mm"]}
     for sx in (-1, 1):
         HB.add_internal_line(_rect(sx * x22 - B22_WH[0] / 2, S(B22_XZ[1]) - B22_WH[1] / 2, sx * x22 + B22_WH[0] / 2,
                                    S(B22_XZ[1]) + B22_WH[1] / 2), "placement", "B-22 guy anchor (INSIDE)", closed=True)
@@ -421,12 +425,8 @@ def build_hardpoints(rs: RevSet, fabrics: str):
     sw.add_internal_line(_rect(W_ / 2 - 22.5, H_ / 2 - 6, W_ / 2 + 22.5, H_ / 2 + 6), "cut_inside",
                          "port slot 45 x 12 (cut with B-12 on)", closed=True)
     sw.labels["note"] = "sew INSIDE B-01 over the IM1/IM2/IM3 windows; B-12 patch on the crest first"
-    swh = BC.boxed_swell(qty=2)
-    swh.piece_id, swh.name = "B-13xh", "boxed fairlead swell, hinge (no port)"
-    _swell_marks(swh, W_, H_)
-    swh.labels["note"] = "sew INSIDE B-01 over the two hinge windows"
+    # BL-033 H-1: no hinge swell (B-13xh): the hinge cleat bears on the B-18 doubler
     rs.add(sw, "attachment", "6 swells + ports")
-    rs.add(swh, "attachment", "6 swells + ports")
     w, h, sw_, sh_ = B12
     b12 = rect_panel("strap-port patch", w, h, 4.0, seam_allowance_mm=SA_LASER, material_id="tpu_coated_nylon_840d",
                      quantity=6, piece_id="B-12", labels={"note": "laser-cut; on the swell crest (outside), slot through "
@@ -456,7 +456,7 @@ def build_hardpoints(rs: RevSet, fabrics: str):
     b11.add_internal_line([(3, 3), (27, 3), (27, 22), (3, 22)], "stitch", "sew-down box", closed=True)
     rs.add(b11, "attachment", "7 Hypalon + webbing parts")
     # B-27 facing: 50 x (slit + 2 x 10 mm), B-01 fabric
-    h27 = F.PORT_Z[1] - F.PORT_Z[0] + 2 * F.PORT_END
+    h27 = F.guy_port()["slit_mm"] + 2 * F.PORT_END     # BL-033: the slit on the fabric (156.2), not the 150 mm dz
     b27 = rect_panel("guy port facing", F.PORT_FACING_W, h27, 0.0, seam_allowance_mm=SA_LASER,
                      material_id=_b01_mat(rs), quantity=2, piece_id="B-27f",
                      labels={"note": "B-01 fabric, hot-cut edges (laminate does not fray); INSIDE B-01 under the slit"})
@@ -493,8 +493,7 @@ def build_pockets(rs: RevSet, c, fabrics: str):
             for e in q.edge_names:
                 q.add_notch_on_edge(e, 0.5, kind="v", label="CL")
             rs.add(q, "pockets", step, notes=bp[pid_]["name"])
-    E_ = F._A()
-    FP = E_.FP
+    FP = F.fp_spec()                      # BL-033: 165 mm face
     W_, H_ = FP["w"] + FP["pleat"], FP["h"]
     fpa = rect_panel("hip-reach pocket body (power mesh)", W_, H_, 0.0, seam_allowance_mm=SA_FLAT,
                      material_id="power_mesh_nylon_spandex", quantity=2, piece_id="FP-a", grain=90.0,
@@ -506,7 +505,7 @@ def build_pockets(rs: RevSet, c, fabrics: str):
         fpa.add_notch(xc - pl, 0, "slit", "pleat")
         fpa.add_notch(xc + pl, 0, "slit", "pleat")
         fpa.add_notch(xc, 0, "v", "pleat CL")
-    rs.add(fpa, "pockets", "3 pockets", notes="corrie_f.hip_reach_pockets FP-L / FP-R")
+    rs.add(fpa, "pockets", "3 pockets", notes=f"corrie_f.hip_reach_pockets FP-L / FP-R ({FP['w']:.0f} mm face)")
     fpb = rect_panel("hip-reach pocket mouth band (camo)", W_, 25.0, 0.0, seam_allowance_mm=SA_FLAT,
                      material_id=F.CAMO, quantity=2, piece_id="FP-b",
                      labels={"note": "shock-cord channel; fold on the line, cord inside"})
@@ -519,6 +518,21 @@ def build_pockets(rs: RevSet, c, fabrics: str):
                      material_id="cordura_330d_nylon66", piece_id="F-02",
                      labels={"note": "under B-05, #5 coil zip on the floor's aft edge (panels.yaml F-02)"})
     rs.add(f02, "pockets", "3 pockets")
+    # BL-033: US1/US2 floor channels B-16 on F-02's outer face (corrie_f.us_channels), across the pocket
+    uc = F.us_channels(c, fabrics)
+    b16 = uc["piece"]
+    b16.labels["note"] = "ends turned 15 mm and left OPEN (the 25 mm under-strap passes through); topstitch both long edges"
+    rs.add(b16, "pockets", "3 pockets", notes="corrie_f.us_channels")
+    W2, H2 = F.F02_WH
+    for k, st in enumerate(uc["stations_mm"]):
+        # F-02: y 0 = its aft (zip) edge, y H2 = its frame-side edge; ASSUMPTION F02-CENTRE: the pocket is centred on the
+        # floor depth, so its frame-side edge is (d0 - H2) / 2 from the floor's frame edge
+        yc = H2 - (st - (uc["floor_depth_mm"] - H2) / 2)
+        for d in (-uc["width_mm"] / 2, uc["width_mm"] / 2):
+            f02.add_internal_line([(0.0, yc + d), (W2, yc + d)], "stitch", f"B-16 channel {'US1' if k == 0 else 'US2'} edge")
+        f02.add_notch(0.0, yc, "v", f"B-16 {'US1' if k == 0 else 'US2'} CL")
+        f02.add_notch(W2, yc, "v", f"B-16 {'US1' if k == 0 else 'US2'} CL")
+    rs.geo["us_channels"] = {"stations_mm": uc["stations_mm"], "width_mm": uc["width_mm"]}
 
 
 ADDON_TODAY = {F.UG: F.fab("body", "today"), F.R70: F.fab("collar", "today")}
@@ -774,9 +788,13 @@ def build_lid(rs: RevSet, fabrics: str):
     return L
 
 
-def lid_hours(rs: RevSet) -> dict:
+def lid_hours_ops(rs: RevSet | None = None) -> dict:
     """BL-030's seam list (corrie_f.lid_seam_list) re-run on the DRAFTED B-29: lengths and counts from the pieces,
-    the same bag_concepts.HOURS rates. Adds the four crown darts the drafted dome needs (HOURS 'dart')."""
+    the same bag_concepts.HOURS rates. Adds the four crown darts the drafted dome needs (HOURS 'dart'). With no RevSet
+    the lid alone is drafted (corrie_f.lid_hours_drafted books this total)."""
+    if rs is None:
+        rs = RevSet(fabrics="B")
+        build_lid(rs, "B")
     H = BC.HOURS
     p = {k: rs.pieces[k] for k in ("B-29a", "B-29b", "B-29c", "B-29d", "B-29e", "B-29f", "B-29g")}
     ncut = sum(q.quantity for q in p.values())
@@ -802,11 +820,17 @@ def lid_hours(rs: RevSet) -> dict:
         ("wall | base: closed ring handling", 1, H["ring"]),
     ]
     rows = [{"op": n, "qty": round(q, 3), "rate_h": r, "hours": round(q * r, 2)} for n, q, r in ops]
-    tot = round(sum(q * r for _, q, r in ops), 2)
+    return {"rows": rows, "hours": round(sum(q * r for _, q, r in ops), 2), "pieces_cut": ncut}
+
+
+def lid_hours(rs: RevSet) -> dict:
+    """``lid_hours_ops`` against BL-030's seam-list estimate and BL-029's one-line estimate."""
+    o = lid_hours_ops(rs)
     sl = F.lid_seam_list()
-    return {"rows": rows, "hours": tot, "pieces_cut": ncut, "bl030_h": sl["hours"], "bl029_booked_h": sl["bl029_estimate_h"],
+    tot = o["hours"]
+    return {**o, "bl030_h": sl["hours"], "bl029_booked_h": sl["bl029_estimate_h"],
             "delta_vs_bl030_h": round(tot - sl["hours"], 2), "delta_vs_booked_h": round(tot - sl["bl029_estimate_h"], 2),
-            "bl030_pieces": sl["pieces"]}
+            "booked_now_h": F.crown_lid()["hours"], "bl030_pieces": sl["pieces"]}
 
 
 # ============================================================================ webbing (hot-knife pieces)
@@ -934,7 +958,7 @@ def build_webbing(rs: RevSet, c):
                        "material_id": "shock_cord_3mm", "length_mm": tk["cut_mm"], "qty": 1, "kit": "base",
                        "source": "corrie_f.tripod_keeper"})
     rs.webbing.append({"id": "FP-cord", "use": "FP mouth shock cord", "material_id": "shock_cord_3mm",
-                       "length_mm": F._A().FP["w"] + F._A().FP["pleat"] + 60.0, "qty": 2, "kit": "base",
+                       "length_mm": F.fp_spec()["w"] + F.fp_spec()["pleat"] + 60.0, "qty": 2, "kit": "base",
                        "source": "corrie_f.hip_reach_pockets (w + pleat + 60)"})
     rs.webbing.append({"id": "E5-cord", "use": "pole quiver grip cord", "material_id": "shock_cord_3mm",
                        "length_mm": F._A().POLE["cord_m"] * 1000.0, "qty": 1, "kit": "base", "source": "evolve.POLE"})
@@ -957,6 +981,41 @@ def build_webbing(rs: RevSet, c):
     ]
 
 
+# ============================================================================ F-01 rain fly (BL-033)
+def build_fly(rs: RevSet, c):
+    """F-01a spine + F-01b sides (corrie_f.fly_pieces), seam notches every 50 mm and at the top aft corner, hem fold
+    lines, tether grommet; the elastic as a cut line (F-EL)."""
+    fp = F.fly_pieces(c)
+    sp, sd = fp["pieces"]
+    sp.labels["note"] = "silpoly: seams 301 then flat-felled + seam-sealed; 20 mm elastic channel hems top + bottom"
+    sd.labels["note"] = "cut 1 pair (mirror); 20 mm elastic channel hems on the bottom and frame edges"
+    for p in (sp, sd):
+        rs.add(p, "fly", "14 rain fly", kit="as_hunted", notes="corrie_f.fly_pieces")
+    rs.seams += fp["seams"]
+    g = fp["geo"]
+    R = g["spine_R"]
+    notch_pair([(sp, sp.edge_points("right"))], [(sd, sd.edge_points("aft")), (sd, sd.edge_points("top"))], "fly seam R",
+               pitch=100.0)
+    for n in list(sp.notches):          # the L seam: the spine is symmetric, F-01b is cut as a mirrored pair
+        sp.add_notch(-n.x, n.y, n.kind, n.label.replace(" R", " L"))
+    # tuck line, collar line and lid-wall line across the spine (fold / placement marks)
+    for y, lab in ((F.FLY_TUCK, "floor edge (tuck below)"), (g["y_end"] - g["top_mm"], "lid aft edge")):
+        xr = float(np.interp(y, [q[1] for q in R], [q[0] for q in R]))
+        sp.add_internal_line([(-xr, y), (xr, y)], "fold", lab)
+    sp.add_drill_hole(0.0, F.FLY_TUCK / 2, 5.0, "tether grommet (cord to F-02)")
+    for p, e in ((sp, "bottom"), (sp, "top"), (sd, "bottom"), (sd, "frame")):
+        pts = p.edge_points(e)
+        p.add_internal_line(pts, "fold", "hem: turn 20 mm, 6 mm elastic in the channel")
+    _dedupe_notches(sp)
+    _dedupe_notches(sd)
+    rs.webbing.append({"id": "F-EL", "use": "fly hem elastic, 6 mm (spine top + bottom, sides bottom + frame)",
+                       "material_id": "elastic_6mm (no record: ASSUMPTION)", "length_mm": round(fp["elastic_m"] * 1000.0),
+                       "qty": 1, "kit": "as_hunted", "source": "corrie_f.fly_pieces (FLY_ELASTIC_RATIO x hem channels)"})
+    rs.geo["fly"] = {"area_m2": round(fp["area_m2"], 3), "mass_B_g": round(fp["mass_g"], 1), "hem_mm": round(fp["hem_mm"]),
+                     "elastic_mm": round(fp["elastic_m"] * 1000.0), "lid_top_z": round(g["lid_top_z"], 1),
+                     "seam_mm": round(g["seam_mm"], 1), "state": g["state"]}
+
+
 # ============================================================================ build + checks
 def build(fabrics: str = "today", addons: bool = True) -> RevSet:
     rs = RevSet(fabrics=fabrics)
@@ -967,6 +1026,7 @@ def build(fabrics: str = "today", addons: bool = True) -> RevSet:
         build_pockets(rs, c, fabrics)
         build_lid(rs, fabrics)
         build_webbing(rs, c)
+        build_fly(rs, c)
         if addons:
             build_addons(rs)
     for p in rs.pieces.values():
@@ -980,7 +1040,8 @@ def build(fabrics: str = "today", addons: bool = True) -> RevSet:
     rs.notes += [
         f"B-22: the drawn x +/-{B22_XZ[0]:.0f} puts the 50 mm tab over the hinge band | blade seam (band half width "
         f"{rs.geo['b22']['band_half_w_at_z']} mm at z {B22_XZ[1]:.0f}); placed at x +/-{rs.geo['b22']['placed_x']} "
-        f"({rs.geo['b22']['moved_mm']} mm inboard, ASSUMPTION B22-IN). Pack-designer to confirm the guy geometry.",
+        f"({rs.geo['b22']['moved_mm']} mm inboard, ASSUMPTION B22-IN). BL-033 confirmed it on the 15 in fine run "
+        "(section 7.2).",
     ]
     return rs
 
@@ -1023,14 +1084,14 @@ RECON = [
     ("add-on meat_liner", "pattern", ["MS-a", "MS-b", "MS-c", "MS-s"], [], "add-on (meat trip)"),
     ("add-on crown_lid", "pattern", ["B-29a", "B-29b", "B-29c", "B-29d", "B-29e", "B-29f", "B-29g"], [], "+ #5 zip"),
     ("add-on crown_straps", "webbing", [], ["B-28", "B-28t", "K-28"], "+ locks, toggles"),
-    ("F-01 rain fly", "not_drafted", [], [], "not in the BL-032 part A list; the fly re-cut is its own draft (RD)"),
+    ("F-01 rain fly", "pattern", ["F-01a", "F-01b"], [], "drafted by BL-033"),
     ("F-02 fly base pocket", "pattern", ["F-02"], [], ""),
-    ("rain fly: fly elastic hem", "not_drafted", [], [], "goes with F-01"),
+    ("rain fly: fly elastic hem", "webbing", [], ["F-EL"], "+ #5 zip, slider, tether"),
     ("IM-web:", "webbing", [], ["IM1", "IM2", "IM3"], ""), ("IM-eyes:", "webbing", [], ["IME"], ""),
     ("IM-hooks:", "hardware", [], [], ""), ("IM-cams:", "hardware", [], [], ""),
     ("B-12:", "pattern", ["B-12"], [], ""), ("US-anchor:", "hardware", [], [], "frame side"),
     ("US-cams:", "hardware", [], [], ""), ("US-tg:", "hardware", [], [], ""), ("US-web:", "webbing", [], ["US"], ""),
-    ("US-chan:", "not_drafted", [], [], "no geometry in any CORRIE F source (v31 drew 50 mm channels on B-05)"),
+    ("US-chan:", "pattern", ["B-16"], [], "drafted by BL-033 (corrie_f.us_channels)"),
     ("B-24-web:", "webbing", [], ["B-24"], ""), ("B-24-hooks:", "hardware", [], [], ""),
     ("B-24-thr:", "hardware", [], [], "thread"),
     ("W-web:", "webbing", [], ["W1", "W2", "W3"], "with A-2 and BL-031 rows"),
@@ -1042,7 +1103,6 @@ RECON = [
     ("attachment: 7075 pins", "hardware", [], [], ""), ("attachment: UHMWPE sleeves", "hardware", [], [], ""),
     ("attachment: bag hooks, 38 mm", "hardware", [], [], ""), ("attachment: TPU hook sleeves", "hardware", [], [], ""),
     ("attachment: webbing eyes", "webbing", [], ["HE"], ""), ("attachment: bag-side straps", "webbing", [], ["T3"], ""),
-    ("attachment: B-01 swell patches", "double_booked", [], [], "ledger correction C2: CORRIE's B-13x is the swell"),
     ("attachment: elastic keepers", "hardware", [], [], "IM2 hook keepers (removed below) + misc"),
     ("attachment: lifter tri-glide keepers", "hardware", [], [], "harness side"),
     ("attachment system: crown hood B-19", "removed", [], [], "BL-004 REC removes it"),
@@ -1058,7 +1118,8 @@ RECON = [
     ("attachment system: IM2 tongue backings B-23", "removed", [], [], "BL-004 REC"),
     ("attachment system: bag hooks 1500", "hardware", [], [], ""),
     ("attachment system: thread", "hardware", [], [], ""),
-    ("B-13x boxed fairlead swell", "pattern", ["B-13x", "B-13xh"], [], "6 with port + 2 hinge"),
+    ("B-13x boxed fairlead swell", "pattern", ["B-13x"], [], "6 with port (the 2 hinge swells: next row)"),
+    ("BL-033 H-1: hinge swells", "removed", [], [], "no hinge window (B-18 is the hinge load path)"),
     ("BL-004 REC: IM2 bag hooks", "removed", [], [], ""), ("BL-004 REC: IM2 TPU hook sleeves", "removed", [], [], ""),
     ("BL-004 REC: T2 tongues", "removed", [], [], ""), ("BL-004 REC: B-23", "removed", [], [], ""),
     ("BL-004 REC: elastic keepers for the IM2", "removed", [], [], ""),
@@ -1116,8 +1177,7 @@ def fabric_component_g(name: str, g: float, fabrics: str = "B") -> float | None:
             bp = {d["id"]: d for d in CO.bag_pockets(c, spec="B.2")}
         return bp[name.split()[0]]["fabric_g"]
     if name.startswith("FP-L/R"):
-        E_ = F._A()
-        FP = E_.FP
+        FP = F.fp_spec()
         mesh = 2 * (FP["w"] + FP["pleat"] + 2 * SA_FLAT) * (FP["h"] + 2 * SA_FLAT) * 1e-6 * F._gsm(F.MESH)
         band = 2 * (FP["w"] + FP["pleat"] + 2 * SA_FLAT) * (25.0 + 2 * SA_FLAT) * 1e-6 * F._gsm(F.CAMO)
         return mesh + band
@@ -1148,13 +1208,18 @@ def mass_check(rs_B: RevSet, rows=None, tol_pct: float = 3.0) -> dict:
             continue
         if o["row"].startswith("BL-004 REC: B-17 trimmed"):
             continue                                    # B-17 is weighed once, against both of its rows (below)
+        if o["row"].startswith("B-13x boxed fairlead swell"):
+            lf_h1 = next(r["ledger_g"] for r in rec["rows"] if r["row"].startswith("BL-033 H-1: hinge swells"))
+        else:
+            lf_h1 = 0.0
         pm = sum(pattern_mass_g(rs_B.pieces[i]) for i in o["pieces"])
         lf = fabric_component_g(o["row"], o["ledger_g"])
         if o["row"].startswith("bag-side load spreaders"):
             trim = next(r for r in rec["rows"] if r["row"].startswith("BL-004 REC: B-17 trimmed"))
             lf += trim["ledger_g"]
+        lf += lf_h1                                     # B-13x: x8 row + the H-1 removal row (6 drawn)
         if o["row"].startswith("BL-028 rev 2: B-27"):
-            pm += 2 * 2 * F.PORT_TURN * (F.PORT_Z[1] - F.PORT_Z[0]) * 1e-6 * F._gsm(rs_B.pieces["B-01"].material_id)
+            pm += 2 * 2 * F.PORT_TURN * F.guy_port()["slit_mm"] * 1e-6 * F._gsm(rs_B.pieces["B-01"].material_id)
         res.append({"row": o["row"][:70], "pieces": o["pieces"], "pattern_g": round(pm, 2), "ledger_fabric_g": round(lf, 2),
                     "delta_g": round(pm - lf, 2), "delta_pct": round(100 * (pm - lf) / lf, 1) if lf else None})
         tp += pm

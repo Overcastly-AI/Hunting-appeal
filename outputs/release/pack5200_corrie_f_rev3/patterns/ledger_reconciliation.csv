@@ -1,7 +1,7 @@
 ledger_row,system,cfg,ledger_g,status,pieces,webbing,note
 "B-11 lash tabs (Hypalon, bow riser + muzzle keepers), released",bag_shell,base,12.0,pattern,B-11,,
 main bag: bow riser carry: 2 x 25 mm webbing loops through B-11 + 25 mm G-hook strap (owner freeze 2026-11-05),bag_shell,base,12.1,webbing,,BRL BRS,G-hook in the row
-"B-01 frame-side panel (flat, Z-fold setback) (challenge_ultra_200)",bag_shell,base,40.96,pattern,B-01,,
+"B-01 frame-side panel (flat, Z-fold setback) (challenge_ultra_200), net of 6 swell windows",bag_shell,base,37.36,pattern,B-01,,
 "B-03 side gusset (ultragrid_210d_uhmwpe_ripstop, x2)",bag_shell,base,42.14,pattern,B-03,,
 B-05 bottom (full S15 width) (challenge_ultra_200),bag_shell,base,10.22,pattern,B-05,,
 "B-02u D2 camo blade U (blades + 75 mm kick strip, one piece) (polyester_ht_630d_printable)",bag_shell,base,31.96,pattern,B-02u,,
@@ -19,15 +19,15 @@ door: 2 cord pulls (3 mm Dyneema + rubber sleeve),bag_shell,base,3.0,hardware,,,
 IMP-2 hydration sleeve (CORRIE IMP-2 geometry) in 70D,bag_pockets,base,32.6,pattern,B-09c B-09p,I2T I2K,+ hardware in the row
 "IMP-4 IMP-4 zipped kill-kit / first-aid pocket, inside the D2 door",bag_pockets,base,22.0,pattern,IMP4-a IMP4-b,,+ #5 zip
 "IMP-8 IMP-8 bow cam / limb cup, right gusset foot (z 35-150)",bag_pockets,base,7.5,pattern,IMP8-a IMP8-b,,
-"FP-L/R hip-reach pockets FP-L / FP-R (team A E-4): power mesh 260 x 230, 2 box pleats, shock-cord top in a 25 mm camo mouth band, sewn to each gusset's lower front corner (z 150-380)",bag_pockets,base,33.5,pattern,FP-a FP-b,FP-cord,
+"FP-L/R hip-reach pockets FP-L / FP-R (team A E-4): power mesh 260 x 230 (165 mm face), 2 box pleats, shock-cord top in a 25 mm camo mouth band, sewn to each gusset's lower front corner (z 150-380)",bag_pockets,base,33.5,pattern,FP-a FP-b,FP-cord,
 E-5 pole quiver: 40 mm boot in FP-R's front pleat + 3 mm shock-cord grip loop and cord lock on a 25 mm tab caught in the right B-01 | gusset seam at z 640,bag_pockets,base,5.4,webbing,,E5 E5-cord,+ cord lock
 "add-on scope_pod: scope pod (team B glass pod), left gusset",bag_pockets,as_hunted,83.7,pattern,A1-a A1-b A1-d,,add-on (as hunted)
 "add-on meat_liner: meat liner (team D SWAP slab, wipeable silpoly / 70D, 330 x 110 x 560)",bag_pockets,meat_trip,61.7,pattern,MS-a MS-b MS-c MS-s,,add-on (meat trip)
 "add-on crown_lid: B-29 crown lid 5.0 L (350 x 210 x 85 mm, domed, camo corner caps, #5 coil zip)",pouch,as_hunted,45.9,pattern,B-29a B-29b B-29c B-29d B-29e B-29f B-29g,,+ #5 zip
 "add-on crown_straps: B-28 crown straps (2), kit M: 25 mm 0.967 m, heavy ladder lock at each end (B-25 toggle tab, hinge-band tab), 2 tail keepers each",straps_compression,as_hunted,77.69,webbing,,B-28 B-28t K-28,"+ locks, toggles"
-F-01 rain fly re-cut to CORRIE F's outer shell,fly,as_hunted,55.06,not_drafted,,,not in the BL-032 part A list; the fly re-cut is its own draft (RD)
+"F-01 rain fly, drafted for CORRIE F rev 3 (spine F-01a + sides F-01b x2, 1.116 m2 cut)",fly,as_hunted,50.21,pattern,F-01a F-01b,,drafted by BL-033
 F-02 fly base pocket (stays on the bag),fly,base,5.9,pattern,F-02,,
-"rain fly: fly elastic hem 3.0 m, #5 pocket zip + slider, tether",fly,as_hunted,15.8,not_drafted,,,goes with F-01
+"rain fly: fly elastic hem 2.44 m (drafted), #5 pocket zip + slider, tether",fly,as_hunted,14.11,webbing,,F-EL,"+ #5 zip, slider, tether"
 "IM-web: IM1-IM3 straps, 25 mm webbing (same cuts; left end a sewn loop, girth-hitched on the left fairlead eye)",straps_meat,base,55.73,webbing,,IM1 IM2 IM3,
 "IM-eyes: 6 fairlead eyes (old stubs), 38 mm webbing 6 x 0.20 m",straps_meat,base,33.6,webbing,,IME,
 IM-hooks: 3 x 25 mm rated Al G-hooks (right end only),straps_meat,base,24.0,hardware,,,
@@ -37,7 +37,7 @@ IM-cams: 3 x 25 mm Al cams,straps_meat,base,39.0,hardware,,,
 US-cams: US1/US2 25 mm Al cams (2),straps_meat,base,26.0,hardware,,,
 "US-tg: US1/US2 tri-glide keepers (2), 25 mm",straps_meat,base,6.0,hardware,,,
 US-web: US1/US2 25 mm webbing 1.10 m,straps_meat,base,19.8,webbing,,US,
-US-chan: US bag-floor channels,straps_meat,base,8.0,not_drafted,,,no geometry in any CORRIE F source (v31 drew 50 mm channels on B-05)
+"US-chan: US bag-floor channels B-16 x2 (37 x 190 mm on F-02, at 48 / 104 mm from the frame edge)",straps_meat,base,3.57,pattern,B-16,,drafted by BL-033 (corrie_f.us_channels)
 "B-24-web: B-24 float links, 38 mm webbing 2 x 435 mm",straps_meat,meat_trip,24.4,webbing,,B-24,
 "B-24-hooks: B-24 rated 38 mm hooks (2), same part as the bag hooks",straps_meat,meat_trip,28.0,hardware,,,
 B-24-thr: B-24 thread,straps_meat,meat_trip,2.0,hardware,,,thread
@@ -57,7 +57,6 @@ attachment: UHMWPE sleeves (8),attachment,base,2.3,hardware,,,
 attachment: TPU hook sleeves (4),attachment,base,4.0,hardware,,,
 "attachment: webbing eyes, net of old stubs",attachment,base,-6.7,webbing,,HE,
 attachment: bag-side straps,attachment,base,17.9,webbing,,T3,
-attachment: B-01 swell patches,attachment,base,12.3,double_booked,,,ledger correction C2: CORRIE's B-13x is the swell
 attachment: elastic keepers,attachment,base,3.6,hardware,,,IM2 hook keepers (removed below) + misc
 attachment: lifter tri-glide keepers,attachment,base,6.0,hardware,,,harness side
 attachment system: crown hood B-19 (Hypalon blank + ears + hem),attachment,base,24.3,removed,,,BL-004 REC removes it
@@ -73,7 +72,8 @@ attachment system: guy tail elastic keepers x2,attachment,base,1.2,webbing,,K-G,
 attachment system: IM2 tongue backings B-23 x2,attachment,base,7.1,removed,,,BL-004 REC
 attachment system: bag hooks 1500 N -> 2200 N rated (4 x +5 g),attachment,base,20.0,hardware,,,
 attachment system: thread (box-X + perimeters),attachment,base,2.0,hardware,,,
-"B-13x boxed fairlead swell (challenge_ultra_200, x8)",attachment,base,14.39,pattern,B-13x B-13xh,,6 with port + 2 hinge
+"B-13x boxed fairlead swell (challenge_ultra_200, x8)",attachment,base,14.39,pattern,B-13x,,6 with port (the 2 hinge swells: next row)
+BL-033 H-1: hinge swells B-13xh x2 deleted (no hinge window; B-18 takes the cleat),attachment,base,-3.6,removed,,,no hinge window (B-18 is the hinge load path)
 BL-004 REC: IM2 bag hooks x2 (rated 38 mm),attachment,base,-28.0,removed,,,
 BL-004 REC: IM2 TPU hook sleeves x2,attachment,base,-2.0,removed,,,
 BL-004 REC: T2 tongues x2 (38 mm x 160),attachment,base,-8.95,removed,,,
@@ -86,7 +86,7 @@ BL-010 A1: IM3 bag hooks -> wiregate carabiners (2),attachment,base,16.0,hardwar
 BL-010 A3: guy ladder locks -> heavy (2),attachment,base,6.0,hardware,,,
 BL-022 rev 1: B-25 guy bridle on the top bar at x +/-52,attachment,base,7.43,webbing,,B-25,
 "BL-022 rev 1: B-26 tripod keeper (3 mm shock cord, right gusset)",straps_compression,base,1.21,webbing,,B-26,shock cord
-"BL-028 rev 2: B-27 guy ports (2), lapped slits in B-01 at x +/-52, z 595-745",attachment,base,2.74,pattern,B-27f,,slits drawn on B-01
+"BL-028 rev 2: B-27 guy ports (2), lapped slits in B-01 at x +/-52, z 595-745",attachment,base,2.84,pattern,B-27f,,slits drawn on B-01
 "BL-031: W1-W3 cut for carry (1340->750, 1412->822, 1618->987 mm)",straps_compression,base,-32.61,webbing,,W1 W2 W3,
 "BL-031: W1-W3 haul extenders (3, 2.22 m 25 mm + rated G-hook each; meat haul, float clamp, antler / cape lash)",straps_compression,meat_trip,63.96,webbing,,WX,+ rated G-hooks
 "BL-031: IM1-IM3 tail keepers (3, 25 mm elastic)",straps_meat,base,1.8,webbing,,K-IM,
