@@ -1,0 +1,147 @@
+{
+ "ticket": "BL-039",
+ "inputs": {
+  "record_ratio": 0.3,
+  "body": "H1-G0.55-B1/2.5",
+  "m_body": 1.1750902718703553,
+  "m_body_beam": 1.204972803402047,
+  "m_body_cyc": 0.781806529058487,
+  "m_cheek": 1.217678484062526,
+  "m_cheek_dir": 1.173915238534178,
+  "cheek_mesh_spread_pct": 8.173859094474627,
+  "m_joint": 1.246,
+  "fat_goal": 1.15
+ },
+ "flips": {
+  "body (cinch static)": 0.2553,
+  "IM3 cheek 28 mm, design angle": 0.2464,
+  "IM3 cheek 28 mm, DIR_SCATTER +10 deg": 0.2556,
+  "z 234 joint (bolt boss, worst basis)": 0.2408
+ },
+ "governing_part": "IM3 cheek 28 mm, DIR_SCATTER +10 deg",
+ "flip_gov": 0.2556,
+ "release": 0.276,
+ "kit_levels": {
+  "record_ratio": 0.3,
+  "flip_body": 0.2553,
+  "flip_cheek": 0.2464,
+  "flip_cheek_dir": 0.2556,
+  "flip_gov": 0.2556,
+  "release": 0.276,
+  "flip_cycled": 0.3837,
+  "release_cycled": 0.404,
+  "fatigue_static": 1.175,
+  "fatigue_cycled": 0.782
+ },
+ "release_matches_kit": true,
+ "margins_at_release": {
+  "body (cinch static)": 1.081,
+  "IM3 cheek 28 mm, design angle": 1.12,
+  "IM3 cheek 28 mm, DIR_SCATTER +10 deg": 1.08,
+  "z 234 joint (bolt boss, worst basis)": 1.146
+ },
+ "goal_level_1p15": 0.294,
+ "swing_bound": 0.1,
+ "swing": {
+  "k0.8": {
+   "m_at_0.30_10pct": 1.0984,
+   "body_flip_10pct": 0.2731,
+   "margin_at_release_10pct": 1.0105,
+   "cushion_left_10pct": 0.0029,
+   "release_for_10pct": 0.294,
+   "p_rule_at_release": 0.0039,
+   "p_margin1_at_release": 0.1161,
+   "p_rule_at_040": 0.6991
+  },
+  "k1": {
+   "m_at_0.30_10pct": 1.1129,
+   "body_flip_10pct": 0.2696,
+   "margin_at_release_10pct": 1.0239,
+   "cushion_left_10pct": 0.0064,
+   "release_for_10pct": 0.29,
+   "p_rule_at_release": 0.0049,
+   "p_margin1_at_release": 0.1451,
+   "p_rule_at_040": 0.8739
+  },
+  "k1.6": {
+   "m_at_0.30_10pct": 1.1354,
+   "body_flip_10pct": 0.2642,
+   "margin_at_release_10pct": 1.0446,
+   "cushion_left_10pct": 0.0118,
+   "release_for_10pct": 0.285,
+   "p_rule_at_release": 0.0079,
+   "p_margin1_at_release": 0.2321,
+   "p_rule_at_040": 1.3982
+  }
+ },
+ "swing_worst": {
+  "m_at_0.30_10pct": 1.0984,
+  "body_flip_10pct": 0.2731,
+  "margin_at_release_10pct": 1.0105,
+  "cushion_left_10pct": 0.0029,
+  "release_for_10pct": 0.294,
+  "p_rule_at_release": 0.0039,
+  "p_margin1_at_release": 0.1161,
+  "p_rule_at_040": 0.6991
+ },
+ "swing_bound_margin_ok": true,
+ "swing_bound_rule_ok": false,
+ "graded": [
+  {
+   "swing_pct": 0,
+   "body_flip": 0.2553,
+   "release": 0.276
+  },
+  {
+   "swing_pct": 1,
+   "body_flip": 0.2571,
+   "release": 0.278
+  },
+  {
+   "swing_pct": 2,
+   "body_flip": 0.2589,
+   "release": 0.279
+  },
+  {
+   "swing_pct": 5,
+   "body_flip": 0.2642,
+   "release": 0.285
+  },
+  {
+   "swing_pct": 10,
+   "body_flip": 0.2731,
+   "release": 0.294
+  },
+  {
+   "swing_pct": 15,
+   "body_flip": 0.2821,
+   "release": 0.303
+  },
+  {
+   "swing_pct": 20,
+   "body_flip": 0.291,
+   "release": 0.311
+  },
+  {
+   "swing_pct": 30,
+   "body_flip": 0.3088,
+   "release": 0.329
+  },
+  {
+   "swing_pct": 50,
+   "body_flip": 0.3445,
+   "release": 0.365
+  },
+  {
+   "swing_pct": 70,
+   "body_flip": 0.3802,
+   "release": 0.401
+  },
+  {
+   "swing_pct": 100,
+   "body_flip": 0.3837,
+   "release": 0.404
+  }
+ ],
+ "cycled_release": 0.404
+}

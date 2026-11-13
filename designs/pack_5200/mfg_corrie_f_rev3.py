@@ -1252,7 +1252,11 @@ RELEASE_TESTS = [   # id, why it gates this package (register row read at run ti
     ("PT-1", "IM3 carabiner on T3"), ("PT-2", "T3 on the 70 mm B-17 tab"), ("PT-3", "HE eye on B-18 (no binding)"),
     ("PT-5", "guy lock + tri-glide keeper"), ("PT-6", "B-24 float link"),
     ("LL-H", "heavy 25 mm ladder lock slip: guys, W1-W3 and the B-28 crown straps (the B-28 slip gate since BL-031)"),
-    ("T9", "rev 3 items: port guys at the S kit, crown strap cinch and free length, lid mass and seat"),
+    ("T9", "loaded CG on the first article (rev C basis); its rev 3 items are the T9-R3a..d rows below (BL-038 split)"),
+    ("T9-R3a", "rev 3 (a): B-27 port guys hold the S-kit top, CG at the S kit (BL-030)"),
+    ("T9-R3b", "rev 3 (b): B-28 crown strap cinch force and retention"),
+    ("T9-R3c", "rev 3 (c): B-28 crown strap free length per crown kit (cut = longest path + 40 mm spare + 2 grips, BL-039)"),
+    ("T9-R3d", "rev 3 (d): sewn B-29 lid mass and seat"),
     ("FS-O5", "alternate fabric gate: ULTRA 200X 50 mm strip (floor / frame side)"),
 ]
 EXTRA_GATES = [

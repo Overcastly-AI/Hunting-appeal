@@ -2506,6 +2506,13 @@ KEEPER_OVER_MM = 150.0     # DECISION (BL-031): a strap whose tail can pass 150 
 TAIL_GRIP_MM = 50.0        # ASSUMPTION: the shortest free tail a gloved hand pinches and pulls through a 25 mm ladder
 #                            lock (two gloved finger widths ~ 40 mm + 10 mm); settled by the gloved cinch trial in T9
 #                            (BL-031 addition: 5 users, winter gloves, each strap at its longest setting)
+CROWN_SPARE_MM = 40.0      # ASSUMPTION CROWN-SPARE (BL-039): cut length kept beyond the longest simulated path plus
+#                            the two grip tails. BL-031 cut each kit to exactly longest + 2 x TAIL_GRIP, so any path
+#                            longer than the sim (ROLL-PATH: sewn bag vs the cloth pass; TORSO-LIN: the 15 / 19 / 23 in
+#                            interpolation, whose per-side / per-case delta at 15 in already spreads 58.9-97.9 mm =
+#                            39 mm; tab fold and bartack placement +/- 5 mm a tab) ate the gloved grip. 40 mm (~1.5 in)
+#                            covers that spread; it adds 20 mm to every tail (two adjusters share it). Settled by T9-R3c
+#                            (free length at the S kit 15 in full and the L kit 6-day)
 CROWN_ADJ = 2              # BL-031 task 1: the slack range is shared by two adjusters, a heavy ladder lock at each end
 CROWN_TAB = 60.0           # front (hinge band) and rear (B-25 toggle) lock tabs, folded 2 x 30 mm (the B-25 tab rule)
 CROWN_KIT_DEFAULT = "M"    # the ledger's headline crown kit (weight_rollup_v2.KIT)
@@ -2545,8 +2552,10 @@ def crown_kit_straps(kit: str = CROWN_KIT_DEFAULT, adjusters: int = CROWN_ADJ) -
 
     * longest path = full at the kit's shortest torso (largest delta); shortest = day at its longest torso;
       most-used = 6-day at the kit's mid torso (mean of the two sides and cases).
-    * cut = longest + ``adjusters`` x TAIL_GRIP (each adjuster keeps a gloved grip at the longest path); the free tail
-      at each adjuster at path L is TAIL_GRIP + (longest - L) / adjusters (the user takes up evenly at both ends).
+    * cut = longest + CROWN_SPARE (BL-039) + ``adjusters`` x TAIL_GRIP (each adjuster keeps a gloved grip at the
+      longest path plus its share of the spare); the free tail at each adjuster at path L is
+      TAIL_GRIP + (longest + spare - L) / adjusters (the user takes up evenly at both ends). ``path_limit_mm`` = the
+      longest path the cut serves with a full grip at both ends (= longest + spare).
     * hardware per strap: ``adjusters`` heavy ladder locks (ladder_lock_25mm_heavy, BL-010 A3), a 60 mm tab per lock
       (front: hinge band at z 700; rear: the POM toggle into the second fold of the B-25 tab, which stays), the
       toggle (attach_diet.TOGGLE_G), the B-25 second fold; a tail keeper per adjuster when a tail can pass
@@ -2570,10 +2579,10 @@ def crown_kit_straps(kit: str = CROWN_KIT_DEFAULT, adjusters: int = CROWN_ADJ) -
                   "long_torso": round(Lmean_s[st] + float(np.mean(d_hi)), 1)}
     L_used = by[MOST_USED_STATE]["mid_torso"]
     loop = 0.0 if adjusters == 2 else CROWN_LOOP
-    cut = L_max + adjusters * TAIL_GRIP_MM + loop
+    cut = L_max + CROWN_SPARE_MM + adjusters * TAIL_GRIP_MM + loop    # BL-039: + the spare (CROWN-SPARE)
 
     def tail(L):
-        return TAIL_GRIP_MM + (L_max - L) / adjusters
+        return TAIL_GRIP_MM + (L_max + CROWN_SPARE_MM - L) / adjusters
 
     tails = {st: {k: round(tail(v), 1) for k, v in row.items()} for st, row in by.items()}
     worst = tail(L_min)
@@ -2584,14 +2593,15 @@ def crown_kit_straps(kit: str = CROWN_KIT_DEFAULT, adjusters: int = CROWN_ADJ) -
     g = 2 * (cut * WEB25 / 1000.0 + tabs * WEB25 / 1000.0 + tog + adjusters * llh + keepers * kg)
     return {"kit": kit, "torso_in": (lo, hi), "width_mm": 25.0, "adjusters": adjusters,
             "path_max_mm": round(L_max, 1), "path_min_mm": round(L_min, 1), "path_used_mm": round(L_used, 1),
-            "adjust_range_mm": round(L_max - L_min, 1), "cut_mm": round(cut, 1), "paths_mm": by, "tails_mm": tails,
+            "adjust_range_mm": round(L_max - L_min, 1), "spare_mm": CROWN_SPARE_MM,
+            "path_limit_mm": round(cut - loop - adjusters * TAIL_GRIP_MM, 1), "cut_mm": round(cut, 1), "paths_mm": by, "tails_mm": tails,
             "tail_used_mm": round(tail(L_used), 1), "tail_worst_mm": round(worst, 1),
             "tail_rule_ok": tail(L_used) <= TAIL_RULE_MM, "keepers_per_strap": keepers,
             "mass_g": round(g, 2), "toggle_g": tog, "ladder_lock": "ladder_lock_25mm_heavy", "ladder_lock_g": llh,
             "keeper_g": kg, "slip_n": _rec("ladder_lock_25mm_heavy", "slip_load_n"),
             "tensile_n": _rec("ladder_lock_25mm_heavy", "tensile_rating_n"),
             "source": f"crown_kit_straps('{kit}'): rolled-top paths (CROWN_ROLLED, ROLL-PATH) + torso change "
-                      f"(TORSO-LIN) + {adjusters} x TAIL_GRIP (ASSUMPTION); poly_webbing_25mm, ladder_lock_25mm_heavy "
+                      f"(TORSO-LIN) + {CROWN_SPARE_MM:g} mm spare (CROWN-SPARE, BL-039) + {adjusters} x TAIL_GRIP (ASSUMPTION); poly_webbing_25mm, ladder_lock_25mm_heavy "
                       "records; TOGGLE_G and the elastic keeper ASSUMPTIONS (attach_diet, attach_system)"}
 
 

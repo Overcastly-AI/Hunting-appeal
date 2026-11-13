@@ -1079,6 +1079,22 @@ but leaves 421 mm at the 6-day and 539 mm worst at M. Load: the heavy lock's 490
 Against BL-030's 20 mm straps (49.1 g) the kit-M pair is **+28.6 g as hunted**; against BL-029's 25 mm single cut
 (67.5 g) +10.2 g (two more locks, two more tabs, four keepers, a shorter cut). Ledger books kit M.
 
+**BL-039 (2026-11-13): 40 mm spare on every kit.** The cuts above equal the longest simulated path + 2 × 50 mm grip:
+zero spare, so any path longer than the sim (ROLL-PATH, TORSO-LIN: the per-side / per-case delta at 15 in already
+spreads 58.9–97.9 mm; tab fold ± 5 mm) eats the gloved grip. Cut = longest + **40 mm** (CROWN_SPARE_MM, ASSUMPTION
+CROWN-SPARE, settled by T9-R3c) + 2 × 50 mm, for S, M and L alike (all three had the same zero spare). Each tail gains
+20 mm; the keepers stay (every worst tail was already over 150 mm). Live values from `corrie_f.crown_kit_table()`:
+
+| kit (torso) | longest path | path limit (cut − 2 grips) | **cut** | tail 6-day mid (each end) | worst tail | pair mass |
+|---|---:|---:|---:|---:|---:|---:|
+| S (15–18 in) | 928.1 | 968.1 | **1068 mm (42.1 in)** | 262 mm (10.3 in) | 320 mm (12.6 in) | 81.7 g (2.88 oz) |
+| M (17.5–20.5 in) | 866.9 | 906.9 | **1007 mm (39.6 in)** | 256 mm (10.1 in) | 314 mm (12.4 in) | **79.5 g (2.81 oz)** |
+| L (20–23 in) | 808.0 | 848.0 | **948 mm (37.3 in)** | 255 mm (10.0 in) | 314 mm (12.4 in) | 77.4 g (2.73 oz) |
+
+Kit M tails (each end): full 74 / 88 / 106 mm at the short / mid / long torso; 6-day 241 / 256 / 273; day 283 / 297 /
+314. +1.44 g a pair as hunted (2 × 40 mm of 25 mm webbing); base mass unchanged (the crown straps are as hunted).
+The table above this note is BL-031's and is kept as history; its mass column predates BL-034's keeper re-weigh.
+
 **Option that meets the rule outright (owner decision 16.6-1):** cut each kit for day and 6-day only and add a
 25 mm extender for a full load with the collar standing (as BL-030's 20 mm extender option, at 25 mm). Each tail is
 then ≤ 100 mm at the 6-day and no keeper is needed, at the cost of a loose part to carry.

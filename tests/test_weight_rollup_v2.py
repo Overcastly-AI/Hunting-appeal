@@ -130,6 +130,12 @@ def test_six_point_six_pounds_is_not_reached_and_the_gap_is_reported():
     fc = W.feature_costs("M")
     assert fc["gap_g"] == pytest.approx(t["A"]["base"] - W.TARGET_G, abs=0.2)
     assert all(not c["frozen"] for c in fc["candidates"] if c["item"] in fc["greedy_take"])
+    # BL-039: DESIGN requirements (hydration sleeve R-19, hipbelt pockets, ...) are not "unfrozen" either
+    assert all(not c["required"] for c in fc["candidates"] if c["item"] in fc["greedy_take"])
+    req = {c["item"] for c in fc["candidates"] if c["required"]}
+    assert {"IMP-2", "IMP-5L"} <= req and not req & set(fc["greedy_take"])
+    assert fc["all_unfrozen_g"] == pytest.approx(sum(c["g"] for c in fc["candidates"]
+                                                     if not c["frozen"] and not c["required"]), abs=0.2)
 
 
 def test_leaders_basis_and_configs():

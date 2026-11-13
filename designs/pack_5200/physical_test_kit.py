@@ -78,13 +78,43 @@ def release_levels() -> dict:
     rec_ratio = float(record("pa12_cf_fdm_paht")["properties"]["fatigue_1e5_ratio"])
     body = float(hb["ca1_flip"])
     cheek = float(ims["14_8"]["ca1_flip_ratio"])          # 28 x 8 mm cheek (half width 14)
+    # BL-039: the cheek at its DIR_SCATTER angle (computed pull + 10 deg aft, the rule BL-021 sized it to) flips at
+    # 0.30 / 1.174 = 0.2556, just above the body's 0.2553; it enters the governing flip (release unchanged at 0.276)
+    cheek_dir = rec_ratio / float(ims["14_8"]["sensitivity"]["fatigue_dir_plus_scatter"])
     cyc = rec_ratio / float(hb["fatigue_cinch_cycled"])
-    gov = max(body, cheek)
+    gov = max(body, cheek, cheek_dir)
     up = lambda x: math.ceil(round(x, 6) * 1000) / 1000  # noqa: E731  (round a release level up to 0.001)
     return {"record_ratio": rec_ratio, "flip_body": round(body, 4), "flip_cheek": round(cheek, 4),
+            "flip_cheek_dir": round(cheek_dir, 4),
             "flip_gov": round(gov, 4), "release": up(gov + 0.02), "flip_cycled": round(cyc, 4),
             "release_cycled": up(cyc + 0.02), "fatigue_static": round(float(hb["fatigue_min_sim"]), 3),
-            "fatigue_cycled": round(float(hb["fatigue_cinch_cycled"]), 3)}
+            "fatigue_cycled": round(float(hb["fatigue_cinch_cycled"]), 3), **swing_rule(up(gov + 0.02))}
+
+
+def swing_rule(release: float) -> dict:
+    """BL-039 (``ca1_mt1c_confirm``): the MT-1c swing (peak-to-peak / mean) each CA-1 level covers under the
+    flip + 0.02 rule, worst bracket k; and the swing that still keeps margin 1.0 at the release level."""
+    import ca1_mt1c_confirm as CC
+    i, k = CC.inputs(), min(CC.K_BRACKET)
+    pct = lambda x: round(100 * x, 1)  # noqa: E731
+    return {"swing_ok_release_pct": pct(CC.p_at_flip(i, release - CC.CUSHION, k)),
+            "swing_ok_040_pct": pct(CC.p_at_flip(i, 0.40 - CC.CUSHION, k)),
+            "swing_margin1_release_pct": pct(CC.p_at_flip(i, release, k))}
+
+
+IM3_EC_MARGIN = 1.15       # CA1_fatigue_rig.md 6a / BL-023: the eye coupons run at >= 1.15 x the 1.6 g demand
+FAT_G = 1.6                # HA-LS-1 rev C walking peak (load_standard.md)
+
+
+def im3_ec_load() -> dict:
+    """BL-039: IM3-EC coupon load from the 28 mm cheek's governing sim demand (BL-021, im3_body_simloads.json:
+    worst hook + IM3 strap combination at 1 g, 15fL), replacing BL-010's 15 in IM3 force (552.4 N, 27 mm cheek)."""
+    e = _json("im3_body_simloads.json")["eye"]["cands"]["14_8"]["sensitivity"]
+    f1 = float(e["governing_combo_1g_n"])
+    peak = round(IM3_EC_MARGIN * FAT_G * f1)
+    return {"combo_1g_n": round(f1, 1), "aft_deg": round(float(e["governing_combo_aft_deg"]), 1),
+            "demand_n": round(FAT_G * f1, 1), "peak_n": peak, "min_n": round(0.1 * peak),
+            "link_n": round(peak / 4.0), "proof_n": 2553}
 
 
 def ca1_forces(ratio: float, uts=88.0, area=40.0, lever=4.0) -> dict:
@@ -115,11 +145,18 @@ def crown_cut_mm() -> dict:
         out = {}
         for k in ("S", "M", "L"):
             d = CF.crown_kit_straps(k)
-            out[k] = {"cut_mm": round(float(d["cut_mm"]), 1), "longest_mm": round(float(d["path_max_mm"]), 1)}
+            out[k] = {"cut_mm": round(float(d["cut_mm"]), 1), "longest_mm": round(float(d["path_max_mm"]), 1),
+                      "spare_mm": round(float(d["spare_mm"]), 1), "path_limit_mm": round(float(d["path_limit_mm"]), 1),
+                      "sixday_mid_mm": round(float(d["paths_mm"]["sixday"]["mid_torso"]), 1),
+                      "torso_in": tuple(d["torso_in"])}
         return out
     except Exception:                                    # pragma: no cover - fall back to corrie_f_body.md 16.2
-        return {"S": {"cut_mm": 1028, "longest_mm": 928.1}, "M": {"cut_mm": 967, "longest_mm": 866.9},
-                "L": {"cut_mm": 908, "longest_mm": 808.0}}
+        return {"S": {"cut_mm": 1068.1, "longest_mm": 928.1, "spare_mm": 40.0, "path_limit_mm": 968.1,
+                      "sixday_mid_mm": 543.3, "torso_in": (15.0, 18.0)},
+                "M": {"cut_mm": 1006.9, "longest_mm": 866.9, "spare_mm": 40.0, "path_limit_mm": 906.9,
+                      "sixday_mid_mm": 495.7, "torso_in": (17.5, 20.5)},
+                "L": {"cut_mm": 948.0, "longest_mm": 808.0, "spare_mm": 40.0, "path_limit_mm": 848.0,
+                      "sixday_mid_mm": 438.8, "torso_in": (20.0, 23.0)}}
 
 
 # ============================================================================ register: new rows and patches
@@ -132,6 +169,25 @@ CFB = "designs/pack_5200/analysis/corrie_f_body.md"
 REL = "outputs/release/pack5200_corrie_f_rev3/manufacturing/release_tests.csv"
 
 
+BP1_COUPON_MM = (70.0, 200.0)   # register BP-1 specimen: one 70 x 200 mm coupon per core thickness
+BP1_CORE_BUY_M2 = 0.02          # the shopping-list ROHACELL line (smallest sensible cut of a sheet)
+
+
+def bp1_cost() -> dict:
+    """BL-039: BP-1 sample cost. The 3 mm coupon is an offcut of the strip layup (no cost); the 2 mm (BL-037 K-1)
+    coupon is its own layup: the ROHACELL line plus two 200 g twill skins at the woven-ply record price (the
+    record's $/m2 is for the cured ply, resin included)."""
+    w, l = BP1_COUPON_MM
+    core = BP1_CORE_BUY_M2 * rec_price("rohacell_71_igf")
+    skins_m2 = 2 * w * l / 1e6
+    skins = skins_m2 * rec_price("cfrp_t300_3k_woven_epoxy_ply")
+    return {"usd": round(core + skins, 2), "core_usd": round(core, 2), "skins_usd": round(skins, 2),
+            "skins_m2": skins_m2,
+            "basis": f"BL-039: 2 mm coupon layup = rohacell_71_igf {BP1_CORE_BUY_M2} m2 x ${rec_price('rohacell_71_igf'):.0f} "
+                     f"+ 2 skins {w:.0f} x {l:.0f} mm cfrp_t300_3k_woven_epoxy_ply x ${rec_price('cfrp_t300_3k_woven_epoxy_ply'):.0f}/m2 "
+                     "(records); 3 mm coupon = offcut of the strip layup"}
+
+
 def tg_ss_usd() -> float:
     """Stainless 25 mm tri-glide: EUR 3.10 incl. 19 % VAT (triglide_25mm record source line) x 1.09 USD/EUR."""
     return round(3.10 / 1.19 * USD_PER_EUR, 2)
@@ -140,18 +196,18 @@ def tg_ss_usd() -> float:
 def new_rows(lv: dict, lid_g: float, cut: dict) -> list[dict]:
     wpd = weight_push()
     g = lambda k: abs(float(wpd[k]["g"]))  # noqa: E731
-    s_path = round(cut["S"]["cut_mm"] - 2 * 50, 1)
+    s_path = cut["S"]["path_limit_mm"]          # BL-039: cut - 2 x 50 mm grip = longest + spare
     rows = [
         dict(id="MT-1c", status="ACTIVE", tier="safety",
              title="meat-strap cinch readout: does the IM cinch cycle with the walking g (CINCH_STATIC)",
              defined_in="designs/pack_5200/analysis/h1_buckling.md (CINCH_STATIC); designs/pack_5200/analysis/h1_sleeve.md; docs/DECISIONS.md 2026-11-12 BL-024 / BL-027 rows (R1 waits on MT-1)",
              what_it_proves="the IM strap cinch is a static preload, so H1's fatigue is the static-cinch value",
-             gates=f"frame release R1: body fatigue {lv['fatigue_static']} with the cinch static, {lv['fatigue_cycled']} if it cycles (then CA-1 must reach {lv['release_cycled']})",
+             gates=f"frame release R1: body fatigue {lv['fatigue_static']} with the cinch static, {lv['fatigue_cycled']} if it cycles fully; the measured swing sets the CA-1 level R1 needs (BL-039, designs/pack_5200/analysis/ca1_mt1c_confirm.md)",
              grams_at_stake_g="0", safety_at_stake=f"H1 body fatigue {lv['fatigue_static']} vs {lv['fatigue_cycled']}",
              specimen="P2 frame + sewn bag, 30 kg sand meat on IM1-IM3 cinched by hand as in the field; kit B 100 kg S-type cell + HX711 inline in the IM2 strap's free end (two snap shackles), logging to an SD card",
              kit="B+C",
              steps="cinch IM1-IM3 by hand as in the field and lock the cams; log the IM2 strap tension at 80 Hz; stage 1 on the stand: run the T5 crank 600 cycles (10 min, 0.4 -> 1.6 g) with the meat in; stage 2 after T1-T4 pass: a 10 min loaded walk on rough ground; for each stage compute the mean tension and the mean peak-to-peak swing per cycle / step; send the log",
-             pass_fail="peak-to-peak swing <= 10 % of the mean cinch tension in both stages (ASSUMPTION CINCH-SWING); fail: report; R1 then needs CA-1 >= the cycled release level",
+             pass_fail=f"record the larger peak-to-peak swing / mean of the two stages (%). R1 needs: swing <= {lv['swing_ok_release_pct']} %: CA-1 at {lv['release']}; swing <= {lv['swing_ok_040_pct']:.0f} %: CA-1 also passed at 0.40; above: CA-1 at {lv['release_cycled']} (BL-039 table, ca1_mt1c_confirm.md section 2; replaces BL-038's 10 % pass bound, which keeps margin >= 1.0 only up to {lv['swing_margin1_release_pct']} % and without the 0.02 cushion)",
              cost_usd="15", cost_basis="ASSUMPTION SD-card logger + power bank $15 (cell and HX711 from kit B)",
              hours_hands_on="2", hours_machine="0.2", phase="4", run_order="62", first_weekend="N",
              notes="BL-038: added. The register's MT-1 is the box-X proof; the R1 hold named 'MT-1' in DECISIONS is this cinch readout (h1_buckling.md). Stage 1 replaces the walk for R1 (no person under an unreleased frame); stage 2 confirms",
@@ -237,13 +293,13 @@ def new_rows(lv: dict, lid_g: float, cut: dict) -> list[dict]:
              defined_in=f"{CFB} 15.6, 16.2, 16.5",
              what_it_proves="ASSUMPTION ROLL-PATH: the cloth-pass rolled top gives the sewn bag's crown strap path",
              gates="B-28 cut per crown kit (bag batch release)", grams_at_stake_g="0",
-             safety_at_stake=f"S kit cut {cut['S']['cut_mm']} mm against a {cut['S']['longest_mm']} mm path: 50 mm grip tail each end",
-             specimen="sewn rev 3 bag on P2 with the S kit at its short end (15 in) packed full, collar standing; then the L kit at 21.5 in, 6-day load", kit="C",
+             safety_at_stake=f"S kit cut {cut['S']['cut_mm']} mm against a {cut['S']['longest_mm']} mm sim path: 50 mm grip tail each end plus {cut['S']['spare_mm']:g} mm spare (BL-039, CROWN-SPARE)",
+             specimen=f"sewn rev 3 bag on P2 with the S kit at its short end ({cut['S']['torso_in'][0]:g} in) packed full, collar standing; then the L kit at {0.5 * sum(cut['L']['torso_in']):g} in, 6-day load", kit="C",
              steps="cinch both crown straps; measure the strap path from the bar tab to the ladder lock along the strap with a tape (both straps); repeat at the L kit 6-day setting",
-             pass_fail=f"S kit full: path <= {s_path} mm (cut {cut['S']['cut_mm']} - 2 x 50 mm grip tail); L kit 6-day: record against the sim's 438.8 mm",
+             pass_fail=f"S kit full: path <= {s_path} mm (cut {cut['S']['cut_mm']} - 2 x 50 mm grip tail; sim {cut['S']['longest_mm']} mm); L kit 6-day: record against the sim's {cut['L']['sixday_mid_mm']} mm",
              cost_usd="0", cost_basis="kit", hours_hands_on="0.7", hours_machine="", phase="4", run_order="70",
              first_weekend="N",
-             notes=f"BL-038: split out of T9 (item c). BL-030's 1138 mm single 20 mm cut is replaced by BL-031's per-kit 25 mm cuts. The S kit has no spare: the sim path is {cut['S']['longest_mm']} mm against the {s_path} mm limit, so a longer measured path means a longer S cut",
+             notes=f"BL-038: split out of T9 (item c). BL-030's 1138 mm single 20 mm cut is replaced by BL-031's per-kit 25 mm cuts. BL-039 added {cut['S']['spare_mm']:g} mm spare to every kit (BL-031 had none: the S sim path {cut['S']['longest_mm']} mm equalled its limit); a path above {s_path} mm still means a longer S cut",
              g_per_usd_eq=""),
         dict(id="T9-R3d", status="ACTIVE", tier="function",
              title="T9 rev 3 (d): sewn lid mass and seat (LID_SLIDER5_G, LID_THREAD, LID-SEAT)",
@@ -330,18 +386,25 @@ def new_rows(lv: dict, lid_g: float, cut: dict) -> list[dict]:
 def patches(lv: dict, lid_g: float) -> dict:
     """Changes to existing register rows: the later tickets moved their numbers."""
     wpd = weight_push()
+    ec = im3_ec_load()
     f1 = abs(float(wpd["F-1"]["g"]))
     rel = lv["release"]
     return {
         "CA-1": dict(
             gates=f"H1 print release R1 (governing flip {lv['flip_gov']} + 0.02 = {rel}); 0.40 only feeds option F-1 (BL-037)",
-            safety_at_stake=f"flip points: H1-G0.55-B1/2.5 body {lv['flip_body']} (fatigue {lv['fatigue_static']}, cinch static), IM3 28 mm cheek {lv['flip_cheek']}; governing {lv['flip_gov']}; release needs ratio >= {rel}; if MT-1c shows the cinch cycling: flip {lv['flip_cycled']}, release {lv['release_cycled']}",
+            safety_at_stake=f"flip points: H1-G0.55-B1/2.5 body {lv['flip_body']} (fatigue {lv['fatigue_static']}, cinch static), IM3 28 mm cheek {lv['flip_cheek']} ({lv['flip_cheek_dir']} at DIR_SCATTER +10 deg); governing {lv['flip_gov']}; release needs ratio >= {rel}; if MT-1c shows the cinch cycling: flip {lv['flip_cycled']}, release {lv['release_cycled']}",
             steps=f"CA1_fatigue_rig.md 6: 3 XY + 2 Z static, then 3 XY at the release level {rel} (= governing flip {lv['flip_gov']} + 0.02) to 1e5, 2 Z at {rel}, then 3 XY at 0.40",
-            pass_fail=f"3/3 run-outs to 1e5 at {rel}, stiffness loss <= 10 %, no crack; static XY >= 79.2 MPa, Z >= 42.3 MPa. If MT-1c shows the cinch cycling, R1 needs 3/3 at {lv['release_cycled']} instead",
+            pass_fail=f"3/3 run-outs to 1e5 at {rel}, stiffness loss <= 10 %, no crack; static XY >= 79.2 MPa, Z >= 42.3 MPa. R1 uses {rel} only if MT-1c's swing is <= {lv['swing_ok_release_pct']} %; up to {lv['swing_ok_040_pct']:.0f} % it needs the 0.40 pass; above, 3/3 at {lv['release_cycled']} (BL-039)",
             grams_at_stake_g=f"{f1}",
             notes=f"BL-038: release level from h1_buckling.json (BL-027 body flip) and im3_body_simloads.json (28 mm cheek), replacing the 0.310 placeholder (CA1_fatigue_rig.md 1 asked for this). Grams: BL-037 F-1 (-{f1} g, an option that also needs a buckling re-run), not -50..-70 g. Machine: 8 runs x 27.8 h. CT-B1 merged here"),
-        "IM3-EC": dict(specimen="3 eye coupons: 120 mm stay segment round z 520 with the IM3 eye and the 28 mm cheek (BL-021), cut from the H1 STL, printed with the CA-1 bars",
-                       notes="BL-038: cheek 27 -> 28 mm (BL-021 adopted)"),
+        "IM3-EC": dict(title=f"IM3 eye cycle coupons, 3 x 1e5 at >= 1.15 x {ec['demand_n']:.0f} N",
+                       defined_in="designs/pack_5200/tests_physical/CA1_fatigue_rig.md §6a; designs/pack_5200/analysis/im3_body_simloads.md (28 mm cheek, governing hook + strap); designs/pack_5200/analysis/loadpath_verification.md §4.1, §8",
+                       what_it_proves=f"the 28 mm IM3 cheek survives 1e5 walking cycles with a 15 % load margin on the BL-021 sim demand (1.6 x {ec['combo_1g_n']:.1f} N hook + strap, 15fL, {ec['aft_deg']:.0f} deg aft = {ec['demand_n']:.0f} N)",
+                       safety_at_stake="IM3 eye fatigue 1.218 at 0.30 (28 mm cheek, BL-021; 1.174 at DIR_SCATTER)",
+                       specimen="3 eye coupons: 120 mm stay segment round z 520 with the IM3 eye and the 28 mm cheek (BL-021), cut from the H1 STL, printed with the CA-1 bars",
+                       steps=f"sewn T3 tongue + IM3 carabiner through the eye, led {ec['aft_deg']:.0f} deg aft of the stay axis, coupon clamped by the stay ends; lever rig at R 0.1: {ec['min_n']} -> {ec['peak_n']} N, 1 Hz, to 1e5; loupe check every 25,000; then pull to {ec['proof_n']} N on the pull bench",
+                       pass_fail=f"3/3 run-outs to 1e5 at {ec['peak_n']} N, no crack at 10x; residual pull {ec['proof_n']} N with no crack",
+                       notes=f"BL-038: cheek 27 -> 28 mm (BL-021 adopted). BL-039: load {ec['peak_n']} N from the BL-021 sim demand (was 1017 N = 1.15 x 1.6 x 552.4 N, BL-010's 15 in IM3 force, below today's demand)"),
         "T9": dict(specimen="P2 frame + bag (rev C CG at 15 / 19 / 23 in); the rev 3 items are rows T9-R3a..d",
                    steps="68 kg fill and meat on IM1-IM3 at 15/19/23 in; hang from haul loop, then from a hip pin, plumb both lines; add 30 kg on IM1-IM3 at 15 in; then rows T9-R3a (port guys, S kit CG), T9-R3c (crown strap path) in the same session; T9-R3b (cinch after a walk) and T9-R3d (lid) after T1-T4",
                    pass_fail="bag CG <= 205 mm at z <= 590; meat <= 190; tall <= 185; rev 3 items: rows T9-R3a..d",
@@ -362,7 +425,15 @@ def patches(lv: dict, lid_g: float) -> dict:
                       grams_at_stake_g=f"{9.8 + abs(float(wpd['B-2']['g'])):.1f}"),
         "BP-1": dict(gates="BL-005 sandwich strip (A_back); BL-037 K-1 (2 mm ROHACELL 71 core)",
                      specimen="70 x 200 mm offcuts of the strip layup: 3 mm and 2 mm ROHACELL 71 core (2 mm: sand a 3 mm sheet or special order)",
-                     grams_at_stake_g=f"{44.6 + abs(float(wpd['K-1']['g'])):.1f}"),
+                     grams_at_stake_g=f"{44.6 + abs(float(wpd['K-1']['g'])):.1f}",
+                     cost_usd=f"{bp1_cost()['usd']:.2f}", cost_basis=bp1_cost()["basis"]),
+        # BL-039: the crown hood B-19 left with BL-004 (owner 2026-11-12, DECISIONS); its guys' crown ends are toggle
+        # loops proven by TL-1. Retired in the register's own format.
+        "PT-4": dict(status="RETIRED", tier="-", what_it_proves="", gates="", grams_at_stake_g="", safety_at_stake="",
+                     specimen="", kit="", steps="", pass_fail="", cost_usd="", cost_basis="", hours_hands_on="",
+                     hours_machine="", phase="-", run_order="-", first_weekend="N", g_per_usd_eq="",
+                     notes="BL-039: retired. Crown hood B-19 removed (BL-004; owner kept it removed 2026-11-12, "
+                           "docs/DECISIONS.md); the guy crown ends are toggle loops, proven by TL-1"),
     }
 
 
@@ -517,7 +588,7 @@ GROUPS = [
                "release R1 cannot happen without it. The 40 C box also runs CS-1 (BL-037) beside CA-4."),
     dict(id="G5", title="Bench session 2: fabric, belt and back coupons", when="any weekend while the lever rig runs (weeks 2-4)",
          rig="kit A pull bench + kit D", kits="A, D",
-         tests=["WP-2", "AB-1", "HB-4", "HB-T", "PT-4", "PS-1", "BP-2", "HB-2"],
+         tests=["WP-2", "AB-1", "HB-4", "HB-T", "PS-1", "BP-2", "HB-2"],          # PT-4 retired (BL-039)
          intro="Sewn and laminated coupons that do not need the frame. Send the AB-1 lab samples on the first day: "
                "the lab takes about 4 weeks."),
     dict(id="G6", title="First-article frames on the stand (P1 then P2)", when="after G4's CA-1, IM3-EC and CA-5 pass (about week 5-6)",
@@ -573,6 +644,7 @@ def loads(lv: dict) -> dict:
     c = ca1_forces(lv["release"])
     c4 = ca1_forces(0.40)
     cc = ca1_forces(lv["release_cycled"])
+    ec = im3_ec_load()
     lb = lambda x: x / LB_PER_N  # noqa: E731  lb -> N
     return {
         "MT-1": [("IM loops (5)", 908), ("US loops (5)", 1080)],
@@ -588,8 +660,8 @@ def loads(lv: dict) -> dict:
         "CA-1": [(f"XY bar peak at the release level {lv['release']}", c["F_max_N"]),
                  ("XY bar valley (R 0.1)", c["F_min_N"]), ("load cell reads (4:1 lever)", c["link_N"]),
                  ("XY bar peak at 0.40", c4["F_max_N"]),
-                 (f"XY bar peak at {lv['release_cycled']} (only if MT-1c fails)", cc["F_max_N"])],
-        "IM3-EC": [("eye cycle peak (1.15 x 884 N)", 1017), ("after run-out, proof pull", 2553)],
+                 (f"XY bar peak at {lv['release_cycled']} (only if MT-1c's swing is over {lv['swing_ok_040_pct']:.0f} %)", cc["F_max_N"])],
+        "IM3-EC": [(f"eye cycle peak (1.15 x {ec['demand_n']:.0f} N)", ec["peak_n"]), ("after run-out, proof pull", ec["proof_n"])],
         "CA-5": [("static mean must reach", 4400), ("lowest static", 3666), ("cycle force", 1543)],
         "CA-4": [("dead load at the lever end (4:1)", 282)],
         "IM3-EP": [("eye pull", 2553)],
@@ -617,7 +689,8 @@ def load_table(rows) -> list[str]:
 def measures(lv: dict, lid_g: float, cut: dict) -> dict:
     """test -> list of (sample, quantity, unit, check, limit, settles). Tests not listed get one Y/N row."""
     y = "Y/N"
-    s_path = round(cut["S"]["cut_mm"] - 2 * 50, 1)
+    s_path = cut["S"]["path_limit_mm"]          # BL-039: cut - 2 x 50 mm grip = longest + spare
+    ec = im3_ec_load()
 
     def per(n, q, unit, chk, lim, settles="", pre="#"):
         return [(f"{pre}{i}", q, unit, chk, lim, settles) for i in range(1, n + 1)]
@@ -653,7 +726,7 @@ def measures(lv: dict, lid_g: float, cut: dict) -> dict:
         + per(3, "stiffness loss at run-out", "%", "max", "10", "PAHT_FAT", "SXY#")
         + per(2, f"Z cycles at {lv['release']}", "cycles", "min", "100000", "PAHT_FAT", "RZ#"),
         "CA-1@0.40": per(3, "cycles at 0.40 (run-out 100000)", "cycles", "min", "100000", "F-1 OPTION", "XY#"),
-        "IM3-EC": per(3, "cycles at 102 -> 1017 N (run-out 100000)", "cycles", "min", "100000", "P_cheek")
+        "IM3-EC": per(3, f"cycles at {ec['min_n']} -> {ec['peak_n']} N (run-out 100000)", "cycles", "min", "100000", "P_cheek")
         + per(3, "no crack at 10x and held 2553 N after", y, "yes", "Y", "P_cheek", "p#"),
         "CA-5": per(3, "static stub peak", "N", "min", "3666", "PRYING-1.25") +
         [("mean", "mean of the 3 static peaks", "N", "min", "4400", "PRYING-1.25"),
@@ -663,9 +736,9 @@ def measures(lv: dict, lid_g: float, cut: dict) -> dict:
         + per(3, "short-beam interlayer shear", "MPa", "min", "22.6", "FI-INTERLAYER", "SB#"),
         "CA-4": per(2, "no rupture after 8 h at 40 C (282 N link)", y, "yes", "Y", "CREEP"),
         "MT-1c": [("stand", "mean cinch tension, T5 crank 600 cycles", "N", "record", "", "CINCH_STATIC"),
-                  ("stand", "peak-to-peak swing / mean tension", "%", "max", "10", "CINCH_STATIC; CINCH-SWING"),
+                  ("stand", "peak-to-peak swing / mean tension (sets the CA-1 level, ca1_mt1c_confirm.md)", "%", "record", "", "CINCH_STATIC; CINCH-SWING"),
                   ("walk", "mean cinch tension, 10 min walk", "N", "record", "", "CINCH_STATIC"),
-                  ("walk", "peak-to-peak swing / mean tension", "%", "max", "10", "CINCH_STATIC; CINCH-SWING")],
+                  ("walk", "peak-to-peak swing / mean tension (sets the CA-1 level, ca1_mt1c_confirm.md)", "%", "record", "", "CINCH_STATIC; CINCH-SWING")],
         "T9": [("15in", "meat CG aft of the stay plane", "mm", "max", "190", "REV-C-CG"),
                ("19in", "meat CG aft of the stay plane", "mm", "max", "190", "REV-C-CG"),
                ("23in", "meat CG aft of the stay plane", "mm", "max", "190", "REV-C-CG"),
@@ -677,7 +750,7 @@ def measures(lv: dict, lid_g: float, cut: dict) -> dict:
                    ("both", ">= 40 N after the walk OR lid still seated", y, "yes", "Y", "CROWN_PRE_N; MU_LID")],
         "T9-R3c": [("S-full-L", "crown strap path, S kit full", "mm", "max", f"{s_path}", "ROLL-PATH; TORSO-LIN"),
                    ("S-full-R", "crown strap path, S kit full", "mm", "max", f"{s_path}", "ROLL-PATH; TORSO-LIN"),
-                   ("L-6day", "crown strap path, L kit 6-day (sim 438.8)", "mm", "record", "", "ROLL-PATH; TORSO-LIN")],
+                   ("L-6day", f"crown strap path, L kit 6-day (sim {cut['L']['sixday_mid_mm']})", "mm", "record", "", "ROLL-PATH; TORSO-LIN")],
         "T9-R3d": [("lid", "sewn lid mass (ledger booking)", "g", "band", f"{lid_g - 5:.1f}..{lid_g + 5:.1f}", "LID_SLIDER5_G; LID_THREAD"),
                    ("lid", "lid seated as drawn (photo)", y, "yes", "Y", "LID-SEAT")],
         "SL-1": per(5, "slider + cord pull mass", "g", "max", "15.0", "SLIDER-CORD")
@@ -834,13 +907,16 @@ def shopping(reg: dict) -> list[dict]:
         _l("HDPE sheet 0.5 mm (BL-037 stiffener wing)", 0.05, "kg", rp("hdpe_sheet"), "McMaster-Carr", "record hdpe_sheet", "S", "HB-D2", "", "a 300 x 300 mm sheet is about 0.045 kg; minimum order may cost more"),
         _l("ROHACELL 71 IG-F core for the 2 mm strip", 0.02, "m2", rp("rohacell_71_igf"), "Rock West Composites", "record rohacell_71_igf", "S", "BP-1",
            "LONG LEAD: 2 mm is not a stock sheet (3 mm thinnest, back_system_integration.md); sand a 3 mm offcut or special order"),
+        _l("200 g 2x2 carbon twill + epoxy for the 2 mm BP-1 coupon skins", round(bp1_cost()["skins_m2"], 3), "m2",
+           rec_price("cfrp_t300_3k_woven_epoxy_ply"), "left over from the spreader / strip layup (else any composites shop)",
+           "record cfrp_t300_3k_woven_epoxy_ply (BL-039)", "S", "BP-1"),
         _l("HyperD 300 printable, custom camo print", 1, "yd", rp("polyester_300d_printable"), "Ripstop by the Roll (custom print, 1 yd min)", "record polyester_300d_printable", "S", "AB-1, FRAY-1",
            "LONG LEAD: custom print, lead time not published"),
         _l("Martindale abrasion test, accredited lab (2 samples + order fee)", 1, "order", (2 * 66 + 97) * USD_PER_EUR, "Measurlabs (EUR 66 / sample + EUR 97 fee)", LINKS["lab"], "S", "AB-1",
            "LONG LEAD: about 4 weeks after the samples arrive", "the listed price is the ISO 12947-2 Martindale method; ask for ASTM D4966 to 8000 rev"),
     ]
     itemized = {"PT-1", "MT-2", "MT-3", "US-BS", "HB-7", "PT-5", "LL-H", "SL-1", "ST-1", "MT-1", "PT-6", "CS-1", "HS-1",
-                "AB-1", "MT-1c", "B-28 slip"}
+                "AB-1", "MT-1c", "B-28 slip", "BP-1"}
     for tid, r in reg.items():
         if not r["status"].startswith(("ACTIVE", "PROPOSED")) or tid in itemized:
             continue
@@ -1108,10 +1184,11 @@ def guide_md(gr: dict, reg: dict, lv: dict, lds: dict, res: list[dict], ow: list
             L += load_table(lds[t]) + [""]
         if t == "CA-1":
             L += [f"Release level today: **{lv['release']}** (governing flip {lv['flip_gov']}: body "
-                  f"{lv['flip_body']}, 28 mm IM3 cheek {lv['flip_cheek']}; + 0.02). `CA1_fatigue_rig.md` still says "
-                  f"0.310 (its placeholder): use {lv['release']}, as that document tells you to use the level in "
-                  f"force. If MT-1c later shows the cinch cycling, R1 needs {lv['release_cycled']}: the 0.40 run "
-                  f"covers it if it passes.", ""]
+                  f"{lv['flip_body']}, 28 mm IM3 cheek {lv['flip_cheek']}, {lv['flip_cheek_dir']} with the pull 10 deg "
+                  f"further aft; + 0.02), the level in `CA1_fatigue_rig.md` section 1 (confirmed by BL-039, "
+                  f"`analysis/ca1_mt1c_confirm.md`). It holds only if MT-1c finds the cinch static (swing <= "
+                  f"{lv['swing_ok_release_pct']} %). Run the 0.40 bars too: they cover a swing up to "
+                  f"{lv['swing_ok_040_pct']:.0f} %. Above that R1 needs {lv['release_cycled']} (0.40 does not cover it).", ""]
         steps = GUIDE_STEPS.get(t) or [s.strip() for s in r["steps"].split(";") if s.strip()]
         L += ["**Steps**", ""] + [f"{k}. {s[0].upper() + s[1:]}" for k, s in enumerate(steps, 1)] + [""]
         L += [f"**Pass:** {r['pass_fail']}", ""]
@@ -1148,10 +1225,11 @@ def readme_md(ow, sh, lv, rk, reg, res) -> str:
         ts = [o["test"] for o in ow if o["release"] == k and o["stage"] == "run"]
         L += [f"**{lab}**: {what}.  ", f"Tests: {', '.join(dict.fromkeys(ts))}", ""]
     L += ["Frame release R1 needs, in order: CA-1 at the release level **" + str(lv["release"]) + "** (governing flip "
-          f"{lv['flip_gov']} + 0.02, from the BL-027 body and the 28 mm IM3 cheek), IM3-EC and CA-5 on the coupons; MT-1 on "
+          f"{lv['flip_gov']} + 0.02, from the BL-027 body and the 28 mm IM3 cheek; confirmed by BL-039), IM3-EC and CA-5 on the coupons; MT-1 on "
           "the bench; then on the first frames IM3-EP and W-PULL (P1), T9, T1, T2 and MT-1c (P2). "
-          f"If MT-1c shows the meat-strap cinch cycling with the walking g, H1's fatigue drops from "
-          f"{lv['fatigue_static']} to {lv['fatigue_cycled']} and R1 needs CA-1 at **{lv['release_cycled']}** instead.", "",
+          f"MT-1c's measured cinch swing sets the CA-1 level R1 needs (BL-039): swing <= {lv['swing_ok_release_pct']} %: "
+          f"{lv['release']}; up to {lv['swing_ok_040_pct']:.0f} %: the 0.40 pass as well; above: **{lv['release_cycled']}** "
+          f"(H1's fatigue with the cinch fully cycling is {lv['fatigue_cycled']} against {lv['fatigue_static']} static).", "",
          "## Sessions", "", "| session | what | when | hands-on h | machine h |", "|---|---|---|---:|---:|"]
     for gr in GROUPS:
         seq = [o for o in ow if o["group"] == gr["id"]]
@@ -1367,8 +1445,8 @@ def charts(ow, sh, lv, rk, outdir: Path) -> list[Path]:
     a2.axis("off")
     ca = next(d for d in rk if d["test"] == "CA-1")
     a2.text(0, 1, "Frame release R1\n\n"
-                  f"CA-1 release level: {lv['release']}\n  governing flip {lv['flip_gov']}\n  (body {lv['flip_body']}, 28 mm cheek {lv['flip_cheek']})\n  + 0.02\n\n"
-                  f"If MT-1c shows the cinch cycling:\n  fatigue {lv['fatigue_static']} -> {lv['fatigue_cycled']}\n  CA-1 must reach {lv['release_cycled']}\n\n"
+                  f"CA-1 release level: {lv['release']}\n  governing flip {lv['flip_gov']}\n  (body {lv['flip_body']}, 28 mm cheek\n  {lv['flip_cheek']} / {lv['flip_cheek_dir']} at +10 deg)\n  + 0.02\n\n"
+                  f"MT-1c swing sets the level:\n  <= {lv['swing_ok_release_pct']} %: {lv['release']}\n  <= {lv['swing_ok_040_pct']:.0f} %: 0.40\n  above: {lv['release_cycled']}\n\n"
                   f"CA-1 at 0.40 is worth {ca['grams']:.1f} g\n(option F-1, not booked; was 60 g)\nrank {ca['rank']} of {len(rk)}",
             va="top", fontsize=10, family="DejaVu Sans")
     p = outdir / "ranking.png"

@@ -29,7 +29,8 @@ def test_register_has_every_gate_the_ticket_names(kit):
 
 def test_ca1_release_level_from_the_adopted_results(kit):
     lv = kit["levels"]
-    assert lv["flip_gov"] == pytest.approx(max(lv["flip_body"], lv["flip_cheek"]))
+    # BL-039: the cheek at its DIR_SCATTER angle joins the governing flip
+    assert lv["flip_gov"] == pytest.approx(max(lv["flip_body"], lv["flip_cheek"], lv["flip_cheek_dir"]))
     assert lv["flip_body"] == pytest.approx(0.30 / lv["fatigue_static"], abs=2e-3)
     assert lv["release"] >= lv["flip_gov"] + 0.02 - 1e-9
     assert lv["release"] < 0.310                        # the BL-023 placeholder is replaced

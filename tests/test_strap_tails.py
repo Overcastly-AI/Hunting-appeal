@@ -60,10 +60,16 @@ def test_kits_take_their_own_torso_range_from_the_paths():
         ds = F._crown_delta_at(lo) + F._crown_delta_at(hi)
         assert a["path_max_mm"] == pytest.approx(full + max(ds), abs=0.1)
         assert a["path_min_mm"] == pytest.approx(day + min(ds), abs=0.1)
-        assert a["cut_mm"] == pytest.approx(a["path_max_mm"] + 2 * F.TAIL_GRIP_MM, abs=0.1)
-        # two adjusters share the slack: each tail = grip + half the take-up
-        assert a["tail_worst_mm"] == pytest.approx(F.TAIL_GRIP_MM + a["adjust_range_mm"] / 2, abs=0.1)
-        assert a["tail_used_mm"] == pytest.approx(F.TAIL_GRIP_MM + (a["path_max_mm"] - a["path_used_mm"]) / 2, abs=0.1)
+        # BL-039: the cut keeps CROWN_SPARE beyond the longest path + two grips (BL-031 had zero spare)
+        assert F.CROWN_SPARE_MM >= 40.0
+        assert a["cut_mm"] == pytest.approx(a["path_max_mm"] + F.CROWN_SPARE_MM + 2 * F.TAIL_GRIP_MM, abs=0.1)
+        assert a["path_limit_mm"] - a["path_max_mm"] == pytest.approx(F.CROWN_SPARE_MM, abs=0.1)
+        assert min(a["tails_mm"]["full"].values()) >= F.TAIL_GRIP_MM + F.CROWN_SPARE_MM / 2 - 0.1
+        # two adjusters share the slack: each tail = grip + half the take-up (+ half the spare)
+        assert a["tail_worst_mm"] == pytest.approx(F.TAIL_GRIP_MM + (a["adjust_range_mm"] + F.CROWN_SPARE_MM) / 2,
+                                                   abs=0.1)
+        assert a["tail_used_mm"] == pytest.approx(
+            F.TAIL_GRIP_MM + (a["path_max_mm"] + F.CROWN_SPARE_MM - a["path_used_mm"]) / 2, abs=0.1)
         one = F.crown_kit_straps(k, adjusters=1)
         assert one["tail_used_mm"] > a["tail_used_mm"] and one["mass_g"] < a["mass_g"]
         cuts.append(a["cut_mm"])

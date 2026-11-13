@@ -489,16 +489,22 @@ def like_for_like_leaders(size: str = "M") -> list:
 # =====================================================================================================================
 # 6.6 lb: what it would cost in features; estimates and their uncertainty
 # =====================================================================================================================
-FEATURE_CANDIDATES = [   # (row-name needle, system, what the hunter loses, frozen?) - only base rows of CORRIE F
-    ("IMP-2", "bag_pockets", "hydration sleeve (SG sells it separately)", False),
-    ("FP-L/R", "bag_pockets", "hip-reach pockets (the BL-002 access fix for the sheep-load 2nd bottle)", False),
-    ("IMP-5L", "belt", "hipbelt pocket (SG, Exo, Seek sell them separately)", False),
-    ("IMP-4", "bag_pockets", "kill-kit / first-aid door pocket", False),
-    ("IMP-6", "harness", "shoulder-strap phone pocket", False),
-    ("B-11 lash", "bag_shell", "lash tabs + muzzle keepers (rifle carry)", False),
-    ("E-5", "bag_pockets", "pole quiver (trekking pole / tripod leg carry)", False),
-    ("IMP-8", "bag_pockets", "bow cam / limb cup (bow carry: owner-frozen)", True),
-    ("US-", "straps_meat", "under-straps (owner-frozen)", True),
+FEATURE_CANDIDATES = [   # (row-name needle, system, what the hunter loses, frozen?, DESIGN requirement or "")
+    # BL-039: an item that is the pack's only means of meeting a DESIGN.md requirement is not "unfrozen" either: the
+    # greedy may not take it (orchestrator 2026-11-13: moving IMP-2 "drops a DESIGN requirement").
+    # ASSUMPTION REQ-MAP: IMP-2 is R-19's sleeve, IMP-5L the brief's hipbelt pockets (DESIGN.md volume table),
+    # B-11 the R-18 rifle carry (muzzle keepers, DESIGN.md "Rifle carry ... FROZEN") and E-5 the R-20 pole / tripod
+    # carry on CORRIE F (the side wings are gone, FT-S2). Settled by the owner reading the list in section 5.
+    ("IMP-2", "bag_pockets", "hydration sleeve (SG sells it separately)", False, "R-19 hydration sleeve"),
+    ("FP-L/R", "bag_pockets", "hip-reach pockets (the BL-002 access fix for the sheep-load 2nd bottle)", False, ""),
+    ("IMP-5L", "belt", "hipbelt pocket (SG, Exo, Seek sell them separately)", False,
+     "hipbelt pockets (DESIGN.md volume table; project brief)"),
+    ("IMP-4", "bag_pockets", "kill-kit / first-aid door pocket", False, ""),
+    ("IMP-6", "harness", "shoulder-strap phone pocket", False, ""),
+    ("B-11 lash", "bag_shell", "lash tabs + muzzle keepers (rifle carry)", False, "R-18 rifle carry"),
+    ("E-5", "bag_pockets", "pole quiver (trekking pole / tripod leg carry)", False, "R-20 trekking pole / tripod carry"),
+    ("IMP-8", "bag_pockets", "bow cam / limb cup (bow carry: owner-frozen)", True, "R-18 bow carry"),
+    ("US-", "straps_meat", "under-straps (owner-frozen)", True, "R-08 bag-off haul cradle"),
 ]
 
 
@@ -507,10 +513,11 @@ def feature_costs(size: str = "M") -> dict:
     base = cfg_total(rows, "base")
     need = base - TARGET_G
     items = []
-    for needle, system, what, frozen in FEATURE_CANDIDATES:
+    for needle, system, what, frozen, req in FEATURE_CANDIDATES:
         g = sum(r["g"] for r in rows if r["system"] == system and needle in r["name"])
-        items.append({"item": needle, "what": what, "g": round(g, 1), "frozen": frozen})
-    free = sorted([i for i in items if not i["frozen"]], key=lambda i: -i["g"])
+        items.append({"item": needle, "what": what, "g": round(g, 1), "frozen": frozen, "required": req})
+    # BL-039: unfrozen = neither owner-frozen nor a DESIGN requirement
+    free = sorted([i for i in items if not i["frozen"] and not i["required"]], key=lambda i: -i["g"])
     acc, take = 0.0, []
     for i in free:
         if acc >= need:
@@ -776,7 +783,8 @@ def report(res: dict, shots: list) -> str:
     w(f"- Closing the last {fc['gap_g']:.0f} g would take deleting or moving to add-ons: "
       + ", ".join(f"{c['item']} ({c['g']:.0f} g)" for c in fc["candidates"] if c["item"] in fc["greedy_take"])
       + f" = {fc['greedy_g']:.0f} g. " + ("That reaches it" if fc["reaches"] else
-      f"Even every unfrozen candidate ({fc['all_unfrozen_g']:.0f} g) does not reach it")
+      f"Even every unfrozen candidate ({fc['all_unfrozen_g']:.0f} g; owner-frozen features and DESIGN requirements "
+      "excluded) does not reach it")
       + ("" if fc["reserve_booked_bl037"] else
          (f"; only with the belt-foam reserve on top ({fc['with_reserve_g']:.0f} g in all) does it, i.e. a pack with "
           "no pockets, no hip-reach access, no hydration sleeve and a softer belt" if fc["reaches_with_reserve"] else
@@ -900,12 +908,14 @@ def report(res: dict, shots: list) -> str:
     w("## 5. Is 6.6 lb (2994 g, base) reachable?\n")
     w(f"**No.** The lightest scenario is {min(P['base'], A['base']):.0f} g. Gap after tests: "
       f"**{fc['gap_g']:.0f} g ({fc['gap_g'] / OZ:.1f} oz)**.\n")
-    w("What closing it would cost in features (CORRIE F base rows; frozen features cannot be traded, RULES.md rule 9):\n")
-    w("| item | g | what the hunter loses | owner-frozen |")
-    w("|---|---:|---|---|")
+    w("What closing it would cost in features (CORRIE F base rows; owner-frozen features (RULES.md rule 9) and DESIGN.md "
+      "requirements (BL-039) cannot be traded):\n")
+    w("| item | g | what the hunter loses | owner-frozen | DESIGN requirement |")
+    w("|---|---:|---|---|---|")
     for c in sorted(fc["candidates"], key=lambda c: -c["g"]):
-        w(f"| {c['item']} | {c['g']:.1f} | {c['what']} | {'yes' if c['frozen'] else 'no'} |")
-    w(f"\n- Taking the largest unfrozen items first: {', '.join(fc['greedy_take'])} = {fc['greedy_g']:.0f} g "
+        w(f"| {c['item']} | {c['g']:.1f} | {c['what']} | {'yes' if c['frozen'] else 'no'} | {c['required'] or '-'} |")
+    w(f"\n- Taking the largest unfrozen items first (neither owner-frozen nor a DESIGN requirement): "
+      f"{', '.join(fc['greedy_take'])} = {fc['greedy_g']:.0f} g "
       + ("reaches 6.6 lb only by stripping the pack of its pockets and hip-reach access." if fc["reaches"] else
          f"does not reach it; all unfrozen candidates together are {fc['all_unfrozen_g']:.0f} g.")
       + ("" if fc["reserve_booked_bl037"] else

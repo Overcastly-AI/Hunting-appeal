@@ -13,8 +13,8 @@
   },
   "P": {
    "base": 3679.4,
-   "as_hunted": 3996.5,
-   "meat_trip": 4192.5,
+   "as_hunted": 3997.9,
+   "meat_trip": 4193.9,
    "by_system_base": {
     "frame": 1071.8,
     "back": 413.6,
@@ -37,8 +37,8 @@
   },
   "A": {
    "base": 3092.2,
-   "as_hunted": 3409.3,
-   "meat_trip": 3605.3,
+   "as_hunted": 3410.8,
+   "meat_trip": 3606.8,
    "by_system_base": {
     "frame": 1067.8,
     "back": 363.6,
@@ -69,13 +69,13 @@
    },
    "P": {
     "base": 3650.9,
-    "as_hunted": 3968.0,
-    "meat_trip": 4164.0
+    "as_hunted": 3969.4,
+    "meat_trip": 4165.4
    },
    "A": {
     "base": 3074.4,
-    "as_hunted": 3391.5,
-    "meat_trip": 3587.5
+    "as_hunted": 3392.9,
+    "meat_trip": 3588.9
    }
   },
   "M": {
@@ -86,13 +86,13 @@
    },
    "P": {
     "base": 3679.4,
-    "as_hunted": 3996.5,
-    "meat_trip": 4192.5
+    "as_hunted": 3997.9,
+    "meat_trip": 4193.9
    },
    "A": {
     "base": 3092.2,
-    "as_hunted": 3409.3,
-    "meat_trip": 3605.3
+    "as_hunted": 3410.8,
+    "meat_trip": 3606.8
    }
   },
   "L": {
@@ -103,13 +103,13 @@
    },
    "P": {
     "base": 3704.3,
-    "as_hunted": 4021.3,
-    "meat_trip": 4217.4
+    "as_hunted": 4022.8,
+    "meat_trip": 4218.8
    },
    "A": {
     "base": 3108.3,
-    "as_hunted": 3425.4,
-    "meat_trip": 3621.4
+    "as_hunted": 3426.8,
+    "meat_trip": 3622.8
    }
   },
   "XL": {
@@ -120,13 +120,13 @@
    },
    "P": {
     "base": 3741.1,
-    "as_hunted": 4058.2,
-    "meat_trip": 4254.2
+    "as_hunted": 4059.6,
+    "meat_trip": 4255.6
    },
    "A": {
     "base": 3136.3,
-    "as_hunted": 3453.4,
-    "meat_trip": 3649.4
+    "as_hunted": 3454.8,
+    "meat_trip": 3650.8
    }
   },
   "XXL": {
@@ -137,13 +137,13 @@
    },
    "P": {
     "base": 3770.8,
-    "as_hunted": 4087.9,
-    "meat_trip": 4283.9
+    "as_hunted": 4089.4,
+    "meat_trip": 4285.4
    },
    "A": {
     "base": 3156.0,
-    "as_hunted": 3473.1,
-    "meat_trip": 3669.1
+    "as_hunted": 3474.6,
+    "meat_trip": 3670.6
    }
   }
  },
@@ -478,8 +478,8 @@
    "gate": "first-article: S15 elbow-swing / sling check (BL-009)",
    "delta_g": {
     "base": 30.6,
-    "as_hunted": 177.7,
-    "meat_trip": 319.3
+    "as_hunted": 179.2,
+    "meat_trip": 320.8
    },
    "rows": [
     {
@@ -1226,10 +1226,10 @@
     },
     {
      "system": "straps_compression",
-     "name": "CORRIE F: add-on crown_straps: B-28 crown straps (2), kit M: 25 mm 0.967 m, heavy ladder lock at each end (B-25 toggle tab, hinge-band tab), 2 tail keepers each",
-     "g": 78.09,
+     "name": "CORRIE F: add-on crown_straps: B-28 crown straps (2), kit M: 25 mm 1.007 m, heavy ladder lock at each end (B-25 toggle tab, hinge-band tab), 2 tail keepers each",
+     "g": 79.53,
      "cfg": "as_hunted",
-     "source": "crown_kit_straps('M'): rolled-top paths (CROWN_ROLLED, ROLL-PATH) + torso change (TORSO-LIN) + 2 x TAIL_GRIP (ASSUMPTION); poly_webbing_25mm, ladder_lock_25mm_heavy records; TOGGLE_G and the elastic keeper ASSUMPTIONS (attach_diet, attach_system)"
+     "source": "crown_kit_straps('M'): rolled-top paths (CROWN_ROLLED, ROLL-PATH) + torso change (TORSO-LIN) + 40 mm spare (CROWN-SPARE, BL-039) + 2 x TAIL_GRIP (ASSUMPTION); poly_webbing_25mm, ladder_lock_25mm_heavy records; TOGGLE_G and the elastic keeper ASSUMPTIONS (attach_diet, attach_system)"
     },
     {
      "system": "fly",
@@ -2339,10 +2339,10 @@
     },
     {
      "system": "straps_compression",
-     "name": "CORRIE F: add-on crown_straps: B-28 crown straps (2), kit M: 25 mm 0.967 m, heavy ladder lock at each end (B-25 toggle tab, hinge-band tab), 2 tail keepers each",
-     "g": 78.09,
+     "name": "CORRIE F: add-on crown_straps: B-28 crown straps (2), kit M: 25 mm 1.007 m, heavy ladder lock at each end (B-25 toggle tab, hinge-band tab), 2 tail keepers each",
+     "g": 79.53,
      "cfg": "as_hunted",
-     "source": "crown_kit_straps('M'): rolled-top paths (CROWN_ROLLED, ROLL-PATH) + torso change (TORSO-LIN) + 2 x TAIL_GRIP (ASSUMPTION); poly_webbing_25mm, ladder_lock_25mm_heavy records; TOGGLE_G and the elastic keeper ASSUMPTIONS (attach_diet, attach_system)"
+     "source": "crown_kit_straps('M'): rolled-top paths (CROWN_ROLLED, ROLL-PATH) + torso change (TORSO-LIN) + 40 mm spare (CROWN-SPARE, BL-039) + 2 x TAIL_GRIP (ASSUMPTION); poly_webbing_25mm, ladder_lock_25mm_heavy records; TOGGLE_G and the elastic keeper ASSUMPTIONS (attach_diet, attach_system)"
     },
     {
      "system": "fly",
@@ -3053,10 +3053,10 @@
     },
     {
      "system": "straps_compression",
-     "name": "CORRIE F: add-on crown_straps: B-28 crown straps (2), kit M: 25 mm 0.967 m, heavy ladder lock at each end (B-25 toggle tab, hinge-band tab), 2 tail keepers each",
-     "g": -78.09,
+     "name": "CORRIE F: add-on crown_straps: B-28 crown straps (2), kit M: 25 mm 1.007 m, heavy ladder lock at each end (B-25 toggle tab, hinge-band tab), 2 tail keepers each",
+     "g": -79.53,
      "cfg": "as_hunted",
-     "source": "crown_kit_straps('M'): rolled-top paths (CROWN_ROLLED, ROLL-PATH) + torso change (TORSO-LIN) + 2 x TAIL_GRIP (ASSUMPTION); poly_webbing_25mm, ladder_lock_25mm_heavy records; TOGGLE_G and the elastic keeper ASSUMPTIONS (attach_diet, attach_system)"
+     "source": "crown_kit_straps('M'): rolled-top paths (CROWN_ROLLED, ROLL-PATH) + torso change (TORSO-LIN) + 40 mm spare (CROWN-SPARE, BL-039) + 2 x TAIL_GRIP (ASSUMPTION); poly_webbing_25mm, ladder_lock_25mm_heavy records; TOGGLE_G and the elastic keeper ASSUMPTIONS (attach_diet, attach_system)"
     },
     {
      "system": "fly",
@@ -3806,7 +3806,7 @@
    }
   },
   "corrie_f_as_hunted": {
-   "total_g": 3684.2,
+   "total_g": 3685.7,
    "by_system": {
     "frame": 1134.0,
     "back": 413.6,
@@ -3817,12 +3817,12 @@
     "pouch": 47.8,
     "fly": 72.1,
     "straps_meat": 283.3,
-    "straps_compression": 218.1,
+    "straps_compression": 219.5,
     "attachment": 191.1,
     "misc": 25.8
    },
    "like_for_like": {
-    "bag_side": 1358.4,
+    "bag_side": 1359.8,
     "suspension": 2300.0,
     "misc": 25.8
    }
@@ -4020,14 +4020,14 @@
     "pct": 44.0
    },
    "P": {
-    "ours_g": 3790.1,
-    "delta_g": 1153.1,
+    "ours_g": 3791.5,
+    "delta_g": 1154.5,
     "pct": 44.0
    },
    "A": {
-    "ours_g": 3202.9,
-    "delta_g": 565.9,
-    "pct": 21.0
+    "ours_g": 3204.3,
+    "delta_g": 567.3,
+    "pct": 22.0
    }
   },
   {
@@ -4088,13 +4088,13 @@
     "pct": 35.0
    },
    "P": {
-    "ours_g": 3805.3,
-    "delta_g": 993.3,
+    "ours_g": 3806.7,
+    "delta_g": 994.7,
     "pct": 35.0
    },
    "A": {
-    "ours_g": 3218.1,
-    "delta_g": 406.1,
+    "ours_g": 3219.5,
+    "delta_g": 407.5,
     "pct": 14.0
    }
   },
@@ -4112,13 +4112,13 @@
     "pct": 41.0
    },
    "P": {
-    "ours_g": 3805.3,
-    "delta_g": 1097.3,
+    "ours_g": 3806.7,
+    "delta_g": 1098.7,
     "pct": 41.0
    },
    "A": {
-    "ours_g": 3218.1,
-    "delta_g": 510.1,
+    "ours_g": 3219.5,
+    "delta_g": 511.5,
     "pct": 19.0
    }
   },
@@ -4162,14 +4162,14 @@
     "pct": 127.0
    },
    "P": {
-    "ours_g": 3790.1,
-    "delta_g": 2117.1,
+    "ours_g": 3791.5,
+    "delta_g": 2118.5,
     "pct": 127.0
    },
    "A": {
-    "ours_g": 3202.9,
-    "delta_g": 1529.9,
-    "pct": 91.0
+    "ours_g": 3204.3,
+    "delta_g": 1531.3,
+    "pct": 92.0
    }
   },
   {
@@ -4186,13 +4186,13 @@
     "pct": 40.0
    },
    "P": {
-    "ours_g": 3805.3,
-    "delta_g": 1083.3,
+    "ours_g": 3806.7,
+    "delta_g": 1084.7,
     "pct": 40.0
    },
    "A": {
-    "ours_g": 3218.1,
-    "delta_g": 496.1,
+    "ours_g": 3219.5,
+    "delta_g": 497.5,
     "pct": 18.0
    }
   }
@@ -4205,70 +4205,78 @@
     "item": "IMP-2",
     "what": "hydration sleeve (SG sells it separately)",
     "g": 32.6,
-    "frozen": false
+    "frozen": false,
+    "required": "R-19 hydration sleeve"
    },
    {
     "item": "FP-L/R",
     "what": "hip-reach pockets (the BL-002 access fix for the sheep-load 2nd bottle)",
     "g": 33.5,
-    "frozen": false
+    "frozen": false,
+    "required": ""
    },
    {
     "item": "IMP-5L",
     "what": "hipbelt pocket (SG, Exo, Seek sell them separately)",
     "g": 15.2,
-    "frozen": false
+    "frozen": false,
+    "required": "hipbelt pockets (DESIGN.md volume table; project brief)"
    },
    {
     "item": "IMP-4",
     "what": "kill-kit / first-aid door pocket",
     "g": 23.9,
-    "frozen": false
+    "frozen": false,
+    "required": ""
    },
    {
     "item": "IMP-6",
     "what": "shoulder-strap phone pocket",
     "g": 11.1,
-    "frozen": false
+    "frozen": false,
+    "required": ""
    },
    {
     "item": "B-11 lash",
     "what": "lash tabs + muzzle keepers (rifle carry)",
     "g": 12.0,
-    "frozen": false
+    "frozen": false,
+    "required": "R-18 rifle carry"
    },
    {
     "item": "E-5",
     "what": "pole quiver (trekking pole / tripod leg carry)",
     "g": 5.4,
-    "frozen": false
+    "frozen": false,
+    "required": "R-20 trekking pole / tripod carry"
    },
    {
     "item": "IMP-8",
     "what": "bow cam / limb cup (bow carry: owner-frozen)",
     "g": 7.5,
-    "frozen": true
+    "frozen": true,
+    "required": "R-18 bow carry"
    },
    {
     "item": "US-",
     "what": "under-straps (owner-frozen)",
     "g": 105.4,
-    "frozen": true
+    "frozen": true,
+    "required": "R-08 bag-off haul cradle"
    }
   ],
-  "all_unfrozen_g": 133.7,
+  "all_unfrozen_g": 68.5,
   "greedy_take": [
    "FP-L/R",
-   "IMP-2",
    "IMP-4",
-   "IMP-5L"
+   "IMP-6"
   ],
-  "greedy_g": 105.2,
-  "reaches": true,
+  "greedy_g": 68.5,
+  "reaches": false,
   "belt_foam_reserve_g": 0.0,
   "reserve_booked_bl037": true,
-  "with_reserve_g": 133.7,
-  "reaches_with_reserve": true
+  "with_reserve_g": 68.5,
+  "reaches_with_reserve": false
  },
  "bl011_headline_base_g": 3274.2,
  "h1_fatigue": {
