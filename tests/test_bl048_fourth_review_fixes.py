@@ -45,17 +45,21 @@ def test_mc_fixture_pin_is_a_hardened_m5x40_dowel():
     assert H.pin_bending(1019.0, 20.0, 8.0, 5.0, 2.4)["sf_yield"] == pytest.approx(1.24, abs=0.01)
 
 
-def test_ma_tl1_reads_the_bl045_record_with_a_pull_vector():
+def test_ma_tl1_reads_the_bl047_record_with_two_rigs():
     ct = K.crown_tube()
-    rec = json.loads((HERE / "analysis/crown_and_fairlead_checks.json").read_text())["crown_tube"]
-    assert ct["proof_n"] == round(rec["proof_tl1_n"]) == 497
-    assert ct["pull"]["below_horizontal_deg"] == pytest.approx(57.2, abs=0.1)
-    assert ct["pull"]["outboard_share"] == pytest.approx(0.136, abs=0.001)
-    u = ct["pull"]
-    assert u["down"] ** 2 + u["aft"] ** 2 + u["outboard"] ** 2 == pytest.approx(1.0, abs=0.01)
+    rec = json.loads((HERE / "analysis/bl047_frame_items.json").read_text())["tl1"]
+    assert ct["proof_n"] == round(rec["proof_publish_n"]) == 497
+    A, B = ct["rigs"]["A"], ct["rigs"]["B"]
+    assert A["below_horizontal_deg"] == pytest.approx(22.2, abs=0.1) and A["guy_n"] == 454
+    assert B["below_horizontal_deg"] == pytest.approx(58.1, abs=0.1) and B["outboard_pct"] == pytest.approx(13.6)
+    assert A["crown_strap_n"] == B["crown_strap_n"] == 43
+    for r in (A, B):
+        assert r["down"] ** 2 + r["aft"] ** 2 + r["outboard"] ** 2 == pytest.approx(1.0, abs=0.01)
     t = K.tl1_patch()
-    assert "57 deg below horizontal" in t["steps"] and "14 % outboard" in t["steps"]
-    assert "UNLOADED" in t["steps"] and "anchor the run's spine end" in t["steps"]
+    assert "RIG A" in t["steps"] and "RIG B" in t["steps"] and "58 deg below horizontal" in t["steps"]
+    assert "43 N" in t["steps"] and "spine stub 25.0 mm fore" in t["steps"]
+    import mfg_corrie_f_rev3 as M
+    assert M.TL1_N == 497
 
 
 def test_m2_rt_cut_rounded_up_with_the_grip_and_an_exception():

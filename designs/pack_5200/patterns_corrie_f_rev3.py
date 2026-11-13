@@ -310,7 +310,13 @@ HE_EYE = round(_HEG["eye_flat"])                          # box top -> fold on t
 HE_FOLD = B18_BELOW + HE_BOX_GAP + HE_BOX[1] + HE_EYE     # fold from a raw end (raw end = B-01 cut edge)
 HE_CUT = 2.0 * HE_FOLD                                    # BL-044: 2 x (12 + 4 + 7 + 25) = 96 (BL-041: 86)
 HE_NECK_W = HE_W - 2 * HE_NECK_EDGE                       # 18
-HE_NECK_TOL = 1.0                                         # ASSUMPTION HE-NECK-TOL (bag_attach.HINGE_NECK_TOL): 18 +/- 1
+HE_NECK_TOL = 0.6                                         # BL-048 DECISION HE-NECK-GAUGE (orchestrator item 4): the
+#   neck is folded on an 18.0 mm gauge bar (so the webbing's width tolerance goes into the fold depth, not the neck)
+#   and QC'd with an 18.6 mm go / no-go slot: neck 18.0 +0.6 / -0. With the printed throat 0.15 mm narrow a face
+#   (PRINT_TOL, a 0.6 mm-nozzle PAHT-CF slot, review m-1) the 18.6 neck keeps 0.5 mm a side in the 20 mm throat; the
+#   frame's bag_attach.HINGE_NECK_TOL (1.0) stays the throat's sizing basis. Was ASSUMPTION HE-NECK-TOL 18 +/- 1.
+#   Settled by HE-FIT (5 sewn necks through the slot gauge)
+PRINT_TOL = 0.15                                          # BL-048: printed slot running narrow, per face (review m-1)
 HE_CUT_BL041 = 86.0                                       # the BL-041 HE-PIN cut (box 34 x 10 at +4..+14, 17 mm eye): ledger
 # ---- BL-040 B-2 DECISION RT-MATE: the roll-top clips' second buckle half sits on a webbing tab on each gusset, as the
 # cloth-pass roll model put it (huntkit.viz3d.corrie_f CLIP_BELOW_SEAM_MM = 150 mm below the collar seam, tab hanging

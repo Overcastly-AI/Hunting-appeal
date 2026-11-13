@@ -548,6 +548,48 @@ def strap_lengths(res: dict) -> dict:
     return out
 
 
+HINGE_JSON = HERE / "analysis" / "hinge_eye_vectors.json"
+HINGE_ROW_N = 1019.0          # bag-on hinge row, factored (mfg_corrie_f_rev3.HINGE_N; load_standard rev C)
+
+
+def hinge_vectors(write: bool = True) -> dict:
+    """BL-048 (orchestrator, for BL-047): the hinge eye force VECTOR on the frame from the rev 3 fine sims (the drapes
+    used above), 15 / 19 / 23 in, fill and meat, both sides. The sim's report books the pin's force ON THE BAG
+    (clothsim Pins.forces = -k (x - p)); the frame gets minus that (as im3_body_simloads.frame_forces_from_run).
+    Frame axes: x lateral (+ = the R side's outboard), y towards the bag, z up. Per row: the 1 g vector (N), its
+    unit vector, the angle in the stay's y-z plane (theta = atan2(fz, fy), 0 = straight into the bag, -90 = down), the
+    inboard angle out of that plane, and the vector scaled to the bag's 1019 N factored row."""
+    rows = []
+    for t in TORSOS:
+        d = json.loads((ROOT / "outputs" / "clothsim" / "corrie_f" / RUN.format(t=t) / "results.json").read_text())
+        for case in ("fill", "meat"):
+            att = d["cases"][case]["attachments"]
+            for side, sx in (("R", 1.0), ("L", -1.0)):
+                f = -np.asarray(att[f"hinge_{side}"]["force_xyz_n"], float)       # on the frame
+                n = float(np.linalg.norm(f))
+                u = f / n
+                rows.append({"torso": t, "case": case, "side": side, "f_1g_n": [round(float(v), 1) for v in f],
+                             "n_1g": round(n, 1), "unit": [round(float(v), 3) for v in u],
+                             "inboard_share": round(float(-sx * u[0]), 3), "up_share": round(float(u[2]), 3),
+                             "theta_yz_deg": round(math.degrees(math.atan2(f[2], f[1])), 1),
+                             "inboard_deg": round(math.degrees(math.atan2(-sx * f[0], math.hypot(f[1], f[2]))), 1),
+                             "at_1019_n": [round(float(v) * HINGE_ROW_N, 1) for v in u]})
+    worst_in = max(rows, key=lambda r: (r["inboard_share"], r["up_share"]))
+    worst_up = max(rows, key=lambda r: r["up_share"])
+    out = {"source": "outputs/clothsim/corrie_f/" + RUN + "/results.json (rev 3 fine, cases fill / meat)",
+           "convention": "force ON THE FRAME (minus the clothsim report's pin force on the bag); x + = R outboard, "
+                         "y + = towards the bag, z + = up; unit vectors are 1 g sim directions",
+           "hinge_row_n": HINGE_ROW_N, "rows": rows,
+           "worst_inboard": worst_in, "worst_up": worst_up,
+           "all_inboard_up": all(r["inboard_share"] > 0 and r["up_share"] > 0 for r in rows),
+           "note": "the 1 g sim includes the cinched under-straps (straight cables, DRAPE-US) and the IM / guy / crown "
+                   "straps; the hinge then takes the floor's lateral spread and is pulled up by the cinch. The rev C "
+                   "governing hinge vector (beam model) is the other direction BL-047 checks."}
+    if write:
+        HINGE_JSON.write_text(json.dumps(out, indent=1))
+    return out
+
+
 # ------------------------------------------------------------------------------------------------ test piece
 def export_test_piece(mesh=None, out_dir: Path = KIT_PIECES) -> dict:
     """US test piece: the R stay z 40-160 with the hinge, US1 and US2 fairleads, cut from the print (frame
@@ -756,6 +798,12 @@ def derive() -> dict:
 
 def main(argv=None) -> int:
     argv = sys.argv[1:] if argv is None else argv
+    if "--hinge" in argv:
+        h = hinge_vectors()
+        for r in h["rows"]:
+            print(r["torso"], r["case"], r["side"], r["f_1g_n"], r["n_1g"], "theta", r["theta_yz_deg"], "inboard", r["inboard_deg"])
+        print("worst inboard", h["worst_inboard"]["unit"], "all inboard-up", h["all_inboard_up"])
+        return 0
     if "--derive" in argv:
         res = derive()
         print(json.dumps({k: res[k] for k in ("corner_keepers", "strap_lengths")}, indent=1))

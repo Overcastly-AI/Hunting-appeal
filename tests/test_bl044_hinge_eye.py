@@ -215,7 +215,7 @@ def test_test_kit_screens_are_named_for_this_ticket():
 # ---------------------------------------------------------------- 7 release status
 def test_release_not_ready_until_a_fourth_review():
     open_ = M.open_findings()
-    assert open_ == []                                                                 # all three reviews' majors fixed
+    assert open_ == ["N-1"]                     # three reviews' majors fixed; BL-048: the fourth review's N-1 waits on the frame
     assert M.FOURTH_REVIEW_DONE is False and not M.ready_to_cut()
 
 
@@ -295,7 +295,11 @@ def test_b25_on_the_bl045_clamp():
     assert P.F.SPINE_CLAMP_HALF == C.SPINE_CLAMP_HALF_X and P.F.SPINE_CLAMP_COLLAR == C.SPINE_CLAMP_COLLAR
     assert P.F.PAWL_HOUSING_UP == C.PAWL_HOUSING_UP and P.F.PAWL_HOUSING_HALF_W == C.PAWL_HOUSING_HALF_W
     t = P.F.b25_topology()
-    assert t["cut_mm"] - P.F.B25_CUT_BL043_MM == pytest.approx(C.B25_CUT_CHANGE_MM + 2 * (C.SPINE_CLAMP_COLLAR - 12.0), abs=0.15)
+    # BL-048 M-B: corrie_f's B-25 now uses the record's 1.5 mm ply (crown_spine_clamp still books 1.2): each side's run
+    # is 0.3 mm shorter and its half wrap pi x 0.15 longer
+    dt = P.F.B25_T - C.B25_T
+    assert t["cut_mm"] - P.F.B25_CUT_BL043_MM == pytest.approx(C.B25_CUT_CHANGE_MM + 2 * (C.SPINE_CLAMP_COLLAR - 12.0)
+                                                               + 2 * (math.pi / 2 - 1) * dt, abs=0.15)
     assert t["pawl_ok"] and t["band_to_clamp_ok"]
     assert t["clamp_half_x"] <= t["clamp_envelope"]["half_x_max_mm"]
     assert P.F.guy_bridle(wide=True)["length_mm"] == pytest.approx(386.5)       # the booked BL-041 part is unchanged

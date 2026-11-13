@@ -249,6 +249,14 @@ T9-R3c-03,T9-R3c,G6,BAG-BATCH,L-6day,"crown strap path, L kit 6-day (sim 438.8)"
 BP-3-01,BP-3,G6,CARRY,1,"passes the register criterion: every sensor <= 14 kPa at 15, 19 and 23 in; record whether the z 100 / 160 sensors read > 1 kPa (rails bear below z 190)",Y/N,yes,Y,,,,,
 RF-1-01,RF-1,G6,CARRY,1,passes the register criterion: peak <= 14 kPa and comfort OK,Y/N,yes,Y,,,,,C-8 RAIL
 T1-01,T1,G6,R1,1,"passes the register criterion: no crack, tap clean, crown set <= 1 mm, crown slip 0, re-load within 10 %, FEA +/-30 %; z 234 step <= 0.5 mm after unload",Y/N,yes,Y,,,,,HA-LS-1 T1
+T1c-SW-01,T1c-SW,G6,R1,run1,"sway |D1-D2|/2 at 225 lb, lifters snug",mm,max,3,,,,,GNL-CROWN
+T1c-SW-02,T1c-SW,G6,R1,run1,sway after unloading,mm,max,0.5,,,,,GNL-CROWN
+T1c-SW-03,T1c-SW,G6,R1,run1,sway(225) / sway(112),ratio,max,2.5,,,,,GNL-CROWN
+T1c-SW-04,T1c-SW,G6,R1,run1,Southwell P_cr (if sway > 0.3 mm),lb,min,340,,,,,GNL-CROWN
+T1c-SW-05,T1c-SW,G6,R1,run1,D3 crown sideways at 225 lb,mm,max,3,,,,,GNL-CROWN
+T1c-SW-06,T1c-SW,G6,R1,run2,"sway |D1-D2|/2 at 225 lb, lifters cinched",mm,max,3,,,,,GNL-CROWN
+T1c-SW-07,T1c-SW,G6,R1,run1,S1 lifter tension at 225 lb,N,record,-,,,,,LIFT-T
+T1c-SW-08,T1c-SW,G6,R1,run1,S2 lower strap tension at 225 lb,N,record,-,,,,,STRAP-SLING
 T3-01,T3,G6,CARRY,1,passes the register criterion: as T1; crown legs slide freely after,Y/N,yes,Y,,,,,
 T2-01,T2,G6,R1,1,passes the register criterion: as T1,Y/N,yes,Y,,,,,HA-LS-1 T2
 MT-1c-01,MT-1c,G6,R1,stand,"mean cinch tension per anchor, T5 crank 600 cycles",N,max,150,,,,,CINCH_STATIC

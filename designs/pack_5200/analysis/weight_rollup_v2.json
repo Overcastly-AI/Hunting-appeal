@@ -12,9 +12,9 @@
    "meat_trip": 3967.4
   },
   "P": {
-   "base": 3786.1,
-   "as_hunted": 4104.7,
-   "meat_trip": 4300.7,
+   "base": 3786.3,
+   "as_hunted": 4104.9,
+   "meat_trip": 4300.9,
    "by_system_base": {
     "frame": 1158.0,
     "back": 413.6,
@@ -25,20 +25,20 @@
     "pouch": 0,
     "fly": 5.9,
     "straps_meat": 416.9,
-    "straps_compression": 243.0,
+    "straps_compression": 243.2,
     "attachment": 292.5,
     "misc": 25.8
    },
    "like_for_like_base": {
-    "bag_side": 1481.4,
+    "bag_side": 1481.6,
     "suspension": 2279.0,
     "misc": 25.8
    }
   },
   "A": {
-   "base": 3199.0,
-   "as_hunted": 3517.5,
-   "meat_trip": 3713.5,
+   "base": 3199.2,
+   "as_hunted": 3517.7,
+   "meat_trip": 3713.7,
    "by_system_base": {
     "frame": 1154.0,
     "back": 363.6,
@@ -49,12 +49,12 @@
     "pouch": 0,
     "fly": 5.9,
     "straps_meat": 300.9,
-    "straps_compression": 141.4,
+    "straps_compression": 141.6,
     "attachment": 188.0,
     "misc": 18.8
    },
    "like_for_like_base": {
-    "bag_side": 1072.5,
+    "bag_side": 1072.7,
     "suspension": 2107.7,
     "misc": 18.8
    }
@@ -68,14 +68,14 @@
     "meat_trip": 3939.5
    },
    "P": {
-    "base": 3757.7,
-    "as_hunted": 4076.2,
-    "meat_trip": 4272.2
+    "base": 3757.8,
+    "as_hunted": 4076.4,
+    "meat_trip": 4272.4
    },
    "A": {
-    "base": 3181.2,
-    "as_hunted": 3499.7,
-    "meat_trip": 3695.7
+    "base": 3181.3,
+    "as_hunted": 3499.9,
+    "meat_trip": 3695.9
    }
   },
   "M": {
@@ -85,14 +85,14 @@
     "meat_trip": 3967.4
    },
    "P": {
-    "base": 3786.1,
-    "as_hunted": 4104.7,
-    "meat_trip": 4300.7
+    "base": 3786.3,
+    "as_hunted": 4104.9,
+    "meat_trip": 4300.9
    },
    "A": {
-    "base": 3199.0,
-    "as_hunted": 3517.5,
-    "meat_trip": 3713.5
+    "base": 3199.2,
+    "as_hunted": 3517.7,
+    "meat_trip": 3713.7
    }
   },
   "L": {
@@ -102,14 +102,14 @@
     "meat_trip": 3991.5
    },
    "P": {
-    "base": 3811.0,
-    "as_hunted": 4129.5,
-    "meat_trip": 4325.5
+    "base": 3811.2,
+    "as_hunted": 4129.7,
+    "meat_trip": 4325.7
    },
    "A": {
-    "base": 3215.0,
-    "as_hunted": 3533.6,
-    "meat_trip": 3729.6
+    "base": 3215.2,
+    "as_hunted": 3533.7,
+    "meat_trip": 3729.7
    }
   },
   "XL": {
@@ -119,14 +119,14 @@
     "meat_trip": 4027.5
    },
    "P": {
-    "base": 3847.8,
-    "as_hunted": 4166.4,
-    "meat_trip": 4362.4
+    "base": 3848.0,
+    "as_hunted": 4166.6,
+    "meat_trip": 4362.6
    },
    "A": {
-    "base": 3243.1,
-    "as_hunted": 3561.6,
-    "meat_trip": 3757.6
+    "base": 3243.2,
+    "as_hunted": 3561.8,
+    "meat_trip": 3757.8
    }
   },
   "XXL": {
@@ -136,14 +136,14 @@
     "meat_trip": 4055.6
    },
    "P": {
-    "base": 3877.6,
-    "as_hunted": 4196.1,
-    "meat_trip": 4392.1
+    "base": 3877.8,
+    "as_hunted": 4196.3,
+    "meat_trip": 4392.3
    },
    "A": {
-    "base": 3262.8,
-    "as_hunted": 3581.3,
-    "meat_trip": 3777.3
+    "base": 3263.0,
+    "as_hunted": 3581.5,
+    "meat_trip": 3777.5
    }
   }
  },
@@ -526,9 +526,9 @@
    "kind": "design",
    "gate": "first-article: S15 elbow-swing / sling check (BL-009)",
    "delta_g": {
-    "base": 51.1,
-    "as_hunted": 199.7,
-    "meat_trip": 341.3
+    "base": 51.3,
+    "as_hunted": 199.9,
+    "meat_trip": 341.5
    },
    "rows": [
     {
@@ -1744,8 +1744,8 @@
     },
     {
      "system": "straps_compression",
-     "name": "CORRIE F: BL-031: roll-top clip straps cut 350 -> 560 mm (2)",
-     "g": 7.56,
+     "name": "CORRIE F: BL-031: roll-top clip straps cut 350 -> 565 mm (2)",
+     "g": 7.74,
      "cfg": "base",
      "source": "strap_tails.roll_row x poly_webbing_25mm record"
     },
@@ -1884,8 +1884,8 @@
     },
     {
      "system": "attachment",
-     "name": "CORRIE F: BL-044: B-25 on the sized spine clamp and the printed spine (25.02 mm fore of the bar) 479.4 -> 511.9 mm",
-     "g": 0.91,
+     "name": "CORRIE F: BL-044: B-25 on the sized spine clamp and the printed spine (25.02 mm fore of the bar) 479.4 -> 512.2 mm",
+     "g": 0.92,
      "cfg": "base",
      "source": "corrie_f.b25_topology with crown_spine_clamp constants (+44.5 run, collar 12 -> 6) x poly_webbing_38mm mass_g_m (record)"
     },
@@ -2948,8 +2948,8 @@
     },
     {
      "system": "straps_compression",
-     "name": "CORRIE F: BL-031: roll-top clip straps cut 350 -> 560 mm (2)",
-     "g": 7.56,
+     "name": "CORRIE F: BL-031: roll-top clip straps cut 350 -> 565 mm (2)",
+     "g": 7.74,
      "cfg": "base",
      "source": "strap_tails.roll_row x poly_webbing_25mm record"
     },
@@ -3088,8 +3088,8 @@
     },
     {
      "system": "attachment",
-     "name": "CORRIE F: BL-044: B-25 on the sized spine clamp and the printed spine (25.02 mm fore of the bar) 479.4 -> 511.9 mm",
-     "g": 0.91,
+     "name": "CORRIE F: BL-044: B-25 on the sized spine clamp and the printed spine (25.02 mm fore of the bar) 479.4 -> 512.2 mm",
+     "g": 0.92,
      "cfg": "base",
      "source": "corrie_f.b25_topology with crown_spine_clamp constants (+44.5 run, collar 12 -> 6) x poly_webbing_38mm mass_g_m (record)"
     },
@@ -3753,8 +3753,8 @@
     },
     {
      "system": "straps_compression",
-     "name": "CORRIE F: BL-031: roll-top clip straps cut 350 -> 560 mm (2)",
-     "g": -7.56,
+     "name": "CORRIE F: BL-031: roll-top clip straps cut 350 -> 565 mm (2)",
+     "g": -7.74,
      "cfg": "base",
      "source": "strap_tails.roll_row x poly_webbing_25mm record"
     },
@@ -3893,8 +3893,8 @@
     },
     {
      "system": "attachment",
-     "name": "CORRIE F: BL-044: B-25 on the sized spine clamp and the printed spine (25.02 mm fore of the bar) 479.4 -> 511.9 mm",
-     "g": -0.91,
+     "name": "CORRIE F: BL-044: B-25 on the sized spine clamp and the printed spine (25.02 mm fore of the bar) 479.4 -> 512.2 mm",
+     "g": -0.92,
      "cfg": "base",
      "source": "corrie_f.b25_topology with crown_spine_clamp constants (+44.5 run, collar 12 -> 6) x poly_webbing_38mm mass_g_m (record)"
     },
@@ -4106,7 +4106,7 @@
  },
  "configs": {
   "corrie_f_base": {
-   "total_g": 3473.9,
+   "total_g": 3474.1,
    "by_system": {
     "frame": 1220.2,
     "back": 413.6,
@@ -4117,18 +4117,18 @@
     "pouch": 0,
     "fly": 5.9,
     "straps_meat": 300.9,
-    "straps_compression": 141.4,
+    "straps_compression": 141.6,
     "attachment": 188.0,
     "misc": 25.8
    },
    "like_for_like": {
-    "bag_side": 1098.5,
+    "bag_side": 1098.7,
     "suspension": 2349.6,
     "misc": 25.8
    }
   },
   "corrie_f_as_hunted": {
-   "total_g": 3792.4,
+   "total_g": 3792.6,
    "by_system": {
     "frame": 1220.2,
     "back": 413.6,
@@ -4139,12 +4139,12 @@
     "pouch": 47.8,
     "fly": 72.1,
     "straps_meat": 300.9,
-    "straps_compression": 220.9,
+    "straps_compression": 221.1,
     "attachment": 192.6,
     "misc": 25.8
    },
    "like_for_like": {
-    "bag_side": 1380.3,
+    "bag_side": 1380.5,
     "suspension": 2386.2,
     "misc": 25.8
    }
@@ -4291,13 +4291,13 @@
     "pct": 60.0
    },
    "P": {
-    "ours_g": 3730.6,
-    "delta_g": 1422.6,
+    "ours_g": 3730.8,
+    "delta_g": 1422.8,
     "pct": 62.0
    },
    "A": {
-    "ours_g": 3151.2,
-    "delta_g": 843.2,
+    "ours_g": 3151.4,
+    "delta_g": 843.4,
     "pct": 37.0
    }
   },
@@ -4316,13 +4316,13 @@
     "pct": 54.0
    },
    "P": {
-    "ours_g": 3730.6,
-    "delta_g": 1334.6,
+    "ours_g": 3730.8,
+    "delta_g": 1334.8,
     "pct": 56.0
    },
    "A": {
-    "ours_g": 3151.2,
-    "delta_g": 755.2,
+    "ours_g": 3151.4,
+    "delta_g": 755.4,
     "pct": 32.0
    }
   },
@@ -4342,13 +4342,13 @@
     "pct": 44.0
    },
    "P": {
-    "ours_g": 3898.2,
-    "delta_g": 1261.2,
+    "ours_g": 3898.4,
+    "delta_g": 1261.4,
     "pct": 48.0
    },
    "A": {
-    "ours_g": 3311.1,
-    "delta_g": 674.1,
+    "ours_g": 3311.3,
+    "delta_g": 674.3,
     "pct": 26.0
    }
   },
@@ -4364,13 +4364,13 @@
     "pct": 34.0
    },
    "P": {
-    "ours_g": 3786.1,
-    "delta_g": 996.1,
+    "ours_g": 3786.3,
+    "delta_g": 996.3,
     "pct": 36.0
    },
    "A": {
-    "ours_g": 3199.0,
-    "delta_g": 409.0,
+    "ours_g": 3199.2,
+    "delta_g": 409.2,
     "pct": 15.0
    }
   },
@@ -4386,13 +4386,13 @@
     "pct": 42.0
    },
    "P": {
-    "ours_g": 3786.1,
-    "delta_g": 1147.1,
+    "ours_g": 3786.3,
+    "delta_g": 1147.3,
     "pct": 43.0
    },
    "A": {
-    "ours_g": 3199.0,
-    "delta_g": 560.0,
+    "ours_g": 3199.2,
+    "delta_g": 560.2,
     "pct": 21.0
    }
   },
@@ -4410,13 +4410,13 @@
     "pct": 35.0
    },
    "P": {
-    "ours_g": 3913.4,
-    "delta_g": 1101.4,
+    "ours_g": 3913.6,
+    "delta_g": 1101.6,
     "pct": 39.0
    },
    "A": {
-    "ours_g": 3326.3,
-    "delta_g": 514.3,
+    "ours_g": 3326.5,
+    "delta_g": 514.5,
     "pct": 18.0
    }
   },
@@ -4434,13 +4434,13 @@
     "pct": 41.0
    },
    "P": {
-    "ours_g": 3913.4,
-    "delta_g": 1205.4,
+    "ours_g": 3913.6,
+    "delta_g": 1205.6,
     "pct": 45.0
    },
    "A": {
-    "ours_g": 3326.3,
-    "delta_g": 618.3,
+    "ours_g": 3326.5,
+    "delta_g": 618.5,
     "pct": 23.0
    }
   },
@@ -4458,13 +4458,13 @@
     "pct": 33.0
    },
    "P": {
-    "ours_g": 3822.7,
-    "delta_g": 987.7,
+    "ours_g": 3822.9,
+    "delta_g": 987.9,
     "pct": 35.0
    },
    "A": {
-    "ours_g": 3235.6,
-    "delta_g": 400.6,
+    "ours_g": 3235.8,
+    "delta_g": 400.8,
     "pct": 14.0
    }
   },
@@ -4484,13 +4484,13 @@
     "pct": 127.0
    },
    "P": {
-    "ours_g": 3898.2,
-    "delta_g": 2225.2,
+    "ours_g": 3898.4,
+    "delta_g": 2225.4,
     "pct": 133.0
    },
    "A": {
-    "ours_g": 3311.1,
-    "delta_g": 1638.1,
+    "ours_g": 3311.3,
+    "delta_g": 1638.3,
     "pct": 98.0
    }
   },
@@ -4508,20 +4508,20 @@
     "pct": 40.0
    },
    "P": {
-    "ours_g": 3913.4,
-    "delta_g": 1191.4,
+    "ours_g": 3913.6,
+    "delta_g": 1191.6,
     "pct": 44.0
    },
    "A": {
-    "ours_g": 3326.3,
-    "delta_g": 604.3,
+    "ours_g": 3326.5,
+    "delta_g": 604.5,
     "pct": 22.0
    }
   }
  ],
  "features": {
-  "after_tests_base_g": 3199.0,
-  "gap_g": 205.3,
+  "after_tests_base_g": 3199.2,
+  "gap_g": 205.5,
   "candidates": [
    {
     "item": "IMP-2",
@@ -4600,7 +4600,7 @@
   "with_reserve_g": 68.5,
   "reaches_with_reserve": false
  },
- "bl011_headline_base_g": 3294.7,
+ "bl011_headline_base_g": 3294.9,
  "h1_fatigue": {
   "old": 1.2794731924250948,
   "per_torso": 1.1502260709981276,
@@ -4626,7 +4626,7 @@
   "P": {
    "scenario": "P",
    "cfg": "base",
-   "total_g": 3786.1,
+   "total_g": 3786.3,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
      "g": 426.7,
@@ -4647,8 +4647,8 @@
      "frac": 0.1
     },
     "cut area x record gsm, length x record g/m": {
-     "g": 2006.9,
-     "band_g": 205.5,
+     "g": 2007.1,
+     "band_g": 205.6,
      "n": 145,
      "frac": 0.08
     }
@@ -4761,7 +4761,7 @@
   "A": {
    "scenario": "A",
    "cfg": "base",
-   "total_g": 3199.0,
+   "total_g": 3199.2,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
      "g": 347.2,
@@ -4782,7 +4782,7 @@
      "frac": 0.1
     },
     "cut area x record gsm, length x record g/m": {
-     "g": 1503.2,
+     "g": 1503.4,
      "band_g": 236.9,
      "n": 166,
      "frac": 0.08

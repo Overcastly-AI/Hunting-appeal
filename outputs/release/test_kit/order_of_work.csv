@@ -55,34 +55,35 @@ seq,group,test,stage,release,also,tier,title,hands_on_h,machine_h,status
 54,G6,BP-3,run,CARRY,,safety,"back pressure on the rails, below and above z 190",3.0,0.0,ACTIVE
 55,G6,RF-1,run,CARRY,,grams,back rail fit 130/70 on 3 backs (C-8),3.0,0.0,ACTIVE
 56,G6,T1,run,R1,,safety,"static proof 150 / 300 / 225 lb (+ joint marks, yoke dial)",4.0,0.0,ACTIVE
-57,G6,T3,run,CARRY,,safety,side-hill 240 lb at 25 deg,3.0,0.0,ACTIVE
-58,G6,T2,run,R1,,safety,meat / tall-load proof 300 lb,3.0,0.0,ACTIVE
-59,G6,MT-1c,run,R1,,safety,meat-strap cinch readout: does the IM cinch cycle with the walking g (CINCH_STATIC),2.0,0.2,ACTIVE
-60,G6,CR-1,run,CARRY,,safety,crown retention hang 136 kg,1.0,0.0,ACTIVE
-61,G6,BU-1,run,BL037,,grams,"50 mm crown bushings: kit change and pawl travel, gloved",1.0,0.0,ACTIVE
-62,G6,SP-1,run,CARRY,,safety,spreader bone-end proof 400 N,1.5,0.0,ACTIVE
-63,G6,T4a,run,CARRY,,safety,"drop-step 2.0 g, 20 drops",3.0,0.0,ACTIVE
-64,G6,T4b,run,CARRY,,safety,single-foot set-down (+ dial on the branch),2.0,0.0,ACTIVE
-65,G6,T4c,run,CARRY,,safety,empty abuse drop 122 cm at -20 C,2.0,4.0,ACTIVE-REVISED
-66,G6,T5,run,CARRY,,safety,"cycle 0.4 -> 1.6 g, 1e5 cycles (H1 body)",6.0,33.0,ACTIVE-REVISED
-67,G6,T5f,run,CARRY,,safety,float US1 share 56 kg,4.0,0.0,PROPOSED
-68,G6,T2u,run,CARRY,,safety,ultimate demo 450 lb on P1 (destroys P1),3.0,0.0,ACTIVE
-69,G7,T9-R3b,run,BAG-BATCH,,safety,"T9 rev 3 (b): crown strap cinch force and retention (CROWN_PRE_N, MU_LID)",1.0,0.0,ACTIVE
-70,G7,T9-R3d,run,BAG-BATCH,,function,"T9 rev 3 (d): sewn lid mass and seat (LID_SLIDER5_G, LID_THREAD, LID-SEAT)",0.3,0.0,ACTIVE
-71,G7,GT-1,run,BAG-BATCH,,safety,capstan pull: guy webbing over the packed bag's corner (MU_WEB_FAB),0.5,0.0,ACTIVE
-72,G7,FIT-R3,run,BAG-BATCH,,function,"rev 3 first-article fit checks (yes / no): lid dart, B-11 loadouts, IM2 notch, carabiner gate on T3, roll clip with rifle + W3, muzzle gap",1.0,0.0,ACTIVE
-73,G7,PT-7,run,BAG-BATCH,,safety,door zip proof,2.0,0.0,ACTIVE
-74,G7,WP-4,run,BAG-BATCH,,function,rain-fly fit,1.0,0.0,ACTIVE
-75,G7,WP-5,run,BAG-BATCH,,grams,TPU trim tick,0.5,0.0,ACTIVE
-76,G7,HS-1,run,BL037,,grams,shoulder pressure: XLPE L200 vs EVA 45C J-strap load foam,3.0,0.0,ACTIVE
-77,G7,ST-1,run,BL037,,grams,"gloved one-hand sternum clip-on, 25 mm side-release",0.3,0.0,ACTIVE
-78,G7,HB-1,run,BL037,CARRY,function,"hipbelt pressure map, 3 testers, + front-strap sensor",4.0,0.0,ACTIVE-REVISED
-79,G7,HB-D2,run,BL037,CARRY,grams,wing stiffener 0.75 mm roll-over (one wing each),2.0,0.0,ACTIVE
-80,G7,HB-3,run,CARRY,,function,hipbelt slip / settle hike,1.5,0.0,ACTIVE
-81,G7,HB-D1,run,CARRY,,grams,no stabilizer straps: side-hill stability,1.5,0.0,ACTIVE
-82,G7,HB-D3,run,CARRY,,grams,pad-seat cord tie and 1000D sleeve retention,0.5,0.0,ACTIVE
-83,G7,FT-S2,run,CARRY,,grams,no wings: 5 km side-hill + door cycles with the tripod loaded,3.0,0.0,ACTIVE
-84,G7,MH-1,run,CARRY,,function,bag-on meat mode walk,1.5,0.0,ACTIVE
-85,G7,MH-2,run,CARRY,,function,frame-only meat haul (float / bag-off),1.5,0.0,ACTIVE-REVISED
-86,G7,MH-3,run,CARRY,,function,meat strap wash,0.5,2.0,ACTIVE
-87,G7,R28-1,run,CARRY,,function,head-clearance photo,0.3,0.0,ACTIVE
+57,G6,T1c-SW,run,R1,,safety,T1(c) hipbelt-off frame test with sway gauges (crown buckling check of the GNL model),2.0,0.0,ACTIVE
+58,G6,T3,run,CARRY,,safety,side-hill 240 lb at 25 deg,3.0,0.0,ACTIVE
+59,G6,T2,run,R1,,safety,meat / tall-load proof 300 lb,3.0,0.0,ACTIVE
+60,G6,MT-1c,run,R1,,safety,meat-strap cinch readout: does the IM cinch cycle with the walking g (CINCH_STATIC),2.0,0.2,ACTIVE
+61,G6,CR-1,run,CARRY,,safety,crown retention hang 136 kg,1.0,0.0,ACTIVE
+62,G6,BU-1,run,BL037,,grams,"50 mm crown bushings: kit change and pawl travel, gloved",1.0,0.0,ACTIVE
+63,G6,SP-1,run,CARRY,,safety,spreader bone-end proof 400 N,1.5,0.0,ACTIVE
+64,G6,T4a,run,CARRY,,safety,"drop-step 2.0 g, 20 drops",3.0,0.0,ACTIVE
+65,G6,T4b,run,CARRY,,safety,single-foot set-down (+ dial on the branch),2.0,0.0,ACTIVE
+66,G6,T4c,run,CARRY,,safety,empty abuse drop 122 cm at -20 C,2.0,4.0,ACTIVE-REVISED
+67,G6,T5,run,CARRY,,safety,"cycle 0.4 -> 1.6 g, 1e5 cycles (H1 body)",6.0,33.0,ACTIVE-REVISED
+68,G6,T5f,run,CARRY,,safety,float US1 share 56 kg,4.0,0.0,PROPOSED
+69,G6,T2u,run,CARRY,,safety,ultimate demo 450 lb on P1 (destroys P1),3.0,0.0,ACTIVE
+70,G7,T9-R3b,run,BAG-BATCH,,safety,"T9 rev 3 (b): crown strap cinch force and retention (CROWN_PRE_N, MU_LID)",1.0,0.0,ACTIVE
+71,G7,T9-R3d,run,BAG-BATCH,,function,"T9 rev 3 (d): sewn lid mass and seat (LID_SLIDER5_G, LID_THREAD, LID-SEAT)",0.3,0.0,ACTIVE
+72,G7,GT-1,run,BAG-BATCH,,safety,capstan pull: guy webbing over the packed bag's corner (MU_WEB_FAB),0.5,0.0,ACTIVE
+73,G7,FIT-R3,run,BAG-BATCH,,function,"rev 3 first-article fit checks (yes / no): lid dart, B-11 loadouts, IM2 notch, carabiner gate on T3, roll clip with rifle + W3, muzzle gap",1.0,0.0,ACTIVE
+74,G7,PT-7,run,BAG-BATCH,,safety,door zip proof,2.0,0.0,ACTIVE
+75,G7,WP-4,run,BAG-BATCH,,function,rain-fly fit,1.0,0.0,ACTIVE
+76,G7,WP-5,run,BAG-BATCH,,grams,TPU trim tick,0.5,0.0,ACTIVE
+77,G7,HS-1,run,BL037,,grams,shoulder pressure: XLPE L200 vs EVA 45C J-strap load foam,3.0,0.0,ACTIVE
+78,G7,ST-1,run,BL037,,grams,"gloved one-hand sternum clip-on, 25 mm side-release",0.3,0.0,ACTIVE
+79,G7,HB-1,run,BL037,CARRY,function,"hipbelt pressure map, 3 testers, + front-strap sensor",4.0,0.0,ACTIVE-REVISED
+80,G7,HB-D2,run,BL037,CARRY,grams,wing stiffener 0.75 mm roll-over (one wing each),2.0,0.0,ACTIVE
+81,G7,HB-3,run,CARRY,,function,hipbelt slip / settle hike,1.5,0.0,ACTIVE
+82,G7,HB-D1,run,CARRY,,grams,no stabilizer straps: side-hill stability,1.5,0.0,ACTIVE
+83,G7,HB-D3,run,CARRY,,grams,pad-seat cord tie and 1000D sleeve retention,0.5,0.0,ACTIVE
+84,G7,FT-S2,run,CARRY,,grams,no wings: 5 km side-hill + door cycles with the tripod loaded,3.0,0.0,ACTIVE
+85,G7,MH-1,run,CARRY,,function,bag-on meat mode walk,1.5,0.0,ACTIVE
+86,G7,MH-2,run,CARRY,,function,frame-only meat haul (float / bag-off),1.5,0.0,ACTIVE-REVISED
+87,G7,MH-3,run,CARRY,,function,meat strap wash,0.5,2.0,ACTIVE
+88,G7,R28-1,run,CARRY,,function,head-clearance photo,0.3,0.0,ACTIVE

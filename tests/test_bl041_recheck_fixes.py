@@ -202,14 +202,14 @@ def test_b25_is_38mm_and_clears_the_spine_clamp(pk):
     assert b["length_bl041_mm"] == pytest.approx(387.0, abs=1.0)    # BL-043 B25-TOPO adds the drawn turn: length_mm
     assert "GBL" not in rs.pieces and not any(w["id"] == "GBL" for w in rs.webbing)
     rows = [r for r in pk["load_points"] if r["point"] == "B-25 bridle toggle tab"]
-    assert rows and all(r["load_n"] == 323.0 and "TL-1 494 N" in r["proof"] and r["sf"] >= 1.3 for r in rows)
+    assert rows and all(r["load_n"] == 323.0 and f"TL-1 {M.TL1_N} N" in r["proof"] and M.TL1_N == 497 and r["sf"] >= 1.3 for r in rows)
     assert not any(r["part"] == "GBL" for r in pk["load_points"])
 
 
 def test_tl1_and_tl1b(kit):
     reg = kit["register"]
     tl = reg["TL-1"]
-    assert "494 N" in tl["title"] and "real rev C crown top bar stock" in tl["specimen"]
+    assert "497 N" in tl["title"] and "real rev C crown top bar stock" in tl["specimen"]
     assert "0.40 mm" in tl["pass_fail"] and "0.02 mm" in tl["pass_fail"] and "NO cradle" in tl["steps"]
     assert reg["TL-1b"]["status"] == "ACTIVE" and reg["TL-1b"]["gates"].startswith("none")
     assert any(o["test"] == "TL-1b" and o["release"] == "DATA" for o in kit["order"])

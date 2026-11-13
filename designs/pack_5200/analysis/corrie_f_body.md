@@ -1888,14 +1888,16 @@ with the sim's straight under-strap cables (pin to floor band); re-running them 
 path (BL-028 `--route` style) was not done: one fine run per torso, about 5 min each; it settles whether the floor shape
 under the real strap moves the lane clearances, 14 / 17.7 mm against the 10 mm rule).
 
-### 24.2 M-A: TL-1 on BL-045's record
+### 24.2 M-A: TL-1 on the crown record (BL-045, then BL-047)
 
-`physical_test_kit.crown_tube()` and `mfg_corrie_f_rev3.TL1_N` read `crown_and_fairlead_checks.json` (`proof_tl1_n`
-**497 N**, `k_vector_run.guy_angle_below_horizontal_deg` 57.2, `max_outboard_share` 0.136). G2 TL-1: run's spine end
-anchored (the stub, bolted), pull vector down 0.84 / aft 0.52 / outboard 0.14 (come-along anchor 1 m from the toggle at
-839 mm below, 528 aft, 136 outboard, checked with an inclinometer), crown-strap toggle in the tab UNLOADED (its pull is
-up and aft in the record and takes load off the bar: slack is conservative). SFs quoted on the vectors 1.35 / 1.27, bound
-1.22 / 1.14. BL-047's crown re-run writes the same keys; the kit re-reads them.
+`physical_test_kit.crown_tube()` and `mfg_corrie_f_rev3.TL1_N` read BL-047's crown re-run on the BL-046 geometry
+(`analysis/bl047_frame_items.json` `tl1`): proof **497 N** (`proof_publish_n`: the larger of the BL-046 vector, 462 N, and
+BL-045's published 497 N). G2 TL-1 now has two rigs, the run's spine end anchored on a spine stub 25.0 mm fore of the bar
+axis under the 6.0 mm collar: **rig A** (the governing BL-046 vector) guy toggle 22 deg below horizontal, 0.5 % outboard
+(unit down 0.38 / aft 0.93 / outboard 0.01); **rig B** (run loaded, BL-045's worst guy) 58 deg below horizontal, 13.6 %
+outboard (down 0.85 / aft 0.51 / outboard 0.14); in both the crown-strap toggle carries **43 N** (4.4 kg over a pulley);
+specimens 1-3 on rig B, 4-5 on rig A; come-along anchor positions 1 m from the toggle and an inclinometer check given.
+The interim BL-048 text (BL-045's 57 deg / 14 %, crown strap unloaded) is superseded.
 
 ### 24.3 M-B: one 38 mm webbing thickness, a purchase spec
 
@@ -1931,6 +1933,30 @@ fatigue 0.92 on its 2.4 g basis (the frame record checks 725 N / 905 N): flagged
 - m-8: webbing pages: IME and USA on their own pages (6 pages), the test square placed clear of every strip
   (`test_square_spot`).
 - m-9: SK-1: the B25-BOX note moved to the footer; BT-M users list the IME / US / USA necks and the B-25 neck and mitre.
+
+### 24.6 Orchestrator additions after BL-047 landed
+
+- **Hinge eye force vector** (`us_route.hinge_vectors`, `analysis/hinge_eye_vectors.json`, for the structural agent): the
+  pin's force on the FRAME (minus the clothsim report's force on the bag) from the rev 3 fine sims, 15 / 19 / 23 in, fill
+  and meat, both sides, 1 g. **Every row is inboard and up**: meat 182-237 N, y-z angle 115-120 deg (up and towards the
+  wearer), 45-52 deg inboard of the stay plane; fill 56-86 N, 85-102 deg, 28-67 deg inboard. Worst inboard share 0.917
+  (23 in fill L, unit 0.917 / 0.034 / 0.397); worst meat (largest) 15 in L, unit (inboard 0.71, -0.31, up 0.64). So the
+  inboard-up direction BL-047 found fatigue 0.86 for is the sims' direction, not a bound. Caveat DRAPE-US: the sims carry the
+  under-straps as straight cables through the bag; their cinch is what pulls the floor up against the pin.
+- **Test kit:** TL-1 rigs A / B (24.2); register row **T1c-SW** (`tests_physical/T1c_hipbelt_off_frame.md`, R1, G6 after
+  T1, 8 results rows: sway at 225 lb <= 3 mm, return <= 0.5 mm, growth <= 2.5 x, Southwell >= 340 lb, crown sideways
+  <= 3 mm, lifter and strap tensions recorded); the low-profile pawl `print/frame_h1/crown_pawl_lp_*` named in the BOM
+  frame-kit line, the kit README and BU-1 (the old `crown_pawl_*` does not fit H1).
+- **HE-FIT piece re-sliced** (`he_stl_check.py`, BL-047's throat relief): under the pin 1.88 / 0.98 / 0.68 mm at ply
+  1.2 / 1.5 / 1.6, now everywhere (the corner-fillet exception of 23.2 is gone); throat 20.0 mm.
+- **HE throat side clearance at 0.15 mm print tolerance: fixed bag-side, DECISION HE-NECK-GAUGE.** With the 19 mm worst
+  neck (18 +/- 1) and the slot 0.15 mm narrow a face the neck kept 0.35 mm a side, under the 0.5 mm rule. The neck is now
+  folded round an 18.0 mm gauge bar (the webbing's width tolerance goes into the fold depth) and every HE / IME / US neck
+  must pass an 18.6 mm go / no-go slot: `HE_NECK_TOL` 1.0 -> 0.6. At 0.15 mm a face: HE (20.0 throat) 0.55 mm a side,
+  US (19.96) 0.53 mm; `PRINT_TOL` 0.15 is now in the he_stl_check / imus_stl_check rule. Op 4.05 and HE-FIT step (8)
+  carry the gauge. Settled by HE-FIT (5 sewn necks through the slot).
+- **Masses** re-run last (`huntkit.mass.ledger --write`, `weight_rollup_v2.py --write`): spine clamp 14.2 g (BL-047), RT
+  565 mm, B-25 512.2 mm.
 
 **Status.** N-1 stays OPEN (frame side): the release says NOT ready to cut until BL-047 moves the US stations, the US cut
 is set, HE-FIT step 0 passes on the re-cut piece and a fifth review has looked (`mfg_corrie_f_rev3.FOURTH_STATUS`,

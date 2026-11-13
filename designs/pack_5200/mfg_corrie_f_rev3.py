@@ -65,8 +65,8 @@ _CT = json.loads((ROOT / "designs" / "pack_5200" / "analysis" / "crown_tube_guy_
 B25_N = round(_CT["kit_loads"]["envelope"]["static_n"])                                       # 323
 TL1_N_BL041 = round(max(_CT["tl1"]["proof_n"], _CT["tl1"]["bar_rule_proof_n"]))               # 494 (BL-041)
 # BL-048 M-A: TL-1 follows BL-045's record (crown tube with the B-25 mitre, real pull vectors): 497 N
-TL1_N = round(json.loads((ROOT / "designs" / "pack_5200" / "analysis" / "crown_and_fairlead_checks.json").read_text())
-              ["crown_tube"]["proof_tl1_n"])
+TL1_N = round(json.loads((ROOT / "designs" / "pack_5200" / "analysis" / "bl047_frame_items.json").read_text())
+              ["tl1"]["proof_publish_n"])                                                     # BL-047 publishes it
 HINGE_N = 1019.0               # load_standard.md rev C / bag_attachment.md section 5: bag-on hinge, factored (BL-040 m-2)
 
 # ============================================================================ shop standards (sources inline)
@@ -467,7 +467,9 @@ def hardware_table(ctx: Ctx) -> list[tuple]:
         ("cordlock", f"spring cord lock ({ncl}): {cl_use}", "cord_lock_spring", ncl, "unit", "base", False),
         ("tpu_sleeve", "TPU sleeve on the IM3 carabiner (2)", "tpu_hook_sleeve", 2, "unit", "base", False),
         ("fairlead", "printed fairleads (8), 7075 pins (8: 6 x {:.0f} mm shank IM / US + 2 x {:.0f} mm shank HINGE for the "
-         "20 mm throat, BL-044), UHMWPE sleeves (8), US anchors, lifter keepers".format(
+         "20 mm throat, BL-044), UHMWPE sleeves (8), US anchors, lifter keepers; crown pawl = the LOW-PROFILE pawl "
+         "print/frame_h1/crown_pawl_lp_fdm_pacf (P1) / _lp_slm (production), NOT the old crown_pawl_* (it does not fit "
+         "H1, BL-047)".format(
              P.F.hinge_pin()["shank_im_mm"], P.F.hinge_pin()["shank_hinge_mm"]), "frame kit", 1, "set", "base", True),
     ]
 
@@ -758,8 +760,11 @@ def he_405_text(ctx) -> str:
     hg = rs.geo["he"]
     hbx = (boxes_of(rs.pieces["HE"]) or [(34.0, 10.0, "")])[0][:2]
     return (f"(1) NECK, on the FLAT HE strip ({hg['cut']:.0f} mm): fold each long edge {P.HE_NECK_EDGE:.0f} mm in between "
-            f"the two 'neck lines' (the strip there is {hg['neck_w']:.0f} mm wide, the fairlead throat), then one BT-M bartack "
-            "across each leg at the 'neck tack' lines (through that leg only) " + step_spec("bt", "304") + ". "
+            f"the two 'neck lines' (the strip there is {hg['neck_w']:.0f} mm wide, the fairlead throat): fold it ROUND an "
+            f"{P.HE_NECK_W:.1f} mm gauge bar (DECISION HE-NECK-GAUGE, BL-048: the webbing's width tolerance goes into the fold, "
+            "not the neck), then one BT-M bartack "
+            "across each leg at the 'neck tack' lines (through that leg only) " + step_spec("bt", "304") + "; every neck "
+            f"must pass a {P.HE_NECK_W + P.HE_NECK_TOL:.1f} mm go / no-go slot (QC; the same gauge for the IME and US necks). "
             "(2) B-18 ROWS FIRST: lay B-18 INSIDE B-01 on the drawn placement, coated face to B-01, its lower edge ON the "
             f"B-01 cut edge (it runs {hg['b18_below_seam']:.0f} mm below the floor seam line); sew its perimeter rows 3 and 9 mm "
             "in, on the TOP and BOTH SIDES only (the bottom goes in the floor seam), through B-18 + B-01 ONLY "
@@ -1635,7 +1640,7 @@ RELEASE_TESTS = [   # id, why it gates this package (register row read at run ti
     ("PT-1", "IM3 carabiner on T3"), ("PT-2", "T3 on the 70 mm B-17 tab"), ("PT-3", "HE eye on B-18 (no binding)"),
     ("HE-FIT", "hinge eye on the z 60 pin of the printed BL-042 hinge fairlead, 1:1 dry fit before PT-3 and before cut "
                "(BL-041 X-2, BL-044 DECISION HE-ENV); step 0 = gate US-ROUTE on the US test piece (BL-048 N-1)"),
-    ("TL-1", f"B-25 38 mm sleeve + guy and crown-strap toggles on the real crown bar at {TL1_N} N, guy pulled 57 deg below horizontal and 14 % outboard, spine end anchored (BL-045 record, crown_and_fairlead_checks.json; BL-048 M-A)"),
+    ("TL-1", f"B-25 38 mm sleeve + guy and crown-strap toggles on the real crown bar at {TL1_N} N, two rigs: A guy 22 deg below horizontal, B 58 deg and 13.6 % outboard, crown strap 43 N, run anchored on a spine stub (BL-047 record bl047_frame_items.json tl1; BL-048 M-A)"),
     ("PT-5", "guy lock + tri-glide keeper"), ("PT-6", "B-24 float link"),
     ("LL-H", "heavy 25 mm ladder lock slip at 432 N (1.5 x 288 N), dry, wet and -20 C: guys, W1-W3 and the B-28 crown "
              "straps (the B-28 slip gate since BL-031)"),
@@ -2046,7 +2051,7 @@ ASSUMPTIONS = [
      "carrying the G-hook / carabiner.", "MT-1 (2 IMC tabs at 908 N); threading the bought cam and hook"),
     ("B25-TAB-CENTRE / WIDE_SLEEVE", "BL-041 (crown_tube_guy_loop.md): B-25 in 38 mm webbing, sleeves x 26.5-64.5, "
      "toggle tab at the sleeve centre x 45.5; the 25 mm tab pull spreads over the 38 mm sleeve.",
-     f"TL-1 at {TL1_N} N on real bar stock, specimen WITH the mitre turn and run (BL-043), pull vector per BL-045 (BL-048)"),
+     f"TL-1 at {TL1_N} N on real bar stock, specimen WITH the mitre turn and run (BL-043), rigs A / B per BL-047 (BL-048)"),
     ("B25-TOPO / CLAMP (BL-045)", "BL-043 M-4: B-25 = tab | sleeve | 45 deg mitre under the sleeve | run necked to "
      f"25 mm | one wrap round the spine under the clamp. BL-044: on the sized clamp (crown_spine_clamp: half "
      f"{P.F._CSC.SPINE_CLAMP_HALF_X:g} along the bar, collar {P.F._CSC.SPINE_CLAMP_COLLAR:g}) and the measured pawl "
@@ -2213,8 +2218,9 @@ FOURTH_STATUS = [
      "guide can clear (US1 has 7 mm of height to move 40.5 mm sideways). US-ROUTE dropped. BL-047 asked to move US1 "
      "inboard / US2 outboard onto their own lanes (us_route.json station_move, >= 10 mm at every drape on the model); "
      "HE-FIT step 0 has a pass criterion and a US test piece in the kit"),
-    ("M-A", "major", "fixed", "TL-1 reads BL-045's record (crown_and_fairlead_checks.json): 497 N, guy toggle 57 deg below "
-     "horizontal and 14 % outboard, spine end anchored, crown-strap toggle unloaded; re-read live when BL-047 re-runs the crown"),
+    ("M-A", "major", "fixed", "TL-1 reads BL-047's crown re-run on the BL-046 geometry (bl047_frame_items.json tl1): proof "
+     "497 N, rig A (guy 22 deg below horizontal) and rig B (58 deg, 13.6 % outboard), crown strap 43 N, run anchored on a "
+     "spine stub 25 mm fore under the 6.0 mm collar"),
     ("M-B", "major", "fixed", "poly_webbing_38mm: purchase spec ply 1.2-1.6 mm (1.5 nominal), break >= 6 kN, sample "
      "calipered before the roll, fallback in the record; BOM + shopping list carry it; HE and B-25 read one thickness"),
     ("M-C", "major", "fixed", "PT-3 / SEW-F / HE-FIT fixture pin: hardened steel M5 x 40 dowel (DIN 6325), bought in kit A, "

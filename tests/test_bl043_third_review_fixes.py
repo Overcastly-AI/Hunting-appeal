@@ -149,7 +149,7 @@ def test_rt_cut_comes_from_the_rerun_roll_model(pk):
     mx = max(v for s in d["states"].values() for v in s["roll_clip_mm"].values())
     r = ST.roll_row()
     assert r["paths_mm"]["max"] == pytest.approx(mx)
-    assert r["after"]["cut_mm"] == 5 * math.floor((ST.ROLL_END_MM + mx + F.TAIL_GRIP_MM) / 5 + 1e-9)
+    assert r["after"]["cut_mm"] == 5 * math.ceil((ST.ROLL_END_MM + mx + F.TAIL_GRIP_MM) / 5 - 1e-9)   # BL-048 m-2: up
     assert r["after"]["cut_mm"] > 510.0                              # BL-041's "510 unchanged" did not hold
     rt = next(w for w in pk["ctx"].rs.webbing if w["id"] == "RT")
     assert rt["length_mm"] == pytest.approx(r["after"]["cut_mm"])

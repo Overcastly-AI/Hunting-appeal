@@ -197,6 +197,7 @@ def check(mesh=None, side: str = "R") -> dict:
            "under_pin": up, "worst_under_pin_clear_mm": min(v["worst"]["clear_mm"] for v in up.values()),
            "throat_min_mm": round(thr, 2), "neck_max_mm": P.HE_NECK_W + P.HE_NECK_TOL,
            "throat_clear_side_mm": round((thr - P.HE_NECK_W - P.HE_NECK_TOL) / 2, 2),
+           "throat_clear_side_at_print_tol_mm": round((thr - 2 * P.PRINT_TOL - P.HE_NECK_W - P.HE_NECK_TOL) / 2, 2),
            "corners": rows, "worst_loop_overlap_mm2": max(r["loop_overlap_mm2"] for r in rows),
            "min_loop_to_material_mm": min(r["loop_to_material_mm"] for r in rows),
            "min_box_top_to_cheek_mm": min(r["box_top_to_cheek_mm"] for r in rows),
@@ -208,7 +209,7 @@ def check(mesh=None, side: str = "R") -> dict:
     res["min_clear_off_corner_mm"] = min(v["clear_off_corner_mm"] for v in up.values())
     res["pass"] = bool(res["worst_loop_overlap_mm2"] < 1e-3 and res["worst_under_pin_clear_mm"] > 0.0
                        and res["min_clear_off_corner_mm"] >= 0.5
-                       and res["throat_clear_side_mm"] >= 0.5 - 0.05
+                       and res["throat_clear_side_at_print_tol_mm"] >= 0.5 - 1e-9
                        and res["min_box_top_to_cheek_mm"] >= P.HE_CHEEK_MIN - 1e-9 and res["min_box_to_material_mm"] > 0.0)
     return res
 

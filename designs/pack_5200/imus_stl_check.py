@@ -281,9 +281,10 @@ def check(meshes: dict | None = None) -> dict:
                  "floor_depth_centre_mm": up[f"{P.HE_T}"]["floor_depth_centre_mm"],
                  "throat_min_mm": round(thr, 2),
                  "throat_clear_side_mm": round((thr - P.HE_NECK_W - P.HE_NECK_TOL) / 2, 2),
+                 "throat_clear_side_at_print_tol_mm": round((thr - 2 * P.PRINT_TOL - P.HE_NECK_W - P.HE_NECK_TOL) / 2, 2),
                  "under_pin": up, "sweep": sw}
             r["eye_pass"] = bool(r["worst_under_pin_clear_mm"] > 0.0 and r["min_clear_off_corner_mm"] >= 0.5
-                                 and r["throat_clear_side_mm"] >= 0.5 - 0.05)
+                                 and r["throat_clear_side_at_print_tol_mm"] >= 0.5 - 1e-9)
             res["stations"][f"{p['id']}@{src}"] = r
     res["pulls"] = pull_directions()
     st = res["stations"]

@@ -6,48 +6,48 @@
   "1.2": {
    "t": 1.2,
    "worst": {
-    "clear_mm": 0.612,
-    "x_from_throat_cl": -9.99,
-    "neck_w": 19.0,
-    "shift": -0.5,
-    "stack_mm": 1.356,
-    "floor_depth_mm": 1.968
+    "clear_mm": 1.879,
+    "x_from_throat_cl": -2.99,
+    "neck_w": 18.0,
+    "shift": -1.0,
+    "stack_mm": 3.6,
+    "floor_depth_mm": 5.479
    },
    "centred_clear_mm": 1.882,
-   "clear_off_corner_mm": 1.809,
+   "clear_off_corner_mm": 1.879,
    "floor_depth_centre_mm": 5.501,
    "floor_profile": [
     [
      -9.99,
-     1.968
+     6.25
     ],
     [
      -9.74,
-     3.941
+     6.434
     ],
     [
      -9.49,
-     4.427
+     6.472
     ],
     [
      -9.24,
-     4.758
+     6.497
     ],
     [
      -8.99,
-     4.937
+     6.439
     ],
     [
      -8.74,
-     5.123
+     6.29
     ],
     [
      -8.49,
-     5.241
+     5.287
     ],
     [
      -8.24,
-     5.33
+     5.336
     ],
     [
      -7.99,
@@ -55,7 +55,7 @@
     ],
     [
      -7.74,
-     5.444
+     5.44
     ],
     [
      -7.49,
@@ -303,51 +303,51 @@
     ],
     [
      7.76,
-     5.44
+     5.437
     ],
     [
      8.01,
-     5.389
+     5.391
     ],
     [
      8.26,
-     5.303
+     5.333
     ],
     [
      8.51,
-     5.245
+     5.852
     ],
     [
      8.76,
-     5.115
+     6.3
     ],
     [
      9.01,
-     4.961
+     6.447
     ],
     [
      9.26,
-     4.731
+     6.486
     ],
     [
      9.51,
-     4.418
+     6.494
     ],
     [
      9.76,
-     3.973
+     6.421
     ]
    ]
   },
   "1.5": {
    "t": 1.5,
    "worst": {
-    "clear_mm": 0.293,
-    "x_from_throat_cl": -9.99,
+    "clear_mm": 0.979,
+    "x_from_throat_cl": -2.99,
     "neck_w": 18.0,
     "shift": -1.0,
-    "stack_mm": 1.675,
-    "floor_depth_mm": 1.968
+    "stack_mm": 4.5,
+    "floor_depth_mm": 5.479
    },
    "centred_clear_mm": 0.982,
    "clear_off_corner_mm": 0.979,
@@ -355,35 +355,35 @@
    "floor_profile": [
     [
      -9.99,
-     1.968
+     6.25
     ],
     [
      -9.74,
-     3.941
+     6.434
     ],
     [
      -9.49,
-     4.427
+     6.472
     ],
     [
      -9.24,
-     4.758
+     6.497
     ],
     [
      -8.99,
-     4.937
+     6.439
     ],
     [
      -8.74,
-     5.123
+     6.29
     ],
     [
      -8.49,
-     5.241
+     5.287
     ],
     [
      -8.24,
-     5.33
+     5.336
     ],
     [
      -7.99,
@@ -391,7 +391,7 @@
     ],
     [
      -7.74,
-     5.444
+     5.44
     ],
     [
      -7.49,
@@ -639,51 +639,51 @@
     ],
     [
      7.76,
-     5.44
+     5.437
     ],
     [
      8.01,
-     5.389
+     5.391
     ],
     [
      8.26,
-     5.303
+     5.333
     ],
     [
      8.51,
-     5.245
+     5.852
     ],
     [
      8.76,
-     5.115
+     6.3
     ],
     [
      9.01,
-     4.961
+     6.447
     ],
     [
      9.26,
-     4.731
+     6.486
     ],
     [
      9.51,
-     4.418
+     6.494
     ],
     [
      9.76,
-     3.973
+     6.421
     ]
    ]
   },
   "1.6": {
    "t": 1.6,
    "worst": {
-    "clear_mm": 0.187,
-    "x_from_throat_cl": -9.99,
+    "clear_mm": 0.679,
+    "x_from_throat_cl": -2.99,
     "neck_w": 18.0,
     "shift": -1.0,
-    "stack_mm": 1.781,
-    "floor_depth_mm": 1.968
+    "stack_mm": 4.8,
+    "floor_depth_mm": 5.479
    },
    "centred_clear_mm": 0.682,
    "clear_off_corner_mm": 0.679,
@@ -691,35 +691,35 @@
    "floor_profile": [
     [
      -9.99,
-     1.968
+     6.25
     ],
     [
      -9.74,
-     3.941
+     6.434
     ],
     [
      -9.49,
-     4.427
+     6.472
     ],
     [
      -9.24,
-     4.758
+     6.497
     ],
     [
      -8.99,
-     4.937
+     6.439
     ],
     [
      -8.74,
-     5.123
+     6.29
     ],
     [
      -8.49,
-     5.241
+     5.287
     ],
     [
      -8.24,
-     5.33
+     5.336
     ],
     [
      -7.99,
@@ -727,7 +727,7 @@
     ],
     [
      -7.74,
-     5.444
+     5.44
     ],
     [
      -7.49,
@@ -975,47 +975,48 @@
     ],
     [
      7.76,
-     5.44
+     5.437
     ],
     [
      8.01,
-     5.389
+     5.391
     ],
     [
      8.26,
-     5.303
+     5.333
     ],
     [
      8.51,
-     5.245
+     5.852
     ],
     [
      8.76,
-     5.115
+     6.3
     ],
     [
      9.01,
-     4.961
+     6.447
     ],
     [
      9.26,
-     4.731
+     6.486
     ],
     [
      9.51,
-     4.418
+     6.494
     ],
     [
      9.76,
-     3.973
+     6.421
     ]
    ]
   }
  },
- "worst_under_pin_clear_mm": 0.187,
- "throat_min_mm": 19.97,
- "neck_max_mm": 19.0,
- "throat_clear_side_mm": 0.48,
+ "worst_under_pin_clear_mm": 0.679,
+ "throat_min_mm": 20.0,
+ "neck_max_mm": 18.6,
+ "throat_clear_side_mm": 0.7,
+ "throat_clear_side_at_print_tol_mm": 0.55,
  "corners": [
   {
    "face_y": 20.0,
@@ -1026,7 +1027,7 @@
    "loop_to_material_mm": 1.88,
    "box_top_to_cheek_mm": 8.85,
    "box_to_material_mm": 7.38,
-   "under_pin_clear_mm": 0.612
+   "under_pin_clear_mm": 1.879
   },
   {
    "face_y": 20.0,
@@ -1037,7 +1038,7 @@
    "loop_to_material_mm": 1.88,
    "box_top_to_cheek_mm": 6.57,
    "box_to_material_mm": 5.16,
-   "under_pin_clear_mm": 0.612
+   "under_pin_clear_mm": 1.879
   },
   {
    "face_y": 20.0,
@@ -1048,7 +1049,7 @@
    "loop_to_material_mm": 0.98,
    "box_top_to_cheek_mm": 8.04,
    "box_to_material_mm": 6.46,
-   "under_pin_clear_mm": 0.293
+   "under_pin_clear_mm": 0.979
   },
   {
    "face_y": 20.0,
@@ -1059,7 +1060,7 @@
    "loop_to_material_mm": 0.98,
    "box_top_to_cheek_mm": 5.05,
    "box_to_material_mm": 3.55,
-   "under_pin_clear_mm": 0.293
+   "under_pin_clear_mm": 0.979
   },
   {
    "face_y": 20.0,
@@ -1070,7 +1071,7 @@
    "loop_to_material_mm": 0.68,
    "box_top_to_cheek_mm": 7.76,
    "box_to_material_mm": 6.15,
-   "under_pin_clear_mm": 0.187
+   "under_pin_clear_mm": 0.679
   },
   {
    "face_y": 20.0,
@@ -1081,7 +1082,7 @@
    "loop_to_material_mm": 0.68,
    "box_top_to_cheek_mm": 4.52,
    "box_to_material_mm": 2.98,
-   "under_pin_clear_mm": 0.187
+   "under_pin_clear_mm": 0.679
   },
   {
    "face_y": 20.95,
@@ -1092,7 +1093,7 @@
    "loop_to_material_mm": 1.88,
    "box_top_to_cheek_mm": 8.86,
    "box_to_material_mm": 7.61,
-   "under_pin_clear_mm": 0.612
+   "under_pin_clear_mm": 1.879
   },
   {
    "face_y": 20.95,
@@ -1103,7 +1104,7 @@
    "loop_to_material_mm": 1.88,
    "box_top_to_cheek_mm": 6.58,
    "box_to_material_mm": 5.45,
-   "under_pin_clear_mm": 0.612
+   "under_pin_clear_mm": 1.879
   },
   {
    "face_y": 20.95,
@@ -1114,7 +1115,7 @@
    "loop_to_material_mm": 0.98,
    "box_top_to_cheek_mm": 8.07,
    "box_to_material_mm": 6.7,
-   "under_pin_clear_mm": 0.293
+   "under_pin_clear_mm": 0.979
   },
   {
    "face_y": 20.95,
@@ -1125,7 +1126,7 @@
    "loop_to_material_mm": 0.98,
    "box_top_to_cheek_mm": 5.09,
    "box_to_material_mm": 3.85,
-   "under_pin_clear_mm": 0.293
+   "under_pin_clear_mm": 0.979
   },
   {
    "face_y": 20.95,
@@ -1136,7 +1137,7 @@
    "loop_to_material_mm": 0.68,
    "box_top_to_cheek_mm": 7.8,
    "box_to_material_mm": 6.39,
-   "under_pin_clear_mm": 0.187
+   "under_pin_clear_mm": 0.679
   },
   {
    "face_y": 20.95,
@@ -1147,7 +1148,7 @@
    "loop_to_material_mm": 0.68,
    "box_top_to_cheek_mm": 4.56,
    "box_to_material_mm": 3.28,
-   "under_pin_clear_mm": 0.187
+   "under_pin_clear_mm": 0.679
   },
   {
    "face_y": 27.05,
@@ -1158,7 +1159,7 @@
    "loop_to_material_mm": 1.88,
    "box_top_to_cheek_mm": 7.66,
    "box_to_material_mm": 7.68,
-   "under_pin_clear_mm": 0.612
+   "under_pin_clear_mm": 1.879
   },
   {
    "face_y": 27.05,
@@ -1169,7 +1170,7 @@
    "loop_to_material_mm": 1.88,
    "box_top_to_cheek_mm": 5.19,
    "box_to_material_mm": 5.2,
-   "under_pin_clear_mm": 0.612
+   "under_pin_clear_mm": 1.879
   },
   {
    "face_y": 27.05,
@@ -1180,7 +1181,7 @@
    "loop_to_material_mm": 0.98,
    "box_top_to_cheek_mm": 6.93,
    "box_to_material_mm": 6.94,
-   "under_pin_clear_mm": 0.293
+   "under_pin_clear_mm": 0.979
   },
   {
    "face_y": 27.05,
@@ -1191,7 +1192,7 @@
    "loop_to_material_mm": 0.98,
    "box_top_to_cheek_mm": 3.66,
    "box_to_material_mm": 3.68,
-   "under_pin_clear_mm": 0.293
+   "under_pin_clear_mm": 0.979
   },
   {
    "face_y": 27.05,
@@ -1202,7 +1203,7 @@
    "loop_to_material_mm": 0.68,
    "box_top_to_cheek_mm": 6.68,
    "box_to_material_mm": 6.69,
-   "under_pin_clear_mm": 0.187
+   "under_pin_clear_mm": 0.679
   },
   {
    "face_y": 27.05,
@@ -1213,7 +1214,7 @@
    "loop_to_material_mm": 0.68,
    "box_top_to_cheek_mm": 3.12,
    "box_to_material_mm": 3.13,
-   "under_pin_clear_mm": 0.187
+   "under_pin_clear_mm": 0.679
   }
  ],
  "worst_loop_overlap_mm2": 0.0,

@@ -105,9 +105,9 @@
  },
  "totals": {
   "usd": 2505.04,
-  "hands_on_h": 152.5,
+  "hands_on_h": 154.5,
   "machine_h": 717.0,
-  "results_rows": 313
+  "results_rows": 321
  },
  "files": [
   "README.md",
@@ -153,6 +153,6 @@
   "first run per release: {'R1': 8, 'BAG-CUT': 9, 'BAG-BATCH': 23, 'BL037': 24, 'CARRY': 25, 'DATA': 26}",
   "R1: CA-1 at 0.40 + MT-1c swing <= 117 % at <= 150 N (fallback >= 0.313)",
   "shopping list 95 lines, USD 2,505.04; long lead: 6",
-  "results template 313 rows, 80 tests"
+  "results template 321 rows, 81 tests"
  ]
 }

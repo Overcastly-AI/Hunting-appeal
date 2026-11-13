@@ -97,3 +97,4 @@ Nothing here is decided; the tickets produce the material.
 | BL-046 | H1 spine channel for OD 20 tube; spine offset in model | structural-fea-engineer | M | 045 | printable H1 |
 | BL-047 | Crown frame buckling with real top-bar offset; pawl pivot and window | structural-fea-engineer | L | 046 | printable H1 |
 | BL-048 | Fourth review fixes, bag side (US route, webbing spec, fixture pin, TL-1 text) | pack-designer | M | 044 | |
+| BL-049 | Hinge fairlead fatigue inboard-up; US lanes on frame lugs | structural-fea-engineer | M | 047, 048 | printable H1 |

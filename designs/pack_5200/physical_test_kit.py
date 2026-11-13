@@ -288,22 +288,33 @@ def crown_tube() -> dict:
     # run's spine end anchored so the drop loads the sleeve as on the frame). BL-047's crown re-run on the BL-046
     # geometry writes the same keys; this reads them live.
     rec = _json("crown_and_fairlead_checks.json")["crown_tube"]
-    vr = rec["k_vector_run"]
-    ang = float(vr["guy_angle_below_horizontal_deg"])
-    out_sh = float(rec["max_outboard_share"])
-    hz = math.cos(math.radians(ang))
-    pull = {"below_horizontal_deg": round(ang, 1), "outboard_share": round(out_sh, 3),
-            "down": round(math.sin(math.radians(ang)), 3), "outboard": round(out_sh, 3),
-            "aft": round(math.sqrt(max(hz * hz - out_sh * out_sh, 0.0)), 3)}
-    return {"proof_n": round(float(rec["proof_tl1_n"])), "proof_n_bl041": round(max(t["proof_n"], t["bar_rule_proof_n"])),
-            "pull": pull, "k_vector": rec["checks"]["vector"].get("k", None), "k_bound": rec["k_bound_max"],
-            "sf_bound": round(rec["checks"]["bound"]["sf_static"], 2), "sf_bound_fat": round(rec["checks"]["bound"]["sf_fatigue"], 2),
+    # BL-047 (orchestrator, mid-BL-048): the crown re-run on BL-046's geometry publishes the TL-1 rigs and the proof in
+    # bl047_frame_items.json tl1: rig A (the governing BL-046 vector) and rig B (the run loaded, BL-045's worst guy angle);
+    # proof = the larger of the BL-046 vector and BL-045's published 497 N.
+    b47 = _json("bl047_frame_items.json")["tl1"]
+    pl = b47["pull"]
+
+    def rig(r):
+        u = r["guy_unit_x_out_y_aft_z_up"]
+        return {"guy_n": round(float(r["guy_toggle_pull_n"])), "below_horizontal_deg": round(float(r["guy_below_horizontal_deg"]), 1),
+                "outboard_pct": round(float(r["guy_outboard_pct"]), 1), "unit": [round(float(v), 3) for v in u],
+                "down": round(-float(u[2]), 3), "aft": round(float(u[1]), 3), "outboard": round(float(u[0]), 3),
+                "crown_strap_n": round(float(r["crown_strap_toggle_n"]))}
+    rigs = {"A": rig(pl["rig"]), "B": rig(pl["rig_B_run_loaded"])}
+    rigs["A"]["run_spine_end"] = pl["rig"]["run_spine_end"]
+    pull = {"below_horizontal_deg": rigs["B"]["below_horizontal_deg"], "outboard_share": rigs["B"]["outboard_pct"] / 100.0,
+            "down": rigs["B"]["down"], "aft": rigs["B"]["aft"], "outboard": rigs["B"]["outboard"]}
+    return {"proof_n": round(float(b47["proof_publish_n"])), "proof_n_bl041": round(max(t["proof_n"], t["bar_rule_proof_n"])),
+            "proof_n_bl046_vector": round(float(b47["proof_tl1_n"])), "rigs": rigs,
+            "pull": pull, "k_vector": b47["k_vector_bl046"], "k_bound": b47["k_bound"],
+            "sf_bound": round(b47["rows"]["bound"]["sf_static"], 2), "sf_bound_fat": round(b47["rows"]["bound"]["sf_fatigue"], 2),
             "sewn_proof_n": round(t["proof_n"]),
             "env_n": round(env["static_n"]), "fat_n": round(env["fatigue_peak_n"]), "dD_A": round(t["dD_A_mm"], 2),
             "dD_B": round(t["dD_B_mm"], 2), "dD_C": round(t["dD_C_mm"], 3), "rt_cap": round(t["rt_capacity_A_n"]),
             "bare_rt_cap": round(t["bare25_rt_capacity_A_n"]), "bare_dD_A_288": round(t["bare25_dD_A_at_288"], 2),
             "bare_dD_B_288": round(t["bare25_dD_B_at_288"], 2), "bare_dD_C_288": round(t["bare25_dD_C_at_288"], 3),
-            "sf_static": round(rec["checks"]["vector"]["sf_static"], 2), "sf_fat": round(rec["checks"]["vector"]["sf_fatigue"], 2),
+            "sf_static": round(b47["rows"]["vector_bl046"]["sf_static"], 2), "sf_fat": round(b47["rows"]["vector_bl046"]["sf_fatigue"], 2),
+            "rec_bl045": rec["proof_tl1_n"],
             "sf_static_bl041": round(b38["sf_static"], 2), "sf_fat_bl041": round(b38["sf_fatigue"], 2)}
 
 
@@ -366,7 +377,7 @@ def he_fit_row() -> dict:
                 safety_at_stake="hinge eye position and the eye's passage under the pin: every sim and placement assumes the floor at z 35",
                 specimen=f"1 scrap HE sewn as op 4.05 (B-18 + B-01 offcut 150 x 120 + B-05 strip, floor seam sewn); one hinge fairlead printed 1:1 from `print/frame_h1/test_pieces/hefit_hinge_fairlead_R.stl` (BL-042: z 60 R, 80 mm stay segment, {e['throat_mm']:.0f} mm throat, {e['gap_under_pin_mm']:.1f} mm under the pin; ream the eye to 7.2) with its UHMWPE sleeve and the 5 mm hinge pin ({P.F.hinge_pin()['shank_hinge_mm']:.0f} mm shank)",
                 kit="A+D",
-                steps=f"(0) US ROUTE (BL-048, fourth review N-1; pass criterion below): print the US test piece `test_kit/print/{US_PIECE_FILE}` (R stay z 40-160 with the hinge, US1 and US2 fairleads, cut from `h1_assembled.stl` by `us_route.export_test_piece`; print it as the H1 frame: PAHT-CF, dried, H1 settings, annealed) and clamp it upright; sew two USA anchors (25 mm, as op 7.16: the piece is the R stay, where the cam anchors sit) and hang the HE specimen of this test on its hinge pin ({FIX_PIN} in each fairlead); USA on the US1 pin, its cam on a 25 mm strap laid down the B-01 offcut over the piece, round a 20 mm dowel at the floor-seam line (the floor corner, 25 mm under the hinge pin) to the crane scale, cinched to {US_T['us1']:.0f} N ({US_T['us1'] / G:.1f} kg); then the same from the US2 pin at {US_T['us2']:.0f} N ({US_T['us2'] / G:.1f} kg); repeat with the IME eye on the IM3-EC piece pulled at -82 to -88 deg (the sim directions). PASS (gate US-ROUTE): at the cinched load, along its whole run from the eye to the dowel, no part of the strap, eye or box touches the hinge fairlead, the HE (eye, legs or box) or the other US fairlead: a 10 mm feeler block passes between them everywhere (the design clearance is >= 10 mm). FAIL = any contact or a gap under 10 mm. On the CURRENT print this step FAILS by design (us_route.json: the strap lies over the hinge cheeks and the HE box, 1-4.5 mm into them, bearing about {US_BEAR:.0f} N): it is the evidence for the US station move asked of BL-047, and is re-run on the re-cut piece once the US fairleads are on their lanes (US1 x {US_MOVE['us1']['x']:.0f}, US2 x {US_MOVE['us2']['x']:.0f}); the bag is not cut until it passes; (1) re-caliper ONE ply of the 38 mm roll in hand at 5 places (the first caliper is at the PURCHASE, on a sample, shopping list; BL-048 M-B): every reading <= {P.HE_T_RANGE[1]:.1f} mm, else reject the roll (3 plies of a thicker web leave < 0.7 mm under the pin); (2) clamp the printed stay segment upright; (3) slide the neck round the pin by hand: the pin goes through cheek, sleeve, eye, cheek with the eye seated, no forcing; then push the neck hard against each cheek in turn and slide it round the pin again (its folded edge passes the printed throat-corner fillet: 0.3 mm clear on the model, BL-044 he_stl_check); (4) hang 5 kg from the B-05 strip so the eye loads the pin; (5) caliper from the floor seam line to the pin centre; (6) feeler gauge between the box top and the cheeks' lower edge; (7) check the eye is not folded over the box and the neck is not pinched by the cheeks; photo",
+                steps=f"(0) US ROUTE (BL-048, fourth review N-1; pass criterion below): print the US test piece `test_kit/print/{US_PIECE_FILE}` (R stay z 40-160 with the hinge, US1 and US2 fairleads, cut from `h1_assembled.stl` by `us_route.export_test_piece`; print it as the H1 frame: PAHT-CF, dried, H1 settings, annealed) and clamp it upright; sew two USA anchors (25 mm, as op 7.16: the piece is the R stay, where the cam anchors sit) and hang the HE specimen of this test on its hinge pin ({FIX_PIN} in each fairlead); USA on the US1 pin, its cam on a 25 mm strap laid down the B-01 offcut over the piece, round a 20 mm dowel at the floor-seam line (the floor corner, 25 mm under the hinge pin) to the crane scale, cinched to {US_T['us1']:.0f} N ({US_T['us1'] / G:.1f} kg); then the same from the US2 pin at {US_T['us2']:.0f} N ({US_T['us2'] / G:.1f} kg); repeat with the IME eye on the IM3-EC piece pulled at -82 to -88 deg (the sim directions). PASS (gate US-ROUTE): at the cinched load, along its whole run from the eye to the dowel, no part of the strap, eye or box touches the hinge fairlead, the HE (eye, legs or box) or the other US fairlead: a 10 mm feeler block passes between them everywhere (the design clearance is >= 10 mm). FAIL = any contact or a gap under 10 mm. On the CURRENT print this step FAILS by design (us_route.json: the strap lies over the hinge cheeks and the HE box, 1-4.5 mm into them, bearing about {US_BEAR:.0f} N): it is the evidence for the US station move asked of BL-047, and is re-run on the re-cut piece once the US fairleads are on their lanes (US1 x {US_MOVE['us1']['x']:.0f}, US2 x {US_MOVE['us2']['x']:.0f}); the bag is not cut until it passes; (1) re-caliper ONE ply of the 38 mm roll in hand at 5 places (the first caliper is at the PURCHASE, on a sample, shopping list; BL-048 M-B): every reading <= {P.HE_T_RANGE[1]:.1f} mm, else reject the roll (3 plies of a thicker web leave < 0.7 mm under the pin); (2) clamp the printed stay segment upright; (3) slide the neck round the pin by hand: the pin goes through cheek, sleeve, eye, cheek with the eye seated, no forcing; then push the neck hard against each cheek in turn and slide it round the pin again (its folded edge passes the printed throat-corner fillet: 0.3 mm clear on the model, BL-044 he_stl_check); (4) hang 5 kg from the B-05 strip so the eye loads the pin; (5) caliper from the floor seam line to the pin centre; (6) feeler gauge between the box top and the cheeks' lower edge; (7) check the eye is not folded over the box and the neck is not pinched by the cheeks; (8) BL-048 DECISION HE-NECK-GAUGE: 5 sewn necks (HE, IME, US) each pass the {P.HE_NECK_W + P.HE_NECK_TOL:.1f} mm go / no-go slot, and the printed throat admits a {P.HE_NECK_W + P.HE_NECK_TOL + 1.0:.1f} mm gauge block (then the widest neck keeps >= 0.5 mm a side); photo",
                 pass_fail=f"ply <= {P.HE_T_RANGE[1]:.1f} mm; pin centre {lo:.0f}-{hi:.0f} mm above the floor seam line; >= {P.HE_CHEEK_MIN:.0f} mm feeler between the box top and the cheeks; the eye slides round the pin by hand; neck alone in the {e['throat_mm']:.0f} mm throat; eye points up (no fold-down)",
                 cost_usd="9", cost_basis="scrap + about 105 g PAHT-CF at USD 80/kg (CA1_fatigue_rig.md 5): the HE-FIT piece 31.9 g and the BL-048 US test piece (us_route.json test_piece g) + a spare", hours_hands_on="0.5", hours_machine="2", phase="1",
                 run_order="9", first_weekend="Y",
@@ -622,11 +633,23 @@ def new_rows(lv: dict, lid_g: float, cut: dict) -> list[dict]:
              gates=f"BL-037 F-3 (-{g('F-3')} g)", grams_at_stake_g=f"{g('F-3'):.1f}",
              safety_at_stake="crown slip (ring crush SF 1.67 by analysis)",
              specimen="2 UHMWPE crown bushings cut 50 mm from the 70 mm stock, on P2", kit="C",
-             steps="fit the 50 mm bushings; winter gloves on; change the crown kit S -> M -> L -> S and run the torso pawl through every stop, 20 cycles; note any stick",
+             steps="fit the 50 mm bushings; winter gloves on; change the crown kit S -> M -> L -> S and run the torso pawl (the LOW-PROFILE pawl crown_pawl_lp, BL-047) through every stop, 20 cycles; note any stick",
              pass_fail="20 of 20 without binding (slides by hand, no tool); the pawl engages every stop",
              cost_usd="10", cost_basis="ASSUMPTION spare UHMWPE tube length $10 (uhmwpe_sheet record has no tube price)",
              hours_hands_on="1", hours_machine="", phase="4", run_order="77", first_weekend="N",
              notes="BL-038: added (BL-037); CR-1 session", g_per_usd_eq=""),
+        dict(id="T1c-SW", status="ACTIVE", tier="safety",
+             title="T1(c) hipbelt-off frame test with sway gauges (crown buckling check of the GNL model)",
+             defined_in="designs/pack_5200/tests_physical/T1c_hipbelt_off_frame.md (BL-047); designs/pack_5200/analysis/crown_gnl.md; load_standard.md 5.3 C8",
+             what_it_proves="the crown hangs 225 lb hipbelt-off without a growing sideways sway of the stay feet (the 0.54 linear eigen mode); Southwell P_cr >= 340 lb",
+             gates="frame release R1 (crown buckling, BL-047 path (a))", grams_at_stake_g="0",
+             safety_at_stake="crown frame buckling in hipbelt-off abuse (GNL margin >= 1.33 to 2 x load)",
+             specimen="P2 frame + bag, crown kit L at 23 in (kit S 15 in too if available)", kit="C, D",
+             steps="as T1c_hipbelt_off_frame.md: hipbelt unbuckled, lumbar pad on the hip log; dial gauges D1 / D2 on the stay feet (fore-aft), D3 crown top bar sideways, D4 crown top fore-aft; crane scales S1 lifter, S2 lower strap; 56 / 112 / 169 / 225 lb (25 / 51 / 77 / 102 kg) steps, 1 min each, hold 225 lb 2 min; unload; run 2 lifters cinched; optional free-hanging variant to 150 lb only",
+             pass_fail="T1 rules; sway |D1-D2|/2 <= 3 mm at 225 lb, returns within 0.5 mm; sway(225) <= 2.5 x sway(112); Southwell P_cr >= 340 lb if readable; D3 <= 3 mm; record S1, S2, D4",
+             cost_usd="0", cost_basis="T1 rig (kit C) + 4 dial gauges and 2 crane scales already in kits A / C",
+             hours_hands_on="2.0", hours_machine="", phase="4", run_order="38", first_weekend="N",
+             notes="BL-048: register row added at the orchestrator's request (BL-047's test doc); runs after T1 (a)/(b) on P2", g_per_usd_eq=""),
     ]
     return rows
 
@@ -634,13 +657,16 @@ def new_rows(lv: dict, lid_g: float, cut: dict) -> list[dict]:
 def tl1_patch() -> dict:
     ct = crown_tube()
     P = ct["proof_n"]
+    ra, rb = ct["rigs"]["A"], ct["rigs"]["B"]
+    P_FORE = f"{_P().F.b25_topology()['spine_fore_mm']:.1f} mm fore of the bar axis"
+    P_COLLAR = f"{_P().F.b25_topology()['clamp_collar_mm']:.1f} mm"
     return dict(title=f"guy + crown-strap toggles in the 38 mm B-25 sleeve on the real crown bar, {P} N",
                 defined_in="designs/pack_5200/analysis/crown_tube_guy_loop.md sections 5-6 (adopted 2026-11-13); designs/pack_5200/analysis/loadpath_verification.md §3 A3",
                 what_it_proves=f"the bar wall under the as-built 38 mm sleeve, mitre and drop (basis A SF {ct['sf_static']} static / {ct['sf_fat']} fatigue on {ct['env_n']} N on the real pull vectors; bound with the run in line {ct['sf_bound']} / {ct['sf_bound_fat']}) and the POM toggles hold the proof: {P} N (BL-045: the {ct['env_n']} N envelope x the worst vector ratio {ct['k_vector']} / KD_eff; BL-041 had {ct['proof_n_bl041']} N); BL-047 re-runs the crown on the BL-046 geometry and may move it",
                 gates="B-25 bridle (38 mm, BL-041) and the guy / crown-strap toggles: bag cut", grams_at_stake_g="3.4",
                 safety_at_stake=f"toggle proof {670 / P:.2f}; bar wall {ct['sf_static']} static / {ct['sf_fat']} fatigue (38 mm B-25, basis A)",
                 specimen=f"{TL1_N_SPEC} x the real rev C crown top bar stock ([+-45/0x5/+-45], wall 1.065, same vendor and clear coat; NOT a generic 18 mm offcut), each >= {TL1_BAR_MM:.0f} mm, carrying {b25_specimen()}, with the guy toggle AND the crown-strap toggle in the tab; {TL1_CTRL} untested control length",
-                steps=f"clamp the tube ends in V-blocks >= 40 mm outside the sleeve edges (the bar reacts as a beam), NO cradle or saddle under the sleeve; anchor the run's spine end (the stub, bolted, as the specimen) so the drop leg loads the sleeve as on the frame; {BORE_GAUGE}; PULL VECTOR (BL-045 record, crown_and_fairlead_checks.json): the guy toggle pulled {ct['pull']['below_horizontal_deg']:.0f} deg below horizontal and {100 * ct['pull']['outboard_share']:.0f} % outboard (unit vector: down {ct['pull']['down']:.2f}, aft {ct['pull']['aft']:.2f}, outboard {ct['pull']['outboard']:.2f}; set the come-along anchor 1 m from the toggle at {1000 * ct['pull']['down']:.0f} mm below, {1000 * ct['pull']['aft']:.0f} mm aft and {1000 * ct['pull']['outboard']:.0f} mm outboard of it, and check the angle with a phone inclinometer on the line); the crown-strap toggle sits in the tab UNLOADED (in the record its pull is up and aft and takes load off the bar, so leaving it slack is conservative); pull in steps 100 / 200 / 300 / 400 / {P} N ({P / G:.1f} kg), reading the gauge at each step; hold {P} N 60 s, listening (phone microphone on the tube); unload, remove the sleeve, micrometer the loop centre at 0 and 90 deg; check the mitre and the run did not slip (pen marks across the fold and at the stub); loupe + tap test against the control; repeat 1 sample after 4 h in the freezer (POM)",
+                steps=f"clamp the tube ends in V-blocks >= 40 mm outside the sleeve edges (the bar reacts as a beam), NO cradle or saddle under the sleeve; anchor the run's spine end on the spine stub {P_FORE} under the {P_COLLAR} collar (BL-046 geometry; the run then pulls fore-down by itself); {BORE_GAUGE}; TWO RIGS (BL-047 record, bl047_frame_items.json tl1.pull): specimens 1-3 on RIG B, 4-5 on RIG A, proof {P} N on the guy toggle (the larger of the BL-046 vector {ct['proof_n_bl046_vector']} N and BL-045's {P} N): RIG A (the governing BL-046 vector): guy toggle pulled {ra['below_horizontal_deg']:.0f} deg below horizontal, {ra['outboard_pct']:.1f} % outboard (unit: down {ra['down']:.2f}, aft {ra['aft']:.2f}, outboard {ra['outboard']:.2f}; come-along anchor 1 m from the toggle at {1000 * ra['down']:.0f} mm below, {1000 * ra['aft']:.0f} mm aft, {1000 * ra['outboard']:.0f} mm outboard); RIG B (run loaded, BL-045's worst guy): {rb['below_horizontal_deg']:.0f} deg below horizontal, {rb['outboard_pct']:.1f} % outboard (down {rb['down']:.2f}, aft {rb['aft']:.2f}, outboard {rb['outboard']:.2f}; anchor at {1000 * rb['down']:.0f} below, {1000 * rb['aft']:.0f} aft, {1000 * rb['outboard']:.0f} outboard); in BOTH rigs the crown-strap toggle carries {ra['crown_strap_n']:.0f} N ({ra['crown_strap_n'] / G:.1f} kg on a cord over a pulley, up and aft as the crown strap) through the proof; the rig's design guy load is {ra['guy_n']:.0f} N, proofed to {P} N; check each angle with a phone inclinometer on the line; pull in steps 100 / 200 / 300 / 400 / {P} N ({P / G:.1f} kg), reading the gauge at each step; hold {P} N 60 s, listening (phone microphone on the tube); unload, remove the sleeve, micrometer the loop centre at 0 and 90 deg; check the mitre and the run did not slip (pen marks across the fold and at the stub); loupe + tap test against the control; repeat 1 sample after 4 h in the freezer (POM)",
                 pass_fail=f"5 of 5: (1) holds {P} N 60 s, toggle does not pull through or crack, no broken stitch; (2) no crackle; (3) gauge at {P} N within 1.15 x the straight line through the 100-300 N readings, no knee; (4) ovalisation at the LOOP CENTRE (bore gauge, BL-043 m-7) <= 0.40 mm at {P} N (basis A {ct['dD_A']}, B {ct['dD_B']}, C {ct['dD_C']} mm, all at the loop centre); (5) out-of-round after unloading <= 0.02 mm more than before; (6) no crush mark, whitening or resin crack at 10x, tap test clean; the cold sample holds",
                 cost_usd="100", cost_basis=f"ASSUMPTION crown bar stock {TL1_BUY_M:.1f} m from the frame vendor ({TL1_N_SPEC} x {TL1_BAR_MM:.0f} + {TL1_CTRL} control x {TL1_BAR_MM:.0f} + {TL1B_N_SPEC} TL-1b x {TL1B_BAR_MM:.0f} = {TL1_STOCK_MM / 1000:.2f} m + 10 %) + dial bore gauge (about USD 60) + toggles + 20 mm spine stub",
                 hours_hands_on="2.0",
@@ -842,7 +868,7 @@ REL_ORDER = {k: i for i, (k, _, _) in enumerate(RELEASES)}
 TEST_RELEASE = {
     # R1
     "CA-1": "R1", "IM3-EC": "R1", "CA-5": "R1", "MT-1": "R1", "MT-1c": "R1", "IM3-EP": "R1", "W-PULL": "R1",
-    "T9": "R1", "T1": "R1", "T2": "R1",
+    "T9": "R1", "T1": "R1", "T2": "R1", "T1c-SW": "R1",
     # bag
     "MT-2": "BAG-CUT", "MT-3": "BAG-CUT", "US-BS": "BAG-CUT", "PT-1": "BAG-CUT", "PT-2": "BAG-CUT", "PT-3": "BAG-CUT",
     "PT-5": "BAG-CUT", "PT-6": "BAG-CUT", "LL-H": "BAG-CUT", "B-28 slip": "BAG-CUT", "PORT-1": "BAG-CUT",
@@ -885,7 +911,7 @@ GROUPS = [
                "the lab takes about 4 weeks."),
     dict(id="G6", title="First-article frames on the stand (P1 then P2)", when="after G4's CA-1, IM3-EC and CA-5 pass (about week 5-6)",
          rig="kit C frame test stand (hip log, shoulder bar, sand bags, T5 crank) + kit A scale and come-along", kits="C, A, B (load cell), D",
-         tests=["IM3-EP", "W-PULL", "T9", "T9-R3a", "T9-R3c", "BP-3", "RF-1", "T1", "T3", "T2", "MT-1c", "CR-1", "BU-1",
+         tests=["IM3-EP", "W-PULL", "T9", "T9-R3a", "T9-R3c", "BP-3", "RF-1", "T1", "T1c-SW", "T3", "T2", "MT-1c", "CR-1", "BU-1",
                 "SP-1", "T4a", "T4b", "T4c", "T5", "T5f", "T2u"],
          intro="Frame release R1 completes here: IM3-EP on P1, then T9, T1, T2 and MT-1c on P2. Nobody carries the "
                "frame until T1 to T4 have passed. T2u destroys P1 and is always last."),
@@ -965,6 +991,7 @@ def loads(lv: dict) -> dict:
         "T9": [("fill", 68 * G), ("meat check", 30 * G)], "T9-R3a": [("fill incl. 30 kg meat", 68 * G)],
         "T9-R3b": [("cinch", 80), ("after the walk, at least", 40)],
         "T1": [("(a)", lb(150)), ("(b)", lb(300)), ("(c) hipbelt off", lb(225))],
+        "T1c-SW": [("25 %", lb(56)), ("50 %", lb(112)), ("75 %", lb(169)), ("100 % hipbelt off, hold 2 min", lb(225))],
         "T2": [("meat / tall load", lb(300))], "T3": [("side-hill 25 deg", lb(240))], "T2u": [("ultimate, 30 s", lb(450))],
         "T4a": [("pack load, 20 drops at 2.0 g", lb(150))], "T5": [("dead load", lb(60)), ("peak", lb(240))],
         "CR-1": [("crown hang", 136 * G)], "SP-1": [("bone-end proof", 400)],
@@ -1033,6 +1060,14 @@ def measures(lv: dict, lid_g: float, cut: dict) -> dict:
         + per(3, "HE: no broken stitch in the box TOP row at run-out (loupe)", y, "yes", "Y", "SEW_FAT; SEWF-HE-RIG", "HEtop#")
         + per(3, "HE: then held 156.0 kg (1530 N) 60 s, eye open, fixture dowel straight after (BL-048 m-6 / M-C)", y,
               "yes", "Y", "HE-ONE; FIX-PIN-S", "HEproof#"),
+        "T1c-SW": [("run1", "sway |D1-D2|/2 at 225 lb, lifters snug", "mm", "max", "3", "GNL-CROWN"),
+                   ("run1", "sway after unloading", "mm", "max", "0.5", "GNL-CROWN"),
+                   ("run1", "sway(225) / sway(112)", "ratio", "max", "2.5", "GNL-CROWN"),
+                   ("run1", "Southwell P_cr (if sway > 0.3 mm)", "lb", "min", "340", "GNL-CROWN"),
+                   ("run1", "D3 crown sideways at 225 lb", "mm", "max", "3", "GNL-CROWN"),
+                   ("run2", "sway |D1-D2|/2 at 225 lb, lifters cinched", "mm", "max", "3", "GNL-CROWN"),
+                   ("run1", "S1 lifter tension at 225 lb", "N", "record", "-", "LIFT-T"),
+                   ("run1", "S2 lower strap tension at 225 lb", "N", "record", "-", "STRAP-SLING")],
         "FIT-R3": [("lid", "LID-DART: 5.0 L rice, height 85 +/- 5 mm, no pucker", y, "yes", "Y", "LID-DART"),
                    ("bow", "B11-PLACE: bow in IMP-8 + BRL loops sits clear of the frame", y, "yes", "Y", "B11-PLACE"),
                    ("rifle", "B11-PLACE: rifle muzzle keeper holds, clear of the frame", y, "yes", "Y", "B11-PLACE"),
@@ -1612,6 +1647,8 @@ def readme_md(ow, sh, lv, rk, reg, res) -> str:
           f"- `print/{US_PIECE_FILE}` (+ `.3mf`, `_frame_coords.stl`): the US test piece for HE-FIT step 0 (BL-048; R stay z "
           "40-160 with the hinge, US1 and US2 fairleads, cut from `h1_assembled.stl` by `designs/pack_5200/us_route.py`; "
           "re-cut it when BL-047 moves the US stations)",
+          "- crown pawl for P1 and BU-1: the LOW-PROFILE pawl `designs/pack_5200/print/frame_h1/crown_pawl_lp_fdm_pacf.stl` "
+          "(BL-047; the old `crown_pawl_*` does not fit H1)",
           "- `manifest.json`", ""]
     return "\n".join(L)
 

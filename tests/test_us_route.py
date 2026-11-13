@@ -27,7 +27,7 @@ def test_he_shapes_sit_on_the_hinge_pin_and_b01():
     he = U.he_shapes()
     assert he["box_z"] == [39.0, 46.0]                       # box 4..11 above the floor seam at z 35
     eye, hx = he["eye_legs"]
-    assert hx == pytest.approx(9.5, abs=0.01)                 # 19 mm widest neck
+    assert hx == pytest.approx((U._P().HE_NECK_W + U._P().HE_NECK_TOL) / 2)   # the widest neck (18.6, HE-NECK-GAUGE)
     lo_y, lo_z, hi_y, hi_z = eye.bounds
     assert lo_z <= 46.0 < 60.0 < hi_z                        # legs from the box top up round the pin
 
