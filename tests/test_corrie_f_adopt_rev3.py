@@ -80,7 +80,10 @@ def test_20mm_straps_are_lighter_by_the_target_and_rated_for_the_loads():
     _need_paths()
     d = F.crown_strap_diet()
     w20, w25 = d["options"]["w20"], d["options"]["w25"]
-    assert d["bl029_g"] == pytest.approx(67.46, abs=0.05)         # BL-029's pair, reproduced by crown_straps(25)
+    # BL-029's pair, reproduced by crown_straps(25): 67.46 g on the 3.0 g toggle ASSUMPTION; BL-034 books the pom_toggle
+    # record (1.7 g), so the history pair is 2 x 1.3 g lighter
+    from huntkit.gendesign import attach_system as AS
+    assert d["bl029_g"] == pytest.approx(67.46 - 2 * (3.0 - AS.TOGGLE_G), abs=0.05)
     assert -25.0 <= w20["delta_vs_bl029_g"] <= -15.0              # ticket target
     assert w20["delta_vs_bl029_g"] < w25["delta_vs_bl029_g"]
     # mass: records x cut, no hand-typed total

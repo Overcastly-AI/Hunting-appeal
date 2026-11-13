@@ -1,6 +1,16 @@
 # Pack 5200: beginner builder plan
 
-> **STOP (2026-11-10): this build plan is out of date.** It still describes the PA66 centre plate, girth-hitched stubs and the hinge-back bay mode, all of which were replaced. Do not build from it. See `docs/release_delta_register.md`.
+> **THE BAG: build it from `outputs/release/pack5200_corrie_f_rev3/` (2026-11-13, RD-21, BL-034).** CORRIE F rev 3,
+> door D2. Start with `patterns/README.md` (print and check the test square, tape the pages, read a piece, build
+> order), then follow `manufacturing/op_sequence.md` operation by operation (machine, needle, thread, SPI, stitch,
+> seam, sketch, QC point for each), `manufacturing/load_points.csv` for every bartack and box-X, and
+> `manufacturing/qc_sheet.md` / `release_tests.csv` for the gates. The tech pack
+> `manufacturing/techpack_corrie_f_rev3.pdf` has all of it in one file. The skill ladder below is still a good way to
+> learn the operations, but its piece ids and step 9 are the old SPINE bag: use the rev 3 ids from the release.
+>
+> **STOP for everything else (2026-11-10): the rest of this plan is out of date.** It still describes the PA66 centre
+> plate, girth-hitched stubs and the hinge-back bay mode (frame, belt, harness and meat-haul steps), all of which were
+> replaced. Do not build those parts from it. See `docs/release_delta_register.md` (R1-R3 releases).
 
 
 **v3 "SPINE" update (2026-11-01).** The bag is now a teardrop roll-top built from 4 developed gores

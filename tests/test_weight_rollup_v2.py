@@ -81,7 +81,9 @@ def test_ticket_steps_match_the_ticket_modules():
         wt, wb = F.weight_table("M", "base", "D2", "today"), F.weight_table("M", "base", "D2", "B")
     imus, att = st["A_imus"]["base"], st["A_att"]["base"]
     assert imus == pytest.approx(-116.96, abs=0.05)                            # BL-014 S1 / DECISIONS BL-014 row
-    assert att == pytest.approx(-103.0, abs=0.05)                              # attachment_diet.md REC
+    from huntkit.gendesign import attach_system as AS
+    # attachment_diet.md REC -103.0 g, BL-034: the guy bar loops' 2 POM toggles at the pom_toggle record (1.7 g, was 3.0)
+    assert att == pytest.approx(-103.0 - 2 * (3.0 - AS.TOGGLE_G), abs=0.05)
     patch = L.parts(L.CONFIGS[0], "M")                 # BL-033: C2 took the B.2 swell-patch row; P_F leaves it alone
     patch = next(r["g"] for r in patch if r["name"] == "attachment: B-01 swell patches")
     assert st["P_F"]["base"] == pytest.approx(wt["bag_side_g"] - wt["corrie_b2_bag_side_g"] + patch + wings - imus - att,
@@ -172,7 +174,9 @@ def test_gated_savings_are_not_proven_now():
     # proven now = BL-013's 3414.4 g + the two gated savings + the 27 mm cheek (+1.46 g), i.e. BL-023's 3635.9 g
     # (BL-014 S1), then 2026-11-12: + H1B body (+42.9 g, h1_buckling.json) - the 27 mm cheek step (6.80 g, now inside
     # the H1B raster) + CORRIE F rev 1 (+8.6 g, BL-022) + rev 3's B-27 ports in base (BL-030; lid and straps as hunted)
-    bl023_p = 3414.4 - st["A_imus"]["base"] - st["A_att"]["base"] + 1.46
+    from huntkit.gendesign import attach_system as AS
+    bl034_tog = 2 * (3.0 - AS.TOGGLE_G)            # BL-034: A_att's guy bar loop toggles on the pom_toggle record
+    bl023_p = 3414.4 - st["A_imus"]["base"] - (st["A_att"]["base"] + bl034_tog) + 1.46
     assert bl023_p == pytest.approx(3635.9, abs=0.3)                             # weight_rollup_v2.md of BL-023
     import strap_tails as ST                       # + BL-031 (2026-11-12): bag-side base rows + the BL031 correction
     bl031 = sum(g for s, n, g, c, src in ST.bag_rows() if c == "base") + st["BL031"]["base"]
@@ -184,12 +188,19 @@ def test_gated_savings_are_not_proven_now():
     bl033 = (F_.b01_net_g()["net_g"] - F_.b01_net_g()["full_g"]
              + next(r["g"] for r in F_.parts("M") if r["name"].startswith("BL-033 H-1"))
              + F_.us_channels()["mass_g"] - us_rec)
-    upd = st["H1B"]["base"] - 2 * (9.53 - 6.13104) + 8.6 + W._F().guy_port()["mass_g"] + bl031 + bl033
+    # BL-034 (base): hardware / elastic / thread rows on the records + the live slider masses (door #10 x2, IMP-4 #5)
+    import bag_concepts as BC
+    import corrie as CO
+    with W.rev():
+        bl034 = (sum(r["g"] for r in F_.parts("M") if r["name"].startswith("BL-034") and r["cfg"] == "base")
+                 + 2 * (BC.SLIDER_G - 6.0) + (CO.SLIDER5_G - 3.0))
+    upd = st["H1B"]["base"] - 2 * (9.53 - 6.13104) + 8.6 + W._F().guy_port()["mass_g"] + bl031 + bl033 + bl034
     assert t["P"]["base"] == pytest.approx(bl023_p + upd, abs=0.3)
-    assert 3610 < t["P"]["base"] < 3660                                        # BL-031: 3634.8 g (was 3683.4)
+    assert 3660 < t["P"]["base"] < 3710                                        # BL-034: 3687.7 g (BL-031: 3634.8 g)
     # after tests: BL-023's 3143.5 g + the same update + the retired OD 17 legs taken back out (they were -20.6 g); the
     # A_b step also deletes BL-031's shortened stabilizers (its compensating row)
-    assert t["A"]["base"] == pytest.approx(3143.5 + upd - st["A_c17"]["base"] - ST.stabilizer_delta_g("M"), abs=0.3)
+    assert t["A"]["base"] == pytest.approx(3143.5 + upd - bl034_tog - st["A_c17"]["base"] - ST.stabilizer_delta_g("M"),
+                                           abs=0.3)
     assert st["A_c17"]["base"] == pytest.approx(-20.6, abs=0.1)
 
 

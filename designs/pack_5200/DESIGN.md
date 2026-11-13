@@ -33,6 +33,14 @@ offline viewer `outputs/pack3d/pack5200_viewer.html`.
 weight`; target 5.0 lb, see §6 and `analysis/bag_weight_plan.md`). ONE diagonal zip, no shelf: three 38 mm internal
 straps cinch meat to the spreader.
 
+**Current status (2026-11-13, BL-034; the line above is the v3.1 history).** Adopted bag CORRIE F rev 3, door D2, on
+the H1 frame. Whole pack, belt M (`analysis/weight_rollup_v2.md`): **proven now 3687.7 g base (8.13 lb), 4004.9 g as
+hunted (8.83 lb), 4200.9 g meat trip (9.26 lb); after tests 3217.6 / 3534.8 / 3730.8 g (7.09 / 7.79 / 8.23 lb)**.
+Bag side (ledger `adopted_bag_rows`, crown kit M): 1119.8 / 1400.3 / 1596.3 g (39.5 / 49.4 / 56.3 oz). BL-034 booked
+the hardware records (sliders, tri-glides, toggles, elastic) and the thread from the operation lengths (18.3 g):
++63.4 g on the bag (meat trip). Beginner build: 70.8 h a bag + 4.1 h one-off (`build_effort_rev3.py`). Build the bag
+from `outputs/release/pack5200_corrie_f_rev3/`; rationale and numbers in `analysis/corrie_f_body.md` (section 17).
+
 ---
 
 ## 1. Requirements (v3.1; changed rows marked *)

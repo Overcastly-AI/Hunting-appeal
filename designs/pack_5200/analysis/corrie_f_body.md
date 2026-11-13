@@ -1135,7 +1135,7 @@ twice.
 
 - TAIL_GRIP 50 mm: T9 gloved cinch trial (5 users, winter gloves, each strap at its longest setting).
 - TORSO-LIN (crown path linear in torso between the sims): T9 free length at both ends of each kit.
-- TAIL_KEEPER_G 0.6 g (attach_system's guy keeper): weigh 10 cut keepers.
+- TAIL_KEEPER_G 0.6 g (attach_system's guy keeper): weigh 10 cut keepers. **BL-034: now 1.35 g from the `elastic_25mm` record (15 g/m x 90 mm); section 17.**
 - Lifter let-out 50 / cinch 30 mm, sternum gap 100–220 mm and buckle 60 mm, stabilizer path 140 ± 30 mm: T9 lifter
   readings, the R-06 fit trial (≥ 3 men, ≥ 3 women), HB-D1.
 - W_DAY_SQUEEZE 100 mm and W_TRIPOD 70 mm (W paths on a day load and over the tripod): T9 W free lengths.
@@ -1164,3 +1164,68 @@ were); at the 6-day they are 50–79 mm.
 - The shoulder straps have no lower webbing adjuster in any file (DESIGN.md 5.3: fixed to the z 110 anchor); fit
   rides on the crown kit alone. Fine if intended; worth a line in the fit trial.
 - `corrie_f_result.json` is still BL-011's (as noted in 15.6).
+
+## 17. BL-034 part A: rev 3 package cleanup (pack-designer, 2026-11-13)
+
+### 17.1 What changed in the bag's numbers
+
+Every figure below comes from code: `huntkit.mass.ledger.adopted_bag_rows` (= `corrie_f.parts`, rev 3, D2, crown kit M,
+team B fabrics), `weight_rollup_v2.py --write` and `build_effort_rev3.py --write`.
+
+| Change | Source | base g | as hunted g | meat trip g |
+|---|---|---:|---:|---:|
+| #10 door sliders 2 x 6 -> 2 x 19.0 g | `slider_10` record via `bag_concepts.SLIDER_G` | +26.0 | +26.0 | +26.0 |
+| US1/US2 backstop tri-glides -> stainless 25 mm, 2 x 11 g, 3.75 kN (orchestrator: stops cradle slip) | `triglide_25mm` stainless_alt; `meat_haul.cradle_parts_g` | +16.0 | +16.0 | +16.0 |
+| #5 sliders 3.0 -> 4.9 g (IMP-4; lid and F-02 as hunted) | `slider_5` via `corrie.SLIDER5_G`, `LID_SLIDER5_G` | +1.9 | +5.7 | +5.7 |
+| 25 mm elastic keepers 0.6 -> 1.35 g (IM x3, roll clip x2, guy x2; crown strap x4 as hunted) | `elastic_25mm` 15 g/m x 90 mm, `TAIL_KEEPER_G` | +5.25 | +8.25 | +8.25 |
+| POM toggles 3.0 -> 1.7 g (guy bar loops x2; B-28 rear x2 as hunted) | `pom_toggle`, `attach_system.TOGGLE_G` | -2.6 | -5.2 | -5.2 |
+| nylon tri-glides 3.0 -> 2.6 g (guy x2, lifter keepers x2) | `triglide_25mm`, `attach_system.TRIGLIDE_G` | -1.6 | -1.6 | -1.6 |
+| thread from the op stitch lengths (no cone waste) replaces the 2 + 2 g rows | `build_effort_rev3.json` | +9.6 | +14.35 | +14.29 |
+| **Bag side, net** | | **+54.55** | **+63.5** | **+63.44** |
+
+Bag side (D2): **base 1119.8 g (39.50 oz), as hunted 1400.3 g (49.39 oz), meat trip 1596.3 g (56.31 oz)** (before:
+1065.2 / 1336.8 / 1532.9). The hipbelt's two BL-031 tail keepers move +1.5 g on the suspension side.
+
+Whole pack (`weight_rollup_v2.md`, belt M): **proven now 3687.7 g base (8.13 lb), 4004.9 g as hunted (8.83 lb),
+4200.9 g meat trip (9.26 lb); after tests 3217.6 / 3534.8 / 3730.8 g (7.09 / 7.79 / 8.23 lb)** (BL-033: 3640.6 /
+3955.4 / 4151.4 and 3173.1 / 3487.9 / 3684.0). The 6.6 lb base target is now 224 g away after tests (694 g proven now).
+
+### 17.2 Build hours and thread (`build_effort_rev3.py`)
+
+The ledger and `build_metrics` now book the operation sequence of the released package (`mfg_corrie_f_rev3.ops`),
+which counts the webbing parts, the drafted lid and the drafted fly:
+
+- **Beginner hours: 70.8 h a bag** (base 50.7 h, as hunted 16.6 h, meat trip 3.5 h) **+ 4.1 h one-off set-up** (test
+  square, swatches, first-article load samples). The HOURS body model gave 44.5 h (kept as
+  `beginner_hours_hours_model` for the competition comparisons). D1 is the D2 sequence plus its HOURS-model shell
+  difference: 72.2 h.
+- **Thread in the bag: 18.3 g** (base 11.6, as hunted 4.75, meat trip 1.9): op stitch length x 2.75 (ASSUMPTION
+  THREAD-FACTOR) x the bonded nylon tex 70 / 90 / 135 records. The BOM's 21.5 g "in the bag" includes the 15 % cone
+  waste (not in the bag) and three ops the package sews twice (IME, T3, LLT: 0.9 g, 1.2 h); both are left out here.
+
+### 17.3 Pattern marks (`patterns_corrie_f_rev3.py`, release `patterns/pattern_checks.md` section 8)
+
+- **B-11 lash tabs, 4 per gusset (8 a bag)**, ASSUMPTION B11-PLACE: bow riser / lash tabs stacked at z 470 and 560,
+  40 mm forward of the aft corner seam (the cam sits in IMP-8 at the right gusset's aft foot; on the left gusset the
+  same marks are antler / cape lash points); muzzle keeper tabs side by side at z 650, 60 and 130 mm aft of the frame
+  seam (a keeper loop runs between them round the barrel). Clear of FP (top z 380), the B-26 cord (z 600), the IMP-2
+  hose slot (z 680-720 at the frame seam), W3 (z ~703) and the hard-point loops. Settled by the archery and rifle fit
+  checks. Releases op 4.07.
+- **DECISION B28-FACE: the B-28 front lock tab goes on the OUTSIDE of the hinge band**, box-X 21 x 20 (the B-28t box,
+  sewn through tab and band in one pass), centre 15 mm under the lock bar at z 700. The crown strap's taut path
+  (`crown_path`, the T9 route) comes over the lid and down the band's outer face; an inside tab would drag the strap
+  through the band. A 25 x 25 box would run off a 25 mm tab.
+- Box-X drawn: W3 (21 x 25, per kit), IM1-IM3 end loops (21 x 25, 60 mm fold), US eyes (21 x 25, 50 mm fold,
+  ASSUMPTION US-EYE), B-24 from `attach_system.link_piece` (34 x 30 hook + 3 x 34 x 20 loops at the 120 / 170 / 220 mm
+  stations; the earlier piece had folds at the gap values, not the loop stations).
+- **DECISION B25-BOX: 21 x 15** at the tip end of each B-25 toggle tab, so the 2 x 30 mm tab keeps a 13 mm loop that
+  passes the 30 x 8 x 5 POM toggle (26 mm perimeter); 21 x 20 would leave 8 mm. Capacity 2504 N against 288 N.
+  B-25 layout (ASSUMPTION B25-LAYOUT): tab | bar sleeve | run + spine wrap | bar sleeve | tab.
+- K-W keeper notches on the aft corner seams where each wrap crosses it (ASSUMPTION KW-PATH, geometry.yaml anchors):
+  W1 R z 128 / L z 202, W2 R z 300 / L z 370, W3 z 703 both sides. The BL-032 package had assumed z 80 / 250 / 420
+  (the frame anchor heights).
+- F-02 placement drawn on B-05 (outside, centred, zip edge aft).
+- Door D1: the three self-paired placeholder seams are real pairs (gusset aft edge split at the zip corner tangent
+  z 590). The legs and band tongues match to 0.0 mm; the zip seam is 6.0 mm long on the lid side, which is team C's
+  3 mm-a-side lid ease (`tailgate.LID ease_mm`), as is the hinge seam's 6.0 mm.
+

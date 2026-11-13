@@ -16,7 +16,7 @@ safety_relevant, notes`).
 those rows name. Nothing was edited in any released or source file by this ticket; this is a list for a later release
 ticket. Units are mm, N, g, with inches / lb / oz in brackets where a builder needs them.
 
-**Counts.** 22 deltas from BL-015, plus RD-23 / RD-24 added by BL-030 (CORRIE F rev 3, 2026-11-12; RD-24 restated by BL-031): 24 in all, 16 safety-relevant. BL-015's own count: **15 are safety-relevant** (a part built from today's files fails HA-LS-1 rev C, an
+**Counts.** (Section 6 adds the CORRIE F rev 3 release status, BL-034.) 22 deltas from BL-015, plus RD-23 / RD-24 added by BL-030 (CORRIE F rev 3, 2026-11-12; RD-24 restated by BL-031): 24 in all, 16 safety-relevant. BL-015's own count: **15 are safety-relevant** (a part built from today's files fails HA-LS-1 rev C, an
 injury limit, or a load limit the user must know). Areas: frame 5, belt 3, back 2, harness 1, bag 4, attachment 1,
 meat haul 2, docs 4.
 
@@ -360,3 +360,24 @@ per `bag_attachment.md` section 10), RD-15 and RD-18 to `patterns_v31.py`; the r
   `robic_210d_ripstop.dxf`).
 - The CSV was written by one script from one row list and checked: 22 rows, every `decision_source` names a file,
   no row points to an analysis without naming the file and section, `safety_relevant` is yes/no on every row.
+
+## 6. CORRIE F rev 3 release status (BL-032 package, merged by BL-034 part A, 2026-11-13)
+
+Merged from `outputs/release/pack5200_corrie_f_rev3/manufacturing/delta_register_rev3.md` (BL-032 part B, checked by `mfg_corrie_f_rev3.py`), with the BL-034 part A changes marked. CSV columns `rev3_status`, `rev3_evidence`, `rev3_still_open` carry the same text. Rows not listed are untouched by rev 3 (frame, belt, back, harness: R1-R3).
+
+| RD | rev 3 status | evidence | still open |
+|---|---|---|---|
+| RD-01 | closed | F-03 in the rev 3 piece list: False | nothing (v3.1 set stays superseded with its STOP notice) |
+| RD-02 | restated | B-24 x2 + 2 carabiners in the meat-trip kit BOM: True; PT-6 in the release gates | user guide (RD-22) with the 53 kg limit and belly rule; PT-6 |
+| RD-03 | closed | IM1 cut 990 mm in the rev 3 cut list | MT-1 / MT-2 on the sewn straps |
+| RD-12 | restated | B-17, B-18, B-22, HE, T3, LLT, TG drafted and sequenced: True; B-19 / B-20 / B-23 / T2 removed (BL-004 REC); IM3 hooks are wiregate carabiners (BL-010) | PT-1, PT-2, PT-3, PT-5, PT-6, LL-H before any load point is sewn on a bag that will carry |
+| RD-15 | closed (numbers) | BOM, yardage and mass use the current records (robic 125 gsm, ultragrid 132 gsm 1500 mm roll, ULTRA 133 gsm) | physical: swatch weights (QC-02), FS-O5 / PT-3 on 200X (alternate gate) |
+| RD-16 | closed (release) | CORRIE F rev 3 patterns (part A) + this op sequence replace SPINE step 9 | first article build; CORRIE gates; BL-033 items listed as volatile ops |
+| RD-17 | restated | IMP-2 / IMP-4 / IMP-8 in the bag: True; SH-03 absent: True; body seams un-bound (SSa2, ASSUMPTION NO-BIND) | FRAY-1 wash-swatch test; IMP-1/3/5/6 belong to the harness / belt packages |
+| RD-18 | closed | B-11 x8 + BRL x2 + BRS + G-hook in the BOM: True; B-11 x8 drawn on B-03 (4 per gusset: 2 bow riser / lash at z 470 / 560, 2 muzzle keeper at z 650; BL-034 part A, ASSUMPTION B11-PLACE) | op 4.07 to be released by part C (re-run mfg_corrie_f_rev3); archery and rifle fit checks |
+| RD-21 | closed (pointer) | this op sequence supersedes BUILD_PLAN.md step 9 for the bag (bag ops only); BUILD_PLAN.md now opens with a pointer to outputs/release/pack5200_corrie_f_rev3/ for the bag (BL-034 part A) | BUILD_PLAN.md frame / belt / harness steps still describe retired parts (R1-R3 releases); full rewrite with the user guide (R5) |
+| RD-22 | open | the packaging card (README Packaging) carries the load limits | the user guide itself |
+| RD-23 | restated | B-25, B-27f, B-22 inside, TG, LLT drafted and sequenced (ops 3.04-3.05, 4.03): True | T9 rev 3 at the S kit; LL-H; PORT-1; attorney review; BL-033 may move B-22 (x +/-130.3 vs 149) |
+| RD-24 | restated | B-29 (7 piece types) + B-28 per kit + keepers sequenced; lid 9.53 h on the drafted pattern vs 7.76 h booked; B-29 + B-28 per kit sequenced; corrie_f.build_metrics now books the op-sequence hours (70.8 h a bag + 4.1 h one-off, BL-034) | T9 lid weigh / photo, cinch, free lengths |
+
+The rev 3 bag release lives in `outputs/release/pack5200_corrie_f_rev3/` (patterns + manufacturing). It replaces `outputs/release/pack5200_v3.1_patterns/` for the bag only (that set keeps its STOP notice).

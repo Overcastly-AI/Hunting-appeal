@@ -1,0 +1,5 @@
+piece,size,unit,rotation_deg,mirrored,x_min_mm,y_min_mm,area_m2
+roll-top HDPE strip,,0,270.0,False,-0.0,0.0,0.0097
+roll-top HDPE strip,,0,270.0,False,-0.0,487.8,0.0097
+"SWAP slab (sleep kit / meat liner) roll stiffener (HDPE, x2 faces)",,0,270.0,False,23.0,0.0,0.0066
+"SWAP slab (sleep kit / meat liner) roll stiffener (HDPE, x2 faces)",,0,270.0,False,23.0,333.0,0.0066
