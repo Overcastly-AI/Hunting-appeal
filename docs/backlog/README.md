@@ -86,3 +86,4 @@ Nothing here is decided; the tickets produce the material.
 | BL-035 | Record masses everywhere; B-28t split; box and ledger fixes | pack-designer | M | 034A | one mass basis, green suite |
 | BL-036 | Small cleanups after BL-034/035 | pack-designer | S | 035 | consistent docs and constants |
 | BL-037 | Weight push: last 220 g after tests | pack-designer | L | 036 | base ≤ 6.6 lb after tests |
+| BL-038 | Physical test kit: register, order, shopping list, guides, results reader | manufacturing-engineer | M | 037 | owner can start testing |
