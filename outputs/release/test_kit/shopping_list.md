@@ -1,6 +1,6 @@
 # Shopping list (BL-038)
 
-Total **USD 2,480.04**. Prices from material records, cited shop pages (links), or marked ASSUMPTION (check at purchase). Cited or record-priced: USD 1,037.04; ASSUMPTION: USD 1,443.00. Prices checked 2026-11-10 (TEST_PLAN §4) and 2026-11-13.
+Total **USD 2,505.04**. Prices from material records, cited shop pages (links), or marked ASSUMPTION (check at purchase). Cited or record-priced: USD 1,037.04; ASSUMPTION: USD 1,468.00. Prices checked 2026-11-10 (TEST_PLAN §4) and 2026-11-13.
 
 **Order these first (long lead):**
 
@@ -13,12 +13,12 @@ Total **USD 2,480.04**. Prices from material records, cited shop pages (links), 
 
 | kit | USD |
 |---|---:|
-| Kit A pull bench | 224.08 |
+| Kit A pull bench | 233.08 |
 | Kit B lever rig | 317.50 |
 | Kit C frame stand | 227.39 |
 | Kit D measuring | 140.46 |
-| Specimens and lab | 1,570.61 |
-| **total** | **2,480.04** |
+| Specimens and lab | 1,586.61 |
+| **total** | **2,505.04** |
 
 Not in this list: the bag, harness and belt materials themselves (pack BOM, `outputs/release/pack5200_corrie_f_rev3/manufacturing/bom.csv`). Swatches are cut from that fabric order, so buy the bag fabric with the kit. You already own (kit E): washing machine, winter gloves, freezer, hose, tape, paint pen, phone.
 
@@ -30,6 +30,7 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | come-along, 2 ton cable puller (Big Red TR8021) | 1 each | 30.30 | [Home Depot](https://homedepot.com/p/Big-Red-2-Ton-Come-Along-Cable-Puller-with-2-Hooks-TR8021/100594355) | all pulls |
 | ratchet straps 1-1/2 in x 10 ft, 4-pack | 1 pack | 17.99 | [Harbor Freight 61303](https://go.harborfreight.com/61303/) | rigging (never above 151 kg) |
 | hardened dowel pins M5 x 22, 50-pack | 1 pack | 11.79 | [Zoro](https://www.zoro.com/zoro-select-dowel-pin-harden-stl-m5x22mm-pk50-dp5005022-050p1/i/G3163027) | pin fixture |
+| hardened dowel pin M5 x 40, DIN 6325 (m6), HRC 58-62 (Heritage DOWMH-050-040) | 3 each | 9.00 | Zoro; ASSUMPTION USD 3 each (product page refused fetch); https://www.zoro.com/heritage-industrial-dowel-pin-m5-nominal-dia-alloy-steel-1-pk-dowmh-050-040/i/G100006107/ | PT-3, SEW-F (HE), HE-FIT: the fixture pin (BL-048 M-C) |
 | anchors: 4x4 lag-screwed into studs (or tow hitch / tree) | 1 set | 40.00 | lumber yard; ASSUMPTION (shop price, check at purchase) | bench |
 | pin fixture: steel flat bar 40 x 6 x 300, M8 bolts | 1 set | 20.00 | hardware store; ASSUMPTION (shop price, check at purchase) | bench |
 | bar clamps: 2 pairs Al 150 x 25 x 10, M6 bolts, grit cloth | 1 set | 15.00 | hardware store; ASSUMPTION (shop price, check at purchase) | PT-2, PT-3, FS-O5 |
@@ -101,7 +102,7 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | printed label (one, heat transfer) | 1 each | 5.00 | label printer; ASSUMPTION (shop price, check at purchase) | SL-1 |
 | side-release buckle 25 mm | 2 each | 1.60 | Strapworks; record buckle_side_release_25mm | ST-1 |
 | poly webbing 25 mm | 32 m | 22.40 | Strapworks; record poly_webbing_25mm | MT-1, MT-3 (dry/wet/cold), US-BS, LL-H (dry/wet/cold), SEW-F, HB-7, PT-5, PT-6, PORT-1, GT-1 |
-| poly webbing 38 mm | 3 m | 3.00 | Strapworks; record poly_webbing_38mm | PT-6 links, WP-3 |
+| poly webbing 38 mm, PLY 1.2-1.6 mm (1.5 nominal), break >= 6 kN: BUY A SAMPLE FIRST and caliper one ply at 5 places, reject > 1.6 mm (heavyweight / mil-spec rolls are 1.8-2.3 mm); fallback in the record notes | 3 m | 3.00 | Strapworks / extremtextil (see record); record poly_webbing_38mm (BL-048 M-B purchase spec) | PT-6 links, WP-3, HE-FIT, PT-3, SEW-F |
 | XLPE L200 foam 5 + 6 mm | 0.35 m2 | 5.25 | Foam By Mail; record xlpe_foam_l200 | CS-1 (0.25), HS-1 (0.1) |
 | EVA 45C foam 5 mm | 0.1 m2 | 2.50 | Seattle Fabrics; record eva_foam_45c | HS-1 |
 | HDPE sheet 0.5 mm (BL-037 stiffener wing) | 0.05 kg | 0.30 | McMaster-Carr; record hdpe_sheet | HB-D2 |
@@ -136,7 +137,7 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | specimens for WP-5: ports, hose frames, cam-cup base | 1 lot | 5.00 | see register; test_register.csv WP-5: ASSUMPTION | WP-5 |
 | sacrificial P1 frame (IM3-EP, W-PULL, then T2u) **LONG LEAD** | 1 each | 437.00 | owner's print + parts; frame_h1.md 5 unit cost | IM3-EP, W-PULL, T2u |
 | specimens for BU-1: 2 UHMWPE crown bushings cut 50 mm from the 70 mm stock, on P2 | 1 lot | 10.00 | see register; test_register.csv BU-1: ASSUMPTION spare UHMWPE tube length $10 (uhmwpe_sheet record has no tube price) | BU-1 |
-| specimens for SEW-F: 3 x 25 mm poly webbing loops, box-X 21 x 25 mm (the IM / US box as drawn), 301,  | 1 lot | 2.00 | see register; test_register.csv SEW-F: 25 mm webbing offcuts + thread (kit A stock); HE scrap + 32 g filament | SEW-F |
+| specimens for SEW-F: 3 x 25 mm poly webbing loops, box-X 21 x 25 mm (the IM / US box as drawn), 301,  | 1 lot | 10.00 | see register; test_register.csv SEW-F: 25 mm webbing offcuts + thread (kit A stock); HE scrap + 3 fixture prints (book about 100  | SEW-F |
 | specimens for FIT-R3: first sewn bag + lid on P2; 5.0 L of dry rice in a bag; the owner's bow (in IMP- | 1 lot | 2.00 | see register; test_register.csv FIT-R3: 5 L of rice | FIT-R3 |
-| specimens for HE-FIT: 1 scrap HE sewn as op 4.05 (B-18 + B-01 offcut 150 x 120 + B-05 strip, floor sea | 1 lot | 1.00 | see register; test_register.csv HE-FIT: scrap + 32 g filament (BL-042 test piece 31.9 g) | HE-FIT |
+| specimens for HE-FIT: 1 scrap HE sewn as op 4.05 (B-18 + B-01 offcut 150 x 120 + B-05 strip, floor sea | 1 lot | 9.00 | see register; test_register.csv HE-FIT: scrap + about 105 g PAHT-CF at USD 80/kg (CA1_fatigue_rig.md 5): the HE-FIT piece 31.9 g a | HE-FIT |
 | specimens for TL-1b: 2 lengths of the real rev C crown bar stock (>= 160 mm) with a 25 mm B-25-style  | 1 lot | 20.00 | see register; test_register.csv TL-1b: ASSUMPTION crown bar offcut + dial bore gauge (shared with TL-1) | TL-1b |

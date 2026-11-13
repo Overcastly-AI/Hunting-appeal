@@ -149,6 +149,19 @@ FAT_G = 1.6                # HA-LS-1 rev C walking peak (load_standard.md)
 GUY_N = 288.0              # corrie_f_body.md 13.5: port guy envelope (rev 2/3), 96.1 N at 1 g x 3.0
 LLH_N = 1.5 * GUY_N        # M-7: the proof rule 1.5 x factored (loadpath_verification.md) -> 432 N (was 366 N)
 SEWF = {"S1": 605.0, "S6": 720.0}   # loadpath_verification S1 / S6 factored (x 3.0 on 1 g)
+# BL-048 M-C: the PT-3 / SEW-F / HE-FIT fixture pin. A 5 mm 7075 pin at the PT-3 proof (1530 N) is at 561 MPa on the
+# frame's own pin_bending model (yield 462-503), and SEW-F HE runs it near its fatigue limit (SF about 1.06), so the
+# fixtures use a hardened steel dowel (DIN 6325, HRC 58-62: about 2000 MPa UTS, ASSUMPTION FIX-PIN-S (no record), so
+# 561 MPa is under a third of it), 40 mm long to span cheek-throat-cheek (36 mm) plus the sleeves.
+FIX_PIN = "the hardened steel M5 x 40 dowel (DIN 6325 m6, HRC 58-62; NOT a 7075 frame pin)"
+FIX_PIN_N = 3                     # PT-3, SEW-F, one spare
+PIN_STRAIGHT = ("PIN CHECK (BL-048 M-C): roll the dowel on the bench plate before and after the test: it rolls "
+                "freely with no visible wobble and a 0.05 mm feeler does not pass under its middle; a bent pin voids "
+                "the specimen.")
+FIX_PRINT = ("PRINT (BL-048 m-6): fixtures print as the H1 frame: PAHT-CF, dried, the H1 slicer settings "
+             "(print/frame_h1/README.md), annealed as H1.")
+US_PIECE_FILE = "us_route_stay_R.stl"
+WEB38 = yaml.safe_load((ROOT / "data" / "materials" / "webbing" / "poly_webbing_38mm.yaml").read_text())["properties"]
 SEWF_SCATTER = 1.15        # BL-041 n-13: the kit's fatigue scatter factor (IM3-EC, CA1_fatigue_rig.md 6a) on SEW-F too
 SEWF_PEAK = round(SEWF_SCATTER * FAT_G * max(SEWF.values()) / 3.0)   # 1.15 x 1.6 g x the S6 1 g load (240 N) = 442 N
 SEWF_MIN = round(0.1 * SEWF_PEAK)
@@ -270,12 +283,28 @@ def crown_tube() -> dict:
     t = d["tl1"]
     env = d["kit_loads"]["envelope"]
     b38 = next(f for f in d["fixes"] if f["key"] == "b25_38")
-    return {"proof_n": round(max(t["proof_n"], t["bar_rule_proof_n"])), "sewn_proof_n": round(t["proof_n"]),
+    # BL-048 M-A: TL-1 follows BL-045's record (crown_and_fairlead_checks.json, crown tube with the B-25 mitre): proof
+    # 497 N with a DEFINED pull (the guy toggle at the governing case's angle below horizontal and outboard share, the
+    # run's spine end anchored so the drop loads the sleeve as on the frame). BL-047's crown re-run on the BL-046
+    # geometry writes the same keys; this reads them live.
+    rec = _json("crown_and_fairlead_checks.json")["crown_tube"]
+    vr = rec["k_vector_run"]
+    ang = float(vr["guy_angle_below_horizontal_deg"])
+    out_sh = float(rec["max_outboard_share"])
+    hz = math.cos(math.radians(ang))
+    pull = {"below_horizontal_deg": round(ang, 1), "outboard_share": round(out_sh, 3),
+            "down": round(math.sin(math.radians(ang)), 3), "outboard": round(out_sh, 3),
+            "aft": round(math.sqrt(max(hz * hz - out_sh * out_sh, 0.0)), 3)}
+    return {"proof_n": round(float(rec["proof_tl1_n"])), "proof_n_bl041": round(max(t["proof_n"], t["bar_rule_proof_n"])),
+            "pull": pull, "k_vector": rec["checks"]["vector"].get("k", None), "k_bound": rec["k_bound_max"],
+            "sf_bound": round(rec["checks"]["bound"]["sf_static"], 2), "sf_bound_fat": round(rec["checks"]["bound"]["sf_fatigue"], 2),
+            "sewn_proof_n": round(t["proof_n"]),
             "env_n": round(env["static_n"]), "fat_n": round(env["fatigue_peak_n"]), "dD_A": round(t["dD_A_mm"], 2),
             "dD_B": round(t["dD_B_mm"], 2), "dD_C": round(t["dD_C_mm"], 3), "rt_cap": round(t["rt_capacity_A_n"]),
             "bare_rt_cap": round(t["bare25_rt_capacity_A_n"]), "bare_dD_A_288": round(t["bare25_dD_A_at_288"], 2),
             "bare_dD_B_288": round(t["bare25_dD_B_at_288"], 2), "bare_dD_C_288": round(t["bare25_dD_C_at_288"], 3),
-            "sf_static": round(b38["sf_static"], 2), "sf_fat": round(b38["sf_fatigue"], 2)}
+            "sf_static": round(rec["checks"]["vector"]["sf_static"], 2), "sf_fat": round(rec["checks"]["vector"]["sf_fatigue"], 2),
+            "sf_static_bl041": round(b38["sf_static"], 2), "sf_fat_bl041": round(b38["sf_fatigue"], 2)}
 
 
 def pt3_specimen() -> str:
@@ -301,13 +330,22 @@ def pt3_steps() -> str:
             "eye reamed to 7.2, its UHMWPE sleeve, bolted upright to the bench plate through the stay segment; "
             + HE_SPACER + f". The pin centre is then {g['tip_y'] - g['pin_y']:.1f} mm toward the frame from the B-01 "
             f"face and {g['pin_z'] - g['box_top']:.0f} mm above the box top (the bag geometry, DECISION HE-ENV). Put the "
-            "5 mm pin through cheek, sleeve, eye, cheek (only the 18 mm neck between the cheeks); clamp the B-05 strip "
+            f"{FIX_PIN} through cheek, sleeve, eye, cheek (only the 18 mm neck between the cheeks); clamp the B-05 strip "
             "ALONE in the bar clamp below; the B-01 top edge stays FREE (never clamped: a clamp there carries the load "
             "past the floor seam); pull DOWN along the spacer face "
             f"(leg B leaves the box top at about {abs(pl['leg_B_deg']):.0f} deg: the peel the frame gives) "
             "to 1530 N (156.0 kg); hold 60 s; with the loupe check the box TOP row first, then the neck tacks and the "
-            "floor seam. If the printed cheeks crack before the eye fails, the specimen is void: re-run it in a "
-            "machined aluminium copy of the same section (ASSUMPTION PT3-PRINT)")
+            "floor seam. " + PIN_STRAIGHT + " If the printed cheeks crack before the eye fails, the specimen is void: "
+            "re-run it in a machined aluminium copy of the same section (ASSUMPTION PT3-PRINT). " + FIX_PRINT)
+
+
+def us_route_record() -> dict:
+    """BL-048 N-1: the under-straps' real path (designs/pack_5200/analysis/us_route.json, us_route.py)."""
+    d = _json("us_route.json")
+    now = d["layouts"]["now"]["rows"]
+    bear = max(sum(v for v in r["section"]["bearing_n"].values()) for r in now if "section" in r)
+    return {"tension_n": d["tension_n"], "station_move": d["station_move"], "bearing_now_n": bear,
+            "worst_now_mm": min(d["layouts"]["now"]["worst_clear_mm"].values()), "piece": d.get("test_piece", {})}
 
 
 def he_fit_row() -> dict:
@@ -317,6 +355,9 @@ def he_fit_row() -> dict:
     g = P.he_geometry()
     lo, hi = P.he_band()
     e = g["env"]
+    ur = us_route_record()
+    US_T, US_MOVE = ur["tension_n"], ur["station_move"]
+    US_BEAR = ur["bearing_now_n"]
     return dict(id="HE-FIT", status="ACTIVE", tier="safety",
                 title="hinge eye 1:1 dry fit on the printed BL-042 z 60 hinge fairlead (eye on the pin, neck in the throat)",
                 defined_in="designs/pack_5200/patterns_corrie_f_rev3.py DECISION HE-ENV (he_geometry, he_band, he_peel; bag_attach.HINGE_EYE_ENVELOPE), ASSUMPTIONS HE-CHEEK, HE-T, HE-PIN-HI, HE-NECK-TOL, HE-GAP-MARGIN; review_20261113_rev3_third.md Z-1 / m-1",
@@ -325,9 +366,9 @@ def he_fit_row() -> dict:
                 safety_at_stake="hinge eye position and the eye's passage under the pin: every sim and placement assumes the floor at z 35",
                 specimen=f"1 scrap HE sewn as op 4.05 (B-18 + B-01 offcut 150 x 120 + B-05 strip, floor seam sewn); one hinge fairlead printed 1:1 from `print/frame_h1/test_pieces/hefit_hinge_fairlead_R.stl` (BL-042: z 60 R, 80 mm stay segment, {e['throat_mm']:.0f} mm throat, {e['gap_under_pin_mm']:.1f} mm under the pin; ream the eye to 7.2) with its UHMWPE sleeve and the 5 mm hinge pin ({P.F.hinge_pin()['shank_hinge_mm']:.0f} mm shank)",
                 kit="A+D",
-                steps=f"(0) BL-045 / BL-044: repeat steps 3 and 7 with one necked IME eye on the IM3-EC test piece (`print/frame_h1/test_pieces/im3ec_cheek_R.stl`) and one necked US eye and one USA pin loop on the first printed frame (P1, US1 L / US1 R): slide each neck against both cheeks and pull the box forward-down along the cradle line (about 50 deg below level) and then straight down the stay; record whether the box or strap touches the fairlead below (model, imus_stl_check: clear to -60 deg, meets it at -75 / -90 deg); (1) caliper ONE ply of the bought 38 mm webbing at 5 places: every reading <= {P.HE_T_RANGE[1]:.1f} mm, else reject the roll (3 plies of a thicker web leave < 0.7 mm under the pin); (2) clamp the printed stay segment upright; (3) slide the neck round the pin by hand: the pin goes through cheek, sleeve, eye, cheek with the eye seated, no forcing; then push the neck hard against each cheek in turn and slide it round the pin again (its folded edge passes the printed throat-corner fillet: 0.3 mm clear on the model, BL-044 he_stl_check); (4) hang 5 kg from the B-05 strip so the eye loads the pin; (5) caliper from the floor seam line to the pin centre; (6) feeler gauge between the box top and the cheeks' lower edge; (7) check the eye is not folded over the box and the neck is not pinched by the cheeks; photo",
+                steps=f"(0) US ROUTE (BL-048, fourth review N-1; pass criterion below): print the US test piece `test_kit/print/{US_PIECE_FILE}` (R stay z 40-160 with the hinge, US1 and US2 fairleads, cut from `h1_assembled.stl` by `us_route.export_test_piece`; print it as the H1 frame: PAHT-CF, dried, H1 settings, annealed) and clamp it upright; sew two USA anchors (25 mm, as op 7.16: the piece is the R stay, where the cam anchors sit) and hang the HE specimen of this test on its hinge pin ({FIX_PIN} in each fairlead); USA on the US1 pin, its cam on a 25 mm strap laid down the B-01 offcut over the piece, round a 20 mm dowel at the floor-seam line (the floor corner, 25 mm under the hinge pin) to the crane scale, cinched to {US_T['us1']:.0f} N ({US_T['us1'] / G:.1f} kg); then the same from the US2 pin at {US_T['us2']:.0f} N ({US_T['us2'] / G:.1f} kg); repeat with the IME eye on the IM3-EC piece pulled at -82 to -88 deg (the sim directions). PASS (gate US-ROUTE): at the cinched load, along its whole run from the eye to the dowel, no part of the strap, eye or box touches the hinge fairlead, the HE (eye, legs or box) or the other US fairlead: a 10 mm feeler block passes between them everywhere (the design clearance is >= 10 mm). FAIL = any contact or a gap under 10 mm. On the CURRENT print this step FAILS by design (us_route.json: the strap lies over the hinge cheeks and the HE box, 1-4.5 mm into them, bearing about {US_BEAR:.0f} N): it is the evidence for the US station move asked of BL-047, and is re-run on the re-cut piece once the US fairleads are on their lanes (US1 x {US_MOVE['us1']['x']:.0f}, US2 x {US_MOVE['us2']['x']:.0f}); the bag is not cut until it passes; (1) re-caliper ONE ply of the 38 mm roll in hand at 5 places (the first caliper is at the PURCHASE, on a sample, shopping list; BL-048 M-B): every reading <= {P.HE_T_RANGE[1]:.1f} mm, else reject the roll (3 plies of a thicker web leave < 0.7 mm under the pin); (2) clamp the printed stay segment upright; (3) slide the neck round the pin by hand: the pin goes through cheek, sleeve, eye, cheek with the eye seated, no forcing; then push the neck hard against each cheek in turn and slide it round the pin again (its folded edge passes the printed throat-corner fillet: 0.3 mm clear on the model, BL-044 he_stl_check); (4) hang 5 kg from the B-05 strip so the eye loads the pin; (5) caliper from the floor seam line to the pin centre; (6) feeler gauge between the box top and the cheeks' lower edge; (7) check the eye is not folded over the box and the neck is not pinched by the cheeks; photo",
                 pass_fail=f"ply <= {P.HE_T_RANGE[1]:.1f} mm; pin centre {lo:.0f}-{hi:.0f} mm above the floor seam line; >= {P.HE_CHEEK_MIN:.0f} mm feeler between the box top and the cheeks; the eye slides round the pin by hand; neck alone in the {e['throat_mm']:.0f} mm throat; eye points up (no fold-down)",
-                cost_usd="1", cost_basis="scrap + 32 g filament (BL-042 test piece 31.9 g)", hours_hands_on="0.5", hours_machine="2", phase="1",
+                cost_usd="9", cost_basis="scrap + about 105 g PAHT-CF at USD 80/kg (CA1_fatigue_rig.md 5): the HE-FIT piece 31.9 g and the BL-048 US test piece (us_route.json test_piece g) + a spare", hours_hands_on="0.5", hours_machine="2", phase="1",
                 run_order="9", first_weekend="Y",
                 notes="BL-041 (re-review X-2): a gate BEFORE PT-3 is sewn and before bag cut. BL-044 (third review Z-1 / m-1): on the BL-042 test piece; the band is set by the cheek clearance (low end) and HE-PIN-HI (high end). A fail low: lengthen HE_EYE by the shortfall; a fail high: shorten it; a ply over 1.6 mm: change webbing",
                 g_per_usd_eq="")
@@ -353,7 +394,7 @@ def b25_specimen() -> str:
             f"{tp['band_x'][0]:.1f}-{tp['band_x'][1]:.1f} from the spine centre, lap bartacked as at frame assembly | the "
             f"strip down the aft side, the 45 deg MITRE under the sleeve | the run necked to {tp['neck_w_mm']:.0f} mm, "
             "wrapped once round a 20 mm spine stub (crown spine tube offcut or 20 mm steel rod) bolted upright to the rig "
-            f"at x 0 and {tp['spine_fore_mm']:.1f} mm FORE of the bar axis (the printed spine channel, BL-045), under a "
+            f"at x 0 and {tp['spine_fore_mm']:.1f} mm FORE of the bar axis (the printed spine channel, BL-046), under a "
             f"{tp['clamp_collar_mm']:.1f} mm collar spacer, its end clamped behind the stub")
 
 
@@ -500,9 +541,9 @@ def new_rows(lv: dict, lid_g: float, cut: dict) -> list[dict]:
              grams_at_stake_g="0", safety_at_stake=f"box-X fatigue 1.48 (S6, ASSUMPTION SEW_FAT); peak = {SEWF_SCATTER} scatter x 1.6 g x the S6 1 g load {SEWF['S6'] / 3.0:.0f} N (BL-041 n-13: the same scatter factor as IM3-EC)",
              specimen="3 x 25 mm poly webbing loops, box-X 21 x 25 mm (the IM / US box as drawn), 301, 7 SPI, tex 135, Nm 140 R, sewn with the MT-1 loops; + 3 HE hinge-eye specimens sewn exactly as the PT-3 specimens (op 4.05), on a third print of the HE-FIT fairlead with the PT-3 spacer plate",
              kit="B",
-             steps=f"loop over a 5 mm pin on the lever (in place of a coupon), the free end in the bar clamp; set the crank so the cell swings {SEWF_MIN / 4:.0f} -> {SEWF_PEAK / 4:.0f} N (4:1 lever = {SEWF_MIN} -> {SEWF_PEAK} N on the loop); 1 Hz to 100,000 cycles (27.8 h); loupe check at 25,000 / 50,000 / 75,000; after run-out pull the loop on the G2 bench to 1080 N (the MT-1 US proof), 1 min. HE (BL-044): the printed fairlead + spacer (the PT-3 fixture) on the bench plate, the B-05 strip to the lever's clamp, cell {SEWF_HE_MIN / 4:.0f} -> {SEWF_HE_PEAK / 4:.0f} N ({SEWF_HE_MIN} -> {SEWF_HE_PEAK} N on the eye), 1 Hz to 100,000 cycles, loupe on the box TOP row; after run-out, the PT-3 proof 1530 N 60 s",
+             steps=f"loop over a 5 mm pin on the lever (in place of a coupon), the free end in the bar clamp; set the crank so the cell swings {SEWF_MIN / 4:.0f} -> {SEWF_PEAK / 4:.0f} N (4:1 lever = {SEWF_MIN} -> {SEWF_PEAK} N on the loop); 1 Hz to 100,000 cycles (27.8 h); loupe check at 25,000 / 50,000 / 75,000; after run-out pull the loop on the G2 bench to 1080 N (the MT-1 US proof), 1 min. HE (BL-044; mounting BL-048 m-6, G4 rig sketch): the printed fairlead + spacer (the PT-3 fixture, {FIX_PIN}) bolted to the lever rig's FIXED base plate at the coupon station, in place of the coupon block, stay segment upright under the lever's clamp; the B-05 strip in the lever's moving bar clamp (the fixture grip never holds the fabric), the pull straight down the spacer face as PT-3; cell {SEWF_HE_MIN / 4:.0f} -> {SEWF_HE_PEAK / 4:.0f} N ({SEWF_HE_MIN} -> {SEWF_HE_PEAK} N on the eye), 1 Hz to 100,000 cycles, loupe on the box TOP row; after run-out, the PT-3 proof 1530 N 60 s. " + PIN_STRAIGHT + " " + FIX_PRINT,
              pass_fail=f"loops: 3 of 3 run-outs to 1e5 at {SEWF_PEAK} N, no broken stitch, then hold 1080 N 1 min; HE: 3 of 3 run-outs to 1e5 at {SEWF_HE_PEAK} N with no broken stitch in the box top row, then hold 1530 N 60 s (a 2 of 3 result in either set: run 3 more of that set, pass with 5 of 6)",
-             cost_usd="2", cost_basis="25 mm webbing offcuts + thread (kit A stock); HE scrap + 32 g filament", hours_hands_on="2.0", hours_machine="166.8",
+             cost_usd="10", cost_basis="25 mm webbing offcuts + thread (kit A stock); HE scrap + 3 fixture prints (book about 100 g PAHT-CF: HE-FIT, PT-3, SEW-F at 31.9 g each, BL-048 m-6)", hours_hands_on="2.0", hours_machine="166.8",
              phase="2", run_order="78", first_weekend="N",
              notes="BL-040 (review M-9): added. Runs on the G4 lever rig between coupons; a loop is not a frame coupon so it can run beside CA-4 / CS-1. BL-044 (third review M-3): + 3 HE specimens at 1.15 x 1.6 g x the rev C hinge load, on the printed fairlead at the real offset (the box top row peels; ASSUMPTION SEWF-HE-RIG: the lever rig carries 625 N on the eye, 156 N at the cell)", g_per_usd_eq=""),
         dict(id="FIT-R3", status="ACTIVE", tier="function",
@@ -595,11 +636,11 @@ def tl1_patch() -> dict:
     P = ct["proof_n"]
     return dict(title=f"guy + crown-strap toggles in the 38 mm B-25 sleeve on the real crown bar, {P} N",
                 defined_in="designs/pack_5200/analysis/crown_tube_guy_loop.md sections 5-6 (adopted 2026-11-13); designs/pack_5200/analysis/loadpath_verification.md §3 A3",
-                what_it_proves=f"the bar wall under the as-built 38 mm sleeve (basis A SF {ct['sf_static']} static / {ct['sf_fat']} fatigue on {ct['env_n']} N) and the POM toggles hold the proof: {P} N = {ct['env_n']} N / KD_eff (bar rule; the sewn 1.5 x rule gives {ct['sewn_proof_n']} N)",
+                what_it_proves=f"the bar wall under the as-built 38 mm sleeve, mitre and drop (basis A SF {ct['sf_static']} static / {ct['sf_fat']} fatigue on {ct['env_n']} N on the real pull vectors; bound with the run in line {ct['sf_bound']} / {ct['sf_bound_fat']}) and the POM toggles hold the proof: {P} N (BL-045: the {ct['env_n']} N envelope x the worst vector ratio {ct['k_vector']} / KD_eff; BL-041 had {ct['proof_n_bl041']} N); BL-047 re-runs the crown on the BL-046 geometry and may move it",
                 gates="B-25 bridle (38 mm, BL-041) and the guy / crown-strap toggles: bag cut", grams_at_stake_g="3.4",
                 safety_at_stake=f"toggle proof {670 / P:.2f}; bar wall {ct['sf_static']} static / {ct['sf_fat']} fatigue (38 mm B-25, basis A)",
                 specimen=f"{TL1_N_SPEC} x the real rev C crown top bar stock ([+-45/0x5/+-45], wall 1.065, same vendor and clear coat; NOT a generic 18 mm offcut), each >= {TL1_BAR_MM:.0f} mm, carrying {b25_specimen()}, with the guy toggle AND the crown-strap toggle in the tab; {TL1_CTRL} untested control length",
-                steps=f"clamp the tube ends in V-blocks >= 40 mm outside the sleeve edges (the bar reacts as a beam), NO cradle or saddle under the sleeve; {BORE_GAUGE}; pull the guy toggle aft and outward as in the field in steps 100 / 200 / 300 / 400 / {P} N ({P / G:.1f} kg), reading the gauge at each step; hold {P} N 60 s, listening (phone microphone on the tube); unload, remove the sleeve, micrometer the loop centre at 0 and 90 deg; check the mitre and the run did not slip (pen marks across the fold and at the stub); loupe + tap test against the control; repeat 1 sample after 4 h in the freezer (POM)",
+                steps=f"clamp the tube ends in V-blocks >= 40 mm outside the sleeve edges (the bar reacts as a beam), NO cradle or saddle under the sleeve; anchor the run's spine end (the stub, bolted, as the specimen) so the drop leg loads the sleeve as on the frame; {BORE_GAUGE}; PULL VECTOR (BL-045 record, crown_and_fairlead_checks.json): the guy toggle pulled {ct['pull']['below_horizontal_deg']:.0f} deg below horizontal and {100 * ct['pull']['outboard_share']:.0f} % outboard (unit vector: down {ct['pull']['down']:.2f}, aft {ct['pull']['aft']:.2f}, outboard {ct['pull']['outboard']:.2f}; set the come-along anchor 1 m from the toggle at {1000 * ct['pull']['down']:.0f} mm below, {1000 * ct['pull']['aft']:.0f} mm aft and {1000 * ct['pull']['outboard']:.0f} mm outboard of it, and check the angle with a phone inclinometer on the line); the crown-strap toggle sits in the tab UNLOADED (in the record its pull is up and aft and takes load off the bar, so leaving it slack is conservative); pull in steps 100 / 200 / 300 / 400 / {P} N ({P / G:.1f} kg), reading the gauge at each step; hold {P} N 60 s, listening (phone microphone on the tube); unload, remove the sleeve, micrometer the loop centre at 0 and 90 deg; check the mitre and the run did not slip (pen marks across the fold and at the stub); loupe + tap test against the control; repeat 1 sample after 4 h in the freezer (POM)",
                 pass_fail=f"5 of 5: (1) holds {P} N 60 s, toggle does not pull through or crack, no broken stitch; (2) no crackle; (3) gauge at {P} N within 1.15 x the straight line through the 100-300 N readings, no knee; (4) ovalisation at the LOOP CENTRE (bore gauge, BL-043 m-7) <= 0.40 mm at {P} N (basis A {ct['dD_A']}, B {ct['dD_B']}, C {ct['dD_C']} mm, all at the loop centre); (5) out-of-round after unloading <= 0.02 mm more than before; (6) no crush mark, whitening or resin crack at 10x, tap test clean; the cold sample holds",
                 cost_usd="100", cost_basis=f"ASSUMPTION crown bar stock {TL1_BUY_M:.1f} m from the frame vendor ({TL1_N_SPEC} x {TL1_BAR_MM:.0f} + {TL1_CTRL} control x {TL1_BAR_MM:.0f} + {TL1B_N_SPEC} TL-1b x {TL1B_BAR_MM:.0f} = {TL1_STOCK_MM / 1000:.2f} m + 10 %) + dial bore gauge (about USD 60) + toggles + 20 mm spine stub",
                 hours_hands_on="2.0",
@@ -988,7 +1029,10 @@ def measures(lv: dict, lid_g: float, cut: dict) -> dict:
         "SEW-F": per(3, f"cycles at {SEWF_MIN} -> {SEWF_PEAK} N (run-out 100000)", "cycles", "min", "100000", "SEW_FAT")
         + per(3, f"HE cycles at {SEWF_HE_MIN} -> {SEWF_HE_PEAK} N on the printed fairlead (run-out 100000)", "cycles", "min",
               "100000", "SEW_FAT; SEWF-HE-RIG", "HE#")
-        + per(3, "no broken stitch at run-out and held 1080 N 1 min after", y, "yes", "Y", "SEW_FAT", "p#"),
+        + per(3, "no broken stitch at run-out and held 1080 N 1 min after", y, "yes", "Y", "SEW_FAT", "p#")
+        + per(3, "HE: no broken stitch in the box TOP row at run-out (loupe)", y, "yes", "Y", "SEW_FAT; SEWF-HE-RIG", "HEtop#")
+        + per(3, "HE: then held 156.0 kg (1530 N) 60 s, eye open, fixture dowel straight after (BL-048 m-6 / M-C)", y,
+              "yes", "Y", "HE-ONE; FIX-PIN-S", "HEproof#"),
         "FIT-R3": [("lid", "LID-DART: 5.0 L rice, height 85 +/- 5 mm, no pucker", y, "yes", "Y", "LID-DART"),
                    ("bow", "B11-PLACE: bow in IMP-8 + BRL loops sits clear of the frame", y, "yes", "Y", "B11-PLACE"),
                    ("rifle", "B11-PLACE: rifle muzzle keeper holds, clear of the frame", y, "yes", "Y", "B11-PLACE"),
@@ -1106,6 +1150,7 @@ LINKS = {
     "hd-come": "https://homedepot.com/p/Big-Red-2-Ton-Come-Along-Cable-Puller-with-2-Hooks-TR8021/100594355",
     "hf-strap": "https://go.harborfreight.com/61303/",
     "pins": "https://www.zoro.com/zoro-select-dowel-pin-harden-stl-m5x22mm-pk50-dp5005022-050p1/i/G3163027",
+    "pin40": "https://www.zoro.com/heritage-industrial-dowel-pin-m5-nominal-dia-alloy-steel-1-pk-dowmh-050-040/i/G100006107/",
     "lc": "https://www.makerfabs.com/s-type-load-cell-100kg-200kg-300kg-500kg-1.html",
     "hx": "https://www.sparkfun.com/sparkfun-load-cell-amplifier-hx711.html",
     "nano": "https://store.arduino.cc/products/arduino-nano-every",
@@ -1136,6 +1181,9 @@ def shopping(reg: dict) -> list[dict]:
         _l("come-along, 2 ton cable puller (Big Red TR8021)", 1, "each", 30.30, "Home Depot", LINKS["hd-come"], "A", "all pulls"),
         _l("ratchet straps 1-1/2 in x 10 ft, 4-pack", 1, "pack", 17.99, "Harbor Freight 61303", LINKS["hf-strap"], "A", "rigging (never above 151 kg)"),
         _l("hardened dowel pins M5 x 22, 50-pack", 1, "pack", 11.79, "Zoro", LINKS["pins"], "A", "pin fixture"),
+        _l("hardened dowel pin M5 x 40, DIN 6325 (m6), HRC 58-62 (Heritage DOWMH-050-040)", FIX_PIN_N, "each", 3.0,
+           "Zoro", "ASSUMPTION USD 3 each (product page refused fetch); " + LINKS["pin40"], "A",
+           "PT-3, SEW-F (HE), HE-FIT: the fixture pin (BL-048 M-C)"),
         _l("anchors: 4x4 lag-screwed into studs (or tow hitch / tree)", 1, "set", 40.00, "lumber yard", A, "A", "bench"),
         _l("pin fixture: steel flat bar 40 x 6 x 300, M8 bolts", 1, "set", 20.00, "hardware store", A, "A", "bench"),
         _l("bar clamps: 2 pairs Al 150 x 25 x 10, M6 bolts, grit cloth", 1, "set", 15.00, "hardware store", A, "A", "PT-2, PT-3, FS-O5"),
@@ -1194,7 +1242,11 @@ def shopping(reg: dict) -> list[dict]:
         _l("side-release buckle 25 mm", 2, "each", rp("buckle_side_release_25mm"), "Strapworks", "record buckle_side_release_25mm", "S", "ST-1"),
         _l("poly webbing 25 mm", 32, "m", rp("poly_webbing_25mm"), "Strapworks", "record poly_webbing_25mm", "S", "MT-1, MT-3 (dry/wet/cold), US-BS, LL-H (dry/wet/cold), SEW-F, HB-7, PT-5, PT-6, PORT-1, GT-1",
            note="BL-040: +12 m for the MT-3 and LL-H wet and cold sets (fresh webbing per condition)"),
-        _l("poly webbing 38 mm", 3, "m", rp("poly_webbing_38mm"), "Strapworks", "record poly_webbing_38mm", "S", "PT-6 links, WP-3"),
+        _l(f"poly webbing 38 mm, PLY {WEB38['thickness_min_mm']:.1f}-{WEB38['thickness_max_mm']:.1f} mm ({WEB38['thickness_mm']:.1f} nominal), "
+           f"break >= {WEB38['breaking_strength_min_n'] / 1000:.0f} kN: BUY A SAMPLE FIRST and caliper one ply at 5 places, reject > "
+           f"{WEB38['thickness_max_mm']:.1f} mm (heavyweight / mil-spec rolls are 1.8-2.3 mm); fallback in the record notes",
+           3, "m", rp("poly_webbing_38mm"), "Strapworks / extremtextil (see record)", "record poly_webbing_38mm (BL-048 M-B purchase spec)", "S",
+           "PT-6 links, WP-3, HE-FIT, PT-3, SEW-F"),
         _l("XLPE L200 foam 5 + 6 mm", 0.35, "m2", rp("xlpe_foam_l200"), "Foam By Mail", "record xlpe_foam_l200", "S", "CS-1 (0.25), HS-1 (0.1)", "", "minimum order not known"),
         _l("EVA 45C foam 5 mm", 0.1, "m2", rp("eva_foam_45c"), "Seattle Fabrics", "record eva_foam_45c", "S", "HS-1"),
         _l("HDPE sheet 0.5 mm (BL-037 stiffener wing)", 0.05, "kg", rp("hdpe_sheet"), "McMaster-Carr", "record hdpe_sheet", "S", "HB-D2", "", "a 300 x 300 mm sheet is about 0.045 kg; minimum order may cost more"),
@@ -1557,6 +1609,9 @@ def readme_md(ow, sh, lv, rk, reg, res) -> str:
           "FAILED / OPEN (`settles` column).", "",
           "## Files", "", "- `guides/G1.md` ... `guides/G7.md`: one session each", "- `shopping_list.md`, `shopping_list.csv`",
           "- `order_of_work.csv`", "- `results_template.csv`", "- `sketches/*.png`: rig sketches", "- `test_kit.pdf`: everything above in one PDF",
+          f"- `print/{US_PIECE_FILE}` (+ `.3mf`, `_frame_coords.stl`): the US test piece for HE-FIT step 0 (BL-048; R stay z "
+          "40-160 with the hinge, US1 and US2 fairleads, cut from `h1_assembled.stl` by `designs/pack_5200/us_route.py`; "
+          "re-cut it when BL-047 moves the US stations)",
           "- `manifest.json`", ""]
     return "\n".join(L)
 

@@ -90,6 +90,11 @@ def _floor5(x: float) -> float:
     return 5.0 * math.floor(x / 5.0 + 1e-9)
 
 
+def _ceil5(x: float) -> float:
+    """BL-048 m-2: a cut rounded DOWN leaves less than TAIL_GRIP at the longest path; cuts that size the grip round up."""
+    return 5.0 * math.ceil(x / 5.0 - 1e-9)
+
+
 def _row(sid, name, where, n, adjusters, cut_before, cut_after, ends, paths, keeper_before, keeper_after, src,
          settings=None, note=""):
     """One audit row. ``paths`` = {"max", "used", "min"} in mm (per strap); tails per adjuster."""
@@ -268,6 +273,15 @@ def us_row() -> dict:
              "tri-glide keeper (meat_haul)", "tri-glide keeper (meat_haul)",
              "meat_haul.HALF_SPAN_MM / BELLY_MM (cradle); 1.10 m pair; 60 mm sewn pin loop ASSUMPTION")
     r["note"] = "bag-on path not modelled (settled by T9); the tri-glide keeper holds the tail flat in every mode"
+    ur = HERE.parent / "analysis" / "us_route.json"
+    if ur.exists():                     # BL-048: the bag-on path IS modelled now (us_route.py, the meat drapes)
+        sl = json.loads(ur.read_text()).get("strap_lengths")
+        if sl:
+            now = sl["layouts"]["now"]
+            r["note"] = (f"BL-048 us_route: bag-on path modelled on the meat drapes; the {sl['cut_mm']:.0f} mm cut leaves "
+                         f"{sl['available_mm']:.0f} mm for a pin-to-cam path of US1 {now['us1']['need_mm']:.0f} / US2 "
+                         f"{now['us2']['need_mm']:.0f} mm on the current stations: US2 short by {now['us2']['short_by_mm']:.0f} mm "
+                         "(cut set after BL-047's station move); the tri-glide keeper holds the tail flat")
     return r
 
 
@@ -289,7 +303,7 @@ def roll_row() -> dict:
         P = {"max": max(L.values()), "used": float(np.mean(list(st["sixday"]["roll_clip_mm"].values()))),
              "min": min(Lmin.values())}
         src = "corrie_f_roll_clips.json (cloth-pass roll model, ROLL-CLIP-PATH ASSUMPTION); cut panels.yaml"
-        after = _floor5(ROLL_END_MM + P["max"] + F.TAIL_GRIP_MM)
+        after = _ceil5(ROLL_END_MM + P["max"] + F.TAIL_GRIP_MM)     # BL-048 m-2: up, so the grip is >= TAIL_GRIP
     else:
         z = {k: v["lid_top_z"] for k, v in json.loads(F.CROWN_ROLLED.read_text())["states"].items()}
         L_full = cut - ROLL_END_MM - F.TAIL_GRIP_MM
@@ -300,6 +314,16 @@ def roll_row() -> dict:
     if r["after"]["needs_keeper"] or not r["after"]["rule_used"]:
         r = _row("RT", "roll-top side clips", "bag", 2, 1, cut, after, ROLL_END_MM, P, None,
                  "25 mm elastic keeper below the buckle", src)
+    if not r["after"]["rule_used"]:
+        # BL-048 m-2: DECISION RT-TAIL-EXC. The clip runs from the roll end, whose height spans day -> full, so one cut
+        # cannot meet both the gloved grip at the longest path and the tail rule at the 6-day path. Grip wins (a clip
+        # that cannot be closed on a full bag is a failure); the tail rule is waived for RT, mitigated by the K-RT
+        # elastic keeper (tail rolled and held flat). Settled by T9-R3c (free length at day / 6-day / full).
+        r["exception"] = {"rule": "TAIL RULE (<= %.0f mm at the most-used setting)" % F.TAIL_RULE_MM,
+                          "decision": "RT-TAIL-EXC", "mitigation": "K-RT 25 mm elastic keeper below the buckle",
+                          "tail_used_mm": r["after"]["tail_used_mm"], "grip_longest_mm": r["after"]["tail_longest_path_mm"],
+                          "settled_by": "T9-R3c"}
+        r["note"] = (r.get("note") or "") + " TAIL-RULE exception RT-TAIL-EXC (BL-048 m-2): grip at the full bag wins; K-RT keeper"
     return r
 
 

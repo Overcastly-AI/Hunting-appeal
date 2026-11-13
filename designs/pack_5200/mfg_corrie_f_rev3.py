@@ -63,7 +63,10 @@ PREVIEW_DPI = 110              # BL-040 m-21: 60 dpi previews were unreadable on
 # rule 323 / KD_eff 0.654 governs the sewn 1.5 x 323 = 484 N). Read from crown_tube_guy_loop.json.
 _CT = json.loads((ROOT / "designs" / "pack_5200" / "analysis" / "crown_tube_guy_loop.json").read_text())
 B25_N = round(_CT["kit_loads"]["envelope"]["static_n"])                                       # 323
-TL1_N = round(max(_CT["tl1"]["proof_n"], _CT["tl1"]["bar_rule_proof_n"]))                     # 494
+TL1_N_BL041 = round(max(_CT["tl1"]["proof_n"], _CT["tl1"]["bar_rule_proof_n"]))               # 494 (BL-041)
+# BL-048 M-A: TL-1 follows BL-045's record (crown tube with the B-25 mitre, real pull vectors): 497 N
+TL1_N = round(json.loads((ROOT / "designs" / "pack_5200" / "analysis" / "crown_and_fairlead_checks.json").read_text())
+              ["crown_tube"]["proof_tl1_n"])
 HINGE_N = 1019.0               # load_standard.md rev C / bag_attachment.md section 5: bag-on hinge, factored (BL-040 m-2)
 
 # ============================================================================ shop standards (sources inline)
@@ -400,8 +403,21 @@ def webbing_bom(ctx: Ctx) -> list[BOMLine]:
                            kit=",".join(sorted({w['kit'] for w in ws})),
                            source=("record " + mid) if mat(mid) else PRICE_ASSUMED.get(key, (0, 0, "ASSUMPTION, no record"))[2],
                            notes=f"net {net_m:.2f} m ({net_m / 0.9144:.2f} yd), crown kit M; per-kit cuts in "
-                                 "cutting_plan.csv"))
+                                 "cutting_plan.csv" + _web_spec(key)))
     return out
+
+
+def _web_spec(key: str) -> str:
+    """BL-048 M-B: a webbing whose thickness is a design value carries it on the BOM as a purchase spec."""
+    m = mat(key)
+    if not m:
+        return ""
+    p = dict(m.props)
+    if "thickness_mm" not in p:
+        return ""
+    return (f"; PURCHASE SPEC: ply {p['thickness_min_mm']:.1f}-{p['thickness_max_mm']:.1f} mm "
+            f"({p['thickness_mm']:.1f} nominal, {p['thickness_mm'] / 25.4:.3f} in), break >= {p['breaking_strength_min_n'] / 1000:.0f} kN; "
+            "caliper a sample before buying the roll, reject > {:.1f} mm (record notes give the fallback)".format(p['thickness_max_mm']))
 
 
 # hardware: (key, item, record, qty, unit, kit, frame_side). Quantities from RevSet.hardware where the pattern lists
@@ -1235,7 +1251,13 @@ def ops(ctx: Ctx) -> list[SewingOp]:
         rtm = rs.geo["rtm"]
         rbx = (boxes_of(rs.pieces["RTM"]) or [(21.0, 25.0, "")])[0][:2]
         rlo = rs.geo["rt_layout"]
-        op("RTM roll-clip buckle tabs on the gussets", "Gusset flat work, before the gusset seams. (1) Thread each RTM "
+        op("RTM roll-clip buckle tabs on the gussets", "Gusset flat work, before the gusset seams. (0) BEFORE the "
+           f"placement is chalked (BL-048 m-3): mate one bought 25 mm side-release buckle and caliper it: width, and "
+           f"height from the female bar to the far end of the mated male. The placement assumes {P.BUCKLE_ENV[0]:.0f} wide x "
+           f"{P.BUCKLE_ENV[1]:.0f} above the bar (ASSUMPTION BUCKLE-ENV; typical mated 25 mm buckles stand 55-65 mm, "
+           "fourth review m-3). If either reading is larger, STOP: send both readings to the pack-designer, who re-runs "
+           "patterns_corrie_f_rev3.rt_layout with them (BUCKLE_ENV) and re-issues the B-03 placement; at kit S 15 in W3's "
+           "lowest edge must stay >= 10 mm clear of the mated male half. (1) Thread each RTM "
            "through the bar of a side-release buckle's FEMALE half (the half with the socket) and fold it on its fold line. "
            f"(2) Lay it on the OUTSIDE of each B-03 on the drawn 'RTM roll-clip buckle tab' placement (z {rtm['z']:.0f}, "
            f"{rtm['below_seam_mm']:.0f} mm under the collar seam, {rtm['depth_from_frame_mm']:.0f} mm aft of the frame seam "
@@ -1441,14 +1463,22 @@ def ops(ctx: Ctx) -> list[SewingOp]:
                     f"band, drops {tp['lengths_mm']['drop']:.0f} mm, turns 90 deg inboard at the drawn 45 deg 'MITRE' "
                     f"fold (under the sleeve, x {tp['band_x'][0]:.1f}-{tp['band_x'][1]:.1f}), is NECKED to "
                     f"{tp['neck_w_mm']:.0f} mm on the 'NECK' line (lower edge folded up) from the band edge inboard, and "
-                    "wraps once round the spine under the clamp collar, continuous to the other side. Nothing on the "
-                    "wearer side of the bar. FRAME COORDINATION: the bar sleeves close round the crown top bar BEFORE the "
-                    "crown corners are bonded (H1 build); the two sleeve-lap bartacks (BT-M) are sewn at frame assembly, "
-                    "not here. GATE B25-FIT (before the laps are tacked): dry-fit the bridle on the crown with the clamp "
+                    "wraps once round the spine under the clamp collar, continuous to the other side. Nothing but the "
+                    "spine wrap is on the wearer side of the bar (the run reaches the spine fore of the bar plane, so the "
+                    "wrap goes round it there; the sleeves, drops and mitres are all aft). NECK FOLD: secure each 13 mm "
+                    "neck fold with one BT-M tack " + step_spec("bt", "304") + " 10 mm inboard of the band edge, and one "
+                    "BT-M across the mitre fold, both sewn flat now (BL-048 m-5). CUT LAST (BL-048 m-4): the spine wrap "
+                    "is booked as 2 pi r but the runs arrive at the spine at an angle in plan, so the cut is uncertain by "
+                    "about +/-10-18 mm: cut B-25 after every other webbing part, from a paper or scrap-strip dry fit at "
+                    "B25-FIT, and mark the cut from the strip. FRAME COORDINATION: the bar sleeves close round the crown "
+                    "top bar BEFORE the crown corners are bonded (H1 build). Sew each sleeve lap OFF the bar, round an "
+                    "18 mm dowel standing in for the bar (BT-M " + step_spec("bt", "304") + "), then slide the closed "
+                    "sleeve onto the bar from its free end before the corners are bonded. GATE B25-FIT (before the laps "
+                    "are sewn): dry-fit the bridle (or the scrap strip) on the crown with the clamp "
                     f"fitted and the crown at kit {tp['governing_kit']}'s SHORTEST setting ({kS['torso_in']:g} in): the "
                     f"mitres sit inside the sleeve bands, the necked run passes under the clamp collar, and the spine "
-                    f"wrap clears the pawl housing (design {kS['clear_mm']:.0f} mm on the BL-045 clamp and measured housing; the run "
-                    f"reaches the spine {tp['spine_fore_mm']:.2f} mm FORE of the bar plane); a "
+                    f"wrap clears the pawl housing (design {kS['clear_mm']:.0f} mm on the BL-046 clamp constants and the measured "
+                    f"housing; the run reaches the spine {tp['spine_fore_mm']:.2f} mm FORE of the bar plane); a "
                     "no stops the laps: photo to the pack-designer.")
         op(f"{pid}: {w['use']} x{w['qty']}", how, kind,
            pieces=f"{pid} x{w['qty']}" + (", 3 x 25 mm cam, 2 x rated G-hook" if pid == "IMC" else ""),
@@ -1604,8 +1634,8 @@ RELEASE_TESTS = [   # id, why it gates this package (register row read at run ti
     ("MT-1", "every 25 mm box-X on IM1-IM3 and US1/US2"), ("MT-2", "IM free-end hooks"), ("MT-3", "IM / US cams"),
     ("PT-1", "IM3 carabiner on T3"), ("PT-2", "T3 on the 70 mm B-17 tab"), ("PT-3", "HE eye on B-18 (no binding)"),
     ("HE-FIT", "hinge eye on the z 60 pin of the printed BL-042 hinge fairlead, 1:1 dry fit before PT-3 and before cut "
-               "(BL-041 X-2, BL-044 DECISION HE-ENV)"),
-    ("TL-1", "B-25 38 mm sleeve + guy and crown-strap toggles on the real crown bar at 494 N (BL-041, crown_tube_guy_loop.md)"),
+               "(BL-041 X-2, BL-044 DECISION HE-ENV); step 0 = gate US-ROUTE on the US test piece (BL-048 N-1)"),
+    ("TL-1", f"B-25 38 mm sleeve + guy and crown-strap toggles on the real crown bar at {TL1_N} N, guy pulled 57 deg below horizontal and 14 % outboard, spine end anchored (BL-045 record, crown_and_fairlead_checks.json; BL-048 M-A)"),
     ("PT-5", "guy lock + tri-glide keeper"), ("PT-6", "B-24 float link"),
     ("LL-H", "heavy 25 mm ladder lock slip at 432 N (1.5 x 288 N), dry, wet and -20 C: guys, W1-W3 and the B-28 crown "
              "straps (the B-28 slip gate since BL-031)"),
@@ -2016,14 +2046,14 @@ ASSUMPTIONS = [
      "carrying the G-hook / carabiner.", "MT-1 (2 IMC tabs at 908 N); threading the bought cam and hook"),
     ("B25-TAB-CENTRE / WIDE_SLEEVE", "BL-041 (crown_tube_guy_loop.md): B-25 in 38 mm webbing, sleeves x 26.5-64.5, "
      "toggle tab at the sleeve centre x 45.5; the 25 mm tab pull spreads over the 38 mm sleeve.",
-     "TL-1 at 494 N on real bar stock, specimen WITH the mitre turn and run (BL-043)"),
+     f"TL-1 at {TL1_N} N on real bar stock, specimen WITH the mitre turn and run (BL-043), pull vector per BL-045 (BL-048)"),
     ("B25-TOPO / CLAMP (BL-045)", "BL-043 M-4: B-25 = tab | sleeve | 45 deg mitre under the sleeve | run necked to "
      f"25 mm | one wrap round the spine under the clamp. BL-044: on the sized clamp (crown_spine_clamp: half "
      f"{P.F._CSC.SPINE_CLAMP_HALF_X:g} along the bar, collar {P.F._CSC.SPINE_CLAMP_COLLAR:g}) and the measured pawl "
      f"housing ({P.F._CSC.PAWL_HOUSING_UP:g} up, +/-{P.F._CSC.PAWL_HOUSING_HALF_W:g}); the run reaches the printed spine "
      f"{P.F._CSC.SPINE_AXIS_FORE_MM:g} mm fore of the bar (+{P.F._CSC.B25_CUT_CHANGE_MM:g} mm run). Was ASSUMED "
      "(B25-CLAMP / PAWL-TOP / SPINE_CLAMP_HALF).",
-     "BL-045 clamp T6 coupon (CLAMP-TYPE); op 7.17 gate B25-FIT at kit S 15 in; TL-1 specimen"),
+     "BL-045 clamp T6 coupon (CLAMP-TYPE); op 7.18 gate B25-FIT at kit S 15 in; TL-1 specimen"),
     ("GUY-LOCK-IN", "BL-040 M-5: the guy ladder lock stays on its LLT tab at B-22 inside the hinge band; the guy length is "
      "set with the roll top open (per crown kit / load), not on the move.", "PORT-1 gloved adjustment at B-22"),
     ("KW-OVER-FP", "BL-040 B-3: haul wraps W1 / W2 cross the FP hip pockets, over the mesh (keeper loop on top).",
@@ -2146,7 +2176,7 @@ THIRD_STATUS = [
      "lists the 34 x 7 box capacity and its peel"),
     ("M-4", "major", "fixed", "DECISION B25-TOPO drawn (SK-12, corrie_f.b25_topology): mitre under each sleeve, run "
      "and spine wrap necked to 25 mm, 13 mm over the (assumed) pawl housing at kit S 15 in; clamp undrawn in the frame "
-     "files: ASSUMPTIONS B25-CLAMP / PAWL-TOP, gate B25-FIT in op 7.17; TL-1 specimen carries the turn and run"),
+     "files: ASSUMPTIONS B25-CLAMP / PAWL-TOP, gate B25-FIT in op 7.18; TL-1 specimen carries the turn and run"),
     ("m-1", "minor", "fixed", "box top +11 (5 mm under the cheeks at the design pin); HE-FIT band 22-29 keeps the box "
      ">= 2 mm under the cheeks over the whole band; the solved bracket 23.1-28.9 sits inside it (test)"),
     ("m-2", "minor", "fixed", "ops 4.05 / 4.08 give machine / needle / thread / stitch per step (step_spec), BT-301 "
@@ -2174,14 +2204,42 @@ THIRD_STATUS = [
 # BL-044: three review rounds found fixes that passed their own checks and failed on the real geometry. The release may
 # say 'ready to cut' only after a FOURTH independent review of the BL-042 / 043 / 044 changes (orchestrator rule).
 FOURTH_REVIEW_DONE = False
+# BL-048: the fourth review (analysis/review_20261113_rev3_fourth.md) is done and found 1 blocker, 3 majors, 9 minors.
+# The release still may not say 'ready to cut' until a FIFTH independent review (orchestrator) has checked BL-047 / 048.
+FIFTH_REVIEW_DONE = False
+FOURTH_STATUS = [
+    ("N-1", "blocker", "open (frame side)", "BL-048 us_route.py: the real US path modelled on the 15/19/23 in meat drapes and the "
+     "sliced print: it lies over the hinge cheeks and the HE (1-4.5 mm into them) and US2 over US1's fairlead. No bag-side "
+     "guide can clear (US1 has 7 mm of height to move 40.5 mm sideways). US-ROUTE dropped. BL-047 asked to move US1 "
+     "inboard / US2 outboard onto their own lanes (us_route.json station_move, >= 10 mm at every drape on the model); "
+     "HE-FIT step 0 has a pass criterion and a US test piece in the kit"),
+    ("M-A", "major", "fixed", "TL-1 reads BL-045's record (crown_and_fairlead_checks.json): 497 N, guy toggle 57 deg below "
+     "horizontal and 14 % outboard, spine end anchored, crown-strap toggle unloaded; re-read live when BL-047 re-runs the crown"),
+    ("M-B", "major", "fixed", "poly_webbing_38mm: purchase spec ply 1.2-1.6 mm (1.5 nominal), break >= 6 kN, sample "
+     "calipered before the roll, fallback in the record; BOM + shopping list carry it; HE and B-25 read one thickness"),
+    ("M-C", "major", "fixed", "PT-3 / SEW-F / HE-FIT fixture pin: hardened steel M5 x 40 dowel (DIN 6325), bought in kit A, "
+     "pin-straight check; the frame pin check at the bag's 1019 N row is flagged to BL-047"),
+    ("m-1", "minor", "frame", "BL-047 (fillet relief)"),
+    ("m-2", "minor", "fixed", "RT cut rounded UP to 565 mm (grip 50.8); DECISION RT-TAIL-EXC with the K-RT keeper"),
+    ("m-3", "minor", "fixed", "op 4.08 step 0: caliper the mated buckle before chalking; re-run rt_layout if larger"),
+    ("m-4", "minor", "fixed", "op 7.18: B-25 cut last from a scrap-strip dry fit at B25-FIT"),
+    ("m-5", "minor", "fixed", "op 7.18 text: wearer-side wording, BL-046 labels, neck-fold and mitre BT-M, laps sewn off the "
+     "bar round an 18 mm dowel; op number 7.18 everywhere"),
+    ("m-6", "minor", "fixed", "SEW-F HE results rows (top row, proof), HE mounting on the lever rig, PAHT-CF print notes, "
+     "about 100 g filament booked"),
+    ("m-7", "minor", "fixed", "release regenerated (release_tests.csv and the tech pack carry the new HE-FIT step 0)"),
+    ("m-8", "minor", "fixed", "webbing pages: the test square is placed clear of every strip (test_square_spot)"),
+    ("m-9", "minor", "fixed", "SK-1: the B25-BOX note moved to the footer; BT-M users include the IME / US / USA necks"),
+]
 
 
 def open_findings() -> list:
-    return [i for i, c, st, _ in REVIEW_STATUS + RECHECK_STATUS + THIRD_STATUS if c in ("blocker", "major") and st != "fixed"]
+    return [i for i, c, st, _ in REVIEW_STATUS + RECHECK_STATUS + THIRD_STATUS + FOURTH_STATUS
+            if c in ("blocker", "major") and st != "fixed"]
 
 
 def ready_to_cut() -> bool:
-    return FOURTH_REVIEW_DONE and not open_findings()
+    return FOURTH_REVIEW_DONE and FIFTH_REVIEW_DONE and not open_findings()
 
 
 # ============================================================================ writers
@@ -2310,6 +2368,16 @@ def write_files(pk: dict, out: Path = OUT) -> list[Path]:
     allst = REVIEW_STATUS + RECHECK_STATUS + THIRD_STATUS
     nb = sum(1 for _, c, st, _ in allst if c == "blocker" and st != "fixed")
     nm = sum(1 for _, c, st, _ in allst if c == "major" and st != "fixed")
+    nb4 = sum(1 for _, c, st, _ in FOURTH_STATUS if c == "blocker" and st != "fixed")
+    nm4 = sum(1 for _, c, st, _ in FOURTH_STATUS if c == "major" and st != "fixed")
+    md += ["", "## Pre-cut FOURTH review status (BL-048)", "",
+           "design-reviewer fourth review `analysis/review_20261113_rev3_fourth.md` (1 blocker, 3 majors, 9 minors), "
+           "bag side fixed by BL-048 (tests/test_us_route.py, tests/test_bl048_fourth_review_fixes.py). "
+           f"Open: {nb4} blockers, {nm4} majors. **NOT ready to cut**: "
+           + ("N-1 needs the US station move on the frame (BL-047) and HE-FIT step 0 passing on the re-cut US test piece; "
+              if nb4 else "") + "a FIFTH independent review decides.", "",
+           "| Finding | Class | Status | How |", "|---|---|---|---|"]
+    md += [f"| {i} | {c} | {st} | {h.replace('|', '/')} |" for i, c, st, h in FOURTH_STATUS]
     md += ["", "## Pre-cut THIRD review status (BL-043 / BL-044)", "",
            "design-reviewer third review `analysis/review_20261113_rev3_third.md` (2 blockers, 4 majors, 14 minors). "
            "BL-043 fixed the bag-side items and checked each against every crown kit and torso end "
@@ -2476,6 +2544,7 @@ def sk_boxes(pk, path):
     fig, axs = plt.subplots(rows, cols, figsize=(14, 3.9 * rows))
     import textwrap
     axs = axs.ravel()
+    footnotes = []
     st = 25.4 / SPI["box"]
     for ax, (dims, nst) in zip(axs, sizes):
         w, h = (float(v) for v in dims.split(" x "))
@@ -2492,10 +2561,12 @@ def sk_boxes(pk, path):
                     arrowprops=dict(arrowstyle="->", lw=0.7))
         used = sorted({r["part"] for r in pk["load_points"] if r["pattern"].startswith(f"box-X {dims} mm")})
         ax.set_title(f"box-X {dims} mm ({w / IN:.2f} x {h / IN:.2f} in)", fontsize=10, loc="left")
-        exc = ("\nEXCEPTION (B25-BOX): B-25 is 38 mm webbing; this 21 mm box leaves 8.5 mm unsewn each edge so the "
-               "13 mm toggle loop stays open" if any(u_.startswith("B-25") for u_ in used) else "")
+        if any(u_.startswith("B-25") for u_ in used):    # BL-048 m-9: the note goes to the footer (it overprinted the
+            footnotes.append(f"* box-X {dims}: EXCEPTION (B25-BOX): B-25 is 38 mm webbing; this 21 mm box leaves 8.5 mm "
+                             "unsewn each edge so the 13 mm toggle loop stays open")    # next panel's title)
         ax.text(0.0, -0.12, f"{nst} stitches incl. 4 lock, 7 SPI, tex 135, Nm 140 R\n"
-                + textwrap.fill("used on: " + ", ".join(used), 48) + textwrap.fill(exc, 52, replace_whitespace=False),
+                + textwrap.fill("used on: " + ", ".join(used), 48)
+                + ("\n* B-25: see the note at the foot" if any(u_.startswith("B-25") for u_ in used) else ""),
                 transform=ax.transAxes, fontsize=8, va="top")
         ax.set_xlim(-0.6 * w, 1.3 * w)
         ax.set_ylim(-0.5 * h, 1.3 * h)
@@ -2509,7 +2580,8 @@ def sk_boxes(pk, path):
         ax.plot(xs, ys, "-", color="#1a7f37", lw=0.8)
         ax.set_title(f"{key} bartack {b['len_mm']:.0f} x {b['w_mm']:.0f} mm, {k} st (304)", fontsize=10, loc="left")
         used = {"BT-S": "B-27 slit ends, FP mouth corners (BL-043: W3G deleted; every BT-S is 10 x 2)",
-                "BT-M": "I2K, HE neck (1 per leg), lid channel ends, B-25 sleeve laps"}[key]
+                "BT-M": "I2K, HE neck (1 per leg), IME neck (op 2.05), US neck (op 7.15), USA neck (op 7.16), "
+                        "lid channel ends, B-25 sleeve laps, B-25 neck fold and mitre (BL-048)"}[key]
         ax.text(0.0, -0.3, f"LK-1900 standard tack, tex 90, Nm 110 R (unrated)\n" + textwrap.fill(used, 48)
                 + "\nno zigzag: BT-301 = 4 straight passes, 2 mm stitch", transform=ax.transAxes, fontsize=8, va="top")
         ax.set_ylim(-8, 10)
@@ -2519,7 +2591,9 @@ def sk_boxes(pk, path):
         ax.axis("off")
     fig.suptitle("SK-1  Load-point stitch patterns (true proportions; dots = 7 SPI stitch positions)", fontsize=13, x=0.01,
                  ha="left")
-    fig.tight_layout()
+    fig.tight_layout(rect=(0, 0.05 if footnotes else 0, 1, 1))
+    for k, t in enumerate(footnotes):
+        fig.text(0.01, 0.035 - 0.02 * k, t, fontsize=8.5, va="top")
     fig.savefig(path, dpi=110)
     plt.close(fig)
 
@@ -3043,7 +3117,7 @@ def sk_bridle(pk, path):
     ax3.set_xlabel("mm along the strip (cut %.0f mm; BL-043 drew %.0f in the bar plane, BL-041 %.0f with no turn)"
                    % (tp["cut_mm"], tp["cut_bl043_mm"], tp["cut_bl041_mm"]))
     ax3.set_yticks([])
-    ax3.set_title("(c) B-25 flat, 38 mm: folds blue dash-dot, boxes green (op 7.17)", fontsize=10, loc="left")
+    ax3.set_title("(c) B-25 flat, 38 mm: folds blue dash-dot, boxes green (op 7.18)", fontsize=10, loc="left")
     fig.suptitle("SK-12  B-25 guy bridle on the crown (BL-043 B25-TOPO, BL-044 on the sized crown_spine_clamp): the turn sits UNDER each sleeve; "
                  "gate B25-FIT dry-fits it before the laps are tacked", fontsize=12, x=0.01, ha="left")
     fig.savefig(path, dpi=100)

@@ -91,7 +91,7 @@ BL-022 rev 1: B-25 guy bridle on the top bar at x +/-52,attachment,base,7.43,web
 "BL-031: W1-W3 cut for carry (1340->750, 1412->822, 1618->987 mm)",straps_compression,base,-32.61,webbing,,W1 W2 W3,
 "BL-031: W1-W3 haul extenders (3, 2.22 m 25 mm + rated G-hook each; meat haul, float clamp, antler / cape lash)",straps_compression,meat_trip,63.96,webbing,,WX,+ rated G-hooks
 "BL-031: IM1-IM3 tail keepers (3, 25 mm elastic)",straps_meat,base,4.05,webbing,,K-IM,
-BL-031: roll-top clip straps cut 350 -> 560 mm (2),straps_compression,base,7.56,webbing,,RT,
+BL-031: roll-top clip straps cut 350 -> 565 mm (2),straps_compression,base,7.74,webbing,,RT,
 "BL-031: roll-top clip tail keepers (2, 25 mm elastic)",straps_compression,base,2.7,webbing,,K-RT,
 "BL-034 records: US1/US2 backstop tri-glides -> stainless 25 mm (2 x 11 g, 3.75 kN; orchestrator 2026-11-13: stops cradle slip)",straps_meat,base,0.0,hardware,,,hardware / elastic re-booked on the BL-034 records
 BL-034 records: lifter tri-glide keepers (2 x 2.6 g nylon),attachment,base,0.0,hardware,,,hardware / elastic re-booked on the BL-034 records
@@ -111,6 +111,6 @@ BL-034 records: guy tail elastic keepers (2 x 1.35 g),attachment,base,1.5,hardwa
 "BL-043: IMC tabs 180 -> 192 mm (m-4, 5 mm raw-end margin, x3)",straps_meat,base,0.65,webbing,,IMC,m-4
 "BL-044: HE hinge eyes 86 -> 96 mm (DECISION HE-ENV, x2)",attachment,base,0.56,webbing,,HE,HE-ENV length change
 BL-044: hinge pins +2 mm for the 20 mm throat (x2),attachment,base,0.22,hardware,,,"frame-side pins, 20 mm throat"
-BL-044: B-25 on the sized spine clamp and the printed spine (25.02 mm fore of the bar) 479.4 -> 511.9 mm,attachment,base,0.91,webbing,,B-25,crown_spine_clamp run_plan
+BL-044: B-25 on the sized spine clamp and the printed spine (25.02 mm fore of the bar) 479.4 -> 512.2 mm,attachment,base,0.92,webbing,,B-25,crown_spine_clamp run_plan
 "BL-044: US cam anchors USA (2 x 202 mm, 25 mm; the US cam's sewn anchor on the right pin, BL-045; DECISION USA-LOOP)",straps_meat,base,7.27,webbing,,USA,BL-045 found-not-fixed; USA-LOOP
 "BL-044: W3 K-W keeper loops deleted (2 x 80 mm, DECISION KW-W3-OFF)",straps_compression,base,-2.88,removed,,,DECISION KW-W3-OFF

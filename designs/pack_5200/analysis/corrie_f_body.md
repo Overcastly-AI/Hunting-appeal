@@ -1797,3 +1797,141 @@ same as the US eye. USA cut 192 -> 202 mm (+0.36 g for the pair).
 (-75 to -90 deg) rather than on the cradle line, the US1 eye, box and strap meet the hinge fairlead 35 mm below
 (slice overlap 18 mm2 at -75, 37 mm2 at -90 deg; the eye itself 3.2 mm2 at -90). Which line the strap takes in bag-on
 carry is not modelled anywhere; HE-FIT step 0 now pulls the US / USA box both ways on P1 and records it.
+
+## 24. BL-048: fourth-review fixes, bag side (pack-designer, 2026-11-13)
+
+Source: `review_20261113_rev3_fourth.md` (N-1, M-A, M-B, M-C, m-2..m-9; m-1 and the crown re-run are BL-047's).
+Code: `us_route.py` (new), `imus_stl_check.py` (US pulls), `concepts/corrie_f.py` (`WEB38_T`), `patterns_corrie_f_rev3.py`
+(`HE_T`), `concepts/strap_tails.py` (`_ceil5`, RT exception, US note), `physical_test_kit.py`, `mfg_corrie_f_rev3.py`,
+`patterns_corrie_f_rev3_export.py` (`test_square_spot`), `data/materials/webbing/poly_webbing_38mm.yaml`. Tests:
+`tests/test_us_route.py`, `tests/test_bl048_fourth_review_fixes.py` (and `test_bl044_hinge_eye.py` updated for N-1).
+Numbers below are printed by that code (`analysis/us_route.json`).
+
+### 24.1 N-1: the under-straps' real path (US-ROUTE dropped)
+
+**Model.** On each rev 3 fine meat drape (`F_r1_PR{15,19,23}_fineFM_over_port/x_meat`; every crown-kit end maps to one
+of these torsos, SIM_TORSO; the fairleads are on the fixed stays, so a kit or torso change moves only the bag) the strap
+is a taut string from its pin to its B-16 channel entry on the floor (x +/-95, 48 / 104 mm from the frame seam), kept
+outside the cloth and the stay (`corrie_f.taut_path`, as BL-028 / BL-029 did for the guys). Both sides, both straps.
+Tension: the bag-on case of `meat_haul`, **US1 444 N, US2 296 N** (factored). The strap (25 mm ribbon, 3 mm thick) is
+measured in 3D against the print, sliced every 1 mm in x into a labelled grid (hinge fairlead / US1 / US2 / stay), plus
+the HE (eye, legs, 34 x 7 box from `he_geometry`). The L side is the R side mirrored: the bag side of the print is
+symmetric to <= 32 mm2 per slice (mesh noise). A section model at the stay lays the strap over what it meets and books
+the bearing (T x the turning at each contact).
+
+**Result on the current print (fails, every drape, both sides).**
+
+| strap | path pin to channel (mm) | to hinge fairlead | to HE | to the other US fairlead | bearing (section, R) |
+|---|---:|---:|---:|---:|---|
+| US1 | 121-132 | -1.0 to -1.4 | -2.2 to -4.4 | US2 +24 | hinge cheeks 189-224 N |
+| US2 | 228-237 | -1.0 to -1.8 | -4.5 to +2.0 | US1 -2.0 to -2.6 | US1 55 N + hinge 44-58 N |
+
+Negative = the strap runs into the part: it lies on B-01 straight down the stay (x 104-110 at z 60, y 8-9, against the
+stay) and rides over the hinge cheek tips and the HE; US2 also over US1's fairlead. The US-ROUTE line would be > 40 mm
+into the bag at z 60 (`test_us_route_line_is_inside_the_bag`). `imus_stl_check` now takes the US pull from this path
+(-90 deg, straight down the stay) instead of US-ROUTE: the US / USA eyes and boxes then meet the fairlead below at all
+four US stations (`eye_pass_all` false; IM stations unchanged and passing).
+
+**No bag-side guide can clear** (`guide_feasibility`). The strap leaves its pin inside the 20 mm throat. To pass the
+fairlead below with 10 mm it must be in a lane 40.5 mm off the stay line (10 throat/2 + 8 cheek + 10 + 12.5) by the
+obstacle's top + 10:
+
+| strap | height from throat exit to (obstacle top + clearance) | needed lateral shift | in-plane turn | allowed |
+|---|---:|---:|---:|---:|
+| US1 past the hinge, 10 mm | 7 mm | 40.5 mm | 80 deg | 10 deg (ASSUMPTION US-FLEET) |
+| US1 past the hinge, touching | 17 mm | 30.5 mm | 61 deg | 10 deg |
+| US2 past US1, 10 mm | 19 mm | 40.5 mm | 65 deg | 10 deg |
+
+A 45-deg fold guide needs one webbing width (25 mm + clearance) of height and there is 7-19 mm. The US eye and box alone,
+straight down, reach z 55.2: below the hinge cheeks' top (z 69). Standing the strap off the cheek tips instead (y >= 39)
+is the US-ROUTE line again, which needs a rigid bridge inside the bag face. So no guide outboard (or inboard) of the
+hinge fairlead is offered; option (c) of the review (rate strap-over-HE by test) is not taken (orchestrator call).
+
+**US station move (asked of BL-047; `us_route.json` `station_move`).** Each US strap gets its own lane down B-01:
+
+- **US1 (z 95, under the spreader's z 112 bottom edge): inboard lug, pin at x +/-70** (45 mm inboard of the stay);
+- **US2 (z 142, beside the spreader, x +/-121): outboard lug, pin at x +/-165** (50 mm outboard);
+- hinge unchanged; pins at the same y and z as now; B-16 channel ends moved to the lane x.
+
+On the same drapes and print (US fairleads masked out, the new fairleads and lug arms added as boxes) every strap clears
+the hinge fairlead, the HE and the other US fairlead by **>= 14.0 mm (US1) / 17.7 mm (US2)** at every torso and side.
+The bare lane (40.5 mm) was not enough: the outer floor draws inboard under load, so US2 drifted to 5.6 mm (19 in L); the
+lanes carry a 4.5 / 9.5 mm margin (`LANE_MARGIN`). With the channel ends left at +/-95 even the bare lanes fail (US1
+3.3 mm, US2 -3.8 mm), so the channels must move with the stations.
+
+**Guide rating (the bag-side part of the move).** (a) Preferred: the B-16 channel ends at the lane x (US1 shortened to
++/-70; US2 run past F-02 onto B-05 with a seam-sealed stitch line). (b) Fallback if the floor must not be stitched: a
+25 mm keeper loop (box-X 21 x 25, 3186 N) at the floor corner at the lane x, turning the strap on the floor towards the
++/-95 channel end: keeper load (conservative, full corner wrap) US1 628 N / SF 5.1, US2 419 N / SF 7.6; lateral part
+205 / 165 N.
+
+**Found by the model: the US strap is too short for bag-on carry** (`strap_lengths`). Cut 550 mm less the sewn eye
+(2 x 50) and a 50 mm grip leaves 400 mm for the pin-to-cam path (USA reach 89.5 mm). Current stations: US1 needs 359
+(fits), **US2 needs 572 mm (short by 172)**; on the lanes US2 needs 771 (cut about 925 mm). The 1.10 m pair was sized on
+the bag-off cradle only. The cut is set once BL-047 fixes the station x (owner decision below; +0.4 m of 25 mm webbing,
+about +7 g, and a longer tail in bag-off mode under the tri-glide keeper).
+
+**HE-FIT step 0 now has a pass criterion (gate US-ROUTE).** On the US test piece the USA anchor on each US pin, a 25 mm
+strap cinched down a B-01 offcut round a 20 mm dowel at the floor corner to 444 / 296 N: PASS = no part of the strap, eye
+or box touches the hinge fairlead, the HE or the other US fairlead; a 10 mm feeler block passes everywhere. On the
+current print it fails by design (it is the evidence for the move); it is re-run on the re-cut piece after BL-047.
+
+**US test piece** (`outputs/release/test_kit/print/us_route_stay_R.stl` / `.3mf` / `_frame_coords.stl`; cut by
+`us_route.export_test_piece` from `h1_assembled.stl`, as BL-042 cut HE-FIT): R stay z 40-160, x 91-139, with the hinge,
+US1 and US2 fairleads, 70.3 g, one watertight shell. It lives in the kit because `print/` is BL-047's; BL-047 is asked to
+add it to `print/frame_h1/test_pieces/` and re-cut it on the moved stations.
+
+ASSUMPTIONS: **US-TOPO** (the strap lies on B-01's frame face and rides over anything proud of its line; settled by HE-FIT
+step 0), **US-FLEET** (<= 10 deg out of the stay plane at the eye; HE-FIT step 0), **DRAPE-TENT** (the drapes have no
+fairleads in the frame contact; a tent only lifts the strap away from them), **DRAPE-US** (the meat drapes were simulated
+with the sim's straight under-strap cables (pin to floor band); re-running them with the strap through eyelets on its real
+path (BL-028 `--route` style) was not done: one fine run per torso, about 5 min each; it settles whether the floor shape
+under the real strap moves the lane clearances, 14 / 17.7 mm against the 10 mm rule).
+
+### 24.2 M-A: TL-1 on BL-045's record
+
+`physical_test_kit.crown_tube()` and `mfg_corrie_f_rev3.TL1_N` read `crown_and_fairlead_checks.json` (`proof_tl1_n`
+**497 N**, `k_vector_run.guy_angle_below_horizontal_deg` 57.2, `max_outboard_share` 0.136). G2 TL-1: run's spine end
+anchored (the stub, bolted), pull vector down 0.84 / aft 0.52 / outboard 0.14 (come-along anchor 1 m from the toggle at
+839 mm below, 528 aft, 136 outboard, checked with an inclinometer), crown-strap toggle in the tab UNLOADED (its pull is
+up and aft in the record and takes load off the bar: slack is conservative). SFs quoted on the vectors 1.35 / 1.27, bound
+1.22 / 1.14. BL-047's crown re-run writes the same keys; the kit re-reads them.
+
+### 24.3 M-B: one 38 mm webbing thickness, a purchase spec
+
+`poly_webbing_38mm` now carries `thickness_mm` 1.5 (nominal), `thickness_min_mm` 1.2, `thickness_max_mm` 1.6 and
+`breaking_strength_min_n` 6000 (the hinge row is governed by the 2355 N B-18 seam). `corrie_f.WEB38_T` reads it;
+`patterns.HE_T` and `corrie_f.B25_T` both use it (B-25 was 1.2): the B-25 cut moves 511.9 -> 512 mm (run -0.3, half wrap
++0.5 a side). BOM line and shopping list carry the spec; the caliper moves to the PURCHASE (a sample before the roll), HE-FIT
+step 1 re-checks the roll in hand. Fallback (record notes): a thicker roll goes only into B-24 and T3; buy 1 m of a
+<= 1.6 mm web for HE, IME and B-25. Market check (secondary, product pages refused automated fetch): extremtextil 40 mm
+"strong" 1.4 mm / 1270 daN; extremtextil "security" 38 mm actual 1.0 mm / 1500 daN; Country Brook 1-1/2 in polyester
+1.75 mm; Strapworks publishes no thickness. No vendor-confirmed 38 mm at 1.2-1.6 mm was found: the sample caliper governs.
+`crown_spine_clamp.B25_T` (frame side) still reads 1.2: asked of BL-047.
+
+### 24.4 M-C: fixture pin, hinge-row load
+
+PT-3, SEW-F (HE) and HE-FIT use a hardened steel **M5 x 40 dowel, DIN 6325 m6, HRC 58-62** (3 bought, kit A, ASSUMPTION
+USD 3 each), with a pin-straight check after each test. On `h1_fairleads.pin_bending` a 5 mm 7075 pin is at 561 MPa at the
+PT-3 proof (yield SF 0.82). At the bag's hinge row, **1019 N factored**, the frame's own pin check gives yield SF 1.24 and
+fatigue 0.92 on its 2.4 g basis (the frame record checks 725 N / 905 N): flagged to BL-047 to make 1019 N the one number.
+
+### 24.5 Minors
+
+- m-2: RT cut rounded UP: **565 mm** (grip 50.8 at the full bag); DECISION **RT-TAIL-EXC**: the tail rule is waived for
+  RT (252.6 mm at 6 days), mitigated by the K-RT keeper; settled by T9-R3c.
+- m-3: op 4.08 step (0): caliper the mated buckle before chalking; if over the 35 x 35 envelope, rt_layout is re-run.
+- m-4 / m-5: op 7.18 rewritten: spine wrap is the only part on the wearer side; BL-046 labels; one BT-M on each neck fold
+  and across the mitre; laps sewn off the bar round an 18 mm dowel, sleeve slid on before the corners are bonded; B-25 cut
+  LAST from a scrap-strip dry fit at B25-FIT; op number 7.18 in SK-12 and the README.
+- m-6: SEW-F results rows HEtop#1-3 and HEproof#1-3; HE mounting on the lever rig stated; fixture prints "as H1,
+  PAHT-CF, dried, annealed"; about 100 g filament booked (SEW-F and HE-FIT cost bases).
+- m-7: release regenerated in the right order (kit first: it writes the register mfg reads); release_tests.csv and the
+  tech pack carry HE-FIT step 0 and TL-1 at 497 N.
+- m-8: webbing pages: IME and USA on their own pages (6 pages), the test square placed clear of every strip
+  (`test_square_spot`).
+- m-9: SK-1: the B25-BOX note moved to the footer; BT-M users list the IME / US / USA necks and the B-25 neck and mitre.
+
+**Status.** N-1 stays OPEN (frame side): the release says NOT ready to cut until BL-047 moves the US stations, the US cut
+is set, HE-FIT step 0 passes on the re-cut piece and a fifth review has looked (`mfg_corrie_f_rev3.FOURTH_STATUS`,
+`FIFTH_REVIEW_DONE`).

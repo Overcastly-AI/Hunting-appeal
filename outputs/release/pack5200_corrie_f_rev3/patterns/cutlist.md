@@ -121,7 +121,7 @@ Knife: CW from the grain-arrow head; cut windows and slits first. Notches 6 mm d
 | W3 | haul wrap W3, kit L | poly_webbing_25mm | 935 (36.8) | 1 | crown kit L | strap_tails.wrap_rows |
 | WX | W haul extender (meat-trip kit) | poly_webbing_25mm | 740 (29.1) | 3 | meat_trip | strap_tails.wrap_rows haul extender_mm |
 | K-W | W gore keeper loop (4, in the aft corner seams: W1, W2) | poly_webbing_25mm | 80 (3.1) | 4 | base | ledger 'keepers: 6 haul-wrap keeper loops' (ASSUMPTION 80 mm cut) less the 2 W3 loops (BL-044 DECISION KW-W3-OFF row) |
-| RT | roll-top side clip strap | poly_webbing_25mm | 560 (22.0) | 2 | base | strap_tails.roll_row |
+| RT | roll-top side clip strap | poly_webbing_25mm | 565 (22.2) | 2 | base | strap_tails.roll_row |
 | RTM | roll-clip buckle tab on the gusset (female half) | poly_webbing_25mm | 70 (2.8) | 2 | base | BL-040 DECISION RT-MATE (LLT tab rule); BL-041 RT-FWD placement (rt_layout) |
 | K-RT | roll clip tail keeper (25 mm elastic) | elastic_25mm | 90 (3.5) | 2 | base | BL-031 |
 | IM1 | internal meat strap IM1 | poly_webbing_25mm | 990 (39.0) | 1 | base | strap_tails.im_rows (unchanged) |

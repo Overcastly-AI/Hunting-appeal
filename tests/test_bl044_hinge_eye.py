@@ -318,8 +318,13 @@ def test_imus_eyes_sliced_on_the_print_and_the_im3ec_piece(imus):
         assert v["worst_under_pin_clear_mm"] > 0.0, k                                 # no touch, even in the fillet
         assert v["min_clear_off_corner_mm"] >= 0.5, k                                 # the HE rule off the corner band
         assert v["throat_clear_side_mm"] >= 0.45, k
-        assert v["route_ok"] and v["eye_pass"], k
-    assert r["eye_pass_all"]
+        if k.startswith("us"):
+            # BL-048 (fourth review N-1): on the CURRENT print the real bag-on strap pulls the US / USA eye straight
+            # down the stay into the fairlead below; the route fails until BL-047 moves the US stations to their lanes
+            assert not v["route_ok"] and not v["eye_pass"], k
+        else:
+            assert v["route_ok"] and v["eye_pass"], k
+    assert not r["eye_pass_all"]
     # IME is the 3-ply necked eye: 0.5-1.0 mm under the pin; the 2-ply US eye has about 1 mm
     assert 0.5 <= st["im3_R@im3ec"]["min_clear_off_corner_mm"] < 1.0
     assert st["us1_L@print"]["min_clear_off_corner_mm"] > 1.0
@@ -332,10 +337,12 @@ def test_imus_pull_directions_cover_every_kit_end(imus):
     assert set(r["pulls"]["kit_ends"].values()) == {15, 19, 23}                      # every kit end maps to a simulated torso
     for k in ("im3_R@im3ec", "im3_L@print", "im2_R@print"):
         assert -90 in r["stations"][k]["sweep"]["clear_thetas"]
-    # straight down the stay a US strap meets the fairlead below (found, not fixed): the cradle line clears
+    # straight down the stay a US strap meets the fairlead below (BL-048 N-1: that IS the real bag-on path); the
+    # dropped cradle line (-50.9 / -45.6) cleared
     for k in ("us1_L@print", "us1_R@print"):
         ok = r["stations"][k]["sweep"]["clear_thetas"]
         assert -60 in ok and -90 not in ok and -75 not in ok
+    assert r["required_pulls"]["us1"] == [-90.0] and r["required_pulls"]["us2"] == [-90.0]
 
 
 def test_usa_pin_loop_clears_the_cheeks_like_the_us_eye(imus):

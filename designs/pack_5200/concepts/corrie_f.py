@@ -101,6 +101,8 @@ def _rec(mid: str, key: str) -> float:
 
 
 WEB25 = _rec("poly_webbing_25mm", "mass_g_m")
+WEB38_T = _rec("poly_webbing_38mm", "thickness_mm")          # BL-048 M-B: purchase-spec ply, 1.5 nominal
+WEB38_T_RANGE = (_rec("poly_webbing_38mm", "thickness_min_mm"), _rec("poly_webbing_38mm", "thickness_max_mm"))
 LADDER_G = _rec("ladder_lock_25mm", "mass_g")
 ZIP10_GM = _rec("coil_zipper_10", "mass_g_m")
 CHAIN10 = _rec("coil_zipper_10", "chain_width_mm")
@@ -1538,7 +1540,9 @@ def guy_bridle(wide: bool = False) -> dict:
 #   shortest setting | RUN on edge along x, aft of the spine plane, under the clamp collar | SPINE WRAP: once round the
 #   spine, continuous into the other side's run | mirror.
 # Nothing is on the wearer side of the bar (head clearance) and no part of the turn is outside the 38 mm sleeve band.
-B25_T = 1.2                # webbing thickness used by BAR_WRAP_MM / SPINE_WRAP_MM (ASSUMPTION there)
+B25_T = WEB38_T            # BL-048 M-B: the 38 mm record's ply thickness (was 1.2, while the HE used 1.5 for the same
+#                            roll). NOTE crown_spine_clamp.B25_T (frame side, BL-047) still reads 1.2: asked to read
+#                            corrie_f.WEB38_T / the record
 SPINE_CLAMP_COLLAR = _CSC.SPINE_CLAMP_COLLAR   # BL-044: 12.8 (BL-045 sized socket; was 12.0 ASSUMPTION B25-CLAMP).
 #                            BL-043 note kept: the spine clamp's collar reaches down the spine below the bar's
 #                            underside (a 6 g split collar, frame.yaml 'spine clamp: 6.0', round a 20 mm tube is ~10-20 mm

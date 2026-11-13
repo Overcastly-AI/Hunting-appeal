@@ -61,7 +61,8 @@ WEB_MARKS = [("HE", None), ("RTM", None), ("LLT", None), ("IMC", None), ("T3", N
              ("B-25", 222.0), ("IME", None), ("USA", None)]      # BL-044: the necked IME and the US cam anchor
 # BL-043 m-12: W3G deleted (W3-OVER); RT (sewn end) and B-25 (R half to the neck; the L half mirrors it) added; every
 # line gets a leader label beside the strip (not only a legend under it)
-WEB_GROUPS = (("HE", "RTM"), ("IMC", "LLT"), ("T3", "US"), ("B-25", "RT"), ("IME", "USA"))   # tall strip left, short one right: the
+WEB_GROUPS = (("HE", "RTM"), ("IMC", "LLT"), ("T3", "US"), ("B-25", "RT"), ("IME",), ("USA",))   # BL-048 m-8: IME and
+#                                     USA are both tall; together they left no room for the test square (USA lay across it)   # tall strip left, short one right: the
 #                                     test square sits bottom right, under the short strip
 WEB_LABEL_W = 46.0                  # mm of label column right of each strip
 WEB_WRAP = 30
@@ -235,9 +236,11 @@ def notes_and_marks_pdf(rs, ids, path: Path, title: str, full: dict | None = Non
         c.drawString(12 * MM, (ph - 17) * MM, "Check the test square, lay the hot-knifed strip on its outline, chalk "
                      "the folds (blue dash-dot), boxes and lines (grey dashed). Each line is named by its leader.")
         x = 14.0
+        occ = []                                        # BL-048 m-8: strip + label footprints, so the square avoids them
         for q, i, L in grp:
             w, h = q.bounds(cut=False)[2], q.bounds(cut=False)[3]
             y0 = ph - 30 - h
+            occ.append((x, y0 - 10.5, x + w + WEB_LABEL_W, ph - 30))     # the two caption lines reach y0 - 10
 
             def to_pt(px, py, x=x, y0=y0):
                 return ((x + px) * MM, (y0 + py) * MM)
@@ -267,11 +270,27 @@ def notes_and_marks_pdf(rs, ids, path: Path, title: str, full: dict | None = Non
                 for k, tline in enumerate(_wrap(lab, WEB_WRAP)[:2]):
                     c.drawString((x + w + 4) * MM, (y0 + ty - 1 - k * 2.6) * MM, tline)
             x = max(x + w + WEB_LABEL_W + 6.0, 104.0)
-        draw_test_squares(c, (pw - 112) * MM, 14 * MM)
+        sq = test_square_spot(occ, pw, ph)
+        draw_test_squares(c, sq[0] * MM, sq[1] * MM)
         c.showPage()
         pages += 1
     c.save()
     return pages
+
+
+SQ_BOX = 112.0                      # huntkit.patterns.export_pdf.TEST_BOX_MM: the squares + labels footprint
+
+
+def test_square_spot(occ: list, pw: float, ph: float) -> tuple:
+    """BL-048 m-8: the test square's lower-left corner (mm) on a webbing page: right, left, then middle, lowest first,
+    the first whose 112 mm box is clear of every strip and label footprint by 1.5 mm. The USA strip
+    (25 x 202) had been drawn across the bottom-right square on page 5."""
+    cands = [(x, y) for y in np.arange(14.0, ph - 30 - SQ_BOX, 5.0) for x in (pw - SQ_BOX, 12.0, (pw - SQ_BOX) / 2)]
+    for x, y in cands:
+        bx = (x - 1.5, y - 1.5, x + SQ_BOX + 1.5, y + SQ_BOX + 1.5)
+        if all(bx[2] <= o[0] or bx[0] >= o[2] or bx[3] <= o[1] or bx[1] >= o[3] for o in occ):
+            return (x, y)
+    raise RuntimeError(f"no free spot for the test square on a webbing page: split the group {occ}")
 
 
 def notes_only_pdf(rs, ids, path: Path, title: str, full: dict | None = None) -> int:

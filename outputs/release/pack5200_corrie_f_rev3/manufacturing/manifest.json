@@ -28,9 +28,9 @@
   ]
  },
  "mass": {
-  "base_g": 1153.1,
-  "as_hunted_g": 1434.9,
-  "meat_trip_g": 1630.9,
+  "base_g": 1153.3,
+  "as_hunted_g": 1435.1,
+  "meat_trip_g": 1631.1,
   "pattern_fabric_alt_g": 570.2,
   "ledger_fabric_g": 570.7,
   "mass_delta_pct": -0.1,
@@ -42,9 +42,9 @@
    "as_hunted": 22.1,
    "meat_trip": 9.2
   },
-  "primary_base_g": 1217.1,
-  "primary_as_hunted_g": 1521.1,
-  "primary_meat_trip_g": 1726.3,
+  "primary_base_g": 1217.3,
+  "primary_as_hunted_g": 1521.3,
+  "primary_meat_trip_g": 1726.5,
   "qc14_tol_pct": 3.0
  },
  "geo": {

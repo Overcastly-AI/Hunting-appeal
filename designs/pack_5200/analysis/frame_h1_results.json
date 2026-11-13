@@ -263,12 +263,11 @@
  "keepouts": {
   "sleeve_R present": 1.0,
   "sleeve_L present": 1.0,
-  "pawl present": 1.0,
   "pivot present": 1.0,
   "pads present": 1.0,
+  "pawl housing ring (BL-046, cheeks for the BL-047 pivot) present": 0.4096008348552048,
   "bore_R empty": 1.0,
   "bore_L empty": 1.0,
-  "spine_channel empty": 1.0,
   "spine channel BL-046 (tube + rack, h1_spine_channel) empty": 0.6377906976744185,
   "fairlead stubs inside the envelope present (voxel)": 1.0,
   "fairleads complete on the print STL (h1_fairleads.check_stl)": true,

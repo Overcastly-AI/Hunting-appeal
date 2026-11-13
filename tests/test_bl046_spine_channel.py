@@ -191,7 +191,12 @@ def test_published_clamp_constants_match(res):
     c = res["clamp"]
     assert CSC.SPINE_CLAMP_HALF_X == pytest.approx(c["half_x_mm"], abs=0.05)
     assert CSC.SPINE_CLAMP_COLLAR == pytest.approx(c["collar_below_bar_underside_mm"], abs=0.05)
-    assert CSC.SPINE_CLAMP_MASS_G == pytest.approx(c["mass_g"], abs=0.05)
+    # BL-047 took the 2.0 mm webs (crown_gnl.json mass.clamp_g); BL-046's record keeps its 2.5 mm clamp
+    import json
+    from pathlib import Path
+    g47 = Path(__file__).resolve().parents[1] / "designs" / "pack_5200" / "analysis" / "crown_gnl.json"
+    want = json.loads(g47.read_text())["mass"]["clamp_g"] if g47.exists() else c["mass_g"]
+    assert CSC.SPINE_CLAMP_MASS_G == pytest.approx(want, abs=0.05)
     assert CSC.SPINE_AXIS_FORE_MM == pytest.approx(c["spine_axis_offset_fore_mm"], abs=0.05)
 
 

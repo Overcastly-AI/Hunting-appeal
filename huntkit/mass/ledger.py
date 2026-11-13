@@ -332,7 +332,10 @@ SUFFIX = "_v2"
 CONFIGS_V2 = tuple(c + SUFFIX for c in CONFIGS)
 ALL_CONFIGS = CONFIGS + CONFIGS_V2
 DEFAULT_CONFIG = "corrie_b2_h1" + SUFFIX
-CORRECTIONS = ("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "H1B", "BL031", "H1F", "BL046")
+CORRECTIONS = ("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "H1B", "BL031", "H1F", "BL046", "BL047")
+#   BL047 (2026-11-13, BL-047): spine clamp webs thinned (crown_gnl.md section 7) in every config; on the H1 configs the H1 print's pawl
+#      bosses / pivot bore / fore-wall window and the m-1 hinge relief (print-mesh volume deltas), and the low-profile
+#      pawl against the old SLM pawl (mesh volumes). All from analysis/crown_gnl.json ``mass``.
 #   BL046 (2026-11-13, BL-045 / BL-046): the spine clamp as sized (crown_spine_clamp.size_clamp on the real crown, a
 #      7075 T-fitting) less the 6 g pack5200.HW still books, in every config; and, on the H1 configs only, the H1 spine
 #      channel + pawl housing re-made for the OD 20 spine tube and its 6 mm rack (print-mesh volume delta,
@@ -422,6 +425,13 @@ def bl046_update() -> dict:
 
 
 @functools.lru_cache(maxsize=None)
+def bl047_update() -> dict:
+    """BL047: clamp web, H1 pawl features + hinge relief, LP pawl (analysis/crown_gnl.json ``mass``, written by
+    huntkit.gendesign.crown_gnl)."""
+    return dict(_json("crown_gnl.json")["mass"])
+
+
+@functools.lru_cache(maxsize=None)
 def h1_body_update() -> dict:
     """H1B: the H1 body raster as adopted (BL-024 + BL-027 + BL-021 28 mm IM3 cheeks), from analysis/h1_buckling.json
     ``chosen`` (written by ``huntkit.gendesign.h1_buckling``). Raises if that file's H1 base is not the body the ledger
@@ -475,6 +485,15 @@ def _correction_rows(config: str, size: str) -> list:
                       "frame", b46["channel_net_g"],
                       src46 + "channel_net_g (print-mesh volume with / without h1_spine_channel.add_channel x the "
                       "PAHT-CF print density)", "base"))
+    b47, src47 = bl047_update(), "analysis/crown_gnl.json mass."
+    bl046.append(("BL047", f"spine clamp webs thinned (BL-047; {b47['clamp_bl046_g']:.1f} -> {b47['clamp_g']:.1f} g)",
+                  "frame", b47["clamp_delta_g"], src47 + "clamp_delta_g (crown_spine_clamp.size_clamp)", "base"))
+    if config != "corrie_b2_today":
+        bl046.append(("BL047", "H1 print: pawl cheek bosses, pivot bore, fore-wall window; hinge floor relief (BL-047)",
+                      "frame", b47["h1_print_delta_g"], src47 + "h1_print_delta_g (print-mesh volume deltas x PAHT-CF "
+                      "print density: h1_pawl.add_pawl, bl047_frame_items.hinge_relief)", "base"))
+        bl046.append(("BL047", "low-profile Ti pawl (fits the H1 housing) against the old SLM pawl (BL-047)", "frame",
+                      b47["pawl_delta_g"], src47 + "pawl_delta_g (mesh volumes x Ti-6Al-4V density)", "base"))
     import strap_tails as ST                        # BL-031 (lazy: it reads corrie_f, which reads this module)
     bl031 = [("BL031", n, sys_, g, src, cfg) for n, sys_, g, src, cfg in ST.suspension_rows(size)]
     return h1b + bl031 + bl046 + [

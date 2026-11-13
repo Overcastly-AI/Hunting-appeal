@@ -1,0 +1,2341 @@
+{
+ "date": "2026-11-13",
+ "ticket": "BL-047",
+ "gnl": {
+  "summary": {
+   "n_runs": 64,
+   "all_reach_lam_max": true,
+   "limit_points": 0,
+   "margin_min": 1.333,
+   "lam_max": 2.0,
+   "linear_margin_range": [
+    0.543,
+    0.596
+   ],
+   "lowest_tangent_eig": {
+    "value": 0.0010944911271618652,
+    "kit": "a_L",
+    "torso_in": 23.0,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "sling_free"
+   },
+   "member_sf_gnl_at_1": {
+    "crown_leg_L": 3.825,
+    "crown_leg_R": 3.859,
+    "dog_leg": 9.208,
+    "crown_top_bar": 5.805,
+    "spine_clamp": 12.664,
+    "crown_spine": 4.175
+   },
+   "member_sf_linear_c8": {
+    "crown_leg_L": 1.115,
+    "crown_leg_R": 1.115,
+    "dog_leg": 2.249,
+    "crown_top_bar": 1.3,
+    "spine_clamp": 4.091,
+    "crown_spine": 1.204
+   },
+   "dog_leg_axial_gnl_n": [
+    -99.5,
+    176.6
+   ],
+   "dog_leg_axial_linear_min_n": -1031.4,
+   "lifter_max_n": 269.0,
+   "back_contact_n": [
+    0,
+    746.3
+   ],
+   "sway_antisym_mm_at_1": 1.4639999999999986,
+   "sway_antisym_mm_at_2": 1.8019999999999925,
+   "imp8": {
+    "kit": "a_L",
+    "torso_in": 23.0,
+    "support": "yoke_back",
+    "lifter": "cinched",
+    "k_mult": 1.0,
+    "lam_reached": 2.0,
+    "margin": 1.333
+   },
+   "spring_reference": {
+    "kit": "a_L",
+    "torso_in": 23.0,
+    "lam_reached": 1.2750000000000001,
+    "lam_extrap": 4.711017717548999,
+    "linear_margin": 0.542988346330955
+   }
+  },
+  "table": [
+   {
+    "kit": "a_S",
+    "torso_in": 15.0,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.596,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 232.6,
+    "back_n": 658.7,
+    "dog_leg_n": 116.7,
+    "member_min": 6.901,
+    "min_eig": 0.005656857015589891
+   },
+   {
+    "kit": "a_S",
+    "torso_in": 15.0,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.596,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 179.1,
+    "back_n": 743.2,
+    "dog_leg_n": 176.6,
+    "member_min": 5.796,
+    "min_eig": 0.011060123750367381
+   },
+   {
+    "kit": "a_S",
+    "torso_in": 15.0,
+    "variant": "strap_upper",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.596,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 224.2,
+    "back_n": 662.8,
+    "dog_leg_n": -25.8,
+    "member_min": 6.675,
+    "min_eig": 0.005640380593469597
+   },
+   {
+    "kit": "a_S",
+    "torso_in": 15.0,
+    "variant": "strap_upper",
+    "k_mult": 4.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.596,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 163.0,
+    "back_n": 746.3,
+    "dog_leg_n": 37.5,
+    "member_min": 5.18,
+    "min_eig": 0.010997881119451033
+   },
+   {
+    "kit": "a_S",
+    "torso_in": 18.0,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.569,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 175.3,
+    "back_n": 575.7,
+    "dog_leg_n": 49.4,
+    "member_min": 9.874,
+    "min_eig": 0.0037489487400245132
+   },
+   {
+    "kit": "a_S",
+    "torso_in": 18.0,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.569,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 98.4,
+    "back_n": 636.1,
+    "dog_leg_n": 85.8,
+    "member_min": 7.31,
+    "min_eig": 0.009306073719003705
+   },
+   {
+    "kit": "a_S",
+    "torso_in": 18.0,
+    "variant": "strap_upper",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.569,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 157.2,
+    "back_n": 577.5,
+    "dog_leg_n": -79.5,
+    "member_min": 7.952,
+    "min_eig": 0.003739219855377794
+   },
+   {
+    "kit": "a_S",
+    "torso_in": 18.0,
+    "variant": "strap_upper",
+    "k_mult": 4.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.569,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 65.6,
+    "back_n": 637.5,
+    "dog_leg_n": -35.3,
+    "member_min": 8.95,
+    "min_eig": 0.009265417238780622
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 17.5,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.577,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 183.4,
+    "back_n": 588.2,
+    "dog_leg_n": 56.4,
+    "member_min": 9.505,
+    "min_eig": 0.0038378782599574795
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 17.5,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.577,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 109.4,
+    "back_n": 651.8,
+    "dog_leg_n": 95.2,
+    "member_min": 7.184,
+    "min_eig": 0.009514377042615596
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 17.5,
+    "variant": "strap_upper",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.577,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 167.0,
+    "back_n": 590.3,
+    "dog_leg_n": -73.8,
+    "member_min": 7.986,
+    "min_eig": 0.0038279496053168893
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 17.5,
+    "variant": "strap_upper",
+    "k_mult": 4.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.577,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 79.5,
+    "back_n": 653.5,
+    "dog_leg_n": -27.9,
+    "member_min": 9.091,
+    "min_eig": 0.00947142857067819
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 19.0,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.565,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 161.7,
+    "back_n": 552.1,
+    "dog_leg_n": 38.2,
+    "member_min": 10.496,
+    "min_eig": 0.0034870964156299726
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 19.0,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.565,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 81.0,
+    "back_n": 606.7,
+    "dog_leg_n": 68.1,
+    "member_min": 7.714,
+    "min_eig": 0.008681764253547455
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 19.0,
+    "variant": "strap_upper",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.565,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 141.3,
+    "back_n": 553.5,
+    "dog_leg_n": -87.2,
+    "member_min": 6.706,
+    "min_eig": 0.003478919196917148
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 19.0,
+    "variant": "strap_upper",
+    "k_mult": 4.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.565,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 44.0,
+    "back_n": 607.8,
+    "dog_leg_n": -49.9,
+    "member_min": 9.902,
+    "min_eig": 0.008648431174202813
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 20.5,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.556,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 143.9,
+    "back_n": 520.0,
+    "dog_leg_n": 25.9,
+    "member_min": 10.172,
+    "min_eig": 0.0031763367877006583
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 20.5,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.556,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 59.4,
+    "back_n": 567.3,
+    "dog_leg_n": 49.1,
+    "member_min": 6.511,
+    "min_eig": 0.007902326500725327
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 20.5,
+    "variant": "strap_upper",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.556,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 119.8,
+    "back_n": 520.7,
+    "dog_leg_n": -94.8,
+    "member_min": 5.127,
+    "min_eig": 0.003169841521459535
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 20.5,
+    "variant": "strap_upper",
+    "k_mult": 4.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.556,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 15.8,
+    "back_n": 568.0,
+    "dog_leg_n": -64.2,
+    "member_min": 5.789,
+    "min_eig": 0.007877135904281629
+   },
+   {
+    "kit": "a_L",
+    "torso_in": 20.0,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.56,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 149.8,
+    "back_n": 530.3,
+    "dog_leg_n": 29.3,
+    "member_min": 10.712,
+    "min_eig": 0.0032476781759307885
+   },
+   {
+    "kit": "a_L",
+    "torso_in": 20.0,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.56,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 66.8,
+    "back_n": 579.8,
+    "dog_leg_n": 54.1,
+    "member_min": 7.389,
+    "min_eig": 0.008087554696220509
+   },
+   {
+    "kit": "a_L",
+    "torso_in": 20.0,
+    "variant": "strap_upper",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.56,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 127.1,
+    "back_n": 531.2,
+    "dog_leg_n": -92.8,
+    "member_min": 5.538,
+    "min_eig": 0.003240845664935459
+   },
+   {
+    "kit": "a_L",
+    "torso_in": 20.0,
+    "variant": "strap_upper",
+    "k_mult": 4.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.56,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 25.6,
+    "back_n": 580.7,
+    "dog_leg_n": -60.8,
+    "member_min": 6.598,
+    "min_eig": 0.00806036422974463
+   },
+   {
+    "kit": "a_L",
+    "torso_in": 23.0,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.543,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 120.1,
+    "back_n": 473.8,
+    "dog_leg_n": 13.6,
+    "member_min": 7.626,
+    "min_eig": 0.00271678286361658
+   },
+   {
+    "kit": "a_L",
+    "torso_in": 23.0,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.543,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 32.6,
+    "back_n": 511.9,
+    "dog_leg_n": 29.0,
+    "member_min": 4.697,
+    "min_eig": 0.006692412607420997
+   },
+   {
+    "kit": "a_L",
+    "torso_in": 23.0,
+    "variant": "strap_upper",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.543,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 90.8,
+    "back_n": 473.8,
+    "dog_leg_n": -99.5,
+    "member_min": 3.825,
+    "min_eig": 0.0027126318912583576
+   },
+   {
+    "kit": "a_L",
+    "torso_in": 23.0,
+    "variant": "strap_upper",
+    "k_mult": 4.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.543,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 0.0,
+    "back_n": 511.5,
+    "dog_leg_n": -81.5,
+    "member_min": 4.561,
+    "min_eig": 0.006677548045845941
+   },
+   {
+    "kit": "a_S",
+    "torso_in": 18.0,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.569,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 175.3,
+    "back_n": 575.7,
+    "dog_leg_n": 49.4,
+    "member_min": 9.874,
+    "min_eig": 0.0037489487400245132
+   },
+   {
+    "kit": "a_S",
+    "torso_in": 18.0,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "cinched",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.569,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": 0.0246,
+    "lifter_n": 269.0,
+    "back_n": 571.7,
+    "dog_leg_n": 7.0,
+    "member_min": 7.051,
+    "min_eig": 0.0024598462791945814
+   },
+   {
+    "kit": "a_S",
+    "torso_in": 18.0,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.569,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 98.4,
+    "back_n": 636.1,
+    "dog_leg_n": 85.8,
+    "member_min": 7.31,
+    "min_eig": 0.009306073719003705
+   },
+   {
+    "kit": "a_S",
+    "torso_in": 18.0,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "cinched",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.569,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": 0.0258,
+    "lifter_n": 264.0,
+    "back_n": 630.2,
+    "dog_leg_n": 7.9,
+    "member_min": 6.833,
+    "min_eig": 0.0028466375171923826
+   },
+   {
+    "kit": "a_S",
+    "torso_in": 18.0,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "sling_free",
+    "imp_mm": 4.0,
+    "linear_margin": 0.569,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 180.5,
+    "back_n": 0,
+    "dog_leg_n": 33.2,
+    "member_min": 18.311,
+    "min_eig": 0.001911619314077415
+   },
+   {
+    "kit": "a_S",
+    "torso_in": 18.0,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "cinched",
+    "support": "sling_free",
+    "imp_mm": 4.0,
+    "linear_margin": 0.569,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": 0.0164,
+    "lifter_n": 265.4,
+    "back_n": 0,
+    "dog_leg_n": -4.1,
+    "member_min": 13.06,
+    "min_eig": 0.0019149545893423813
+   },
+   {
+    "kit": "a_S",
+    "torso_in": 18.0,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "loose",
+    "support": "sling_free",
+    "imp_mm": 4.0,
+    "linear_margin": 0.569,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 112.3,
+    "back_n": 0,
+    "dog_leg_n": 67.6,
+    "member_min": 9.106,
+    "min_eig": 0.0013763489447337868
+   },
+   {
+    "kit": "a_S",
+    "torso_in": 18.0,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "cinched",
+    "support": "sling_free",
+    "imp_mm": 4.0,
+    "linear_margin": 0.569,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": 0.0187,
+    "lifter_n": 265.9,
+    "back_n": 0,
+    "dog_leg_n": -3.9,
+    "member_min": 13.0,
+    "min_eig": 0.0019395836537802252
+   },
+   {
+    "kit": "a_S",
+    "torso_in": 18.0,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "yoke_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.569,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 0.0,
+    "back_n": 500.0,
+    "dog_leg_n": 136.4,
+    "member_min": 4.715,
+    "min_eig": 0.0015691118926741258
+   },
+   {
+    "kit": "a_S",
+    "torso_in": 18.0,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "cinched",
+    "support": "yoke_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.569,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": 0.6,
+    "lifter_n": 120.6,
+    "back_n": 486.9,
+    "dog_leg_n": 67.6,
+    "member_min": 10.141,
+    "min_eig": 0.002151574548445558
+   },
+   {
+    "kit": "a_S",
+    "torso_in": 18.0,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "loose",
+    "support": "yoke_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.569,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 0.0,
+    "back_n": 549.1,
+    "dog_leg_n": 134.9,
+    "member_min": 4.79,
+    "min_eig": 0.0016605520588229795
+   },
+   {
+    "kit": "a_S",
+    "torso_in": 18.0,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "cinched",
+    "support": "yoke_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.569,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": 0.6,
+    "lifter_n": 89.4,
+    "back_n": 536.2,
+    "dog_leg_n": 83.1,
+    "member_min": 7.973,
+    "min_eig": 0.004261484461613627
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 20.5,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.556,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 143.9,
+    "back_n": 520.0,
+    "dog_leg_n": 25.9,
+    "member_min": 10.172,
+    "min_eig": 0.0031763367877006583
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 20.5,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "cinched",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.556,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": 0.0246,
+    "lifter_n": 238.9,
+    "back_n": 516.1,
+    "dog_leg_n": -0.5,
+    "member_min": 7.371,
+    "min_eig": 0.002131025799558559
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 20.5,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.556,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 59.4,
+    "back_n": 567.3,
+    "dog_leg_n": 49.1,
+    "member_min": 6.511,
+    "min_eig": 0.007902326500725327
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 20.5,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "cinched",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.556,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": 0.027,
+    "lifter_n": 236.4,
+    "back_n": 561.9,
+    "dog_leg_n": -0.7,
+    "member_min": 7.163,
+    "min_eig": 0.002476934782444914
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 20.5,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "sling_free",
+    "imp_mm": 4.0,
+    "linear_margin": 0.556,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 160.2,
+    "back_n": 0,
+    "dog_leg_n": 17.0,
+    "member_min": 13.245,
+    "min_eig": 0.0012189105193427356
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 20.5,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "cinched",
+    "support": "sling_free",
+    "imp_mm": 4.0,
+    "linear_margin": 0.556,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": 0.0176,
+    "lifter_n": 248.8,
+    "back_n": 0,
+    "dog_leg_n": -6.7,
+    "member_min": 11.931,
+    "min_eig": 0.001599857199426952
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 20.5,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "loose",
+    "support": "sling_free",
+    "imp_mm": 4.0,
+    "linear_margin": 0.556,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 83.5,
+    "back_n": 0,
+    "dog_leg_n": 40.1,
+    "member_min": 7.886,
+    "min_eig": 0.0012291272619172362
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 20.5,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "cinched",
+    "support": "sling_free",
+    "imp_mm": 4.0,
+    "linear_margin": 0.556,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": 0.0199,
+    "lifter_n": 248.5,
+    "back_n": 0,
+    "dog_leg_n": -6.3,
+    "member_min": 11.93,
+    "min_eig": 0.001617935279480061
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 20.5,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "yoke_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.556,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 0.0,
+    "back_n": 452.2,
+    "dog_leg_n": 66.1,
+    "member_min": 5.207,
+    "min_eig": 0.0013576041718828505
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 20.5,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "cinched",
+    "support": "yoke_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.556,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": 0.6,
+    "lifter_n": 96.3,
+    "back_n": 443.5,
+    "dog_leg_n": 34.5,
+    "member_min": 8.826,
+    "min_eig": 0.0017835616336096013
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 20.5,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "loose",
+    "support": "yoke_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.556,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 0.0,
+    "back_n": 491.7,
+    "dog_leg_n": 65.2,
+    "member_min": 5.265,
+    "min_eig": 0.0014327818608791103
+   },
+   {
+    "kit": "a_M",
+    "torso_in": 20.5,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "cinched",
+    "support": "yoke_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.556,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": 0.6,
+    "lifter_n": 64.7,
+    "back_n": 484.2,
+    "dog_leg_n": 43.2,
+    "member_min": 7.24,
+    "min_eig": 0.0033436816253022425
+   },
+   {
+    "kit": "a_L",
+    "torso_in": 23.0,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.543,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 120.1,
+    "back_n": 473.8,
+    "dog_leg_n": 13.6,
+    "member_min": 7.626,
+    "min_eig": 0.00271678286361658
+   },
+   {
+    "kit": "a_L",
+    "torso_in": 23.0,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "cinched",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.543,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": 0.0246,
+    "lifter_n": 214.5,
+    "back_n": 470.1,
+    "dog_leg_n": -3.7,
+    "member_min": 7.687,
+    "min_eig": 0.001872613185556783
+   },
+   {
+    "kit": "a_L",
+    "torso_in": 23.0,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "loose",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.543,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 32.6,
+    "back_n": 511.9,
+    "dog_leg_n": 29.0,
+    "member_min": 4.697,
+    "min_eig": 0.006692412607420997
+   },
+   {
+    "kit": "a_L",
+    "torso_in": 23.0,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "cinched",
+    "support": "sling_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.543,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": 0.027,
+    "lifter_n": 212.0,
+    "back_n": 507.0,
+    "dog_leg_n": -3.8,
+    "member_min": 7.527,
+    "min_eig": 0.0021884860395507723
+   },
+   {
+    "kit": "a_L",
+    "torso_in": 23.0,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "sling_free",
+    "imp_mm": 4.0,
+    "linear_margin": 0.543,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 142.6,
+    "back_n": 0,
+    "dog_leg_n": 8.2,
+    "member_min": 9.352,
+    "min_eig": 0.0010944911271618652
+   },
+   {
+    "kit": "a_L",
+    "torso_in": 23.0,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "cinched",
+    "support": "sling_free",
+    "imp_mm": 4.0,
+    "linear_margin": 0.543,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": 0.0176,
+    "lifter_n": 231.6,
+    "back_n": 0,
+    "dog_leg_n": -7.4,
+    "member_min": 11.354,
+    "min_eig": 0.001365375823023483
+   },
+   {
+    "kit": "a_L",
+    "torso_in": 23.0,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "loose",
+    "support": "sling_free",
+    "imp_mm": 4.0,
+    "linear_margin": 0.543,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 61.7,
+    "back_n": 0,
+    "dog_leg_n": 23.8,
+    "member_min": 5.422,
+    "min_eig": 0.0011106727146716687
+   },
+   {
+    "kit": "a_L",
+    "torso_in": 23.0,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "cinched",
+    "support": "sling_free",
+    "imp_mm": 4.0,
+    "linear_margin": 0.543,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": 0.0211,
+    "lifter_n": 232.1,
+    "back_n": 0,
+    "dog_leg_n": -7.3,
+    "member_min": 11.297,
+    "min_eig": 0.0013788559417900318
+   },
+   {
+    "kit": "a_L",
+    "torso_in": 23.0,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "loose",
+    "support": "yoke_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.543,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 0.0,
+    "back_n": 413.3,
+    "dog_leg_n": 34.5,
+    "member_min": 4.175,
+    "min_eig": 0.0011907829596734592
+   },
+   {
+    "kit": "a_L",
+    "torso_in": 23.0,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "cinched",
+    "support": "yoke_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.543,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": 0.6,
+    "lifter_n": 77.7,
+    "back_n": 407.3,
+    "dog_leg_n": 18.4,
+    "member_min": 6.585,
+    "min_eig": 0.0015084928199523306
+   },
+   {
+    "kit": "a_L",
+    "torso_in": 23.0,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "loose",
+    "support": "yoke_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.543,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": -0.05,
+    "lifter_n": 0.0,
+    "back_n": 445.9,
+    "dog_leg_n": 34.0,
+    "member_min": 4.226,
+    "min_eig": 0.001252111552322173
+   },
+   {
+    "kit": "a_L",
+    "torso_in": 23.0,
+    "variant": "crown_bar",
+    "k_mult": 4.0,
+    "lifter": "cinched",
+    "support": "yoke_back",
+    "imp_mm": 4.0,
+    "linear_margin": 0.543,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": 0.6,
+    "lifter_n": 45.9,
+    "back_n": 441.6,
+    "dog_leg_n": 23.5,
+    "member_min": 5.34,
+    "min_eig": 0.0026783892302263052
+   },
+   {
+    "kit": "a_L",
+    "torso_in": 23.0,
+    "variant": "crown_bar",
+    "k_mult": 1.0,
+    "lifter": "cinched",
+    "support": "yoke_back",
+    "imp_mm": 8.0,
+    "linear_margin": 0.543,
+    "lam_reached": 2.0,
+    "margin": 1.333,
+    "lifter_pre_strain": 0.6,
+    "lifter_n": 81.9,
+    "back_n": 407.3,
+    "dog_leg_n": 16.6,
+    "member_min": 6.601,
+    "min_eig": 0.001264835051047724
+   }
+  ]
+ },
+ "assumptions": {
+  "STRAP-GEOM": [
+   "Shoulder straps run from the yoke node to a shoulder-crest point 90 mm to each side, 100 mm fore and 40 mm above it (yoke 50 mm below C7, geometry.yaml datums); the lifter runs from its node to the same point (its strap end sits just fore of the crest): 42-46 deg below horizontal against geometry.yaml's 40.6. Webbing cables, tension only, EA from poly_webbing_25mm (WEB-EA).",
+   "T1(c) on the rig: photograph the strap and lifter angles at 225 lb; re-run with the measured angles."
+  ],
+  "STRAP-K": [
+   "The body under each shoulder crest = the HA-LS-1 shoulder + lifter springs per side (2, 7, 6.5 N/mm x, y, z) and 4x that, as a band; the path is reported for both.",
+   "T1(c): crown-top sag against load at 25 % steps; the measured secant stiffness picks the band end."
+  ],
+  "STRAP-SLING": [
+   "With the hipbelt off the shoulder strap is a sling: its front run (crest -> lower adjuster -> lower anchor, geometry.yaml shoulder_strap_lower_anchor z 110) is snug and carries tension; modelled as a straight cable crest -> nearest stay node. Run with and without it.",
+   "T1(c): crane scale on one lower strap at 225 lb."
+  ],
+  "LIFT-T": [
+   "Lifter tension at the factored load is set by how hard the wearer cinches it; swept 0 / 200 / 450 / 700 N each (700 = the linear spring model's lifter reaction).",
+   "T1(c): crane scale in each lifter at 225 lb (record the tension)."
+  ],
+  "BACK": [
+   "With the hipbelt off the lumbar pad bears on the wearer's lower back (on the rig: the hip log), compression only, 30 N/mm in total (HA-LS-1 lumbar_pad ky).",
+   "T1(c) is run with the pad touching the hip log (belt unbuckled); a free-hanging variant is in T1(c)-sway."
+  ],
+  "WEB-EA": [
+   "Webbing linear to break: EA = 13344 N / 0.15 = 89 kN (secant); 25 mm polyester record.",
+   "Pull a 300 mm length of the lifter webbing on the crane scale to 500 N and read the stretch."
+  ],
+  "IMP": [
+   "Imperfection = the linear first buckling mode of the real crown (the 0.54 mode) scaled to 4 mm at its largest node translation (about crown height / 200), and 8 mm as a check.",
+   "First-article frame: measure crown-top and stay-foot out-of-plane against a straight edge before T1."
+  ],
+  "DEAD": [
+   "The C8 loads stay as HA-LS-1 places them (dead nodal loads on the bag nodes, bag couple on TB0/TB2 and the stay feet); only the supports are made physical.",
+   "Not a test item: it is the standard's load."
+  ]
+ },
+ "pawl": {
+  "check": {
+   "swing_deg": 10.0,
+   "lp_min_dist_mm": 0.506,
+   "old_min_dist_mm": -3.551,
+   "rows": [
+    {
+     "deg": 0.0,
+     "pawl": "lp",
+     "min_dist_mm": 0.506,
+     "max_py": 10.5
+    },
+    {
+     "deg": 0.0,
+     "pawl": "old",
+     "min_dist_mm": -3.416,
+     "max_py": 14.0
+    },
+    {
+     "deg": 1.0,
+     "pawl": "lp",
+     "min_dist_mm": 0.507,
+     "max_py": 10.64
+    },
+    {
+     "deg": 1.0,
+     "pawl": "old",
+     "min_dist_mm": -3.551,
+     "max_py": 14.14
+    },
+    {
+     "deg": 2.0,
+     "pawl": "lp",
+     "min_dist_mm": 0.506,
+     "max_py": 10.77
+    },
+    {
+     "deg": 2.0,
+     "pawl": "old",
+     "min_dist_mm": -3.502,
+     "max_py": 14.4
+    },
+    {
+     "deg": 3.0,
+     "pawl": "lp",
+     "min_dist_mm": 0.506,
+     "max_py": 10.91
+    },
+    {
+     "deg": 3.0,
+     "pawl": "old",
+     "min_dist_mm": -3.326,
+     "max_py": 14.85
+    },
+    {
+     "deg": 4.0,
+     "pawl": "lp",
+     "min_dist_mm": 0.506,
+     "max_py": 11.04
+    },
+    {
+     "deg": 4.0,
+     "pawl": "old",
+     "min_dist_mm": -3.076,
+     "max_py": 15.3
+    },
+    {
+     "deg": 5.0,
+     "pawl": "lp",
+     "min_dist_mm": 0.507,
+     "max_py": 11.17
+    },
+    {
+     "deg": 5.0,
+     "pawl": "old",
+     "min_dist_mm": -2.796,
+     "max_py": 15.74
+    },
+    {
+     "deg": 6.0,
+     "pawl": "lp",
+     "min_dist_mm": 0.506,
+     "max_py": 11.3
+    },
+    {
+     "deg": 6.0,
+     "pawl": "old",
+     "min_dist_mm": -2.527,
+     "max_py": 16.18
+    },
+    {
+     "deg": 7.0,
+     "pawl": "lp",
+     "min_dist_mm": 0.507,
+     "max_py": 11.43
+    },
+    {
+     "deg": 7.0,
+     "pawl": "old",
+     "min_dist_mm": -1.974,
+     "max_py": 16.62
+    },
+    {
+     "deg": 8.0,
+     "pawl": "lp",
+     "min_dist_mm": 0.506,
+     "max_py": 11.55
+    },
+    {
+     "deg": 8.0,
+     "pawl": "old",
+     "min_dist_mm": -1.407,
+     "max_py": 17.06
+    },
+    {
+     "deg": 9.0,
+     "pawl": "lp",
+     "min_dist_mm": 0.507,
+     "max_py": 11.84
+    },
+    {
+     "deg": 9.0,
+     "pawl": "old",
+     "min_dist_mm": -0.934,
+     "max_py": 17.49
+    },
+    {
+     "deg": 10.0,
+     "pawl": "lp",
+     "min_dist_mm": 0.507,
+     "max_py": 12.31
+    },
+    {
+     "deg": 10.0,
+     "pawl": "old",
+     "min_dist_mm": -0.557,
+     "max_py": 17.92
+    }
+   ],
+   "bores": [
+    {
+     "x": -17.91,
+     "bore_clear": true,
+     "wall_2mm_full": 1.0
+    },
+    {
+     "x": -12.0,
+     "bore_clear": true,
+     "wall_2mm_full": 1.0
+    },
+    {
+     "x": -23.82,
+     "bore_clear": true,
+     "wall_2mm_full": 1.0
+    },
+    {
+     "x": 12.0,
+     "bore_clear": true,
+     "wall_2mm_full": 1.0
+    },
+    {
+     "x": 17.91,
+     "bore_clear": true,
+     "wall_2mm_full": 1.0
+    },
+    {
+     "x": 23.82,
+     "bore_clear": true,
+     "wall_2mm_full": 1.0
+    }
+   ],
+   "lp_max_py": 12.307445300003362,
+   "old_max_py": 17.92286623219312,
+   "face_py": 12.84,
+   "zone_py": 9.15,
+   "lift_at_teeth_mm": 3.04,
+   "pass": true
+  },
+  "cheek": {
+   "force": {
+    "factored_yz": [
+     0.0,
+     2181.9200719496694,
+     850.2365579108329
+    ],
+    "set": "a_S C:hipbelt_off_abuse|15",
+    "n": 2341.7253051510784
+   },
+   "cheek": {
+    "force_yz": [
+     0.0,
+     2181.9200719496694,
+     850.2365579108329
+    ],
+    "built": {
+     "fi99": 0.7818140736910454,
+     "fi_max": 0.8026310922224137,
+     "bearing_mpa": 18.2947289464928,
+     "bearing_sf": 2.055236790332886,
+     "metal_sf": 6.169809912468737,
+     "thick_mm": 8.0,
+     "hole_d_mm": 8.0,
+     "pin_d_mm": 4.2,
+     "metal": true,
+     "force_n": 2341.7253051510784,
+     "sf_fi": 1.279076488453157
+    },
+    "record_8x8": {
+     "fi99": 0.7228098989638448,
+     "fi_max": 0.7863720860331598,
+     "bearing_mpa": 18.2947289464928,
+     "bearing_sf": 2.055236790332886,
+     "metal_sf": 6.169809912468737,
+     "thick_mm": 8.0,
+     "hole_d_mm": 8.0,
+     "pin_d_mm": 4.2,
+     "metal": true,
+     "force_n": 2341.7253051510784,
+     "sf_fi": 1.383489630445723
+    },
+    "edges_mm": {
+     "fore": 8.84,
+     "bottom": 8.5,
+     "to_housing_top": 35.62
+    }
+   }
+  },
+  "files": {
+   "crown_pawl_lp_fdm_pacf": {
+    "width_mm": 16.0,
+    "g": 4.25,
+    "watertight": true,
+    "extents_mm": [
+     33.0,
+     12.36,
+     16.0
+    ]
+   },
+   "crown_pawl_lp_slm": {
+    "width_mm": 12.0,
+    "g": 13.31,
+    "watertight": true,
+    "extents_mm": [
+     33.0,
+     12.36,
+     12.0
+    ]
+   }
+  },
+  "assumptions": {
+   "PAWL-LIFT": [
+    "The release cord swings the pawl 10 deg about its pin (7.9 deg lifts the nearer tooth tip 0.5 mm clear of the rack tips, + 2 deg).",
+    "Pawl dry fit in the first print: pull the cord to the stop, rack slides."
+   ],
+   "PAWL-PLACE": [
+    "Pivot 20 mm below the teeth (pawl line z 520 -> pin z 500), pin 4 mm fore of the rack tooth tips (printables.spring_pawl pin at (4, 4) with the tooth face 0.15 mm above the rack tips).",
+    "Pawl dry fit: teeth seat in the rack with the pin in its sleeves."
+   ],
+   "PAWL-SPRING": [
+    "The LP pawl's spring is a 0.5 mm music-wire torsion spring on the pin beside the pawl (3 mm a side in the 22 mm channel), one leg on the 10.5 mm tang, the other on the window's lower edge; the old 14 mm tang does not fit the housing.",
+    "Pawl dry fit + 100 release cycles by hand."
+   ],
+   "PAWL-FDM-STRENGTH": [
+    "The LP pawl keeps the teeth, the pin and a 7.5 mm arm (old 8): the rack check (printables.rack_check, rating 5328 N) is on the teeth and is unchanged; the arm only carries the spring.",
+    "Rack/pawl pull test in the test kit (unchanged)."
+   ]
+  },
+  "place": {
+   "face_y_rel": -16.15,
+   "z_pivot": 500.0,
+   "pivot_y_rel": -20.15,
+   "housing_fore_rel": -28.98903780756151,
+   "channel_fore_rel": -25.3,
+   "zone_py": 9.150000000000002,
+   "face_py": 12.83903780756151
+  }
+ },
+ "channel_check": {
+  "all_pass": true,
+  "min": {
+   "clear_mm": 0.964,
+   "fore_wall_mm": 3.67,
+   "aft_wall_mm": 6.79,
+   "side_wall_mm": 13.8,
+   "walls_ok": true
+  },
+  "settings_pass": 21,
+  "n": 21
+ },
+ "fairleads_all_pass": true,
+ "he": {
+  "as_written": {
+   "worst_under_pin_clear_mm": 0.679,
+   "min_clear_off_corner_mm": 0.679,
+   "throat_clear_side_mm": 0.5,
+   "worst_loop_overlap_mm2": 0.0,
+   "min_box_top_to_cheek_mm": 3.12,
+   "pass": true
+  },
+  "per_ply": {
+   "1.2": {
+    "worst": 1.879,
+    "centred": 1.882,
+    "off_corner": 1.879,
+    "where": -2.99
+   },
+   "1.5": {
+    "worst": 0.979,
+    "centred": 0.982,
+    "off_corner": 0.979,
+    "where": -2.99
+   },
+   "1.6": {
+    "worst": 0.679,
+    "centred": 0.682,
+    "off_corner": 0.679,
+    "where": -2.99
+   }
+  },
+  "tol_0p15": {
+   "worst_under_pin_clear_mm": 0.579,
+   "throat_clear_side_mm": 0.45,
+   "meets_0p5_everywhere": true
+  }
+ },
+ "keepouts": {
+  "sleeve_R present": 1.0,
+  "sleeve_L present": 1.0,
+  "pivot present": 1.0,
+  "pads present": 0.8822984244670992,
+  "pawl housing ring (BL-046, cheeks for the BL-047 pivot) present": 0.9673884685624837,
+  "bore_R empty": 1.0,
+  "bore_L empty": 1.0,
+  "spine channel BL-046 (tube + rack, h1_spine_channel) empty": 1.0,
+  "fairlead stubs inside the envelope present (voxel)": 0.98851308232291,
+  "fairleads complete on the print STL (h1_fairleads.check_stl)": true,
+  "outside envelope (voxels)": 0,
+  "boss wearer face flush (rails)": true,
+  "boss bag side outboard of spreader and inside envelope": true,
+  "boss inside x half-width 152": true,
+  "stay outer radius at z 234 mm": 13.41,
+  "bag envelope local y at z 234 mm": 18.490985022210744,
+  "boss local extents (x, y) mm": [
+   [
+    16.4,
+    2.0,
+    18.0
+   ],
+   [
+    -19.0,
+    -3.0,
+    13.0
+   ]
+  ],
+  "boss top z / next spreader clip bottom z": [
+   252.0,
+   255.0
+  ],
+  "boss clear of spreader clip": true,
+  "bolt head top z": 254.5,
+  "bolt head clear of spreader clip": true,
+  "boss max |x| mm (half-width limit 152)": 142.0
+ },
+ "keepouts_bl046": {
+  "sleeve_R present": 1.0,
+  "sleeve_L present": 1.0,
+  "pawl present": 0.7929292929292929,
+  "pivot present": 1.0,
+  "pads present": 0.8822984244670992,
+  "bore_R empty": 1.0,
+  "bore_L empty": 1.0,
+  "spine_channel empty": 0.9193548387096774,
+  "spine channel BL-046 (tube + rack, h1_spine_channel) empty": 1.0,
+  "fairlead stubs inside the envelope present (voxel)": 0.98851308232291,
+  "fairleads complete on the print STL (h1_fairleads.check_stl)": true,
+  "outside envelope (voxels)": 1800,
+  "boss wearer face flush (rails)": true,
+  "boss bag side outboard of spreader and inside envelope": true,
+  "boss inside x half-width 152": true,
+  "stay outer radius at z 234 mm": 13.41,
+  "bag envelope local y at z 234 mm": 18.490985022210744,
+  "boss local extents (x, y) mm": [
+   [
+    16.4,
+    2.0,
+    18.0
+   ],
+   [
+    -19.0,
+    -3.0,
+    13.0
+   ]
+  ],
+  "boss top z / next spreader clip bottom z": [
+   252.0,
+   255.0
+  ],
+  "boss clear of spreader clip": true,
+  "bolt head top z": 254.5,
+  "bolt head clear of spreader clip": true,
+  "boss max |x| mm (half-width limit 152)": 142.0
+ },
+ "clamp_web": {
+  "bl046_2p5": {
+   "socket": {
+    "avg": {
+     "sf": 2.389,
+     "set": "a_S 15 in hipbelt_off_abuse (strap_upper)"
+    },
+    "peak": {
+     "sf": 1.381,
+     "set": "a_S 15 in hipbelt_off_abuse (strap_upper)"
+    },
+    "fat_avg": {
+     "sf": 3.071,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    },
+    "fat_peak": {
+     "sf": 1.776,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    }
+   },
+   "saddle": {
+    "avg": {
+     "sf": 5.211,
+     "set": "a_S 15 in side_hill_torsion (crown_bar)"
+    },
+    "peak": {
+     "sf": 1.139,
+     "set": "a_S 15 in hipbelt_off_abuse (strap_upper)"
+    },
+    "fat_avg": {
+     "sf": 6.136,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    },
+    "fat_peak": {
+     "sf": 1.287,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    }
+   },
+   "socket_with_shear": {
+    "avg": {
+     "sf": 2.315,
+     "set": "a_S 15 in hipbelt_off_abuse (strap_upper)"
+    },
+    "peak": {
+     "sf": 1.264,
+     "set": "a_S 15 in hipbelt_off_abuse (strap_upper)"
+    },
+    "fat_avg": {
+     "sf": 3.026,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    },
+    "fat_peak": {
+     "sf": 1.701,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    }
+   },
+   "saddle_with_shear": {
+    "avg": {
+     "sf": 3.843,
+     "set": "a_S 15 in hipbelt_off_abuse (strap_upper)"
+    },
+    "peak": {
+     "sf": 0.806,
+     "set": "a_S 15 in hipbelt_off_abuse (strap_upper)"
+    },
+    "fat_avg": {
+     "sf": 4.647,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    },
+    "fat_peak": {
+     "sf": 0.975,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    }
+   },
+   "socket_bending": {
+    "sigma_factored_mpa": 103.8,
+    "sf_yield": 4.45,
+    "sigma_walk_mpa": 24.3,
+    "sf_fatigue_kt2": 3.27
+   },
+   "webs": {
+    "web_t_mm": 2.5,
+    "web_h_mm": 21.2,
+    "sigma_vm_factored_mpa": 167.1,
+    "sf_yield": 2.77,
+    "set": "a_S 15 in side_hill_torsion (crown_bar)",
+    "sigma_vm_walk_mpa": 26.8,
+    "sf_fatigue_kt2": 2.97
+   }
+  },
+  "bl047_2p0": {
+   "socket": {
+    "avg": {
+     "sf": 2.422,
+     "set": "a_S 15 in hipbelt_off_abuse (strap_upper)"
+    },
+    "peak": {
+     "sf": 1.4,
+     "set": "a_S 15 in hipbelt_off_abuse (strap_upper)"
+    },
+    "fat_avg": {
+     "sf": 3.114,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    },
+    "fat_peak": {
+     "sf": 1.801,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    }
+   },
+   "saddle": {
+    "avg": {
+     "sf": 5.262,
+     "set": "a_S 15 in side_hill_torsion (crown_bar)"
+    },
+    "peak": {
+     "sf": 1.153,
+     "set": "a_S 15 in hipbelt_off_abuse (strap_upper)"
+    },
+    "fat_avg": {
+     "sf": 6.201,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    },
+    "fat_peak": {
+     "sf": 1.301,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    }
+   },
+   "socket_with_shear": {
+    "avg": {
+     "sf": 2.345,
+     "set": "a_S 15 in hipbelt_off_abuse (strap_upper)"
+    },
+    "peak": {
+     "sf": 1.277,
+     "set": "a_S 15 in hipbelt_off_abuse (strap_upper)"
+    },
+    "fat_avg": {
+     "sf": 3.067,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    },
+    "fat_peak": {
+     "sf": 1.723,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    }
+   },
+   "saddle_with_shear": {
+    "avg": {
+     "sf": 3.869,
+     "set": "a_S 15 in hipbelt_off_abuse (strap_upper)"
+    },
+    "peak": {
+     "sf": 0.812,
+     "set": "a_S 15 in hipbelt_off_abuse (strap_upper)"
+    },
+    "fat_avg": {
+     "sf": 4.686,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    },
+    "fat_peak": {
+     "sf": 0.983,
+     "set": "a_L 23 in static_carry (strap_upper)"
+    }
+   },
+   "socket_bending": {
+    "sigma_factored_mpa": 102.4,
+    "sf_yield": 4.51,
+    "sigma_walk_mpa": 24.0,
+    "sf_fatigue_kt2": 3.31
+   },
+   "webs": {
+    "web_t_mm": 2.0,
+    "web_h_mm": 21.2,
+    "sigma_vm_factored_mpa": 153.6,
+    "sf_yield": 3.01,
+    "set": "a_S 15 in side_hill_torsion (crown_bar)",
+    "sigma_vm_walk_mpa": 33.2,
+    "sf_fatigue_kt2": 2.4
+   }
+  },
+  "mass_g": [
+   15.9,
+   14.2
+  ],
+  "crown_real_2p0": {
+   "a_S": {
+    "min": {
+     "crown_leg": {
+      "sf": 1.149,
+      "set": "C_im3:hipbelt_off_abuse|18"
+     },
+     "crown_top_bar": {
+      "sf": 1.296,
+      "set": "C_im3:hipbelt_off_abuse|15"
+     },
+     "crown_spine": {
+      "sf": 1.217,
+      "set": "C:hipbelt_off_abuse|15"
+     },
+     "corner_bond_avg": {
+      "sf": 2.322,
+      "set": "C:tall_load_posts|15"
+     },
+     "corner_bond_peak": {
+      "sf": 1.206,
+      "set": "C:tall_load_posts|15"
+     },
+     "bushing_bearing": {
+      "sf": 15.295,
+      "set": "C_im3:hipbelt_off_abuse|15"
+     },
+     "leg_ring_crush": {
+      "sf": 2.028,
+      "set": "C_im3:hipbelt_off_abuse|15"
+     },
+     "fatigue": {
+      "sf": 2.829,
+      "set": "C_im3:static_carry|18"
+     },
+     "buckling": {
+      "sf": 0.569,
+      "set": "C:hipbelt_off_abuse|18"
+     },
+     "rack": {
+      "sf": 6.266,
+      "set": "C_im3:hipbelt_off_abuse|15"
+     },
+     "pawl_cheek": {
+      "sf": 1.383,
+      "set": "C:hipbelt_off_abuse|15"
+     },
+     "corner_bond_fatigue_peak": {
+      "sf": 2.96,
+      "set": "C:static_carry|15"
+     }
+    },
+    "min_all": 0.569
+   },
+   "a_M": {
+    "min": {
+     "crown_leg": {
+      "sf": 1.128,
+      "set": "C_im3:hipbelt_off_abuse|20.5"
+     },
+     "crown_top_bar": {
+      "sf": 2.436,
+      "set": "C_im3:side_hill_torsion|17.5"
+     },
+     "crown_spine": {
+      "sf": 1.764,
+      "set": "C_im3:hipbelt_off_abuse|20.5"
+     },
+     "corner_bond_avg": {
+      "sf": 2.736,
+      "set": "C:tall_load_posts|17.5"
+     },
+     "corner_bond_peak": {
+      "sf": 1.421,
+      "set": "C:tall_load_posts|17.5"
+     },
+     "bushing_bearing": {
+      "sf": 20.524,
+      "set": "C_im3:hipbelt_off_abuse|17.5"
+     },
+     "leg_ring_crush": {
+      "sf": 2.721,
+      "set": "C_im3:hipbelt_off_abuse|17.5"
+     },
+     "fatigue": {
+      "sf": 1.799,
+      "set": "C_im3:static_carry|20.5"
+     },
+     "buckling": {
+      "sf": 0.556,
+      "set": "C:hipbelt_off_abuse|20.5"
+     },
+     "rack": {
+      "sf": 6.266,
+      "set": "C_im3:hipbelt_off_abuse|17.5"
+     },
+     "pawl_cheek": {
+      "sf": 2.006,
+      "set": "C_im3:hipbelt_off_abuse|17.5"
+     },
+     "corner_bond_fatigue_peak": {
+      "sf": 3.27,
+      "set": "C_im3:static_carry|20.5"
+     }
+    },
+    "min_all": 0.556
+   },
+   "a_L": {
+    "min": {
+     "crown_leg": {
+      "sf": 1.115,
+      "set": "C_im3:hipbelt_off_abuse|23"
+     },
+     "crown_top_bar": {
+      "sf": 2.374,
+      "set": "C_im3:side_hill_torsion|23"
+     },
+     "crown_spine": {
+      "sf": 1.204,
+      "set": "C_im3:hipbelt_off_abuse|23"
+     },
+     "corner_bond_avg": {
+      "sf": 2.909,
+      "set": "C:tall_load_posts|20"
+     },
+     "corner_bond_peak": {
+      "sf": 1.511,
+      "set": "C:tall_load_posts|20"
+     },
+     "bushing_bearing": {
+      "sf": 23.033,
+      "set": "C_im3:hipbelt_off_abuse|23"
+     },
+     "leg_ring_crush": {
+      "sf": 3.054,
+      "set": "C_im3:hipbelt_off_abuse|23"
+     },
+     "fatigue": {
+      "sf": 1.386,
+      "set": "C_im3:static_carry|23"
+     },
+     "buckling": {
+      "sf": 0.543,
+      "set": "C:hipbelt_off_abuse|23"
+     },
+     "rack": {
+      "sf": 6.266,
+      "set": "C:hipbelt_off_abuse|20"
+     },
+     "pawl_cheek": {
+      "sf": 2.785,
+      "set": "C_im3:hipbelt_off_abuse|20"
+     },
+     "corner_bond_fatigue_peak": {
+      "sf": 2.109,
+      "set": "C_im3:static_carry|23"
+     }
+    },
+    "min_all": 0.543
+   }
+  }
+ },
+ "items": {
+  "hinge_one_number": {
+   "hinge_row_n": 1019.0,
+   "factor": 3.0,
+   "f_1g_n": 339.7,
+   "revC_direction": {
+    "force_on_file_n": 724.2,
+    "sf_strength": 2.65,
+    "sf_fatigue": 1.49,
+    "sf_creep": 3.18
+   },
+   "sim_direction": {
+    "run": "F_PR15_fineFM|meat|L",
+    "f1g_on_file_n": 250.2,
+    "sf_strength": 1.53,
+    "sf_fatigue": 0.86,
+    "sf_creep": 1.84
+   },
+   "pin_7075_5mm": {
+    "M_nmm": 4585.5,
+    "sigma_mpa": 373.66,
+    "sf_yield": 1.24,
+    "sigma_walk_mpa": 199.29,
+    "goodman_smax_r0_mpa": 228.93,
+    "sf_fatigue": 1.15
+   },
+   "previous_basis": {
+    "revC_n": 724.2,
+    "sim_x3_n": 750.7
+   }
+  },
+  "tl1": {
+   "run_vector": {
+    "mitre_centre_x_s": [
+     45.5,
+     36.0
+    ],
+    "spine_wrap_x_s": [
+     11.5,
+     29.5
+    ],
+    "spine_fore_mm": 25.02,
+    "collar_mm": 6.0,
+    "u_run": [
+     -0.7245119753786018,
+     -0.5331555771756652,
+     -0.4368381028018041
+    ],
+    "yz_share": 0.6892622124656161,
+    "plan_angle_fore_deg": 36.34869579673249,
+    "below_horizontal_deg": 25.90231300784887
+   },
+   "k_vector_bl046": 0.9362,
+   "k_vector_bl045": 1.006,
+   "k_bound": 1.116,
+   "rows": {
+    "vector_bl046": {
+     "k": 0.9362,
+     "width_mm": 38.0,
+     "capacity_n": 438.818,
+     "capacity_rt_n": 671.073,
+     "sf_static": 1.452,
+     "fi_fatigue": 0.367,
+     "sf_fatigue": 1.361,
+     "proof_over_rt_capacity": 0.675
+    },
+    "vector_bl045": {
+     "k": 1.006,
+     "width_mm": 38.0,
+     "capacity_n": 438.818,
+     "capacity_rt_n": 671.073,
+     "sf_static": 1.351,
+     "fi_fatigue": 0.395,
+     "sf_fatigue": 1.267,
+     "proof_over_rt_capacity": 0.726
+    },
+    "bound": {
+     "k": 1.116,
+     "width_mm": 38.0,
+     "capacity_n": 438.818,
+     "capacity_rt_n": 671.073,
+     "sf_static": 1.218,
+     "fi_fatigue": 0.438,
+     "sf_fatigue": 1.142,
+     "proof_over_rt_capacity": 0.805
+    }
+   },
+   "proof_tl1_n": 462.0,
+   "proof_tl1_bl045_n": 497.0,
+   "proof_bound_n": 551.0,
+   "pull": {
+    "unit_x_out_y_aft_z_up": [
+     0.009,
+     0.955,
+     -0.296
+    ],
+    "below_horizontal_deg": 17.2,
+    "outboard_pct": 0.9,
+    "aft_pct": 95.5,
+    "fore_component": false,
+    "governing_run": {
+     "torso": 19.0,
+     "case": "fill",
+     "side": "L"
+    },
+    "rig": {
+     "guy_toggle_pull_n": 454.0,
+     "guy_unit_x_out_y_aft_z_up": [
+      0.005,
+      0.926,
+      -0.377
+     ],
+     "guy_below_horizontal_deg": 22.2,
+     "guy_outboard_pct": 0.5,
+     "crown_strap_toggle_n": 43.0,
+     "run_spine_end": "anchored to a stub of the OD 20 spine tube 25.0 mm fore of the bar axis, the 6.0 mm collar fitted (BL-046 geometry); the run then pulls fore-down by itself",
+     "fore_component_of_run_on_sleeve": 0.533
+    },
+    "rig_B_run_loaded": {
+     "guy_toggle_pull_n": 454.0,
+     "guy_unit_x_out_y_aft_z_up": [
+      0.136,
+      0.51,
+      -0.849
+     ],
+     "guy_below_horizontal_deg": 58.1,
+     "guy_outboard_pct": 13.6,
+     "crown_strap_toggle_n": 43.0,
+     "k_vector": 0.8952,
+     "run": {
+      "torso": 23.0,
+      "case": "meat",
+      "side": "L"
+     }
+    }
+   },
+   "proof_publish_n": 497.0,
+   "note": "TL-1 proofs the bound or the vector? The bound (run in line with the guy) is not a physical pull on BL-046's geometry (the run now heads fore, the guy aft); the proof is set on the larger of the BL-046 vector and BL-045's published 497 N, so it never drops below the released value."
+  }
+ },
+ "mass": {
+  "clamp_g": 14.2,
+  "clamp_bl046_g": 15.9,
+  "clamp_delta_g": -1.7,
+  "pawl_print_net_g": -1.08,
+  "hinge_relief_g": -0.3,
+  "pawl_lp_slm_g": 13.31,
+  "pawl_old_slm_g": 16.91,
+  "assembled_g": 886.2,
+  "assembled_bl046_g": 887.6,
+  "lower_g": 342.7,
+  "upper_g": 543.5,
+  "pawl_delta_g": -3.6,
+  "h1_print_delta_g": -1.38
+ },
+ "print": {
+  "d_mid": 1.0,
+  "d_up": 2.5,
+  "im3_half_z": 14.0,
+  "fairleads_bl042": {
+   "spine_channel_bl046": {
+    "body_mm3": 765064.1800017504,
+    "housing_added_mm3": 56333.05383855826,
+    "cut_mm3": 31838.83986392431,
+    "net_mm3": 24494.213974633953,
+    "net_g": 25.963866813111988
+   },
+   "pawl_bl047": {
+    "boss_mm3": 2271.503997066524,
+    "cut_mm3": 3290.0841002127854,
+    "net_mm3": -1018.5801031462615,
+    "net_g": -1.0796949093350372
+   },
+   "body_mm3": 788539.813873238,
+   "fairleads_added_mm3": 54897.795708041405,
+   "throats_cut_mm3": 5422.7565981085645,
+   "holes_cut_mm3": 1952.6771325973095,
+   "net_mm3": 47522.36197733553,
+   "net_g": 50.373703695975664,
+   "per_station": {
+    "hinge_L": {
+     "throat_cut_from_body_mm3": 532.0
+    },
+    "hinge_R": {
+     "throat_cut_from_body_mm3": 512.5
+    },
+    "us1_L": {
+     "throat_cut_from_body_mm3": 501.7
+    },
+    "us1_R": {
+     "throat_cut_from_body_mm3": 505.3
+    },
+    "us2_L": {
+     "throat_cut_from_body_mm3": 911.4
+    },
+    "us2_R": {
+     "throat_cut_from_body_mm3": 911.4
+    },
+    "im1_L": {
+     "throat_cut_from_body_mm3": 292.4
+    },
+    "im1_R": {
+     "throat_cut_from_body_mm3": 280.1
+    },
+    "im2_L": {
+     "throat_cut_from_body_mm3": 201.6
+    },
+    "im2_R": {
+     "throat_cut_from_body_mm3": 195.5
+    },
+    "im3_L": {
+     "throat_cut_from_body_mm3": 289.4
+    },
+    "im3_R": {
+     "throat_cut_from_body_mm3": 289.4
+    }
+   },
+   "hinge_relief_bl047": {
+    "cut_mm3": 287.56415079103317,
+    "g": -0.30481799983849517
+   }
+  },
+  "assembled": {
+   "faces": 304716,
+   "volume_cm3": 836.04,
+   "g": 886.2,
+   "watertight": true,
+   "shells": 1,
+   "dropped": [
+    [
+     20,
+     0.003696255664426218
+    ]
+   ]
+  },
+  "lower": {
+   "faces": 163066,
+   "volume_cm3": 323.31,
+   "g": 342.7,
+   "footprint_mm": [
+    279.7,
+    234.5,
+    76.7
+   ],
+   "watertight": true,
+   "shells": 1,
+   "dropped": [],
+   "dropped_centre_frame_mm": [],
+   "print_h": 12.1,
+   "fits_h2s_340x320x340": true
+  },
+  "upper": {
+   "faces": 146032,
+   "volume_cm3": 512.73,
+   "g": 543.5,
+   "footprint_mm": [
+    280.1,
+    309.4,
+    64.4
+   ],
+   "watertight": true,
+   "shells": 1,
+   "dropped": [],
+   "dropped_centre_frame_mm": [],
+   "print_h": 19.2,
+   "fits_h2s_340x320x340": true
+  }
+ },
+ "margin_rows": [
+  [
+   "pawl cheek, as built (FI99)",
+   1.279076488453157
+  ],
+  [
+   "pawl LP clear of print, 0-10 deg (mm / 0.5)",
+   1.012
+  ],
+  [
+   "clamp web 2.0 yield",
+   3.01
+  ],
+  [
+   "clamp web 2.0 fatigue (Kt 2)",
+   2.4
+  ],
+  [
+   "hinge pin 5 mm 7075 yield @1019",
+   1.24
+  ],
+  [
+   "hinge pin fatigue @1.6 g x 340",
+   1.15
+  ],
+  [
+   "hinge fairlead strength @1019 (rev C dir)",
+   2.65
+  ],
+  [
+   "hinge fairlead strength @1019 (sim dir)",
+   1.53
+  ],
+  [
+   "hinge fairlead fatigue (rev C dir)",
+   1.49
+  ],
+  [
+   "hinge fairlead fatigue (sim dir)",
+   0.86
+  ],
+  [
+   "B-25 bar, BL-046 vector, static",
+   1.452
+  ],
+  [
+   "B-25 bar, BL-046 vector, fatigue",
+   1.361
+  ]
+ ]
+}

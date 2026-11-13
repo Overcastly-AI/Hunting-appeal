@@ -150,9 +150,11 @@ HE_CHEEK_MIN = 2.0                # ASSUMPTION HE-CHEEK: the box top must stay >
 #                                   fillet, print tolerance) at every loaded pin height HE-FIT may pass; settled by HE-FIT
 HE_PIN_HI = 4.0                   # ASSUMPTION HE-PIN-HI: a loaded pin up to 4 mm above the design (+25) is accepted: the
 #                                   bag floor hangs at most 4 mm below the z 35 every sim assumes; settled by QC-20 / T9
-HE_T = 1.5                        # ASSUMPTION HE-T: 38 mm heavyweight polyester webbing 1.5 mm thick (the record has no
-#                                   thickness); settled by a caliper on the bought roll
-HE_T_RANGE = (1.2, 1.6)           # BL-044: the bracket the eye is solved over. The upper end is a GATE, not a bracket:
+HE_T = F.WEB38_T                  # BL-048 M-B: the 38 mm webbing record's purchase-spec ply thickness (1.5 nominal,
+#                                   poly_webbing_38mm thickness_mm; was ASSUMPTION HE-T); ONE value for every 38 mm part
+#                                   (HE, IME, T3, B-24, B-25: corrie_f.B25_T reads the same record). The caliper gate is
+#                                   at the PURCHASE (sample before the roll), HE-FIT step 1 re-checks the roll in hand
+HE_T_RANGE = (F.WEB38_T_RANGE[0], F.WEB38_T_RANGE[1])         # BL-044: the bracket the eye is solved over. The upper end is a GATE, not a bracket:
 #                                   3 plies of 1.6 mm (4.8) leave 0.7 mm under the pin (gap 5.5, review Z-1 rule: wrap
 #                                   <= gap - 0.5); a roll thicker than 1.6 mm is rejected at the caliper (HE-FIT step 1)
 HE_NF_DESIGN = 2                  # fold plies under the main ply in the wrap (the 2 mm ridge, see above); 1 = the flanks

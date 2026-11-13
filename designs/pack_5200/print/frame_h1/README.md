@@ -26,6 +26,16 @@ today, re-sized locally (about 65 g lighter on the printed body), split at z = 2
 > lower-branch tip at z 217–234 is now fused to its bolt boss, as in the analysis). Record:
 > `designs/pack_5200/analysis/crown_and_fairlead_checks.md`. The bag side must meet `bag_attach.imus_eye_envelope`.
 >
+> **Rev BL-047 (2026-11-13):** the pawl now fits. BL-046 re-made the spine channel for the OD 20 tube + 6 mm rack
+> (22 x 36.3 mm, housing z 496-535.6); this rev adds the **pawl pivot bore** through both cheeks (printed 7.6, ream
+> 8.0, centre z 500, 4 mm fore of the rack tooth tips), **cheek bosses** down to z 491.5 under it, and a **window in
+> the housing's fore wall** (x +/-9) for the pawl's swing and its release cord. The old pawl
+> (`../crown_pawl_fdm_pacf.stl`, `../crown_pawl_slm.stl`) does **not** fit H1: swung to release it stands 5 mm proud
+> of the housing into the yoke's path. Use the **low-profile pawl** in this folder (`crown_pawl_lp_*`). Both hinge
+> fairleads (z 60) have the throat floor relieved 1 mm deep next to each cheek (bag review m-1). Slice-checked on
+> this STL through the full pawl swing (`huntkit/gendesign/h1_pawl.py`); record
+> `designs/pack_5200/analysis/crown_gnl.md`. Assembled 886.2 g, lower 342.7 g, upper 543.5 g, one closed shell each.
+>
 > Status: **engineering release candidate.** These files are not yet the released frame
 > (`designs/pack_5200/print/frame/` is still today's body). Print the first article only after coupon CA-1
 > (`designs/pack_5200/tests_physical/CA1_fatigue_rig.md`) and the joint stubs CA-5 pass.
@@ -34,9 +44,11 @@ today, re-sized locally (about 65 g lighter on the printed body), split at z = 2
 
 | file | what | mass | print time |
 |---|---|---:|---:|
-| `h1_lower_flat.stl` / `.3mf` | lower half (feet to z 234), laid flat: wearer face on the plate | 343.0 g (0.76 lb) | about 12.1 h |
-| `h1_upper_flat.stl` / `.3mf` | upper half (z 234 to the top), laid flat | 518.6 g (1.14 lb) | about 18.3 h |
-| `h1_assembled.stl` | the whole body in frame coordinates (x right, y aft toward the bag, z up from the feet), for checks and renders | 861.6 g | |
+| `h1_lower_flat.stl` / `.3mf` | lower half (feet to z 234), laid flat: wearer face on the plate | 342.7 g (0.76 lb) | about 12.1 h |
+| `h1_upper_flat.stl` / `.3mf` | upper half (z 234 to the top), laid flat | 543.5 g (1.20 lb) | about 19.2 h |
+| `h1_assembled.stl` | the whole body in frame coordinates (x right, y aft toward the bag, z up from the feet), for checks and renders | 886.2 g (BL-047) | |
+| `crown_pawl_lp_fdm_pacf.stl` / `.3mf` | low-profile crown pawl, PAHT-CF prototype, 16 mm wide, 100 % infill (BL-047) | 4.3 g | about 0.5 h |
+| `crown_pawl_lp_slm.stl` / `.3mf` | low-profile crown pawl, Ti-6Al-4V SLM + HIP, 12 mm wide (BL-047) | 13.3 g | - |
 | `test_pieces/hefit_hinge_fairlead_R.stl` / `.3mf` | HE-FIT test piece: the z 60 right hinge fairlead on an 80 mm stay segment, cut from the file above | 33.7 g | |
 | `test_pieces/im3ec_cheek_R.stl` / `.3mf` | IM3-EC coupon: the z 520 right IM3 eye (28 mm cheek) on a 120 mm stay segment | 68.6 g | |
 
@@ -128,7 +140,12 @@ bottom reaches z 171). So the bore must be one continuous hole.
 
 ## 6. Inserts, bushings and crown (same as today)
 
-1. Pawl: ream each cheek to **8.0 mm** and press in the 304 sleeve (OD 8.0, ID 4.2, length 8).
+1. Pawl: ream the pivot bore (printed 7.6, at z 500 through both cheeks of the pawl housing) to **8.0 mm** from each
+   side and press in the 304 sleeve (OD 8.0, ID 4.2, length 8) flush with each cheek's outer face. Fit the
+   **low-profile pawl** (`crown_pawl_lp_*`, not the old one) on the 4 mm pin with a 0.5 mm music-wire torsion spring
+   beside it (one leg on the pawl's tang, the other on the window's lower edge); the release cord runs out through
+   the fore-wall window. Check: pull the cord to the stop: the rack slides both ways; let go: the pawl snaps back
+   into the teeth.
    Fairlead eyes (all 12: z 60, 95, 142, 190, 330, 520, both stays): ream each to **7.2 mm** from both sides and
    press in the UHMWPE pin sleeves. The hinge pin (z 60) spans a 20 mm throat: it is 2 mm longer than the others.
 2. Hip mount: press the M5 heat-set inserts and fit the SLM Ti pivot mount.

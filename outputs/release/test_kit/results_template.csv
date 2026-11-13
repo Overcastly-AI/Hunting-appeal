@@ -103,21 +103,21 @@ LL-H-16,LL-H,G2,BAG-CUT,cold,freezer reading,C,record,,,,,,LL-SLIP
 PORT-1-01,PORT-1,G2,BAG-CUT,1,towel dry after 1 min hose,Y/N,yes,Y,,,,,PORT_FACING_W; PORT_TURN
 PORT-1-02,PORT-1,G2,BAG-CUT,1,lap gap at 10.2 kg (100 N),mm,max,2,,,,,PORT_FACING_W; PORT_TURN
 PORT-1-03,PORT-1,G2,BAG-CUT,1,gloved lock adjustments OK out of 5,count,min,5,,,,,GLOVE-T
-TL-1-01,TL-1,G2,BAG-CUT,oval#1,ovalisation at 494 N,mm,max,0.40,,,,,WIDE_SLEEVE; RING_SLICE
-TL-1-02,TL-1,G2,BAG-CUT,oval#2,ovalisation at 494 N,mm,max,0.40,,,,,WIDE_SLEEVE; RING_SLICE
-TL-1-03,TL-1,G2,BAG-CUT,oval#3,ovalisation at 494 N,mm,max,0.40,,,,,WIDE_SLEEVE; RING_SLICE
-TL-1-04,TL-1,G2,BAG-CUT,oval#4,ovalisation at 494 N,mm,max,0.40,,,,,WIDE_SLEEVE; RING_SLICE
-TL-1-05,TL-1,G2,BAG-CUT,oval#5,ovalisation at 494 N,mm,max,0.40,,,,,WIDE_SLEEVE; RING_SLICE
+TL-1-01,TL-1,G2,BAG-CUT,oval#1,ovalisation at 497 N,mm,max,0.40,,,,,WIDE_SLEEVE; RING_SLICE
+TL-1-02,TL-1,G2,BAG-CUT,oval#2,ovalisation at 497 N,mm,max,0.40,,,,,WIDE_SLEEVE; RING_SLICE
+TL-1-03,TL-1,G2,BAG-CUT,oval#3,ovalisation at 497 N,mm,max,0.40,,,,,WIDE_SLEEVE; RING_SLICE
+TL-1-04,TL-1,G2,BAG-CUT,oval#4,ovalisation at 497 N,mm,max,0.40,,,,,WIDE_SLEEVE; RING_SLICE
+TL-1-05,TL-1,G2,BAG-CUT,oval#5,ovalisation at 497 N,mm,max,0.40,,,,,WIDE_SLEEVE; RING_SLICE
 TL-1-06,TL-1,G2,BAG-CUT,set#1,permanent out-of-round after unloading (increase),mm,max,0.02,,,,,RING_SLICE
 TL-1-07,TL-1,G2,BAG-CUT,set#2,permanent out-of-round after unloading (increase),mm,max,0.02,,,,,RING_SLICE
 TL-1-08,TL-1,G2,BAG-CUT,set#3,permanent out-of-round after unloading (increase),mm,max,0.02,,,,,RING_SLICE
 TL-1-09,TL-1,G2,BAG-CUT,set#4,permanent out-of-round after unloading (increase),mm,max,0.02,,,,,RING_SLICE
 TL-1-10,TL-1,G2,BAG-CUT,set#5,permanent out-of-round after unloading (increase),mm,max,0.02,,,,,RING_SLICE
-TL-1-11,TL-1,G2,BAG-CUT,hold#1,"held 494 N 60 s, linear (no knee), silent, no crush mark / whitening at 10x, toggles whole",Y/N,yes,Y,,,,,GUY-TOGGLE; WIDE_SLEEVE
-TL-1-12,TL-1,G2,BAG-CUT,hold#2,"held 494 N 60 s, linear (no knee), silent, no crush mark / whitening at 10x, toggles whole",Y/N,yes,Y,,,,,GUY-TOGGLE; WIDE_SLEEVE
-TL-1-13,TL-1,G2,BAG-CUT,hold#3,"held 494 N 60 s, linear (no knee), silent, no crush mark / whitening at 10x, toggles whole",Y/N,yes,Y,,,,,GUY-TOGGLE; WIDE_SLEEVE
-TL-1-14,TL-1,G2,BAG-CUT,hold#4,"held 494 N 60 s, linear (no knee), silent, no crush mark / whitening at 10x, toggles whole",Y/N,yes,Y,,,,,GUY-TOGGLE; WIDE_SLEEVE
-TL-1-15,TL-1,G2,BAG-CUT,hold#5,"held 494 N 60 s, linear (no knee), silent, no crush mark / whitening at 10x, toggles whole",Y/N,yes,Y,,,,,GUY-TOGGLE; WIDE_SLEEVE
+TL-1-11,TL-1,G2,BAG-CUT,hold#1,"held 497 N 60 s, linear (no knee), silent, no crush mark / whitening at 10x, toggles whole",Y/N,yes,Y,,,,,GUY-TOGGLE; WIDE_SLEEVE
+TL-1-12,TL-1,G2,BAG-CUT,hold#2,"held 497 N 60 s, linear (no knee), silent, no crush mark / whitening at 10x, toggles whole",Y/N,yes,Y,,,,,GUY-TOGGLE; WIDE_SLEEVE
+TL-1-13,TL-1,G2,BAG-CUT,hold#3,"held 497 N 60 s, linear (no knee), silent, no crush mark / whitening at 10x, toggles whole",Y/N,yes,Y,,,,,GUY-TOGGLE; WIDE_SLEEVE
+TL-1-14,TL-1,G2,BAG-CUT,hold#4,"held 497 N 60 s, linear (no knee), silent, no crush mark / whitening at 10x, toggles whole",Y/N,yes,Y,,,,,GUY-TOGGLE; WIDE_SLEEVE
+TL-1-15,TL-1,G2,BAG-CUT,hold#5,"held 497 N 60 s, linear (no knee), silent, no crush mark / whitening at 10x, toggles whole",Y/N,yes,Y,,,,,GUY-TOGGLE; WIDE_SLEEVE
 TL-1-16,TL-1,G2,BAG-CUT,cold1,cold sample (4 h freezer) held the proof,Y/N,yes,Y,,,,,GUY-TOGGLE
 FS-O5-01,FS-O5,G2,BAG-CUT,1,"passes the register criterion: mean >= 1840 N/50 mm, minimum >= 1195 N/50 mm",Y/N,yes,Y,,,,,ULTRA-200X STRIP
 WP-3-01,WP-3,G2,BAG-BATCH,1,passes the register criterion: release and re-tension in one grab every time,Y/N,yes,Y,,,,,A-2 TAIL
@@ -198,6 +198,12 @@ SEW-F-06,SEW-F,G4,BAG-BATCH,HE#3,HE cycles at 62 -> 625 N on the printed fairlea
 SEW-F-07,SEW-F,G4,BAG-BATCH,p#1,no broken stitch at run-out and held 1080 N 1 min after,Y/N,yes,Y,,,,,SEW_FAT
 SEW-F-08,SEW-F,G4,BAG-BATCH,p#2,no broken stitch at run-out and held 1080 N 1 min after,Y/N,yes,Y,,,,,SEW_FAT
 SEW-F-09,SEW-F,G4,BAG-BATCH,p#3,no broken stitch at run-out and held 1080 N 1 min after,Y/N,yes,Y,,,,,SEW_FAT
+SEW-F-10,SEW-F,G4,BAG-BATCH,HEtop#1,HE: no broken stitch in the box TOP row at run-out (loupe),Y/N,yes,Y,,,,,SEW_FAT; SEWF-HE-RIG
+SEW-F-11,SEW-F,G4,BAG-BATCH,HEtop#2,HE: no broken stitch in the box TOP row at run-out (loupe),Y/N,yes,Y,,,,,SEW_FAT; SEWF-HE-RIG
+SEW-F-12,SEW-F,G4,BAG-BATCH,HEtop#3,HE: no broken stitch in the box TOP row at run-out (loupe),Y/N,yes,Y,,,,,SEW_FAT; SEWF-HE-RIG
+SEW-F-13,SEW-F,G4,BAG-BATCH,HEproof#1,"HE: then held 156.0 kg (1530 N) 60 s, eye open, fixture dowel straight after (BL-048 m-6 / M-C)",Y/N,yes,Y,,,,,HE-ONE; FIX-PIN-S
+SEW-F-14,SEW-F,G4,BAG-BATCH,HEproof#2,"HE: then held 156.0 kg (1530 N) 60 s, eye open, fixture dowel straight after (BL-048 m-6 / M-C)",Y/N,yes,Y,,,,,HE-ONE; FIX-PIN-S
+SEW-F-15,SEW-F,G4,BAG-BATCH,HEproof#3,"HE: then held 156.0 kg (1530 N) 60 s, eye open, fixture dowel straight after (BL-048 m-6 / M-C)",Y/N,yes,Y,,,,,HE-ONE; FIX-PIN-S
 CS-1-01,CS-1,G4,BL037,6mm#1,"compression set, 6 mm disc",%,max,15,,,,,XLPE-SET
 CS-1-02,CS-1,G4,BL037,6mm#2,"compression set, 6 mm disc",%,max,15,,,,,XLPE-SET
 CS-1-03,CS-1,G4,BL037,6mm#3,"compression set, 6 mm disc",%,max,15,,,,,XLPE-SET

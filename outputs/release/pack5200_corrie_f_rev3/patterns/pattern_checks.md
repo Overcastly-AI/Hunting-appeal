@@ -135,7 +135,7 @@ Rows 115; unmatched 0; matched twice 0; drafted ids without a row 0; row ids not
 | BL-031: W1-W3 cut for carry (1340->750, 1412->822, 1618->987 mm) | straps_compression | base | -32.6 | webbing | W1, W2, W3 |  |
 | BL-031: W1-W3 haul extenders (3, 2.22 m 25 mm + rated G-hook each; meat haul, float clamp, | straps_compression | meat_trip | 64.0 | webbing | WX | + rated G-hooks |
 | BL-031: IM1-IM3 tail keepers (3, 25 mm elastic) | straps_meat | base | 4.0 | webbing | K-IM |  |
-| BL-031: roll-top clip straps cut 350 -> 560 mm (2) | straps_compression | base | 7.6 | webbing | RT |  |
+| BL-031: roll-top clip straps cut 350 -> 565 mm (2) | straps_compression | base | 7.7 | webbing | RT |  |
 | BL-031: roll-top clip tail keepers (2, 25 mm elastic) | straps_compression | base | 2.7 | webbing | K-RT |  |
 | BL-034 records: US1/US2 backstop tri-glides -> stainless 25 mm (2 x 11 g, 3.75 kN; orchest | straps_meat | base | 0.0 | hardware |  | hardware / elastic re-booked on the BL-034 records |
 | BL-034 records: lifter tri-glide keepers (2 x 2.6 g nylon) | attachment | base | 0.0 | hardware |  | hardware / elastic re-booked on the BL-034 records |

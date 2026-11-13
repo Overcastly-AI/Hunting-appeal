@@ -1,0 +1,140 @@
+{
+ "hinge_one_number": {
+  "hinge_row_n": 1019.0,
+  "factor": 3.0,
+  "f_1g_n": 339.7,
+  "revC_direction": {
+   "force_on_file_n": 724.2,
+   "sf_strength": 2.65,
+   "sf_fatigue": 1.49,
+   "sf_creep": 3.18
+  },
+  "sim_direction": {
+   "run": "F_PR15_fineFM|meat|L",
+   "f1g_on_file_n": 250.2,
+   "sf_strength": 1.53,
+   "sf_fatigue": 0.86,
+   "sf_creep": 1.84
+  },
+  "pin_7075_5mm": {
+   "M_nmm": 4585.5,
+   "sigma_mpa": 373.66,
+   "sf_yield": 1.24,
+   "sigma_walk_mpa": 199.29,
+   "goodman_smax_r0_mpa": 228.93,
+   "sf_fatigue": 1.15
+  },
+  "previous_basis": {
+   "revC_n": 724.2,
+   "sim_x3_n": 750.7
+  }
+ },
+ "tl1": {
+  "run_vector": {
+   "mitre_centre_x_s": [
+    45.5,
+    36.0
+   ],
+   "spine_wrap_x_s": [
+    11.5,
+    29.5
+   ],
+   "spine_fore_mm": 25.02,
+   "collar_mm": 6.0,
+   "u_run": [
+    -0.7245119753786018,
+    -0.5331555771756652,
+    -0.4368381028018041
+   ],
+   "yz_share": 0.6892622124656161,
+   "plan_angle_fore_deg": 36.34869579673249,
+   "below_horizontal_deg": 25.90231300784887
+  },
+  "k_vector_bl046": 0.9362,
+  "k_vector_bl045": 1.006,
+  "k_bound": 1.116,
+  "rows": {
+   "vector_bl046": {
+    "k": 0.9362,
+    "width_mm": 38.0,
+    "capacity_n": 438.818,
+    "capacity_rt_n": 671.073,
+    "sf_static": 1.452,
+    "fi_fatigue": 0.367,
+    "sf_fatigue": 1.361,
+    "proof_over_rt_capacity": 0.675
+   },
+   "vector_bl045": {
+    "k": 1.006,
+    "width_mm": 38.0,
+    "capacity_n": 438.818,
+    "capacity_rt_n": 671.073,
+    "sf_static": 1.351,
+    "fi_fatigue": 0.395,
+    "sf_fatigue": 1.267,
+    "proof_over_rt_capacity": 0.726
+   },
+   "bound": {
+    "k": 1.116,
+    "width_mm": 38.0,
+    "capacity_n": 438.818,
+    "capacity_rt_n": 671.073,
+    "sf_static": 1.218,
+    "fi_fatigue": 0.438,
+    "sf_fatigue": 1.142,
+    "proof_over_rt_capacity": 0.805
+   }
+  },
+  "proof_tl1_n": 462.0,
+  "proof_tl1_bl045_n": 497.0,
+  "proof_bound_n": 551.0,
+  "pull": {
+   "unit_x_out_y_aft_z_up": [
+    0.009,
+    0.955,
+    -0.296
+   ],
+   "below_horizontal_deg": 17.2,
+   "outboard_pct": 0.9,
+   "aft_pct": 95.5,
+   "fore_component": false,
+   "governing_run": {
+    "torso": 19.0,
+    "case": "fill",
+    "side": "L"
+   },
+   "rig": {
+    "guy_toggle_pull_n": 454.0,
+    "guy_unit_x_out_y_aft_z_up": [
+     0.005,
+     0.926,
+     -0.377
+    ],
+    "guy_below_horizontal_deg": 22.2,
+    "guy_outboard_pct": 0.5,
+    "crown_strap_toggle_n": 43.0,
+    "run_spine_end": "anchored to a stub of the OD 20 spine tube 25.0 mm fore of the bar axis, the 6.0 mm collar fitted (BL-046 geometry); the run then pulls fore-down by itself",
+    "fore_component_of_run_on_sleeve": 0.533
+   },
+   "rig_B_run_loaded": {
+    "guy_toggle_pull_n": 454.0,
+    "guy_unit_x_out_y_aft_z_up": [
+     0.136,
+     0.51,
+     -0.849
+    ],
+    "guy_below_horizontal_deg": 58.1,
+    "guy_outboard_pct": 13.6,
+    "crown_strap_toggle_n": 43.0,
+    "k_vector": 0.8952,
+    "run": {
+     "torso": 23.0,
+     "case": "meat",
+     "side": "L"
+    }
+   }
+  },
+  "proof_publish_n": 497.0,
+  "note": "TL-1 proofs the bound or the vector? The bound (run in line with the guy) is not a physical pull on BL-046's geometry (the run now heads fore, the guy aft); the proof is set on the larger of the BL-046 vector and BL-045's published 497 N, so it never drops below the released value."
+ }
+}

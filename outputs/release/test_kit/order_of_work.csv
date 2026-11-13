@@ -19,7 +19,7 @@ seq,group,test,stage,release,also,tier,title,hands_on_h,machine_h,status
 18,G2,LL-H,run,BAG-CUT,,safety,"heavy 25 mm ladder lock slip at 432 N, dry, wet and cold (guys, W1-W3, B-28)",2.0,1.0,ACTIVE
 19,G2,B-28 slip,run,BAG-CUT,,safety,B-28 crown strap on its heavy ladder lock,0.0,0.0,COVERED->LL-H
 20,G2,PORT-1,run,BAG-CUT,,safety,"B-27 guy port mock-up: hose, 100 N lap pull, gloved lock use",1.5,0.0,ACTIVE
-21,G2,TL-1,run,BAG-CUT,,safety,"guy + crown-strap toggles in the 38 mm B-25 sleeve on the real crown bar, 494 N",2.0,4.0,ACTIVE
+21,G2,TL-1,run,BAG-CUT,,safety,"guy + crown-strap toggles in the 38 mm B-25 sleeve on the real crown bar, 497 N",2.0,4.0,ACTIVE
 22,G2,FS-O5,run,BAG-CUT,,grams,ULTRA 200X 50 mm strip tensile (C-5 / O-5),3.5,0.0,ACTIVE
 23,G2,WP-3,run,BAG-BATCH,,grams,gloved tail on W1-W3 ladder locks,0.3,0.0,ACTIVE
 24,G2,SL-1,run,BL037,,grams,weigh the cord-pull door sliders and the printed label; gloved door cycles,1.0,0.0,ACTIVE

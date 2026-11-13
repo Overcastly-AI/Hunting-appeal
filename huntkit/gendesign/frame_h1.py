@@ -304,15 +304,18 @@ def keepouts(solid: np.ndarray) -> dict:
     c = base()
     dom, cen = c["dom"], c["cen"]
     out = {}
-    for k in ("sleeve_R", "sleeve_L", "pawl", "pivot", "pads"):
+    # BL-047: the domain's old plate-spine masks ('pawl' cheeks, 'spine_channel', the passive slot round them) are
+    # re-based on the BL-046 channel: the pawl interface is the BL-046 housing ring (its cheeks carry the BL-047 pivot
+    # bore), the channel is h1_spine_channel's, and the housing ring is allowed inside the old passive slot.
+    from .h1_spine_channel import channel_mask, housing_ring_mask
+    ring = housing_ring_mask(cen)
+    for k in ("sleeve_R", "sleeve_L", "pivot", "pads"):
         m = np.asarray(dom.masks[k], bool) & ~c["holes"] & c["solid0c"]    # as present in today's printed body
         out[f"{k} present"] = float((solid & m).sum() / max(m.sum(), 1))
-    for k in ("bore_R", "bore_L", "spine_channel"):
+    out["pawl housing ring (BL-046, cheeks for the BL-047 pivot) present"] = float((solid & ring).sum() / max(ring.sum(), 1))
+    for k in ("bore_R", "bore_L"):
         m = np.asarray(dom.masks[k], bool)
         out[f"{k} empty"] = float(1.0 - (solid & m).sum() / max(m.sum(), 1))
-    # BL-046: 'spine_channel' above is the domain's old plate-spine channel; the OD 20 tube + 6 mm rack channel is
-    # h1_spine_channel.channel_section (bodies before BL-046 fill part of it)
-    from .h1_spine_channel import channel_mask
     m = channel_mask(cen)
     out["spine channel BL-046 (tube + rack, h1_spine_channel) empty"] = float(1.0 - (solid & m).sum() / max(m.sum(), 1))
     fl = (attachment_field(cen, SCALE) <= 0.0) & ~dom.passive_void
@@ -326,7 +329,7 @@ def keepouts(solid: np.ndarray) -> dict:
         out["fairleads complete on the print STL (h1_fairleads.check_stl)"] = bool(check_stl(stl)["all_pass"])
     else:
         out["fairleads complete on the print STL (h1_fairleads.check_stl)"] = None
-    out["outside envelope (voxels)"] = int((solid & dom.passive_void).sum())
+    out["outside envelope (voxels)"] = int((solid & dom.passive_void & ~ring).sum())
     j = JOINT
     env, yc = _axis(j.z)
     bl = j.bolts_local()
@@ -802,9 +805,25 @@ def print_mesh(solid: np.ndarray, j: Joint = JOINT, log=print, fairleads: bool =
         if log:
             log(f"  spine channel (BL-046): housing +{ch_stats['housing_added_mm3'] * 1.06e-3:.1f} g, "
                 f"channel / bay -{ch_stats['cut_mm3'] * 1.06e-3:.1f} g, net {ch_stats['net_g']:+.1f} g")
+        # BL-047: pawl pivot bore (printed 7.6, reamed 8.0), cheek bosses, fore-wall window (h1_pawl)
+        from .h1_pawl import add_pawl
+        pw_stats: dict = {}
+        man = add_pawl(man, stats=pw_stats)
+        if stats is not None:
+            stats["pawl_bl047"] = pw_stats
+        if log:
+            log(f"  pawl (BL-047): bosses, bore, window net {pw_stats['net_g']:+.1f} g")
     if fairleads:
         from .h1_fairleads import add_fairleads
         man = add_fairleads(man, log=log, stats=stats)
+        # BL-047 (review m-1): the hinge throat floor relieved 1 mm deep within 1.5 mm of each cheek face
+        from .bl047_frame_items import hinge_relief
+        rl: dict = {}
+        man = hinge_relief(man, stats=rl)
+        if stats is not None:
+            stats["hinge_relief_bl047"] = rl
+        if log:
+            log(f"  hinge relief (BL-047 m-1): {rl['g']:+.2f} g")
     man = man.simplify(SIMPLIFY_MM)
     out = _from_manifold(man)
     if log:

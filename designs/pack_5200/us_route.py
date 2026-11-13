@@ -1,0 +1,782 @@
+"""BL-048 N-1: the under-straps' REAL path in bag-on meat carry, checked on the cloth-sim drapes and the sliced print.
+
+    python designs/pack_5200/us_route.py            # model, write analysis/us_route.json + screenshots + the US test piece
+
+Fourth review N-1: ASSUMPTION US-ROUTE (``imus_stl_check.us_cradle_theta``) took each under-strap off its pin on the
+straight line to its B-16 floor channel. That line runs 19-78 mm inside the loaded bag, so it is not a path a strap
+can take. This module replaces it, as BL-028 / BL-029 did for the guys:
+
+1. **Real path.** On the CORRIE F rev 3 fine meat drapes (``F_r1_PR{15,19,23}_fineFM_over_port`` / ``x_meat``; every
+   crown-kit end maps to one of these torsos, h1_sleeve ASSUMPTION SIM_TORSO, and the fairleads are on the fixed stays,
+   so a kit or torso change moves only the bag) the strap is a taut string (``corrie_f.taut_path``) from its pin
+   (``h1_fairleads.placed``) to its channel entry on the floor (B-16 on F-02: x +/-95 at 48 / 104 mm from the frame
+   seam, ``corrie_f.us_channels``), kept outside the cloth and outside the stays. Cam-tight tension = the bag-on case
+   of ``huntkit.gendesign.meat_haul`` (US1 444 N, US2 296 N, factored).
+2. **Contact.** The strap as a 25 mm ribbon (2 x the webbing ply thick) against the print, by slicing
+   ``print/frame_h1/h1_assembled.stl`` in x planes every 1 mm into an occupancy grid (signed distance by EDT), each
+   cell labelled hinge fairlead / US1 fairlead / US2 fairlead / stay, plus the HE (eye, legs, box) from the pattern
+   (``patterns_corrie_f_rev3.he_geometry``) on B-01. A section model at the stay then lays the strap over what it
+   meets (a string over the obstacles' bag-side envelope) and gives the bearing load on each from the turning angles.
+3. **Bag-side guide.** Every guide on B-01 has to take the strap from its throat exit to a lane clear of the
+   fairlead below. The lateral shift that needs, against the height available, is computed for an outboard
+   (x >= 140) and an inboard lane, at 0 and 10 mm clearance; so is the fold a webbing guide needs to turn in plane.
+4. **US station move.** If no guide clears: the US stations each get their own lane (lugs off the stay), checked the
+   same way on the drapes (the printed US fairleads masked out of the grid, the moved ones added as boxes).
+5. **US test piece.** The R stay z 40-160 with the hinge, US1 and US2 fairleads, cut from the print (as BL-042 cut the
+   HE-FIT piece), so HE-FIT step 0 needs no full frame. Written into the test kit (``print/`` is BL-047's).
+
+Units mm, N. Frame coordinates: x lateral, y towards the bag, z up.
+"""
+from __future__ import annotations
+
+import json
+import math
+import sys
+from pathlib import Path
+
+import numpy as np
+
+ROOT = Path(__file__).resolve().parents[2]
+HERE = ROOT / "designs" / "pack_5200"
+for _p in (str(ROOT), str(HERE), str(HERE / "concepts")):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
+
+PRINT = HERE / "print" / "frame_h1" / "h1_assembled.stl"
+OUT_JSON = HERE / "analysis" / "us_route.json"
+SCREENS = ROOT / "outputs" / "screens"
+SHOT = "20261113_BL048us"
+KIT_PIECES = ROOT / "outputs" / "release" / "test_kit" / "print"
+US_PIECE = "us_route_stay_R"
+TORSOS = (15, 19, 23)
+RUN = "F_r1_PR{t}_fineFM_over_port"          # rev 3 = corrie_f.REV3_ROUTE on the rev 1 shell (corrie_f.sim_rev)
+CASE = "meat"
+STRAP_W = 25.0                                # US / USA webbing (imus_stl_check.eye_spec)
+CLEAR_REQ = 10.0                              # BL-048 / N-1: strap >= 10 mm off the HE and every fairlead it passes
+CHANNEL_X = 95.0                              # corrie_f.F02_WH[0] / 2: B-16 is topstitched across F-02 (190 mm)
+FLEET_MAX_DEG = 10.0                          # ASSUMPTION US-FLEET: the necked eye (18-19 mm in a 20 mm throat) takes
+#   a pull up to 10 deg out of the stay's y-z plane before an edge loads a cheek (the IM3 sim hook forces reach 10 deg
+#   lateral and were accepted, imus_stl_check); settled by HE-FIT step 0 (pull the US box 10 deg sideways, no cheek
+#   contact on the neck edge)
+GRID = {"x": (40.0, 200.0), "y": (-32.0, 52.0), "z": (18.0, 178.0), "h": 1.0}
+LABELS = ("stay", "hinge", "us1", "us2", "he")
+
+
+def _H():
+    from huntkit.gendesign import h1_fairleads as H
+    return H
+
+
+def _F():
+    import corrie_f as F
+    return F
+
+
+def _P():
+    import patterns_corrie_f_rev3 as P
+    return P
+
+
+def tensions() -> dict:
+    """Cam-tight under-strap tension in bag-on meat carry (factored, meat_haul bag_on)."""
+    from huntkit.gendesign import meat_haul as M
+    nodes = M.analyse()["bag_on"]["nodes"]
+    return {k: round(float(nodes[k]["tension_n"]), 1) for k in ("us1", "us2")}
+
+
+def stations(side: str = "R") -> dict:
+    return {p["name"]: p for p in _H().placed() if p["side"] == side and p["name"] in ("hinge", "us1", "us2")}
+
+
+def fairlead_box(p: dict, x: float | None = None, pad: float = 0.0) -> dict:
+    """Envelope of a printed fairlead (cheeks + saddle, proud of the stay): x throat/2 + cheek, z +/- half_z, y from
+    the stay's bag-side surface to the cheek tips."""
+    g = p["geom"]
+    x0 = p["x"] if x is None else x
+    hx = g.throat / 2 + g.cheek
+    return {"x": (x0 - hx - pad, x0 + hx + pad), "z": (p["z"] - g.half_z - pad, p["z"] + g.half_z + pad),
+            "y": (p["yc"] + p["stay_r"] - 0.5, p["y_tip"] + pad)}
+
+
+# ------------------------------------------------------------------------------------------------ the HE on B-01
+def he_shapes() -> dict:
+    """The hinge eye on the R hinge pin in frame coordinates (design corner, patterns_corrie_f_rev3.he_geometry):
+    eye + legs (19 mm neck) and the 34 x 7 box (box_gap..box_top above the floor seam, on B-01's frame face, 4 plies:
+    two 3-ply legs' ends and the main ply) as y-z polygons with their x half-widths."""
+    from shapely.geometry import Point, Polygon
+    P = _P()
+    g = P.he_geometry()
+    p = stations()["hinge"]
+    yc, zp = p["yc"], p["z"]
+    z_seam = zp - g["pin_z"]                            # the floor seam line under the loaded pin
+    t = g["t"]
+    face = yc + g["face_y"]                             # B-01 at the box
+    box_z = (z_seam + g["box_gap"], z_seam + g["box_top"])
+    eye = Point(p["y_pin"], zp).buffer(2.5 + 3 * t, 48)
+    legs = Polygon([(face - 3 * t, box_z[1]), (face, box_z[1]), (p["y_pin"] + g["r_c"] + t / 2, zp),
+                    (p["y_pin"] - g["r_c"] - t / 2, zp)])
+    box = Polygon([(face - 4 * t, box_z[0]), (face, box_z[0]), (face, box_z[1]), (face - 4 * t, box_z[1])])
+    return {"eye_legs": (eye.union(legs).convex_hull, (P.HE_NECK_W + P.HE_NECK_TOL) / 2),
+            "box": (box, P.HE_BOX[0] / 2), "x": p["x"], "z_seam": round(z_seam, 2), "box_z": [round(v, 2) for v in box_z],
+            "b01_y": round(face, 2)}
+
+
+# ------------------------------------------------------------------------------------------------ occupancy grid
+def _axes():
+    h = GRID["h"]
+    return [np.arange(GRID[k][0], GRID[k][1] + 1e-9, h) for k in ("x", "y", "z")]
+
+
+def occupancy(mesh=None, mask_us: bool = False, extra_boxes=()) -> dict:
+    """Label grid of the R side (x > 0) from x-plane slices of the print: 0 free, 1 stay, 2 hinge fairlead, 3 US1,
+    4 US2, 5 HE. ``mask_us`` clears the printed US1 / US2 fairleads (stay kept: a moved-station layout);
+    ``extra_boxes`` = [(label, box)] fairlead / lug envelopes added."""
+    import shapely
+    import trimesh
+    from shapely.geometry import box as sbox
+    mesh = mesh if mesh is not None else trimesh.load(PRINT)
+    H = _H()
+    xs, ys, zs = _axes()
+    Y, Z = np.meshgrid(ys, zs, indexing="ij")
+    occ = np.zeros((len(xs), len(ys), len(zs)), np.uint8)
+    st = stations()
+    boxes = {n: fairlead_box(st[n], pad=1.5) for n in ("hinge", "us1", "us2")}
+    for i, x in enumerate(xs):
+        S = H._xplane(mesh, float(x))
+        if S is None or S.is_empty:
+            continue
+        inside = shapely.contains_xy(S, Y, Z)
+        lab = np.where(inside, 1, 0).astype(np.uint8)
+        for k, n in enumerate(("hinge", "us1", "us2")):
+            b = boxes[n]
+            if not (b["x"][0] <= x <= b["x"][1]):
+                continue
+            ystay = st[n]["yc"] + st[n]["stay_r"] + 0.3
+            m = inside & (Z >= b["z"][0]) & (Z <= b["z"][1]) & (Y > ystay)
+            lab[m] = 0 if (mask_us and n != "hinge") else 2 + k
+        occ[i] = lab
+    he = he_shapes()
+    for key in ("eye_legs", "box"):
+        poly, hx = he[key]
+        inside = shapely.contains_xy(poly, Y, Z)
+        sel = np.abs(xs - he["x"]) <= hx
+        occ[sel] = np.where(inside[None], 5, occ[sel])
+    for lab_, b in extra_boxes:
+        sx = (xs >= b["x"][0]) & (xs <= b["x"][1])
+        sy = (ys >= b["y"][0]) & (ys <= b["y"][1])
+        sz = (zs >= b["z"][0]) & (zs <= b["z"][1])
+        occ[np.ix_(sx, sy, sz)] = lab_
+    return {"occ": occ, "axes": (xs, ys, zs), "mask_us": mask_us, "n_extra": len(extra_boxes)}
+
+
+def sdf(grid: dict, labels) -> np.ndarray:
+    """Signed distance (mm, + outside) to the union of the given labels."""
+    from scipy.ndimage import distance_transform_edt
+    h = GRID["h"]
+    m = np.isin(grid["occ"], labels)
+    if not m.any():
+        return np.full(m.shape, 1e3)
+    return (distance_transform_edt(~m) - distance_transform_edt(m)) * h
+
+
+def _lookup(field: np.ndarray, grid: dict, pts: np.ndarray) -> np.ndarray:
+    from scipy.ndimage import map_coordinates
+    xs, ys, zs = grid["axes"]
+    h = GRID["h"]
+    q = np.vstack([(pts[:, 0] - xs[0]) / h, (pts[:, 1] - ys[0]) / h, (pts[:, 2] - zs[0]) / h])
+    return map_coordinates(field, q, order=1, mode="nearest")
+
+
+def symmetry_check(mesh=None) -> dict:
+    """The model works on the R side and mirrors x for L: max symmetric difference of x-plane slices at the
+    stations' cheek middles (mm2)."""
+    import trimesh
+    mesh = mesh if mesh is not None else trimesh.load(PRINT)
+    H = _H()
+    out = {}
+    for x in (100.0, 115.0, 130.0, 150.0):
+        a, b = H._xplane(mesh, x), H._xplane(mesh, -x)
+        if a is None or b is None:
+            continue
+        from shapely.geometry import box as sbox
+        win = sbox(5, 20, 50, 175)                     # bag side of the stays (the wearer side carries the
+        #                                                  hipbelt features and is not where the straps run)
+        out[f"x{x:g}"] = round(float(a.intersection(win).symmetric_difference(b.intersection(win)).area), 2)
+    return out
+
+
+# ------------------------------------------------------------------------------------------------ the strap path
+def _floor_map(torso: int):
+    """Drafted floor (z 35 plane) -> loaded position, by barycentric weights on the drafted triangles."""
+    F = _F()
+    m = F.fine_mesh(torso)
+    X0, T = m["X0"], m["tris"]
+    flat = np.abs(X0[:, 2] - 35.0) < 0.5
+    tf = T[flat[T].all(axis=1)]
+    return X0, tf
+
+
+def map_floor(torso: int, X, x: float, y: float) -> np.ndarray:
+    X0, tf = _floor_map(torso)
+    a, b, c = X0[tf[:, 0], :2], X0[tf[:, 1], :2], X0[tf[:, 2], :2]
+    p = np.array([x, y])
+    v0, v1, v2 = b - a, c - a, p - a
+    d00, d01, d11 = (v0 * v0).sum(1), (v0 * v1).sum(1), (v1 * v1).sum(1)
+    d20, d21 = (v2 * v0).sum(1), (v2 * v1).sum(1)
+    den = d00 * d11 - d01 * d01
+    v = (d11 * d20 - d01 * d21) / den
+    w = (d00 * d21 - d01 * d20) / den
+    u = 1 - v - w
+    ok = (u >= -1e-6) & (v >= -1e-6) & (w >= -1e-6)
+    if not ok.any():
+        raise ValueError(f"({x}, {y}) is off the drafted floor")
+    k = int(np.argmax(ok))
+    return u[k] * X[tf[k, 0]] + v[k] * X[tf[k, 1]] + w[k] * X[tf[k, 2]]
+
+
+def floor_seam_y(torso: int) -> float:
+    X0, tf = _floor_map(torso)
+    n = np.unique(tf)
+    return float(X0[n, 1].min())
+
+
+def channel_entry(torso: int, X, name: str, side: str, x_entry: float = CHANNEL_X) -> np.ndarray:
+    F = _F()
+    st = F.us_channels()["stations_mm"][0 if name == "us1" else 1]
+    sx = 1 if side == "R" else -1
+    return map_floor(torso, X, sx * x_entry, floor_seam_y(torso) + st)
+
+
+def stays(side: str) -> list:
+    """The stay as a tube obstacle for the string (frame x +/-115, centre y yc, radius at z 60-160)."""
+    st = stations(side)
+    p = st["us1"]
+    yc = np.mean([q["yc"] for q in st.values()])
+    r = max(q["stay_r"] for q in st.values())
+    return [(np.array([p["x"], yc, 0.0]), np.array([p["x"], yc, 220.0]), r)]
+
+
+def strap_path(torso: int, X, name: str, side: str = "R", pin=None, x_entry: float = CHANNEL_X):
+    """Taut strap from the pin to the channel entry, outside the cloth and the stay (corrie_f.taut_path)."""
+    F = _F()
+    m = F.fine_mesh(torso)
+    surf = F.ClothSurface(X, m["tris"])
+    st = stations(side)[name]
+    sx = 1 if side == "R" else -1
+    A = np.array(pin if pin is not None else (st["x"], st["y_pin"], st["z"]), float)
+    B = channel_entry(torso, X, name, side, x_entry)
+    W = np.array([0.5 * (A[0] + B[0]), -45.0, min(A[2], B[2]) - 40.0])
+    P = F.taut_path(surf, A, B, W, stays(side), n=120, iters=6000)
+    return P, surf, A, B
+
+
+def ribbon(P, surf, w: float = STRAP_W, t: float = 3.0, nw: int = 11) -> np.ndarray:
+    """Points of the strap ribbon: width square to the path in the cloth's tangent plane, both faces (+/- t/2)."""
+    u = np.gradient(P, axis=0)
+    u /= np.maximum(np.linalg.norm(u, axis=1), 1e-9)[:, None]
+    nr = surf.closest(P)[1]
+    wd = np.cross(nr, u)
+    wd /= np.maximum(np.linalg.norm(wd, axis=1), 1e-9)[:, None]
+    out = [P + k * wd + s * nr for k in np.linspace(-w / 2, w / 2, nw) for s in (-t / 2, t / 2)]
+    return np.vstack(out)
+
+
+def clearances(R: np.ndarray, grid: dict, fields: dict, side: str, own=None) -> dict:
+    """Min signed distance from the ribbon to each obstacle (R side grid; L mirrored)."""
+    Q = R.copy()
+    if side == "L":
+        Q[:, 0] = -Q[:, 0]
+    xs, ys, zs = grid["axes"]
+    keep = (Q[:, 0] >= xs[0]) & (Q[:, 0] <= xs[-1]) & (Q[:, 2] >= zs[0]) & (Q[:, 2] <= zs[-1])
+    Q = Q[keep]
+    out = {}
+    for k, f in fields.items():
+        if k == own:
+            continue
+        out[k] = round(float(_lookup(f, grid, Q).min()), 1) if len(Q) else None
+    return out
+
+
+def trace(P, zs=(150, 142, 135, 130, 120, 110, 104, 95, 90, 86, 80, 75, 69, 65, 60, 55, 51, 45, 39)) -> dict:
+    """Strap centre x and y where the path crosses each z (on its way down the frame face)."""
+    out = {}
+    for z in zs:
+        i = np.where((P[:-1, 2] - z) * (P[1:, 2] - z) <= 0)[0]
+        if len(i):
+            j = i[0]
+            f = (z - P[j, 2]) / (P[j + 1, 2] - P[j, 2] + 1e-12)
+            q = P[j] + f * (P[j + 1] - P[j])
+            out[f"z{z}"] = [round(float(q[0]), 1), round(float(q[1]), 1)]
+    return out
+
+
+def floor_corner(P) -> dict:
+    """Where the strap turns under the floor: the last point of its descent down the frame face (y within 8 mm of
+    the pin's) before it heads into the bag under the floor."""
+    near = np.where(P[:, 1] <= P[0, 1] + 8.0)[0]
+    k = int(near[np.argmin(P[near, 2])])
+    return {"y": round(float(P[k, 1]), 1), "z": round(float(P[k, 2]), 1), "index": k}
+
+
+# ------------------------------------------------------------------------------------------------ section model
+def section_bearing(grid: dict, xc: float, pin: dict, corner_yz, T: float, w: float = STRAP_W, own: int = 0) -> dict:
+    """At the stay: the strap is a string from its pin to the floor corner, laid over the bag-side (max y) envelope
+    of everything under its 25 mm footprint (x xc +/- w/2). Returns the envelope, the string (upper convex hull) and
+    the bearing on each obstacle = T x the turning at each hull vertex, booked to the obstacle under that vertex."""
+    xs, ys, zs = grid["axes"]
+    sel = (xs >= xc - w / 2) & (xs <= xc + w / 2)
+    occ = grid["occ"][sel]
+    z0, z1 = corner_yz[1], pin["z"] - 3.0
+    env = []
+    for k, z in enumerate(zs):
+        if not (z0 <= z <= z1):
+            continue
+        col = occ[:, :, k]
+        hit = (col > 1) & (col != own)                   # fairleads and HE (not the strap's own fairlead; the stay
+        #                                                  is under the cloth anyway)
+        if not hit.any():
+            continue
+        jy = np.where(hit.any(axis=0))[0].max()
+        cj = col[:, jy]
+        lab = int(cj[(cj > 1) & (cj != own)][0])
+        env.append((float(ys[jy]) + GRID["h"] / 2, float(z), lab))
+    A = (pin["y_pin"], pin["z"])
+    B = (float(corner_yz[0]), float(corner_yz[1]))
+    pts = [A] + [(y, z) for y, z, _ in env] + [B]
+    labs = [0] + [l for _, _, l in env] + [0]
+    # upper hull in +y going down in z: keep points not below the chord (monotone chain on z descending)
+    order = np.argsort([-p[1] for p in pts], kind="stable")
+    hull = []
+    for i in order:
+        p = pts[i]
+        while len(hull) >= 2:
+            (y1, z1_), (y2, z2_) = pts[hull[-2]], pts[hull[-1]]
+            cross = (y2 - y1) * (p[1] - z1_) - (z2_ - z1_) * (p[0] - y1)
+            if cross <= 0:        # the middle point is not on the +y side of the chord: drop it
+                hull.pop()
+            else:
+                break
+        hull.append(int(i))
+    H = [pts[i] for i in hull]
+    bearing = {}
+    turn_tot = 0.0
+    for a, b, c, i in zip(H[:-2], H[1:-1], H[2:], hull[1:-1]):
+        u1 = np.subtract(b, a)
+        u2 = np.subtract(c, b)
+        u1, u2 = u1 / np.linalg.norm(u1), u2 / np.linalg.norm(u2)
+        f = T * np.linalg.norm(u2 - u1)
+        turn_tot += math.degrees(math.acos(np.clip(u1 @ u2, -1, 1)))
+        nm = LABELS[labs[i] - 1] if labs[i] else "-"
+        bearing[nm] = bearing.get(nm, 0.0) + f
+    lift = max((y for y, _, _ in env), default=None)
+    return {"envelope": env, "hull": [[round(y, 2), round(z, 2)] for y, z in H],
+            "bearing_n": {k: round(v, 0) for k, v in bearing.items()}, "turn_deg": round(turn_tot, 1),
+            "obstacle_top_y": None if lift is None else round(lift, 1),
+            "touches": sorted({LABELS[l - 1] for _, _, l in env})}
+
+
+# ------------------------------------------------------------------------------------------------ bag-side guide
+def guide_feasibility() -> dict:
+    """What a guide on B-01 must do. The strap leaves its pin inside the throat (centre at the stay x, the eye pulled
+    in the stay's y-z plane), at the cheeks' lower edge. To pass the fairlead (and HE) below with ``c`` clearance it
+    must be in a lane centred >= throat/2 + cheek + c + w/2 off the stay line by the top of that obstacle + c. The
+    in-plane turn that takes (lower bound: a zero-radius kink, width projection ignored) and the room a 45 deg fold
+    guide needs (one webbing width) are compared with what there is."""
+    st = stations()
+    P = _P()
+    he = he_shapes()
+    g = st["hinge"]["geom"]
+    rows = []
+    blocks = {"us1": ("hinge fairlead + HE eye", st["hinge"]["z"] + g.half_z, st["us1"]["z"] - g.half_z),
+              "us2": ("US1 fairlead (+ its eye and box hanging below)", st["us1"]["z"] + g.half_z, st["us2"]["z"] - g.half_z)}
+    for name, (what, z_top, z_exit) in blocks.items():
+        for c in (0.0, CLEAR_REQ):
+            dz = z_exit - (z_top + c)
+            dx = g.throat / 2 + g.cheek + c + STRAP_W / 2
+            phi = 90.0 if dz <= 0 else math.degrees(math.atan2(dx, dz))
+            rows.append({"strap": name, "passes": what, "clear_mm": c, "exit_z": z_exit, "block_top_z": z_top,
+                         "height_available_mm": round(dz, 1), "lateral_shift_mm": round(dx, 1),
+                         "in_plane_turn_deg": round(phi, 1), "fleet_allowed_deg": FLEET_MAX_DEG,
+                         "fold_room_needed_mm": STRAP_W + c, "fold_fits": dz >= STRAP_W,
+                         "ok": phi <= FLEET_MAX_DEG or dz >= STRAP_W + c})
+    # the eye and box alone: straight down they reach this far below the pin (imus_stl_check.box_distance + box)
+    import imus_stl_check as I
+    sp = I.eye_spec("us1", "L")
+    reach = I.box_distance(sp, P.HE_T) + sp["box_len"]
+    return {"rows": rows, "us_eye_box_reach_mm": round(reach, 1),
+            "us1_box_bottom_z_straight_down": round(st["us1"]["z"] - reach, 1),
+            "hinge_cheek_top_z": st["hinge"]["z"] + g.half_z, "he_box_z": he["box_z"],
+            "any_ok": any(r["ok"] for r in rows if r["clear_mm"] == CLEAR_REQ),
+            "standoff_y_needed": round(st["hinge"]["y_tip"] + CLEAR_REQ + 3.0, 1)}
+
+
+# ------------------------------------------------------------------------------------------------ layouts
+def lane_offset(c: float = CLEAR_REQ) -> float:
+    """Centre-to-centre lane spacing so a strap clears the neighbouring fairlead by ``c``."""
+    g = stations()["hinge"]["geom"]
+    return g.throat / 2 + g.cheek + c + STRAP_W / 2
+
+
+def layouts() -> dict:
+    """Station layouts checked on the drapes. ``now`` = the print. ``lanes`` = BL-048's proposal for BL-047: the hinge
+    stays on the stay (x 115); US1 (z 95, under the spreader's z 112 bottom edge) on an inboard lug, US2 (z 142,
+    beside the spreader, which spans x +/-121 from z 112) on an outboard lug, each one lane (lane_offset) off the stay
+    line, channel ends at the lane x."""
+    st = stations()
+    x0 = st["us1"]["x"]
+    d = lane_offset()
+    return {"now": {"us1": x0, "us2": x0, "entry": {"us1": CHANNEL_X, "us2": CHANNEL_X}},
+            "lanes": {"us1": round(x0 - d, 1), "us2": round(x0 + d, 1),
+                      "entry": {"us1": round(x0 - d, 1), "us2": round(x0 + d, 1)}},
+            "lanes_old_channel": {"us1": round(x0 - d, 1), "us2": round(x0 + d, 1),
+                                  "entry": {"us1": CHANNEL_X, "us2": CHANNEL_X}},
+            "lanes_wide": {"us1": round(x0 - d - LANE_MARGIN["us1"], 1), "us2": round(x0 + d + LANE_MARGIN["us2"], 1),
+                           "entry": {"us1": round(x0 - d - LANE_MARGIN["us1"], 1),
+                                     "us2": round(x0 + d + LANE_MARGIN["us2"], 1)}}}
+
+
+RECOMMENDED = "lanes_wide"
+LANE_MARGIN = {"us1": 4.5, "us2": 9.5}      # BL-048: added to the bare lane offset after the first drape check: the
+#   outer floor draws inboard under load (the drafted x 155.5 channel entry lands at x 143-152 on the drapes), so the
+#   US2 strap drifts towards the hinge as it descends (5.6 mm worst at 19 in L on the bare lane); US1 had 10.2 mm.
+#   US1 x 70, US2 x 165 are the values checked (us_route.json 'lanes_wide')
+
+
+def lug_boxes(lay: dict) -> list:
+    """Envelopes of the moved US fairleads and their lug arms (frame side of the fairlead floor) for the grid."""
+    st = stations()
+    out = []
+    for k, n in ((3, "us1"), (4, "us2")):
+        p = st[n]
+        x = lay[n]
+        b = fairlead_box(p, x=x)
+        out.append((k, b))
+        lo, hi = sorted((p["x"], x))
+        out.append((k, {"x": (lo, hi), "z": b["z"], "y": (p["yc"] - 8.0, p["y_floor"])}))
+    return out
+
+
+def run_layout(name: str, mesh, drapes: dict, T: dict) -> dict:
+    lay = layouts()[name]
+    moved = name != "now"
+    grid = occupancy(mesh, mask_us=moved, extra_boxes=lug_boxes(lay) if moved else ())
+    fields = {"hinge": sdf(grid, [2]), "us1": sdf(grid, [3]), "us2": sdf(grid, [4]), "he": sdf(grid, [5]),
+              "stay": sdf(grid, [1])}
+    st = stations()
+    rows = []
+    for t, X in drapes.items():
+        for side in ("R", "L"):
+            sx = 1 if side == "R" else -1
+            for n in ("us1", "us2"):
+                p = st[n]
+                pin = (sx * lay[n], p["y_pin"], p["z"])
+                P, surf, A, B = strap_path(t, X, n, side, pin=pin, x_entry=lay["entry"][n])
+                R = ribbon(P, surf)
+                cl = clearances(R, grid, fields, side, own=n)
+                fc = floor_corner(P)
+                r = {"torso": t, "side": side, "strap": n, "pin_x": round(pin[0], 1),
+                     "length_mm": round(float(np.linalg.norm(np.diff(P, axis=0), axis=1).sum()), 1),
+                     "trace": trace(P), "corner": {k: fc[k] for k in ("y", "z")}, "clear_mm": cl,
+                     "entry": [round(float(v), 1) for v in B]}
+                gate = [cl[k] for k in ("hinge", "he", "us1" if n == "us2" else None) if k and cl.get(k) is not None]
+                r["min_clear_mm"] = round(min(gate), 1)
+                r["pass"] = r["min_clear_mm"] >= CLEAR_REQ
+                if side == "R":
+                    pr = dict(p, x=lay[n])
+                    tr = trace(P)
+                    r["section"] = section_bearing(grid, abs(tr["z60"][0]) if "z60" in tr else abs(pin[0]), pr,
+                                                   (fc["y"], fc["z"]), T[n], own=3 if n == "us1" else 4)
+                if True:
+                    r["path"] = [[round(float(v), 1) for v in q] for q in P[::3]]
+                rows.append(r)
+    worst = {n: min(r["min_clear_mm"] for r in rows if r["strap"] == n) for n in ("us1", "us2")}
+    return {"layout": lay, "rows": rows, "worst_clear_mm": worst, "pass": all(r["pass"] for r in rows)}
+
+
+def corner_keepers(res: dict) -> dict:
+    """The bag-side part of the station move, rated. With the US stations on their lanes the strap runs straight down
+    B-01 from its pin to the floor corner; on the floor it must reach its B-16 channel. Two ways:
+    (a) the B-16 channel ends moved to the lane x (US1: shortened to +/-lane; US2: run past F-02 onto B-05) - the
+        checked case ('lanes_wide' enters the channel at the lane x);
+    (b) F-02's channels kept (+/-95) and a 25 mm keeper loop at the floor corner at the lane x holds the strap there:
+        it turns on the floor towards the channel end, and the keeper takes the turn. Load = T x |u_out - u_in|
+        (u_in straight down B-01, u_out along the floor from the corner to the channel end, drafted floor),
+        on a box-X 21 x 25 (the USA box, capacity 3186 N, corrie_f_body 23.10)."""
+    F = _F()
+    st = F.us_channels()["stations_mm"]
+    T = res["tension_n"]
+    lay = res["layouts"][RECOMMENDED]["layout"]
+    cap = 3186.0
+    out = {}
+    for n, y in (("us1", st[0]), ("us2", st[1])):
+        dx = abs(lay[n]) - CHANNEL_X
+        u_in = np.array([0.0, 0.0, -1.0])
+        v = np.array([-np.sign(dx) * abs(dx), y, 0.0])
+        u_out = v / np.linalg.norm(v)
+        f = float(T[n] * np.linalg.norm(u_out - u_in))
+        lat = float(T[n] * abs(u_out[0]))
+        out[n] = {"lane_x": lay[n], "channel_end_x": CHANNEL_X, "turn_on_floor_deg": round(math.degrees(math.atan2(abs(dx), y)), 1),
+                  "keeper_load_n": round(f, 0), "keeper_lateral_n": round(lat, 0), "box": "box-X 21 x 25 (USA box)",
+                  "capacity_n": cap, "sf": round(cap / f, 2)}
+    out["choice"] = ("(a) channel ends at the lane x: no concentrated load on the floor; US2's channel then runs past "
+                     "F-02 onto B-05 (seam-sealed stitch line). (b) is the fallback if the floor must not be stitched.")
+    return out
+
+
+def strap_lengths(res: dict) -> dict:
+    """Is the US strap long enough for its REAL bag-on path? Pin-to-pin need = the modelled path L (pin -> channel
+    entry) + the channel between the entries + path R, less the USA cam's reach below the right pin; available = the
+    US cut less its sewn eye (2 x US_EYE) and a gloved grip (TAIL_GRIP) past the cam. Worst drape per strap."""
+    P = _P()
+    F = _F()
+    w = next(x for x in P.build("today").webbing if x["id"] == "US")
+    cut = float(w["length_mm"])
+    reach = P.USA_CUT / 2.0 - P.USA_PIN_LOOP / 2.0                # cam bar from the pin, USA folded dog-bone
+    avail = cut - 2 * P.US_EYE - F.TAIL_GRIP_MM
+    out = {"cut_mm": cut, "usa_reach_mm": round(reach, 1), "available_mm": round(avail, 1), "layouts": {}}
+    for name, L in res["layouts"].items():
+        row = {}
+        for n in ("us1", "us2"):
+            need = 0.0
+            for t in TORSOS:
+                rr = [r for r in L["rows"] if r["torso"] == t and r["strap"] == n]
+                span = abs(rr[0]["entry"][0]) + abs(rr[1]["entry"][0])
+                need = max(need, sum(r["length_mm"] for r in rr) + span - reach)
+            row[n] = {"need_mm": round(need, 1), "short_by_mm": round(max(0.0, need - avail), 1),
+                      "cut_needed_mm": float(5 * math.ceil((need + 2 * P.US_EYE + F.TAIL_GRIP_MM) / 5.0))}
+        out["layouts"][name] = row
+    return out
+
+
+# ------------------------------------------------------------------------------------------------ test piece
+def export_test_piece(mesh=None, out_dir: Path = KIT_PIECES) -> dict:
+    """US test piece: the R stay z 40-160 with the hinge, US1 and US2 fairleads, cut from the print (frame
+    coordinates kept, and laid flat for printing), as h1_fairleads.export_pieces cut HE-FIT / IM3-EC."""
+    import trimesh
+    import manifold3d as m3d
+    from huntkit.gendesign import frame_h1 as H1
+    from huntkit.gendesign.h1_buckling import clean_shell
+    from huntkit.gendesign.surface import _from_manifold, _to_manifold
+    mesh = mesh if mesh is not None else trimesh.load(PRINT)
+    st = stations()
+    p = st["us1"]
+    hx = p["geom"].throat / 2 + p["geom"].cheek + 6.0
+    zlo, zhi = 40.0, 160.0
+    man = _to_manifold(mesh)
+    b = m3d.Manifold.cube((2 * hx, 80.0, zhi - zlo), center=True).translate((p["x"], p["yc"], 0.5 * (zlo + zhi)))
+    piece, dropped = clean_shell(_from_manifold((man ^ b).simplify(0.04)))
+    flat = H1.lay_flat(piece)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    piece.export(out_dir / f"{US_PIECE}_frame_coords.stl")
+    flat.export(out_dir / f"{US_PIECE}.stl")
+    flat.export(out_dir / f"{US_PIECE}.3mf")
+    wt = all(trimesh.load(out_dir / fn).is_watertight for fn in (f"{US_PIECE}_frame_coords.stl", f"{US_PIECE}.stl"))
+    rho = _H().RHO_G_MM3
+    return {"file": str((out_dir / f"{US_PIECE}.stl").relative_to(ROOT)), "z": [zlo, zhi],
+            "x": [round(p["x"] - hx, 1), round(p["x"] + hx, 1)], "g": round(piece.volume * rho, 1),
+            "watertight": bool(wt), "shells": len(piece.split(only_watertight=False)), "dropped": dropped,
+            "extents_mm": [round(v, 1) for v in flat.extents],
+            "fairleads": sorted(n for n in st if zlo < st[n]["z"] < zhi)}
+
+
+# ------------------------------------------------------------------------------------------------ run
+def model(write: bool = True, piece: bool = True) -> dict:
+    import trimesh
+    F = _F()
+    mesh = trimesh.load(PRINT)
+    T = tensions()
+    drapes = {}
+    for t in TORSOS:
+        X = F.drape(RUN.format(t=t), CASE)
+        if X is None:
+            raise FileNotFoundError(f"{RUN.format(t=t)} not on disk: corrie_f_sim.py finerun F --torso {t} --route over_port")
+        drapes[t] = X
+    res = {"tension_n": T, "runs": {t: RUN.format(t=t) + "/x_" + CASE for t in TORSOS},
+           "stations": {n: {k: (round(v, 2) if isinstance(v, float) else v) for k, v in p.items() if k != "geom"}
+                        for n, p in stations().items()},
+           "he": {k: v for k, v in he_shapes().items() if k in ("z_seam", "box_z", "b01_y")},
+           "symmetry_mm2": symmetry_check(mesh), "guide": guide_feasibility(), "lane_offset_mm": round(lane_offset(), 1)}
+    res["layouts"] = {n: run_layout(n, mesh, drapes, T) for n in layouts()}
+    res["us_route_dropped"] = True
+    res["recommended"] = RECOMMENDED
+    rec = res["layouts"][RECOMMENDED]
+    res["station_move"] = {"us1": {"x": rec["layout"]["us1"], "z": stations()["us1"]["z"], "offset_from_stay_mm":
+                                   round(stations()["us1"]["x"] - rec["layout"]["us1"], 1), "side": "inboard"},
+                           "us2": {"x": rec["layout"]["us2"], "z": stations()["us2"]["z"], "offset_from_stay_mm":
+                                   round(rec["layout"]["us2"] - stations()["us2"]["x"], 1), "side": "outboard"},
+                           "channel_entry_x": rec["layout"]["entry"], "pass": rec["pass"],
+                           "worst_clear_mm": rec["worst_clear_mm"]}
+    res["corner_keepers"] = corner_keepers(res)
+    res["strap_lengths"] = strap_lengths(res)
+    if piece:
+        res["test_piece"] = export_test_piece(mesh)
+    res["assumptions"] = [
+        "US-TOPO: the strap lies on B-01's frame face between the bag and the frame; where a fairlead or the HE stands "
+        "proud of its line it rides over it (the bag face gives, the strap is the tension member); settled by HE-FIT "
+        "step 0 on the US test piece and by FIT-US on P1",
+        "US-FLEET: an eye in its 20 mm throat takes <= 10 deg out of the stay plane; settled by HE-FIT step 0",
+        "SIM_TORSO (h1_sleeve): every crown-kit end maps to the 15 / 19 / 23 in drape; the fairleads are on the fixed "
+        "stays, so a kit or torso change moves only the bag",
+        "DRAPE-US: the meat drapes were simulated with straight under-strap cables (pin to floor band); a re-run "
+        "with the strap routed through eyelets on this path was not done; it settles whether the floor shape moves the "
+        "lane clearances (14 / 17.7 mm against 10)",
+        "DRAPE-TENT: the drapes have no fairleads in the frame contact (B-01 is not tented by the cheek tips there); the "
+        "lane check measures the strap ribbon against the print in 3D, so a tent can only lift the strap away from it",
+    ]
+    if write:
+        OUT_JSON.write_text(json.dumps(res, indent=1, default=lambda o: o.tolist() if hasattr(o, "tolist") else str(o)))
+    return res
+
+
+def figures(res: dict) -> list:
+    """1: the strap now (side section at the stay over the print + HE, and the front trace on B-01 at 15 in);
+    2: the lane layout for BL-047 (front view, all torsos) with clearances."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib.patches import Rectangle
+    import trimesh
+    H = _H()
+    SCREENS.mkdir(parents=True, exist_ok=True)
+    mesh = trimesh.load(PRINT)
+    st = stations()
+    out = []
+    now = res["layouts"]["now"]
+    fig, axs = plt.subplots(1, 3, figsize=(15, 6.2), gridspec_kw={"width_ratios": [1.0, 1.0, 1.25]})
+    for ax, n in zip(axs[:2], ("us1", "us2")):
+        r = next(q for q in now["rows"] if q["torso"] == 15 and q["side"] == "R" and q["strap"] == n)
+        S = H._xplane(mesh, 112.0)
+        for poly in getattr(S, "geoms", [S]):
+            xx, yy = poly.exterior.xy
+            ax.fill(xx, yy, fc="#9aa3ad", ec="#33393f", lw=0.6)
+            for h in poly.interiors:
+                ax.fill(*h.xy, fc="white", ec="#33393f", lw=0.4)
+        he = he_shapes()
+        for key, col in (("eye_legs", "#e67e22"), ("box", "#d35400")):
+            ax.fill(*he[key][0].exterior.xy, fc=col, alpha=0.75, ec=col)
+        sec = r["section"]
+        hy, hz = zip(*sec["hull"])
+        ax.plot(hy, hz, "-", c="#c0392b", lw=3.0, label=f"strap at {res['tension_n'][n]:.0f} N, laid over (model)")
+        ax.plot([st[n]["y_pin"], st[n]["y_pin"] + 120 * math.cos(math.radians(-50.9 if n == 'us1' else -45.6))],
+                [st[n]["z"], st[n]["z"] + 120 * math.sin(math.radians(-50.9 if n == 'us1' else -45.6))], "--", c="#7f8c8d",
+                lw=1.2, label="US-ROUTE (dropped): runs inside the bag")
+        P = np.array(r["path"])
+        ax.plot(P[:, 1], P[:, 2], ":", c="#2c3e50", lw=1.4, label="taut path on the 15 in drape (no fairleads)")
+        ax.axvline(he["b01_y"], c="#16a085", lw=1.0, ls="-.", label="B-01 plane (panel offset 20)")
+        txt = ", ".join(f"{k} {v:.0f} N" for k, v in sec["bearing_n"].items())
+        ax.set_title(f"{n.upper()} R, side section x 112 (15 in, meat)\ntouches: {', '.join(sec['touches'])}\n"
+                     f"bearing: {txt}", fontsize=9, loc="left")
+        ax.set_xlim(-25, 75)
+        ax.set_ylim(20, 165)
+        ax.set_aspect("equal")
+        ax.set_xlabel("frame y (mm, to the bag)")
+        ax.legend(fontsize=7, loc="upper right")
+    axs[0].set_ylabel("frame z (mm)")
+    ax = axs[2]
+    for n, col in (("hinge", "#7f8c8d"), ("us1", "#2980b9"), ("us2", "#8e44ad")):
+        b = fairlead_box(st[n])
+        ax.add_patch(Rectangle((b["x"][0], b["z"][0]), b["x"][1] - b["x"][0], b["z"][1] - b["z"][0], fc=col, alpha=0.5))
+        ax.text(b["x"][1] + 1, b["z"][1] - 4, n, fontsize=8)
+    he = res["he"]
+    ax.add_patch(Rectangle((115 - 17, he["box_z"][0]), 34, he["box_z"][1] - he["box_z"][0], fc="#d35400", alpha=0.7))
+    ax.text(133, he["box_z"][0], "HE box", fontsize=8)
+    for r in now["rows"]:
+        if r["side"] != "R":
+            continue
+        P = np.array([v for k, v in sorted(r["trace"].items(), key=lambda kv: -int(kv[0][1:]))])
+        zz = [int(k[1:]) for k in sorted(r["trace"], key=lambda k: -int(k[1:]))]
+        col = "#2980b9" if r["strap"] == "us1" else "#8e44ad"
+        for s in (-1, 1):
+            ax.plot(P[:, 0] + s * STRAP_W / 2, zz, "-", c=col, lw=0.8, alpha=0.6)
+    ax.set_xlim(60, 180)
+    ax.set_ylim(25, 165)
+    ax.set_aspect("equal")
+    ax.set_xlabel("frame x (mm)")
+    ax.set_title("Front view of the R stay: the strap edges (25 mm) on B-01,\n15 / 19 / 23 in drapes, over the hinge "
+                 "fairlead and HE box", fontsize=9, loc="left")
+    fig.suptitle("BL-048 N-1: the under-straps' real path in bag-on meat carry runs over the hinge fairlead and the HE "
+                 "(US-ROUTE was a line through the bag)", fontsize=11, x=0.01, ha="left")
+    fig.tight_layout()
+    p1 = SCREENS / f"{SHOT}_1.png"
+    fig.savefig(p1, dpi=85)
+    plt.close(fig)
+    out.append(p1)
+
+    lay = res["layouts"][res["recommended"]]
+    fig, ax = plt.subplots(figsize=(10.5, 6.6))
+    S = H._zplane(mesh, 60.0)
+    ax.add_patch(Rectangle((st["hinge"]["x"] - 9.4, 0), 18.8, 175, fc="#bdc3c7", alpha=0.5))
+    ax.text(st["hinge"]["x"] - 8, 168, "stay", fontsize=8)
+    b = fairlead_box(st["hinge"])
+    ax.add_patch(Rectangle((b["x"][0], b["z"][0]), b["x"][1] - b["x"][0], b["z"][1] - b["z"][0], fc="#7f8c8d", alpha=0.7))
+    ax.text(b["x"][1] + 2, b["z"][0] + 4, "hinge\n(unchanged)", fontsize=8)
+    ax.add_patch(Rectangle((115 - 17, he["box_z"][0]), 34, he["box_z"][1] - he["box_z"][0], fc="#d35400", alpha=0.7))
+    for k, bx in lug_boxes(lay["layout"]):
+        col = "#2980b9" if k == 3 else "#8e44ad"
+        ax.add_patch(Rectangle((bx["x"][0], bx["z"][0]), bx["x"][1] - bx["x"][0], bx["z"][1] - bx["z"][0], fc=col,
+                               alpha=0.45, ec=col))
+    for n, col in (("us1", "#2980b9"), ("us2", "#8e44ad")):
+        for r in lay["rows"]:
+            if r["side"] != "R" or r["strap"] != n:
+                continue
+            ks = sorted(r["trace"], key=lambda k: -int(k[1:]))
+            xs_ = np.array([r["trace"][k][0] for k in ks])
+            zz = [int(k[1:]) for k in ks]
+            for s in (-1, 1):
+                ax.plot(xs_ + s * STRAP_W / 2, zz, "-", c=col, lw=1.0)
+        w = lay["worst_clear_mm"][n]
+        ax.text(lay["layout"][n] - 12, st[n]["z"] + 12, f"{n.upper()} lane x {lay['layout'][n]:.1f}\nworst clear {w:.1f} mm",
+                fontsize=8.5, color=col)
+    ax.axvline(121, c="#27ae60", ls=":", lw=1)
+    ax.text(122, 170, "spreader edge x 121 (z >= 112)", fontsize=7.5, color="#27ae60")
+    ax.set_xlim(40, 200)
+    ax.set_ylim(20, 185)
+    ax.set_aspect("equal")
+    ax.set_xlabel("frame x (mm), R side; L mirrored")
+    ax.set_ylabel("frame z (mm)")
+    ok = "PASS" if lay["pass"] else "FAIL"
+    ax.set_title(f"BL-048 -> BL-047: US station lanes (each strap clear of the hinge fairlead, HE and the other US fairlead "
+                 f"by >= {CLEAR_REQ:.0f} mm)\nstrap edges on the 15 / 19 / 23 in meat drapes: {ok}", fontsize=9.5, loc="left")
+    fig.tight_layout()
+    p2 = SCREENS / f"{SHOT}_2.png"
+    fig.savefig(p2, dpi=90)
+    plt.close(fig)
+    out.append(p2)
+    return out
+
+
+def derive() -> dict:
+    """Re-derive the cheap keys (keepers, strap lengths) on the stored model without re-running the paths."""
+    res = json.loads(OUT_JSON.read_text())
+    res["corner_keepers"] = corner_keepers(res)
+    res["strap_lengths"] = strap_lengths(res)
+    OUT_JSON.write_text(json.dumps(res, indent=1))
+    return res
+
+
+def main(argv=None) -> int:
+    argv = sys.argv[1:] if argv is None else argv
+    if "--derive" in argv:
+        res = derive()
+        print(json.dumps({k: res[k] for k in ("corner_keepers", "strap_lengths")}, indent=1))
+        if "--figures" in argv:
+            for p in figures(res):
+                print("screen:", p)
+        return 0
+    res = model()
+    for n, L in res["layouts"].items():
+        print(n, "worst clear", L["worst_clear_mm"], "pass", L["pass"])
+        for r in L["rows"]:
+            if r["side"] == "R" and r["torso"] == 15:
+                print("  ", r["strap"], r["clear_mm"], r.get("section", {}).get("bearing_n"), r["trace"].get("z60"))
+    print("guide any_ok", res["guide"]["any_ok"])
+    for r in res["guide"]["rows"]:
+        print("  ", r)
+    print("piece", res.get("test_piece"))
+    for p in figures(res):
+        print("screen:", p)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

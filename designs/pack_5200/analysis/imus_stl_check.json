@@ -153,11 +153,11 @@
     ],
     "eye_ok_all": false
    },
-   "eye_pass": true,
+   "eye_pass": false,
    "required_thetas": [
-    -50.9
+    -90.0
    ],
-   "route_ok": true
+   "route_ok": false
   },
   "us1_R@print": {
    "station": "us1_R",
@@ -308,11 +308,11 @@
     ],
     "eye_ok_all": false
    },
-   "eye_pass": true,
+   "eye_pass": false,
    "required_thetas": [
-    -50.9
+    -90.0
    ],
-   "route_ok": true
+   "route_ok": false
   },
   "us2_L@print": {
    "station": "us2_L",
@@ -364,7 +364,7 @@
       "theta": -90,
       "eye_overlap_mm2": 0.0,
       "eye_clear_mm": 1.54,
-      "box_overlap_mm2": 78.376,
+      "box_overlap_mm2": 78.354,
       "box_clear_mm": 0.0,
       "box_from_pin_mm": 14.5,
       "pass": false
@@ -463,11 +463,11 @@
     ],
     "eye_ok_all": true
    },
-   "eye_pass": true,
+   "eye_pass": false,
    "required_thetas": [
-    -45.6
+    -90.0
    ],
-   "route_ok": true
+   "route_ok": false
   },
   "us2_R@print": {
    "station": "us2_R",
@@ -519,7 +519,7 @@
       "theta": -90,
       "eye_overlap_mm2": 0.0,
       "eye_clear_mm": 1.54,
-      "box_overlap_mm2": 78.423,
+      "box_overlap_mm2": 78.404,
       "box_clear_mm": 0.0,
       "box_from_pin_mm": 14.5,
       "pass": false
@@ -618,11 +618,11 @@
     ],
     "eye_ok_all": true
    },
-   "eye_pass": true,
+   "eye_pass": false,
    "required_thetas": [
-    -45.6
+    -90.0
    ],
-   "route_ok": true
+   "route_ok": false
   },
   "im1_L@print": {
    "station": "im1_L",
@@ -1854,13 +1854,13 @@
    -9.5
   ],
   "us1": [
-   -50.9
+   -90.0
   ],
   "us2": [
-   -45.6
+   -90.0
   ]
  },
- "eye_pass_all": true,
+ "eye_pass_all": false,
  "box_clear_thetas": {
   "us1_L@print": [
    -60,

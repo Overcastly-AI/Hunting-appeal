@@ -59,7 +59,7 @@ diamonds. Tape on the back, then check the test square again.
 - BL-043 (third-review fixes): W3 rides at the crown-bar height (z 601-804 over the kits), so the W3G guide is gone
   (DECISION W3-OVER: W3 is the outer layer, slacken it to open the top); the RTM buckle tab moves 10 mm under W3's
   lowest edge (z 544, flat x 50), the hose slots too (z 558, DECISION HOSE-LOW); the RT strap is
-  sewn at the roll end again (DECISION RT-ORIGIN; 'roll end' and 'B-07s strip end' notches on B-07; RT cut 560);
+  sewn at the roll end again (DECISION RT-ORIGIN; 'roll end' and 'B-07s strip end' notches on B-07; RT cut 565);
   muzzle tabs 113 / 173 mm; B-25 drawn with its mitre turns and 25 mm neck (SK-12, cut 512); IMC 192 mm;
   webbing pages carry a leader label on every line, with B-25 and RT added.
 
@@ -68,7 +68,7 @@ diamonds. Tape on the back, then check the test square again.
 | File | Step | Pages |
 |---|---|---:|
 | `print_letter/step1_pockets.pdf` | Step 1: pockets (FP hip-reach, IMP-4, IMP-8, IMP-2 sleeve, F-02 + B-16 floor channels) | 37 |
-| `print_letter/step2_small_parts.pdf` | Step 2: swells, port patches, guy-port facings, Hypalon tabs | 13 |
+| `print_letter/step2_small_parts.pdf` | Step 2: swells, port patches, guy-port facings, Hypalon tabs | 14 |
 | `print_letter/step3_door_blade.pdf` | Step 3: door D2, camo blade U, hinge band, accents | 22 |
 | `print_letter/step4_main_bag.pdf` | Step 4: frame panel B-01, gussets B-03, floor B-05 | 22 |
 | `print_letter/step5_collar.pdf` | Step 5: roll-top collar, hem, HDPE strips | 31 |

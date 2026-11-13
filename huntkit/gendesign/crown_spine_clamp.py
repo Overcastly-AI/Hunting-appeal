@@ -62,7 +62,8 @@ B25_BAND = (26.5, 64.5)            # corrie_f.BRIDLE_BAND_REV3
 B25_T = 1.2                        # corrie_f.B25_T (ASSUMPTION there)
 BAR_OD, SPINE_OD = 18.0, 20.0      # frame.yaml top_bar_section / spine_section od
 REAL_CROWN = True                  # BL-046: clamp loads on the crown as built (h1_spine_channel.real_crown)
-WEB_T_MM = 2.5                     # BL-046: the fitting's two webs (h1_spine_channel.CLAMP_WEB_T); sized in web_check
+WEB_T_MM = 2.0                     # BL-046: the fitting's two webs (h1_spine_channel.CLAMP_WEB_T); sized in web_check
+#                                    BL-047: 2.5 -> 2.0 (web yield 3.01, fatigue 2.40; every other margin holds)
 G_PER_KG = 9.81
 
 ASSUMPTIONS = {
@@ -486,7 +487,7 @@ SPINE_CLAMP_HALF_X = 12.0          # size_clamp half_x_mm: saddle 24 mm along th
 SPINE_CLAMP_COLLAR = 6.0           # size_clamp collar_below_bar_underside_mm: the spine clears the bar (25 mm fore), so
 #                                    the 15 mm socket starts at the bar's centre height [12.8]
 SPINE_AXIS_FORE_MM = 25.02         # spine_axis: spine axis fore (wearer side) of the top bar's real axis [15.85]
-SPINE_CLAMP_MASS_G = 15.9          # size_clamp mass_g: 25 mm offset, two 2.5 mm webs (frame.yaml books 6.0) [10.4]
+SPINE_CLAMP_MASS_G = 14.2          # size_clamp mass_g: 25 mm offset, two 2.0 mm webs (BL-047; frame.yaml books 6.0) [15.9]
 PAWL_HOUSING_UP = 15.62            # h1_crown_interfaces: housing top z 535.62 above the pawl line z 520 (kept in BL-046)
 PAWL_HOUSING_HALF_W = 24.82        # h1_crown_interfaces: housing max |x| above the upper bar (kept in BL-046)
 BODY_TOP_Z_IN_B25_BAND = 519.18    # h1_crown_interfaces: printed body top under the sleeve band (corrie_f modelled the

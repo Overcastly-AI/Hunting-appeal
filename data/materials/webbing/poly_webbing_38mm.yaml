@@ -12,6 +12,11 @@ properties:
   width_mm: 38
   breaking_strength_n: 20016
   mass_g_m: 28
+  thickness_mm: 1.5           # BL-048 M-B: PURCHASE SPEC, nominal ply thickness (the HE / IME / B-25 design value)
+  thickness_max_mm: 1.6       # purchase gate: caliper one ply at 5 places on a sample BEFORE buying the roll
+  thickness_min_mm: 1.2       # the bottom of the bracket the hinge eye is solved over (patterns HE_T_RANGE)
+  breaking_strength_min_n: 6000   # purchase spec floor: the hinge row is governed by the 2355 N B-18 seam (BL-044),
+  #                                 the B-24 float link by its 4000 N carabiner; 6 kN keeps the web off every SF table
   fiber: polyester
   weave: flat twill/plain, heavyweight
   elongation_at_break_pct: 15
@@ -21,9 +26,21 @@ confidence: estimate
 sources:
 - A-A-55301 / MIL-W-27265-class polyester webbing families (confirm Type/Class on purchase)
 - Strapworks / Rockywoods published breaking strengths for heavyweight webbing
+- 'BL-048 thickness market check (secondary: search-result text, product pages refused automated fetch, 403 / 410):
+  extremtextil "Webbing (Polyester) 40mm, strong" 1.4 mm, 44 g/m, 1270 daN https://www.extremtextil.de/en/webbing-polyester-40mm-strong.html;
+  extremtextil "Security-webbing, Polyester, 40mm" actual width 38 mm, 1.0 mm, 36 g/m, 1500 daN
+  https://www.extremtextil.de/en/security-webbing-polyester-40mm.html; Country Brook 1-1/2 in polyester about
+  1.75 mm (0.069 in), 1500 lb https://countrybrookdesign.com/1-1-2-inch-sheet-music-polyester-webbing.html;
+  Strapworks publishes no thickness for its 1-1/2 in polyester https://strapworks.com/Polyester_s/60.htm'
+- 'Heavyweight mil-spec class 38 mm polyester is commonly 1.8-2.3 mm (fourth review M-B, secondary): it FAILS the 1.6 mm gate'
 cost_usd:
   value: 1.0
   per: m
-notes: 'ESTIMATE: typical vendor rating ~4500 lbf for heavyweight 38 mm polyester. Buy mil-spec Type/Class with
+notes: 'BL-048 M-B PURCHASE SPEC: 38 mm (1.5 in) polyester, plain or twill, ply 1.2-1.6 mm (1.5 nominal), break
+  >= 6 kN, no optical brightener. Buy a 0.3 m sample (or ask the vendor for a caliper reading) and caliper one ply
+  at 5 places before ordering the roll; reject anything over 1.6 mm. Typical "heavyweight 4500 lbf" and mil-spec
+  rolls are 1.8-2.3 mm and are rejected. FALLBACK if the only roll to hand is thicker: use it for B-24 and T3 only
+  (they wrap no pin and pass no throat), and buy 1 m of a <= 1.6 mm web (seatbelt-style or "security" polyester) for
+  the HE, IME and B-25; never sew a thicker web into the HE or IME (3 plies must pass the 5.5 mm gap). ESTIMATE: typical vendor rating ~4500 lbf for heavyweight 38 mm polyester. Buy with a mill cert (thickness and break) to make this a datasheet value; a mil-spec Type/Class with
   a cert to make this a datasheet value. Polyester: low stretch, low water uptake (no sag when wet), better UV -
   preferred for compression straps and load lifters. Seal cut ends with a hot knife.'

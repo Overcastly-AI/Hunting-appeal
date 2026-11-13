@@ -216,11 +216,13 @@ def pull_directions() -> dict:
     return out
 
 
+US_ROUTE_JSON = HERE / "analysis" / "us_route.json"
+
+
 def us_cradle_theta(name: str) -> float:
-    """ASSUMPTION US-ROUTE: in bag-on carry the under-strap leaves its pin on the straight line to its floor channel
-    (corrie_f.us_channels: US1 -> the aft channel, US2 -> the fore channel, at the floor seam line). The other reading,
-    the strap hugging B-01 straight down to the floor corner (theta about -88), is reported as found-not-fixed: it
-    runs into the fairlead below (US1: the hinge; see ``check`` rows at -75 / -90)."""
+    """DROPPED as the design case by BL-048 (fourth review N-1): ASSUMPTION US-ROUTE put the under-strap on the
+    straight line from its pin to its floor channel; that line runs 19-78 mm inside the loaded bag. Kept for the
+    record (the angle it gave)."""
     import corrie_f as F
     H = _H()
     u = F.us_channels()
@@ -229,13 +231,31 @@ def us_cradle_theta(name: str) -> float:
     return round(math.degrees(math.atan2(F.BC.Z0 - p["z"], y - p["y_pin"])), 1)
 
 
+def us_real_theta(name: str, along: float = 25.0) -> float:
+    """BL-048: the direction the under-strap really pulls its eye in bag-on meat carry, on the CURRENT print: the
+    taut strap on the 15 / 19 / 23 in meat drapes (us_route.json 'now'), from the pin to the point ``along`` mm down
+    its path, in the stay's y-z plane, the steepest over every drape and side; clamped to the swept range (>= -90)."""
+    d = json.loads(US_ROUTE_JSON.read_text())
+    out = []
+    for r in d["layouts"]["now"]["rows"]:
+        if r["strap"] != name:
+            continue
+        P = np.asarray(r["path"], float)
+        s = np.r_[0.0, np.cumsum(np.linalg.norm(np.diff(P, axis=0), axis=1))]
+        q = np.array([np.interp(along, s, P[:, k]) for k in range(3)])
+        out.append(math.degrees(math.atan2(q[2] - P[0, 2], q[1] - P[0, 1])))
+    t = min(out) if out else -90.0
+    return round(max(t, -90.0), 1)          # a pull past straight down (towards the frame) is booked at -90
+
+
 def required_pulls(pulls: dict) -> dict:
     """The pull directions each station must clear: IM3 every sim torso (both sides) and rev C; IM1 / IM2 rev C (IM2's
-    side-hill case is straight down); US1 / US2 the cradle line (ASSUMPTION US-ROUTE)."""
+    side-hill case is straight down); US1 / US2 their REAL path on the current print (BL-048: us_route.json; was the
+    cradle line, ASSUMPTION US-ROUTE, dropped)."""
     sims = [v["theta"] for v in pulls["sim_im3"].values()]
     rc = pulls["revC"]
     out = {"im1": [rc["im1"]], "im2": [rc["im2"]], "im3": sorted({rc["im3"], *(([min(sims), max(sims)]) if sims else [])}),
-           "us1": [us_cradle_theta("us1")], "us2": [us_cradle_theta("us2")]}
+           "us1": [us_real_theta("us1")], "us2": [us_real_theta("us2")]}
     return out
 
 

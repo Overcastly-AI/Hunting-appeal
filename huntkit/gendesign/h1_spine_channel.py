@@ -266,6 +266,19 @@ def channel_mask(cen: np.ndarray) -> np.ndarray:
     return out
 
 
+def housing_ring_mask(cen: np.ndarray) -> np.ndarray:
+    """Voxels (centres ``cen``) of the BL-046 housing ring (housing section minus the channel, housing heights):
+    the pawl interface for frame_h1.keepouts (BL-047 re-base of the domain's old plate-channel 'pawl' mask)."""
+    from shapely import contains_xy
+    x, y, z = np.asarray(cen, float).T
+    h = housing_dims()
+    out = np.zeros(len(x), bool)
+    near = (np.abs(x) < 30.0) & (z >= h["z"][0]) & (z <= h["z"][1])
+    yr = y[near] - axis_y(z[near])
+    out[near] = contains_xy(housing_section(), x[near], yr) & ~contains_xy(channel_section(), x[near], yr)
+    return out
+
+
 # ================================================================================== spine axis decision
 def axis_decision() -> dict:
     """Where the tube axis can sit: from the fixed housing fore face (YOKE-PATH), wall, pawl zone, rack, tube."""
@@ -290,7 +303,8 @@ def axis_decision() -> dict:
 
 # ================================================================================== beam model: the real crown
 TOP_BAR_AFT_MM = 25.0              # geometry.yaml frame.members_topology.crown.top_bar_aft_offset_mm (asserted in tests)
-CLAMP_WEB_T = 2.5                  # clamp fitting webs (two, 7075), thickness; sized in crown_spine_clamp.web_check
+CLAMP_WEB_T = 2.0                  # clamp fitting webs (two, 7075), thickness; sized in crown_spine_clamp.web_check
+#                                    (BL-047: 2.5 -> 2.0, every margin holds; analysis/crown_gnl.md section 6)
 CLAMP_WEB_H = 21.2                 # web height = the saddle OD (18 + 2 x (0.8 bond + 0.8 wall))
 CLAMP_WEB_GAP = 23.2               # webs at the socket OD's sides (crown_spine_clamp socket_od_mm)
 
@@ -391,6 +405,19 @@ def _wall(P, x0, y0, x1, y1) -> float:
     return 0.0 if g.is_empty else float(g.length)
 
 
+def _fore_wall(win, z: float, c: dict) -> float:
+    """Fore wall thickness on the centre line; inside the BL-047 pawl window's height, beside the window (|x| = its
+    half width + 1 mm, the lesser side): the window is the intended opening for the pawl's swing and its cord."""
+    try:
+        from .h1_pawl import window_section
+        w, hx = window_section()
+    except Exception:          # pragma: no cover
+        w, hx = None, 0.0
+    if w is not None and w.bounds[1] - 0.5 <= z <= w.bounds[3] + 0.5:
+        return min(_wall(win, sx * (hx + 1.0), c["fore_rel"] - 0.01, sx * (hx + 1.0), -60.0) for sx in (-1.0, 1.0))
+    return _wall(win, 0.0, c["fore_rel"] - 0.01, 0.0, -60.0)
+
+
 def slice_channel(mesh, z: float) -> dict:
     """One slice: clearance of the tube + rack to the body, pawl zone empty, wall thicknesses (y relative to axis)."""
     from shapely.geometry import box
@@ -404,7 +431,7 @@ def slice_channel(mesh, z: float) -> dict:
     out = {"z": round(float(z), 2), "clear_mm": round(clear, 3),
            "tube_rack_clear": bool(clear >= RUN_CLEAR - MESH_TOL),
            "pawl_zone_empty": bool(not win.intersects(pz)),
-           "fore_wall_mm": round(_wall(win, 0.0, c["fore_rel"] - 0.01, 0.0, -60.0), 2),
+           "fore_wall_mm": round(_fore_wall(win, z, c), 2),
            "aft_wall_mm": round(_wall(win, 0.0, c["aft_r"] + 0.01, 0.0, 40.0), 2),
            "side_wall_R_mm": round(_wall(win, c["half_x"] + 0.01, -8.0, 40.0, -8.0), 2),
            "side_wall_L_mm": round(_wall(win, -c["half_x"] - 0.01, -8.0, -40.0, -8.0), 2),
