@@ -403,11 +403,11 @@
     "item": "bonded_nylon_tex90 (needle + bobbin)",
     "material_id": "bonded_nylon_tex90",
     "unit": "m",
-    "production_qty": 124.4,
+    "production_qty": 125.1,
     "production_usd": 0.76,
     "prototype_qty": 1260.0,
     "prototype_usd": 7.69,
-    "how": "1 cone(s) of 4 oz = 1260 m each (124.4 m used)"
+    "how": "1 cone(s) of 4 oz = 1260 m each (125.1 m used)"
    },
    {
     "section": "consumable",
@@ -474,7 +474,7 @@
  "fabric_usd_primary": 88.09,
  "fabric_usd_alternate": 88.17,
  "missing_cost": [],
- "proto_hours": 74.8,
+ "proto_hours": 75.2,
  "proto_hours_by_step": {
   "0 Prep and cutting": 16.28,
   "1 Pockets": 6.06,
@@ -483,23 +483,23 @@
   "4 Main bag": 14.36,
   "5 Collar and roll top": 3.5,
   "6 Crown lid B-29 (as hunted)": 8.46,
-  "7 Straps and webbing": 6.46,
+  "7 Straps and webbing": 6.86,
   "8 Add-ons (scope pod as hunted, meat liner meat trip)": 3.71,
   "9 Rain fly F-01": 5.4,
   "10 Finish, inspect, pack": 1.2
  },
- "sam_min": 508.8,
+ "sam_min": 511.6,
  "labour_usd": {
-  "us_contract_usd_min": 432.44,
-  "asia_contract_usd_min": 61.05
+  "us_contract_usd_min": 434.89,
+  "asia_contract_usd_min": 61.4
  },
  "cmt_usd": {
-  "us_contract_usd_min": 540.55,
-  "asia_contract_usd_min": 76.31
+  "us_contract_usd_min": 543.61,
+  "asia_contract_usd_min": 76.74
  },
  "landed_usd": {
-  "us_contract_usd_min": 921.61,
-  "asia_contract_usd_min": 457.37
+  "us_contract_usd_min": 924.67,
+  "asia_contract_usd_min": 457.81
  },
  "lid_hours_drafted": 9.53,
  "lid_hours_booked": 7.76,

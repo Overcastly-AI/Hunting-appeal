@@ -2080,3 +2080,76 @@ SEAM-FLOOR (HE-FIT step 0, FIT-US); carried: US-TOPO, US-FLEET, DRAPE-US, DRAPE-
 
 **Status.** N-1 is fixed in the design (stations, channels, cut; model >= 10 mm everywhere); N-1b (clevis heads) is open
 on the frame side; the release stays **NOT ready to cut** (`FIFTH_REVIEW_DONE` False): review 5 follows.
+
+## 26. BL-052: clevis hardware, kit text and the belly mark (pack-designer, 2026-11-13)
+
+Source: `docs/backlog/BL-052-clevis-handoff.md`, the hand-off in `h1_crown.md` 4 (BL-051). Code: `mfg_corrie_f_rev3.py`
+(`frame_bolt_lines`, `bt_path_mm`, the belly-gauge op, PACKAGING card line, RD-02 / RD-22, N-1b text, ASSUMPTIONS
+BELLY-MIN / BELLY-GAUGE / CLEVIS-FACE), `physical_test_kit.py` (`clevis_hw_txt`, `gauge_txt`, `t1_patch`, `mt1cr_row`,
+`clevis_face_z`, CLEVIS-SHARE / FIT-US / HE-FIT step 0 text, shopping, results rows), `concepts/corrie_f.py`
+(`BELLY_MIN_MM`, `BELLY_GAUGE_MM`, `BELLY_GAUGE_TIP_MM`), `patterns_corrie_f_rev3.py` (`_belly_gauge` on US / US2).
+Tests: `tests/test_bl052_clevis_handoff.py`, `tests/test_bl050b_bag_lanes.py` (updated). Units mm, N, g.
+
+### 26.1 Clevis hardware (item 1)
+
+Every count reads `h1_bedfit.JOINT` (BL-051 counterbore: `head_washer` False, `n_washers` 1 per bolt, `bolt_len` 35):
+clevis bolts `n_cl` = 2 per clevis x 2 clevises = **4 Ti gr5 M5 x 35 DIN 7984** (was M5 x 40), nuts 4, washers
+`n_cl * n_washers` = **4 x 10 mm DIN 433, nut side only** (was 8). The BOM line says why an M5 x 45 must not go in the
+clevis (it bottoms in the blind tail hole 10 mm before the head seats). Release BOM and test kit regenerated. Kit
+shopping: clevis washers 2 + 2 + 2 spare = 6 (was 10).
+
+### 26.2 Kit text (item 2)
+
+- HE-FIT step 0 and CLEVIS-SHARE: M5 x 35, heads in the 9 mm counterbores with **no** washer under the head, 2 x 10 mm
+  DIN 433 washers on the nut side; "check the heads sit below the clevis face" (design 0.5 mm below).
+- **T1**: US1 and US2 arm-root strain gauges (1 mm foil, 120 ohm, quarter bridge, cyanoacrylate on sanded PAHT, R side,
+  bag face, 3 mm off the stay, axis along the arm); read at 0 / 150 / 300 lb; root stress = strain x 3.86 GPa (record
+  `pa12_cf_fdm_paht` youngs_modulus_xy_mpa). PASS: gauge stress <= the h1_crown lug model's at that load.
+- **MT-1cr (new row, R1, G6)**: the "MT-1 cradle pull" that h1_crown.md names did not exist: the register's MT-1 is the
+  bench box-X proof with no frame. MT-1cr runs on P1, bag off: (A) a helper sets the cradle round a 20 kg sand quarter
+  from the packaging card only, 3 tries, belly measured under a stick across each strap's pins (>= 60 mm, 6 of 6);
+  (B) each pin pulled along its lane leg (US1 45 deg, US2 23 deg) to 240 / 480 / 720 N with both root gauges read.
+  The MT-1 row's note points at it.
+- **CLEVIS-SHARE**: the US2 arm-root gauge is required, read at 240 / 480 / 720 N and at each cycle stop; loupe check
+  of the head counterbores (ASSUMPTION HEAD-BEAR). Its joint numbers now come from `h1_crown.json` (strength 3.11,
+  fatigue 1.4; share 1.0: 1.87 / 0.84), replacing BL-050's typed 3.85 / 1.73.
+- Shopping: strain gauges (pack of 10), quarter-bridge completion resistors + two more HX711 modules, gauge adhesive
+  (prices ASSUMPTION, no record).
+
+### 26.3 Minimum cradle belly 60 mm (item 3, orchestrator call)
+
+US1 arm-root fatigue on its lane (`h1_crown.json` belly_sweep): 70 mm 1.09, **60 mm 1.03**, 55 mm 1.00, 50 mm 0.95.
+DECISION BELLY-GAUGE: a 60 mm (2.4 in) ruler sewn on every US / US2 tail: two contrast-thread BT-S tacks (10 x 2 mm,
+304, tex 90) across the strap centre, 60 mm apart centre to centre, the outer one 20 mm from the sealed tip (US1 at
+470 / 530 mm, US2 at 845 / 905 mm on the flat strip). Thread only: no hardware, no hook-and-loop, quiet. Packaging card
+(the user-guide stand-in, RD-22 still open): "cam until the quarter hangs about a hand's width (70 mm) below a pole
+laid across the strap's two pins, NEVER flatter than the 60 mm between the two contrast tacks; flatter = more strap
+tension than the frame is rated for: let the cam out."
+
+Why a ruler and not a length stop: a sewn stop on the strap sets a path length, not a belly. On the straight-leg model
+the US2 path changes only 6.4 mm per 10 mm of belly (US1 12 mm), less than the quarter's shape and cam take-up
+scatter, so a stop would not hold 60 mm. The ruler lets the hunter read the belly directly; whether a gloved hunter
+does so is ASSUMPTION BELLY-GAUGE (MT-1cr part A settles it). If it fails, the frame-side root fix (BL-049 proposal 2,
+US1 arm onto the lower branch) is the robust answer (owner).
+
+Mass: 4 tacks x 54.9 mm of 304 path x 2.75 (THREAD_FACTOR) x 0.09 g/m = **+0.05 g (0.002 oz)**, booked through the
+op's stitch length (`build_effort_rev3.json` -> `corrie_f.parts` BL-034 thread row), base config.
+
+The meat-haul instructions in `huntkit/gendesign/meat_haul.py` (step 6, "about 70 mm") are frame-side code this ticket
+may not edit: the same line is listed for the structural / meat-haul owner (report, found not fixed).
+
+### 26.4 Clevis face (item 4)
+
+With the heads sunk, the bag panel rests on the clevis's flat outer face (x +/-183, z 127-157: the US2 pin z 142 +/-
+the 14.5 mm joint block); the free drapes pass 4.0 mm inside it on every drape (us_route.json face_min_mm).
+ASSUMPTION CLEVIS-FACE: that contact is not a wear point. FIT-US now colours the clevis faces (a second colour) and
+adds step (7), a 10x loupe inspection of B-03 / the B-01 | B-03 corner over that band (about 92-122 mm above the floor
+seam) after the crank cycles and again after the T9 walk; results rows "face after FIT-US", "face after the T9 walk".
+N-1b stays open (frame side) with the BL-051 state in its text; the owner option if it wears is the panel let out
+about 7 mm over z 127-157 or a wear patch there.
+
+### 26.5 Assumptions
+
+BELLY-MIN (MT-1cr part A + owner), BELLY-GAUGE (MT-1cr part A; tails threaded through the bought cam + tri-glide at
+op @FIT: US2's inner tack sits at the cam at the worst bag-on drape, 54 mm grip), CLEVIS-FACE (FIT-US step 7, T9 walk),
+HEAD-BEAR (CLEVIS-SHARE), US1-STUB-GOVERNS / STAY-STUB / CROWN-SECTION (T1, MT-1cr, CLEVIS-SHARE gauges).

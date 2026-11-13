@@ -3,20 +3,20 @@
  "thread_factor": 2.75,
  "thread_waste_excluded": 0.15,
  "thread_g": {
-  "base": 12.26,
+  "base": 12.31,
   "as_hunted": 4.63,
   "meat_trip": 1.94
  },
- "thread_g_total": 18.83,
- "thread_g_package_incl_waste_and_duplicates": 21.66,
+ "thread_g_total": 18.88,
+ "thread_g_package_incl_waste_and_duplicates": 21.72,
  "hours_per_bag": {
-  "base": 50.89,
+  "base": 51.29,
   "as_hunted": 16.29,
   "meat_trip": 3.48
  },
- "hours_per_bag_total": 70.66,
+ "hours_per_bag_total": 71.06,
  "hours_one_off": 4.1,
- "hours_package_total": 74.76,
+ "hours_package_total": 75.16,
  "hours_by_step": {
   "0 Prep and cutting": 12.18,
   "1 Pockets": 6.06,
@@ -25,7 +25,7 @@
   "4 Main bag": 14.37,
   "5 Collar and roll top": 3.49,
   "6 Crown lid B-29 (as hunted)": 8.46,
-  "7 Straps and webbing": 6.46,
+  "7 Straps and webbing": 6.86,
   "8 Add-ons (scope pod as hunted, meat liner meat trip)": 3.71,
   "9 Rain fly F-01": 5.4,
   "10 Finish, inspect, pack": 1.2
@@ -998,6 +998,18 @@
   },
   {
    "seq": "7.25",
+   "op": "US / US2 belly gauge tacks (BL-052, DECISION BELLY-GAUGE)",
+   "step": "7 Straps and webbing",
+   "cfg": "base",
+   "per_bag": true,
+   "thread_id": "bonded_nylon_tex90",
+   "length_mm": 219.7,
+   "thread_g": 0.054,
+   "hours": 0.4,
+   "duplicate_of": null
+  },
+  {
+   "seq": "7.26",
    "op": "Fit the hardware",
    "step": "7 Straps and webbing",
    "cfg": "base",

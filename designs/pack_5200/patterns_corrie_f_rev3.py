@@ -1606,6 +1606,18 @@ def _neck(p, w, edge, span, tack=4.0):
         p.add_internal_line([(edge + 1, y), (w - edge - 1, y)], "stitch", "neck tack BT-M (one per leg)")
 
 
+BELLY_TACK_MM = 10.0          # BL-052: = mfg BARTACK_STD BT-S length (10 x 2 mm), across the strap's centre
+
+
+def _belly_gauge(p, w, length):
+    """BL-052 DECISION BELLY-GAUGE (corrie_f.BELLY_MIN_MM): two contrast BT-S tacks across the strap's tail,
+    BELLY_GAUGE_MM apart centre to centre, the first BELLY_GAUGE_TIP_MM from the sealed tail tip (flat y = length)."""
+    b = BELLY_TACK_MM
+    for y in (length - F.BELLY_GAUGE_TIP_MM, length - F.BELLY_GAUGE_TIP_MM - F.BELLY_GAUGE_MM):
+        p.add_internal_line([((w - b) / 2, y), ((w + b) / 2, y)], "stitch",
+                            f"belly gauge tack BT-S, contrast thread ({F.BELLY_GAUGE_MM:.0f} mm apart)")
+
+
 def _tip_box_y(fold, h):
     """Flat y of a box sewn in the doubled zone of an end folded at ``fold`` (tip lands at 2 x fold), its edge
     BOX_TIP_GAP from the tip: leaves the largest loop at the fold."""
@@ -1728,8 +1740,10 @@ def build_webbing(rs: RevSet, c):
                   boxes=[(_tip_box_y(US_EYE, 25.0), 25.0, "sewn eye (MT-1)")],
                   source="corrie_f.US_CUT_MM (BL-050 B; us_route.json strap_lengths)",
                   note=f"eye neck: long edges folded {US_NECK_EDGE:.1f} mm in between the neck lines (BL-044); "
-                       f"{n.upper()} only: do not swap with the other strap")
+                       f"{n.upper()} only: do not swap with the other strap; tail: two contrast BT-S belly-gauge "
+                       f"tacks {F.BELLY_GAUGE_MM:.0f} mm apart (BL-052)")
         _neck(us, 25.0, US_NECK_EDGE, US_NECK)
+        _belly_gauge(us, 25.0, F.US_CUT_MM[n])
     # BL-044 (BL-045 found-not-fixed): the US cam on the RIGHT pin had no drawn anchor (BOM 'US-anchor' only). USA = a
     # 25 mm dog-bone as IMC: one loop round the right pin (necked to 18 mm where it passes the throat), the
     # other round the US cam's anchor bar, each closed by a 21 x 25 box. Path: left eye (US) - US strap - cam - cam bar

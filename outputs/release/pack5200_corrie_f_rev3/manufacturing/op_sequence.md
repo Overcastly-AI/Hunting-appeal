@@ -185,7 +185,7 @@ Beginner rules: all flat work before the bag becomes 3D; clips, never pins, in c
 - Machine WF1; needle Nm 90/14 DPx17, round point R; thread bonded_nylon_tex70; SPI 10; stitch 301; seam SSa2
 - stitching 1979 mm (78 in); beginner 0.69 h, SAM 5.0 min
 **5.02 RT roll-clip straps on the flat hem B-07**
-- How: B-07 still flat. Each RT strap (565 mm): lay its first 60 mm (to the 'end of the sewn zone' line) on the OUTSIDE of B-07 on the drawn 'RT roll-clip strap' rectangle (L at x 967-1027 mm, R at x 382-442 mm from the B-07 left end), strap end on the outer line, the free strap running along the hem out across the 'roll end' notch (BL-043 DECISION RT-ORIGIN: the strap leaves the roll at its end, where the hem folds; its box sits on the B-07s strip, 7.5 mm clear of the 40 mm fold gap). Box-X 21 x 25 at the drawn 'RT strap' box through strap + B-07. Fold the free strap back over the box for now and clip it out of the way. The ADJUSTABLE (male) buckle half is threaded on the free end at hardware fitting (op 7.25).
+- How: B-07 still flat. Each RT strap (565 mm): lay its first 60 mm (to the 'end of the sewn zone' line) on the OUTSIDE of B-07 on the drawn 'RT roll-clip strap' rectangle (L at x 967-1027 mm, R at x 382-442 mm from the B-07 left end), strap end on the outer line, the free strap running along the hem out across the 'roll end' notch (BL-043 DECISION RT-ORIGIN: the strap leaves the roll at its end, where the hem folds; its box sits on the B-07s strip, 7.5 mm clear of the 40 mm fold gap). Box-X 21 x 25 at the drawn 'RT strap' box through strap + B-07. Fold the free strap back over the box for now and clip it out of the way. The ADJUSTABLE (male) buckle half is threaded on the free end at hardware fitting (op 7.26).
 - Machine BT / PS (prototype WF2 + J1); needle Nm 140/22 DPx17, round point R; thread bonded_nylon_tex135; SPI 7; stitch 301 box-X path; seam BOX
 - stitching 315 mm (12 in); load table: RT; sketch SK-10; QC QC-07; beginner 0.30 h, SAM 2.2 min
 **5.03 Roll-top hem with HDPE strips**
@@ -251,7 +251,7 @@ Beginner rules: all flat work before the bag becomes 3D; clips, never pins, in c
 ## Step 7 Straps and webbing
 
 **7.01 B-28: B-28 crown strap, kit M x2**
-- How: straight strap, sealed ends; threaded at assembly (op 7.25).
+- How: straight strap, sealed ends; threaded at assembly (op 7.26).
 - Machine bench; needle -; thread -; SPI -; stitch -; seam -
 - sketch SK-1, SK-7; beginner 0.00 h, SAM 0.0 min
 **7.02 B-28t: lock tab (the other 2 are boxed in an earlier op) x2**
@@ -299,7 +299,7 @@ Beginner rules: all flat work before the bag becomes 3D; clips, never pins, in c
 - Machine BT / PS (prototype WF2 + J1); needle Nm 140/22 DPx17, round point R; thread bonded_nylon_tex135; SPI 7; stitch 301 box-X path; seam BOX
 - stitching 157 mm (6 in); load table: IM3; sketch SK-1, SK-7; QC QC-07; beginner 0.10 h, SAM 0.7 min
 **7.13 IMC: IM cam anchor tab (cam bar <-> hook / carabiner) x3**
-- How: HARDWARE FIRST (BL-043 m-5): this op closes both loops, so before sewing either box thread the 25 mm CAM's anchor bar into the 'fold round the CAM anchor bar' loop (all 3 tabs) and the rated G-HOOK's bar into the other loop of the IM1 and IM2 tabs; the IM3 tab's second loop stays EMPTY (the wiregate carabiner clips in at op 7.25). Hardware for this op: 3 cams, 2 G-hooks. Then: 192 mm (7.6 in). Folds: fold round the CAM anchor bar; fold round the G-hook bar / carabiner. Box-X: 21 x 25, 21 x 25 at the drawn marks.
+- How: HARDWARE FIRST (BL-043 m-5): this op closes both loops, so before sewing either box thread the 25 mm CAM's anchor bar into the 'fold round the CAM anchor bar' loop (all 3 tabs) and the rated G-HOOK's bar into the other loop of the IM1 and IM2 tabs; the IM3 tab's second loop stays EMPTY (the wiregate carabiner clips in at op 7.26). Hardware for this op: 3 cams, 2 G-hooks. Then: 192 mm (7.6 in). Folds: fold round the CAM anchor bar; fold round the G-hook bar / carabiner. Box-X: 21 x 25, 21 x 25 at the drawn marks.
 - Machine BT / PS (prototype WF2 + J1); needle Nm 140/22 DPx17, round point R; thread bonded_nylon_tex135; SPI 7; stitch 301 box-X path; seam BOX
 - stitching 944 mm (37 in); load table: IMC; sketch SK-1, SK-7; QC QC-07; beginner 0.60 h, SAM 4.3 min
 **7.14 K-IM: IM tail keeper (25 mm elastic) x3**
@@ -346,7 +346,11 @@ Beginner rules: all flat work before the bag becomes 3D; clips, never pins, in c
 - How: Cut 299 mm (11.8 in), melt / whip both ends; fitted at hardware assembly (op below) as its use says.
 - Machine bench; needle -; thread -; SPI -; stitch -; seam -
 - beginner 0.06 h, SAM 0.4 min
-**7.25 Fit the hardware**
+**7.25 US / US2 belly gauge tacks (BL-052, DECISION BELLY-GAUGE)**
+- How: On the flat tail of each under-strap sew one BT-S tack [ZZ or BT; Nm 110/18 DPx17, round point R; bonded_nylon_tex90; ISO 304, 16 x 2 mm zigzag; prototype without zigzag: BT-301 fallback (4 passes, UNRATED); CONTRAST colour thread, same record] across the strap centre at each of the two 'belly gauge tack' lines: 60 mm (2.36 in) apart centre to centre, the first 20 mm from the sealed tail tip. QC: steel rule, 60 +/- 2 mm between the tack centres. This is the hunter's minimum-belly gauge (user card: cradle belly never under 60 mm).
+- Machine BT; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI -; stitch 304; seam BT
+- stitching 220 mm (9 in); sketch SK-1; QC QC-07; beginner 0.40 h, SAM 2.9 min
+**7.26 Fit the hardware**
 - How: IM1-IM3 (SK-11, DECISION IM-CAM-TAB): the cam is SEWN to the IMC tab (cam end box), the IMC's other loop carries the G-hook (IM1 / IM2) or the wiregate carabiner (IM3); the IM strap's free end goes through the cam from the wearer side, its sewn loop girth-hitched on the left eye; US1/US2: cam, then the STAINLESS 25 mm tri-glide threaded behind the cam as the cradle slip backstop (orchestrator 2026-11-13; gate US-BS); T3 loops: wiregate carabiner + TPU sleeve; W1-W3: rated G-hook end, heavy ladder lock on the gusset side; W3 is the OUTER layer (BL-043 DECISION W3-OVER): it may lie over the RT straps and the roll, so slacken W3 (G-hook off) before opening the roll top; guys: toggle in the B-25 tab, through the B-27 port, heavy ladder lock on LLT, nylon tri-glide tail keeper; B-28: toggle rear, ladder lock both ends, 2 elastic keepers; RT: thread the free end through the ADJUSTABLE (male) half of each side-release buckle (its female half is already on the RTM gusset tab), K-RT keeper below it; E5: cord lock; cords MK-cord per their use.
 - Machine bench; needle -; thread -; SPI -; stitch -; seam -
 - sketch SK-11; QC QC-11; beginner 1.00 h, SAM 7.2 min

@@ -2,7 +2,7 @@
 
 Material cost a bag, record prices (production quantities): **primary $381.06**, alternate $381.14 (fabric $88.09 / $88.17).
 
-Beginner hours (bag_concepts.HOURS model, every op): **74.8 h**, of which one-off set-up 4.1 h. Lid on the drafted pattern 9.53 h (booked 7.76 h).
+Beginner hours (bag_concepts.HOURS model, every op): **75.2 h**, of which one-off set-up 4.1 h. Lid on the drafted pattern 9.53 h (booked 7.76 h).
 
 | Step | Beginner h |
 |---|---:|
@@ -13,17 +13,17 @@ Beginner hours (bag_concepts.HOURS model, every op): **74.8 h**, of which one-of
 | 4 Main bag | 14.36 |
 | 5 Collar and roll top | 3.50 |
 | 6 Crown lid B-29 (as hunted) | 8.46 |
-| 7 Straps and webbing | 6.46 |
+| 7 Straps and webbing | 6.86 |
 | 8 Add-ons (scope pod as hunted, meat liner meat trip) | 3.71 |
 | 9 Rain fly F-01 | 5.40 |
 | 10 Finish, inspect, pack | 1.20 |
 
-Factory SAM 509 min (8.5 h) a bag (ASSUMPTION SAM-RATIO 0.12).
+Factory SAM 512 min (8.5 h) a bag (ASSUMPTION SAM-RATIO 0.12).
 
 | Scenario | Labour $ | CMT incl. overhead $ | + materials $ |
 |---|---:|---:|---:|
-| us_contract_usd_min | 432.44 | 540.55 | 921.61 |
-| asia_contract_usd_min | 61.05 | 76.31 | 457.37 |
+| us_contract_usd_min | 434.89 | 543.61 | 924.67 |
+| asia_contract_usd_min | 61.40 | 76.74 | 457.81 |
 
 ## One bag (prototype buy) vs production (BL-040 M-11)
 
@@ -67,7 +67,7 @@ Production a bag (10-bag markers + waste): **$381.06**. Buying for ONE bag (1-ba
 | hardware | TPU sleeve on the IM3 carabiner (2) | unit | 2 | 0.40 | 2 | 0.40 | as production (whole units / cones) |
 | thread | bonded_nylon_tex135 (needle + bobbin) | m | 35.1 | 0.28 | 840 | 6.80 | 1 cone(s) of 4 oz = 840 m each (35.1 m used) |
 | thread | bonded_nylon_tex70 (needle + bobbin) | m | 82 | 0.43 | 1620 | 8.42 | 1 cone(s) of 4 oz = 1620 m each (82 m used) |
-| thread | bonded_nylon_tex90 (needle + bobbin) | m | 124.4 | 0.76 | 1260 | 7.69 | 1 cone(s) of 4 oz = 1260 m each (124.4 m used) |
+| thread | bonded_nylon_tex90 (needle + bobbin) | m | 125.1 | 0.76 | 1260 | 7.69 | 1 cone(s) of 4 oz = 1260 m each (125.1 m used) |
 | consumable | 6 mm double-sided basting tape (zips) | roll of 20 m | 3.66 | 0.18 | 1 | 6.00 | 1 roll of 20 m (ASSUMPTION SHOP-UNIT: smallest roll) |
 | consumable | labels: size / care / ID, hang tag, load-limit warning card | set | 1 | 0.60 | 1 | 0.60 | as production (whole units / cones) |
 | consumable | silicone seam sealer for the silpoly fly and liner seams, ~10 ml (ASSU | tube 1 oz (28 ml) | 1 | 0.80 | 1 | 8.00 | 1 tube 1 oz (28 ml) (ASSUMPTION SHOP-UNIT: smallest tube of silicone seam sealer) |
@@ -78,9 +78,9 @@ Production a bag (10-bag markers + waste): **$381.06**. Buying for ONE bag (1-ba
 
 | Kit | Ledger, team B fabrics (g) | Primary pattern delta (g) | PRIMARY target (g) | lb |
 |---|---:|---:|---:|---:|
-| base | 1160.8 | +64.7 | 1225.5 | 2.70 |
-| as hunted | 1442.6 | +86.9 | 1529.5 | 3.37 |
-| meat trip | 1638.6 | +96.0 | 1734.6 | 3.82 |
+| base | 1160.9 | +64.7 | 1225.6 | 2.70 |
+| as hunted | 1442.7 | +86.9 | 1529.6 | 3.37 |
+| meat trip | 1638.7 | +96.0 | 1734.7 | 3.82 |
 
 One-off tooling (not a bag): J1-J8 jigs; LK-1900 / AMS-210EN programs; laser files are the part A DXFs; dies only above ~500 bags a year.
 

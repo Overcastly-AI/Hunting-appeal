@@ -146,6 +146,14 @@ SEAMS = {   # seam constructions (ASTM D6193 code; ISO 4916 class / number)
 }
 BARTACK_STD = {"BT-S": {"len_mm": 10.0, "w_mm": 2.0, "stitches": 28},     # ASSUMPTION BT-STD (LK-1900 short tack)
                "BT-M": {"len_mm": 16.0, "w_mm": 2.0, "stitches": 42}}     # LK-1900 standard tack, 42 stitches
+GAUGE_NOTE = "CONTRAST colour thread, same record"     # BL-052 belly gauge tacks (quiet: thread only, no hardware)
+
+
+def bt_path_mm(kind: str) -> float:
+    """BL-052: seam path of one bartack (the zigzag over its stitches), so a tack op books thread like a seam."""
+    b = BARTACK_STD[kind]
+    k = b["stitches"]
+    return (k - 1) * math.hypot(b["len_mm"] / (k - 1), b["w_mm"])
 HOURS = P.BC.HOURS                     # bag_concepts.HOURS: the beginner-hours model every bag entry is booked on
 WEB_CUT_H = 0.03                       # ASSUMPTION: hot-knife cut + seal per webbing piece (h, beginner)
 PLACE_H = 0.05                         # ASSUMPTION: mark + clip one placement (h, beginner)
@@ -494,8 +502,9 @@ def fairlead_line() -> str:
 
 def frame_bolt_lines() -> list[tuple]:
     """BL-050 B (BL-051 mix-up risk): the two frame bolt sets on DISTINCT lines. The z 234 body joint (frame_h1.JOINT:
-    M5 x 45, 12 mm washers, load-bearing) and the BL-050 US2 clevis (h1_bedfit.JOINT: M5 x 40, 10 mm DIN 433 washers:
-    12 mm does not fit its 29 mm block). Both Ti gr5 DIN 7984 low head, A2 ISO 4032 nuts."""
+    M5 x 45, 12 mm washers, load-bearing) and the US2 clevis (h1_bedfit.JOINT; BL-051 counterbored heads: M5 x 35, no
+    washer under the head, one 10 mm DIN 433 washer per bolt on the nut side: 12 mm does not fit its 29 mm block).
+    Both Ti gr5 DIN 7984 low head, A2 ISO 4032 nuts. BL-052: every clevis count from BF.JOINT (n_washers per bolt)."""
     from huntkit.gendesign import frame_h1 as FH
     from huntkit.gendesign import h1_bedfit as BF
     z, c = FH.JOINT, BF.JOINT
@@ -506,14 +515,15 @@ def frame_bolt_lines() -> list[tuple]:
         ("z234_nut", "z 234 JOINT: M5 hex nut A2 ISO 4032 (8 AF x 4)", "-", 4, "unit", "frame kit", True),
         ("z234_washer", f"z 234 JOINT: M5 washer {z.washer_od:.0f} mm OD x {z.washer_t:.1f} A2 ({z.washer_od:.0f} mm is "
          f"LOAD-BEARING; NOT the {c.washer_od:.0f} mm clevis washer)", "-", 8, "unit", "frame kit", True),
-        ("clevis_bolt", f"US2 CLEVIS (BL-050): Ti gr5 low-head socket cap screw M5 x {c.bolt_len:.0f} DIN 7984, 2 per "
-         f"side (NOT the M5 x {z.bolt_len:.0f} of z 234: it would stand {z.bolt_len - c.bolt_len:.0f} mm longer into "
-         "the trap)", "-", n_cl, "unit", "frame kit", True),
-        ("clevis_nut", "US2 CLEVIS (BL-050): M5 hex nut A2 ISO 4032 (8 AF x 4), side traps", "-", n_cl, "unit",
+        ("clevis_bolt", f"US2 CLEVIS (BL-051): Ti gr5 low-head socket cap screw M5 x {c.bolt_len:.0f} DIN 7984, 2 per "
+         f"side, head in the printed {c.cbore_d:.0f} mm counterbore, NO washer under the head (NOT the M5 x "
+         f"{z.bolt_len:.0f} of z 234: it bottoms in the blind tail hole {z.bolt_len - c.bolt_len:.0f} mm before the "
+         "head seats)", "-", n_cl, "unit", "frame kit", True),
+        ("clevis_nut", "US2 CLEVIS (BL-051): M5 hex nut A2 ISO 4032 (8 AF x 4), side traps", "-", n_cl, "unit",
          "frame kit", True),
-        ("clevis_washer", f"US2 CLEVIS (BL-050): M5 washer {c.washer_od:.0f} mm OD x {c.washer_t:.1f} A2 DIN 433 "
-         f"({z.washer_od:.0f} mm does not fit the clevis block; NOT for z 234)", "-", 2 * n_cl, "unit", "frame kit",
-         True),
+        ("clevis_washer", f"US2 CLEVIS (BL-051): M5 washer {c.washer_od:.0f} mm OD x {c.washer_t:.1f} A2 DIN 433, "
+         f"{c.n_washers} per bolt on the NUT side only ({z.washer_od:.0f} mm does not fit the clevis block; NOT for "
+         "z 234)", "-", n_cl * c.n_washers, "unit", "frame kit", True),
     ]
 
 
@@ -1564,6 +1574,17 @@ def ops(ctx: Ctx) -> list[SewingOp]:
            bartack=pid if lpr else "", hours=hrs, length=wl, sketch="SK-1, SK-7" + (", SK-12" if pid == "B-25" else ""),
            qc="QC-07" if lpr else "",
            vol="pattern: ledger" if pid in ("US", "US2") else "")
+    # BL-052 DECISION BELLY-GAUGE (orchestrator: minimum cradle belly 60 mm): the 60 mm ruler on each US / US2 tail
+    ng = sum(1 for pid in ("US", "US2") if pid in rs.pieces
+             for ln in rs.pieces[pid].internal_lines if (ln.label or "").startswith("belly gauge tack"))
+    if ng:
+        op("US / US2 belly gauge tacks (BL-052, DECISION BELLY-GAUGE)",
+           f"On the flat tail of each under-strap sew one BT-S tack {step_spec('bt', '304', GAUGE_NOTE)} across the strap centre at each of the two 'belly gauge tack' lines: "
+           f"{P.F.BELLY_GAUGE_MM:.0f} mm ({P.F.BELLY_GAUGE_MM / IN:.2f} in) apart centre to centre, the first "
+           f"{P.F.BELLY_GAUGE_TIP_MM:.0f} mm from the sealed tail tip. QC: steel rule, {P.F.BELLY_GAUGE_MM:.0f} +/- 2 mm "
+           "between the tack centres. This is the hunter's minimum-belly gauge (user card: cradle belly never under "
+           f"{P.F.BELLY_MIN_MM:.0f} mm).", "bt", pieces="US x1, US2 x1", seam="BT",
+           length=ng * bt_path_mm("BT-S"), hours=ng * HOURS["bartack"], sketch="SK-1", qc="QC-07")
     cords = [w["id"] for w in webs if "cord" in w["material_id"] and w["id"] not in named_before]
     op("Fit the hardware", "IM1-IM3 (SK-11, DECISION IM-CAM-TAB): the cam is SEWN to the IMC tab (cam end box), the "
        "IMC's other loop carries the G-hook (IM1 / IM2) or the wiregate carabiner (IM3); the IM strap's free end goes "
@@ -1780,6 +1801,8 @@ DEFECTS = [   # defect, where, cause, prevention / fix, class
     ("Hook-and-loop or a non-coil zip fitted", "any", "substitution", "BOM check (owner: quiet bag)", "critical"),
 ]
 
+from huntkit.gendesign.meat_haul import BELLY_MM as _MH_BELLY  # noqa: E402  (BL-052: the design belly, 70 mm)
+
 PACKAGING = [
     "Bag: collar unrolled, door zipped, straps coiled inside the bag (keepers on), folded flat to about 450 x 350 mm.",
     "Base kit inside the bag: IM1-IM3, US1/US2, W1-W3 fitted; guys fitted to B-22 with the toggle end coiled.",
@@ -1789,6 +1812,10 @@ PACKAGING = [
     "carabiners, meat liner MS.",
     "Card on top: load limits (53 kg / 116 lb frame meat in float mode, RD-02), guy rule (port guys fitted for every "
     "carry, RD-23), the strap tail rule, wash cold / line dry, no hook-and-loop.",
+    f"Card, meat-haul rule (BL-052, ASSUMPTION BELLY-MIN): 'Bag-off cradle: cam the under-straps until the quarter "
+    f"hangs about a hand's width ({_MH_BELLY:.0f} mm, {_MH_BELLY / IN:.2f} in) below a pole laid across the strap's two "
+    f"pins, NEVER flatter than the {P.F.BELLY_MIN_MM:.0f} mm ({P.F.BELLY_MIN_MM / IN:.1f} in) between the two contrast "
+    "tacks on the strap tail. Flatter = more strap tension than the frame is rated for: let the cam out.'",
     "Outer: recycled poly bag 600 x 800 mm, 10 bags per carton; carton label: rev 3, door D2, crown kit, fabric set "
     "(primary / alternate), date, lot.",
 ]
@@ -1924,7 +1951,8 @@ def delta_closeout(ctx: Ctx, bom: list[BOMLine], lpts: list[dict]) -> list[dict]
     add("RD-01", "closed" if "F-03" not in ids else "open", f"F-03 in the rev 3 piece list: {'F-03' in ids}",
         "nothing (v3.1 set stays superseded with its STOP notice)")
     add("RD-02", "restated", f"B-24 x2 + 2 carabiners in the meat-trip kit BOM: {has('B-24') and 'B-24 float links' in items}; "
-        "PT-6 in the release gates", "user guide (RD-22) with the 53 kg limit and belly rule; PT-6")
+        "PT-6 in the release gates", "user guide (RD-22) with the 53 kg limit and the belly rule (the packaging card carries "
+        f"the {P.F.BELLY_MIN_MM:.0f} mm minimum and the strap gauge since BL-052); PT-6")
     add("RD-03", "closed" if abs(im1 - 990.0) < 1.0 else "restated", f"IM1 cut {im1:.0f} mm in the rev 3 cut list",
         "MT-1 / MT-2 on the sewn straps")
     add("RD-12", "restated", f"B-17, B-18, B-22, HE, T3, LLT, TG drafted and sequenced: {has('B-17', 'B-18', 'B-22', 'HE', 'T3', 'LLT', 'TG')}; "
@@ -1947,7 +1975,8 @@ def delta_closeout(ctx: Ctx, bom: list[BOMLine], lpts: list[dict]) -> list[dict]
         f"this op sequence supersedes BUILD_PLAN.md step 9 for the bag; BUILD_PLAN.md points at the rev 3 release: {ptr}",
         "BUILD_PLAN.md body still describes the SPINE bag (its banner says so)" if ptr else
         "BUILD_PLAN.md needs a pointer to this package")
-    add("RD-22", "open", "the packaging card (README Packaging) carries the load limits", "the user guide itself")
+    add("RD-22", "open", "the packaging card (README Packaging) carries the load limits and the "
+        f"{P.F.BELLY_MIN_MM:.0f} mm minimum cradle belly with the strap gauge (BL-052)", "the user guide itself")
     add("RD-23", "restated", f"B-25, B-27f, B-22 inside, TG, LLT drafted and sequenced (ops 3.04-3.05, 4.03): "
         f"{has('B-25', 'B-27f', 'B-22', 'TG', 'LLT')}", "T9 rev 3 at the S kit; LL-H; PORT-1; attorney review; B-22 placed at "
         f"x +/-{ctx.rs.geo['b22']['placed_x']:.1f} vs drawn {ctx.rs.geo['b22']['drawn_x']:.0f} (ASSUMPTION B22-IN)")
@@ -2081,6 +2110,8 @@ from huntkit.gendesign.bag_attach import HINGE_EYE_ENVELOPE as _ENV  # noqa: E40
 _UR = json.loads((ROOT / "designs" / "pack_5200" / "analysis" / "us_route.json").read_text())   # BL-050 B numbers
 _UW, _UH = _UR["layouts"]["now"]["worst_clear_mm"], _UR.get("clevis_heads", {})
 _USL, _UCS = _UR["strap_lengths"]["layouts"]["now"], _UR.get("cradle_span", {})
+_H1C = ROOT / "designs" / "pack_5200" / "analysis" / "h1_crown.json"          # BL-052: the belly sweep (BL-051)
+_BS = json.loads(_H1C.read_text()).get("belly_sweep", {}) if _H1C.exists() else {}
 ASSUMPTIONS = [
     ("NO-BIND", "Body seams are SSa2 (second row over the turned allowances), not bound: the ledger books no binding "
                 "(RD-17 B-1).", "FRAY-1 wash-swatch test (3 cycles); if it fails, bind with 20 mm grosgrain via a binder"),
@@ -2166,6 +2197,25 @@ ASSUMPTIONS = [
      f"{_UCS.get('at_float_limit', {}).get('us2', {}).get('tension_n', float('nan')):.0f} N at the float meat limit, "
      f"against the {_UCS.get('lug_check_n', float('nan')):.0f} N the frame lug was checked at; belly 50 mm would give "
      f"{_UCS.get('sensitivity', {}).get('belly_50', {}).get('us2', float('nan')):.0f} N).",     "FIT-US (5): US2 leg angle and tension with a 20 kg quarter stand-in in the cradle"),
+    # BL-052 (h1_crown.md 4, orchestrator call)
+    ("BELLY-MIN", f"The hunter never cams the bag-off cradle flatter than {P.F.BELLY_MIN_MM:.0f} mm "
+     f"({P.F.BELLY_MIN_MM / IN:.1f} in) below the line between the strap's pins: US1 arm root fatigue "
+     f"{_BS.get('60', {}).get('us1', {}).get('fatigue', float('nan')):.2f} at 60 mm, "
+     f"{_BS.get('55', {}).get('us1', {}).get('fatigue', float('nan')):.2f} at 55, "
+     f"{_BS.get('50', {}).get('us1', {}).get('fatigue', float('nan')):.2f} at 50 (h1_crown.json belly_sweep). The user "
+     "card and the meat-haul instruction carry the rule; the strap carries the gauge.",
+     "MT-1cr: belly measured on 3 cradles set by the instruction; strain gauge at the US1 root (owner decision on the "
+     "rule; root fix BL-049 proposal 2 is the frame-side alternative)"),
+    ("BELLY-GAUGE", f"Two contrast BT-S tacks {P.F.BELLY_GAUGE_MM:.0f} mm apart on each US / US2 tail are a ruler a "
+     "gloved hunter can use in the field: pole / arrow across the strap's two pins, the strap at mid-span at least "
+     "one gauge below it; the 0.3-0.5 mm tacks pass the 25 mm cam and the stainless tri-glide (US2's inner tack is "
+     f"{P.F.BELLY_GAUGE_TIP_MM + P.F.BELLY_GAUGE_MM:.0f} mm from the tip, at the cam at the worst bag-on drape: grip "
+     f"{_USL['us2']['grip_left_mm']:.0f} mm).", "MT-1cr (3 cradles set by the user card, belly measured >= 60 mm, 6 of 6); "
+     "thread both tails through the bought cam + tri-glide at op @FIT (no snag)"),
+    ("CLEVIS-FACE", "The bag side panel resting on the US2 clevis's flat, edge-rounded (r 1.5) outer face at "
+     f"x +/-{_UH.get('outer_face_x_mm', float('nan')):.0f}, z 127-157 (free drapes "
+     f"{-_UH.get('face_min_mm', float('nan')):.1f} mm inside it) is not a wear point.",
+     "FIT-US step 7 and after the T9 walk: inspect B-03 / B-01 over z 127-157 for abrasion (h1_crown.md 7)"),
 ]
 
 JIGS = [
@@ -2317,11 +2367,15 @@ FOURTH_STATUS = [
      f"cut US2 {P.F.US_CUT_MM['us2']:.0f} mm (DECISION US-CUT): us_route 'now' clears >= 10 mm on every drape and side "
      f"(US1 {_UW['us1']:.1f} / US2 {_UW['us2']:.1f} mm). "
      "Physical gate: HE-FIT step 0 on print/frame_h1/test_pieces/us_route_stay_R + us2_clevis_R"),
-    ("N-1b (BL-050 B)", "major", "open (frame side)", "us_route.head_clearance: the free rev 3 drapes reach the US2 clevis "
-     f"bolt heads (x +/-{_UH.get('head_x_mm', [0, 0])[0]:.0f}-{_UH.get('head_x_mm', [0, 0])[1]:.1f}; worst "
-     f"{_UH.get('cloth_min_mm', float('nan')):+.1f} mm): ASSUMPTION HEAD-PROUD is not supported "
-     "by the model. Gate FIT-US on P1 (colour transfer); owner decision: counterbore / cap the heads (frame) or a wear "
-     "patch on the bag corner"),
+    ("N-1b (BL-050 B)", "major", "open (frame side)", "us_route.head_clearance: the free rev 3 drapes reached the US2 "
+     "clevis bolt heads (BL-050: worst -1.1 mm). BL-051 sank the heads in counterbores (x +/-"
+     f"{_UH.get('head_x_mm', [0, 0])[0]:.0f}-{_UH.get('head_x_mm', [0, 0])[1]:.1f}, "
+     f"{_UH.get('head_recess_mm', float('nan')):.1f} mm below the clevis outer face at x +/-"
+     f"{_UH.get('outer_face_x_mm', float('nan')):.0f}): nothing stands proud now, but the free drapes pass "
+     f"{-_UH.get('face_min_mm', float('nan')):.1f} mm inside the clevis's flat outer face (z 127-157) on every drape, so "
+     "the bag side panel rests on that face (ASSUMPTION CLEVIS-FACE, BL-052): gate FIT-US on P1 (colour on heads AND "
+     "face) plus the CLEVIS-FACE wear inspection after FIT-US and after the T9 walk; owner option if it wears: let the "
+     "B-03 side panel out about 7 mm over z 127-157 or a wear patch there (h1_crown.md 3a)"),
     ("M-A", "major", "fixed", "TL-1 reads BL-047's crown re-run on the BL-046 geometry (bl047_frame_items.json tl1): proof "
      "497 N, rig A (guy 22 deg below horizontal) and rig B (58 deg, 13.6 % outboard), crown strap 43 N, run anchored on a "
      "spine stub 25 mm fore under the 6.0 mm collar"),

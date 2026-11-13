@@ -138,13 +138,20 @@ def test_clevis_heads_checked_on_every_drape_and_found_touching():
     from huntkit.gendesign import h1_bedfit as BF
     h = REC["clevis_heads"]
     j = BF.JOINT
-    assert h["head_x_mm"] == [round(j.head_face + j.washer_t, 1), round(j.head_face + j.washer_t + j.head_h, 1)]
-    assert h["head_x_mm"][1] < h["pack_half_width_mm"]
+    # BL-051 / BL-052: the heads sit in counterbores with no washer: head span from the joint, below the outer face
+    assert not j.head_washer and h["head_x_mm"] == [round(x, 1) for x in j.head_x]
+    assert h["head_x_mm"][1] == pytest.approx(j.outer_face - (j.head_recess - j.head_h))
+    assert h["head_x_mm"][1] < h["outer_face_x_mm"] == j.outer_face < h["pack_half_width_mm"]
+    # the bag panel rests on the clevis's flat outer face instead (ASSUMPTION CLEVIS-FACE, inspected in FIT-US step 7)
+    assert h["face_min_mm"] < 0.0 and len(h["face_rows"]) == 12
     assert {(r["torso"], r["case"], r["side"]) for r in h["rows"]} == \
         {(t, c, s) for t in U.TORSOS for c in ("fill", "meat") for s in "RL"}
     # HONEST RESULT: the free drapes reach the heads (HEAD-PROUD not supported by the model): FIT-US gates it
     assert h["cloth_min_mm"] <= 0.0
-    assert h["strap_min_mm"] > 0.0                 # the US2 strap itself passes clear of them
+    # BL-051 moved the bolt axes 1.5 mm up: the strap centre-line bound now reads below 0 (BL-050: +2.3). It is a
+    # lower bound (centre line less half the width); the real strap route on the STL is us_route 'now', which passes
+    assert "lower bound" in h["strap_note"] and h["strap_min_mm"] > -h["head_d_mm"] / 2
+    assert REC["layouts"]["now"]["pass"]
 
 
 # ------------------------------------------------------------------------------------------------ 5. kit, BOM
@@ -155,7 +162,11 @@ def test_kit_points_at_the_frame_test_piece_and_clevis():
     st = reg["HE-FIT"]["steps"]
     assert K.US_PIECE_PATH in st and K.US_CLEVIS_PATH in st and "test_kit/print" not in st
     assert "FAILS by design" not in st
-    assert "M5 x 40" in st and "10 mm OD DIN 433" in st
+    from huntkit.gendesign import h1_bedfit as BF
+    j = BF.JOINT                                   # BL-052: the BL-051 counterbored joint, numbers from the joint
+    assert f"M5 x {j.bolt_len:.0f}" in st and "M5 x 35" in st and "Ti gr5 M5 x 40" not in st and "Ti M5 x 40" not in st
+    assert "NO washer under the head" in st and f"{2 * j.n_washers} x 10 mm OD DIN 433 washers on the NUT side" in st
+    assert "heads sit below the clevis face" in st
     assert not (ROOT / "outputs" / "release" / "test_kit" / "print").exists()
     readme = (ROOT / "outputs" / "release" / "test_kit" / "README.md").read_text()
     assert K.US_PIECE_PATH in readme and K.US_CLEVIS_PATH in readme
@@ -187,16 +198,25 @@ def test_two_frame_bolt_sets_on_distinct_lines():
     from huntkit.gendesign import frame_h1 as FH
     from huntkit.gendesign import h1_bedfit as BF
     assert FH.JOINT.bolt_len == 45.0 and FH.JOINT.washer_od == 12.0
-    assert BF.JOINT.bolt_len == 40.0 and BF.JOINT.washer_od == 10.0
+    # BL-051 counterbored clevis (BL-052 hand-off): M5 x 35, no head washer, one nut-side washer per bolt
+    assert BF.JOINT.bolt_len == 35.0 and BF.JOINT.washer_od == 10.0
+    assert not BF.JOINT.head_washer and BF.JOINT.n_washers == 1
+    n_cl = 2 * len(BF.us2_stations())
     lines = {k: (item, q) for k, item, rec, q, unit, kit, frame in M.frame_bolt_lines()}
-    assert "M5 x 45" in lines["z234_bolt"][0] and "M5 x 40" in lines["clevis_bolt"][0]
+    assert "M5 x 45" in lines["z234_bolt"][0] and "M5 x 35" in lines["clevis_bolt"][0]
+    assert "counterbore" in lines["clevis_bolt"][0] and "NO washer under the head" in lines["clevis_bolt"][0]
     assert "12 mm OD" in lines["z234_washer"][0] and "10 mm OD" in lines["clevis_washer"][0]
-    assert lines["clevis_bolt"][1] == 4 and lines["clevis_washer"][1] == 8 and lines["z234_washer"][1] == 8
+    assert "NUT side only" in lines["clevis_washer"][0]
+    assert lines["clevis_bolt"][1] == n_cl == 4 and lines["z234_washer"][1] == 8
+    assert lines["clevis_washer"][1] == n_cl * BF.JOINT.n_washers == 4
     bom = (ROOT / "outputs" / "release" / "pack5200_corrie_f_rev3" / "manufacturing" / "bom.csv").read_text()
-    assert "US2 CLEVIS (BL-050): Ti gr5 low-head socket cap screw M5 x 40" in bom
+    assert "US2 CLEVIS (BL-051): Ti gr5 low-head socket cap screw M5 x 35" in bom and "M5 x 40 DIN 7984" not in bom
     assert "z 234 JOINT: Ti gr5 low-head socket cap screw M5 x 45" in bom
+    rows = {r["item"]: r for r in csv.DictReader(bom.splitlines())}
+    cw = [r for k, r in rows.items() if k.startswith("US2 CLEVIS (BL-051): M5 washer")]
+    assert len(cw) == 1 and float(cw[0]["qty"]) == 4                # the regenerated release books 4 clevis washers
     sh = [x["item"] for x in K.shopping({})]
-    assert any(i.startswith("US2 CLEVIS ONLY: Ti gr5") and "M5 x 40" in i for i in sh)
+    assert any(i.startswith("US2 CLEVIS ONLY: Ti gr5") and "M5 x 35" in i for i in sh)
     assert any(i.startswith("US2 CLEVIS ONLY: M5 washer 10 mm") for i in sh)
     assert any(i.startswith("z 234 JOINT ONLY: Ti gr5") and "M5 x 45" in i for i in sh)
     assert any(i.startswith("z 234 JOINT ONLY: M5 washer 12 mm") for i in sh)

@@ -104,10 +104,10 @@
   }
  },
  "totals": {
-  "usd": 2558.62,
-  "hands_on_h": 157.5,
+  "usd": 2645.42,
+  "hands_on_h": 160.0,
   "machine_h": 747.0,
-  "results_rows": 332
+  "results_rows": 357
  },
  "files": [
   "README.md",
@@ -149,7 +149,7 @@
   "active tests not in the order of work: none",
   "first run per release: {'R1': 9, 'BAG-CUT': 10, 'BAG-BATCH': 24, 'BL037': 25, 'CARRY': 26, 'DATA': 27}",
   "R1: CA-1 at 0.40 + MT-1c swing <= 117 % at <= 150 N (fallback >= 0.313)",
-  "shopping list 103 lines, USD 2,558.62; long lead: 6",
-  "results template 332 rows, 83 tests"
+  "shopping list 107 lines, USD 2,645.42; long lead: 6",
+  "results template 357 rows, 84 tests"
  ]
 }

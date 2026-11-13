@@ -887,6 +887,16 @@ US_SIDE_SEAM_MIN = 15.0       # ASSUMPTION US-CHAN-EDGE: the turned channel end 
 # BL-050 B: the US strap cuts (DECISION US-CUT). US1 keeps the 550 mm cut (bag-on need 320 mm + eye + grip = 470);
 # US2 925 mm = us_route.strap_lengths 'now' cut_needed (bag-on path 771 mm on the lanes, BL-048: about 925)
 US_CUT_MM = {"us1": 550.0, "us2": 925.0}
+# BL-052 (orchestrator call, h1_crown.md 4): MINIMUM CRADLE BELLY 60 mm. The US1 arm root's fatigue on its lane is
+# 1.09 at the 70 mm design belly, 1.03 at 60 mm, 1.00 at 55 mm and 0.95 at 50 mm (h1_crown.json belly_sweep): the user
+# must not cam the cradle flatter than 60 mm. DECISION BELLY-GAUGE: each US / US2 strap carries a 60 mm ruler on its
+# tail, two contrast BT-S tacks BELLY_GAUGE_MM apart (centre to centre), the first BELLY_GAUGE_TIP_MM from the sealed
+# tail tip, so the hunter always has the minimum belly in hand. ASSUMPTION BELLY-GAUGE: a hunter can read the belly
+# with it (a pole / arrow laid across the strap's two pins, the strap at mid-span at least one gauge below it);
+# settled by MT-1cr (the 'MT-1 cradle pull' of h1_crown.md): 3 cradles set by the instruction, measured belly >= 60 mm.
+BELLY_MIN_MM = 60.0
+BELLY_GAUGE_MM = BELLY_MIN_MM
+BELLY_GAUGE_TIP_MM = 20.0
 
 
 def us_channel_end_x() -> dict:

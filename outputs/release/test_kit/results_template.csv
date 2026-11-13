@@ -195,6 +195,10 @@ CLEVIS-SHARE-03,CLEVIS-SHARE,G4,R1,1000 cycles,"no joint opening at 480 N (feele
 CLEVIS-SHARE-04,CLEVIS-SHARE,G4,R1,10000 cycles,"no joint opening at 480 N (feeler), no crack (loupe)",Y/N,yes,Y,,,,,CLEVIS-SHARE; CLEVIS-PRINT
 CLEVIS-SHARE-05,CLEVIS-SHARE,G4,R1,100000 cycles,"no joint opening at 480 N (feeler), no crack (loupe)",Y/N,yes,Y,,,,,CLEVIS-SHARE; CLEVIS-PRINT
 CLEVIS-SHARE-06,CLEVIS-SHARE,G4,R1,end,"bolt torque marks unmoved, no crack at the cheek root / arm root / bolt holes",Y/N,yes,Y,,,,,CLEVIS-DRY
+CLEVIS-SHARE-07,CLEVIS-SHARE,G4,R1,end,"no head pull-in, no crack at the head counterbores (BL-051 heads, no washer)",Y/N,yes,Y,,,,,HEAD-BEAR
+CLEVIS-SHARE-08,CLEVIS-SHARE,G4,R1,US2 root 240 N,"US2 arm-root strain (gauge, BL-052)",microstrain,record,,,,,,STAY-STUB; CROWN-SECTION
+CLEVIS-SHARE-09,CLEVIS-SHARE,G4,R1,US2 root 480 N,"US2 arm-root strain (gauge, BL-052)",microstrain,record,,,,,,STAY-STUB; CROWN-SECTION
+CLEVIS-SHARE-10,CLEVIS-SHARE,G4,R1,US2 root 720 N,"US2 arm-root strain (gauge, BL-052)",microstrain,record,,,,,,STAY-STUB; CROWN-SECTION
 SEW-F-01,SEW-F,G4,BAG-BATCH,#1,cycles at 44 -> 442 N (run-out 100000),cycles,min,100000,,,,,SEW_FAT
 SEW-F-02,SEW-F,G4,BAG-BATCH,#2,cycles at 44 -> 442 N (run-out 100000),cycles,min,100000,,,,,SEW_FAT
 SEW-F-03,SEW-F,G4,BAG-BATCH,#3,cycles at 44 -> 442 N (run-out 100000),cycles,min,100000,,,,,SEW_FAT
@@ -243,6 +247,19 @@ BP-2-01,BP-2,G5,CARRY,1,passes the register criterion: imprint width >= 8 mm at 
 HB-2-01,HB-2,G5,CARRY,1,passes the register criterion: mu >= 0.45 credits the grip print,Y/N,yes,Y,,,,,
 IM3-EP-01,IM3-EP,G6,R1,1,"passes the register criterion: both eyes hold 2553 N for 60 s, no crack, no whitening at the cheek root",Y/N,yes,Y,,,,,P_cheek
 W-PULL-01,W-PULL,G6,R1,1,"passes the register criterion: 6 of 6 hold 338 N, no crack, no set",Y/N,yes,Y,,,,,
+MT-1cr-01,MT-1cr,G6,R1,try 1 US1,"cradle belly below the pin line, set by the packaging card",mm,min,60,,,,,BELLY-MIN; BELLY-GAUGE
+MT-1cr-02,MT-1cr,G6,R1,try 1 US2,"cradle belly below the pin line, set by the packaging card",mm,min,60,,,,,BELLY-MIN; BELLY-GAUGE
+MT-1cr-03,MT-1cr,G6,R1,try 2 US1,"cradle belly below the pin line, set by the packaging card",mm,min,60,,,,,BELLY-MIN; BELLY-GAUGE
+MT-1cr-04,MT-1cr,G6,R1,try 2 US2,"cradle belly below the pin line, set by the packaging card",mm,min,60,,,,,BELLY-MIN; BELLY-GAUGE
+MT-1cr-05,MT-1cr,G6,R1,try 3 US1,"cradle belly below the pin line, set by the packaging card",mm,min,60,,,,,BELLY-MIN; BELLY-GAUGE
+MT-1cr-06,MT-1cr,G6,R1,try 3 US2,"cradle belly below the pin line, set by the packaging card",mm,min,60,,,,,BELLY-MIN; BELLY-GAUGE
+MT-1cr-07,MT-1cr,G6,R1,US1 240 N,US1 arm-root strain at the pin pull (gauge),microstrain,record,,,,,,US1-STUB-GOVERNS; STAY-STUB; CROWN-SECTION
+MT-1cr-08,MT-1cr,G6,R1,US1 480 N,US1 arm-root strain at the pin pull (gauge),microstrain,record,,,,,,US1-STUB-GOVERNS; STAY-STUB; CROWN-SECTION
+MT-1cr-09,MT-1cr,G6,R1,US1 720 N,US1 arm-root strain at the pin pull (gauge),microstrain,record,,,,,,US1-STUB-GOVERNS; STAY-STUB; CROWN-SECTION
+MT-1cr-10,MT-1cr,G6,R1,US2 240 N,US2 arm-root strain at the pin pull (gauge),microstrain,record,,,,,,STAY-STUB; CROWN-SECTION
+MT-1cr-11,MT-1cr,G6,R1,US2 480 N,US2 arm-root strain at the pin pull (gauge),microstrain,record,,,,,,STAY-STUB; CROWN-SECTION
+MT-1cr-12,MT-1cr,G6,R1,US2 720 N,US2 arm-root strain at the pin pull (gauge),microstrain,record,,,,,,STAY-STUB; CROWN-SECTION
+MT-1cr-13,MT-1cr,G6,R1,roots,no crack or whitening at the US1 / US2 arm roots; zero returns within 5 %,Y/N,yes,Y,,,,,US1-STUB-GOVERNS
 T9-01,T9,G6,R1; BAG-BATCH,15in,meat CG aft of the stay plane,mm,max,190,,,,,REV-C-CG
 T9-02,T9,G6,R1; BAG-BATCH,19in,meat CG aft of the stay plane,mm,max,190,,,,,REV-C-CG
 T9-03,T9,G6,R1; BAG-BATCH,23in,meat CG aft of the stay plane,mm,max,190,,,,,REV-C-CG
@@ -254,12 +271,20 @@ FIT-US-02,FIT-US,G6,BAG-BATCH,M (19 in),no colour from the clevis bolt heads on 
 FIT-US-03,FIT-US,G6,BAG-BATCH,L (23 in),no colour from the clevis bolt heads on the bag,Y/N,yes,Y,,,,,HEAD-PROUD
 FIT-US-04,FIT-US,G6,BAG-BATCH,cradle,US2 strap and tail clear the bolt heads in the bag-off cradle,Y/N,yes,Y,,,,,HEAD-PROUD
 FIT-US-05,FIT-US,G6,BAG-BATCH,seam,US2 eye slides across the clevis seam under load without catching,Y/N,yes,Y,,,,,SEAM-FLOOR
+FIT-US-06,FIT-US,G6,BAG-BATCH,face after FIT-US,"bag panel over the clevis face (z 127-157): no fuzz, pilling, broken yarn, shine or pin-hole under the 10x loupe (face colour itself is expected)",Y/N,yes,Y,,,,,CLEVIS-FACE
+FIT-US-07,FIT-US,G6,BAG-BATCH,face after the T9 walk,"bag panel over the clevis face (z 127-157): no fuzz, pilling, broken yarn, shine or pin-hole under the 10x loupe (face colour itself is expected)",Y/N,yes,Y,,,,,CLEVIS-FACE
 T9-R3c-01,T9-R3c,G6,BAG-BATCH,S-full-L,"crown strap path, S kit full",mm,max,968.1,,,,,ROLL-PATH; TORSO-LIN
 T9-R3c-02,T9-R3c,G6,BAG-BATCH,S-full-R,"crown strap path, S kit full",mm,max,968.1,,,,,ROLL-PATH; TORSO-LIN
 T9-R3c-03,T9-R3c,G6,BAG-BATCH,L-6day,"crown strap path, L kit 6-day (sim 438.8)",mm,record,,,,,,ROLL-PATH; TORSO-LIN
 BP-3-01,BP-3,G6,CARRY,1,"passes the register criterion: every sensor <= 14 kPa at 15, 19 and 23 in; record whether the z 100 / 160 sensors read > 1 kPa (rails bear below z 190)",Y/N,yes,Y,,,,,
 RF-1-01,RF-1,G6,CARRY,1,passes the register criterion: peak <= 14 kPa and comfort OK,Y/N,yes,Y,,,,,C-8 RAIL
-T1-01,T1,G6,R1,1,"passes the register criterion: no crack, tap clean, crown set <= 1 mm, crown slip 0, re-load within 10 %, FEA +/-30 %; z 234 step <= 0.5 mm after unload",Y/N,yes,Y,,,,,HA-LS-1 T1
+T1-01,T1,G6,R1,(a) US1 root,"US1 arm-root strain at 150 lb (gauge, BL-052)",microstrain,record,,,,,,US1-STUB-GOVERNS; STAY-STUB; CROWN-SECTION
+T1-02,T1,G6,R1,(a) US2 root,"US2 arm-root strain at 150 lb (gauge, BL-052)",microstrain,record,,,,,,STAY-STUB; CROWN-SECTION
+T1-03,T1,G6,R1,(b) US1 root,"US1 arm-root strain at 300 lb (gauge, BL-052)",microstrain,record,,,,,,US1-STUB-GOVERNS; STAY-STUB; CROWN-SECTION
+T1-04,T1,G6,R1,(b) US2 root,"US2 arm-root strain at 300 lb (gauge, BL-052)",microstrain,record,,,,,,STAY-STUB; CROWN-SECTION
+T1-05,T1,G6,R1,(c) US1 root,"US1 arm-root strain at 225 lb belt off, end (gauge, BL-052)",microstrain,record,,,,,,US1-STUB-GOVERNS; STAY-STUB; CROWN-SECTION
+T1-06,T1,G6,R1,(c) US2 root,"US2 arm-root strain at 225 lb belt off, end (gauge, BL-052)",microstrain,record,,,,,,STAY-STUB; CROWN-SECTION
+T1-07,T1,G6,R1,all,"T1 pass rules (no crack, crown set <= 1 mm, z 234 step <= 0.5 mm, ...)",Y/N,yes,Y,,,,,HA-LS-1 T1
 T1c-SW-01,T1c-SW,G6,R1,run1,"sway |D1-D2|/2 at 225 lb, lifters snug",mm,max,3,,,,,GNL-CROWN
 T1c-SW-02,T1c-SW,G6,R1,run1,sway after unloading,mm,max,0.5,,,,,GNL-CROWN
 T1c-SW-03,T1c-SW,G6,R1,run1,sway(225) / sway(112),ratio,max,2.5,,,,,GNL-CROWN

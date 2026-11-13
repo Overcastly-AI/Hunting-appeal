@@ -1,6 +1,6 @@
 # Shopping list (BL-038)
 
-Total **USD 2,558.62**. Prices from material records, cited shop pages (links), or marked ASSUMPTION (check at purchase). Cited or record-priced: USD 1,037.04; ASSUMPTION: USD 1,521.58. Prices checked 2026-11-10 (TEST_PLAN §4) and 2026-11-13.
+Total **USD 2,645.42**. Prices from material records, cited shop pages (links), or marked ASSUMPTION (check at purchase). Cited or record-priced: USD 1,037.04; ASSUMPTION: USD 1,608.38. Prices checked 2026-11-10 (TEST_PLAN §4) and 2026-11-13.
 
 **Order these first (long lead):**
 
@@ -13,12 +13,12 @@ Total **USD 2,558.62**. Prices from material records, cited shop pages (links), 
 
 | kit | USD |
 |---|---:|
-| Kit A pull bench | 246.58 |
-| Kit B lever rig | 339.58 |
+| Kit A pull bench | 246.38 |
+| Kit B lever rig | 406.58 |
 | Kit C frame stand | 227.39 |
 | Kit D measuring | 140.46 |
-| Specimens and lab | 1,604.61 |
-| **total** | **2,558.62** |
+| Specimens and lab | 1,624.61 |
+| **total** | **2,645.42** |
 
 Not in this list: the bag, harness and belt materials themselves (pack BOM, `outputs/release/pack5200_corrie_f_rev3/manufacturing/bom.csv`). Swatches are cut from that fabric order, so buy the bag fabric with the kit. You already own (kit E): washing machine, winter gloves, freezer, hose, tape, paint pen, phone.
 
@@ -31,9 +31,9 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | ratchet straps 1-1/2 in x 10 ft, 4-pack | 1 pack | 17.99 | [Harbor Freight 61303](https://go.harborfreight.com/61303/) | rigging (never above 151 kg) |
 | hardened dowel pins M5 x 22, 50-pack | 1 pack | 11.79 | [Zoro](https://www.zoro.com/zoro-select-dowel-pin-harden-stl-m5x22mm-pk50-dp5005022-050p1/i/G3163027) | pin fixture |
 | hardened dowel pin M5 x 40, DIN 6325 (m6), HRC 58-62 (Heritage DOWMH-050-040) | 3 each | 9.00 | Zoro; ASSUMPTION USD 3 each (product page refused fetch); https://www.zoro.com/heritage-industrial-dowel-pin-m5-nominal-dia-alloy-steel-1-pk-dowmh-050-040/i/G100006107/ | PT-3, SEW-F (HE), HE-FIT: the fixture pin (BL-048 M-C) |
-| US2 CLEVIS ONLY: Ti gr5 low-head socket cap screw M5 x 40, DIN 7984 (NOT M5 x 45) | 5 each | 12.50 | Ti fastener shop (e.g. eBay / AliExpress Ti gr5 DIN 7984); ASSUMPTION (shop price, check at purchase) | HE-FIT step 0 (2), CLEVIS-SHARE (2), spare (1) |
+| US2 CLEVIS ONLY: Ti gr5 low-head socket cap screw M5 x 35, DIN 7984 (NOT M5 x 45) | 5 each | 12.50 | Ti fastener shop (e.g. eBay / AliExpress Ti gr5 DIN 7984); ASSUMPTION (shop price, check at purchase) | HE-FIT step 0 (2), CLEVIS-SHARE (2), spare (1) |
 | US2 CLEVIS: M5 hex nut A2, ISO 4032 (8 AF x 4 mm; thin nuts do not fit the trap) | 5 each | 0.50 | hardware store; ASSUMPTION (shop price, check at purchase) | HE-FIT step 0, CLEVIS-SHARE |
-| US2 CLEVIS ONLY: M5 washer 10 mm OD x 1 mm A2, DIN 433 (NOT the 12 mm z 234 washer) | 10 each | 0.50 | hardware store; ASSUMPTION (shop price, check at purchase) | HE-FIT step 0 (4), CLEVIS-SHARE (4), spare (2) |
+| US2 CLEVIS ONLY: M5 washer 10 mm OD x 1 mm A2, DIN 433 (NOT the 12 mm z 234 washer; nut side only, BL-051) | 6 each | 0.30 | hardware store; ASSUMPTION (shop price, check at purchase) | HE-FIT step 0 (2), CLEVIS-SHARE (2), spare (2) |
 | anchors: 4x4 lag-screwed into studs (or tow hitch / tree) | 1 set | 40.00 | lumber yard; ASSUMPTION (shop price, check at purchase) | bench |
 | pin fixture: steel flat bar 40 x 6 x 300, M8 bolts | 1 set | 20.00 | hardware store; ASSUMPTION (shop price, check at purchase) | bench |
 | bar clamps: 2 pairs Al 150 x 25 x 10, M6 bolts, grit cloth | 1 set | 15.00 | hardware store; ASSUMPTION (shop price, check at purchase) | PT-2, PT-3, FS-O5 |
@@ -44,11 +44,14 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 
 | item | qty | USD | source | for |
 |---|---:|---:|---|---|
-| z 234 JOINT ONLY: Ti gr5 low-head socket cap screw M5 x 45, DIN 7984 (NOT M5 x 40) | 8 each | 20.00 | Ti fastener shop; ASSUMPTION (shop price, check at purchase) | CA-5 (4 stub pairs x 2) |
+| z 234 JOINT ONLY: Ti gr5 low-head socket cap screw M5 x 45, DIN 7984 (NOT M5 x 35) | 8 each | 20.00 | Ti fastener shop; ASSUMPTION (shop price, check at purchase) | CA-5 (4 stub pairs x 2) |
 | z 234 JOINT: M5 hex nut A2, ISO 4032 | 8 each | 0.80 | hardware store; ASSUMPTION (shop price, check at purchase) | CA-5 |
 | z 234 JOINT ONLY: M5 washer 12 mm OD x 1 mm A2 (load-bearing; NOT the 10 mm clevis washer) | 16 each | 1.28 | hardware store; ASSUMPTION (shop price, check at purchase) | CA-5 |
 | S-type load cell 100 kg | 1 each | 23.60 | [Makerfabs](https://www.makerfabs.com/s-type-load-cell-100kg-200kg-300kg-500kg-1.html) | CA-*, IM3-EC, MT-1c |
 | HX711 load-cell amplifier (SparkFun) | 1 each | 11.50 | [SparkFun](https://www.sparkfun.com/sparkfun-load-cell-amplifier-hx711.html) | CA-*, MT-1c |
+| foil strain gauges 120 ohm, 1 mm grid, pre-wired, pack of 10 | 1 pack | 25.00 | electronics shop; ASSUMPTION (shop price, check at purchase) | T1, MT-1cr (US1 + US2 roots on P1 / P2), CLEVIS-SHARE (US2 root) |
+| quarter-bridge completion: 120 ohm 0.1 % resistors (3 per channel) + 2nd and 3rd HX711 modules | 1 set | 30.00 | electronics shop; ASSUMPTION (shop price, check at purchase) | T1, MT-1cr, CLEVIS-SHARE (one channel per gauge) |
+| cyanoacrylate strain-gauge adhesive + 400 grit paper + isopropanol | 1 set | 12.00 | electronics shop; ASSUMPTION (shop price, check at purchase) | gauge bonding on the sanded PAHT |
 | Arduino Nano Every | 1 each | 15.81 | [Arduino Store (EUR 14.50)](https://store.arduino.cc/products/arduino-nano-every) | CA-*, MT-1c, FSR strips |
 | gear motor 12 V 60 W 60 rpm 8 N m worm (uxcell) | 1 each | 54.99 | [eBay](https://www.ebay.com/itm/266938738081) | CA-* |
 | 12 V 10 A power supply | 1 each | 20.00 | electronics shop; ASSUMPTION (shop price, check at purchase) | CA-* |
@@ -149,3 +152,4 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | specimens for TL-1b: 2 lengths of the real rev C crown bar stock (>= 160 mm) with a 25 mm B-25-style  | 1 lot | 20.00 | see register; test_register.csv TL-1b: ASSUMPTION crown bar offcut + dial bore gauge (shared with TL-1) | TL-1b |
 | specimens for CLEVIS-SHARE: `designs/pack_5200/print/frame_h1/test_pieces/us_route_stay_R.stl` + `designs/pa | 1 lot | 10.00 | see register; test_register.csv CLEVIS-SHARE: about 140 g PAHT-CF at USD 80/kg (us_route.json test_piece g_as_assembled) + the clevis bo | CLEVIS-SHARE |
 | specimens for FIT-US: P1 frame with both US2 clevises bolted on (as built), the first sewn bag, US1 /  | 1 lot | 2.00 | see register; test_register.csv FIT-US: lipstick / chalk paste; P1, bag and sand from kits C / D | FIT-US |
+| specimens for MT-1cr: P1 frame (the sacrificial frame) on the kit C stand, bag OFF, both US2 clevises  | 1 lot | 20.00 | see register; test_register.csv MT-1cr: strain gauges and bridge parts on the shopping list (kit B); P1, stand and sand from kits  | MT-1cr |
