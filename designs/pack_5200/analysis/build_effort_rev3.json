@@ -3,26 +3,26 @@
  "thread_factor": 2.75,
  "thread_waste_excluded": 0.15,
  "thread_g": {
-  "base": 12.21,
+  "base": 12.26,
   "as_hunted": 4.63,
   "meat_trip": 1.94
  },
- "thread_g_total": 18.78,
- "thread_g_package_incl_waste_and_duplicates": 21.61,
+ "thread_g_total": 18.83,
+ "thread_g_package_incl_waste_and_duplicates": 21.66,
  "hours_per_bag": {
-  "base": 50.54,
+  "base": 50.89,
   "as_hunted": 16.29,
   "meat_trip": 3.48
  },
- "hours_per_bag_total": 70.31,
+ "hours_per_bag_total": 70.66,
  "hours_one_off": 4.1,
- "hours_package_total": 74.42,
+ "hours_package_total": 74.76,
  "hours_by_step": {
   "0 Prep and cutting": 12.18,
   "1 Pockets": 6.06,
   "2 Small parts": 4.33,
   "3 Door D2 and hinge band": 5.0,
-  "4 Main bag": 14.02,
+  "4 Main bag": 14.37,
   "5 Collar and roll top": 3.49,
   "6 Crown lid B-29 (as hunted)": 8.46,
   "7 Straps and webbing": 6.46,
@@ -494,14 +494,14 @@
   },
   {
    "seq": "4.14",
-   "op": "US floor channels B-16 on F-02",
+   "op": "US floor channels B-16 (US1) and B-16b (US2) on F-02",
    "step": "4 Main bag",
    "cfg": "base",
    "per_bag": true,
    "thread_id": "bonded_nylon_tex90",
-   "length_mm": 760.0,
-   "thread_g": 0.188,
-   "hours": 1.008,
+   "length_mm": 660.0,
+   "thread_g": 0.163,
+   "hours": 0.728,
    "duplicate_of": null
   },
   {
@@ -511,9 +511,9 @@
    "cfg": "base",
    "per_bag": true,
    "thread_id": "bonded_nylon_tex90",
-   "length_mm": 2874.4,
-   "thread_g": 0.711,
-   "hours": 1.892,
+   "length_mm": 3154.4,
+   "thread_g": 0.781,
+   "hours": 2.516,
    "duplicate_of": null
   },
   {
@@ -878,18 +878,30 @@
   },
   {
    "seq": "7.15",
-   "op": "US: under-strap US1 / US2 x2",
+   "op": "US: under-strap US1 (pins z 95) x1",
    "step": "7 Straps and webbing",
    "cfg": "base",
    "per_bag": true,
    "thread_id": "bonded_nylon_tex135",
-   "length_mm": 314.6,
-   "thread_g": 0.117,
-   "hours": 0.2,
+   "length_mm": 157.3,
+   "thread_g": 0.058,
+   "hours": 0.1,
    "duplicate_of": null
   },
   {
    "seq": "7.16",
+   "op": "US2: under-strap US2 (pins z 142) x1",
+   "step": "7 Straps and webbing",
+   "cfg": "base",
+   "per_bag": true,
+   "thread_id": "bonded_nylon_tex135",
+   "length_mm": 157.3,
+   "thread_g": 0.058,
+   "hours": 0.1,
+   "duplicate_of": null
+  },
+  {
+   "seq": "7.17",
    "op": "USA: US cam anchor (right pin <-> cam bar) x2",
    "step": "7 Straps and webbing",
    "cfg": "base",
@@ -901,7 +913,7 @@
    "duplicate_of": null
   },
   {
-   "seq": "7.17",
+   "seq": "7.18",
    "op": "B-24: float stand-off link (38 mm, meat-trip) x2",
    "step": "7 Straps and webbing",
    "cfg": "meat_trip",
@@ -913,7 +925,7 @@
    "duplicate_of": null
   },
   {
-   "seq": "7.18",
+   "seq": "7.19",
    "op": "B-25: guy bridle on the crown top bar (38 mm, BL-041 / BL-043 topology) x1",
    "step": "7 Straps and webbing",
    "cfg": "base",
@@ -925,7 +937,7 @@
    "duplicate_of": null
   },
   {
-   "seq": "7.19",
+   "seq": "7.20",
    "op": "TG: port guy (B-25 toggle -> B-27 port -> B-22 inside) x2",
    "step": "7 Straps and webbing",
    "cfg": "base",
@@ -937,7 +949,7 @@
    "duplicate_of": null
   },
   {
-   "seq": "7.20",
+   "seq": "7.21",
    "op": "K-G: guy tail keeper (25 mm elastic) x2",
    "step": "7 Straps and webbing",
    "cfg": "base",
@@ -949,7 +961,7 @@
    "duplicate_of": null
   },
   {
-   "seq": "7.21",
+   "seq": "7.22",
    "op": "BRL: bow riser loop (through B-11) x2",
    "step": "7 Straps and webbing",
    "cfg": "base",
@@ -961,7 +973,7 @@
    "duplicate_of": null
   },
   {
-   "seq": "7.22",
+   "seq": "7.23",
    "op": "BRS: bow riser strap + G-hook x1",
    "step": "7 Straps and webbing",
    "cfg": "base",
@@ -973,7 +985,7 @@
    "duplicate_of": null
   },
   {
-   "seq": "7.23",
+   "seq": "7.24",
    "op": "MK-cord: rifle muzzle keeper, 3 mm shock cord loop through the 2 B-11 muzzle tab",
    "step": "7 Straps and webbing",
    "cfg": "base",
@@ -985,7 +997,7 @@
    "duplicate_of": null
   },
   {
-   "seq": "7.24",
+   "seq": "7.25",
    "op": "Fit the hardware",
    "step": "7 Straps and webbing",
    "cfg": "base",

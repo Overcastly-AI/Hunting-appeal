@@ -36,9 +36,9 @@
    }
   },
   "A": {
-   "base": 3338.7,
-   "as_hunted": 3657.2,
-   "meat_trip": 3853.2,
+   "base": 3338.8,
+   "as_hunted": 3657.3,
+   "meat_trip": 3853.3,
    "by_system_base": {
     "frame": 1283.2,
     "back": 363.6,
@@ -50,11 +50,11 @@
     "fly": 5.9,
     "straps_meat": 308.4,
     "straps_compression": 141.6,
-    "attachment": 190.8,
+    "attachment": 190.9,
     "misc": 18.8
    },
    "like_for_like_base": {
-    "bag_side": 1083.0,
+    "bag_side": 1083.1,
     "suspension": 2236.9,
     "misc": 18.8
    }
@@ -69,13 +69,13 @@
    },
    "P": {
     "base": 3897.4,
-    "as_hunted": 4215.9,
-    "meat_trip": 4411.9
+    "as_hunted": 4216.0,
+    "meat_trip": 4412.0
    },
    "A": {
     "base": 3320.9,
-    "as_hunted": 3639.4,
-    "meat_trip": 3835.4
+    "as_hunted": 3639.5,
+    "meat_trip": 3835.5
    }
   },
   "M": {
@@ -90,9 +90,9 @@
     "meat_trip": 4440.4
    },
    "A": {
-    "base": 3338.7,
-    "as_hunted": 3657.2,
-    "meat_trip": 3853.2
+    "base": 3338.8,
+    "as_hunted": 3657.3,
+    "meat_trip": 3853.3
    }
   },
   "L": {
@@ -102,7 +102,7 @@
     "meat_trip": 3991.5
    },
    "P": {
-    "base": 3950.7,
+    "base": 3950.8,
     "as_hunted": 4269.3,
     "meat_trip": 4465.3
    },
@@ -125,8 +125,8 @@
    },
    "A": {
     "base": 3382.8,
-    "as_hunted": 3701.3,
-    "meat_trip": 3897.3
+    "as_hunted": 3701.4,
+    "meat_trip": 3897.4
    }
   },
   "XXL": {
@@ -136,14 +136,14 @@
     "meat_trip": 4055.6
    },
    "P": {
-    "base": 4017.3,
-    "as_hunted": 4335.8,
-    "meat_trip": 4531.8
+    "base": 4017.4,
+    "as_hunted": 4335.9,
+    "meat_trip": 4531.9
    },
    "A": {
-    "base": 3402.5,
-    "as_hunted": 3721.0,
-    "meat_trip": 3917.0
+    "base": 3402.6,
+    "as_hunted": 3721.1,
+    "meat_trip": 3917.1
    }
   }
  },
@@ -1905,8 +1905,8 @@
     },
     {
      "system": "attachment",
-     "name": "CORRIE F: BL-034 thread: base ops, 12.2 g from the op stitch lengths (booked 2.0 g)",
-     "g": 10.21,
+     "name": "CORRIE F: BL-034 thread: base ops, 12.3 g from the op stitch lengths (booked 2.0 g)",
+     "g": 10.26,
      "cfg": "base",
      "source": "build_effort_rev3.json: mfg_corrie_f_rev3 op lengths x THREAD_FACTOR 2.75 (ASSUMPTION) x bonded_nylon_tex70/90/135 records"
     },
@@ -3116,8 +3116,8 @@
     },
     {
      "system": "attachment",
-     "name": "CORRIE F: BL-034 thread: base ops, 12.2 g from the op stitch lengths (booked 2.0 g)",
-     "g": 10.21,
+     "name": "CORRIE F: BL-034 thread: base ops, 12.3 g from the op stitch lengths (booked 2.0 g)",
+     "g": 10.26,
      "cfg": "base",
      "source": "build_effort_rev3.json: mfg_corrie_f_rev3 op lengths x THREAD_FACTOR 2.75 (ASSUMPTION) x bonded_nylon_tex70/90/135 records"
     },
@@ -3928,8 +3928,8 @@
     },
     {
      "system": "attachment",
-     "name": "CORRIE F: BL-034 thread: base ops, 12.2 g from the op stitch lengths (booked 2.0 g)",
-     "g": -10.21,
+     "name": "CORRIE F: BL-034 thread: base ops, 12.3 g from the op stitch lengths (booked 2.0 g)",
+     "g": -10.26,
      "cfg": "base",
      "source": "build_effort_rev3.json: mfg_corrie_f_rev3 op lengths x THREAD_FACTOR 2.75 (ASSUMPTION) x bonded_nylon_tex70/90/135 records"
     },
@@ -4246,7 +4246,7 @@
  },
  "configs": {
   "corrie_f_base": {
-   "total_g": 3613.6,
+   "total_g": 3613.7,
    "by_system": {
     "frame": 1349.4,
     "back": 413.6,
@@ -4258,7 +4258,7 @@
     "fly": 5.9,
     "straps_meat": 308.4,
     "straps_compression": 141.6,
-    "attachment": 190.8,
+    "attachment": 190.9,
     "misc": 25.8
    },
    "like_for_like": {
@@ -4268,7 +4268,7 @@
    }
   },
   "corrie_f_as_hunted": {
-   "total_g": 3932.1,
+   "total_g": 3932.2,
    "by_system": {
     "frame": 1349.4,
     "back": 413.6,
@@ -4436,8 +4436,8 @@
     "pct": 68.0
    },
    "A": {
-    "ours_g": 3290.9,
-    "delta_g": 982.9,
+    "ours_g": 3291.0,
+    "delta_g": 983.0,
     "pct": 43.0
    }
   },
@@ -4461,8 +4461,8 @@
     "pct": 62.0
    },
    "A": {
-    "ours_g": 3290.9,
-    "delta_g": 894.9,
+    "ours_g": 3291.0,
+    "delta_g": 895.0,
     "pct": 37.0
    }
   },
@@ -4487,8 +4487,8 @@
     "pct": 53.0
    },
    "A": {
-    "ours_g": 3450.8,
-    "delta_g": 813.8,
+    "ours_g": 3450.9,
+    "delta_g": 813.9,
     "pct": 31.0
    }
   },
@@ -4509,8 +4509,8 @@
     "pct": 41.0
    },
    "A": {
-    "ours_g": 3338.7,
-    "delta_g": 548.7,
+    "ours_g": 3338.8,
+    "delta_g": 548.8,
     "pct": 20.0
    }
   },
@@ -4531,8 +4531,8 @@
     "pct": 49.0
    },
    "A": {
-    "ours_g": 3338.7,
-    "delta_g": 699.7,
+    "ours_g": 3338.8,
+    "delta_g": 699.8,
     "pct": 27.0
    }
   },
@@ -4555,8 +4555,8 @@
     "pct": 44.0
    },
    "A": {
-    "ours_g": 3466.0,
-    "delta_g": 654.0,
+    "ours_g": 3466.1,
+    "delta_g": 654.1,
     "pct": 23.0
    }
   },
@@ -4579,8 +4579,8 @@
     "pct": 50.0
    },
    "A": {
-    "ours_g": 3466.0,
-    "delta_g": 758.0,
+    "ours_g": 3466.1,
+    "delta_g": 758.1,
     "pct": 28.0
    }
   },
@@ -4603,8 +4603,8 @@
     "pct": 40.0
    },
    "A": {
-    "ours_g": 3375.3,
-    "delta_g": 540.3,
+    "ours_g": 3375.4,
+    "delta_g": 540.4,
     "pct": 19.0
    }
   },
@@ -4629,8 +4629,8 @@
     "pct": 141.0
    },
    "A": {
-    "ours_g": 3450.8,
-    "delta_g": 1777.8,
+    "ours_g": 3450.9,
+    "delta_g": 1777.9,
     "pct": 106.0
    }
   },
@@ -4653,15 +4653,15 @@
     "pct": 49.0
    },
    "A": {
-    "ours_g": 3466.0,
-    "delta_g": 744.0,
+    "ours_g": 3466.1,
+    "delta_g": 744.1,
     "pct": 27.0
    }
   }
  ],
  "features": {
-  "after_tests_base_g": 3338.7,
-  "gap_g": 345.0,
+  "after_tests_base_g": 3338.8,
+  "gap_g": 345.1,
   "candidates": [
    {
     "item": "IMP-2",
@@ -4740,7 +4740,7 @@
   "with_reserve_g": 68.5,
   "reaches_with_reserve": false
  },
- "bl011_headline_base_g": 3302.4,
+ "bl011_headline_base_g": 3302.5,
  "h1_fatigue": {
   "old": 1.2794731924250948,
   "per_torso": 1.1502260709981276,
@@ -4769,7 +4769,7 @@
    "total_g": 3925.9,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
-     "g": 426.7,
+     "g": 426.8,
      "band_g": 142.1,
      "n": 26,
      "frac": 0.3
@@ -4847,8 +4847,8 @@
      "band_g": 5.3
     },
     {
-     "name": "BL-034 thread: base ops, 12.2 g from the op stitch lengths (booked 2.0 g)",
-     "g": 10.21,
+     "name": "BL-034 thread: base ops, 12.3 g from the op stitch lengths (booked 2.0 g)",
+     "g": 10.26,
      "band_g": 3.1
     },
     {
@@ -4901,10 +4901,10 @@
   "A": {
    "scenario": "A",
    "cfg": "base",
-   "total_g": 3338.7,
+   "total_g": 3338.8,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
-     "g": 347.2,
+     "g": 347.3,
      "band_g": 171.7,
      "n": 32,
      "frac": 0.3
@@ -4997,8 +4997,8 @@
      "band_g": 5.3
     },
     {
-     "name": "BL-034 thread: base ops, 12.2 g from the op stitch lengths (booked 2.0 g)",
-     "g": 10.21,
+     "name": "BL-034 thread: base ops, 12.3 g from the op stitch lengths (booked 2.0 g)",
+     "g": 10.26,
      "band_g": 3.1
     },
     {

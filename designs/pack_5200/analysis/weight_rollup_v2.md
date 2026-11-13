@@ -10,12 +10,12 @@ Owner: pack-designer (BL-013, 2026-11-12 update); revision: manufacturing-engine
 |---|---:|---:|---:|
 | CORRIE B.2 on H1 (ledger start) | 3740.9 (8.25 lb) | 3913.0 | 3967.4 |
 | **proven now** | **3925.9 (8.66 lb, 8 lb 10.5 oz)** | 4244.4 (9.36 lb) | 4440.4 (9.79 lb) |
-| **after tests** | **3338.7 (7.36 lb, 7 lb 5.8 oz)** | 3657.2 (8.06 lb) | 3853.2 (8.49 lb) |
+| **after tests** | **3338.8 (7.36 lb, 7 lb 5.8 oz)** | 3657.3 (8.06 lb) | 3853.3 (8.50 lb) |
 | target (base) | 2993.7 (6.60 lb) | | |
 
 - **6.6 lb is not reachable with what is adopted or under test.** Proven now misses it by **932 g**, after tests by **345 g**.
 - Closing the last 345 g would take deleting or moving to add-ons: FP-L/R (34 g), IMP-4 (24 g), IMP-6 (11 g) = 68 g. Even every unfrozen candidate (68 g; owner-frozen features and DESIGN requirements excluded) does not reach it; see section 5. BL-037's weight push (step A_bl037, `weight_push.md`) is already in after tests.
-- The BL-011 headline (`corrie_f.pack_with_adopted`, rev 3: base 3302 g) is -624 g against proven now and -36 g against after tests: it takes the gated BL-005/006 items and the fabric swaps as done, leaves package C out, books the H1 body at 757.7 g and has the ledger's booking errors in it (section 2).
+- The BL-011 headline (`corrie_f.pack_with_adopted`, rev 3: base 3302 g) is -623 g against proven now and -36 g against after tests: it takes the gated BL-005/006 items and the fabric swaps as done, leaves package C out, books the H1 body at 757.7 g and has the ledger's booking errors in it (section 2).
 
 ## 1. Rules
 
@@ -77,11 +77,11 @@ Owner: pack-designer (BL-013, 2026-11-12 update); revision: manufacturing-engine
 
 | belt | B.2 | proven now | after tests |
 |---|---|---|---|
-| S | 3713 / 3885 / 3940 | 3897 / 4216 / 4412 | 3321 / 3639 / 3835 |
+| S | 3713 / 3885 / 3940 | 3897 / 4216 / 4412 | 3321 / 3640 / 3836 |
 | M | 3741 / 3913 / 3967 | 3926 / 4244 / 4440 | 3339 / 3657 / 3853 |
 | L | 3765 / 3937 / 3992 | 3951 / 4269 / 4465 | 3355 / 3673 / 3869 |
 | XL | 3801 / 3973 / 4028 | 3988 / 4306 / 4502 | 3383 / 3701 / 3897 |
-| XXL | 3829 / 4001 / 4056 | 4017 / 4336 / 4532 | 3402 / 3721 / 3917 |
+| XXL | 3829 / 4001 / 4056 | 4017 / 4336 / 4532 | 3403 / 3721 / 3917 |
 
 Crown kit by torso size (change against H1, g): S: kits -81.5; M: kits -62.2; L: kits -43.0. Kit S is lighter and kit L heavier than the M figures used above (today's 16 x 8 legs; the OD 17 legs are retired).
 
@@ -99,7 +99,7 @@ Crown kit by torso size (change against H1, g): S: kits -81.5; M: kits -62.2; L:
 | fly | 5.9 | 5.9 | 5.9 |
 | straps_meat | 385.6 | 424.4 | 308.4 |
 | straps_compression | 243.5 | 243.2 | 141.6 |
-| attachment | 318.0 | 295.4 | 190.8 |
+| attachment | 318.0 | 295.4 | 190.9 |
 | misc | 40.8 | 25.8 | 18.8 |
 
 Like-for-like split (BL-001 groups, base): proven now bag side 1492 g, suspension 2408 g; after tests bag side 1083 g, suspension 2237 g.
@@ -172,7 +172,7 @@ Single typed ASSUMPTION masses >= 5 g in after tests (base):
 | IM-hooks: 3 x 25 mm rated Al G-hooks (right end only) | 24.0 | 7.2 |
 | 38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): US-cams US1/US2 25 mm Al cams ( | 17.6 | 5.3 |
 | BL-003 (a) IM/US: US-cams US1/US2 25 mm Al cams (2) | -17.6 | 5.3 |
-| BL-034 thread: base ops, 12.2 g from the op stitch lengths (booked 2.0 g) | 10.2 | 3.1 |
+| BL-034 thread: base ops, 12.3 g from the op stitch lengths (booked 2.0 g) | 10.3 | 3.1 |
 | belt B 2:1 pull: 2 x 25 mm Al D-ring (no record, ASSUMPTION 5 g, $1) | 10.0 | 3.0 |
 | BL-004 REC: guy toggles x2 (POM, in the B-25 tabs; row booked with the old guy bar loops,  | 9.5 | 2.9 |
 | hood + IM2 hooks kept until PT-1/TL-1/LL-H (BL-004 REC undone): guy bar loops x2: 25 mm we | -9.5 | 2.9 |
@@ -200,8 +200,8 @@ Other open estimates:
 
 | config | total g (belt M) | bag side | suspension |
 |---|---:|---:|---:|
-| corrie_f_base | 3613.6 | 1109.0 | 2478.8 |
-| corrie_f_as_hunted | 3932.1 | 1390.9 | 2515.4 |
+| corrie_f_base | 3613.7 | 1109.0 | 2478.8 |
+| corrie_f_as_hunted | 3932.2 | 1390.9 | 2515.4 |
 | bl005_back | 3696.3 | 1482.2 | 2173.3 |
 | bl006_belt | 3683.5 | 1482.2 | 2160.5 |
 | bl007_a | 3654.3 | 1482.2 | 2131.3 |
