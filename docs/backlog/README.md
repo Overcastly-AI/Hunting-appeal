@@ -90,3 +90,5 @@ Nothing here is decided; the tickets produce the material.
 | BL-039 | Pre-release fixes: S crown strap spare, CA-1/MT-1c rule confirmations, stale docs | pack-designer | S | 038 | clean release |
 | BL-040 | Fix pre-cut review findings (3 blockers, 13 majors) | pack-designer | L | 039 | ready to cut |
 | BL-041 | Fix re-review findings (2 blockers, 5 majors) | pack-designer | M | 040 | ready to cut |
+| BL-042 | H1 print files: complete fairleads, hinge pin clearance | structural-fea-engineer | M | — | printable H1 |
+| BL-043 | Third review fixes, bag side except hinge eye | pack-designer | M | — | |
