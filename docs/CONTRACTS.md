@@ -107,6 +107,16 @@ API (`huntkit.materials`):
 - `generate(pattern_spec: dict, palette: list[hex], width_mm, height_mm, dpi, seed) -> RGB array`
 - Patterns are defined in `designs/apparel/camo/<pattern>.yaml` (layers, scales, shapes, colors).
 - Export: tileable seamless repeat PNG/TIFF at print DPI + SVG vector separations + preview.
+- Additions (2026-11-13, additive; no existing signature changed). `huntkit.camo.placed`: placed (engineered) print
+  layouts for cut pieces. `read_dxf_pieces(release_dxf) -> [PieceGeom]` (reads the §3 DXF layers CUT/SEW/GRAIN/TEXT);
+  `set_tile(pieces)` packs a product set into its largest piece's holes/bbox; `layout_sheet(...) -> Sheet`;
+  `engineer_phases(pieces, labels, repeat_mm)` per-instance phase `"<id>#<k>"` in mm; `render_sheet(sheet, labels,
+  repeat_mm, hexes, dpi, phases) -> PIL.Image` (art upright in each piece's frame, +y = up on the product;
+  3 mm bleed, grey cut line, waste unprinted); `clean_hairlines(labels)` removes 1-px rasteriser seams.
+  `huntkit.camo.originality`: `describe(img, ppmm)`, `image_similarity(a, b, ppmm_a, ppmm_b)` (copy indicator
+  `ncc_max`, thresholds `NCC_COPY` / `NCC_CLEAR`), `compare_to_references(desc)` against the cited
+  `designs/apparel/camo/originality_refs.yaml`; CLI `python -m huntkit.camo.originality`. Product use:
+  `designs/pack_5200/camo_corrie_f_rev3.py` -> `outputs/release/pack5200_corrie_f_rev3/camo/`.
 
 ## 5. Manufacturing (`huntkit.manufacturing`)
 - `BOM` from a design YAML: material id, qty, unit, waste factor, cost (pulled from material records).

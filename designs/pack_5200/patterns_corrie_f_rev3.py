@@ -116,6 +116,38 @@ F02_OUT = "OUTSIDE"              # F02-PLACE (BL-034): F-02 centred on the outsi
 KEEPER_CUT = F.TAIL_KEEPER_CUT_MM  # ASSUMPTION (corrie_f): 25 mm elastic keeper cut 90 mm, lapped 15 mm into a 75 mm loop
 #                                  (fits 25 mm webbing + a 21 mm rolled tail); settled by weighing 10 cut keepers
 
+# ---- BL-040 B-1 DECISION HE-ONE (pack-designer): ONE hinge-eye construction for the piece, the op, the load table
+# and the PT-3 specimen. HE = 38 mm x 150 mm folded in half at 75 mm (the eye fold); BOTH raw ends reach the B-01 cut
+# edge so the floor seam (B-01 | B-05, 12 mm) catches both plies; box-X 34 x 34 (38 mm webbing less 2 mm a side, the
+# LLT / B28 rule) through HE (2 plies) + B-01 + B-18, its lower edge HE_BOX_GAP above the floor seam line. The free loop
+# between the box top and the fold is the eye. Neck (bag_attachment.md HE row: 18 mm fairlead throat): each long edge
+# folded 10 mm in over the loop zone, held by one BT-M bartack per leg, sewn on the FLAT strip before the fold.
+# z below = height on B-01 above the floor seam line (BC.Z0 = 35 mm in frame z).
+HE_CUT = 150.0                    # attach_system.drawing_pieces HE 38 x 150 (ledger 'attachment: webbing eyes'), unchanged
+HE_W = 38.0
+HE_FOLD = HE_CUT / 2.0            # 75: eye fold; raw ends 12 mm below the seam line -> fold 63 mm above it
+HE_BOX = (34.0, 34.0)             # 38 - 2 x 2 mm a side; square (bag_attachment.md HE row)
+HE_BOX_GAP = 4.0                  # ASSUMPTION HE-GAP: box 4 mm above the floor seam line (clear of the SSa row; the SSa2
+#                                   allowances are turned DOWN onto B-05 at the hinge, op 4.15); settled by the PT-3 swatch
+HE_NECK_EDGE = 10.0               # each long edge folded 10 mm in: 38 -> 18 mm neck (bag_attachment.md HE row)
+HE_TACK_ABOVE_BOX = 6.0           # neck bartack 6 mm above the box top, one per leg
+# ASSUMPTION HE-REACH: the 25 mm free eye (box top z +38 -> fold z +63 above the seam line) folds out and down onto the
+# z 60 hinge pin (frame z; = 25 mm above the B-01 | B-05 seam line); settled by QC-20 (first article on the frame).
+B18_W = 90.0
+B18_BELOW = SA_BODY               # B-1 fix: B-18 runs 12 mm below the floor seam line into the allowance (caught by it)
+B18_TOP = HE_BOX_GAP + HE_BOX[1] + 12.0   # 50 mm above the seam line: the 9 mm perimeter row clears the box top by 3 mm
+B18_H = B18_BELOW + B18_TOP       # 62 mm (was 45, stopping at the seam line)
+# ---- BL-040 B-2 DECISION RT-MATE: the roll-top clips' second buckle half sits on a webbing tab on each gusset, as the
+# cloth-pass roll model put it (huntkit.viz3d.corrie_f CLIP_BELOW_SEAM_MM = 150 mm below the collar seam, at the gusset's
+# mid depth, tab hanging 38 mm). Female half on the gusset tab (fixed); the RT strap carries the adjustable male half.
+RTM_BELOW_SEAM = 150.0            # corrie_f_roll_clips.json clip_below_seam_mm (the paths the RT cut is sized on)
+RTM_CUT, RTM_FOLD = 70.0, 35.0    # as LLT: 70 mm, folded round the buckle bar
+RTM_BOX = (21.0, 25.0)            # LLT_BOX rule (25 mm webbing less 2 mm a side x 25)
+RT_SEWN = 60.0                    # strap_tails.ROLL_END_MM 90 = 60 sewn to the roll end + 30 round the buckle bar
+RT_BOX = (25.0, 21.0)             # box-X on the hem: 25 along the strap x 21 across it (strap lies along the hem)
+RT_HEM_Y = 16.5                   # ASSUMPTION RT-HEM: strap centred 16.5 mm above the hem seam line on B-07 (outer half of
+#                                   the 70 mm hem, clear of the fold and of the B-07s strips); settled by the first collar
+
 MATERIAL_FACE = {
     "challenge_ultra_200": ("film side DOWN (inside)", "non-directional, keep grain"),
     "cordura_330d_nylon66": ("PU coat DOWN (inside)", "solid colour: two-way lay allowed"),
@@ -210,6 +242,28 @@ def notch_pair(sideA, sideB, label, pitch=NOTCH_PITCH, ends=False):
     return len(pos)
 
 
+def ring_notches(sideA, origins, sideB, label, pitch=NOTCH_PITCH):
+    """BL-040 M-3: notch a ring seam segment by segment. Each segment of side A gets notches every ``pitch`` mm measured
+    from its own 'start' or 'end' (origins[i]) plus a V at every junction; side B gets the same ring positions (scaled
+    when the seam has ease). A pattern used twice in the ring (the gusset, cut as a pair) therefore carries one notch set
+    when both passes measure from the same physical end. Returns {segment index: [distance from its origin, ...]}."""
+    L, ca = _side_pts(sideA)
+    _, cb = _side_pts(sideB)
+    r = cb[-1] / ca[-1] if ca[-1] else 1.0
+    pos, seg = [], {}
+    for i, (Li, c0) in enumerate(zip(L, ca[:-1])):
+        ks = [k * pitch for k in range(1, int(Li // pitch) + 1) if k * pitch < Li - 0.4 * pitch]
+        seg[i] = [round(d, 2) for d in ks]
+        pos += [(c0 + d if origins[i] == "start" else c0 + Li - d, "slit") for d in ks]
+        if i:
+            pos.append((c0, "v"))
+    pos += [(float(v) / r, "v") for v in cb[1:-1]]
+    for s, kind in sorted(pos):
+        _notch_on_side(sideA, s, label, kind)
+        _notch_on_side(sideB, s * r, label, kind)
+    return seg
+
+
 VEdge = F.PolyEdge   # BL-033: the class moved to corrie_f (its build uses it for the D2 seams)
 
 
@@ -288,7 +342,7 @@ def _b11_marks(G, xc, yc, label):
     G.add_internal_line(_rect(x0, y0, x0 + B11_W, y0 + B11_H), "placement", f"B-11 lash tab: {label} (both gussets)",
                         closed=True)
     G.add_internal_line(_rect(x0 + 3, y0 + 3, x0 + 27, y0 + 22), "stitch", "B-11 sew-down box", closed=True)
-    G.add_internal_line(_rect(x0 + 2.5, y0 + 30, x0 + 27.5, y0 + 35), "placement", "B-11 slot (on the tab)", closed=True)
+    G.add_internal_line(_rect(x0 + 1.5, y0 + 30, x0 + 28.5, y0 + 35), "placement", "B-11 slot 27 x 5 (on the tab)", closed=True)
     for x, y in ((x0 + 3, y0 + 3), (x0 + 27, y0 + 3), (x0 + 27, y0 + 22), (x0 + 3, y0 + 22)):
         G.add_drill_hole(x, y, 3.0, "B-11 box corner")
 
@@ -358,11 +412,43 @@ def build_shell(rs: RevSet, c):
     for a, bb, lab in pairs:
         notch_pair(a, bb, lab)
     col = {p.piece_id: p for p, g in b.pieces if g == "collar"}
-    tops = [E(B01, "top"), E(G, "top"), E(U, "top_right"), E(HB, "top"), E(U, "top_left"), E(G, "top")]
-    notch_pair(tops, [E(col["B-06f"], "bottom"), E(col["B-06"], "bottom")], "collar ring")
+    # BL-040 M-3: the ring runs ONE way round the bag. B-01 top runs R -> L (x +180 -> -180), so the L gusset follows,
+    # traversed frame -> aft (its 'top' edge runs aft -> frame: reversed), then the L blade top, the band and the R blade
+    # top (all reversed: they run L <- R as drawn), then the R gusset aft -> frame (as drawn). BL-032 passed every edge
+    # unreversed, which mirrored the notches on the gusset and the band (review M-3: 10 mm off on the gusset).
+    tops = [E(B01, "top"), E(G, "top", True), E(U, "top_left", True), E(HB, "top", True), E(U, "top_right", True),
+            E(G, "top")]
+    # both gusset passes measure their 50 mm notches from the FRAME end, so the one gusset pattern carries one set
+    rs.geo["collar_ring"] = ring_notches(tops, ["start", "start", "start", "start", "start", "end"],
+                                         [E(col["B-06f"], "bottom"), E(col["B-06"], "bottom")], "collar ring")
     notch_pair([E(col["B-06f"], "right")], [E(col["B-06"], "left", True)], "collar R", pitch=100.0)
     notch_pair([E(col["B-06f"], "left")], [E(col["B-06"], "right", True)], "collar L", pitch=100.0)
     notch_pair([E(col["B-07"], "bottom")], [E(col["B-06f"], "top"), E(col["B-06"], "top")], "hem ring")
+    # BL-040 B-2: RT strap placements on the hem B-07, above each gusset's centre (the roll end). The collar is a straight
+    # tube (B-06f / B-06 bottom = top), so a ring position carries straight up. Body ring: B-01 top, L gusset, ..., R
+    # gusset; collar bottom ring: B-06f (0 -> 360) then B-06 (0 -> 690); hem ring: B-06f top (360 -> 0) then B-06 top
+    # (690 -> 0) = B-07 bottom (0 -> 1050). The strap's sewn 60 mm lies on the FRAME-side half of the gusset (both sides
+    # the same, mirror), its free end crossing the gusset-centre notch.
+    _, ctop = _side_pts(tops)
+    _, ccol = _side_pts([E(col["B-06f"], "bottom"), E(col["B-06"], "bottom")])
+    L06f, L06 = col["B-06f"].edge_length("bottom"), col["B-06"].edge_length("bottom")
+    L07 = col["B-07"].edge_length("bottom")
+    Lg = float(ctop[2] - ctop[1])
+    rt = {}
+    for side, s_ring, sgn in (("L", float(ctop[1]) + Lg / 2, -1), ("R", float(ctop[-1]) - Lg / 2, 1)):
+        x06 = s_ring * ccol[-1] / ctop[-1] - L06f                  # on B-06 (bottom = top x)
+        s_hem = L06f + (L06 - x06)
+        xc = s_hem * L07 / (L06f + L06)
+        # R: hem runs frame -> aft at the R gusset, so the frame half is x < xc; L: aft -> frame, frame half is x > xc
+        x0, x1 = (xc - RT_SEWN, xc) if sgn > 0 else (xc, xc + RT_SEWN)
+        B07 = col["B-07"]
+        B07.add_internal_line(_rect(x0, RT_HEM_Y - 12.5, x1, RT_HEM_Y + 12.5), "placement",
+                              f"RT roll-clip strap {side} (OUTSIDE; strap end at the outer line, free end crosses the "
+                              "gusset-centre notch)", closed=True)
+        _box_x(B07, 0.5 * (x0 + x1), RT_HEM_Y, RT_BOX[0], RT_BOX[1], f"RT strap {side}")
+        B07.add_notch(xc, 0.0, "v", f"gusset centre {side} (RT strap)")
+        rt[side] = {"x_centre": round(xc, 1), "x0": round(x0, 1), "x1": round(x1, 1)}
+    rs.geo["rt_on_b07"] = rt
     # door zip corner tangents (corrie_f_body.md section 9.3)
     zl, r = F.D2["z_lo"], F.D2["r"]
     xc = M["inner"](zl + r)
@@ -398,8 +484,13 @@ def build_shell(rs: RevSet, c):
         y0 = s01(B17_Z - B17[1] / 2)
         B01.add_internal_line(_rect(x - B17[0] / 2, y0, x + B17[0] / 2, y0 + B17[1]), "placement",
                               "B-17 IM3 bag-hook tab (OUTSIDE)", closed=True)
-        B01.add_internal_line(_rect(x - 45, s01(BC.Z0), x + 45, s01(BC.Z0 + 45)), "placement",
-                              "B-18 hinge-eye doubler (INSIDE, lower edge in the floor seam)", closed=True)
+        # BL-040 B-1: B-18 reaches 12 mm below the floor seam line (to the B-01 cut edge) so the floor seam catches it;
+        # the HE box-X (DECISION HE-ONE) drawn on B-01 too, so the box_mismatches check sees every layer of the stack
+        y18 = s01(BC.Z0) - B18_BELOW
+        B01.add_internal_line(_rect(x - B18_W / 2, y18, x + B18_W / 2, s01(BC.Z0 + B18_TOP)), "placement",
+                              "B-18 hinge-eye doubler (INSIDE; lower edge ON the B-01 cut edge, caught in the floor seam)",
+                              closed=True)
+        _box_x(B01, x, s01(BC.Z0 + HE_BOX_GAP + HE_BOX[1] / 2), HE_BOX[0], HE_BOX[1], "HE hinge eye (OUTSIDE)")
         B01.add_drill_hole(sx * IMP2_KEEP[0], s01(IMP2_KEEP[1]), 3.0, "IMP-2 keeper tab")
     _edge_notch_at_z(B01, "left", lambda z: (-a(z), s01(z)), HARD_Z, "hard-point loop (L only)")
     _edge_notch_at_z(B01, "right", lambda z: (a(z), s01(z)), (POLE_TAB_Z,), "E-5 pole grip tab")
@@ -435,12 +526,22 @@ def build_shell(rs: RevSet, c):
     # BL-034: B-11 lash tabs, 4 per gusset (ASSUMPTION B11-PLACE): 2 bow riser / lash tabs, 2 muzzle keeper tabs
     b11 = []
     for z in B11_BOW_Z:
-        _b11_marks(G, ga(z) - B11_BOW_IN, sig(z), f"bow riser (R) / lash (L), z {z:.0f}")
+        _b11_marks(G, ga(z) - B11_BOW_IN, sig(z), f"bow riser (R) / light lash, no load rating (L), z {z:.0f}")
         b11.append(("bow riser / lash", z, round(ga(z) - B11_BOW_IN - gf(z), 1)))
     for dx in B11_MUZ_X:
         _b11_marks(G, gf(B11_MUZ_Z) + dx, sig(B11_MUZ_Z), f"muzzle keeper, z {B11_MUZ_Z:.0f}")
         b11.append(("muzzle keeper", B11_MUZ_Z, dx))
     rs.geo["b11"] = {"per_gusset": len(b11), "tabs": b11}
+    # BL-040 B-2 DECISION RT-MATE: the roll-clip buckle tab on each gusset (both: one pattern), at the gusset's mid depth
+    # RTM_BELOW_SEAM under the collar seam, buckle bar on the top line, tab hanging down; box as the LLT rule
+    zt = M["z_c"] - RTM_BELOW_SEAM
+    xm = 0.5 * (gf(zt) + ga(zt))
+    yb = sig(zt)
+    G.add_internal_line(_rect(xm - 12.5, yb - RTM_FOLD, xm + 12.5, yb), "placement",
+                        "RTM roll-clip buckle tab (both gussets, OUTSIDE; buckle bar on the top line)", closed=True)
+    _box_x(G, xm, yb - (RTM_CUT * 0.75 - RTM_FOLD), RTM_BOX[0], RTM_BOX[1], "RTM buckle tab")
+    rs.geo["rtm"] = {"z": round(zt, 1), "depth_from_frame_mm": round(xm - gf(zt), 1), "gusset_depth_mm": round(ga(zt) - gf(zt), 1),
+                     "rect": (round(xm - 12.5, 1), round(yb - RTM_FOLD, 1), round(xm + 12.5, 1), round(yb, 1))}
     # BL-034: K-W keeper loops at the W1-W3 crossings of the aft corner seams (ASSUMPTION KW-PATH)
     kw = kw_heights(c)
     rs.geo["kw_z"] = kw
@@ -510,8 +611,10 @@ def build_hardpoints(rs: RevSet, fabrics: str):
     W_, H_ = 90 + 32, 50 + 32
     _swell_marks(sw, W_, H_)
     # the slot runs along the strap's width (z): the swell's long side is z, so the slot is 45 along x of this piece
-    sw.add_internal_line(_rect(W_ / 2 - 22.5, H_ / 2 - 6, W_ / 2 + 22.5, H_ / 2 + 6), "cut_inside",
-                         "port slot 45 x 12 (cut with B-12 on)", closed=True)
+    # BL-040 m-7: the swell's slot is cut AFTER B-12 is sewn on (op 2.01), through the laser-cut B-12 slot, so it is a
+    # placement mark here, not a cut-out (B-12 keeps its laser-cut slot)
+    sw.add_internal_line(_rect(W_ / 2 - 22.5, H_ / 2 - 6, W_ / 2 + 22.5, H_ / 2 + 6), "placement",
+                         "port slot 45 x 12: cut AFTER sewing B-12 on, through the B-12 slot", closed=True)
     sw.labels["note"] = "sew INSIDE B-01 over the IM1/IM2/IM3 windows; B-12 patch on the crest first"
     # BL-033 H-1: no hinge swell (B-13xh): the hinge cleat bears on the B-18 doubler
     rs.add(sw, "attachment", "6 swells + ports")
@@ -531,16 +634,34 @@ def build_hardpoints(rs: RevSet, fabrics: str):
                                      f"{B17_Z + B17[1] / 2:.0f}; T3 tongue box-X at centre"})
     b17.add_internal_line(_rect(3, 3, B17[0] - 3, B17[1] - 3), "stitch", "perimeter row 1", closed=True)
     b17.add_internal_line(_rect(9, 9, B17[0] - 9, B17[1] - 9), "stitch", "perimeter row 2", closed=True)
-    _box_x(b17, B17[0] / 2, B17[1] / 2, 38, 38, "T3 tongue")
+    # BL-040 M-2: 34 x 34, the T3 piece / op 2.03 / load-table box (38 mm webbing less 2 mm a side); was 38 x 38
+    _box_x(b17, B17[0] / 2, B17[1] / 2, 34, 34, "T3 tongue")
     rs.add(b17, "attachment", "7 Hypalon + webbing parts")
-    for k in ("B-18", "B-22"):
-        p = dp[k]
-        p.labels["note"] = p.labels.get("note", "").replace("B-02d", "B-02h (INSIDE, rev 2 turned in)")
-        rs.add(p, "attachment", "7 Hypalon + webbing parts")
+    # BL-040 B-1 DECISION HE-ONE: B-18 drawn here (attach_system's 90 x 45 piece stopped at the seam line, with a 38 x 38
+    # box and rows on 4 sides): 90 x 62, its lower 12 mm in the floor seam allowance, rows on the top and both sides only
+    b18 = rect_panel("hinge-eye doubler", B18_W, B18_H, 6.0, seam_allowance_mm=SA_LASER, material_id="hypalon_coated_nylon",
+                     quantity=2, piece_id="B-18",
+                     labels={"note": f"laser-cut; INSIDE B-01 at x +/-{STAY_X:.0f}, coated face to B-01; lower edge ON the "
+                                     f"B-01 cut edge ({B18_BELOW:.0f} mm below the floor seam line, caught in the floor seam); "
+                                     f"HE box-X {HE_BOX[0]:.0f}x{HE_BOX[1]:.0f}; rows top + sides only"})
+    for d in (3.0, 9.0):
+        b18.add_internal_line([(d, 0.0), (d, B18_H - d), (B18_W - d, B18_H - d), (B18_W - d, 0.0)], "stitch",
+                              f"perimeter row {'1' if d == 3.0 else '2'} ({d:g} mm in; top + sides, bottom open)")
+    b18.add_internal_line([(0.0, B18_BELOW), (B18_W, B18_BELOW)], "placement", "floor seam line (B-01 | B-05)")
+    _box_x(b18, B18_W / 2, B18_BELOW + HE_BOX_GAP + HE_BOX[1] / 2, HE_BOX[0], HE_BOX[1], "HE eye")
+    rs.add(b18, "attachment", "7 Hypalon + webbing parts")
+    b22 = dp["B-22"]
+    # BL-040 M-4: the attach_system note said OUTSIDE B-02d at the drawn x +/-149 z 752 (rev 1); state the rev 3 placement
+    pl22 = rs.geo["b22"]
+    b22.labels["note"] = (f"laser-cut, no seam allowance; INSIDE B-02h (the hinge band) at x +/-{pl22['placed_x']:.1f}, "
+                          f"z {B22_XZ[1]:.0f}; coated face to the band")
+    rs.add(b22, "attachment", "7 Hypalon + webbing parts")
+    # BL-040 m-11: slot 27 x 5 (the POM toggle record's clearance for 25 mm webbing; 25 x 5 had none)
     b11 = rect_panel("lash tab", 30.0, 50.0, 4.0, seam_allowance_mm=SA_LASER, material_id="hypalon_coated_nylon",
-                     quantity=8, piece_id="B-11", labels={"note": "laser-cut; slot 25 x 5; bow riser + muzzle keepers "
+                     quantity=8, piece_id="B-11", labels={"note": "laser-cut; slot 27 x 5; R gusset: bow riser; L gusset: "
+                                                                "light lash only, NO load rating; muzzle keepers both "
                                                                 "(panels.yaml B-11, released)"})
-    b11.add_internal_line(_rect(2.5, 30.0, 27.5, 35.0), "cut_inside", "slot 25 x 5", closed=True)
+    b11.add_internal_line(_rect(1.5, 30.0, 28.5, 35.0), "cut_inside", "slot 27 x 5", closed=True)
     b11.add_internal_line([(3, 3), (27, 3), (27, 22), (3, 22)], "stitch", "sew-down box", closed=True)
     rs.add(b11, "attachment", "7 Hypalon + webbing parts")
     # B-27 facing: 50 x (slit + 2 x 10 mm), B-01 fabric
@@ -578,6 +699,12 @@ def build_pockets(rs: RevSet, c, fabrics: str):
             q = copy.deepcopy(p)
             if sleeve and q.piece_id == "B-09c":
                 q.material_id = sleeve
+            if q.piece_id == "B-09p" and not any(ln.kind == "cut_inside" for ln in q.internal_lines):
+                # BL-040 m-4: the hose slot the binding frames (named 'slot 12 x 40', never drawn): laser-cut it
+                x0, y0, x1, y1 = q.bounds(cut=False)
+                cx, cy = 0.5 * (x0 + x1), 0.5 * (y0 + y1)
+                q.add_internal_line(_rect(cx - HOSE_SLOT[0] / 2, cy - HOSE_SLOT[1] / 2, cx + HOSE_SLOT[0] / 2,
+                                          cy + HOSE_SLOT[1] / 2), "cut_inside", "hose slot 12 x 40", closed=True)
             for e in q.edge_names:
                 q.add_notch_on_edge(e, 0.5, kind="v", label="CL")
             rs.add(q, "pockets", step, notes=bp[pid_]["name"])
@@ -1023,9 +1150,18 @@ def build_webbing(rs: RevSet, c):
          folds=[(40.0, "fold, raw ends in the seam")], source="ledger 'keepers: 6 haul-wrap keeper loops' "
                                                                "(ASSUMPTION 80 mm cut)")
     rr = ST.roll_row()
+    # BL-040 B-2: the RT end (0-60 mm) is box-X'd on the hem B-07 at its drawn 'RT roll-clip strap' placement; the free
+    # end threads the adjustable (male) half of the side-release buckle, whose female half is on the RTM gusset tab
     _web(rs, "RT", "roll-top side clip strap", rr["after"]["cut_mm"], 2,
-         folds=[(ST.ROLL_END_MM - 30.0, "sewn to the roll end (60)"), (ST.ROLL_END_MM, "round the buckle bar (30)")],
+         folds=[(RT_SEWN, "end of the sewn zone (60 mm on the hem)")],
+         boxes=[(RT_SEWN / 2, RT_BOX[0], "box-X to the hem B-07")],
+         note="free end through the ADJUSTABLE (male) buckle half; tail keeper K-RT below the buckle",
          source="strap_tails.roll_row")
+    _web(rs, "RTM", "roll-clip buckle tab on the gusset (female half)", RTM_CUT, 2,
+         folds=[(RTM_FOLD, "fold round the buckle's female-half bar")],
+         boxes=[(RTM_CUT * 0.75, RTM_BOX[1], "box-X through RTM + B-03")],
+         note="one per gusset, flat work before the gusset seams (BL-040 B-2)",
+         source="BL-040 DECISION RT-MATE (cloth-pass clip_below_seam 150 mm; LLT tab rule)")
     _web(rs, "K-RT", "roll clip tail keeper (25 mm elastic)", KEEPER_CUT, 2, mat=ELASTIC,
          folds=[(15.0, "lap 15 mm, zigzag")], source="BL-031")
     for r in ST.im_rows():
@@ -1040,13 +1176,34 @@ def build_webbing(rs: RevSet, c):
          boxes=[(_tip_box_y(US_EYE, 25.0), 25.0, "sewn eye (MT-1)")], source="ledger US-web 1.10 m")
     # BL-034: B-24 drawn by attach_system.link_piece (folds at the real loop stations, hook box + 3 loop boxes 34 x 20)
     lk = AS.link_piece()
-    lk.labels["note"] = "hot-knife cut; " + lk.labels.get("note", "")
+    # BL-040 m-15: the attach_system note still names a 'rated 38 mm hook'; BL-010 made the hook end a wiregate carabiner
+    lk.labels["note"] = ("hot-knife cut; " + lk.labels.get("note", "")).replace(
+        "rated 38 mm hook (same part as the bag hooks)", "wiregate carabiner (carabiner_wiregate_22kn, as the IM3 bag hook)")
     rs.add(lk, "webbing", "13 straps + webbing", kit="meat_trip", notes="attach_system.link_piece (meat_haul.LINK)")
     rs.webbing.append({"id": "B-24", "use": "float stand-off link (38 mm, meat-trip)", "material_id": "poly_webbing_38mm",
                        "length_mm": round(lk.edge_length("left"), 1), "qty": lk.quantity, "kit": "meat_trip",
                        "source": "attach_system.link_piece; ledger B-24-web 2 x 435 mm"})
-    _web(rs, "HE", "hinge eye (38 mm)", 150.0, 2, mat="poly_webbing_38mm", folds=[(50.0, "fold back (eye)"), (100.0, "fold")],
-         boxes=[(125.0, 34, "box-X through B-18 + B-01")], source="attach_system.drawing_pieces HE")
+    # BL-040 B-1 DECISION HE-ONE: folded in half; both legs carry the box (they lie on top of each other once folded)
+    yb = B18_BELOW + HE_BOX_GAP + HE_BOX[1] / 2               # box centre from a raw end (raw end = B-01 cut edge)
+    neck0, neck1 = B18_BELOW + HE_BOX_GAP + HE_BOX[1], HE_CUT - (B18_BELOW + HE_BOX_GAP + HE_BOX[1])
+    he = _web(rs, "HE", "hinge eye (38 mm)", HE_CUT, 2, mat="poly_webbing_38mm",
+              folds=[(HE_FOLD, "EYE FOLD: fold in half here")],
+              boxes=[(yb, HE_BOX[1], "box-X through HE (2 plies) + B-01 + B-18 (leg A)"),
+                     (HE_CUT - yb, HE_BOX[1], "box-X (leg B, same box once folded)")],
+              note=f"fold in half at {HE_FOLD:.0f} mm, both raw ends to the B-01 cut edge; neck: long edges folded "
+                   f"{HE_NECK_EDGE:.0f} mm in between the neck lines, one BT-M per leg, sewn flat BEFORE the fold",
+              source="BL-040 DECISION HE-ONE (cut 38 x 150 as attach_system.drawing_pieces HE)")
+    for y in (B18_BELOW, HE_CUT - B18_BELOW):
+        he.add_internal_line([(0, y), (HE_W, y)], "placement", "floor seam line (raw end below it goes in the seam)")
+    for y in (neck0, neck1):
+        he.add_internal_line([(0, y), (HE_W, y)], "placement", "neck line")
+    for x in (HE_NECK_EDGE, HE_W - HE_NECK_EDGE):
+        he.add_internal_line([(x, neck0), (x, neck1)], "fold", "neck: fold the edge in to this line")
+    for y in (neck0 + HE_TACK_ABOVE_BOX, neck1 - HE_TACK_ABOVE_BOX):
+        he.add_internal_line([(HE_NECK_EDGE + 1, y), (HE_W - HE_NECK_EDGE - 1, y)], "stitch", "neck tack BT-M (one per leg)")
+    rs.geo["he"] = {"cut": HE_CUT, "fold": HE_FOLD, "box": HE_BOX, "box_z_above_seam": (HE_BOX_GAP, HE_BOX_GAP + HE_BOX[1]),
+                    "eye_mm": HE_FOLD - B18_BELOW - HE_BOX_GAP - HE_BOX[1], "neck_w": HE_W - 2 * HE_NECK_EDGE,
+                    "b18": (B18_W, B18_H), "b18_below_seam": B18_BELOW}
     _web(rs, "T3", "IM3 bag-hook tongue (38 mm)", 160.0, 2, mat="poly_webbing_38mm",
          folds=[(45.0, "fold round the hook bed")], boxes=[(22.0, 30, "loop box-X"), (130.0, 34, "box-X to B-17")],
          source="attach_system.drawing_pieces T2/T3 (IM2 hooks removed by BL-004: 2 left)")
@@ -1109,7 +1266,17 @@ def build_webbing(rs: RevSet, c):
          "length_mm": None, "qty": 4},
         {"item": "rated 25 mm G-hooks: W1-W3 (3) + extenders (3)", "material_id": "g_hook_25mm_aluminium",
          "length_mm": None, "qty": 6},
-        {"item": "25 mm side-release buckles (roll top)", "material_id": "-", "length_mm": None, "qty": 2},
+        {"item": "25 mm side-release buckles (roll top): male on RT, female on RTM", "material_id": "buckle_side_release_25mm",
+         "length_mm": None, "qty": 2},
+        # BL-040 m-14: the rest of the bag hardware, so the cut list's hardware table matches the BOM
+        {"item": "rated 25 mm G-hooks: IM1, IM2 (2) + bow riser (1)", "material_id": "g_hook_25mm_aluminium",
+         "length_mm": None, "qty": 3},
+        {"item": "wiregate carabiners 22 kN: IM3 bag hooks (2) + IM3 free end (1) + B-24 links (2, meat trip)",
+         "material_id": "carabiner_wiregate_22kn", "length_mm": None, "qty": 5},
+        {"item": "25 mm aluminium cam buckles: IM1-IM3 (3) + US1/US2 (2)", "material_id": "cam_25mm_al",
+         "length_mm": None, "qty": 5},
+        {"item": "25 mm tri-glides: US backstop, STAINLESS (2) + guy tail keepers, nylon (2)", "material_id": "triglide_25mm",
+         "length_mm": None, "qty": 4},
         {"item": "cord lock (E-5)", "material_id": "cord_lock_spring", "length_mm": None, "qty": 1},
         {"item": "cord locks: rifle muzzle keepers (2, BL-035)", "material_id": "cord_lock_spring", "length_mm": None,
          "qty": F.muzzle_keeper()["qty"]},
@@ -1231,7 +1398,7 @@ RECON = [
     ("B-24-thr:", "hardware", [], [], "thread"),
     ("W-web:", "webbing", [], ["W1", "W2", "W3"], "with A-2 and BL-031 rows"),
     ("W-hw:", "hardware", [], [], ""), ("A-2:", "webbing", [], ["W1", "W2", "W3"], "tail trim, in the cut"),
-    ("keepers:", "webbing", [], ["K-W"], ""), ("roll:", "webbing", [], ["RT"], "+ 2 buckles"),
+    ("keepers:", "webbing", [], ["K-W"], ""), ("roll:", "webbing", [], ["RT", "RTM"], "+ 2 buckles; RTM gusset tabs added by BL-040 (not booked)"),
     ("BL-010 S2", "hardware", [], [], ""), ("BL-010 S9", "hardware", [], [], ""), ("BL-010 S12", "hardware", [], [], ""),
     ("bag-side load spreaders", "pattern", ["B-17", "B-18"], [], "B-17 trimmed by the BL-004 REC row"),
     ("attachment: printed fairleads", "hardware", [], [], "frame side"),
@@ -1369,6 +1536,8 @@ def mass_check(rs_B: RevSet, rows=None, tol_pct: float = 3.0) -> dict:
 def summary(rs: RevSet) -> dict:
     rep = seam_report(rs)
     return {"fabrics": rs.fabrics, "piece_types": len(rs.pieces),
+            "fabric_types": sum(1 for p in rs.pieces.values() if p.material_id not in WEBBING),
+            "webbing_types": sum(1 for p in rs.pieces.values() if p.material_id in WEBBING),
             "pieces_cut_base": sum(p.quantity for p in rs.all_pieces(kits={"base"}, sizes={KIT}, webbing=False)),
             "pieces_cut_all_fabric": sum(p.quantity for p in rs.all_pieces(sizes={KIT}, webbing=False)),
             "webbing_lines": len(rs.webbing), "seams": len(rep.results), "mismatches": len(rep.mismatches),

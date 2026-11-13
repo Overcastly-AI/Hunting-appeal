@@ -79,16 +79,16 @@
   "corrie_f_rev3_camo_1set_tile": {
    "file": "corrie_f_rev3_camo_1set_tile_300dpi.png",
    "width_mm": 437.6,
-   "length_mm": 864.0,
+   "length_mm": 868.0,
    "px": [
     5169,
-    10205
+    10253
    ],
    "dpi": 300.0,
    "sets": 1,
-   "utilisation_usable": 0.557,
+   "utilisation_usable": 0.554,
    "notes": [],
-   "bytes": 444127
+   "bytes": 444538
   },
   "corrie_f_rev3_camo_hyperd300_1yd_3sets": {
    "file": "corrie_f_rev3_camo_hyperd300_1yd_3sets_300dpi.png",
@@ -102,7 +102,7 @@
    "sets": 3,
    "utilisation_usable": 0.464,
    "notes": [],
-   "bytes": 1065457
+   "bytes": 1065351
   },
   "corrie_f_rev3_camo_hyperd300_1yd_2sets_ab1": {
    "file": "corrie_f_rev3_camo_hyperd300_1yd_2sets_ab1_300dpi.png",
@@ -116,21 +116,21 @@
    "sets": 2,
    "utilisation_usable": 0.309,
    "notes": [],
-   "bytes": 1165839
+   "bytes": 1164502
   },
   "corrie_f_rev3_camo_630d_engineered_repeat_3sets": {
    "file": "corrie_f_rev3_camo_630d_engineered_repeat_3sets_300dpi.tif",
    "width_mm": 1500.0,
-   "length_mm": 758.0,
+   "length_mm": 762.0,
    "px": [
     17717,
-    8953
+    9001
    ],
    "dpi": 300.0,
    "sets": 3,
-   "utilisation_usable": 0.548,
+   "utilisation_usable": 0.546,
    "notes": [],
-   "bytes": 12675514
+   "bytes": 12694958
   }
  },
  "yield": {
@@ -150,11 +150,11 @@
    "utilisation": 0.652
   },
   "placed_630d_repeat": {
-   "repeat_mm": 758.0,
+   "repeat_mm": 762.0,
    "sets": 3,
-   "m_per_bag": 0.2527,
-   "utilisation_usable": 0.548,
-   "ten_bags_m": 3.032,
+   "m_per_bag": 0.254,
+   "utilisation_usable": 0.546,
+   "ten_bags_m": 3.048,
    "twelve_sets_same_length": true
   },
   "placed_hyperd_1yd": {
@@ -191,6 +191,7 @@
   "PRINT-ADDER": "ASSUMPTION PRINT-ADDER: mill print adder $8/yd over the $18/yd 630D record (no published price; replace with the strike-off quote).",
   "TOL-PROTO": "ASSUMPTION TOL-PROTO: print-on-demand prototypes accepted at dE00 <= 3.0 per ink (digital POD lots are not colour-held); production holds owner_base.yaml qc.ink_tolerance_dE00 = 1.0.",
   "UP": "ASSUMPTION UP: each piece's DXF +y is up on the bag (labels read upright). The placed print renders the camo upright in that frame.",
+  "RBTR-FULLYARD": "ASSUMPTION RBTR-FULLYARD: RBTR's design tool accepts a 58 x 36 in image as one full yard at 100 % (not tiled); check its preview.",
   "SH01B": "ASSUMPTION SH01B: BL-037 G-2 keeps the SH-01b kick bands on 630D. They are on the HyperD sheets for look only; cut them from 630D (printed or solid) for a structural build."
  },
  "render_solids": {

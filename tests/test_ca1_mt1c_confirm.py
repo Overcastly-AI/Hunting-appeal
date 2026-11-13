@@ -99,3 +99,63 @@ def test_im3_ec_load_from_the_bl021_demand():
     assert f"{ec['peak_n']} N" in reg["pass_fail"] and "1017 N" not in reg["pass_fail"]
     doc = (ROOT / "designs/pack_5200/tests_physical/CA1_fatigue_rig.md").read_text()
     assert f"{ec['peak_n']} N" in doc and "0.276" in doc
+
+
+# ---------------------------------------------------------------- structural countersign (2026-11-13)
+def test_goodman_step_closed_form():
+    # 0 -> P (R 0) and the R 0.1 coupon at S have equal sa / (1 - sm): P / 2 / (1 - P / 2) = 0.45 S / (1 - 0.55 S)
+    for P in (0.1, 0.2553, 0.4):
+        S = CC.goodman_r01(P)
+        assert (P / 2) / (1 - P / 2) == pytest.approx(0.45 * S / (1 - 0.55 * S), rel=1e-12)
+        assert S > P                     # an R 0.1 coupon at equal max is milder than the R 0 frame cycle
+    assert CC.goodman_r01(0.2553) == pytest.approx(0.2758, abs=2e-4)
+
+
+def test_countersign_explicit_run_reproduces_and_fixes_k(c):
+    s = c["countersign"]
+    assert s is not None, "run python designs/pack_5200/ca1_mt1c_confirm.py --explicit"
+    i, x = c["inputs"], s["explicit"]
+    # the split W + C re-solve reproduces both official body margins exactly (same solver, same sets)
+    assert s["reproduces"]
+    assert x["m_static"] == pytest.approx(i["m_body"], abs=1e-9) and x["m_cycled"] == pytest.approx(i["m_body_cyc"], abs=1e-9)
+    assert x["raster_g"] == pytest.approx(800.656, abs=0.01)
+    # the cycled run is peak = 1.6 W + 1.6 C: k = 1.6, not a bracket
+    assert s["k_check"] and x["flip_peak_a"]["1.6"] == pytest.approx(i["record_ratio"] / i["m_body_cyc"], abs=1e-9)
+    # the chord is above the explicit curve on this body (an empirical result: FI99 is a percentile)
+    assert s["chord_conservative"]
+    # explicit flips rise with the cinch share / swing; in phase governs
+    fa = [x["flip_peak_a"][k] for k in sorted(x["flip_peak_a"], key=float)]
+    assert fa == sorted(fa)
+    assert s["antiphase_10pct"] < x["flip_goodman"]["0.1"]
+
+
+def test_countersign_release_rule(c):
+    s = c["countersign"]
+    x = s["explicit"]
+    # mean stress and the R 0 / R 0.1 gap move the static-cinch body flip above the BL-039 rule
+    assert x["flip_goodman_no_cinch"] == pytest.approx(CC.goodman_r01(c["flips"]["body (cinch static)"]), abs=2e-4)
+    assert s["flip_static_goodman"] == pytest.approx(0.2926, abs=5e-4)
+    assert s["margin_at_276"] < 1.0 < s["margin_at_276_signed"]
+    assert c["release"] < s["flip_static_goodman_signed"] + 0.02      # even the lower bound breaks flip + 0.02
+    assert s["release_static"] == pytest.approx(0.313) and s["release_static"] > c["release"]
+    # body governs the cheek and the joint on the same basis
+    assert max(s["other_goodman"].values()) < s["flip_static_goodman"]
+    # the table: rising, 0.40 covers swings up to ~117 %, 0.276 covers none
+    lv = [r["level"] for r in s["table"]]
+    assert lv == sorted(lv) and lv[0] == s["release_static"]
+    assert 115.0 <= s["p_040_pct"] <= 120.0 and s["p_276_pct"] == 0.0
+    assert next(r for r in s["table"] if r["swing_pct"] == 100)["level"] <= 0.40 - 1e-9
+    assert next(r for r in s["table"] if r["swing_pct"] == 150)["level"] > 0.40
+    assert s["margin_040_p100"] > 1.0
+
+
+def test_countersign_im3_ec(c):
+    ec = c["countersign"]["ec"]
+    i = c["inputs"]
+    assert ec["peak_n"] == 1178 and ec["aft_deg"] == pytest.approx(22.3, abs=0.05)
+    assert ec["aft_deg_dir"] == pytest.approx(ec["aft_deg"] + 10.0, abs=0.05)
+    # at the computed angle the 1.15 coupon proves only 1.15 x (DIR_SCATTER / design) at the +10 deg angle
+    assert ec["proven_dir_margin_at_aft"] == pytest.approx(1.15 * i["m_cheek_dir"] / i["m_cheek"], abs=1e-3)
+    assert ec["proven_dir_margin_at_aft"] < 1.15
+    assert ec["peak_n_at_aft_for_dir"] == pytest.approx(1178 * i["m_cheek"] / i["m_cheek_dir"], abs=1.0)
+    assert ec["min_n_r002"] == round(0.02 * 1.15 * 1.6 * ec["combo_1g_n"])

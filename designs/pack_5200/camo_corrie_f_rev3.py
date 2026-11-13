@@ -133,7 +133,7 @@ def colour_rows(base, coverage_pieces: dict) -> list[dict]:
             "tol_production_dE00": 1.0,
             "tol_prototype_dE00": 3.0,
             "tol_dL": 0.7 if dark else 1.5,
-            "notes": ("no OBA; check 365 nm UV; dark must not print NIR-black only if spec'd" if dark else
+            "notes": ("no OBA; check 365 nm UV; dark: hold |dL*| tight, it carries the macro contrast" if dark else
                       "no OBA; check 365 nm UV" + ("; hold chroma C* to the low side" if ink["role"] in ("field", "olive") else "")),
         })
     return rows
@@ -179,6 +179,7 @@ ASSUMPTIONS = {
     "PRINT-ADDER": "ASSUMPTION PRINT-ADDER: mill print adder $8/yd over the $18/yd 630D record (no published price; replace with the strike-off quote).",
     "TOL-PROTO": "ASSUMPTION TOL-PROTO: print-on-demand prototypes accepted at dE00 <= 3.0 per ink (digital POD lots are not colour-held); production holds owner_base.yaml qc.ink_tolerance_dE00 = 1.0.",
     "UP": "ASSUMPTION UP: each piece's DXF +y is up on the bag (labels read upright). The placed print renders the camo upright in that frame.",
+    "RBTR-FULLYARD": "ASSUMPTION RBTR-FULLYARD: RBTR's design tool accepts a 58 x 36 in image as one full yard at 100 % (not tiled); check its preview.",
     "SH01B": "ASSUMPTION SH01B: BL-037 G-2 keeps the SH-01b kick bands on 630D. They are on the HyperD sheets for look only; cut them from 630D (printed or solid) for a structural build.",
 }
 

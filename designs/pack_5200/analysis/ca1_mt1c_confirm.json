@@ -146,5 +146,167 @@
    "release": 0.404
   }
  ],
- "cycled_release": 0.404
+ "cycled_release": 0.404,
+ "countersign": {
+  "explicit": {
+   "date": "2026-11-13",
+   "body": "H1-G0.55-B1/2.5",
+   "raster_g": 800.65616,
+   "n_pairs": 14,
+   "m_static": 1.1750902718703553,
+   "m_cycled": 0.7818065290584872,
+   "governing_set": "S_meat@a_L_fine_sm8_23",
+   "flip_peak_a": {
+    "0": 0.255299535007212,
+    "0.05": 0.2579789010556877,
+    "0.1": 0.2604946568371783,
+    "0.2": 0.26645323721111813,
+    "0.3": 0.27204567773616817,
+    "0.5": 0.2857064642498293,
+    "0.7": 0.299472870465495,
+    "1": 0.3253041039688064,
+    "1.2": 0.3435154972514518,
+    "1.6": 0.38372664956032476
+   },
+   "flip_goodman_no_cinch": 0.2758414614260829,
+   "flip_goodman": {
+    "0": 0.2926223685447195,
+    "0.05": 0.2953852855697108,
+    "0.1": 0.29857228146189935,
+    "0.2": 0.30448737860034897,
+    "0.3": 0.3103300109619331,
+    "0.5": 0.3242323220696035,
+    "0.7": 0.3407312702480962,
+    "1": 0.3654526382226549,
+    "1.15": 0.37792625165427113,
+    "1.5": 0.40856143951863955,
+    "2": 0.4488351062489519
+   },
+   "flip_goodman_signed": {
+    "0": 0.26541084849689345,
+    "0.05": 0.2678826653689525,
+    "0.1": 0.2699127213263716,
+    "0.2": 0.27496885205225996,
+    "0.3": 0.28041547268228,
+    "0.5": 0.2935837391167559,
+    "0.7": 0.30728394200336534,
+    "1": 0.3303945765361225,
+    "1.15": 0.34238703815329996,
+    "1.5": 0.3708793286054311,
+    "2": 0.41336218246651407
+   },
+   "flip_goodman_antiphase_10pct": 0.28720432226884096
+  },
+  "k_found": 1.6,
+  "k_check": true,
+  "reproduces": true,
+  "chord_excess_max": 0.012,
+  "chord_conservative": true,
+  "r_gap_body": 1.0805,
+  "other_goodman": {
+   "IM3 cheek 28 mm, design angle": 0.2665,
+   "IM3 cheek 28 mm, DIR_SCATTER +10 deg": 0.2762,
+   "z 234 joint (bolt boss, worst basis)": 0.2606
+  },
+  "flip_static_goodman": 0.2926,
+  "flip_static_goodman_signed": 0.2654,
+  "margin_at_276": 0.943,
+  "margin_at_276_signed": 1.04,
+  "release_static": 0.313,
+  "goal_level_1p15": 0.337,
+  "table": [
+   {
+    "swing_pct": 0,
+    "body_flip": 0.2926,
+    "body_flip_signed": 0.2654,
+    "doc_flip": 0.2553,
+    "level": 0.313
+   },
+   {
+    "swing_pct": 5,
+    "body_flip": 0.2954,
+    "body_flip_signed": 0.2679,
+    "doc_flip": 0.2642,
+    "level": 0.316
+   },
+   {
+    "swing_pct": 10,
+    "body_flip": 0.2986,
+    "body_flip_signed": 0.2699,
+    "doc_flip": 0.2731,
+    "level": 0.319
+   },
+   {
+    "swing_pct": 20,
+    "body_flip": 0.3045,
+    "body_flip_signed": 0.275,
+    "doc_flip": 0.291,
+    "level": 0.325
+   },
+   {
+    "swing_pct": 30,
+    "body_flip": 0.3103,
+    "body_flip_signed": 0.2804,
+    "doc_flip": 0.3088,
+    "level": 0.331
+   },
+   {
+    "swing_pct": 50,
+    "body_flip": 0.3242,
+    "body_flip_signed": 0.2936,
+    "doc_flip": 0.3445,
+    "level": 0.345
+   },
+   {
+    "swing_pct": 70,
+    "body_flip": 0.3407,
+    "body_flip_signed": 0.3073,
+    "doc_flip": 0.3802,
+    "level": 0.361
+   },
+   {
+    "swing_pct": 100,
+    "body_flip": 0.3655,
+    "body_flip_signed": 0.3304,
+    "doc_flip": 0.3837,
+    "level": 0.386
+   },
+   {
+    "swing_pct": 115,
+    "body_flip": 0.3779,
+    "body_flip_signed": 0.3424,
+    "doc_flip": 0.3837,
+    "level": 0.398
+   },
+   {
+    "swing_pct": 150,
+    "body_flip": 0.4086,
+    "body_flip_signed": 0.3709,
+    "doc_flip": 0.3837,
+    "level": 0.429
+   },
+   {
+    "swing_pct": 200,
+    "body_flip": 0.4488,
+    "body_flip_signed": 0.4134,
+    "doc_flip": 0.3837,
+    "level": 0.469
+   }
+  ],
+  "p_040_pct": 117.4,
+  "p_276_pct": 0.0,
+  "margin_040_static": 1.367,
+  "margin_040_p100": 1.095,
+  "antiphase_10pct": 0.2872,
+  "ec": {
+   "combo_1g_n": 640.1,
+   "peak_n": 1178,
+   "aft_deg": 22.3,
+   "aft_deg_dir": 32.3,
+   "proven_dir_margin_at_aft": 1.109,
+   "peak_n_at_aft_for_dir": 1222,
+   "r01_peak_n_at_dir": 1272,
+   "min_n_r002": 24
+  }
+ }
 }
