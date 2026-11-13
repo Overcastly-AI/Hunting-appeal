@@ -1023,13 +1023,43 @@ def parts(size: str = "M", door: str = DOOR_DEFAULT, fabrics: str = "B", c: Shel
         mk = muzzle_keeper()
         add("bag_shell", f"BL-035: rifle muzzle keepers ({mk['qty']}, 3 mm shock cord x {mk['cut_mm']:.0f} mm + spring "
             "cord lock, through the B-11 muzzle tabs, both gussets)", mk["mass_g"], "base", mk["source"])
+    # BL-041 (ledger item 9): the rev 3 pattern parts the ledger did not book. Lazy import: the pattern module imports
+    # this one. B-18 grew 90 x 45 -> 90 x 62 (BL-040 HE-ONE); HE shortened 150 -> HE_CUT (BL-041 HE-PIN); the RTM
+    # roll-clip buckle tabs (BL-040 RT-MATE) and the W3G guides (BL-041 RT-OVER-W3) are new 25 mm webbing.
+    if REVS[REVISION].get("crown_kits"):
+        for s_, n, g, src in bl041_rows():
+            add(s_, n, g, "base", src)
     return out
+
+
+def bl041_rows() -> list:
+    """BL-041 ledger rows (system, name, g, source), every mass from the pattern dimensions x a record."""
+    import importlib
+    P = importlib.import_module("patterns_corrie_f_rev3")
+    hyp = _gsm("hypalon_coated_nylon")
+    w38 = _rec("poly_webbing_38mm", "mass_g_m")
+    b18 = 2 * B18_RECT[0] * (P.B18_H - B18_RECT[1]) * 1e-6 * hyp
+    he = 2 * (P.HE_CUT - 150.0) / 1000.0 * w38
+    rtm = 2 * P.RTM_CUT / 1000.0 * WEB25
+    w3g = 2 * P.W3G_CUT / 1000.0 * WEB25
+    return [
+        ("attachment", f"BL-041: B-18 hinge doublers 90 x {B18_RECT[1]:.0f} -> 90 x {P.B18_H:.0f} (BL-040 HE-ONE, x2)", b18,
+         f"patterns_corrie_f_rev3.B18_H x hypalon_coated_nylon {hyp:.0f} gsm (record)"),
+        ("attachment", f"BL-041: HE hinge eyes 150 -> {P.HE_CUT:.0f} mm (DECISION HE-PIN, x2)", he,
+         "patterns_corrie_f_rev3.HE_CUT x poly_webbing_38mm mass_g_m (record)"),
+        ("straps_compression", f"BL-041: RTM roll-clip buckle tabs (2 x {P.RTM_CUT:.0f} mm, BL-040 RT-MATE)", rtm,
+         "patterns_corrie_f_rev3.RTM_CUT x poly_webbing_25mm mass_g_m (record)"),
+        ("straps_compression", f"BL-041: W3G W3 guides on the gussets (2 x {P.W3G_CUT:.0f} mm, DECISION RT-OVER-W3)", w3g,
+         "patterns_corrie_f_rev3.W3G_CUT x poly_webbing_25mm mass_g_m (record)"),
+        ("straps_meat", f"BL-041: IMC IM cam anchor tabs (3 x {4 * P.IMC_FOLD:.0f} mm, DECISION IM-CAM-TAB)",
+         3 * 4 * P.IMC_FOLD / 1000.0 * WEB25, "patterns_corrie_f_rev3.IMC_FOLD x 4 x poly_webbing_25mm mass_g_m (record)"),
+    ]
 
 
 # BL-035: rifle muzzle keeper (DESIGN.md R-18: muzzle loops on both sides; patterns_corrie_f_rev3 B11-PLACE: two muzzle
 # tabs side by side at z 650, 60 and 130 mm aft of the frame seam). One 3 mm shock-cord loop per gusset runs out of one
 # tab slot, round the barrel and back into the other, closed by a spring cord lock (quiet: no hook-and-loop, no metal).
-MUZZLE_TAB_GAP = 130.0 - 60.0   # mm between the two muzzle tabs (patterns_corrie_f_rev3 B11-PLACE marks)
+MUZZLE_TAB_GAP = 60.0          # mm between the two muzzle tabs (patterns_corrie_f_rev3 MK_PITCH, BL-041 RT-FWD; was 70)
 MUZZLE_BARREL_D = 25.0          # ASSUMPTION MUZZLE-CORD: barrel / muzzle-brake OD the loop is sized for (sporter
 #                                 barrels are 15-20 mm at the muzzle; 25 mm covers a brake). Settled by the rifle fit check
 MUZZLE_STANDOFF = 40.0          # ASSUMPTION MUZZLE-CORD: tab slot to barrel, each leg (rifle in the butt boot, barrel

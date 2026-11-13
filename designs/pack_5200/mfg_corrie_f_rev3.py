@@ -689,6 +689,37 @@ def _hw_values() -> dict:
             "ghook_noset": v("g_hook_25mm_aluminium", "no_set_load_n", 900.0)}
 
 
+HE_405_STEPS = ("NECK", "B18-ROWS", "PLACE-HE", "BOX", "BASTE")   # BL-041 X-1: the order op 4.05 sews in
+
+
+def he_405_text(ctx) -> str:
+    """Op 4.05 (BL-041 X-1 order): the B-18 rows are sewn through B-18 + B-01 ONLY, before the HE is laid on, so no row
+    can cross the open eye; then the HE is placed and boxed below the fairlead cheeks (DECISION HE-PIN). The PT-3
+    specimen text is built from the same steps (physical_test_kit)."""
+    rs = ctx.rs
+    hg = rs.geo["he"]
+    hbx = (boxes_of(rs.pieces["HE"]) or [(34.0, 10.0, "")])[0][:2]
+    return (f"(1) NECK, on the FLAT HE strip ({hg['cut']:.0f} mm): fold each long edge {P.HE_NECK_EDGE:.0f} mm in between "
+            f"the two 'neck lines' (the strip there is {hg['neck_w']:.0f} mm wide, the fairlead throat), then one BT-M bartack "
+            "across each leg at the 'neck tack' lines (through that leg only). "
+            "(2) B-18 ROWS FIRST: lay B-18 INSIDE B-01 on the drawn placement, coated face to B-01, its lower edge ON the "
+            f"B-01 cut edge (it runs {hg['b18_below_seam']:.0f} mm below the floor seam line); sew its perimeter rows 3 and 9 mm "
+            "in, on the TOP and BOTH SIDES only (the bottom goes in the floor seam), through B-18 + B-01 ONLY. Nothing else "
+            "is on the panel yet: these rows must never catch the HE. "
+            "(3) PLACE THE HE: fold the strip in half on the 'EYE FOLD' line (raw ends together, neck folds inside) and lay it "
+            "OUTSIDE B-01 over B-18, centred on the 'hinge eye CL' notch, eye fold pointing UP, both raw ends ON the B-01 cut "
+            "edge. Layer order from outside: HE leg / HE leg / B-01 / B-18. Clip. "
+            f"(4) BOX: box-X {hbx[0]:.0f} x {hbx[1]:.0f} at the drawn 'HE hinge eye' box (drill corners: its lower edge "
+            f"{hg['box_z_above_seam'][0]:.0f} mm, its top {hg['box_z_above_seam'][1]:.0f} mm above the floor seam line), through "
+            "all four layers. Its top edge must stay BELOW the fairlead cheeks: nothing but the 18 mm neck may sit above "
+            f"+{hg['cheek_z'][0]:.0f} mm. "
+            "(5) BASTE the bottom of the stack (2 HE raw ends + B-18 + B-01) at 6 mm, inside the allowance, so op 4.15 "
+            f"catches all of it. The free loop above the box ({hg['eye_mm']:.0f} mm, fold {hg['fold_z_flat']:.0f} mm above the "
+            "seam line) is the eye: it points UP and takes the z 60 pin with the neck in the 18 mm throat (DECISION HE-PIN; "
+            f"loaded pin centre {hg['pin_z_design']:.1f} mm above the seam line, target {hg['pin_target_z']:.0f} +/- "
+            f"{hg['pin_tol']:.0f}). No stitching crosses the eye after step 3.")
+
+
 def load_points(ctx: Ctx) -> list[dict]:
     """Every sewn load point: pattern box size, stitch count, thread / needle, the factored load from the record that
     sets it, the capacity (attach_system rules) and the proof test that releases it. Box sizes are the box-X marks drawn
@@ -888,7 +919,6 @@ LID_HOW = [   # keyword in the lid_hours row -> beginner instruction
 EARLY_FOLD = ("K-W", "HPL", "E5", "I2T", "I2K")    # BL-040 m-10: folded in step 2, sewn by the op that inserts them
 
 
-RTM_BELOW_SEAM_TXT = f"{P.RTM_BELOW_SEAM:.0f} mm under the collar seam"
 
 
 def ops(ctx: Ctx) -> list[SewingOp]:
@@ -1107,20 +1137,8 @@ def ops(ctx: Ctx) -> list[SewingOp]:
     hg = rs.geo["he"]
     hbx = (boxes_of(rs.pieces["HE"]) or [(34.0, 34.0, "")])[0][:2]
     b18_rows = sum(_len(ln.points) for ln in lines(b18, "stitch", "perimeter row"))
-    op("B-18 doublers + HE hinge eyes (DECISION HE-ONE, sketch SK-8)",
-       f"(1) Neck, on the FLAT HE strip: fold each long edge {P.HE_NECK_EDGE:.0f} mm in between the two 'neck lines' "
-       f"(the strip there is {hg['neck_w']:.0f} mm wide), then one BT-M bartack across each leg at the 'neck tack' lines "
-       "(through that leg only). (2) Fold the strip in half on the 'EYE FOLD' line: raw ends together, neck folds "
-       "inside. (3) B-18 goes INSIDE B-01 on the drawn placement, coated face to B-01, its lower edge ON the B-01 cut "
-       "edge (it runs 12 mm below the floor seam line). (4) The folded HE goes OUTSIDE B-01 on the same spot, centred on "
-       "the 'hinge eye CL' notch, eye fold pointing UP, both raw ends ON the B-01 cut edge. Layer order from outside: HE "
-       "leg / HE leg / B-01 / B-18. Clip all four. (5) Box-X "
-       f"{hbx[0]:.0f} x {hbx[1]:.0f} at the drawn 'HE hinge eye' box (drill corners: its lower edge "
-       f"{hg['box_z_above_seam'][0]:.0f} mm above the floor seam line), through all four layers. (6) B-18 perimeter rows "
-       "3 and 9 mm in, on the TOP and BOTH SIDES only (the bottom goes in the floor seam). (7) Baste the bottom of the "
-       "stack (2 HE raw ends + B-18 + B-01) at 6 mm, inside the allowance, so op 4.15 catches all of it. The free loop "
-       f"above the box ({hg['eye_mm']:.0f} mm) is the eye.", "box",
-       pieces="HE x2, B-18 x2, B-01", seam="BOX + LSd", length=2 * (b18_rows + 2 * 40.0) + bl(*hbx, 2),
+    op("B-18 doublers + HE hinge eyes (DECISION HE-ONE / HE-PIN, sketch SK-8)", he_405_text(ctx), "box",
+       pieces="HE x2, B-18 x2, B-01", seam="LSd + BOX", length=2 * (b18_rows + 2 * 40.0) + bl(*hbx, 2),
        hours=2 * (3 * H["bartack"] + rate(b18_rows, "applique")), bartack="HE + B-18 + B-01",
        vol="pattern: HE / B-18", sketch="SK-8, SK-1, SK-3", qc="QC-07")
     op("IMP-2 keeper tabs I2K on B-01", "Fold each I2K, bartack at the 2 'IMP-2 keeper tab' drill marks (inside).",
@@ -1137,7 +1155,8 @@ def ops(ctx: Ctx) -> list[SewingOp]:
            f"the 4 'B-11 box corner' drill marks; sew the {bw:.0f} x {bh:.0f} mm 'B-11 sew-down box' (rectangle + both "
            "diagonals, 301) through tab + gusset. Right gusset: bow riser; left: LIGHT LASH ONLY, no load rating "
            "(BL-040 m-12); muzzle keepers both "
-           "sides (pattern ASSUMPTION B11-PLACE, settled by the archery and rifle loadout fits).", "hyp",
+           "sides, AFT of the roll-clip path (BL-041 RT-FWD: 10 mm clear of the buckle; pattern ASSUMPTION B11-PLACE / "
+           "MK-GAP, settled by the archery and rifle loadout fits and FIT-R3).", "hyp",
            pieces=f"B-11 x{n11}, B-03 x2", seam="LSd (box-X sew-down)", length=n11 * AS.box_x(bw, bh)["path_mm"],
            hours=n11 * H["bartack"], sketch="SK-5", qc="QC-07")
     else:
@@ -1150,11 +1169,15 @@ def ops(ctx: Ctx) -> list[SewingOp]:
         op("RTM roll-clip buckle tabs on the gussets", "Gusset flat work, before the gusset seams. Thread each RTM through "
            "the bar of a side-release buckle's FEMALE half (the half with the socket) and fold it on its fold line. Lay "
            f"it on the OUTSIDE of each B-03 on the drawn 'RTM roll-clip buckle tab' placement (z {rtm['z']:.0f}, "
-           f"{RTM_BELOW_SEAM_TXT}, {rtm['depth_from_frame_mm']:.0f} mm aft of the frame seam line = mid depth): buckle "
-           f"bar on the top line, socket pointing UP (the male half on the RT strap comes down into it). Box-X "
-           f"{rbx[0]:.0f} x {rbx[1]:.0f} at the drawn 'RTM buckle tab' box through RTM (2 plies) + B-03.", "box",
-           pieces="RTM x2, B-03 x2, 2 SR buckle female halves", seam="BOX", bartack="RTM",
-           hours=2 * (H["bartack"] + PLACE_H), length=bl(*rbx, 2), sketch="SK-10", qc="QC-07")
+           f"{rtm['below_seam_mm']:.0f} mm under the collar seam, {rtm['depth_from_frame_mm']:.0f} mm aft of the frame seam "
+           "line, on the drawn 'RT strap path'; DECISION RT-FWD): buckle bar on the top line, socket pointing UP (the male "
+           f"half on the RT strap comes down into it). Box-X {rbx[0]:.0f} x {rbx[1]:.0f} at the drawn 'RTM buckle tab' box "
+           "through RTM (2 plies) + B-03. Then the W3G GUIDE on the same path (DECISION RT-OVER-W3): lay each W3G flat on "
+           "its drawn placement, strip ends on the outer lines, and sew one BT-S tack (16 x 2, 304) on each 'W3G guide "
+           "tack' line through W3G + B-03; the strip is longer than the tack spacing: push the 10 mm ease to the middle "
+           "so a 25 mm strap slides under it.", "box",
+           pieces="RTM x2, W3G x2, B-03 x2, 2 SR buckle female halves", seam="BOX + BT", bartack="RTM; W3G",
+           hours=2 * (H["bartack"] + PLACE_H) + 4 * H["bartack"], length=bl(*rbx, 2), sketch="SK-10", qc="QC-07")
     kb = rs.pieces["SH-01b"]
     op("Gusset flat work: kick bands", "SH-01b on each gusset foot at the 'kick band top' line, top edge turned 8 mm, "
        "topstitched; bottom and sides go in the seams.", "body", pieces="SH-01b x2, B-03 x2", seam="LSd",

@@ -107,7 +107,8 @@ B11_BOW_IN = 40.0                #   corner seam (the cam sits in IMP-8 at the r
 #                                  cord (z 600). Same marks on the left gusset = antler / cape lash points (gusset is one
 #                                  pattern). Settled by the archery loadout fit (bow in IMP-8, two BRL loops round the riser)
 B11_MUZ_Z = 650.0                # ASSUMPTION B11-PLACE: muzzle keeper tabs side by side at z 650 (a keeper loop runs
-B11_MUZ_X = (60.0, 130.0)        #   between them round the barrel), 60 / 130 mm aft of the frame seam: clear of the B-26 cord
+B11_MUZ_X = (60.0, 130.0)        #   between them round the barrel), BL-040: 60 / 130 mm aft of the frame seam; BL-041
+#                                  RT-FWD moves them aft of the roll-clip path (rt_layout mk_dx, 111 / 171): clear of the B-26 cord
 #                                  (z 600), the IMP-2 hose slot (frame seam + 20-32 mm, z 680-720), W3 (z ~690-715) and the
 #                                  hard-point loops in the seams (z 640). Settled by the rifle fit (butt boot on the belt wing,
 #                                  both sides)
@@ -117,36 +118,184 @@ KEEPER_CUT = F.TAIL_KEEPER_CUT_MM  # ASSUMPTION (corrie_f): 25 mm elastic keeper
 #                                  (fits 25 mm webbing + a 21 mm rolled tail); settled by weighing 10 cut keepers
 
 # ---- BL-040 B-1 DECISION HE-ONE (pack-designer): ONE hinge-eye construction for the piece, the op, the load table
-# and the PT-3 specimen. HE = 38 mm x 150 mm folded in half at 75 mm (the eye fold); BOTH raw ends reach the B-01 cut
-# edge so the floor seam (B-01 | B-05, 12 mm) catches both plies; box-X 34 x 34 (38 mm webbing less 2 mm a side, the
-# LLT / B28 rule) through HE (2 plies) + B-01 + B-18, its lower edge HE_BOX_GAP above the floor seam line. The free loop
-# between the box top and the fold is the eye. Neck (bag_attachment.md HE row: 18 mm fairlead throat): each long edge
-# folded 10 mm in over the loop zone, held by one BT-M bartack per leg, sewn on the FLAT strip before the fold.
-# z below = height on B-01 above the floor seam line (BC.Z0 = 35 mm in frame z).
-HE_CUT = 150.0                    # attach_system.drawing_pieces HE 38 x 150 (ledger 'attachment: webbing eyes'), unchanged
+# and the PT-3 specimen. HE = 38 mm webbing folded in half at the eye fold; BOTH raw ends reach the B-01 cut edge so the
+# floor seam (B-01 | B-05, 12 mm) catches both plies; box-X through HE (2 plies) + B-01 + B-18, its lower edge
+# HE_BOX_GAP above the floor seam line. The free loop between the box top and the fold is the eye. Neck
+# (bag_attachment.md HE row: 18 mm fairlead throat): each long edge folded 10 mm in over the loop zone, held by one BT-M
+# bartack per leg, sewn on the FLAT strip before the fold. z below = height on B-01 above the floor seam line
+# (BC.Z0 = 35 mm in frame z).
+# ---- BL-041 X-2 DECISION HE-PIN (pack-designer, 2026-11-13): the eye goes back on the pin. BL-040 put a 34 x 34 box
+# at +4..+38 and the eye at +38..+63, i.e. 13-38 mm ABOVE the z 60 pin (+25), relying on the eye folding down
+# (ASSUMPTION HE-REACH, withdrawn): a 180 deg peel at the box top with the cheeks on the 38 mm box stack. Now the eye
+# points UP with the box BELOW the fairlead cheeks: box top = cheek bottom (pin z - bag_attach.HALF_Z = +16) less
+# HE_CHEEK_CLEAR, so only the 18 mm neck enters the 18 mm throat, and the eye length is solved (he_geometry) so the
+# loaded pin sits at frame z 60 (bag_attachment.md:118 'eye top at z 60'; the bag floor stays at z 35 as every sim
+# assumes). Box 34 x 10 (38 mm webbing less 2 mm a side x what fits under the cheeks), in line with the pull: no peel.
 HE_W = 38.0
-HE_FOLD = HE_CUT / 2.0            # 75: eye fold; raw ends 12 mm below the seam line -> fold 63 mm above it
-HE_BOX = (34.0, 34.0)             # 38 - 2 x 2 mm a side; square (bag_attachment.md HE row)
 HE_BOX_GAP = 4.0                  # ASSUMPTION HE-GAP: box 4 mm above the floor seam line (clear of the SSa row; the SSa2
 #                                   allowances are turned DOWN onto B-05 at the hinge, op 4.15); settled by the PT-3 swatch
+HE_CHEEK_CLEAR = 2.0              # ASSUMPTION HE-CHEEK: box top 2 mm under the cleat cheeks' lower edge (cheek fillet,
+#                                   print tolerance); settled by HE-FIT (1:1 dry fit on a printed z 60 fairlead)
+HE_T = 1.5                        # ASSUMPTION HE-T: 38 mm heavyweight polyester webbing 1.5 mm thick (the record has no
+#                                   thickness; 1.2-2.0 mm is the bracket tested); settled by a caliper on the bought roll
 HE_NECK_EDGE = 10.0               # each long edge folded 10 mm in: 38 -> 18 mm neck (bag_attachment.md HE row)
-HE_TACK_ABOVE_BOX = 6.0           # neck bartack 6 mm above the box top, one per leg
-# ASSUMPTION HE-REACH: the 25 mm free eye (box top z +38 -> fold z +63 above the seam line) folds out and down onto the
-# z 60 hinge pin (frame z; = 25 mm above the B-01 | B-05 seam line); settled by QC-20 (first article on the frame).
+HE_TACK_ABOVE_BOX = 4.0           # neck bartack 4 mm above the box top, one per leg (on the straight leg, under the cheeks)
+HE_PIN_TOL = 3.0                  # eye-at-pin tolerance (BL-041 ticket): loaded pin centre within +/-3 mm of frame z 60
 B18_W = 90.0
 B18_BELOW = SA_BODY               # B-1 fix: B-18 runs 12 mm below the floor seam line into the allowance (caught by it)
-B18_TOP = HE_BOX_GAP + HE_BOX[1] + 12.0   # 50 mm above the seam line: the 9 mm perimeter row clears the box top by 3 mm
-B18_H = B18_BELOW + B18_TOP       # 62 mm (was 45, stopping at the seam line)
+B18_TOP = 50.0                    # BL-041: kept at +50 (90 x 62, the BL-040 piece): B-18 now also backs the cleat
+#                                   cheeks (+16..+34 above the seam line, hinge_standoff) with its 9 mm row 7 mm above them
+B18_H = B18_BELOW + B18_TOP       # 62 mm
+
+
+def he_geometry(face_y: float | None = None, t: float = HE_T) -> dict:
+    """BL-041 DECISION HE-PIN. Hinge-eye geometry from the frame: fairlead pin and cheeks (``bag_attach`` PIN_D,
+    HOLE_PROUD, HALF_Z), stay radius and cleat push at z 60 (``corrie_f.hinge_standoff``), B-01 face 20 mm from the stay
+    centre (PANEL_OFFSET) or pushed to the cheek tips (top_mm). Section through the eye (y towards the bag, z up): both
+    legs leave the box top at the ply midline (face_y - t, box top) and wrap the pin (centreline radius PIN_D/2 + t/2).
+    Loop length L = 2 sqrt(d^2 - r^2) + r (2 pi - 2 acos(r/d)), d = |box top -> pin centre|; eye length on the flat
+    strip (box top -> fold) = L / 2. ``face_y`` None = the mean of the two B-01 positions (design value)."""
+    from huntkit.gendesign import bag_attach as BA
+    hs = F.hinge_standoff()
+    h = hs["hinge"]
+    pin_z = h["z"] - BC.Z0                                   # +25 above the floor seam line
+    cheek_lo = pin_z - BA.HALF_Z                             # +16
+    box_top = cheek_lo - HE_CHEEK_CLEAR                      # +14
+    box_h = box_top - HE_BOX_GAP                             # 10
+    pin_y = h["stay_r_mm"] + BA.HOLE_PROUD
+    faces = (BA.PANEL_OFFSET, h["top_mm"])
+    fy = 0.5 * sum(faces) if face_y is None else face_y
+    r = BA.PIN_D / 2 + t / 2
+
+    def loop_len(zc, y0=fy):
+        d = math.hypot(y0 - t - pin_y, zc - box_top)
+        return 2 * math.sqrt(max(d * d - r * r, 0.0)) + r * (2 * math.pi - 2 * math.acos(min(r / d, 1.0)))
+
+    eye = loop_len(pin_z) / 2.0
+    return {"pin_z": pin_z, "cheek_lo": cheek_lo, "cheek_hi": pin_z + BA.HALF_Z, "box_top": box_top, "box_h": box_h,
+            "box_gap": HE_BOX_GAP, "pin_y": round(pin_y, 2), "face_y": fy, "faces_y": faces, "t": t, "r_c": r,
+            "eye_flat": eye, "throat": BA.THROAT, "pin_d": BA.PIN_D, "loop_len": loop_len}
+
+
+def he_pin_z(eye_flat: float, face_y: float | None = None, t: float = HE_T) -> float:
+    """Loaded pin-centre height above the floor seam line for an eye of ``eye_flat`` mm (box top -> fold, flat):
+    the inverse of he_geometry (bisection on the pin height)."""
+    g = he_geometry(face_y, t)
+    lo, hi = g["box_top"] + 0.1, g["box_top"] + 2 * eye_flat
+    for _ in range(80):
+        mid = 0.5 * (lo + hi)
+        if g["loop_len"](mid) / 2.0 < eye_flat:
+            lo = mid
+        else:
+            hi = mid
+    return 0.5 * (lo + hi)
+
+
+_HEG = he_geometry()
+HE_BOX = (HE_W - 4.0, round(_HEG["box_h"], 1))          # 34 x 10
+HE_EYE = round(_HEG["eye_flat"])                          # box top -> fold on the flat strip (mm, whole mm)
+HE_FOLD = B18_BELOW + HE_BOX_GAP + HE_BOX[1] + HE_EYE     # fold from a raw end (raw end = B-01 cut edge)
+HE_CUT = 2.0 * HE_FOLD                                    # was 150 (BL-040 HE-ONE); the ledger books the change (BL-041)
 # ---- BL-040 B-2 DECISION RT-MATE: the roll-top clips' second buckle half sits on a webbing tab on each gusset, as the
-# cloth-pass roll model put it (huntkit.viz3d.corrie_f CLIP_BELOW_SEAM_MM = 150 mm below the collar seam, at the gusset's
-# mid depth, tab hanging 38 mm). Female half on the gusset tab (fixed); the RT strap carries the adjustable male half.
-RTM_BELOW_SEAM = 150.0            # corrie_f_roll_clips.json clip_below_seam_mm (the paths the RT cut is sized on)
+# cloth-pass roll model put it (huntkit.viz3d.corrie_f CLIP_BELOW_SEAM_MM = 150 mm below the collar seam, tab hanging
+# 38 mm). Female half on the gusset tab (fixed); the RT strap carries the adjustable male half.
+# ---- BL-041 Y-2 DECISION RT-FWD (pack-designer): the clip path (RT strap from the hem + RTM tab + buckle body) ran down
+# the gusset centre, between the two muzzle-keeper tabs, across their cord and under W3. Now (``rt_layout``):
+#  * the RT strap hangs straight down the flat gusset at RT_X: the IMP-2 hose slot's aft edge + RT_CLEAR + half a strap;
+#  * the muzzle-keeper pair moves AFT of the clip: first tab RT_CLEAR clear of the buckle envelope, MK_PITCH apart;
+#  * the RTM buckle bar sits RT_CLEAR above the B-26 tripod cord (z 600, R gusset), so the cord never crosses the buckle
+#    body: 135 mm under the collar seam, 15 mm higher than the roll model's 150 (ASSUMPTION RT-CLIP-Z: the strap tail
+#    gets 15 mm longer, the 510 mm RT cut is unchanged; settled by T9 roll-clip free length);
+#  * W3 crosses every vertical path on the gusset (z 702.6, K-W keepers), so it cannot be cleared sideways: it runs
+#    through a W3G guide tunnel sewn on the strap path, UNDER the RT strap (DECISION RT-OVER-W3), so the roll clip opens
+#    and closes with W3 cinched.
+RTM_BELOW_SEAM_MODEL = 150.0      # corrie_f_roll_clips.json clip_below_seam_mm (the paths the RT cut is sized on)
 RTM_CUT, RTM_FOLD = 70.0, 35.0    # as LLT: 70 mm, folded round the buckle bar
 RTM_BOX = (21.0, 25.0)            # LLT_BOX rule (25 mm webbing less 2 mm a side x 25)
 RT_SEWN = 60.0                    # strap_tails.ROLL_END_MM 90 = 60 sewn to the roll end + 30 round the buckle bar
 RT_BOX = (25.0, 21.0)             # box-X on the hem: 25 along the strap x 21 across it (strap lies along the hem)
 RT_HEM_Y = 16.5                   # ASSUMPTION RT-HEM: strap centred 16.5 mm above the hem seam line on B-07 (outer half of
 #                                   the 70 mm hem, clear of the fold and of the B-07s strips); settled by the first collar
+RT_CLEAR = 10.0                   # BL-041 ticket: >= 10 mm between the clip path and the muzzle tabs / cords / slot
+BUCKLE_ENV = (35.0, 35.0)         # ASSUMPTION BUCKLE-ENV: 25 mm side-release female half + mated male, 35 wide x 35 above
+#                                   its bar (the record gives no body size); settled by a caliper on the bought buckle
+STRAP_W = 25.0
+CORD_R = 1.5                      # 3 mm shock cord (B-26, the muzzle keeper cord)
+MK_PITCH = F.MUZZLE_TAB_GAP       # 60, ASSUMPTION MK-GAP: muzzle tabs 60 mm apart (30 mm clear between them for the barrel +
+#                                   the keeper cord; was 70 / 40); settled by FIT-R3 (rifle in the keeper)
+W3G_CUT, W3G_TACK_IN, W3G_SPAN = 60.0, 7.0, 36.0  # W3 guide: 25 mm webbing 60 mm, tacks 7 mm from each end (46 apart on
+#                                   the strip), sewn 36 apart on the gusset: 10 mm of ease for 25 mm W3 to pass under it
+
+
+def rt_layout(M: dict, c) -> dict:
+    """BL-041 Y-2 DECISION RT-FWD: the roll-clip path and the muzzle keepers on the flat gusset (x = flat x, the frame
+    seam line is gy_frame(z); y = sigma). Every number from the pattern maps, the hose slot, the B-26 cord height and
+    the W3 path (kw_heights)."""
+    gf, ga, sig = M["gy_frame"], M["gy_aft"], M["sig"]
+    hose_x1 = gf(HOSE_Z) + 20.0 + HOSE_SLOT[0]
+    x_rt = math.ceil(hose_x1 + RT_CLEAR + STRAP_W / 2)
+    y_cord = sig(F.TRIPOD_KEEPER_Z)
+    y_bar = y_cord + CORD_R + RT_CLEAR             # buckle envelope RT_CLEAR above the cord's top
+    z_bar = float(np.interp(y_bar, [sig(z) for z in np.linspace(BC.Z0, M["z_c"], 400)], np.linspace(BC.Z0, M["z_c"], 400)))
+    tab1_x0 = x_rt + max(BUCKLE_ENV[0], STRAP_W) / 2 + RT_CLEAR
+    dx1 = math.ceil(tab1_x0 + B11_W / 2 - gf(B11_MUZ_Z))
+    mk = (float(dx1), float(dx1 + MK_PITCH))
+    z_w3 = kw_heights(c)["W3"]["R"]
+    zt = M["z_c"]
+    return {"x": float(x_rt), "y_bar": y_bar, "z_bar": round(z_bar, 1), "below_seam": round(zt - z_bar, 1),
+            "y_top": sig(zt), "frac_top": (x_rt - gf(zt)) / (ga(zt) - gf(zt)), "y_cord": y_cord, "mk_dx": mk,
+            "z_w3": z_w3, "y_w3": sig(z_w3), "hose_x1": hose_x1}
+
+
+def _rect_gap(r1, r2) -> float:
+    """Clear distance between two axis-aligned rectangles (x0, y0, x1, y1); 0 when they touch or overlap."""
+    dx = max(r2[0] - r1[2], r1[0] - r2[2], 0.0)
+    dy = max(r2[1] - r1[3], r1[1] - r2[3], 0.0)
+    return math.hypot(dx, dy)
+
+
+def _bbox(ln):
+    xs, ys = [q[0] for q in ln.points], [q[1] for q in ln.points]
+    return (min(xs), min(ys), max(xs), max(ys))
+
+
+def rt_clearances(G: Piece, rl: dict) -> dict:
+    """BL-041 Y-2: clear distance (mm) from each part of the roll-clip path (RTM tab, buckle envelope, strap corridor)
+    to every other placement on the gusset that it could foul: the muzzle-keeper tabs, the keeper cord between their
+    slots, the hose slot, the bow tabs, the B-26 cord and W3. W3 crosses the strap by design (through W3G, RT outside)."""
+    x, yb = rl["x"], rl["y_bar"]
+    path = {"RTM tab": (x - STRAP_W / 2, yb - RTM_FOLD, x + STRAP_W / 2, yb),
+            "buckle envelope": (x - BUCKLE_ENV[0] / 2, yb, x + BUCKLE_ENV[0] / 2, yb + BUCKLE_ENV[1]),
+            "strap corridor": (x - STRAP_W / 2, yb + BUCKLE_ENV[1], x + STRAP_W / 2, rl["y_top"])}
+    obs = {}
+    mk = []
+    for ln in G.internal_lines:
+        lab = ln.label or ""
+        if lab.startswith("B-11 lash tab"):
+            kind = "muzzle tab" if "muzzle" in lab else "bow tab"
+            bb = _bbox(ln)
+            obs[f"{kind} x {0.5 * (bb[0] + bb[2]):.0f}"] = bb
+            if kind == "muzzle tab":
+                mk.append(bb)
+        elif lab.startswith("IMP-2 hose port slot"):
+            obs["hose slot"] = _bbox(ln)
+    if len(mk) == 2:                                   # keeper cord between the two slots (op 7.22)
+        mk.sort()
+        ys = mk[0][1] + 30.0
+        obs["muzzle keeper cord"] = (0.5 * (mk[0][0] + mk[0][2]), ys - 3.0, 0.5 * (mk[1][0] + mk[1][2]), ys + 8.0)
+    obs["B-26 cord (R)"] = (-1e3, rl["y_cord"] - CORD_R, 1e3, rl["y_cord"] + CORD_R)
+    out = {f"{pk} | {ok}": round(_rect_gap(pr, orr), 1) for pk, pr in path.items() for ok, orr in obs.items()}
+    # the B-26 cord crosses the whole R gusset at z 600: it may lie over the FLAT sewn RTM tab (as it lies over the
+    # gusset), never over the buckle body (ASSUMPTION RT-CLIP-Z puts the bar RT_CLEAR above it)
+    accepted = {"RTM tab | B-26 cord (R)": "the cord lies over the flat, box-X'd tab below the buckle bar"}
+    chk = {k: v for k, v in out.items() if k not in accepted}
+    w3 = (-1e3, rl["y_w3"] - STRAP_W / 2, 1e3, rl["y_w3"] + STRAP_W / 2)
+    return {"gaps": out, "min_gap": min(chk.values()), "min_pair": min(chk, key=chk.get), "req": RT_CLEAR,
+            "accepted": accepted,
+            "w3_crossing": {"strap corridor": round(_rect_gap(path["strap corridor"], w3), 1),
+                            "buckle envelope": round(_rect_gap(path["buckle envelope"], w3), 1),
+                            "how": "W3 runs through the W3G guide under the RT strap (DECISION RT-OVER-W3)"}}
+
 
 MATERIAL_FACE = {
     "challenge_ultra_200": ("film side DOWN (inside)", "non-directional, keep grain"),
@@ -435,18 +584,23 @@ def build_shell(rs: RevSet, c):
     L07 = col["B-07"].edge_length("bottom")
     Lg = float(ctop[2] - ctop[1])
     rt = {}
-    for side, s_ring, sgn in (("L", float(ctop[1]) + Lg / 2, -1), ("R", float(ctop[-1]) - Lg / 2, 1)):
+    # BL-041 RT-FWD: the strap leaves the hem at the clip path's ring position (rt_layout frac_top from the gusset's frame
+    # end; the body ring runs frame -> aft on the L gusset and aft -> frame on the R one), not at the gusset centre
+    fr = rt_layout(M, c)["frac_top"]
+    for side, s_ring, sgn in (("L", float(ctop[1]) + fr * Lg, -1), ("R", float(ctop[-1]) - fr * Lg, 1)):
         x06 = s_ring * ccol[-1] / ctop[-1] - L06f                  # on B-06 (bottom = top x)
         s_hem = L06f + (L06 - x06)
         xc = s_hem * L07 / (L06f + L06)
-        # R: hem runs frame -> aft at the R gusset, so the frame half is x < xc; L: aft -> frame, frame half is x > xc
-        x0, x1 = (xc - RT_SEWN, xc) if sgn > 0 else (xc, xc + RT_SEWN)
+        # R: hem runs frame -> aft at the R gusset, so the aft side is x > xc; L: aft -> frame, aft side is x < xc. BL-041:
+        # the sewn 60 mm lies AFT of the crossing (the path is 27 % of the gusset from the frame end: 60 mm towards the
+        # frame would run past the frame corner)
+        x0, x1 = (xc, xc + RT_SEWN) if sgn > 0 else (xc - RT_SEWN, xc)
         B07 = col["B-07"]
         B07.add_internal_line(_rect(x0, RT_HEM_Y - 12.5, x1, RT_HEM_Y + 12.5), "placement",
                               f"RT roll-clip strap {side} (OUTSIDE; strap end at the outer line, free end crosses the "
-                              "gusset-centre notch)", closed=True)
+                              "clip-path notch)", closed=True)
         _box_x(B07, 0.5 * (x0 + x1), RT_HEM_Y, RT_BOX[0], RT_BOX[1], f"RT strap {side}")
-        B07.add_notch(xc, 0.0, "v", f"gusset centre {side} (RT strap)")
+        B07.add_notch(xc, 0.0, "v", f"clip path {side} (RT strap)")
         rt[side] = {"x_centre": round(xc, 1), "x0": round(x0, 1), "x1": round(x1, 1)}
     rs.geo["rt_on_b07"] = rt
     # door zip corner tangents (corrie_f_body.md section 9.3)
@@ -528,20 +682,32 @@ def build_shell(rs: RevSet, c):
     for z in B11_BOW_Z:
         _b11_marks(G, ga(z) - B11_BOW_IN, sig(z), f"bow riser (R) / light lash, no load rating (L), z {z:.0f}")
         b11.append(("bow riser / lash", z, round(ga(z) - B11_BOW_IN - gf(z), 1)))
-    for dx in B11_MUZ_X:
+    rl = rt_layout(M, c)                       # BL-041 Y-2 DECISION RT-FWD
+    for dx in rl["mk_dx"]:
         _b11_marks(G, gf(B11_MUZ_Z) + dx, sig(B11_MUZ_Z), f"muzzle keeper, z {B11_MUZ_Z:.0f}")
         b11.append(("muzzle keeper", B11_MUZ_Z, dx))
     rs.geo["b11"] = {"per_gusset": len(b11), "tabs": b11}
-    # BL-040 B-2 DECISION RT-MATE: the roll-clip buckle tab on each gusset (both: one pattern), at the gusset's mid depth
-    # RTM_BELOW_SEAM under the collar seam, buckle bar on the top line, tab hanging down; box as the LLT rule
-    zt = M["z_c"] - RTM_BELOW_SEAM
-    xm = 0.5 * (gf(zt) + ga(zt))
-    yb = sig(zt)
+    # BL-040 B-2 DECISION RT-MATE + BL-041 RT-FWD: the roll-clip buckle tab on each gusset (both: one pattern) on the
+    # clip path RT_X, its bar RT_CLEAR above the B-26 cord; buckle bar on the top line, tab hanging down; LLT box rule
+    xm, yb, zt = rl["x"], rl["y_bar"], rl["z_bar"]
     G.add_internal_line(_rect(xm - 12.5, yb - RTM_FOLD, xm + 12.5, yb), "placement",
                         "RTM roll-clip buckle tab (both gussets, OUTSIDE; buckle bar on the top line)", closed=True)
     _box_x(G, xm, yb - (RTM_CUT * 0.75 - RTM_FOLD), RTM_BOX[0], RTM_BOX[1], "RTM buckle tab")
-    rs.geo["rtm"] = {"z": round(zt, 1), "depth_from_frame_mm": round(xm - gf(zt), 1), "gusset_depth_mm": round(ga(zt) - gf(zt), 1),
-                     "rect": (round(xm - 12.5, 1), round(yb - RTM_FOLD, 1), round(xm + 12.5, 1), round(yb, 1))}
+    G.add_internal_line([(xm, yb + BUCKLE_ENV[1]), (xm, rl["y_top"])], "placement",
+                        "RT strap path (roll clip; nothing sewn on it)")
+    # W3G guide tunnel on the strap path at the W3 crossing: tacks W3G_SPAN apart across the strap line (DECISION
+    # RT-OVER-W3: W3 runs through it, under the RT strap)
+    for yy in (rl["y_w3"] - W3G_SPAN / 2, rl["y_w3"] + W3G_SPAN / 2):
+        G.add_internal_line([(xm - 8.0, yy), (xm + 8.0, yy)], "stitch", "W3G guide tack (W3 passes under, RT over)")
+    G.add_internal_line(_rect(xm - 12.5, rl["y_w3"] - W3G_SPAN / 2 - W3G_TACK_IN, xm + 12.5,
+                              rl["y_w3"] + W3G_SPAN / 2 + W3G_TACK_IN), "placement",
+                        "W3G W3 guide (both gussets, OUTSIDE; tacks only, 10 mm ease)", closed=True)
+    rs.geo["rtm"] = {"z": round(zt, 1), "below_seam_mm": rl["below_seam"],
+                     "depth_from_frame_mm": round(xm - gf(zt), 1), "gusset_depth_mm": round(ga(zt) - gf(zt), 1),
+                     "rect": (round(xm - 12.5, 1), round(yb - RTM_FOLD, 1), round(xm + 12.5, 1), round(yb, 1)),
+                     "x": xm, "y_bar": round(yb, 1), "frac_top": round(rl["frac_top"], 3)}
+    rs.geo["rt_layout"] = {k: (round(v, 3) if isinstance(v, float) else v) for k, v in rl.items()}
+    rs.geo["rt_clear"] = rt_clearances(G, rl)
     # BL-034: K-W keeper loops at the W1-W3 crossings of the aft corner seams (ASSUMPTION KW-PATH)
     kw = kw_heights(c)
     rs.geo["kw_z"] = kw
@@ -1066,6 +1232,9 @@ def _web(rs, pid, name, length, qty, mat="poly_webbing_25mm", folds=(), boxes=()
 
 
 IM_LOOP = 60.0         # strap_tails / mfg IM-BOX: 60 mm end-loop fold
+IMC_FOLD = 45.0        # BL-041 IM-CAM-TAB: 45 mm folds -> 21 x 25 box 2 mm from the tip leaves an 18 mm clear loop for
+#                        the cam / hook bar (ASSUMPTION IMC-LOOP: 25 mm cam and G-hook bars pass an 18 mm loop; settled by
+#                        threading the bought cam and hook on the first tab)
 US_EYE = 50.0          # ASSUMPTION US-EYE: 50 mm eye fold round the left pin's UHMWPE sleeve (the HE eye fold); settled
 #                        by the MT-1 specimens, sewn this way
 B25_BOX = (21.0, 15.0)  # DECISION B25-BOX (BL-034): 21 x 15 at the tip end of the 2 x 30 tab leaves a 13 mm clear loop,
@@ -1160,14 +1329,31 @@ def build_webbing(rs: RevSet, c):
     _web(rs, "RTM", "roll-clip buckle tab on the gusset (female half)", RTM_CUT, 2,
          folds=[(RTM_FOLD, "fold round the buckle's female-half bar")],
          boxes=[(RTM_CUT * 0.75, RTM_BOX[1], "box-X through RTM + B-03")],
-         note="one per gusset, flat work before the gusset seams (BL-040 B-2)",
-         source="BL-040 DECISION RT-MATE (cloth-pass clip_below_seam 150 mm; LLT tab rule)")
+         note="one per gusset, flat work before the gusset seams (BL-040 B-2); on the BL-041 clip path",
+         source="BL-040 DECISION RT-MATE (LLT tab rule); BL-041 RT-FWD placement (rt_layout)")
+    # BL-041 Y-2 DECISION RT-OVER-W3: W3 guide tunnel on each gusset's clip path; two BT-S tacks across the strip
+    w3g = _web(rs, "W3G", "W3 guide on the gusset (W3 under, RT strap over)", W3G_CUT, 2,
+               note=f"one per gusset on the clip path at the W3 height; tack lines {W3G_CUT - 2 * W3G_TACK_IN:.0f} mm apart "
+                    f"on the strip, sewn to the {W3G_SPAN:.0f} mm marks on B-03 (10 mm ease); W3 threads under it once",
+               source="BL-041 DECISION RT-OVER-W3 (W3 cannot clear the clip path sideways: it crosses the gusset)")
+    for y in (W3G_TACK_IN, W3G_CUT - W3G_TACK_IN):
+        w3g.add_internal_line([(4.5, y), (20.5, y)], "stitch", "W3G tack BT-S (16 x 2, 304)")
     _web(rs, "K-RT", "roll clip tail keeper (25 mm elastic)", KEEPER_CUT, 2, mat=ELASTIC,
          folds=[(15.0, "lap 15 mm, zigzag")], source="BL-031")
     for r in ST.im_rows():
         _web(rs, r["id"], f"internal meat strap {r['id']}", r["after"]["cut_mm"], 1,
              folds=[(IM_LOOP, "left end loop (girth-hitched on the eye)")],
              boxes=[(_tip_box_y(IM_LOOP, 25.0), 25.0, "end loop (MT-1)")], source="strap_tails.im_rows (unchanged)")
+    # BL-041 m-19 / n-15 DECISION IM-CAM-TAB: each IM strap's cam gets a SEWN anchor on the rated path. IMC = a 25 mm
+    # dog-bone: one end folded round the cam's anchor bar, the other round the G-hook bar (IM1 / IM2) or into a
+    # carabiner loop (IM3), each closed by a 21 x 25 box at the tip end (the IM end-loop box, MT-1). Path: left eye <-
+    # girth-hitched IM loop - IM strap - through the cam - cam bar = IMC = hook / carabiner -> right eye (SK-11).
+    _web(rs, "IMC", "IM cam anchor tab (cam bar <-> hook / carabiner)", 4.0 * IMC_FOLD, 3,
+         folds=[(IMC_FOLD, "fold round the CAM anchor bar"), (3.0 * IMC_FOLD, "fold round the G-hook bar / carabiner")],
+         boxes=[(_tip_box_y(IMC_FOLD, 25.0), 25.0, "cam end box-X (MT-1)"),
+                (4.0 * IMC_FOLD - _tip_box_y(IMC_FOLD, 25.0), 25.0, "hook end box-X (MT-1)")],
+         note="one per IM strap; both raw ends meet in the middle; clear loop 18 mm each end",
+         source="BL-041 DECISION IM-CAM-TAB (review m-19 / n-15: the cam had no sewn anchor)")
     _web(rs, "K-IM", "IM tail keeper (25 mm elastic)", KEEPER_CUT, 3, mat=ELASTIC, folds=[(15.0, "lap 15 mm")],
          source="BL-031")
     _web(rs, "IME", "IM fairlead eye (38 mm)", 200.0, 6, mat="poly_webbing_38mm", folds=[(100.0, "fold (eye)")],
@@ -1191,8 +1377,9 @@ def build_webbing(rs: RevSet, c):
               boxes=[(yb, HE_BOX[1], "box-X through HE (2 plies) + B-01 + B-18 (leg A)"),
                      (HE_CUT - yb, HE_BOX[1], "box-X (leg B, same box once folded)")],
               note=f"fold in half at {HE_FOLD:.0f} mm, both raw ends to the B-01 cut edge; neck: long edges folded "
-                   f"{HE_NECK_EDGE:.0f} mm in between the neck lines, one BT-M per leg, sewn flat BEFORE the fold",
-              source="BL-040 DECISION HE-ONE (cut 38 x 150 as attach_system.drawing_pieces HE)")
+                   f"{HE_NECK_EDGE:.0f} mm in between the neck lines, one BT-M per leg, sewn flat BEFORE the fold; "
+                   f"eye {HE_EYE:.0f} mm points UP onto the z 60 pin (HE-PIN)",
+              source=f"BL-040 DECISION HE-ONE + BL-041 DECISION HE-PIN (cut 38 x {HE_CUT:.0f}; eye solved by he_geometry)")
     for y in (B18_BELOW, HE_CUT - B18_BELOW):
         he.add_internal_line([(0, y), (HE_W, y)], "placement", "floor seam line (raw end below it goes in the seam)")
     for y in (neck0, neck1):
@@ -1201,9 +1388,19 @@ def build_webbing(rs: RevSet, c):
         he.add_internal_line([(x, neck0), (x, neck1)], "fold", "neck: fold the edge in to this line")
     for y in (neck0 + HE_TACK_ABOVE_BOX, neck1 - HE_TACK_ABOVE_BOX):
         he.add_internal_line([(HE_NECK_EDGE + 1, y), (HE_W - HE_NECK_EDGE - 1, y)], "stitch", "neck tack BT-M (one per leg)")
+    g = he_geometry()
+    pins = [he_pin_z(HE_EYE, fy, t) for fy in g["faces_y"] for t in (1.2, HE_T, 2.0)]
     rs.geo["he"] = {"cut": HE_CUT, "fold": HE_FOLD, "box": HE_BOX, "box_z_above_seam": (HE_BOX_GAP, HE_BOX_GAP + HE_BOX[1]),
                     "eye_mm": HE_FOLD - B18_BELOW - HE_BOX_GAP - HE_BOX[1], "neck_w": HE_W - 2 * HE_NECK_EDGE,
-                    "b18": (B18_W, B18_H), "b18_below_seam": B18_BELOW}
+                    "b18": (B18_W, B18_H), "b18_below_seam": B18_BELOW,
+                    # BL-041 HE-PIN: where the eye sits on the frame (heights above the floor seam line, mm)
+                    "pin_target_z": g["pin_z"], "pin_z_design": round(he_pin_z(HE_EYE), 2),
+                    "pin_z_range": (round(min(pins), 2), round(max(pins), 2)), "pin_tol": HE_PIN_TOL,
+                    "cheek_z": (g["cheek_lo"], g["cheek_hi"]), "cheek_clear": round(g["cheek_lo"] - HE_BOX_GAP - HE_BOX[1], 2),
+                    "fold_z_flat": HE_BOX_GAP + HE_BOX[1] + HE_EYE, "throat": g["throat"],
+                    # the open eye's footprint on B-01 / B-18 (x about the eye CL, z above the seam line): no stitch
+                    # row sewn after the HE is placed may cross it (X-1)
+                    "eye_footprint": (-HE_W / 2, HE_BOX_GAP + HE_BOX[1], HE_W / 2, HE_BOX_GAP + HE_BOX[1] + HE_EYE)}
     _web(rs, "T3", "IM3 bag-hook tongue (38 mm)", 160.0, 2, mat="poly_webbing_38mm",
          folds=[(45.0, "fold round the hook bed")], boxes=[(22.0, 30, "loop box-X"), (130.0, 34, "box-X to B-17")],
          source="attach_system.drawing_pieces T2/T3 (IM2 hooks removed by BL-004: 2 left)")
@@ -1398,7 +1595,7 @@ RECON = [
     ("B-24-thr:", "hardware", [], [], "thread"),
     ("W-web:", "webbing", [], ["W1", "W2", "W3"], "with A-2 and BL-031 rows"),
     ("W-hw:", "hardware", [], [], ""), ("A-2:", "webbing", [], ["W1", "W2", "W3"], "tail trim, in the cut"),
-    ("keepers:", "webbing", [], ["K-W"], ""), ("roll:", "webbing", [], ["RT", "RTM"], "+ 2 buckles; RTM gusset tabs added by BL-040 (not booked)"),
+    ("keepers:", "webbing", [], ["K-W"], ""), ("roll:", "webbing", [], ["RT"], "+ 2 buckles (the RTM tabs: BL-041 row)"),
     ("BL-010 S2", "hardware", [], [], ""), ("BL-010 S9", "hardware", [], [], ""), ("BL-010 S12", "hardware", [], [], ""),
     ("bag-side load spreaders", "pattern", ["B-17", "B-18"], [], "B-17 trimmed by the BL-004 REC row"),
     ("attachment: printed fairleads", "hardware", [], [], "frame side"),
@@ -1439,6 +1636,11 @@ RECON = [
     ("BL-034 records:", "hardware", [], [], "hardware / elastic re-booked on the BL-034 records"),
     ("BL-034 thread:", "hardware", [], [], "thread from the op lengths (build_effort_rev3)"),
     ("BL-035: rifle muzzle keepers", "webbing", [], ["MK-cord"], "+ 2 cord locks"),
+    ("BL-041: B-18 hinge doublers", "pattern", [], [], "B-18 growth; weighed with the bag-side load spreaders row"),
+    ("BL-041: HE hinge eyes", "webbing", [], ["HE"], "HE-PIN length change"),
+    ("BL-041: RTM roll-clip buckle tabs", "webbing", [], ["RTM"], ""),
+    ("BL-041: W3G W3 guides", "webbing", [], ["W3G"], ""),
+    ("BL-041: IMC IM cam anchor tabs", "webbing", [], ["IMC"], ""),
 ]
 
 
@@ -1511,8 +1713,8 @@ def mass_check(rs_B: RevSet, rows=None, tol_pct: float = 3.0) -> dict:
     for o in rec["rows"]:
         if o["status"] != "pattern":
             continue
-        if o["row"].startswith("BL-004 REC: B-17 trimmed"):
-            continue                                    # B-17 is weighed once, against both of its rows (below)
+        if o["row"].startswith(("BL-004 REC: B-17 trimmed", "BL-041: B-18 hinge doublers")):
+            continue                                    # B-17 / B-18 are weighed once, against all their rows (below)
         if o["row"].startswith("B-13x boxed fairlead swell"):
             lf_h1 = next(r["ledger_g"] for r in rec["rows"] if r["row"].startswith("BL-033 H-1: hinge swells"))
         else:
@@ -1522,6 +1724,7 @@ def mass_check(rs_B: RevSet, rows=None, tol_pct: float = 3.0) -> dict:
         if o["row"].startswith("bag-side load spreaders"):
             trim = next(r for r in rec["rows"] if r["row"].startswith("BL-004 REC: B-17 trimmed"))
             lf += trim["ledger_g"]
+            lf += sum(r["ledger_g"] for r in rec["rows"] if r["row"].startswith("BL-041: B-18 hinge doublers"))
         lf += lf_h1                                     # B-13x: x8 row + the H-1 removal row (6 drawn)
         if o["row"].startswith("BL-028 rev 2: B-27"):
             pm += 2 * 2 * F.PORT_TURN * F.guy_port()["slit_mm"] * 1e-6 * F._gsm(rs_B.pieces["B-01"].material_id)
