@@ -1,0 +1,15 @@
+piece,size,unit,rotation_deg,mirrored,x_min_mm,y_min_mm,area_m2
+"D2 door (whole aft face z 110-650, R 55 corners)",,0,270.0,False,-0.0,38.0,0.19482
+side gusset,,0,270.0,False,-0.0,392.1,0.15964
+side gusset,,0,90.0,True,0.0,645.3,0.15964
+crown lid: crown (4 corner darts),,0,0.0,False,-0.0,906.1,0.10618
+roll-top hem,,0,270.0,False,738.2,38.0,0.10093
+glass pod back panel (hooks to 4 loops),,0,270.0,False,-0.0,1203.8,0.10066
+D2 hinge band (z 650 to the collar seam),,0,90.0,False,469.0,898.9,0.04139
+fly base pocket,,0,270.0,False,469.0,1263.2,0.0336
+crown lid: front wall run,,0,0.0,False,591.5,1114.7,0.02933
+"cam cup body (folded, 2 side seams)",,0,270.0,False,632.0,1171.7,0.0257
+"crown lid: aft wall, upper (zip)",,0,0.0,False,632.0,1320.7,0.01828
+"crown lid: aft wall, lower (zip)",,0,0.0,False,632.0,1360.7,0.01828
+crown lid: strap channel,,0,270.0,False,-0.0,1422.8,0.01332
+crown lid: strap channel,,0,270.0,False,632.0,1400.7,0.01332

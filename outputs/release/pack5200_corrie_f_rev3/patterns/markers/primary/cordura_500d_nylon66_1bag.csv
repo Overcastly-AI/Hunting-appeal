@@ -1,0 +1,2 @@
+piece,size,unit,rotation_deg,mirrored,x_min_mm,y_min_mm,area_m2
+bottom (full S15 width),,0,270.0,False,-0.0,38.0,0.07685

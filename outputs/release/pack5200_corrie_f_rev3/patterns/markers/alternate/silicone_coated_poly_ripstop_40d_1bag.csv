@@ -1,0 +1,2 @@
+piece,size,unit,rotation_deg,mirrored,x_min_mm,y_min_mm,area_m2
+SWAP slab (sleep kit / meat liner) tube (sides + aft),,0,270.0,False,-0.0,25.5,0.38262
