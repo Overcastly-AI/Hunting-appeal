@@ -36,27 +36,27 @@
    }
   },
   "A": {
-   "base": 3211.4,
-   "as_hunted": 3528.5,
-   "meat_trip": 3724.5,
+   "base": 3092.2,
+   "as_hunted": 3409.3,
+   "meat_trip": 3605.3,
    "by_system_base": {
-    "frame": 1071.8,
-    "back": 369.0,
-    "belt": 441.9,
-    "harness": 225.1,
-    "bag_shell": 359.5,
+    "frame": 1067.8,
+    "back": 363.6,
+    "belt": 393.3,
+    "harness": 196.8,
+    "bag_shell": 333.5,
     "bag_pockets": 102.9,
     "pouch": 0,
     "fly": 5.9,
     "straps_meat": 283.3,
     "straps_compression": 140.0,
     "attachment": 186.4,
-    "misc": 25.8
+    "misc": 18.8
    },
    "like_for_like_base": {
-    "bag_side": 1078.0,
-    "suspension": 2107.7,
-    "misc": 25.8
+    "bag_side": 1052.0,
+    "suspension": 2021.4,
+    "misc": 18.8
    }
   }
  },
@@ -73,9 +73,9 @@
     "meat_trip": 4164.0
    },
    "A": {
-    "base": 3186.0,
-    "as_hunted": 3503.0,
-    "meat_trip": 3699.0
+    "base": 3074.4,
+    "as_hunted": 3391.5,
+    "meat_trip": 3587.5
    }
   },
   "M": {
@@ -90,9 +90,9 @@
     "meat_trip": 4192.5
    },
    "A": {
-    "base": 3211.4,
-    "as_hunted": 3528.5,
-    "meat_trip": 3724.5
+    "base": 3092.2,
+    "as_hunted": 3409.3,
+    "meat_trip": 3605.3
    }
   },
   "L": {
@@ -107,9 +107,9 @@
     "meat_trip": 4217.4
    },
    "A": {
-    "base": 3233.8,
-    "as_hunted": 3550.9,
-    "meat_trip": 3746.9
+    "base": 3108.3,
+    "as_hunted": 3425.4,
+    "meat_trip": 3621.4
    }
   },
   "XL": {
@@ -124,9 +124,9 @@
     "meat_trip": 4254.2
    },
    "A": {
-    "base": 3268.2,
-    "as_hunted": 3585.3,
-    "meat_trip": 3781.3
+    "base": 3136.3,
+    "as_hunted": 3453.4,
+    "meat_trip": 3649.4
    }
   },
   "XXL": {
@@ -141,9 +141,9 @@
     "meat_trip": 4283.9
    },
    "A": {
-    "base": 3295.1,
-    "as_hunted": 3612.2,
-    "meat_trip": 3808.2
+    "base": 3156.0,
+    "as_hunted": 3473.1,
+    "meat_trip": 3669.1
    }
   }
  },
@@ -3627,6 +3627,104 @@
     }
    ]
   },
+  "A_bl037": {
+   "class": "A",
+   "ticket": "BL-037",
+   "label": "weight push: belt/strap foams, sliders, camo cloth +6",
+   "kind": "design",
+   "gate": "HB-1 + CS-1, HB-D2, BP-1 (2 mm core), HS-1, ST-1, SL-1, AB-1, BU-1 (weight_push.md); fallback today's parts",
+   "delta_g": {
+    "base": -119.2,
+    "as_hunted": -119.2,
+    "meat_trip": -119.2
+   },
+   "rows": [
+    {
+     "system": "belt",
+     "name": "BL-037 B-1: wing load foam EVA 45C -> XLPE L200 6 mm (BL-006 d2)",
+     "g": -21.3,
+     "cfg": "base",
+     "source": "weight_push (BL-037): hipbelt_diet._mass_delta('d2')"
+    },
+    {
+     "system": "belt",
+     "name": "BL-037 B-1: lumbar firm foam EVA 45C -> XLPE L200 6 mm (BL-006 d4)",
+     "g": -10.6,
+     "cfg": "base",
+     "source": "weight_push (BL-037): hipbelt_diet._mass_delta('d4')"
+    },
+    {
+     "system": "belt",
+     "name": "BL-037 B-2: wing stiffener 0.75 -> 0.5 mm (c3 in place of c2)",
+     "g": -9.75,
+     "cfg": "base",
+     "source": "weight_push (BL-037): hipbelt_diet._mass_delta('c3') - ('c2')"
+    },
+    {
+     "system": "belt",
+     "name": "BL-037 B-3: wing comfort foam EVA 30C 5 -> 4 mm (BL-006 d3)",
+     "g": -2.4,
+     "cfg": "base",
+     "source": "weight_push (BL-037): hipbelt_diet._mass_delta('d3')"
+    },
+    {
+     "system": "back",
+     "name": "BL-037 K-1: backer strip core R71 3 -> 2 mm (b_swR71c2_70)",
+     "g": -5.33,
+     "cfg": "base",
+     "source": "weight_push (BL-037): back_system2.mass_delta_g"
+    },
+    {
+     "system": "harness",
+     "name": "BL-037 H-1: J-strap load foam EVA 45C -> XLPE L200 5 mm (pair)",
+     "g": -22.31,
+     "cfg": "base",
+     "source": "weight_push (BL-037): build_geometry J-strap outline x foam records"
+    },
+    {
+     "system": "harness",
+     "name": "BL-037 H-2: sternum Fidlock -> 25 mm side-release",
+     "g": -6.0,
+     "cfg": "base",
+     "source": "weight_push (BL-037): fidlock / buckle_side_release_25mm records"
+    },
+    {
+     "system": "bag_shell",
+     "name": "BL-037 G-1: D2 door sliders with cord pulls (2)",
+     "g": -8.0,
+     "cfg": "base",
+     "source": "weight_push (BL-037): slider_10 record - ASSUMPTION SLIDER-CORD"
+    },
+    {
+     "system": "bag_shell",
+     "name": "BL-037 G-2: B-02u + SH-07 camo 630D -> HyperD 300",
+     "g": -17.97,
+     "cfg": "base",
+     "source": "weight_push (BL-037): gsm ratio of the records"
+    },
+    {
+     "system": "belt",
+     "name": "BL-037 G-2: SH-05 belt camo shards 630D -> HyperD 300",
+     "g": -4.55,
+     "cfg": "base",
+     "source": "weight_push (BL-037): gsm ratio of the records"
+    },
+    {
+     "system": "frame",
+     "name": "BL-037 F-3: crown bushings 70 -> 50 mm",
+     "g": -3.99,
+     "cfg": "base",
+     "source": "weight_push (BL-037): crown_diet.bushing_g"
+    },
+    {
+     "system": "misc",
+     "name": "BL-037 X-1: printed label in place of the woven set",
+     "g": -7.0,
+     "cfg": "base",
+     "source": "weight_push (BL-037): geometry.yaml labels_g - ASSUMPTION LABEL"
+    }
+   ]
+  },
   "A_c17": {
    "class": "R",
    "ticket": "BL-017 c17",
@@ -3876,9 +3974,9 @@
     "pct": 57.0
    },
    "A": {
-    "ours_g": 3163.6,
-    "delta_g": 855.6,
-    "pct": 37.0
+    "ours_g": 3044.4,
+    "delta_g": 736.4,
+    "pct": 32.0
    }
   },
   {
@@ -3901,9 +3999,9 @@
     "pct": 51.0
    },
    "A": {
-    "ours_g": 3163.6,
-    "delta_g": 767.6,
-    "pct": 32.0
+    "ours_g": 3044.4,
+    "delta_g": 648.4,
+    "pct": 27.0
    }
   },
   {
@@ -3927,9 +4025,9 @@
     "pct": 44.0
    },
    "A": {
-    "ours_g": 3322.1,
-    "delta_g": 685.1,
-    "pct": 26.0
+    "ours_g": 3202.9,
+    "delta_g": 565.9,
+    "pct": 21.0
    }
   },
   {
@@ -3949,9 +4047,9 @@
     "pct": 32.0
    },
    "A": {
-    "ours_g": 3211.4,
-    "delta_g": 421.4,
-    "pct": 15.0
+    "ours_g": 3092.2,
+    "delta_g": 302.2,
+    "pct": 11.0
    }
   },
   {
@@ -3971,9 +4069,9 @@
     "pct": 39.0
    },
    "A": {
-    "ours_g": 3211.4,
-    "delta_g": 572.4,
-    "pct": 22.0
+    "ours_g": 3092.2,
+    "delta_g": 453.2,
+    "pct": 17.0
    }
   },
   {
@@ -3995,9 +4093,9 @@
     "pct": 35.0
    },
    "A": {
-    "ours_g": 3337.3,
-    "delta_g": 525.3,
-    "pct": 19.0
+    "ours_g": 3218.1,
+    "delta_g": 406.1,
+    "pct": 14.0
    }
   },
   {
@@ -4019,9 +4117,9 @@
     "pct": 41.0
    },
    "A": {
-    "ours_g": 3337.3,
-    "delta_g": 629.3,
-    "pct": 23.0
+    "ours_g": 3218.1,
+    "delta_g": 510.1,
+    "pct": 19.0
    }
   },
   {
@@ -4043,9 +4141,9 @@
     "pct": 31.0
    },
    "A": {
-    "ours_g": 3248.0,
-    "delta_g": 413.0,
-    "pct": 15.0
+    "ours_g": 3128.8,
+    "delta_g": 293.8,
+    "pct": 10.0
    }
   },
   {
@@ -4069,9 +4167,9 @@
     "pct": 127.0
    },
    "A": {
-    "ours_g": 3322.1,
-    "delta_g": 1649.1,
-    "pct": 99.0
+    "ours_g": 3202.9,
+    "delta_g": 1529.9,
+    "pct": 91.0
    }
   },
   {
@@ -4093,15 +4191,15 @@
     "pct": 40.0
    },
    "A": {
-    "ours_g": 3337.3,
-    "delta_g": 615.3,
-    "pct": 23.0
+    "ours_g": 3218.1,
+    "delta_g": 496.1,
+    "pct": 18.0
    }
   }
  ],
  "features": {
-  "after_tests_base_g": 3211.4,
-  "gap_g": 217.7,
+  "after_tests_base_g": 3092.2,
+  "gap_g": 98.5,
   "candidates": [
    {
     "item": "IMP-2",
@@ -4163,16 +4261,14 @@
    "FP-L/R",
    "IMP-2",
    "IMP-4",
-   "IMP-5L",
-   "B-11 lash",
-   "IMP-6",
-   "E-5"
+   "IMP-5L"
   ],
-  "greedy_g": 133.7,
-  "reaches": false,
-  "belt_foam_reserve_g": -31.9,
-  "with_reserve_g": 165.6,
-  "reaches_with_reserve": false
+  "greedy_g": 105.2,
+  "reaches": true,
+  "belt_foam_reserve_g": 0.0,
+  "reserve_booked_bl037": true,
+  "with_reserve_g": 133.7,
+  "reaches_with_reserve": true
  },
  "bl011_headline_base_g": 3274.2,
  "h1_fatigue": {
@@ -4335,12 +4431,12 @@
   "A": {
    "scenario": "A",
    "cfg": "base",
-   "total_g": 3211.4,
+   "total_g": 3092.2,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
-     "g": 358.5,
-     "band_g": 166.1,
-     "n": 28,
+     "g": 343.5,
+     "band_g": 170.6,
+     "n": 30,
      "frac": 0.3
     },
     "printed PAHT-CF body (2 mm raster x density)": {
@@ -4350,20 +4446,20 @@
      "frac": 0.05
     },
     "frame lumps and carbon (beam model, frame_mass json)": {
-     "g": 514.1,
-     "band_g": 63.9,
-     "n": 12,
+     "g": 510.1,
+     "band_g": 64.3,
+     "n": 13,
      "frac": 0.1
     },
     "cut area x record gsm, length x record g/m": {
-     "g": 1587.6,
-     "band_g": 225.6,
-     "n": 146,
+     "g": 1487.4,
+     "band_g": 233.6,
+     "n": 155,
      "frac": 0.08
     }
    },
-   "worst_g": 498.0,
-   "rss_g": 72.0,
+   "worst_g": 510.9,
+   "rss_g": 72.1,
    "named": [
     {
      "name": "D2 door zip #10 in the blade | door seam, 2 sliders",
@@ -4461,9 +4557,19 @@
      "band_g": 2.4
     },
     {
+     "name": "BL-037 G-1: D2 door sliders with cord pulls (2)",
+     "g": -8.0,
+     "band_g": 2.4
+    },
+    {
      "name": "BL-022 rev 1: B-25 guy bridle on the top bar at x +/-52",
      "g": 7.43,
      "band_g": 2.2
+    },
+    {
+     "name": "BL-037 X-1: printed label in place of the woven set",
+     "g": -7.0,
+     "band_g": 2.1
     },
     {
      "name": "belt B cant snap deleted (2 POM 3-position detents, ASSUMPTION -6 g)",

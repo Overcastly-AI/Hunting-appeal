@@ -1,0 +1,913 @@
+{
+ "date": "2026-11-13",
+ "ticket": "BL-037",
+ "size": "M",
+ "systems": {
+  "by_system": {
+   "frame": 1071.8,
+   "belt": 441.9,
+   "back": 369.0,
+   "bag_shell": 359.5,
+   "straps_meat": 283.3,
+   "harness": 225.1,
+   "attachment": 186.4,
+   "straps_compression": 140.0,
+   "bag_pockets": 102.9,
+   "misc": 25.8,
+   "fly": 5.9,
+   "pouch": 0
+  },
+  "groups": {
+   "frame_side": 2375.9,
+   "bag_side": 794.7,
+   "unsplit": 41.0,
+   "spreader": 162.3,
+   "frame": 1071.8,
+   "back": 369.0,
+   "belt": 441.9,
+   "harness": 225.1,
+   "bag_shell": 359.5,
+   "bag_pockets": 102.9,
+   "pouch": 0,
+   "fly": 5.9,
+   "straps_meat": 283.3,
+   "straps_compression": 140.0,
+   "attachment": 186.4,
+   "misc": 25.8
+  },
+  "functions": [
+   {
+    "function": "frame side (frame, back, belt, harness, meat carry)",
+    "ours_key": "frame_side",
+    "ours_g": 2375.9,
+    "leader": "Stone Glacier Krux, M belt",
+    "leader_g": 1247.0,
+    "over_g": 1128.9,
+    "ratio": 1.91,
+    "source": "docs/research/published_weight_definitions.md 2.1 (Gearfool Krux)"
+   },
+   {
+    "function": "frame side (frame, back, belt, harness, meat carry)",
+    "ours_key": "frame_side",
+    "ours_g": 2375.9,
+    "leader": "Exo K4 frame system",
+    "leader_g": 1332.0,
+    "over_g": 1043.9,
+    "ratio": 1.78,
+    "source": "docs/research/published_weight_definitions.md 2.1 (Exo K4 frame)"
+   },
+   {
+    "function": "frame side (frame, back, belt, harness, meat carry)",
+    "ours_key": "frame_side",
+    "ours_g": 2375.9,
+    "leader": "Kifaru ARK, M belt",
+    "leader_g": 1400.0,
+    "over_g": 975.9,
+    "ratio": 1.7,
+    "source": "docs/research/published_weight_definitions.md 2.1 (goHunt ARK)"
+   },
+   {
+    "function": "bag side (shell, pockets, compression, attachment)",
+    "ours_key": "bag_side",
+    "ours_g": 794.7,
+    "leader": "Stone Glacier Sky 5900 bag",
+    "leader_g": 1026.0,
+    "over_g": -231.3,
+    "ratio": 0.77,
+    "source": "docs/research/published_weight_definitions.md 2.1 (SG Sky 5900)"
+   },
+   {
+    "function": "bag side (shell, pockets, compression, attachment)",
+    "ours_key": "bag_side",
+    "ours_g": 794.7,
+    "leader": "Exo K4 5000 bag only",
+    "leader_g": 1077.0,
+    "over_g": -282.3,
+    "ratio": 0.74,
+    "source": "docs/research/published_weight_definitions.md 2.1 (Exo K4 5000, 'Bag Only: 2lb, 6oz')"
+   },
+   {
+    "function": "bag side (shell, pockets, compression, attachment)",
+    "ours_key": "bag_side",
+    "ours_g": 794.7,
+    "leader": "KUIU ICON 6 6000 bag",
+    "leader_g": 1350.0,
+    "over_g": -555.3,
+    "ratio": 0.59,
+    "source": "docs/research/published_weight_definitions.md 2.1 (KUIU whitepaper)"
+   },
+   {
+    "function": "hipbelt",
+    "ours_key": "belt",
+    "ours_g": 441.9,
+    "leader": "Stone Glacier 3-piece belt",
+    "leader_g": 363.0,
+    "over_g": 78.9,
+    "ratio": 1.22,
+    "source": "docs/research/hipbelt_fit.md 3 (SG 3-Piece Belt)"
+   },
+   {
+    "function": "load spreader / cross stays",
+    "ours_key": "spreader",
+    "ours_g": 162.3,
+    "leader": "Seek Outside 7075 cross stays (pair)",
+    "leader_g": 113.0,
+    "over_g": 49.3,
+    "ratio": 1.44,
+    "source": "docs/research/spreader_research.md (Seek Outside Revolution, fetched)"
+   },
+   {
+    "function": "frame structure (stays, crown, torso adjust; no belt, harness, back)",
+    "ours_key": "frame",
+    "ours_g": 1071.8,
+    "leader": "KUIU ICON 6 frame, tall",
+    "leader_g": 388.0,
+    "over_g": 683.8,
+    "ratio": 2.76,
+    "source": "docs/research/bag_attachment_research.md (KUIU ICON 6: 13.7 oz tall)"
+   }
+  ],
+  "ranked_vs_lightest": [
+   {
+    "function": "frame structure (stays, crown, torso adjust; no belt, harness, back)",
+    "ratio": 2.76,
+    "over_g": 683.8,
+    "leader": "KUIU ICON 6 frame, tall"
+   },
+   {
+    "function": "frame side (frame, back, belt, harness, meat carry)",
+    "ratio": 1.91,
+    "over_g": 1128.9,
+    "leader": "Stone Glacier Krux, M belt"
+   },
+   {
+    "function": "load spreader / cross stays",
+    "ratio": 1.44,
+    "over_g": 49.3,
+    "leader": "Seek Outside 7075 cross stays (pair)"
+   },
+   {
+    "function": "hipbelt",
+    "ratio": 1.22,
+    "over_g": 78.9,
+    "leader": "Stone Glacier 3-piece belt"
+   },
+   {
+    "function": "bag side (shell, pockets, compression, attachment)",
+    "ratio": 0.77,
+    "over_g": -231.3,
+    "leader": "Stone Glacier Sky 5900 bag"
+   }
+  ],
+  "total_base_g": 3211.6
+ },
+ "levers": [
+  {
+   "key": "B-1",
+   "system": "belt",
+   "status": "pick",
+   "risk": "low",
+   "change": "wing load foam + lumbar firm foam EVA 45C 6 mm -> XLPE L200 6 mm (BL-006 d2 + d4, the 'belt-foam reserve')",
+   "g": -31.9,
+   "gate": "HB-1 (3 testers) + CS-1 compression set of L200 at 50 % for 22 h",
+   "check": "hipbelt fit model, 16 ANSUR II forms, package + BL-037: worst wing 56.5 kPa (limit 56.5), worst hold 0.64 (>= 0.64), lumbar worst 44.7 (watch 48.6): PASS",
+   "owner": "none",
+   "source": "hipbelt_diet._mass_delta('d2'/'d4'); xlpe_foam_l200 record (datasheet)",
+   "hours": "0 (same pieces and ops; a material or bought-part swap)"
+  },
+  {
+   "key": "B-2",
+   "system": "belt",
+   "status": "pick",
+   "risk": "medium",
+   "change": "wing stiffener HDPE 0.75 -> 0.5 mm (BL-006 c3 in place of c2)",
+   "g": -9.7,
+   "gate": "HB-D2 wing roll-over, built at 0.5 and 0.75 mm side by side; keep the thinner that passes",
+   "check": "same fit-model run (c3 in the package): PASS; 0.5 mm keeps 12.5 % of 1.0 mm's bending stiffness, which the model cannot judge (hence the gate)",
+   "owner": "none",
+   "source": "hipbelt_diet._mass_delta('c3') - _mass_delta('c2')",
+   "hours": "0 (same pieces and ops; a material or bought-part swap)"
+  },
+  {
+   "key": "B-3",
+   "system": "belt",
+   "status": "pick",
+   "risk": "low",
+   "change": "wing comfort foam EVA 30C 5 -> 4 mm (BL-006 d3)",
+   "g": -2.4,
+   "gate": "HB-1",
+   "check": "same fit-model run: PASS",
+   "owner": "none",
+   "source": "hipbelt_diet._mass_delta('d3')",
+   "hours": "0 (same pieces and ops; a material or bought-part swap)"
+  },
+  {
+   "key": "K-1",
+   "system": "back",
+   "status": "pick",
+   "risk": "low",
+   "change": "BL-005 backer strip core ROHACELL 71 3 mm -> 2 mm (row b_swR71c2_70)",
+   "g": -5.3,
+   "gate": "BP-1 three-point bend coupon at the 2 mm core + BP-2 (already planned for the strip)",
+   "check": "back_system2 row b_swR71c2_70: skin 13.49 kPa (<= 13.8), strip SF 1.89 factored, fatigue 4.42, air walk / factored / lean 14.5 / 8.6 / 5.1 mm, gutter 110: PASS (back_system_integration.md 4)",
+   "owner": "none",
+   "source": "back_system2.mass_delta_g (both rows)",
+   "hours": "0 (same pieces and ops; a material or bought-part swap)"
+  },
+  {
+   "key": "H-1",
+   "system": "harness",
+   "status": "pick",
+   "risk": "medium",
+   "change": "J-strap load foam EVA 45C 5 mm -> XLPE L200 5 mm (comfort layer, shell and mesh unchanged)",
+   "g": -22.3,
+   "gate": "HS-1 shoulder pressure strips (kit D FSRs) at 30 kg and 68 kg, 3 testers, against today's EVA strap on the other shoulder; + CS-1 compression set",
+   "check": "no paper model of shoulder pressure exists in huntkit (stated, not run); the belt model shows XLPE L200 lowering peaks as a load layer (BL-006 d2), the same record",
+   "owner": "none",
+   "source": "j_strap_breakdown(): build_geometry strap outline x eva_foam_45c / xlpe_foam_l200 density",
+   "hours": "0 (same pieces and ops; a material or bought-part swap)"
+  },
+  {
+   "key": "H-2",
+   "system": "harness",
+   "status": "pick",
+   "risk": "low",
+   "change": "sternum buckle Fidlock 25 mm magnetic -> 25 mm side-release (records)",
+   "g": -6.0,
+   "gate": "ST-1 gloved one-hand sternum clip-on, 10 tries (R-06 fit trial session); fallback the Fidlock",
+   "check": "side-release break 450 N vs Fidlock 300 N (stronger); the sternum is not on an HA-LS-1 load path",
+   "owner": "QUICK hardware family (build_geometry) loses its magnetic sternum; quiet rule unaffected (both click)",
+   "source": "fidlock_magnetic_buckle_25mm, buckle_side_release_25mm records",
+   "hours": "0 (same pieces and ops; a material or bought-part swap)"
+  },
+  {
+   "key": "G-1",
+   "system": "bag_shell",
+   "status": "pick",
+   "risk": "low",
+   "change": "D2 door sliders: #10 slider body with the door cord pull in place of the metal tab (2)",
+   "g": -8.0,
+   "gate": "SL-1 weigh 5 sliders on receipt; gloved open / close x 20",
+   "check": "mass only (the door zip is unloaded: strap_arch 0.45 N/mm vs 35.4 N/mm crosswise); quieter (record: a bare metal pull taps the body)",
+   "owner": "none (quiet rule helped)",
+   "source": "slider_10 record 19.0 g; ASSUMPTION SLIDER-CORD 15.0 g",
+   "hours": "0 (same pieces and ops; a material or bought-part swap)"
+  },
+  {
+   "key": "G-2",
+   "system": "bag_shell + belt",
+   "status": "pick",
+   "risk": "medium",
+   "change": "camo accents 630D printable -> HyperD 300 printable on B-02u blades, SH-07 garage, SH-05 belt shards (kick bands SH-01b stay 630D)",
+   "g": -22.5,
+   "gate": "AB-1: Martindale (ASTM D4966) both fabrics to 8000 rev + a brush-drag strip on the blade edge; owner print swatch of the camo on HyperD 300; fallback 630D",
+   "check": "the zip is sewn to the blade but carries no load (SF 78 on the #10 chain); HyperD 300 seam 42-52 lbf (record) is above any blade load; 630D record is an ESTIMATE",
+   "owner": "camo stays an accent (rule unchanged); colour match to be judged on the swatch",
+   "source": "polyester_300d_printable / polyester_ht_630d_printable gsm x corrie_f rows",
+   "hours": "0 (same pieces and ops; a material or bought-part swap)"
+  },
+  {
+   "key": "F-3",
+   "system": "frame",
+   "status": "pick",
+   "risk": "low",
+   "change": "crown UHMWPE bushings 70 -> 50 mm (crown_diet (e))",
+   "g": -4.0,
+   "gate": "BU-1 slide trial: kit change and pawl travel with 50 mm bushings (L/D 2.8), 20 cycles gloved; fallback 70 mm",
+   "check": "crown_diet (e): ring crush SF 1.67 (from 2.33), bearing 12.6; beam loads unchanged; the voxel body spreads each bushing force over 40 mm, so the body is unchanged",
+   "owner": "none (crown kits unchanged)",
+   "source": "crown_diet.bushing_g (pack5200.hardware_mass formula)",
+   "hours": "0 (same pieces and ops; a material or bought-part swap)"
+  },
+  {
+   "key": "X-1",
+   "system": "misc",
+   "status": "pick",
+   "risk": "low",
+   "change": "woven label set -> one printed label on the liner",
+   "g": -7.0,
+   "gate": "SL-1 weigh the label set",
+   "check": "mass only; both masses are ASSUMPTIONs",
+   "owner": "none",
+   "source": "geometry.yaml labels_g 8.0 g (ASSUMPTION); ASSUMPTION LABEL 1.0 g",
+   "hours": "-0.1 h (one heat press instead of three sewn labels; ASSUMPTION)"
+  },
+  {
+   "key": "F-1",
+   "system": "frame",
+   "status": "option",
+   "risk": "high",
+   "change": "CA-1 >= 0.40: take BL-024's G0.55 growth off (BL-027 members and 28 mm cheeks kept, members re-grown)",
+   "g": -9.9,
+   "gate": "CA-1 at 0.40 AND MT-1 shows the cinch static (cycled bound below) AND a converged member re-sizing",
+   "check": "run here (h1_buckling.full_check, 4 bases) on plain H1 + BL-027 members: -24.9 g gross, fatigue at 0.40 1.33 static, 0.922 cinch cycled (fails if MT-1 shows cycling); Euler buckling 0.965 (mirrored 0.859) < 1.0: FAILS as it stands. re-grown mid +1.4 / upper +3.5 mm: -9.9 g, min 0.952 (fails: the load moves to the lower branches). So the net is at most the figure shown, not -50 to -70 g",
+   "owner": "none",
+   "source": "outputs/h1_buckling/check_bl037_h1a0_m1_u2.5_im3.json and axial_bl037_a0_*.pkl (this ticket)",
+   "hours": "0 (same pieces and ops; a material or bought-part swap)"
+  },
+  {
+   "key": "F-2",
+   "system": "frame",
+   "status": "option",
+   "risk": "high",
+   "change": "spreader load share: take the BL-027 upper-branch growth off (the mid-bar growth must stay)",
+   "g": -13.9,
+   "gate": "SPREADER_MAP: a Sandwich v2 plate run on the H1 supports with the cinch preload, then puck load cells / branch strain gauges in the T2 meat test",
+   "check": "the mid bar needs its growth whatever the spreader does: the fill hipbelt-off abuse set (no cinch) gives 0.66 on the H1-G0.55 mid bar; so at most the upper-branch 13.9 g of the 22.2 g comes back, and only if the plate run shows the share",
+   "owner": "none",
+   "source": "analysis/h1_buckling.json task1 decomposition + chosen member masses",
+   "hours": "0 (same pieces and ops; a material or bought-part swap)"
+  },
+  {
+   "key": "F-4",
+   "system": "frame",
+   "status": "option",
+   "risk": "medium",
+   "change": "z 234 joint: A2 washers and nuts -> Ti 6Al-4V (8 washers, 4 nuts)",
+   "g": -4.5,
+   "gate": "needs Ti washer / nut records (materials-engineer) and a joint re-check (frame_h1.joint_check, bearing on PAHT); anti-seize for Ti on Ti",
+   "check": "not run (no record)",
+   "owner": "none",
+   "source": "frame_mass_h1.json joint_hardware_g x (1 - rho Ti / rho A2) (ti_6al_4v, sst_304 records)",
+   "hours": "0 (same pieces and ops; a material or bought-part swap)"
+  },
+  {
+   "key": "F-5",
+   "system": "frame",
+   "status": "option",
+   "risk": "high",
+   "change": "frame print parameters: sparse (gyroid) infill inside thick low-stress regions of the H1 body",
+   "g": null,
+   "gate": "new coupon series (CA-1 style) at the chosen infill, then the whole body FEA with the reduced stiffness and allowables",
+   "check": "not estimable without coupons; the booked body is solid raster x 1060 kg/m3 (record) and the roll-up already bands it +-5 %; weighing the printed halves settles the booking, it is not a lever",
+   "owner": "none",
+   "source": "pa12_cf_fdm_paht record; weight_rollup_v2 section 6",
+   "hours": "0 (same pieces and ops; a material or bought-part swap)"
+  },
+  {
+   "key": "F-6",
+   "system": "frame",
+   "status": "option",
+   "risk": "high",
+   "change": "stays: BL-017 OD 17 x 7 crown legs in a 19 mm bore (retired at 0.30) back with CA-1 >= 0.40",
+   "g": -20.6,
+   "gate": "CA-1 >= 0.40 and a body re-run with F-1 (not stacked here)",
+   "check": "retired: body fatigue 0.97-0.99 on the sim loads at 0.30 (BL-021 (4)); x 1.33 at 0.40 if CA-1 passes; not re-run with F-1",
+   "owner": "none",
+   "source": "crown_diet.option_mass via weight_rollup_v2.crown",
+   "hours": "0 (same pieces and ops; a material or bought-part swap)"
+  },
+  {
+   "key": "G-3",
+   "system": "bag_shell",
+   "status": "option",
+   "risk": "low",
+   "change": "door chain #10 -> #8 coil (sliders unchanged until a #8 slider record exists)",
+   "g": -7.1,
+   "gate": "needs a slider_8 record (materials-engineer) and PT-7 door zip proof on #8",
+   "check": "#8 crosswise 700 N vs #10 900 N (records, ESTIMATE); the door zip is unloaded (SF 78 on #10, about 61 on #8)",
+   "owner": "none",
+   "source": "coil_zipper_10 / coil_zipper_8 records x door zip length",
+   "hours": "0 (same pieces and ops; a material or bought-part swap)"
+  },
+  {
+   "key": "O-IMP-2",
+   "system": "feature",
+   "status": "owner",
+   "risk": "low",
+   "change": "move to an add-on: hydration sleeve (SG sells it separately)",
+   "g": -32.6,
+   "gate": "owner decision",
+   "check": "no structural effect",
+   "owner": "hydration (DESIGN requirement)",
+   "source": "weight_rollup_v2.feature_costs (CORRIE F base rows)",
+   "hours": "-1.1 h (build_effort_rev3 ops naming IMP-2)"
+  },
+  {
+   "key": "O-FP-L/R",
+   "system": "feature",
+   "status": "owner",
+   "risk": "low",
+   "change": "move to an add-on: hip-reach pockets (the BL-002 access fix for the sheep-load 2nd bottle)",
+   "g": -33.5,
+   "gate": "owner decision",
+   "check": "no structural effect",
+   "owner": "feature loss (not frozen, not a DESIGN requirement)",
+   "source": "weight_rollup_v2.feature_costs (CORRIE F base rows)",
+   "hours": "not in the bag op list"
+  },
+  {
+   "key": "O-IMP-5L",
+   "system": "feature",
+   "status": "owner",
+   "risk": "low",
+   "change": "move to an add-on: hipbelt pocket (SG, Exo, Seek sell them separately)",
+   "g": -15.2,
+   "gate": "owner decision",
+   "check": "no structural effect",
+   "owner": "hipbelt pockets (DESIGN requirement)",
+   "source": "weight_rollup_v2.feature_costs (CORRIE F base rows)",
+   "hours": "not in the bag op list"
+  },
+  {
+   "key": "O-IMP-4",
+   "system": "feature",
+   "status": "owner",
+   "risk": "low",
+   "change": "move to an add-on: kill-kit / first-aid door pocket",
+   "g": -23.9,
+   "gate": "owner decision",
+   "check": "no structural effect",
+   "owner": "feature loss (not frozen, not a DESIGN requirement)",
+   "source": "weight_rollup_v2.feature_costs (CORRIE F base rows)",
+   "hours": "-3.0 h (build_effort_rev3 ops naming IMP-4)"
+  },
+  {
+   "key": "O-IMP-6",
+   "system": "feature",
+   "status": "owner",
+   "risk": "low",
+   "change": "move to an add-on: shoulder-strap phone pocket",
+   "g": -11.1,
+   "gate": "owner decision",
+   "check": "no structural effect",
+   "owner": "feature loss (not frozen, not a DESIGN requirement)",
+   "source": "weight_rollup_v2.feature_costs (CORRIE F base rows)",
+   "hours": "not in the bag op list"
+  },
+  {
+   "key": "O-B-11",
+   "system": "feature",
+   "status": "owner",
+   "risk": "low",
+   "change": "move to an add-on: lash tabs + muzzle keepers (rifle carry)",
+   "g": -12.0,
+   "gate": "owner decision",
+   "check": "no structural effect",
+   "owner": "rifle carry (DESIGN requirement)",
+   "source": "weight_rollup_v2.feature_costs (CORRIE F base rows)",
+   "hours": "-1.1 h (build_effort_rev3 ops naming B-11)"
+  },
+  {
+   "key": "O-E-5",
+   "system": "feature",
+   "status": "owner",
+   "risk": "low",
+   "change": "move to an add-on: pole quiver (trekking pole / tripod leg carry)",
+   "g": -5.4,
+   "gate": "owner decision",
+   "check": "no structural effect",
+   "owner": "trekking pole / tripod carry (DESIGN requirement)",
+   "source": "weight_rollup_v2.feature_costs (CORRIE F base rows)",
+   "hours": "not in the bag op list"
+  },
+  {
+   "key": "O-IMP-8",
+   "system": "feature",
+   "status": "owner",
+   "risk": "low",
+   "change": "move to an add-on: bow cam / limb cup (bow carry: owner-frozen)",
+   "g": -7.5,
+   "gate": "owner decision",
+   "check": "no structural effect",
+   "owner": "bow carry (owner-frozen)",
+   "source": "weight_rollup_v2.feature_costs (CORRIE F base rows)",
+   "hours": "-1.6 h (build_effort_rev3 ops naming IMP-8)"
+  },
+  {
+   "key": "O-US-",
+   "system": "feature",
+   "status": "owner",
+   "risk": "low",
+   "change": "move to an add-on: under-straps (owner-frozen)",
+   "g": -105.4,
+   "gate": "owner decision",
+   "check": "no structural effect",
+   "owner": "under-straps (owner-frozen)",
+   "source": "weight_rollup_v2.feature_costs (CORRIE F base rows)",
+   "hours": "not in the bag op list"
+  },
+  {
+   "key": "O-cams",
+   "system": "straps_meat",
+   "status": "owner",
+   "risk": "medium",
+   "change": "IM1-IM3 and US1/US2 aluminium cams -> heavy 25 mm ladder locks",
+   "g": -26.0,
+   "gate": "owner decision (aluminium cams are owner-fixed) + MT-1..3 with ladder locks",
+   "check": "ladder_lock_25mm_heavy mass is an ASSUMPTION in its record",
+   "owner": "changes 'aluminium cams' (DECISIONS)",
+   "source": "cam_25mm_al, ladder_lock_25mm_heavy records",
+   "hours": "0 (same pieces and ops; a material or bought-part swap)"
+  },
+  {
+   "key": "O-cord",
+   "system": "frame",
+   "status": "owner",
+   "risk": "low",
+   "change": "drop the torso release cord + toggle (adjust with the pack off)",
+   "g": -3.2,
+   "gate": "owner decision",
+   "check": "no structural effect (crown_diet section 7)",
+   "owner": "no on-body lengthening",
+   "source": "crown_diet.TORSO_ADJUST_ROW_G - webbing - cam",
+   "hours": "0 (same pieces and ops; a material or bought-part swap)"
+  },
+  {
+   "key": "O-slider",
+   "system": "bag_shell",
+   "status": "owner",
+   "risk": "low",
+   "change": "D2 door with one slider instead of two (on top of G-1)",
+   "g": -15.0,
+   "gate": "owner decision",
+   "check": "no structural effect",
+   "owner": "door opens from one side only (no top peek)",
+   "source": "ASSUMPTION SLIDER-CORD",
+   "hours": "0 (same pieces and ops; a material or bought-part swap)"
+  },
+  {
+   "key": "R-1",
+   "system": "straps_meat",
+   "status": "rejected",
+   "risk": "-",
+   "change": "IM fairlead eyes 38 -> 25 mm webbing",
+   "g": null,
+   "gate": "-",
+   "check": "the eyes are captive in the printed fairlead slots (released H1 print) and take the 38 mm bag hooks",
+   "owner": "-",
+   "source": "-",
+   "hours": "-"
+  },
+  {
+   "key": "R-2",
+   "system": "bag_shell",
+   "status": "rejected",
+   "risk": "-",
+   "change": "roll-top HDPE strip thinner",
+   "g": null,
+   "gate": "-",
+   "check": "already 0.8 mm (bag_concepts.HDPE_T)",
+   "owner": "-",
+   "source": "-",
+   "hours": "-"
+  },
+  {
+   "key": "R-3",
+   "system": "back",
+   "status": "rejected",
+   "risk": "-",
+   "change": "lighter spreader core",
+   "g": null,
+   "gate": "-",
+   "check": "Sandwich v2 is at FPF 1.25 / fatigue 1.09 / sandwich 1.11 (owner decision, 7 mm core); no lighter row passes",
+   "owner": "-",
+   "source": "-",
+   "hours": "-"
+  },
+  {
+   "key": "R-4",
+   "system": "bag",
+   "status": "rejected",
+   "risk": "-",
+   "change": "DCF hybrid / laminates on the shell",
+   "g": null,
+   "gate": "-",
+   "check": "crinkle: breaks the quiet rule (owner-frozen)",
+   "owner": "-",
+   "source": "-",
+   "hours": "-"
+  },
+  {
+   "key": "R-5",
+   "system": "harness + back",
+   "status": "rejected",
+   "risk": "-",
+   "change": "lighter spacer mesh on straps and back",
+   "g": null,
+   "gate": "-",
+   "check": "no lighter breathable spacer record; ask the materials-engineer for one (back mesh 67.6 g, strap faces 29.7 g)",
+   "owner": "-",
+   "source": "-",
+   "hours": "-"
+  },
+  {
+   "key": "R-6",
+   "system": "harness + belt",
+   "status": "rejected",
+   "risk": "-",
+   "change": "yoke plate / 7075 belt plate thinner",
+   "g": null,
+   "gate": "-",
+   "check": "both are rev C fixes (C-7, C-1..3)",
+   "owner": "-",
+   "source": "-",
+   "hours": "-"
+  },
+  {
+   "key": "R-7",
+   "system": "frame",
+   "status": "rejected",
+   "risk": "-",
+   "change": "fixed torso",
+   "g": null,
+   "gate": "-",
+   "check": "retired: fatigue below 1.0 on the sim loads; owner keeps three crown kits",
+   "owner": "-",
+   "source": "-",
+   "hours": "-"
+  },
+  {
+   "key": "RISK-cheek",
+   "system": "frame",
+   "status": "risk",
+   "risk": "-",
+   "change": "28 mm IM3 cheek booking: stand-alone fairlead volume vs the raster share",
+   "g": 5.3,
+   "gate": "weigh the two printed halves against the slicer",
+   "check": "adds up to this much; never saves",
+   "owner": "-",
+   "source": "weight_rollup_v2.cheek_g - ledger.h1_body_update im3_cheek_28_g",
+   "hours": "-"
+  }
+ ],
+ "summary": {
+  "left_after_owner_route_g": 30.1,
+  "closers": [
+   {
+    "key": "O-IMP-2",
+    "g": -32.6,
+    "status": "owner",
+    "owner": "hydration (DESIGN requirement)",
+    "margin_g": 2.5,
+    "with_cheek_risk_margin_g": -2.8
+   }
+  ],
+  "before_g": 3211.4,
+  "picks_g": -119.1,
+  "picks_by_risk": {
+   "low": -64.6,
+   "medium": -54.5,
+   "high": 0
+  },
+  "after_g": 3092.3,
+  "after_lb": 6.82,
+  "target_g": 2993.7,
+  "gap_before_g": 217.7,
+  "gap_after_g": 98.6,
+  "ticket_g": 220.0,
+  "met": false,
+  "options_g": -56.0,
+  "options_gross_note": "F-1 fails buckling as run; F-6 needs F-1; each needs CA-1 >= 0.40",
+  "owner_free_features": [
+   "O-FP-L/R",
+   "O-IMP-4",
+   "O-IMP-6"
+  ],
+  "owner_free_g": -68.5,
+  "owner_route_take": [
+   "O-FP-L/R",
+   "O-IMP-4",
+   "O-IMP-6"
+  ],
+  "owner_route_g": -68.5,
+  "owner_route_after_g": 3023.8,
+  "owner_route_reaches": false,
+  "cheek_risk_g": 5.3
+ },
+ "belt_check": {
+  "package": {
+   "worst_wing_kpa": 56.5,
+   "median_wing_kpa": 50.7,
+   "worst_lumbar_kpa": 45.4,
+   "median_lumbar_kpa": 29.45,
+   "median_hold": 0.715,
+   "worst_hold": 0.64,
+   "min_asis_clear_mm": 3.0,
+   "median_T_req_n": 320.5
+  },
+  "package + BL-037": {
+   "worst_wing_kpa": 56.5,
+   "median_wing_kpa": 49.9,
+   "worst_lumbar_kpa": 44.7,
+   "median_lumbar_kpa": 29.3,
+   "median_hold": 0.725,
+   "worst_hold": 0.64,
+   "min_asis_clear_mm": 3.0,
+   "median_T_req_n": 320.5
+  },
+  "limits": {
+   "worst_wing_kpa": 56.5,
+   "worst_hold": 0.64,
+   "lumbar_watch_kpa": 48.6
+  },
+  "passes": true
+ },
+ "j_strap": {
+  "shell_g": 14.04549821925591,
+  "mesh_g": 29.651607351762475,
+  "load_foam_eva_g": 31.46,
+  "comfort_g": 15.73,
+  "total_g": 90.88710557101838,
+  "load_foam_xlpe_g": 9.152000000000001,
+  "delta_g": -22.308,
+  "booked_g": 91.0
+ },
+ "camo": {
+  "pieces_g": {
+   "B-02u": 31.96,
+   "SH-07": 1.23,
+   "SH-05": 8.4
+  },
+  "factor": 0.5413793103448277,
+  "delta_g": -22.515965517241384,
+  "kept_630d": [
+   "SH-01b kick bands"
+  ]
+ },
+ "spreader_share": {
+  "worst_mid_bar": {
+   "set": "S_fill@a_L_fine_sm8_23:hipbelt_off_abuse|23",
+   "member": "mid bar (x -115..115) all",
+   "N_full": -125.9,
+   "N_via_stays": -125.9,
+   "margin_via_stays": 0.661
+  },
+  "members_added_g": 22.166720000000005,
+  "branch_growth_g": 13.899999999999991,
+  "mid_growth_g": 8.3,
+  "upper_only_saving_g": -13.899999999999991,
+  "verdict": "the mid bar needs its growth whatever the spreader does: the fill hipbelt-off abuse set (no cinch) gives 0.66 on the H1-G0.55 mid bar"
+ },
+ "spreader_share_rows": [
+  {
+   "set": "S_meat@a_L_fine_sm8_alt_20:hipbelt_off_abuse|20",
+   "member": "mid bar (x -115..115) all",
+   "N_full": -189.4,
+   "N_via_stays": -46.0,
+   "margin_via_stays": 1.807
+  },
+  {
+   "set": "S_meat@a_L_fine_sm8_23:hipbelt_off_abuse|23",
+   "member": "mid bar (x -115..115) all",
+   "N_full": -180.7,
+   "N_via_stays": -37.4,
+   "margin_via_stays": 2.227
+  },
+  {
+   "set": "S_fill@a_L_fine_sm8_23:hipbelt_off_abuse|23",
+   "member": "mid bar (x -115..115) all",
+   "N_full": -125.9,
+   "N_via_stays": -125.9,
+   "margin_via_stays": 0.661
+  },
+  {
+   "set": "S_meat@a_L_fine_sm8_23:side_hill_torsion|23",
+   "member": "branch lower (z 165-330) R",
+   "N_full": -274.7,
+   "N_via_stays": -20.7,
+   "margin_via_stays": 17.038
+  },
+  {
+   "set": "S_meat@a_L_fine_sm8_23:side_hill_torsion|23",
+   "member": "branch upper (z 330-495) R",
+   "N_full": -426.1,
+   "N_via_stays": -181.1,
+   "margin_via_stays": 1.688
+  },
+  {
+   "set": "C@a_L_beam_23:single_stay_setdown|23",
+   "member": "branch lower (z 165-330) L",
+   "N_full": -30.1,
+   "N_via_stays": -30.1,
+   "margin_via_stays": 11.729
+  },
+  {
+   "set": "C@a_L_beam_23:single_stay_setdown|23",
+   "member": "branch lower (z 165-330) R",
+   "N_full": -62.0,
+   "N_via_stays": -62.0,
+   "margin_via_stays": 5.687
+  },
+  {
+   "set": "C@a_L_beam_23:single_stay_setdown|23",
+   "member": "branch upper (z 330-495) R",
+   "N_full": -241.0,
+   "N_via_stays": -241.0,
+   "margin_via_stays": 1.268
+  }
+ ],
+ "ca1": {
+  "available": true,
+  "body_g": 775.73344,
+  "delta_g": -24.922720000000027,
+  "bases": {
+   "fine_sm8": {
+    "strength": 1.504,
+    "fatigue_030": 0.995,
+    "fatigue_040": 1.326,
+    "creep": 2.122,
+    "buckling": 0.982,
+    "mirrored": {
+     "branch lower (z 165-330)": 1.087,
+     "branch upper (z 330-495)": 0.859
+    },
+    "joint": [
+     2.06,
+     1.71
+    ]
+   },
+   "fine": {
+    "strength": 1.518,
+    "fatigue_030": 1.014,
+    "fatigue_040": 1.352,
+    "creep": 2.163,
+    "buckling": 0.969,
+    "mirrored": {
+     "branch lower (z 165-330)": 1.087,
+     "branch upper (z 330-495)": 0.862
+    },
+    "joint": [
+     2.06,
+     1.71
+    ]
+   },
+   "beam": {
+    "strength": 1.522,
+    "fatigue_030": 1.162,
+    "fatigue_040": 1.549,
+    "creep": 2.479,
+    "buckling": 1.248,
+    "mirrored": {
+     "branch lower (z 165-330)": 1.248,
+     "branch upper (z 330-495)": 1.457
+    },
+    "joint": [
+     1.95,
+     1.25
+    ]
+   },
+   "fine_sm8.cyc": {
+    "strength": 1.504,
+    "fatigue_030": 0.692,
+    "fatigue_040": 0.922,
+    "creep": 1.476,
+    "buckling": 0.965,
+    "mirrored": {
+     "branch lower (z 165-330)": 0.965,
+     "branch upper (z 330-495)": 0.859
+    },
+    "joint": [
+     2.09,
+     1.05
+    ]
+   }
+  },
+  "buckling_min": 0.965,
+  "mirrored_min": 0.859,
+  "passes_buckling": false,
+  "sizing": [
+   {
+    "d_mid": 1.4,
+    "d_up": 3.5,
+    "raster_g": 790.79,
+    "delta_g": -9.87,
+    "margins": {
+     "branch lower (z 165-330) L": 0.952,
+     "branch lower (z 165-330) R": 1.366,
+     "branch upper (z 330-495) L": 9.133,
+     "branch upper (z 330-495) R": 1.832,
+     "mid bar (x -115..115) all": 1.25
+    },
+    "mirrored": {
+     "branch lower (z 165-330)": 0.952,
+     "branch upper (z 330-495)": 1.688
+    },
+    "min": 0.952,
+    "passes_buckling_fine_sm8": false
+   }
+  ]
+ },
+ "back": {
+  "key": "b_swR71c2_70",
+  "recommended": "b_swR71c3_70",
+  "delta_g": -5.329799999999999
+ },
+ "door_sliders": {
+  "slider_g": 19.0,
+  "cord_pull_g": 15.0,
+  "n": 2,
+  "delta_g": -8.0,
+  "one_slider_delta_g": -19.0
+ },
+ "cheek": {
+  "standalone_g": 7.2979199999999995,
+  "booked_g": 2.00128,
+  "risk_g": 5.29664
+ },
+ "screens": [
+  "outputs/screens/20261113_BL037_1.png",
+  "outputs/screens/20261113_BL037_2.png",
+  "docs/screens/20261113_BL037_1.png"
+ ]
+}

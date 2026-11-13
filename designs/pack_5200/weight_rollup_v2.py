@@ -302,6 +302,8 @@ STEP_META = {   # id: (class, ticket, short label, kind, gate)
               "owner swatch look (ULTRAGrid) + PT-3 and 50 mm strip test (ULTRA 200X)"),
     "A_wings": ("A", "BL-003 (owner)", "side wings deleted", "design",
                 "FT-S2 5 km side-hill + door open/close x 5, pod shift <= 20 mm"),
+    "A_bl037": ("A", "BL-037", "weight push: belt/strap foams, sliders, camo cloth +6", "design",
+                "HB-1 + CS-1, HB-D2, BP-1 (2 mm core), HS-1, ST-1, SL-1, AB-1, BU-1 (weight_push.md); fallback today's parts"),
     "A_c17": ("R", "BL-017 c17", "OD 17 legs, 19 mm bore", "design",
               "retired: body fatigue 0.97-0.99 on the cloth-sim loads (BL-021 (4)); not booked"),
     "O_fixed": ("R", "BL-007 (a)", "fixed torso instead of the kits", "design",
@@ -350,6 +352,8 @@ def _steps_at(size: str) -> tuple:
     s["A_fab"] = fabric_step(size)
     s["A_wings"] = [_r(p.system, f"BL-003 wings off: {p.id} {p.name}", -p.g, p.cfg, "strap_arch._delete_wings", "A_wings")
                     for p in wings]
+    import weight_push as WP                        # BL-037 picks (lazy: weight_push imports this module)
+    s["A_bl037"] = WP.picked_rows(size)
     s["A_c17"] = [_r("frame", "BL-017 (c17): OD 17 x 7 UD legs, sleeve bore reamed 18 -> 19 mm",
                      crown("(a)+(d2)+(c17 bore 19)") - ad2, "base",
                      "crown_diet.option_mass('(a)+(d2)+(c17 bore 19)') - option_mass('(a)+(d2)')", "A_c17")]
@@ -514,10 +518,12 @@ def feature_costs(size: str = "M") -> dict:
         acc += i["g"]
         take.append(i["item"])
     HD = _HD()
-    reserve = sum(HD._mass_delta(k, size) for k in HD.NEXT_LEVER)
+    # BL-037 books the belt-foam reserve (d2 + d4) in after tests (step A_bl037); then it is no longer a reserve
+    booked = any(r["step"] == "A_bl037" and "XLPE" in r["name"] and r["system"] == "belt" for r in rows)
+    reserve = 0.0 if booked else sum(HD._mass_delta(k, size) for k in HD.NEXT_LEVER)
     return {"after_tests_base_g": base, "gap_g": round(need, 1), "candidates": items,
             "all_unfrozen_g": round(sum(i["g"] for i in free), 1), "greedy_take": take, "greedy_g": round(acc, 1),
-            "reaches": acc >= need, "belt_foam_reserve_g": round(reserve, 1),
+            "reaches": acc >= need, "belt_foam_reserve_g": round(reserve, 1), "reserve_booked_bl037": booked,
             "with_reserve_g": round(sum(i["g"] for i in free) - reserve, 1),
             "reaches_with_reserve": sum(i["g"] for i in free) - reserve >= need}
 
@@ -753,7 +759,9 @@ def report(res: dict, shots: list) -> str:
       "'owner options' scenario held only the fixed torso and is dropped. Wings, hood and IM2 hooks stay deleted in "
       "after tests (owner decisions 2026-11-11 / 2026-11-12); proven now still books them, because each deletion "
       "passes only after a named test with the part as its fallback (BL-014 S1). (5) The fabric swaps stay in after "
-      "tests.\n")
+      "tests. **2026-11-13 (BL-037):** the weight-push picks are a new after-tests step A_bl037 (belt XLPE foams and "
+      "0.5 mm stiffener, 2 mm strip core, J-strap XLPE foam, side-release sternum, cord-pull door sliders, HyperD 300 "
+      "camo cloth, 50 mm crown bushings, printed label), each gated by a named test (`weight_push.md`).\n")
     w("## 0. Answer\n")
     w(f"| Belt {sz}, crown kit {res['kit']} | base | as hunted | meat trip |")
     w("|---|---:|---:|---:|")
@@ -769,10 +777,11 @@ def report(res: dict, shots: list) -> str:
       + ", ".join(f"{c['item']} ({c['g']:.0f} g)" for c in fc["candidates"] if c["item"] in fc["greedy_take"])
       + f" = {fc['greedy_g']:.0f} g. " + ("That reaches it" if fc["reaches"] else
       f"Even every unfrozen candidate ({fc['all_unfrozen_g']:.0f} g) does not reach it")
-      + (f"; only with the belt-foam reserve on top ({fc['with_reserve_g']:.0f} g in all) does it, i.e. a pack with "
-         "no pockets, no hip-reach access, no hydration sleeve and a softer belt" if fc["reaches_with_reserve"] else
-         f"; with the belt-foam reserve on top ({fc['with_reserve_g']:.0f} g in all) it is still short")
-      + "; see section 5.")
+      + ("" if fc["reserve_booked_bl037"] else
+         (f"; only with the belt-foam reserve on top ({fc['with_reserve_g']:.0f} g in all) does it, i.e. a pack with "
+          "no pockets, no hip-reach access, no hydration sleeve and a softer belt" if fc["reaches_with_reserve"] else
+          f"; with the belt-foam reserve on top ({fc['with_reserve_g']:.0f} g in all) it is still short"))
+      + "; see section 5. BL-037's weight push (step A_bl037, `weight_push.md`) is already in after tests.")
     h = res["bl011_headline_base_g"]
     w(f"- The BL-011 headline (`corrie_f.pack_with_adopted`, rev {CORRIE_F_REV}: base {h:.0f} g) is {h - P['base']:+.0f} g "
       f"against proven now and {h - A['base']:+.0f} g against after tests: it takes the gated BL-005/006 items and the "
@@ -899,11 +908,16 @@ def report(res: dict, shots: list) -> str:
     w(f"\n- Taking the largest unfrozen items first: {', '.join(fc['greedy_take'])} = {fc['greedy_g']:.0f} g "
       + ("reaches 6.6 lb only by stripping the pack of its pockets and hip-reach access." if fc["reaches"] else
          f"does not reach it; all unfrozen candidates together are {fc['all_unfrozen_g']:.0f} g.")
-      + (f" With the belt-foam reserve as well, {fc['with_reserve_g']:.0f} g against the {fc['gap_g']:.0f} g gap: "
-         + ("6.6 lb is reached only by deleting every one of these features and softening the belt." if
-            fc["reaches_with_reserve"] else "still short.")))
-    w(f"- Not in any scenario: the belt-foam reserve (BL-006 d2 + d4, {fc['belt_foam_reserve_g']:+.1f} g, gated by HB-1 "
-      "and a compression-set check). On its own it does not close the gap.")
+      + ("" if fc["reserve_booked_bl037"] else
+         (f" With the belt-foam reserve as well, {fc['with_reserve_g']:.0f} g against the {fc['gap_g']:.0f} g gap: "
+          + ("6.6 lb is reached only by deleting every one of these features and softening the belt." if
+             fc["reaches_with_reserve"] else "still short."))))
+    if fc["reserve_booked_bl037"]:
+        w("- The belt-foam reserve (BL-006 d2 + d4) is booked in after tests since BL-037 (step A_bl037, gated by "
+          "HB-1 and CS-1), with BL-037's other picks; `weight_push.md` lists every lever and option left.")
+    else:
+        w(f"- Not in any scenario: the belt-foam reserve (BL-006 d2 + d4, {fc['belt_foam_reserve_g']:+.1f} g, gated by "
+          "HB-1 and a compression-set check). On its own it does not close the gap.")
     fxa, fxc = res["fixed_torso"]["a"], res["fixed_torso"]["c"]
     w(f"- Retired, not booked: BL-007 fixed torso ((a) {fxa['pack_delta_g']:+.1f} g against H1 on its own, "
       f"{st['O_fixed']['delta_g']['base']:+.1f} g once the kits it replaces are undone) and the BL-017 OD 17 legs "

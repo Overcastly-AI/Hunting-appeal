@@ -233,8 +233,9 @@ def test_gated_savings_are_not_proven_now():
     assert 3660 < t["P"]["base"] < 3710                     # BL-036: 3679.4 g (BL-035: 3684.7 g, BL-034: 3687.7 g)
     # after tests: BL-023's 3143.5 g + the same update + the retired OD 17 legs taken back out (they were -20.6 g); the
     # A_b step also deletes BL-031's shortened stabilizers (its compensating row)
+    # BL-037: the weight-push picks are their own after-tests step (weight_push.picked_rows)
     assert t["A"]["base"] == pytest.approx(3143.5 + upd - bl034_tog + bl035_a + bl036_hood - st["A_c17"]["base"]
-                                           - ST.stabilizer_delta_g("M"), abs=0.3)
+                                           - ST.stabilizer_delta_g("M") + st["A_bl037"]["base"], abs=0.3)
     assert st["A_c17"]["base"] == pytest.approx(-20.6, abs=0.1)
 
 

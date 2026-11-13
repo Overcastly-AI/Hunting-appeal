@@ -264,7 +264,7 @@ Steps and pass numbers: `test_register.csv` row T9. CR-1 (crown hang, `BUILD_PLA
 |---|---|---|
 | PT-1, PT-2, PT-3, PT-6, MT-1..3, LL-H | sew the bag and harness as drawn; keeps BL-003 (a) −116.9 g and BL-004 −103.0 g | change the part or the sewing; re-test; the 38 mm set or the hood comes back |
 | CA-1 at the release level (**0.310** = governing flip 0.290 + 0.02; BL-021 placeholder) | print H1 as designed | measured ratio < 0.310: **H1 is not released**. BL-021 re-sizes the governing part (IM3 cheek first) to the measured ratio; about +20 g per −0.02 for the body (`CA1_fatigue_rig.md` §6) |
-| CA-1 at 0.40 | re-run the push: body about −50 to −70 g (`frame_h1.md` §6) | stay at the measured ratio |
+| CA-1 at 0.40 | re-run the push: body about −50 to −70 g (`frame_h1.md` §6). **BL-037 correction:** on H1 as adopted the release is BL-024's G0.55 growth only (−24.9 g gross); that body fails Euler buckling (0.965–0.982), and one member re-growth step gives −9.9 g net with a lower branch still at 0.95, so the lever is under 10 g; it also needs MT-1 to show the cinch static (cycled 0.92 at 0.40) (`weight_push.md` §3, option F-1) | stay at the measured ratio |
 | IM3-EC + IM3-EP | IM3 eye released at 27 mm | cheek grows (BL-021); re-print the coupons |
 | BP-1 + BP-2 | keep the sandwich backer strip, −44.6 g | BP-08 twill backer back |
 | BP-3 | rails ≤ 14 kPa; tells whether they bear below z 190 | lumbar-pad shim, re-test (structural sizes it) |
@@ -278,6 +278,26 @@ Steps and pass numbers: `test_register.csv` row T9. CR-1 (crown hang, `BUILD_PLA
 | T1–T5 | first loaded carry | stop, send the log |
 | WP-1 / WP-3 / WP-5 | keep B-1 / A-2 / B-10 (54.6 g already taken in B.2) | add the grams back (binding, longer tails, Hypalon trims) |
 | FS-O5 + PT-3 on ULTRA 200X | C-5 floor swap, −7.0 g | keep 500D |
+
+### BL-037 weight-push gates (2026-11-13, `designs/pack_5200/analysis/weight_push.md`)
+
+The BL-037 picks are booked in the roll-up's after-tests step `A_bl037` (−119.1 g, base, belt M). Each keeps today's
+part as its fallback. Run them in the sessions named; none needs a new kit (kit D FSR strips, kit A scale).
+
+| test | what | unlocks (pick, g) | session / kit | pass | fail means |
+|---|---|---|---|---|---|
+| **HB-1** (extended) | pressure map with the XLPE L200 wing load foam and lumbar firm foam and the 4 mm wing comfort foam | B-1 −31.9, B-3 −2.4 | HB-1 session, kit D | wing worst ≤ 56.5 kPa, lumbar ≤ 48.6 kPa, hold not worse than belt B on the same testers | EVA 45C layers back (and 5 mm comfort) |
+| **CS-1** (new) | XLPE L200 compression set: 3 discs 30 mm, 50 % for 22 h at 40 °C, recover 24 h (ASTM D3575 style) | B-1, H-1 | bench, kit D calipers | set ≤ 15 % (EVA 45C record value) | EVA 45C on belt and straps |
+| **HB-D2** (extended) | wing roll-over with 0.5 mm and 0.75 mm stiffener wings side by side | B-2 −9.7 (0.5 mm) | HB-D2 session | 0.5 mm passes the HB-D2 roll-over criterion | keep 0.75 mm (BL-006 c2) |
+| **BP-1** (extended) | three-point bend coupon also at the 2 mm ROHACELL 71 core (70 mm strip) | K-1 −5.3 | BP-1 session, kit B | SF ≥ 1 at the factored strip load as BP-1 | 3 mm core (BL-005 recommended) |
+| **HS-1** (new) | shoulder pressure strips under each J-strap, one strap XLPE L200 load foam, the other EVA 45C, 30 kg and 68 kg, 3 testers, 20 min walk | H-1 −22.3 | T9 session, kit D | XLPE peak ≤ EVA peak + 10 %, no bottoming felt, CS-1 passed | EVA 45C load foam |
+| **ST-1** (new) | gloved one-hand sternum clip-on with a 25 mm side-release, 10 tries | H-2 −6.0 | R-06 fit trial | 10 / 10 | Fidlock |
+| **SL-1** (new) | weigh 5 #10 slider bodies with cord pulls and the printed label set; gloved door open / close × 20 | G-1 −8.0, X-1 −7.0 | weekend 1 bench, kit A scale | slider ≤ 15.0 g, label ≤ 1 g, no snag | metal-tab sliders, woven labels |
+| **AB-1** (new) | HyperD 300 vs 630D printable: Martindale (ASTM D4966) to 8000 rev + a 50-pass brush-drag strip; owner judges a camo print swatch | G-2 −22.5 | sewn-samples session | no hole at 8000 rev, owner OK on the print | 630D on B-02u, SH-07, SH-05 |
+| **BU-1** (new) | 50 mm crown bushings: kit change and pawl travel, 20 gloved cycles | F-3 −4.0 | CR-1 session | no binding, pawl engages every stop | 70 mm bushings |
+
+Not picked (options in `weight_push.md`): CA-1 at 0.40 + MT-1 static (F-1), the spreader load share (F-2, needs a
+plate run and puck load cells in T2), Ti joint washers (F-4), OD 17 legs (F-6), #8 door chain (G-3).
 
 ## 4. Kits and shopping list
 
@@ -365,7 +385,7 @@ WP-5 moves to 1st). The bottom four keep their places except RF-1 / HB-5 swappin
 | 1 | WP-3 gloved tail | 5.4 | 0 | 0.3 | 1.20 | protects A-2 (already in B.2) |
 | 2 | WP-1 wash fray | 36.4 | 5 | 2.0 | 1.04 | protects B-1 (already in B.2) |
 | 3 | WP-5 trim tick | 12.8 | 5 | 0.5 | 1.02 | protects B-10 (already in B.2) |
-| 4 | CA-1 at 0.40 | 60 | 15 | 6 | 0.57 | also the top safety gate; 60 g only if 0.40 passes |
+| 4 | CA-1 at 0.40 | 60 | 15 | 6 | 0.57 | also the top safety gate; 60 g only if 0.40 passes. **BL-037: on H1 as adopted the body lever is under 10 g** (`weight_push.md` F-1); CA-1 stays the top safety gate |
 | 5 | WP-2 slot pull | 6.2 | 5 | 0.7 | 0.40 | C-6 lash tabs |
 | 6 | HB-5 7075 plate | 25.0 | 45 | 4 | 0.24 | also a safety gate |
 | 7 | RF-1 rail fit | 7.2 | 10 | 3 | 0.13 | C-8 rails |
