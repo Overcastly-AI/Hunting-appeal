@@ -1,0 +1,3044 @@
+{
+ "date": "2026-11-13",
+ "ticket": "BL-049",
+ "published": {
+  "US1_X": 70.0,
+  "US1_Z": 95.0,
+  "US2_X": 165.0,
+  "US2_Z": 142.0,
+  "STAY_X": 115.0,
+  "CHANNEL_ENTRY_X": {
+   "us1": 70.0,
+   "us2": 165.0
+  },
+  "HINGE_PIN_MATERIAL": "ti_6al_4v",
+  "HINGE_PIN_D": 5.0,
+  "hinge_eye_envelope": {
+   "station_z_mm": 60.0,
+   "pin_d_mm": 5.0,
+   "pin_centre_above_stay_surface_mm": 10.1,
+   "throat_floor_above_stay_surface_mm": 1.1,
+   "gap_under_pin_mm": 6.5,
+   "eye_plies_design": 3,
+   "eye_ply_t_mm": 1.5,
+   "eye_thickness_design_mm": 4.5,
+   "gap_clearance_over_eye_mm": 2.0,
+   "eye_section_steps_mm": [
+    [
+     2.0,
+     4.5
+    ],
+    [
+     9.5,
+     3.0
+    ]
+   ],
+   "eye_margin_mm": 1.0,
+   "throat_mm": 20.0,
+   "neck_w_max_mm": 19.0,
+   "throat_clearance_over_max_neck_mm": 1.0,
+   "throat_clearance_over_nominal_neck_mm": 2.0,
+   "cheek_half_z_mm": 9.0,
+   "cheek_up_mm": 27.0,
+   "cheek_thickness_mm": 10.0,
+   "cheek_tip_above_stay_surface_mm": 17.7,
+   "stay_r_mm_at_z60": 9.3545,
+   "pin_centre_from_stay_centre_mm": 19.4545
+  },
+  "us_eye_envelope": {
+   "us1": {
+    "station": "us1",
+    "station_z_mm": 95.0,
+    "wraps": "L pin: US1 sewn eye, 25 mm poly webbing (pattern US, 50 mm eye fold round the pin sleeve). R pin: the US1 cam's anchor (BOM 'US-anchor', no drawn part: a webbing loop is the only thing that fits the throat; the 32 mm cam body does not)",
+    "web_w_mm": 25.0,
+    "neck_w_mm": 18.0,
+    "neck_fold_edge_mm": 3.5,
+    "pin_d_mm": 5.0,
+    "pin_centre_above_stay_surface_mm": 10.1,
+    "throat_floor_above_stay_surface_mm": 2.1,
+    "gap_under_pin_mm": 5.5,
+    "eye_plies_design": 2,
+    "eye_ply_t_mm": 1.5,
+    "eye_thickness_design_mm": 3.0,
+    "gap_clearance_over_eye_mm": 2.5,
+    "eye_section_steps_mm": [
+     [
+      9.5,
+      3.0
+     ]
+    ],
+    "eye_margin_mm": 1.0,
+    "throat_mm": 20.0,
+    "neck_w_max_mm": 19.0,
+    "throat_clearance_over_max_neck_mm": 1.0,
+    "cheek_half_z_mm": 9.0,
+    "cheek_tip_above_stay_surface_mm": 17.7,
+    "saddle_root_depth_mm": 9.1875,
+    "on_crown_sleeve": false
+   },
+   "us2": {
+    "station": "us2",
+    "station_z_mm": 142.0,
+    "wraps": "as us1 (US2 strap)",
+    "web_w_mm": 25.0,
+    "neck_w_mm": 18.0,
+    "neck_fold_edge_mm": 3.5,
+    "pin_d_mm": 5.0,
+    "pin_centre_above_stay_surface_mm": 10.1,
+    "throat_floor_above_stay_surface_mm": 2.1,
+    "gap_under_pin_mm": 5.5,
+    "eye_plies_design": 2,
+    "eye_ply_t_mm": 1.5,
+    "eye_thickness_design_mm": 3.0,
+    "gap_clearance_over_eye_mm": 2.5,
+    "eye_section_steps_mm": [
+     [
+      9.5,
+      3.0
+     ]
+    ],
+    "eye_margin_mm": 1.0,
+    "throat_mm": 20.0,
+    "neck_w_max_mm": 19.0,
+    "throat_clearance_over_max_neck_mm": 1.0,
+    "cheek_half_z_mm": 9.0,
+    "cheek_tip_above_stay_surface_mm": 17.7,
+    "saddle_root_depth_mm": 8.9632,
+    "on_crown_sleeve": false
+   }
+  }
+ },
+ "hinge": {
+  "geom_bl042": {
+   "throat": 20.0,
+   "cheek": 8.0,
+   "half_z": 9.0,
+   "embed": 9.3545,
+   "hole_d": 7.2,
+   "pin_d": 5.0,
+   "hole_proud": 10.1,
+   "floor_proud": 2.1,
+   "wall_front": 4.0,
+   "chamfer_w": 9.0,
+   "half_z_up": null
+  },
+  "geom_bl049": {
+   "throat": 20.0,
+   "cheek": 10.0,
+   "half_z": 9.0,
+   "embed": 9.3545,
+   "hole_d": 7.2,
+   "pin_d": 5.0,
+   "hole_proud": 10.1,
+   "floor_proud": 1.1,
+   "wall_front": 4.0,
+   "chamfer_w": 9.0,
+   "half_z_up": 27.0
+  },
+  "study": {
+   "h": 1.0,
+   "bl047_print": {
+    "added_g": 8.1408,
+    "rows": {
+     "15|fill|R": {
+      "strength": 1.8004320368796458,
+      "fatigue": 1.0127430207448007,
+      "fatigue_2p4": 0.8101944165958405,
+      "creep": 2.1605184442555747,
+      "fatigue_fimax": 0.503226313326932,
+      "fatigue_gov_region": 1.0127430207448007,
+      "peak_xyz": [
+       -10.5,
+       11.1,
+       -6.5
+      ]
+     },
+     "15|fill|L": {
+      "strength": 1.5885624868597745,
+      "fatigue": 0.8935663988586232,
+      "fatigue_2p4": 0.7148531190868984,
+      "creep": 1.9062749842317297,
+      "fatigue_fimax": 0.4464083663943019,
+      "fatigue_gov_region": 0.8935663988586232,
+      "peak_xyz": [
+       -10.5,
+       11.1,
+       -6.5
+      ]
+     },
+     "15|meat|R": {
+      "strength": 1.2069832591503828,
+      "fatigue": 0.6789280832720903,
+      "fatigue_2p4": 0.5431424666176722,
+      "creep": 1.4483799109804596,
+      "fatigue_fimax": 0.3683727532966318,
+      "fatigue_gov_region": 0.6789280832720903,
+      "peak_xyz": [
+       -10.5,
+       11.1,
+       -6.5
+      ]
+     },
+     "15|meat|L": {
+      "strength": 1.3143760248395002,
+      "fatigue": 0.7393365139722187,
+      "fatigue_2p4": 0.591469211177775,
+      "creep": 1.5772512298074002,
+      "fatigue_fimax": 0.39709818936358954,
+      "fatigue_gov_region": 0.7393365139722187,
+      "peak_xyz": [
+       -10.5,
+       11.1,
+       -6.5
+      ]
+     },
+     "19|fill|R": {
+      "strength": 1.2377130959650358,
+      "fatigue": 0.6962136164803324,
+      "fatigue_2p4": 0.556970893184266,
+      "creep": 1.485255715158043,
+      "fatigue_fimax": 0.36284350236491036,
+      "fatigue_gov_region": 0.6962136164803324,
+      "peak_xyz": [
+       -10.5,
+       11.1,
+       -6.5
+      ]
+     },
+     "19|fill|L": {
+      "strength": 1.248206545644871,
+      "fatigue": 0.7021161819252398,
+      "fatigue_2p4": 0.5616929455401919,
+      "creep": 1.4978478547738452,
+      "fatigue_fimax": 0.3542244839734329,
+      "fatigue_gov_region": 0.7021161819252398,
+      "peak_xyz": [
+       -10.5,
+       11.1,
+       -6.5
+      ]
+     },
+     "19|meat|R": {
+      "strength": 1.223386391927691,
+      "fatigue": 0.6881548454593261,
+      "fatigue_2p4": 0.5505238763674609,
+      "creep": 1.4680636703132293,
+      "fatigue_fimax": 0.3720518073317456,
+      "fatigue_gov_region": 0.6881548454593261,
+      "peak_xyz": [
+       -10.5,
+       11.1,
+       -6.5
+      ]
+     },
+     "19|meat|L": {
+      "strength": 1.3090181560964824,
+      "fatigue": 0.7363227128042712,
+      "fatigue_2p4": 0.589058170243417,
+      "creep": 1.570821787315779,
+      "fatigue_fimax": 0.3955938136380481,
+      "fatigue_gov_region": 0.7363227128042712,
+      "peak_xyz": [
+       -10.5,
+       11.1,
+       -6.5
+      ]
+     },
+     "23|fill|R": {
+      "strength": 1.2492958916745691,
+      "fatigue": 0.702728939066945,
+      "fatigue_2p4": 0.562183151253556,
+      "creep": 1.4991550700094831,
+      "fatigue_fimax": 0.35472963930741974,
+      "fatigue_gov_region": 0.702728939066945,
+      "peak_xyz": [
+       -10.5,
+       11.1,
+       -6.5
+      ]
+     },
+     "23|fill|L": {
+      "strength": 1.103513203509999,
+      "fatigue": 0.6207261769743744,
+      "fatigue_2p4": 0.49658094157949956,
+      "creep": 1.324215844211999,
+      "fatigue_fimax": 0.3278640783482474,
+      "fatigue_gov_region": 0.6207261769743744,
+      "peak_xyz": [
+       -10.5,
+       11.1,
+       -6.5
+      ]
+     },
+     "23|meat|R": {
+      "strength": 1.2158481361037432,
+      "fatigue": 0.6839145765583554,
+      "fatigue_2p4": 0.5471316612466843,
+      "creep": 1.4590177633244918,
+      "fatigue_fimax": 0.3689144548026665,
+      "fatigue_gov_region": 0.6839145765583554,
+      "peak_xyz": [
+       -10.5,
+       11.1,
+       -6.5
+      ]
+     },
+     "23|meat|L": {
+      "strength": 1.3137787235542508,
+      "fatigue": 0.739000531999266,
+      "fatigue_2p4": 0.5912004255994129,
+      "creep": 1.576534468265101,
+      "fatigue_fimax": 0.3956372585730092,
+      "fatigue_gov_region": 0.739000531999266,
+      "peak_xyz": [
+       -10.5,
+       11.1,
+       -6.5
+      ]
+     },
+     "revC": {
+      "strength": 2.3795919969897796,
+      "fatigue": 1.338520498306751,
+      "fatigue_2p4": 1.0708163986454007,
+      "creep": 2.8555103963877357,
+      "fatigue_fimax": 0.8700366811112635,
+      "fatigue_gov_region": 1.338520498306751,
+      "peak_xyz": [
+       -9.5,
+       4.1,
+       9.5
+      ]
+     }
+    },
+    "sim_worst": "23|fill|L",
+    "sim": {
+     "strength": 1.104,
+     "fatigue": 0.621,
+     "fatigue_2p4": 0.497,
+     "creep": 1.324,
+     "fatigue_fimax": 0.328,
+     "fatigue_gov_region": 0.621
+    },
+    "revC": {
+     "strength": 2.38,
+     "fatigue": 1.339,
+     "fatigue_2p4": 1.071,
+     "creep": 2.856,
+     "fatigue_fimax": 0.87,
+     "fatigue_gov_region": 1.339
+    }
+   },
+   "bl042_no_relief": {
+    "added_g": 8.1408,
+    "rows": {
+     "15|fill|R": {
+      "strength": 2.1087543072104515,
+      "fatigue": 1.1861742978058787,
+      "fatigue_2p4": 0.9489394382447031,
+      "creep": 2.5305051686525415,
+      "fatigue_fimax": 0.5840625068658064,
+      "fatigue_gov_region": 1.1861742978058787,
+      "peak_xyz": [
+       -10.5,
+       13.1,
+       -8.5
+      ]
+     },
+     "15|fill|L": {
+      "strength": 1.9290859480803664,
+      "fatigue": 1.0851108457952061,
+      "fatigue_2p4": 0.8680886766361647,
+      "creep": 2.31490313769644,
+      "fatigue_fimax": 0.5412918703279487,
+      "fatigue_gov_region": 1.0851108457952061,
+      "peak_xyz": [
+       -10.5,
+       13.1,
+       -8.5
+      ]
+     },
+     "15|meat|R": {
+      "strength": 1.525263973870441,
+      "fatigue": 0.8579609853021228,
+      "fatigue_2p4": 0.6863687882416983,
+      "creep": 1.8303167686445292,
+      "fatigue_fimax": 0.4798009073501464,
+      "fatigue_gov_region": 0.8579609853021228,
+      "peak_xyz": [
+       -9.5,
+       12.1,
+       -5.5
+      ]
+     },
+     "15|meat|L": {
+      "strength": 1.6415334134085533,
+      "fatigue": 0.9233625450423111,
+      "fatigue_2p4": 0.7386900360338489,
+      "creep": 1.9698400960902638,
+      "fatigue_fimax": 0.5245309823521533,
+      "fatigue_gov_region": 0.9233625450423111,
+      "peak_xyz": [
+       -9.5,
+       12.1,
+       -5.5
+      ]
+     },
+     "19|fill|R": {
+      "strength": 1.559540506215966,
+      "fatigue": 0.8772415347464807,
+      "fatigue_2p4": 0.7017932277971846,
+      "creep": 1.8714486074591592,
+      "fatigue_fimax": 0.4832945275517607,
+      "fatigue_gov_region": 0.8772415347464807,
+      "peak_xyz": [
+       -10.5,
+       13.1,
+       -6.5
+      ]
+     },
+     "19|fill|L": {
+      "strength": 1.5755661000440127,
+      "fatigue": 0.8862559312747571,
+      "fatigue_2p4": 0.7090047450198056,
+      "creep": 1.8906793200528151,
+      "fatigue_fimax": 0.4652962310161732,
+      "fatigue_gov_region": 0.8862559312747571,
+      "peak_xyz": [
+       -10.5,
+       13.1,
+       -8.5
+      ]
+     },
+     "19|meat|R": {
+      "strength": 1.5430973619441277,
+      "fatigue": 0.8679922660935716,
+      "fatigue_2p4": 0.6943938128748574,
+      "creep": 1.851716834332953,
+      "fatigue_fimax": 0.48672426038575045,
+      "fatigue_gov_region": 0.8679922660935716,
+      "peak_xyz": [
+       -9.5,
+       12.1,
+       -5.5
+      ]
+     },
+     "19|meat|L": {
+      "strength": 1.634645398103207,
+      "fatigue": 0.9194880364330538,
+      "fatigue_2p4": 0.735590429146443,
+      "creep": 1.9615744777238482,
+      "fatigue_fimax": 0.5216178279768018,
+      "fatigue_gov_region": 0.9194880364330538,
+      "peak_xyz": [
+       -9.5,
+       12.1,
+       -5.5
+      ]
+     },
+     "23|fill|R": {
+      "strength": 1.579288710072669,
+      "fatigue": 0.8883498994158763,
+      "fatigue_2p4": 0.7106799195327009,
+      "creep": 1.8951464520872028,
+      "fatigue_fimax": 0.466254183776523,
+      "fatigue_gov_region": 0.8883498994158763,
+      "peak_xyz": [
+       -10.5,
+       13.1,
+       -8.5
+      ]
+     },
+     "23|fill|L": {
+      "strength": 1.4433083065635723,
+      "fatigue": 0.8118609224420092,
+      "fatigue_2p4": 0.6494887379536075,
+      "creep": 1.7319699678762865,
+      "fatigue_fimax": 0.43230280058040366,
+      "fatigue_gov_region": 0.8118609224420092,
+      "peak_xyz": [
+       -9.5,
+       12.1,
+       -5.5
+      ]
+     },
+     "23|meat|R": {
+      "strength": 1.535194174199494,
+      "fatigue": 0.8635467229872155,
+      "fatigue_2p4": 0.6908373783897723,
+      "creep": 1.842233009039393,
+      "fatigue_fimax": 0.4829138619355797,
+      "fatigue_gov_region": 0.8635467229872155,
+      "peak_xyz": [
+       -9.5,
+       12.1,
+       -5.5
+      ]
+     },
+     "23|meat|L": {
+      "strength": 1.6337700789359617,
+      "fatigue": 0.9189956694014785,
+      "fatigue_2p4": 0.7351965355211826,
+      "creep": 1.9605240947231541,
+      "fatigue_fimax": 0.5234651171029021,
+      "fatigue_gov_region": 0.9189956694014785,
+      "peak_xyz": [
+       -9.5,
+       12.1,
+       -5.5
+      ]
+     },
+     "revC": {
+      "strength": 2.6506359274190947,
+      "fatigue": 1.4909827091732404,
+      "fatigue_2p4": 1.1927861673385924,
+      "creep": 3.180763112902914,
+      "fatigue_fimax": 0.9176125369198044,
+      "fatigue_gov_region": 1.4909827091732404,
+      "peak_xyz": [
+       -10.5,
+       13.1,
+       -8.5
+      ]
+     }
+    },
+    "sim_worst": "23|fill|L",
+    "sim": {
+     "strength": 1.443,
+     "fatigue": 0.812,
+     "fatigue_2p4": 0.649,
+     "creep": 1.732,
+     "fatigue_fimax": 0.432,
+     "fatigue_gov_region": 0.812
+    },
+    "revC": {
+     "strength": 2.651,
+     "fatigue": 1.491,
+     "fatigue_2p4": 1.193,
+     "creep": 3.181,
+     "fatigue_fimax": 0.918,
+     "fatigue_gov_region": 1.491
+    }
+   },
+   "bl049": {
+    "added_g": 17.97336,
+    "rows": {
+     "15|fill|R": {
+      "strength": 4.1887646393061075,
+      "fatigue": 2.356180109609685,
+      "fatigue_2p4": 1.884944087687748,
+      "creep": 5.026517567167329,
+      "fatigue_fimax": 0.9912389212427077,
+      "fatigue_gov_region": 2.356180109609685,
+      "peak_xyz": [
+       -9.5,
+       11.1,
+       -6.5
+      ]
+     },
+     "15|fill|L": {
+      "strength": 3.6103527842308285,
+      "fatigue": 2.030823441129841,
+      "fatigue_2p4": 1.6246587529038725,
+      "creep": 4.332423341076995,
+      "fatigue_fimax": 0.8478043416374264,
+      "fatigue_gov_region": 2.030823441129841,
+      "peak_xyz": [
+       -9.5,
+       11.1,
+       -6.5
+      ]
+     },
+     "15|meat|R": {
+      "strength": 2.461730332893679,
+      "fatigue": 1.3847233122526943,
+      "fatigue_2p4": 1.1077786498021553,
+      "creep": 2.954076399472415,
+      "fatigue_fimax": 0.6282548918178853,
+      "fatigue_gov_region": 1.3847233122526943,
+      "peak_xyz": [
+       -9.5,
+       11.1,
+       -5.5
+      ]
+     },
+     "15|meat|L": {
+      "strength": 2.7122133644216313,
+      "fatigue": 1.5256200174871672,
+      "fatigue_2p4": 1.220496013989734,
+      "creep": 3.254656037305957,
+      "fatigue_fimax": 0.6923176437326279,
+      "fatigue_gov_region": 1.5256200174871672,
+      "peak_xyz": [
+       -9.5,
+       11.1,
+       -5.5
+      ]
+     },
+     "19|fill|R": {
+      "strength": 2.565203021297291,
+      "fatigue": 1.4429266994797258,
+      "fatigue_2p4": 1.154341359583781,
+      "creep": 3.0782436255567487,
+      "fatigue_fimax": 0.6334813718741089,
+      "fatigue_gov_region": 1.4429266994797258,
+      "peak_xyz": [
+       -9.5,
+       11.1,
+       -5.5
+      ]
+     },
+     "19|fill|L": {
+      "strength": 2.6331342040716823,
+      "fatigue": 1.481137989790321,
+      "fatigue_2p4": 1.184910391832257,
+      "creep": 3.159761044886019,
+      "fatigue_fimax": 0.6277427170307645,
+      "fatigue_gov_region": 1.481137989790321,
+      "peak_xyz": [
+       -9.5,
+       11.1,
+       -5.5
+      ]
+     },
+     "19|meat|R": {
+      "strength": 2.501730636127773,
+      "fatigue": 1.4072234828218722,
+      "fatigue_2p4": 1.1257787862574975,
+      "creep": 3.002076763353327,
+      "fatigue_fimax": 0.6381468443858633,
+      "fatigue_gov_region": 1.4072234828218722,
+      "peak_xyz": [
+       -9.5,
+       11.1,
+       -5.5
+      ]
+     },
+     "19|meat|L": {
+      "strength": 2.6937903635164777,
+      "fatigue": 1.5152570794780185,
+      "fatigue_2p4": 1.212205663582415,
+      "creep": 3.2325484362197736,
+      "fatigue_fimax": 0.6881675171169319,
+      "fatigue_gov_region": 1.5152570794780185,
+      "peak_xyz": [
+       -9.5,
+       11.1,
+       -5.5
+      ]
+     },
+     "23|fill|R": {
+      "strength": 2.6351143992701584,
+      "fatigue": 1.4822518495894639,
+      "fatigue_2p4": 1.1858014796715712,
+      "creep": 3.1621372791241904,
+      "fatigue_fimax": 0.6285816641601473,
+      "fatigue_gov_region": 1.4822518495894639,
+      "peak_xyz": [
+       -9.5,
+       11.1,
+       -5.5
+      ]
+     },
+     "23|fill|L": {
+      "strength": 2.3039190619765018,
+      "fatigue": 1.295954472361782,
+      "fatigue_2p4": 1.0367635778894255,
+      "creep": 2.7647028743718023,
+      "fatigue_fimax": 0.5584357145093501,
+      "fatigue_gov_region": 1.295954472361782,
+      "peak_xyz": [
+       -9.5,
+       11.1,
+       -5.5
+      ]
+     },
+     "23|meat|R": {
+      "strength": 2.487949661436294,
+      "fatigue": 1.3994716845579154,
+      "fatigue_2p4": 1.1195773476463322,
+      "creep": 2.9855395937235527,
+      "fatigue_fimax": 0.632651159579473,
+      "fatigue_gov_region": 1.3994716845579154,
+      "peak_xyz": [
+       -9.5,
+       11.1,
+       -5.5
+      ]
+     },
+     "23|meat|L": {
+      "strength": 2.714127328816978,
+      "fatigue": 1.52669662245955,
+      "fatigue_2p4": 1.2213572979676401,
+      "creep": 3.2569527945803736,
+      "fatigue_fimax": 0.690732339682766,
+      "fatigue_gov_region": 1.52669662245955,
+      "peak_xyz": [
+       -9.5,
+       11.1,
+       -5.5
+      ]
+     },
+     "revC": {
+      "strength": 6.21823045500994,
+      "fatigue": 3.4977546309430902,
+      "fatigue_2p4": 2.7982037047544726,
+      "creep": 7.461876546011928,
+      "fatigue_fimax": 2.075849925964092,
+      "fatigue_gov_region": 3.4977546309430902,
+      "peak_xyz": [
+       -9.5,
+       4.1,
+       27.5
+      ]
+     }
+    },
+    "sim_worst": "23|fill|L",
+    "sim": {
+     "strength": 2.304,
+     "fatigue": 1.296,
+     "fatigue_2p4": 1.037,
+     "creep": 2.765,
+     "fatigue_fimax": 0.558,
+     "fatigue_gov_region": 1.296
+    },
+    "revC": {
+     "strength": 6.218,
+     "fatigue": 3.498,
+     "fatigue_2p4": 2.798,
+     "creep": 7.462,
+     "fatigue_fimax": 2.076,
+     "fatigue_gov_region": 3.498
+    }
+   },
+   "bl047_print_h0.75": {
+    "rows": {
+     "23|fill|L": {
+      "strength": 0.8703269045179948,
+      "fatigue": 0.489558883791372,
+      "fatigue_2p4": 0.3916471070330976,
+      "creep": 1.044392285421594,
+      "fatigue_fimax": 0.22363055598048756,
+      "fatigue_gov_region": 0.489558883791372,
+      "peak_xyz": [
+       -10.9,
+       11.0,
+       -5.9
+      ]
+     },
+     "revC": {
+      "strength": 2.1936351162720915,
+      "fatigue": 1.2339197529030512,
+      "fatigue_2p4": 0.987135802322441,
+      "creep": 2.63236213952651,
+      "fatigue_fimax": 0.7978591960624202,
+      "fatigue_gov_region": 1.2339197529030512,
+      "peak_xyz": [
+       8.6,
+       5.8,
+       9.1
+      ]
+     }
+    },
+    "sim_worst": "23|fill|L",
+    "sim": {
+     "strength": 0.87,
+     "fatigue": 0.49,
+     "fatigue_2p4": 0.392,
+     "creep": 1.044,
+     "fatigue_fimax": 0.224,
+     "fatigue_gov_region": 0.49
+    },
+    "revC": {
+     "strength": 2.194,
+     "fatigue": 1.234,
+     "fatigue_2p4": 0.987,
+     "creep": 2.632,
+     "fatigue_fimax": 0.798,
+     "fatigue_gov_region": 1.234
+    }
+   },
+   "bl049_h0.75": {
+    "rows": {
+     "23|fill|L": {
+      "strength": 2.255426841966177,
+      "fatigue": 1.2686775986059744,
+      "fatigue_2p4": 1.0149420788847796,
+      "creep": 2.7065122103594126,
+      "fatigue_fimax": 0.5367823170464462,
+      "fatigue_gov_region": 1.2686775986059744,
+      "peak_xyz": [
+       -9.1,
+       11.0,
+       -5.4
+      ]
+     },
+     "revC": {
+      "strength": 5.593451666123598,
+      "fatigue": 3.146316562194523,
+      "fatigue_2p4": 2.517053249755619,
+      "creep": 6.712141999348317,
+      "fatigue_fimax": 1.6149298932790255,
+      "fatigue_gov_region": 3.146316562194523,
+      "peak_xyz": [
+       -12.1,
+       16.3,
+       -2.4
+      ]
+     }
+    },
+    "sim_worst": "23|fill|L",
+    "sim": {
+     "strength": 2.255,
+     "fatigue": 1.269,
+     "fatigue_2p4": 1.015,
+     "creep": 2.707,
+     "fatigue_fimax": 0.537,
+     "fatigue_gov_region": 1.269
+    },
+    "revC": {
+     "strength": 5.593,
+     "fatigue": 3.146,
+     "fatigue_2p4": 2.517,
+     "creep": 6.712,
+     "fatigue_fimax": 1.615,
+     "fatigue_gov_region": 3.146
+    }
+   },
+   "bl049_ellipse": {
+    "rows": {
+     "15|fill|R": {
+      "strength": 3.711600805610759,
+      "fatigue": 2.0877754531560515,
+      "fatigue_2p4": 1.6702203625248413,
+      "creep": 4.453920966732911,
+      "fatigue_fimax": 0.8722581757063999,
+      "fatigue_gov_region": 2.0877754531560515,
+      "peak_xyz": [
+       -6.5,
+       0.1,
+       26.5
+      ]
+     },
+     "15|fill|L": {
+      "strength": 3.259049556953183,
+      "fatigue": 1.8332153757861651,
+      "fatigue_2p4": 1.4665723006289324,
+      "creep": 3.91085946834382,
+      "fatigue_fimax": 0.7783477005581575,
+      "fatigue_gov_region": 1.8332153757861651,
+      "peak_xyz": [
+       -6.5,
+       0.1,
+       26.5
+      ]
+     },
+     "15|meat|R": {
+      "strength": 2.3452179335165866,
+      "fatigue": 1.3191850876030795,
+      "fatigue_2p4": 1.0553480700824638,
+      "creep": 2.8142615202199037,
+      "fatigue_fimax": 0.5754152280700269,
+      "fatigue_gov_region": 1.3191850876030795,
+      "peak_xyz": [
+       -5.5,
+       -0.9,
+       27.5
+      ]
+     },
+     "15|meat|L": {
+      "strength": 2.5922681761296738,
+      "fatigue": 1.4581508490729411,
+      "fatigue_2p4": 1.166520679258353,
+      "creep": 3.1107218113556083,
+      "fatigue_fimax": 0.621581218231961,
+      "fatigue_gov_region": 1.4581508490729411,
+      "peak_xyz": [
+       -5.5,
+       -0.9,
+       27.5
+      ]
+     },
+     "19|fill|R": {
+      "strength": 2.4596127194927417,
+      "fatigue": 1.383532154714667,
+      "fatigue_2p4": 1.1068257237717336,
+      "creep": 2.9515352633912904,
+      "fatigue_fimax": 0.5998921397139202,
+      "fatigue_gov_region": 1.383532154714667,
+      "peak_xyz": [
+       -5.5,
+       -0.9,
+       27.5
+      ]
+     },
+     "19|fill|L": {
+      "strength": 2.4691199700029776,
+      "fatigue": 1.3888799831266747,
+      "fatigue_2p4": 1.1111039865013397,
+      "creep": 2.9629439640035735,
+      "fatigue_fimax": 0.6205133107055278,
+      "fatigue_gov_region": 1.3888799831266747,
+      "peak_xyz": [
+       -5.5,
+       -0.9,
+       27.5
+      ]
+     },
+     "19|meat|R": {
+      "strength": 2.3888154528979717,
+      "fatigue": 1.3437086922551087,
+      "fatigue_2p4": 1.074966953804087,
+      "creep": 2.866578543477566,
+      "fatigue_fimax": 0.5841354423776145,
+      "fatigue_gov_region": 1.3437086922551087,
+      "peak_xyz": [
+       -5.5,
+       -0.9,
+       27.5
+      ]
+     },
+     "19|meat|L": {
+      "strength": 2.570086475468584,
+      "fatigue": 1.4456736424510783,
+      "fatigue_2p4": 1.1565389139608628,
+      "creep": 3.0841037705623013,
+      "fatigue_fimax": 0.6177299513066425,
+      "fatigue_gov_region": 1.4456736424510783,
+      "peak_xyz": [
+       -5.5,
+       -0.9,
+       27.5
+      ]
+     },
+     "23|fill|R": {
+      "strength": 2.476623967522649,
+      "fatigue": 1.39310098173149,
+      "fatigue_2p4": 1.1144807853851917,
+      "creep": 2.971948761027179,
+      "fatigue_fimax": 0.6201346651586548,
+      "fatigue_gov_region": 1.39310098173149,
+      "peak_xyz": [
+       -5.5,
+       -0.9,
+       27.5
+      ]
+     },
+     "23|fill|L": {
+      "strength": 2.1935585486708273,
+      "fatigue": 1.2338766836273403,
+      "fatigue_2p4": 0.9871013469018721,
+      "creep": 2.632270258404993,
+      "fatigue_fimax": 0.5593444237965696,
+      "fatigue_gov_region": 1.2338766836273403,
+      "peak_xyz": [
+       -5.5,
+       -0.9,
+       27.5
+      ]
+     },
+     "23|meat|R": {
+      "strength": 2.3763110087192234,
+      "fatigue": 1.336674942404563,
+      "fatigue_2p4": 1.0693399539236503,
+      "creep": 2.8515732104630684,
+      "fatigue_fimax": 0.5817809219922982,
+      "fatigue_gov_region": 1.336674942404563,
+      "peak_xyz": [
+       -5.5,
+       -0.9,
+       27.5
+      ]
+     },
+     "23|meat|L": {
+      "strength": 2.597181043785529,
+      "fatigue": 1.4609143371293596,
+      "fatigue_2p4": 1.1687314697034876,
+      "creep": 3.116617252542634,
+      "fatigue_fimax": 0.6222713771932288,
+      "fatigue_gov_region": 1.4609143371293596,
+      "peak_xyz": [
+       -5.5,
+       -0.9,
+       27.5
+      ]
+     },
+     "revC": {
+      "strength": 5.9255260724457255,
+      "fatigue": 3.3331084157507207,
+      "fatigue_2p4": 2.666486732600576,
+      "creep": 7.110631286934871,
+      "fatigue_fimax": 2.027340227410205,
+      "fatigue_gov_region": 3.3331084157507207,
+      "peak_xyz": [
+       -6.5,
+       0.1,
+       26.5
+      ]
+     }
+    },
+    "sim_worst": "23|fill|L",
+    "sim": {
+     "strength": 2.194,
+     "fatigue": 1.234,
+     "fatigue_2p4": 0.987,
+     "creep": 2.632,
+     "fatigue_fimax": 0.559,
+     "fatigue_gov_region": 1.234
+    },
+    "revC": {
+     "strength": 5.926,
+     "fatigue": 3.333,
+     "fatigue_2p4": 2.666,
+     "creep": 7.111,
+     "fatigue_fimax": 2.027,
+     "fatigue_gov_region": 3.333
+    }
+   }
+  },
+  "pin": {
+   "bl042|alu_7075_t6": {
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "span_mm": 28.0,
+    "M_nmm": 4585.5,
+    "sigma_mpa": 373.66,
+    "sy_mpa": 462.0,
+    "sf_yield": 1.24,
+    "sigma_walk_mpa": 249.11,
+    "goodman_smax_r0_mpa": 228.93,
+    "sf_fatigue": 0.92,
+    "length_mm": 40.0,
+    "mass_g": 2.21,
+    "sf_fatigue_3p0_basis": 1.15
+   },
+   "bl042|ti_6al_4v": {
+    "material": "ti_6al_4v",
+    "pin_d_mm": 5.0,
+    "span_mm": 28.0,
+    "M_nmm": 4585.5,
+    "sigma_mpa": 373.66,
+    "sy_mpa": 827.0,
+    "sf_yield": 2.21,
+    "sigma_walk_mpa": 249.11,
+    "goodman_smax_r0_mpa": 618.95,
+    "sf_fatigue": 2.48,
+    "length_mm": 40.0,
+    "mass_g": 3.48,
+    "sf_fatigue_3p0_basis": 3.11
+   },
+   "bl049|alu_7075_t6": {
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "span_mm": 30.0,
+    "M_nmm": 5095.0,
+    "sigma_mpa": 415.18,
+    "sy_mpa": 462.0,
+    "sf_yield": 1.11,
+    "sigma_walk_mpa": 276.79,
+    "goodman_smax_r0_mpa": 228.93,
+    "sf_fatigue": 0.83,
+    "length_mm": 44.0,
+    "mass_g": 2.43,
+    "sf_fatigue_3p0_basis": 1.03
+   },
+   "bl049|ti_6al_4v": {
+    "material": "ti_6al_4v",
+    "pin_d_mm": 5.0,
+    "span_mm": 30.0,
+    "M_nmm": 5095.0,
+    "sigma_mpa": 415.18,
+    "sy_mpa": 827.0,
+    "sf_yield": 1.99,
+    "sigma_walk_mpa": 276.79,
+    "goodman_smax_r0_mpa": 618.95,
+    "sf_fatigue": 2.24,
+    "length_mm": 44.0,
+    "mass_g": 3.83,
+    "sf_fatigue_3p0_basis": 2.8
+   },
+   "chosen": "bl049|ti_6al_4v"
+  }
+ },
+ "lugs": {
+  "us1": {
+   "lane_x": 70.0,
+   "z": 95.0,
+   "xoff": -45.0,
+   "arm": {
+    "root": {
+     "y_lo": -13.0,
+     "z": [
+      -5.0,
+      11.0
+     ],
+     "top": "stay"
+    },
+    "tip": {
+     "y_lo": -10.0,
+     "z": [
+      -5.0,
+      11.0
+     ]
+    }
+   },
+   "added_g_model": 22.31,
+   "rows": {
+    "cradle": {
+     "force_n": 720.0,
+     "g_times_req": 2.4,
+     "regions": {
+      "use": {
+       "sf": 2.72,
+       "fatigue": 1.22,
+       "creep": 2.61,
+       "peak_xyz": [
+        -0.5,
+        -9.7,
+        10.5
+       ]
+      },
+      "fairlead": {
+       "sf": 3.62,
+       "fatigue": 1.63,
+       "creep": 3.48,
+       "peak_xyz": [
+        -45.5,
+        0.3,
+        8.5
+       ]
+      },
+      "arm": {
+       "sf": 2.83,
+       "fatigue": 1.28,
+       "creep": 2.72,
+       "peak_xyz": [
+        -10.5,
+        8.3,
+        -4.5
+       ]
+      },
+      "root": {
+       "sf": 1.88,
+       "fatigue": 0.84,
+       "creep": 1.8,
+       "peak_xyz": [
+        -0.5,
+        -9.7,
+        10.5
+       ]
+      }
+     },
+     "governing_region": "root",
+     "sf": 1.88,
+     "fatigue": 0.84,
+     "creep": 1.8
+    },
+    "cradle|fleet_out": {
+     "force_n": 720.0,
+     "g_times_req": 2.4,
+     "regions": {
+      "use": {
+       "sf": 2.57,
+       "fatigue": 1.16,
+       "creep": 2.47,
+       "peak_xyz": [
+        -0.5,
+        -9.7,
+        10.5
+       ]
+      },
+      "fairlead": {
+       "sf": 3.59,
+       "fatigue": 1.62,
+       "creep": 3.45,
+       "peak_xyz": [
+        -45.5,
+        0.3,
+        8.5
+       ]
+      },
+      "arm": {
+       "sf": 2.65,
+       "fatigue": 1.19,
+       "creep": 2.54,
+       "peak_xyz": [
+        -10.5,
+        8.3,
+        -4.5
+       ]
+      },
+      "root": {
+       "sf": 1.78,
+       "fatigue": 0.8,
+       "creep": 1.71,
+       "peak_xyz": [
+        -0.5,
+        -9.7,
+        10.5
+       ]
+      }
+     },
+     "governing_region": "root",
+     "sf": 1.78,
+     "fatigue": 0.8,
+     "creep": 1.71
+    },
+    "cradle|fleet_in": {
+     "force_n": 720.0,
+     "g_times_req": 2.4,
+     "regions": {
+      "use": {
+       "sf": 2.96,
+       "fatigue": 1.33,
+       "creep": 2.84,
+       "peak_xyz": [
+        -0.5,
+        -9.7,
+        10.5
+       ]
+      },
+      "fairlead": {
+       "sf": 3.69,
+       "fatigue": 1.66,
+       "creep": 3.54,
+       "peak_xyz": [
+        -27.5,
+        12.3,
+        8.5
+       ]
+      },
+      "arm": {
+       "sf": 3.13,
+       "fatigue": 1.41,
+       "creep": 3.0,
+       "peak_xyz": [
+        -10.5,
+        8.3,
+        -4.5
+       ]
+      },
+      "root": {
+       "sf": 2.06,
+       "fatigue": 0.93,
+       "creep": 1.97,
+       "peak_xyz": [
+        -0.5,
+        -9.7,
+        10.5
+       ]
+      }
+     },
+     "governing_region": "root",
+     "sf": 2.06,
+     "fatigue": 0.93,
+     "creep": 1.97
+    },
+    "bagon_down": {
+     "force_n": 444.4,
+     "g_times_req": 3.0,
+     "regions": {
+      "use": {
+       "sf": 3.59,
+       "fatigue": 2.02,
+       "creep": 4.3,
+       "peak_xyz": [
+        -9.5,
+        2.3,
+        -4.5
+       ]
+      },
+      "fairlead": {
+       "sf": 4.69,
+       "fatigue": 2.64,
+       "creep": 5.63,
+       "peak_xyz": [
+        -27.5,
+        12.3,
+        8.5
+       ]
+      },
+      "arm": {
+       "sf": 3.52,
+       "fatigue": 1.98,
+       "creep": 4.22,
+       "peak_xyz": [
+        -25.5,
+        9.3,
+        -4.5
+       ]
+      },
+      "root": {
+       "sf": 3.0,
+       "fatigue": 1.69,
+       "creep": 3.61,
+       "peak_xyz": [
+        -9.5,
+        2.3,
+        -4.5
+       ]
+      }
+     },
+     "governing_region": "root",
+     "sf": 3.0,
+     "fatigue": 1.69,
+     "creep": 3.61
+    },
+    "bagon_down|fleet_out": {
+     "force_n": 444.4,
+     "g_times_req": 3.0,
+     "regions": {
+      "use": {
+       "sf": 3.61,
+       "fatigue": 2.03,
+       "creep": 4.33,
+       "peak_xyz": [
+        -9.5,
+        2.3,
+        -4.5
+       ]
+      },
+      "fairlead": {
+       "sf": 4.76,
+       "fatigue": 2.68,
+       "creep": 5.71,
+       "peak_xyz": [
+        -27.5,
+        12.3,
+        1.5
+       ]
+      },
+      "arm": {
+       "sf": 3.54,
+       "fatigue": 1.99,
+       "creep": 4.25,
+       "peak_xyz": [
+        -25.5,
+        10.3,
+        -4.5
+       ]
+      },
+      "root": {
+       "sf": 2.95,
+       "fatigue": 1.66,
+       "creep": 3.54,
+       "peak_xyz": [
+        -9.5,
+        2.3,
+        -4.5
+       ]
+      }
+     },
+     "governing_region": "root",
+     "sf": 2.95,
+     "fatigue": 1.66,
+     "creep": 3.54
+    },
+    "bagon_down|fleet_in": {
+     "force_n": 444.4,
+     "g_times_req": 3.0,
+     "regions": {
+      "use": {
+       "sf": 3.67,
+       "fatigue": 2.06,
+       "creep": 4.41,
+       "peak_xyz": [
+        -9.5,
+        2.3,
+        10.5
+       ]
+      },
+      "fairlead": {
+       "sf": 4.71,
+       "fatigue": 2.65,
+       "creep": 5.65,
+       "peak_xyz": [
+        -27.5,
+        12.3,
+        8.5
+       ]
+      },
+      "arm": {
+       "sf": 3.59,
+       "fatigue": 2.02,
+       "creep": 4.31,
+       "peak_xyz": [
+        -10.5,
+        8.3,
+        10.5
+       ]
+      },
+      "root": {
+       "sf": 3.02,
+       "fatigue": 1.7,
+       "creep": 3.62,
+       "peak_xyz": [
+        -9.5,
+        2.3,
+        10.5
+       ]
+      }
+     },
+     "governing_region": "root",
+     "sf": 3.02,
+     "fatigue": 1.7,
+     "creep": 3.62
+    },
+    "bagon_fore30": {
+     "force_n": 444.4,
+     "g_times_req": 3.0,
+     "regions": {
+      "use": {
+       "sf": 3.48,
+       "fatigue": 1.96,
+       "creep": 4.18,
+       "peak_xyz": [
+        -7.5,
+        6.3,
+        10.5
+       ]
+      },
+      "fairlead": {
+       "sf": 5.23,
+       "fatigue": 2.94,
+       "creep": 6.27,
+       "peak_xyz": [
+        -44.5,
+        -0.7,
+        -4.5
+       ]
+      },
+      "arm": {
+       "sf": 3.33,
+       "fatigue": 1.87,
+       "creep": 3.99,
+       "peak_xyz": [
+        -10.5,
+        8.3,
+        10.5
+       ]
+      },
+      "root": {
+       "sf": 2.8,
+       "fatigue": 1.58,
+       "creep": 3.36,
+       "peak_xyz": [
+        -7.5,
+        6.3,
+        10.5
+       ]
+      }
+     },
+     "governing_region": "root",
+     "sf": 2.8,
+     "fatigue": 1.58,
+     "creep": 3.36
+    },
+    "bagon_fore30|fleet_out": {
+     "force_n": 444.4,
+     "g_times_req": 3.0,
+     "regions": {
+      "use": {
+       "sf": 3.57,
+       "fatigue": 2.01,
+       "creep": 4.29,
+       "peak_xyz": [
+        -9.5,
+        2.3,
+        10.5
+       ]
+      },
+      "fairlead": {
+       "sf": 5.25,
+       "fatigue": 2.96,
+       "creep": 6.31,
+       "peak_xyz": [
+        -44.5,
+        -0.7,
+        -4.5
+       ]
+      },
+      "arm": {
+       "sf": 3.34,
+       "fatigue": 1.88,
+       "creep": 4.01,
+       "peak_xyz": [
+        -10.5,
+        8.3,
+        10.5
+       ]
+      },
+      "root": {
+       "sf": 2.96,
+       "fatigue": 1.67,
+       "creep": 3.56,
+       "peak_xyz": [
+        -9.5,
+        2.3,
+        10.5
+       ]
+      }
+     },
+     "governing_region": "root",
+     "sf": 2.96,
+     "fatigue": 1.67,
+     "creep": 3.56
+    },
+    "bagon_fore30|fleet_in": {
+     "force_n": 444.4,
+     "g_times_req": 3.0,
+     "regions": {
+      "use": {
+       "sf": 3.49,
+       "fatigue": 1.96,
+       "creep": 4.19,
+       "peak_xyz": [
+        -7.5,
+        6.3,
+        10.5
+       ]
+      },
+      "fairlead": {
+       "sf": 5.09,
+       "fatigue": 2.86,
+       "creep": 6.11,
+       "peak_xyz": [
+        -44.5,
+        -0.7,
+        -4.5
+       ]
+      },
+      "arm": {
+       "sf": 3.37,
+       "fatigue": 1.9,
+       "creep": 4.05,
+       "peak_xyz": [
+        -10.5,
+        8.3,
+        10.5
+       ]
+      },
+      "root": {
+       "sf": 2.7,
+       "fatigue": 1.52,
+       "creep": 3.24,
+       "peak_xyz": [
+        -7.5,
+        6.3,
+        10.5
+       ]
+      }
+     },
+     "governing_region": "root",
+     "sf": 2.7,
+     "fatigue": 1.52,
+     "creep": 3.24
+    },
+    "bagon_drape": {
+     "force_n": 444.4,
+     "g_times_req": 3.0,
+     "regions": {
+      "use": {
+       "sf": 4.6,
+       "fatigue": 2.59,
+       "creep": 5.52,
+       "peak_xyz": [
+        -0.5,
+        -9.7,
+        10.5
+       ]
+      },
+      "fairlead": {
+       "sf": 7.68,
+       "fatigue": 4.32,
+       "creep": 9.22,
+       "peak_xyz": [
+        -45.5,
+        0.3,
+        8.5
+       ]
+      },
+      "arm": {
+       "sf": 5.25,
+       "fatigue": 2.95,
+       "creep": 6.3,
+       "peak_xyz": [
+        -10.5,
+        8.3,
+        -4.5
+       ]
+      },
+      "root": {
+       "sf": 3.27,
+       "fatigue": 1.84,
+       "creep": 3.92,
+       "peak_xyz": [
+        -0.5,
+        -9.7,
+        10.5
+       ]
+      }
+     },
+     "governing_region": "root",
+     "sf": 3.27,
+     "fatigue": 1.84,
+     "creep": 3.92
+    },
+    "bagon_drape|fleet_out": {
+     "force_n": 444.4,
+     "g_times_req": 3.0,
+     "regions": {
+      "use": {
+       "sf": 5.09,
+       "fatigue": 2.86,
+       "creep": 6.11,
+       "peak_xyz": [
+        -0.5,
+        -9.7,
+        10.5
+       ]
+      },
+      "fairlead": {
+       "sf": 7.62,
+       "fatigue": 4.28,
+       "creep": 9.14,
+       "peak_xyz": [
+        -45.5,
+        0.3,
+        8.5
+       ]
+      },
+      "arm": {
+       "sf": 6.01,
+       "fatigue": 3.38,
+       "creep": 7.21,
+       "peak_xyz": [
+        -10.5,
+        8.3,
+        -4.5
+       ]
+      },
+      "root": {
+       "sf": 3.58,
+       "fatigue": 2.01,
+       "creep": 4.29,
+       "peak_xyz": [
+        -0.5,
+        -9.7,
+        10.5
+       ]
+      }
+     },
+     "governing_region": "root",
+     "sf": 3.58,
+     "fatigue": 2.01,
+     "creep": 4.29
+    },
+    "bagon_drape|fleet_in": {
+     "force_n": 444.4,
+     "g_times_req": 3.0,
+     "regions": {
+      "use": {
+       "sf": 4.27,
+       "fatigue": 2.4,
+       "creep": 5.13,
+       "peak_xyz": [
+        -0.5,
+        -9.7,
+        10.5
+       ]
+      },
+      "fairlead": {
+       "sf": 6.48,
+       "fatigue": 3.65,
+       "creep": 7.78,
+       "peak_xyz": [
+        -45.5,
+        0.3,
+        8.5
+       ]
+      },
+      "arm": {
+       "sf": 4.76,
+       "fatigue": 2.68,
+       "creep": 5.72,
+       "peak_xyz": [
+        -10.5,
+        8.3,
+        -4.5
+       ]
+      },
+      "root": {
+       "sf": 3.08,
+       "fatigue": 1.73,
+       "creep": 3.7,
+       "peak_xyz": [
+        -0.5,
+        -9.7,
+        10.5
+       ]
+      }
+     },
+     "governing_region": "root",
+     "sf": 3.08,
+     "fatigue": 1.73,
+     "creep": 3.7
+    }
+   },
+   "worst_strength": {
+    "load": "cradle|fleet_out",
+    "sf": 1.78
+   },
+   "worst_fatigue": {
+    "load": "cradle|fleet_out",
+    "fatigue": 0.8
+   },
+   "min_creep": 1.71,
+   "pin_7075_cradle": {
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "span_mm": 28.0,
+    "M_nmm": 3240.0,
+    "sigma_mpa": 264.02,
+    "sy_mpa": 462.0,
+    "sf_yield": 1.75,
+    "sigma_walk_mpa": 176.01,
+    "goodman_smax_r0_mpa": 228.93,
+    "sf_fatigue": 1.3,
+    "length_mm": 40.0,
+    "mass_g": 2.21
+   }
+  },
+  "us2": {
+   "lane_x": 165.0,
+   "z": 142.0,
+   "xoff": 50.0,
+   "arm": {
+    "root": {
+     "y_lo": -11.0,
+     "z": [
+      -15.0,
+      15.0
+     ],
+     "top": "stay"
+    },
+    "tip": {
+     "y_lo": -8.0,
+     "z": [
+      -9.0,
+      9.0
+     ]
+    }
+   },
+   "added_g_model": 27.23,
+   "rows": {
+    "cradle": {
+     "force_n": 720.0,
+     "g_times_req": 2.4,
+     "regions": {
+      "use": {
+       "sf": 3.12,
+       "fatigue": 1.4,
+       "creep": 2.99,
+       "peak_xyz": [
+        9.5,
+        -0.5,
+        14.5
+       ]
+      },
+      "fairlead": {
+       "sf": 3.61,
+       "fatigue": 1.63,
+       "creep": 3.47,
+       "peak_xyz": [
+        49.5,
+        -0.5,
+        8.5
+       ]
+      },
+      "arm": {
+       "sf": 3.21,
+       "fatigue": 1.44,
+       "creep": 3.08,
+       "peak_xyz": [
+        26.5,
+        9.5,
+        -9.5
+       ]
+      },
+      "root": {
+       "sf": 2.44,
+       "fatigue": 1.1,
+       "creep": 2.34,
+       "peak_xyz": [
+        9.5,
+        -0.5,
+        14.5
+       ]
+      }
+     },
+     "governing_region": "root",
+     "sf": 2.44,
+     "fatigue": 1.1,
+     "creep": 2.34
+    },
+    "cradle|fleet_out": {
+     "force_n": 720.0,
+     "g_times_req": 2.4,
+     "regions": {
+      "use": {
+       "sf": 3.33,
+       "fatigue": 1.5,
+       "creep": 3.2,
+       "peak_xyz": [
+        9.5,
+        -0.5,
+        14.5
+       ]
+      },
+      "fairlead": {
+       "sf": 3.65,
+       "fatigue": 1.64,
+       "creep": 3.5,
+       "peak_xyz": [
+        60.5,
+        12.5,
+        8.5
+       ]
+      },
+      "arm": {
+       "sf": 3.48,
+       "fatigue": 1.56,
+       "creep": 3.34,
+       "peak_xyz": [
+        26.5,
+        9.5,
+        -9.5
+       ]
+      },
+      "root": {
+       "sf": 2.64,
+       "fatigue": 1.19,
+       "creep": 2.54,
+       "peak_xyz": [
+        9.5,
+        -0.5,
+        14.5
+       ]
+      }
+     },
+     "governing_region": "root",
+     "sf": 2.64,
+     "fatigue": 1.19,
+     "creep": 2.54
+    },
+    "cradle|fleet_in": {
+     "force_n": 720.0,
+     "g_times_req": 2.4,
+     "regions": {
+      "use": {
+       "sf": 2.97,
+       "fatigue": 1.34,
+       "creep": 2.85,
+       "peak_xyz": [
+        9.5,
+        -0.5,
+        14.5
+       ]
+      },
+      "fairlead": {
+       "sf": 3.61,
+       "fatigue": 1.62,
+       "creep": 3.46,
+       "peak_xyz": [
+        49.5,
+        -0.5,
+        8.5
+       ]
+      },
+      "arm": {
+       "sf": 3.07,
+       "fatigue": 1.38,
+       "creep": 2.95,
+       "peak_xyz": [
+        26.5,
+        9.5,
+        -9.5
+       ]
+      },
+      "root": {
+       "sf": 2.31,
+       "fatigue": 1.04,
+       "creep": 2.22,
+       "peak_xyz": [
+        9.5,
+        -0.5,
+        14.5
+       ]
+      }
+     },
+     "governing_region": "root",
+     "sf": 2.31,
+     "fatigue": 1.04,
+     "creep": 2.22
+    },
+    "bagon_down": {
+     "force_n": 296.3,
+     "g_times_req": 3.0,
+     "regions": {
+      "use": {
+       "sf": 7.89,
+       "fatigue": 4.44,
+       "creep": 9.47,
+       "peak_xyz": [
+        30.5,
+        10.5,
+        -8.5
+       ]
+      },
+      "fairlead": {
+       "sf": 7.44,
+       "fatigue": 4.19,
+       "creep": 8.93,
+       "peak_xyz": [
+        60.5,
+        12.5,
+        -8.5
+       ]
+      },
+      "arm": {
+       "sf": 7.7,
+       "fatigue": 4.33,
+       "creep": 9.24,
+       "peak_xyz": [
+        30.5,
+        10.5,
+        -8.5
+       ]
+      },
+      "root": {
+       "sf": 9.94,
+       "fatigue": 5.59,
+       "creep": 11.92,
+       "peak_xyz": [
+        9.5,
+        1.5,
+        14.5
+       ]
+      }
+     },
+     "governing_region": "fairlead",
+     "sf": 7.44,
+     "fatigue": 4.19,
+     "creep": 8.93
+    },
+    "bagon_down|fleet_out": {
+     "force_n": 296.3,
+     "g_times_req": 3.0,
+     "regions": {
+      "use": {
+       "sf": 7.9,
+       "fatigue": 4.45,
+       "creep": 9.48,
+       "peak_xyz": [
+        60.5,
+        12.5,
+        8.5
+       ]
+      },
+      "fairlead": {
+       "sf": 7.42,
+       "fatigue": 4.17,
+       "creep": 8.9,
+       "peak_xyz": [
+        60.5,
+        12.5,
+        8.5
+       ]
+      },
+      "arm": {
+       "sf": 7.84,
+       "fatigue": 4.41,
+       "creep": 9.41,
+       "peak_xyz": [
+        30.5,
+        10.5,
+        8.5
+       ]
+      },
+      "root": {
+       "sf": 10.0,
+       "fatigue": 5.62,
+       "creep": 11.99,
+       "peak_xyz": [
+        9.5,
+        1.5,
+        14.5
+       ]
+      }
+     },
+     "governing_region": "fairlead",
+     "sf": 7.42,
+     "fatigue": 4.17,
+     "creep": 8.9
+    },
+    "bagon_down|fleet_in": {
+     "force_n": 296.3,
+     "g_times_req": 3.0,
+     "regions": {
+      "use": {
+       "sf": 7.93,
+       "fatigue": 4.46,
+       "creep": 9.51,
+       "peak_xyz": [
+        32.5,
+        12.5,
+        -8.5
+       ]
+      },
+      "fairlead": {
+       "sf": 7.49,
+       "fatigue": 4.21,
+       "creep": 8.98,
+       "peak_xyz": [
+        32.5,
+        12.5,
+        -8.5
+       ]
+      },
+      "arm": {
+       "sf": 7.69,
+       "fatigue": 4.33,
+       "creep": 9.23,
+       "peak_xyz": [
+        30.5,
+        10.5,
+        -8.5
+       ]
+      },
+      "root": {
+       "sf": 10.0,
+       "fatigue": 5.62,
+       "creep": 12.0,
+       "peak_xyz": [
+        9.5,
+        1.5,
+        -14.5
+       ]
+      }
+     },
+     "governing_region": "fairlead",
+     "sf": 7.49,
+     "fatigue": 4.21,
+     "creep": 8.98
+    },
+    "bagon_fore30": {
+     "force_n": 296.3,
+     "g_times_req": 3.0,
+     "regions": {
+      "use": {
+       "sf": 7.7,
+       "fatigue": 4.33,
+       "creep": 9.24,
+       "peak_xyz": [
+        9.5,
+        0.5,
+        -14.5
+       ]
+      },
+      "fairlead": {
+       "sf": 8.27,
+       "fatigue": 4.65,
+       "creep": 9.92,
+       "peak_xyz": [
+        49.5,
+        -0.5,
+        -8.5
+       ]
+      },
+      "arm": {
+       "sf": 7.3,
+       "fatigue": 4.11,
+       "creep": 8.76,
+       "peak_xyz": [
+        26.5,
+        9.5,
+        9.5
+       ]
+      },
+      "root": {
+       "sf": 7.31,
+       "fatigue": 4.11,
+       "creep": 8.77,
+       "peak_xyz": [
+        9.5,
+        0.5,
+        -14.5
+       ]
+      }
+     },
+     "governing_region": "arm",
+     "sf": 7.3,
+     "fatigue": 4.11,
+     "creep": 8.76
+    },
+    "bagon_fore30|fleet_out": {
+     "force_n": 296.3,
+     "g_times_req": 3.0,
+     "regions": {
+      "use": {
+       "sf": 7.44,
+       "fatigue": 4.18,
+       "creep": 8.93,
+       "peak_xyz": [
+        26.5,
+        9.5,
+        9.5
+       ]
+      },
+      "fairlead": {
+       "sf": 8.0,
+       "fatigue": 4.5,
+       "creep": 9.6,
+       "peak_xyz": [
+        49.5,
+        -0.5,
+        -8.5
+       ]
+      },
+      "arm": {
+       "sf": 7.13,
+       "fatigue": 4.01,
+       "creep": 8.56,
+       "peak_xyz": [
+        26.5,
+        9.5,
+        9.5
+       ]
+      },
+      "root": {
+       "sf": 6.98,
+       "fatigue": 3.93,
+       "creep": 8.37,
+       "peak_xyz": [
+        9.5,
+        0.5,
+        -14.5
+       ]
+      }
+     },
+     "governing_region": "root",
+     "sf": 6.98,
+     "fatigue": 3.93,
+     "creep": 8.37
+    },
+    "bagon_fore30|fleet_in": {
+     "force_n": 296.3,
+     "g_times_req": 3.0,
+     "regions": {
+      "use": {
+       "sf": 8.12,
+       "fatigue": 4.57,
+       "creep": 9.75,
+       "peak_xyz": [
+        32.5,
+        12.5,
+        -8.5
+       ]
+      },
+      "fairlead": {
+       "sf": 8.23,
+       "fatigue": 4.63,
+       "creep": 9.88,
+       "peak_xyz": [
+        32.5,
+        12.5,
+        -8.5
+       ]
+      },
+      "arm": {
+       "sf": 7.77,
+       "fatigue": 4.37,
+       "creep": 9.32,
+       "peak_xyz": [
+        30.5,
+        10.5,
+        -8.5
+       ]
+      },
+      "root": {
+       "sf": 7.97,
+       "fatigue": 4.48,
+       "creep": 9.56,
+       "peak_xyz": [
+        9.5,
+        0.5,
+        -14.5
+       ]
+      }
+     },
+     "governing_region": "arm",
+     "sf": 7.77,
+     "fatigue": 4.37,
+     "creep": 9.32
+    },
+    "bagon_drape": {
+     "force_n": 296.3,
+     "g_times_req": 3.0,
+     "regions": {
+      "use": {
+       "sf": 7.74,
+       "fatigue": 4.35,
+       "creep": 9.29,
+       "peak_xyz": [
+        9.5,
+        -0.5,
+        -14.5
+       ]
+      },
+      "fairlead": {
+       "sf": 13.96,
+       "fatigue": 7.85,
+       "creep": 16.75,
+       "peak_xyz": [
+        49.5,
+        -0.5,
+        -2.5
+       ]
+      },
+      "arm": {
+       "sf": 9.33,
+       "fatigue": 5.25,
+       "creep": 11.19,
+       "peak_xyz": [
+        15.5,
+        8.5,
+        12.5
+       ]
+      },
+      "root": {
+       "sf": 5.5,
+       "fatigue": 3.09,
+       "creep": 6.6,
+       "peak_xyz": [
+        9.5,
+        -0.5,
+        -14.5
+       ]
+      }
+     },
+     "governing_region": "root",
+     "sf": 5.5,
+     "fatigue": 3.09,
+     "creep": 6.6
+    },
+    "bagon_drape|fleet_out": {
+     "force_n": 296.3,
+     "g_times_req": 3.0,
+     "regions": {
+      "use": {
+       "sf": 7.19,
+       "fatigue": 4.04,
+       "creep": 8.62,
+       "peak_xyz": [
+        9.5,
+        -0.5,
+        -14.5
+       ]
+      },
+      "fairlead": {
+       "sf": 11.13,
+       "fatigue": 6.26,
+       "creep": 13.36,
+       "peak_xyz": [
+        49.5,
+        -0.5,
+        -1.5
+       ]
+      },
+      "arm": {
+       "sf": 8.6,
+       "fatigue": 4.84,
+       "creep": 10.32,
+       "peak_xyz": [
+        15.5,
+        8.5,
+        12.5
+       ]
+      },
+      "root": {
+       "sf": 5.22,
+       "fatigue": 2.94,
+       "creep": 6.27,
+       "peak_xyz": [
+        9.5,
+        -0.5,
+        -14.5
+       ]
+      }
+     },
+     "governing_region": "root",
+     "sf": 5.22,
+     "fatigue": 2.94,
+     "creep": 6.27
+    },
+    "bagon_drape|fleet_in": {
+     "force_n": 296.3,
+     "g_times_req": 3.0,
+     "regions": {
+      "use": {
+       "sf": 8.37,
+       "fatigue": 4.71,
+       "creep": 10.04,
+       "peak_xyz": [
+        9.5,
+        -0.5,
+        -14.5
+       ]
+      },
+      "fairlead": {
+       "sf": 13.01,
+       "fatigue": 7.32,
+       "creep": 15.62,
+       "peak_xyz": [
+        49.5,
+        -0.5,
+        -2.5
+       ]
+      },
+      "arm": {
+       "sf": 10.5,
+       "fatigue": 5.91,
+       "creep": 12.61,
+       "peak_xyz": [
+        15.5,
+        8.5,
+        12.5
+       ]
+      },
+      "root": {
+       "sf": 5.94,
+       "fatigue": 3.34,
+       "creep": 7.13,
+       "peak_xyz": [
+        9.5,
+        -0.5,
+        -14.5
+       ]
+      }
+     },
+     "governing_region": "root",
+     "sf": 5.94,
+     "fatigue": 3.34,
+     "creep": 7.13
+    }
+   },
+   "worst_strength": {
+    "load": "cradle|fleet_in",
+    "sf": 2.31
+   },
+   "worst_fatigue": {
+    "load": "cradle|fleet_in",
+    "fatigue": 1.04
+   },
+   "min_creep": 2.22,
+   "pin_7075_cradle": {
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "span_mm": 28.0,
+    "M_nmm": 3240.0,
+    "sigma_mpa": 264.02,
+    "sy_mpa": 462.0,
+    "sf_yield": 1.75,
+    "sigma_walk_mpa": 176.01,
+    "goodman_smax_r0_mpa": 228.93,
+    "sf_fatigue": 1.3,
+    "length_mm": 40.0,
+    "mass_g": 2.21
+   }
+  }
+ },
+ "arms": {
+  "us1": {
+   "root": {
+    "y_lo": -13.0,
+    "z": [
+     -5.0,
+     11.0
+    ],
+    "top": "stay"
+   },
+   "tip": {
+    "y_lo": -10.0,
+    "z": [
+     -5.0,
+     11.0
+    ]
+   }
+  },
+  "us2": {
+   "root": {
+    "y_lo": -11.0,
+    "z": [
+     -15.0,
+     15.0
+    ],
+    "top": "stay"
+   },
+   "tip": {
+    "y_lo": -8.0,
+    "z": [
+     -9.0,
+     9.0
+    ]
+   }
+  }
+ },
+ "export": {
+  "d_mid": 1.0,
+  "d_up": 2.5,
+  "im3_half_z": 14.0,
+  "fairleads_bl042": {
+   "spine_channel_bl046": {
+    "body_mm3": 746871.3568681618,
+    "housing_added_mm3": 56333.05383855838,
+    "cut_mm3": 31838.839863924426,
+    "net_mm3": 24494.213974633953,
+    "net_g": 25.963866813111988
+   },
+   "pawl_bl047": {
+    "boss_mm3": 2271.5039970666403,
+    "cut_mm3": 3290.084100212902,
+    "net_mm3": -1018.5801031462615,
+    "net_g": -1.0796949093350372
+   },
+   "lugs_bl049": {
+    "arms_mm3": 67165.06688998127,
+    "arms_g": 71.19497090338015
+   },
+   "body_mm3": 837512.0576296308,
+   "fairleads_added_mm3": 87466.4870297776,
+   "throats_cut_mm3": 4112.309587039752,
+   "holes_cut_mm3": 2033.9975455119275,
+   "net_mm3": 81320.17989722593,
+   "net_g": 86.19939069105948,
+   "per_station": {
+    "hinge_L": {
+     "throat_cut_from_body_mm3": 1278.0
+    },
+    "hinge_R": {
+     "throat_cut_from_body_mm3": 1265.3
+    },
+    "us1_L": {
+     "throat_cut_from_body_mm3": 7.7
+    },
+    "us1_R": {
+     "throat_cut_from_body_mm3": 7.7
+    },
+    "us2_L": {
+     "throat_cut_from_body_mm3": 2.6
+    },
+    "us2_R": {
+     "throat_cut_from_body_mm3": 2.6
+    },
+    "im1_L": {
+     "throat_cut_from_body_mm3": 292.4
+    },
+    "im1_R": {
+     "throat_cut_from_body_mm3": 280.1
+    },
+    "im2_L": {
+     "throat_cut_from_body_mm3": 201.6
+    },
+    "im2_R": {
+     "throat_cut_from_body_mm3": 195.5
+    },
+    "im3_L": {
+     "throat_cut_from_body_mm3": 289.4
+    },
+    "im3_R": {
+     "throat_cut_from_body_mm3": 289.4
+    }
+   }
+  },
+  "assembled": {
+   "faces": 301460,
+   "volume_cm3": 919.05,
+   "g": 974.2,
+   "watertight": true,
+   "shells": 1,
+   "dropped": [
+    [
+     20,
+     0.0036962556644250335
+    ],
+    [
+     10,
+     0.00019864108356869767
+    ],
+    [
+     6,
+     0.00013662623417450928
+    ],
+    [
+     8,
+     6.374148562674857e-05
+    ],
+    [
+     6,
+     1.9077633508224334e-05
+    ],
+    [
+     4,
+     1.196730512721215e-05
+    ],
+    [
+     4,
+     1.1587995277277663e-05
+    ],
+    [
+     4,
+     2.8744467454414984e-11
+    ]
+   ]
+  },
+  "lower": {
+   "faces": 159788,
+   "volume_cm3": 406.34,
+   "g": 430.7,
+   "footprint_mm": [
+    367.5,
+    234.5,
+    76.7
+   ],
+   "watertight": true,
+   "shells": 1,
+   "dropped": [],
+   "dropped_centre_frame_mm": [],
+   "print_h": 15.2,
+   "fits_h2s_340x320x340": false
+  },
+  "upper": {
+   "faces": 146084,
+   "volume_cm3": 512.71,
+   "g": 543.5,
+   "footprint_mm": [
+    280.1,
+    309.4,
+    64.4
+   ],
+   "watertight": true,
+   "shells": 1,
+   "dropped": [],
+   "dropped_centre_frame_mm": [],
+   "print_h": 19.2,
+   "fits_h2s_340x320x340": true
+  }
+ },
+ "bed": {
+  "lower": {
+   "deg": 65.5,
+   "w_mm": 342.9,
+   "h_mm": 322.7,
+   "over_mm": 2.9,
+   "fits": false,
+   "fits_with_brim": false,
+   "extents_mm": [
+    367.5,
+    234.5,
+    76.7
+   ]
+  },
+  "upper": {
+   "deg": 90.0,
+   "w_mm": 309.4,
+   "h_mm": 280.1,
+   "over_mm": -30.6,
+   "fits": true,
+   "fits_with_brim": true,
+   "extents_mm": [
+    280.1,
+    309.4,
+    64.4
+   ]
+  }
+ },
+ "slice_checks": {
+  "fairleads": {
+   "hinge_L": {
+    "pass": true,
+    "gap_under_pin": 6.49,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": -115.0,
+    "cheek_mm": 9.99,
+    "cheek_height_mm": 35.98
+   },
+   "hinge_R": {
+    "pass": true,
+    "gap_under_pin": 6.5,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": 115.0,
+    "cheek_mm": 9.99,
+    "cheek_height_mm": 35.97
+   },
+   "us1_L": {
+    "pass": true,
+    "gap_under_pin": 5.5,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": -70.0,
+    "cheek_mm": 8.0,
+    "cheek_height_mm": 18.0
+   },
+   "us1_R": {
+    "pass": true,
+    "gap_under_pin": 5.5,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": 70.0,
+    "cheek_mm": 8.0,
+    "cheek_height_mm": 18.0
+   },
+   "us2_L": {
+    "pass": true,
+    "gap_under_pin": 5.5,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": -165.0,
+    "cheek_mm": 8.0,
+    "cheek_height_mm": 17.98
+   },
+   "us2_R": {
+    "pass": true,
+    "gap_under_pin": 5.5,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": 165.0,
+    "cheek_mm": 8.0,
+    "cheek_height_mm": 17.98
+   },
+   "im1_L": {
+    "pass": true,
+    "gap_under_pin": 5.5,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": -115.0,
+    "cheek_mm": 7.99,
+    "cheek_height_mm": 17.98
+   },
+   "im1_R": {
+    "pass": true,
+    "gap_under_pin": 5.5,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": 115.0,
+    "cheek_mm": 7.99,
+    "cheek_height_mm": 17.98
+   },
+   "im2_L": {
+    "pass": true,
+    "gap_under_pin": 5.5,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": -115.0,
+    "cheek_mm": 7.99,
+    "cheek_height_mm": 18.0
+   },
+   "im2_R": {
+    "pass": true,
+    "gap_under_pin": 5.5,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": 115.0,
+    "cheek_mm": 7.99,
+    "cheek_height_mm": 17.98
+   },
+   "im3_L": {
+    "pass": true,
+    "gap_under_pin": 5.5,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": -115.0,
+    "cheek_mm": 7.98,
+    "cheek_height_mm": 27.99
+   },
+   "im3_R": {
+    "pass": true,
+    "gap_under_pin": 5.5,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": 115.0,
+    "cheek_mm": 7.98,
+    "cheek_height_mm": 27.99
+   }
+  },
+  "fairleads_pass": true,
+  "channel": {
+   "min": {
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_mm": 13.8,
+    "walls_ok": true
+   },
+   "pass": true
+  },
+  "pawl": {
+   "swing_deg": 10.0,
+   "lp_min_dist_mm": 0.506,
+   "old_min_dist_mm": -3.551,
+   "lp_max_py": 12.307445300003362,
+   "old_max_py": 17.92286623219312,
+   "face_py": 12.84,
+   "zone_py": 9.15,
+   "lift_at_teeth_mm": 3.04,
+   "pass": true
+  },
+  "pieces": {
+   "us_route_stay_R|hinge_R": {
+    "pass": true,
+    "gap_under_pin": 6.49,
+    "throat": 20.02,
+    "eye_fits": true,
+    "watertight": true
+   },
+   "us_route_stay_R|us1_R": {
+    "pass": true,
+    "gap_under_pin": 5.49,
+    "throat": 20.0,
+    "eye_fits": true,
+    "watertight": true
+   },
+   "us_route_stay_R|us2_R": {
+    "pass": true,
+    "gap_under_pin": 5.47,
+    "throat": 20.0,
+    "eye_fits": true,
+    "watertight": true
+   },
+   "hefit_hinge_fairlead_R|hinge_R": {
+    "pass": true,
+    "gap_under_pin": 6.49,
+    "throat": 20.01,
+    "eye_fits": true,
+    "watertight": true
+   },
+   "im3ec_cheek_R|im3_R": {
+    "pass": true,
+    "gap_under_pin": 5.49,
+    "throat": 20.01,
+    "eye_fits": true,
+    "watertight": true
+   }
+  },
+  "pieces_pass": true
+ },
+ "body": {
+  "fine_sm8": {
+   "before": {
+    "strength": 1.671,
+    "fatigue": 1.205,
+    "creep": 2.57,
+    "buckling": 1.143,
+    "joint_s": 2.08,
+    "joint_f": 1.73
+   },
+   "after": {
+    "strength": 1.678,
+    "fatigue": 1.247,
+    "creep": 2.66,
+    "buckling": 1.171,
+    "joint_s": 2.09,
+    "joint_f": 1.72
+   }
+  },
+  "fine": {
+   "before": {
+    "strength": 1.671,
+    "fatigue": 1.227,
+    "creep": 2.618,
+    "buckling": 1.129,
+    "joint_s": 2.08,
+    "joint_f": 1.73
+   },
+   "after": {
+    "strength": 1.678,
+    "fatigue": 1.263,
+    "creep": 2.694,
+    "buckling": 1.138,
+    "joint_s": 2.09,
+    "joint_f": 1.72
+   }
+  },
+  "beam": {
+   "before": {
+    "strength": 1.595,
+    "fatigue": 1.219,
+    "creep": 2.601,
+    "buckling": 1.175,
+    "joint_s": 1.96,
+    "joint_f": 1.25
+   },
+   "after": {
+    "strength": 1.611,
+    "fatigue": 1.223,
+    "creep": 2.61,
+    "buckling": 1.25,
+    "joint_s": 1.96,
+    "joint_f": 1.25
+   }
+  },
+  "fine_sm8.cyc": {
+   "before": {
+    "strength": 1.671,
+    "fatigue": 0.797,
+    "creep": 1.699,
+    "buckling": 1.045,
+    "joint_s": 2.11,
+    "joint_f": 1.08
+   },
+   "after": {
+    "strength": 1.678,
+    "fatigue": 0.829,
+    "creep": 1.768,
+    "buckling": 1.106,
+    "joint_s": 2.12,
+    "joint_f": 1.09
+   }
+  },
+  "raster_g": {
+   "before": 835.22064,
+   "after": 888.90752
+  },
+  "cradle": {
+   "cradle": {
+    "min": {
+     "strength": 2.5381003884214404,
+     "fatigue": 1.142145174789648,
+     "creep": 2.436576372884583
+    },
+    "buckling_min": 5.138,
+    "joint_strength": 10.351,
+    "joint_fatigue": 4.658
+   },
+   "cradle_on_stay": {
+    "min": {
+     "strength": 2.703569819330526,
+     "fatigue": 1.2166064186987364,
+     "creep": 2.5954270265573047
+    },
+    "buckling_min": 11.318,
+    "joint_strength": 10.673,
+    "joint_fatigue": 4.803
+   }
+  },
+  "voxels": {
+   "stripped": 2427,
+   "added": 5924
+  }
+ },
+ "us_route": {
+  "layouts": {
+   "now": {
+    "layout": {
+     "us1": 70.0,
+     "us2": 165.0,
+     "entry": {
+      "us1": 95.0,
+      "us2": 95.0
+     }
+    },
+    "worst_clear_mm": {
+     "us1": 4.9,
+     "us2": -3.2
+    },
+    "pass": false
+   },
+   "print_lanes": {
+    "layout": {
+     "us1": 70.0,
+     "us2": 165.0,
+     "entry": {
+      "us1": 70.0,
+      "us2": 165.0
+     }
+    },
+    "worst_clear_mm": {
+     "us1": 12.4,
+     "us2": 14.6
+    },
+    "pass": true
+   },
+   "lanes": {
+    "layout": {
+     "us1": 72.5,
+     "us2": 157.5,
+     "entry": {
+      "us1": 72.5,
+      "us2": 157.5
+     }
+    },
+    "worst_clear_mm": {
+     "us1": 9.9,
+     "us2": 8.0
+    },
+    "pass": false
+   },
+   "lanes_old_channel": {
+    "layout": {
+     "us1": 72.5,
+     "us2": 157.5,
+     "entry": {
+      "us1": 95.0,
+      "us2": 95.0
+     }
+    },
+    "worst_clear_mm": {
+     "us1": 4.5,
+     "us2": -4.7
+    },
+    "pass": false
+   },
+   "lanes_wide": {
+    "layout": {
+     "us1": 68.0,
+     "us2": 167.0,
+     "entry": {
+      "us1": 68.0,
+      "us2": 167.0
+     }
+    },
+    "worst_clear_mm": {
+     "us1": 14.5,
+     "us2": 15.5
+    },
+    "pass": true
+   }
+  },
+  "test_piece": {
+   "file": "designs/pack_5200/print/frame_h1/test_pieces/us_route_stay_R.stl",
+   "z": [
+    40.0,
+    160.0
+   ],
+   "x": [
+    46.0,
+    189.0
+   ],
+   "g": 129.6,
+   "watertight": true,
+   "shells": 1,
+   "dropped": [],
+   "extents_mm": [
+    137.7,
+    120.0,
+    64.7
+   ],
+   "fairleads": [
+    "hinge",
+    "us1",
+    "us2"
+   ]
+  },
+  "station_move": {
+   "us1": {
+    "x": 70.0,
+    "z": 95.0,
+    "offset_from_stay_mm": 45.0,
+    "side": "inboard"
+   },
+   "us2": {
+    "x": 165.0,
+    "z": 142.0,
+    "offset_from_stay_mm": 50.0,
+    "side": "outboard"
+   },
+   "channel_entry_x": {
+    "us1": 70.0,
+    "us2": 165.0
+   },
+   "pass": true,
+   "worst_clear_mm": {
+    "us1": 12.4,
+    "us2": 14.6
+   }
+  }
+ },
+ "he_check": {
+  "as_written": {
+   "worst_under_pin_clear_mm": 1.088,
+   "min_clear_off_corner_mm": 1.686,
+   "throat_clear_side_mm": 0.69,
+   "worst_loop_overlap_mm2": 0.0,
+   "min_box_top_to_cheek_mm": 3.12,
+   "pass": true
+  },
+  "per_ply": {
+   "1.2": {
+    "worst": 1.513,
+    "centred": 2.89,
+    "off_corner": 2.849,
+    "where": -9.99
+   },
+   "1.5": {
+    "worst": 1.194,
+    "centred": 1.99,
+    "off_corner": 1.986,
+    "where": -9.99
+   },
+   "1.6": {
+    "worst": 1.088,
+    "centred": 1.69,
+    "off_corner": 1.686,
+    "where": -9.99
+   }
+  },
+  "tol_0p15": {
+   "worst_under_pin_clear_mm": 0.988,
+   "throat_clear_side_mm": 0.64,
+   "meets_0p5_everywhere": true
+  }
+ },
+ "pieces": {
+  "hinge": {
+   "file": "print/frame_h1/test_pieces/hefit_hinge_fairlead_R.stl",
+   "what": "HE-FIT: z 60 R hinge fairlead, 80 mm stay segment",
+   "g": 41.4,
+   "watertight": true,
+   "shells": 1,
+   "dropped": [],
+   "extents_mm": [
+    46.4,
+    80.0,
+    44.4
+   ]
+  },
+  "im3": {
+   "file": "print/frame_h1/test_pieces/im3ec_cheek_R.stl",
+   "what": "IM3-EC: z 520 R IM3 eye, 28 mm cheek, 120 mm stay segment",
+   "g": 68.5,
+   "watertight": true,
+   "shells": 1,
+   "dropped": [],
+   "extents_mm": [
+    42.5,
+    83.4,
+    51.3
+   ]
+  }
+ },
+ "mass": {
+  "assembled_g": 974.2,
+  "assembled_bl047_g": 886.2,
+  "lower_g": 430.7,
+  "upper_g": 543.5,
+  "delta_print_g": 88.0,
+  "lug_arms_g": 71.19,
+  "print_rest_g": 16.81,
+  "hinge_pin_g": 3.83,
+  "pin_booked_g": 2.413,
+  "hinge_pins_delta_g": 2.83,
+  "total_frame_delta_g": 90.8
+ }
+}

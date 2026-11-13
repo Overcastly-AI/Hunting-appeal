@@ -36,6 +36,20 @@ today, re-sized locally (about 65 g lighter on the printed body), split at z = 2
 > this STL through the full pawl swing (`huntkit/gendesign/h1_pawl.py`); record
 > `designs/pack_5200/analysis/crown_gnl.md`. Assembled 886.2 g, lower 342.7 g, upper 543.5 g, one closed shell each.
 >
+> **Rev BL-049 (2026-11-13):** (1) the **hinge fairleads (z 60) are bigger**: cheeks 10 mm thick (was 8) and 36 mm
+> tall, reaching 27 mm up the stay above the pin (still 9 mm below it); the throat floor is 1 mm lower across the
+> whole throat (6.5 mm clear under the pin, was 5.5) and BL-047's relief groove beside the cheeks is gone. The sims
+> pull the hinge eye inboard and up; the old hinge failed fatigue that way. The **hinge pin is now 5 mm
+> Ti-6Al-4V, 44 mm long** (a 7075 pin fails the 1019 N check). (2) **The under-strap stations moved to their own
+> lanes on printed lug arms**: US1 (z 95) on an arm **45 mm inboard** of each stay (pin at x +/-70), US2 (z 142) on
+> an arm **50 mm outboard** (pin at x +/-165). The old US fairleads on the stays are gone. The lower half is now
+> **367.5 mm wide and does not fit the H2S bed** (best rotation 343 x 323 mm before the brim): see
+> `designs/pack_5200/analysis/h1_lanes.md` (owner decision). The lug arms overhang: **tree supports under the four
+> arms** (the only supports on the frame). Assembled 974.2 g, lower 430.7 g, upper 543.5 g, one closed shell each;
+> slice checks pass (12 fairleads with their eye stacks, spine channel, pawl swing). Test pieces re-cut:
+> `test_pieces/hefit_hinge_fairlead_R` (the new hinge), `test_pieces/im3ec_cheek_R`, and the US route piece
+> `test_pieces/us_route_stay_R` (hinge + both lane lugs).
+>
 > Status: **engineering release candidate.** These files are not yet the released frame
 > (`designs/pack_5200/print/frame/` is still today's body). Print the first article only after coupon CA-1
 > (`designs/pack_5200/tests_physical/CA1_fatigue_rig.md`) and the joint stubs CA-5 pass.
@@ -44,12 +58,13 @@ today, re-sized locally (about 65 g lighter on the printed body), split at z = 2
 
 | file | what | mass | print time |
 |---|---|---:|---:|
-| `h1_lower_flat.stl` / `.3mf` | lower half (feet to z 234), laid flat: wearer face on the plate | 342.7 g (0.76 lb) | about 12.1 h |
+| `h1_lower_flat.stl` / `.3mf` | lower half (feet to z 234), laid flat: wearer face on the plate. **BL-049: 367.5 mm wide, does not fit the H2S bed** | 430.7 g (0.95 lb) | about 15.2 h |
 | `h1_upper_flat.stl` / `.3mf` | upper half (z 234 to the top), laid flat | 543.5 g (1.20 lb) | about 19.2 h |
-| `h1_assembled.stl` | the whole body in frame coordinates (x right, y aft toward the bag, z up from the feet), for checks and renders | 886.2 g (BL-047) | |
+| `h1_assembled.stl` | the whole body in frame coordinates (x right, y aft toward the bag, z up from the feet), for checks and renders | 974.2 g (BL-049) | |
 | `crown_pawl_lp_fdm_pacf.stl` / `.3mf` | low-profile crown pawl, PAHT-CF prototype, 16 mm wide, 100 % infill (BL-047) | 4.3 g | about 0.5 h |
 | `crown_pawl_lp_slm.stl` / `.3mf` | low-profile crown pawl, Ti-6Al-4V SLM + HIP, 12 mm wide (BL-047) | 13.3 g | - |
-| `test_pieces/hefit_hinge_fairlead_R.stl` / `.3mf` | HE-FIT test piece: the z 60 right hinge fairlead on an 80 mm stay segment, cut from the file above | 33.7 g | |
+| `test_pieces/hefit_hinge_fairlead_R.stl` / `.3mf` | HE-FIT test piece: the z 60 right hinge fairlead (BL-049 size) on an 80 mm stay segment, cut from the file above | 41.4 g | |
+| `test_pieces/us_route_stay_R.stl` / `.3mf` | US route piece (HE-FIT step 0, FIT-US): right stay z 40-160 with the hinge and both lane lugs (BL-049) | see `analysis/us_route.json` test_piece | |
 | `test_pieces/im3ec_cheek_R.stl` / `.3mf` | IM3-EC coupon: the z 520 right IM3 eye (28 mm cheek) on a 120 mm stay segment | 68.6 g | |
 
 - Masses are from the mesh volume × 1.06 g/cm³. The analysis raster (2 mm) of this body is 800.7 g; it cannot hold
@@ -73,7 +88,8 @@ today, re-sized locally (about 65 g lighter on the printed body), split at z = 2
 
 | part | qty | note |
 |---|---:|---|
-| Bambu PAHT-CF | 0.95 kg | about 862 g of part + 8 % waste |
+| Bambu PAHT-CF | 1.06 kg | about 974 g of part + 8 % waste (BL-049) |
+| Ti-6Al-4V pin, 5 mm h8 ground, 44 mm, with a clip groove (or a 5 x 44 Ti clevis pin) | 2 | BL-049 hinge pins (3.8 g each); not 7075 |
 | Ti gr5 **low-head** socket cap screw M5 × 45 (DIN 7984, 3.5 mm head) | 4 | Not M5 × 40: it does not reach through the nut. Not a standard ISO 4762 head (5 mm): it stands 1 mm into the band of the z 260 spreader clip. An ISO 7380 button head M5 × 45 also fits. |
 | M5 hex nut A2 (ISO 4032, 8 mm across flats, 4 mm thick) | 4 | thin nuts do not fit the trap |
 | M5 washer, 12 mm OD × 1.0 mm, A2 | 8 | **12 mm OD is load-bearing**. A standard 10 mm washer is not enough. |
@@ -94,7 +110,8 @@ PRODUCTION.md describes.
 4. **Orientation: as in the files.** The wearer face is on the plate (layer normal = frame y), which is the same
    as today. Do not rotate the parts. The analysis assumes the layers run along the stays.
 5. Seam on the wearer face (the plate side). Brim 8 mm.
-6. **Supports: none.**
+6. **Supports: none, except tree supports under the four US lug arms (BL-049)**: they stand off the stays as
+   cantilevers (US1 45 mm inboard at z 90-106, US2 50 mm outboard at z 127-157).
    - Since BL-045 all 12 fairleads are saddles with a 45° underside outboard of |x| 9 mm; they print without
      supports.
    - The bores, bolt holes and counterbores are horizontal round holes that bridge on their own.
@@ -147,7 +164,8 @@ bottom reaches z 171). So the bore must be one continuous hole.
    the fore-wall window. Check: pull the cord to the stop: the rack slides both ways; let go: the pawl snaps back
    into the teeth.
    Fairlead eyes (all 12: z 60, 95, 142, 190, 330, 520, both stays): ream each to **7.2 mm** from both sides and
-   press in the UHMWPE pin sleeves. The hinge pin (z 60) spans a 20 mm throat: it is 2 mm longer than the others.
+   press in the UHMWPE pin sleeves. The hinge pin (z 60) is **5 mm Ti-6Al-4V, 44 mm** (BL-049: 10 mm cheeks); the
+   others stay 5 mm 7075.
 2. Hip mount: press the M5 heat-set inserts and fit the SLM Ti pivot mount.
 3. Press the UHMWPE bushings into the 18.0 mm bores.
 4. Fit the carbon crown (rev C), the rack, the pawl and the pulley guides, as in `../frame/PRODUCTION.md`.

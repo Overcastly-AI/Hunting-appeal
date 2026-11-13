@@ -240,6 +240,10 @@ def test_channel_mask_is_empty_on_the_bl046_body(C):
 def test_b25_constants_follow_the_real_offset(res):
     from huntkit.gendesign import crown_spine_clamp as CSC
     b = res["b25"]["run_plan_mm"]
-    assert CSC.B25_CUT_CHANGE_MM == pytest.approx(b["cut_change_mm"], abs=0.05)
-    assert CSC.B25_RUN_EXTRA_PER_SIDE_MM == pytest.approx(b["cut_change_mm"] / 2, abs=0.05)
+    # BL-049: the constant is on the webbing record's 1.5 mm ply (crown_spine_clamp.B25_T); the BL-046 record was run on
+    # 1.2. Re-derive it live on the real clamp and the print
+    live = CSC.b25_clearances(CSC.size_clamp(), CSC.h1_crown_interfaces())["run_plan_mm"]
+    assert CSC.B25_CUT_CHANGE_MM == pytest.approx(live["cut_change_mm"], abs=0.05)
+    assert CSC.B25_CUT_CHANGE_MM - b["cut_change_mm"] == pytest.approx(0.9, abs=0.1)        # 1.2 -> 1.5 mm ply
+    assert CSC.B25_RUN_EXTRA_PER_SIDE_MM == pytest.approx(live["cut_change_mm"] / 2, abs=0.05)
     assert res["b25"]["all_ok"]

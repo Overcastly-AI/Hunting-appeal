@@ -84,7 +84,7 @@ def bl042_geom_of(name: str):
     from . import bag_attach as BA
     from .h1_buckling import IM3_HALF_Z
     if name == "hinge":
-        return BA.HINGE_GEOM
+        return BA.HINGE_GEOM_BL042
     if name == "im3":
         return dataclasses.replace(BA.legacy_geom(), half_z=IM3_HALF_Z)
     return BA.legacy_geom()
@@ -96,18 +96,26 @@ def eye_envelope(name: str) -> dict:
     return BA.HINGE_EYE_ENVELOPE if name == "hinge" else BA.imus_eye_envelope(name)
 
 
-def placed(geom_of=station_geom) -> list:
+def placed(geom_of=station_geom, lanes: bool | None = None) -> list:
     """Every fairlead in frame coordinates: station, stay centre y (frame_branch._sleeve_y) and radius
-    (stay_radius(z, SCALE)), pin centre y, floor y, tip y. Same placement as bag_attach.attachment_field."""
+    (stay_radius(z, SCALE)), pin centre y, floor y, tip y. Same placement as bag_attach.attachment_field.
+    BL-049: with ``lanes`` (default ``h1_lanes.LANES``) the US1 / US2 fairleads stand at their lane x (h1_lanes.LANE_X,
+    on lug arms; ``lane`` True, ``stay_x`` the stay axis); their y heights stay those of the stay surface at the
+    station z (imus_eye_envelope unchanged)."""
     from . import bag_attach as BA
+    from . import h1_lanes as LN
     from .frame_branch import _sleeve_y, stay_radius
+    lanes = LN.LANES if lanes is None else lanes
     out = []
     for st in BA.stations():
         g = geom_of(st["name"])
         r = float(stay_radius(st["z"], BA.SCALE))
         yc = float(np.asarray(_sleeve_y(st["z"]), float))
-        out.append({**st, "geom": g, "stay_r": r, "yc": yc, "y_pin": yc + r + g.hole_proud,
-                    "y_floor": yc + r + g.floor_proud, "y_tip": yc + r + g.tip_proud})
+        q = {**st, "geom": g, "stay_r": r, "yc": yc, "y_pin": yc + r + g.hole_proud,
+             "y_floor": yc + r + g.floor_proud, "y_tip": yc + r + g.tip_proud, "stay_x": st["x"], "lane": False}
+        if lanes and st["name"] in LN.LANE_X:
+            q.update(x=st["sign"] * LN.LANE_X[st["name"]], lane=True)
+        out.append(q)
     return out
 
 
@@ -128,7 +136,7 @@ def _fairlead_solid(p: dict):
     # grid offset off the design planes: a zero level exactly on grid nodes gives degenerate triangles that an STL
     # round trip turns into non-manifold edges
     lo = np.array([-hx, r - g.embed - 1.5, -g.half_z - 1.5]) - np.array([0.0917, 0.0533, 0.0771])
-    hi = np.array([hx, r + g.tip_proud + 1.5, g.half_z + 1.5])
+    hi = np.array([hx, r + g.tip_proud + 1.5, g.z_top + 1.5])
     n = np.ceil((hi - lo) / MESH_H).astype(int) + 1
     ax = [lo[k] + MESH_H * np.arange(n[k]) for k in range(3)]
     X, Y, Z = np.meshgrid(*ax, indexing="ij")
@@ -152,14 +160,15 @@ def _throat_cut(p: dict, fillet: float = THROAT_FILLET):
     solid from it before cutting, so only the voxel stub in the throat goes."""
     import manifold3d as m3d
     g = p["geom"]
-    hz = g.half_z + 4.0
+    hz = g.z_half_span + 4.0
+    zc = p["z"] + g.z_mid
     y0, y1 = p["y_floor"] - THROAT_OVERCUT, p["y_tip"] + 15.0
     xa = p["x"] - g.throat / 2 - THROAT_OVERCUT + fillet
     xb = p["x"] + g.throat / 2 + THROAT_OVERCUT - fillet
     cyl = []
     for xx in (xa, xb):
         for yy in (y0 + fillet, y1):
-            cyl.append(m3d.Manifold.cylinder(2 * hz, fillet, fillet, 32, center=True).translate((xx, yy, p["z"])))
+            cyl.append(m3d.Manifold.cylinder(2 * hz, fillet, fillet, 32, center=True).translate((xx, yy, zc)))
     return m3d.Manifold.batch_hull(cyl)
 
 
@@ -215,11 +224,11 @@ def voxel_as_printed(solid: np.ndarray) -> tuple:
     for p in placed():
         g = p["geom"]
         loc = cen - np.array([p["x"], p["yc"], p["z"]])
-        near = np.where((np.abs(loc[:, 0]) < g.throat / 2 + g.cheek + 4) & (np.abs(loc[:, 2]) < g.half_z + 6))[0]
+        near = np.where((np.abs(loc[:, 0]) < g.throat / 2 + g.cheek + 4) & (np.abs(loc[:, 2] - g.z_mid) < g.z_half_span + 6))[0]
         L = loc[near]
         fld = BA.fairlead_local(L, p["stay_r"], dataclasses.replace(g, hole_d=HOLE_PRINT_D))
         thr = (np.abs(L[:, 0]) < g.throat / 2) & (L[:, 1] > p["stay_r"] + g.floor_proud) & \
-              (np.abs(L[:, 2]) < g.half_z + 4.0) & (fld > 0.0)
+              (np.abs(L[:, 2] - g.z_mid) < g.z_half_span + 4.0) & (fld > 0.0)
         hole = (np.hypot(L[:, 1] - (p["stay_r"] + g.hole_proud), L[:, 2]) < HOLE_PRINT_D / 2) & \
                (np.abs(L[:, 0]) <= g.throat / 2 + g.cheek + 0.5)
         rm = near[thr | hole]
@@ -347,7 +356,7 @@ def check_station(mesh, p: dict, eye: dict | None = None) -> dict:
             "front_wall_mm": round(wall, 2), "cheek_thick_mm": round(thick, 2), "cheek_height_mm": round(height, 2)}
     out["cheeks"] = cheeks
     out["design"] = {"hole_print_d": HOLE_PRINT_D, "wall_front": g.wall_front, "cheek": g.cheek,
-                     "cheek_height": 2 * g.half_z, "y_pin": round(yp, 2), "y_tip": round(p["y_tip"], 2)}
+                     "cheek_height": g.half_z + g.z_top, "y_pin": round(yp, 2), "y_tip": round(p["y_tip"], 2)}
     ok = out["throat_open"] and abs(floor - p["y_floor"]) <= TOL["floor"] + 0.5 and \
         out["gap_under_pin"] >= g.gap_under_pin - TOL["floor"]
     for c in cheeks.values():
@@ -357,7 +366,7 @@ def check_station(mesh, p: dict, eye: dict | None = None) -> dict:
         ok &= c["hole_ring_centre_err_mm"] is not None and c["hole_ring_centre_err_mm"] <= TOL["hole_c"]
         ok &= c["front_wall_mm"] >= g.wall_front - TOL["wall"]
         ok &= c["cheek_thick_mm"] >= g.cheek - TOL["cheek"]
-        ok &= c["cheek_height_mm"] >= 2 * g.half_z - TOL["half_z"]
+        ok &= c["cheek_height_mm"] >= g.half_z + g.z_top - TOL["half_z"]
     out["pass"] = bool(ok)
     if eye:
         # the eye's stay-side ply stack under the pin (stepped: 3 plies in the middle, 2 out to the widest neck), plus
@@ -400,7 +409,7 @@ def check_stl(path_or_mesh, eye: bool = True, geom_of=station_geom) -> dict:
 
 # ======================================================================================= FEA
 def fairlead_fea(geom, stay_r: float, loads: dict, h: float = 1.0, stay_ax: float | None = None,
-                 bore_r: float | None = None) -> dict:
+                 bore_r: float | None = None, relief: bool = False) -> dict:
     """bag_attach.solve_fairlead's model (stay stub + fairlead_local, bearing on the hole half facing the force,
     fixed end caps, PAHT layer FI, FI99 over the yoke away from the caps) with ``geom`` and several 3D loads
     (name -> [fx, fy, fz] N, x = pin axis): the x part pushes the inner face of the cheek it pulls toward
@@ -413,7 +422,7 @@ def fairlead_fea(geom, stay_r: float, loads: dict, h: float = 1.0, stay_ax: floa
     pa = BA._paht()
     y_hole = stay_r + geom.hole_proud
     xext = max(20.0, geom.throat / 2 + geom.cheek + 3.0)
-    zext = max(22.0, geom.half_z + 8.0)
+    zext = max(22.0, max(geom.half_z, geom.z_top) + 8.0)
     lo = np.array([-xext, -(stay_r + 4.0), -zext])
     hi = np.array([xext, stay_r + geom.tip_proud + 4.0, zext])
     n = np.maximum(np.round((hi - lo) / h).astype(int), 6)
@@ -425,6 +434,15 @@ def fairlead_fea(geom, stay_r: float, loads: dict, h: float = 1.0, stay_ax: floa
         stay &= np.hypot(c[:, 0], c[:, 1]) >= bore_r
     yoke = BA.fairlead_local(c, stay_r, geom) <= 0.0
     solid = stay | yoke
+    if relief:          # BL-049: BL-047's m-1 throat relief (bl047_frame_items.relief_solid) as voids, both cheeks
+        from .bl047_frame_items import RELIEF_DEPTH, RELIEF_INTO_CHEEK, RELIEF_UP, RELIEF_W
+        yf = stay_r + geom.floor_proud
+        ax_c = np.abs(c[:, 0])
+        rel = (ax_c >= geom.throat / 2.0 - RELIEF_W) & (ax_c <= geom.throat / 2.0 + RELIEF_INTO_CHEEK) & \
+              (c[:, 1] >= yf - RELIEF_DEPTH) & (c[:, 1] <= yf + RELIEF_UP) & \
+              (c[:, 2] >= -geom.half_z - 1.0) & (c[:, 2] <= geom.z_top + 1.0)
+        solid &= ~rel
+        yoke &= ~rel
     nc = g.node_coords()
     radial = np.c_[nc[:, 1] - y_hole, nc[:, 2]]
     rr = np.linalg.norm(radial, axis=1)
@@ -533,8 +551,8 @@ def fea_study(h: float = 1.0, log=print) -> dict:
     for k, v in L["sim_1g"].items():
         loads[k] = (1000.0 * np.asarray(v) / np.linalg.norm(v)).tolist()       # unit-free 1000 N directions
     res = {"loads": L, "h": h, "stay_ax_sensitivity_mm": STAY_AX_60}
-    for tag, geom, ax in (("legacy", BA.legacy_geom(), None), ("bl042", BA.HINGE_GEOM, None),
-                          ("legacy_ellipse", BA.legacy_geom(), STAY_AX_60), ("bl042_ellipse", BA.HINGE_GEOM, STAY_AX_60)):
+    for tag, geom, ax in (("legacy", BA.legacy_geom(), None), ("bl042", BA.HINGE_GEOM_BL042, None),
+                          ("legacy_ellipse", BA.legacy_geom(), STAY_AX_60), ("bl042_ellipse", BA.HINGE_GEOM_BL042, STAY_AX_60)):
         OUT.mkdir(parents=True, exist_ok=True)
         cp = OUT / f"fea_hinge_{tag}_{h:g}.json"
         if cp.exists() and json.loads(cp.read_text())["geom"] == dataclasses.asdict(geom):
@@ -677,10 +695,10 @@ def plot_slices(mesh, path: Path, title: str, stations=("hinge", "us1", "us2", "
         a1 = axs[1, j]
         a1.add_patch(Circle((p["y_pin"], p["z"]), g.pin_d / 2, color="#2e86de", alpha=0.8, lw=0))
         a1.add_patch(Circle((p["y_pin"], p["z"]), HOLE_PRINT_D / 2, fill=False, ls="--", lw=0.8, ec="#c0392b"))
-        a1.add_patch(Rectangle((p["y_floor"] - 2.0, p["z"] - g.half_z), p["y_tip"] - p["y_floor"] + 2.0, 2 * g.half_z,
+        a1.add_patch(Rectangle((p["y_floor"] - 2.0, p["z"] - g.half_z), p["y_tip"] - p["y_floor"] + 2.0, g.half_z + g.z_top,
                                fill=False, ls="--", lw=0.8, ec="#c0392b"))
         a1.set_xlim(p["yc"] - 6, p["y_tip"] + 5)
-        a1.set_ylim(p["z"] - g.half_z - 10, p["z"] + g.half_z + 10)
+        a1.set_ylim(p["z"] - g.half_z - 10, p["z"] + g.z_top + 10)
         a1.set_title(f"plane x {xm:.1f} (outboard cheek)", fontsize=7)
         a1.set_xlabel("y mm (bag +)", fontsize=6)
         a1.set_ylabel("z mm", fontsize=6)

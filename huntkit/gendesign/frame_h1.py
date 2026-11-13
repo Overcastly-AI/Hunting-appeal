@@ -751,6 +751,9 @@ def print_mesh(solid: np.ndarray, j: Joint = JOINT, log=print, fairleads: bool =
     # the smoothed body and the exact capsule, so a branch root that the voxel model (and the FEA) joins to the inboard
     # boss below z 234 came out loose: the lower-half export dropped it as a 571 mm3 island at (84, -0.4, 225).
     core = c["boss"] & (boss_sdf(c["cen"], j) <= -BOSS_CORE_MM)
+    from . import h1_lanes as LN
+    if fairleads and LN.LANES:         # BL-049: the US stations moved to lanes: their old stubs on the stays go
+        solid, _ = LN.strip_old_us(solid)
     body = solid & ~core
     field = ndimage.zoom(dom.grid.to_array(body.astype(float)), 2, order=1)
     field = ndimage.gaussian_filter(field, 0.7)
@@ -815,15 +818,23 @@ def print_mesh(solid: np.ndarray, j: Joint = JOINT, log=print, fairleads: bool =
             log(f"  pawl (BL-047): bosses, bore, window net {pw_stats['net_g']:+.1f} g")
     if fairleads:
         from .h1_fairleads import add_fairleads
+        if LN.LANES:                   # BL-049: lug arms of the US lane stations, before the throats are cut
+            lg: dict = {}
+            man = LN.add_lugs(man, log=log, stats=lg)
+            if stats is not None:
+                stats["lugs_bl049"] = lg
         man = add_fairleads(man, log=log, stats=stats)
-        # BL-047 (review m-1): the hinge throat floor relieved 1 mm deep within 1.5 mm of each cheek face
-        from .bl047_frame_items import hinge_relief
-        rl: dict = {}
-        man = hinge_relief(man, stats=rl)
-        if stats is not None:
-            stats["hinge_relief_bl047"] = rl
-        if log:
-            log(f"  hinge relief (BL-047 m-1): {rl['g']:+.2f} g")
+        from . import bag_attach as BA
+        if BA.HINGE_GEOM.floor_proud >= BA.HINGE_GEOM_BL042.floor_proud:
+            # BL-047 (review m-1): the hinge throat floor relieved 1 mm deep within 1.5 mm of each cheek face.
+            # BL-049 lowers the whole hinge floor 1 mm instead (no notch at the cheek root): no groove then.
+            from .bl047_frame_items import hinge_relief
+            rl: dict = {}
+            man = hinge_relief(man, stats=rl)
+            if stats is not None:
+                stats["hinge_relief_bl047"] = rl
+            if log:
+                log(f"  hinge relief (BL-047 m-1): {rl['g']:+.2f} g")
     man = man.simplify(SIMPLIFY_MM)
     out = _from_manifold(man)
     if log:

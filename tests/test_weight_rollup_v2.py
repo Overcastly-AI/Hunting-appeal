@@ -249,9 +249,11 @@ def test_gated_savings_are_not_proven_now():
                     and r["cfg"] == "base")                # + BL-043 / BL-044 rows (corrie_f.bl043_rows, bl044_rows)
     upd = (st["H1B"]["base"] - 2 * (9.53 - 6.13104) + 8.6 + W._F().guy_port()["mass_g"] + bl031 + bl033 + bl034 + bl035
            + bl036 + bl041 + st["H1F"]["base"]            # BL-042: H1 fairleads outside the voxel envelope
-           + st["BL046"]["base"])                         # BL-046: spine clamp as sized + H1 spine channel
+           + st["BL046"]["base"]                          # BL-046: spine clamp as sized + H1 spine channel
+           + st["BL047"]["base"] + st["BL049"]["base"])     # BL-047 web / pawl (was missing: the 6.7 g of BL-049 item 4);
+    #                                                        BL-049 lug arms, hinge growth, Ti hinge pins
     assert t["P"]["base"] == pytest.approx(bl023_p + upd, abs=0.3)
-    assert 3660 < t["P"]["base"] < 3800                     # BL-046 +35.9 g; BL-042 +37.2 g (BL-036: 3679.4 g)
+    assert 3660 < t["P"]["base"] < 3890                     # BL-049 +90.8, BL-047 -6.7; BL-046 +35.9 g; BL-042 +37.2 g
     # after tests: BL-023's 3143.5 g + the same update + the retired OD 17 legs taken back out (they were -20.6 g); the
     # A_b step also deletes BL-031's shortened stabilizers (its compensating row)
     # BL-037: the weight-push picks are their own after-tests step (weight_push.picked_rows)

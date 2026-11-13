@@ -98,3 +98,4 @@ Nothing here is decided; the tickets produce the material.
 | BL-047 | Crown frame buckling with real top-bar offset; pawl pivot and window | structural-fea-engineer | L | 046 | printable H1 |
 | BL-048 | Fourth review fixes, bag side (US route, webbing spec, fixture pin, TL-1 text) | pack-designer | M | 044 | |
 | BL-049 | Hinge fairlead fatigue inboard-up; US lanes on frame lugs | structural-fea-engineer | M | 047, 048 | printable H1 |
+| BL-050 | Bed fit for US2 lanes (A, structural), bag on lanes (B, pack-designer) | both | M | 049 | |

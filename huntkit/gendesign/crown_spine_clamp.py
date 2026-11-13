@@ -34,6 +34,8 @@ from pathlib import Path
 import numpy as np
 import yaml
 
+from huntkit.materials import load as _load_material
+
 REPO = Path(__file__).resolve().parents[2]
 PACK = REPO / "designs" / "pack_5200"
 FRAME_YAML = PACK / "frame.yaml"
@@ -59,7 +61,9 @@ B25_RUN_GAP = 2.0                  # corrie_f.B25_RUN_GAP: run's top edge 2 mm u
 B25_NECK_W = 25.0                  # corrie_f.B25_NECK_W (DECISION B25-TOPO)
 B25_W = 38.0                       # corrie_f.BRIDLE_W_REV3
 B25_BAND = (26.5, 64.5)            # corrie_f.BRIDLE_BAND_REV3
-B25_T = 1.2                        # corrie_f.B25_T (ASSUMPTION there)
+# BL-049: the B-25 ply thickness from the 38 mm webbing record's purchase spec (BL-048 M-B; corrie_f.B25_T reads the
+# same field), was 1.2 hand-typed
+B25_T = float(_load_material("poly_webbing_38mm").require("thickness_mm"))
 BAR_OD, SPINE_OD = 18.0, 20.0      # frame.yaml top_bar_section / spine_section od
 REAL_CROWN = True                  # BL-046: clamp loads on the crown as built (h1_spine_channel.real_crown)
 WEB_T_MM = 2.0                     # BL-046: the fitting's two webs (h1_spine_channel.CLAMP_WEB_T); sized in web_check
@@ -492,8 +496,9 @@ PAWL_HOUSING_UP = 15.62            # h1_crown_interfaces: housing top z 535.62 a
 PAWL_HOUSING_HALF_W = 24.82        # h1_crown_interfaces: housing max |x| above the upper bar (kept in BL-046)
 BODY_TOP_Z_IN_B25_BAND = 519.18    # h1_crown_interfaces: printed body top under the sleeve band (corrie_f modelled the
 #                                    upper bar as OD 22 centred on z 520, top 531)
-B25_RUN_EXTRA_PER_SIDE_MM = 22.25  # b25_clearances run_plan: the run reaches the spine 25 mm fore of the bar [17.0]
-B25_CUT_CHANGE_MM = 44.5           # b25_clearances run_plan cut_change_mm (both sides) [34.1]
+B25_RUN_EXTRA_PER_SIDE_MM = 22.7   # b25_clearances run_plan: the run reaches the spine 25 mm fore of the bar [17.0];
+#                                    BL-049: on the record's 1.5 mm ply (22.25 on the old 1.2)
+B25_CUT_CHANGE_MM = 45.4           # b25_clearances run_plan cut_change_mm (both sides) [34.1]; BL-049: 1.5 mm ply (44.5)
 
 
 def main(argv=None):

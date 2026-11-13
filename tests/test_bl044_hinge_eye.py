@@ -42,7 +42,7 @@ def test_section_model_reads_the_bl042_envelope():
     E, g = BA.HINGE_EYE_ENVELOPE, P.he_geometry()
     assert g["pin_y"] == pytest.approx(E["pin_centre_from_stay_centre_mm"])       # 19.45, not stay_r + 6.5
     assert g["throat"] == E["throat_mm"] == 20.0
-    assert g["gap_under_pin"] == pytest.approx(5.5)
+    assert g["gap_under_pin"] == pytest.approx(E["gap_under_pin_mm"])      # BL-049: 6.5 (floor 1 mm lower; was 5.5)
     assert g["tip_y"] == pytest.approx(E["stay_r_mm_at_z60"] + E["cheek_tip_above_stay_surface_mm"], abs=1e-3)
     assert g["cheek_lo"] == pytest.approx(g["pin_z"] - E["cheek_half_z_mm"])
     # the BL-041 model used the legacy constants (pin 6.5 mm proud): 3.6 mm nearer the stay
@@ -62,7 +62,8 @@ def test_neck_wrap_fits_the_gap_with_margin():
     E = BA.HINGE_EYE_ENVELOPE
     assert 3 * P.HE_T_RANGE[1] <= E["gap_under_pin_mm"] - 0.5 + 1e-9                 # review Z-1 rule, thickest roll
     assert (E["throat_mm"] - P.HE_NECK_W - P.HE_NECK_TOL) / 2 >= 0.5 - 1e-9         # replaces neck_w == throat
-    assert 3 * 2.0 > E["gap_under_pin_mm"] - 0.5                                     # BL-041's 2.0 mm bracket fails
+    assert 3 * 2.0 > BA.HINGE_GEOM_BL042.gap_under_pin - 0.5                        # BL-041's 2.0 mm bracket failed
+    #                                                                                  the BL-042 gap (BL-049 adds 1 mm)
 
 
 # ---------------------------------------------------------------- 2 the STL test piece, sliced
@@ -75,8 +76,9 @@ def test_eye_sliced_into_the_hefit_test_piece(stl):
     assert r["throat_min_mm"] == pytest.approx(20.0, abs=0.1)
     assert r["min_box_top_to_cheek_mm"] >= P.HE_CHEEK_MIN
     assert len(r["corners"]) == 18                                                    # 3 faces x 3 plies x 2 wraps
-    # the checked design numbers are the print's: floor 5.5 under the pin at the throat centre
-    assert r["under_pin"][f"{P.HE_T}"]["floor_depth_centre_mm"] == pytest.approx(5.5, abs=0.1)
+    # the checked design numbers are the print's: the envelope's gap under the pin at the throat centre (BL-049: 6.5)
+    assert r["under_pin"][f"{P.HE_T}"]["floor_depth_centre_mm"] == pytest.approx(BA.HINGE_EYE_ENVELOPE["gap_under_pin_mm"],
+                                                                                 abs=0.1)
 
 
 def test_stl_check_catches_a_raised_floor(stl):
@@ -297,7 +299,8 @@ def test_b25_on_the_bl045_clamp():
     t = P.F.b25_topology()
     # BL-048 M-B: corrie_f's B-25 now uses the record's 1.5 mm ply (crown_spine_clamp still books 1.2): each side's run
     # is 0.3 mm shorter and its half wrap pi x 0.15 longer
-    dt = P.F.B25_T - C.B25_T
+    dt = P.F.B25_T - 1.2          # BL-049: crown_spine_clamp reads the record's 1.5 mm ply too; the bag's own term is
+    #                               its ply against BL-043's 1.2 (B25_CUT_BL043_MM)
     assert t["cut_mm"] - P.F.B25_CUT_BL043_MM == pytest.approx(C.B25_CUT_CHANGE_MM + 2 * (C.SPINE_CLAMP_COLLAR - 12.0)
                                                                + 2 * (math.pi / 2 - 1) * dt, abs=0.15)
     assert t["pawl_ok"] and t["band_to_clamp_ok"]
@@ -322,13 +325,11 @@ def test_imus_eyes_sliced_on_the_print_and_the_im3ec_piece(imus):
         assert v["worst_under_pin_clear_mm"] > 0.0, k                                 # no touch, even in the fillet
         assert v["min_clear_off_corner_mm"] >= 0.5, k                                 # the HE rule off the corner band
         assert v["throat_clear_side_mm"] >= 0.45, k
-        if k.startswith("us"):
-            # BL-048 (fourth review N-1): on the CURRENT print the real bag-on strap pulls the US / USA eye straight
-            # down the stay into the fairlead below; the route fails until BL-047 moves the US stations to their lanes
-            assert not v["route_ok"] and not v["eye_pass"], k
-        else:
-            assert v["route_ok"] and v["eye_pass"], k
-    assert not r["eye_pass_all"]
+        # BL-048 (fourth review N-1): on the BL-047 print the real bag-on strap pulled the US / USA eye straight down
+        # the stay into the fairlead below; BL-049 moved the US stations to their lanes (lug arms), so every route
+        # passes now
+        assert v["route_ok"] and v["eye_pass"], k
+    assert r["eye_pass_all"]
     # IME is the 3-ply necked eye: 0.5-1.0 mm under the pin; the 2-ply US eye has about 1 mm
     assert 0.5 <= st["im3_R@im3ec"]["min_clear_off_corner_mm"] < 1.0
     assert st["us1_L@print"]["min_clear_off_corner_mm"] > 1.0
@@ -341,11 +342,10 @@ def test_imus_pull_directions_cover_every_kit_end(imus):
     assert set(r["pulls"]["kit_ends"].values()) == {15, 19, 23}                      # every kit end maps to a simulated torso
     for k in ("im3_R@im3ec", "im3_L@print", "im2_R@print"):
         assert -90 in r["stations"][k]["sweep"]["clear_thetas"]
-    # straight down the stay a US strap meets the fairlead below (BL-048 N-1: that IS the real bag-on path); the
-    # dropped cradle line (-50.9 / -45.6) cleared
+    # straight down is the real bag-on path (BL-048 N-1); on the BL-049 lanes nothing is below the US pins any more
     for k in ("us1_L@print", "us1_R@print"):
         ok = r["stations"][k]["sweep"]["clear_thetas"]
-        assert -60 in ok and -90 not in ok and -75 not in ok
+        assert -60 in ok and -90 in ok and -75 in ok
     assert r["required_pulls"]["us1"] == [-90.0] and r["required_pulls"]["us2"] == [-90.0]
 
 

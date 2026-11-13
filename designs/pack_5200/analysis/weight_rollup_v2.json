@@ -12,11 +12,11 @@
    "meat_trip": 3967.4
   },
   "P": {
-   "base": 3786.3,
-   "as_hunted": 4104.9,
-   "meat_trip": 4300.9,
+   "base": 3870.5,
+   "as_hunted": 4189.0,
+   "meat_trip": 4385.0,
    "by_system_base": {
-    "frame": 1158.0,
+    "frame": 1239.3,
     "back": 413.6,
     "belt": 482.3,
     "harness": 225.1,
@@ -26,21 +26,21 @@
     "fly": 5.9,
     "straps_meat": 416.9,
     "straps_compression": 243.2,
-    "attachment": 292.5,
+    "attachment": 295.4,
     "misc": 25.8
    },
    "like_for_like_base": {
-    "bag_side": 1481.6,
-    "suspension": 2279.0,
+    "bag_side": 1484.4,
+    "suspension": 2360.3,
     "misc": 25.8
    }
   },
   "A": {
-   "base": 3199.2,
-   "as_hunted": 3517.7,
-   "meat_trip": 3713.7,
+   "base": 3283.3,
+   "as_hunted": 3601.9,
+   "meat_trip": 3797.9,
    "by_system_base": {
-    "frame": 1154.0,
+    "frame": 1235.3,
     "back": 363.6,
     "belt": 393.3,
     "harness": 196.8,
@@ -50,12 +50,12 @@
     "fly": 5.9,
     "straps_meat": 300.9,
     "straps_compression": 141.6,
-    "attachment": 188.0,
+    "attachment": 190.8,
     "misc": 18.8
    },
    "like_for_like_base": {
-    "bag_side": 1072.7,
-    "suspension": 2107.7,
+    "bag_side": 1075.5,
+    "suspension": 2189.0,
     "misc": 18.8
    }
   }
@@ -68,14 +68,14 @@
     "meat_trip": 3939.5
    },
    "P": {
-    "base": 3757.8,
-    "as_hunted": 4076.4,
-    "meat_trip": 4272.4
+    "base": 3842.0,
+    "as_hunted": 4160.5,
+    "meat_trip": 4356.5
    },
    "A": {
-    "base": 3181.3,
-    "as_hunted": 3499.9,
-    "meat_trip": 3695.9
+    "base": 3265.5,
+    "as_hunted": 3584.0,
+    "meat_trip": 3780.0
    }
   },
   "M": {
@@ -85,14 +85,14 @@
     "meat_trip": 3967.4
    },
    "P": {
-    "base": 3786.3,
-    "as_hunted": 4104.9,
-    "meat_trip": 4300.9
+    "base": 3870.5,
+    "as_hunted": 4189.0,
+    "meat_trip": 4385.0
    },
    "A": {
-    "base": 3199.2,
-    "as_hunted": 3517.7,
-    "meat_trip": 3713.7
+    "base": 3283.3,
+    "as_hunted": 3601.9,
+    "meat_trip": 3797.9
    }
   },
   "L": {
@@ -102,14 +102,14 @@
     "meat_trip": 3991.5
    },
    "P": {
-    "base": 3811.2,
-    "as_hunted": 4129.7,
-    "meat_trip": 4325.7
+    "base": 3895.4,
+    "as_hunted": 4213.9,
+    "meat_trip": 4409.9
    },
    "A": {
-    "base": 3215.2,
-    "as_hunted": 3533.7,
-    "meat_trip": 3729.7
+    "base": 3299.4,
+    "as_hunted": 3617.9,
+    "meat_trip": 3813.9
    }
   },
   "XL": {
@@ -119,14 +119,14 @@
     "meat_trip": 4027.5
    },
    "P": {
-    "base": 3848.0,
-    "as_hunted": 4166.6,
-    "meat_trip": 4362.6
+    "base": 3932.2,
+    "as_hunted": 4250.7,
+    "meat_trip": 4446.7
    },
    "A": {
-    "base": 3243.2,
-    "as_hunted": 3561.8,
-    "meat_trip": 3757.8
+    "base": 3327.4,
+    "as_hunted": 3645.9,
+    "meat_trip": 3841.9
    }
   },
   "XXL": {
@@ -136,14 +136,14 @@
     "meat_trip": 4055.6
    },
    "P": {
-    "base": 3877.8,
-    "as_hunted": 4196.3,
-    "meat_trip": 4392.3
+    "base": 3961.9,
+    "as_hunted": 4280.5,
+    "meat_trip": 4476.5
    },
    "A": {
-    "base": 3263.0,
-    "as_hunted": 3581.5,
-    "meat_trip": 3777.5
+    "base": 3347.1,
+    "as_hunted": 3665.7,
+    "meat_trip": 3861.7
    }
   }
  },
@@ -425,6 +425,76 @@
      "g": 25.96,
      "cfg": "base",
      "source": "ledger correction BL046: analysis/h1_spine_channel.json mass.channel_net_g (print-mesh volume with / without h1_spine_channel.add_channel x the PAHT-CF print density)"
+    }
+   ]
+  },
+  "BL047": {
+   "class": "P",
+   "ticket": "BL-047",
+   "label": "spine clamp webs thinned; H1 pawl bosses / bore / window; low-profile Ti pawl",
+   "kind": "safety",
+   "gate": "pawl swing check on the print (h1_pawl); first-article weigh",
+   "delta_g": {
+    "base": -6.7,
+    "as_hunted": -6.7,
+    "meat_trip": -6.7
+   },
+   "rows": [
+    {
+     "system": "frame",
+     "name": "spine clamp webs thinned (BL-047; 15.9 -> 14.2 g)",
+     "g": -1.7,
+     "cfg": "base",
+     "source": "ledger correction BL047: analysis/crown_gnl.json mass.clamp_delta_g (crown_spine_clamp.size_clamp)"
+    },
+    {
+     "system": "frame",
+     "name": "H1 print: pawl cheek bosses, pivot bore, fore-wall window; hinge floor relief (BL-047)",
+     "g": -1.38,
+     "cfg": "base",
+     "source": "ledger correction BL047: analysis/crown_gnl.json mass.h1_print_delta_g (print-mesh volume deltas x PAHT-CF print density: h1_pawl.add_pawl, bl047_frame_items.hinge_relief)"
+    },
+    {
+     "system": "frame",
+     "name": "low-profile Ti pawl (fits the H1 housing) against the old SLM pawl (BL-047)",
+     "g": -3.6,
+     "cfg": "base",
+     "source": "ledger correction BL047: analysis/crown_gnl.json mass.pawl_delta_g (mesh volumes x Ti-6Al-4V density)"
+    }
+   ]
+  },
+  "BL049": {
+   "class": "P",
+   "ticket": "BL-049",
+   "label": "hinge fairlead grown (inboard-up sim pull); US lanes on lug arms; Ti hinge pins",
+   "kind": "safety",
+   "gate": "HE-FIT on the re-cut hinge piece; FIT-US / HE-FIT step 0 on us_route_stay_R; first-article weigh",
+   "delta_g": {
+    "base": 90.8,
+    "as_hunted": 90.8,
+    "meat_trip": 90.8
+   },
+   "rows": [
+    {
+     "system": "frame",
+     "name": "H1 print: US1 / US2 lug arms to the lanes (x +/-70, +/-165; BL-049)",
+     "g": 71.19,
+     "cfg": "base",
+     "source": "ledger correction BL049: analysis/h1_lanes.json mass.lug_arms_g (print-mesh volume added by h1_lanes.add_lugs x PAHT-CF print density)"
+    },
+    {
+     "system": "frame",
+     "name": "H1 print: hinge fairleads grown (cheeks 10 mm, 27 mm up), US fairleads moved onto the lugs, old US stubs and the hinge relief groove gone (BL-049)",
+     "g": 16.81,
+     "cfg": "base",
+     "source": "ledger correction BL049: analysis/h1_lanes.json mass.print_rest_g (assembled print mesh BL-049 - BL-047 - lug_arms_g)"
+    },
+    {
+     "system": "attachment",
+     "name": "hinge pins: 5 mm Ti-6Al-4V (2, 44 mm) in place of 7075 as booked (BL-049)",
+     "g": 2.83,
+     "cfg": "base",
+     "source": "ledger correction BL049: analysis/h1_lanes.json mass.hinge_pins_delta_g (h1_lanes.hinge_pin mass - attachment 7075 pin row / 8, x 2)"
     }
    ]
   },
@@ -1884,10 +1954,10 @@
     },
     {
      "system": "attachment",
-     "name": "CORRIE F: BL-044: B-25 on the sized spine clamp and the printed spine (25.02 mm fore of the bar) 479.4 -> 512.2 mm",
-     "g": 0.92,
+     "name": "CORRIE F: BL-044: B-25 on the sized spine clamp and the printed spine (25.02 mm fore of the bar) 479.4 -> 513.1 mm",
+     "g": 0.94,
      "cfg": "base",
-     "source": "corrie_f.b25_topology with crown_spine_clamp constants (+44.5 run, collar 12 -> 6) x poly_webbing_38mm mass_g_m (record)"
+     "source": "corrie_f.b25_topology with crown_spine_clamp constants (+45.4 run, collar 12 -> 6) x poly_webbing_38mm mass_g_m (record)"
     },
     {
      "system": "straps_meat",
@@ -3088,10 +3158,10 @@
     },
     {
      "system": "attachment",
-     "name": "CORRIE F: BL-044: B-25 on the sized spine clamp and the printed spine (25.02 mm fore of the bar) 479.4 -> 512.2 mm",
-     "g": 0.92,
+     "name": "CORRIE F: BL-044: B-25 on the sized spine clamp and the printed spine (25.02 mm fore of the bar) 479.4 -> 513.1 mm",
+     "g": 0.94,
      "cfg": "base",
-     "source": "corrie_f.b25_topology with crown_spine_clamp constants (+44.5 run, collar 12 -> 6) x poly_webbing_38mm mass_g_m (record)"
+     "source": "corrie_f.b25_topology with crown_spine_clamp constants (+45.4 run, collar 12 -> 6) x poly_webbing_38mm mass_g_m (record)"
     },
     {
      "system": "straps_meat",
@@ -3893,10 +3963,10 @@
     },
     {
      "system": "attachment",
-     "name": "CORRIE F: BL-044: B-25 on the sized spine clamp and the printed spine (25.02 mm fore of the bar) 479.4 -> 512.2 mm",
-     "g": -0.92,
+     "name": "CORRIE F: BL-044: B-25 on the sized spine clamp and the printed spine (25.02 mm fore of the bar) 479.4 -> 513.1 mm",
+     "g": -0.94,
      "cfg": "base",
-     "source": "corrie_f.b25_topology with crown_spine_clamp constants (+44.5 run, collar 12 -> 6) x poly_webbing_38mm mass_g_m (record)"
+     "source": "corrie_f.b25_topology with crown_spine_clamp constants (+45.4 run, collar 12 -> 6) x poly_webbing_38mm mass_g_m (record)"
     },
     {
      "system": "straps_meat",
@@ -4106,9 +4176,9 @@
  },
  "configs": {
   "corrie_f_base": {
-   "total_g": 3474.1,
+   "total_g": 3558.2,
    "by_system": {
-    "frame": 1220.2,
+    "frame": 1301.5,
     "back": 413.6,
     "belt": 499.2,
     "harness": 216.6,
@@ -4118,19 +4188,19 @@
     "fly": 5.9,
     "straps_meat": 300.9,
     "straps_compression": 141.6,
-    "attachment": 188.0,
+    "attachment": 190.8,
     "misc": 25.8
    },
    "like_for_like": {
-    "bag_side": 1098.7,
-    "suspension": 2349.6,
+    "bag_side": 1101.5,
+    "suspension": 2430.9,
     "misc": 25.8
    }
   },
   "corrie_f_as_hunted": {
-   "total_g": 3792.6,
+   "total_g": 3876.8,
    "by_system": {
-    "frame": 1220.2,
+    "frame": 1301.5,
     "back": 413.6,
     "belt": 535.9,
     "harness": 216.6,
@@ -4140,12 +4210,12 @@
     "fly": 72.1,
     "straps_meat": 300.9,
     "straps_compression": 221.1,
-    "attachment": 192.6,
+    "attachment": 195.5,
     "misc": 25.8
    },
    "like_for_like": {
-    "bag_side": 1380.5,
-    "suspension": 2386.2,
+    "bag_side": 1383.4,
+    "suspension": 2467.6,
     "misc": 25.8
    }
   },
@@ -4291,14 +4361,14 @@
     "pct": 60.0
    },
    "P": {
-    "ours_g": 3730.8,
-    "delta_g": 1422.8,
-    "pct": 62.0
+    "ours_g": 3815.0,
+    "delta_g": 1507.0,
+    "pct": 65.0
    },
    "A": {
-    "ours_g": 3151.4,
-    "delta_g": 843.4,
-    "pct": 37.0
+    "ours_g": 3235.5,
+    "delta_g": 927.5,
+    "pct": 40.0
    }
   },
   {
@@ -4316,14 +4386,14 @@
     "pct": 54.0
    },
    "P": {
-    "ours_g": 3730.8,
-    "delta_g": 1334.8,
-    "pct": 56.0
+    "ours_g": 3815.0,
+    "delta_g": 1419.0,
+    "pct": 59.0
    },
    "A": {
-    "ours_g": 3151.4,
-    "delta_g": 755.4,
-    "pct": 32.0
+    "ours_g": 3235.5,
+    "delta_g": 839.5,
+    "pct": 35.0
    }
   },
   {
@@ -4342,14 +4412,14 @@
     "pct": 44.0
    },
    "P": {
-    "ours_g": 3898.4,
-    "delta_g": 1261.4,
-    "pct": 48.0
+    "ours_g": 3982.6,
+    "delta_g": 1345.6,
+    "pct": 51.0
    },
    "A": {
-    "ours_g": 3311.3,
-    "delta_g": 674.3,
-    "pct": 26.0
+    "ours_g": 3395.4,
+    "delta_g": 758.4,
+    "pct": 29.0
    }
   },
   {
@@ -4364,14 +4434,14 @@
     "pct": 34.0
    },
    "P": {
-    "ours_g": 3786.3,
-    "delta_g": 996.3,
-    "pct": 36.0
+    "ours_g": 3870.5,
+    "delta_g": 1080.5,
+    "pct": 39.0
    },
    "A": {
-    "ours_g": 3199.2,
-    "delta_g": 409.2,
-    "pct": 15.0
+    "ours_g": 3283.3,
+    "delta_g": 493.3,
+    "pct": 18.0
    }
   },
   {
@@ -4386,14 +4456,14 @@
     "pct": 42.0
    },
    "P": {
-    "ours_g": 3786.3,
-    "delta_g": 1147.3,
-    "pct": 43.0
+    "ours_g": 3870.5,
+    "delta_g": 1231.5,
+    "pct": 47.0
    },
    "A": {
-    "ours_g": 3199.2,
-    "delta_g": 560.2,
-    "pct": 21.0
+    "ours_g": 3283.3,
+    "delta_g": 644.3,
+    "pct": 24.0
    }
   },
   {
@@ -4410,14 +4480,14 @@
     "pct": 35.0
    },
    "P": {
-    "ours_g": 3913.6,
-    "delta_g": 1101.6,
-    "pct": 39.0
+    "ours_g": 3997.8,
+    "delta_g": 1185.8,
+    "pct": 42.0
    },
    "A": {
-    "ours_g": 3326.5,
-    "delta_g": 514.5,
-    "pct": 18.0
+    "ours_g": 3410.6,
+    "delta_g": 598.6,
+    "pct": 21.0
    }
   },
   {
@@ -4434,14 +4504,14 @@
     "pct": 41.0
    },
    "P": {
-    "ours_g": 3913.6,
-    "delta_g": 1205.6,
-    "pct": 45.0
+    "ours_g": 3997.8,
+    "delta_g": 1289.8,
+    "pct": 48.0
    },
    "A": {
-    "ours_g": 3326.5,
-    "delta_g": 618.5,
-    "pct": 23.0
+    "ours_g": 3410.6,
+    "delta_g": 702.6,
+    "pct": 26.0
    }
   },
   {
@@ -4458,14 +4528,14 @@
     "pct": 33.0
    },
    "P": {
-    "ours_g": 3822.9,
-    "delta_g": 987.9,
-    "pct": 35.0
+    "ours_g": 3907.1,
+    "delta_g": 1072.1,
+    "pct": 38.0
    },
    "A": {
-    "ours_g": 3235.8,
-    "delta_g": 400.8,
-    "pct": 14.0
+    "ours_g": 3319.9,
+    "delta_g": 484.9,
+    "pct": 17.0
    }
   },
   {
@@ -4484,14 +4554,14 @@
     "pct": 127.0
    },
    "P": {
-    "ours_g": 3898.4,
-    "delta_g": 2225.4,
-    "pct": 133.0
+    "ours_g": 3982.6,
+    "delta_g": 2309.6,
+    "pct": 138.0
    },
    "A": {
-    "ours_g": 3311.3,
-    "delta_g": 1638.3,
-    "pct": 98.0
+    "ours_g": 3395.4,
+    "delta_g": 1722.4,
+    "pct": 103.0
    }
   },
   {
@@ -4508,20 +4578,20 @@
     "pct": 40.0
    },
    "P": {
-    "ours_g": 3913.6,
-    "delta_g": 1191.6,
-    "pct": 44.0
+    "ours_g": 3997.8,
+    "delta_g": 1275.8,
+    "pct": 47.0
    },
    "A": {
-    "ours_g": 3326.5,
-    "delta_g": 604.5,
-    "pct": 22.0
+    "ours_g": 3410.6,
+    "delta_g": 688.6,
+    "pct": 25.0
    }
   }
  ],
  "features": {
-  "after_tests_base_g": 3199.2,
-  "gap_g": 205.5,
+  "after_tests_base_g": 3283.3,
+  "gap_g": 289.6,
   "candidates": [
    {
     "item": "IMP-2",
@@ -4626,7 +4696,7 @@
   "P": {
    "scenario": "P",
    "cfg": "base",
-   "total_g": 3786.3,
+   "total_g": 3870.5,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
      "g": 426.7,
@@ -4635,26 +4705,26 @@
      "frac": 0.3
     },
     "printed PAHT-CF body (2 mm raster x density)": {
-     "g": 801.6,
-     "band_g": 45.0,
-     "n": 6,
+     "g": 817.0,
+     "band_g": 45.9,
+     "n": 8,
      "frac": 0.05
     },
     "frame lumps and carbon (beam model, frame_mass json)": {
-     "g": 550.9,
-     "band_g": 67.5,
-     "n": 15,
+     "g": 545.6,
+     "band_g": 68.1,
+     "n": 17,
      "frac": 0.1
     },
     "cut area x record gsm, length x record g/m": {
-     "g": 2007.1,
-     "band_g": 205.6,
-     "n": 145,
+     "g": 2081.1,
+     "band_g": 211.5,
+     "n": 147,
      "frac": 0.08
     }
    },
-   "worst_g": 460.2,
-   "rss_g": 70.0,
+   "worst_g": 467.6,
+   "rss_g": 70.2,
    "named": [
     {
      "name": "D2 door zip #10 in the blade | door seam, 2 sliders",
@@ -4761,7 +4831,7 @@
   "A": {
    "scenario": "A",
    "cfg": "base",
-   "total_g": 3199.2,
+   "total_g": 3283.3,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
      "g": 347.2,
@@ -4770,26 +4840,26 @@
      "frac": 0.3
     },
     "printed PAHT-CF body (2 mm raster x density)": {
-     "g": 801.6,
-     "band_g": 45.0,
-     "n": 6,
+     "g": 817.0,
+     "band_g": 45.9,
+     "n": 8,
      "frac": 0.05
     },
     "frame lumps and carbon (beam model, frame_mass json)": {
-     "g": 546.9,
-     "band_g": 67.9,
-     "n": 16,
+     "g": 541.6,
+     "band_g": 68.5,
+     "n": 18,
      "frac": 0.1
     },
     "cut area x record gsm, length x record g/m": {
-     "g": 1503.4,
-     "band_g": 236.9,
-     "n": 166,
+     "g": 1577.4,
+     "band_g": 242.8,
+     "n": 168,
      "frac": 0.08
     }
    },
-   "worst_g": 521.5,
-   "rss_g": 72.1,
+   "worst_g": 528.9,
+   "rss_g": 72.4,
    "named": [
     {
      "name": "D2 door zip #10 in the blade | door seam, 2 sliders",

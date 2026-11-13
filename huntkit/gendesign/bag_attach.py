@@ -81,6 +81,23 @@ class FairleadGeom:
     floor_proud: float = HOLE_PROUD - HOLE_D / 2.0 - 0.8   # top of the root (the throat floor) above the stay surface
     wall_front: float = WALL_FRONT
     chamfer_w: float | None = None   # 45 deg underside from |x| = chamfer_w outward (self-supporting, layer normal +y)
+    half_z_up: float | None = None   # BL-049: cheek reach ABOVE the pin axis (stay +z) when it differs from half_z (the
+    #                                  reach below); None = symmetric (every fairlead before BL-049)
+
+    @property
+    def z_top(self) -> float:
+        """Cheek top above the pin axis along the stay (= half_z unless half_z_up is set)."""
+        return self.half_z if self.half_z_up is None else self.half_z_up
+
+    @property
+    def z_mid(self) -> float:
+        """Centre of the cheek's z span relative to the pin axis (0 for a symmetric fairlead)."""
+        return 0.5 * (self.z_top - self.half_z)
+
+    @property
+    def z_half_span(self) -> float:
+        """Half the cheek's full height along the stay."""
+        return 0.5 * (self.z_top + self.half_z)
 
     @property
     def gap_under_pin(self) -> float:
@@ -113,12 +130,31 @@ HINGE_NECK_TOL = 1.0           # ASSUMPTION HE-NECK-TOL: folded neck 18 +-1 mm (
 HINGE_THROAT_CLEAR = 1.0       # ASSUMPTION: 1 mm total clearance over the widest neck (19 mm) for the printed cheek faces
 _R60 = round((9.0 + (8.5 - 9.0) * (60.0 - 40.0) / (150.0 - 40.0)) * SCALE, 4)   # = frame_branch.stay_radius(60, SCALE)
 _FLOOR60 = round(HOLE_PROUD - HOLE_D / 2.0 - 0.8, 9)   # 2.1: the 2026-11-01 floor height, kept (root bridge strength)
-HINGE_GEOM = FairleadGeom(
+HINGE_GEOM_BL042 = FairleadGeom(
     throat=HINGE_NECK_W + HINGE_NECK_TOL + HINGE_THROAT_CLEAR,          # 20.0 (was 18.0)
     floor_proud=_FLOOR60,
     hole_proud=_FLOOR60 + HINGE_EYE_PLIES * HINGE_EYE_PLY_T + HINGE_EYE_MARGIN + PIN_D / 2.0,   # 10.1: gap 5.5 (was 1.9)
     embed=_R60,                # saddle: root and cheeks down to the stay centreline (BL-042 sweep, h1_fairleads.md 3)
     chamfer_w=9.0,             # 45 deg underside outboard of |x| 9 (prints without support, layer normal +y)
+)
+# BL-049: the sims pull the hinge eye inboard and up (us_route.hinge_vectors, analysis/hinge_eye_vectors.json); the
+# eye's edge then pushes the inboard cheek's inner face next to the throat floor, and BL-047's 1 mm relief groove
+# (bl047_frame_items.relief_solid) sat exactly at that corner. BL-049 hinge (h1_lanes.py, h1_lanes.md 2):
+# - the cheeks grow UP the stay only (cheek top 27 mm above the pin, bottom unchanged at 9 mm below it, so the HE box
+#   below keeps its clearance); thicker cheeks (10 mm) for the stiffness at the root;
+# - the throat floor is lowered 1.0 mm across the whole throat (1.1 mm above the stay surface; gap under the pin
+#   5.5 -> 6.5 mm) in place of BL-047's relief groove: the corner fillet sits 1 mm lower everywhere, with no notch.
+# The pin centre does not move (10.1 mm above the stay surface).
+HINGE_FLOOR_DROP_BL049 = 1.0
+HINGE_GEOM = FairleadGeom(
+    throat=HINGE_GEOM_BL042.throat,
+    cheek=10.0,
+    half_z=HALF_Z,
+    half_z_up=27.0,
+    floor_proud=round(_FLOOR60 - HINGE_FLOOR_DROP_BL049, 9),           # 1.1
+    hole_proud=HINGE_GEOM_BL042.hole_proud,                             # 10.1 (unchanged)
+    embed=_R60,
+    chamfer_w=9.0,
 )
 # What the bag must meet at the hinge (BL-042). Import this in the pattern / HE section model in place of the
 # module constants above, which stay the IM1-IM3 / under-strap fairlead (and the voxel analysis envelope).
@@ -141,7 +177,9 @@ HINGE_EYE_ENVELOPE = {
     "neck_w_max_mm": HINGE_NECK_W + HINGE_NECK_TOL,
     "throat_clearance_over_max_neck_mm": HINGE_GEOM.throat - HINGE_NECK_W - HINGE_NECK_TOL,
     "throat_clearance_over_nominal_neck_mm": HINGE_GEOM.throat - HINGE_NECK_W,
-    "cheek_half_z_mm": HINGE_GEOM.half_z,
+    "cheek_half_z_mm": HINGE_GEOM.half_z,              # below the pin (the HE box side)
+    "cheek_up_mm": HINGE_GEOM.z_top,                   # BL-049: cheek top above the pin
+    "cheek_thickness_mm": HINGE_GEOM.cheek,            # BL-049: 10 mm (was 8): outer faces at +/- 20 mm from the stay
     "cheek_tip_above_stay_surface_mm": HINGE_GEOM.tip_proud,
     "stay_r_mm_at_z60": _R60,
     "pin_centre_from_stay_centre_mm": round(_R60 + HINGE_GEOM.hole_proud, 4),
@@ -189,9 +227,9 @@ def eye_geom(name: str) -> FairleadGeom:
     # below the crown-leg sleeve the stay is solid: saddle to the centreline, as the hinge. On the sleeve (IM1-IM3) the
     # root stops EYE_BORE_CLEAR above the 18.0 mm reamed bore (print_mesh cuts the bore r 8.7 from z 155; the fairleads
     # are unioned after that cut, so a deeper root would fill the bore)
-    on_sleeve = z + HINGE_GEOM.half_z + 4.0 > SLEEVE_BORE_FROM_Z
+    on_sleeve = z + HINGE_GEOM_BL042.half_z + 4.0 > SLEEVE_BORE_FROM_Z
     embed = r - (SLEEVE_BORE_R_REAM + EYE_BORE_CLEAR) if on_sleeve else r
-    g = _dc.replace(HINGE_GEOM, embed=round(embed, 4))
+    g = _dc.replace(HINGE_GEOM_BL042, embed=round(embed, 4))     # BL-049: the IM / US stations keep BL-045's section
     if name == "im3":
         from .h1_buckling import IM3_HALF_Z
         g = _dc.replace(g, half_z=IM3_HALF_Z)
@@ -241,11 +279,11 @@ def fairlead_local(pts: np.ndarray, stay_r: float, geom: FairleadGeom | None = N
         inner = s * g.throat / 2.0
         outer = s * (g.throat / 2.0 + g.cheek)
         lo = np.array([min(inner, outer), y_root, -g.half_z])
-        hi = np.array([max(inner, outer), y_tip, g.half_z])
+        hi = np.array([max(inner, outer), y_tip, g.z_top])
         sdf = np.minimum(sdf, _box(pts, lo, hi))
     root_hi_y = stay_r + g.floor_proud
     root = _box(pts, np.array([-(g.throat / 2.0 + g.cheek), y_root, -g.half_z]),
-                np.array([g.throat / 2.0 + g.cheek, root_hi_y, g.half_z]))
+                np.array([g.throat / 2.0 + g.cheek, root_hi_y, g.z_top]))
     sdf = _smin(sdf, root, 3.0)
     if g.chamfer_w is not None:     # 45 deg underside: material only above y_root + (|x| - chamfer_w)
         sdf = np.maximum(sdf, ((np.abs(x) - g.chamfer_w) - (y - y_root)) / np.sqrt(2.0))

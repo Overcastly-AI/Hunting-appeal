@@ -45,8 +45,8 @@ for _p in (str(ROOT), str(HERE), str(HERE / "concepts")):
 PRINT = HERE / "print" / "frame_h1" / "h1_assembled.stl"
 OUT_JSON = HERE / "analysis" / "us_route.json"
 SCREENS = ROOT / "outputs" / "screens"
-SHOT = "20261113_BL048us"
-KIT_PIECES = ROOT / "outputs" / "release" / "test_kit" / "print"
+SHOT = "20261113_BL049_us"                    # BL-049 re-run on the lanes print (BL-048: 20261113_BL048us)
+KIT_PIECES = HERE / "print" / "frame_h1" / "test_pieces"   # BL-049: re-cut on the moved stations (was the kit folder)
 US_PIECE = "us_route_stay_R"
 TORSOS = (15, 19, 23)
 RUN = "F_r1_PR{t}_fineFM_over_port"          # rev 3 = corrie_f.REV3_ROUTE on the rev 1 shell (corrie_f.sim_rev)
@@ -94,7 +94,7 @@ def fairlead_box(p: dict, x: float | None = None, pad: float = 0.0) -> dict:
     g = p["geom"]
     x0 = p["x"] if x is None else x
     hx = g.throat / 2 + g.cheek
-    return {"x": (x0 - hx - pad, x0 + hx + pad), "z": (p["z"] - g.half_z - pad, p["z"] + g.half_z + pad),
+    return {"x": (x0 - hx - pad, x0 + hx + pad), "z": (p["z"] - g.half_z - pad, p["z"] + g.z_top + pad),
             "y": (p["yc"] + p["stay_r"] - 0.5, p["y_tip"] + pad)}
 
 
@@ -251,9 +251,10 @@ def stays(side: str) -> list:
     """The stay as a tube obstacle for the string (frame x +/-115, centre y yc, radius at z 60-160)."""
     st = stations(side)
     p = st["us1"]
+    xs = p.get("stay_x", p["x"])                     # BL-049: the US stations may stand on lane lugs off the stay
     yc = np.mean([q["yc"] for q in st.values()])
     r = max(q["stay_r"] for q in st.values())
-    return [(np.array([p["x"], yc, 0.0]), np.array([p["x"], yc, 220.0]), r)]
+    return [(np.array([xs, yc, 0.0]), np.array([xs, yc, 220.0]), r)]
 
 
 def strap_path(torso: int, X, name: str, side: str = "R", pin=None, x_entry: float = CHANNEL_X):
@@ -387,7 +388,7 @@ def guide_feasibility() -> dict:
     he = he_shapes()
     g = st["hinge"]["geom"]
     rows = []
-    blocks = {"us1": ("hinge fairlead + HE eye", st["hinge"]["z"] + g.half_z, st["us1"]["z"] - g.half_z),
+    blocks = {"us1": ("hinge fairlead + HE eye", st["hinge"]["z"] + g.z_top, st["us1"]["z"] - g.half_z),
               "us2": ("US1 fairlead (+ its eye and box hanging below)", st["us1"]["z"] + g.half_z, st["us2"]["z"] - g.half_z)}
     for name, (what, z_top, z_exit) in blocks.items():
         for c in (0.0, CLEAR_REQ):
@@ -405,7 +406,7 @@ def guide_feasibility() -> dict:
     reach = I.box_distance(sp, P.HE_T) + sp["box_len"]
     return {"rows": rows, "us_eye_box_reach_mm": round(reach, 1),
             "us1_box_bottom_z_straight_down": round(st["us1"]["z"] - reach, 1),
-            "hinge_cheek_top_z": st["hinge"]["z"] + g.half_z, "he_box_z": he["box_z"],
+            "hinge_cheek_top_z": st["hinge"]["z"] + g.z_top, "he_box_z": he["box_z"],
             "any_ok": any(r["ok"] for r in rows if r["clear_mm"] == CLEAR_REQ),
             "standoff_y_needed": round(st["hinge"]["y_tip"] + CLEAR_REQ + 3.0, 1)}
 
@@ -423,9 +424,13 @@ def layouts() -> dict:
     beside the spreader, which spans x +/-121 from z 112) on an outboard lug, each one lane (lane_offset) off the stay
     line, channel ends at the lane x."""
     st = stations()
-    x0 = st["us1"]["x"]
+    x0 = st["us1"].get("stay_x", st["us1"]["x"])
     d = lane_offset()
-    return {"now": {"us1": x0, "us2": x0, "entry": {"us1": CHANNEL_X, "us2": CHANNEL_X}},
+    # BL-049: 'now' = the pins where the print has them (the lane lugs since BL-049), the bag's B-16 channel as drawn
+    # (+/-95); 'print_lanes' = the same print with the channel ends at the lane x (BL-048 'lanes_wide', BL-050's bag)
+    xu1, xu2 = abs(st["us1"]["x"]), abs(st["us2"]["x"])
+    return {"now": {"us1": xu1, "us2": xu2, "entry": {"us1": CHANNEL_X, "us2": CHANNEL_X}},
+            "print_lanes": {"us1": xu1, "us2": xu2, "entry": {"us1": xu1, "us2": xu2}},
             "lanes": {"us1": round(x0 - d, 1), "us2": round(x0 + d, 1),
                       "entry": {"us1": round(x0 - d, 1), "us2": round(x0 + d, 1)}},
             "lanes_old_channel": {"us1": round(x0 - d, 1), "us2": round(x0 + d, 1),
@@ -435,7 +440,7 @@ def layouts() -> dict:
                                      "us2": round(x0 + d + LANE_MARGIN["us2"], 1)}}}
 
 
-RECOMMENDED = "lanes_wide"
+RECOMMENDED = "print_lanes"          # BL-049: the lanes as printed (BL-048 recommended "lanes_wide", x 70 / 165)
 LANE_MARGIN = {"us1": 4.5, "us2": 9.5}      # BL-048: added to the bare lane offset after the first drape check: the
 #   outer floor draws inboard under load (the drafted x 155.5 channel entry lands at x 143-152 on the drapes), so the
 #   US2 strap drifts towards the hinge as it descends (5.6 mm worst at 19 in L on the bare lane); US1 had 10.2 mm.
@@ -458,7 +463,7 @@ def lug_boxes(lay: dict) -> list:
 
 def run_layout(name: str, mesh, drapes: dict, T: dict) -> dict:
     lay = layouts()[name]
-    moved = name != "now"
+    moved = name not in ("now", "print_lanes")       # those two run on the print as it is
     grid = occupancy(mesh, mask_us=moved, extra_boxes=lug_boxes(lay) if moved else ())
     fields = {"hinge": sdf(grid, [2]), "us1": sdf(grid, [3]), "us2": sdf(grid, [4]), "he": sdf(grid, [5]),
               "stay": sdf(grid, [1])}
@@ -482,7 +487,7 @@ def run_layout(name: str, mesh, drapes: dict, T: dict) -> dict:
                 r["min_clear_mm"] = round(min(gate), 1)
                 r["pass"] = r["min_clear_mm"] >= CLEAR_REQ
                 if side == "R":
-                    pr = dict(p, x=lay[n])
+                    pr = dict(p, x=lay[n])                 # (pin x on this layout)
                     tr = trace(P)
                     r["section"] = section_bearing(grid, abs(tr["z60"][0]) if "z60" in tr else abs(pin[0]), pr,
                                                    (fc["y"], fc["z"]), T[n], own=3 if n == "us1" else 4)
@@ -605,7 +610,11 @@ def export_test_piece(mesh=None, out_dir: Path = KIT_PIECES) -> dict:
     hx = p["geom"].throat / 2 + p["geom"].cheek + 6.0
     zlo, zhi = 40.0, 160.0
     man = _to_manifold(mesh)
-    b = m3d.Manifold.cube((2 * hx, 80.0, zhi - zlo), center=True).translate((p["x"], p["yc"], 0.5 * (zlo + zhi)))
+    # BL-049: x spans every station in the piece (the lane lugs stand 45 / 50 mm off the stay)
+    xa = min(q["x"] - (q["geom"].throat / 2 + q["geom"].cheek) for q in st.values()) - 6.0
+    xb = max(q["x"] + (q["geom"].throat / 2 + q["geom"].cheek) for q in st.values()) + 6.0
+    b = m3d.Manifold.cube((xb - xa, 80.0, zhi - zlo), center=True).translate((0.5 * (xa + xb), p["yc"],
+                                                                                0.5 * (zlo + zhi)))
     piece, dropped = clean_shell(_from_manifold((man ^ b).simplify(0.04)))
     flat = H1.lay_flat(piece)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -615,7 +624,7 @@ def export_test_piece(mesh=None, out_dir: Path = KIT_PIECES) -> dict:
     wt = all(trimesh.load(out_dir / fn).is_watertight for fn in (f"{US_PIECE}_frame_coords.stl", f"{US_PIECE}.stl"))
     rho = _H().RHO_G_MM3
     return {"file": str((out_dir / f"{US_PIECE}.stl").relative_to(ROOT)), "z": [zlo, zhi],
-            "x": [round(p["x"] - hx, 1), round(p["x"] + hx, 1)], "g": round(piece.volume * rho, 1),
+            "x": [round(xa, 1), round(xb, 1)], "g": round(piece.volume * rho, 1),
             "watertight": bool(wt), "shells": len(piece.split(only_watertight=False)), "dropped": dropped,
             "extents_mm": [round(v, 1) for v in flat.extents],
             "fairleads": sorted(n for n in st if zlo < st[n]["z"] < zhi)}
@@ -642,10 +651,11 @@ def model(write: bool = True, piece: bool = True) -> dict:
     res["us_route_dropped"] = True
     res["recommended"] = RECOMMENDED
     rec = res["layouts"][RECOMMENDED]
+    sx0 = stations()["us1"].get("stay_x", 115.0)
     res["station_move"] = {"us1": {"x": rec["layout"]["us1"], "z": stations()["us1"]["z"], "offset_from_stay_mm":
-                                   round(stations()["us1"]["x"] - rec["layout"]["us1"], 1), "side": "inboard"},
+                                   round(sx0 - rec["layout"]["us1"], 1), "side": "inboard"},
                            "us2": {"x": rec["layout"]["us2"], "z": stations()["us2"]["z"], "offset_from_stay_mm":
-                                   round(rec["layout"]["us2"] - stations()["us2"]["x"], 1), "side": "outboard"},
+                                   round(rec["layout"]["us2"] - sx0, 1), "side": "outboard"},
                            "channel_entry_x": rec["layout"]["entry"], "pass": rec["pass"],
                            "worst_clear_mm": rec["worst_clear_mm"]}
     res["corner_keepers"] = corner_keepers(res)
@@ -751,7 +761,7 @@ def figures(res: dict) -> list:
     ax.text(st["hinge"]["x"] - 8, 168, "stay", fontsize=8)
     b = fairlead_box(st["hinge"])
     ax.add_patch(Rectangle((b["x"][0], b["z"][0]), b["x"][1] - b["x"][0], b["z"][1] - b["z"][0], fc="#7f8c8d", alpha=0.7))
-    ax.text(b["x"][1] + 2, b["z"][0] + 4, "hinge\n(unchanged)", fontsize=8)
+    ax.text(b["x"][1] + 2, b["z"][0] + 4, "hinge\n(BL-049)", fontsize=8)
     ax.add_patch(Rectangle((115 - 17, he["box_z"][0]), 34, he["box_z"][1] - he["box_z"][0], fc="#d35400", alpha=0.7))
     for k, bx in lug_boxes(lay["layout"]):
         col = "#2980b9" if k == 3 else "#8e44ad"
@@ -777,7 +787,7 @@ def figures(res: dict) -> list:
     ax.set_xlabel("frame x (mm), R side; L mirrored")
     ax.set_ylabel("frame z (mm)")
     ok = "PASS" if lay["pass"] else "FAIL"
-    ax.set_title(f"BL-048 -> BL-047: US station lanes (each strap clear of the hinge fairlead, HE and the other US fairlead "
+    ax.set_title(f"BL-049 print ({res['recommended']}): US station lanes (each strap clear of the hinge fairlead, HE and the other US fairlead "
                  f"by >= {CLEAR_REQ:.0f} mm)\nstrap edges on the 15 / 19 / 23 in meat drapes: {ok}", fontsize=9.5, loc="left")
     fig.tight_layout()
     p2 = SCREENS / f"{SHOT}_2.png"

@@ -332,7 +332,7 @@ SUFFIX = "_v2"
 CONFIGS_V2 = tuple(c + SUFFIX for c in CONFIGS)
 ALL_CONFIGS = CONFIGS + CONFIGS_V2
 DEFAULT_CONFIG = "corrie_b2_h1" + SUFFIX
-CORRECTIONS = ("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "H1B", "BL031", "H1F", "BL046", "BL047")
+CORRECTIONS = ("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "H1B", "BL031", "H1F", "BL046", "BL047", "BL049")
 #   BL047 (2026-11-13, BL-047): spine clamp webs thinned (crown_gnl.md section 7) in every config; on the H1 configs the H1 print's pawl
 #      bosses / pivot bore / fore-wall window and the m-1 hinge relief (print-mesh volume deltas), and the low-profile
 #      pawl against the old SLM pawl (mesh volumes). All from analysis/crown_gnl.json ``mass``.
@@ -365,7 +365,7 @@ def adopted_bag_rows(size: str = "M") -> list:
         return F.parts(size, door=ADOPTED_BAG["door"])
 
 
-H1_ONLY = ("H1B", "H1F")    # corrections that apply to the H1 configs only (not to today's production raster)
+H1_ONLY = ("H1B", "H1F", "BL049")    # corrections that apply to the H1 configs only (not to today's production raster)
 #   H1F (2026-11-13, BL-042) the H1 fairleads completed outside the voxel envelope. The H1 raster stops at the bag
 #      envelope (frame_topopt Y_HI_GRID 16 mm), so it holds only the fairlead stubs below y 16, not the cheek tops,
 #      front walls and pin holes (C1 assumed it held them whole). The print files now carry every fairlead complete
@@ -432,6 +432,13 @@ def bl047_update() -> dict:
 
 
 @functools.lru_cache(maxsize=None)
+def bl049_update() -> dict:
+    """BL049: hinge fairlead grown, US lane lugs, Ti hinge pins (analysis/h1_lanes.json ``mass``, written by
+    huntkit.gendesign.h1_lanes)."""
+    return dict(_json("h1_lanes.json")["mass"])
+
+
+@functools.lru_cache(maxsize=None)
 def h1_body_update() -> dict:
     """H1B: the H1 body raster as adopted (BL-024 + BL-027 + BL-021 28 mm IM3 cheeks), from analysis/h1_buckling.json
     ``chosen`` (written by ``huntkit.gendesign.h1_buckling``). Raises if that file's H1 base is not the body the ledger
@@ -494,6 +501,18 @@ def _correction_rows(config: str, size: str) -> list:
                       "print density: h1_pawl.add_pawl, bl047_frame_items.hinge_relief)", "base"))
         bl046.append(("BL047", "low-profile Ti pawl (fits the H1 housing) against the old SLM pawl (BL-047)", "frame",
                       b47["pawl_delta_g"], src47 + "pawl_delta_g (mesh volumes x Ti-6Al-4V density)", "base"))
+    if config != "corrie_b2_today":
+        b49, src49 = bl049_update(), "analysis/h1_lanes.json mass."
+        bl046 += [
+            ("BL049", "H1 print: US1 / US2 lug arms to the lanes (x +/-70, +/-165; BL-049)", "frame", b49["lug_arms_g"],
+             src49 + "lug_arms_g (print-mesh volume added by h1_lanes.add_lugs x PAHT-CF print density)", "base"),
+            ("BL049", "H1 print: hinge fairleads grown (cheeks 10 mm, 27 mm up), US fairleads moved onto the lugs, old "
+             "US stubs and the hinge relief groove gone (BL-049)", "frame", b49["print_rest_g"],
+             src49 + "print_rest_g (assembled print mesh BL-049 - BL-047 - lug_arms_g)", "base"),
+            ("BL049", "hinge pins: 5 mm Ti-6Al-4V (2, 44 mm) in place of 7075 as booked (BL-049)", "attachment",
+             b49["hinge_pins_delta_g"], src49 + "hinge_pins_delta_g (h1_lanes.hinge_pin mass - attachment 7075 pin "
+             "row / 8, x 2)", "base"),
+        ]
     import strap_tails as ST                        # BL-031 (lazy: it reads corrie_f, which reads this module)
     bl031 = [("BL031", n, sys_, g, src, cfg) for n, sys_, g, src, cfg in ST.suspension_rows(size)]
     return h1b + bl031 + bl046 + [
