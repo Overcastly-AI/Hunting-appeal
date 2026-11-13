@@ -333,10 +333,13 @@ CONFIGS_V2 = tuple(c + SUFFIX for c in CONFIGS)
 ALL_CONFIGS = CONFIGS + CONFIGS_V2
 DEFAULT_CONFIG = "corrie_b2_h1" + SUFFIX
 CORRECTIONS = ("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "H1B", "BL031", "H1F", "BL046", "BL047", "BL049",
-               "BL050")
+               "BL050", "BL051")
+#   BL051 (2026-11-13, BL-051): on the H1 configs, the stay crown h1_lanes.strip_old_us had cut away over the old US1 /
+#      US2 stub sites, restored (print-mesh delta); BL050's pins / sleeves row retired (a double count: the cradle rows
+#      book the US1 / US2 pins).
 #   BL050 (2026-11-13, BL-050 A): in every config, the 7075 pins and UHMWPE sleeves of the 4 fairlead stations the
-#      attachment rows never booked (bag_attach._mass_budget counts 8; bag_attach.stations() places 12: the US1 / US2
-#      pins were missing); on the H1 configs, the US2 bolt-on clevis (joint blocks and bolt cuts in the print, the Ti
+#      attachment rows never booked (bag_attach._mass_budget counts 8; bag_attach.stations() places 12; BL-051 found
+#      the US1 / US2 pins booked in the cradle rows, meat_haul.cradle_parts_g: a double count, the row is gone); on the H1 configs, the US2 bolt-on clevis (joint blocks and bolt cuts in the print, the Ti
 #      M5 joint hardware). All from analysis/h1_bedfit.json ``mass``.
 #   BL047 (2026-11-13, BL-047): spine clamp webs thinned (crown_gnl.md section 7) in every config; on the H1 configs the H1 print's pawl
 #      bosses / pivot bore / fore-wall window and the m-1 hinge relief (print-mesh volume deltas), and the low-profile
@@ -370,7 +373,8 @@ def adopted_bag_rows(size: str = "M") -> list:
         return F.parts(size, door=ADOPTED_BAG["door"])
 
 
-H1_ONLY = ("H1B", "H1F", "BL049")    # corrections that apply to the H1 configs only (not to today's production raster)
+H1_ONLY = ("H1B", "H1F", "BL049", "BL050", "BL051")   # corrections that apply to the H1 configs only (not to today's
+#   production raster). BL050 joined with BL-051: its only all-config row (pins / sleeves) was a double count.
 #   H1F (2026-11-13, BL-042) the H1 fairleads completed outside the voxel envelope. The H1 raster stops at the bag
 #      envelope (frame_topopt Y_HI_GRID 16 mm), so it holds only the fairlead stubs below y 16, not the cheek tops,
 #      front walls and pin holes (C1 assumed it held them whole). The print files now carry every fairlead complete
@@ -451,6 +455,13 @@ def bl050_update() -> dict:
 
 
 @functools.lru_cache(maxsize=None)
+def bl051_update() -> dict:
+    """BL051: the stay crown restored over the old US stub sites (analysis/h1_crown.json ``mass``, written by
+    huntkit.gendesign.h1_crown)."""
+    return dict(_json("h1_crown.json")["mass"])
+
+
+@functools.lru_cache(maxsize=None)
 def h1_body_update() -> dict:
     """H1B: the H1 body raster as adopted (BL-024 + BL-027 + BL-021 28 mm IM3 cheeks), from analysis/h1_buckling.json
     ``chosen`` (written by ``huntkit.gendesign.h1_buckling``). Raises if that file's H1 base is not the body the ledger
@@ -526,19 +537,23 @@ def _correction_rows(config: str, size: str) -> list:
              "row / 8, x 2)", "base"),
         ]
     b50, src50 = bl050_update(), "analysis/h1_bedfit.json mass."
-    bl046.append(("BL050", f"7075 pins + UHMWPE sleeves for the {b50['stations'] - b50['pins_booked']} fairlead "
-                           f"stations booked short ({b50['stations']} stations, {b50['pins_booked']} booked; BL-050)",
-                  "attachment", b50["pins_sleeves_delta_g"],
-                  src50 + "pins_sleeves_delta_g ((len(bag_attach.stations()) - 8) x (pin row + sleeve row) / 8)", "base"))
+    # BL-051: the BL050 row "7075 pins + UHMWPE sleeves for the 4 fairlead stations booked short" (every config) is
+    # retired: it double-counted. The 4 US1 / US2 pins + sleeves were already booked by
+    # meat_haul.cradle_parts_g ('under-straps US1/US2: 7075 pins (4)', 'UHMWPE sleeves (4)'; CORRIE F: 'US-anchor'
+    # row); bag_attach._mass_budget books the other 8 (bag_attach._pins_booked_here, CRADLE_PIN_STATIONS).
     if config != "corrie_b2_today":
+        hw50 = "; ".join(k for k in b50.get("hardware", {}))
         bl046 += [
             ("BL050", "H1 print: US2 bolt-on clevis, joint blocks and bolt / trap cuts (BL-050)", "frame",
              b50["print_delta_g"], src50 + "print_delta_g (assembled print mesh BL-050 - BL-049, clevises included)",
              "base"),
-            ("BL050", "US2 clevis joint hardware: 4 Ti M5 x 35 DIN 7984, 4 nuts, 8 DIN 433 washers (BL-050)", "frame",
+            ("BL050", f"US2 clevis joint hardware (BOM HW-US2: {hw50}; BL-050)", "frame",
              b50["hardware_g"], src50 + "hardware_g (h1_bedfit.hardware_g: frame_comp_B.bolt_mass_g, steel nut / "
              "washer volumes)", "base"),
         ]
+        b51, src51 = bl051_update(), "analysis/h1_crown.json mass."
+        bl046.append(("BL051", "H1 print: stay crown restored over the old US1 / US2 stub sites (BL-051)", "frame",
+                      b51["print_delta_g"], src51 + "print_delta_g (assembled print mesh BL-051 - BL-050)", "base"))
     import strap_tails as ST                        # BL-031 (lazy: it reads corrie_f, which reads this module)
     bl031 = [("BL031", n, sys_, g, src, cfg) for n, sys_, g, src, cfg in ST.suspension_rows(size)]
     return h1b + bl031 + bl046 + [

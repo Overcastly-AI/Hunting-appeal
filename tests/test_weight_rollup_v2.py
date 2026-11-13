@@ -251,7 +251,8 @@ def test_gated_savings_are_not_proven_now():
            + bl036 + bl041 + st["H1F"]["base"]            # BL-042: H1 fairleads outside the voxel envelope
            + st["BL046"]["base"]                          # BL-046: spine clamp as sized + H1 spine channel
            + st["BL047"]["base"] + st["BL049"]["base"]      # BL-047 web / pawl (was missing: the 6.7 g of BL-049 item 4);
-           + st["BL050"]["base"])                          # BL-050 US2 clevis + hardware, pins / sleeves for 12 stations
+           + st["BL050"]["base"]                           # BL-050 US2 clevis + hardware (BL-051: its pins row retired)
+           + st["BL051"]["base"])                          # BL-051 stay crown restored
     #                                                        BL-049 lug arms, hinge growth, Ti hinge pins
     assert t["P"]["base"] == pytest.approx(bl023_p + upd, abs=0.3)
     assert 3660 < t["P"]["base"] < 3950       # BL-050 +56.1, BL-049 +90.8, BL-047 -6.7; BL-046 +35.9 g; BL-042 +37.2 g

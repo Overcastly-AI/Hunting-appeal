@@ -92,6 +92,8 @@ def test_m8_test_square_avoids_the_strips():
 def test_fourth_status_and_not_ready():
     import mfg_corrie_f_rev3 as M
     st = {i: (c, s) for i, c, s, _ in M.FOURTH_STATUS}
-    assert st["N-1"] == ("blocker", "open (frame side)")
+    # BL-050 B: N-1 fixed by the lanes (BL-049 / 050 A) and the channel ends (BL-050 B); the clevis heads (N-1b) open
+    assert st["N-1"] == ("blocker", "fixed")
+    assert st["N-1b (BL-050 B)"] == ("major", "open (frame side)")
     assert all(st[k][1] == "fixed" for k in ("M-A", "M-B", "M-C"))
-    assert "N-1" in M.open_findings() and not M.ready_to_cut()
+    assert "N-1b (BL-050 B)" in M.open_findings() and not M.ready_to_cut()

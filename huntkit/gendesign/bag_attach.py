@@ -798,12 +798,23 @@ def plot_exploded() -> str:
     return _save(fig, f"{DATE}_attach_3_exploded.png")
 
 
+CRADLE_PIN_STATIONS = ("us1", "us2")   # BL-051: pins + sleeves booked by meat_haul.cradle_parts_g ('under-straps
+#   US1/US2: 7075 pins (4)', 'UHMWPE sleeves (4)'; CORRIE F books them in 'US-anchor: US1/US2 printed anchors, 7075
+#   pins, UHMWPE sleeves (frame side)', strap_arch rec). BL-050 added a +10.80 g ledger row for these 4 stations as
+#   'booked short': that was a double count and is retired (huntkit/mass/ledger.py BL050).
+
+
+def _pins_booked_here() -> list:
+    """The stations whose pin + sleeve this module's mass budget books: every station but the under-strap ones."""
+    return [s for s in stations() if s["name"] not in CRADLE_PIN_STATIONS]
+
+
 def _mass_budget(added_one_g: float, pin: dict) -> dict:
     """Grams added to the 2865 g pack. Old LINK hardware comes off. Meat hooks stay."""
     web = load("poly_webbing_38mm")
     gsm = float(web.require("mass_g_m"))
     n_yoke = 8
-    n_pin = 8
+    n_pin = len(_pins_booked_here())        # BL-051: 8 of the 12 stations; US1 / US2 pins are booked elsewhere
     n_bag_hook = 4                          # IM2 and IM3, both sides. IM1 is the meat strap's own hook.
     loops_m = n_yoke * 0.12                 # captive eye on each pin
     old_stubs_m = 6 * 0.20                  # v3.1 girth-hitched stubs
@@ -812,8 +823,8 @@ def _mass_budget(added_one_g: float, pin: dict) -> dict:
     triglide_g = 2 * TRIGLIDE_G             # lifter keepers: triglide_25mm record (BL-035; was 2 x 3.0 g ASSUMPTION)
     parts = {
         "printed fairleads (8)": n_yoke * added_one_g,
-        "7075 pins (8)": n_pin * pin["pin_g"],
-        "UHMWPE sleeves (8)": n_pin * pin["sleeve_g"],
+        f"7075 pins ({n_pin})": n_pin * pin["pin_g"],
+        f"UHMWPE sleeves ({n_pin})": n_pin * pin["sleeve_g"],
         "bag hooks, 38 mm Al (4)": n_bag_hook * HOOK_G,
         "TPU hook sleeves (4)": n_bag_hook * TPU_G,
         "webbing eyes, net of old stubs": (loops_m - old_stubs_m) * gsm,
@@ -836,7 +847,8 @@ def _cost(added_one_g: float, mass: dict) -> dict:
     hours = print_hours(plastic_g / 0.001060)          # marginal, the frame is already on the printer
     machine = hours * 1.0
     web = load("poly_webbing_38mm")
-    hardware = (8 * PIN_USD + 8 * 0.40 + 4 * HOOK_USD + 4 * TPU_USD
+    n_pin = len(_pins_booked_here())        # BL-051: as _mass_budget
+    hardware = (n_pin * PIN_USD + n_pin * 0.40 + 4 * HOOK_USD + 4 * TPU_USD
                 + mass["webbing_m"] * float(web.cost_usd["value"]) + 2 * 0.40)
     return {"filament": filament, "scrap": scrap, "machine": machine, "hardware": hardware,
             "total": filament + scrap + machine + hardware, "hours": hours}

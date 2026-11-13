@@ -137,8 +137,8 @@ HE_W = 38.0
 HE_BOX_GAP = 4.0                  # ASSUMPTION HE-GAP: box 4 mm above the floor seam line (clear of the SSa row; the SSa2
 #                                   allowances are turned DOWN onto B-05 at the hinge, op 4.15); settled by the PT-3 swatch
 # ---- BL-044 DECISION HE-ENV (pack-designer, 2026-11-13; review 2026-11-13 Z-1 / M-3 / m-1): the hinge eye is solved
-# against the BL-042 hinge fairlead, ``bag_attach.HINGE_EYE_ENVELOPE`` (pin 10.1 mm above the stay surface, 5.5 mm under
-# the pin, 20 mm throat, cheek tips 17.7 mm proud, cheeks +/-9 mm about the pin), NOT the module constants HOLE_PROUD /
+# against the hinge fairlead, ``bag_attach.HINGE_EYE_ENVELOPE`` (read at run time: since BL-049 pin 10.1 mm above the
+# stay surface, 6.5 mm under the pin (BL-042: 5.5), 20 mm throat, cheek tips 17.7 mm proud, 10 mm cheeks), NOT the module constants HOLE_PROUD /
 # THROAT (those stay the IM / US fairleads). The wrap is the real folded neck: the neck folds lie INSIDE the loop
 # (op 4.05 step 3), so the main ply wraps the pin over HE_NF fold plies: 2 in the middle 2 mm where the two 10 mm folds
 # overlap (the main ply rides that ridge), 1 elsewhere. Box top HE_CHEEK_CLEAR under the cheeks at the design pin, and
@@ -155,7 +155,8 @@ HE_T = F.WEB38_T                  # BL-048 M-B: the 38 mm webbing record's purch
 #                                   (HE, IME, T3, B-24, B-25: corrie_f.B25_T reads the same record). The caliper gate is
 #                                   at the PURCHASE (sample before the roll), HE-FIT step 1 re-checks the roll in hand
 HE_T_RANGE = (F.WEB38_T_RANGE[0], F.WEB38_T_RANGE[1])         # BL-044: the bracket the eye is solved over. The upper end is a GATE, not a bracket:
-#                                   3 plies of 1.6 mm (4.8) leave 0.7 mm under the pin (gap 5.5, review Z-1 rule: wrap
+#                                   3 plies of 1.6 mm (4.8) leave 0.7 mm under the pin at the BL-042 gap 5.5 (1.7 at BL-049's
+#                                   6.5; the gate is kept), review Z-1 rule: wrap
 #                                   <= gap - 0.5); a roll thicker than 1.6 mm is rejected at the caliper (HE-FIT step 1)
 HE_NF_DESIGN = 2                  # fold plies under the main ply in the wrap (the 2 mm ridge, see above); 1 = the flanks
 HE_NECK_EDGE = 10.0               # each long edge folded 10 mm in: 38 -> 18 mm neck (bag_attach.HE_FOLD_EDGE)
@@ -1048,6 +1049,26 @@ def build_shell(rs: RevSet, c):
     for x, y in ((fx0 + 3, fy0 + 3), (fx0 + W2 - 3, fy0 + 3), (fx0 + W2 - 3, fy0 + H2 - 3), (fx0 + 3, fy0 + H2 - 3)):
         BOT.add_drill_hole(x, y, 3.0, "F-02 corner")
     rs.geo["f02_on_b05"] = {"x0": round(fx0, 1), "y0": round(fy0, 1), "w": W2, "h": H2, "face": F02_OUT}
+    # BL-050 B (DECISION US-CHAN-LANE): a channel that ends outboard of F-02 (B-16b, US2) has its tails on B-05, at its
+    # fore-aft station from the frame edge (y 0 = the B-01 | B-05 seam line)
+    uc = F.us_channels(c)
+    xm = 0.5 * (bx0 + bx1)
+    side_clear = []
+    for k, n in enumerate(("us1", "us2")):
+        if uc["on_f02"][n]:
+            continue
+        pid, ex, yc = F.US_CHANNEL_IDS[n], uc["end_x_mm"][n], uc["stations_mm"][k]
+        for sx in (-1, 1):
+            xa, xb = sorted((xm + sx * W2 / 2, xm + sx * ex))
+            for d in (-uc["width_mm"] / 2, uc["width_mm"] / 2):
+                BOT.add_internal_line([(xa, yc + d), (xb, yc + d)], "stitch",
+                                      f"{pid} {n.upper()} channel tail edge (through the floor: seam-seal inside)")
+            xe = xm + sx * ex
+            BOT.add_internal_line([(xe, yc - uc["width_mm"] / 2), (xe, yc + uc["width_mm"] / 2)], "placement",
+                                  f"{pid} {n.upper()} channel end (open)")
+            side_clear.append(round(min(xe - bx0, bx1 - xe), 1))
+    rs.geo["us_chan_on_b05"] = {"side_seam_clear_mm": min(side_clear) if side_clear else None,
+                                "rule_mm": F.US_SIDE_SEAM_MIN}
     for sx in (-1, 1):
         BOT.add_notch(a0 + sx * STAY_X, 0.0, "v", "hinge eye CL")
         B01.add_notch(sx * STAY_X, 0.0, "v", "hinge eye CL")
@@ -1196,21 +1217,36 @@ def build_pockets(rs: RevSet, c, fabrics: str):
                      material_id="cordura_330d_nylon66", piece_id="F-02",
                      labels={"note": "under B-05, #5 coil zip on the floor's aft edge (panels.yaml F-02)"})
     rs.add(f02, "pockets", "3 pockets")
-    # BL-033: US1/US2 floor channels B-16 on F-02's outer face (corrie_f.us_channels), across the pocket
+    # BL-033: US1/US2 floor channels on F-02's outer face (corrie_f.us_channels). BL-050 B (DECISION US-CHAN-LANE):
+    # each channel ends at its strap's lane x: B-16 (US1, x +/-70) lies on F-02; B-16b (US2, x +/-165) crosses F-02
+    # and its outboard tails lie on B-05 (drawn on both pieces; the B-05 stretch is stitched through the floor and
+    # seam-sealed inside, op 'US floor channels')
     uc = F.us_channels(c, fabrics)
-    b16 = uc["piece"]
-    b16.labels["note"] = "ends turned 15 mm and left OPEN (the 25 mm under-strap passes through); topstitch both long edges"
-    rs.add(b16, "pockets", "3 pockets", notes="corrie_f.us_channels")
     W2, H2 = F.F02_WH
+    for n, lab in (("us1", "US1"), ("us2", "US2")):
+        q = uc["pieces"][n]
+        q.labels["note"] = (f"ends turned {F.US_CHANNEL_END:.0f} mm and left OPEN at x +/-{uc['end_x_mm'][n]:.0f} (the "
+                            "25 mm under-strap turns in here from the floor corner); topstitch both long edges"
+                            + ("" if uc["on_f02"][n] else "; centre on F-02, outboard tails on B-05: stitched through "
+                               "the floor, seam-sealed inside"))
+        rs.add(q, "pockets", "3 pockets", notes="corrie_f.us_channels (BL-050: ends at the lane x)")
     for k, st in enumerate(uc["stations_mm"]):
+        n = ("us1", "us2")[k]
+        lab, pid = n.upper(), F.US_CHANNEL_IDS[n]
+        hx = min(uc["end_x_mm"][n], W2 / 2)
         # F-02: y 0 = its aft (zip) edge, y H2 = its frame-side edge; ASSUMPTION F02-CENTRE: the pocket is centred on the
         # floor depth, so its frame-side edge is (d0 - H2) / 2 from the floor's frame edge
         yc = H2 - (st - (uc["floor_depth_mm"] - H2) / 2)
         for d in (-uc["width_mm"] / 2, uc["width_mm"] / 2):
-            f02.add_internal_line([(0.0, yc + d), (W2, yc + d)], "stitch", f"B-16 channel {'US1' if k == 0 else 'US2'} edge")
-        f02.add_notch(0.0, yc, "v", f"B-16 {'US1' if k == 0 else 'US2'} CL")
-        f02.add_notch(W2, yc, "v", f"B-16 {'US1' if k == 0 else 'US2'} CL")
-    rs.geo["us_channels"] = {"stations_mm": uc["stations_mm"], "width_mm": uc["width_mm"]}
+            f02.add_internal_line([(W2 / 2 - hx, yc + d), (W2 / 2 + hx, yc + d)], "stitch", f"{pid} channel {lab} edge")
+        if uc["on_f02"][n]:
+            for x in (W2 / 2 - hx, W2 / 2 + hx):
+                f02.add_internal_line([(x, yc - uc["width_mm"] / 2), (x, yc + uc["width_mm"] / 2)], "placement",
+                                      f"{pid} {lab} channel end (open)")
+        f02.add_notch(0.0, yc, "v", f"{pid} {lab} CL")
+        f02.add_notch(W2, yc, "v", f"{pid} {lab} CL")
+    rs.geo["us_channels"] = {"stations_mm": uc["stations_mm"], "width_mm": uc["width_mm"], "end_x_mm": uc["end_x_mm"],
+                             "length_mm": uc["length_mm"], "on_f02": uc["on_f02"], "ids": dict(F.US_CHANNEL_IDS)}
 
 
 ADDON_TODAY = {F.UG: F.fab("body", "today"), F.R70: F.fab("collar", "today")}
@@ -1684,10 +1720,16 @@ def build_webbing(rs: RevSet, c):
                note=f"neck: long edges folded {IME_NECK_EDGE:.0f} mm in between the neck lines, one BT-M per leg, sewn "
                     "flat BEFORE the fold (BL-044, bag_attach.imus_eye_envelope)")
     _neck(ime, 38.0, IME_NECK_EDGE, IME_NECK)
-    us = _web(rs, "US", "under-strap US1 / US2", 550.0, 2, folds=[(US_EYE, "eye fold (round the left pin)")],
-              boxes=[(_tip_box_y(US_EYE, 25.0), 25.0, "sewn eye (MT-1)")], source="ledger US-web 1.10 m",
-              note=f"eye neck: long edges folded {US_NECK_EDGE:.1f} mm in between the neck lines (BL-044)")
-    _neck(us, 25.0, US_NECK_EDGE, US_NECK)
+    # BL-050 B DECISION US-CUT (corrie_f.US_CUT_MM): the two under-straps are cut to their own lanes' bag-on paths
+    pub = json.loads(F.H1_PUBLISHED.read_text())["published"]
+    for pid, n in (("US", "us1"), ("US2", "us2")):
+        us = _web(rs, pid, f"under-strap {n.upper()} (pins z {pub[n.upper() + '_Z']:.0f})", F.US_CUT_MM[n], 1,
+                  folds=[(US_EYE, "eye fold (round the left pin)")],
+                  boxes=[(_tip_box_y(US_EYE, 25.0), 25.0, "sewn eye (MT-1)")],
+                  source="corrie_f.US_CUT_MM (BL-050 B; us_route.json strap_lengths)",
+                  note=f"eye neck: long edges folded {US_NECK_EDGE:.1f} mm in between the neck lines (BL-044); "
+                       f"{n.upper()} only: do not swap with the other strap")
+        _neck(us, 25.0, US_NECK_EDGE, US_NECK)
     # BL-044 (BL-045 found-not-fixed): the US cam on the RIGHT pin had no drawn anchor (BOM 'US-anchor' only). USA = a
     # 25 mm dog-bone as IMC: one loop round the right pin (necked to 18 mm where it passes the throat), the
     # other round the US cam's anchor bar, each closed by a 21 x 25 box. Path: left eye (US) - US strap - cam - cam bar
@@ -1968,8 +2010,8 @@ RECON = [
     ("IM-web:", "webbing", [], ["IM1", "IM2", "IM3"], ""), ("IM-eyes:", "webbing", [], ["IME"], ""),
     ("IM-hooks:", "hardware", [], [], ""), ("IM-cams:", "hardware", [], [], ""),
     ("B-12:", "pattern", ["B-12"], [], ""), ("US-anchor:", "hardware", [], [], "frame side"),
-    ("US-cams:", "hardware", [], [], ""), ("US-tg:", "hardware", [], [], ""), ("US-web:", "webbing", [], ["US"], ""),
-    ("US-chan:", "pattern", ["B-16"], [], "drafted by BL-033 (corrie_f.us_channels)"),
+    ("US-cams:", "hardware", [], [], ""), ("US-tg:", "hardware", [], [], ""), ("US-web:", "webbing", [], ["US", "US2"], ""),
+    ("US-chan:", "pattern", ["B-16", "B-16b"], [], "drafted by BL-033 (corrie_f.us_channels); BL-050 ends at the lane x"),
     ("B-24-web:", "webbing", [], ["B-24"], ""), ("B-24-hooks:", "hardware", [], [], ""),
     ("B-24-thr:", "hardware", [], [], "thread"),
     ("W-web:", "webbing", [], ["W1", "W2", "W3"], "with A-2 and BL-031 rows"),
@@ -2028,6 +2070,7 @@ RECON = [
     ("BL-044: W3 K-W keeper loops deleted", "removed", [], [], "DECISION KW-W3-OFF"),
     ("BL-044: B-25 on the sized spine clamp", "webbing", [], ["B-25"], "crown_spine_clamp run_plan"),
     ("BL-044: US cam anchors USA", "webbing", [], ["USA"], "BL-045 found-not-fixed; USA-LOOP"),
+    ("BL-050 B: US2 under-strap cut", "webbing", [], ["US2"], "DECISION US-CUT (corrie_f.US_CUT_MM)"),
 ]
 
 

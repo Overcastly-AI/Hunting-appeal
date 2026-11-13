@@ -287,9 +287,12 @@ STEP_META = {   # id: (class, ticket, short label, kind, gate)
               "pawl swing check on the print (h1_pawl); first-article weigh"),
     "BL049": ("P", "BL-049", "hinge fairlead grown (inboard-up sim pull); US lanes on lug arms; Ti hinge pins", "safety",
               "HE-FIT on the re-cut hinge piece; FIT-US / HE-FIT step 0 on us_route_stay_R; first-article weigh"),
-    "BL050": ("P", "BL-050 A", "US2 bolt-on clevis (lower half fits the H2S bed); pins + sleeves for 12 stations",
+    "BL050": ("P", "BL-050 A", "US2 bolt-on clevis (lower half fits the H2S bed)",
               "safety", "US2 clevis joint pull (CA-1 rig) and FIT-US on us_route_stay_R + us2_clevis_R; first-article "
               "weigh"),
+    "BL051": ("P", "BL-051", "H1 stay crown restored over the old US stub sites (BL-050's +10.8 g US pins / sleeves "
+              "row retired: the cradle rows already book them)", "correction", "crown continuity slice check "
+              "(h1_crown); first-article weigh"),
     "BL031": ("P", "BL-031 (owner)", "strap tails: lifters, sternum, stabilizers cut to length; belt tail + keepers",
               "design", "T9 gloved cinch trial (TAIL_GRIP 50 mm), R-06 fit trial (sternum), HB-D1 (stabilizers)"),
     "P_pkgC": ("P", "package C (2026-11-09)", "7075 belt plate; C-4 / C-7 rev C fixes", "safety",

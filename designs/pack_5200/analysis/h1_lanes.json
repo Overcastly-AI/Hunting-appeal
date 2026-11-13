@@ -1,4 +1,13 @@
 {
+ "superseded_by": {
+  "files": [
+   "designs/pack_5200/analysis/h1_bedfit.json",
+   "designs/pack_5200/analysis/h1_crown.json"
+  ],
+  "what": "print, bed fit, slice checks, US2 lug, body numbers, print masses (BL-050 A bolt-on clevis; BL-051 crown restored)",
+  "still_current": "hinge fairlead study, hinge pin, lane positions (published), lug loads",
+  "date": "2026-11-13"
+ },
  "date": "2026-11-13",
  "ticket": "BL-049",
  "published": {

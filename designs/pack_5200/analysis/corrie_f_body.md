@@ -1941,7 +1941,9 @@ fatigue 0.92 on its 2.4 g basis (the frame record checks 725 N / 905 N): flagged
   and meat, both sides, 1 g. **Every row is inboard and up**: meat 182-237 N, y-z angle 115-120 deg (up and towards the
   wearer), 45-52 deg inboard of the stay plane; fill 56-86 N, 85-102 deg, 28-67 deg inboard. Worst inboard share 0.917
   (23 in fill L, unit 0.917 / 0.034 / 0.397); worst meat (largest) 15 in L, unit (inboard 0.71, -0.31, up 0.64). So the
-  inboard-up direction BL-047 found fatigue 0.86 for is the sims' direction, not a bound. Caveat DRAPE-US: the sims carry the
+  inboard-up direction BL-047 found fatigue 0.86 for is the sims' direction, not a bound (**SUPERSEDED** by BL-049: the
+  hinge fairlead was grown for this direction, fatigue **1.30** inboard-up at the 1019 N row, `h1_lanes.md`; the 0.86 in
+  `crown_gnl.md` / `bl047_frame_items.json` is the BL-047 fairlead). Caveat DRAPE-US: the sims carry the
   under-straps as straight cables through the bag; their cinch is what pulls the floor up against the pin.
 - **Test kit:** TL-1 rigs A / B (24.2); register row **T1c-SW** (`tests_physical/T1c_hipbelt_off_frame.md`, R1, G6 after
   T1, 8 results rows: sway at 225 lb <= 3 mm, return <= 0.5 mm, growth <= 2.5 x, Southwell >= 340 lb, crown sideways
@@ -1961,3 +1963,120 @@ fatigue 0.92 on its 2.4 g basis (the frame record checks 725 N / 905 N): flagged
 **Status.** N-1 stays OPEN (frame side): the release says NOT ready to cut until BL-047 moves the US stations, the US cut
 is set, HE-FIT step 0 passes on the re-cut piece and a fifth review has looked (`mfg_corrie_f_rev3.FOURTH_STATUS`,
 `FIFTH_REVIEW_DONE`).
+
+## 25. BL-050 B: the bag on the US lanes (pack-designer, 2026-11-13)
+
+Source: `docs/backlog/BL-050-bed-fit-and-bag-lanes.md` Part B, after Part A (`h1_bedfit.md`; published stations
+`h1_bedfit.json` `published`: US1 x +/-70 z 95, US2 x +/-165 z 142, bolt-on US2 clevis). Code: `concepts/corrie_f.py`
+(`us_channels`, `us_channel_end_x`, `US_CUT_MM`, `bl050_rows`), `patterns_corrie_f_rev3.py` (B-16 / B-16b on F-02 and
+B-05, US / US2 webbing), `us_route.py` (layouts `now` / `old_channel`, `strap_lengths` per strap, `cradle_span`,
+`bag_on_legs`, `head_clearance`, figure 3), `concepts/strap_tails.py` (`us_rows`), `mfg_corrie_f_rev3.py` (ops 4.14 and
+floor, BOM frame bolt lines, PU sealer, FOURTH_STATUS, assumptions), `physical_test_kit.py` (HE-FIT step 0 on the frame
+test piece, CLEVIS-SHARE, FIT-US, shopping lines), `patterns_corrie_f_rev3_export.py`. Tests:
+`tests/test_bl050b_bag_lanes.py` (and the BL-033 / 044 / 048 / us_route tests moved to this design). Every number below
+is printed by that code (`analysis/us_route.json`, `he_stl_check.json`, `imus_stl_check.json`). Units mm, N, g.
+
+### 25.1 DECISION US-CHAN-LANE: the channel ends at the lane x
+
+BL-048 guide option (a). Each under-strap gets its own channel, ending at its lane:
+
+| piece | strap | finished | ends | lies on | station from the frame edge |
+|---|---|---|---|---|---:|
+| B-16 | US1 | 37 x 140 mm (5.5 x 1.5 in) | x +/-70 | F-02 (190 mm) | 48 |
+| B-16b | US2 | 37 x 330 mm (13.0 x 1.5 in) | x +/-165 | F-02, tails on B-05 | 104 |
+
+The ends come from `h1_bedfit.json` (`CHANNEL_ENTRY_X`), not typed. B-16b's two 70 mm tails lie on B-05 outboard of
+F-02; they are stitched through the floor after F-02 is on and before the floor ring, and the stitch lines are sealed on
+B-05's inside face with a urethane seam sealer (the 500D floor is PU-coated; silicone does not bond to PU). Its ends sit
+31.8 mm inside the B-03 | B-05 side seam (>= 15 mm, ASSUMPTION US-CHAN-EDGE). Sewing: op 4.14 sews B-16 and the centre of
+B-16b on the flat F-02 (B-16b's tails left free); the floor op sews the tails to B-05 (two-stage, so F-02's pocket is not
+stitched shut). Channel mass 3.57 -> 4.30 g (+0.73 g).
+
+### 25.2 Strap path on the print, every torso and side
+
+`us_route` 'now' is now the pattern as drawn on the print as it is (the md5 of the STL is in the json). On the 15 / 19 /
+23 in rev 3 fine meat drapes (every crown-kit end maps to one of them, SIM_TORSO), both sides, both straps, the strap
+clears the hinge fairlead, the HE and the other US fairlead by **US1 12.4 / US2 14.6 mm** (>= 10: pass, 12 of 12 rows).
+The BL-048 drawing (ends +/-95, layout 'old_channel') on the same print gives 4.9 / -3.2 mm (fails): the channel had to
+move with the stations.
+
+**IM / US eyes on the printed fairleads** (`imus_stl_check.py`, re-run with the US pull from this path, -90 deg, every
+kit end): all 11 station checks pass (`eye_pass_all` true; US gap under the pin 0.97-1.10 mm over the stack). **HE on the
+HE-FIT piece** (`he_stl_check.py`, HINGE_EYE_ENVELOPE gap 6.5 since BL-049): pass, worst under-pin clearance 1.09 mm at
+the 1.6 mm ply (>= 0.5), throat 19.98 mm, box to the cheeks >= 3.12 mm.
+
+### 25.3 DECISION US-CUT: US1 550 mm, US2 925 mm
+
+`strap_lengths` 'now' (pin-to-cam path on the drapes, the USA anchor's 89.5 mm reach off): US1 needs 320 mm, US2
+771 mm. With the 2 x 50 mm sewn eye and a 50 mm gloved grip: US1 keeps its **550 mm** cut (130 mm grip left); US2 is cut
+**925 mm** (the 5 mm-rounded need; 54 mm grip at the worst drape). The two are separate pattern pieces (US, US2) with the
+same eye, neck and box; the op and the pieces say "do not swap". Ledger row BL-050 B: +375 mm of 25 mm webbing = **+6.75 g**.
+Bag-off, the cradle path on the lane span is shorter (US1 198 - 89.5, US2 358.5 - 89.5 mm), so the tails are longer
+(US2 about 556 mm in the straight-leg model; a real quarter takes more); the stainless tri-glide holds the tail.
+
+### 25.4 Bag-off cradle on the lane span (`us_route.cradle_span`)
+
+meat_haul's cradle (two straight legs to a 70 mm belly, T = V / (2 sin theta)) on each strap's own half span (US1 70, US2
+165; meat_haul.HALF_SPAN_MM is still 115, the stay x: a frame-side module, not edited here):
+
+| case (factored) | US1 theta / T | US2 theta / T | meat_haul (115 mm span) US1 / US2 | cam SF min |
+|---|---|---|---|---:|
+| bag-off / float, 36 kg x 1.6 g x 1.5 | 45.0 deg / 359.5 N | 23.0 deg / 433.9 N | 488.9 / 325.9 N | 2.54 |
+| float, 53 kg (the frame's float meat limit) | 529.3 N | **638.8 N** | 719.8 N (US1) | - |
+| float, 56 kg (heavy meat) | 559.2 N | 675.0 N | - | 1.63 |
+
+The narrow US1 span steepens its legs (less tension); the wide US2 span flattens them (+33 %). At the 53 kg float limit the
+worst strap is 638.8 N, **inside the 720 N** the frame's US lugs and the clevis joint were checked at (0.887). But the
+belly governs (ASSUMPTION CRADLE-SPAN): 50 mm gives US2 **860 N** (over 720), 90 mm 521 N. The lug check also used
+meat_haul's 31.3 deg leg; the US2 leg on the lane is 23 deg (more aft, less down). Both go to the structural agent.
+
+**Bag-on on the real path** (`bag_on_legs`): the strap leaves its pin straight down B-01 (legs 80.8-89.5 deg from the
+horizontal over the drapes), so the cam-tight tension for the meat_haul vertical is US1 232 N / US2 156 N; us_route and
+the lug check use meat_haul's cradle-angle values 444 / 296 N (x 1.9, conservative).
+
+### 25.5 The US2 clevis bolt heads against the bag (ASSUMPTION HEAD-PROUD)
+
+The heads stand at x +/-184-187.5 (washer + 3.5 mm DIN 7984 head), y -6.97 (bolt axis), z 134 / 150. Against the free
+rev 3 drapes (15 / 19 / 23 in, fill and meat, both sides; `head_clearance`, distance to the cloth surface): **worst -1.1 mm**;
+within 0 mm at 15 in fill L, 15 in meat L, 19 in meat L and 23 in meat L (-0.1); 2.6-16.4 mm elsewhere. The bag's B-01 |
+B-03 corner drapes to y -4 to -8 there (beside the frame, outboard of the stay, where the sim has no frame). **The model
+does not support HEAD-PROUD**: the bag corner would rest on the heads at the short and middle kits. The US2 strap itself
+passes them by >= 2.3 mm (centre-line lower bound). This is frame geometry; not fixed here. Gate **FIT-US** (P1 + first
+bag, colour on the heads, kits S / M / L) settles it; owner options: counterbore or cap the heads (frame), or a wear patch
+on the bag corner (bag). Release status row N-1b (major, open, frame side).
+
+### 25.6 Test kit
+
+- HE-FIT step 0 (gate US-ROUTE) now prints `print/frame_h1/test_pieces/us_route_stay_R` (BL-049 / 050 A, without the US2
+  outer cheek) and `print/frame_h1/us2_clevis_R`, bolted with 2 Ti M5 x 40 DIN 7984, 2 nuts, 4 x 10 mm DIN 433 washers;
+  the dowel at each strap's own lane; SEAM-FLOOR slide added. The old kit copy `test_kit/print/` (BL-048 stations) is
+  retired. "Fails by design" text gone: the model gives 12.4 / 14.6 mm.
+- **CLEVIS-SHARE** (R1, G1 print / G4 lever rig): the piece + clevis, eye shimmed onto the outer cheek, 720 N cradle pull
+  (60 s), then 1e5 cycles at 480 N (720 x 1.6 / 2.4, R 0.1); pass = no joint opening (0.05 mm feeler) at any stop, no
+  crack, torque marks unmoved. Settles CLEVIS-SHARE, CLEVIS-DRY, CLEVIS-PRINT.
+- **FIT-US** (BAG-BATCH, G6 with T9-R3a): heads coloured, bag on at 15 / 19 / 23 in with 30 kg meat, 200 crank cycles,
+  look for colour on the bag; cradle with a 20 kg stand-in; US2 eye over the clevis seam. Settles HEAD-PROUD, SEAM-FLOOR.
+- Shopping list and BOM: the two frame bolt sets on distinct lines: **z 234 joint** Ti M5 x 45 DIN 7984 + **12 mm**
+  washers (load-bearing), **US2 clevis** Ti M5 x 40 DIN 7984 + **10 mm** DIN 433 washers (12 mm does not fit the 29 mm
+  block). BOM frame-kit line now says 12 stations, 10 x 7075 pins, 2 Ti-6Al-4V hinge pins 44 mm (was 8 / 8 / 38 mm).
+
+### 25.7 Regenerated, stale records
+
+Patterns, mfg and the kit regenerated on HINGE_EYE_ENVELOPE (gap 6.5, cheeks 10) and the B-25 runtime thickness
+(`crown_spine_clamp.B25_T` from the 38 mm record); mfg / pattern texts that typed "5.5 mm under the pin" for the hinge now
+read the envelope. The 0.86 hinge-fatigue line in 24.6 is marked SUPERSEDED (BL-049: 1.30); the frame-side records
+(`crown_gnl.md`, `bl047_frame_items.json`) are generated by frame code and still carry it.
+
+### 25.8 Mass
+
+Bag +7.48 g (+0.26 oz): US2 webbing +6.75 g (row BL-050 B), channels +0.73 g (US-chan row, drafted pieces). The ~3 ml
+of urethane sealer is not booked (the silicone fly sealer is not either; about 1-2 g cured, ASSUMPTION).
+
+### 25.9 Assumptions
+
+US-CHAN-EDGE (lay B-16b on the cut B-05), SEAL-PU (hose test on a sealed offcut), CRADLE-SPAN (FIT-US step 5: leg angle
+and tension with a stand-in quarter), HEAD-PROUD (FIT-US), CLEVIS-SHARE / CLEVIS-DRY / CLEVIS-PRINT (CLEVIS-SHARE),
+SEAM-FLOOR (HE-FIT step 0, FIT-US); carried: US-TOPO, US-FLEET, DRAPE-US, DRAPE-TENT, SIM_TORSO.
+
+**Status.** N-1 is fixed in the design (stations, channels, cut; model >= 10 mm everywhere); N-1b (clevis heads) is open
+on the frame side; the release stays **NOT ready to cut** (`FIFTH_REVIEW_DONE` False): review 5 follows.

@@ -55,17 +55,20 @@ def test_lane_offset_is_cheek_plus_clearance_plus_half_strap():
 
 
 def test_print_lanes_need_the_channel_moved():
-    """BL-049: the print has the US stations on their lanes. With the bag's B-16 channel ends where the pattern has
-    them today (x +/-95, 'now') the straps still pass too close; with the channel ends at the lane x ('print_lanes',
-    BL-048's 'lanes_wide' for BL-050) every drape clears by >= 10 mm. (BL-048's finding on the BL-047 print: the strap
-    rode over the hinge cheeks and the HE, hinge clearance < 0 on every row.)"""
+    """BL-049: the print has the US stations on their lanes. With the bag's B-16 channel ends at the BL-048 drawing
+    (x +/-95, 'old_channel') the straps still pass too close; with the channel ends at the lane x ('print_lanes', and
+    since BL-050 B 'now' = the pattern as drawn) every drape clears by >= 10 mm."""
     from huntkit.gendesign import h1_lanes as LN
-    now, pl = REC["layouts"]["now"], REC["layouts"]["print_lanes"]
-    assert now["layout"]["us1"] == pl["layout"]["us1"] == LN.US1_X and pl["layout"]["us2"] == LN.US2_X
-    assert not now["pass"] and pl["pass"]
-    assert all(r["min_clear_mm"] >= U.CLEAR_REQ for r in pl["rows"])
-    assert {(r["torso"], r["side"]) for r in pl["rows"]} == {(t, s) for t in U.TORSOS for s in "RL"}
-    assert all(r["clear_mm"]["hinge"] >= U.CLEAR_REQ for r in pl["rows"])            # nothing rides over the hinge
+    now, old, pl = REC["layouts"]["now"], REC["layouts"]["old_channel"], REC["layouts"]["print_lanes"]
+    assert now["layout"]["us1"] == pl["layout"]["us1"] == old["layout"]["us1"] == LN.US1_X
+    assert pl["layout"]["us2"] == LN.US2_X
+    assert not old["pass"] and pl["pass"] and now["pass"]
+    assert old["layout"]["entry"] == {"us1": U.CHANNEL_X, "us2": U.CHANNEL_X}
+    assert now["layout"]["entry"] == U._F().us_channels()["end_x_mm"]          # the pattern's channel ends
+    for L in (pl, now):
+        assert all(r["min_clear_mm"] >= U.CLEAR_REQ for r in L["rows"])
+        assert {(r["torso"], r["side"]) for r in L["rows"]} == {(t, s) for t in U.TORSOS for s in "RL"}
+        assert all(r["clear_mm"]["hinge"] >= U.CLEAR_REQ for r in L["rows"])     # nothing rides over the hinge
 
 
 def test_us_route_line_is_inside_the_bag():

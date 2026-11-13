@@ -445,7 +445,7 @@ $SKPOLY
   9
 $TDCREATE
  40
-2461358.637037037
+2461358.8199189813
   9
 $TDUCREATE
  40
@@ -453,7 +453,7 @@ $TDUCREATE
   9
 $TDUPDATE
  40
-2461358.637037037
+2461358.8199189813
   9
 $TDUUPDATE
  40
@@ -505,7 +505,7 @@ $SPLINESEGS
   9
 $HANDSEED
   5
-DB
+F8
   9
 $SURFTAB1
  70
@@ -885,11 +885,11 @@ $PSTYLEMODE
   9
 $FINGERPRINTGUID
   2
-{7443F7F3-53ED-4CAB-9348-B52404BC28D5}
+{0C687EF8-D98A-4AD6-A25C-0A3E4D6F7164}
   9
 $VERSIONGUID
   2
-{694B6D27-8072-4BE4-A9E1-467CB6AD5660}
+{34C4B01C-A7AE-4A97-8748-97F6C01EC2C9}
   9
 $EXTNAMES
 290
@@ -3057,7 +3057,7 @@ AcAecLayerStandard
   0
 APPID
   5
-D8
+F5
 330
 3
 100
@@ -3071,7 +3071,7 @@ HATCHBACKGROUNDCOLOR
   0
 APPID
   5
-D9
+F6
 330
 3
 100
@@ -4725,7 +4725,7 @@ BLOCK_RECORD
 100
 AcDbSymbolTable
  70
-7
+8
   0
 BLOCK_RECORD
   5
@@ -4813,7 +4813,7 @@ B-05_0
   0
 BLOCK_RECORD
   5
-C1
+C7
 330
 9
 100
@@ -4822,6 +4822,20 @@ AcDbSymbolTableRecord
 AcDbBlockTableRecord
   2
 B-16_1
+340
+0
+  0
+BLOCK_RECORD
+  5
+DE
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+B-16b_2
 340
 0
   0
@@ -5259,7 +5273,9 @@ LWPOLYLINE
 100
 AcDbEntity
   8
-NOTCH
+SEW
+  6
+DASHED
 100
 AcDbPolyline
  90
@@ -5267,13 +5283,13 @@ AcDbPolyline
  70
 0
  10
-50.0
+31.819999999999993
  20
--12.0
+85.5
  10
-50.0
+101.82
  20
--6.0
+85.5
   0
 LWPOLYLINE
   5
@@ -5283,7 +5299,9 @@ LWPOLYLINE
 100
 AcDbEntity
   8
-NOTCH
+SEW
+  6
+DASHED
 100
 AcDbPolyline
  90
@@ -5291,13 +5309,13 @@ AcDbPolyline
  70
 0
  10
-100.0
+31.819999999999993
  20
--12.0
+122.5
  10
-100.0
+101.82
  20
--6.0
+122.5
   0
 LWPOLYLINE
   5
@@ -5307,7 +5325,9 @@ LWPOLYLINE
 100
 AcDbEntity
   8
-NOTCH
+INTERNAL
+  6
+CONTINUOUS
 100
 AcDbPolyline
  90
@@ -5315,13 +5335,13 @@ AcDbPolyline
  70
 0
  10
-150.0
+31.819999999999993
  20
--12.0
+85.5
  10
-150.0
+31.819999999999993
  20
--6.0
+122.5
   0
 LWPOLYLINE
   5
@@ -5331,7 +5351,9 @@ LWPOLYLINE
 100
 AcDbEntity
   8
-NOTCH
+SEW
+  6
+DASHED
 100
 AcDbPolyline
  90
@@ -5339,13 +5361,13 @@ AcDbPolyline
  70
 0
  10
-200.0
+291.82
  20
--12.0
+85.5
  10
-200.0
+361.82
  20
--6.0
+85.5
   0
 LWPOLYLINE
   5
@@ -5355,7 +5377,9 @@ LWPOLYLINE
 100
 AcDbEntity
   8
-NOTCH
+SEW
+  6
+DASHED
 100
 AcDbPolyline
  90
@@ -5363,13 +5387,13 @@ AcDbPolyline
  70
 0
  10
-249.99999999999997
+291.82
  20
--12.0
+122.5
  10
-249.99999999999997
+361.82
  20
--6.0
+122.5
   0
 LWPOLYLINE
   5
@@ -5379,7 +5403,9 @@ LWPOLYLINE
 100
 AcDbEntity
   8
-NOTCH
+INTERNAL
+  6
+CONTINUOUS
 100
 AcDbPolyline
  90
@@ -5387,13 +5413,13 @@ AcDbPolyline
  70
 0
  10
-300.0
+361.82
  20
--12.0
+85.5
  10
-300.0
+361.82
  20
--6.0
+122.5
   0
 LWPOLYLINE
   5
@@ -5411,11 +5437,11 @@ AcDbPolyline
  70
 0
  10
-350.0
+50.0
  20
 -12.0
  10
-350.0
+50.0
  20
 -6.0
   0
@@ -5435,13 +5461,13 @@ AcDbPolyline
  70
 0
  10
-405.64
+100.0
  20
-50.0
+-12.0
  10
-399.64
+100.0
  20
-50.0
+-6.0
   0
 LWPOLYLINE
   5
@@ -5459,13 +5485,13 @@ AcDbPolyline
  70
 0
  10
-405.64
+150.0
  20
-100.0
+-12.0
  10
-399.64
+150.0
  20
-100.0
+-6.0
   0
 LWPOLYLINE
   5
@@ -5483,13 +5509,13 @@ AcDbPolyline
  70
 0
  10
+200.0
+ 20
 -12.0
- 20
-50.0
  10
--6.0
+200.0
  20
-50.0
+-6.0
   0
 LWPOLYLINE
   5
@@ -5507,13 +5533,13 @@ AcDbPolyline
  70
 0
  10
+249.99999999999997
+ 20
 -12.0
- 20
-100.0
  10
--6.0
+249.99999999999997
  20
-100.0
+-6.0
   0
 LWPOLYLINE
   5
@@ -5531,13 +5557,13 @@ AcDbPolyline
  70
 0
  10
-50.0
+300.0
  20
-172.0
+-12.0
  10
-50.0
+300.0
  20
-166.0
+-6.0
   0
 LWPOLYLINE
   5
@@ -5555,13 +5581,13 @@ AcDbPolyline
  70
 0
  10
-100.0
+350.0
  20
-172.0
+-12.0
  10
-100.0
+350.0
  20
-166.0
+-6.0
   0
 LWPOLYLINE
   5
@@ -5579,13 +5605,13 @@ AcDbPolyline
  70
 0
  10
-149.99999999999997
+405.64
  20
-172.0
+50.0
  10
-149.99999999999997
+399.64
  20
-166.0
+50.0
   0
 LWPOLYLINE
   5
@@ -5603,13 +5629,13 @@ AcDbPolyline
  70
 0
  10
-200.0
+405.64
  20
-172.0
+100.0
  10
-200.0
+399.64
  20
-166.0
+100.0
   0
 LWPOLYLINE
   5
@@ -5627,13 +5653,13 @@ AcDbPolyline
  70
 0
  10
-250.0
+-12.0
  20
-172.0
+50.0
  10
-250.0
+-6.0
  20
-166.0
+50.0
   0
 LWPOLYLINE
   5
@@ -5651,6 +5677,150 @@ AcDbPolyline
  70
 0
  10
+-12.0
+ 20
+100.0
+ 10
+-6.0
+ 20
+100.0
+  0
+LWPOLYLINE
+  5
+A9
+330
+92
+100
+AcDbEntity
+  8
+NOTCH
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+50.0
+ 20
+172.0
+ 10
+50.0
+ 20
+166.0
+  0
+LWPOLYLINE
+  5
+AA
+330
+92
+100
+AcDbEntity
+  8
+NOTCH
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+100.0
+ 20
+172.0
+ 10
+100.0
+ 20
+166.0
+  0
+LWPOLYLINE
+  5
+AB
+330
+92
+100
+AcDbEntity
+  8
+NOTCH
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+149.99999999999997
+ 20
+172.0
+ 10
+149.99999999999997
+ 20
+166.0
+  0
+LWPOLYLINE
+  5
+AC
+330
+92
+100
+AcDbEntity
+  8
+NOTCH
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+200.0
+ 20
+172.0
+ 10
+200.0
+ 20
+166.0
+  0
+LWPOLYLINE
+  5
+AD
+330
+92
+100
+AcDbEntity
+  8
+NOTCH
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+250.0
+ 20
+172.0
+ 10
+250.0
+ 20
+166.0
+  0
+LWPOLYLINE
+  5
+AE
+330
+92
+100
+AcDbEntity
+  8
+NOTCH
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
 300.0
  20
 172.0
@@ -5661,7 +5831,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-A9
+AF
 330
 92
 100
@@ -5685,7 +5855,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-AA
+B0
 330
 92
 100
@@ -5713,7 +5883,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-AB
+B1
 330
 92
 100
@@ -5741,120 +5911,6 @@ AcDbPolyline
   0
 POINT
   5
-AC
-330
-92
-100
-AcDbEntity
-  8
-DRILL
-100
-AcDbPoint
- 10
-104.82
- 20
-13.0
- 30
-0.0
-  0
-CIRCLE
-  5
-AD
-330
-92
-100
-AcDbEntity
-  8
-DRILL
-100
-AcDbCircle
- 10
-104.82
- 20
-13.0
- 30
-0.0
- 40
-1.5
-  0
-POINT
-  5
-AE
-330
-92
-100
-AcDbEntity
-  8
-DRILL
-100
-AcDbPoint
- 10
-288.82
- 20
-13.0
- 30
-0.0
-  0
-CIRCLE
-  5
-AF
-330
-92
-100
-AcDbEntity
-  8
-DRILL
-100
-AcDbCircle
- 10
-288.82
- 20
-13.0
- 30
-0.0
- 40
-1.5
-  0
-POINT
-  5
-B0
-330
-92
-100
-AcDbEntity
-  8
-DRILL
-100
-AcDbPoint
- 10
-288.82
- 20
-147.0
- 30
-0.0
-  0
-CIRCLE
-  5
-B1
-330
-92
-100
-AcDbEntity
-  8
-DRILL
-100
-AcDbCircle
- 10
-288.82
- 20
-147.0
- 30
-0.0
- 40
-1.5
-  0
-POINT
-  5
 B2
 330
 92
@@ -5867,13 +5923,127 @@ AcDbPoint
  10
 104.82
  20
-147.0
+13.0
  30
 0.0
   0
 CIRCLE
   5
 B3
+330
+92
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+104.82
+ 20
+13.0
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+B4
+330
+92
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+288.82
+ 20
+13.0
+ 30
+0.0
+  0
+CIRCLE
+  5
+B5
+330
+92
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+288.82
+ 20
+13.0
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+B6
+330
+92
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+288.82
+ 20
+147.0
+ 30
+0.0
+  0
+CIRCLE
+  5
+B7
+330
+92
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+288.82
+ 20
+147.0
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+B8
+330
+92
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+104.82
+ 20
+147.0
+ 30
+0.0
+  0
+CIRCLE
+  5
+B9
 330
 92
 100
@@ -5893,7 +6063,7 @@ AcDbCircle
   0
 LWPOLYLINE
   5
-B4
+BA
 330
 92
 100
@@ -5917,7 +6087,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-B5
+BB
 330
 92
 100
@@ -5945,7 +6115,7 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-B6
+BC
 330
 92
 100
@@ -5973,7 +6143,7 @@ AcDbPolyline
   0
 TEXT
   5
-B7
+BD
 330
 92
 100
@@ -6003,7 +6173,7 @@ AcDbText
   0
 TEXT
   5
-B8
+BE
 330
 92
 100
@@ -6033,7 +6203,7 @@ AcDbText
   0
 TEXT
   5
-B9
+BF
 330
 92
 100
@@ -6063,7 +6233,7 @@ AcDbText
   0
 TEXT
   5
-BA
+C0
 330
 92
 100
@@ -6093,7 +6263,7 @@ AcDbText
   0
 TEXT
   5
-BB
+C1
 330
 92
 100
@@ -6123,7 +6293,7 @@ AcDbText
   0
 TEXT
   5
-BC
+C2
 330
 92
 100
@@ -6153,7 +6323,7 @@ AcDbText
   0
 TEXT
   5
-BD
+C3
 330
 92
 100
@@ -6183,7 +6353,7 @@ AcDbText
   0
 TEXT
   5
-BE
+C4
 330
 92
 100
@@ -6225,9 +6395,9 @@ AcDbBlockEnd
   0
 BLOCK
   5
-C2
+C8
 330
-C1
+C7
 100
 AcDbEntity
   8
@@ -6251,9 +6421,9 @@ B-16_1
   0
 LWPOLYLINE
   5
-C4
+CA
 330
-C1
+C7
 100
 AcDbEntity
   8
@@ -6273,19 +6443,19 @@ AcDbPolyline
  20
 -12.0
  10
-205.0
+155.0
  20
 -12.0
  10
-205.0
+155.0
  20
 49.0
   0
 LWPOLYLINE
   5
-C5
+CB
 330
-C1
+C7
 100
 AcDbEntity
   8
@@ -6303,11 +6473,11 @@ AcDbPolyline
  20
 0.0
  10
-190.0
+140.0
  20
 0.0
  10
-190.0
+140.0
  20
 37.0
  10
@@ -6317,9 +6487,9 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-C6
+CC
 330
-C1
+C7
 100
 AcDbEntity
   8
@@ -6331,23 +6501,23 @@ AcDbPolyline
  70
 0
  10
-98.0
+73.0
  20
 -12.0
  10
-95.0
+70.0
  20
 -6.0
  10
-92.0
+67.0
  20
 -12.0
   0
 LWPOLYLINE
   5
-C7
+CD
 330
-C1
+C7
 100
 AcDbEntity
   8
@@ -6359,23 +6529,23 @@ AcDbPolyline
  70
 0
  10
-205.0
+155.0
  20
 21.5
  10
-199.0
+149.0
  20
 18.5
  10
-205.0
+155.0
  20
 15.5
   0
 LWPOLYLINE
   5
-C8
+CE
 330
-C1
+C7
 100
 AcDbEntity
   8
@@ -6387,23 +6557,23 @@ AcDbPolyline
  70
 0
  10
-92.0
+67.0
  20
 49.0
  10
-95.0
+70.0
  20
 43.0
  10
-98.0
+73.0
  20
 49.0
   0
 LWPOLYLINE
   5
-C9
+CF
 330
-C1
+C7
 100
 AcDbEntity
   8
@@ -6429,9 +6599,9 @@ AcDbPolyline
   0
 LWPOLYLINE
   5
-CA
+D0
 330
-C1
+C7
 100
 AcDbEntity
   8
@@ -6443,19 +6613,19 @@ AcDbPolyline
  70
 0
  10
-38.0
+28.0
  20
 18.5
  10
-152.0
+112.0
  20
 18.5
   0
 LWPOLYLINE
   5
-CB
+D1
 330
-C1
+C7
 100
 AcDbEntity
   8
@@ -6467,23 +6637,23 @@ AcDbPolyline
  70
 0
  10
-144.6315120479769
+104.63151204797691
  20
 15.384653261530797
  10
-152.0
+112.0
  20
 18.5
  10
-144.6315120479769
+104.63151204797691
  20
 21.615346738469203
   0
 LWPOLYLINE
   5
-CC
+D2
 330
-C1
+C7
 100
 AcDbEntity
   8
@@ -6495,23 +6665,23 @@ AcDbPolyline
  70
 0
  10
-45.36848795202308
+35.36848795202308
  20
 21.615346738469203
  10
-38.0
+28.0
  20
 18.5
  10
-45.36848795202308
+35.36848795202308
  20
 15.384653261530795
   0
 TEXT
   5
-CD
+D3
 330
-C1
+C7
 100
 AcDbEntity
   8
@@ -6519,7 +6689,7 @@ TEXT
 100
 AcDbText
  10
-107.0
+82.0
  20
 46.5
  30
@@ -6529,7 +6699,7 @@ AcDbText
   1
 ID: B-16
  11
-107.0
+82.0
  21
 46.5
  31
@@ -6539,189 +6709,9 @@ AcDbText
   0
 TEXT
   5
-CE
-330
-C1
-100
-AcDbEntity
-  8
-TEXT
-100
-AcDbText
- 10
-107.0
- 20
-38.5
- 30
-0.0
- 40
-5.0
-  1
-PIECE: under-strap floor channel (US1 / US2)
- 11
-107.0
- 21
-38.5
- 31
-0.0
-100
-AcDbText
-  0
-TEXT
-  5
-CF
-330
-C1
-100
-AcDbEntity
-  8
-TEXT
-100
-AcDbText
- 10
-107.0
- 20
-30.5
- 30
-0.0
- 40
-5.0
-  1
-MATERIAL: cordura_500d_nylon66
- 11
-107.0
- 21
-30.5
- 31
-0.0
-100
-AcDbText
-  0
-TEXT
-  5
-D0
-330
-C1
-100
-AcDbEntity
-  8
-TEXT
-100
-AcDbText
- 10
-107.0
- 20
-22.5
- 30
-0.0
- 40
-5.0
-  1
-CUT 2
- 11
-107.0
- 21
-22.5
- 31
-0.0
-100
-AcDbText
-  0
-TEXT
-  5
-D1
-330
-C1
-100
-AcDbEntity
-  8
-TEXT
-100
-AcDbText
- 10
-107.0
- 20
-14.5
- 30
-0.0
- 40
-5.0
-  1
-FACE UP
- 11
-107.0
- 21
-14.5
- 31
-0.0
-100
-AcDbText
-  0
-TEXT
-  5
-D2
-330
-C1
-100
-AcDbEntity
-  8
-TEXT
-100
-AcDbText
- 10
-107.0
- 20
-6.5
- 30
-0.0
- 40
-5.0
-  1
-KNIFE: CW from the grain-arrow head; cut windows and slits first
- 11
-107.0
- 21
-6.5
- 31
-0.0
-100
-AcDbText
-  0
-TEXT
-  5
-D3
-330
-C1
-100
-AcDbEntity
-  8
-TEXT
-100
-AcDbText
- 10
-107.0
- 20
--1.5
- 30
-0.0
- 40
-5.0
-  1
-NOTE: ends turned 15 mm and left OPEN (the 25 mm under-strap passes through); topstitch both long edges
- 11
-107.0
- 21
--1.5
- 31
-0.0
-100
-AcDbText
-  0
-TEXT
-  5
 D4
 330
-C1
+C7
 100
 AcDbEntity
   8
@@ -6729,19 +6719,19 @@ TEXT
 100
 AcDbText
  10
-107.0
+82.0
  20
--9.5
+38.5
  30
 0.0
  40
 5.0
   1
-PACK: 5200 CORRIE F rev 3
+PIECE: under-strap floor channel (US1, ends at x +/-70)
  11
-107.0
+82.0
  21
--9.5
+38.5
  31
 0.0
 100
@@ -6751,7 +6741,7 @@ TEXT
   5
 D5
 330
-C1
+C7
 100
 AcDbEntity
   8
@@ -6759,7 +6749,187 @@ TEXT
 100
 AcDbText
  10
-107.0
+82.0
+ 20
+30.5
+ 30
+0.0
+ 40
+5.0
+  1
+MATERIAL: cordura_500d_nylon66
+ 11
+82.0
+ 21
+30.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+D6
+330
+C7
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+82.0
+ 20
+22.5
+ 30
+0.0
+ 40
+5.0
+  1
+CUT 1
+ 11
+82.0
+ 21
+22.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+D7
+330
+C7
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+82.0
+ 20
+14.5
+ 30
+0.0
+ 40
+5.0
+  1
+FACE UP
+ 11
+82.0
+ 21
+14.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+D8
+330
+C7
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+82.0
+ 20
+6.5
+ 30
+0.0
+ 40
+5.0
+  1
+KNIFE: CW from the grain-arrow head; cut windows and slits first
+ 11
+82.0
+ 21
+6.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+D9
+330
+C7
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+82.0
+ 20
+-1.5
+ 30
+0.0
+ 40
+5.0
+  1
+NOTE: ends turned 15 mm and left OPEN at x +/-70 (the 25 mm under-strap turns in here from the floor corner); topstitch both long edges
+ 11
+82.0
+ 21
+-1.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+DA
+330
+C7
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+82.0
+ 20
+-9.5
+ 30
+0.0
+ 40
+5.0
+  1
+PACK: 5200 CORRIE F rev 3
+ 11
+82.0
+ 21
+-9.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+DB
+330
+C7
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+82.0
  20
 -17.5
  30
@@ -6769,7 +6939,7 @@ AcDbText
   1
 FACE: PU coat DOWN (inside)
  11
-107.0
+82.0
  21
 -17.5
  31
@@ -6779,9 +6949,575 @@ AcDbText
   0
 ENDBLK
   5
-C3
+C9
 330
-C1
+C7
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+DF
+330
+DE
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+B-16b_2
+ 70
+0
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+B-16b_2
+  1
+
+  0
+LWPOLYLINE
+  5
+E1
+330
+DE
+100
+AcDbEntity
+  8
+CUT
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-15.0
+ 20
+49.0
+ 10
+-15.0
+ 20
+-12.0
+ 10
+345.0
+ 20
+-12.0
+ 10
+345.0
+ 20
+49.0
+  0
+LWPOLYLINE
+  5
+E2
+330
+DE
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 10
+330.0
+ 20
+0.0
+ 10
+330.0
+ 20
+37.0
+ 10
+0.0
+ 20
+37.0
+  0
+LWPOLYLINE
+  5
+E3
+330
+DE
+100
+AcDbEntity
+  8
+NOTCH
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+168.0
+ 20
+-12.0
+ 10
+165.0
+ 20
+-6.0
+ 10
+162.0
+ 20
+-12.0
+  0
+LWPOLYLINE
+  5
+E4
+330
+DE
+100
+AcDbEntity
+  8
+NOTCH
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+345.0
+ 20
+21.5
+ 10
+339.0
+ 20
+18.5
+ 10
+345.0
+ 20
+15.5
+  0
+LWPOLYLINE
+  5
+E5
+330
+DE
+100
+AcDbEntity
+  8
+NOTCH
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+162.0
+ 20
+49.0
+ 10
+165.0
+ 20
+43.0
+ 10
+168.0
+ 20
+49.0
+  0
+LWPOLYLINE
+  5
+E6
+330
+DE
+100
+AcDbEntity
+  8
+NOTCH
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+-15.0
+ 20
+15.5
+ 10
+-9.0
+ 20
+18.5
+ 10
+-15.0
+ 20
+21.5
+  0
+LWPOLYLINE
+  5
+E7
+330
+DE
+100
+AcDbEntity
+  8
+GRAIN
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+66.0
+ 20
+18.5
+ 10
+264.0
+ 20
+18.5
+  0
+LWPOLYLINE
+  5
+E8
+330
+DE
+100
+AcDbEntity
+  8
+GRAIN
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+256.6315120479769
+ 20
+15.384653261530797
+ 10
+264.0
+ 20
+18.5
+ 10
+256.6315120479769
+ 20
+21.615346738469203
+  0
+LWPOLYLINE
+  5
+E9
+330
+DE
+100
+AcDbEntity
+  8
+GRAIN
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+73.36848795202309
+ 20
+21.615346738469203
+ 10
+66.0
+ 20
+18.5
+ 10
+73.36848795202309
+ 20
+15.384653261530795
+  0
+TEXT
+  5
+EA
+330
+DE
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+177.0
+ 20
+46.5
+ 30
+0.0
+ 40
+5.0
+  1
+ID: B-16b
+ 11
+177.0
+ 21
+46.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+EB
+330
+DE
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+177.0
+ 20
+38.5
+ 30
+0.0
+ 40
+5.0
+  1
+PIECE: under-strap floor channel (US2, ends at x +/-165)
+ 11
+177.0
+ 21
+38.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+EC
+330
+DE
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+177.0
+ 20
+30.5
+ 30
+0.0
+ 40
+5.0
+  1
+MATERIAL: cordura_500d_nylon66
+ 11
+177.0
+ 21
+30.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+ED
+330
+DE
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+177.0
+ 20
+22.5
+ 30
+0.0
+ 40
+5.0
+  1
+CUT 1
+ 11
+177.0
+ 21
+22.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+EE
+330
+DE
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+177.0
+ 20
+14.5
+ 30
+0.0
+ 40
+5.0
+  1
+FACE UP
+ 11
+177.0
+ 21
+14.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+EF
+330
+DE
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+177.0
+ 20
+6.5
+ 30
+0.0
+ 40
+5.0
+  1
+KNIFE: CW from the grain-arrow head; cut windows and slits first
+ 11
+177.0
+ 21
+6.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+F0
+330
+DE
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+177.0
+ 20
+-1.5
+ 30
+0.0
+ 40
+5.0
+  1
+NOTE: ends turned 15 mm and left OPEN at x +/-165 (the 25 mm under-strap turns in here from the floor corner); topstitch both long edges; centre on F-02, outboard tails on B-05: stitched through the floor, seam-sealed inside
+ 11
+177.0
+ 21
+-1.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+F1
+330
+DE
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+177.0
+ 20
+-9.5
+ 30
+0.0
+ 40
+5.0
+  1
+PACK: 5200 CORRIE F rev 3
+ 11
+177.0
+ 21
+-9.5
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+F2
+330
+DE
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+177.0
+ 20
+-17.5
+ 30
+0.0
+ 40
+5.0
+  1
+FACE: PU coat DOWN (inside)
+ 11
+177.0
+ 21
+-17.5
+ 31
+0.0
+100
+AcDbText
+  0
+ENDBLK
+  5
+E0
+330
+DE
 100
 AcDbEntity
   8
@@ -6797,7 +7533,7 @@ ENTITIES
   0
 INSERT
   5
-BF
+C5
 330
 17
 100
@@ -6817,7 +7553,7 @@ B-05_0
   0
 INSERT
   5
-D6
+DC
 330
 17
 100
@@ -6830,6 +7566,26 @@ AcDbBlockReference
 B-16_1
  10
 462.64
+ 20
+12.0
+ 30
+0.0
+  0
+INSERT
+  5
+F3
+330
+17
+100
+AcDbEntity
+  8
+CUT
+100
+AcDbBlockReference
+  2
+B-16b_2
+ 10
+662.64
  20
 12.0
  30
@@ -7925,7 +8681,7 @@ CREATED_BY_EZDXF
   3
 WRITTEN_BY_EZDXF
 350
-DA
+F7
   0
 DICTIONARYVAR
   5
@@ -7937,7 +8693,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-11-13T15:17:20.592437+00:00
+1.4.5 @ 2026-11-13T19:40:41.049262+00:00
   0
 VISUALSTYLE
   5
@@ -8641,7 +9397,7 @@ X-Ray
   0
 DICTIONARYVAR
   5
-DA
+F7
 330
 2D
 100
@@ -8649,7 +9405,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-11-13T15:17:20.600838+00:00
+1.4.5 @ 2026-11-13T19:40:41.057095+00:00
   0
 ENDSEC
   0

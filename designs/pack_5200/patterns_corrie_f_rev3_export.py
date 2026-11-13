@@ -42,7 +42,7 @@ TITLE = "CORRIE F rev 3"
 
 STEPS = [   # (file, title, piece ids) in the build order of the release README
     ("step1_pockets", "Step 1: pockets (FP hip-reach, IMP-4, IMP-8, IMP-2 sleeve, F-02 + B-16 floor channels)",
-     ["FP-a", "FP-b", "IMP4-a", "IMP4-b", "IMP8-a", "IMP8-b", "B-09c", "B-09p", "F-02", "B-16"]),
+     ["FP-a", "FP-b", "IMP4-a", "IMP4-b", "IMP8-a", "IMP8-b", "B-09c", "B-09p", "F-02", "B-16", "B-16b"]),
     ("step2_small_parts", "Step 2: swells, port patches, guy-port facings, Hypalon tabs",
      ["B-13x", "B-12", "B-27f", "B-11", "B-17", "B-18", "B-22"]),
     ("step3_door_blade", "Step 3: door D2, camo blade U, hinge band, accents",
@@ -58,10 +58,10 @@ STEPS = [   # (file, title, piece ids) in the build order of the release README
 # ---- BL-041 n-6 / n-7: printed notes and the 1:1 webbing-marks pages ------------------------------------------------
 NOTE_MAX = 40                       # a label note longer than this goes to the NOTES page (the DXF keeps it in full)
 WEB_MARKS = [("HE", None), ("RTM", None), ("LLT", None), ("IMC", None), ("T3", None), ("US", 110.0), ("RT", 110.0),
-             ("B-25", 222.0), ("IME", None), ("USA", None)]      # BL-044: the necked IME and the US cam anchor
+             ("B-25", 222.0), ("IME", None), ("USA", None), ("US2", 110.0)]  # BL-044: IME, USA; BL-050 B: US2 (925 mm)
 # BL-043 m-12: W3G deleted (W3-OVER); RT (sewn end) and B-25 (R half to the neck; the L half mirrors it) added; every
 # line gets a leader label beside the strip (not only a legend under it)
-WEB_GROUPS = (("HE", "RTM"), ("IMC", "LLT"), ("T3", "US"), ("B-25", "RT"), ("IME",), ("USA",))   # BL-048 m-8: IME and
+WEB_GROUPS = (("HE", "RTM"), ("IMC", "LLT"), ("T3", "US"), ("B-25", "RT"), ("IME",), ("USA",), ("US2",))   # BL-048 m-8: IME and
 #                                     USA are both tall; together they left no room for the test square (USA lay across it)   # tall strip left, short one right: the
 #                                     test square sits bottom right, under the short strip
 WEB_LABEL_W = 46.0                  # mm of label column right of each strip
@@ -544,9 +544,13 @@ def bl033_section(rsP) -> list:
            f" mm; row {gp['mass_g']} g.",
            "- `corrie_f.build`: the door zip and the two band | blade seams are real pairs (blade U inner edge split at "
            "z 650); no self-paired seam is left in D2.",
-           f"- US floor channels: B-16 x2, {g['us_channels']['width_mm']:.0f} x {F.F02_WH[0]:.0f} mm on F-02, centres "
-           f"{g['us_channels']['stations_mm'][0]:.0f} / {g['us_channels']['stations_mm'][1]:.0f} mm from the floor's frame "
-           "edge (the under-straps carry about 55 % of the floor vertical in bag-on; meat_haul_modes.md).",
+           f"- US floor channels (BL-050 B, DECISION US-CHAN-LANE): B-16 (US1) {g['us_channels']['width_mm']:.0f} x "
+           f"{g['us_channels']['length_mm']['us1']:.0f} mm on F-02, B-16b (US2) {g['us_channels']['width_mm']:.0f} x "
+           f"{g['us_channels']['length_mm']['us2']:.0f} mm across F-02 with its tails on B-05 (stitched through the floor, "
+           f"seam-sealed inside); ends at the US lane x +/-{g['us_channels']['end_x_mm']['us1']:.0f} / "
+           f"+/-{g['us_channels']['end_x_mm']['us2']:.0f}; centres {g['us_channels']['stations_mm'][0]:.0f} / "
+           f"{g['us_channels']['stations_mm'][1]:.0f} mm from the floor's frame edge (the under-straps carry about 55 % of "
+           "the floor vertical in bag-on; meat_haul_modes.md).",
            f"- Lid hours: {F.crown_lid()['hours']} h booked (drafted B-29), was {F.crown_lid()['hours_bl029']} h.",
            f"- H-1: hinge swells x2 removed ({next(r['g'] for r in F.parts() if r['name'].startswith('BL-033 H-1'))} g).", "",
            "### 7.5 F-01 rain fly", "",
@@ -639,7 +643,7 @@ def make_screens(rsP, mkP, mk10, log=print):
                                           "notches, windows, slits)", nxt()))
     small = [rsP.pieces[k] for k in ("B-13x", "B-12", "B-27f", "B-11", "B-17", "B-18", "B-22", "SH-07",
                                      "SH-01b", "FP-a", "FP-b", "IMP4-a", "IMP4-b", "IMP8-a", "IMP8-b", "B-09c",
-                                     "B-09p", "F-02", "B-16")]
+                                     "B-09p", "F-02", "B-16", "B-16b")]
     shots.append(PVX.render_pieces(small, f"{TITLE}: pockets, swells, ports, Hypalon tabs", nxt(), max_row=1400.0))
     lid = [rsP.pieces[k] for k in ("B-29a", "B-29b", "B-29c", "B-29d", "B-29e", "B-29f", "B-29g")]
     shots.append(PVX.render_pieces(lid, f"{TITLE}: B-29 crown lid (crown with 4 corner darts, base, zipped wall, "
@@ -673,7 +677,7 @@ def make_screens(rsP, mkP, mk10, log=print):
                                    "BL-034: hinge band B-28 front tabs OUTSIDE (21 x 20 box-X); F-02 on B-05", nxt(),
                                    max_row=900.0))
     # BL-035: the short tabs go last (their labels run into free space, clear of the B-24 hook box)
-    web = [rsP.pieces[k] for k in ("B-25", "US", "IM1", "W3", "B-24", "W1", "B-28t", "B-28s")]
+    web = [rsP.pieces[k] for k in ("B-25", "US", "IM1", "W3", "B-24", "W1", "B-28t", "B-28s")]   # (US2: same eye as US)
     shots.append(PVX.render_pieces(web, "BL-034/035: webbing box-X marks (B-25 toggle tabs, US eye, IM loop, W3, B-24, "
                                         "B-28t lock tabs, B-28s toggle loop)", nxt(), max_row=1400.0))
     for s in shots:
@@ -744,6 +748,9 @@ diamonds. Tape on the back, then check the test square again.
   sewn at the roll end again (DECISION RT-ORIGIN; 'roll end' and 'B-07s strip end' notches on B-07; RT cut {rt_cut:.0f});
   muzzle tabs {mk0:.0f} / {mk1:.0f} mm; B-25 drawn with its mitre turns and 25 mm neck (SK-12, cut {b25:.0f}); IMC 192 mm;
   webbing pages carry a leader label on every line, with B-25 and RT added.
+- BL-050 B (US lanes): the floor channels end at the US lane x (B-16 US1 on F-02, x +/-70; B-16b US2 across F-02 and
+  onto B-05, x +/-165: its tails are stitched through the floor and seam-sealed inside); the under-straps are cut
+  apart: US 550 mm (US1), US2 925 mm (its own 1:1 webbing-marks page). Do not swap them.
 
 ## 5. Build order and what to print
 

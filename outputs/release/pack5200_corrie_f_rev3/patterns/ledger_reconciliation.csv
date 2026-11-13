@@ -36,8 +36,8 @@ IM-cams: 3 x 25 mm Al cams,straps_meat,base,39.6,hardware,,,
 "US-anchor: US1/US2 printed anchors, 7075 pins, UHMWPE sleeves (frame side)",straps_meat,base,33.6,hardware,,,frame side
 US-cams: US1/US2 25 mm Al cams (2),straps_meat,base,26.4,hardware,,,
 "US-tg: US1/US2 tri-glide keepers (2), 25 mm",straps_meat,base,22.0,hardware,,,
-US-web: US1/US2 25 mm webbing 1.10 m,straps_meat,base,19.8,webbing,,US,
-"US-chan: US bag-floor channels B-16 x2 (37 x 190 mm on F-02, at 48 / 104 mm from the frame edge)",straps_meat,base,3.57,pattern,B-16,,drafted by BL-033 (corrie_f.us_channels)
+US-web: US1/US2 25 mm webbing 1.475 m (US1 550 + US2 925 mm),straps_meat,base,26.55,webbing,,US US2,
+"US-chan: US bag-floor channels B-16 + B-16b (37 x 140 on F-02 / 330 mm across F-02 onto B-05, at 48 / 104 mm from the frame edge)",straps_meat,base,4.3,pattern,B-16 B-16b,,drafted by BL-033 (corrie_f.us_channels); BL-050 ends at the lane x
 "B-24-web: B-24 float links, 38 mm webbing 2 x 435 mm",straps_meat,meat_trip,24.4,webbing,,B-24,
 "B-24-hooks: B-24 rated 38 mm hooks (2), same part as the bag hooks",straps_meat,meat_trip,28.0,hardware,,,
 B-24-thr: B-24 thread,straps_meat,meat_trip,2.0,hardware,,,thread
@@ -111,6 +111,6 @@ BL-034 records: guy tail elastic keepers (2 x 1.35 g),attachment,base,1.5,hardwa
 "BL-043: IMC tabs 180 -> 192 mm (m-4, 5 mm raw-end margin, x3)",straps_meat,base,0.65,webbing,,IMC,m-4
 "BL-044: HE hinge eyes 86 -> 96 mm (DECISION HE-ENV, x2)",attachment,base,0.56,webbing,,HE,HE-ENV length change
 BL-044: hinge pins +2 mm for the 20 mm throat (x2),attachment,base,0.22,hardware,,,"frame-side pins, 20 mm throat"
-BL-044: B-25 on the sized spine clamp and the printed spine (25.02 mm fore of the bar) 479.4 -> 512.2 mm,attachment,base,0.92,webbing,,B-25,crown_spine_clamp run_plan
+BL-044: B-25 on the sized spine clamp and the printed spine (25.02 mm fore of the bar) 479.4 -> 513.1 mm,attachment,base,0.94,webbing,,B-25,crown_spine_clamp run_plan
 "BL-044: US cam anchors USA (2 x 202 mm, 25 mm; the US cam's sewn anchor on the right pin, BL-045; DECISION USA-LOOP)",straps_meat,base,7.27,webbing,,USA,BL-045 found-not-fixed; USA-LOOP
 "BL-044: W3 K-W keeper loops deleted (2 x 80 mm, DECISION KW-W3-OFF)",straps_compression,base,-2.88,removed,,,DECISION KW-W3-OFF

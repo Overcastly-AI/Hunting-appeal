@@ -874,20 +874,48 @@ US_CHANNEL_Y = (0.30, 0.65)   # patterns_v31.CHANNEL_Y: ASSUMPTION there (channe
 US_CHANNEL_PLAY = 12.0        # patterns_v31.CHANNEL_W 50 = 38 mm webbing + 12 mm play; the same play on 25 mm webbing
 US_CHANNEL_END = 15.0         # patterns_v31 B-16: ends turned 15 mm, open
 F02_WH = (190.0, 140.0)       # panels.yaml F-02 (finished): the channels are topstitched across its outer face
+# BL-050 B (DECISION US-CHAN-LANE, BL-048 guide option (a)): each channel ends at its US station's lane x, so the strap
+# comes straight down B-01 from its pin and turns into its channel at the floor corner (us_route 'now' = the pattern).
+# The x come from the frame's published stations (h1_bedfit.json 'published' CHANNEL_ENTRY_X: US1 +/-70, US2 +/-165).
+# US1's channel (B-16) is shorter than F-02 and lies on it; US2's (B-16b) runs past F-02's side edges onto B-05: its
+# outboard tails are stitched through the floor (op: seam-sealed inside).
+H1_PUBLISHED = Path(__file__).resolve().parents[1] / "analysis" / "h1_bedfit.json"
+US_CHANNEL_IDS = {"us1": "B-16", "us2": "B-16b"}
+US_SIDE_SEAM_MIN = 15.0       # ASSUMPTION US-CHAN-EDGE: the turned channel end stays >= 15 mm clear of the B-03 | B-05
+#                               side seam's stitch line (SA_BODY) so the seam and the channel end are sewn separately;
+#                               settled by laying B-16b on the cut B-05 (op 'US floor channels')
+# BL-050 B: the US strap cuts (DECISION US-CUT). US1 keeps the 550 mm cut (bag-on need 320 mm + eye + grip = 470);
+# US2 925 mm = us_route.strap_lengths 'now' cut_needed (bag-on path 771 mm on the lanes, BL-048: about 925)
+US_CUT_MM = {"us1": 550.0, "us2": 925.0}
+
+
+def us_channel_end_x() -> dict:
+    """Channel end |x| per strap = the frame's published lane x (BL-050 A, h1_bedfit.json)."""
+    pub = json.loads(H1_PUBLISHED.read_text())["published"]["CHANNEL_ENTRY_X"]
+    return {k: float(pub[k]) for k in ("us1", "us2")}
 
 
 def us_channels(c: ShellF | None = None, fabrics: str = "B") -> dict:
-    """B-16 x2: open channels across the floor (on the F-02 fly pocket's outer face, which covers the floor's middle),
-    channel length = F-02 width, in the floor fabric. Returns the piece, the stations and the mass."""
+    """B-16 (US1) and B-16b (US2): open channels across the floor at the US fore-aft stations, each ending at its
+    strap's lane x (BL-050 B). US1 lies on the F-02 fly pocket's outer face; US2 crosses F-02 and runs onto B-05.
+    In the floor fabric. Returns the pieces, the stations, the ends and the mass."""
     c = c or make()
     d0 = float(c.depth([BC.Z0])[0])
     w = 25.0 + US_CHANNEL_PLAY
-    p = rect_panel("under-strap floor channel (US1 / US2)", F02_WH[0], w, 0.0, piece_id="B-16",
-                   material_id=fab("floor", fabrics), quantity=2, grain=0.0,
-                   seam_allowance_mm={"default": SA_BODY, "left": US_CHANNEL_END, "right": US_CHANNEL_END})
+    ends = us_channel_end_x()
+    pieces = {}
+    for n in ("us1", "us2"):
+        pid = US_CHANNEL_IDS[n]
+        pieces[n] = rect_panel(f"under-strap floor channel ({n.upper()}, ends at x +/-{ends[n]:.0f})", 2.0 * ends[n], w,
+                               0.0, piece_id=pid, material_id=fab("floor", fabrics), quantity=1, grain=0.0,
+                               seam_allowance_mm={"default": SA_BODY, "left": US_CHANNEL_END, "right": US_CHANNEL_END})
     st = [round(f * d0, 1) for f in US_CHANNEL_Y]
-    return {"piece": p, "width_mm": w, "stations_mm": st, "floor_depth_mm": d0, "mass_g": BC.piece_mass_g(p),
-            "source": f"{p.material_id} record x cut area (patterns_v31 B-16 rule, 25 mm webbing)"}
+    mass = sum(BC.piece_mass_g(p) for p in pieces.values())
+    return {"pieces": pieces, "piece": pieces["us1"], "width_mm": w, "stations_mm": st, "floor_depth_mm": d0,
+            "end_x_mm": ends, "length_mm": {n: 2.0 * ends[n] for n in ends}, "on_f02": {n: ends[n] <= F02_WH[0] / 2
+                                                                                       for n in ends},
+            "mass_g": mass, "source": f"{fab('floor', fabrics)} record x cut area (patterns_v31 B-16 rule, 25 mm "
+                                      "webbing; ends at the lane x, h1_bedfit.json published)"}
 
 
 def fly_rows(b: BC.Build, ledger_rows: list) -> list:
@@ -923,8 +951,9 @@ def strap_rows() -> list:
             if p.id != "pouch-straps"]           # the pouch straps are booked with the top pouch add-on
     # BL-033: the US floor channels drafted (B-16), not the B.2 estimate (floor geometry: the same in every revision)
     uc = us_channels()                       # (floor geometry: the same in every revision)
-    rows = [(s_, f"US-chan: US bag-floor channels B-16 x2 ({uc['width_mm']:.0f} x {F02_WH[0]:.0f} mm on F-02, at "
-                 f"{uc['stations_mm'][0]:.0f} / {uc['stations_mm'][1]:.0f} mm from the frame edge)", uc["mass_g"], cfg,
+    rows = [(s_, f"US-chan: US bag-floor channels B-16 + B-16b ({uc['width_mm']:.0f} x {uc['length_mm']['us1']:.0f} "
+                 f"on F-02 / {uc['length_mm']['us2']:.0f} mm across F-02 onto B-05, at {uc['stations_mm'][0]:.0f} / "
+                 f"{uc['stations_mm'][1]:.0f} mm from the frame edge)", uc["mass_g"], cfg,
              uc["source"]) if n.startswith("US-chan:") else (s_, n, g, cfg, src) for s_, n, g, cfg, src in rows]
     H = {h["where"]: h for h in LP.hooks_table()}
     hw = LP.hw()
@@ -1043,7 +1072,20 @@ def parts(size: str = "M", door: str = DOOR_DEFAULT, fabrics: str = "B", c: Shel
             add(s_, n, g, "base", src)
         for s_, n, g, src in bl044_rows():
             add(s_, n, g, "base", src)
+        for s_, n, g, src in bl050_rows():
+            add(s_, n, g, "base", src)
     return out
+
+
+US_CUT_LEDGER_MM = 550.0      # the ledger / strap_arch US-web row books 1.10 m = 2 x 550 mm (BL-003 REC, 25 mm)
+
+
+def bl050_rows() -> list:
+    """BL-050 B ledger rows (system, name, g, source): US2 cut to its lane path (DECISION US-CUT). The B-16 / B-16b
+    channel mass is already the drafted pieces' (strap_rows 'US-chan'), so only the webbing delta is booked here."""
+    return [("straps_meat", f"BL-050 B: US2 under-strap cut {US_CUT_LEDGER_MM:.0f} -> {US_CUT_MM['us2']:.0f} mm (US1 "
+             f"{US_CUT_MM['us1']:.0f} mm, DECISION US-CUT)", (sum(US_CUT_MM.values()) - 2 * US_CUT_LEDGER_MM) / 1000.0
+             * WEB25, "corrie_f.US_CUT_MM - the 1.10 m ledger pair, x poly_webbing_25mm mass_g_m (record)")]
 
 
 def bl041_rows() -> list:

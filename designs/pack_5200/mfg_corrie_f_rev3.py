@@ -166,13 +166,18 @@ PRICE_ASSUMED = {   # items with no material record: (usd, per, why). BL-034 C: 
     "rubber_pull_sleeve": (0.15, "unit", "ASSUMPTION"),
     "basting_tape_6mm": (0.05, "m", "ASSUMPTION"),
     "seam_sealer": (0.80, "bag", "ASSUMPTION: 10 ml of a silicone seam sealer"),
+    # BL-050 B: the B-16b tails are stitched through the PU-coated 500D floor; silicone does not bond to PU, so a
+    # urethane sealer (Seam Grip class) seals those holes
+    "seam_sealer_pu": (0.40, "bag", "ASSUMPTION: about 3 ml of a urethane seam sealer (2 x 70 mm x 2 lines + 4 bartacks)"),
     "label_set": (0.60, "set", "ASSUMPTION: size / care / ID label + hang tag + warning card"),
     "polybag_carton": (0.90, "bag", "ASSUMPTION: 2 recycled poly bags + 1/10 carton"),
 }
 # BL-041 n-10 / Y-5: what a one-off buyer can actually buy. ASSUMPTIONS SHOP-UNIT (settled by the owner's order):
 THREAD_CONE_G = 113.4          # 4 oz cone (the smallest common bonded-nylon put-up); cone price = record $/m x cone length
 SHOP_UNIT = {"basting_tape_6mm": (1, "roll of 20 m", 6.00, "ASSUMPTION SHOP-UNIT: smallest roll"),
-             "seam_sealer": (1, "tube 1 oz (28 ml)", 8.00, "ASSUMPTION SHOP-UNIT: smallest tube of silicone seam sealer")}
+             "seam_sealer": (1, "tube 1 oz (28 ml)", 8.00, "ASSUMPTION SHOP-UNIT: smallest tube of silicone seam sealer"),
+             "seam_sealer_pu": (1, "tube 1 oz (28 ml)", 9.00, "ASSUMPTION SHOP-UNIT: smallest tube of urethane seam "
+                                "sealer (Seam Grip class)")}
 # DECISION CAMO-FIRST (orchestrator, BL-041 Y-5): the first build is solid 630D on the camo panels (camo route D). The
 # HyperD 300 print yard is bought by the test kit as the AB-1 / FRAY-1 specimen only (with its shipping), not by the bag.
 FIRST_BUILD_CAMO = "solid 630D (polyester_ht_630d_printable, unprinted) on B-02u, SH-07, SH-01b, FP-b, B-29f and A1-d"
@@ -466,11 +471,49 @@ def hardware_table(ctx: Ctx) -> list[tuple]:
         ("srb", "25 mm side-release buckle (roll top)", "buckle_side_release_25mm", 2, "unit", "base", False),
         ("cordlock", f"spring cord lock ({ncl}): {cl_use}", "cord_lock_spring", ncl, "unit", "base", False),
         ("tpu_sleeve", "TPU sleeve on the IM3 carabiner (2)", "tpu_hook_sleeve", 2, "unit", "base", False),
-        ("fairlead", "printed fairleads (8), 7075 pins (8: 6 x {:.0f} mm shank IM / US + 2 x {:.0f} mm shank HINGE for the "
-         "20 mm throat, BL-044), UHMWPE sleeves (8), US anchors, lifter keepers; crown pawl = the LOW-PROFILE pawl "
-         "print/frame_h1/crown_pawl_lp_fdm_pacf (P1) / _lp_slm (production), NOT the old crown_pawl_* (it does not fit "
-         "H1, BL-047)".format(
-             P.F.hinge_pin()["shank_im_mm"], P.F.hinge_pin()["shank_hinge_mm"]), "frame kit", 1, "set", "base", True),
+        ("fairlead", fairlead_line(), "frame kit", 1, "set", "base", True),
+    ] + frame_bolt_lines()
+
+
+def fairlead_line() -> str:
+    """BL-050 B: the frame-kit attachment set as it stands after BL-049 / 050 (12 stations, h1_bedfit 'stations'; the
+    hinge pins Ti-6Al-4V at the frame's PIN-L length, h1_lanes.hinge_pin 'chosen'). Was '8 fairleads, 8 x 7075 pins,
+    38 mm shank HINGE' (BL-044)."""
+    from huntkit.gendesign import bag_attach as BA
+    from huntkit.gendesign import h1_lanes as LN
+    n = len(BA.stations())
+    hp = LN.hinge_pin()
+    hc = hp[hp["chosen"]]
+    im = P.F.hinge_pin()["shank_im_mm"]
+    return (f"printed fairleads ({n} stations, in the H1 print; the US2 outer cheeks are the bolt-on clevises), 7075 pins "
+            f"({n - 2}: IM1-IM3 and US1 / US2, {im:.0f} mm shank), Ti-6Al-4V HINGE pins (2: 5 mm h8 ground, "
+            f"{hc['length_mm']:.0f} mm, clip groove; BL-049, NOT 7075), UHMWPE sleeves ({n}), lifter keepers; crown pawl "
+            "= the LOW-PROFILE pawl print/frame_h1/crown_pawl_lp_fdm_pacf (P1) / _lp_slm (production), NOT the old "
+            "crown_pawl_* (it does not fit H1, BL-047)")
+
+
+def frame_bolt_lines() -> list[tuple]:
+    """BL-050 B (BL-051 mix-up risk): the two frame bolt sets on DISTINCT lines. The z 234 body joint (frame_h1.JOINT:
+    M5 x 45, 12 mm washers, load-bearing) and the BL-050 US2 clevis (h1_bedfit.JOINT: M5 x 40, 10 mm DIN 433 washers:
+    12 mm does not fit its 29 mm block). Both Ti gr5 DIN 7984 low head, A2 ISO 4032 nuts."""
+    from huntkit.gendesign import frame_h1 as FH
+    from huntkit.gendesign import h1_bedfit as BF
+    z, c = FH.JOINT, BF.JOINT
+    n_cl = 2 * len([q for q in BF.us2_stations()])               # 2 bolts per clevis, one clevis per side
+    return [
+        ("z234_bolt", f"z 234 JOINT: Ti gr5 low-head socket cap screw M5 x {z.bolt_len:.0f} DIN 7984 (NOT the M5 x "
+         f"{c.bolt_len:.0f} of the US2 clevis: too short here)", "-", 4, "unit", "frame kit", True),
+        ("z234_nut", "z 234 JOINT: M5 hex nut A2 ISO 4032 (8 AF x 4)", "-", 4, "unit", "frame kit", True),
+        ("z234_washer", f"z 234 JOINT: M5 washer {z.washer_od:.0f} mm OD x {z.washer_t:.1f} A2 ({z.washer_od:.0f} mm is "
+         f"LOAD-BEARING; NOT the {c.washer_od:.0f} mm clevis washer)", "-", 8, "unit", "frame kit", True),
+        ("clevis_bolt", f"US2 CLEVIS (BL-050): Ti gr5 low-head socket cap screw M5 x {c.bolt_len:.0f} DIN 7984, 2 per "
+         f"side (NOT the M5 x {z.bolt_len:.0f} of z 234: it would stand {z.bolt_len - c.bolt_len:.0f} mm longer into "
+         "the trap)", "-", n_cl, "unit", "frame kit", True),
+        ("clevis_nut", "US2 CLEVIS (BL-050): M5 hex nut A2 ISO 4032 (8 AF x 4), side traps", "-", n_cl, "unit",
+         "frame kit", True),
+        ("clevis_washer", f"US2 CLEVIS (BL-050): M5 washer {c.washer_od:.0f} mm OD x {c.washer_t:.1f} A2 DIN 433 "
+         f"({z.washer_od:.0f} mm does not fit the clevis block; NOT for z 234)", "-", 2 * n_cl, "unit", "frame kit",
+         True),
     ]
 
 
@@ -615,6 +658,9 @@ def consumables_bom(g: dict) -> list[BOMLine]:
            BOMLine("consumable", "silicone seam sealer for the silpoly fly and liner seams, ~10 ml (ASSUMPTION)",
                    "seam_sealer", 1, "bag", 0, PRICE_ASSUMED["seam_sealer"][0], PRICE_ASSUMED["seam_sealer"][0],
                    source=PRICE_ASSUMED["seam_sealer"][2]),
+           BOMLine("consumable", "urethane seam sealer for the B-16b channel tail stitch lines on the PU-coated floor "
+                   "B-05, ~3 ml (BL-050 B; ASSUMPTION)", "seam_sealer_pu", 1, "bag", 0, PRICE_ASSUMED["seam_sealer_pu"][0],
+                   PRICE_ASSUMED["seam_sealer_pu"][0], source=PRICE_ASSUMED["seam_sealer_pu"][2]),
            BOMLine("packaging", "poly bags + carton share", "polybag_carton", 1, "bag", 0,
                    PRICE_ASSUMED["polybag_carton"][0], PRICE_ASSUMED["polybag_carton"][0],
                    source=PRICE_ASSUMED["polybag_carton"][2])]
@@ -931,11 +977,16 @@ def load_points(ctx: Ctx) -> list[dict]:
         add("US cam anchor", "USA", f"{lab.replace(' box-X', '')}: dog-bone between the right pin and the cam bar", w, h,
             720.0, "loadpath_verification S5-S7: 720 N cradle (the same strap as the left eye)",
             "MT-1 1080 N (2 USA specimens added to the MT-1 lot)", hw=CAM)
-    for w, h, lab in box("US") or [(21.0, 25.0, "ASSUMPTION US-BOX (not drawn)")]:
-        add("US1/US2 sewn eye", "US", "eye on the left pin (US-EYE fold, pattern)", w, h, 720.0,
-            "loadpath_verification S5-S7: 720 N", "MT-1 1080 N; SEW-F (box-X fatigue); US-BS", hw=CAM,
-            note=(lab if "ASSUMPTION" in lab else "") + "; cam side: stainless tri-glide backstop behind the cam "
-                 "(orchestrator 2026-11-13; gate US-BS)")
+    cs_ = json.loads((ROOT / "designs" / "pack_5200" / "analysis" / "us_route.json").read_text()).get("cradle_span", {})
+    lim_ = cs_.get("at_float_limit", {})
+    for pid_, nm_ in (("US", "US1"), ("US2", "US2")):      # BL-050 B: US1 and US2 are cut to their own lengths
+        on_lane = (f"; BL-050 B lane span: {lim_[nm_.lower()]['tension_n']:.0f} N at the "
+                   f"{lim_[nm_.lower()]['meat_kg']:.0f} kg float limit, us_route.json cradle_span") if lim_ else ""
+        for w, h, lab in box(pid_) or [(21.0, 25.0, "ASSUMPTION US-BOX (not drawn)")]:
+            add(f"{nm_} sewn eye", pid_, "eye on the left pin (US-EYE fold, pattern)", w, h, 720.0,
+                f"loadpath_verification S5-S7: 720 N{on_lane}", "MT-1 1080 N; SEW-F (box-X fatigue); US-BS", hw=CAM,
+                note=(lab if "ASSUMPTION" in lab else "") + "; cam side: stainless tri-glide backstop behind the cam "
+                     "(orchestrator 2026-11-13; gate US-BS)")
     for pid in ("W1", "W2", "W3"):
         for w, h, lab in box(pid) or [(21.0, 25.0, "ASSUMPTION W-BOX (pattern draws the fold only)")]:
             add(f"{pid} G-hook end", pid, "G-hook fold 2 x 30 mm", w, h, 225.0, "loadpath_verification S9: 225 N",
@@ -1324,16 +1375,36 @@ def ops(ctx: Ctx) -> list[SewingOp]:
     fl = sum(seam_mm(ctx, n) for n in ("bottom | B-01 (hinge eyes in it)", "bottom | gusset R", "bottom | gusset L",
                                        "bottom | blade U kick strip"))
     if g["b16"]:
-        b16 = rs.pieces["B-16"]
-        L16 = 2 * b16.bounds(cut=False)[2]
-        op("US floor channels B-16 on F-02", f"Turn both ends of each B-16 15 mm (left OPEN: the 25 mm under-strap "
-           f"passes through), lay it across F-02's outer face on the drawn 'B-16 channel' lines (stations "
-           f"{g['us_channels']['stations_mm'] if g['us_channels'] else '-'} mm), topstitch both long edges, bartack the "
-           "4 corners.", "body", pieces=f"B-16 x{b16.quantity}, F-02", seam="LSd", length=b16.quantity * L16,
-           hours=b16.quantity * (rate(L16, "applique") + 2 * H["bartack"]), vol="pattern: ledger (US-chan)")
-        us_txt = "US channels: on F-02 (op above)."
+        # BL-050 B DECISION US-CHAN-LANE: each channel ends at its strap's lane x (US1 B-16 on F-02; US2 B-16b across F-02
+        # and onto B-05). Stage 1 here (flat F-02); B-16b's tails go on B-05 in the floor op (stage 2).
+        uc_ = g["us_channels"]
+        b16, b16b = rs.pieces["B-16"], rs.pieces["B-16b"]
+        W2 = P.F.F02_WH[0]
+        L1 = 2 * b16.bounds(cut=False)[2]                       # both long edges
+        L2c = 2 * W2                                            # B-16b on F-02: both edges, F-02 edge to edge
+        op("US floor channels B-16 (US1) and B-16b (US2) on F-02",
+           f"Turn both ends of B-16 and of B-16b {P.F.US_CHANNEL_END:.0f} mm under (left OPEN: the 25 mm under-strap "
+           f"passes through). B-16 (US1, {uc_['length_mm']['us1']:.0f} mm): lay it on F-02's outer face on the drawn "
+           f"'B-16 channel US1' lines, its ends on the 'channel end (open)' marks (x +/-{uc_['end_x_mm']['us1']:.0f}), "
+           "topstitch both long edges, bartack the 4 corners. B-16b (US2, "
+           f"{uc_['length_mm']['us2']:.0f} mm, ends at x +/-{uc_['end_x_mm']['us2']:.0f}): centre it on F-02's 'B-16b "
+           f"channel US2' lines (CL notches matched), topstitch both long edges ON F-02 ONLY, from F-02's left edge to "
+           f"its right edge; leave the two {uc_['end_x_mm']['us2'] - W2 / 2:.0f} mm tails FREE (they are sewn to B-05 "
+           "in op 'Floor B-05'). Stations from the floor's frame edge "
+           f"{uc_['stations_mm'][0]:.0f} / {uc_['stations_mm'][1]:.0f} mm. Do not swap the two: B-16 is the short one.",
+           "body", pieces="B-16, B-16b, F-02", seam="LSd", length=L1 + L2c,
+           hours=rate(L1 + L2c, "applique") + 2 * H["bartack"], vol="pattern: ledger (US-chan)")
+        tail = 2 * (uc_["end_x_mm"]["us2"] - W2 / 2)            # both tails
+        us_txt = (f"BL-050 B: after F-02 is on and BEFORE the floor ring, lay B-16b's two tails flat on B-05 on the "
+                  f"drawn 'B-16b US2 channel tail edge' lines (ends on the 'channel end (open)' marks at x +/-"
+                  f"{uc_['end_x_mm']['us2']:.0f}, {rs.geo['us_chan_on_b05']['side_seam_clear_mm']:.0f} mm inside the side "
+                  "seam line), topstitch both long edges through B-05 and bartack the 2 outer corners of each tail; then "
+                  "seal those stitch lines (and the bartacks) on B-05's INSIDE face with the urethane seam sealer (BOM "
+                  "consumable), a thin bead pressed into the holes, 12 h to cure before the floor ring is folded.")
+        us_len = 2 * tail
     else:
         us_txt = "US floor channels: NOT drafted (ledger row US-chan, not_drafted) - HOLD."
+        us_len = 0.0
     op("Floor B-05 (F-02 first)", "Sew F-02 to the OUTSIDE of B-05 on the drawn 'F-02 fly pocket' placement (zip edge "
        f"aft, corner drill marks), perimeter row. Then the floor ring ({fl:.0f} mm): B-01 edge "
        "first with the HE tails and the B-18 lower edges caught in it, then gussets, then the blade kick strip; "
@@ -1342,8 +1413,10 @@ def ops(ctx: Ctx) -> list[SewingOp]:
        "hinge-eye spans (x +/-115, 50 mm each way) with the ZIPPER / EDGE FOOT: the floor seam runs 4 mm from the HE box "
        "stack and a walking foot (5-6 mm half width) rides up on it there; check from inside that "
        f"the B-18 lower edge and both HE raw ends are in the seam. {us_txt}", "body",
-       pieces="B-05, F-02, B-01, B-03 x2, B-02u", seam="SSa2",
-       length=2 * fl + piece_perim(f2), hours=rate(fl) + H["ring"] + 4 * H["pivot"] + rate(piece_perim(f2), "applique"),
+       pieces="B-05, F-02, B-16b tails, B-01, B-03 x2, B-02u", seam="SSa2",
+       length=2 * fl + piece_perim(f2) + us_len,
+       hours=rate(fl) + H["ring"] + 4 * H["pivot"] + rate(piece_perim(f2), "applique")
+       + (rate(us_len, "applique") + 4 * H["bartack"] if us_len else 0.0),
        qc="QC-08", vol="" if g["b16"] else "pattern: ledger (US-chan)")
 
     # ---------------------------------------------------------------- 5 collar
@@ -1446,7 +1519,7 @@ def ops(ctx: Ctx) -> list[SewingOp]:
                    "25 mm CAM's anchor bar into the 'fold round the CAM anchor bar' loop (all 3 tabs) and the rated "
                    "G-HOOK's bar into the other loop of the IM1 and IM2 tabs; the IM3 tab's second loop stays EMPTY (the "
                    "wiregate carabiner clips in at op @FIT). Hardware for this op: 3 cams, 2 G-hooks. Then: " + how)
-        if pid in ("US", "USA"):                   # BL-044 (BL-045 imus_eye_envelope): necked where it passes the throat
+        if pid in ("US", "US2", "USA"):            # BL-044 (BL-045 imus_eye_envelope): necked where it passes the throat
             neck = (f"NECK FIRST (BL-044, as op 4.05's HE): on the FLAT strip fold each long edge {P.US_NECK_EDGE:.1f} mm "
                     "in between the two 'neck lines' (18 mm: the eye passes the 20 mm throat of the BL-045 fairlead), "
                     "one BT-M tack across each leg at the 'neck tack' lines " + step_spec("bt", "304") + ". ")
@@ -1490,7 +1563,7 @@ def ops(ctx: Ctx) -> list[SewingOp]:
            seam="BOX" if kind == "box" else ("BT" if kind == "bt" else "-"),
            bartack=pid if lpr else "", hours=hrs, length=wl, sketch="SK-1, SK-7" + (", SK-12" if pid == "B-25" else ""),
            qc="QC-07" if lpr else "",
-           vol="pattern: ledger" if pid in ("US",) else "")
+           vol="pattern: ledger" if pid in ("US", "US2") else "")
     cords = [w["id"] for w in webs if "cord" in w["material_id"] and w["id"] not in named_before]
     op("Fit the hardware", "IM1-IM3 (SK-11, DECISION IM-CAM-TAB): the cam is SEWN to the IMC tab (cam end box), the "
        "IMC's other loop carries the G-hook (IM1 / IM2) or the wiregate carabiner (IM3); the IM strap's free end goes "
@@ -1652,6 +1725,8 @@ RELEASE_TESTS = [   # id, why it gates this package (register row read at run ti
     ("T9-R3c", "rev 3 (c): B-28 crown strap free length per crown kit (cut = longest path + 40 mm spare + 2 grips, BL-039)"),
     ("T9-R3d", "rev 3 (d): sewn B-29 lid mass and seat"),
     ("FS-O5", "alternate fabric gate: ULTRA 200X 50 mm strip (floor / frame side)"),
+    ("FIT-US", "BL-050 B: US straps on their lanes and the US2 clevis bolt heads on P1 with the first bag (colour "
+               "transfer at kits S / M / L; the free drapes reach the heads: ASSUMPTION HEAD-PROUD)"),
 ]
 EXTRA_GATES = [
     ("B-28 slip", f"B-28 crown strap on its heavy ladder lock: covered by LL-H at {LLH_N:.0f} N (BL-031 dropped the 20 mm "
@@ -2002,6 +2077,10 @@ def checks(pk: dict) -> dict:
 
 
 # ============================================================================ assumptions that govern (id, text, settled by)
+from huntkit.gendesign.bag_attach import HINGE_EYE_ENVELOPE as _ENV  # noqa: E402  (BL-050 B: read, not typed)
+_UR = json.loads((ROOT / "designs" / "pack_5200" / "analysis" / "us_route.json").read_text())   # BL-050 B numbers
+_UW, _UH = _UR["layouts"]["now"]["worst_clear_mm"], _UR.get("clevis_heads", {})
+_USL, _UCS = _UR["strap_lengths"]["layouts"]["now"], _UR.get("cradle_span", {})
 ASSUMPTIONS = [
     ("NO-BIND", "Body seams are SSa2 (second row over the turned allowances), not bound: the ledger books no binding "
                 "(RD-17 B-1).", "FRAY-1 wash-swatch test (3 cycles); if it fails, bind with 20 mm grosgrain via a binder"),
@@ -2030,7 +2109,9 @@ ASSUMPTIONS = [
     ("HE-ONE / HE-PIN / HE-ENV / HE-GAP / HE-CHEEK / HE-T / HE-PIN-HI", f"BL-040 B-1 + BL-041 X-1 / X-2 + BL-044 Z-1 / "
      f"M-3 / m-1: one hinge-eye construction (HE {P.HE_CUT:.0f} mm folded in half, both raw ends and the B-18 edge in the "
      f"floor seam, B-18 rows sewn first through B-18 + B-01 only); eye UP on the z 60 pin of the BL-042 hinge fairlead "
-     f"(bag_attach.HINGE_EYE_ENVELOPE: pin 10.1 mm above the stay, 5.5 mm under it, 20 mm throat); box-X "
+     f"(bag_attach.HINGE_EYE_ENVELOPE: pin {_ENV['pin_centre_above_stay_surface_mm']:.1f} mm above the stay, "
+     f"{_ENV['gap_under_pin_mm']:.1f} mm under it (BL-049 floor drop; BL-042 5.5), {_ENV['throat_mm']:.0f} mm throat, "
+     f"{_ENV['cheek_thickness_mm']:.0f} mm cheeks); box-X "
      f"{P.HE_BOX[0]:.0f} x {P.HE_BOX[1]:.0f} at +{P.HE_BOX_GAP:.0f}..+{P.HE_BOX_GAP + P.HE_BOX[1]:.0f} mm, "
      f"{P.HE_CHEEK_CLEAR:.0f} mm under the cheeks at the design pin and >= {P.HE_CHEEK_MIN:.0f} mm over the HE-FIT band; "
      f"eye {P.HE_EYE} mm solved on the real 3-ply neck wrap for webbing {P.HE_T} mm (bracket "
@@ -2068,6 +2149,23 @@ ASSUMPTIONS = [
     ("PRICES", "Items with no material record use PRICE_ASSUMED (TPU hook sleeve, rubber pull sleeve, basting tape, seam "
                "sealer, labels, packaging). Hardware and elastic use their records since BL-034.",
      "supplier quotes"),
+    # BL-050 B
+    ("US-CHAN-LANE / US-CUT (decisions)", "The B-16 (US1) / B-16b (US2) channels end at the frame's published lane x "
+     f"(h1_bedfit.json: +/-{P.F.us_channel_end_x()['us1']:.0f} / +/-{P.F.us_channel_end_x()['us2']:.0f}); US1 is cut "
+     f"{P.F.US_CUT_MM['us1']:.0f} mm, US2 {P.F.US_CUT_MM['us2']:.0f} mm (us_route.json strap_lengths 'now': bag-on need "
+     f"{_USL['us1']['need_mm']:.0f} / {_USL['us2']['need_mm']:.0f} mm, grip left {_USL['us1']['grip_left_mm']:.0f} / "
+     f"{_USL['us2']['grip_left_mm']:.0f} mm).", "HE-FIT step 0 (strap on its lane, >= 10 mm feeler) and T9 / FIT-US "
+     "(cinch and grip at every kit end)"),
+    ("US-CHAN-EDGE", f"B-16b's turned ends stay >= {P.F.US_SIDE_SEAM_MIN:.0f} mm inside the B-03 | B-05 side seam, so the "
+     "channel end and the side seam are sewn separately (drawn: patterns geo us_chan_on_b05).",
+     "lay B-16b on the cut B-05 at op 4.14 / floor op"),
+    ("SEAL-PU", "A urethane seam sealer bead on B-05's inside face seals the B-16b tail stitch lines on the PU-coated 500D "
+     "floor (silicone does not bond to PU).", "WP-1 style hose test on a B-05 offcut with one sealed tail before the bag"),
+    ("CRADLE-SPAN", "The bag-off cradle keeps meat_haul's belly on each strap's own lane span (us_route.cradle_span: US2 "
+     f"legs at {_UCS.get('modes', {}).get('bag_off', {}).get('us2', {}).get('theta_deg', float('nan')):.0f} deg, "
+     f"{_UCS.get('at_float_limit', {}).get('us2', {}).get('tension_n', float('nan')):.0f} N at the float meat limit, "
+     f"against the {_UCS.get('lug_check_n', float('nan')):.0f} N the frame lug was checked at; belly 50 mm would give "
+     f"{_UCS.get('sensitivity', {}).get('belly_50', {}).get('us2', float('nan')):.0f} N).",     "FIT-US (5): US2 leg angle and tension with a 20 kg quarter stand-in in the cradle"),
 ]
 
 JIGS = [
@@ -2213,11 +2311,17 @@ FOURTH_REVIEW_DONE = False
 # The release still may not say 'ready to cut' until a FIFTH independent review (orchestrator) has checked BL-047 / 048.
 FIFTH_REVIEW_DONE = False
 FOURTH_STATUS = [
-    ("N-1", "blocker", "open (frame side)", "BL-048 us_route.py: the real US path modelled on the 15/19/23 in meat drapes and the "
-     "sliced print: it lies over the hinge cheeks and the HE (1-4.5 mm into them) and US2 over US1's fairlead. No bag-side "
-     "guide can clear (US1 has 7 mm of height to move 40.5 mm sideways). US-ROUTE dropped. BL-047 asked to move US1 "
-     "inboard / US2 outboard onto their own lanes (us_route.json station_move, >= 10 mm at every drape on the model); "
-     "HE-FIT step 0 has a pass criterion and a US test piece in the kit"),
+    ("N-1", "blocker", "fixed", "BL-048 us_route.py: the real US path on the 15/19/23 in meat drapes and the sliced print "
+     "rode the hinge cheeks and the HE. BL-049 / 050 A moved US1 to an inboard lug (x +/-70) and US2 to an outboard lug "
+     "(x +/-165, bolt-on clevis); BL-050 B moved the B-16 / B-16b channel ends to the lane x (DECISION US-CHAN-LANE) and "
+     f"cut US2 {P.F.US_CUT_MM['us2']:.0f} mm (DECISION US-CUT): us_route 'now' clears >= 10 mm on every drape and side "
+     f"(US1 {_UW['us1']:.1f} / US2 {_UW['us2']:.1f} mm). "
+     "Physical gate: HE-FIT step 0 on print/frame_h1/test_pieces/us_route_stay_R + us2_clevis_R"),
+    ("N-1b (BL-050 B)", "major", "open (frame side)", "us_route.head_clearance: the free rev 3 drapes reach the US2 clevis "
+     f"bolt heads (x +/-{_UH.get('head_x_mm', [0, 0])[0]:.0f}-{_UH.get('head_x_mm', [0, 0])[1]:.1f}; worst "
+     f"{_UH.get('cloth_min_mm', float('nan')):+.1f} mm): ASSUMPTION HEAD-PROUD is not supported "
+     "by the model. Gate FIT-US on P1 (colour transfer); owner decision: counterbore / cap the heads (frame) or a wear "
+     "patch on the bag corner"),
     ("M-A", "major", "fixed", "TL-1 reads BL-047's crown re-run on the BL-046 geometry (bl047_frame_items.json tl1): proof "
      "497 N, rig A (guy 22 deg below horizontal) and rig B (58 deg, 13.6 % outboard), crown strap 43 N, run anchored on a "
      "spine stub 25 mm fore under the 6.0 mm collar"),
@@ -2380,8 +2484,8 @@ def write_files(pk: dict, out: Path = OUT) -> list[Path]:
            "design-reviewer fourth review `analysis/review_20261113_rev3_fourth.md` (1 blocker, 3 majors, 9 minors), "
            "bag side fixed by BL-048 (tests/test_us_route.py, tests/test_bl048_fourth_review_fixes.py). "
            f"Open: {nb4} blockers, {nm4} majors. **NOT ready to cut**: "
-           + ("N-1 needs the US station move on the frame (BL-047) and HE-FIT step 0 passing on the re-cut US test piece; "
-              if nb4 else "") + "a FIFTH independent review decides.", "",
+           + ("open items above (BL-050 B: N-1b, the clevis bolt heads, frame side); " if nb4 or nm4 else "")
+           + "HE-FIT step 0, CLEVIS-SHARE and FIT-US are physical gates; a FIFTH independent review decides.", "",
            "| Finding | Class | Status | How |", "|---|---|---|---|"]
     md += [f"| {i} | {c} | {st} | {h.replace('|', '/')} |" for i, c, st, h in FOURTH_STATUS]
     md += ["", "## Pre-cut THIRD review status (BL-043 / BL-044)", "",

@@ -148,7 +148,7 @@ def test_hinge_pin_two_mm_longer_in_bom_and_ledger(pk):
     pin = next(g for n, g in rows.items() if n.startswith("BL-044: hinge pins"))
     assert pin == pytest.approx(2 * math.pi * 2.5 ** 2 * 2.0 * 2.81 / 1000.0, rel=0.02)
     line = next(b for b in pk["bom"] if "7075 pins" in (b.item or ""))
-    assert "38 mm shank HINGE" in line.item
+    assert "Ti-6Al-4V HINGE pins (2: 5 mm h8 ground, 44 mm" in line.item     # BL-050 B: the BL-049 Ti pin (was 38 mm 7075)
 
 
 def test_viz_hinge_fairlead_and_eye_follow_the_envelope():
@@ -217,7 +217,7 @@ def test_test_kit_screens_are_named_for_this_ticket():
 # ---------------------------------------------------------------- 7 release status
 def test_release_not_ready_until_a_fourth_review():
     open_ = M.open_findings()
-    assert open_ == ["N-1"]                     # three reviews' majors fixed; BL-048: the fourth review's N-1 waits on the frame
+    assert open_ == ["N-1b (BL-050 B)"]         # BL-050 B: N-1 fixed; the clevis bolt heads (frame side) are open
     assert M.FOURTH_REVIEW_DONE is False and not M.ready_to_cut()
 
 

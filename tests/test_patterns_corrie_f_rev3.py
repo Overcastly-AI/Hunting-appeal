@@ -204,10 +204,12 @@ def test_rain_fly_drafted_and_sewn(rsP):
 
 
 def test_us_floor_channels(rsP):
-    b16 = rsP.pieces["B-16"]
-    assert b16.quantity == 2
+    # BL-050 B: one channel per strap, each ending at its lane x (B-16 US1 on F-02, B-16b US2 onto B-05)
+    b16, b16b = rsP.pieces["B-16"], rsP.pieces["B-16b"]
+    assert b16.quantity == 1 and b16b.quantity == 1
+    assert b16.bounds(cut=False)[2] == pytest.approx(140.0) and b16b.bounds(cut=False)[2] == pytest.approx(330.0)
     f02 = rsP.pieces["F-02"]
-    ch = [ln for ln in f02.internal_lines if ln.label.startswith("B-16 channel")]
+    ch = [ln for ln in f02.internal_lines if ln.label.startswith(("B-16 channel", "B-16b channel"))]
     assert len(ch) == 4
     x0, y0, x1, y1 = f02.bounds(cut=False)
     for ln in ch:

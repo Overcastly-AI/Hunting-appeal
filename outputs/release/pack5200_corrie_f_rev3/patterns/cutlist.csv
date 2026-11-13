@@ -27,7 +27,8 @@ IMP8-b,"cam cup base (TPU-coated 840D, laser-cut)",tpu_coated_nylon_840d,,1,,UP,
 FP-a,hip-reach pocket body (power mesh),power_mesh_nylon_spandex,,2,,UP,0.0679,0.13579,1044.0,8,23.1
 FP-b,hip-reach pocket mouth band (camo),polyester_ht_630d_printable,,2,,UP,0.01132,0.02263,634.0,8,6.6
 F-02,fly base pocket,cordura_330d_nylon66,,1,,UP,0.0336,0.0336,740.0,10,6.0
-B-16,under-strap floor channel (US1 / US2),cordura_500d_nylon66,,2,,UP,0.01342,0.02684,562.0,default=12; left=15; right=15,6.8
+B-16,"under-strap floor channel (US1, ends at x +/-70)",cordura_500d_nylon66,,1,,UP,0.01037,0.01037,462.0,default=12; left=15; right=15,2.6
+B-16b,"under-strap floor channel (US2, ends at x +/-165)",cordura_500d_nylon66,,1,,UP,0.02196,0.02196,842.0,default=12; left=15; right=15,5.6
 B-29a,crown lid: crown (4 corner darts),cordura_330d_nylon66,,1,,UP,0.10618,0.10618,1590.6,default=12; dart1a=10; dart1b=10; dart2a=10; dart2b=10; dart3a=10; dart3b=10; dart4a=10; dart4b=10,19.1
 B-29b,crown lid: base (lies on the roll),robic_100d_ripstop,,1,,UP,0.08046,0.08046,1064.6,12,10.1
 B-29c,crown lid: front wall run,cordura_330d_nylon66,,1,,UP,0.02933,0.02933,1194.5,12,5.3

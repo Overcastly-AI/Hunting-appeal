@@ -1,5 +1,7 @@
 # H1 hinge for the inboard-up pull, and the US stations on lane lugs (BL-049)
 
+> **SUPERSEDED (2026-11-13) for the print, the bed fit and the US2 lug: see `h1_bedfit.md` (BL-050 A: bolt-on US2 outer clevis, the halves fit the H2S bed) and `h1_crown.md` (BL-051: the stay crown that `strip_old_us` cut away over the old US1 / US2 stub sites is restored; lug FEA on the real stay section; body re-checked).** The hinge fairlead, hinge pin and lane positions below still stand. Print masses, bed footprints, slice checks and the body numbers in this file are the BL-049 print (lower half 367.5 mm wide, crown cut): do not build from them.
+
 structural-fea-engineer, 2026-11-13. Ticket `docs/backlog/BL-049-hinge-and-us-lanes.md`. Code `huntkit/gendesign/h1_lanes.py` (`python -m huntkit.gendesign.h1_lanes --fea | --body | --export`), geometry `bag_attach.HINGE_GEOM` (BL-049) and `h1_fairleads.placed` (lanes), print `frame_h1.print_mesh`; tests `tests/test_h1_lanes.py`. Results `h1_lanes.json`. Units mm, N, g (imperial in brackets).
 
 ## Summary

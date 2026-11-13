@@ -106,7 +106,8 @@ def test_hip_reach_access_zero_hourly_misses():
 
 def test_us_channels_have_geometry(rows):
     uc = F.us_channels()
-    assert uc["width_mm"] == pytest.approx(37.0) and uc["piece"].quantity == 2
+    assert uc["width_mm"] == pytest.approx(37.0) and uc["piece"].quantity == 1          # BL-050 B: B-16 + B-16b
+    assert sum(p.quantity for p in uc["pieces"].values()) == 2
     assert all(0 < s < uc["floor_depth_mm"] for s in uc["stations_mm"])
     r = next(x for x in rows if x["name"].startswith("US-chan:"))
     assert r["g"] == pytest.approx(uc["mass_g"], abs=0.01)

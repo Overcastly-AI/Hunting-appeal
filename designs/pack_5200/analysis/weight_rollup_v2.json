@@ -12,11 +12,11 @@
    "meat_trip": 3967.4
   },
   "P": {
-   "base": 3926.6,
-   "as_hunted": 4245.1,
-   "meat_trip": 4441.1,
+   "base": 3925.9,
+   "as_hunted": 4244.4,
+   "meat_trip": 4440.4,
    "by_system_base": {
-    "frame": 1284.6,
+    "frame": 1287.2,
     "back": 413.6,
     "belt": 482.3,
     "harness": 225.1,
@@ -24,23 +24,23 @@
     "bag_pockets": 110.6,
     "pouch": 0,
     "fly": 5.9,
-    "straps_meat": 416.9,
+    "straps_meat": 424.4,
     "straps_compression": 243.2,
-    "attachment": 306.2,
+    "attachment": 295.4,
     "misc": 25.8
    },
    "like_for_like_base": {
-    "bag_side": 1495.2,
-    "suspension": 2405.6,
+    "bag_side": 1491.9,
+    "suspension": 2408.2,
     "misc": 25.8
    }
   },
   "A": {
-   "base": 3339.4,
-   "as_hunted": 3658.0,
-   "meat_trip": 3854.0,
+   "base": 3338.7,
+   "as_hunted": 3657.2,
+   "meat_trip": 3853.2,
    "by_system_base": {
-    "frame": 1280.6,
+    "frame": 1283.2,
     "back": 363.6,
     "belt": 393.3,
     "harness": 196.8,
@@ -48,14 +48,14 @@
     "bag_pockets": 102.9,
     "pouch": 0,
     "fly": 5.9,
-    "straps_meat": 300.9,
+    "straps_meat": 308.4,
     "straps_compression": 141.6,
-    "attachment": 201.6,
+    "attachment": 190.8,
     "misc": 18.8
    },
    "like_for_like_base": {
-    "bag_side": 1086.3,
-    "suspension": 2234.3,
+    "bag_side": 1083.0,
+    "suspension": 2236.9,
     "misc": 18.8
    }
   }
@@ -68,14 +68,14 @@
     "meat_trip": 3939.5
    },
    "P": {
-    "base": 3898.1,
-    "as_hunted": 4216.6,
-    "meat_trip": 4412.6
+    "base": 3897.4,
+    "as_hunted": 4215.9,
+    "meat_trip": 4411.9
    },
    "A": {
-    "base": 3321.6,
-    "as_hunted": 3640.1,
-    "meat_trip": 3836.1
+    "base": 3320.9,
+    "as_hunted": 3639.4,
+    "meat_trip": 3835.4
    }
   },
   "M": {
@@ -85,14 +85,14 @@
     "meat_trip": 3967.4
    },
    "P": {
-    "base": 3926.6,
-    "as_hunted": 4245.1,
-    "meat_trip": 4441.1
+    "base": 3925.9,
+    "as_hunted": 4244.4,
+    "meat_trip": 4440.4
    },
    "A": {
-    "base": 3339.4,
-    "as_hunted": 3658.0,
-    "meat_trip": 3854.0
+    "base": 3338.7,
+    "as_hunted": 3657.2,
+    "meat_trip": 3853.2
    }
   },
   "L": {
@@ -102,14 +102,14 @@
     "meat_trip": 3991.5
    },
    "P": {
-    "base": 3951.5,
-    "as_hunted": 4270.0,
-    "meat_trip": 4466.0
+    "base": 3950.7,
+    "as_hunted": 4269.3,
+    "meat_trip": 4465.3
    },
    "A": {
-    "base": 3355.5,
-    "as_hunted": 3674.0,
-    "meat_trip": 3870.0
+    "base": 3354.8,
+    "as_hunted": 3673.3,
+    "meat_trip": 3869.3
    }
   },
   "XL": {
@@ -119,14 +119,14 @@
     "meat_trip": 4027.5
    },
    "P": {
-    "base": 3988.3,
-    "as_hunted": 4306.8,
-    "meat_trip": 4502.8
+    "base": 3987.6,
+    "as_hunted": 4306.1,
+    "meat_trip": 4502.1
    },
    "A": {
-    "base": 3383.5,
-    "as_hunted": 3702.0,
-    "meat_trip": 3898.0
+    "base": 3382.8,
+    "as_hunted": 3701.3,
+    "meat_trip": 3897.3
    }
   },
   "XXL": {
@@ -136,14 +136,14 @@
     "meat_trip": 4055.6
    },
    "P": {
-    "base": 4018.0,
-    "as_hunted": 4336.6,
-    "meat_trip": 4532.6
+    "base": 4017.3,
+    "as_hunted": 4335.8,
+    "meat_trip": 4531.8
    },
    "A": {
-    "base": 3403.2,
-    "as_hunted": 3721.8,
-    "meat_trip": 3917.8
+    "base": 3402.5,
+    "as_hunted": 3721.0,
+    "meat_trip": 3917.0
    }
   }
  },
@@ -501,22 +501,15 @@
   "BL050": {
    "class": "P",
    "ticket": "BL-050 A",
-   "label": "US2 bolt-on clevis (lower half fits the H2S bed); pins + sleeves for 12 stations",
+   "label": "US2 bolt-on clevis (lower half fits the H2S bed)",
    "kind": "safety",
    "gate": "US2 clevis joint pull (CA-1 rig) and FIT-US on us_route_stay_R + us2_clevis_R; first-article weigh",
    "delta_g": {
-    "base": 56.1,
-    "as_hunted": 56.1,
-    "meat_trip": 56.1
+    "base": 45.3,
+    "as_hunted": 45.3,
+    "meat_trip": 45.3
    },
    "rows": [
-    {
-     "system": "attachment",
-     "name": "7075 pins + UHMWPE sleeves for the 4 fairlead stations booked short (12 stations, 8 booked; BL-050)",
-     "g": 10.8,
-     "cfg": "base",
-     "source": "ledger correction BL050: analysis/h1_bedfit.json mass.pins_sleeves_delta_g ((len(bag_attach.stations()) - 8) x (pin row + sleeve row) / 8)"
-    },
     {
      "system": "frame",
      "name": "H1 print: US2 bolt-on clevis, joint blocks and bolt / trap cuts (BL-050)",
@@ -526,10 +519,31 @@
     },
     {
      "system": "frame",
-     "name": "US2 clevis joint hardware: 4 Ti M5 x 35 DIN 7984, 4 nuts, 8 DIN 433 washers (BL-050)",
+     "name": "US2 clevis joint hardware (BOM HW-US2: 4 Ti gr5 M5 x 40 DIN 7984; 4 A2 M5 hex nuts ISO 4032; 8 A2 M5 x 10 x 1 washers DIN 433; BL-050)",
      "g": 24.39,
      "cfg": "base",
      "source": "ledger correction BL050: analysis/h1_bedfit.json mass.hardware_g (h1_bedfit.hardware_g: frame_comp_B.bolt_mass_g, steel nut / washer volumes)"
+    }
+   ]
+  },
+  "BL051": {
+   "class": "P",
+   "ticket": "BL-051",
+   "label": "H1 stay crown restored over the old US stub sites (BL-050's +10.8 g US pins / sleeves row retired: the cradle rows already book them)",
+   "kind": "correction",
+   "gate": "crown continuity slice check (h1_crown); first-article weigh",
+   "delta_g": {
+    "base": 2.6,
+    "as_hunted": 2.6,
+    "meat_trip": 2.6
+   },
+   "rows": [
+    {
+     "system": "frame",
+     "name": "H1 print: stay crown restored over the old US1 / US2 stub sites (BL-051)",
+     "g": 2.6,
+     "cfg": "base",
+     "source": "ledger correction BL051: analysis/h1_crown.json mass.print_delta_g (assembled print mesh BL-051 - BL-050)"
     }
    ]
   },
@@ -631,9 +645,9 @@
    "kind": "design",
    "gate": "first-article: S15 elbow-swing / sling check (BL-009)",
    "delta_g": {
-    "base": 51.3,
-    "as_hunted": 199.9,
-    "meat_trip": 341.5
+    "base": 58.8,
+    "as_hunted": 207.4,
+    "meat_trip": 349.0
    },
    "rows": [
     {
@@ -1471,10 +1485,10 @@
     },
     {
      "system": "straps_meat",
-     "name": "CORRIE F: US-chan: US bag-floor channels B-16 x2 (37 x 190 mm on F-02, at 48 / 104 mm from the frame edge)",
-     "g": 3.57,
+     "name": "CORRIE F: US-chan: US bag-floor channels B-16 + B-16b (37 x 140 on F-02 / 330 mm across F-02 onto B-05, at 48 / 104 mm from the frame edge)",
+     "g": 4.3,
      "cfg": "base",
-     "source": "challenge_ultra_200 record x cut area (patterns_v31 B-16 rule, 25 mm webbing)"
+     "source": "challenge_ultra_200 record x cut area (patterns_v31 B-16 rule, 25 mm webbing; ends at the lane x, h1_bedfit.json published)"
     },
     {
      "system": "straps_meat",
@@ -2007,6 +2021,13 @@
      "g": -2.88,
      "cfg": "base",
      "source": "patterns_corrie_f_rev3.KW_CUT x poly_webbing_25mm mass_g_m (record), negative"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: BL-050 B: US2 under-strap cut 550 -> 925 mm (US1 550 mm, DECISION US-CUT)",
+     "g": 6.75,
+     "cfg": "base",
+     "source": "corrie_f.US_CUT_MM - the 1.10 m ledger pair, x poly_webbing_25mm mass_g_m (record)"
     },
     {
      "system": "misc",
@@ -2675,10 +2696,10 @@
     },
     {
      "system": "straps_meat",
-     "name": "CORRIE F: US-chan: US bag-floor channels B-16 x2 (37 x 190 mm on F-02, at 48 / 104 mm from the frame edge)",
-     "g": 3.57,
+     "name": "CORRIE F: US-chan: US bag-floor channels B-16 + B-16b (37 x 140 on F-02 / 330 mm across F-02 onto B-05, at 48 / 104 mm from the frame edge)",
+     "g": 4.3,
      "cfg": "base",
-     "source": "challenge_ultra_200 record x cut area (patterns_v31 B-16 rule, 25 mm webbing)"
+     "source": "challenge_ultra_200 record x cut area (patterns_v31 B-16 rule, 25 mm webbing; ends at the lane x, h1_bedfit.json published)"
     },
     {
      "system": "straps_meat",
@@ -3213,6 +3234,13 @@
      "source": "patterns_corrie_f_rev3.KW_CUT x poly_webbing_25mm mass_g_m (record), negative"
     },
     {
+     "system": "straps_meat",
+     "name": "CORRIE F: BL-050 B: US2 under-strap cut 550 -> 925 mm (US1 550 mm, DECISION US-CUT)",
+     "g": 6.75,
+     "cfg": "base",
+     "source": "corrie_f.US_CUT_MM - the 1.10 m ledger pair, x poly_webbing_25mm mass_g_m (record)"
+    },
+    {
      "system": "bag_shell",
      "name": "CORRIE F: B-11 lash tabs (Hypalon, bow riser + muzzle keepers), released",
      "g": -12.0,
@@ -3480,10 +3508,10 @@
     },
     {
      "system": "straps_meat",
-     "name": "CORRIE F: US-chan: US bag-floor channels B-16 x2 (37 x 190 mm on F-02, at 48 / 104 mm from the frame edge)",
-     "g": -3.57,
+     "name": "CORRIE F: US-chan: US bag-floor channels B-16 + B-16b (37 x 140 on F-02 / 330 mm across F-02 onto B-05, at 48 / 104 mm from the frame edge)",
+     "g": -4.3,
      "cfg": "base",
-     "source": "challenge_ultra_200 record x cut area (patterns_v31 B-16 rule, 25 mm webbing)"
+     "source": "challenge_ultra_200 record x cut area (patterns_v31 B-16 rule, 25 mm webbing; ends at the lane x, h1_bedfit.json published)"
     },
     {
      "system": "straps_meat",
@@ -4016,6 +4044,13 @@
      "g": 2.88,
      "cfg": "base",
      "source": "patterns_corrie_f_rev3.KW_CUT x poly_webbing_25mm mass_g_m (record), negative"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: BL-050 B: US2 under-strap cut 550 -> 925 mm (US1 550 mm, DECISION US-CUT)",
+     "g": -6.75,
+     "cfg": "base",
+     "source": "corrie_f.US_CUT_MM - the 1.10 m ledger pair, x poly_webbing_25mm mass_g_m (record)"
     }
    ]
   },
@@ -4211,9 +4246,9 @@
  },
  "configs": {
   "corrie_f_base": {
-   "total_g": 3614.3,
+   "total_g": 3613.6,
    "by_system": {
-    "frame": 1346.8,
+    "frame": 1349.4,
     "back": 413.6,
     "belt": 499.2,
     "harness": 216.6,
@@ -4221,21 +4256,21 @@
     "bag_pockets": 102.9,
     "pouch": 0,
     "fly": 5.9,
-    "straps_meat": 300.9,
+    "straps_meat": 308.4,
     "straps_compression": 141.6,
-    "attachment": 201.6,
+    "attachment": 190.8,
     "misc": 25.8
    },
    "like_for_like": {
-    "bag_side": 1112.3,
-    "suspension": 2476.2,
+    "bag_side": 1109.0,
+    "suspension": 2478.8,
     "misc": 25.8
    }
   },
   "corrie_f_as_hunted": {
-   "total_g": 3932.8,
+   "total_g": 3932.1,
    "by_system": {
-    "frame": 1346.8,
+    "frame": 1349.4,
     "back": 413.6,
     "belt": 535.9,
     "harness": 216.6,
@@ -4243,14 +4278,14 @@
     "bag_pockets": 186.6,
     "pouch": 47.8,
     "fly": 72.1,
-    "straps_meat": 300.9,
+    "straps_meat": 308.4,
     "straps_compression": 221.1,
-    "attachment": 206.3,
+    "attachment": 195.5,
     "misc": 25.8
    },
    "like_for_like": {
-    "bag_side": 1394.2,
-    "suspension": 2512.8,
+    "bag_side": 1390.9,
+    "suspension": 2515.4,
     "misc": 25.8
    }
   },
@@ -4396,13 +4431,13 @@
     "pct": 60.0
    },
    "P": {
-    "ours_g": 3871.1,
-    "delta_g": 1563.1,
+    "ours_g": 3870.4,
+    "delta_g": 1562.4,
     "pct": 68.0
    },
    "A": {
-    "ours_g": 3291.6,
-    "delta_g": 983.6,
+    "ours_g": 3290.9,
+    "delta_g": 982.9,
     "pct": 43.0
    }
   },
@@ -4421,13 +4456,13 @@
     "pct": 54.0
    },
    "P": {
-    "ours_g": 3871.1,
-    "delta_g": 1475.1,
+    "ours_g": 3870.4,
+    "delta_g": 1474.4,
     "pct": 62.0
    },
    "A": {
-    "ours_g": 3291.6,
-    "delta_g": 895.6,
+    "ours_g": 3290.9,
+    "delta_g": 894.9,
     "pct": 37.0
    }
   },
@@ -4447,13 +4482,13 @@
     "pct": 44.0
    },
    "P": {
-    "ours_g": 4038.7,
-    "delta_g": 1401.7,
+    "ours_g": 4038.0,
+    "delta_g": 1401.0,
     "pct": 53.0
    },
    "A": {
-    "ours_g": 3451.5,
-    "delta_g": 814.5,
+    "ours_g": 3450.8,
+    "delta_g": 813.8,
     "pct": 31.0
    }
   },
@@ -4469,13 +4504,13 @@
     "pct": 34.0
    },
    "P": {
-    "ours_g": 3926.6,
-    "delta_g": 1136.6,
+    "ours_g": 3925.9,
+    "delta_g": 1135.9,
     "pct": 41.0
    },
    "A": {
-    "ours_g": 3339.4,
-    "delta_g": 549.4,
+    "ours_g": 3338.7,
+    "delta_g": 548.7,
     "pct": 20.0
    }
   },
@@ -4491,13 +4526,13 @@
     "pct": 42.0
    },
    "P": {
-    "ours_g": 3926.6,
-    "delta_g": 1287.6,
+    "ours_g": 3925.9,
+    "delta_g": 1286.9,
     "pct": 49.0
    },
    "A": {
-    "ours_g": 3339.4,
-    "delta_g": 700.4,
+    "ours_g": 3338.7,
+    "delta_g": 699.7,
     "pct": 27.0
    }
   },
@@ -4515,13 +4550,13 @@
     "pct": 35.0
    },
    "P": {
-    "ours_g": 4053.9,
-    "delta_g": 1241.9,
+    "ours_g": 4053.2,
+    "delta_g": 1241.2,
     "pct": 44.0
    },
    "A": {
-    "ours_g": 3466.7,
-    "delta_g": 654.7,
+    "ours_g": 3466.0,
+    "delta_g": 654.0,
     "pct": 23.0
    }
   },
@@ -4539,13 +4574,13 @@
     "pct": 41.0
    },
    "P": {
-    "ours_g": 4053.9,
-    "delta_g": 1345.9,
+    "ours_g": 4053.2,
+    "delta_g": 1345.2,
     "pct": 50.0
    },
    "A": {
-    "ours_g": 3466.7,
-    "delta_g": 758.7,
+    "ours_g": 3466.0,
+    "delta_g": 758.0,
     "pct": 28.0
    }
   },
@@ -4563,13 +4598,13 @@
     "pct": 33.0
    },
    "P": {
-    "ours_g": 3963.2,
-    "delta_g": 1128.2,
+    "ours_g": 3962.5,
+    "delta_g": 1127.5,
     "pct": 40.0
    },
    "A": {
-    "ours_g": 3376.0,
-    "delta_g": 541.0,
+    "ours_g": 3375.3,
+    "delta_g": 540.3,
     "pct": 19.0
    }
   },
@@ -4589,13 +4624,13 @@
     "pct": 127.0
    },
    "P": {
-    "ours_g": 4038.7,
-    "delta_g": 2365.7,
+    "ours_g": 4038.0,
+    "delta_g": 2365.0,
     "pct": 141.0
    },
    "A": {
-    "ours_g": 3451.5,
-    "delta_g": 1778.5,
+    "ours_g": 3450.8,
+    "delta_g": 1777.8,
     "pct": 106.0
    }
   },
@@ -4613,20 +4648,20 @@
     "pct": 40.0
    },
    "P": {
-    "ours_g": 4053.9,
-    "delta_g": 1331.9,
+    "ours_g": 4053.2,
+    "delta_g": 1331.2,
     "pct": 49.0
    },
    "A": {
-    "ours_g": 3466.7,
-    "delta_g": 744.7,
+    "ours_g": 3466.0,
+    "delta_g": 744.0,
     "pct": 27.0
    }
   }
  ],
  "features": {
-  "after_tests_base_g": 3339.4,
-  "gap_g": 345.7,
+  "after_tests_base_g": 3338.7,
+  "gap_g": 345.0,
   "candidates": [
    {
     "item": "IMP-2",
@@ -4687,7 +4722,7 @@
    {
     "item": "US-",
     "what": "under-straps (owner-frozen)",
-    "g": 105.4,
+    "g": 112.8,
     "frozen": true,
     "required": "R-08 bag-off haul cradle"
    }
@@ -4705,7 +4740,7 @@
   "with_reserve_g": 68.5,
   "reaches_with_reserve": false
  },
- "bl011_headline_base_g": 3294.9,
+ "bl011_headline_base_g": 3302.4,
  "h1_fatigue": {
   "old": 1.2794731924250948,
   "per_torso": 1.1502260709981276,
@@ -4731,7 +4766,7 @@
   "P": {
    "scenario": "P",
    "cfg": "base",
-   "total_g": 3926.6,
+   "total_g": 3925.9,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
      "g": 426.7,
@@ -4746,14 +4781,14 @@
      "frac": 0.05
     },
     "frame lumps and carbon (beam model, frame_mass json)": {
-     "g": 545.6,
-     "band_g": 68.1,
-     "n": 17,
+     "g": 548.2,
+     "band_g": 68.3,
+     "n": 18,
      "frac": 0.1
     },
     "cut area x record gsm, length x record g/m": {
-     "g": 2137.2,
-     "band_g": 216.0,
+     "g": 2133.9,
+     "band_g": 215.7,
      "n": 150,
      "frac": 0.08
     }
@@ -4866,7 +4901,7 @@
   "A": {
    "scenario": "A",
    "cfg": "base",
-   "total_g": 3339.4,
+   "total_g": 3338.7,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
      "g": 347.2,
@@ -4881,14 +4916,14 @@
      "frac": 0.05
     },
     "frame lumps and carbon (beam model, frame_mass json)": {
-     "g": 541.6,
-     "band_g": 68.5,
-     "n": 18,
+     "g": 544.2,
+     "band_g": 68.7,
+     "n": 19,
      "frac": 0.1
     },
     "cut area x record gsm, length x record g/m": {
-     "g": 1633.5,
-     "band_g": 247.3,
+     "g": 1630.2,
+     "band_g": 247.0,
      "n": 171,
      "frac": 0.08
     }

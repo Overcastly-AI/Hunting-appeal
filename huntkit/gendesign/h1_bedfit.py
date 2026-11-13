@@ -564,8 +564,13 @@ def mass_rows() -> dict:
     ex = json.loads((REPO / "outputs" / "h1_lanes" / "export_info.json").read_text())
     b49 = json.loads((ANALYSIS / "h1_lanes.json").read_text())["mass"]
     led = {r["name"]: r["g"] for r in LG._parts("corrie_b2_h1", "M")}
-    pin8, sl8 = led["attachment: 7075 pins (8)"], led["attachment: UHMWPE sleeves (8)"]
     n_st = len(BA.stations())
+    # BL-051: the attachment rows book 8 stations and meat_haul.cradle_parts_g books the 4 US1 / US2 pins + sleeves
+    # ('under-straps US1/US2: 7075 pins (4)'), so all 12 are booked; BL-050's 'booked short' delta was a double count
+    n_at = len(BA._pins_booked_here())
+    n_bk = n_at + sum(1 for s_ in BA.stations() if s_["name"] in BA.CRADLE_PIN_STATIONS)
+    pin8 = led[f"attachment: 7075 pins ({n_at})"] * 8.0 / n_at
+    sl8 = led[f"attachment: UHMWPE sleeves ({n_at})"] * 8.0 / n_at
     hw = hardware_g()
     st = ex["fairleads_bl042"].get("us2_clevis_bl050", {})
     m = {"assembled_g": ex["assembled"]["g"], "assembled_bl049_g": b49["assembled_g"],
@@ -574,8 +579,8 @@ def mass_rows() -> dict:
          "lower_g": ex["lower"]["g"], "upper_g": ex["upper"]["g"],
          "clevis_g": {k: ex[k]["g"] for k in ("us2_clevis_R", "us2_clevis_L") if k in ex},
          "hardware": hw, "hardware_g": round(sum(hw.values()), 2),
-         "stations": n_st, "pins_booked": 8, "pin_g": round(pin8 / 8.0, 3), "sleeve_g": round(sl8 / 8.0, 3),
-         "pins_sleeves_delta_g": round((n_st - 8) * (pin8 + sl8) / 8.0, 2)}
+         "stations": n_st, "pins_booked": n_bk, "pin_g": round(pin8 / 8.0, 3), "sleeve_g": round(sl8 / 8.0, 3),
+         "pins_sleeves_delta_g": round((n_st - n_bk) * (pin8 + sl8) / 8.0, 2)}
     m["frame_delta_g"] = round(m["print_delta_g"] + m["hardware_g"], 2)
     return m
 
@@ -861,6 +866,9 @@ ASSUMPTIONS = [
 ]
 
 
+BL051_NOTE = ("> **BL-051 (2026-11-13):** the print described here had the stay crown cut 2 mm low over z 86-104 and z 131-152 (`h1_lanes.strip_old_us`); it is restored and re-exported, see `h1_crown.md` for the current print masses (assembled 997.7 g), slice checks, US2 lug (real stay section) and the z 142 notch, whose 'root air' below was the cut-away crown (rule now: nothing proud of the support line). The ledger's pins / sleeves row (A4) is retired: the US1 / US2 pins + sleeves were already booked by `meat_haul.cradle_parts_g` (a double count, -10.8 g).\n")
+
+
 def write_md(res: dict, shots: list) -> str:
     j, j1 = res["joint"], res["joint_share_1"]
     pr = res["option_c"]["probe"] or {}
@@ -873,6 +881,7 @@ def write_md(res: dict, shots: list) -> str:
     w = []
     a = w.append
     a("# H1 print-bed fit with the US2 lanes: bolt-on US2 outer clevis (BL-050 Part A)")
+    a(BL051_NOTE)
     a("")
     a("structural-fea-engineer, 2026-11-13. Ticket `docs/backlog/BL-050-bed-fit-and-bag-lanes.md` Part A. Code "
       "`huntkit/gendesign/h1_bedfit.py` (`python -m huntkit.gendesign.h1_bedfit --probe 147 | --joint`; the report "

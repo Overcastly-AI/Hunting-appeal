@@ -182,13 +182,15 @@ def test_joint_slices_on_the_print():
 
 @pytest.mark.skipif(not (PD / "h1_assembled.stl").exists(), reason="print files not generated")
 def test_spreader_us2_notch_air():
-    """A3: the z 142 notch is 0 mm from the arm root in plan, but nothing in its footprint comes within 1.5 mm of
-    the crown line the sheet bears on."""
+    """A3 as revised by BL-051: the z 142 notch is 0 mm from the arm root in plan; with the stay crown restored the
+    notch footprint holds the plain crown, and nothing in it stands proud of the support line the sheet bears on.
+    (BL-050's 1.5 mm air was the crown cut away by strip_old_us; it no longer holds and is not the rule.)"""
     from huntkit.gendesign import spreader as S
     r = S.us2_notch_check()
     assert abs(r["plan_clear_mm"]) < 0.5
-    assert r["pass"] and r["air_mm"] >= S.US2_ROOT_AIR
-    assert all(row["air_mm"] >= S.US2_ROOT_AIR for row in r["rows"])
+    assert r["pass"] and r["proud_mm"] <= S.US2_PROUD_MAX
+    assert all(row["air_mm"] >= -S.US2_PROUD_MAX for row in r["rows"])
+    assert r["air_mm"] < S.US2_ROOT_AIR          # the crown is back: the old 'air' was the defect
 
 
 # ------------------------------------------------------------------------------------------------ record
@@ -227,6 +229,11 @@ def test_mass_rows_and_ledger(res):
     assert m["print_delta_g"] == pytest.approx(m["assembled_g"] - m["assembled_bl049_g"], abs=0.11)
     h1 = L.corrections("corrie_b2_h1", "M")["BL050"]
     today = L.corrections("corrie_b2_today", "M")["BL050"]
-    assert sum(r["g"] for r in h1) == pytest.approx(m["frame_delta_g"] + m["pins_sleeves_delta_g"], abs=0.05)
-    assert len(today) == 1 and today[0]["g"] == pytest.approx(m["pins_sleeves_delta_g"], abs=0.01)
-    assert today[0]["system"] == "attachment"
+    # BL-051: the '4 stations booked short' row was a double count (the cradle rows book the US1 / US2 pins +
+    # sleeves); BL050 keeps only the H1 clevis rows
+    assert sum(r["g"] for r in h1) == pytest.approx(m["frame_delta_g"], abs=0.05)
+    assert today == []
+    rows = {r["name"]: r["g"] for r in L.parts("corrie_b2_today", "M")}
+    assert rows["attachment: 7075 pins (8)"] == pytest.approx(8 * m["pin_g"], abs=0.02)
+    assert rows["under-straps US1/US2: 7075 pins (4)"] == pytest.approx(4 * m["pin_g"], abs=0.1)     # rows to 0.1 g
+    assert rows["under-straps US1/US2: UHMWPE sleeves (4)"] == pytest.approx(4 * m["sleeve_g"], abs=0.1)

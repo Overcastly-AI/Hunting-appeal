@@ -32,11 +32,11 @@
    "selvedge_mm": 38.0,
    "pieces": 3,
    "units": 1,
-   "length_mm": 220.0,
-   "efficiency": 0.3255,
-   "yield_m_per_unit": 0.22,
-   "yield_yd_per_unit": 0.2406,
-   "fabric_area_m2": 0.3353,
+   "length_mm": 360.0,
+   "efficiency": 0.2094,
+   "yield_m_per_unit": 0.36,
+   "yield_yd_per_unit": 0.3937,
+   "fabric_area_m2": 0.5486,
    "unplaced": []
   },
   "hdpe_sheet": {
@@ -139,7 +139,7 @@
    "pieces": 13,
    "units": 1,
    "length_mm": 743.0,
-   "efficiency": 0.6837,
+   "efficiency": 0.6889,
    "yield_m_per_unit": 0.743,
    "yield_yd_per_unit": 0.8126,
    "fabric_area_m2": 1.0566,
@@ -335,11 +335,11 @@
    "selvedge_mm": 38.0,
    "pieces": 30,
    "units": 10,
-   "length_mm": 889.0,
-   "efficiency": 0.8055,
-   "yield_m_per_unit": 0.0889,
-   "yield_yd_per_unit": 0.0972,
-   "fabric_area_m2": 1.3548,
+   "length_mm": 921.0,
+   "efficiency": 0.8186,
+   "yield_m_per_unit": 0.0921,
+   "yield_yd_per_unit": 0.1007,
+   "fabric_area_m2": 1.4036,
    "unplaced": []
   }
  }

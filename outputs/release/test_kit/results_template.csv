@@ -189,6 +189,12 @@ CA-5-03,CA-5,G4,R1,#3,static stub peak,N,min,3666,,,,,PRYING-1.25
 CA-5-04,CA-5,G4,R1,mean,mean of the 3 static peaks,N,min,4400,,,,,PRYING-1.25
 CA-5-05,CA-5,G4,R1,cyc,joint step after 1e5 cycles at 1543 N,mm,max,0.1,,,,,BOSS-BENDING
 CA-5-06,CA-5,G4,R1,cyc,no crack at the boss root after 1e5 cycles,Y/N,yes,Y,,,,,BOSS-BENDING
+CLEVIS-SHARE-01,CLEVIS-SHARE,G4,R1,static,"no joint opening at 720 N (0.05 mm feeler does not enter, both sides, both ends)",Y/N,yes,Y,,,,,CLEVIS-SHARE; CLEVIS-DRY
+CLEVIS-SHARE-02,CLEVIS-SHARE,G4,R1,static,pencil-line step across the joint after 720 N,mm,max,0.05,,,,,CLEVIS-DRY
+CLEVIS-SHARE-03,CLEVIS-SHARE,G4,R1,1000 cycles,"no joint opening at 480 N (feeler), no crack (loupe)",Y/N,yes,Y,,,,,CLEVIS-SHARE; CLEVIS-PRINT
+CLEVIS-SHARE-04,CLEVIS-SHARE,G4,R1,10000 cycles,"no joint opening at 480 N (feeler), no crack (loupe)",Y/N,yes,Y,,,,,CLEVIS-SHARE; CLEVIS-PRINT
+CLEVIS-SHARE-05,CLEVIS-SHARE,G4,R1,100000 cycles,"no joint opening at 480 N (feeler), no crack (loupe)",Y/N,yes,Y,,,,,CLEVIS-SHARE; CLEVIS-PRINT
+CLEVIS-SHARE-06,CLEVIS-SHARE,G4,R1,end,"bolt torque marks unmoved, no crack at the cheek root / arm root / bolt holes",Y/N,yes,Y,,,,,CLEVIS-DRY
 SEW-F-01,SEW-F,G4,BAG-BATCH,#1,cycles at 44 -> 442 N (run-out 100000),cycles,min,100000,,,,,SEW_FAT
 SEW-F-02,SEW-F,G4,BAG-BATCH,#2,cycles at 44 -> 442 N (run-out 100000),cycles,min,100000,,,,,SEW_FAT
 SEW-F-03,SEW-F,G4,BAG-BATCH,#3,cycles at 44 -> 442 N (run-out 100000),cycles,min,100000,,,,,SEW_FAT
@@ -243,6 +249,11 @@ T9-03,T9,G6,R1; BAG-BATCH,23in,meat CG aft of the stay plane,mm,max,190,,,,,REV-
 T9-04,T9,G6,R1; BAG-BATCH,fill,bag CG aft (uniform fill),mm,max,205,,,,,REV-C-CG
 T9-05,T9,G6,R1; BAG-BATCH,tall,tall-load CG aft,mm,max,185,,,,,REV-C-CG
 T9-R3a-01,T9-R3a,G6,BAG-BATCH,S15,"meat CG aft, S kit, top full, lid + 1 kg (sim 179.3)",mm,max,190,,,,,LID-SIM; INT-1
+FIT-US-01,FIT-US,G6,BAG-BATCH,S (15 in),no colour from the clevis bolt heads on the bag,Y/N,yes,Y,,,,,HEAD-PROUD
+FIT-US-02,FIT-US,G6,BAG-BATCH,M (19 in),no colour from the clevis bolt heads on the bag,Y/N,yes,Y,,,,,HEAD-PROUD
+FIT-US-03,FIT-US,G6,BAG-BATCH,L (23 in),no colour from the clevis bolt heads on the bag,Y/N,yes,Y,,,,,HEAD-PROUD
+FIT-US-04,FIT-US,G6,BAG-BATCH,cradle,US2 strap and tail clear the bolt heads in the bag-off cradle,Y/N,yes,Y,,,,,HEAD-PROUD
+FIT-US-05,FIT-US,G6,BAG-BATCH,seam,US2 eye slides across the clevis seam under load without catching,Y/N,yes,Y,,,,,SEAM-FLOOR
 T9-R3c-01,T9-R3c,G6,BAG-BATCH,S-full-L,"crown strap path, S kit full",mm,max,968.1,,,,,ROLL-PATH; TORSO-LIN
 T9-R3c-02,T9-R3c,G6,BAG-BATCH,S-full-R,"crown strap path, S kit full",mm,max,968.1,,,,,ROLL-PATH; TORSO-LIN
 T9-R3c-03,T9-R3c,G6,BAG-BATCH,L-6day,"crown strap path, L kit 6-day (sim 438.8)",mm,record,,,,,,ROLL-PATH; TORSO-LIN

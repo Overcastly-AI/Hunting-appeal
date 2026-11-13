@@ -262,27 +262,35 @@ def im_rows() -> list:
     return out
 
 
-def us_row() -> dict:
-    """US1 / US2 under-straps (pin to pin, owner-frozen), 1.10 m pair (meat_haul.cradle_parts_g). Cradle path from
-    meat_haul (two legs at HALF_SPAN, BELLY); the bag-on path under the floor channels is not modelled anywhere."""
+def us_rows() -> list:
+    """US1 / US2 under-straps (pin to pin, owner-frozen). BL-050 B: each strap has its own cut (corrie_f.US_CUT_MM)
+    and its own lane (h1_bedfit published half span US1 70 / US2 165). Paths: the bag-off cradle (meat_haul's two
+    straight legs to the BELLY_MM belly, on the strap's own half span; us_route.cradle_span) is the SHORTEST path (the
+    longest tail); the bag-on path under the floor channels (us_route.json strap_lengths 'now', the meat drapes) is
+    the longest."""
     from huntkit.gendesign import meat_haul as MH
-    cradle = 2 * math.hypot(MH.HALF_SPAN_MM, MH.BELLY_MM)
-    cut = 1100.0 / 2.0
-    P = {"max": cradle, "used": cradle, "min": cradle}
-    r = _row("US", "under-straps US1 / US2 (each)", "frame / bag floor", 2, 1, cut, cut, 60.0, P,
-             "tri-glide keeper (meat_haul)", "tri-glide keeper (meat_haul)",
-             "meat_haul.HALF_SPAN_MM / BELLY_MM (cradle); 1.10 m pair; 60 mm sewn pin loop ASSUMPTION")
-    r["note"] = "bag-on path not modelled (settled by T9); the tri-glide keeper holds the tail flat in every mode"
+    F = _F()
+    pub = json.loads(F.H1_PUBLISHED.read_text())["published"]
     ur = HERE.parent / "analysis" / "us_route.json"
-    if ur.exists():                     # BL-048: the bag-on path IS modelled now (us_route.py, the meat drapes)
-        sl = json.loads(ur.read_text()).get("strap_lengths")
-        if sl:
-            now = sl["layouts"]["now"]
-            r["note"] = (f"BL-048 us_route: bag-on path modelled on the meat drapes; the {sl['cut_mm']:.0f} mm cut leaves "
-                         f"{sl['available_mm']:.0f} mm for a pin-to-cam path of US1 {now['us1']['need_mm']:.0f} / US2 "
-                         f"{now['us2']['need_mm']:.0f} mm on the current stations: US2 short by {now['us2']['short_by_mm']:.0f} mm "
-                         "(cut set after BL-047's station move); the tri-glide keeper holds the tail flat")
-    return r
+    sl = json.loads(ur.read_text()).get("strap_lengths") if ur.exists() else None
+    out = []
+    import patterns_corrie_f_rev3 as PT
+    reach = PT.USA_CUT / 2.0 - PT.USA_PIN_LOOP / 2.0    # the USA cam anchor spans this much of the pin-to-pin path
+    for sid, n in (("US", "us1"), ("US2", "us2")):
+        cradle = 2 * math.hypot(float(pub[n.upper() + "_X"]), MH.BELLY_MM) - reach      # the strap's own share
+        cut = float(F.US_CUT_MM[n])
+        bag_on = None
+        if sl and "now" in sl.get("layouts", {}):
+            bag_on = float(sl["layouts"]["now"][n]["need_mm"])        # pin-to-cam, as strap_lengths (USA reach off)
+        P = {"max": max(cradle, bag_on or cradle), "used": bag_on or cradle, "min": cradle}
+        r = _row(sid, f"under-strap {n.upper()}", "frame / bag floor", 1, 1, cut, cut, 2 * 50.0, P,
+                 "tri-glide keeper (meat_haul)", "tri-glide keeper (meat_haul)",
+                 f"corrie_f.US_CUT_MM (BL-050 B); cradle 2 x hypot(half span {pub[n.upper() + '_X']:.0f}, belly "
+                 f"{MH.BELLY_MM:.0f}) less the USA reach; bag-on path us_route.json strap_lengths 'now'; 2 x 50 mm sewn eye")
+        r["note"] = ("bag-on path modelled on the meat drapes (us_route); bag-off cradle on the lane span; the "
+                     "stainless tri-glide holds the tail flat in every mode")
+        out.append(r)
+    return out
 
 
 ROLL_CLIPS = HERE / "corrie_f_sim" / "corrie_f_roll_clips.json"   # huntkit.viz3d.corrie_f --roll-clips (BL-031)
@@ -359,7 +367,7 @@ def other_rows() -> list:
 
 def audit(size: str = "M", kit: str = "M") -> dict:
     rows = [crown_row(kit), lifter_row(), sternum_row(), stabilizer_row(size), belt_row(size)] + wrap_rows(kit) + \
-        im_rows() + [us_row(), roll_row()]
+        im_rows() + us_rows() + [roll_row()]
     F = _F()
     return {"size": size, "kit": kit, "rule_mm": F.TAIL_RULE_MM, "keeper_over_mm": F.KEEPER_OVER_MM,
             "grip_mm": F.TAIL_GRIP_MM, "rows": rows, "other": other_rows(),

@@ -1,5 +1,5 @@
 {
- "material_usd_primary": 380.33,
+ "material_usd_primary": 381.06,
  "prototype_buy": {
   "rows": [
    {
@@ -26,14 +26,14 @@
    },
    {
     "section": "fabric",
-    "item": "cordura_500d_nylon66: B-05x1 B-16x2",
+    "item": "cordura_500d_nylon66: B-05x1 B-16x1 B-16bx1",
     "material_id": "cordura_500d_nylon66",
     "unit": "m",
-    "production_qty": 0.092,
-    "production_usd": 1.5,
+    "production_qty": 0.095,
+    "production_usd": 1.56,
     "prototype_qty": 0.457,
     "prototype_usd": 7.5,
-    "how": "1-bag marker 0.22 m -> 0.5 yd"
+    "how": "1-bag marker 0.36 m -> 0.5 yd"
    },
    {
     "section": "fabric",
@@ -150,22 +150,22 @@
     "item": "poly_webbing_25mm: B-28 B-28s B-28t BRL BRS E5 HPL I2K I2T IM1 IM2 IM3",
     "material_id": "poly_webbing_25mm",
     "unit": "m",
-    "production_qty": 16.966,
-    "production_usd": 11.88,
+    "production_qty": 17.36,
+    "production_usd": 12.15,
     "prototype_qty": 17.374,
     "prototype_usd": 12.16,
-    "how": "16.966 m -> 19 yd"
+    "how": "17.36 m -> 19 yd"
    },
    {
     "section": "webbing",
     "item": "poly_webbing_38mm: B-24 B-25 HE IME T3",
     "material_id": "poly_webbing_38mm",
     "unit": "m",
-    "production_qty": 3.249,
+    "production_qty": 3.25,
     "production_usd": 3.25,
     "prototype_qty": 3.658,
     "prototype_usd": 3.66,
-    "how": "3.249 m -> 4 yd"
+    "how": "3.25 m -> 4 yd"
    },
    {
     "section": "webbing",
@@ -403,11 +403,11 @@
     "item": "bonded_nylon_tex90 (needle + bobbin)",
     "material_id": "bonded_nylon_tex90",
     "unit": "m",
-    "production_qty": 123.8,
+    "production_qty": 124.4,
     "production_usd": 0.76,
     "prototype_qty": 1260.0,
     "prototype_usd": 7.69,
-    "how": "1 cone(s) of 4 oz = 1260 m each (123.8 m used)"
+    "how": "1 cone(s) of 4 oz = 1260 m each (124.4 m used)"
    },
    {
     "section": "consumable",
@@ -443,6 +443,17 @@
     "how": "1 tube 1 oz (28 ml) (ASSUMPTION SHOP-UNIT: smallest tube of silicone seam sealer)"
    },
    {
+    "section": "consumable",
+    "item": "urethane seam sealer for the B-16b channel tail stitch lines on the PU",
+    "material_id": "seam_sealer_pu",
+    "unit": "tube 1 oz (28 ml)",
+    "production_qty": 1,
+    "production_usd": 0.4,
+    "prototype_qty": 1,
+    "prototype_usd": 9.0,
+    "how": "1 tube 1 oz (28 ml) (ASSUMPTION SHOP-UNIT: smallest tube of urethane seam sealer (Seam Grip class))"
+   },
+   {
     "section": "packaging",
     "item": "poly bags + carton share",
     "material_id": "polybag_carton",
@@ -454,22 +465,22 @@
     "how": "as production (whole units / cones)"
    }
   ],
-  "total_usd": 501.49,
+  "total_usd": 510.49,
   "fabric_usd": 185.15,
   "assumption": "SHOP-INCR: roll goods in 0.5 yd steps at full width, webbing whole yards, HDPE one 0.25 m2 sheet; hardware as production (whole units); thread by the 4 oz cone, basting tape and seam sealer by the smallest pack (SHOP-UNIT, BL-041 n-10); no camo print (CAMO-FIRST, BL-041 Y-5)"
  },
- "prototype_usd": 501.49,
- "material_usd_alternate": 380.17,
- "fabric_usd_primary": 88.03,
- "fabric_usd_alternate": 87.87,
+ "prototype_usd": 510.49,
+ "material_usd_alternate": 381.14,
+ "fabric_usd_primary": 88.09,
+ "fabric_usd_alternate": 88.17,
  "missing_cost": [],
- "proto_hours": 74.4,
+ "proto_hours": 74.8,
  "proto_hours_by_step": {
   "0 Prep and cutting": 16.28,
   "1 Pockets": 6.06,
   "2 Small parts": 4.33,
   "3 Door D2 and hinge band": 5.0,
-  "4 Main bag": 14.02,
+  "4 Main bag": 14.36,
   "5 Collar and roll top": 3.5,
   "6 Crown lid B-29 (as hunted)": 8.46,
   "7 Straps and webbing": 6.46,
@@ -477,18 +488,18 @@
   "9 Rain fly F-01": 5.4,
   "10 Finish, inspect, pack": 1.2
  },
- "sam_min": 506.3,
+ "sam_min": 508.8,
  "labour_usd": {
-  "us_contract_usd_min": 430.33,
-  "asia_contract_usd_min": 60.75
+  "us_contract_usd_min": 432.44,
+  "asia_contract_usd_min": 61.05
  },
  "cmt_usd": {
-  "us_contract_usd_min": 537.91,
-  "asia_contract_usd_min": 75.94
+  "us_contract_usd_min": 540.55,
+  "asia_contract_usd_min": 76.31
  },
  "landed_usd": {
-  "us_contract_usd_min": 918.24,
-  "asia_contract_usd_min": 456.27
+  "us_contract_usd_min": 921.61,
+  "asia_contract_usd_min": 457.37
  },
  "lid_hours_drafted": 9.53,
  "lid_hours_booked": 7.76,

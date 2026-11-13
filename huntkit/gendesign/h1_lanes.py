@@ -259,9 +259,49 @@ def strip_old_us(solid: np.ndarray, log=None) -> tuple:
         rm = rm[~c["dom"].passive_void[rm] & ~c["holes"][rm]]
         n += int(out[rm].sum())
         out[rm] = False
+        if CROWN_RESTORE:                    # BL-051: the stay section bridged back over the strip zone
+            back = rm[_crown_bridge(solid, cen, rm, H1.H)]
+            n -= int(out[back].size)
+            out[back] = True
     if log:
         log(f"  old US stubs removed: {n} voxels ({n * H1.H ** 3 * RHO_G_MM3:.1f} g)")
     return out, n
+
+
+# BL-051: ``strip_old_us`` took the stay's own bag-face crown with the stub. The 'outside' rule above keeps only the
+# stay CIRCLE (r 8.96-9.19, top y = yc + r + 1 = 7.3 at US2), but the H1 body's stay is fuller than that circle on the
+# bag face (crown top y 10.0 at z 127, 11.8 at z 160, 9.8 at z 110), so the print came out 2-4 mm low over the old
+# stub sites (US2 z 131-152, US1 z 86-104; at US2 z 138-146 the release body itself already lacked it: the old stub's
+# throat). With CROWN_RESTORE the stay section is bridged across each strip zone: every voxel of the zone is set solid
+# where the body is solid at the same (x, y) on the reference z planes each side of that station's strip zone (the stay section
+# each side, intersected: never fuller than the leaner side), whatever the stub left there. False = the BL-049/050
+# print. ``strip_old_us``'s count is then the net voxels removed.
+CROWN_RESTORE = True
+CROWN_REF_VOX = (2, 3, 4)          # reference planes 4-8 mm beyond each end of the zone (all intersected): the raw
+#                                    release body still carries the old stub's edge blend (y 11 at z 103-107 over
+#                                    US1) one voxel out, which a +/-1 voxel bridge copied into a 1.5 mm hump
+
+
+def _crown_bridge(solid: np.ndarray, cen: np.ndarray, rm: np.ndarray, h: float) -> np.ndarray:
+    """Mask over ``rm`` (voxel indices of one station's strip zone): True where the body ``solid`` is solid at the same
+    (x, y) on every reference plane CROWN_REF_VOX voxels below the zone's lowest z and above its highest z (the stay
+    prism bridged over it, never fuller than the leanest reference section)."""
+    if len(rm) == 0:
+        return np.zeros(0, bool)
+    key = np.floor(cen / h).astype(np.int64)        # centres sit at odd mm on the 2 mm grid: floor, never round
+    k0 = key.min(axis=0)
+    span = key.max(axis=0) - k0 + 1
+    lin = lambda k: ((k[:, 0] - k0[0]) * span[1] + (k[:, 1] - k0[1])) * span[2] + (k[:, 2] - k0[2])
+    solid_lin = np.sort(lin(key[solid]))
+    kz = key[rm, 2]
+    out = np.ones(len(rm), bool)
+    for dz in [kz.min() - k for k in CROWN_REF_VOX] + [kz.max() + k for k in CROWN_REF_VOX]:
+        q = key[rm].copy()
+        q[:, 2] = dz
+        lq = lin(q)
+        i = np.clip(np.searchsorted(solid_lin, lq), 0, len(solid_lin) - 1)
+        out &= solid_lin[i] == lq
+    return out
 
 
 def voxel_lugs(solid: np.ndarray) -> tuple:
@@ -294,7 +334,7 @@ def _local_station(geom, stay_r: float, xoff: float) -> dict:
 
 
 def lug_fea(geom, stay_r: float, xoff: float, arm: dict | None, loads: dict, h: float = 1.0,
-            relief: bool = False, field: str | None = None) -> dict:
+            relief: bool = False, field: str | None = None, stay_poly: list | None = None) -> dict:
     """Voxel FEA of a fairlead standing ``xoff`` from the stay axis on an arm (h1_fairleads.fairlead_fea's model,
     rules and load application; ``xoff`` 0 and ``arm`` None = that model exactly). Local axes: x along the pin
     (+ = towards the lane), y towards the bag, z along the stay; the stay stub (circle r ``stay_r``) is fixed at its
@@ -314,10 +354,18 @@ def lug_fea(geom, stay_r: float, xoff: float, arm: dict | None, loads: dict, h: 
         xa, xb = -max(20.0, hx + 3.0), max(20.0, hx + 3.0)
     lo = np.array([xa, -(stay_r + 4.0), -zext])
     hi = np.array([xb, stay_r + geom.tip_proud + 4.0, zext])
+    if stay_poly is not None:            # room for the real stay section (BL-051)
+        sp_ = np.asarray(stay_poly, float)
+        lo[:2] = np.minimum(lo[:2], sp_.min(axis=0) - 2.0)
+        hi[:2] = np.maximum(hi[:2], sp_.max(axis=0) + 2.0)
     n = np.maximum(np.round((hi - lo) / h).astype(int), 6)
     g = Grid(tuple(int(v) for v in n), h, x0=lo)
     c = g.elem_centers()
-    stay = (np.hypot(c[:, 0], c[:, 1]) <= stay_r) & (np.abs(c[:, 2]) <= zext - 1.0)
+    stay_xy = np.hypot(c[:, 0], c[:, 1]) <= stay_r
+    if stay_poly is not None:            # BL-051: the stay's real section (crown included) in place of the circle
+        from matplotlib.path import Path as _MPath
+        stay_xy |= _MPath(np.asarray(stay_poly, float)).contains_points(c[:, :2])
+    stay = stay_xy & (np.abs(c[:, 2]) <= zext - 1.0)
     cl = c - np.array([xoff, 0.0, 0.0])
     fl_f = BA.fairlead_local(cl, stay_r, geom)
     yoke = fl_f <= 0.0
@@ -344,7 +392,13 @@ def lug_fea(geom, stay_r: float, xoff: float, arm: dict | None, loads: dict, h: 
     band = (rr > geom.hole_d / 2.0 - 0.35 * h) & (rr < geom.hole_d / 2.0 + 0.9 * h)
     band &= np.abs(xl) >= geom.throat / 2.0 - 0.3
     band &= np.abs(xl) <= geom.throat / 2.0 + geom.cheek + 0.6 * h
-    end = (np.abs(nc[:, 2]) >= zext - 2.5) & (np.hypot(nc[:, 0], nc[:, 1]) <= stay_r + h)
+    end_xy = np.hypot(nc[:, 0], nc[:, 1]) <= stay_r + h
+    if stay_poly is not None:
+        from matplotlib.path import Path as _MPath
+        from shapely.geometry import Polygon as _Pg
+        big = np.asarray(_Pg(np.asarray(stay_poly, float)).buffer(h).exterior.coords)
+        end_xy |= _MPath(big).contains_points(nc[:, :2])
+    end = (np.abs(nc[:, 2]) >= zext - 2.5) & end_xy
     fixed = np.zeros(g.ndof, bool)
     ids = np.where(end)[0]
     for d in range(3):
@@ -588,9 +642,10 @@ def lug_geom_inputs(name: str) -> dict:
     return {"p": p, "xoff": p["x"] - STAY_X, "arm": arm_of(name)}
 
 
-def lug_study(h: float = 1.0, log=print, arms: dict | None = None) -> dict:
+def lug_study(h: float = 1.0, log=print, arms: dict | None = None, stay_polys: dict | None = None) -> dict:
     """Strength / fatigue / creep of each lane lug (fairlead + arm + stay root) under lug_loads; the governing region
-    of each load (FI99 per region) and the record's whole-yoke FI99. ``arms`` overrides ARM (sizing sweeps)."""
+    of each load (FI99 per region) and the record's whole-yoke FI99. ``arms`` overrides ARM (sizing sweeps).
+    ``stay_polys`` (BL-051): {name: local (x, y) polygon of the stay section} in place of the stay circle (own cache)."""
     from . import bag_attach as BA
     pa = BA._paht()
     res = {}
@@ -603,9 +658,14 @@ def lug_study(h: float = 1.0, log=print, arms: dict | None = None) -> dict:
         geom = p["geom"]
         q = arm.get("isect")                  # BL-050: own cache per pocketed arm variant
         tag = f"lug_{name}_{h:g}" + (f"_{q.get('kind', 'I')}_w{q['web']:g}_f{q['flange']:g}" if q else "")
-        f = _cached(tag, lambda: lug_fea(geom, p["stay_r"], gi["xoff"], arm, loads, h=h),
-                    {"geom": dataclasses.asdict(geom), "stay_r": p["stay_r"], "xoff": gi["xoff"], "arm": arm,
-                     "loads": loads, "h": h})
+        sp = (stay_polys or {}).get(name)
+        key = {"geom": dataclasses.asdict(geom), "stay_r": p["stay_r"], "xoff": gi["xoff"], "arm": arm, "loads": loads,
+               "h": h}
+        if sp is not None:
+            tag += "_crown"
+            key["stay_poly"] = [[round(float(a), 3), round(float(b), 3)] for a, b in sp]
+        f = _cached(tag, lambda: lug_fea(geom, p["stay_r"], gi["xoff"], arm, loads, h=h, stay_poly=key.get("stay_poly")),
+                    key)
         rows = {}
         for k, v in f["loads"].items():
             gr = L[k]["g_times_req"]
@@ -869,7 +929,10 @@ def compute(log=print) -> dict:
     led = None
     try:
         from huntkit.mass import ledger as LG
-        led = [r for r in LG.parts("corrie_b2_h1_v2", "M") if r["name"] == "attachment: 7075 pins (8)"][0]["g"] / 8.0
+        import re as _re             # BL-051: the row is 'attachment: 7075 pins (<n>)' (n = 12 since BL-051, 8 before)
+        row = [r for r in LG.parts("corrie_b2_h1_v2", "M")
+               if _re.fullmatch(r"attachment: 7075 pins \(\d+\)", r["name"])][0]
+        led = row["g"] / float(_re.search(r"\((\d+)\)", row["name"]).group(1))
     except Exception:            # pragma: no cover
         led = 19.3 / 8.0
     ch = pin[pin["chosen"]]
@@ -890,6 +953,7 @@ def compute(log=print) -> dict:
            "lugs": lugs, "arms": ARM, "export": ex, "bed": bed, "slice_checks": sc, "body": body,
            "us_route": {"layouts": urs, "test_piece": ur.get("test_piece"), "station_move": ur.get("station_move")},
            "he_check": he, "pieces": pieces, "mass": mass}
+    res = {"superseded_by": json.loads(RESULTS.read_text()).get("superseded_by") if RESULTS.exists() else None, **res}
     RESULTS.write_text(json.dumps(res, indent=1, default=lambda o: o.tolist() if hasattr(o, "tolist") else float(o)))
     if log:
         log(f"  wrote {RESULTS.relative_to(REPO)}")
@@ -1113,6 +1177,14 @@ def _reg_min(lug: dict, region: str) -> float:
     return min(r["regions"][region]["fatigue"] for r in lug["rows"].values() if region in r["regions"])
 
 
+SUPERSEDED_NOTE = (
+    "> **SUPERSEDED (2026-11-13) for the print, the bed fit and the US2 lug: see `h1_bedfit.md` (BL-050 A: bolt-on US2 "
+    "outer clevis, the halves fit the H2S bed) and `h1_crown.md` (BL-051: the stay crown that `strip_old_us` cut away "
+    "over the old US1 / US2 stub sites is restored; lug FEA on the real stay section; body re-checked).** The hinge "
+    "fairlead, hinge pin and lane positions below still stand. Print masses, bed footprints, slice checks and the "
+    "body numbers in this file are the BL-049 print (lower half 367.5 mm wide, crown cut): do not build from them.\n")
+
+
 def write_md(res: dict, shots: list) -> str:
     from . import bag_attach as BA
     h = res["hinge"]["study"]
@@ -1123,6 +1195,7 @@ def write_md(res: dict, shots: list) -> str:
     w = []
     a = w.append
     a("# H1 hinge for the inboard-up pull, and the US stations on lane lugs (BL-049)\n")
+    a(SUPERSEDED_NOTE)
     a("structural-fea-engineer, 2026-11-13. Ticket `docs/backlog/BL-049-hinge-and-us-lanes.md`. Code "
       "`huntkit/gendesign/h1_lanes.py` (`python -m huntkit.gendesign.h1_lanes --fea | --body | --export`), geometry "
       "`bag_attach.HINGE_GEOM` (BL-049) and `h1_fairleads.placed` (lanes), print `frame_h1.print_mesh`; tests "

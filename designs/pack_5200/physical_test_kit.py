@@ -161,6 +161,13 @@ PIN_STRAIGHT = ("PIN CHECK (BL-048 M-C): roll the dowel on the bench plate befor
 FIX_PRINT = ("PRINT (BL-048 m-6): fixtures print as the H1 frame: PAHT-CF, dried, the H1 slicer settings "
              "(print/frame_h1/README.md), annealed as H1.")
 US_PIECE_FILE = "us_route_stay_R.stl"
+# BL-050 B: the kit points at the frame's own test piece (re-cut on the lanes by BL-049 / 050 A) and the bolt-on US2
+# clevis; the old kit copy (outputs/release/test_kit/print, BL-048 stations) is retired
+US_PIECE_PATH = "designs/pack_5200/print/frame_h1/test_pieces/us_route_stay_R.stl"
+US_CLEVIS_PATH = "designs/pack_5200/print/frame_h1/us2_clevis_R.stl"
+FRAME_PIECES = ("us_route_stay_R", "us2_clevis_R")
+from huntkit.gendesign.frame_h1 import JOINT as Z234  # noqa: E402  (the z 234 body joint: M5 x 45, 12 mm washers)
+from huntkit.gendesign.h1_bedfit import JOINT as CLEVIS  # noqa: E402  (the US2 clevis: M5 x 40, 10 mm DIN 433)
 WEB38 = yaml.safe_load((ROOT / "data" / "materials" / "webbing" / "poly_webbing_38mm.yaml").read_text())["properties"]
 SEWF_SCATTER = 1.15        # BL-041 n-13: the kit's fatigue scatter factor (IM3-EC, CA1_fatigue_rig.md 6a) on SEW-F too
 SEWF_PEAK = round(SEWF_SCATTER * FAT_G * max(SEWF.values()) / 3.0)   # 1.15 x 1.6 g x the S6 1 g load (240 N) = 442 N
@@ -353,33 +360,95 @@ def pt3_steps() -> str:
 def us_route_record() -> dict:
     """BL-048 N-1: the under-straps' real path (designs/pack_5200/analysis/us_route.json, us_route.py)."""
     d = _json("us_route.json")
-    now = d["layouts"]["now"]["rows"]
-    bear = max(sum(v for v in r["section"]["bearing_n"].values()) for r in now if "section" in r)
-    return {"tension_n": d["tension_n"], "station_move": d["station_move"], "bearing_now_n": bear,
-            "worst_now_mm": min(d["layouts"]["now"]["worst_clear_mm"].values()), "piece": d.get("test_piece", {})}
+    old = d["layouts"].get("old_channel", d["layouts"]["now"])["rows"]
+    bear = max(sum(v for v in r["section"]["bearing_n"].values()) for r in old if "section" in r)
+    return {"tension_n": d["tension_n"], "station_move": d["station_move"], "bearing_old_n": bear,
+            "worst_now_mm": d["layouts"]["now"]["worst_clear_mm"], "pass_now": d["layouts"]["now"]["pass"],
+            "piece": d.get("test_piece", {}), "heads": d.get("clevis_heads", {}), "cradle": d.get("cradle_span", {})}
+
+
+def hinge_pin_len() -> float:
+    """BL-049 hinge pin length (h1_lanes.hinge_pin 'chosen': Ti-6Al-4V, throat + 2 cheeks + 4, PIN-L)."""
+    from huntkit.gendesign import h1_lanes as LN
+    hp = LN.hinge_pin()
+    return float(hp[hp["chosen"]]["length_mm"])
+
+
+def clevis_row() -> dict:
+    """BL-050 B (orchestrator): ASSUMPTIONS CLEVIS-SHARE / CLEVIS-DRY (h1_bedfit.md 7) settled on the CA-1 lever rig:
+    the US test piece with the bolt-on US2 clevis, the US2 pin pulled in the cradle direction with the eye against
+    the outer cheek, to the frame's cradle check load, then cycled at its 1.6 g peak; no joint opening."""
+    from huntkit.gendesign import h1_bedfit as BF
+    from huntkit.gendesign import h1_lanes as LN
+    from huntkit.gendesign import meat_haul as MH
+    j = BF.JOINT
+    F = LN.US_CRADLE_N
+    Fc = round(F * FAT_G / 2.4)                      # the lug check's fatigue peak: 720 x 1.6 / 2.4 = 480 N
+    th = math.degrees(MH._theta())
+    cs = us_route_record()["cradle"]
+    th2 = cs.get("modes", {}).get("bag_off", {}).get("us2", {}).get("theta_deg")
+    return dict(id="CLEVIS-SHARE", status="ACTIVE", tier="safety",
+                title=f"US2 bolt-on clevis joint: {F:.0f} N cradle pull with the eye on the outer cheek, then 1e5 cycles at {Fc} N; no joint opening",
+                defined_in="designs/pack_5200/analysis/h1_bedfit.md 2 and 7 (ASSUMPTIONS CLEVIS-SHARE, CLEVIS-DRY, CLEVIS-PRINT); huntkit/gendesign/h1_bedfit.py JOINT; us_route.json cradle_span (BL-050 B)",
+                what_it_proves=f"the clevis (outer cheek) takes <= the 0.6 share the joint was sized on (strength 3.85, fatigue 1.73; at 1.0 2.31 / 1.04) and the dry, un-preloaded butt joint stays shut at the cradle load",
+                gates="frame release R1 (the US2 lug as built from two printed parts)", grams_at_stake_g="0",
+                safety_at_stake=f"US2 cradle anchor (bag-off / float meat on the frame): joint fatigue 1.73 at share 0.6, 1.04 at 1.0",
+                specimen=f"`{US_PIECE_PATH}` + `{US_CLEVIS_PATH}` printed with the CA-1 bars (PAHT-CF, dried, annealed, 7 days conditioned), clevis holes reamed 5.1, bolted with 2 Ti gr5 M5 x {j.bolt_len:.0f} DIN 7984, 2 A2 nuts, 4 x {j.washer_od:.0f} mm DIN 433 washers, blue threadlocker, snug (no preload credited, CLEVIS-DRY); one sewn US eye (25 mm, necked as op 'US', 18.6 mm slot) on {FIX_PIN} in the US2 throat with its UHMWPE sleeve",
+                kit="B, A, D",
+                steps=(f"clamp the piece by its stay ends on the lever rig base (as IM3-EC); 1 mm PTFE shim between the eye and the INNER cheek so the eye bears on the OUTER cheek (the clevis: CLEVIS-SHARE worst case); lead the US eye's strap aft and down at {th:.0f} deg below the bag direction (the lug check's cradle line; the lane span gives {th2} deg for US2, which loads the joint less in shear-down) through the rig link; pencil lines across the joint face top and bottom, a 0.05 mm feeler at hand; (1) static: turnbuckle in place of the spring, pull in steps to {F:.0f} N ({F / G:.1f} kg), hold 60 s; at {F:.0f} N try the 0.05 mm feeler at the joint face from both sides and both ends; unload, check the pencil lines; (2) cycles: spring back in, R about 0.1 ({round(0.1 * Fc)} -> {Fc} N), 1e5 cycles, stop at 1e3, 1e4 and 1e5 to check the feeler at {Fc} N and the pencil lines; (3) at the end re-check the bolts' torque mark and look at the arm root and the throat floor with the loupe; optional strain gauge at the US2 arm root as STAY-STUB"),
+                pass_fail=f"no joint opening: the 0.05 mm feeler does not enter the joint face at {F:.0f} N or at {Fc} N at any stop; pencil lines step <= 0.05 mm (none visible under the loupe); no crack at the cheek root, the arm root or round the bolt holes; the bolt torque marks have not moved; 1e5 cycles run out",
+                cost_usd="10", cost_basis="about 140 g PAHT-CF at USD 80/kg (us_route.json test_piece g_as_assembled) + the clevis bolts on the shopping list",
+                hours_hands_on="1.5", hours_machine="30", phase="2", run_order="20", first_weekend="N",
+                notes="BL-050 B (orchestrator): new. The US test piece printed for HE-FIT step 0 can be re-used AFTER step 0 only if this test is run on a second print (this test may crack it)",
+                g_per_usd_eq="")
+
+
+def fit_us_row() -> dict:
+    """BL-050 B (orchestrator): FIT-US on P1: the clevis bolt heads (ASSUMPTION HEAD-PROUD) and the US straps on the
+    built frame and bag, every crown kit end. us_route.head_clearance found the free drapes reach the heads."""
+    ur = us_route_record()
+    h = ur["heads"] or {}
+    rows = h.get("rows", [])
+    worst = min(rows, key=lambda r: r["cloth_mm"]) if rows else {}
+    touch = sorted({f"{r['torso']} in {r['case']} {r['side']}" for r in rows if r["cloth_mm"] <= 0.0})
+    hx = h.get("head_x_mm", [0, 0])
+    return dict(id="FIT-US", status="ACTIVE", tier="safety",
+                title="US fit on P1 with the bag: clevis bolt heads clear of the bag at every crown kit end; US straps on their lanes; US2 eye over the clevis seam",
+                defined_in="designs/pack_5200/analysis/h1_bedfit.md 7 (ASSUMPTIONS HEAD-PROUD, SEAM-FLOOR); designs/pack_5200/analysis/corrie_f_body.md 25 (BL-050 B: us_route.head_clearance)",
+                what_it_proves=f"the 4 US2 clevis bolt heads (x +/-{hx[0]:.1f}-{hx[1]:.1f}, z {h.get('head_z_mm', ['?', '?'])[0]} / {h.get('head_z_mm', ['?', '?'])[1]}) do not rub the bag; the model says they may: the free rev 3 drapes reach them (worst {worst.get('cloth_mm', '?')} mm, {worst.get('torso', '?')} in {worst.get('case', '?')} {worst.get('side', '?')}; within 0 mm at {', '.join(touch) or 'none'})",
+                gates="bag first article (BAG-BATCH): a FAIL means a frame-side head change (counterbore or cap, owner decision) before more bags", grams_at_stake_g="0",
+                safety_at_stake="bag abrasion at the B-01 | B-03 corner over a Ti socket head under load; US strap route",
+                specimen="P1 frame with both US2 clevises bolted on (as built), the first sewn bag, US1 / US2 straps rigged (bag on), crown kits S, M, L",
+                kit="C, D",
+                steps="(1) colour each clevis bolt head with lipstick or chalk paste; (2) mount the bag; 30 kg sand meat on IM1-IM3, cinch the US straps; set the crown to 15 in (kit S shortest), run the T5 crank 200 cycles (or walk 5 min if T1-T4 have passed); (3) take the bag off and look for colour on B-01, B-03 and the B-18 / floor corner; photo; (4) repeat at 19 in and 23 in (kits M, L); (5) bag-off cradle: rig the US straps round a 20 kg sand bag as a quarter, check the US2 strap and its tail clear the heads; (6) slide the US2 eye across the clevis seam in the throat floor under load (SEAM-FLOOR)",
+                pass_fail="no colour transfer on the bag at any crown setting; the strap and its tail clear the heads in the cradle; the US2 eye slides across the seam without catching; FAIL: photo to the pack-designer and the structural-fea-engineer (frame head change)",
+                cost_usd="2", cost_basis="lipstick / chalk paste; P1, bag and sand from kits C / D",
+                hours_hands_on="1.5", hours_machine="", phase="4", run_order="37", first_weekend="N",
+                notes="BL-050 B (orchestrator): new. Run with T9-R3a on P1 / the first sewn bag", g_per_usd_eq="")
 
 
 def he_fit_row() -> dict:
     """BL-044 DECISION HE-ENV: HE-FIT on the BL-042 test piece, with the pass band that agrees with the cheek
-    clearance (review m-1) and the webbing caliper gate (the 3-ply neck must pass the 5.5 mm gap under the pin)."""
+    clearance (review m-1) and the webbing caliper gate (the 3-ply neck must pass the gap under the pin:
+    bag_attach.HINGE_EYE_ENVELOPE, 6.5 mm since BL-049)."""
     P = _P()
     g = P.he_geometry()
     lo, hi = P.he_band()
     e = g["env"]
     ur = us_route_record()
     US_T, US_MOVE = ur["tension_n"], ur["station_move"]
-    US_BEAR = ur["bearing_now_n"]
+    US_W = ur["worst_now_mm"]
     return dict(id="HE-FIT", status="ACTIVE", tier="safety",
                 title="hinge eye 1:1 dry fit on the printed BL-042 z 60 hinge fairlead (eye on the pin, neck in the throat)",
                 defined_in="designs/pack_5200/patterns_corrie_f_rev3.py DECISION HE-ENV (he_geometry, he_band, he_peel; bag_attach.HINGE_EYE_ENVELOPE), ASSUMPTIONS HE-CHEEK, HE-T, HE-PIN-HI, HE-NECK-TOL, HE-GAP-MARGIN; review_20261113_rev3_third.md Z-1 / m-1",
                 what_it_proves=f"the loaded pin centre sits {lo:.0f}-{hi:.0f} mm above the floor seam line (design {g['pin_z']:.0f}: frame z 60 with the floor at z 35), so the box top stays >= {P.HE_CHEEK_MIN:.0f} mm under the cheeks; the 3-ply neck slides round the pin through the {e['gap_under_pin_mm']:.1f} mm gap over the throat floor; only the {P.HE_NECK_W:.0f} mm neck is between the cheeks ({e['throat_mm']:.0f} mm throat)",
                 gates="HE pattern before the PT-3 specimens and before the bag is cut", grams_at_stake_g="0",
                 safety_at_stake="hinge eye position and the eye's passage under the pin: every sim and placement assumes the floor at z 35",
-                specimen=f"1 scrap HE sewn as op 4.05 (B-18 + B-01 offcut 150 x 120 + B-05 strip, floor seam sewn); one hinge fairlead printed 1:1 from `print/frame_h1/test_pieces/hefit_hinge_fairlead_R.stl` (BL-042: z 60 R, 80 mm stay segment, {e['throat_mm']:.0f} mm throat, {e['gap_under_pin_mm']:.1f} mm under the pin; ream the eye to 7.2) with its UHMWPE sleeve and the 5 mm hinge pin ({P.F.hinge_pin()['shank_hinge_mm']:.0f} mm shank)",
+                specimen=f"1 scrap HE sewn as op 4.05 (B-18 + B-01 offcut 150 x 120 + B-05 strip, floor seam sewn); one hinge fairlead printed 1:1 from `print/frame_h1/test_pieces/hefit_hinge_fairlead_R.stl` (BL-042: z 60 R, 80 mm stay segment, {e['throat_mm']:.0f} mm throat, {e['gap_under_pin_mm']:.1f} mm under the pin; ream the eye to 7.2) with its UHMWPE sleeve and the Ti-6Al-4V hinge pin (5 mm, {hinge_pin_len():.0f} mm, BL-049; the {FIX_PIN} stands in for it in step 0)",
                 kit="A+D",
-                steps=f"(0) US ROUTE (BL-048, fourth review N-1; pass criterion below): print the US test piece `test_kit/print/{US_PIECE_FILE}` (R stay z 40-160 with the hinge, US1 and US2 fairleads, cut from `h1_assembled.stl` by `us_route.export_test_piece`; print it as the H1 frame: PAHT-CF, dried, H1 settings, annealed) and clamp it upright; sew two USA anchors (25 mm, as op 7.16: the piece is the R stay, where the cam anchors sit) and hang the HE specimen of this test on its hinge pin ({FIX_PIN} in each fairlead); USA on the US1 pin, its cam on a 25 mm strap laid down the B-01 offcut over the piece, round a 20 mm dowel at the floor-seam line (the floor corner, 25 mm under the hinge pin) to the crane scale, cinched to {US_T['us1']:.0f} N ({US_T['us1'] / G:.1f} kg); then the same from the US2 pin at {US_T['us2']:.0f} N ({US_T['us2'] / G:.1f} kg); repeat with the IME eye on the IM3-EC piece pulled at -82 to -88 deg (the sim directions). PASS (gate US-ROUTE): at the cinched load, along its whole run from the eye to the dowel, no part of the strap, eye or box touches the hinge fairlead, the HE (eye, legs or box) or the other US fairlead: a 10 mm feeler block passes between them everywhere (the design clearance is >= 10 mm). FAIL = any contact or a gap under 10 mm. On the CURRENT print this step FAILS by design (us_route.json: the strap lies over the hinge cheeks and the HE box, 1-4.5 mm into them, bearing about {US_BEAR:.0f} N): it is the evidence for the US station move asked of BL-047, and is re-run on the re-cut piece once the US fairleads are on their lanes (US1 x {US_MOVE['us1']['x']:.0f}, US2 x {US_MOVE['us2']['x']:.0f}); the bag is not cut until it passes; (1) re-caliper ONE ply of the 38 mm roll in hand at 5 places (the first caliper is at the PURCHASE, on a sample, shopping list; BL-048 M-B): every reading <= {P.HE_T_RANGE[1]:.1f} mm, else reject the roll (3 plies of a thicker web leave < 0.7 mm under the pin); (2) clamp the printed stay segment upright; (3) slide the neck round the pin by hand: the pin goes through cheek, sleeve, eye, cheek with the eye seated, no forcing; then push the neck hard against each cheek in turn and slide it round the pin again (its folded edge passes the printed throat-corner fillet: 0.3 mm clear on the model, BL-044 he_stl_check); (4) hang 5 kg from the B-05 strip so the eye loads the pin; (5) caliper from the floor seam line to the pin centre; (6) feeler gauge between the box top and the cheeks' lower edge; (7) check the eye is not folded over the box and the neck is not pinched by the cheeks; (8) BL-048 DECISION HE-NECK-GAUGE: 5 sewn necks (HE, IME, US) each pass the {P.HE_NECK_W + P.HE_NECK_TOL:.1f} mm go / no-go slot, and the printed throat admits a {P.HE_NECK_W + P.HE_NECK_TOL + 1.0:.1f} mm gauge block (then the widest neck keeps >= 0.5 mm a side); photo",
+                steps=f"(0) US ROUTE (BL-048 N-1, re-run on the BL-050 lanes; pass criterion below): print the US test piece `{US_PIECE_PATH}` (R stay z 40-160 with the hinge fairlead and the US1 / US2 lane lugs, cut from `h1_assembled.stl` by `us_route.export_test_piece`; BL-050: printed WITHOUT the US2 outer cheek) and the bolt-on clevis `{US_CLEVIS_PATH}`; print both as the H1 frame: PAHT-CF, dried, H1 settings, annealed; ream the clevis bolt holes 5.1 and bolt the clevis on with 2 Ti M5 x 40 DIN 7984, 2 A2 nuts in the side traps and 4 x 10 mm OD DIN 433 washers (NOT the z 234 joint's M5 x 45 / 12 mm washers; shopping list), blue threadlocker, snug; clamp the piece upright; sew two USA anchors (25 mm, as op 7.16: the piece is the R stay, where the cam anchors sit) and hang the HE specimen of this test on its hinge pin ({FIX_PIN} in each fairlead); USA on the US1 pin, its cam on a 25 mm strap laid down the B-01 offcut over the piece, round a 20 mm dowel at the floor-seam line (the floor corner, 25 mm under the hinge pin) to the crane scale, cinched to {US_T['us1']:.0f} N ({US_T['us1'] / G:.1f} kg); then the same from the US2 pin at {US_T['us2']:.0f} N ({US_T['us2'] / G:.1f} kg), the dowel at the strap's own lane (straight under its pin: the B-16 / B-16b channel ends are at the lane x, BL-050 B); repeat with the IME eye on the IM3-EC piece pulled at -82 to -88 deg (the sim directions); then slide the US2 eye by hand across the clevis seam in the throat floor under 5 kg (SEAM-FLOOR: it must not catch; chamfer 0.3 mm both edges if it does). PASS (gate US-ROUTE): at the cinched load, along its whole run from the eye to the dowel, no part of the strap, eye or box touches the hinge fairlead, the HE (eye, legs or box) or the other US fairlead: a 10 mm feeler block passes between them everywhere (the design clearance is >= 10 mm). FAIL = any contact or a gap under 10 mm. On the BL-050 print with the BL-050 B channel ends the model gives worst clearances US1 {US_W['us1']:.1f} / US2 {US_W['us2']:.1f} mm over the 15 / 19 / 23 in meat drapes, both sides (us_route.json 'now'; the BL-048 channel drawing at x +/-95 rode the hinge cheeks, bearing about {ur['bearing_old_n']:.0f} N); the bag is not cut until it passes; (1) re-caliper ONE ply of the 38 mm roll in hand at 5 places (the first caliper is at the PURCHASE, on a sample, shopping list; BL-048 M-B): every reading <= {P.HE_T_RANGE[1]:.1f} mm, else reject the roll (3 plies of a thicker web leave < 0.7 mm under the pin); (2) clamp the printed stay segment upright; (3) slide the neck round the pin by hand: the pin goes through cheek, sleeve, eye, cheek with the eye seated, no forcing; then push the neck hard against each cheek in turn and slide it round the pin again (its folded edge passes the printed throat-corner fillet: 0.3 mm clear on the model, BL-044 he_stl_check); (4) hang 5 kg from the B-05 strip so the eye loads the pin; (5) caliper from the floor seam line to the pin centre; (6) feeler gauge between the box top and the cheeks' lower edge; (7) check the eye is not folded over the box and the neck is not pinched by the cheeks; (8) BL-048 DECISION HE-NECK-GAUGE: 5 sewn necks (HE, IME, US) each pass the {P.HE_NECK_W + P.HE_NECK_TOL:.1f} mm go / no-go slot, and the printed throat admits a {P.HE_NECK_W + P.HE_NECK_TOL + 1.0:.1f} mm gauge block (then the widest neck keeps >= 0.5 mm a side); photo",
                 pass_fail=f"ply <= {P.HE_T_RANGE[1]:.1f} mm; pin centre {lo:.0f}-{hi:.0f} mm above the floor seam line; >= {P.HE_CHEEK_MIN:.0f} mm feeler between the box top and the cheeks; the eye slides round the pin by hand; neck alone in the {e['throat_mm']:.0f} mm throat; eye points up (no fold-down)",
-                cost_usd="9", cost_basis="scrap + about 105 g PAHT-CF at USD 80/kg (CA1_fatigue_rig.md 5): the HE-FIT piece 31.9 g and the BL-048 US test piece (us_route.json test_piece g) + a spare", hours_hands_on="0.5", hours_machine="2", phase="1",
+                cost_usd="15", cost_basis="scrap + about 175 g PAHT-CF at USD 80/kg (CA1_fatigue_rig.md 5): the HE-FIT piece 31.9 g, the US test piece 126 g + the US2 clevis 14 g (us_route.json test_piece, h1_bedfit.json) + a spare; the clevis bolts are on the shopping list", hours_hands_on="0.5", hours_machine="2", phase="1",
                 run_order="9", first_weekend="Y",
                 notes="BL-041 (re-review X-2): a gate BEFORE PT-3 is sewn and before bag cut. BL-044 (third review Z-1 / m-1): on the BL-042 test piece; the band is set by the cheek clearance (low end) and HE-PIN-HI (high end). A fail low: lengthen HE_EYE by the shortfall; a fail high: shorten it; a ply over 1.6 mm: change webbing",
                 g_per_usd_eq="")
@@ -650,6 +719,8 @@ def new_rows(lv: dict, lid_g: float, cut: dict) -> list[dict]:
              cost_usd="0", cost_basis="T1 rig (kit C) + 4 dial gauges and 2 crane scales already in kits A / C",
              hours_hands_on="2.0", hours_machine="", phase="4", run_order="38", first_weekend="N",
              notes="BL-048: register row added at the orchestrator's request (BL-047's test doc); runs after T1 (a)/(b) on P2", g_per_usd_eq=""),
+        clevis_row(),
+        fit_us_row(),
     ]
     return rows
 
@@ -868,7 +939,7 @@ REL_ORDER = {k: i for i, (k, _, _) in enumerate(RELEASES)}
 TEST_RELEASE = {
     # R1
     "CA-1": "R1", "IM3-EC": "R1", "CA-5": "R1", "MT-1": "R1", "MT-1c": "R1", "IM3-EP": "R1", "W-PULL": "R1",
-    "T9": "R1", "T1": "R1", "T2": "R1", "T1c-SW": "R1",
+    "T9": "R1", "T1": "R1", "T2": "R1", "T1c-SW": "R1", "CLEVIS-SHARE": "R1",
     # bag
     "MT-2": "BAG-CUT", "MT-3": "BAG-CUT", "US-BS": "BAG-CUT", "PT-1": "BAG-CUT", "PT-2": "BAG-CUT", "PT-3": "BAG-CUT",
     "PT-5": "BAG-CUT", "PT-6": "BAG-CUT", "LL-H": "BAG-CUT", "B-28 slip": "BAG-CUT", "PORT-1": "BAG-CUT",
@@ -876,7 +947,7 @@ TEST_RELEASE = {
     "TL-1b": "DATA",
     "SEW-F": "BAG-BATCH", "FIT-R3": "BAG-BATCH",
     "T9-R3a": "BAG-BATCH", "T9-R3b": "BAG-BATCH", "T9-R3c": "BAG-BATCH", "T9-R3d": "BAG-BATCH", "GT-1": "BAG-BATCH",
-    "PT-7": "BAG-BATCH", "WP-2": "BAG-BATCH", "WP-3": "BAG-BATCH", "WP-4": "BAG-BATCH", "WP-5": "BAG-BATCH",
+    "PT-7": "BAG-BATCH", "FIT-US": "BAG-BATCH", "WP-2": "BAG-BATCH", "WP-3": "BAG-BATCH", "WP-4": "BAG-BATCH", "WP-5": "BAG-BATCH",
     # BL-037
     "HS-1": "BL037", "CS-1": "BL037", "AB-1": "BL037", "SL-1": "BL037", "ST-1": "BL037", "BU-1": "BL037",
     "HB-1": "BL037", "HB-D2": "BL037", "BP-1": "BL037",
@@ -887,7 +958,7 @@ ALSO = {"MT-1": "BAG-CUT", "BP-1": "CARRY", "HB-1": "CARRY", "HB-D2": "CARRY", "
 GROUPS = [
     dict(id="G1", title="Order the long-lead parts, print and condition the coupons", when="week 1, day 1",
          rig="3D printer (frame profile), oven, conditioning box (kit D)", kits="B (filament), D",
-         tests=["CA-1", "IM3-EC", "CA-5", "CA-3", "CA-4", "HB-6", "T7"], print_only=True,
+         tests=["CA-1", "IM3-EC", "CA-5", "CLEVIS-SHARE", "CA-3", "CA-4", "HB-6", "T7"], print_only=True,
          intro="Start here, today. The frame coupons need 7 days in the conditioning box before the lever rig can test "
                "them, so they set the pace for frame release R1. Order the long-lead parts the same day."),
     dict(id="G2", title="Pull bench weekend: hooks, cams, bartacks, ladder locks", when="weekend 1 (week 1)",
@@ -901,7 +972,8 @@ GROUPS = [
          intro="Both swatch sets go in the same wash. Three cold cycles, line dry, then look at every edge."),
     dict(id="G4", title="Lever rig: frame coupons (weeks 2-5)", when="build weekend 2, then runs day and night",
          rig="kit B lever fatigue rig (CA1_fatigue_rig.md), 40 C box, 3-point bend fixture", kits="B, D",
-         tests=["CA-1", "IM3-EC", "CA-5", "HB-6", "CA-3", "CA-4", "SEW-F", "CS-1", "BP-1", "HB-5", "T6", "T7", "CA-2"],
+         tests=["CA-1", "IM3-EC", "CA-5", "CLEVIS-SHARE", "HB-6", "CA-3", "CA-4", "SEW-F", "CS-1", "BP-1", "HB-5", "T6",
+                "T7", "CA-2"],
          intro="Build the rig once; every frame coupon runs on it. CA-1 at the release level comes first: frame "
                "release R1 cannot happen without it. The 40 C box also runs CS-1 (BL-037) beside CA-4."),
     dict(id="G5", title="Bench session 2: fabric, belt and back coupons", when="any weekend while the lever rig runs (weeks 2-4)",
@@ -911,7 +983,7 @@ GROUPS = [
                "the lab takes about 4 weeks."),
     dict(id="G6", title="First-article frames on the stand (P1 then P2)", when="after G4's CA-1, IM3-EC and CA-5 pass (about week 5-6)",
          rig="kit C frame test stand (hip log, shoulder bar, sand bags, T5 crank) + kit A scale and come-along", kits="C, A, B (load cell), D",
-         tests=["IM3-EP", "W-PULL", "T9", "T9-R3a", "T9-R3c", "BP-3", "RF-1", "T1", "T1c-SW", "T3", "T2", "MT-1c", "CR-1", "BU-1",
+         tests=["IM3-EP", "W-PULL", "T9", "T9-R3a", "FIT-US", "T9-R3c", "BP-3", "RF-1", "T1", "T1c-SW", "T3", "T2", "MT-1c", "CR-1", "BU-1",
                 "SP-1", "T4a", "T4b", "T4c", "T5", "T5f", "T2u"],
          intro="Frame release R1 completes here: IM3-EP on P1, then T9, T1, T2 and MT-1c on P2. Nobody carries the "
                "frame until T1 to T4 have passed. T2u destroys P1 and is always last."),
@@ -1030,6 +1102,18 @@ def measures(lv: dict, lid_g: float, cut: dict) -> dict:
         "MT-3": [x for cond in ("dry", "wet", "cold") for x in
                  per(5, f"{cond}: mark moved at 92.6 kg (908 N)", "mm", "max", "3", "CAM-SLIP", f"{cond}-a#")
                  + per(5, f"{cond}: mark moved at 110.1 kg (1080 N)", "mm", "max", "3", "CAM-SLIP", f"{cond}-b#")],
+        # BL-050 B (orchestrator): the US2 bolt-on clevis and the US fit on P1
+        "CLEVIS-SHARE": [("static", "no joint opening at 720 N (0.05 mm feeler does not enter, both sides, both ends)", y,
+                          "yes", "Y", "CLEVIS-SHARE; CLEVIS-DRY"),
+                         ("static", "pencil-line step across the joint after 720 N", "mm", "max", "0.05", "CLEVIS-DRY")]
+        + [(f"{n:g} cycles", "no joint opening at 480 N (feeler), no crack (loupe)", y, "yes", "Y",
+            "CLEVIS-SHARE; CLEVIS-PRINT") for n in (1e3, 1e4, 1e5)]
+        + [("end", "bolt torque marks unmoved, no crack at the cheek root / arm root / bolt holes", y, "yes", "Y",
+            "CLEVIS-DRY")],
+        "FIT-US": [(f"{k} ({t} in)", "no colour from the clevis bolt heads on the bag", y, "yes", "Y", "HEAD-PROUD")
+                   for k, t in (("S", 15), ("M", 19), ("L", 23))]
+        + [("cradle", "US2 strap and tail clear the bolt heads in the bag-off cradle", y, "yes", "Y", "HEAD-PROUD"),
+           ("seam", "US2 eye slides across the clevis seam under load without catching", y, "yes", "Y", "SEAM-FLOOR")],
         "US-BS": per(3, "strap stopped within", "mm", "max", "10", "US-BS")
         + per(3, "held 110.1 kg (1080 N) 1 min", y, "yes", "Y", "US-BS", "h#"),
         "PT-1": per(5, "held 260.2 kg (2553 N) 60 s, gate closes, no set", y, "yes", "Y", "CARA-PROOF"),
@@ -1219,6 +1303,22 @@ def shopping(reg: dict) -> list[dict]:
         _l("hardened dowel pin M5 x 40, DIN 6325 (m6), HRC 58-62 (Heritage DOWMH-050-040)", FIX_PIN_N, "each", 3.0,
            "Zoro", "ASSUMPTION USD 3 each (product page refused fetch); " + LINKS["pin40"], "A",
            "PT-3, SEW-F (HE), HE-FIT: the fixture pin (BL-048 M-C)"),
+        # BL-050 B: the two frame bolt sets on DISTINCT lines (BL-051 mix-up risk): US2 clevis M5 x 40 + 10 mm washers
+        # vs the z 234 joint's M5 x 45 + 12 mm washers (h1_bedfit.JOINT / frame_h1.JOINT)
+        _l(f"US2 CLEVIS ONLY: Ti gr5 low-head socket cap screw M5 x {CLEVIS.bolt_len:.0f}, DIN 7984 (NOT M5 x {Z234.bolt_len:.0f})",
+           5, "each", 2.50, "Ti fastener shop (e.g. eBay / AliExpress Ti gr5 DIN 7984)", A, "A",
+           "HE-FIT step 0 (2), CLEVIS-SHARE (2), spare (1)"),
+        _l("US2 CLEVIS: M5 hex nut A2, ISO 4032 (8 AF x 4 mm; thin nuts do not fit the trap)", 5, "each", 0.10,
+           "hardware store", A, "A", "HE-FIT step 0, CLEVIS-SHARE"),
+        _l(f"US2 CLEVIS ONLY: M5 washer {CLEVIS.washer_od:.0f} mm OD x {CLEVIS.washer_t:.0f} mm A2, DIN 433 (NOT the "
+           f"{Z234.washer_od:.0f} mm z 234 washer)", 10, "each", 0.05, "hardware store", A, "A",
+           "HE-FIT step 0 (4), CLEVIS-SHARE (4), spare (2)"),
+        _l(f"z 234 JOINT ONLY: Ti gr5 low-head socket cap screw M5 x {Z234.bolt_len:.0f}, DIN 7984 (NOT M5 x "
+           f"{CLEVIS.bolt_len:.0f})", 8, "each", 2.50, "Ti fastener shop", A, "B", "CA-5 (4 stub pairs x 2)",
+           note="skip if the CA-5 specimen lot already bought them"),
+        _l("z 234 JOINT: M5 hex nut A2, ISO 4032", 8, "each", 0.10, "hardware store", A, "B", "CA-5"),
+        _l(f"z 234 JOINT ONLY: M5 washer {Z234.washer_od:.0f} mm OD x {Z234.washer_t:.0f} mm A2 (load-bearing; NOT the "
+           f"{CLEVIS.washer_od:.0f} mm clevis washer)", 16, "each", 0.08, "hardware store", A, "B", "CA-5"),
         _l("anchors: 4x4 lag-screwed into studs (or tow hitch / tree)", 1, "set", 40.00, "lumber yard", A, "A", "bench"),
         _l("pin fixture: steel flat bar 40 x 6 x 300, M8 bolts", 1, "set", 20.00, "hardware store", A, "A", "bench"),
         _l("bar clamps: 2 pairs Al 150 x 25 x 10, M6 bolts, grit cloth", 1, "set", 15.00, "hardware store", A, "A", "PT-2, PT-3, FS-O5"),
@@ -1644,9 +1744,11 @@ def readme_md(ow, sh, lv, rk, reg, res) -> str:
           "FAILED / OPEN (`settles` column).", "",
           "## Files", "", "- `guides/G1.md` ... `guides/G7.md`: one session each", "- `shopping_list.md`, `shopping_list.csv`",
           "- `order_of_work.csv`", "- `results_template.csv`", "- `sketches/*.png`: rig sketches", "- `test_kit.pdf`: everything above in one PDF",
-          f"- `print/{US_PIECE_FILE}` (+ `.3mf`, `_frame_coords.stl`): the US test piece for HE-FIT step 0 (BL-048; R stay z "
-          "40-160 with the hinge, US1 and US2 fairleads, cut from `h1_assembled.stl` by `designs/pack_5200/us_route.py`; "
-          "re-cut it when BL-047 moves the US stations)",
+          f"- US test piece (HE-FIT step 0, CLEVIS-SHARE): `{US_PIECE_PATH}` (+ `.3mf`, `_frame_coords.stl`) plus the "
+          f"bolt-on clevis `{US_CLEVIS_PATH}` (+ `.3mf`), both in the frame print folder (BL-049 / BL-050: R stay z 40-160 "
+          "with the hinge fairlead and the US1 / US2 lane lugs; the stay piece is printed without the US2 outer cheek, "
+          f"bolt the clevis on with 2 Ti M5 x {CLEVIS.bolt_len:.0f} DIN 7984 and {CLEVIS.washer_od:.0f} mm DIN 433 washers). "
+          "The old kit copy `test_kit/print/` (BL-048 stations) is retired",
           "- crown pawl for P1 and BU-1: the LOW-PROFILE pawl `designs/pack_5200/print/frame_h1/crown_pawl_lp_fdm_pacf.stl` "
           "(BL-047; the old `crown_pawl_*` does not fit H1)",
           "- `manifest.json`", ""]

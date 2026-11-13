@@ -336,6 +336,13 @@ def outline_v2(half_w: float = 121.0, corner_r: float = 20.0, z_lo: float = Z_LO
 # support line (the stay crown each side of the notch). ``us2_notch_check`` measures it on the print STL.
 US2_NOTCH_Z = 142.0
 US2_ROOT_AIR = 1.5                # the air part of NOTCH_CLEAR (6 = 4.5 root blend + 1.5 air)
+# BL-051: the 2.31 mm 'air' BL-050 measured was the stay crown CUT AWAY by h1_lanes.strip_old_us, not an arm root
+# below the crown. With the crown restored (h1_lanes.CROWN_RESTORE) the notch footprint holds the plain stay crown
+# (the root sits under it, inside the stay section) and the arm never reaches the sheet plane. The stay crown is
+# the sheet's support everywhere else, so the 1.5 mm air of a cleat does not apply to it: the rule is that nothing
+# in the notch footprint stands PROUD of the support line (``proud_mm`` <= US2_PROUD_MAX). ``air_mm`` (the BL-050
+# rule) is still reported.
+US2_PROUD_MAX = 0.0
 
 
 def _print_top(mesh, z: float, x_lo: float, x_hi: float):
@@ -360,7 +367,9 @@ def us2_notch_check(stl=None, half_w: float = 121.0) -> dict:
       and above the notch, as a straight line in z between the two bands' highest points;
     - ``root_top_y``: the print's top inside the notch footprint (|x| x_in .. half_w, the notch z less NOTCH_CLEAR at
       each end: the ends are the stay crown the sheet bears on);
-    - ``air_mm`` = min over z of support - top; pass when >= US2_ROOT_AIR."""
+    - ``air_mm`` = min over z of support - top (BL-050 rule: >= US2_ROOT_AIR, ``air_rule_pass``);
+    - ``proud_mm`` = -air_mm; pass (BL-051) when <= US2_PROUD_MAX: nothing in the notch stands above the sheet's
+      support line (the restored stay crown is that support)."""
     import numpy as _np
     import trimesh
     from shapely.geometry import box as _box
@@ -390,8 +399,9 @@ def us2_notch_check(stl=None, half_w: float = 121.0) -> dict:
         air = sup - top if air is None else min(air, sup - top)
     return {"notch_z": [US2_NOTCH_Z - hz, US2_NOTCH_Z + hz], "root_z": [z0, z1], "plan_clear_mm": round(plan, 2),
             "support_bands": {"below": {"z": a[1], "y": round(a[0], 2)}, "above": {"z": b[1], "y": round(b[0], 2)}},
-            "air_mm": round(air, 2), "air_req_mm": US2_ROOT_AIR, "pass": bool(air >= US2_ROOT_AIR), "rows": rows,
-            "stl": str(path)}
+            "air_mm": round(air, 2), "air_req_mm": US2_ROOT_AIR, "air_rule_pass": bool(air >= US2_ROOT_AIR),
+            "proud_mm": round(-air, 2), "proud_max_mm": US2_PROUD_MAX, "rule": "BL-051 not proud of the support line",
+            "pass": bool(-air <= US2_PROUD_MAX), "rows": rows, "stl": str(path)}
 
 
 def outline_v1():
