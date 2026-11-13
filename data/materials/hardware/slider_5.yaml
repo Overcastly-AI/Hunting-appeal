@@ -1,0 +1,29 @@
+id: slider_5
+name: 'YKK #5 coil (CN) slider, metal, single non-locking pull'
+category: hardware
+generic: false
+trade_names:
+- 'YKK 5CN non-lock slider (DFL / "Style C")'
+supplier_examples:
+- Rockywoods (each; 100 / 2000-piece boxes listed)
+- Ripstop by the Roll (YKK coil slider standard, #3 / #5 / #8)
+- Weaver Leather Supply (#5 coil semi-swivel sliders, zinc alloy)
+- Extremtextil (YKK 5C sliders)
+properties:
+  zipper_size: 5
+  mass_g: 4.9
+  body_material: zinc alloy die cast
+  locking: false
+  quietness_1to5: 3
+confidence: datasheet
+sources:
+- "mass_g (0.172 oz = 4.9 g nominal), single pull, non-locking, metal, for #5 coil YKK, price USD 0.96 each: Rockywoods, https://rockywoods.com/products/metal-slider-with-pull-for-5-coil-ykk-zipper (accessed 2026-11-13; listed sold out)"
+- "Ripstop by the Roll YKK coil slider standard, USD 0.90, weight given as '~1 gram' for all sizes: https://ripstopbytheroll.com/products/ykk-coil-slider (accessed 2026-11-13). Not used: a zinc #5 slider body cannot weigh 1 g; the figure conflicts with Rockywoods and a 4 g YKK #5 zinc listing (pethardware.com, search result only, page blocks fetch)"
+- "body_material zinc alloy, price USD 0.25-0.45 by finish: Weaver Leather Supply #5 coil semi-swivel sliders, https://www.weaverleathersupply.com/products/5cn-1-np (search result 2026-11-13)"
+- "ASSUMPTION quietness_1to5 = 3: metal tab taps; fit a cord pull. ASSUMPTION mass_g = 4.9 until 5 are weighed"
+cost_usd:
+  value: 0.96
+  per: unit
+notes: 'MASS CORRECTION: corrie.SLIDER5_G books 3.0 g; the Rockywoods nominal is 4.9 g (single pull), so the three #5
+  sliders on the BOM are about +5.7 g. Weigh on receipt (target <= 5 g). For the IMP-4 and lid zips a reverse-mount
+  slider is not needed (not AquaGuard / Uretek chain). Use a cord pull, not the metal tab, for quiet.'

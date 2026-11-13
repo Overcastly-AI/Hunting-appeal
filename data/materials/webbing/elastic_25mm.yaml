@@ -1,0 +1,34 @@
+id: elastic_25mm
+name: Elastic braid 25 mm, polyester / rubber, UV-resistant (keeper elastic)
+category: webbing
+generic: false
+trade_names:
+- Extremtextil elastic braid 25 mm (art. 70111)
+supplier_examples:
+- Extremtextil (25 mm braids by the metre, several weights)
+- Weaver Leather Supply (1 in black polyester elastic, medium and heavy, by the yard)
+- Trivantage / Trican (flat elastic braid 1050, 1 in, 144 yd)
+properties:
+  width_mm: 25
+  mass_g_m: 15.0
+  light_alt_mass_g_m: 11.9
+  fibre: polyester with elastodiene (rubber) threads
+  light_alt_fibre: 66 % polyester, 34 % elastane
+  stretch_pct: 100
+  quietness_1to5: 5
+confidence: estimate
+sources:
+- "mass_g_m (15 g/m), fibre 'Polyester, Elasthodien', 'Durable, UV-resistant elastic braid', black, EUR 1.20/m incl. 19 % VAT: Extremtextil art. 70111, https://www.extremtextil.de/en/elastic-braid-25mm/70111 (accessed 2026-11-13)"
+- "light_alt_mass_g_m (11.9 g/m), light_alt_fibre (66 % PES / 34 % elastane), 'very light, thin and soft', EUR 1.00/m incl. VAT: Extremtextil art. 73041, https://www.extremtextil.de/en/elastic-braid-soft-25mm/73041 (accessed 2026-11-13)"
+- "US source: Weaver 1 in heavy-weight knitted elastic USD 1.46/yd, 50 yd spool, https://www.weaverleathersupply.com/products/el-767-blk (accessed 2026-11-13); medium weight USD 0.80/yd, https://www.weaverleathersupply.com/products/el-765-blk (search result)"
+- "ASSUMPTION stretch_pct = 100: no listing gives elongation; typical for polyester/rubber braid. Settled by: mark 100 mm, stretch by hand to lock-up, measure; and the keeper fit test (75 mm loop holds a 25 mm webbing tail doubled, no slide under a shake)"
+- "ASSUMPTION quietness_1to5 = 5 (textile)"
+cost_usd:
+  value: 1.1
+  per: m
+notes: 'Pick: art. 70111 (UV-resistant, firmer grip for strap-tail keepers that live outside). Price EUR 1.20 incl. VAT
+  = EUR 1.01 ex VAT x 1.09 USD/EUR (ASSUMPTION) = USD 1.10/m (the BOM assumed USD 0.60). MASS: corrie_f.TAIL_KEEPER_G
+  books 0.6 g per 90 mm keeper (6.7 g/m); this braid is 15 g/m, i.e. 1.35 g per keeper, and about +8 g on the 0.99 m net
+  the BOM uses. The soft 73041 (11.9 g/m) saves about 3 g but is thinner and elastane-based (weaker in UV); use it only
+  for inside keepers. Black; check for optical brightener under a UV torch before buying a lot (white braids often
+  carry it). Elastic creeps and loses grip over seasons: keepers are a wear item.'

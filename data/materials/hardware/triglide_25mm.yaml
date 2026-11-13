@@ -1,0 +1,35 @@
+id: triglide_25mm
+name: Tri-glide 25 mm, moulded nylon
+category: hardware
+generic: false
+trade_names:
+- Extremtextil Triglide 25 mm (art. 50054)
+supplier_examples:
+- Extremtextil (nylon, EUR 0.40 incl. VAT)
+- Rockywoods (plastic tri-glide; 3/4 in listed at USD 0.37)
+- Buckleguy (Duraflex / ITW 1 in sliplock tri-glides)
+- Weaver Leather Supply (1 in plastic tri-glides)
+properties:
+  width_mm: 25
+  mass_g: 2.6
+  polymer: nylon (PA)
+  slip_load_n: 150
+  stainless_alt_mass_g: 11
+  stainless_alt_breaking_strength_n: 3750
+  quietness_1to5: 5
+confidence: estimate
+sources:
+- "mass_g (2.6 g/pcs), polymer nylon, webbing 25 mm, EUR 0.40/piece incl. 19 % VAT: Extremtextil Triglide 25 mm art. 50054, https://www.extremtextil.de/en/triglide-25mm/50054 (accessed 2026-11-13); no strength given"
+- "stainless_alt_mass_g (11 g/pcs), stainless_alt_breaking_strength_n (3.75 kN), 36 x 28.5 x 2 mm, EUR 3.10 incl. VAT: Extremtextil stainless tri-glide 25 mm art. 70460, https://www.extremtextil.de/en/tri-glide-25mm-stainless-steel/70460 (accessed 2026-11-13)"
+- "Rockywoods 3/4 in plastic tri-glide USD 0.37 each: https://rockywoods.com/products/3-4-triglide-rings-black-sold-per-each (search result 2026-11-13)"
+- "ASSUMPTION slip_load_n = 150 N: no maker publishes a slip value for a plastic tri-glide (ITW, Duraflex searched 2026-11-13). Settled by: 5 tri-glides on the chosen 25 mm poly webbing, pull the standing part at 50 mm/min, dry and wet, record slip onset; pass for a keeper = holds 50 N"
+- "ASSUMPTION quietness_1to5 = 5 (plastic on webbing, no metal contact)"
+cost_usd:
+  value: 0.37
+  per: unit
+notes: 'Price: EUR 0.40 incl. VAT = EUR 0.34 ex VAT x 1.09 USD/EUR (ASSUMPTION) = USD 0.37. Mass 2.6 g is 0.4 g under
+  attach_system.TRIGLIDE_G (3.0 g). Use as a TAIL KEEPER only. meat_haul.py says the under-strap tri-glide "sits behind
+  the cam so a slip cannot lengthen the cradle": a 2.6 g nylon tri-glide is not a rated part and will not stop a cam
+  that slips at about 1100 N. If the tri-glide is meant as a slip backstop, use the stainless 25 mm tri-glide
+  (11 g, 3.75 kN break, about USD 2.85 ex VAT) and test it as a backstop. Matte black; nylon absorbs water (slightly
+  lower slip wet).'

@@ -1,0 +1,30 @@
+id: elastic_6mm
+name: Flat braided elastic 6 mm (1/4 in), polyester / rubber
+category: webbing
+generic: true
+trade_names:
+- Stretchrite 1/4 in braided elastic (reference)
+supplier_examples:
+- Weaver Leather Supply (EL-14-BLK, 1/4 in black flat braided, by the yard, 144 yd spool)
+- Sewing-notion rolls (1/4 in x 144 yd, Stretchrite, Sedona Designz)
+- Extremtextil (narrowest flat braid 10 mm; 6 mm not listed)
+properties:
+  width_mm: 6.35
+  mass_g_m: 3.0
+  fibre: polyester with rubber (about 70 / 30)
+  stretch_pct: 100
+  quietness_1to5: 5
+confidence: estimate
+sources:
+- "width_mm (1/4 in), braided flat elastic, polyester, black, USD 0.55/yd (white USD 0.59 regular, 0.30 on sale), 144 yd spool: Weaver Leather Supply EL-14-BLK, https://www.weaverleathersupply.com/products/el-14-blk (accessed 2026-11-13); no weight listed"
+- "fibre: Stretchrite 1/4 in braided elastic listed as 72 % polyester / 28 % rubber (desertcart listing) and 69 / 31 (Walmart listing) - search results 2026-11-13, secondary (https://www.desertcart.vn/products/2622204)"
+- "mass bracket: a 1/4 in polyester braided roll is listed at 9.6 oz, given as 144 yd (2.07 g/m) or 3600 in (2.98 g/m) in the same listing (https://www.desertcart.nz/products/192104305, secondary, self-contradictory); Extremtextil 10 mm flat braid 6.8 g/m scales by width to 4.1 g/m (search result 2026-11-13)"
+- "ASSUMPTION mass_g_m = 3.0 (middle of the 2.1-4.1 g/m bracket). Settled by: weigh 1 m of the bought lot (0.1 g scale)"
+- "ASSUMPTION stretch_pct = 100 (typical polyester/rubber braid). Settled by: stretch 100 mm to lock-up; the fly hem must gather the drafted perimeter at <= 60 % stretch"
+cost_usd:
+  value: 0.6
+  per: m
+notes: 'Price USD 0.55/yd = USD 0.60/m (the BOM assumed USD 0.25/m; 144 yd rolls run about USD 0.10-0.40/m but are
+  marketplace listings). 2.56 m per fly = about 7.7 g. Black only (white elastic usually carries optical brightener,
+  bad for ungulate UV vision). Rubber-core elastic in a sil-poly hem channel ages with UV and heat; the channel shades
+  it. Polyester braid does not roll in a 20 mm channel when sewn at one end and stretched through.'

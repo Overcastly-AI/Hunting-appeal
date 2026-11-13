@@ -1,0 +1,39 @@
+id: cam_25mm_al
+name: Cam buckle 25 mm, CNC aluminium with stainless spring (Austere Mfg type)
+category: hardware
+generic: false
+trade_names:
+- Austere Manufacturing 1 in cam buckle
+supplier_examples:
+- Ripstop by the Roll (Austere MFG cam buckle, 3/4 in and 1 in, USD 25.50)
+- Extremtextil (Austere 25 mm cam buckle with spring, EUR 28.90 incl. VAT)
+- Austere Manufacturing direct (buckles and complete cam straps)
+properties:
+  width_mm: 25
+  mass_g: 12.2
+  mass_alt_rbtr_g: 11.25
+  length_mm: 33
+  outer_width_mm: 32
+  thickness_mm: 8
+  material: anodised aluminium body, stainless steel spring, titanium pin
+  slip_load_n: 1100
+  breaking_strength_n: 1100
+  service_temp_low_c: -20
+  quietness_1to5: 4
+confidence: estimate
+sources:
+- "mass_g (12.2 g/pcs), length_mm x outer_width_mm x thickness_mm (33 x 32 x 8 mm), material (aluminium, stainless steel, titanium pin, anodised), webbing 25 mm, EUR 28.90 incl. 19 % VAT, 'This products is NOT certified': Extremtextil, https://www.extremtextil.de/en/cam-buckle-w.-spring-aluminium-austere-mfg-25mm/72713.SW (accessed 2026-11-13)"
+- "price USD 25.50, CNC aluminium, made in USA, 1 in and 3/4 in: Ripstop by the Roll, https://ripstopbytheroll.com/products/cam-buckle (accessed 2026-11-13; all variants listed sold out). mass_alt_rbtr_g 11.25 g from the same listing via the search index (secondary; the fetched page did not show weights)"
+- "A different alloy 25 mm cam buckle is listed at 'Cam Buckle break load = 450kg' (Jimmy Green, https://jimmygreen.com/webbing-restraint-straps/79496-cam-strap-buckle-25mm, search result 2026-11-13; secondary, not this part)"
+- "ASSUMPTION slip_load_n = breaking_strength_n = 1100 N: the design value the pack already carries (strap_arch.CAM25_N = meat_haul.CAM_N, DESIGN.md 4.5). No maker publishes a slip or break rating for this buckle. Settled by: 5 cams on the chosen 25 mm poly webbing, 50 mm/min, dry, wet and at -20 C, pass = no slip > 5 mm below 1100 N; then pull to failure (strap_arch.py 'Test' line, meat_haul_modes.md 'still open')"
+- "ASSUMPTION service_temp_low_c = -20 (aluminium + steel spring, no polymer); quietness_1to5 = 4 (metal lever can click on metal hardware; anodised, matte)"
+cost_usd:
+  value: 25.5
+  per: unit
+notes: 'PRICE CORRECTION: the BOM assumed USD 6.00 a cam (PRICE_ASSUMED cam_25mm_al). The light rated-class
+  aluminium cam that the 13 g design mass is based on costs USD 25.50 (RBTR) to about USD 26.50 ex VAT (Extremtextil,
+  EUR 24.29 x 1.09 USD/EUR ASSUMPTION). Five cams = USD 127.50 per bag, not USD 30. Mass 12.2 g + about 1 g glove
+  pull tab = 13 g matches strap_arch.CAM25_G. Cheaper cams exist (die-cast zinc or steel 25 mm tie-down cams, USD
+  2-5) but are 40-110 g each (a galvanised 25 mm steel cam is listed at 0.111 kg / 600 daN) and noisy: rejected for
+  weight. Both resellers showed stock problems on 2026-11-13: order the prototype set early. Not certified by the
+  maker; the 1100 N slip value is unproven and governs the IM and US strap checks until the cam test passes.'

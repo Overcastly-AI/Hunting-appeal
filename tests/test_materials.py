@@ -60,7 +60,7 @@ def test_required_records_present(mid):
 
 def test_all_materials_count_and_unique():
     allm = mat.all_materials()
-    assert 45 <= len(allm) <= 110
+    assert 45 <= len(allm) <= 160
     ids = [m.id for m in allm]
     assert len(ids) == len(set(ids))
     assert {m.category for m in allm} == set(mat.CATEGORIES)

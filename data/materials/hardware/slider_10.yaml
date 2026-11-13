@@ -1,0 +1,42 @@
+id: slider_10
+name: 'YKK #10 coil (CN) slider, metal, single non-locking pull'
+category: hardware
+generic: false
+trade_names:
+- 'YKK 10CN non-lock slider (DFL / "Style C" single pull)'
+- 'YKK #580 single-pull coil slider (Keystone 10SPCOILB)'
+supplier_examples:
+- Rockywoods (each; 100 / 2000-piece boxes listed)
+- Sailrite (Style C single non-locking, black or white)
+- Shelby Outdoor EU (1 to 500+ price breaks)
+- Keystone Bros (trade account; YKK restricts assembly onto non-YKK chain)
+properties:
+  zipper_size: 10
+  mass_g: 19.0
+  mass_alt_keystone_g: 18.1
+  length_mm: 24
+  width_mm: 19
+  height_mm: 16
+  pull_length_mm: 45
+  pull_width_mm: 16
+  body_material: zinc alloy die cast (painted black or nickel)
+  locking: false
+  quietness_1to5: 3
+confidence: datasheet
+sources:
+- "mass_g (0.68 oz = 19.3 g nominal), single pull, non-locking, metal, for #10 coil YKK, price USD 1.99 each: Rockywoods, https://rockywoods.com/products/metal-slider-with-pull-for-10-coil-ykk-zipper (accessed 2026-11-13; listed sold out)"
+- "length_mm, width_mm, height_mm, pull_length_mm, pull_width_mm, mass 19.4 g, YKK 10C non-lock slider + pull, EUR 1.90 (silver) / 2.50 (black) incl. 25.5 % VAT single, 1.20 at 5+, 0.90 at 100+, 0.75 at 500+: Shelby Outdoor, https://shelbyoutdoor.com/en/p100442/ykk-non-lock-slider-for-10c-coil-zipper (accessed 2026-11-13)"
+- "mass_alt_keystone_g (0.04 lb per EA), YKK single-pull coil slider CF #580 black: Keystone Bros, https://www.keystonbros.com/itemdetail/YKK10CFBSPM (accessed 2026-11-13; price behind login)"
+- "Style C single non-locking #10 coil, black: Sailrite, https://www.sailrite.com/YKK-Slider-Single-Black-COIL-10 (accessed 2026-11-13; price and weight not shown to the fetcher)"
+- "body_material zinc alloy: Weaver Leather Supply #10 coil YKK sliders are listed 'Zinc Alloy', https://www.weaverleathersupply.com/products/10c-1-np (search result 2026-11-13)"
+- "ASSUMPTION mass_g = 19.0: the three listings agree at 18-19.4 g; weigh 5 on receipt. ASSUMPTION quietness_1to5 = 3: a bare metal pull taps the slider body; replace the tab with the door cord pull (dyneema_cord_3mm + rubber sleeve) or tape it"
+cost_usd:
+  value: 1.99
+  per: unit
+notes: 'Rockywoods single price (USD 1.99) for the prototype; at volume Shelby lists EUR 0.75-0.90 (about USD 0.55-0.65
+  ex VAT at 1.09 USD/EUR, ASSUMPTION). MASS CORRECTION: the bag concepts book 6 g a slider (bag_concepts.SLIDER_G,
+  build_geometry zip row). Three independent listings put a #10 metal coil slider at 18-19.4 g, so the D2 door (2
+  sliders) is about +26 g against the ledger. A lighter option is the YKK #10 slider with a cord loop in place of the
+  metal tab (no weight published; the body alone is most of the mass, so expect 12-15 g, ASSUMPTION, weigh one).
+  Buy YKK sliders for YKK chain (coil_zipper_10); YKK forbids mixing on other chain, and fit on a third-party chain is
+  not guaranteed. Matte black paint; no optical brightener issue (metal).'
