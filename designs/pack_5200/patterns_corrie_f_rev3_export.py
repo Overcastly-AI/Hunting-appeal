@@ -456,7 +456,10 @@ diamonds. Tape on the back, then check the test square again.
 - **Solid black inside a piece** = cut it out (swell windows, port slots, hose slots, guy port slits). Cut these first.
 - Label: ID, name, material, how many (L+R = one normal, one flipped), face up.
 - Marks that say **L only** / **R only** go on that side's gusset only (the gusset is one pattern cut as a pair).
-- BL-033: no hinge swell window in B-01 (B-18 doublers sit on whole fabric); B-16 under-strap channels on F-02.\n- BL-034: B-11 lash tabs (4 per gusset), K-W keeper notches, F-02 placement on B-05, every webbing box-X drawn.
+- BL-033: no hinge swell window in B-01 (B-18 doublers sit on whole fabric); B-16 under-strap channels on F-02.\n- BL-034: B-11 lash tabs (4 per gusset), K-W keeper notches, F-02 placement on B-05, every webbing box-X drawn.\n- BL-040 (pre-cut review fixes): ONE hinge eye (HE folded in half; B-18 90 x 62 reaching 12 mm into the floor seam;
+  box-X 34 x 34 on HE, B-18 and B-01); B-17 box 34 x 34; RTM roll-clip buckle tabs on both gussets and RT strap
+  placements on the hem B-07; collar-ring notches measured one way round (one set on the gusset); B-11 slot 27 x 5;
+  B-09p hose slot drawn; the swell port slot is a mark (cut through the laser-cut B-12 slot after sewing).
 
 ## 5. Build order and what to print
 
@@ -465,13 +468,15 @@ diamonds. Tape on the back, then check the test square again.
 {pages}
 
 1. **Pockets** first (cheap, teach the machine): FP mesh + mouth band, IMP-4 with its #5 zip, IMP-8, IMP-2.
-2. **Small parts**: set one B-13x swell into a scrap window before cutting B-01. Sew B-12 on the swell crest and
-   cut the slot through both. B-27 facings go inside B-01 under each slit.
-3. **Door D2**: door + #10 zip into the blade U (notch at each corner tangent), hinge band. B-22 anchors and the
-   B-28 front tabs go on the hinge band OUTSIDE (21 x 20 box-X) before it is joined.
-4. **Main bag**: B-01 flat work first (swells, B-27 slits, B-17 outside, B-18 inside, IMP-2 keeper tabs), then
-   the gussets (FP pockets, IMP-8, hose slots, kick bands), then the box seams, then the floor.
-5. **Collar**: B-06f + B-06 + B-07 + HDPE strips; collar ring matched at every panel-corner V-notch.
+2. **Small parts**: set one B-13x swell into a scrap window before cutting B-01. Sew B-12 on the swell crest,
+   then cut the swell out through the B-12's laser-cut slot. B-27 facings go inside B-01 under each slit.
+3. **Door D2**: door + #10 zip into the blade U (notch at each corner tangent), hinge band. The B-22 anchors go
+   INSIDE the hinge band; the B-28 front tabs go OUTSIDE (21 x 20 box-X); both before the band is joined.
+4. **Main bag**: B-01 flat work first (swells, B-27 slits, B-17 outside, B-18 inside + HE outside: sketch SK-8,
+   IMP-2 keeper tabs), then the gussets (B-11 tabs, RTM buckle tabs, kick bands, FP pockets, IMP-8, hose slots),
+   then the box seams (K-W keepers ON TOP of the FP mesh: sketch SK-9), then the floor.
+5. **Collar**: RT straps on the flat hem B-07 first (sketch SK-10), then B-06f + B-06 + B-07 + HDPE strips; collar
+   ring matched at every notch.
 6. **Crown lid B-29**: darts, channels, zip between the aft strips, caps, then the two ring seams.
 7. **Straps** (`cutlist.md` webbing table): B-28 per crown kit, W1-W3 cut for carry, extenders, keepers.
 8. **Rain fly F-01**: spine to both sides (notch to notch, the top aft corner is a V-notch), flat-fell and seam-seal,
