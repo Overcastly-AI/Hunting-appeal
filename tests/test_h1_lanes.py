@@ -230,7 +230,9 @@ def test_old_us_stubs_gone_on_the_stl():
         p = next(q for q in HF.placed(lanes=False) if q["id"] == f"{n}_R")
         S = HF._zplane(m, p["z"])
         from shapely.geometry import box
-        above = box(115.0 - 8.0, p["y_floor"] + 1.0, 115.0 + 8.0, p["y_tip"])
+        # BL-051: the stay's own crown is back over the old sites; 'proud' = above the plain stay crown (z 122) + 0.5
+        crown = HF._zplane(m, 122.0).intersection(box(107.0, -20.0, 123.0, 20.0)).bounds[3]
+        above = box(115.0 - 8.0, max(p["y_floor"] + 1.0, crown + 0.5), 115.0 + 8.0, p["y_tip"])
         assert S.intersection(above).area < 1.0
         lane = box(L.LANE_X[n] - 18.0, p["y_floor"] + 1.0, L.LANE_X[n] + 18.0, p["y_tip"])
         assert S.intersection(lane).area > 100.0

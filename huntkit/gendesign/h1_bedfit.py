@@ -59,11 +59,13 @@ BLOCK_EDGE_R = 1.5                 # rounded block edges
 
 @dataclass
 class ClevisJoint:
-    """Dry butt joint at |x| SPLIT_X, per side: two Ti M5 through-bolts along x at (yc + dy, z_pin +/- dz). Head and a
-    DIN 433 washer on the clevis's outer face (|x| head_face); washer + nut in a side-access trap in the body block
-    that opens to the wearer face (as the z 234 joint's inboard trap). Holes printed 4.8, reamed 5.1 (fitted bolts
-    take the shear, as at z 234)."""
-    dy: float = -4.3               # bolt axis from the stay centre yc (y -6.97 at US2): under the cheeks' solid
+    """Dry butt joint at |x| SPLIT_X, per side: two Ti M5 through-bolts along x at (yc + dy, z_pin +/- dz). BL-051:
+    the head sits in a counterbore (cbore_d, head_recess deep) in the clevis's outer face (|x| outer_face) and bears
+    on the PAHT at |x| head_face with no washer, so nothing stands proud of the face (the free bag drapes reached
+    the BL-050 heads, -1.1 mm); washer + nut in a side-access trap in the body block that opens to the wearer face
+    (as the z 234 joint's inboard trap). Holes printed 4.8, reamed 5.1 (fitted bolts take the shear, as at z 234)."""
+    dy: float = -2.8               # bolt axis from the stay centre yc (y -5.47 at US2; BL-050 -4.3): BL-051 moved it
+    #                                1.5 mm up so the head counterbore keeps a 2.5 mm wall to the block's wearer face
     dz: float = 8.0                # bolt axes at z_pin +/- 8 (washer OD 10 inside the +/-14.5 block)
     hole_d: float = 5.1            # reamed (printed 4.8)
     hole_print_d: float = 4.8
@@ -74,11 +76,27 @@ class ClevisJoint:
     nut_face: float = 151.0        # |x| where the nut washer bears (body plug 151 -> 163 = 12 mm: hole bearing at
     #                                share 1.0 governs the fatigue; 8 mm gave 0.79 there)
     trap_x0: float = 145.8         # |x| inboard end of the trap (washer 1 + nut 4 + 0.2 play)
-    head_face: float = 183.0       # |x| clevis outer face (outer cheek's outer face, h1 US2 x 165 + 18)
+    outer_face: float = 183.0      # |x| clevis outer face (outer cheek's outer face, h1 US2 x 165 + 18)
+    head_recess: float = 4.0       # BL-051: counterbore depth (head 3.5 + 0.5 below the face)
+    cbore_d: float = 9.0           # BL-051: head 8.5 + 0.5 (printed; the head bears on its floor, no washer)
     head_h: float = 3.5            # DIN 7984 low head
     head_d: float = 8.5
-    bolt_len: float = 40.0         # grip 32 + 2 washers + nut 4 + 1 = 39: M5 x 40 Ti gr5 DIN 7984
-    tail_x: float = 142.5          # |x| bolt tail clearance end (head_face - bolt_len - 0.5)
+    head_washer: bool = False      # BL-051: no washer under the head (BL-050 had one, on the face)
+    bolt_len: float = 35.0         # grip 28 + nut washer 1 + nut 4 + 1 = 34: M5 x 35 Ti gr5 DIN 7984 (BL-050: x 40)
+    tail_x: float = 143.5          # |x| bolt tail clearance end (head_face - bolt_len - 0.5)
+
+    @property
+    def head_face(self):           # |x| where the head bears (counterbore floor)
+        return self.outer_face - self.head_recess
+
+    @property
+    def head_x(self):              # |x| span of the head (frame), for clearance checks (us_route.head_clearance)
+        x0 = self.head_face + (self.washer_t if self.head_washer else 0.0)
+        return x0, x0 + self.head_h
+
+    @property
+    def n_washers(self):           # per bolt
+        return 2 if self.head_washer else 1
 
     @property
     def slot_w(self):
@@ -130,7 +148,7 @@ def block_boxes(p: dict) -> dict:
     y0, y1 = p["yc"] + BLOCK_DY_LO, p["y_floor"] - 0.0371
     z0, z1 = p["z"] - BLOCK_HALF_Z, p["z"] + BLOCK_HALF_Z
     return {"body": (*_sx(p, BODY_BLOCK_X0, SPLIT_X + 1.0), y0, y1, z0, z1),
-            "clevis": (*_sx(p, SPLIT_X - 1.0, JOINT.head_face - 0.0413), y0, y1, z0, z1)}
+            "clevis": (*_sx(p, SPLIT_X - 1.0, JOINT.outer_face - 0.0413), y0, y1, z0, z1)}
 
 
 def bolt_axes(p: dict, j: ClevisJoint = JOINT) -> list:
@@ -151,7 +169,9 @@ def cuts(p: dict, j: ClevisJoint = JOINT):
     out = None
     yb = p["yc"] + BLOCK_DY_LO
     for (y, z) in bolt_axes(p, j):
-        h = _cyl_x(p["sign"] * j.tail_x, p["sign"] * (j.head_face + 1.0), y, z, j.hole_print_d)
+        h = _cyl_x(p["sign"] * j.tail_x, p["sign"] * (j.outer_face + 1.0), y, z, j.hole_print_d)
+        if j.head_recess > 0.0:        # BL-051: head counterbore from the outer face
+            h = h + _cyl_x(p["sign"] * j.head_face, p["sign"] * (j.outer_face + 1.0), y, z, j.cbore_d, seg=64)
         t = _box(*_sx(p, j.trap_x0, j.nut_face), yb - 1.0, y + j.slot_w / 2.0, z - j.slot_w / 2.0, z + j.slot_w / 2.0)
         out = h + t if out is None else out + h + t
     return out
@@ -391,13 +411,16 @@ def joint_check(share: float = CHEEK_SHARE, j: ClevisJoint = JOINT) -> dict:
     U, V, a = _face_grid(p, j=j)
     bolts = [(0.0, -j.dz), (0.0, j.dz)]
     TI, PA = H1.TI, H1.PAHT
-    kb = TI["E"] * TI["As"] / (j.head_face - j.nut_face + 2 * j.washer_t)
+    kb = TI["E"] * TI["As"] / (j.head_face - j.nut_face + j.n_washers * j.washer_t)
     kc = PA["E"] * PA["E_hot"] / H1.L_CONTACT
     k = PA["knock"]
-    ring = math.pi / 4 * (j.washer_od ** 2 - j.hole_d ** 2)
-    Lp = min(j.L_body, j.L_clevis)
+    # BL-051: the bearing ring and the shear-out width of each end (nut washer in the body; head, or its washer, in the
+    # clevis): the weaker end governs
+    bear_d = {"body": j.washer_od, "clevis": j.washer_od if j.head_washer else j.head_d}
+    ring = min(math.pi / 4 * (d ** 2 - j.hole_d ** 2) for d in bear_d.values())
+    shear_lw = min(j.L_body * bear_d["body"], j.L_clevis * bear_d["clevis"])
     cap = {"washer_bearing_n": ring * k * PA["s_xy"],
-           "plug_shear_out_n": 2 * Lp * j.washer_od * 0.6 * k * PA["s_z"],
+           "plug_shear_out_n": 2 * shear_lw * 0.6 * k * PA["s_z"],
            "bolt_tension_n": 0.7 * TI["uts"] * TI["As"], "bolt_fatigue_n": 0.25 * TI["uts"] * TI["As"],
            # fitted bolt bearing in the body plug, load across the layers in part: interlayer strength (conservative)
            "hole_bearing_n": j.hole_d * j.L_body * k * PA["s_z"],
@@ -469,12 +492,13 @@ def joint_check(share: float = CHEEK_SHARE, j: ClevisJoint = JOINT) -> dict:
 
 
 def hardware_g(j: ClevisJoint = JOINT) -> dict:
-    """Two bolts, two nuts, four washers per side (x 2 sides)."""
+    """Two bolts, two nuts, two (BL-050: four) washers per side (x 2 sides)."""
     from .frame_comp_B import bolt_mass_g
     nut = (3 * math.sqrt(3) / 2 * (j.nut_af / math.sqrt(3)) ** 2 - math.pi / 4 * 5.0 ** 2) * j.nut_t * 7.9e-3
     washer = math.pi / 4 * (j.washer_od ** 2 - 5.3 ** 2) * j.washer_t * 7.9e-3
     return {f"4 Ti gr5 M5 x {j.bolt_len:.0f} DIN 7984": round(4 * bolt_mass_g(j.bolt_len), 2),
-            "4 A2 M5 hex nuts ISO 4032": round(4 * nut, 2), "8 A2 M5 x 10 x 1 washers DIN 433": round(8 * washer, 2)}
+            "4 A2 M5 hex nuts ISO 4032": round(4 * nut, 2),
+            f"{4 * j.n_washers} A2 M5 x 10 x 1 washers DIN 433": round(4 * j.n_washers * washer, 2)}
 
 
 # ======================================================================================= arm sections (A2)
@@ -866,7 +890,7 @@ ASSUMPTIONS = [
 ]
 
 
-BL051_NOTE = ("> **BL-051 (2026-11-13):** the print described here had the stay crown cut 2 mm low over z 86-104 and z 131-152 (`h1_lanes.strip_old_us`); it is restored and re-exported, see `h1_crown.md` for the current print masses (assembled 997.7 g), slice checks, US2 lug (real stay section) and the z 142 notch, whose 'root air' below was the cut-away crown (rule now: nothing proud of the support line). The ledger's pins / sleeves row (A4) is retired: the US1 / US2 pins + sleeves were already booked by `meat_haul.cradle_parts_g` (a double count, -10.8 g).\n")
+BL051_NOTE = ("> **BL-051 (2026-11-13):** the print described here had the stay crown cut 2 mm low over z 86-104 and z 131-152 (`h1_lanes.strip_old_us`); it is restored and re-exported, see `h1_crown.md` for the current print masses (assembled 996.6 g), slice checks, US2 lug (real stay section) and the z 142 notch, whose 'root air' below was the cut-away crown (rule now: nothing proud of the support line). The clevis screw heads are counterbored (ASSUMPTION HEAD-PROUD retired; M5 x 35, no head washer, bolt axes at yc - 2.8) and the lug and joint carry the lane cradle rows (US2 860 N at a 50 mm belly). The ledger's pins / sleeves row (A4) is retired: the US1 / US2 pins + sleeves were already booked by `meat_haul.cradle_parts_g` (a double count, -10.8 g).\n")
 
 
 def write_md(res: dict, shots: list) -> str:

@@ -154,8 +154,12 @@ def test_record_mass_and_ledger(res):
     assert m["print_delta_g"] == pytest.approx(m["assembled_g"] - m["assembled_bl050_g"], abs=0.11)
     assert 0.0 < m["print_delta_g"] < 10.0
     rows = L.corrections("corrie_b2_h1", "M")["BL051"]
-    assert len(rows) == 1 and rows[0]["g"] == pytest.approx(m["print_delta_g"], abs=0.01)
+    assert len(rows) == 2
+    assert sum(r["g"] for r in rows) == pytest.approx(m["print_delta_g"] + m["hardware_delta_g"], abs=0.02)
+    assert m["hardware_delta_g"] < 0                     # M5 x 35, no head washers
     assert L.corrections("corrie_b2_today", "M")["BL051"] == []
     assert L.corrections("corrie_b2_today", "M")["BL050"] == []          # the double-counted pins row is gone
     hw = [r for r in L.corrections("corrie_b2_h1", "M")["BL050"] if "hardware" in r["name"]]
-    assert hw and "M5 x 40" in hw[0]["name"] and "M5 x 35" not in hw[0]["name"]
+    assert hw and "M5 x 40" in hw[0]["name"]                   # what BL-050 bought (h1_bedfit.json)
+    hw51 = [r for r in rows if "hardware" in r["name"]]
+    assert hw51 and "M5 x 35" in hw51[0]["name"]               # BL-051: counterbored heads, shorter screws

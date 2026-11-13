@@ -698,6 +698,16 @@ def build_record(log=print) -> dict:
     return rec, d
 
 
+SUPERSEDED_HINGE_MD = (
+    "> **SUPERSEDED (BL-051 note, 2026-11-13): the hinge fairlead fatigue 0.86 (sim direction, 1019 N row) below is the "
+    "BL-047 hinge.** BL-049 grew the hinge (cheeks 10 mm, 27 mm up the stay, floor lowered 1 mm, relief groove gone, "
+    "Ti pin): fatigue in the sims' inboard-up direction **1.30** at the 1019 N row (strength 2.30), rev C direction "
+    "3.50 (`h1_lanes.md`, `h1_lanes.json` hinge). The other numbers in this file stand.\n")
+SUPERSEDED_HINGE_JSON = ("BL-051 (2026-11-13): the hinge fairlead sf_fatigue 0.86 (sim direction) is the BL-047 hinge; "
+                         "BL-049's grown hinge gives 1.30 inboard-up at the 1019 N row, strength 2.30 "
+                         "(analysis/h1_lanes.json hinge). The rest of this record stands.")
+
+
 def write_doc(rec: dict, d: dict, shots: list) -> str:
     s = rec["gnl"]["summary"]
     T = rec["gnl"]["table"]
@@ -937,8 +947,10 @@ def main(argv=None):
              plot_margins(d, {"rows": rec["margin_rows"]}, SCREENS / f"{SHOT}4.png")]
     RESULTS.write_text(json.dumps(rec, indent=1, default=_np))
     from . import bl047_frame_items as B
-    B.RESULTS.write_text(json.dumps(rec["items"], indent=1, default=_np))
-    DOC.write_text(write_doc(rec, d, shots))
+    B.RESULTS.write_text(json.dumps({"superseded_note": SUPERSEDED_HINGE_JSON, **rec["items"]}, indent=1, default=_np))
+    doc = write_doc(rec, d, shots)
+    first, rest = doc.split("\n", 1)
+    DOC.write_text(first + "\n\n" + SUPERSEDED_HINGE_MD + rest)
     print("\n".join(shots))
 
 

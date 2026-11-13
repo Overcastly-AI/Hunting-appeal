@@ -12,11 +12,11 @@
    "meat_trip": 3967.4
   },
   "P": {
-   "base": 3925.9,
-   "as_hunted": 4244.4,
-   "meat_trip": 4440.4,
+   "base": 3921.6,
+   "as_hunted": 4240.1,
+   "meat_trip": 4436.1,
    "by_system_base": {
-    "frame": 1287.2,
+    "frame": 1282.9,
     "back": 413.6,
     "belt": 482.3,
     "harness": 225.1,
@@ -31,16 +31,16 @@
    },
    "like_for_like_base": {
     "bag_side": 1491.9,
-    "suspension": 2408.2,
+    "suspension": 2403.9,
     "misc": 25.8
    }
   },
   "A": {
-   "base": 3338.8,
-   "as_hunted": 3657.3,
-   "meat_trip": 3853.3,
+   "base": 3334.5,
+   "as_hunted": 3653.0,
+   "meat_trip": 3849.0,
    "by_system_base": {
-    "frame": 1283.2,
+    "frame": 1278.9,
     "back": 363.6,
     "belt": 393.3,
     "harness": 196.8,
@@ -55,7 +55,7 @@
    },
    "like_for_like_base": {
     "bag_side": 1083.1,
-    "suspension": 2236.9,
+    "suspension": 2232.6,
     "misc": 18.8
    }
   }
@@ -68,14 +68,14 @@
     "meat_trip": 3939.5
    },
    "P": {
-    "base": 3897.4,
-    "as_hunted": 4216.0,
-    "meat_trip": 4412.0
+    "base": 3893.1,
+    "as_hunted": 4211.7,
+    "meat_trip": 4407.7
    },
    "A": {
-    "base": 3320.9,
-    "as_hunted": 3639.5,
-    "meat_trip": 3835.5
+    "base": 3316.6,
+    "as_hunted": 3635.2,
+    "meat_trip": 3831.2
    }
   },
   "M": {
@@ -85,14 +85,14 @@
     "meat_trip": 3967.4
    },
    "P": {
-    "base": 3925.9,
-    "as_hunted": 4244.4,
-    "meat_trip": 4440.4
+    "base": 3921.6,
+    "as_hunted": 4240.1,
+    "meat_trip": 4436.1
    },
    "A": {
-    "base": 3338.8,
-    "as_hunted": 3657.3,
-    "meat_trip": 3853.3
+    "base": 3334.5,
+    "as_hunted": 3653.0,
+    "meat_trip": 3849.0
    }
   },
   "L": {
@@ -102,14 +102,14 @@
     "meat_trip": 3991.5
    },
    "P": {
-    "base": 3950.8,
-    "as_hunted": 4269.3,
-    "meat_trip": 4465.3
+    "base": 3946.5,
+    "as_hunted": 4265.0,
+    "meat_trip": 4461.0
    },
    "A": {
-    "base": 3354.8,
-    "as_hunted": 3673.3,
-    "meat_trip": 3869.3
+    "base": 3350.5,
+    "as_hunted": 3669.0,
+    "meat_trip": 3865.0
    }
   },
   "XL": {
@@ -119,14 +119,14 @@
     "meat_trip": 4027.5
    },
    "P": {
-    "base": 3987.6,
-    "as_hunted": 4306.1,
-    "meat_trip": 4502.1
+    "base": 3983.3,
+    "as_hunted": 4301.8,
+    "meat_trip": 4497.8
    },
    "A": {
-    "base": 3382.8,
-    "as_hunted": 3701.4,
-    "meat_trip": 3897.4
+    "base": 3378.5,
+    "as_hunted": 3697.1,
+    "meat_trip": 3893.1
    }
   },
   "XXL": {
@@ -136,14 +136,14 @@
     "meat_trip": 4055.6
    },
    "P": {
-    "base": 4017.4,
-    "as_hunted": 4335.9,
-    "meat_trip": 4531.9
+    "base": 4013.1,
+    "as_hunted": 4331.6,
+    "meat_trip": 4527.6
    },
    "A": {
-    "base": 3402.6,
-    "as_hunted": 3721.1,
-    "meat_trip": 3917.1
+    "base": 3398.3,
+    "as_hunted": 3716.8,
+    "meat_trip": 3912.8
    }
   }
  },
@@ -533,17 +533,24 @@
    "kind": "correction",
    "gate": "crown continuity slice check (h1_crown); first-article weigh",
    "delta_g": {
-    "base": 2.6,
-    "as_hunted": 2.6,
-    "meat_trip": 2.6
+    "base": -1.7,
+    "as_hunted": -1.7,
+    "meat_trip": -1.7
    },
    "rows": [
     {
      "system": "frame",
-     "name": "H1 print: stay crown restored over the old US1 / US2 stub sites (BL-051)",
-     "g": 2.6,
+     "name": "H1 print: stay crown restored over the old US1 / US2 stub sites; US2 clevis heads counterbored (BL-051)",
+     "g": 1.5,
      "cfg": "base",
      "source": "ledger correction BL051: analysis/h1_crown.json mass.print_delta_g (assembled print mesh BL-051 - BL-050)"
+    },
+    {
+     "system": "frame",
+     "name": "US2 clevis hardware re-specified (BOM HW-US2: 4 Ti gr5 M5 x 35 DIN 7984; 4 A2 M5 hex nuts ISO 4032; 4 A2 M5 x 10 x 1 washers DIN 433; was BL-050's M5 x 40 + 8 washers; BL-051)",
+     "g": -3.2,
+     "cfg": "base",
+     "source": "ledger correction BL051: analysis/h1_crown.json mass.hardware_delta_g (h1_bedfit.hardware_g now - BL-050 hardware_g)"
     }
    ]
   },
@@ -4246,9 +4253,9 @@
  },
  "configs": {
   "corrie_f_base": {
-   "total_g": 3613.7,
+   "total_g": 3609.3,
    "by_system": {
-    "frame": 1349.4,
+    "frame": 1345.1,
     "back": 413.6,
     "belt": 499.2,
     "harness": 216.6,
@@ -4263,14 +4270,14 @@
    },
    "like_for_like": {
     "bag_side": 1109.0,
-    "suspension": 2478.8,
+    "suspension": 2474.5,
     "misc": 25.8
    }
   },
   "corrie_f_as_hunted": {
-   "total_g": 3932.2,
+   "total_g": 3927.9,
    "by_system": {
-    "frame": 1349.4,
+    "frame": 1345.1,
     "back": 413.6,
     "belt": 535.9,
     "harness": 216.6,
@@ -4285,7 +4292,7 @@
    },
    "like_for_like": {
     "bag_side": 1390.9,
-    "suspension": 2515.4,
+    "suspension": 2511.1,
     "misc": 25.8
    }
   },
@@ -4431,14 +4438,14 @@
     "pct": 60.0
    },
    "P": {
-    "ours_g": 3870.4,
-    "delta_g": 1562.4,
+    "ours_g": 3866.1,
+    "delta_g": 1558.1,
     "pct": 68.0
    },
    "A": {
-    "ours_g": 3291.0,
-    "delta_g": 983.0,
-    "pct": 43.0
+    "ours_g": 3286.7,
+    "delta_g": 978.7,
+    "pct": 42.0
    }
   },
   {
@@ -4456,13 +4463,13 @@
     "pct": 54.0
    },
    "P": {
-    "ours_g": 3870.4,
-    "delta_g": 1474.4,
-    "pct": 62.0
+    "ours_g": 3866.1,
+    "delta_g": 1470.1,
+    "pct": 61.0
    },
    "A": {
-    "ours_g": 3291.0,
-    "delta_g": 895.0,
+    "ours_g": 3286.7,
+    "delta_g": 890.7,
     "pct": 37.0
    }
   },
@@ -4482,13 +4489,13 @@
     "pct": 44.0
    },
    "P": {
-    "ours_g": 4038.0,
-    "delta_g": 1401.0,
+    "ours_g": 4033.7,
+    "delta_g": 1396.7,
     "pct": 53.0
    },
    "A": {
-    "ours_g": 3450.9,
-    "delta_g": 813.9,
+    "ours_g": 3446.6,
+    "delta_g": 809.6,
     "pct": 31.0
    }
   },
@@ -4504,13 +4511,13 @@
     "pct": 34.0
    },
    "P": {
-    "ours_g": 3925.9,
-    "delta_g": 1135.9,
+    "ours_g": 3921.6,
+    "delta_g": 1131.6,
     "pct": 41.0
    },
    "A": {
-    "ours_g": 3338.8,
-    "delta_g": 548.8,
+    "ours_g": 3334.5,
+    "delta_g": 544.5,
     "pct": 20.0
    }
   },
@@ -4526,14 +4533,14 @@
     "pct": 42.0
    },
    "P": {
-    "ours_g": 3925.9,
-    "delta_g": 1286.9,
+    "ours_g": 3921.6,
+    "delta_g": 1282.6,
     "pct": 49.0
    },
    "A": {
-    "ours_g": 3338.8,
-    "delta_g": 699.8,
-    "pct": 27.0
+    "ours_g": 3334.5,
+    "delta_g": 695.5,
+    "pct": 26.0
    }
   },
   {
@@ -4550,13 +4557,13 @@
     "pct": 35.0
    },
    "P": {
-    "ours_g": 4053.2,
-    "delta_g": 1241.2,
+    "ours_g": 4048.9,
+    "delta_g": 1236.9,
     "pct": 44.0
    },
    "A": {
-    "ours_g": 3466.1,
-    "delta_g": 654.1,
+    "ours_g": 3461.8,
+    "delta_g": 649.8,
     "pct": 23.0
    }
   },
@@ -4574,13 +4581,13 @@
     "pct": 41.0
    },
    "P": {
-    "ours_g": 4053.2,
-    "delta_g": 1345.2,
+    "ours_g": 4048.9,
+    "delta_g": 1340.9,
     "pct": 50.0
    },
    "A": {
-    "ours_g": 3466.1,
-    "delta_g": 758.1,
+    "ours_g": 3461.8,
+    "delta_g": 753.8,
     "pct": 28.0
    }
   },
@@ -4598,13 +4605,13 @@
     "pct": 33.0
    },
    "P": {
-    "ours_g": 3962.5,
-    "delta_g": 1127.5,
+    "ours_g": 3958.2,
+    "delta_g": 1123.2,
     "pct": 40.0
    },
    "A": {
-    "ours_g": 3375.4,
-    "delta_g": 540.4,
+    "ours_g": 3371.1,
+    "delta_g": 536.1,
     "pct": 19.0
    }
   },
@@ -4624,13 +4631,13 @@
     "pct": 127.0
    },
    "P": {
-    "ours_g": 4038.0,
-    "delta_g": 2365.0,
+    "ours_g": 4033.7,
+    "delta_g": 2360.7,
     "pct": 141.0
    },
    "A": {
-    "ours_g": 3450.9,
-    "delta_g": 1777.9,
+    "ours_g": 3446.6,
+    "delta_g": 1773.6,
     "pct": 106.0
    }
   },
@@ -4648,20 +4655,20 @@
     "pct": 40.0
    },
    "P": {
-    "ours_g": 4053.2,
-    "delta_g": 1331.2,
+    "ours_g": 4048.9,
+    "delta_g": 1326.9,
     "pct": 49.0
    },
    "A": {
-    "ours_g": 3466.1,
-    "delta_g": 744.1,
+    "ours_g": 3461.8,
+    "delta_g": 739.8,
     "pct": 27.0
    }
   }
  ],
  "features": {
-  "after_tests_base_g": 3338.8,
-  "gap_g": 345.1,
+  "after_tests_base_g": 3334.5,
+  "gap_g": 340.8,
   "candidates": [
    {
     "item": "IMP-2",
@@ -4766,7 +4773,7 @@
   "P": {
    "scenario": "P",
    "cfg": "base",
-   "total_g": 3925.9,
+   "total_g": 3921.6,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
      "g": 426.8,
@@ -4781,9 +4788,9 @@
      "frac": 0.05
     },
     "frame lumps and carbon (beam model, frame_mass json)": {
-     "g": 548.2,
-     "band_g": 68.3,
-     "n": 18,
+     "g": 543.9,
+     "band_g": 68.5,
+     "n": 19,
      "frac": 0.1
     },
     "cut area x record gsm, length x record g/m": {
@@ -4793,7 +4800,7 @@
      "frac": 0.08
     }
    },
-   "worst_g": 472.1,
+   "worst_g": 472.3,
    "rss_g": 70.3,
    "named": [
     {
@@ -4901,7 +4908,7 @@
   "A": {
    "scenario": "A",
    "cfg": "base",
-   "total_g": 3338.8,
+   "total_g": 3334.5,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
      "g": 347.3,
@@ -4916,9 +4923,9 @@
      "frac": 0.05
     },
     "frame lumps and carbon (beam model, frame_mass json)": {
-     "g": 544.2,
-     "band_g": 68.7,
-     "n": 19,
+     "g": 539.9,
+     "band_g": 68.9,
+     "n": 20,
      "frac": 0.1
     },
     "cut area x record gsm, length x record g/m": {
@@ -4928,7 +4935,7 @@
      "frac": 0.08
     }
    },
-   "worst_g": 533.4,
+   "worst_g": 533.6,
    "rss_g": 72.4,
    "named": [
     {

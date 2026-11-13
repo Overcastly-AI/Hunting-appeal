@@ -552,8 +552,12 @@ def _correction_rows(config: str, size: str) -> list:
              "washer volumes)", "base"),
         ]
         b51, src51 = bl051_update(), "analysis/h1_crown.json mass."
-        bl046.append(("BL051", "H1 print: stay crown restored over the old US1 / US2 stub sites (BL-051)", "frame",
-                      b51["print_delta_g"], src51 + "print_delta_g (assembled print mesh BL-051 - BL-050)", "base"))
+        bl046.append(("BL051", "H1 print: stay crown restored over the old US1 / US2 stub sites; US2 clevis heads "
+                      "counterbored (BL-051)", "frame", b51["print_delta_g"],
+                      src51 + "print_delta_g (assembled print mesh BL-051 - BL-050)", "base"))
+        bl046.append(("BL051", f"US2 clevis hardware re-specified (BOM HW-US2: {'; '.join(b51['hardware'])}; was BL-050's "
+                      "M5 x 40 + 8 washers; BL-051)", "frame", b51["hardware_delta_g"],
+                      src51 + "hardware_delta_g (h1_bedfit.hardware_g now - BL-050 hardware_g)", "base"))
     import strap_tails as ST                        # BL-031 (lazy: it reads corrie_f, which reads this module)
     bl031 = [("BL031", n, sys_, g, src, cfg) for n, sys_, g, src, cfg in ST.suspension_rows(size)]
     return h1b + bl031 + bl046 + [

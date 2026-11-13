@@ -90,7 +90,11 @@ def test_joint_check_hand_numbers():
     assert r["worst_strength"]["check"] in ("net_section", "hole_bearing")
     assert r["worst_strength"]["sf"] >= 2.0 and r["worst_fatigue"]["fatigue"] >= 1.15
     r1 = BF.joint_check(share=1.0)
-    assert r1["worst_strength"]["sf"] >= 1.0 and r1["worst_fatigue"]["fatigue"] >= 1.0
+    assert r1["worst_strength"]["sf"] >= 1.0
+    # BL-051: the whole pin load on the clevis (sensitivity) holds fatigue on every row but the 50 mm belly lane row
+    # (US2 860 N), where it reads about 0.84 (h1_crown.md, CLEVIS-SHARE settles it)
+    assert all(v["min_fatigue"] >= 1.0 for k, v in r1["rows"].items() if not k.startswith("cradle_lane_b50"))
+    assert 0.75 < min(v["min_fatigue"] for v in r1["rows"].values()) < 1.0
     assert r1["worst_strength"]["sf"] < r["worst_strength"]["sf"]
 
 

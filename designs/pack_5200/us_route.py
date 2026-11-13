@@ -663,7 +663,8 @@ def head_clearance(drapes: dict | None = None, res: dict | None = None) -> dict:
     F = _F()
     j = BF.JOINT
     p = stations()["us2"]
-    x0, x1 = j.head_face + j.washer_t, j.head_face + j.washer_t + j.head_h
+    x0, x1 = j.head_x if hasattr(j, "head_x") else (j.head_face + j.washer_t, j.head_face + j.washer_t + j.head_h)
+    #                                                   BL-051: heads in a counterbore, below the clevis outer face
     yc, zc = p["yc"] + j.dy, p["z"]
     r = j.head_d / 2
     heads = [(zc + dz) for dz in (-j.dz, j.dz)]
@@ -683,6 +684,7 @@ def head_clearance(drapes: dict | None = None, res: dict | None = None) -> dict:
            "method": "cloth = the drape's surface sampled 7 x 7 per triangle (ClothSurface.S); distance to the head "
                      "cylinders, < 0 = the free drape passes through a head (the sim has no frame outboard of the stays, "
                      "so the cloth would tent over it)"}
+    face_rows = []
     for t in TORSOS:
         m = F.fine_mesh(t)
         for case in ("fill", "meat"):
@@ -701,7 +703,25 @@ def head_clearance(drapes: dict | None = None, res: dict | None = None) -> dict:
                 q = Q[near][k] if near.any() else None
                 out["rows"].append({"torso": t, "case": case, "side": side, "cloth_mm": round(float(d[k]), 1),
                                     "at": [round(float(v), 1) for v in q] if q is not None else None})
+                if hasattr(j, "outer_face") and near.any():     # BL-051: the clevis's outer slab (cheek x 8 mm deep)
+                    lo = np.array([j.outer_face - 8.0, p["yc"] - 9.8, zc - 14.5])
+                    hi = np.array([j.outer_face, p["y_tip"], zc + 14.5])
+                    Qn = Q[near]
+                    dv = np.maximum(np.maximum(lo - Qn, Qn - hi), 0.0)
+                    din = np.minimum(Qn - lo, hi - Qn).min(axis=1)
+                    df = np.where((dv == 0).all(axis=1), -din, np.linalg.norm(dv, axis=1))
+                    kf = int(np.argmin(df))
+                    face_rows.append({"torso": t, "case": case, "side": side, "face_mm": round(float(df[kf]), 1),
+                                      "at": [round(float(v), 1) for v in Qn[kf]]})
     out["cloth_min_mm"] = min(r_["cloth_mm"] for r_ in out["rows"]) if out["rows"] else None
+    # BL-051: the heads no longer stand proud; the nearest frame surface there is the clevis's flat outer face
+    # (|x| outer_face, the US2 outer cheek's face): its clearance to the cloth on the same drapes
+    of = getattr(j, "outer_face", None)
+    if of is not None:
+        out["outer_face_x_mm"] = of
+        out["head_recess_mm"] = round(of - x1, 2)
+        out["face_rows"] = face_rows
+        out["face_min_mm"] = min(r_["face_mm"] for r_ in face_rows) if face_rows else None
     if res is not None:
         strap = []
         for r_ in res["layouts"]["now"]["rows"]:

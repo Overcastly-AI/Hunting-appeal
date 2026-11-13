@@ -65,9 +65,11 @@ today, re-sized locally (about 65 g lighter on the printed body), split at z = 2
 > **Rev BL-051 (2026-11-13): the stay crown is whole again over z 86-152.** Since BL-049 the bag face of both stays
 > sat 2-4 mm low where the old US1 / US2 fairleads used to be (z 86-104 and z 131-152): removing the old fairlead
 > stubs had taken the top of the stay with them. The stay section is now continuous there (crown top within 0.3 mm of
-> the plain stay, slice-checked on `h1_assembled.stl`). Assembled 997.7 g (+2.6 g), lower 425.9 g, upper 543.5 g
-> (unchanged), clevises 2 x 14.1 g; the lower half's footprint and plate rotation are unchanged. All test pieces
-> re-cut. Record `designs/pack_5200/analysis/h1_crown.md`. **The z 234 joint and the US2 clevises use different
+> the plain stay, slice-checked on `h1_assembled.stl`). **The US2 clevis screw heads now sit in counterbores**
+> (9.0 mm x 4.0 mm deep, 0.5 mm below the clevis face, no washer under the head) so nothing stands proud where the
+> bag's side panel lies: the clevis screws are now **M5 × 35** (were M5 × 40) and the clevis takes 4 washers, not 8.
+> Assembled 996.6 g, lower 425.6 g, upper 543.5 g (unchanged), clevises 2 x 13.8 g; the lower half's footprint and
+> plate rotation are unchanged. All test pieces re-cut. Record `designs/pack_5200/analysis/h1_crown.md`. **The z 234 joint and the US2 clevises use different
 > screws and washers: see the BOM IDs in the shopping list and keep them in separate labelled bags.**
 >
 > Status: **engineering release candidate.** These files are not yet the released frame
@@ -78,10 +80,10 @@ today, re-sized locally (about 65 g lighter on the printed body), split at z = 2
 
 | file | what | mass | print time |
 |---|---|---:|---:|
-| `h1_lower_flat.stl` / `.3mf` | lower half (feet to z 234), laid flat: wearer face on the plate, **turned 163.5 deg to fit the H2S (BL-050): print it as it loads** | 425.9 g (0.94 lb, BL-051) | about 15.1 h |
+| `h1_lower_flat.stl` / `.3mf` | lower half (feet to z 234), laid flat: wearer face on the plate, **turned 163.5 deg to fit the H2S (BL-050): print it as it loads** | 425.6 g (0.94 lb, BL-051) | about 15.1 h |
 | `h1_upper_flat.stl` / `.3mf` | upper half (z 234 to the top), laid flat | 543.5 g (1.20 lb) | about 19.2 h |
-| `h1_assembled.stl` | the whole frame as assembled (body + the two US2 clevises) in frame coordinates (x right, y aft toward the bag, z up from the feet), for checks and renders | 997.7 g (BL-051) | |
-| `us2_clevis_R.stl` / `.3mf`, `us2_clevis_L.stl` / `.3mf` | US2 outer cheek + outer throat floor (BL-050), bolts onto the lower half at x +/-163; laid flat, wearer face on the plate | 14.1 g each | about 0.5 h each |
+| `h1_assembled.stl` | the whole frame as assembled (body + the two US2 clevises) in frame coordinates (x right, y aft toward the bag, z up from the feet), for checks and renders | 996.6 g (BL-051) | |
+| `us2_clevis_R.stl` / `.3mf`, `us2_clevis_L.stl` / `.3mf` | US2 outer cheek + outer throat floor (BL-050), bolts onto the lower half at x +/-163; screw heads in counterbores (BL-051); laid flat, wearer face on the plate | 13.8 g each | about 0.5 h each |
 | `crown_pawl_lp_fdm_pacf.stl` / `.3mf` | low-profile crown pawl, PAHT-CF prototype, 16 mm wide, 100 % infill (BL-047) | 4.3 g | about 0.5 h |
 | `crown_pawl_lp_slm.stl` / `.3mf` | low-profile crown pawl, Ti-6Al-4V SLM + HIP, 12 mm wide (BL-047) | 13.3 g | - |
 | `test_pieces/hefit_hinge_fairlead_R.stl` / `.3mf` | HE-FIT test piece: the z 60 right hinge fairlead (BL-049 size) on an 80 mm stay segment, cut from the file above | 41.6 g (BL-051) | |
@@ -113,16 +115,16 @@ today, re-sized locally (about 65 g lighter on the printed body), split at z = 2
 | Ti-6Al-4V pin, 5 mm h8 ground, 44 mm, with a clip groove (or a 5 x 44 Ti clevis pin) | 2 | BL-049 hinge pins (3.8 g each); not 7075 |
 | **HW-J234-SCR** Ti gr5 **low-head** socket cap screw **M5 × 45** (DIN 7984, 3.5 mm head) | 4 | z 234 joint only. Not M5 × 40: it does not reach through the nut. Not a standard ISO 4762 head (5 mm): it stands 1 mm into the band of the z 260 spreader clip. An ISO 7380 button head M5 × 45 also fits. |
 | **HW-J234-WSH** M5 washer **12 mm OD** × 1.0 mm, A2 | 8 | z 234 joint only. **12 mm OD is load-bearing**: a 10 mm washer (HW-US2-WSH) is not enough here. |
-| **HW-US2-SCR** Ti gr5 low-head socket cap screw **M5 × 40** (DIN 7984) | 4 | US2 clevises only (BL-050), 2 per side. An M5 × 45 is 5 mm too long: its tip bottoms in the blind tail hole (it ends at x +/-142.5) before the head seats. |
-| **HW-US2-WSH** M5 washer **10 mm OD** × 1.0 mm, A2 (DIN 433) | 8 | US2 clevises only (BL-050): a 12 mm washer does not fit the 29 mm block. |
+| **HW-US2-SCR** Ti gr5 low-head socket cap screw **M5 × 35** (DIN 7984, 8.5 mm head) | 4 | US2 clevises only, 2 per side, heads in the counterbores (BL-051; was M5 × 40). An M5 × 45 is 10 mm too long: its tip bottoms in the blind tail hole (it ends at x +/-143.5) before the head seats. A button head does not fit the 9 mm counterbore. |
+| **HW-US2-WSH** M5 washer **10 mm OD** × 1.0 mm, A2 (DIN 433) | 4 | US2 clevises only, nut side only (BL-051: no washer under the head; was 8): a 12 mm washer does not fit the trap. |
 | **HW-M5-NUT** M5 hex nut A2 (ISO 4032, 8 mm across flats, 4 mm thick) | 8 | the same nut for both joints (4 + 4); thin nuts do not fit the traps |
 | 5.1 mm reamer (or a 5.1 mm drill bit, sharp) | 1 | bolt holes |
 | 18.0 mm reamer | 1 | same as today |
 | medium threadlocker (blue) | | |
 
-> **Two screw lengths and two washer sizes (BOM mix-up risk).** HW-J234-SCR (M5 × 45) and HW-US2-SCR (M5 × 40) look
+> **Two screw lengths and two washer sizes (BOM mix-up risk).** HW-J234-SCR (M5 × 45) and HW-US2-SCR (M5 × 35) look
 > alike, and so do HW-J234-WSH (12 mm OD) and HW-US2-WSH (10 mm OD). Keep each in its own bag labelled with its BOM ID
-> and joint ("z 234 joint" / "US2 clevis"). Check before fitting: lay the screw against a ruler (45 or 40 mm under
+> and joint ("z 234 joint" / "US2 clevis"). Check before fitting: lay the screw against a ruler (45 or 35 mm under
 > the head) and the washer against a caliper (12 or 10 mm). Fit the z 234 joint first and put its leftovers away
 > before you open the US2 bag.
 
@@ -198,7 +200,7 @@ bottom reaches z 171). So the bore must be one continuous hole.
    **US2 clevises (BL-050):** ream the two bolt holes in each clevis and in the lower half's US2 block (x +/-145 to
    163, printed 4.8) to **5.1 mm**. Drop a 10 mm washer (HW-US2-WSH) + M5 nut into each side trap from the wearer face (the nut is held
    by its flats), put the clevis on its block (its flat face against the frame's at x +/-163, the throat floors
-   flush), push the M5 × 40 screws (HW-US2-SCR, not the z 234 M5 × 45) with a 10 mm washer (HW-US2-WSH) under the head in from the clevis's outer face and snug them
+   flush), push the M5 × 35 screws (HW-US2-SCR, not the z 234 M5 × 45) into the counterbores in the clevis's outer face, **no washer under the head**; the heads must end below the face and snug them
    (about 1 N m, blue threadlocker; preload is not counted on). Then ream the US2 eye (both cheeks, assembled) to
    7.2 mm so the two cheeks line up, and press the sleeve. Feel the throat floor across the joint line: no step;
    break the edges 0.3 mm if the eye catches.

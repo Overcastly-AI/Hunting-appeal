@@ -32,14 +32,24 @@ G = 9.80665
 MU = 0.4                         # wet game bag on the spreader, geometry.yaml
 QUARTER_KG = 36.0                # R-08, one bone-in quarter
 RATED_KG = 68.0
-CAM_N = 1100.0                   # ASSUMPTION, DESIGN.md §4.5, 38 mm metal cam
+CAM_N = 1100.0                   # ASSUMPTION, DESIGN.md §4.5, 38 mm metal cam (BL-051 note: CORRIE F's 25 mm cam
+#                                  carries the same 1100 N, data/materials cam_25mm_al slip_load_n, also unproven)
 WEB_N = 20016.0                  # poly_webbing_38mm record
 # Under-straps. The belly is how far the cradle hangs below the straight line
 # between the stays. A deeper belly keeps the cam tension down.
 US1_Z = 95.0
 US2_Z = 142.0
 BELLY_MM = 70.0
-HALF_SPAN_MM = 115.0
+HALF_SPAN_MM = 115.0             # LEGACY (BL-051 note): the stay x, where US1 / US2 stood until BL-049. On the lanes each
+#                                  strap has its own half span (lane_half_span: US1 70, US2 165 = spans 140 / 330), so
+#                                  the real leg angles are US1 45 deg / US2 23 deg, not _theta()'s 31.3. _theta() is
+#                                  kept because the 720 N envelope row of the frame lug check, the cradle FEA and this
+#                                  module's bag-on resolution were booked at it; the lane rows are h1_lanes.lug_loads
+#                                  'cradle_lane' / 'cradle_lane_b50' (us_route.cradle_span) and h1_crown.body_lane.
+#                                  Bag-on: this module books the bag-on under-strap tension at the cradle angle too;
+#                                  on the real bag-on path the legs are 81-89 deg, so the booked tension is about 1.9 x
+#                                  the path tension (us_route.json cradle_span bag_on_path used_over_path): conservative,
+#                                  kept.
 # Of the bag-floor vertical, this fraction moves onto the two under-straps.
 # The rest stays on the hinge pins. ASSUMPTION.
 CRADLE_SHARE = 0.55
@@ -126,7 +136,19 @@ def _scale(sf: float, checked_n: float, new_n: float) -> float:
 
 
 def _theta() -> float:
+    """LEGACY leg angle (stay x half span, see HALF_SPAN_MM); the lane angles are ``theta_lane``."""
     return float(np.arctan(BELLY_MM / HALF_SPAN_MM))
+
+
+def lane_half_span(name: str) -> float:
+    """BL-051: half span of under-strap ``name`` on its lane (h1_lanes.LANE_X: US1 70, US2 165 mm)."""
+    from .h1_lanes import LANE_X
+    return float(LANE_X[name])
+
+
+def theta_lane(name: str, belly: float = BELLY_MM) -> float:
+    """BL-051: leg angle of under-strap ``name`` on its lane, atan(belly / lane half span)."""
+    return float(np.arctan(belly / lane_half_span(name)))
 
 
 def cradle_tension(vertical_n: float) -> float:
@@ -365,7 +387,7 @@ def analyse(cradle_fea: dict | None = None) -> dict:
     modes["bag_off"]["frame_sf"] = branch["cases"]["meat_straps"]
     modes["float"]["frame_sf"] = branch["cases"]["meat_straps"]
     modes["sheet"] = dict(sheet)
-    web_m = load("poly_webbing_38mm")
+    web_m = load("poly_webbing_38mm")              # B.2 booking (see cradle_parts_g); CORRIE F costs its own 25 mm parts
     pa = load("pa12_cf_fdm_paht")
     parts = cradle_parts_g(cradle_fea)
     plastic = parts["printed anchors (4)"]
@@ -378,7 +400,12 @@ def analyse(cradle_fea: dict | None = None) -> dict:
 
 def cradle_parts_g(cradle_fea: dict | None = None) -> dict:
     """Mass list of the two 38 mm under-straps (cradle), g. Shared with designs/pack_5200/build_geometry.py.
-    Anchor mass from cradle_fea.json (``added_g``) when given; pins/sleeves as bag_attach; cam 22 g ASSUMPTION."""
+    Anchor mass from cradle_fea.json (``added_g``) when given; pins/sleeves as bag_attach; cam 22 g ASSUMPTION.
+    BL-051 note: this is the CORRIE B.2 / 2026-11-01 booking (38 mm straps, 38 mm cams, 1.10 m), i.e. the ledger's
+    B.2 baseline that strap_arch.today_parts reads by name. The adopted CORRIE F books its own 25 mm under-straps
+    (strap_arch rec 'US-cams' on cam_25mm_al, 25 mm webbing at the us_route.json strap_lengths cut lengths) and
+    removes these rows ('REMOVED (B.2): under-straps ...'). Do not rename or re-mass these rows to 25 mm here: that
+    would move the B.2 baseline every roll-up step is measured from."""
     if cradle_fea is None:
         f = ANALYSIS / "cradle_fea.json"
         cradle_fea = json.loads(f.read_text()) if f.exists() else {}

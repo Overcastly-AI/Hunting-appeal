@@ -627,6 +627,17 @@ def lug_loads(name: str) -> dict:
         if best is None or abs(u[1]) > abs(best[1]):
             best = u
     base["bagon_drape"] = (T, best.tolist(), 3.0)
+    # BL-051 (BL-050 B us_route.json cradle_span): the cradle on the lane. Each strap's legs leave its pin at its own
+    # angle, atan(belly / lane half span) (US2 23 deg at the 70 mm design belly, not meat_haul's 31.3 deg from the
+    # stay x), at the 53 kg float-limit tension on the same factored basis as US_CRADLE_N (1.6 g x 1.5): the design
+    # belly 70 mm, and a 50 mm belly (a harder cinch: US2 860 N, flatter still).
+    cs = ur.get("cradle_span")
+    if cs:
+        half = cs["half_span_mm"][name]
+        for key, belly, Tn in (("cradle_lane", cs["belly_mm"], cs["at_float_limit"][name]["tension_n"]),
+                               ("cradle_lane_b50", 50.0, cs["sensitivity"]["belly_50"][name])):
+            a = math.atan2(belly, half)
+            base[key] = (float(Tn), [0.0, math.cos(a), -math.sin(a)], 2.4)
     for k, (F, u, gr) in base.items():
         u = np.asarray(u, float)
         out[k] = {"vec": (F * u).tolist(), "g_times_req": gr}
@@ -744,7 +755,7 @@ def lane_kit_sets(orig):
     return f
 
 
-def cradle_sets(fleet: bool = True) -> list:
+def cradle_sets(fleet: bool = True, per_strap: dict | None = None, tag: str = "lanes") -> list:
     """Bag-off float cradle on the lanes: each of the four US pins pulls US_CRADLE_N / 2.4 at 1 g (factor 2.4 = 1.6 g x
     1.5, so the strength row is 720 N a pin and the fatigue row 480 N), aft and down at meat_haul._theta, at the stay
     node with the lane moment; the hip-pivot clamp reacts. As 'static_carry' so h1_sleeve.evaluate also gives its
@@ -753,17 +764,20 @@ def cradle_sets(fleet: bool = True) -> list:
     from .frame_topopt import LoadSet
     th = MH._theta()
     F1 = US_CRADLE_N / 2.4
+    # BL-051: ``per_strap`` {name: (factored N, leg angle rad)} replaces 720 N at meat_haul._theta for each strap
+    ps = per_strap or {nm: (US_CRADLE_N, th) for nm in US_NODE_Z}
     sets = []
-    for tag, lat in (("dir", 0.0), ("fleet", math.sin(math.radians(FLEET_DEG)))):
-        if tag == "fleet" and not fleet:
+    for fl, lat in (("dir", 0.0), ("fleet", math.sin(math.radians(FLEET_DEG)))):
+        if fl == "fleet" and not fleet:
             continue
         items = []
         for name, zn in US_NODE_Z.items():
+            Fs, ths = ps[name][0] / 2.4, ps[name][1]
             for sx in (1.0, -1.0):
-                u = np.array([-sx * lat, math.cos(th), -math.sin(th)])
+                u = np.array([-sx * lat, math.cos(ths), -math.sin(ths)])
                 u /= np.linalg.norm(u)
                 yn = -1.7 if name == "us1" else -2.5            # the beam nodes' y (h1_sleeve sets)
-                items.append((np.array([sx * STAY_X, yn, zn]), np.r_[F1 * u, 0.0, 0.0, 0.0], "bag"))
+                items.append((np.array([sx * STAY_X, yn, zn]), np.r_[Fs * u, 0.0, 0.0, 0.0], "bag"))
         items, _ = lane_items(items)
         # the meat bears forward on the frame face between the straps (meat_straps' face rule): the aft pull of the
         # straps is reacted there, not at the hip pivot; equal shares on the stay face nodes z 60-155, each side
@@ -773,7 +787,7 @@ def cradle_sets(fleet: bool = True) -> list:
             for yn, zn in face:
                 items.append((np.array([sx * STAY_X, yn, zn]), np.r_[0.0, -fy / (2 * len(face)), 0.0, 0.0, 0.0, 0.0],
                               "bag"))
-        sets.append(LoadSet(key=f"U_cradle@lanes_{tag}_0:static_carry|0", case="static_carry", torso=0.0, factor=2.4,
+        sets.append(LoadSet(key=f"U_cradle@{tag}_{fl}_0:static_carry|0", case="static_carry", torso=0.0, factor=2.4,
                             g=1.6, kg=53.0, items=items, bushings=[], pawl=np.zeros(3)))
     return sets
 

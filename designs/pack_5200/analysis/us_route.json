@@ -1,7 +1,7 @@
 {
  "print": {
   "file": "designs/pack_5200/print/frame_h1/h1_assembled.stl",
-  "md5": "34f4f17083e286c68c115351dcb6da99"
+  "md5": "3db902620586b7e2fa983dee1ca2ebb1"
  },
  "tension_n": {
   "us1": 444.4,
@@ -541,7 +541,7 @@
       "hinge": 19.2,
       "us1": 58.8,
       "he": 22.6,
-      "stay": -7.6
+      "stay": -7.1
      },
      "entry": [
       155.3,
@@ -1727,7 +1727,7 @@
       "hinge": 14.6,
       "us1": 54.9,
       "he": 22.2,
-      "stay": -7.1
+      "stay": -6.6
      },
      "entry": [
       157.4,
@@ -2320,7 +2320,7 @@
       "hinge": 15.5,
       "us1": 58.0,
       "he": 22.6,
-      "stay": -6.8
+      "stay": -6.4
      },
      "entry": [
       -150.9,
@@ -2913,7 +2913,7 @@
       "hinge": 18.8,
       "us1": 63.8,
       "he": 22.0,
-      "stay": -7.3
+      "stay": -7.0
      },
      "entry": [
       151.6,
@@ -3506,7 +3506,7 @@
       "hinge": 16.4,
       "us1": 59.5,
       "he": 22.4,
-      "stay": -6.8
+      "stay": -6.3
      },
      "entry": [
       -156.5,
@@ -4116,7 +4116,7 @@
       "hinge": 12.3,
       "us1": 55.0,
       "he": 16.1,
-      "stay": -7.7
+      "stay": -7.2
      },
      "entry": [
       93.5,
@@ -5302,7 +5302,7 @@
       "hinge": 9.5,
       "us1": 49.6,
       "he": 14.5,
-      "stay": -7.3
+      "stay": -6.8
      },
      "entry": [
       94.3,
@@ -5895,7 +5895,7 @@
       "hinge": 1.1,
       "us1": 48.9,
       "he": 7.6,
-      "stay": -6.8
+      "stay": -6.4
      },
      "entry": [
       -95.0,
@@ -6488,7 +6488,7 @@
       "hinge": -3.2,
       "us1": 44.8,
       "he": 3.6,
-      "stay": -7.2
+      "stay": -7.0
      },
      "entry": [
       93.8,
@@ -7315,7 +7315,7 @@
       "hinge": -0.7,
       "us1": 50.0,
       "he": 4.7,
-      "stay": -7.0
+      "stay": -6.5
      },
      "entry": [
       -95.9,
@@ -7925,7 +7925,7 @@
       "hinge": 19.2,
       "us1": 58.8,
       "he": 22.6,
-      "stay": -7.6
+      "stay": -7.1
      },
      "entry": [
       155.3,
@@ -9111,7 +9111,7 @@
       "hinge": 14.6,
       "us1": 54.9,
       "he": 22.2,
-      "stay": -7.1
+      "stay": -6.6
      },
      "entry": [
       157.4,
@@ -9704,7 +9704,7 @@
       "hinge": 15.5,
       "us1": 58.0,
       "he": 22.6,
-      "stay": -6.8
+      "stay": -6.4
      },
      "entry": [
       -150.9,
@@ -10297,7 +10297,7 @@
       "hinge": 18.8,
       "us1": 63.8,
       "he": 22.0,
-      "stay": -7.3
+      "stay": -7.0
      },
      "entry": [
       151.6,
@@ -10890,7 +10890,7 @@
       "hinge": 16.4,
       "us1": 59.5,
       "he": 22.4,
-      "stay": -6.8
+      "stay": -6.3
      },
      "entry": [
       -156.5,
@@ -12093,7 +12093,7 @@
       "hinge": 14.5,
       "us1": 49.0,
       "he": 23.9,
-      "stay": -4.9
+      "stay": -4.4
      },
      "entry": [
       -152.4,
@@ -12686,7 +12686,7 @@
       "hinge": 14.6,
       "us1": 53.8,
       "he": 22.2,
-      "stay": -4.6
+      "stay": -4.4
      },
      "entry": [
       153.2,
@@ -13279,7 +13279,7 @@
       "hinge": 8.0,
       "us1": 49.7,
       "he": 15.3,
-      "stay": -4.3
+      "stay": -4.0
      },
      "entry": [
       -144.7,
@@ -13872,7 +13872,7 @@
       "hinge": 9.0,
       "us1": 54.6,
       "he": 12.0,
-      "stay": -5.5
+      "stay": -4.7
      },
      "entry": [
       146.8,
@@ -14465,7 +14465,7 @@
       "hinge": 8.0,
       "us1": 49.4,
       "he": 15.9,
-      "stay": -4.5
+      "stay": -4.0
      },
      "entry": [
       -150.8,
@@ -15075,7 +15075,7 @@
       "hinge": 6.7,
       "us1": 46.5,
       "he": 12.4,
-      "stay": -4.0
+      "stay": -3.9
      },
      "entry": [
       93.5,
@@ -17083,7 +17083,7 @@
       "hinge": -4.7,
       "us1": 37.4,
       "he": -3.0,
-      "stay": -4.3
+      "stay": -4.1
      },
      "entry": [
       -95.0,
@@ -17676,7 +17676,7 @@
       "hinge": -3.4,
       "us1": 43.1,
       "he": -0.8,
-      "stay": -4.8
+      "stay": -4.5
      },
      "entry": [
       93.8,
@@ -18503,7 +18503,7 @@
       "hinge": -4.5,
       "us1": 37.8,
       "he": -2.9,
-      "stay": -4.5
+      "stay": -4.0
      },
      "entry": [
       -95.9,
@@ -19113,7 +19113,7 @@
       "hinge": 20.9,
       "us1": 69.3,
       "he": 22.6,
-      "stay": -6.9
+      "stay": -6.5
      },
      "entry": [
       155.6,
@@ -20299,7 +20299,7 @@
       "hinge": 20.4,
       "us1": 67.6,
       "he": 22.2,
-      "stay": -6.8
+      "stay": -6.3
      },
      "entry": [
       157.7,
@@ -20892,7 +20892,7 @@
       "hinge": 15.5,
       "us1": 61.0,
       "he": 26.5,
-      "stay": -6.7
+      "stay": -6.4
      },
      "entry": [
       -152.1,
@@ -21485,7 +21485,7 @@
       "hinge": 18.2,
       "us1": 66.3,
       "he": 21.8,
-      "stay": -6.6
+      "stay": -6.3
      },
      "entry": [
       152.8,
@@ -22078,7 +22078,7 @@
       "hinge": 16.7,
       "us1": 62.5,
       "he": 26.7,
-      "stay": -6.0
+      "stay": -5.9
      },
      "entry": [
       -157.8,
@@ -22601,10 +22601,10 @@
  },
  "clevis_heads": {
   "head_x_mm": [
-   184.0,
-   187.5
+   179.0,
+   182.5
   ],
-  "head_y_mm": -6.97,
+  "head_y_mm": -5.47,
   "head_z_mm": [
    134.0,
    150.0
@@ -22616,7 +22616,7 @@
     "torso": 15,
     "case": "fill",
     "side": "R",
-    "cloth_mm": 2.6,
+    "cloth_mm": 0.9,
     "at": [
      182.9,
      -0.4,
@@ -22627,43 +22627,43 @@
     "torso": 15,
     "case": "fill",
     "side": "L",
-    "cloth_mm": -1.1,
+    "cloth_mm": -1.7,
     "at": [
-     185.1,
-     -4.3,
-     134.8
+     180.7,
+     -4.8,
+     134.7
     ]
    },
    {
     "torso": 15,
     "case": "meat",
     "side": "R",
-    "cloth_mm": 5.5,
+    "cloth_mm": 3.2,
     "at": [
-     185.0,
-     2.6,
+     179.7,
+     1.8,
+     132.4
+    ]
+   },
+   {
+    "torso": 15,
+    "case": "meat",
+    "side": "L",
+    "cloth_mm": -1.2,
+    "at": [
+     180.2,
+     -7.4,
      132.5
     ]
    },
    {
-    "torso": 15,
-    "case": "meat",
-    "side": "L",
-    "cloth_mm": -1.0,
-    "at": [
-     186.5,
-     -7.7,
-     135.6
-    ]
-   },
-   {
     "torso": 19,
     "case": "fill",
     "side": "R",
-    "cloth_mm": 16.4,
+    "cloth_mm": 13.1,
     "at": [
-     177.5,
-     12.3,
+     172.6,
+     10.2,
      134.8
     ]
    },
@@ -22671,83 +22671,220 @@
     "torso": 19,
     "case": "fill",
     "side": "L",
-    "cloth_mm": 5.7,
+    "cloth_mm": 3.4,
     "at": [
-     183.2,
-     2.7,
-     132.2
-    ]
-   },
-   {
-    "torso": 19,
-    "case": "meat",
-    "side": "R",
-    "cloth_mm": 4.4,
-    "at": [
-     184.7,
-     1.5,
-     132.2
-    ]
-   },
-   {
-    "torso": 19,
-    "case": "meat",
-    "side": "L",
-    "cloth_mm": -1.0,
-    "at": [
-     186.5,
-     -3.8,
-     149.3
-    ]
-   },
-   {
-    "torso": 23,
-    "case": "fill",
-    "side": "R",
-    "cloth_mm": 15.5,
-    "at": [
-     177.1,
-     11.1,
-     134.9
-    ]
-   },
-   {
-    "torso": 23,
-    "case": "fill",
-    "side": "L",
-    "cloth_mm": 13.9,
-    "at": [
-     179.4,
-     10.4,
+     179.2,
+     2.1,
      150.5
     ]
    },
    {
+    "torso": 19,
+    "case": "meat",
+    "side": "R",
+    "cloth_mm": 2.1,
+    "at": [
+     179.4,
+     0.7,
+     132.2
+    ]
+   },
+   {
+    "torso": 19,
+    "case": "meat",
+    "side": "L",
+    "cloth_mm": -1.3,
+    "at": [
+     181.2,
+     -4.4,
+     148.0
+    ]
+   },
+   {
+    "torso": 23,
+    "case": "fill",
+    "side": "R",
+    "cloth_mm": 12.1,
+    "at": [
+     174.5,
+     9.9,
+     150.4
+    ]
+   },
+   {
+    "torso": 23,
+    "case": "fill",
+    "side": "L",
+    "cloth_mm": 11.3,
+    "at": [
+     175.0,
+     9.4,
+     150.3
+    ]
+   },
+   {
     "torso": 23,
     "case": "meat",
     "side": "R",
-    "cloth_mm": 9.0,
+    "cloth_mm": 6.4,
     "at": [
-     181.9,
-     6.0,
-     148.6
+     178.1,
+     5.0,
+     135.4
     ]
    },
    {
     "torso": 23,
     "case": "meat",
     "side": "L",
-    "cloth_mm": -0.1,
+    "cloth_mm": -1.4,
     "at": [
-     185.3,
-     -3.2,
-     135.8
+     180.8,
+     -3.1,
+     135.6
     ]
    }
   ],
   "method": "cloth = the drape's surface sampled 7 x 7 per triangle (ClothSurface.S); distance to the head cylinders, < 0 = the free drape passes through a head (the sim has no frame outboard of the stays, so the cloth would tent over it)",
-  "cloth_min_mm": -1.1,
-  "strap_min_mm": 2.3,
+  "cloth_min_mm": -1.7,
+  "outer_face_x_mm": 183.0,
+  "head_recess_mm": 0.5,
+  "face_rows": [
+   {
+    "torso": 15,
+    "case": "fill",
+    "side": "R",
+    "face_mm": -3.4,
+    "at": [
+     179.6,
+     -1.0,
+     137.4
+    ]
+   },
+   {
+    "torso": 15,
+    "case": "fill",
+    "side": "L",
+    "face_mm": -3.8,
+    "at": [
+     178.8,
+     -5.1,
+     131.7
+    ]
+   },
+   {
+    "torso": 15,
+    "case": "meat",
+    "side": "R",
+    "face_mm": -3.3,
+    "at": [
+     179.7,
+     1.8,
+     132.4
+    ]
+   },
+   {
+    "torso": 15,
+    "case": "meat",
+    "side": "L",
+    "face_mm": -4.0,
+    "at": [
+     179.0,
+     -7.0,
+     147.9
+    ]
+   },
+   {
+    "torso": 19,
+    "case": "fill",
+    "side": "R",
+    "face_mm": -3.7,
+    "at": [
+     179.3,
+     13.0,
+     137.8
+    ]
+   },
+   {
+    "torso": 19,
+    "case": "fill",
+    "side": "L",
+    "face_mm": -3.9,
+    "at": [
+     179.1,
+     1.9,
+     146.9
+    ]
+   },
+   {
+    "torso": 19,
+    "case": "meat",
+    "side": "R",
+    "face_mm": -3.6,
+    "at": [
+     179.4,
+     0.7,
+     132.2
+    ]
+   },
+   {
+    "torso": 19,
+    "case": "meat",
+    "side": "L",
+    "face_mm": -3.7,
+    "at": [
+     179.3,
+     -4.5,
+     141.4
+    ]
+   },
+   {
+    "torso": 23,
+    "case": "fill",
+    "side": "R",
+    "face_mm": -3.9,
+    "at": [
+     178.9,
+     11.8,
+     137.9
+    ]
+   },
+   {
+    "torso": 23,
+    "case": "fill",
+    "side": "L",
+    "face_mm": -3.7,
+    "at": [
+     179.3,
+     11.0,
+     135.6
+    ]
+   },
+   {
+    "torso": 23,
+    "case": "meat",
+    "side": "R",
+    "face_mm": -3.6,
+    "at": [
+     178.6,
+     5.1,
+     151.5
+    ]
+   },
+   {
+    "torso": 23,
+    "case": "meat",
+    "side": "L",
+    "face_mm": -4.0,
+    "at": [
+     179.0,
+     -3.0,
+     132.5
+    ]
+   }
+  ],
+  "face_min_mm": -4.0,
+  "strap_min_mm": -2.8,
   "strap_note": "centre-line distance less half the 25 mm width (a lower bound on the gap)"
  },
  "test_piece": {
@@ -22760,8 +22897,8 @@
    46.0,
    189.0
   ],
-  "g": 127.1,
-  "g_as_assembled": 141.3,
+  "g": 127.0,
+  "g_as_assembled": 140.7,
   "bolt_on": "us2_clevis_R",
   "watertight": true,
   "shells": 1,

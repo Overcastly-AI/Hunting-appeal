@@ -1,4 +1,5 @@
 {
+ "superseded_note": "BL-051 (2026-11-13): the hinge fairlead sf_fatigue 0.86 (sim direction) is the BL-047 hinge; BL-049's grown hinge gives 1.30 inboard-up at the 1019 N row, strength 2.30 (analysis/h1_lanes.json hinge). The rest of this record stands.",
  "hinge_one_number": {
   "hinge_row_n": 1019.0,
   "factor": 3.0,

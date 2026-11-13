@@ -1542,14 +1542,14 @@
  },
  "export": {
   "assembled": {
-   "g": 997.7,
+   "g": 996.6,
    "watertight": true,
    "shells": 1,
    "footprint_mm": null,
    "bed_bl050": null
   },
   "lower": {
-   "g": 425.9,
+   "g": 425.6,
    "watertight": true,
    "shells": 1,
    "footprint_mm": [
@@ -1771,7 +1771,7 @@
  },
  "joint": {
   "capacities_n": {
-   "washer_bearing_n": 4091.1,
+   "washer_bearing_n": 2556.7,
    "plug_shear_out_n": 5414.4,
    "bolt_tension_n": 8896.3,
    "bolt_fatigue_n": 3177.2,
@@ -1780,33 +1780,33 @@
    "contact_mpa": 70.4
   },
   "net_section": {
-   "A": 376.0,
-   "yc": 0.91,
+   "A": 344.5,
+   "yc": 1.08,
    "zc": 142.0,
-   "Iy": 25648.61,
-   "Iz": 10382.69,
-   "Iyz": 0.0
+   "Iy": 23343.37,
+   "Iz": 10255.82,
+   "Iyz": -0.0
   },
   "worst_strength": {
-   "load": "cradle",
-   "sf": 3.85,
+   "load": "cradle_lane_b50",
+   "sf": 3.11,
    "check": "net_section"
   },
   "worst_fatigue": {
-   "load": "cradle",
-   "fatigue": 1.73,
+   "load": "cradle_lane_b50",
+   "fatigue": 1.4,
    "check": "net_section_paht"
   }
  },
  "joint_share_1": {
   "worst_strength": {
-   "load": "cradle",
-   "sf": 2.31,
+   "load": "cradle_lane_b50",
+   "sf": 1.87,
    "check": "net_section"
   },
   "worst_fatigue": {
-   "load": "cradle",
-   "fatigue": 1.04,
+   "load": "cradle_lane_b50",
+   "fatigue": 0.84,
    "check": "net_section_paht"
   }
  },
@@ -1817,12 +1817,12 @@
     "holes": [
      {
       "d_eq_mm": 4.79,
-      "y": -6.97,
+      "y": -5.47,
       "z": 150.0
      },
      {
       "d_eq_mm": 4.79,
-      "y": -6.97,
+      "y": -5.47,
       "z": 134.0
      }
     ],
@@ -1834,7 +1834,7 @@
     ]
    },
    "body_trap": {
-    "outer_area_mm2": 663.9,
+    "outer_area_mm2": 632.7,
     "holes": [
      {
       "d_eq_mm": 6.98,
@@ -1854,13 +1854,13 @@
     "holes": [
      {
       "d_eq_mm": 4.79,
-      "y": -6.97,
-      "z": 134.0
+      "y": -5.47,
+      "z": 150.0
      },
      {
       "d_eq_mm": 4.79,
-      "y": -6.97,
-      "z": 150.0
+      "y": -5.47,
+      "z": 134.0
      }
     ],
     "bounds_yz": [
@@ -1878,13 +1878,13 @@
     "holes": [
      {
       "d_eq_mm": 4.79,
-      "y": -6.97,
-      "z": 134.0
+      "y": -5.47,
+      "z": 150.0
      },
      {
       "d_eq_mm": 4.79,
-      "y": -6.97,
-      "z": 150.0
+      "y": -5.47,
+      "z": 134.0
      }
     ],
     "bounds_yz": [
@@ -1895,7 +1895,7 @@
     ]
    },
    "body_trap": {
-    "outer_area_mm2": 664.8,
+    "outer_area_mm2": 633.6,
     "holes": [
      {
       "d_eq_mm": 6.98,
@@ -1915,12 +1915,12 @@
     "holes": [
      {
       "d_eq_mm": 4.79,
-      "y": -6.97,
+      "y": -5.47,
       "z": 150.0
      },
      {
       "d_eq_mm": 4.79,
-      "y": -6.97,
+      "y": -5.47,
       "z": 134.0
      }
     ],
@@ -1968,6 +1968,29 @@
       "load": "cradle|fleet_out",
       "sf_min": 1.78
      }
+    },
+    "cradle_rows": {
+     "cradle": {
+      "force_n": 720.0,
+      "sf": 1.78,
+      "fatigue": 0.8,
+      "load": "cradle|fleet_out",
+      "region": "root"
+     },
+     "cradle_lane": {
+      "force_n": 529.3,
+      "sf": 2.36,
+      "fatigue": 1.06,
+      "load": "cradle_lane|fleet_out",
+      "region": "root"
+     },
+     "cradle_lane_b50": {
+      "force_n": 643.8,
+      "sf": 1.98,
+      "fatigue": 0.89,
+      "load": "cradle_lane_b50|fleet_out",
+      "region": "root"
+     }
     }
    },
    "crown": {
@@ -1998,6 +2021,29 @@
       "load": "cradle|fleet_out",
       "sf_min": 1.91
      }
+    },
+    "cradle_rows": {
+     "cradle": {
+      "force_n": 720.0,
+      "sf": 1.91,
+      "fatigue": 0.86,
+      "load": "cradle|fleet_out",
+      "region": "root"
+     },
+     "cradle_lane": {
+      "force_n": 529.3,
+      "sf": 2.42,
+      "fatigue": 1.09,
+      "load": "cradle_lane|fleet_out",
+      "region": "root"
+     },
+     "cradle_lane_b50": {
+      "force_n": 643.8,
+      "sf": 2.11,
+      "fatigue": 0.95,
+      "load": "cradle_lane_b50|fleet_out",
+      "region": "root"
+     }
     }
    }
   },
@@ -2007,61 +2053,107 @@
    "circle_area_mm2": 252.4,
    "circle": {
     "worst_strength": {
-     "load": "cradle|fleet_in",
-     "sf": 2.31
+     "load": "cradle_lane_b50|fleet_in",
+     "sf": 1.82
     },
     "worst_fatigue": {
-     "load": "cradle|fleet_in",
-     "fatigue": 1.04
+     "load": "cradle_lane_b50|fleet_in",
+     "fatigue": 0.82
     },
     "regions": {
      "fairlead": {
-      "fatigue": 1.62,
-      "sf_at": 3.61,
-      "load": "cradle|fleet_in",
-      "sf_min": 3.61
+      "fatigue": 1.48,
+      "sf_at": 3.29,
+      "load": "cradle_lane_b50|fleet_in",
+      "sf_min": 3.29
      },
      "arm": {
-      "fatigue": 1.38,
-      "sf_at": 3.07,
-      "load": "cradle|fleet_in",
-      "sf_min": 3.07
+      "fatigue": 1.25,
+      "sf_at": 2.78,
+      "load": "cradle_lane_b50|fleet_in",
+      "sf_min": 2.78
      },
      "root": {
+      "fatigue": 0.82,
+      "sf_at": 1.82,
+      "load": "cradle_lane_b50|fleet_in",
+      "sf_min": 1.82
+     }
+    },
+    "cradle_rows": {
+     "cradle": {
+      "force_n": 720.0,
+      "sf": 2.31,
       "fatigue": 1.04,
-      "sf_at": 2.31,
       "load": "cradle|fleet_in",
-      "sf_min": 2.31
+      "region": "root"
+     },
+     "cradle_lane": {
+      "force_n": 638.8,
+      "sf": 2.49,
+      "fatigue": 1.12,
+      "load": "cradle_lane|fleet_in",
+      "region": "root"
+     },
+     "cradle_lane_b50": {
+      "force_n": 860.2,
+      "sf": 1.82,
+      "fatigue": 0.82,
+      "load": "cradle_lane_b50|fleet_in",
+      "region": "root"
      }
     }
    },
    "crown": {
     "worst_strength": {
-     "load": "cradle|fleet_in",
-     "sf": 2.93
+     "load": "cradle_lane_b50|fleet_in",
+     "sf": 2.5
     },
     "worst_fatigue": {
-     "load": "cradle|fleet_in",
-     "fatigue": 1.32
+     "load": "cradle_lane_b50|fleet_in",
+     "fatigue": 1.13
     },
     "regions": {
      "fairlead": {
-      "fatigue": 1.66,
-      "sf_at": 3.7,
-      "load": "cradle|fleet_in",
-      "sf_min": 3.7
+      "fatigue": 1.49,
+      "sf_at": 3.32,
+      "load": "cradle_lane_b50|fleet_in",
+      "sf_min": 3.32
      },
      "arm": {
-      "fatigue": 1.32,
-      "sf_at": 2.93,
-      "load": "cradle|fleet_in",
-      "sf_min": 2.93
+      "fatigue": 1.18,
+      "sf_at": 2.62,
+      "load": "cradle_lane_b50|fleet_in",
+      "sf_min": 2.62
      },
      "root": {
-      "fatigue": 1.37,
-      "sf_at": 3.03,
+      "fatigue": 1.13,
+      "sf_at": 2.5,
+      "load": "cradle_lane_b50|fleet_in",
+      "sf_min": 2.5
+     }
+    },
+    "cradle_rows": {
+     "cradle": {
+      "force_n": 720.0,
+      "sf": 2.93,
+      "fatigue": 1.32,
       "load": "cradle|fleet_in",
-      "sf_min": 3.03
+      "region": "arm"
+     },
+     "cradle_lane": {
+      "force_n": 638.8,
+      "sf": 3.34,
+      "fatigue": 1.5,
+      "load": "cradle_lane|fleet_in",
+      "region": "root"
+     },
+     "cradle_lane_b50": {
+      "force_n": 860.2,
+      "sf": 2.5,
+      "fatigue": 1.13,
+      "load": "cradle_lane_b50|fleet_in",
+      "region": "root"
      }
     }
    }
@@ -2085,8 +2177,8 @@
     46.0,
     189.0
    ],
-   "g": 127.1,
-   "g_as_assembled": 141.3,
+   "g": 127.0,
+   "g_as_assembled": 140.7,
    "bolt_on": "us2_clevis_R",
    "watertight": true,
    "shells": 1,
@@ -2304,23 +2396,68 @@
      "fatigue_peak_region": 4.286374676298786
     }
    }
+  },
+  "cradle_lane70_bl051": {
+   "strength": 2.661,
+   "fatigue": 1.197,
+   "creep": 2.554,
+   "buckling": 1.904,
+   "governing_tag": "U_cradle@cradle_lane70_fleet_0"
+  },
+  "cradle_lane50_bl051": {
+   "strength": 2.377,
+   "fatigue": 1.07,
+   "creep": 2.282,
+   "buckling": 1.313,
+   "governing_tag": "U_cradle@cradle_lane50_fleet_0"
   }
  },
  "mass": {
-  "assembled_g": 997.7,
+  "assembled_g": 996.6,
   "assembled_bl050_g": 995.1,
-  "print_delta_g": 2.6,
-  "lower_g": 425.9,
+  "print_delta_g": 1.5,
+  "lower_g": 425.6,
   "lower_bl050_g": 423.4,
   "upper_g": 543.5,
   "upper_bl050_g": 543.5,
   "clevis_g": {
-   "us2_clevis_R": 14.14,
-   "us2_clevis_L": 14.14
+   "us2_clevis_R": 13.76,
+   "us2_clevis_L": 13.76
   },
-  "lug_arms_g": 69.84
+  "lug_arms_g": 69.84,
+  "hardware": {
+   "4 Ti gr5 M5 x 35 DIN 7984": 14.89,
+   "4 A2 M5 hex nuts ISO 4032": 4.52,
+   "4 A2 M5 x 10 x 1 washers DIN 433": 1.78
+  },
+  "hardware_g": 21.19,
+  "hardware_bl050_g": 24.39,
+  "hardware_delta_g": -3.2
  },
  "us1_root": {
+  "by_load": {
+   "cradle": {
+    "force_n": 720.0,
+    "sf": 1.91,
+    "fatigue": 0.86,
+    "load": "cradle|fleet_out",
+    "region": "root"
+   },
+   "cradle_lane": {
+    "force_n": 529.3,
+    "sf": 2.42,
+    "fatigue": 1.09,
+    "load": "cradle_lane|fleet_out",
+    "region": "root"
+   },
+   "cradle_lane_b50": {
+    "force_n": 643.8,
+    "sf": 2.11,
+    "fatigue": 0.95,
+    "load": "cradle_lane_b50|fleet_out",
+    "region": "root"
+   }
+  },
   "stub_circle_fatigue": 0.8,
   "stub_crown_fatigue": 0.86,
   "stub_crown_strength": 1.91,
@@ -2328,5 +2465,228 @@
   "body_cradle_fatigue_bl049": 1.142,
   "governs": "stub_crown",
   "why": "The whole-body model applies each US pin load at the stay node (force + the lane moment, h1_lanes.lane_items): the arm carries no pin load there, so its root sees only the stay's global stress. The stub model routes the pin load through the cheeks and the arm into the root, which is what loads that root; its fixed stub ends leave out the lower branch (conservative) and the global stay stress (unconservative). The stub number is the one to design to until the T1 / MT-1 strain gauge at the US1 root settles it."
+ },
+ "belly_sweep": {
+  "50": {
+   "us1": {
+    "tension_n": 643.8,
+    "leg_deg": 35.5,
+    "sf": 2.11,
+    "fatigue": 0.95
+   },
+   "us2": {
+    "tension_n": 860.2,
+    "leg_deg": 16.9,
+    "sf": 2.5,
+    "fatigue": 1.13
+   }
+  },
+  "55": {
+   "us1": {
+    "tension_n": 605.7,
+    "leg_deg": 38.2,
+    "sf": 2.23,
+    "fatigue": 1.0
+   },
+   "us2": {
+    "tension_n": 789.0,
+    "leg_deg": 18.4,
+    "sf": 2.71,
+    "fatigue": 1.22
+   }
+  },
+  "60": {
+   "us1": {
+    "tension_n": 575.1,
+    "leg_deg": 40.6,
+    "sf": 2.29,
+    "fatigue": 1.03
+   },
+   "us2": {
+    "tension_n": 730.1,
+    "leg_deg": 20.0,
+    "sf": 2.92,
+    "fatigue": 1.31
+   }
+  },
+  "70": {
+   "us1": {
+    "tension_n": 529.3,
+    "leg_deg": 45.0,
+    "sf": 2.42,
+    "fatigue": 1.09
+   },
+   "us2": {
+    "tension_n": 638.8,
+    "leg_deg": 23.0,
+    "sf": 3.34,
+    "fatigue": 1.5
+   }
+  }
+ },
+ "clevis_heads": {
+  "head_x_mm": [
+   179.0,
+   182.5
+  ],
+  "head_y_mm": -5.47,
+  "head_z_mm": [
+   134.0,
+   150.0
+  ],
+  "head_d_mm": 8.5,
+  "pack_half_width_mm": 197.0,
+  "cloth_min_mm": -1.7,
+  "outer_face_x_mm": 183.0,
+  "head_recess_mm": 0.5,
+  "face_min_mm": -4.0,
+  "strap_min_mm": -2.8,
+  "strap_note": "centre-line distance less half the 25 mm width (a lower bound on the gap)",
+  "rows": [
+   {
+    "torso": 15,
+    "case": "fill",
+    "side": "R",
+    "cloth_mm": 0.9,
+    "at": [
+     182.9,
+     -0.4,
+     134.4
+    ],
+    "face_mm": -3.4
+   },
+   {
+    "torso": 15,
+    "case": "fill",
+    "side": "L",
+    "cloth_mm": -1.7,
+    "at": [
+     180.7,
+     -4.8,
+     134.7
+    ],
+    "face_mm": -3.8
+   },
+   {
+    "torso": 15,
+    "case": "meat",
+    "side": "R",
+    "cloth_mm": 3.2,
+    "at": [
+     179.7,
+     1.8,
+     132.4
+    ],
+    "face_mm": -3.3
+   },
+   {
+    "torso": 15,
+    "case": "meat",
+    "side": "L",
+    "cloth_mm": -1.2,
+    "at": [
+     180.2,
+     -7.4,
+     132.5
+    ],
+    "face_mm": -4.0
+   },
+   {
+    "torso": 19,
+    "case": "fill",
+    "side": "R",
+    "cloth_mm": 13.1,
+    "at": [
+     172.6,
+     10.2,
+     134.8
+    ],
+    "face_mm": -3.7
+   },
+   {
+    "torso": 19,
+    "case": "fill",
+    "side": "L",
+    "cloth_mm": 3.4,
+    "at": [
+     179.2,
+     2.1,
+     150.5
+    ],
+    "face_mm": -3.9
+   },
+   {
+    "torso": 19,
+    "case": "meat",
+    "side": "R",
+    "cloth_mm": 2.1,
+    "at": [
+     179.4,
+     0.7,
+     132.2
+    ],
+    "face_mm": -3.6
+   },
+   {
+    "torso": 19,
+    "case": "meat",
+    "side": "L",
+    "cloth_mm": -1.3,
+    "at": [
+     181.2,
+     -4.4,
+     148.0
+    ],
+    "face_mm": -3.7
+   },
+   {
+    "torso": 23,
+    "case": "fill",
+    "side": "R",
+    "cloth_mm": 12.1,
+    "at": [
+     174.5,
+     9.9,
+     150.4
+    ],
+    "face_mm": -3.9
+   },
+   {
+    "torso": 23,
+    "case": "fill",
+    "side": "L",
+    "cloth_mm": 11.3,
+    "at": [
+     175.0,
+     9.4,
+     150.3
+    ],
+    "face_mm": -3.7
+   },
+   {
+    "torso": 23,
+    "case": "meat",
+    "side": "R",
+    "cloth_mm": 6.4,
+    "at": [
+     178.1,
+     5.0,
+     135.4
+    ],
+    "face_mm": -3.6
+   },
+   {
+    "torso": 23,
+    "case": "meat",
+    "side": "L",
+    "cloth_mm": -1.4,
+    "at": [
+     180.8,
+     -3.1,
+     135.6
+    ],
+    "face_mm": -4.0
+   }
+  ]
  }
 }

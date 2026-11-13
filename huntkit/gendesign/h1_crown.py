@@ -14,6 +14,7 @@ Units mm, N, MPa, g. Frame coordinates: x lateral (R +), y towards the bag, z up
 from __future__ import annotations
 
 import argparse
+import dataclasses
 import json
 from pathlib import Path
 
@@ -115,6 +116,24 @@ def stay_section(name: str, mesh=None, tol: float = 0.15) -> list:
     raise ValueError(f"no stay section at z {z}")
 
 
+CRADLE_KEYS = ("cradle", "cradle_lane", "cradle_lane_b50")
+
+
+def cradle_rows(lug: dict) -> dict:
+    """Per cradle load family (h1_lanes.lug_loads: 720 N envelope at 31.3 deg, the lane at the 70 mm design belly, the
+    lane at a 50 mm belly), the worst over its fleet variants: force, strength, fatigue, governing region."""
+    out = {}
+    for k in CRADLE_KEYS:
+        rr = {q: v for q, v in lug["rows"].items() if q == k or q.startswith(k + "|")}
+        if not rr:
+            continue
+        ws = min(rr, key=lambda q: rr[q]["sf"])
+        wf = min(rr, key=lambda q: rr[q]["fatigue"])
+        out[k] = {"force_n": rr[k]["force_n"], "sf": rr[ws]["sf"], "fatigue": rr[wf]["fatigue"], "load": wf,
+                  "region": rr[wf]["governing_region"]}
+    return out
+
+
 def lug_crown(log=print) -> dict:
     """h1_lanes.lug_study with the real stay section (crown included) in place of the r 9 circle, next to the
     circle-stub record (BL-049 / BL-050)."""
@@ -140,9 +159,9 @@ def lug_crown(log=print) -> dict:
         out[n] = {"section_z": SECTION_Z[n], "section_area_mm2": round(Polygon(polys[n]).area, 1),
                   "circle_area_mm2": round(float(np.pi * LN.lug_geom_inputs(n)["p"]["stay_r"] ** 2), 1),
                   "circle": {"worst_strength": circ[n]["worst_strength"], "worst_fatigue": circ[n]["worst_fatigue"],
-                             "regions": reg(circ[n])},
+                             "regions": reg(circ[n]), "cradle_rows": cradle_rows(circ[n])},
                   "crown": {"worst_strength": crown[n]["worst_strength"], "worst_fatigue": crown[n]["worst_fatigue"],
-                            "regions": reg(crown[n])}}
+                            "regions": reg(crown[n]), "cradle_rows": cradle_rows(crown[n])}}
     return out
 
 
@@ -176,6 +195,33 @@ def body(log=print) -> dict:
     return {"check": chk, "cradle": cr, "voxels": info}
 
 
+LANE_CRADLES = {"cradle_lane70_bl051": "cradle_lane", "cradle_lane50_bl051": "cradle_lane_b50"}
+
+
+def body_lane(log=print) -> dict:
+    """BL-051 (orchestrator item 2): the bag-off cradle on the whole body at each strap's real leg angle and tension
+    (h1_lanes.lug_loads 'cradle_lane' = 70 mm design belly, 'cradle_lane_b50' = 50 mm belly), lane moments as
+    h1_lanes.cradle_sets."""
+    import math as _m
+    from . import h1_lanes as LN
+    from . import h1_sleeve as S
+    solid, _ = LN.body_solid()
+    out = {}
+    o_out = S.OUT
+    S.OUT = LN.OUT
+    try:
+        for nm, row in LANE_CRADLES.items():
+            ps = {}
+            for st in LN.US_NODE_Z:
+                v = np.asarray(LN.lug_loads(st)[row]["vec"], float)
+                ps[st] = (float(np.linalg.norm(v)), _m.atan2(-v[2], v[1]))
+            out[nm] = S.body_eval(nm, solid, LN.cradle_sets(per_strap=ps, tag=nm.split("_bl")[0]), log=log)
+            out[nm]["per_strap"] = {k: [round(a, 1), round(_m.degrees(b), 1)] for k, (a, b) in ps.items()}
+    finally:
+        S.OUT = o_out
+    return out
+
+
 def body_summary() -> dict | None:
     """Before (BL-049 / BL-050 body) and after (crown restored), per basis, from the caches; None if not run."""
     from . import h1_buckling as B
@@ -197,25 +243,78 @@ def body_summary() -> dict | None:
     out["cradle"] = {"before": {**{k: round(co["min"][k], 3) for k in keys}, "buckling": round(co["buckling_min"], 3)},
                      "after": {**{k: round(cn["min"][k], 3) for k in keys}, "buckling": round(cn["buckling_min"], 3)},
                      "governing_tag": cn.get("governing_tag"), "top_regions": cn.get("top_regions")}
+    for nm in LANE_CRADLES:
+        f = LN.OUT / f"body_{nm}.json"
+        if f.exists():
+            r = json.loads(f.read_text())
+            out[nm] = {**{k: round(r["min"][k], 3) for k in keys}, "buckling": round(r["buckling_min"], 3),
+                       "governing_tag": r.get("governing_tag")}
     return out
 
 
 def mass_rows(ex: dict) -> dict:
     """Print masses against the BL-050 export (h1_bedfit.json export), from the export info of this print."""
-    bf = json.loads((ANALYSIS / "h1_bedfit.json").read_text())["export"]
+    from . import h1_bedfit as BF
+    bfj = json.loads((ANALYSIS / "h1_bedfit.json").read_text())
+    bf = bfj["export"]
     a0 = bf["assembled"]["g"]
+    hw = BF.hardware_g()
     return {"assembled_g": ex["assembled"]["g"], "assembled_bl050_g": a0,
             "print_delta_g": round(ex["assembled"]["g"] - a0, 1),
             "lower_g": ex["lower"]["g"], "lower_bl050_g": bf["lower"]["g"],
             "upper_g": ex["upper"]["g"], "upper_bl050_g": bf["upper"]["g"],
             "clevis_g": {k: ex[k]["g"] for k in ("us2_clevis_R", "us2_clevis_L") if k in ex},
-            "lug_arms_g": round(ex["fairleads_bl042"]["lugs_bl049"]["arms_g"], 2)}
+            "lug_arms_g": round(ex["fairleads_bl042"]["lugs_bl049"]["arms_g"], 2),
+            "hardware": hw, "hardware_g": round(sum(hw.values()), 2),
+            "hardware_bl050_g": bfj["mass"]["hardware_g"],
+            "hardware_delta_g": round(sum(hw.values()) - bfj["mass"]["hardware_g"], 2)}
+
+
+BELLY_SWEEP = (50.0, 55.0, 60.0, 70.0)
+
+
+def belly_sweep() -> dict:
+    """Lane lugs on the real stay section against the cradle belly (us_route.cradle_span at the 53 kg float limit,
+    factored as US_CRADLE_N; leg angle atan(belly / lane half span); +/-10 deg fleet): lowest strength and fatigue
+    over the lug regions (FI99 rule). Sets the minimum belly the meat-haul instructions may allow."""
+    import importlib
+    import math as _m
+    import sys as _sys
+    from . import bag_attach as BA
+    from . import h1_lanes as LN
+    if str(PACK) not in _sys.path:
+        _sys.path.insert(0, str(PACK))
+    U = importlib.import_module("us_route")
+    pa = BA._paht()
+    s10, c10 = _m.sin(_m.radians(LN.FLEET_DEG)), _m.cos(_m.radians(LN.FLEET_DEG))
+    out = {}
+    for b in BELLY_SWEEP:
+        cs = U.cradle_span(b)
+        for n in LN.LANE_X:
+            T = cs["at_float_limit"][n]["tension_n"]
+            a = _m.atan2(b, cs["half_span_mm"][n])
+            u = np.array([0.0, _m.cos(a), -_m.sin(a)])
+            loads = {"dir": (T * u).tolist()}
+            for sg, lab in ((1.0, "out"), (-1.0, "in")):
+                v = c10 * u + np.array([sg * s10, 0.0, 0.0])
+                loads[lab] = (T * v / np.linalg.norm(v)).tolist()
+            gi = LN.lug_geom_inputs(n)
+            p = gi["p"]
+            f = LN.lug_fea(p["geom"], p["stay_r"], gi["xoff"], gi["arm"], loads, h=1.0, stay_poly=stay_section(n))
+            fi = max(max(v[r]["fi99"] for r in ("use", "fairlead", "arm", "root") if r in v)
+                     for v in f["loads"].values() if isinstance(v, dict) and "use" in v)
+            out.setdefault(f"{b:g}", {})[n] = {"tension_n": round(T, 1), "leg_deg": round(_m.degrees(a), 1),
+                                              "sf": round(1.0 / fi, 2),
+                                              "fatigue": round(BA._fatigue_sf(fi, 2.4, pa["fat"]), 2)}
+    return out
 
 
 def us1_governs(lug: dict, bs: dict | None) -> dict:
-    """Item 2: the US1 root on the stub model against the whole body, and which one governs."""
+    """Item 2: the US1 root on the stub model against the whole body, and which one governs (and at which load)."""
     u = lug["us1"]
-    return {"stub_circle_fatigue": u["circle"]["regions"]["root"]["fatigue"],
+    cr = u["crown"].get("cradle_rows", {})
+    return {"by_load": cr,
+            "stub_circle_fatigue": u["circle"]["regions"]["root"]["fatigue"],
             "stub_crown_fatigue": u["crown"]["regions"]["root"]["fatigue"],
             "stub_crown_strength": u["crown"]["regions"]["root"]["sf_min"],
             "body_cradle_fatigue": None if bs is None else bs["cradle"]["after"]["fatigue"],
@@ -271,6 +370,11 @@ def compute(log=print, before_stl: Path | None = None) -> dict:
            "body": bs,
            "mass": mass_rows(ex)}
     res["us1_root"] = us1_governs(lug, bs)
+    res["belly_sweep"] = belly_sweep()
+    hc = ur.get("clevis_heads", {})
+    res["clevis_heads"] = {k: v for k, v in hc.items() if k not in ("rows", "face_rows", "method")}
+    res["clevis_heads"]["rows"] = [{**r_, "face_mm": f_["face_mm"]} for r_, f_ in zip(hc.get("rows", []),
+                                                                                    hc.get("face_rows", []))]
     RESULTS.write_text(json.dumps(res, indent=1, default=lambda o: o.tolist() if hasattr(o, "tolist") else float(o)))
     if log:
         log(f"  wrote {RESULTS.relative_to(REPO)}")
@@ -402,7 +506,71 @@ def plot_lug_field(path: Path) -> str:
     return _save(fig, path)
 
 
+JOINT_INFO: dict = {}
+def plot_clevis(path: Path, before_stl: Path | None) -> str:
+    """US2 clevis joint, section through the lower bolt axis (z pin - dz) and a plan section on the bolt plane:
+    BL-050 heads proud of the face against BL-051 heads in the counterbore."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from shapely.geometry import Polygon, box
+    from . import h1_bedfit as BF
+    j = BF.JOINT
+    m1 = _mesh()
+    m0 = _mesh(before_stl) if before_stl is not None and Path(before_stl).exists() else None
+    win = box(135.0, -20.0, 195.0, 30.0)
+    fig, axs = plt.subplots(1, 2, figsize=(13, 5.0), sharey=True)
+    for ax, (mm, lab, zz, dy) in zip(axs, ((m0, "BL-050: head + washer proud of the face", 134.0, -4.3),
+                                            (m1, "BL-051: head in a 9 x 4 mm counterbore", 142.0 - j.dz, j.dy))):
+        if mm is None:
+            continue
+        sec = mm.section(plane_origin=[0.0, 0.0, zz], plane_normal=[0.0, 0.0, 1.0])
+        for d in sec.discrete:
+            pg = Polygon(d[:, :2]).buffer(0)
+            if not pg.intersects(win):
+                continue
+            g_ = pg.intersection(win)
+            for q in getattr(g_, "geoms", [g_]):
+                if q.is_empty or not hasattr(q, "exterior") or q.area < 2.0:
+                    continue
+                x, y = q.exterior.xy
+                ax.fill(x, y, color="#1f6f8b", alpha=0.35, lw=0)
+                ax.plot(x, y, color="#1f6f8b", lw=1.2)
+                for h_ in q.interiors:
+                    x, y = h_.xy
+                    ax.fill(x, y, color="white")
+                    ax.plot(x, y, color="#1f6f8b", lw=1.0)
+        yb = -2.67 + dy
+        if "BL-050" in lab:
+            hx0, hx1 = 184.0, 187.5
+        else:
+            hx0, hx1 = j.head_x
+        ax.add_patch(plt.Rectangle((hx0, yb - j.head_d / 2), hx1 - hx0, j.head_d, fc="#555", ec="#222"))
+        ax.plot([hx1 - (40.0 if "BL-050" in lab else j.bolt_len) - (0 if "BL-050" in lab else j.head_h), hx0],
+                [yb, yb], color="#8e44ad", lw=3, alpha=0.7)
+        ax.axvline(183.0, color="#c0392b", ls=":", lw=1)
+        ax.text(183.4, 24, "clevis outer face x 183", color="#c0392b", fontsize=9)
+        ax.set_aspect("equal")
+        ax.set_xlim(135, 195)
+        ax.set_title(f"{lab}  (section z {zz:g})", fontsize=10)
+        ax.set_xlabel("frame x, mm")
+        ax.grid(alpha=0.25)
+    axs[0].set_ylabel("frame y, mm (bag up)")
+    fig.suptitle("BL-051: US2 clevis bolt heads sunk below the outer face (grey: head, purple: screw)",
+                 x=0.02, ha="left", fontsize=12, fontweight="bold")
+    return _save(fig, path)
+
+
 ASSUMPTIONS = [
+    ("BELLY-MIN", "The cradle belly stays >= 55 mm (US1 root fatigue 1.00; 60 mm proposed for the instructions, "
+     "1.03); a 50 mm belly is the governing check case (US2 860 N).", "Owner decision on the instruction; MT-1 cradle "
+     "pull with the belly measured, strain gauge at the US1 root."),
+    ("HEAD-BEAR", "The US2 clevis screw heads bear on the counterbore floor in PAHT-CF with no washer (bearing ring "
+     "from the 8.5 mm head, the weaker end in the joint check).", "CLEVIS-SHARE pull on the CA-1 rig: no head pull-in "
+     "or crack at the counterbore after 1e5 cycles."),
+    ("CLEVIS-FACE", "The bag panel rests on the clevis's flat outer face (free drapes 3.3-4.0 mm inside it); contact "
+     "on a flat, edge-rounded printed face is not a wear or load point.", "FIT-US / T9 on P1: inspect the bag panel "
+     "over the clevis for abrasion after the T9 walk."),
     ("CROWN-BRIDGE", "The stay section over each old stub site is the intersection of the plain stay sections 4-8 mm "
      "beyond each end of the strip zone (h1_lanes._crown_bridge); what the topology body had under the old stub is "
      "unknown (the stub was a keep-in).", "Not needed for strength (the FEA uses this body); first-article slice / "
@@ -427,10 +595,16 @@ KIT_TEXT_FOR_BL050B = (
     "(a)/(b) and at 240 / 480 / 720 N per pin in the MT-1 cradle pull; PASS: measured root stress (strain x 3.86 GPa, "
     "youngs_modulus_xy_mpa of data/materials pa12_cf_fdm_paht) <= the h1_crown lug model's root stress at that load (ASSUMPTION "
     "US1-STUB-GOVERNS / STAY-STUB / CROWN-SECTION)'. The CLEVIS-SHARE pull's 'optional strain gauge at the US2 arm "
-    "root' becomes required, same gauge place.")
+    "root' becomes required, same gauge place. US ROUTE step (0) and the CLEVIS-SHARE pull: the clevis now takes 2 Ti "
+    "M5 x 35 DIN 7984 (HW-US2-SCR; was M5 x 40) with the heads in the printed counterbores, no washer under the head, "
+    "and 2 x 10 mm OD DIN 433 washers on the nut side only (HW-US2-WSH; was 4); add 'check the heads sit below the "
+    "clevis face'. MT-1 cradle pull: measure and record the belly (minimum-belly decision, ASSUMPTION BELLY-MIN).")
 
 
 def write_md(res: dict, shots: list) -> str:
+    global JOINT_INFO
+    from . import h1_bedfit as BF
+    JOINT_INFO = {**dataclasses.asdict(BF.JOINT), "head_face": BF.JOINT.head_face}
     a_ = []
     a = a_.append
     m = res["mass"]
@@ -472,14 +646,29 @@ def write_md(res: dict, shots: list) -> str:
       f"{res['us_route']['print_lanes']['worst_clear_mm']['us2']} mm (>= 10): pass "
       f"{res['us_route']['print_lanes']['pass']}.")
     j, j1 = res["joint"], res["joint_share_1"]
-    a(f"- **US2 clevis joint** (geometry unchanged, re-run): strength {j['worst_strength']['sf']} "
+    hc = res.get("clevis_heads", {})
+    a(f"- **US2 clevis heads counterbored (orchestrator item 1):** each head now sits in a {JOINT_INFO['cbore_d']:g} mm "
+      f"counterbore {JOINT_INFO['head_recess']:g} mm deep, {hc.get('head_recess_mm')} mm below the clevis outer face "
+      f"(|x| {hc.get('outer_face_x_mm')}), bearing on the PAHT with no washer; bolt axes 1.5 mm higher (dy "
+      f"{JOINT_INFO['dy']:g}) for a 2.5 mm wall; screws **M5 x 35** (were M5 x 40), 4 washers (were 8). Nothing stands "
+      f"proud of the clevis now. But the free drapes (no frame in the sim) pass **{-hc.get('face_min_mm', 0):.1f} mm "
+      f"inside the clevis's flat outer face** (the US2 outer cheek face, there since BL-049) on all 12 drapes: the bag "
+      f"panel will rest on that face whatever the heads do. **The >= 3 mm clearance is not met by the clevis face** "
+      f"(owner / pack-designer item, section 3a).")
+    a(f"- **US2 clevis joint** (recessed heads; every cradle row incl. the lane rows): strength {j['worst_strength']['sf']} "
       f"({j['worst_strength']['check']}, {j['worst_strength']['load']}), fatigue "
-      f"{j['worst_fatigue']['fatigue']} ({j['worst_fatigue']['check']}); share 1.0: {j1['worst_strength']['sf']} / {j1['worst_fatigue']['fatigue']}.")
+      f"{j['worst_fatigue']['fatigue']} ({j['worst_fatigue']['check']}); share 1.0 (sensitivity): "
+      f"{j1['worst_strength']['sf']} / {j1['worst_fatigue']['fatigue']} (below 1 only at the 50 mm belly row).")
     u2 = lug["us2"]
-    a(f"- **US2 lug** on the real stay section (crown in): strength **{u2['crown']['worst_strength']['sf']}**, fatigue "
-      f"**{u2['crown']['worst_fatigue']['fatigue']}** (root {u2['crown']['regions']['root']['fatigue']}, arm "
-      f"{u2['crown']['regions']['arm']['fatigue']}); the r 9 circle stub of BL-049 / BL-050 gave "
-      f"{u2['circle']['worst_strength']['sf']} / {u2['circle']['worst_fatigue']['fatigue']}.")
+    cr2, bsw = u2["crown"]["cradle_rows"], res["belly_sweep"]
+    a(f"- **US2 lug, real leg angle (orchestrator item 2):** on the lane the cradle leg is "
+      f"{bsw['70']['us2']['leg_deg']} deg at the 70 mm design belly ({cr2['cradle_lane']['force_n']} N): strength "
+      f"{cr2['cradle_lane']['sf']}, fatigue {cr2['cradle_lane']['fatigue']}; at a 50 mm belly "
+      f"{bsw['50']['us2']['leg_deg']} deg, **{cr2['cradle_lane_b50']['force_n']} N: {cr2['cradle_lane_b50']['sf']} / "
+      f"{cr2['cradle_lane_b50']['fatigue']}** (governs; real stay section). The 720 N row at 31.3 deg: "
+      f"{cr2['cradle']['sf']} / {cr2['cradle']['fatigue']}. On the r 9 circle stub of BL-049 / BL-050 the 860 N row "
+      f"would read {u2['circle']['cradle_rows']['cradle_lane_b50']['sf']} / "
+      f"{u2['circle']['cradle_rows']['cradle_lane_b50']['fatigue']}: the crown is what carries it.")
     if bs:
         fb = bs["bases"]
         worst = lambda k, w: min(v[w][k] for v in fb.values())
@@ -491,11 +680,19 @@ def write_md(res: dict, shots: list) -> str:
           f"{worst('joint_fatigue', 'after'):.2f}. Bag-off cradle: {bs['cradle']['after']['strength']:.2f} / "
           f"{bs['cradle']['after']['fatigue']:.2f} / buckling {bs['cradle']['after']['buckling']:.2f} (was "
           f"{bs['cradle']['before']['strength']:.2f} / {bs['cradle']['before']['fatigue']:.2f} / "
-          f"{bs['cradle']['before']['buckling']:.2f}).")
-    a(f"- **US1 root (item 2): the stub model governs, fatigue {u1['stub_crown_fatigue']}** on the real stay section "
-      f"(0.80 on the circle stub); the whole body reads {u1['body_cradle_fatigue']} because it never puts the pin "
-      f"load through the arm. **Below 1.0: target not met** (section 4). The T1 strain-gauge text is not in the kit; "
-      f"the change is listed for BL-050B (section 4).")
+          f"{bs['cradle']['before']['buckling']:.2f}); on the lane (new, per-strap angle and tension): 70 mm belly "
+          f"{bs['cradle_lane70_bl051']['strength']:.2f} / {bs['cradle_lane70_bl051']['fatigue']:.2f} / buckling "
+          f"{bs['cradle_lane70_bl051']['buckling']:.2f}, 50 mm belly {bs['cradle_lane50_bl051']['strength']:.2f} / "
+          f"{bs['cradle_lane50_bl051']['fatigue']:.2f} / buckling {bs['cradle_lane50_bl051']['buckling']:.2f}.")
+    b1 = u1["by_load"]
+    a(f"- **US1 root (ticket item 2): the stub model governs** (the whole body never routes the pin load through the "
+      f"arm). At the loads the lane really sees, real stay section: design belly 70 mm ({b1['cradle_lane']['force_n']} "
+      f"N, 45 deg) fatigue **{b1['cradle_lane']['fatigue']}**; 50 mm belly ({b1['cradle_lane_b50']['force_n']} N) "
+      f"**{b1['cradle_lane_b50']['fatigue']}**; 1.00 at 55 mm, {bsw['60']['us1']['fatigue']} at 60 mm. The 0.80 / "
+      f"{u1['stub_crown_fatigue']} quoted before is the 720 N envelope at 31.3 deg, which no lane cradle reaches at "
+      f"US1. **Target met at the design belly, not below a 55 mm belly**: the meat-haul instruction needs a minimum "
+      f"belly (owner decision; 60 mm proposed). Whole body: {u1['body_cradle_fatigue']}. The T1 strain-gauge text is "
+      f"not in the kit; the change is listed for the kit owner (section 4).")
     a(f"- **Spreader z 142 notch:** BL-050's '2.31 mm air' was the cut-away crown. With the crown back, the notch "
       f"footprint holds the plain crown, {sp['air_mm']} mm under the support line (old 1.5 mm air rule: "
       f"{sp['air_rule_pass']}). Rule now: nothing proud of the support line (proud {sp['proud_mm']} mm <= "
@@ -506,7 +703,18 @@ def write_md(res: dict, shots: list) -> str:
       "Setting n_pin to 12 would have booked them twice, and so did BL-050's '+10.80 g, 4 stations booked short' "
       "ledger row. Fixed at the source by making the count explicit (`bag_attach._pins_booked_here`, "
       "`CRADLE_PIN_STATIONS`) and retiring the BL050 row: **-10.8 g** on every config. `h1_lanes.md / .json` carry a "
-      "superseded note; screws and washers have distinct BOM IDs and callouts (section 6).\n")
+      "superseded note; screws and washers have distinct BOM IDs and callouts (section 6).")
+    a("- **meat_haul.py (orchestrator item 3):** HALF_SPAN_MM 115 kept as the LEGACY stay-x span with a comment (the "
+      "720 N envelope row, the cradle FEA and the bag-on resolution were booked at its 31.3 deg); new "
+      "`lane_half_span` / `theta_lane` (US1 70 / US2 165 mm half spans = 140 / 330 spans: 45 / 23 deg); the lane rows "
+      "now sit in `h1_lanes.lug_loads` ('cradle_lane', 'cradle_lane_b50'). '38 mm cams / 38 mm webbing 1.10 m': NOT "
+      "changed, on purpose: `cradle_parts_g` is the CORRIE B.2 booking, the ledger's baseline that "
+      "`strap_arch.today_parts` reads by name; CORRIE F removes those rows and books its own 25 mm cams (cam_25mm_al) "
+      "and webbing (strap_arch rec). Re-massing them to 25 mm moved the B.2 baseline by -23.8 g and broke the roll-up "
+      "(tried, reverted); the docstring now says so. The bag-on under-strap tension stays at the cradle angle and is stated as about "
+      "1.9 x the real path tension (conservative). No meat_haul number changed, so `meat_haul_modes.md` stands.")
+    a("- **Stale hinge 0.86 (orchestrator item 5):** `crown_gnl.md` and `bl047_frame_items.json` carry a superseded "
+      "note (BL-049 hinge 1.30 inboard-up), kept by `crown_gnl.py` on a re-run.\n")
 
     a("## 1. Cause and fix\n")
     a("`strip_old_us` takes the old US1 / US2 fairlead stubs off the voxel body before the print mesh and the body "
@@ -570,7 +778,27 @@ def write_md(res: dict, shots: list) -> str:
             a(f"| {n} | {lab} | " + " | ".join(f"{rg[q]['fatigue']} ({rg[q]['sf_min']})" for q in ("fairlead", "arm", "root"))
               + f" | {r['worst_strength']['sf']} | {r['worst_fatigue']['fatigue']} |")
     a("")
-    a(f"US2 clevis joint (`h1_bedfit.joint_check`, geometry unchanged): share 0.6 strength {j['worst_strength']['sf']}, "
+    a("Cradle load families, worst over each family's fleet variants (real stay section; strength / fatigue / region):\n")
+    a("| lug | 720 N at 31.3 deg (BL-049 envelope) | lane, 70 mm design belly | lane, 50 mm belly |")
+    a("|---|---|---|---|")
+    for n in ("us1", "us2"):
+        cr = lug[n]["crown"]["cradle_rows"]
+        a(f"| {n} | " + " | ".join(f"{cr[k]['force_n']} N: {cr[k]['sf']} / {cr[k]['fatigue']} ({cr[k]['region']})"
+                                   for k in CRADLE_KEYS) + " |")
+    a("")
+    a("Belly sweep (`belly_sweep`, us_route.cradle_span at the 53 kg float limit, factored 1.6 g x 1.5):\n")
+    a("| belly mm | US1 N / leg deg / strength / fatigue | US2 N / leg deg / strength / fatigue |")
+    a("|---:|---|---|")
+    for b_, v in res["belly_sweep"].items():
+        a(f"| {b_} | " + " | ".join(f"{v[n]['tension_n']} / {v[n]['leg_deg']} / {v[n]['sf']} / {v[n]['fatigue']}"
+                                    for n in ("us1", "us2")) + " |")
+    a("")
+    a("**Governing load:** the 50 mm belly row. The belly is set by how hard the hunter cams the straps; meat_haul "
+      "specifies about 70 mm but nothing stops a harder cinch, and a flatter cradle raises the tension fast. The 720 N "
+      "row at 31.3 deg (meat_haul's legacy angle from the stay x) is kept in the record but is not a load either lane "
+      "sees: it overstates US1 (real max 644 N) and understates US2's tension (860 N), with the wrong direction for "
+      "both.\n")
+    a(f"US2 clevis joint (`h1_bedfit.joint_check`, recessed heads, all rows): share 0.6 strength {j['worst_strength']['sf']}, "
       f"fatigue {j['worst_fatigue']['fatigue']}; share 1.0 {j1['worst_strength']['sf']} / "
       f"{j1['worst_fatigue']['fatigue']}. Strap route (`us_route.py`, 'print_lanes', on the new STL): worst US1 "
       f"{res['us_route']['print_lanes']['worst_clear_mm']['us1']} / US2 {res['us_route']['print_lanes']['worst_clear_mm']['us2']}"
@@ -584,6 +812,25 @@ def write_md(res: dict, shots: list) -> str:
       f"(proud {sp['proud_mm']} mm, pass {sp['pass']}). The notch no longer clears anything (no cleat on the stay "
       "at z 142 since BL-049): closing it gives the sheet bearing there too (owner option, needs the spreader "
       "re-run).\n")
+    a("### 3a. US2 clevis bolt heads\n")
+    a(f"`h1_bedfit.ClevisJoint` (BL-051): counterbore {JOINT_INFO['cbore_d']:g} mm x {JOINT_INFO['head_recess']:g} mm "
+      f"from the outer face (|x| {JOINT_INFO['outer_face']:g}), head bearing at |x| {JOINT_INFO['head_face']:g} with no "
+      f"washer, bolt axes at yc {JOINT_INFO['dy']:+g} (counterbore wall 2.5 mm to the block's wearer face, 2.0 mm to its "
+      f"z faces), M5 x {JOINT_INFO['bolt_len']:g}, tail hole to |x| {JOINT_INFO['tail_x']:g}. Joint capacities: "
+      f"{', '.join(f'{k} {v}' for k, v in j['capacities_n'].items())} (bearing ring and shear-out now from the head, "
+      "the weaker end). `us_route.head_clearance` on the same 12 fine drapes (15 / 19 / 23 in, fill / meat, R / L):\n")
+    a("| torso | case | side | cloth to head mm | cloth to the clevis outer slab mm |")
+    a("|---:|---|---|---:|---:|")
+    for r_ in hc.get("rows", []):
+        a(f"| {r_['torso']} | {r_['case']} | {r_['side']} | {r_['cloth_mm']} | {r_['face_mm']} |")
+    a("")
+    a(f"Heads: worst {hc.get('cloth_min_mm')} mm (BL-050: -1.1); clevis slab worst {hc.get('face_min_mm')} mm; strap "
+      f"ribbon {hc.get('strap_min_mm')} mm (a centre-line lower bound; the real strap route on the STL is the "
+      "print_lanes check above, which passes). The sim has no frame outboard of the stays, so negative numbers mean the "
+      "free cloth hangs through frame parts there. With the heads sunk, the first thing the bag meets is the clevis's "
+      "flat outer face (rounded edges r 1.5), about 4 mm inside the free drape on every case. Meeting >= 3 mm there "
+      "would take the bag's side panel let out about 7 mm over z 127-157 near x 183 (pack-designer), or the lane / "
+      "outer cheek moved in, which BL-050 ruled out (bed and strap clearance).\n")
 
     a("## 4. Body, and the US1 root (item 2)\n")
     if bs:
@@ -597,8 +844,14 @@ def write_md(res: dict, shots: list) -> str:
             a(f"| {b} | {o['strength']:.3f} -> **{n_['strength']:.3f}** | {o['fatigue']:.3f} -> **{n_['fatigue']:.3f}** | "
               f"{o['creep']:.3f} -> {n_['creep']:.3f} | {o['buckling']:.3f} -> **{n_['buckling']:.3f}** | "
               f"{n_['joint_strength']:.2f} / {n_['joint_fatigue']:.2f} |")
+        for nm, lab in (("cradle_lane70_bl051", "cradle on the lane, 70 mm belly"),
+                        ("cradle_lane50_bl051", "cradle on the lane, 50 mm belly")):
+            if nm in bs:
+                q = bs[nm]
+                a(f"| {lab} (new) | **{q['strength']:.3f}** | **{q['fatigue']:.3f}** | {q['creep']:.3f} | "
+                  f"**{q['buckling']:.3f}** | |")
         c = bs["cradle"]
-        a(f"| bag-off cradle (lanes) | {c['before']['strength']:.3f} -> **{c['after']['strength']:.3f}** | "
+        a(f"| bag-off cradle (lanes, 720 N at 31.3 deg) | {c['before']['strength']:.3f} -> **{c['after']['strength']:.3f}** | "
           f"{c['before']['fatigue']:.3f} -> **{c['after']['fatigue']:.3f}** | {c['before']['creep']:.3f} -> "
           f"{c['after']['creep']:.3f} | {c['before']['buckling']:.3f} -> **{c['after']['buckling']:.3f}** | |")
         a("")
@@ -606,14 +859,15 @@ def write_md(res: dict, shots: list) -> str:
           f"{(bs.get('governing_region') or {}).get('region')} / peak {(bs.get('governing_region') or {}).get('peak_region')}."
           " The fatigue minimum of the cycled basis (fine_sm8.cyc, the BL-024 cinch-cycled set) has been below 1 since "
           "BL-024 (R1 hold for MT-1, h1_lanes.md section 3); the crown does not change it.\n")
-    a(f"**Which US1 number governs.** Stub model {u1['stub_circle_fatigue']} (circle) / **{u1['stub_crown_fatigue']}** "
-      f"(real section, strength {u1['stub_crown_strength']}); whole body {u1['body_cradle_fatigue']} (BL-049: "
-      f"{u1['body_cradle_fatigue_bl049']}). **The stub model governs.** {u1['why']} So the US1 arm root fails the "
-      "fatigue requirement (>= 1.0 at the 1.6 g walking peak, 1e5 cycles) by about 14 % on the best model there is, "
-      "and the body number does not clear it. The fix is a design change, not this ticket: BL-049 proposal 2 (run "
-      "the US1 arm onto the lower branch it touches, which also unblocks the lighter arms), or a taller root (the "
-      "US1 arm spans z 90-106: it cannot go down, the hinge cheek top is z 87; upward it has up to 6 mm to the "
-      "spreader sheet's bottom edge, z 112; neither is sized here). Until then the first article's T1 "
+    a(f"**Which US1 number governs.** Model: the stub model. {u1['why']} Whole body {u1['body_cradle_fatigue']} "
+      f"(720 N row; BL-049: {u1['body_cradle_fatigue_bl049']}). Load: on the 720 N / 31.3 deg envelope the stub reads "
+      f"{u1['stub_circle_fatigue']} (circle) / {u1['stub_crown_fatigue']} (real section), but US1 on its lane sees at "
+      f"most {b1['cradle_lane_b50']['force_n']} N (50 mm belly) at a steeper leg: real section "
+      f"**{b1['cradle_lane']['fatigue']}** at the 70 mm design belly, **{b1['cradle_lane_b50']['fatigue']}** at 50 mm, "
+      "1.00 at 55 mm. So the US1 root meets the fatigue requirement (>= 1.0 at the 1.6 g walking peak, 1e5 cycles) at "
+      "the design belly and fails it by 5 % if the straps are cammed flatter than about 55 mm. Options: a minimum belly "
+      "in the meat-haul instructions (60 mm: US1 1.03, a strap mark or a 60 mm gauge on the B-16 channel; owner), or "
+      "the root fix of BL-049 proposal 2 (run the US1 arm onto the lower branch). Either way the first article's T1 "
       "and MT-1 carry a strain gauge at the US1 root.\n")
     a("**Kit text (for BL-050B; `physical_test_kit.py` is theirs and not edited here):** " + KIT_TEXT_FOR_BL050B + "\n")
 
@@ -629,21 +883,24 @@ def write_md(res: dict, shots: list) -> str:
       f"{m['upper_g']} g, clevises {sum(m['clevis_g'].values()):.1f} g ({m['assembled_g']} g, "
       f"{m['assembled_g'] / 453.59237:.2f} lb). Lug arms as unioned {m['lug_arms_g']} g (the union adds a little "
       "less than before: the crown now holds part of their root).\n")
-    a("**Mass reductions that keep the SF (not applied):** the restored crown is +2.6 g and holds no margin that "
-      "governs anywhere else; the US2 lug now has fatigue margin (root 1.37, arm 1.32 on the real section) that the "
-      "circle model hid, so the US2 arm could taper further (not sized here: a lug FEA sweep on the real section "
-      "would set it). The US1 arm cannot lose anything (0.86).\n")
+    a(f"| frame: US2 clevis hardware M5 x 35, 4 washers (was M5 x 40, 8 washers) | {m['hardware_delta_g']:+.2f} | "
+      f"{m['hardware_delta_g'] / 28.3495:+.3f} |")
+    a("")
+    a("**Mass reductions that keep the SF (not applied):** the restored crown holds no margin that governs anywhere "
+      "else. The US2 lug has 1.13 at the 860 N row on the real section, just under the 1.15 scatter goal: no taper. "
+      "The US1 arm cannot lose anything (0.95 at a 50 mm belly).\n")
 
-    a("## 6. BOM mix-up (washers 10 / 12 mm, screws M5 x 40 / x 45)\n")
+    a("## 6. BOM mix-up (washers 10 / 12 mm, screws M5 x 35 / x 45)\n")
     a("Both joints use M5 Ti DIN 7984 screws and A2 washers that differ only in length / OD. The print README's "
       "shopping list now gives each its own BOM line and ID: **HW-J234-SCR** M5 x 45 (z 234 joint, 4), **HW-J234-WSH** "
-      "12 mm OD (z 234 joint, 8), **HW-US2-SCR** M5 x 40 (US2 clevis, 4), **HW-US2-WSH** 10 mm OD DIN 433 (US2 clevis, "
-      "8), **HW-M5-NUT** (both, 8), with a callout to bag and label them apart and the IDs in the assembly steps. "
-      "Consequence of a swap: an M5 x 40 at z 234 does not reach through the nut; an M5 x 45 in the clevis bottoms in "
-      "the blind tail hole (|x| 142.5) before the head seats; a 10 mm washer at z 234 loses the washer-bearing area "
-      "the joint is sized on; a 12 mm washer does not fit the clevis block. The ledger's BL050 hardware row named "
-      "the clevis screws 'M5 x 35' (a typo against `h1_bedfit.hardware_g`'s M5 x 40); it now prints the names from "
-      "`h1_bedfit.hardware_g` with the BOM ID.\n")
+      "12 mm OD (z 234 joint, 8), **HW-US2-SCR** M5 x 35 (US2 clevis, 4; M5 x 40 until the BL-051 counterbore), "
+      "**HW-US2-WSH** 10 mm OD DIN 433 (US2 clevis, 4, nut side only), **HW-M5-NUT** (both, 8), with a callout to bag "
+      "and label them apart and the IDs in the assembly steps. Consequence of a swap: an M5 x 35 at z 234 does not "
+      "reach through the nut; an M5 x 45 in the clevis bottoms in the blind tail hole (|x| 143.5) 10 mm before the head "
+      "seats; a 10 mm washer at z 234 loses the washer-bearing area the joint is sized on; a 12 mm washer does not fit "
+      "the clevis trap. The ledger's BL050 hardware row said 'M5 x 35' while BL-050 bought M5 x 40; it now prints the "
+      "names from `h1_bedfit.json` (what BL-050 booked), and the BL051 row books the change to M5 x 35 with its "
+      "grams.\n")
 
     a("## 7. Assumptions\n")
     for k, t, st in ASSUMPTIONS:
@@ -660,7 +917,7 @@ def write_md(res: dict, shots: list) -> str:
 def report(log=print, before_stl: Path | None = None) -> dict:
     res = compute(log=log, before_stl=before_stl)
     shots = [plot_profile(res, SCREENS / f"{SHOT}1.png"), plot_sections(SCREENS / f"{SHOT}2.png", before_stl),
-             plot_lug_field(SCREENS / f"{SHOT}3.png")]
+             plot_lug_field(SCREENS / f"{SHOT}3.png"), plot_clevis(SCREENS / f"{SHOT}4.png", before_stl)]
     write_md(res, shots)
     if log:
         log(f"  wrote {DOC.relative_to(REPO)}; screens {shots}")
@@ -676,6 +933,7 @@ def main(argv=None) -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     if a.body:
         r = body()
+        body_lane()
         print(json.dumps(body_summary(), indent=1, default=float))
     if a.lug:
         r = lug_crown()
