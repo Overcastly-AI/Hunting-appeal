@@ -332,7 +332,12 @@ SUFFIX = "_v2"
 CONFIGS_V2 = tuple(c + SUFFIX for c in CONFIGS)
 ALL_CONFIGS = CONFIGS + CONFIGS_V2
 DEFAULT_CONFIG = "corrie_b2_h1" + SUFFIX
-CORRECTIONS = ("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "H1B", "BL031", "H1F", "BL046", "BL047", "BL049")
+CORRECTIONS = ("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "H1B", "BL031", "H1F", "BL046", "BL047", "BL049",
+               "BL050")
+#   BL050 (2026-11-13, BL-050 A): in every config, the 7075 pins and UHMWPE sleeves of the 4 fairlead stations the
+#      attachment rows never booked (bag_attach._mass_budget counts 8; bag_attach.stations() places 12: the US1 / US2
+#      pins were missing); on the H1 configs, the US2 bolt-on clevis (joint blocks and bolt cuts in the print, the Ti
+#      M5 joint hardware). All from analysis/h1_bedfit.json ``mass``.
 #   BL047 (2026-11-13, BL-047): spine clamp webs thinned (crown_gnl.md section 7) in every config; on the H1 configs the H1 print's pawl
 #      bosses / pivot bore / fore-wall window and the m-1 hinge relief (print-mesh volume deltas), and the low-profile
 #      pawl against the old SLM pawl (mesh volumes). All from analysis/crown_gnl.json ``mass``.
@@ -439,6 +444,13 @@ def bl049_update() -> dict:
 
 
 @functools.lru_cache(maxsize=None)
+def bl050_update() -> dict:
+    """BL050: pins / sleeves for 12 stations, the US2 bolt-on clevis (analysis/h1_bedfit.json ``mass``, written by
+    huntkit.gendesign.h1_bedfit)."""
+    return dict(_json("h1_bedfit.json")["mass"])
+
+
+@functools.lru_cache(maxsize=None)
 def h1_body_update() -> dict:
     """H1B: the H1 body raster as adopted (BL-024 + BL-027 + BL-021 28 mm IM3 cheeks), from analysis/h1_buckling.json
     ``chosen`` (written by ``huntkit.gendesign.h1_buckling``). Raises if that file's H1 base is not the body the ledger
@@ -512,6 +524,20 @@ def _correction_rows(config: str, size: str) -> list:
             ("BL049", "hinge pins: 5 mm Ti-6Al-4V (2, 44 mm) in place of 7075 as booked (BL-049)", "attachment",
              b49["hinge_pins_delta_g"], src49 + "hinge_pins_delta_g (h1_lanes.hinge_pin mass - attachment 7075 pin "
              "row / 8, x 2)", "base"),
+        ]
+    b50, src50 = bl050_update(), "analysis/h1_bedfit.json mass."
+    bl046.append(("BL050", f"7075 pins + UHMWPE sleeves for the {b50['stations'] - b50['pins_booked']} fairlead "
+                           f"stations booked short ({b50['stations']} stations, {b50['pins_booked']} booked; BL-050)",
+                  "attachment", b50["pins_sleeves_delta_g"],
+                  src50 + "pins_sleeves_delta_g ((len(bag_attach.stations()) - 8) x (pin row + sleeve row) / 8)", "base"))
+    if config != "corrie_b2_today":
+        bl046 += [
+            ("BL050", "H1 print: US2 bolt-on clevis, joint blocks and bolt / trap cuts (BL-050)", "frame",
+             b50["print_delta_g"], src50 + "print_delta_g (assembled print mesh BL-050 - BL-049, clevises included)",
+             "base"),
+            ("BL050", "US2 clevis joint hardware: 4 Ti M5 x 35 DIN 7984, 4 nuts, 8 DIN 433 washers (BL-050)", "frame",
+             b50["hardware_g"], src50 + "hardware_g (h1_bedfit.hardware_g: frame_comp_B.bolt_mass_g, steel nut / "
+             "washer volumes)", "base"),
         ]
     import strap_tails as ST                        # BL-031 (lazy: it reads corrie_f, which reads this module)
     bl031 = [("BL031", n, sys_, g, src, cfg) for n, sys_, g, src, cfg in ST.suspension_rows(size)]

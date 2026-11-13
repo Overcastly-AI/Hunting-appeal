@@ -325,6 +325,75 @@ def outline_v2(half_w: float = 121.0, corner_r: float = 20.0, z_lo: float = Z_LO
     return shape.simplify(0.05)
 
 
+# ---------------------------------------------------------------------------- BL-050: the z 142 notch after the lanes
+# Since BL-049 the US2 cleat is not on the stay any more (h1_lanes: lane lug at x +/-165). Under the z 142 notch the
+# stay now carries the US2 lug ARM's root, which spans the same z (127-157) as the notch: in plan the notch's straight
+# sides sit on the root's top and bottom faces, 0 mm (fourth review / BL-050 A3). The notch cannot grow (z 121 would cut
+# the z 119 clip tab and the z 118.5 bottom edge tube) and the root cannot shrink (it governs the US2 lug, h1_lanes
+# lug FEA). NOTCH_CLEAR is the air round a cleat that stands up THROUGH the sheet plane; the arm root does not: its top
+# is the stay crown (h1_lanes ARM 'top': 'stay'), and on the print it sits below the crown the sheet bears on. So the
+# rule for the z 142 notch is 3D: nothing inside the notch footprint may stand within US2_ROOT_AIR of the sheet's
+# support line (the stay crown each side of the notch). ``us2_notch_check`` measures it on the print STL.
+US2_NOTCH_Z = 142.0
+US2_ROOT_AIR = 1.5                # the air part of NOTCH_CLEAR (6 = 4.5 root blend + 1.5 air)
+
+
+def _print_top(mesh, z: float, x_lo: float, x_hi: float):
+    """Highest frame y of the print section at height z within |x| in [x_lo, x_hi], both sides (None if empty)."""
+    import numpy as _np
+    sec = mesh.section(plane_origin=[0.0, 0.0, z], plane_normal=[0.0, 0.0, 1.0])
+    if sec is None:
+        return None
+    best = None
+    for P in sec.discrete:
+        q = P[(_np.abs(P[:, 0]) >= x_lo) & (_np.abs(P[:, 0]) <= x_hi)]
+        if len(q):
+            best = float(q[:, 1].max()) if best is None else max(best, float(q[:, 1].max()))
+    return best
+
+
+def us2_notch_check(stl=None, half_w: float = 121.0) -> dict:
+    """The z 142 notch against the US2 lug-arm root on the print (frame coordinates, both sides together):
+
+    - ``plan_clear_mm``: plan distance from the sheet outline to the root footprint (|x| 115 .. half_w, z 127-157);
+    - ``support_y``: the sheet's support, the stay-crown top (|x| STAY_X +/- 3) in the NOTCH_CLEAR bands just below
+      and above the notch, as a straight line in z between the two bands' highest points;
+    - ``root_top_y``: the print's top inside the notch footprint (|x| x_in .. half_w, the notch z less NOTCH_CLEAR at
+      each end: the ends are the stay crown the sheet bears on);
+    - ``air_mm`` = min over z of support - top; pass when >= US2_ROOT_AIR."""
+    import numpy as _np
+    import trimesh
+    from shapely.geometry import box as _box
+    from .h1_lanes import ARM
+    path = stl or (Path(__file__).resolve().parents[2] / "designs" / "pack_5200" / "print" / "frame_h1" /
+                   "h1_assembled.stl")
+    m = trimesh.load(path)
+    rz = ARM["us2"]["root"]["z"]
+    z0, z1 = US2_NOTCH_Z + rz[0], US2_NOTCH_Z + rz[1]
+    hz = FAIRLEAD_HALF_Z + NOTCH_CLEAR
+    x_in = STAY_X - FAIRLEAD_HALF_X - NOTCH_CLEAR
+    sh = outline_v2(half_w=half_w)
+    root = _box(STAY_X, z0, half_w + 3.0, z1).union(_box(-half_w - 3.0, z0, -STAY_X, z1))
+    plan = float(sh.distance(root)) if not sh.intersects(root) else -float(sh.intersection(root).area)
+    lo_band = _np.arange(US2_NOTCH_Z - hz - NOTCH_CLEAR, US2_NOTCH_Z - hz + 0.01, 1.0)
+    hi_band = _np.arange(US2_NOTCH_Z + hz, US2_NOTCH_Z + hz + NOTCH_CLEAR + 0.01, 1.0)
+    crown = lambda zz: _print_top(m, float(zz), STAY_X - 3.0, STAY_X + 3.0)
+    a = max((crown(z), z) for z in lo_band if crown(z) is not None)
+    b = max((crown(z), z) for z in hi_band if crown(z) is not None)
+    rows, air = [], None
+    for z in _np.arange(US2_NOTCH_Z - hz + NOTCH_CLEAR, US2_NOTCH_Z + hz - NOTCH_CLEAR + 0.01, 1.0):
+        top = _print_top(m, float(z), x_in, half_w)
+        sup = a[0] + (b[0] - a[0]) * (z - a[1]) / (b[1] - a[1])
+        if top is None:
+            continue
+        rows.append({"z": float(z), "top_y": round(top, 2), "support_y": round(sup, 2), "air_mm": round(sup - top, 2)})
+        air = sup - top if air is None else min(air, sup - top)
+    return {"notch_z": [US2_NOTCH_Z - hz, US2_NOTCH_Z + hz], "root_z": [z0, z1], "plan_clear_mm": round(plan, 2),
+            "support_bands": {"below": {"z": a[1], "y": round(a[0], 2)}, "above": {"z": b[1], "y": round(b[0], 2)}},
+            "air_mm": round(air, 2), "air_req_mm": US2_ROOT_AIR, "pass": bool(air >= US2_ROOT_AIR), "rows": rows,
+            "stl": str(path)}
+
+
 def outline_v1():
     """Retired v1 drawing: 208 x 300, square corners, 22 mm notches (the v1 attachment note; v2 notches are 30 mm)."""
     from shapely.geometry import box

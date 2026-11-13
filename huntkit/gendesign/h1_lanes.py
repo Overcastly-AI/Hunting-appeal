@@ -70,6 +70,12 @@ ARM = {"us1": {"root": {"y_lo": -13.0, "z": (-5.0, 11.0), "top": "stay"}, "tip":
 # x +/-121 and sits on the stays' bag face). Root top at the stay's bag face ('stay'), so the arm never stands proud
 # of the stay where the sheet or its clips bear. US2 root z 127-157 = the sheet's US2 notch (spreader.NOTCH_CLEAR).
 ARM_FILLET = 3.0                   # rounded arm edges (hull of z cylinders), print look and no knife edges
+# BL-050: I-section arms. Outboard of the root (the arm's first ``root_keep`` mm off the stay surface stays solid, it
+# governs) to ``tip_keep`` mm short of the fairlead, each arm is pocketed from both z faces down to a ``web`` mm web,
+# leaving ``flange`` mm flanges at the arm's top (bag side) and bottom (wearer side). An arm dict with an 'isect' key
+# is pocketed (in_arm, arm_solid); ARM_ISECT says which arms are (set by the BL-050 lug FEA, h1_bedfit.isect_study).
+ISECT = {"web": 3.0, "flange": 3.0, "root_keep": 6.0, "tip_keep": 2.0}
+ARM_ISECT = {"us1": False, "us2": False}
 
 # ---------------------------------------------------------------------------------------------------- loads
 HINGE_ROW_N = 1019.0               # bl047_frame_items.HINGE_ROW_N (= mfg_corrie_f_rev3.HINGE_N), factored, per side
@@ -110,8 +116,25 @@ def arm_box(p: dict, arm: dict | None = None) -> dict:
     return {k: (min(s["root"][k][0], s["tip"][k][0]), max(s["root"][k][1], s["tip"][k][1])) for k in ("x", "y", "z")}
 
 
+def arm_of(name: str) -> dict:
+    """The arm dict as built: ARM[name], with ISECT under 'isect' where ARM_ISECT says so."""
+    a = dict(ARM[name])
+    if ARM_ISECT.get(name):
+        a["isect"] = dict(ISECT)
+    return a
+
+
+def _pocket_span(p: dict, a: dict) -> tuple:
+    """|x - stay axis| range of the pockets: (stay_r + root_keep, fairlead inner face - tip_keep)."""
+    q = a["isect"]
+    s1 = abs(p["x"] - p["sign"] * STAY_X) - (p["geom"].throat / 2 + p["geom"].cheek)
+    return p["stay_r"] + q["root_keep"], s1 - q["tip_keep"]
+
+
 def in_arm(pts: np.ndarray, p: dict, arm: dict | None = None) -> np.ndarray:
-    """Points (frame coordinates) inside the tapered arm of station ``p``."""
+    """Points (frame coordinates) inside the tapered arm of station ``p`` (less the I-section pockets when the arm
+    dict carries 'isect')."""
+    arm = arm if arm is not None else arm_of(p["name"]) if p["name"] in ARM else None
     s = arm_sections(p, arm)
     xs = p["sign"] * STAY_X
     d = np.abs(pts[:, 0] - xs)
@@ -123,7 +146,51 @@ def in_arm(pts: np.ndarray, p: dict, arm: dict | None = None) -> np.ndarray:
     zlo = r["z"][0] + t * (q["z"][0] - r["z"][0])
     zhi = r["z"][1] + t * (q["z"][1] - r["z"][1])
     on = (np.sign(pts[:, 0] - xs) == np.sign(p["x"] - xs)) & (d <= abs(p["x"] - xs))
-    return on & (pts[:, 1] >= ylo) & (pts[:, 1] <= yhi) & (pts[:, 2] >= zlo) & (pts[:, 2] <= zhi)
+    inside = on & (pts[:, 1] >= ylo) & (pts[:, 1] <= yhi) & (pts[:, 2] >= zlo) & (pts[:, 2] <= zhi)
+    if arm is not None and arm.get("isect"):
+        q = arm["isect"]
+        da, db = _pocket_span(p, arm)
+        zc = 0.5 * (zlo + zhi)
+        pocket = (d >= da) & (d <= db) & (pts[:, 1] > ylo + q["flange"]) & (pts[:, 1] < yhi - q["flange"])
+        if q.get("kind", "I") == "box":       # closed box: a sealed core, walls 'web' thick on both z faces
+            pocket &= np.abs(pts[:, 2] - zc) < 0.5 * (zhi - zlo) - q["web"]
+        else:                                 # I: pockets open to both z faces, a 'web' mm web on the mid plane
+            pocket &= np.abs(pts[:, 2] - zc) > q["web"] / 2.0
+        inside &= ~pocket
+    return inside
+
+
+def pocket_solid(p: dict, arm: dict | None = None):
+    """The two I-section pockets of station ``p``'s arm as one manifold (None if the arm is solid): hull of the
+    pocket sections at the two ends of the span (the arm tapers linearly), each run 1 mm past the arm's z faces."""
+    import manifold3d as m3d
+    a = arm if arm is not None else arm_of(p["name"])
+    if not a.get("isect"):
+        return None
+    q = a["isect"]
+    s = arm_sections(p, a)
+    xs = p["sign"] * STAY_X
+    sgn = 1.0 if p["x"] > xs else -1.0
+    s0, s1 = p["stay_r"], abs(p["x"] - xs) - (p["geom"].throat / 2 + p["geom"].cheek)
+    da, db = _pocket_span(p, a)
+    out = None
+    for side in (-1.0, 1.0):
+        pts = []
+        for dd in (da, db):
+            t = min(max((dd - s0) / max(s1 - s0, 1e-6), 0.0), 1.0)
+            r, tp = s["root"], s["tip"]
+            ylo = r["y"][0] + t * (tp["y"][0] - r["y"][0]) + q["flange"]
+            yhi = r["y"][1] + t * (tp["y"][1] - r["y"][1]) - q["flange"]
+            zlo = r["z"][0] + t * (tp["z"][0] - r["z"][0])
+            zhi = r["z"][1] + t * (tp["z"][1] - r["z"][1])
+            zc = 0.5 * (zlo + zhi)
+            za, zb = (zc + q["web"] / 2.0, zhi + 1.0) if side > 0 else (zlo - 1.0, zc - q["web"] / 2.0)
+            for yy in (ylo, yhi):
+                for zz in (za, zb):
+                    pts.append(m3d.Manifold.cube((0.01, 0.01, 0.01)).translate((xs + sgn * dd, yy, zz)))
+        h = m3d.Manifold.batch_hull(pts)
+        out = h if out is None else out + h
+    return out
 
 
 def arm_solid(p: dict):
@@ -147,7 +214,9 @@ def add_lugs(man, log=print, stats: dict | None = None):
     v0 = man.volume()
     for p in HF.placed():
         if p.get("lane"):
-            man = man + arm_solid(p)
+            arm = arm_solid(p)
+            pk = pocket_solid(p)
+            man = man + (arm - pk if pk is not None else arm)
     if stats is not None:
         stats.update({"arms_mm3": man.volume() - v0, "arms_g": (man.volume() - v0) * RHO_G_MM3})
     if log:
@@ -516,7 +585,7 @@ def lug_loads(name: str) -> dict:
 def lug_geom_inputs(name: str) -> dict:
     from . import h1_fairleads as HF
     p = next(q for q in HF.placed() if q["name"] == name and q["side"] == "R")
-    return {"p": p, "xoff": p["x"] - STAY_X, "arm": ARM[name]}
+    return {"p": p, "xoff": p["x"] - STAY_X, "arm": arm_of(name)}
 
 
 def lug_study(h: float = 1.0, log=print, arms: dict | None = None) -> dict:
@@ -532,7 +601,9 @@ def lug_study(h: float = 1.0, log=print, arms: dict | None = None) -> dict:
         L = lug_loads(name)
         loads = {k: v["vec"] for k, v in L.items()}
         geom = p["geom"]
-        f = _cached(f"lug_{name}_{h:g}", lambda: lug_fea(geom, p["stay_r"], gi["xoff"], arm, loads, h=h),
+        q = arm.get("isect")                  # BL-050: own cache per pocketed arm variant
+        tag = f"lug_{name}_{h:g}" + (f"_{q.get('kind', 'I')}_w{q['web']:g}_f{q['flange']:g}" if q else "")
+        f = _cached(tag, lambda: lug_fea(geom, p["stay_r"], gi["xoff"], arm, loads, h=h),
                     {"geom": dataclasses.asdict(geom), "stay_r": p["stay_r"], "xoff": gi["xoff"], "arm": arm,
                      "loads": loads, "h": h})
         rows = {}

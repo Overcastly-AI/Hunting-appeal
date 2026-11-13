@@ -225,7 +225,8 @@ def test_corrections_match_their_sources():
     # net effect on the whole H1 pack (every item booked), belt M: the C1..C8 meat-trip deltas of BL-013 sum to -49.1 g,
     # and H1B adds the 2026-11-12 body (+42.9 g, h1_buckling.md / DECISIONS BL-027 row)
     assert L.total("corrie_b2_h1_v2", "M") - L.total("corrie_b2_h1", "M") == pytest.approx(sum(c.values()), abs=0.15)
-    assert sum(v for k, v in c.items() if k not in ("H1B", "BL031", "H1F", "BL046", "BL047", "BL049")) == pytest.approx(-49.1, abs=0.5)
+    assert sum(v for k, v in c.items() if k not in ("H1B", "BL031", "H1F", "BL046", "BL047", "BL049", "BL050")) == \
+        pytest.approx(-49.1, abs=0.5)                                          # BL050: h1_bedfit (test_h1_bedfit)
     import strap_tails as ST                                       # BL-031: harness / belt side of the tail rule
     assert c["BL031"] == pytest.approx(sum(r[2] for r in ST.suspension_rows("M")), abs=0.05) and c["BL031"] < 0
     assert c["H1B"] == pytest.approx(42.9, abs=0.1)
@@ -260,10 +261,11 @@ def test_v2_shifts_systems_as_booked():
     assert new["harness"] - old["harness"] == pytest.approx(
         sum(r["g"] for k in ("C6", "BL031") for r in corr[k] if r["system"] == "harness"), abs=0.15)
     assert new["frame"] - old["frame"] == pytest.approx(
-        sum(r["g"] for k in ("C3", "C4", "C5", "H1B", "H1F", "BL046", "BL047", "BL049")
+        sum(r["g"] for k in ("C3", "C4", "C5", "H1B", "H1F", "BL046", "BL047", "BL049", "BL050")
             for r in L.corrections("corrie_b2_h1", "M")[k] if r["system"] == "frame"),
         abs=0.15)                                     # H1F: BL-042 fairleads; BL046: clamp + channel; BL047: web, pawl;
     #                                                   BL049: lug arms, hinge growth (its Ti pin row is attachment)
+    #                                                   BL050: US2 clevis blocks + hardware (its pin row is attachment)
     assert L.bag_system("corrie_b2_h1_v2", "M") == L.corrie_bag_system()      # C1/C2/C6 are outside the bag system
     assert L.DEFAULT_CONFIG == "corrie_b2_h1_v2" and L.total() == L.total("corrie_b2_h1_v2", "M")
     with pytest.raises(KeyError):

@@ -1,0 +1,2276 @@
+{
+ "date": "2026-11-13",
+ "ticket": "BL-050 Part A",
+ "published": {
+  "US1_X": 70.0,
+  "US1_Z": 95.0,
+  "US2_X": 165.0,
+  "US2_Z": 142.0,
+  "STAY_X": 115.0,
+  "CHANNEL_ENTRY_X": {
+   "us1": 70.0,
+   "us2": 165.0
+  },
+  "US2_SPLIT_X": 163.0,
+  "US2_BOLT_ON": true,
+  "ARM_ISECT": {
+   "us1": false,
+   "us2": false
+  }
+ },
+ "bed_mm": [
+  340.0,
+  320.0
+ ],
+ "brim_mm": 8.0,
+ "option_c": {
+  "sweep": [
+   {
+    "us2_x": 165.0,
+    "deg": 155.75,
+    "swap": false,
+    "w_mm": 342.91,
+    "h_mm": 322.1,
+    "over_mm": 18.91,
+    "fits_with_brim": false
+   },
+   {
+    "us2_x": 161.0,
+    "deg": 157.25,
+    "swap": false,
+    "w_mm": 338.86,
+    "h_mm": 317.48,
+    "over_mm": 14.86,
+    "fits_with_brim": false
+   },
+   {
+    "us2_x": 157.0,
+    "deg": 158.75,
+    "swap": false,
+    "w_mm": 334.51,
+    "h_mm": 313.39,
+    "over_mm": 10.51,
+    "fits_with_brim": false
+   },
+   {
+    "us2_x": 153.0,
+    "deg": 70.25,
+    "swap": true,
+    "w_mm": 329.85,
+    "h_mm": 309.08,
+    "over_mm": 5.85,
+    "fits_with_brim": false
+   },
+   {
+    "us2_x": 151.0,
+    "deg": 161.25,
+    "swap": false,
+    "w_mm": 327.34,
+    "h_mm": 306.09,
+    "over_mm": 3.34,
+    "fits_with_brim": false
+   },
+   {
+    "us2_x": 149.0,
+    "deg": 72.0,
+    "swap": true,
+    "w_mm": 324.7,
+    "h_mm": 303.8,
+    "over_mm": 0.7,
+    "fits_with_brim": false
+   },
+   {
+    "us2_x": 148.0,
+    "deg": 72.25,
+    "swap": true,
+    "w_mm": 323.5,
+    "h_mm": 303.03,
+    "over_mm": -0.5,
+    "fits_with_brim": true
+   },
+   {
+    "us2_x": 147.0,
+    "deg": 72.75,
+    "swap": true,
+    "w_mm": 322.07,
+    "h_mm": 301.46,
+    "over_mm": -1.93,
+    "fits_with_brim": true
+   },
+   {
+    "us2_x": 145.0,
+    "deg": 163.5,
+    "swap": false,
+    "w_mm": 319.4,
+    "h_mm": 299.06,
+    "over_mm": -4.6,
+    "fits_with_brim": true
+   },
+   {
+    "us2_x": 141.0,
+    "deg": 75.25,
+    "swap": true,
+    "w_mm": 313.65,
+    "h_mm": 293.27,
+    "over_mm": -10.35,
+    "fits_with_brim": true
+   }
+  ],
+  "probe": {
+   "us2_x": 147.0,
+   "lower_g": 413.0,
+   "bed": {
+    "lower": {
+     "extents_mm": [
+      331.5,
+      234.49,
+      76.7
+     ],
+     "fits": true,
+     "fits_with_brim": false,
+     "spare_mm": [
+      -7.5,
+      69.51
+     ],
+     "best_rotation": {
+      "deg": 162.75,
+      "swap": false,
+      "w_mm": 322.33,
+      "h_mm": 301.99,
+      "over_mm": -1.67,
+      "fits_with_brim": true
+     }
+    },
+    "upper": {
+     "extents_mm": [
+      280.12,
+      309.39,
+      64.38
+     ],
+     "fits": true,
+     "fits_with_brim": false,
+     "spare_mm": [
+      43.88,
+      -5.39
+     ],
+     "best_rotation": {
+      "deg": 0.0,
+      "swap": true,
+      "w_mm": 309.39,
+      "h_mm": 280.12,
+      "over_mm": -14.61,
+      "fits_with_brim": true
+     }
+    }
+   },
+   "route": {
+    "layout": {
+     "us1": 70.0,
+     "us2": 147.0,
+     "entry": {
+      "us1": 70.0,
+      "us2": 147.0
+     }
+    },
+    "worst_clear_mm": {
+     "us1": 12.4,
+     "us2": -3.2
+    },
+    "pass": false,
+    "rows": [
+     {
+      "torso": 15,
+      "side": "R",
+      "strap": "us1",
+      "clear_mm": {
+       "hinge": 12.4,
+       "us2": 52.7,
+       "he": 16.2,
+       "stay": -6.6
+      },
+      "min_clear_mm": 12.4,
+      "pass": true
+     },
+     {
+      "torso": 15,
+      "side": "R",
+      "strap": "us2",
+      "clear_mm": {
+       "hinge": 1.9,
+       "us1": 41.6,
+       "he": 11.6,
+       "stay": -6.8
+      },
+      "min_clear_mm": 1.9,
+      "pass": false
+     },
+     {
+      "torso": 15,
+      "side": "L",
+      "strap": "us1",
+      "clear_mm": {
+       "hinge": 13.0,
+       "us2": 53.1,
+       "he": 16.6,
+       "stay": -7.1
+      },
+      "min_clear_mm": 13.0,
+      "pass": true
+     },
+     {
+      "torso": 15,
+      "side": "L",
+      "strap": "us2",
+      "clear_mm": {
+       "hinge": 2.5,
+       "us1": 41.5,
+       "he": 15.4,
+       "stay": -5.3
+      },
+      "min_clear_mm": 2.5,
+      "pass": false
+     },
+     {
+      "torso": 19,
+      "side": "R",
+      "strap": "us1",
+      "clear_mm": {
+       "hinge": 14.0,
+       "us2": 52.8,
+       "he": 17.7,
+       "stay": -6.0
+      },
+      "min_clear_mm": 14.0,
+      "pass": true
+     },
+     {
+      "torso": 19,
+      "side": "R",
+      "strap": "us2",
+      "clear_mm": {
+       "hinge": 1.4,
+       "us1": 40.6,
+       "he": 12.3,
+       "stay": -7.0
+      },
+      "min_clear_mm": 1.4,
+      "pass": false
+     },
+     {
+      "torso": 19,
+      "side": "L",
+      "strap": "us1",
+      "clear_mm": {
+       "hinge": 12.4,
+       "us2": 54.9,
+       "he": 15.5,
+       "stay": -7.1
+      },
+      "min_clear_mm": 12.4,
+      "pass": true
+     },
+     {
+      "torso": 19,
+      "side": "L",
+      "strap": "us2",
+      "clear_mm": {
+       "hinge": 1.0,
+       "us1": 42.0,
+       "he": 7.6,
+       "stay": -5.1
+      },
+      "min_clear_mm": 1.0,
+      "pass": false
+     },
+     {
+      "torso": 23,
+      "side": "R",
+      "strap": "us1",
+      "clear_mm": {
+       "hinge": 14.0,
+       "us2": 52.8,
+       "he": 16.0,
+       "stay": -6.3
+      },
+      "min_clear_mm": 14.0,
+      "pass": true
+     },
+     {
+      "torso": 23,
+      "side": "R",
+      "strap": "us2",
+      "clear_mm": {
+       "hinge": -3.2,
+       "us1": 41.2,
+       "he": 3.6,
+       "stay": -6.2
+      },
+      "min_clear_mm": -3.2,
+      "pass": false
+     },
+     {
+      "torso": 23,
+      "side": "L",
+      "strap": "us1",
+      "clear_mm": {
+       "hinge": 12.4,
+       "us2": 53.4,
+       "he": 15.3,
+       "stay": -6.4
+      },
+      "min_clear_mm": 12.4,
+      "pass": true
+     },
+     {
+      "torso": 23,
+      "side": "L",
+      "strap": "us2",
+      "clear_mm": {
+       "hinge": -2.1,
+       "us1": 41.2,
+       "he": 5.2,
+       "stay": -5.0
+      },
+      "min_clear_mm": -2.1,
+      "pass": false
+     }
+    ]
+   }
+  }
+ },
+ "bed": {
+  "lower": {
+   "extents_mm": [
+    321.05,
+    299.58,
+    76.7
+   ],
+   "fits": true,
+   "fits_with_brim": true,
+   "spare_mm": [
+    2.95,
+    4.42
+   ],
+   "best_rotation": {
+    "deg": 0.0,
+    "swap": false,
+    "w_mm": 321.05,
+    "h_mm": 299.58,
+    "over_mm": -2.95,
+    "fits_with_brim": true
+   }
+  },
+  "upper": {
+   "extents_mm": [
+    309.39,
+    280.12,
+    64.38
+   ],
+   "fits": true,
+   "fits_with_brim": true,
+   "spare_mm": [
+    14.61,
+    23.88
+   ],
+   "best_rotation": {
+    "deg": 0.0,
+    "swap": false,
+    "w_mm": 309.39,
+    "h_mm": 280.12,
+    "over_mm": -14.61,
+    "fits_with_brim": true
+   }
+  }
+ },
+ "pieces": {
+  "us2_clevis_R": {
+   "g": 14.14,
+   "footprint_mm": [
+    20.7,
+    29.0,
+    36.5
+   ],
+   "watertight": true,
+   "shells": 1
+  },
+  "us2_clevis_L": {
+   "g": 14.14,
+   "footprint_mm": [
+    20.7,
+    29.0,
+    36.5
+   ],
+   "watertight": true,
+   "shells": 1
+  }
+ },
+ "export": {
+  "assembled": {
+   "g": 995.1,
+   "watertight": true,
+   "shells": 1,
+   "footprint_mm": null,
+   "bed_bl050": null
+  },
+  "lower": {
+   "g": 423.4,
+   "watertight": true,
+   "shells": 1,
+   "footprint_mm": [
+    321.1,
+    299.6,
+    76.7
+   ],
+   "bed_bl050": {
+    "rot_deg": 163.5,
+    "extents_mm": [
+     321.05,
+     299.58,
+     76.7
+    ],
+    "fits": true,
+    "fits_with_brim": true,
+    "spare_mm": [
+     2.95,
+     4.42
+    ]
+   }
+  },
+  "upper": {
+   "g": 543.5,
+   "watertight": true,
+   "shells": 1,
+   "footprint_mm": [
+    309.4,
+    280.1,
+    64.4
+   ],
+   "bed_bl050": {
+    "rot_deg": 90.0,
+    "extents_mm": [
+     309.39,
+     280.12,
+     64.38
+    ],
+    "fits": true,
+    "fits_with_brim": true,
+    "spare_mm": [
+     14.61,
+     23.88
+    ]
+   }
+  }
+ },
+ "joint": {
+  "share": 0.6,
+  "joint": {
+   "dy": -4.3,
+   "dz": 8.0,
+   "hole_d": 5.1,
+   "hole_print_d": 4.8,
+   "washer_od": 10.0,
+   "washer_t": 1.0,
+   "nut_af": 8.0,
+   "nut_t": 4.0,
+   "nut_face": 151.0,
+   "trap_x0": 145.8,
+   "head_face": 183.0,
+   "head_h": 3.5,
+   "head_d": 8.5,
+   "bolt_len": 40.0,
+   "tail_x": 142.5
+  },
+  "capacities_n": {
+   "washer_bearing_n": 4091.1,
+   "plug_shear_out_n": 5414.4,
+   "bolt_tension_n": 8896.3,
+   "bolt_fatigue_n": 3177.2,
+   "hole_bearing_n": 2301.1,
+   "bolt_shear_n": 7193.9,
+   "contact_mpa": 70.4
+  },
+  "net_section": {
+   "A": 376.0,
+   "yc": 0.91,
+   "zc": 142.0,
+   "Iy": 25648.61,
+   "Iz": 10382.69,
+   "Iyz": 0.0
+  },
+  "rows": {
+   "cradle": {
+    "g_times_req": 2.4,
+    "force_on_clevis_n": [
+     0.0,
+     369.0,
+     -224.6
+    ],
+    "moment_nmm": [
+     -5248.0,
+     3594.0,
+     5904.0
+    ],
+    "bolt_tension_n": [
+     135.7,
+     375.2
+    ],
+    "bolt_shear_n": [
+     524.7,
+     182.2
+    ],
+    "contact_mpa": 4.1,
+    "resid_n": 0.0,
+    "net_section_fi": 0.259,
+    "net_section_sigma_mpa": 18.26,
+    "sf": {
+     "bolt_tension": 23.71,
+     "washer_bearing": 10.9,
+     "plug_shear_out": 14.43,
+     "bolt_shear": 13.71,
+     "hole_bearing": 4.39,
+     "contact": 17.19,
+     "net_section": 3.85
+    },
+    "fatigue": {
+     "bolt": 12.7,
+     "plug_paht": 6.49,
+     "washer_paht": 4.91,
+     "hole_paht": 1.97,
+     "net_section_paht": 1.73
+    },
+    "min_sf": 3.85,
+    "min_fatigue": 1.73
+   },
+   "cradle|fleet_out": {
+    "g_times_req": 2.4,
+    "force_on_clevis_n": [
+     125.0,
+     363.4,
+     -221.2
+    ],
+    "moment_nmm": [
+     -5168.0,
+     3539.0,
+     2894.0
+    ],
+    "bolt_tension_n": [
+     65.1,
+     315.4
+    ],
+    "bolt_shear_n": [
+     516.7,
+     179.4
+    ],
+    "contact_mpa": 2.64,
+    "resid_n": 0.0,
+    "net_section_fi": 0.225,
+    "net_section_sigma_mpa": 15.85,
+    "sf": {
+     "bolt_tension": 28.21,
+     "washer_bearing": 12.97,
+     "plug_shear_out": 17.17,
+     "bolt_shear": 13.92,
+     "hole_bearing": 4.45,
+     "contact": 26.66,
+     "net_section": 4.44
+    },
+    "fatigue": {
+     "bolt": 15.11,
+     "plug_paht": 7.73,
+     "washer_paht": 5.84,
+     "hole_paht": 2.0,
+     "net_section_paht": 2.0
+    },
+    "min_sf": 4.44,
+    "min_fatigue": 2.0
+   },
+   "cradle|fleet_in": {
+    "g_times_req": 2.4,
+    "force_on_clevis_n": [
+     0.0,
+     363.4,
+     -221.2
+    ],
+    "moment_nmm": [
+     -5168.0,
+     3539.0,
+     5815.0
+    ],
+    "bolt_tension_n": [
+     133.6,
+     369.5
+    ],
+    "bolt_shear_n": [
+     516.7,
+     179.4
+    ],
+    "contact_mpa": 4.03,
+    "resid_n": 0.0,
+    "net_section_fi": 0.255,
+    "net_section_sigma_mpa": 17.99,
+    "sf": {
+     "bolt_tension": 24.08,
+     "washer_bearing": 11.07,
+     "plug_shear_out": 14.65,
+     "bolt_shear": 13.92,
+     "hole_bearing": 4.45,
+     "contact": 17.45,
+     "net_section": 3.91
+    },
+    "fatigue": {
+     "bolt": 12.9,
+     "plug_paht": 6.59,
+     "washer_paht": 4.98,
+     "hole_paht": 2.0,
+     "net_section_paht": 1.76
+    },
+    "min_sf": 3.91,
+    "min_fatigue": 1.76
+   },
+   "bagon_down": {
+    "g_times_req": 3.0,
+    "force_on_clevis_n": [
+     0.0,
+     0.0,
+     -177.8
+    ],
+    "moment_nmm": [
+     -4154.0,
+     2844.0,
+     0.0
+    ],
+    "bolt_tension_n": [
+     0.0,
+     162.8
+    ],
+    "bolt_shear_n": [
+     274.4,
+     274.4
+    ],
+    "contact_mpa": 2.38,
+    "resid_n": 0.0,
+    "net_section_fi": 0.07,
+    "net_section_sigma_mpa": 3.05,
+    "sf": {
+     "bolt_tension": 54.64,
+     "washer_bearing": 25.13,
+     "plug_shear_out": 33.25,
+     "bolt_shear": 26.22,
+     "hole_bearing": 8.39,
+     "contact": 29.63,
+     "net_section": 14.26
+    },
+    "fatigue": {
+     "bolt": 36.59,
+     "plug_paht": 18.71,
+     "washer_paht": 14.13,
+     "hole_paht": 4.72,
+     "net_section_paht": 8.02
+    },
+    "min_sf": 8.39,
+    "min_fatigue": 4.72
+   },
+   "bagon_down|fleet_out": {
+    "g_times_req": 3.0,
+    "force_on_clevis_n": [
+     51.5,
+     0.0,
+     -175.1
+    ],
+    "moment_nmm": [
+     -4090.0,
+     2801.0,
+     -1202.0
+    ],
+    "bolt_tension_n": [
+     46.6,
+     308.1
+    ],
+    "bolt_shear_n": [
+     270.2,
+     270.2
+    ],
+    "contact_mpa": 5.51,
+    "resid_n": 0.0,
+    "net_section_fi": 0.069,
+    "net_section_sigma_mpa": 4.16,
+    "sf": {
+     "bolt_tension": 28.87,
+     "washer_bearing": 13.28,
+     "plug_shear_out": 17.57,
+     "bolt_shear": 26.62,
+     "hole_bearing": 8.52,
+     "contact": 12.77,
+     "net_section": 14.48
+    },
+    "fatigue": {
+     "bolt": 19.34,
+     "plug_paht": 9.88,
+     "washer_paht": 7.47,
+     "hole_paht": 4.79,
+     "net_section_paht": 8.15
+    },
+    "min_sf": 8.52,
+    "min_fatigue": 4.79
+   },
+   "bagon_down|fleet_in": {
+    "g_times_req": 3.0,
+    "force_on_clevis_n": [
+     0.0,
+     0.0,
+     -175.1
+    ],
+    "moment_nmm": [
+     -4090.0,
+     2801.0,
+     0.0
+    ],
+    "bolt_tension_n": [
+     0.0,
+     160.3
+    ],
+    "bolt_shear_n": [
+     270.2,
+     270.2
+    ],
+    "contact_mpa": 2.34,
+    "resid_n": 0.0,
+    "net_section_fi": 0.069,
+    "net_section_sigma_mpa": 3.0,
+    "sf": {
+     "bolt_tension": 55.48,
+     "washer_bearing": 25.51,
+     "plug_shear_out": 33.77,
+     "bolt_shear": 26.62,
+     "hole_bearing": 8.52,
+     "contact": 30.09,
+     "net_section": 14.48
+    },
+    "fatigue": {
+     "bolt": 37.15,
+     "plug_paht": 18.99,
+     "washer_paht": 14.35,
+     "hole_paht": 4.79,
+     "net_section_paht": 8.15
+    },
+    "min_sf": 8.52,
+    "min_fatigue": 4.79
+   },
+   "bagon_fore30": {
+    "g_times_req": 3.0,
+    "force_on_clevis_n": [
+     0.0,
+     -88.9,
+     -154.0
+    ],
+    "moment_nmm": [
+     -3597.0,
+     2463.0,
+     -1422.0
+    ],
+    "bolt_tension_n": [
+     65.3,
+     294.2
+    ],
+    "bolt_shear_n": [
+     196.1,
+     280.0
+    ],
+    "contact_mpa": 6.11,
+    "resid_n": 0.0,
+    "net_section_fi": 0.087,
+    "net_section_sigma_mpa": 6.11,
+    "sf": {
+     "bolt_tension": 30.24,
+     "washer_bearing": 13.9,
+     "plug_shear_out": 18.4,
+     "bolt_shear": 25.69,
+     "hole_bearing": 8.22,
+     "contact": 11.52,
+     "net_section": 11.52
+    },
+    "fatigue": {
+     "bolt": 20.25,
+     "plug_paht": 10.35,
+     "washer_paht": 7.82,
+     "hole_paht": 4.62,
+     "net_section_paht": 6.48
+    },
+    "min_sf": 8.22,
+    "min_fatigue": 4.62
+   },
+   "bagon_fore30|fleet_out": {
+    "g_times_req": 3.0,
+    "force_on_clevis_n": [
+     51.5,
+     -87.5,
+     -151.6
+    ],
+    "moment_nmm": [
+     -3542.0,
+     2426.0,
+     -2603.0
+    ],
+    "bolt_tension_n": [
+     239.2,
+     464.8
+    ],
+    "bolt_shear_n": [
+     193.1,
+     275.8
+    ],
+    "contact_mpa": 10.38,
+    "resid_n": 0.0,
+    "net_section_fi": 0.102,
+    "net_section_sigma_mpa": 7.17,
+    "sf": {
+     "bolt_tension": 19.14,
+     "washer_bearing": 8.8,
+     "plug_shear_out": 11.65,
+     "bolt_shear": 26.08,
+     "hole_bearing": 8.34,
+     "contact": 6.79,
+     "net_section": 9.81
+    },
+    "fatigue": {
+     "bolt": 12.82,
+     "plug_paht": 6.55,
+     "washer_paht": 4.95,
+     "hole_paht": 4.69,
+     "net_section_paht": 5.52
+    },
+    "min_sf": 6.79,
+    "min_fatigue": 4.69
+   },
+   "bagon_fore30|fleet_in": {
+    "g_times_req": 3.0,
+    "force_on_clevis_n": [
+     0.0,
+     -87.5,
+     -151.6
+    ],
+    "moment_nmm": [
+     -3542.0,
+     2426.0,
+     -1401.0
+    ],
+    "bolt_tension_n": [
+     64.3,
+     289.7
+    ],
+    "bolt_shear_n": [
+     193.1,
+     275.8
+    ],
+    "contact_mpa": 6.02,
+    "resid_n": 0.0,
+    "net_section_fi": 0.086,
+    "net_section_sigma_mpa": 6.02,
+    "sf": {
+     "bolt_tension": 30.7,
+     "washer_bearing": 14.12,
+     "plug_shear_out": 18.69,
+     "bolt_shear": 26.08,
+     "hole_bearing": 8.34,
+     "contact": 11.69,
+     "net_section": 11.7
+    },
+    "fatigue": {
+     "bolt": 20.56,
+     "plug_paht": 10.51,
+     "washer_paht": 7.94,
+     "hole_paht": 4.69,
+     "net_section_paht": 6.58
+    },
+    "min_sf": 8.34,
+    "min_fatigue": 4.69
+   },
+   "bagon_drape": {
+    "g_times_req": 3.0,
+    "force_on_clevis_n": [
+     0.0,
+     -177.6,
+     -8.7
+    ],
+    "moment_nmm": [
+     -204.0,
+     140.0,
+     -2841.0
+    ],
+    "bolt_tension_n": [
+     349.9,
+     363.0
+    ],
+    "bolt_shear_n": [
+     76.2,
+     101.6
+    ],
+    "contact_mpa": 10.23,
+    "resid_n": 0.0,
+    "net_section_fi": 0.101,
+    "net_section_sigma_mpa": 7.08,
+    "sf": {
+     "bolt_tension": 24.51,
+     "washer_bearing": 11.27,
+     "plug_shear_out": 14.92,
+     "bolt_shear": 70.79,
+     "hole_bearing": 22.64,
+     "contact": 6.88,
+     "net_section": 9.94
+    },
+    "fatigue": {
+     "bolt": 16.41,
+     "plug_paht": 8.39,
+     "washer_paht": 6.34,
+     "hole_paht": 12.74,
+     "net_section_paht": 5.59
+    },
+    "min_sf": 6.88,
+    "min_fatigue": 5.59
+   },
+   "bagon_drape|fleet_out": {
+    "g_times_req": 3.0,
+    "force_on_clevis_n": [
+     51.5,
+     -174.9,
+     -8.6
+    ],
+    "moment_nmm": [
+     -201.0,
+     138.0,
+     -4000.0
+    ],
+    "bolt_tension_n": [
+     520.2,
+     533.1
+    ],
+    "bolt_shear_n": [
+     75.0,
+     100.1
+    ],
+    "contact_mpa": 14.43,
+    "resid_n": 0.0,
+    "net_section_fi": 0.115,
+    "net_section_sigma_mpa": 8.13,
+    "sf": {
+     "bolt_tension": 16.69,
+     "washer_bearing": 7.67,
+     "plug_shear_out": 10.16,
+     "bolt_shear": 71.88,
+     "hole_bearing": 22.99,
+     "contact": 4.88,
+     "net_section": 8.66
+    },
+    "fatigue": {
+     "bolt": 11.17,
+     "plug_paht": 5.71,
+     "washer_paht": 4.32,
+     "hole_paht": 12.93,
+     "net_section_paht": 4.87
+    },
+    "min_sf": 4.88,
+    "min_fatigue": 4.32
+   },
+   "bagon_drape|fleet_in": {
+    "g_times_req": 3.0,
+    "force_on_clevis_n": [
+     0.0,
+     -174.9,
+     -8.6
+    ],
+    "moment_nmm": [
+     -201.0,
+     138.0,
+     -2798.0
+    ],
+    "bolt_tension_n": [
+     344.6,
+     357.5
+    ],
+    "bolt_shear_n": [
+     75.0,
+     100.1
+    ],
+    "contact_mpa": 10.08,
+    "resid_n": 0.0,
+    "net_section_fi": 0.099,
+    "net_section_sigma_mpa": 6.98,
+    "sf": {
+     "bolt_tension": 24.89,
+     "washer_bearing": 11.44,
+     "plug_shear_out": 15.15,
+     "bolt_shear": 71.88,
+     "hole_bearing": 22.99,
+     "contact": 6.99,
+     "net_section": 10.09
+    },
+    "fatigue": {
+     "bolt": 16.67,
+     "plug_paht": 8.52,
+     "washer_paht": 6.44,
+     "hole_paht": 12.93,
+     "net_section_paht": 5.68
+    },
+    "min_sf": 6.99,
+    "min_fatigue": 5.68
+   }
+  },
+  "worst_strength": {
+   "load": "cradle",
+   "sf": 3.85,
+   "check": "net_section"
+  },
+  "worst_fatigue": {
+   "load": "cradle",
+   "fatigue": 1.73,
+   "check": "net_section_paht"
+  }
+ },
+ "joint_share_1": {
+  "share": 1.0,
+  "joint": {
+   "dy": -4.3,
+   "dz": 8.0,
+   "hole_d": 5.1,
+   "hole_print_d": 4.8,
+   "washer_od": 10.0,
+   "washer_t": 1.0,
+   "nut_af": 8.0,
+   "nut_t": 4.0,
+   "nut_face": 151.0,
+   "trap_x0": 145.8,
+   "head_face": 183.0,
+   "head_h": 3.5,
+   "head_d": 8.5,
+   "bolt_len": 40.0,
+   "tail_x": 142.5
+  },
+  "capacities_n": {
+   "washer_bearing_n": 4091.1,
+   "plug_shear_out_n": 5414.4,
+   "bolt_tension_n": 8896.3,
+   "bolt_fatigue_n": 3177.2,
+   "hole_bearing_n": 2301.1,
+   "bolt_shear_n": 7193.9,
+   "contact_mpa": 70.4
+  },
+  "net_section": {
+   "A": 376.0,
+   "yc": 0.91,
+   "zc": 142.0,
+   "Iy": 25648.61,
+   "Iz": 10382.69,
+   "Iyz": 0.0
+  },
+  "rows": {
+   "cradle": {
+    "g_times_req": 2.4,
+    "force_on_clevis_n": [
+     0.0,
+     615.0,
+     -374.4
+    ],
+    "moment_nmm": [
+     -8746.0,
+     5990.0,
+     9840.0
+    ],
+    "bolt_tension_n": [
+     226.1,
+     625.3
+    ],
+    "bolt_shear_n": [
+     874.4,
+     303.7
+    ],
+    "contact_mpa": 6.83,
+    "resid_n": 0.0,
+    "net_section_fi": 0.432,
+    "net_section_sigma_mpa": 30.44,
+    "sf": {
+     "bolt_tension": 14.23,
+     "washer_bearing": 6.54,
+     "plug_shear_out": 8.66,
+     "bolt_shear": 8.23,
+     "hole_bearing": 2.63,
+     "contact": 10.31,
+     "net_section": 2.31
+    },
+    "fatigue": {
+     "bolt": 7.62,
+     "plug_paht": 3.9,
+     "washer_paht": 2.94,
+     "hole_paht": 1.18,
+     "net_section_paht": 1.04
+    },
+    "min_sf": 2.31,
+    "min_fatigue": 1.04
+   },
+   "cradle|fleet_out": {
+    "g_times_req": 2.4,
+    "force_on_clevis_n": [
+     125.0,
+     605.7,
+     -368.7
+    ],
+    "moment_nmm": [
+     -8613.0,
+     5899.0,
+     6770.0
+    ],
+    "bolt_tension_n": [
+     155.2,
+     558.6
+    ],
+    "bolt_shear_n": [
+     861.1,
+     299.1
+    ],
+    "contact_mpa": 5.34,
+    "resid_n": 0.0,
+    "net_section_fi": 0.395,
+    "net_section_sigma_mpa": 27.84,
+    "sf": {
+     "bolt_tension": 15.93,
+     "washer_bearing": 7.32,
+     "plug_shear_out": 9.69,
+     "bolt_shear": 8.35,
+     "hole_bearing": 2.67,
+     "contact": 13.19,
+     "net_section": 2.53
+    },
+    "fatigue": {
+     "bolt": 8.53,
+     "plug_paht": 4.36,
+     "washer_paht": 3.3,
+     "hole_paht": 1.2,
+     "net_section_paht": 1.14
+    },
+    "min_sf": 2.53,
+    "min_fatigue": 1.14
+   },
+   "cradle|fleet_in": {
+    "g_times_req": 2.4,
+    "force_on_clevis_n": [
+     0.0,
+     605.7,
+     -368.7
+    ],
+    "moment_nmm": [
+     -8613.0,
+     5899.0,
+     9691.0
+    ],
+    "bolt_tension_n": [
+     222.7,
+     615.8
+    ],
+    "bolt_shear_n": [
+     861.1,
+     299.1
+    ],
+    "contact_mpa": 6.72,
+    "resid_n": 0.0,
+    "net_section_fi": 0.426,
+    "net_section_sigma_mpa": 29.98,
+    "sf": {
+     "bolt_tension": 14.45,
+     "washer_bearing": 6.64,
+     "plug_shear_out": 8.79,
+     "bolt_shear": 8.35,
+     "hole_bearing": 2.67,
+     "contact": 10.47,
+     "net_section": 2.35
+    },
+    "fatigue": {
+     "bolt": 7.74,
+     "plug_paht": 3.96,
+     "washer_paht": 2.99,
+     "hole_paht": 1.2,
+     "net_section_paht": 1.06
+    },
+    "min_sf": 2.35,
+    "min_fatigue": 1.06
+   },
+   "bagon_down": {
+    "g_times_req": 3.0,
+    "force_on_clevis_n": [
+     0.0,
+     0.0,
+     -296.3
+    ],
+    "moment_nmm": [
+     -6923.0,
+     4741.0,
+     0.0
+    ],
+    "bolt_tension_n": [
+     0.0,
+     271.4
+    ],
+    "bolt_shear_n": [
+     457.3,
+     457.3
+    ],
+    "contact_mpa": 3.96,
+    "resid_n": 0.0,
+    "net_section_fi": 0.117,
+    "net_section_sigma_mpa": 5.08,
+    "sf": {
+     "bolt_tension": 32.78,
+     "washer_bearing": 15.08,
+     "plug_shear_out": 19.95,
+     "bolt_shear": 15.73,
+     "hole_bearing": 5.03,
+     "contact": 17.78,
+     "net_section": 8.56
+    },
+    "fatigue": {
+     "bolt": 21.95,
+     "plug_paht": 11.22,
+     "washer_paht": 8.48,
+     "hole_paht": 2.83,
+     "net_section_paht": 4.81
+    },
+    "min_sf": 5.03,
+    "min_fatigue": 2.83
+   },
+   "bagon_down|fleet_out": {
+    "g_times_req": 3.0,
+    "force_on_clevis_n": [
+     51.5,
+     0.0,
+     -291.8
+    ],
+    "moment_nmm": [
+     -6817.0,
+     4669.0,
+     -1202.0
+    ],
+    "bolt_tension_n": [
+     0.0,
+     380.3
+    ],
+    "bolt_shear_n": [
+     450.4,
+     450.4
+    ],
+    "contact_mpa": 6.7,
+    "resid_n": 0.0,
+    "net_section_fi": 0.115,
+    "net_section_sigma_mpa": 6.16,
+    "sf": {
+     "bolt_tension": 23.39,
+     "washer_bearing": 10.76,
+     "plug_shear_out": 14.24,
+     "bolt_shear": 15.97,
+     "hole_bearing": 5.11,
+     "contact": 10.5,
+     "net_section": 8.69
+    },
+    "fatigue": {
+     "bolt": 15.67,
+     "plug_paht": 8.01,
+     "washer_paht": 6.05,
+     "hole_paht": 2.87,
+     "net_section_paht": 4.89
+    },
+    "min_sf": 5.11,
+    "min_fatigue": 2.87
+   },
+   "bagon_down|fleet_in": {
+    "g_times_req": 3.0,
+    "force_on_clevis_n": [
+     0.0,
+     0.0,
+     -291.8
+    ],
+    "moment_nmm": [
+     -6817.0,
+     4669.0,
+     0.0
+    ],
+    "bolt_tension_n": [
+     0.0,
+     267.2
+    ],
+    "bolt_shear_n": [
+     450.4,
+     450.4
+    ],
+    "contact_mpa": 3.9,
+    "resid_n": 0.0,
+    "net_section_fi": 0.115,
+    "net_section_sigma_mpa": 5.0,
+    "sf": {
+     "bolt_tension": 33.29,
+     "washer_bearing": 15.31,
+     "plug_shear_out": 20.26,
+     "bolt_shear": 15.97,
+     "hole_bearing": 5.11,
+     "contact": 18.06,
+     "net_section": 8.69
+    },
+    "fatigue": {
+     "bolt": 22.29,
+     "plug_paht": 11.4,
+     "washer_paht": 8.61,
+     "hole_paht": 2.87,
+     "net_section_paht": 4.89
+    },
+    "min_sf": 5.11,
+    "min_fatigue": 2.87
+   },
+   "bagon_fore30": {
+    "g_times_req": 3.0,
+    "force_on_clevis_n": [
+     0.0,
+     -148.2,
+     -256.6
+    ],
+    "moment_nmm": [
+     -5995.0,
+     4106.0,
+     -2370.0
+    ],
+    "bolt_tension_n": [
+     108.9,
+     490.4
+    ],
+    "bolt_shear_n": [
+     326.9,
+     466.7
+    ],
+    "contact_mpa": 10.19,
+    "resid_n": 0.0,
+    "net_section_fi": 0.145,
+    "net_section_sigma_mpa": 10.19,
+    "sf": {
+     "bolt_tension": 18.14,
+     "washer_bearing": 8.34,
+     "plug_shear_out": 11.04,
+     "bolt_shear": 15.41,
+     "hole_bearing": 4.93,
+     "contact": 6.91,
+     "net_section": 6.91
+    },
+    "fatigue": {
+     "bolt": 12.15,
+     "plug_paht": 6.21,
+     "washer_paht": 4.69,
+     "hole_paht": 2.77,
+     "net_section_paht": 3.89
+    },
+    "min_sf": 4.93,
+    "min_fatigue": 2.77
+   },
+   "bagon_fore30|fleet_out": {
+    "g_times_req": 3.0,
+    "force_on_clevis_n": [
+     51.5,
+     -145.9,
+     -252.7
+    ],
+    "moment_nmm": [
+     -5904.0,
+     4043.0,
+     -3536.0
+    ],
+    "bolt_tension_n": [
+     281.7,
+     657.9
+    ],
+    "bolt_shear_n": [
+     321.9,
+     459.7
+    ],
+    "contact_mpa": 14.39,
+    "resid_n": 0.0,
+    "net_section_fi": 0.159,
+    "net_section_sigma_mpa": 11.19,
+    "sf": {
+     "bolt_tension": 13.52,
+     "washer_bearing": 6.22,
+     "plug_shear_out": 8.23,
+     "bolt_shear": 15.65,
+     "hole_bearing": 5.01,
+     "contact": 4.89,
+     "net_section": 6.29
+    },
+    "fatigue": {
+     "bolt": 9.05,
+     "plug_paht": 4.63,
+     "washer_paht": 3.5,
+     "hole_paht": 2.82,
+     "net_section_paht": 3.54
+    },
+    "min_sf": 4.89,
+    "min_fatigue": 2.82
+   },
+   "bagon_fore30|fleet_in": {
+    "g_times_req": 3.0,
+    "force_on_clevis_n": [
+     0.0,
+     -145.9,
+     -252.7
+    ],
+    "moment_nmm": [
+     -5904.0,
+     4043.0,
+     -2334.0
+    ],
+    "bolt_tension_n": [
+     107.2,
+     482.9
+    ],
+    "bolt_shear_n": [
+     321.9,
+     459.7
+    ],
+    "contact_mpa": 10.03,
+    "resid_n": 0.0,
+    "net_section_fi": 0.143,
+    "net_section_sigma_mpa": 10.03,
+    "sf": {
+     "bolt_tension": 18.42,
+     "washer_bearing": 8.47,
+     "plug_shear_out": 11.21,
+     "bolt_shear": 15.65,
+     "hole_bearing": 5.01,
+     "contact": 7.02,
+     "net_section": 7.02
+    },
+    "fatigue": {
+     "bolt": 12.34,
+     "plug_paht": 6.31,
+     "washer_paht": 4.77,
+     "hole_paht": 2.82,
+     "net_section_paht": 3.95
+    },
+    "min_sf": 5.01,
+    "min_fatigue": 2.82
+   },
+   "bagon_drape": {
+    "g_times_req": 3.0,
+    "force_on_clevis_n": [
+     0.0,
+     -295.9,
+     -14.6
+    ],
+    "moment_nmm": [
+     -340.0,
+     233.0,
+     -4735.0
+    ],
+    "bolt_tension_n": [
+     583.2,
+     605.0
+    ],
+    "bolt_shear_n": [
+     126.9,
+     169.4
+    ],
+    "contact_mpa": 17.05,
+    "resid_n": 0.0,
+    "net_section_fi": 0.168,
+    "net_section_sigma_mpa": 11.81,
+    "sf": {
+     "bolt_tension": 14.71,
+     "washer_bearing": 6.76,
+     "plug_shear_out": 8.95,
+     "bolt_shear": 42.47,
+     "hole_bearing": 13.59,
+     "contact": 4.13,
+     "net_section": 5.96
+    },
+    "fatigue": {
+     "bolt": 9.85,
+     "plug_paht": 5.03,
+     "washer_paht": 3.8,
+     "hole_paht": 7.64,
+     "net_section_paht": 3.35
+    },
+    "min_sf": 4.13,
+    "min_fatigue": 3.35
+   },
+   "bagon_drape|fleet_out": {
+    "g_times_req": 3.0,
+    "force_on_clevis_n": [
+     51.5,
+     -291.4,
+     -14.3
+    ],
+    "moment_nmm": [
+     -335.0,
+     229.0,
+     -5865.0
+    ],
+    "bolt_tension_n": [
+     749.9,
+     771.4
+    ],
+    "bolt_shear_n": [
+     125.0,
+     166.8
+    ],
+    "contact_mpa": 21.14,
+    "resid_n": 0.0,
+    "net_section_fi": 0.182,
+    "net_section_sigma_mpa": 12.78,
+    "sf": {
+     "bolt_tension": 11.53,
+     "washer_bearing": 5.3,
+     "plug_shear_out": 7.02,
+     "bolt_shear": 43.13,
+     "hole_bearing": 13.8,
+     "contact": 3.33,
+     "net_section": 5.51
+    },
+    "fatigue": {
+     "bolt": 7.72,
+     "plug_paht": 3.95,
+     "washer_paht": 2.98,
+     "hole_paht": 7.76,
+     "net_section_paht": 3.1
+    },
+    "min_sf": 3.33,
+    "min_fatigue": 2.98
+   },
+   "bagon_drape|fleet_in": {
+    "g_times_req": 3.0,
+    "force_on_clevis_n": [
+     0.0,
+     -291.4,
+     -14.3
+    ],
+    "moment_nmm": [
+     -335.0,
+     229.0,
+     -4663.0
+    ],
+    "bolt_tension_n": [
+     574.3,
+     595.8
+    ],
+    "bolt_shear_n": [
+     125.0,
+     166.8
+    ],
+    "contact_mpa": 16.79,
+    "resid_n": 0.0,
+    "net_section_fi": 0.165,
+    "net_section_sigma_mpa": 11.63,
+    "sf": {
+     "bolt_tension": 14.93,
+     "washer_bearing": 6.87,
+     "plug_shear_out": 9.09,
+     "bolt_shear": 43.13,
+     "hole_bearing": 13.8,
+     "contact": 4.19,
+     "net_section": 6.05
+    },
+    "fatigue": {
+     "bolt": 10.0,
+     "plug_paht": 5.11,
+     "washer_paht": 3.86,
+     "hole_paht": 7.76,
+     "net_section_paht": 3.41
+    },
+    "min_sf": 4.19,
+    "min_fatigue": 3.41
+   }
+  },
+  "worst_strength": {
+   "load": "cradle",
+   "sf": 2.31,
+   "check": "net_section"
+  },
+  "worst_fatigue": {
+   "load": "cradle",
+   "fatigue": 1.04,
+   "check": "net_section_paht"
+  }
+ },
+ "joint_slices": {
+  "L": {
+   "clevis_170": {
+    "outer_area_mm2": 604.6,
+    "holes": [
+     {
+      "d_eq_mm": 4.79,
+      "y": -6.97,
+      "z": 150.0
+     },
+     {
+      "d_eq_mm": 4.79,
+      "y": -6.97,
+      "z": 134.0
+     }
+    ],
+    "bounds_yz": [
+     -12.47,
+     127.5,
+     8.4,
+     156.5
+    ]
+   },
+   "body_trap": {
+    "outer_area_mm2": 663.9,
+    "holes": [
+     {
+      "d_eq_mm": 6.98,
+      "y": 16.4,
+      "z": 142.0
+     }
+    ],
+    "bounds_yz": [
+     -12.47,
+     127.5,
+     23.97,
+     156.5
+    ]
+   },
+   "face": {
+    "outer_area_mm2": 604.6,
+    "holes": [
+     {
+      "d_eq_mm": 4.79,
+      "y": -6.97,
+      "z": 134.0
+     },
+     {
+      "d_eq_mm": 4.79,
+      "y": -6.97,
+      "z": 150.0
+     }
+    ],
+    "bounds_yz": [
+     -12.47,
+     127.5,
+     8.4,
+     156.5
+    ]
+   },
+   "pass": true
+  },
+  "R": {
+   "clevis_170": {
+    "outer_area_mm2": 604.6,
+    "holes": [
+     {
+      "d_eq_mm": 4.79,
+      "y": -6.97,
+      "z": 134.0
+     },
+     {
+      "d_eq_mm": 4.79,
+      "y": -6.97,
+      "z": 150.0
+     }
+    ],
+    "bounds_yz": [
+     -12.47,
+     127.5,
+     8.4,
+     156.5
+    ]
+   },
+   "body_trap": {
+    "outer_area_mm2": 664.8,
+    "holes": [
+     {
+      "d_eq_mm": 6.98,
+      "y": 16.4,
+      "z": 142.0
+     }
+    ],
+    "bounds_yz": [
+     -12.47,
+     127.5,
+     24.0,
+     156.5
+    ]
+   },
+   "face": {
+    "outer_area_mm2": 604.6,
+    "holes": [
+     {
+      "d_eq_mm": 4.79,
+      "y": -6.97,
+      "z": 150.0
+     },
+     {
+      "d_eq_mm": 4.79,
+      "y": -6.97,
+      "z": 134.0
+     }
+    ],
+    "bounds_yz": [
+     -12.47,
+     127.5,
+     8.4,
+     156.5
+    ]
+   },
+   "pass": true
+  },
+  "pass": true
+ },
+ "lug_us2_bl049": {
+  "lane_x": 165.0,
+  "z": 142.0,
+  "xoff": 50.0,
+  "arm": {
+   "root": {
+    "y_lo": -11.0,
+    "z": [
+     -15.0,
+     15.0
+    ],
+    "top": "stay"
+   },
+   "tip": {
+    "y_lo": -8.0,
+    "z": [
+     -9.0,
+     9.0
+    ]
+   }
+  },
+  "added_g_model": 27.23,
+  "worst_strength": {
+   "load": "cradle|fleet_in",
+   "sf": 2.31
+  },
+  "worst_fatigue": {
+   "load": "cradle|fleet_in",
+   "fatigue": 1.04
+  },
+  "min_creep": 2.22,
+  "pin_7075_cradle": {
+   "material": "alu_7075_t6",
+   "pin_d_mm": 5.0,
+   "span_mm": 28.0,
+   "M_nmm": 3240.0,
+   "sigma_mpa": 264.02,
+   "sy_mpa": 462.0,
+   "sf_yield": 1.75,
+   "sigma_walk_mpa": 176.01,
+   "goodman_smax_r0_mpa": 228.93,
+   "sf_fatigue": 1.3,
+   "length_mm": 40.0,
+   "mass_g": 2.21
+  }
+ },
+ "isect": {
+  "solid": {
+   "lugs": {
+    "us1": {
+     "strength": 1.78,
+     "fatigue": 0.8,
+     "fatigue_load": "cradle|fleet_out",
+     "region_fatigue": {
+      "fairlead": 1.62,
+      "arm": 1.19,
+      "root": 0.8
+     }
+    },
+    "us2": {
+     "strength": 2.31,
+     "fatigue": 1.04,
+     "fatigue_load": "cradle|fleet_in",
+     "region_fatigue": {
+      "fairlead": 1.62,
+      "arm": 1.38,
+      "root": 1.04
+     }
+    }
+   },
+   "saved_g": 0.0
+  },
+  "I_w3_f3": {
+   "kind": "I",
+   "web": 3.0,
+   "flange": 3.0,
+   "lugs": {
+    "us1": {
+     "strength": 1.2,
+     "fatigue": 0.54,
+     "fatigue_load": "cradle|fleet_out",
+     "region_fatigue": {
+      "fairlead": 1.57,
+      "arm": 0.54,
+      "root": 0.66
+     }
+    },
+    "us2": {
+     "strength": 1.44,
+     "fatigue": 0.65,
+     "fatigue_load": "cradle|fleet_in",
+     "region_fatigue": {
+      "fairlead": 1.58,
+      "arm": 0.65,
+      "root": 0.97
+     }
+    }
+   },
+   "saved_g": 13.6,
+   "every_margin_holds": false
+  },
+  "box_w3_f3": {
+   "kind": "box",
+   "web": 3.0,
+   "flange": 3.0,
+   "lugs": {
+    "us1": {
+     "strength": 1.69,
+     "fatigue": 0.76,
+     "fatigue_load": "cradle|fleet_out",
+     "region_fatigue": {
+      "fairlead": 1.61,
+      "arm": 0.91,
+      "root": 0.76
+     }
+    },
+    "us2": {
+     "strength": 1.92,
+     "fatigue": 0.86,
+     "fatigue_load": "cradle|fleet_in",
+     "region_fatigue": {
+      "fairlead": 1.62,
+      "arm": 0.86,
+      "root": 1.01
+     }
+    }
+   },
+   "saved_g": 13.6,
+   "every_margin_holds": false
+  },
+  "box_w4_f4": {
+   "kind": "box",
+   "web": 4.0,
+   "flange": 4.0,
+   "lugs": {
+    "us1": {
+     "strength": 1.72,
+     "fatigue": 0.77,
+     "fatigue_load": "cradle|fleet_out",
+     "region_fatigue": {
+      "fairlead": 1.62,
+      "arm": 1.04,
+      "root": 0.77
+     }
+    },
+    "us2": {
+     "strength": 2.28,
+     "fatigue": 1.02,
+     "fatigue_load": "cradle|fleet_in",
+     "region_fatigue": {
+      "fairlead": 1.62,
+      "arm": 1.08,
+      "root": 1.02
+     }
+    }
+   },
+   "saved_g": 11.01,
+   "every_margin_holds": false
+  },
+  "box_w5_f5": {
+   "kind": "box",
+   "web": 5.0,
+   "flange": 5.0,
+   "lugs": {
+    "us1": {
+     "strength": 1.73,
+     "fatigue": 0.78,
+     "fatigue_load": "cradle|fleet_out",
+     "region_fatigue": {
+      "fairlead": 1.62,
+      "arm": 1.11,
+      "root": 0.78
+     }
+    },
+    "us2": {
+     "strength": 2.29,
+     "fatigue": 1.03,
+     "fatigue_load": "cradle|fleet_in",
+     "region_fatigue": {
+      "fairlead": 1.62,
+      "arm": 1.21,
+      "root": 1.03
+     }
+    }
+   },
+   "saved_g": 8.63,
+   "every_margin_holds": false
+  },
+  "adopted": []
+ },
+ "us_route": {
+  "print_lanes": {
+   "worst_clear_mm": {
+    "us1": 12.4,
+    "us2": 14.6
+   },
+   "pass": true,
+   "rows": [
+    {
+     "torso": 15,
+     "side": "R",
+     "strap": "us1",
+     "min_clear_mm": 12.4,
+     "pass": true
+    },
+    {
+     "torso": 15,
+     "side": "R",
+     "strap": "us2",
+     "min_clear_mm": 19.2,
+     "pass": true
+    },
+    {
+     "torso": 15,
+     "side": "L",
+     "strap": "us1",
+     "min_clear_mm": 13.0,
+     "pass": true
+    },
+    {
+     "torso": 15,
+     "side": "L",
+     "strap": "us2",
+     "min_clear_mm": 21.5,
+     "pass": true
+    },
+    {
+     "torso": 19,
+     "side": "R",
+     "strap": "us1",
+     "min_clear_mm": 14.0,
+     "pass": true
+    },
+    {
+     "torso": 19,
+     "side": "R",
+     "strap": "us2",
+     "min_clear_mm": 14.6,
+     "pass": true
+    },
+    {
+     "torso": 19,
+     "side": "L",
+     "strap": "us1",
+     "min_clear_mm": 12.4,
+     "pass": true
+    },
+    {
+     "torso": 19,
+     "side": "L",
+     "strap": "us2",
+     "min_clear_mm": 15.5,
+     "pass": true
+    },
+    {
+     "torso": 23,
+     "side": "R",
+     "strap": "us1",
+     "min_clear_mm": 14.0,
+     "pass": true
+    },
+    {
+     "torso": 23,
+     "side": "R",
+     "strap": "us2",
+     "min_clear_mm": 18.8,
+     "pass": true
+    },
+    {
+     "torso": 23,
+     "side": "L",
+     "strap": "us1",
+     "min_clear_mm": 12.4,
+     "pass": true
+    },
+    {
+     "torso": 23,
+     "side": "L",
+     "strap": "us2",
+     "min_clear_mm": 16.4,
+     "pass": true
+    }
+   ]
+  },
+  "station_move": {
+   "us1": {
+    "x": 70.0,
+    "z": 95.0,
+    "offset_from_stay_mm": 45.0,
+    "side": "inboard"
+   },
+   "us2": {
+    "x": 165.0,
+    "z": 142.0,
+    "offset_from_stay_mm": 50.0,
+    "side": "outboard"
+   },
+   "channel_entry_x": {
+    "us1": 70.0,
+    "us2": 165.0
+   },
+   "pass": true,
+   "worst_clear_mm": {
+    "us1": 12.4,
+    "us2": 14.6
+   }
+  },
+  "test_piece": {
+   "file": "designs/pack_5200/print/frame_h1/test_pieces/us_route_stay_R.stl",
+   "z": [
+    40.0,
+    160.0
+   ],
+   "x": [
+    46.0,
+    189.0
+   ],
+   "g": 125.9,
+   "g_as_assembled": 140.0,
+   "bolt_on": "us2_clevis_R",
+   "watertight": true,
+   "shells": 1,
+   "dropped": [],
+   "extents_mm": [
+    117.0,
+    120.0,
+    64.7
+   ],
+   "fairleads": [
+    "hinge",
+    "us1",
+    "us2"
+   ]
+  }
+ },
+ "slice_checks": {
+  "fairleads": {
+   "hinge_L": {
+    "pass": true,
+    "gap_under_pin": 6.49,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": -115.0,
+    "cheek_mm": 9.99,
+    "cheek_height_mm": 35.98
+   },
+   "hinge_R": {
+    "pass": true,
+    "gap_under_pin": 6.5,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": 115.0,
+    "cheek_mm": 9.99,
+    "cheek_height_mm": 35.97
+   },
+   "us1_L": {
+    "pass": true,
+    "gap_under_pin": 5.5,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": -70.0,
+    "cheek_mm": 8.0,
+    "cheek_height_mm": 18.0
+   },
+   "us1_R": {
+    "pass": true,
+    "gap_under_pin": 5.5,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": 70.0,
+    "cheek_mm": 8.0,
+    "cheek_height_mm": 18.0
+   },
+   "us2_L": {
+    "pass": true,
+    "gap_under_pin": 5.5,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": -165.0,
+    "cheek_mm": 8.0,
+    "cheek_height_mm": 17.98
+   },
+   "us2_R": {
+    "pass": true,
+    "gap_under_pin": 5.5,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": 165.0,
+    "cheek_mm": 8.0,
+    "cheek_height_mm": 17.98
+   },
+   "im1_L": {
+    "pass": true,
+    "gap_under_pin": 5.5,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": -115.0,
+    "cheek_mm": 7.99,
+    "cheek_height_mm": 17.98
+   },
+   "im1_R": {
+    "pass": true,
+    "gap_under_pin": 5.5,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": 115.0,
+    "cheek_mm": 7.99,
+    "cheek_height_mm": 17.98
+   },
+   "im2_L": {
+    "pass": true,
+    "gap_under_pin": 5.5,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": -115.0,
+    "cheek_mm": 7.99,
+    "cheek_height_mm": 18.0
+   },
+   "im2_R": {
+    "pass": true,
+    "gap_under_pin": 5.5,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": 115.0,
+    "cheek_mm": 7.99,
+    "cheek_height_mm": 17.98
+   },
+   "im3_L": {
+    "pass": true,
+    "gap_under_pin": 5.5,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": -115.0,
+    "cheek_mm": 7.98,
+    "cheek_height_mm": 27.99
+   },
+   "im3_R": {
+    "pass": true,
+    "gap_under_pin": 5.5,
+    "throat": 20.0,
+    "eye_fits": true,
+    "x": 115.0,
+    "cheek_mm": 7.98,
+    "cheek_height_mm": 27.99
+   }
+  },
+  "fairleads_pass": true,
+  "channel": {
+   "min": {
+    "clear_mm": 0.964,
+    "fore_wall_mm": 3.67,
+    "aft_wall_mm": 6.79,
+    "side_wall_mm": 13.8,
+    "walls_ok": true
+   },
+   "pass": true
+  },
+  "pawl": {
+   "swing_deg": 10.0,
+   "lp_min_dist_mm": 0.506,
+   "old_min_dist_mm": -3.551,
+   "lp_max_py": 12.307445300003362,
+   "old_max_py": 17.92286623219312,
+   "face_py": 12.84,
+   "zone_py": 9.15,
+   "lift_at_teeth_mm": 3.04,
+   "pass": true
+  },
+  "pieces": {
+   "us_route_stay_R|hinge_R": {
+    "pass": true,
+    "gap_under_pin": 6.49,
+    "throat": 20.02,
+    "eye_fits": true,
+    "watertight": true
+   },
+   "us_route_stay_R|us1_R": {
+    "pass": true,
+    "gap_under_pin": 5.49,
+    "throat": 20.0,
+    "eye_fits": true,
+    "watertight": true
+   },
+   "us_route_stay_R|us2_R": {
+    "pass": true,
+    "gap_under_pin": 5.52,
+    "throat": 20.0,
+    "eye_fits": true,
+    "watertight": true
+   },
+   "hefit_hinge_fairlead_R|hinge_R": {
+    "pass": true,
+    "gap_under_pin": 6.49,
+    "throat": 20.01,
+    "eye_fits": true,
+    "watertight": true
+   },
+   "im3ec_cheek_R|im3_R": {
+    "pass": true,
+    "gap_under_pin": 5.49,
+    "throat": 20.01,
+    "eye_fits": true,
+    "watertight": true
+   }
+  },
+  "pieces_pass": true
+ },
+ "spreader_us2_notch": {
+  "notch_z": [
+   127.0,
+   157.0
+  ],
+  "root_z": [
+   127.0,
+   157.0
+  ],
+  "plan_clear_mm": -0.0,
+  "support_bands": {
+   "below": {
+    "z": 127.0,
+    "y": 10.0
+   },
+   "above": {
+    "z": 160.0,
+    "y": 11.84
+   }
+  },
+  "air_mm": 2.31,
+  "air_req_mm": 1.5,
+  "pass": true,
+  "stl": "/home/user/Hunting-appeal/designs/pack_5200/print/frame_h1/h1_assembled.stl"
+ },
+ "mass": {
+  "assembled_g": 995.1,
+  "assembled_bl049_g": 974.2,
+  "print_delta_g": 20.9,
+  "joint_blocks_g": 26.1,
+  "joint_cuts_g": 5.15,
+  "lower_g": 423.4,
+  "upper_g": 543.5,
+  "clevis_g": {
+   "us2_clevis_R": 14.14,
+   "us2_clevis_L": 14.14
+  },
+  "hardware": {
+   "4 Ti gr5 M5 x 40 DIN 7984": 16.3,
+   "4 A2 M5 hex nuts ISO 4032": 4.52,
+   "8 A2 M5 x 10 x 1 washers DIN 433": 3.57
+  },
+  "hardware_g": 24.39,
+  "stations": 12,
+  "pins_booked": 8,
+  "pin_g": 2.413,
+  "sleeve_g": 0.287,
+  "pins_sleeves_delta_g": 10.8,
+  "frame_delta_g": 45.29
+ }
+}

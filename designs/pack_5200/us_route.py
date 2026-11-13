@@ -45,7 +45,7 @@ for _p in (str(ROOT), str(HERE), str(HERE / "concepts")):
 PRINT = HERE / "print" / "frame_h1" / "h1_assembled.stl"
 OUT_JSON = HERE / "analysis" / "us_route.json"
 SCREENS = ROOT / "outputs" / "screens"
-SHOT = "20261113_BL049_us"                    # BL-049 re-run on the lanes print (BL-048: 20261113_BL048us)
+SHOT = "20261113_BL050_us"                    # BL-050 re-run (BL-049: 20261113_BL049_us, BL-048: 20261113_BL048us)
 KIT_PIECES = HERE / "print" / "frame_h1" / "test_pieces"   # BL-049: re-cut on the moved stations (was the kit folder)
 US_PIECE = "us_route_stay_R"
 TORSOS = (15, 19, 23)
@@ -616,7 +616,19 @@ def export_test_piece(mesh=None, out_dir: Path = KIT_PIECES) -> dict:
     b = m3d.Manifold.cube((xb - xa, 80.0, zhi - zlo), center=True).translate((0.5 * (xa + xb), p["yc"],
                                                                                 0.5 * (zlo + zhi)))
     piece, dropped = clean_shell(_from_manifold((man ^ b).simplify(0.04)))
-    flat = H1.lay_flat(piece)
+    # BL-050: the US2 outer clevis is its own printed piece (h1_bedfit): the frame-coordinate copy is the piece as
+    # assembled (the slice checks read it); the print file is the stay piece without it (bolt us2_clevis_R from the
+    # frame print folder onto it, as on the frame)
+    from huntkit.gendesign import h1_buckling as HB
+    printed = piece
+    if HB.US2_CLEVIS:
+        from huntkit.gendesign import h1_bedfit as BF
+        cut = _to_manifold(piece)
+        for q in BF.us2_stations():
+            if q["side"] == "R":
+                cut = cut - BF.split_box(q)
+        printed, _ = clean_shell(_from_manifold(cut))
+    flat = H1.lay_flat(printed)
     out_dir.mkdir(parents=True, exist_ok=True)
     piece.export(out_dir / f"{US_PIECE}_frame_coords.stl")
     flat.export(out_dir / f"{US_PIECE}.stl")
@@ -624,7 +636,8 @@ def export_test_piece(mesh=None, out_dir: Path = KIT_PIECES) -> dict:
     wt = all(trimesh.load(out_dir / fn).is_watertight for fn in (f"{US_PIECE}_frame_coords.stl", f"{US_PIECE}.stl"))
     rho = _H().RHO_G_MM3
     return {"file": str((out_dir / f"{US_PIECE}.stl").relative_to(ROOT)), "z": [zlo, zhi],
-            "x": [round(xa, 1), round(xb, 1)], "g": round(piece.volume * rho, 1),
+            "x": [round(xa, 1), round(xb, 1)], "g": round(printed.volume * rho, 1),
+            "g_as_assembled": round(piece.volume * rho, 1), "bolt_on": "us2_clevis_R" if printed is not piece else None,
             "watertight": bool(wt), "shells": len(piece.split(only_watertight=False)), "dropped": dropped,
             "extents_mm": [round(v, 1) for v in flat.extents],
             "fairleads": sorted(n for n in st if zlo < st[n]["z"] < zhi)}

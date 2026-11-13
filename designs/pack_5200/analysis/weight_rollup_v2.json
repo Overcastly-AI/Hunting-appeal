@@ -12,11 +12,11 @@
    "meat_trip": 3967.4
   },
   "P": {
-   "base": 3870.5,
-   "as_hunted": 4189.0,
-   "meat_trip": 4385.0,
+   "base": 3926.6,
+   "as_hunted": 4245.1,
+   "meat_trip": 4441.1,
    "by_system_base": {
-    "frame": 1239.3,
+    "frame": 1284.6,
     "back": 413.6,
     "belt": 482.3,
     "harness": 225.1,
@@ -26,21 +26,21 @@
     "fly": 5.9,
     "straps_meat": 416.9,
     "straps_compression": 243.2,
-    "attachment": 295.4,
+    "attachment": 306.2,
     "misc": 25.8
    },
    "like_for_like_base": {
-    "bag_side": 1484.4,
-    "suspension": 2360.3,
+    "bag_side": 1495.2,
+    "suspension": 2405.6,
     "misc": 25.8
    }
   },
   "A": {
-   "base": 3283.3,
-   "as_hunted": 3601.9,
-   "meat_trip": 3797.9,
+   "base": 3339.4,
+   "as_hunted": 3658.0,
+   "meat_trip": 3854.0,
    "by_system_base": {
-    "frame": 1235.3,
+    "frame": 1280.6,
     "back": 363.6,
     "belt": 393.3,
     "harness": 196.8,
@@ -50,12 +50,12 @@
     "fly": 5.9,
     "straps_meat": 300.9,
     "straps_compression": 141.6,
-    "attachment": 190.8,
+    "attachment": 201.6,
     "misc": 18.8
    },
    "like_for_like_base": {
-    "bag_side": 1075.5,
-    "suspension": 2189.0,
+    "bag_side": 1086.3,
+    "suspension": 2234.3,
     "misc": 18.8
    }
   }
@@ -68,14 +68,14 @@
     "meat_trip": 3939.5
    },
    "P": {
-    "base": 3842.0,
-    "as_hunted": 4160.5,
-    "meat_trip": 4356.5
+    "base": 3898.1,
+    "as_hunted": 4216.6,
+    "meat_trip": 4412.6
    },
    "A": {
-    "base": 3265.5,
-    "as_hunted": 3584.0,
-    "meat_trip": 3780.0
+    "base": 3321.6,
+    "as_hunted": 3640.1,
+    "meat_trip": 3836.1
    }
   },
   "M": {
@@ -85,14 +85,14 @@
     "meat_trip": 3967.4
    },
    "P": {
-    "base": 3870.5,
-    "as_hunted": 4189.0,
-    "meat_trip": 4385.0
+    "base": 3926.6,
+    "as_hunted": 4245.1,
+    "meat_trip": 4441.1
    },
    "A": {
-    "base": 3283.3,
-    "as_hunted": 3601.9,
-    "meat_trip": 3797.9
+    "base": 3339.4,
+    "as_hunted": 3658.0,
+    "meat_trip": 3854.0
    }
   },
   "L": {
@@ -102,14 +102,14 @@
     "meat_trip": 3991.5
    },
    "P": {
-    "base": 3895.4,
-    "as_hunted": 4213.9,
-    "meat_trip": 4409.9
+    "base": 3951.5,
+    "as_hunted": 4270.0,
+    "meat_trip": 4466.0
    },
    "A": {
-    "base": 3299.4,
-    "as_hunted": 3617.9,
-    "meat_trip": 3813.9
+    "base": 3355.5,
+    "as_hunted": 3674.0,
+    "meat_trip": 3870.0
    }
   },
   "XL": {
@@ -119,14 +119,14 @@
     "meat_trip": 4027.5
    },
    "P": {
-    "base": 3932.2,
-    "as_hunted": 4250.7,
-    "meat_trip": 4446.7
+    "base": 3988.3,
+    "as_hunted": 4306.8,
+    "meat_trip": 4502.8
    },
    "A": {
-    "base": 3327.4,
-    "as_hunted": 3645.9,
-    "meat_trip": 3841.9
+    "base": 3383.5,
+    "as_hunted": 3702.0,
+    "meat_trip": 3898.0
    }
   },
   "XXL": {
@@ -136,14 +136,14 @@
     "meat_trip": 4055.6
    },
    "P": {
-    "base": 3961.9,
-    "as_hunted": 4280.5,
-    "meat_trip": 4476.5
+    "base": 4018.0,
+    "as_hunted": 4336.6,
+    "meat_trip": 4532.6
    },
    "A": {
-    "base": 3347.1,
-    "as_hunted": 3665.7,
-    "meat_trip": 3861.7
+    "base": 3403.2,
+    "as_hunted": 3721.8,
+    "meat_trip": 3917.8
    }
   }
  },
@@ -495,6 +495,41 @@
      "g": 2.83,
      "cfg": "base",
      "source": "ledger correction BL049: analysis/h1_lanes.json mass.hinge_pins_delta_g (h1_lanes.hinge_pin mass - attachment 7075 pin row / 8, x 2)"
+    }
+   ]
+  },
+  "BL050": {
+   "class": "P",
+   "ticket": "BL-050 A",
+   "label": "US2 bolt-on clevis (lower half fits the H2S bed); pins + sleeves for 12 stations",
+   "kind": "safety",
+   "gate": "US2 clevis joint pull (CA-1 rig) and FIT-US on us_route_stay_R + us2_clevis_R; first-article weigh",
+   "delta_g": {
+    "base": 56.1,
+    "as_hunted": 56.1,
+    "meat_trip": 56.1
+   },
+   "rows": [
+    {
+     "system": "attachment",
+     "name": "7075 pins + UHMWPE sleeves for the 4 fairlead stations booked short (12 stations, 8 booked; BL-050)",
+     "g": 10.8,
+     "cfg": "base",
+     "source": "ledger correction BL050: analysis/h1_bedfit.json mass.pins_sleeves_delta_g ((len(bag_attach.stations()) - 8) x (pin row + sleeve row) / 8)"
+    },
+    {
+     "system": "frame",
+     "name": "H1 print: US2 bolt-on clevis, joint blocks and bolt / trap cuts (BL-050)",
+     "g": 20.9,
+     "cfg": "base",
+     "source": "ledger correction BL050: analysis/h1_bedfit.json mass.print_delta_g (assembled print mesh BL-050 - BL-049, clevises included)"
+    },
+    {
+     "system": "frame",
+     "name": "US2 clevis joint hardware: 4 Ti M5 x 35 DIN 7984, 4 nuts, 8 DIN 433 washers (BL-050)",
+     "g": 24.39,
+     "cfg": "base",
+     "source": "ledger correction BL050: analysis/h1_bedfit.json mass.hardware_g (h1_bedfit.hardware_g: frame_comp_B.bolt_mass_g, steel nut / washer volumes)"
     }
    ]
   },
@@ -4176,9 +4211,9 @@
  },
  "configs": {
   "corrie_f_base": {
-   "total_g": 3558.2,
+   "total_g": 3614.3,
    "by_system": {
-    "frame": 1301.5,
+    "frame": 1346.8,
     "back": 413.6,
     "belt": 499.2,
     "harness": 216.6,
@@ -4188,19 +4223,19 @@
     "fly": 5.9,
     "straps_meat": 300.9,
     "straps_compression": 141.6,
-    "attachment": 190.8,
+    "attachment": 201.6,
     "misc": 25.8
    },
    "like_for_like": {
-    "bag_side": 1101.5,
-    "suspension": 2430.9,
+    "bag_side": 1112.3,
+    "suspension": 2476.2,
     "misc": 25.8
    }
   },
   "corrie_f_as_hunted": {
-   "total_g": 3876.8,
+   "total_g": 3932.8,
    "by_system": {
-    "frame": 1301.5,
+    "frame": 1346.8,
     "back": 413.6,
     "belt": 535.9,
     "harness": 216.6,
@@ -4210,12 +4245,12 @@
     "fly": 72.1,
     "straps_meat": 300.9,
     "straps_compression": 221.1,
-    "attachment": 195.5,
+    "attachment": 206.3,
     "misc": 25.8
    },
    "like_for_like": {
-    "bag_side": 1383.4,
-    "suspension": 2467.6,
+    "bag_side": 1394.2,
+    "suspension": 2512.8,
     "misc": 25.8
    }
   },
@@ -4361,14 +4396,14 @@
     "pct": 60.0
    },
    "P": {
-    "ours_g": 3815.0,
-    "delta_g": 1507.0,
-    "pct": 65.0
+    "ours_g": 3871.1,
+    "delta_g": 1563.1,
+    "pct": 68.0
    },
    "A": {
-    "ours_g": 3235.5,
-    "delta_g": 927.5,
-    "pct": 40.0
+    "ours_g": 3291.6,
+    "delta_g": 983.6,
+    "pct": 43.0
    }
   },
   {
@@ -4386,14 +4421,14 @@
     "pct": 54.0
    },
    "P": {
-    "ours_g": 3815.0,
-    "delta_g": 1419.0,
-    "pct": 59.0
+    "ours_g": 3871.1,
+    "delta_g": 1475.1,
+    "pct": 62.0
    },
    "A": {
-    "ours_g": 3235.5,
-    "delta_g": 839.5,
-    "pct": 35.0
+    "ours_g": 3291.6,
+    "delta_g": 895.6,
+    "pct": 37.0
    }
   },
   {
@@ -4412,14 +4447,14 @@
     "pct": 44.0
    },
    "P": {
-    "ours_g": 3982.6,
-    "delta_g": 1345.6,
-    "pct": 51.0
+    "ours_g": 4038.7,
+    "delta_g": 1401.7,
+    "pct": 53.0
    },
    "A": {
-    "ours_g": 3395.4,
-    "delta_g": 758.4,
-    "pct": 29.0
+    "ours_g": 3451.5,
+    "delta_g": 814.5,
+    "pct": 31.0
    }
   },
   {
@@ -4434,14 +4469,14 @@
     "pct": 34.0
    },
    "P": {
-    "ours_g": 3870.5,
-    "delta_g": 1080.5,
-    "pct": 39.0
+    "ours_g": 3926.6,
+    "delta_g": 1136.6,
+    "pct": 41.0
    },
    "A": {
-    "ours_g": 3283.3,
-    "delta_g": 493.3,
-    "pct": 18.0
+    "ours_g": 3339.4,
+    "delta_g": 549.4,
+    "pct": 20.0
    }
   },
   {
@@ -4456,14 +4491,14 @@
     "pct": 42.0
    },
    "P": {
-    "ours_g": 3870.5,
-    "delta_g": 1231.5,
-    "pct": 47.0
+    "ours_g": 3926.6,
+    "delta_g": 1287.6,
+    "pct": 49.0
    },
    "A": {
-    "ours_g": 3283.3,
-    "delta_g": 644.3,
-    "pct": 24.0
+    "ours_g": 3339.4,
+    "delta_g": 700.4,
+    "pct": 27.0
    }
   },
   {
@@ -4480,14 +4515,14 @@
     "pct": 35.0
    },
    "P": {
-    "ours_g": 3997.8,
-    "delta_g": 1185.8,
-    "pct": 42.0
+    "ours_g": 4053.9,
+    "delta_g": 1241.9,
+    "pct": 44.0
    },
    "A": {
-    "ours_g": 3410.6,
-    "delta_g": 598.6,
-    "pct": 21.0
+    "ours_g": 3466.7,
+    "delta_g": 654.7,
+    "pct": 23.0
    }
   },
   {
@@ -4504,14 +4539,14 @@
     "pct": 41.0
    },
    "P": {
-    "ours_g": 3997.8,
-    "delta_g": 1289.8,
-    "pct": 48.0
+    "ours_g": 4053.9,
+    "delta_g": 1345.9,
+    "pct": 50.0
    },
    "A": {
-    "ours_g": 3410.6,
-    "delta_g": 702.6,
-    "pct": 26.0
+    "ours_g": 3466.7,
+    "delta_g": 758.7,
+    "pct": 28.0
    }
   },
   {
@@ -4528,14 +4563,14 @@
     "pct": 33.0
    },
    "P": {
-    "ours_g": 3907.1,
-    "delta_g": 1072.1,
-    "pct": 38.0
+    "ours_g": 3963.2,
+    "delta_g": 1128.2,
+    "pct": 40.0
    },
    "A": {
-    "ours_g": 3319.9,
-    "delta_g": 484.9,
-    "pct": 17.0
+    "ours_g": 3376.0,
+    "delta_g": 541.0,
+    "pct": 19.0
    }
   },
   {
@@ -4554,14 +4589,14 @@
     "pct": 127.0
    },
    "P": {
-    "ours_g": 3982.6,
-    "delta_g": 2309.6,
-    "pct": 138.0
+    "ours_g": 4038.7,
+    "delta_g": 2365.7,
+    "pct": 141.0
    },
    "A": {
-    "ours_g": 3395.4,
-    "delta_g": 1722.4,
-    "pct": 103.0
+    "ours_g": 3451.5,
+    "delta_g": 1778.5,
+    "pct": 106.0
    }
   },
   {
@@ -4578,20 +4613,20 @@
     "pct": 40.0
    },
    "P": {
-    "ours_g": 3997.8,
-    "delta_g": 1275.8,
-    "pct": 47.0
+    "ours_g": 4053.9,
+    "delta_g": 1331.9,
+    "pct": 49.0
    },
    "A": {
-    "ours_g": 3410.6,
-    "delta_g": 688.6,
-    "pct": 25.0
+    "ours_g": 3466.7,
+    "delta_g": 744.7,
+    "pct": 27.0
    }
   }
  ],
  "features": {
-  "after_tests_base_g": 3283.3,
-  "gap_g": 289.6,
+  "after_tests_base_g": 3339.4,
+  "gap_g": 345.7,
   "candidates": [
    {
     "item": "IMP-2",
@@ -4696,7 +4731,7 @@
   "P": {
    "scenario": "P",
    "cfg": "base",
-   "total_g": 3870.5,
+   "total_g": 3926.6,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
      "g": 426.7,
@@ -4717,14 +4752,14 @@
      "frac": 0.1
     },
     "cut area x record gsm, length x record g/m": {
-     "g": 2081.1,
-     "band_g": 211.5,
-     "n": 147,
+     "g": 2137.2,
+     "band_g": 216.0,
+     "n": 150,
      "frac": 0.08
     }
    },
-   "worst_g": 467.6,
-   "rss_g": 70.2,
+   "worst_g": 472.1,
+   "rss_g": 70.3,
    "named": [
     {
      "name": "D2 door zip #10 in the blade | door seam, 2 sliders",
@@ -4831,7 +4866,7 @@
   "A": {
    "scenario": "A",
    "cfg": "base",
-   "total_g": 3283.3,
+   "total_g": 3339.4,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
      "g": 347.2,
@@ -4852,13 +4887,13 @@
      "frac": 0.1
     },
     "cut area x record gsm, length x record g/m": {
-     "g": 1577.4,
-     "band_g": 242.8,
-     "n": 168,
+     "g": 1633.5,
+     "band_g": 247.3,
+     "n": 171,
      "frac": 0.08
     }
    },
-   "worst_g": 528.9,
+   "worst_g": 533.4,
    "rss_g": 72.4,
    "named": [
     {

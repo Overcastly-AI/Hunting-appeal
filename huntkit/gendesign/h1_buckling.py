@@ -611,16 +611,26 @@ def _assert_stl_closed(path):
         raise RuntimeError(f"{path}: not watertight after an STL round trip")
 
 
+US2_CLEVIS = True    # BL-050: the US2 outer clevis is a bolt-on piece (h1_bedfit); False = BL-049 one-piece lug
+
+
 def export_print(d_mid: float, d_up: float, log=print) -> dict:
     """H1 print files from the release body (frame_h1.print_mesh, which since BL-042 adds every fairlead complete and
     cuts every pin hole, the IM3 eyes included), split at z 234, each half one closed shell, laid flat; written to
-    designs/pack_5200/print/frame_h1/."""
+    designs/pack_5200/print/frame_h1/. BL-050 (``US2_CLEVIS``): the US2 joint blocks and bolt cuts are added
+    (h1_bedfit.split_us2); ``h1_assembled.stl`` is the frame as assembled (body + clevises), the halves are the body
+    only, each flat half turned on the plate to fit the H2S bed with its brim (h1_bedfit.orient_on_bed), and the two
+    clevises are written as ``us2_clevis_R`` / ``_L``."""
     from . import frame_h1 as H1
     from .frame_topopt import split_mesh
     solid = final_solid(d_mid, d_up)
     fl_stats: dict = {}
     mesh = H1.print_mesh(solid, log=log, stats=fl_stats)
     mesh, drop_a = clean_shell(mesh)
+    body, pieces = mesh, {}
+    if US2_CLEVIS:
+        from . import h1_bedfit as BF
+        mesh, body, pieces, fl_stats["us2_clevis_bl050"] = BF.split_us2(mesh, log=log)
     H1.PRINT_DIR.mkdir(parents=True, exist_ok=True)
     mesh.export(H1.PRINT_DIR / "h1_assembled.stl")
     _assert_stl_closed(H1.PRINT_DIR / "h1_assembled.stl")
@@ -628,11 +638,14 @@ def export_print(d_mid: float, d_up: float, log=print) -> dict:
             "assembled": {"faces": len(mesh.faces), "volume_cm3": round(mesh.volume / 1000, 2),
                           "g": round(mesh.volume * 1.06e-3, 1), "watertight": bool(mesh.is_watertight),
                           "shells": len(mesh.split(only_watertight=False)), "dropped": drop_a}}
-    lo, hi = split_mesh(mesh, H1.JOINT.z)
+    lo, hi = split_mesh(body, H1.JOINT.z)
     for nm, m in (("lower", lo), ("upper", hi)):
         m, drop = clean_shell(m)
         where = list(getattr(clean_shell, "where", [])) if drop else []
         f = H1.lay_flat(m)
+        bed = None
+        if US2_CLEVIS:
+            f, bed = BF.orient_on_bed(f)
         f.export(H1.PRINT_DIR / f"h1_{nm}_flat.stl")
         f.export(H1.PRINT_DIR / f"h1_{nm}_flat.3mf")
         _assert_stl_closed(H1.PRINT_DIR / f"h1_{nm}_flat.stl")
@@ -640,7 +653,15 @@ def export_print(d_mid: float, d_up: float, log=print) -> dict:
                     "footprint_mm": [round(v, 1) for v in f.extents], "watertight": bool(f.is_watertight),
                     "shells": len(f.split(only_watertight=False)), "dropped": drop, "dropped_centre_frame_mm": where,
                     "print_h": round(f.volume / 8.0 / 3600.0 * 1.08, 1),
-                    "fits_h2s_340x320x340": bool(sorted(f.extents)[-1] <= 340 and sorted(f.extents)[-2] <= 320)}
+                    "fits_h2s_340x320x340": bool(sorted(f.extents)[-1] <= 340 and sorted(f.extents)[-2] <= 320),
+                    "bed_bl050": bed}
+    for nm, m in pieces.items():
+        f = H1.lay_flat(m)
+        f.export(H1.PRINT_DIR / f"{nm}.stl")
+        f.export(H1.PRINT_DIR / f"{nm}.3mf")
+        _assert_stl_closed(H1.PRINT_DIR / f"{nm}.stl")
+        info[nm] = {"faces": len(f.faces), "g": round(f.volume * 1.06e-3, 2), "footprint_mm": [round(v, 1) for v in f.extents],
+                    "watertight": bool(f.is_watertight), "shells": len(f.split(only_watertight=False))}
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "print_info.json").write_text(json.dumps(info, indent=1, default=_np_default))
     if log:

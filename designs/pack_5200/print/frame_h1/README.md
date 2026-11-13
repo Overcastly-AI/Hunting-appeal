@@ -50,6 +50,18 @@ today, re-sized locally (about 65 g lighter on the printed body), split at z = 2
 > `test_pieces/hefit_hinge_fairlead_R` (the new hinge), `test_pieces/im3ec_cheek_R`, and the US route piece
 > `test_pieces/us_route_stay_R` (hinge + both lane lugs).
 >
+> **Rev BL-050 (2026-11-13): the lower half fits the H2S again.** US2 stays at x +/-165 (moving it in to x 147, the
+> most the bed allows, puts the strap onto the hinge fairlead: -3.2 mm). Instead the **US2 outer cheek is a bolt-on
+> piece**: each US2 fairlead is split in its throat floor at x +/-163; the outer floor and outer cheek print on their
+> own as `us2_clevis_R` / `us2_clevis_L` (14.1 g each) and bolt to the frame with two Ti
+> M5 x 40 low-head screws each (nuts in side traps that open to the wearer face). The lower half is written **already
+> turned on the plate** (321.1 x 299.6 mm; with the 8 mm brim
+> 3.0 / 4.4 mm spare): **do not rotate it in the slicer.** `h1_assembled.stl` is
+> the frame as assembled (clevises in place). Assembled 995.1 g, lower 423.4 g, upper
+> 543.5 g, clevises 2 x 14.1 g; slice checks pass. Record
+> `designs/pack_5200/analysis/h1_bedfit.md`. `test_pieces/us_route_stay_R` now prints without the US2 outer cheek:
+> bolt `us2_clevis_R` onto it.
+>
 > Status: **engineering release candidate.** These files are not yet the released frame
 > (`designs/pack_5200/print/frame/` is still today's body). Print the first article only after coupon CA-1
 > (`designs/pack_5200/tests_physical/CA1_fatigue_rig.md`) and the joint stubs CA-5 pass.
@@ -58,13 +70,14 @@ today, re-sized locally (about 65 g lighter on the printed body), split at z = 2
 
 | file | what | mass | print time |
 |---|---|---:|---:|
-| `h1_lower_flat.stl` / `.3mf` | lower half (feet to z 234), laid flat: wearer face on the plate. **BL-049: 367.5 mm wide, does not fit the H2S bed** | 430.7 g (0.95 lb) | about 15.2 h |
+| `h1_lower_flat.stl` / `.3mf` | lower half (feet to z 234), laid flat: wearer face on the plate, **turned 163.5 deg to fit the H2S (BL-050): print it as it loads** | 423.4 g (0.93 lb) | about 15.0 h |
 | `h1_upper_flat.stl` / `.3mf` | upper half (z 234 to the top), laid flat | 543.5 g (1.20 lb) | about 19.2 h |
-| `h1_assembled.stl` | the whole body in frame coordinates (x right, y aft toward the bag, z up from the feet), for checks and renders | 974.2 g (BL-049) | |
+| `h1_assembled.stl` | the whole frame as assembled (body + the two US2 clevises) in frame coordinates (x right, y aft toward the bag, z up from the feet), for checks and renders | 995.1 g (BL-050) | |
+| `us2_clevis_R.stl` / `.3mf`, `us2_clevis_L.stl` / `.3mf` | US2 outer cheek + outer throat floor (BL-050), bolts onto the lower half at x +/-163; laid flat, wearer face on the plate | 14.1 g each | about 0.5 h each |
 | `crown_pawl_lp_fdm_pacf.stl` / `.3mf` | low-profile crown pawl, PAHT-CF prototype, 16 mm wide, 100 % infill (BL-047) | 4.3 g | about 0.5 h |
 | `crown_pawl_lp_slm.stl` / `.3mf` | low-profile crown pawl, Ti-6Al-4V SLM + HIP, 12 mm wide (BL-047) | 13.3 g | - |
 | `test_pieces/hefit_hinge_fairlead_R.stl` / `.3mf` | HE-FIT test piece: the z 60 right hinge fairlead (BL-049 size) on an 80 mm stay segment, cut from the file above | 41.4 g | |
-| `test_pieces/us_route_stay_R.stl` / `.3mf` | US route piece (HE-FIT step 0, FIT-US): right stay z 40-160 with the hinge and both lane lugs (BL-049) | see `analysis/us_route.json` test_piece | |
+| `test_pieces/us_route_stay_R.stl` / `.3mf` | US route piece (HE-FIT step 0, FIT-US): right stay z 40-160 with the hinge and both lane lugs; BL-050: without the US2 outer cheek, bolt `us2_clevis_R` on (it also tests the clevis joint) | see `analysis/us_route.json` test_piece | |
 | `test_pieces/im3ec_cheek_R.stl` / `.3mf` | IM3-EC coupon: the z 520 right IM3 eye (28 mm cheek) on a 120 mm stay segment | 68.6 g | |
 
 - Masses are from the mesh volume × 1.06 g/cm³. The analysis raster (2 mm) of this body is 800.7 g; it cannot hold
@@ -88,11 +101,14 @@ today, re-sized locally (about 65 g lighter on the printed body), split at z = 2
 
 | part | qty | note |
 |---|---:|---|
-| Bambu PAHT-CF | 1.06 kg | about 974 g of part + 8 % waste (BL-049) |
+| Bambu PAHT-CF | 1.08 kg | about 995 g of part + 8 % waste (BL-050) |
 | Ti-6Al-4V pin, 5 mm h8 ground, 44 mm, with a clip groove (or a 5 x 44 Ti clevis pin) | 2 | BL-049 hinge pins (3.8 g each); not 7075 |
 | Ti gr5 **low-head** socket cap screw M5 × 45 (DIN 7984, 3.5 mm head) | 4 | Not M5 × 40: it does not reach through the nut. Not a standard ISO 4762 head (5 mm): it stands 1 mm into the band of the z 260 spreader clip. An ISO 7380 button head M5 × 45 also fits. |
 | M5 hex nut A2 (ISO 4032, 8 mm across flats, 4 mm thick) | 4 | thin nuts do not fit the trap |
 | M5 washer, 12 mm OD × 1.0 mm, A2 | 8 | **12 mm OD is load-bearing**. A standard 10 mm washer is not enough. |
+| Ti gr5 low-head socket cap screw **M5 × 40** (DIN 7984) | 4 | BL-050 US2 clevises, 2 per side (not the M5 × 45 of the z 234 joint) |
+| M5 hex nut A2 (ISO 4032, 8 mm AF, 4 mm thick) | 4 | BL-050 US2 clevis traps |
+| M5 washer **10 mm OD** × 1.0 mm, A2 (DIN 433) | 8 | BL-050 US2 clevises only (12 mm does not fit the 29 mm block); the z 234 joint keeps its 12 mm washers |
 | 5.1 mm reamer (or a 5.1 mm drill bit, sharp) | 1 | bolt holes |
 | 18.0 mm reamer | 1 | same as today |
 | medium threadlocker (blue) | | |
@@ -166,6 +182,13 @@ bottom reaches z 171). So the bore must be one continuous hole.
    Fairlead eyes (all 12: z 60, 95, 142, 190, 330, 520, both stays): ream each to **7.2 mm** from both sides and
    press in the UHMWPE pin sleeves. The hinge pin (z 60) is **5 mm Ti-6Al-4V, 44 mm** (BL-049: 10 mm cheeks); the
    others stay 5 mm 7075.
+   **US2 clevises (BL-050):** ream the two bolt holes in each clevis and in the lower half's US2 block (x +/-145 to
+   163, printed 4.8) to **5.1 mm**. Drop a washer + M5 nut into each side trap from the wearer face (the nut is held
+   by its flats), put the clevis on its block (its flat face against the frame's at x +/-163, the throat floors
+   flush), push the M5 × 40 screws with a 10 mm washer under the head in from the clevis's outer face and snug them
+   (about 1 N m, blue threadlocker; preload is not counted on). Then ream the US2 eye (both cheeks, assembled) to
+   7.2 mm so the two cheeks line up, and press the sleeve. Feel the throat floor across the joint line: no step;
+   break the edges 0.3 mm if the eye catches.
 2. Hip mount: press the M5 heat-set inserts and fit the SLM Ti pivot mount.
 3. Press the UHMWPE bushings into the 18.0 mm bores.
 4. Fit the carbon crown (rev C), the rack, the pawl and the pulley guides, as in `../frame/PRODUCTION.md`.

@@ -146,9 +146,9 @@ def test_print_files_have_complete_fairleads():
 
 
 @pytest.mark.skipif(not STL.exists(), reason="print files not generated")
-@pytest.mark.xfail(strict=True, reason="BL-049: the US2 lane lugs (x +/-165) make the lower half 367.5 mm wide; it does "
-                                       "not fit the H2S bed at any rotation (343 x 323). Owner decision in h1_lanes.md")
 def test_print_halves_fit_the_h2s_bed():
+    """BL-050: the US2 outer clevis is a bolt-on piece (h1_bedfit) and the halves are written turned on the plate.
+    (BL-049 had this as a strict xfail: the US2 lugs made the lower half 367.5 mm wide.)"""
     import trimesh
     for nm in ("lower", "upper"):
         h = trimesh.load(STL.parent / f"h1_{nm}_flat.stl")
