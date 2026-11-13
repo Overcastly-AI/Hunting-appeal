@@ -21,9 +21,10 @@ def sysm():
 
 def test_corrie_baseline_same_metric():
     c2 = C.corrie_b2_system()
-    # body group is corrie.build() B.2 as published in corrie_body.md section 12 (533.1 g with today's records)
+    # body group is corrie.build() B.2: 533.1 g in corrie_body.md section 12; BL-035 re-run on the BL-034 records:
+    # 559.1 g = +26.0 g, the two #10 door sliders at the slider_10 record (19.0 g, was 6 g ASSUMPTION)
     assert dict(c2["items"])["body group (shell, collar, swells, accents, wings, pouch, door zip, wing/pouch hardware)"] \
-        == pytest.approx(533.1, abs=0.5)
+        == pytest.approx(559.1, abs=0.5)
     assert c2["total_g"] == pytest.approx(sum(g for _, g in c2["items"]), abs=0.2)
 
 

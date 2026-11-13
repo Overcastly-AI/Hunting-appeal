@@ -219,3 +219,59 @@ def test_b27_facing_on_the_fabric_slit(rsP):
     gp = PR.F.guy_port()
     assert gp["slit_mm"] == pytest.approx(156.2, abs=0.05)
     assert rsP.pieces["B-27f"].edge_length("left") == pytest.approx(gp["slit_mm"] + 2 * PR.F.PORT_END, abs=0.05)
+
+
+# ---------------------------------------------------------------------------------------------------------- BL-035
+def _boxes(p):
+    """(w, h, label, (x0, y0, x1, y1)) of every box-X rectangle drawn on a piece."""
+    out = []
+    for ln in p.internal_lines:
+        if ln.closed and "box-X" in (ln.label or ""):
+            xs, ys = [q[0] for q in ln.points], [q[1] for q in ln.points]
+            out.append((round(max(xs) - min(xs), 1), round(max(ys) - min(ys), 1), ln.label,
+                        (min(xs), min(ys), max(xs), max(ys))))
+    return out
+
+
+def test_bl035_b28_split_toggle_loop_passes(rsP):
+    """B-28s (the B-25 second fold) has a 21 x 15 box at the tip end: the loop left at the fold passes the POM toggle."""
+    t, s = rsP.pieces["B-28t"], rsP.pieces["B-28s"]
+    assert t.quantity == 4 and s.quantity == 2                      # 6 tabs of CROWN_TAB as before (mass unchanged)
+    assert [(b[0], b[1]) for b in _boxes(t)] == [(21.0, 20.0)]
+    (w, h, _, (x0, y0, x1, y1)), = _boxes(s)
+    assert (w, h) == (21.0, 15.0)
+    fold = PR.F.CROWN_TAB / 2
+    loop = (y0 - fold) if y0 >= fold else (fold - y1 if y1 <= fold else 0.0)   # clear length, fold to box edge
+    perim = 2 * (8.0 + 5.0)                                            # pom_toggle 30 x 8 x 5 cross-section
+    assert loop == pytest.approx(13.0, abs=0.01) and 2 * loop >= perim
+    assert y1 == pytest.approx(2 * fold - PR.BOX_TIP_GAP, abs=0.01)    # tip end
+    ids = {w_["id"] for w_ in rsP.webbing}
+    assert {"B-28t", "B-28s"} <= ids
+
+
+def test_bl035_llt_box_matches_band_mark(rsP):
+    llt = [(b[0], b[1]) for b in _boxes(rsP.pieces["LLT"])]
+    band = [(b[0], b[1]) for b in _boxes(rsP.pieces["B-02h"]) if "LLT" in b[2]]
+    assert llt == [PR.LLT_BOX] and band and all(b == PR.LLT_BOX for b in band)
+
+
+def test_bl035_b24_capacity_uses_the_drawn_boxes(rsP):
+    from huntkit.gendesign import attach_system as AS
+    bx = [(b[0], b[1]) for b in _boxes(rsP.pieces["B-24"])]
+    assert bx[0] == AS.LINK_HOOK_BOX and bx[1:] == [AS.LINK_LOOP_BOX] * 3
+    import inspect
+    src = inspect.getsource(AS.fab_parts) if hasattr(AS, "fab_parts") else inspect.getsource(AS)
+    assert "box_x(*LINK_HOOK_BOX)" in src and "box_x(*LINK_LOOP_BOX)" in src      # the capacity row
+    assert AS.box_x(*AS.LINK_HOOK_BOX)["cap_n"] > 941.0 * 4          # misuse 941 N: box-X is not the weak link
+
+
+def test_bl035_muzzle_keeper_in_ledger_and_bom_inputs(rsP):
+    mk = PR.F.muzzle_keeper()
+    assert mk["qty"] == 2 and mk["cut_mm"] == pytest.approx(309.0)
+    assert mk["mass_g"] == pytest.approx(2 * (309.0 * 6.0 / 1000 + 2.5), abs=0.01)    # shock_cord_3mm + cord_lock_spring
+    row = [r for r in PR.ledger_rows() if r["name"].startswith("BL-035: rifle muzzle keepers")]
+    assert len(row) == 1 and row[0]["g"] == pytest.approx(mk["mass_g"]) and row[0]["cfg"] == "base"
+    w = [x for x in rsP.webbing if x["id"] == "MK-cord"]
+    assert len(w) == 1 and w[0]["material_id"] == "shock_cord_3mm" and w[0]["qty"] == 2
+    locks = sum(h["qty"] for h in rsP.hardware if h["material_id"] == "cord_lock_spring")
+    assert locks == 1 + 2                                                # E-5 + 2 muzzle keepers

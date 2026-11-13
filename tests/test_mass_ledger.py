@@ -33,8 +33,17 @@ def test_today_reproduces_weight_table(size):
 
 def test_cross_check_frame_mass_h1_json():
     h = _j("frame_mass_h1.json")
-    assert L.total("corrie_b2_today", "M") == pytest.approx(h["today_corrected"]["corrie_b2_M_g"], abs=0.5)
-    assert L.total("corrie_b2_h1", "M") == pytest.approx(h["h1"]["corrie_b2_M_g"], abs=0.5)
+    # frame_mass_h1.json is BL-007's record (pack totals at the masses of 2026-11-10). The bag and shared rows have been
+    # re-booked on material records since (BL-034 / BL-035), +46.5 g on both configs; the frames are unchanged:
+    #   +26.0 #10 door sliders (slider_10 19.0 g, was 6 g), +16.0 stainless US tri-glides (2 x 11 g, was 2 x 3 g),
+    #   +1.9 IMP-4 #5 slider (slider_5 4.9 g, was 3 g)                                    [BL-034 records]
+    #   +4.5 elastic hook keepers (6 x 1.35 g, was 6 x 0.6), -0.8 lifter tri-glides (2 x 2.6, was 2 x 3),
+    #   -1.1 torso adjust (cam 12.2 + toggle 1.7, was 12 + 3)                              [BL-035 records]
+    rebook = 26.0 + 16.0 + 1.9 + 4.5 - 0.8 - 1.1
+    assert L.total("corrie_b2_today", "M") == pytest.approx(h["today_corrected"]["corrie_b2_M_g"] + rebook, abs=0.5)
+    assert L.total("corrie_b2_h1", "M") == pytest.approx(h["h1"]["corrie_b2_M_g"] + rebook, abs=0.5)
+    assert L.total("corrie_b2_today", "M") == pytest.approx(4029.5, abs=0.1)
+    assert L.total("corrie_b2_h1", "M") == pytest.approx(3973.5, abs=0.1)
     fr = lambda c: sum(r["g"] for r in L.parts(c, "M") if r["system"] == "frame" and not r["name"].startswith("torso"))  # noqa: E731
     assert fr("corrie_b2_today") == pytest.approx(h["today_corrected"]["frame_g"], abs=0.2)
     assert fr("corrie_b2_h1") == pytest.approx(h["h1"]["frame_g"], abs=0.2)

@@ -216,3 +216,24 @@ def test_retired_items_stay_out():
     a = W.scenario_rows("A")
     net = lambda rows, needle: sum(r["g"] for r in rows if needle in r["name"])  # noqa: E731
     assert all(abs(net(a, p.id)) < 0.05 for p in W.wing_parts() if p.id.startswith("M-01"))   # wing panels net out
+
+
+def test_bl035_bag_thread_not_double_counted():
+    """CORRIE F books its thread from the op lengths; the bag share of the B.2 misc thread line comes out once."""
+    mt = W.misc_thread()
+    bag = sum(mt["soft_goods_g"][k] for k in mt["bag_soft_keys"])
+    assert mt["bag_thread_g"] == pytest.approx(mt["thread_frac"] * bag, abs=0.06)
+    allsoft = sum(mt["soft_goods_g"].values())
+    misc_row = L.by_system("corrie_b2_h1", "M")["misc"]
+    rec = [r for r in L.parts("corrie_b2_h1", "M") if r["group"] == L.WP.G_REC][0]["g"]
+    assert misc_row - rec == pytest.approx(mt["thread_frac"] * allsoft + mt["labels_g"], abs=0.1)   # the geometry row
+    with W.rev():
+        rows = W.corrie_f_step("M", "B", "t")
+    rm = [r for r in rows if r["system"] == "misc"]
+    assert len(rm) == 1 and rm[0]["g"] == pytest.approx(-mt["bag_thread_g"])
+    assert any(r["name"].startswith("CORRIE F: BL-034 thread:") for r in rows)
+
+
+def test_bl035_muzzle_keepers_booked_in_the_adopted_bag():
+    rows = [r for r in L.adopted_bag_rows("M") if r["name"].startswith("BL-035: rifle muzzle keepers")]
+    assert len(rows) == 1 and rows[0]["system"] == "bag_shell" and rows[0]["g"] == pytest.approx(8.71, abs=0.01)

@@ -1229,3 +1229,76 @@ which counts the webbing parts, the drafted lid and the drafted fly:
   z 590). The legs and band tongues match to 0.0 mm; the zip seam is 6.0 mm long on the lid side, which is team C's
   3 mm-a-side lid ease (`tailgate.LID ease_mm`), as is the hinge seam's 6.0 mm.
 
+
+## 18. BL-035: record masses everywhere, small pattern and ledger fixes (pack-designer, 2026-11-13)
+
+### 18.1 Constants moved onto the records (one mass basis)
+
+| Constant | Was | Now | Source |
+|---|---:|---:|---|
+| `crown_diet.CAM_G` + `build_geometry` torso-adjust cam | 12 g | 12.2 g | `cam_25mm_al`; no pull tab (ASSUMPTION TA-CAM: set once per fit, bag off) |
+| `crown_diet.TOGGLE_G` + torso-adjust release toggle | 3 g | 1.7 g | `pom_toggle` |
+| torso-adjust row (`TORSO_ADJUST_ROW_G`, now computed) | 41.7 g | 40.6 g (1.43 oz) | web 25.2 + cam 12.2 + cord 1.5 + toggle 1.7 |
+| `bag_attach` lifter tri-glide keepers | 2 x 3.0 g | 2 x 2.6 g | `triglide_25mm` |
+| `bag_attach` "elastic keepers" (6 hook keepers) | 6 x 0.6 g | 6 x 1.35 g | `elastic_25mm` 15 g/m x 90 mm cut (ASSUMPTION, = `TAIL_KEEPER_CUT_MM`) |
+| `strap_arch.CAM25_G` (IM1-IM3, US1/US2) | 13.0 g | 13.2 g | `cam_25mm_al` 12.2 g + 1 g glove pull tab (ASSUMPTION CAM-TAB) |
+
+`bag_attachment_results.json` was re-booked with `python -m huntkit.gendesign.bag_attach --refresh-mass` (mass budget
+only, FEA rows unchanged), then `geometry.yaml` (`build_geometry.py`), the bag-competition `result.json` files and
+`crown_diet_results.json` were re-run.
+
+`corrie.weight_table` gets one new row, **SPINE shared rows re-booked on material records since 2026-11-09**
+(`spine_rebooked_g` = geometry.yaml total - 3523.7 g, now +18.6 g). Without it the ledger's booking reconciliation
+row (which should be about 1 g) absorbed the BL-034 stainless US tri-glides and the BL-035 rows (-17.4 g).
+
+### 18.2 What moved (belt M)
+
+| Quantity | Before | Now | Delta and why |
+|---|---:|---:|---|
+| CORRIE B.2 on today's frame (ledger) | 3982.9 | 4029.5 | +26.0 #10 door sliders, +16.0 stainless US tri-glides, +1.9 IMP-4 #5 slider (BL-034); +4.5 hook keepers, -0.8 lifter tri-glides, -1.1 torso adjust (BL-035) |
+| CORRIE B.2 on H1 (ledger, crown diet basis) | 3927.0 | 3973.5 | same +46.5 |
+| BL-008 B.2 base / as hunted | 3700.4 / 3872.4 | 3747.1 / 3919.1 | same +46.5 (B-24 54.4 unchanged) |
+| CORRIE B.2 bag system (bag-comp metric) | 710.6 (A), 716.5 (lean) | 738.5, 744.4 | +26.0 door sliders + 1.9 IMP-4 slider |
+| CORRIE B.2 body group | 533.1 | 559.1 | +26.0 door sliders |
+| Team D bag system | 991.0 | 1017.0 | +26.0 its door sliders |
+| Team B FELL (max) | 583.1 | 598.0 | +13.0 one #10 slider in its body, +1.9 A3 lid pod #5 slider |
+| BL-017 (d1) pulley delete | -45.2 | -45.4 | cam 12.0 -> 12.2 |
+| BL-029 B-28 (history) | 67.46 | 64.86 | 2 toggles 3.0 -> 1.7 g (moved on purpose: one basis; the 67.46 g booking is reproduced in the test as 64.86 + 2 x 1.3) |
+| BL-004 REC with heavy guy locks | 218.1 (after BL-034) | 220.3 | keepers +3.0, lifter tri-glides -0.8; still over the 220 g bar by 0.3 g |
+| BL-003 REC saving with the 14 g hook fallback | 200.5 | **199.5** | 5 cams x +0.2 g: **the fallback now misses 200 g by 0.5 g** (history; REC adopted, fallback only if the 25 mm hook fails 910 N) |
+
+### 18.3 Adopted bag (CORRIE F rev 3, D2, team B fabrics, crown kit M)
+
+- +1.0 g IM/US cams (5 x 0.2), +3.0 g hook keepers (4 left after BL-004 REC x 0.75), +8.7 g **rifle muzzle keepers**
+  (new row, `corrie_f.muzzle_keeper`): one 3 mm shock-cord loop per gusset through the two B-11 muzzle tabs (70 mm
+  apart), round the barrel, closed by a spring cord lock. Cut 309 mm = 70 + 2 x 40 stand-off + pi x 25 barrel + 2 x 40
+  tails (ASSUMPTION MUZZLE-CORD, settled by the R-18 rifle fit check), 4.35 g each.
+- Bag side: **base 1132.5 g (39.95 oz), as hunted 1413.1 g (49.85 oz), meat trip 1609.0 g (56.75 oz)** (BL-034:
+  1119.8 / 1400.3 / 1596.3).
+
+### 18.4 Whole pack (`weight_rollup_v2.md`)
+
+The bag's thread was booked twice: CORRIE F books it from the op stitch lengths (BL-034) and the misc line still held
+3 % of the B.2 bag's soft goods. `build_geometry` now writes the split (`weight.misc_thread`: bag 15.0 g, suspension
+19.2 g, labels 8 g); `weight_rollup_v2.corrie_f_step` removes the bag share with the B.2 bag (misc 43.5 -> 28.5 g).
+
+**Proven now 3684.6 g base (8.12 lb), 4001.8 g as hunted (8.82 lb), 4197.8 g meat trip (9.25 lb); after tests
+3214.0 / 3531.2 / 3727.2 g (7.09 / 7.78 / 8.22 lb)** (BL-034: 3687.7 / 4004.9 / 4200.9 and 3217.6 / 3534.8 / 3730.8).
+P base -3.1 g = misc thread -15.0, muzzle keepers +8.7, hook keepers +4.5 (P keeps all 6 until PT-1), torso adjust
+-1.1, (d2) cam -0.2; the lifter tri-glides net 0 (BL-034 had already applied 2.6 g as a record row). After tests -3.6 g:
+also 25 mm cams +1.0 and REC removes 2 of the heavier keepers -1.5. The 6.6 lb base target
+is 220 g away after tests (691 g proven now).
+
+### 18.5 Pattern fixes (release `patterns/pattern_checks.md` 8.2)
+
+- **B-28t split.** B-28t is now the 4 lock tabs (front on the hinge band, rear carrying the POM toggle), box 21 x 20.
+  The B-25 second fold the rear toggle enters is its own piece **B-28s** (2), box **21 x 15 at the tip end**: the folded
+  loop is 13 mm, which passes the 30 x 8 x 5 toggle (26 mm perimeter). The old 21 x 20 box at 0.75 x tab left 5 mm.
+  ASSUMPTION B28-TOGGLE: the rear tab carries the toggle sewn across its tip (corrie_f says "the POM toggle into the
+  second fold of the B-25 tab"); settled by the T9 fit and TL-1 toggle-loop pull.
+- **LLT box.** The B-02h "B-22 / guy LLT" mark is 21 x 25 (`LLT_BOX`), the same box as the LLT piece (was 25 x 25).
+- **B-24 boxes.** DECISION B24-BOX: the drawn boxes are the capacity basis. `attach_system.LINK_HOOK_BOX` 34 x 30
+  (fits inside the 45 mm hook fold; a 38 x 38 box runs off the 38 mm webbing and onto the hook bed) and
+  `LINK_LOOP_BOX` 34 x 20. Box-X capacity 4430 N (hook) and 3786 N (loops) against the 941 N misuse load; the 2200 N
+  rated hook still governs.
+- B-28t / B-28s labels shortened and the webbing screenshot reordered, so no label covers the B-24 hook box.

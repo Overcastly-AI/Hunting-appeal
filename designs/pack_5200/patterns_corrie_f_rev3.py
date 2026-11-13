@@ -980,15 +980,15 @@ def build_webbing(rs: RevSet, c):
     # 21 x 20 box (B28-FACE); the third tab, the B-25 second fold the rear toggle passes into, is its own piece B-28s
     # with the B25-BOX rule: 21 x 15 at the tip end leaves the 13 mm loop the 30 x 8 x 5 toggle needs (a 21 x 20 box
     # at 0.75 x tab left 5 mm: the toggle did not pass).
-    _web(rs, "B-28t", "B-28 lock tab (front + rear)", F.CROWN_TAB, 4,
+    _web(rs, "B-28t", "lock tab", F.CROWN_TAB, 4,
          folds=[(F.CROWN_TAB / 2, "fold round the lock bar")],
          boxes=[(F.CROWN_TAB * 0.75, B28_BOX[1], "box-X")], kit="as_hunted",
-         note="front tab: OUTSIDE the hinge band; rear tab: POM toggle sewn across the tip",
+         note="B-28 front + rear lock tabs; front: OUTSIDE the hinge band; rear: POM toggle sewn across the tip",
          source="corrie_f.CROWN_TAB, 2 per strap (front + rear lock)")
-    _web(rs, "B-28s", "B-28 toggle loop (B-25 second fold)", F.CROWN_TAB, 2,
+    _web(rs, "B-28s", "toggle loop", F.CROWN_TAB, 2,
          folds=[(F.CROWN_TAB / 2, "fold: toggle loop")],
          boxes=[(_tip_box_y(F.CROWN_TAB / 2, B25_BOX[1]), B25_BOX[1], "box-X 21x15 tip")], kit="as_hunted",
-         note="sewn on the B-25 tab; 13 mm loop passes the POM toggle (B25-BOX rule)",
+         note="B-28 toggle loop = the B-25 second fold, sewn on the B-25 tab; 13 mm loop passes the POM toggle (B25-BOX)",
          source="corrie_f.CROWN_TAB, 1 per strap (the B-25 second fold)")
     _web(rs, "K-28", "B-28 tail keeper (25 mm elastic loop)", KEEPER_CUT, 4, mat=ELASTIC,
          folds=[(15.0, "lap 15 mm, zigzag")], kit="as_hunted", source="corrie_f.crown_kit_straps keepers_per_strap x 2")

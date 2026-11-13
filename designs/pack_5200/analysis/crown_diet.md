@@ -14,6 +14,14 @@ BL-007 [frame_fixed_torso.md](frame_fixed_torso.md)).
 - Masses from the mass ledger (`huntkit.mass.ledger`, config `corrie_b2_h1`, belt M: **3927.0 g**) plus item deltas,
   each traced below. Imperial in brackets.
 
+> **BL-035 refresh (pack-designer, 2026-11-13).** `crown_diet_results.json` was re-run on the record masses: the
+> torso-adjust cam is `cam_25mm_al` 12.2 g (was 12 g) and the release-cord toggle `pom_toggle` 1.7 g (was 3 g), so the
+> torso-adjust row is 40.6 g (was 41.7 g) and (d1) saves **45.4 g** (was 45.2). The ledger pack (`corrie_b2_h1`, belt
+> M) is now **3973.5 g** (was 3927.0): +26.0 g #10 door sliders, +16.0 g stainless US tri-glides, +1.9 g IMP-4 #5
+> slider (BL-034 records), +4.5 g elastic hook keepers, -0.8 g lifter tri-glides, -1.1 g torso adjust (BL-035). The
+> recommended option saves **112.6 / 93.6 / 74.6 g** (S / M / L; was 112.4 / 93.4 / 74.4); with it the pack is
+> 3879.9 g at M. The tables below keep the BL-017 figures; the JSON holds the current ones.
+
 ## 0. Result
 
 | | H1 today | **recommended: (a)+(d1)+(c17 bore 19)** | (a)+(d2)+(c17 bore 19) | (a)+(d1), no leg change |

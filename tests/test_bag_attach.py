@@ -112,3 +112,16 @@ def test_attachment_note_quotes_the_sandwich_v2_notch():
     assert h == pytest.approx(30.0)
     assert f"notched {h:.0f} mm in height" in md
     assert "notched 22 mm" not in md
+
+
+def test_bl035_keepers_and_tri_glides_from_records():
+    """BL-035: lifter tri-glides and the six hook keepers are booked on the triglide_25mm / elastic_25mm records, and
+    the stored results JSON carries the same masses (re-booked with --refresh-mass)."""
+    from huntkit.gendesign import bag_attach as BA
+    from huntkit.materials import load
+    assert BA.TRIGLIDE_G == pytest.approx(float(load("triglide_25mm").require("mass_g")))
+    assert BA.KEEPER_G == pytest.approx(float(load("elastic_25mm").require("mass_g_m")) * BA.KEEPER_CUT_MM / 1000)
+    res = json.loads((BA.ANALYSIS / "bag_attachment_results.json").read_text())
+    assert res["parts_g"]["lifter tri-glide keepers"] == pytest.approx(2 * BA.TRIGLIDE_G)
+    assert res["parts_g"]["elastic keepers"] == pytest.approx(6 * BA.KEEPER_G)
+    assert res["delta_g"] == pytest.approx(sum(res["parts_g"].values()), abs=1e-6)

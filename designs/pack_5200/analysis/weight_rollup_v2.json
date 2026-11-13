@@ -7,143 +7,143 @@
  "target_g": 2993.7,
  "scenarios": {
   "B.2": {
-   "base": 3728.4,
-   "as_hunted": 3900.5,
-   "meat_trip": 3954.9
+   "base": 3747.0,
+   "as_hunted": 3919.1,
+   "meat_trip": 3973.5
   },
   "P": {
-   "base": 3687.7,
-   "as_hunted": 4004.9,
-   "meat_trip": 4200.9,
+   "base": 3684.6,
+   "as_hunted": 4001.8,
+   "meat_trip": 4197.8,
    "by_system_base": {
-    "frame": 1073.1,
+    "frame": 1071.8,
     "back": 413.6,
     "belt": 482.3,
-    "harness": 225.9,
-    "bag_shell": 403.9,
+    "harness": 225.1,
+    "bag_shell": 412.6,
     "bag_pockets": 110.6,
     "pouch": 0,
     "fly": 5.9,
     "straps_meat": 399.2,
     "straps_compression": 241.5,
-    "attachment": 288.2,
-    "misc": 43.5
+    "attachment": 293.5,
+    "misc": 28.5
    },
    "like_for_like_base": {
-    "bag_side": 1449.3,
-    "suspension": 2194.8,
-    "misc": 43.5
+    "bag_side": 1463.4,
+    "suspension": 2192.7,
+    "misc": 28.5
    }
   },
   "A": {
-   "base": 3217.6,
-   "as_hunted": 3534.8,
-   "meat_trip": 3730.8,
+   "base": 3214.0,
+   "as_hunted": 3531.2,
+   "meat_trip": 3727.2,
    "by_system_base": {
-    "frame": 1073.1,
+    "frame": 1071.8,
     "back": 369.0,
     "belt": 441.9,
-    "harness": 225.9,
-    "bag_shell": 350.8,
+    "harness": 225.1,
+    "bag_shell": 359.5,
     "bag_pockets": 102.9,
     "pouch": 0,
     "fly": 5.9,
-    "straps_meat": 282.3,
+    "straps_meat": 283.3,
     "straps_compression": 140.0,
-    "attachment": 182.5,
-    "misc": 43.5
+    "attachment": 186.3,
+    "misc": 28.5
    },
    "like_for_like_base": {
-    "bag_side": 1064.3,
-    "suspension": 2109.8,
-    "misc": 43.5
+    "bag_side": 1077.9,
+    "suspension": 2107.7,
+    "misc": 28.5
    }
   }
  },
  "by_size": {
   "S": {
    "B.2": {
-    "base": 3700.5,
-    "as_hunted": 3872.6,
-    "meat_trip": 3927.0
+    "base": 3719.1,
+    "as_hunted": 3891.2,
+    "meat_trip": 3945.6
    },
    "P": {
-    "base": 3659.2,
-    "as_hunted": 3976.4,
-    "meat_trip": 4172.4
+    "base": 3656.1,
+    "as_hunted": 3973.3,
+    "meat_trip": 4169.3
    },
    "A": {
-    "base": 3192.1,
-    "as_hunted": 3509.3,
-    "meat_trip": 3705.3
+    "base": 3188.6,
+    "as_hunted": 3505.8,
+    "meat_trip": 3701.8
    }
   },
   "M": {
    "B.2": {
-    "base": 3728.4,
-    "as_hunted": 3900.5,
-    "meat_trip": 3954.9
+    "base": 3747.0,
+    "as_hunted": 3919.1,
+    "meat_trip": 3973.5
    },
    "P": {
-    "base": 3687.7,
-    "as_hunted": 4004.9,
-    "meat_trip": 4200.9
+    "base": 3684.6,
+    "as_hunted": 4001.8,
+    "meat_trip": 4197.8
    },
    "A": {
-    "base": 3217.6,
-    "as_hunted": 3534.8,
-    "meat_trip": 3730.8
+    "base": 3214.0,
+    "as_hunted": 3531.2,
+    "meat_trip": 3727.2
    }
   },
   "L": {
    "B.2": {
-    "base": 3752.5,
-    "as_hunted": 3924.6,
-    "meat_trip": 3979.0
+    "base": 3771.1,
+    "as_hunted": 3943.2,
+    "meat_trip": 3997.6
    },
    "P": {
-    "base": 3712.6,
-    "as_hunted": 4029.8,
-    "meat_trip": 4225.8
+    "base": 3709.5,
+    "as_hunted": 4026.7,
+    "meat_trip": 4222.7
    },
    "A": {
-    "base": 3240.0,
-    "as_hunted": 3557.2,
-    "meat_trip": 3753.2
+    "base": 3236.4,
+    "as_hunted": 3553.6,
+    "meat_trip": 3749.6
    }
   },
   "XL": {
    "B.2": {
-    "base": 3788.5,
-    "as_hunted": 3960.6,
-    "meat_trip": 4015.0
+    "base": 3807.1,
+    "as_hunted": 3979.2,
+    "meat_trip": 4033.6
    },
    "P": {
-    "base": 3749.4,
-    "as_hunted": 4066.6,
-    "meat_trip": 4262.6
+    "base": 3746.3,
+    "as_hunted": 4063.5,
+    "meat_trip": 4259.5
    },
    "A": {
-    "base": 3274.4,
-    "as_hunted": 3591.6,
-    "meat_trip": 3787.6
+    "base": 3270.8,
+    "as_hunted": 3588.0,
+    "meat_trip": 3784.0
    }
   },
   "XXL": {
    "B.2": {
-    "base": 3816.6,
-    "as_hunted": 3988.7,
-    "meat_trip": 4043.1
+    "base": 3835.2,
+    "as_hunted": 4007.3,
+    "meat_trip": 4061.7
    },
    "P": {
-    "base": 3779.1,
-    "as_hunted": 4096.3,
-    "meat_trip": 4292.3
+    "base": 3776.0,
+    "as_hunted": 4093.2,
+    "meat_trip": 4289.2
    },
    "A": {
-    "base": 3301.3,
-    "as_hunted": 3618.5,
-    "meat_trip": 3814.5
+    "base": 3297.7,
+    "as_hunted": 3614.9,
+    "meat_trip": 3810.9
    }
   }
  },
@@ -275,14 +275,14 @@
     {
      "system": "attachment",
      "name": "REMOVED: attachment: lifter tri-glide keepers (moved to harness)",
-     "g": -6.0,
+     "g": -5.2,
      "cfg": "base",
      "source": "ledger correction C6: bag_attach: 'lifter backup' is a harness part; negative copy of ledger row attachment:attachment_lifter_tri_glide_keepers"
     },
     {
      "system": "harness",
      "name": "lifter tri-glide keepers (moved from attachment)",
-     "g": 6.0,
+     "g": 5.2,
      "cfg": "base",
      "source": "ledger correction C6: ledger row attachment:attachment_lifter_tri_glide_keepers"
     }
@@ -477,9 +477,9 @@
    "kind": "design",
    "gate": "first-article: S15 elbow-swing / sling check (BL-009)",
    "delta_g": {
-    "base": 51.1,
-    "as_hunted": 198.4,
-    "meat_trip": 340.0
+    "base": 29.7,
+    "as_hunted": 176.9,
+    "meat_trip": 318.6
    },
    "rows": [
     {
@@ -569,14 +569,14 @@
     {
      "system": "attachment",
      "name": "REMOVED (B.2): attachment: elastic keepers",
-     "g": -3.6,
+     "g": -8.1,
      "cfg": "base",
      "source": "corrie_f.corrie_b2_rows"
     },
     {
      "system": "attachment",
      "name": "REMOVED (B.2): attachment: lifter tri-glide keepers",
-     "g": -6.0,
+     "g": -5.2,
      "cfg": "base",
      "source": "corrie_f.corrie_b2_rows"
     },
@@ -702,7 +702,7 @@
     {
      "system": "straps_meat",
      "name": "REMOVED (B.2): under-straps US1/US2: tri-glide keepers (2)",
-     "g": -6.0,
+     "g": -22.0,
      "cfg": "base",
      "source": "corrie_f.corrie_b2_rows"
     },
@@ -1276,7 +1276,7 @@
     {
      "system": "straps_meat",
      "name": "CORRIE F: IM-cams: 3 x 25 mm Al cams",
-     "g": 39.0,
+     "g": 39.6,
      "cfg": "base",
      "source": "strap_arch rec: ASSUMPTION CAM25_G (Austere 25 mm class)"
     },
@@ -1297,14 +1297,14 @@
     {
      "system": "straps_meat",
      "name": "CORRIE F: US-cams: US1/US2 25 mm Al cams (2)",
-     "g": 26.0,
+     "g": 26.4,
      "cfg": "base",
      "source": "strap_arch rec: ASSUMPTION CAM25_G"
     },
     {
      "system": "straps_meat",
      "name": "CORRIE F: US-tg: US1/US2 tri-glide keepers (2), 25 mm",
-     "g": 6.0,
+     "g": 22.0,
      "cfg": "base",
      "source": "strap_arch rec: ledger"
     },
@@ -1458,14 +1458,14 @@
     {
      "system": "attachment",
      "name": "CORRIE F: attachment: elastic keepers",
-     "g": 3.6,
+     "g": 8.1,
      "cfg": "base",
      "source": "ledger"
     },
     {
      "system": "attachment",
      "name": "CORRIE F: attachment: lifter tri-glide keepers",
-     "g": 6.0,
+     "g": 5.2,
      "cfg": "base",
      "source": "ledger"
     },
@@ -1605,7 +1605,7 @@
     {
      "system": "attachment",
      "name": "CORRIE F: BL-004 REC: elastic keepers for the IM2 hooks x2",
-     "g": -1.2,
+     "g": -2.7,
      "cfg": "base",
      "source": "attach_diet.mass_changes: ledger row / 6"
     },
@@ -1703,14 +1703,14 @@
     {
      "system": "straps_meat",
      "name": "CORRIE F: BL-034 records: US1/US2 backstop tri-glides -> stainless 25 mm (2 x 11 g, 3.75 kN; orchestrator 2026-11-13: stops cradle slip)",
-     "g": 16.0,
+     "g": 0.0,
      "cfg": "base",
      "source": "triglide_25mm record stainless_alt_mass_g, less the US-tg row"
     },
     {
      "system": "attachment",
      "name": "CORRIE F: BL-034 records: lifter tri-glide keepers (2 x 2.6 g nylon)",
-     "g": -0.8,
+     "g": 0.0,
      "cfg": "base",
      "source": "triglide_25mm record mass_g, less the ledger row"
     },
@@ -1757,6 +1757,20 @@
      "source": "slider_5 record"
     },
     {
+     "system": "bag_shell",
+     "name": "CORRIE F: BL-035: rifle muzzle keepers (2, 3 mm shock cord x 309 mm + spring cord lock, through the B-11 muzzle tabs, both gussets)",
+     "g": 8.71,
+     "cfg": "base",
+     "source": "shock_cord_3mm record (6 g/m) x cut (tab gap 70 + 2 x stand-off 40 + pi x barrel 25 + tails 80 mm, ASSUMPTION MUZZLE-CORD) + cord_lock_spring record, x 2 (one per gusset)"
+    },
+    {
+     "system": "misc",
+     "name": "REMOVED (B.2): bag share of the misc thread line (3% x bag soft goods 500.7 g); CORRIE F books its own thread",
+     "g": -15.0,
+     "cfg": "base",
+     "source": "geometry.yaml weight.misc_thread.bag_thread_g (build_geometry)"
+    },
+    {
      "system": "straps_compression",
      "name": "wing part kept until FT-S2: M-01 M-01 side wings x2 (330D, hemmed)",
      "g": 36.91,
@@ -1794,14 +1808,14 @@
     {
      "system": "straps_meat",
      "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): IM-cams 3 x 25 mm Al cams",
-     "g": 27.0,
+     "g": 26.4,
      "cfg": "base",
      "source": "strap_arch._lighten_im_us(today_parts) - today_parts: ASSUMPTION CAM25_G (Austere 25 mm class)"
     },
     {
      "system": "straps_meat",
      "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): US-cams US1/US2 25 mm Al cams (2)",
-     "g": 18.0,
+     "g": 17.6,
      "cfg": "base",
      "source": "strap_arch._lighten_im_us(today_parts) - today_parts: ASSUMPTION CAM25_G"
     },
@@ -1843,7 +1857,7 @@
     {
      "system": "attachment",
      "name": "hood + IM2 hooks kept until PT-1/TL-1/LL-H (BL-004 REC undone): elastic keepers for the IM2 hooks x2",
-     "g": 1.2,
+     "g": 2.7,
      "cfg": "base",
      "source": "attach_diet.mass_changes('REC'): ledger row / 6"
     },
@@ -1877,15 +1891,15 @@
    "kind": "design",
    "gate": "-",
    "delta_g": {
-    "base": -34.4,
-    "as_hunted": -34.4,
-    "meat_trip": -34.4
+    "base": -34.6,
+    "as_hunted": -34.6,
+    "meat_trip": -34.6
    },
    "rows": [
     {
      "system": "frame",
      "name": "BL-017 (d2): 3:1 pulley -> pawl + 1:1 pull strap",
-     "g": -34.4,
+     "g": -34.6,
      "cfg": "base",
      "source": "crown_diet.option_mass('(d2) pawl + 1:1 strap')"
     }
@@ -1919,9 +1933,9 @@
    "kind": "design",
    "gate": "MT-1 / MT-2 / MT-3 at the BL-010 per-row loads; fallback 38 mm webbing, cams and hooks",
    "delta_g": {
-    "base": -117.0,
-    "as_hunted": -117.0,
-    "meat_trip": -117.0
+    "base": -116.0,
+    "as_hunted": -116.0,
+    "meat_trip": -116.0
    },
    "rows": [
     {
@@ -1941,14 +1955,14 @@
     {
      "system": "straps_meat",
      "name": "BL-003 (a) IM/US: IM-cams 3 x 25 mm Al cams",
-     "g": -27.0,
+     "g": -26.4,
      "cfg": "base",
      "source": "strap_arch._lighten_im_us(today_parts) - today_parts: ASSUMPTION CAM25_G (Austere 25 mm class)"
     },
     {
      "system": "straps_meat",
      "name": "BL-003 (a) IM/US: US-cams US1/US2 25 mm Al cams (2)",
-     "g": -18.0,
+     "g": -17.6,
      "cfg": "base",
      "source": "strap_arch._lighten_im_us(today_parts) - today_parts: ASSUMPTION CAM25_G"
     },
@@ -1968,9 +1982,9 @@
    "kind": "design",
    "gate": "PT-1 / PT-2 at 2553 N, TL-1 toggle loop 366 N, LL-H heavy lock 366 N; fallback hood + IM2 hooks (owner kept them removed 2026-11-12)",
    "delta_g": {
-    "base": -105.6,
-    "as_hunted": -105.6,
-    "meat_trip": -105.6
+    "base": -107.1,
+    "as_hunted": -107.1,
+    "meat_trip": -107.1
    },
    "rows": [
     {
@@ -2004,7 +2018,7 @@
     {
      "system": "attachment",
      "name": "BL-004 REC: elastic keepers for the IM2 hooks x2",
-     "g": -1.2,
+     "g": -2.7,
      "cfg": "base",
      "source": "attach_diet.mass_changes('REC'): ledger row / 6"
     },
@@ -2375,7 +2389,7 @@
     {
      "system": "straps_meat",
      "name": "CORRIE F: IM-cams: 3 x 25 mm Al cams",
-     "g": 39.0,
+     "g": 39.6,
      "cfg": "base",
      "source": "strap_arch rec: ASSUMPTION CAM25_G (Austere 25 mm class)"
     },
@@ -2396,14 +2410,14 @@
     {
      "system": "straps_meat",
      "name": "CORRIE F: US-cams: US1/US2 25 mm Al cams (2)",
-     "g": 26.0,
+     "g": 26.4,
      "cfg": "base",
      "source": "strap_arch rec: ASSUMPTION CAM25_G"
     },
     {
      "system": "straps_meat",
      "name": "CORRIE F: US-tg: US1/US2 tri-glide keepers (2), 25 mm",
-     "g": 6.0,
+     "g": 22.0,
      "cfg": "base",
      "source": "strap_arch rec: ledger"
     },
@@ -2557,14 +2571,14 @@
     {
      "system": "attachment",
      "name": "CORRIE F: attachment: elastic keepers",
-     "g": 3.6,
+     "g": 8.1,
      "cfg": "base",
      "source": "ledger"
     },
     {
      "system": "attachment",
      "name": "CORRIE F: attachment: lifter tri-glide keepers",
-     "g": 6.0,
+     "g": 5.2,
      "cfg": "base",
      "source": "ledger"
     },
@@ -2704,7 +2718,7 @@
     {
      "system": "attachment",
      "name": "CORRIE F: BL-004 REC: elastic keepers for the IM2 hooks x2",
-     "g": -1.2,
+     "g": -2.7,
      "cfg": "base",
      "source": "attach_diet.mass_changes: ledger row / 6"
     },
@@ -2802,14 +2816,14 @@
     {
      "system": "straps_meat",
      "name": "CORRIE F: BL-034 records: US1/US2 backstop tri-glides -> stainless 25 mm (2 x 11 g, 3.75 kN; orchestrator 2026-11-13: stops cradle slip)",
-     "g": 16.0,
+     "g": 0.0,
      "cfg": "base",
      "source": "triglide_25mm record stainless_alt_mass_g, less the US-tg row"
     },
     {
      "system": "attachment",
      "name": "CORRIE F: BL-034 records: lifter tri-glide keepers (2 x 2.6 g nylon)",
-     "g": -0.8,
+     "g": 0.0,
      "cfg": "base",
      "source": "triglide_25mm record mass_g, less the ledger row"
     },
@@ -2854,6 +2868,13 @@
      "g": 1.9,
      "cfg": "as_hunted",
      "source": "slider_5 record"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: BL-035: rifle muzzle keepers (2, 3 mm shock cord x 309 mm + spring cord lock, through the B-11 muzzle tabs, both gussets)",
+     "g": 8.71,
+     "cfg": "base",
+     "source": "shock_cord_3mm record (6 g/m) x cut (tab gap 70 + 2 x stand-off 40 + pi x barrel 25 + tails 80 mm, ASSUMPTION MUZZLE-CORD) + cord_lock_spring record, x 2 (one per gusset)"
     },
     {
      "system": "bag_shell",
@@ -3082,7 +3103,7 @@
     {
      "system": "straps_meat",
      "name": "CORRIE F: IM-cams: 3 x 25 mm Al cams",
-     "g": -39.0,
+     "g": -39.6,
      "cfg": "base",
      "source": "strap_arch rec: ASSUMPTION CAM25_G (Austere 25 mm class)"
     },
@@ -3103,14 +3124,14 @@
     {
      "system": "straps_meat",
      "name": "CORRIE F: US-cams: US1/US2 25 mm Al cams (2)",
-     "g": -26.0,
+     "g": -26.4,
      "cfg": "base",
      "source": "strap_arch rec: ASSUMPTION CAM25_G"
     },
     {
      "system": "straps_meat",
      "name": "CORRIE F: US-tg: US1/US2 tri-glide keepers (2), 25 mm",
-     "g": -6.0,
+     "g": -22.0,
      "cfg": "base",
      "source": "strap_arch rec: ledger"
     },
@@ -3264,14 +3285,14 @@
     {
      "system": "attachment",
      "name": "CORRIE F: attachment: elastic keepers",
-     "g": -3.6,
+     "g": -8.1,
      "cfg": "base",
      "source": "ledger"
     },
     {
      "system": "attachment",
      "name": "CORRIE F: attachment: lifter tri-glide keepers",
-     "g": -6.0,
+     "g": -5.2,
      "cfg": "base",
      "source": "ledger"
     },
@@ -3411,7 +3432,7 @@
     {
      "system": "attachment",
      "name": "CORRIE F: BL-004 REC: elastic keepers for the IM2 hooks x2",
-     "g": 1.2,
+     "g": 2.7,
      "cfg": "base",
      "source": "attach_diet.mass_changes: ledger row / 6"
     },
@@ -3509,14 +3530,14 @@
     {
      "system": "straps_meat",
      "name": "CORRIE F: BL-034 records: US1/US2 backstop tri-glides -> stainless 25 mm (2 x 11 g, 3.75 kN; orchestrator 2026-11-13: stops cradle slip)",
-     "g": -16.0,
+     "g": -0.0,
      "cfg": "base",
      "source": "triglide_25mm record stainless_alt_mass_g, less the US-tg row"
     },
     {
      "system": "attachment",
      "name": "CORRIE F: BL-034 records: lifter tri-glide keepers (2 x 2.6 g nylon)",
-     "g": 0.8,
+     "g": -0.0,
      "cfg": "base",
      "source": "triglide_25mm record mass_g, less the ledger row"
     },
@@ -3561,6 +3582,13 @@
      "g": -1.9,
      "cfg": "as_hunted",
      "source": "slider_5 record"
+    },
+    {
+     "system": "bag_shell",
+     "name": "CORRIE F: BL-035: rifle muzzle keepers (2, 3 mm shock cord x 309 mm + spring cord lock, through the B-11 muzzle tabs, both gussets)",
+     "g": -8.71,
+     "cfg": "base",
+     "source": "shock_cord_3mm record (6 g/m) x cut (tab gap 70 + 2 x stand-off 40 + pi x barrel 25 + tails 80 mm, ASSUMPTION MUZZLE-CORD) + cord_lock_spring record, x 2 (one per gusset)"
     }
    ]
   },
@@ -3627,22 +3655,22 @@
    "kind": "design",
    "gate": "retired: body fatigue below 1.0 on the cloth-sim loads (BL-021 (4)); adjustable torso kept; not booked",
    "delta_g": {
-    "base": 2.9,
-    "as_hunted": 2.9,
-    "meat_trip": 2.9
+    "base": 4.2,
+    "as_hunted": 4.2,
+    "meat_trip": 4.2
    },
    "rows": [
     {
      "system": "frame",
      "name": "BL-007 (a) fixed torso at 19 in (frame_fixed.frame_mass, vs H1)",
-     "g": -87.7,
+     "g": -86.6,
      "cfg": "base",
      "source": "frame_fixed.frame_mass('a', 19)"
     },
     {
      "system": "frame",
      "name": "crown kits (a)+(d2)+(c17 bore 19) undone (fixed torso replaces them)",
-     "g": 82.6,
+     "g": 82.8,
      "cfg": "base",
      "source": "crown_diet.option_mass"
     },
@@ -3658,53 +3686,53 @@
  },
  "configs": {
   "corrie_f_base": {
-   "total_g": 3373.1,
+   "total_g": 3369.7,
    "by_system": {
-    "frame": 1135.1,
+    "frame": 1134.0,
     "back": 413.6,
     "belt": 499.2,
-    "harness": 217.4,
-    "bag_shell": 350.8,
+    "harness": 216.6,
+    "bag_shell": 359.5,
     "bag_pockets": 102.9,
     "pouch": 0,
     "fly": 5.9,
-    "straps_meat": 282.3,
+    "straps_meat": 283.3,
     "straps_compression": 140.0,
-    "attachment": 182.5,
-    "misc": 43.5
+    "attachment": 186.3,
+    "misc": 28.5
    },
    "like_for_like": {
-    "bag_side": 1064.3,
-    "suspension": 2265.3,
-    "misc": 43.5
+    "bag_side": 1077.9,
+    "suspension": 2263.4,
+    "misc": 28.5
    }
   },
   "corrie_f_as_hunted": {
-   "total_g": 3690.3,
+   "total_g": 3686.9,
    "by_system": {
-    "frame": 1135.1,
+    "frame": 1134.0,
     "back": 413.6,
     "belt": 535.9,
-    "harness": 217.4,
-    "bag_shell": 350.8,
+    "harness": 216.6,
+    "bag_shell": 359.5,
     "bag_pockets": 186.6,
     "pouch": 47.8,
     "fly": 72.1,
-    "straps_meat": 282.3,
+    "straps_meat": 283.3,
     "straps_compression": 218.1,
-    "attachment": 187.3,
-    "misc": 43.5
+    "attachment": 191.1,
+    "misc": 28.5
    },
    "like_for_like": {
-    "bag_side": 1344.9,
-    "suspension": 2301.9,
-    "misc": 43.5
+    "bag_side": 1358.4,
+    "suspension": 2300.0,
+    "misc": 28.5
    }
   },
   "bl005_back": {
-   "total_g": 3683.8,
+   "total_g": 3702.4,
    "by_system": {
-    "frame": 1066.8,
+    "frame": 1065.7,
     "back": 369.0,
     "belt": 515.0,
     "harness": 223.6,
@@ -3712,21 +3740,21 @@
     "bag_pockets": 126.2,
     "pouch": 0,
     "fly": 5.9,
-    "straps_meat": 369.6,
+    "straps_meat": 385.6,
     "straps_compression": 243.5,
-    "attachment": 317.7,
+    "attachment": 321.4,
     "misc": 43.5
    },
    "like_for_like": {
-    "bag_side": 1465.9,
-    "suspension": 2174.4,
+    "bag_side": 1485.6,
+    "suspension": 2173.3,
     "misc": 43.5
    }
   },
   "bl006_belt": {
-   "total_g": 3671.0,
+   "total_g": 3689.6,
    "by_system": {
-    "frame": 1066.8,
+    "frame": 1065.7,
     "back": 413.6,
     "belt": 457.6,
     "harness": 223.6,
@@ -3734,19 +3762,19 @@
     "bag_pockets": 126.2,
     "pouch": 0,
     "fly": 5.9,
-    "straps_meat": 369.6,
+    "straps_meat": 385.6,
     "straps_compression": 243.5,
-    "attachment": 317.7,
+    "attachment": 321.4,
     "misc": 43.5
    },
    "like_for_like": {
-    "bag_side": 1465.9,
-    "suspension": 2161.6,
+    "bag_side": 1485.6,
+    "suspension": 2160.5,
     "misc": 43.5
    }
   },
   "bl007_a": {
-   "total_g": 3640.7,
+   "total_g": 3660.4,
    "by_system": {
     "frame": 979.1,
     "back": 413.6,
@@ -3756,19 +3784,19 @@
     "bag_pockets": 126.2,
     "pouch": 0,
     "fly": 5.9,
-    "straps_meat": 369.6,
+    "straps_meat": 385.6,
     "straps_compression": 243.5,
-    "attachment": 317.7,
+    "attachment": 321.4,
     "misc": 43.5
    },
    "like_for_like": {
-    "bag_side": 1465.9,
+    "bag_side": 1485.6,
     "suspension": 2131.3,
     "misc": 43.5
    }
   },
   "bl007_c": {
-   "total_g": 3625.9,
+   "total_g": 3645.6,
    "by_system": {
     "frame": 964.3,
     "back": 413.6,
@@ -3778,13 +3806,13 @@
     "bag_pockets": 126.2,
     "pouch": 0,
     "fly": 5.9,
-    "straps_meat": 369.6,
+    "straps_meat": 385.6,
     "straps_compression": 243.5,
-    "attachment": 317.7,
+    "attachment": 321.4,
     "misc": 43.5
    },
    "like_for_like": {
-    "bag_side": 1465.9,
+    "bag_side": 1485.6,
     "suspension": 2116.5,
     "misc": 43.5
    }
@@ -3803,26 +3831,26 @@
  },
  "crown_kits_by_torso_size": {
   "S": {
-   "(a)+(d2)": -81.3,
-   "(a)+(d2)+(c17 bore 19)": -101.6
+   "(a)+(d2)": -81.5,
+   "(a)+(d2)+(c17 bore 19)": -101.8
   },
   "M": {
-   "(a)+(d2)": -62.0,
-   "(a)+(d2)+(c17 bore 19)": -82.6
+   "(a)+(d2)": -62.2,
+   "(a)+(d2)+(c17 bore 19)": -82.8
   },
   "L": {
-   "(a)+(d2)": -42.8,
-   "(a)+(d2)+(c17 bore 19)": -63.6
+   "(a)+(d2)": -43.0,
+   "(a)+(d2)+(c17 bore 19)": -63.8
   }
  },
  "fixed_torso": {
   "a": {
-   "pack_delta_g": -87.7,
+   "pack_delta_g": -86.6,
    "frame_g": 979.1,
    "fatigue_old_basis": 1.084
   },
   "c": {
-   "pack_delta_g": -102.5,
+   "pack_delta_g": -101.4,
    "frame_g": 964.3,
    "fatigue_old_basis": 1.037
   }
@@ -3838,18 +3866,18 @@
    ],
    "note": "no lid; SG sells hip pockets and sleeve",
    "B.2": {
-    "ours_g": 3672.9,
-    "delta_g": 1364.9,
-    "pct": 59.0
+    "ours_g": 3691.5,
+    "delta_g": 1383.5,
+    "pct": 60.0
    },
    "P": {
-    "ours_g": 3632.2,
-    "delta_g": 1324.2,
+    "ours_g": 3629.1,
+    "delta_g": 1321.1,
     "pct": 57.0
    },
    "A": {
-    "ours_g": 3169.8,
-    "delta_g": 861.8,
+    "ours_g": 3166.2,
+    "delta_g": 858.2,
     "pct": 37.0
    }
   },
@@ -3863,18 +3891,18 @@
    ],
    "note": "same basis",
    "B.2": {
-    "ours_g": 3672.9,
-    "delta_g": 1276.9,
-    "pct": 53.0
+    "ours_g": 3691.5,
+    "delta_g": 1295.5,
+    "pct": 54.0
    },
    "P": {
-    "ours_g": 3632.2,
-    "delta_g": 1236.2,
-    "pct": 52.0
+    "ours_g": 3629.1,
+    "delta_g": 1233.1,
+    "pct": 51.0
    },
    "A": {
-    "ours_g": 3169.8,
-    "delta_g": 773.8,
+    "ours_g": 3166.2,
+    "delta_g": 770.2,
     "pct": 32.0
    }
   },
@@ -3889,18 +3917,18 @@
    ],
    "note": "lid in",
    "B.2": {
-    "ours_g": 3777.4,
-    "delta_g": 1140.4,
-    "pct": 43.0
+    "ours_g": 3796.0,
+    "delta_g": 1159.0,
+    "pct": 44.0
    },
    "P": {
-    "ours_g": 3798.4,
-    "delta_g": 1161.4,
+    "ours_g": 3795.3,
+    "delta_g": 1158.3,
     "pct": 44.0
    },
    "A": {
-    "ours_g": 3328.3,
-    "delta_g": 691.3,
+    "ours_g": 3324.7,
+    "delta_g": 687.7,
     "pct": 26.0
    }
   },
@@ -3911,18 +3939,18 @@
    "remove": [],
    "note": "hip pockets supplied",
    "B.2": {
-    "ours_g": 3728.4,
-    "delta_g": 938.4,
+    "ours_g": 3747.0,
+    "delta_g": 957.0,
     "pct": 34.0
    },
    "P": {
-    "ours_g": 3687.7,
-    "delta_g": 897.7,
+    "ours_g": 3684.6,
+    "delta_g": 894.6,
     "pct": 32.0
    },
    "A": {
-    "ours_g": 3217.6,
-    "delta_g": 427.6,
+    "ours_g": 3214.0,
+    "delta_g": 424.0,
     "pct": 15.0
    }
   },
@@ -3933,18 +3961,18 @@
    "remove": [],
    "note": "incl. hip pouches",
    "B.2": {
-    "ours_g": 3728.4,
-    "delta_g": 1089.4,
-    "pct": 41.0
+    "ours_g": 3747.0,
+    "delta_g": 1108.0,
+    "pct": 42.0
    },
    "P": {
-    "ours_g": 3687.7,
-    "delta_g": 1048.7,
+    "ours_g": 3684.6,
+    "delta_g": 1045.6,
     "pct": 40.0
    },
    "A": {
-    "ours_g": 3217.6,
-    "delta_g": 578.6,
+    "ours_g": 3214.0,
+    "delta_g": 575.0,
     "pct": 22.0
    }
   },
@@ -3957,18 +3985,18 @@
    "remove": [],
    "note": "inclusions not stated",
    "B.2": {
-    "ours_g": 3792.6,
-    "delta_g": 980.6,
-    "pct": 35.0
+    "ours_g": 3811.2,
+    "delta_g": 999.2,
+    "pct": 36.0
    },
    "P": {
-    "ours_g": 3813.6,
-    "delta_g": 1001.6,
+    "ours_g": 3810.5,
+    "delta_g": 998.5,
     "pct": 36.0
    },
    "A": {
-    "ours_g": 3343.5,
-    "delta_g": 531.5,
+    "ours_g": 3339.9,
+    "delta_g": 527.9,
     "pct": 19.0
    }
   },
@@ -3981,18 +4009,18 @@
    "remove": [],
    "note": "workbook 'full'",
    "B.2": {
-    "ours_g": 3792.6,
-    "delta_g": 1084.6,
-    "pct": 40.0
+    "ours_g": 3811.2,
+    "delta_g": 1103.2,
+    "pct": 41.0
    },
    "P": {
-    "ours_g": 3813.6,
-    "delta_g": 1105.6,
+    "ours_g": 3810.5,
+    "delta_g": 1102.5,
     "pct": 41.0
    },
    "A": {
-    "ours_g": 3343.5,
-    "delta_g": 635.5,
+    "ours_g": 3339.9,
+    "delta_g": 631.9,
     "pct": 23.0
    }
   },
@@ -4005,18 +4033,18 @@
    "remove": [],
    "note": "sewn Nalgene pockets",
    "B.2": {
-    "ours_g": 3767.2,
-    "delta_g": 932.2,
-    "pct": 33.0
+    "ours_g": 3785.8,
+    "delta_g": 950.8,
+    "pct": 34.0
    },
    "P": {
-    "ours_g": 3724.3,
-    "delta_g": 889.3,
+    "ours_g": 3721.2,
+    "delta_g": 886.2,
     "pct": 31.0
    },
    "A": {
-    "ours_g": 3254.2,
-    "delta_g": 419.2,
+    "ours_g": 3250.6,
+    "delta_g": 415.6,
     "pct": 15.0
    }
   },
@@ -4031,18 +4059,18 @@
    ],
    "note": "24 in frame, lid, shelf",
    "B.2": {
-    "ours_g": 3777.4,
-    "delta_g": 2104.4,
-    "pct": 126.0
+    "ours_g": 3796.0,
+    "delta_g": 2123.0,
+    "pct": 127.0
    },
    "P": {
-    "ours_g": 3798.4,
-    "delta_g": 2125.4,
+    "ours_g": 3795.3,
+    "delta_g": 2122.3,
     "pct": 127.0
    },
    "A": {
-    "ours_g": 3328.3,
-    "delta_g": 1655.3,
+    "ours_g": 3324.7,
+    "delta_g": 1651.7,
     "pct": 99.0
    }
   },
@@ -4055,25 +4083,25 @@
    "remove": [],
    "note": "frame, belt, straps, bag, lid",
    "B.2": {
-    "ours_g": 3792.6,
-    "delta_g": 1070.6,
-    "pct": 39.0
+    "ours_g": 3811.2,
+    "delta_g": 1089.2,
+    "pct": 40.0
    },
    "P": {
-    "ours_g": 3813.6,
-    "delta_g": 1091.6,
+    "ours_g": 3810.5,
+    "delta_g": 1088.5,
     "pct": 40.0
    },
    "A": {
-    "ours_g": 3343.5,
-    "delta_g": 621.5,
+    "ours_g": 3339.9,
+    "delta_g": 617.9,
     "pct": 23.0
    }
   }
  ],
  "features": {
-  "after_tests_base_g": 3217.6,
-  "gap_g": 223.9,
+  "after_tests_base_g": 3214.0,
+  "gap_g": 220.3,
   "candidates": [
    {
     "item": "IMP-2",
@@ -4126,7 +4154,7 @@
    {
     "item": "US-",
     "what": "under-straps (owner-frozen)",
-    "g": 89.0,
+    "g": 105.4,
     "frozen": true
    }
   ],
@@ -4146,7 +4174,7 @@
   "with_reserve_g": 165.6,
   "reaches_with_reserve": false
  },
- "bl011_headline_base_g": 3280.2,
+ "bl011_headline_base_g": 3291.8,
  "h1_fatigue": {
   "old": 1.2794731924250948,
   "per_torso": 1.1502260709981276,
@@ -4172,12 +4200,12 @@
   "P": {
    "scenario": "P",
    "cfg": "base",
-   "total_g": 3687.7,
+   "total_g": 3684.6,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
-     "g": 417.9,
-     "band_g": 139.5,
-     "n": 24,
+     "g": 425.5,
+     "band_g": 141.8,
+     "n": 25,
      "frac": 0.3
     },
     "printed PAHT-CF body (2 mm raster x density)": {
@@ -4187,19 +4215,19 @@
      "frac": 0.05
     },
     "frame lumps and carbon (beam model, frame_mass json)": {
-     "g": 514.3,
-     "band_g": 63.8,
+     "g": 514.1,
+     "band_g": 63.9,
      "n": 12,
      "frac": 0.1
     },
     "cut area x record gsm, length x record g/m": {
-     "g": 2004.2,
-     "band_g": 201.5,
-     "n": 136,
+     "g": 1993.7,
+     "band_g": 203.0,
+     "n": 135,
      "frac": 0.08
     }
    },
-   "worst_g": 447.3,
+   "worst_g": 451.1,
    "rss_g": 70.0,
    "named": [
     {
@@ -4219,13 +4247,13 @@
     },
     {
      "name": "torso adjust: 3:1 pulley webbing 25 mm x 1.4 m, metal cam buckle, pawl release cord + stra",
-     "g": 41.7,
-     "band_g": 12.5
+     "g": 40.6,
+     "band_g": 12.2
     },
     {
      "name": "IM-cams: 3 x 25 mm Al cams",
-     "g": 39.0,
-     "band_g": 11.7
+     "g": 39.6,
+     "band_g": 11.9
     },
     {
      "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): IM-hooks 3 x 25 mm rated Al G-h",
@@ -4233,14 +4261,14 @@
      "band_g": 9.0
     },
     {
-     "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): IM-cams 3 x 25 mm Al cams",
-     "g": 27.0,
-     "band_g": 8.1
+     "name": "US-cams: US1/US2 25 mm Al cams (2)",
+     "g": 26.4,
+     "band_g": 7.9
     },
     {
-     "name": "US-cams: US1/US2 25 mm Al cams (2)",
-     "g": 26.0,
-     "band_g": 7.8
+     "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): IM-cams 3 x 25 mm Al cams",
+     "g": 26.4,
+     "band_g": 7.9
     },
     {
      "name": "IM-hooks: 3 x 25 mm rated Al G-hooks (right end only)",
@@ -4249,8 +4277,8 @@
     },
     {
      "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): US-cams US1/US2 25 mm Al cams (",
-     "g": 18.0,
-     "band_g": 5.4
+     "g": 17.6,
+     "band_g": 5.3
     },
     {
      "name": "belt B 2:1 pull: 2 x 25 mm Al D-ring (no record, ASSUMPTION 5 g, $1)",
@@ -4271,6 +4299,11 @@
      "name": "hood + IM2 hooks kept until PT-1/TL-1/LL-H (BL-004 REC undone): guy bar loops x2: 25 mm we",
      "g": -9.52,
      "band_g": 2.9
+    },
+    {
+     "name": "BL-035: rifle muzzle keepers (2, 3 mm shock cord x 309 mm + spring cord lock, through the ",
+     "g": 8.71,
+     "band_g": 2.6
     },
     {
      "name": "POM pawl housing double-booked (the printed body forms the housing and its cheeks)",
@@ -4302,12 +4335,12 @@
   "A": {
    "scenario": "A",
    "cfg": "base",
-   "total_g": 3217.6,
+   "total_g": 3214.0,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
-     "g": 352.5,
-     "band_g": 164.8,
-     "n": 27,
+     "g": 361.1,
+     "band_g": 166.8,
+     "n": 28,
      "frac": 0.3
     },
     "printed PAHT-CF body (2 mm raster x density)": {
@@ -4317,19 +4350,19 @@
      "frac": 0.05
     },
     "frame lumps and carbon (beam model, frame_mass json)": {
-     "g": 514.3,
-     "band_g": 63.8,
+     "g": 514.1,
+     "band_g": 63.9,
      "n": 12,
      "frac": 0.1
     },
     "cut area x record gsm, length x record g/m": {
-     "g": 1599.6,
-     "band_g": 224.9,
-     "n": 148,
+     "g": 1587.6,
+     "band_g": 226.6,
+     "n": 147,
      "frac": 0.08
     }
    },
-   "worst_g": 496.1,
+   "worst_g": 499.7,
    "rss_g": 72.2,
    "named": [
     {
@@ -4349,13 +4382,13 @@
     },
     {
      "name": "torso adjust: 3:1 pulley webbing 25 mm x 1.4 m, metal cam buckle, pawl release cord + stra",
-     "g": 41.7,
-     "band_g": 12.5
+     "g": 40.6,
+     "band_g": 12.2
     },
     {
      "name": "IM-cams: 3 x 25 mm Al cams",
-     "g": 39.0,
-     "band_g": 11.7
+     "g": 39.6,
+     "band_g": 11.9
     },
     {
      "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): IM-hooks 3 x 25 mm rated Al G-h",
@@ -4368,19 +4401,19 @@
      "band_g": 9.0
     },
     {
+     "name": "US-cams: US1/US2 25 mm Al cams (2)",
+     "g": 26.4,
+     "band_g": 7.9
+    },
+    {
      "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): IM-cams 3 x 25 mm Al cams",
-     "g": 27.0,
-     "band_g": 8.1
+     "g": 26.4,
+     "band_g": 7.9
     },
     {
      "name": "BL-003 (a) IM/US: IM-cams 3 x 25 mm Al cams",
-     "g": -27.0,
-     "band_g": 8.1
-    },
-    {
-     "name": "US-cams: US1/US2 25 mm Al cams (2)",
-     "g": 26.0,
-     "band_g": 7.8
+     "g": -26.4,
+     "band_g": 7.9
     },
     {
      "name": "IM-hooks: 3 x 25 mm rated Al G-hooks (right end only)",
@@ -4394,13 +4427,13 @@
     },
     {
      "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): US-cams US1/US2 25 mm Al cams (",
-     "g": 18.0,
-     "band_g": 5.4
+     "g": 17.6,
+     "band_g": 5.3
     },
     {
      "name": "BL-003 (a) IM/US: US-cams US1/US2 25 mm Al cams (2)",
-     "g": -18.0,
-     "band_g": 5.4
+     "g": -17.6,
+     "band_g": 5.3
     },
     {
      "name": "belt B 2:1 pull: 2 x 25 mm Al D-ring (no record, ASSUMPTION 5 g, $1)",
@@ -4416,6 +4449,11 @@
      "name": "hood + IM2 hooks kept until PT-1/TL-1/LL-H (BL-004 REC undone): guy bar loops x2: 25 mm we",
      "g": -9.52,
      "band_g": 2.9
+    },
+    {
+     "name": "BL-035: rifle muzzle keepers (2, 3 mm shock cord x 309 mm + spring cord lock, through the ",
+     "g": 8.71,
+     "band_g": 2.6
     },
     {
      "name": "POM pawl housing double-booked (the printed body forms the housing and its cheeks)",

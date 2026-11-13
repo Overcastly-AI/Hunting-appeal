@@ -29,14 +29,17 @@ def test_block_items_and_ledger():
     lb = C.ledger_basis()
     assert soft == pytest.approx(lb["torso_adjust_g"], abs=0.01) == pytest.approx(C.TORSO_ADJUST_ROW_G, abs=0.01)
     assert 250.0 < sum(blk.values()) < 265.0                                     # ticket: "about 250 g"
-    assert lb["pack_g"] == pytest.approx(3927.0, abs=0.1)
+    # BL-035: 3927.0 (BL-017) -> 3973.5 g = +26.0 #10 door sliders, +16.0 stainless US tri-glides, +1.9 IMP-4 #5 slider
+    # (BL-034 records) + 4.5 elastic hook keepers, -0.8 lifter tri-glides, -1.1 torso adjust (BL-035 records)
+    assert lb["pack_g"] == pytest.approx(3973.5, abs=0.1)
+    assert C.TORSO_ADJUST_ROW_G == pytest.approx(25.2 + 12.2 + 1.5 + 1.7, abs=0.01)   # web + cam + cord + toggle records
 
 
 def test_option_masses():
     h = C.option_mass(C.Option("x"), "M")
     assert h["delta_g"] == 0.0
     d1 = C.option_mass(C.Option("d1", lock="pawl"), "L")["delta_g"]
-    assert d1 == pytest.approx(-(25.2 + 12.0 + 8.0), abs=0.05)
+    assert d1 == pytest.approx(-(25.2 + 12.2 + 8.0), abs=0.05)          # cam_25mm_al record 12.2 g (BL-035; was 12.0)
     a_l = C.option_mass(C.Option("a", kit=True), "L")
     assert a_l["items"].get("crown legs", 0.0) == pytest.approx(0.0, abs=0.01)    # L keeps 430 mm legs
     a_s = C.option_mass(C.Option("a", kit=True), "S")

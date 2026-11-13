@@ -143,7 +143,11 @@ def test_heavy_guy_lock_sensitivity_is_record_based(mt):
     d = 2 * (float(load("ladder_lock_25mm_heavy").require("mass_g")) - float(load("ladder_lock_25mm").require("mass_g")))
     for v, r in mt["variants"].items():
         assert r["with_heavy_guy_locks_g"] == pytest.approx(r["attachment_g"] + d, abs=0.06)
-    # honest edge: with the heavy locks REC misses 220 g by under a gram
+    # honest edge: with the heavy locks REC misses 220 g by under a gram. History: 220.7 (BL-004); 218.1 after the
+    # BL-034 toggle / tri-glide records (-2 x 1.3 g toggles, guy and lifter tri-glides); BL-035: 220.3 g, the six
+    # elastic hook keepers on the elastic_25mm record (+0.75 g each; REC keeps 4 of the 6: +3.0 g) and the lifter
+    # tri-glide ledger row on the triglide_25mm record (2 x 2.6 g, was 2 x 3.0: -0.8 g) = +2.2 g
+    assert mt["variants"]["REC"]["with_heavy_guy_locks_g"] == pytest.approx(220.3, abs=0.1)
     assert mt["variants"]["REC"]["with_heavy_guy_locks_g"] > AD.TARGET_G
 
 

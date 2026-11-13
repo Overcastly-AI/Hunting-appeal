@@ -19,8 +19,10 @@ def cmp():
 
 def test_corrie_baseline_booked_by_same_code(cmp):
     c = cmp["corrie_b2"]
-    assert c["total_g"] == pytest.approx(716.5, abs=1.0)        # body 533.1 + IMP-1/2/4/8 124.3 + fly 53.2 + F-02 5.9
-    assert c["body"]["total"] == pytest.approx(533.1, abs=0.5)
+    # BL-035 (BL-034 records): 716.5 -> 744.4 g = body 533.1 -> 559.1 (+26.0, #10 door sliders 2 x 19.0 g, were 6 g)
+    # + IMP-4 #5 slider +1.9 (4.9 g, was 3.0); IMP-1/2/4/8 126.2 + fly 53.2 + F-02 5.9
+    assert c["total_g"] == pytest.approx(744.4, abs=1.0)
+    assert c["body"]["total"] == pytest.approx(559.1, abs=0.5)
 
 
 def test_fell_lighter_in_every_config(cmp):

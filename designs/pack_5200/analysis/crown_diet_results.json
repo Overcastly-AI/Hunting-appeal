@@ -2,8 +2,8 @@
  "date": "2026-11-11",
  "ticket": "BL-017",
  "ledger": {
-  "pack_g": 3927.0,
-  "torso_adjust_g": 41.7,
+  "pack_g": 3973.5,
+  "torso_adjust_g": 40.6,
   "crown_lump_g": 239.4,
   "frame_g": 1025.0800000000002
  },
@@ -19,10 +19,10 @@
   "pawl 304 bushings + pin": 9.94,
   "pulley guides (3)": 8.0,
   "pulley webbing 25 mm x 1.4 m": 25.2,
-  "cam buckle": 12.0,
-  "release cord + toggle": 4.5
+  "cam buckle": 12.2,
+  "release cord + toggle": 3.2
  },
- "block_total_g": 258.3,
+ "block_total_g": 257.2,
  "sizes": {
   "S": {
    "torso_in": [
@@ -1900,21 +1900,21 @@
   "H1 today": {
    "S": {
     "frame_g": 1025.1,
-    "pack_g": 3927.0,
+    "pack_g": 3973.5,
     "delta_g": 0,
     "soft_goods_delta_g": 0,
     "items": {}
    },
    "M": {
     "frame_g": 1025.1,
-    "pack_g": 3927.0,
+    "pack_g": 3973.5,
     "delta_g": 0,
     "soft_goods_delta_g": 0,
     "items": {}
    },
    "L": {
     "frame_g": 1025.1,
-    "pack_g": 3927.0,
+    "pack_g": 3973.5,
     "delta_g": 0,
     "soft_goods_delta_g": 0,
     "items": {}
@@ -1923,7 +1923,7 @@
   "(a) 3 crown kits": {
    "S": {
     "frame_g": 978.2,
-    "pack_g": 3873.3,
+    "pack_g": 3919.8,
     "delta_g": -53.7,
     "soft_goods_delta_g": -6.9,
     "items": {
@@ -1935,7 +1935,7 @@
    },
    "M": {
     "frame_g": 997.5,
-    "pack_g": 3892.6,
+    "pack_g": 3939.1,
     "delta_g": -34.4,
     "soft_goods_delta_g": -6.9,
     "items": {
@@ -1947,7 +1947,7 @@
    },
    "L": {
     "frame_g": 1016.7,
-    "pack_g": 3911.8,
+    "pack_g": 3958.3,
     "delta_g": -15.2,
     "soft_goods_delta_g": -6.9,
     "items": {
@@ -1959,48 +1959,48 @@
   "(b) plunger (no pulley, no cord)": {
    "S": {
     "frame_g": 1014.6,
-    "pack_g": 3874.8,
-    "delta_g": -52.2,
-    "soft_goods_delta_g": -41.7,
+    "pack_g": 3922.4,
+    "delta_g": -51.1,
+    "soft_goods_delta_g": -40.6,
     "items": {
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0,
      "rack -> perforated strip (holes)": -2.47,
-     "release cord + toggle (plunger pulled at the housing)": -4.5
+     "release cord + toggle (plunger pulled at the housing)": -3.2
     }
    },
    "M": {
     "frame_g": 1014.6,
-    "pack_g": 3874.8,
-    "delta_g": -52.2,
-    "soft_goods_delta_g": -41.7,
+    "pack_g": 3922.4,
+    "delta_g": -51.1,
+    "soft_goods_delta_g": -40.6,
     "items": {
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0,
      "rack -> perforated strip (holes)": -2.47,
-     "release cord + toggle (plunger pulled at the housing)": -4.5
+     "release cord + toggle (plunger pulled at the housing)": -3.2
     }
    },
    "L": {
     "frame_g": 1014.6,
-    "pack_g": 3874.8,
-    "delta_g": -52.2,
-    "soft_goods_delta_g": -41.7,
+    "pack_g": 3922.4,
+    "delta_g": -51.1,
+    "soft_goods_delta_g": -40.6,
     "items": {
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0,
      "rack -> perforated strip (holes)": -2.47,
-     "release cord + toggle (plunger pulled at the housing)": -4.5
+     "release cord + toggle (plunger pulled at the housing)": -3.2
     }
    }
   },
   "(c) OD 17 x 7 UD legs": {
    "S": {
     "frame_g": 1016.8,
-    "pack_g": 3918.7,
+    "pack_g": 3965.2,
     "delta_g": -8.3,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2010,7 +2010,7 @@
    },
    "M": {
     "frame_g": 1016.8,
-    "pack_g": 3918.7,
+    "pack_g": 3965.2,
     "delta_g": -8.3,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2020,7 +2020,7 @@
    },
    "L": {
     "frame_g": 1016.8,
-    "pack_g": 3918.7,
+    "pack_g": 3965.2,
     "delta_g": -8.3,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2032,7 +2032,7 @@
   "(c) OD 17 x 7 UD legs, bore 19": {
    "S": {
     "frame_g": 1004.3,
-    "pack_g": 3906.2,
+    "pack_g": 3952.7,
     "delta_g": -20.8,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2043,7 +2043,7 @@
    },
    "M": {
     "frame_g": 1004.3,
-    "pack_g": 3906.2,
+    "pack_g": 3952.7,
     "delta_g": -20.8,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2054,7 +2054,7 @@
    },
    "L": {
     "frame_g": 1004.3,
-    "pack_g": 3906.2,
+    "pack_g": 3952.7,
     "delta_g": -20.8,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2067,7 +2067,7 @@
   "(c) OD 18 x 6 UD legs, bore 20": {
    "S": {
     "frame_g": 984.2,
-    "pack_g": 3886.1,
+    "pack_g": 3932.6,
     "delta_g": -40.9,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2078,7 +2078,7 @@
    },
    "M": {
     "frame_g": 984.2,
-    "pack_g": 3886.1,
+    "pack_g": 3932.6,
     "delta_g": -40.9,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2089,7 +2089,7 @@
    },
    "L": {
     "frame_g": 984.2,
-    "pack_g": 3886.1,
+    "pack_g": 3932.6,
     "delta_g": -40.9,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2102,34 +2102,34 @@
   "(d1) pawl only, no pulley": {
    "S": {
     "frame_g": 1017.1,
-    "pack_g": 3881.8,
-    "delta_g": -45.2,
-    "soft_goods_delta_g": -37.2,
+    "pack_g": 3928.1,
+    "delta_g": -45.4,
+    "soft_goods_delta_g": -37.4,
     "items": {
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0
     }
    },
    "M": {
     "frame_g": 1017.1,
-    "pack_g": 3881.8,
-    "delta_g": -45.2,
-    "soft_goods_delta_g": -37.2,
+    "pack_g": 3928.1,
+    "delta_g": -45.4,
+    "soft_goods_delta_g": -37.4,
     "items": {
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0
     }
    },
    "L": {
     "frame_g": 1017.1,
-    "pack_g": 3881.8,
-    "delta_g": -45.2,
-    "soft_goods_delta_g": -37.2,
+    "pack_g": 3928.1,
+    "delta_g": -45.4,
+    "soft_goods_delta_g": -37.4,
     "items": {
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0
     }
    }
@@ -2137,12 +2137,12 @@
   "(d2) pawl + 1:1 strap": {
    "S": {
     "frame_g": 1019.8,
-    "pack_g": 3892.6,
-    "delta_g": -34.4,
-    "soft_goods_delta_g": -29.1,
+    "pack_g": 3938.9,
+    "delta_g": -34.6,
+    "soft_goods_delta_g": -29.3,
     "items": {
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0,
      "1:1 pull-down strap 0.45 m": 8.1,
      "one guide kept (guide A)": 2.67
@@ -2150,12 +2150,12 @@
    },
    "M": {
     "frame_g": 1019.8,
-    "pack_g": 3892.6,
-    "delta_g": -34.4,
-    "soft_goods_delta_g": -29.1,
+    "pack_g": 3938.9,
+    "delta_g": -34.6,
+    "soft_goods_delta_g": -29.3,
     "items": {
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0,
      "1:1 pull-down strap 0.45 m": 8.1,
      "one guide kept (guide A)": 2.67
@@ -2163,12 +2163,12 @@
    },
    "L": {
     "frame_g": 1019.8,
-    "pack_g": 3892.6,
-    "delta_g": -34.4,
-    "soft_goods_delta_g": -29.1,
+    "pack_g": 3938.9,
+    "delta_g": -34.6,
+    "soft_goods_delta_g": -29.3,
     "items": {
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0,
      "1:1 pull-down strap 0.45 m": 8.1,
      "one guide kept (guide A)": 2.67
@@ -2178,7 +2178,7 @@
   "(e) bushings 50 mm": {
    "S": {
     "frame_g": 1021.1,
-    "pack_g": 3923.0,
+    "pack_g": 3969.5,
     "delta_g": -4.0,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2187,7 +2187,7 @@
    },
    "M": {
     "frame_g": 1021.1,
-    "pack_g": 3923.0,
+    "pack_g": 3969.5,
     "delta_g": -4.0,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2196,7 +2196,7 @@
    },
    "L": {
     "frame_g": 1021.1,
-    "pack_g": 3923.0,
+    "pack_g": 3969.5,
     "delta_g": -4.0,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2207,15 +2207,15 @@
   "(a)+(d2)": {
    "S": {
     "frame_g": 972.9,
-    "pack_g": 3845.7,
-    "delta_g": -81.3,
-    "soft_goods_delta_g": -29.1,
+    "pack_g": 3892.0,
+    "delta_g": -81.5,
+    "soft_goods_delta_g": -29.3,
     "items": {
      "crown legs": -26.03,
      "spine cut per size": -12.45,
      "rack cut per size (strip part)": -8.35,
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0,
      "1:1 pull-down strap 0.45 m": 8.1,
      "one guide kept (guide A)": 2.67
@@ -2223,15 +2223,15 @@
    },
    "M": {
     "frame_g": 992.2,
-    "pack_g": 3865.0,
-    "delta_g": -62.0,
-    "soft_goods_delta_g": -29.1,
+    "pack_g": 3911.3,
+    "delta_g": -62.2,
+    "soft_goods_delta_g": -29.3,
     "items": {
      "crown legs": -13.01,
      "spine cut per size": -6.22,
      "rack cut per size (strip part)": -8.35,
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0,
      "1:1 pull-down strap 0.45 m": 8.1,
      "one guide kept (guide A)": 2.67
@@ -2239,13 +2239,13 @@
    },
    "L": {
     "frame_g": 1011.4,
-    "pack_g": 3884.2,
-    "delta_g": -42.8,
-    "soft_goods_delta_g": -29.1,
+    "pack_g": 3930.5,
+    "delta_g": -43.0,
+    "soft_goods_delta_g": -29.3,
     "items": {
      "rack cut per size (strip part)": -8.35,
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0,
      "1:1 pull-down strap 0.45 m": 8.1,
      "one guide kept (guide A)": 2.67
@@ -2255,41 +2255,41 @@
   "(a)+(d1)": {
    "S": {
     "frame_g": 970.3,
-    "pack_g": 3835.0,
-    "delta_g": -92.0,
-    "soft_goods_delta_g": -37.2,
+    "pack_g": 3881.3,
+    "delta_g": -92.2,
+    "soft_goods_delta_g": -37.4,
     "items": {
      "crown legs": -26.03,
      "spine cut per size": -12.45,
      "rack cut per size (strip part)": -8.35,
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0
     }
    },
    "M": {
     "frame_g": 989.5,
-    "pack_g": 3854.2,
-    "delta_g": -72.8,
-    "soft_goods_delta_g": -37.2,
+    "pack_g": 3900.5,
+    "delta_g": -73.0,
+    "soft_goods_delta_g": -37.4,
     "items": {
      "crown legs": -13.01,
      "spine cut per size": -6.22,
      "rack cut per size (strip part)": -8.35,
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0
     }
    },
    "L": {
-    "frame_g": 1008.8,
-    "pack_g": 3873.5,
-    "delta_g": -53.5,
-    "soft_goods_delta_g": -37.2,
+    "frame_g": 1008.7,
+    "pack_g": 3919.7,
+    "delta_g": -53.8,
+    "soft_goods_delta_g": -37.4,
     "items": {
      "rack cut per size (strip part)": -8.35,
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0
     }
    }
@@ -2297,44 +2297,44 @@
   "(a)+(d1)+(e)": {
    "S": {
     "frame_g": 966.3,
-    "pack_g": 3831.0,
-    "delta_g": -96.0,
-    "soft_goods_delta_g": -37.2,
+    "pack_g": 3877.3,
+    "delta_g": -96.2,
+    "soft_goods_delta_g": -37.4,
     "items": {
      "crown legs": -26.03,
      "spine cut per size": -12.45,
      "rack cut per size (strip part)": -8.35,
      "UHMWPE bushings": -3.99,
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0
     }
    },
    "M": {
     "frame_g": 985.5,
-    "pack_g": 3850.2,
-    "delta_g": -76.8,
-    "soft_goods_delta_g": -37.2,
+    "pack_g": 3896.5,
+    "delta_g": -77.0,
+    "soft_goods_delta_g": -37.4,
     "items": {
      "crown legs": -13.01,
      "spine cut per size": -6.22,
      "rack cut per size (strip part)": -8.35,
      "UHMWPE bushings": -3.99,
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0
     }
    },
    "L": {
     "frame_g": 1004.8,
-    "pack_g": 3869.5,
-    "delta_g": -57.5,
-    "soft_goods_delta_g": -37.2,
+    "pack_g": 3915.8,
+    "delta_g": -57.7,
+    "soft_goods_delta_g": -37.4,
     "items": {
      "rack cut per size (strip part)": -8.35,
      "UHMWPE bushings": -3.99,
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0
     }
    }
@@ -2342,45 +2342,45 @@
   "(a)+(d1)+(c17)": {
    "S": {
     "frame_g": 962.4,
-    "pack_g": 3827.1,
-    "delta_g": -99.9,
-    "soft_goods_delta_g": -37.2,
+    "pack_g": 3873.4,
+    "delta_g": -100.1,
+    "soft_goods_delta_g": -37.4,
     "items": {
      "crown legs": -27.13,
      "spine cut per size": -12.45,
      "rack cut per size (strip part)": -8.35,
      "UHMWPE bushings": -6.79,
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0
     }
    },
    "M": {
     "frame_g": 981.4,
-    "pack_g": 3846.1,
-    "delta_g": -80.9,
-    "soft_goods_delta_g": -37.2,
+    "pack_g": 3892.4,
+    "delta_g": -81.1,
+    "soft_goods_delta_g": -37.4,
     "items": {
      "crown legs": -14.35,
      "spine cut per size": -6.22,
      "rack cut per size (strip part)": -8.35,
      "UHMWPE bushings": -6.79,
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0
     }
    },
    "L": {
     "frame_g": 1000.4,
-    "pack_g": 3865.1,
-    "delta_g": -61.9,
-    "soft_goods_delta_g": -37.2,
+    "pack_g": 3911.4,
+    "delta_g": -62.1,
+    "soft_goods_delta_g": -37.4,
     "items": {
      "crown legs": -1.56,
      "rack cut per size (strip part)": -8.35,
      "UHMWPE bushings": -6.79,
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0
     }
    }
@@ -2388,16 +2388,16 @@
   "(a)+(d2)+(c17)": {
    "S": {
     "frame_g": 965.1,
-    "pack_g": 3837.9,
-    "delta_g": -89.1,
-    "soft_goods_delta_g": -29.1,
+    "pack_g": 3884.2,
+    "delta_g": -89.3,
+    "soft_goods_delta_g": -29.3,
     "items": {
      "crown legs": -27.13,
      "spine cut per size": -12.45,
      "rack cut per size (strip part)": -8.35,
      "UHMWPE bushings": -6.79,
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0,
      "1:1 pull-down strap 0.45 m": 8.1,
      "one guide kept (guide A)": 2.67
@@ -2405,16 +2405,16 @@
    },
    "M": {
     "frame_g": 984.1,
-    "pack_g": 3856.9,
-    "delta_g": -70.1,
-    "soft_goods_delta_g": -29.1,
+    "pack_g": 3903.2,
+    "delta_g": -70.3,
+    "soft_goods_delta_g": -29.3,
     "items": {
      "crown legs": -14.35,
      "spine cut per size": -6.22,
      "rack cut per size (strip part)": -8.35,
      "UHMWPE bushings": -6.79,
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0,
      "1:1 pull-down strap 0.45 m": 8.1,
      "one guide kept (guide A)": 2.67
@@ -2422,15 +2422,15 @@
    },
    "L": {
     "frame_g": 1003.1,
-    "pack_g": 3875.9,
-    "delta_g": -51.1,
-    "soft_goods_delta_g": -29.1,
+    "pack_g": 3922.2,
+    "delta_g": -51.3,
+    "soft_goods_delta_g": -29.3,
     "items": {
      "crown legs": -1.56,
      "rack cut per size (strip part)": -8.35,
      "UHMWPE bushings": -6.79,
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0,
      "1:1 pull-down strap 0.45 m": 8.1,
      "one guide kept (guide A)": 2.67
@@ -2440,47 +2440,47 @@
   "(a)+(d1)+(c17 bore 19)": {
    "S": {
     "frame_g": 949.9,
-    "pack_g": 3814.6,
-    "delta_g": -112.4,
-    "soft_goods_delta_g": -37.2,
+    "pack_g": 3860.9,
+    "delta_g": -112.6,
+    "soft_goods_delta_g": -37.4,
     "items": {
      "crown legs": -27.13,
      "spine cut per size": -12.45,
      "rack cut per size (strip part)": -8.35,
      "UHMWPE bushings": 0.82,
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0,
      "printed sleeve bore 18 -> 19 (H1 solid, z 160-544)": -20.1
     }
    },
    "M": {
     "frame_g": 968.9,
-    "pack_g": 3833.6,
-    "delta_g": -93.4,
-    "soft_goods_delta_g": -37.2,
+    "pack_g": 3879.9,
+    "delta_g": -93.6,
+    "soft_goods_delta_g": -37.4,
     "items": {
      "crown legs": -14.35,
      "spine cut per size": -6.22,
      "rack cut per size (strip part)": -8.35,
      "UHMWPE bushings": 0.82,
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0,
      "printed sleeve bore 18 -> 19 (H1 solid, z 160-544)": -20.1
     }
    },
    "L": {
     "frame_g": 987.9,
-    "pack_g": 3852.6,
-    "delta_g": -74.4,
-    "soft_goods_delta_g": -37.2,
+    "pack_g": 3898.9,
+    "delta_g": -74.6,
+    "soft_goods_delta_g": -37.4,
     "items": {
      "crown legs": -1.56,
      "rack cut per size (strip part)": -8.35,
      "UHMWPE bushings": 0.82,
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0,
      "printed sleeve bore 18 -> 19 (H1 solid, z 160-544)": -20.1
     }
@@ -2489,16 +2489,16 @@
   "(a)+(d2)+(c17 bore 19)": {
    "S": {
     "frame_g": 952.6,
-    "pack_g": 3825.4,
-    "delta_g": -101.6,
-    "soft_goods_delta_g": -29.1,
+    "pack_g": 3871.7,
+    "delta_g": -101.8,
+    "soft_goods_delta_g": -29.3,
     "items": {
      "crown legs": -27.13,
      "spine cut per size": -12.45,
      "rack cut per size (strip part)": -8.35,
      "UHMWPE bushings": 0.82,
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0,
      "1:1 pull-down strap 0.45 m": 8.1,
      "one guide kept (guide A)": 2.67,
@@ -2507,16 +2507,16 @@
    },
    "M": {
     "frame_g": 971.6,
-    "pack_g": 3844.4,
-    "delta_g": -82.6,
-    "soft_goods_delta_g": -29.1,
+    "pack_g": 3890.7,
+    "delta_g": -82.8,
+    "soft_goods_delta_g": -29.3,
     "items": {
      "crown legs": -14.35,
      "spine cut per size": -6.22,
      "rack cut per size (strip part)": -8.35,
      "UHMWPE bushings": 0.82,
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0,
      "1:1 pull-down strap 0.45 m": 8.1,
      "one guide kept (guide A)": 2.67,
@@ -2525,15 +2525,15 @@
    },
    "L": {
     "frame_g": 990.6,
-    "pack_g": 3863.4,
-    "delta_g": -63.6,
-    "soft_goods_delta_g": -29.1,
+    "pack_g": 3909.7,
+    "delta_g": -63.8,
+    "soft_goods_delta_g": -29.3,
     "items": {
      "crown legs": -1.56,
      "rack cut per size (strip part)": -8.35,
      "UHMWPE bushings": 0.82,
      "pulley webbing 1.4 m": -25.2,
-     "cam buckle": -12.0,
+     "cam buckle": -12.2,
      "pulley guides": -8.0,
      "1:1 pull-down strap 0.45 m": 8.1,
      "one guide kept (guide A)": 2.67,

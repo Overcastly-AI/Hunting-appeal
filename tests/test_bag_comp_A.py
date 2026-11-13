@@ -42,7 +42,9 @@ def test_ledger_and_system_mass():
     assert set(led) >= {"E-1", "E-3", "E-4", "E-5", "E-7"}
     assert led["E-1"]["g"] < 0 and led["E-3"]["g"] < 0          # corners and tub save mass
     assert 0 < s["delta_g"] < 40                                  # honest: the pockets cost more than the cuts save
-    assert s["corrie_b2"]["bag_system_g"] == pytest.approx(710.6, abs=1.0)
+    # BL-035: 710.6 -> 738.5 g = +26.0 #10 door sliders (slider_10 record 19.0 g, was 6 g) + 1.9 IMP-4 #5 slider
+    # (slider_5 record 4.9 g, was 3.0 g), both BL-034 records on CORRIE B.2's body and pocket
+    assert s["corrie_b2"]["bag_system_g"] == pytest.approx(738.5, abs=1.0)
 
 
 def test_cloth_sim_surface_is_continuous():

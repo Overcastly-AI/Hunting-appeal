@@ -23,6 +23,7 @@ from reportlab.pdfgen import canvas  # noqa: E402
 
 import patterns_corrie_f_rev3 as PR  # noqa: E402
 from huntkit import materials as MAT  # noqa: E402
+from huntkit.gendesign import attach_system as AS  # noqa: E402  (B-24 box sizes, BL-035)
 from huntkit.patterns import cut_list, export_dxf, export_pdf_tiled, nest  # noqa: E402
 from huntkit.patterns.export_pdf import MM, PAPERS, draw_test_squares  # noqa: E402
 import patterns_v31_export as PVX  # noqa: E402  (drawing helpers only)
@@ -32,7 +33,7 @@ REL = ROOT / "outputs" / "release" / "pack5200_corrie_f_rev3" / "patterns"
 OUT = ROOT / "outputs" / "patterns_corrie_f_rev3"
 SCREENS = ROOT / "outputs" / "screens"
 DATE = "20261113"
-SHOT_TAG = "BL034"                 # BL-034 part A re-export: screenshot prefix 20261113_BL034_ (BL-033 kept its own)
+SHOT_TAG = "BL035"                 # BL-035 re-export: screenshot prefix 20261113_BL035_ (BL-033 / BL-034 kept their own)
 YD = 914.4
 WASTE_PROD = PVX.WASTE_PROD        # 3 % lay loss ASSUMPTION (v3.1 rule)
 NEST_UNITS = 10
@@ -191,9 +192,16 @@ def bl034_section(rsP) -> list:
            "| W3 (per kit) | 21 x 25 | G-hook end, as W1 / W2 |",
            f"| IM1-IM3 | 21 x 25 | end loop, fold {PR.IM_LOOP:.0f} mm, box at the tip end |",
            f"| US1/US2 | 21 x 25 | sewn eye, fold {PR.US_EYE:.0f} mm (ASSUMPTION US-EYE) |",
-           "| B-24 | 34 x 30 hook + 3 x 34 x 20 loops | attach_system.link_piece (the loop stations at 120 / 170 / 220 mm) |",
+           f"| B-24 | {AS.LINK_HOOK_BOX[0]:.0f} x {AS.LINK_HOOK_BOX[1]:.0f} hook + 3 x {AS.LINK_LOOP_BOX[0]:.0f} x "
+           f"{AS.LINK_LOOP_BOX[1]:.0f} loops | attach_system.link_piece (the loop stations at 120 / 170 / 220 mm); "
+           "BL-035: the capacity row uses the same boxes |",
            f"| B-25 | {PR.B25_BOX[0]:.0f} x {PR.B25_BOX[1]:.0f} each tab | DECISION B25-BOX: leaves the 13 mm loop the POM toggle needs |",
-           f"| B-02h B-28 front tab | {PR.B28_BOX[0]:.0f} x {PR.B28_BOX[1]:.0f}, OUTSIDE | DECISION B28-FACE |", "",
+           f"| B-02h B-28 front tab | {PR.B28_BOX[0]:.0f} x {PR.B28_BOX[1]:.0f}, OUTSIDE | DECISION B28-FACE |",
+           f"| B-28t lock tabs (front + rear, 4) | {PR.B28_BOX[0]:.0f} x {PR.B28_BOX[1]:.0f} | fold round the lock bar |",
+           f"| B-28s toggle loop (B-25 second fold, 2) | {PR.B25_BOX[0]:.0f} x {PR.B25_BOX[1]:.0f} at the tip | "
+           "BL-035: split from B-28t; 13 mm loop passes the B-28 rear toggle (B25-BOX rule) |",
+           f"| LLT + B-22 + B-02h | {PR.LLT_BOX[0]:.0f} x {PR.LLT_BOX[1]:.0f} | BL-035: the B-02h mark matches the LLT "
+           "piece (was 25 x 25) |", "",
            "### 8.3 K-W keeper notches and F-02", "",
            "K-W keepers are caught in the aft corner seams where each wrap crosses it (ASSUMPTION KW-PATH, geometry.yaml "
            "anchors): " + "; ".join(f"{k} R z {v['R']:.0f} / L z {v['L']:.0f}" for k, v in kw.items()) +
@@ -380,9 +388,10 @@ def make_screens(rsP, mkP, mk10, log=print):
     shots.append(PVX.render_pieces([rsP.pieces[k] for k in ("B-02h", "B-05")],
                                    "BL-034: hinge band B-28 front tabs OUTSIDE (21 x 20 box-X); F-02 on B-05", nxt(),
                                    max_row=900.0))
-    web = [rsP.pieces[k] for k in ("B-25", "US", "IM1", "W3", "B-24", "B-28t", "W1")]
-    shots.append(PVX.render_pieces(web, "BL-034: webbing box-X marks (B-25 toggle tabs, US eye, IM loop, W3, B-24)",
-                                   nxt(), max_row=1400.0))
+    # BL-035: the short tabs go last (their labels run into free space, clear of the B-24 hook box)
+    web = [rsP.pieces[k] for k in ("B-25", "US", "IM1", "W3", "B-24", "W1", "B-28t", "B-28s")]
+    shots.append(PVX.render_pieces(web, "BL-034/035: webbing box-X marks (B-25 toggle tabs, US eye, IM loop, W3, B-24, "
+                                        "B-28t lock tabs, B-28s toggle loop)", nxt(), max_row=1400.0))
     for s in shots:
         assert s.stat().st_size <= 1.5e6, s
     log(f"screens {len(shots)}")

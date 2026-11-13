@@ -1,11 +1,11 @@
 {
  "team": "C (OPEN)",
  "name": "TAILGATE",
- "one_line": "Full-face lid hinged at the floor seam: the whole aft face drops like a tailgate (floor to z 650, full width); 3 lid straps at the IM heights carry the hoop load so the #10 zip never pulls the bag shut; roll-top, pouch and the whole frame interface as CORRIE B.2.",
- "bag_system_g": 758.7,
+ "one_line": "Full-face lid hinged at the floor seam: the whole aft face drops like a tailgate (floor to z 650, full width); 3 lid straps at the IM heights close the lid before the #10 zip does (the sim puts <= 0.45 N/mm on the zip, SF 79); roll-top, pouch and the whole frame interface as CORRIE B.2.",
+ "bag_system_g": 786.6,
  "pack_mass_M_g": 3991.1,
- "corrie_b2_bag_system_g_used": 710.6,
- "mass_note": "bag_system = body group (bag_concepts.metrics: shell, collar, swells, accents, straps, pouch, zips, hardware) + bag pockets IMP-1/2/4/8 (+ IMP-C1 strap sleeve for TAILGATE) + fly F-01 scaled to the outer shell. CORRIE B.2 by the same definition: 710.6 g; pack_mass_M_g = 3943 - that + TAILGATE's.",
+ "corrie_b2_bag_system_g_used": 738.5,
+ "mass_note": "bag_system = body group (bag_concepts.metrics: shell, collar, swells, accents, straps, pouch, zips, hardware) + bag pockets IMP-1/2/4/8 (+ IMP-C1 strap sleeve for TAILGATE) + fly F-01 scaled to the outer shell. CORRIE B.2 by the same definition: 738.5 g; pack_mass_M_g = 3943 - that + TAILGATE's.",
  "volume_L": 88.1,
  "volume_note": "cloth-sim closed volume, fill case, mean of 15/19/23 in (the flat-panel rule gives 75.9 L for this box, as CORRIE rev B); pouch 2.7 L not counted",
  "fill_height_in": 40.2,
@@ -41,7 +41,7 @@
   "Tailgate lid: one 330D panel, the whole aft face, hinged on a sewn floor seam (no zip at the floor)",
   "Opening 0.229 m2 vs CORRIE's door 0.153 m2; clear width 286/314/353 mm at IM1/IM2/IM3, 254 mm at the floor, no sill",
   "#10 coil inverted-U zip (1.59 m) in the aft corner seams, 2 sliders parked closed under a top-right camo garage, zip feet in 500D boots",
-  "Lid straps H1-H3 at z 190/330/520 (the IM heights), gusset loop to gusset loop over the zip; lid cut 6 mm full: straps-then-zip rule",
+  "Lid straps H1-H3 at z 190/330/520 (the IM heights), gusset loop to gusset loop over the zip: cinch first, zip second, so the slider never clamps a full bag",
   "Camo storm flaps over both zip legs frame the lid (owner camo as the accent edge); 330D flap on the top run",
   "No wings: 2 side straps a side (tripod right with the IMP-8 cup, pad/decoy left), IMP-1 spotter sleeve sewn to the left gusset",
   "IMP-4 kill kit on the inside of the lid: it comes to you when the lid drops",
@@ -61,7 +61,8 @@
  "screenshots": [
   "outputs/screens/20261110_bagC_1.png",
   "outputs/screens/20261110_bagC_2.png",
-  "outputs/screens/20261110_bagC_3.png"
+  "outputs/screens/20261110_bagC_3.png",
+  "outputs/screens/20261110_bagC_4.png"
  ],
  "hoop": {
   "zip_crosswise_n_mm": 35.4,

@@ -1,15 +1,15 @@
 {
  "system": {
   "corrie_b2": {
-   "body_g": 533.1,
+   "body_g": 559.1,
    "pockets_g": {
     "IMP-1": 54.5,
     "IMP-2": 40.3,
-    "IMP-4": 22.0,
+    "IMP-4": 23.9,
     "IMP-8": 7.5
    },
    "fly_g": 53.2,
-   "bag_system_g": 710.6,
+   "bag_system_g": 738.5,
    "pieces": 42,
    "curved_seams": 1,
    "zip_mm": 1514.0,
@@ -17,7 +17,7 @@
    "seam_m": 13.41
   },
   "corrie_e": {
-   "body_g_corrie_build": 534.5,
+   "body_g_corrie_build": 560.5,
    "ledger": [
     {
      "id": "E-1",
@@ -78,11 +78,11 @@
    "pockets_g": {
     "IMP-1": 54.5,
     "IMP-2": 40.3,
-    "IMP-4": 22.0,
+    "IMP-4": 23.9,
     "IMP-8": 7.5
    },
    "fly_g": 52.4,
-   "bag_system_g": 734.6,
+   "bag_system_g": 762.5,
    "pieces": 42,
    "curved_seams": 2,
    "zip_mm": 1476.0,

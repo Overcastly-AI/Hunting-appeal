@@ -35,7 +35,11 @@ def test_rev3_default_is_25mm_per_kit_and_bl030_20mm_is_history():
     assert F.crown_straps(25.0, "S")["kit"] == "S"
     assert F.crown_straps(20.0)["width_mm"] == 20.0                     # BL-030's diet, still reproducible
     assert F.crown_strap_diet()["chosen"]["width_mm"] == 20.0
-    assert F.crown_straps_bl029()["mass_g"] == pytest.approx(67.46, abs=0.05)
+    # BL-035 (one mass basis): BL-029's strap is re-booked on the pom_toggle record (1.7 g, was the 3.0 g ASSUMPTION
+    # BL-029 used): 67.46 -> 64.86 g = 2 toggles x -1.3 g. The cut and the path are unchanged (history geometry).
+    bl029 = F.crown_straps_bl029()
+    assert bl029["mass_g"] == pytest.approx(64.86, abs=0.05)
+    assert bl029["mass_g"] - 2 * (bl029["toggle_g"] - 3.0) == pytest.approx(67.46, abs=0.05)   # BL-029 as booked
     with F.revision(2):
         assert F.crown_straps()["cut_mm"] == F.crown_straps_bl029()["cut_mm"]
 
