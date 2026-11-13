@@ -200,7 +200,7 @@ def trap_solid(p: dict, y: float, z: float, j: ClevisJoint = JOINT):
     rc = af / math.sqrt(3.0)                          # circumradius of the hex slot
     hx = m3d.Manifold.cylinder(w_lo - j.trap_x0, rc, rc, 6)        # along +z, vertices at angle 0 (+x local)
     # local z -> frame x; local x -> frame y (a vertex points along y: flats face +/- z)
-    hx = hx.rotate((0.0, 90.0, 0.0)).translate((min(p["sign"] * j.trap_x0, p["sign"] * w_lo), y, z))
+    hx = hx.rotate((0.0, 0.0, 90.0)).rotate((0.0, 90.0, 0.0)).translate((min(p["sign"] * j.trap_x0, p["sign"] * w_lo), y, z))
     ns = _box(*_sx(p, j.trap_x0, w_lo), yb - 1.0, y, z - af / 2.0, z + af / 2.0)
     return ws + hx + ns
 
@@ -210,7 +210,7 @@ def trap_walls(p: dict | None = None, j: ClevisJoint = JOINT) -> dict:
     p = p or next(q for q in us2_stations() if q["side"] == "R")
     af = j.nut_af + j.nut_play
     out = {}
-    for lab, w in (("washer_slot", j.slot_w), ("hex_slot", af), ("hex_corner_y", af)):
+    for lab, w in (("washer_slot", j.slot_w), ("hex_slot", af)):
         out[lab] = {"outer_wall_mm": round(BLOCK_HALF_Z - (j.dz + w / 2.0), 2),
                     "between_traps_mm": round(2 * j.dz - w, 2)}
     out["min_wall_mm"] = min(min(v.values()) for v in out.values())
