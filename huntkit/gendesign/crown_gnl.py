@@ -360,14 +360,21 @@ def run_all(log=print) -> dict:
             cache.write_bytes(pickle.dumps(done))
         return done[key]
     rows = []
-    for kit in KITS:
+    for kit in KITS:                         # worn baseline: every setting, both couples, stiffness band, lifter ends
         for t in sets_for(kit):
             for variant in ("crown_bar", "strap_upper"):
                 for km in K_MULTS:
-                    for lf in LIFTER_STATES:
-                        for sp_ in SUPPORTS:
-                            key = ("set", kit, t, variant, km, lf, sp_, IMP_MM[0])
-                            rows.append(get(key, lambda: run_set(kit, t, variant, km, lf, sp_, IMP_MM[0], log=log)))
+                    for lf in ("loose", "cinched"):
+                        key = ("set", kit, t, variant, km, lf, "sling_back", IMP_MM[0])
+                        rows.append(get(key, lambda: run_set(kit, t, variant, km, lf, "sling_back", IMP_MM[0], log=log)))
+    for kit in KITS:                         # support variants on each kit's linear-worst setting
+        w = min((r for r in rows if r["kit"] == kit), key=lambda r: r["linear_margin"])
+        for sp_ in ("sling_free", "yoke_back"):
+            for km in K_MULTS:
+                for lf in LIFTER_STATES:
+                    key = ("set", kit, w["torso_in"], w["variant"], km, lf, sp_, IMP_MM[0])
+                    rows.append(get(key, lambda: run_set(kit, w["torso_in"], w["variant"], km, lf, sp_, IMP_MM[0],
+                                                         log=log)))
     gov = min(rows, key=lambda r: (r["lam_reached"], r["min_eig_last"]))
     imp8 = get(("set", gov["kit"], gov["torso_in"], gov["variant"], gov["k_mult"], gov["lifter"], gov["support"],
                 IMP_MM[1]), lambda: run_set(gov["kit"], gov["torso_in"], gov["variant"], gov["k_mult"], gov["lifter"],
