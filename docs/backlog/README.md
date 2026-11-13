@@ -87,3 +87,4 @@ Nothing here is decided; the tickets produce the material.
 | BL-036 | Small cleanups after BL-034/035 | pack-designer | S | 035 | consistent docs and constants |
 | BL-037 | Weight push: last 220 g after tests | pack-designer | L | 036 | base ≤ 6.6 lb after tests |
 | BL-038 | Physical test kit: register, order, shopping list, guides, results reader | manufacturing-engineer | M | 037 | owner can start testing |
+| BL-039 | Pre-release fixes: S crown strap spare, CA-1/MT-1c rule confirmations, stale docs | pack-designer | S | 038 | clean release |

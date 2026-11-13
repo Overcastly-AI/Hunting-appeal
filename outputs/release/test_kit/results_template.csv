@@ -1,0 +1,225 @@
+row_id,test_id,group,release,sample,quantity,unit,check,limit,measured,date,photo,notes,settles
+MT-1-01,MT-1,G2,R1; BAG-CUT,IM#1,"held 92.6 kg (908 N) 1 min, no broken stitch",Y/N,yes,Y,,,,,BOX25
+MT-1-02,MT-1,G2,R1; BAG-CUT,IM#2,"held 92.6 kg (908 N) 1 min, no broken stitch",Y/N,yes,Y,,,,,BOX25
+MT-1-03,MT-1,G2,R1; BAG-CUT,IM#3,"held 92.6 kg (908 N) 1 min, no broken stitch",Y/N,yes,Y,,,,,BOX25
+MT-1-04,MT-1,G2,R1; BAG-CUT,IM#4,"held 92.6 kg (908 N) 1 min, no broken stitch",Y/N,yes,Y,,,,,BOX25
+MT-1-05,MT-1,G2,R1; BAG-CUT,IM#5,"held 92.6 kg (908 N) 1 min, no broken stitch",Y/N,yes,Y,,,,,BOX25
+MT-1-06,MT-1,G2,R1; BAG-CUT,US#1,"held 110.1 kg (1080 N) 1 min, no broken stitch",Y/N,yes,Y,,,,,BOX25
+MT-1-07,MT-1,G2,R1; BAG-CUT,US#2,"held 110.1 kg (1080 N) 1 min, no broken stitch",Y/N,yes,Y,,,,,BOX25
+MT-1-08,MT-1,G2,R1; BAG-CUT,US#3,"held 110.1 kg (1080 N) 1 min, no broken stitch",Y/N,yes,Y,,,,,BOX25
+MT-1-09,MT-1,G2,R1; BAG-CUT,US#4,"held 110.1 kg (1080 N) 1 min, no broken stitch",Y/N,yes,Y,,,,,BOX25
+MT-1-10,MT-1,G2,R1; BAG-CUT,US#5,"held 110.1 kg (1080 N) 1 min, no broken stitch",Y/N,yes,Y,,,,,BOX25
+PT-1-01,PT-1,G2,BAG-CUT,#1,"held 260.2 kg (2553 N) 60 s, gate closes, no set",Y/N,yes,Y,,,,,CARA-PROOF
+PT-1-02,PT-1,G2,BAG-CUT,#2,"held 260.2 kg (2553 N) 60 s, gate closes, no set",Y/N,yes,Y,,,,,CARA-PROOF
+PT-1-03,PT-1,G2,BAG-CUT,#3,"held 260.2 kg (2553 N) 60 s, gate closes, no set",Y/N,yes,Y,,,,,CARA-PROOF
+PT-1-04,PT-1,G2,BAG-CUT,#4,"held 260.2 kg (2553 N) 60 s, gate closes, no set",Y/N,yes,Y,,,,,CARA-PROOF
+PT-1-05,PT-1,G2,BAG-CUT,#5,"held 260.2 kg (2553 N) 60 s, gate closes, no set",Y/N,yes,Y,,,,,CARA-PROOF
+MT-2-01,MT-2,G2,BAG-CUT,G#1,"G-hook held 65.7 kg (645 N) 1 min, gate closes",Y/N,yes,Y,,,,,
+MT-2-02,MT-2,G2,BAG-CUT,G#2,"G-hook held 65.7 kg (645 N) 1 min, gate closes",Y/N,yes,Y,,,,,
+MT-2-03,MT-2,G2,BAG-CUT,G#3,"G-hook held 65.7 kg (645 N) 1 min, gate closes",Y/N,yes,Y,,,,,
+MT-2-04,MT-2,G2,BAG-CUT,G#4,"G-hook held 65.7 kg (645 N) 1 min, gate closes",Y/N,yes,Y,,,,,
+MT-2-05,MT-2,G2,BAG-CUT,G#5,"G-hook held 65.7 kg (645 N) 1 min, gate closes",Y/N,yes,Y,,,,,
+MT-2-06,MT-2,G2,BAG-CUT,C#1,"carabiner held 92.8 kg (910 N) 1 min, gate closes",Y/N,yes,Y,,,,,
+MT-2-07,MT-2,G2,BAG-CUT,C#2,"carabiner held 92.8 kg (910 N) 1 min, gate closes",Y/N,yes,Y,,,,,
+MT-2-08,MT-2,G2,BAG-CUT,C#3,"carabiner held 92.8 kg (910 N) 1 min, gate closes",Y/N,yes,Y,,,,,
+MT-2-09,MT-2,G2,BAG-CUT,C#4,"carabiner held 92.8 kg (910 N) 1 min, gate closes",Y/N,yes,Y,,,,,
+MT-2-10,MT-2,G2,BAG-CUT,C#5,"carabiner held 92.8 kg (910 N) 1 min, gate closes",Y/N,yes,Y,,,,,
+MT-3-01,MT-3,G2,BAG-CUT,a#1,mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
+MT-3-02,MT-3,G2,BAG-CUT,a#2,mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
+MT-3-03,MT-3,G2,BAG-CUT,a#3,mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
+MT-3-04,MT-3,G2,BAG-CUT,a#4,mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
+MT-3-05,MT-3,G2,BAG-CUT,a#5,mark moved at 92.6 kg (908 N),mm,max,3,,,,,CAM-SLIP
+MT-3-06,MT-3,G2,BAG-CUT,b#1,mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
+MT-3-07,MT-3,G2,BAG-CUT,b#2,mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
+MT-3-08,MT-3,G2,BAG-CUT,b#3,mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
+MT-3-09,MT-3,G2,BAG-CUT,b#4,mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
+MT-3-10,MT-3,G2,BAG-CUT,b#5,mark moved at 110.1 kg (1080 N),mm,max,3,,,,,CAM-SLIP
+US-BS-01,US-BS,G2,BAG-CUT,#1,strap stopped within,mm,max,10,,,,,US-BS
+US-BS-02,US-BS,G2,BAG-CUT,#2,strap stopped within,mm,max,10,,,,,US-BS
+US-BS-03,US-BS,G2,BAG-CUT,#3,strap stopped within,mm,max,10,,,,,US-BS
+US-BS-04,US-BS,G2,BAG-CUT,h#1,held 110.1 kg (1080 N) 1 min,Y/N,yes,Y,,,,,US-BS
+US-BS-05,US-BS,G2,BAG-CUT,h#2,held 110.1 kg (1080 N) 1 min,Y/N,yes,Y,,,,,US-BS
+US-BS-06,US-BS,G2,BAG-CUT,h#3,held 110.1 kg (1080 N) 1 min,Y/N,yes,Y,,,,,US-BS
+PT-2-01,PT-2,G2,BAG-CUT,#1,"held 260.2 kg (2553 N) 60 s, no stitch break, no tear",Y/N,yes,Y,,,,,
+PT-2-02,PT-2,G2,BAG-CUT,#2,"held 260.2 kg (2553 N) 60 s, no stitch break, no tear",Y/N,yes,Y,,,,,
+PT-2-03,PT-2,G2,BAG-CUT,#3,"held 260.2 kg (2553 N) 60 s, no stitch break, no tear",Y/N,yes,Y,,,,,
+PT-2-04,PT-2,G2,BAG-CUT,#4,"held 260.2 kg (2553 N) 60 s, no stitch break, no tear",Y/N,yes,Y,,,,,
+PT-2-05,PT-2,G2,BAG-CUT,#5,"held 260.2 kg (2553 N) 60 s, no stitch break, no tear",Y/N,yes,Y,,,,,
+PT-3-01,PT-3,G2,BAG-CUT,#1,held 156 kg (1530 N) 60 s,Y/N,yes,Y,,,,,
+PT-3-02,PT-3,G2,BAG-CUT,#2,held 156 kg (1530 N) 60 s,Y/N,yes,Y,,,,,
+PT-3-03,PT-3,G2,BAG-CUT,#3,held 156 kg (1530 N) 60 s,Y/N,yes,Y,,,,,
+PT-3-04,PT-3,G2,BAG-CUT,#4,held 156 kg (1530 N) 60 s,Y/N,yes,Y,,,,,
+PT-3-05,PT-3,G2,BAG-CUT,#5,held 156 kg (1530 N) 60 s,Y/N,yes,Y,,,,,
+PT-5-01,PT-5,G2,BAG-CUT,#1,total slip after 10 cycles to 17.3 kg,mm,max,5,,,,,
+PT-6-01,PT-6,G2,BAG-CUT,#1,"held 143.7 kg (1410 N) 60 s, no box-X break, gate closes",Y/N,yes,Y,,,,,
+PT-6-02,PT-6,G2,BAG-CUT,#2,"held 143.7 kg (1410 N) 60 s, no box-X break, gate closes",Y/N,yes,Y,,,,,
+PT-6-03,PT-6,G2,BAG-CUT,#3,"held 143.7 kg (1410 N) 60 s, no box-X break, gate closes",Y/N,yes,Y,,,,,
+PT-6-04,PT-6,G2,BAG-CUT,#4,"held 143.7 kg (1410 N) 60 s, no box-X break, gate closes",Y/N,yes,Y,,,,,
+PT-6-05,PT-6,G2,BAG-CUT,#5,"held 143.7 kg (1410 N) 60 s, no box-X break, gate closes",Y/N,yes,Y,,,,,
+LL-H-01,LL-H,G2,BAG-CUT,#1,slip after 1 h at 37.3 kg (366 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
+LL-H-02,LL-H,G2,BAG-CUT,#2,slip after 1 h at 37.3 kg (366 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
+LL-H-03,LL-H,G2,BAG-CUT,#3,slip after 1 h at 37.3 kg (366 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
+LL-H-04,LL-H,G2,BAG-CUT,#4,slip after 1 h at 37.3 kg (366 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
+LL-H-05,LL-H,G2,BAG-CUT,#5,slip after 1 h at 37.3 kg (366 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
+PORT-1-01,PORT-1,G2,BAG-CUT,1,towel dry after 1 min hose,Y/N,yes,Y,,,,,PORT_FACING_W; PORT_TURN
+PORT-1-02,PORT-1,G2,BAG-CUT,1,lap gap at 10.2 kg (100 N),mm,max,2,,,,,PORT_FACING_W; PORT_TURN
+PORT-1-03,PORT-1,G2,BAG-CUT,1,gloved lock adjustments OK out of 5,count,min,5,,,,,GLOVE-T
+TL-1-01,TL-1,G2,BAG-CUT,1,"passes the register criterion: 5 of 5 hold 366 N, toggle does not pull through or crack; cold sample holds; no crush mark on the tube",Y/N,yes,Y,,,,,GUY-TOGGLE
+FS-O5-01,FS-O5,G2,BAG-CUT,1,"passes the register criterion: mean >= 1840 N/50 mm, minimum >= 1195 N/50 mm",Y/N,yes,Y,,,,,ULTRA-200X STRIP
+WP-3-01,WP-3,G2,BAG-BATCH,1,passes the register criterion: release and re-tension in one grab every time,Y/N,yes,Y,,,,,A-2 TAIL
+SL-1-01,SL-1,G2,BL037,#1,slider + cord pull mass,g,max,15.0,,,,,SLIDER-CORD
+SL-1-02,SL-1,G2,BL037,#2,slider + cord pull mass,g,max,15.0,,,,,SLIDER-CORD
+SL-1-03,SL-1,G2,BL037,#3,slider + cord pull mass,g,max,15.0,,,,,SLIDER-CORD
+SL-1-04,SL-1,G2,BL037,#4,slider + cord pull mass,g,max,15.0,,,,,SLIDER-CORD
+SL-1-05,SL-1,G2,BL037,#5,slider + cord pull mass,g,max,15.0,,,,,SLIDER-CORD
+SL-1-06,SL-1,G2,BL037,label,printed label mass,g,max,1.0,,,,,LABEL
+SL-1-07,SL-1,G2,BL037,door,"gloved open / close without a snag, out of 20",count,min,20,,,,,SLIDER-CORD
+HB-7-01,HB-7,G2,CARRY,#1,"no slip at 43.4 kg (426 N), 1 min",Y/N,yes,Y,,,,,HB7-426
+HB-7-02,HB-7,G2,CARRY,#2,"no slip at 43.4 kg (426 N), 1 min",Y/N,yes,Y,,,,,HB7-426
+HB-7-03,HB-7,G2,CARRY,#3,"no slip at 43.4 kg (426 N), 1 min",Y/N,yes,Y,,,,,HB7-426
+HB-7-04,HB-7,G2,CARRY,#4,"no slip at 43.4 kg (426 N), 1 min",Y/N,yes,Y,,,,,HB7-426
+HB-7-05,HB-7,G2,CARRY,#5,"no slip at 43.4 kg (426 N), 1 min",Y/N,yes,Y,,,,,HB7-426
+HB-7-06,HB-7,G2,CARRY,s#1,slip load,kg,min,50.0,,,,,LL-SLIP
+HB-7-07,HB-7,G2,CARRY,s#2,slip load,kg,min,50.0,,,,,LL-SLIP
+HB-7-08,HB-7,G2,CARRY,s#3,slip load,kg,min,50.0,,,,,LL-SLIP
+HB-7-09,HB-7,G2,CARRY,s#4,slip load,kg,min,50.0,,,,,LL-SLIP
+HB-7-10,HB-7,G2,CARRY,s#5,slip load,kg,min,50.0,,,,,LL-SLIP
+FRAY-1-01,FRAY-1,G3,BAG-CUT,ULTRA|330D,no fray past the 2nd row after 3 washes,Y/N,yes,Y,,,,,NO-BIND
+FRAY-1-02,FRAY-1,G3,BAG-CUT,330D|330D,no fray past the 2nd row after 3 washes,Y/N,yes,Y,,,,,NO-BIND
+FRAY-1-03,FRAY-1,G3,BAG-CUT,500D|330D,no fray past the 2nd row after 3 washes,Y/N,yes,Y,,,,,NO-BIND
+FRAY-1-04,FRAY-1,G3,BAG-CUT,630D|330D,no fray past the 2nd row after 3 washes,Y/N,yes,Y,,,,,NO-BIND
+FRAY-1-05,FRAY-1,G3,BAG-CUT,HyperD300|330D,no fray past the 2nd row after 3 washes,Y/N,yes,Y,,,,,NO-BIND
+FRAY-1-06,FRAY-1,G3,BAG-CUT,100D|330D,no fray past the 2nd row after 3 washes,Y/N,yes,Y,,,,,NO-BIND
+WP-1-01,WP-1,G3,BAG-CUT,330D|330D,no fray past the 2nd row after 3 washes,Y/N,yes,Y,,,,,B-1 NO-BINDING
+WP-1-02,WP-1,G3,BAG-CUT,330D|ULTRA,no fray past the 2nd row after 3 washes,Y/N,yes,Y,,,,,B-1 NO-BINDING
+WP-1-03,WP-1,G3,BAG-CUT,500D|330D,no fray past the 2nd row after 3 washes,Y/N,yes,Y,,,,,B-1 NO-BINDING
+WP-1-04,WP-1,G3,BAG-CUT,100D|ULTRA,no fray past the 2nd row after 3 washes,Y/N,yes,Y,,,,,B-1 NO-BINDING
+CA-1-01,CA-1,G4,R1,XY#1,static XY UTS,MPa,min,79.2,,,,,PAHT_UTS
+CA-1-02,CA-1,G4,R1,XY#2,static XY UTS,MPa,min,79.2,,,,,PAHT_UTS
+CA-1-03,CA-1,G4,R1,XY#3,static XY UTS,MPa,min,79.2,,,,,PAHT_UTS
+CA-1-04,CA-1,G4,R1,Z#1,static Z UTS,MPa,min,42.3,,,,,PAHT_UTS
+CA-1-05,CA-1,G4,R1,Z#2,static Z UTS,MPa,min,42.3,,,,,PAHT_UTS
+CA-1-06,CA-1,G4,R1,RXY#1,cycles at the release level 0.276 (run-out 100000),cycles,min,100000,,,,,PAHT_FAT
+CA-1-07,CA-1,G4,R1,RXY#2,cycles at the release level 0.276 (run-out 100000),cycles,min,100000,,,,,PAHT_FAT
+CA-1-08,CA-1,G4,R1,RXY#3,cycles at the release level 0.276 (run-out 100000),cycles,min,100000,,,,,PAHT_FAT
+CA-1-09,CA-1,G4,R1,SXY#1,stiffness loss at run-out,%,max,10,,,,,PAHT_FAT
+CA-1-10,CA-1,G4,R1,SXY#2,stiffness loss at run-out,%,max,10,,,,,PAHT_FAT
+CA-1-11,CA-1,G4,R1,SXY#3,stiffness loss at run-out,%,max,10,,,,,PAHT_FAT
+CA-1-12,CA-1,G4,R1,RZ#1,Z cycles at 0.276,cycles,min,100000,,,,,PAHT_FAT
+CA-1-13,CA-1,G4,R1,RZ#2,Z cycles at 0.276,cycles,min,100000,,,,,PAHT_FAT
+CA-1@0.40-01,CA-1@0.40,G4,OPTION F-1,XY#1,cycles at 0.40 (run-out 100000),cycles,min,100000,,,,,F-1 OPTION
+CA-1@0.40-02,CA-1@0.40,G4,OPTION F-1,XY#2,cycles at 0.40 (run-out 100000),cycles,min,100000,,,,,F-1 OPTION
+CA-1@0.40-03,CA-1@0.40,G4,OPTION F-1,XY#3,cycles at 0.40 (run-out 100000),cycles,min,100000,,,,,F-1 OPTION
+IM3-EC-01,IM3-EC,G4,R1,#1,cycles at 102 -> 1017 N (run-out 100000),cycles,min,100000,,,,,P_cheek
+IM3-EC-02,IM3-EC,G4,R1,#2,cycles at 102 -> 1017 N (run-out 100000),cycles,min,100000,,,,,P_cheek
+IM3-EC-03,IM3-EC,G4,R1,#3,cycles at 102 -> 1017 N (run-out 100000),cycles,min,100000,,,,,P_cheek
+IM3-EC-04,IM3-EC,G4,R1,p#1,no crack at 10x and held 2553 N after,Y/N,yes,Y,,,,,P_cheek
+IM3-EC-05,IM3-EC,G4,R1,p#2,no crack at 10x and held 2553 N after,Y/N,yes,Y,,,,,P_cheek
+IM3-EC-06,IM3-EC,G4,R1,p#3,no crack at 10x and held 2553 N after,Y/N,yes,Y,,,,,P_cheek
+CA-5-01,CA-5,G4,R1,#1,static stub peak,N,min,3666,,,,,PRYING-1.25
+CA-5-02,CA-5,G4,R1,#2,static stub peak,N,min,3666,,,,,PRYING-1.25
+CA-5-03,CA-5,G4,R1,#3,static stub peak,N,min,3666,,,,,PRYING-1.25
+CA-5-04,CA-5,G4,R1,mean,mean of the 3 static peaks,N,min,4400,,,,,PRYING-1.25
+CA-5-05,CA-5,G4,R1,cyc,joint step after 1e5 cycles at 1543 N,mm,max,0.1,,,,,BOSS-BENDING
+CA-5-06,CA-5,G4,R1,cyc,no crack at the boss root after 1e5 cycles,Y/N,yes,Y,,,,,BOSS-BENDING
+CS-1-01,CS-1,G4,BL037,6mm#1,"compression set, 6 mm disc",%,max,15,,,,,XLPE-SET
+CS-1-02,CS-1,G4,BL037,6mm#2,"compression set, 6 mm disc",%,max,15,,,,,XLPE-SET
+CS-1-03,CS-1,G4,BL037,6mm#3,"compression set, 6 mm disc",%,max,15,,,,,XLPE-SET
+CS-1-04,CS-1,G4,BL037,5mm#1,"compression set, 5 mm disc",%,max,15,,,,,XLPE-SET
+CS-1-05,CS-1,G4,BL037,5mm#2,"compression set, 5 mm disc",%,max,15,,,,,XLPE-SET
+CS-1-06,CS-1,G4,BL037,5mm#3,"compression set, 5 mm disc",%,max,15,,,,,XLPE-SET
+BP-1-01,BP-1,G4,BL037; CARRY,3mm,3 mm core strip passes BP-1,Y/N,yes,Y,,,,,BL-005 STRIP
+BP-1-02,BP-1,G4,BL037; CARRY,2mm,2 mm core strip passes BP-1 (SF >= 1 at the factored strip load),Y/N,yes,Y,,,,,K-1 2MM CORE
+HB-6-01,HB-6,G4,CARRY,1,"passes the register criterion: >= 1.5 kN, 5 of 5",Y/N,yes,Y,,,,,INSERT-PULL
+CA-3-01,CA-3,G4,CARRY,Z#1,Z strength after 48 h at 40 C water,MPa,min,37.6,,,,,FI-INTERLAYER
+CA-3-02,CA-3,G4,CARRY,Z#2,Z strength after 48 h at 40 C water,MPa,min,37.6,,,,,FI-INTERLAYER
+CA-3-03,CA-3,G4,CARRY,Z#3,Z strength after 48 h at 40 C water,MPa,min,37.6,,,,,FI-INTERLAYER
+CA-3-04,CA-3,G4,CARRY,SB#1,short-beam interlayer shear,MPa,min,22.6,,,,,FI-INTERLAYER
+CA-3-05,CA-3,G4,CARRY,SB#2,short-beam interlayer shear,MPa,min,22.6,,,,,FI-INTERLAYER
+CA-3-06,CA-3,G4,CARRY,SB#3,short-beam interlayer shear,MPa,min,22.6,,,,,FI-INTERLAYER
+CA-4-01,CA-4,G4,CARRY,#1,no rupture after 8 h at 40 C (282 N link),Y/N,yes,Y,,,,,CREEP
+CA-4-02,CA-4,G4,CARRY,#2,no rupture after 8 h at 40 C (282 N link),Y/N,yes,Y,,,,,CREEP
+HB-5-01,HB-5,G4,CARRY,1,"passes the register criterion: no yield (grid unchanged), slope within tolerance after cycling, no crack",Y/N,yes,Y,,,,,C-1..C-3 7075 PLATE
+T6-01,T6,G4,CARRY,1,"passes the register criterion: mean >= 1.5 x, lowest >= 1.25 x the largest FEA limit end force (frame_sizing_cases_19in.md); cohesive failure",Y/N,yes,Y,,,,,
+T7-01,T7,G4,CARRY,1,passes the register criterion: no crack; ovalisation <= 0.2 mm after unload at 1.5 x,Y/N,yes,Y,,,,,
+CA-2-01,CA-2,G4,CARRY,1,passes the register criterion: credit only a measured gain (0-11 % expected),Y/N,yes,Y,,,,,
+WP-2-01,WP-2,G5,BAG-BATCH,1,"passes the register criterion: 5 of 5 hold 450 N, no slot tear",Y/N,yes,Y,,,,,C-6 TPU TAB
+AB-1-01,AB-1,G5,BL037,lab,HyperD 300: no hole at 8000 rev,Y/N,yes,Y,,,,,HYPERD-ABRASION
+AB-1-02,AB-1,G5,BL037,lab,630D: rev at end point (reference),rev,record,,,,,,HYPERD-ABRASION
+AB-1-03,AB-1,G5,BL037,brush,HyperD strip no worse than 630D after 50 passes,Y/N,yes,Y,,,,,HYPERD-ABRASION
+AB-1-04,AB-1,G5,BL037,print,owner OK on the camo print (in writing),Y/N,yes,Y,,,,,HYPERD-ABRASION
+HB-4-01,HB-4,G5,CARRY,1,passes the register criterion: no thread break; hole elongation < 0.5 mm,Y/N,yes,Y,,,,,
+HB-T-01,HB-T,G5,CARRY,1,"passes the register criterion: 5 of 5 hold 1500 N for 60 s, no broken stitch",Y/N,yes,Y,,,,,
+PT-4-01,PT-4,G5,CARRY,1,"passes the register criterion: hood stays seated, no toggle pull-through",Y/N,yes,Y,,,,,
+PS-1-01,PS-1,G5,CARRY,1,passes the register criterion: sag < 3 mm; no contact with a dummy plate spine at 4.5 mm,Y/N,yes,Y,,,,,
+BP-2-01,BP-2,G5,CARRY,1,passes the register criterion: imprint width >= 8 mm at all 5 stations,Y/N,yes,Y,,,,,BL-005 STRIP
+HB-2-01,HB-2,G5,CARRY,1,passes the register criterion: mu >= 0.45 credits the grip print,Y/N,yes,Y,,,,,
+IM3-EP-01,IM3-EP,G6,R1,1,"passes the register criterion: both eyes hold 2553 N for 60 s, no crack, no whitening at the cheek root",Y/N,yes,Y,,,,,P_cheek
+W-PULL-01,W-PULL,G6,R1,1,"passes the register criterion: 6 of 6 hold 338 N, no crack, no set",Y/N,yes,Y,,,,,
+T9-01,T9,G6,R1; BAG-BATCH,15in,meat CG aft of the stay plane,mm,max,190,,,,,REV-C-CG
+T9-02,T9,G6,R1; BAG-BATCH,19in,meat CG aft of the stay plane,mm,max,190,,,,,REV-C-CG
+T9-03,T9,G6,R1; BAG-BATCH,23in,meat CG aft of the stay plane,mm,max,190,,,,,REV-C-CG
+T9-04,T9,G6,R1; BAG-BATCH,fill,bag CG aft (uniform fill),mm,max,205,,,,,REV-C-CG
+T9-05,T9,G6,R1; BAG-BATCH,tall,tall-load CG aft,mm,max,185,,,,,REV-C-CG
+T9-R3a-01,T9-R3a,G6,BAG-BATCH,S15,"meat CG aft, S kit, top full, lid + 1 kg (sim 179.3)",mm,max,190,,,,,LID-SIM; INT-1
+T9-R3c-01,T9-R3c,G6,BAG-BATCH,S-full-L,"crown strap path, S kit full",mm,max,928.1,,,,,ROLL-PATH; TORSO-LIN
+T9-R3c-02,T9-R3c,G6,BAG-BATCH,S-full-R,"crown strap path, S kit full",mm,max,928.1,,,,,ROLL-PATH; TORSO-LIN
+T9-R3c-03,T9-R3c,G6,BAG-BATCH,L-6day,"crown strap path, L kit 6-day (sim 438.8)",mm,record,,,,,,ROLL-PATH; TORSO-LIN
+BP-3-01,BP-3,G6,CARRY,1,"passes the register criterion: every sensor <= 14 kPa at 15, 19 and 23 in; record whether the z 100 / 160 sensors read > 1 kPa (rails bear below z 190)",Y/N,yes,Y,,,,,
+RF-1-01,RF-1,G6,CARRY,1,passes the register criterion: peak <= 14 kPa and comfort OK,Y/N,yes,Y,,,,,C-8 RAIL
+T1-01,T1,G6,R1,1,"passes the register criterion: no crack, tap clean, crown set <= 1 mm, crown slip 0, re-load within 10 %, FEA +/-30 %; z 234 step <= 0.5 mm after unload",Y/N,yes,Y,,,,,HA-LS-1 T1
+T3-01,T3,G6,CARRY,1,passes the register criterion: as T1; crown legs slide freely after,Y/N,yes,Y,,,,,
+T2-01,T2,G6,R1,1,passes the register criterion: as T1,Y/N,yes,Y,,,,,HA-LS-1 T2
+MT-1c-01,MT-1c,G6,R1,stand,"mean cinch tension, T5 crank 600 cycles",N,record,,,,,,CINCH_STATIC
+MT-1c-02,MT-1c,G6,R1,stand,peak-to-peak swing / mean tension,%,max,10,,,,,CINCH_STATIC; CINCH-SWING
+MT-1c-03,MT-1c,G6,R1,walk,"mean cinch tension, 10 min walk",N,record,,,,,,CINCH_STATIC
+MT-1c-04,MT-1c,G6,R1,walk,peak-to-peak swing / mean tension,%,max,10,,,,,CINCH_STATIC; CINCH-SWING
+CR-1-01,CR-1,G6,CARRY,1,passes the register criterion: no slip either way,Y/N,yes,Y,,,,,
+BU-1-01,BU-1,G6,BL037,1,"gloved kit / pawl cycles without binding, out of 20",count,min,20,,,,,BUSHING-LD
+SP-1-01,SP-1,G6,CARRY,1,"passes the register criterion: no crack, no skin-core disbond, deflection inside the 14 mm standoff",Y/N,yes,Y,,,,,
+T4a-01,T4a,G6,CARRY,1,"passes the register criterion: no damage; if 2.0 g needs < 10 mm, revisit the standard",Y/N,yes,Y,,,,,
+T4b-01,T4b,G6,CARRY,1,"passes the register criterion: no damage at foot/lumbar, tap clean; record peak g and branch deflection",Y/N,yes,Y,,,,,
+T4c-01,T4c,G6,CARRY,1,"passes the register criterion: crown still telescopes and locks, no crack, tap clean",Y/N,yes,Y,,,,,
+T5-01,T5,G6,CARRY,1,"passes the register criterion: no crack/debond, stiffness change <= 10 %, crown slip < 1 tooth",Y/N,yes,Y,,,,,
+T5f-01,T5f,G6,CARRY,1,passes the register criterion: share <= 0.95 x the no-friction value,Y/N,yes,Y,,,,,
+T2u-01,T2u,G6,CARRY,1,passes the register criterion: still carries the load at 30 s; record first noise,Y/N,yes,Y,,,,,
+T9-R3b-01,T9-R3b,G7,BAG-BATCH,L,left strap tension after the walk,N,record,,,,,,CROWN_PRE_N; MU_LID
+T9-R3b-02,T9-R3b,G7,BAG-BATCH,R,right strap tension after the walk,N,record,,,,,,CROWN_PRE_N; MU_LID
+T9-R3b-03,T9-R3b,G7,BAG-BATCH,both,>= 40 N after the walk OR lid still seated,Y/N,yes,Y,,,,,CROWN_PRE_N; MU_LID
+T9-R3d-01,T9-R3d,G7,BAG-BATCH,lid,sewn lid mass (ledger booking),g,band,42.8..52.8,,,,,LID_SLIDER5_G; LID_THREAD
+T9-R3d-02,T9-R3d,G7,BAG-BATCH,lid,lid seated as drawn (photo),Y/N,yes,Y,,,,,LID-SEAT
+GT-1-01,GT-1,G7,BAG-BATCH,#1,mu = ln(T / 49 N) / wrap angle (rad),-,band,0.20..0.40,,,,,MU_WEB_FAB
+GT-1-02,GT-1,G7,BAG-BATCH,#2,mu = ln(T / 49 N) / wrap angle (rad),-,band,0.20..0.40,,,,,MU_WEB_FAB
+GT-1-03,GT-1,G7,BAG-BATCH,#3,mu = ln(T / 49 N) / wrap angle (rad),-,band,0.20..0.40,,,,,MU_WEB_FAB
+PT-7-01,PT-7,G7,BAG-BATCH,1,passes the register criterion: no tooth separation,Y/N,yes,Y,,,,,
+WP-4-01,WP-4,G7,BAG-BATCH,1,"passes the register criterion: covers to the B-05 seam, no gap at the hinge band",Y/N,yes,Y,,,,,
+WP-5-01,WP-5,G7,BAG-BATCH,1,passes the register criterion: no audible tick at 1 m,Y/N,yes,Y,,,,,B-10 TPU TRIM
+HS-1-01,HS-1,G7,BL037,T1-30kg,XLPE peak / EVA peak,-,max,1.10,,,,,XLPE-SHOULDER
+HS-1-02,HS-1,G7,BL037,T1-68kg,XLPE peak / EVA peak,-,max,1.10,,,,,XLPE-SHOULDER
+HS-1-03,HS-1,G7,BL037,T2-30kg,XLPE peak / EVA peak,-,max,1.10,,,,,XLPE-SHOULDER
+HS-1-04,HS-1,G7,BL037,T2-68kg,XLPE peak / EVA peak,-,max,1.10,,,,,XLPE-SHOULDER
+HS-1-05,HS-1,G7,BL037,T3-30kg,XLPE peak / EVA peak,-,max,1.10,,,,,XLPE-SHOULDER
+HS-1-06,HS-1,G7,BL037,T3-68kg,XLPE peak / EVA peak,-,max,1.10,,,,,XLPE-SHOULDER
+HS-1-07,HS-1,G7,BL037,T1,no bottoming felt,Y/N,yes,Y,,,,,XLPE-SHOULDER
+HS-1-08,HS-1,G7,BL037,T2,no bottoming felt,Y/N,yes,Y,,,,,XLPE-SHOULDER
+HS-1-09,HS-1,G7,BL037,T3,no bottoming felt,Y/N,yes,Y,,,,,XLPE-SHOULDER
+ST-1-01,ST-1,G7,BL037,1,"one-hand gloved clip-ons, out of 10",count,min,10,,,,,
+HB-1-01,HB-1,G7,BL037; CARRY,T1,wing worst,kPa,max,56.5,,,,,B-1 XLPE BELT; FRONT-STRAP
+HB-1-02,HB-1,G7,BL037; CARRY,T1,lumbar worst,kPa,max,48.6,,,,,B-1 XLPE BELT; FRONT-STRAP
+HB-1-03,HB-1,G7,BL037; CARRY,T1,front strap,kPa,max,48.6,,,,,B-1 XLPE BELT; FRONT-STRAP
+HB-1-04,HB-1,G7,BL037; CARRY,T2,wing worst,kPa,max,56.5,,,,,B-1 XLPE BELT; FRONT-STRAP
+HB-1-05,HB-1,G7,BL037; CARRY,T2,lumbar worst,kPa,max,48.6,,,,,B-1 XLPE BELT; FRONT-STRAP
+HB-1-06,HB-1,G7,BL037; CARRY,T2,front strap,kPa,max,48.6,,,,,B-1 XLPE BELT; FRONT-STRAP
+HB-1-07,HB-1,G7,BL037; CARRY,T3,wing worst,kPa,max,56.5,,,,,B-1 XLPE BELT; FRONT-STRAP
+HB-1-08,HB-1,G7,BL037; CARRY,T3,lumbar worst,kPa,max,48.6,,,,,B-1 XLPE BELT; FRONT-STRAP
+HB-1-09,HB-1,G7,BL037; CARRY,T3,front strap,kPa,max,48.6,,,,,B-1 XLPE BELT; FRONT-STRAP
+HB-D2-01,HB-D2,G7,BL037; CARRY,0.5mm,0.5 mm wing passes roll-over,Y/N,yes,Y,,,,,B-2 0.5MM
+HB-D2-02,HB-D2,G7,BL037; CARRY,0.75mm,0.75 mm wing passes roll-over,Y/N,yes,Y,,,,,BL-006 C2
+HB-3-01,HB-3,G7,CARRY,1,passes the register criterion: <= 15 mm (ASSUMPTION),Y/N,yes,Y,,,,,
+HB-D1-01,HB-D1,G7,CARRY,1,passes the register criterion: belt creep within HB-3's 15 mm both ways; no tester-reported roll or sway difference,Y/N,yes,Y,,,,,BL-006 B
+HB-D3-01,HB-D3,G7,CARRY,1,"passes the register criterion: pad stays seated, cord lock holds, sleeve does not fray at the flange edge",Y/N,yes,Y,,,,,BL-006 F
+FT-S2-01,FT-S2,G7,CARRY,1,passes the register criterion: shift <= 20 mm throughout; the tripod is never freed by a door cycle,Y/N,yes,Y,,,,,W1/W2 NO WINGS
+MH-1-01,MH-1,G7,CARRY,1,passes the register criterion: no load shift you can feel; <= 60 s,Y/N,yes,Y,,,,,
+MH-2-01,MH-2,G7,CARRY,1,passes the register criterion: < 25 mm slip after 30 min,Y/N,yes,Y,,,,,
+MH-3-01,MH-3,G7,CARRY,1,passes the register criterion: hooks and cams still work,Y/N,yes,Y,,,,,
+R28-1-01,R28-1,G7,CARRY,1,passes the register criterion: ~30 deg tilt before contact,Y/N,yes,Y,,,,,

@@ -1,0 +1,79 @@
+{
+ "ticket": "BL-038",
+ "date": "2026-11-13",
+ "levels": {
+  "record_ratio": 0.3,
+  "flip_body": 0.2553,
+  "flip_cheek": 0.2464,
+  "flip_gov": 0.2553,
+  "release": 0.276,
+  "flip_cycled": 0.3837,
+  "release_cycled": 0.404,
+  "fatigue_static": 1.175,
+  "fatigue_cycled": 0.782
+ },
+ "lid_g": 47.8,
+ "crown_cut": {
+  "S": {
+   "cut_mm": 1028.1,
+   "longest_mm": 928.1
+  },
+  "M": {
+   "cut_mm": 966.9,
+   "longest_mm": 866.9
+  },
+  "L": {
+   "cut_mm": 908.0,
+   "longest_mm": 808.0
+  }
+ },
+ "totals": {
+  "usd": 2351.38,
+  "hands_on_h": 147.5,
+  "machine_h": 548.2,
+  "results_rows": 224
+ },
+ "files": [
+  "README.md",
+  "guides/G1.md",
+  "guides/G2.md",
+  "guides/G3.md",
+  "guides/G4.md",
+  "guides/G5.md",
+  "guides/G6.md",
+  "guides/G7.md",
+  "manifest.json",
+  "order_of_work.csv",
+  "results_template.csv",
+  "shopping_list.csv",
+  "shopping_list.md",
+  "sketches/G1_rig.png",
+  "sketches/G2_rig.png",
+  "sketches/G3_rig.png",
+  "sketches/G4_rig.png",
+  "sketches/G5_rig.png",
+  "sketches/G6_rig.png",
+  "sketches/G7_rig.png",
+  "sketches/order_of_work.png",
+  "sketches/ranking.png",
+  "sketches/shopping.png",
+  "test_kit.pdf"
+ ],
+ "screens": [
+  "outputs/screens/20261113_BL038_1.png",
+  "outputs/screens/20261113_BL038_2.png",
+  "outputs/screens/20261113_BL038_3.png",
+  "outputs/screens/20261113_BL038_4.png",
+  "outputs/screens/20261113_BL038_5.png",
+  "outputs/screens/20261113_BL038_6.png"
+ ],
+ "checks": [
+  "register rows for the ticket's gates: all present",
+  "release_tests.csv ids without a register row (ALT-* are alternate-set checks): none",
+  "active tests not in the order of work: none",
+  "first run per release: {'R1': 8, 'BAG-CUT': 9, 'BAG-BATCH': 22, 'BL037': 23, 'CARRY': 24}",
+  "CA-1 release level 0.276 (cycled 0.404)",
+  "shopping list 89 lines, USD 2,351.38; long lead: 6",
+  "results template 224 rows, 77 tests"
+ ]
+}
