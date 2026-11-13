@@ -33,7 +33,12 @@ def test_b2_is_the_default_and_b1_stays_reproducible():
         # B.1 books none of the B.2 rows
         assert not any(r[0].startswith(("A-2", "B-10", "G-1", "G-2")) for r in w1["rows"])
         assert 60.0 < w1["total_g"] - w2["total_g"] < 110.0
-    assert CO.weight_table("M", spec="B.2")["total_g"] < CO.PUBLISH_G + 200.0
+    # B.2 was published within 200 g of PUBLISH_G. Re-booked on the hardware records (BL-034: #10 door sliders +26.0,
+    # IMP-4 #5 slider +1.9; BL-035: corrie.spine_rebooked_g +18.6 = stainless US tri-glides, hook keepers, lifter
+    # tri-glides, torso adjust) it is 4011.0 g: HONEST RESULT, now 11 g over that bound (B.2 is superseded by CORRIE F)
+    w = CO.weight_table("M", spec="B.2")["total_g"]
+    assert w == pytest.approx(4011.0, abs=0.1)
+    assert w - CO.spine_rebooked_g() - 27.9 < CO.PUBLISH_G + 200.0       # the bound held on the old hardware masses
 
 
 def test_b2_items_in_the_build(builds):

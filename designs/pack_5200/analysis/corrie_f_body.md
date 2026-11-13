@@ -1273,8 +1273,11 @@ row (which should be about 1 g) absorbed the BL-034 stainless US tri-glides and 
   (new row, `corrie_f.muzzle_keeper`): one 3 mm shock-cord loop per gusset through the two B-11 muzzle tabs (70 mm
   apart), round the barrel, closed by a spring cord lock. Cut 309 mm = 70 + 2 x 40 stand-off + pi x 25 barrel + 2 x 40
   tails (ASSUMPTION MUZZLE-CORD, settled by the R-18 rifle fit check), 4.35 g each.
-- Bag side: **base 1132.5 g (39.95 oz), as hunted 1413.1 g (49.85 oz), meat trip 1609.0 g (56.75 oz)** (BL-034:
-  1119.8 / 1400.3 / 1596.3).
+- Bag side: **base 1132.6 g (39.95 oz), as hunted 1413.1 g (49.85 oz), meat trip 1609.0 g (56.75 oz)** (BL-034:
+  1119.8 / 1400.3 / 1596.3), after `build_effort_rev3.py --write` on the part C package (thread base 11.6 -> 11.7 g,
+  as hunted 4.75 -> 4.63 g; beginner hours 70.8 -> 70.5 h a bag: part C removed the duplicate ops from the package and
+  the duplicate-op heuristic from `build_effort_rev3`, reviewed: `duplicates` is empty and B-28s / MK-cord are sewn by
+  their own step-7 ops).
 
 ### 18.4 Whole pack (`weight_rollup_v2.md`)
 
@@ -1282,9 +1285,9 @@ The bag's thread was booked twice: CORRIE F books it from the op stitch lengths 
 3 % of the B.2 bag's soft goods. `build_geometry` now writes the split (`weight.misc_thread`: bag 15.0 g, suspension
 19.2 g, labels 8 g); `weight_rollup_v2.corrie_f_step` removes the bag share with the B.2 bag (misc 43.5 -> 28.5 g).
 
-**Proven now 3684.6 g base (8.12 lb), 4001.8 g as hunted (8.82 lb), 4197.8 g meat trip (9.25 lb); after tests
-3214.0 / 3531.2 / 3727.2 g (7.09 / 7.78 / 8.22 lb)** (BL-034: 3687.7 / 4004.9 / 4200.9 and 3217.6 / 3534.8 / 3730.8).
-P base -3.1 g = misc thread -15.0, muzzle keepers +8.7, hook keepers +4.5 (P keeps all 6 until PT-1), torso adjust
+**Proven now 3684.7 g base (8.12 lb), 4001.8 g as hunted (8.82 lb), 4197.8 g meat trip (9.25 lb); after tests
+3214.1 / 3531.2 / 3727.2 g (7.09 / 7.78 / 8.22 lb)** (BL-034: 3687.7 / 4004.9 / 4200.9 and 3217.6 / 3534.8 / 3730.8).
+P base -3.0 g (-3.1 before the build-effort refresh, +0.1 thread) = misc thread -15.0, muzzle keepers +8.7, hook keepers +4.5 (P keeps all 6 until PT-1), torso adjust
 -1.1, (d2) cam -0.2; the lifter tri-glides net 0 (BL-034 had already applied 2.6 g as a record row). After tests -3.6 g:
 also 25 mm cams +1.0 and REC removes 2 of the heavier keepers -1.5. The 6.6 lb base target
 is 220 g away after tests (691 g proven now).

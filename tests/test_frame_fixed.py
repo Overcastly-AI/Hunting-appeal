@@ -118,7 +118,8 @@ def test_mass_booking_items():
     assert a["frame_g"] == pytest.approx(expect, abs=0.3)
     assert a["frame_g"] == pytest.approx(sum(a["items"].values()), abs=0.05)
     assert a["pack_g"] == pytest.approx(h1["pack_g"] + (a["frame_g"] - h1["frame_g"]) - lb["torso_adjust_g"], abs=0.2)
-    assert lb["torso_adjust_g"] == pytest.approx(41.7, abs=0.05)
+    # BL-035: torso-adjust row on the records (cam_25mm_al 12.2 g, pom_toggle 1.7 g; were 12 g and 3 g): 41.7 -> 40.6 g
+    assert lb["torso_adjust_g"] == pytest.approx(40.6, abs=0.05)
     assert F.frame_mass("a", 15.0, 757.0, 757.0)["frame_g"] < a["frame_g"] < F.frame_mass("a", 23.0, 757.0, 757.0)["frame_g"]
 
 

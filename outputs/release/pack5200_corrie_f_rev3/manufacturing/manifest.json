@@ -15,7 +15,7 @@
   "hardware_rows_by_keyword": [],
   "box_mismatches": [],
   "thread_bag_g": 18.28,
-  "thread_ledger_g": 18.29,
+  "thread_ledger_g": 18.27,
   "proto_hours": 74.6,
   "sam_min": 507.5,
   "volatile": [
@@ -28,7 +28,7 @@
   ]
  },
  "mass": {
-  "base_g": 1132.5,
+  "base_g": 1132.6,
   "as_hunted_g": 1413.0,
   "meat_trip_g": 1609.0,
   "pattern_fabric_alt_g": 567.2,

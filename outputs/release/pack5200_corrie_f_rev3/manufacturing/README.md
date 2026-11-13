@@ -44,7 +44,7 @@ Current values: B-22 at x +/-130.3 mm (drawn 149.0); FP flat width 260.0 mm (fin
 
 ## Pattern / ledger flags
 
-- Thread in the bag (all ops, no cone waste): 18.28 g; booked on the ledger: 18.29 g (build_effort_rev3.json; re-run `python designs/pack_5200/build_effort_rev3.py --write` when they differ).
+- Thread in the bag (all ops, no cone waste): 18.28 g; booked on the ledger: 18.27 g (build_effort_rev3.json; re-run `python designs/pack_5200/build_effort_rev3.py --write` when they differ).
 - Box-X mismatches between a panel and its tab: none.
 - Ledger hardware rows mapped by keyword (confirm): none.
 - Unmapped ledger hardware rows: none.

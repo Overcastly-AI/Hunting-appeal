@@ -84,3 +84,4 @@ Nothing here is decided; the tickets produce the material.
 | BL-033 | Rev 3 pattern fixes: hinge window/B-18, B-22 path, FP 165, ledger, rain fly | pack-designer | M | 032A | patterns close cleanly |
 | BL-034 | Rev 3 package cleanup: marks, thread/hours, records, regen, BUILD_PLAN | pack-designer + materials → manufacturing | M | 032, 033 | release closes |
 | BL-035 | Record masses everywhere; B-28t split; box and ledger fixes | pack-designer | M | 034A | one mass basis, green suite |
+| BL-036 | Small cleanups after BL-034/035 | pack-designer | S | 035 | consistent docs and constants |

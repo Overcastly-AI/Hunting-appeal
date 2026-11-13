@@ -111,7 +111,8 @@ Knife: CW from the grain-arrow head; cut windows and slits first. Notches 6 mm d
 | B-28 | B-28 crown strap, kit S | poly_webbing_25mm | 1028 (40.5) | 2 | crown kit S (as hunted) | corrie_f.crown_kit_straps |
 | B-28 | B-28 crown strap, kit M | poly_webbing_25mm | 967 (38.1) | 2 | crown kit M (as hunted) | corrie_f.crown_kit_straps |
 | B-28 | B-28 crown strap, kit L | poly_webbing_25mm | 908 (35.7) | 2 | crown kit L (as hunted) | corrie_f.crown_kit_straps |
-| B-28t | B-28 lock tab (front on the hinge band, rear through the B-25 toggle, B-25 second fold) | poly_webbing_25mm | 60 (2.4) | 6 | as_hunted | corrie_f.CROWN_TAB, 3 per strap |
+| B-28t | lock tab | poly_webbing_25mm | 60 (2.4) | 4 | as_hunted | corrie_f.CROWN_TAB, 2 per strap (front + rear lock) |
+| B-28s | toggle loop | poly_webbing_25mm | 60 (2.4) | 2 | as_hunted | corrie_f.CROWN_TAB, 1 per strap (the B-25 second fold) |
 | K-28 | B-28 tail keeper (25 mm elastic loop) | elastic_25mm | 90 (3.5) | 4 | as_hunted | corrie_f.crown_kit_straps keepers_per_strap x 2 |
 | W1 | haul wrap W1 (cut for carry) | poly_webbing_25mm | 750 (29.5) | 1 | base | strap_tails.wrap_rows |
 | W2 | haul wrap W2 (cut for carry) | poly_webbing_25mm | 822 (32.4) | 1 | base | strap_tails.wrap_rows |
@@ -145,6 +146,7 @@ Knife: CW from the grain-arrow head; cut windows and slits first. Notches 6 mm d
 | B-26 | B-26 tripod keeper, 3 mm shock cord (ends 15 mm in the R corner seams) | shock_cord_3mm | 201 (7.9) | 1 | base | corrie_f.tripod_keeper |
 | FP-cord | FP mouth shock cord | shock_cord_3mm | 320 (12.6) | 2 | base | corrie_f.hip_reach_pockets (w + pleat + 60) |
 | E5-cord | pole quiver grip cord | shock_cord_3mm | 300 (11.8) | 1 | base | evolve.POLE |
+| MK-cord | rifle muzzle keeper, 3 mm shock cord loop through the 2 B-11 muzzle tabs + spring cord lock (one per gusset) | shock_cord_3mm | 309 (12.2) | 2 | base | corrie_f.muzzle_keeper (ASSUMPTION MUZZLE-CORD) |
 | F-EL | fly hem elastic, 6 mm (spine top + bottom, sides bottom + frame) | elastic_6mm | 2436 (95.9) | 1 | as_hunted | corrie_f.fly_pieces (FLY_ELASTIC_RATIO x hem channels) |
 
 ## Hardware
@@ -160,6 +162,7 @@ Knife: CW from the grain-arrow head; cut windows and slits first. Notches 6 mm d
 | rated 25 mm G-hooks: W1-W3 (3) + extenders (3) | g_hook_25mm_aluminium |  | 6 |
 | 25 mm side-release buckles (roll top) | - |  | 2 |
 | cord lock (E-5) | cord_lock_spring |  | 1 |
+| cord locks: rifle muzzle keepers (2, BL-035) | cord_lock_spring |  | 2 |
 
 ## Pieces with areas (primary set)
 

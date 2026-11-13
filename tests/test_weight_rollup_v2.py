@@ -80,14 +80,20 @@ def test_ticket_steps_match_the_ticket_modules():
     with W.rev():
         wt, wb = F.weight_table("M", "base", "D2", "today"), F.weight_table("M", "base", "D2", "B")
     imus, att = st["A_imus"]["base"], st["A_att"]["base"]
-    assert imus == pytest.approx(-116.96, abs=0.05)                            # BL-014 S1 / DECISIONS BL-014 row
+    import strap_arch as SA_
+    # BL-014 S1 / DECISIONS BL-014 row -116.96 g; BL-035: the five 25 mm cams on the cam_25mm_al record + 1 g pull tab
+    # (13.2 g, was 13.0 typed): -116.0 g
+    assert imus == pytest.approx(-116.96 + 5 * (SA_.CAM25_G - 13.0), abs=0.05)
     from huntkit.gendesign import attach_system as AS
-    # attachment_diet.md REC -103.0 g, BL-034: the guy bar loops' 2 POM toggles at the pom_toggle record (1.7 g, was 3.0)
-    assert att == pytest.approx(-103.0 - 2 * (3.0 - AS.TOGGLE_G), abs=0.05)
+    # attachment_diet.md REC -103.0 g, BL-034: the guy bar loops' 2 POM toggles at the pom_toggle record (1.7 g, was 3.0);
+    # BL-035: REC removes 2 of the 6 hook keepers, now at the elastic_25mm record (1.35 g, was 0.6)
+    from huntkit.gendesign import bag_attach as BA_
+    assert att == pytest.approx(-103.0 - 2 * (3.0 - AS.TOGGLE_G) - 2 * (BA_.KEEPER_G - 0.6), abs=0.05)
     patch = L.parts(L.CONFIGS[0], "M")                 # BL-033: C2 took the B.2 swell-patch row; P_F leaves it alone
     patch = next(r["g"] for r in patch if r["name"] == "attachment: B-01 swell patches")
-    assert st["P_F"]["base"] == pytest.approx(wt["bag_side_g"] - wt["corrie_b2_bag_side_g"] + patch + wings - imus - att,
-                                              abs=0.3)
+    # BL-035: P_F also takes the bag share of the misc thread line out (CORRIE F books its own thread)
+    assert st["P_F"]["base"] == pytest.approx(wt["bag_side_g"] - wt["corrie_b2_bag_side_g"] + patch + wings - imus - att
+                                              - W.misc_thread()["bag_thread_g"], abs=0.3)
     assert st["A_wings"]["base"] == pytest.approx(-wings, abs=0.05)
     assert st["A_fab"]["base"] == pytest.approx(wb["bag_side_g"] - wt["bag_side_g"], abs=0.3)
     assert st["A_back"]["base"] == pytest.approx(-44.6, abs=0.1)              # BL-005 record
@@ -100,7 +106,9 @@ def test_ticket_steps_match_the_ticket_modules():
     assert W.cheek_g() - W.cheek_g(13.5) == pytest.approx(0.5, abs=0.01)       # DECISIONS BL-021: +0.5 g over 27 mm
     assert st["H1B"]["base"] == pytest.approx(L.h1_body_update()["steps_sum_g"], abs=0.05)
     fx = W.fixed_torso("a")
-    assert fx["pack_delta_g"] == pytest.approx(3839.3 - 3927.0, abs=0.15)    # BL-007's own result at 19 in
+    # BL-007's own result at 19 in (-87.7 g); BL-035: the fixed torso deletes the torso-adjust row, now 40.6 g on the
+    # records (was 41.7 g), so it saves 1.1 g less
+    assert fx["pack_delta_g"] == pytest.approx(3839.3 - 3927.0 + (41.7 - 40.6), abs=0.15)
     # CORRIE F rev 3 (BL-030, the ledger's adopted bag): rev 1's +8.6 g on rev 0 (DECISIONS 2026-11-12, "Rev 1 adds
     # +8.6 g (D2)") + rev 2's B-27 ports in base; the rev 3 lid and crown straps are as hunted, not base
     assert W.CORRIE_F_REV == L.ADOPTED_BAG["revision"] == 3
@@ -108,7 +116,8 @@ def test_ticket_steps_match_the_ticket_modules():
         r0 = F.weight_table("M", "base", "D2", "today")["bag_side_g"]
     import strap_tails as ST                       # BL-031 base strap changes ride on rev 3 (strap_tails.bag_rows)
     bl031 = sum(g for s, n, g, c, src in ST.bag_rows() if c == "base")
-    assert wt["bag_side_g"] - r0 == pytest.approx(8.6 + F.guy_port()["mass_g"] + bl031, abs=0.1)
+    assert wt["bag_side_g"] - r0 == pytest.approx(8.6 + F.guy_port()["mass_g"] + bl031 + F.muzzle_keeper()["mass_g"],
+                                                  abs=0.1)                  # + BL-035 muzzle keepers (rev 3)
 
 
 def test_six_point_six_pounds_is_not_reached_and_the_gap_is_reported():
@@ -176,7 +185,11 @@ def test_gated_savings_are_not_proven_now():
     # the H1B raster) + CORRIE F rev 1 (+8.6 g, BL-022) + rev 3's B-27 ports in base (BL-030; lid and straps as hunted)
     from huntkit.gendesign import attach_system as AS
     bl034_tog = 2 * (3.0 - AS.TOGGLE_G)            # BL-034: A_att's guy bar loop toggles on the pom_toggle record
-    bl023_p = 3414.4 - st["A_imus"]["base"] - (st["A_att"]["base"] + bl034_tog) + 1.46
+    import strap_arch as SA_
+    from huntkit.gendesign import bag_attach as BA_
+    bl035_a = 5 * (SA_.CAM25_G - 13.0) - 2 * (BA_.KEEPER_G - 0.6)   # BL-035: cam and hook-keeper records in A_imus / A_att
+    bl023_p = 3414.4 - (st["A_imus"]["base"] - 5 * (SA_.CAM25_G - 13.0)) \
+        - (st["A_att"]["base"] + bl034_tog + 2 * (BA_.KEEPER_G - 0.6)) + 1.46
     assert bl023_p == pytest.approx(3635.9, abs=0.3)                             # weight_rollup_v2.md of BL-023
     import strap_tails as ST                       # + BL-031 (2026-11-12): bag-side base rows + the BL031 correction
     bl031 = sum(g for s, n, g, c, src in ST.bag_rows() if c == "base") + st["BL031"]["base"]
@@ -192,15 +205,25 @@ def test_gated_savings_are_not_proven_now():
     import bag_concepts as BC
     import corrie as CO
     with W.rev():
-        bl034 = (sum(r["g"] for r in F_.parts("M") if r["name"].startswith("BL-034") and r["cfg"] == "base")
+        fp = F_.parts("M")
+        bl034 = (sum(r["g"] for r in fp if r["name"].startswith("BL-034") and r["cfg"] == "base")
                  + 2 * (BC.SLIDER_G - 6.0) + (CO.SLIDER5_G - 3.0))
-    upd = st["H1B"]["base"] - 2 * (9.53 - 6.13104) + 8.6 + W._F().guy_port()["mass_g"] + bl031 + bl033 + bl034
+        # BL-035: geometry.yaml now books the BL-034 stainless US tri-glides and the record lifter tri-glides in the
+        # rows themselves (their BL-034 record rows are 0), so they are counted from the rows (were 2 x 3.0 g each)
+        row = lambda pre: next(r["g"] for r in fp if r["name"].startswith(pre))  # noqa: E731
+        bl034 += (row("US-tg:") - 6.0) + (row("attachment: lifter tri-glide keepers") - 6.0)
+        # BL-035 (base, P): muzzle keepers, the bag share of the misc thread out, the six hook keepers on the record
+        # (P keeps all six until PT-1), torso-adjust row on the records, (d2) removes the 12.2 g record cam
+        from huntkit.gendesign import crown_diet as CD_
+        bl035 = (F_.muzzle_keeper()["mass_g"] - W.misc_thread()["bag_thread_g"] + 6 * (BA_.KEEPER_G - 0.6)
+                 - (41.7 - CD_.TORSO_ADJUST_ROW_G) - (CD_.CAM_G - 12.0))
+    upd = st["H1B"]["base"] - 2 * (9.53 - 6.13104) + 8.6 + W._F().guy_port()["mass_g"] + bl031 + bl033 + bl034 + bl035
     assert t["P"]["base"] == pytest.approx(bl023_p + upd, abs=0.3)
-    assert 3660 < t["P"]["base"] < 3710                                        # BL-034: 3687.7 g (BL-031: 3634.8 g)
+    assert 3660 < t["P"]["base"] < 3710                     # BL-035: 3684.6 g (BL-034: 3687.7 g, BL-031: 3634.8 g)
     # after tests: BL-023's 3143.5 g + the same update + the retired OD 17 legs taken back out (they were -20.6 g); the
     # A_b step also deletes BL-031's shortened stabilizers (its compensating row)
-    assert t["A"]["base"] == pytest.approx(3143.5 + upd - bl034_tog - st["A_c17"]["base"] - ST.stabilizer_delta_g("M"),
-                                           abs=0.3)
+    assert t["A"]["base"] == pytest.approx(3143.5 + upd - bl034_tog + bl035_a - st["A_c17"]["base"]
+                                           - ST.stabilizer_delta_g("M"), abs=0.3)
     assert st["A_c17"]["base"] == pytest.approx(-20.6, abs=0.1)
 
 
