@@ -111,7 +111,9 @@ def test_recorded_result_passes_rev_c():
     assert r["keepouts"]["boss clear of spreader clip"]
     assert r["keepouts"]["bolt head clear of spreader clip"]
     for k, v in r["keepouts"].items():
-        if k.endswith(("present", "empty")):
+        # BL-046: the tube + rack channel is cut into the release body (h1_spine_channel, test_bl046_spine_channel);
+        # this 2026-11-10 study body predates it, so its BL-046 channel key reads part-filled by design
+        if k.endswith(("present", "empty")) and "BL-046" not in k:
             assert v >= 0.999, k
 
 
