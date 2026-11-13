@@ -99,3 +99,4 @@ Nothing here is decided; the tickets produce the material.
 | BL-048 | Fourth review fixes, bag side (US route, webbing spec, fixture pin, TL-1 text) | pack-designer | M | 044 | |
 | BL-049 | Hinge fairlead fatigue inboard-up; US lanes on frame lugs | structural-fea-engineer | M | 047, 048 | printable H1 |
 | BL-050 | Bed fit for US2 lanes (A, structural), bag on lanes (B, pack-designer) | both | M | 049 | |
+| BL-051 | Stay crown section loss at US2 root; record cleanup | structural-fea-engineer | S | 050A | |

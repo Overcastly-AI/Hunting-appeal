@@ -169,7 +169,9 @@ def test_lower_half_has_no_island():
     assert len(hi.split(only_watertight=False)) == 1
     lf = trimesh.load(PRINT / "h1_lower_flat.stl")
     uf = trimesh.load(PRINT / "h1_upper_flat.stl")
-    assert m.volume - lf.volume - uf.volume == pytest.approx(0.0, abs=5.0)     # nothing dropped by the export
+    # BL-050: the assembled frame carries the two bolt-on US2 clevises, which print on their own
+    cl = sum(trimesh.load(PRINT / f"us2_clevis_{s}.stl").volume for s in ("R", "L") if (PRINT / f"us2_clevis_{s}.stl").exists())
+    assert m.volume - lf.volume - uf.volume - cl == pytest.approx(0.0, abs=5.0)     # nothing dropped by the export
 
 
 def test_boss_core_constant():
