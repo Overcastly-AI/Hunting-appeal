@@ -1305,3 +1305,51 @@ is 220 g away after tests (691 g proven now).
   `LINK_LOOP_BOX` 34 x 20. Box-X capacity 4430 N (hook) and 3786 N (loops) against the 941 N misuse load; the 2200 N
   rated hook still governs.
 - B-28t / B-28s labels shortened and the webbing screenshot reordered, so no label covers the B-24 hook box.
+
+## 19. BL-036: small cleanups after BL-034/035 (pack-designer, 2026-11-13)
+
+### 19.1 Attachment boxes and the tri-glide booking
+
+- **B-24** in `attach_system_results.json`, `bag_attachment.md` and `cut/attachment/README.md` now reads the drawn
+  boxes (hook box-X 34 x 30, loops 34 x 20; capacities 4430 / 3786 N, hook 2200 N governs, SF 2.34 unchanged).
+- **B-22** was checked on a 25 x 25 box-X. The box that holds it is the LLT box, sewn through LLT + B-22 + B-02d in
+  one pass on 25 mm webbing: 21 x 25 (`attach_system.LLT_BOX`, = `patterns_corrie_f_rev3.LLT_BOX`). Capacity
+  3458 -> 3186 N against a 112 N factored guy; the 50 mm perimeter seam (1024 N) still governs, SF 9.15 unchanged.
+  The B-22 drawing in `attachment_parts.pdf/.dxf` shows the same 21 x 25 box.
+- `python -m huntkit.gendesign.attach_system --refresh` now also re-books the phase mass rows on today's records
+  (`mass_delta`: `triglide_25mm` 2.6 g, `pom_toggle` 1.7 g). Guy lock row 16.5 -> 15.7 g, hood tongues + toggles
+  10.3 -> 7.7 g, phase delta 131.5 -> 128.1 g. `corrie_f.BOOKED_TRIGLIDE_G` = 2.6, so the BL-034 guy tri-glide row is
+  0.0 (was -0.8): the tri-glides are corrected once.
+
+### 19.2 Misc thread
+
+- `build_geometry` counted the thread of both harness strap sets (harness_J + harness_S); the pack carries the J set.
+  harness_S is out of the thread base (`weight.misc_thread.excluded_g`): misc 42.2 -> 39.5 g (-2.7 g).
+- `corrie_f.weight_table` (and so `pack_with_adopted`) now takes the bag share of the misc thread line
+  (`misc_bag_thread_g`, 15.0 g) out of CORRIE F's pack, as `weight_rollup_v2.corrie_f_step` does: CORRIE F on H1 base
+  3394.0 -> **3376.3 g** (-15.0 thread, -2.7 S-strap thread), with adopted packages 3291.9 -> 3274.2 g.
+
+### 19.3 What moved (belt M)
+
+| Quantity | BL-035 | BL-036 | Why |
+|---|---:|---:|---|
+| CORRIE B.2 on H1 (ledger) | 3973.5 | **3967.4 (8.75 lb)** | -2.6 hood toggles, -0.8 guy tri-glides (records), -2.7 S-strap thread |
+| CORRIE F bag side base / as hunted / meat trip | 1132.6 / 1413.1 / 1609.0 | same | the tri-glide and toggle rows only moved from the correction rows into the ledger rows |
+| Proven now base / as hunted / meat trip | 3684.7 / 4001.8 / 4197.8 | **3679.4 / 3996.5 / 4192.5** (8.11 / 8.81 / 9.24 lb) | -2.6 hood toggles (P keeps the hood), -2.7 S-strap thread |
+| After tests | 3214.1 / 3531.2 / 3727.2 | **3211.4 / 3528.5 / 3724.5** (7.08 / 7.78 / 8.21 lb) | -2.7 S-strap thread (A deletes the hood, so its toggles net out) |
+| BL-004 REC step (A_att) | -107.1 | -104.5 | the hood toggles it deletes are 1.7 g now |
+| Crown diet: recommended pack at M | 3879.9 | 3873.8 | ledger basis; savings 112.6 / 93.6 / 74.6 g unchanged |
+| BL-004 REC attachment with heavy guy locks | 220.3 | **219.5** | guy tri-glides on the record (attach_diet had kept 3.0 g): **now meets the 220 g bar by 0.5 g** |
+
+The 6.6 lb (2993.7 g) base target is **218 g** away after tests (686 g proven now).
+
+### 19.4 Stale numbers and tags
+
+- `bag_weight_plan.py` / `.md` marked HISTORICAL (the 2026-11-05 plan; its 12.0 g cam is that day's ASSUMPTION, the
+  record is 12.2 g). Not re-run.
+- Bag-competition write-ups (A, C, D, form, lean) and the verdict carry a "masses superseded" note with today's
+  `result.json` / `ledger.teams()` numbers. Team E's `form_numbers.json` and `result.json` were re-run (BL-035 had
+  missed them: bag system 739.3 -> 767.2 g, CORRIE B.2 721.7 -> 749.6 g, pack unchanged 3960.6 g).
+- `crown_diet_results.json` re-run on the new ledger; `crown_diet.md` notes that its table masses are superseded.
+- `mfg_corrie_f_rev3.py`: the volatile op tags read `pattern: <value>` (was `BL-033 <value>`), RD-16 / RD-23 texts no
+  longer cite BL-033 as pending, two unused locals and one placeholder-free f-string removed.

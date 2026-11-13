@@ -664,7 +664,7 @@ def load_points(ctx: Ctx) -> list[dict]:
             note=f"alternate body fabric: B-22 seam {b22a:.0f} N"
                  + (f"; PATTERN MISMATCH: B-02h draws the LLT box {', '.join(mism)}, the LLT piece {w:.0f}x{h:.0f}: "
                     "sew the LLT size (the tab is 25 mm wide)" if mism else ""),
-            vol="BL-033 B-22 x")
+            vol="pattern: B-22 x")
     add("port guy, B-27 slit ends", "B-01", f"both ends of each slit, z {P.F.PORT_Z[0]:.0f} / {P.F.PORT_Z[1]:.0f}",
         0, 0, None, "no rated load (lap only); port mock-up: 100 N guy pull through the lap", "port mock-up (13.9)",
         kind="BT-S")
@@ -706,7 +706,7 @@ def load_points(ctx: Ctx) -> list[dict]:
         add("hinge eye", "HE + B-18 + B-01", "x +/-115, eye top z 60", w, h, 795.0,
             "loadpath_verification A5: 795 N", "PT-3 1530 N",
             {"B-18 seam (80 mm, B-05 strip)": AS.patch_seam(80.0, "cordura_500d_nylon66", "hypalon_coated_nylon")["cap_n"]},
-            vol="BL-033 hinge window vs B-18")
+            vol="pattern: hinge window vs B-18")
     for pid in ("IM1", "IM2", "IM3"):
         for w, h, lab in box(pid) or [(21.0, 25.0, "ASSUMPTION IM-BOX (not drawn)")]:
             add(f"{pid} end loop", pid, "left end loop, girth-hitched on the eye (box drawn at the tip end)", w, h,
@@ -845,11 +845,11 @@ def ops(ctx: Ctx) -> list[SewingOp]:
     op("FP hip-reach pocket: pleats", f"Fold the 2 box pleats on each FP-a (flat {g['fp_flat_w']:.0f} mm wide, "
        f"finished {g['fp_finished_w']:.0f} mm), baste across top and bottom at 6 mm. Do not stretch the mesh.",
        "mesh", pieces="FP-a x2", seam="SSa", length=2 * 2 * g["fp_flat_w"], hours=2 * 2 * 2 * H["pivot"] + rate(4 * g["fp_flat_w"]),
-       vol="BL-033 FP width", sketch="SK-5")
+       vol="pattern: FP width", sketch="SK-5")
     op("FP mouth band and shock-cord channel", f"Sew FP-b to the FP-a top ({fp_seam:.0f} mm), fold the band on its "
        "fold line over the seam, edge-stitch 2 mm to form the channel; thread the shock cord (FP-cord) and bar it at "
        "both ends inside the side allowance.", "mesh", pieces="FP-a, FP-b x2, FP-cord", seam="SSa + EFa channel",
-       length=2 * fp_seam * 2, hours=rate(4 * fp_seam), vol="BL-033 FP width", sketch="SK-2")
+       length=2 * fp_seam * 2, hours=rate(4 * fp_seam), vol="pattern: FP width", sketch="SK-2")
     i4 = rs.pieces["IMP4-b"]
     op("IMP-4 zip pocket", "Set the #5 zip (210 mm) in the top of IMP4-a (basting tape, ZIP seam), stops at the drill "
        "marks; sew the bellows strip IMP4-b round bottom + sides of IMP4-a.", "light", pieces="IMP4-a, IMP4-b, #5 zip",
@@ -869,7 +869,7 @@ def ops(ctx: Ctx) -> list[SewingOp]:
           "aft edge, corners drilled; pattern ASSUMPTION F02-CENTRE fore-aft)." if f02p else
           "(placement NOT drawn on B-05: HOLD the floor op until it is)."),
        "body", pieces="F-02, #5 zip", seam="ZIP + EFa", length=2 * 230 + piece_perim(f2),
-       hours=H["zip_fixed"] + 0.23 * H["zip_m"] + rate(piece_perim(f2)), vol="BL-033 F-01")
+       hours=H["zip_fixed"] + 0.23 * H["zip_m"] + rate(piece_perim(f2)), vol="pattern: F-01")
 
     # ---------------------------------------------------------------- 2 small parts
     step("2 Small parts")
@@ -881,8 +881,7 @@ def ops(ctx: Ctx) -> list[SewingOp]:
     sw_ids = ", ".join(f"{i} x{rs.pieces[i].quantity}" for i in g["swell_ids"])
     op("Box the swells", f"Sew the 4 corner folds of every swell ({sw_ids}): fold on 'box the corner', sew "
        "across. Practice: set one swell into a scrap window before touching B-01.", "body",
-       pieces=sw_ids, seam="SSa", hours=g["swell_n"] * H["swell_boxed"] / 2, vol="BL-033 hinge window vs B-18")
-    t3 = rs.pieces["T3"]
+       pieces=sw_ids, seam="SSa", hours=g["swell_n"] * H["swell_boxed"] / 2, vol="pattern: hinge window vs B-18")
     op("T3 IM3 tongues onto B-17", "Fold each T3 45 mm round the bed (empty loop: the carabiner clips in later), box-X "
        "the loop; box-X the other end to the centre of a B-17 (Hypalon, coated face out).", "box",
        pieces="T3 x2, B-17 x2", seam="BOX", bartack="T3 (load table)", sketch="SK-1", qc="QC-07",
@@ -912,14 +911,14 @@ def ops(ctx: Ctx) -> list[SewingOp]:
        f"+/-{b22x:.1f} mm ({b22x / IN:.2f} in) on the drawn placement (drawn x +/-{g['b22_drawn_x']:.0f}, moved "
        f"{g['b22_moved']:.1f} mm inboard, ASSUMPTION B22-IN). Double-row perimeter 3 / 9 mm.", "hyp",
        pieces="B-22 x2, B-02h", seam="LSd (2 rows)", length=2 * 2 * piece_perim(b22),
-       hours=2 * rate(2 * piece_perim(b22), "applique"), vol="BL-033 B-22 x",
+       hours=2 * rate(2 * piece_perim(b22), "applique"), vol="pattern: B-22 x",
        sketch="SK-4", qc="QC-07")
     llt_box = (boxes_of(rs.pieces["LLT"]) or [(21.0, 25.0, "")])[0][:2]
     band_llt = next(((w, h) for w, h, lab in boxes_of(rs.pieces["B-02h"]) if "LLT" in lab), None)
     op("Guy ladder-lock tabs LLT through B-22", "Fold each LLT round the bar of a heavy 25 mm ladder lock, box-X "
        "through LLT + B-22 + B-02h at the drawn 'B-22 / guy LLT box' (drill corners).", "box",
        pieces="LLT x2, B-22, B-02h, 2 heavy ladder locks", seam="BOX", bartack="LLT + B-22 + B-02h",
-       hours=2 * H["bartack"], vol="BL-033 B-22 x", sketch="SK-1, SK-4", qc="QC-07", length=bl(*llt_box, 2),
+       hours=2 * H["bartack"], vol="pattern: B-22 x", sketch="SK-1, SK-4", qc="QC-07", length=bl(*llt_box, 2),
        notes=f"Box {llt_box[0]:.0f} x {llt_box[1]:.0f} mm (LLT piece)."
              + (f" PATTERN MISMATCH: B-02h draws {band_llt[0]:.0f} x {band_llt[1]:.0f}; sew the LLT size."
                 if band_llt and tuple(band_llt) != tuple(llt_box) else ""))
@@ -944,12 +943,12 @@ def ops(ctx: Ctx) -> list[SewingOp]:
     step("4 Main bag")
     op("Check the B-01 cut-outs", f"{g['windows']} swell windows, 2 B-27 slits ({g['port_slit_mm']:.0f} mm at x "
        "+/-52), IMP-2 keeper drill marks. All cut, corners awled.", "none", pieces="B-01", hours=0.1,
-       vol="BL-033 hinge window vs B-18", qc="QC-03")
+       vol="pattern: hinge window vs B-18", qc="QC-03")
     op(f"Set the {g['swell_n']} swells into the B-01 windows", f"Swell base to window edge, INSIDE B-01, notch to "
        f"notch ({g['windows']} windows, {g['window_perim_mm']:.0f} mm of window edge in all; hinge windows: "
        f"{g['hinge_windows']}). Sew from the swell side, needle down at every corner.", "body",
        pieces=f"{sw_ids}, B-01", seam="SSa", length=g["window_perim_mm"], hours=g["swell_n"] * H["swell_boxed"] / 2,
-       vol="BL-033 hinge window vs B-18", sketch="SK-3", qc="QC-08")
+       vol="pattern: hinge window vs B-18", sketch="SK-3", qc="QC-08")
     pz = g["port_slit_mm"]
     op("B-27 guy ports (2)", f"Each slit ({pz:.0f} mm, x +/-52, z {g['port_z'][0]:.0f}-{g['port_z'][1]:.0f}): turn "
        f"both edges {g['port_turn']:.0f} mm and edge-stitch; sew the B-27f facing INSIDE along the inboard stitch line "
@@ -970,7 +969,7 @@ def ops(ctx: Ctx) -> list[SewingOp]:
        "floor seam).", "box", pieces="HE x2, B-18 x2, B-01", seam="BOX + LSd",
        length=2 * 1.5 * piece_perim(b18) + bl(34, 34, 2),
        hours=2 * (2 * H["bartack"] + rate(1.5 * piece_perim(b18), "applique")), bartack="HE + B-18 + B-01",
-       vol="BL-033 hinge window vs B-18", sketch="SK-1, SK-3", qc="QC-07")
+       vol="pattern: hinge window vs B-18", sketch="SK-1, SK-3", qc="QC-07")
     op("IMP-2 keeper tabs I2K on B-01", "Fold each I2K, bartack at the 2 'IMP-2 keeper tab' drill marks (inside).",
        "bt", pieces="I2K x2, B-01", seam="BT", hours=2 * H["bartack"])
     b11 = g["b11"]
@@ -990,7 +989,6 @@ def ops(ctx: Ctx) -> list[SewingOp]:
     else:
         op("B-11 lash tabs (8)", "Bow riser + muzzle keepers: placements NOT drawn on the pattern. HOLD until they "
            "are.", "hyp", pieces="B-11 x8", seam="LSd", hours=8 * H["bartack"], notes="HOLD (pattern).")
-    g3 = rs.pieces["B-03"]
     kb = rs.pieces["SH-01b"]
     op("Gusset flat work: kick bands", "SH-01b on each gusset foot at the 'kick band top' line, top edge turned 8 mm, "
        "topstitched; bottom and sides go in the seams.", "body", pieces="SH-01b x2, B-03 x2", seam="LSd",
@@ -1001,7 +999,7 @@ def ops(ctx: Ctx) -> list[SewingOp]:
        "fp_min_margin_mm). "
        "Bottom and sides 301, box pleats laid flat, bartack the 2 mouth corners.", "mesh", pieces="FP x2, B-03 x2",
        seam="LSd", length=2 * (g["fp_h"] * 2 + g["fp_finished_w"]), bartack="FP corners (BT-S)",
-       hours=2 * (rate(2 * g["fp_h"] + g["fp_finished_w"]) + 2 * H["bartack"]), vol="BL-033 FP width",
+       hours=2 * (rate(2 * g["fp_h"] + g["fp_finished_w"]) + 2 * H["bartack"]), vol="pattern: FP width",
        sketch="SK-5")
     op("Gusset flat work: IMP-8 (R only) and hose ports", f"IMP-8 cup at 'IMP-8 cup top (R only)'. Hose slots (both "
        f"gussets, z {g['hose_z']:.0f}): B-09p binding (TPU, laser-cut) laid over the slot, perimeter + slot edge "
@@ -1036,7 +1034,7 @@ def ops(ctx: Ctx) -> list[SewingOp]:
            f"passes through), lay it across F-02's outer face on the drawn 'B-16 channel' lines (stations "
            f"{g['us_channels']['stations_mm'] if g['us_channels'] else '-'} mm), topstitch both long edges, bartack the "
            "4 corners.", "body", pieces=f"B-16 x{b16.quantity}, F-02", seam="LSd", length=b16.quantity * L16,
-           hours=b16.quantity * (rate(L16, "applique") + 2 * H["bartack"]), vol="BL-033 ledger (US-chan)")
+           hours=b16.quantity * (rate(L16, "applique") + 2 * H["bartack"]), vol="pattern: ledger (US-chan)")
         us_txt = "US channels: on F-02 (op above)."
     else:
         us_txt = "US floor channels: NOT drafted (ledger row US-chan, not_drafted) - HOLD."
@@ -1046,7 +1044,7 @@ def ops(ctx: Ctx) -> list[SewingOp]:
        f"quarter notches matched, needle down at the 4 corners. SSa2. {us_txt}", "body",
        pieces="B-05, F-02, B-01, B-03 x2, B-02u", seam="SSa2",
        length=2 * fl + piece_perim(f2), hours=rate(fl) + H["ring"] + 4 * H["pivot"] + rate(piece_perim(f2), "applique"),
-       qc="QC-08", vol="" if g["b16"] else "BL-033 ledger (US-chan)")
+       qc="QC-08", vol="" if g["b16"] else "pattern: ledger (US-chan)")
 
     # ---------------------------------------------------------------- 5 collar
     step("5 Collar and roll top")
@@ -1136,7 +1134,7 @@ def ops(ctx: Ctx) -> list[SewingOp]:
         op(f"{pid}: {w['use']} x{w['qty']}", how, kind, pieces=f"{pid} x{w['qty']}",
            seam="BOX" if kind == "box" else ("BT" if kind == "bt" else "-"),
            bartack=pid if lpr else "", hours=hrs, length=wl, sketch="SK-1, SK-7", qc="QC-07" if lpr else "",
-           vol="BL-033 ledger" if pid in ("US",) else "")
+           vol="pattern: ledger" if pid in ("US",) else "")
     cords = [w["id"] for w in webs if "cord" in w["material_id"] and w["id"] not in named_before]
     op("Fit the hardware", "IM1/IM2: G-hook right end, cam threaded; IM3: wiregate carabiner on the free end; US1/US2: "
        "cam, then the STAINLESS 25 mm tri-glide threaded behind the cam as the cradle slip backstop (orchestrator "
@@ -1157,7 +1155,7 @@ def ops(ctx: Ctx) -> list[SewingOp]:
        "Silpoly: clips, no pins; 10 SPI tex 70.", "light", pieces="MS-a, MS-b, MS-c, MS-s x2", seam="SSa2",
        length=ms, hours=rate(ms / 2) + H["ring"])
 
-    # ---------------------------------------------------------------- 9 fly (volatile: BL-033)
+    # ---------------------------------------------------------------- 9 fly (volatile: reads the F-01 pattern)
     step("9 Rain fly F-01")
     if g["fly_drafted"]:
         fids = g["fly_ids"]
@@ -1167,17 +1165,17 @@ def ops(ctx: Ctx) -> list[SewingOp]:
         op("F-01 fly: panel seams", f"Join the fly panels ({'; '.join(f'{k} {v:.0f} mm' for k, v in fs.items())}). "
            f"Silpoly: weights and clips, no pins; 301 then flat-fell; seam-seal the felled seams (piece note: {note})",
            "light", pieces=", ".join(fids), seam="SSa then LSc flat-fell (ISO 4916 class 2)", length=3 * fl_len,
-           hours=rate(fl_len) * 2, vol="BL-033 F-01")
+           hours=rate(fl_len) * 2, vol="pattern: F-01")
         hem = sum(sum(_len(ln.points) for ln in lines(rs.pieces[i], "fold", "hem")) * rs.pieces[i].quantity for i in fids)
         el = [w for w in rs.webbing if w["id"] == "F-EL"]
         op("F-01 fly: elastic channel hems", f"Turn the hems 20 mm on the drawn hem lines ({hem:.0f} mm of hem); "
            + (f"thread {el[0]['length_mm']:.0f} mm of 6 mm elastic (F-EL), bar each end." if el else "elastic per the "
               "pattern."), "light", pieces=", ".join(fids) + (", F-EL" if el else ""), seam="EFb channel",
-           length=hem, hours=rate(hem) + 4 * H["bartack"], vol="BL-033 F-01")
+           length=hem, hours=rate(hem) + 4 * H["bartack"], vol="pattern: F-01")
     else:
-        op("F-01 rain fly: HOLD", "F-01 is not drafted (ledger row 'F-01 rain fly' not_drafted; BL-033 adds it). "
+        op("F-01 rain fly: HOLD", "F-01 is not drafted (ledger row 'F-01 rain fly' not_drafted; BL-033 drafted it, so this branch runs only if it goes missing). "
            "Re-run this script when the pattern lands; ops are generated from the F-01 pieces.", "none",
-           pieces="F-01", hours=0.0, vol="BL-033 F-01")
+           pieces="F-01", hours=0.0, vol="pattern: F-01")
 
     # ---------------------------------------------------------------- 10 finish
     step("10 Finish, inspect, pack")
@@ -1192,7 +1190,7 @@ def ops(ctx: Ctx) -> list[SewingOp]:
         for pid in miss:
             op(f"{pid}: HOLD, not sequenced", "This piece is in the pattern but no operation uses it: the pattern "
                "changed after this generator was written. Add its operation here.", "none", pieces=pid,
-               vol="BL-033 ledger")
+               vol="pattern: ledger")
     return out
 
 
@@ -1388,7 +1386,7 @@ def delta_closeout(ctx: Ctx, bom: list[BOMLine], lpts: list[dict]) -> list[dict]
     add("RD-15", "closed (numbers)", "BOM, yardage and mass use the current records (robic 125 gsm, ultragrid 132 gsm "
         "1500 mm roll, ULTRA 133 gsm)", "physical: swatch weights (QC-02), FS-O5 / PT-3 on 200X (alternate gate)")
     add("RD-16", "closed (release)", "CORRIE F rev 3 patterns (part A) + this op sequence replace SPINE step 9",
-        "first article build; CORRIE gates; BL-033 items listed as volatile ops")
+        "first article build; CORRIE gates; pattern-read ops listed as volatile ops")
     add("RD-17", "restated", f"IMP-2 / IMP-4 / IMP-8 in the bag: {has('B-09c', 'IMP4-a', 'IMP8-a')}; SH-03 absent: "
         f"{'SH-03' not in ids}; body seams un-bound (SSa2, ASSUMPTION NO-BIND)",
         "FRAY-1 wash-swatch test; IMP-1/3/5/6 belong to the harness / belt packages")
@@ -1404,8 +1402,8 @@ def delta_closeout(ctx: Ctx, bom: list[BOMLine], lpts: list[dict]) -> list[dict]
         "BUILD_PLAN.md needs a pointer to this package")
     add("RD-22", "open", "the packaging card (README Packaging) carries the load limits", "the user guide itself")
     add("RD-23", "restated", f"B-25, B-27f, B-22 inside, TG, LLT drafted and sequenced (ops 3.04-3.05, 4.03): "
-        f"{has('B-25', 'B-27f', 'B-22', 'TG', 'LLT')}", "T9 rev 3 at the S kit; LL-H; PORT-1; attorney review; BL-033 "
-        "may move B-22 (x +/-130.3 vs 149)")
+        f"{has('B-25', 'B-27f', 'B-22', 'TG', 'LLT')}", "T9 rev 3 at the S kit; LL-H; PORT-1; attorney review; B-22 placed at "
+        f"x +/-{ctx.rs.geo['b22']['placed_x']:.1f} vs drawn {ctx.rs.geo['b22']['drawn_x']:.0f} (ASSUMPTION B22-IN)")
     eff = _build_effort()
     add("RD-24", "restated", f"B-29 (7 piece types) + B-28 per kit + keepers sequenced; lid {ctx.lid['hours']} h on the "
         "drafted pattern; build_metrics books the op-sequence hours (build_effort_rev3.json: "
@@ -1601,7 +1599,8 @@ def write_files(pk: dict, out: Path = OUT) -> list[Path]:
           f"- Load points: {len(pk['load_points'])}; lowest SF {checks(pk)['min_sf']} ({checks(pk)['min_sf_point']}).", "",
           "## Volatile operations (re-run when the pattern changes)", "",
           "These ops read their numbers from the pattern; re-run `python designs/pack_5200/mfg_corrie_f_rev3.py` after "
-          "the pattern module changes and they update (tags name the ticket that last moved them):", ""]
+          "the pattern module changes and they update (tags name the pattern value each op reads; BL-033, which last "
+          "moved them, has landed):", ""]
     for v in pk["volatile"]:
         md.append(f"- **{v}**: ops " + ", ".join(o.seq for o in pk["ops"] if o.volatile == v)
                   + ("; load points " + ", ".join(r["point"] for r in pk["load_points"] if r["volatile"] == v)
@@ -1680,7 +1679,7 @@ def write_files(pk: dict, out: Path = OUT) -> list[Path]:
            "dies only above ~500 bags a year.", "", "Assumptions: " + "; ".join(c["assumptions"]) + "."]
     (out / "costing.md").write_text("\n".join(cm) + "\n")
     files.append(out / "costing.md")
-    dm = [f"# Release delta register: rows this release resolves (BL-032)", "",
+    dm = ["# Release delta register: rows this release resolves (BL-032)", "",
           "For the orchestrator to merge into `docs/release_delta_register.md` (not edited here).", "",
           _md_table(pk["delta"], [("id", "RD"), ("status_after_rev3_package", "Status"), ("evidence", "Evidence (checked "
                                                                                                      "by the script)"),
@@ -1924,7 +1923,7 @@ def sketches(pk, out: Path = OUT) -> dict:
     sk_piece_map(pk, ["B-01", "B-13x", "B-27f"], "SK-3  B-01 frame-side panel: flat work in order 4.02 swells, 4.03 "
                  "B-27 ports, 4.04 B-17 (outside), 4.05 B-18 + HE (inside), 4.06 I2K", sk["SK-3"],
                  [f"{g['windows']} swell windows (cut-outs), B-27 slits x +/-52 z {g['port_z'][0]:.0f}-"
-                  f"{g['port_z'][1]:.0f}. Volatile: hinge window vs B-18 (BL-033).", "6 with port (B-12 on the crest) "
+                  f"{g['port_z'][1]:.0f}. Volatile: hinge window vs B-18 (read from the pattern).", "6 with port (B-12 on the crest) "
                   "+ 2 hinge (B-13xh)", "facing INSIDE, inboard stitch line"], figsize=(16, 9))
     sk["SK-4"] = d / "SK-4_hinge_band.png"
     sk_piece_map(pk, ["B-02h", "B-22", "B-02door"], f"SK-4  Hinge band B-02h: B-22 INSIDE at x +/-{g['b22_x']} "

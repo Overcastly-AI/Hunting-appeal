@@ -12,7 +12,7 @@ Code: `huntkit/gendesign/attach_system.py` (system, sims, strengths, drawings, s
 - **IM3 hook fixed**: all four bag hooks become one **rated >= 2200 N** part, proof PT-1 at **2120 N**, which is 1.5 x the C5 IM3 load of 1415 N (hood-off case). SF on the rated hook **1.55** (was 1.06).
 - **Bag off 52 s** (limit 120 s), bag on 59 s, float mode 128 s with the meat loaded, bag-off haul 108 s. Estimates for gloved hands, not a timed trial.
 - **Float mode replaces the hinge swing (owner 2026-11-06).** For bulk meat the bag comes off its pins, the meat goes on the frame (cradle + IM1-IM3) and the bag hangs upright behind it on two B-24 stand-off links clipped to the IM3 eyes, at a 120 / 170 / 220 mm gap. The bag never pivots in use. The hinge pins, HE eyes and B-18 doublers stay: they are the bag's bottom anchor in bag-on mode (factored 1019 N per side, section 5) and the bag is still put on by tipping it onto them. Links: +54.4 g, their own weight group (section 11). Study: `analysis/meat_carry_alternatives.md`; research: `docs/research/meat_carry_mechanisms.md`.
-- **Mass +132 g**: pack 3316 -> **3447 g (7.60 lb)**. Marginal cost about **$16**. No new frame feature.
+- **Mass +128 g**: pack 3316 -> **3444 g (7.59 lb)**. Marginal cost about **$16**. No new frame feature.
 
 ## 1. The joint, bottom to top
 
@@ -125,8 +125,8 @@ Stitch standards. Load joints: box-X, ISO 301 lockstitch, **7 SPI** (3.6 mm), `b
 | HT | hood tongues (woven into the ladder, POM toggle end) | 2 | `poly_webbing_25mm` | 25 mm x 120 mm | one end box-X to the hood back ply at x +/-60; other end folded over a POM toggle 30 x 8 x 5 and box-X'd | box-X 25 x 25 both ends, 301, 7 SPI, `bonded_nylon_tex135` | - | woven in at the rung for the torso setting (rung k = crown setting k) |
 | B-20 | hood ladder strip (new) | 2 | `hypalon_coated_nylon` | 40 x 250, 17 slots 27 x 5 at 12.7 mm pitch, laser-cut | flat | double-row both long edges 2 / 5 mm (clear of the slots) + bartack both ends, 301, 8 SPI, `bonded_nylon_tex90` | - | OUTSIDE B-01b/B-01u, centred x +/-60, z 545-795 (sewn after the B-01 tiers are joined; follows the setback) |
 | TG | top side guy (fixed length, set once) | 2 | `poly_webbing_25mm` | 25 mm x 500 mm | hood end box-X on the ear; bag end through a 25 mm ladder lock + tri-glide keeper on B-22, tail 100 mm in an elastic keeper | box-X 25 x 25 (hood end), 301, 7 SPI, `bonded_nylon_tex135` | B-22 corner tab | hood ear x +/-95 -> B-02d at x +/-149, z 752 (outer face, upper corner); free length about 314 mm |
-| B-22 | guy corner tab (new) | 2 | `hypalon_coated_nylon` | 50 x 60, laser-cut, R6 | flat | double-row perimeter; ladder-lock tab (25 mm x 70 mm webbing) box-X 25 x 25 through it, 8 SPI, `bonded_nylon_tex90` | - | OUTSIDE B-02d at x +/-149, z 752 |
-| B-24 | float-mode stand-off link (new) | 2 | `poly_webbing_38mm` | 38 mm x 435 mm | hook end folded 45 mm round the bed of a rated 38 mm hook, box-X; three loops (25 mm opening, 50 mm of webbing each) with their bed at 120 / 170 / 220 mm from the hook bed, each closed with a 38 x 20 box-X; 20 mm tail, heat-sealed | box-X 38 x 38 (hook) + 3 x box-X 38 x 20 (loops), 301, 7 SPI, `bonded_nylon_tex135` | - | hook on the IM3 captive eye (z 520, x +/-115); the bag's T3 hook clips into a loop (float mode only; stowed in the lid or hipbelt pocket) |
+| B-22 | guy corner tab (new) | 2 | `hypalon_coated_nylon` | 50 x 60, laser-cut, R6 | flat | double-row perimeter; ladder-lock tab (25 mm x 70 mm webbing) box-X 21 x 25 through it (LLT + B-22 + B-02d, one pass), 8 SPI, `bonded_nylon_tex90` | - | OUTSIDE B-02d at x +/-149, z 752 |
+| B-24 | float-mode stand-off link (new) | 2 | `poly_webbing_38mm` | 38 mm x 435 mm | hook end folded 45 mm round the bed of a rated 38 mm hook, box-X; three loops (25 mm opening, 50 mm of webbing each) with their bed at 120 / 170 / 220 mm from the hook bed, each closed with a 34 x 20 box-X; 20 mm tail, heat-sealed | box-X 34 x 30 (hook) + 3 x box-X 34 x 20 (loops), 301, 7 SPI, `bonded_nylon_tex135` | - | hook on the IM3 captive eye (z 520, x +/-115); the bag's T3 hook clips into a loop (float mode only; stowed in the lid or hipbelt pocket) |
 
 Strength (per side, factored HA-LS-1 x 3.0 or the beam model, whichever is larger):
 
@@ -142,8 +142,8 @@ Strength (per side, factored HA-LS-1 x 3.0 or the beam model, whichever is large
 | HT | 79 | sim hood capture per side x 3.0 | box-X 25 3458; POM toggle (ASSUMPTION) 670; webbing 6672 | POM toggle (ASSUMPTION) | **8.51** | 120 |
 | B-20 | 79 | as HT | rung bar (7.7 mm, 30 deg sag) 315 | rung bar (7.7 mm, 30 deg sag) | **4.00** | 120 |
 | TG | 112 | sim guy x 3.0 | box-X 25 3458; ladder lock slip 300; webbing 6672 | ladder lock slip | **2.68** | 170 |
-| B-22 | 112 | as TG | perimeter seam (50 mm loaded) 1024; box-X 25 3458 | perimeter seam (50 mm loaded) | **9.15** | 170 |
-| B-24 | 941 | 32 kg bag on two links at 30 deg x 3.0 (misuse envelope; design case 12 kg = 353 N) | box-X (hook end) 5256; loop box-X 38 x 20 4089; webbing on hook bed 10008; hook (rated) 2200 | hook (rated) | **2.34** | 1410 |
+| B-22 | 112 | as TG | perimeter seam (50 mm loaded) 1024; LLT box-X 21 x 25 3186 | perimeter seam (50 mm loaded) | **9.15** | 170 |
+| B-24 | 941 | 32 kg bag on two links at 30 deg x 3.0 (misuse envelope; design case 12 kg = 353 N) | box-X (hook end) 4430; loop box-X 34 x 20 3786; webbing on hook bed 10008; hook (rated) 2200 | hook (rated) | **2.34** | 1410 |
 
 Proof tests (owner bench, before the first sewn bag):
 
@@ -262,26 +262,26 @@ Original IP: The hood is a single J-profile Hypalon cap between the crown legs, 
 | hood lip stiffener B-19s (HDPE 1.5) | 3.9 |
 | hood lining B-19L (XLPE 3) | 0.6 |
 | hood ladder strips B-20 x2 | 20.0 |
-| hood tongues x2 + POM toggles | 10.3 |
+| hood tongues x2 + POM toggles | 7.7 |
 | hood grab tab (25 mm x 90) | 1.6 |
 | top side guys x2 (25 mm webbing) | 18.0 |
-| guy ladder locks + tri-glides + ladder-lock tabs | 16.5 |
+| guy ladder locks + tri-glides + ladder-lock tabs | 15.7 |
 | guy corner tabs B-22 x2 | 5.9 |
 | guy tail elastic keepers x2 | 1.2 |
 | IM2 tongue backings B-23 x2 | 7.1 |
 | bag hooks 1500 N -> 2200 N rated (4 x +5 g) | 20.0 |
 | thread (box-X + perimeters) | 2.0 |
-| **delta** | **131.5** |
+| **delta** | **128.1** |
 
 
 Float-mode stand-off links B-24 (owner 2026-11-06), booked as their own weight group, not in the delta above: 38 mm webbing, 2 x 435 mm 24.4 g; rated 38 mm hooks (2), same part as the bag hooks 28.0 g; thread (box-X + loop box-X) 2.0 g; **+54.4 g**.
 
-Pack (this phase) 3316 -> **3447 g (7.60 lb)**, 471 g over the published 2976 g. Basis: hypalon_coated_nylon 1000 gsm, hdpe_sheet, xlpe_foam, poly_webbing_25mm, ladder_lock_25mm records; toggle, tri-glide, hook masses ASSUMPTION; elastic keeper 0.6 g ASSUMPTION. Marginal cost about $16 (records' prices; hook $6.00 and toggle $0.50 ASSUMPTION).
+Pack (this phase) 3316 -> **3444 g (7.59 lb)**, 468 g over the published 2976 g. Basis: hypalon_coated_nylon 1000 gsm, hdpe_sheet, xlpe_foam, poly_webbing_25mm, ladder_lock_25mm, pom_toggle, triglide_25mm records; hook mass ASSUMPTION; elastic keeper 0.6 g history (corrie_f re-books it on elastic_25mm). Marginal cost about $16 (records' prices; hook $6.00 and toggle $0.50 ASSUMPTION).
 
 ## 12. Owner choices (recommendation first)
 
 1. **15-16.5 in settings: accept the 15 in result (recommended)**, fill CG 189 mm, inside the 205 mm envelope of the frame re-check that is running; cinching the guys there gets closer to 180 but fails R-28 (2.2). The alternative is a hood on the accessory extension posts for short torsos: it needs an IP opinion on US 10,952,523, a C6p-type frame case and an R-28 check with posts.
-2. **Accept +132 g for the joint (recommended)**: pack 3447 g (7.60 lb), 471 g over the published 2976 g. Without the top anchor the frame has to carry the 205 mm CG at every torso.
+2. **Accept +128 g for the joint (recommended)**: pack 3444 g (7.59 lb), 468 g over the published 2976 g. Without the top anchor the frame has to carry the 205 mm CG at every torso.
 3. **One rated hook for all four bag hooks (recommended, +20 g)** or rated hooks at IM3 only (+10 g, two hook types in the kit).
 4. **FTO read on US 12,495,885 and confirmation that US 8,579,171 / 8,348,114 are expired** before release (recommended; open since the research).
 5. Lighter options if the weight is not accepted: ladder strips in 500D Cordura with bound slots (about -11 g, less durable at the slots), rated hooks at IM3 only (-10 g), no tri-glide keepers on the guys (-6 g; research says keep them).

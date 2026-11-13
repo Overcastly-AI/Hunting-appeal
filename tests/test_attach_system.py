@@ -131,7 +131,8 @@ def test_mass_delta_and_budget(res):
                "2026-11-06 float mode: IM1 meat strap cut +17 mm (220 mm float gap)": 0.5,
                "2026-11-09 materials records corrected (Robic 125 g/m2, ULTRA 200X, UltraGrid, shock cord)": 28.1,
                "2026-11-13 BL-034: US1/US2 backstop tri-glides stainless (2 x 11 g, were 2 x 3 g)": 16.0,
-               "2026-11-13 BL-035 records: hook keepers +4.5, lifter tri-glides -0.8, torso-adjust cam + toggle -1.1": 2.6}
+               "2026-11-13 BL-035 records: hook keepers +4.5, lifter tri-glides -0.8, torso-adjust cam + toggle -1.1": 2.6,
+               "2026-11-13 BL-036: misc thread no longer counts the S-strap set (3 % x 91.1 g)": -2.7}
     assert geo["weight"]["groups_g"]["float-mode stand-off links B-24"] == pytest.approx(54.4, abs=0.2)
     assert geo["weight"]["total_g"] == pytest.approx(res["pack_after_g"] + sum(later_g.values()), abs=1.0)
 

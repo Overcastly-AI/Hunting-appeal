@@ -1,5 +1,7 @@
 # Bag competition, team D (MODULE): CACHE
 
+> **Masses superseded (BL-035 records, checked BL-036, 2026-11-13).** The mass figures in this write-up are the 2026-11-10 entry. BL-034/035 put the hardware on the material records (two #10 door sliders +26.0 g, IMP-4 #5 slider +1.9 g where the bag has them); `result.json` holds the current numbers, on the same definitions: bag system **1017.0 g** (was 991.0), CORRIE B.2 on CACHE's definition **920.0 g** (was 892.1), pack on the RULES.md 3943 g basis **4040.0 g** (was 4041.9): +97.0 g over CORRIE B.2 (was +98.9).
+
 Date 2026-11-10. Rules: `designs/pack_5200/bag_comp/RULES.md`. Research: `docs/research/bag_comp_D.md`.
 Code (team folder only): `designs/pack_5200/bag_comp/D/` — `cache.py` (mass and build model), `clothsim_cache.py` +
 `scenarios/` (cloth sim), `cache_loadout.py` (access), `module_cloth_bpy.py` (Blender cloth of the modules),

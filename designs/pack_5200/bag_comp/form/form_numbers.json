@@ -49,7 +49,7 @@
   "rows": [
    [
     "CORRIE B.2 bag system (body group + IMP-1/2/4/6/8 + fly)",
-    721.7
+    749.6
    ],
    [
     "- CORRIE shell B-01/B-03x2/B-05/B-02u/door/B-02h + SH-01a/b kick plates",
@@ -76,7 +76,7 @@
     -0.4
    ]
   ],
-  "bag_system_g": 739.3,
+  "bag_system_g": 767.2,
   "shell": {
    "rows": {
     "B-01 frame-side panel (ULTRA 200)": 37.1,
@@ -91,7 +91,7 @@
    "fang_area_m2": 0.0164,
    "fang_seam_mm": 255.8
   },
-  "corrie_bag_system_g": 721.7,
+  "corrie_bag_system_g": 749.6,
   "zip_door_mm": 1227.2,
   "collar_perimeter_mm": 1233.7
  },

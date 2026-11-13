@@ -1,5 +1,7 @@
 # Bag competition, Team B LEAN: FELL
 
+> **Masses superseded (BL-035 records, checked BL-036, 2026-11-13).** The mass figures in this write-up are the 2026-11-10 entry. BL-034/035 put the hardware on the material records (two #10 door sliders +26.0 g, IMP-4 #5 slider +1.9 g where the bag has them); `result.json` holds the current numbers, on the same definitions: FELL max (sheep 8-day) **598.0 g** (was 583.1: FELL has one #10 slider in its body, +13.0, and the A3 lid pod #5 slider, +1.9), CORRIE B.2 **744.4 g** (was 716.5), so FELL saves **146.4 g** (was 133.4) and the pack on the RULES.md 3943 g basis is **3796.6 g** (was 3810).
+
 Owner: pack-designer (Team B). Date 2026-11-10. Rules: `designs/pack_5200/bag_comp/RULES.md`.
 Research: `docs/research/bag_comp_lean.md` (cited). Code: `designs/pack_5200/bag_comp/lean/`
 (`fell.py` build + masses + CORRIE baseline, `fell_clothsim.py` + `scenarios/` cloth sim, `fell_loadout.py` access,

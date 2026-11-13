@@ -732,13 +732,13 @@ weight:
     goods; size M belt, J-straps, rain fly (owner: counts), meat harness'
   groups_g: {frame (printed branch body + carbon crown): 1062.6, 'back-system spreader (Sandwich v2, BP-06)': 162.3,
     torso adjust (not in the frame line): 40.6, main bag: 394.1, bag-side load spreaders: 27.8, bag-to-frame attachment (fairleads): 147.8,
-    bag-to-frame attachment system: 131.4, under-straps US1/US2 (cradle): 138.4, float-mode stand-off links B-24: 54.4,
+    bag-to-frame attachment system: 128.0, under-straps US1/US2 (cradle): 138.4, float-mode stand-off links B-24: 54.4,
     accents: 52.7, rain fly: 68.4, pockets: 59.0, hipbelt (M): 334.3, harness: 212.5, back panel: 251.3, internal meat harness: 254.4,
-    haul wraps (= compression): 108.1, misc: 42.2}
-  total_g: 3542.3
-  total_lb: 7.81
+    haul wraps (= compression): 108.1, misc: 39.5}
+  total_g: 3536.2
+  total_lb: 7.8
   target_g: 2268
-  gap_g: 1274.3
+  gap_g: 1268.2
   weight_plan: analysis/bag_weight_plan.md (bag-side savings, owner choices)
   v31_tube_baseline: {total_g: 2224.1, frame_g: 569.2, back_panel_g: 75.2, misc_g: 36.1, source: 'geometry.yaml
       v3.1 (commit 6061796): carbon-tube frame v2, single 6 mm XLPE back sheet', used_by: huntkit/gendesign/frame_production.py
@@ -747,10 +747,11 @@ weight:
     thread_frac: 0.03
     labels_g: 8.0
     soft_goods_g: {main bag: 301.5, accents: 52.7, fly: 52.6, pockets: 52.0, hipbelt: 191.7, meat: 14.1, reinforcement: 27.8,
-      harness_J: 91.0, harness_S: 91.1, harness_common: 13.6, back_panel: 251.3}
+      harness_J: 91.0, harness_common: 13.6, back_panel: 251.3}
+    excluded_g: {harness_S: 91.1}
     bag_soft_keys: [main bag, accents, fly, pockets, meat, reinforcement]
     bag_thread_g: 15.0
-    other_thread_g: 19.2
+    other_thread_g: 16.4
     note: misc row = thread_frac x soft goods + labels (ASSUMPTION); bag_thread_g is the share on the bag's pieces
       (main bag, accents, fly, pockets, meat ports, bag-side spreaders)
   rifle_boot_optional_g: 35.6
@@ -810,13 +811,13 @@ weight:
       mass.parts_g (attachment phase 2026-11-05)}
   - {group: bag-to-frame attachment system, item: hood ladder strips B-20 x2, mass_g: 20.0, basis: analysis/attach_system_results.json
       mass.parts_g (attachment phase 2026-11-05)}
-  - {group: bag-to-frame attachment system, item: hood tongues x2 + POM toggles, mass_g: 10.3, basis: analysis/attach_system_results.json
+  - {group: bag-to-frame attachment system, item: hood tongues x2 + POM toggles, mass_g: 7.7, basis: analysis/attach_system_results.json
       mass.parts_g (attachment phase 2026-11-05)}
   - {group: bag-to-frame attachment system, item: hood grab tab (25 mm x 90), mass_g: 1.6, basis: analysis/attach_system_results.json
       mass.parts_g (attachment phase 2026-11-05)}
   - {group: bag-to-frame attachment system, item: top side guys x2 (25 mm webbing), mass_g: 18.0, basis: analysis/attach_system_results.json
       mass.parts_g (attachment phase 2026-11-05)}
-  - {group: bag-to-frame attachment system, item: guy ladder locks + tri-glides + ladder-lock tabs, mass_g: 16.5,
+  - {group: bag-to-frame attachment system, item: guy ladder locks + tri-glides + ladder-lock tabs, mass_g: 15.7,
     basis: analysis/attach_system_results.json mass.parts_g (attachment phase 2026-11-05)}
   - {group: bag-to-frame attachment system, item: guy corner tabs B-22 x2, mass_g: 5.9, basis: analysis/attach_system_results.json
       mass.parts_g (attachment phase 2026-11-05)}
@@ -873,4 +874,4 @@ weight:
     basis: records; lengths from the 3D teardrop (haul_wraps)}
   - {group: haul wraps (= compression), item: 3 aluminium G-hooks (HAUL family) + 3 ladder locks, mass_g: 24, basis: G-hook
       4 g ASSUMPTION (no record); ladder lock record}
-  - {group: misc, item: thread (~3 % of soft goods) + labels, mass_g: 42.2, basis: ASSUMPTION}
+  - {group: misc, item: thread (~3 % of soft goods) + labels, mass_g: 39.5, basis: ASSUMPTION}

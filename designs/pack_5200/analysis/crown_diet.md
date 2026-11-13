@@ -21,6 +21,13 @@ BL-007 [frame_fixed_torso.md](frame_fixed_torso.md)).
 > slider (BL-034 records), +4.5 g elastic hook keepers, -0.8 g lifter tri-glides, -1.1 g torso adjust (BL-035). The
 > recommended option saves **112.6 / 93.6 / 74.6 g** (S / M / L; was 112.4 / 93.4 / 74.4); with it the pack is
 > 3879.9 g at M. The tables below keep the BL-017 figures; the JSON holds the current ones.
+>
+> **BL-036 refresh (pack-designer, 2026-11-13). SUPERSEDED: every pack mass in the tables below (3927.0 g basis) is
+> the BL-017 record; use `crown_diet_results.json`.** The ledger pack is now **3967.4 g** (8.75 lb; was 3973.5):
+> -3.4 g attach_system phase rows re-booked on the records (hood POM toggles 2 x 3.0 -> 1.7 g, guy tri-glides
+> 2 x 3.0 -> 2.6 g) and -2.7 g misc thread (it no longer counts the S-strap set). The block savings do not move
+> (recommended **112.6 / 93.6 / 74.6 g**, S / M / L); with it the pack is **3873.8 g (8.54 lb)** at M. Structural
+> margins in the tables are unchanged (no geometry or load moved).
 
 ## 0. Result
 

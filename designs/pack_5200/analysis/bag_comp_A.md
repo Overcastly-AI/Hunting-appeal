@@ -1,5 +1,7 @@
 # Bag competition, Team A EVOLVE: CORRIE E
 
+> **Masses superseded (BL-035 records, checked BL-036, 2026-11-13).** The mass figures in this write-up are the 2026-11-10 entry. BL-034/035 put the hardware on the material records (two #10 door sliders +26.0 g, IMP-4 #5 slider +1.9 g where the bag has them); `result.json` holds the current numbers, on the same definitions: bag system **762.5 g** (was 734.6), CORRIE B.2 **738.5 g** (was 710.6), so the difference (+24.0 g) and the pack on the RULES.md 3943 g basis (**3967.0 g**) do not move.
+
 Owner request 2026-11-10 (bag design competition, `designs/pack_5200/bag_comp/RULES.md`). Team A brief: the best
 possible evolution of CORRIE B.2. Fix its known weak spots: the snacks miss on S-L belts, the 8-day sheep load
 pushing the trekking poles out of reach, the boxy look, and the bulge strain at the side-panel | floor seam.

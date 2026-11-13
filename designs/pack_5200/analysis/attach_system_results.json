@@ -2280,7 +2280,7 @@
    "material": "hypalon_coated_nylon",
    "cut": "50 x 60, laser-cut, R6",
    "fold": "flat",
-   "stitch": "double-row perimeter; ladder-lock tab (25 mm x 70 mm webbing) box-X 25 x 25 through it",
+   "stitch": "double-row perimeter; ladder-lock tab (25 mm x 70 mm webbing) box-X 21 x 25 through it (LLT + B-22 + B-02d, one pass)",
    "spi": 8,
    "thread": "bonded_nylon_tex90",
    "needle": "Nm 110 / 18",
@@ -2290,7 +2290,7 @@
    "load_basis": "as TG",
    "caps_n": {
     "perimeter seam (50 mm loaded)": 1024.0,
-    "box-X 25": 3458.0
+    "LLT box-X 21 x 25": 3186.0
    },
    "governs": "perimeter seam (50 mm loaded)",
    "sf": 9.15,
@@ -2302,8 +2302,8 @@
    "qty": 2,
    "material": "poly_webbing_38mm",
    "cut": "38 mm x 435 mm",
-   "fold": "hook end folded 45 mm round the bed of a rated 38 mm hook, box-X; three loops (25 mm opening, 50 mm of webbing each) with their bed at 120 / 170 / 220 mm from the hook bed, each closed with a 38 x 20 box-X; 20 mm tail, heat-sealed",
-   "stitch": "box-X 38 x 38 (hook) + 3 x box-X 38 x 20 (loops), 301",
+   "fold": "hook end folded 45 mm round the bed of a rated 38 mm hook, box-X; three loops (25 mm opening, 50 mm of webbing each) with their bed at 120 / 170 / 220 mm from the hook bed, each closed with a 34 x 20 box-X; 20 mm tail, heat-sealed",
+   "stitch": "box-X 34 x 30 (hook) + 3 x box-X 34 x 20 (loops), 301",
    "spi": 7,
    "thread": "bonded_nylon_tex135",
    "needle": "Nm 140 / 22",
@@ -2312,8 +2312,8 @@
    "load_n": 941.0,
    "load_basis": "32 kg bag on two links at 30 deg x 3.0 (misuse envelope; design case 12 kg = 353 N)",
    "caps_n": {
-    "box-X (hook end)": 5256.0,
-    "loop box-X 38 x 20": 4089.0,
+    "box-X (hook end)": 4430.0,
+    "loop box-X 34 x 20": 3786.0,
     "webbing on hook bed": 10008.0,
     "hook (rated)": 2200.0
    },
@@ -2384,21 +2384,22 @@
    "hood lip stiffener B-19s (HDPE 1.5)": 3.9,
    "hood lining B-19L (XLPE 3)": 0.6,
    "hood ladder strips B-20 x2": 20.0,
-   "hood tongues x2 + POM toggles": 10.3,
+   "hood tongues x2 + POM toggles": 7.7,
    "hood grab tab (25 mm x 90)": 1.6,
    "top side guys x2 (25 mm webbing)": 18.0,
-   "guy ladder locks + tri-glides + ladder-lock tabs": 16.5,
+   "guy ladder locks + tri-glides + ladder-lock tabs": 15.7,
    "guy corner tabs B-22 x2": 5.9,
    "guy tail elastic keepers x2": 1.2,
    "IM2 tongue backings B-23 x2": 7.1,
    "bag hooks 1500 N -> 2200 N rated (4 x +5 g)": 20.0,
    "thread (box-X + perimeters)": 2.0
   },
-  "delta_g": 131.5,
-  "basis": "hypalon_coated_nylon 1000 gsm, hdpe_sheet, xlpe_foam, poly_webbing_25mm, ladder_lock_25mm records; toggle, tri-glide, hook masses ASSUMPTION; elastic keeper 0.6 g ASSUMPTION"
+  "delta_g": 128.1,
+  "basis": "hypalon_coated_nylon 1000 gsm, hdpe_sheet, xlpe_foam, poly_webbing_25mm, ladder_lock_25mm, pom_toggle, triglide_25mm records; hook mass ASSUMPTION; elastic keeper 0.6 g history (corrie_f re-books it on elastic_25mm)",
+  "rebooked": "BL-036 (2026-11-13): parts_g on today's records (refresh); phase 2026-11-05 rows otherwise"
  },
  "pack_before_g": 3315.8,
- "pack_after_g": 3447.3,
+ "pack_after_g": 3443.9,
  "cost_usd": 16.03,
  "times_s": {
   "bag_on": 59,

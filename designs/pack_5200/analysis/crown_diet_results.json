@@ -2,7 +2,7 @@
  "date": "2026-11-11",
  "ticket": "BL-017",
  "ledger": {
-  "pack_g": 3973.5,
+  "pack_g": 3967.4,
   "torso_adjust_g": 40.6,
   "crown_lump_g": 239.4,
   "frame_g": 1025.0800000000002
@@ -1900,21 +1900,21 @@
   "H1 today": {
    "S": {
     "frame_g": 1025.1,
-    "pack_g": 3973.5,
+    "pack_g": 3967.4,
     "delta_g": 0,
     "soft_goods_delta_g": 0,
     "items": {}
    },
    "M": {
     "frame_g": 1025.1,
-    "pack_g": 3973.5,
+    "pack_g": 3967.4,
     "delta_g": 0,
     "soft_goods_delta_g": 0,
     "items": {}
    },
    "L": {
     "frame_g": 1025.1,
-    "pack_g": 3973.5,
+    "pack_g": 3967.4,
     "delta_g": 0,
     "soft_goods_delta_g": 0,
     "items": {}
@@ -1923,7 +1923,7 @@
   "(a) 3 crown kits": {
    "S": {
     "frame_g": 978.2,
-    "pack_g": 3919.8,
+    "pack_g": 3913.7,
     "delta_g": -53.7,
     "soft_goods_delta_g": -6.9,
     "items": {
@@ -1935,7 +1935,7 @@
    },
    "M": {
     "frame_g": 997.5,
-    "pack_g": 3939.1,
+    "pack_g": 3933.0,
     "delta_g": -34.4,
     "soft_goods_delta_g": -6.9,
     "items": {
@@ -1947,7 +1947,7 @@
    },
    "L": {
     "frame_g": 1016.7,
-    "pack_g": 3958.3,
+    "pack_g": 3952.2,
     "delta_g": -15.2,
     "soft_goods_delta_g": -6.9,
     "items": {
@@ -1959,7 +1959,7 @@
   "(b) plunger (no pulley, no cord)": {
    "S": {
     "frame_g": 1014.6,
-    "pack_g": 3922.4,
+    "pack_g": 3916.3,
     "delta_g": -51.1,
     "soft_goods_delta_g": -40.6,
     "items": {
@@ -1972,7 +1972,7 @@
    },
    "M": {
     "frame_g": 1014.6,
-    "pack_g": 3922.4,
+    "pack_g": 3916.3,
     "delta_g": -51.1,
     "soft_goods_delta_g": -40.6,
     "items": {
@@ -1985,7 +1985,7 @@
    },
    "L": {
     "frame_g": 1014.6,
-    "pack_g": 3922.4,
+    "pack_g": 3916.3,
     "delta_g": -51.1,
     "soft_goods_delta_g": -40.6,
     "items": {
@@ -2000,7 +2000,7 @@
   "(c) OD 17 x 7 UD legs": {
    "S": {
     "frame_g": 1016.8,
-    "pack_g": 3965.2,
+    "pack_g": 3959.1,
     "delta_g": -8.3,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2010,7 +2010,7 @@
    },
    "M": {
     "frame_g": 1016.8,
-    "pack_g": 3965.2,
+    "pack_g": 3959.1,
     "delta_g": -8.3,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2020,7 +2020,7 @@
    },
    "L": {
     "frame_g": 1016.8,
-    "pack_g": 3965.2,
+    "pack_g": 3959.1,
     "delta_g": -8.3,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2032,7 +2032,7 @@
   "(c) OD 17 x 7 UD legs, bore 19": {
    "S": {
     "frame_g": 1004.3,
-    "pack_g": 3952.7,
+    "pack_g": 3946.6,
     "delta_g": -20.8,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2043,7 +2043,7 @@
    },
    "M": {
     "frame_g": 1004.3,
-    "pack_g": 3952.7,
+    "pack_g": 3946.6,
     "delta_g": -20.8,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2054,7 +2054,7 @@
    },
    "L": {
     "frame_g": 1004.3,
-    "pack_g": 3952.7,
+    "pack_g": 3946.6,
     "delta_g": -20.8,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2067,7 +2067,7 @@
   "(c) OD 18 x 6 UD legs, bore 20": {
    "S": {
     "frame_g": 984.2,
-    "pack_g": 3932.6,
+    "pack_g": 3926.5,
     "delta_g": -40.9,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2078,7 +2078,7 @@
    },
    "M": {
     "frame_g": 984.2,
-    "pack_g": 3932.6,
+    "pack_g": 3926.5,
     "delta_g": -40.9,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2089,7 +2089,7 @@
    },
    "L": {
     "frame_g": 984.2,
-    "pack_g": 3932.6,
+    "pack_g": 3926.5,
     "delta_g": -40.9,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2102,7 +2102,7 @@
   "(d1) pawl only, no pulley": {
    "S": {
     "frame_g": 1017.1,
-    "pack_g": 3928.1,
+    "pack_g": 3922.0,
     "delta_g": -45.4,
     "soft_goods_delta_g": -37.4,
     "items": {
@@ -2113,7 +2113,7 @@
    },
    "M": {
     "frame_g": 1017.1,
-    "pack_g": 3928.1,
+    "pack_g": 3922.0,
     "delta_g": -45.4,
     "soft_goods_delta_g": -37.4,
     "items": {
@@ -2124,7 +2124,7 @@
    },
    "L": {
     "frame_g": 1017.1,
-    "pack_g": 3928.1,
+    "pack_g": 3922.0,
     "delta_g": -45.4,
     "soft_goods_delta_g": -37.4,
     "items": {
@@ -2137,7 +2137,7 @@
   "(d2) pawl + 1:1 strap": {
    "S": {
     "frame_g": 1019.8,
-    "pack_g": 3938.9,
+    "pack_g": 3932.8,
     "delta_g": -34.6,
     "soft_goods_delta_g": -29.3,
     "items": {
@@ -2150,7 +2150,7 @@
    },
    "M": {
     "frame_g": 1019.8,
-    "pack_g": 3938.9,
+    "pack_g": 3932.8,
     "delta_g": -34.6,
     "soft_goods_delta_g": -29.3,
     "items": {
@@ -2163,7 +2163,7 @@
    },
    "L": {
     "frame_g": 1019.8,
-    "pack_g": 3938.9,
+    "pack_g": 3932.8,
     "delta_g": -34.6,
     "soft_goods_delta_g": -29.3,
     "items": {
@@ -2178,7 +2178,7 @@
   "(e) bushings 50 mm": {
    "S": {
     "frame_g": 1021.1,
-    "pack_g": 3969.5,
+    "pack_g": 3963.4,
     "delta_g": -4.0,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2187,7 +2187,7 @@
    },
    "M": {
     "frame_g": 1021.1,
-    "pack_g": 3969.5,
+    "pack_g": 3963.4,
     "delta_g": -4.0,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2196,7 +2196,7 @@
    },
    "L": {
     "frame_g": 1021.1,
-    "pack_g": 3969.5,
+    "pack_g": 3963.4,
     "delta_g": -4.0,
     "soft_goods_delta_g": 0,
     "items": {
@@ -2207,7 +2207,7 @@
   "(a)+(d2)": {
    "S": {
     "frame_g": 972.9,
-    "pack_g": 3892.0,
+    "pack_g": 3885.9,
     "delta_g": -81.5,
     "soft_goods_delta_g": -29.3,
     "items": {
@@ -2223,7 +2223,7 @@
    },
    "M": {
     "frame_g": 992.2,
-    "pack_g": 3911.3,
+    "pack_g": 3905.2,
     "delta_g": -62.2,
     "soft_goods_delta_g": -29.3,
     "items": {
@@ -2239,7 +2239,7 @@
    },
    "L": {
     "frame_g": 1011.4,
-    "pack_g": 3930.5,
+    "pack_g": 3924.4,
     "delta_g": -43.0,
     "soft_goods_delta_g": -29.3,
     "items": {
@@ -2255,7 +2255,7 @@
   "(a)+(d1)": {
    "S": {
     "frame_g": 970.3,
-    "pack_g": 3881.3,
+    "pack_g": 3875.2,
     "delta_g": -92.2,
     "soft_goods_delta_g": -37.4,
     "items": {
@@ -2269,7 +2269,7 @@
    },
    "M": {
     "frame_g": 989.5,
-    "pack_g": 3900.5,
+    "pack_g": 3894.4,
     "delta_g": -73.0,
     "soft_goods_delta_g": -37.4,
     "items": {
@@ -2283,7 +2283,7 @@
    },
    "L": {
     "frame_g": 1008.7,
-    "pack_g": 3919.7,
+    "pack_g": 3913.6,
     "delta_g": -53.8,
     "soft_goods_delta_g": -37.4,
     "items": {
@@ -2297,7 +2297,7 @@
   "(a)+(d1)+(e)": {
    "S": {
     "frame_g": 966.3,
-    "pack_g": 3877.3,
+    "pack_g": 3871.2,
     "delta_g": -96.2,
     "soft_goods_delta_g": -37.4,
     "items": {
@@ -2312,7 +2312,7 @@
    },
    "M": {
     "frame_g": 985.5,
-    "pack_g": 3896.5,
+    "pack_g": 3890.4,
     "delta_g": -77.0,
     "soft_goods_delta_g": -37.4,
     "items": {
@@ -2327,7 +2327,7 @@
    },
    "L": {
     "frame_g": 1004.8,
-    "pack_g": 3915.8,
+    "pack_g": 3909.7,
     "delta_g": -57.7,
     "soft_goods_delta_g": -37.4,
     "items": {
@@ -2342,7 +2342,7 @@
   "(a)+(d1)+(c17)": {
    "S": {
     "frame_g": 962.4,
-    "pack_g": 3873.4,
+    "pack_g": 3867.3,
     "delta_g": -100.1,
     "soft_goods_delta_g": -37.4,
     "items": {
@@ -2357,7 +2357,7 @@
    },
    "M": {
     "frame_g": 981.4,
-    "pack_g": 3892.4,
+    "pack_g": 3886.3,
     "delta_g": -81.1,
     "soft_goods_delta_g": -37.4,
     "items": {
@@ -2372,7 +2372,7 @@
    },
    "L": {
     "frame_g": 1000.4,
-    "pack_g": 3911.4,
+    "pack_g": 3905.3,
     "delta_g": -62.1,
     "soft_goods_delta_g": -37.4,
     "items": {
@@ -2388,7 +2388,7 @@
   "(a)+(d2)+(c17)": {
    "S": {
     "frame_g": 965.1,
-    "pack_g": 3884.2,
+    "pack_g": 3878.1,
     "delta_g": -89.3,
     "soft_goods_delta_g": -29.3,
     "items": {
@@ -2405,7 +2405,7 @@
    },
    "M": {
     "frame_g": 984.1,
-    "pack_g": 3903.2,
+    "pack_g": 3897.1,
     "delta_g": -70.3,
     "soft_goods_delta_g": -29.3,
     "items": {
@@ -2422,7 +2422,7 @@
    },
    "L": {
     "frame_g": 1003.1,
-    "pack_g": 3922.2,
+    "pack_g": 3916.1,
     "delta_g": -51.3,
     "soft_goods_delta_g": -29.3,
     "items": {
@@ -2440,7 +2440,7 @@
   "(a)+(d1)+(c17 bore 19)": {
    "S": {
     "frame_g": 949.9,
-    "pack_g": 3860.9,
+    "pack_g": 3854.8,
     "delta_g": -112.6,
     "soft_goods_delta_g": -37.4,
     "items": {
@@ -2456,7 +2456,7 @@
    },
    "M": {
     "frame_g": 968.9,
-    "pack_g": 3879.9,
+    "pack_g": 3873.8,
     "delta_g": -93.6,
     "soft_goods_delta_g": -37.4,
     "items": {
@@ -2472,7 +2472,7 @@
    },
    "L": {
     "frame_g": 987.9,
-    "pack_g": 3898.9,
+    "pack_g": 3892.8,
     "delta_g": -74.6,
     "soft_goods_delta_g": -37.4,
     "items": {
@@ -2489,7 +2489,7 @@
   "(a)+(d2)+(c17 bore 19)": {
    "S": {
     "frame_g": 952.6,
-    "pack_g": 3871.7,
+    "pack_g": 3865.6,
     "delta_g": -101.8,
     "soft_goods_delta_g": -29.3,
     "items": {
@@ -2507,7 +2507,7 @@
    },
    "M": {
     "frame_g": 971.6,
-    "pack_g": 3890.7,
+    "pack_g": 3884.6,
     "delta_g": -82.8,
     "soft_goods_delta_g": -29.3,
     "items": {
@@ -2525,7 +2525,7 @@
    },
    "L": {
     "frame_g": 990.6,
-    "pack_g": 3909.7,
+    "pack_g": 3903.6,
     "delta_g": -63.8,
     "soft_goods_delta_g": -29.3,
     "items": {

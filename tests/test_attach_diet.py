@@ -27,7 +27,8 @@ def test_unit_masses_rebuild_their_ledger_rows():
     assert 4 * u["bag_hook"] == pytest.approx(g("bag hooks, 38 mm Al") + g("bag hooks 1500 N -> 2200 N"))
     assert u["bag_hook"] == pytest.approx(14.0, abs=0.05)          # attach_system.HOOK_RATED_G
     assert u["b17_pair"] + u["b18_pair"] == pytest.approx(g("bag-side load spreaders"))
-    assert u["hood_family"] == pytest.approx(24.3 + 3.9 + 0.6 + 20.0 + 10.3 + 1.6, abs=0.05)
+    # BL-036: attach_system re-books its phase rows on the records: hood tongues + 2 POM toggles 10.3 -> 7.7 g
+    assert u["hood_family"] == pytest.approx(24.3 + 3.9 + 0.6 + 20.0 + 7.7 + 1.6, abs=0.05)
 
 
 def test_variant_masses_are_ledger_minus_changes(mt):
@@ -146,9 +147,11 @@ def test_heavy_guy_lock_sensitivity_is_record_based(mt):
     # honest edge: with the heavy locks REC misses 220 g by under a gram. History: 220.7 (BL-004); 218.1 after the
     # BL-034 toggle / tri-glide records (-2 x 1.3 g toggles, guy and lifter tri-glides); BL-035: 220.3 g, the six
     # elastic hook keepers on the elastic_25mm record (+0.75 g each; REC keeps 4 of the 6: +3.0 g) and the lifter
-    # tri-glide ledger row on the triglide_25mm record (2 x 2.6 g, was 2 x 3.0: -0.8 g) = +2.2 g
-    assert mt["variants"]["REC"]["with_heavy_guy_locks_g"] == pytest.approx(220.3, abs=0.1)
-    assert mt["variants"]["REC"]["with_heavy_guy_locks_g"] > AD.TARGET_G
+    # tri-glide ledger row on the triglide_25mm record (2 x 2.6 g, was 2 x 3.0: -0.8 g) = +2.2 g. BL-036: 219.5 g, the
+    # guy lock row's two tri-glides on the triglide_25mm record too (attach_system --refresh re-books it; attach_diet
+    # had kept them at the 3.0 g ASSUMPTION): -0.8 g, so REC with the heavy locks now meets 220 g by 0.5 g
+    assert mt["variants"]["REC"]["with_heavy_guy_locks_g"] == pytest.approx(219.5, abs=0.1)
+    assert mt["variants"]["REC"]["with_heavy_guy_locks_g"] <= AD.TARGET_G
 
 
 @pytest.mark.skipif(not _RES, reason="no stored attach_diet sims")

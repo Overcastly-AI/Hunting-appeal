@@ -31,7 +31,9 @@ def test_block_items_and_ledger():
     assert 250.0 < sum(blk.values()) < 265.0                                     # ticket: "about 250 g"
     # BL-035: 3927.0 (BL-017) -> 3973.5 g = +26.0 #10 door sliders, +16.0 stainless US tri-glides, +1.9 IMP-4 #5 slider
     # (BL-034 records) + 4.5 elastic hook keepers, -0.8 lifter tri-glides, -1.1 torso adjust (BL-035 records)
-    assert lb["pack_g"] == pytest.approx(3973.5, abs=0.1)
+    # BL-036: -3.4 attach_system phase rows on the records (hood toggles 2 x 1.3, guy tri-glides 2 x 0.4), -2.7 misc
+    # thread no longer counts the S-strap set
+    assert lb["pack_g"] == pytest.approx(3967.4, abs=0.1)
     assert C.TORSO_ADJUST_ROW_G == pytest.approx(25.2 + 12.2 + 1.5 + 1.7, abs=0.01)   # web + cam + cord + toggle records
 
 

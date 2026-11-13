@@ -1058,7 +1058,7 @@ def build_effort() -> dict | None:
     return json.loads(f.read_text()) if f.exists() else None
 
 
-BOOKED_TRIGLIDE_G = 3.0     # history: the tri-glide mass inside the ledger rows (bag_attach / attach_system ASSUMPTION)
+BOOKED_TRIGLIDE_G = 2.6     # BL-036: attach_system --refresh re-books its guy lock row on triglide_25mm (was 3.0 ASSUMPTION)
 BOOKED_FLY_SLIDER5_G = 3.0  # history: build_geometry fly row "#5 pocket zip + slider" (slider 3 g ASSUMPTION)
 
 
@@ -1139,10 +1139,19 @@ def corrie_b2_rows(size: str = "M") -> list:
     return rows
 
 
+def misc_bag_thread_g() -> float:
+    """BL-036: the bag's share of the ledger misc thread line (geometry.yaml weight.misc_thread.bag_thread_g, written by
+    build_geometry; the same number weight_rollup_v2.corrie_f_step removes)."""
+    import yaml
+    f = Path(__file__).resolve().parents[1] / "geometry.yaml"
+    return float(yaml.safe_load(f.read_text())["weight"]["misc_thread"]["bag_thread_g"])
+
+
 def weight_table(size: str = "M", config: str = "as_hunted", door: str = DOOR_DEFAULT, fabrics: str = "B") -> dict:
     """Bag side by ledger system for one weight configuration (base / as_hunted / meat_trip), CORRIE F against CORRIE
     B.2 on the same rule, and the pack on H1 (ledger total - CORRIE B.2 bag side + CORRIE F bag side; suspension and
-    misc as the ledger books them today: BL-013 has not landed, see ``pack_with_adopted``)."""
+    misc as the ledger books them today, less the bag's share of the misc thread line, which CORRIE F books itself
+    (BL-036): BL-013 has not landed, see ``pack_with_adopted``)."""
     from huntkit.mass import ledger as L
     if config not in CFGS:
         raise KeyError(config)
@@ -1156,10 +1165,13 @@ def weight_table(size: str = "M", config: str = "as_hunted", door: str = DOOR_DE
     rest = tot - allB                                     # suspension + misc (ledger)
     imp3 = sum(r["g"] for r in B if r["name"].startswith("IMP-3"))
     rest_cfg = rest - (0.0 if config != "base" else imp3)   # IMP-3 holster: as hunted (belt)
+    # BL-036: CORRIE F books its own thread (the 'BL-034 thread:' rows), so the bag's share of the ledger misc thread
+    # line comes out of CORRIE F's pack (as weight_rollup_v2.corrie_f_step); CORRIE B.2 keeps it (its thread is there)
+    misc_out = misc_bag_thread_g() if any(r["name"].startswith("BL-034 thread:") for r in F) else 0.0
     return {"size": size, "config": config, "door": door, "fabrics": fabrics,
             "bag_side_g": bsF, "corrie_b2_bag_side_g": bsB, "delta_g": round(bsF - bsB, 1),
-            "by_system": sysF, "corrie_b2_by_system": sysB,
-            "pack_h1_g": round(rest_cfg + bsF, 1), "corrie_b2_pack_h1_g": round(rest_cfg + bsB, 1),
+            "by_system": sysF, "corrie_b2_by_system": sysB, "misc_bag_thread_removed_g": misc_out,
+            "pack_h1_g": round(rest_cfg - misc_out + bsF, 1), "corrie_b2_pack_h1_g": round(rest_cfg + bsB, 1),
             "bag_system_g": round(sum(sysF[s] for s in L.BAG_SYSTEM), 1)}
 
 

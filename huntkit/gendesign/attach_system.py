@@ -356,6 +356,12 @@ def factored_loads(sims: dict, rec: dict) -> dict:
     }
 
 
+# BL-036: the guy ladder-lock tab box-X is sewn through LLT + B-22 + B-02d in one pass on 25 mm webbing, so it is the
+# LLT piece's drawn box (25 mm webbing less 2 mm a side = 21 wide, 25 tall; patterns_corrie_f_rev3.LLT_BOX), not 25 x 25
+# (which runs off the webbing edge). B-22's box capacity is checked on this box, as drawn.
+LLT_BOX = (21.0, 25.0)
+
+
 def parts(F: dict) -> list[dict]:
     """Every sewn bag-side attachment part, with its make spec and strength check (per side unless qty says)."""
     w38, w25 = "poly_webbing_38mm", "poly_webbing_25mm"
@@ -437,10 +443,11 @@ def parts(F: dict) -> list[dict]:
         {"box-X 25": bx25["cap_n"], "ladder lock slip": float(load(LADDER_LOCK).require("slip_load_n")),
          "webbing": web_pin(w25)})
     add("B-22", "guy corner tab (new)", 2, "hypalon_coated_nylon", "50 x 60, laser-cut, R6", "flat",
-        "double-row perimeter; ladder-lock tab (25 mm x 70 mm webbing) box-X 25 x 25 through it", "perim", "-",
+        f"double-row perimeter; ladder-lock tab (25 mm x 70 mm webbing) box-X {LLT_BOX[0]:.0f} x {LLT_BOX[1]:.0f} through it "
+        "(LLT + B-22 + B-02d, one pass)", "perim", "-",
         f"OUTSIDE B-02d at x +/-{GUY['bag_xz'][0]:.0f}, z {GUY['bag_xz'][1]:.0f}", F["guy"], "as TG",
         {"perimeter seam (50 mm loaded)": patch_seam(50.0, "cordura_330d_nylon66", "hypalon_coated_nylon")["cap_n"],
-         "box-X 25": bx25["cap_n"]})
+         f"LLT box-X {LLT_BOX[0]:.0f} x {LLT_BOX[1]:.0f}": box_x(*LLT_BOX)["cap_n"]})
     # float-mode stand-off link (owner 2026-11-06): sized on the misuse envelope (the rest of the 68 kg rating in the bag)
     from huntkit.gendesign import meat_haul as MH
     gaps = " / ".join(f"{g_:.0f}" for g_ in MH.FLOAT_GAPS_MM)
@@ -514,8 +521,9 @@ def mass_delta(P: list) -> dict:
         "thread (box-X + perimeters)": 2.0,
     }
     return {"parts_g": {k: round(v, 1) for k, v in rows.items()}, "delta_g": round(sum(rows.values()), 1),
-            "basis": "hypalon_coated_nylon 1000 gsm, hdpe_sheet, xlpe_foam, poly_webbing_25mm, ladder_lock_25mm records; "
-                     "toggle, tri-glide, hook masses ASSUMPTION; elastic keeper 0.6 g ASSUMPTION"}
+            "basis": "hypalon_coated_nylon 1000 gsm, hdpe_sheet, xlpe_foam, poly_webbing_25mm, ladder_lock_25mm, "
+                     "pom_toggle, triglide_25mm records; hook mass ASSUMPTION; elastic keeper 0.6 g history (corrie_f "
+                     "re-books it on elastic_25mm)"}
 
 
 # ================================================================ procedures (gloved hands; seconds are ASSUMPTIONS)
@@ -775,7 +783,7 @@ def drawing_pieces() -> list:
     b22 = rect_panel("guy corner tab", 50, 60, 6.0, piece_id="B-22", material_id=hyp, quantity=2, seam_allowance_mm=0.0,
                      labels={"note": f"{note}; OUTSIDE B-02d at x +/-{GUY['bag_xz'][0]:.0f} z {GUY['bag_xz'][1]:.0f}"})
     _rows(b22, 50, 60, (3, 9), "perimeter")
-    _box_x_lines(b22, 25, 30, 25, 25, "ladder-lock tab")
+    _box_x_lines(b22, 25, 30, LLT_BOX[0], LLT_BOX[1], "ladder-lock tab")
     P.append(b22)
     b23 = rect_panel("IM2 tongue backing", 60, 60, 6.0, piece_id="B-23", material_id=hyp, quantity=2, seam_allowance_mm=0.0,
                      labels={"note": f"{note}; INSIDE B-01 at x +/-115 z 260"})
@@ -1725,14 +1733,19 @@ def docs_only(log=print) -> str:
 
 def refresh(log=print) -> dict:
     """Re-derive what changed with the float mode (2026-11-06) on top of the frozen record: parts and proof tests (B-24),
-    procedure times, drawings and the screens that show procedures or parts. The cloth-sim results, factored loads, the
-    phase mass delta and its pack before/after stay as recorded (they are the 2026-11-05/06 attachment phase; later
-    weight changes are booked in geometry.yaml and listed in tests/test_attach_system.py)."""
+    procedure times, drawings and the screens that show procedures or parts. The cloth-sim results, factored loads and
+    the pack-before mass stay as recorded (the 2026-11-05/06 attachment phase; later weight changes are booked in
+    geometry.yaml and listed in tests/test_attach_system.py). BL-036: the phase mass rows are re-booked on today's
+    records (``mass_delta``: tri-glide 2.6 g, POM toggle 1.7 g), so downstream code no longer corrects them a second
+    time (corrie_f.BOOKED_TRIGLIDE_G = 2.6); pack_after_g follows."""
     import shutil
     res = json.loads(RESULT.read_text())
     F = res["factored_n"]
     P = parts(F)
     res["parts"] = P
+    res["mass"] = mass_delta(P)
+    res["mass"]["rebooked"] = "BL-036 (2026-11-13): parts_g on today's records (refresh); phase 2026-11-05 rows otherwise"
+    res["pack_after_g"] = round(res["pack_before_g"] + res["mass"]["delta_g"], 1)
     res["proof_tests"] = proof_tests(F, P)
     res["times_s"] = procedure_times()
     res["drawings"] = export_drawings(log)

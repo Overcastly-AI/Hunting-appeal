@@ -1323,7 +1323,9 @@ def weight_budget(P, Hf, diag, wraps, info):
         hw("poly_webbing_25mm", length_m=wrap_len), "records; lengths from the 3D teardrop (haul_wraps)")
     row("haul wraps (= compression)", "3 aluminium G-hooks (HAUL family) + 3 ladder locks", 3 * 4 + 3 * hw("ladder_lock_25mm"),
         "G-hook 4 g ASSUMPTION (no record); ladder lock record")
-    soft = [k for k in sub_mass if k not in ("carry", "lid", "spreader", "attach_system")]
+    # BL-036: harness_S (the alternative S-strap set) is not in the pack (the ledger books the J-straps only), so its
+    # soft goods carry no thread here; counting both sets put ~2.7 g of S-strap thread in misc.
+    soft = [k for k in sub_mass if k not in ("carry", "lid", "spreader", "attach_system", "harness_S")]
     row("misc", "thread (~3 % of soft goods) + labels", THREAD_FRAC * sum(sub_mass[k] for k in soft) + LABELS_G, "ASSUMPTION")
     # BL-035: the bag's share of that thread, so a bag that books its own thread (CORRIE F rev 3: build_effort_rev3, op
     # stitch lengths) can take it out of misc without a double count (weight_rollup_v2.corrie_f_step)
@@ -1332,6 +1334,7 @@ def weight_budget(P, Hf, diag, wraps, info):
     _MISC_THREAD.update({
         "thread_frac": THREAD_FRAC, "labels_g": LABELS_G,
         "soft_goods_g": {k: round(sub_mass[k], 1) for k in soft},
+        "excluded_g": {"harness_S": round(sub_mass["harness_S"], 1)},     # BL-036: S-strap set, not in the pack
         "bag_soft_keys": bag,
         "bag_thread_g": round(THREAD_FRAC * sum(sub_mass[k] for k in bag), 1),
         "other_thread_g": round(THREAD_FRAC * sum(sub_mass[k] for k in soft if k not in bag), 1),

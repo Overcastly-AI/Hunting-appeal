@@ -8,20 +8,20 @@ Owner: pack-designer (BL-013, 2026-11-12 update); revision: manufacturing-engine
 
 | Belt M, crown kit M | base | as hunted | meat trip |
 |---|---:|---:|---:|
-| CORRIE B.2 on H1 (ledger start) | 3747.0 (8.26 lb) | 3919.1 | 3973.5 |
-| **proven now** | **3684.7 (8.12 lb, 8 lb 2.0 oz)** | 4001.8 (8.82 lb) | 4197.8 (9.25 lb) |
-| **after tests** | **3214.1 (7.09 lb, 7 lb 1.4 oz)** | 3531.2 (7.78 lb) | 3727.2 (8.22 lb) |
+| CORRIE B.2 on H1 (ledger start) | 3740.9 (8.25 lb) | 3913.0 | 3967.4 |
+| **proven now** | **3679.4 (8.11 lb, 8 lb 1.8 oz)** | 3996.5 (8.81 lb) | 4192.5 (9.24 lb) |
+| **after tests** | **3211.4 (7.08 lb, 7 lb 1.3 oz)** | 3528.5 (7.78 lb) | 3724.5 (8.21 lb) |
 | target (base) | 2993.7 (6.60 lb) | | |
 
-- **6.6 lb is not reachable with what is adopted or under test.** Proven now misses it by **691 g**, after tests by **220 g**.
-- Closing the last 220 g would take deleting or moving to add-ons: IMP-2 (33 g), FP-L/R (34 g), IMP-5L (15 g), IMP-4 (24 g), IMP-6 (11 g), B-11 lash (12 g), E-5 (5 g) = 134 g. Even every unfrozen candidate (134 g) does not reach it; with the belt-foam reserve on top (166 g in all) it is still short; see section 5.
-- The BL-011 headline (`corrie_f.pack_with_adopted`, rev 3: base 3292 g) is -393 g against proven now and +78 g against after tests: it takes the gated BL-005/006 items and the fabric swaps as done, leaves package C out, books the H1 body at 757.7 g and has the ledger's booking errors in it (section 2).
+- **6.6 lb is not reachable with what is adopted or under test.** Proven now misses it by **686 g**, after tests by **218 g**.
+- Closing the last 218 g would take deleting or moving to add-ons: IMP-2 (33 g), FP-L/R (34 g), IMP-5L (15 g), IMP-4 (24 g), IMP-6 (11 g), B-11 lash (12 g), E-5 (5 g) = 134 g. Even every unfrozen candidate (134 g) does not reach it; with the belt-foam reserve on top (166 g in all) it is still short; see section 5.
+- The BL-011 headline (`corrie_f.pack_with_adopted`, rev 3: base 3274 g) is -405 g against proven now and +63 g against after tests: it takes the gated BL-005/006 items and the fabric swaps as done, leaves package C out, books the H1 body at 757.7 g and has the ledger's booking errors in it (section 2).
 
 ## 1. Rules
 
-- **Start:** ledger `corrie_b2_h1`, belt M, every item booked: 3973.5 g. BL-008 tags (owner-adopted 2026-11-10): add-ons (top pouch / crown lid, scope pod, IMP-3 holster, rain fly) are as hunted; float links B-24 and the meat liner are meat trip. Taking the add-ons out of base is a reporting rule, not a saving; it is its own grey bar in the waterfall.
+- **Start:** ledger `corrie_b2_h1`, belt M, every item booked: 3967.4 g. BL-008 tags (owner-adopted 2026-11-10): add-ons (top pouch / crown lid, scope pod, IMP-3 holster, rain fly) are as hunted; float links B-24 and the meat liner are meat trip. Taking the add-ons out of base is a reporting rule, not a saving; it is its own grey bar in the waterfall.
 - **Proven now (P):** PASS verdicts with no open decision gate, plus every booking correction and safety addition. **After tests (A):** BL-014's rule: a change gated by a named test, where failing the test sends the part back to a known heavier part, is in A even when its fallback is known (BL-014 S1); its safety hardware (BL-010) stays in P (ASSUMPTION: conservative, settled when the gate passes). A scenario includes the one before it (P, then P + A). **Retired (R):** not adopted; in no scenario.
-- DECISION: a named test that can only add mass (the H1 release tests MT-1 / CA-1 / T1 / T2, the IM3 eye pull and coupon, the lifter protractor check, HB-7 lock slip) does not move a change out of P: there is no lighter outcome to wait for. BL-014 notes that the S15 elbow-swing check does have a fallback shell (S16 / CORRIE); CORRIE F's shell is kept in P here because P_F also carries today's fabrics and every part a failed gate would restore (P_F is +29.8 g on base: moving the whole of it to A would make proven now 3654.9 g). The owner's wing removal has its own field test FT-S2 with a known fallback (the wing parts), so the wing saving (101.6 g) is in A, and P carries the wing parts. If FT-S2, PT-1 / TL-1 / LL-H were treated as first-article verification of owner decisions, proven now would be 3476.0 g.
+- DECISION: a named test that can only add mass (the H1 release tests MT-1 / CA-1 / T1 / T2, the IM3 eye pull and coupon, the lifter protractor check, HB-7 lock slip) does not move a change out of P: there is no lighter outcome to wait for. BL-014 notes that the S15 elbow-swing check does have a fallback shell (S16 / CORRIE); CORRIE F's shell is kept in P here because P_F also carries today's fabrics and every part a failed gate would restore (P_F is +30.6 g on base: moving the whole of it to A would make proven now 3648.8 g). The owner's wing removal has its own field test FT-S2 with a known fallback (the wing parts), so the wing saving (101.6 g) is in A, and P carries the wing parts. If FT-S2, PT-1 / TL-1 / LL-H were treated as first-article verification of owner decisions, proven now would be 3473.3 g.
 - CORRIE F is door D2 (orchestrator call 2026-11-11), rev 3 (ledger `ADOPTED_BAG`). P uses today's fabrics on CORRIE F's pieces; A adds the swaps (owner swatch + strip test). P books the B-25 bridle even with the hood fallback (conservative, 7.4 g).
 
 ## 2. Steps (belt M; base / as hunted / meat trip deltas, g)
@@ -39,11 +39,11 @@ Owner: pack-designer (BL-013, 2026-11-12 update); revision: manufacturing-engine
 | H1B | proven now | BL-024/027/021 | H1 body (sleeve growth, buckling members, 28 mm IM3 cheeks) (safety) | +42.9 | +42.9 | +42.9 | MT-1 cinch, CA-1 PAHT ratio >= 0.255, T1/T2 gauges (release R1; failing adds mass, never removes) |
 | BL031 | proven now | BL-031 (owner) | strap tails: lifters, sternum, stabilizers cut to length; belt tail + keepers (design) | -17.5 | -17.5 | -17.5 | T9 gloved cinch trial (TAIL_GRIP 50 mm), R-06 fit trial (sternum), HB-D1 (stabilizers) |
 | P_pkgC | proven now | package C (2026-11-09) | 7075 belt plate; C-4 / C-7 rev C fixes (safety) | -8.4 | -8.4 | -8.4 | HB-5 plate, pad-seat sag test, T1(c) yoke dial (verification; the 6061 fallback fails rev C too) |
-| P_F | proven now | BL-011/010/022/029/030 | CORRIE F rev 3, D2, today's fabrics; wings, 38 mm IM/US and hood kept (design) | +29.8 | +176.9 | +318.5 | first-article: S15 elbow-swing / sling check (BL-009) |
+| P_F | proven now | BL-011/010/022/029/030 | CORRIE F rev 3, D2, today's fabrics; wings, 38 mm IM/US and hood kept (design) | +30.6 | +177.7 | +319.3 | first-article: S15 elbow-swing / sling check (BL-009) |
 | P_d2 | proven now | BL-017 d2 | 1:1 pull strap (no 3:1 pulley) (design) | -34.6 | -34.6 | -34.6 | - |
 | P_kits | proven now | BL-017 a (owner) | three crown kits, size M (design) | -27.6 | -27.6 | -27.6 | - |
 | A_imus | after tests | BL-003 (a) | IM/US straps 38 -> 25 mm, 25 mm cams + rated hooks (design) | -116.0 | -116.0 | -116.0 | MT-1 / MT-2 / MT-3 at the BL-010 per-row loads; fallback 38 mm webbing, cams and hooks |
-| A_att | after tests | BL-004 REC | hood + IM2 bag hooks deleted, guy toggle loops (design) | -107.1 | -107.1 | -107.1 | PT-1 / PT-2 at 2553 N, TL-1 toggle loop 366 N, LL-H heavy lock 366 N; fallback hood + IM2 hooks (owner kept them removed 2026-11-12) |
+| A_att | after tests | BL-004 REC | hood + IM2 bag hooks deleted, guy toggle loops (design) | -104.5 | -104.5 | -104.5 | PT-1 / PT-2 at 2553 N, TL-1 toggle loop 366 N, LL-H heavy lock 366 N; fallback hood + IM2 hooks (owner kept them removed 2026-11-12) |
 | A_back | after tests | BL-005 | sandwich backer strip (design) | -44.6 | -44.6 | -44.6 | BP-1 3-point bend coupon + BP-2 stay contact width; BP-3 back pressure below z 190 |
 | A_b | after tests | BL-006 b | no belt stabilizers (design) | -18.1 | -18.1 | -18.1 | HB-D1 side-hill stability |
 | A_c2 | after tests | BL-006 c2 | 0.75 mm wing stiffener (design) | -9.8 | -9.8 | -9.8 | HB-D2 wing roll-over (+ HB-1 front-strap sensor) |
@@ -70,11 +70,11 @@ Owner: pack-designer (BL-013, 2026-11-12 update); revision: manufacturing-engine
 
 | belt | B.2 | proven now | after tests |
 |---|---|---|---|
-| S | 3719 / 3891 / 3946 | 3656 / 3973 / 4169 | 3189 / 3506 / 3702 |
-| M | 3747 / 3919 / 3974 | 3685 / 4002 / 4198 | 3214 / 3531 / 3727 |
-| L | 3771 / 3943 / 3998 | 3710 / 4027 / 4223 | 3236 / 3554 / 3750 |
-| XL | 3807 / 3979 / 4034 | 3746 / 4064 / 4260 | 3271 / 3588 / 3784 |
-| XXL | 3835 / 4007 / 4062 | 3776 / 4093 / 4289 | 3298 / 3615 / 3811 |
+| S | 3713 / 3885 / 3940 | 3651 / 3968 / 4164 | 3186 / 3503 / 3699 |
+| M | 3741 / 3913 / 3967 | 3679 / 3996 / 4192 | 3211 / 3528 / 3724 |
+| L | 3765 / 3937 / 3992 | 3704 / 4021 / 4217 | 3234 / 3551 / 3747 |
+| XL | 3801 / 3973 / 4028 | 3741 / 4058 / 4254 | 3268 / 3585 / 3781 |
+| XXL | 3829 / 4001 / 4056 | 3771 / 4088 / 4284 | 3295 / 3612 / 3808 |
 
 Crown kit by torso size (change against H1, g): S: kits -81.5; M: kits -62.2; L: kits -43.0. Kit S is lighter and kit L heavier than the M figures used above (today's 16 x 8 legs; the OD 17 legs are retired).
 
@@ -92,10 +92,10 @@ Crown kit by torso size (change against H1, g): S: kits -81.5; M: kits -62.2; L:
 | fly | 5.9 | 5.9 | 5.9 |
 | straps_meat | 385.6 | 399.2 | 283.3 |
 | straps_compression | 243.5 | 241.5 | 140.0 |
-| attachment | 321.4 | 293.6 | 186.4 |
-| misc | 43.5 | 28.5 | 28.5 |
+| attachment | 318.0 | 291.0 | 186.4 |
+| misc | 40.8 | 25.8 | 25.8 |
 
-Like-for-like split (BL-001 groups, base): proven now bag side 1464 g, suspension 2193 g; after tests bag side 1078 g, suspension 2108 g.
+Like-for-like split (BL-001 groups, base): proven now bag side 1461 g, suspension 2193 g; after tests bag side 1078 g, suspension 2108 g.
 
 ## 4. Against the leaders (BL-008 like-for-like basis)
 
@@ -103,22 +103,22 @@ Leader figures and inclusions: `docs/research/published_weight_definitions.md` s
 
 | leader | published g | our basis | B.2 | proven now | after tests |
 |---|---:|---|---:|---:|---:|
-| Stone Glacier Sky 5900 + Krux, M belt | 2308 | base - hip_pocket - hydration | 3692 (+1384, +60 %) | 3629 (+1321, +57 %) | 3166 (+858, +37 %) |
-| Stone Glacier Sky 5900 + Xcurve, M belt | 2396 | base - hip_pocket - hydration | 3692 (+1296, +54 %) | 3629 (+1233, +51 %) | 3166 (+770, +32 %) |
-| Exo K4 5000 (bag + frame + lid) | 2637 | base + pouch - hip_pocket | 3796 (+1159, +44 %) | 3795 (+1158, +44 %) | 3325 (+688, +26 %) |
-| KUIU ICON 6 6000 full kit | 2790 | base | 3747 (+957, +34 %) | 3685 (+895, +32 %) | 3214 (+424, +15 %) |
-| KUIU PRO 6000 full kit (secondary) | 2639 | base | 3747 (+1108, +42 %) | 3685 (+1046, +40 %) | 3214 (+575, +22 %) |
-| Mystery Ranch Beartooth 85 | 2812 | base + pouch | 3811 (+999, +36 %) | 3811 (+999, +36 %) | 3340 (+528, +19 %) |
-| Mystery Ranch Metcalf 100 (secondary) | 2708 | base + pouch | 3811 (+1103, +41 %) | 3811 (+1103, +41 %) | 3340 (+632, +23 %) |
-| Kifaru ARK + Absaroka | 2835 | base + holster | 3786 (+951, +34 %) | 3721 (+886, +31 %) | 3251 (+416, +15 %) |
-| Seek Outside Unaweep 6300 (shipped) | 1673 | base + pouch - hip_pocket | 3796 (+2123, +127 %) | 3795 (+2122, +127 %) | 3325 (+1652, +99 %) |
-| Initial Ascent IA5K | 2722 | base + pouch | 3811 (+1089, +40 %) | 3811 (+1089, +40 %) | 3340 (+618, +23 %) |
+| Stone Glacier Sky 5900 + Krux, M belt | 2308 | base - hip_pocket - hydration | 3685 (+1377, +60 %) | 3624 (+1316, +57 %) | 3164 (+856, +37 %) |
+| Stone Glacier Sky 5900 + Xcurve, M belt | 2396 | base - hip_pocket - hydration | 3685 (+1289, +54 %) | 3624 (+1228, +51 %) | 3164 (+768, +32 %) |
+| Exo K4 5000 (bag + frame + lid) | 2637 | base + pouch - hip_pocket | 3790 (+1153, +44 %) | 3790 (+1153, +44 %) | 3322 (+685, +26 %) |
+| KUIU ICON 6 6000 full kit | 2790 | base | 3741 (+951, +34 %) | 3679 (+889, +32 %) | 3211 (+421, +15 %) |
+| KUIU PRO 6000 full kit (secondary) | 2639 | base | 3741 (+1102, +42 %) | 3679 (+1040, +39 %) | 3211 (+572, +22 %) |
+| Mystery Ranch Beartooth 85 | 2812 | base + pouch | 3805 (+993, +35 %) | 3805 (+993, +35 %) | 3337 (+525, +19 %) |
+| Mystery Ranch Metcalf 100 (secondary) | 2708 | base + pouch | 3805 (+1097, +41 %) | 3805 (+1097, +41 %) | 3337 (+629, +23 %) |
+| Kifaru ARK + Absaroka | 2835 | base + holster | 3780 (+945, +33 %) | 3716 (+881, +31 %) | 3248 (+413, +15 %) |
+| Seek Outside Unaweep 6300 (shipped) | 1673 | base + pouch - hip_pocket | 3790 (+2117, +127 %) | 3790 (+2117, +127 %) | 3322 (+1649, +99 %) |
+| Initial Ascent IA5K | 2722 | base + pouch | 3805 (+1083, +40 %) | 3805 (+1083, +40 %) | 3337 (+615, +23 %) |
 
-After tests, we are +416 to +858 g against the framed leaders (Seek Outside excluded: a 1.7 kg system is another class).
+After tests, we are +413 to +856 g against the framed leaders (Seek Outside excluded: a 1.7 kg system is another class).
 
 ## 5. Is 6.6 lb (2994 g, base) reachable?
 
-**No.** The lightest scenario is 3214 g. Gap after tests: **220 g (7.8 oz)**.
+**No.** The lightest scenario is 3211 g. Gap after tests: **218 g (7.7 oz)**.
 
 What closing it would cost in features (CORRIE F base rows; frozen features cannot be traded, RULES.md rule 9):
 
@@ -134,7 +134,7 @@ What closing it would cost in features (CORRIE F base rows; frozen features cann
 | IMP-8 | 7.5 | bow cam / limb cup (bow carry: owner-frozen) | yes |
 | E-5 | 5.4 | pole quiver (trekking pole / tripod leg carry) | no |
 
-- Taking the largest unfrozen items first: FP-L/R, IMP-2, IMP-4, IMP-5L, B-11 lash, IMP-6, E-5 = 134 g does not reach it; all unfrozen candidates together are 134 g. With the belt-foam reserve as well, 166 g against the 220 g gap: still short.
+- Taking the largest unfrozen items first: FP-L/R, IMP-2, IMP-4, IMP-5L, B-11 lash, IMP-6, E-5 = 134 g does not reach it; all unfrozen candidates together are 134 g. With the belt-foam reserve as well, 166 g against the 218 g gap: still short.
 - Not in any scenario: the belt-foam reserve (BL-006 d2 + d4, -31.9 g, gated by HB-1 and a compression-set check). On its own it does not close the gap.
 - Retired, not booked: BL-007 fixed torso ((a) -86.6 g against H1 on its own, +4.2 g once the kits it replaces are undone) and the BL-017 OD 17 legs (-20.6 g). Both fall below fatigue 1.0 on the cloth-sim loads (BL-021 (4), 0.97-0.99), so neither is a lever.
 - The lever the 6.6 lb target needs is on the frame side (BL-008: frame side about double the leaders'), which no open ticket reaches: after tests the suspension is 2108 g.
@@ -145,8 +145,8 @@ Nothing in the roll-up has been weighed. Each row is banded by its source class.
 
 | scenario (base) | total g | typed ASSUMPTION | printed body | frame lumps / carbon | area x gsm, records | worst case | RSS |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| proven now | 3685 | 426 +- 142 (30%) | 751 +- 42 (5%) | 514 +- 64 (10%) | 1994 +- 203 (8%) | +- 451 | +- 70 |
-| after tests | 3214 | 361 +- 167 (30%) | 751 +- 42 (5%) | 514 +- 64 (10%) | 1588 +- 227 (8%) | +- 500 | +- 72 |
+| proven now | 3679 | 423 +- 141 (30%) | 751 +- 42 (5%) | 514 +- 64 (10%) | 1991 +- 202 (8%) | +- 450 | +- 70 |
+| after tests | 3211 | 358 +- 166 (30%) | 751 +- 42 (5%) | 514 +- 64 (10%) | 1588 +- 226 (8%) | +- 498 | +- 72 |
 
 Single typed ASSUMPTION masses >= 5 g in after tests (base):
 
@@ -154,9 +154,9 @@ Single typed ASSUMPTION masses >= 5 g in after tests (base):
 |---|---:|---:|
 | D2 door zip #10 in the blade | door seam, 2 sliders | 66.4 | 19.9 |
 | harness: load lifters 25 mm poly + ladders, sternum Fidlock (QUICK family) + POM rails | 65.6 | 19.7 |
-| misc: thread (~3 % of soft goods) + labels | 42.2 | 12.7 |
 | torso adjust: 3:1 pulley webbing 25 mm x 1.4 m, metal cam buckle, pawl release cord + stra | 40.6 | 12.2 |
 | IM-cams: 3 x 25 mm Al cams | 39.6 | 11.9 |
+| misc: thread (~3 % of soft goods) + labels | 39.5 | 11.8 |
 | 38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): IM-hooks 3 x 25 mm rated Al G-h | 30.0 | 9.0 |
 | BL-003 (a) IM/US: IM-hooks 3 x 25 mm rated Al G-hooks (right end only) | -30.0 | 9.0 |
 | US-cams: US1/US2 25 mm Al cams (2) | 26.4 | 7.9 |
@@ -181,7 +181,7 @@ Other open estimates:
 - IM3 fairlead cheek 28 mm: booked inside the H1B raster at 2.0 g; the stand-alone fairlead volume is 7.3 g a pair, so up to +5.3 g may be unbooked (ASSUMPTION: the raster overlap is right; settled by weighing the two printed halves against the slicer).
 - H1 body on the 2 mm raster (800.7 g); BL-027's print halves (lower 310.5 g, upper 497.4 g, `h1_buckling.json` print) are +7.2 g against the raster, as BL-007's H1 mesh was heavier than its raster; the ledger keeps the raster basis for every body (ASSUMPTION MESH, h1_buckling.md; settled by weighing the printed halves).
 - Risk not in any scenario: BL-010 front-strap pad pair, booked only if HB-1 fails: +42.9 g.
-- Misc: thread ~3 % of soft goods + labels (ASSUMPTION in geometry.yaml). BL-035: the bag's share (15.0 g) comes out with the B.2 bag, because CORRIE F books its own thread from the op stitch lengths; the suspension share (19.2 g) and the 8 g labels stay.
+- Misc: thread ~3 % of soft goods + labels (ASSUMPTION in geometry.yaml). BL-035: the bag's share (15.0 g) comes out with the B.2 bag, because CORRIE F books its own thread from the op stitch lengths; the suspension share (16.4 g) and the 8 g labels stay.
 - Crown kit masses are for kit M (torso 17.5-20.5 in); belt sizes S-XXL keep kit M (torso and belt are separate).
 
 ## 7. Configs added to the ledger basis (task 1)
@@ -190,12 +190,12 @@ Other open estimates:
 
 | config | total g (belt M) | bag side | suspension |
 |---|---:|---:|---:|
-| corrie_f_base | 3369.8 | 1078.0 | 2263.4 |
-| corrie_f_as_hunted | 3686.9 | 1358.4 | 2300.0 |
-| bl005_back | 3702.4 | 1485.6 | 2173.3 |
-| bl006_belt | 3689.6 | 1485.6 | 2160.5 |
-| bl007_a | 3660.4 | 1485.6 | 2131.3 |
-| bl007_c | 3645.6 | 1485.6 | 2116.5 |
+| corrie_f_base | 3367.1 | 1078.0 | 2263.4 |
+| corrie_f_as_hunted | 3684.2 | 1358.4 | 2300.0 |
+| bl005_back | 3696.3 | 1482.2 | 2173.3 |
+| bl006_belt | 3683.5 | 1482.2 | 2160.5 |
+| bl007_a | 3654.3 | 1482.2 | 2131.3 |
+| bl007_c | 3639.5 | 1482.2 | 2116.5 |
 
 ## 8. Screenshots
 

@@ -1,5 +1,7 @@
 # Bag competition verdict (BL-002)
 
+> **Masses superseded (BL-035 records, checked BL-036, 2026-11-13).** The mass rows below are the 2026-11-10 verdict. On today's records (`huntkit.mass.ledger.teams()`, A, C, E and CORRIE B.2 +27.9 g for the door and IMP-4 sliders, D +26.0 g, FELL +14.9 g) the ledger bag systems are A **935.9**, B **765.5**, C **960.0**, D **1007.1**, E **912.5 g** against CORRIE B.2 **911.9 g**: vs CORRIE B.2 +24.0 / **-146.4** / +48.1 / +95.2 / +0.6 g (B was -133.4, D +97.1). Only FELL's saving and D's adjustment move; the ranking, the gate (CG) and the winner do not. `verdict.json` was not regenerated (its generator is not in the repo, see Found, not fixed).
+
 design-reviewer, 2026-11-10. Ticket `docs/backlog/BL-002-close-bag-competition.md`; rules `designs/pack_5200/bag_comp/RULES.md`.
 Numbers: `designs/pack_5200/bag_comp/verdict.json`. Masses: `huntkit.mass.ledger.teams()` (BL-001). CG and volume: read
 straight from `outputs/clothsim/<run>/results.json`. Access: each team's loadout output, re-run. Generator script:

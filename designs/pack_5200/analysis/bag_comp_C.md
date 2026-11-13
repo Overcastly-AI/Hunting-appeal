@@ -1,5 +1,7 @@
 # Bag competition, team C (OPEN): TAILGATE
 
+> **Masses superseded (BL-035 records, checked BL-036, 2026-11-13).** The mass figures in this write-up are the 2026-11-10 entry. BL-034/035 put the hardware on the material records (two #10 door sliders +26.0 g, IMP-4 #5 slider +1.9 g where the bag has them); `result.json` holds the current numbers, on the same definitions: bag system **786.6 g** (was 758.7), CORRIE B.2 **738.5 g** (was 710.6), so the difference (+48.1 g) and the pack on the RULES.md 3943 g basis (**3991.1 g**) do not move.
+
 Team C, 2026-11-10. Brief (bag_comp/RULES.md): a full-access hauler whose whole aft face opens, with the roll-top
 and the fixed frame interface kept, and an answer to zip blowout under hoop load. Research:
 `docs/research/bag_comp_C.md`. Code (team folder only): `designs/pack_5200/bag_comp/C/`

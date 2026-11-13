@@ -1,5 +1,7 @@
 # Bag competition, Team E FORM: CHERT (2026-11-10)
 
+> **Masses superseded (BL-035 records, checked BL-036, 2026-11-13).** The mass figures in this write-up are the 2026-11-10 entry. BL-034/035 put the hardware on the material records (two #10 door sliders +26.0 g, IMP-4 #5 slider +1.9 g where the bag has them); `result.json` holds the current numbers, on the same definitions: bag system **767.2 g** (was 739.3), CORRIE B.2 **749.6 g** (was 721.7; `form_numbers.json` and `result.json` re-run in BL-036, BL-035 had missed this entry), so the difference (+17.6 g) and the pack on the RULES.md 3943 g basis (**3960.6 g**) do not move.
+
 Entry for `designs/pack_5200/bag_comp/RULES.md`. Code: `designs/pack_5200/bag_comp/form/` (form.py envelope, pieces,
 mass and build metrics; form_sim.py cloth sim; form_loadout.py access; form_viz.py renders; form_patterns.py pattern
 sheet; form_result.py writes `result.json`). Research: `docs/research/bag_comp_form.md`. Tests:

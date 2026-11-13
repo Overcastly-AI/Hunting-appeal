@@ -92,7 +92,7 @@ def test_seam_lengths_and_placements_come_from_the_pattern(pk):
     zd = ctx.seams["door | blade U (#10 zip, R 55 corners)"]
     assert ops["Door #10 zip"].length_mm == pytest.approx(4 * zd, abs=0.2)
     b22 = next(o for o in pk["ops"] if o.operation.startswith("B-22 guy anchors"))
-    assert f"{ctx.rs.geo['b22']['placed_x']:.1f}" in b22.notes and b22.volatile == "BL-033 B-22 x"
+    assert f"{ctx.rs.geo['b22']['placed_x']:.1f}" in b22.notes and b22.volatile == "pattern: B-22 x"
     sw = next(o for o in pk["ops"] if o.operation.startswith("Set the") and "swells" in o.operation)
     n = sum(p.quantity for pid, p in ctx.rs.pieces.items() if pid.startswith("B-13"))
     assert sw.operation.startswith(f"Set the {n} swells")
@@ -104,7 +104,7 @@ def test_fly_ops_follow_the_pattern(pk):
     fly = [o for o in pk["ops"] if o.step.startswith("9")]
     if pk["geo"]["fly_drafted"]:
         assert all("HOLD" not in o.operation for o in fly)
-        assert all(o.volatile == "BL-033 F-01" for o in fly)
+        assert all(o.volatile == "pattern: F-01" for o in fly)
     else:
         assert fly and "HOLD" in fly[0].operation
 
