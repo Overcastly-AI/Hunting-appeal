@@ -1422,7 +1422,12 @@ def _b28_front(rs) -> str | None:
     """The B-28 tab piece that is boxed through the hinge band (its webbing use names the front tab)."""
     tabs = sorted(i for i in rs.pieces if i.startswith("B-28") and i != "B-28")
     use = {w["id"]: w["use"] for w in rs.webbing}
-    return next((i for i in tabs if "front" in use.get(i, "")), tabs[0] if tabs else None)
+    for word in ("front", "lock"):                       # BL-035 renamed the uses: 'lock tab' / 'toggle loop'
+        hit = next((i for i in tabs if word in use.get(i, "")), None)
+        if hit:
+            return hit
+    band = {(w, h) for w, h, lab in boxes_of(rs.pieces["B-02h"]) if "B-28" in lab}
+    return next((i for i in tabs if band & {(w, h) for w, h, _ in boxes_of(rs.pieces[i])}), tabs[0] if tabs else None)
 
 
 def box_mismatches(ctx: Ctx) -> list[str]:

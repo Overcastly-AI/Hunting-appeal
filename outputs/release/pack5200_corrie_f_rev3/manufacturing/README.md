@@ -1,4 +1,4 @@
-# CORRIE F rev 3 (door D2) - 5200 cu in hunting pack bag: manufacturing package (BL-032 part B)
+# CORRIE F rev 3 (door D2) - 5200 cu in hunting pack bag: manufacturing package (BL-032 part B, BL-034 part C)
 
 Generated 20261113 by `designs/pack_5200/mfg_corrie_f_rev3.py` from `patterns_corrie_f_rev3.build()` and the part A markers. **Do not edit by hand: re-run the script.** Patterns: `../patterns/`.
 
@@ -19,15 +19,15 @@ Generated 20261113 by `designs/pack_5200/mfg_corrie_f_rev3.py` from `patterns_co
 
 ## Key numbers
 
-- Pieces: 75 piece types; 77 fabric / sheet pieces + 73 webbing / cord / elastic pieces (crown kit M).
-- Ledger 1:1: 93 rows, 0 unmatched, 0 pieces without a row. Mass from pattern areas (ledger basis, team B fabrics): 567.2 g vs 567.7 g (-0.08 %, limit +/-3 %). Primary fabrics weigh +94.9 g more on the same pieces.
-- Operations: 92; beginner hours 75.2 h (one-off set-up 4.1 h of it); factory SAM 512 min (8.5 h, ASSUMPTION SAM-RATIO).
-- Material cost a bag (record prices): primary $259, alternate $259. CMT + materials: US contract $802, Asia $336 (ASSUMPTION LABOUR).
-- Load points: 23; lowest SF 1.93 (B-17 IM3 tab perimeter (double row)).
+- Pieces: 76 piece types; 77 fabric / sheet pieces + 75 webbing / cord / elastic pieces (crown kit M).
+- Ledger 1:1: 102 rows, 0 unmatched, 0 pieces without a row. Mass from pattern areas (ledger basis, team B fabrics): 567.2 g vs 567.7 g (-0.08 %, limit +/-3 %). Primary fabrics weigh +94.9 g more on the same pieces.
+- Operations: 90; beginner hours 74.6 h (one-off set-up 4.1 h of it); factory SAM 508 min (8.5 h, ASSUMPTION SAM-RATIO).
+- Material cost a bag (record prices): primary $367, alternate $367. CMT + materials: US contract $907, Asia $443 (ASSUMPTION LABOUR).
+- Load points: 26; lowest SF 1.93 (B-17 IM3 tab perimeter (double row)).
 
-## Re-run when BL-033 lands (volatile operations)
+## Volatile operations (re-run when the pattern changes)
 
-These ops read their numbers from the pattern; re-run `python designs/pack_5200/mfg_corrie_f_rev3.py` after the pattern module changes and they update:
+These ops read their numbers from the pattern; re-run `python designs/pack_5200/mfg_corrie_f_rev3.py` after the pattern module changes and they update (tags name the ticket that last moved them):
 
 - **BL-033 B-22 x**: ops 3.04, 3.05; load points port guy, bag end
 - **BL-033 F-01**: ops 1.06, 9.01, 9.02
@@ -36,11 +36,18 @@ These ops read their numbers from the pattern; re-run `python designs/pack_5200/
 - **BL-033 ledger**: ops 7.16
 - **BL-033 ledger (US-chan)**: ops 4.13
 
-Current values: B-22 at x +/-130.3 mm (drawn 149.0); FP flat width 260.0 mm (finished 165.0); 6 swell windows; F-01 drafted: True.
+Current values: B-22 at x +/-130.3 mm (drawn 149.0); FP flat width 260.0 mm (finished 165.0); 6 swell windows; F-01 drafted: True; B-11 tabs on the gussets: 8; K-W keeper z: {'W1': {'R': 128.2, 'L': 201.8}, 'W2': {'R': 299.9, 'L': 370.1}, 'W3': {'R': 702.6, 'L': 702.6}}.
 
 ## On HOLD (cannot be sewn from the pattern as released)
 
-- 4.07 B-11 lash tabs (8)
+- none
+
+## Pattern / ledger flags
+
+- Thread in the bag (all ops, no cone waste): 18.28 g; booked on the ledger: 18.29 g (build_effort_rev3.json; re-run `python designs/pack_5200/build_effort_rev3.py --write` when they differ).
+- Box-X mismatches between a panel and its tab: none.
+- Ledger hardware rows mapped by keyword (confirm): none.
+- Unmapped ledger hardware rows: none.
 
 ## Assumptions that govern
 
@@ -55,15 +62,12 @@ Current values: B-22 at x +/-130.3 mm (drawn 149.0); FP flat width 260.0 mm (fin
 | THREAD-NEEDLE | Tex 70 / Nm 90, tex 90 / Nm 110, tex 135 / Nm 140, round point (attach_system.NEEDLE for 90 / 135). | swatches in op 0.02: no skipped stitches, no shredding |
 | UTIL-SMALL | Small and sheet pieces nest at 70% across bags in production. | first production markers |
 | UTIL-ALT | Alternate-set body fabrics nest at 85% in production (no 10-bag alternate marker). | alternate 10-bag markers if the alternate set passes its gates |
-| B28-FACE | B-28 front tabs go on the OUTSIDE of the hinge band (the strap runs on the aft face); part A README says 'inside'. | pattern-maker / pack-designer confirm; T9 strap path |
-| B25-BOX | Each B-25 toggle tab and second fold is closed with a 21 x 20 box-X (pattern shows folds only). | LL-H toggle-loop pull |
-| IM-BOX / US-BOX / W3-BOX | IM1-IM3 end loops, US eyes and W3's hook end get a 21 x 25 box-X (pattern draws folds only). | MT-1 specimens are sewn exactly this way |
+| B11-PLACE / KW-PATH / F02-CENTRE / US-EYE | Pattern placements read by this package (patterns_corrie_f_rev3, BL-034 part A): B-11 tab heights, K-W keeper heights from the W path, F-02 fore-aft on B-05, the US eye fold. | archery / rifle loadout fits; T9 W free lengths (keeper within +/-15 mm of the wrap); fly fit; MT-1 specimens |
 | WX-LOAD | Haul extenders carry the S9 float-clamp load (225 N). | pack-designer load case; LL-H |
-| KW-PLACE | K-W keepers at W1-W3 heights z 80 / 250 / 420 in the aft corner seams (not drawn). | pattern-maker notches |
-| F02-PLACE | F-02 centred on the outside of B-05 (not drawn). | pattern-maker placement; fly fit (BL-033) |
+| US-BS | The stainless 25 mm tri-glide behind each US cam stops cradle slip (record: 3.75 kN break, no slip rating). | gate US-BS: cam slipped on purpose, backstop holds |
+| TG-SS-PRICE | Stainless tri-glide USD 2.84 from the record's EUR source line, converted as the record does (ex VAT x 1.09 USD/EUR). | supplier quote |
 | BT-STD | Slit-end bartack 10 x 2 mm, 28 stitches; standard tack 16 x 2 mm, 42 stitches (LK-1900 patterns). | QC-07 |
-| PRICES | Items with no record cost use PRICE_ASSUMED (sliders, cams, tri-glides, toggles, elastic, labels). | supplier quotes; materials-engineer records |
-| ELASTIC | 25 mm elastic keepers: no material record (pattern module ELASTIC). | materials-engineer record |
+| PRICES | Items with no material record use PRICE_ASSUMED (TPU hook sleeve, rubber pull sleeve, basting tape, seam sealer, labels, packaging). Hardware and elastic use their records since BL-034. | supplier quotes |
 
 ## Packaging
 

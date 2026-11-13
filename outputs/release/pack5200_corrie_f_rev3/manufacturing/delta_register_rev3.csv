@@ -6,8 +6,8 @@ RD-12,restated,"B-17, B-18, B-22, HE, T3, LLT, TG drafted and sequenced: True; B
 RD-15,closed (numbers),"BOM, yardage and mass use the current records (robic 125 gsm, ultragrid 132 gsm 1500 mm roll, ULTRA 133 gsm)","physical: swatch weights (QC-02), FS-O5 / PT-3 on 200X (alternate gate)"
 RD-16,closed (release),CORRIE F rev 3 patterns (part A) + this op sequence replace SPINE step 9,first article build; CORRIE gates; BL-033 items listed as volatile ops
 RD-17,restated,"IMP-2 / IMP-4 / IMP-8 in the bag: True; SH-03 absent: True; body seams un-bound (SSa2, ASSUMPTION NO-BIND)",FRAY-1 wash-swatch test; IMP-1/3/5/6 belong to the harness / belt packages
-RD-18,closed,B-11 x8 + BRL x2 + BRS + G-hook in the BOM: True,B-11 placements are not drawn on any rev 3 piece (pattern-maker)
-RD-21,restated,this op sequence supersedes BUILD_PLAN.md step 9 for the bag (bag ops only),"BUILD_PLAN.md still describes stubs, bay mode, the PA66 plate: needs a pointer to this package (not edited here)"
+RD-18,closed,B-11 x8 + BRL x2 + BRS + G-hook in the BOM: True; B-11 placements drawn on B-03: 8 tabs (op 4.07 released),archery / rifle loadout fit settles ASSUMPTION B11-PLACE
+RD-21,closed (pointer),this op sequence supersedes BUILD_PLAN.md step 9 for the bag; BUILD_PLAN.md points at the rev 3 release: True,BUILD_PLAN.md body still describes the SPINE bag (its banner says so)
 RD-22,open,the packaging card (README Packaging) carries the load limits,the user guide itself
 RD-23,restated,"B-25, B-27f, B-22 inside, TG, LLT drafted and sequenced (ops 3.04-3.05, 4.03): True",T9 rev 3 at the S kit; LL-H; PORT-1; attorney review; BL-033 may move B-22 (x +/-130.3 vs 149)
-RD-24,restated,B-29 (7 piece types) + B-28 per kit + keepers sequenced; lid 9.53 h on the drafted pattern vs 7.76 h booked,"T9 lid weigh / photo, cinch, free lengths; build_metrics still books the old lid hours (ledger / corrie_f owner)"
+RD-24,restated,B-29 (7 piece types) + B-28 per kit + keepers sequenced; lid 9.53 h on the drafted pattern; build_metrics books the op-sequence hours (build_effort_rev3.json: 70.77 h a bag),"T9 lid weigh / photo, cinch, free lengths"

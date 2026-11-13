@@ -1,35 +1,35 @@
 {
- "material_usd_primary": 258.78,
- "material_usd_alternate": 258.62,
+ "material_usd_primary": 367.35,
+ "material_usd_alternate": 367.19,
  "fabric_usd_primary": 87.91,
  "fabric_usd_alternate": 87.75,
  "missing_cost": [],
- "proto_hours": 75.2,
+ "proto_hours": 74.6,
  "proto_hours_by_step": {
-  "0 Prep and cutting": 16.13,
+  "0 Prep and cutting": 16.19,
   "1 Pockets": 6.37,
   "2 Small parts": 3.97,
   "3 Door D2 and hinge band": 5.0,
   "4 Main bag": 13.54,
   "5 Collar and roll top": 3.4,
   "6 Crown lid B-29 (as hunted)": 8.46,
-  "7 Straps and webbing": 8.0,
+  "7 Straps and webbing": 7.36,
   "8 Add-ons (scope pod as hunted, meat liner meat trip)": 3.71,
   "9 Rain fly F-01": 5.4,
   "10 Finish, inspect, pack": 1.2
  },
- "sam_min": 511.6,
+ "sam_min": 507.5,
  "labour_usd": {
-  "us_contract_usd_min": 434.9,
-  "asia_contract_usd_min": 61.4
+  "us_contract_usd_min": 431.36,
+  "asia_contract_usd_min": 60.9
  },
  "cmt_usd": {
-  "us_contract_usd_min": 543.63,
-  "asia_contract_usd_min": 76.75
+  "us_contract_usd_min": 539.2,
+  "asia_contract_usd_min": 76.12
  },
  "landed_usd": {
-  "us_contract_usd_min": 802.41,
-  "asia_contract_usd_min": 335.53
+  "us_contract_usd_min": 906.55,
+  "asia_contract_usd_min": 443.47
  },
  "lid_hours_drafted": 9.53,
  "lid_hours_booked": 7.76,

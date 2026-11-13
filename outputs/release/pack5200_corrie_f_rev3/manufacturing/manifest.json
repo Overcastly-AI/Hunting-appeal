@@ -2,20 +2,22 @@
  "checks": {
   "recon_unmatched": 0,
   "recon_pieces_without_row": 0,
-  "recon_rows": 93,
+  "recon_rows": 102,
   "mass_delta_pct": -0.08,
   "mass_ok": true,
-  "ops": 92,
-  "load_points": 23,
+  "ops": 90,
+  "load_points": 26,
   "min_sf": 1.93,
   "min_sf_point": "B-17 IM3 tab perimeter (double row)",
-  "holds": [
-   "4.07 B-11 lash tabs (8)"
-  ],
+  "holds": [],
   "unsequenced": [],
   "unmapped_hardware": [],
-  "proto_hours": 75.2,
-  "sam_min": 511.6,
+  "hardware_rows_by_keyword": [],
+  "box_mismatches": [],
+  "thread_bag_g": 18.28,
+  "thread_ledger_g": 18.29,
+  "proto_hours": 74.6,
+  "sam_min": 507.5,
   "volatile": [
    "BL-033 B-22 x",
    "BL-033 F-01",
@@ -26,9 +28,9 @@
   ]
  },
  "mass": {
-  "base_g": 1065.2,
-  "as_hunted_g": 1336.8,
-  "meat_trip_g": 1532.9,
+  "base_g": 1132.5,
+  "as_hunted_g": 1413.0,
+  "meat_trip_g": 1609.0,
   "pattern_fabric_alt_g": 567.2,
   "ledger_fabric_g": 567.7,
   "mass_delta_pct": -0.08,
@@ -47,8 +49,12 @@
    150.0,
    380.0
   ],
-  "fp_clamped": 0.0,
   "fp_margin": 9.5,
+  "fp_clear_req": 9.0,
+  "b11_box": [
+   24.0,
+   19.0
+  ],
   "swell_ids": [
    "B-13x"
   ],

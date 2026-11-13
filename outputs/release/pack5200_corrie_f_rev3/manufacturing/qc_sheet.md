@@ -17,7 +17,7 @@
 | QC-11 | Hardware | Hardware fitted | count against the BOM; threading as SK-7 | every lock threaded the right way (pull test by hand), carabiners gate-in, cord lock holds | 100 % |
 | QC-12 | Final | Width | tape across the widest point, bag packed full | <= 394 mm (15.5 in) (owner limit) | first article + 1 in 10 |
 | QC-13 | Final | Volume | fill with 10 mm foam balls / litre jug method, collar rolled 3 times | 85 L +/- 3 L (5200 cu in) (owner limit) | first article |
-| QC-14 | Final | Mass, bag base | 1 g scale | within +/- 3 % of the ledger base bag (1065 g on the ledger basis; primary fabrics are heavier, see costing.md) | every bag |
+| QC-14 | Final | Mass, bag base | 1 g scale | within +/- 3 % of the ledger base bag (1132 g on the ledger basis; primary fabrics are heavier, see costing.md) | every bag |
 | QC-15 | Final | No hook-and-loop, coil zips only | visual | zero hook-and-loop anywhere (owner: quiet bag) | 100 % |
 | QC-16 | Final | Camo use | visual | camo only on B-02u, SH-07, SH-01b, FP-b, B-29f, A1-d (accents) | 100 % |
 | QC-17 | Final | Thread ends, seals | visual | ends <= 3 mm, no open webbing ends, no burnt fabric | 100 % |
@@ -46,6 +46,7 @@
 | ALT-1 | alternate set: owner sees an ULTRAGrid swatch | release of this package | owner OK in writing | part A README section 1 |
 | ALT-2 | alternate set: PT-3 on 200X + 50 mm strip test | release of this package | >= 36.8 N/mm (1840 N / 50 mm mean, FS-O5) | part A README; register FS-O5 |
 | ALT-3 | alternate set: weigh the 70D stock | release of this package | gsm within +/- 5 % of nylon_ripstop_70d record | part A README |
+| US-BS | US backstop: cam on 25 mm webbing with the stainless tri-glide threaded behind it; open the cam (forced slip) and load the strap to the US proof 1080 N (MT-1 basis, S5-S7 720 N x 1.5) | release of this package | tri-glide stops the strap within 10 mm and holds 1080 N for 1 min, 3 of 3 (ASSUMPTION US-BS) | triglide_25mm record note; DECISIONS 2026-11-13 |
 | FRAY-1 | wash-swatch fray test of the un-bound SSa2 seam (3 wash cycles, R-12) | release of this package | no allowance frayed past the 2nd row; else bind (ASSUMPTION NO-BIND) | RD-17 |
 
 ## Defect list
