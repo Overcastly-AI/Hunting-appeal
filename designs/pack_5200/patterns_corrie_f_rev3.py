@@ -185,30 +185,7 @@ def notch_pair(sideA, sideB, label, pitch=NOTCH_PITCH, ends=False):
     return len(pos)
 
 
-class VEdge(EdgeRef):
-    """A seam side made of a raw polyline on a real piece (part of an edge, or a placement line): an EdgeRef whose
-    points are given, so ``check_seams`` reports it like any edge."""
-
-    def __init__(self, piece, pts, name):
-        object.__setattr__(self, "piece", piece)
-        object.__setattr__(self, "name", name)
-        object.__setattr__(self, "reverse", False)
-        object.__setattr__(self, "_pts", [tuple(map(float, p)) for p in pts])
-
-    @property
-    def points(self):
-        return self._pts
-
-    @property
-    def length(self):
-        return _len(self._pts)
-
-    @property
-    def label(self):
-        return f"{self.piece.piece_id}.{self.name}"
-
-    def reversed(self):
-        return VEdge(self.piece, self._pts[::-1], self.name)
+VEdge = F.PolyEdge   # BL-033: the class moved to corrie_f (its build uses it for the D2 seams)
 
 
 def _v_side(name, side):
@@ -294,26 +271,15 @@ def build_shell(rs: RevSet, c):
         rs.add(p, "shell", step[pid])
     B01, G, BOT, U, DR, HB = (P[k] for k in ("B-01", "B-03", "B-05", "B-02u", "B-02door", "B-02h"))
     G.labels["cut"] = "1 pair L+R (mirror); marks labelled 'L only' / 'R only' go on that gusset only"
-    # ---- seams: corrie_f.build's pairs, less the three self-referencing placeholders (door zip, band | blade)
+    # ---- seams: corrie_f.build's pairs as built (BL-033: the door zip and band | blade seams are real pairs there now)
     for s, tags in b.seams:
         ea, eb = s.a[0], s.b[0]
         if len(s.a) == 1 and len(s.b) == 1 and ea.piece is eb.piece and ea.name == eb.name:
-            continue
+            raise ValueError(f"self-paired placeholder seam in corrie_f.build: {s.name}")
         rs.seams.append(Seam(s.a, s.b, name=s.name, stitch="301"))
-    # blade U inner edge split at the hinge (z 650): hi R | zip | hi L
-    inner = U.edge_points("inner")
-    zh = F.D2["z_hinge"]
-    yh = M["S"](zh)
-    hits = [i for i, (x, y) in enumerate(inner) if abs(y - yh) < 1e-6 and abs(abs(x) - M["inner"](zh)) < 1e-6]
-    iR, iL = hits[0], hits[-1]
-    hiR, mid, hiL = inner[:iR + 1], inner[iR:iL + 1], inner[iL:]
+    sp = b.extra["d2_inner_split"]
+    hiR, mid, hiL = sp["hiR"], sp["mid"], sp["hiL"]
     zipe = DR.edge_points("zip")
-    rs.seams += [
-        Seam(DR.edge("zip"), _v_side("blade U inner (door zip run)", [(U, mid[::-1])]),
-             name="door | blade U (#10 zip, R 55 corners)"),
-        Seam(HB.edge("right"), _v_side("blade U inner hi R", [(U, hiR[::-1])]), name="hinge band R | blade U"),
-        Seam(HB.edge("left"), _v_side("blade U inner hi L", [(U, hiL[::-1])]), name="hinge band L | blade U"),
-    ]
     # ---- notches on every seam (50 mm + junctions)
     E = lambda p, e, rev=False: (p, p.edge_points(e)[::-1] if rev else p.edge_points(e))  # noqa: E731
     pairs = [

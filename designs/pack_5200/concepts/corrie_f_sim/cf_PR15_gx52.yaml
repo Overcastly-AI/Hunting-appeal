@@ -62,7 +62,7 @@ cases:
   fill:
     external: &id001
     - label: top_pouch_1kg
-      kg: 1.054
+      kg: 1.124
       piece: B-06
       top_mm: 15.0
       offset_mm:

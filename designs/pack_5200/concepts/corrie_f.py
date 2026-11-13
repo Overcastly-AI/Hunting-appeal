@@ -57,6 +57,7 @@ import shell_sweep as SS  # noqa: E402
 from bag_concepts import SA_BODY, SA_FLAT, _seam  # noqa: E402
 from huntkit import materials as MAT  # noqa: E402
 from huntkit.patterns import Piece, rect_panel  # noqa: E402
+from huntkit.patterns.piece import EdgeRef  # noqa: E402
 
 NAME = "CORRIE F"
 LB, OZ, IN = 453.592, 28.3495, 25.4
@@ -306,6 +307,44 @@ def d2_pieces(c, fabrics="B"):
     return {"door": door, "band": band, "blade": blade, "zip_mm": zip_len}
 
 
+class PolyEdge(EdgeRef):
+    """A seam side made of a raw polyline on a real piece (part of an edge): an EdgeRef whose points are given, so
+    ``check_seams`` and ``bag_concepts.metrics`` treat it like any edge (BL-033; was patterns_corrie_f_rev3.VEdge)."""
+
+    def __init__(self, piece, pts, name):
+        object.__setattr__(self, "piece", piece)
+        object.__setattr__(self, "name", name)
+        object.__setattr__(self, "reverse", False)
+        object.__setattr__(self, "_pts", [tuple(map(float, p)) for p in pts])
+
+    @property
+    def points(self):
+        return self._pts
+
+    @property
+    def length(self):
+        p = np.asarray(self._pts, float)
+        return float(np.linalg.norm(np.diff(p, axis=0), axis=1).sum()) if len(p) > 1 else 0.0
+
+    @property
+    def label(self):
+        return f"{self.piece.piece_id}.{self.name}"
+
+    def reversed(self):
+        return PolyEdge(self.piece, self._pts[::-1], self.name)
+
+
+def d2_inner_split(c, U) -> dict:
+    """The D2 blade U inner edge split at the hinge (z 650): hi R (band side) | door zip run | hi L."""
+    _, S, A = _face_xy(c)
+    zh = D2["z_hinge"]
+    yh, xh = S(zh), A(zh) - float(blade_w(c, zh))
+    inner = U.edge_points("inner")
+    hits = [i for i, (x, y) in enumerate(inner) if abs(y - yh) < 1e-6 and abs(abs(x) - xh) < 1e-6]
+    iR, iL = hits[0], hits[-1]
+    return {"hiR": inner[:iR + 1], "mid": inner[iR:iL + 1], "hiL": inner[iL:]}
+
+
 def d1_pieces(c, fabrics="B"):
     """D1 aft face: team C's lid (floor hinge, R 60 top corners, 3 mm ease a side) and hinge band with corner
     tongues, on this shell (tailgate.lid_face is concept-generic)."""
@@ -353,11 +392,19 @@ def build(c: ShellF | None = None, door: str = DOOR_DEFAULT, fabrics: str = "B")
                 _seam(U.edge("outer_left").reversed(), G.edge("aft"), "blade U | gusset L (aft corner, 2 hard-point loops)",
                       "seared"),
                 _seam(U.edge("bottom"), BOT.edge("top").reversed(), "bottom | blade U kick strip", "seared"),
-                _seam(DR.edge("zip"), DR.edge("zip"), "door | blade U (#10 zip, R 55 corners): panel line = camo break "
-                      "= zip", "zip"),
                 _seam(HB.edge("bottom"), DR.edge("hinge"), "hinge band | door (door hinge, z 650)", "seared"),
-                _seam(HB.edge("right"), HB.edge("right"), "hinge band | blade R (z 650 to collar)", "seared"),
-                _seam(HB.edge("left"), HB.edge("left"), "hinge band | blade L (z 650 to collar)", "seared"),
+            ]
+            # BL-033: the real pairs (were three self-paired placeholders): the blade U inner edge split at the hinge
+            # (z 650) into hi R | door zip run | hi L, each sewn in the door's / band's direction
+            sp = d2_inner_split(c, U)
+            b.extra["d2_inner_split"] = sp
+            b.seams += [
+                _seam(DR.edge("zip"), [PolyEdge(U, sp["mid"][::-1], "inner (door zip run)")],
+                      "door | blade U (#10 zip, R 55 corners)", "zip"),
+                _seam(HB.edge("right"), [PolyEdge(U, sp["hiR"][::-1], "inner hi R")],
+                      "hinge band R | blade U", "seared"),
+                _seam(HB.edge("left"), [PolyEdge(U, sp["hiL"][::-1], "inner hi L")],
+                      "hinge band L | blade U", "seared"),
             ]
             b.zips.append({"name": "D2 door zip #10 in the blade | door seam, 2 sliders", "length_mm": P["zip_mm"],
                            "corners": 2, "z": (D2["z_lo"], D2["z_hinge"]), "where": "blade | door seam"})
@@ -1586,6 +1633,56 @@ def _route_wrap_fixed(torso: int) -> dict:
 
 
 ROUTES.update({"over": _route_over, "over_port": lambda t: _route_over(t, True), "wrapfix": _route_wrap_fixed})
+
+# ---- BL-033 task 2: B-22 as the rev 3 pattern places it (patterns_corrie_f_rev3 drew it 18.7 mm inboard of the drawn
+# x +/-149, because a 50 mm tab at 149 lies over the hinge band | blade seam at z 695). One source for both.
+B22_DRAWN = (149.0, 695.0)    # corrie_body.md section 4 B-02h row / guy_geometry: B-22 at x +/-149, z 695
+B22_W = 50.0                  # attach_system.drawing_pieces B-22 50 x 60
+B22_EDGE_CLEAR = 6.0          # ASSUMPTION: tab edge >= 6 mm inside the band | blade seam line (presser foot); settled by
+#                               sewing the first hinge band
+B22_FALLBACK = {"x": 149.0, "tab_w": 38.0}   # ticket BL-033 task 2: a 38 mm tab at x +/-149 if the moved tab fails
+
+
+def b22_placement(c: ShellF | None = None, tab_w: float = B22_W, x_want: float = B22_DRAWN[0]) -> dict:
+    """Where a ``tab_w`` wide B-22 can sit on the hinge band at z 695: the band's flat half width there (aft face
+    a(z) less the D2 blade) less the edge clearance and half the tab. Same flat maps as the pattern (``_face_xy``)."""
+    c = c or make()
+    z = B22_DRAWN[1]
+    with frame_face(c):
+        _, S, A = _face_xy(c)
+    band = A(z) - float(blade_w(c, z))
+    x_max = band - B22_EDGE_CLEAR - tab_w / 2
+    x = min(x_want, x_max)
+    return {"z": z, "band_half_w_mm": round(band, 1), "x_max_mm": round(x_max, 1), "x_mm": round(x, 1),
+            "moved_mm": round(x_want - x, 1), "tab_w_mm": tab_w, "fits_at_want": x_want <= x_max + 1e-9}
+
+
+def _row_node(torso: int, side: str, x: float) -> int:
+    """Hinge-band node on the scenario B-22 node's own mesh row (same drafted z) nearest x. ASSUMPTION B22-NODE: the fine
+    mesh (h 25) has no node at (130.3, 695); the row of the scenario B-22 (z 682) isolates the x move, and its nearest
+    node (x 125.3) is 5 mm MORE inboard than drafted (conservative for the guy's lifter gap and pull angle)."""
+    m = fine_mesh(torso)
+    X0 = m["X0"]
+    z0 = X0[m["b22"][side], 2]
+    idx = np.array([j for j, p in enumerate(m["piece"]) if p == "B-02h" and abs(X0[j, 2] - z0) < 1.0])
+    return int(idx[np.argmin(np.abs(X0[idx, 0] - x))])
+
+
+def _route_over_port_at(torso: int, x22: float, z22: float) -> dict:
+    """'over_port' (rev 3) with the inside port guy's B-22 end moved to x22 on the scenario B-22 row (``_row_node``)."""
+    out = _route_over(torso, True)
+    for s, sx in (("R", 1), ("L", -1)):
+        out[s]["extra"][f"TP_{s}"]["nodes"][0] = _row_node(torso, s, sx * x22)
+    return out
+
+
+def _route_over_port_b22in(torso: int) -> dict:
+    p = b22_placement()
+    return _route_over_port_at(torso, p["x_mm"], p["z"])
+
+
+ROUTES.update({"over_port_b22in": _route_over_port_b22in,
+               "over_port_b22fb": lambda t: _route_over_port_at(t, B22_FALLBACK["x"], B22_DRAWN[1])})
 
 
 # ---- the crown lid B-29 (BL-029 look rules, docs/research/top_anchor_and_lids.md section 7)
