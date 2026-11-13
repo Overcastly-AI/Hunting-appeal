@@ -83,8 +83,9 @@ HARD_Z = F.HARD_Z                # scope-pod hard points z 420 / 640 (left corne
 POLE_TAB_Z = 640.0               # corrie_f.hip_reach_pockets E-5: grip tab in the right B-01 | gusset seam at z 640
 FP_Z = (150.0, 380.0)            # corrie_f.hip_reach_pockets: z 150-380 on the gusset's lower front (aft) corner
 IMP8_Z = (35.0, 150.0)           # corrie_f.fixed_pockets IMP-8: right gusset foot z 35-150
-HOSE_Z = CO.HYDRO["port_z"]      # 700: IMP-2 hose ports in the gussets, 20 mm aft of the frame seam
-HOSE_SLOT = (12.0, 40.0)
+HOSE_Z_BL041 = CO.HYDRO["port_z"]  # 700: IMP-2 hose ports in the gussets, 20 mm aft of the frame seam (to BL-041)
+HOSE_SLOT = (12.0, 40.0)          # corrie.bag_pockets hose port binding 'slot 12 x 40'
+#                                  BL-043 DECISION HOSE-LOW: HOSE_Z (below w3_sweep) replaces z 700
 IMP2_TAB = (0.0, 985.0)          # IMP-2 hang tab on B-06f at x 0, z 985 (lean.fell IMP-2L attach note)
 IMP2_KEEP = (100.0, 560.0)       # IMP-2 bottom keeper tabs on B-01 at x +/-100, z 560
 IMP4_Z = (350.0, 630.0)          # corrie.bag_pockets IMP-4 "B-02door inside face, z 350-630"
@@ -199,52 +200,97 @@ HE_CUT = 2.0 * HE_FOLD                                    # was 150 (BL-040 HE-O
 # ---- BL-040 B-2 DECISION RT-MATE: the roll-top clips' second buckle half sits on a webbing tab on each gusset, as the
 # cloth-pass roll model put it (huntkit.viz3d.corrie_f CLIP_BELOW_SEAM_MM = 150 mm below the collar seam, tab hanging
 # 38 mm). Female half on the gusset tab (fixed); the RT strap carries the adjustable male half.
-# ---- BL-041 Y-2 DECISION RT-FWD (pack-designer): the clip path (RT strap from the hem + RTM tab + buckle body) ran down
-# the gusset centre, between the two muzzle-keeper tabs, across their cord and under W3. Now (``rt_layout``):
-#  * the RT strap hangs straight down the flat gusset at RT_X: the IMP-2 hose slot's aft edge + RT_CLEAR + half a strap;
-#  * the muzzle-keeper pair moves AFT of the clip: first tab RT_CLEAR clear of the buckle envelope, MK_PITCH apart;
-#  * the RTM buckle bar sits RT_CLEAR above the B-26 tripod cord (z 600, R gusset), so the cord never crosses the buckle
-#    body: 135 mm under the collar seam, 15 mm higher than the roll model's 150 (ASSUMPTION RT-CLIP-Z: the strap tail
-#    gets 15 mm longer, the 510 mm RT cut is unchanged; settled by T9 roll-clip free length);
-#  * W3 crosses every vertical path on the gusset (z 702.6, K-W keepers), so it cannot be cleared sideways: it runs
-#    through a W3G guide tunnel sewn on the strap path, UNDER the RT strap (DECISION RT-OVER-W3), so the roll clip opens
-#    and closes with W3 cinched.
-RTM_BELOW_SEAM_MODEL = 150.0      # corrie_f_roll_clips.json clip_below_seam_mm (the paths the RT cut is sized on)
+# ---- BL-041 Y-2 DECISION RT-FWD (pack-designer): the clip path (RT strap + RTM tab + buckle body) ran down the gusset
+# centre, between the two muzzle-keeper tabs and across their cord. BL-041 moved it forward to flat x 91 and its strap
+# origin on the hem to the same ring position; BL-043 keeps the forward tab and corrects the rest (``rt_layout``):
+# ---- BL-043 M-1 DECISION W3-OVER (pack-designer, 2026-11-13; supersedes BL-041 RT-OVER-W3 and its W3G guide). W3 is
+# anchored on the crown top bar, so its crossing of the gusset moves with the torso setting: z 601 (kit S, 15 in) to
+# 804 (kit L, 23 in) against a collar seam at z 745 (``w3_sweep``). No guide sewn on the gusset can span that (it ends
+# 59 mm below the top of the sweep), and the roll model puts the roll and its bent-down ends at z 681-827 for the day
+# and 6-day loads (``corrie_f_sim/corrie_f_roll_clips.json`` w3_roll), so at kit M and L settings W3 lies on the roll
+# itself whatever the gusset carries. W3 is therefore the OUTER layer: it may cross the RT strap and the roll, and the
+# user slackens W3 (G-hook off) before opening the roll top. Nothing hard sits in W3's sweep: the RTM buckle body and
+# the hose slot are RT_CLEAR below the lowest W3 edge at every kit and torso end (6 corners, ``w3_corners``); W3 bears
+# on webbing and cord only, never on a tack (W3G and its two unrated BT-S tacks are deleted).
+#  * the RTM buckle bar sits BUCKLE_ENV + RT_CLEAR under the lowest W3 edge (kit S at 15 in), i.e. under the B-26 cord:
+#    the cord crosses the strap above the buckle (soft on soft, accepted) and never the buckle body;
+#  * DECISION HOSE-LOW (BL-043 m-9): the IMP-2 hose slot moves from z 700 (under W3 from 16.6 to 20.3 in: a cinched W3
+#    pinched the hose) to HOSE_Z, its top RT_CLEAR under the lowest W3 edge: the hose leaves the bag below W3 at
+#    every setting and goes forward to the shoulder strap without crossing it;
+#  * the strap hangs from the slot's aft edge + RT_CLEAR + half the buckle (RT_X rule, now on the buckle width: the slot
+#    and the buckle share a height band);
+#  * BL-043 M-2 DECISION RT-ORIGIN: the strap is sewn at the ROLL END, the gusset centre of the hem (BL-040 RT-MATE,
+#    restored). BL-041 put it at the clip path's ring position (27 % of the gusset from the frame corner): the hem then
+#    folds flat only with a 76 mm tuck of each gusset's aft part (front layer 449 mm against a 601 mm back layer), and
+#    the sewn 60 mm and box-X lay across the 40 mm HDPE-strip gap where the hem folds. Fall back to the old origin
+#    (ticket rule); the strap runs from the roll end down to the forward tab (re-solved on the cloth-pass roll model).
 RTM_CUT, RTM_FOLD = 70.0, 35.0    # as LLT: 70 mm, folded round the buckle bar
 RTM_BOX = (21.0, 25.0)            # LLT_BOX rule (25 mm webbing less 2 mm a side x 25)
 RT_SEWN = 60.0                    # strap_tails.ROLL_END_MM 90 = 60 sewn to the roll end + 30 round the buckle bar
 RT_BOX = (25.0, 21.0)             # box-X on the hem: 25 along the strap x 21 across it (strap lies along the hem)
 RT_HEM_Y = 16.5                   # ASSUMPTION RT-HEM: strap centred 16.5 mm above the hem seam line on B-07 (outer half of
 #                                   the 70 mm hem, clear of the fold and of the B-07s strips); settled by the first collar
-RT_CLEAR = 10.0                   # BL-041 ticket: >= 10 mm between the clip path and the muzzle tabs / cords / slot
+RT_CLEAR = 10.0                   # BL-041 ticket: >= 10 mm between the clip path and the muzzle tabs / cords / slot / W3
 BUCKLE_ENV = (35.0, 35.0)         # ASSUMPTION BUCKLE-ENV: 25 mm side-release female half + mated male, 35 wide x 35 above
 #                                   its bar (the record gives no body size); settled by a caliper on the bought buckle
 STRAP_W = 25.0
 CORD_R = 1.5                      # 3 mm shock cord (B-26, the muzzle keeper cord)
 MK_PITCH = F.MUZZLE_TAB_GAP       # 60, ASSUMPTION MK-GAP: muzzle tabs 60 mm apart (30 mm clear between them for the barrel +
 #                                   the keeper cord; was 70 / 40); settled by FIT-R3 (rifle in the keeper)
-W3G_CUT, W3G_TACK_IN, W3G_SPAN = 60.0, 7.0, 36.0  # W3 guide: 25 mm webbing 60 mm, tacks 7 mm from each end (46 apart on
-#                                   the strip), sewn 36 apart on the gusset: 10 mm of ease for 25 mm W3 to pass under it
+HEM_GAP = 40.0                    # bag_concepts.collar_set: two B-07s strips of (hem / 2 - 40): a 40 mm gap at each fold
+ROLL_CLIPS_JSON = CONC / "corrie_f_sim" / "corrie_f_roll_clips.json"   # huntkit.viz3d.corrie_f --roll-clips (BL-043)
+
+
+def w3_sweep() -> dict:
+    """BL-043 M-1: W3's height at every crown setting of every crown kit. Both W3 anchors are on the crown top bar
+    (geometry.yaml haul_wraps W3 'moves with torso'), so W3 runs level at the bar height (kw_heights: z linear between
+    two equal anchor heights) while the bag stays on the hinge. Bar heights: geometry.yaml frame.crown_settings; kit
+    ranges: crown_diet.SIZES. Returns {kit: {torso_in: z}} and the six kit-end corners."""
+    from huntkit.gendesign import crown_diet as CDI
+    cs = {round(float(q["torso_in"]), 1): float(q["crown_top_z"]) for q in BC.GEOM["frame"]["crown_settings"]}
+    kits = {k: {t: z for t, z in cs.items() if lo - 1e-6 <= t <= hi + 1e-6} for k, (lo, hi) in CDI.SIZES.items()}
+    corners = {f"{k} {t:g} in": cs[round(float(t), 1)] for k, (lo, hi) in CDI.SIZES.items() for t in (lo, hi)}
+    zs = [z for d in kits.values() for z in d.values()]
+    return {"kits": kits, "corners": corners, "z_min": min(zs), "z_max": max(zs), "half_w": STRAP_W / 2}
+
+
+# DECISION HOSE-LOW (BL-043 m-9): slot top RT_CLEAR under the lowest W3 edge (z; the gusset is vertical there, so the
+# sigma gap equals the z gap: checked in rt_clearances / w3_corners). ASSUMPTION HOSE-LOW: the bladder outlet sits at
+# the IMP-2 sleeve foot (keeper tabs z 560), so the shorter inside run reaches the low port; settled by the hydration fit
+# (hose from the port to the bite-valve clip on the shoulder strap at kit S 15 in and kit L 23 in, nothing crossing it).
+HOSE_Z = float(math.floor(w3_sweep()["z_min"] - STRAP_W / 2 - RT_CLEAR - HOSE_SLOT[1] / 2))
 
 
 def rt_layout(M: dict, c) -> dict:
-    """BL-041 Y-2 DECISION RT-FWD: the roll-clip path and the muzzle keepers on the flat gusset (x = flat x, the frame
-    seam line is gy_frame(z); y = sigma). Every number from the pattern maps, the hose slot, the B-26 cord height and
-    the W3 path (kw_heights)."""
+    """BL-041 RT-FWD as corrected by BL-043 (W3-OVER, HOSE-LOW, RT-ORIGIN): the roll-clip path and the muzzle keepers on
+    the flat gusset (x = flat x, the frame seam line is gy_frame(z); y = sigma). Every number from the pattern maps,
+    the W3 sweep (all kits), the hose slot, the B-26 cord height."""
     gf, ga, sig = M["gy_frame"], M["gy_aft"], M["sig"]
-    hose_x1 = gf(HOSE_Z) + 20.0 + HOSE_SLOT[0]
-    x_rt = math.ceil(hose_x1 + RT_CLEAR + STRAP_W / 2)
-    y_cord = sig(F.TRIPOD_KEEPER_Z)
-    y_bar = y_cord + CORD_R + RT_CLEAR             # buckle envelope RT_CLEAR above the cord's top
-    z_bar = float(np.interp(y_bar, [sig(z) for z in np.linspace(BC.Z0, M["z_c"], 400)], np.linspace(BC.Z0, M["z_c"], 400)))
-    tab1_x0 = x_rt + max(BUCKLE_ENV[0], STRAP_W) / 2 + RT_CLEAR
+    sw = w3_sweep()
+    zz = np.linspace(BC.Z0, M["z_c"], 400)
+    z_of = lambda y: float(np.interp(y, [sig(z) for z in zz], zz))       # noqa: E731
+    y_w3_lo = sig(sw["z_min"]) - sw["half_w"]                     # lowest W3 edge (kit S, 15 in)
+    y_bar = y_w3_lo - RT_CLEAR - BUCKLE_ENV[1]                    # buckle envelope RT_CLEAR under it
+    z_bar = z_of(y_bar)
+    hose_z = HOSE_Z                                               # DECISION HOSE-LOW
+    hose_x1 = gf(hose_z) + 20.0 + HOSE_SLOT[0]
+    x_rt = math.ceil(hose_x1 + RT_CLEAR + max(BUCKLE_ENV[0], STRAP_W) / 2)
+    zt = M["z_c"]
+    x_top = 0.5 * (gf(zt) + ga(zt))                               # RT-ORIGIN: the roll end = the gusset centre at the top
+    y_env, y_top = y_bar + BUCKLE_ENV[1], sig(zt)
+
+    def corridor_x(y):                                            # strap centre line in the flat: buckle -> roll end
+        return x_rt + (x_top - x_rt) * float(np.clip((y - y_env) / (y_top - y_env), 0.0, 1.0))
+    y_mk = (sig(B11_MUZ_Z) - B11_H / 2, sig(B11_MUZ_Z) + B11_H / 2)
+    slope = (x_top - x_rt) / (y_top - y_env)                      # the band's horizontal half-width grows on a slant
+    tab1_x0 = max(corridor_x(y) for y in y_mk) + (STRAP_W / 2 + RT_CLEAR) * math.hypot(1.0, slope)
     dx1 = math.ceil(tab1_x0 + B11_W / 2 - gf(B11_MUZ_Z))
     mk = (float(dx1), float(dx1 + MK_PITCH))
-    z_w3 = kw_heights(c)["W3"]["R"]
-    zt = M["z_c"]
     return {"x": float(x_rt), "y_bar": y_bar, "z_bar": round(z_bar, 1), "below_seam": round(zt - z_bar, 1),
-            "y_top": sig(zt), "frac_top": (x_rt - gf(zt)) / (ga(zt) - gf(zt)), "y_cord": y_cord, "mk_dx": mk,
-            "z_w3": z_w3, "y_w3": sig(z_w3), "hose_x1": hose_x1}
+            "y_top": y_top, "x_top": x_top, "y_env": y_env, "frac_top": 0.5,
+            "tab_frac": (x_rt - gf(z_bar)) / (ga(z_bar) - gf(z_bar)), "y_cord": sig(F.TRIPOD_KEEPER_Z), "mk_dx": mk,
+            "z_w3_min": sw["z_min"], "z_w3_max": sw["z_max"], "y_w3_lo": y_w3_lo, "hose_z": hose_z,
+            "hose_x1": hose_x1, "corridor": [(x_rt, y_env), (x_top, y_top)]}
 
 
 def _rect_gap(r1, r2) -> float:
@@ -259,14 +305,25 @@ def _bbox(ln):
     return (min(xs), min(ys), max(xs), max(ys))
 
 
-def rt_clearances(G: Piece, rl: dict) -> dict:
-    """BL-041 Y-2: clear distance (mm) from each part of the roll-clip path (RTM tab, buckle envelope, strap corridor)
-    to every other placement on the gusset that it could foul: the muzzle-keeper tabs, the keeper cord between their
-    slots, the hose slot, the bow tabs, the B-26 cord and W3. W3 crosses the strap by design (through W3G, RT outside)."""
+def _gap(a, b) -> float:
+    """Clear distance between two shapes, each an axis-aligned rect (x0, y0, x1, y1) or a shapely geometry."""
+    from shapely.geometry import box
+    ga_ = box(*a) if isinstance(a, tuple) else a
+    gb_ = box(*b) if isinstance(b, tuple) else b
+    return float(ga_.distance(gb_))
+
+
+def rt_clearances(G: Piece, rl: dict, M: dict | None = None) -> dict:
+    """BL-041 Y-2 / BL-043 M-1: clear distance (mm) from each part of the roll-clip path (RTM tab, buckle envelope, strap
+    corridor from the buckle to the roll end) to every placement on the gusset it could foul: the muzzle-keeper tabs,
+    the keeper cord between their slots, the hose slot, the bow tabs, the B-26 cord. Then W3 at the SIX kit-end corners
+    (``w3_corners``): its band against the buckle body, the hose slot and the tabs."""
+    from shapely.geometry import LineString
     x, yb = rl["x"], rl["y_bar"]
+    corr = LineString(rl["corridor"]).buffer(STRAP_W / 2, cap_style=2)
     path = {"RTM tab": (x - STRAP_W / 2, yb - RTM_FOLD, x + STRAP_W / 2, yb),
             "buckle envelope": (x - BUCKLE_ENV[0] / 2, yb, x + BUCKLE_ENV[0] / 2, yb + BUCKLE_ENV[1]),
-            "strap corridor": (x - STRAP_W / 2, yb + BUCKLE_ENV[1], x + STRAP_W / 2, rl["y_top"])}
+            "strap corridor": corr}
     obs = {}
     mk = []
     for ln in G.internal_lines:
@@ -284,17 +341,45 @@ def rt_clearances(G: Piece, rl: dict) -> dict:
         ys = mk[0][1] + 30.0
         obs["muzzle keeper cord"] = (0.5 * (mk[0][0] + mk[0][2]), ys - 3.0, 0.5 * (mk[1][0] + mk[1][2]), ys + 8.0)
     obs["B-26 cord (R)"] = (-1e3, rl["y_cord"] - CORD_R, 1e3, rl["y_cord"] + CORD_R)
-    out = {f"{pk} | {ok}": round(_rect_gap(pr, orr), 1) for pk, pr in path.items() for ok, orr in obs.items()}
-    # the B-26 cord crosses the whole R gusset at z 600: it may lie over the FLAT sewn RTM tab (as it lies over the
-    # gusset), never over the buckle body (ASSUMPTION RT-CLIP-Z puts the bar RT_CLEAR above it)
-    accepted = {"RTM tab | B-26 cord (R)": "the cord lies over the flat, box-X'd tab below the buckle bar"}
+    out = {f"{pk} | {ok}": round(_gap(pr, orr), 1) for pk, pr in path.items() for ok, orr in obs.items()}
+    # the B-26 cord crosses the whole R gusset at z 600: it lies over the flat sewn RTM tab or under the strap (soft on
+    # soft, as W3), never against the buckle body (W3-OVER puts the buckle RT_CLEAR under the lowest W3 edge, below it)
+    accepted = {"RTM tab | B-26 cord (R)": "the cord lies over the flat, box-X'd tab below the buckle bar",
+                "strap corridor | B-26 cord (R)": "the strap crosses the cord above the buckle (soft on soft; the clip "
+                                                  "opens and the strap slides out from under or over it)"}
+    accepted = {k: v for k, v in accepted.items() if k in out and out[k] < RT_CLEAR}
     chk = {k: v for k, v in out.items() if k not in accepted}
-    w3 = (-1e3, rl["y_w3"] - STRAP_W / 2, 1e3, rl["y_w3"] + STRAP_W / 2)
+    corners = w3_corners(G, rl, path, obs, M)
     return {"gaps": out, "min_gap": min(chk.values()), "min_pair": min(chk, key=chk.get), "req": RT_CLEAR,
-            "accepted": accepted,
-            "w3_crossing": {"strap corridor": round(_rect_gap(path["strap corridor"], w3), 1),
-                            "buckle envelope": round(_rect_gap(path["buckle envelope"], w3), 1),
-                            "how": "W3 runs through the W3G guide under the RT strap (DECISION RT-OVER-W3)"}}
+            "accepted": accepted, "w3_corners": corners,
+            "w3_hard_min": min(r["hard_min"] for r in corners.values()),
+            "w3_crossing": {"how": "W3 is the outer layer (DECISION W3-OVER): it may cross the RT strap, the RTM tab, "
+                                   "the B-26 cord and the roll; slacken W3 to open the roll top"}}
+
+
+def w3_corners(G: Piece, rl: dict, path: dict, obs: dict, M: dict | None = None) -> dict:
+    """BL-043 M-1: W3 at the six kit-end corners (S/M/L at both ends of their torso range). W3's band (25 mm, level at the
+    crown-bar height) in the flat gusset, and its clear distance to the HARD parts on the gusset: the buckle envelope
+    and the hose slot (>= RT_CLEAR required), and what it lies over (soft, recorded): RT strap corridor, RTM tab, muzzle
+    tabs, B-26 cord. Above the collar seam (z_c) W3 is off the gusset (on the collar or the roll)."""
+    from shapely.geometry import box
+    sw = w3_sweep()
+    M = M or _maps(F.make())
+    sig, zc = M["sig"], M["z_c"]
+    out = {}
+    hard = {k: v for k, v in {"buckle envelope": path["buckle envelope"], "hose slot": obs.get("hose slot")}.items() if v}
+    for name, z in sw["corners"].items():
+        lo, hi = z - sw["half_w"], z + sw["half_w"]
+        on = lo < zc
+        yb = (sig(min(lo, zc)), sig(min(hi, zc)))
+        band = box(-1e3, yb[0], 1e3, yb[1]) if on else None
+        gaps = {k: (round(_gap(band, v), 1) if band is not None else None) for k, v in hard.items()}
+        over = sorted(k for k, v in {**path, **obs}.items() if band is not None and k not in hard and _gap(band, v) == 0.0)
+        hm = min((g for g in gaps.values() if g is not None), default=float("inf"))
+        out[name] = {"z": z, "band_z": (round(lo, 1), round(hi, 1)), "on_gusset": on,
+                     "above_collar_seam_mm": round(max(hi - zc, 0.0), 1), "hard_gaps": gaps, "hard_min": hm,
+                     "lies_over": over, "ok": hm >= RT_CLEAR - 1e-6}
+    return out
 
 
 MATERIAL_FACE = {
@@ -584,24 +669,35 @@ def build_shell(rs: RevSet, c):
     L07 = col["B-07"].edge_length("bottom")
     Lg = float(ctop[2] - ctop[1])
     rt = {}
-    # BL-041 RT-FWD: the strap leaves the hem at the clip path's ring position (rt_layout frac_top from the gusset's frame
-    # end; the body ring runs frame -> aft on the L gusset and aft -> frame on the R one), not at the gusset centre
-    fr = rt_layout(M, c)["frac_top"]
-    for side, s_ring, sgn in (("L", float(ctop[1]) + fr * Lg, -1), ("R", float(ctop[-1]) - fr * Lg, 1)):
+    # BL-043 M-2 DECISION RT-ORIGIN: the strap is sewn at the ROLL END again (the gusset centre of the hem, where the
+    # 40 mm gap between the two B-07s strips lets the hem fold flat); its sewn 60 mm lies on the FRAME-side half, on the
+    # strip, its free end leaving across the fold line (the gusset-centre notch) and out of the roll end.
+    k_hem = L07 / float(ctop[-1])
+    Lf = float(ctop[1])                                            # B-01 top (the frame side of the ring)
+    hem = {"hem_mm": round(L07, 1), "frame_mm": round(Lf * k_hem, 1), "gusset_mm": round(Lg * k_hem, 1)}
+    f41 = 0.269                                                    # BL-041 frac_top (clip path ring position)
+    front = (Lf + 2 * f41 * Lg) * k_hem
+    hem.update(fold="gusset centre (B-07s strip gap)", front_layer_mm=round(0.5 * L07, 1),
+               bl041_front_layer_mm=round(front, 1), bl041_back_layer_mm=round(L07 - front, 1),
+               bl041_tuck_each_mm=round(0.5 * ((L07 - front) - front), 1))
+    for side, s_ring, sgn in (("L", float(ctop[1]) + 0.5 * Lg, -1), ("R", float(ctop[-1]) - 0.5 * Lg, 1)):
         x06 = s_ring * ccol[-1] / ctop[-1] - L06f                  # on B-06 (bottom = top x)
         s_hem = L06f + (L06 - x06)
         xc = s_hem * L07 / (L06f + L06)
-        # R: hem runs frame -> aft at the R gusset, so the aft side is x > xc; L: aft -> frame, aft side is x < xc. BL-041:
-        # the sewn 60 mm lies AFT of the crossing (the path is 27 % of the gusset from the frame end: 60 mm towards the
-        # frame would run past the frame corner)
-        x0, x1 = (xc, xc + RT_SEWN) if sgn > 0 else (xc - RT_SEWN, xc)
+        # R: hem runs frame -> aft at the R gusset, so the frame side is x < xc; L: aft -> frame, frame side x > xc
+        x0, x1 = (xc - RT_SEWN, xc) if sgn > 0 else (xc, xc + RT_SEWN)
         B07 = col["B-07"]
         B07.add_internal_line(_rect(x0, RT_HEM_Y - 12.5, x1, RT_HEM_Y + 12.5), "placement",
-                              f"RT roll-clip strap {side} (OUTSIDE; strap end at the outer line, free end crosses the "
-                              "clip-path notch)", closed=True)
-        _box_x(B07, 0.5 * (x0 + x1), RT_HEM_Y, RT_BOX[0], RT_BOX[1], f"RT strap {side}")
-        B07.add_notch(xc, 0.0, "v", f"clip path {side} (RT strap)")
-        rt[side] = {"x_centre": round(xc, 1), "x0": round(x0, 1), "x1": round(x1, 1)}
+                              f"RT roll-clip strap {side} (OUTSIDE; free end out across the roll-end notch)", closed=True)
+        # box on the part that lies on the B-07s strip (sewn 60 less the half gap), clear of the fold zone
+        bx = xc - sgn * (HEM_GAP / 2 + 0.5 * (RT_SEWN - HEM_GAP / 2))
+        _box_x(B07, bx, RT_HEM_Y, RT_BOX[0], RT_BOX[1], f"RT strap {side}")
+        B07.add_notch(xc, 0.0, "v", f"roll end {side} (RT strap; hem folds here)")
+        for xg in (xc - HEM_GAP / 2, xc + HEM_GAP / 2):
+            B07.add_notch(xg, 0.0, "slit", "B-07s strip end")
+        rt[side] = {"x_centre": round(xc, 1), "x0": round(x0, 1), "x1": round(x1, 1), "box_x": round(bx, 1),
+                    "box_to_gap_mm": round(abs(bx - xc) - RT_BOX[0] / 2 - HEM_GAP / 2, 1)}
+    rs.geo["rt_origin"] = hem
     rs.geo["rt_on_b07"] = rt
     # door zip corner tangents (corrie_f_body.md section 9.3)
     zl, r = F.D2["z_lo"], F.D2["r"]
@@ -693,21 +789,16 @@ def build_shell(rs: RevSet, c):
     G.add_internal_line(_rect(xm - 12.5, yb - RTM_FOLD, xm + 12.5, yb), "placement",
                         "RTM roll-clip buckle tab (both gussets, OUTSIDE; buckle bar on the top line)", closed=True)
     _box_x(G, xm, yb - (RTM_CUT * 0.75 - RTM_FOLD), RTM_BOX[0], RTM_BOX[1], "RTM buckle tab")
-    G.add_internal_line([(xm, yb + BUCKLE_ENV[1]), (xm, rl["y_top"])], "placement",
-                        "RT strap path (roll clip; nothing sewn on it)")
-    # W3G guide tunnel on the strap path at the W3 crossing: tacks W3G_SPAN apart across the strap line (DECISION
-    # RT-OVER-W3: W3 runs through it, under the RT strap)
-    for yy in (rl["y_w3"] - W3G_SPAN / 2, rl["y_w3"] + W3G_SPAN / 2):
-        G.add_internal_line([(xm - 8.0, yy), (xm + 8.0, yy)], "stitch", "W3G guide tack (W3 passes under, RT over)")
-    G.add_internal_line(_rect(xm - 12.5, rl["y_w3"] - W3G_SPAN / 2 - W3G_TACK_IN, xm + 12.5,
-                              rl["y_w3"] + W3G_SPAN / 2 + W3G_TACK_IN), "placement",
-                        "W3G W3 guide (both gussets, OUTSIDE; tacks only, 10 mm ease)", closed=True)
+    # BL-043: no W3G (DECISION W3-OVER); the strap's flat shadow from the buckle to the roll end, for the reader
+    G.add_internal_line([(xm, yb + BUCKLE_ENV[1]), (rl["x_top"], rl["y_top"])], "placement",
+                        "RT strap from the roll end (roll clip; nothing sewn on it; W3 may lie over it)")
     rs.geo["rtm"] = {"z": round(zt, 1), "below_seam_mm": rl["below_seam"],
                      "depth_from_frame_mm": round(xm - gf(zt), 1), "gusset_depth_mm": round(ga(zt) - gf(zt), 1),
                      "rect": (round(xm - 12.5, 1), round(yb - RTM_FOLD, 1), round(xm + 12.5, 1), round(yb, 1)),
-                     "x": xm, "y_bar": round(yb, 1), "frac_top": round(rl["frac_top"], 3)}
+                     "x": xm, "y_bar": round(yb, 1), "tab_frac": round(rl["tab_frac"], 3)}
     rs.geo["rt_layout"] = {k: (round(v, 3) if isinstance(v, float) else v) for k, v in rl.items()}
-    rs.geo["rt_clear"] = rt_clearances(G, rl)
+    rs.geo["rt_clear"] = rt_clearances(G, rl, M)
+    rs.geo["w3_sweep"] = {k: v for k, v in w3_sweep().items() if k != "kits"}
     # BL-034: K-W keeper loops at the W1-W3 crossings of the aft corner seams (ASSUMPTION KW-PATH)
     kw = kw_heights(c)
     rs.geo["kw_z"] = kw
@@ -1232,9 +1323,11 @@ def _web(rs, pid, name, length, qty, mat="poly_webbing_25mm", folds=(), boxes=()
 
 
 IM_LOOP = 60.0         # strap_tails / mfg IM-BOX: 60 mm end-loop fold
-IMC_FOLD = 45.0        # BL-041 IM-CAM-TAB: 45 mm folds -> 21 x 25 box 2 mm from the tip leaves an 18 mm clear loop for
-#                        the cam / hook bar (ASSUMPTION IMC-LOOP: 25 mm cam and G-hook bars pass an 18 mm loop; settled by
-#                        threading the bought cam and hook on the first tab)
+IMC_FOLD_BL041 = 45.0  # BL-041 IM-CAM-TAB: 45 mm folds, box 2 mm from the raw end (review 3 m-4)
+IMC_LOOP = 18.0        # ASSUMPTION IMC-LOOP: 25 mm cam and G-hook bars pass an 18 mm clear loop; settled by threading the
+#                        bought cam and hook on the first tab
+IMC_TIP_GAP = 5.0      # BL-043 m-4: box edge 5 mm in from each raw end (as RTM / LLT), not 2
+IMC_FOLD = IMC_LOOP + 25.0 + IMC_TIP_GAP   # 48: loop 18 + 21 x 25 box + 5 mm to the raw end; cut 4 x 48 = 192 mm
 US_EYE = 50.0          # ASSUMPTION US-EYE: 50 mm eye fold round the left pin's UHMWPE sleeve (the HE eye fold); settled
 #                        by the MT-1 specimens, sewn this way
 B25_BOX = (21.0, 15.0)  # DECISION B25-BOX (BL-034): 21 x 15 at the tip end of the 2 x 30 tab leaves a 13 mm clear loop,
@@ -1331,13 +1424,7 @@ def build_webbing(rs: RevSet, c):
          boxes=[(RTM_CUT * 0.75, RTM_BOX[1], "box-X through RTM + B-03")],
          note="one per gusset, flat work before the gusset seams (BL-040 B-2); on the BL-041 clip path",
          source="BL-040 DECISION RT-MATE (LLT tab rule); BL-041 RT-FWD placement (rt_layout)")
-    # BL-041 Y-2 DECISION RT-OVER-W3: W3 guide tunnel on each gusset's clip path; two BT-S tacks across the strip
-    w3g = _web(rs, "W3G", "W3 guide on the gusset (W3 under, RT strap over)", W3G_CUT, 2,
-               note=f"one per gusset on the clip path at the W3 height; tack lines {W3G_CUT - 2 * W3G_TACK_IN:.0f} mm apart "
-                    f"on the strip, sewn to the {W3G_SPAN:.0f} mm marks on B-03 (10 mm ease); W3 threads under it once",
-               source="BL-041 DECISION RT-OVER-W3 (W3 cannot clear the clip path sideways: it crosses the gusset)")
-    for y in (W3G_TACK_IN, W3G_CUT - W3G_TACK_IN):
-        w3g.add_internal_line([(4.5, y), (20.5, y)], "stitch", "W3G tack BT-S (16 x 2, 304)")
+    # BL-043 DECISION W3-OVER: the BL-041 W3G guides (2 x 60 mm, two unrated BT-S tacks each) are deleted
     _web(rs, "K-RT", "roll clip tail keeper (25 mm elastic)", KEEPER_CUT, 2, mat=ELASTIC,
          folds=[(15.0, "lap 15 mm, zigzag")], source="BL-031")
     for r in ST.im_rows():
@@ -1350,9 +1437,10 @@ def build_webbing(rs: RevSet, c):
     # girth-hitched IM loop - IM strap - through the cam - cam bar = IMC = hook / carabiner -> right eye (SK-11).
     _web(rs, "IMC", "IM cam anchor tab (cam bar <-> hook / carabiner)", 4.0 * IMC_FOLD, 3,
          folds=[(IMC_FOLD, "fold round the CAM anchor bar"), (3.0 * IMC_FOLD, "fold round the G-hook bar / carabiner")],
-         boxes=[(_tip_box_y(IMC_FOLD, 25.0), 25.0, "cam end box-X (MT-1)"),
-                (4.0 * IMC_FOLD - _tip_box_y(IMC_FOLD, 25.0), 25.0, "hook end box-X (MT-1)")],
-         note="one per IM strap; both raw ends meet in the middle; clear loop 18 mm each end",
+         boxes=[(IMC_FOLD + IMC_LOOP + 12.5, 25.0, "cam end box-X (MT-1)"),
+                (3.0 * IMC_FOLD - IMC_LOOP - 12.5, 25.0, "hook end box-X (MT-1)")],
+         note=f"one per IM strap; both raw ends meet in the middle; clear loop {IMC_LOOP:.0f} mm each end; each box "
+              f"{IMC_TIP_GAP:.0f} mm in from its raw end (BL-043 m-4)",
          source="BL-041 DECISION IM-CAM-TAB (review m-19 / n-15: the cam had no sewn anchor)")
     _web(rs, "K-IM", "IM tail keeper (25 mm elastic)", KEEPER_CUT, 3, mat=ELASTIC, folds=[(15.0, "lap 15 mm")],
          source="BL-031")
@@ -1404,23 +1492,43 @@ def build_webbing(rs: RevSet, c):
     _web(rs, "T3", "IM3 bag-hook tongue (38 mm)", 160.0, 2, mat="poly_webbing_38mm",
          folds=[(45.0, "fold round the hook bed")], boxes=[(22.0, 30, "loop box-X"), (130.0, 34, "box-X to B-17")],
          source="attach_system.drawing_pieces T2/T3 (IM2 hooks removed by BL-004: 2 left)")
-    gb = F.guy_bridle(wide=True)    # BL-041 (crown_tube_guy_loop.md 8.1): 38 mm, sleeves x 26.5-64.5, cut 387
-    rs.geo["b25"] = {k: gb[k] for k in ("length_mm", "width_mm", "band", "sleeve_x", "clear_to_clamp_mm", "mass_g")}
-    rs.geo["b25"]["clamp_half"] = F.SPINE_CLAMP_HALF
-    rs.geo["b25"]["min_clear"] = F.MIN_CLEAR_MM
-    # BL-034 B25-LAYOUT: tab R | bar sleeve R | run + spine wrap | bar sleeve L | tab L (corrie_f.guy_bridle sum order);
-    # each end tab folds 2 x 30 into a loop for the guy's POM toggle, closed by a box at the tip end (B25-BOX)
-    Lb, tb, bw = gb["length_mm"], F.BRIDLE_TAB_MM, F.BAR_WRAP_MM
-    _web(rs, "B-25", "guy bridle on the crown top bar (38 mm, BL-041)", Lb, 1, mat=gb["material_id"],
-         folds=[(tb / 2, "tab fold R (toggle loop)"), (tb, "bar sleeve R start"), (tb + bw, "bar sleeve R lap (bartack)"),
-                (Lb - tb - bw, "bar sleeve L lap (bartack)"), (Lb - tb, "bar sleeve L start"),
-                (Lb - tb / 2, "tab fold L (toggle loop)")],
-         boxes=[(_tip_box_y(tb / 2, B25_BOX[1]), B25_BOX[1], "toggle tab R"),
-                (Lb - _tip_box_y(tb / 2, B25_BOX[1]), B25_BOX[1], "toggle tab L")], box_w=B25_BOX[0],
-         note=f"fitted on the bar before the crown corners are bonded; sleeves x {gb['band'][0]}-{gb['band'][1]} each side "
-              f"({gb['clear_to_clamp_mm']} mm clear of the spine clamp); toggle tab at the sleeve centre x {gb['sleeve_x']} "
-              "(DECISION B25-TAB-CENTRE); 2 toggle tabs + second folds",
-         source="corrie_f.guy_bridle(wide=True) (crown_tube_guy_loop.md section 5, 8.1)")
+    gb = F.guy_bridle(wide=True)    # BL-041 (crown_tube_guy_loop.md 8.1): 38 mm, sleeves x 26.5-64.5
+    tp = F.b25_topology()           # BL-043 M-4 DECISION B25-TOPO: sleeve | mitre | necked run | spine wrap
+    rs.geo["b25"] = {k: gb[k] for k in ("width_mm", "band", "sleeve_x", "clear_to_clamp_mm")}
+    rs.geo["b25"].update(length_mm=tp["cut_mm"], length_bl041_mm=gb["length_mm"], clamp_half=F.SPINE_CLAMP_HALF,
+                         min_clear=F.MIN_CLEAR_MM, mass_g=round(tp["cut_mm"] * gb["mass_g"] / gb["length_mm"], 2),
+                         topology=tp)
+    # B25-LAYOUT (BL-034) + B25-TOPO (BL-043), from the R end: tab | sleeve | drop | MITRE | run (neck from the band
+    # edge) | half spine wrap | (centre) | mirror. Each end tab folds 2 x 30 into the toggle loop (B25-BOX).
+    Lb, tb, bw = tp["cut_mm"], F.BRIDLE_TAB_MM, tp["lengths_mm"]["sleeve"]
+    lm = tp["lengths_mm"]
+    y_m = tb + bw + lm["drop"]                                   # mitre centre (strip centre line)
+    y_n = y_m + (0.5 * sum(tp["band_x"]) - tp["band_x"][0])      # the band's inboard edge: the neck starts here
+    w38 = tp["width_mm"]
+    q = _web(rs, "B-25", "guy bridle on the crown top bar (38 mm, BL-041 / BL-043 topology)", Lb, 1, mat=gb["material_id"],
+             folds=[(tb / 2, "tab fold R (toggle loop)"), (tb, "bar sleeve R start"),
+                    (tb + bw, "bar sleeve R lap (bartack); leaves the bar DOWN, aft side"),
+                    (Lb / 2, "spine wrap centre (round the spine)"),
+                    (Lb - tb - bw, "bar sleeve L lap (bartack)"), (Lb - tb, "bar sleeve L start"),
+                    (Lb - tb / 2, "tab fold L (toggle loop)")],
+             boxes=[(_tip_box_y(tb / 2, B25_BOX[1]), B25_BOX[1], "toggle tab R"),
+                    (Lb - _tip_box_y(tb / 2, B25_BOX[1]), B25_BOX[1], "toggle tab L")], box_w=B25_BOX[0],
+             note=f"fitted on the bar before the crown corners are bonded; sleeves x {gb['band'][0]}-{gb['band'][1]} each "
+                  f"side ({gb['clear_to_clamp_mm']} mm clear of the spine clamp); toggle tab at the sleeve centre x "
+                  f"{gb['sleeve_x']} (DECISION B25-TAB-CENTRE); 45 deg MITRE under each sleeve, run + spine wrap NECKED to "
+                  f"{tp['neck_w_mm']:.0f} mm (DECISION B25-TOPO, SK-12); box {B25_BOX[0]:.0f} x {B25_BOX[1]:.0f} on 38 mm is "
+                  "the B25-BOX exception (8.5 mm unsewn each edge: the box must leave the 13 mm toggle loop; SK-1)",
+             source="corrie_f.b25_topology (BL-043 B25-TOPO) on corrie_f.guy_bridle(wide=True) (crown_tube_guy_loop.md 5, 8.1)")
+    for ym, side in ((y_m, "R"), (Lb - y_m, "L")):
+        sg = 1.0 if side == "R" else -1.0
+        q.add_internal_line([(0.0, ym - sg * w38 / 2), (w38, ym + sg * w38 / 2)], "fold",
+                            f"MITRE {side}: 45 deg fold, turns the strip 90 deg inboard (under the sleeve)")
+    neck = w38 - tp["neck_w_mm"]
+    q.add_internal_line([(neck, y_n), (neck, Lb - y_n)], "fold",
+                        f"NECK: fold the lower {neck:.0f} mm (x 0 edge = lower edge) up between the two band-edge marks")
+    for yy in (y_n, Lb - y_n):
+        q.add_internal_line([(0.0, yy), (w38, yy)], "placement", "sleeve band inboard edge (neck starts)")
+    rs.geo["b25"]["flat"] = {"mitre_y": round(y_m, 1), "neck_y": round(y_n, 1), "centre_y": round(Lb / 2, 1)}
     _web(rs, "TG", "port guy (B-25 toggle -> B-27 port -> B-22 inside)", AS.GUY["cut_mm"], 2,
          boxes=[(20.0, 25, "toggle loop box-X")], note="free end through the heavy ladder lock; heat-seal",
          source="attach_system.GUY cut_mm")
@@ -1628,7 +1736,7 @@ RECON = [
     ("BL-004 REC: T2 tongues", "removed", [], [], ""), ("BL-004 REC: B-23", "removed", [], [], ""),
     ("BL-004 REC: elastic keepers for the IM2", "removed", [], [], ""),
     ("BL-004 REC: hood B-19", "removed", [], [], ""),
-    ("BL-004 REC: guy bar loops", "hardware", [], [], "the POM toggles (now on the guy's B-25 end); webbing: BL-041 row"),
+    ("BL-004 REC: guy toggles", "hardware", [], [], "the POM toggles (on the guy's B-25 end); webbing: BL-041 row"),
     ("BL-041: GBL guy bar loop webbing deleted", "removed", [], [], "carried nothing in rev 3"),
     ("BL-041: B-25 bridle 25 -> 38 mm", "webbing", [], ["B-25"], "crown_tube_guy_loop.md"),
     ("BL-004 REC: B-17 trimmed", "pattern", ["B-17"], [], "B-17 drawn 90 x 70"),
@@ -1646,8 +1754,9 @@ RECON = [
     ("BL-041: B-18 hinge doublers", "pattern", [], [], "B-18 growth; weighed with the bag-side load spreaders row"),
     ("BL-041: HE hinge eyes", "webbing", [], ["HE"], "HE-PIN length change"),
     ("BL-041: RTM roll-clip buckle tabs", "webbing", [], ["RTM"], ""),
-    ("BL-041: W3G W3 guides", "webbing", [], ["W3G"], ""),
     ("BL-041: IMC IM cam anchor tabs", "webbing", [], ["IMC"], ""),
+    ("BL-043: B-25 bridle drawn topology", "webbing", [], ["B-25"], "B25-TOPO"),
+    ("BL-043: IMC tabs", "webbing", [], ["IMC"], "m-4"),
 ]
 
 

@@ -11,6 +11,15 @@ today, re-sized locally (about 65 g lighter on the printed body), split at z = 2
 > slivers removed). Record: `designs/pack_5200/analysis/h1_buckling.md` (`huntkit/gendesign/h1_buckling.py`,
 > `python -m huntkit.gendesign.h1_buckling --export`). R1 is still held for MT-1 (meat-strap cinch, BL-024).
 >
+> **Rev BL-042 (2026-11-13):** the files before this had **no working fairleads**: the voxel model stops at the bag
+> envelope (y 16 mm), and every fairlead was cut off there (no front wall, no pin hole, a solid throat). All 12
+> fairleads (hinge, US1, US2, IM1, IM2, IM3, both sides) are now added whole, with exact pin holes and clear
+> throats, and checked by slicing this STL (`huntkit/gendesign/h1_fairleads.py`, record
+> `designs/pack_5200/analysis/h1_fairleads.md`). The **hinge fairlead (z 60) is new**: 20 mm throat (was 18),
+> 5.5 mm clear under the pin for the 3-ply webbing eye (was 1.9), pin centre 10.1 mm above the stay surface
+> (was 6.5), and a saddle that wraps the stay down to its centreline with a 45° underside. The bag side must
+> meet `bag_attach.HINGE_EYE_ENVELOPE`. Test pieces for HE-FIT and IM3-EC are in `test_pieces/`.
+>
 > Status: **engineering release candidate.** These files are not yet the released frame
 > (`designs/pack_5200/print/frame/` is still today's body). Print the first article only after coupon CA-1
 > (`designs/pack_5200/tests_physical/CA1_fatigue_rig.md`) and the joint stubs CA-5 pass.
@@ -19,22 +28,25 @@ today, re-sized locally (about 65 g lighter on the printed body), split at z = 2
 
 | file | what | mass | print time |
 |---|---|---:|---:|
-| `h1_lower_flat.stl` / `.3mf` | lower half (feet to z 234), laid flat: wearer face on the plate | 310.5 g (0.68 lb) | about 11.0 h |
-| `h1_upper_flat.stl` / `.3mf` | upper half (z 234 to the top), laid flat | 497.4 g (1.10 lb) | about 17.6 h |
-| `h1_assembled.stl` | the whole body in frame coordinates (x right, y aft toward the bag, z up from the feet), for checks and renders | 808.5 g | |
+| `h1_lower_flat.stl` / `.3mf` | lower half (feet to z 234), laid flat: wearer face on the plate | 331.2 g (0.73 lb) | about 11.7 h |
+| `h1_upper_flat.stl` / `.3mf` | upper half (z 234 to the top), laid flat | 513.8 g (1.13 lb) | about 18.2 h |
+| `h1_assembled.stl` | the whole body in frame coordinates (x right, y aft toward the bag, z up from the feet), for checks and renders | 845.7 g | |
+| `test_pieces/hefit_hinge_fairlead_R.stl` / `.3mf` | HE-FIT test piece: the z 60 right hinge fairlead on an 80 mm stay segment, cut from the file above | 31.9 g | |
+| `test_pieces/im3ec_cheek_R.stl` / `.3mf` | IM3-EC coupon: the z 520 right IM3 eye (28 mm cheek) on a 120 mm stay segment | 66.8 g | |
 
-- Masses are from the mesh volume × 1.06 g/cm³. The analysis raster (2 mm) of this body is 800.7 g; the ledger still
-  books H1's 757.7 g until the orchestrator updates `analysis/frame_mass_h1.json`.
+- Masses are from the mesh volume × 1.06 g/cm³. The analysis raster (2 mm) of this body is 800.7 g; it cannot hold
+  the fairleads above y 16, which add 37.2 g in the mesh (ledger row H1F, `analysis/h1_fairleads.json`).
 - Print time is volume / 8 mm³/s + 8 % waste.
 - The meshes are smooth, re-meshed surfaces, not voxels. Exact features are cut in with Boolean geometry:
   - bores printed at Ø17.4, reamed to 18.0;
   - bolt holes printed at Ø4.8, reamed to 5.1;
   - head counterbores Ø12.4;
   - washer slots and hex nut traps;
-  - **IM3 eye holes (z 520, both stays) printed at Ø7.0, reamed to 7.2** for the UHMWPE pin sleeve. The IM3 cheeks
-    are now 28 mm tall along the stay (were 18), 8 mm thick, throat 18 mm unchanged.
-- Each file is one closed, watertight shell. Footprints 279 × 234 × 64 mm and
-  279 × 309 × 52 mm fit the H2S bed.
+  - **all 12 fairlead eye holes printed at Ø7.0, reamed to 7.2** for the UHMWPE pin sleeves (BL-042). The IM3 cheeks
+    are 28 mm tall along the stay (were 18), 8 mm thick, throat 18 mm. The hinge cheeks are 18 mm tall, 8 mm thick,
+    throat 20 mm, on a saddle round the stay. Every throat is cut clear from its floor up.
+- Each file is one closed, watertight shell. Footprints 279 × 235 × 74 mm and
+  279 × 309 × 60 mm fit the H2S bed (taller than before: the fairleads now stand up to 17.7 mm proud of the stay).
 - What changed against the 2026-11-10 files you can see: the mid bar (z 330) is about 2 mm fuller across, the two
   upper inboard branches (z 330 to the crown) about 5 mm fuller, the lumbar struts / pan and stay feet slightly
   fuller (BL-024), and the IM3 eyes taller.
@@ -43,7 +55,7 @@ today, re-sized locally (about 65 g lighter on the printed body), split at z = 2
 
 | part | qty | note |
 |---|---:|---|
-| Bambu PAHT-CF | 0.90 kg | about 808 g of part + 8 % waste |
+| Bambu PAHT-CF | 0.95 kg | about 846 g of part + 8 % waste |
 | Ti gr5 **low-head** socket cap screw M5 × 45 (DIN 7984, 3.5 mm head) | 4 | Not M5 × 40: it does not reach through the nut. Not a standard ISO 4762 head (5 mm): it stands 1 mm into the band of the z 260 spreader clip. An ISO 7380 button head M5 × 45 also fits. |
 | M5 hex nut A2 (ISO 4032, 8 mm across flats, 4 mm thick) | 4 | thin nuts do not fit the trap |
 | M5 washer, 12 mm OD × 1.0 mm, A2 | 8 | **12 mm OD is load-bearing**. A standard 10 mm washer is not enough. |
@@ -64,7 +76,10 @@ PRODUCTION.md describes.
 4. **Orientation: as in the files.** The wearer face is on the plate (layer normal = frame y), which is the same
    as today. Do not rotate the parts. The analysis assumes the layers run along the stays.
 5. Seam on the wearer face (the plate side). Brim 8 mm.
-6. **Supports: none.**
+6. **Supports: none, except under the 10 IM / US fairleads (BL-042).**
+   - The cheeks of the fairleads at z 95, 142, 190, 330 and 520 stand beside the stay with a flat underside about
+     8 × 18 mm (8 × 28 at IM3) facing the plate. Paint-on supports under those 10 cheek pairs only. The hinge
+     fairleads (z 60) have a 45° underside and need none.
    - The bores, bolt holes and counterbores are horizontal round holes that bridge on their own.
    - A rough bridge inside a bore is fine; you ream it.
    - The nut traps are side slots, about 5.6 mm tall, and bridge cleanly.
@@ -109,7 +124,8 @@ bottom reaches z 171). So the bore must be one continuous hole.
 ## 6. Inserts, bushings and crown (same as today)
 
 1. Pawl: ream each cheek to **8.0 mm** and press in the 304 sleeve (OD 8.0, ID 4.2, length 8).
-   IM3 eyes (z 520): ream each to **7.2 mm** and press in the UHMWPE pin sleeve.
+   Fairlead eyes (all 12: z 60, 95, 142, 190, 330, 520, both stays): ream each to **7.2 mm** from both sides and
+   press in the UHMWPE pin sleeves. The hinge pin (z 60) spans a 20 mm throat: it is 2 mm longer than the others.
 2. Hip mount: press the M5 heat-set inserts and fit the SLM Ti pivot mount.
 3. Press the UHMWPE bushings into the 18.0 mm bores.
 4. Fit the carbon crown (rev C), the rack, the pawl and the pulley guides, as in `../frame/PRODUCTION.md`.
@@ -121,7 +137,7 @@ bottom reaches z 171). So the bore must be one continuous hole.
 
 ## 7. Check before use
 
-1. Weigh the body after annealing and reaming. Expect about 808 g (1.78 lb). More than 840 g means
+1. Weigh the body after annealing and reaming. Expect about 846 g (1.86 lb). More than 880 g means
    over-extrusion; check the flow.
 2. First article: HA-LS-1 T9, T1–T5, T4b with a dial on the branch, T4c at −20 °C
    (`designs/pack_5200/analysis/load_standard.md`).

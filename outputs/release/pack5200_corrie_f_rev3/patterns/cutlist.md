@@ -121,21 +121,20 @@ Knife: CW from the grain-arrow head; cut windows and slits first. Notches 6 mm d
 | W3 | haul wrap W3, kit L | poly_webbing_25mm | 935 (36.8) | 1 | crown kit L | strap_tails.wrap_rows |
 | WX | W haul extender (meat-trip kit) | poly_webbing_25mm | 740 (29.1) | 3 | meat_trip | strap_tails.wrap_rows haul extender_mm |
 | K-W | W gore keeper loop (6, in the gore seams) | poly_webbing_25mm | 80 (3.1) | 6 | base | ledger 'keepers: 6 haul-wrap keeper loops' (ASSUMPTION 80 mm cut) |
-| RT | roll-top side clip strap | poly_webbing_25mm | 510 (20.1) | 2 | base | strap_tails.roll_row |
+| RT | roll-top side clip strap | poly_webbing_25mm | 560 (22.0) | 2 | base | strap_tails.roll_row |
 | RTM | roll-clip buckle tab on the gusset (female half) | poly_webbing_25mm | 70 (2.8) | 2 | base | BL-040 DECISION RT-MATE (LLT tab rule); BL-041 RT-FWD placement (rt_layout) |
-| W3G | W3 guide on the gusset (W3 under, RT strap over) | poly_webbing_25mm | 60 (2.4) | 2 | base | BL-041 DECISION RT-OVER-W3 (W3 cannot clear the clip path sideways: it crosses the gusset) |
 | K-RT | roll clip tail keeper (25 mm elastic) | elastic_25mm | 90 (3.5) | 2 | base | BL-031 |
 | IM1 | internal meat strap IM1 | poly_webbing_25mm | 990 (39.0) | 1 | base | strap_tails.im_rows (unchanged) |
 | IM2 | internal meat strap IM2 | poly_webbing_25mm | 1023 (40.3) | 1 | base | strap_tails.im_rows (unchanged) |
 | IM3 | internal meat strap IM3 | poly_webbing_25mm | 1083 (42.6) | 1 | base | strap_tails.im_rows (unchanged) |
-| IMC | IM cam anchor tab (cam bar <-> hook / carabiner) | poly_webbing_25mm | 180 (7.1) | 3 | base | BL-041 DECISION IM-CAM-TAB (review m-19 / n-15: the cam had no sewn anchor) |
+| IMC | IM cam anchor tab (cam bar <-> hook / carabiner) | poly_webbing_25mm | 192 (7.6) | 3 | base | BL-041 DECISION IM-CAM-TAB (review m-19 / n-15: the cam had no sewn anchor) |
 | K-IM | IM tail keeper (25 mm elastic) | elastic_25mm | 90 (3.5) | 3 | base | BL-031 |
 | IME | IM fairlead eye (38 mm) | poly_webbing_38mm | 200 (7.9) | 6 | base | ledger IM-eyes 6 x 0.20 m |
 | US | under-strap US1 / US2 | poly_webbing_25mm | 550 (21.7) | 2 | base | ledger US-web 1.10 m |
 | B-24 | float stand-off link (38 mm, meat-trip) | poly_webbing_38mm | 435 (17.1) | 2 | meat_trip | attach_system.link_piece; ledger B-24-web 2 x 435 mm |
 | HE | hinge eye (38 mm) | poly_webbing_38mm | 86 (3.4) | 2 | base | BL-040 DECISION HE-ONE + BL-041 DECISION HE-PIN (cut 38 x 86; eye solved by he_geometry) |
 | T3 | IM3 bag-hook tongue (38 mm) | poly_webbing_38mm | 160 (6.3) | 2 | base | attach_system.drawing_pieces T2/T3 (IM2 hooks removed by BL-004: 2 left) |
-| B-25 | guy bridle on the crown top bar (38 mm, BL-041) | poly_webbing_38mm | 386 (15.2) | 1 | base | corrie_f.guy_bridle(wide=True) (crown_tube_guy_loop.md section 5, 8.1) |
+| B-25 | guy bridle on the crown top bar (38 mm, BL-041 / BL-043 topology) | poly_webbing_38mm | 479 (18.9) | 1 | base | corrie_f.b25_topology (BL-043 B25-TOPO) on corrie_f.guy_bridle(wide=True) (crown_tube_guy_loop.md 5, 8.1) |
 | TG | port guy (B-25 toggle -> B-27 port -> B-22 inside) | poly_webbing_25mm | 500 (19.7) | 2 | base | attach_system.GUY cut_mm |
 | LLT | guy ladder-lock tab on B-22 | poly_webbing_25mm | 70 (2.8) | 2 | base | attach_system.drawing_pieces LLT |
 | K-G | guy tail keeper (25 mm elastic) | elastic_25mm | 90 (3.5) | 2 | base | ledger 'guy tail elastic keepers x2' |

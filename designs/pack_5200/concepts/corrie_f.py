@@ -948,6 +948,9 @@ def attachment_rows(ledger_rows: list) -> list:
     rows.append(("attachment", "BL-033 H-1: hinge swells B-13xh x2 deleted (no hinge window; B-18 takes the cleat)",
                  -len(SWELL_WINDOWS_DROPPED) * 2 * b13["g"] / 8.0, "base", "ledger B-13x row / 8 x 2"))
     for n, g, src in AD.mass_changes("REC"):
+        if n.startswith("guy bar loops x2"):        # BL-043 m-14: the bar loops are gone (BL-041); the toggles stay
+            n = ("guy toggles x2 (POM, in the B-25 tabs; row booked with the old guy bar loops, their 25 mm webbing "
+                 "removed by the BL-041 row)")
         rows.append(("attachment", f"BL-004 REC: {n}", g, "base", f"attach_diet.mass_changes: {src}"))
     H = {h["where"]: h for h in LP.hooks_table()}
     im3 = H["IM3 bag hooks (2)"]
@@ -1025,9 +1028,11 @@ def parts(size: str = "M", door: str = DOOR_DEFAULT, fabrics: str = "B", c: Shel
             "cord lock, through the B-11 muzzle tabs, both gussets)", mk["mass_g"], "base", mk["source"])
     # BL-041 (ledger item 9): the rev 3 pattern parts the ledger did not book. Lazy import: the pattern module imports
     # this one. B-18 grew 90 x 45 -> 90 x 62 (BL-040 HE-ONE); HE shortened 150 -> HE_CUT (BL-041 HE-PIN); the RTM
-    # roll-clip buckle tabs (BL-040 RT-MATE) and the W3G guides (BL-041 RT-OVER-W3) are new 25 mm webbing.
+    # roll-clip buckle tabs (BL-040 RT-MATE) are new 25 mm webbing (BL-043 deleted the BL-041 W3G guides).
     if REVS[REVISION].get("crown_kits"):
         for s_, n, g, src in bl041_rows():
+            add(s_, n, g, "base", src)
+        for s_, n, g, src in bl043_rows():
             add(s_, n, g, "base", src)
     return out
 
@@ -1041,7 +1046,6 @@ def bl041_rows() -> list:
     b18 = 2 * B18_RECT[0] * (P.B18_H - B18_RECT[1]) * 1e-6 * hyp
     he = 2 * (P.HE_CUT - 150.0) / 1000.0 * w38
     rtm = 2 * P.RTM_CUT / 1000.0 * WEB25
-    w3g = 2 * P.W3G_CUT / 1000.0 * WEB25
     return [
         ("attachment", f"BL-041: B-18 hinge doublers 90 x {B18_RECT[1]:.0f} -> 90 x {P.B18_H:.0f} (BL-040 HE-ONE, x2)", b18,
          f"patterns_corrie_f_rev3.B18_H x hypalon_coated_nylon {hyp:.0f} gsm (record)"),
@@ -1049,13 +1053,31 @@ def bl041_rows() -> list:
          "patterns_corrie_f_rev3.HE_CUT x poly_webbing_38mm mass_g_m (record)"),
         ("straps_compression", f"BL-041: RTM roll-clip buckle tabs (2 x {P.RTM_CUT:.0f} mm, BL-040 RT-MATE)", rtm,
          "patterns_corrie_f_rev3.RTM_CUT x poly_webbing_25mm mass_g_m (record)"),
-        ("straps_compression", f"BL-041: W3G W3 guides on the gussets (2 x {P.W3G_CUT:.0f} mm, DECISION RT-OVER-W3)", w3g,
-         "patterns_corrie_f_rev3.W3G_CUT x poly_webbing_25mm mass_g_m (record)"),
+        # BL-043 DECISION W3-OVER: the W3G guides (2 x 60 mm, +2.16 g) are deleted, so their row is gone
         ("attachment", "BL-041: GBL guy bar loop webbing deleted (2 x 170 mm; rev 1+ toggles the guy into the B-25 tab, "
          "the toggles stay)", -2 * 170.0 / 1000.0 * WEB25,
-         "attach_diet BAR_LOOP 170 mm x poly_webbing_25mm record (negative copy of the webbing in 'BL-004 REC: guy bar loops')"),
-        ("straps_meat", f"BL-041: IMC IM cam anchor tabs (3 x {4 * P.IMC_FOLD:.0f} mm, DECISION IM-CAM-TAB)",
-         3 * 4 * P.IMC_FOLD / 1000.0 * WEB25, "patterns_corrie_f_rev3.IMC_FOLD x 4 x poly_webbing_25mm mass_g_m (record)"),
+         "attach_diet BAR_LOOP 170 mm x poly_webbing_25mm record (negative copy of the webbing in 'BL-004 REC: guy toggles x2', the old guy bar loop row)"),
+        ("straps_meat", f"BL-041: IMC IM cam anchor tabs (3 x {4 * P.IMC_FOLD_BL041:.0f} mm, DECISION IM-CAM-TAB)",
+         3 * 4 * P.IMC_FOLD_BL041 / 1000.0 * WEB25,
+         "patterns_corrie_f_rev3.IMC_FOLD_BL041 x 4 x poly_webbing_25mm mass_g_m (record)"),
+    ]
+
+
+def bl043_rows() -> list:
+    """BL-043 ledger rows (system, name, g, source): the third-review fixes that change a cut length. Every mass from
+    the pattern dimensions x a record. (W3G's deletion is the BL-041 row removed; the RT cut follows the roll model
+    through strap_tails.roll_row.)"""
+    import importlib
+    P = importlib.import_module("patterns_corrie_f_rev3")
+    w38 = _rec("poly_webbing_38mm", "mass_g_m")
+    t = b25_topology()
+    return [
+        ("attachment", f"BL-043: B-25 bridle drawn topology (sleeve, mitre, necked run, spine wrap) {t['cut_bl041_mm']:.0f} -> "
+         f"{t['cut_mm']:.0f} mm (DECISION B25-TOPO)", (t["cut_mm"] - t["cut_bl041_mm"]) / 1000.0 * w38,
+         "corrie_f.b25_topology cut_mm - BL-041 guy_bridle(wide=True) x poly_webbing_38mm mass_g_m (record)"),
+        ("straps_meat", f"BL-043: IMC tabs {4 * P.IMC_FOLD_BL041:.0f} -> {4 * P.IMC_FOLD:.0f} mm (m-4, 5 mm raw-end margin, x3)",
+         3 * 4 * (P.IMC_FOLD - P.IMC_FOLD_BL041) / 1000.0 * WEB25,
+         "patterns_corrie_f_rev3.IMC_FOLD - IMC_FOLD_BL041, x 4 x 3 x poly_webbing_25mm mass_g_m (record)"),
     ]
 
 
@@ -1446,6 +1468,83 @@ def guy_bridle(wide: bool = False) -> dict:
             "material_id": mat, "sleeve_x": round(x, 1), "band": (round(x - w / 2, 1), round(x + w / 2, 1)),
             "clear_to_clamp_mm": round(x - w / 2 - SPINE_CLAMP_HALF, 1),
             "source": f"{mat} record x length (BAR_WRAP_MM, SPINE_WRAP_MM, BRIDLE_TAB_MM ASSUMPTIONS)"}
+
+
+# BL-043 M-4 DECISION B25-TOPO (pack-designer, 2026-11-13): how the one-piece 38 mm B-25 gets from a sleeve round the
+# bar (webbing length round the bar, width along x) to a run along the bar and a wrap round the spine. A 90 deg turn of a
+# 38 mm strip in its own plane is a 45 deg mitre fold that fills a 38 x 38 mm square; the bar has 11.5 mm between the
+# sleeve and the (assumed) spine clamp, so the turn cannot sit beside the sleeve. It sits UNDER it:
+#   tab (2 x 30, toggle loop) | sleeve: round the bar, lap bartacked | the strip leaves the bar going DOWN on its AFT
+#   (bag) side, still inside the sleeve band, and drops below the clamp collar | MITRE: one 45 deg fold, inside the
+#   sleeve band x 26.5-64.5, turns it to run INBOARD on edge (width vertical) | NECK: inboard of the band the lower edge
+#   is folded 13 mm up (38 -> 25 mm, top edge kept), so the run and spine wrap clear the pawl housing at kit S's
+#   shortest setting | RUN on edge along x, aft of the spine plane, under the clamp collar | SPINE WRAP: once round the
+#   spine, continuous into the other side's run | mirror.
+# Nothing is on the wearer side of the bar (head clearance) and no part of the turn is outside the 38 mm sleeve band.
+B25_T = 1.2                # webbing thickness used by BAR_WRAP_MM / SPINE_WRAP_MM (ASSUMPTION there)
+SPINE_CLAMP_COLLAR = 12.0  # ASSUMPTION B25-CLAMP: the spine clamp's collar reaches 12 mm down the spine below the bar's
+#                            underside (a 6 g split collar, frame.yaml 'spine clamp: 6.0', round a 20 mm tube is ~10-20 mm
+#                            tall: 0.59 g/mm in 3 mm aluminium). The frame files draw no clamp (frame.yaml has only its
+#                            mass; print/ has no part): settled by the clamp drawing (structural) and the op 7.17 dry fit
+B25_RUN_GAP = 2.0          # run's top edge 2 mm under the clamp collar
+B25_NECK_W = 25.0          # DECISION B25-TOPO: run + spine wrap necked to 25 mm (lower edge folded 13 mm up)
+UPPER_BAR_OD = 22.0        # frame.yaml: upper bar (z 520, pawl housing) OD 22
+PAWL_HOUSING_HALF_W = 18.0  # ASSUMPTION PAWL-TOP: housing reaches 18 mm either side of the spine axis (spine r 10 + 8 mm wall)
+PAWL_HOUSING_UP = 20.0     # ASSUMPTION PAWL-TOP: the pawl housing reaches 20 mm above the pawl line on the upper bar
+#                            (upper bar OD 22 -> 11 mm + a 9 mm housing wall); settled by the op 7.17 dry fit at the kit's
+#                            shortest setting (the spine wrap must clear the housing)
+
+
+def b25_topology(kit: str | None = None) -> dict:
+    """BL-043 M-4: the drawn B-25 topology (DECISION B25-TOPO) on the crown, per side (right; left mirrors), in crown
+    coordinates: x along the bar from the spine centre, s down the spine from the bar centre. Checks: the turn inside
+    the sleeve band; the band clear of the clamp (>= MIN_CLEAR_MM along x); the run under the clamp collar; the spine
+    wrap's bare spine; the wrap's clearance to the pawl housing at the SHORTEST torso of each crown kit (the spine is
+    longest above the pawl at the longest torso, so the shortest governs). Lengths of the strip as cut."""
+    from huntkit.gendesign import crown_diet as CDI
+    w = BRIDLE_W_REV3
+    x0, x1 = BRIDLE_BAND_REV3
+    rb, rs_ = BAR_OD / 2, SPINE_OD / 2
+    xc = 0.5 * (x0 + x1)
+    s_top = rb + SPINE_CLAMP_COLLAR + B25_RUN_GAP                # run / wrap / mitre top edge, under the clamp collar
+    mitre = {"x": (x0, x1), "s": (s_top, s_top + w), "fold": "45 deg, one fold, aft of the bar, in the sleeve band"}
+    run_s = (s_top, s_top + B25_NECK_W)                           # necked run + spine wrap
+    # strip centre line: down from the bar to the mitre's centre, inboard to the spine, half round the spine
+    drop = s_top + 0.5 * w - rb
+    run_x = xc - (rs_ + B25_T)                          # mitre centre -> spine wrap tangent
+    half_wrap = math.pi * (rs_ + B25_T / 2)
+    side = drop + run_x + half_wrap
+    sleeve = BAR_WRAP_MM
+    cut = 2 * (BRIDLE_TAB_MM + sleeve + side)
+    uz = CDI.geom()["uz"]
+    kits = {}
+    for k, (lo, hi) in CDI.SIZES.items():
+        s_pawl = (CDI.crown_top_z(lo) - CDI.PAWL_Z) / uz          # spine length bar centre -> pawl line, shortest torso
+        top = s_pawl - PAWL_HOUSING_UP / uz
+        bar_top = s_pawl - UPPER_BAR_OD / 2 / uz
+        kits[k] = {"torso_in": lo, "s_pawl_mm": round(s_pawl, 1), "housing_top_s_mm": round(top, 1),
+                   "wrap_bottom_s_mm": round(run_s[1], 1), "clear_mm": round(top - run_s[1], 1),
+                   "mitre_bottom_s_mm": round(mitre["s"][1], 1),
+                   "mitre_to_upper_bar_mm": round(bar_top - mitre["s"][1], 1),
+                   "mitre_to_housing_x_mm": round(x0 - PAWL_HOUSING_HALF_W, 1),
+                   "ok": top - run_s[1] >= 0.0 and bar_top - mitre["s"][1] >= 0.0 and x0 > PAWL_HOUSING_HALF_W}
+    clamp_x = SPINE_CLAMP_HALF
+    out = {"width_mm": w, "band_x": (x0, x1), "mitre": mitre, "run_s": run_s, "run_x": (rs_ + B25_T, x0),
+           "spine_wrap_s": run_s, "neck_w_mm": B25_NECK_W, "bare_spine_needed_mm": round(B25_NECK_W + B25_RUN_GAP, 1),
+           "clamp_half_x": clamp_x, "clamp_collar_mm": SPINE_CLAMP_COLLAR,
+           "turn_inside_band": mitre["x"][0] >= x0 - 1e-9 and mitre["x"][1] <= x1 + 1e-9,
+           "band_to_clamp_x_mm": round(x0 - clamp_x, 1), "band_to_clamp_ok": x0 - clamp_x >= MIN_CLEAR_MM,
+           "run_under_collar_mm": B25_RUN_GAP, "kits": kits, "governing_kit": min(kits, key=lambda q: kits[q]["clear_mm"]),
+           "pawl_ok": all(v["ok"] for v in kits.values()),
+           "lengths_mm": {"tab": BRIDLE_TAB_MM, "sleeve": round(sleeve, 1), "drop": round(drop, 1),
+                          "run": round(run_x, 1), "half_spine_wrap": round(half_wrap, 1)},
+           "cut_mm": round(cut, 1), "cut_bl041_mm": guy_bridle(wide=True)["length_mm"],
+           "clamp_envelope": {"half_x_max_mm": round(x0 - MIN_CLEAR_MM, 1),
+                              "collar_max_mm": round(min(v["housing_top_s_mm"] for v in kits.values()) - B25_NECK_W
+                                                     - B25_RUN_GAP - rb, 1)},
+           "source": "corrie_f.b25_topology (BL-043 DECISION B25-TOPO); bar / spine OD frame.yaml; crown heights "
+                     "geometry.yaml crown_settings; ASSUMPTIONS SPINE_CLAMP_HALF, B25-CLAMP, PAWL-TOP"}
+    return out
 
 
 def tripod_keeper(c: ShellF | None = None, door: str = DOOR_DEFAULT) -> dict:
@@ -3482,7 +3581,7 @@ def plot_bl028_port(path: Path) -> Path:
 
 # ---- BL-029 concepts: mass on the ledger basis, gloved steps, patent check (doc section 14.3)
 GUY_ROWS = ("attachment system: top side guys x2", "attachment system: guy ladder locks", "attachment system: guy tail",
-            "BL-010 A3: guy ladder locks", "BL-004 REC: guy bar loops", "attachment system: guy corner tabs B-22")
+            "BL-010 A3: guy ladder locks", "BL-004 REC: guy toggles", "attachment system: guy corner tabs B-22")
 # ASSUMPTION GLOVE-T: gloved hand actions counted from the parts (one action = one buckle, lock, hook, zip or flip);
 # settled by the FT glove test (timed, winter gloves) on the prototype
 GLOVE_STEPS = {

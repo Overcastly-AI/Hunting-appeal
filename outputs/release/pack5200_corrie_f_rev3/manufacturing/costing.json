@@ -1,5 +1,5 @@
 {
- "material_usd_primary": 379.97,
+ "material_usd_primary": 380.07,
  "prototype_buy": {
   "rows": [
    {
@@ -150,22 +150,22 @@
     "item": "poly_webbing_25mm: B-28 B-28s B-28t BRL BRS E5 HPL I2K I2T IM1 IM2 IM3",
     "material_id": "poly_webbing_25mm",
     "unit": "m",
-    "production_qty": 16.683,
-    "production_usd": 11.68,
+    "production_qty": 16.7,
+    "production_usd": 11.69,
     "prototype_qty": 17.374,
     "prototype_usd": 12.16,
-    "how": "16.683 m -> 19 yd"
+    "how": "16.7 m -> 19 yd"
    },
    {
     "section": "webbing",
     "item": "poly_webbing_38mm: B-24 B-25 HE IME T3",
     "material_id": "poly_webbing_38mm",
     "unit": "m",
-    "production_qty": 3.096,
-    "production_usd": 3.1,
+    "production_qty": 3.193,
+    "production_usd": 3.19,
     "prototype_qty": 3.658,
     "prototype_usd": 3.66,
-    "how": "3.096 m -> 4 yd"
+    "how": "3.193 m -> 4 yd"
    },
    {
     "section": "webbing",
@@ -459,17 +459,17 @@
   "assumption": "SHOP-INCR: roll goods in 0.5 yd steps at full width, webbing whole yards, HDPE one 0.25 m2 sheet; hardware as production (whole units); thread by the 4 oz cone, basting tape and seam sealer by the smallest pack (SHOP-UNIT, BL-041 n-10); no camo print (CAMO-FIRST, BL-041 Y-5)"
  },
  "prototype_usd": 501.49,
- "material_usd_alternate": 379.81,
+ "material_usd_alternate": 379.91,
  "fabric_usd_primary": 88.03,
  "fabric_usd_alternate": 87.87,
  "missing_cost": [],
- "proto_hours": 74.5,
+ "proto_hours": 74.1,
  "proto_hours_by_step": {
-  "0 Prep and cutting": 16.34,
+  "0 Prep and cutting": 16.28,
   "1 Pockets": 6.06,
   "2 Small parts": 4.39,
   "3 Door D2 and hinge band": 5.0,
-  "4 Main bag": 14.42,
+  "4 Main bag": 14.02,
   "5 Collar and roll top": 3.5,
   "6 Crown lid B-29 (as hunted)": 8.46,
   "7 Straps and webbing": 6.06,
@@ -477,18 +477,18 @@
   "9 Rain fly F-01": 5.4,
   "10 Finish, inspect, pack": 1.2
  },
- "sam_min": 507.1,
+ "sam_min": 503.8,
  "labour_usd": {
-  "us_contract_usd_min": 431.04,
-  "asia_contract_usd_min": 60.85
+  "us_contract_usd_min": 428.23,
+  "asia_contract_usd_min": 60.46
  },
  "cmt_usd": {
-  "us_contract_usd_min": 538.79,
-  "asia_contract_usd_min": 76.06
+  "us_contract_usd_min": 535.29,
+  "asia_contract_usd_min": 75.57
  },
  "landed_usd": {
-  "us_contract_usd_min": 918.76,
-  "asia_contract_usd_min": 456.03
+  "us_contract_usd_min": 915.36,
+  "asia_contract_usd_min": 455.64
  },
  "lid_hours_drafted": 9.53,
  "lid_hours_booked": 7.76,

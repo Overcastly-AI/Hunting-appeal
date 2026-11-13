@@ -332,7 +332,7 @@ SUFFIX = "_v2"
 CONFIGS_V2 = tuple(c + SUFFIX for c in CONFIGS)
 ALL_CONFIGS = CONFIGS + CONFIGS_V2
 DEFAULT_CONFIG = "corrie_b2_h1" + SUFFIX
-CORRECTIONS = ("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "H1B", "BL031")
+CORRECTIONS = ("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "H1B", "BL031", "H1F")
 #   BL031 (2026-11-12, BL-031 strap tails, not a booking error): the harness and belt side of the tail rule
 #      (``strap_tails.suspension_rows``: lifters, sternum and hip stabilizers cut to length, the 2:1 belt tail to the
 #      gloved grip, two belt tail keepers). The bag side of BL-031 is booked by corrie_f.parts (adopted bag rows).
@@ -358,7 +358,12 @@ def adopted_bag_rows(size: str = "M") -> list:
         return F.parts(size, door=ADOPTED_BAG["door"])
 
 
-H1_ONLY = ("H1B",)          # corrections that apply to the H1 configs only (not to today's production raster)
+H1_ONLY = ("H1B", "H1F")    # corrections that apply to the H1 configs only (not to today's production raster)
+#   H1F (2026-11-13, BL-042) the H1 fairleads completed outside the voxel envelope. The H1 raster stops at the bag
+#      envelope (frame_topopt Y_HI_GRID 16 mm), so it holds only the fairlead stubs below y 16, not the cheek tops,
+#      front walls and pin holes (C1 assumed it held them whole). The print files now carry every fairlead complete
+#      (h1_fairleads.add_fairleads, hinge saddle); the print-mesh volume delta is booked here (analysis/h1_fairleads.json
+#      mass.net_g). Today's production raster (frame_branch, no envelope clip at the fairleads) is unaffected.
 G_CORR = "BL-013 booking corrections (folded into the ledger by BL-023)"
 #   H1B (2026-11-12) the H1 printed body as adopted since frame_mass_h1.json was written: BL-024 H1-G0.55 grow-only
 #      offset, the BL-027 buckling members and the BL-021 28 mm IM3 cheeks, all on the same 2 mm raster
@@ -399,6 +404,13 @@ def non_body_sources() -> dict:
 
 
 @functools.lru_cache(maxsize=None)
+def h1_fairleads_update() -> dict:
+    """H1F: the fairlead volume the H1 print mesh adds over the voxel raster (analysis/h1_fairleads.json ``mass``,
+    written by huntkit.gendesign.h1_fairleads)."""
+    return dict(_json("h1_fairleads.json")["mass"])
+
+
+@functools.lru_cache(maxsize=None)
 def h1_body_update() -> dict:
     """H1B: the H1 body raster as adopted (BL-024 + BL-027 + BL-021 28 mm IM3 cheeks), from analysis/h1_buckling.json
     ``chosen`` (written by ``huntkit.gendesign.h1_buckling``). Raises if that file's H1 base is not the body the ledger
@@ -435,6 +447,10 @@ def _correction_rows(config: str, size: str) -> list:
              "frame", hb["bl027_members_g"], src + "members_added_g (h1_buckling.md, member mass table)", "base"),
             ("H1B", "H1 body: IM3 fairlead cheeks 18 -> 28 mm (2 sides, BL-021), as rastered into the body", "frame",
              hb["im3_cheek_28_g"], src + "im3_cheek_added_g (cheek mask minus the body it overlaps)", "base"),
+            ("H1F", "H1 print: 12 fairleads completed outside the voxel envelope (cheek tops, front walls, pin holes, "
+             "hinge saddle; BL-042)", "frame", h1_fairleads_update()["net_g"],
+             "analysis/h1_fairleads.json mass.net_g (print-mesh volume with / without h1_fairleads.add_fairleads x "
+             "the PAHT-CF print density)", "base"),
         ]
     import strap_tails as ST                        # BL-031 (lazy: it reads corrie_f, which reads this module)
     bl031 = [("BL031", n, sys_, g, src, cfg) for n, sys_, g, src, cfg in ST.suspension_rows(size)]

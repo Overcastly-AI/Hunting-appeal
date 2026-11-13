@@ -311,7 +311,16 @@ def keepouts(solid: np.ndarray) -> dict:
         m = np.asarray(dom.masks[k], bool)
         out[f"{k} empty"] = float(1.0 - (solid & m).sum() / max(m.sum(), 1))
     fl = (attachment_field(cen, SCALE) <= 0.0) & ~dom.passive_void
-    out["fairleads present"] = float((solid & fl).sum() / max(fl.sum(), 1))
+    # BL-042: this is only the part of each fairlead inside the voxel envelope (y <= y_hi, 16 mm); the voxel model
+    # cannot hold a whole fairlead. The fairleads themselves are added exactly by print_mesh and checked on the
+    # exported STL (h1_fairleads.check_stl: pin hole, throat, floor gap, walls, cheek height per station).
+    out["fairlead stubs inside the envelope present (voxel)"] = float((solid & fl).sum() / max(fl.sum(), 1))
+    stl = PRINT_DIR / "h1_assembled.stl"
+    if stl.exists():
+        from .h1_fairleads import check_stl
+        out["fairleads complete on the print STL (h1_fairleads.check_stl)"] = bool(check_stl(stl)["all_pass"])
+    else:
+        out["fairleads complete on the print STL (h1_fairleads.check_stl)"] = None
     out["outside envelope (voxels)"] = int((solid & dom.passive_void).sum())
     j = JOINT
     env, yc = _axis(j.z)
@@ -714,10 +723,12 @@ def _box_local(p, u, dirn, along0, along1, half_w, z0, z1):
 SIMPLIFY_MM = 0.04     # manifold3d simplify tolerance: about 45 % fewer faces, volume change < 0.1 %
 
 
-def print_mesh(solid: np.ndarray, j: Joint = JOINT, log=print):
+def print_mesh(solid: np.ndarray, j: Joint = JOINT, log=print, fairleads: bool = True, stats: dict | None = None):
     """Smooth surface of the voxel body (2x upsampled field, Taubin), then exact features with manifold3d:
     boss capsules, sleeve bore rings re-cut at the 17.4 mm pre-ream size, bolt holes 4.8 mm (ream 5.1),
-    counterbores, washer + nut traps."""
+    counterbores, washer + nut traps, and (BL-042) every bag fairlead complete: the voxel model stops at the bag
+    envelope (y 16), so the fairleads are added exactly (``h1_fairleads.add_fairleads``: solids, throats, pin holes
+    printed 7.0 / reamed 7.2). ``stats`` gets the fairlead step's volumes."""
     import manifold3d as m3d
     from .surface import _from_manifold, _to_manifold, field_to_mesh
     from scipy import ndimage
@@ -768,6 +779,9 @@ def print_mesh(solid: np.ndarray, j: Joint = JOINT, log=print):
         cuts.append(_box_local(p, uu, dirn, 0.0, j.r_boss + 6.0, j.nut_af / 2 + 0.1, n_lo, w_lo))
     for cc in cuts:
         man = man - cc
+    if fairleads:
+        from .h1_fairleads import add_fairleads
+        man = add_fairleads(man, log=log, stats=stats)
     man = man.simplify(SIMPLIFY_MM)
     out = _from_manifold(man)
     if log:

@@ -9,6 +9,7 @@ Run: python -m huntkit.gendesign.bag_attach
 from __future__ import annotations
 
 import json
+from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
@@ -66,31 +67,116 @@ def _box(p, lo, hi):
     return np.linalg.norm(np.maximum(q, 0.0), axis=1) + np.minimum(np.max(q, axis=1), 0.0)
 
 
-def fairlead_local(pts: np.ndarray, stay_r: float) -> np.ndarray:
+@dataclass(frozen=True)
+class FairleadGeom:
+    """One fairlead's section, mm, in stay-local coordinates (pin axis x, bag direction +y, stay axis z).
+    Heights are measured from the stay surface (stay radius ``stay_r``) toward the bag."""
+    throat: float = THROAT
+    cheek: float = CHEEK
+    half_z: float = HALF_Z
+    embed: float = EMBED
+    hole_d: float = HOLE_D
+    pin_d: float = PIN_D
+    hole_proud: float = HOLE_PROUD
+    floor_proud: float = HOLE_PROUD - HOLE_D / 2.0 - 0.8   # top of the root (the throat floor) above the stay surface
+    wall_front: float = WALL_FRONT
+    chamfer_w: float | None = None   # 45 deg underside from |x| = chamfer_w outward (self-supporting, layer normal +y)
+
+    @property
+    def gap_under_pin(self) -> float:
+        """Clear height between the pin's underside and the throat floor (the eye's stay-side ply passes here)."""
+        return self.hole_proud - self.pin_d / 2.0 - self.floor_proud
+
+    @property
+    def tip_proud(self) -> float:
+        return self.hole_proud + self.hole_d / 2.0 + self.wall_front
+
+
+def legacy_geom() -> FairleadGeom:
+    """The 2026-11-01 fairlead from the module constants, read at call time (callers that swap HALF_Z / CHEEK on the
+    module still get their swap)."""
+    return FairleadGeom(throat=THROAT, cheek=CHEEK, half_z=HALF_Z, embed=EMBED, hole_d=HOLE_D, pin_d=PIN_D,
+                        hole_proud=HOLE_PROUD, floor_proud=round(HOLE_PROUD - HOLE_D / 2.0 - 0.8, 9), wall_front=WALL_FRONT)
+
+
+# BL-042 (review 2026-11-13 Z-1): the hinge fairlead (z 60) must pass the bag's hinge eye, a necked 38 mm webbing loop
+# round the pin. The neck (op 4.05: each edge folded 10 mm in, 18 mm wide) is 2 plies over most of its width and 3 plies
+# in the middle; 3 plies of HE-T 1.5 mm webbing = 4.5 mm must pass between the pin and the throat floor.
+HINGE_EYE_PLIES = 3
+HINGE_EYE_PLY_T = 1.5          # ASSUMPTION HE-T (patterns_corrie_f_rev3.HE_T): settled by a caliper on the bought roll
+HINGE_EYE_MARGIN = 1.0         # ASSUMPTION HE-GAP-MARGIN: 1.0 mm over 3 plies for print tolerance (+-0.2 mm on the
+#                                floor, the pin hole reamed), webbing thickness scatter and the eye riding round the pin
+#                                under load; settled by HE-FIT (a 3-ply eye must slide round the pin by hand)
+HINGE_NECK_W = 18.0            # 38 mm webbing, edges folded 10 mm in (patterns_corrie_f_rev3.HE_NECK_EDGE)
+HE_FOLD_EDGE = 10.0            # patterns_corrie_f_rev3.HE_NECK_EDGE: each long edge folded 10 mm in
+HINGE_NECK_TOL = 1.0           # ASSUMPTION HE-NECK-TOL: folded neck 18 +-1 mm (webbing width +-0.5, fold +-0.5)
+HINGE_THROAT_CLEAR = 1.0       # ASSUMPTION: 1 mm total clearance over the widest neck (19 mm) for the printed cheek faces
+_R60 = round((9.0 + (8.5 - 9.0) * (60.0 - 40.0) / (150.0 - 40.0)) * SCALE, 4)   # = frame_branch.stay_radius(60, SCALE)
+_FLOOR60 = round(HOLE_PROUD - HOLE_D / 2.0 - 0.8, 9)   # 2.1: the 2026-11-01 floor height, kept (root bridge strength)
+HINGE_GEOM = FairleadGeom(
+    throat=HINGE_NECK_W + HINGE_NECK_TOL + HINGE_THROAT_CLEAR,          # 20.0 (was 18.0)
+    floor_proud=_FLOOR60,
+    hole_proud=_FLOOR60 + HINGE_EYE_PLIES * HINGE_EYE_PLY_T + HINGE_EYE_MARGIN + PIN_D / 2.0,   # 10.1: gap 5.5 (was 1.9)
+    embed=_R60,                # saddle: root and cheeks down to the stay centreline (BL-042 sweep, h1_fairleads.md 3)
+    chamfer_w=9.0,             # 45 deg underside outboard of |x| 9 (prints without support, layer normal +y)
+)
+# What the bag must meet at the hinge (BL-042). Import this in the pattern / HE section model in place of the
+# module constants above, which stay the IM1-IM3 / under-strap fairlead (and the voxel analysis envelope).
+HINGE_EYE_ENVELOPE = {
+    "station_z_mm": 60.0,
+    "pin_d_mm": HINGE_GEOM.pin_d,
+    "pin_centre_above_stay_surface_mm": HINGE_GEOM.hole_proud,
+    "throat_floor_above_stay_surface_mm": HINGE_GEOM.floor_proud,
+    "gap_under_pin_mm": round(HINGE_GEOM.gap_under_pin, 3),
+    "eye_plies_design": HINGE_EYE_PLIES,
+    "eye_ply_t_mm": HINGE_EYE_PLY_T,
+    "eye_thickness_design_mm": HINGE_EYE_PLIES * HINGE_EYE_PLY_T,
+    "gap_clearance_over_eye_mm": round(HINGE_GEOM.gap_under_pin - HINGE_EYE_PLIES * HINGE_EYE_PLY_T, 3),
+    # the eye's stay-side ply stack under the pin, by half-width from the neck centre: 3 plies where both 10 mm folds
+    # overlap (middle 2 mm, +-1 mm fold tolerance), 2 plies out to the widest neck edge (op 4.05 fold, HE_NECK_EDGE)
+    "eye_section_steps_mm": [[HE_FOLD_EDGE - HINGE_NECK_W / 2.0 + HINGE_NECK_TOL, HINGE_EYE_PLIES * HINGE_EYE_PLY_T],
+                             [(HINGE_NECK_W + HINGE_NECK_TOL) / 2.0, 2 * HINGE_EYE_PLY_T]],
+    "eye_margin_mm": HINGE_EYE_MARGIN,
+    "throat_mm": HINGE_GEOM.throat,
+    "neck_w_max_mm": HINGE_NECK_W + HINGE_NECK_TOL,
+    "throat_clearance_over_max_neck_mm": HINGE_GEOM.throat - HINGE_NECK_W - HINGE_NECK_TOL,
+    "throat_clearance_over_nominal_neck_mm": HINGE_GEOM.throat - HINGE_NECK_W,
+    "cheek_half_z_mm": HINGE_GEOM.half_z,
+    "cheek_tip_above_stay_surface_mm": HINGE_GEOM.tip_proud,
+    "stay_r_mm_at_z60": _R60,
+    "pin_centre_from_stay_centre_mm": round(_R60 + HINGE_GEOM.hole_proud, 4),
+}
+
+
+def fairlead_local(pts: np.ndarray, stay_r: float, geom: FairleadGeom | None = None) -> np.ndarray:
     """SDF of one fairlead in stay-local coordinates (stay axis z, bag direction +y).
 
     Negative inside the added plastic only. The root overlaps the stay by ``EMBED``
     so a union with the stay is one piece. The sleeve bore is not filled: the root
     stops ``EMBED`` inside the surface, and every sleeved stay is thicker than that.
+    ``geom`` None = the module constants (``legacy_geom``), identical to the 2026-11-01 field.
     """
+    g = geom or legacy_geom()
     x, y, z = pts[:, 0], pts[:, 1], pts[:, 2]
-    y_root = stay_r - EMBED
-    y_hole = stay_r + HOLE_PROUD
-    y_tip = y_hole + HOLE_D / 2.0 + WALL_FRONT
+    y_root = stay_r - g.embed
+    y_hole = stay_r + g.hole_proud
+    y_tip = y_hole + g.hole_d / 2.0 + g.wall_front
     sdf = np.full(len(pts), 40.0)
     for s in (1.0, -1.0):
-        inner = s * THROAT / 2.0
-        outer = s * (THROAT / 2.0 + CHEEK)
-        lo = np.array([min(inner, outer), y_root, -HALF_Z])
-        hi = np.array([max(inner, outer), y_tip, HALF_Z])
+        inner = s * g.throat / 2.0
+        outer = s * (g.throat / 2.0 + g.cheek)
+        lo = np.array([min(inner, outer), y_root, -g.half_z])
+        hi = np.array([max(inner, outer), y_tip, g.half_z])
         sdf = np.minimum(sdf, _box(pts, lo, hi))
-    root_hi_y = y_hole - HOLE_D / 2.0 - 0.8
-    root = _box(pts, np.array([-(THROAT / 2.0 + CHEEK), y_root, -HALF_Z]),
-                np.array([THROAT / 2.0 + CHEEK, root_hi_y, HALF_Z]))
+    root_hi_y = stay_r + g.floor_proud
+    root = _box(pts, np.array([-(g.throat / 2.0 + g.cheek), y_root, -g.half_z]),
+                np.array([g.throat / 2.0 + g.cheek, root_hi_y, g.half_z]))
     sdf = _smin(sdf, root, 3.0)
-    hole = np.hypot(y - y_hole, z) - HOLE_D / 2.0
+    if g.chamfer_w is not None:     # 45 deg underside: material only above y_root + (|x| - chamfer_w)
+        sdf = np.maximum(sdf, ((np.abs(x) - g.chamfer_w) - (y - y_root)) / np.sqrt(2.0))
+    hole = np.hypot(y - y_hole, z) - g.hole_d / 2.0
     # open the throat and the cheeks; do not let the hole eat the stay core
-    hole = np.where(np.abs(x) <= THROAT / 2.0 + CHEEK + 0.5, hole, 40.0)
+    hole = np.where(np.abs(x) <= g.throat / 2.0 + g.cheek + 0.5, hole, 40.0)
     return np.maximum(sdf, -hole)
 
 
@@ -233,29 +319,32 @@ def _creep_sf(fi: float, g_times_req: float, rupture: float) -> float:
     return rupture / fi_1g
 
 
-def solve_fairlead(stay_r: float, force_yz: np.ndarray, h: float = 0.8, label: str = "") -> dict:
-    """Voxel FEA of one fairlead on a stay stub. Layer normal is +y (the print direction)."""
+def solve_fairlead(stay_r: float, force_yz: np.ndarray, h: float = 0.8, label: str = "",
+                   geom: FairleadGeom | None = None) -> dict:
+    """Voxel FEA of one fairlead on a stay stub. Layer normal is +y (the print direction). ``geom`` None = the
+    module constants (``legacy_geom``)."""
+    gm = geom or legacy_geom()
     pa = _paht()
     force_yz = np.asarray(force_yz, float)
     mag = float(np.linalg.norm(force_yz))
     direction = force_yz / mag if mag > 1.0 else np.array([0.0, -1.0])
-    y_hole = stay_r + HOLE_PROUD
+    y_hole = stay_r + gm.hole_proud
     # tight box: the stay stub only has to carry the root out to a fixed cap
     lo = np.array([-20.0, -(stay_r + 4.0), -22.0])
-    hi = np.array([20.0, stay_r + HOLE_PROUD + HOLE_D / 2.0 + WALL_FRONT + 4.0, 22.0])
+    hi = np.array([20.0, stay_r + gm.tip_proud + 4.0, 22.0])
     n = np.maximum(np.round((hi - lo) / h).astype(int), 6)
     g = Grid(tuple(int(v) for v in n), h, x0=lo)
     c = g.elem_centers()
     stay = (np.hypot(c[:, 0], c[:, 1]) <= stay_r) & (np.abs(c[:, 2]) <= 21.0)
-    yoke = fairlead_local(c, stay_r) <= 0.0
+    yoke = fairlead_local(c, stay_r, gm) <= 0.0
     solid = stay | yoke
     nc = g.node_coords()
     radial = np.c_[nc[:, 1] - y_hole, nc[:, 2]]
     rr = np.linalg.norm(radial, axis=1)
-    band = (rr > HOLE_D / 2.0 - 0.35 * h) & (rr < HOLE_D / 2.0 + 0.9 * h)
-    band &= np.abs(nc[:, 0]) >= THROAT / 2.0 - 0.3
-    band &= np.abs(nc[:, 0]) <= THROAT / 2.0 + CHEEK + 0.6 * h
-    face = band & (radial @ direction > 0.15 * HOLE_D / 2.0)
+    band = (rr > gm.hole_d / 2.0 - 0.35 * h) & (rr < gm.hole_d / 2.0 + 0.9 * h)
+    band &= np.abs(nc[:, 0]) >= gm.throat / 2.0 - 0.3
+    band &= np.abs(nc[:, 0]) <= gm.throat / 2.0 + gm.cheek + 0.6 * h
+    face = band & (radial @ direction > 0.15 * gm.hole_d / 2.0)
     idx = np.where(face)[0]
     if idx.size < 6:
         idx = np.where(band)[0]
@@ -281,7 +370,7 @@ def solve_fairlead(stay_r: float, force_yz: np.ndarray, h: float = 0.8, label: s
     eidx, S = element_stress(g, U, solid, pa["E"])
     fi = layer_failure_index(np.abs(S[:, :3]), np.abs(S[:, 3:]), 1, pa["s_xy"], pa["s_z"], pa["knock"])
     cc = c[eidx]
-    yoke_e = fairlead_local(cc, stay_r) <= h
+    yoke_e = fairlead_local(cc, stay_r, gm) <= h
     away = np.abs(cc[:, 2]) < 16.0
     use = yoke_e & away
     if int(use.sum()) < 12:
@@ -289,7 +378,7 @@ def solve_fairlead(stay_r: float, force_yz: np.ndarray, h: float = 0.8, label: s
     fi_use = fi[use]
     fi99 = float(np.percentile(fi_use, 99))
     # bearing on the projected cheek pair (sleeve OD x both cheeks)
-    bear = mag / max(HOLE_D * 2.0 * CHEEK, 1e-9)
+    bear = mag / max(gm.hole_d * 2.0 * gm.cheek, 1e-9)
     allow_n = pa["knock"] * pa["s_z"]          # +y bearing crosses the layers
     g_tr = 3.0                                 # overwritten by the caller via the return; placeholder
     added = float((yoke & ~stay).sum() * h ** 3 * pa["rho"] / 1e6)
@@ -297,7 +386,7 @@ def solve_fairlead(stay_r: float, force_yz: np.ndarray, h: float = 0.8, label: s
     gfi[eidx] = fi
     arr = g.to_array(gfi)
     # a cut through one cheek, not a mean that washes the hole out
-    x_cheek = THROAT / 2.0 + CHEEK / 2.0
+    x_cheek = gm.throat / 2.0 + gm.cheek / 2.0
     xs = lo[0] + (np.arange(arr.shape[0]) + 0.5) * h
     slab = arr[int(np.argmin(np.abs(xs - x_cheek)))]
     return {"label": label, "h_mm": h, "fi99": fi99, "fi_max": float(fi_use.max()),

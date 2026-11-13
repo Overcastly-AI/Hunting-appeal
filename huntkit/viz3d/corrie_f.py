@@ -1533,17 +1533,61 @@ def crown_rolled_paths(states=("day", "sixday", "full"), level: int = 2, write: 
 
 
 def roll_clip_paths(states=("day", "sixday", "full"), level: int = 2, write: bool = True) -> dict:
-    """BL-031: the roll-clip strap's path (roll end -> side-release on the gusset tab, ``cloth_pass`` roll model) at
-    each load state, 19 in, lid on (as the crown paths). ``strap_tails.roll_row`` sizes the tails from these. Written
-    to ``corrie_f_sim/corrie_f_roll_clips.json``."""
-    F = _mods()[2]
-    out = {"torso_in": TORSO, "method": "huntkit.viz3d.cloth_pass roll clips (roll end to the gusset tab, taut "
-           "quadratic path pushed off the cloth); cloth_pass ClothParams clip_run / clip_below_seam", "level": level,
-           "clip_below_seam_mm": CLIP_BELOW_SEAM_MM, "states": {}}
+    """BL-031 / BL-043: the roll-clip strap's path (roll end -> side-release on the gusset tab, ``cloth_pass`` roll
+    model) at each load state, 19 in, lid on (as the crown paths). ``strap_tails.roll_row`` sizes the RT cut from these.
+    Written to ``corrie_f_sim/corrie_f_roll_clips.json``.
+
+    BL-043 (M-2): the tab is where the pattern puts it (``patterns_corrie_f_rev3.rt_layout``: buckle bar ``z_bar``,
+    ``tab_frac`` of the gusset depth from the frame seam) and the strap leaves the ROLL END (DECISION RT-ORIGIN, the
+    fall-back the ticket asks for: BL-041's origin at 27 % of the gusset needs a gusset tuck to fold flat, see
+    ``rs.geo['rt_origin']``). The cloth is the cached solve: the tab is not in the cloth job, and the roll ends' bend
+    sits at its 75 deg cap in all three states for both tab heights (``meta['bend_deg']``), so moving the tab changes
+    only the strap path. Also written: the BL-031 path (tab at mid depth, 150 mm under the seam) for comparison, the
+    strap's stand-off from the cloth along its length (where it bears on the gusset), and the roll's height span
+    against W3 at the six kit-end corners (``w3_roll``)."""
+    BC, CO, F, CS = _mods()
+    import importlib
+    P = importlib.import_module("patterns_corrie_f_rev3")
+    c = F.make()
+    M = P._maps(c)
+    rl = P.rt_layout(M, c)
+    sw = P.w3_sweep()
+    PV.ensure(TORSO)
+    out = {"torso_in": TORSO, "method": "huntkit.viz3d.cloth_pass.roll_clip_path: roll end (gusset centre of the flattened "
+           "mouth) to the side-release on the gusset tab, taut quadratic path pushed 2 mm off the solved cloth, + the "
+           "38 mm tab; cloth = the cached cloth-pass solve (19 in)", "level": level,
+           "tab": {"z_bar": rl["z_bar"], "tab_frac": round(rl["tab_frac"], 4), "x_flat": rl["x"],
+                   "origin": "roll end (DECISION RT-ORIGIN)"},
+           "bl031_tab": {"clip_below_seam_mm": CLIP_BELOW_SEAM_MM, "tab_frac": 0.5}, "states": {}, "w3_roll": {}}
     for st in states:
-        sc = scene(st, False, level, with_pouch=True)
-        out["states"][st] = {"roll_clip_mm": sc.report.get("roll_clip_mm", {})}
-        print(st, out["states"][st], flush=True)
+        p = CP.ClothParams(level=level, clip_below_seam=CLIP_BELOW_SEAM_MM)
+        res = CP.run(st, p, SHELL, TORSO)
+        sk, meta = d2_recut(res["skin"]), res["meta"]
+        q = CP.ClothParams(**meta["params"])
+        _, rinfo, C, fr = CP.roll_mesh(meta["lip"], meta["collar_in_roll_mm"], q)
+        S = CP.Surf(sk["X"], sk["tris"])
+        row = {"roll_clip_mm": {}, "bl031_roll_clip_mm": {}, "bend_deg": round(float(meta["bend_deg"]), 1),
+               "roll_end_z": round(float(C[-1, 2]), 1), "roll_z_span": [round(float(C[:, 2].min() - fr["r_out"]), 1),
+                                                                         round(float(C[:, 2].max() + fr["r_out"]), 1)],
+               "standoff": {}}
+        for sx, side in ((1, "R"), (-1, "L")):
+            r = CP.roll_clip_path(S, sk, C, fr, sx, rl["z_bar"], rl["tab_frac"])
+            r0 = CP.roll_clip_path(S, sk, C, fr, sx, meta["z_clip"])
+            row["roll_clip_mm"][side] = round(r["length_mm"], 1)
+            row["bl031_roll_clip_mm"][side] = round(r0["length_mm"], 1)
+            P3 = r["path"]
+            qn, nn = S.near(P3)
+            d = np.einsum("ij,ij->i", P3 - qn, nn)
+            on = P3[d < 5.0][:, 2]
+            row["standoff"][side] = {"bears_on_cloth_z": [round(float(on.min()), 1), round(float(on.max()), 1)] if len(on) else None,
+                                     "at_muzzle_tabs_mm": round(float(np.interp(P.B11_MUZ_Z, P3[::-1, 2], d[::-1])), 1)}
+        out["states"][st] = row
+        print(st, row, flush=True)
+    for name, z in sw["corners"].items():
+        lo, hi = z - sw["half_w"], z + sw["half_w"]
+        out["w3_roll"][name] = {st: ("on the roll" if (lo <= r["roll_z_span"][1] and hi >= r["roll_z_span"][0]) else
+                                     ("above the roll top" if lo > r["roll_z_span"][1] else "below the roll"))
+                                for st, r in out["states"].items()}
     if write:
         (F.HERE / "corrie_f_sim" / "corrie_f_roll_clips.json").write_text(json.dumps(out, indent=1))
     return out

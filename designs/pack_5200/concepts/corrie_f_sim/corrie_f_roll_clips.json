@@ -1,26 +1,145 @@
 {
  "torso_in": 19,
- "method": "huntkit.viz3d.cloth_pass roll clips (roll end to the gusset tab, taut quadratic path pushed off the cloth); cloth_pass ClothParams clip_run / clip_below_seam",
+ "method": "huntkit.viz3d.cloth_pass.roll_clip_path: roll end (gusset centre of the flattened mouth) to the side-release on the gusset tab, taut quadratic path pushed 2 mm off the solved cloth, + the 38 mm tab; cloth = the cached cloth-pass solve (19 in)",
  "level": 2,
- "clip_below_seam_mm": 150.0,
+ "tab": {
+  "z_bar": 543.5,
+  "tab_frac": 0.2661,
+  "x_flat": 50.0,
+  "origin": "roll end (DECISION RT-ORIGIN)"
+ },
+ "bl031_tab": {
+  "clip_below_seam_mm": 150.0,
+  "tab_frac": 0.5
+ },
  "states": {
   "day": {
    "roll_clip_mm": {
-    "R": 165.53479550390227,
-    "L": 161.30332567102468
+    "R": 210.8,
+    "L": 202.3
+   },
+   "bl031_roll_clip_mm": {
+    "R": 165.5,
+    "L": 161.3
+   },
+   "bend_deg": 75.0,
+   "roll_end_z": 692.8,
+   "roll_z_span": [
+    681.1,
+    790.3
+   ],
+   "standoff": {
+    "R": {
+     "bears_on_cloth_z": [
+      501.6,
+      580.4
+     ],
+     "at_muzzle_tabs_mm": 31.4
+    },
+    "L": {
+     "bears_on_cloth_z": [
+      508.3,
+      583.8
+     ],
+     "at_muzzle_tabs_mm": 40.4
+    }
    }
   },
   "sixday": {
    "roll_clip_mm": {
-    "R": 170.489928682406,
-    "L": 179.7202120338733
+    "R": 222.8,
+    "L": 222.0
+   },
+   "bl031_roll_clip_mm": {
+    "R": 170.5,
+    "L": 179.7
+   },
+   "bend_deg": 75.0,
+   "roll_end_z": 729.7,
+   "roll_z_span": [
+    718.4,
+    826.6
+   ],
+   "standoff": {
+    "R": {
+     "bears_on_cloth_z": [
+      514.0,
+      555.3
+     ],
+     "at_muzzle_tabs_mm": 36.8
+    },
+    "L": {
+     "bears_on_cloth_z": [
+      515.9,
+      559.7
+     ],
+     "at_muzzle_tabs_mm": 32.7
+    }
    }
   },
   "full": {
    "roll_clip_mm": {
-    "R": 369.06227835278406,
-    "L": 374.8632885471971
+    "R": 424.2,
+    "L": 421.1
+   },
+   "bl031_roll_clip_mm": {
+    "R": 369.1,
+    "L": 374.9
+   },
+   "bend_deg": 75.0,
+   "roll_end_z": 917.8,
+   "roll_z_span": [
+    911.3,
+    1006.4
+   ],
+   "standoff": {
+    "R": {
+     "bears_on_cloth_z": [
+      506.7,
+      553.8
+     ],
+     "at_muzzle_tabs_mm": 28.7
+    },
+    "L": {
+     "bears_on_cloth_z": [
+      511.1,
+      558.2
+     ],
+     "at_muzzle_tabs_mm": 27.3
+    }
    }
+  }
+ },
+ "w3_roll": {
+  "S 15 in": {
+   "day": "below the roll",
+   "sixday": "below the roll",
+   "full": "below the roll"
+  },
+  "S 18 in": {
+   "day": "on the roll",
+   "sixday": "below the roll",
+   "full": "below the roll"
+  },
+  "M 17.5 in": {
+   "day": "below the roll",
+   "sixday": "below the roll",
+   "full": "below the roll"
+  },
+  "M 20.5 in": {
+   "day": "on the roll",
+   "sixday": "on the roll",
+   "full": "below the roll"
+  },
+  "L 20 in": {
+   "day": "on the roll",
+   "sixday": "on the roll",
+   "full": "below the roll"
+  },
+  "L 23 in": {
+   "day": "above the roll top",
+   "sixday": "on the roll",
+   "full": "below the roll"
   }
  }
 }

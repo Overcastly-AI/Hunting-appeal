@@ -131,15 +131,13 @@ def test_clip_path_clearances(pk):
     assert {"muzzle tab", "muzzle keeper cord", "hose slot", "bow tab", "B-26 cord (R)"} <= kinds
     parts = {k.split(" | ")[0] for k in rc["gaps"]}
     assert parts == {"RTM tab", "buckle envelope", "strap corridor"}           # buckle body + strap path, not the tab only
-    assert set(rc["accepted"]) == {"RTM tab | B-26 cord (R)"}
-    # W3 crosses the path by geometry: handled by the W3G guide on the path, under the RT strap
-    assert rc["w3_crossing"]["strap corridor"] == 0.0 and rc["w3_crossing"]["buckle envelope"] >= P.RT_CLEAR
+    # BL-043 (M-1, DECISION W3-OVER) supersedes BL-041 RT-OVER-W3: the buckle now sits under the B-26 cord, so the cord
+    # crosses the strap (accepted, soft on soft) and no longer the flat RTM tab; W3G is deleted
+    assert set(rc["accepted"]) == {"strap corridor | B-26 cord (R)"}
     g = rs.pieces["B-03"]
-    tacks = [ln for ln in g.internal_lines if "W3G guide tack" in (ln.label or "")]
-    assert len(tacks) == 2
-    xs = {round(0.5 * (ln.points[0][0] + ln.points[1][0]), 1) for ln in tacks}
-    assert xs == {round(rs.geo["rtm"]["x"], 1)}
-    assert "W3G" in rs.pieces and any(w["id"] == "W3G" for w in rs.webbing)
+    assert not [ln for ln in g.internal_lines if "W3G" in (ln.label or "")]
+    assert "W3G" not in rs.pieces and not any(w["id"] == "W3G" for w in rs.webbing)
+    assert rc["w3_hard_min"] >= P.RT_CLEAR - 1e-6
 
 
 def test_bl040_layout_fails_the_clearance_check(pk):
@@ -163,12 +161,14 @@ def test_fit_r3_covers_rifle_roll_clip_and_w3(kit):
 
 
 def test_hem_strap_and_gusset_path_agree(pk):
+    """BL-043 M-2 (DECISION RT-ORIGIN) supersedes BL-041's origin at the clip path: the strap is sewn at the roll end
+    (gusset centre), its sewn 60 mm on the frame-side half, ending at the roll-end notch."""
     rs = pk["ctx"].rs
     rl = rs.geo["rt_layout"]
-    assert 0.1 < rl["frac_top"] < 0.5
+    assert rl["frac_top"] == pytest.approx(0.5)
     rt = rs.geo["rt_on_b07"]
-    assert rt["R"]["x0"] == pytest.approx(rt["R"]["x_centre"])                 # sewn length lies aft of the crossing
-    assert rt["L"]["x1"] == pytest.approx(rt["L"]["x_centre"])
+    assert rt["R"]["x1"] == pytest.approx(rt["R"]["x_centre"])
+    assert rt["L"]["x0"] == pytest.approx(rt["L"]["x_centre"])
 
 
 # ---------------------------------------------------------------- Y-3 machine
@@ -191,7 +191,7 @@ def test_b25_is_38mm_and_clears_the_spine_clamp(pk):
     assert b["width_mm"] == 38.0 and b["band"] == (26.5, 64.5)
     assert b["clear_to_clamp_mm"] >= b["min_clear"]
     assert rs.pieces["B-25"].material_id == "poly_webbing_38mm"
-    assert b["length_mm"] == pytest.approx(387.0, abs=1.0)
+    assert b["length_bl041_mm"] == pytest.approx(387.0, abs=1.0)    # BL-043 B25-TOPO adds the drawn turn: length_mm
     assert "GBL" not in rs.pieces and not any(w["id"] == "GBL" for w in rs.webbing)
     rows = [r for r in pk["load_points"] if r["point"] == "B-25 bridle toggle tab"]
     assert rows and all(r["load_n"] == 323.0 and "TL-1 494 N" in r["proof"] and r["sf"] >= 1.3 for r in rows)
@@ -289,7 +289,7 @@ def test_ledger_books_the_rev3_parts():
     with F.revision(3):
         rows = {r["name"]: r for r in F.parts("M", "D2")}
     b = {n: r["g"] for n, r in rows.items() if n.startswith("BL-041")}
-    assert len(b) == 7
+    assert len(b) == 6                  # BL-043 deleted the W3G row (DECISION W3-OVER)
     assert next(v for n, v in b.items() if "B-18" in n) == pytest.approx(3.1, abs=0.1)
     assert next(v for n, v in b.items() if "RTM" in n) > 0 and next(v for n, v in b.items() if "GBL" in n) < 0
     assert next(v for n, v in b.items() if "B-25" in n) == pytest.approx(3.39, abs=0.02)
@@ -302,5 +302,6 @@ def test_ledger_books_the_rev3_parts():
 def test_recheck_status_and_ready_to_cut():
     ids = {i for i, *_ in M.RECHECK_STATUS}
     assert {"X-1", "X-2", "Y-1", "Y-2", "Y-3", "Y-4", "Y-5"} | {f"n-{k}" for k in range(1, 16)} <= ids
-    open_major = [i for i, c, st, _ in M.RECHECK_STATUS + M.REVIEW_STATUS if c in ("blocker", "major") and st != "fixed"]
+    open_major = [i for i, c, st, _ in M.RECHECK_STATUS + M.REVIEW_STATUS + M.THIRD_STATUS
+                  if c in ("blocker", "major") and st != "fixed"]
     assert M.ready_to_cut() == (not open_major)

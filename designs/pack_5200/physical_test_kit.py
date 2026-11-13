@@ -300,7 +300,7 @@ def he_fit_row() -> dict:
                 what_it_proves=f"the loaded pin centre sits {g['pin_z']:.0f} +/- {P.HE_PIN_TOL:.0f} mm above the floor seam line (frame z 60 with the floor at z 35), only the 18 mm neck is between the cheeks, the box top clears the cheeks",
                 gates="HE pattern before the PT-3 specimens and before the bag is cut", grams_at_stake_g="0",
                 safety_at_stake="hinge eye position: every sim and placement assumes the floor at z 35",
-                specimen=f"1 scrap HE sewn as op 4.05 (B-18 + B-01 offcut 150 x 120 + B-05 strip, floor seam sewn); one hinge fairlead printed 1:1 from the H1 STL (z 60, x 115 stay segment, 80 mm long) with its UHMWPE sleeve and the 5 mm pin",
+                specimen=f"1 scrap HE sewn as op 4.05 (B-18 + B-01 offcut 150 x 120 + B-05 strip, floor seam sewn); one hinge fairlead printed 1:1 from `print/frame_h1/test_pieces/hefit_hinge_fairlead_R.stl` (BL-042: z 60 R, 80 mm stay segment, 20 mm throat, 5.5 mm under the pin; ream the eye to 7.2) with its UHMWPE sleeve and the 5 mm pin",
                 kit="A+D",
                 steps="clamp the printed stay segment upright; push the pin through cheek, sleeve, eye, cheek; hang 5 kg from the B-05 strip so the eye loads the pin; measure with the caliper from the floor seam line to the pin centre; check the box top is below the cheeks' lower edge with daylight between them; check the eye is not folded over the box; photo",
                 pass_fail=f"pin centre {g['pin_z'] - P.HE_PIN_TOL:.0f}-{g['pin_z'] + P.HE_PIN_TOL:.0f} mm above the floor seam line; box top clear of the cheeks; neck alone in the 18 mm throat; eye points up (no fold-down)",
@@ -308,6 +308,29 @@ def he_fit_row() -> dict:
                 run_order="9", first_weekend="Y",
                 notes="BL-041 (re-review X-2): a gate BEFORE PT-3 is sewn and before bag cut, not QC-20 on a finished bag. A fail: the HE length (HE_EYE) is re-solved from the measured webbing thickness",
                 g_per_usd_eq="")
+
+
+# BL-043 m-8 / M-4: crown bar stock for TL-1 / TL-1b. TL-1 now carries the as-built half bridle (sleeve + mitre + run to
+# a spine stub 45.5 mm inboard of the sleeve centre), so its bar spans the stub as well: 200 mm (V-block 40 mm outside
+# the sleeve's outboard edge at x 64.5 -> x 125; inboard V-block beyond the stub at x 0 -> x -55). TL-1b keeps 160 mm.
+TL1_N_SPEC, TL1B_N_SPEC, TL1_CTRL = 5, 2, 1
+TL1_BAR_MM, TL1B_BAR_MM = 200.0, 160.0
+TL1_STOCK_MM = TL1_N_SPEC * TL1_BAR_MM + TL1_CTRL * TL1_BAR_MM + TL1B_N_SPEC * TL1B_BAR_MM      # 1520
+TL1_BUY_M = math.ceil(TL1_STOCK_MM * 1.10 / 500.0) * 0.5     # + 10 % kerf / squaring, in 0.5 m steps -> 2.0 m
+BORE_GAUGE = ("dial bore gauge 10-18 mm range, 0.01 mm, >= 110 mm reach (BL-043 m-7: basis A predicts dD at the LOOP "
+              "CENTRE; the gauge goes in through the open outboard tube end, anvils on the pull axis at the sleeve centre, "
+              "depth marked on the shaft; zero it on the unloaded tube)")
+
+
+def b25_specimen() -> str:
+    """TL-1 specimen: the as-built half bridle with the real turn (BL-043 M-4, DECISION B25-TOPO)."""
+    P = _P()
+    tp = P.F.b25_topology()
+    return (f"a HALF B-25 as built (DECISION B25-TOPO, SK-12): 38 mm toggle tab (2 x 30) | sleeve round the bar at x "
+            f"{tp['band_x'][0]:.1f}-{tp['band_x'][1]:.1f} from the spine centre, lap bartacked as at frame assembly | the "
+            f"strip down the aft side, the 45 deg MITRE under the sleeve | the run necked to {tp['neck_w_mm']:.0f} mm, "
+            "wrapped once round a 20 mm spine stub (crown spine tube offcut or 20 mm steel rod) bolted upright to the rig "
+            f"at x 0, under a {tp['clamp_collar_mm']:.0f} mm collar spacer, its end clamped behind the stub")
 
 
 def tl1b_row() -> dict:
@@ -318,11 +341,11 @@ def tl1b_row() -> dict:
                 what_it_proves="which ring model (A point load / B shear-flow / C 180 deg wrap) the rev C bar follows; credits basis B or C if it passes (kits S / M could then keep 25 mm)",
                 gates="none (data, not a gate); TL-1 is the gate", grams_at_stake_g="3.4",
                 safety_at_stake=f"basis A predicts first-ply failure at {ct['bare_rt_cap']} N pristine",
-                specimen="1-2 lengths of the real rev C crown bar stock (>= 160 mm) with a 25 mm B-25-style sleeve (lap bartacked), both toggles in the tab",
+                specimen=f"{TL1B_N_SPEC} lengths of the real rev C crown bar stock (>= {TL1B_BAR_MM:.0f} mm) with a 25 mm B-25-style sleeve (lap bartacked), both toggles in the tab",
                 kit="A+D",
-                steps=f"same rig as TL-1 (V-blocks >= 40 mm outside the sleeve, no cradle under it); dial gauge on a C-frame on the bare tube 2 mm outboard of the sleeve edge, along the pull; step 100 / 200 / 300 / 400 / {ct['proof_n']} N, read the gauge at each step; stop at the first knee or sound",
+                steps=f"same rig as TL-1 (V-blocks >= 40 mm outside the sleeve, no cradle under it); {BORE_GAUGE}; step 100 / 200 / 288 / 300 / 400 / {ct['proof_n']} N, read the gauge at each step; stop at the first knee or sound",
                 pass_fail=f"record only: dD at 288 N against the predictions A {ct['bare_dD_A_288']} / B {ct['bare_dD_B_288']} / C {ct['bare_dD_C_288']} mm; holds {ct['proof_n']} N linear with dD at or below the B line = basis B credited (tell the structural-fea-engineer)",
-                cost_usd="20", cost_basis="ASSUMPTION crown bar offcut + dial gauge on a C-frame (shared with TL-1)",
+                cost_usd="20", cost_basis="ASSUMPTION crown bar offcut + dial bore gauge (shared with TL-1)",
                 hours_hands_on="1.0", hours_machine="", phase="1", run_order="26", first_weekend="Y",
                 notes="BL-041 (crown_tube_guy_loop.md, orchestrator 2026-11-13): new", g_per_usd_eq="")
 
@@ -465,10 +488,10 @@ def new_rows(lv: dict, lid_g: float, cut: dict) -> list[dict]:
              gates="CORRIE F rev 3 first article (bag batch release)", grams_at_stake_g="0", safety_at_stake="fit only",
              specimen="first sewn bag + lid on P2; 5.0 L of dry rice in a bag; the owner's bow (in IMP-8) and rifle; the IM3 carabiners",
              kit="C+D",
-             steps="(1) LID-DART: fill the sewn lid with 5.0 L of dry rice, set it on a flat table: height 85 mm +/- 5, no pucker at the 4 corner darts (photo); (2) B11-PLACE: carry the bow in IMP-8 with the 2 BRL loops round the riser, and the rifle with the muzzle in the B-11 muzzle keeper, both sides: they sit and do not touch the frame (photo); (3) IM2 notch fit: IM2 strap girth-hitched on its eye seats in the fairlead notch (photo); (4) carabiner gate: the IM3 carabiner clips the T3 loop and the gate closes fully, 5 of 5; (5) ROLL CLIP + RIFLE + W3 (BL-041 RT-FWD / RT-OVER-W3): rifle muzzle in the keeper and W3 cinched through its W3G guide, both sides: the roll clip opens and closes gloved without touching the rifle or letting W3 off, and the buckle body clears the muzzle tab (photo); (6) MK-GAP: the barrel sits between the two muzzle tabs (30 mm clear) with the keeper cord closed round it",
-             pass_fail="6 of 6 yes (any no: photo to the pack-designer)", cost_usd="2", cost_basis="5 L of rice",
+             steps="(1) LID-DART: fill the sewn lid with 5.0 L of dry rice, set it on a flat table: height 85 mm +/- 5, no pucker at the 4 corner darts (photo); (2) B11-PLACE: carry the bow in IMP-8 with the 2 BRL loops round the riser, and the rifle with the muzzle in the B-11 muzzle keeper, both sides: they sit and do not touch the frame (photo); (3) IM2 notch fit: IM2 strap girth-hitched on its eye seats in the fairlead notch (photo); (4) carabiner gate: the IM3 carabiner clips the T3 loop and the gate closes fully, 5 of 5; (5) ROLL CLIP + RIFLE + W3 (BL-041 RT-FWD, BL-043 W3-OVER / RT-ORIGIN): 6-day load, rifle muzzle in the keeper, roll clipped, W3 cinched OVER everything, both sides: with W3's G-hook off the roll clip opens and closes gloved without touching the rifle, the strap leaves the roll at its END (not out of a gusset tuck) and the buckle body clears the muzzle tab (photo); (6) MK-GAP: the barrel sits between the two muzzle tabs (30 mm clear) with the keeper cord closed round it; (7) W3 SWEEP (BL-043 M-1), at BOTH ends of the owner's crown kit (shortest and longest torso setting): W3 cinched lies on webbing, cord or the roll only, never on the buckle body or the hose (measure the gap from W3's lower edge to the buckle top: >= 10 mm at the shortest setting), and the hose leaves its slot below W3 (photo each end)",
+             pass_fail="7 of 7 yes (any no: photo to the pack-designer)", cost_usd="2", cost_basis="5 L of rice",
              hours_hands_on="1.0", hours_machine="", phase="4", run_order="79", first_weekend="N",
-             notes="BL-040 (review m-18): added; the four fits were settled-by items with no row in the kit. BL-041 (re-review Y-2): rows 5-6 added", g_per_usd_eq=""),
+             notes="BL-040 (review m-18): added; the four fits were settled-by items with no row in the kit. BL-041 (re-review Y-2): rows 5-6 added. BL-043 (third review M-1 / M-2): row 5 for W3-OVER / RT-ORIGIN, row 7 (W3 at both ends of the owner's crown kit) added", g_per_usd_eq=""),
         he_fit_row(),
         tl1b_row(),
         dict(id="SL-1", status="ACTIVE", tier="grams", title="weigh the cord-pull door sliders and the printed label; gloved door cycles",
@@ -551,12 +574,12 @@ def tl1_patch() -> dict:
                 what_it_proves=f"the bar wall under the as-built 38 mm sleeve (basis A SF {ct['sf_static']} static / {ct['sf_fat']} fatigue on {ct['env_n']} N) and the POM toggles hold the proof: {P} N = {ct['env_n']} N / KD_eff (bar rule; the sewn 1.5 x rule gives {ct['sewn_proof_n']} N)",
                 gates="B-25 bridle (38 mm, BL-041) and the guy / crown-strap toggles: bag cut", grams_at_stake_g="3.4",
                 safety_at_stake=f"toggle proof {670 / P:.2f}; bar wall {ct['sf_static']} static / {ct['sf_fat']} fatigue (38 mm B-25, basis A)",
-                specimen=f"5 x the real rev C crown top bar stock ([+-45/0x5/+-45], wall 1.065, same vendor and clear coat; NOT a generic 18 mm offcut), each >= 160 mm, carrying an as-built 38 mm B-25 sleeve (lap bartacked as at frame assembly) with the guy toggle AND the crown-strap toggle in the tab; 1 untested control length",
-                steps=f"clamp the tube ends in V-blocks >= 40 mm outside the sleeve edges (the bar reacts as a beam), NO cradle or saddle under the sleeve; dial gauge on a C-frame on the bare tube 2 mm outboard of the sleeve edge, along the pull, zeroed; pull the guy toggle aft and outward as in the field in steps 100 / 200 / 300 / 400 / {P} N ({P / G:.1f} kg), reading the gauge at each step; hold {P} N 60 s, listening (phone microphone on the tube); unload, remove the sleeve, micrometer the loop centre at 0 and 90 deg; loupe + tap test against the control; repeat 1 sample after 4 h in the freezer (POM)",
-                pass_fail=f"5 of 5: (1) holds {P} N 60 s, toggle does not pull through or crack, no broken stitch; (2) no crackle; (3) gauge at {P} N within 1.15 x the straight line through the 100-300 N readings, no knee; (4) ovalisation <= 0.40 mm at {P} N (basis A {ct['dD_A']}, B {ct['dD_B']}, C {ct['dD_C']} mm); (5) out-of-round after unloading <= 0.02 mm more than before; (6) no crush mark, whitening or resin crack at 10x, tap test clean; the cold sample holds",
-                cost_usd="40", cost_basis="ASSUMPTION crown bar stock 1 m from the frame vendor + dial gauge on a C-frame + toggles",
+                specimen=f"{TL1_N_SPEC} x the real rev C crown top bar stock ([+-45/0x5/+-45], wall 1.065, same vendor and clear coat; NOT a generic 18 mm offcut), each >= {TL1_BAR_MM:.0f} mm, carrying {b25_specimen()}, with the guy toggle AND the crown-strap toggle in the tab; {TL1_CTRL} untested control length",
+                steps=f"clamp the tube ends in V-blocks >= 40 mm outside the sleeve edges (the bar reacts as a beam), NO cradle or saddle under the sleeve; {BORE_GAUGE}; pull the guy toggle aft and outward as in the field in steps 100 / 200 / 300 / 400 / {P} N ({P / G:.1f} kg), reading the gauge at each step; hold {P} N 60 s, listening (phone microphone on the tube); unload, remove the sleeve, micrometer the loop centre at 0 and 90 deg; check the mitre and the run did not slip (pen marks across the fold and at the stub); loupe + tap test against the control; repeat 1 sample after 4 h in the freezer (POM)",
+                pass_fail=f"5 of 5: (1) holds {P} N 60 s, toggle does not pull through or crack, no broken stitch; (2) no crackle; (3) gauge at {P} N within 1.15 x the straight line through the 100-300 N readings, no knee; (4) ovalisation at the LOOP CENTRE (bore gauge, BL-043 m-7) <= 0.40 mm at {P} N (basis A {ct['dD_A']}, B {ct['dD_B']}, C {ct['dD_C']} mm, all at the loop centre); (5) out-of-round after unloading <= 0.02 mm more than before; (6) no crush mark, whitening or resin crack at 10x, tap test clean; the cold sample holds",
+                cost_usd="100", cost_basis=f"ASSUMPTION crown bar stock {TL1_BUY_M:.1f} m from the frame vendor ({TL1_N_SPEC} x {TL1_BAR_MM:.0f} + {TL1_CTRL} control x {TL1_BAR_MM:.0f} + {TL1B_N_SPEC} TL-1b x {TL1B_BAR_MM:.0f} = {TL1_STOCK_MM / 1000:.2f} m + 10 %) + dial bore gauge (about USD 60) + toggles + 20 mm spine stub",
                 hours_hands_on="2.0",
-                notes=f"BL-041 (crown_tube_guy_loop.md 6, orchestrator 2026-11-13): {P} N on real bar stock with the 38 mm B-25 (was 432 N on a 25 mm loop round an offcut, which basis A puts above the bare bar's {ct['bare_rt_cap']} N). TL-1b is the bare-bar data test")
+                notes=f"BL-041 (crown_tube_guy_loop.md 6, orchestrator 2026-11-13): {P} N on real bar stock with the 38 mm B-25 (was 432 N on a 25 mm loop round an offcut, which basis A puts above the bare bar's {ct['bare_rt_cap']} N). TL-1b is the bare-bar data test. BL-043 (third review M-4, m-7, m-8): specimen with the real turn and run (B25-TOPO), ovalisation read at the loop centre with a bore gauge, stock {TL1_BUY_M:.1f} m")
 
 
 def patches(lv: dict, lid_g: float) -> dict:
@@ -566,7 +589,8 @@ def patches(lv: dict, lid_g: float) -> dict:
     f1 = abs(float(wpd["F-1"]["g"]))
     rel = lv["release"]
     return {
-        "MT-1": dict(specimen="12 loops: 10 x 25 mm poly webbing, box-X 25 x 25, stitch 301, 7 SPI, bonded nylon tex 135; + 2 IMC cam anchor tabs (BL-041, 21 x 25 box-X both ends, cam bar in one loop, a 5 mm pin in the other)",
+        "MT-1": dict(specimen="12 loops: 10 x 25 mm poly webbing, box-X 25 x 25, stitch 301, 7 SPI, bonded nylon tex 135; + 2 IMC cam anchor tabs cut to the pattern (BL-041; BL-043 m-4: "
+                     f"{4 * _P().IMC_FOLD:.0f} mm, {_P().IMC_FOLD:.0f} mm folds, 21 x 25 box-X both ends with {_P().IMC_LOOP:.0f} mm loops and each box {_P().IMC_TIP_GAP:.0f} mm in from its raw end; cam bar in one loop, a 5 mm pin in the other)",
                      steps="sew the loops exactly like the pack; loop over the 5 mm pin; 5 loops to 908 N (92.6 kg) and 5 to 1080 N (110.1 kg); the 2 IMC tabs (cam bar on a 5 mm pin each end) to 908 N; hold 1 min each",
                      pass_fail="5 of 5 hold 908 N (IM) and 5 of 5 hold 1080 N (US) for 1 min, 2 of 2 IMC hold 908 N, no broken stitch"),
         "CA-1": dict(
@@ -581,7 +605,7 @@ def patches(lv: dict, lid_g: float) -> dict:
                        defined_in="designs/pack_5200/tests_physical/CA1_fatigue_rig.md §6a; designs/pack_5200/analysis/im3_body_simloads.md (28 mm cheek, governing hook + strap); designs/pack_5200/analysis/loadpath_verification.md §4.1, §8",
                        what_it_proves=f"the 28 mm IM3 cheek survives 1e5 walking cycles with a 15 % load margin on the BL-021 sim demand (1.6 x {ec['combo_1g_n']:.1f} N hook + strap, 15fL = {ec['demand_n']:.0f} N) at the {ec['aft_deg']} deg DIR_SCATTER angle",
                        safety_at_stake="IM3 eye fatigue 1.218 at 0.30 (28 mm cheek, BL-021; 1.174 at DIR_SCATTER)",
-                       specimen="3 eye coupons: 120 mm stay segment round z 520 with the IM3 eye and the 28 mm cheek (BL-021), cut from the H1 STL, printed with the CA-1 bars",
+                       specimen="3 eye coupons: 120 mm stay segment round z 520 with the IM3 eye and the 28 mm cheek (BL-021), printed from `print/frame_h1/test_pieces/im3ec_cheek_R.stl` (BL-042: z 520 R, eye printed 7.0 / reamed 7.2), printed with the CA-1 bars",
                        steps=f"sewn T3 tongue + IM3 carabiner through the eye, led {ec['aft_deg']} deg aft of the stay axis (the DIR_SCATTER angle: computed {ec['aft_deg_computed']} deg + 10), coupon clamped by the stay ends; lever rig at R about 0.02 (F_min / peak): {ec['min_n']} -> {ec['peak_n']} N (F_min only keeps the rig taut), 1 Hz, to 1e5; loupe check every 25,000; then pull to {ec['proof_n']} N on the pull bench. (Equivalent alternative: {ec['alt_r01_peak_n']} N peak at R 0.1)",
                        pass_fail=f"3/3 run-outs to 1e5 at {ec['peak_n']} N, no crack at 10x; residual pull {ec['proof_n']} N with no crack",
                        notes=f"BL-040: angle {ec['aft_deg']} deg and R about 0.02 from the adopted structural countersign. BL-038: cheek 27 -> 28 mm (BL-021 adopted). BL-039: load {ec['peak_n']} N from the BL-021 sim demand (was 1017 N = 1.15 x 1.6 x 552.4 N, BL-010's 15 in IM3 force, below today's demand)"),
@@ -920,8 +944,9 @@ def measures(lv: dict, lid_g: float, cut: dict) -> dict:
         + per(5, "permanent out-of-round after unloading (increase)", "mm", "max", "0.02", "RING_SLICE", "set#")
         + per(5, f"held {crown_tube()['proof_n']} N 60 s, linear (no knee), silent, no crush mark / whitening at 10x, toggles whole", y, "yes", "Y", "GUY-TOGGLE; WIDE_SLEEVE", "hold#")
         + per(1, "cold sample (4 h freezer) held the proof", y, "yes", "Y", "GUY-TOGGLE", "cold"),
-        "TL-1b": [(f"{n}", f"ovalisation at {f} N", "mm", "record", "-", "RING_SLICE; BASIS_A") for n, f in
-                  (("1", 100), ("1", 200), ("1", 288), ("1", 400))] + per(1, "load at the first knee or sound (none: write the last step)", "N", "record", "-", "BASIS_A", "knee"),
+        "TL-1b": [(f"{n}", f"ovalisation at the loop centre at {f} N (bore gauge)", "mm", "record", "-", "RING_SLICE; BASIS_A")
+                  for n in [str(i + 1) for i in range(TL1B_N_SPEC)] for f in (100, 200, 288, 300, 400)]
+        + per(TL1B_N_SPEC, "load at the first knee or sound (none: write the last step)", "N", "record", "-", "BASIS_A", "knee"),
         "PT-5": per(1, "total slip after 10 cycles to 17.3 kg", "mm", "max", "5"),
         "PT-6": per(5, "held 143.7 kg (1410 N) 60 s, no box-X break, gate closes", y, "yes", "Y"),
         "LL-H": [x for cond, hold in (("dry", "1 h"), ("wet", "1 h"), ("cold", "10 min")) for x in
@@ -934,7 +959,13 @@ def measures(lv: dict, lid_g: float, cut: dict) -> dict:
                    ("bow", "B11-PLACE: bow in IMP-8 + BRL loops sits clear of the frame", y, "yes", "Y", "B11-PLACE"),
                    ("rifle", "B11-PLACE: rifle muzzle keeper holds, clear of the frame", y, "yes", "Y", "B11-PLACE"),
                    ("IM2", "IM2 strap seats in the fairlead notch", y, "yes", "Y", "IM2 NOTCH FIT"),
-                   ("gate", "IM3 carabiner gate closes on the T3 loop, out of 5", "count", "min", "5", "CARA-GATE")],
+                   ("gate", "IM3 carabiner gate closes on the T3 loop, out of 5", "count", "min", "5", "CARA-GATE"),
+                   ("clip", "roll clip opens / closes gloved with W3 off; strap leaves the roll END", y, "yes", "Y",
+                    "W3-OVER; RT-ORIGIN"),
+                   ("W3 short", "shortest kit setting: gap W3 lower edge -> buckle top", "mm", "min", "10",
+                    "W3-OVER (BL-043 M-1)"),
+                   ("W3 long", "longest kit setting: W3 on webbing / cord / roll only, hose clear", y, "yes", "Y",
+                    "W3-OVER; HOSE-LOW")],
         "HB-7": per(5, "no slip at 43.4 kg (426 N), 1 min", y, "yes", "Y", "HB7-426")
         + per(5, "slip load", "kg", "min", "50.0", "LL-SLIP", "s#"),
         "PORT-1": [("1", "towel dry after 1 min hose", y, "yes", "Y", "PORT_FACING_W; PORT_TURN"),
@@ -1315,12 +1346,14 @@ PREP = {
            "1. MT-1: 10 loops of 25 mm poly webbing; fold each end into a 20 mm loop and close it with a 25 x 25 mm "
            "box-X, stitch 301, 7 SPI, bonded nylon tex 135, Nm 140 round-point needle.",
            "2. PT-2: 5 x T3 tongue on a 70 mm B-17 tab on a B-01 swatch about 200 x 200 mm (`bag_attachment.md` 5 T3).",
-           "3. HE-FIT first (print one z 60 hinge fairlead from the H1 STL, sew 1 scrap hinge eye as op 4.05), then "
+           "3. HE-FIT first (print one z 60 hinge fairlead from `print/frame_h1/test_pieces/hefit_hinge_fairlead_R.stl`, sew 1 scrap hinge eye as op 4.05), then "
            "PT-3: 5 hinge-eye swatches sewn exactly as op 4.05 and sketch SK-8 of the release, IN ITS ORDER: B-18 rows "
            "first through B-18 + B-01 only, then the HE (folded in half, eye UP) and its box-X below the cheek line, "
            "B-18 and both HE raw ends in the B-01 | B-05 floor seam, no binding (register PT-3 specimen).",
-           "3a. TL-1 / TL-1b: buy 1 m of the real crown top bar stock from the frame vendor; sew 5 x 38 mm B-25 "
-           "sleeves (TL-1) and 2 x 25 mm (TL-1b) round 160 mm lengths, laps bartacked as at frame assembly.",
+           f"3a. TL-1 / TL-1b: buy {TL1_BUY_M:.1f} m of the real crown top bar stock from the frame vendor "
+           f"({TL1_STOCK_MM / 1000:.2f} m used); sew {TL1_N_SPEC} x 38 mm HALF B-25 bridles (TL-1: sleeve, mitre, "
+           f"necked run, as SK-12) round {TL1_BAR_MM:.0f} mm lengths and {TL1B_N_SPEC} x 25 mm sleeves (TL-1b) round "
+           f"{TL1B_BAR_MM:.0f} mm lengths, laps bartacked as at frame assembly; keep {TL1_CTRL} {TL1_BAR_MM:.0f} mm control.",
            "4. PT-6: 5 B-24 links to the cut list (carabiner + 3 loops).",
            "5. US-BS: 3 x 600 mm of 25 mm webbing threaded through a cam with the stainless tri-glide behind it.",
            "6. LL-H: 5 heavy ladder locks + nylon tri-glides and 15 x 600 mm of 25 mm webbing (5 dry, 5 wet, 5 cold); "

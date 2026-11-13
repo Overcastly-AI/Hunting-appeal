@@ -603,25 +603,28 @@ def clean_shell(mesh) -> tuple:
     return parts[0], dropped
 
 
+def _assert_stl_closed(path):
+    """BL-042: the file as a slicer reads it (STL round trip, vertices merged) must be closed and 2-manifold."""
+    import trimesh
+    m = trimesh.load(path)
+    if not m.is_watertight:
+        raise RuntimeError(f"{path}: not watertight after an STL round trip")
+
+
 def export_print(d_mid: float, d_up: float, log=print) -> dict:
-    """H1 print files from the release body (frame_h1.print_mesh + an exact IM3 eye-hole cut), split at z 234,
-    each half one closed shell, laid flat; written to designs/pack_5200/print/frame_h1/."""
-    import manifold3d as m3d
+    """H1 print files from the release body (frame_h1.print_mesh, which since BL-042 adds every fairlead complete and
+    cuts every pin hole, the IM3 eyes included), split at z 234, each half one closed shell, laid flat; written to
+    designs/pack_5200/print/frame_h1/."""
     from . import frame_h1 as H1
     from .frame_topopt import split_mesh
-    from .surface import _from_manifold, _to_manifold
     solid = final_solid(d_mid, d_up)
-    mesh = H1.print_mesh(solid, log=log)
-    man = _to_manifold(mesh)
-    for c_, half, r in im3_holes():
-        cyl = m3d.Manifold.cylinder(2 * half, r, r, 64, center=True)
-        cyl = cyl.transform(np.array([[0.0, 0, 1, c_[0]], [0, 1, 0, c_[1]], [-1, 0, 0, c_[2]]]))   # z axis -> x axis
-        man = man - cyl
-    mesh = _from_manifold(man)
+    fl_stats: dict = {}
+    mesh = H1.print_mesh(solid, log=log, stats=fl_stats)
     mesh, drop_a = clean_shell(mesh)
     H1.PRINT_DIR.mkdir(parents=True, exist_ok=True)
     mesh.export(H1.PRINT_DIR / "h1_assembled.stl")
-    info = {"d_mid": d_mid, "d_up": d_up, "im3_half_z": IM3_HALF_Z,
+    _assert_stl_closed(H1.PRINT_DIR / "h1_assembled.stl")
+    info = {"d_mid": d_mid, "d_up": d_up, "im3_half_z": IM3_HALF_Z, "fairleads_bl042": fl_stats,
             "assembled": {"faces": len(mesh.faces), "volume_cm3": round(mesh.volume / 1000, 2),
                           "g": round(mesh.volume * 1.06e-3, 1), "watertight": bool(mesh.is_watertight),
                           "shells": len(mesh.split(only_watertight=False)), "dropped": drop_a}}
@@ -632,6 +635,7 @@ def export_print(d_mid: float, d_up: float, log=print) -> dict:
         f = H1.lay_flat(m)
         f.export(H1.PRINT_DIR / f"h1_{nm}_flat.stl")
         f.export(H1.PRINT_DIR / f"h1_{nm}_flat.3mf")
+        _assert_stl_closed(H1.PRINT_DIR / f"h1_{nm}_flat.stl")
         info[nm] = {"faces": len(f.faces), "volume_cm3": round(f.volume / 1000, 2), "g": round(f.volume * 1.06e-3, 1),
                     "footprint_mm": [round(v, 1) for v in f.extents], "watertight": bool(f.is_watertight),
                     "shells": len(f.split(only_watertight=False)), "dropped": drop, "dropped_centre_frame_mm": where,

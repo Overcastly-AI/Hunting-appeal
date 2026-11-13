@@ -979,6 +979,38 @@ def belt_tabs(sc) -> int:
     return n
 
 
+def roll_clip_path(S, sk: dict, C, fr: dict, sx: float, z_clip: float, tab_frac: float | None = None) -> dict:
+    """One roll-clip strap (BL-020 model; a function since BL-043): from the roll end (the end of the roll centre line
+    ``C``, i.e. the gusset centre of the mouth flattened fore-aft) to the side-release on the gusset tab at height
+    ``z_clip``, a taut quadratic path pushed 2 mm off the solved cloth ``S`` plus the 38 mm tab hanging below the
+    buckle. ``tab_frac`` = where the tab sits across the gusset at z_clip, as a fraction of the drafted gusset row from
+    its frame-side edge (None = the row's middle, the BL-020 / BL-031 placement). Returns the path, its frames, the
+    buckle point B, the roll end E and the strap length (roll end to the tab bottom, as ``report['roll_clip_mm']``)."""
+    side = "R" if sx > 0 else "L"
+    piece = sk["piece"].astype(str)
+    e = -1 if sx > 0 else 0
+    E = C[e] + fr["T"][e] * (2.0 * sx)
+    gv = np.unique(sk["tris"][piece == f"B-03{side}"])
+    g0 = sk["X0"][gv]
+    row = gv[np.abs(g0[:, 2] - z_clip) < 10.0]
+    y_lo, y_hi = float(sk["X0"][row, 1].min()), float(sk["X0"][row, 1].max())
+    ymid = 0.5 * (y_lo + y_hi) if tab_frac is None else y_lo + float(tab_frac) * (y_hi - y_lo)
+    j = row[np.argmin(np.abs(sk["X0"][row, 1] - ymid))]
+    B, nB = S.near(sk["X"][j], 2.0)
+    B, nB = B[0], nB[0]
+    tabdn, _ = S.near(B + np.array([0, 0, -38.0]), 2.0)
+    ctrl = 0.5 * (E + B) + np.array([sx * 22.0, 0, 0])
+    tt = np.linspace(0, 1, 24)[:, None]
+    path = (1 - tt) ** 2 * E + 2 * tt * (1 - tt) * ctrl + tt ** 2 * B
+    path = S.push_out(np.vstack([path, tabdn[0]]), 2.0)
+    path = _smooth_path(path, 3.0, 5.0)
+    t = _unit(np.gradient(path, axis=0))
+    N = _unit(np.cross(t, [0.0, 1.0, 0.0]))
+    N *= np.sign(N[:, 0:1] * sx + 1e-9)
+    return {"path": path, "N": N, "t": t, "B": B, "E": E, "row_y": (y_lo, y_hi), "tab_y0": float(sk["X0"][j, 1]),
+            "length_mm": float(np.linalg.norm(np.diff(path, axis=0), axis=1).sum())}
+
+
 def s15_scene(state: str = "full", carry: bool = False, params: ClothParams | None = None, name: str | None = None,
               shell: str = "S15", torso: int = 19, force: bool = False, with_pouch: bool | None = None,
               skin_hook=None, scene_params: dict | None = None, pouch_soft: dict | None = None):
@@ -1049,24 +1081,8 @@ def s15_scene(state: str = "full", carry: bool = False, params: ClothParams | No
     piece = sk["piece"].astype(str)
     clip_pts = {}
     for sx, side in ((1, "R"), (-1, "L")):
-        e = -1 if sx > 0 else 0
-        E = C[e] + fr["T"][e] * (2.0 * sx)
-        gv = np.unique(sk["tris"][piece == f"B-03{side}"])
-        g0 = sk["X0"][gv]
-        row = gv[np.abs(g0[:, 2] - meta["z_clip"]) < 10.0]
-        ymid = 0.5 * (sk["X0"][row, 1].min() + sk["X0"][row, 1].max())
-        j = row[np.argmin(np.abs(sk["X0"][row, 1] - ymid))]
-        B, nB = S.near(sk["X"][j], 2.0)
-        B, nB = B[0], nB[0]
-        tabdn, _ = S.near(B + np.array([0, 0, -38.0]), 2.0)
-        ctrl = 0.5 * (E + B) + np.array([sx * 22.0, 0, 0])
-        tt = np.linspace(0, 1, 24)[:, None]
-        path = (1 - tt) ** 2 * E + 2 * tt * (1 - tt) * ctrl + tt ** 2 * B
-        path = S.push_out(np.vstack([path, tabdn[0]]), 2.0)
-        path = _smooth_path(path, 3.0, 5.0)
-        t = _unit(np.gradient(path, axis=0))
-        N = _unit(np.cross(t, [0.0, 1.0, 0.0]))
-        N *= np.sign(N[:, 0:1] * sx + 1e-9)
+        rc = roll_clip_path(S, sk, C, fr, sx, meta["z_clip"])
+        path, N, t, B = rc["path"], rc["N"], rc["t"], rc["B"]
         sc.add_strap(f"s15_roll_clip_{side}", path, N, 25.0, dent=False, label="Roll clip (ROLL family)", **vis)
         if hasattr(sc, "report"):          # BL-031: roll end to the gusset tab, for the tail audit (strap_tails)
             sc.report.setdefault("roll_clip_mm", {})[side] = float(np.linalg.norm(np.diff(path, axis=0), axis=1).sum())

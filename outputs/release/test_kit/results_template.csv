@@ -134,11 +134,18 @@ HB-7-07,HB-7,G2,CARRY,s#2,slip load,kg,min,50.0,,,,,LL-SLIP
 HB-7-08,HB-7,G2,CARRY,s#3,slip load,kg,min,50.0,,,,,LL-SLIP
 HB-7-09,HB-7,G2,CARRY,s#4,slip load,kg,min,50.0,,,,,LL-SLIP
 HB-7-10,HB-7,G2,CARRY,s#5,slip load,kg,min,50.0,,,,,LL-SLIP
-TL-1b-01,TL-1b,G2,DATA,1,ovalisation at 100 N,mm,record,-,,,,,RING_SLICE; BASIS_A
-TL-1b-02,TL-1b,G2,DATA,1,ovalisation at 200 N,mm,record,-,,,,,RING_SLICE; BASIS_A
-TL-1b-03,TL-1b,G2,DATA,1,ovalisation at 288 N,mm,record,-,,,,,RING_SLICE; BASIS_A
-TL-1b-04,TL-1b,G2,DATA,1,ovalisation at 400 N,mm,record,-,,,,,RING_SLICE; BASIS_A
-TL-1b-05,TL-1b,G2,DATA,knee1,load at the first knee or sound (none: write the last step),N,record,-,,,,,BASIS_A
+TL-1b-01,TL-1b,G2,DATA,1,ovalisation at the loop centre at 100 N (bore gauge),mm,record,-,,,,,RING_SLICE; BASIS_A
+TL-1b-02,TL-1b,G2,DATA,1,ovalisation at the loop centre at 200 N (bore gauge),mm,record,-,,,,,RING_SLICE; BASIS_A
+TL-1b-03,TL-1b,G2,DATA,1,ovalisation at the loop centre at 288 N (bore gauge),mm,record,-,,,,,RING_SLICE; BASIS_A
+TL-1b-04,TL-1b,G2,DATA,1,ovalisation at the loop centre at 300 N (bore gauge),mm,record,-,,,,,RING_SLICE; BASIS_A
+TL-1b-05,TL-1b,G2,DATA,1,ovalisation at the loop centre at 400 N (bore gauge),mm,record,-,,,,,RING_SLICE; BASIS_A
+TL-1b-06,TL-1b,G2,DATA,2,ovalisation at the loop centre at 100 N (bore gauge),mm,record,-,,,,,RING_SLICE; BASIS_A
+TL-1b-07,TL-1b,G2,DATA,2,ovalisation at the loop centre at 200 N (bore gauge),mm,record,-,,,,,RING_SLICE; BASIS_A
+TL-1b-08,TL-1b,G2,DATA,2,ovalisation at the loop centre at 288 N (bore gauge),mm,record,-,,,,,RING_SLICE; BASIS_A
+TL-1b-09,TL-1b,G2,DATA,2,ovalisation at the loop centre at 300 N (bore gauge),mm,record,-,,,,,RING_SLICE; BASIS_A
+TL-1b-10,TL-1b,G2,DATA,2,ovalisation at the loop centre at 400 N (bore gauge),mm,record,-,,,,,RING_SLICE; BASIS_A
+TL-1b-11,TL-1b,G2,DATA,knee1,load at the first knee or sound (none: write the last step),N,record,-,,,,,BASIS_A
+TL-1b-12,TL-1b,G2,DATA,knee2,load at the first knee or sound (none: write the last step),N,record,-,,,,,BASIS_A
 FRAY-1-01,FRAY-1,G3,BAG-CUT,ULTRA|330D,no fray past the 2nd row after 3 washes,Y/N,yes,Y,,,,,NO-BIND
 FRAY-1-02,FRAY-1,G3,BAG-CUT,330D|330D,no fray past the 2nd row after 3 washes,Y/N,yes,Y,,,,,NO-BIND
 FRAY-1-03,FRAY-1,G3,BAG-CUT,500D|330D,no fray past the 2nd row after 3 washes,Y/N,yes,Y,,,,,NO-BIND
@@ -257,6 +264,9 @@ FIT-R3-02,FIT-R3,G7,BAG-BATCH,bow,B11-PLACE: bow in IMP-8 + BRL loops sits clear
 FIT-R3-03,FIT-R3,G7,BAG-BATCH,rifle,"B11-PLACE: rifle muzzle keeper holds, clear of the frame",Y/N,yes,Y,,,,,B11-PLACE
 FIT-R3-04,FIT-R3,G7,BAG-BATCH,IM2,IM2 strap seats in the fairlead notch,Y/N,yes,Y,,,,,IM2 NOTCH FIT
 FIT-R3-05,FIT-R3,G7,BAG-BATCH,gate,"IM3 carabiner gate closes on the T3 loop, out of 5",count,min,5,,,,,CARA-GATE
+FIT-R3-06,FIT-R3,G7,BAG-BATCH,clip,roll clip opens / closes gloved with W3 off; strap leaves the roll END,Y/N,yes,Y,,,,,W3-OVER; RT-ORIGIN
+FIT-R3-07,FIT-R3,G7,BAG-BATCH,W3 short,shortest kit setting: gap W3 lower edge -> buckle top,mm,min,10,,,,,W3-OVER (BL-043 M-1)
+FIT-R3-08,FIT-R3,G7,BAG-BATCH,W3 long,"longest kit setting: W3 on webbing / cord / roll only, hose clear",Y/N,yes,Y,,,,,W3-OVER; HOSE-LOW
 PT-7-01,PT-7,G7,BAG-BATCH,1,passes the register criterion: no tooth separation,Y/N,yes,Y,,,,,
 WP-4-01,WP-4,G7,BAG-BATCH,1,"passes the register criterion: covers to the B-05 seam, no gap at the hinge band",Y/N,yes,Y,,,,,
 WP-5-01,WP-5,G7,BAG-BATCH,1,passes the register criterion: no audible tick at 1 m,Y/N,yes,Y,,,,,B-10 TPU TRIM

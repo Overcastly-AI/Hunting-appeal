@@ -33,21 +33,20 @@ webbing,poly_webbing_25mm,W3x1,0.987,,,,-,"haul wrap W3, kit M (crown kit M)","h
 webbing,poly_webbing_25mm,W3x1,0.935,,,,-,"haul wrap W3, kit L (crown kit L)","hot knife at 935 mm (36.82 in), seal both ends","automatic hot-knife webbing cutter, length stop",-
 webbing,poly_webbing_25mm,WXx3,0.74,,,,-,W haul extender (meat-trip kit) (meat_trip),"hot knife at 740 mm (29.13 in), seal both ends","automatic hot-knife webbing cutter, length stop",-
 webbing,poly_webbing_25mm,K-Wx6,0.08,,,,-,"W gore keeper loop (6, in the gore seams) (base)","hot knife at 80 mm (3.15 in), seal both ends","automatic hot-knife webbing cutter, length stop",-
-webbing,poly_webbing_25mm,RTx2,0.51,,,,-,roll-top side clip strap (base),"hot knife at 510 mm (20.08 in), seal both ends","automatic hot-knife webbing cutter, length stop",-
+webbing,poly_webbing_25mm,RTx2,0.56,,,,-,roll-top side clip strap (base),"hot knife at 560 mm (22.05 in), seal both ends","automatic hot-knife webbing cutter, length stop",-
 webbing,poly_webbing_25mm,RTMx2,0.07,,,,-,roll-clip buckle tab on the gusset (female half) (base),"hot knife at 70 mm (2.76 in), seal both ends","automatic hot-knife webbing cutter, length stop",-
-webbing,poly_webbing_25mm,W3Gx2,0.06,,,,-,"W3 guide on the gusset (W3 under, RT strap over) (base)","hot knife at 60 mm (2.36 in), seal both ends","automatic hot-knife webbing cutter, length stop",-
 webbing,elastic_25mm,K-RTx2,0.09,,,,-,roll clip tail keeper (25 mm elastic) (base),"hot knife at 90 mm (3.54 in), seal both ends","automatic hot-knife webbing cutter, length stop",-
 webbing,poly_webbing_25mm,IM1x1,0.99,,,,-,internal meat strap IM1 (base),"hot knife at 990 mm (38.98 in), seal both ends","automatic hot-knife webbing cutter, length stop",-
 webbing,poly_webbing_25mm,IM2x1,1.023,,,,-,internal meat strap IM2 (base),"hot knife at 1023 mm (40.28 in), seal both ends","automatic hot-knife webbing cutter, length stop",-
 webbing,poly_webbing_25mm,IM3x1,1.083,,,,-,internal meat strap IM3 (base),"hot knife at 1083 mm (42.64 in), seal both ends","automatic hot-knife webbing cutter, length stop",-
-webbing,poly_webbing_25mm,IMCx3,0.18,,,,-,IM cam anchor tab (cam bar <-> hook / carabiner) (base),"hot knife at 180 mm (7.09 in), seal both ends","automatic hot-knife webbing cutter, length stop",-
+webbing,poly_webbing_25mm,IMCx3,0.192,,,,-,IM cam anchor tab (cam bar <-> hook / carabiner) (base),"hot knife at 192 mm (7.56 in), seal both ends","automatic hot-knife webbing cutter, length stop",-
 webbing,elastic_25mm,K-IMx3,0.09,,,,-,IM tail keeper (25 mm elastic) (base),"hot knife at 90 mm (3.54 in), seal both ends","automatic hot-knife webbing cutter, length stop",-
 webbing,poly_webbing_38mm,IMEx6,0.2,,,,-,IM fairlead eye (38 mm) (base),"hot knife at 200 mm (7.87 in), seal both ends","automatic hot-knife webbing cutter, length stop",-
 webbing,poly_webbing_25mm,USx2,0.55,,,,-,under-strap US1 / US2 (base),"hot knife at 550 mm (21.65 in), seal both ends","automatic hot-knife webbing cutter, length stop",-
 webbing,poly_webbing_38mm,B-24x2,0.435,,,,-,"float stand-off link (38 mm, meat-trip) (meat_trip)","hot knife at 435 mm (17.13 in), seal both ends","automatic hot-knife webbing cutter, length stop",-
 webbing,poly_webbing_38mm,HEx2,0.086,,,,-,hinge eye (38 mm) (base),"hot knife at 86 mm (3.39 in), seal both ends","automatic hot-knife webbing cutter, length stop",-
 webbing,poly_webbing_38mm,T3x2,0.16,,,,-,IM3 bag-hook tongue (38 mm) (base),"hot knife at 160 mm (6.30 in), seal both ends","automatic hot-knife webbing cutter, length stop",-
-webbing,poly_webbing_38mm,B-25x1,0.387,,,,-,"guy bridle on the crown top bar (38 mm, BL-041) (base)","hot knife at 386 mm (15.22 in), seal both ends","automatic hot-knife webbing cutter, length stop",-
+webbing,poly_webbing_38mm,B-25x1,0.479,,,,-,"guy bridle on the crown top bar (38 mm, BL-041 / BL-043 topology) (base)","hot knife at 479 mm (18.87 in), seal both ends","automatic hot-knife webbing cutter, length stop",-
 webbing,poly_webbing_25mm,TGx2,0.5,,,,-,port guy (B-25 toggle -> B-27 port -> B-22 inside) (base),"hot knife at 500 mm (19.69 in), seal both ends","automatic hot-knife webbing cutter, length stop",-
 webbing,poly_webbing_25mm,LLTx2,0.07,,,,-,guy ladder-lock tab on B-22 (base),"hot knife at 70 mm (2.76 in), seal both ends","automatic hot-knife webbing cutter, length stop",-
 webbing,elastic_25mm,K-Gx2,0.09,,,,-,guy tail keeper (25 mm elastic) (base),"hot knife at 90 mm (3.54 in), seal both ends","automatic hot-knife webbing cutter, length stop",-

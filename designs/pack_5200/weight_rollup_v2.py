@@ -279,6 +279,8 @@ STEP_META = {   # id: (class, ticket, short label, kind, gate)
     "C8": ("P", "BL-006 a2", "belt webbing re-booked", "correction", "HB-7 (planned lock-slip test)"),
     "H1B": ("P", "BL-024/027/021", "H1 body (sleeve growth, buckling members, 28 mm IM3 cheeks)",
             "safety", "MT-1 cinch, CA-1 PAHT ratio >= 0.255, T1/T2 gauges (release R1; failing adds mass, never removes)"),
+    "H1F": ("P", "BL-042", "H1 fairleads completed outside the voxel envelope (12, hinge saddle)", "correction",
+            "HE-FIT / IM3-EC test pieces; first-article weigh (print/frame_h1/README.md section 7)"),
     "BL031": ("P", "BL-031 (owner)", "strap tails: lifters, sternum, stabilizers cut to length; belt tail + keepers",
               "design", "T9 gloved cinch trial (TAIL_GRIP 50 mm), R-06 fit trial (sternum), HB-D1 (stabilizers)"),
     "P_pkgC": ("P", "package C (2026-11-09)", "7075 belt plate; C-4 / C-7 rev C fixes", "safety",

@@ -80,7 +80,7 @@ BL-004 REC: T2 tongues x2 (38 mm x 160),attachment,base,-8.95,removed,,,
 BL-004 REC: B-23 IM2 tongue backings x2,attachment,base,-7.1,removed,,,
 BL-004 REC: elastic keepers for the IM2 hooks x2,attachment,base,-2.7,removed,,,
 BL-004 REC: hood B-19 + B-19s + B-19L + ladders B-20 + tongues/toggles + grab tab,attachment,base,-58.1,removed,,,
-BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle,attachment,base,9.52,hardware,,,the POM toggles (now on the guy's B-25 end); webbing: BL-041 row
+"BL-004 REC: guy toggles x2 (POM, in the B-25 tabs; row booked with the old guy bar loops, their 25 mm webbing removed by the BL-041 row)",attachment,base,9.52,hardware,,,the POM toggles (on the guy's B-25 end); webbing: BL-041 row
 BL-004 REC: B-17 trimmed 110 -> 70 mm tall (pair),attachment,base,-7.2,pattern,B-17,,B-17 drawn 90 x 70
 BL-010 A1: IM3 bag hooks -> wiregate carabiners (2),attachment,base,16.0,hardware,,,
 BL-010 A3: guy ladder locks -> heavy (2),attachment,base,6.0,hardware,,,
@@ -91,7 +91,7 @@ BL-022 rev 1: B-25 guy bridle on the top bar at x +/-52,attachment,base,7.43,web
 "BL-031: W1-W3 cut for carry (1340->750, 1412->822, 1618->987 mm)",straps_compression,base,-32.61,webbing,,W1 W2 W3,
 "BL-031: W1-W3 haul extenders (3, 2.22 m 25 mm + rated G-hook each; meat haul, float clamp, antler / cape lash)",straps_compression,meat_trip,63.96,webbing,,WX,+ rated G-hooks
 "BL-031: IM1-IM3 tail keepers (3, 25 mm elastic)",straps_meat,base,4.05,webbing,,K-IM,
-BL-031: roll-top clip straps cut 350 -> 510 mm (2),straps_compression,base,5.76,webbing,,RT,
+BL-031: roll-top clip straps cut 350 -> 560 mm (2),straps_compression,base,7.56,webbing,,RT,
 "BL-031: roll-top clip tail keepers (2, 25 mm elastic)",straps_compression,base,2.7,webbing,,K-RT,
 "BL-034 records: US1/US2 backstop tri-glides -> stainless 25 mm (2 x 11 g, 3.75 kN; orchestrator 2026-11-13: stops cradle slip)",straps_meat,base,0.0,hardware,,,hardware / elastic re-booked on the BL-034 records
 BL-034 records: lifter tri-glide keepers (2 x 2.6 g nylon),attachment,base,0.0,hardware,,,hardware / elastic re-booked on the BL-034 records
@@ -105,6 +105,7 @@ BL-034 records: guy tail elastic keepers (2 x 1.35 g),attachment,base,1.5,hardwa
 "BL-041: B-18 hinge doublers 90 x 45 -> 90 x 62 (BL-040 HE-ONE, x2)",attachment,base,3.06,pattern,,,B-18 growth; weighed with the bag-side load spreaders row
 "BL-041: HE hinge eyes 150 -> 86 mm (DECISION HE-PIN, x2)",attachment,base,-3.58,webbing,,HE,HE-PIN length change
 "BL-041: RTM roll-clip buckle tabs (2 x 70 mm, BL-040 RT-MATE)",straps_compression,base,2.52,webbing,,RTM,
-"BL-041: W3G W3 guides on the gussets (2 x 60 mm, DECISION RT-OVER-W3)",straps_compression,base,2.16,webbing,,W3G,
 "BL-041: GBL guy bar loop webbing deleted (2 x 170 mm; rev 1+ toggles the guy into the B-25 tab, the toggles stay)",attachment,base,-6.12,removed,,,carried nothing in rev 3
 "BL-041: IMC IM cam anchor tabs (3 x 180 mm, DECISION IM-CAM-TAB)",straps_meat,base,9.72,webbing,,IMC,
+"BL-043: B-25 bridle drawn topology (sleeve, mitre, necked run, spine wrap) 386 -> 479 mm (DECISION B25-TOPO)",attachment,base,2.6,webbing,,B-25,B25-TOPO
+"BL-043: IMC tabs 180 -> 192 mm (m-4, 5 mm raw-end margin, x3)",straps_meat,base,0.65,webbing,,IMC,m-4

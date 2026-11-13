@@ -90,7 +90,8 @@ def test_roll_top_has_a_mating_buckle_tab(pk):
     assert any("RTM roll-clip buckle tab" in (ln.label or "") for ln in g.internal_lines)
     # BL-041 RT-FWD: the bar sits RT_CLEAR above the B-26 cord, on the clip path (was 150 mm under, mid depth)
     assert rs.geo["rtm"]["z"] == pytest.approx(rs.geo["z_c"] - rs.geo["rtm"]["below_seam_mm"])
-    assert 120.0 < rs.geo["rtm"]["below_seam_mm"] <= 150.0
+    # BL-043 W3-OVER: the buckle sits under the lowest W3 edge (kit S 15 in), about 200 mm under the seam
+    assert 150.0 < rs.geo["rtm"]["below_seam_mm"] <= 220.0
     b07 = rs.pieces["B-07"]
     assert sum("RT roll-clip strap" in (ln.label or "") for ln in b07.internal_lines) == 2
     seqs = [o.seq for o in pk["ops"]]
@@ -245,7 +246,11 @@ def test_colourway_is_a_named_primary_pairing(pk):
 def test_review_status_and_ready_to_cut(pk):
     ids = {i for i, *_ in M.REVIEW_STATUS}
     assert {f"B-{k}" for k in range(1, 4)} | {f"M-{k}" for k in range(1, 14)} | {f"m-{k}" for k in range(1, 22)} <= ids
-    assert M.ready_to_cut()
+    assert all(st == "fixed" for _, c, st, _ in M.REVIEW_STATUS if c in ("blocker", "major"))
+    # BL-043: the third review's hinge-eye items (Z-1, Z-2, M-3) stay open until BL-042 / BL-044
+    open_ = [i for i, c, st, _ in M.REVIEW_STATUS + M.RECHECK_STATUS + M.THIRD_STATUS
+             if c in ("blocker", "major") and st != "fixed"]
+    assert M.ready_to_cut() == (not open_)
 
 
 def test_released_cutlist_has_unique_piece_ids():

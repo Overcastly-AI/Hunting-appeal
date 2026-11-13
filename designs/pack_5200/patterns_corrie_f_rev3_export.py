@@ -57,7 +57,14 @@ STEPS = [   # (file, title, piece ids) in the build order of the release README
 
 # ---- BL-041 n-6 / n-7: printed notes and the 1:1 webbing-marks pages ------------------------------------------------
 NOTE_MAX = 40                       # a label note longer than this goes to the NOTES page (the DXF keeps it in full)
-WEB_MARKS = [("HE", None), ("RTM", None), ("W3G", None), ("LLT", None), ("IMC", None), ("T3", None), ("US", 110.0)]
+WEB_MARKS = [("HE", None), ("RTM", None), ("LLT", None), ("IMC", None), ("T3", None), ("US", 110.0), ("RT", 110.0),
+             ("B-25", 222.0)]
+# BL-043 m-12: W3G deleted (W3-OVER); RT (sewn end) and B-25 (R half to the neck; the L half mirrors it) added; every
+# line gets a leader label beside the strip (not only a legend under it)
+WEB_GROUPS = (("HE", "RTM"), ("IMC", "LLT"), ("T3", "US"), ("B-25", "RT"))   # tall strip left, short one right: the
+#                                     test square sits bottom right, under the short strip
+WEB_LABEL_W = 46.0                  # mm of label column right of each strip
+WEB_WRAP = 30
 
 
 def print_copy(p):
@@ -81,9 +88,14 @@ def _crop(p, L):
     w = p.bounds(cut=False)[2]
     q = rect_panel(p.name, w, L, 0.0, seam_allowance_mm=0.0, material_id=p.material_id, quantity=p.quantity,
                    piece_id=p.piece_id)
+    from shapely.geometry import LineString, box
     for ln in p.internal_lines:
         if all(pt[1] <= L for pt in ln.points):
             q.add_internal_line(ln.points, ln.kind, ln.label, ln.closed)
+        elif not ln.closed and min(pt[1] for pt in ln.points) < L and len(ln.points) > 1:
+            g = LineString(ln.points).intersection(box(-1.0, -1.0, w + 1.0, L))   # BL-043: a line that runs past the crop
+            if g.geom_type == "LineString" and g.length > 1.0:                    # is cut at it, not dropped
+                q.add_internal_line(list(g.coords), ln.kind, ln.label, False)
     return q
 
 
@@ -114,14 +126,14 @@ def notes_and_marks_pdf(rs, ids, path: Path, title: str) -> int:
     pages = 1
     pcs = [(_crop(rs.pieces[i], L) if L else rs.pieces[i], i, L) for i, L in WEB_MARKS if i in rs.pieces]
     byid = {t[1]: t for t in pcs}
-    groups = [[byid[i] for i in ids_ if i in byid] for ids_ in (("HE", "RTM", "W3G", "LLT"), ("IMC", "T3", "US"))]
+    groups = [[byid[i] for i in ids_ if i in byid] for ids_ in WEB_GROUPS]
     groups = [g_ for g_ in groups if g_]
     for gi, grp in enumerate(groups):
         c.setFont("Helvetica-Bold", 11)
         c.drawString(12 * MM, (ph - 12) * MM, f"{TITLE}: webbing marks 1:1 (page {gi + 1} of {len(groups)})")
         c.setFont("Helvetica", 8)
         c.drawString(12 * MM, (ph - 17) * MM, "Check the test square, lay the hot-knifed strip on its outline, chalk "
-                     "the folds (blue dash-dot), boxes and lines (grey dashed).")
+                     "the folds (blue dash-dot), boxes and lines (grey dashed). Each line is named by its leader.")
         x = 14.0
         for q, i, L in grp:
             w, h = q.bounds(cut=False)[2], q.bounds(cut=False)[3]
@@ -133,19 +145,28 @@ def notes_and_marks_pdf(rs, ids, path: Path, title: str) -> int:
             c.setFont("Helvetica-Bold", 8)
             c.drawString(x * MM, (y0 - 5) * MM, f"{i}  {w:.0f} x {rs.pieces[i].bounds(cut=False)[3]:.0f} mm")
             c.setFont("Helvetica", 6.5)
-            c.drawString(x * MM, (y0 - 9) * MM, f"cut {rs.pieces[i].quantity}" + (f"; first {L:.0f} mm shown" if L else ""))
-            yy = y0 - 13
-            floor = 130.0 if x + w > pw - 115 else 14.0       # keep clear of the test square (bottom right)
-            seen = set()
+            c.drawString(x * MM, (y0 - 9) * MM, f"cut {rs.pieces[i].quantity}" + (
+                f"; first {L:.0f} mm shown" + ("; the L half mirrors it" if i == "B-25" else "") if L else ""))
+            # leader labels: one per named line, at its height, pushed apart so none overlap
+            tags = []
             for ln in q.internal_lines:
-                lab = (ln.label or "").split(" box-X")[0]
-                if lab and lab not in seen and ln.kind in ("fold", "stitch", "placement"):
-                    seen.add(lab)
-                    for t in _wrap(lab, 26)[:2]:
-                        if yy > floor:
-                            c.drawString(x * MM, yy * MM, t)
-                        yy -= 3
-            x += w + 22.0
+                lab = (ln.label or "").strip()
+                if not lab or ln.kind not in ("fold", "stitch", "placement"):
+                    continue
+                ys = [pt[1] for pt in ln.points]
+                xs = [pt[0] for pt in ln.points]
+                tags.append([0.5 * (min(ys) + max(ys)), max(xs), 0.5 * (min(ys) + max(ys)), lab])
+            tags.sort(key=lambda r: -r[0])
+            gap = 3.2
+            for k in range(1, len(tags)):
+                tags[k][2] = min(tags[k][2], tags[k - 1][2] - gap * len(_wrap(tags[k - 1][3], WEB_WRAP)[:2]))
+            c.setFont("Helvetica", 5.5)
+            for ly, lx, ty, lab in tags:
+                c.setLineWidth(0.25)
+                c.line((x + lx) * MM, (y0 + ly) * MM, (x + w + 3) * MM, (y0 + ty) * MM)
+                for k, tline in enumerate(_wrap(lab, WEB_WRAP)[:2]):
+                    c.drawString((x + w + 4) * MM, (y0 + ty - 1 - k * 2.6) * MM, tline)
+            x = max(x + w + WEB_LABEL_W + 6.0, 104.0)
         draw_test_squares(c, (pw - 112) * MM, 14 * MM)
         c.showPage()
         pages += 1
@@ -590,6 +611,12 @@ diamonds. Tape on the back, then check the test square again.
   roll-clip path moved forward of the muzzle keepers (RTM at flat x 91, 133.5 mm under the collar seam; muzzle tabs
   111 / 171 mm), W3G guide on the path; IMC cam anchor tabs; B-25 in 38 mm (sleeves x 26.5-64.5); GBL deleted; long
   piece notes on a NOTES page and a 1:1 webbing-marks page at the end of step 2.
+- BL-043 (third-review fixes): W3 rides at the crown-bar height (z 601-804 over the kits), so the W3G guide is gone
+  (DECISION W3-OVER: W3 is the outer layer, slacken it to open the top); the RTM buckle tab moves 10 mm under W3's
+  lowest edge (z {rtm_z:.0f}, flat x {rtm_x:.0f}), the hose slots too (z {hose_z:.0f}, DECISION HOSE-LOW); the RT strap is
+  sewn at the roll end again (DECISION RT-ORIGIN; 'roll end' and 'B-07s strip end' notches on B-07; RT cut {rt_cut:.0f});
+  muzzle tabs {mk0:.0f} / {mk1:.0f} mm; B-25 drawn with its mitre turns and 25 mm neck (SK-12, cut {b25:.0f}); IMC 192 mm;
+  webbing pages carry a leader label on every line, with B-25 and RT added.
 
 ## 5. Build order and what to print
 
@@ -705,7 +732,9 @@ def export_all(nest10=True, log=print):
         nfab=s["fabric_types"], nwebt=s["webbing_types"],
         nweb=len(rsP.webbing), nseams=len(rep.results), nmis=len(rep.mismatches), pm=mc["pattern_g"], lm=mc["ledger_g"],
         dpct=mc["delta_pct"], pages="\n".join(f"| `print_letter/{fn}.pdf` | {title} | {pages[fn]} |" for fn, title, _ in STEPS),
-        yd1=t[1], yd10=t[10], yd50=t[50], yd100=t[100]))
+        yd1=t[1], yd10=t[10], yd50=t[50], yd100=t[100], rtm_z=rsP.geo["rtm"]["z"], rtm_x=rsP.geo["rtm"]["x"],
+        hose_z=PR.HOSE_Z, rt_cut=next(w["length_mm"] for w in rsP.webbing if w["id"] == "RT"),
+        mk0=rsP.geo["rt_layout"]["mk_dx"][0], mk1=rsP.geo["rt_layout"]["mk_dx"][1], b25=rsP.geo["b25"]["length_mm"]))
     shots = make_screens(rsP, mkP, mk10, log)
     summ = {**s, "seam_mismatches": [r.seam.name for r in rep.mismatches], "mass_check": {k: v for k, v in mc.items() if k != "rows"},
             "reconcile": {k: v for k, v in rec.items() if k != "rows"}, "lid_hours": {k: v for k, v in hours.items() if k != "rows"},

@@ -1,6 +1,6 @@
 # Shopping list (BL-038)
 
-Total **USD 2,419.04**. Prices from material records, cited shop pages (links), or marked ASSUMPTION (check at purchase). Cited or record-priced: USD 1,037.04; ASSUMPTION: USD 1,382.00. Prices checked 2026-11-10 (TEST_PLAN §4) and 2026-11-13.
+Total **USD 2,479.04**. Prices from material records, cited shop pages (links), or marked ASSUMPTION (check at purchase). Cited or record-priced: USD 1,037.04; ASSUMPTION: USD 1,442.00. Prices checked 2026-11-10 (TEST_PLAN §4) and 2026-11-13.
 
 **Order these first (long lead):**
 
@@ -17,8 +17,8 @@ Total **USD 2,419.04**. Prices from material records, cited shop pages (links), 
 | Kit B lever rig | 317.50 |
 | Kit C frame stand | 227.39 |
 | Kit D measuring | 140.46 |
-| Specimens and lab | 1,509.61 |
-| **total** | **2,419.04** |
+| Specimens and lab | 1,569.61 |
+| **total** | **2,479.04** |
 
 Not in this list: the bag, harness and belt materials themselves (pack BOM, `outputs/release/pack5200_corrie_f_rev3/manufacturing/bom.csv`). Swatches are cut from that fabric order, so buy the bag fabric with the kit. You already own (kit E): washing machine, winter gloves, freezer, hose, tape, paint pen, phone.
 
@@ -124,7 +124,7 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | specimens for CA-2: 3 XY + 3 Z bars per anneal | 1 lot | 10.00 | see register; test_register.csv CA-2: ASSUMPTION | CA-2 |
 | specimens for HB-4: 1 ear stitched into a wing-root coupon (3 recommended) | 1 lot | 15.00 | see register; test_register.csv HB-4: ASSUMPTION plate offcut + foam | HB-4 |
 | specimens for HB-T: 5 tabs sewn like the belt: 50 mm webbing round a buckle bar, 25 mm anchor and lo | 1 lot | 5.00 | see register; test_register.csv HB-T: ASSUMPTION webbing | HB-T |
-| specimens for TL-1: 5 x the real rev C crown top bar stock ([+-45/0x5/+-45], wall 1.065, same vendor | 1 lot | 40.00 | see register; test_register.csv TL-1: ASSUMPTION crown bar stock 1 m from the frame vendor + dial gauge on a C-frame + toggles | TL-1 |
+| specimens for TL-1: 5 x the real rev C crown top bar stock ([+-45/0x5/+-45], wall 1.065, same vendor | 1 lot | 100.00 | see register; test_register.csv TL-1: ASSUMPTION crown bar stock 2.0 m from the frame vendor (5 x 200 + 1 control x 200 + 2 TL-1 | TL-1 |
 | specimens for HB-5: 1 plate on the Ti pin over a foam block | 1 lot | 45.00 | see register; test_register.csv HB-5: ASSUMPTION plate $25 + fixture $20 | HB-5 |
 | specimens for PS-1: pad seat on a printed pan offcut | 1 lot | 5.00 | see register; test_register.csv PS-1: ASSUMPTION | PS-1 |
 | specimens for BP-2: 100 mm printed H1 stay segment (z about 260) on a strip offcut, 10 mm foam under | 1 lot | 5.00 | see register; test_register.csv BP-2: ASSUMPTION carbon paper; Prescale roll about EUR 1275 not bought (§4.4) | BP-2 |
@@ -139,4 +139,4 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | specimens for SEW-F: 3 x 25 mm poly webbing loops, box-X 21 x 25 mm (the IM / US box as drawn), 301,  | 1 lot | 1.00 | see register; test_register.csv SEW-F: 25 mm webbing offcuts + thread (kit A stock) | SEW-F |
 | specimens for FIT-R3: first sewn bag + lid on P2; 5.0 L of dry rice in a bag; the owner's bow (in IMP- | 1 lot | 2.00 | see register; test_register.csv FIT-R3: 5 L of rice | FIT-R3 |
 | specimens for HE-FIT: 1 scrap HE sewn as op 4.05 (B-18 + B-01 offcut 150 x 120 + B-05 strip, floor sea | 1 lot | 1.00 | see register; test_register.csv HE-FIT: scrap + 10 g filament | HE-FIT |
-| specimens for TL-1b: 1-2 lengths of the real rev C crown bar stock (>= 160 mm) with a 25 mm B-25-styl | 1 lot | 20.00 | see register; test_register.csv TL-1b: ASSUMPTION crown bar offcut + dial gauge on a C-frame (shared with TL-1) | TL-1b |
+| specimens for TL-1b: 2 lengths of the real rev C crown bar stock (>= 160 mm) with a 25 mm B-25-style  | 1 lot | 20.00 | see register; test_register.csv TL-1b: ASSUMPTION crown bar offcut + dial bore gauge (shared with TL-1) | TL-1b |

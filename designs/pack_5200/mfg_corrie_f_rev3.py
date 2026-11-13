@@ -48,7 +48,7 @@ PAT = REL / "patterns"
 OUT = REL / "manufacturing"
 SCREENS = ROOT / "outputs" / "screens"
 DATE = "20261113"
-TOPIC = "BL041"
+TOPIC = "BL043"
 TITLE = "CORRIE F rev 3 (door D2) - 5200 cu in hunting pack bag"
 REGISTER = ROOT / "designs" / "pack_5200" / "tests_physical" / "test_register.csv"
 YD = 914.4
@@ -98,8 +98,8 @@ PROTO_MACHINE_MIN = ("MINIMUM PROTOTYPE MACHINE (buy this or better): a walking-
 # slit ends, HE neck tacks, I2K, FP mouth corners, B-16 corners, lid channel ends, BRL / BRS, W3G, B-25 sleeve laps,
 # elastic laps): none carries an HA-LS-1 load-table load (load_points.csv: the only 304 rows have no load). The box-X
 # load points are ISO 301 already.
-BT_301_FALLBACK = ("BT-301 (prototype, straight stitch only): 4 passes over the tack length (16 mm for BT-M / BT-S, 10 mm "
-                   "for slit ends, the full lap width for elastic laps) at 2 mm stitch, needle down and pivot at each "
+BT_301_FALLBACK = ("BT-301 (prototype, straight stitch only): 4 passes over the tack length (16 mm for BT-M, 10 mm "
+                   "for BT-S and slit ends, the full lap width for elastic laps) at 2 mm stitch, needle down and pivot at each "
                    "end, 3-stitch backtack, same thread and needle as the 304 tack it replaces. UNRATED, like every 304 "
                    "tack in this release (none is on a load-table path); the PT-3 neck tacks are sewn the same way as the "
                    "bag's.")
@@ -470,6 +470,7 @@ HW_LEDGER_MAP = {
     "BL-034 records: US1/US2 backstop tri-glides": ("triglide_ss",),
     "BL-034 records: lifter tri-glide keepers": ("fairlead",),
     "BL-034 records: guy tri-glides": ("triglide",),
+    "BL-004 REC: guy toggles": ("toggle",),          # BL-043 m-14: relabelled row (was 'guy bar loops x2 ... + POM toggle')
     "BL-034 records: guy tail elastic keepers": ("elastic_25mm",),
     "BL-034 records: F-02 fly pocket #5 slider": ("slider5",),
     "BL-034 thread:": ("thread",),
@@ -650,10 +651,11 @@ def camo_bom(ctx: Ctx) -> list[BOMLine]:
                                r["material_id"], round(q10 / 10.0, 3), r["unit"], 0.0, uc, round(q10 / 10.0 * uc, 2),
                                alt_material_id="polyester_ht_630d_printable (unprinted, fabric line)", kit="base",
                                source=f"camo/bom_print_line_proposed.csv: {r['source']}",
-                               notes=f"{r['notes']}; prototype (1 bag) {q1:g} {r['unit']} = ${float(r['cost_1bag_usd']):.2f}; "
-                                     "costs ON TOP of the unprinted camo fabric line until the owner picks the print base; "
-                                     f"CAVEAT: {SUBLIMATION_CAVEAT}",
-                               proto_qty=q1))
+                               notes=f"{r['notes']}; PRODUCTION ONLY (DECISION CAMO-FIRST, BL-043 m-10): the first "
+                                     "build is solid 630D on the camo pieces, so the prototype buys none of this line "
+                                     f"(the camo test yard is a test-kit specimen); a 1-bag print run would be {q1:g} "
+                                     f"{r['unit']} = ${float(r['cost_1bag_usd']):.2f}; CAVEAT: {SUBLIMATION_CAVEAT}",
+                               proto_qty=0.0))
     return out
 
 
@@ -719,6 +721,17 @@ def _hw_values() -> dict:
 HE_405_STEPS = ("NECK", "B18-ROWS", "PLACE-HE", "BOX", "BASTE")   # BL-041 X-1: the order op 4.05 sews in
 
 
+def step_spec(kind: str, stitch: str = "301", note: str = "") -> str:
+    """BL-043 m-2: one step's machine / needle / thread / stitch, in words (an op may mix box-X, rows and tacks)."""
+    mach = {"box": "BT / PS (prototype: WF2 + J1 template)", "body": "WF2", "light": "WF1", "bt": "ZZ or BT",
+            "baste": "WF1"}[kind]
+    k = {"bt": "body", "baste": "body"}.get(kind, kind)
+    spi = {"box": f"box-X path {SPI['box']} SPI", "body": f"{SPI['body']} SPI", "light": f"{SPI['light']} SPI",
+           "bt": "16 x 2 mm zigzag", "baste": "6 mm stitch"}[kind]
+    fb = "; prototype without zigzag: BT-301 fallback (4 passes, UNRATED)" if stitch == "304" else ""
+    return f"[{mach}; {NEEDLE[k]}; {THREAD[k]}; ISO {stitch}, {spi}{fb}{'; ' + note if note else ''}]"
+
+
 def he_405_text(ctx) -> str:
     """Op 4.05 (BL-041 X-1 order): the B-18 rows are sewn through B-18 + B-01 ONLY, before the HE is laid on, so no row
     can cross the open eye; then the HE is placed and boxed below the fairlead cheeks (DECISION HE-PIN). The PT-3
@@ -728,20 +741,21 @@ def he_405_text(ctx) -> str:
     hbx = (boxes_of(rs.pieces["HE"]) or [(34.0, 10.0, "")])[0][:2]
     return (f"(1) NECK, on the FLAT HE strip ({hg['cut']:.0f} mm): fold each long edge {P.HE_NECK_EDGE:.0f} mm in between "
             f"the two 'neck lines' (the strip there is {hg['neck_w']:.0f} mm wide, the fairlead throat), then one BT-M bartack "
-            "across each leg at the 'neck tack' lines (through that leg only). "
+            "across each leg at the 'neck tack' lines (through that leg only) " + step_spec("bt", "304") + ". "
             "(2) B-18 ROWS FIRST: lay B-18 INSIDE B-01 on the drawn placement, coated face to B-01, its lower edge ON the "
             f"B-01 cut edge (it runs {hg['b18_below_seam']:.0f} mm below the floor seam line); sew its perimeter rows 3 and 9 mm "
-            "in, on the TOP and BOTH SIDES only (the bottom goes in the floor seam), through B-18 + B-01 ONLY. Nothing else "
+            "in, on the TOP and BOTH SIDES only (the bottom goes in the floor seam), through B-18 + B-01 ONLY "
+            + step_spec("body", "301", "rated rows (load_points B-18)") + ". Nothing else "
             "is on the panel yet: these rows must never catch the HE. "
             "(3) PLACE THE HE: fold the strip in half on the 'EYE FOLD' line (raw ends together, neck folds inside) and lay it "
             "OUTSIDE B-01 over B-18, centred on the 'hinge eye CL' notch, eye fold pointing UP, both raw ends ON the B-01 cut "
             "edge. Layer order from outside: HE leg / HE leg / B-01 / B-18. Clip. "
             f"(4) BOX: box-X {hbx[0]:.0f} x {hbx[1]:.0f} at the drawn 'HE hinge eye' box (drill corners: its lower edge "
             f"{hg['box_z_above_seam'][0]:.0f} mm, its top {hg['box_z_above_seam'][1]:.0f} mm above the floor seam line), through "
-            "all four layers. Its top edge must stay BELOW the fairlead cheeks: nothing but the 18 mm neck may sit above "
+            "all four layers " + step_spec("box") + ". Its top edge must stay BELOW the fairlead cheeks: nothing but the 18 mm neck may sit above "
             f"+{hg['cheek_z'][0]:.0f} mm. "
             "(5) BASTE the bottom of the stack (2 HE raw ends + B-18 + B-01) at 6 mm, inside the allowance, so op 4.15 "
-            f"catches all of it. The free loop above the box ({hg['eye_mm']:.0f} mm, fold {hg['fold_z_flat']:.0f} mm above the "
+            f"catches all of it {step_spec('baste')}. The free loop above the box ({hg['eye_mm']:.0f} mm, fold {hg['fold_z_flat']:.0f} mm above the "
             "seam line) is the eye: it points UP and takes the z 60 pin with the neck in the 18 mm throat (DECISION HE-PIN; "
             f"loaded pin centre {hg['pin_z_design']:.1f} mm above the seam line, target {hg['pin_target_z']:.0f} +/- "
             f"{hg['pin_tol']:.0f}). No stitching crosses the eye after step 3.")
@@ -1204,18 +1218,20 @@ def ops(ctx: Ctx) -> list[SewingOp]:
     if "RTM" in rs.pieces:
         rtm = rs.geo["rtm"]
         rbx = (boxes_of(rs.pieces["RTM"]) or [(21.0, 25.0, "")])[0][:2]
-        op("RTM roll-clip buckle tabs on the gussets", "Gusset flat work, before the gusset seams. Thread each RTM through "
-           "the bar of a side-release buckle's FEMALE half (the half with the socket) and fold it on its fold line. Lay "
-           f"it on the OUTSIDE of each B-03 on the drawn 'RTM roll-clip buckle tab' placement (z {rtm['z']:.0f}, "
+        rlo = rs.geo["rt_layout"]
+        op("RTM roll-clip buckle tabs on the gussets", "Gusset flat work, before the gusset seams. (1) Thread each RTM "
+           "through the bar of a side-release buckle's FEMALE half (the half with the socket) and fold it on its fold line. "
+           f"(2) Lay it on the OUTSIDE of each B-03 on the drawn 'RTM roll-clip buckle tab' placement (z {rtm['z']:.0f}, "
            f"{rtm['below_seam_mm']:.0f} mm under the collar seam, {rtm['depth_from_frame_mm']:.0f} mm aft of the frame seam "
-           "line, on the drawn 'RT strap path'; DECISION RT-FWD): buckle bar on the top line, socket pointing UP (the male "
-           f"half on the RT strap comes down into it). Box-X {rbx[0]:.0f} x {rbx[1]:.0f} at the drawn 'RTM buckle tab' box "
-           "through RTM (2 plies) + B-03. Then the W3G GUIDE on the same path (DECISION RT-OVER-W3): lay each W3G flat on "
-           "its drawn placement, strip ends on the outer lines, and sew one BT-S tack (16 x 2, 304) on each 'W3G guide "
-           "tack' line through W3G + B-03; the strip is longer than the tack spacing: push the 10 mm ease to the middle "
-           "so a 25 mm strap slides under it.", "box",
-           pieces="RTM x2, W3G x2, B-03 x2, 2 SR buckle female halves", seam="BOX + BT", bartack="RTM; W3G",
-           hours=2 * (H["bartack"] + PLACE_H) + 4 * H["bartack"], length=bl(*rbx, 2), sketch="SK-10", qc="QC-07")
+           "line): buckle bar on the top line, socket pointing UP (the male half on the RT strap comes down into it from "
+           "the roll end along the drawn 'RT strap from the roll end' line). DECISION W3-OVER (BL-043): the buckle sits "
+           f"{P.RT_CLEAR:.0f} mm under the lowest W3 edge of every crown kit (W3 z {rlo['z_w3_min']:.0f}-"
+           f"{rlo['z_w3_max']:.0f} with the torso setting), so W3 never bears on it; nothing else is sewn on the strap "
+           "path (the BL-041 W3G guide is deleted). "
+           f"(3) Box-X {rbx[0]:.0f} x {rbx[1]:.0f} at the drawn 'RTM buckle tab' box through RTM (2 plies) + B-03 "
+           + step_spec("box") + ".", "box",
+           pieces="RTM x2, B-03 x2, 2 SR buckle female halves", seam="BOX", bartack="RTM",
+           hours=2 * (H["bartack"] + PLACE_H), length=bl(*rbx, 2), sketch="SK-10", qc="QC-07")
     kb = rs.pieces["SH-01b"]
     op("Gusset flat work: kick bands", "SH-01b on each gusset foot at the 'kick band top' line, top edge turned 8 mm, "
        "topstitched; bottom and sides go in the seams.", "body", pieces="SH-01b x2, B-03 x2", seam="LSd",
@@ -1231,8 +1247,8 @@ def ops(ctx: Ctx) -> list[SewingOp]:
        hours=2 * (rate(2 * g["fp_h"] + g["fp_finished_w"]) + 2 * H["bartack"]), vol="pattern: FP width",
        sketch="SK-5")
     op("Gusset flat work: IMP-8 (R only) and hose ports", f"IMP-8 cup at 'IMP-8 cup top (R only)'. Hose slots (both "
-       f"gussets, z {g['hose_z']:.0f}): B-09p binding (TPU, laser-cut) laid over the slot, perimeter + slot edge "
-       "stitched.", "body", pieces="IMP-8, B-09p x2, B-03 x2", seam="LSd",
+       f"gussets, z {g['hose_z']:.0f}; BL-043 DECISION HOSE-LOW: below W3 at every crown setting, so a cinched W3 never "
+       "lies on the hose): B-09p binding (TPU, laser-cut) laid over the slot, perimeter + slot edge stitched.", "body", pieces="IMP-8, B-09p x2, B-03 x2", seam="LSd",
        length=piece_perim(i8) / 2 + 2 * 2 * piece_perim(rs.pieces["B-09p"]),
        hours=rate(piece_perim(i8) / 2) + 2 * rate(2 * piece_perim(rs.pieces["B-09p"]), "applique"))
     s_r = seam_mm(ctx, "B-01 | gusset R (FP-R edge, pole-grip tab)")
@@ -1302,13 +1318,16 @@ def ops(ctx: Ctx) -> list[SewingOp]:
        "first 60 mm (to the 'end of the sewn zone' line) on the OUTSIDE of B-07 on the drawn 'RT roll-clip strap' "
        f"rectangle (L at x {rtg.get('L', {}).get('x0', 0):.0f}-{rtg.get('L', {}).get('x1', 0):.0f} mm, R at x "
        f"{rtg.get('R', {}).get('x0', 0):.0f}-{rtg.get('R', {}).get('x1', 0):.0f} mm from the B-07 left end), strap end "
-       "on the outer line, the free strap running along the hem across the 'clip path (RT strap)' notch (BL-041 RT-FWD). Box-X "
+       "on the outer line, the free strap running along the hem out across the 'roll end' notch (BL-043 DECISION "
+       "RT-ORIGIN: the strap leaves the roll at its end, where the hem folds; its box sits on the B-07s strip, "
+       f"{rtg.get('R', {}).get('box_to_gap_mm', 0):.1f} mm clear of the 40 mm fold gap). Box-X "
        f"{rbx[0]:.0f} x {rbx[1]:.0f} at the drawn 'RT strap' box through strap + B-07. Fold the free strap back over "
        "the box for now and clip it out of the way. The ADJUSTABLE (male) buckle half is threaded on the free end at "
        "hardware fitting (op @FIT).", "box", pieces="RT x2, B-07", seam="BOX", bartack="RT", length=bl(*rbx, 2),
        hours=2 * (H["bartack"] + PLACE_H), sketch="SK-10", qc="QC-07")
     op("Roll-top hem with HDPE strips", f"Close the hem back seam ({hm:.0f} mm). Sew the hem to the collar top ring "
-       f"({ht:.0f} mm), the RT straps hanging free outside; fold over the two B-07s HDPE strips and stitch closed "
+       f"({ht:.0f} mm), the RT straps hanging free outside; fold over the two B-07s HDPE strips, their ends on the "
+       "'B-07s strip end' notches (a 40 mm gap at each roll end, where the hem folds flat), and stitch closed "
        "(EFb), keeping the strap ends out of the fold.", "body", pieces="B-07, B-07s x2, B-06", seam="SSa + EFb",
        length=hm + 2 * ht, hours=rate(hm) + rate(ht) + H["ring"], sketch="SK-2")
     cb = seam_mm(ctx, "collar | body tops (ring)")
@@ -1379,14 +1398,33 @@ def ops(ctx: Ctx) -> list[SewingOp]:
             kind = "box" if (bxs or lpr) else "bt"
             hrs = w["qty"] * max(1, len(bxs)) * H["bartack"]
             wl = w["qty"] * (sum(bl(a, b) for a, b, _ in bxs) if bxs else (bl(21, 25) if lpr else 0.0))
+        if pid == "IMC":                           # BL-043 m-5: the loops close on the bars, so the bars go in first
+            how = ("HARDWARE FIRST (BL-043 m-5): this op closes both loops, so before sewing either box thread the "
+                   "25 mm CAM's anchor bar into the 'fold round the CAM anchor bar' loop (all 3 tabs) and the rated "
+                   "G-HOOK's bar into the other loop of the IM1 and IM2 tabs; the IM3 tab's second loop stays EMPTY (the "
+                   "wiregate carabiner clips in at op @FIT). Hardware for this op: 3 cams, 2 G-hooks. Then: " + how)
         if pid == "B-25":
+            tp = rs.geo["b25"]["topology"]
+            kS = tp["kits"][tp["governing_kit"]]
             how += (" Toggle tabs: fold each end on its 'tab fold' line and sew the drawn tip-end box (DECISION "
-                    "B25-BOX: the clear loop passes the POM toggle). FRAME COORDINATION: the bar sleeves close round the "
-                    "crown top bar BEFORE the crown corners are bonded (H1 build); the two sleeve-lap bartacks (BT-M) "
-                    "are sewn at frame assembly, not here.")
-        op(f"{pid}: {w['use']} x{w['qty']}", how, kind, pieces=f"{pid} x{w['qty']}",
+                    "B25-BOX: the clear loop passes the POM toggle). TOPOLOGY (BL-043 DECISION B25-TOPO, sketch SK-12): "
+                    "round the bar = the sleeve; the strip leaves the bar DOWN on its aft (bag) side inside the sleeve "
+                    f"band, drops {tp['lengths_mm']['drop']:.0f} mm, turns 90 deg inboard at the drawn 45 deg 'MITRE' "
+                    f"fold (under the sleeve, x {tp['band_x'][0]:.1f}-{tp['band_x'][1]:.1f}), is NECKED to "
+                    f"{tp['neck_w_mm']:.0f} mm on the 'NECK' line (lower edge folded up) from the band edge inboard, and "
+                    "wraps once round the spine under the clamp collar, continuous to the other side. Nothing on the "
+                    "wearer side of the bar. FRAME COORDINATION: the bar sleeves close round the crown top bar BEFORE the "
+                    "crown corners are bonded (H1 build); the two sleeve-lap bartacks (BT-M) are sewn at frame assembly, "
+                    "not here. GATE B25-FIT (before the laps are tacked): dry-fit the bridle on the crown with the clamp "
+                    f"fitted and the crown at kit {tp['governing_kit']}'s SHORTEST setting ({kS['torso_in']:g} in): the "
+                    f"mitres sit inside the sleeve bands, the necked run passes under the clamp collar, and the spine "
+                    f"wrap clears the pawl housing (design {kS['clear_mm']:.0f} mm, ASSUMPTIONS B25-CLAMP / PAWL-TOP); a "
+                    "no stops the laps: photo to the pack-designer.")
+        op(f"{pid}: {w['use']} x{w['qty']}", how, kind,
+           pieces=f"{pid} x{w['qty']}" + (", 3 x 25 mm cam, 2 x rated G-hook" if pid == "IMC" else ""),
            seam="BOX" if kind == "box" else ("BT" if kind == "bt" else "-"),
-           bartack=pid if lpr else "", hours=hrs, length=wl, sketch="SK-1, SK-7", qc="QC-07" if lpr else "",
+           bartack=pid if lpr else "", hours=hrs, length=wl, sketch="SK-1, SK-7" + (", SK-12" if pid == "B-25" else ""),
+           qc="QC-07" if lpr else "",
            vol="pattern: ledger" if pid in ("US",) else "")
     cords = [w["id"] for w in webs if "cord" in w["material_id"] and w["id"] not in named_before]
     op("Fit the hardware", "IM1-IM3 (SK-11, DECISION IM-CAM-TAB): the cam is SEWN to the IMC tab (cam end box), the "
@@ -1394,8 +1432,8 @@ def ops(ctx: Ctx) -> list[SewingOp]:
        "through the cam from the wearer side, its sewn loop girth-hitched on the left eye; US1/US2: "
        "cam, then the STAINLESS 25 mm tri-glide threaded behind the cam as the cradle slip backstop (orchestrator "
        "2026-11-13; gate US-BS); T3 loops: wiregate carabiner + TPU sleeve; W1-W3: rated G-hook end, heavy ladder lock on "
-       "the gusset side; W3: thread its free end UNDER the W3G guide on each gusset (once; it stays threaded) so the RT "
-       "strap always lies OVER W3 (DECISION RT-OVER-W3); guys: toggle in the B-25 tab, through the B-27 port, heavy ladder lock on LLT, nylon tri-glide "
+       "the gusset side; W3 is the OUTER layer (BL-043 DECISION W3-OVER): it may lie over the RT straps and the roll, "
+       "so slacken W3 (G-hook off) before opening the roll top; guys: toggle in the B-25 tab, through the B-27 port, heavy ladder lock on LLT, nylon tri-glide "
        "tail keeper; B-28: toggle rear, ladder lock both ends, 2 elastic keepers; RT: thread the free end through the "
        "ADJUSTABLE (male) half of each side-release buckle (its female half is already on the RTM gusset tab), K-RT "
        "keeper below it; E5: cord "
@@ -1927,15 +1965,23 @@ ASSUMPTIONS = [
      f"+{P.HE_BOX_GAP + P.HE_BOX[1]:.0f} mm, {P.HE_CHEEK_CLEAR:.0f} mm under the fairlead cheeks; eye {P.HE_EYE} mm solved "
      f"for webbing {P.HE_T} mm thick (ASSUMPTION HE-REACH withdrawn).",
      "HE-FIT dry fit on a printed fairlead (pin 22-28 mm above the seam line), then PT-3 on specimens sewn as op 4.05 / SK-8"),
-    ("RT-MATE / RT-HEM / RT-FWD / RT-CLIP-Z / RT-OVER-W3 / BUCKLE-ENV / MK-GAP", "BL-040 B-2 + BL-041 Y-2: roll-clip "
-     "buckle female half on an RTM tab on the clip path (hose slot + 10 mm + half a strap), its bar 10 mm above the "
-     "B-26 cord (about 17 mm higher than the roll model's 150 mm); muzzle tabs aft of it, 60 mm apart; W3 through a W3G "
-     "guide under the RT strap; buckle envelope 35 x 35.",
-     "FIT-R3 rows 5-6 (rifle + roll clip + W3 cinched); T9 roll-clip free length; caliper on the buckle"),
+    ("RT-MATE / RT-HEM / RT-FWD / RT-ORIGIN / W3-OVER / HOSE-LOW / BUCKLE-ENV / MK-GAP", "BL-040 B-2 + BL-041 Y-2 + "
+     "BL-043 M-1 / M-2 / m-9: the RT strap is sewn at the roll end (gusset centre of the hem); its buckle's female half "
+     "on an RTM tab forward on the gusset (hose slot + 10 mm + half a buckle), the buckle body 10 mm under the lowest W3 "
+     "edge of every crown kit (W3 rides at the crown-bar height, z 601-804); W3 is the outer layer (slacken it to open "
+     "the top); the hose slot also sits under W3's sweep; muzzle tabs 10 mm clear of the strap's line to the roll end; "
+     "buckle envelope 35 x 35; RT cut from the cloth-pass roll model re-run with this tab and origin.",
+     "FIT-R3 rows 5-7 (rifle + roll clip + W3, at both ends of the owner's crown kit); T9 roll-clip free length; "
+     "hydration fit (HOSE-LOW); caliper on the buckle"),
     ("IM-CAM-TAB / IMC-LOOP", "BL-041 m-19: each IM cam sewn to an IMC dog-bone (21 x 25 box-X each end, 18 mm loops) "
      "carrying the G-hook / carabiner.", "MT-1 (2 IMC tabs at 908 N); threading the bought cam and hook"),
     ("B25-TAB-CENTRE / WIDE_SLEEVE", "BL-041 (crown_tube_guy_loop.md): B-25 in 38 mm webbing, sleeves x 26.5-64.5, "
-     "toggle tab at the sleeve centre x 45.5; the 25 mm tab pull spreads over the 38 mm sleeve.", "TL-1 at 494 N on real bar stock"),
+     "toggle tab at the sleeve centre x 45.5; the 25 mm tab pull spreads over the 38 mm sleeve.",
+     "TL-1 at 494 N on real bar stock, specimen WITH the mitre turn and run (BL-043)"),
+    ("B25-TOPO / B25-CLAMP / PAWL-TOP / SPINE_CLAMP_HALF", "BL-043 M-4: B-25 = tab | sleeve | 45 deg mitre under the "
+     "sleeve | run necked to 25 mm | one wrap round the spine under the clamp. The frame files draw no spine clamp: "
+     "half-width 15 mm along the bar and a 12 mm collar down the spine are assumed; the pawl housing is assumed to reach "
+     "20 mm above the pawl line.", "clamp drawing (structural); op 7.17 gate B25-FIT at kit S 15 in; TL-1 specimen"),
     ("GUY-LOCK-IN", "BL-040 M-5: the guy ladder lock stays on its LLT tab at B-22 inside the hinge band; the guy length is "
      "set with the roll top open (per crown kit / load), not on the move.", "PORT-1 gloved adjustment at B-22"),
     ("KW-OVER-FP", "BL-040 B-3: haul wraps W1 / W2 cross the FP hip pockets, over the mesh (keeper loop on top).",
@@ -2034,8 +2080,47 @@ RECHECK_STATUS = [
 ]
 
 
+# BL-043: design-reviewer THIRD review (analysis/review_20261113_rev3_third.md): id, class, status, how. The hinge-eye
+# items wait for BL-042 (frame print files, hinge fairlead) and BL-044 (HE redesign on BL-042's envelope).
+THIRD_STATUS = [
+    ("Z-1", "blocker", "open", "hinge eye vs the throat floor: BL-042 (fairlead) + BL-044 (HE on the new envelope); "
+     "SK-8 (c) now draws the floor and the gap under the pin"),
+    ("Z-2", "blocker", "open", "H1 STL fairleads clipped: BL-042 (frame side)"),
+    ("M-1", "major", "fixed", "DECISION W3-OVER: W3 rides at the crown-bar height (z 601-804 over kits S / M / L); W3G "
+     "deleted; RTM buckle and the hose slot (HOSE-LOW) 10 mm under the lowest W3 edge; W3 lies only on webbing, cord "
+     "and the roll at all 6 kit-end corners (test); W3 crosses the roll at kit M / L part loads, so W3 is slackened "
+     "to open the top; FIT-R3 row 7 at both ends of the owner's kit"),
+    ("M-2", "major", "fixed", "DECISION RT-ORIGIN: BL-041's origin needed a 76 mm gusset tuck to fold flat and put the "
+     "box across the hem fold gap: fall back to the roll end; cloth-pass roll model re-run with the new tab "
+     "(corrie_f_roll_clips.json): paths 202-424 mm, RT cut 510 -> 560 mm"),
+    ("M-3", "major", "open", "34 x 10 hinge-eye box peel / fatigue / PT-3 fixture: hinge eye, BL-044"),
+    ("M-4", "major", "fixed", "DECISION B25-TOPO drawn (SK-12, corrie_f.b25_topology): mitre under each sleeve, run "
+     "and spine wrap necked to 25 mm, 13 mm over the (assumed) pawl housing at kit S 15 in; clamp undrawn in the frame "
+     "files: ASSUMPTIONS B25-CLAMP / PAWL-TOP, gate B25-FIT in op 7.17; TL-1 specimen carries the turn and run"),
+    ("m-1", "minor", "open", "HE-FIT pin band: hinge eye, BL-044"),
+    ("m-2", "minor", "fixed", "ops 4.05 / 4.08 give machine / needle / thread / stitch per step (step_spec), BT-301 "
+     "named on the 304 tacks"),
+    ("m-3", "minor", "fixed", "W3G (the only 16 mm BT-S) deleted; every BT-S is 10 x 2 (SK-1)"),
+    ("m-4", "minor", "fixed", "IMC 192 mm, 48 mm folds, boxes 5 mm in from each raw end; MT-1 IMC specimens cut to it"),
+    ("m-5", "minor", "fixed", "op 7.13 (IMC): cam and G-hook bars threaded before the boxes, hardware listed"),
+    ("m-6", "minor", "fixed", "B25-BOX exception stated on the piece and on SK-1"),
+    ("m-7", "minor", "fixed", "TL-1 / TL-1b read ovalisation at the loop centre with a bore gauge"),
+    ("m-8", "minor", "fixed", "bar stock 2.0 m (5 x 200 + control 200 + 2 x 160 + 10 %); TL-1b steps include 288 N; "
+     "TL-1b count 2 everywhere"),
+    ("m-9", "minor", "fixed", "W3 / hose slot in the clearance set at all 6 corners; DECISION HOSE-LOW moves the slot "
+     "below W3's sweep"),
+    ("m-10", "minor", "fixed", "camo print BOM line proto_qty 0, 'production only'"),
+    ("m-11", "minor", "open", "B-18 label over the HE box on the tiled print: hinge eye, BL-044"),
+    ("m-12", "minor", "fixed", "webbing pages: leader label on every line; B-25 and RT added; W3G removed"),
+    ("m-13", "minor", "fixed", "SK-8 (c): stay labelled printed PAHT-CF, throat floor drawn with its gap under the pin "
+     "(the HE redraw itself is BL-044)"),
+    ("m-14", "minor", "fixed", "ledger row relabelled 'BL-004 REC: guy toggles x2', mapped by prefix (no keyword rows)"),
+]
+
+
 def ready_to_cut() -> bool:
-    return not any(c in ("blocker", "major") and st != "fixed" for _, c, st, _ in REVIEW_STATUS + RECHECK_STATUS)
+    return not any(c in ("blocker", "major") and st != "fixed"
+                   for _, c, st, _ in REVIEW_STATUS + RECHECK_STATUS + THIRD_STATUS)
 
 
 # ============================================================================ writers
@@ -2161,9 +2246,17 @@ def write_files(pk: dict, out: Path = OUT) -> list[Path]:
            f"- Box-X mismatches between a panel and its tab: {'; '.join(ck_['box_mismatches']) or 'none'}.",
            f"- Ledger hardware rows mapped by keyword (confirm): {'; '.join(ck_['hardware_rows_by_keyword']) or 'none'}.",
            f"- Unmapped ledger hardware rows: {'; '.join(ck_['unmapped_hardware']) or 'none'}."]
-    allst = REVIEW_STATUS + RECHECK_STATUS
+    allst = REVIEW_STATUS + RECHECK_STATUS + THIRD_STATUS
     nb = sum(1 for _, c, st, _ in allst if c == "blocker" and st != "fixed")
     nm = sum(1 for _, c, st, _ in allst if c == "major" and st != "fixed")
+    md += ["", "## Pre-cut THIRD review status (BL-043)", "",
+           "design-reviewer third review `analysis/review_20261113_rev3_third.md` (2 blockers, 4 majors, 14 minors). "
+           "BL-043 fixed the bag-side items and checked each against every crown kit and torso end "
+           "(tests/test_bl043_third_review_fixes.py); the hinge-eye items wait for BL-042 / BL-044. "
+           f"Open: {nb} blockers, {nm} majors: " + ("**ready to cut** after the physical gates." if ready_to_cut()
+                                                    else "**NOT ready to cut.**"), "",
+           "| Finding | Class | Status | How |", "|---|---|---|---|"]
+    md += [f"| {i} | {c} | {st} | {h.replace('|', '/')} |" for i, c, st, h in THIRD_STATUS]
     md += ["", "## Pre-cut re-check status (BL-041)", "",
            "design-reviewer re-check `analysis/review_20261113_rev3_recheck.md` (2 blockers, 5 majors, 15 minors), "
            "fixed by BL-041 and re-checked geometrically (tests/test_bl041_recheck_fixes.py). A third independent "
@@ -2171,7 +2264,7 @@ def write_files(pk: dict, out: Path = OUT) -> list[Path]:
            "| Finding | Class | Status | How |", "|---|---|---|---|"]
     md += [f"| {i} | {c} | {st} | {h.replace('|', '/')} |" for i, c, st, h in RECHECK_STATUS]
     md += ["", "## Pre-cut review status (BL-040)", "",
-           f"Open after BL-041: {nb} blockers, {nm} majors. " + (
+           f"Open after BL-043 (all three reviews): {nb} blockers, {nm} majors. " + (
                "**Ready to cut** the bag fabric once the G2 proof tests and the G3 wash have passed (the physical "
                "gates in qc_sheet.md still apply)." if ready_to_cut() else "**NOT ready to cut.**"), "",
            "| Finding | Class | Status | How |", "|---|---|---|---|"]
@@ -2334,8 +2427,11 @@ def sk_boxes(pk, path):
                     arrowprops=dict(arrowstyle="->", lw=0.7))
         used = sorted({r["part"] for r in pk["load_points"] if r["pattern"].startswith(f"box-X {dims} mm")})
         ax.set_title(f"box-X {dims} mm ({w / IN:.2f} x {h / IN:.2f} in)", fontsize=10, loc="left")
+        exc = ("\nEXCEPTION (B25-BOX): B-25 is 38 mm webbing; this 21 mm box leaves 8.5 mm unsewn each edge so the "
+               "13 mm toggle loop stays open" if any(u_.startswith("B-25") for u_ in used) else "")
         ax.text(0.0, -0.12, f"{nst} stitches incl. 4 lock, 7 SPI, tex 135, Nm 140 R\n"
-                + textwrap.fill("used on: " + ", ".join(used), 48), transform=ax.transAxes, fontsize=8, va="top")
+                + textwrap.fill("used on: " + ", ".join(used), 48) + textwrap.fill(exc, 52, replace_whitespace=False),
+                transform=ax.transAxes, fontsize=8, va="top")
         ax.set_xlim(-0.6 * w, 1.3 * w)
         ax.set_ylim(-0.5 * h, 1.3 * h)
         ax.set_aspect("equal")
@@ -2347,7 +2443,7 @@ def sk_boxes(pk, path):
         ys = [(b["w_mm"] if i % 2 else 0.0) for i in range(k)]
         ax.plot(xs, ys, "-", color="#1a7f37", lw=0.8)
         ax.set_title(f"{key} bartack {b['len_mm']:.0f} x {b['w_mm']:.0f} mm, {k} st (304)", fontsize=10, loc="left")
-        used = {"BT-S": "B-27 slit ends, FP mouth corners, W3G guide tacks",
+        used = {"BT-S": "B-27 slit ends, FP mouth corners (BL-043: W3G deleted; every BT-S is 10 x 2)",
                 "BT-M": "I2K, HE neck (1 per leg), lid channel ends, B-25 sleeve laps"}[key]
         ax.text(0.0, -0.3, f"LK-1900 standard tack, tex 90, Nm 110 R (unrated)\n" + textwrap.fill(used, 48)
                 + "\nno zigzag: BT-301 = 4 straight passes, 2 mm stitch", transform=ax.transAxes, fontsize=8, va="top")
@@ -2537,7 +2633,15 @@ def sk_hinge_eye(pk, path):
     ax = axs[2]
     sr = g["pin_y"] - 6.5                                   # stay radius (pin_y = stay_r + HOLE_PROUD)
     ax.add_patch(plt.Rectangle((-sr, -14), 2 * sr, 70, fc="#666", alpha=0.35, ec="none"))
-    ax.text(0, 52, "stay (carbon)", ha="center", fontsize=8)
+    ax.text(0, 52, "stay (printed PAHT-CF body)", ha="center", fontsize=8)
+    # BL-043 m-13: the fairlead root bridges the throat under the pin (bag_attach.fairlead_local: root top at
+    # y_hole - HOLE_D / 2 - 0.8 = the throat floor), drawn with the same constants the pattern's section model reads
+    from huntkit.gendesign import bag_attach as BA_
+    fl = BA_.HOLE_PROUD - BA_.HOLE_D / 2.0 - 0.8
+    ax.add_patch(plt.Rectangle((sr, g["cheek_lo"]), fl, g["cheek_hi"] - g["cheek_lo"], fc="#577", ec="#233", alpha=0.85))
+    gap_pin = (sr + BA_.HOLE_PROUD - g["pin_d"] / 2) - (sr + fl)
+    ax.annotate(f"throat floor (fairlead root)\nunder the pin: {gap_pin:.1f} mm gap\n(review Z-1: BL-042 / BL-044)",
+                (sr + fl, g["cheek_hi"] - 2), (-13, 27), fontsize=7.5, color="#233", arrowprops=dict(arrowstyle="->"))
     ax.add_patch(plt.Rectangle((sr, g["cheek_lo"]), g["faces_y"][1] - sr, g["cheek_hi"] - g["cheek_lo"], fc="#9bb", ec="#577",
                                hatch="//", alpha=0.6))
     ax.text(-12.5, 35.5, f"fairlead cheeks (beside the eye, hatched)\nz {g['cheek_lo']:.0f}-{g['cheek_hi']:.0f}",
@@ -2559,7 +2663,7 @@ def sk_hinge_eye(pk, path):
     ax.text(-13, 1.0, "floor seam line (frame z 35)", fontsize=8)
     ax.plot([-14, 34], [-12, -12], "k:", lw=1)
     ax.text(-13, -11, "B-01 cut edge (in the seam)", fontsize=8)
-    ax.text(-12, 20, f"neck 18 mm wide in the\n{g['throat']:.0f} mm throat", fontsize=8, color="#a5650a")
+    ax.text(-12, 14, f"neck 18 mm wide in the\n{g['throat']:.0f} mm throat", fontsize=8, color="#a5650a")
     ax.set_xlim(-14, 34)
     ax.set_ylim(-14, 56)
     ax.set_aspect("equal")
@@ -2665,33 +2769,44 @@ def sk_roll_clip(pk, path):
     draw_piece(ax, b07, "(a) B-07 hem, flat, OUTSIDE up: RT strap rectangles + box-X (op 5.02); red ticks = notches",
                label_lines=False, fs=7)
     for side, d in rt.items():
-        ax.annotate(f"RT {side}: strap end at the outer line,\nfree strap crosses the notch", (d["x_centre"], 30),
-                    (d["x_centre"] - 130, 95), fontsize=8, arrowprops=dict(arrowstyle="->"))
+        ax.annotate(f"RT {side}: sewn 60 mm on the B-07s strip,\nfree strap out across the roll-end notch",
+                    (d["x_centre"], 30), (d["x_centre"] - 130, 95), fontsize=8, arrowprops=dict(arrowstyle="->"))
     ax.set_ylim(-20, 120)
     ax2 = fig.add_axes([0.05, 0.05, 0.50, 0.47])
     G = rs.pieces["B-03"]
-    draw_piece(ax2, G, "(b) Gusset B-03 (upper part): clip path, RTM tab, W3G guide (op 4.08)", label_lines=False, fs=7)
+    draw_piece(ax2, G, "(b) Gusset B-03 (upper part): RTM tab, strap line to the roll end, W3 sweep (op 4.08)",
+               label_lines=False, fs=7)
     rl, rc = rs.geo["rt_layout"], rs.geo["rt_clear"]
     x0, y0, x1, y1 = rtm["rect"]
     xm, yb = rl["x"], rl["y_bar"]
+    sig = P._maps(P.F.make())["sig"]
+    sw = rs.geo["w3_sweep"]
+    ax2.axhspan(sig(sw["z_min"]) - sw["half_w"], rl["y_top"], color="#4a5d7a", alpha=0.12)
+    for nm, z in sw["corners"].items():
+        if z < rs.geo["z_c"]:
+            ax2.plot([-20, 240], [sig(z)] * 2, color="#4a5d7a", lw=0.8, ls=":")
+    on_g = ", ".join(f"{k}" for k, z in sw["corners"].items() if z < rs.geo["z_c"])
+    ax2.text(255, 722, f"W3 sweep (shaded), z {sw['z_min']:.0f}-{sw['z_max']:.0f}: crown bar height,\nall kits; dotted = "
+             f"kit ends on the gusset\n({on_g});\nW3 lies OVER the strap: slacken W3 to open the top", fontsize=7.5,
+             color="#4a5d7a", va="top")
     ax2.add_patch(plt.Rectangle((x0, y0), x1 - x0, y1 - y0, fc="#f3d9a8", ec="#c27c0e", lw=1.5))
     ax2.add_patch(plt.Rectangle((xm - P.BUCKLE_ENV[0] / 2, yb), P.BUCKLE_ENV[0], P.BUCKLE_ENV[1], fc="#ccc", ec="#333",
                                 lw=1.0, ls="--"))
-    ax2.add_patch(plt.Rectangle((xm - P.STRAP_W / 2, yb + P.BUCKLE_ENV[1]), P.STRAP_W, rl["y_top"] - yb - P.BUCKLE_ENV[1],
-                                fc="#c27c0e", alpha=0.25, ec="#c27c0e"))
+    (cx0, cy0), (cx1, cy1) = rl["corridor"]
+    ax2.plot([cx0, cx1], [cy0, cy1], color="#c27c0e", lw=8, alpha=0.35, solid_capstyle="butt")
     ax2.plot([-20, 240], [rl["y_cord"]] * 2, color="#7a2e2e", lw=1.2, ls="-.")
-    ax2.text(250, rl["y_cord"] - 3, "B-26 cord (R gusset)", fontsize=8, color="#7a2e2e")
-    ax2.plot([-20, 240], [rl["y_w3"]] * 2, color="#4a5d7a", lw=6, alpha=0.35)
-    ax2.text(250, rl["y_w3"] - 3, "W3: under the RT strap, through W3G", fontsize=8, color="#4a5d7a")
+    ax2.text(-25, rl["y_cord"] + 3, "B-26 cord (R)", fontsize=7, color="#7a2e2e")
     ax2.annotate(f"RTM: bar z {rtm['z']:.0f} ({rtm['below_seam_mm']:.0f} mm under the collar seam),\n"
-                 f"{rtm['depth_from_frame_mm']:.0f} mm aft of the frame seam; dashed = buckle envelope\n"
-                 f"min clear {rc['min_gap']:.1f} mm to tabs / cords / hose slot", (x1, y0 + 10), (250, 480), fontsize=8,
-                 arrowprops=dict(arrowstyle="->"))
-    ax2.annotate("RT strap path; W3G guide on it", (xm + 12, 655), (250, 662 + 25), fontsize=8, color="#a5650a",
-                 arrowprops=dict(arrowstyle="->", color="#a5650a"))
-    ax2.annotate("muzzle keeper tabs (aft of the clip)", (205, 625), (250, 625), fontsize=8, color="#1a7f37",
+                 f"{rtm['depth_from_frame_mm']:.0f} mm aft of the frame seam; dashed = buckle envelope,\n"
+                 f"{rc['w3_hard_min']:.1f} mm under W3 at kit S 15 in; min clear {rc['min_gap']:.1f} mm to tabs / slot",
+                 (x1, y0 + 10), (250, 430), fontsize=8, arrowprops=dict(arrowstyle="->"))
+    ax2.annotate("RT strap from the roll end\n(off the cloth above the buckle)", (0.5 * (cx0 + cx1), 0.5 * (cy0 + cy1)),
+                 (255, 625), fontsize=8, color="#a5650a", arrowprops=dict(arrowstyle="->", color="#a5650a"))
+    ax2.annotate("muzzle keeper tabs", (205, 600), (255, 580), fontsize=8, color="#1a7f37",
                  arrowprops=dict(arrowstyle="->", color="#1a7f37"))
-    ax2.annotate("IMP-2 hose slot", (61, 690), (250, 700), fontsize=8, arrowprops=dict(arrowstyle="->"))
+    hz = sig(P.HOSE_Z)
+    ax2.annotate(f"IMP-2 hose slot (z {P.HOSE_Z:.0f}, below W3)", (16, hz), (-20, 410), fontsize=8,
+                 arrowprops=dict(arrowstyle="->"))
     ax2.set_xlim(-30, 420)
     ax2.set_xlabel("mm across the gusset (flat)")
     ax2.set_ylabel("sigma (mm along the gusset)")
@@ -2712,7 +2827,7 @@ def sk_roll_clip(pk, path):
     ax3.set_ylim(0, 10)
     ax3.axis("off")
     ax3.set_title("(c) Closed: roll end -> RT strap -> buckle -> RTM tab", fontsize=10, loc="left")
-    fig.suptitle("SK-10  Roll-top clip: what to sew where (BL-040 B-2; BL-041 RT-FWD / RT-OVER-W3)", fontsize=13, x=0.01,
+    fig.suptitle("SK-10  Roll-top clip: what to sew where (BL-040 B-2; BL-041 RT-FWD; BL-043 W3-OVER / RT-ORIGIN)", fontsize=13, x=0.01,
                  ha="left")
     fig.savefig(path, dpi=100)
     plt.close(fig)
@@ -2772,6 +2887,98 @@ def sk_meat_straps(pk, path):
     plt.close(fig)
 
 
+def sk_bridle(pk, path):
+    """SK-12 (BL-043 M-4, DECISION B25-TOPO): the 38 mm B-25 on the crown, drawn to scale from corrie_f.b25_topology:
+    (a) looking forward from the bag (aft elevation, x along the bar, z down the spine); (b) section through the sleeve
+    (y-z): the strip leaves the bar down on the aft side; (c) the flat strip with its folds."""
+    plt = _plt()
+    from matplotlib.patches import Circle, Polygon, Rectangle
+    rs = pk["ctx"].rs
+    tp = rs.geo["b25"]["topology"]
+    F_ = P.F
+    rb, rsp = F_.BAR_OD / 2, F_.SPINE_OD / 2
+    x0, x1 = tp["band_x"]
+    st, sb = tp["mitre"]["s"]
+    ns = tp["run_s"]
+    ch, cc = tp["clamp_half_x"], tp["clamp_collar_mm"]
+    kS = tp["kits"][tp["governing_kit"]]
+    fig = plt.figure(figsize=(16, 9.5))
+    ax = fig.add_axes([0.04, 0.38, 0.60, 0.52])
+    ax.add_patch(Rectangle((-110, -rb), 220, 2 * rb, fc="#cfcfcf", ec="#333"))                     # bar
+    ax.add_patch(Rectangle((-rsp, -kS["s_pawl_mm"] - 10), 2 * rsp, kS["s_pawl_mm"] + 10 - rb, fc="#e2e2e2", ec="#333"))
+    ax.add_patch(Rectangle((-ch, -rb - cc), 2 * ch, cc + 2 * rb, fc="#9aa7b8", ec="#333", alpha=0.8))  # clamp
+    ax.text(0, rb + 3, "spine clamp\n(ASSUMED: no drawing)", ha="center", fontsize=8)
+    ht = -kS["housing_top_s_mm"]
+    hw = F_.PAWL_HOUSING_HALF_W
+    ax.add_patch(Rectangle((-hw, -kS["s_pawl_mm"] - 11), 2 * hw, kS["s_pawl_mm"] + 11 + ht, fc="#d9c7a0", ec="#7a5c1e",
+                           alpha=0.7))
+    ax.add_patch(Rectangle((-110, -kS["s_pawl_mm"] - 11), 220, 22, fc="#e8e0cc", ec="#7a5c1e", alpha=0.6))
+    ax.text(-108, ht - 22, f"upper bar + pawl housing at kit {tp['governing_kit']} {kS['torso_in']:g} in (housing top ASSUMED)",
+            fontsize=8, color="#7a5c1e")
+    for sx in (-1, 1):
+        a, b = sorted((sx * x0, sx * x1))
+        ax.add_patch(Rectangle((a, -rb), b - a, 2 * rb, fc="#e9b96e", ec="#a5650a", alpha=0.9))      # sleeve
+        ax.add_patch(Rectangle((a, -rb - (st - rb)), b - a, st - rb, fc="#e9b96e", ec="#a5650a", alpha=0.5))   # drop
+        xi, xo = (x0, x1) if sx > 0 else (-x0, -x1)
+        ax.add_patch(Polygon([(xo, -st), (xo, -sb), (xi, -sb)], fc="#e9b96e", ec="#a5650a", alpha=0.75))
+        ax.plot([xo, xi], [-st, -sb], color="#2b6cb0", lw=1.5, ls="-.")
+        ax.add_patch(Rectangle((min(sx * (rsp + 1.2), xi), -ns[1]), abs(xi - sx * (rsp + 1.2)), ns[1] - ns[0],
+                               fc="#e9b96e", ec="#a5650a", alpha=0.75))
+        ax.text(sx * 0.5 * (x0 + x1), rb + 19, f"sleeve x {x0:.1f}-{x1:.1f}", ha="center", fontsize=8)
+        ax.text(sx * (x1 + 3), -0.5 * (st + sb), "45 deg MITRE\n(under the sleeve)", ha="left" if sx > 0 else "right",
+                fontsize=7.5, color="#2b6cb0", va="center")
+    ax.add_patch(Rectangle((-rsp - 1.2, -ns[1]), 2 * rsp + 2.4, ns[1] - ns[0], fc="#c27c0e", ec="#a5650a"))
+    ax.annotate(f"spine wrap, necked to {tp['neck_w_mm']:.0f} mm,\n{kS['clear_mm']:.0f} mm above the pawl housing at "
+                f"kit {tp['governing_kit']} {kS['torso_in']:g} in", (-rsp, -0.5 * (ns[0] + ns[1])), (-112, 11), fontsize=7.5,
+                arrowprops=dict(arrowstyle="->"))
+    ax.annotate(f"{tp['band_to_clamp_x_mm']:.1f} mm", (ch, 0), (ch + 1, -2), fontsize=7)
+    ax.set_xlim(-115, 115)
+    ax.set_ylim(-kS["s_pawl_mm"] - 18, 36)
+    ax.set_aspect("equal")
+    ax.set_xlabel("x along the crown bar from the spine centre (mm)")
+    ax.set_ylabel("z from the bar centre (mm)")
+    ax.set_title("(a) Crown seen from the bag (aft): sleeve, drop, mitre, necked run, spine wrap", fontsize=10, loc="left")
+    ax2 = fig.add_axes([0.68, 0.40, 0.29, 0.48])
+    ax2.add_patch(Circle((0, 0), rb, fc="#cfcfcf", ec="#333"))
+    th = __import__("numpy").linspace(0.5 * math.pi, 2.5 * math.pi, 60)
+    r = rb + 1.2
+    ax2.plot(r * __import__("numpy").cos(th), r * __import__("numpy").sin(th), color="#a5650a", lw=3)
+    ax2.plot([r, r], [0, -st + 2], color="#a5650a", lw=3)
+    ax2.add_patch(Rectangle((r - 1, -sb), 2, sb - st, fc="#e9b96e", ec="#a5650a"))
+    ax2.plot([0, 0], [r, r + 30], color="#a5650a", lw=3)
+    ax2.text(2, r + 20, "toggle tab\n(guy + crown strap)", fontsize=8)
+    ax2.annotate("strip leaves DOWN\non the AFT side", (r, -14), (r + 6, -30), fontsize=8, arrowprops=dict(arrowstyle="->"))
+    ax2.text(-r - 3, -6, "wearer\n(fore)", ha="right", fontsize=8, color="#555")
+    ax2.text(r + 8, 4, "bag\n(aft)", fontsize=8, color="#555")
+    ax2.set_xlim(-35, 45)
+    ax2.set_ylim(-sb - 5, 45)
+    ax2.set_aspect("equal")
+    ax2.axis("off")
+    ax2.set_title("(b) Section through a sleeve (y-z)", fontsize=10, loc="left")
+    ax3 = fig.add_axes([0.04, 0.05, 0.92, 0.22])
+    b25 = rs.pieces["B-25"]
+    L = b25.bounds(cut=False)[3]
+    ax3.add_patch(Rectangle((0, 0), L, tp["width_mm"], fc="#fbeed6", ec="#333"))
+    for ln in b25.internal_lines:
+        pts = [(q[1], q[0]) for q in ln.points]
+        col = {"fold": "#2b6cb0", "stitch": "#1a7f37", "placement": "#888"}.get(ln.kind, "#333")
+        ax3.plot(*zip(*pts), color=col, lw=1.0, ls="-." if ln.kind == "fold" else "-")
+    fl = rs.geo["b25"]["flat"]
+    for yy, lab, up in ((fl["mitre_y"], "MITRE R", 1), (L - fl["mitre_y"], "MITRE L", 1), (fl["neck_y"], "NECK from here", 0),
+                        (fl["centre_y"], "spine wrap centre", 1), (30, "tab fold", 1), (L - 30, "tab fold", 1)):
+        ax3.text(yy, tp["width_mm"] + 3 if up else -6, lab, ha="center", fontsize=7.5)
+    ax3.set_xlim(-10, L + 10)
+    ax3.set_ylim(-8, tp["width_mm"] + 14)
+    ax3.set_aspect("equal")
+    ax3.set_xlabel("mm along the strip (cut %.0f mm; BL-041 drew %.0f with no turn)" % (tp["cut_mm"], tp["cut_bl041_mm"]))
+    ax3.set_yticks([])
+    ax3.set_title("(c) B-25 flat, 38 mm: folds blue dash-dot, boxes green (op 7.17)", fontsize=10, loc="left")
+    fig.suptitle("SK-12  B-25 guy bridle on the crown (BL-043 DECISION B25-TOPO): the 90 deg turn sits UNDER each sleeve; "
+                 "gate B25-FIT dry-fits it before the laps are tacked", fontsize=12, x=0.01, ha="left")
+    fig.savefig(path, dpi=100)
+    plt.close(fig)
+
+
 def sketches(pk, out: Path = OUT) -> dict:
     d = out / "sketches"
     d.mkdir(parents=True, exist_ok=True)
@@ -2813,6 +3020,8 @@ def sketches(pk, out: Path = OUT) -> dict:
     sk_roll_clip(pk, sk["SK-10"])
     sk["SK-11"] = d / "SK-11_meat_straps.png"
     sk_meat_straps(pk, sk["SK-11"])
+    sk["SK-12"] = d / "SK-12_B-25_bridle.png"
+    sk_bridle(pk, sk["SK-12"])
     return sk
 
 
@@ -2843,8 +3052,9 @@ def techpack_design(pk: dict, sk: dict) -> MF.TechPack:
         ["Mass targets, PRIMARY fabrics (QC-14)", f"base {pk['mass']['primary_base_g']:.0f} g / as hunted "
                                                    f"{pk['mass']['primary_as_hunted_g']:.0f} g / meat trip "
                                                    f"{pk['mass']['primary_meat_trip_g']:.0f} g, +/- {QC14_TOL_PCT:.0f} %"],
-        ["Pre-cut review (BL-040)", ("0 blockers, 0 majors open: ready to cut after the G2 / G3 gates" if ready_to_cut()
-                                     else "blockers or majors open: NOT ready to cut")],
+        ["Pre-cut reviews (BL-040 / 041 / 043)", ("0 blockers, 0 majors open: ready to cut after the G2 / G3 gates"
+                                                 if ready_to_cut() else "third-review hinge-eye items open (BL-042 / "
+                                                 "BL-044): NOT ready to cut")],
         ["Cost a bag (production)", f"materials ${c['material_usd_primary']:.0f} primary / ${c['material_usd_alternate']:.0f} "
                        f"alternate; + CMT: US ${c['landed_usd']['us_contract_usd_min']:.0f}, Asia "
                        f"${c['landed_usd']['asia_contract_usd_min']:.0f} (ASSUMPTIONS)"],
@@ -2984,7 +3194,8 @@ def screenshots(pdf: Path, sk: dict) -> list[Path]:
     op_page = next((i + 1 for i, pg in enumerate(rd.pages) if "6. Sewing operation sequence" in (pg.extract_text() or "")), 2)
     subprocess.run(["pdftoppm", "-png", "-r", "110", "-f", str(op_page + 2), "-l", str(op_page + 2), str(pdf),
                     str(tmp / "ops")], check=True)
-    srcs = [sorted(tmp.glob("cover*.png"))[0], sk["SK-8"], sk["SK-9"], sk["SK-10"], sk["SK-11"], sorted(tmp.glob("ops*.png"))[0]]
+    srcs = [sorted(tmp.glob("cover*.png"))[0], sk["SK-8"], sk["SK-9"], sk["SK-10"], sk["SK-11"], sorted(tmp.glob("ops*.png"))[0],
+            sk["SK-12"]]                                              # BL-043: the B-25 topology
     out = []
     for i, s_ in enumerate(srcs, 1):
         dst = SCREENS / f"{DATE}_{TOPIC}_{i}.png"

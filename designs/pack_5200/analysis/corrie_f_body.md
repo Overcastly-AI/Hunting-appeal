@@ -1459,3 +1459,139 @@ SK-8 / SK-10 / SK-11), `physical_test_kit.py` (HE-FIT, PT-3, TL-1, TL-1b), `conc
 - **Ledger (base, belt M), rows `BL-041: ...` in `corrie_f.parts`:** B-18 +3.06 g, HE -3.58 g, RTM +2.52 g,
   W3G +2.16 g, IMC +9.72 g, B-25 38 mm +3.39 g, GBL -6.12 g = **+11.15 g** (muzzle cords -0.1 g); the bag
   reconciles 1:1 (0 unmatched rows, 0 pieces without a row).
+
+
+## 22. BL-043: third-review fixes, bag side (pack-designer, 2026-11-13)
+
+Source: `review_20261113_rev3_third.md` (2 blockers, 4 majors, 14 minors). BL-043 takes M-1, M-2, M-4 and the minors
+not tied to the hinge eye; Z-1, Z-2, M-3, m-1 and m-11 wait for BL-042 (frame print files, hinge fairlead) and BL-044
+(HE on BL-042's envelope). Code: `patterns_corrie_f_rev3.py` (`w3_sweep`, `rt_layout`, `rt_clearances`, `w3_corners`,
+RT-ORIGIN on B-07, B-25 piece), `concepts/corrie_f.py` (`b25_topology`, `bl043_rows`),
+`huntkit/viz3d/cloth_pass.py` (`roll_clip_path`), `huntkit/viz3d/corrie_f.py` (`roll_clip_paths`),
+`mfg_corrie_f_rev3.py` (ops 4.05 / 4.08 / 4.11 / 5.02 / 5.03 / 7.13 / 7.17 / 7.23, SK-8 (c), SK-10, SK-12,
+`THIRD_STATUS`), `physical_test_kit.py` (TL-1, TL-1b, MT-1, FIT-R3). Tests: `tests/test_bl043_third_review_fixes.py`
+(21). Every number below is printed by that code; each fix was checked at all six crown-kit ends (S 15 / 18, M 17.5 /
+20.5, L 20 / 23 in), not at 19 in only.
+
+**M-1: DECISION W3-OVER (supersedes BL-041 RT-OVER-W3).** Both W3 anchors are on the crown top bar, so W3 runs level
+at the bar height while the bag stays on the hinge:
+
+| kit end | W3 z (mm) | W3 band on the bag | closest hard part | what W3 lies on |
+|---|---:|---|---:|---|
+| S 15 in | 601.0 | gusset z 588.5-613.5 | buckle 10.0 mm, hose slot 10.5 mm | B-26 cord, RT strap |
+| S 18 in | 677.2 | gusset | 86.6 mm | muzzle tabs, RT strap |
+| M 17.5 in | 664.5 | gusset | 73.7 mm | muzzle tabs + cord, RT strap |
+| M 20.5 in | 740.7 | gusset / collar seam (8 mm above it) | 150.8 mm | RT strap; the roll at day / 6-day loads |
+| L 20 in | 728.0 | gusset | 137.9 mm | RT strap; the roll at day / 6-day loads |
+| L 23 in | 804.2 | 72 mm above the collar seam | - | on the 6-day roll; above the day roll's top |
+
+- No guide sewn on the gusset can span the sweep (z 588-817 against a collar seam at 745). The re-run roll model puts
+  the roll and its bent-down ends at z 681-790 (day) and 718-827 (6-day), so at kit M and L settings W3 lies on the
+  roll itself. The roll can only be opened with W3 slack at those settings, whatever the gusset carries.
+- So W3 is the outer layer. It may cross the RT strap, the RTM tab, the B-26 cord, the muzzle tabs and the roll. The
+  user slackens W3 (G-hook off) before opening the top. **The W3G guide and its two unrated BT-S tacks are deleted**,
+  so nothing W3 bears on is a tack.
+- The RTM buckle body sits 10 mm under the lowest W3 edge: bar **z 543.5** (201.5 mm under the collar seam, 59.6 mm aft
+  of the frame seam), envelope 35 x 35 (ASSUMPTION BUCKLE-ENV). The B-26 cord (z 600) now crosses the strap above the
+  buckle (soft on soft, accepted), 20 mm clear of the buckle body.
+- Clip path to the other gusset placements: min **10.4 mm** (buckle envelope to the hose slot). The strap's flat
+  shadow is now a slant from the buckle to the roll end, so the muzzle tabs move to **113 / 173 mm** (were 111 / 171).
+  That keeps 10 mm perpendicular to the slant; the aft tab is 10.3 mm inside the aft seam line (FP-CLEAR 9 mm).
+- The K-W keeper loops for W3 (aft corner seams, z 702.6) have the same torso dependence. They were parked on T9 by
+  the review and are not changed here (see Found, not fixed).
+
+**m-9: DECISION HOSE-LOW.** At z 700 the hose slot was under W3 from 16.6 to 20.3 in, and a cinched W3 pinched the
+hose. The slot moves to **z 558**, its top 10.5 mm under the lowest W3 edge. The hose leaves below W3 at every
+setting and goes forward to the shoulder strap without crossing it. ASSUMPTION HOSE-LOW: the bladder outlet sits at the
+IMP-2 sleeve foot (keeper tabs z 560), so the inside run is shorter. Settled by the hydration fit (FIT-R3 row 7 at both
+kit ends).
+
+**M-2: DECISION RT-ORIGIN (fall back to the roll end).** The hem (1049.7 mm) is stiffened by two B-07s strips of
+hem/2 - 40, so it folds flat at the two 40 mm strip gaps. The ring halves are equal (front layer 524.8 mm) only when
+those gaps sit at the gusset centres. BL-041's origin (27 % of the gusset from the frame corner) gives a 448.6 mm front
+layer against a 601.1 mm back layer. That folds flat only with a **76.2 mm tuck of each gusset**, and its sewn 60 mm
+and box-X lay across the fold gap. So the strap is sewn at the roll end again:
+- the sewn 60 mm is on the frame-side half, on the strip, its box 7.5 mm clear of the gap;
+- 'roll end' and 'B-07s strip end' notches go on B-07;
+- the free strap leaves the roll at its end.
+
+The cloth-pass roll model was re-run with this origin and the new tab (`cloth_pass.roll_clip_path`, tab at z 543.5,
+26.6 % of the gusset depth). The cloth is the cached solve: the tab is not in the cloth job, and the roll-end bend is
+at its 75 deg cap in all three states.
+
+| load | BL-031 path (mm, R / L) | BL-043 path (mm, R / L) |
+|---|---|---|
+| day | 165.5 / 161.3 | 210.8 / 202.3 |
+| 6-day | 170.5 / 179.7 | 222.8 / 222.0 |
+| full | 369.1 / 374.9 | 424.2 / 421.1 |
+
+- **RT cut 510 -> 560 mm** (floor5 of 90 + 424.2 + 50), +1.8 g. BL-041's "510 unchanged" did not hold.
+- The strap bears on the cloth only within about 80 mm above the buckle (z 502-584). Above that it stands 27-40 mm off
+  the gusset at the muzzle-tab height. That is less than the rifle barrel's 40 mm stand-off (ASSUMPTION MUZZLE-CORD),
+  so FIT-R3 row 5 keeps the gloved open / close check with the rifle in the keeper.
+
+**M-4: DECISION B25-TOPO (SK-12).** The 90 deg turn of a 38 mm strip in its own plane is a 45 deg mitre that fills
+38 x 38 mm. The bar has 11.5 mm between the sleeve and the clamp, so the turn sits **under the sleeve**:
+1. tab;
+2. sleeve round the bar;
+3. the strip leaves DOWN on the aft (bag) side and drops 33 mm below the bar to clear the clamp collar;
+4. 45 deg mitre inside the sleeve band (x 26.5-64.5);
+5. run inboard on edge, **necked to 25 mm** (lower edge folded 13 mm up);
+6. one wrap round the spine under the clamp collar, continuous to the other side.
+
+Nothing sits on the wearer side of the bar. Cut **386.5 -> 479.4 mm** (+2.60 g).
+
+The frame files draw no spine clamp: frame.yaml has only its 6 g mass and print/ has no part. ASSUMPTIONS:
+- B25-CLAMP: half-width 15 mm along the bar, collar 12 mm down the spine.
+- PAWL-TOP: the housing reaches 20 mm above the pawl line, 18 mm either side of the spine.
+
+Governing case, kit S at 15 in (the shortest spine above the pawl, 81 mm):
+
+| check | clearance |
+|---|---:|
+| necked spine wrap to the pawl housing | **13 mm** |
+| mitre to the upper bar | 9 mm |
+| mitre to the housing side | 8.5 mm |
+
+The un-necked 38 mm wrap would touch the housing (0 mm), which is why the run is necked. The clamp drawing must stay
+inside x +/-16.5 mm along the bar and 25 mm down the spine (`clamp_envelope`). Settled by:
+- gate **B25-FIT** in op 7.17: dry fit on the crown at kit S 15 in before the laps are tacked;
+- **TL-1**, whose specimen is now the as-built half bridle: sleeve, mitre, necked run, wrapped round a 20 mm spine stub
+  on the rig.
+
+**Minors done.**
+
+| # | fix |
+|---|---|
+| m-2 | per-step machine / needle / thread / stitch on ops 4.05 / 4.08 (`step_spec`, BT-301 on the 304 tacks) |
+| m-3 | BT-S is 10 x 2 everywhere (the 16 mm W3G tacks are gone) |
+| m-4 | IMC 192 mm (48 mm folds, 18 mm loops, each box 5 mm in from its raw end), +0.65 g; MT-1 specimens cut to it |
+| m-5 | op 7.13 threads the cam and G-hook bars before the boxes and lists them |
+| m-6 | B25-BOX exception stated on the piece and on SK-1 |
+| m-7 | TL-1 / TL-1b read ovalisation at the loop centre with a bore gauge, where basis A predicts it |
+| m-8 | bar stock 2.0 m (5 x 200 + control 200 + 2 x 160 + 10 %); TL-1b steps include 288 N; TL-1b count 2 |
+| m-9 | HOSE-LOW (above) |
+| m-10 | camo print BOM line production-only, prototype qty 0 |
+| m-12 | webbing pages: a leader label on every line; B-25 and RT added; W3G removed |
+| m-13 | SK-8 (c) names the printed PAHT-CF stay and draws the throat floor with its gap under the pin; the HE redraw is BL-044 |
+| m-14 | ledger row relabelled 'BL-004 REC: guy toggles x2', mapped by prefix |
+
+**Ledger (base, belt M, kit M).**
+
+| change | g |
+|---|---:|
+| B-25 topology | +2.60 |
+| IMC | +0.65 |
+| RT cut | +1.80 |
+| W3G deleted (its BL-041 row removed) | -2.16 |
+| **net** | **+2.89** |
+
+The bag reconciles 1:1 (0 unmatched, 0 pieces without a row). Thread is re-booked from the ops
+(`build_effort_rev3.py --write`).
+
+**Status.** M-1, M-2, M-4 and 12 minors are fixed. Z-1, Z-2, M-3, m-1 and m-11 stay open for BL-042 / BL-044, so
+the release reads **NOT ready to cut**.
+
+**Owner decision needed.** W3-OVER changes how the bag is used: W3 must be slackened (G-hook off) before the roll
+top opens, at every kit, because at kit M / L settings W3 sits on the roll. The alternative was moving W3's anchors off
+the crown bar, a frame change that is not proposed here.

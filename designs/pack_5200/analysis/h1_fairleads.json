@@ -1,0 +1,1774 @@
+{
+ "date": "2026-11-13",
+ "ticket": "BL-042",
+ "hinge_geom": {
+  "throat": 20.0,
+  "cheek": 8.0,
+  "half_z": 9.0,
+  "embed": 9.3545,
+  "hole_d": 7.2,
+  "pin_d": 5.0,
+  "hole_proud": 10.1,
+  "floor_proud": 2.1,
+  "wall_front": 4.0,
+  "chamfer_w": 9.0
+ },
+ "legacy_geom": {
+  "throat": 18.0,
+  "cheek": 8.0,
+  "half_z": 9.0,
+  "embed": 2.0,
+  "hole_d": 7.2,
+  "pin_d": 5.0,
+  "hole_proud": 6.5,
+  "floor_proud": 2.1,
+  "wall_front": 4.0,
+  "chamfer_w": null
+ },
+ "hinge_eye_envelope": {
+  "station_z_mm": 60.0,
+  "pin_d_mm": 5.0,
+  "pin_centre_above_stay_surface_mm": 10.1,
+  "throat_floor_above_stay_surface_mm": 2.1,
+  "gap_under_pin_mm": 5.5,
+  "eye_plies_design": 3,
+  "eye_ply_t_mm": 1.5,
+  "eye_thickness_design_mm": 4.5,
+  "gap_clearance_over_eye_mm": 1.0,
+  "eye_section_steps_mm": [
+   [
+    2.0,
+    4.5
+   ],
+   [
+    9.5,
+    3.0
+   ]
+  ],
+  "eye_margin_mm": 1.0,
+  "throat_mm": 20.0,
+  "neck_w_max_mm": 19.0,
+  "throat_clearance_over_max_neck_mm": 1.0,
+  "throat_clearance_over_nominal_neck_mm": 2.0,
+  "cheek_half_z_mm": 9.0,
+  "cheek_tip_above_stay_surface_mm": 17.7,
+  "stay_r_mm_at_z60": 9.3545,
+  "pin_centre_from_stay_centre_mm": 19.4545
+ },
+ "check_before": {
+  "hinge_L": {
+   "id": "hinge_L",
+   "z": 60.0,
+   "x": -115.0,
+   "floor_y": 15.44,
+   "floor_y_design": 10.34,
+   "gap_under_pin": -3.2,
+   "gap_under_pin_design": 1.9,
+   "throat_min_w": 0.0,
+   "throat_design": 18.0,
+   "throat_open": false,
+   "cheeks": {
+    "out": {
+     "hole_vertical_mm": 25.44,
+     "hole_centre_y": 24.62,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    },
+    "in": {
+     "hole_vertical_mm": 25.46,
+     "hole_centre_y": 24.61,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 18.0,
+    "y_pin": 14.74,
+    "y_tip": 22.34
+   },
+   "pass": false,
+   "eye_overlap_mm2": 68.6338,
+   "eye_fits": false,
+   "eye_gap_min_by_step": [
+    [
+     2.0,
+     4.5,
+     -3.2
+    ],
+    [
+     9.5,
+     3.0,
+     -3.18
+    ]
+   ]
+  },
+  "hinge_R": {
+   "id": "hinge_R",
+   "z": 60.0,
+   "x": 115.0,
+   "floor_y": 15.45,
+   "floor_y_design": 10.34,
+   "gap_under_pin": -3.21,
+   "gap_under_pin_design": 1.9,
+   "throat_min_w": 0.0,
+   "throat_design": 18.0,
+   "throat_open": false,
+   "cheeks": {
+    "in": {
+     "hole_vertical_mm": 25.4,
+     "hole_centre_y": 24.64,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    },
+    "out": {
+     "hole_vertical_mm": 25.4,
+     "hole_centre_y": 24.64,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 18.0,
+    "y_pin": 14.74,
+    "y_tip": 22.34
+   },
+   "pass": false,
+   "eye_overlap_mm2": 68.2424,
+   "eye_fits": false,
+   "eye_gap_min_by_step": [
+    [
+     2.0,
+     4.5,
+     -3.21
+    ],
+    [
+     9.5,
+     3.0,
+     -3.21
+    ]
+   ]
+  },
+  "us1_L": {
+   "id": "us1_L",
+   "z": 95.0,
+   "x": -115.0,
+   "floor_y": 9.92,
+   "floor_y_design": 9.51,
+   "gap_under_pin": 1.49,
+   "gap_under_pin_design": 1.9,
+   "throat_min_w": 80.0,
+   "throat_design": 18.0,
+   "throat_open": true,
+   "cheeks": {
+    "out": {
+     "hole_vertical_mm": 26.42,
+     "hole_centre_y": 23.3,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    },
+    "in": {
+     "hole_vertical_mm": 26.51,
+     "hole_centre_y": 23.26,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 18.0,
+    "y_pin": 13.91,
+    "y_tip": 21.51
+   },
+   "pass": false
+  },
+  "us1_R": {
+   "id": "us1_R",
+   "z": 95.0,
+   "x": 115.0,
+   "floor_y": 9.94,
+   "floor_y_design": 9.51,
+   "gap_under_pin": 1.47,
+   "gap_under_pin_design": 1.9,
+   "throat_min_w": 80.0,
+   "throat_design": 18.0,
+   "throat_open": true,
+   "cheeks": {
+    "in": {
+     "hole_vertical_mm": 26.42,
+     "hole_centre_y": 23.3,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    },
+    "out": {
+     "hole_vertical_mm": 26.43,
+     "hole_centre_y": 23.3,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 18.0,
+    "y_pin": 13.91,
+    "y_tip": 21.51
+   },
+   "pass": false
+  },
+  "us2_L": {
+   "id": "us2_L",
+   "z": 142.0,
+   "x": -115.0,
+   "floor_y": 7.97,
+   "floor_y_design": 8.4,
+   "gap_under_pin": 2.33,
+   "gap_under_pin_design": 1.9,
+   "throat_min_w": 52.71,
+   "throat_design": 18.0,
+   "throat_open": true,
+   "cheeks": {
+    "out": {
+     "hole_vertical_mm": 25.1,
+     "hole_centre_y": 22.85,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    },
+    "in": {
+     "hole_vertical_mm": 25.55,
+     "hole_centre_y": 22.62,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 18.0,
+    "y_pin": 12.8,
+    "y_tip": 20.4
+   },
+   "pass": false
+  },
+  "us2_R": {
+   "id": "us2_R",
+   "z": 142.0,
+   "x": 115.0,
+   "floor_y": 8.02,
+   "floor_y_design": 8.4,
+   "gap_under_pin": 2.28,
+   "gap_under_pin_design": 1.9,
+   "throat_min_w": 80.0,
+   "throat_design": 18.0,
+   "throat_open": true,
+   "cheeks": {
+    "in": {
+     "hole_vertical_mm": 25.5,
+     "hole_centre_y": 22.65,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    },
+    "out": {
+     "hole_vertical_mm": 25.36,
+     "hole_centre_y": 22.72,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 18.0,
+    "y_pin": 12.8,
+    "y_tip": 20.4
+   },
+   "pass": false
+  },
+  "im1_L": {
+   "id": "im1_L",
+   "z": 190.0,
+   "x": -115.0,
+   "floor_y": 14.78,
+   "floor_y_design": 12.6,
+   "gap_under_pin": -0.28,
+   "gap_under_pin_design": 1.9,
+   "throat_min_w": 0.0,
+   "throat_design": 18.0,
+   "throat_open": false,
+   "cheeks": {
+    "out": {
+     "hole_vertical_mm": 25.07,
+     "hole_centre_y": 27.06,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    },
+    "in": {
+     "hole_vertical_mm": 25.1,
+     "hole_centre_y": 27.05,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 18.0,
+    "y_pin": 17.0,
+    "y_tip": 24.6
+   },
+   "pass": false
+  },
+  "im1_R": {
+   "id": "im1_R",
+   "z": 190.0,
+   "x": 115.0,
+   "floor_y": 14.76,
+   "floor_y_design": 12.6,
+   "gap_under_pin": -0.27,
+   "gap_under_pin_design": 1.9,
+   "throat_min_w": 0.0,
+   "throat_design": 18.0,
+   "throat_open": false,
+   "cheeks": {
+    "in": {
+     "hole_vertical_mm": 25.06,
+     "hole_centre_y": 27.07,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    },
+    "out": {
+     "hole_vertical_mm": 25.05,
+     "hole_centre_y": 27.07,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 18.0,
+    "y_pin": 17.0,
+    "y_tip": 24.6
+   },
+   "pass": false
+  },
+  "im2_L": {
+   "id": "im2_L",
+   "z": 330.0,
+   "x": -115.0,
+   "floor_y": 11.79,
+   "floor_y_design": 9.7,
+   "gap_under_pin": -0.2,
+   "gap_under_pin_design": 1.9,
+   "throat_min_w": 0.0,
+   "throat_design": 18.0,
+   "throat_open": false,
+   "cheeks": {
+    "out": {
+     "hole_vertical_mm": 26.47,
+     "hole_centre_y": 23.46,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    },
+    "in": {
+     "hole_vertical_mm": 26.53,
+     "hole_centre_y": 23.43,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 18.0,
+    "y_pin": 14.1,
+    "y_tip": 21.7
+   },
+   "pass": false
+  },
+  "im2_R": {
+   "id": "im2_R",
+   "z": 330.0,
+   "x": 115.0,
+   "floor_y": 11.79,
+   "floor_y_design": 9.7,
+   "gap_under_pin": -0.2,
+   "gap_under_pin_design": 1.9,
+   "throat_min_w": 0.0,
+   "throat_design": 18.0,
+   "throat_open": false,
+   "cheeks": {
+    "in": {
+     "hole_vertical_mm": 26.48,
+     "hole_centre_y": 23.45,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    },
+    "out": {
+     "hole_vertical_mm": 26.48,
+     "hole_centre_y": 23.46,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 18.0,
+    "y_pin": 14.1,
+    "y_tip": 21.7
+   },
+   "pass": false
+  },
+  "im3_L": {
+   "id": "im3_L",
+   "z": 520.0,
+   "x": -115.0,
+   "floor_y": 9.89,
+   "floor_y_design": 9.09,
+   "gap_under_pin": 1.1,
+   "gap_under_pin_design": 1.9,
+   "throat_min_w": 80.0,
+   "throat_design": 18.0,
+   "throat_open": true,
+   "cheeks": {
+    "out": {
+     "hole_vertical_mm": 26.2,
+     "hole_centre_y": 22.99,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    },
+    "in": {
+     "hole_vertical_mm": 26.31,
+     "hole_centre_y": 22.93,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 28.0,
+    "y_pin": 13.49,
+    "y_tip": 21.09
+   },
+   "pass": false
+  },
+  "im3_R": {
+   "id": "im3_R",
+   "z": 520.0,
+   "x": 115.0,
+   "floor_y": 9.89,
+   "floor_y_design": 9.09,
+   "gap_under_pin": 1.1,
+   "gap_under_pin_design": 1.9,
+   "throat_min_w": 80.0,
+   "throat_design": 18.0,
+   "throat_open": true,
+   "cheeks": {
+    "in": {
+     "hole_vertical_mm": 26.21,
+     "hole_centre_y": 22.98,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    },
+    "out": {
+     "hole_vertical_mm": 26.23,
+     "hole_centre_y": 22.97,
+     "hole_ring_d_mm": 0.0,
+     "hole_ring_centre_err_mm": null,
+     "front_wall_mm": 0.0,
+     "cheek_thick_mm": 0.0,
+     "cheek_height_mm": 0.0
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 28.0,
+    "y_pin": 13.49,
+    "y_tip": 21.09
+   },
+   "pass": false
+  },
+  "all_pass": false
+ },
+ "check_after": {
+  "hinge_L": {
+   "id": "hinge_L",
+   "z": 60.0,
+   "x": -115.0,
+   "floor_y": 10.34,
+   "floor_y_design": 10.34,
+   "gap_under_pin": 5.5,
+   "gap_under_pin_design": 5.5,
+   "throat_min_w": 20.0,
+   "throat_design": 20.0,
+   "throat_open": true,
+   "cheeks": {
+    "out": {
+     "hole_vertical_mm": 7.0,
+     "hole_centre_y": 18.34,
+     "hole_ring_d_mm": 6.98,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.1,
+     "cheek_thick_mm": 7.99,
+     "cheek_height_mm": 17.99
+    },
+    "in": {
+     "hole_vertical_mm": 7.0,
+     "hole_centre_y": 18.34,
+     "hole_ring_d_mm": 6.98,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.09,
+     "cheek_thick_mm": 8.0,
+     "cheek_height_mm": 17.97
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 18.0,
+    "y_pin": 18.34,
+    "y_tip": 25.94
+   },
+   "pass": true,
+   "eye_overlap_mm2": 0.0,
+   "eye_fits": true,
+   "eye_gap_min_by_step": [
+    [
+     2.0,
+     4.5,
+     5.5
+    ],
+    [
+     9.5,
+     3.0,
+     4.44
+    ]
+   ]
+  },
+  "hinge_R": {
+   "id": "hinge_R",
+   "z": 60.0,
+   "x": 115.0,
+   "floor_y": 10.34,
+   "floor_y_design": 10.34,
+   "gap_under_pin": 5.5,
+   "gap_under_pin_design": 5.5,
+   "throat_min_w": 20.0,
+   "throat_design": 20.0,
+   "throat_open": true,
+   "cheeks": {
+    "in": {
+     "hole_vertical_mm": 7.0,
+     "hole_centre_y": 18.34,
+     "hole_ring_d_mm": 6.98,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.1,
+     "cheek_thick_mm": 7.99,
+     "cheek_height_mm": 17.99
+    },
+    "out": {
+     "hole_vertical_mm": 7.0,
+     "hole_centre_y": 18.34,
+     "hole_ring_d_mm": 6.98,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.09,
+     "cheek_thick_mm": 8.0,
+     "cheek_height_mm": 17.97
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 18.0,
+    "y_pin": 18.34,
+    "y_tip": 25.94
+   },
+   "pass": true,
+   "eye_overlap_mm2": 0.0,
+   "eye_fits": true,
+   "eye_gap_min_by_step": [
+    [
+     2.0,
+     4.5,
+     5.5
+    ],
+    [
+     9.5,
+     3.0,
+     4.44
+    ]
+   ]
+  },
+  "us1_L": {
+   "id": "us1_L",
+   "z": 95.0,
+   "x": -115.0,
+   "floor_y": 9.51,
+   "floor_y_design": 9.51,
+   "gap_under_pin": 1.9,
+   "gap_under_pin_design": 1.9,
+   "throat_min_w": 18.0,
+   "throat_design": 18.0,
+   "throat_open": true,
+   "cheeks": {
+    "out": {
+     "hole_vertical_mm": 6.98,
+     "hole_centre_y": 13.91,
+     "hole_ring_d_mm": 6.99,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.11,
+     "cheek_thick_mm": 8.0,
+     "cheek_height_mm": 17.99
+    },
+    "in": {
+     "hole_vertical_mm": 6.98,
+     "hole_centre_y": 13.91,
+     "hole_ring_d_mm": 6.99,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.09,
+     "cheek_thick_mm": 8.0,
+     "cheek_height_mm": 17.99
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 18.0,
+    "y_pin": 13.91,
+    "y_tip": 21.51
+   },
+   "pass": true
+  },
+  "us1_R": {
+   "id": "us1_R",
+   "z": 95.0,
+   "x": 115.0,
+   "floor_y": 9.51,
+   "floor_y_design": 9.51,
+   "gap_under_pin": 1.9,
+   "gap_under_pin_design": 1.9,
+   "throat_min_w": 18.0,
+   "throat_design": 18.0,
+   "throat_open": true,
+   "cheeks": {
+    "in": {
+     "hole_vertical_mm": 6.98,
+     "hole_centre_y": 13.91,
+     "hole_ring_d_mm": 6.99,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.11,
+     "cheek_thick_mm": 8.0,
+     "cheek_height_mm": 17.99
+    },
+    "out": {
+     "hole_vertical_mm": 6.98,
+     "hole_centre_y": 13.91,
+     "hole_ring_d_mm": 6.99,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.09,
+     "cheek_thick_mm": 8.0,
+     "cheek_height_mm": 17.98
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 18.0,
+    "y_pin": 13.91,
+    "y_tip": 21.51
+   },
+   "pass": true
+  },
+  "us2_L": {
+   "id": "us2_L",
+   "z": 142.0,
+   "x": -115.0,
+   "floor_y": 8.4,
+   "floor_y_design": 8.4,
+   "gap_under_pin": 1.9,
+   "gap_under_pin_design": 1.9,
+   "throat_min_w": 18.0,
+   "throat_design": 18.0,
+   "throat_open": true,
+   "cheeks": {
+    "out": {
+     "hole_vertical_mm": 6.97,
+     "hole_centre_y": 12.8,
+     "hole_ring_d_mm": 6.99,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.11,
+     "cheek_thick_mm": 8.0,
+     "cheek_height_mm": 18.0
+    },
+    "in": {
+     "hole_vertical_mm": 6.97,
+     "hole_centre_y": 12.8,
+     "hole_ring_d_mm": 6.99,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.1,
+     "cheek_thick_mm": 8.0,
+     "cheek_height_mm": 17.98
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 18.0,
+    "y_pin": 12.8,
+    "y_tip": 20.4
+   },
+   "pass": true
+  },
+  "us2_R": {
+   "id": "us2_R",
+   "z": 142.0,
+   "x": 115.0,
+   "floor_y": 8.4,
+   "floor_y_design": 8.4,
+   "gap_under_pin": 1.9,
+   "gap_under_pin_design": 1.9,
+   "throat_min_w": 18.0,
+   "throat_design": 18.0,
+   "throat_open": true,
+   "cheeks": {
+    "in": {
+     "hole_vertical_mm": 6.97,
+     "hole_centre_y": 12.8,
+     "hole_ring_d_mm": 6.99,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.11,
+     "cheek_thick_mm": 8.0,
+     "cheek_height_mm": 18.0
+    },
+    "out": {
+     "hole_vertical_mm": 6.97,
+     "hole_centre_y": 12.8,
+     "hole_ring_d_mm": 6.99,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.1,
+     "cheek_thick_mm": 8.0,
+     "cheek_height_mm": 17.98
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 18.0,
+    "y_pin": 12.8,
+    "y_tip": 20.4
+   },
+   "pass": true
+  },
+  "im1_L": {
+   "id": "im1_L",
+   "z": 190.0,
+   "x": -115.0,
+   "floor_y": 12.61,
+   "floor_y_design": 12.6,
+   "gap_under_pin": 1.89,
+   "gap_under_pin_design": 1.9,
+   "throat_min_w": 18.0,
+   "throat_design": 18.0,
+   "throat_open": true,
+   "cheeks": {
+    "out": {
+     "hole_vertical_mm": 6.97,
+     "hole_centre_y": 17.0,
+     "hole_ring_d_mm": 6.99,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.11,
+     "cheek_thick_mm": 8.0,
+     "cheek_height_mm": 18.0
+    },
+    "in": {
+     "hole_vertical_mm": 6.98,
+     "hole_centre_y": 16.99,
+     "hole_ring_d_mm": 6.99,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.1,
+     "cheek_thick_mm": 8.0,
+     "cheek_height_mm": 18.0
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 18.0,
+    "y_pin": 17.0,
+    "y_tip": 24.6
+   },
+   "pass": true
+  },
+  "im1_R": {
+   "id": "im1_R",
+   "z": 190.0,
+   "x": 115.0,
+   "floor_y": 12.61,
+   "floor_y_design": 12.6,
+   "gap_under_pin": 1.89,
+   "gap_under_pin_design": 1.9,
+   "throat_min_w": 18.0,
+   "throat_design": 18.0,
+   "throat_open": true,
+   "cheeks": {
+    "in": {
+     "hole_vertical_mm": 6.97,
+     "hole_centre_y": 17.0,
+     "hole_ring_d_mm": 6.99,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.11,
+     "cheek_thick_mm": 8.0,
+     "cheek_height_mm": 18.0
+    },
+    "out": {
+     "hole_vertical_mm": 6.98,
+     "hole_centre_y": 16.99,
+     "hole_ring_d_mm": 6.99,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.1,
+     "cheek_thick_mm": 8.0,
+     "cheek_height_mm": 18.0
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 18.0,
+    "y_pin": 17.0,
+    "y_tip": 24.6
+   },
+   "pass": true
+  },
+  "im2_L": {
+   "id": "im2_L",
+   "z": 330.0,
+   "x": -115.0,
+   "floor_y": 9.7,
+   "floor_y_design": 9.7,
+   "gap_under_pin": 1.89,
+   "gap_under_pin_design": 1.9,
+   "throat_min_w": 18.0,
+   "throat_design": 18.0,
+   "throat_open": true,
+   "cheeks": {
+    "out": {
+     "hole_vertical_mm": 6.98,
+     "hole_centre_y": 14.1,
+     "hole_ring_d_mm": 6.99,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.11,
+     "cheek_thick_mm": 8.0,
+     "cheek_height_mm": 18.0
+    },
+    "in": {
+     "hole_vertical_mm": 6.98,
+     "hole_centre_y": 14.1,
+     "hole_ring_d_mm": 6.99,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.09,
+     "cheek_thick_mm": 8.0,
+     "cheek_height_mm": 18.0
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 18.0,
+    "y_pin": 14.1,
+    "y_tip": 21.7
+   },
+   "pass": true
+  },
+  "im2_R": {
+   "id": "im2_R",
+   "z": 330.0,
+   "x": 115.0,
+   "floor_y": 9.7,
+   "floor_y_design": 9.7,
+   "gap_under_pin": 1.9,
+   "gap_under_pin_design": 1.9,
+   "throat_min_w": 18.0,
+   "throat_design": 18.0,
+   "throat_open": true,
+   "cheeks": {
+    "in": {
+     "hole_vertical_mm": 6.98,
+     "hole_centre_y": 14.1,
+     "hole_ring_d_mm": 6.99,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.11,
+     "cheek_thick_mm": 8.0,
+     "cheek_height_mm": 18.0
+    },
+    "out": {
+     "hole_vertical_mm": 6.98,
+     "hole_centre_y": 14.1,
+     "hole_ring_d_mm": 6.99,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.09,
+     "cheek_thick_mm": 8.0,
+     "cheek_height_mm": 18.0
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 18.0,
+    "y_pin": 14.1,
+    "y_tip": 21.7
+   },
+   "pass": true
+  },
+  "im3_L": {
+   "id": "im3_L",
+   "z": 520.0,
+   "x": -115.0,
+   "floor_y": 9.1,
+   "floor_y_design": 9.09,
+   "gap_under_pin": 1.89,
+   "gap_under_pin_design": 1.9,
+   "throat_min_w": 18.0,
+   "throat_design": 18.0,
+   "throat_open": true,
+   "cheeks": {
+    "out": {
+     "hole_vertical_mm": 6.99,
+     "hole_centre_y": 13.5,
+     "hole_ring_d_mm": 6.99,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.1,
+     "cheek_thick_mm": 8.0,
+     "cheek_height_mm": 28.0
+    },
+    "in": {
+     "hole_vertical_mm": 6.99,
+     "hole_centre_y": 13.49,
+     "hole_ring_d_mm": 6.99,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.1,
+     "cheek_thick_mm": 8.0,
+     "cheek_height_mm": 28.0
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 28.0,
+    "y_pin": 13.49,
+    "y_tip": 21.09
+   },
+   "pass": true
+  },
+  "im3_R": {
+   "id": "im3_R",
+   "z": 520.0,
+   "x": 115.0,
+   "floor_y": 9.09,
+   "floor_y_design": 9.09,
+   "gap_under_pin": 1.9,
+   "gap_under_pin_design": 1.9,
+   "throat_min_w": 18.0,
+   "throat_design": 18.0,
+   "throat_open": true,
+   "cheeks": {
+    "in": {
+     "hole_vertical_mm": 6.99,
+     "hole_centre_y": 13.5,
+     "hole_ring_d_mm": 6.99,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.1,
+     "cheek_thick_mm": 8.0,
+     "cheek_height_mm": 28.0
+    },
+    "out": {
+     "hole_vertical_mm": 6.99,
+     "hole_centre_y": 13.49,
+     "hole_ring_d_mm": 6.99,
+     "hole_ring_centre_err_mm": 0.0,
+     "front_wall_mm": 4.08,
+     "cheek_thick_mm": 8.0,
+     "cheek_height_mm": 28.0
+    }
+   },
+   "design": {
+    "hole_print_d": 7.0,
+    "wall_front": 4.0,
+    "cheek": 8.0,
+    "cheek_height": 28.0,
+    "y_pin": 13.49,
+    "y_tip": 21.09
+   },
+   "pass": true
+  },
+  "all_pass": true
+ },
+ "assembled": {
+  "g_before": 808.5,
+  "g_after": 845.7,
+  "watertight": true,
+  "shells": 1,
+  "bounds_y_max_before": 15.46,
+  "bounds_y_max_after": 25.94
+ },
+ "halves": {
+  "lower": {
+   "g": 331.2,
+   "watertight": true,
+   "shells": 1,
+   "extents_mm": [
+    278.8,
+    234.5,
+    74.4
+   ]
+  },
+  "upper": {
+   "g": 513.8,
+   "watertight": true,
+   "shells": 1,
+   "extents_mm": [
+    278.8,
+    309.4,
+    60.5
+   ]
+  }
+ },
+ "export_info": {
+  "d_mid": 1.0,
+  "d_up": 2.5,
+  "im3_half_z": 14.0,
+  "fairleads_bl042": {
+   "body_mm3": 762551.6859711537,
+   "fairleads_added_mm3": 41741.41750323691,
+   "throats_cut_mm3": 4619.451316111139,
+   "holes_cut_mm3": 2067.752659083111,
+   "net_mm3": 35054.21352804266,
+   "net_g": 37.15746633972522,
+   "per_station": {
+    "hinge_L": {
+     "throat_cut_from_body_mm3": 532.0
+    },
+    "hinge_R": {
+     "throat_cut_from_body_mm3": 512.5
+    },
+    "us1_L": {
+     "throat_cut_from_body_mm3": 411.4
+    },
+    "us1_R": {
+     "throat_cut_from_body_mm3": 417.1
+    },
+    "us2_L": {
+     "throat_cut_from_body_mm3": 727.7
+    },
+    "us2_R": {
+     "throat_cut_from_body_mm3": 746.0
+    },
+    "im1_L": {
+     "throat_cut_from_body_mm3": 219.2
+    },
+    "im1_R": {
+     "throat_cut_from_body_mm3": 202.5
+    },
+    "im2_L": {
+     "throat_cut_from_body_mm3": 172.2
+    },
+    "im2_R": {
+     "throat_cut_from_body_mm3": 166.5
+    },
+    "im3_L": {
+     "throat_cut_from_body_mm3": 256.2
+    },
+    "im3_R": {
+     "throat_cut_from_body_mm3": 256.2
+    }
+   }
+  },
+  "assembled": {
+   "faces": 303044,
+   "volume_cm3": 797.79,
+   "g": 845.7,
+   "watertight": true,
+   "shells": 1,
+   "dropped": [
+    [
+     12,
+     0.0006058699029574122
+    ],
+    [
+     4,
+     0.00012046198522715675
+    ],
+    [
+     4,
+     1.4475469143053013e-05
+    ],
+    [
+     4,
+     3.56014995261944e-08
+    ]
+   ]
+  },
+  "lower": {
+   "faces": 160756,
+   "volume_cm3": 312.46,
+   "g": 331.2,
+   "footprint_mm": [
+    278.8,
+    234.5,
+    74.4
+   ],
+   "watertight": true,
+   "shells": 1,
+   "dropped": [
+    [
+     1244,
+     570.9808353182561
+    ]
+   ],
+   "dropped_centre_frame_mm": [
+    [
+     84.4,
+     -0.4,
+     225.5
+    ]
+   ],
+   "print_h": 11.7,
+   "fits_h2s_340x320x340": true
+  },
+  "upper": {
+   "faces": 145232,
+   "volume_cm3": 484.75,
+   "g": 513.8,
+   "footprint_mm": [
+    278.8,
+    309.4,
+    60.5
+   ],
+   "watertight": true,
+   "shells": 1,
+   "dropped": [],
+   "dropped_centre_frame_mm": [],
+   "print_h": 18.2,
+   "fits_h2s_340x320x340": true
+  }
+ },
+ "mass": {
+  "net_g": 37.16,
+  "solids_g": 44.25,
+  "throats_g": -4.9,
+  "holes_g": -2.19,
+  "basis": "print_mesh volume before / after h1_fairleads.add_fairleads x 1.06 g/cm3 (pre-simplify)"
+ },
+ "pieces": {
+  "hinge": {
+   "file": "print/frame_h1/test_pieces/hefit_hinge_fairlead_R.stl",
+   "what": "HE-FIT: z 60 R hinge fairlead, 80 mm stay segment",
+   "g": 31.9,
+   "watertight": true,
+   "shells": 1,
+   "dropped": [],
+   "extents_mm": [
+    42.7,
+    80.0,
+    44.4
+   ],
+   "slice_check": {
+    "id": "hinge_R",
+    "z": 60.0,
+    "x": 115.0,
+    "floor_y": 10.33,
+    "floor_y_design": 10.34,
+    "gap_under_pin": 5.51,
+    "gap_under_pin_design": 5.5,
+    "throat_min_w": 20.01,
+    "throat_design": 20.0,
+    "throat_open": true,
+    "cheeks": {
+     "in": {
+      "hole_vertical_mm": 7.0,
+      "hole_centre_y": 18.34,
+      "hole_ring_d_mm": 6.97,
+      "hole_ring_centre_err_mm": 0.0,
+      "front_wall_mm": 4.09,
+      "cheek_thick_mm": 7.99,
+      "cheek_height_mm": 17.97
+     },
+     "out": {
+      "hole_vertical_mm": 7.0,
+      "hole_centre_y": 18.34,
+      "hole_ring_d_mm": 6.97,
+      "hole_ring_centre_err_mm": 0.0,
+      "front_wall_mm": 4.09,
+      "cheek_thick_mm": 7.99,
+      "cheek_height_mm": 17.98
+     }
+    },
+    "design": {
+     "hole_print_d": 7.0,
+     "wall_front": 4.0,
+     "cheek": 8.0,
+     "cheek_height": 18.0,
+     "y_pin": 18.34,
+     "y_tip": 25.94
+    },
+    "pass": true,
+    "eye_overlap_mm2": 0.0,
+    "eye_fits": true,
+    "eye_gap_min_by_step": [
+     [
+      2.0,
+      4.5,
+      5.51
+     ],
+     [
+      9.5,
+      3.0,
+      4.44
+     ]
+    ]
+   }
+  },
+  "im3": {
+   "file": "print/frame_h1/test_pieces/im3ec_cheek_R.stl",
+   "what": "IM3-EC: z 520 R IM3 eye, 28 mm cheek, 120 mm stay segment",
+   "g": 66.8,
+   "watertight": true,
+   "shells": 1,
+   "dropped": [],
+   "extents_mm": [
+    40.7,
+    83.4,
+    47.7
+   ],
+   "slice_check": {
+    "id": "im3_R",
+    "z": 520.0,
+    "x": 115.0,
+    "floor_y": 9.12,
+    "floor_y_design": 9.09,
+    "gap_under_pin": 1.87,
+    "gap_under_pin_design": 1.9,
+    "throat_min_w": 18.0,
+    "throat_design": 18.0,
+    "throat_open": true,
+    "cheeks": {
+     "in": {
+      "hole_vertical_mm": 6.97,
+      "hole_centre_y": 13.5,
+      "hole_ring_d_mm": 6.98,
+      "hole_ring_centre_err_mm": 0.0,
+      "front_wall_mm": 4.08,
+      "cheek_thick_mm": 8.0,
+      "cheek_height_mm": 27.98
+     },
+     "out": {
+      "hole_vertical_mm": 6.97,
+      "hole_centre_y": 13.5,
+      "hole_ring_d_mm": 6.98,
+      "hole_ring_centre_err_mm": 0.0,
+      "front_wall_mm": 4.06,
+      "cheek_thick_mm": 8.0,
+      "cheek_height_mm": 27.98
+     }
+    },
+    "design": {
+     "hole_print_d": 7.0,
+     "wall_front": 4.0,
+     "cheek": 8.0,
+     "cheek_height": 28.0,
+     "y_pin": 13.49,
+     "y_tip": 21.09
+    },
+    "pass": true
+   }
+  }
+ },
+ "fea": {
+  "loads": {
+   "revC": {
+    "vec": [
+     0.0,
+     184.76582433901558,
+     -700.19481
+    ],
+    "g_times_req": 3.0,
+    "case": "tall_load"
+   },
+   "sim_1g": {
+    "F_PR15|fill|R": [
+     -83.6,
+     -1.2,
+     109.3
+    ],
+    "F_PR15|fill|L": [
+     -80.3,
+     -3.6,
+     117.0
+    ],
+    "F_PR15|meat|R": [
+     -141.1,
+     -96.5,
+     206.3
+    ],
+    "F_PR15|meat|L": [
+     -156.6,
+     -88.7,
+     242.0
+    ],
+    "F_PR19|fill|R": [
+     -84.3,
+     14.8,
+     121.6
+    ],
+    "F_PR19|fill|L": [
+     -75.2,
+     -20.7,
+     55.6
+    ],
+    "F_PR19|meat|R": [
+     -110.9,
+     -88.1,
+     223.0
+    ],
+    "F_PR19|meat|L": [
+     -118.5,
+     -83.3,
+     206.3
+    ],
+    "F_PR23|fill|R": [
+     -94.7,
+     -2.0,
+     41.8
+    ],
+    "F_PR23|fill|L": [
+     -79.8,
+     -15.3,
+     37.6
+    ],
+    "F_PR23|meat|R": [
+     -98.9,
+     -69.9,
+     179.6
+    ],
+    "F_PR23|meat|L": [
+     -95.6,
+     -77.5,
+     208.9
+    ],
+    "F_PR15_fineFM|fill|R": [
+     -39.0,
+     1.2,
+     76.6
+    ],
+    "F_PR15_fineFM|fill|L": [
+     -42.9,
+     -0.1,
+     56.8
+    ],
+    "F_PR15_fineFM|meat|R": [
+     -194.6,
+     -68.6,
+     126.2
+    ],
+    "F_PR15_fineFM|meat|L": [
+     -196.2,
+     -82.2,
+     131.8
+    ],
+    "F_PR19_fineFM|fill|R": [
+     -55.0,
+     -8.6,
+     45.8
+    ],
+    "F_PR19_fineFM|fill|L": [
+     -52.4,
+     3.7,
+     38.2
+    ],
+    "F_PR19_fineFM|meat|R": [
+     -158.8,
+     -63.5,
+     101.6
+    ],
+    "F_PR19_fineFM|meat|L": [
+     -156.7,
+     -71.8,
+     119.3
+    ],
+    "F_PR23_fineFM|fill|R": [
+     -60.2,
+     5.2,
+     42.8
+    ],
+    "F_PR23_fineFM|fill|L": [
+     -49.5,
+     6.0,
+     8.8
+    ],
+    "F_PR23_fineFM|meat|R": [
+     -143.7,
+     -51.8,
+     98.2
+    ],
+    "F_PR23_fineFM|meat|L": [
+     -138.9,
+     -56.5,
+     120.3
+    ]
+   }
+  },
+  "h": 1.0,
+  "stay_ax_sensitivity_mm": 6.0,
+  "legacy": {
+   "added_g": 6.20736,
+   "revC_force_n": 724.1624001524879,
+   "revC_sf": 2.974484513385129,
+   "revC_fatigue": 1.6731475387791348,
+   "revC_creep": 3.569381416062155,
+   "sim_worst": {
+    "run": "F_PR15_fineFM|meat|L",
+    "f1g_n": 250.24492002835942,
+    "strength": 1.4120775173748565,
+    "fatigue": 0.7942936035233567,
+    "creep": 1.694493020849828
+   },
+   "pin_revC": {
+    "M_nmm": 3077.690200648073,
+    "sigma_mpa": 250.79275967417757,
+    "sf_yield": 1.8421584442876922,
+    "sigma_walk_mpa": 133.7561384928947,
+    "goodman_smax_r0_mpa": 228.92798210040553,
+    "sf_fatigue": 1.7115325298701447
+   },
+   "pin_sim": {
+    "M_nmm": 3845.2454834672135,
+    "sigma_mpa": 313.3387909609431,
+    "sf_yield": 1.4744424033269063,
+    "sigma_walk_mpa": 167.1140218458363,
+    "goodman_smax_r0_mpa": 228.92798210040553,
+    "sf_fatigue": 1.3698909257991108
+   }
+  },
+  "bl042": {
+   "added_g": 8.1408,
+   "revC_force_n": 724.1624001524879,
+   "revC_sf": 3.729823599611549,
+   "revC_fatigue": 2.098025774781496,
+   "revC_creep": 4.4757883195338595,
+   "sim_worst": {
+    "run": "F_PR15_fineFM|meat|L",
+    "f1g_n": 250.24492002835942,
+    "strength": 2.075774250133639,
+    "fatigue": 1.1676230157001724,
+    "creep": 2.4909291001603675
+   },
+   "pin_revC": {
+    "M_nmm": 3258.7308006861954,
+    "sigma_mpa": 265.54527494912924,
+    "sf_yield": 1.739816308493931,
+    "sigma_walk_mpa": 141.6241466395356,
+    "goodman_smax_r0_mpa": 228.92798210040553,
+    "sf_fatigue": 1.616447389321803
+   },
+   "pin_sim": {
+    "M_nmm": 4071.4363942594023,
+    "sigma_mpa": 331.77048454688094,
+    "sf_yield": 1.3925289364754114,
+    "sigma_walk_mpa": 176.9442584250032,
+    "goodman_smax_r0_mpa": 228.92798210040553,
+    "sf_fatigue": 1.2937858743658266
+   }
+  },
+  "legacy_ellipse": {
+   "added_g": 6.32184,
+   "revC_force_n": 724.1624001524879,
+   "revC_sf": 2.078243019738044,
+   "revC_fatigue": 1.1690116986026495,
+   "revC_creep": 2.493891623685653,
+   "sim_worst": {
+    "run": "F_PR15_fineFM|meat|L",
+    "f1g_n": 250.24492002835942,
+    "strength": 0.9188530470702188,
+    "fatigue": 0.516854838976998,
+    "creep": 1.1026236564842626
+   },
+   "pin_revC": {
+    "M_nmm": 3077.690200648073,
+    "sigma_mpa": 250.79275967417757,
+    "sf_yield": 1.8421584442876922,
+    "sigma_walk_mpa": 133.7561384928947,
+    "goodman_smax_r0_mpa": 228.92798210040553,
+    "sf_fatigue": 1.7115325298701447
+   },
+   "pin_sim": {
+    "M_nmm": 3845.2454834672135,
+    "sigma_mpa": 313.3387909609431,
+    "sf_yield": 1.4744424033269063,
+    "sigma_walk_mpa": 167.1140218458363,
+    "goodman_smax_r0_mpa": 228.92798210040553,
+    "sf_fatigue": 1.3698909257991108
+   }
+  },
+  "bl042_ellipse": {
+   "added_g": 9.0948,
+   "revC_force_n": 724.1624001524879,
+   "revC_sf": 3.3552572086964907,
+   "revC_fatigue": 1.887332179891776,
+   "revC_creep": 4.026308650435789,
+   "sim_worst": {
+    "run": "F_PR15_fineFM|meat|L",
+    "f1g_n": 250.24492002835942,
+    "strength": 2.065138390210042,
+    "fatigue": 1.1616403444931485,
+    "creep": 2.4781660682520505
+   },
+   "pin_revC": {
+    "M_nmm": 3258.7308006861954,
+    "sigma_mpa": 265.54527494912924,
+    "sf_yield": 1.739816308493931,
+    "sigma_walk_mpa": 141.6241466395356,
+    "goodman_smax_r0_mpa": 228.92798210040553,
+    "sf_fatigue": 1.616447389321803
+   },
+   "pin_sim": {
+    "M_nmm": 4071.4363942594023,
+    "sigma_mpa": 331.77048454688094,
+    "sf_yield": 1.3925289364754114,
+    "sigma_walk_mpa": 176.9442584250032,
+    "goodman_smax_r0_mpa": 228.92798210040553,
+    "sf_fatigue": 1.2937858743658266
+   }
+  },
+  "im3_28": {
+   "force_n": 605.0318208669462,
+   "sf": 5.2385546094008015,
+   "fatigue": 2.946686967787951
+  }
+ },
+ "body": {
+  "voxels": {
+   "hinge_L": {
+    "removed": 74,
+    "added": 305
+   },
+   "hinge_R": {
+    "removed": 74,
+    "added": 347
+   },
+   "us1_L": {
+    "removed": 35,
+    "added": 0
+   },
+   "us1_R": {
+    "removed": 35,
+    "added": 0
+   },
+   "us2_L": {
+    "removed": 108,
+    "added": 0
+   },
+   "us2_R": {
+    "removed": 103,
+    "added": 0
+   },
+   "im1_L": {
+    "removed": 40,
+    "added": 0
+   },
+   "im1_R": {
+    "removed": 39,
+    "added": 0
+   },
+   "im2_L": {
+    "removed": 16,
+    "added": 0
+   },
+   "im2_R": {
+    "removed": 16,
+    "added": 0
+   },
+   "im3_L": {
+    "removed": 0,
+    "added": 0
+   },
+   "im3_R": {
+    "removed": 0,
+    "added": 0
+   }
+  },
+  "raster_g_before": 800.65616,
+  "raster_g_after": 801.60592,
+  "bases": {
+   "fine_sm8": {
+    "before": {
+     "strength": 1.67670659086256,
+     "fatigue": 1.1750902718703553,
+     "creep": 2.5068592466567585,
+     "buckling": 1.223,
+     "joint_s": 2.082,
+     "joint_f": 1.728
+    },
+    "after": {
+     "strength": 1.6770782732442926,
+     "fatigue": 1.1723899135845308,
+     "creep": 2.5010984823136657,
+     "buckling": 1.22,
+     "joint_s": 2.085,
+     "joint_f": 1.73
+    }
+   },
+   "fine": {
+    "before": {
+     "strength": 1.67670659086256,
+     "fatigue": 1.1958529131443882,
+     "creep": 2.551152881374695,
+     "buckling": 1.223,
+     "joint_s": 2.08,
+     "joint_f": 1.728
+    },
+    "after": {
+     "strength": 1.6770782732442926,
+     "fatigue": 1.193424321710556,
+     "creep": 2.5459718863158534,
+     "buckling": 1.22,
+     "joint_s": 2.084,
+     "joint_f": 1.73
+    }
+   },
+   "beam": {
+    "before": {
+     "strength": 1.5777015732823223,
+     "fatigue": 1.204972803402047,
+     "creep": 2.5706086472577008,
+     "buckling": 1.358,
+     "joint_s": 1.947,
+     "joint_f": 1.246
+    },
+    "after": {
+     "strength": 1.577832210037655,
+     "fatigue": 1.2034013270715203,
+     "creep": 2.5672561644192435,
+     "buckling": 1.353,
+     "joint_s": 1.947,
+     "joint_f": 1.247
+    }
+   },
+   "fine_sm8.cyc": {
+    "before": {
+     "strength": 1.67670659086256,
+     "fatigue": 0.781806529058487,
+     "creep": 1.667853928658106,
+     "buckling": 1.035,
+     "joint_s": 2.113,
+     "joint_f": 1.075
+    },
+    "after": {
+     "strength": 1.6770782732442926,
+     "fatigue": 0.7811968758595934,
+     "creep": 1.6665533351671327,
+     "buckling": 1.037,
+     "joint_s": 2.117,
+     "joint_f": 1.075
+    }
+   }
+  }
+ }
+}
