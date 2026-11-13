@@ -82,3 +82,4 @@ Nothing here is decided; the tickets produce the material.
 | BL-031 | Crown straps 25 mm sized per kit; no hanging tails | pack-designer | M | 030 | owner: no straps hanging everywhere |
 | BL-032 | CORRIE F rev 3 cut and sew package (patterns, markers, BOM, ops, QC, tech pack) | pattern-maker → manufacturing-engineer | XL | 031 | build-ready rev 3 |
 | BL-033 | Rev 3 pattern fixes: hinge window/B-18, B-22 path, FP 165, ledger, rain fly | pack-designer | M | 032A | patterns close cleanly |
+| BL-034 | Rev 3 package cleanup: marks, thread/hours, records, regen, BUILD_PLAN | pack-designer + materials → manufacturing | M | 032, 033 | release closes |

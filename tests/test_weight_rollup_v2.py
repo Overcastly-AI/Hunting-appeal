@@ -176,7 +176,15 @@ def test_gated_savings_are_not_proven_now():
     assert bl023_p == pytest.approx(3635.9, abs=0.3)                             # weight_rollup_v2.md of BL-023
     import strap_tails as ST                       # + BL-031 (2026-11-12): bag-side base rows + the BL031 correction
     bl031 = sum(g for s, n, g, c, src in ST.bag_rows() if c == "base") + st["BL031"]["base"]
-    upd = st["H1B"]["base"] - 2 * (9.53 - 6.13104) + 8.6 + W._F().guy_port()["mass_g"] + bl031
+    # BL-033 (base): B-01 net of its windows, the two hinge swells out, the US channels drafted (the swell patches
+    # leave CORRIE F's rows but C2 already took them, so the roll-up is unchanged by that one)
+    F_ = W._F()
+    import strap_arch as SA
+    us_rec = next(p.g for p in SA.architectures()["rec"] if p.id == "US-chan")
+    bl033 = (F_.b01_net_g()["net_g"] - F_.b01_net_g()["full_g"]
+             + next(r["g"] for r in F_.parts("M") if r["name"].startswith("BL-033 H-1"))
+             + F_.us_channels()["mass_g"] - us_rec)
+    upd = st["H1B"]["base"] - 2 * (9.53 - 6.13104) + 8.6 + W._F().guy_port()["mass_g"] + bl031 + bl033
     assert t["P"]["base"] == pytest.approx(bl023_p + upd, abs=0.3)
     assert 3610 < t["P"]["base"] < 3660                                        # BL-031: 3634.8 g (was 3683.4)
     # after tests: BL-023's 3143.5 g + the same update + the retired OD 17 legs taken back out (they were -20.6 g); the

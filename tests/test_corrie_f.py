@@ -89,7 +89,9 @@ def test_strap_rows_are_bl003_rec_plus_bl010_fixes():
     rows = F.strap_rows()
     fixes = sum(g for s, n, g, c, src in rows if n.startswith("BL-010"))
     assert fixes == pytest.approx(14.0 + 21.0 + 16.0, abs=0.01)        # loadpath_verification S2 + S9 + S12
-    assert sum(g for s, n, g, c, src in rows) == pytest.approx(rec + fixes, abs=0.05)
+    # BL-033: the US floor channels are booked from their drafted B-16 pieces, not strap_arch's B.2 estimate
+    us = next(p.g for p in SA.architectures()["rec"] if p.id == "US-chan")
+    assert sum(g for s, n, g, c, src in rows) == pytest.approx(rec + fixes - us + F.us_channels()["mass_g"], abs=0.05)
 
 
 def test_goal_is_reported_honestly(summ):

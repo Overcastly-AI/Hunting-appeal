@@ -95,7 +95,9 @@ def test_rev3_swaps_the_pouch_for_the_lid_and_keeps_base_as_rev2():
     hunted = lambda rows: sum(r["g"] for r in rows if r["cfg"] in ("base", "as_hunted"))  # noqa: E731
     d = hunted(r3) - hunted(r2)
     pouch = sum(r["g"] for n, r in n2.items() if "top_pouch" in n)
-    assert d == pytest.approx(lid[0]["g"] + cs[0]["g"] - pouch + bl031, abs=0.05)
+    # BL-033: rev 3 books the drafted F-01 fly (and its re-booked hem elastic) instead of the scaled-area estimate
+    fly = lambda rows: sum(r["g"] for r in rows if r["system"] == "fly" and r["cfg"] == "as_hunted")  # noqa: E731
+    assert d == pytest.approx(lid[0]["g"] + cs[0]["g"] - pouch + bl031 + fly(r3) - fly(r2), abs=0.05)
 
 
 def test_revs_0_to_2_are_unchanged_by_rev3():
