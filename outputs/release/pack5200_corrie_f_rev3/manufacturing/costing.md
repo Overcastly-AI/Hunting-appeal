@@ -1,33 +1,33 @@
 # CORRIE F rev 3 (door D2) - 5200 cu in hunting pack bag: costing and hours
 
-Material cost a bag, record prices (production quantities): **primary $379.76**, alternate $379.60 (fabric $88.03 / $87.87).
+Material cost a bag, record prices (production quantities): **primary $379.97**, alternate $379.81 (fabric $88.03 / $87.87).
 
-Beginner hours (bag_concepts.HOURS model, every op): **73.6 h**, of which one-off set-up 4.1 h. Lid on the drafted pattern 9.53 h (booked 7.76 h).
+Beginner hours (bag_concepts.HOURS model, every op): **74.5 h**, of which one-off set-up 4.1 h. Lid on the drafted pattern 9.53 h (booked 7.76 h).
 
 | Step | Beginner h |
 |---|---:|
-| 0 Prep and cutting | 16.25 |
+| 0 Prep and cutting | 16.34 |
 | 1 Pockets | 6.06 |
 | 2 Small parts | 4.39 |
 | 3 Door D2 and hinge band | 5.00 |
-| 4 Main bag | 14.02 |
+| 4 Main bag | 14.42 |
 | 5 Collar and roll top | 3.50 |
 | 6 Crown lid B-29 (as hunted) | 8.46 |
-| 7 Straps and webbing | 5.66 |
+| 7 Straps and webbing | 6.06 |
 | 8 Add-ons (scope pod as hunted, meat liner meat trip) | 3.71 |
 | 9 Rain fly F-01 | 5.40 |
 | 10 Finish, inspect, pack | 1.20 |
 
-Factory SAM 501 min (8.3 h) a bag (ASSUMPTION SAM-RATIO 0.12).
+Factory SAM 507 min (8.5 h) a bag (ASSUMPTION SAM-RATIO 0.12).
 
 | Scenario | Labour $ | CMT incl. overhead $ | + materials $ |
 |---|---:|---:|---:|
-| us_contract_usd_min | 425.59 | 531.99 | 911.75 |
-| asia_contract_usd_min | 60.08 | 75.10 | 454.87 |
+| us_contract_usd_min | 431.04 | 538.79 | 918.76 |
+| asia_contract_usd_min | 60.85 | 76.06 | 456.03 |
 
 ## One bag (prototype buy) vs production (BL-040 M-11)
 
-Production a bag (10-bag markers + waste): **$379.76**. Buying for ONE bag (1-bag markers, shop increments): **$497.72**. SHOP-INCR: roll goods in 0.5 yd steps at full width, webbing whole yards, HDPE one 0.25 m2 sheet; hardware / thread / consumables as production.
+Production a bag (10-bag markers + waste): **$379.97**. Buying for ONE bag (1-bag markers, shop increments): **$501.49**. SHOP-INCR: roll goods in 0.5 yd steps at full width, webbing whole yards, HDPE one 0.25 m2 sheet; hardware as production (whole units); thread by the 4 oz cone, basting tape and seam sealer by the smallest pack (SHOP-UNIT, BL-041 n-10); no camo print (CAMO-FIRST, BL-041 Y-5).
 
 | Section | Item | Unit | Production qty | Production $ | Prototype qty | Prototype $ | How |
 |---|---|---|---:|---:|---:|---:|---|
@@ -41,12 +41,12 @@ Production a bag (10-bag markers + waste): **$379.76**. Buying for ONE bag (1-ba
 | fabric | robic_100d_ripstop: B-06x1 B-09cx1 IMP4-ax1 IMP4-bx1 B-29bx1 A1-bx1 MS | m | 0.958 | 16.77 | 1.372 | 24.00 | 1-bag marker 1.208 m -> 1.5 yd |
 | fabric | silicone_coated_poly_ripstop_40d: F-01ax1 F-01bx2 MS-ax1 | m | 1.404 | 15.36 | 1.829 | 20.00 | 1-bag marker 1.715 m -> 2.0 yd |
 | fabric | tpu_coated_nylon_840d: B-12x6 B-09px2 IMP8-bx1 | m2 | 0.036 | 0.58 | 0.686 | 11.00 | 1-bag 0.09 m2 -> 0.5 yd x 1500 mm roll |
-| fabric_print | camo print, Owner Base accent 380, placed (3 sets/yd) -- see camo/READ | yd | 0.4 | 12.10 | 1 | 30.25 | camo/ 1-bag print order |
+| fabric_print | camo print, Owner Base accent 380, placed (3 sets/yd) -- see camo/READ | yd | 0.4 | 12.10 | 0 | 0.00 | NOT in the first build (DECISION CAMO-FIRST): solid 630D (polyester_ht_630d_printable, unprinted) on B-02u, SH-07, SH-01b, FP-b, B-29f and A1-d; the HyperD print yard + shipping is bought by the test kit (AB-1 / FRAY-1 specimen) |
 | webbing | elastic_25mm: K-28 K-G K-IM K-RT | m | 1.04 | 1.14 | 1.829 | 2.01 | 1.04 m -> 2 yd |
 | webbing | elastic_6mm: F-EL | m | 2.558 | 1.53 | 2.743 | 1.65 | 2.558 m -> 3 yd |
-| webbing | poly_webbing_25mm: B-25 B-28 B-28s B-28t BRL BRS E5 GBL HPL I2K I2T IM | m | 16.78 | 11.75 | 17.374 | 12.16 | 16.78 m -> 19 yd |
-| webbing | poly_webbing_38mm: B-24 HE IME T3 | m | 2.825 | 2.82 | 3.658 | 3.66 | 2.825 m -> 4 yd |
-| webbing | shock_cord_3mm: B-26 E5-cord FP-cord MK-cord | m | 1.847 | 0.92 | 2.743 | 1.37 | 1.847 m -> 3 yd |
+| webbing | poly_webbing_25mm: B-28 B-28s B-28t BRL BRS E5 HPL I2K I2T IM1 IM2 IM3 | m | 16.683 | 11.68 | 17.374 | 12.16 | 16.683 m -> 19 yd |
+| webbing | poly_webbing_38mm: B-24 B-25 HE IME T3 | m | 3.096 | 3.10 | 3.658 | 3.66 | 3.096 m -> 4 yd |
+| webbing | shock_cord_3mm: B-26 E5-cord FP-cord MK-cord | m | 1.826 | 0.91 | 1.829 | 0.91 | 1.826 m -> 2 yd |
 | hardware | #10 coil zip chain, door D2 (2 sliders) | m | 1.418 | 5.67 | 1.418 | 5.67 | as production (whole units / cones) |
 | hardware | #10 coil slider, metal pull (door) | unit | 2 | 3.98 | 2 | 3.98 | as production (whole units / cones) |
 | hardware | #5 coil zip chain: lid, IMP-4, F-02 (3 zips) | m | 0.97 | 1.94 | 0.97 | 1.94 | as production (whole units / cones) |
@@ -65,21 +65,21 @@ Production a bag (10-bag markers + waste): **$379.76**. Buying for ONE bag (1-ba
 | hardware | 25 mm side-release buckle (roll top) | unit | 2 | 1.60 | 2 | 1.60 | as production (whole units / cones) |
 | hardware | spring cord lock (3): cord lock (E-5) + rifle muzzle keepers (2, BL-03 | unit | 3 | 1.20 | 3 | 1.20 | as production (whole units / cones) |
 | hardware | TPU sleeve on the IM3 carabiner (2) | unit | 2 | 0.40 | 2 | 0.40 | as production (whole units / cones) |
-| thread | bonded_nylon_tex135 (needle + bobbin) | m | 31.6 | 0.26 | 31.6 | 0.26 | as production (whole units / cones) |
-| thread | bonded_nylon_tex70 (needle + bobbin) | m | 82 | 0.43 | 82 | 0.43 | as production (whole units / cones) |
-| thread | bonded_nylon_tex90 (needle + bobbin) | m | 123.8 | 0.76 | 123.8 | 0.76 | as production (whole units / cones) |
-| consumable | 6 mm double-sided basting tape (zips) | m | 3.66 | 0.18 | 3.66 | 0.18 | as production (whole units / cones) |
+| thread | bonded_nylon_tex135 (needle + bobbin) | m | 33.4 | 0.27 | 840 | 6.80 | 1 cone(s) of 4 oz = 840 m each (33.4 m used) |
+| thread | bonded_nylon_tex70 (needle + bobbin) | m | 82 | 0.43 | 1620 | 8.42 | 1 cone(s) of 4 oz = 1620 m each (82 m used) |
+| thread | bonded_nylon_tex90 (needle + bobbin) | m | 123.8 | 0.76 | 1260 | 7.69 | 1 cone(s) of 4 oz = 1260 m each (123.8 m used) |
+| consumable | 6 mm double-sided basting tape (zips) | roll of 20 m | 3.66 | 0.18 | 1 | 6.00 | 1 roll of 20 m (ASSUMPTION SHOP-UNIT: smallest roll) |
 | consumable | labels: size / care / ID, hang tag, load-limit warning card | set | 1 | 0.60 | 1 | 0.60 | as production (whole units / cones) |
-| consumable | silicone seam sealer for the silpoly fly and liner seams, ~10 ml (ASSU | bag | 1 | 0.80 | 1 | 0.80 | as production (whole units / cones) |
+| consumable | silicone seam sealer for the silpoly fly and liner seams, ~10 ml (ASSU | tube 1 oz (28 ml) | 1 | 0.80 | 1 | 8.00 | 1 tube 1 oz (28 ml) (ASSUMPTION SHOP-UNIT: smallest tube of silicone seam sealer) |
 | packaging | poly bags + carton share | bag | 1 | 0.90 | 1 | 0.90 | as production (whole units / cones) |
 
 ## Mass by kit (BL-040 M-6)
 
 | Kit | Ledger, team B fabrics (g) | Primary pattern delta (g) | PRIMARY target (g) | lb |
 |---|---:|---:|---:|---:|
-| base | 1132.7 | +64.0 | 1196.7 | 2.64 |
-| as hunted | 1414.6 | +86.1 | 1500.7 | 3.31 |
-| meat trip | 1610.6 | +95.3 | 1705.9 | 3.76 |
+| base | 1143.9 | +64.1 | 1208.0 | 2.66 |
+| as hunted | 1425.8 | +86.2 | 1512.0 | 3.33 |
+| meat trip | 1621.8 | +95.3 | 1717.1 | 3.79 |
 
 One-off tooling (not a bag): J1-J8 jigs; LK-1900 / AMS-210EN programs; laser files are the part A DXFs; dies only above ~500 bags a year.
 

@@ -445,7 +445,7 @@ $SKPOLY
   9
 $TDCREATE
  40
-2461358.2340625
+2461358.2817708333
   9
 $TDUCREATE
  40
@@ -453,7 +453,7 @@ $TDUCREATE
   9
 $TDUPDATE
  40
-2461358.2340625
+2461358.2817708333
   9
 $TDUUPDATE
  40
@@ -505,7 +505,7 @@ $SPLINESEGS
   9
 $HANDSEED
   5
-139
+168
   9
 $SURFTAB1
  70
@@ -885,11 +885,11 @@ $PSTYLEMODE
   9
 $FINGERPRINTGUID
   2
-{9EA0817D-CCE4-4CF0-81A6-043DE3640E64}
+{662844F7-AE30-4380-8B8A-1F383074FE71}
   9
 $VERSIONGUID
   2
-{703F47CB-1CCD-4BE2-87A3-EE7CEEBE4CB7}
+{038986E7-8E5F-4A73-9722-54F1B6A6A9F1}
   9
 $EXTNAMES
 290
@@ -3057,7 +3057,7 @@ AcAecLayerStandard
   0
 APPID
   5
-136
+165
 330
 3
 100
@@ -3071,7 +3071,7 @@ HATCHBACKGROUNDCOLOR
   0
 APPID
   5
-137
+166
 330
 3
 100
@@ -4725,7 +4725,7 @@ BLOCK_RECORD
 100
 AcDbSymbolTable
  70
-9
+10
   0
 BLOCK_RECORD
   5
@@ -4850,6 +4850,20 @@ AcDbSymbolTableRecord
 AcDbBlockTableRecord
   2
 T3_3
+340
+0
+  0
+BLOCK_RECORD
+  5
+136
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+B-25_4
 340
 0
   0
@@ -6981,11 +6995,11 @@ AcDbPolyline
  10
 38.0
  20
-150.0
+86.0
  10
 0.0
  20
-150.0
+86.0
   0
 LWPOLYLINE
   5
@@ -7015,11 +7029,11 @@ AcDbPolyline
  10
 38.0
  20
-150.0
+86.0
  10
 0.0
  20
-150.0
+86.0
   0
 LWPOLYLINE
   5
@@ -7041,11 +7055,11 @@ AcDbPolyline
  10
 0.0
  20
-75.0
+43.0
  10
 38.0
  20
-75.0
+43.0
   0
 LWPOLYLINE
   5
@@ -7075,11 +7089,11 @@ AcDbPolyline
  10
 36.0
  20
-50.0
+26.0
  10
 2.0
  20
-50.0
+26.0
   0
 LWPOLYLINE
   5
@@ -7105,7 +7119,7 @@ AcDbPolyline
  10
 36.0
  20
-50.0
+26.0
   0
 LWPOLYLINE
   5
@@ -7131,7 +7145,7 @@ AcDbPolyline
  10
 2.0
  20
-50.0
+26.0
   0
 LWPOLYLINE
   5
@@ -7153,19 +7167,19 @@ AcDbPolyline
  10
 2.0
  20
-100.0
+60.0
  10
 36.0
  20
-100.0
+60.0
  10
 36.0
  20
-134.0
+70.0
  10
 2.0
  20
-134.0
+70.0
   0
 LWPOLYLINE
   5
@@ -7187,11 +7201,11 @@ AcDbPolyline
  10
 2.0
  20
-100.0
+60.0
  10
 36.0
  20
-134.0
+70.0
   0
 LWPOLYLINE
   5
@@ -7213,11 +7227,11 @@ AcDbPolyline
  10
 36.0
  20
-100.0
+60.0
  10
 2.0
  20
-134.0
+70.0
   0
 LWPOLYLINE
   5
@@ -7265,11 +7279,11 @@ AcDbPolyline
  10
 0.0
  20
-138.0
+74.0
  10
 38.0
  20
-138.0
+74.0
   0
 LWPOLYLINE
   5
@@ -7291,11 +7305,11 @@ AcDbPolyline
  10
 0.0
  20
-50.0
+26.0
  10
 38.0
  20
-50.0
+26.0
   0
 LWPOLYLINE
   5
@@ -7317,11 +7331,11 @@ AcDbPolyline
  10
 0.0
  20
-100.0
+60.0
  10
 38.0
  20
-100.0
+60.0
   0
 LWPOLYLINE
   5
@@ -7343,11 +7357,11 @@ AcDbPolyline
  10
 10.0
  20
-50.0
+26.0
  10
 10.0
  20
-100.0
+60.0
   0
 LWPOLYLINE
   5
@@ -7369,11 +7383,11 @@ AcDbPolyline
  10
 28.0
  20
-50.0
+26.0
  10
 28.0
  20
-100.0
+60.0
   0
 LWPOLYLINE
   5
@@ -7395,11 +7409,11 @@ AcDbPolyline
  10
 11.0
  20
-56.0
+30.0
  10
 27.0
  20
-56.0
+30.0
   0
 LWPOLYLINE
   5
@@ -7421,11 +7435,11 @@ AcDbPolyline
  10
 11.0
  20
-94.0
+56.0
  10
 27.0
  20
-94.0
+56.0
   0
 POINT
   5
@@ -7517,7 +7531,7 @@ AcDbPoint
  10
 36.0
  20
-50.0
+26.0
  30
 0.0
   0
@@ -7535,7 +7549,7 @@ AcDbCircle
  10
 36.0
  20
-50.0
+26.0
  30
 0.0
  40
@@ -7555,7 +7569,7 @@ AcDbPoint
  10
 2.0
  20
-50.0
+26.0
  30
 0.0
   0
@@ -7573,7 +7587,7 @@ AcDbCircle
  10
 2.0
  20
-50.0
+26.0
  30
 0.0
  40
@@ -7593,7 +7607,7 @@ AcDbPoint
  10
 2.0
  20
-100.0
+60.0
  30
 0.0
   0
@@ -7611,7 +7625,7 @@ AcDbCircle
  10
 2.0
  20
-100.0
+60.0
  30
 0.0
  40
@@ -7631,7 +7645,7 @@ AcDbPoint
  10
 36.0
  20
-100.0
+60.0
  30
 0.0
   0
@@ -7649,7 +7663,7 @@ AcDbCircle
  10
 36.0
  20
-100.0
+60.0
  30
 0.0
  40
@@ -7669,7 +7683,7 @@ AcDbPoint
  10
 36.0
  20
-134.0
+70.0
  30
 0.0
   0
@@ -7687,7 +7701,7 @@ AcDbCircle
  10
 36.0
  20
-134.0
+70.0
  30
 0.0
  40
@@ -7707,7 +7721,7 @@ AcDbPoint
  10
 2.0
  20
-134.0
+70.0
  30
 0.0
   0
@@ -7725,7 +7739,7 @@ AcDbCircle
  10
 2.0
  20
-134.0
+70.0
  30
 0.0
  40
@@ -7747,13 +7761,13 @@ AcDbPolyline
  70
 0
  10
-18.999999999999996
+19.0
  20
-30.0
+17.2
  10
-19.000000000000004
+19.0
  20
-120.0
+68.8
   0
 LWPOLYLINE
   5
@@ -7771,17 +7785,17 @@ AcDbPolyline
  70
 0
  10
-22.11534673846921
+22.115346738469206
  20
-112.63151204797693
+61.431512047976916
  10
-19.000000000000004
+19.0
  20
-120.0
+68.8
  10
-15.884653261530795
+15.884653261530792
  20
-112.63151204797693
+61.431512047976916
   0
 LWPOLYLINE
   5
@@ -7799,17 +7813,17 @@ AcDbPolyline
  70
 0
  10
-15.884653261530794
+15.884653261530797
  20
-37.36848795202308
+24.56848795202308
  10
-18.999999999999996
+19.0
  20
-30.0
+17.2
  10
-22.1153467384692
+22.115346738469203
  20
-37.36848795202308
+24.56848795202308
   0
 TEXT
   5
@@ -7825,7 +7839,7 @@ AcDbText
  10
 31.0
  20
-103.0
+71.0
  30
 0.0
  40
@@ -7835,7 +7849,7 @@ ID: HE
  11
 31.0
  21
-103.0
+71.0
  31
 0.0
 100
@@ -7855,7 +7869,7 @@ AcDbText
  10
 31.0
  20
-95.0
+63.0
  30
 0.0
  40
@@ -7865,7 +7879,7 @@ PIECE: hinge eye (38 mm)
  11
 31.0
  21
-95.0
+63.0
  31
 0.0
 100
@@ -7885,7 +7899,7 @@ AcDbText
  10
 31.0
  20
-87.0
+55.0
  30
 0.0
  40
@@ -7895,7 +7909,7 @@ MATERIAL: poly_webbing_38mm
  11
 31.0
  21
-87.0
+55.0
  31
 0.0
 100
@@ -7915,7 +7929,7 @@ AcDbText
  10
 31.0
  20
-79.0
+47.0
  30
 0.0
  40
@@ -7925,7 +7939,7 @@ CUT 2
  11
 31.0
  21
-79.0
+47.0
  31
 0.0
 100
@@ -7945,7 +7959,7 @@ AcDbText
  10
 31.0
  20
-71.0
+39.0
  30
 0.0
  40
@@ -7955,7 +7969,7 @@ FACE UP
  11
 31.0
  21
-71.0
+39.0
  31
 0.0
 100
@@ -7975,7 +7989,7 @@ AcDbText
  10
 31.0
  20
-63.0
+31.0
  30
 0.0
  40
@@ -7985,7 +7999,7 @@ KNIFE: CW from the grain-arrow head; cut windows and slits first
  11
 31.0
  21
-63.0
+31.0
  31
 0.0
 100
@@ -8005,17 +8019,17 @@ AcDbText
  10
 31.0
  20
-55.0
+23.0
  30
 0.0
  40
 5.0
   1
-NOTE: hot-knife cut; fold in half at 75 mm, both raw ends to the B-01 cut edge; neck: long edges folded 10 mm in between the neck lines, one BT-M per leg, sewn flat BEFORE the fold
+NOTE: hot-knife cut; fold in half at 43 mm, both raw ends to the B-01 cut edge; neck: long edges folded 10 mm in between the neck lines, one BT-M per leg, sewn flat BEFORE the fold; eye 17 mm points UP onto the z 60 pin (HE-PIN)
  11
 31.0
  21
-55.0
+23.0
  31
 0.0
 100
@@ -8035,7 +8049,7 @@ AcDbText
  10
 31.0
  20
-47.0
+15.0
  30
 0.0
  40
@@ -8045,7 +8059,7 @@ PACK: 5200 CORRIE F rev 3
  11
 31.0
  21
-47.0
+15.0
  31
 0.0
 100
@@ -8065,7 +8079,7 @@ AcDbText
  10
 31.0
  20
-39.0
+7.0
  30
 0.0
  40
@@ -8075,7 +8089,7 @@ FACE: -
  11
 31.0
  21
-39.0
+7.0
  31
 0.0
 100
@@ -9049,6 +9063,1092 @@ AcDbEntity
 100
 AcDbBlockEnd
   0
+BLOCK
+  5
+137
+330
+136
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+B-25_4
+ 70
+0
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+B-25_4
+  1
+
+  0
+LWPOLYLINE
+  5
+139
+330
+136
+100
+AcDbEntity
+  8
+CUT
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 10
+38.0
+ 20
+0.0
+ 10
+38.0
+ 20
+386.5
+ 10
+0.0
+ 20
+386.5
+  0
+LWPOLYLINE
+  5
+13A
+330
+136
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 10
+38.0
+ 20
+0.0
+ 10
+38.0
+ 20
+386.5
+ 10
+0.0
+ 20
+386.5
+  0
+LWPOLYLINE
+  5
+13B
+330
+136
+100
+AcDbEntity
+  8
+INTERNAL
+  6
+DASHDOT
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+0.0
+ 20
+30.0
+ 10
+38.0
+ 20
+30.0
+  0
+LWPOLYLINE
+  5
+13C
+330
+136
+100
+AcDbEntity
+  8
+INTERNAL
+  6
+DASHDOT
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+0.0
+ 20
+60.0
+ 10
+38.0
+ 20
+60.0
+  0
+LWPOLYLINE
+  5
+13D
+330
+136
+100
+AcDbEntity
+  8
+INTERNAL
+  6
+DASHDOT
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+0.0
+ 20
+139.08849013323177
+ 10
+38.0
+ 20
+139.08849013323177
+  0
+LWPOLYLINE
+  5
+13E
+330
+136
+100
+AcDbEntity
+  8
+INTERNAL
+  6
+DASHDOT
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+0.0
+ 20
+247.41150986676823
+ 10
+38.0
+ 20
+247.41150986676823
+  0
+LWPOLYLINE
+  5
+13F
+330
+136
+100
+AcDbEntity
+  8
+INTERNAL
+  6
+DASHDOT
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+0.0
+ 20
+326.5
+ 10
+38.0
+ 20
+326.5
+  0
+LWPOLYLINE
+  5
+140
+330
+136
+100
+AcDbEntity
+  8
+INTERNAL
+  6
+DASHDOT
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+0.0
+ 20
+356.5
+ 10
+38.0
+ 20
+356.5
+  0
+LWPOLYLINE
+  5
+141
+330
+136
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+2.0
+ 20
+43.0
+ 10
+36.0
+ 20
+43.0
+ 10
+36.0
+ 20
+58.0
+ 10
+2.0
+ 20
+58.0
+  0
+LWPOLYLINE
+  5
+142
+330
+136
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+2.0
+ 20
+43.0
+ 10
+36.0
+ 20
+58.0
+  0
+LWPOLYLINE
+  5
+143
+330
+136
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+36.0
+ 20
+43.0
+ 10
+2.0
+ 20
+58.0
+  0
+LWPOLYLINE
+  5
+144
+330
+136
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+2.0
+ 20
+328.5
+ 10
+36.0
+ 20
+328.5
+ 10
+36.0
+ 20
+343.5
+ 10
+2.0
+ 20
+343.5
+  0
+LWPOLYLINE
+  5
+145
+330
+136
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+2.0
+ 20
+328.5
+ 10
+36.0
+ 20
+343.5
+  0
+LWPOLYLINE
+  5
+146
+330
+136
+100
+AcDbEntity
+  8
+SEW
+  6
+DASHED
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+36.0
+ 20
+328.5
+ 10
+2.0
+ 20
+343.5
+  0
+POINT
+  5
+147
+330
+136
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+2.0
+ 20
+43.0
+ 30
+0.0
+  0
+CIRCLE
+  5
+148
+330
+136
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+2.0
+ 20
+43.0
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+149
+330
+136
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+36.0
+ 20
+43.0
+ 30
+0.0
+  0
+CIRCLE
+  5
+14A
+330
+136
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+36.0
+ 20
+43.0
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+14B
+330
+136
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+36.0
+ 20
+58.0
+ 30
+0.0
+  0
+CIRCLE
+  5
+14C
+330
+136
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+36.0
+ 20
+58.0
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+14D
+330
+136
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+2.0
+ 20
+58.0
+ 30
+0.0
+  0
+CIRCLE
+  5
+14E
+330
+136
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+2.0
+ 20
+58.0
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+14F
+330
+136
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+2.0
+ 20
+328.5
+ 30
+0.0
+  0
+CIRCLE
+  5
+150
+330
+136
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+2.0
+ 20
+328.5
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+151
+330
+136
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+36.0
+ 20
+328.5
+ 30
+0.0
+  0
+CIRCLE
+  5
+152
+330
+136
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+36.0
+ 20
+328.5
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+153
+330
+136
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+36.0
+ 20
+343.5
+ 30
+0.0
+  0
+CIRCLE
+  5
+154
+330
+136
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+36.0
+ 20
+343.5
+ 30
+0.0
+ 40
+1.5
+  0
+POINT
+  5
+155
+330
+136
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbPoint
+ 10
+2.0
+ 20
+343.5
+ 30
+0.0
+  0
+CIRCLE
+  5
+156
+330
+136
+100
+AcDbEntity
+  8
+DRILL
+100
+AcDbCircle
+ 10
+2.0
+ 20
+343.5
+ 30
+0.0
+ 40
+1.5
+  0
+LWPOLYLINE
+  5
+157
+330
+136
+100
+AcDbEntity
+  8
+GRAIN
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+18.999999999999993
+ 20
+77.30000000000001
+ 10
+19.000000000000007
+ 20
+309.2
+  0
+LWPOLYLINE
+  5
+158
+330
+136
+100
+AcDbEntity
+  8
+GRAIN
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+22.115346738469214
+ 20
+301.8315120479769
+ 10
+19.000000000000007
+ 20
+309.2
+ 10
+15.884653261530799
+ 20
+301.8315120479769
+  0
+LWPOLYLINE
+  5
+159
+330
+136
+100
+AcDbEntity
+  8
+GRAIN
+100
+AcDbPolyline
+ 90
+3
+ 70
+0
+ 10
+15.88465326153079
+ 20
+84.6684879520231
+ 10
+18.999999999999993
+ 20
+77.30000000000001
+ 10
+22.115346738469196
+ 20
+84.6684879520231
+  0
+TEXT
+  5
+15A
+330
+136
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+31.0
+ 20
+221.25
+ 30
+0.0
+ 40
+5.0
+  1
+ID: B-25
+ 11
+31.0
+ 21
+221.25
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+15B
+330
+136
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+31.0
+ 20
+213.25
+ 30
+0.0
+ 40
+5.0
+  1
+PIECE: guy bridle on the crown top bar (38 mm, BL-041)
+ 11
+31.0
+ 21
+213.25
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+15C
+330
+136
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+31.0
+ 20
+205.25
+ 30
+0.0
+ 40
+5.0
+  1
+MATERIAL: poly_webbing_38mm
+ 11
+31.0
+ 21
+205.25
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+15D
+330
+136
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+31.0
+ 20
+197.25
+ 30
+0.0
+ 40
+5.0
+  1
+CUT 1
+ 11
+31.0
+ 21
+197.25
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+15E
+330
+136
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+31.0
+ 20
+189.25
+ 30
+0.0
+ 40
+5.0
+  1
+FACE UP
+ 11
+31.0
+ 21
+189.25
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+15F
+330
+136
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+31.0
+ 20
+181.25
+ 30
+0.0
+ 40
+5.0
+  1
+KNIFE: CW from the grain-arrow head; cut windows and slits first
+ 11
+31.0
+ 21
+181.25
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+160
+330
+136
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+31.0
+ 20
+173.25
+ 30
+0.0
+ 40
+5.0
+  1
+NOTE: hot-knife cut; fitted on the bar before the crown corners are bonded; sleeves x 26.5-64.5 each side (11.5 mm clear of the spine clamp); toggle tab at the sleeve centre x 45.5 (DECISION B25-TAB-CENTRE); 2 toggle tabs + second folds
+ 11
+31.0
+ 21
+173.25
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+161
+330
+136
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+31.0
+ 20
+165.25
+ 30
+0.0
+ 40
+5.0
+  1
+PACK: 5200 CORRIE F rev 3
+ 11
+31.0
+ 21
+165.25
+ 31
+0.0
+100
+AcDbText
+  0
+TEXT
+  5
+162
+330
+136
+100
+AcDbEntity
+  8
+TEXT
+100
+AcDbText
+ 10
+31.0
+ 20
+157.25
+ 30
+0.0
+ 40
+5.0
+  1
+FACE: -
+ 11
+31.0
+ 21
+157.25
+ 31
+0.0
+100
+AcDbText
+  0
+ENDBLK
+  5
+138
+330
+136
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
 ENDSEC
   0
 SECTION
@@ -9130,6 +10230,26 @@ AcDbBlockReference
 T3_3
  10
 204.0
+ 20
+0.0
+ 30
+0.0
+  0
+INSERT
+  5
+163
+330
+17
+100
+AcDbEntity
+  8
+CUT
+100
+AcDbBlockReference
+  2
+B-25_4
+ 10
+272.0
  20
 0.0
  30
@@ -10225,7 +11345,7 @@ CREATED_BY_EZDXF
   3
 WRITTEN_BY_EZDXF
 350
-138
+167
   0
 DICTIONARYVAR
   5
@@ -10237,7 +11357,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-11-13T05:37:03.093011+00:00
+1.4.5 @ 2026-11-13T06:45:45.253099+00:00
   0
 VISUALSTYLE
   5
@@ -10941,7 +12061,7 @@ X-Ray
   0
 DICTIONARYVAR
   5
-138
+167
 330
 2D
 100
@@ -10949,7 +12069,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-11-13T05:37:03.100093+00:00
+1.4.5 @ 2026-11-13T06:45:45.259667+00:00
   0
 ENDSEC
   0

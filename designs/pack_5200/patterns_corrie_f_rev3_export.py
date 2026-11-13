@@ -33,7 +33,7 @@ REL = ROOT / "outputs" / "release" / "pack5200_corrie_f_rev3" / "patterns"
 OUT = ROOT / "outputs" / "patterns_corrie_f_rev3"
 SCREENS = ROOT / "outputs" / "screens"
 DATE = "20261113"
-SHOT_TAG = "BL040pat"                 # BL-040 re-export: screenshot prefix 20261113_BL040_ (earlier tickets kept their own)
+SHOT_TAG = "BL041pat"                 # BL-041 re-export: screenshot prefix 20261113_BL041pat_ (earlier tickets kept their own)
 YD = 914.4
 WASTE_PROD = PVX.WASTE_PROD        # 3 % lay loss ASSUMPTION (v3.1 rule)
 NEST_UNITS = 10
@@ -53,6 +53,131 @@ STEPS = [   # (file, title, piece ids) in the build order of the release README
     ("step7_addons", "Step 7: add-ons (scope pod, meat liner)", ["A1-a", "A1-b", "A1-d", "MS-a", "MS-b", "MS-c", "MS-s"]),
     ("step8_rain_fly", "Step 8: F-01 rain fly (spine + 2 sides, silpoly)", ["F-01a", "F-01b"]),
 ]
+
+
+# ---- BL-041 n-6 / n-7: printed notes and the 1:1 webbing-marks pages ------------------------------------------------
+NOTE_MAX = 40                       # a label note longer than this goes to the NOTES page (the DXF keeps it in full)
+WEB_MARKS = [("HE", None), ("RTM", None), ("W3G", None), ("LLT", None), ("IMC", None), ("T3", None), ("US", 110.0)]
+
+
+def print_copy(p):
+    """Copy of a piece for the tiled print: a long label note is replaced by a pointer to the NOTES page, so it can
+    neither run over the next piece nor be clipped at a tile edge (re-review n-6)."""
+    q = p.copy()
+    n = q.labels.get("note", "")
+    if len(n) > NOTE_MAX:
+        q.labels["note"] = f"see NOTES page ({p.piece_id})"
+    return q
+
+
+def _wrap(t, n):
+    import textwrap
+    return textwrap.wrap(t, n) or [""]
+
+
+def _crop(p, L):
+    """Webbing piece cropped to its first L mm (marks inside it only), for pieces longer than a page."""
+    from huntkit.patterns import rect_panel
+    w = p.bounds(cut=False)[2]
+    q = rect_panel(p.name, w, L, 0.0, seam_allowance_mm=0.0, material_id=p.material_id, quantity=p.quantity,
+                   piece_id=p.piece_id)
+    for ln in p.internal_lines:
+        if all(pt[1] <= L for pt in ln.points):
+            q.add_internal_line(ln.points, ln.kind, ln.label, ln.closed)
+    return q
+
+
+def notes_and_marks_pdf(rs, ids, path: Path, title: str) -> int:
+    """Extra pages for a step PDF: (1) NOTES, every long piece note in full, wrapped; (2) 1:1 webbing marks (folds, boxes,
+    neck / tack / seam lines) for the op 4.05 / 4.08 / step 7 webbing, with a test square. Returns pages written."""
+    from huntkit.patterns.export_pdf import draw_piece_pdf
+    pw, ph = PAPERS["letter"]
+    c = canvas.Canvas(str(path), pagesize=(pw * MM, ph * MM))
+    c.setTitle(f"{title} - notes + webbing marks")
+    y = ph - 15
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(12 * MM, y * MM, f"{TITLE}: piece NOTES (full text; the DXFs carry the same)")
+    y -= 10
+    for i in ids:
+        n = rs.pieces[i].labels.get("note", "")
+        if len(n) <= NOTE_MAX:
+            continue
+        c.setFont("Helvetica-Bold", 9)
+        c.drawString(12 * MM, y * MM, f"{i}  {rs.pieces[i].name}")
+        y -= 5
+        c.setFont("Helvetica", 9)
+        for t in _wrap(n, 105):
+            c.drawString(16 * MM, y * MM, t)
+            y -= 4.5
+        y -= 3
+    c.showPage()
+    pages = 1
+    pcs = [(_crop(rs.pieces[i], L) if L else rs.pieces[i], i, L) for i, L in WEB_MARKS if i in rs.pieces]
+    byid = {t[1]: t for t in pcs}
+    groups = [[byid[i] for i in ids_ if i in byid] for ids_ in (("HE", "RTM", "W3G", "LLT"), ("IMC", "T3", "US"))]
+    groups = [g_ for g_ in groups if g_]
+    for gi, grp in enumerate(groups):
+        c.setFont("Helvetica-Bold", 11)
+        c.drawString(12 * MM, (ph - 12) * MM, f"{TITLE}: webbing marks 1:1 (page {gi + 1} of {len(groups)})")
+        c.setFont("Helvetica", 8)
+        c.drawString(12 * MM, (ph - 17) * MM, "Check the test square, lay the hot-knifed strip on its outline, chalk "
+                     "the folds (blue dash-dot), boxes and lines (grey dashed).")
+        x = 14.0
+        for q, i, L in grp:
+            w, h = q.bounds(cut=False)[2], q.bounds(cut=False)[3]
+            y0 = ph - 30 - h
+
+            def to_pt(px, py, x=x, y0=y0):
+                return ((x + px) * MM, (y0 + py) * MM)
+            draw_piece_pdf(c, q, to_pt, scale=1.0, labels=False)
+            c.setFont("Helvetica-Bold", 8)
+            c.drawString(x * MM, (y0 - 5) * MM, f"{i}  {w:.0f} x {rs.pieces[i].bounds(cut=False)[3]:.0f} mm")
+            c.setFont("Helvetica", 6.5)
+            c.drawString(x * MM, (y0 - 9) * MM, f"cut {rs.pieces[i].quantity}" + (f"; first {L:.0f} mm shown" if L else ""))
+            yy = y0 - 13
+            floor = 130.0 if x + w > pw - 115 else 14.0       # keep clear of the test square (bottom right)
+            seen = set()
+            for ln in q.internal_lines:
+                lab = (ln.label or "").split(" box-X")[0]
+                if lab and lab not in seen and ln.kind in ("fold", "stitch", "placement"):
+                    seen.add(lab)
+                    for t in _wrap(lab, 26)[:2]:
+                        if yy > floor:
+                            c.drawString(x * MM, yy * MM, t)
+                        yy -= 3
+            x += w + 22.0
+        draw_test_squares(c, (pw - 112) * MM, 14 * MM)
+        c.showPage()
+        pages += 1
+    c.save()
+    return pages
+
+
+def notes_only_pdf(rs, ids, path: Path, title: str) -> int:
+    pw, ph = PAPERS["letter"]
+    c = canvas.Canvas(str(path), pagesize=(pw * MM, ph * MM))
+    y = ph - 15
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(12 * MM, y * MM, f"{TITLE} {title[:60]}: piece NOTES (full text)")
+    y -= 10
+    for i in ids:
+        n = rs.pieces[i].labels.get("note", "")
+        if len(n) <= NOTE_MAX:
+            continue
+        c.setFont("Helvetica-Bold", 9)
+        c.drawString(12 * MM, y * MM, f"{i}  {rs.pieces[i].name}")
+        y -= 5
+        c.setFont("Helvetica", 9)
+        for t in _wrap(n, 105):
+            c.drawString(16 * MM, y * MM, t)
+            y -= 4.5
+        y -= 3
+        if y < 20:
+            c.showPage()
+            y = ph - 15
+    c.showPage()
+    c.save()
+    return 1
 
 
 def roll(mid: str) -> tuple[float, float]:
@@ -460,6 +585,11 @@ diamonds. Tape on the back, then check the test square again.
   box-X 34 x 34 on HE, B-18 and B-01); B-17 box 34 x 34; RTM roll-clip buckle tabs on both gussets and RT strap
   placements on the hem B-07; collar-ring notches measured one way round (one set on the gusset); B-11 slot 27 x 5;
   B-09p hose slot drawn; the swell port slot is a mark (cut through the laser-cut B-12 slot after sewing).
+- BL-041 (re-check fixes): the hinge eye points UP onto the z 60 pin (DECISION HE-PIN: HE 38 x 86, box-X 34 x 10 at
+  +4..+14 mm, 2 mm under the fairlead cheeks; supersedes the 34 x 34 box above); B-18 rows sewn before the HE (op 4.05);
+  roll-clip path moved forward of the muzzle keepers (RTM at flat x 91, 133.5 mm under the collar seam; muzzle tabs
+  111 / 171 mm), W3G guide on the path; IMC cam anchor tabs; B-25 in 38 mm (sleeves x 26.5-64.5); GBL deleted; long
+  piece notes on a NOTES page and a 1:1 webbing-marks page at the end of step 2.
 
 ## 5. Build order and what to print
 
@@ -516,9 +646,24 @@ def export_all(nest10=True, log=print):
     test_square_pdf(REL / "print_letter" / "00_PRINT_FIRST_test_square.pdf")
     pages = {}
     for fn, title, ids in STEPS:
-        pcs = [rsP.pieces[i] for i in ids]
+        pcs = [print_copy(rsP.pieces[i]) for i in ids]          # BL-041 n-6: long notes -> NOTES page
         info = export_pdf_tiled(pcs, REL / "print_letter" / f"{fn}.pdf", "letter", compress=True, title=f"{TITLE} {title}")
         pages[fn] = info["pages"]
+        if fn == "step2_small_parts" or any(len(rsP.pieces[i].labels.get("note", "")) > NOTE_MAX for i in ids):
+            from pypdf import PdfReader, PdfWriter
+            extra = OUT / f"_{fn}_extra.pdf"
+            extra.parent.mkdir(parents=True, exist_ok=True)
+            n = notes_and_marks_pdf(rsP, ids, extra, title) if fn == "step2_small_parts" else 0
+            if fn != "step2_small_parts":                      # notes only (no webbing marks) for the other steps
+                n = notes_only_pdf(rsP, ids, extra, title)
+            n = len(PdfReader(str(extra)).pages)
+            wr = PdfWriter()
+            for src in (REL / "print_letter" / f"{fn}.pdf", extra):
+                for pg in PdfReader(str(src)).pages:
+                    wr.add_page(pg)
+            with open(REL / "print_letter" / f"{fn}.pdf", "wb") as fh:
+                wr.write(fh)
+            pages[fn] += n
     for setname, rs in (("primary", rsP), ("alternate", rsA)):
         for mid, pcs in by_material(rs.all_pieces()).items():
             export_dxf(pcs, REL / "dxf" / setname / f"{_fname(mid)}.dxf")

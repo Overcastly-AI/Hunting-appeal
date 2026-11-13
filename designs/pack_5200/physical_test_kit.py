@@ -45,7 +45,7 @@ REGISTER = TP / "test_register.csv"
 TEST_PLAN = TP / "TEST_PLAN.md"
 OUT = ROOT / "outputs" / "release" / "test_kit"
 SCREENS = ROOT / "outputs" / "screens"
-SHOT = "20261113_BL038"
+SHOT = "20261113_BL041kit"
 DATE = "2026-11-13"
 G = 9.81                    # N per kg on the crane scale
 LB_PER_N = 0.224809
@@ -129,8 +129,13 @@ def r1_rule_txt(lv: dict) -> str:
 
 
 def fallback_txt(lv: dict) -> str:
+    # BL-041 n-2: a fallback must sit BELOW the failed 0.40. Table rows above 0.40 (swing > 115 %) are not fallbacks:
+    # that case needs a structural cinch re-run (ca1_mt1c_confirm.md, countersign)
+    rows = [(p_, lev) for p_, lev in lv["fallback_table"] if lev < R1_CA1_LEVEL]
     return ("if 0.40 fails: 3 XY bars at the table level for the measured swing, >= "
-            f"{lv['fallback_min']} (" + "; ".join(f"<= {p} %: {lev}" for p, lev in lv["fallback_table"]) + ")")
+            f"{lv['fallback_min']} (" + " / ".join(f"<= {p_} %: {lev}" for p_, lev in rows)
+            + f"). Swing > {rows[-1][0] if rows else 0} %: STOP, no fallback level: the structural-fea-engineer re-runs "
+            "the cinch case")
 
 
 def fallback_level(swing_pct: float, lv: dict) -> float:
@@ -144,9 +149,11 @@ FAT_G = 1.6                # HA-LS-1 rev C walking peak (load_standard.md)
 GUY_N = 288.0              # corrie_f_body.md 13.5: port guy envelope (rev 2/3), 96.1 N at 1 g x 3.0
 LLH_N = 1.5 * GUY_N        # M-7: the proof rule 1.5 x factored (loadpath_verification.md) -> 432 N (was 366 N)
 SEWF = {"S1": 605.0, "S6": 720.0}   # loadpath_verification S1 / S6 factored (x 3.0 on 1 g)
-SEWF_PEAK = round(FAT_G * max(SEWF.values()) / 3.0)   # M-9: 1.6 g x the governing 1 g load (US eye, 240 N) = 384 N
+SEWF_SCATTER = 1.15        # BL-041 n-13: the kit's fatigue scatter factor (IM3-EC, CA1_fatigue_rig.md 6a) on SEW-F too
+SEWF_PEAK = round(SEWF_SCATTER * FAT_G * max(SEWF.values()) / 3.0)   # 1.15 x 1.6 g x the S6 1 g load (240 N) = 442 N
 SEWF_MIN = round(0.1 * SEWF_PEAK)
 COLD_C = -20.0             # M-8: cam_25mm_al / ladder_lock_25mm_heavy records: dry, wet and -20 C
+PRINT_SHIP_USD = 12.0      # ASSUMPTION SHIP (camo-designer, camo/cost_1_and_10_bags.csv): RBTR print order shipping
 FREEZER_MAX_C = -18.0      # ASSUMPTION FREEZER: a home freezer holds about -18 C; record the reading (BL-040)
 
 
@@ -156,9 +163,10 @@ def im3_ec_load() -> dict:
     R <= 0.02 (F_min only keeps the rig taut)."""
     ec = _countersign()["ec"]
     peak = ec["peak_n"]
+    fmin = math.floor(0.02 * peak)          # BL-041 n-1: 24 N was R 0.0204 > 0.02; floor keeps R <= 0.02 (23 N)
     return {"combo_1g_n": ec["combo_1g_n"], "aft_deg": round(ec["aft_deg_dir"]), "aft_deg_computed": ec["aft_deg"],
-            "demand_n": round(FAT_G * ec["combo_1g_n"], 1), "peak_n": peak, "min_n": ec["min_n_r002"],
-            "link_n": round(peak / 4.0), "proof_n": 2553, "r": round(ec["min_n_r002"] / peak, 3),
+            "demand_n": round(FAT_G * ec["combo_1g_n"], 1), "peak_n": peak, "min_n": fmin,
+            "link_n": round(peak / 4.0), "proof_n": 2553, "r": round(fmin / peak, 4),
             "alt_r01_peak_n": ec["r01_peak_n_at_dir"]}
 
 
@@ -236,6 +244,87 @@ def bp1_cost() -> dict:
 def tg_ss_usd() -> float:
     """Stainless 25 mm tri-glide: EUR 3.10 incl. 19 % VAT (triglide_25mm record source line) x 1.09 USD/EUR."""
     return round(3.10 / 1.19 * USD_PER_EUR, 2)
+
+
+# ============================================================================ BL-041 (re-review 2026-11-13)
+def _P():
+    import importlib
+    if str(HERE) not in sys.path:
+        sys.path.insert(0, str(HERE))
+    return importlib.import_module("patterns_corrie_f_rev3")
+
+
+def crown_tube() -> dict:
+    """crown_tube_guy_loop.json (structural-fea-engineer, Y-4; adopted by the orchestrator 2026-11-13)."""
+    d = _json("crown_tube_guy_loop.json")
+    t = d["tl1"]
+    env = d["kit_loads"]["envelope"]
+    b38 = next(f for f in d["fixes"] if f["key"] == "b25_38")
+    return {"proof_n": round(max(t["proof_n"], t["bar_rule_proof_n"])), "sewn_proof_n": round(t["proof_n"]),
+            "env_n": round(env["static_n"]), "fat_n": round(env["fatigue_peak_n"]), "dD_A": round(t["dD_A_mm"], 2),
+            "dD_B": round(t["dD_B_mm"], 2), "dD_C": round(t["dD_C_mm"], 3), "rt_cap": round(t["rt_capacity_A_n"]),
+            "bare_rt_cap": round(t["bare25_rt_capacity_A_n"]), "bare_dD_A_288": round(t["bare25_dD_A_at_288"], 2),
+            "bare_dD_B_288": round(t["bare25_dD_B_at_288"], 2), "bare_dD_C_288": round(t["bare25_dD_C_at_288"], 3),
+            "sf_static": round(b38["sf_static"], 2), "sf_fat": round(b38["sf_fatigue"], 2)}
+
+
+def pt3_specimen() -> str:
+    """PT-3 specimen from the pattern constants, in the op 4.05 order (BL-041 X-1 / Y-1)."""
+    P = _P()
+    return (f"5 swatches sewn exactly as op 4.05 / SK-8, in the op 4.05 order (BL-041): B-01 (primary ULTRA 200) 150 x "
+            f"120 mm; B-18 Hypalon {P.B18_W:.0f} x {P.B18_H:.0f} inside, its lower edge on the B-01 cut edge, its perimeter "
+            "rows 3 / 9 mm on the top and both sides sewn FIRST through B-18 + B-01 only (rows first, before HE); "
+            f"HE 38 x {P.HE_CUT:.0f} mm, neck edges folded {P.HE_NECK_EDGE:.0f} mm in + 1 BT-M per leg, folded in half, both "
+            f"raw ends on the B-01 cut edge, eye UP; box-X {P.HE_BOX[0]:.0f} x {P.HE_BOX[1]:.0f} mm, "
+            f"{P.HE_BOX_GAP:.0f} mm above the seam line, through HE (2 plies) + B-01 + B-18 (301, 7 SPI, tex 135, Nm 140 R); "
+            "stack basted at 6 mm in the allowance; a 150 x 80 mm B-05 (500D) strip joined by the SSa2 floor seam, sewn "
+            "with the zipper / edge foot, allowances turned onto B-05; no binding")
+
+
+def pt3_steps() -> str:
+    P = _P()
+    g = P.he_geometry()
+    return ("put the 5 mm pin through the eye in the PIN FIXTURE with an 18 mm wide slot (the fairlead throat: only the "
+            "neck enters it); clamp the B-05 strip ALONE in the bar clamp; the B-01 top edge stays FREE (never clamped: a "
+            "clamp there carries the load past the floor seam); pull in line DOWN B-01 away from the pin, the eye pointing "
+            f"at the pin (the bag-on direction, DECISION HE-PIN: pin {g['pin_z']:.0f} mm above the seam line, box below it), "
+            "to 1530 N (156.0 kg); hold 60 s; with the loupe check the box top row, the neck tacks and the floor seam")
+
+
+def he_fit_row() -> dict:
+    P = _P()
+    g = P.he_geometry()
+    return dict(id="HE-FIT", status="ACTIVE", tier="safety",
+                title="hinge eye 1:1 dry fit on a printed z 60 fairlead (eye on the pin, neck in the throat)",
+                defined_in="designs/pack_5200/patterns_corrie_f_rev3.py DECISION HE-PIN (he_geometry), ASSUMPTIONS HE-CHEEK, HE-T; review_20261113_rev3_recheck.md X-2",
+                what_it_proves=f"the loaded pin centre sits {g['pin_z']:.0f} +/- {P.HE_PIN_TOL:.0f} mm above the floor seam line (frame z 60 with the floor at z 35), only the 18 mm neck is between the cheeks, the box top clears the cheeks",
+                gates="HE pattern before the PT-3 specimens and before the bag is cut", grams_at_stake_g="0",
+                safety_at_stake="hinge eye position: every sim and placement assumes the floor at z 35",
+                specimen=f"1 scrap HE sewn as op 4.05 (B-18 + B-01 offcut 150 x 120 + B-05 strip, floor seam sewn); one hinge fairlead printed 1:1 from the H1 STL (z 60, x 115 stay segment, 80 mm long) with its UHMWPE sleeve and the 5 mm pin",
+                kit="A+D",
+                steps="clamp the printed stay segment upright; push the pin through cheek, sleeve, eye, cheek; hang 5 kg from the B-05 strip so the eye loads the pin; measure with the caliper from the floor seam line to the pin centre; check the box top is below the cheeks' lower edge with daylight between them; check the eye is not folded over the box; photo",
+                pass_fail=f"pin centre {g['pin_z'] - P.HE_PIN_TOL:.0f}-{g['pin_z'] + P.HE_PIN_TOL:.0f} mm above the floor seam line; box top clear of the cheeks; neck alone in the 18 mm throat; eye points up (no fold-down)",
+                cost_usd="1", cost_basis="scrap + 10 g filament", hours_hands_on="0.5", hours_machine="2", phase="1",
+                run_order="9", first_weekend="Y",
+                notes="BL-041 (re-review X-2): a gate BEFORE PT-3 is sewn and before bag cut, not QC-20 on a finished bag. A fail: the HE length (HE_EYE) is re-solved from the measured webbing thickness",
+                g_per_usd_eq="")
+
+
+def tl1b_row() -> dict:
+    ct = crown_tube()
+    return dict(id="TL-1b", status="ACTIVE", tier="data",
+                title="bare crown bar under today's 25 mm sleeve: step load, ovalisation vs load (which ring model is real)",
+                defined_in="designs/pack_5200/analysis/crown_tube_guy_loop.md section 6 (TL-1b), ASSUMPTIONS RING_SLICE, BASIS_A",
+                what_it_proves="which ring model (A point load / B shear-flow / C 180 deg wrap) the rev C bar follows; credits basis B or C if it passes (kits S / M could then keep 25 mm)",
+                gates="none (data, not a gate); TL-1 is the gate", grams_at_stake_g="3.4",
+                safety_at_stake=f"basis A predicts first-ply failure at {ct['bare_rt_cap']} N pristine",
+                specimen="1-2 lengths of the real rev C crown bar stock (>= 160 mm) with a 25 mm B-25-style sleeve (lap bartacked), both toggles in the tab",
+                kit="A+D",
+                steps=f"same rig as TL-1 (V-blocks >= 40 mm outside the sleeve, no cradle under it); dial gauge on a C-frame on the bare tube 2 mm outboard of the sleeve edge, along the pull; step 100 / 200 / 300 / 400 / {ct['proof_n']} N, read the gauge at each step; stop at the first knee or sound",
+                pass_fail=f"record only: dD at 288 N against the predictions A {ct['bare_dD_A_288']} / B {ct['bare_dD_B_288']} / C {ct['bare_dD_C_288']} mm; holds {ct['proof_n']} N linear with dD at or below the B line = basis B credited (tell the structural-fea-engineer)",
+                cost_usd="20", cost_basis="ASSUMPTION crown bar offcut + dial gauge on a C-frame (shared with TL-1)",
+                hours_hands_on="1.0", hours_machine="", phase="1", run_order="26", first_weekend="Y",
+                notes="BL-041 (crown_tube_guy_loop.md, orchestrator 2026-11-13): new", g_per_usd_eq="")
 
 
 def new_rows(lv: dict, lid_g: float, cut: dict) -> list[dict]:
@@ -361,7 +450,7 @@ def new_rows(lv: dict, lid_g: float, cut: dict) -> list[dict]:
              defined_in="designs/pack_5200/analysis/loadpath_verification.md S1, S6, H1 ('PASS after ... SEW-F (lever rig)'), ASSUMPTION SEW_FAT; designs/pack_5200/analysis/review_20261113_rev3_release.md M-9",
              what_it_proves="ASSUMPTION SEW_FAT: a 25 mm box-X keeps 0.40 x its static strength over 1e5 walking cycles (loadpath ratios down to 1.48)",
              gates="IM1-IM3 end loops (S1), US1/US2 sewn eyes (S6), belt anchor box-X (H1): loaded carry and the bag batch",
-             grams_at_stake_g="0", safety_at_stake=f"box-X fatigue 1.48 (S6, ASSUMPTION SEW_FAT); peak = 1.6 g x the S6 1 g load {SEWF['S6'] / 3.0:.0f} N",
+             grams_at_stake_g="0", safety_at_stake=f"box-X fatigue 1.48 (S6, ASSUMPTION SEW_FAT); peak = {SEWF_SCATTER} scatter x 1.6 g x the S6 1 g load {SEWF['S6'] / 3.0:.0f} N (BL-041 n-13: the same scatter factor as IM3-EC)",
              specimen="3 x 25 mm poly webbing loops, box-X 21 x 25 mm (the IM / US box as drawn), 301, 7 SPI, tex 135, Nm 140 R, sewn with the MT-1 loops",
              kit="B",
              steps=f"loop over a 5 mm pin on the lever (in place of a coupon), the free end in the bar clamp; set the crank so the cell swings {SEWF_MIN / 4:.0f} -> {SEWF_PEAK / 4:.0f} N (4:1 lever = {SEWF_MIN} -> {SEWF_PEAK} N on the loop); 1 Hz to 100,000 cycles (27.8 h); loupe check at 25,000 / 50,000 / 75,000; after run-out pull the loop on the G2 bench to 1080 N (the MT-1 US proof), 1 min",
@@ -370,16 +459,18 @@ def new_rows(lv: dict, lid_g: float, cut: dict) -> list[dict]:
              phase="2", run_order="78", first_weekend="N",
              notes="BL-040 (review M-9): added. Runs on the G4 lever rig between coupons; a loop is not a frame coupon so it can run beside CA-4 / CS-1", g_per_usd_eq=""),
         dict(id="FIT-R3", status="ACTIVE", tier="function",
-             title="rev 3 first-article fit checks (yes / no): lid dart, B-11 loadouts, IM2 notch, carabiner gate on T3",
+             title="rev 3 first-article fit checks (yes / no): lid dart, B-11 loadouts, IM2 notch, carabiner gate on T3, roll clip with rifle + W3, muzzle gap",
              defined_in="designs/pack_5200/patterns_corrie_f_rev3.py ASSUMPTIONS LID-DART, B11-PLACE; designs/pack_5200/analysis/loadpath_verification.md S1 (IM2 notch fit); data/materials/hardware/carabiner_wiregate_22kn.yaml (gate 17 vs 21 mm); review_20261113_rev3_release.md m-18",
              what_it_proves="the pattern ASSUMPTIONS that only a fit settles: LID-DART, B11-PLACE, the IM2 notch fit and the carabiner gate on the T3 loop",
              gates="CORRIE F rev 3 first article (bag batch release)", grams_at_stake_g="0", safety_at_stake="fit only",
              specimen="first sewn bag + lid on P2; 5.0 L of dry rice in a bag; the owner's bow (in IMP-8) and rifle; the IM3 carabiners",
              kit="C+D",
-             steps="(1) LID-DART: fill the sewn lid with 5.0 L of dry rice, set it on a flat table: height 85 mm +/- 5, no pucker at the 4 corner darts (photo); (2) B11-PLACE: carry the bow in IMP-8 with the 2 BRL loops round the riser, and the rifle with the muzzle in the B-11 muzzle keeper, both sides: they sit and do not touch the frame (photo); (3) IM2 notch fit: IM2 strap girth-hitched on its eye seats in the fairlead notch (photo); (4) carabiner gate: the IM3 carabiner clips the T3 loop and the gate closes fully, 5 of 5",
-             pass_fail="4 of 4 yes (any no: photo to the pack-designer)", cost_usd="2", cost_basis="5 L of rice",
+             steps="(1) LID-DART: fill the sewn lid with 5.0 L of dry rice, set it on a flat table: height 85 mm +/- 5, no pucker at the 4 corner darts (photo); (2) B11-PLACE: carry the bow in IMP-8 with the 2 BRL loops round the riser, and the rifle with the muzzle in the B-11 muzzle keeper, both sides: they sit and do not touch the frame (photo); (3) IM2 notch fit: IM2 strap girth-hitched on its eye seats in the fairlead notch (photo); (4) carabiner gate: the IM3 carabiner clips the T3 loop and the gate closes fully, 5 of 5; (5) ROLL CLIP + RIFLE + W3 (BL-041 RT-FWD / RT-OVER-W3): rifle muzzle in the keeper and W3 cinched through its W3G guide, both sides: the roll clip opens and closes gloved without touching the rifle or letting W3 off, and the buckle body clears the muzzle tab (photo); (6) MK-GAP: the barrel sits between the two muzzle tabs (30 mm clear) with the keeper cord closed round it",
+             pass_fail="6 of 6 yes (any no: photo to the pack-designer)", cost_usd="2", cost_basis="5 L of rice",
              hours_hands_on="1.0", hours_machine="", phase="4", run_order="79", first_weekend="N",
-             notes="BL-040 (review m-18): added; the four fits were settled-by items with no row in the kit", g_per_usd_eq=""),
+             notes="BL-040 (review m-18): added; the four fits were settled-by items with no row in the kit. BL-041 (re-review Y-2): rows 5-6 added", g_per_usd_eq=""),
+        he_fit_row(),
+        tl1b_row(),
         dict(id="SL-1", status="ACTIVE", tier="grams", title="weigh the cord-pull door sliders and the printed label; gloved door cycles",
              defined_in=f"{WP} 2 (G-1, X-1), 7 SLIDER-CORD, LABEL",
              what_it_proves="ASSUMPTION SLIDER-CORD 15.0 g and LABEL 1.0 g; the cord pull works gloved",
@@ -452,6 +543,22 @@ def new_rows(lv: dict, lid_g: float, cut: dict) -> list[dict]:
     return rows
 
 
+def tl1_patch() -> dict:
+    ct = crown_tube()
+    P = ct["proof_n"]
+    return dict(title=f"guy + crown-strap toggles in the 38 mm B-25 sleeve on the real crown bar, {P} N",
+                defined_in="designs/pack_5200/analysis/crown_tube_guy_loop.md sections 5-6 (adopted 2026-11-13); designs/pack_5200/analysis/loadpath_verification.md §3 A3",
+                what_it_proves=f"the bar wall under the as-built 38 mm sleeve (basis A SF {ct['sf_static']} static / {ct['sf_fat']} fatigue on {ct['env_n']} N) and the POM toggles hold the proof: {P} N = {ct['env_n']} N / KD_eff (bar rule; the sewn 1.5 x rule gives {ct['sewn_proof_n']} N)",
+                gates="B-25 bridle (38 mm, BL-041) and the guy / crown-strap toggles: bag cut", grams_at_stake_g="3.4",
+                safety_at_stake=f"toggle proof {670 / P:.2f}; bar wall {ct['sf_static']} static / {ct['sf_fat']} fatigue (38 mm B-25, basis A)",
+                specimen=f"5 x the real rev C crown top bar stock ([+-45/0x5/+-45], wall 1.065, same vendor and clear coat; NOT a generic 18 mm offcut), each >= 160 mm, carrying an as-built 38 mm B-25 sleeve (lap bartacked as at frame assembly) with the guy toggle AND the crown-strap toggle in the tab; 1 untested control length",
+                steps=f"clamp the tube ends in V-blocks >= 40 mm outside the sleeve edges (the bar reacts as a beam), NO cradle or saddle under the sleeve; dial gauge on a C-frame on the bare tube 2 mm outboard of the sleeve edge, along the pull, zeroed; pull the guy toggle aft and outward as in the field in steps 100 / 200 / 300 / 400 / {P} N ({P / G:.1f} kg), reading the gauge at each step; hold {P} N 60 s, listening (phone microphone on the tube); unload, remove the sleeve, micrometer the loop centre at 0 and 90 deg; loupe + tap test against the control; repeat 1 sample after 4 h in the freezer (POM)",
+                pass_fail=f"5 of 5: (1) holds {P} N 60 s, toggle does not pull through or crack, no broken stitch; (2) no crackle; (3) gauge at {P} N within 1.15 x the straight line through the 100-300 N readings, no knee; (4) ovalisation <= 0.40 mm at {P} N (basis A {ct['dD_A']}, B {ct['dD_B']}, C {ct['dD_C']} mm); (5) out-of-round after unloading <= 0.02 mm more than before; (6) no crush mark, whitening or resin crack at 10x, tap test clean; the cold sample holds",
+                cost_usd="40", cost_basis="ASSUMPTION crown bar stock 1 m from the frame vendor + dial gauge on a C-frame + toggles",
+                hours_hands_on="2.0",
+                notes=f"BL-041 (crown_tube_guy_loop.md 6, orchestrator 2026-11-13): {P} N on real bar stock with the 38 mm B-25 (was 432 N on a 25 mm loop round an offcut, which basis A puts above the bare bar's {ct['bare_rt_cap']} N). TL-1b is the bare-bar data test")
+
+
 def patches(lv: dict, lid_g: float) -> dict:
     """Changes to existing register rows: the later tickets moved their numbers."""
     wpd = weight_push()
@@ -459,7 +566,11 @@ def patches(lv: dict, lid_g: float) -> dict:
     f1 = abs(float(wpd["F-1"]["g"]))
     rel = lv["release"]
     return {
+        "MT-1": dict(specimen="12 loops: 10 x 25 mm poly webbing, box-X 25 x 25, stitch 301, 7 SPI, bonded nylon tex 135; + 2 IMC cam anchor tabs (BL-041, 21 x 25 box-X both ends, cam bar in one loop, a 5 mm pin in the other)",
+                     steps="sew the loops exactly like the pack; loop over the 5 mm pin; 5 loops to 908 N (92.6 kg) and 5 to 1080 N (110.1 kg); the 2 IMC tabs (cam bar on a 5 mm pin each end) to 908 N; hold 1 min each",
+                     pass_fail="5 of 5 hold 908 N (IM) and 5 of 5 hold 1080 N (US) for 1 min, 2 of 2 IMC hold 908 N, no broken stitch"),
         "CA-1": dict(
+            title=f"PAHT-CF fatigue coupons, {R1_CA1_LEVEL:.2f} (fallback >= {lv['fallback_min']})",
             gates=f"H1 print release R1: {r1_rule_txt(lv)}; 0.40 also feeds option F-1 (BL-037)",
             safety_at_stake=f"Goodman flip of the H1 body with the cinch static {lv['flip_goodman_static']} (countersign; BL-039's 0.276 rule left out the cinch mean and the R 0 / R 0.1 gap: body margin 0.943 there); margin at 0.40: {lv['margin_040_static']} static, {lv['margin_040_p100']} at 100 % swing",
             steps=f"CA1_fatigue_rig.md 6: 3 XY + 2 Z static, then 3 XY at {lv['release']:.2f} to 1e5 and 2 Z at {lv['release']:.2f}; {fallback_txt(lv)}",
@@ -483,28 +594,24 @@ def patches(lv: dict, lid_g: float) -> dict:
                      gates="guy ladder locks on B-22 (BL-004 REC, A_att); W1-W3 float clamp locks; B-28 crown strap locks (the B-28 slip gate, BL-031)",
                      what_it_proves=f"record ladder_lock_25mm_heavy (490 N slip, ASSUMPTION 0.5 x tensile) holds the guy proof {LLH_N:.0f} N = 1.5 x {GUY_N:.0f} N (rev 2/3 guy envelope) and the W 338 N proof, dry, wet and at -20 C as the record's settled-by line asks",
                      specimen="5 heavy ladder locks + tri-glides, re-used for 3 conditions on FRESH 25 mm webbing each time (15 lengths of 600 mm); 2 of the 5 threaded as a B-28 front lock on a hinge-band tab",
-                     steps=f"thread as in the pack; paint-pen mark at the lock. DRY (room temperature): hang {LLH_N / G:.1f} kg ({LLH_N:.0f} N, sand bags) 50 mm above the floor for 1 h, all 5 side by side; measure the mark. WET: re-thread on fresh webbing, soak lock + webbing 10 min in water, hang the same load wet for 1 h. COLD: re-thread on fresh webbing, 2 h in the freezer (record -20 C; a home freezer holds about {FREEZER_MAX_C:.0f} C: write the reading), load within 2 min of taking it out, hold 10 min",
+                     steps=f"thread as in the pack and paint-pen mark at the lock; DRY at room temperature: hang {LLH_N / G:.1f} kg ({LLH_N:.0f} N, sand bags) 50 mm above the floor for 1 h, all 5 side by side, then measure the mark; WET: re-thread on fresh webbing, soak lock + webbing 10 min in water, hang the same load wet for 1 h, measure; COLD: re-thread on fresh webbing, 2 h in the freezer, write the freezer reading, load within 2 min of taking it out, hold 10 min, measure. The record asks for -20 C: a home freezer at {FREEZER_MAX_C:.0f} C or colder is ACCEPTED as the -20 C condition (ASSUMPTION FREEZER; dry ice in a cool box reaches -20 C if the owner wants the exact figure)",
                      pass_fail=f"slip < 5 mm, 5 of 5, in each of dry / wet / cold at {LLH_N:.0f} N (covers the W 338 N proof); a fail in any condition: tell the pack-designer (record fallbacks: aluminium ladderlock)",
                      cost_usd=f"{5 * rec_price('ladder_lock_25mm_heavy') + 9.0 * rec_price('poly_webbing_25mm'):.2f}",
                      cost_basis="ladder_lock_25mm_heavy x 5 + poly_webbing_25mm 9 m (15 x 0.6 m) (records)",
                      hours_hands_on="2.0",
                      notes=f"BL-040 (review M-7, M-8): load {LLH_N:.0f} N (was 366 N = 1.5 x the old 244 N A3 load); wet and -20 C conditions added from the record"),
-        "TL-1": dict(steps=f"tube clamped in the pin fixture; loop round the tube, toggle through; pull aft-outward to {LLH_N:.0f} N ({LLH_N / G:.1f} kg); hold 60 s; repeat 1 sample after 4 h in the freezer (as PT-4)",
-                     pass_fail=f"5 of 5 hold {LLH_N:.0f} N, toggle does not pull through or crack; cold sample holds; no crush mark on the tube",
-                     what_it_proves=f"25 mm loop + POM toggle round the bare OD 18 crown bar (toggle 670 N ASSUMPTION) holds 1.5 x the {GUY_N:.0f} N rev 2/3 guy envelope",
-                     notes="the cold repeat is added here (POM is brittler cold), not in the source. BL-040 (review M-7): 432 N (was 366 N = 1.5 x the old 244 N)"),
+        "TL-1": tl1_patch(),
         "MT-3": dict(cost_usd=f"{5 * rec_price('cam_25mm_al'):.2f}", cost_basis="cam_25mm_al record 25.50 x 5 (re-used for US-BS)",
                      title="25 mm cam buckle slip at the BL-010 per-row loads, dry, wet and cold",
                      specimen="5 x 25 mm Al cams, re-used for 3 conditions on FRESH 25 mm webbing each time (15 lengths of 600 mm)",
-                     steps=f"thread the cam as in the pack; paint-pen mark at the cam mouth. DRY: pull to 908 N (92.6 kg), hold 1 min, measure; then to 1080 N (110.1 kg), hold 1 min, measure. WET: fresh webbing, cam + webbing soaked 10 min, same two holds. COLD: fresh webbing, 2 h in the freezer (record -20 C; write the freezer reading), pull within 2 min of taking it out, same two holds",
+                     steps=f"thread the cam as in the pack and paint-pen mark at the cam mouth; DRY: pull to 908 N (92.6 kg), hold 1 min, measure; then to 1080 N (110.1 kg), hold 1 min, measure. WET: fresh webbing, cam + webbing soaked 10 min, same two holds. COLD: fresh webbing, 2 h in the freezer, write the freezer reading, pull within 2 min of taking it out, same two holds. A home freezer at {FREEZER_MAX_C:.0f} C or colder is ACCEPTED as the record's -20 C (ASSUMPTION FREEZER)",
                      pass_fail="mark moves < 3 mm at 908 N and at 1080 N, 5 of 5, in each of dry / wet / cold",
                      hours_hands_on="2.0",
                      notes="BL-038: price from the record (was ASSUMPTION $4). Cams LONG LEAD (both resellers out of stock 2026-11-13). BL-040 (review M-8): wet and -20 C conditions from the cam_25mm_al record's settled-by line"),
-        "PT-3": dict(title="HE hinge eye on B-18 + B-01 + B-05 floor seam, sewn as op 4.05 (DECISION HE-ONE), no binding",
-                     specimen="5 swatches sewn exactly as op 4.05 / SK-8: B-01 (primary ULTRA 200) 150 x 120 mm; B-18 Hypalon 90 x 62 inside, its lower edge on the B-01 cut edge; HE 38 x 150 mm, neck edges folded 10 mm in + 1 BT-M per leg, folded in half, both raw ends on the B-01 cut edge; box-X 34 x 34 mm, 4 mm above the seam line, through HE (2 plies) + B-01 + B-18 (301, 7 SPI, tex 135, Nm 140 R); a 150 x 80 mm B-05 (500D) strip joined by the SSa2 floor seam, allowances turned onto B-05; no binding",
-                     steps="5 mm pin through the eye; clamp the B-05 strip in one bar clamp and the B-01 top edge in the other so the pull runs up B-01 (the bag-on direction); pull to 1530 N (156.0 kg); hold 60 s",
-                     pass_fail="5 of 5 hold 1530 N 60 s: no stitch break, no Hypalon or laminate tear, B-18 still in the floor seam",
-                     notes="BL-040 (review B-1): specimen re-issued from the one hinge-eye drawing (the release had three)"),
+        "PT-3": dict(title="HE hinge eye on B-18 + B-01 + B-05 floor seam, sewn as op 4.05 (HE-ONE / HE-PIN), no binding",
+                     specimen=pt3_specimen(), steps=pt3_steps(),
+                     pass_fail="5 of 5 hold 1530 N 60 s: no stitch break, no Hypalon or laminate tear, B-18 still in the floor seam, the eye still open (no row across it)",
+                     notes="BL-041 (re-review X-1 / X-2 / Y-1): specimen from the reordered op 4.05 (B-18 rows first), HE-PIN geometry (eye up, box below the cheeks), rig: pin in an 18 mm slot, B-05 alone in the clamp, B-01 top free. Run HE-FIT first"),
         "HB-7": dict(cost_usd=f"{5 * rec_price('ladder_lock_25mm_heavy') + 5 * rec_price('d_ring_25mm_aluminium'):.2f}",
                      cost_basis="ladder_lock_25mm_heavy 2.10 x 5 + d_ring_25mm_aluminium 1.85 x 5 (records)"),
         "MT-2": dict(notes="BL-038: in the kit the MT-2 carabiners are a separate lot of 5 from PT-1"),
@@ -638,6 +745,7 @@ RELEASES = [  # key, label, what it releases
     ("BAG-BATCH", "Bag release, step 2: batch", "first-article bag checks before more bags are cut (release_tests.csv)"),
     ("BL037", "BL-037 weight gates", "the -119.1 g A_bl037 picks (weight_push.md)"),
     ("CARRY", "Field release and the rest", "first loaded carry, meat haul, belt and comfort tests"),
+    ("DATA", "Data only (no gate)", "measurements that credit a model; nothing waits on them (BL-041 TL-1b)"),
 ]
 REL_ORDER = {k: i for i, (k, _, _) in enumerate(RELEASES)}
 
@@ -648,7 +756,8 @@ TEST_RELEASE = {
     # bag
     "MT-2": "BAG-CUT", "MT-3": "BAG-CUT", "US-BS": "BAG-CUT", "PT-1": "BAG-CUT", "PT-2": "BAG-CUT", "PT-3": "BAG-CUT",
     "PT-5": "BAG-CUT", "PT-6": "BAG-CUT", "LL-H": "BAG-CUT", "B-28 slip": "BAG-CUT", "PORT-1": "BAG-CUT",
-    "FRAY-1": "BAG-CUT", "WP-1": "BAG-CUT", "TL-1": "BAG-CUT", "FS-O5": "BAG-CUT",
+    "FRAY-1": "BAG-CUT", "WP-1": "BAG-CUT", "TL-1": "BAG-CUT", "FS-O5": "BAG-CUT", "HE-FIT": "BAG-CUT",
+    "TL-1b": "DATA",
     "SEW-F": "BAG-BATCH", "FIT-R3": "BAG-BATCH",
     "T9-R3a": "BAG-BATCH", "T9-R3b": "BAG-BATCH", "T9-R3c": "BAG-BATCH", "T9-R3d": "BAG-BATCH", "GT-1": "BAG-BATCH",
     "PT-7": "BAG-BATCH", "WP-2": "BAG-BATCH", "WP-3": "BAG-BATCH", "WP-4": "BAG-BATCH", "WP-5": "BAG-BATCH",
@@ -667,8 +776,8 @@ GROUPS = [
                "them, so they set the pace for frame release R1. Order the long-lead parts the same day."),
     dict(id="G2", title="Pull bench weekend: hooks, cams, bartacks, ladder locks", when="weekend 1 (week 1)",
          rig="kit A pull bench (come-along, 300 kg crane scale, 5 mm pin fixture, bar clamps)", kits="A, D (caliper, loupe, pocket scale), E",
-         tests=["MT-1", "PT-1", "MT-2", "MT-3", "US-BS", "PT-2", "PT-3", "PT-5", "PT-6", "LL-H", "B-28 slip", "PORT-1",
-                "TL-1", "FS-O5", "HB-7", "WP-3", "SL-1"],
+         tests=["HE-FIT", "MT-1", "PT-1", "MT-2", "MT-3", "US-BS", "PT-2", "PT-3", "PT-5", "PT-6", "LL-H", "B-28 slip",
+                "PORT-1", "TL-1", "TL-1b", "FS-O5", "HB-7", "WP-3", "SL-1"],
          intro="One bench, one weekend. MT-1 goes first because frame release R1 needs it; the rest are every sewn "
                "load point on the bag. After this weekend you may cut the bag (if G3's wash also passes)."),
     dict(id="G3", title="Wash and look: seams without binding", when="weekend 1, evenings",
@@ -739,14 +848,17 @@ def loads(lv: dict) -> dict:
     ec = im3_ec_load()
     lb = lambda x: x / LB_PER_N  # noqa: E731  lb -> N
     return {
-        "MT-1": [("IM loops (5)", 908), ("US loops (5)", 1080)],
+        "MT-1": [("IM loops (5) + IMC tabs (2)", 908), ("US loops (5)", 1080)],
         "MT-2": [("G-hooks (5)", 645), ("carabiners (5)", 910)],
         "MT-3": [("first hold", 908), ("second hold", 1080)],
         "US-BS": [("US proof, cam held open", 1080)],
         "PT-1": [("proof, 60 s", 2553)], "PT-2": [("proof, 60 s", 2553)], "PT-3": [("proof, 60 s", 1530)],
+        "HE-FIT": [("hang from the B-05 strip", 5 * G)],
+        "TL-1": [(f"step {k}", v) for k, v in enumerate((100, 200, 300, 400), 1)] + [("proof, hold 60 s", crown_tube()["proof_n"])],
+        "TL-1b": [(f"step {k}", v) for k, v in enumerate((100, 200, 288, 300, 400), 1)] + [("last step (stop at a knee)", crown_tube()["proof_n"])],
         "PT-5": [("10 cycles to", 170)], "PT-6": [("proof, 60 s", 1410)],
         "LL-H": [("dead load: dry 1 h, wet 1 h, cold 10 min", LLH_N)], "B-28 slip": [("covered by LL-H", LLH_N)],
-        "SEW-F": [("loop peak (1.6 g x the S6 1 g load)", SEWF_PEAK), ("valley (R 0.1)", SEWF_MIN),
+        "SEW-F": [("loop peak (1.15 scatter x 1.6 g x the S6 1 g load)", SEWF_PEAK), ("valley (R 0.1)", SEWF_MIN),
                   ("load cell reads at the peak (4:1 lever)", SEWF_PEAK / 4.0), ("after run-out, MT-1 US proof", 1080)],
         "HB-7": [("hold 1 min, no slip", 426), ("slip must be above", 490)],
         "PORT-1": [("guy at 45 deg during the hose", 49.05), ("lap pull", 100)],
@@ -790,7 +902,8 @@ def measures(lv: dict, lid_g: float, cut: dict) -> dict:
 
     m = {
         "MT-1": per(5, "held 92.6 kg (908 N) 1 min, no broken stitch", y, "yes", "Y", "BOX25", "IM#")
-        + per(5, "held 110.1 kg (1080 N) 1 min, no broken stitch", y, "yes", "Y", "BOX25", "US#"),
+        + per(5, "held 110.1 kg (1080 N) 1 min, no broken stitch", y, "yes", "Y", "BOX25", "US#")
+        + per(2, "IMC cam anchor tab held 92.6 kg (908 N) 1 min, both boxes whole (BL-041)", y, "yes", "Y", "BOX25; IMC-LOOP", "IMC#"),
         "MT-2": per(5, "G-hook held 65.7 kg (645 N) 1 min, gate closes", y, "yes", "Y", "", "G#")
         + per(5, "carabiner held 92.8 kg (910 N) 1 min, gate closes", y, "yes", "Y", "", "C#"),
         "MT-3": [x for cond in ("dry", "wet", "cold") for x in
@@ -800,7 +913,15 @@ def measures(lv: dict, lid_g: float, cut: dict) -> dict:
         + per(3, "held 110.1 kg (1080 N) 1 min", y, "yes", "Y", "US-BS", "h#"),
         "PT-1": per(5, "held 260.2 kg (2553 N) 60 s, gate closes, no set", y, "yes", "Y", "CARA-PROOF"),
         "PT-2": per(5, "held 260.2 kg (2553 N) 60 s, no stitch break, no tear", y, "yes", "Y"),
-        "PT-3": per(5, "held 156 kg (1530 N) 60 s, B-18 still in the floor seam (sewn as op 4.05)", y, "yes", "Y", "HE-ONE; HE-GAP"),
+        "PT-3": per(5, "held 156 kg (1530 N) 60 s, B-18 still in the floor seam, eye open (sewn as op 4.05, B-18 rows first)", y, "yes", "Y", "HE-ONE; HE-PIN; HE-GAP"),
+        "HE-FIT": per(1, "pin centre above the floor seam line (pass 22-28)", "mm", "band", "22..28", "HE-PIN; HE-CHEEK; HE-T")
+        + per(1, "box top clear of the cheeks, neck alone in the throat, eye points up", y, "yes", "Y", "HE-PIN", "fit"),
+        "TL-1": per(5, f"ovalisation at {crown_tube()['proof_n']} N", "mm", "max", "0.40", "WIDE_SLEEVE; RING_SLICE", "oval#")
+        + per(5, "permanent out-of-round after unloading (increase)", "mm", "max", "0.02", "RING_SLICE", "set#")
+        + per(5, f"held {crown_tube()['proof_n']} N 60 s, linear (no knee), silent, no crush mark / whitening at 10x, toggles whole", y, "yes", "Y", "GUY-TOGGLE; WIDE_SLEEVE", "hold#")
+        + per(1, "cold sample (4 h freezer) held the proof", y, "yes", "Y", "GUY-TOGGLE", "cold"),
+        "TL-1b": [(f"{n}", f"ovalisation at {f} N", "mm", "record", "-", "RING_SLICE; BASIS_A") for n, f in
+                  (("1", 100), ("1", 200), ("1", 288), ("1", 400))] + per(1, "load at the first knee or sound (none: write the last step)", "N", "record", "-", "BASIS_A", "knee"),
         "PT-5": per(1, "total slip after 10 cycles to 17.3 kg", "mm", "max", "5"),
         "PT-6": per(5, "held 143.7 kg (1410 N) 60 s, no box-X break, gate closes", y, "yes", "Y"),
         "LL-H": [x for cond, hold in (("dry", "1 h"), ("wet", "1 h"), ("cold", "10 min")) for x in
@@ -1019,6 +1140,8 @@ def shopping(reg: dict) -> list[dict]:
            "record cfrp_t300_3k_woven_epoxy_ply (BL-039)", "S", "BP-1"),
         _l("HyperD 300 printable, custom camo print", 1, "yd", rp("polyester_300d_printable"), "Ripstop by the Roll (custom print, 1 yd min)", "record polyester_300d_printable", "S", "AB-1, FRAY-1",
            "LONG LEAD: custom print, lead time not published"),
+        _l("shipping for the HyperD print order", 1, "order", PRINT_SHIP_USD, "Ripstop by the Roll", "ASSUMPTION SHIP (camo/cost_1_and_10_bags.csv)", "S", "AB-1, FRAY-1",
+           "", "BL-041 (re-review n-10 / Y-5): the print yard is a test-kit specimen only; the first bag is solid 630D"),
         _l("Martindale abrasion test, accredited lab (2 samples + order fee)", 1, "order", (2 * 66 + 97) * USD_PER_EUR, "Measurlabs (EUR 66 / sample + EUR 97 fee)", LINKS["lab"], "S", "AB-1",
            "LONG LEAD: about 4 weeks after the samples arrive", "the listed price is the ISO 12947-2 Martindale method; ask for ASTM D4966 to 8000 rev"),
     ]
@@ -1192,8 +1315,12 @@ PREP = {
            "1. MT-1: 10 loops of 25 mm poly webbing; fold each end into a 20 mm loop and close it with a 25 x 25 mm "
            "box-X, stitch 301, 7 SPI, bonded nylon tex 135, Nm 140 round-point needle.",
            "2. PT-2: 5 x T3 tongue on a 70 mm B-17 tab on a B-01 swatch about 200 x 200 mm (`bag_attachment.md` 5 T3).",
-           "3. PT-3: 5 hinge-eye swatches sewn exactly as op 4.05 and sketch SK-8 of the release (HE folded in half, "
-           "box-X 34 x 34 through HE + B-01 + B-18, B-18 and both HE raw ends in the B-01 | B-05 floor seam), no binding.",
+           "3. HE-FIT first (print one z 60 hinge fairlead from the H1 STL, sew 1 scrap hinge eye as op 4.05), then "
+           "PT-3: 5 hinge-eye swatches sewn exactly as op 4.05 and sketch SK-8 of the release, IN ITS ORDER: B-18 rows "
+           "first through B-18 + B-01 only, then the HE (folded in half, eye UP) and its box-X below the cheek line, "
+           "B-18 and both HE raw ends in the B-01 | B-05 floor seam, no binding (register PT-3 specimen).",
+           "3a. TL-1 / TL-1b: buy 1 m of the real crown top bar stock from the frame vendor; sew 5 x 38 mm B-25 "
+           "sleeves (TL-1) and 2 x 25 mm (TL-1b) round 160 mm lengths, laps bartacked as at frame assembly.",
            "4. PT-6: 5 B-24 links to the cut list (carabiner + 3 loops).",
            "5. US-BS: 3 x 600 mm of 25 mm webbing threaded through a cam with the stainless tri-glide behind it.",
            "6. LL-H: 5 heavy ladder locks + nylon tri-glides and 15 x 600 mm of 25 mm webbing (5 dry, 5 wet, 5 cold); "
@@ -1470,7 +1597,7 @@ def charts(ow, sh, lv, rk, outdir: Path) -> list[Path]:
     import matplotlib.pyplot as plt
 
     paths = []
-    colors = {"R1": "#2f5d8a", "BAG-CUT": "#4f8a3a", "BAG-BATCH": "#8ab26a", "BL037": "#c7882a", "CARRY": "#9a9a9a"}
+    colors = {"R1": "#2f5d8a", "BAG-CUT": "#4f8a3a", "BAG-BATCH": "#8ab26a", "BL037": "#c7882a", "CARRY": "#9a9a9a", "DATA": "#c9c9c9"}
     rel_name = {k: lab for k, lab, _ in RELEASES}
 
     # 1. order of work, one bar per test, grouped by session

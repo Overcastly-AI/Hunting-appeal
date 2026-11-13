@@ -1404,18 +1404,23 @@ def build_webbing(rs: RevSet, c):
     _web(rs, "T3", "IM3 bag-hook tongue (38 mm)", 160.0, 2, mat="poly_webbing_38mm",
          folds=[(45.0, "fold round the hook bed")], boxes=[(22.0, 30, "loop box-X"), (130.0, 34, "box-X to B-17")],
          source="attach_system.drawing_pieces T2/T3 (IM2 hooks removed by BL-004: 2 left)")
-    gb = F.guy_bridle()
+    gb = F.guy_bridle(wide=True)    # BL-041 (crown_tube_guy_loop.md 8.1): 38 mm, sleeves x 26.5-64.5, cut 387
+    rs.geo["b25"] = {k: gb[k] for k in ("length_mm", "width_mm", "band", "sleeve_x", "clear_to_clamp_mm", "mass_g")}
+    rs.geo["b25"]["clamp_half"] = F.SPINE_CLAMP_HALF
+    rs.geo["b25"]["min_clear"] = F.MIN_CLEAR_MM
     # BL-034 B25-LAYOUT: tab R | bar sleeve R | run + spine wrap | bar sleeve L | tab L (corrie_f.guy_bridle sum order);
     # each end tab folds 2 x 30 into a loop for the guy's POM toggle, closed by a box at the tip end (B25-BOX)
     Lb, tb, bw = gb["length_mm"], F.BRIDLE_TAB_MM, F.BAR_WRAP_MM
-    _web(rs, "B-25", "guy bridle on the crown top bar", Lb, 1,
+    _web(rs, "B-25", "guy bridle on the crown top bar (38 mm, BL-041)", Lb, 1, mat=gb["material_id"],
          folds=[(tb / 2, "tab fold R (toggle loop)"), (tb, "bar sleeve R start"), (tb + bw, "bar sleeve R lap (bartack)"),
                 (Lb - tb - bw, "bar sleeve L lap (bartack)"), (Lb - tb, "bar sleeve L start"),
                 (Lb - tb / 2, "tab fold L (toggle loop)")],
          boxes=[(_tip_box_y(tb / 2, B25_BOX[1]), B25_BOX[1], "toggle tab R"),
                 (Lb - _tip_box_y(tb / 2, B25_BOX[1]), B25_BOX[1], "toggle tab L")],
-         note="fitted on the bar before the crown corners are bonded; 2 toggle tabs + second folds",
-         source="corrie_f.guy_bridle")
+         note=f"fitted on the bar before the crown corners are bonded; sleeves x {gb['band'][0]}-{gb['band'][1]} each side "
+              f"({gb['clear_to_clamp_mm']} mm clear of the spine clamp); toggle tab at the sleeve centre x {gb['sleeve_x']} "
+              "(DECISION B25-TAB-CENTRE); 2 toggle tabs + second folds",
+         source="corrie_f.guy_bridle(wide=True) (crown_tube_guy_loop.md section 5, 8.1)")
     _web(rs, "TG", "port guy (B-25 toggle -> B-27 port -> B-22 inside)", AS.GUY["cut_mm"], 2,
          boxes=[(20.0, 25, "toggle loop box-X")], note="free end through the heavy ladder lock; heat-seal",
          source="attach_system.GUY cut_mm")
@@ -1423,8 +1428,8 @@ def build_webbing(rs: RevSet, c):
          boxes=[(52.0, LLT_BOX[1], "box-X through B-22 + B-02h")], source="attach_system.drawing_pieces LLT")
     _web(rs, "K-G", "guy tail keeper (25 mm elastic)", KEEPER_CUT, 2, mat=ELASTIC, folds=[(15.0, "lap 15 mm")],
          source="ledger 'guy tail elastic keepers x2'")
-    _web(rs, "GBL", "guy bar loop (POM toggle)", 170.0, 2, folds=[(85.0, "fold round the bar")],
-         boxes=[(150.0, 25, "box-X")], source="ledger BL-004 REC 'guy bar loops x2: 25 mm x 170 mm'")
+    # BL-041: GBL deleted. Rev 1+ toggles the guy into the B-25 tab; the 25 mm guy bar loop carried nothing in rev 3
+    # (crown_tube_guy_loop.md 8.2). Its POM toggle is the guy's own toggle and stays (ledger row unchanged).
     _web(rs, "HPL", "scope-pod hard-point loop", F.LOOP_M * 1000.0, 4, folds=[(40.0, "fold, raw ends in the seam")],
          source="corrie_f.LOOP_M")
     _web(rs, "E5", "pole grip tab (cord lock)", F._A().POLE["tab_m"] * 1000.0, 1, folds=[(30.0, "fold")],
@@ -1623,7 +1628,9 @@ RECON = [
     ("BL-004 REC: T2 tongues", "removed", [], [], ""), ("BL-004 REC: B-23", "removed", [], [], ""),
     ("BL-004 REC: elastic keepers for the IM2", "removed", [], [], ""),
     ("BL-004 REC: hood B-19", "removed", [], [], ""),
-    ("BL-004 REC: guy bar loops", "webbing", [], ["GBL"], ""),
+    ("BL-004 REC: guy bar loops", "hardware", [], [], "the POM toggles (now on the guy's B-25 end); webbing: BL-041 row"),
+    ("BL-041: GBL guy bar loop webbing deleted", "removed", [], [], "carried nothing in rev 3"),
+    ("BL-041: B-25 bridle 25 -> 38 mm", "webbing", [], ["B-25"], "crown_tube_guy_loop.md"),
     ("BL-004 REC: B-17 trimmed", "pattern", ["B-17"], [], "B-17 drawn 90 x 70"),
     ("BL-010 A1", "hardware", [], [], ""), ("BL-010 A3", "hardware", [], [], ""),
     ("BL-022 rev 1: B-25", "webbing", [], ["B-25"], ""), ("BL-022 rev 1: B-26", "webbing", [], ["B-26"], "shock cord"),

@@ -587,7 +587,10 @@ def build_rows(beam: dict, beam_rec: dict, sim: dict, fl: dict, belt: dict, fea:
               "LL-slip heavy (5 locks, 366 N, 1 h hold)"),
          _chk("B-22 seam", PROOF * ng, 1024.0, "proof", "attachment_diet.md 5"),
          _chk("loop webbing on the 18 mm bar (kd 0.5)", ng, C["kd_pin"] * H["web25"], "strength", "record")],
-        note="bare-bar check; the corner wrap under the loop adds wall (not credited).")
+        note="bare-bar check; the corner wrap under the loop adds wall (not credited). BL-041: rev 3 moved the guy "
+             "toggle into the B-25 bridle tab, shared with the B-28 crown strap (323 N envelope); the 25 mm sleeve "
+             "fails the ring check there (crown_tube_guy_loop.md): fix rows = the 38 mm B-25 as built.",
+        fix=_a3_rev3_fix())
     row("A4", "BL-004", "crown top bar centre x +/-66", "none (hood deleted)", "hood capture removed", 0, 0.0,
         "load removed", [])
     hn = max(sim["hinge_REC_S15"]["factored"], sim["hinge_M_notop_S15"]["factored"],
@@ -746,6 +749,25 @@ def front_pad() -> dict:
 
 
 # =============================================================================================== output
+def _a3_rev3_fix() -> dict:
+    """BL-041 (pack-designer, orchestrator 2026-11-13): A3 as built in CORRIE F rev 3, from the structural record
+    ``analysis/crown_tube_guy_loop.json`` (basis A ring check, the HA-LS-1 rule): B-25 bridle in 38 mm webbing, sleeves
+    x 26.5-64.5, the guy and the B-28 crown strap on one tab (323 N envelope, 172 N fatigue peak); TL-1 494 N."""
+    d = json.loads((ANALYSIS / "crown_tube_guy_loop.json").read_text())
+    env = d["kit_loads"]["envelope"]
+    b = next(f for f in d["fixes"] if f["key"] == "b25_38")
+    t = d["tl1"]
+    n, proof = env["static_n"], max(t["proof_n"], t["bar_rule_proof_n"])
+    return {"change": "B-25 bridle in 38 mm webbing, sleeves x 26.5-64.5 (rev 3; crown_tube_guy_loop.md 5)",
+            "mass_g": b["d_mass_g"],
+            "checks": [_chk("rev 3: crown bar wall under the 38 mm B-25 sleeve (guy + crown strap, basis A)", n,
+                            b["capacity_n"], "strength", "crown_tube_guy_loop basis A", False, "TL-1 494 N"),
+                       _chk("rev 3: crown bar wall fatigue (FI at 1.6 g <= 0.5)", b["fi_fatigue"], 0.5, "fatigue",
+                            "crown_tube_guy_loop basis A; units FI"),
+                       _chk("rev 3: POM toggle pull-through, TL-1 proof", proof, 670.0, "proof",
+                            "ASSUMPTION attach_system", False, "TL-1 494 N")]}
+
+
 def compute(fea_live: bool = False, log=print) -> dict:
     fea = {"fairlead_im3": dict(FROZEN["fairlead_im3"])}
     body = dict(FROZEN["body_rec_per_torso"])
@@ -826,10 +848,11 @@ def write_md(res: dict) -> str:
       "deleted), `attachment_diet.md` section 5 (BL-004 REC) and `hipbelt_diet.md` section 5 (BL-006). Shell S15. "
       "Proof rule: 1.5 x factored (bag_attachment.md). Fatigue: 1e5 cycles 0 -> 1.6 g. "
       "Units: N (1 N = 0.225 lbf), g (1 oz = 28.35 g).\n")
-    nf = sum(1 for r in rows if "fix" in r)
+    nf = sum(1 for r in rows if "fix" in r and r["id"] != "A3")
     w("## 1. Result\n")
     w(f"- **{len(rows)} rows, every row has a verdict.** {nf} rows FAIL as handed over; each has a fix that passes. "
-      "The rest pass on rated parts or pass after a named test.")
+      "The rest pass on rated parts or pass after a named test. A3 passed as handed over (244 N); its fix rows are "
+      "the rev 3 build (B-25 in 38 mm under the 323 N guy + crown-strap envelope, BL-041).")
     w(f"- **Check of the solver first:** the IM3 fairlead at 1415 N reproduces the released float_fea record "
       f"(FI99 {res['fairlead_reproduce']['this_run']:.4f} vs {res['fairlead_reproduce']['record']:.4f}); H1's "
       f"per-torso body fatigue reproduces {res['body']['h1_per_torso']['fatigue']:.3f} (BL-017).")

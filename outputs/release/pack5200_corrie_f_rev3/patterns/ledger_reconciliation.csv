@@ -45,7 +45,7 @@ B-24-thr: B-24 thread,straps_meat,meat_trip,2.0,hardware,,,thread
 W-hw: W1-W3 G-hooks (3) + ladder locks (3),straps_compression,base,24.0,hardware,,,
 A-2: A-2 wrap tails 250 -> 150 mm,straps_compression,base,-5.4,webbing,,W1 W2 W3,"tail trim, in the cut"
 keepers: 6 haul-wrap keeper loops in the gore seams,straps_compression,base,8.6,webbing,,K-W,
-roll: roll-top: 2 x 25 mm side-release + 2 x 0.35 m,straps_compression,base,30.6,webbing,,RT RTM,+ 2 buckles; RTM gusset tabs added by BL-040 (not booked)
+roll: roll-top: 2 x 25 mm side-release + 2 x 0.35 m,straps_compression,base,30.6,webbing,,RT,+ 2 buckles (the RTM tabs: BL-041 row)
 BL-010 S2: IM3 free end G-hook -> wiregate carabiner,straps_meat,base,14.0,hardware,,,
 BL-010 S9: W1-W3 rated 25 mm G-hooks (3) and heavy ladder locks (3),straps_compression,base,21.0,hardware,,,
 BL-010 S12: B-24 hooks -> wiregate carabiners (2),straps_meat,meat_trip,16.0,hardware,,,
@@ -80,11 +80,12 @@ BL-004 REC: T2 tongues x2 (38 mm x 160),attachment,base,-8.95,removed,,,
 BL-004 REC: B-23 IM2 tongue backings x2,attachment,base,-7.1,removed,,,
 BL-004 REC: elastic keepers for the IM2 hooks x2,attachment,base,-2.7,removed,,,
 BL-004 REC: hood B-19 + B-19s + B-19L + ladders B-20 + tongues/toggles + grab tab,attachment,base,-58.1,removed,,,
-BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle,attachment,base,9.52,webbing,,GBL,
+BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle,attachment,base,9.52,hardware,,,the POM toggles (now on the guy's B-25 end); webbing: BL-041 row
 BL-004 REC: B-17 trimmed 110 -> 70 mm tall (pair),attachment,base,-7.2,pattern,B-17,,B-17 drawn 90 x 70
 BL-010 A1: IM3 bag hooks -> wiregate carabiners (2),attachment,base,16.0,hardware,,,
 BL-010 A3: guy ladder locks -> heavy (2),attachment,base,6.0,hardware,,,
 BL-022 rev 1: B-25 guy bridle on the top bar at x +/-52,attachment,base,7.43,webbing,,B-25,
+"BL-041: B-25 bridle 25 -> 38 mm webbing, sleeves x 26.5-64.5 (crown_tube_guy_loop.md, orchestrator 2026-11-13)",attachment,base,3.39,webbing,,B-25,crown_tube_guy_loop.md
 "BL-022 rev 1: B-26 tripod keeper (3 mm shock cord, right gusset)",straps_compression,base,1.21,webbing,,B-26,shock cord
 "BL-028 rev 2: B-27 guy ports (2), lapped slits in B-01 at x +/-52, z 595-745",attachment,base,2.84,pattern,B-27f,,slits drawn on B-01
 "BL-031: W1-W3 cut for carry (1340->750, 1412->822, 1618->987 mm)",straps_compression,base,-32.61,webbing,,W1 W2 W3,
@@ -96,8 +97,14 @@ BL-031: roll-top clip straps cut 350 -> 510 mm (2),straps_compression,base,5.76,
 BL-034 records: lifter tri-glide keepers (2 x 2.6 g nylon),attachment,base,0.0,hardware,,,hardware / elastic re-booked on the BL-034 records
 "BL-034 records: guy tri-glides in the guy lock row (2 x 2.6 g, booked 2.6 g)",attachment,base,0.0,hardware,,,hardware / elastic re-booked on the BL-034 records
 BL-034 records: guy tail elastic keepers (2 x 1.35 g),attachment,base,1.5,hardware,,,hardware / elastic re-booked on the BL-034 records
-"BL-034 thread: base ops, 11.8 g from the op stitch lengths (booked 2.0 g)",attachment,base,9.81,hardware,,,thread from the op lengths (build_effort_rev3)
+"BL-034 thread: base ops, 12.0 g from the op stitch lengths (booked 2.0 g)",attachment,base,10.02,hardware,,,thread from the op lengths (build_effort_rev3)
 "BL-034 thread: as_hunted ops, 4.6 g from the op stitch lengths (booked 0.0 g)",attachment,as_hunted,4.63,hardware,,,thread from the op lengths (build_effort_rev3)
 "BL-034 thread: meat_trip ops, 1.9 g from the op stitch lengths (booked 2.0 g)",straps_meat,meat_trip,-0.06,hardware,,,thread from the op lengths (build_effort_rev3)
 "BL-034 records: F-02 fly pocket #5 slider (4.9 g, booked 3.0 g)",fly,as_hunted,1.9,hardware,,,hardware / elastic re-booked on the BL-034 records
-"BL-035: rifle muzzle keepers (2, 3 mm shock cord x 309 mm + spring cord lock, through the B-11 muzzle tabs, both gussets)",bag_shell,base,8.71,webbing,,MK-cord,+ 2 cord locks
+"BL-035: rifle muzzle keepers (2, 3 mm shock cord x 299 mm + spring cord lock, through the B-11 muzzle tabs, both gussets)",bag_shell,base,8.59,webbing,,MK-cord,+ 2 cord locks
+"BL-041: B-18 hinge doublers 90 x 45 -> 90 x 62 (BL-040 HE-ONE, x2)",attachment,base,3.06,pattern,,,B-18 growth; weighed with the bag-side load spreaders row
+"BL-041: HE hinge eyes 150 -> 86 mm (DECISION HE-PIN, x2)",attachment,base,-3.58,webbing,,HE,HE-PIN length change
+"BL-041: RTM roll-clip buckle tabs (2 x 70 mm, BL-040 RT-MATE)",straps_compression,base,2.52,webbing,,RTM,
+"BL-041: W3G W3 guides on the gussets (2 x 60 mm, DECISION RT-OVER-W3)",straps_compression,base,2.16,webbing,,W3G,
+"BL-041: GBL guy bar loop webbing deleted (2 x 170 mm; rev 1+ toggles the guy into the B-25 tab, the toggles stay)",attachment,base,-6.12,removed,,,carried nothing in rev 3
+"BL-041: IMC IM cam anchor tabs (3 x 180 mm, DECISION IM-CAM-TAB)",straps_meat,base,9.72,webbing,,IMC,

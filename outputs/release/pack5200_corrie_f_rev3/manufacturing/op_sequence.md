@@ -14,17 +14,17 @@ Beginner rules: all flat work before the bag becomes 3D; clips, never pins, in c
 - Machine WF1; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI 8; stitch 301; seam SSa2, LSd, BOX, SSa (swatches)
 - sketch SK-1, SK-2; QC QC-05, QC-06; beginner 1.00 h, SAM 0.0 min (one-off)
 **0.03 Sew the first-article load samples**
-- How: Before cutting the bag, sew the proof specimens exactly as the bag: 10 x 25 mm box-X loops (MT-1), 5 T3 tongues on 70 mm B-17 tabs on B-01 swatches (PT-2), 5 hinge eyes exactly as op 4.05 and SK-8 (HE folded in half, box-X 34 x 34 through HE + B-01 + B-18, B-18 and both HE raw ends caught in a B-01 | B-05 SSa2 floor seam, no binding: PT-3), 5 B-24 links (PT-6). The bag's load points are sewn only after these pass.
+- How: Before cutting the bag, sew the proof specimens exactly as the bag: 10 x 25 mm box-X loops + 2 IMC cam tabs (MT-1), 5 T3 tongues on 70 mm B-17 tabs on B-01 swatches (PT-2), 1 hinge eye for the HE-FIT dry fit on a printed z 60 fairlead FIRST, then 5 hinge eyes exactly as op 4.05 and SK-8 in its order (B-18 rows first through B-18 + B-01 only; then HE folded in half, eye UP, box-X 34 x 10 through HE + B-01 + B-18 below the cheek line; B-18 and both HE raw ends caught in a B-01 | B-05 SSa2 floor seam sewn with the zipper / edge foot, no binding: PT-3), 5 B-24 links (PT-6), 5 TL-1 sleeves (38 mm B-25) on real crown bar stock. The bag's load points are sewn only after these pass.
 - Machine BT / PS (prototype WF2 + J1); needle Nm 140/22 DPx17, round point R; thread bonded_nylon_tex135; SPI 7; stitch 301 box-X path; seam BOX + LSd (as the bag)
 - load table: all load points; sketch SK-1; QC TEST gates; beginner 3.00 h, SAM 0.0 min (one-off)
 **0.04 Cut 77 fabric / sheet pieces**
 - How: Per cutting_plan.csv: lay face up (one way for camo and mesh), L+R pieces face to face, cut windows, slots and slits FIRST, knife clockwise from the grain arrow. Notches 6 mm, never past the seam line. Hypalon, TPU-840D and HDPE from the DXF on the laser / router.
 - Machine SK / LASER / HK; needle -; thread -; SPI -; stitch -; seam -
 - QC QC-02, QC-03, QC-04; beginner 9.24 h, SAM 66.5 min
-**0.05 Hot-knife 77 webbing / elastic / cord pieces**
+**0.05 Hot-knife 80 webbing / elastic / cord pieces**
 - How: Cut lengths in cutting_plan.csv (crown kit M shown; B-28 and W3 per crown kit). Use the J8 stop; seal both ends; no hard bead wider than the webbing.
 - Machine SK / LASER / HK; needle -; thread -; SPI -; stitch -; seam -
-- QC QC-04; beginner 2.31 h, SAM 16.6 min
+- QC QC-04; beginner 2.40 h, SAM 17.3 min
 **0.06 Mark every placement**
 - How: Chalk / silver pen on the INSIDE unless the pattern says OUTSIDE; awl the drill marks (box corners, slit ends, window corners, zip stops). Pieces: B-01, B-03 (L only / R only marks), B-02h, B-02door, B-02u, B-06f, B-29a.
 - Machine bench; needle -; thread -; SPI -; stitch -; seam -
@@ -133,22 +133,22 @@ Beginner rules: all flat work before the bag becomes 3D; clips, never pins, in c
 - How: Place each B-17 (with its T3) OUTSIDE B-01 at x +/-115, z 385-455 (placement). Double-row perimeter 3 / 9 mm, 8 SPI, tex 90; the 90 mm top edge carries the load: no gaps, backtack 10 mm.
 - Machine WF2; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI 8; stitch 301; seam LSd (2 rows)
 - stitching 1239 mm (49 in); load table: B-17 perimeter; sketch SK-3; QC QC-07; beginner 0.99 h, SAM 7.1 min
-**4.05 B-18 doublers + HE hinge eyes (DECISION HE-ONE, sketch SK-8)**  _(volatile: pattern: HE / B-18)_
-- How: (1) Neck, on the FLAT HE strip: fold each long edge 10 mm in between the two 'neck lines' (the strip there is 18 mm wide), then one BT-M bartack across each leg at the 'neck tack' lines (through that leg only). (2) Fold the strip in half on the 'EYE FOLD' line: raw ends together, neck folds inside. (3) B-18 goes INSIDE B-01 on the drawn placement, coated face to B-01, its lower edge ON the B-01 cut edge (it runs 12 mm below the floor seam line). (4) The folded HE goes OUTSIDE B-01 on the same spot, centred on the 'hinge eye CL' notch, eye fold pointing UP, both raw ends ON the B-01 cut edge. Layer order from outside: HE leg / HE leg / B-01 / B-18. Clip all four. (5) Box-X 34 x 34 at the drawn 'HE hinge eye' box (drill corners: its lower edge 4 mm above the floor seam line), through all four layers. (6) B-18 perimeter rows 3 and 9 mm in, on the TOP and BOTH SIDES only (the bottom goes in the floor seam). (7) Baste the bottom of the stack (2 HE raw ends + B-18 + B-01) at 6 mm, inside the allowance, so op 4.15 catches all of it. The free loop above the box (25 mm) is the eye.
-- Machine BT / PS (prototype WF2 + J1); needle Nm 140/22 DPx17, round point R; thread bonded_nylon_tex135; SPI 7; stitch 301 box-X path; seam BOX + LSd
-- stitching 1384 mm (54 in); load table: HE + B-18 + B-01; sketch SK-8, SK-1, SK-3; QC QC-07; beginner 1.21 h, SAM 8.7 min
+**4.05 B-18 doublers + HE hinge eyes (DECISION HE-ONE / HE-PIN, sketch SK-8)**  _(volatile: pattern: HE / B-18)_
+- How: (1) NECK, on the FLAT HE strip (86 mm): fold each long edge 10 mm in between the two 'neck lines' (the strip there is 18 mm wide, the fairlead throat), then one BT-M bartack across each leg at the 'neck tack' lines (through that leg only). (2) B-18 ROWS FIRST: lay B-18 INSIDE B-01 on the drawn placement, coated face to B-01, its lower edge ON the B-01 cut edge (it runs 12 mm below the floor seam line); sew its perimeter rows 3 and 9 mm in, on the TOP and BOTH SIDES only (the bottom goes in the floor seam), through B-18 + B-01 ONLY. Nothing else is on the panel yet: these rows must never catch the HE. (3) PLACE THE HE: fold the strip in half on the 'EYE FOLD' line (raw ends together, neck folds inside) and lay it OUTSIDE B-01 over B-18, centred on the 'hinge eye CL' notch, eye fold pointing UP, both raw ends ON the B-01 cut edge. Layer order from outside: HE leg / HE leg / B-01 / B-18. Clip. (4) BOX: box-X 34 x 10 at the drawn 'HE hinge eye' box (drill corners: its lower edge 4 mm, its top 14 mm above the floor seam line), through all four layers. Its top edge must stay BELOW the fairlead cheeks: nothing but the 18 mm neck may sit above +16 mm. (5) BASTE the bottom of the stack (2 HE raw ends + B-18 + B-01) at 6 mm, inside the allowance, so op 4.15 catches all of it. The free loop above the box (17 mm, fold 31 mm above the seam line) is the eye: it points UP and takes the z 60 pin with the neck in the 18 mm throat (DECISION HE-PIN; loaded pin centre 24.6 mm above the seam line, target 25 +/- 3). No stitching crosses the eye after step 3.
+- Machine BT / PS (prototype WF2 + J1); needle Nm 140/22 DPx17, round point R; thread bonded_nylon_tex135; SPI 7; stitch 301 box-X path; seam LSd + BOX
+- stitching 1238 mm (49 in); load table: HE + B-18 + B-01; sketch SK-8, SK-1, SK-3; QC QC-07; beginner 1.21 h, SAM 8.7 min
 **4.06 IMP-2 keeper tabs I2K on B-01**
 - How: Fold each I2K, bartack at the 2 'IMP-2 keeper tab' drill marks (inside).
 - Machine BT; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI -; stitch 304; seam BT
 - beginner 0.20 h, SAM 1.4 min
 **4.07 B-11 lash tabs (8) on the gussets**
-- How: Gusset flat work, before the gusset seams: 4 tabs on each B-03 at the drawn 'B-11 lash tab' placements (bow riser / lash z 470 (175 mm aft of the frame seam, 40 mm forward of the aft corner); bow riser / lash z 560 (186 mm aft of the frame seam, 40 mm forward of the aft corner); muzzle keeper z 650 (60 mm aft of the frame seam); muzzle keeper z 650 (130 mm aft of the frame seam)). Tab coated face out, slot end UP; awl the 4 'B-11 box corner' drill marks; sew the 24 x 19 mm 'B-11 sew-down box' (rectangle + both diagonals, 301) through tab + gusset. Right gusset: bow riser; left: LIGHT LASH ONLY, no load rating (BL-040 m-12); muzzle keepers both sides (pattern ASSUMPTION B11-PLACE, settled by the archery and rifle loadout fits).
+- How: Gusset flat work, before the gusset seams: 4 tabs on each B-03 at the drawn 'B-11 lash tab' placements (bow riser / lash z 470 (175 mm aft of the frame seam, 40 mm forward of the aft corner); bow riser / lash z 560 (186 mm aft of the frame seam, 40 mm forward of the aft corner); muzzle keeper z 650 (111 mm aft of the frame seam); muzzle keeper z 650 (171 mm aft of the frame seam)). Tab coated face out, slot end UP; awl the 4 'B-11 box corner' drill marks; sew the 24 x 19 mm 'B-11 sew-down box' (rectangle + both diagonals, 301) through tab + gusset. Right gusset: bow riser; left: LIGHT LASH ONLY, no load rating (BL-040 m-12); muzzle keepers both sides, AFT of the roll-clip path (BL-041 RT-FWD: 10 mm clear of the buckle; pattern ASSUMPTION B11-PLACE / MK-GAP, settled by the archery and rifle loadout fits and FIT-R3).
 - Machine WF2; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI 8; stitch 301; seam LSd (box-X sew-down)
 - stitching 1178 mm (46 in); sketch SK-5; QC QC-07; beginner 0.80 h, SAM 5.8 min
 **4.08 RTM roll-clip buckle tabs on the gussets**
-- How: Gusset flat work, before the gusset seams. Thread each RTM through the bar of a side-release buckle's FEMALE half (the half with the socket) and fold it on its fold line. Lay it on the OUTSIDE of each B-03 on the drawn 'RTM roll-clip buckle tab' placement (z 595, 150 mm under the collar seam, 108 mm aft of the frame seam line = mid depth): buckle bar on the top line, socket pointing UP (the male half on the RT strap comes down into it). Box-X 21 x 25 at the drawn 'RTM buckle tab' box through RTM (2 plies) + B-03.
-- Machine BT / PS (prototype WF2 + J1); needle Nm 140/22 DPx17, round point R; thread bonded_nylon_tex135; SPI 7; stitch 301 box-X path; seam BOX
-- stitching 315 mm (12 in); load table: RTM; sketch SK-10; QC QC-07; beginner 0.30 h, SAM 2.2 min
+- How: Gusset flat work, before the gusset seams. Thread each RTM through the bar of a side-release buckle's FEMALE half (the half with the socket) and fold it on its fold line. Lay it on the OUTSIDE of each B-03 on the drawn 'RTM roll-clip buckle tab' placement (z 612, 134 mm under the collar seam, 80 mm aft of the frame seam line, on the drawn 'RT strap path'; DECISION RT-FWD): buckle bar on the top line, socket pointing UP (the male half on the RT strap comes down into it). Box-X 21 x 25 at the drawn 'RTM buckle tab' box through RTM (2 plies) + B-03. Then the W3G GUIDE on the same path (DECISION RT-OVER-W3): lay each W3G flat on its drawn placement, strip ends on the outer lines, and sew one BT-S tack (16 x 2, 304) on each 'W3G guide tack' line through W3G + B-03; the strip is longer than the tack spacing: push the 10 mm ease to the middle so a 25 mm strap slides under it.
+- Machine BT / PS (prototype WF2 + J1); needle Nm 140/22 DPx17, round point R; thread bonded_nylon_tex135; SPI 7; stitch 301 box-X path; seam BOX + BT
+- stitching 315 mm (12 in); load table: RTM; W3G; sketch SK-10; QC QC-07; beginner 0.70 h, SAM 5.0 min
 **4.09 Gusset flat work: kick bands**
 - How: SH-01b on each gusset foot at the 'kick band top' line, top edge turned 8 mm, topstitched; bottom and sides go in the seams.
 - Machine WF1; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI 8; stitch 301; seam LSd
@@ -174,7 +174,7 @@ Beginner rules: all flat work before the bag becomes 3D; clips, never pins, in c
 - Machine WF1; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI 8; stitch 301; seam LSd
 - stitching 760 mm (30 in); beginner 1.01 h, SAM 7.2 min
 **4.15 Floor B-05 (F-02 first)**
-- How: Sew F-02 to the OUTSIDE of B-05 on the drawn 'F-02 fly pocket' placement (zip edge aft, corner drill marks), perimeter row. Then the floor ring (1107 mm): B-01 edge first with the HE tails and the B-18 lower edges caught in it, then gussets, then the blade kick strip; quarter notches matched, needle down at the 4 corners. SSa2. At the two hinge eyes turn the allowances DOWN onto B-05 (the second row runs on the floor, clear of the HE box, ASSUMPTION HE-GAP); check from inside that the B-18 lower edge and both HE raw ends are in the seam. US channels: on F-02 (op above).
+- How: Sew F-02 to the OUTSIDE of B-05 on the drawn 'F-02 fly pocket' placement (zip edge aft, corner drill marks), perimeter row. Then the floor ring (1107 mm): B-01 edge first with the HE tails and the B-18 lower edges caught in it, then gussets, then the blade kick strip; quarter notches matched, needle down at the 4 corners. SSa2. At the two hinge eyes turn the allowances DOWN onto B-05 (the second row runs on the floor, clear of the HE box, ASSUMPTION HE-GAP). BL-041 n-14: sew the two hinge-eye spans (x +/-115, 50 mm each way) with the ZIPPER / EDGE FOOT: the floor seam runs 4 mm from the HE box stack and a walking foot (5-6 mm half width) rides up on it there; check from inside that the B-18 lower edge and both HE raw ends are in the seam. US channels: on F-02 (op above).
 - Machine WF1; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI 8; stitch 301; seam SSa2
 - stitching 2874 mm (113 in); QC QC-08; beginner 1.89 h, SAM 13.6 min
 
@@ -185,7 +185,7 @@ Beginner rules: all flat work before the bag becomes 3D; clips, never pins, in c
 - Machine WF1; needle Nm 90/14 DPx17, round point R; thread bonded_nylon_tex70; SPI 10; stitch 301; seam SSa2
 - stitching 1979 mm (78 in); beginner 0.69 h, SAM 5.0 min
 **5.02 RT roll-clip straps on the flat hem B-07**
-- How: B-07 still flat. Each RT strap (510 mm): lay its first 60 mm (to the 'end of the sewn zone' line) on the OUTSIDE of B-07 on the drawn 'RT roll-clip strap' rectangle (L at x 967-1027 mm, R at x 382-442 mm from the B-07 left end), strap end on the outer line, the free strap running along the hem across the 'gusset centre (RT strap)' notch. Box-X 21 x 25 at the drawn 'RT strap' box through strap + B-07. Fold the free strap back over the box for now and clip it out of the way. The ADJUSTABLE (male) buckle half is threaded on the free end at hardware fitting (op 7.end).
+- How: B-07 still flat. Each RT strap (510 mm): lay its first 60 mm (to the 'end of the sewn zone' line) on the OUTSIDE of B-07 on the drawn 'RT roll-clip strap' rectangle (L at x 945-1005 mm, R at x 404-464 mm from the B-07 left end), strap end on the outer line, the free strap running along the hem across the 'clip path (RT strap)' notch (BL-041 RT-FWD). Box-X 21 x 25 at the drawn 'RT strap' box through strap + B-07. Fold the free strap back over the box for now and clip it out of the way. The ADJUSTABLE (male) buckle half is threaded on the free end at hardware fitting (op 7.23).
 - Machine BT / PS (prototype WF2 + J1); needle Nm 140/22 DPx17, round point R; thread bonded_nylon_tex135; SPI 7; stitch 301 box-X path; seam BOX
 - stitching 315 mm (12 in); load table: RT; sketch SK-10; QC QC-07; beginner 0.30 h, SAM 2.2 min
 **5.03 Roll-top hem with HDPE strips**
@@ -251,7 +251,7 @@ Beginner rules: all flat work before the bag becomes 3D; clips, never pins, in c
 ## Step 7 Straps and webbing
 
 **7.01 B-28: B-28 crown strap, kit M x2**
-- How: straight strap, sealed ends; threaded at assembly (op 7.end).
+- How: straight strap, sealed ends; threaded at assembly (op 7.23).
 - Machine bench; needle -; thread -; SPI -; stitch -; seam -
 - sketch SK-1, SK-7; beginner 0.00 h, SAM 0.0 min
 **7.02 B-28t: lock tab (the other 2 are boxed in an earlier op) x2**
@@ -298,34 +298,34 @@ Beginner rules: all flat work before the bag becomes 3D; clips, never pins, in c
 - How: 1083 mm (42.6 in). Folds: left end loop (girth-hitched on the eye). Box-X: 21 x 25 at the drawn marks.
 - Machine BT / PS (prototype WF2 + J1); needle Nm 140/22 DPx17, round point R; thread bonded_nylon_tex135; SPI 7; stitch 301 box-X path; seam BOX
 - stitching 157 mm (6 in); load table: IM3; sketch SK-1, SK-7; QC QC-07; beginner 0.10 h, SAM 0.7 min
-**7.13 K-IM: IM tail keeper (25 mm elastic) x3**
+**7.13 IMC: IM cam anchor tab (cam bar <-> hook / carabiner) x3**
+- How: 180 mm (7.1 in). Folds: fold round the CAM anchor bar; fold round the G-hook bar / carabiner. Box-X: 21 x 25, 21 x 25 at the drawn marks.
+- Machine BT / PS (prototype WF2 + J1); needle Nm 140/22 DPx17, round point R; thread bonded_nylon_tex135; SPI 7; stitch 301 box-X path; seam BOX
+- stitching 944 mm (37 in); load table: IMC; sketch SK-1, SK-7; QC QC-07; beginner 0.60 h, SAM 4.3 min
+**7.14 K-IM: IM tail keeper (25 mm elastic) x3**
 - How: Cut 90 mm, lap 15 mm into a loop round its strap, zigzag the lap (3 passes).
 - Machine ZZ; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI 8; stitch 304; seam BT (zigzag lap)
 - beginner 0.30 h, SAM 2.2 min
-**7.14 US: under-strap US1 / US2 x2**  _(volatile: pattern: ledger)_
+**7.15 US: under-strap US1 / US2 x2**  _(volatile: pattern: ledger)_
 - How: 550 mm (21.7 in). Folds: eye fold (round the left pin sleeve). Box-X: 21 x 25 at the drawn marks.
 - Machine BT / PS (prototype WF2 + J1); needle Nm 140/22 DPx17, round point R; thread bonded_nylon_tex135; SPI 7; stitch 301 box-X path; seam BOX
 - stitching 315 mm (12 in); load table: US; sketch SK-1, SK-7; QC QC-07; beginner 0.20 h, SAM 1.4 min
-**7.15 B-24: float stand-off link (38 mm, meat-trip) x2**
+**7.16 B-24: float stand-off link (38 mm, meat-trip) x2**
 - How: 435 mm (17.1 in). Folds: fold round the hook bed (finished 0); loop 1 start; loop 1 apex: gap 120 mm (4.7 in) - T3 hook sits here; loop 1 end (meets start); loop 2 start; loop 2 apex: gap 170 mm (6.7 in) - T3 hook sits here; loop 2 end (meets start); loop 3 start; loop 3 apex: gap 220 mm (8.7 in) - T3 hook sits here; loop 3 end (meets start). Box-X: 34 x 30, 34 x 20, 34 x 20, 34 x 20 at the drawn marks.
 - Machine BT / PS (prototype WF2 + J1); needle Nm 140/22 DPx17, round point R; thread bonded_nylon_tex135; SPI 7; stitch 301 box-X path; seam BOX
 - stitching 1559 mm (61 in); load table: B-24; sketch SK-1, SK-7; QC QC-07; beginner 0.80 h, SAM 5.8 min
-**7.16 B-25: guy bridle on the crown top bar x1**
-- How: 412 mm (16.2 in). Folds: tab fold R (toggle loop); bar sleeve R start; bar sleeve R lap (bartack); bar sleeve L lap (bartack); bar sleeve L start; tab fold L (toggle loop). Box-X: 21 x 15, 21 x 15 at the drawn marks. Toggle tabs: fold each end on its 'tab fold' line and sew the drawn tip-end box (DECISION B25-BOX: the clear loop passes the POM toggle). FRAME COORDINATION: the bar sleeves close round the crown top bar BEFORE the crown corners are bonded (H1 build); the two sleeve-lap bartacks (BT-M) are sewn at frame assembly, not here.
+**7.17 B-25: guy bridle on the crown top bar (38 mm, BL-041) x1**
+- How: 386 mm (15.2 in). Folds: tab fold R (toggle loop); bar sleeve R start; bar sleeve R lap (bartack); bar sleeve L lap (bartack); bar sleeve L start; tab fold L (toggle loop). Box-X: 34 x 15, 34 x 15 at the drawn marks. Toggle tabs: fold each end on its 'tab fold' line and sew the drawn tip-end box (DECISION B25-BOX: the clear loop passes the POM toggle). FRAME COORDINATION: the bar sleeves close round the crown top bar BEFORE the crown corners are bonded (H1 build); the two sleeve-lap bartacks (BT-M) are sewn at frame assembly, not here.
 - Machine BT / PS (prototype WF2 + J1); needle Nm 140/22 DPx17, round point R; thread bonded_nylon_tex135; SPI 7; stitch 301 box-X path; seam BOX
-- stitching 247 mm (10 in); load table: B-25; sketch SK-1, SK-7; QC QC-07; beginner 0.20 h, SAM 1.4 min
-**7.17 TG: port guy (B-25 toggle -> B-27 port -> B-22 inside) x2**
+- stitching 345 mm (14 in); load table: B-25; sketch SK-1, SK-7; QC QC-07; beginner 0.20 h, SAM 1.4 min
+**7.18 TG: port guy (B-25 toggle -> B-27 port -> B-22 inside) x2**
 - How: 500 mm (19.7 in). Folds: -. Box-X: 21 x 25 at the drawn marks.
 - Machine BT / PS (prototype WF2 + J1); needle Nm 140/22 DPx17, round point R; thread bonded_nylon_tex135; SPI 7; stitch 301 box-X path; seam BOX
 - stitching 315 mm (12 in); load table: TG; sketch SK-1, SK-7; QC QC-07; beginner 0.20 h, SAM 1.4 min
-**7.18 K-G: guy tail keeper (25 mm elastic) x2**
+**7.19 K-G: guy tail keeper (25 mm elastic) x2**
 - How: Cut 90 mm, lap 15 mm into a loop round its strap, zigzag the lap (3 passes).
 - Machine ZZ; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI 8; stitch 304; seam BT (zigzag lap)
 - beginner 0.20 h, SAM 1.4 min
-**7.19 GBL: guy bar loop (POM toggle) x2**
-- How: 170 mm (6.7 in). Folds: fold round the bar. Box-X: 21 x 25 at the drawn marks.
-- Machine BT / PS (prototype WF2 + J1); needle Nm 140/22 DPx17, round point R; thread bonded_nylon_tex135; SPI 7; stitch 301 box-X path; seam BOX
-- stitching 315 mm (12 in); load table: GBL; sketch SK-1, SK-7; QC QC-07; beginner 0.20 h, SAM 1.4 min
 **7.20 BRL: bow riser loop (through B-11) x2**
 - How: 100 mm (3.9 in). Folds: fold. Box-X / bartack per the load table where it is caught in a seam.
 - Machine BT; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI -; stitch 304; seam BT
@@ -335,13 +335,13 @@ Beginner rules: all flat work before the bag becomes 3D; clips, never pins, in c
 - Machine BT; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI -; stitch 304; seam BT
 - sketch SK-1, SK-7; beginner 0.10 h, SAM 0.7 min
 **7.22 MK-cord: rifle muzzle keeper, 3 mm shock cord loop through the 2 B-11 muzzle tabs + spring cord lock (one per gusset) x2**
-- How: Cut 309 mm (12.2 in), melt / whip both ends; fitted at hardware assembly (op below) as its use says.
+- How: Cut 299 mm (11.8 in), melt / whip both ends; fitted at hardware assembly (op below) as its use says.
 - Machine bench; needle -; thread -; SPI -; stitch -; seam -
 - beginner 0.06 h, SAM 0.4 min
 **7.23 Fit the hardware**
-- How: IM1/IM2: G-hook right end, cam threaded; IM3: wiregate carabiner on the free end; US1/US2: cam, then the STAINLESS 25 mm tri-glide threaded behind the cam as the cradle slip backstop (orchestrator 2026-11-13; gate US-BS); T3 loops: wiregate carabiner + TPU sleeve; W1-W3: rated G-hook end, heavy ladder lock on the gusset side; guys: toggle in the B-25 tab, through the B-27 port, heavy ladder lock on LLT, nylon tri-glide tail keeper; B-28: toggle rear, ladder lock both ends, 2 elastic keepers; RT: thread the free end through the ADJUSTABLE (male) half of each side-release buckle (its female half is already on the RTM gusset tab), K-RT keeper below it; E5: cord lock; cords MK-cord per their use.
+- How: IM1-IM3 (SK-11, DECISION IM-CAM-TAB): the cam is SEWN to the IMC tab (cam end box), the IMC's other loop carries the G-hook (IM1 / IM2) or the wiregate carabiner (IM3); the IM strap's free end goes through the cam from the wearer side, its sewn loop girth-hitched on the left eye; US1/US2: cam, then the STAINLESS 25 mm tri-glide threaded behind the cam as the cradle slip backstop (orchestrator 2026-11-13; gate US-BS); T3 loops: wiregate carabiner + TPU sleeve; W1-W3: rated G-hook end, heavy ladder lock on the gusset side; W3: thread its free end UNDER the W3G guide on each gusset (once; it stays threaded) so the RT strap always lies OVER W3 (DECISION RT-OVER-W3); guys: toggle in the B-25 tab, through the B-27 port, heavy ladder lock on LLT, nylon tri-glide tail keeper; B-28: toggle rear, ladder lock both ends, 2 elastic keepers; RT: thread the free end through the ADJUSTABLE (male) half of each side-release buckle (its female half is already on the RTM gusset tab), K-RT keeper below it; E5: cord lock; cords MK-cord per their use.
 - Machine bench; needle -; thread -; SPI -; stitch -; seam -
-- QC QC-11; beginner 1.00 h, SAM 7.2 min
+- sketch SK-11; QC QC-11; beginner 1.00 h, SAM 7.2 min
 
 ## Step 8 Add-ons (scope pod as hunted, meat liner meat trip)
 

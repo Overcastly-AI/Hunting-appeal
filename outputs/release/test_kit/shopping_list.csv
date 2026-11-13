@@ -61,9 +61,10 @@ S,HDPE sheet 0.5 mm (BL-037 stiffener wing),0.05,kg,6.0,0.3,McMaster-Carr,record
 S,ROHACELL 71 IG-F core for the 2 mm strip,0.02,m2,120.0,2.4,Rock West Composites,record rohacell_71_igf,BP-1,"LONG LEAD: 2 mm is not a stock sheet (3 mm thinnest, back_system_integration.md); sand a 3 mm offcut or special order",
 S,200 g 2x2 carbon twill + epoxy for the 2 mm BP-1 coupon skins,0.028,m2,45.0,1.26,left over from the spreader / strip layup (else any composites shop),record cfrp_t300_3k_woven_epoxy_ply (BL-039),BP-1,,
 S,"HyperD 300 printable, custom camo print",1,yd,30.25,30.25,"Ripstop by the Roll (custom print, 1 yd min)",record polyester_300d_printable,"AB-1, FRAY-1","LONG LEAD: custom print, lead time not published",
+S,shipping for the HyperD print order,1,order,12.0,12.0,Ripstop by the Roll,ASSUMPTION SHIP (camo/cost_1_and_10_bags.csv),"AB-1, FRAY-1",,BL-041 (re-review n-10 / Y-5): the print yard is a test-kit specimen only; the first bag is solid 630D
 S,"Martindale abrasion test, accredited lab (2 samples + order fee)",1,order,249.61,249.61,Measurlabs (EUR 66 / sample + EUR 97 fee),https://measurlabs.com/products/textile-abrasion-resistance-martindale,AB-1,LONG LEAD: about 4 weeks after the samples arrive,the listed price is the ISO 12947-2 Martindale method; ask for ASTM D4966 to 8000 rev
 S,"specimens for PT-2: 5 swatches built like the pack, B-17 cut 70 mm tall",1,lot,15.0,15.0,see register,test_register.csv PT-2: ASSUMPTION Hypalon + laminate offcuts,PT-2,,
-S,specimens for PT-3: 5 swatches sewn exactly as op 4.05 / SK-8: B-01 (primary ULTRA 200) 150 x 120 mm,1,lot,15.0,15.0,see register,test_register.csv PT-3: ASSUMPTION offcuts,PT-3,,
+S,"specimens for PT-3: 5 swatches sewn exactly as op 4.05 / SK-8, in the op 4.05 order (BL-041): B-01 (",1,lot,15.0,15.0,see register,test_register.csv PT-3: ASSUMPTION offcuts,PT-3,,
 S,"specimens for WP-1: 4 seam pairings 330D|330D, 330D|ULTRA 200, 500D|330D, 100D|ULTRA; 301 + 2nd row ",1,lot,5.0,5.0,see register,test_register.csv WP-1: offcuts,WP-1,,
 S,"specimens for CA-1: 12 XY + 4 Z + 3 spare bars, printed and annealed like the frame, 7 days at 23 C ",1,lot,15.0,15.0,see register,test_register.csv CA-1: CA1_fatigue_rig.md §5 (filament $80/kg),CA-1,,
 S,specimens for IM3-EC: 3 eye coupons: 120 mm stay segment round z 520 with the IM3 eye and the 28 mm ch,1,lot,10.0,10.0,see register,test_register.csv IM3-EC: ASSUMPTION: filament + 3 tongues,IM3-EC,,
@@ -76,7 +77,7 @@ S,specimens for CA-4: 2 XY bars,1,lot,10.0,10.0,see register,test_register.csv C
 S,specimens for CA-2: 3 XY + 3 Z bars per anneal,1,lot,10.0,10.0,see register,test_register.csv CA-2: ASSUMPTION,CA-2,,
 S,specimens for HB-4: 1 ear stitched into a wing-root coupon (3 recommended),1,lot,15.0,15.0,see register,test_register.csv HB-4: ASSUMPTION plate offcut + foam,HB-4,,
 S,"specimens for HB-T: 5 tabs sewn like the belt: 50 mm webbing round a buckle bar, 25 mm anchor and lo",1,lot,5.0,5.0,see register,test_register.csv HB-T: ASSUMPTION webbing,HB-T,,
-S,"specimens for TL-1: 5 loops: 25 mm webbing x 170 mm + POM toggle, on an 18 mm CF tube offcut (no wra",1,lot,8.0,8.0,see register,test_register.csv TL-1: ASSUMPTION toggles + tube offcut,TL-1,,
+S,"specimens for TL-1: 5 x the real rev C crown top bar stock ([+-45/0x5/+-45], wall 1.065, same vendor",1,lot,40.0,40.0,see register,test_register.csv TL-1: ASSUMPTION crown bar stock 1 m from the frame vendor + dial gauge on a C-frame + toggles,TL-1,,
 S,specimens for HB-5: 1 plate on the Ti pin over a foam block,1,lot,45.0,45.0,see register,test_register.csv HB-5: ASSUMPTION plate $25 + fixture $20,HB-5,,
 S,specimens for PS-1: pad seat on a printed pan offcut,1,lot,5.0,5.0,see register,test_register.csv PS-1: ASSUMPTION,PS-1,,
 S,"specimens for BP-2: 100 mm printed H1 stay segment (z about 260) on a strip offcut, 10 mm foam under",1,lot,5.0,5.0,see register,test_register.csv BP-2: ASSUMPTION carbon paper; Prescale roll about EUR 1275 not bought (§4.4),BP-2,,
@@ -90,3 +91,5 @@ S,"sacrificial P1 frame (IM3-EP, W-PULL, then T2u)",1,each,437.0,437.0,owner's p
 S,"specimens for BU-1: 2 UHMWPE crown bushings cut 50 mm from the 70 mm stock, on P2",1,lot,10.0,10.0,see register,test_register.csv BU-1: ASSUMPTION spare UHMWPE tube length $10 (uhmwpe_sheet record has no tube price),BU-1,,
 S,"specimens for SEW-F: 3 x 25 mm poly webbing loops, box-X 21 x 25 mm (the IM / US box as drawn), 301, ",1,lot,1.0,1.0,see register,test_register.csv SEW-F: 25 mm webbing offcuts + thread (kit A stock),SEW-F,,
 S,specimens for FIT-R3: first sewn bag + lid on P2; 5.0 L of dry rice in a bag; the owner's bow (in IMP-,1,lot,2.0,2.0,see register,test_register.csv FIT-R3: 5 L of rice,FIT-R3,,
+S,"specimens for HE-FIT: 1 scrap HE sewn as op 4.05 (B-18 + B-01 offcut 150 x 120 + B-05 strip, floor sea",1,lot,1.0,1.0,see register,test_register.csv HE-FIT: scrap + 10 g filament,HE-FIT,,
+S,specimens for TL-1b: 1-2 lengths of the real rev C crown bar stock (>= 160 mm) with a 25 mm B-25-styl,1,lot,20.0,20.0,see register,test_register.csv TL-1b: ASSUMPTION crown bar offcut + dial gauge on a C-frame (shared with TL-1),TL-1b,,

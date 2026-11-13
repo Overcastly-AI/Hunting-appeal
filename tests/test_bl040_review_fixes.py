@@ -32,14 +32,13 @@ def _boxes(rs, pid, key=None):
 def test_hinge_eye_one_box_everywhere(pk):
     rs = pk["ctx"].rs
     he = _boxes(rs, "HE")
-    assert he == {(34.0, 34.0)}
+    assert he == {tuple(sorted(P.HE_BOX))}                                     # BL-041 HE-PIN: 34 x 10 (was 34 x 34)
     assert _boxes(rs, "B-18", "HE") == he
     assert _boxes(rs, "B-01", "HE hinge eye") == he
     row = next(r for r in pk["load_points"] if r["point"] == "hinge eye")
-    assert row["pattern"].startswith("box-X 34 x 34")
+    assert row["pattern"].startswith(f"box-X {P.HE_BOX[0]:.0f} x {P.HE_BOX[1]:.0f}")
     assert row["load_n"] == 1019.0 and "PT-3 1530" in row["proof"]          # m-2: 1.5 x 1019
-    assert "34 x 34" in _op(pk, "HE hinge eyes").notes
-    assert "op 4.05" in pk["tests"][0]["title"] or True                        # tests list read from the register
+    assert f"{P.HE_BOX[0]:.0f} x {P.HE_BOX[1]:.0f}" in _op(pk, "HE hinge eyes").notes   # BL-041 n-12: tautology removed
 
 
 def test_b18_reaches_into_the_floor_seam_and_has_no_bottom_rows(pk):
@@ -52,8 +51,8 @@ def test_b18_reaches_into_the_floor_seam_and_has_no_bottom_rows(pk):
     assert all(min(p[1] for p in ln.points) == pytest.approx(0.0) for ln in rows)  # open at the bottom edge
     pl = next(ln for ln in rs.pieces["B-01"].internal_lines if (ln.label or "").startswith("B-18 hinge-eye"))
     assert min(p[1] for p in pl.points) == pytest.approx(-P.B18_BELOW, abs=0.5)   # B-01 cut edge
-    # the free eye is the 25 mm the design calls for, the box clears the seam line
-    assert rs.geo["he"]["eye_mm"] == pytest.approx(25.0)
+    # the free eye is the one he_geometry solves for the pin (BL-041 HE-PIN; was 25 mm), the box clears the seam line
+    assert rs.geo["he"]["eye_mm"] == pytest.approx(P.HE_EYE)
     assert rs.geo["he"]["box_z_above_seam"][0] > 0
 
 
@@ -79,7 +78,7 @@ def test_pt3_specimen_is_the_op_405_drawing():
     import physical_test_kit as K
     kit = K.build(write=False)
     pt3 = kit["register"]["PT-3"]
-    for word in ("op 4.05", "34 x 34", "folded in half", "90 x 62", "cut edge"):
+    for word in ("op 4.05", f"{P.HE_BOX[0]:.0f} x {P.HE_BOX[1]:.0f}", "folded in half", "90 x 62", "cut edge"):
         assert word in pt3["specimen"], word
 
 
@@ -89,8 +88,9 @@ def test_roll_top_has_a_mating_buckle_tab(pk):
     assert "RTM" in rs.pieces and any(w["id"] == "RTM" for w in rs.webbing)
     g = rs.pieces["B-03"]
     assert any("RTM roll-clip buckle tab" in (ln.label or "") for ln in g.internal_lines)
-    assert rs.geo["rtm"]["z"] == pytest.approx(rs.geo["z_c"] - 150.0)
-    assert 0.4 < rs.geo["rtm"]["depth_from_frame_mm"] / rs.geo["rtm"]["gusset_depth_mm"] < 0.6
+    # BL-041 RT-FWD: the bar sits RT_CLEAR above the B-26 cord, on the clip path (was 150 mm under, mid depth)
+    assert rs.geo["rtm"]["z"] == pytest.approx(rs.geo["z_c"] - rs.geo["rtm"]["below_seam_mm"])
+    assert 120.0 < rs.geo["rtm"]["below_seam_mm"] <= 150.0
     b07 = rs.pieces["B-07"]
     assert sum("RT roll-clip strap" in (ln.label or "") for ln in b07.internal_lines) == 2
     seqs = [o.seq for o in pk["ops"]]
@@ -179,7 +179,7 @@ def test_m9_sew_f_in_the_kit():
     import physical_test_kit as K
     kit = K.build(write=False)
     assert kit["register"]["SEW-F"]["status"] == "ACTIVE"
-    assert K.SEWF_PEAK == 384
+    assert K.SEWF_PEAK == 442                                       # BL-041 n-13: 1.15 x 384
     assert any(o["test"] == "SEW-F" and o["group"] == "G4" for o in kit["order"])
     assert any(o["test"] == "FIT-R3" and o["group"] == "G7" for o in kit["order"])     # m-18
 

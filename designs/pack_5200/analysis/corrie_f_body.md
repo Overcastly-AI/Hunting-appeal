@@ -622,8 +622,12 @@ Rev 2 fine runs (`F_PR{t}_fineFM_port`, fill then meat, all converged):
 - **R-28 34° at all three torsos**, the frame-only limit. The bag wall moves 9–19 mm toward the head above the bar at
   19 and 23 in, but the bare bar and back pad still make first contact.
 - **Top bar:** largest guy load 96.1 N at 1 g (23 in full), **288 N factored** (× 3.0) against the 312 N that BL-021
-  checked the bar with (strength 1.36): covered. The guy now pulls the bar aft (into the bag) instead of outboard along
-  it, so the bridle's outboard load drops.
+  checked the bar with (strength 1.36). That 1.36 is the bar's **bending** check, not the wall (ring crush) under the
+  loop. The guy now pulls the bar aft (into the bag) instead of outboard along it, so the bridle's outboard load drops.
+  **BL-041 (2026-11-13):** the ring check under the B-25 sleeve is `crown_tube_guy_loop.md` (structural): the guy and
+  the B-28 crown strap share one B-25 tab, **323 N** envelope; the 25 mm sleeve fails it (basis A SF 0.90 / 0.85
+  fatigue), so rev 3 builds **B-25 in 38 mm webbing, sleeves x 26.5–64.5, tab at the sleeve centre x 45.5** (SF 1.36 /
+  1.27, +3.4 g); TL-1 proves it at 494 N on real bar stock (section 21).
 - **Volume:** closed 81.9–84.0 L on the fine mesh, as rev 1 (82.4–84.0).
 
 ### 13.6 Options considered
@@ -1409,3 +1413,49 @@ Source: `review_20261113_rev3_release.md` (3 blockers, 13 majors, 21 minors). Co
   `krummholz` in `designs/apparel/colorways.yaml` (Owner Base accents, Deadfall Shadow trim, Elk Wallow harness);
   `huntkit.viz3d.export.colorway` reads it (no hard-coded fallback in use) and the BOM names it on every coloured line.
 
+
+## 21. BL-041: re-check fixes (pack-designer, 2026-11-13)
+
+Source: `review_20261113_rev3_recheck.md` (2 blockers, 5 majors, 15 minors) and the structural result
+`crown_tube_guy_loop.md` (Y-4, adopted by the orchestrator). Code: `patterns_corrie_f_rev3.py` (`he_geometry`,
+`he_pin_z`, `rt_layout`, `rt_clearances`), `mfg_corrie_f_rev3.py` (`he_405_text`, `box_positions`, `RECHECK_STATUS`,
+SK-8 / SK-10 / SK-11), `physical_test_kit.py` (HE-FIT, PT-3, TL-1, TL-1b), `concepts/corrie_f.py` (`bl041_rows`,
+`guy_bridle(wide=True)`). Tests: `tests/test_bl041_recheck_fixes.py`. Every number below is printed by that code.
+
+- **DECISION HE-PIN (X-2).** BL-040 put the eye 13-38 mm above the z 60 pin and relied on it folding down
+  (ASSUMPTION HE-REACH, withdrawn). The eye now points UP with the box BELOW the fairlead cheeks:
+  - pin at frame z 60 = **+25 mm** above the floor seam line (BC.Z0 35); cheeks z 51-69 = +16..+34
+    (`bag_attach.HALF_Z` 9);
+  - box top = cheek bottom - 2 mm (ASSUMPTION HE-CHEEK) = +14; box bottom +4 (HE-GAP) → **box-X 34 x 10 mm**
+    (0.39 in tall), in line with the pull: no peel;
+  - eye length from the section (`he_geometry`): both legs from the box top (ply midline) round the 5 mm pin
+    (centreline r 3.25 mm), pin 15.85 mm from the stay centre, B-01 face 20.0-23.45 mm (nominal / pushed by the
+    cheeks), webbing 1.5 mm (ASSUMPTION HE-T, bracket 1.2-2.0): **eye 17 mm**, HE cut **86 mm** (was 150);
+  - loaded pin centre **+24.6 mm** design, **+23.4..+25.3 mm** over the bracket: inside 25 +/- 3 (test);
+  - only the 18 mm neck is in the 18 mm throat; B-18 stays 90 x 62 (it now backs the cheeks, +16..+34);
+  - settled by **HE-FIT**, a 1:1 dry fit on a printed z 60 fairlead, a BAG-CUT gate run before PT-3 (not QC-20).
+  - Alternative not taken: eye pointing down with the box above (the pin would bear on the box edge, a peel).
+- **X-1.** Op 4.05 order: NECK, **B-18 ROWS (through B-18 + B-01 only)**, PLACE HE, BOX, BASTE. Geometrically the rows
+  (+41 / +47) are also above the eye (fold +31), and the side rows (x 3 / 9 mm in) are 17 mm outside the HE.
+- **Y-1 PT-3 rig.** Pin in an 18 mm slot fixture, B-05 strip alone in the clamp, B-01 top free, pull down B-01;
+  specimen text built from the pattern constants in the op 4.05 order.
+- **DECISION RT-FWD / RT-OVER-W3 (Y-2).** The clip path hangs straight down the gusset at flat x 91 (hose slot
+  + 10 mm + half a strap); the RTM bar sits 10 mm above the B-26 cord (z 611.5, 133.5 mm under the collar seam,
+  ASSUMPTION RT-CLIP-Z: 16.5 mm higher than the roll model's 150, the 510 mm RT cut unchanged, its tail 16.5 mm
+  longer); the muzzle tabs move aft to 111 / 171 mm (60 apart, ASSUMPTION MK-GAP). Clearance from the buckle
+  envelope (35 x 35, ASSUMPTION BUCKLE-ENV) and the strap corridor to the muzzle tabs, their cord, the hose slot,
+  the bow tabs and the B-26 cord: **min 10.0 mm**. The B-26 cord lies over the flat sewn RTM tab (accepted). W3
+  crosses every vertical path at z 702.6, so it runs through a **W3G guide** (2 x 60 mm, two BT-S tacks) under the
+  RT strap. The rifle (keeper centre) sits about 46 mm further aft than in BL-040 (owner decision below).
+- **Y-3.** Machine minimum adds a 304 zigzag; BT-301 fallback (4 passes at 2 mm, unrated; every 304 tack in the
+  release is unrated).
+- **Y-4 (structural, adopted).** B-25 in 38 mm, sleeves x 26.5-64.5 (11.5 mm from the spine clamp), cut 386.5 mm,
+  tab at the sleeve centre (DECISION B25-TAB-CENTRE); load row 323 N, bar wall SF 1.36 / 1.27; TL-1 494 N on real bar
+  stock with both toggles, TL-1b bare-bar data test; GBL deleted (it carried nothing in rev 3).
+- **Y-5 (orchestrator).** First build: solid 630D on the camo pieces (DECISION CAMO-FIRST); the HyperD print yard and
+  its shipping are a test-kit specimen (AB-1 / FRAY-1).
+- **DECISION IM-CAM-TAB (m-19 / n-15).** Each IM cam is sewn to an IMC dog-bone (25 x 180 mm, 21 x 25 box-X each end,
+  18 mm loops) that carries the G-hook (IM1 / IM2) or the carabiner (IM3); SK-11; load row 605 N; 2 IMC tabs in MT-1.
+- **Ledger (base, belt M), rows `BL-041: ...` in `corrie_f.parts`:** B-18 +3.06 g, HE -3.58 g, RTM +2.52 g,
+  W3G +2.16 g, IMC +9.72 g, B-25 38 mm +3.39 g, GBL -6.12 g = **+11.15 g** (muzzle cords -0.1 g); the bag
+  reconciles 1:1 (0 unmatched rows, 0 pieces without a row).

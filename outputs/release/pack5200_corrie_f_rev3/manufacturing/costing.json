@@ -1,5 +1,5 @@
 {
- "material_usd_primary": 379.76,
+ "material_usd_primary": 379.97,
  "prototype_buy": {
   "rows": [
    {
@@ -119,9 +119,9 @@
     "unit": "yd",
     "production_qty": 0.4,
     "production_usd": 12.1,
-    "prototype_qty": 1.0,
-    "prototype_usd": 30.25,
-    "how": "camo/ 1-bag print order"
+    "prototype_qty": 0.0,
+    "prototype_usd": 0.0,
+    "how": "NOT in the first build (DECISION CAMO-FIRST): solid 630D (polyester_ht_630d_printable, unprinted) on B-02u, SH-07, SH-01b, FP-b, B-29f and A1-d; the HyperD print yard + shipping is bought by the test kit (AB-1 / FRAY-1 specimen)"
    },
    {
     "section": "webbing",
@@ -147,36 +147,36 @@
    },
    {
     "section": "webbing",
-    "item": "poly_webbing_25mm: B-25 B-28 B-28s B-28t BRL BRS E5 GBL HPL I2K I2T IM",
+    "item": "poly_webbing_25mm: B-28 B-28s B-28t BRL BRS E5 HPL I2K I2T IM1 IM2 IM3",
     "material_id": "poly_webbing_25mm",
     "unit": "m",
-    "production_qty": 16.78,
-    "production_usd": 11.75,
+    "production_qty": 16.683,
+    "production_usd": 11.68,
     "prototype_qty": 17.374,
     "prototype_usd": 12.16,
-    "how": "16.78 m -> 19 yd"
+    "how": "16.683 m -> 19 yd"
    },
    {
     "section": "webbing",
-    "item": "poly_webbing_38mm: B-24 HE IME T3",
+    "item": "poly_webbing_38mm: B-24 B-25 HE IME T3",
     "material_id": "poly_webbing_38mm",
     "unit": "m",
-    "production_qty": 2.825,
-    "production_usd": 2.82,
+    "production_qty": 3.096,
+    "production_usd": 3.1,
     "prototype_qty": 3.658,
     "prototype_usd": 3.66,
-    "how": "2.825 m -> 4 yd"
+    "how": "3.096 m -> 4 yd"
    },
    {
     "section": "webbing",
     "item": "shock_cord_3mm: B-26 E5-cord FP-cord MK-cord",
     "material_id": "shock_cord_3mm",
     "unit": "m",
-    "production_qty": 1.847,
-    "production_usd": 0.92,
-    "prototype_qty": 2.743,
-    "prototype_usd": 1.37,
-    "how": "1.847 m -> 3 yd"
+    "production_qty": 1.826,
+    "production_usd": 0.91,
+    "prototype_qty": 1.829,
+    "prototype_usd": 0.91,
+    "how": "1.826 m -> 2 yd"
    },
    {
     "section": "hardware",
@@ -381,11 +381,11 @@
     "item": "bonded_nylon_tex135 (needle + bobbin)",
     "material_id": "bonded_nylon_tex135",
     "unit": "m",
-    "production_qty": 31.6,
-    "production_usd": 0.26,
-    "prototype_qty": 31.6,
-    "prototype_usd": 0.26,
-    "how": "as production (whole units / cones)"
+    "production_qty": 33.4,
+    "production_usd": 0.27,
+    "prototype_qty": 840.0,
+    "prototype_usd": 6.8,
+    "how": "1 cone(s) of 4 oz = 840 m each (33.4 m used)"
    },
    {
     "section": "thread",
@@ -394,9 +394,9 @@
     "unit": "m",
     "production_qty": 82.0,
     "production_usd": 0.43,
-    "prototype_qty": 82.0,
-    "prototype_usd": 0.43,
-    "how": "as production (whole units / cones)"
+    "prototype_qty": 1620.0,
+    "prototype_usd": 8.42,
+    "how": "1 cone(s) of 4 oz = 1620 m each (82 m used)"
    },
    {
     "section": "thread",
@@ -405,20 +405,20 @@
     "unit": "m",
     "production_qty": 123.8,
     "production_usd": 0.76,
-    "prototype_qty": 123.8,
-    "prototype_usd": 0.76,
-    "how": "as production (whole units / cones)"
+    "prototype_qty": 1260.0,
+    "prototype_usd": 7.69,
+    "how": "1 cone(s) of 4 oz = 1260 m each (123.8 m used)"
    },
    {
     "section": "consumable",
     "item": "6 mm double-sided basting tape (zips)",
     "material_id": "basting_tape_6mm",
-    "unit": "m",
+    "unit": "roll of 20 m",
     "production_qty": 3.66,
     "production_usd": 0.18,
-    "prototype_qty": 3.66,
-    "prototype_usd": 0.18,
-    "how": "as production (whole units / cones)"
+    "prototype_qty": 1,
+    "prototype_usd": 6.0,
+    "how": "1 roll of 20 m (ASSUMPTION SHOP-UNIT: smallest roll)"
    },
    {
     "section": "consumable",
@@ -435,12 +435,12 @@
     "section": "consumable",
     "item": "silicone seam sealer for the silpoly fly and liner seams, ~10 ml (ASSU",
     "material_id": "seam_sealer",
-    "unit": "bag",
+    "unit": "tube 1 oz (28 ml)",
     "production_qty": 1,
     "production_usd": 0.8,
     "prototype_qty": 1,
-    "prototype_usd": 0.8,
-    "how": "as production (whole units / cones)"
+    "prototype_usd": 8.0,
+    "how": "1 tube 1 oz (28 ml) (ASSUMPTION SHOP-UNIT: smallest tube of silicone seam sealer)"
    },
    {
     "section": "packaging",
@@ -454,41 +454,41 @@
     "how": "as production (whole units / cones)"
    }
   ],
-  "total_usd": 497.72,
+  "total_usd": 501.49,
   "fabric_usd": 185.15,
-  "assumption": "SHOP-INCR: roll goods in 0.5 yd steps at full width, webbing whole yards, HDPE one 0.25 m2 sheet; hardware / thread / consumables as production"
+  "assumption": "SHOP-INCR: roll goods in 0.5 yd steps at full width, webbing whole yards, HDPE one 0.25 m2 sheet; hardware as production (whole units); thread by the 4 oz cone, basting tape and seam sealer by the smallest pack (SHOP-UNIT, BL-041 n-10); no camo print (CAMO-FIRST, BL-041 Y-5)"
  },
- "prototype_usd": 497.72,
- "material_usd_alternate": 379.6,
+ "prototype_usd": 501.49,
+ "material_usd_alternate": 379.81,
  "fabric_usd_primary": 88.03,
  "fabric_usd_alternate": 87.87,
  "missing_cost": [],
- "proto_hours": 73.6,
+ "proto_hours": 74.5,
  "proto_hours_by_step": {
-  "0 Prep and cutting": 16.25,
+  "0 Prep and cutting": 16.34,
   "1 Pockets": 6.06,
   "2 Small parts": 4.39,
   "3 Door D2 and hinge band": 5.0,
-  "4 Main bag": 14.02,
+  "4 Main bag": 14.42,
   "5 Collar and roll top": 3.5,
   "6 Crown lid B-29 (as hunted)": 8.46,
-  "7 Straps and webbing": 5.66,
+  "7 Straps and webbing": 6.06,
   "8 Add-ons (scope pod as hunted, meat liner meat trip)": 3.71,
   "9 Rain fly F-01": 5.4,
   "10 Finish, inspect, pack": 1.2
  },
- "sam_min": 500.7,
+ "sam_min": 507.1,
  "labour_usd": {
-  "us_contract_usd_min": 425.59,
-  "asia_contract_usd_min": 60.08
+  "us_contract_usd_min": 431.04,
+  "asia_contract_usd_min": 60.85
  },
  "cmt_usd": {
-  "us_contract_usd_min": 531.99,
-  "asia_contract_usd_min": 75.1
+  "us_contract_usd_min": 538.79,
+  "asia_contract_usd_min": 76.06
  },
  "landed_usd": {
-  "us_contract_usd_min": 911.75,
-  "asia_contract_usd_min": 454.87
+  "us_contract_usd_min": 918.76,
+  "asia_contract_usd_min": 456.03
  },
  "lid_hours_drafted": 9.53,
  "lid_hours_booked": 7.76,

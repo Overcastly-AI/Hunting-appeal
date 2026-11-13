@@ -1,6 +1,6 @@
 # Shopping list (BL-038)
 
-Total **USD 2,354.04**. Prices from material records, cited shop pages (links), or marked ASSUMPTION (check at purchase). Cited or record-priced: USD 1,037.04; ASSUMPTION: USD 1,317.00. Prices checked 2026-11-10 (TEST_PLAN §4) and 2026-11-13.
+Total **USD 2,419.04**. Prices from material records, cited shop pages (links), or marked ASSUMPTION (check at purchase). Cited or record-priced: USD 1,037.04; ASSUMPTION: USD 1,382.00. Prices checked 2026-11-10 (TEST_PLAN §4) and 2026-11-13.
 
 **Order these first (long lead):**
 
@@ -17,8 +17,8 @@ Total **USD 2,354.04**. Prices from material records, cited shop pages (links), 
 | Kit B lever rig | 317.50 |
 | Kit C frame stand | 227.39 |
 | Kit D measuring | 140.46 |
-| Specimens and lab | 1,444.61 |
-| **total** | **2,354.04** |
+| Specimens and lab | 1,509.61 |
+| **total** | **2,419.04** |
 
 Not in this list: the bag, harness and belt materials themselves (pack BOM, `outputs/release/pack5200_corrie_f_rev3/manufacturing/bom.csv`). Swatches are cut from that fabric order, so buy the bag fabric with the kit. You already own (kit E): washing machine, winter gloves, freezer, hose, tape, paint pen, phone.
 
@@ -108,9 +108,10 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | ROHACELL 71 IG-F core for the 2 mm strip **LONG LEAD** | 0.02 m2 | 2.40 | Rock West Composites; record rohacell_71_igf | BP-1 |
 | 200 g 2x2 carbon twill + epoxy for the 2 mm BP-1 coupon skins | 0.028 m2 | 1.26 | left over from the spreader / strip layup (else any composites shop); record cfrp_t300_3k_woven_epoxy_ply (BL-039) | BP-1 |
 | HyperD 300 printable, custom camo print **LONG LEAD** | 1 yd | 30.25 | Ripstop by the Roll (custom print, 1 yd min); record polyester_300d_printable | AB-1, FRAY-1 |
+| shipping for the HyperD print order | 1 order | 12.00 | Ripstop by the Roll; ASSUMPTION SHIP (camo/cost_1_and_10_bags.csv) | AB-1, FRAY-1 |
 | Martindale abrasion test, accredited lab (2 samples + order fee) **LONG LEAD** | 1 order | 249.61 | [Measurlabs (EUR 66 / sample + EUR 97 fee)](https://measurlabs.com/products/textile-abrasion-resistance-martindale) | AB-1 |
 | specimens for PT-2: 5 swatches built like the pack, B-17 cut 70 mm tall | 1 lot | 15.00 | see register; test_register.csv PT-2: ASSUMPTION Hypalon + laminate offcuts | PT-2 |
-| specimens for PT-3: 5 swatches sewn exactly as op 4.05 / SK-8: B-01 (primary ULTRA 200) 150 x 120 mm | 1 lot | 15.00 | see register; test_register.csv PT-3: ASSUMPTION offcuts | PT-3 |
+| specimens for PT-3: 5 swatches sewn exactly as op 4.05 / SK-8, in the op 4.05 order (BL-041): B-01 ( | 1 lot | 15.00 | see register; test_register.csv PT-3: ASSUMPTION offcuts | PT-3 |
 | specimens for WP-1: 4 seam pairings 330D|330D, 330D|ULTRA 200, 500D|330D, 100D|ULTRA; 301 + 2nd row  | 1 lot | 5.00 | see register; test_register.csv WP-1: offcuts | WP-1 |
 | specimens for CA-1: 12 XY + 4 Z + 3 spare bars, printed and annealed like the frame, 7 days at 23 C  | 1 lot | 15.00 | see register; test_register.csv CA-1: CA1_fatigue_rig.md §5 (filament $80/kg) | CA-1 |
 | specimens for IM3-EC: 3 eye coupons: 120 mm stay segment round z 520 with the IM3 eye and the 28 mm ch | 1 lot | 10.00 | see register; test_register.csv IM3-EC: ASSUMPTION: filament + 3 tongues | IM3-EC |
@@ -123,7 +124,7 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | specimens for CA-2: 3 XY + 3 Z bars per anneal | 1 lot | 10.00 | see register; test_register.csv CA-2: ASSUMPTION | CA-2 |
 | specimens for HB-4: 1 ear stitched into a wing-root coupon (3 recommended) | 1 lot | 15.00 | see register; test_register.csv HB-4: ASSUMPTION plate offcut + foam | HB-4 |
 | specimens for HB-T: 5 tabs sewn like the belt: 50 mm webbing round a buckle bar, 25 mm anchor and lo | 1 lot | 5.00 | see register; test_register.csv HB-T: ASSUMPTION webbing | HB-T |
-| specimens for TL-1: 5 loops: 25 mm webbing x 170 mm + POM toggle, on an 18 mm CF tube offcut (no wra | 1 lot | 8.00 | see register; test_register.csv TL-1: ASSUMPTION toggles + tube offcut | TL-1 |
+| specimens for TL-1: 5 x the real rev C crown top bar stock ([+-45/0x5/+-45], wall 1.065, same vendor | 1 lot | 40.00 | see register; test_register.csv TL-1: ASSUMPTION crown bar stock 1 m from the frame vendor + dial gauge on a C-frame + toggles | TL-1 |
 | specimens for HB-5: 1 plate on the Ti pin over a foam block | 1 lot | 45.00 | see register; test_register.csv HB-5: ASSUMPTION plate $25 + fixture $20 | HB-5 |
 | specimens for PS-1: pad seat on a printed pan offcut | 1 lot | 5.00 | see register; test_register.csv PS-1: ASSUMPTION | PS-1 |
 | specimens for BP-2: 100 mm printed H1 stay segment (z about 260) on a strip offcut, 10 mm foam under | 1 lot | 5.00 | see register; test_register.csv BP-2: ASSUMPTION carbon paper; Prescale roll about EUR 1275 not bought (§4.4) | BP-2 |
@@ -137,3 +138,5 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | specimens for BU-1: 2 UHMWPE crown bushings cut 50 mm from the 70 mm stock, on P2 | 1 lot | 10.00 | see register; test_register.csv BU-1: ASSUMPTION spare UHMWPE tube length $10 (uhmwpe_sheet record has no tube price) | BU-1 |
 | specimens for SEW-F: 3 x 25 mm poly webbing loops, box-X 21 x 25 mm (the IM / US box as drawn), 301,  | 1 lot | 1.00 | see register; test_register.csv SEW-F: 25 mm webbing offcuts + thread (kit A stock) | SEW-F |
 | specimens for FIT-R3: first sewn bag + lid on P2; 5.0 L of dry rice in a bag; the owner's bow (in IMP- | 1 lot | 2.00 | see register; test_register.csv FIT-R3: 5 L of rice | FIT-R3 |
+| specimens for HE-FIT: 1 scrap HE sewn as op 4.05 (B-18 + B-01 offcut 150 x 120 + B-05 strip, floor sea | 1 lot | 1.00 | see register; test_register.csv HE-FIT: scrap + 10 g filament | HE-FIT |
+| specimens for TL-1b: 1-2 lengths of the real rev C crown bar stock (>= 160 mm) with a 25 mm B-25-styl | 1 lot | 20.00 | see register; test_register.csv TL-1b: ASSUMPTION crown bar offcut + dial gauge on a C-frame (shared with TL-1) | TL-1b |

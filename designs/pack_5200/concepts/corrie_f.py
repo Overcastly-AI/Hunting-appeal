@@ -1051,6 +1051,9 @@ def bl041_rows() -> list:
          "patterns_corrie_f_rev3.RTM_CUT x poly_webbing_25mm mass_g_m (record)"),
         ("straps_compression", f"BL-041: W3G W3 guides on the gussets (2 x {P.W3G_CUT:.0f} mm, DECISION RT-OVER-W3)", w3g,
          "patterns_corrie_f_rev3.W3G_CUT x poly_webbing_25mm mass_g_m (record)"),
+        ("attachment", "BL-041: GBL guy bar loop webbing deleted (2 x 170 mm; rev 1+ toggles the guy into the B-25 tab, "
+         "the toggles stay)", -2 * 170.0 / 1000.0 * WEB25,
+         "attach_diet BAR_LOOP 170 mm x poly_webbing_25mm record (negative copy of the webbing in 'BL-004 REC: guy bar loops')"),
         ("straps_meat", f"BL-041: IMC IM cam anchor tabs (3 x {4 * P.IMC_FOLD:.0f} mm, DECISION IM-CAM-TAB)",
          3 * 4 * P.IMC_FOLD / 1000.0 * WEB25, "patterns_corrie_f_rev3.IMC_FOLD x 4 x poly_webbing_25mm mass_g_m (record)"),
     ]
@@ -1415,16 +1418,34 @@ def _bg():
     return AS._bg()
 
 
-def guy_bridle() -> dict:
-    """B-25 guy bridle (rev 1): one 25 mm webbing piece sewn round the top bar at x +/-GUY_X (two sleeves), joined
+# BL-041 (orchestrator 2026-11-13, adopting crown_tube_guy_loop.md section 5 / 8): from rev 3 the B-25 bridle is 38 mm
+# webbing, its sleeves at x 26.5-64.5 (outboard edge kept at x 64.5, 4.5 mm from the corner-wrap scarf; 11.5 mm from the
+# spine clamp): basis A ring check SF 1.36 static / 1.27 fatigue on the 323 N guy + crown-strap envelope (25 mm: 0.90).
+# DECISION B25-TAB-CENTRE: the toggle tab sits at the sleeve centre x 45.5 (the 25 mm tab pull spread over the full
+# 38 mm sleeve, ASSUMPTION WIDE_SLEEVE, settled by TL-1); the guy / crown-strap line moves 6.5 mm inboard at the bar,
+# absorbed by the B-27 port slit and the lid channels (crown_tube_guy_loop.md 5).
+BRIDLE_W_REV3 = 38.0
+BRIDLE_BAND_REV3 = (26.5, 64.5)
+
+
+def guy_bridle(wide: bool = False) -> dict:
+    """B-25 guy bridle (rev 1): one webbing piece sewn round the top bar at x +/-GUY_X (two sleeves), joined
     along the bar and round the spine below its clamp (so the spine locates it and the guys' outboard pulls cancel in
     the webbing), with a folded tab at each sleeve for the guy's toggle loop. Fitted on the bar before the crown corners
-    are bonded (build step). Permanent: no handling in use."""
-    x = REVS[1]["guy_x"]
-    run = 2.0 * (x - GUY_W / 2.0 - SPINE_CLAMP_HALF)
+    are bonded (build step). Permanent: no handling in use. Default: the rev 1 part (25 mm at x +/-GUY_X; the record
+    other modules compare against). ``wide=True`` (BL-041, rev 3 as built): 38 mm, sleeve band BRIDLE_BAND_REV3."""
+    if wide:
+        w, x = BRIDLE_W_REV3, 0.5 * sum(BRIDLE_BAND_REV3)
+        mat, gm = "poly_webbing_38mm", _rec("poly_webbing_38mm", "mass_g_m")
+    else:
+        w, x = GUY_W, REVS[1]["guy_x"]
+        mat, gm = "poly_webbing_25mm", WEB25
+    run = 2.0 * (x - w / 2.0 - SPINE_CLAMP_HALF)
     mm = 2 * BAR_WRAP_MM + run + SPINE_WRAP_MM + 2 * BRIDLE_TAB_MM
-    return {"id": "B-25", "length_mm": round(mm, 1), "mass_g": round(mm * WEB25 / 1000.0, 2),
-            "source": "poly_webbing_25mm record x length (BAR_WRAP_MM, SPINE_WRAP_MM, BRIDLE_TAB_MM ASSUMPTIONS)"}
+    return {"id": "B-25", "length_mm": round(mm, 1), "mass_g": round(mm * gm / 1000.0, 2), "width_mm": w,
+            "material_id": mat, "sleeve_x": round(x, 1), "band": (round(x - w / 2, 1), round(x + w / 2, 1)),
+            "clear_to_clamp_mm": round(x - w / 2 - SPINE_CLAMP_HALF, 1),
+            "source": f"{mat} record x length (BAR_WRAP_MM, SPINE_WRAP_MM, BRIDLE_TAB_MM ASSUMPTIONS)"}
 
 
 def tripod_keeper(c: ShellF | None = None, door: str = DOOR_DEFAULT) -> dict:
@@ -1456,6 +1477,11 @@ def rev1_rows(c: ShellF | None = None, door: str = DOOR_DEFAULT) -> list:
         b = guy_bridle()
         rows.append(("attachment", f"BL-022 rev 1: {b['id']} guy bridle on the top bar at x +/-{r['guy_x']:.0f}",
                      b["mass_g"], "base", b["source"]))
+        if r.get("crown_kits"):              # BL-041: rev 3 builds it in 38 mm (crown_tube_guy_loop.md 8.6)
+            w = guy_bridle(wide=True)
+            rows.append(("attachment", f"BL-041: B-25 bridle 25 -> 38 mm webbing, sleeves x {w['band'][0]}-{w['band'][1]} "
+                         "(crown_tube_guy_loop.md, orchestrator 2026-11-13)", w["mass_g"] - b["mass_g"], "base",
+                         f"guy_bridle(wide=True) {w['mass_g']} g - rev 1 {b['mass_g']} g ({w['source']})"))
     if r["tripod_keeper"]:
         k = tripod_keeper(c, door)
         rows.append(("straps_compression", f"BL-022 rev 1: {k['id']} tripod keeper (3 mm shock cord, right gusset)",

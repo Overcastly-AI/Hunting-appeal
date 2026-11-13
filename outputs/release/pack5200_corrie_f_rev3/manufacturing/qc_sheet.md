@@ -17,28 +17,28 @@
 | QC-11 | Hardware | Hardware fitted | count against the BOM; threading as SK-7 | every lock threaded the right way (pull test by hand), carabiners gate-in, cord lock holds | 100 % |
 | QC-12 | Final | Width | tape across the widest point, bag packed full | <= 394 mm (15.5 in) (owner limit) | first article + 1 in 10 |
 | QC-13 | Final | Volume | fill with 10 mm foam balls / litre jug method, collar rolled 3 times | owner limit 85 L +/- 3 L (82-88 L, 5200 cu in). EXPECTED on the sewn bag: 81.9-84.0 L (fine-mesh closed volume, corrie_f_body.md 13.5), so a reading of 81.9-82.0 L is the design, not a sewing fault: record it and tell the pack-designer (BL-040 m-17) | first article |
-| QC-14 | Final | Mass by kit, PRIMARY fabrics (the set you build) | 1 g scale, bag empty, kit by kit | base 1197 g (42.2 oz), as hunted 1501 g, meat trip 1706 g, each +/- 3 % (= ledger on the team B basis 1133 / 1415 / 1611 g + the primary pattern delta of each kit, costing.md). Alternate-fabric bags: the ledger values | every bag |
+| QC-14 | Final | Mass by kit, PRIMARY fabrics (the set you build) | 1 g scale, bag empty, kit by kit | base 1208 g (42.6 oz), as hunted 1512 g, meat trip 1717 g, each +/- 3 % (= ledger on the team B basis 1144 / 1426 / 1622 g + the primary pattern delta of each kit, costing.md). Alternate-fabric bags: the ledger values | every bag |
 | QC-15 | Final | No hook-and-loop, coil zips only | visual | zero hook-and-loop anywhere (owner: quiet bag) | 100 % |
 | QC-16 | Final | Camo use | visual | camo only on B-02u, SH-07, SH-01b, FP-b, B-29f, A1-d (accents) | 100 % |
 | QC-17 | Final | Thread ends, seals | visual | ends <= 3 mm, no open webbing ends, no burnt fabric | 100 % |
 | QC-18 | Final | Labels | visual | ID label with rev 3 + date, size / crown kit, load-limit card (53 kg frame meat, RD-02) | 100 % |
 | QC-19 | Final | Kits complete | count | base / as-hunted (lid, B-28 per kit, scope pod) / meat-trip (WX, B-24, liner) bags each complete | 100 % |
-| QC-20 | Final | Fit on the frame | hook to a frame or the fit jig: hinge pins, IM eyes through B-12 ports, guys through B-27 | every eye reaches its port without strain; door opens fully | first article + 1 in 25 |
+| QC-20 | Final | Fit on the frame | hook to a frame or the fit jig: hinge pins, IM eyes through B-12 ports, guys through B-27 | every eye reaches its port without strain; door opens fully; hinge eyes on the z 60 pins with the floor seam 25 +/- 3 mm below the pin centre (already proven by HE-FIT before cut; this confirms the batch) | first article + 1 in 25 |
 
 ## Physical tests that gate release (no load point is sewn on a carrying bag before its test passes)
 
 | ID | Test | Gates | Pass / fail | Source |
 |---|---|---|---|---|
-| MT-1 | 25 mm box-X bartack proof at the BL-010 per-row loads | every 25 mm box-X on IM1-IM3 and US1/US2 | 5 of 5 hold 908 N (IM) and 5 of 5 hold 1080 N (US) for 1 min, no broken stitch | test_register.csv |
+| MT-1 | 25 mm box-X bartack proof at the BL-010 per-row loads | every 25 mm box-X on IM1-IM3 and US1/US2 | 5 of 5 hold 908 N (IM) and 5 of 5 hold 1080 N (US) for 1 min, 2 of 2 IMC hold 908 N, no broken stitch | test_register.csv |
 | MT-2 | meat-strap hook proof per strap (BL-010) | IM free-end hooks | 5 of 5 G-hooks hold 645 N and 5 of 5 carabiners hold 910 N for 1 min, gates close | test_register.csv |
 | MT-3 | 25 mm cam buckle slip at the BL-010 per-row loads, dry, wet and cold | IM / US cams | mark moves < 3 mm at 908 N and at 1080 N, 5 of 5, in each of dry / wet / cold | test_register.csv |
 | PT-1 | IM3 bag carabiner on the sewn T3 tongue, per-row proof (BL-010) | IM3 carabiner on T3 | 5 of 5 hold 2553 N for 60 s, gate closes after, no visible set | test_register.csv |
 | PT-2 | T3 tongue on the 70 mm B-17 tab on a B-01 swatch (BL-010 load) | T3 on the 70 mm B-17 tab | 5 of 5 hold 2553 N, no stitch break, no laminate tear | test_register.csv |
-| PT-3 | HE hinge eye on B-18 + B-01 + B-05 floor seam, sewn as op 4.05 (DECISION HE-ONE), no binding | HE eye on B-18 (no binding) | 5 of 5 hold 1530 N 60 s: no stitch break, no Hypalon or laminate tear, B-18 still in the floor seam | test_register.csv |
+| PT-3 | HE hinge eye on B-18 + B-01 + B-05 floor seam, sewn as op 4.05 (HE-ONE / HE-PIN), no binding | HE eye on B-18 (no binding) | 5 of 5 hold 1530 N 60 s: no stitch break, no Hypalon or laminate tear, B-18 still in the floor seam, the eye still open (no row across it) | test_register.csv |
 | PT-5 | guy ladder lock + tri-glide keeper slip | guy lock + tri-glide keeper | slip < 5 mm over 10 cycles | test_register.csv |
 | PT-6 | B-24 float stand-off link | B-24 float link | 5 of 5 hold 1410 N, no box-X break, gate closes | test_register.csv |
 | LL-H | heavy 25 mm ladder lock slip at 432 N, dry, wet and cold (guys, W1-W3, B-28) | heavy 25 mm ladder lock slip at 432 N (1.5 x 288 N), dry, wet and -20 C: guys, W1-W3 and the B-28 crown straps (the B-28 slip gate since BL-031) | slip < 5 mm, 5 of 5, in each of dry / wet / cold at 432 N (covers the W 338 N proof); a fail in any condition: tell the pack-designer (record fallbacks: aluminium ladderlock) | test_register.csv |
-| SEW-F | box-X fatigue on the lever rig: 25 mm box-X loops, 1e5 cycles 38 -> 384 N (R 0.1) | box-X fatigue (ASSUMPTION SEW_FAT 0.40 x box strength): IM end loops (S1), US eyes (S6), belt tabs (H1) | 3 of 3 run-outs to 1e5 at 384 N, no broken stitch, then hold 1080 N 1 min (a 2 of 3 result: run 3 more, pass with 5 of 6) | test_register.csv |
+| SEW-F | box-X fatigue on the lever rig: 25 mm box-X loops, 1e5 cycles 44 -> 442 N (R 0.1) | box-X fatigue (ASSUMPTION SEW_FAT 0.40 x box strength): IM end loops (S1), US eyes (S6), belt tabs (H1) | 3 of 3 run-outs to 1e5 at 442 N, no broken stitch, then hold 1080 N 1 min (a 2 of 3 result: run 3 more, pass with 5 of 6) | test_register.csv |
 | T9 | loaded CG (+ 15 in, 30 kg meat check); CORRIE F rev 3 items in rows T9-R3a..d (BL-038 split) | loaded CG on the first article (rev C basis); its rev 3 items are the T9-R3a..d rows below (BL-038 split) | bag CG <= 205 mm at z <= 590; meat <= 190; tall <= 185; rev 3 items: rows T9-R3a..d | test_register.csv |
 | T9-R3a | T9 rev 3 (a): port guys hold the S-kit top, meat CG at 15 in | rev 3 (a): B-27 port guys hold the S-kit top, CG at the S kit (BL-030) | meat CG <= 190 mm aft (record against 179.3 mm) | test_register.csv |
 | T9-R3b | T9 rev 3 (b): crown strap cinch force and retention (CROWN_PRE_N, MU_LID) | rev 3 (b): B-28 crown strap cinch force and retention | after the walk >= 40 N, or the lid still seated on the full top (report both values) | test_register.csv |

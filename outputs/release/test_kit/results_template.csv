@@ -9,6 +9,10 @@ MT-1-07,MT-1,G2,R1; BAG-CUT,US#2,"held 110.1 kg (1080 N) 1 min, no broken stitch
 MT-1-08,MT-1,G2,R1; BAG-CUT,US#3,"held 110.1 kg (1080 N) 1 min, no broken stitch",Y/N,yes,Y,,,,,BOX25
 MT-1-09,MT-1,G2,R1; BAG-CUT,US#4,"held 110.1 kg (1080 N) 1 min, no broken stitch",Y/N,yes,Y,,,,,BOX25
 MT-1-10,MT-1,G2,R1; BAG-CUT,US#5,"held 110.1 kg (1080 N) 1 min, no broken stitch",Y/N,yes,Y,,,,,BOX25
+MT-1-11,MT-1,G2,R1; BAG-CUT,IMC#1,"IMC cam anchor tab held 92.6 kg (908 N) 1 min, both boxes whole (BL-041)",Y/N,yes,Y,,,,,BOX25; IMC-LOOP
+MT-1-12,MT-1,G2,R1; BAG-CUT,IMC#2,"IMC cam anchor tab held 92.6 kg (908 N) 1 min, both boxes whole (BL-041)",Y/N,yes,Y,,,,,BOX25; IMC-LOOP
+HE-FIT-01,HE-FIT,G2,BAG-CUT,#1,pin centre above the floor seam line (pass 22-28),mm,band,22..28,,,,,HE-PIN; HE-CHEEK; HE-T
+HE-FIT-02,HE-FIT,G2,BAG-CUT,fit1,"box top clear of the cheeks, neck alone in the throat, eye points up",Y/N,yes,Y,,,,,HE-PIN
 PT-1-01,PT-1,G2,BAG-CUT,#1,"held 260.2 kg (2553 N) 60 s, gate closes, no set",Y/N,yes,Y,,,,,CARA-PROOF
 PT-1-02,PT-1,G2,BAG-CUT,#2,"held 260.2 kg (2553 N) 60 s, gate closes, no set",Y/N,yes,Y,,,,,CARA-PROOF
 PT-1-03,PT-1,G2,BAG-CUT,#3,"held 260.2 kg (2553 N) 60 s, gate closes, no set",Y/N,yes,Y,,,,,CARA-PROOF
@@ -65,11 +69,11 @@ PT-2-02,PT-2,G2,BAG-CUT,#2,"held 260.2 kg (2553 N) 60 s, no stitch break, no tea
 PT-2-03,PT-2,G2,BAG-CUT,#3,"held 260.2 kg (2553 N) 60 s, no stitch break, no tear",Y/N,yes,Y,,,,,
 PT-2-04,PT-2,G2,BAG-CUT,#4,"held 260.2 kg (2553 N) 60 s, no stitch break, no tear",Y/N,yes,Y,,,,,
 PT-2-05,PT-2,G2,BAG-CUT,#5,"held 260.2 kg (2553 N) 60 s, no stitch break, no tear",Y/N,yes,Y,,,,,
-PT-3-01,PT-3,G2,BAG-CUT,#1,"held 156 kg (1530 N) 60 s, B-18 still in the floor seam (sewn as op 4.05)",Y/N,yes,Y,,,,,HE-ONE; HE-GAP
-PT-3-02,PT-3,G2,BAG-CUT,#2,"held 156 kg (1530 N) 60 s, B-18 still in the floor seam (sewn as op 4.05)",Y/N,yes,Y,,,,,HE-ONE; HE-GAP
-PT-3-03,PT-3,G2,BAG-CUT,#3,"held 156 kg (1530 N) 60 s, B-18 still in the floor seam (sewn as op 4.05)",Y/N,yes,Y,,,,,HE-ONE; HE-GAP
-PT-3-04,PT-3,G2,BAG-CUT,#4,"held 156 kg (1530 N) 60 s, B-18 still in the floor seam (sewn as op 4.05)",Y/N,yes,Y,,,,,HE-ONE; HE-GAP
-PT-3-05,PT-3,G2,BAG-CUT,#5,"held 156 kg (1530 N) 60 s, B-18 still in the floor seam (sewn as op 4.05)",Y/N,yes,Y,,,,,HE-ONE; HE-GAP
+PT-3-01,PT-3,G2,BAG-CUT,#1,"held 156 kg (1530 N) 60 s, B-18 still in the floor seam, eye open (sewn as op 4.05, B-18 rows first)",Y/N,yes,Y,,,,,HE-ONE; HE-PIN; HE-GAP
+PT-3-02,PT-3,G2,BAG-CUT,#2,"held 156 kg (1530 N) 60 s, B-18 still in the floor seam, eye open (sewn as op 4.05, B-18 rows first)",Y/N,yes,Y,,,,,HE-ONE; HE-PIN; HE-GAP
+PT-3-03,PT-3,G2,BAG-CUT,#3,"held 156 kg (1530 N) 60 s, B-18 still in the floor seam, eye open (sewn as op 4.05, B-18 rows first)",Y/N,yes,Y,,,,,HE-ONE; HE-PIN; HE-GAP
+PT-3-04,PT-3,G2,BAG-CUT,#4,"held 156 kg (1530 N) 60 s, B-18 still in the floor seam, eye open (sewn as op 4.05, B-18 rows first)",Y/N,yes,Y,,,,,HE-ONE; HE-PIN; HE-GAP
+PT-3-05,PT-3,G2,BAG-CUT,#5,"held 156 kg (1530 N) 60 s, B-18 still in the floor seam, eye open (sewn as op 4.05, B-18 rows first)",Y/N,yes,Y,,,,,HE-ONE; HE-PIN; HE-GAP
 PT-5-01,PT-5,G2,BAG-CUT,#1,total slip after 10 cycles to 17.3 kg,mm,max,5,,,,,
 PT-6-01,PT-6,G2,BAG-CUT,#1,"held 143.7 kg (1410 N) 60 s, no box-X break, gate closes",Y/N,yes,Y,,,,,
 PT-6-02,PT-6,G2,BAG-CUT,#2,"held 143.7 kg (1410 N) 60 s, no box-X break, gate closes",Y/N,yes,Y,,,,,
@@ -95,7 +99,22 @@ LL-H-16,LL-H,G2,BAG-CUT,cold,freezer reading,C,record,,,,,,LL-SLIP
 PORT-1-01,PORT-1,G2,BAG-CUT,1,towel dry after 1 min hose,Y/N,yes,Y,,,,,PORT_FACING_W; PORT_TURN
 PORT-1-02,PORT-1,G2,BAG-CUT,1,lap gap at 10.2 kg (100 N),mm,max,2,,,,,PORT_FACING_W; PORT_TURN
 PORT-1-03,PORT-1,G2,BAG-CUT,1,gloved lock adjustments OK out of 5,count,min,5,,,,,GLOVE-T
-TL-1-01,TL-1,G2,BAG-CUT,1,"passes the register criterion: 5 of 5 hold 432 N, toggle does not pull through or crack; cold sample holds; no crush mark on the tube",Y/N,yes,Y,,,,,GUY-TOGGLE
+TL-1-01,TL-1,G2,BAG-CUT,oval#1,ovalisation at 494 N,mm,max,0.40,,,,,WIDE_SLEEVE; RING_SLICE
+TL-1-02,TL-1,G2,BAG-CUT,oval#2,ovalisation at 494 N,mm,max,0.40,,,,,WIDE_SLEEVE; RING_SLICE
+TL-1-03,TL-1,G2,BAG-CUT,oval#3,ovalisation at 494 N,mm,max,0.40,,,,,WIDE_SLEEVE; RING_SLICE
+TL-1-04,TL-1,G2,BAG-CUT,oval#4,ovalisation at 494 N,mm,max,0.40,,,,,WIDE_SLEEVE; RING_SLICE
+TL-1-05,TL-1,G2,BAG-CUT,oval#5,ovalisation at 494 N,mm,max,0.40,,,,,WIDE_SLEEVE; RING_SLICE
+TL-1-06,TL-1,G2,BAG-CUT,set#1,permanent out-of-round after unloading (increase),mm,max,0.02,,,,,RING_SLICE
+TL-1-07,TL-1,G2,BAG-CUT,set#2,permanent out-of-round after unloading (increase),mm,max,0.02,,,,,RING_SLICE
+TL-1-08,TL-1,G2,BAG-CUT,set#3,permanent out-of-round after unloading (increase),mm,max,0.02,,,,,RING_SLICE
+TL-1-09,TL-1,G2,BAG-CUT,set#4,permanent out-of-round after unloading (increase),mm,max,0.02,,,,,RING_SLICE
+TL-1-10,TL-1,G2,BAG-CUT,set#5,permanent out-of-round after unloading (increase),mm,max,0.02,,,,,RING_SLICE
+TL-1-11,TL-1,G2,BAG-CUT,hold#1,"held 494 N 60 s, linear (no knee), silent, no crush mark / whitening at 10x, toggles whole",Y/N,yes,Y,,,,,GUY-TOGGLE; WIDE_SLEEVE
+TL-1-12,TL-1,G2,BAG-CUT,hold#2,"held 494 N 60 s, linear (no knee), silent, no crush mark / whitening at 10x, toggles whole",Y/N,yes,Y,,,,,GUY-TOGGLE; WIDE_SLEEVE
+TL-1-13,TL-1,G2,BAG-CUT,hold#3,"held 494 N 60 s, linear (no knee), silent, no crush mark / whitening at 10x, toggles whole",Y/N,yes,Y,,,,,GUY-TOGGLE; WIDE_SLEEVE
+TL-1-14,TL-1,G2,BAG-CUT,hold#4,"held 494 N 60 s, linear (no knee), silent, no crush mark / whitening at 10x, toggles whole",Y/N,yes,Y,,,,,GUY-TOGGLE; WIDE_SLEEVE
+TL-1-15,TL-1,G2,BAG-CUT,hold#5,"held 494 N 60 s, linear (no knee), silent, no crush mark / whitening at 10x, toggles whole",Y/N,yes,Y,,,,,GUY-TOGGLE; WIDE_SLEEVE
+TL-1-16,TL-1,G2,BAG-CUT,cold1,cold sample (4 h freezer) held the proof,Y/N,yes,Y,,,,,GUY-TOGGLE
 FS-O5-01,FS-O5,G2,BAG-CUT,1,"passes the register criterion: mean >= 1840 N/50 mm, minimum >= 1195 N/50 mm",Y/N,yes,Y,,,,,ULTRA-200X STRIP
 WP-3-01,WP-3,G2,BAG-BATCH,1,passes the register criterion: release and re-tension in one grab every time,Y/N,yes,Y,,,,,A-2 TAIL
 SL-1-01,SL-1,G2,BL037,#1,slider + cord pull mass,g,max,15.0,,,,,SLIDER-CORD
@@ -115,6 +134,11 @@ HB-7-07,HB-7,G2,CARRY,s#2,slip load,kg,min,50.0,,,,,LL-SLIP
 HB-7-08,HB-7,G2,CARRY,s#3,slip load,kg,min,50.0,,,,,LL-SLIP
 HB-7-09,HB-7,G2,CARRY,s#4,slip load,kg,min,50.0,,,,,LL-SLIP
 HB-7-10,HB-7,G2,CARRY,s#5,slip load,kg,min,50.0,,,,,LL-SLIP
+TL-1b-01,TL-1b,G2,DATA,1,ovalisation at 100 N,mm,record,-,,,,,RING_SLICE; BASIS_A
+TL-1b-02,TL-1b,G2,DATA,1,ovalisation at 200 N,mm,record,-,,,,,RING_SLICE; BASIS_A
+TL-1b-03,TL-1b,G2,DATA,1,ovalisation at 288 N,mm,record,-,,,,,RING_SLICE; BASIS_A
+TL-1b-04,TL-1b,G2,DATA,1,ovalisation at 400 N,mm,record,-,,,,,RING_SLICE; BASIS_A
+TL-1b-05,TL-1b,G2,DATA,knee1,load at the first knee or sound (none: write the last step),N,record,-,,,,,BASIS_A
 FRAY-1-01,FRAY-1,G3,BAG-CUT,ULTRA|330D,no fray past the 2nd row after 3 washes,Y/N,yes,Y,,,,,NO-BIND
 FRAY-1-02,FRAY-1,G3,BAG-CUT,330D|330D,no fray past the 2nd row after 3 washes,Y/N,yes,Y,,,,,NO-BIND
 FRAY-1-03,FRAY-1,G3,BAG-CUT,500D|330D,no fray past the 2nd row after 3 washes,Y/N,yes,Y,,,,,NO-BIND
@@ -142,9 +166,9 @@ CA-1@fallback-01,CA-1@fallback,G4,R1 (only if 0.40 fails),FXY#1,only if 0.40 fai
 CA-1@fallback-02,CA-1@fallback,G4,R1 (only if 0.40 fails),FXY#2,only if 0.40 failed: cycles at the table level for the MT-1c swing (run-out 100000),cycles,min,100000,,,,,PAHT_FAT; CINCH-SWING
 CA-1@fallback-03,CA-1@fallback,G4,R1 (only if 0.40 fails),FXY#3,only if 0.40 failed: cycles at the table level for the MT-1c swing (run-out 100000),cycles,min,100000,,,,,PAHT_FAT; CINCH-SWING
 CA-1@fallback-04,CA-1@fallback,G4,R1 (only if 0.40 fails),level,"fallback level used (table, >= 0.313)",-,record,,,,,,CINCH-SWING
-IM3-EC-01,IM3-EC,G4,R1,#1,cycles at 24 -> 1178 N (run-out 100000),cycles,min,100000,,,,,P_cheek
-IM3-EC-02,IM3-EC,G4,R1,#2,cycles at 24 -> 1178 N (run-out 100000),cycles,min,100000,,,,,P_cheek
-IM3-EC-03,IM3-EC,G4,R1,#3,cycles at 24 -> 1178 N (run-out 100000),cycles,min,100000,,,,,P_cheek
+IM3-EC-01,IM3-EC,G4,R1,#1,cycles at 23 -> 1178 N (run-out 100000),cycles,min,100000,,,,,P_cheek
+IM3-EC-02,IM3-EC,G4,R1,#2,cycles at 23 -> 1178 N (run-out 100000),cycles,min,100000,,,,,P_cheek
+IM3-EC-03,IM3-EC,G4,R1,#3,cycles at 23 -> 1178 N (run-out 100000),cycles,min,100000,,,,,P_cheek
 IM3-EC-04,IM3-EC,G4,R1,p#1,no crack at 10x and held 2553 N after,Y/N,yes,Y,,,,,P_cheek
 IM3-EC-05,IM3-EC,G4,R1,p#2,no crack at 10x and held 2553 N after,Y/N,yes,Y,,,,,P_cheek
 IM3-EC-06,IM3-EC,G4,R1,p#3,no crack at 10x and held 2553 N after,Y/N,yes,Y,,,,,P_cheek
@@ -154,9 +178,9 @@ CA-5-03,CA-5,G4,R1,#3,static stub peak,N,min,3666,,,,,PRYING-1.25
 CA-5-04,CA-5,G4,R1,mean,mean of the 3 static peaks,N,min,4400,,,,,PRYING-1.25
 CA-5-05,CA-5,G4,R1,cyc,joint step after 1e5 cycles at 1543 N,mm,max,0.1,,,,,BOSS-BENDING
 CA-5-06,CA-5,G4,R1,cyc,no crack at the boss root after 1e5 cycles,Y/N,yes,Y,,,,,BOSS-BENDING
-SEW-F-01,SEW-F,G4,BAG-BATCH,#1,cycles at 38 -> 384 N (run-out 100000),cycles,min,100000,,,,,SEW_FAT
-SEW-F-02,SEW-F,G4,BAG-BATCH,#2,cycles at 38 -> 384 N (run-out 100000),cycles,min,100000,,,,,SEW_FAT
-SEW-F-03,SEW-F,G4,BAG-BATCH,#3,cycles at 38 -> 384 N (run-out 100000),cycles,min,100000,,,,,SEW_FAT
+SEW-F-01,SEW-F,G4,BAG-BATCH,#1,cycles at 44 -> 442 N (run-out 100000),cycles,min,100000,,,,,SEW_FAT
+SEW-F-02,SEW-F,G4,BAG-BATCH,#2,cycles at 44 -> 442 N (run-out 100000),cycles,min,100000,,,,,SEW_FAT
+SEW-F-03,SEW-F,G4,BAG-BATCH,#3,cycles at 44 -> 442 N (run-out 100000),cycles,min,100000,,,,,SEW_FAT
 SEW-F-04,SEW-F,G4,BAG-BATCH,p#1,no broken stitch at run-out and held 1080 N 1 min after,Y/N,yes,Y,,,,,SEW_FAT
 SEW-F-05,SEW-F,G4,BAG-BATCH,p#2,no broken stitch at run-out and held 1080 N 1 min after,Y/N,yes,Y,,,,,SEW_FAT
 SEW-F-06,SEW-F,G4,BAG-BATCH,p#3,no broken stitch at run-out and held 1080 N 1 min after,Y/N,yes,Y,,,,,SEW_FAT

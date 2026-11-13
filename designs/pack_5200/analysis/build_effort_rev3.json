@@ -3,29 +3,29 @@
  "thread_factor": 2.75,
  "thread_waste_excluded": 0.15,
  "thread_g": {
-  "base": 11.81,
+  "base": 12.02,
   "as_hunted": 4.63,
   "meat_trip": 1.94
  },
- "thread_g_total": 18.38,
- "thread_g_package_incl_waste_and_duplicates": 21.14,
+ "thread_g_total": 18.59,
+ "thread_g_package_incl_waste_and_duplicates": 21.39,
  "hours_per_bag": {
-  "base": 49.77,
+  "base": 50.66,
   "as_hunted": 16.29,
   "meat_trip": 3.48
  },
- "hours_per_bag_total": 69.54,
+ "hours_per_bag_total": 70.43,
  "hours_one_off": 4.1,
- "hours_package_total": 73.65,
+ "hours_package_total": 74.54,
  "hours_by_step": {
-  "0 Prep and cutting": 12.15,
+  "0 Prep and cutting": 12.24,
   "1 Pockets": 6.06,
   "2 Small parts": 4.39,
   "3 Door D2 and hinge band": 5.0,
-  "4 Main bag": 14.02,
+  "4 Main bag": 14.42,
   "5 Collar and roll top": 3.49,
   "6 Crown lid B-29 (as hunted)": 8.46,
-  "7 Straps and webbing": 5.66,
+  "7 Straps and webbing": 6.06,
   "8 Add-ons (scope pod as hunted, meat liner meat trip)": 3.71,
   "9 Rain fly F-01": 5.4,
   "10 Finish, inspect, pack": 1.2
@@ -86,14 +86,14 @@
   },
   {
    "seq": "0.05",
-   "op": "Hot-knife 77 webbing / elastic / cord pieces",
+   "op": "Hot-knife 80 webbing / elastic / cord pieces",
    "step": "0 Prep and cutting",
    "cfg": "base",
    "per_bag": true,
    "thread_id": "-",
    "length_mm": 0.0,
    "thread_g": 0.0,
-   "hours": 2.31,
+   "hours": 2.4,
    "duplicate_of": null
   },
   {
@@ -386,13 +386,13 @@
   },
   {
    "seq": "4.05",
-   "op": "B-18 doublers + HE hinge eyes (DECISION HE-ONE, sketch SK-8)",
+   "op": "B-18 doublers + HE hinge eyes (DECISION HE-ONE / HE-PIN, sketch SK-8)",
    "step": "4 Main bag",
    "cfg": "base",
    "per_bag": true,
    "thread_id": "bonded_nylon_tex135",
-   "length_mm": 1384.3,
-   "thread_g": 0.514,
+   "length_mm": 1237.8,
+   "thread_g": 0.46,
    "hours": 1.208,
    "duplicate_of": null
   },
@@ -429,7 +429,7 @@
    "thread_id": "bonded_nylon_tex135",
    "length_mm": 314.6,
    "thread_g": 0.117,
-   "hours": 0.3,
+   "hours": 0.7,
    "duplicate_of": null
   },
   {
@@ -854,6 +854,18 @@
   },
   {
    "seq": "7.13",
+   "op": "IMC: IM cam anchor tab (cam bar <-> hook / carabiner) x3",
+   "step": "7 Straps and webbing",
+   "cfg": "base",
+   "per_bag": true,
+   "thread_id": "bonded_nylon_tex135",
+   "length_mm": 943.8,
+   "thread_g": 0.35,
+   "hours": 0.6,
+   "duplicate_of": null
+  },
+  {
+   "seq": "7.14",
    "op": "K-IM: IM tail keeper (25 mm elastic) x3",
    "step": "7 Straps and webbing",
    "cfg": "base",
@@ -865,7 +877,7 @@
    "duplicate_of": null
   },
   {
-   "seq": "7.14",
+   "seq": "7.15",
    "op": "US: under-strap US1 / US2 x2",
    "step": "7 Straps and webbing",
    "cfg": "base",
@@ -877,7 +889,7 @@
    "duplicate_of": null
   },
   {
-   "seq": "7.15",
+   "seq": "7.16",
    "op": "B-24: float stand-off link (38 mm, meat-trip) x2",
    "step": "7 Straps and webbing",
    "cfg": "meat_trip",
@@ -889,19 +901,19 @@
    "duplicate_of": null
   },
   {
-   "seq": "7.16",
-   "op": "B-25: guy bridle on the crown top bar x1",
+   "seq": "7.17",
+   "op": "B-25: guy bridle on the crown top bar (38 mm, BL-041) x1",
    "step": "7 Straps and webbing",
    "cfg": "base",
    "per_bag": true,
    "thread_id": "bonded_nylon_tex135",
-   "length_mm": 247.2,
-   "thread_g": 0.092,
+   "length_mm": 344.6,
+   "thread_g": 0.128,
    "hours": 0.2,
    "duplicate_of": null
   },
   {
-   "seq": "7.17",
+   "seq": "7.18",
    "op": "TG: port guy (B-25 toggle -> B-27 port -> B-22 inside) x2",
    "step": "7 Straps and webbing",
    "cfg": "base",
@@ -913,7 +925,7 @@
    "duplicate_of": null
   },
   {
-   "seq": "7.18",
+   "seq": "7.19",
    "op": "K-G: guy tail keeper (25 mm elastic) x2",
    "step": "7 Straps and webbing",
    "cfg": "base",
@@ -921,18 +933,6 @@
    "thread_id": "bonded_nylon_tex90",
    "length_mm": 0.0,
    "thread_g": 0.0,
-   "hours": 0.2,
-   "duplicate_of": null
-  },
-  {
-   "seq": "7.19",
-   "op": "GBL: guy bar loop (POM toggle) x2",
-   "step": "7 Straps and webbing",
-   "cfg": "base",
-   "per_bag": true,
-   "thread_id": "bonded_nylon_tex135",
-   "length_mm": 314.6,
-   "thread_g": 0.117,
    "hours": 0.2,
    "duplicate_of": null
   },

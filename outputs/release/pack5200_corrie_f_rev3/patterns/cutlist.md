@@ -122,22 +122,23 @@ Knife: CW from the grain-arrow head; cut windows and slits first. Notches 6 mm d
 | WX | W haul extender (meat-trip kit) | poly_webbing_25mm | 740 (29.1) | 3 | meat_trip | strap_tails.wrap_rows haul extender_mm |
 | K-W | W gore keeper loop (6, in the gore seams) | poly_webbing_25mm | 80 (3.1) | 6 | base | ledger 'keepers: 6 haul-wrap keeper loops' (ASSUMPTION 80 mm cut) |
 | RT | roll-top side clip strap | poly_webbing_25mm | 510 (20.1) | 2 | base | strap_tails.roll_row |
-| RTM | roll-clip buckle tab on the gusset (female half) | poly_webbing_25mm | 70 (2.8) | 2 | base | BL-040 DECISION RT-MATE (cloth-pass clip_below_seam 150 mm; LLT tab rule) |
+| RTM | roll-clip buckle tab on the gusset (female half) | poly_webbing_25mm | 70 (2.8) | 2 | base | BL-040 DECISION RT-MATE (LLT tab rule); BL-041 RT-FWD placement (rt_layout) |
+| W3G | W3 guide on the gusset (W3 under, RT strap over) | poly_webbing_25mm | 60 (2.4) | 2 | base | BL-041 DECISION RT-OVER-W3 (W3 cannot clear the clip path sideways: it crosses the gusset) |
 | K-RT | roll clip tail keeper (25 mm elastic) | elastic_25mm | 90 (3.5) | 2 | base | BL-031 |
 | IM1 | internal meat strap IM1 | poly_webbing_25mm | 990 (39.0) | 1 | base | strap_tails.im_rows (unchanged) |
 | IM2 | internal meat strap IM2 | poly_webbing_25mm | 1023 (40.3) | 1 | base | strap_tails.im_rows (unchanged) |
 | IM3 | internal meat strap IM3 | poly_webbing_25mm | 1083 (42.6) | 1 | base | strap_tails.im_rows (unchanged) |
+| IMC | IM cam anchor tab (cam bar <-> hook / carabiner) | poly_webbing_25mm | 180 (7.1) | 3 | base | BL-041 DECISION IM-CAM-TAB (review m-19 / n-15: the cam had no sewn anchor) |
 | K-IM | IM tail keeper (25 mm elastic) | elastic_25mm | 90 (3.5) | 3 | base | BL-031 |
 | IME | IM fairlead eye (38 mm) | poly_webbing_38mm | 200 (7.9) | 6 | base | ledger IM-eyes 6 x 0.20 m |
 | US | under-strap US1 / US2 | poly_webbing_25mm | 550 (21.7) | 2 | base | ledger US-web 1.10 m |
 | B-24 | float stand-off link (38 mm, meat-trip) | poly_webbing_38mm | 435 (17.1) | 2 | meat_trip | attach_system.link_piece; ledger B-24-web 2 x 435 mm |
-| HE | hinge eye (38 mm) | poly_webbing_38mm | 150 (5.9) | 2 | base | BL-040 DECISION HE-ONE (cut 38 x 150 as attach_system.drawing_pieces HE) |
+| HE | hinge eye (38 mm) | poly_webbing_38mm | 86 (3.4) | 2 | base | BL-040 DECISION HE-ONE + BL-041 DECISION HE-PIN (cut 38 x 86; eye solved by he_geometry) |
 | T3 | IM3 bag-hook tongue (38 mm) | poly_webbing_38mm | 160 (6.3) | 2 | base | attach_system.drawing_pieces T2/T3 (IM2 hooks removed by BL-004: 2 left) |
-| B-25 | guy bridle on the crown top bar | poly_webbing_25mm | 412 (16.2) | 1 | base | corrie_f.guy_bridle |
+| B-25 | guy bridle on the crown top bar (38 mm, BL-041) | poly_webbing_38mm | 386 (15.2) | 1 | base | corrie_f.guy_bridle(wide=True) (crown_tube_guy_loop.md section 5, 8.1) |
 | TG | port guy (B-25 toggle -> B-27 port -> B-22 inside) | poly_webbing_25mm | 500 (19.7) | 2 | base | attach_system.GUY cut_mm |
 | LLT | guy ladder-lock tab on B-22 | poly_webbing_25mm | 70 (2.8) | 2 | base | attach_system.drawing_pieces LLT |
 | K-G | guy tail keeper (25 mm elastic) | elastic_25mm | 90 (3.5) | 2 | base | ledger 'guy tail elastic keepers x2' |
-| GBL | guy bar loop (POM toggle) | poly_webbing_25mm | 170 (6.7) | 2 | base | ledger BL-004 REC 'guy bar loops x2: 25 mm x 170 mm' |
 | HPL | scope-pod hard-point loop | poly_webbing_25mm | 80 (3.1) | 4 | base | corrie_f.LOOP_M |
 | E5 | pole grip tab (cord lock) | poly_webbing_25mm | 60 (2.4) | 1 | base | evolve.POLE tab_m |
 | I2T | IMP-2 hang tab (B-06f) | poly_webbing_25mm | 100 (3.9) | 1 | base | lean.fell IMP-2L 0.10 m |
@@ -147,7 +148,7 @@ Knife: CW from the grain-arrow head; cut windows and slits first. Notches 6 mm d
 | B-26 | B-26 tripod keeper, 3 mm shock cord (ends 15 mm in the R corner seams) | shock_cord_3mm | 201 (7.9) | 1 | base | corrie_f.tripod_keeper |
 | FP-cord | FP mouth shock cord | shock_cord_3mm | 320 (12.6) | 2 | base | corrie_f.hip_reach_pockets (w + pleat + 60) |
 | E5-cord | pole quiver grip cord | shock_cord_3mm | 300 (11.8) | 1 | base | evolve.POLE |
-| MK-cord | rifle muzzle keeper, 3 mm shock cord loop through the 2 B-11 muzzle tabs + spring cord lock (one per gusset) | shock_cord_3mm | 309 (12.2) | 2 | base | corrie_f.muzzle_keeper (ASSUMPTION MUZZLE-CORD) |
+| MK-cord | rifle muzzle keeper, 3 mm shock cord loop through the 2 B-11 muzzle tabs + spring cord lock (one per gusset) | shock_cord_3mm | 299 (11.8) | 2 | base | corrie_f.muzzle_keeper (ASSUMPTION MUZZLE-CORD) |
 | F-EL | fly hem elastic, 6 mm (spine top + bottom, sides bottom + frame) | elastic_6mm | 2436 (95.9) | 1 | as_hunted | corrie_f.fly_pieces (FLY_ELASTIC_RATIO x hem channels) |
 
 ## Hardware

@@ -12,49 +12,49 @@
    "meat_trip": 3967.4
   },
   "P": {
-   "base": 3679.4,
-   "as_hunted": 3997.9,
-   "meat_trip": 4193.9,
+   "base": 3690.8,
+   "as_hunted": 4009.3,
+   "meat_trip": 4205.3,
    "by_system_base": {
     "frame": 1071.8,
     "back": 413.6,
     "belt": 482.3,
     "harness": 225.1,
-    "bag_shell": 412.6,
+    "bag_shell": 412.5,
     "bag_pockets": 110.6,
     "pouch": 0,
     "fly": 5.9,
-    "straps_meat": 399.2,
-    "straps_compression": 241.5,
-    "attachment": 291.0,
+    "straps_meat": 408.9,
+    "straps_compression": 246.2,
+    "attachment": 288.0,
     "misc": 25.8
    },
    "like_for_like_base": {
-    "bag_side": 1460.9,
+    "bag_side": 1472.2,
     "suspension": 2192.7,
     "misc": 25.8
    }
   },
   "A": {
-   "base": 3092.2,
-   "as_hunted": 3410.8,
-   "meat_trip": 3606.8,
+   "base": 3103.6,
+   "as_hunted": 3422.1,
+   "meat_trip": 3618.1,
    "by_system_base": {
     "frame": 1067.8,
     "back": 363.6,
     "belt": 393.3,
     "harness": 196.8,
-    "bag_shell": 333.5,
+    "bag_shell": 333.4,
     "bag_pockets": 102.9,
     "pouch": 0,
     "fly": 5.9,
-    "straps_meat": 283.3,
-    "straps_compression": 140.0,
-    "attachment": 186.4,
+    "straps_meat": 293.0,
+    "straps_compression": 144.6,
+    "attachment": 183.5,
     "misc": 18.8
    },
    "like_for_like_base": {
-    "bag_side": 1052.0,
+    "bag_side": 1063.3,
     "suspension": 2021.4,
     "misc": 18.8
    }
@@ -68,14 +68,14 @@
     "meat_trip": 3939.5
    },
    "P": {
-    "base": 3650.9,
-    "as_hunted": 3969.4,
-    "meat_trip": 4165.4
+    "base": 3662.3,
+    "as_hunted": 3980.8,
+    "meat_trip": 4176.8
    },
    "A": {
-    "base": 3074.4,
-    "as_hunted": 3392.9,
-    "meat_trip": 3588.9
+    "base": 3085.8,
+    "as_hunted": 3404.3,
+    "meat_trip": 3600.3
    }
   },
   "M": {
@@ -85,14 +85,14 @@
     "meat_trip": 3967.4
    },
    "P": {
-    "base": 3679.4,
-    "as_hunted": 3997.9,
-    "meat_trip": 4193.9
+    "base": 3690.8,
+    "as_hunted": 4009.3,
+    "meat_trip": 4205.3
    },
    "A": {
-    "base": 3092.2,
-    "as_hunted": 3410.8,
-    "meat_trip": 3606.8
+    "base": 3103.6,
+    "as_hunted": 3422.1,
+    "meat_trip": 3618.1
    }
   },
   "L": {
@@ -102,14 +102,14 @@
     "meat_trip": 3991.5
    },
    "P": {
-    "base": 3704.3,
-    "as_hunted": 4022.8,
-    "meat_trip": 4218.8
+    "base": 3715.6,
+    "as_hunted": 4034.1,
+    "meat_trip": 4230.1
    },
    "A": {
-    "base": 3108.3,
-    "as_hunted": 3426.8,
-    "meat_trip": 3622.8
+    "base": 3119.6,
+    "as_hunted": 3438.2,
+    "meat_trip": 3634.2
    }
   },
   "XL": {
@@ -119,14 +119,14 @@
     "meat_trip": 4027.5
    },
    "P": {
-    "base": 3741.1,
-    "as_hunted": 4059.6,
-    "meat_trip": 4255.6
+    "base": 3752.5,
+    "as_hunted": 4071.0,
+    "meat_trip": 4267.0
    },
    "A": {
-    "base": 3136.3,
-    "as_hunted": 3454.8,
-    "meat_trip": 3650.8
+    "base": 3147.7,
+    "as_hunted": 3466.2,
+    "meat_trip": 3662.2
    }
   },
   "XXL": {
@@ -136,14 +136,14 @@
     "meat_trip": 4055.6
    },
    "P": {
-    "base": 3770.8,
-    "as_hunted": 4089.4,
-    "meat_trip": 4285.4
+    "base": 3782.2,
+    "as_hunted": 4100.7,
+    "meat_trip": 4296.7
    },
    "A": {
-    "base": 3156.0,
-    "as_hunted": 3474.6,
-    "meat_trip": 3670.6
+    "base": 3167.4,
+    "as_hunted": 3485.9,
+    "meat_trip": 3681.9
    }
   }
  },
@@ -477,9 +477,9 @@
    "kind": "design",
    "gate": "first-article: S15 elbow-swing / sling check (BL-009)",
    "delta_g": {
-    "base": 30.6,
-    "as_hunted": 179.2,
-    "meat_trip": 320.8
+    "base": 41.9,
+    "as_hunted": 190.5,
+    "meat_trip": 332.1
    },
    "rows": [
     {
@@ -1652,6 +1652,13 @@
      "source": "poly_webbing_25mm record x length (BAR_WRAP_MM, SPINE_WRAP_MM, BRIDLE_TAB_MM ASSUMPTIONS)"
     },
     {
+     "system": "attachment",
+     "name": "CORRIE F: BL-041: B-25 bridle 25 -> 38 mm webbing, sleeves x 26.5-64.5 (crown_tube_guy_loop.md, orchestrator 2026-11-13)",
+     "g": 3.39,
+     "cfg": "base",
+     "source": "guy_bridle(wide=True) 10.82 g - rev 1 7.43 g (poly_webbing_38mm record x length (BAR_WRAP_MM, SPINE_WRAP_MM, BRIDLE_TAB_MM ASSUMPTIONS))"
+    },
+    {
      "system": "straps_compression",
      "name": "CORRIE F: BL-022 rev 1: B-26 tripod keeper (3 mm shock cord, right gusset)",
      "g": 1.21,
@@ -1730,8 +1737,8 @@
     },
     {
      "system": "attachment",
-     "name": "CORRIE F: BL-034 thread: base ops, 11.7 g from the op stitch lengths (booked 2.0 g)",
-     "g": 9.7,
+     "name": "CORRIE F: BL-034 thread: base ops, 12.0 g from the op stitch lengths (booked 2.0 g)",
+     "g": 10.02,
      "cfg": "base",
      "source": "build_effort_rev3.json: mfg_corrie_f_rev3 op lengths x THREAD_FACTOR 2.75 (ASSUMPTION) x bonded_nylon_tex70/90/135 records"
     },
@@ -1758,10 +1765,52 @@
     },
     {
      "system": "bag_shell",
-     "name": "CORRIE F: BL-035: rifle muzzle keepers (2, 3 mm shock cord x 309 mm + spring cord lock, through the B-11 muzzle tabs, both gussets)",
-     "g": 8.71,
+     "name": "CORRIE F: BL-035: rifle muzzle keepers (2, 3 mm shock cord x 299 mm + spring cord lock, through the B-11 muzzle tabs, both gussets)",
+     "g": 8.59,
      "cfg": "base",
-     "source": "shock_cord_3mm record (6 g/m) x cut (tab gap 70 + 2 x stand-off 40 + pi x barrel 25 + tails 80 mm, ASSUMPTION MUZZLE-CORD) + cord_lock_spring record, x 2 (one per gusset)"
+     "source": "shock_cord_3mm record (6 g/m) x cut (tab gap 60 + 2 x stand-off 40 + pi x barrel 25 + tails 80 mm, ASSUMPTION MUZZLE-CORD) + cord_lock_spring record, x 2 (one per gusset)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-041: B-18 hinge doublers 90 x 45 -> 90 x 62 (BL-040 HE-ONE, x2)",
+     "g": 3.06,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.B18_H x hypalon_coated_nylon 1000 gsm (record)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-041: HE hinge eyes 150 -> 86 mm (DECISION HE-PIN, x2)",
+     "g": -3.58,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.HE_CUT x poly_webbing_38mm mass_g_m (record)"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-041: RTM roll-clip buckle tabs (2 x 70 mm, BL-040 RT-MATE)",
+     "g": 2.52,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.RTM_CUT x poly_webbing_25mm mass_g_m (record)"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-041: W3G W3 guides on the gussets (2 x 60 mm, DECISION RT-OVER-W3)",
+     "g": 2.16,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.W3G_CUT x poly_webbing_25mm mass_g_m (record)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-041: GBL guy bar loop webbing deleted (2 x 170 mm; rev 1+ toggles the guy into the B-25 tab, the toggles stay)",
+     "g": -6.12,
+     "cfg": "base",
+     "source": "attach_diet BAR_LOOP 170 mm x poly_webbing_25mm record (negative copy of the webbing in 'BL-004 REC: guy bar loops')"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: BL-041: IMC IM cam anchor tabs (3 x 180 mm, DECISION IM-CAM-TAB)",
+     "g": 9.72,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.IMC_FOLD x 4 x poly_webbing_25mm mass_g_m (record)"
     },
     {
      "system": "misc",
@@ -2765,6 +2814,13 @@
      "source": "poly_webbing_25mm record x length (BAR_WRAP_MM, SPINE_WRAP_MM, BRIDLE_TAB_MM ASSUMPTIONS)"
     },
     {
+     "system": "attachment",
+     "name": "CORRIE F: BL-041: B-25 bridle 25 -> 38 mm webbing, sleeves x 26.5-64.5 (crown_tube_guy_loop.md, orchestrator 2026-11-13)",
+     "g": 3.39,
+     "cfg": "base",
+     "source": "guy_bridle(wide=True) 10.82 g - rev 1 7.43 g (poly_webbing_38mm record x length (BAR_WRAP_MM, SPINE_WRAP_MM, BRIDLE_TAB_MM ASSUMPTIONS))"
+    },
+    {
      "system": "straps_compression",
      "name": "CORRIE F: BL-022 rev 1: B-26 tripod keeper (3 mm shock cord, right gusset)",
      "g": 1.21,
@@ -2843,8 +2899,8 @@
     },
     {
      "system": "attachment",
-     "name": "CORRIE F: BL-034 thread: base ops, 11.7 g from the op stitch lengths (booked 2.0 g)",
-     "g": 9.7,
+     "name": "CORRIE F: BL-034 thread: base ops, 12.0 g from the op stitch lengths (booked 2.0 g)",
+     "g": 10.02,
      "cfg": "base",
      "source": "build_effort_rev3.json: mfg_corrie_f_rev3 op lengths x THREAD_FACTOR 2.75 (ASSUMPTION) x bonded_nylon_tex70/90/135 records"
     },
@@ -2871,10 +2927,52 @@
     },
     {
      "system": "bag_shell",
-     "name": "CORRIE F: BL-035: rifle muzzle keepers (2, 3 mm shock cord x 309 mm + spring cord lock, through the B-11 muzzle tabs, both gussets)",
-     "g": 8.71,
+     "name": "CORRIE F: BL-035: rifle muzzle keepers (2, 3 mm shock cord x 299 mm + spring cord lock, through the B-11 muzzle tabs, both gussets)",
+     "g": 8.59,
      "cfg": "base",
-     "source": "shock_cord_3mm record (6 g/m) x cut (tab gap 70 + 2 x stand-off 40 + pi x barrel 25 + tails 80 mm, ASSUMPTION MUZZLE-CORD) + cord_lock_spring record, x 2 (one per gusset)"
+     "source": "shock_cord_3mm record (6 g/m) x cut (tab gap 60 + 2 x stand-off 40 + pi x barrel 25 + tails 80 mm, ASSUMPTION MUZZLE-CORD) + cord_lock_spring record, x 2 (one per gusset)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-041: B-18 hinge doublers 90 x 45 -> 90 x 62 (BL-040 HE-ONE, x2)",
+     "g": 3.06,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.B18_H x hypalon_coated_nylon 1000 gsm (record)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-041: HE hinge eyes 150 -> 86 mm (DECISION HE-PIN, x2)",
+     "g": -3.58,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.HE_CUT x poly_webbing_38mm mass_g_m (record)"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-041: RTM roll-clip buckle tabs (2 x 70 mm, BL-040 RT-MATE)",
+     "g": 2.52,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.RTM_CUT x poly_webbing_25mm mass_g_m (record)"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-041: W3G W3 guides on the gussets (2 x 60 mm, DECISION RT-OVER-W3)",
+     "g": 2.16,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.W3G_CUT x poly_webbing_25mm mass_g_m (record)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-041: GBL guy bar loop webbing deleted (2 x 170 mm; rev 1+ toggles the guy into the B-25 tab, the toggles stay)",
+     "g": -6.12,
+     "cfg": "base",
+     "source": "attach_diet BAR_LOOP 170 mm x poly_webbing_25mm record (negative copy of the webbing in 'BL-004 REC: guy bar loops')"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: BL-041: IMC IM cam anchor tabs (3 x 180 mm, DECISION IM-CAM-TAB)",
+     "g": 9.72,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.IMC_FOLD x 4 x poly_webbing_25mm mass_g_m (record)"
     },
     {
      "system": "bag_shell",
@@ -3479,6 +3577,13 @@
      "source": "poly_webbing_25mm record x length (BAR_WRAP_MM, SPINE_WRAP_MM, BRIDLE_TAB_MM ASSUMPTIONS)"
     },
     {
+     "system": "attachment",
+     "name": "CORRIE F: BL-041: B-25 bridle 25 -> 38 mm webbing, sleeves x 26.5-64.5 (crown_tube_guy_loop.md, orchestrator 2026-11-13)",
+     "g": -3.39,
+     "cfg": "base",
+     "source": "guy_bridle(wide=True) 10.82 g - rev 1 7.43 g (poly_webbing_38mm record x length (BAR_WRAP_MM, SPINE_WRAP_MM, BRIDLE_TAB_MM ASSUMPTIONS))"
+    },
+    {
      "system": "straps_compression",
      "name": "CORRIE F: BL-022 rev 1: B-26 tripod keeper (3 mm shock cord, right gusset)",
      "g": -1.21,
@@ -3557,8 +3662,8 @@
     },
     {
      "system": "attachment",
-     "name": "CORRIE F: BL-034 thread: base ops, 11.7 g from the op stitch lengths (booked 2.0 g)",
-     "g": -9.7,
+     "name": "CORRIE F: BL-034 thread: base ops, 12.0 g from the op stitch lengths (booked 2.0 g)",
+     "g": -10.02,
      "cfg": "base",
      "source": "build_effort_rev3.json: mfg_corrie_f_rev3 op lengths x THREAD_FACTOR 2.75 (ASSUMPTION) x bonded_nylon_tex70/90/135 records"
     },
@@ -3585,10 +3690,52 @@
     },
     {
      "system": "bag_shell",
-     "name": "CORRIE F: BL-035: rifle muzzle keepers (2, 3 mm shock cord x 309 mm + spring cord lock, through the B-11 muzzle tabs, both gussets)",
-     "g": -8.71,
+     "name": "CORRIE F: BL-035: rifle muzzle keepers (2, 3 mm shock cord x 299 mm + spring cord lock, through the B-11 muzzle tabs, both gussets)",
+     "g": -8.59,
      "cfg": "base",
-     "source": "shock_cord_3mm record (6 g/m) x cut (tab gap 70 + 2 x stand-off 40 + pi x barrel 25 + tails 80 mm, ASSUMPTION MUZZLE-CORD) + cord_lock_spring record, x 2 (one per gusset)"
+     "source": "shock_cord_3mm record (6 g/m) x cut (tab gap 60 + 2 x stand-off 40 + pi x barrel 25 + tails 80 mm, ASSUMPTION MUZZLE-CORD) + cord_lock_spring record, x 2 (one per gusset)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-041: B-18 hinge doublers 90 x 45 -> 90 x 62 (BL-040 HE-ONE, x2)",
+     "g": -3.06,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.B18_H x hypalon_coated_nylon 1000 gsm (record)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-041: HE hinge eyes 150 -> 86 mm (DECISION HE-PIN, x2)",
+     "g": 3.58,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.HE_CUT x poly_webbing_38mm mass_g_m (record)"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-041: RTM roll-clip buckle tabs (2 x 70 mm, BL-040 RT-MATE)",
+     "g": -2.52,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.RTM_CUT x poly_webbing_25mm mass_g_m (record)"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-041: W3G W3 guides on the gussets (2 x 60 mm, DECISION RT-OVER-W3)",
+     "g": -2.16,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.W3G_CUT x poly_webbing_25mm mass_g_m (record)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-041: GBL guy bar loop webbing deleted (2 x 170 mm; rev 1+ toggles the guy into the B-25 tab, the toggles stay)",
+     "g": 6.12,
+     "cfg": "base",
+     "source": "attach_diet BAR_LOOP 170 mm x poly_webbing_25mm record (negative copy of the webbing in 'BL-004 REC: guy bar loops')"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: BL-041: IMC IM cam anchor tabs (3 x 180 mm, DECISION IM-CAM-TAB)",
+     "g": -9.72,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.IMC_FOLD x 4 x poly_webbing_25mm mass_g_m (record)"
     }
    ]
   },
@@ -3784,45 +3931,45 @@
  },
  "configs": {
   "corrie_f_base": {
-   "total_g": 3367.1,
+   "total_g": 3378.5,
    "by_system": {
     "frame": 1134.0,
     "back": 413.6,
     "belt": 499.2,
     "harness": 216.6,
-    "bag_shell": 359.5,
+    "bag_shell": 359.4,
     "bag_pockets": 102.9,
     "pouch": 0,
     "fly": 5.9,
-    "straps_meat": 283.3,
-    "straps_compression": 140.0,
-    "attachment": 186.4,
+    "straps_meat": 293.0,
+    "straps_compression": 144.6,
+    "attachment": 183.5,
     "misc": 25.8
    },
    "like_for_like": {
-    "bag_side": 1078.0,
+    "bag_side": 1089.3,
     "suspension": 2263.4,
     "misc": 25.8
    }
   },
   "corrie_f_as_hunted": {
-   "total_g": 3685.7,
+   "total_g": 3697.0,
    "by_system": {
     "frame": 1134.0,
     "back": 413.6,
     "belt": 535.9,
     "harness": 216.6,
-    "bag_shell": 359.5,
+    "bag_shell": 359.4,
     "bag_pockets": 186.6,
     "pouch": 47.8,
     "fly": 72.1,
-    "straps_meat": 283.3,
-    "straps_compression": 219.5,
-    "attachment": 191.1,
+    "straps_meat": 293.0,
+    "straps_compression": 224.2,
+    "attachment": 188.1,
     "misc": 25.8
    },
    "like_for_like": {
-    "bag_side": 1359.8,
+    "bag_side": 1371.2,
     "suspension": 2300.0,
     "misc": 25.8
    }
@@ -3969,13 +4116,13 @@
     "pct": 60.0
    },
    "P": {
-    "ours_g": 3623.9,
-    "delta_g": 1315.9,
-    "pct": 57.0
+    "ours_g": 3635.3,
+    "delta_g": 1327.3,
+    "pct": 58.0
    },
    "A": {
-    "ours_g": 3044.4,
-    "delta_g": 736.4,
+    "ours_g": 3055.8,
+    "delta_g": 747.8,
     "pct": 32.0
    }
   },
@@ -3994,14 +4141,14 @@
     "pct": 54.0
    },
    "P": {
-    "ours_g": 3623.9,
-    "delta_g": 1227.9,
-    "pct": 51.0
+    "ours_g": 3635.3,
+    "delta_g": 1239.3,
+    "pct": 52.0
    },
    "A": {
-    "ours_g": 3044.4,
-    "delta_g": 648.4,
-    "pct": 27.0
+    "ours_g": 3055.8,
+    "delta_g": 659.8,
+    "pct": 28.0
    }
   },
   {
@@ -4020,13 +4167,13 @@
     "pct": 44.0
    },
    "P": {
-    "ours_g": 3791.5,
-    "delta_g": 1154.5,
+    "ours_g": 3802.9,
+    "delta_g": 1165.9,
     "pct": 44.0
    },
    "A": {
-    "ours_g": 3204.3,
-    "delta_g": 567.3,
+    "ours_g": 3215.7,
+    "delta_g": 578.7,
     "pct": 22.0
    }
   },
@@ -4042,13 +4189,13 @@
     "pct": 34.0
    },
    "P": {
-    "ours_g": 3679.4,
-    "delta_g": 889.4,
+    "ours_g": 3690.8,
+    "delta_g": 900.8,
     "pct": 32.0
    },
    "A": {
-    "ours_g": 3092.2,
-    "delta_g": 302.2,
+    "ours_g": 3103.6,
+    "delta_g": 313.6,
     "pct": 11.0
    }
   },
@@ -4064,14 +4211,14 @@
     "pct": 42.0
    },
    "P": {
-    "ours_g": 3679.4,
-    "delta_g": 1040.4,
-    "pct": 39.0
+    "ours_g": 3690.8,
+    "delta_g": 1051.8,
+    "pct": 40.0
    },
    "A": {
-    "ours_g": 3092.2,
-    "delta_g": 453.2,
-    "pct": 17.0
+    "ours_g": 3103.6,
+    "delta_g": 464.6,
+    "pct": 18.0
    }
   },
   {
@@ -4088,14 +4235,14 @@
     "pct": 35.0
    },
    "P": {
-    "ours_g": 3806.7,
-    "delta_g": 994.7,
-    "pct": 35.0
+    "ours_g": 3818.1,
+    "delta_g": 1006.1,
+    "pct": 36.0
    },
    "A": {
-    "ours_g": 3219.5,
-    "delta_g": 407.5,
-    "pct": 14.0
+    "ours_g": 3230.9,
+    "delta_g": 418.9,
+    "pct": 15.0
    }
   },
   {
@@ -4112,13 +4259,13 @@
     "pct": 41.0
    },
    "P": {
-    "ours_g": 3806.7,
-    "delta_g": 1098.7,
+    "ours_g": 3818.1,
+    "delta_g": 1110.1,
     "pct": 41.0
    },
    "A": {
-    "ours_g": 3219.5,
-    "delta_g": 511.5,
+    "ours_g": 3230.9,
+    "delta_g": 522.9,
     "pct": 19.0
    }
   },
@@ -4136,14 +4283,14 @@
     "pct": 33.0
    },
    "P": {
-    "ours_g": 3716.0,
-    "delta_g": 881.0,
+    "ours_g": 3727.4,
+    "delta_g": 892.4,
     "pct": 31.0
    },
    "A": {
-    "ours_g": 3128.8,
-    "delta_g": 293.8,
-    "pct": 10.0
+    "ours_g": 3140.2,
+    "delta_g": 305.2,
+    "pct": 11.0
    }
   },
   {
@@ -4162,13 +4309,13 @@
     "pct": 127.0
    },
    "P": {
-    "ours_g": 3791.5,
-    "delta_g": 2118.5,
+    "ours_g": 3802.9,
+    "delta_g": 2129.9,
     "pct": 127.0
    },
    "A": {
-    "ours_g": 3204.3,
-    "delta_g": 1531.3,
+    "ours_g": 3215.7,
+    "delta_g": 1542.7,
     "pct": 92.0
    }
   },
@@ -4186,20 +4333,20 @@
     "pct": 40.0
    },
    "P": {
-    "ours_g": 3806.7,
-    "delta_g": 1084.7,
+    "ours_g": 3818.1,
+    "delta_g": 1096.1,
     "pct": 40.0
    },
    "A": {
-    "ours_g": 3219.5,
-    "delta_g": 497.5,
-    "pct": 18.0
+    "ours_g": 3230.9,
+    "delta_g": 508.9,
+    "pct": 19.0
    }
   }
  ],
  "features": {
-  "after_tests_base_g": 3092.2,
-  "gap_g": 98.5,
+  "after_tests_base_g": 3103.6,
+  "gap_g": 109.9,
   "candidates": [
    {
     "item": "IMP-2",
@@ -4278,7 +4425,7 @@
   "with_reserve_g": 68.5,
   "reaches_with_reserve": false
  },
- "bl011_headline_base_g": 3274.2,
+ "bl011_headline_base_g": 3285.5,
  "h1_fatigue": {
   "old": 1.2794731924250948,
   "per_torso": 1.1502260709981276,
@@ -4304,12 +4451,12 @@
   "P": {
    "scenario": "P",
    "cfg": "base",
-   "total_g": 3679.4,
+   "total_g": 3690.8,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
-     "g": 422.9,
-     "band_g": 141.0,
-     "n": 25,
+     "g": 426.5,
+     "band_g": 142.1,
+     "n": 26,
      "frac": 0.3
     },
     "printed PAHT-CF body (2 mm raster x density)": {
@@ -4325,14 +4472,14 @@
      "frac": 0.1
     },
     "cut area x record gsm, length x record g/m": {
-     "g": 1991.1,
-     "band_g": 202.3,
-     "n": 134,
+     "g": 1998.8,
+     "band_g": 204.4,
+     "n": 140,
      "frac": 0.08
     }
    },
-   "worst_g": 449.6,
-   "rss_g": 69.8,
+   "worst_g": 452.9,
+   "rss_g": 69.9,
    "named": [
     {
      "name": "D2 door zip #10 in the blade | door seam, 2 sliders",
@@ -4385,14 +4532,14 @@
      "band_g": 5.3
     },
     {
-     "name": "belt B 2:1 pull: 2 x 25 mm Al D-ring (no record, ASSUMPTION 5 g, $1)",
-     "g": 10.0,
+     "name": "BL-034 thread: base ops, 12.0 g from the op stitch lengths (booked 2.0 g)",
+     "g": 10.02,
      "band_g": 3.0
     },
     {
-     "name": "BL-034 thread: base ops, 11.7 g from the op stitch lengths (booked 2.0 g)",
-     "g": 9.7,
-     "band_g": 2.9
+     "name": "belt B 2:1 pull: 2 x 25 mm Al D-ring (no record, ASSUMPTION 5 g, $1)",
+     "g": 10.0,
+     "band_g": 3.0
     },
     {
      "name": "BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
@@ -4405,8 +4552,8 @@
      "band_g": 2.9
     },
     {
-     "name": "BL-035: rifle muzzle keepers (2, 3 mm shock cord x 309 mm + spring cord lock, through the ",
-     "g": 8.71,
+     "name": "BL-035: rifle muzzle keepers (2, 3 mm shock cord x 299 mm + spring cord lock, through the ",
+     "g": 8.59,
      "band_g": 2.6
     },
     {
@@ -4439,12 +4586,12 @@
   "A": {
    "scenario": "A",
    "cfg": "base",
-   "total_g": 3092.2,
+   "total_g": 3103.6,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
-     "g": 343.5,
-     "band_g": 170.6,
-     "n": 30,
+     "g": 347.1,
+     "band_g": 171.6,
+     "n": 31,
      "frac": 0.3
     },
     "printed PAHT-CF body (2 mm raster x density)": {
@@ -4460,14 +4607,14 @@
      "frac": 0.1
     },
     "cut area x record gsm, length x record g/m": {
-     "g": 1487.4,
-     "band_g": 233.6,
-     "n": 155,
+     "g": 1495.1,
+     "band_g": 235.8,
+     "n": 161,
      "frac": 0.08
     }
    },
-   "worst_g": 510.9,
-   "rss_g": 72.1,
+   "worst_g": 514.2,
+   "rss_g": 72.2,
    "named": [
     {
      "name": "D2 door zip #10 in the blade | door seam, 2 sliders",
@@ -4540,14 +4687,14 @@
      "band_g": 5.3
     },
     {
-     "name": "belt B 2:1 pull: 2 x 25 mm Al D-ring (no record, ASSUMPTION 5 g, $1)",
-     "g": 10.0,
+     "name": "BL-034 thread: base ops, 12.0 g from the op stitch lengths (booked 2.0 g)",
+     "g": 10.02,
      "band_g": 3.0
     },
     {
-     "name": "BL-034 thread: base ops, 11.7 g from the op stitch lengths (booked 2.0 g)",
-     "g": 9.7,
-     "band_g": 2.9
+     "name": "belt B 2:1 pull: 2 x 25 mm Al D-ring (no record, ASSUMPTION 5 g, $1)",
+     "g": 10.0,
+     "band_g": 3.0
     },
     {
      "name": "hood + IM2 hooks kept until PT-1/TL-1/LL-H (BL-004 REC undone): guy bar loops x2: 25 mm we",
@@ -4555,8 +4702,8 @@
      "band_g": 2.9
     },
     {
-     "name": "BL-035: rifle muzzle keepers (2, 3 mm shock cord x 309 mm + spring cord lock, through the ",
-     "g": 8.71,
+     "name": "BL-035: rifle muzzle keepers (2, 3 mm shock cord x 299 mm + spring cord lock, through the ",
+     "g": 8.59,
      "band_g": 2.6
     },
     {

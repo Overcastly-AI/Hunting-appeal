@@ -956,7 +956,49 @@
     "LL-slip heavy (5 locks, 366 N, 1 h hold)",
     "toggle-loop pull 366 N"
    ],
-   "note": "bare-bar check; the corner wrap under the loop adds wall (not credited)."
+   "note": "bare-bar check; the corner wrap under the loop adds wall (not credited). BL-041: rev 3 moved the guy toggle into the B-25 bridle tab, shared with the B-28 crown strap (323 N envelope); the 25 mm sleeve fails the ring check there (crown_tube_guy_loop.md): fix rows = the 38 mm B-25 as built.",
+   "fix": {
+    "change": "B-25 bridle in 38 mm webbing, sleeves x 26.5-64.5 (rev 3; crown_tube_guy_loop.md 5)",
+    "mass_g": 3.39,
+    "checks": [
+     {
+      "item": "rev 3: crown bar wall under the 38 mm B-25 sleeve (guy + crown strap, basis A)",
+      "demand_n": 322.79999999999995,
+      "capacity": 438.8180329240564,
+      "kind": "strength",
+      "ratio": 1.3594115022430497,
+      "rated": false,
+      "basis": "crown_tube_guy_loop basis A",
+      "test": "TL-1 494 N"
+     },
+     {
+      "item": "rev 3: crown bar wall fatigue (FI at 1.6 g <= 0.5)",
+      "demand_n": 0.39232662990810746,
+      "capacity": 0.5,
+      "kind": "fatigue",
+      "ratio": 1.274448283352859,
+      "rated": true,
+      "basis": "crown_tube_guy_loop basis A; units FI",
+      "test": ""
+     },
+     {
+      "item": "rev 3: POM toggle pull-through, TL-1 proof",
+      "demand_n": 493.6500070154468,
+      "capacity": 670.0,
+      "kind": "proof",
+      "ratio": 1.3572368894528042,
+      "rated": false,
+      "basis": "ASSUMPTION attach_system",
+      "test": "TL-1 494 N"
+     }
+    ],
+    "after_verdict": "PASS after TL-1 494 N",
+    "after_min": 1.274448283352859,
+    "after_governs": "rev 3: crown bar wall fatigue (FI at 1.6 g <= 0.5)",
+    "after_tests": [
+     "TL-1 494 N"
+    ]
+   }
   },
   {
    "id": "A4",
@@ -1766,17 +1808,20 @@
   "15": {
    "n_1g": 552.4,
    "case": "meat",
-   "source": "live"
+   "source": "live",
+   "run": "F_r0_PR15"
   },
   "19": {
    "n_1g": 515.5,
    "case": "meat",
-   "source": "live"
+   "source": "live",
+   "run": "F_r0_PR19"
   },
   "23": {
    "n_1g": 460.1,
    "case": "meat",
-   "source": "live"
+   "source": "live",
+   "run": "F_r0_PR23"
   }
  },
  "fairlead_reproduce": {
@@ -1844,7 +1889,7 @@
  "mass": {
   "fix_g": {
    "BL-003": 35.0,
-   "BL-004": 22.79792,
+   "BL-004": 26.187920000000002,
    "BL-006": 0.0
   },
   "meat_trip_kit_g": 16.0,
@@ -1856,7 +1901,7 @@
   },
   "saving_after_g": {
    "BL-003": 183.5,
-   "BL-004": 80.20208,
+   "BL-004": 76.81208,
    "BL-006": 57.400000000000034
   }
  },
@@ -1896,7 +1941,7 @@
   "bag_hook_g": 14.0,
   "b24_hook_g": 14.0,
   "w_hook_g": 4.0,
-  "pack_g": 3927.0
+  "pack_g": 3967.4
  },
  "front_pad": {
   "limit_kpa": 48.6,
