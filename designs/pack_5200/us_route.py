@@ -615,6 +615,47 @@ def cradle_span(belly: float | None = None) -> dict:
     return out
 
 
+# BL-053 (fifth review M-1): the cradle as a 3D string. Each strap runs pin -> under the quarter -> pin. In the plane
+# through the two pins (frame x) that touches the quarter's lowest front edge, a taut strap is two straight legs from
+# each pin to that edge: the flattest legs (highest tension) any convex quarter bottom with that drop can give, because
+# a rounded or wide bottom only makes the legs steeper. Leg vector on the R pin, frame axes (x + outboard, y + aft
+# towards the bag, z + up): (-dx, dy, -belly) with dx the lateral run to the contact (the pin's lane x for a narrow
+# load that meets the strap at x 0, inboard; for a quarter WIDER than the span the legs run OUTBOARD to its edges),
+# dy the contact line's distance aft of the pin, belly the drop. Vertical equilibrium: V = 2 T belly / |leg|, so
+# T = V |leg| / (2 belly) and the leg's lateral pull T dx / |leg| = V dx / (2 belly) does not depend on dy.
+CRADLE3D_BELLY = (40.0, 50.0, 60.0, 70.0)   # BL-053: design down to a 40 mm belly (ticket item 4)
+CRADLE3D_DY = (0.0, 50.0, 95.0)             # ASSUMPTION QUARTER-CONTACT: the strap meets the quarter 0 mm (taut strap on
+#                                             the front edge against the spreader) to 95 mm (half the 190 mm depth of the
+#                                             quarter proxy, a round bottom) aft of the pin line
+QUARTER_W_MAX = 280.0                       # ASSUMPTION QUARTER-WIDTH: the R-08 quarter proxy (huntkit/viz3d/params.py
+#                                             'quarter' 280 x 190 x 620 mm); legs run outboard where it is wider than the span
+
+
+def cradle_3d(bellies=CRADLE3D_BELLY, dys=CRADLE3D_DY, w_max: float = QUARTER_W_MAX) -> dict:
+    """BL-053: per strap, per belly, per contact dy, the leg unit vector on the R pin and the tension at the 53 kg
+    float limit, factored as US_CRADLE_N (1.6 g x 1.5). 'in': a narrow load (legs run inboard to x 0, the lane half
+    span); 'out': a load wider than the span (legs run outboard to the load's edge, w_max / 2 - lane x; for US2 this
+    is 0 at w_max 280). V per strap from cradle_span's float-limit row (the meat_haul shares)."""
+    cs = cradle_span()
+    out = {"bellies_mm": list(bellies), "dy_mm": list(dys), "quarter_w_max_mm": w_max, "rows": {}, "vertical_n": {}}
+    for n in ("us1", "us2"):
+        half = cs["half_span_mm"][n]
+        th = math.atan2(cs["belly_mm"], half)
+        V = 2.0 * cs["at_float_limit"][n]["tension_n"] * math.sin(th)
+        out["vertical_n"][n] = round(V, 1)
+        for b in bellies:
+            for dy in dys:
+                for lab, dx, sx in (("in", half, -1.0), ("out", max(w_max / 2.0 - half, 0.0), 1.0)):
+                    v = np.array([sx * dx, dy, -b])
+                    L = float(np.linalg.norm(v))
+                    T = V * L / (2.0 * b)
+                    out["rows"][f"{n}|b{b:g}|dy{dy:g}|{lab}"] = {
+                        "strap": n, "belly_mm": b, "dy_mm": dy, "legs": lab, "unit": (v / L).round(4).tolist(),
+                        "tension_n": round(T, 1), "vec_n": (T * v / L).round(1).tolist(),
+                        "lateral_n": round(T * dx / L, 1), "leg_below_horizontal_deg": round(math.degrees(math.asin(b / L)), 1)}
+    return out
+
+
 def cradle_record() -> dict:
     rec = cradle_span()
     rec["sensitivity"] = {f"belly_{b:.0f}": {n: cradle_span(b)["at_float_limit"][n]["tension_n"] for n in ("us1", "us2")}

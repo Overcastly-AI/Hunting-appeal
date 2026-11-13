@@ -537,6 +537,25 @@ def _draw(mode_key: str, modes: dict) -> str:
     return _save(fig, names[mode_key])
 
 
+BELLY_FRAME_SAFE_MM = 40.0      # BL-053 (review 5 M-3): the US1 root, US2 lug and clevis are sized so the cradle passes
+#                                 strength >= 1.5 and fatigue >= 1.15 down to a 40 mm belly (h1_rev5.BELLY_DESIGN); the
+#                                 belly is then advice, not a safety rule (BL-054 item 4)
+
+
+def belly_advice() -> str:
+    """BL-054 item 4: step 6's belly guidance is ADVICE. It cites BL-053's record when it is on file; until then it
+    says the 40 mm frame check is pending and keeps the card's 60 mm minimum, so the text is never ahead of the
+    analysis."""
+    rec = ANALYSIS / "h1_rev5.json"
+    if rec.exists():
+        return (f"This is advice, not a safety rule: a deeper belly keeps the cam tension and strap wear down and is "
+                f"easier to cam by hand, but the frame is checked down to a {BELLY_FRAME_SAFE_MM:.0f} mm "
+                f"({BELLY_FRAME_SAFE_MM / 25.4:.1f} in) belly (BL-053, `analysis/h1_rev5.md`), so a flatter cradle is "
+                "not a frame overload.")
+    return (f"Never under 60 mm (2.4 in) until the BL-053 frame check to a {BELLY_FRAME_SAFE_MM:.0f} mm belly is on "
+            "file (`analysis/h1_rev5.md`); after that the belly is advice only.")
+
+
 def write(modes: dict, screens: list[str]) -> str:
     b, w, o = modes["bag_on"], modes["float"], modes["bag_off"]
 
@@ -617,7 +636,7 @@ The full step list with seconds is in `analysis/bag_attachment.md` section 7 (at
 3. Pop the two under-strap cams and lift the bag floor out of the open channels. The straps stay on their pins.
 4. Pull the two tethered hinge pins at z 60.
 5. Lift the bag clear.
-6. Set the quarter in the cradle, bone toward the spreader. Cam the two under-straps until the belly is about {BELLY_MM:.0f} mm.
+6. Set the quarter in the cradle, bone toward the spreader. Cam the two under-straps until the belly is about {BELLY_MM:.0f} mm ({BELLY_MM / 25.4:.1f} in). {belly_advice()}
 7. Hook IM1–IM3 eye-to-eye over the meat and cam them. A hock can sit on IM1.
 
 Walking peak of 36 kg is **{o['walk_n']:.0f} N**. The strength check is 1.5 times that,

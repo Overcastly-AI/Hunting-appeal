@@ -149,6 +149,27 @@ BARTACK_STD = {"BT-S": {"len_mm": 10.0, "w_mm": 2.0, "stitches": 28},     # ASSU
 GAUGE_NOTE = "CONTRAST colour thread, same record"     # BL-052 belly gauge tacks (quiet: thread only, no hardware)
 
 
+_OPIDX: dict = {}              # BL-054 (review 5 m-2): op key (title before ':') -> seq, filled by package()
+
+
+def OP(key: str) -> str:
+    """A cross-reference to a bag op by its piece / title key, resolved to the op number when the files are written
+    (``opref``). Never type an op number into text (fourth-review m-5 (e) and review 5 m-2 regressed twice)."""
+    return f"\u00abop:{key}\u00bb"
+
+
+def opref(text: str) -> str:
+    import re as _re
+    return _re.sub("\u00abop:([^\u00bb]+)\u00bb", lambda m: _OPIDX.get(m.group(1), f"[op {m.group(1)}?]"), text)
+
+
+def _index_ops(oplist) -> dict:
+    out = {}
+    for o in oplist:
+        out.setdefault(o.operation.split(":")[0].strip(), o.seq)
+    return out
+
+
 def bt_path_mm(kind: str) -> float:
     """BL-052: seam path of one bartack (the zigzag over its stitches), so a tack op books thread like a seam."""
     b = BARTACK_STD[kind]
@@ -495,7 +516,8 @@ def fairlead_line() -> str:
     im = P.F.hinge_pin()["shank_im_mm"]
     return (f"printed fairleads ({n} stations, in the H1 print; the US2 outer cheeks are the bolt-on clevises), 7075 pins "
             f"({n - 2}: IM1-IM3 and US1 / US2, {im:.0f} mm shank), Ti-6Al-4V HINGE pins (2: 5 mm h8 ground, "
-            f"{hc['length_mm']:.0f} mm, clip groove; BL-049, NOT 7075), UHMWPE sleeves ({n}), lifter keepers; crown pawl "
+            f"{hc['length_mm']:.0f} mm; BL-049, NOT 7075; retention per BL-053), UHMWPE sleeves ({2 * n}: one per cheek, "
+            "print/frame_h1/BUILD_H1.md ASSUMPTION PIN-SLEEVE), lifter keepers; crown pawl "
             "= the LOW-PROFILE pawl print/frame_h1/crown_pawl_lp_fdm_pacf (P1) / _lp_slm (production), NOT the old "
             "crown_pawl_* (it does not fit H1, BL-047)")
 
@@ -797,13 +819,15 @@ def _hw_values() -> dict:
 HE_405_STEPS = ("NECK", "B18-ROWS", "PLACE-HE", "BOX", "BASTE")   # BL-041 X-1: the order op 4.05 sews in
 
 
-def step_spec(kind: str, stitch: str = "301", note: str = "") -> str:
-    """BL-043 m-2: one step's machine / needle / thread / stitch, in words (an op may mix box-X, rows and tacks)."""
+def step_spec(kind: str, stitch: str = "301", note: str = "", bt: str = "BT-M") -> str:
+    """BL-043 m-2: one step's machine / needle / thread / stitch, in words (an op may mix box-X, rows and tacks).
+    BL-054 (review 5 m-6): ``bt`` names the bartack standard of a 'bt' step (BARTACK_STD; was always the BT-M 16 x 2)."""
     mach = {"box": "BT / PS (prototype: WF2 + J1 template)", "body": "WF2", "light": "WF1", "bt": "ZZ or BT",
             "baste": "WF1"}[kind]
     k = {"bt": "body", "baste": "body"}.get(kind, kind)
     spi = {"box": f"box-X path {SPI['box']} SPI", "body": f"{SPI['body']} SPI", "light": f"{SPI['light']} SPI",
-           "bt": "16 x 2 mm zigzag", "baste": "6 mm stitch"}[kind]
+           "bt": f"{bt} {BARTACK_STD[bt]['len_mm']:.0f} x {BARTACK_STD[bt]['w_mm']:.0f} mm zigzag, "
+                 f"{BARTACK_STD[bt]['stitches']} st", "baste": "6 mm stitch"}[kind]
     fb = "; prototype without zigzag: BT-301 fallback (4 passes, UNRATED)" if stitch == "304" else ""
     return f"[{mach}; {NEEDLE[k]}; {THREAD[k]}; ISO {stitch}, {spi}{fb}{'; ' + note if note else ''}]"
 
@@ -1579,7 +1603,7 @@ def ops(ctx: Ctx) -> list[SewingOp]:
              for ln in rs.pieces[pid].internal_lines if (ln.label or "").startswith("belly gauge tack"))
     if ng:
         op("US / US2 belly gauge tacks (BL-052, DECISION BELLY-GAUGE)",
-           f"On the flat tail of each under-strap sew one BT-S tack {step_spec('bt', '304', GAUGE_NOTE)} across the strap centre at each of the two 'belly gauge tack' lines: "
+           f"On the flat tail of each under-strap sew one BT-S tack {step_spec('bt', '304', GAUGE_NOTE, bt='BT-S')} across the strap centre at each of the two 'belly gauge tack' lines: "
            f"{P.F.BELLY_GAUGE_MM:.0f} mm ({P.F.BELLY_GAUGE_MM / IN:.2f} in) apart centre to centre, the first "
            f"{P.F.BELLY_GAUGE_TIP_MM:.0f} mm from the sealed tail tip. QC: steel rule, {P.F.BELLY_GAUGE_MM:.0f} +/- 2 mm "
            "between the tack centres. This is the hunter's minimum-belly gauge (user card: cradle belly never under "
@@ -2074,6 +2098,8 @@ def package(ctx: Ctx | None = None) -> dict:
     ctx = ctx or build_ctx()
     g = geo(ctx)
     oplist = ops(ctx)
+    _OPIDX.clear()
+    _OPIDX.update(_index_ops(oplist))
     bom = (fabric_bom(ctx) + camo_bom(ctx) + webbing_bom(ctx) + hardware_bom(ctx) + thread_bom(oplist, ledger_thread_g())
            + consumables_bom(g))
     for b in bom:                                   # BL-040: every coloured line names the colorways.yaml standard
@@ -2170,7 +2196,7 @@ ASSUMPTIONS = [
      f"housing ({P.F._CSC.PAWL_HOUSING_UP:g} up, +/-{P.F._CSC.PAWL_HOUSING_HALF_W:g}); the run reaches the printed spine "
      f"{P.F._CSC.SPINE_AXIS_FORE_MM:g} mm fore of the bar (+{P.F._CSC.B25_CUT_CHANGE_MM:g} mm run). Was ASSUMED "
      "(B25-CLAMP / PAWL-TOP / SPINE_CLAMP_HALF).",
-     "BL-045 clamp T6 coupon (CLAMP-TYPE); op 7.18 gate B25-FIT at kit S 15 in; TL-1 specimen"),
+     f"BL-045 clamp T6 coupon (CLAMP-TYPE; BL-054: T6(c) in print/frame_h1/BUILD_H1.md 13a); op {OP('B-25')} gate B25-FIT at kit S 15 in; TL-1 specimen"),
     ("GUY-LOCK-IN", "BL-040 M-5: the guy ladder lock stays on its LLT tab at B-22 inside the hinge band; the guy length is "
      "set with the roll top open (per crown kit / load), not on the move.", "PORT-1 gloved adjustment at B-22"),
     ("KW-OVER-FP", "BL-040 B-3: haul wraps W1 / W2 cross the FP hip pockets, over the mesh (keeper loop on top).",
@@ -2329,7 +2355,7 @@ THIRD_STATUS = [
      "lists the 34 x 7 box capacity and its peel"),
     ("M-4", "major", "fixed", "DECISION B25-TOPO drawn (SK-12, corrie_f.b25_topology): mitre under each sleeve, run "
      "and spine wrap necked to 25 mm, 13 mm over the (assumed) pawl housing at kit S 15 in; clamp undrawn in the frame "
-     "files: ASSUMPTIONS B25-CLAMP / PAWL-TOP, gate B25-FIT in op 7.18; TL-1 specimen carries the turn and run"),
+     f"files: ASSUMPTIONS B25-CLAMP / PAWL-TOP, gate B25-FIT in op {OP('B-25')}; TL-1 specimen carries the turn and run"),
     ("m-1", "minor", "fixed", "box top +11 (5 mm under the cheeks at the design pin); HE-FIT band 22-29 keeps the box "
      ">= 2 mm under the cheeks over the whole band; the solved bracket 23.1-28.9 sits inside it (test)"),
     ("m-2", "minor", "fixed", "ops 4.05 / 4.08 give machine / needle / thread / stitch per step (step_spec), BT-301 "
@@ -2386,9 +2412,9 @@ FOURTH_STATUS = [
     ("m-1", "minor", "frame", "BL-047 (fillet relief)"),
     ("m-2", "minor", "fixed", "RT cut rounded UP to 565 mm (grip 50.8); DECISION RT-TAIL-EXC with the K-RT keeper"),
     ("m-3", "minor", "fixed", "op 4.08 step 0: caliper the mated buckle before chalking; re-run rt_layout if larger"),
-    ("m-4", "minor", "fixed", "op 7.18: B-25 cut last from a scrap-strip dry fit at B25-FIT"),
-    ("m-5", "minor", "fixed", "op 7.18 text: wearer-side wording, BL-046 labels, neck-fold and mitre BT-M, laps sewn off the "
-     "bar round an 18 mm dowel; op number 7.18 everywhere"),
+    ("m-4", "minor", "fixed", f"op {OP('B-25')}: B-25 cut last from a scrap-strip dry fit at B25-FIT"),
+    ("m-5", "minor", "fixed", f"op {OP('B-25')} text: wearer-side wording, BL-046 labels, neck-fold and mitre BT-M, laps "
+     "sewn off the bar round an 18 mm dowel; op numbers are read from the op list (BL-054, review 5 m-2)"),
     ("m-6", "minor", "fixed", "SEW-F HE results rows (top row, proof), HE mounting on the lever rig, PAHT-CF print notes, "
      "about 100 g filament booked"),
     ("m-7", "minor", "fixed", "release regenerated (release_tests.csv and the tech pack carry the new HE-FIT step 0)"),
@@ -2541,7 +2567,7 @@ def write_files(pk: dict, out: Path = OUT) -> list[Path]:
            + ("open items above (BL-050 B: N-1b, the clevis bolt heads, frame side); " if nb4 or nm4 else "")
            + "HE-FIT step 0, CLEVIS-SHARE and FIT-US are physical gates; a FIFTH independent review decides.", "",
            "| Finding | Class | Status | How |", "|---|---|---|---|"]
-    md += [f"| {i} | {c} | {st} | {h.replace('|', '/')} |" for i, c, st, h in FOURTH_STATUS]
+    md += [f"| {i} | {c} | {st} | {opref(h).replace('|', '/')} |" for i, c, st, h in FOURTH_STATUS]
     md += ["", "## Pre-cut THIRD review status (BL-043 / BL-044)", "",
            "design-reviewer third review `analysis/review_20261113_rev3_third.md` (2 blockers, 4 majors, 14 minors). "
            "BL-043 fixed the bag-side items and checked each against every crown kit and torso end "
@@ -2553,21 +2579,21 @@ def write_files(pk: dict, out: Path = OUT) -> list[Path]:
                                                     "(three rounds found fixes that passed their own checks but failed "
                                                     "on the real geometry).")), "",
            "| Finding | Class | Status | How |", "|---|---|---|---|"]
-    md += [f"| {i} | {c} | {st} | {h.replace('|', '/')} |" for i, c, st, h in THIRD_STATUS]
+    md += [f"| {i} | {c} | {st} | {opref(h).replace('|', '/')} |" for i, c, st, h in THIRD_STATUS]
     md += ["", "## Pre-cut re-check status (BL-041)", "",
            "design-reviewer re-check `analysis/review_20261113_rev3_recheck.md` (2 blockers, 5 majors, 15 minors), "
            "fixed by BL-041 and re-checked geometrically (tests/test_bl041_recheck_fixes.py). A third independent "
            "review is still due before the fabric is cut.", "",
            "| Finding | Class | Status | How |", "|---|---|---|---|"]
-    md += [f"| {i} | {c} | {st} | {h.replace('|', '/')} |" for i, c, st, h in RECHECK_STATUS]
+    md += [f"| {i} | {c} | {st} | {opref(h).replace('|', '/')} |" for i, c, st, h in RECHECK_STATUS]
     md += ["", "## Pre-cut review status (BL-040)", "",
            f"Open after BL-044 (all three reviews): {nb} blockers, {nm} majors. " + (
                "**Ready to cut** the bag fabric once the G2 proof tests and the G3 wash have passed (the physical "
                "gates in qc_sheet.md still apply)." if ready_to_cut() else "**NOT ready to cut.**"), "",
            "| Finding | Class | Status | How |", "|---|---|---|---|"]
-    md += [f"| {i} | {c} | {st} | {h.replace('|', '/')} |" for i, c, st, h in REVIEW_STATUS]
+    md += [f"| {i} | {c} | {st} | {opref(h).replace('|', '/')} |" for i, c, st, h in REVIEW_STATUS]
     md += ["", "## Assumptions that govern", "", "| ID | Assumption | Settled by |", "|---|---|---|"]
-    md += [f"| {a} | {t} | {s} |" for a, t, s in ASSUMPTIONS]
+    md += [f"| {a} | {opref(t)} | {opref(s)} |" for a, t, s in ASSUMPTIONS]
     md += ["", "## Packaging", ""] + [f"{i + 1}. {t}" for i, t in enumerate(PACKAGING)]
     (out / "README.md").write_text("\n".join(md) + "\n")
     files.append(out / "README.md")
@@ -2743,8 +2769,11 @@ def sk_boxes(pk, path):
         ys = [(b["w_mm"] if i % 2 else 0.0) for i in range(k)]
         ax.plot(xs, ys, "-", color="#1a7f37", lw=0.8)
         ax.set_title(f"{key} bartack {b['len_mm']:.0f} x {b['w_mm']:.0f} mm, {k} st (304)", fontsize=10, loc="left")
-        used = {"BT-S": "B-27 slit ends, FP mouth corners (BL-043: W3G deleted; every BT-S is 10 x 2)",
-                "BT-M": "I2K, HE neck (1 per leg), IME neck (op 2.05), US neck (op 7.15), USA neck (op 7.16), "
+        gt = next((v for k_, v in _OPIDX.items() if k_.startswith("US / US2 belly gauge")), None)
+        used = {"BT-S": "B-27 slit ends, FP mouth corners, " + (f"US / US2 belly gauge tacks (op {gt}, contrast "
+                "thread, BL-054 review 5 m-6)" if gt else "") + " (BL-043: W3G deleted; every BT-S is 10 x 2)",
+                "BT-M": f"I2K, HE neck (1 per leg), IME neck (op {_OPIDX.get('IME fairlead eyes (frame kit)', '?')}), US neck "
+                        f"(op {_OPIDX.get('US', '?')}), USA neck (op {_OPIDX.get('USA', '?')}), "
                         "lid channel ends, B-25 sleeve laps, B-25 neck fold and mitre (BL-048)"}[key]
         ax.text(0.0, -0.3, f"LK-1900 standard tack, tex 90, Nm 110 R (unrated)\n" + textwrap.fill(used, 48)
                 + "\nno zigzag: BT-301 = 4 straight passes, 2 mm stitch", transform=ax.transAxes, fontsize=8, va="top")
@@ -3281,7 +3310,8 @@ def sk_bridle(pk, path):
     ax3.set_xlabel("mm along the strip (cut %.0f mm; BL-043 drew %.0f in the bar plane, BL-041 %.0f with no turn)"
                    % (tp["cut_mm"], tp["cut_bl043_mm"], tp["cut_bl041_mm"]))
     ax3.set_yticks([])
-    ax3.set_title("(c) B-25 flat, 38 mm: folds blue dash-dot, boxes green (op 7.18)", fontsize=10, loc="left")
+    ax3.set_title(f"(c) B-25 flat, 38 mm: folds blue dash-dot, boxes green (op {_OPIDX.get('B-25', '?')})", fontsize=10,
+                  loc="left")
     fig.suptitle("SK-12  B-25 guy bridle on the crown (BL-043 B25-TOPO, BL-044 on the sized crown_spine_clamp): the turn sits UNDER each sleeve; "
                  "gate B25-FIT dry-fits it before the laps are tacked", fontsize=12, x=0.01, ha="left")
     fig.savefig(path, dpi=100)
@@ -3335,6 +3365,14 @@ def sketches(pk, out: Path = OUT) -> dict:
 
 
 # ============================================================================ tech pack content (PDF: huntkit.manufacturing)
+def _cap(txt: str, n: int = 1600) -> str:
+    """BL-054: a register 'steps' cell longer than a tech-pack table row can hold (HE-FIT carries its print text)
+    is cut at a word and pointed at the full text (release_tests.csv and the test-kit guide keep it whole)."""
+    if len(txt) <= n:
+        return txt
+    return txt[:txt.rfind(" ", 0, n)] + " ... (full steps: release_tests.csv and the test-kit guide)"
+
+
 def techpack_design(pk: dict, sk: dict) -> MF.TechPack:
     """CORRIE F rev 3 content for ``huntkit.manufacturing.tech_pack`` (CONTRACTS.md section 5): cover, equipment, flats,
     BOM, cutting plan, op sequence, load points, QC, packaging, costing, delta register, assumptions."""
@@ -3448,7 +3486,7 @@ def techpack_design(pk: dict, sk: dict) -> MF.TechPack:
               [12, 18, 35, 60, 85, 35]), page_break(),
         h2("Physical tests that gate release"),
         table([["ID", "Test", "Gates", "Steps", "Pass / fail", "Source"]] +
-              [[t["id"], t["title"], t["gates"], t["steps"], t["pass"], t["source"]] for t in pk["tests"]],
+              [[t["id"], t["title"], t["gates"], _cap(t["steps"]), t["pass"], t["source"]] for t in pk["tests"]],
               [13, 45, 40, 75, 55, 17]), page_break(),
         h2("Defect list"),
         table([["Defect", "Where", "Cause", "Prevent / fix", "Class"]] + [list(d) for d in DEFECTS],
@@ -3468,7 +3506,7 @@ def techpack_design(pk: dict, sk: dict) -> MF.TechPack:
               [[d["id"], d["status_after_rev3_package"], d["evidence"], d["still_open"]] for d in pk["delta"]],
               [14, 25, 110, 96])]))
     secs.append(S("12. Assumptions that govern", [
-        table([["ID", "Assumption", "Settled by"]] + [list(a) for a in ASSUMPTIONS], [30, 125, 90])]))
+        table([["ID", "Assumption", "Settled by"]] + [[opref(x) for x in a] for a in ASSUMPTIONS], [30, 125, 90])]))
     return MF.TechPack(
         title=TITLE, date=DATE, footer=f"{TITLE} - tech pack - {DATE} - generated, do not edit",
         subtitle=(f"Revision 3, door D2, crown kit M shown (S / L cut lists in cutting_plan.csv). Issued {DATE}. "

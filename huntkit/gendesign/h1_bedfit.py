@@ -66,7 +66,9 @@ class ClevisJoint:
     (as the z 234 joint's inboard trap). Holes printed 4.8, reamed 5.1 (fitted bolts take the shear, as at z 234)."""
     dy: float = -2.8               # bolt axis from the stay centre yc (y -5.47 at US2; BL-050 -4.3): BL-051 moved it
     #                                1.5 mm up so the head counterbore keeps a 2.5 mm wall to the block's wearer face
-    dz: float = 8.0                # bolt axes at z_pin +/- 8 (washer OD 10 inside the +/-14.5 block)
+    dz: float = 7.0                # bolt axes at z_pin +/- 7 (BL-053, fifth review M-2: was 8, which left the washer
+    #                                slot 1.1-1.3 mm from the block's z faces; 7 gives 2.3 mm at the washer, 3.4 mm at
+    #                                the nut's hex slot, 3.6 mm between the two washer slots)
     hole_d: float = 5.1            # reamed (printed 4.8)
     hole_print_d: float = 4.8
     washer_od: float = 10.0        # DIN 433 5.3 x 10 x 1 (z room: 8 + 5 = 13 < 14.5)
@@ -76,6 +78,9 @@ class ClevisJoint:
     nut_face: float = 151.0        # |x| where the nut washer bears (body plug 151 -> 163 = 12 mm: hole bearing at
     #                                share 1.0 governs the fatigue; 8 mm gave 0.79 there)
     trap_x0: float = 145.8         # |x| inboard end of the trap (washer 1 + nut 4 + 0.2 play)
+    hex_trap: bool = True          # BL-053 (M-2): two-step trap as at z 234: washer slot (slot_w, washer_t + 0.2 long
+    #                                at the nut face), then an AF + 0.2 hex slot that holds the nut by its flats
+    nut_play: float = 0.2          # hex slot AF play
     outer_face: float = 183.0      # |x| clevis outer face (outer cheek's outer face, h1 US2 x 165 + 18)
     head_recess: float = 4.0       # BL-051: counterbore depth (head 3.5 + 0.5 below the face)
     cbore_d: float = 9.0           # BL-051: head 8.5 + 0.5 (printed; the head bears on its floor, no washer)
@@ -172,9 +177,58 @@ def cuts(p: dict, j: ClevisJoint = JOINT):
         h = _cyl_x(p["sign"] * j.tail_x, p["sign"] * (j.outer_face + 1.0), y, z, j.hole_print_d)
         if j.head_recess > 0.0:        # BL-051: head counterbore from the outer face
             h = h + _cyl_x(p["sign"] * j.head_face, p["sign"] * (j.outer_face + 1.0), y, z, j.cbore_d, seg=64)
-        t = _box(*_sx(p, j.trap_x0, j.nut_face), yb - 1.0, y + j.slot_w / 2.0, z - j.slot_w / 2.0, z + j.slot_w / 2.0)
+        if j.hex_trap:
+            t = trap_solid(p, y, z, j)
+        else:
+            t = _box(*_sx(p, j.trap_x0, j.nut_face), yb - 1.0, y + j.slot_w / 2.0, z - j.slot_w / 2.0,
+                     z + j.slot_w / 2.0)
         out = h + t if out is None else out + h + t
     return out
+
+
+def trap_solid(p: dict, y: float, z: float, j: ClevisJoint = JOINT):
+    """BL-053 (M-2): the nut + washer trap of one bolt, as the z 234 joint's: a washer slot slot_w wide (round top, box
+    to the wearer face) over |x| nut_face - washer_t - 0.2 .. nut_face, then the nut's hex pocket (AF + play across z,
+    flats facing +/- z so the nut cannot turn, corners towards y) with an AF + play slot down to the wearer face, over
+    |x| trap_x0 .. the washer slot."""
+    import manifold3d as m3d
+    yb = p["yc"] + BLOCK_DY_LO
+    w_lo = j.nut_face - j.washer_t - 0.2
+    ws = _cyl_x(p["sign"] * w_lo, p["sign"] * j.nut_face, y, z, j.slot_w, seg=48) + \
+        _box(*_sx(p, w_lo, j.nut_face), yb - 1.0, y, z - j.slot_w / 2.0, z + j.slot_w / 2.0)
+    af = j.nut_af + j.nut_play
+    rc = af / math.sqrt(3.0)                          # circumradius of the hex slot
+    hx = m3d.Manifold.cylinder(w_lo - j.trap_x0, rc, rc, 6)        # along +z, vertices at angle 0 (+x local)
+    # local z -> frame x; local x -> frame y (a vertex points along y: flats face +/- z)
+    hx = hx.rotate((0.0, 90.0, 0.0)).translate((min(p["sign"] * j.trap_x0, p["sign"] * w_lo), y, z))
+    ns = _box(*_sx(p, j.trap_x0, w_lo), yb - 1.0, y, z - af / 2.0, z + af / 2.0)
+    return ws + hx + ns
+
+
+def trap_walls(p: dict | None = None, j: ClevisJoint = JOINT) -> dict:
+    """Wall (mm) between each trap step and the block's z faces, and between the two traps (M-2 rule >= 2 mm)."""
+    p = p or next(q for q in us2_stations() if q["side"] == "R")
+    af = j.nut_af + j.nut_play
+    out = {}
+    for lab, w in (("washer_slot", j.slot_w), ("hex_slot", af), ("hex_corner_y", af)):
+        out[lab] = {"outer_wall_mm": round(BLOCK_HALF_Z - (j.dz + w / 2.0), 2),
+                    "between_traps_mm": round(2 * j.dz - w, 2)}
+    out["min_wall_mm"] = min(min(v.values()) for v in out.values())
+    out["pass_2mm"] = bool(out["min_wall_mm"] >= 2.0)
+    out["nut_held_by_flats"] = bool(j.hex_trap and af < j.nut_af / math.cos(math.radians(30)) - 0.2)
+    return out
+
+
+LIP_R = 3.0                        # BL-053 (M-6): the US2 blocks' lower aft edge (the bag-on strap wraps it)
+
+
+def lip_round_cut(p: dict, r: float = LIP_R):
+    """Material to take off the lower aft edge of both joint blocks of station p (edge along x at y = y_floor,
+    z = pin - BLOCK_HALF_Z): the corner square less a quarter cylinder of radius r."""
+    y1, z0 = p["y_floor"], p["z"] - BLOCK_HALF_Z
+    xa, xb = _sx(p, BODY_BLOCK_X0 - 1.0, JOINT.outer_face + 1.0)
+    sq = _box(xa, xb, y1 - r, y1 + 0.5, z0 - 0.5, z0 + r)
+    return sq - _cyl_x(xa - 0.5, xb + 0.5, y1 - r, z0 + r, 2 * r, seg=64)
 
 
 def split_box(p: dict):
@@ -195,6 +249,8 @@ def split_us2(mesh, log=print) -> tuple:
     v1 = man.volume()
     for p in us2_stations():
         man = man - cuts(p)
+        if LIP_R > 0.0:                # BL-053 (M-6): r 3 lip on the blocks' lower aft edge
+            man = man - lip_round_cut(p)
     v2 = man.volume()
     body = man
     pieces = {}
@@ -401,7 +457,7 @@ def joint_loads(name: str = "us2") -> dict:
     return LN.lug_loads(name)
 
 
-def joint_check(share: float = CHEEK_SHARE, j: ClevisJoint = JOINT) -> dict:
+def joint_check(share: float = CHEEK_SHARE, j: ClevisJoint = JOINT, loads: dict | None = None) -> dict:
     """Per load row: bolt forces from the dry-face contact solve (tension-only bolts, no preload credited, as the
     z 234 joint), bolt shear from the direct shear and the torsion, PAHT checks; static at the factored row, fatigue
     at 1.6 g (row x 1.6 / g_times_req). Body block net section through the nut traps (layer rule, layer normal y)."""
@@ -430,11 +486,14 @@ def joint_check(share: float = CHEEK_SHARE, j: ClevisJoint = JOINT) -> dict:
     ns = net_section(p, j)
     xs_ns = 0.5 * (j.trap_x0 + j.nut_face)
     rows = {}
-    for nm, L in joint_loads().items():
+    for nm, L in (loads if loads is not None else joint_loads()).items():
         F = np.asarray(L["vec"], float)
-        Fc = np.array([max(F[0], 0.0), share * F[1], share * F[2]])
+        if L.get("direct"):            # BL-053: a force already on the clevis (e.g. the strap's wrap on the block lip)
+            Fc = F.copy()
+        else:
+            Fc = np.array([max(F[0], 0.0), share * F[1], share * F[2]])
         gr = L["g_times_req"]
-        r = pin - c0
+        r = (np.asarray(L["at"], float) if L.get("at") is not None else pin) - c0
         M = np.cross(r, Fc)
         # face equilibrium (see module notes): sum f = Fx, sum f v = M_y, sum f u = -M_z (u = y, v = z local)
         cs = H1.contact_solve(U, V, a, Fc[0], M[1], -M[2], bolts, kb, kc)

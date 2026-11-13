@@ -334,7 +334,7 @@ def _local_station(geom, stay_r: float, xoff: float) -> dict:
 
 
 def lug_fea(geom, stay_r: float, xoff: float, arm: dict | None, loads: dict, h: float = 1.0,
-            relief: bool = False, field: str | None = None, stay_poly: list | None = None) -> dict:
+            relief: bool = False, field: str | None = None, stay_poly: list | None = None, extra=None) -> dict:
     """Voxel FEA of a fairlead standing ``xoff`` from the stay axis on an arm (h1_fairleads.fairlead_fea's model,
     rules and load application; ``xoff`` 0 and ``arm`` None = that model exactly). Local axes: x along the pin
     (+ = towards the lane), y towards the bag, z along the stay; the stay stub (circle r ``stay_r``) is fixed at its
@@ -376,6 +376,8 @@ def lug_fea(geom, stay_r: float, xoff: float, arm: dict | None, loads: dict, h: 
         cs = c + np.array([STAY_X, 0.0, 0.0])
         st["x"] = STAY_X + xoff
         armm = in_arm(cs, st, arm)
+        if extra is not None:            # BL-053: extra lug solid (inner-cheek buttress), frame-like coords as in_arm
+            armm |= extra(cs, st)
     solid = stay | yoke | armm
     if relief:          # BL-047's m-1 relief groove (bl047_frame_items.relief_solid) as voids, both cheeks
         from .bl047_frame_items import RELIEF_DEPTH, RELIEF_INTO_CHEEK, RELIEF_UP, RELIEF_W

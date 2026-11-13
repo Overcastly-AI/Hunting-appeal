@@ -41,6 +41,6 @@ notes: 'BL-048 M-B PURCHASE SPEC: 38 mm (1.5 in) polyester, plain or twill, ply 
   at 5 places before ordering the roll; reject anything over 1.6 mm. Typical "heavyweight 4500 lbf" and mil-spec
   rolls are 1.8-2.3 mm and are rejected. FALLBACK if the only roll to hand is thicker: use it for B-24 and T3 only
   (they wrap no pin and pass no throat), and buy 1 m of a <= 1.6 mm web (seatbelt-style or "security" polyester) for
-  the HE, IME and B-25; never sew a thicker web into the HE or IME (3 plies must pass the 5.5 mm gap). ESTIMATE: typical vendor rating ~4500 lbf for heavyweight 38 mm polyester. Buy with a mill cert (thickness and break) to make this a datasheet value; a mil-spec Type/Class with
+  the HE, IME and B-25; never sew a thicker web into the HE or IME (3 plies must pass the 6.5 mm gap under the hinge pin, BL-049; was 5.5). ESTIMATE: typical vendor rating ~4500 lbf for heavyweight 38 mm polyester. Buy with a mill cert (thickness and break) to make this a datasheet value; a mil-spec Type/Class with
   a cert to make this a datasheet value. Polyester: low stretch, low water uptake (no sag when wet), better UV -
   preferred for compression straps and load lifters. Seal cut ends with a hot knife.'
