@@ -108,9 +108,9 @@ Knife: CW from the grain-arrow head; cut windows and slits first. Notches 6 mm d
 
 | ID | Use | Material | Length mm (in) | Qty | Kit | Source |
 |---|---|---|---:|---:|---|---|
-| B-28 | B-28 crown strap, kit S | poly_webbing_25mm | 1028 (40.5) | 2 | crown kit S (as hunted) | corrie_f.crown_kit_straps |
-| B-28 | B-28 crown strap, kit M | poly_webbing_25mm | 967 (38.1) | 2 | crown kit M (as hunted) | corrie_f.crown_kit_straps |
-| B-28 | B-28 crown strap, kit L | poly_webbing_25mm | 908 (35.7) | 2 | crown kit L (as hunted) | corrie_f.crown_kit_straps |
+| B-28 | B-28 crown strap, kit S | poly_webbing_25mm | 1068 (42.1) | 2 | crown kit S (as hunted) | corrie_f.crown_kit_straps |
+| B-28 | B-28 crown strap, kit M | poly_webbing_25mm | 1007 (39.6) | 2 | crown kit M (as hunted) | corrie_f.crown_kit_straps |
+| B-28 | B-28 crown strap, kit L | poly_webbing_25mm | 948 (37.3) | 2 | crown kit L (as hunted) | corrie_f.crown_kit_straps |
 | B-28t | lock tab | poly_webbing_25mm | 60 (2.4) | 4 | as_hunted | corrie_f.CROWN_TAB, 2 per strap (front + rear lock) |
 | B-28s | toggle loop | poly_webbing_25mm | 60 (2.4) | 2 | as_hunted | corrie_f.CROWN_TAB, 1 per strap (the B-25 second fold) |
 | K-28 | B-28 tail keeper (25 mm elastic loop) | elastic_25mm | 90 (3.5) | 4 | as_hunted | corrie_f.crown_kit_straps keepers_per_strap x 2 |

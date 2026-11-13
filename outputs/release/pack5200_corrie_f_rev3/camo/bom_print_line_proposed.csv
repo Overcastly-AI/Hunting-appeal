@@ -1,0 +1,2 @@
+section,item,material_id,qty_1bag,qty_10bag,unit,unit_cost_usd,cost_1bag_usd,cost_10bag_usd,source,notes
+fabric_print,"camo print, Owner Base accent 380, placed (3 sets/yd)",polyester_300d_printable,1,4,yd,30.25,30.25,121.0,"RBTR HyperD 300 DYO $30.25/yd, 1 yd min (vendors.csv)",replaces the unprinted 630D row only if AB-1 passes; else 630D mill print (C) or solid (D)

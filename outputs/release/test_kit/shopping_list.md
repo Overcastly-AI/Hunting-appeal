@@ -1,6 +1,6 @@
 # Shopping list (BL-038)
 
-Total **USD 2,351.38**. Prices from material records, cited shop pages (links), or marked ASSUMPTION (check at purchase). Cited or record-priced: USD 1,027.38; ASSUMPTION: USD 1,324.00. Prices checked 2026-11-10 (TEST_PLAN §4) and 2026-11-13.
+Total **USD 2,342.64**. Prices from material records, cited shop pages (links), or marked ASSUMPTION (check at purchase). Cited or record-priced: USD 1,028.64; ASSUMPTION: USD 1,314.00. Prices checked 2026-11-10 (TEST_PLAN §4) and 2026-11-13.
 
 **Order these first (long lead):**
 
@@ -17,8 +17,8 @@ Total **USD 2,351.38**. Prices from material records, cited shop pages (links), 
 | Kit B lever rig | 317.50 |
 | Kit C frame stand | 227.39 |
 | Kit D measuring | 140.46 |
-| Specimens and lab | 1,441.95 |
-| **total** | **2,351.38** |
+| Specimens and lab | 1,433.21 |
+| **total** | **2,342.64** |
 
 Not in this list: the bag, harness and belt materials themselves (pack BOM, `outputs/release/pack5200_corrie_f_rev3/manufacturing/bom.csv`). Swatches are cut from that fabric order, so buy the bag fabric with the kit. You already own (kit E): washing machine, winter gloves, freezer, hose, tape, paint pen, phone.
 
@@ -106,6 +106,7 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | EVA 45C foam 5 mm | 0.1 m2 | 2.50 | Seattle Fabrics; record eva_foam_45c | HS-1 |
 | HDPE sheet 0.5 mm (BL-037 stiffener wing) | 0.05 kg | 0.30 | McMaster-Carr; record hdpe_sheet | HB-D2 |
 | ROHACELL 71 IG-F core for the 2 mm strip **LONG LEAD** | 0.02 m2 | 2.40 | Rock West Composites; record rohacell_71_igf | BP-1 |
+| 200 g 2x2 carbon twill + epoxy for the 2 mm BP-1 coupon skins | 0.028 m2 | 1.26 | left over from the spreader / strip layup (else any composites shop); record cfrp_t300_3k_woven_epoxy_ply (BL-039) | BP-1 |
 | HyperD 300 printable, custom camo print **LONG LEAD** | 1 yd | 30.25 | Ripstop by the Roll (custom print, 1 yd min); record polyester_300d_printable | AB-1, FRAY-1 |
 | Martindale abrasion test, accredited lab (2 samples + order fee) **LONG LEAD** | 1 order | 249.61 | [Measurlabs (EUR 66 / sample + EUR 97 fee)](https://measurlabs.com/products/textile-abrasion-resistance-martindale) | AB-1 |
 | specimens for PT-2: 5 swatches built like the pack, B-17 cut 70 mm tall | 1 lot | 15.00 | see register; test_register.csv PT-2: ASSUMPTION Hypalon + laminate offcuts | PT-2 |
@@ -128,7 +129,6 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | specimens for BP-2: 100 mm printed H1 stay segment (z about 260) on a strip offcut, 10 mm foam under | 1 lot | 5.00 | see register; test_register.csv BP-2: ASSUMPTION carbon paper; Prescale roll about EUR 1275 not bought (§4.4) | BP-2 |
 | specimens for T6: 3 corner coupons, 0.8 mm glass-bead bondline | 1 lot | 30.00 | see register; test_register.csv T6: ASSUMPTION tube offcuts + MMA | T6 |
 | specimens for T7: 150 mm printed H1 sleeve segment + UHMWPE bushing + leg offcut | 1 lot | 10.00 | see register; test_register.csv T7: ASSUMPTION | T7 |
-| specimens for PT-4: 1 sewn hood on an 18 mm tube | 1 lot | 10.00 | see register; test_register.csv PT-4: ASSUMPTION | PT-4 |
 | specimens for SP-1: P2 spreader | 1 lot | 5.00 | see register; test_register.csv SP-1: ASSUMPTION dowel | SP-1 |
 | specimens for HB-D2: belt B wings side by side: 0.5 mm and 0.75 mm HDPE stiffener (and the 1.0 mm ref | 1 lot | 5.00 | see register; test_register.csv HB-D2: ASSUMPTION 1.0 mm HDPE offcut | HB-D2 |
 | specimens for RF-1: rails on P2, 3 testers | 1 lot | 10.00 | see register; test_register.csv RF-1: ASSUMPTION foam | RF-1 |

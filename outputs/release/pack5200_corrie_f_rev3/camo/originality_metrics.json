@@ -1,0 +1,154 @@
+{
+ "descriptor": {
+  "n_inks": 4,
+  "continuous_tone": false,
+  "inks": [
+   {
+    "hex": "#8B8148",
+    "share": 0.3358,
+    "L": 53.7
+   },
+   {
+    "hex": "#313120",
+    "share": 0.2967,
+    "L": 19.9
+   },
+   {
+    "hex": "#AE9D6C",
+    "share": 0.2929,
+    "L": 65.1
+   },
+   {
+    "hex": "#C6B497",
+    "share": 0.0745,
+    "L": 74.1
+   }
+  ],
+  "mean_L": 48.51179016726209,
+  "L_spread_p5_p95": [
+   19.85839461255,
+   74.11538762104747
+  ],
+  "axis_alignment": 0.6559701947191703,
+  "digital_micro": true,
+  "coherence": 0.29104285275115416,
+  "feature_deg": 89.74881858655054,
+  "dark_share": 0.2967347645429363,
+  "dark_blob_median_mm": 85.4965977470716,
+  "dark_micro_share": 0.03907954770878794,
+  "ppmm_used": 2.0,
+  "organic_macro": null,
+  "vertical_streaks": true,
+  "L_ladder": [
+   19.9,
+   53.7,
+   65.1,
+   74.1
+  ]
+ },
+ "references": [
+  {
+   "id": "sitka_optifade",
+   "name": "Sitka / GORE Optifade (Open Country, Subalpine, Elevated II, Cover)",
+   "compared": [
+    "digital_micro"
+   ],
+   "same": [
+    "digital_micro"
+   ],
+   "family_overlap": 1.0,
+   "note": "Same CONCEPT family as Owner Base (macro + pixel micro). Concept overlap is expected and is not copying; the image-level check against a real swatch is the open item."
+  },
+  {
+   "id": "marpat_cadpat",
+   "name": "MARPAT (USMC) / CADPAT (Canada)",
+   "compared": [
+    "digital_micro",
+    "continuous_tone"
+   ],
+   "same": [
+    "digital_micro",
+    "continuous_tone"
+   ],
+   "family_overlap": 1.0,
+   "note": "Fully pixelated (no traced organic macro). Owner Base macro is organic blobs on a 5.6-unit trace grid with 45 deg corners; pixels only on blob edges."
+  },
+  {
+   "id": "kuiu_valo",
+   "name": "KUIU Valo",
+   "compared": [],
+   "same": [],
+   "family_overlap": null,
+   "note": "6 described colours vs our 4; palette families overlap (tan, olive, near-black) as they do for most western patterns."
+  },
+  {
+   "id": "kuiu_vias",
+   "name": "KUIU Vias",
+   "compared": [],
+   "same": [],
+   "family_overlap": null,
+   "note": "Grey-dominant rock palette; Owner Base has no grey ink."
+  },
+  {
+   "id": "kuiu_verde",
+   "name": "KUIU Verde / Verde 2.0",
+   "compared": [],
+   "same": [],
+   "family_overlap": null,
+   "note": "Green-dominant; Owner Base mean colour is a dry-grass tan-olive (#8C8056)."
+  },
+  {
+   "id": "first_lite_fusion_cipher_specter",
+   "name": "First Lite Fusion / Cipher / Specter",
+   "compared": [],
+   "same": [],
+   "family_overlap": null,
+   "note": "No structural description published, so no class comparison is possible; needs the image check."
+  }
+ ],
+ "calibration": {
+  "owner_vs_shift_scale_noise_copy": {
+   "ncc_max": 0.9566,
+   "ncc_at": {
+    "scale": 1.0,
+    "dihedral": 0,
+    "size_px": 190
+   },
+   "spectrum_corr": 0.9998,
+   "orientation_corr": 0.9925,
+   "palette_dE00": 5.19,
+   "target_ppmm": 0.5,
+   "verdict": "PROBABLE COPY / DERIVATIVE - stop, get IP advice"
+  },
+  "owner_vs_proxy_same_statistics": {
+   "ncc_max": 0.2725,
+   "ncc_at": {
+    "scale": 0.8,
+    "dihedral": 2,
+    "size_px": 152
+   },
+   "spectrum_corr": 0.9993,
+   "orientation_corr": 0.6584,
+   "palette_dE00": 0.06,
+   "target_ppmm": 0.5,
+   "verdict": "no image-level resemblance found (shift, flip, +-25 % scale)"
+  },
+  "owner_vs_cirquefall_shard": {
+   "ncc_max": 0.1573,
+   "ncc_at": {
+    "scale": 1.25,
+    "dihedral": 6,
+    "size_px": 190
+   },
+   "spectrum_corr": 0.9975,
+   "orientation_corr": 0.1667,
+   "palette_dE00": 8.52,
+   "target_ppmm": 0.5,
+   "verdict": "no image-level resemblance found (shift, flip, +-25 % scale)"
+  }
+ },
+ "thresholds": {
+  "ncc_copy": 0.6,
+  "ncc_clear": 0.35
+ }
+}

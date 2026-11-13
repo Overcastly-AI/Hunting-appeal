@@ -68,7 +68,7 @@ Rows 102; unmatched 0; matched twice 0; drafted ids without a row 0; row ids not
 | add-on scope_pod: scope pod (team B glass pod), left gusset | bag_pockets | as_hunted | 83.7 | pattern | A1-a, A1-b, A1-d | add-on (as hunted) |
 | add-on meat_liner: meat liner (team D SWAP slab, wipeable silpoly / 70D, 330 x 110 x 560) | bag_pockets | meat_trip | 61.7 | pattern | MS-a, MS-b, MS-c, MS-s | add-on (meat trip) |
 | add-on crown_lid: B-29 crown lid 5.0 L (350 x 210 x 85 mm, domed, camo corner caps, #5 coi | pouch | as_hunted | 47.8 | pattern | B-29a, B-29b, B-29c, B-29d, B-29e, B-29f, B-29g | + #5 zip |
-| add-on crown_straps: B-28 crown straps (2), kit M: 25 mm 0.967 m, heavy ladder lock at eac | straps_compression | as_hunted | 78.1 | webbing | B-28, B-28t, B-28s, K-28 | + locks, toggles |
+| add-on crown_straps: B-28 crown straps (2), kit M: 25 mm 1.007 m, heavy ladder lock at eac | straps_compression | as_hunted | 79.5 | webbing | B-28, B-28t, B-28s, K-28 | + locks, toggles |
 | F-01 rain fly, drafted for CORRIE F rev 3 (spine F-01a + sides F-01b x2, 1.116 m2 cut) | fly | as_hunted | 50.2 | pattern | F-01a, F-01b | drafted by BL-033 |
 | F-02 fly base pocket (stays on the bag) | fly | base | 5.9 | pattern | F-02 |  |
 | rain fly: fly elastic hem 2.44 m (drafted), #5 pocket zip + slider, tether | fly | as_hunted | 14.1 | webbing | F-EL | + #5 zip, slider, tether |

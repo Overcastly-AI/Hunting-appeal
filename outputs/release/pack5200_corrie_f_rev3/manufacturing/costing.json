@@ -1,6 +1,6 @@
 {
- "material_usd_primary": 367.35,
- "material_usd_alternate": 367.19,
+ "material_usd_primary": 367.41,
+ "material_usd_alternate": 367.25,
  "fabric_usd_primary": 87.91,
  "fabric_usd_alternate": 87.75,
  "missing_cost": [],
@@ -28,8 +28,8 @@
   "asia_contract_usd_min": 76.12
  },
  "landed_usd": {
-  "us_contract_usd_min": 906.55,
-  "asia_contract_usd_min": 443.47
+  "us_contract_usd_min": 906.61,
+  "asia_contract_usd_min": 443.53
  },
  "lid_hours_drafted": 9.53,
  "lid_hours_booked": 7.76,

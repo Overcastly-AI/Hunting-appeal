@@ -31,7 +31,10 @@
   "flip_cycled": 0.3837,
   "release_cycled": 0.404,
   "fatigue_static": 1.175,
-  "fatigue_cycled": 0.782
+  "fatigue_cycled": 0.782,
+  "swing_ok_release_pct": 0.4,
+  "swing_ok_040_pct": 69.9,
+  "swing_margin1_release_pct": 11.6
  },
  "release_matches_kit": true,
  "margins_at_release": {

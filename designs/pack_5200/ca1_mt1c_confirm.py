@@ -204,8 +204,58 @@ def report(c: dict) -> str:
     return "\n".join(L)
 
 
+SCREEN = HERE.parents[1] / "outputs" / "screens" / "20261113_BL039_1.png"
+
+
+def plot(c: dict, path: Path = SCREEN) -> Path:
+    """Phone-readable chart: CA-1 level R1 needs against the MT-1c cinch swing (worst k), with margin-1.0 line."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    i, k = c["inputs"], min(K_BRACKET)
+    floor = max(f for n, f in c["flips"].items() if "body" not in n)
+    ps = [x / 1000 for x in range(0, 1001, 2)]
+    lev = [up3(max(body_flip(i, p, k), floor) + CUSHION) for p in ps]
+    flip = [max(body_flip(i, p, k), floor) for p in ps]
+    ink, muted, grid, blue = "#1f1f1e", "#6b6a66", "#e4e2dc", "#2a78d6"
+    fig, ax = plt.subplots(figsize=(7.2, 5.4), dpi=150)
+    fig.patch.set_facecolor("#ffffff")
+    ax.plot([100 * p for p in ps], lev, color=blue, lw=2, label="CA-1 level R1 needs (flip + 0.02)")
+    ax.plot([100 * p for p in ps], flip, color=muted, lw=1.2, ls="--", label="governing flip (margin 1.0)")
+    for y, t, dy in ((c["release"], f"{c['release']}: release level", 0.0), (0.40, "0.40: coupon run", -0.004),
+                     (c["cycled_release"], f"{c['cycled_release']}: cinch fully cycling", 0.004)):
+        ax.axhline(y, color=grid, lw=1, zorder=0)
+        ax.text(101, y + dy, t, va="center", fontsize=8, color=ink)
+    w = c["swing_worst"]
+    ax.axvline(10, color=grid, lw=1, zorder=0)
+    ax.annotate(f"BL-038 bound 10 %:\nneeds {w['release_for_10pct']},\nmargin at {c['release']} = "
+                f"{w['margin_at_release_10pct']:.3f}", (10, w["release_for_10pct"]), (22, 0.29), fontsize=8,
+                color=ink, arrowprops=dict(arrowstyle="-", color=muted, lw=0.8))
+    ax.annotate(f"0.40 covers up to {100 * w['p_rule_at_040']:.0f} %", (100 * w["p_rule_at_040"], 0.40),
+                (45, 0.375), fontsize=8, color=ink, arrowprops=dict(arrowstyle="-", color=muted, lw=0.8))
+    ax.set_xlim(0, 100)
+    ax.set_ylim(0.24, 0.42)
+    ax.set_xlabel("MT-1c cinch swing, peak-to-peak / mean (%)", color=ink, fontsize=9)
+    ax.set_ylabel("PAHT-CF fatigue ratio (1e5, R 0.1)", color=ink, fontsize=9)
+    ax.set_title("BL-039: CA-1 level for frame release R1 vs. the measured cinch swing\n"
+                 f"(H1 body + 28 mm IM3 cheek; worst bracket k {k:g})", fontsize=10, color=ink, loc="left")
+    for sp in ("top", "right"):
+        ax.spines[sp].set_visible(False)
+    for sp in ("left", "bottom"):
+        ax.spines[sp].set_color(muted)
+    ax.tick_params(colors=muted, labelsize=8)
+    ax.grid(axis="y", color=grid, lw=0.6)
+    ax.legend(frameon=False, fontsize=8, loc="lower right")
+    fig.tight_layout()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(path)
+    plt.close(fig)
+    return path
+
+
 def main() -> dict:
     c = confirm()
+    print("screen:", plot(c))
     (AN / "ca1_mt1c_confirm.json").write_text(json.dumps(c, indent=1, default=str))
     (AN / "ca1_mt1c_confirm.md").write_text(report(c), encoding="utf-8")
     print(json.dumps({k: c[k] for k in ("flip_gov", "release", "release_matches_kit", "goal_level_1p15",

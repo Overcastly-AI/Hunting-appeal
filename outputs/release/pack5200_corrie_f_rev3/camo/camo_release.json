@@ -1,0 +1,250 @@
+{
+ "pattern": "owner_base",
+ "scale": "accent",
+ "repeat_mm": 380.0,
+ "full_option_mm": 760.0,
+ "inks": [
+  "#AE9D6C",
+  "#8B8148",
+  "#C6B497",
+  "#313120"
+ ],
+ "seam_check": {
+  "z_max": 3.5,
+  "reference": "127 interior 7.8125-unit grid lines",
+  "x": {
+   "seam_dE00": 5.889,
+   "ref_median_dE00": 4.304,
+   "ref_mad_dE00": 2.539,
+   "ref_max_dE00": 13.963,
+   "common_grid_lines_dE00": 8.916,
+   "z": 0.62
+  },
+  "y": {
+   "seam_dE00": 7.664,
+   "ref_median_dE00": 3.856,
+   "ref_mad_dE00": 2.215,
+   "ref_max_dE00": 10.539,
+   "common_grid_lines_dE00": 6.072,
+   "z": 1.72
+  },
+  "seamless": true
+ },
+ "dpi": 300.0,
+ "phases_mm": {
+  "B-02u#1": [
+   379.47,
+   250.6
+  ],
+  "SH-07#1": [
+   24.11,
+   172.3
+  ],
+  "SH-01b#1": [
+   40.23,
+   220.5
+  ],
+  "SH-01b#2": [
+   128.05,
+   101.94
+  ],
+  "FP-b#1": [
+   67.82,
+   250.86
+  ],
+  "FP-b#2": [
+   136.76,
+   241.18
+  ],
+  "B-29f#1": [
+   83.93,
+   234.67
+  ],
+  "B-29f#2": [
+   27.99,
+   206.26
+  ],
+  "A1-d#1": [
+   364.61,
+   129.25
+  ]
+ },
+ "set_tile": {
+  "width_mm": 417.64,
+  "length_mm": 738.0451848057867,
+  "utilisation": 0.6519672512857457,
+  "unplaced": []
+ },
+ "sheets": {
+  "corrie_f_rev3_camo_1set_tile": {
+   "file": "corrie_f_rev3_camo_1set_tile_300dpi.png",
+   "width_mm": 437.6,
+   "length_mm": 864.0,
+   "px": [
+    5169,
+    10205
+   ],
+   "dpi": 300.0,
+   "sets": 1,
+   "utilisation_usable": 0.557,
+   "notes": [],
+   "bytes": 444127
+  },
+  "corrie_f_rev3_camo_hyperd300_1yd_3sets": {
+   "file": "corrie_f_rev3_camo_hyperd300_1yd_3sets_300dpi.png",
+   "width_mm": 1473.2,
+   "length_mm": 914.4,
+   "px": [
+    17400,
+    10800
+   ],
+   "dpi": 300.0,
+   "sets": 3,
+   "utilisation_usable": 0.464,
+   "notes": [],
+   "bytes": 1065457
+  },
+  "corrie_f_rev3_camo_hyperd300_1yd_2sets_ab1": {
+   "file": "corrie_f_rev3_camo_hyperd300_1yd_2sets_ab1_300dpi.png",
+   "width_mm": 1473.2,
+   "length_mm": 914.4,
+   "px": [
+    17400,
+    10800
+   ],
+   "dpi": 300.0,
+   "sets": 2,
+   "utilisation_usable": 0.309,
+   "notes": [],
+   "bytes": 1165839
+  },
+  "corrie_f_rev3_camo_630d_engineered_repeat_3sets": {
+   "file": "corrie_f_rev3_camo_630d_engineered_repeat_3sets_300dpi.tif",
+   "width_mm": 1500.0,
+   "length_mm": 758.0,
+   "px": [
+    17717,
+    8953
+   ],
+   "dpi": 300.0,
+   "sets": 3,
+   "utilisation_usable": 0.548,
+   "notes": [],
+   "bytes": 12675514
+  }
+ },
+ "yield": {
+  "net_piece_area_m2": 0.201,
+  "release_1bag_marker": {
+   "length_m": 0.738,
+   "efficiency": 0.1878
+  },
+  "release_10bag_marker": {
+   "length_m": 2.9612,
+   "efficiency": 0.468,
+   "m_per_bag": 0.2961
+  },
+  "placed_set_tile": {
+   "w_mm": 417.6,
+   "l_mm": 738.0,
+   "utilisation": 0.652
+  },
+  "placed_630d_repeat": {
+   "repeat_mm": 758.0,
+   "sets": 3,
+   "m_per_bag": 0.2527,
+   "utilisation_usable": 0.548,
+   "ten_bags_m": 3.032,
+   "twelve_sets_same_length": true
+  },
+  "placed_hyperd_1yd": {
+   "sets": 3,
+   "utilisation_usable": 0.464
+  }
+ },
+ "bases": {
+  "630d": {
+   "material_id": "polyester_ht_630d_printable",
+   "label": "630D HT polyester, TPU back (primary)",
+   "roll_mm": 1500.0,
+   "usable_mm": 1450.0,
+   "gsm": 290,
+   "cost": {
+    "value": 18,
+    "per": "yd"
+   }
+  },
+  "hyperd300": {
+   "material_id": "polyester_300d_printable",
+   "label": "HyperD 300, PU back (BL-037 G-2, gated AB-1)",
+   "roll_mm": 1473.0,
+   "usable_mm": 1422.0,
+   "gsm": 133,
+   "cost": {
+    "value": 30.25,
+    "per": "yd"
+   }
+  }
+ },
+ "assumptions": {
+  "SHIP": "ASSUMPTION SHIP: shipping $12 per order (RBTR rate not captured; Contrado US $9.95 cited).",
+  "PRINT-ADDER": "ASSUMPTION PRINT-ADDER: mill print adder $8/yd over the $18/yd 630D record (no published price; replace with the strike-off quote).",
+  "TOL-PROTO": "ASSUMPTION TOL-PROTO: print-on-demand prototypes accepted at dE00 <= 3.0 per ink (digital POD lots are not colour-held); production holds owner_base.yaml qc.ink_tolerance_dE00 = 1.0.",
+  "UP": "ASSUMPTION UP: each piece's DXF +y is up on the bag (labels read upright). The placed print renders the camo upright in that frame.",
+  "SH01B": "ASSUMPTION SH01B: BL-037 G-2 keeps the SH-01b kick bands on 630D. They are on the HyperD sheets for look only; cut them from 630D (printed or solid) for a structural build."
+ },
+ "render_solids": {
+  "body": [
+   "Krummholz Sage (as rendered)",
+   "#6E745B"
+  ],
+  "trim": [
+   "Basalt Ink",
+   "#2D2B27"
+  ]
+ },
+ "pieces": [
+  {
+   "id": "B-02u",
+   "name": "D2 camo blade U (blades + 75 mm kick strip, one piece)",
+   "qty": 1,
+   "grain_deg": 90.0,
+   "cut_area_m2": 0.11019
+  },
+  {
+   "id": "SH-07",
+   "name": "slider garage, top of the right blade (camo)",
+   "qty": 1,
+   "grain_deg": 90.0,
+   "cut_area_m2": 0.00426
+  },
+  {
+   "id": "SH-01b",
+   "name": "kick band, gusset (camo)",
+   "qty": 2,
+   "grain_deg": 90.0,
+   "cut_area_m2": 0.01514
+  },
+  {
+   "id": "FP-b",
+   "name": "hip-reach pocket mouth band (camo)",
+   "qty": 2,
+   "grain_deg": 90.0,
+   "cut_area_m2": 0.01132
+  },
+  {
+   "id": "B-29f",
+   "name": "crown lid: camo corner cap (overlay)",
+   "qty": 2,
+   "grain_deg": 0.0,
+   "cut_area_m2": 0.00725
+  },
+  {
+   "id": "A1-d",
+   "name": "glass pod leading-edge bar (camo)",
+   "qty": 1,
+   "grain_deg": 90.0,
+   "cut_area_m2": 0.01911
+  }
+ ]
+}

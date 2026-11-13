@@ -1,0 +1,63 @@
+# Published DESCRIPTIONS of commercial / military camo patterns, for class-level originality
+# screening only (huntkit.camo.originality.compare_to_references). BENCHMARK ONLY: no images of
+# these patterns are stored, traced or sampled in this repo. Each feature is set only where a
+# cited source states it; null = not described in the sources (not guessed).
+# Research note: docs/research/camo_originality_print_2026.md (accessed 2026-11-13).
+#
+# Features (same meaning as huntkit.camo.originality.describe):
+#   digital_micro     square-pixel ("digital") micro elements
+#   organic_macro     large non-pixel macro shapes
+#   continuous_tone   photographic / gradient tones rather than a few flat inks
+#   vertical_streaks  strongly vertically elongated elements
+references:
+  - id: sitka_optifade
+    name: "Sitka / GORE Optifade (Open Country, Subalpine, Elevated II, Cover)"
+    features: {digital_micro: true, organic_macro: true, continuous_tone: null, vertical_streaks: null}
+    described: "macro pattern breaks up the 3D shape; micro layer is small digital pixels that add background noise; Open Country has large neutral macro areas for long range"
+    sources:
+      - "https://www.sitkagear.com/experience/types-of-camo"
+      - "https://kinute.com/stories/633614810-hiding-in-plain-sight-sitka-gear-s-science-based-approach-to-camouflage"
+      - "https://support.sitkagear.com/hc/en-us/articles/4415229190683-What-is-GORE-OPTIFADE-Concealment"
+    note: "Same CONCEPT family as Owner Base (macro + pixel micro). Concept overlap is expected and is not copying; the image-level check against a real swatch is the open item."
+  - id: marpat_cadpat
+    name: "MARPAT (USMC) / CADPAT (Canada)"
+    features: {digital_micro: true, organic_macro: false, continuous_tone: false, vertical_streaks: null}
+    described: "multi-scale pattern of small rectangular pixels; based on CADPAT; design patent US D491372 S and uniform patent US 6805957 B1; restricted to authorised manufacturers"
+    sources:
+      - "https://en.wikipedia.org/wiki/MARPAT"
+      - "https://camopedia.org/index.php/MARPAT"
+    note: "Fully pixelated (no traced organic macro). Owner Base macro is organic blobs on a 5.6-unit trace grid with 45 deg corners; pixels only on blob edges."
+  - id: kuiu_valo
+    name: "KUIU Valo"
+    features: {digital_micro: null, organic_macro: true, continuous_tone: null, vertical_streaks: null}
+    described: "large macro pattern with micro details; six colours: desert tan, prairie-grass yellow, stone grey, coyote brown, olive drab, minimal black"
+    sources:
+      - "https://kuiu.com/blogs/innovation/inside-look-at-valo"
+      - "https://www.americanhunter.org/content/kuiu-valo-coast-to-coast-camouflage"
+      - "https://www.gameandfishmag.com/editorial/kuiu-introduces-new-valo-camouflage/376511"
+    note: "6 described colours vs our 4; palette families overlap (tan, olive, near-black) as they do for most western patterns."
+  - id: kuiu_vias
+    name: "KUIU Vias"
+    features: {digital_micro: null, organic_macro: true, continuous_tone: null, vertical_streaks: null}
+    described: "alpine, high contrast, rocky broken ground; tan, light grey, dark grey, brown, black"
+    sources:
+      - "https://kuiu.com/blogs/innovation/inside-look-at-valo"
+      - "https://www.hookandbarrel.com/gear/kuiu-camo-patterns-explained"
+    note: "Grey-dominant rock palette; Owner Base has no grey ink."
+  - id: kuiu_verde
+    name: "KUIU Verde / Verde 2.0"
+    features: {digital_micro: null, organic_macro: true, continuous_tone: null, vertical_streaks: null}
+    described: "darkest of the three, green-heavy, for wet/lush timber"
+    sources:
+      - "https://www.hookandbarrel.com/gear/kuiu-camo-patterns-explained"
+      - "https://kuiu.com/blogs/innovation/inside-look-at-valo"
+    note: "Green-dominant; Owner Base mean colour is a dry-grass tan-olive (#8C8056)."
+  - id: first_lite_fusion_cipher_specter
+    name: "First Lite Fusion / Cipher / Specter"
+    features: {digital_micro: null, organic_macro: null, continuous_tone: null, vertical_streaks: null}
+    described: "Fusion (western timber/shade) and Cipher share one algorithm with different palettes; Specter tuned for whitetail; structure not described in the sources"
+    sources:
+      - "https://firstlite.com/pages/first-lite-camouflage"
+      - "https://www.ammoland.com/2017/01/same-science-new-pattern-first-lites-new-cipher-camouflage-pattern/"
+      - "https://gearjunkie.com/outdoor/hunt-fish/first-lite-specter-whitetail-camouflage"
+    note: "No structural description published, so no class comparison is possible; needs the image check."

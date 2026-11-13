@@ -22,7 +22,7 @@ Generated 20261113 by `designs/pack_5200/mfg_corrie_f_rev3.py` from `patterns_co
 - Pieces: 76 piece types; 77 fabric / sheet pieces + 75 webbing / cord / elastic pieces (crown kit M).
 - Ledger 1:1: 102 rows, 0 unmatched, 0 pieces without a row. Mass from pattern areas (ledger basis, team B fabrics): 567.2 g vs 567.7 g (-0.08 %, limit +/-3 %). Primary fabrics weigh +94.9 g more on the same pieces.
 - Operations: 90; beginner hours 74.6 h (one-off set-up 4.1 h of it); factory SAM 508 min (8.5 h, ASSUMPTION SAM-RATIO).
-- Material cost a bag (record prices): primary $367, alternate $367. CMT + materials: US contract $907, Asia $443 (ASSUMPTION LABOUR).
+- Material cost a bag (record prices): primary $367, alternate $367. CMT + materials: US contract $907, Asia $444 (ASSUMPTION LABOUR).
 - Load points: 26; lowest SF 1.93 (B-17 IM3 tab perimeter (double row)).
 
 ## Volatile operations (re-run when the pattern changes)
