@@ -1,0 +1,744 @@
+{
+ "date": "2026-11-13",
+ "section": {
+  "od": 18,
+  "t": 1.065,
+  "layup": "[45(cfrp_t300_3k_woven_epoxy_ply) / 0_5(cfrp_t700_ud_epoxy_ply) / 45(cfrp_t300_3k_woven_epoxy_ply)]  (inner -> outer)",
+  "D22": 2953.157495184614,
+  "A22": 20724.03602891348,
+  "mass_g": 18.757470421614705
+ },
+ "kit_sections": {
+  "S@15": {
+   "od": 18.0,
+   "t": 1.065,
+   "layup": "[45(cfrp_t300_3k_woven_epoxy_ply) / 0_5(cfrp_t700_ud_epoxy_ply) / 45(cfrp_t300_3k_woven_epoxy_ply)]  (inner -> outer)"
+  },
+  "S@18": {
+   "od": 18.0,
+   "t": 1.065,
+   "layup": "[45(cfrp_t300_3k_woven_epoxy_ply) / 0_5(cfrp_t700_ud_epoxy_ply) / 45(cfrp_t300_3k_woven_epoxy_ply)]  (inner -> outer)"
+  },
+  "M@17.5": {
+   "od": 18.0,
+   "t": 1.065,
+   "layup": "[45(cfrp_t300_3k_woven_epoxy_ply) / 0_5(cfrp_t700_ud_epoxy_ply) / 45(cfrp_t300_3k_woven_epoxy_ply)]  (inner -> outer)"
+  },
+  "M@20.5": {
+   "od": 18.0,
+   "t": 1.065,
+   "layup": "[45(cfrp_t300_3k_woven_epoxy_ply) / 0_5(cfrp_t700_ud_epoxy_ply) / 45(cfrp_t300_3k_woven_epoxy_ply)]  (inner -> outer)"
+  },
+  "L@20": {
+   "od": 18.0,
+   "t": 1.065,
+   "layup": "[45(cfrp_t300_3k_woven_epoxy_ply) / 0_5(cfrp_t700_ud_epoxy_ply) / 45(cfrp_t300_3k_woven_epoxy_ply)]  (inner -> outer)"
+  },
+  "L@23": {
+   "od": 18.0,
+   "t": 1.065,
+   "layup": "[45(cfrp_t300_3k_woven_epoxy_ply) / 0_5(cfrp_t700_ud_epoxy_ply) / 45(cfrp_t300_3k_woven_epoxy_ply)]  (inner -> outer)"
+  }
+ },
+ "sim_loads": {
+  "by_torso": {
+   "15.0": {
+    "rows": {
+     "fill": {
+      "guy": 51.3,
+      "crown": 11.6
+     },
+     "meat": {
+      "guy": 33.7,
+      "crown": 11.1
+     }
+    },
+    "guy": 51.3,
+    "crown": 11.6,
+    "pair": 62.9
+   },
+   "19.0": {
+    "rows": {
+     "fill": {
+      "guy": 74.5,
+      "crown": 7.0
+     },
+     "meat": {
+      "guy": 54.9,
+      "crown": 6.1
+     }
+    },
+    "guy": 74.5,
+    "crown": 7.0,
+    "pair": 81.5
+   },
+   "23.0": {
+    "rows": {
+     "fill": {
+      "guy": 95.8,
+      "crown": 6.8
+     },
+     "meat": {
+      "guy": 68.3,
+      "crown": 6.5
+     }
+    },
+    "guy": 95.8,
+    "crown": 6.8,
+    "pair": 102.6
+   }
+  },
+  "guy_1g_envelope_n": 96.0,
+  "crown_1g_max_n": 11.6,
+  "crown_cinch_n": 80.0,
+  "lid_3g_n": 30.8,
+  "guy_envelope_factored_n": 288.0
+ },
+ "kit_loads": {
+  "S": {
+   "label": "S at 18 in",
+   "guy_1g_n": 68.7,
+   "crown_1g_n": 11.6,
+   "cases": {
+    "guy alone (C5, x3.0)": 206.10000000000002,
+    "crown strap alone, 288 N envelope (guy off)": 206.10000000000002,
+    "guy + crown strap, stumble (x3.0 each)": 240.89999999999998,
+    "guy (C1 x2.0) + crown strap hand cinch (x1.5)": 257.4
+   },
+   "static_n": 257.4,
+   "static_case": "guy (C1 x2.0) + crown strap hand cinch (x1.5)",
+   "vector_stumble_n": 209.01734377797456,
+   "fatigue_peak_n": 128.48,
+   "proof_n": 386.09999999999997
+  },
+  "M": {
+   "label": "M at 20.5 in",
+   "guy_1g_n": 82.5,
+   "crown_1g_n": 7.0,
+   "cases": {
+    "guy alone (C5, x3.0)": 247.46249999999998,
+    "crown strap alone, 288 N envelope (guy off)": 247.46249999999998,
+    "guy + crown strap, stumble (x3.0 each)": 268.4625,
+    "guy (C1 x2.0) + crown strap hand cinch (x1.5)": 284.975
+   },
+   "static_n": 284.975,
+   "static_case": "guy (C1 x2.0) + crown strap hand cinch (x1.5)",
+   "vector_stumble_n": 248.35194564619377,
+   "fatigue_peak_n": 143.18,
+   "proof_n": 427.46250000000003
+  },
+  "L": {
+   "label": "L at 23 in",
+   "guy_1g_n": 95.8,
+   "crown_1g_n": 6.8,
+   "cases": {
+    "guy alone (C5, x3.0)": 287.4,
+    "crown strap alone, 288 N envelope (guy off)": 287.4,
+    "guy + crown strap, stumble (x3.0 each)": 307.79999999999995,
+    "guy (C1 x2.0) + crown strap hand cinch (x1.5)": 311.6
+   },
+   "static_n": 311.6,
+   "static_case": "guy (C1 x2.0) + crown strap hand cinch (x1.5)",
+   "vector_stumble_n": 288.12309869220826,
+   "fatigue_peak_n": 164.16,
+   "proof_n": 467.40000000000003
+  },
+  "envelope": {
+   "label": "envelope (guy 96 N at 23 in + crown strap 11.6 N at 15 in)",
+   "guy_1g_n": 96.0,
+   "crown_1g_n": 11.6,
+   "cases": {
+    "guy alone (C5, x3.0)": 288.0,
+    "crown strap alone, 288 N envelope (guy off)": 288.0,
+    "guy + crown strap, stumble (x3.0 each)": 322.79999999999995,
+    "guy (C1 x2.0) + crown strap hand cinch (x1.5)": 312.0
+   },
+   "static_n": 322.79999999999995,
+   "static_case": "guy + crown strap, stumble (x3.0 each)",
+   "vector_stumble_n": 290.0948810303277,
+   "fatigue_peak_n": 172.16,
+   "proof_n": 484.19999999999993
+  }
+ },
+ "per_kit": {
+  "S": {
+   "A": {
+    "width_mm": 25.0,
+    "basis": "A",
+    "capacity_n": 291.0584672693966,
+    "capacity_rt_n": 453.659244937723,
+    "sf_static": 1.130763276104882,
+    "fi_fatigue": 0.4414233373979876,
+    "sf_fatigue": 1.132699514591363,
+    "proof_over_rt_capacity": 0.8510793162674392
+   },
+   "B": {
+    "width_mm": 25.0,
+    "basis": "B",
+    "capacity_n": 392.1646503845664,
+    "capacity_rt_n": 582.4113234684536,
+    "sf_static": 1.5235611903052309,
+    "fi_fatigue": 0.3276174940143363,
+    "sf_fatigue": 1.5261700279598633,
+    "proof_over_rt_capacity": 0.6629335393080027
+   },
+   "C": {
+    "width_mm": 25.0,
+    "basis": "C",
+    "capacity_n": 2769.4374228972288,
+    "capacity_rt_n": 4326.110859678997,
+    "sf_static": 10.759275147230882,
+    "fi_fatigue": 0.04639209354858485,
+    "sf_fatigue": 10.77769856357888,
+    "proof_over_rt_capacity": 0.08924875310029597
+   }
+  },
+  "M": {
+   "A": {
+    "width_mm": 25.0,
+    "basis": "A",
+    "capacity_n": 291.0584672693966,
+    "capacity_rt_n": 453.659244937723,
+    "sf_static": 1.021347371767336,
+    "fi_fatigue": 0.4919286538655345,
+    "sf_fatigue": 1.0164075543700117,
+    "proof_over_rt_capacity": 0.9422545771302001
+   },
+   "B": {
+    "width_mm": 25.0,
+    "basis": "B",
+    "capacity_n": 392.1646503845664,
+    "capacity_rt_n": 582.4113234684536,
+    "sf_static": 1.3761370309134708,
+    "fi_fatigue": 0.3651017496339717,
+    "sf_fatigue": 1.3694812487238666,
+    "proof_over_rt_capacity": 0.7339529345932327
+   },
+   "C": {
+    "width_mm": 25.0,
+    "basis": "C",
+    "capacity_n": 2769.4374228972288,
+    "capacity_rt_n": 4326.110859678997,
+    "sf_static": 9.718176762513304,
+    "fi_fatigue": 0.05170003077744692,
+    "sf_fatigue": 9.671174126614153,
+    "proof_over_rt_capacity": 0.09880988117621153
+   }
+  },
+  "L": {
+   "A": {
+    "width_mm": 25.0,
+    "basis": "A",
+    "capacity_n": 291.0584672693966,
+    "capacity_rt_n": 453.659244937723,
+    "sf_static": 0.9340772377066643,
+    "fi_fatigue": 0.5640103912457476,
+    "sf_fatigue": 0.8865084894901213,
+    "proof_over_rt_capacity": 1.0302887138653227
+   },
+   "B": {
+    "width_mm": 25.0,
+    "basis": "B",
+    "capacity_n": 392.1646503845664,
+    "capacity_rt_n": 582.4113234684536,
+    "sf_static": 1.2585515095781976,
+    "fi_fatigue": 0.4185996872462131,
+    "sf_fatigue": 1.1944586086274562,
+    "proof_over_rt_capacity": 0.8025256054715372
+   },
+   "C": {
+    "width_mm": 25.0,
+    "basis": "C",
+    "capacity_n": 2769.4374228972288,
+    "capacity_rt_n": 4326.110859678997,
+    "sf_static": 8.887796607500734,
+    "fi_fatigue": 0.05927557656394528,
+    "sf_fatigue": 8.435177335822456,
+    "proof_over_rt_capacity": 0.108041614087227
+   }
+  },
+  "envelope": {
+   "A": {
+    "width_mm": 25.0,
+    "basis": "A",
+    "capacity_n": 291.0584672693966,
+    "capacity_rt_n": 453.659244937723,
+    "sf_static": 0.9016681142174617,
+    "fi_fatigue": 0.5914962777586983,
+    "sf_fatigue": 0.8453138570788702,
+    "proof_over_rt_capacity": 1.0673209141069515
+   },
+   "B": {
+    "width_mm": 25.0,
+    "basis": "B",
+    "capacity_n": 392.1646503845664,
+    "capacity_rt_n": 582.4113234684536,
+    "sf_static": 1.2148842948716434,
+    "fi_fatigue": 0.4389992821412527,
+    "sf_fatigue": 1.1389540264421654,
+    "proof_over_rt_capacity": 0.8313711984794999
+   },
+   "C": {
+    "width_mm": 25.0,
+    "basis": "C",
+    "capacity_n": 2769.4374228972288,
+    "capacity_rt_n": 4326.110859678997,
+    "sf_static": 8.579422004018678,
+    "fi_fatigue": 0.06216424988577498,
+    "sf_fatigue": 8.043208128767509,
+    "proof_over_rt_capacity": 0.11192500971552267
+   }
+  }
+ },
+ "sweep": {
+  "widths": [
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21,
+   22,
+   23,
+   24,
+   25,
+   26,
+   27,
+   28,
+   29,
+   30,
+   31,
+   32,
+   33,
+   34,
+   35,
+   36,
+   37,
+   38,
+   39,
+   40,
+   41,
+   42,
+   43,
+   44,
+   45,
+   46,
+   47,
+   48,
+   49,
+   50,
+   51,
+   52,
+   53,
+   54,
+   55,
+   56,
+   57,
+   58,
+   59,
+   60
+  ],
+  "A": [
+   175.63879240996894,
+   187.24478865951878,
+   198.83696304484758,
+   210.41516050885477,
+   221.97922743248463,
+   233.52901163937142,
+   245.06436240022614,
+   256.58513043696684,
+   268.0911679265935,
+   279.5823285048105,
+   291.0584672693966,
+   302.5194407833264,
+   313.96510707764355,
+   325.39532565408933,
+   336.80995748748694,
+   348.2088650278847,
+   359.59191220246043,
+   370.9589644171883,
+   382.3098885582711,
+   393.6445529933403,
+   404.9628275724258,
+   416.2645836286975,
+   427.54969397898196,
+   438.8180329240564,
+   450.0694762487211,
+   461.30390122165517,
+   472.5211865950559,
+   483.7212126040659,
+   494.9038609659891,
+   506.06901487930105,
+   517.2165590224512,
+   528.3463795524657,
+   539.4583641033497,
+   550.5524017842909,
+   561.6283831776726,
+   572.6862003368924,
+   583.7257467839918,
+   594.7469175071045,
+   605.7496089577155,
+   616.733719047745,
+   627.6991471464515,
+   638.6457940771637,
+   649.5735621138366,
+   660.4823549774427,
+   671.3720778321951,
+   682.242637281608
+  ],
+  "B": [
+   237.2505113206064,
+   252.86802735765042,
+   268.4584652097158,
+   284.0214620289782,
+   299.55665989948716,
+   315.06370585057664,
+   330.5422518687597,
+   345.99195490812156,
+   361.4124768992291,
+   376.8034847565726,
+   392.1646503845664,
+   407.49565068212064,
+   422.79616754580246,
+   438.0658878716168,
+   453.30450355541416,
+   468.5117114919575,
+   483.68721357266446,
+   498.83071668204514,
+   513.9419326928593,
+   529.0205784600199,
+   544.0663758132557,
+   559.0790515485639,
+   574.0583374184712,
+   589.0039701211309,
+   603.9156912882715,
+   618.7932474720322,
+   633.6363901306976,
+   648.4448756133619,
+   663.2184651435448,
+   677.4957912259678,
+   690.7214044839417,
+   703.8625817891016,
+   716.9200296620661,
+   729.8944480837047,
+   742.786530547374,
+   755.5969641112027,
+   768.3264294504158,
+   780.9756009096764,
+   793.545146555416,
+   806.0357282281514,
+   818.448001594748,
+   830.7826162006317,
+   843.0402155219188,
+   855.2214370174589,
+   867.326912180766,
+   879.357266591829
+  ],
+  "C": [
+   1899.8268790399695,
+   2000.9274804340423,
+   2098.69673180456,
+   2193.1923535308874,
+   2284.481659537417,
+   2372.639712560419,
+   2457.747667884696,
+   2539.8913027853205,
+   2619.159724553746,
+   2695.644246942071,
+   2769.4374228972288,
+   2840.632220364051,
+   2894.035996658051,
+   2930.627746897315,
+   2965.467914616541,
+   2998.676915992685,
+   3030.364581795919,
+   3060.631274034291,
+   3089.5688668394628,
+   3117.2616100841456,
+   3143.7868914605724,
+   3169.2159104324455,
+   3193.614275523957,
+   3217.042534767007,
+   3239.556647740258,
+   3261.2084064584706,
+   3282.045811373611,
+   3302.1134079009566,
+   3321.4525881603536,
+   3340.1018620049904,
+   3358.0971008809825,
+   3375.4717576072376,
+   3392.2570647744856,
+   3408.4822141260324,
+   3424.174518992312,
+   3439.3595615997674,
+   3454.0613268568363,
+   3468.302324030304,
+   3482.1036975606676,
+   3495.485328121278,
+   3508.4659249007836,
+   3521.063109978216,
+   3533.293495564127,
+   3545.17275479634,
+   3556.7156867046697,
+   3567.9362758933985
+  ]
+ },
+ "fixes": [
+  {
+   "width_mm": 25.0,
+   "basis": "A",
+   "capacity_n": 291.0584672693966,
+   "capacity_rt_n": 453.659244937723,
+   "sf_static": 0.9016681142174617,
+   "fi_fatigue": 0.5914962777586983,
+   "sf_fatigue": 0.8453138570788702,
+   "proof_over_rt_capacity": 1.0673209141069515,
+   "key": "bare25",
+   "label": "today: 25 mm B-25 sleeve on the bare bar",
+   "d_mass_g": 0.0,
+   "where": "-",
+   "notes": "rev 3 as released",
+   "credit": "-",
+   "fits": true,
+   "strength_ok": false,
+   "passes": false
+  },
+  {
+   "width_mm": 38.0,
+   "basis": "A",
+   "capacity_n": 438.8180329240564,
+   "capacity_rt_n": 671.0734976191607,
+   "sf_static": 1.3594115022430497,
+   "fi_fatigue": 0.39232662990810746,
+   "sf_fatigue": 1.274448283352859,
+   "proof_over_rt_capacity": 0.7215305055524441,
+   "key": "b25_38",
+   "label": "B-25 bridle in 38 mm webbing (sleeve x 26.5-64.5)",
+   "d_mass_g": 3.39,
+   "where": "bag side (B-25, frame-fitted)",
+   "notes": "one piece, 387 mm of poly_webbing_38mm; 11.5 mm to the spine clamp",
+   "credit": "ASSUMPTION WIDE_SLEEVE",
+   "fits": true,
+   "strength_ok": true,
+   "passes": true
+  },
+  {
+   "width_mm": 50.0,
+   "basis": "A",
+   "capacity_n": 572.6862003368924,
+   "capacity_rt_n": 861.3978892242121,
+   "sf_static": 1.7741208188875233,
+   "fi_fatigue": 0.30061838385266476,
+   "sf_fatigue": 1.6632382677070527,
+   "proof_over_rt_capacity": 0.5621095733541648,
+   "key": "b25_50",
+   "label": "B-25 bridle in 50 mm webbing (sleeve x 14.5-64.5)",
+   "d_mass_g": 6.35,
+   "where": "bag side (B-25, frame-fitted)",
+   "notes": "one piece, 363 mm of poly_webbing_50mm; -0.5 mm to the spine clamp",
+   "credit": "ASSUMPTION WIDE_SLEEVE",
+   "fits": false,
+   "strength_ok": true,
+   "passes": false
+  },
+  {
+   "width_mm": 28.2,
+   "basis": "A",
+   "capacity_n": 327.6795033830671,
+   "capacity_rt_n": 508.2987268627815,
+   "sf_static": 1.015116181484099,
+   "fi_fatigue": 0.5253914212593879,
+   "sf_fatigue": 0.9516714201413425,
+   "proof_over_rt_capacity": 0.9525894408362601,
+   "key": "hdpe_liner",
+   "label": "HDPE liner 1.6 x 40 mm under the 25 mm sleeve",
+   "d_mass_g": 7.53,
+   "where": "frame (pair)",
+   "notes": "hdpe_sheet record; spread w + 2t only",
+   "credit": "ASSUMPTION LINER_SPREAD",
+   "fits": true,
+   "strength_ok": false,
+   "passes": false
+  },
+  {
+   "width_mm": 40.0,
+   "basis": "A",
+   "capacity_n": 461.30390122165517,
+   "capacity_rt_n": 703.4685054969922,
+   "sf_static": 1.4290703259654747,
+   "fi_fatigue": 0.3732030003303129,
+   "sf_fatigue": 1.3397534305926324,
+   "proof_over_rt_capacity": 0.6883037353007273,
+   "key": "pa12_collar",
+   "label": "printed PA12-CF collar 2 x 40 mm under the sleeve",
+   "d_mass_g": 10.76,
+   "where": "frame (pair)",
+   "notes": "pa12_cf_fdm_paht record; needs its own creep / fatigue check (PAHT ratios 0.4 / 0.3)",
+   "credit": "ASSUMPTION COLLAR_SPREAD",
+   "fits": true,
+   "strength_ok": true,
+   "passes": true
+  },
+  {
+   "width_mm": 25.0,
+   "basis": "A",
+   "capacity_n": 733.6281760729277,
+   "capacity_rt_n": 1285.008785762553,
+   "sf_static": 2.2727019085282767,
+   "fi_fatigue": 0.23466928563398867,
+   "sf_fatigue": 2.1306580392452594,
+   "proof_over_rt_capacity": 0.3768067622297732,
+   "key": "hoop2",
+   "label": "bar wall + 2 UD 90 plies [+-45/90/0x5/90/+-45], 1.315 mm",
+   "d_mass_g": 4.15,
+   "where": "frame (top bar, every kit)",
+   "notes": "special-order wrap (same vendors as rev C); OD 18 kept, ID smaller; frame.yaml + bar checks re-run",
+   "credit": "CLT, no new assumption",
+   "fits": true,
+   "strength_ok": true,
+   "passes": true
+  },
+  {
+   "width_mm": 25.0,
+   "basis": "A",
+   "capacity_n": 365.9968576713113,
+   "capacity_rt_n": 623.1051944361787,
+   "sf_static": 1.1338192616831206,
+   "fi_fatigue": 0.4703865522108136,
+   "sf_fatigue": 1.0629555578279255,
+   "proof_over_rt_capacity": 0.7770758522373286,
+   "key": "hoop1_in",
+   "label": "bar wall + 1 UD 90 ply inside, 1.19 mm",
+   "d_mass_g": 2.09,
+   "where": "frame (top bar, every kit)",
+   "notes": "special-order wrap (same vendors as rev C); OD 18 kept, ID smaller; frame.yaml + bar checks re-run",
+   "credit": "CLT, no new assumption",
+   "fits": true,
+   "strength_ok": true,
+   "passes": true
+  },
+  {
+   "width_mm": 25.0,
+   "basis": "A",
+   "capacity_n": 416.8689907123932,
+   "capacity_rt_n": 720.0969418380057,
+   "sf_static": 1.2914157085266211,
+   "fi_fatigue": 0.4129834644351775,
+   "sf_fatigue": 1.210702226743707,
+   "proof_over_rt_capacity": 0.6724094658201263,
+   "key": "tw0_in",
+   "label": "bar wall + 1 twill 0/90 inside, 1.285 mm",
+   "d_mass_g": 3.46,
+   "where": "frame (top bar, every kit)",
+   "notes": "special-order wrap (same vendors as rev C); OD 18 kept, ID smaller; frame.yaml + bar checks re-run",
+   "credit": "CLT, no new assumption",
+   "fits": true,
+   "strength_ok": true,
+   "passes": true
+  }
+ ],
+ "lightest_passing": "hoop1_in",
+ "recommended": "b25_38",
+ "tl1": {
+  "proof_n": 484.19999999999993,
+  "proof_kg": 49.37465903239128,
+  "rt_capacity_A_n": 671.0734976191607,
+  "kd_capacity_A_n": 438.8180329240564,
+  "dD_A_mm": 0.3897832089277647,
+  "dD_B_mm": 0.19687990059170637,
+  "dD_C_mm": 0.004916862650346597,
+  "bare25_rt_capacity_A_n": 453.659244937723,
+  "bare25_dD_A_at_288": 0.3523987970677785,
+  "bare25_dD_B_at_288": 0.17799699564322946,
+  "bare25_dD_C_at_288": 0.004445282516453652,
+  "kd_eff": 0.6539045789781569,
+  "bar_rule_proof_n": 493.6500070154468
+ },
+ "verification": {
+  "roark1_M_load": {
+   "closed_form": 0.3183098861837907,
+   "fourier": 0.3180448488097823,
+   "fe": 0.31393870421920933
+  },
+  "roark1_M_90": {
+   "closed_form": 0.1816901138162093,
+   "fourier": 0.18168989313593759
+  },
+  "roark1_N_90": {
+   "closed_form": -0.5,
+   "fourier": -0.4999997793197283
+  },
+  "roark1_dD": {
+   "closed_form": 0.12236069342631198,
+   "fe": 0.12361874730681424
+  },
+  "bruhn_point_shear_M": {
+   "closed_form": 0.238732414637843,
+   "fourier": 0.23846726683159566,
+   "fe": 0.23500676684101907
+  },
+  "wrap180_M": {
+   "fourier": 0.014623835202669473,
+   "fe": 0.015373663128034211,
+   "at_deg": 66.80000000000001
+  },
+  "fe_max_reaction_n": 0.002538491717132274
+ },
+ "legacy": {
+  "244.5": {
+   "bar_local_sf": 1.2064786819130355,
+   "basis_A_sf": 1.2064786819130353
+  },
+  "288": {
+   "bar_local_sf": 1.0242501309990875,
+   "basis_A_sf": 1.0242501309990872
+  },
+  "rev_b_210": {
+   "bar_local_sf": 1.0844696273146301,
+   "capacity_n": 227.73862173607233
+  }
+ },
+ "assumptions": {
+  "RING_SLICE": [
+   "The bar wall under a loop is a ring slice as wide as the bearing (the strap or saddle width); the tube either side is not credited. Conservative: the adjacent shell resists ovalisation.",
+   "TL-1b: ovalisation of the bare bar under a 25 mm loop, measured, against the basis A/B/C predictions."
+  ],
+  "BASIS_A": [
+   "Design basis = the repo's existing rule (frame_cg_recheck.bar_local): Roark point-load ring, M = 0.318 F Rm / w, with the hoop membrane N = -F / 2w added at the same point. HA-LS-1 keeps the point-load ring for ring crush and credits a spread contact only with a passing coupon.",
+   "TL-1b coupon unlocks basis B or C (as T7 does for the crown bushings)."
+  ],
+  "WRAP_UNIFORM": [
+   "Basis C: the strap presses uniformly over the 180 deg it wraps (equal legs, friction not mobilised under a symmetric pull).",
+   "TL-1b ovalisation reading."
+  ],
+  "LOAD_INTERP": [
+   "The port guy 1 g force varies linearly with torso between the rev 3 fine sims at 15 / 19 / 23 in (corrie_f.bl029_table, rev 3 over_port); a kit is checked at its tallest setting. The crown strap takes the larger of the two bracketing sims.",
+   "T9 / PORT-1 load reading on the prototype at each kit."
+  ],
+  "COLLINEAR": [
+   "Guy and crown strap forces on the shared B-25 sleeve are added as scalars (collinear). They are about 90 deg apart in the sims (guy aft, crown strap up the frame face), so the vector sum is lower; the scalar sum is the conservative envelope.",
+   "-"
+  ],
+  "CINCH": [
+   "Crown strap hand cinch 80 N (corrie_f.CROWN_PRE_N, ASSUMPTION there) x 1.5, combined with the guy at the C1 static factor (1 g x 2.0): the cinch is applied with the pack at rest.",
+   "B-28 cinch pull reading at fit (FS-O5 / T9)."
+  ],
+  "BAR_BENDING": [
+   "The bar's own bending at the sleeve (both guys pulling, fixed-fixed between the corners, spine support ignored: M = P a^2 / L at the load, a = 63 mm) and its beam shear flow F / (2 pi R) are added at every angle with the worse sign.",
+   "-"
+  ],
+  "WIDE_SLEEVE": [
+   "A 38 mm B-25 sleeve spreads the 25 mm tab pull over its full 38 mm (webbing in-plane shear over a 70 mm wrap). The sleeve is shifted inboard (x 26.5-64.5) to stay 4.5 mm clear of the corner wrap scarf at x 69 and 11.5 mm clear of the spine clamp.",
+   "TL-1 is run on the 38 mm sleeve as built (this is what it proves)."
+  ],
+  "COLLAR_SPREAD": [
+   "A printed PA12-CF collar (2 mm wall, 40 mm long) spreads the strap over its length (stiff in that short overhang); its ring-moment share is not credited.",
+   "TL-1 with the collar fitted."
+  ],
+  "LINER_SPREAD": [
+   "A 1.6 mm HDPE liner spreads the strap only by 45 deg through its thickness (w + 2 t): soft (1.1 GPa), so no ring-moment share or longer spread is credited.",
+   "-"
+  ]
+ }
+}
