@@ -147,6 +147,81 @@ HINGE_EYE_ENVELOPE = {
     "pin_centre_from_stay_centre_mm": round(_R60 + HINGE_GEOM.hole_proud, 4),
 }
 
+# BL-045 (ticket item 3): the 10 IM / US fairleads also carry webbing round the pin, so they get the hinge's eye
+# clearance. Inventory of what passes round each pin (patterns_corrie_f_rev3 pieces, mfg BOM / load points, SK-11):
+# hooks and carabiners never touch a pin; each clips a webbing eye that is captive on the pin.
+IMUS_STATIONS = ("us1", "us2", "im1", "im2", "im3")
+PIN_WRAP = {
+    "im1": {"wraps": "IME eye, 38 mm poly webbing (frame kit, op 'IME fairlead eyes', pattern IME 200 mm folded at "
+                     "100 mm, box-X 34 x 30)", "clips_on_the_eye": "IM1 strap girth hitch (L); IM1 G-hook (R)",
+            "web_w_mm": 38.0},
+    "im2": {"wraps": "IME eye, 38 mm (as im1)", "clips_on_the_eye": "IM2 strap girth hitch (L); IM2 G-hook (R); T2 bag hook",
+            "web_w_mm": 38.0},
+    "im3": {"wraps": "IME eye, 38 mm (as im1)", "clips_on_the_eye": "IM3 strap girth hitch (L); IM3 wiregate carabiner (R); "
+                                                                   "T3 bag carabiner; B-24 float-link carabiner",
+            "web_w_mm": 38.0},
+    "us1": {"wraps": "L pin: US1 sewn eye, 25 mm poly webbing (pattern US, 50 mm eye fold round the pin sleeve). R pin: "
+                     "the US1 cam's anchor (BOM 'US-anchor', no drawn part: a webbing loop is the only thing that fits "
+                     "the throat; the 32 mm cam body does not)", "clips_on_the_eye": "-", "web_w_mm": 25.0},
+    "us2": {"wraps": "as us1 (US2 strap)", "clips_on_the_eye": "-", "web_w_mm": 25.0},
+}
+IMUS_Z = {"us1": 95.0, "us2": 142.0, "im1": 190.0, "im2": 330.0, "im3": 520.0}
+SLEEVE_BORE_FROM_Z = 155.0     # frame_h1.print_mesh: the crown bore is cut from z 155 (print 17.4, ream 18.0)
+SLEEVE_BORE_R_REAM = 9.0       # frame_topopt.SLEEVE_BORE_R: 18.0 mm reamed bore
+EYE_BORE_CLEAR = 1.0           # ASSUMPTION EYE-ROOT: the saddle root stops 1 mm above the reamed bore on the sleeve
+#                                stations (the bore wall there is the sleeve's own, SLEEVE_WALL_FLOOR 3.6 mm and more)
+IMUS_NECK_W = HINGE_NECK_W     # every eye on a pin is necked to 18 mm: the 38 mm IME as the HE (edges folded 10 mm in,
+#                                3 plies in the middle 2 mm, 2 plies out to the edge); the 25 mm US eye / anchor loop with
+#                                each edge folded 3.5 mm in (2 plies at the edges, 1 in the middle)
+US_FOLD_EDGE = (25.0 - IMUS_NECK_W) / 2.0     # 3.5
+
+
+def eye_geom(name: str) -> FairleadGeom:
+    """BL-045: the print geometry of an IM / US fairlead that carries a webbing eye on its pin. The hinge's clearance
+    (throat 20, 5.5 mm under the pin for a 3-ply 38 mm neck + 1 mm, floor 2.1 mm above the stay surface) and its
+    saddle (root and cheeks down to the stay centreline, 45 deg underside outboard of |x| 9), on the station's own
+    stay radius; IM3 keeps its 28 mm cheek (h1_buckling.IM3_HALF_Z). One geometry for all ten, so a 3-ply 38 mm eye
+    fits every pin (the 2-ply 25 mm US eye has 2.5 mm of margin)."""
+    import dataclasses as _dc
+    from .frame_branch import stay_radius
+    z = IMUS_Z[name]
+    r = float(stay_radius(z, SCALE))
+    # below the crown-leg sleeve the stay is solid: saddle to the centreline, as the hinge. On the sleeve (IM1-IM3) the
+    # root stops EYE_BORE_CLEAR above the 18.0 mm reamed bore (print_mesh cuts the bore r 8.7 from z 155; the fairleads
+    # are unioned after that cut, so a deeper root would fill the bore)
+    on_sleeve = z + HINGE_GEOM.half_z + 4.0 > SLEEVE_BORE_FROM_Z
+    embed = r - (SLEEVE_BORE_R_REAM + EYE_BORE_CLEAR) if on_sleeve else r
+    g = _dc.replace(HINGE_GEOM, embed=round(embed, 4))
+    if name == "im3":
+        from .h1_buckling import IM3_HALF_Z
+        g = _dc.replace(g, half_z=IM3_HALF_Z)
+    return g
+
+
+def imus_eye_envelope(name: str) -> dict:
+    """What the bag / frame kit must meet at an IM / US pin (BL-045), the same keys as HINGE_EYE_ENVELOPE. Import this
+    in the pattern (IME / US / US-anchor necks) and the mfg ops."""
+    g = eye_geom(name)
+    w = PIN_WRAP[name]["web_w_mm"]
+    plies = HINGE_EYE_PLIES if w >= 38.0 else 2
+    steps = ([[HE_FOLD_EDGE - HINGE_NECK_W / 2.0 + HINGE_NECK_TOL, HINGE_EYE_PLIES * HINGE_EYE_PLY_T],
+              [(HINGE_NECK_W + HINGE_NECK_TOL) / 2.0, 2 * HINGE_EYE_PLY_T]] if w >= 38.0 else
+             [[(HINGE_NECK_W + HINGE_NECK_TOL) / 2.0, 2 * HINGE_EYE_PLY_T]])
+    return {
+        "station": name, "station_z_mm": IMUS_Z[name],
+        "wraps": PIN_WRAP[name]["wraps"], "web_w_mm": w,
+        "neck_w_mm": IMUS_NECK_W, "neck_fold_edge_mm": HE_FOLD_EDGE if w >= 38.0 else US_FOLD_EDGE,
+        "pin_d_mm": g.pin_d, "pin_centre_above_stay_surface_mm": g.hole_proud,
+        "throat_floor_above_stay_surface_mm": g.floor_proud, "gap_under_pin_mm": round(g.gap_under_pin, 3),
+        "eye_plies_design": plies, "eye_ply_t_mm": HINGE_EYE_PLY_T, "eye_thickness_design_mm": plies * HINGE_EYE_PLY_T,
+        "gap_clearance_over_eye_mm": round(g.gap_under_pin - plies * HINGE_EYE_PLY_T, 3),
+        "eye_section_steps_mm": steps, "eye_margin_mm": HINGE_EYE_MARGIN,
+        "throat_mm": g.throat, "neck_w_max_mm": IMUS_NECK_W + HINGE_NECK_TOL,
+        "throat_clearance_over_max_neck_mm": g.throat - IMUS_NECK_W - HINGE_NECK_TOL,
+        "cheek_half_z_mm": g.half_z, "cheek_tip_above_stay_surface_mm": g.tip_proud,
+        "saddle_root_depth_mm": g.embed, "on_crown_sleeve": bool(IMUS_Z[name] + g.half_z + 4.0 > SLEEVE_BORE_FROM_Z),
+    }
+
 
 def fairlead_local(pts: np.ndarray, stay_r: float, geom: FairleadGeom | None = None) -> np.ndarray:
     """SDF of one fairlead in stay-local coordinates (stay axis z, bag direction +y).

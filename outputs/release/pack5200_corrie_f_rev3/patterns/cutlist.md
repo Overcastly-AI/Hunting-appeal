@@ -120,7 +120,7 @@ Knife: CW from the grain-arrow head; cut windows and slits first. Notches 6 mm d
 | W3 | haul wrap W3, kit M | poly_webbing_25mm | 987 (38.8) | 1 | crown kit M | strap_tails.wrap_rows |
 | W3 | haul wrap W3, kit L | poly_webbing_25mm | 935 (36.8) | 1 | crown kit L | strap_tails.wrap_rows |
 | WX | W haul extender (meat-trip kit) | poly_webbing_25mm | 740 (29.1) | 3 | meat_trip | strap_tails.wrap_rows haul extender_mm |
-| K-W | W gore keeper loop (6, in the gore seams) | poly_webbing_25mm | 80 (3.1) | 6 | base | ledger 'keepers: 6 haul-wrap keeper loops' (ASSUMPTION 80 mm cut) |
+| K-W | W gore keeper loop (4, in the aft corner seams: W1, W2) | poly_webbing_25mm | 80 (3.1) | 4 | base | ledger 'keepers: 6 haul-wrap keeper loops' (ASSUMPTION 80 mm cut) less the 2 W3 loops (BL-044 DECISION KW-W3-OFF row) |
 | RT | roll-top side clip strap | poly_webbing_25mm | 560 (22.0) | 2 | base | strap_tails.roll_row |
 | RTM | roll-clip buckle tab on the gusset (female half) | poly_webbing_25mm | 70 (2.8) | 2 | base | BL-040 DECISION RT-MATE (LLT tab rule); BL-041 RT-FWD placement (rt_layout) |
 | K-RT | roll clip tail keeper (25 mm elastic) | elastic_25mm | 90 (3.5) | 2 | base | BL-031 |
@@ -132,7 +132,7 @@ Knife: CW from the grain-arrow head; cut windows and slits first. Notches 6 mm d
 | IME | IM fairlead eye (38 mm) | poly_webbing_38mm | 200 (7.9) | 6 | base | ledger IM-eyes 6 x 0.20 m |
 | US | under-strap US1 / US2 | poly_webbing_25mm | 550 (21.7) | 2 | base | ledger US-web 1.10 m |
 | B-24 | float stand-off link (38 mm, meat-trip) | poly_webbing_38mm | 435 (17.1) | 2 | meat_trip | attach_system.link_piece; ledger B-24-web 2 x 435 mm |
-| HE | hinge eye (38 mm) | poly_webbing_38mm | 86 (3.4) | 2 | base | BL-040 DECISION HE-ONE + BL-041 DECISION HE-PIN (cut 38 x 86; eye solved by he_geometry) |
+| HE | hinge eye (38 mm) | poly_webbing_38mm | 96 (3.8) | 2 | base | BL-040 DECISION HE-ONE + BL-041 HE-PIN + BL-044 DECISION HE-ENV (cut 38 x 96; eye solved by he_geometry on bag_attach.HINGE_EYE_ENVELOPE) |
 | T3 | IM3 bag-hook tongue (38 mm) | poly_webbing_38mm | 160 (6.3) | 2 | base | attach_system.drawing_pieces T2/T3 (IM2 hooks removed by BL-004: 2 left) |
 | B-25 | guy bridle on the crown top bar (38 mm, BL-041 / BL-043 topology) | poly_webbing_38mm | 479 (18.9) | 1 | base | corrie_f.b25_topology (BL-043 B25-TOPO) on corrie_f.guy_bridle(wide=True) (crown_tube_guy_loop.md 5, 8.1) |
 | TG | port guy (B-25 toggle -> B-27 port -> B-22 inside) | poly_webbing_25mm | 500 (19.7) | 2 | base | attach_system.GUY cut_mm |

@@ -12,11 +12,11 @@
    "meat_trip": 3967.4
   },
   "P": {
-   "base": 3690.7,
-   "as_hunted": 4009.2,
-   "meat_trip": 4205.2,
+   "base": 3728.7,
+   "as_hunted": 4047.2,
+   "meat_trip": 4243.2,
    "by_system_base": {
-    "frame": 1071.8,
+    "frame": 1108.9,
     "back": 413.6,
     "belt": 482.3,
     "harness": 225.1,
@@ -24,23 +24,23 @@
     "bag_pockets": 110.6,
     "pouch": 0,
     "fly": 5.9,
-    "straps_meat": 408.9,
-    "straps_compression": 246.2,
-    "attachment": 288.0,
+    "straps_meat": 409.6,
+    "straps_compression": 243.0,
+    "attachment": 291.4,
     "misc": 25.8
    },
    "like_for_like_base": {
-    "bag_side": 1472.2,
-    "suspension": 2192.7,
+    "bag_side": 1473.0,
+    "suspension": 2229.9,
     "misc": 25.8
    }
   },
   "A": {
-   "base": 3103.6,
-   "as_hunted": 3422.1,
-   "meat_trip": 3618.1,
+   "base": 3141.5,
+   "as_hunted": 3460.0,
+   "meat_trip": 3656.0,
    "by_system_base": {
-    "frame": 1067.8,
+    "frame": 1105.0,
     "back": 363.6,
     "belt": 393.3,
     "harness": 196.8,
@@ -48,14 +48,14 @@
     "bag_pockets": 102.9,
     "pouch": 0,
     "fly": 5.9,
-    "straps_meat": 293.0,
-    "straps_compression": 144.6,
-    "attachment": 183.5,
+    "straps_meat": 293.6,
+    "straps_compression": 141.4,
+    "attachment": 186.8,
     "misc": 18.8
    },
    "like_for_like_base": {
-    "bag_side": 1063.3,
-    "suspension": 2021.4,
+    "bag_side": 1064.1,
+    "suspension": 2058.6,
     "misc": 18.8
    }
   }
@@ -68,14 +68,14 @@
     "meat_trip": 3939.5
    },
    "P": {
-    "base": 3662.2,
-    "as_hunted": 3980.8,
-    "meat_trip": 4176.8
+    "base": 3700.2,
+    "as_hunted": 4018.7,
+    "meat_trip": 4214.7
    },
    "A": {
-    "base": 3085.7,
-    "as_hunted": 3404.2,
-    "meat_trip": 3600.2
+    "base": 3123.7,
+    "as_hunted": 3442.2,
+    "meat_trip": 3638.2
    }
   },
   "M": {
@@ -85,14 +85,14 @@
     "meat_trip": 3967.4
    },
    "P": {
-    "base": 3690.7,
-    "as_hunted": 4009.2,
-    "meat_trip": 4205.2
+    "base": 3728.7,
+    "as_hunted": 4047.2,
+    "meat_trip": 4243.2
    },
    "A": {
-    "base": 3103.6,
-    "as_hunted": 3422.1,
-    "meat_trip": 3618.1
+    "base": 3141.5,
+    "as_hunted": 3460.0,
+    "meat_trip": 3656.0
    }
   },
   "L": {
@@ -102,14 +102,14 @@
     "meat_trip": 3991.5
    },
    "P": {
-    "base": 3715.6,
-    "as_hunted": 4034.1,
-    "meat_trip": 4230.1
+    "base": 3753.5,
+    "as_hunted": 4072.1,
+    "meat_trip": 4268.1
    },
    "A": {
-    "base": 3119.6,
-    "as_hunted": 3438.1,
-    "meat_trip": 3634.1
+    "base": 3157.6,
+    "as_hunted": 3476.1,
+    "meat_trip": 3672.1
    }
   },
   "XL": {
@@ -119,14 +119,14 @@
     "meat_trip": 4027.5
    },
    "P": {
-    "base": 3752.4,
-    "as_hunted": 4070.9,
-    "meat_trip": 4266.9
+    "base": 3790.4,
+    "as_hunted": 4108.9,
+    "meat_trip": 4304.9
    },
    "A": {
-    "base": 3147.6,
-    "as_hunted": 3466.2,
-    "meat_trip": 3662.2
+    "base": 3185.6,
+    "as_hunted": 3504.1,
+    "meat_trip": 3700.1
    }
   },
   "XXL": {
@@ -136,14 +136,14 @@
     "meat_trip": 4055.6
    },
    "P": {
-    "base": 3782.2,
-    "as_hunted": 4100.7,
-    "meat_trip": 4296.7
+    "base": 3820.1,
+    "as_hunted": 4138.6,
+    "meat_trip": 4334.6
    },
    "A": {
-    "base": 3167.3,
-    "as_hunted": 3485.9,
-    "meat_trip": 3681.9
+    "base": 3205.3,
+    "as_hunted": 3523.8,
+    "meat_trip": 3719.8
    }
   }
  },
@@ -379,6 +379,27 @@
     }
    ]
   },
+  "H1F": {
+   "class": "P",
+   "ticket": "BL-042",
+   "label": "H1 fairleads completed outside the voxel envelope (12, hinge saddle)",
+   "kind": "correction",
+   "gate": "HE-FIT / IM3-EC test pieces; first-article weigh (print/frame_h1/README.md section 7)",
+   "delta_g": {
+    "base": 37.2,
+    "as_hunted": 37.2,
+    "meat_trip": 37.2
+   },
+   "rows": [
+    {
+     "system": "frame",
+     "name": "H1 print: 12 fairleads completed outside the voxel envelope (cheek tops, front walls, pin holes, hinge saddle; BL-042)",
+     "g": 37.16,
+     "cfg": "base",
+     "source": "ledger correction H1F: analysis/h1_fairleads.json mass.net_g (print-mesh volume with / without h1_fairleads.add_fairleads x the PAHT-CF print density)"
+    }
+   ]
+  },
   "BL031": {
    "class": "P",
    "ticket": "BL-031 (owner)",
@@ -477,9 +498,9 @@
    "kind": "design",
    "gate": "first-article: S15 elbow-swing / sling check (BL-009)",
    "delta_g": {
-    "base": 41.9,
-    "as_hunted": 190.5,
-    "meat_trip": 332.1
+    "base": 42.7,
+    "as_hunted": 191.3,
+    "meat_trip": 332.9
    },
    "rows": [
     {
@@ -1618,7 +1639,7 @@
     },
     {
      "system": "attachment",
-     "name": "CORRIE F: BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
+     "name": "CORRIE F: BL-004 REC: guy toggles x2 (POM, in the B-25 tabs; row booked with the old guy bar loops, their 25 mm webbing removed by the BL-041 row)",
      "g": 9.52,
      "cfg": "base",
      "source": "attach_diet.mass_changes: poly_webbing_25mm record; toggle ASSUMPTION (attach_system.TOGGLE_G)"
@@ -1695,8 +1716,8 @@
     },
     {
      "system": "straps_compression",
-     "name": "CORRIE F: BL-031: roll-top clip straps cut 350 -> 510 mm (2)",
-     "g": 5.76,
+     "name": "CORRIE F: BL-031: roll-top clip straps cut 350 -> 560 mm (2)",
+     "g": 7.56,
      "cfg": "base",
      "source": "strap_tails.roll_row x poly_webbing_25mm record"
     },
@@ -1782,7 +1803,7 @@
      "name": "CORRIE F: BL-041: HE hinge eyes 150 -> 86 mm (DECISION HE-PIN, x2)",
      "g": -3.58,
      "cfg": "base",
-     "source": "patterns_corrie_f_rev3.HE_CUT x poly_webbing_38mm mass_g_m (record)"
+     "source": "patterns_corrie_f_rev3.HE_CUT_BL041 x poly_webbing_38mm mass_g_m (record)"
     },
     {
      "system": "straps_compression",
@@ -1792,25 +1813,53 @@
      "source": "patterns_corrie_f_rev3.RTM_CUT x poly_webbing_25mm mass_g_m (record)"
     },
     {
-     "system": "straps_compression",
-     "name": "CORRIE F: BL-041: W3G W3 guides on the gussets (2 x 60 mm, DECISION RT-OVER-W3)",
-     "g": 2.16,
-     "cfg": "base",
-     "source": "patterns_corrie_f_rev3.W3G_CUT x poly_webbing_25mm mass_g_m (record)"
-    },
-    {
      "system": "attachment",
      "name": "CORRIE F: BL-041: GBL guy bar loop webbing deleted (2 x 170 mm; rev 1+ toggles the guy into the B-25 tab, the toggles stay)",
      "g": -6.12,
      "cfg": "base",
-     "source": "attach_diet BAR_LOOP 170 mm x poly_webbing_25mm record (negative copy of the webbing in 'BL-004 REC: guy bar loops')"
+     "source": "attach_diet BAR_LOOP 170 mm x poly_webbing_25mm record (negative copy of the webbing in 'BL-004 REC: guy toggles x2', the old guy bar loop row)"
     },
     {
      "system": "straps_meat",
      "name": "CORRIE F: BL-041: IMC IM cam anchor tabs (3 x 180 mm, DECISION IM-CAM-TAB)",
      "g": 9.72,
      "cfg": "base",
-     "source": "patterns_corrie_f_rev3.IMC_FOLD x 4 x poly_webbing_25mm mass_g_m (record)"
+     "source": "patterns_corrie_f_rev3.IMC_FOLD_BL041 x 4 x poly_webbing_25mm mass_g_m (record)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-043: B-25 bridle drawn topology (sleeve, mitre, necked run, spine wrap) 386 -> 479 mm (DECISION B25-TOPO)",
+     "g": 2.6,
+     "cfg": "base",
+     "source": "corrie_f.b25_topology cut_mm - BL-041 guy_bridle(wide=True) x poly_webbing_38mm mass_g_m (record)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: BL-043: IMC tabs 180 -> 192 mm (m-4, 5 mm raw-end margin, x3)",
+     "g": 0.65,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.IMC_FOLD - IMC_FOLD_BL041, x 4 x 3 x poly_webbing_25mm mass_g_m (record)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-044: HE hinge eyes 86 -> 96 mm (DECISION HE-ENV, x2)",
+     "g": 0.56,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.HE_CUT - HE_CUT_BL041, x 2 x poly_webbing_38mm mass_g_m (record)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-044: hinge pins +2 mm for the 20 mm throat (x2)",
+     "g": 0.22,
+     "cfg": "base",
+     "source": "corrie_f.hinge_pin: bag_attach.HINGE_EYE_ENVELOPE throat - bag_attach.THROAT, 5 mm x alu_7075_t6 density (record)"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-044: W3 K-W keeper loops deleted (2 x 80 mm, DECISION KW-W3-OFF)",
+     "g": -2.88,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.KW_CUT x poly_webbing_25mm mass_g_m (record), negative"
     },
     {
      "system": "misc",
@@ -2780,7 +2829,7 @@
     },
     {
      "system": "attachment",
-     "name": "CORRIE F: BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
+     "name": "CORRIE F: BL-004 REC: guy toggles x2 (POM, in the B-25 tabs; row booked with the old guy bar loops, their 25 mm webbing removed by the BL-041 row)",
      "g": 9.52,
      "cfg": "base",
      "source": "attach_diet.mass_changes: poly_webbing_25mm record; toggle ASSUMPTION (attach_system.TOGGLE_G)"
@@ -2857,8 +2906,8 @@
     },
     {
      "system": "straps_compression",
-     "name": "CORRIE F: BL-031: roll-top clip straps cut 350 -> 510 mm (2)",
-     "g": 5.76,
+     "name": "CORRIE F: BL-031: roll-top clip straps cut 350 -> 560 mm (2)",
+     "g": 7.56,
      "cfg": "base",
      "source": "strap_tails.roll_row x poly_webbing_25mm record"
     },
@@ -2944,7 +2993,7 @@
      "name": "CORRIE F: BL-041: HE hinge eyes 150 -> 86 mm (DECISION HE-PIN, x2)",
      "g": -3.58,
      "cfg": "base",
-     "source": "patterns_corrie_f_rev3.HE_CUT x poly_webbing_38mm mass_g_m (record)"
+     "source": "patterns_corrie_f_rev3.HE_CUT_BL041 x poly_webbing_38mm mass_g_m (record)"
     },
     {
      "system": "straps_compression",
@@ -2954,25 +3003,53 @@
      "source": "patterns_corrie_f_rev3.RTM_CUT x poly_webbing_25mm mass_g_m (record)"
     },
     {
-     "system": "straps_compression",
-     "name": "CORRIE F: BL-041: W3G W3 guides on the gussets (2 x 60 mm, DECISION RT-OVER-W3)",
-     "g": 2.16,
-     "cfg": "base",
-     "source": "patterns_corrie_f_rev3.W3G_CUT x poly_webbing_25mm mass_g_m (record)"
-    },
-    {
      "system": "attachment",
      "name": "CORRIE F: BL-041: GBL guy bar loop webbing deleted (2 x 170 mm; rev 1+ toggles the guy into the B-25 tab, the toggles stay)",
      "g": -6.12,
      "cfg": "base",
-     "source": "attach_diet BAR_LOOP 170 mm x poly_webbing_25mm record (negative copy of the webbing in 'BL-004 REC: guy bar loops')"
+     "source": "attach_diet BAR_LOOP 170 mm x poly_webbing_25mm record (negative copy of the webbing in 'BL-004 REC: guy toggles x2', the old guy bar loop row)"
     },
     {
      "system": "straps_meat",
      "name": "CORRIE F: BL-041: IMC IM cam anchor tabs (3 x 180 mm, DECISION IM-CAM-TAB)",
      "g": 9.72,
      "cfg": "base",
-     "source": "patterns_corrie_f_rev3.IMC_FOLD x 4 x poly_webbing_25mm mass_g_m (record)"
+     "source": "patterns_corrie_f_rev3.IMC_FOLD_BL041 x 4 x poly_webbing_25mm mass_g_m (record)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-043: B-25 bridle drawn topology (sleeve, mitre, necked run, spine wrap) 386 -> 479 mm (DECISION B25-TOPO)",
+     "g": 2.6,
+     "cfg": "base",
+     "source": "corrie_f.b25_topology cut_mm - BL-041 guy_bridle(wide=True) x poly_webbing_38mm mass_g_m (record)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: BL-043: IMC tabs 180 -> 192 mm (m-4, 5 mm raw-end margin, x3)",
+     "g": 0.65,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.IMC_FOLD - IMC_FOLD_BL041, x 4 x 3 x poly_webbing_25mm mass_g_m (record)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-044: HE hinge eyes 86 -> 96 mm (DECISION HE-ENV, x2)",
+     "g": 0.56,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.HE_CUT - HE_CUT_BL041, x 2 x poly_webbing_38mm mass_g_m (record)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-044: hinge pins +2 mm for the 20 mm throat (x2)",
+     "g": 0.22,
+     "cfg": "base",
+     "source": "corrie_f.hinge_pin: bag_attach.HINGE_EYE_ENVELOPE throat - bag_attach.THROAT, 5 mm x alu_7075_t6 density (record)"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-044: W3 K-W keeper loops deleted (2 x 80 mm, DECISION KW-W3-OFF)",
+     "g": -2.88,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.KW_CUT x poly_webbing_25mm mass_g_m (record), negative"
     },
     {
      "system": "bag_shell",
@@ -3543,7 +3620,7 @@
     },
     {
      "system": "attachment",
-     "name": "CORRIE F: BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
+     "name": "CORRIE F: BL-004 REC: guy toggles x2 (POM, in the B-25 tabs; row booked with the old guy bar loops, their 25 mm webbing removed by the BL-041 row)",
      "g": -9.52,
      "cfg": "base",
      "source": "attach_diet.mass_changes: poly_webbing_25mm record; toggle ASSUMPTION (attach_system.TOGGLE_G)"
@@ -3620,8 +3697,8 @@
     },
     {
      "system": "straps_compression",
-     "name": "CORRIE F: BL-031: roll-top clip straps cut 350 -> 510 mm (2)",
-     "g": -5.76,
+     "name": "CORRIE F: BL-031: roll-top clip straps cut 350 -> 560 mm (2)",
+     "g": -7.56,
      "cfg": "base",
      "source": "strap_tails.roll_row x poly_webbing_25mm record"
     },
@@ -3707,7 +3784,7 @@
      "name": "CORRIE F: BL-041: HE hinge eyes 150 -> 86 mm (DECISION HE-PIN, x2)",
      "g": 3.58,
      "cfg": "base",
-     "source": "patterns_corrie_f_rev3.HE_CUT x poly_webbing_38mm mass_g_m (record)"
+     "source": "patterns_corrie_f_rev3.HE_CUT_BL041 x poly_webbing_38mm mass_g_m (record)"
     },
     {
      "system": "straps_compression",
@@ -3717,25 +3794,53 @@
      "source": "patterns_corrie_f_rev3.RTM_CUT x poly_webbing_25mm mass_g_m (record)"
     },
     {
-     "system": "straps_compression",
-     "name": "CORRIE F: BL-041: W3G W3 guides on the gussets (2 x 60 mm, DECISION RT-OVER-W3)",
-     "g": -2.16,
-     "cfg": "base",
-     "source": "patterns_corrie_f_rev3.W3G_CUT x poly_webbing_25mm mass_g_m (record)"
-    },
-    {
      "system": "attachment",
      "name": "CORRIE F: BL-041: GBL guy bar loop webbing deleted (2 x 170 mm; rev 1+ toggles the guy into the B-25 tab, the toggles stay)",
      "g": 6.12,
      "cfg": "base",
-     "source": "attach_diet BAR_LOOP 170 mm x poly_webbing_25mm record (negative copy of the webbing in 'BL-004 REC: guy bar loops')"
+     "source": "attach_diet BAR_LOOP 170 mm x poly_webbing_25mm record (negative copy of the webbing in 'BL-004 REC: guy toggles x2', the old guy bar loop row)"
     },
     {
      "system": "straps_meat",
      "name": "CORRIE F: BL-041: IMC IM cam anchor tabs (3 x 180 mm, DECISION IM-CAM-TAB)",
      "g": -9.72,
      "cfg": "base",
-     "source": "patterns_corrie_f_rev3.IMC_FOLD x 4 x poly_webbing_25mm mass_g_m (record)"
+     "source": "patterns_corrie_f_rev3.IMC_FOLD_BL041 x 4 x poly_webbing_25mm mass_g_m (record)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-043: B-25 bridle drawn topology (sleeve, mitre, necked run, spine wrap) 386 -> 479 mm (DECISION B25-TOPO)",
+     "g": -2.6,
+     "cfg": "base",
+     "source": "corrie_f.b25_topology cut_mm - BL-041 guy_bridle(wide=True) x poly_webbing_38mm mass_g_m (record)"
+    },
+    {
+     "system": "straps_meat",
+     "name": "CORRIE F: BL-043: IMC tabs 180 -> 192 mm (m-4, 5 mm raw-end margin, x3)",
+     "g": -0.65,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.IMC_FOLD - IMC_FOLD_BL041, x 4 x 3 x poly_webbing_25mm mass_g_m (record)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-044: HE hinge eyes 86 -> 96 mm (DECISION HE-ENV, x2)",
+     "g": -0.56,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.HE_CUT - HE_CUT_BL041, x 2 x poly_webbing_38mm mass_g_m (record)"
+    },
+    {
+     "system": "attachment",
+     "name": "CORRIE F: BL-044: hinge pins +2 mm for the 20 mm throat (x2)",
+     "g": -0.22,
+     "cfg": "base",
+     "source": "corrie_f.hinge_pin: bag_attach.HINGE_EYE_ENVELOPE throat - bag_attach.THROAT, 5 mm x alu_7075_t6 density (record)"
+    },
+    {
+     "system": "straps_compression",
+     "name": "CORRIE F: BL-044: W3 K-W keeper loops deleted (2 x 80 mm, DECISION KW-W3-OFF)",
+     "g": 2.88,
+     "cfg": "base",
+     "source": "patterns_corrie_f_rev3.KW_CUT x poly_webbing_25mm mass_g_m (record), negative"
     }
    ]
   },
@@ -3931,9 +4036,9 @@
  },
  "configs": {
   "corrie_f_base": {
-   "total_g": 3378.4,
+   "total_g": 3416.4,
    "by_system": {
-    "frame": 1134.0,
+    "frame": 1171.1,
     "back": 413.6,
     "belt": 499.2,
     "harness": 216.6,
@@ -3941,21 +4046,21 @@
     "bag_pockets": 102.9,
     "pouch": 0,
     "fly": 5.9,
-    "straps_meat": 293.0,
-    "straps_compression": 144.6,
-    "attachment": 183.5,
+    "straps_meat": 293.6,
+    "straps_compression": 141.4,
+    "attachment": 186.8,
     "misc": 25.8
    },
    "like_for_like": {
-    "bag_side": 1089.3,
-    "suspension": 2263.4,
+    "bag_side": 1090.1,
+    "suspension": 2300.5,
     "misc": 25.8
    }
   },
   "corrie_f_as_hunted": {
-   "total_g": 3697.0,
+   "total_g": 3734.9,
    "by_system": {
-    "frame": 1134.0,
+    "frame": 1171.1,
     "back": 413.6,
     "belt": 535.9,
     "harness": 216.6,
@@ -3963,14 +4068,14 @@
     "bag_pockets": 186.6,
     "pouch": 47.8,
     "fly": 72.1,
-    "straps_meat": 293.0,
-    "straps_compression": 224.2,
-    "attachment": 188.1,
+    "straps_meat": 293.6,
+    "straps_compression": 220.9,
+    "attachment": 191.5,
     "misc": 25.8
    },
    "like_for_like": {
-    "bag_side": 1371.2,
-    "suspension": 2300.0,
+    "bag_side": 1371.9,
+    "suspension": 2337.2,
     "misc": 25.8
    }
   },
@@ -4116,14 +4221,14 @@
     "pct": 60.0
    },
    "P": {
-    "ours_g": 3635.2,
-    "delta_g": 1327.2,
-    "pct": 58.0
+    "ours_g": 3673.2,
+    "delta_g": 1365.2,
+    "pct": 59.0
    },
    "A": {
-    "ours_g": 3055.8,
-    "delta_g": 747.8,
-    "pct": 32.0
+    "ours_g": 3093.7,
+    "delta_g": 785.7,
+    "pct": 34.0
    }
   },
   {
@@ -4141,14 +4246,14 @@
     "pct": 54.0
    },
    "P": {
-    "ours_g": 3635.2,
-    "delta_g": 1239.2,
-    "pct": 52.0
+    "ours_g": 3673.2,
+    "delta_g": 1277.2,
+    "pct": 53.0
    },
    "A": {
-    "ours_g": 3055.8,
-    "delta_g": 659.8,
-    "pct": 28.0
+    "ours_g": 3093.7,
+    "delta_g": 697.7,
+    "pct": 29.0
    }
   },
   {
@@ -4167,14 +4272,14 @@
     "pct": 44.0
    },
    "P": {
-    "ours_g": 3802.8,
-    "delta_g": 1165.8,
-    "pct": 44.0
+    "ours_g": 3840.8,
+    "delta_g": 1203.8,
+    "pct": 46.0
    },
    "A": {
-    "ours_g": 3215.7,
-    "delta_g": 578.7,
-    "pct": 22.0
+    "ours_g": 3253.6,
+    "delta_g": 616.6,
+    "pct": 23.0
    }
   },
   {
@@ -4189,14 +4294,14 @@
     "pct": 34.0
    },
    "P": {
-    "ours_g": 3690.7,
-    "delta_g": 900.7,
-    "pct": 32.0
+    "ours_g": 3728.7,
+    "delta_g": 938.7,
+    "pct": 34.0
    },
    "A": {
-    "ours_g": 3103.6,
-    "delta_g": 313.6,
-    "pct": 11.0
+    "ours_g": 3141.5,
+    "delta_g": 351.5,
+    "pct": 13.0
    }
   },
   {
@@ -4211,14 +4316,14 @@
     "pct": 42.0
    },
    "P": {
-    "ours_g": 3690.7,
-    "delta_g": 1051.7,
-    "pct": 40.0
+    "ours_g": 3728.7,
+    "delta_g": 1089.7,
+    "pct": 41.0
    },
    "A": {
-    "ours_g": 3103.6,
-    "delta_g": 464.6,
-    "pct": 18.0
+    "ours_g": 3141.5,
+    "delta_g": 502.5,
+    "pct": 19.0
    }
   },
   {
@@ -4235,14 +4340,14 @@
     "pct": 35.0
    },
    "P": {
-    "ours_g": 3818.0,
-    "delta_g": 1006.0,
-    "pct": 36.0
+    "ours_g": 3856.0,
+    "delta_g": 1044.0,
+    "pct": 37.0
    },
    "A": {
-    "ours_g": 3230.9,
-    "delta_g": 418.9,
-    "pct": 15.0
+    "ours_g": 3268.8,
+    "delta_g": 456.8,
+    "pct": 16.0
    }
   },
   {
@@ -4259,14 +4364,14 @@
     "pct": 41.0
    },
    "P": {
-    "ours_g": 3818.0,
-    "delta_g": 1110.0,
-    "pct": 41.0
+    "ours_g": 3856.0,
+    "delta_g": 1148.0,
+    "pct": 42.0
    },
    "A": {
-    "ours_g": 3230.9,
-    "delta_g": 522.9,
-    "pct": 19.0
+    "ours_g": 3268.8,
+    "delta_g": 560.8,
+    "pct": 21.0
    }
   },
   {
@@ -4283,14 +4388,14 @@
     "pct": 33.0
    },
    "P": {
-    "ours_g": 3727.3,
-    "delta_g": 892.3,
-    "pct": 31.0
+    "ours_g": 3765.3,
+    "delta_g": 930.3,
+    "pct": 33.0
    },
    "A": {
-    "ours_g": 3140.2,
-    "delta_g": 305.2,
-    "pct": 11.0
+    "ours_g": 3178.1,
+    "delta_g": 343.1,
+    "pct": 12.0
    }
   },
   {
@@ -4309,14 +4414,14 @@
     "pct": 127.0
    },
    "P": {
-    "ours_g": 3802.8,
-    "delta_g": 2129.8,
-    "pct": 127.0
+    "ours_g": 3840.8,
+    "delta_g": 2167.8,
+    "pct": 130.0
    },
    "A": {
-    "ours_g": 3215.7,
-    "delta_g": 1542.7,
-    "pct": 92.0
+    "ours_g": 3253.6,
+    "delta_g": 1580.6,
+    "pct": 94.0
    }
   },
   {
@@ -4333,20 +4438,20 @@
     "pct": 40.0
    },
    "P": {
-    "ours_g": 3818.0,
-    "delta_g": 1096.0,
-    "pct": 40.0
+    "ours_g": 3856.0,
+    "delta_g": 1134.0,
+    "pct": 42.0
    },
    "A": {
-    "ours_g": 3230.9,
-    "delta_g": 508.9,
-    "pct": 19.0
+    "ours_g": 3268.8,
+    "delta_g": 546.8,
+    "pct": 20.0
    }
   }
  ],
  "features": {
-  "after_tests_base_g": 3103.6,
-  "gap_g": 109.9,
+  "after_tests_base_g": 3141.5,
+  "gap_g": 147.8,
   "candidates": [
    {
     "item": "IMP-2",
@@ -4425,7 +4530,7 @@
   "with_reserve_g": 68.5,
   "reaches_with_reserve": false
  },
- "bl011_headline_base_g": 3285.5,
+ "bl011_headline_base_g": 3286.2,
  "h1_fatigue": {
   "old": 1.2794731924250948,
   "per_torso": 1.1502260709981276,
@@ -4451,7 +4556,7 @@
   "P": {
    "scenario": "P",
    "cfg": "base",
-   "total_g": 3690.7,
+   "total_g": 3728.7,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
      "g": 426.5,
@@ -4460,9 +4565,9 @@
      "frac": 0.3
     },
     "printed PAHT-CF body (2 mm raster x density)": {
-     "g": 751.2,
-     "band_g": 42.5,
-     "n": 5,
+     "g": 788.4,
+     "band_g": 44.4,
+     "n": 6,
      "frac": 0.05
     },
     "frame lumps and carbon (beam model, frame_mass json)": {
@@ -4472,13 +4577,13 @@
      "frac": 0.1
     },
     "cut area x record gsm, length x record g/m": {
-     "g": 1998.8,
-     "band_g": 204.4,
-     "n": 140,
+     "g": 1999.6,
+     "band_g": 205.0,
+     "n": 144,
      "frac": 0.08
     }
    },
-   "worst_g": 452.9,
+   "worst_g": 455.2,
    "rss_g": 69.9,
    "named": [
     {
@@ -4542,7 +4647,7 @@
      "band_g": 3.0
     },
     {
-     "name": "BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
+     "name": "BL-004 REC: guy toggles x2 (POM, in the B-25 tabs; row booked with the old guy bar loops, ",
      "g": 9.52,
      "band_g": 2.9
     },
@@ -4586,18 +4691,18 @@
   "A": {
    "scenario": "A",
    "cfg": "base",
-   "total_g": 3103.6,
+   "total_g": 3141.5,
    "classes": {
     "typed ASSUMPTION (no record, no drawing)": {
      "g": 347.0,
      "band_g": 171.6,
-     "n": 31,
+     "n": 32,
      "frac": 0.3
     },
     "printed PAHT-CF body (2 mm raster x density)": {
-     "g": 751.2,
-     "band_g": 42.5,
-     "n": 5,
+     "g": 788.4,
+     "band_g": 44.4,
+     "n": 6,
      "frac": 0.05
     },
     "frame lumps and carbon (beam model, frame_mass json)": {
@@ -4607,14 +4712,14 @@
      "frac": 0.1
     },
     "cut area x record gsm, length x record g/m": {
-     "g": 1495.1,
-     "band_g": 235.8,
-     "n": 161,
+     "g": 1495.9,
+     "band_g": 236.3,
+     "n": 165,
      "frac": 0.08
     }
    },
-   "worst_g": 514.2,
-   "rss_g": 72.2,
+   "worst_g": 516.5,
+   "rss_g": 72.1,
    "named": [
     {
      "name": "D2 door zip #10 in the blade | door seam, 2 sliders",
@@ -4672,11 +4777,6 @@
      "band_g": 7.2
     },
     {
-     "name": "BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
-     "g": 19.04,
-     "band_g": 5.7
-    },
-    {
      "name": "38 mm IM/US kept until MT-1/MT-2/MT-3 (BL-003 (a) undone): US-cams US1/US2 25 mm Al cams (",
      "g": 17.6,
      "band_g": 5.3
@@ -4697,8 +4797,18 @@
      "band_g": 3.0
     },
     {
+     "name": "BL-004 REC: guy toggles x2 (POM, in the B-25 tabs; row booked with the old guy bar loops, ",
+     "g": 9.52,
+     "band_g": 2.9
+    },
+    {
      "name": "hood + IM2 hooks kept until PT-1/TL-1/LL-H (BL-004 REC undone): guy bar loops x2: 25 mm we",
      "g": -9.52,
+     "band_g": 2.9
+    },
+    {
+     "name": "BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle",
+     "g": 9.52,
      "band_g": 2.9
     },
     {

@@ -8,19 +8,19 @@
   "meat_trip": 1.94
  },
  "thread_g_total": 18.55,
- "thread_g_package_incl_waste_and_duplicates": 21.35,
+ "thread_g_package_incl_waste_and_duplicates": 21.34,
  "hours_per_bag": {
-  "base": 50.2,
+  "base": 50.08,
   "as_hunted": 16.29,
   "meat_trip": 3.48
  },
- "hours_per_bag_total": 69.97,
+ "hours_per_bag_total": 69.85,
  "hours_one_off": 4.1,
- "hours_package_total": 74.08,
+ "hours_package_total": 73.96,
  "hours_by_step": {
-  "0 Prep and cutting": 12.18,
+  "0 Prep and cutting": 12.12,
   "1 Pockets": 6.06,
-  "2 Small parts": 4.39,
+  "2 Small parts": 4.33,
   "3 Door D2 and hinge band": 5.0,
   "4 Main bag": 14.02,
   "5 Collar and roll top": 3.49,
@@ -86,14 +86,14 @@
   },
   {
    "seq": "0.05",
-   "op": "Hot-knife 78 webbing / elastic / cord pieces",
+   "op": "Hot-knife 76 webbing / elastic / cord pieces",
    "step": "0 Prep and cutting",
    "cfg": "base",
    "per_bag": true,
    "thread_id": "-",
    "length_mm": 0.0,
    "thread_g": 0.0,
-   "hours": 2.34,
+   "hours": 2.28,
    "duplicate_of": null
   },
   {
@@ -225,7 +225,7 @@
    "thread_id": "-",
    "length_mm": 0.0,
    "thread_g": 0.0,
-   "hours": 0.42,
+   "hours": 0.36,
    "duplicate_of": null
   },
   {
@@ -391,8 +391,8 @@
    "cfg": "base",
    "per_bag": true,
    "thread_id": "bonded_nylon_tex135",
-   "length_mm": 1237.8,
-   "thread_g": 0.46,
+   "length_mm": 1222.9,
+   "thread_g": 0.454,
    "hours": 1.208,
    "duplicate_of": null
   },

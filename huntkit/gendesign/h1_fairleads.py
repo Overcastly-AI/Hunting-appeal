@@ -55,6 +55,9 @@ HOLE_PRINT_D = 7.0           # h1_buckling.IM3_HOLE_PRINT_D (ASSUMPTION HOLE_REA
 THROAT_FILLET = 1.0          # ASSUMPTION: 1 mm fillet left in the throat's floor corners (cut profile radius)
 MESH_H = 0.25                # marching-cubes cell for the exact fairlead solids, mm
 # tolerances of the STL check: facets of the 96-segment holes and 0.25 mm marching cubes, Taubin-smoothed body
+EYE_MESH_TOL = 0.05          # BL-045: the eye-stack test polygon is shrunk by the export's simplify tolerance (0.04 mm,
+#                              frame_h1.SIMPLIFY_MM): a floor 0.01 mm proud after simplify is mesh noise, not a print
+#                              error (the 1.0 mm HE-GAP-MARGIN is the print tolerance)
 TOL = {"hole_d": 0.15, "hole_c": 0.3, "throat": 0.2, "wall": 0.3, "cheek": 0.3, "half_z": 0.5, "floor": 0.3}
 
 STAY_AX_60 = 6.0             # ASSUMPTION STAY-AX: the H1 stay at z 40-80 is 11-16 mm across the pin axis (STL slices,
@@ -65,7 +68,19 @@ FACTOR = 3.0                 # rev C: 2.0 g x 1.5 on a 1 g force (the sim vector
 
 # ======================================================================================= geometry
 def station_geom(name: str):
-    """Print geometry of a fairlead station: hinge = BL-042 HINGE_GEOM, IM3 = BL-021 28 mm cheek, else 2026-11-01."""
+    """Print geometry of a fairlead station: hinge = BL-042 HINGE_GEOM; IM1-IM3 / US1-US2 = BL-045 eye_geom (the hinge's
+    eye clearance and saddle on the station's stay; IM3 keeps the BL-021 28 mm cheek)."""
+    from . import bag_attach as BA
+    from .h1_buckling import IM3_HALF_Z
+    if name == "hinge":
+        return BA.HINGE_GEOM
+    if name in BA.IMUS_STATIONS:          # BL-045: every IM / US pin carries a webbing eye -> the hinge's clearance
+        return BA.eye_geom(name)
+    raise KeyError(name)
+
+
+def bl042_geom_of(name: str):
+    """The geometry BL-042 printed (before BL-045): hinge = HINGE_GEOM, IM3 = 28 mm cheek, others 2026-11-01."""
     from . import bag_attach as BA
     from .h1_buckling import IM3_HALF_Z
     if name == "hinge":
@@ -73,6 +88,12 @@ def station_geom(name: str):
     if name == "im3":
         return dataclasses.replace(BA.legacy_geom(), half_z=IM3_HALF_Z)
     return BA.legacy_geom()
+
+
+def eye_envelope(name: str) -> dict:
+    """The eye envelope the slice check holds a station to (hinge: BL-042; IM / US: BL-045)."""
+    from . import bag_attach as BA
+    return BA.HINGE_EYE_ENVELOPE if name == "hinge" else BA.imus_eye_envelope(name)
 
 
 def placed(geom_of=station_geom) -> list:
@@ -202,7 +223,7 @@ def voxel_as_printed(solid: np.ndarray) -> tuple:
         hole = (np.hypot(L[:, 1] - (p["stay_r"] + g.hole_proud), L[:, 2]) < HOLE_PRINT_D / 2) & \
                (np.abs(L[:, 0]) <= g.throat / 2 + g.cheek + 0.5)
         rm = near[thr | hole]
-        add = near[(fld <= 0.0)] if p["name"] == "hinge" else near[:0]
+        add = near[(fld <= 0.0)] if g.chamfer_w is not None else near[:0]      # saddles (hinge; BL-045 IM / US)
         add = add[~dom.passive_void[add] & ~c["holes"][add]]
         cnt[p["id"]] = {"removed": int(out[rm].sum()), "added": int((~out[add]).sum())}
         out[rm] = False
@@ -341,7 +362,7 @@ def check_station(mesh, p: dict, eye: dict | None = None) -> dict:
     if eye:
         # the eye's stay-side ply stack under the pin (stepped: 3 plies in the middle, 2 out to the widest neck), plus
         # the margin, directly under the pin in plane z = zs: no material may lie inside it
-        e = eye_polygon(xs, yp - g.pin_d / 2, eye, margin=True)
+        e = eye_polygon(xs, yp - g.pin_d / 2, eye, margin=True).buffer(-EYE_MESH_TOL)
         out["eye_overlap_mm2"] = round(float(S.intersection(e).area), 4)
         out["eye_fits"] = bool(out["eye_overlap_mm2"] < 1e-3)
         out["eye_gap_min_by_step"] = [[hw, t, round(yp - g.pin_d / 2 - max(floor_at(d) for d in np.linspace(-hw, hw, 9)), 2)]
@@ -367,13 +388,19 @@ def check_stl(path_or_mesh, eye: bool = True, geom_of=station_geom) -> dict:
     mesh = trimesh.load(path_or_mesh) if isinstance(path_or_mesh, (str, Path)) else path_or_mesh
     res = {}
     for p in placed(geom_of):
-        res[p["id"]] = check_station(mesh, p, BA.HINGE_EYE_ENVELOPE if (eye and p["name"] == "hinge") else None)
+        env = None
+        if eye and p["name"] == "hinge":
+            env = BA.HINGE_EYE_ENVELOPE
+        elif eye and p["name"] in BA.IMUS_STATIONS and p["geom"].chamfer_w is not None:   # BL-045 eye stations
+            env = BA.imus_eye_envelope(p["name"])
+        res[p["id"]] = check_station(mesh, p, env)
     res["all_pass"] = all(v["pass"] for k, v in res.items() if isinstance(v, dict))
     return res
 
 
 # ======================================================================================= FEA
-def fairlead_fea(geom, stay_r: float, loads: dict, h: float = 1.0, stay_ax: float | None = None) -> dict:
+def fairlead_fea(geom, stay_r: float, loads: dict, h: float = 1.0, stay_ax: float | None = None,
+                 bore_r: float | None = None) -> dict:
     """bag_attach.solve_fairlead's model (stay stub + fairlead_local, bearing on the hole half facing the force,
     fixed end caps, PAHT layer FI, FI99 over the yoke away from the caps) with ``geom`` and several 3D loads
     (name -> [fx, fy, fz] N, x = pin axis): the x part pushes the inner face of the cheek it pulls toward
@@ -394,6 +421,8 @@ def fairlead_fea(geom, stay_r: float, loads: dict, h: float = 1.0, stay_ax: floa
     c = g.elem_centers()
     ax_ = stay_ax or stay_r
     stay = (np.hypot(c[:, 0] / ax_, c[:, 1] / stay_r) <= 1.0) & (np.abs(c[:, 2]) <= zext - 1.0)
+    if bore_r:          # BL-045: the crown-leg bore of the sleeve stations (IM1-IM3) is empty
+        stay &= np.hypot(c[:, 0], c[:, 1]) >= bore_r
     yoke = BA.fairlead_local(c, stay_r, geom) <= 0.0
     solid = stay | yoke
     nc = g.node_coords()
@@ -539,10 +568,13 @@ def fea_study(h: float = 1.0, log=print) -> dict:
     rc3 = json.loads((ANALYSIS / "rev_c_verification_results.json").read_text())["attachments"]["gov_c"]["im3"]
     cp = OUT / f"fea_im3_{h:g}.json"
     g3 = station_geom("im3")
-    if cp.exists():
+    if cp.exists() and json.loads(cp.read_text())["geom"] == dataclasses.asdict(g3) and \
+            json.loads(cp.read_text()).get("bore_r") == BA.SLEEVE_BORE_R_REAM:        # BL-045: cache keyed on geometry
         r3 = json.loads(cp.read_text())
     else:
-        r3 = fairlead_fea(g3, float(stay_radius(520.0, BA.SCALE)), {"revC": [rc3["fx"], rc3["fy"], rc3["fz"]]}, h=h)
+        r3 = fairlead_fea(g3, float(stay_radius(520.0, BA.SCALE)), {"revC": [rc3["fx"], rc3["fy"], rc3["fz"]]}, h=h,
+                          bore_r=BA.SLEEVE_BORE_R_REAM)
+        r3["bore_r"] = BA.SLEEVE_BORE_R_REAM
         cp.write_text(json.dumps(r3))
     v3 = r3["loads"]["revC"]
     res["im3_28"] = {"force_n": v3["force_n"], "sf": v3["sf"],
@@ -716,7 +748,7 @@ def plot_hinge_detail(before, after, path: Path) -> str:
 # ======================================================================================= run / report
 BEFORE_STL = OUT / "h1_assembled_before_bl042.stl"     # git HEAD 7dabc6c copy of the released-candidate STL
 BODY_CHECK = "m1_u2.5_im3"                               # h1_buckling.full_check name of the release body
-BODY_CHECK_BL042 = "m1_u2.5_im3_bl042"
+BODY_CHECK_BL042 = "m1_u2.5_im3_bl045"     # BL-045: as printed with the IM / US eye saddles too
 
 
 def before_stl() -> Path:
@@ -944,7 +976,7 @@ def write_md(res: dict, shots: list) -> str:
       f"{hg['hole_proud'] + hg['hole_d'] / 2 + hg['wall_front']:.1f} |")
     a("")
     a("**The bag must meet `bag_attach.HINGE_EYE_ENVELOPE`** (import it; the module constants `THROAT`, `HOLE_PROUD`, "
-      "`HALF_Z` stay the IM / US fairleads):\n")
+      "`HALF_Z` stay the voxel analysis envelope; BL-045 gives the IM / US pins `imus_eye_envelope`):\n")
     a("```")
     for k, v in e.items():
         a(f"{k}: {v}")
@@ -1015,14 +1047,17 @@ def write_md(res: dict, shots: list) -> str:
                    ("throats_g", "throats cleared"), ("holes_g", "12 pin holes"), ("net_g", "**net, ledger H1F**")):
         a(f"| {lab} | {m[k]:+.1f} | {m[k] / 28.3495:+.2f} |")
     a(f"\nBasis: {m['basis']}. Ledger: `huntkit/mass/ledger.py` H1F (H1 configs), source `h1_fairleads.json`.\n")
-    a("**Mass reduction that keeps the SF (not applied):** the 10 IM / US fairleads carry the 2026-11-01 geometry, "
-      "whose own rev C margins are >= 2.97 (hinge) / 3.60 (IM3). They could lose material only with a per-station "
-      "check against their own loads; BL-004's attachment diet is the place for that.\n")
+    a("**BL-045 (2026-11-13): the 10 IM / US fairleads now carry the hinge's eye clearance** (`bag_attach.eye_geom`, "
+      "`imus_eye_envelope`): each pin carries a webbing eye (IME 38 mm at IM1-IM3, the US 25 mm eye / cam anchor at "
+      "US1-US2), so the 1.9 mm gap and 18 mm throat of the 2026-11-01 shape could not take a necked eye. Gap 5.5 mm, "
+      "throat 20 mm, saddle (to the stay centreline at US1 / US2; on the crown sleeve at IM1-IM3 the root stops 1 mm "
+      "above the 18 mm bore). The mass above includes them; the per-station checks are in "
+      "`crown_and_fairlead_checks.md` (BL-045).\n")
+    a("**Mass reduction that keeps the SF (not applied):** the IM1 / IM2 eye fairleads have 1/FI99 above 5 at their "
+      "rev C loads (BL-045 table); a thinner cheek there needs a per-station check against the sim loads too.\n")
 
-    a("**Print note.** The 10 IM / US fairleads keep the 2026-11-01 shape: each cheek stands beside the stay with a flat "
-      "underside facing the plate (about 8 x 18 mm; 8 x 28 at IM3). The pre-BL-042 files had the same ledges (clipped), "
-      "and the print README said 'supports: none'. It now asks for paint-on supports under those 10 cheek pairs. "
-      "The hinge saddle's underside is 45 deg outboard of |x| 9 mm.\n")
+    a("**Print note.** Since BL-045 all 12 fairleads are saddles with a 45 deg underside outboard of |x| 9 mm "
+      "(printable face-down without supports); the IM1-IM3 roots stop above the crown bore.\n")
     a("## 7. Test pieces (HE-FIT, IM3-EC)\n")
     for k, v in res["pieces"].items():
         a(f"- `{v['file']}` (+ `.3mf`, + `_frame_coords.stl`): {v['what']}; {v['g']:.1f} g; watertight {v['watertight']}, "

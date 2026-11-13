@@ -445,7 +445,7 @@ $SKPOLY
   9
 $TDCREATE
  40
-2461358.351574074
+2461358.411967593
   9
 $TDUCREATE
  40
@@ -453,7 +453,7 @@ $TDUCREATE
   9
 $TDUPDATE
  40
-2461358.351574074
+2461358.411979167
   9
 $TDUUPDATE
  40
@@ -885,11 +885,11 @@ $PSTYLEMODE
   9
 $FINGERPRINTGUID
   2
-{D2CAFE57-87CB-49EF-8BEB-B5D2D5A64910}
+{E1D232BA-3B96-4C24-ACF1-C3ADD5F5BDF2}
   9
 $VERSIONGUID
   2
-{D2975773-9380-4253-913A-A4111A6C5807}
+{98DDD3DD-5BE9-455F-ACBF-824CC4FF079E}
   9
 $EXTNAMES
 290
@@ -7585,11 +7585,11 @@ AcDbPolyline
  20
 224.0
  10
-25.99999999999999
+22.99999999999999
  20
 224.0
  10
-25.999999999999996
+22.999999999999996
  20
 258.0
   0
@@ -7615,7 +7615,7 @@ AcDbPolyline
  20
 258.0
  10
-25.99999999999999
+22.99999999999999
  20
 224.0
   0
@@ -7641,7 +7641,7 @@ AcDbPolyline
  20
 224.0
  10
-25.999999999999996
+22.999999999999996
  20
 258.0
   0
@@ -7733,7 +7733,7 @@ DRILL
 100
 AcDbPoint
  10
-25.99999999999999
+22.99999999999999
  20
 224.0
  30
@@ -7751,7 +7751,7 @@ DRILL
 100
 AcDbCircle
  10
-25.99999999999999
+22.99999999999999
  20
 224.0
  30
@@ -7771,7 +7771,7 @@ DRILL
 100
 AcDbPoint
  10
-25.999999999999996
+22.999999999999996
  20
 258.0
  30
@@ -7789,7 +7789,7 @@ DRILL
 100
 AcDbCircle
  10
-25.999999999999996
+22.999999999999996
  20
 258.0
  30
@@ -8077,7 +8077,7 @@ AcDbText
  40
 4.0
   1
-NOTE: laser-cut; INSIDE B-01 at x +/-115, coated face to B-01; lower edge ON the B-01 cut edge (12 mm below the floor seam line, caught in the floor seam); HE box-X 34x10; rows top + sides only
+NOTE: laser-cut; INSIDE B-01 at x +/-115, coated face to B-01; lower edge ON the B-01 cut edge (12 mm below the floor seam line, caught in the floor seam); HE box-X 34x7; rows top + sides only
  11
 42.99999999999999
  21
@@ -8589,11 +8589,11 @@ AcDbPolyline
  20
 317.0
  10
-25.99999999999999
+22.99999999999999
  20
 317.0
  10
-25.999999999999996
+22.999999999999996
  20
 351.0
   0
@@ -8619,7 +8619,7 @@ AcDbPolyline
  20
 351.0
  10
-25.99999999999999
+22.99999999999999
  20
 317.0
   0
@@ -8645,7 +8645,7 @@ AcDbPolyline
  20
 317.0
  10
-25.999999999999996
+22.999999999999996
  20
 351.0
   0
@@ -8737,7 +8737,7 @@ DRILL
 100
 AcDbPoint
  10
-25.99999999999999
+22.99999999999999
  20
 317.0
  30
@@ -8755,7 +8755,7 @@ DRILL
 100
 AcDbCircle
  10
-25.99999999999999
+22.99999999999999
  20
 317.0
  30
@@ -8775,7 +8775,7 @@ DRILL
 100
 AcDbPoint
  10
-25.999999999999996
+22.999999999999996
  20
 351.0
  30
@@ -8793,7 +8793,7 @@ DRILL
 100
 AcDbCircle
  10
-25.999999999999996
+22.999999999999996
  20
 351.0
  30
@@ -9081,7 +9081,7 @@ AcDbText
  40
 4.0
   1
-NOTE: laser-cut; INSIDE B-01 at x +/-115, coated face to B-01; lower edge ON the B-01 cut edge (12 mm below the floor seam line, caught in the floor seam); HE box-X 34x10; rows top + sides only
+NOTE: laser-cut; INSIDE B-01 at x +/-115, coated face to B-01; lower edge ON the B-01 cut edge (12 mm below the floor seam line, caught in the floor seam); HE box-X 34x7; rows top + sides only
  11
 42.99999999999999
  21
@@ -17855,7 +17855,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-11-13T08:26:16.965145+00:00
+1.4.5 @ 2026-11-13T09:53:14.984850+00:00
   0
 VISUALSTYLE
   5
@@ -18567,7 +18567,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-11-13T08:26:16.981386+00:00
+1.4.5 @ 2026-11-13T09:53:15.001582+00:00
   0
 ENDSEC
   0

@@ -92,9 +92,19 @@ def stay_r(z):
     return np.asarray(stay_radius(np.asarray(z, float), _BA().SCALE), float)
 
 
-def pin_y(z) -> float:
-    """Pin axis y at a fairlead: hole centre HOLE_PROUD above the stay surface (bag_attach.fairlead_local)."""
-    return float(stay_y(z) + stay_r(z) + _BA().HOLE_PROUD)
+def fairlead_geom(name: str):
+    """Section of the fairlead at a station: the hinge (z 60) is the BL-042 hinge fairlead (bag_attach.HINGE_GEOM: pin
+    10.1 mm above the stay, 20 mm throat, saddle root), every other station the 2026-11-01 one (BL-044)."""
+    BA = _BA()
+    return BA.HINGE_GEOM if name == "hinge" else BA.legacy_geom()
+
+
+def pin_y(z, name: str | None = None) -> float:
+    """Pin axis y at a fairlead: hole centre ``hole_proud`` above the stay surface (bag_attach.fairlead_local). The
+    hinge station (z 60, or ``name`` 'hinge') uses the BL-042 hinge geometry."""
+    if name is None:
+        name = "hinge" if abs(float(z) - _BA().HINGE_EYE_ENVELOPE["station_z_mm"]) < 1e-6 else "other"
+    return float(stay_y(z) + stay_r(z) + fairlead_geom(name).hole_proud)
 
 
 def board_t() -> float:
@@ -187,6 +197,42 @@ def _eye_loop(pin, end, width, thick=2.4, r_in=3.6):
         pts.append(end + ro * n_); nrm.append(n_)
     pts.append(pts[0]); nrm.append(nrm[0])
     return G.ribbon(np.array(pts), width, thick, np.array(nrm), step=2.0)
+
+
+@lru_cache(maxsize=1)
+def he_section():
+    """BL-044 DECISION HE-ENV: the loaded hinge eye's section relative to the pin centre (dy towards the bag, dz up),
+    from the pattern's model (patterns_corrie_f_rev3.he_geometry on bag_attach.HINGE_EYE_ENVELOPE): the ply-stack
+    mid-line from leg B's box-top end round the pin to leg A's, its outward normals, the neck width and stack thickness.
+    None when the pattern module cannot be imported (older viz3d models run without designs/ on the path)."""
+    try:
+        from pathlib import Path as _P
+        pk = _P(__file__).resolve().parents[2] / "designs" / "pack_5200"
+        for q in (pk / "concepts", pk):
+            if str(q) not in sys.path:
+                sys.path.append(str(q))
+        import importlib
+        PR = importlib.import_module("patterns_corrie_f_rev3")
+    except Exception:  # noqa: BLE001
+        return None
+    g = PR.he_geometry()
+    lp = g["loop"]
+    t3 = (1 + PR.HE_NF_DESIGN) * PR.HE_T
+    (cy, cz) = lp["C"]
+    rm = g["pin_d"] / 2 + t3 / 2                        # stack mid-line on the pin
+    th = np.linspace(lp["thB"], lp["thA"], 50)          # B side (stay side) round the top to the A side
+    arc = np.column_stack([cy + rm * np.cos(th), cz + rm * np.sin(th)])
+    nrm = np.column_stack([np.cos(th), np.sin(th)])
+    B, A = np.array(lp["B"]), np.array(lp["A"])
+    legB = np.linspace(B, arc[0], 8, endpoint=False)
+    legA = np.linspace(arc[-1], A, 8)[1:]
+    def _n(P0, P1, sgn):                                 # leg normal: away from the loop interior
+        t = (P1 - P0) / np.linalg.norm(P1 - P0)
+        return np.tile(sgn * np.array([t[1], -t[0]]), (8, 1))
+    pts = np.vstack([legA[::-1], arc[::-1], legB[::-1]])
+    nr = np.vstack([_n(A, arc[-1], -1.0)[:7], nrm[::-1], _n(B, arc[0], 1.0)])
+    pts = pts - np.array([cy, cz])
+    return {"loop": pts, "nrm": nr[:len(pts)], "neck_w": PR.HE_NECK_W, "neck_t": t3}
 
 
 # ============================================================================ drape (B-01 conforms + swells)
@@ -326,13 +372,14 @@ def frame_side(p: dict, g: dict, Part, block, face_y) -> dict:
         z0, x0, s = st["z"], st["x"], st["sign"]
         r = float(stay_r(z0))
         y0 = float(stay_y(z0))
-        hx = BA.THROAT / 2 + BA.CHEEK + 2.0
-        ylo, yhi = r - BA.EMBED - 2.0, r + BA.HOLE_PROUD + BA.HOLE_D / 2 + BA.WALL_FRONT + 2.0
+        fg = fairlead_geom(st["name"])                                         # BL-044: hinge = BL-042 geometry
+        hx = fg.throat / 2 + fg.cheek + 2.0
+        ylo, yhi = r - fg.embed - 2.0, r + fg.tip_proud + 2.0
         xs = np.arange(-hx, hx + 1e-6, hcell)
         ys = np.arange(ylo, yhi + 1e-6, hcell)
-        zs = np.arange(-BA.HALF_Z - 2.0, BA.HALF_Z + 2.0 + 1e-6, hcell)
+        zs = np.arange(-fg.half_z - 2.0, fg.half_z + 2.0 + 1e-6, hcell)
         X, Y, Z = np.meshgrid(xs, ys, zs, indexing="ij")
-        sdf = BA.fairlead_local(np.c_[X.ravel(), Y.ravel(), Z.ravel()], r).reshape(X.shape)
+        sdf = BA.fairlead_local(np.c_[X.ravel(), Y.ravel(), Z.ravel()], r, fg).reshape(X.shape)
         v, f, _, _ = marching_cubes(sdf, level=0.12, spacing=(hcell, hcell, hcell))   # 0.12 mm proud of the print
         v = v + [xs[0], ys[0], zs[0]]
         V = np.c_[v[:, 0] + x0, v[:, 1] + y0, v[:, 2] + z0]
@@ -344,11 +391,12 @@ def frame_side(p: dict, g: dict, Part, block, face_y) -> dict:
             pass
         m = G._mesh(V, f, np.c_[V[:, 0], V[:, 2]] / 40.0)
         (cleats if st["name"] in ("hinge", "im1", "im2", "im3") else cradle_cl).append(m)
-        py = pin_y(z0)
+        py = pin_y(z0, st["name"])
         pin_at[st["id"]] = np.array([x0, py, z0])
-        pin = _cyl([x0 - PIN_L / 2, py, z0], [x0 + PIN_L / 2, py, z0], PIN_D / 2, n=16)
+        pl_ = PIN_L + (fg.throat - BA.THROAT if st["name"] == "hinge" else 0.0)  # BL-044: hinge pin +2 mm (20 mm throat)
+        pin = _cyl([x0 - pl_ / 2, py, z0], [x0 + pl_ / 2, py, z0], PIN_D / 2, n=16)
         if st["name"] == "hinge":
-            ring = [np.array([x0 + s * (PIN_L / 2 + 6), py + 9 * np.cos(a), z0 + 9 * np.sin(a)])
+            ring = [np.array([x0 + s * (pl_ / 2 + 6), py + 9 * np.cos(a), z0 + 9 * np.sin(a)])
                     for a in np.linspace(0, 2 * np.pi, 25)]
             pins_hinge += [pin, G.tube(np.array(ring), 1.5, n=8, tile=40.0)]     # Dyneema cord pull loop
         else:
@@ -379,7 +427,7 @@ def frame_side(p: dict, g: dict, Part, block, face_y) -> dict:
                       label="Captive webbing eyes on the IM1-IM3 pins (bag hooks and meat straps clip here)"))
     for st in BA.stations():                     # cradle cleat tips are not under a swell: the cloth drapes them
         if st["name"] in ("us1", "us2"):
-            y_tip = float(stay_y(st["z"]) + stay_r(st["z"]) + BA.HOLE_PROUD + BA.HOLE_D / 2 + BA.WALL_FRONT)
+            y_tip = float(stay_y(st["z"]) + stay_r(st["z"]) + fairlead_geom(st["name"]).tip_proud)
             dr.box(st["x"] - 17, st["x"] + 17, st["z"] - 9, st["z"] + 9, y_tip + 1.5)
 
     # ---------------------------------------------------------------- back panel (released rails r120_b80)
@@ -564,10 +612,17 @@ def bag_side(p, g, Part, block, crown_info, bx, fs, metrics) -> list:
     for s in (-1, 1):
         x = s * STAY_X
         pin = fs["pin_at"][f"hinge_{'R' if s > 0 else 'L'}"]
-        tgt, _ = face_pt(full, x, pin[2] - 16, lift=1.6)
-        d = (tgt - pin) / np.linalg.norm(tgt - pin)
-        end = pin + d * 16.0
-        he.append(_eye_loop(pin, end, 18.0))                   # necked to the 18 mm throat (HE fold)
+        sec = he_section()
+        if sec is None:                                        # pattern module not importable: the BL-041 sketch
+            tgt, _ = face_pt(full, x, pin[2] - 16, lift=1.6)
+            d = (tgt - pin) / np.linalg.norm(tgt - pin)
+            end = pin + d * 16.0
+            he.append(_eye_loop(pin, end, 18.0))
+        else:                                                  # BL-044 HE-ENV: the solved loop, 18 mm neck, 3 plies
+            Pl = np.column_stack([np.full(len(sec["loop"]), pin[0]), pin[1] + sec["loop"][:, 0], pin[2] + sec["loop"][:, 1]])
+            Nl = np.column_stack([np.zeros(len(sec["loop"])), sec["nrm"]])
+            he.append(G.ribbon(Pl, sec["neck_w"], sec["neck_t"], Nl, step=1.5, caps=False))
+            end = Pl[0]
         zz = np.linspace(end[2], z0 + 8, 10)
         P = np.array([face_pt(full, x, z_, lift=1.6)[0] for z_ in zz])
         N = np.array([face_pt(full, x, z_)[1] for z_ in zz])
@@ -582,7 +637,8 @@ def bag_side(p, g, Part, block, crown_info, bx, fs, metrics) -> list:
             N = np.array([face_pt(full, x, z_)[1] for z_ in zz])
             tg.append(G.ribbon(np.vstack([top, P]), 38.0, 2.0, np.vstack([[0, -1, 0], N]), step=4.0))
     parts.append(Part("hinge_eyes", G.concat(he), "webbing", "bag", modes=BAGM, explode=BE, floats=True,
-                      label="HE hinge eyes on the z 60 pins (38 mm, necked to the 18 mm throat), tails into the B-01|B-05 seam"))
+                      label="HE hinge eyes on the z 60 pins (38 mm, necked to 18 mm in the 20 mm throat of the BL-042 "
+                            "hinge fairlead), tails into the B-01|B-05 seam"))
     parts.append(Part("hook_tongues", G.concat(tg), "webbing", "bag", modes=BAGM, explode=BE, floats=True,
                       label="T2 (z 260, on B-23) and T3 (z 450, on B-17) bag-hook tongues, 38 mm"))
     parts.append(Part("bag_hooks", G.concat(hk), "aluminium", "bag", modes=BAGM, explode=BE, floats=True,

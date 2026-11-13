@@ -705,7 +705,8 @@ def build_panels(Hf, diag):
         "diagonal zip", "main bag", "under-zip backing; the stretch band mouth is the storm flap (quiet, no garage needed)")
     add(rect_panel("hydration sleeve", 250.0, 430.0, 0.0, seam_allowance_mm=10.0, material_id="robic_100d_ripstop",
                    piece_id="B-09"),
-        "interior", "main bag", "sewn to B-01; hose ports at the collar seam BOTH sides")
+        "interior", "main bag", "sewn to B-01; hose ports in the side gores BOTH sides (v3.1 drawing; CORRIE F rev 3 puts them in "
+        "the gussets at z 558, DECISION HOSE-LOW)")
     # B-10 frame-link tabs (6 x 50 x 70 Hypalon, 21 g) RETIRED 2026-11-05 (bag weight plan W-01): the bag hangs on the
     # printed fairleads (analysis/bag_attachment.md) and the v3.1 production patterns already dropped B-10.
     add(rect_panel("lash tab", 30.0, 50.0, 0.0, seam_allowance_mm=0.0, material_id="hypalon_coated_nylon",

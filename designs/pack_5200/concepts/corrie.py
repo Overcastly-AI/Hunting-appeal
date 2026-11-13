@@ -369,8 +369,10 @@ def bag_pockets(c: BC.Concept | None = None, spec: str | None = None) -> list:
                 "frame-side collar strip at x 0, z 985 (flat-work, before the collar ring). Bottom corners are held by 2 mm Dyneema "
                 "loops to two webbing tabs on B-01 at z 560, x +/-100 (above the IM3 strap, z 520 +/- 19). Its bottom, z 545, "
                 "stays clear of IM3, so the meat straps and their ports are untouched. Hose ports: two 12 x 40 mm bound slots "
-                f"({trim_nm} frames, 40 x 60) in the B-03 gussets at z 700, 20 mm aft of the frame-side seam, both sides (R-19), "
-                "above the wing tops (z 600) and below the collar seam (z 736). Roll rule: with a bladder in, the roll closes at or "
+                f"({trim_nm} frames, 40 x 60) in the B-03 gussets, 20 mm aft of the frame-side seam, both sides (R-19). CORRIE B: "
+                "z 700, above the wing tops (z 600), below the collar seam (z 736). CORRIE F rev 3: z 558, under the "
+                "lowest W3 edge of every crown kit (patterns_corrie_f_rev3.HOSE_Z, DECISION HOSE-LOW, BL-043); the "
+                "ports are NOT at the collar seam. Roll rule: with a bladder in, the roll closes at or "
                 "above z 990 (ASSUMPTION)."),
         bladder_centre_z=Hh["z"][0] + 200.0 + 10.0))
     # IMP-4 kill-kit / first-aid pocket inside the door

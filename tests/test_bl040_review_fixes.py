@@ -250,7 +250,7 @@ def test_review_status_and_ready_to_cut(pk):
     # BL-043: the third review's hinge-eye items (Z-1, Z-2, M-3) stay open until BL-042 / BL-044
     open_ = [i for i, c, st, _ in M.REVIEW_STATUS + M.RECHECK_STATUS + M.THIRD_STATUS
              if c in ("blocker", "major") and st != "fixed"]
-    assert M.ready_to_cut() == (not open_)
+    assert M.ready_to_cut() == (M.FOURTH_REVIEW_DONE and not open_)         # BL-044: a fourth review gates it
 
 
 def test_released_cutlist_has_unique_piece_ids():

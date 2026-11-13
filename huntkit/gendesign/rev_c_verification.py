@@ -126,9 +126,19 @@ def attachments(fine_h: float = 1.0, log=print) -> dict:
     for key in ("hinge", "im3"):
         g_ = gov_c[key]
         t0 = time.time()
-        row = BA.solve_fairlead(host[key], np.array([g_["fy"], g_["fz"]]), h=fine_h, label=f"{key} {fine_h:.2f} mm")
-        row.pop("slab", None)
+        # BL-045: the cheek is solved on the geometry the print carries (h1_fairleads.station_geom): the BL-042
+        # hinge (saddle, pin 10.1 mm up, 20 mm throat) and the BL-045 IM3 eye fairlead (28 mm cheek). Before BL-045
+        # this ran the 2026-11-01 module constants for both, so the record kept the replaced hinge's 2.97.
+        # BL-045 also gives IM3 the eye clearance (saddle root stopping 1 mm above the crown bore), so the cheek is
+        # solved with h1_fairleads.fairlead_fea (solve_fairlead's model, plus the empty bore on the sleeve stations).
+        from .h1_fairleads import fairlead_fea, station_geom
+        gm = station_geom(key)
+        bore = None if key == "hinge" else BA.SLEEVE_BORE_R_REAM
+        fr = fairlead_fea(gm, host[key], {"revC": [g_.get("fx", 0.0), g_["fy"], g_["fz"]]}, h=fine_h, bore_r=bore)
+        rr = fr["loads"]["revC"]
+        row = {"sf": rr["sf"], "fi99": rr["fi99"], "fi_max": rr["fi_max"], "added_g": fr["added_g"], "h": fine_h}
         row.update(station=key, case=g_["case"], force_n=g_["n"], g_times_req=g_["g_times_req"],
+                   geometry=("BL-042 HINGE_GEOM" if key == "hinge" else "BL-045 eye_geom('im3'), 28 mm cheek, bore empty"),
                    sf_fatigue=BA._fatigue_sf(row["fi99"], g_["g_times_req"], pa["fat"]),
                    sf_creep=BA._creep_sf(row["fi99"], g_["g_times_req"], pa["rupture"]))
         fea[key] = row
@@ -726,6 +736,22 @@ def refresh_spreader(log=print) -> dict:
     ctx["spreader_files"] = write_spreader_files(sp, log=log)
     ctx["summary"] = summary_rows(ctx)
     ctx["screens"] = [plot_summary(ctx), ctx["spreader_files"]["png"]]
+    save(ctx)
+    write_doc(ctx, ctx["screens"])
+    return ctx
+
+
+def refresh_attachments(log=print) -> dict:
+    """BL-045: re-run only the attachment part (fairlead cheeks on the as-printed geometry, pin, hooks, bartack, bar
+    wall) and rewrite the record, chart and doc. The body, crown, torso-adjust and spreader results do not depend on
+    the fairlead geometry (the fairlead cheek / pin checks mesh fairlead_local on a stay stub) and are kept."""
+    ctx = json.loads(RESULTS.read_text())
+    old = ctx["attachments"].get("bl045_previous_sf") or \
+        {k: ctx["attachments"]["fairlead_fea"][k]["sf"] for k in ("hinge", "im3")}     # keep the pre-BL-045 values
+    ctx["attachments"] = attachments(log=log)
+    ctx["attachments"]["bl045_previous_sf"] = old
+    ctx["summary"] = summary_rows(ctx)
+    ctx["screens"] = [plot_summary(ctx)] + [s for s in ctx.get("screens", [])[1:]]
     save(ctx)
     write_doc(ctx, ctx["screens"])
     return ctx

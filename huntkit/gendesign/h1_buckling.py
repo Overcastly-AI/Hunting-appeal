@@ -697,8 +697,11 @@ def compute() -> dict:
     ck = json.loads((OUT / f"check_{name}.json").read_text())
     sol = final_solid(dm, du)
     sim = [ck[b] for b in ("fine_sm8", "fine")]
-    ko = ck["keepouts"]
-    present = {k: float(v) for k, v in ko.items() if k.endswith("present")}
+    # BL-045: the keep-outs are re-read from frame_h1.keepouts on the release body (cheap, no solve), not from the
+    # cached check: the cached 'fairleads present 1.000' (pre-BL-042) counted only the voxel stubs inside the envelope.
+    # The record now carries the voxel stub fraction under its real name and the slice check of the print STL.
+    ko = H1.keepouts(sol)
+    present = {k: float(v) for k, v in ko.items() if k.endswith("present") and isinstance(v, (int, float))}
     empty = {k: float(v) for k, v in ko.items() if k.endswith("empty")}
     cheek_g = float((im3_cheek_mask() & ~body_solid(dm, du)).sum()) * H1.H ** 3 * 1.06e-3
     fmin = min(c["min"]["fatigue"] for c in sim)
@@ -1126,7 +1129,11 @@ def write_md(res: dict, shots: list) -> str:
     a("\nKeep-outs (fraction of each fixed interface present / bore empty): " + ", ".join(
         f"{k} {v:.3f}" for k, v in {**c["keepouts_present"], **c["keepouts_empty"]}.items())
       + f"; outside envelope {c['keepouts'].get('outside envelope (voxels)')} voxels; boss clear of the spreader clip "
-        f"{c['keepouts'].get('boss clear of spreader clip')}.\n")
+        f"{c['keepouts'].get('boss clear of spreader clip')}. Fairleads (BL-042 / BL-045): the voxel model holds only "
+        f"their stubs inside the y 16 envelope (present "
+        f"{c['keepouts'].get('fairlead stubs inside the envelope present (voxel)', float('nan')):.3f}); the whole "
+        f"fairleads are added by the print export and checked on the print STL by `h1_fairleads.check_stl`: "
+        f"**{'all pass' if c['keepouts'].get('fairleads complete on the print STL (h1_fairleads.check_stl)') else 'FAIL'}**.\n")
     a("### 4.1 Mass of each load-path member (2 mm raster, PAHT-CF 1.06 g/cm3)\n")
     a("| member family | H1-G0.55 g | chosen g | change g |")
     a("|---|---|---|---|")
@@ -1136,10 +1143,15 @@ def write_md(res: dict, shots: list) -> str:
     a(f"| **body** | **{c['g055_raster_g']:.1f}** | **{c['body_raster_g']:.1f}** | **{c['body_raster_g'] - c['g055_raster_g']:+.1f}** |")
     a("\nFamilies by nearest member (frame_comp_A.group_of); the IM3 cheek growth sits in 'top' / 'sleeve'.\n")
     a("### 4.2 Mass reductions that keep the margins (not applied; each needs its own run)\n")
-    a(f"1. **Settle the spreader share (biggest lever).** If a plate run of Sandwich v2 (spreader.py's plate on the H1 "
-      f"supports, with the cinch preload) shows the stays take most of the cinch push, the sim compression falls toward "
-      f"the *cinch via stays* column (mid bar {dm['N_cinch_via_stays']:.0f} N, upper branch R {du['N_cinch_via_stays']:.0f} N), "
-      f"H1-G0.55 would pass as it is and the {c['members_added_g']:.0f} g could come back off.")
+    # BL-039 corrected this item by hand in the record (BL-037's "the 22 g could come back off" is wrong); BL-045 puts
+    # the corrected text in the generator so a re-run no longer restores the old sentence.
+    a(f"1. **Settle the spreader share (at most 13.9 g; corrected by BL-039 from BL-037).** If a plate run of Sandwich "
+      f"v2 (spreader.py's plate on the H1 supports, with the cinch preload) shows the stays take most of the cinch push, "
+      f"the sim compression of the upper branches falls toward the *cinch via stays* column (upper branch R "
+      f"{du['N_cinch_via_stays']:.0f} N) and their +13.9 g growth could come back off. ~~H1-G0.55 would pass as it is "
+      f"and the {c['members_added_g']:.0f} g could come back off~~ is wrong: the mid bar's +8.3 g stays whatever the "
+      "spreader does, because the fill hipbelt-off abuse set carries no cinch and gives 0.66 on the H1-G0.55 mid bar "
+      "(`S_fill@a_L_fine_sm8_23:hipbelt_off_abuse|23`, 126 N factored compression; `weight_push.md` §3, option F-2).")
     a("2. **Taper the growth.** A pinned-pinned column needs its stiffness most in the middle; growing only the middle "
       "60 % of each member should keep most of P_cr for about 60 % of the added mass (hand estimate, not run: "
       "roughly -8 g). Needs the cut rule changed to the member's least section (it is one cut today).")
@@ -1176,12 +1188,15 @@ def write_md(res: dict, shots: list) -> str:
                if v > 1.0]
         a("")
         for v, w in big:
-            a(f"- The lower half's dropped piece ({v / 1000:.2f} cm3, {v * 1.06e-3:.1f} g, centred at frame x {w[0]:.0f}, "
-              f"y {w[1]:.0f}, z {w[2]:.0f}) is the loose island BL-015 found, beside the right inboard bolt boss: "
-              "in the assembled body it joins the rest only through material above z 234, so the split leaves it "
-              "loose in the lower half. In the dry joint it could only rest against the upper half and carries "
-              "nothing; it is left out of the print (the 2 mm analysis raster counts it, 0.6 g, conservative for "
-              "mass, negligible for stiffness).")
+            a(f"- **The lower half dropped a piece** ({v / 1000:.2f} cm3, {v * 1.06e-3:.1f} g, centred at frame x "
+              f"{w[0]:.0f}, y {w[1]:.0f}, z {w[2]:.0f}). Check it against the voxel body before printing (BL-045).")
+        if not big:
+            a("- BL-045: no half drops a piece. Before BL-045 the lower half dropped a 571 mm3 island at frame (84, -0.4, "
+              "225): the tip of the right lower branch, which the 2 mm voxel body (and so the FEA) joins to the inboard "
+              "bolt boss below z 234. `print_mesh` took the whole voxel boss out of the smoothing field before adding "
+              "the exact boss, which left a one-voxel gap, so the print had the branch tip hanging from the upper half "
+              "only. The field now keeps the boss voxels up to `frame_h1.BOSS_CORE_MM` inside the capsule, and the "
+              "branch root fuses with the boss as analysed (`h1_buckling.clean_shell` drops nothing above 1 mm3).")
         a("- The assembled body's dropped pieces are boolean slivers of zero volume (BL-015's sliver defect).\n")
     else:
         a("Not written (the body does not pass).\n")

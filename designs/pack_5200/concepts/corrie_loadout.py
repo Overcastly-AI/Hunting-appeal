@@ -606,7 +606,7 @@ def improvements():
            "tripod-leg holders, not a wing sleeve. Wing pockets for scopes are prior art (Eberlestock X2, ALPS "
            "Traverse). Frame guardrails H1-H4 untouched.", rank=2)
     add("IMP-2", "Hydration sleeve B-09 restored on B-01, hung from the B-06f collar strip above IM3 (z >= 545), "
-        "2 bound hose ports at the collar seam", _part("robic_100d_ripstop", 250, 430, sa=10) + 0.1 * WEB25
+        "2 bound hose ports in the gussets (CORRIE B z 700; CORRIE F rev 3 z 558, DECISION HOSE-LOW)", _part("robic_100d_ripstop", 250, 430, sa=10) + 0.1 * WEB25
         + 2 * _part("hypalon_coated_nylon", 40, 60, sa=0),
         pieces=3, seam_m=1.5, tacks=1, extra_h=0.5,
         problem="R-19 (frozen) asks for a sleeve + ports; CORRIE's body build has none, so water has no pack-on "

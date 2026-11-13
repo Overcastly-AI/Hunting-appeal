@@ -1427,7 +1427,7 @@ SK-8 / SK-10 / SK-11), `physical_test_kit.py` (HE-FIT, PT-3, TL-1, TL-1b), `conc
   - pin at frame z 60 = **+25 mm** above the floor seam line (BC.Z0 35); cheeks z 51-69 = +16..+34
     (`bag_attach.HALF_Z` 9);
   - box top = cheek bottom - 2 mm (ASSUMPTION HE-CHEEK) = +14; box bottom +4 (HE-GAP) → **box-X 34 x 10 mm**
-    (0.39 in tall), in line with the pull: no peel;
+    (0.39 in tall) [BL-044 §23.3: the 'in line, no peel' claim is withdrawn; the box peels and is rated by PT-3 / SEW-F];
   - eye length from the section (`he_geometry`): both legs from the box top (ply midline) round the 5 mm pin
     (centreline r 3.25 mm), pin 15.85 mm from the stay centre, B-01 face 20.0-23.45 mm (nominal / pushed by the
     cheeks), webbing 1.5 mm (ASSUMPTION HE-T, bracket 1.2-2.0): **eye 17 mm**, HE cut **86 mm** (was 150);
@@ -1595,3 +1595,134 @@ the release reads **NOT ready to cut**.
 **Owner decision needed.** W3-OVER changes how the bag is used: W3 must be slackened (G-hook off) before the roll
 top opens, at every kit, because at kit M / L settings W3 sits on the roll. The alternative was moving W3's anchors off
 the crown bar, a frame change that is not proposed here.
+
+
+## 23. BL-044: hinge eye on the BL-042 fairlead, and the bag-side loose ends (pack-designer, 2026-11-13)
+
+Source: `review_20261113_rev3_third.md` Z-1, M-3, m-1, m-11 (with BL-042 `h1_fairleads.md`), and BL-043's found-not-fixed
+list. Code: `patterns_corrie_f_rev3.py` (`he_envelope`, `he_loop`, `he_geometry`, `he_pin_z`, `he_bracket`, `he_band`,
+`he_peel`, `kw_w3_kink`, `rt_rifle_clearance`), `he_stl_check.py` (the eye laid into slices of the HE-FIT test-piece
+STL), `concepts/corrie_f.py` (`hinge_standoff`, `hinge_pin`, `bl044_rows`), `huntkit/viz3d/attach.py`
+(`fairlead_geom`, `pin_y`, `he_section`), `huntkit/viz3d/corrie_f.py` (`rev3_clips`, `rev3_hose_ports`, `rev3_b25`),
+`mfg_corrie_f_rev3.py`, `physical_test_kit.py`, `patterns_corrie_f_rev3_export.py` (`fit_label`). Tests:
+`tests/test_bl044_hinge_eye.py`. Every number below is printed by that code (`analysis/he_stl_check.json` for the
+slices).
+
+### 23.1 DECISION HE-ENV (Z-1): the eye on `bag_attach.HINGE_EYE_ENVELOPE`
+
+The section model now reads the BL-042 hinge fairlead (pin 10.1 mm above the stay surface, 19.45 mm from the stay
+centre; throat floor 5.5 mm under the pin; throat 20 mm; cheeks +/-9 mm about the pin; cheek tips 17.7 mm proud). The
+BL-041 model read the legacy constants (pin 3.6 mm nearer the stay, 18 mm throat) and wrapped one ply.
+
+- **The wrap is the folded neck.** The neck folds lie inside the loop, so the main ply wraps the pin over the fold
+  plies: 2 where the two 10 mm folds overlap (the middle 2 mm ridge, which the taut main ply rides), 1 on the flanks.
+  Main-ply centreline radius 2.5 + 2 x 1.5 + 0.75 = **6.25 mm** (BL-041: 3.25).
+- **Box 34 x 7 at +4..+11** (was 34 x 10 at +4..+14): box top 5 mm under the cheeks at the design pin (HE_CHEEK_CLEAR),
+  so it stays >= 2 mm under them (HE-CHEEK) over the whole HE-FIT band. Box-X capacity 3067 N (thread path); the B-18
+  seam (2355 N) still governs the hinge row.
+- **Eye 25 mm, HE cut 96 mm** (was 17 / 86). Loaded pin centre **25.09 mm** above the floor seam line at the design
+  corner (B-01 in line, ply 1.5 mm, 2 fold plies); **23.12-28.86 mm** over the bracket: B-01 at 20 / 20.95 / 27.05 mm
+  from the stay centre x ply 1.2 / 1.5 / 1.6 mm x 1 or 2 fold plies (18 corners).
+- **Webbing gate:** HE_T_RANGE 1.2-1.6 mm. 3 plies of 1.6 mm leave 0.7 mm under the pin (review rule: wrap <= gap - 0.5);
+  a roll over 1.6 mm is rejected at the caliper (HE-FIT step 1). BL-041's 2.0 mm bracket would not fit (6.0 in 5.5).
+- **Neck in the throat:** the widest neck (19 mm, HE-NECK-TOL) clears the 20 mm throat by 0.5 mm a side; the test that
+  asserted `neck_w == throat` (`test_bl041_recheck_fixes.py:55`) is replaced by this clearance test.
+
+**m-1 (HE-FIT band).** Band **22-29 mm**: the low end keeps the box top 2 mm under the cheeks (11 + 9 + 2); the high
+end is ASSUMPTION HE-PIN-HI (the floor hangs at most 4 mm below the z 35 every sim assumes; settled by QC-20 / T9). The
+solved bracket (23.1-28.9) sits inside it with 1.1 / 0.1 mm to spare. HE-FIT also measures the box-to-cheek gap with a
+feeler (>= 2 mm) and the webbing ply (<= 1.6 mm).
+
+**B-01 stand-off.** The hinge cheek tips stand 27.05 mm from the stay centre, so with no swell (DECISION H-1) they lift
+B-01 **7.05 mm** over the 20 mm PANEL_OFFSET (8.05 mm with B-18), not the 3.45 mm BL-033 recorded (`hinge_standoff`
+now reads the envelope; US2 keeps the legacy 3.45). That is under the 16 mm swell the IM stations are given; the tent
+is local (36 x 18 mm of cheek tips). ASSUMPTION HE-TENT: B-01 / B-18 tents over the cheek tips without pulling the
+box off line; settled by HE-FIT (the specimen offcut lies over the printed cheeks).
+
+### 23.2 The eye on the real STL
+
+`he_stl_check.py` slices `print/frame_h1/test_pieces/hefit_hinge_fairlead_R_frame_coords.stl` (the file HE-FIT
+prints) and lays the eye into it at all 18 corners, each with the bag at its own height on the printed pin.
+
+| check (STL) | result | required |
+|---|---:|---:|
+| loop (legs + wrap) overlapping printed material, any corner, planes x across the neck | 0.000 mm2 | 0 |
+| stack to floor under the pin, neck centred, ply 1.2 / 1.5 / 1.6 | 1.91 / 1.01 / 0.71 mm | >= 0.5 |
+| same, neck slid against a cheek, outside the last 0.1 mm at the cheek face | >= 0.71 mm | >= 0.5 |
+| same, in the throat-corner fillet (last 0.1 mm), ply 1.2 / 1.5 / 1.6 | 0.61 / **0.29** / **0.19** mm | > 0 |
+| throat, printed | 19.97 mm: 0.49 mm a side on the 19 mm neck | 0.5 |
+| box top to the cheeks' lower edge, any corner | >= 3.12 mm | >= 2 |
+| box stack to printed material | >= 2.98 mm | > 0 |
+
+ASSUMPTIONS HE-STACK (3 plies over the +/-2 mm ridge, falling to 2 at the neck edge, where the main ply turns into its
+fold) and HE-FOLD-R (the folded edge is round, radius one ply). **Not met in full:** where the neck slides against a
+cheek, its round folded edge meets the printed throat-corner fillet (the floor rises 3.5 mm in the last 0.5 mm to the
+cheek face). There the 0.5 mm rule is not met (0.29 mm at the design ply, 0.19 mm at the 1.6 mm gate); the eye still
+does not touch. It is checked physically: HE-FIT slides the neck against each cheek in turn with the pin in. The
+frame-side fix (relieve the floor 1 mm deep within 1.5 mm of each cheek face, or a smaller corner fillet) is a frame
+change for the structural-fea-engineer (Found, not fixed; owner decision below).
+
+### 23.3 M-3: the box peels; rated instead
+
+The stay-side leg must pass under a pin that sits 1.5 mm (in line) to 7.6 mm (B-01 held at the cheek tips) toward
+the frame from B-01, so the two legs leave the box top at an included angle. In line, leg B leaves **23 deg** off the
+box line (peel across the top row = 0.20 x the hinge load); with B-01 held at the cheek-tip plane, **50 deg** (0.38 x).
+It cannot be avoided with a box on B-01 (a lower box is limited by the floor seam and HE-GAP). "No peel" is dropped.
+Rated by test:
+
+- **PT-3** pulls on a fresh print of the HE-FIT fairlead, eye on the pin, with a spacer plate holding B-01 at the
+  cheek-tip plane (the 50 deg worst peel), B-05 alone in the clamp, to 1530 N for 60 s; box top row checked first
+  (ASSUMPTION PT3-PRINT: a cracked print voids the specimen; re-run in machined aluminium of the same section).
+- **SEW-F** adds 3 HE specimens on the same fixture at **625 N peak** (1.15 x 1.6 g x 1019 N / 3), R 0.1, 1e5 cycles,
+  then the PT-3 proof (ASSUMPTION SEWF-HE-RIG: the lever rig carries 625 N on the eye).
+- The hinge load row lists the 34 x 7 box capacity and its peel; no peel capacity is credited.
+
+### 23.4 m-11: the B-18 label
+
+The step 2 tiled print re-flows each label block into a clear spot (`fit_label`: wrapped, shortened, moved up or down
+by blank lines) so it touches no internal line, drill mark or notch and stays inside the seam line. B-18 and B-22 now
+clear every mark (0.0 mm2). The full label of every shortened piece is on the NOTES page. B-12 and B-27f are so small
+that even their ID crosses a mark (6.4 mm2 each); recorded, not fixed.
+
+### 23.5 DECISION KW-W3-OFF (BL-043 found-not-fixed)
+
+A W3 K-W loop fixed at the 19 in crossing (z 702.6) would make W3 climb or drop along the 180 mm gusset to it at every
+other setting: **29.5 deg and 114 N** across an unrated seam-caught loop at kit S 15 in and kit L 23 in (101.6 mm off),
+8-12 deg at the other kit ends. Nothing on the bag can follow W3's 203 mm sweep (the collar seam is at 745), so the two
+W3 loops are deleted; W3 is located by its two crown-bar anchors at one height and runs level at every kit end. W1 / W2
+keep theirs (frame-fixed anchors). K-W 6 -> 4 loops, **-2.88 g**.
+
+### 23.6 RT strap vs the rifle barrel (recorded)
+
+ASSUMPTION RIFLE-LINE: the barrel (25 mm OD, on the cloth) runs from the butt boot (frame seam line at the floor,
++/-60 mm) through the muzzle keeper and 300 mm on. In the flat gusset the roll-clip strap and buckle stay **27.1 mm**
+or more clear of it at every boot position (RT_CLEAR 10); where the strap stands off the cloth at the muzzle tabs
+(27.3-40.4 mm, cloth-pass roll model) it is also outboard of a barrel lying on the cloth. Recorded; FIT-R3 row 5 keeps
+the gloved open / close check with the rifle in the keeper.
+
+### 23.7 Stale text and marks
+
+- "Hose ports at the collar seam" (`corrie.py`, `build_geometry.py`, `corrie_loadout.py`): now the gusset slots,
+  CORRIE B z 700, CORRIE F rev 3 z 558 (HOSE-LOW).
+- The L hem's 'B-07s strip end' notch had been merged by `_dedupe_notches` into the 'hem ring' slit 2.7 mm away (drawn
+  at 950.0 for 947.3). The strip ends are now placement lines across the hem at their exact x.
+- Test-kit screenshots are named for the ticket that regenerates the kit (`20261113_BL044kit_<n>`, was `BL041kit`).
+
+### 23.8 Hinge pin, weights
+
+- Hinge pin spans 8 + 20 + 8 = 36 mm (IM / US 34): shank 36 -> **38 mm**, drawn pin 50 -> **52 mm**, BOM line split
+  (6 x 36 mm + 2 x 38 mm shank); **+0.22 g** for the pair (7075 record density).
+- Ledger rows (base): HE 86 -> 96 mm **+0.56 g**, hinge pins **+0.22 g**, W3 K-W loops **-2.88 g**. Thread re-booked
+  from the ops. Roll-up regenerated with H1F (+37.2 g, BL-042): **proven now, base 3690.7 -> 3728.7 g (8.22 lb)**;
+  after tests 3141.5 g.
+
+### 23.9 Renders
+
+`huntkit.viz3d.corrie_f` now draws the release's roll clips (strap from the roll end to the RTM buckle, bar z 543.5,
+26.6 % of the gusset depth), the HOSE-LOW ports (both gussets, z 558, the hose routed forward below W3), the 38 mm
+B-25 topology (sleeves x 26.5-64.5, drop, necked run, spine wrap) and W3 level at the crown bar (19 in). Hero and side
+re-rendered as `20261113_BL044_3/4.png`.
+
+**Status.** Z-1, M-3, m-1, m-11 are fixed (with the corner-fillet exception in 23.2); Z-2 by BL-042. All three
+reviews have 0 blockers and 0 majors open, but the release stays **NOT ready to cut** until a fourth independent
+review (`mfg_corrie_f_rev3.FOURTH_REVIEW_DONE`).

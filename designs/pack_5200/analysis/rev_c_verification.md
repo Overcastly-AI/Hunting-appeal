@@ -48,10 +48,10 @@ Margin = SF / requirement; pass ≥ 1.00. Each row is the worse of the crown-bar
 | torso adjust | pawl cheek, 304 bushing (C_im3) | **1.41** | hipbelt_off_abuse|15 | 1/FI99 | yes |
 | torso adjust | cam hold, walking (C_im3) | **68.63** | static carry x 1.6 | 700 N slip | yes |
 | printed body | segment joint dowel pull-out (z 234) | **2.25** | C_im3:drop_2p5g|23 | MMA 6 MPa hot/wet | yes |
-| attachments | fairlead hinge cheek strength | **2.97** | tall_load | 1/FI99, 1 mm mesh | yes |
-| attachments | fairlead hinge cheek fatigue | **1.67** | tall_load | 1.6 g, PAHT 0.3 | yes |
-| attachments | fairlead im3 cheek strength | **3.60** | meat_straps | 1/FI99, 1 mm mesh | yes |
-| attachments | fairlead im3 cheek fatigue | **2.02** | meat_straps | 1.6 g, PAHT 0.3 | yes |
+| attachments | fairlead hinge cheek strength | **3.73** | tall_load | 1/FI99, 1 mm mesh | yes |
+| attachments | fairlead hinge cheek fatigue | **2.10** | tall_load | 1.6 g, PAHT 0.3 | yes |
+| attachments | fairlead im3 cheek strength | **6.03** | meat_straps | 1/FI99, 1 mm mesh | yes |
+| attachments | fairlead im3 cheek fatigue | **3.39** | meat_straps | 1.6 g, PAHT 0.3 | yes |
 | attachments | hinge pin 7075 shear yield | **14.46** | tall_load | factored | yes |
 | attachments | hinge UHMWPE sleeve bearing | **2.32** | tall_load | factored | yes |
 | attachments | bag hooks (2200 N rated) | **4.30** | side_hill_torsion@IM3 | rated / factored | yes |
@@ -142,8 +142,8 @@ Governing factored force per fairlead (both couple variants; `@IM3` = the IM3 co
 
 | part | load N | SF | rule |
 |---|---:|---:|---|
-| fairlead hinge, printed cheek (1 mm voxels) | 724 | 2.97 (fatigue 1.67, creep 3.57) | 1 / FI99 ≥ 1 |
-| fairlead im3, printed cheek (1 mm voxels) | 605 | 3.60 (fatigue 2.02, creep 4.31) | 1 / FI99 ≥ 1 |
+| fairlead hinge, printed cheek (1 mm voxels) | 724 | 3.73 (fatigue 2.10, creep 4.48) | 1 / FI99 ≥ 1 |
+| fairlead im3, printed cheek (1 mm voxels) | 605 | 6.03 (fatigue 3.39, creep 7.23) | 1 / FI99 ≥ 1 |
 | hinge pin 5 mm 7075, double shear | 724 | 14.5 | yield |
 | hinge UHMWPE sleeve bearing | 724 | 2.32 | yield |
 | bag hooks, rated 2200 N (side_hill_torsion@IM3, SR330) | 512 | 4.30 | rated ≥ factored |

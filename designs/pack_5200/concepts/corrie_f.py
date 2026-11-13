@@ -496,6 +496,7 @@ def build(c: ShellF | None = None, door: str = DOOR_DEFAULT, fabrics: str = "B")
 # lay over the B-18 hinge-eye doubler (z 35-80), whose lower edge in the floor seam IS the hinge load path (A5:
 # HE box-X through B-18 + B-01, B-18 seam 80 mm into the B-05 strip): a window there cuts B-01 from under the box-X.
 # The hinge cleat bears on B-18 instead (``hinge_standoff``: 3.5 mm into the 20 mm B-01 offset, the same as the
+# [BL-044: the BL-042 hinge fairlead stands 17.7 mm proud, so the push is now 7.1 mm; see hinge_standoff]
 # under-strap cleat US2, which the v3.1 patterns accepted with no swell).
 SWELL_W = 50.0
 SWELL_WINDOWS = {"im1": (BC.STATIONS["im1"], 45.0, 45.0), "im2": (BC.STATIONS["im2"], 45.0, 45.0),
@@ -528,19 +529,23 @@ def swell_windows(c: ShellF | None = None) -> list:
 
 def hinge_standoff() -> dict:
     """BL-033 task 1: what the hinge cleat does to B-01 with no swell, against US2 (no swell since v3.1). Fairlead proud
-    of the stay = bag_attach HOLE_PROUD + HOLE_D / 2 + WALL_FRONT; stay radius frame_branch.stay_radius (attachment.yaml
-    scale); B-01 at bag_attach.PANEL_OFFSET from the stay centre; B-18 thickness from the hypalon record."""
+    of the stay: US2 = bag_attach HOLE_PROUD + HOLE_D / 2 + WALL_FRONT (the 2026-11-01 fairlead, kept on the IM / US
+    stations); hinge = bag_attach.HINGE_EYE_ENVELOPE cheek tip (BL-044: the BL-042 hinge fairlead, 17.7 mm proud, was
+    14.1). Stay radius frame_branch.stay_radius (attachment.yaml scale); B-01 at bag_attach.PANEL_OFFSET from the stay
+    centre; B-18 thickness from the hypalon record."""
     import yaml
     from huntkit.gendesign import bag_attach as BA
     from huntkit.gendesign.frame_branch import stay_radius
     sc = float(yaml.safe_load((PACK / "attachment.yaml").read_text())["scale"])
     proud = BA.HOLE_PROUD + BA.HOLE_D / 2 + BA.WALL_FRONT
+    env = BA.HINGE_EYE_ENVELOPE
     out = {"proud_mm": round(proud, 2), "panel_offset_mm": BA.PANEL_OFFSET, "scale": sc,
            "b18_t_mm": _rec("hypalon_coated_nylon", "thickness_mm")}
-    for k, z in (("hinge", 60.0), ("us2", 142.0)):
+    for k, z, pr in (("hinge", 60.0, env["cheek_tip_above_stay_surface_mm"]), ("us2", 142.0, proud)):
         r = float(stay_radius(z, sc))
-        out[k] = {"z": z, "stay_r_mm": round(r, 2), "top_mm": round(r + proud, 2),
-                  "push_mm": round(max(0.0, r + proud - BA.PANEL_OFFSET), 2)}
+        out[k] = {"z": z, "stay_r_mm": round(r, 2), "proud_mm": round(pr, 2), "top_mm": round(r + pr, 2),
+                  "push_mm": round(max(0.0, r + pr - BA.PANEL_OFFSET), 2)}
+    out["hinge"]["envelope"] = "bag_attach.HINGE_EYE_ENVELOPE (BL-042)"
     out["hinge"]["push_with_b18_mm"] = round(out["hinge"]["push_mm"] + out["b18_t_mm"], 2)
     z0 = BC.Z0
     out["b18_z"] = (z0, z0 + B18_RECT[1])
@@ -1034,6 +1039,8 @@ def parts(size: str = "M", door: str = DOOR_DEFAULT, fabrics: str = "B", c: Shel
             add(s_, n, g, "base", src)
         for s_, n, g, src in bl043_rows():
             add(s_, n, g, "base", src)
+        for s_, n, g, src in bl044_rows():
+            add(s_, n, g, "base", src)
     return out
 
 
@@ -1044,13 +1051,13 @@ def bl041_rows() -> list:
     hyp = _gsm("hypalon_coated_nylon")
     w38 = _rec("poly_webbing_38mm", "mass_g_m")
     b18 = 2 * B18_RECT[0] * (P.B18_H - B18_RECT[1]) * 1e-6 * hyp
-    he = 2 * (P.HE_CUT - 150.0) / 1000.0 * w38
+    he = 2 * (P.HE_CUT_BL041 - 150.0) / 1000.0 * w38
     rtm = 2 * P.RTM_CUT / 1000.0 * WEB25
     return [
         ("attachment", f"BL-041: B-18 hinge doublers 90 x {B18_RECT[1]:.0f} -> 90 x {P.B18_H:.0f} (BL-040 HE-ONE, x2)", b18,
          f"patterns_corrie_f_rev3.B18_H x hypalon_coated_nylon {hyp:.0f} gsm (record)"),
-        ("attachment", f"BL-041: HE hinge eyes 150 -> {P.HE_CUT:.0f} mm (DECISION HE-PIN, x2)", he,
-         "patterns_corrie_f_rev3.HE_CUT x poly_webbing_38mm mass_g_m (record)"),
+        ("attachment", f"BL-041: HE hinge eyes 150 -> {P.HE_CUT_BL041:.0f} mm (DECISION HE-PIN, x2)", he,
+         "patterns_corrie_f_rev3.HE_CUT_BL041 x poly_webbing_38mm mass_g_m (record)"),
         ("straps_compression", f"BL-041: RTM roll-clip buckle tabs (2 x {P.RTM_CUT:.0f} mm, BL-040 RT-MATE)", rtm,
          "patterns_corrie_f_rev3.RTM_CUT x poly_webbing_25mm mass_g_m (record)"),
         # BL-043 DECISION W3-OVER: the W3G guides (2 x 60 mm, +2.16 g) are deleted, so their row is gone
@@ -1079,6 +1086,42 @@ def bl043_rows() -> list:
          3 * 4 * (P.IMC_FOLD - P.IMC_FOLD_BL041) / 1000.0 * WEB25,
          "patterns_corrie_f_rev3.IMC_FOLD - IMC_FOLD_BL041, x 4 x 3 x poly_webbing_25mm mass_g_m (record)"),
     ]
+
+
+def bl044_rows() -> list:
+    """BL-044 ledger rows (system, name, g, source): the hinge eye re-solved on the BL-042 fairlead (HE cut) and the
+    two hinge pins 2 mm longer for its 20 mm throat. Every mass from a pattern / envelope dimension x a record."""
+    import importlib
+    P = importlib.import_module("patterns_corrie_f_rev3")
+    w38 = _rec("poly_webbing_38mm", "mass_g_m")
+    pin = hinge_pin()
+    return [
+        ("attachment", f"BL-044: HE hinge eyes {P.HE_CUT_BL041:.0f} -> {P.HE_CUT:.0f} mm (DECISION HE-ENV, x2)",
+         2 * (P.HE_CUT - P.HE_CUT_BL041) / 1000.0 * w38,
+         "patterns_corrie_f_rev3.HE_CUT - HE_CUT_BL041, x 2 x poly_webbing_38mm mass_g_m (record)"),
+        ("attachment", f"BL-044: hinge pins +{pin['delta_mm']:.0f} mm for the 20 mm throat (x2)", 2 * pin["delta_g"],
+         "corrie_f.hinge_pin: bag_attach.HINGE_EYE_ENVELOPE throat - bag_attach.THROAT, 5 mm x alu_7075_t6 density (record)"),
+        ("straps_compression", f"BL-044: W3 K-W keeper loops deleted (2 x {P.KW_CUT:.0f} mm, DECISION KW-W3-OFF)",
+         -2 * P.KW_CUT / 1000.0 * WEB25, "patterns_corrie_f_rev3.KW_CUT x poly_webbing_25mm mass_g_m (record), negative"),
+    ]
+
+
+def hinge_pin() -> dict:
+    """BL-044 item 5: the hinge pin spans cheek + throat + cheek of the BL-042 hinge fairlead (8 + 20 + 8 = 36 mm; the
+    IM / US pins 8 + 18 + 8 = 34 mm). bag_attach.pin_check books every pin at 36 mm of shank + an 8 mm x 3 mm head
+    (the 2 mm over the span is the retaining groove / washer); the hinge pin keeps that 2 mm, so its shank is 38 mm.
+    The drawn pin (attach_system.PIN, 50 mm overall with the pull-ring eye) grows by the same 2 mm."""
+    from huntkit.gendesign import bag_attach as BA
+    from huntkit.gendesign import attach_system as AS
+    env = BA.HINGE_EYE_ENVELOPE
+    d = env["pin_d_mm"]
+    delta = env["throat_mm"] - BA.THROAT
+    rho = _rec("alu_7075_t6", "density_kg_m3")
+    span_im = BA.THROAT + 2 * BA.CHEEK
+    span_h = env["throat_mm"] + 2 * BA.CHEEK
+    return {"d_mm": d, "span_im_mm": span_im, "span_hinge_mm": span_h, "shank_im_mm": span_im + 2.0,
+            "shank_hinge_mm": span_h + 2.0, "overall_im_mm": AS.PIN["L"], "overall_hinge_mm": AS.PIN["L"] + delta,
+            "delta_mm": delta, "delta_g": math.pi * (d / 2) ** 2 * delta * rho / 1e6}
 
 
 # BL-035: rifle muzzle keeper (DESIGN.md R-18: muzzle loops on both sides; patterns_corrie_f_rev3 B11-PLACE: two muzzle

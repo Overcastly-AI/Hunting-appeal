@@ -709,7 +709,10 @@ def body_verify(variant: str, solid: np.ndarray, sets, log=print) -> dict:
     from .bag_attach import attachment_field
     from .spreader import SCALE
     fl = (attachment_field(c["cen"], SCALE) <= 0.0) & ~dom.passive_void
-    ko["fairleads present"] = float((solid & fl).sum() / max(fl.sum(), 1))
+    # BL-045 (stale label, review 3 Z-2): the voxel model stops at the y 16 envelope, so this is only the fairlead
+    # stubs inside it, never the whole fairlead. Named as frame_h1.keepouts names it since BL-042; whole fairleads are
+    # checked on a print STL by h1_fairleads.check_stl (this fixed-torso study exports none).
+    ko["fairlead stubs inside the envelope present (voxel)"] = float((solid & fl).sum() / max(fl.sum(), 1))
     ko["outside envelope (voxels)"] = int((solid & dom.passive_void).sum())
     # spreader clip sections must stay as H1 (clips are not re-made)
     from .spreader import CLIP_Z

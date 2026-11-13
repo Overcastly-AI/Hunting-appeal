@@ -76,7 +76,10 @@ def test_fairlead_fea_reproduces_solve_fairlead():
     rc = json.loads((REPO / "designs/pack_5200/analysis/rev_c_verification_results.json").read_text())["attachments"]
     f = rc["gov_c"]["hinge"]
     r = FL.fairlead_fea(BA.legacy_geom(), 9.354545454545455, {"rc": [0.0, f["fy"], f["fz"]]}, h=1.0)
-    assert r["loads"]["rc"]["sf"] == pytest.approx(rc["fairlead_fea"]["hinge"]["sf"], rel=1e-6)
+    # BL-045: the record now holds the BL-042 hinge; the legacy value it held is kept as bl045_previous_sf
+    assert r["loads"]["rc"]["sf"] == pytest.approx(rc["bl045_previous_sf"]["hinge"], rel=1e-6)
+    r2 = FL.fairlead_fea(BA.HINGE_GEOM, 9.354545454545455, {"rc": [0.0, f["fy"], f["fz"]]}, h=1.0)
+    assert r2["loads"]["rc"]["sf"] == pytest.approx(rc["fairlead_fea"]["hinge"]["sf"], rel=1e-6)
     s = BA.solve_fairlead(9.354545454545455, np.array([f["fy"], f["fz"]]), h=1.0)
     assert r["loads"]["rc"]["fi99"] == pytest.approx(s["fi99"], rel=1e-9)
 
@@ -160,4 +163,5 @@ def test_results_record():
     rows = L.corrections("corrie_b2_h1", "M")["H1F"]
     assert len(rows) == 1 and rows[0]["g"] == pytest.approx(d["mass"]["net_g"]) and rows[0]["system"] == "frame"
     assert L.corrections("corrie_b2_today", "M")["H1F"] == []
-    assert d["mass"]["net_g"] == pytest.approx(d["assembled"]["g_after"] - d["assembled"]["g_before"], abs=1.0)
+    # BL-045's boss-core fix adds about 2.6 g of skin round the four bolt bosses (not fairlead mass)
+    assert d["mass"]["net_g"] == pytest.approx(d["assembled"]["g_after"] - d["assembled"]["g_before"] - 2.6, abs=1.0)

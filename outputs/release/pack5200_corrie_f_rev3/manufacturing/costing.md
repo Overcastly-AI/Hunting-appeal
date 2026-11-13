@@ -1,14 +1,14 @@
 # CORRIE F rev 3 (door D2) - 5200 cu in hunting pack bag: costing and hours
 
-Material cost a bag, record prices (production quantities): **primary $380.07**, alternate $379.91 (fabric $88.03 / $87.87).
+Material cost a bag, record prices (production quantities): **primary $379.97**, alternate $379.81 (fabric $88.03 / $87.87).
 
-Beginner hours (bag_concepts.HOURS model, every op): **74.1 h**, of which one-off set-up 4.1 h. Lid on the drafted pattern 9.53 h (booked 7.76 h).
+Beginner hours (bag_concepts.HOURS model, every op): **74.0 h**, of which one-off set-up 4.1 h. Lid on the drafted pattern 9.53 h (booked 7.76 h).
 
 | Step | Beginner h |
 |---|---:|
-| 0 Prep and cutting | 16.28 |
+| 0 Prep and cutting | 16.22 |
 | 1 Pockets | 6.06 |
-| 2 Small parts | 4.39 |
+| 2 Small parts | 4.33 |
 | 3 Door D2 and hinge band | 5.00 |
 | 4 Main bag | 14.02 |
 | 5 Collar and roll top | 3.50 |
@@ -18,16 +18,16 @@ Beginner hours (bag_concepts.HOURS model, every op): **74.1 h**, of which one-of
 | 9 Rain fly F-01 | 5.40 |
 | 10 Finish, inspect, pack | 1.20 |
 
-Factory SAM 504 min (8.4 h) a bag (ASSUMPTION SAM-RATIO 0.12).
+Factory SAM 503 min (8.4 h) a bag (ASSUMPTION SAM-RATIO 0.12).
 
 | Scenario | Labour $ | CMT incl. overhead $ | + materials $ |
 |---|---:|---:|---:|
-| us_contract_usd_min | 428.23 | 535.29 | 915.36 |
-| asia_contract_usd_min | 60.46 | 75.57 | 455.64 |
+| us_contract_usd_min | 427.51 | 534.38 | 914.35 |
+| asia_contract_usd_min | 60.35 | 75.44 | 455.41 |
 
 ## One bag (prototype buy) vs production (BL-040 M-11)
 
-Production a bag (10-bag markers + waste): **$380.07**. Buying for ONE bag (1-bag markers, shop increments): **$501.49**. SHOP-INCR: roll goods in 0.5 yd steps at full width, webbing whole yards, HDPE one 0.25 m2 sheet; hardware as production (whole units); thread by the 4 oz cone, basting tape and seam sealer by the smallest pack (SHOP-UNIT, BL-041 n-10); no camo print (CAMO-FIRST, BL-041 Y-5).
+Production a bag (10-bag markers + waste): **$379.97**. Buying for ONE bag (1-bag markers, shop increments): **$501.49**. SHOP-INCR: roll goods in 0.5 yd steps at full width, webbing whole yards, HDPE one 0.25 m2 sheet; hardware as production (whole units); thread by the 4 oz cone, basting tape and seam sealer by the smallest pack (SHOP-UNIT, BL-041 n-10); no camo print (CAMO-FIRST, BL-041 Y-5).
 
 | Section | Item | Unit | Production qty | Production $ | Prototype qty | Prototype $ | How |
 |---|---|---|---:|---:|---:|---:|---|
@@ -44,8 +44,8 @@ Production a bag (10-bag markers + waste): **$380.07**. Buying for ONE bag (1-ba
 | fabric_print | camo print, Owner Base accent 380, placed (3 sets/yd) -- see camo/READ | yd | 0.4 | 12.10 | 0 | 0.00 | NOT in the first build (DECISION CAMO-FIRST): solid 630D (polyester_ht_630d_printable, unprinted) on B-02u, SH-07, SH-01b, FP-b, B-29f and A1-d; the HyperD print yard + shipping is bought by the test kit (AB-1 / FRAY-1 specimen) |
 | webbing | elastic_25mm: K-28 K-G K-IM K-RT | m | 1.04 | 1.14 | 1.829 | 2.01 | 1.04 m -> 2 yd |
 | webbing | elastic_6mm: F-EL | m | 2.558 | 1.53 | 2.743 | 1.65 | 2.558 m -> 3 yd |
-| webbing | poly_webbing_25mm: B-28 B-28s B-28t BRL BRS E5 HPL I2K I2T IM1 IM2 IM3 | m | 16.7 | 11.69 | 17.374 | 12.16 | 16.7 m -> 19 yd |
-| webbing | poly_webbing_38mm: B-24 B-25 HE IME T3 | m | 3.193 | 3.19 | 3.658 | 3.66 | 3.193 m -> 4 yd |
+| webbing | poly_webbing_25mm: B-28 B-28s B-28t BRL BRS E5 HPL I2K I2T IM1 IM2 IM3 | m | 16.532 | 11.57 | 17.374 | 12.16 | 16.532 m -> 19 yd |
+| webbing | poly_webbing_38mm: B-24 B-25 HE IME T3 | m | 3.214 | 3.21 | 3.658 | 3.66 | 3.214 m -> 4 yd |
 | webbing | shock_cord_3mm: B-26 E5-cord FP-cord MK-cord | m | 1.826 | 0.91 | 1.829 | 0.91 | 1.826 m -> 2 yd |
 | hardware | #10 coil zip chain, door D2 (2 sliders) | m | 1.418 | 5.67 | 1.418 | 5.67 | as production (whole units / cones) |
 | hardware | #10 coil slider, metal pull (door) | unit | 2 | 3.98 | 2 | 3.98 | as production (whole units / cones) |
@@ -77,9 +77,9 @@ Production a bag (10-bag markers + waste): **$380.07**. Buying for ONE bag (1-ba
 
 | Kit | Ledger, team B fabrics (g) | Primary pattern delta (g) | PRIMARY target (g) | lb |
 |---|---:|---:|---:|---:|
-| base | 1146.8 | +64.0 | 1210.8 | 2.67 |
-| as hunted | 1428.6 | +86.2 | 1514.8 | 3.34 |
-| meat trip | 1624.6 | +95.4 | 1720.0 | 3.79 |
+| base | 1144.7 | +64.0 | 1208.7 | 2.66 |
+| as hunted | 1426.5 | +86.2 | 1512.7 | 3.33 |
+| meat trip | 1622.5 | +95.4 | 1717.9 | 3.79 |
 
 One-off tooling (not a bag): J1-J8 jigs; LK-1900 / AMS-210EN programs; laser files are the part A DXFs; dies only above ~500 bags a year.
 

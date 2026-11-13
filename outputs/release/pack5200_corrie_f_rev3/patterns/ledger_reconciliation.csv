@@ -109,3 +109,6 @@ BL-034 records: guy tail elastic keepers (2 x 1.35 g),attachment,base,1.5,hardwa
 "BL-041: IMC IM cam anchor tabs (3 x 180 mm, DECISION IM-CAM-TAB)",straps_meat,base,9.72,webbing,,IMC,
 "BL-043: B-25 bridle drawn topology (sleeve, mitre, necked run, spine wrap) 386 -> 479 mm (DECISION B25-TOPO)",attachment,base,2.6,webbing,,B-25,B25-TOPO
 "BL-043: IMC tabs 180 -> 192 mm (m-4, 5 mm raw-end margin, x3)",straps_meat,base,0.65,webbing,,IMC,m-4
+"BL-044: HE hinge eyes 86 -> 96 mm (DECISION HE-ENV, x2)",attachment,base,0.56,webbing,,HE,HE-ENV length change
+BL-044: hinge pins +2 mm for the 20 mm throat (x2),attachment,base,0.22,hardware,,,"frame-side pins, 20 mm throat"
+"BL-044: W3 K-W keeper loops deleted (2 x 80 mm, DECISION KW-W3-OFF)",straps_compression,base,-2.88,removed,,,DECISION KW-W3-OFF

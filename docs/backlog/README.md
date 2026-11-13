@@ -94,3 +94,4 @@ Nothing here is decided; the tickets produce the material.
 | BL-043 | Third review fixes, bag side except hinge eye | pack-designer | M | — | |
 | BL-044 | Hinge eye on new fairlead; K-W kink; stale; renders | pack-designer | M | 042, 043 | |
 | BL-045 | Crown tube with mitre; spine clamp; IM/US fairleads; loose island | structural-fea-engineer | M | 042, 043 | |
+| BL-046 | H1 spine channel for OD 20 tube; spine offset in model | structural-fea-engineer | M | 045 | printable H1 |

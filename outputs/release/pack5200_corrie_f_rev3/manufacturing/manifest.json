@@ -2,7 +2,7 @@
  "checks": {
   "recon_unmatched": 0,
   "recon_pieces_without_row": 0,
-  "recon_rows": 110,
+  "recon_rows": 113,
   "mass_delta_pct": -0.1,
   "mass_ok": true,
   "ops": 86,
@@ -16,8 +16,8 @@
   "box_mismatches": [],
   "thread_bag_g": 18.56,
   "thread_ledger_g": 18.55,
-  "proto_hours": 74.1,
-  "sam_min": 503.8,
+  "proto_hours": 74.0,
+  "sam_min": 502.9,
   "volatile": [
    "pattern: B-22 x",
    "pattern: F-01",
@@ -28,9 +28,9 @@
   ]
  },
  "mass": {
-  "base_g": 1146.8,
-  "as_hunted_g": 1428.6,
-  "meat_trip_g": 1624.6,
+  "base_g": 1144.7,
+  "as_hunted_g": 1426.5,
+  "meat_trip_g": 1622.5,
   "pattern_fabric_alt_g": 570.2,
   "ledger_fabric_g": 570.7,
   "mass_delta_pct": -0.1,
@@ -42,9 +42,9 @@
    "as_hunted": 22.1,
    "meat_trip": 9.2
   },
-  "primary_base_g": 1210.8,
-  "primary_as_hunted_g": 1514.8,
-  "primary_meat_trip_g": 1720.0,
+  "primary_base_g": 1208.7,
+  "primary_as_hunted_g": 1512.7,
+  "primary_meat_trip_g": 1717.9,
   "qc14_tol_pct": 3.0
  },
  "geo": {

@@ -4,11 +4,11 @@ Date 2026-11-13. Ticket `docs/backlog/BL-042-h1-fairleads.md`, findings Z-1 / Z-
 
 ## Summary
 
-- **Z-2 fixed and checked on the STL itself.** Before: every one of the 12 fairleads in `print/frame_h1/h1_assembled.stl` was cut off at y 15.46 (the voxel envelope): no front wall, no pin hole, a solid throat at the hinge, IM1 and IM2. After: all 12 are whole (bounds y max 25.9 mm). Slicing the exported STL through every pin axis and every cheek: before **0 / 12 pass**, after **12 / 12 pass**.
-- **Z-1 fixed.** Hinge fairlead (z 60): gap under the pin 1.9 -> **5.50 mm** measured on the STL (3-ply eye 4.5 mm + 1.0 mm margin; 0.22 in); throat 18 -> **20.0 mm** measured (18 mm neck, 19 mm worst case, 1.0 mm clear; 0.79 in). The eye's ply stack plus margin overlaps the section by 0.000 mm2 (before: 68.2 mm2).
+- **Z-2 fixed and checked on the STL itself.** Before: every one of the 12 fairleads in `print/frame_h1/h1_assembled.stl` was cut off at y 15.46 (the voxel envelope): no front wall, no pin hole, a solid throat at the hinge, IM1 and IM2. After: all 12 are whole (bounds y max 28.2 mm). Slicing the exported STL through every pin axis and every cheek: before **0 / 12 pass**, after **12 / 12 pass**.
+- **Z-1 fixed.** Hinge fairlead (z 60): gap under the pin 1.9 -> **5.50 mm** measured on the STL (3-ply eye 4.5 mm + 1.0 mm margin; 0.22 in); throat 18 -> **20.0 mm** measured (18 mm neck, 19 mm worst case, 1.0 mm clear; 0.79 in). The eye's ply stack plus margin overlaps the section by 0.000 mm2 (before: 66.3 mm2).
 - **Cheek strength kept and raised.** Rev C governing hinge load (724 N factored, tall_load): 1/FI99 2.97 -> **3.73**, fatigue 1.67 -> **2.10**. On the CORRIE F sim hinge-pin vectors with their sideways pull (never checked before): fatigue 0.79 (fails) -> **1.17**, strength 1.41 -> **2.08**. The fix that does it is a saddle: the hinge fairlead's root and cheeks now wrap the stay down to its centreline (45 deg underside outboard of the stay).
-- **Mass.** The completed fairleads add **+37.2 g (1.31 oz)** to the printed body (mesh 808.5 -> 845.7 g). The 2 mm raster never held them above y 16, so this mass was never booked (ledger C1 removed the fairleads as 'inside the raster'). Booked now as ledger row **H1F** (H1 configs only).
-- **Body checks re-run** on the voxel body as printed (throat stubs cleared, holes emptied, hinge saddle added): every rev C basis moves by at most 0.006 (section 5).
+- **Mass.** The completed fairleads add **+50.4 g (1.78 oz)** to the printed body (mesh 808.5 -> 861.6 g). The 2 mm raster never held them above y 16, so this mass was never booked (ledger C1 removed the fairleads as 'inside the raster'). Booked now as ledger row **H1F** (H1 configs only).
+- **Body checks re-run** on the voxel body as printed (throat stubs cleared, holes emptied, hinge saddle added): every rev C basis moves by at most 0.039 (section 5).
 - **Test pieces** for HE-FIT and IM3-EC are cut from the fixed mesh (`print/frame_h1/test_pieces/`), and the test kit points at them.
 
 ## 1. What was wrong (Z-2), measured on the old STL
@@ -24,7 +24,7 @@ Slice check of the old file (plane z through each pin axis, plane x through each
 | us2_R z 142 | 8.02 / 8.40 | 2.28 | 80.0 | 25.4 (open to the bag) | 0.0 | 0.0 | **no** |
 | im1_R z 190 | 14.76 / 12.60 | -0.27 | 0.0 | 25.1 (open to the bag) | 0.0 | 0.0 | **no** |
 | im2_R z 330 | 11.79 / 9.70 | -0.20 | 0.0 | 26.5 (open to the bag) | 0.0 | 0.0 | **no** |
-| im3_R z 520 | 9.89 / 9.09 | 1.10 | 80.0 | 26.2 (open to the bag) | 0.0 | 0.0 | **no** |
+| im3_R z 520 | 9.89 / 9.09 | 4.70 | 80.0 | 29.9 (open to the bag) | 0.0 | 0.0 | **no** |
 
 A hole 'vertical' of 25-28 mm means no material above the pin at all: the hole is an open slot. A throat of 0 mm is a solid throat. The left side reads the same (`h1_fairleads.json` `check_before`).
 
@@ -40,20 +40,20 @@ A hole 'vertical' of 25-28 mm means no material above the pin at all: the hole i
 
 | file | g | lb | watertight | shells | footprint mm |
 |---|---:|---:|---|---:|---|
-| h1_assembled.stl | 845.7 | 1.86 | True | 1 | |
-| h1_lower_flat.stl | 331.2 | 0.73 | True | 1 | 279 x 234 x 74 |
-| h1_upper_flat.stl | 513.8 | 1.13 | True | 1 | 279 x 309 x 60 |
+| h1_assembled.stl | 861.6 | 1.90 | True | 1 | |
+| h1_lower_flat.stl | 343.0 | 0.76 | True | 1 | 280 x 234 x 77 |
+| h1_upper_flat.stl | 518.6 | 1.14 | True | 1 | 280 x 309 x 64 |
 
 Slice check of the new file (design = the BL-042 geometry), right side; the left side passes the same:
 
 | station | floor y / design | gap under pin mm (design) | throat mm (design) | hole ring Ø mm | centre err mm | front wall mm | cheek mm | cheek height mm | pass |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---|
 | hinge_R z 60 | 10.34 / 10.34 | 5.50 (5.50) | 20.0 (20) | 6.98 | 0.00 | 4.09 | 8.00 | 18.0 | yes |
-| us1_R z 95 | 9.51 / 9.51 | 1.90 (1.90) | 18.0 (18) | 6.99 | 0.00 | 4.09 | 8.00 | 18.0 | yes |
-| us2_R z 142 | 8.40 / 8.40 | 1.90 (1.90) | 18.0 (18) | 6.99 | 0.00 | 4.10 | 8.00 | 18.0 | yes |
-| im1_R z 190 | 12.61 / 12.60 | 1.89 (1.90) | 18.0 (18) | 6.99 | 0.00 | 4.10 | 8.00 | 18.0 | yes |
-| im2_R z 330 | 9.70 / 9.70 | 1.90 (1.90) | 18.0 (18) | 6.99 | 0.00 | 4.09 | 8.00 | 18.0 | yes |
-| im3_R z 520 | 9.09 / 9.09 | 1.90 (1.90) | 18.0 (18) | 6.99 | 0.00 | 4.08 | 8.00 | 28.0 | yes |
+| us1_R z 95 | 9.51 / 9.51 | 5.50 (5.50) | 20.0 (20) | 6.98 | 0.00 | 4.11 | 8.00 | 18.0 | yes |
+| us2_R z 142 | 8.40 / 8.40 | 5.50 (5.50) | 20.0 (20) | 6.98 | 0.00 | 4.11 | 8.00 | 18.0 | yes |
+| im1_R z 190 | 12.61 / 12.60 | 5.49 (5.50) | 20.0 (20) | 6.99 | 0.00 | 4.11 | 7.99 | 18.0 | yes |
+| im2_R z 330 | 9.70 / 9.70 | 5.50 (5.50) | 20.0 (20) | 6.98 | 0.00 | 4.11 | 7.99 | 18.0 | yes |
+| im3_R z 520 | 9.09 / 9.09 | 5.50 (5.50) | 20.0 (20) | 6.99 | 0.00 | 4.10 | 7.98 | 28.0 | yes |
 
 The IM3 cheeks are **28 mm** tall (BL-021) on both sides. Hinge eye check by step (half-width mm, plies' thickness mm, clear gap mm): [[2.0, 4.5, 5.5], [9.5, 3.0, 4.44]].
 
@@ -77,7 +77,7 @@ The eye is the neck: op 4.05 folds each long edge of the 38 mm webbing 10 mm in,
 | gap under the pin mm | 1.90 | 5.50 |
 | tip above stay surface mm | 14.1 | 17.7 |
 
-**The bag must meet `bag_attach.HINGE_EYE_ENVELOPE`** (import it; the module constants `THROAT`, `HOLE_PROUD`, `HALF_Z` stay the IM / US fairleads):
+**The bag must meet `bag_attach.HINGE_EYE_ENVELOPE`** (import it; the module constants `THROAT`, `HOLE_PROUD`, `HALF_Z` stay the voxel analysis envelope; BL-045 gives the IM / US pins `imus_eye_envelope`):
 
 ```
 station_z_mm: 60.0
@@ -120,19 +120,19 @@ Requirements: 1/FI99 >= 1.0 on the factored load (HA-LS-1 rev C), fatigue >= 1.0
 
 - Pin bending (legacy, 5 mm 7075-T6, span throat + cheek, load spread over the throat): rev C 251 MPa, yield SF 1.84 (S-basis 462), fatigue SF 1.71 (Goodman R 0 from the record's 159 MPa x 0.9 surface); sim 313 MPa, yield 1.47, fatigue 1.37.
 - Pin bending (bl042, 5 mm 7075-T6, span throat + cheek, load spread over the throat): rev C 266 MPa, yield SF 1.74 (S-basis 462), fatigue SF 1.62 (Goodman R 0 from the record's 159 MPa x 0.9 surface); sim 332 MPa, yield 1.39, fatigue 1.29.
-- IM3 28 mm cheek (geometry unchanged), rev C governing IM3 force 605 N: 1/FI99 5.24, fatigue 2.95. BL-021's sim-load eye check (`im3_body_simloads`) is on the same geometry and is not affected.
+- IM3 28 mm cheek (geometry unchanged), rev C governing IM3 force 605 N: 1/FI99 6.03, fatigue 3.39. BL-021's sim-load eye check (`im3_body_simloads`) is on the same geometry and is not affected.
 
 ## 5. Did any structural check depend on the clipped geometry?
 
 - **Fairlead cheek / pin checks** (rev C record, BL-021, BL-024, BL-027): no. They mesh `fairlead_local` whole on a stay stub; they never used the print mesh. They did use the 2026-11-01 hinge geometry, now replaced: re-run in section 4.
-- **Body checks** (42 rev C sets x 4 bases, Euler buckling, z 234 joint): they run on the 2 mm voxel body, which holds the fairlead stubs below y 16. The print now clears the throat stubs (up to 0.75 cm3 a station) and adds the hinge saddle, so the body was re-run as printed (`voxel_as_printed`, 540 voxels out, 652 in):
+- **Body checks** (42 rev C sets x 4 bases, Euler buckling, z 234 joint): they run on the 2 mm voxel body, which holds the fairlead stubs below y 16. The print now clears the throat stubs (up to 0.91 cm3 a station) and adds the hinge saddle, so the body was re-run as printed (`voxel_as_printed`, 604 voxels out, 1720 in):
 
 | basis | strength before / after | fatigue before / after | creep before / after | buckling before / after | joint S / F after |
 |---|---|---|---|---|---|
-| fine_sm8 | 1.677 / 1.677 | 1.175 / 1.172 | 2.507 / 2.501 | 1.223 / 1.220 | 2.08 / 1.73 |
-| fine | 1.677 / 1.677 | 1.196 / 1.193 | 2.551 / 2.546 | 1.223 / 1.220 | 2.08 / 1.73 |
-| beam | 1.578 / 1.578 | 1.205 / 1.203 | 2.571 / 2.567 | 1.358 / 1.353 | 1.95 / 1.25 |
-| fine_sm8.cyc | 1.677 / 1.677 | 0.782 / 0.781 | 1.668 / 1.667 | 1.035 / 1.037 | 2.12 / 1.07 |
+| fine_sm8 | 1.677 / 1.682 | 1.175 / 1.194 | 2.507 / 2.546 | 1.223 / 1.227 | 2.07 / 1.72 |
+| fine | 1.677 / 1.682 | 1.196 / 1.212 | 2.551 / 2.585 | 1.223 / 1.227 | 2.07 / 1.72 |
+| beam | 1.578 / 1.581 | 1.205 / 1.204 | 2.571 / 2.568 | 1.358 / 1.349 | 1.95 / 1.25 |
+| fine_sm8.cyc | 1.677 / 1.682 | 0.782 / 0.787 | 1.668 / 1.679 | 1.035 / 1.024 | 2.10 / 1.07 |
 
 `fine_sm8.cyc` fatigue was below 1 before this ticket (BL-024 cinch-cycled set, R1 hold for MT-1); BL-042 does not change that.
 
@@ -142,21 +142,23 @@ Requirements: 1/FI99 >= 1.0 on the factored load (HA-LS-1 rev C), fatigue >= 1.0
 
 | step | g | oz |
 |---|---:|---:|
-| 12 fairlead solids (union, net of what the body already held) | +44.2 | +1.56 |
-| throats cleared | -4.9 | -0.17 |
-| 12 pin holes | -2.2 | -0.08 |
-| **net, ledger H1F** | +37.2 | +1.31 |
+| 12 fairlead solids (union, net of what the body already held) | +58.2 | +2.05 |
+| throats cleared | -5.8 | -0.20 |
+| 12 pin holes | -2.1 | -0.07 |
+| **net, ledger H1F** | +50.4 | +1.78 |
 
 Basis: print_mesh volume before / after h1_fairleads.add_fairleads x 1.06 g/cm3 (pre-simplify). Ledger: `huntkit/mass/ledger.py` H1F (H1 configs), source `h1_fairleads.json`.
 
-**Mass reduction that keeps the SF (not applied):** the 10 IM / US fairleads carry the 2026-11-01 geometry, whose own rev C margins are >= 2.97 (hinge) / 3.60 (IM3). They could lose material only with a per-station check against their own loads; BL-004's attachment diet is the place for that.
+**BL-045 (2026-11-13): the 10 IM / US fairleads now carry the hinge's eye clearance** (`bag_attach.eye_geom`, `imus_eye_envelope`): each pin carries a webbing eye (IME 38 mm at IM1-IM3, the US 25 mm eye / cam anchor at US1-US2), so the 1.9 mm gap and 18 mm throat of the 2026-11-01 shape could not take a necked eye. Gap 5.5 mm, throat 20 mm, saddle (to the stay centreline at US1 / US2; on the crown sleeve at IM1-IM3 the root stops 1 mm above the 18 mm bore). The mass above includes them; the per-station checks are in `crown_and_fairlead_checks.md` (BL-045).
 
-**Print note.** The 10 IM / US fairleads keep the 2026-11-01 shape: each cheek stands beside the stay with a flat underside facing the plate (about 8 x 18 mm; 8 x 28 at IM3). The pre-BL-042 files had the same ledges (clipped), and the print README said 'supports: none'. It now asks for paint-on supports under those 10 cheek pairs. The hinge saddle's underside is 45 deg outboard of |x| 9 mm.
+**Mass reduction that keeps the SF (not applied):** the IM1 / IM2 eye fairleads have 1/FI99 above 5 at their rev C loads (BL-045 table); a thinner cheek there needs a per-station check against the sim loads too.
+
+**Print note.** Since BL-045 all 12 fairleads are saddles with a 45 deg underside outboard of |x| 9 mm (printable face-down without supports); the IM1-IM3 roots stop above the crown bore.
 
 ## 7. Test pieces (HE-FIT, IM3-EC)
 
-- `print/frame_h1/test_pieces/hefit_hinge_fairlead_R.stl` (+ `.3mf`, + `_frame_coords.stl`): HE-FIT: z 60 R hinge fairlead, 80 mm stay segment; 31.9 g; watertight True, 1 shell; slice check passes.
-- `print/frame_h1/test_pieces/im3ec_cheek_R.stl` (+ `.3mf`, + `_frame_coords.stl`): IM3-EC: z 520 R IM3 eye, 28 mm cheek, 120 mm stay segment; 66.8 g; watertight True, 1 shell; slice check passes.
+- `print/frame_h1/test_pieces/hefit_hinge_fairlead_R.stl` (+ `.3mf`, + `_frame_coords.stl`): HE-FIT: z 60 R hinge fairlead, 80 mm stay segment; 33.7 g; watertight True, 1 shell; slice check passes.
+- `print/frame_h1/test_pieces/im3ec_cheek_R.stl` (+ `.3mf`, + `_frame_coords.stl`): IM3-EC: z 520 R IM3 eye, 28 mm cheek, 120 mm stay segment; 68.6 g; watertight True, 1 shell; slice check passes.
 
 `designs/pack_5200/physical_test_kit.py` (HE-FIT, IM3-EC, run order) now names these files. The released guide `outputs/release/test_kit/guides/G2.md` still says 'from the H1 STL' until the kit is re-released.
 

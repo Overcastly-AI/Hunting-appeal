@@ -20,12 +20,12 @@ Generated 20261113 by `designs/pack_5200/mfg_corrie_f_rev3.py` from `patterns_co
 
 ## Key numbers
 
-- Pieces: 77 piece types; 77 fabric / sheet pieces + 78 webbing / cord / elastic pieces (crown kit M).
-- Ledger 1:1: 110 rows, 0 unmatched, 0 pieces without a row. Mass from pattern areas (ledger basis, team B fabrics): 570.2 g vs 570.7 g (-0.10 %, limit +/-3 %). Primary fabrics weigh +94.8 g more on the same pieces.
-- Operations: 86; beginner hours 74.1 h (one-off set-up 4.1 h of it); factory SAM 504 min (8.4 h, ASSUMPTION SAM-RATIO).
-- Material cost a bag, PRODUCTION (10-bag markers, record prices): primary $380, alternate $380. CMT + materials: US contract $915, Asia $456 (ASSUMPTION LABOUR).
+- Pieces: 77 piece types; 77 fabric / sheet pieces + 76 webbing / cord / elastic pieces (crown kit M).
+- Ledger 1:1: 113 rows, 0 unmatched, 0 pieces without a row. Mass from pattern areas (ledger basis, team B fabrics): 570.2 g vs 570.7 g (-0.10 %, limit +/-3 %). Primary fabrics weigh +94.8 g more on the same pieces.
+- Operations: 86; beginner hours 74.0 h (one-off set-up 4.1 h of it); factory SAM 503 min (8.4 h, ASSUMPTION SAM-RATIO).
+- Material cost a bag, PRODUCTION (10-bag markers, record prices): primary $380, alternate $380. CMT + materials: US contract $914, Asia $455 (ASSUMPTION LABOUR).
 - **What ONE bag costs to buy (prototype, 1-bag markers rounded to shop steps): $501** (fabric $185 vs $88 in production; ASSUMPTION SHOP-INCR; thread by the 4 oz cone, sealer and tape by the smallest pack, ASSUMPTION SHOP-UNIT; no camo print: DECISION CAMO-FIRST; table in costing.md).
-- **Mass targets, PRIMARY fabrics (the set you build): base 1211 g (2.67 lb), as hunted 1515 g, meat trip 1720 g** (QC-14, +/- 3 %); ledger (team B basis) 1147 / 1429 / 1625 g.
+- **Mass targets, PRIMARY fabrics (the set you build): base 1209 g (2.66 lb), as hunted 1513 g, meat trip 1718 g** (QC-14, +/- 3 %); ledger (team B basis) 1145 / 1426 / 1622 g.
 - **Sewing machine:** MINIMUM PROTOTYPE MACHINE (buy this or better): a walking-foot (compound or upper-and-lower feed) lockstitch that takes the 135x17 / DPx17 needle system up to size 140/22, sews tex 135 (V-138 / No. 138) bonded nylon top and bobbin, and clears at least 6 mm under the raised foot (38 mm webbing folded in half + Hypalon + laminate is about 5 mm), AND sews a 304 zigzag up to 5 mm wide (BL-041 Y-3: the BT-S / BT-M tacks and elastic laps are ISO 304; e.g. a portable straight / zigzag walking foot). A straight-stitch-only walking foot (the WF2 class) may be used if every 304 tack is sewn as the BT-301 fallback below. A domestic or 'heavy-duty domestic' machine (130/705H needles, tex 90 max) CANNOT sew the load points as specified. The alternative, re-rating every box-X for Nm 120/19 + tex 90 and re-running MT-1 / PT-1..PT-6 on it, is an owner decision, not taken here. Fallback for the 304 tacks: BT-301 (prototype, straight stitch only): 4 passes over the tack length (16 mm for BT-M, 10 mm for BT-S and slit ends, the full lap width for elastic laps) at 2 mm stitch, needle down and pivot at each end, 3-stitch backtack, same thread and needle as the 304 tack it replaces. UNRATED, like every 304 tack in this release (none is on a load-table path); the PT-3 neck tacks are sewn the same way as the bag's.
 - **First build fabric for the camo pieces (DECISION CAMO-FIRST, orchestrator 2026-11-13):** solid 630D (polyester_ht_630d_printable, unprinted) on B-02u, SH-07, SH-01b, FP-b, B-29f and A1-d. B-02u is structural (two 715 mm corner seams, the floor seam and the #10 door zip): it is cut from 630D, the base the patterns, the BOM `fabric` line and QC-14 assume. The HyperD 300 print yard is a test-kit specimen only (AB-1 / FRAY-1, not a bag-cut gate); a printed bag waits for AB-1, FRAY-1 (HyperD | 330D) and a QC-14 target on that base.
 - **Camo (later builds):** the print comes from the camo-designer's release: read `../camo/README.md` first (print file `../camo/print/`, colours, placement, vendors, 1- and 10-bag costs). BOM section `fabric_print` (production only). **Caveat:** 630D printable base is TPU-coated and sublimation transfer runs at about 200 C: print BEFORE the coating is applied (mill print), or order a strike-off and check the coat survives, before buying yardage.
@@ -43,7 +43,7 @@ These ops read their numbers from the pattern; re-run `python designs/pack_5200/
 - **pattern: ledger**: ops 7.15
 - **pattern: ledger (US-chan)**: ops 4.14
 
-Current values: B-22 at x +/-130.3 mm (drawn 149.0); FP flat width 260.0 mm (finished 165.0); 6 swell windows; F-01 drafted: True; B-11 tabs on the gussets: 8; K-W keeper z: {'W1': {'R': 128.2, 'L': 201.8}, 'W2': {'R': 299.9, 'L': 370.1}, 'W3': {'R': 702.6, 'L': 702.6}}.
+Current values: B-22 at x +/-130.3 mm (drawn 149.0); FP flat width 260.0 mm (finished 165.0); 6 swell windows; F-01 drafted: True; B-11 tabs on the gussets: 8; K-W keeper z: {'W1': {'R': 128.2, 'L': 201.8}, 'W2': {'R': 299.9, 'L': 370.1}}.
 
 ## On HOLD (cannot be sewn from the pattern as released)
 
@@ -56,19 +56,19 @@ Current values: B-22 at x +/-130.3 mm (drawn 149.0); FP flat width 260.0 mm (fin
 - Ledger hardware rows mapped by keyword (confirm): none.
 - Unmapped ledger hardware rows: none.
 
-## Pre-cut THIRD review status (BL-043)
+## Pre-cut THIRD review status (BL-043 / BL-044)
 
-design-reviewer third review `analysis/review_20261113_rev3_third.md` (2 blockers, 4 majors, 14 minors). BL-043 fixed the bag-side items and checked each against every crown kit and torso end (tests/test_bl043_third_review_fixes.py); the hinge-eye items wait for BL-042 / BL-044. Open: 2 blockers, 1 majors: **NOT ready to cut.**
+design-reviewer third review `analysis/review_20261113_rev3_third.md` (2 blockers, 4 majors, 14 minors). BL-043 fixed the bag-side items and checked each against every crown kit and torso end (tests/test_bl043_third_review_fixes.py); BL-042 fixed the frame print files and BL-044 the hinge eye on the BL-042 fairlead, checked by slicing the HE-FIT test-piece STL (tests/test_bl044_hinge_eye.py). Open: 0 blockers, 0 majors. **NOT ready to cut**: a FOURTH independent review of BL-042 / 043 / 044 is due first (three rounds found fixes that passed their own checks but failed on the real geometry).
 
 | Finding | Class | Status | How |
 |---|---|---|---|
-| Z-1 | blocker | open | hinge eye vs the throat floor: BL-042 (fairlead) + BL-044 (HE on the new envelope); SK-8 (c) now draws the floor and the gap under the pin |
-| Z-2 | blocker | open | H1 STL fairleads clipped: BL-042 (frame side) |
+| Z-1 | blocker | fixed | BL-042 hinge fairlead (5.5 mm under the pin, 20 mm throat) + BL-044 DECISION HE-ENV: the eye is solved on the real 3-ply neck wrap against bag_attach.HINGE_EYE_ENVELOPE and checked by slicing the HE-FIT test-piece STL at every bracket corner (he_stl_check: no overlap, gap and throat clearances); the test at test_bl041:55 (neck == throat) is replaced by a clearance test; SK-8 (c) redrawn on the envelope |
+| Z-2 | blocker | fixed | BL-042: H1 print files carry the whole fairleads (12 / 12 pass the STL slice check); HE-FIT and IM3-EC print the BL-042 test pieces |
 | M-1 | major | fixed | DECISION W3-OVER: W3 rides at the crown-bar height (z 601-804 over kits S / M / L); W3G deleted; RTM buckle and the hose slot (HOSE-LOW) 10 mm under the lowest W3 edge; W3 lies only on webbing, cord and the roll at all 6 kit-end corners (test); W3 crosses the roll at kit M / L part loads, so W3 is slackened to open the top; FIT-R3 row 7 at both ends of the owner's kit |
 | M-2 | major | fixed | DECISION RT-ORIGIN: BL-041's origin needed a 76 mm gusset tuck to fold flat and put the box across the hem fold gap: fall back to the roll end; cloth-pass roll model re-run with the new tab (corrie_f_roll_clips.json): paths 202-424 mm, RT cut 510 -> 560 mm |
-| M-3 | major | open | 34 x 10 hinge-eye box peel / fatigue / PT-3 fixture: hinge eye, BL-044 |
+| M-3 | major | fixed | peel cannot be avoided (the stay-side leg passes under a pin 1.5-7.6 mm toward the frame from B-01: leg B leaves the box 23 deg off the box line in line, 50 deg held at the cheek-tip plane; he_peel); 'no peel' dropped; rated instead: PT-3 on the printed BL-042 fairlead with B-01 held at the cheek-tip plane (worst peel) to 1530 N, and 3 HE specimens added to SEW-F at 625 N peak (1.15 x 1.6 g x 1019 / 3); load row lists the 34 x 7 box capacity and its peel |
 | M-4 | major | fixed | DECISION B25-TOPO drawn (SK-12, corrie_f.b25_topology): mitre under each sleeve, run and spine wrap necked to 25 mm, 13 mm over the (assumed) pawl housing at kit S 15 in; clamp undrawn in the frame files: ASSUMPTIONS B25-CLAMP / PAWL-TOP, gate B25-FIT in op 7.17; TL-1 specimen carries the turn and run |
-| m-1 | minor | open | HE-FIT pin band: hinge eye, BL-044 |
+| m-1 | minor | fixed | box top +11 (5 mm under the cheeks at the design pin); HE-FIT band 22-29 keeps the box >= 2 mm under the cheeks over the whole band; the solved bracket 23.1-28.9 sits inside it (test) |
 | m-2 | minor | fixed | ops 4.05 / 4.08 give machine / needle / thread / stitch per step (step_spec), BT-301 named on the 304 tacks |
 | m-3 | minor | fixed | W3G (the only 16 mm BT-S) deleted; every BT-S is 10 x 2 (SK-1) |
 | m-4 | minor | fixed | IMC 192 mm, 48 mm folds, boxes 5 mm in from each raw end; MT-1 IMC specimens cut to it |
@@ -78,7 +78,7 @@ design-reviewer third review `analysis/review_20261113_rev3_third.md` (2 blocker
 | m-8 | minor | fixed | bar stock 2.0 m (5 x 200 + control 200 + 2 x 160 + 10 %); TL-1b steps include 288 N; TL-1b count 2 everywhere |
 | m-9 | minor | fixed | W3 / hose slot in the clearance set at all 6 corners; DECISION HOSE-LOW moves the slot below W3's sweep |
 | m-10 | minor | fixed | camo print BOM line proto_qty 0, 'production only' |
-| m-11 | minor | open | B-18 label over the HE box on the tiled print: hinge eye, BL-044 |
+| m-11 | minor | fixed | step 2 tiled print: every label block re-flowed into a clear spot (export.fit_label); B-18 and B-22 labels clear every mark and stay inside the outline (test); shortened labels in full on the NOTES page |
 | m-12 | minor | fixed | webbing pages: leader label on every line; B-25 and RT added; W3G removed |
 | m-13 | minor | fixed | SK-8 (c): stay labelled printed PAHT-CF, throat floor drawn with its gap under the pin (the HE redraw itself is BL-044) |
 | m-14 | minor | fixed | ledger row relabelled 'BL-004 REC: guy toggles x2', mapped by prefix (no keyword rows) |
@@ -90,8 +90,8 @@ design-reviewer re-check `analysis/review_20261113_rev3_recheck.md` (2 blockers,
 | Finding | Class | Status | How |
 |---|---|---|---|
 | X-1 | blocker | fixed | op 4.05 reordered: NECK, B-18 ROWS (through B-18 + B-01 only), PLACE HE, BOX, BASTE; test: no B-18 / B-01 stitch line crosses the eye footprint and the rows precede the HE in the op text; PT-3 specimen built from the same order |
-| X-2 | blocker | fixed | DECISION HE-PIN: eye UP on the z 60 pin, box-X 34 x 10 at +4..+14 (2 mm under the cheeks), eye 17 mm solved by he_geometry, HE 86 mm; loaded pin +23.4..+25.3 over the B-01 / webbing bracket (target 25 +/- 3, test); HE-FIT dry fit is a BAG-CUT gate before PT-3; SK-8 redrawn with the rows and the real pin |
-| Y-1 | major | fixed | PT-3 rig: pin in an 18 mm slot fixture, B-05 strip alone in the clamp, B-01 top free, pull down B-01; specimen = reordered op 4.05 with the B-18 rows and the baste |
+| X-2 | blocker | fixed | DECISION HE-PIN: eye UP on the z 60 pin, box-X 34 x 10 at +4..+14 (2 mm under the cheeks), eye 17 mm solved by he_geometry, HE 86 mm; loaded pin +23.4..+25.3 over the B-01 / webbing bracket (target 25 +/- 3, test); HE-FIT dry fit is a BAG-CUT gate before PT-3; SK-8 redrawn with the rows and the real pin [superseded by BL-044 DECISION HE-ENV: box 34 x 7 at +4..+11, eye 25 mm, HE 96 mm on the BL-042 fairlead] |
+| Y-1 | major | fixed | [BL-044: the rig is now the printed BL-042 fairlead with a spacer, see M-3] PT-3 rig: pin in an 18 mm slot fixture, B-05 strip alone in the clamp, B-01 top free, pull down B-01; specimen = reordered op 4.05 with the B-18 rows and the baste |
 | Y-2 | major | fixed | DECISION RT-FWD: clip path on the gusset at 10.9 mm from the hose slot, buckle bar 10 mm over the B-26 cord, muzzle tabs aft (111 / 171 mm, 60 apart); min clearance 10.0 mm over tabs, keeper cord, hose slot, bow tabs, B-26 cord (test on the buckle envelope + strap corridor); W3 through a W3G guide under the RT strap (DECISION RT-OVER-W3); FIT-R3 rows 5-6 |
 | Y-3 | major | fixed | machine minimum adds a 304 zigzag; BT-301 straight-stitch fallback, unrated (every 304 tack in the release is unrated); BUILD_PLAN 140/22 and tex 70 / 90 / 135 |
 | Y-4 | major | fixed | structural result adopted (crown_tube_guy_loop.md): B-25 in 38 mm, sleeves x 26.5-64.5, load row 323 N, bar wall SF 1.36 / 1.27 fatigue; TL-1 at 494 N on real bar stock with both toggles, TL-1b data test; GBL deleted; ledger booked |
@@ -114,7 +114,7 @@ design-reviewer re-check `analysis/review_20261113_rev3_recheck.md` (2 blockers,
 
 ## Pre-cut review status (BL-040)
 
-Open after BL-043 (all three reviews): 2 blockers, 1 majors. **NOT ready to cut.**
+Open after BL-044 (all three reviews): 0 blockers, 0 majors. **NOT ready to cut.**
 
 | Finding | Class | Status | How |
 |---|---|---|---|
@@ -174,7 +174,7 @@ Open after BL-043 (all three reviews): 2 blockers, 1 majors. **NOT ready to cut.
 | US-BS | The stainless 25 mm tri-glide behind each US cam stops cradle slip (record: 3.75 kN break, no slip rating). | gate US-BS: cam slipped on purpose, backstop holds |
 | TG-SS-PRICE | Stainless tri-glide USD 2.84 from the record's EUR source line, converted as the record does (ex VAT x 1.09 USD/EUR). | supplier quote |
 | BT-STD | Slit-end bartack 10 x 2 mm, 28 stitches; standard tack 16 x 2 mm, 42 stitches (LK-1900 patterns). | QC-07 |
-| HE-ONE / HE-PIN / HE-GAP / HE-CHEEK / HE-T | BL-040 B-1 + BL-041 X-1 / X-2: one hinge-eye construction (HE 86 mm folded in half, both raw ends and the B-18 edge in the floor seam, B-18 rows sewn first through B-18 + B-01 only); eye UP on the z 60 pin, box-X 34 x 10 at +4..+14 mm, 2 mm under the fairlead cheeks; eye 17 mm solved for webbing 1.5 mm thick (ASSUMPTION HE-REACH withdrawn). | HE-FIT dry fit on a printed fairlead (pin 22-28 mm above the seam line), then PT-3 on specimens sewn as op 4.05 / SK-8 |
+| HE-ONE / HE-PIN / HE-ENV / HE-GAP / HE-CHEEK / HE-T / HE-PIN-HI | BL-040 B-1 + BL-041 X-1 / X-2 + BL-044 Z-1 / M-3 / m-1: one hinge-eye construction (HE 96 mm folded in half, both raw ends and the B-18 edge in the floor seam, B-18 rows sewn first through B-18 + B-01 only); eye UP on the z 60 pin of the BL-042 hinge fairlead (bag_attach.HINGE_EYE_ENVELOPE: pin 10.1 mm above the stay, 5.5 mm under it, 20 mm throat); box-X 34 x 7 at +4..+11 mm, 5 mm under the cheeks at the design pin and >= 2 mm over the HE-FIT band; eye 25 mm solved on the real 3-ply neck wrap for webbing 1.5 mm (bracket 1.2-1.6 mm, thicker rejected). The box PEELS (leg B 23-50 deg off the box line): rated by PT-3 on the printed fairlead and SEW-F HE specimens. | caliper gate on the roll (ply <= 1.6 mm); HE-FIT on the BL-042 test piece (pin 22-29 mm above the seam line, box >= 2 mm under the cheeks), then PT-3 and SEW-F HE on specimens sewn as op 4.05 / SK-8 |
 | RT-MATE / RT-HEM / RT-FWD / RT-ORIGIN / W3-OVER / HOSE-LOW / BUCKLE-ENV / MK-GAP | BL-040 B-2 + BL-041 Y-2 + BL-043 M-1 / M-2 / m-9: the RT strap is sewn at the roll end (gusset centre of the hem); its buckle's female half on an RTM tab forward on the gusset (hose slot + 10 mm + half a buckle), the buckle body 10 mm under the lowest W3 edge of every crown kit (W3 rides at the crown-bar height, z 601-804); W3 is the outer layer (slacken it to open the top); the hose slot also sits under W3's sweep; muzzle tabs 10 mm clear of the strap's line to the roll end; buckle envelope 35 x 35; RT cut from the cloth-pass roll model re-run with this tab and origin. | FIT-R3 rows 5-7 (rifle + roll clip + W3, at both ends of the owner's crown kit); T9 roll-clip free length; hydration fit (HOSE-LOW); caliper on the buckle |
 | IM-CAM-TAB / IMC-LOOP | BL-041 m-19: each IM cam sewn to an IMC dog-bone (21 x 25 box-X each end, 18 mm loops) carrying the G-hook / carabiner. | MT-1 (2 IMC tabs at 908 N); threading the bought cam and hook |
 | B25-TAB-CENTRE / WIDE_SLEEVE | BL-041 (crown_tube_guy_loop.md): B-25 in 38 mm webbing, sleeves x 26.5-64.5, toggle tab at the sleeve centre x 45.5; the 25 mm tab pull spreads over the 38 mm sleeve. | TL-1 at 494 N on real bar stock, specimen WITH the mitre turn and run (BL-043) |

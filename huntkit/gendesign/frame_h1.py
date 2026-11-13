@@ -721,6 +721,8 @@ def _box_local(p, u, dirn, along0, along1, half_w, z0, z1):
 
 
 SIMPLIFY_MM = 0.04     # manifold3d simplify tolerance: about 45 % fewer faces, volume change < 0.1 %
+BOSS_CORE_MM = 2.0     # BL-045: voxels kept in the smoothing field up to one voxel (H) inside the exact boss capsule,
+#                        so the smoothed body fuses with the capsule wherever the voxel body touches the boss
 
 
 def print_mesh(solid: np.ndarray, j: Joint = JOINT, log=print, fairleads: bool = True, stats: dict | None = None):
@@ -734,7 +736,12 @@ def print_mesh(solid: np.ndarray, j: Joint = JOINT, log=print, fairleads: bool =
     from scipy import ndimage
     c = base()
     dom = c["dom"]
-    body = solid & ~c["boss"]                        # bosses are added as exact solids
+    # Bosses are added as exact solids. BL-045: only the boss CORE (deeper than BOSS_CORE_MM inside the capsule) is
+    # taken out of the voxel field. Taking the whole voxel boss out (as before) left a gap of about one voxel between
+    # the smoothed body and the exact capsule, so a branch root that the voxel model (and the FEA) joins to the inboard
+    # boss below z 234 came out loose: the lower-half export dropped it as a 571 mm3 island at (84, -0.4, 225).
+    core = c["boss"] & (boss_sdf(c["cen"], j) <= -BOSS_CORE_MM)
+    body = solid & ~core
     field = ndimage.zoom(dom.grid.to_array(body.astype(float)), 2, order=1)
     field = ndimage.gaussian_filter(field, 0.7)
     mesh = field_to_mesh(field, dom.h / 2, dom.grid.x0 - dom.h / 4, level=0.5, smooth_iters=10, upsample=1)

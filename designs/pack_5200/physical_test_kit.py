@@ -14,7 +14,7 @@ Turns ``designs/pack_5200/tests_physical/TEST_PLAN.md`` into a kit the owner can
 3. ``outputs/release/test_kit/``: order of work (R1 frame release, then the bag, then the BL-037 gates, grouped by
    rig), shopping list (CSV + md, prices from material records or cited, long-lead flags), one beginner guide per
    test group, the results template the owner fills in, rig sketches, a PDF of the whole kit and phone screenshots
-   ``outputs/screens/20261113_BL038_<n>.png``.
+   ``outputs/screens/<SHOT>_<n>.png`` (SHOT names the ticket that last regenerated the kit).
 
 The results template is read back by ``huntkit.manufacturing.test_results`` (verdict per test, ASSUMPTION status,
 release status).
@@ -45,7 +45,7 @@ REGISTER = TP / "test_register.csv"
 TEST_PLAN = TP / "TEST_PLAN.md"
 OUT = ROOT / "outputs" / "release" / "test_kit"
 SCREENS = ROOT / "outputs" / "screens"
-SHOT = "20261113_BL041kit"
+SHOT = "20261113_BL044kit"     # BL-044: named for the ticket that regenerates the kit (was BL041kit after BL-043)
 DATE = "2026-11-13"
 G = 9.81                    # N per kg on the crane scale
 LB_PER_N = 0.224809
@@ -152,6 +152,16 @@ SEWF = {"S1": 605.0, "S6": 720.0}   # loadpath_verification S1 / S6 factored (x 
 SEWF_SCATTER = 1.15        # BL-041 n-13: the kit's fatigue scatter factor (IM3-EC, CA1_fatigue_rig.md 6a) on SEW-F too
 SEWF_PEAK = round(SEWF_SCATTER * FAT_G * max(SEWF.values()) / 3.0)   # 1.15 x 1.6 g x the S6 1 g load (240 N) = 442 N
 SEWF_MIN = round(0.1 * SEWF_PEAK)
+# BL-044 (review M-3): the hinge-eye box peels (leg B leaves the box top at 23-50 deg off the box line, he_peel), so SEW-F
+# also carries 3 HE specimens at the hinge's own walking load: 1.15 scatter x 1.6 g x the rev C hinge 1 g load
+# (HINGE_N 1019 N factored / 3.0).
+HINGE_N = 1019.0           # = mfg_corrie_f_rev3.HINGE_N (load_standard.md rev C bag-on hinge, factored)
+SEWF_HE_PEAK = round(SEWF_SCATTER * FAT_G * HINGE_N / 3.0)          # 625 N
+SEWF_HE_MIN = round(0.1 * SEWF_HE_PEAK)
+HE_SPACER = ("flat spacer plate (PLA, or 6 mm ply shimmed) screwed to the printed stay segment, its face flush with the "
+             "cheek tips (17.7 mm proud of the stay surface) from the cheeks down past the box, so B-01 is HELD at the "
+             "cheek-tip plane and the box cannot swing in line: leg B leaves the box top at the worst peel angle "
+             "(he_peel 'tip_plane')")
 COLD_C = -20.0             # M-8: cam_25mm_al / ladder_lock_25mm_heavy records: dry, wet and -20 C
 PRINT_SHIP_USD = 12.0      # ASSUMPTION SHIP (camo-designer, camo/cost_1_and_10_bags.csv): RBTR print order shipping
 FREEZER_MAX_C = -18.0      # ASSUMPTION FREEZER: a home freezer holds about -18 C; record the reading (BL-040)
@@ -282,31 +292,44 @@ def pt3_specimen() -> str:
 
 
 def pt3_steps() -> str:
+    """BL-044 (review M-3): the pin sits in the printed BL-042 hinge fairlead at its real offset from B-01, with B-01
+    held at the cheek-tip plane, so the box top row sees the eye's real (worst) peel, not an in-line pull."""
     P = _P()
     g = P.he_geometry()
-    return ("put the 5 mm pin through the eye in the PIN FIXTURE with an 18 mm wide slot (the fairlead throat: only the "
-            "neck enters it); clamp the B-05 strip ALONE in the bar clamp; the B-01 top edge stays FREE (never clamped: a "
-            "clamp there carries the load past the floor seam); pull in line DOWN B-01 away from the pin, the eye pointing "
-            f"at the pin (the bag-on direction, DECISION HE-PIN: pin {g['pin_z']:.0f} mm above the seam line, box below it), "
-            "to 1530 N (156.0 kg); hold 60 s; with the loupe check the box top row, the neck tacks and the floor seam")
+    pl = P.he_peel()["rows"]["tip_plane_nf2"]
+    return ("FIXTURE: a fresh print of `print/frame_h1/test_pieces/hefit_hinge_fairlead_R.stl` (not the HE-FIT piece), "
+            "eye reamed to 7.2, its UHMWPE sleeve, bolted upright to the bench plate through the stay segment; "
+            + HE_SPACER + f". The pin centre is then {g['tip_y'] - g['pin_y']:.1f} mm toward the frame from the B-01 "
+            f"face and {g['pin_z'] - g['box_top']:.0f} mm above the box top (the bag geometry, DECISION HE-ENV). Put the "
+            "5 mm pin through cheek, sleeve, eye, cheek (only the 18 mm neck between the cheeks); clamp the B-05 strip "
+            "ALONE in the bar clamp below; the B-01 top edge stays FREE (never clamped: a clamp there carries the load "
+            "past the floor seam); pull DOWN along the spacer face "
+            f"(leg B leaves the box top at about {abs(pl['leg_B_deg']):.0f} deg: the peel the frame gives) "
+            "to 1530 N (156.0 kg); hold 60 s; with the loupe check the box TOP row first, then the neck tacks and the "
+            "floor seam. If the printed cheeks crack before the eye fails, the specimen is void: re-run it in a "
+            "machined aluminium copy of the same section (ASSUMPTION PT3-PRINT)")
 
 
 def he_fit_row() -> dict:
+    """BL-044 DECISION HE-ENV: HE-FIT on the BL-042 test piece, with the pass band that agrees with the cheek
+    clearance (review m-1) and the webbing caliper gate (the 3-ply neck must pass the 5.5 mm gap under the pin)."""
     P = _P()
     g = P.he_geometry()
+    lo, hi = P.he_band()
+    e = g["env"]
     return dict(id="HE-FIT", status="ACTIVE", tier="safety",
-                title="hinge eye 1:1 dry fit on a printed z 60 fairlead (eye on the pin, neck in the throat)",
-                defined_in="designs/pack_5200/patterns_corrie_f_rev3.py DECISION HE-PIN (he_geometry), ASSUMPTIONS HE-CHEEK, HE-T; review_20261113_rev3_recheck.md X-2",
-                what_it_proves=f"the loaded pin centre sits {g['pin_z']:.0f} +/- {P.HE_PIN_TOL:.0f} mm above the floor seam line (frame z 60 with the floor at z 35), only the 18 mm neck is between the cheeks, the box top clears the cheeks",
+                title="hinge eye 1:1 dry fit on the printed BL-042 z 60 hinge fairlead (eye on the pin, neck in the throat)",
+                defined_in="designs/pack_5200/patterns_corrie_f_rev3.py DECISION HE-ENV (he_geometry, he_band, he_peel; bag_attach.HINGE_EYE_ENVELOPE), ASSUMPTIONS HE-CHEEK, HE-T, HE-PIN-HI, HE-NECK-TOL, HE-GAP-MARGIN; review_20261113_rev3_third.md Z-1 / m-1",
+                what_it_proves=f"the loaded pin centre sits {lo:.0f}-{hi:.0f} mm above the floor seam line (design {g['pin_z']:.0f}: frame z 60 with the floor at z 35), so the box top stays >= {P.HE_CHEEK_MIN:.0f} mm under the cheeks; the 3-ply neck slides round the pin through the {e['gap_under_pin_mm']:.1f} mm gap over the throat floor; only the {P.HE_NECK_W:.0f} mm neck is between the cheeks ({e['throat_mm']:.0f} mm throat)",
                 gates="HE pattern before the PT-3 specimens and before the bag is cut", grams_at_stake_g="0",
-                safety_at_stake="hinge eye position: every sim and placement assumes the floor at z 35",
-                specimen=f"1 scrap HE sewn as op 4.05 (B-18 + B-01 offcut 150 x 120 + B-05 strip, floor seam sewn); one hinge fairlead printed 1:1 from `print/frame_h1/test_pieces/hefit_hinge_fairlead_R.stl` (BL-042: z 60 R, 80 mm stay segment, 20 mm throat, 5.5 mm under the pin; ream the eye to 7.2) with its UHMWPE sleeve and the 5 mm pin",
+                safety_at_stake="hinge eye position and the eye's passage under the pin: every sim and placement assumes the floor at z 35",
+                specimen=f"1 scrap HE sewn as op 4.05 (B-18 + B-01 offcut 150 x 120 + B-05 strip, floor seam sewn); one hinge fairlead printed 1:1 from `print/frame_h1/test_pieces/hefit_hinge_fairlead_R.stl` (BL-042: z 60 R, 80 mm stay segment, {e['throat_mm']:.0f} mm throat, {e['gap_under_pin_mm']:.1f} mm under the pin; ream the eye to 7.2) with its UHMWPE sleeve and the 5 mm hinge pin ({P.F.hinge_pin()['shank_hinge_mm']:.0f} mm shank)",
                 kit="A+D",
-                steps="clamp the printed stay segment upright; push the pin through cheek, sleeve, eye, cheek; hang 5 kg from the B-05 strip so the eye loads the pin; measure with the caliper from the floor seam line to the pin centre; check the box top is below the cheeks' lower edge with daylight between them; check the eye is not folded over the box; photo",
-                pass_fail=f"pin centre {g['pin_z'] - P.HE_PIN_TOL:.0f}-{g['pin_z'] + P.HE_PIN_TOL:.0f} mm above the floor seam line; box top clear of the cheeks; neck alone in the 18 mm throat; eye points up (no fold-down)",
-                cost_usd="1", cost_basis="scrap + 10 g filament", hours_hands_on="0.5", hours_machine="2", phase="1",
+                steps=f"(1) caliper ONE ply of the bought 38 mm webbing at 5 places: every reading <= {P.HE_T_RANGE[1]:.1f} mm, else reject the roll (3 plies of a thicker web leave < 0.7 mm under the pin); (2) clamp the printed stay segment upright; (3) slide the neck round the pin by hand: the pin goes through cheek, sleeve, eye, cheek with the eye seated, no forcing; then push the neck hard against each cheek in turn and slide it round the pin again (its folded edge passes the printed throat-corner fillet: 0.3 mm clear on the model, BL-044 he_stl_check); (4) hang 5 kg from the B-05 strip so the eye loads the pin; (5) caliper from the floor seam line to the pin centre; (6) feeler gauge between the box top and the cheeks' lower edge; (7) check the eye is not folded over the box and the neck is not pinched by the cheeks; photo",
+                pass_fail=f"ply <= {P.HE_T_RANGE[1]:.1f} mm; pin centre {lo:.0f}-{hi:.0f} mm above the floor seam line; >= {P.HE_CHEEK_MIN:.0f} mm feeler between the box top and the cheeks; the eye slides round the pin by hand; neck alone in the {e['throat_mm']:.0f} mm throat; eye points up (no fold-down)",
+                cost_usd="1", cost_basis="scrap + 32 g filament (BL-042 test piece 31.9 g)", hours_hands_on="0.5", hours_machine="2", phase="1",
                 run_order="9", first_weekend="Y",
-                notes="BL-041 (re-review X-2): a gate BEFORE PT-3 is sewn and before bag cut, not QC-20 on a finished bag. A fail: the HE length (HE_EYE) is re-solved from the measured webbing thickness",
+                notes="BL-041 (re-review X-2): a gate BEFORE PT-3 is sewn and before bag cut. BL-044 (third review Z-1 / m-1): on the BL-042 test piece; the band is set by the cheek clearance (low end) and HE-PIN-HI (high end). A fail low: lengthen HE_EYE by the shortfall; a fail high: shorten it; a ply over 1.6 mm: change webbing",
                 g_per_usd_eq="")
 
 
@@ -469,18 +492,18 @@ def new_rows(lv: dict, lid_g: float, cut: dict) -> list[dict]:
              cost_usd="0", cost_basis="kit D", hours_hands_on="0.3", hours_machine="", phase="5", run_order="71",
              first_weekend="N", notes="BL-038: split out of T9 (item d); mass from the ledger at run time", g_per_usd_eq=""),
         dict(id="SEW-F", status="ACTIVE", tier="safety",
-             title=f"box-X fatigue on the lever rig: 25 mm box-X loops, 1e5 cycles {SEWF_MIN} -> {SEWF_PEAK} N (R 0.1)",
+             title=f"box-X fatigue on the lever rig: 25 mm box-X loops, 1e5 cycles {SEWF_MIN} -> {SEWF_PEAK} N (R 0.1); HE hinge eyes {SEWF_HE_MIN} -> {SEWF_HE_PEAK} N on the printed fairlead (BL-044)",
              defined_in="designs/pack_5200/analysis/loadpath_verification.md S1, S6, H1 ('PASS after ... SEW-F (lever rig)'), ASSUMPTION SEW_FAT; designs/pack_5200/analysis/review_20261113_rev3_release.md M-9",
              what_it_proves="ASSUMPTION SEW_FAT: a 25 mm box-X keeps 0.40 x its static strength over 1e5 walking cycles (loadpath ratios down to 1.48)",
-             gates="IM1-IM3 end loops (S1), US1/US2 sewn eyes (S6), belt anchor box-X (H1): loaded carry and the bag batch",
+             gates="IM1-IM3 end loops (S1), US1/US2 sewn eyes (S6), belt anchor box-X (H1), HE hinge-eye 34 x 7 box (BL-044, review M-3): loaded carry and the bag batch",
              grams_at_stake_g="0", safety_at_stake=f"box-X fatigue 1.48 (S6, ASSUMPTION SEW_FAT); peak = {SEWF_SCATTER} scatter x 1.6 g x the S6 1 g load {SEWF['S6'] / 3.0:.0f} N (BL-041 n-13: the same scatter factor as IM3-EC)",
-             specimen="3 x 25 mm poly webbing loops, box-X 21 x 25 mm (the IM / US box as drawn), 301, 7 SPI, tex 135, Nm 140 R, sewn with the MT-1 loops",
+             specimen="3 x 25 mm poly webbing loops, box-X 21 x 25 mm (the IM / US box as drawn), 301, 7 SPI, tex 135, Nm 140 R, sewn with the MT-1 loops; + 3 HE hinge-eye specimens sewn exactly as the PT-3 specimens (op 4.05), on a third print of the HE-FIT fairlead with the PT-3 spacer plate",
              kit="B",
-             steps=f"loop over a 5 mm pin on the lever (in place of a coupon), the free end in the bar clamp; set the crank so the cell swings {SEWF_MIN / 4:.0f} -> {SEWF_PEAK / 4:.0f} N (4:1 lever = {SEWF_MIN} -> {SEWF_PEAK} N on the loop); 1 Hz to 100,000 cycles (27.8 h); loupe check at 25,000 / 50,000 / 75,000; after run-out pull the loop on the G2 bench to 1080 N (the MT-1 US proof), 1 min",
-             pass_fail=f"3 of 3 run-outs to 1e5 at {SEWF_PEAK} N, no broken stitch, then hold 1080 N 1 min (a 2 of 3 result: run 3 more, pass with 5 of 6)",
-             cost_usd="1", cost_basis="25 mm webbing offcuts + thread (kit A stock)", hours_hands_on="1.0", hours_machine="83.4",
+             steps=f"loop over a 5 mm pin on the lever (in place of a coupon), the free end in the bar clamp; set the crank so the cell swings {SEWF_MIN / 4:.0f} -> {SEWF_PEAK / 4:.0f} N (4:1 lever = {SEWF_MIN} -> {SEWF_PEAK} N on the loop); 1 Hz to 100,000 cycles (27.8 h); loupe check at 25,000 / 50,000 / 75,000; after run-out pull the loop on the G2 bench to 1080 N (the MT-1 US proof), 1 min. HE (BL-044): the printed fairlead + spacer (the PT-3 fixture) on the bench plate, the B-05 strip to the lever's clamp, cell {SEWF_HE_MIN / 4:.0f} -> {SEWF_HE_PEAK / 4:.0f} N ({SEWF_HE_MIN} -> {SEWF_HE_PEAK} N on the eye), 1 Hz to 100,000 cycles, loupe on the box TOP row; after run-out, the PT-3 proof 1530 N 60 s",
+             pass_fail=f"loops: 3 of 3 run-outs to 1e5 at {SEWF_PEAK} N, no broken stitch, then hold 1080 N 1 min; HE: 3 of 3 run-outs to 1e5 at {SEWF_HE_PEAK} N with no broken stitch in the box top row, then hold 1530 N 60 s (a 2 of 3 result in either set: run 3 more of that set, pass with 5 of 6)",
+             cost_usd="2", cost_basis="25 mm webbing offcuts + thread (kit A stock); HE scrap + 32 g filament", hours_hands_on="2.0", hours_machine="166.8",
              phase="2", run_order="78", first_weekend="N",
-             notes="BL-040 (review M-9): added. Runs on the G4 lever rig between coupons; a loop is not a frame coupon so it can run beside CA-4 / CS-1", g_per_usd_eq=""),
+             notes="BL-040 (review M-9): added. Runs on the G4 lever rig between coupons; a loop is not a frame coupon so it can run beside CA-4 / CS-1. BL-044 (third review M-3): + 3 HE specimens at 1.15 x 1.6 g x the rev C hinge load, on the printed fairlead at the real offset (the box top row peels; ASSUMPTION SEWF-HE-RIG: the lever rig carries 625 N on the eye, 156 N at the cell)", g_per_usd_eq=""),
         dict(id="FIT-R3", status="ACTIVE", tier="function",
              title="rev 3 first-article fit checks (yes / no): lid dart, B-11 loadouts, IM2 notch, carabiner gate on T3, roll clip with rifle + W3, muzzle gap",
              defined_in="designs/pack_5200/patterns_corrie_f_rev3.py ASSUMPTIONS LID-DART, B11-PLACE; designs/pack_5200/analysis/loadpath_verification.md S1 (IM2 notch fit); data/materials/hardware/carabiner_wiregate_22kn.yaml (gate 17 vs 21 mm); review_20261113_rev3_release.md m-18",
@@ -634,8 +657,8 @@ def patches(lv: dict, lid_g: float) -> dict:
                      notes="BL-038: price from the record (was ASSUMPTION $4). Cams LONG LEAD (both resellers out of stock 2026-11-13). BL-040 (review M-8): wet and -20 C conditions from the cam_25mm_al record's settled-by line"),
         "PT-3": dict(title="HE hinge eye on B-18 + B-01 + B-05 floor seam, sewn as op 4.05 (HE-ONE / HE-PIN), no binding",
                      specimen=pt3_specimen(), steps=pt3_steps(),
-                     pass_fail="5 of 5 hold 1530 N 60 s: no stitch break, no Hypalon or laminate tear, B-18 still in the floor seam, the eye still open (no row across it)",
-                     notes="BL-041 (re-review X-1 / X-2 / Y-1): specimen from the reordered op 4.05 (B-18 rows first), HE-PIN geometry (eye up, box below the cheeks), rig: pin in an 18 mm slot, B-05 alone in the clamp, B-01 top free. Run HE-FIT first"),
+                     pass_fail="5 of 5 hold 1530 N 60 s: no stitch break (box top row included), no Hypalon or laminate tear, B-18 still in the floor seam, the eye still open (no row across it)",
+                     notes="BL-041 (re-review X-1 / X-2 / Y-1): specimen from the reordered op 4.05 (B-18 rows first). BL-044 (third review M-3): rig = the printed BL-042 hinge fairlead with B-01 held at the cheek-tip plane (the box peels; it is not in line), B-05 alone in the clamp, B-01 top free. Run HE-FIT first"),
         "HB-7": dict(cost_usd=f"{5 * rec_price('ladder_lock_25mm_heavy') + 5 * rec_price('d_ring_25mm_aluminium'):.2f}",
                      cost_basis="ladder_lock_25mm_heavy 2.10 x 5 + d_ring_25mm_aluminium 1.85 x 5 (records)"),
         "MT-2": dict(notes="BL-038: in the kit the MT-2 carabiners are a separate lot of 5 from PT-1"),
@@ -883,6 +906,8 @@ def loads(lv: dict) -> dict:
         "PT-5": [("10 cycles to", 170)], "PT-6": [("proof, 60 s", 1410)],
         "LL-H": [("dead load: dry 1 h, wet 1 h, cold 10 min", LLH_N)], "B-28 slip": [("covered by LL-H", LLH_N)],
         "SEW-F": [("loop peak (1.15 scatter x 1.6 g x the S6 1 g load)", SEWF_PEAK), ("valley (R 0.1)", SEWF_MIN),
+                  ("HE peak (1.15 x 1.6 g x the rev C hinge 1 g load, BL-044)", SEWF_HE_PEAK), ("HE valley (R 0.1)", SEWF_HE_MIN),
+                  ("HE after run-out, PT-3 proof", 1530),
                   ("load cell reads at the peak (4:1 lever)", SEWF_PEAK / 4.0), ("after run-out, MT-1 US proof", 1080)],
         "HB-7": [("hold 1 min, no slip", 426), ("slip must be above", 490)],
         "PORT-1": [("guy at 45 deg during the hose", 49.05), ("lap pull", 100)],
@@ -938,7 +963,10 @@ def measures(lv: dict, lid_g: float, cut: dict) -> dict:
         "PT-1": per(5, "held 260.2 kg (2553 N) 60 s, gate closes, no set", y, "yes", "Y", "CARA-PROOF"),
         "PT-2": per(5, "held 260.2 kg (2553 N) 60 s, no stitch break, no tear", y, "yes", "Y"),
         "PT-3": per(5, "held 156 kg (1530 N) 60 s, B-18 still in the floor seam, eye open (sewn as op 4.05, B-18 rows first)", y, "yes", "Y", "HE-ONE; HE-PIN; HE-GAP"),
-        "HE-FIT": per(1, "pin centre above the floor seam line (pass 22-28)", "mm", "band", "22..28", "HE-PIN; HE-CHEEK; HE-T")
+        "HE-FIT": [("#1", f"pin centre above the floor seam line (pass {_P().he_band()[0]:.0f}-{_P().he_band()[1]:.0f})", "mm",
+                    "band", f"{_P().he_band()[0]:.0f}..{_P().he_band()[1]:.0f}", "HE-ENV; HE-CHEEK; HE-PIN-HI; HE-T"),
+                   ("#1", "box top to the cheeks' lower edge (feeler)", "mm", "min", f"{_P().HE_CHEEK_MIN:.0f}", "HE-CHEEK"),
+                   ("#1", "webbing ply thickness, thickest of 5 readings", "mm", "max", f"{_P().HE_T_RANGE[1]:.1f}", "HE-T")]
         + per(1, "box top clear of the cheeks, neck alone in the throat, eye points up", y, "yes", "Y", "HE-PIN", "fit"),
         "TL-1": per(5, f"ovalisation at {crown_tube()['proof_n']} N", "mm", "max", "0.40", "WIDE_SLEEVE; RING_SLICE", "oval#")
         + per(5, "permanent out-of-round after unloading (increase)", "mm", "max", "0.02", "RING_SLICE", "set#")
@@ -954,6 +982,8 @@ def measures(lv: dict, lid_g: float, cut: dict) -> dict:
                      "LL-SLIP; LL-H-5MM", f"{cond}-#")]
         + [("cold", "freezer reading", "C", "record", "", "LL-SLIP")],
         "SEW-F": per(3, f"cycles at {SEWF_MIN} -> {SEWF_PEAK} N (run-out 100000)", "cycles", "min", "100000", "SEW_FAT")
+        + per(3, f"HE cycles at {SEWF_HE_MIN} -> {SEWF_HE_PEAK} N on the printed fairlead (run-out 100000)", "cycles", "min",
+              "100000", "SEW_FAT; SEWF-HE-RIG", "HE#")
         + per(3, "no broken stitch at run-out and held 1080 N 1 min after", y, "yes", "Y", "SEW_FAT", "p#"),
         "FIT-R3": [("lid", "LID-DART: 5.0 L rice, height 85 +/- 5 mm, no pucker", y, "yes", "Y", "LID-DART"),
                    ("bow", "B11-PLACE: bow in IMP-8 + BRL loops sits clear of the frame", y, "yes", "Y", "B11-PLACE"),

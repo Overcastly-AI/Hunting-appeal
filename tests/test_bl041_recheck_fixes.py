@@ -35,16 +35,18 @@ def _op(pk, word):
 
 
 # ---------------------------------------------------------------- X-2 eye on the pin
-def test_eye_at_pin_within_3mm_over_the_bracket(pk):
+# BL-044 (third review Z-1 / m-1): the BL-041 section model (one ply, legacy fairlead, 18 mm neck == 18 mm throat) is
+# replaced by DECISION HE-ENV on bag_attach.HINGE_EYE_ENVELOPE; these tests now check the HE-ENV numbers.
+def test_eye_at_pin_inside_the_hefit_band_over_the_bracket(pk):
     hg = pk["ctx"].rs.geo["he"]
     g = P.he_geometry()
     assert g["pin_z"] == pytest.approx(25.0)                                  # frame z 60 with the floor at z 35
-    for fy in g["faces_y"]:
-        for t in (1.2, P.HE_T, 2.0):
-            assert abs(P.he_pin_z(P.HE_EYE, fy, t) - g["pin_z"]) <= P.HE_PIN_TOL, (fy, t)
+    lo, hi = P.he_band()
+    for r in P.he_bracket(P.HE_EYE):
+        assert lo <= r["pin_z"] <= hi, r
     assert abs(hg["pin_z_design"] - 25.0) <= 1.0
-    # the BL-040 eye (box top +38, 25 mm eye) puts the pin far outside the tolerance: the test would have caught X-2
-    assert g["pin_z"] < 38.0 - P.HE_PIN_TOL
+    # the BL-040 eye (box top +38, 25 mm eye) puts the pin far outside the band: the test would have caught X-2
+    assert g["pin_z"] < 38.0 - 3.0
 
 
 def test_box_below_the_cheeks_only_the_neck_in_the_throat(pk):
@@ -52,14 +54,17 @@ def test_box_below_the_cheeks_only_the_neck_in_the_throat(pk):
     lo, top = hg["box_z_above_seam"]
     assert top <= hg["cheek_z"][0] - P.HE_CHEEK_CLEAR + 1e-9                    # no box stack against the cheeks
     assert lo >= P.HE_BOX_GAP - 1e-9 and lo > 0
-    assert hg["neck_w"] == pytest.approx(hg["throat"])                         # 18 mm neck, 18 mm throat
+    # BL-044 (replaces 'neck_w == throat', the zero-clearance neck the third review flagged): the widest neck clears
+    # the BL-042 20 mm throat by >= 0.5 mm a side
+    assert hg["throat"] == pytest.approx(20.0)
+    assert (hg["throat"] - hg["neck_w_max"]) / 2 >= 0.5 - 1e-9
     assert hg["fold_z_flat"] > hg["pin_target_z"]                              # the eye reaches over the pin
     assert P.HE_CUT == pytest.approx(2 * (P.B18_BELOW + P.HE_BOX_GAP + P.HE_BOX[1] + P.HE_EYE))
 
 
 def test_loop_length_closed_form_is_consistent():
     g = P.he_geometry()
-    for z in (20.0, 25.0, 30.0):
+    for z in (22.0, 25.0, 28.0):
         e = g["loop_len"](z) / 2
         assert P.he_pin_z(e) == pytest.approx(z, abs=0.05)                     # inverse of the forward model
     # a longer eye puts the pin higher (monotonic)
@@ -114,10 +119,13 @@ def test_pt3_rig_and_specimen(kit):
     assert "rows first, before HE" in pt3["specimen"] and f"38 x {P.HE_CUT:.0f}" in pt3["specimen"]
     assert f"{P.HE_BOX[0]:.0f} x {P.HE_BOX[1]:.0f}" in pt3["specimen"] and "basted" in pt3["specimen"]
     st = pt3["steps"]
-    assert "B-05 strip ALONE" in st and "B-01 top edge stays FREE" in st and "18 mm wide slot" in st
+    # BL-044 (M-3): the pin is in the printed BL-042 hinge fairlead with B-01 held at the cheek tips, not an 18 mm slot
+    assert "B-05 strip ALONE" in st and "B-01 top edge stays FREE" in st and "hefit_hinge_fairlead_R" in st
+    assert "18 mm wide slot" not in st
     assert "eye still open" in pt3["pass_fail"]
     he = reg["HE-FIT"]
-    assert he["status"] == "ACTIVE" and "22-28" in he["pass_fail"]
+    lo, hi = P.he_band()
+    assert he["status"] == "ACTIVE" and f"{lo:.0f}-{hi:.0f}" in he["pass_fail"]
     order = [o["test"] for o in kit["order"] if o["group"] == "G2"]
     assert order.index("HE-FIT") < order.index("PT-3")
 
@@ -304,4 +312,4 @@ def test_recheck_status_and_ready_to_cut():
     assert {"X-1", "X-2", "Y-1", "Y-2", "Y-3", "Y-4", "Y-5"} | {f"n-{k}" for k in range(1, 16)} <= ids
     open_major = [i for i, c, st, _ in M.RECHECK_STATUS + M.REVIEW_STATUS + M.THIRD_STATUS
                   if c in ("blocker", "major") and st != "fixed"]
-    assert M.ready_to_cut() == (not open_major)
+    assert M.ready_to_cut() == (M.FOURTH_REVIEW_DONE and not open_major)     # BL-044: a fourth review gates it

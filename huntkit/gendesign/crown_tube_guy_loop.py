@@ -476,6 +476,97 @@ def verification() -> dict:
     }
 
 
+# ============================================================================================ BL-045 re-check
+GUY_PATHS = CONCEPTS / "corrie_f_sim" / "corrie_f_guy_paths.json"
+CROWN_PATHS = CONCEPTS / "corrie_f_sim" / "corrie_f_crown_paths.json"
+TOGGLE_L_MM = 30.0       # pom_toggle record: POM 30 x 8 x 5 mm (attach_system.TOGGLE_G source)
+ASSUMPTIONS["GUY-DIR"] = ("The port guy's direction at the bar is the rev 2 port runs' (corrie_f_guy_paths.json, "
+                          "F_r1_PR*_fineFM_port); rev 3 keeps that routing (B-27 port to B-22) and its over_port runs "
+                          "store only the crown strap's path. Crown strap direction: corrie_f_crown_paths.json over_port.",
+                          "PORT-1 / T9 guy angle reading at each kit.")
+ASSUMPTIONS["RUN-TENSION"] = ("B-25's run (mitre -> necked run -> spine wrap) carries the guy's outboard component, "
+                              "with no sleeve friction credited, as a downward pull of the drop leg on the sleeve's aft "
+                              "face; an inboard component slackens it (the sleeve is then held by friction, 14.5 mm "
+                              "short of the clamp).", "TL-1 rig pulls at the worst measured guy angle (x share 0.14).")
+
+
+def b25_topology_recheck(env: dict | None = None) -> dict:
+    """BL-045 item 1: the ring check on the bar under B-25 as BL-043 built it (corrie_f.b25_topology, SK-12).
+    1. Bearing: what of B-25 lies on the bar (the sleeve band) and what does not (drop, 45 deg mitre, necked run,
+       spine wrap all sit below the bar's underside); bearing width = the sleeve band.
+    2. Pull direction: the guy (aft, up or down with torso, sideways up to 51 %) and the crown strap at the bar, from
+       the cloth-sim taut paths; the run's tension (outboard part of the guy) pulls the sleeve down through the drop
+       leg. The radial (y-z) resultant on the sleeve against BL-041's scalar sum (guy + crown strap).
+    3. Basis A SF at 38 mm with that demand; the toggle-width sensitivity; the spine wall under the spine wrap."""
+    C = _corrie()
+    tp = C.b25_topology()
+    rb = C.BAR_OD / 2.0
+    band = tuple(tp["band_x"])
+    on_bar = {"sleeve": {"x": band, "width_mm": band[1] - band[0], "layers": "1 wrap + 15 mm lap (BAR_WRAP_MM)"}}
+    below = {"drop": (rb, tp["mitre"]["s"][0]), "mitre": tuple(tp["mitre"]["s"]), "necked run + spine wrap":
+             tuple(tp["run_s"])}
+    off_bar = {k: {"s_mm": [round(v[0], 1), round(v[1], 1)], "below_bar_underside_mm": round(v[0] - rb, 1)}
+               for k, v in below.items()}
+    gp = json.loads(GUY_PATHS.read_text())["rows"]
+    cp = json.loads(CROWN_PATHS.read_text())["rows"]
+    sl = sim_loads()
+    runs = []
+    for t in TORSO_SIMS:
+        for case in ("fill", "meat"):
+            g = gp.get(f"F_r1_PR{int(t)}_fineFM_port:{case}")
+            c = cp.get(f"F_r1_PR{int(t)}_fineFM_over_port:{case}")
+            r = sl["by_torso"][t]["rows"].get(case)
+            if not (g and c and r):
+                continue
+            for side in ("R", "L"):
+                ug = -np.asarray(g[side]["u_bag"], float)          # pull on the bar (toward the bag)
+                uc = -np.asarray(c[side]["u_bag"], float)
+                xo = float(g[side]["outboard_share_at_bar"])
+                Fg, Fc = r["guy"], r["crown"]
+                T = Fg * max(xo, 0.0)
+                v = Fg * np.array([ug[1], ug[2]]) + Fc * np.array([uc[1], uc[2]]) + T * np.array([0.0, -1.0])
+                bound = Fg * (math.sqrt(max(1 - xo * xo, 0.0)) + max(xo, 0.0)) + Fc
+                runs.append({"torso": t, "case": case, "side": side, "guy_1g_n": round(Fg, 1), "crown_1g_n": round(Fc, 1),
+                             "guy_dir_on_bar": [round(float(q), 3) for q in ug], "outboard_share": xo,
+                             "run_tension_1g_n": round(T, 1), "radial_1g_n": round(float(np.linalg.norm(v)), 1),
+                             "scalar_1g_n": round(Fg + Fc, 1),
+                             "k_vector": round(float(np.linalg.norm(v)) / (Fg + Fc), 3),
+                             "k_bound": round(bound / (Fg + Fc), 3),
+                             "guy_angle_below_horizontal_deg": round(math.degrees(math.atan2(-ug[2], abs(ug[1]))), 1)})
+    kv = max(r_["k_vector"] for r_ in runs)
+    kb = max(r_["k_bound"] for r_ in runs)
+    env = env or kit_loads()["envelope"]
+    rc = section("rev_c")
+    w = on_bar["sleeve"]["width_mm"]
+    out = {"topology": {"band_x": band, "on_bar": on_bar, "off_bar": off_bar,
+                        "mitre_on_bar": bool(tp["mitre"]["s"][0] < rb),
+                        "tab_width_mm": tp["width_mm"], "toggle_len_mm": TOGGLE_L_MM},
+           "runs": runs, "k_vector_max": kv, "k_bound_max": kb,
+           "k_vector_run": max(runs, key=lambda q: q["k_vector"]),
+           "max_outboard_share": max(r_["outboard_share"] for r_ in runs),
+           "max_inboard_share": -min(r_["outboard_share"] for r_ in runs)}
+    rows = {}
+    for key, k in (("bl041_scalar", 1.0), ("vector", kv), ("bound", kb)):
+        e2 = dict(env, static_n=env["static_n"] * k, fatigue_peak_n=env["fatigue_peak_n"] * k,
+                  proof_n=env["proof_n"] * k)
+        rows[key] = {"k": k, "static_n": round(e2["static_n"], 1), "fatigue_peak_n": round(e2["fatigue_peak_n"], 1),
+                     **{kk: round(float(vv), 3) for kk, vv in check_row(rc, w, e2, "A").items() if kk != "basis"}}
+        if key != "bl041_scalar":
+            rows[key + "_toggle_width"] = {"k": k, **{kk: round(float(vv), 3) for kk, vv in
+                                                      check_row(rc, TOGGLE_L_MM, e2, "A").items() if kk != "basis"}}
+    out["checks"] = rows
+    # spine wall under the spine wrap (necked 25 mm), basis A, at the run tension (both runs pull outboard, the
+    # wrap's net load on the spine is the difference; one side alone is the bound)
+    from huntkit.fea.sections import from_spec as _fs
+    sp = _fs(frame_spec()["frame"]["spine_section"])
+    T_f = CASE_FACTOR * sl["guy_1g_envelope_n"] * max(out["max_outboard_share"], 0.0)
+    cap = capacity(sp, tp["neck_w_mm"], "A", globals_=False)["capacity_n"]
+    out["spine_wrap"] = {"run_tension_factored_n": round(T_f, 1), "capacity_n": round(cap, 1),
+                         "sf": round(cap / max(T_f, 1e-9), 1), "width_mm": tp["neck_w_mm"]}
+    out["proof_tl1_n"] = round(max(PROOF * env["static_n"] * kv, env["static_n"] * kv / 0.654), 0)
+    return out
+
+
 def legacy_reproduction() -> dict:
     """frame_cg_recheck.bar_local (the repo's check) against basis A here without the bar globals."""
     from huntkit.gendesign import frame_cg_recheck as R

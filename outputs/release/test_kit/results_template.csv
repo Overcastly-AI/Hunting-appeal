@@ -11,8 +11,10 @@ MT-1-09,MT-1,G2,R1; BAG-CUT,US#4,"held 110.1 kg (1080 N) 1 min, no broken stitch
 MT-1-10,MT-1,G2,R1; BAG-CUT,US#5,"held 110.1 kg (1080 N) 1 min, no broken stitch",Y/N,yes,Y,,,,,BOX25
 MT-1-11,MT-1,G2,R1; BAG-CUT,IMC#1,"IMC cam anchor tab held 92.6 kg (908 N) 1 min, both boxes whole (BL-041)",Y/N,yes,Y,,,,,BOX25; IMC-LOOP
 MT-1-12,MT-1,G2,R1; BAG-CUT,IMC#2,"IMC cam anchor tab held 92.6 kg (908 N) 1 min, both boxes whole (BL-041)",Y/N,yes,Y,,,,,BOX25; IMC-LOOP
-HE-FIT-01,HE-FIT,G2,BAG-CUT,#1,pin centre above the floor seam line (pass 22-28),mm,band,22..28,,,,,HE-PIN; HE-CHEEK; HE-T
-HE-FIT-02,HE-FIT,G2,BAG-CUT,fit1,"box top clear of the cheeks, neck alone in the throat, eye points up",Y/N,yes,Y,,,,,HE-PIN
+HE-FIT-01,HE-FIT,G2,BAG-CUT,#1,pin centre above the floor seam line (pass 22-29),mm,band,22..29,,,,,HE-ENV; HE-CHEEK; HE-PIN-HI; HE-T
+HE-FIT-02,HE-FIT,G2,BAG-CUT,#1,box top to the cheeks' lower edge (feeler),mm,min,2,,,,,HE-CHEEK
+HE-FIT-03,HE-FIT,G2,BAG-CUT,#1,"webbing ply thickness, thickest of 5 readings",mm,max,1.6,,,,,HE-T
+HE-FIT-04,HE-FIT,G2,BAG-CUT,fit1,"box top clear of the cheeks, neck alone in the throat, eye points up",Y/N,yes,Y,,,,,HE-PIN
 PT-1-01,PT-1,G2,BAG-CUT,#1,"held 260.2 kg (2553 N) 60 s, gate closes, no set",Y/N,yes,Y,,,,,CARA-PROOF
 PT-1-02,PT-1,G2,BAG-CUT,#2,"held 260.2 kg (2553 N) 60 s, gate closes, no set",Y/N,yes,Y,,,,,CARA-PROOF
 PT-1-03,PT-1,G2,BAG-CUT,#3,"held 260.2 kg (2553 N) 60 s, gate closes, no set",Y/N,yes,Y,,,,,CARA-PROOF
@@ -188,9 +190,12 @@ CA-5-06,CA-5,G4,R1,cyc,no crack at the boss root after 1e5 cycles,Y/N,yes,Y,,,,,
 SEW-F-01,SEW-F,G4,BAG-BATCH,#1,cycles at 44 -> 442 N (run-out 100000),cycles,min,100000,,,,,SEW_FAT
 SEW-F-02,SEW-F,G4,BAG-BATCH,#2,cycles at 44 -> 442 N (run-out 100000),cycles,min,100000,,,,,SEW_FAT
 SEW-F-03,SEW-F,G4,BAG-BATCH,#3,cycles at 44 -> 442 N (run-out 100000),cycles,min,100000,,,,,SEW_FAT
-SEW-F-04,SEW-F,G4,BAG-BATCH,p#1,no broken stitch at run-out and held 1080 N 1 min after,Y/N,yes,Y,,,,,SEW_FAT
-SEW-F-05,SEW-F,G4,BAG-BATCH,p#2,no broken stitch at run-out and held 1080 N 1 min after,Y/N,yes,Y,,,,,SEW_FAT
-SEW-F-06,SEW-F,G4,BAG-BATCH,p#3,no broken stitch at run-out and held 1080 N 1 min after,Y/N,yes,Y,,,,,SEW_FAT
+SEW-F-04,SEW-F,G4,BAG-BATCH,HE#1,HE cycles at 62 -> 625 N on the printed fairlead (run-out 100000),cycles,min,100000,,,,,SEW_FAT; SEWF-HE-RIG
+SEW-F-05,SEW-F,G4,BAG-BATCH,HE#2,HE cycles at 62 -> 625 N on the printed fairlead (run-out 100000),cycles,min,100000,,,,,SEW_FAT; SEWF-HE-RIG
+SEW-F-06,SEW-F,G4,BAG-BATCH,HE#3,HE cycles at 62 -> 625 N on the printed fairlead (run-out 100000),cycles,min,100000,,,,,SEW_FAT; SEWF-HE-RIG
+SEW-F-07,SEW-F,G4,BAG-BATCH,p#1,no broken stitch at run-out and held 1080 N 1 min after,Y/N,yes,Y,,,,,SEW_FAT
+SEW-F-08,SEW-F,G4,BAG-BATCH,p#2,no broken stitch at run-out and held 1080 N 1 min after,Y/N,yes,Y,,,,,SEW_FAT
+SEW-F-09,SEW-F,G4,BAG-BATCH,p#3,no broken stitch at run-out and held 1080 N 1 min after,Y/N,yes,Y,,,,,SEW_FAT
 CS-1-01,CS-1,G4,BL037,6mm#1,"compression set, 6 mm disc",%,max,15,,,,,XLPE-SET
 CS-1-02,CS-1,G4,BL037,6mm#2,"compression set, 6 mm disc",%,max,15,,,,,XLPE-SET
 CS-1-03,CS-1,G4,BL037,6mm#3,"compression set, 6 mm disc",%,max,15,,,,,XLPE-SET

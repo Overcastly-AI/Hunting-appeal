@@ -33,7 +33,7 @@ REL = ROOT / "outputs" / "release" / "pack5200_corrie_f_rev3" / "patterns"
 OUT = ROOT / "outputs" / "patterns_corrie_f_rev3"
 SCREENS = ROOT / "outputs" / "screens"
 DATE = "20261113"
-SHOT_TAG = "BL041pat"                 # BL-041 re-export: screenshot prefix 20261113_BL041pat_ (earlier tickets kept their own)
+SHOT_TAG = "BL044pat"                 # BL-044 re-export: screenshot prefix 20261113_BL044pat_ (earlier tickets kept their own)
 YD = 914.4
 WASTE_PROD = PVX.WASTE_PROD        # 3 % lay loss ASSUMPTION (v3.1 rule)
 NEST_UNITS = 10
@@ -77,6 +77,98 @@ def print_copy(p):
     return q
 
 
+# ---- BL-044 (review m-11 / n-6): a label block may not overprint a mark --------------------------------------------
+LABEL_FS_PT = 9.0                   # huntkit.patterns.export_pdf.draw_piece_pdf: 9 pt at true scale, 1.2 leading,
+LABEL_DX_PT = 4.0                   #   block starts 4 pt right of the seam polygon's representative point, vertically
+#                                     centred on it (bold first line). These mirror that function; test_bl044 checks them
+#                                     against the drawn PDF text.
+LABEL_FIT_STEP = "step2_small_parts"   # the page review m-11 / n-6 is about (every piece there has a NOTES entry)
+LABEL_CLEAR_MM = 1.0                # clear distance from the text block to any internal line, drill mark or notch
+
+
+class FitLabelPiece(PR.Piece):
+    """Print copy whose label lines are re-flowed (and padded with blank lines, which moves the block up or down) so
+    the block sits clear of every internal line, drill mark and notch, inside the seam line. The geometry is the
+    piece's own; only ``label_lines`` changes, so the DXF and the cutting data are untouched."""
+    fit_lines: list | None = None
+
+    def label_lines(self):
+        return list(self.fit_lines) if self.fit_lines is not None else super().label_lines()
+
+
+def label_block(p, lines):
+    """Text block of ``lines`` as draw_piece_pdf places it on ``p`` (mm, piece coordinates), as a shapely box, or
+    None for no visible text."""
+    from reportlab.pdfbase.pdfmetrics import stringWidth
+    from shapely.geometry import box
+    cx, cy = p.seam_polygon().representative_point().coords[0]
+    fs, h = LABEL_FS_PT / MM, 1.2 * LABEL_FS_PT / MM
+    n = len(lines)
+    vis = [(i, t) for i, t in enumerate(lines) if t.strip()]
+    if not vis:
+        return None
+    w = max(stringWidth(t, "Helvetica-Bold" if i == 0 else "Helvetica", LABEL_FS_PT) for i, t in vis) / MM
+    base = [cy + n * h / 2 - (i + 1) * h for i, _ in vis]
+    x0 = cx + LABEL_DX_PT / MM
+    return box(x0, min(base) - 0.22 * fs, x0 + w, max(base) + 0.78 * fs)
+
+
+def _label_obstacles(p):
+    from shapely.geometry import LineString, Point
+    from shapely.ops import unary_union
+    g = []
+    for ln in p.internal_lines:
+        pts = list(ln.points) + ([ln.points[0]] if ln.closed else [])
+        if len(pts) >= 2:
+            g.append(LineString(pts))
+    for d in p.drill_holes:
+        g.append(Point(d.xy).buffer(d.diameter))            # the drill cross is 2 x the hole radius each way
+    for _, pts in p.notch_marks():
+        g.append(LineString(pts))
+    from huntkit.patterns.export_dxf import arrow
+    g0, g1 = p.grain_arrow()
+    for seg in arrow(g0, g1, head=8.0):                  # the grain arrow as draw_piece_pdf draws it
+        g.append(LineString(seg))
+    return unary_union(g).buffer(LABEL_CLEAR_MM) if g else None
+
+
+def label_clash(p, lines=None) -> dict:
+    """Where the label block of ``p`` (its own lines, or ``lines``) hits a mark (internal lines, drill marks, notches,
+    the grain arrow) or leaves the seam line (mm2)."""
+    lines = p.label_lines() if lines is None else lines
+    b = label_block(p, lines)
+    if b is None:
+        return {"marks_mm2": 0.0, "outside_mm2": 0.0}
+    ob = _label_obstacles(p)
+    return {"marks_mm2": round(float(b.intersection(ob).area), 2) if ob is not None else 0.0,
+            "outside_mm2": round(float(b.difference(p.seam_polygon()).area), 2)}
+
+
+def fit_label(p):
+    """BL-044 m-11: a print copy of ``p`` with its label lines re-flowed / shifted into a clear spot; unchanged if the
+    drawn label is already clear. If nothing fits, the label shrinks to its ID and a pointer to the NOTES page."""
+    if not any(label_clash(p).values()):
+        return p
+    q = p.copy()
+    q.__class__ = FitLabelPiece
+    base = p.label_lines()
+    short = [base[0], f"CUT {p.quantity}  FACE {p.face.upper()}", f"MAT: {p.material_id or '-'}",
+             "full label: NOTES page"]
+    cands = []
+    for src in (base, short, [base[0], "label: NOTES page"], [base[0]], [p.piece_id]):
+        for wrap in (None, 28, 22, 18, 14, 10):
+            lines = src if wrap is None else [w for t in src for w in _wrap(t, wrap)]
+            cands.append(lines)
+    for lines in cands:
+        for k in range(0, 40):
+            for pad in (([""] * k + lines), (lines + [""] * k)):
+                if not any(label_clash(q, pad).values()):
+                    q.fit_lines = pad
+                    return q
+    q.fit_lines = [base[0]]
+    return q
+
+
 def _wrap(t, n):
     import textwrap
     return textwrap.wrap(t, n) or [""]
@@ -99,7 +191,7 @@ def _crop(p, L):
     return q
 
 
-def notes_and_marks_pdf(rs, ids, path: Path, title: str) -> int:
+def notes_and_marks_pdf(rs, ids, path: Path, title: str, full: dict | None = None) -> int:
     """Extra pages for a step PDF: (1) NOTES, every long piece note in full, wrapped; (2) 1:1 webbing marks (folds, boxes,
     neck / tack / seam lines) for the op 4.05 / 4.08 / step 7 webbing, with a test square. Returns pages written."""
     from huntkit.patterns.export_pdf import draw_piece_pdf
@@ -110,17 +202,25 @@ def notes_and_marks_pdf(rs, ids, path: Path, title: str) -> int:
     c.setFont("Helvetica-Bold", 12)
     c.drawString(12 * MM, y * MM, f"{TITLE}: piece NOTES (full text; the DXFs carry the same)")
     y -= 10
+    full = full or {}
     for i in ids:
         n = rs.pieces[i].labels.get("note", "")
-        if len(n) <= NOTE_MAX:
+        if len(n) <= NOTE_MAX and i not in full:
             continue
         c.setFont("Helvetica-Bold", 9)
         c.drawString(12 * MM, y * MM, f"{i}  {rs.pieces[i].name}")
         y -= 5
         c.setFont("Helvetica", 9)
-        for t in _wrap(n, 105):
-            c.drawString(16 * MM, y * MM, t)
-            y -= 4.5
+        body = []
+        if i in full:                                   # BL-044 m-11: the label the tiled page shortened, in full
+            body += ["LABEL (shortened on the piece so it clears the marks): " + "; ".join(
+                t for t in full[i] if not t.startswith("NOTE:"))]
+        if len(n) > NOTE_MAX:
+            body.append(n)
+        for b in body:
+            for t in _wrap(b, 105):
+                c.drawString(16 * MM, y * MM, t)
+                y -= 4.5
         y -= 3
     c.showPage()
     pages = 1
@@ -174,24 +274,32 @@ def notes_and_marks_pdf(rs, ids, path: Path, title: str) -> int:
     return pages
 
 
-def notes_only_pdf(rs, ids, path: Path, title: str) -> int:
+def notes_only_pdf(rs, ids, path: Path, title: str, full: dict | None = None) -> int:
     pw, ph = PAPERS["letter"]
     c = canvas.Canvas(str(path), pagesize=(pw * MM, ph * MM))
     y = ph - 15
     c.setFont("Helvetica-Bold", 12)
     c.drawString(12 * MM, y * MM, f"{TITLE} {title[:60]}: piece NOTES (full text)")
     y -= 10
+    full = full or {}
     for i in ids:
         n = rs.pieces[i].labels.get("note", "")
-        if len(n) <= NOTE_MAX:
+        if len(n) <= NOTE_MAX and i not in full:
             continue
         c.setFont("Helvetica-Bold", 9)
         c.drawString(12 * MM, y * MM, f"{i}  {rs.pieces[i].name}")
         y -= 5
         c.setFont("Helvetica", 9)
-        for t in _wrap(n, 105):
-            c.drawString(16 * MM, y * MM, t)
-            y -= 4.5
+        body = []
+        if i in full:                                   # BL-044 m-11: the label the tiled page shortened, in full
+            body += ["LABEL (shortened on the piece so it clears the marks): " + "; ".join(
+                t for t in full[i] if not t.startswith("NOTE:"))]
+        if len(n) > NOTE_MAX:
+            body.append(n)
+        for b in body:
+            for t in _wrap(b, 105):
+                c.drawString(16 * MM, y * MM, t)
+                y -= 4.5
         y -= 3
         if y < 20:
             c.showPage()
@@ -674,13 +782,17 @@ def export_all(nest10=True, log=print):
     pages = {}
     for fn, title, ids in STEPS:
         pcs = [print_copy(rsP.pieces[i]) for i in ids]          # BL-041 n-6: long notes -> NOTES page
+        if fn == LABEL_FIT_STEP:                                # BL-044 m-11: label blocks clear of every mark
+            pcs = [fit_label(q) for q in pcs]
         info = export_pdf_tiled(pcs, REL / "print_letter" / f"{fn}.pdf", "letter", compress=True, title=f"{TITLE} {title}")
         pages[fn] = info["pages"]
         if fn == "step2_small_parts" or any(len(rsP.pieces[i].labels.get("note", "")) > NOTE_MAX for i in ids):
             from pypdf import PdfReader, PdfWriter
             extra = OUT / f"_{fn}_extra.pdf"
             extra.parent.mkdir(parents=True, exist_ok=True)
-            n = notes_and_marks_pdf(rsP, ids, extra, title) if fn == "step2_small_parts" else 0
+            full = {q.piece_id: rsP.pieces[q.piece_id].label_lines() for q in pcs
+                    if getattr(q, "fit_lines", None) is not None}
+            n = notes_and_marks_pdf(rsP, ids, extra, title, full) if fn == "step2_small_parts" else 0
             if fn != "step2_small_parts":                      # notes only (no webbing marks) for the other steps
                 n = notes_only_pdf(rsP, ids, extra, title)
             n = len(PdfReader(str(extra)).pages)

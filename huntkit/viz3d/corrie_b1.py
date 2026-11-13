@@ -29,6 +29,10 @@ from .params import REPO
 SUSP = ("pack", "pack_haul", "frame", "frame_haul")   # belt + seat also in the frame-only (cutaway) mode
 
 
+
+IMP2_PORT_Z = 700.0      # CORRIE B: IMP-2 hose port height on B-03R (corrie.HYDRO port_z); BL-044 callers may move it
+IMP2_FORWARD = False     # BL-044: route the hose forward off the gusset below W3 (CORRIE F rev 3 HOSE-LOW)
+
 def _hc():
     sys.path.insert(0, str(REPO / "designs" / "pack_5200" / "concepts"))
     import corrie as CO  # noqa: E402
@@ -467,15 +471,20 @@ def bag_side_parts(pack, params: dict, clean: bool = False) -> list:
               Part("imp1_scope_armour", G.concat(scope), "fitting", "bag", modes=BAGM, floats=True,
                    label="85 mm angled spotter (drawn up 70 mm to show it)"),
               Part("imp1_scope_eyepiece", G.concat(eye), "hardware", "bag", modes=BAGM, floats=True)]
-    # ---- IMP-2: hose port on B-03R at z 700 and the hose up over the right strap to a bite valve
-    P0, n0 = S.on([a_of(700.0), yf_of(700.0) + 20.0, 700.0], 1.0)
+    # ---- IMP-2: hose port on B-03R at z 700 and the hose up over the right strap to a bite valve. BL-044: callers may
+    # move the port (IMP2_PORT_Z; CORRIE F rev 3 HOSE-LOW puts it at z 558) and route the hose forward off the gusset
+    # below W3 (IMP2_FORWARD) instead of up the gusset.
+    zp = IMP2_PORT_Z
+    P0, n0 = S.on([a_of(zp), yf_of(zp) + 20.0, zp], 1.0)
     P0, n0 = P0[0], n0[0]
     port = patch(S, P0, 40, 60, lift=1.4, thick=2.2)
     runs = _strap_runs(pack)
     R = runs[1]
     top_i = 0
     Ptop = R["front"][top_i]
-    pts = [P0 + n0 * 4, P0 + n0 * 10 + [0, -10, 40], np.array([a_of(760) + 10, 40.0, 780.0]),
+    mid = (np.array([a_of(zp + 30) + 14, yf_of(zp + 30) - 12.0, zp + 40.0]) if IMP2_FORWARD
+           else np.array([a_of(760) + 10, 40.0, 780.0]))
+    pts = [P0 + n0 * 4, P0 + n0 * 10 + [0, -10, 40] if not IMP2_FORWARD else P0 + n0 * 10 + [0, -14, 12], mid,
            np.array([Ptop[0] + 30, Ptop[1] + 60, Ptop[2] + 30])]
     for sgo in np.linspace(10, 250, 14):
         Pq, tq, nq, wq = _at(R, sgo)
@@ -488,7 +497,7 @@ def bag_side_parts(pack, params: dict, clean: bool = False) -> list:
     for sgo in (60.0, 180.0):
         Pq, tq, nq, wq = _at(R, sgo)
         clips.append(_block(Pq + nq * 6.5 + wq * 26.0, (14, 10, 18), e=0.35, R=_frame(nq, tq)))
-    parts += [Part("imp2_port", port, "hypalon", "bag", modes=BAGM, floats=True, label="IMP-2 bound hose port, B-03R z 700"),
+    parts += [Part("imp2_port", port, "hypalon", "bag", modes=BAGM, floats=True, label=f"IMP-2 bound hose port, B-03R z {zp:.0f}"),
               Part("imp2_hose@t19", G.concat([G.tube(hose, 4.6, n=12)] + clips), "hardware", "suspension", torso=19.0,
                    modes=("pack",), label="Drinking hose over the right strap"),
               Part("imp2_valve@t19", G.concat(valve), "hypalon", "suspension", torso=19.0, modes=("pack",))]

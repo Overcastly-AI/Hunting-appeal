@@ -135,9 +135,10 @@ def test_rt_origin_at_the_roll_end_and_clear_of_the_fold(pk):
     for side, d in rt.items():
         assert d["x1"] - d["x0"] == pytest.approx(P.RT_SEWN)
         assert d["box_to_gap_mm"] >= 5.0                             # box on the strip, clear of the 40 mm fold gap
-        ends = [n.x for n in b07.notches if "B-07s strip end" in (n.label or "")]
-        assert any(abs(e - (d["x_centre"] - P.HEM_GAP / 2)) <= 3.0 for e in ends)
-        assert any(abs(e - (d["x_centre"] + P.HEM_GAP / 2)) <= 3.0 for e in ends)
+        # BL-044: the strip ends are exact placement lines (the L one had merged into a hem-ring slit 2.7 mm away)
+        ends = [ln.points[0][0] for ln in b07.internal_lines if (ln.label or "").startswith("B-07s strip end")]
+        assert any(abs(e - (d["x_centre"] - P.HEM_GAP / 2)) <= 0.06 for e in ends)
+        assert any(abs(e - (d["x_centre"] + P.HEM_GAP / 2)) <= 0.06 for e in ends)
     # roll ends 180 deg apart on the hem ring (equal flat layers)
     assert abs(rt["L"]["x_centre"] - rt["R"]["x_centre"]) == pytest.approx(0.5 * o["hem_mm"], abs=1.0)
 
@@ -332,6 +333,6 @@ def test_third_review_status_is_honest():
     assert {"Z-1", "Z-2", "M-1", "M-2", "M-3", "M-4"} | {f"m-{k}" for k in range(1, 15)} <= set(st)
     for i in ("M-1", "M-2", "M-4"):
         assert st[i][1] == "fixed"
-    for i in ("Z-1", "Z-2", "M-3", "m-1", "m-11"):                  # hinge eye: BL-042 / BL-044
-        assert st[i][1] == "open"
-    assert not M.ready_to_cut()
+    for i in ("Z-1", "Z-2", "M-3", "m-1", "m-11"):                  # hinge eye: fixed by BL-042 / BL-044
+        assert st[i][1] == "fixed"
+    assert not M.ready_to_cut()                                     # BL-044: NOT ready until a fourth review

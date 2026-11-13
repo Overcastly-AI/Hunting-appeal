@@ -48,7 +48,7 @@ PAT = REL / "patterns"
 OUT = REL / "manufacturing"
 SCREENS = ROOT / "outputs" / "screens"
 DATE = "20261113"
-TOPIC = "BL043"
+TOPIC = "BL044mfg"            # BL-044: screenshots named for the ticket that regenerates the package
 TITLE = "CORRIE F rev 3 (door D2) - 5200 cu in hunting pack bag"
 REGISTER = ROOT / "designs" / "pack_5200" / "tests_physical" / "test_register.csv"
 YD = 914.4
@@ -450,8 +450,9 @@ def hardware_table(ctx: Ctx) -> list[tuple]:
         ("srb", "25 mm side-release buckle (roll top)", "buckle_side_release_25mm", 2, "unit", "base", False),
         ("cordlock", f"spring cord lock ({ncl}): {cl_use}", "cord_lock_spring", ncl, "unit", "base", False),
         ("tpu_sleeve", "TPU sleeve on the IM3 carabiner (2)", "tpu_hook_sleeve", 2, "unit", "base", False),
-        ("fairlead", "printed fairleads (8), 7075 pins (8), UHMWPE sleeves (8), US anchors, lifter keepers",
-         "frame kit", 1, "set", "base", True),
+        ("fairlead", "printed fairleads (8), 7075 pins (8: 6 x {:.0f} mm shank IM / US + 2 x {:.0f} mm shank HINGE for the "
+         "20 mm throat, BL-044), UHMWPE sleeves (8), US anchors, lifter keepers".format(
+             P.F.hinge_pin()["shank_im_mm"], P.F.hinge_pin()["shank_hinge_mm"]), "frame kit", 1, "set", "base", True),
     ]
 
 
@@ -462,6 +463,7 @@ HW_LEDGER_MAP = {
     "US-tg": ("triglide_ss",), "B-24-hooks": ("cara_x",), "B-24-thr": ("thread",), "W-hw": ("ghook", "ll_heavy"),
     "BL-010 S2": ("cara",), "BL-010 S9": ("ghook", "ll_heavy"), "BL-010 S12": ("cara_x",),
     "attachment: printed fairleads": ("fairlead",), "attachment: 7075 pins": ("fairlead",),
+    "BL-044: hinge pins": ("fairlead",),
     "attachment: UHMWPE sleeves": ("fairlead",), "attachment: bag hooks, 38 mm": ("cara",),
     "attachment: TPU hook sleeves": ("tpu_sleeve",), "attachment: elastic keepers": ("elastic_25mm",),
     "attachment: lifter tri-glide": ("fairlead",), "attachment system: bag hooks 1500": ("cara",),
@@ -756,9 +758,10 @@ def he_405_text(ctx) -> str:
             f"+{hg['cheek_z'][0]:.0f} mm. "
             "(5) BASTE the bottom of the stack (2 HE raw ends + B-18 + B-01) at 6 mm, inside the allowance, so op 4.15 "
             f"catches all of it {step_spec('baste')}. The free loop above the box ({hg['eye_mm']:.0f} mm, fold {hg['fold_z_flat']:.0f} mm above the "
-            "seam line) is the eye: it points UP and takes the z 60 pin with the neck in the 18 mm throat (DECISION HE-PIN; "
-            f"loaded pin centre {hg['pin_z_design']:.1f} mm above the seam line, target {hg['pin_target_z']:.0f} +/- "
-            f"{hg['pin_tol']:.0f}). No stitching crosses the eye after step 3.")
+            f"seam line) is the eye: it points UP and takes the z 60 pin with the {hg['neck_w']:.0f} mm neck in the "
+            f"{hg['throat']:.0f} mm throat and the 3-ply neck through the {hg['gap_under_pin']:.1f} mm gap under the pin "
+            f"(DECISION HE-ENV, BL-042 hinge fairlead; loaded pin centre {hg['pin_z_design']:.1f} mm above the seam line, "
+            f"HE-FIT band {hg['pin_band'][0]:.0f}-{hg['pin_band'][1]:.0f}). No stitching crosses the eye after step 3.")
 
 
 def load_points(ctx: Ctx) -> list[dict]:
@@ -885,9 +888,15 @@ def load_points(ctx: Ctx) -> list[dict]:
         add("hinge eye", "HE + B-18 + B-01", f"x +/-115, box {P.HE_BOX_GAP:.0f}-{P.HE_BOX_GAP + h:.0f} mm above the "
             "floor seam line; B-18 and both HE raw ends in the B-01 | B-05 seam (DECISION HE-ONE)", w, h, HINGE_N,
             "load_standard.md (rev C) bag-on hinge case 1019 N factored; bag_attachment.md section 5 (loadpath A5 "
-            "795 N is the sim-only value)", "PT-3 1530 N (= 1.5 x 1019)",
+            "795 N is the sim-only value)", "PT-3 1530 N (= 1.5 x 1019) on the printed fairlead; SEW-F HE 625 N x 1e5",
             {"B-18 seam (80 mm, B-05 strip)": AS.patch_seam(80.0, "cordura_500d_nylon66", "hypalon_coated_nylon")["cap_n"]},
-            note=("PATTERN MISMATCH: B-18 box " + ", ".join(mism)) if mism else "", vol="pattern: HE / B-18")
+            note=(("PATTERN MISMATCH: B-18 box " + ", ".join(mism) + "; ") if mism else "") + (
+                f"box-X {w:.0f} x {h:.0f} capacity {AS.box_x(w, h)['cap_n']:.0f} N (attach_system.box_x thread path); "
+                f"the box top row PEELS (BL-044 he_peel): leg B leaves it {P.he_peel()['design']['peel_deg']:.0f} deg off "
+                f"the box line in line, {P.he_peel()['worst']['peel_deg']:.0f} deg with B-01 held at the cheek tips = "
+                f"{P.he_peel()['peel_frac_design']:.2f}-{P.he_peel()['peel_frac_worst']:.2f} x the hinge load across the "
+                "row; no peel capacity is credited: rated by PT-3 on the printed fairlead (worst peel) and SEW-F HE"),
+            vol="pattern: HE / B-18")
     for pid in ("IM1", "IM2", "IM3"):
         for w, h, lab in box(pid) or [(21.0, 25.0, "ASSUMPTION IM-BOX (not drawn)")]:
             add(f"{pid} end loop", pid, "left end loop, girth-hitched on the eye (box drawn at the tip end)", w, h,
@@ -1327,7 +1336,7 @@ def ops(ctx: Ctx) -> list[SewingOp]:
        hours=2 * (H["bartack"] + PLACE_H), sketch="SK-10", qc="QC-07")
     op("Roll-top hem with HDPE strips", f"Close the hem back seam ({hm:.0f} mm). Sew the hem to the collar top ring "
        f"({ht:.0f} mm), the RT straps hanging free outside; fold over the two B-07s HDPE strips, their ends on the "
-       "'B-07s strip end' notches (a 40 mm gap at each roll end, where the hem folds flat), and stitch closed "
+       "drawn 'B-07s strip end' lines (a 40 mm gap at each roll end, where the hem folds flat), and stitch closed "
        "(EFb), keeping the strap ends out of the fold.", "body", pieces="B-07, B-07s x2, B-06", seam="SSa + EFb",
        length=hm + 2 * ht, hours=rate(hm) + rate(ht) + H["ring"], sketch="SK-2")
     cb = seam_mm(ctx, "collar | body tops (ring)")
@@ -1562,8 +1571,9 @@ def qc_points(ctx: Ctx, g: dict, rows_mass: dict) -> list[dict]:
         ("QC-18", "Final", "Labels", "visual", "ID label with rev 3 + date, size / crown kit, load-limit card (53 kg frame meat, RD-02)", "100 %"),
         ("QC-19", "Final", "Kits complete", "count", "base / as-hunted (lid, B-28 per kit, scope pod) / meat-trip (WX, B-24, liner) bags each complete", "100 %"),
         ("QC-20", "Final", "Fit on the frame", "hook to a frame or the fit jig: hinge pins, IM eyes through B-12 ports, guys through B-27",
-         "every eye reaches its port without strain; door opens fully; hinge eyes on the z 60 pins with the floor seam "
-         "25 +/- 3 mm below the pin centre (already proven by HE-FIT before cut; this confirms the batch)",
+         "every eye reaches its port without strain; door opens fully; hinge eyes on the z 60 pins with the pin centre "
+         f"{P.he_band()[0]:.0f}-{P.he_band()[1]:.0f} mm above the floor seam (the HE-FIT band, already proven before cut; "
+         "this confirms the batch)",
          "first article + 1 in 25"),
     ]
     return [dict(zip(("id", "stage", "check", "method", "pass", "frequency"), r)) for r in q]
@@ -1572,12 +1582,14 @@ def qc_points(ctx: Ctx, g: dict, rows_mass: dict) -> list[dict]:
 RELEASE_TESTS = [   # id, why it gates this package (register row read at run time)
     ("MT-1", "every 25 mm box-X on IM1-IM3 and US1/US2"), ("MT-2", "IM free-end hooks"), ("MT-3", "IM / US cams"),
     ("PT-1", "IM3 carabiner on T3"), ("PT-2", "T3 on the 70 mm B-17 tab"), ("PT-3", "HE eye on B-18 (no binding)"),
-    ("HE-FIT", "hinge eye on the z 60 pin, 1:1 dry fit before PT-3 and before cut (BL-041 X-2, DECISION HE-PIN)"),
+    ("HE-FIT", "hinge eye on the z 60 pin of the printed BL-042 hinge fairlead, 1:1 dry fit before PT-3 and before cut "
+               "(BL-041 X-2, BL-044 DECISION HE-ENV)"),
     ("TL-1", "B-25 38 mm sleeve + guy and crown-strap toggles on the real crown bar at 494 N (BL-041, crown_tube_guy_loop.md)"),
     ("PT-5", "guy lock + tri-glide keeper"), ("PT-6", "B-24 float link"),
     ("LL-H", "heavy 25 mm ladder lock slip at 432 N (1.5 x 288 N), dry, wet and -20 C: guys, W1-W3 and the B-28 crown "
              "straps (the B-28 slip gate since BL-031)"),
-    ("SEW-F", "box-X fatigue (ASSUMPTION SEW_FAT 0.40 x box strength): IM end loops (S1), US eyes (S6), belt tabs (H1)"),
+    ("SEW-F", "box-X fatigue (ASSUMPTION SEW_FAT 0.40 x box strength): IM end loops (S1), US eyes (S6), belt tabs (H1), "
+              "HE hinge-eye box on the printed fairlead (BL-044, review M-3)"),
     ("T9", "loaded CG on the first article (rev C basis); its rev 3 items are the T9-R3a..d rows below (BL-038 split)"),
     ("T9-R3a", "rev 3 (a): B-27 port guys hold the S-kit top, CG at the S kit (BL-030)"),
     ("T9-R3b", "rev 3 (b): B-28 crown strap cinch force and retention"),
@@ -1959,12 +1971,18 @@ ASSUMPTIONS = [
     ("TG-SS-PRICE", f"Stainless tri-glide USD {TG_SS_USD} from the record's EUR source line, converted as the record does "
                     "(ex VAT x 1.09 USD/EUR).", "supplier quote"),
     ("BT-STD", "Slit-end bartack 10 x 2 mm, 28 stitches; standard tack 16 x 2 mm, 42 stitches (LK-1900 patterns).", "QC-07"),
-    ("HE-ONE / HE-PIN / HE-GAP / HE-CHEEK / HE-T", f"BL-040 B-1 + BL-041 X-1 / X-2: one hinge-eye construction (HE "
-     f"{P.HE_CUT:.0f} mm folded in half, both raw ends and the B-18 edge in the floor seam, B-18 rows sewn first through "
-     f"B-18 + B-01 only); eye UP on the z 60 pin, box-X {P.HE_BOX[0]:.0f} x {P.HE_BOX[1]:.0f} at +{P.HE_BOX_GAP:.0f}.."
-     f"+{P.HE_BOX_GAP + P.HE_BOX[1]:.0f} mm, {P.HE_CHEEK_CLEAR:.0f} mm under the fairlead cheeks; eye {P.HE_EYE} mm solved "
-     f"for webbing {P.HE_T} mm thick (ASSUMPTION HE-REACH withdrawn).",
-     "HE-FIT dry fit on a printed fairlead (pin 22-28 mm above the seam line), then PT-3 on specimens sewn as op 4.05 / SK-8"),
+    ("HE-ONE / HE-PIN / HE-ENV / HE-GAP / HE-CHEEK / HE-T / HE-PIN-HI", f"BL-040 B-1 + BL-041 X-1 / X-2 + BL-044 Z-1 / "
+     f"M-3 / m-1: one hinge-eye construction (HE {P.HE_CUT:.0f} mm folded in half, both raw ends and the B-18 edge in the "
+     f"floor seam, B-18 rows sewn first through B-18 + B-01 only); eye UP on the z 60 pin of the BL-042 hinge fairlead "
+     f"(bag_attach.HINGE_EYE_ENVELOPE: pin 10.1 mm above the stay, 5.5 mm under it, 20 mm throat); box-X "
+     f"{P.HE_BOX[0]:.0f} x {P.HE_BOX[1]:.0f} at +{P.HE_BOX_GAP:.0f}..+{P.HE_BOX_GAP + P.HE_BOX[1]:.0f} mm, "
+     f"{P.HE_CHEEK_CLEAR:.0f} mm under the cheeks at the design pin and >= {P.HE_CHEEK_MIN:.0f} mm over the HE-FIT band; "
+     f"eye {P.HE_EYE} mm solved on the real 3-ply neck wrap for webbing {P.HE_T} mm (bracket "
+     f"{P.HE_T_RANGE[0]}-{P.HE_T_RANGE[1]} mm, thicker rejected). The box PEELS (leg B 23-50 deg off the box line): "
+     "rated by PT-3 on the printed fairlead and SEW-F HE specimens.",
+     f"caliper gate on the roll (ply <= {P.HE_T_RANGE[1]} mm); HE-FIT on the BL-042 test piece (pin "
+     f"{P.he_band()[0]:.0f}-{P.he_band()[1]:.0f} mm above the seam line, box >= {P.HE_CHEEK_MIN:.0f} mm under the cheeks), "
+     "then PT-3 and SEW-F HE on specimens sewn as op 4.05 / SK-8"),
     ("RT-MATE / RT-HEM / RT-FWD / RT-ORIGIN / W3-OVER / HOSE-LOW / BUCKLE-ENV / MK-GAP", "BL-040 B-2 + BL-041 Y-2 + "
      "BL-043 M-1 / M-2 / m-9: the RT strap is sewn at the roll end (gusset centre of the hem); its buckle's female half "
      "on an RTM tab forward on the gusset (hose slot + 10 mm + half a buckle), the buckle body 10 mm under the lowest W3 "
@@ -2048,8 +2066,9 @@ RECHECK_STATUS = [
      "test: no B-18 / B-01 stitch line crosses the eye footprint and the rows precede the HE in the op text; PT-3 specimen built from the same order"),
     ("X-2", "blocker", "fixed", "DECISION HE-PIN: eye UP on the z 60 pin, box-X 34 x 10 at +4..+14 (2 mm under the cheeks), "
      "eye 17 mm solved by he_geometry, HE 86 mm; loaded pin +23.4..+25.3 over the B-01 / webbing bracket (target 25 +/- 3, test); "
-     "HE-FIT dry fit is a BAG-CUT gate before PT-3; SK-8 redrawn with the rows and the real pin"),
-    ("Y-1", "major", "fixed", "PT-3 rig: pin in an 18 mm slot fixture, B-05 strip alone in the clamp, B-01 top free, pull "
+     "HE-FIT dry fit is a BAG-CUT gate before PT-3; SK-8 redrawn with the rows and the real pin [superseded by BL-044 "
+     "DECISION HE-ENV: box 34 x 7 at +4..+11, eye 25 mm, HE 96 mm on the BL-042 fairlead]"),
+    ("Y-1", "major", "fixed", "[BL-044: the rig is now the printed BL-042 fairlead with a spacer, see M-3] PT-3 rig: pin in an 18 mm slot fixture, B-05 strip alone in the clamp, B-01 top free, pull "
      "down B-01; specimen = reordered op 4.05 with the B-18 rows and the baste"),
     ("Y-2", "major", "fixed", "DECISION RT-FWD: clip path on the gusset at 10.9 mm from the hose slot, buckle bar 10 mm "
      "over the B-26 cord, muzzle tabs aft (111 / 171 mm, 60 apart); min clearance 10.0 mm over tabs, keeper cord, hose "
@@ -2083,9 +2102,12 @@ RECHECK_STATUS = [
 # BL-043: design-reviewer THIRD review (analysis/review_20261113_rev3_third.md): id, class, status, how. The hinge-eye
 # items wait for BL-042 (frame print files, hinge fairlead) and BL-044 (HE redesign on BL-042's envelope).
 THIRD_STATUS = [
-    ("Z-1", "blocker", "open", "hinge eye vs the throat floor: BL-042 (fairlead) + BL-044 (HE on the new envelope); "
-     "SK-8 (c) now draws the floor and the gap under the pin"),
-    ("Z-2", "blocker", "open", "H1 STL fairleads clipped: BL-042 (frame side)"),
+    ("Z-1", "blocker", "fixed", "BL-042 hinge fairlead (5.5 mm under the pin, 20 mm throat) + BL-044 DECISION HE-ENV: "
+     "the eye is solved on the real 3-ply neck wrap against bag_attach.HINGE_EYE_ENVELOPE and checked by slicing the "
+     "HE-FIT test-piece STL at every bracket corner (he_stl_check: no overlap, gap and throat clearances); the test at "
+     "test_bl041:55 (neck == throat) is replaced by a clearance test; SK-8 (c) redrawn on the envelope"),
+    ("Z-2", "blocker", "fixed", "BL-042: H1 print files carry the whole fairleads (12 / 12 pass the STL slice check); "
+     "HE-FIT and IM3-EC print the BL-042 test pieces"),
     ("M-1", "major", "fixed", "DECISION W3-OVER: W3 rides at the crown-bar height (z 601-804 over kits S / M / L); W3G "
      "deleted; RTM buckle and the hose slot (HOSE-LOW) 10 mm under the lowest W3 edge; W3 lies only on webbing, cord "
      "and the roll at all 6 kit-end corners (test); W3 crosses the roll at kit M / L part loads, so W3 is slackened "
@@ -2093,11 +2115,16 @@ THIRD_STATUS = [
     ("M-2", "major", "fixed", "DECISION RT-ORIGIN: BL-041's origin needed a 76 mm gusset tuck to fold flat and put the "
      "box across the hem fold gap: fall back to the roll end; cloth-pass roll model re-run with the new tab "
      "(corrie_f_roll_clips.json): paths 202-424 mm, RT cut 510 -> 560 mm"),
-    ("M-3", "major", "open", "34 x 10 hinge-eye box peel / fatigue / PT-3 fixture: hinge eye, BL-044"),
+    ("M-3", "major", "fixed", "peel cannot be avoided (the stay-side leg passes under a pin 1.5-7.6 mm toward the frame "
+     "from B-01: leg B leaves the box 23 deg off the box line in line, 50 deg held at the cheek-tip plane; he_peel); "
+     "'no peel' dropped; rated instead: PT-3 on the printed BL-042 fairlead with B-01 held at the cheek-tip plane "
+     "(worst peel) to 1530 N, and 3 HE specimens added to SEW-F at 625 N peak (1.15 x 1.6 g x 1019 / 3); load row "
+     "lists the 34 x 7 box capacity and its peel"),
     ("M-4", "major", "fixed", "DECISION B25-TOPO drawn (SK-12, corrie_f.b25_topology): mitre under each sleeve, run "
      "and spine wrap necked to 25 mm, 13 mm over the (assumed) pawl housing at kit S 15 in; clamp undrawn in the frame "
      "files: ASSUMPTIONS B25-CLAMP / PAWL-TOP, gate B25-FIT in op 7.17; TL-1 specimen carries the turn and run"),
-    ("m-1", "minor", "open", "HE-FIT pin band: hinge eye, BL-044"),
+    ("m-1", "minor", "fixed", "box top +11 (5 mm under the cheeks at the design pin); HE-FIT band 22-29 keeps the box "
+     ">= 2 mm under the cheeks over the whole band; the solved bracket 23.1-28.9 sits inside it (test)"),
     ("m-2", "minor", "fixed", "ops 4.05 / 4.08 give machine / needle / thread / stitch per step (step_spec), BT-301 "
      "named on the 304 tacks"),
     ("m-3", "minor", "fixed", "W3G (the only 16 mm BT-S) deleted; every BT-S is 10 x 2 (SK-1)"),
@@ -2110,7 +2137,9 @@ THIRD_STATUS = [
     ("m-9", "minor", "fixed", "W3 / hose slot in the clearance set at all 6 corners; DECISION HOSE-LOW moves the slot "
      "below W3's sweep"),
     ("m-10", "minor", "fixed", "camo print BOM line proto_qty 0, 'production only'"),
-    ("m-11", "minor", "open", "B-18 label over the HE box on the tiled print: hinge eye, BL-044"),
+    ("m-11", "minor", "fixed", "step 2 tiled print: every label block re-flowed into a clear spot (export.fit_label); "
+     "B-18 and B-22 labels clear every mark and stay inside the outline (test); shortened labels in full on the NOTES "
+     "page"),
     ("m-12", "minor", "fixed", "webbing pages: leader label on every line; B-25 and RT added; W3G removed"),
     ("m-13", "minor", "fixed", "SK-8 (c): stay labelled printed PAHT-CF, throat floor drawn with its gap under the pin "
      "(the HE redraw itself is BL-044)"),
@@ -2118,9 +2147,17 @@ THIRD_STATUS = [
 ]
 
 
+# BL-044: three review rounds found fixes that passed their own checks and failed on the real geometry. The release may
+# say 'ready to cut' only after a FOURTH independent review of the BL-042 / 043 / 044 changes (orchestrator rule).
+FOURTH_REVIEW_DONE = False
+
+
+def open_findings() -> list:
+    return [i for i, c, st, _ in REVIEW_STATUS + RECHECK_STATUS + THIRD_STATUS if c in ("blocker", "major") and st != "fixed"]
+
+
 def ready_to_cut() -> bool:
-    return not any(c in ("blocker", "major") and st != "fixed"
-                   for _, c, st, _ in REVIEW_STATUS + RECHECK_STATUS + THIRD_STATUS)
+    return FOURTH_REVIEW_DONE and not open_findings()
 
 
 # ============================================================================ writers
@@ -2249,12 +2286,16 @@ def write_files(pk: dict, out: Path = OUT) -> list[Path]:
     allst = REVIEW_STATUS + RECHECK_STATUS + THIRD_STATUS
     nb = sum(1 for _, c, st, _ in allst if c == "blocker" and st != "fixed")
     nm = sum(1 for _, c, st, _ in allst if c == "major" and st != "fixed")
-    md += ["", "## Pre-cut THIRD review status (BL-043)", "",
+    md += ["", "## Pre-cut THIRD review status (BL-043 / BL-044)", "",
            "design-reviewer third review `analysis/review_20261113_rev3_third.md` (2 blockers, 4 majors, 14 minors). "
            "BL-043 fixed the bag-side items and checked each against every crown kit and torso end "
-           "(tests/test_bl043_third_review_fixes.py); the hinge-eye items wait for BL-042 / BL-044. "
-           f"Open: {nb} blockers, {nm} majors: " + ("**ready to cut** after the physical gates." if ready_to_cut()
-                                                    else "**NOT ready to cut.**"), "",
+           "(tests/test_bl043_third_review_fixes.py); BL-042 fixed the frame print files and BL-044 the hinge eye on "
+           "the BL-042 fairlead, checked by slicing the HE-FIT test-piece STL (tests/test_bl044_hinge_eye.py). "
+           f"Open: {nb} blockers, {nm} majors. " + ("**ready to cut** after the physical gates." if ready_to_cut()
+                                                    else "**NOT ready to cut**: " + ("findings open." if (nb or nm) else
+                                                    "a FOURTH independent review of BL-042 / 043 / 044 is due first "
+                                                    "(three rounds found fixes that passed their own checks but failed "
+                                                    "on the real geometry).")), "",
            "| Finding | Class | Status | How |", "|---|---|---|---|"]
     md += [f"| {i} | {c} | {st} | {h.replace('|', '/')} |" for i, c, st, h in THIRD_STATUS]
     md += ["", "## Pre-cut re-check status (BL-041)", "",
@@ -2264,7 +2305,7 @@ def write_files(pk: dict, out: Path = OUT) -> list[Path]:
            "| Finding | Class | Status | How |", "|---|---|---|---|"]
     md += [f"| {i} | {c} | {st} | {h.replace('|', '/')} |" for i, c, st, h in RECHECK_STATUS]
     md += ["", "## Pre-cut review status (BL-040)", "",
-           f"Open after BL-043 (all three reviews): {nb} blockers, {nm} majors. " + (
+           f"Open after BL-044 (all three reviews): {nb} blockers, {nm} majors. " + (
                "**Ready to cut** the bag fabric once the G2 proof tests and the G3 wash have passed (the physical "
                "gates in qc_sheet.md still apply)." if ready_to_cut() else "**NOT ready to cut.**"), "",
            "| Finding | Class | Status | How |", "|---|---|---|---|"]
@@ -2584,93 +2625,96 @@ def sk_webbing(pk, path):
 
 
 def _eye_loop(g):
-    """Centreline of the loaded hinge eye in section (y towards the bag, z above the floor seam line): two tangents
-    from the box top (ply midline) round the far side of the pin (P.he_geometry)."""
+    """Main-ply centreline of the loaded hinge eye in section (y towards the bag, z above the floor seam line): leg A
+    from the box top up the bag side of the pin, round it over the fold plies, leg B down the stay side between the
+    pin and the throat floor (P.he_loop, BL-044 DECISION HE-ENV)."""
     import numpy as np
-    py, pz = g["face_y"] - g["t"], g["box_top"]
-    cy, cz, r = g["pin_y"], g["pin_z"], g["r_c"]
-    dy, dz = py - cy, pz - cz
-    d = math.hypot(dy, dz)
-    base = math.atan2(dz, dy)
-    off = math.acos(r / d)
-    a1, a2 = base + off, base - off + 2 * math.pi           # tangent points; wrap the far side (away from P)
-    th = np.linspace(a1, a2, 60)
-    ys = [py] + list(cy + r * np.cos(th)) + [py]
-    zs = [pz] + list(cz + r * np.sin(th)) + [pz]
+    lp = g["loop"]
+    (cy, cz), r = lp["C"], lp["r_c"]
+    th = np.linspace(lp["thA"], lp["thB"], 80)
+    ys = [lp["A"][0]] + list(cy + r * np.cos(th)) + [lp["B"][0]]
+    zs = [lp["A"][1]] + list(cz + r * np.sin(th)) + [lp["B"][1]]
     return ys, zs
 
 
 def sk_hinge_eye(pk, path):
-    """SK-8 (BL-040 B-1, redrawn BL-041 X-1 / X-2): the hinge eye as sewn (op 4.05 order: B-18 rows FIRST, then the HE)
-    and as loaded on the z 60 pin (DECISION HE-PIN), every dimension from the pattern."""
+    """SK-8 (BL-040 B-1, redrawn BL-041 X-1 / X-2 and BL-044 Z-1 / M-3): the hinge eye as sewn (op 4.05 order: B-18
+    rows FIRST, then the HE) and as loaded on the z 60 pin of the BL-042 hinge fairlead (DECISION HE-ENV), every
+    dimension from the pattern and bag_attach.HINGE_EYE_ENVELOPE."""
     plt = _plt()
     rs = pk["ctx"].rs
     hg = rs.geo["he"]
     g = P.he_geometry()
+    pl = P.he_peel()
     gap, top = hg["box_z_above_seam"]
-    fold_z = hg["fold_z_flat"]
     fig, axs = plt.subplots(1, 4, figsize=(19, 8.4), gridspec_kw={"width_ratios": [0.55, 0.9, 1.15, 1.25]})
     # (a) the flat strip
     draw_piece(axs[0], rs.pieces["HE"], f"(a) HE strip, flat\n(38 x {hg['cut']:.0f} mm)", fs=6)
     # (b) the op 4.05 order
     ax = axs[1]
     ax.axis("off")
-    steps = ["1  NECK (flat strip): fold both long edges 10 mm in\n   between the neck lines (18 mm wide); BT-M tack\n"
+    steps = [f"0  CALIPER one ply of the roll: <= {P.HE_T_RANGE[1]:.1f} mm\n   (3 plies must pass the {g['gap_under_pin']:.1f} mm gap\n"
+             "   under the pin), else change webbing.",
+             "1  NECK (flat strip): fold both long edges 10 mm in\n   between the neck lines (18 mm wide); BT-M tack\n"
              "   across each leg at the tack lines.",
              "2  B-18 ROWS FIRST: B-18 inside B-01, lower edge on\n   the B-01 cut edge; sew its 3 / 9 mm rows (top +\n"
              "   both sides) through B-18 + B-01 ONLY.",
-             "3  PLACE HE: fold in half on EYE FOLD, lay it OUTSIDE\n   B-01 on the CL notch, eye UP, raw ends on the cut\n"
-             "   edge. Layers: HE / HE / B-01 / B-18.",
+             "3  PLACE HE: fold in half on EYE FOLD (neck folds\n   INSIDE), lay it OUTSIDE B-01 on the CL notch, eye\n"
+             "   UP, raw ends on the cut edge. HE / HE / B-01 / B-18.",
              f"4  BOX-X {P.HE_BOX[0]:.0f} x {P.HE_BOX[1]:.0f} at +{gap:.0f}..+{top:.0f} mm through all 4\n"
              f"   layers. Box top stays BELOW +{g['cheek_lo']:.0f} (the cheeks).",
              "5  BASTE the stack at 6 mm in the allowance. Op 4.15\n   catches it in the floor seam (zipper / edge foot).",
              "No stitching may cross the eye after step 3."]
     for i, t in enumerate(steps):
-        ax.text(0.0, 0.97 - i * 0.16, t, transform=ax.transAxes, va="top", fontsize=9.5,
-                color="#b00" if i in (1, 5) else "k", fontweight="bold" if i == 5 else "normal")
-    ax.set_title("(b) op 4.05 order (PT-3 specimens: the same)", fontsize=10, loc="left")
-    # (c) section through the eye on the frame (y towards the bag, z above the floor seam line)
+        ax.text(0.0, 0.98 - i * 0.14, t, transform=ax.transAxes, va="top", fontsize=9.2,
+                color="#b00" if i in (0, 2, 6) else "k", fontweight="bold" if i == 6 else "normal")
+    ax.set_title("(b) op 4.05 order (PT-3 / SEW-F HE specimens: the same)", fontsize=10, loc="left")
+    # (c) section through the eye on the BL-042 hinge fairlead (y towards the bag, z above the floor seam line)
     ax = axs[2]
-    sr = g["pin_y"] - 6.5                                   # stay radius (pin_y = stay_r + HOLE_PROUD)
+    sr = g["stay_r"]
     ax.add_patch(plt.Rectangle((-sr, -14), 2 * sr, 70, fc="#666", alpha=0.35, ec="none"))
     ax.text(0, 52, "stay (printed PAHT-CF body)", ha="center", fontsize=8)
-    # BL-043 m-13: the fairlead root bridges the throat under the pin (bag_attach.fairlead_local: root top at
-    # y_hole - HOLE_D / 2 - 0.8 = the throat floor), drawn with the same constants the pattern's section model reads
-    from huntkit.gendesign import bag_attach as BA_
-    fl = BA_.HOLE_PROUD - BA_.HOLE_D / 2.0 - 0.8
-    ax.add_patch(plt.Rectangle((sr, g["cheek_lo"]), fl, g["cheek_hi"] - g["cheek_lo"], fc="#577", ec="#233", alpha=0.85))
-    gap_pin = (sr + BA_.HOLE_PROUD - g["pin_d"] / 2) - (sr + fl)
-    ax.annotate(f"throat floor (fairlead root)\nunder the pin: {gap_pin:.1f} mm gap\n(review Z-1: BL-042 / BL-044)",
-                (sr + fl, g["cheek_hi"] - 2), (-13, 27), fontsize=7.5, color="#233", arrowprops=dict(arrowstyle="->"))
-    ax.add_patch(plt.Rectangle((sr, g["cheek_lo"]), g["faces_y"][1] - sr, g["cheek_hi"] - g["cheek_lo"], fc="#9bb", ec="#577",
-                               hatch="//", alpha=0.6))
-    ax.text(-12.5, 35.5, f"fairlead cheeks (beside the eye, hatched)\nz {g['cheek_lo']:.0f}-{g['cheek_hi']:.0f}",
-            fontsize=8, color="#355")
+    # fairlead (BL-042 HINGE_GEOM): saddle root from the stay centreline up to the throat floor, cheeks beside the eye
+    ax.add_patch(plt.Rectangle((0.0, g["cheek_lo"]), g["floor_y"], g["cheek_hi"] - g["cheek_lo"], fc="#577", ec="#233",
+                               alpha=0.85))
+    ax.add_patch(plt.Rectangle((g["floor_y"], g["cheek_lo"]), g["tip_y"] - g["floor_y"], g["cheek_hi"] - g["cheek_lo"],
+                               fc="#9bb", ec="#577", hatch="//", alpha=0.45))
+    ax.annotate(f"throat floor (saddle root)\n{g['gap_under_pin']:.1f} mm under the pin;\n3-ply neck {3 * P.HE_T:.1f} mm "
+                f"+ {g['gap_under_pin'] - 3 * P.HE_T:.1f} clear", (g["floor_y"], g["cheek_hi"] - 3), (-13.5, 5.5),
+                fontsize=7.5, color="#233", arrowprops=dict(arrowstyle="->"))
+    ax.text(-13.5, 37.0, f"fairlead cheeks beside the eye (hatched)\nz +{g['cheek_lo']:.0f}..+{g['cheek_hi']:.0f}, tips "
+            f"{g['tip_y']:.1f} mm from the stay CL\n(bag_attach.HINGE_EYE_ENVELOPE)", fontsize=7.5, color="#355")
     fy = g["face_y"]
-    ax.plot([fy, fy], [-12, 52], color="#2b6cb0", lw=4)
-    ax.plot([fy + 1.6, fy + 1.6], [-12, P.B18_TOP], color="#555", lw=4)
-    ax.text(fy + 2.4, 44, "B-01 | B-18\n(inside)", fontsize=8)
+    ax.plot([fy, fy], [-12, g["cheek_lo"] - 1], color="#2b6cb0", lw=4)
+    ax.plot([fy, g["tip_y"]], [g["cheek_lo"] - 1, g["cheek_lo"]], color="#2b6cb0", lw=4)
+    ax.plot([g["tip_y"], g["tip_y"]], [g["cheek_lo"], 52], color="#2b6cb0", lw=4)
+    ax.plot([g["tip_y"] + 1.6, g["tip_y"] + 1.6], [g["cheek_lo"], P.B18_TOP], color="#555", lw=3)
+    ax.text(g["tip_y"] + 2.2, 44, "B-01 | B-18\n(inside)", fontsize=8)
+    ax.plot([g["tip_y"]] * 2, [gap, g["cheek_lo"]], color="#2b6cb0", lw=1, ls="--")
     ys, zs = _eye_loop(g)
     ax.plot(ys, zs, color="#c27c0e", lw=3.2)
-    ax.plot([fy - g["t"]] * 2, [-12, gap], color="#c27c0e", lw=3.2)
+    ax.plot([fy - g["t"] / 2] * 2, [-12, gap], color="#c27c0e", lw=2.2)
     ax.add_patch(plt.Circle((g["pin_y"], g["pin_z"]), g["pin_d"] / 2, fc="#222"))
-    ax.add_patch(plt.Rectangle((fy - 2.4 * g["t"], gap), 2.4 * g["t"] + 3.2, top - gap, fc="#1a7f37", alpha=0.35, ec="#1a7f37"))
-    ax.annotate(f"5 mm pin, frame z 60\n= +{g['pin_z']:.0f} above the floor seam\n(eye top wraps it, box BELOW)",
-                (g["pin_y"], g["pin_z"]), (-12.5, 43), fontsize=8.5, arrowprops=dict(arrowstyle="->"))
-    ax.annotate(f"box-X {P.HE_BOX[0]:.0f} x {P.HE_BOX[1]:.0f}, +{gap:.0f}..+{top:.0f}\n{hg['cheek_clear']:.0f} mm under the cheeks",
-                (fy, (gap + top) / 2), (fy + 4, 4), fontsize=8.5, color="#1a7f37", arrowprops=dict(arrowstyle="->", color="#1a7f37"))
-    ax.plot([-14, 34], [0, 0], "k--", lw=1)
+    ax.add_patch(plt.Rectangle((fy - 2 * g["t"], gap), 2 * g["t"] + 3.0, top - gap, fc="#1a7f37", alpha=0.35, ec="#1a7f37"))
+    ax.annotate(f"5 mm pin, frame z 60 = +{g['pin_z']:.0f}\n{g['pin_y'] - sr:.1f} mm above the stay\n(eye wraps it, box BELOW)",
+                (g["pin_y"], g["pin_z"]), (-13.5, 45.0), fontsize=8, arrowprops=dict(arrowstyle="->"))
+    ax.annotate(f"box-X {P.HE_BOX[0]:.0f} x {P.HE_BOX[1]:.0f}, +{gap:.0f}..+{top:.0f}\n{hg['cheek_clear']:.0f} mm under the "
+                f"cheeks\nleg B peels {pl['design']['peel_deg']:.0f} deg (in line) to\n{pl['worst']['peel_deg']:.0f} deg "
+                "(B-01 held at the tips):\nrated by PT-3 + SEW-F HE", (fy, (gap + top) / 2), (fy + 1.5, -11),
+                fontsize=7.5, color="#1a7f37", arrowprops=dict(arrowstyle="->", color="#1a7f37"))
+    ax.plot([-14, 40], [0, 0], "k--", lw=1)
     ax.text(-13, 1.0, "floor seam line (frame z 35)", fontsize=8)
-    ax.plot([-14, 34], [-12, -12], "k:", lw=1)
-    ax.text(-13, -11, "B-01 cut edge (in the seam)", fontsize=8)
-    ax.text(-12, 14, f"neck 18 mm wide in the\n{g['throat']:.0f} mm throat", fontsize=8, color="#a5650a")
-    ax.set_xlim(-14, 34)
-    ax.set_ylim(-14, 56)
+    ax.plot([-14, 40], [-12, -12], "k:", lw=1)
+    ax.text(-13, -13.6, "B-01 cut edge (in the seam)", fontsize=8)
+    ax.text(-13.5, -8.5, f"neck {P.HE_NECK_W:.0f} mm wide in the\n{g['throat']:.0f} mm throat (+/-1 mm\nneck: >= "
+            f"{hg['throat_clear_side_min']:.1f} mm a side)", fontsize=7.5, color="#a5650a")
+    ax.set_xlim(-14, 40)
+    ax.set_ylim(-16, 56)
     ax.set_aspect("equal")
     ax.set_xlabel("mm from the stay centre towards the bag")
     ax.set_ylabel("mm above the floor seam line")
-    ax.set_title(f"(c) Loaded on the frame, section (pin centre +{hg['pin_z_design']:.1f}, target "
-                 f"{hg['pin_target_z']:.0f} +/- {hg['pin_tol']:.0f})", fontsize=10, loc="left")
+    ax.set_title(f"(c) Loaded on the BL-042 hinge fairlead (pin +{hg['pin_z_design']:.1f}; HE-FIT band "
+                 f"{hg['pin_band'][0]:.0f}-{hg['pin_band'][1]:.0f})", fontsize=10, loc="left")
     # (d) on B-01, outside view, with the B-18 rows
     ax = axs[3]
     ax.add_patch(plt.Rectangle((-P.B18_W / 2, -P.B18_BELOW), P.B18_W, P.B18_H, fc="#ddd", ec="#555", ls="--"))
@@ -2705,8 +2749,8 @@ def sk_hinge_eye(pk, path):
     ax.set_xlim(-72, 72)
     ax.set_ylim(-32, 62)
     ax.set_title(f"(d) On B-01 from OUTSIDE, x +/-{P.STAY_X:.0f} (both sides)", fontsize=10, loc="left")
-    fig.suptitle("SK-8  Hinge eye HE + B-18 (DECISIONS HE-ONE + HE-PIN, op 4.05; PT-3 and HE-FIT specimens are sewn "
-                 "exactly so)", fontsize=13, x=0.01, ha="left")
+    fig.suptitle("SK-8  Hinge eye HE + B-18 (DECISIONS HE-ONE + HE-PIN + HE-ENV, op 4.05; PT-3, SEW-F HE and HE-FIT "
+                 "specimens are sewn exactly so)", fontsize=13, x=0.01, ha="left")
     fig.tight_layout()
     fig.savefig(path, dpi=95)
     plt.close(fig)
@@ -3053,8 +3097,9 @@ def techpack_design(pk: dict, sk: dict) -> MF.TechPack:
                                                    f"{pk['mass']['primary_as_hunted_g']:.0f} g / meat trip "
                                                    f"{pk['mass']['primary_meat_trip_g']:.0f} g, +/- {QC14_TOL_PCT:.0f} %"],
         ["Pre-cut reviews (BL-040 / 041 / 043)", ("0 blockers, 0 majors open: ready to cut after the G2 / G3 gates"
-                                                 if ready_to_cut() else "third-review hinge-eye items open (BL-042 / "
-                                                 "BL-044): NOT ready to cut")],
+                                                 if ready_to_cut() else ("third-review items open: NOT ready to cut"
+                                                 if open_findings() else "third-review findings all fixed (BL-042 / "
+                                                 "043 / 044); a FOURTH independent review is due: NOT ready to cut"))],
         ["Cost a bag (production)", f"materials ${c['material_usd_primary']:.0f} primary / ${c['material_usd_alternate']:.0f} "
                        f"alternate; + CMT: US ${c['landed_usd']['us_contract_usd_min']:.0f}, Asia "
                        f"${c['landed_usd']['asia_contract_usd_min']:.0f} (ASSUMPTIONS)"],

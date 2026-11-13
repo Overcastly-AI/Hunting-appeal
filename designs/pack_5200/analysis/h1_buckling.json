@@ -2399,7 +2399,8 @@
    "bore_R empty": 1.0,
    "bore_L empty": 1.0,
    "spine_channel empty": 1.0,
-   "fairleads present": 1.0,
+   "fairlead stubs inside the envelope present (voxel)": 1.0,
+   "fairleads complete on the print STL (h1_fairleads.check_stl)": true,
    "outside envelope (voxels)": 0,
    "boss wearer face flush (rails)": true,
    "boss bag side outboard of spreader and inside envelope": true,
@@ -2432,8 +2433,7 @@
    "sleeve_L present": 1.0,
    "pawl present": 1.0,
    "pivot present": 1.0,
-   "pads present": 1.0,
-   "fairleads present": 1.0
+   "pads present": 1.0
   },
   "keepouts_empty": {
    "bore_R empty": 1.0,
@@ -2490,68 +2490,99 @@
   "d_mid": 1.0,
   "d_up": 2.5,
   "im3_half_z": 14.0,
+  "fairleads_bl042": {
+   "body_mm3": 765064.1800017504,
+   "fairleads_added_mm3": 41658.45173265552,
+   "throats_cut_mm3": 4619.512989637675,
+   "holes_cut_mm3": 2067.7526591290953,
+   "net_mm3": 34971.18608388875,
+   "net_g": 37.06945724892208,
+   "per_station": {
+    "hinge_L": {
+     "throat_cut_from_body_mm3": 532.0
+    },
+    "hinge_R": {
+     "throat_cut_from_body_mm3": 512.5
+    },
+    "us1_L": {
+     "throat_cut_from_body_mm3": 411.4
+    },
+    "us1_R": {
+     "throat_cut_from_body_mm3": 417.1
+    },
+    "us2_L": {
+     "throat_cut_from_body_mm3": 727.7
+    },
+    "us2_R": {
+     "throat_cut_from_body_mm3": 746.0
+    },
+    "im1_L": {
+     "throat_cut_from_body_mm3": 219.2
+    },
+    "im1_R": {
+     "throat_cut_from_body_mm3": 202.5
+    },
+    "im2_L": {
+     "throat_cut_from_body_mm3": 172.2
+    },
+    "im2_R": {
+     "throat_cut_from_body_mm3": 166.5
+    },
+    "im3_L": {
+     "throat_cut_from_body_mm3": 256.2
+    },
+    "im3_R": {
+     "throat_cut_from_body_mm3": 256.2
+    }
+   }
+  },
   "assembled": {
-   "faces": 268496,
-   "volume_cm3": 762.71,
-   "g": 808.5,
+   "faces": 308334,
+   "volume_cm3": 800.26,
+   "g": 848.3,
    "watertight": true,
    "shells": 1,
    "dropped": [
     [
-     12,
-     0.0006058699029572595
+     16,
+     0.00314777448523292
     ],
     [
      4,
-     0.00012046198522700872
-    ],
-    [
-     4,
-     1.4475469142941991e-05
+     4.2985356980551614e-05
     ]
    ]
   },
   "lower": {
-   "faces": 142842,
-   "volume_cm3": 292.93,
-   "g": 310.5,
+   "faces": 164924,
+   "volume_cm3": 314.95,
+   "g": 333.8,
    "footprint_mm": [
-    278.8,
+    279.7,
     234.5,
-    64.0
-   ],
-   "watertight": true,
-   "shells": 1,
-   "dropped": [
-    [
-     1244,
-     570.9677420539459
-    ]
-   ],
-   "dropped_centre_frame_mm": [
-    [
-     84.4,
-     -0.4,
-     225.5
-    ]
-   ],
-   "print_h": 11.0,
-   "fits_h2s_340x320x340": true
-  },
-  "upper": {
-   "faces": 128710,
-   "volume_cm3": 469.21,
-   "g": 497.4,
-   "footprint_mm": [
-    278.8,
-    309.4,
-    52.4
+    74.4
    ],
    "watertight": true,
    "shells": 1,
    "dropped": [],
    "dropped_centre_frame_mm": [],
-   "print_h": 17.6,
+   "print_h": 11.8,
+   "fits_h2s_340x320x340": true
+  },
+  "upper": {
+   "faces": 147702,
+   "volume_cm3": 485.31,
+   "g": 514.4,
+   "footprint_mm": [
+    280.1,
+    309.4,
+    60.5
+   ],
+   "watertight": true,
+   "shells": 1,
+   "dropped": [],
+   "dropped_centre_frame_mm": [],
+   "print_h": 18.2,
    "fits_h2s_340x320x340": true
   }
  },

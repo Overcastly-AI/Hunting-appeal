@@ -26,9 +26,14 @@ def test_hinge_window_gone_and_b18_whole():
     assert hs["overlap_z_mm"] == pytest.approx(40.0)              # what BL-032 had: window z 40-130 over B-18 z 35-80
     assert hs["b18_window_overlap_mm2"] == 0.0
     assert hs["nearest_window_above_b18_mm"] > 50.0
-    # the cleat lifts B-01 by about what the US2 cleat (no swell since v3.1) already does
-    assert 0.0 < hs["hinge"]["push_mm"] < 5.0
-    assert abs(hs["hinge"]["push_mm"] - hs["us2"]["push_mm"]) < 1.0
+    # BL-044: the BL-042 hinge fairlead (cheek tips 17.7 mm proud, bag_attach.HINGE_EYE_ENVELOPE) lifts B-01 7.05 mm,
+    # double the US2 cleat (legacy 14.1 mm proud), still under the 16 mm swell the IM fairleads are given
+    from huntkit.gendesign import bag_attach as BA
+    env = BA.HINGE_EYE_ENVELOPE
+    assert hs["hinge"]["top_mm"] == pytest.approx(env["stay_r_mm_at_z60"] + env["cheek_tip_above_stay_surface_mm"], abs=0.01)
+    assert hs["hinge"]["push_mm"] == pytest.approx(hs["hinge"]["top_mm"] - BA.PANEL_OFFSET, abs=0.01)
+    assert 5.0 < hs["hinge"]["push_mm"] < BA.SWELL
+    assert 0.0 < hs["us2"]["push_mm"] < 5.0
 
 
 def test_b01_booked_net_of_its_windows(rows):

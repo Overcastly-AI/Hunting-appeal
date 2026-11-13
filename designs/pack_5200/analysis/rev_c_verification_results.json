@@ -6721,60 +6721,32 @@
   },
   "fairlead_fea": {
    "hinge": {
-    "label": "hinge 1.00 mm",
-    "h_mm": 1.0,
-    "fi99": 0.3361927068371061,
-    "fi_max": 0.8511503689973917,
-    "sf": 2.974484513385132,
-    "bearing_mpa": 6.2861319457681235,
-    "bearing_sf": 5.981420740828171,
-    "added_g": 6.20736,
-    "solid": 17364,
-    "applied_n": 724.1624001524877,
-    "requested_n": 724.1624001524879,
-    "stay_r": 9.354545454545455,
-    "slab_origin": [
-     -13.354545454545455,
-     -22.0
-    ],
-    "slab_h": 1.0,
-    "y_hole": 15.854545454545455,
-    "n_contact": 234,
-    "g_times_req_placeholder": 3.0,
+    "sf": 3.729823599611555,
+    "fi99": 0.2681091942536225,
+    "fi_max": 0.43563721801838634,
+    "added_g": 8.1408,
+    "h": 1.0,
     "station": "hinge",
     "case": "tall_load",
     "force_n": 724.1624001524879,
     "g_times_req": 3.0,
-    "sf_fatigue": 1.6731475387791368,
-    "sf_creep": 3.569381416062159
+    "geometry": "BL-042 HINGE_GEOM",
+    "sf_fatigue": 2.0980257747814997,
+    "sf_creep": 4.475788319533867
    },
    "im3": {
-    "label": "im3 1.00 mm",
-    "h_mm": 1.0,
-    "fi99": 0.2781027292104384,
-    "fi_max": 0.4161346058688319,
-    "sf": 3.5957935502434677,
-    "bearing_mpa": 5.252012333914464,
-    "bearing_sf": 7.159160643473913,
-    "added_g": 6.13104,
-    "solid": 43080,
-    "applied_n": 605.0318208669462,
-    "requested_n": 605.0318208669462,
-    "stay_r": 16.8,
-    "slab_origin": [
-     -20.8,
-     -22.0
-    ],
-    "slab_h": 1.0,
-    "y_hole": 23.3,
-    "n_contact": 270,
-    "g_times_req_placeholder": 3.0,
+    "sf": 6.025369422079843,
+    "fi99": 0.16596492761680645,
+    "fi_max": 0.2820093704997436,
+    "added_g": 10.76536,
+    "h": 1.0,
     "station": "im3",
     "case": "meat_straps",
     "force_n": 605.0318208669462,
     "g_times_req": 3.0,
-    "sf_fatigue": 2.0226338720119506,
-    "sf_creep": 4.314952260292162
+    "geometry": "BL-045 eye_geom('im3'), 28 mm cheek, bore empty",
+    "sf_fatigue": 3.3892702999199114,
+    "sf_creep": 7.230443306495811
    }
   },
   "pin": {
@@ -6836,6 +6808,10 @@
     "sf": 2.13512255879124,
     "allowed": true
    }
+  },
+  "bl045_previous_sf": {
+   "hinge": 2.974484513385132,
+   "im3": 3.5957935502434677
   }
  },
  "spreader": {
@@ -7281,28 +7257,28 @@
   {
    "part": "attachments",
    "check": "fairlead hinge cheek strength",
-   "margin": 2.974484513385132,
+   "margin": 3.729823599611555,
    "where": "tall_load",
    "basis": "1/FI99, 1 mm mesh"
   },
   {
    "part": "attachments",
    "check": "fairlead hinge cheek fatigue",
-   "margin": 1.6731475387791368,
+   "margin": 2.0980257747814997,
    "where": "tall_load",
    "basis": "1.6 g, PAHT 0.3"
   },
   {
    "part": "attachments",
    "check": "fairlead im3 cheek strength",
-   "margin": 3.5957935502434677,
+   "margin": 6.025369422079843,
    "where": "meat_straps",
    "basis": "1/FI99, 1 mm mesh"
   },
   {
    "part": "attachments",
    "check": "fairlead im3 cheek fatigue",
-   "margin": 2.0226338720119506,
+   "margin": 3.3892702999199114,
    "where": "meat_straps",
    "basis": "1.6 g, PAHT 0.3"
   },

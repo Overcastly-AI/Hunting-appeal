@@ -445,7 +445,7 @@ $SKPOLY
   9
 $TDCREATE
  40
-2461358.351377315
+2461358.411770833
   9
 $TDUCREATE
  40
@@ -453,7 +453,7 @@ $TDUCREATE
   9
 $TDUPDATE
  40
-2461358.351377315
+2461358.411770833
   9
 $TDUUPDATE
  40
@@ -885,11 +885,11 @@ $PSTYLEMODE
   9
 $FINGERPRINTGUID
   2
-{9F1766B8-F588-4A77-8A4F-959BD576B9A8}
+{2D991DD5-8911-41DD-9190-06688BBD262F}
   9
 $VERSIONGUID
   2
-{B18B1208-7B16-4B32-9752-7C3E4C778CCD}
+{8D3D6A1A-4710-4EA7-9370-3F26E0594916}
   9
 $EXTNAMES
 290
@@ -6639,11 +6639,11 @@ AcDbPolyline
  10
 62.0
  20
-26.0
+23.0
  10
 28.0
  20
-26.0
+23.0
   0
 LWPOLYLINE
   5
@@ -6669,7 +6669,7 @@ AcDbPolyline
  10
 62.0
  20
-26.0
+23.0
   0
 LWPOLYLINE
   5
@@ -6695,7 +6695,7 @@ AcDbPolyline
  10
 28.0
  20
-26.0
+23.0
   0
 POINT
   5
@@ -6787,7 +6787,7 @@ AcDbPoint
  10
 62.0
  20
-26.0
+23.0
  30
 0.0
   0
@@ -6805,7 +6805,7 @@ AcDbCircle
  10
 62.0
  20
-26.0
+23.0
  30
 0.0
  40
@@ -6825,7 +6825,7 @@ AcDbPoint
  10
 28.0
  20
-26.0
+23.0
  30
 0.0
   0
@@ -6843,7 +6843,7 @@ AcDbCircle
  10
 28.0
  20
-26.0
+23.0
  30
 0.0
  40
@@ -7129,7 +7129,7 @@ AcDbText
  40
 5.0
   1
-NOTE: laser-cut; INSIDE B-01 at x +/-115, coated face to B-01; lower edge ON the B-01 cut edge (12 mm below the floor seam line, caught in the floor seam); HE box-X 34x10; rows top + sides only
+NOTE: laser-cut; INSIDE B-01 at x +/-115, coated face to B-01; lower edge ON the B-01 cut edge (12 mm below the floor seam line, caught in the floor seam); HE box-X 34x7; rows top + sides only
  11
 57.0
  21
@@ -10041,7 +10041,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-11-13T08:25:59.544697+00:00
+1.4.5 @ 2026-11-13T09:52:57.799788+00:00
   0
 VISUALSTYLE
   5
@@ -10753,7 +10753,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-11-13T08:25:59.550916+00:00
+1.4.5 @ 2026-11-13T09:52:57.806558+00:00
   0
 ENDSEC
   0

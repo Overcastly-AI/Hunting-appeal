@@ -1200,6 +1200,134 @@ def crown_lid(sc, bar, open_lid: bool = False, state: str = "sixday") -> dict:
     return out
 
 
+# ------------------------------------------------------------------------------------------- BL-044: rev 3 as released
+def _pattern():
+    _mods()
+    import importlib
+    return importlib.import_module("patterns_corrie_f_rev3")
+
+
+def rev3_clips(sc, sk) -> dict:
+    """BL-044 item 7: the roll clips where the release puts them (BL-043 DECISION RT-ORIGIN / W3-OVER): the strap
+    leaves the roll END and runs to the side-release on the RTM tab, buckle bar at ``rt_layout`` z_bar, ``tab_frac`` of
+    the gusset depth from the frame seam (the cloth-pass roll model of ``roll_clip_paths``). Replaces the BL-031
+    picture clips (150 mm under the collar seam, mid-depth)."""
+    from . import corrie as VC
+    P = _pattern()
+    c = P.F.make()
+    rl = P.rt_layout(P._maps(c), c)
+    meta = getattr(sc, "cloth_meta", None)
+    if meta is None:
+        return {}
+    q = CP.ClothParams(**meta["params"])
+    _, _, C, fr = CP.roll_mesh(meta["lip"], meta["collar_in_roll_mm"], q)
+    S = CP.Surf(sk["X"], sk["tris"])
+    vis = dict(group="bag", modes=VC.BAGM)
+    sc.parts = [x for x in sc.parts if not x.name.startswith(("s15_roll_clip_", "s15_roll_buckle_"))]
+    out = {"z_bar": rl["z_bar"], "tab_frac": round(rl["tab_frac"], 3)}
+    for sx, side in ((1, "R"), (-1, "L")):
+        rc = CP.roll_clip_path(S, sk, C, fr, sx, rl["z_bar"], rl["tab_frac"])
+        path, N, t, B = rc["path"], rc["N"], rc["t"], rc["B"]
+        sc.add_strap(f"s15_roll_clip_{side}", path, N, 25.0, dent=False,
+                     label="Roll clip: roll end -> side-release on the RTM tab (BL-043 RT-ORIGIN, BL-044 render)", **vis)
+        sc.report.setdefault("roll_clip_mm", {})[side] = float(np.linalg.norm(np.diff(path, axis=0), axis=1).sum())
+        ib = int(np.argmin(np.linalg.norm(path - B, axis=1)))
+        zc = rl["z_bar"] + P.BUCKLE_ENV[1] / 2                # buckle body centred in its envelope above the RTM bar
+        i = int(np.argmin(np.abs(path[:ib + 1, 2] - zc)))
+        i = max(min(i, len(path) - 2), 4)
+        sc.add_hardware(f"s15_roll_buckle_{side}", "side_release_25", path[i], N[i], t[i], **vis)
+        out[side] = {"buckle_z": round(float(path[i][2]), 1), "path_mm": round(sc.report["roll_clip_mm"][side], 1)}
+    return out
+
+
+def rev3_hose_ports(sc, sk) -> dict:
+    """BL-044 item 7: the IMP-2 hose ports where the release puts them (BL-043 DECISION HOSE-LOW): a 40 x 60 bound
+    frame with its 12 x 40 slot on each gusset, 20 mm aft of the frame seam, centred at ``HOSE_Z`` (under the lowest W3
+    edge of every crown kit)."""
+    from . import corrie as VC
+    from . import geom as G
+    P = _pattern()
+    X = np.asarray(sk["X"], float)
+    tris = np.asarray(sk["tris"])
+    pc = sk["piece"].astype(str)
+    g = np.unique(tris[np.char.startswith(pc, "B-03")])
+    S = CP.Surf(X, tris)
+    frames, slots, out = [], [], {}
+    for sx, side in ((1, "R"), (-1, "L")):
+        row = g[(np.abs(X[g, 2] - P.HOSE_Z) < 6.0) & (X[g, 0] * sx > 0)]
+        if not len(row):
+            continue
+        q = X[row]
+        fwd = q[np.argmin(q[:, 1])]                      # the gusset's frame-side edge at the port height
+        yc = fwd[1] + 20.0 + P.HOSE_SLOT[0] / 2           # 20 mm aft of the seam + half the slot
+        near = q[np.argsort(np.abs(q[:, 1] - yc))[:6]]
+        cen = near.mean(0)
+        _, nn = S.near(cen[None, :])
+        n = _unit(nn[0])
+        if n[0] * sx < 0:
+            n = -n
+        cen = cen + n * 0.8
+        for (w, h, th, lst) in ((40.0, 60.0, 1.2, frames), (12.0, 40.0, 0.4, slots)):
+            lst.append(G.plate(_rect_poly(w, h), cen + n * (0.0 if lst is frames else 0.7), [0.0, 1.0, 0.0],
+                               [0.0, 0.0, 1.0], th, tile=40.0))
+        out[side] = [round(float(v), 1) for v in cen]
+    vis = dict(group="bag", modes=VC.BAGM)
+    if frames:
+        sc.parts = [x for x in sc.parts if x.name != "imp2_port"]      # the legacy R-only patch (no slot)
+        sc.add_part("cf_hose_port_frames", G.concat(frames), "hypalon",
+                    label=f"IMP-2 hose ports: bound 12 x 40 slots, z {P.HOSE_Z:.0f} (BL-043 HOSE-LOW)", **vis)
+        sc.add_part("cf_hose_port_slots", G.concat(slots), "hardware", label="hose slots (open)", **vis)
+    return out
+
+
+def _rect_poly(w, h):
+    from shapely.geometry import box as _box
+    return _box(-w / 2, -h / 2, w / 2, h / 2)
+
+
+def rev3_b25(sc, info: dict) -> dict:
+    """BL-044 item 7: the 38 mm B-25 as drawn by BL-043 (DECISION B25-TOPO, corrie_f.b25_topology): a 38 mm sleeve
+    round the top bar over x 26.5-64.5 each side, the strip down the aft side of the bar, the 45 deg mitre inside the
+    sleeve band, the run necked to 25 mm inboard to the spine and one wrap round the spine under the clamp collar.
+    Replaces the rev 1 25 mm sleeves at x +/-52 and their run under the bar."""
+    from . import geom as G
+    F = _mods()[2]
+    tp = F.b25_topology()
+    crown = _part(sc, f"crown@t{TORSO}")
+    if crown is None or "bar" not in info:
+        return {}
+    yb, zb, rb = info["bar"]
+    Vc = np.asarray(crown.mesh.vertices)
+    x0, x1 = tp["band_x"]
+    xm, W, nw = 0.5 * (x0 + x1), tp["width_mm"], tp["neck_w_mm"]
+    s0, s1 = tp["run_s"]
+    zr = zb - rb - 0.5 * (s0 + s1)                        # run / wrap centre height
+    sp = Vc[(np.abs(Vc[:, 0]) < 20.0) & (np.abs(Vc[:, 2] - zr) < 6.0)]
+    ys = 0.5 * (sp[:, 1].min() + sp[:, 1].max()) if len(sp) else yb
+    rs_ = 0.5 * (sp[:, 0].max() - sp[:, 0].min()) if len(sp) else 11.0
+    a = np.linspace(0, 2 * np.pi, 48)
+    parts = []
+    for sx in (1, -1):
+        ring = np.column_stack([np.full(48, sx * xm), yb + (rb + 1.0) * np.cos(a), zb + (rb + 1.0) * np.sin(a)])
+        nr = np.column_stack([np.zeros(48), np.cos(a), np.sin(a)])
+        parts.append(G.ribbon(ring, W, 1.6, nr, step=3.0, caps=False))
+        ya = yb + rb + 1.8                                # the strip down the aft side of the bar to the mitre
+        dz = np.linspace(zb, zb - rb - tp["mitre"]["s"][1], 12)
+        P = np.column_stack([np.full(len(dz), sx * xm), np.full(len(dz), ya), dz])
+        parts.append(G.ribbon(P, W, 1.4, np.tile([0.0, 1.0, 0.0], (len(P), 1)), step=3.0))
+        xr = np.linspace(sx * x1, sx * (rs_ + 1.0), 14)   # the necked run, on the mitre, to the spine
+        P = np.column_stack([xr, np.full(len(xr), ya + 1.5), np.full(len(xr), zr)])
+        parts.append(G.ribbon(P, nw, 1.4, np.tile([0.0, 1.0, 0.0], (len(P), 1)), step=3.0))
+    wrap = np.column_stack([(rs_ + 1.0) * np.cos(a), ys + (rs_ + 1.0) * np.sin(a), np.full(48, zr)])
+    parts.append(G.ribbon(wrap, nw, 1.4, np.column_stack([np.cos(a), np.sin(a), np.zeros(48)]), step=3.0, caps=False))
+    sc.parts = [x for x in sc.parts if x.name != f"cf_guy_loops@t{TORSO}"]
+    sc.add_part(f"cf_guy_loops@t{TORSO}", G.concat(parts), "webbing", group="attach", torso=float(TORSO),
+                modes=("pack", "pack_haul", "frame", "frame_haul"),
+                label="B-25 bridle (38 mm): sleeves x 26.5-64.5, mitre under each sleeve, run necked to 25 mm, spine "
+                      "wrap (BL-043 B25-TOPO)")
+    return {"sleeve_x": xm, "run_z": round(zr, 1), "spine_r": round(rs_, 1), "spine_y": round(ys, 1)}
+
+
 def roll_clip_tails(sc, state: str) -> dict:
     """BL-031: the roll-clip tails at their real length for the load state (``strap_tails.roll_row``), rolled into a
     25 mm elastic keeper below each side-release buckle (the buckle's ladder side, tail pulled down the gusset)."""
@@ -1304,7 +1432,9 @@ def finish(sc, state: str, meat: bool = True, lid: bool = False, open_lid: bool 
     r = F.REVS[F.REVISION]
     if r.get("crown_lid") and lid and rev["guys"].get("bar"):
         sc.report["rev3"] = crown_lid(sc, rev["guys"]["bar"], open_lid, state)
-    if r.get("crown_kits"):
+    if r.get("crown_kits"):                   # BL-044: the release's clips, hose ports and B-25 (rev 3)
+        sc.report["bl044"] = {"clips": rev3_clips(sc, sk), "hose": rev3_hose_ports(sc, sk),
+                              "b25": rev3_b25(sc, rev["guys"])}
         sc.report["bl031"] = roll_clip_tails(sc, state)
     rev["door"] = door_rev1(sc)              # last: the door lies on everything built above
     sc.report["rev1"] = rev
@@ -1347,12 +1477,16 @@ def scene(state: str = "sixday", carry: bool = False, level: int = 2, name: str 
         cap["pocket"] = SimpleNamespace(DOOR=dict(CO2.DOOR), DOOR_POCKET=dict(CO2.DOOR_POCKET))
         return o_pocket(S, CO2)
     VC._door_open, VB1.door_pocket_parts = see_door, see_pocket
+    hose0 = (VB1.IMP2_PORT_Z, VB1.IMP2_FORWARD)
+    if F.REVS[F.REVISION].get("crown_kits"):             # BL-044: rev 3 hose port (DECISION HOSE-LOW), hose forward
+        VB1.IMP2_PORT_Z, VB1.IMP2_FORWARD = float(_pattern().HOSE_Z), True
     try:
         sc = CP.s15_scene(state, carry, p, name or f"corrie_f_{state}{'_carry' if carry else ''}", shell=SHELL,
                           torso=TORSO, force=force, with_pouch=with_pouch, skin_hook=d2_recut,
                           scene_params=viz_params(), pouch_soft=POUCH_SOFT)
     finally:
         VC._door_open, VB1.door_pocket_parts = o_open, o_pocket
+        VB1.IMP2_PORT_Z, VB1.IMP2_FORWARD = hose0
         PV.viz_door = False
         if old is not None:
             studio.LEGACY_WRAPS = old
@@ -1426,7 +1560,7 @@ SHOTS = {
     "frame_bare": {"scene": "full", "view": {"az": -38, "el": 10, "fov": 24, "fstop": 11, "frame": "pack"},
                    "state": {"mannequin": True, "mode": "frame"},
                    "caption": "Bag off: the H1 frame, crown, spreader and belt B",
-                   "sub": "BL-027 body, 28 mm IM3 cheeks; B-25 guy bridle on the top bar; crown at 19 in"},
+                   "sub": "BL-027 body; 38 mm B-25: sleeves, mitre, necked run, spine wrap"},
     "addons_on": {"scene": "full_carry", "view": {"az": 38, "el": 12, "fov": 24, "fstop": 11, "box": BOX, "zoom": 1.4},
                   "state": PK, "caption": "Add-ons on: tripod under W1-W3 (right), scope pod (left), crown lid",
                   "sub": "CORRIE F rev 3, full load; B-26 keeper cord over the tripod"},
@@ -1443,7 +1577,7 @@ SHOTS = {
     "roll": {"scene": "sixday", "view": {"az": -32, "el": 22, "fov": 18, "fstop": 8, "at": [0.0, 150.0, 610.0],
                                          "span": 560}, "state": {"mannequin": True, "lid": False},
              "caption": "Rolled closure, crown lid off, 6-day load",
-             "sub": "Roll ends bent down to clip tabs 150 mm below the collar seam; port guys inside"},
+             "sub": "Roll ends to the RTM-tab buckles 201 mm under the collar seam; W3 outermost"},
     "lid": {"scene": "sixday", "view": {"az": -34, "el": 20, "fov": 18, "fstop": 8, "box": LID_BOX, "zoom": 1.0},
             "state": PK, "caption": "Crown lid close-up: one strap line from the bar over the lid to the bag",
             "sub": "B-29 5.0 L lid; 25 mm B-28 crown straps, a lock at each end, tails in keepers"},
