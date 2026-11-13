@@ -597,6 +597,19 @@ def pad_seat() -> dict:
 
 # ---- weight table
 SPINE_TOTAL_G = 3495.6          # geometry.yaml weight.total_g (released SPINE, belt M)
+SPINE_REBOOK_BASE_G = 3523.7    # geometry.yaml weight.total_g as regenerated 2026-11-09 (commit ec83099, "SPINE 3496 ->
+#                                 3524 g"): the total the ledger's booking reconciliation (about 1 g) was set against.
+#                                 BL-035: any later re-booking of geometry.yaml's shared rows on material records is
+#                                 carried by its own weight_table row (spine_rebooked_g), so it cannot hide in the
+#                                 reconciliation row (ledger: "a balancing row, not a hidden part").
+
+
+def spine_rebooked_g() -> float:
+    """BL-035: geometry.yaml weight.total_g now minus SPINE_REBOOK_BASE_G (shared rows re-booked on records since
+    2026-11-09: BL-034 stainless US tri-glides, BL-035 hook keepers, lifter tri-glides, torso-adjust cam and toggle)."""
+    import yaml
+    g = yaml.safe_load((HERE.parent / "geometry.yaml").read_text())["weight"]["total_g"]
+    return round(float(g) - SPINE_REBOOK_BASE_G, 1)
 SPINE_SIDE_POCKETS_G = 60.3     # geometry.yaml weight.rows "floating side pockets x2"
 SPINE_B09_G = 10.9              # panels.yaml B-09 mass_g_total (inside the main-bag fabric row)
 BELT_C0_BODY_G = 165.0          # hipbelt_results.json bom.C0.total_g (current belt body, same method as belt B)
@@ -685,6 +698,8 @@ def weight_table(size: str = "M", c: BC.Concept | None = None, spec: str | None 
     hip_p = hl["L"]["mass_g"] + (hl["R"]["mass_g"] if hl["R"] else 0.0)
     rows = [
         ("SPINE released pack (belt M)", SPINE_TOTAL_G, "geometry.yaml weight.total_g"),
+        ("SPINE shared rows re-booked on material records since 2026-11-09 (BL-034 / BL-035)", spine_rebooked_g(),
+         "corrie.spine_rebooked_g: geometry.yaml weight.total_g - SPINE_REBOOK_BASE_G"),
         ("CORRIE body group vs SPINE body group", body - spine_body, "corrie.build() vs bag_concepts.spine_build(), same metric"),
         ("SPINE floating side pockets (CORRIE has wings instead)", -SPINE_SIDE_POCKETS_G,
          "geometry.yaml row; CORRECTION: the rev B 3725 g total still carried them"),

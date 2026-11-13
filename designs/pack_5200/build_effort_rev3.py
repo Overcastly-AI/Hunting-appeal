@@ -15,9 +15,10 @@ released pattern with its stitch length and its HOURS-model time. This module su
 * every op is given a weight configuration (base / as_hunted / meat_trip) from the pattern pieces it sews
   (``RevSet.meta`` kit: base -> base, as_hunted / addon -> as_hunted, meat_trip -> meat_trip; an op that sews any base
   piece is base; prep and finish ops are base);
-* ops that sew the same webbing part twice (the step-2 / step-4 op and the step-7 webbing op on the same id with the
-  same stitch length: IME, T3, HE) are counted once (FOUND in BL-034: the package double-counts them; reported, the
-  package is part C's).
+* ops that sew the same webbing part twice used to be counted once here (FOUND in BL-034 part A: IME, T3, LLT in
+  step 7 repeated steps 2 / 3). BL-034 part C removed them from the package itself (each part is box-sewn by one op,
+  ``tests/test_mfg_corrie_f_rev3.py::test_no_webbing_part_is_box_sewn_twice``), so every op counts now; the old
+  same-id / same-length heuristic also mis-flagged a step-7 op that sews the remaining pieces of a part (B-28t).
 
 The result is cached in ``analysis/build_effort_rev3.json`` so that the ledger (``corrie_f.parts``) does not rebuild
 the pattern on every call; ``tests/test_build_effort_rev3.py`` checks the cache against a fresh run.
@@ -53,17 +54,12 @@ def compute() -> dict:
         meta.setdefault(w["id"], "as_hunted" if "as hunted" in w["kit"] or w["kit"].startswith("crown")
                         else w["kit"] if w["kit"] in KIT_CFG else "base")
     known = set(meta)
-    seen, rows = {}, []
+    rows = []
     for o in oplist:
         ids = _ids(o, known)
         kits = {KIT_CFG.get(meta[i], "base") for i in ids}
         cfg = "base" if (not kits or "base" in kits) else ("as_hunted" if "as_hunted" in kits else "meat_trip")
-        dup = None
-        if o.step.startswith("7 ") and o.length_mm and len(ids) == 1 and (ids[0], round(o.length_mm)) in seen:
-            dup = seen[(ids[0], round(o.length_mm))]
-        if o.length_mm and len(ids) >= 1:
-            for i in ids:
-                seen.setdefault((i, round(o.length_mm)), o.seq)
+        dup = None                  # BL-034 part C: the package has no duplicate ops (see the module docstring)
         g = 0.0
         if o.thread_id.startswith("bonded") and o.length_mm:
             g = o.length_mm / 1000.0 * M.THREAD_FACTOR * float(M.mat(o.thread_id).require("mass_g_m"))

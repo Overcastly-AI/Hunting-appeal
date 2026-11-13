@@ -1,8 +1,8 @@
 {
   "recommendation": "branch_fairlead",
-  "delta_g": 113.28479179323278,
-  "pack_g": 2978.7275117932327,
-  "pack_lb": 6.566970056822677,
+  "delta_g": 116.98479179323279,
+  "pack_g": 2982.427511793233,
+  "pack_lb": 6.575127160523517,
   "sf_min": 2.96592494800924,
   "sf_fatigue_min": 1.668332783255197,
   "sf_creep_min": 3.559109937611088,
@@ -228,7 +228,7 @@
     {
       "id": "fairlead",
       "short": "Branch fairlead",
-      "mass_g": 113.28479179323278,
+      "mass_g": 116.98479179323279,
       "detach_s": 34,
       "attach_s": 70,
       "sf_show": 1.668332783255197,
@@ -325,8 +325,8 @@
     "webbing eyes, net of old stubs": -6.720000000000006,
     "bag-side straps": 17.92,
     "B-01 swell patches": 12.320000000000002,
-    "elastic keepers": 3.5999999999999996,
-    "lifter tri-glide keepers": 6.0,
+    "elastic keepers": 8.100000000000001,
+    "lifter tri-glide keepers": 5.2,
     "old LINK hardware removed": -30.8
   },
   "cost_usd": 47.849773696,

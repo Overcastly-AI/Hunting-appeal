@@ -97,6 +97,9 @@ B28_BOX = (21.0, 20.0)           # DECISION B28-FACE (BL-034): the B-28 front lo
 #                                  of the 2 x 30 fold), sewn through tab + band in one pass; a 25 x 25 box would run off a
 #                                  25 mm tab. Centre 15 mm under the lock bar (mid of the 30 mm doubled tab).
 B28_BAR_DROP = F.CROWN_TAB / 4.0  # 15 mm
+LLT_BOX = (21.0, 25.0)           # BL-035: the guy ladder-lock tab box-X, sewn through LLT + B-22 + B-02h in one pass, so the
+#                                  LLT piece and the B-02h mark are one box (25 mm webbing less 2 mm a side x 25 mm); the
+#                                  B-02h mark was drawn 25 x 25 (would run off the 25 mm tab)
 B11_W, B11_H = 30.0, 50.0        # panels.yaml B-11
 B11_BOW_Z = (470.0, 560.0)       # ASSUMPTION B11-PLACE: bow riser tabs, stacked on the riser line 40 mm forward of the aft
 B11_BOW_IN = 40.0                #   corner seam (the cam sits in IMP-8 at the right gusset's aft foot, z 35-150; a 30-33 in
@@ -455,7 +458,7 @@ def build_shell(rs: RevSet, c):
     for sx in (-1, 1):
         HB.add_internal_line(_rect(sx * x22 - B22_WH[0] / 2, S(B22_XZ[1]) - B22_WH[1] / 2, sx * x22 + B22_WH[0] / 2,
                                    S(B22_XZ[1]) + B22_WH[1] / 2), "placement", "B-22 guy anchor (INSIDE)", closed=True)
-        _box_x(HB, sx * x22, S(B22_XZ[1]), 25, 25, "B-22 / guy LLT")
+        _box_x(HB, sx * x22, S(B22_XZ[1]), LLT_BOX[0], LLT_BOX[1], "B-22 / guy LLT")
         # BL-034 DECISION B28-FACE: OUTSIDE, 21 x 20 box (the B-28t box), lock bar at z 700
         yb = S(B28_TAB_Z)
         HB.add_internal_line(_rect(sx * F.CROWN_X - 12.5, yb - 2 * B28_BAR_DROP, sx * F.CROWN_X + 12.5, yb), "placement",
@@ -973,9 +976,20 @@ def build_webbing(rs: RevSet, c):
     base.size = KIT
     rs.add(base, "webbing", "13 straps + webbing", kit="as_hunted", notes="graded per crown kit S / M / L")
     rs.graded["B-28"] = g
-    _web(rs, "B-28t", "B-28 lock tab (front on the hinge band, rear through the B-25 toggle, B-25 second fold)",
-         F.CROWN_TAB, 6, folds=[(F.CROWN_TAB / 2, "fold round the lock bar / toggle")],
-         boxes=[(F.CROWN_TAB * 0.75, 20, "box-X")], kit="as_hunted", source="corrie_f.CROWN_TAB, 3 per strap")
+    # BL-035: B-28t split. The two lock tabs per strap (front on the hinge band, rear carrying the POM toggle) keep the
+    # 21 x 20 box (B28-FACE); the third tab, the B-25 second fold the rear toggle passes into, is its own piece B-28s
+    # with the B25-BOX rule: 21 x 15 at the tip end leaves the 13 mm loop the 30 x 8 x 5 toggle needs (a 21 x 20 box
+    # at 0.75 x tab left 5 mm: the toggle did not pass).
+    _web(rs, "B-28t", "B-28 lock tab (front + rear)", F.CROWN_TAB, 4,
+         folds=[(F.CROWN_TAB / 2, "fold round the lock bar")],
+         boxes=[(F.CROWN_TAB * 0.75, B28_BOX[1], "box-X")], kit="as_hunted",
+         note="front tab: OUTSIDE the hinge band; rear tab: POM toggle sewn across the tip",
+         source="corrie_f.CROWN_TAB, 2 per strap (front + rear lock)")
+    _web(rs, "B-28s", "B-28 toggle loop (B-25 second fold)", F.CROWN_TAB, 2,
+         folds=[(F.CROWN_TAB / 2, "fold: toggle loop")],
+         boxes=[(_tip_box_y(F.CROWN_TAB / 2, B25_BOX[1]), B25_BOX[1], "box-X 21x15 tip")], kit="as_hunted",
+         note="sewn on the B-25 tab; 13 mm loop passes the POM toggle (B25-BOX rule)",
+         source="corrie_f.CROWN_TAB, 1 per strap (the B-25 second fold)")
     _web(rs, "K-28", "B-28 tail keeper (25 mm elastic loop)", KEEPER_CUT, 4, mat=ELASTIC,
          folds=[(15.0, "lap 15 mm, zigzag")], kit="as_hunted", source="corrie_f.crown_kit_straps keepers_per_strap x 2")
     # W1-W3 cut for carry + meat-trip haul extenders (strap_tails.wrap_rows, kit M; W3 per kit)
@@ -1052,7 +1066,7 @@ def build_webbing(rs: RevSet, c):
          boxes=[(20.0, 25, "toggle loop box-X")], note="free end through the heavy ladder lock; heat-seal",
          source="attach_system.GUY cut_mm")
     _web(rs, "LLT", "guy ladder-lock tab on B-22", 70.0, 2, folds=[(35.0, "fold round the lock bar")],
-         boxes=[(52.0, 25, "box-X through B-22 + B-02h")], source="attach_system.drawing_pieces LLT")
+         boxes=[(52.0, LLT_BOX[1], "box-X through B-22 + B-02h")], source="attach_system.drawing_pieces LLT")
     _web(rs, "K-G", "guy tail keeper (25 mm elastic)", KEEPER_CUT, 2, mat=ELASTIC, folds=[(15.0, "lap 15 mm")],
          source="ledger 'guy tail elastic keepers x2'")
     _web(rs, "GBL", "guy bar loop (POM toggle)", 170.0, 2, folds=[(85.0, "fold round the bar")],
@@ -1076,6 +1090,11 @@ def build_webbing(rs: RevSet, c):
                        "source": "corrie_f.hip_reach_pockets (w + pleat + 60)"})
     rs.webbing.append({"id": "E5-cord", "use": "pole quiver grip cord", "material_id": "shock_cord_3mm",
                        "length_mm": F._A().POLE["cord_m"] * 1000.0, "qty": 1, "kit": "base", "source": "evolve.POLE"})
+    mk = F.muzzle_keeper()               # BL-035: rifle muzzle keepers through the B-11 muzzle tabs (both gussets)
+    rs.webbing.append({"id": "MK-cord", "use": "rifle muzzle keeper, 3 mm shock cord loop through the 2 B-11 muzzle tabs "
+                                          "+ spring cord lock (one per gusset)", "material_id": "shock_cord_3mm",
+                       "length_mm": mk["cut_mm"], "qty": mk["qty"], "kit": "base",
+                       "source": "corrie_f.muzzle_keeper (ASSUMPTION MUZZLE-CORD)"})
     # hardware (from the ledger rows; counts only)
     rs.hardware += [
         {"item": "#10 coil zip, door, 2 sliders + 2 cord pulls", "material_id": "coil_zipper_10",
@@ -1092,6 +1111,8 @@ def build_webbing(rs: RevSet, c):
          "length_mm": None, "qty": 6},
         {"item": "25 mm side-release buckles (roll top)", "material_id": "-", "length_mm": None, "qty": 2},
         {"item": "cord lock (E-5)", "material_id": "cord_lock_spring", "length_mm": None, "qty": 1},
+        {"item": "cord locks: rifle muzzle keepers (2, BL-035)", "material_id": "cord_lock_spring", "length_mm": None,
+         "qty": F.muzzle_keeper()["qty"]},
     ]
 
 
@@ -1197,7 +1218,7 @@ RECON = [
     ("add-on scope_pod", "pattern", ["A1-a", "A1-b", "A1-d"], [], "add-on (as hunted)"),
     ("add-on meat_liner", "pattern", ["MS-a", "MS-b", "MS-c", "MS-s"], [], "add-on (meat trip)"),
     ("add-on crown_lid", "pattern", ["B-29a", "B-29b", "B-29c", "B-29d", "B-29e", "B-29f", "B-29g"], [], "+ #5 zip"),
-    ("add-on crown_straps", "webbing", [], ["B-28", "B-28t", "K-28"], "+ locks, toggles"),
+    ("add-on crown_straps", "webbing", [], ["B-28", "B-28t", "B-28s", "K-28"], "+ locks, toggles"),
     ("F-01 rain fly", "pattern", ["F-01a", "F-01b"], [], "drafted by BL-033"),
     ("F-02 fly base pocket", "pattern", ["F-02"], [], ""),
     ("rain fly: fly elastic hem", "webbing", [], ["F-EL"], "+ #5 zip, slider, tether"),
@@ -1250,6 +1271,7 @@ RECON = [
     ("BL-031: roll-top clip tail keepers", "webbing", [], ["K-RT"], ""),
     ("BL-034 records:", "hardware", [], [], "hardware / elastic re-booked on the BL-034 records"),
     ("BL-034 thread:", "hardware", [], [], "thread from the op lengths (build_effort_rev3)"),
+    ("BL-035: rifle muzzle keepers", "webbing", [], ["MK-cord"], "+ 2 cord locks"),
 ]
 
 

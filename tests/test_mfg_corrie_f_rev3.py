@@ -1,4 +1,4 @@
-"""BL-032 part B: CORRIE F rev 3 manufacturing package (designs/pack_5200/mfg_corrie_f_rev3.py)."""
+"""BL-032 part B / BL-034 part C: CORRIE F rev 3 manufacturing package (designs/pack_5200/mfg_corrie_f_rev3.py)."""
 import csv
 import math
 import sys
@@ -141,9 +141,118 @@ def test_package_writes_and_tech_pack_builds(pk, tmp_path):
     with (tmp_path / "op_sequence.csv").open() as fh:
         assert sum(1 for _ in csv.DictReader(fh)) == len(pk["ops"])
     sk = M.sketches(pk, tmp_path)
-    pdf = M.tech_pack(pk, sk, tmp_path / "tp.pdf")
+    design = M.techpack_design(pk, sk)
+    assert M.MF.missing_sections(design) == []
+    pdf = M.MF.tech_pack(design, tmp_path / "tp.pdf", strict=True)
     import pypdf
     r = pypdf.PdfReader(str(pdf))
     assert len(r.pages) >= 20
     text = " ".join((p.extract_text() or "") for p in r.pages[:3])
     assert "Tech pack" in text and "Ledger reconciliation" in text
+
+
+# ---------------------------------------------------------------------------- BL-034 part C
+def test_contract_records_come_from_huntkit_manufacturing(pk):
+    from huntkit.manufacturing import BOMLine, SewingOp
+    assert M.SewingOp is SewingOp and M.BOMLine is BOMLine
+    assert all(isinstance(o, SewingOp) for o in pk["ops"]) and all(isinstance(b, BOMLine) for b in pk["bom"])
+
+
+def test_record_prices_win_over_assumptions(pk):
+    for k in ("slider_10", "slider_5", "cam_25mm_al", "triglide_25mm", "pom_toggle", "elastic_25mm", "elastic_6mm"):
+        assert k not in M.PRICE_ASSUMED, k
+    for b in pk["bom"]:
+        if b.material_id in ("slider_10", "slider_5", "cam_25mm_al", "pom_toggle") and b.section == "hardware":
+            assert b.unit_cost_usd == pytest.approx(M.MAT.load(b.material_id).cost_usd["value"]), b.item
+        if b.material_id.startswith("elastic") and b.section == "webbing":
+            assert b.unit_cost_usd == pytest.approx(M.MAT.load(b.material_id).cost_usd["value"]), b.item
+
+
+def test_us_backstop_is_the_stainless_triglide(pk):
+    ss = [b for b in pk["bom"] if b.section == "hardware" and "STAINLESS" in b.item]
+    assert len(ss) == 1 and ss[0].material_id == "triglide_25mm" and ss[0].qty == 2
+    assert ss[0].unit_cost_usd == M.TG_SS_USD and ss[0].unit_cost_usd > 5 * M.MAT.load("triglide_25mm").cost_usd["value"]
+    assert "US-tg" in ss[0].source and "US1/US2 backstop" in ss[0].source
+    assert "US-BS" in {t["id"] for t in pk["tests"]}
+
+
+def test_ledger_hardware_rows_all_mapped(pk):
+    ck = M.checks(pk)
+    assert ck["unmapped_hardware"] == []
+    rows = [t for t, (_k, how, _l) in M.ledger_map(pk["ctx"]).items()]
+    assert any(t.startswith("BL-034 records:") for t in rows) and any(t.startswith("BL-034 thread:") for t in rows)
+
+
+def test_op_407_released_and_b11_from_the_pattern(pk):
+    ck = M.checks(pk)
+    assert ck["holds"] == []
+    o = next(o for o in pk["ops"] if o.seq == "4.07")
+    assert "B-11" in o.operation and "HOLD" not in o.operation + o.notes
+    b11 = pk["ctx"].rs.geo["b11"]
+    assert o.pieces.startswith(f"B-11 x{2 * b11['per_gusset']}")
+    w, h = M._b11_box(pk["ctx"].rs)
+    assert o.length_mm == pytest.approx(2 * b11["per_gusset"] * M.AS.box_x(w, h)["path_mm"], abs=0.2)
+
+
+def test_no_webbing_part_is_box_sewn_twice(pk):
+    seen: dict = {}
+    for o in pk["ops"]:
+        if "box" in o.stitch_type and o.length_mm:
+            for x in o.pieces.split(","):
+                t, _, n = x.strip().partition(" x")
+                seen[t] = seen.get(t, 0) + (int(n) if n.isdigit() else 1)
+    qty = {}
+    for w in pk["ctx"].rs.webbing:
+        if not ("kit S" in w["kit"] or "kit L" in w["kit"]):
+            qty[w["id"]] = qty.get(w["id"], 0) + w["qty"]
+    for pid, n in seen.items():
+        if pid in qty:
+            assert n <= qty[pid], (pid, n, qty[pid])
+    titles = [o.operation for o in pk["ops"]]
+    for pid in ("IME", "T3", "LLT", "HE"):                     # the old 7.15 / 7.19 / 7.22 (+ HE 7.18) are gone
+        assert not any(t.startswith(f"{pid}: ") for t in titles), pid
+
+
+def test_thread_in_the_bag_excludes_cone_waste(pk):
+    for b in (b for b in pk["bom"] if b.section == "thread"):
+        m_sewn = M.MF.thread_metres(pk["ops"], M.THREAD_FACTOR)[b.material_id]
+        assert b.qty == pytest.approx(m_sewn * (1 + M.THREAD_WASTE), abs=0.06)
+        g = m_sewn * M.MAT.load(b.material_id).require("mass_g_m")
+        assert f"= {g:.1f} g in the bag (no cone waste)" in b.notes
+    ck = M.checks(pk)
+    assert ck["thread_bag_g"] == pytest.approx(sum(
+        M.MF.thread_metres(pk["ops"], M.THREAD_FACTOR)[t] * M.MAT.load(t).require("mass_g_m")
+        for t in M.MF.thread_metres(pk["ops"], M.THREAD_FACTOR) if t.startswith("bonded")), abs=0.01)
+
+
+def test_load_points_use_the_pattern_boxes(pk):
+    rs = pk["ctx"].rs
+    lp = pk["load_points"]
+
+    def sizes(part):
+        return {tuple(float(v) for v in r["pattern"].split("box-X ")[1].split(" mm")[0].split(" x "))
+                for r in lp if r["part"] == part and r["pattern"].startswith("box-X")}
+    for pid in ("B-24", "B-25", "US", "IM1", "W3", "TG", "GBL"):
+        drawn = {(w, h) for w, h, _ in M.boxes_of(rs.pieces[pid])}
+        assert drawn and sizes(pid) == drawn, pid
+    hook = next(r for r in lp if r["point"] == "B-24 float link: hook end")
+    hw, hh, _ = next(b for b in M.boxes_of(rs.pieces["B-24"]) if "hook" in b[2])
+    assert hook["pattern"].startswith(f"box-X {hw:.0f} x {hh:.0f} mm")
+    band = {(w, h) for w, h, lab in M.boxes_of(rs.pieces["B-02h"]) if "B-28" in lab}
+    assert sizes("B-02h") == band
+    assert not [r for r in lp if "ASSUMPTION" in (r["note"] or "")]
+
+
+def test_ops_quote_the_pattern_placements(pk):
+    g = pk["geo"]
+    kw = next(o for o in pk["ops"] if o.operation.startswith("Aft corner seams"))
+    for zz in g["kw_z"].values():
+        assert f"{zz['R']:.0f}" in kw.notes and f"{zz['L']:.0f}" in kw.notes
+    assert "KW-PLACE" not in kw.notes
+    fp = next(o for o in pk["ops"] if o.operation.startswith("Gusset flat work: FP"))
+    assert "clamp" not in fp.notes and f"{g['fp_margin']}" in fp.notes
+    f02 = next(o for o in pk["ops"] if o.operation.startswith("F-02 fly base pocket"))
+    assert "F02-PLACE" not in f02.notes and "drawn" in f02.notes
+    b28 = next(o for o in pk["ops"] if o.operation.startswith("B-28 front tabs"))
+    bw, bh = next((w, h) for w, h, lab in M.boxes_of(pk["ctx"].rs.pieces["B-02h"]) if "B-28" in lab)
+    assert f"{bw:.0f} x {bh:.0f} mm" in b28.notes and b28.length_mm == pytest.approx(2 * M.AS.box_x(bw, bh)["path_mm"], abs=0.2)

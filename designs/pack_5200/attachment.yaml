@@ -17,8 +17,8 @@ swells_accepted: true
 bag_on_required: true
 bag_off_required: true
 im1_bag_clip: false
-delta_g: 113.3
-pack_g: 2979
+delta_g: 117
+pack_g: 2982
 sf_min: 2.966
 sf_fatigue_min: 1.668
 top_anchor: crown_hood_plus_top_guys

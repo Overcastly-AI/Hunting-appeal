@@ -1224,6 +1224,11 @@ def _analysis_json(name):
     return json.loads((HERE / "analysis" / name).read_text())
 
 
+THREAD_FRAC, LABELS_G = 0.03, 8.0   # misc row: thread ~3 % of soft goods + 8 g labels (ASSUMPTION)
+BAG_SOFT = ("main bag", "accents", "fly", "pockets", "meat", "reinforcement")   # sub_mass keys sewn into the bag
+_MISC_THREAD: dict = {}
+
+
 def weight_budget(P, Hf, diag, wraps, info):
     """PRODUCTION base weight: printed branch frame + Sandwich v2 spreader + fairlead attachment + under-straps + soft
     goods (size M belt, J-straps, rain fly (owner: counts), meat harness). Lid, rifle boot, posts excluded.
@@ -1254,8 +1259,9 @@ def weight_budget(P, Hf, diag, wraps, info):
         float(sp["chosen"]["mass_g"]), f"analysis/spreader_results.json chosen.mass_g ({sp['chosen_key']}; owner "
         f"{'2026-11-06, 7 mm core' if sp['chosen_key'] == 'sw110c7d' else '2026-11-05'})")
     row("torso adjust (not in the frame line)", "3:1 pulley webbing 25 mm x 1.4 m, metal cam buckle, pawl release cord + strap toggle",
-        hw("poly_webbing_25mm", length_m=1.4) + 12 + hw("dyneema_cord_2mm", length_m=0.6) + 3,
-        "records; cam 12 g + toggle 3 g ASSUMPTION")
+        hw("poly_webbing_25mm", length_m=1.4) + hw("cam_25mm_al") + hw("dyneema_cord_2mm", length_m=0.6) + hw("pom_toggle"),
+        "records: poly_webbing_25mm, cam_25mm_al (no pull tab, ASSUMPTION TA-CAM), dyneema_cord_2mm, pom_toggle "
+        "(BL-035; were cam 12 g + toggle 3 g ASSUMPTIONs)")
     row("main bag", "fabric panels (B-*, D-01, collar, tabs)", sub_mass["main bag"], "computed: cut area x gsm")
     row("main bag", "#10 coil diagonal zip + 2 sliders", hw("coil_zipper_10", length_m=(diag["zip_len"] + 60) / 1000) + 12,
         "coil_zipper_10 g/m; sliders 6 g ea ASSUMPTION")
@@ -1318,7 +1324,19 @@ def weight_budget(P, Hf, diag, wraps, info):
     row("haul wraps (= compression)", "3 aluminium G-hooks (HAUL family) + 3 ladder locks", 3 * 4 + 3 * hw("ladder_lock_25mm"),
         "G-hook 4 g ASSUMPTION (no record); ladder lock record")
     soft = [k for k in sub_mass if k not in ("carry", "lid", "spreader", "attach_system")]
-    row("misc", "thread (~3 % of soft goods) + labels", 0.03 * sum(sub_mass[k] for k in soft) + 8, "ASSUMPTION")
+    row("misc", "thread (~3 % of soft goods) + labels", THREAD_FRAC * sum(sub_mass[k] for k in soft) + LABELS_G, "ASSUMPTION")
+    # BL-035: the bag's share of that thread, so a bag that books its own thread (CORRIE F rev 3: build_effort_rev3, op
+    # stitch lengths) can take it out of misc without a double count (weight_rollup_v2.corrie_f_step)
+    bag = [k for k in soft if k in BAG_SOFT]
+    _MISC_THREAD.clear()
+    _MISC_THREAD.update({
+        "thread_frac": THREAD_FRAC, "labels_g": LABELS_G,
+        "soft_goods_g": {k: round(sub_mass[k], 1) for k in soft},
+        "bag_soft_keys": bag,
+        "bag_thread_g": round(THREAD_FRAC * sum(sub_mass[k] for k in bag), 1),
+        "other_thread_g": round(THREAD_FRAC * sum(sub_mass[k] for k in soft if k not in bag), 1),
+        "note": "misc row = thread_frac x soft goods + labels (ASSUMPTION); bag_thread_g is the share on the bag's "
+                "pieces (main bag, accents, fly, pockets, meat ports, bag-side spreaders)"})
     tot = sum(r["mass_g"] for r in rows)
     carry = sub_mass["carry"] + hw("poly_webbing_25mm", length_m=0.6) + hw("ladder_lock_25mm")
     lid = sub_mass["lid"] + hw("aquaguard_zipper_8", length_m=0.26) + 4 * hw("fidlock_magnetic_buckle_25mm") \
@@ -1521,6 +1539,7 @@ def build():
                    "gap_g": round(total - 2268, 1),
                    "weight_plan": "analysis/bag_weight_plan.md (bag-side savings, owner choices)",
                    "v31_tube_baseline": V31_TUBE_BASELINE,
+                   "misc_thread": dict(_MISC_THREAD),
                    "rifle_boot_optional_g": carry, "lid_accessory_g": lid_g, "extension_posts_accessory_g": 60,
                    "excluded_from_base": ["rifle boot (switchable, either side)", "lid / hip pack accessory",
                                           "extension posts accessory (ASSUMPTION ~60 g)"],

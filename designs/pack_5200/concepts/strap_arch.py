@@ -45,6 +45,7 @@ for _p in (ROOT, PACK, PACK / "concepts"):
     if str(_p) not in sys.path:
         sys.path.insert(0, str(_p))
 
+from huntkit import materials as _MAT  # noqa: E402
 from huntkit.gendesign import attach_system as AS  # noqa: E402
 from huntkit.gendesign import meat_haul as MH  # noqa: E402
 from huntkit.mass import ledger as L  # noqa: E402
@@ -84,12 +85,15 @@ G_HOOK_HAUL_G = 4.0   # corrie.G_HOOK (weight_pass W.G_HOOK_G): 4 g ASSUMPTION, 
 #   pull 5 to break (>= 1200 N), plus field test FT-S1 (hook stays on a slack eye through 1 km of brush).
 G25R_G, G25R_N, G25R_YIELD_N = 8.0, 1200.0, 900.0
 PROOF_MEAT_N = 910.0   # meat-strap proof load, DECISIONS 2026-11-10 (BL-016, tests_physical/TEST_PLAN.md)
-# ASSUMPTION: 25 mm aluminium cam buckle: 13 g (Austere Mfg 25 mm cam 12.2 g, maker-reseller listing, + 1 g glove
-#   pull tab); slip >= 1100 N, the same slip ASSUMPTION the 38 mm cam carries today (meat_haul.CAM_N). No maker
+# 25 mm aluminium cam buckle: cam_25mm_al record 12.2 g (BL-034 part B) + ASSUMPTION CAM-TAB 1.0 g glove pull tab
+#   (25 mm webbing / cord loop on the lever; settled by weighing the first tabbed cam) = 13.2 g (BL-035; was 13.0 g
+#   typed); slip >= 1100 N, the same slip ASSUMPTION the 38 mm cam carries today (meat_haul.CAM_N). No maker
 #   publishes a slip rating; a 25 mm alloy cam is listed at 450 kg break (Jimmy Green, secondary). Settled by: the
 #   open IM/US hardware proof test (meat_haul_modes.md "still open"), run on 25 mm webbing: 5 cams, wet and at -20 C,
 #   pass = no slip > 5 mm below 1100 N.
-CAM25_G, CAM25_N = 13.0, CAM_N
+CAM_PULL_TAB_G = 1.0   # ASSUMPTION CAM-TAB (cam_25mm_al record note: "about 1 g glove pull tab")
+CAM25_G, CAM25_N = float(_MAT.load("cam_25mm_al").require("mass_g")) + CAM_PULL_TAB_G, CAM_N
+#   CAM_N is the record's slip_load_n too (cam_25mm_al 1100 N, an ASSUMPTION there)
 # ASSUMPTION: a box-X bartack on 25 mm webbing holds the 38 mm value scaled by width (2700 x 25/38). Settled by the
 #   same bartack proof test that settles BARTACK_38_N.
 BARTACK25_N = BARTACK38_N * 25.0 / 38.0
@@ -786,7 +790,7 @@ def report(shots: list) -> str:
       "no longer exists; it is the same in base, as hunted and meat trip because no option moves a part between "
       "configurations. Function split rule for the bar chart: a part serving n functions books g/n to each.\n")
     a("### (a) lighten in place\n")
-    a(f"IM1-IM3: 38 -> 25 mm webbing (same cuts), 25 mm Al cam (ASSUMPTION {CAM25_G:.0f} g, slip {CAM25_N:.0f} N), left "
+    a(f"IM1-IM3: 38 -> 25 mm webbing (same cuts), 25 mm Al cam ({CAM25_G:.1f} g: record + 1 g pull tab ASSUMPTION, slip {CAM25_N:.0f} N), left "
       f"end a sewn loop girth-hitched on the left fairlead eye, so 3 rated 25 mm G-hooks ({G25R_G:.0f} g, "
       f"{G25R_N:.0f} N) instead of 6 sliding-gate hooks. US1/US2: 25 mm webbing, the same 25 mm cam. B-24: 25 mm "
       f"webbing and the 25 mm rated G-hook. Saves {S['a']['saved_removed_g']:.1f} g; short of 200 g on its own. The "
@@ -909,7 +913,7 @@ def report(shots: list) -> str:
       "not width (changes the R-25 wording). Gated by the cam/hook proof tests below.\n")
 
     a("## 10. Assumptions that govern (each with the test that settles it)\n")
-    a(f"- ASSUMPTION: 25 mm Al cam {CAM25_G:.0f} g, slip >= {CAM25_N:.0f} N. Test: 5 cams on the chosen 25 mm webbing, "
+    a(f"- ASSUMPTION: 25 mm Al cam {CAM25_G:.1f} g (cam_25mm_al record + 1 g pull tab), slip >= {CAM25_N:.0f} N. Test: 5 cams on the chosen 25 mm webbing, "
       "wet and at -20 C, no slip > 5 mm below 1100 N (the open IM/US hardware proof test, now on 25 mm).\n"
       f"- CONFLICT: the meat-strap proof load is {PROOF_MEAT_N:.0f} N (DECISIONS 2026-11-10, BL-016); the 25 mm G-hook's "
       f"published no-set load is {G25R_YIELD_N:.0f} N. Either a 25 mm hook rated >= 910 N no-set is sourced "

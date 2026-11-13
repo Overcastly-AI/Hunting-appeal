@@ -447,14 +447,17 @@ def parts(F: dict) -> list[dict]:
     add(MH.LINK["id"], "float-mode stand-off link (new)", 2, w38, f"38 mm x {MH.link_cut_mm():.0f} mm",
         f"hook end folded {MH.LINK['hook_fold_mm']:.0f} mm round the bed of a rated 38 mm hook, box-X; three loops "
         f"({MH.LINK['loop_open_mm']:.0f} mm opening, {MH.LINK['loop_fold_mm']:.0f} mm of webbing each) with their bed at "
-        f"{gaps} mm from the hook bed, each closed with a 38 x 20 box-X; {MH.LINK['tail_mm']:.0f} mm tail, heat-sealed",
-        "box-X 38 x 38 (hook) + 3 x box-X 38 x 20 (loops), 301", "box", "-",
+        f"{gaps} mm from the hook bed, each closed with a {LINK_LOOP_BOX[0]:.0f} x {LINK_LOOP_BOX[1]:.0f} box-X; "
+        f"{MH.LINK['tail_mm']:.0f} mm tail, heat-sealed",
+        f"box-X {LINK_HOOK_BOX[0]:.0f} x {LINK_HOOK_BOX[1]:.0f} (hook) + 3 x box-X {LINK_LOOP_BOX[0]:.0f} x "
+        f"{LINK_LOOP_BOX[1]:.0f} (loops), 301", "box", "-",
         "hook on the IM3 captive eye (z 520, x +/-115); the bag's T3 hook clips into a loop (float mode only; "
         "stowed in the lid or hipbelt pocket)",
         MH.link_tension(MH.FLOAT_BAG_ENVELOPE_KG), f"{MH.FLOAT_BAG_ENVELOPE_KG:.0f} kg bag on two links at "
         f"{MH.LINK_ANGLE_DEG:.0f} deg x 3.0 (misuse envelope; design case {MH.FLOAT_GEAR_KG:.0f} kg = "
         f"{MH.link_tension(MH.FLOAT_GEAR_KG):.0f} N)",
-        {"box-X (hook end)": bx38["cap_n"], "loop box-X 38 x 20": box_x(38.0, 20.0)["cap_n"],
+        {"box-X (hook end)": box_x(*LINK_HOOK_BOX)["cap_n"],
+         f"loop box-X {LINK_LOOP_BOX[0]:.0f} x {LINK_LOOP_BOX[1]:.0f}": box_x(*LINK_LOOP_BOX)["cap_n"],
          "webbing on hook bed": web_pin(w38), "hook (rated)": HOOK_RATED_N})
     return out
 
@@ -803,12 +806,19 @@ def drawing_pieces() -> list:
     return P
 
 
+# BL-035: the B-24 boxes as drawn ARE the capacity basis (one box size in the pattern, the BOM and the check). 38 mm
+# webbing less 2 mm a side = 34 mm wide; the hook box is 30 mm tall so it fits inside the 45 mm hook fold (7.5 mm clear
+# at the tip and at the hook bed); a 38 x 38 box would run off the webbing and onto the hook bed.
+LINK_HOOK_BOX = (34.0, 30.0)
+LINK_LOOP_BOX = (34.0, 20.0)
+
+
 def link_piece():
     """B-24 float-mode stand-off link, flat cut with fold and stitch lines (owner 2026-11-06, meat_haul.LINK).
     Cut coordinate c from the hook end. The hook end folds at c = hook_fold round the hook bed (finished 0). Loop k is
     pinched from the next loop_fold mm of webbing: it starts at s_k, its apex fold (where the T3 hook sits) is at
     s_k + loop_fold / 2, i.e. at the gap distance g_k from the hook bed in the finished link, and it is closed by a
-    38 x 20 box-X across both plies at its base."""
+    34 x 20 box-X across both plies at its base (LINK_LOOP_BOX; the hook end LINK_HOOK_BOX 34 x 30)."""
     from huntkit.gendesign import meat_haul as MH
     from huntkit.patterns import rect_panel
     L_ = MH.LINK
@@ -818,14 +828,15 @@ def link_piece():
                    labels={"note": "hot-knife cut, heat-seal both ends; rated 38 mm hook (same part as the bag hooks) on the "
                                    "hook-end fold; 301 tex135 7 SPI"})
     p.add_internal_line([(0, hf), (w, hf)], "fold", "fold round the hook bed (finished 0)")
-    _box_x_lines(p, w / 2, hf / 2, w - 4, 30, "hook box-X 38")
+    _box_x_lines(p, w / 2, hf / 2, LINK_HOOK_BOX[0], LINK_HOOK_BOX[1], "hook box-X 34 x 30")
     for k, g_ in enumerate(MH.FLOAT_GAPS_MM):
         s_ = hf + (g_ - lf / 2) + lf * k
         p.add_internal_line([(0, s_), (w, s_)], "fold", f"loop {k + 1} start")
         p.add_internal_line([(0, s_ + lf / 2), (w, s_ + lf / 2)], "fold", f"loop {k + 1} apex: gap {g_:.0f} mm "
                             f"({g_ / 25.4:.1f} in) - T3 hook sits here")
         p.add_internal_line([(0, s_ + lf), (w, s_ + lf)], "fold", f"loop {k + 1} end (meets start)")
-        _box_x_lines(p, w / 2, s_ - 11, w - 4, 20, f"loop {k + 1} base box-X 38 x 20 (both plies, after folding)")
+        _box_x_lines(p, w / 2, s_ - 11, LINK_LOOP_BOX[0], LINK_LOOP_BOX[1],
+                     f"loop {k + 1} base box-X 34 x 20 (both plies, after folding)")
     return p
 
 

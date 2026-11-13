@@ -220,7 +220,7 @@ Checklist = the noise sources owners name (research 3.4) plus the four inferred 
 6. Clicking pin (oval sleeve): pin out, push the old UHMWPE sleeve out with the pin, press in the spare. (180 s)
 7. Guy slipping: half hitch the tail round the ladder lock. (15 s)
 
-Repair kit: spare 5 mm 7075 pin with cord pull loop, 2 UHMWPE sleeves, spare 38 mm bag hook (2.2 kN), 3 mm Dyneema-core cord, 1.5 m, 38 mm webbing, 0.6 m, spare POM toggle, about 45 g (not in the base weight).
+Repair kit: spare 5 mm 7075 pin with cord pull loop, 2 UHMWPE sleeves, spare 38 mm bag hook (2.2 kN), 3 mm Dyneema-core cord, 1.5 m, 38 mm webbing, 0.6 m, spare POM toggle, about 44 g (not in the base weight).
 
 ## 8. Patent guardrails (engineering read, not a legal opinion)
 
@@ -325,7 +325,7 @@ Code: `huntkit/gendesign/bag_attach.py`. Load standard: HA-LS-1 rev B.
 
 **Branch fairlead.** Eight identical printed cleats, at the hinge and at IM1–IM3, both sides.
 
-- Added mass **113 g**. Pack goes from 2865 g to **2979 g (6.57 lb)**.
+- Added mass **117 g**. Pack goes from 2865 g to **2982 g (6.58 lb)**.
 - Printed fairlead, fine mesh 1.00 mm. Minimum strength SF **2.97**. Minimum fatigue SF **1.67**.
 - Pin double-shear SF **14.4** (7075-T6 S-basis). Sleeve bearing SF **2.32**.
 - Bag off in about **34 s** (four hooks and two hinge pins; 2026-11-01 estimate, before the under-straps and the hood).
@@ -397,7 +397,7 @@ Neither interface moves onto the printed fairleads.
 
 | option | added g | detach s | governing SF | pass | why it lost, or why it won |
 |---|---:|---:|---:|---|---|
-| Branch fairlead | 113 | 34 | 1.67 | yes | shows the branch |
+| Branch fairlead | 117 | 34 | 1.67 | yes | shows the branch |
 | Printed clip ear | 58 | 20 | 0.28 | no | tongue fatigue 0.28 at a 18 mm root |
 | Webbing through window | 40 | 45 | 0.40 | no | return strand crosses the back |
 | Sleeve over the limbs | 18 | 180 | 2.00 | no | hides the frame |
@@ -422,12 +422,12 @@ A sleeve is three minutes because the crown and the hipbelt block sliding it off
 | webbing eyes, net of old stubs | -6.7 |
 | bag-side straps | 17.9 |
 | B-01 swell patches | 12.3 |
-| elastic keepers | 3.6 |
-| lifter tri-glide keepers | 6.0 |
+| elastic keepers | 8.1 |
+| lifter tri-glide keepers | 5.2 |
 | old LINK hardware removed | -30.8 |
-| **delta** | **113** |
+| **delta** | **117** |
 
-Pack **2979 g (6.57 lb)**. The 5.0 lb target is still missed, by **711 g**. This attachment is not the reason; the branch frame already was.
+Pack **2982 g (6.58 lb)**. The 5.0 lb target is still missed, by **714 g**. This attachment is not the reason; the branch frame already was.
 
 Cost is marginal. Filament $4.26, scrap $0.64, extra machine time $1.75, hooks pins and webbing $41.20. **$48** on top of the frame.
 
@@ -463,7 +463,7 @@ Cost is marginal. Filament $4.26, scrap $0.64, extra machine time $1.75, hooks p
 ### Assumptions
 
 - Hook 1500 N and 9 g, bartack 2700 N, cam 1100 N / 22 g: carried over from DESIGN.md §4.5 (2026-11-01). The bag hooks are now the rated part and PT-1 (section 3); the bartacks are checked by stitch count in section 5.
-- Pin price $2.50 and tri-glide 3 g are small-shop assumptions. Aluminium strength is the 7075 record, S-basis.
+- Pin price $2.50 is a small-shop assumption; tri-glide 2.6 g (triglide_25mm record) and elastic hook keeper 1.35 g (elastic_25mm x 90 mm cut, ASSUMPTION) since BL-035. Aluminium strength is the 7075 record, S-basis.
 - UHMWPE sleeve strength is the sheet yield, 21 MPa. No fatigue number is published here; the sleeve is replaceable.
 - B-01 patch 200 gsm is an assumption. The cloth is the same `challenge_ultra_200` as the panel; the gram is the patch area.
 - Detach and attach seconds are gloved-hand assumptions, not a timed trial.

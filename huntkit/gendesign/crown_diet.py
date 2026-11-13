@@ -37,6 +37,8 @@ from pathlib import Path
 
 import numpy as np
 
+from huntkit import materials as _MAT
+
 REPO = Path(__file__).resolve().parents[2]
 OUT = REPO / "outputs" / "crown_diet"
 DOC = REPO / "designs" / "pack_5200" / "analysis" / "crown_diet.md"
@@ -55,9 +57,16 @@ H1_TORSOS = (15.0, 19.0, 23.0)
 # ---------------------------------------------------------------- mass sources (every number traced)
 WEBBING_G_M = 18.0       # data/materials/webbing/poly_webbing_25mm.yaml mass_g_m
 CORD_G_M = 2.5           # data/materials/hardware/dyneema_cord_2mm.yaml mass_g_m
-CAM_G, TOGGLE_G = 12.0, 3.0           # geometry.yaml torso-adjust row: cam 12 g + toggle 3 g ASSUMPTION
+# BL-035 (record masses everywhere): the torso-adjust cam and the release-cord toggle are the hardware records
+# (cam_25mm_al 12.2 g, pom_toggle 1.7 g; were 12 g and 3 g ASSUMPTIONs). The torso-adjust cam has no glove pull tab
+# (ASSUMPTION TA-CAM: it is set once per fit, by hand, bag off; the IM / US cams carry the 1 g tab, strap_arch.CAM25_G).
+CAM_G = float(_MAT.load("cam_25mm_al").require("mass_g"))        # 12.2 g
+TOGGLE_G = float(_MAT.load("pom_toggle").require("mass_g"))       # 1.7 g
 PULLEY_WEB_M = 1.4                    # geometry.yaml torso-adjust row: webbing 25 mm x 1.4 m
-TORSO_ADJUST_ROW_G = 41.7             # ledger row "torso adjust: ..." (checked against the ledger in tests)
+RELEASE_CORD_M = 0.6                  # geometry.yaml torso-adjust row: dyneema_cord_2mm x 0.6 m
+TORSO_ADJUST_ROW_G = round(WEBBING_G_M * PULLEY_WEB_M + CAM_G + CORD_G_M * RELEASE_CORD_M + TOGGLE_G, 1)
+#                                     # = the ledger row "torso adjust: ..." 40.6 g (build_geometry, same records;
+#                                     # checked against the ledger in tests)
 PULLEY_GUIDES_G = 8.0                 # pack5200.HW pulley_guides_g (ASSUMPTION there)
 RACK_G = 22.0                         # pack5200.HW rack_g (ASSUMPTION there)
 PAWL_HOUSING_G = 14.0                 # pack5200.HW pawl_housing_g: POM housing + spring + Ti pawl (ASSUMPTION there)
@@ -401,7 +410,7 @@ BLOCK_SOURCES = {
     "pawl housing": "pack5200.HW pawl_housing_g (ASSUMPTION there)",
     "pawl 304 bushings": "frame_branch.pack_numbers pawl 9.94",
     "pulley guides": "pack5200.HW pulley_guides_g (ASSUMPTION there)",
-    "pulley webbing / cam / cord": "ledger torso-adjust row 41.7 = webbing 1.4 m x 18 g/m + cam 12 + toggle 3 + cord",
+    "pulley webbing / cam / cord": "ledger torso-adjust row 40.6 = webbing 1.4 m x 18 g/m + cam_25mm_al 12.2 + pom_toggle 1.7 + cord 0.6 m x 2.5 g/m (BL-035 records)",
 }
 
 

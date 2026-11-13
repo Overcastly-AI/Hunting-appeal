@@ -47,6 +47,10 @@ BARTACK_N = 2700.0
 TPU_G = 1.0
 TPU_USD = 0.40
 PIN_USD = 2.50               # ASSUMPTION: turned pin, small shop, not the raw aluminium
+TRIGLIDE_G = float(load("triglide_25mm").require("mass_g"))       # 2.6 g nylon (BL-035: record, was 3.0 ASSUMPTION)
+KEEPER_CUT_MM = 90.0         # ASSUMPTION (BL-035, = corrie_f.TAIL_KEEPER_CUT_MM / patterns KEEPER_CUT): one 25 mm elastic
+#                              hook keeper cut 90 mm, lapped 15 mm into a 75 mm loop; settled by weighing 10 cut keepers
+KEEPER_G = float(load("elastic_25mm").require("mass_g_m")) * KEEPER_CUT_MM / 1000.0   # 15 g/m x 90 mm = 1.35 g
 OLD_LINK_G = 30.8            # DESIGN.md v3.1 LINK line (toggles + quick-pins + their webbing)
 
 
@@ -603,7 +607,7 @@ def _mass_budget(added_one_g: float, pin: dict) -> dict:
     old_stubs_m = 6 * 0.20                  # v3.1 girth-hitched stubs
     bag_straps_m = n_bag_hook * 0.16
     patch_g = 8 * (0.070 * 0.055) * 2.0 * 200.0     # ASSUMPTION 200 gsm, two plies, 70 x 55 mm
-    triglide_g = 2 * 3.0                    # ASSUMPTION, lifter keepers
+    triglide_g = 2 * TRIGLIDE_G             # lifter keepers: triglide_25mm record (BL-035; was 2 x 3.0 g ASSUMPTION)
     parts = {
         "printed fairleads (8)": n_yoke * added_one_g,
         "7075 pins (8)": n_pin * pin["pin_g"],
@@ -613,7 +617,7 @@ def _mass_budget(added_one_g: float, pin: dict) -> dict:
         "webbing eyes, net of old stubs": (loops_m - old_stubs_m) * gsm,
         "bag-side straps": bag_straps_m * gsm,
         "B-01 swell patches": patch_g,
-        "elastic keepers": 6 * 0.6,
+        "elastic keepers": 6 * KEEPER_G,    # hook keepers: elastic_25mm x KEEPER_CUT_MM (BL-035; was 6 x 0.6 g)
         "lifter tri-glide keepers": triglide_g,
         "old LINK hardware removed": -OLD_LINK_G,
     }
@@ -895,7 +899,7 @@ def write_docs(ctx: dict) -> str:
     a("## Assumptions")
     a("")
     a("- Hook 1500 N and 9 g, bartack 2700 N, cam 1100 N / 22 g: carried over from DESIGN.md §4.5 (2026-11-01). The bag hooks are now the rated part and PT-1 (section 3); the bartacks are checked by stitch count in section 5.")
-    a("- Pin price $2.50 and tri-glide 3 g are small-shop assumptions. Aluminium strength is the 7075 record, S-basis.")
+    a(f"- Pin price $2.50 is a small-shop assumption; tri-glide {TRIGLIDE_G:.1f} g (triglide_25mm record) and elastic hook keeper {KEEPER_G:.2f} g (elastic_25mm x {KEEPER_CUT_MM:.0f} mm cut, ASSUMPTION) since BL-035. Aluminium strength is the 7075 record, S-basis.")
     a("- UHMWPE sleeve strength is the sheet yield, 21 MPa. No fatigue number is published here; the sleeve is replaceable.")
     a("- B-01 patch 200 gsm is an assumption. The cloth is the same `challenge_ultra_200` as the panel; the gram is the patch area.")
     a("- Detach and attach seconds are gloved-hand assumptions, not a timed trial.")
@@ -1067,6 +1071,39 @@ def docs_only(log=print) -> str:
     return path
 
 
+def refresh_mass(log=print) -> dict:
+    """BL-035: re-book the mass budget in bag_attachment_results.json from the current constants (hardware records)
+    without re-running the FEA. The FEA rows, the pin and the printed-fairlead mass are unchanged (same ``added`` and
+    ``pin_check`` inputs as ``docs_only``); parts_g, delta_g, pack_g, pack_lb, cost_usd and the branch_fairlead option
+    mass are rewritten, then the doc is regenerated with ``docs_only``."""
+    f = ANALYSIS / "bag_attachment_results.json"
+    res = json.loads(f.read_text())
+    gov = res["governing"]
+    fine = [r for r in res["fea"] if abs(r["h_mm"] - res["h_mm"]) < 1e-6]
+    pin = pin_check(gov["hinge"]["n"], gov["hinge"]["g_times_req"])
+    added = float(np.mean([r["added_g"] for r in fine]))
+    mass = _mass_budget(added, pin)
+    base = res["pack_g"] - res["delta_g"]
+    old = dict(res["parts_g"])
+    res["parts_g"] = mass["parts_g"]
+    res["delta_g"] = mass["delta_g"]
+    res["pack_g"] = base + mass["delta_g"]
+    res["pack_lb"] = res["pack_g"] / 453.59237
+    res["cost_usd"] = _cost(added, mass)["total"]
+    for o in res["options"]:
+        if o.get("id") == "fairlead":
+            o["mass_g"] = mass["delta_g"]
+    f.write_text(json.dumps(res, indent=2, default=float))
+    moved = {k: round(mass["parts_g"][k] - old.get(k, 0.0), 2) for k in mass["parts_g"]
+             if abs(mass["parts_g"][k] - old.get(k, 0.0)) > 1e-6}
+    log(f"bag_attachment_results.json mass re-booked: {moved}")
+    docs_only(log)
+    return moved
+
+
 if __name__ == "__main__":
     import sys
-    docs_only() if "--docs-only" in sys.argv else run()
+    if "--refresh-mass" in sys.argv:
+        refresh_mass()
+    else:
+        docs_only() if "--docs-only" in sys.argv else run()

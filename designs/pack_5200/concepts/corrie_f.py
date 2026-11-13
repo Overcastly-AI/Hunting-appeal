@@ -1018,7 +1018,37 @@ def parts(size: str = "M", door: str = DOOR_DEFAULT, fabrics: str = "B", c: Shel
     # (rows computed here from SLIDER_G / SLIDER5_G / TOGGLE_G / TAIL_KEEPER_G already read the records)
     for s, n, g, cfg, src in record_rows(out):
         add(s, n, g, cfg, src)
+    # BL-035: the rifle muzzle-keeper cords on the B-11 muzzle tabs (rev 3 places the tabs; the ledger had no cord)
+    if REVS[REVISION].get("crown_kits"):
+        mk = muzzle_keeper()
+        add("bag_shell", f"BL-035: rifle muzzle keepers ({mk['qty']}, 3 mm shock cord x {mk['cut_mm']:.0f} mm + spring "
+            "cord lock, through the B-11 muzzle tabs, both gussets)", mk["mass_g"], "base", mk["source"])
     return out
+
+
+# BL-035: rifle muzzle keeper (DESIGN.md R-18: muzzle loops on both sides; patterns_corrie_f_rev3 B11-PLACE: two muzzle
+# tabs side by side at z 650, 60 and 130 mm aft of the frame seam). One 3 mm shock-cord loop per gusset runs out of one
+# tab slot, round the barrel and back into the other, closed by a spring cord lock (quiet: no hook-and-loop, no metal).
+MUZZLE_TAB_GAP = 130.0 - 60.0   # mm between the two muzzle tabs (patterns_corrie_f_rev3 B11-PLACE marks)
+MUZZLE_BARREL_D = 25.0          # ASSUMPTION MUZZLE-CORD: barrel / muzzle-brake OD the loop is sized for (sporter
+#                                 barrels are 15-20 mm at the muzzle; 25 mm covers a brake). Settled by the rifle fit check
+MUZZLE_STANDOFF = 40.0          # ASSUMPTION MUZZLE-CORD: tab slot to barrel, each leg (rifle in the butt boot, barrel
+#                                 lying on the gusset at the boot's cant). Settled by the rifle fit check (R-18)
+MUZZLE_TAILS = 2 * 40.0         # ASSUMPTION MUZZLE-CORD: 40 mm a side through the cord lock + stopper knot
+MUZZLE_QTY = 2                  # one per gusset: the rifle rides on either belt wing (R-18, owner freeze)
+
+
+def muzzle_keeper() -> dict:
+    """BL-035: cut length and mass of the rifle muzzle-keeper cords (shock_cord_3mm, cord_lock_spring records)."""
+    loop = MUZZLE_TAB_GAP + 2 * MUZZLE_STANDOFF + math.pi * MUZZLE_BARREL_D
+    cut = round(loop + MUZZLE_TAILS, 0)
+    lock = _rec("cord_lock_spring", "mass_g")
+    one = cut * SHOCK_GM / 1000.0 + lock
+    return {"id": "MK", "qty": MUZZLE_QTY, "loop_mm": round(loop, 1), "cut_mm": cut, "cord_lock_g": lock,
+            "each_g": round(one, 2), "mass_g": round(MUZZLE_QTY * one, 2),
+            "source": f"shock_cord_3mm record ({SHOCK_GM:g} g/m) x cut (tab gap {MUZZLE_TAB_GAP:.0f} + 2 x stand-off "
+                      f"{MUZZLE_STANDOFF:.0f} + pi x barrel {MUZZLE_BARREL_D:.0f} + tails {MUZZLE_TAILS:.0f} mm, "
+                      "ASSUMPTION MUZZLE-CORD) + cord_lock_spring record, x 2 (one per gusset)"}
 
 
 def build_effort() -> dict | None:

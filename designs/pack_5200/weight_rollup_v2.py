@@ -171,9 +171,24 @@ def corrie_f_step(size: str, fabrics: str, step: str) -> list:
     F = _F()
     out = [_r(r["system"], f"REMOVED (B.2): {r['name']}", -r["g"], r["cfg"], "corrie_f.corrie_b2_rows", step)
            for r in F.corrie_b2_rows(size) if r["system"] in F.BAG_SIDE and r["name"] != "attachment: B-01 swell patches"]
-    out += [_r(r["system"], f"CORRIE F: {r['name']}", r["g"], r["cfg"], r["source"], step)
-            for r in F.parts(size, "D2", fabrics)]
+    fp = F.parts(size, "D2", fabrics)
+    out += [_r(r["system"], f"CORRIE F: {r['name']}", r["g"], r["cfg"], r["source"], step) for r in fp]
+    # BL-035: CORRIE F books its own thread (BL-034 'BL-034 thread:' rows from the op stitch lengths), so the bag's
+    # share of the B.2 misc line (thread ~3 % of soft goods, geometry.yaml) comes out with the B.2 bag; the suspension
+    # share and the labels stay in misc.
+    if any(r["name"].startswith("BL-034 thread:") for r in fp):
+        mt = misc_thread()
+        out.append(_r("misc", f"REMOVED (B.2): bag share of the misc thread line ({mt['thread_frac']:.0%} x bag soft goods "
+                      f"{sum(mt['soft_goods_g'][k] for k in mt['bag_soft_keys']):.1f} g); CORRIE F books its own thread",
+                      -mt["bag_thread_g"], "base", "geometry.yaml weight.misc_thread.bag_thread_g (build_geometry)", step))
     return out
+
+
+def misc_thread() -> dict:
+    """BL-035: the split of the geometry.yaml misc line (thread ~3 % of soft goods + labels) into the bag share and the
+    rest (``build_geometry.weight_budget``)."""
+    import yaml
+    return yaml.safe_load((HERE / "geometry.yaml").read_text())["weight"]["misc_thread"]
 
 
 def fabric_step(size: str) -> list:
@@ -924,8 +939,10 @@ def report(res: dict, shots: list) -> str:
       "h1_buckling.md; settled by weighing the printed halves).")
     for r in res["risks"]:
         w(f"- Risk not in any scenario: {r['what']}: +{r['g']:.1f} g.")
-    w("- Misc (thread ~3 % of soft goods, ASSUMPTION in geometry.yaml) is kept at the B.2 figure; the lighter bag "
-      "would trim it by a few grams.")
+    mt = misc_thread()
+    w(f"- Misc: thread ~3 % of soft goods + labels (ASSUMPTION in geometry.yaml). BL-035: the bag's share "
+      f"({mt['bag_thread_g']:.1f} g) comes out with the B.2 bag, because CORRIE F books its own thread from the op "
+      f"stitch lengths; the suspension share ({mt['other_thread_g']:.1f} g) and the {mt['labels_g']:.0f} g labels stay.")
     w("- Crown kit masses are for kit M (torso 17.5-20.5 in); belt sizes S-XXL keep kit M (torso and belt are separate).\n")
     w("## 7. Configs added to the ledger basis (task 1)\n")
     w("`weight_rollup_v2.configs(size)` returns ledger-schema rows; `ledger.total / by_system / like_for_like` take them. "

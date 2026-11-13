@@ -1,21 +1,24 @@
-"""BL-032 part B: CORRIE F rev 3 manufacturing package (manufacturing-engineer, 2026-11-13).
+"""BL-032 part B / BL-034 part C: CORRIE F rev 3 manufacturing package (manufacturing-engineer, 2026-11-13).
 
     python designs/pack_5200/mfg_corrie_f_rev3.py            # regenerate the package
     python designs/pack_5200/mfg_corrie_f_rev3.py --check    # build + print the checks, write nothing
 
 Writes ``outputs/release/pack5200_corrie_f_rev3/manufacturing/`` (BOM, cutting plan, sewing operation sequence,
 bartack / load-point table, QC sheet, release tests, defect list, packaging, costing, delta-register close-out, the
-tech pack PDF and its raster preview) and phone screenshots ``outputs/screens/20261113_BL032B_<n>.png``.
+tech pack PDF and its raster preview) and phone screenshots ``outputs/screens/20261113_BL034C_<n>.png``.
 
 Everything is regenerated from the pattern module ``patterns_corrie_f_rev3.build()`` (read only) and the released
 part A markers (``patterns/markers/markers.json``). Nothing here is hand-typed geometry: seam lengths come from the
 pattern's own seam pairs, placements (B-22 x, FP width, swell windows, B-27 slits) from the pieces, cut lengths from
-``RevSet.webbing``, the lid operations from ``patterns_corrie_f_rev3.lid_hours``. When BL-033 moves the hinge swell
-window, the B-22 tab, the FP pockets or adds the F-01 fly, re-run this script; the ops marked ``volatile`` are the ones
-that change.
+``RevSet.webbing``, the lid operations from ``patterns_corrie_f_rev3.lid_hours``, box-X sizes from the box marks drawn on
+the pieces, the B-11 / K-W / F-02 placements from ``RevSet.geo``. When the pattern changes (a new webbing piece, a box
+size, a keeper height, a cord), re-run this script: webbing, cord and elastic pieces get their operation, BOM line and
+load-point row from the pattern; pieces no operation names land in step 11 as HOLD; ledger hardware rows the BOM does
+not map land as UNMAPPED lines.
 
-Shared-code contracts: ``SewingOp`` and ``BOMLine`` carry the field names of CONTRACTS.md section 5 so they can move to
-``huntkit.manufacturing`` (empty today) unchanged. Load capacities use ``huntkit.gendesign.attach_system`` (read only).
+Shared code (BL-034 part C): ``SewingOp``, ``BOMLine`` and the tech pack PDF builder live in ``huntkit.manufacturing``
+(CONTRACTS.md section 5); this script assembles the CORRIE content (``techpack_design``). Load capacities use
+``huntkit.gendesign.attach_system`` (read only).
 Units: mm, N, g, USD; inches / lb / oz / yd in the documents.
 """
 from __future__ import annotations
@@ -26,7 +29,7 @@ import json
 import math
 import subprocess
 import sys
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass, field
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -36,6 +39,8 @@ if str(HERE) not in sys.path:
 import patterns_corrie_f_rev3 as P  # noqa: E402  (sets sys.path for concepts/ and the repo root)
 from huntkit import materials as MAT  # noqa: E402
 from huntkit.gendesign import attach_system as AS  # noqa: E402
+from huntkit import manufacturing as MF  # noqa: E402
+from huntkit.manufacturing import BOMLine, SewingOp  # noqa: E402,F401  (contract records, CONTRACTS.md section 5)
 
 ROOT = P.ROOT
 REL = ROOT / "outputs" / "release" / "pack5200_corrie_f_rev3"
@@ -43,7 +48,7 @@ PAT = REL / "patterns"
 OUT = REL / "manufacturing"
 SCREENS = ROOT / "outputs" / "screens"
 DATE = "20261113"
-TOPIC = "BL032B"
+TOPIC = "BL034C"
 TITLE = "CORRIE F rev 3 (door D2) - 5200 cu in hunting pack bag"
 REGISTER = ROOT / "designs" / "pack_5200" / "tests_physical" / "test_register.csv"
 YD = 914.4
@@ -110,16 +115,14 @@ UTIL_SMALL = 0.70                      # ASSUMPTION UTIL-SMALL: production utili
 THREAD_FACTOR = 2.75                   # ASSUMPTION: m of thread per m of 301 seam, both threads, incl. ends
 THREAD_WASTE = 0.15                    # ASSUMPTION: cone ends, test sewing
 WEB_WASTE = 0.05                       # ASSUMPTION: webbing trim, seal and a test piece
+# Stainless 25 mm tri-glide (US backstop, orchestrator 2026-11-13): triglide_25mm record, stainless_alt source line
+# "EUR 3.10 incl. VAT", converted as the record's own price note (ex 19 % VAT x 1.09 USD/EUR, the record's ASSUMPTION)
+TG_SS_USD = round(3.10 / 1.19 * 1.09, 2)
 LABOUR = {"us_contract_usd_min": 0.85, "asia_contract_usd_min": 0.12}   # ASSUMPTION LABOUR (loaded CMT minute)
 OVERHEAD = 0.25                        # ASSUMPTION: contract overhead + margin on CMT
-PRICE_ASSUMED = {   # items with no cost in a record: (usd, per, why)
-    "elastic_25mm": (0.60, "m", "ASSUMPTION ELASTIC-COST, no record"),
-    "elastic_6mm": (0.25, "m", "ASSUMPTION ELASTIC-COST, no record (fly hem)"),
-    "slider_10": (0.80, "unit", "ASSUMPTION SLIDER: #10 coil slider, metal pull"),
-    "slider_5": (0.40, "unit", "ASSUMPTION SLIDER: #5 coil slider"),
-    "cam_25mm_al": (6.00, "unit", "ASSUMPTION CAM25 part (MT-3); no record"),
-    "triglide_25mm": (0.30, "unit", "ASSUMPTION; attach_system.TRIGLIDE_G mass"),
-    "pom_toggle": (0.30, "unit", "ASSUMPTION; attach_system.TOGGLE_G 3 g, POM 30 x 8 x 5"),
+PRICE_ASSUMED = {   # items with no material record: (usd, per, why). BL-034 C: the 7 hardware / elastic keys that have
+    #               records now (slider_10, slider_5, cam_25mm_al, triglide_25mm, pom_toggle, elastic_25mm, elastic_6mm)
+    #               are gone, so the record cost_usd is used
     "tpu_hook_sleeve": (0.20, "unit", "ASSUMPTION"),
     "rubber_pull_sleeve": (0.15, "unit", "ASSUMPTION"),
     "basting_tape_6mm": (0.05, "m", "ASSUMPTION"),
@@ -129,48 +132,8 @@ PRICE_ASSUMED = {   # items with no cost in a record: (usd, per, why)
 }
 
 
-# ============================================================================ contract-shaped records
-@dataclass
-class SewingOp:            # CONTRACTS.md section 5 fields first
-    seq: str
-    operation: str
-    machine: str
-    stitch_type: str
-    spi: float | None
-    thread_id: str
-    needle: str
-    attachment: str
-    notes: str
-    time_s: float           # factory SAM, s
-    step: str = ""
-    pieces: str = ""
-    seam: str = ""
-    length_mm: float = 0.0
-    bartack: str = ""
-    sketch: str = ""
-    qc: str = ""
-    volatile: str = ""
-    proto_h: float = 0.0
-    per_bag: bool = True
-
-
-@dataclass
-class BOMLine:             # CONTRACTS.md section 5: material id, qty, unit, waste factor, cost
-    section: str
-    item: str
-    material_id: str
-    qty: float
-    unit: str
-    waste_pct: float
-    unit_cost_usd: float | None
-    cost_usd: float | None
-    alt_material_id: str = ""
-    alt_qty: float | None = None
-    alt_cost_usd: float | None = None
-    kit: str = ""
-    source: str = ""
-    notes: str = ""
-    proto_qty: float | None = None
+# ============================================================================ contract records
+# SewingOp and BOMLine: huntkit.manufacturing.records (moved in BL-034 part C, fields unchanged).
 
 
 # ============================================================================ inputs
@@ -274,6 +237,16 @@ def seam_mm(ctx: Ctx, name: str) -> float:
 
 
 # ============================================================================ geometry the ops quote
+def _b11_box(rs) -> tuple[float, float]:
+    """Size of the B-11 sew-down box as drawn on the gusset (BL-034 part A), else on the B-11 piece."""
+    for pid in ("B-03", "B-11"):
+        p = rs.pieces.get(pid)
+        for ln in (lines(p, "stitch", "B-11 sew-down") or lines(p, "stitch", "sew-down")) if p is not None else []:
+            xs, ys = [q[0] for q in ln.points], [q[1] for q in ln.points]
+            return round(max(xs) - min(xs), 1), round(max(ys) - min(ys), 1)
+    return 24.0, 19.0
+
+
 def geo(ctx: Ctx) -> dict:
     rs = ctx.rs
     F = P.F
@@ -286,7 +259,9 @@ def geo(ctx: Ctx) -> dict:
         "b22_moved": rs.geo["b22"]["moved_mm"],
         "fp_flat_w": round(fpb[2] - fpb[0], 1), "fp_h": round(fpb[3] - fpb[1], 1),
         "fp_finished_w": (F.fp_spec() if hasattr(F, "fp_spec") else F._A().FP)["w"], "fp_z": P.FP_Z,
-        "fp_clamped": rs.geo.get("fp_clamped_mm"), "fp_margin": rs.geo.get("fp_min_margin_mm"),
+        "fp_margin": rs.geo.get("fp_min_margin_mm"), "fp_clear_req": rs.geo.get("fp_clear_req_mm"),
+        "b11": rs.geo.get("b11"), "b11_box": _b11_box(rs), "kw_z": rs.geo.get("kw_z") or {},
+        "f02": rs.geo.get("f02_on_b05"),
         "swell_ids": sorted(pid for pid in rs.pieces if pid.startswith("B-13")),
         "swell_n": sum(q.quantity for pid, q in rs.pieces.items() if pid.startswith("B-13")),
         "hinge_windows": len(lines(b01, "cut_inside", "HINGE")),
@@ -386,97 +361,184 @@ def webbing_bom(ctx: Ctx) -> list[BOMLine]:
     return out
 
 
-# hardware: (key, item, record or ASSUMPTION key, qty, unit, kit, ledger row prefix, frame_side)
+# hardware: (key, item, record, qty, unit, kit, frame_side). Quantities from RevSet.hardware where the pattern lists
+# the part; ledger rows reach each line through HW_LEDGER_MAP.
+def _hw_qty(ctx: Ctx, mid: str, default):
+    q = sum(h["qty"] for h in ctx.rs.hardware if h["material_id"] == mid)
+    return q or default
+
+
 def hardware_table(ctx: Ctx) -> list[tuple]:
     hw = {h["item"]: h for h in ctx.rs.hardware}
     zl = {k: v["length_mm"] for k, v in hw.items() if v["material_id"].startswith("coil")}
     z10 = sum(v for k, v in zl.items() if "#10" in k) / 1000.0
     z5 = sum(v for k, v in zl.items() if "#5" in k) / 1000.0
     n5 = sum(1 for k in zl if "#5" in k)
-    ll = sum(v["qty"] for k, v in hw.items() if v["material_id"] == "ladder_lock_25mm_heavy")
+    ll = _hw_qty(ctx, "ladder_lock_25mm_heavy", 9)
+    tog = _hw_qty(ctx, "pom_toggle", 4)
+    ncl = _hw_qty(ctx, "cord_lock_spring", 1)
+    cl_use = " + ".join(h["item"].split(":")[-1].strip() if ":" in h["item"] else h["item"]
+                        for h in ctx.rs.hardware if h["material_id"] == "cord_lock_spring") or "E-5 pole grip"
     return [
-        ("zip10", "#10 coil zip chain, door D2 (2 sliders)", "coil_zipper_10", round(z10, 3), "m", "base",
-         "D2 door zip", False),
-        ("slider10", "#10 coil slider, metal pull (door)", "slider_10", 2, "unit", "base", "D2 door zip", False),
+        ("zip10", "#10 coil zip chain, door D2 (2 sliders)", "coil_zipper_10", round(z10, 3), "m", "base", False),
+        ("slider10", "#10 coil slider, metal pull (door)", "slider_10", 2, "unit", "base", False),
         ("zip5", f"#5 coil zip chain: lid, IMP-4, F-02 ({n5} zips)", "coil_zipper_5", round(z5, 3), "m",
-         "base,as_hunted", "IMP-4 / add-on crown_lid / F-02", False),
-        ("slider5", "#5 coil slider + pull", "slider_5", n5, "unit", "base,as_hunted", "IMP-4 / crown_lid", False),
+         "base,as_hunted", False),
+        ("slider5", f"#5 coil slider + pull ({n5}: lid, IMP-4, F-02)", "slider_5", n5, "unit", "base,as_hunted", False),
         ("pull_cord", "door pull cord 3 mm Dyneema, 2 x 0.15 m (ASSUMPTION length)", "dyneema_cord_3mm", 0.30, "m",
-         "base", "door: 2 cord pulls", False),
-        ("pull_sleeve", "rubber pull sleeve", "rubber_pull_sleeve", 2, "unit", "base", "door: 2 cord pulls", False),
+         "base", False),
+        ("pull_sleeve", "rubber pull sleeve", "rubber_pull_sleeve", 2, "unit", "base", False),
         ("ghook", "rated 25 mm aluminium G-hook: IM1, IM2 (2) + W1-W3 (3) + bow riser (1)", "g_hook_25mm_aluminium",
-         6, "unit", "base", "IM-hooks / W-hw / BL-010 S9 / bow riser", False),
+         6, "unit", "base", False),
         ("ghook_x", "rated 25 mm aluminium G-hook: W haul extenders", "g_hook_25mm_aluminium", 3, "unit", "meat_trip",
-         "BL-031: W1-W3 haul extenders", False),
+         False),
         ("cara", "wiregate carabiner 22 kN: IM3 bag hooks (2) + IM3 meat free end (1)", "carabiner_wiregate_22kn", 3,
-         "unit", "base", "BL-010 A1 / BL-010 S2", False),
+         "unit", "base", False),
         ("cara_x", "wiregate carabiner 22 kN: B-24 float links", "carabiner_wiregate_22kn", 2, "unit", "meat_trip",
-         "BL-010 S12", False),
-        ("ll_heavy", "heavy 25 mm ladder lock: B-28 (4) + guys (2) + W1-W3 (3)", "ladder_lock_25mm_heavy", ll, "unit",
-         "base,as_hunted", "W-hw / BL-010 A3 / crown_straps", False),
-        ("cam", "25 mm aluminium cam buckle: IM1-IM3 (3) + US1/US2 (2)", "cam_25mm_al", 5, "unit", "base",
-         "IM-cams / US-cams", False),
-        ("triglide", "25 mm tri-glide: US keepers (2) + guy keepers (2)", "triglide_25mm", 4, "unit", "base",
-         "US-tg / guy ladder locks", False),
-        ("toggle", "POM toggle 30 x 8 x 5: B-28 rear (2) + guy loops (2)", "pom_toggle", 4, "unit", "base,as_hunted",
-         "crown_straps / BL-004 REC guy bar loops", False),
-        ("srb", "25 mm side-release buckle (roll top)", "buckle_side_release_25mm", 2, "unit", "base", "roll:", False),
-        ("cordlock", "spring cord lock (E-5 pole grip)", "cord_lock_spring", 1, "unit", "base", "E-5 pole quiver", False),
-        ("tpu_sleeve", "TPU sleeve on the IM3 carabiner (2)", "tpu_hook_sleeve", 2, "unit", "base",
-         "attachment: TPU hook sleeves (4) less BL-004 REC (2)", False),
+         False),
+        ("ll_heavy", f"heavy 25 mm ladder lock ({ll}): B-28 (4) + guys (2) + W1-W3 (3)", "ladder_lock_25mm_heavy", ll,
+         "unit", "base,as_hunted", False),
+        ("cam", "25 mm aluminium cam buckle: IM1-IM3 (3) + US1/US2 (2)", "cam_25mm_al", 5, "unit", "base", False),
+        ("triglide_ss", "25 mm STAINLESS tri-glide: US1/US2 cradle backstop behind the cam (2; orchestrator "
+         "2026-11-13, 11 g, 3.75 kN)", "triglide_25mm", 2, "unit", "base", False),
+        ("triglide", "25 mm nylon tri-glide: guy tail keepers (2)", "triglide_25mm", 2, "unit", "base", False),
+        ("toggle", f"POM toggle 30 x 8 x 5 ({tog}): B-28 rear (2) + guy loops (2)", "pom_toggle", tog, "unit",
+         "base,as_hunted", False),
+        ("srb", "25 mm side-release buckle (roll top)", "buckle_side_release_25mm", 2, "unit", "base", False),
+        ("cordlock", f"spring cord lock ({ncl}): {cl_use}", "cord_lock_spring", ncl, "unit", "base", False),
+        ("tpu_sleeve", "TPU sleeve on the IM3 carabiner (2)", "tpu_hook_sleeve", 2, "unit", "base", False),
         ("fairlead", "printed fairleads (8), 7075 pins (8), UHMWPE sleeves (8), US anchors, lifter keepers",
-         "frame kit", 1, "set", "base", "attachment: printed fairleads ...", True),
+         "frame kit", 1, "set", "base", True),
     ]
 
 
-HW_LEDGER_KEYS = ("D2 door zip", "door: 2 cord pulls", "IM-hooks", "IM-cams", "US-anchor", "US-cams", "US-tg",
-                  "B-24-hooks", "B-24-thr", "W-hw", "BL-010 S2", "BL-010 S9", "BL-010 S12",
-                  "attachment: printed fairleads", "attachment: 7075 pins", "attachment: UHMWPE sleeves",
-                  "attachment: bag hooks, 38 mm", "attachment: TPU hook sleeves", "attachment: elastic keepers",
-                  "attachment: lifter tri-glide", "attachment system: bag hooks 1500", "attachment system: thread",
-                  "BL-010 A1", "BL-010 A3")
+# ledger hardware row prefix -> BOM line keys it is bought on (hardware_table keys, "thread", or a webbing material id)
+HW_LEDGER_MAP = {
+    "D2 door zip": ("zip10", "slider10"), "door: 2 cord pulls": ("pull_cord", "pull_sleeve"),
+    "IM-hooks": ("ghook",), "IM-cams": ("cam",), "US-anchor": ("fairlead",), "US-cams": ("cam",),
+    "US-tg": ("triglide_ss",), "B-24-hooks": ("cara_x",), "B-24-thr": ("thread",), "W-hw": ("ghook", "ll_heavy"),
+    "BL-010 S2": ("cara",), "BL-010 S9": ("ghook", "ll_heavy"), "BL-010 S12": ("cara_x",),
+    "attachment: printed fairleads": ("fairlead",), "attachment: 7075 pins": ("fairlead",),
+    "attachment: UHMWPE sleeves": ("fairlead",), "attachment: bag hooks, 38 mm": ("cara",),
+    "attachment: TPU hook sleeves": ("tpu_sleeve",), "attachment: elastic keepers": ("elastic_25mm",),
+    "attachment: lifter tri-glide": ("fairlead",), "attachment system: bag hooks 1500": ("cara",),
+    "attachment system: thread": ("thread",), "BL-010 A1": ("cara",), "BL-010 A3": ("ll_heavy",),
+    # BL-034 part A rows (record masses and the thread from the op lengths)
+    "BL-034 records: US1/US2 backstop tri-glides": ("triglide_ss",),
+    "BL-034 records: lifter tri-glide keepers": ("fairlead",),
+    "BL-034 records: guy tri-glides": ("triglide",),
+    "BL-034 records: guy tail elastic keepers": ("elastic_25mm",),
+    "BL-034 records: F-02 fly pocket #5 slider": ("slider5",),
+    "BL-034 thread:": ("thread",),
+}
+# fallback for rows added later (e.g. BL-035): a keyword in the row text -> BOM line key. Rows mapped this way are listed
+# in checks()["hardware_rows_by_keyword"] so a person confirms them.
+HW_KEYWORDS = (("stainless", "triglide_ss"), ("tri-glide", "triglide"), ("#10", "slider10"), ("#5", "slider5"),
+               ("slider", "slider5"), ("elastic", "elastic_25mm"), ("thread", "thread"), ("toggle", "toggle"),
+               ("cam", "cam"), ("carabiner", "cara"), ("G-hook", "ghook"), ("ladder lock", "ll_heavy"),
+               ("cord lock", "cordlock"), ("cord", "cord"), ("fairlead", "fairlead"), ("sleeve", "tpu_sleeve"))
+
+
+def _hw_rows(ctx: Ctx) -> list[dict]:
+    return [r for r in ctx.rec["rows"] if r["status"] == "hardware"]
+
+
+def ledger_map(ctx: Ctx) -> dict:
+    """Every ledger hardware row -> (BOM keys, how, label): how = 'prefix', 'keyword' or None (unmapped)."""
+    out = {}
+    for r in _hw_rows(ctx):
+        t = r["row"]
+        hit = next(((k, v) for k, v in sorted(HW_LEDGER_MAP.items(), key=lambda kv: -len(kv[0])) if t.startswith(k)),
+                   None)
+        if hit:
+            out[t] = (hit[1], "prefix", hit[0].rstrip(":"))
+            continue
+        kw = next((key for word, key in HW_KEYWORDS if word.lower() in t.lower()), None)
+        out[t] = ((kw,), "keyword", t[:60]) if kw else ((), None, t[:60])
+    return out
 
 
 def unmapped_hardware_rows(ctx: Ctx) -> list[str]:
-    """Ledger rows booked as hardware that this BOM's hardware table does not cover (a ledger change)."""
-    return [r["row"] for r in ctx.rec["rows"] if r["status"] == "hardware"
-            and not any(r["row"].startswith(k) for k in HW_LEDGER_KEYS)]
+    """Ledger rows booked as hardware that this BOM does not cover (a ledger change)."""
+    return [t for t, (_, how, _l) in ledger_map(ctx).items() if how is None]
+
+
+def keyword_mapped_rows(ctx: Ctx) -> list[str]:
+    return [f"{t} -> {keys[0]}" for t, (keys, how, _l) in ledger_map(ctx).items() if how == "keyword"]
+
+
+def _rows_for(ctx: Ctx, key: str) -> list[str]:
+    return sorted({lab for _t, (keys, _h, lab) in ledger_map(ctx).items() if key in keys})
 
 
 def hardware_bom(ctx: Ctx) -> list[BOMLine]:
     out = [BOMLine("hardware", f"UNMAPPED ledger hardware row: {r}", "-", 0, "-", 0.0, None, None,
-                   source="ledger (BL-033?)", notes="add to hardware_table()") for r in unmapped_hardware_rows(ctx)]
-    for key, item, rec, qty, unit, kit, led, frame in hardware_table(ctx):
+                   source="ledger", notes="add to HW_LEDGER_MAP / hardware_table()") for r in unmapped_hardware_rows(ctx)]
+    table_recs = set()
+    for key, item, rec, qty, unit, kit, frame in hardware_table(ctx):
+        table_recs.add(rec)
+        led = "; ".join(_rows_for(ctx, key)) or "-"
         if frame:
             out.append(BOMLine("hardware_frame_side", item, rec, qty, unit, 0.0, None, None, kit=kit,
-                               source=f"ledger rows '{led}'", notes="frame kit (H1 package), not sewn; listed so the "
-                                                                    "bag kit is complete"))
+                               source=f"ledger rows: {led}", notes="frame kit (H1 package), not sewn; listed so the bag "
+                                                                   "kit is complete"))
             continue
-        if rec in PRICE_ASSUMED:
+        if key == "triglide_ss":
+            uc, src = TG_SS_USD, "record triglide_25mm stainless_alt (EUR 3.10 incl. VAT, converted as the record)"
+        elif rec in PRICE_ASSUMED:
             uc, src = PRICE_ASSUMED[rec][0], PRICE_ASSUMED[rec][2]
         else:
-            uc = cost_per(rec, unit) if unit == "m" else (float(mat(rec).cost_usd["value"]) if mat(rec) and mat(rec).cost_usd else None)
+            m = mat(rec)
+            uc = cost_per(rec, unit) if unit == "m" else (float(m.cost_usd["value"]) if m and m.cost_usd else None)
             src = f"record {rec}"
         out.append(BOMLine("hardware", item, rec, qty, unit, 0.0, uc, round(qty * uc, 2) if uc is not None else None,
-                           alt_material_id="same", kit=kit, source=f"{src}; ledger rows '{led}'"))
+                           alt_material_id="same", kit=kit, source=f"{src}; ledger rows: {led}"))
+    # parts the pattern's hardware list names that the table above does not (e.g. a part a later ticket adds)
+    for h in ctx.rs.hardware:
+        mid = h["material_id"]
+        if mid in table_recs or mid in ("-",) or mid.startswith("coil"):
+            continue
+        m = mat(mid)
+        per = (m.cost_usd or {}).get("per") if m else None
+        unit = "m" if (h.get("length_mm") and per in ("m", "yd")) else "unit"
+        qty = round(h["length_mm"] * h["qty"] / 1000.0, 3) if unit == "m" else h["qty"]
+        uc = cost_per(mid, "m") if unit == "m" else (float(m.cost_usd["value"]) if m and m.cost_usd else None)
+        out.append(BOMLine("hardware", f"{h['item']} (pattern hardware list)", mid, qty, unit, 0.0, uc,
+                           round(qty * uc, 2) if uc is not None else None, alt_material_id="same",
+                           source=f"record {mid}" if m else "no record: ASSUMPTION, price missing",
+                           notes="added from RevSet.hardware (not in hardware_table)"))
     return out
 
 
-def thread_bom(ops: list[SewingOp]) -> list[BOMLine]:
-    by: dict = {}
-    for o in ops:
-        if o.thread_id.startswith("bonded") and o.length_mm:
-            by[o.thread_id] = by.get(o.thread_id, 0.0) + o.length_mm / 1000.0 * THREAD_FACTOR
+def thread_bom(ops: list[SewingOp], ledger_thread_g: float | None = None) -> list[BOMLine]:
+    """Purchase quantity = stitch use x (1 + cone waste). The mass in the bag excludes the cone waste (it never reaches
+    the bag), as ``build_effort_rev3`` books it on the ledger."""
+    use = {k: v for k, v in MF.thread_metres(ops, THREAD_FACTOR).items() if k.startswith("bonded")}
     out = []
-    for tid, m in sorted(by.items()):
+    for tid, m in sorted(use.items()):
         q = m * (1 + THREAD_WASTE)
         uc = cost_per(tid, "m")
-        g = q * float(mat(tid).require("mass_g_m"))
+        g_bag = m * float(mat(tid).require("mass_g_m"))
         out.append(BOMLine("thread", f"{tid} (needle + bobbin)", tid, round(q, 1), "m", THREAD_WASTE * 100, uc,
                            round(q * uc, 2) if uc else None, alt_material_id="same", kit="all",
-                           source=f"record {tid}; sum of op stitch lengths x {THREAD_FACTOR} (ASSUMPTION THREAD-FACTOR)",
-                           notes=f"{g:.1f} g in the bag (ledger books thread 2.0 g + B-24 2.0 g)"))
+                           source=f"record {tid}; sum of op stitch lengths x {THREAD_FACTOR} (ASSUMPTION THREAD-FACTOR) "
+                                  f"+ {THREAD_WASTE:.0%} cone waste on the purchase quantity only",
+                           notes=f"{m:.1f} m sewn = {g_bag:.1f} g in the bag (no cone waste)"
+                                 + (f"; ledger books {ledger_thread_g:.1f} g of bag thread in all" if ledger_thread_g
+                                    is not None else "")))
     return out
+
+
+def thread_bag_g(ops: list[SewingOp]) -> float:
+    """Thread mass that ends up in the bag (all ops, no cone waste)."""
+    return float(sum(m * float(mat(t).require("mass_g_m")) for t, m in MF.thread_metres(ops, THREAD_FACTOR).items()
+                     if t.startswith("bonded")))
+
+
+def ledger_thread_g() -> float:
+    """Bag thread booked on the ledger: the original thread rows plus the BL-034 rows from the op lengths."""
+    return float(sum(r["g"] for r in P.ledger_rows() if r["name"].startswith(
+        ("attachment system: thread", "B-24-thr", "BL-034 thread"))))
 
 
 def consumables_bom(g: dict) -> list[BOMLine]:
@@ -543,16 +605,17 @@ def cutting_plan(ctx: Ctx) -> list[dict]:
 # ============================================================================ bartack / load points
 def load_points(ctx: Ctx) -> list[dict]:
     """Every sewn load point: pattern box size, stitch count, thread / needle, the factored load from the record that
-    sets it, the capacity (attach_system rules) and the proof test that releases it."""
+    sets it, the capacity (attach_system rules) and the proof test that releases it. Box sizes are the box-X marks drawn
+    on the pieces (BL-034 part A); a webbing piece with drawn boxes that no row below names gets an UNRATED row."""
     rs = ctx.rs
     bx = AS.box_x
     st = 25.4 / SPI["box"]
     body_alt = ctx.rsA.pieces["B-02h"].material_id
     body = rs.pieces["B-02h"].material_id
 
-    def box(pid, default=None):
+    def box(pid, label=None):
         b = boxes_of(rs.pieces[pid]) if pid in rs.pieces else []
-        return b if b else ([default] if default else [])
+        return [x for x in b if label is None or label in x[2]]
 
     rows = []
 
@@ -592,28 +655,43 @@ def load_points(ctx: Ctx) -> list[dict]:
     for w, h, lab in box("TG"):
         add("port guy, toggle end", "TG", "TG toggle loop (B-25 tab side)", w, h, guy,
             "corrie_f_body.md 13.5: 96.1 N x 3.0", "LL-H (366 N, toggle-loop pull, loadpath A3)")
+    band_llt = sorted({(w, h) for w, h, _ in box("B-02h", "LLT")})
     for w, h, lab in box("LLT"):
+        mism = [f"{a:.0f}x{b:.0f}" for a, b in band_llt if (a, b) != (w, h)]
         add("port guy, bag end", "LLT + B-22 + B-02h", f"inside the hinge band at x +/-{ctx.rs.geo['b22']['placed_x']}",
             w, h, guy, "corrie_f_body.md 13.5: 96.1 N x 3.0", "LL-H; PT-5 (lock + keeper)",
-            {"B-22 perimeter 50 mm (primary body)": b22}, note=f"alternate body fabric: B-22 seam {b22a:.0f} N",
+            {"B-22 perimeter 50 mm (primary body)": b22},
+            note=f"alternate body fabric: B-22 seam {b22a:.0f} N"
+                 + (f"; PATTERN MISMATCH: B-02h draws the LLT box {', '.join(mism)}, the LLT piece {w:.0f}x{h:.0f}: "
+                    "sew the LLT size (the tab is 25 mm wide)" if mism else ""),
             vol="BL-033 B-22 x")
     add("port guy, B-27 slit ends", "B-01", f"both ends of each slit, z {P.F.PORT_Z[0]:.0f} / {P.F.PORT_Z[1]:.0f}",
         0, 0, None, "no rated load (lap only); port mock-up: 100 N guy pull through the lap", "port mock-up (13.9)",
         kind="BT-S")
-    for w, h, lab in box("B-28t"):
-        add("crown strap tabs (6)", "B-28t", "front: hinge band (outside); rear: through the B-25 toggle; B-25 second "
-            "fold", w, h, guy, "corrie_f_body.md 15.2: 288 N envelope (port guy) if a crown strap ever holds the top",
-            "LL-H (heavy lock slip 366 N covers 288 N; BL-031 dropped the 20 mm gate)")
-    for pid, where in (("B-02h", "B-28 front tab box on the hinge band"),):
-        for w, h, lab in [b for b in box(pid) if "B-28" in b[2]]:
-            add("crown strap front tab on the band", pid, where, w, h, guy, "as above", "LL-H")
-    add("B-25 bridle tab folds (4)", "B-25", "toggle tab + second fold, each side (not drawn on the pattern)", 21, 20,
-        guy, "corrie_f_body.md 13.5 (guy) / 15.2 (crown strap)", "LL-H toggle-loop pull 366 N",
-        note="ASSUMPTION B25-BOX: box-X 21 x 20 closes each fold; pattern shows folds only")
+    # crown strap tabs: every B-28 tab piece the pattern draws (B-28t today; BL-035 may split it) + the band box
+    for pid in sorted(i for i in rs.pieces if i.startswith("B-28") and i != "B-28"):
+        use = next((w["use"] for w in rs.webbing if w["id"] == pid), rs.pieces[pid].name)
+        for w, h, lab in box(pid):
+            add(f"crown strap tab ({pid} x{rs.pieces[pid].quantity})", pid, use, w, h, guy,
+                "corrie_f_body.md 15.2: 288 N envelope (port guy) if a crown strap ever holds the top",
+                "LL-H (heavy lock slip 366 N covers 288 N; BL-031 dropped the 20 mm gate)")
+    for w, h, lab in box("B-02h", "B-28"):
+        add("crown strap front tab on the band", "B-02h", "B-28 front lock tab, OUTSIDE the hinge band (DECISION "
+            "B28-FACE, BL-034), box through tab + band", w, h, guy, "corrie_f_body.md 15.2 (as above)", "LL-H")
+    for w, h, lab in box("B-25"):
+        add("B-25 bridle toggle tab", "B-25", f"{lab.split(' box-X')[0]}: tip-end box, clear loop for the POM toggle "
+            "(DECISION B25-BOX, BL-034)", w, h, guy, "corrie_f_body.md 13.5 (guy)", "LL-H toggle-loop pull 366 N")
+    if not box("B-25"):
+        add("B-25 bridle toggle tab", "B-25", "NOT DRAWN on the pattern", 21, 15, guy, "corrie_f_body.md 13.5",
+            "LL-H toggle-loop pull 366 N", note="pattern draws no B-25 box: HOLD the B-25 tabs")
+    laps = [ln.label for ln in lines(rs.pieces["B-25"], "fold") if "bartack" in (ln.label or "")] if "B-25" in rs.pieces else []
+    if laps:
+        add("B-25 bar sleeve laps", "B-25", "; ".join(laps) + " (sewn at frame assembly, round the crown top bar)",
+            0, 0, None, "no rated load: the sleeve wraps the bar, the lap only keeps it closed",
+            "LL-H toggle-loop pull (whole bridle)", kind="BT-M")
     for w, h, lab in box("GBL"):
         add("guy bar loop", "GBL", "round the crown top bar", w, h, 244.0, "loadpath_verification A3: 244 N", "LL-H")
-    t3 = box("T3")
-    for w, h, lab in t3:
+    for w, h, lab in box("T3"):
         add("IM3 bag-hook tongue", "T3", lab.replace(" box-X", ""), w, h, 1702.0,
             "loadpath_verification A1: IM3 1702 N factored (guys-off misuse)", "PT-1 2553 N carabiner; PT-2 2553 N",
             {"webbing on carabiner bed": AS.web_pin("poly_webbing_38mm"), "carabiner (PT-1 basis: 0.5 x 8 kN minor axis)": 4000.0})
@@ -630,24 +708,38 @@ def load_points(ctx: Ctx) -> list[dict]:
             {"B-18 seam (80 mm, B-05 strip)": AS.patch_seam(80.0, "cordura_500d_nylon66", "hypalon_coated_nylon")["cap_n"]},
             vol="BL-033 hinge window vs B-18")
     for pid in ("IM1", "IM2", "IM3"):
-        add(f"{pid} end loop", pid, "left end loop (girth hitch on the eye); not drawn as a box on the pattern", 21, 25,
-            605.0, "loadpath_verification S1: 605 N", "MT-1 908 N",
-            note="ASSUMPTION IM-BOX: box-X 21 x 25 closes the 60 mm loop (MT-1 specimen)")
-    add("US1/US2 sewn eye", "US", "eye on the left pin", 21, 25, 720.0, "loadpath_verification S5-S7: 720 N",
-        "MT-1 1080 N", note="ASSUMPTION US-BOX: box-X 21 x 25; pattern has no marks")
+        for w, h, lab in box(pid) or [(21.0, 25.0, "ASSUMPTION IM-BOX (not drawn)")]:
+            add(f"{pid} end loop", pid, "left end loop, girth-hitched on the eye (box drawn at the tip end)", w, h,
+                605.0, "loadpath_verification S1: 605 N", "MT-1 908 N",
+                note=lab if "ASSUMPTION" in lab else "MT-1 specimens are sewn exactly this way")
+    for w, h, lab in box("US") or [(21.0, 25.0, "ASSUMPTION US-BOX (not drawn)")]:
+        add("US1/US2 sewn eye", "US", "eye on the left pin (US-EYE fold, pattern)", w, h, 720.0,
+            "loadpath_verification S5-S7: 720 N", "MT-1 1080 N",
+            note=(lab if "ASSUMPTION" in lab else "") + "; cam side: stainless tri-glide backstop behind the cam "
+                 "(orchestrator 2026-11-13; gate US-BS)")
     for pid in ("W1", "W2", "W3"):
-        bb = box(pid) or [(21.0, 25.0, "ASSUMPTION W3-BOX (pattern draws the fold only)")]
-        for w, h, lab in bb:
+        for w, h, lab in box(pid) or [(21.0, 25.0, "ASSUMPTION W-BOX (pattern draws the fold only)")]:
             add(f"{pid} G-hook end", pid, "G-hook fold 2 x 30 mm", w, h, 225.0, "loadpath_verification S9: 225 N",
                 "LL-H 366 N; W-PULL 338 N", note=lab if "ASSUMPTION" in lab else "")
     for w, h, lab in box("WX"):
-        add("W haul extender", "WX", lab.replace(" box-X 21x25", ""), w, h, 225.0,
+        add("W haul extender", "WX", lab.split(" box-X")[0], w, h, 225.0,
             "ASSUMPTION WX-LOAD: same float-clamp load as S9 (225 N)", "LL-H; one extender pulled to 338 N")
-    add("B-24 float link: hook end", "B-24", "38 mm, hook fold (pattern: folds only)", 34, 34, 941.0,
-        "loadpath_verification S12 / RD-02: 941 N misuse", "PT-6 1410 N",
-        {"carabiner": 4000.0, "webbing on bed": AS.web_pin("poly_webbing_38mm")},
-        note="attach_system B-24: box-X 38 x 38 (hook) + 3 x 38 x 20 (loops); drawn here 34 wide (2 mm edge)")
-    add("B-24 float link: 3 loops", "B-24", "loop beds 120 / 170 / 220 mm", 34, 20, 941.0, "as above", "PT-6 1410 N")
+    b24caps = {"carabiner": 4000.0, "webbing on bed": AS.web_pin("poly_webbing_38mm")}
+    n_loops = sum(1 for x in box("B-24") if "hook" not in x[2])
+    for w, h, lab in box("B-24"):
+        hook = "hook" in lab
+        add("B-24 float link: " + ("hook end" if hook else "loop bases"), "B-24",
+            ("hook-end fold" if hook else f"{n_loops} loop bases") + " (boxes as drawn by attach_system.link_piece)",
+            w, h, 941.0,
+            "loadpath_verification S12 / RD-02: 941 N misuse", "PT-6 1410 N", b24caps,
+            note="loop boxes close each T3 loop across both plies" if not hook else "")
+    # any other webbing piece with drawn boxes (a piece a later ticket adds): listed, UNRATED until it has a load case
+    named = {r["part"].split(" ")[0] for r in rows}
+    for pid, p in sorted(rs.pieces.items()):
+        if p.material_id in P.WEBBING and pid not in named:
+            for w, h, lab in boxes_of(p):
+                add(f"{pid} (new piece)", pid, lab.split(" box-X")[0], w, h, None, "UNRATED: no load case yet "
+                    "(pack-designer)", "MT-1 method on the drawn box", note="new in the pattern; give it a load")
     seen, out = set(), []
     for r in rows:                                   # L / R marks of one tab give one row
         k = (r["point"], r["part"], r["where"], r["pattern"])
@@ -771,8 +863,11 @@ def ops(ctx: Ctx) -> list[SewingOp]:
        "hang tab goes in later (op 5.01).", "light", pieces="B-09c", seam="SSa + EFa",
        length=b9.bounds(cut=False)[3] + b9.bounds(cut=False)[2], hours=rate(b9.bounds(cut=False)[3] + b9.bounds(cut=False)[2]))
     f2 = rs.pieces["F-02"]
-    op("F-02 fly base pocket", "Set the #5 zip (230 mm), turn the edges 10 mm. It is sewn to the floor in op 4.13. "
-       "Placement on B-05 is NOT drawn on the pattern: centre it on the outside of B-05 (ASSUMPTION F02-PLACE).",
+    f02p = g["f02"]
+    op("F-02 fly base pocket", "Set the #5 zip (230 mm), turn the edges 10 mm. It is sewn to the floor B-05 in step 4 "
+       + (f"on the drawn 'F-02 fly pocket' placement ({f02p['w']:.0f} x {f02p['h']:.0f} mm, {f02p['face']}, zip on the "
+          "aft edge, corners drilled; pattern ASSUMPTION F02-CENTRE fore-aft)." if f02p else
+          "(placement NOT drawn on B-05: HOLD the floor op until it is)."),
        "body", pieces="F-02, #5 zip", seam="ZIP + EFa", length=2 * 230 + piece_perim(f2),
        hours=H["zip_fixed"] + 0.23 * H["zip_m"] + rate(piece_perim(f2)), vol="BL-033 F-01")
 
@@ -819,14 +914,25 @@ def ops(ctx: Ctx) -> list[SewingOp]:
        pieces="B-22 x2, B-02h", seam="LSd (2 rows)", length=2 * 2 * piece_perim(b22),
        hours=2 * rate(2 * piece_perim(b22), "applique"), vol="BL-033 B-22 x",
        sketch="SK-4", qc="QC-07")
+    llt_box = (boxes_of(rs.pieces["LLT"]) or [(21.0, 25.0, "")])[0][:2]
+    band_llt = next(((w, h) for w, h, lab in boxes_of(rs.pieces["B-02h"]) if "LLT" in lab), None)
     op("Guy ladder-lock tabs LLT through B-22", "Fold each LLT round the bar of a heavy 25 mm ladder lock, box-X "
        "through LLT + B-22 + B-02h at the drawn 'B-22 / guy LLT box' (drill corners).", "box",
        pieces="LLT x2, B-22, B-02h, 2 heavy ladder locks", seam="BOX", bartack="LLT + B-22 + B-02h",
-       hours=2 * H["bartack"], vol="BL-033 B-22 x", sketch="SK-1, SK-4", qc="QC-07", length=bl(21, 25, 2))
-    op("B-28 front tabs on the hinge band (OUTSIDE)", "Fold a B-28t round a heavy ladder lock, box-X it on the OUTSIDE "
-       "of B-02h at the drawn 'B-28 front tab box' (ASSUMPTION B28-FACE: the strap runs on the aft face, so the tab is "
-       "outside; part A README says 'inside').", "box", pieces="B-28t x2, B-02h, 2 heavy ladder locks", seam="BOX",
-       bartack="B-28t", hours=2 * H["bartack"], sketch="SK-4", qc="QC-07", length=bl(25, 25, 2))
+       hours=2 * H["bartack"], vol="BL-033 B-22 x", sketch="SK-1, SK-4", qc="QC-07", length=bl(*llt_box, 2),
+       notes=f"Box {llt_box[0]:.0f} x {llt_box[1]:.0f} mm (LLT piece)."
+             + (f" PATTERN MISMATCH: B-02h draws {band_llt[0]:.0f} x {band_llt[1]:.0f}; sew the LLT size."
+                if band_llt and tuple(band_llt) != tuple(llt_box) else ""))
+    b28_front = _b28_front(rs) or "B-28t"
+    b28_box = next(((w, h) for w, h, lab in boxes_of(rs.pieces["B-02h"]) if "B-28" in lab), None)
+    op("B-28 front tabs on the hinge band (OUTSIDE)", f"Fold a {b28_front} round the bar of a heavy ladder lock (lock bar "
+       "on the top line of the drawn 'B-28 front lock tab' placement), box-X it through tab + band on the OUTSIDE of "
+       "B-02h at the drawn 'B-28 front tab (OUTSIDE)' box"
+       + (f", {b28_box[0]:.0f} x {b28_box[1]:.0f} mm" if b28_box else " (box NOT drawn: HOLD)")
+       + ". DECISION B28-FACE (BL-034): the crown strap runs down the band's aft face to the lock, so the tab is "
+       "outside.", "box", pieces=f"{b28_front} x2, B-02h, 2 heavy ladder locks", seam="BOX",
+       bartack=b28_front, hours=2 * H["bartack"], sketch="SK-4", qc="QC-07",
+       length=bl(*(b28_box or (21.0, 20.0)), 2))
     hb = seam_mm(ctx, "hinge band | door (door hinge, z 650)")
     op("Hinge band to the door top", f"Join B-02h to the door top ({hb:.0f} mm), SSa2.", "body",
        pieces="B-02h, B-02door", seam="SSa2", length=2 * hb, hours=rate(hb))
@@ -867,18 +973,32 @@ def ops(ctx: Ctx) -> list[SewingOp]:
        vol="BL-033 hinge window vs B-18", sketch="SK-1, SK-3", qc="QC-07")
     op("IMP-2 keeper tabs I2K on B-01", "Fold each I2K, bartack at the 2 'IMP-2 keeper tab' drill marks (inside).",
        "bt", pieces="I2K x2, B-01", seam="BT", hours=2 * H["bartack"])
-    op("B-11 lash tabs (8)", "Bow riser + muzzle keepers. NOT placed on any rev 3 pattern piece (found in this "
-       "ticket). HOLD until the pattern-maker draws the placements; sew-down box 301 tex 90 when placed.", "hyp",
-       pieces="B-11 x8", seam="LSd", hours=8 * H["bartack"], notes="HOLD (pattern).")
+    b11 = g["b11"]
+    if b11:
+        n11 = 2 * b11["per_gusset"]
+        bw, bh = g["b11_box"]
+        tabs = "; ".join(f"{k} z {z:.0f} ({dx:.0f} mm aft of the frame seam)" if "muzzle" in k else
+                         f"{k} z {z:.0f} ({dx:.0f} mm aft of the frame seam, 40 mm forward of the aft corner)"
+                         for k, z, dx in b11["tabs"])
+        op(f"B-11 lash tabs ({n11}) on the gussets", f"Gusset flat work, before the gusset seams: {b11['per_gusset']} "
+           f"tabs on each B-03 at the drawn 'B-11 lash tab' placements ({tabs}). Tab coated face out, slot end UP; awl "
+           f"the 4 'B-11 box corner' drill marks; sew the {bw:.0f} x {bh:.0f} mm 'B-11 sew-down box' (rectangle + both "
+           "diagonals, 301) through tab + gusset. Right gusset: bow riser; left: antler / cape lash; muzzle keepers both "
+           "sides (pattern ASSUMPTION B11-PLACE, settled by the archery and rifle loadout fits).", "hyp",
+           pieces=f"B-11 x{n11}, B-03 x2", seam="LSd (box-X sew-down)", length=n11 * AS.box_x(bw, bh)["path_mm"],
+           hours=n11 * H["bartack"], sketch="SK-5", qc="QC-07")
+    else:
+        op("B-11 lash tabs (8)", "Bow riser + muzzle keepers: placements NOT drawn on the pattern. HOLD until they "
+           "are.", "hyp", pieces="B-11 x8", seam="LSd", hours=8 * H["bartack"], notes="HOLD (pattern).")
     g3 = rs.pieces["B-03"]
     kb = rs.pieces["SH-01b"]
     op("Gusset flat work: kick bands", "SH-01b on each gusset foot at the 'kick band top' line, top edge turned 8 mm, "
        "topstitched; bottom and sides go in the seams.", "body", pieces="SH-01b x2, B-03 x2", seam="LSd",
        length=2 * kb.bounds(cut=False)[2], hours=rate(2 * kb.bounds(cut=False)[2], "applique"))
     op("Gusset flat work: FP pockets (both)", f"Sew each FP to its gusset at the placement, z {g['fp_z'][0]:.0f}-"
-       f"{g['fp_z'][1]:.0f}, {g['fp_finished_w']:.0f} mm face; inner edge >= 9 mm off the frame seam (now "
-       f"{g['fp_margin'] if g['fp_margin'] is not None else '-'} mm at the tightest; part A clamp "
-       f"{g['fp_clamped'] or 0} mm). "
+       f"{g['fp_z'][1]:.0f}, {g['fp_finished_w']:.0f} mm face; inner edge >= {g['fp_clear_req'] or 9:.0f} mm off "
+       f"the frame seam ({g['fp_margin'] if g['fp_margin'] is not None else '-'} mm at the tightest point, pattern "
+       "fp_min_margin_mm). "
        "Bottom and sides 301, box pleats laid flat, bartack the 2 mouth corners.", "mesh", pieces="FP x2, B-03 x2",
        seam="LSd", length=2 * (g["fp_h"] * 2 + g["fp_finished_w"]), bartack="FP corners (BT-S)",
        hours=2 * (rate(2 * g["fp_h"] + g["fp_finished_w"]) + 2 * H["bartack"]), vol="BL-033 FP width",
@@ -897,10 +1017,15 @@ def ops(ctx: Ctx) -> list[SewingOp]:
        hours=rate(s_r + s_l) + 3 * H["bartack"], sketch="SK-5", qc="QC-08")
     s_br = seam_mm(ctx, "blade U | gusset R (aft corner)")
     s_bl = seam_mm(ctx, "blade U | gusset L (aft corner, 2 hard-point loops)")
+    kwz = g["kw_z"]
+    kw_txt = ("; ".join(f"{side} seam z " + " / ".join(f"{kwz[w][side]:.0f}" for w in sorted(kwz)) for side in ("R", "L"))
+              + f" ({', '.join(sorted(kwz))}; the drawn 'K-W keeper' notches on B-03 and B-02u, pattern ASSUMPTION "
+              "KW-PATH)") if kwz else "heights NOT drawn: HOLD the keepers"
+    n_kw = next((w["qty"] for w in rs.webbing if w["id"] == "K-W"), 6)
     op("Aft corner seams blade U | gussets (closes the tube)", f"R and L ({s_br:.0f} / {s_bl:.0f} mm): 2 HPL loops in "
-       "the L seam at the hard-point notches; 3 K-W keeper loops in each seam at W1-W3 heights (ASSUMPTION KW-PLACE: "
-       "W heights z 80 / 250 / 420 from the frame lash points; not drawn). SSa2.", "body",
-       pieces="B-02u, B-03 x2, HPL x2, K-W x6", seam="SSa-ins + SSa2", length=2 * (s_br + s_bl),
+       f"the L seam at the hard-point notches; {n_kw // 2} K-W keeper loops in each seam, raw ends in the seam, at the "
+       f"W1-W3 crossings: {kw_txt}. SSa2.", "body",
+       pieces=f"B-02u, B-03 x2, HPL x2, K-W x{n_kw}", seam="SSa-ins + SSa2", length=2 * (s_br + s_bl),
        hours=rate(s_br + s_bl) + 8 * H["bartack"], sketch="SK-5", qc="QC-08")
     fl = sum(seam_mm(ctx, n) for n in ("bottom | B-01 (hinge eyes in it)", "bottom | gusset R", "bottom | gusset L",
                                        "bottom | blade U kick strip"))
@@ -915,7 +1040,8 @@ def ops(ctx: Ctx) -> list[SewingOp]:
         us_txt = "US channels: on F-02 (op above)."
     else:
         us_txt = "US floor channels: NOT drafted (ledger row US-chan, not_drafted) - HOLD."
-    op("Floor B-05 (F-02 first)", f"Sew F-02 to the outside of B-05. Then the floor ring ({fl:.0f} mm): B-01 edge "
+    op("Floor B-05 (F-02 first)", "Sew F-02 to the OUTSIDE of B-05 on the drawn 'F-02 fly pocket' placement (zip edge "
+       f"aft, corner drill marks), perimeter row. Then the floor ring ({fl:.0f} mm): B-01 edge "
        "first with the HE tails and the B-18 lower edges caught in it, then gussets, then the blade kick strip; "
        f"quarter notches matched, needle down at the 4 corners. SSa2. {us_txt}", "body",
        pieces="B-05, F-02, B-01, B-03 x2, B-02u", seam="SSa2",
@@ -957,11 +1083,31 @@ def ops(ctx: Ctx) -> list[SewingOp]:
 
     # ---------------------------------------------------------------- 7 straps and webbing (from the pieces)
     step("7 Straps and webbing")
+    # Webbing parts whose box-X an earlier box op already sews (T3 2.03, IME 2.04, LLT 3.05, HE 4.05; 2 of the 6 B-28t
+    # in 3.06) get no second op here for those pieces (BL-034 C: the old 7.15 IME, 7.19 T3, 7.22 LLT and 7.18 HE sewed
+    # them twice). A cord that an earlier op inserts is skipped.
+    boxed_before: dict = {}
+    for o in out:
+        if "box" in o.stitch_type and o.length_mm:
+            for x in o.pieces.split(","):
+                t, _, n_ = x.strip().partition(" x")
+                boxed_before[t] = boxed_before.get(t, 0) + (int(n_) if n_.isdigit() else 1)
+    named_before = {t for o in out for t in _tokens(o.pieces)}
     for w in webs:
         pid = w["id"]
         p = rs.pieces.get(pid)
-        if w["material_id"] == "shock_cord_3mm":
-            continue                                        # sewn where it is inserted (ops 1.02, 4.12, E5 below)
+        done = boxed_before.get(pid, 0)
+        if done >= w["qty"]:
+            continue
+        if done:
+            w = {**w, "qty": w["qty"] - done, "use": f"{w['use']} (the other {done} are boxed in an earlier op)"}
+        if "cord" in w["material_id"]:
+            if pid in named_before:
+                continue                                    # sewn where it is inserted (ops 1.02, 4.11, 4.12)
+            op(f"{pid}: {w['use']} x{w['qty']}", f"Cut {w['length_mm']:.0f} mm ({w['length_mm'] / IN:.1f} in), melt / "
+               "whip both ends; fitted at hardware assembly (op below) as its use says.", "none",
+               pieces=f"{pid} x{w['qty']}", hours=w["qty"] * WEB_CUT_H)
+            continue
         folds = [ln.label for ln in lines(p, "fold")] if p is not None else []
         bxs = boxes_of(p) if p is not None else []
         lpr = lp.get(pid)
@@ -983,16 +1129,21 @@ def ops(ctx: Ctx) -> list[SewingOp]:
             hrs = w["qty"] * max(1, len(bxs)) * H["bartack"]
             wl = w["qty"] * (sum(bl(a, b) for a, b, _ in bxs) if bxs else (bl(21, 25) if lpr else 0.0))
         if pid == "B-25":
-            how += (" FRAME COORDINATION: the bar sleeves close round the crown top bar BEFORE the crown corners are "
-                    "bonded (H1 build); sew the toggle tabs + second folds here, the sleeves at frame assembly.")
+            how += (" Toggle tabs: fold each end on its 'tab fold' line and sew the drawn tip-end box (DECISION "
+                    "B25-BOX: the clear loop passes the POM toggle). FRAME COORDINATION: the bar sleeves close round the "
+                    "crown top bar BEFORE the crown corners are bonded (H1 build); the two sleeve-lap bartacks (BT-M) "
+                    "are sewn at frame assembly, not here.")
         op(f"{pid}: {w['use']} x{w['qty']}", how, kind, pieces=f"{pid} x{w['qty']}",
            seam="BOX" if kind == "box" else ("BT" if kind == "bt" else "-"),
            bartack=pid if lpr else "", hours=hrs, length=wl, sketch="SK-1, SK-7", qc="QC-07" if lpr else "",
            vol="BL-033 ledger" if pid in ("US",) else "")
-    op("Fit the hardware", "IM1/IM2: G-hook right end, cam threaded; IM3: wiregate carabiner on the free end; T3 loops: "
-       "wiregate carabiner + TPU sleeve; W1-W3: rated G-hook end, heavy ladder lock on the gusset side; guys: "
-       "toggle in the B-25 tab, through the B-27 port, heavy ladder lock on LLT, tri-glide keeper; B-28: toggle rear, "
-       "ladder lock both ends, 2 elastic keepers; RT: side-release buckles; E5: cord lock.", "none",
+    cords = [w["id"] for w in webs if "cord" in w["material_id"] and w["id"] not in named_before]
+    op("Fit the hardware", "IM1/IM2: G-hook right end, cam threaded; IM3: wiregate carabiner on the free end; US1/US2: "
+       "cam, then the STAINLESS 25 mm tri-glide threaded behind the cam as the cradle slip backstop (orchestrator "
+       "2026-11-13; gate US-BS); T3 loops: wiregate carabiner + TPU sleeve; W1-W3: rated G-hook end, heavy ladder lock on "
+       "the gusset side; guys: toggle in the B-25 tab, through the B-27 port, heavy ladder lock on LLT, nylon tri-glide "
+       "tail keeper; B-28: toggle rear, ladder lock both ends, 2 elastic keepers; RT: side-release buckles; E5: cord "
+       "lock" + (f"; cords {', '.join(cords)} per their use" if cords else "") + ".", "none",
        pieces="hardware", hours=1.0, qc="QC-11")
 
     # ---------------------------------------------------------------- 8 add-ons
@@ -1117,6 +1268,10 @@ EXTRA_GATES = [
     ("ALT-2", "alternate set: PT-3 on 200X + 50 mm strip test", ">= 36.8 N/mm (1840 N / 50 mm mean, FS-O5)",
      "part A README; register FS-O5"),
     ("ALT-3", "alternate set: weigh the 70D stock", "gsm within +/- 5 % of nylon_ripstop_70d record", "part A README"),
+    ("US-BS", "US backstop: cam on 25 mm webbing with the stainless tri-glide threaded behind it; open the cam (forced "
+              "slip) and load the strap to the US proof 1080 N (MT-1 basis, S5-S7 720 N x 1.5)",
+     "tri-glide stops the strap within 10 mm and holds 1080 N for 1 min, 3 of 3 (ASSUMPTION US-BS)",
+     "triglide_25mm record note; DECISIONS 2026-11-13"),
     ("FRAY-1", "wash-swatch fray test of the un-bound SSa2 seam (3 wash cycles, R-12)",
      "no allowance frayed past the 2nd row; else bind (ASSUMPTION NO-BIND)", "RD-17"),
 ]
@@ -1237,18 +1392,51 @@ def delta_closeout(ctx: Ctx, bom: list[BOMLine], lpts: list[dict]) -> list[dict]
     add("RD-17", "restated", f"IMP-2 / IMP-4 / IMP-8 in the bag: {has('B-09c', 'IMP4-a', 'IMP8-a')}; SH-03 absent: "
         f"{'SH-03' not in ids}; body seams un-bound (SSa2, ASSUMPTION NO-BIND)",
         "FRAY-1 wash-swatch test; IMP-1/3/5/6 belong to the harness / belt packages")
-    add("RD-18", "closed", f"B-11 x8 + BRL x2 + BRS + G-hook in the BOM: {has('B-11', 'BRL', 'BRS')}",
-        "B-11 placements are not drawn on any rev 3 piece (pattern-maker)")
-    add("RD-21", "restated", "this op sequence supersedes BUILD_PLAN.md step 9 for the bag (bag ops only)",
-        "BUILD_PLAN.md still describes stubs, bay mode, the PA66 plate: needs a pointer to this package (not edited here)")
+    b11 = ctx.rs.geo.get("b11") or {}
+    add("RD-18", "closed", f"B-11 x8 + BRL x2 + BRS + G-hook in the BOM: {has('B-11', 'BRL', 'BRS')}; B-11 placements "
+        f"drawn on B-03: {2 * b11.get('per_gusset', 0)} tabs (op 4.07 released)",
+        "archery / rifle loadout fit settles ASSUMPTION B11-PLACE")
+    bp = ROOT / "designs" / "pack_5200" / "BUILD_PLAN.md"
+    ptr = bp.exists() and "outputs/release/pack5200_corrie_f_rev3/" in bp.read_text()
+    add("RD-21", "closed (pointer)" if ptr else "restated",
+        f"this op sequence supersedes BUILD_PLAN.md step 9 for the bag; BUILD_PLAN.md points at the rev 3 release: {ptr}",
+        "BUILD_PLAN.md body still describes the SPINE bag (its banner says so)" if ptr else
+        "BUILD_PLAN.md needs a pointer to this package")
     add("RD-22", "open", "the packaging card (README Packaging) carries the load limits", "the user guide itself")
     add("RD-23", "restated", f"B-25, B-27f, B-22 inside, TG, LLT drafted and sequenced (ops 3.04-3.05, 4.03): "
         f"{has('B-25', 'B-27f', 'B-22', 'TG', 'LLT')}", "T9 rev 3 at the S kit; LL-H; PORT-1; attorney review; BL-033 "
         "may move B-22 (x +/-130.3 vs 149)")
+    eff = _build_effort()
     add("RD-24", "restated", f"B-29 (7 piece types) + B-28 per kit + keepers sequenced; lid {ctx.lid['hours']} h on the "
-        f"drafted pattern vs {ctx.lid['bl029_booked_h']} h booked", "T9 lid weigh / photo, cinch, free lengths; "
-        "build_metrics still books the old lid hours (ledger / corrie_f owner)")
+        "drafted pattern; build_metrics books the op-sequence hours (build_effort_rev3.json: "
+        f"{eff.get('hours_per_bag_total', '-')} h a bag)", "T9 lid weigh / photo, cinch, free lengths")
     return R
+
+
+def _build_effort() -> dict:
+    f = ROOT / "designs" / "pack_5200" / "analysis" / "build_effort_rev3.json"
+    return json.loads(f.read_text()) if f.exists() else {}
+
+
+def _b28_front(rs) -> str | None:
+    """The B-28 tab piece that is boxed through the hinge band (its webbing use names the front tab)."""
+    tabs = sorted(i for i in rs.pieces if i.startswith("B-28") and i != "B-28")
+    use = {w["id"]: w["use"] for w in rs.webbing}
+    return next((i for i in tabs if "front" in use.get(i, "")), tabs[0] if tabs else None)
+
+
+def box_mismatches(ctx: Ctx) -> list[str]:
+    """Box-X marks that disagree between a panel and the webbing piece sewn through it (pattern consistency)."""
+    rs, out = ctx.rs, []
+    hb = boxes_of(rs.pieces["B-02h"])
+    for key, pid in (("LLT", "LLT"), ("B-28", _b28_front(rs))):
+        if pid is None:
+            continue
+        band = sorted({(w, h) for w, h, lab in hb if key in lab})
+        piece = sorted({(w, h) for w, h, _ in boxes_of(rs.pieces[pid])})
+        if band and piece and not set(band) & set(piece):
+            out.append(f"B-02h {key} box {band} vs {pid} box {piece}")
+    return out
 
 
 # ============================================================================ build everything (no files)
@@ -1256,7 +1444,8 @@ def package(ctx: Ctx | None = None) -> dict:
     ctx = ctx or build_ctx()
     g = geo(ctx)
     oplist = ops(ctx)
-    bom = fabric_bom(ctx) + webbing_bom(ctx) + hardware_bom(ctx) + thread_bom(oplist) + consumables_bom(g)
+    bom = (fabric_bom(ctx) + webbing_bom(ctx) + hardware_bom(ctx) + thread_bom(oplist, ledger_thread_g())
+           + consumables_bom(g))
     lpts = load_points(ctx)
     lm = ledger_mass(ctx)
     return {"ctx": ctx, "geo": g, "ops": oplist, "bom": bom, "load_points": lpts, "cutting": cutting_plan(ctx),
@@ -1276,6 +1465,8 @@ def checks(pk: dict) -> dict:
             "min_sf_point": min(rated, key=lambda r: r["sf"])["point"],
             "holds": [o.seq + " " + o.operation for o in pk["ops"] if "HOLD" in o.operation or "HOLD" in o.notes],
             "unsequenced": unsequenced(ctx.rs, pk["ops"]), "unmapped_hardware": unmapped_hardware_rows(ctx),
+            "hardware_rows_by_keyword": keyword_mapped_rows(ctx), "box_mismatches": box_mismatches(ctx),
+            "thread_bag_g": round(thread_bag_g(pk["ops"]), 2), "thread_ledger_g": round(ledger_thread_g(), 2),
             "proto_hours": pk["costing"]["proto_hours"], "sam_min": pk["costing"]["sam_min"],
             "volatile": pk["volatile"]}
 
@@ -1297,23 +1488,23 @@ ASSUMPTIONS = [
     ("UTIL-SMALL", f"Small and sheet pieces nest at {UTIL_SMALL:.0%} across bags in production.", "first production markers"),
     ("UTIL-ALT", f"Alternate-set body fabrics nest at {UTIL_ALT_LARGE:.0%} in production (no 10-bag alternate marker).",
      "alternate 10-bag markers if the alternate set passes its gates"),
-    ("B28-FACE", "B-28 front tabs go on the OUTSIDE of the hinge band (the strap runs on the aft face); part A README "
-                 "says 'inside'.", "pattern-maker / pack-designer confirm; T9 strap path"),
-    ("B25-BOX", "Each B-25 toggle tab and second fold is closed with a 21 x 20 box-X (pattern shows folds only).", "LL-H toggle-loop pull"),
-    ("IM-BOX / US-BOX / W3-BOX", "IM1-IM3 end loops, US eyes and W3's hook end get a 21 x 25 box-X (pattern draws folds only).",
-     "MT-1 specimens are sewn exactly this way"),
+    ("B11-PLACE / KW-PATH / F02-CENTRE / US-EYE", "Pattern placements read by this package (patterns_corrie_f_rev3, BL-034 "
+     "part A): B-11 tab heights, K-W keeper heights from the W path, F-02 fore-aft on B-05, the US eye fold.",
+     "archery / rifle loadout fits; T9 W free lengths (keeper within +/-15 mm of the wrap); fly fit; MT-1 specimens"),
     ("WX-LOAD", "Haul extenders carry the S9 float-clamp load (225 N).", "pack-designer load case; LL-H"),
-    ("KW-PLACE", "K-W keepers at W1-W3 heights z 80 / 250 / 420 in the aft corner seams (not drawn).", "pattern-maker notches"),
-    ("F02-PLACE", "F-02 centred on the outside of B-05 (not drawn).", "pattern-maker placement; fly fit (BL-033)"),
+    ("US-BS", "The stainless 25 mm tri-glide behind each US cam stops cradle slip (record: 3.75 kN break, no slip rating).",
+     "gate US-BS: cam slipped on purpose, backstop holds"),
+    ("TG-SS-PRICE", f"Stainless tri-glide USD {TG_SS_USD} from the record's EUR source line, converted as the record does "
+                    "(ex VAT x 1.09 USD/EUR).", "supplier quote"),
     ("BT-STD", "Slit-end bartack 10 x 2 mm, 28 stitches; standard tack 16 x 2 mm, 42 stitches (LK-1900 patterns).", "QC-07"),
-    ("PRICES", "Items with no record cost use PRICE_ASSUMED (sliders, cams, tri-glides, toggles, elastic, labels).",
-     "supplier quotes; materials-engineer records"),
-    ("ELASTIC", "25 mm elastic keepers: no material record (pattern module ELASTIC).", "materials-engineer record"),
+    ("PRICES", "Items with no material record use PRICE_ASSUMED (TPU hook sleeve, rubber pull sleeve, basting tape, seam "
+               "sealer, labels, packaging). Hardware and elastic use their records since BL-034.",
+     "supplier quotes"),
 ]
 
 JIGS = [
-    ("J1", "Box-X templates, clear acrylic 2 mm, one per size in the load table (21x20, 21x25, 25x25, 34x20, 34x30, 34x34), "
-           "slots for chalk on the rectangle and both diagonals; production: LK-1900 / AMS-210EN programs of the same paths"),
+    ("J1", "Box-X templates, clear acrylic 2 mm, one per box size in the load table (section 7 / SK-1), slots for chalk on "
+           "the rectangle and both diagonals; production: LK-1900 / AMS-210EN programs of the same paths"),
     ("J2", "Swell window corner template + clip board (8 swells, notch to notch)"),
     ("J3", "B-27 port gauge: 6 mm turn, 20 mm lap, facing line; a slotted ruler"),
     ("J4", "Webbing fold gauge: aluminium angle with stops at 15 / 30 / 45 / 50 / 60 / 100 mm"),
@@ -1348,22 +1539,15 @@ def _md_table(rows: list[dict], cols: list[tuple[str, str]]) -> str:
     return "\n".join(out)
 
 
-def _imp(b: BOMLine) -> str:
-    if b.unit == "m":
-        return f"{b.qty / 0.9144:.2f} yd"
-    if b.unit == "m2":
-        return f"{b.qty * 10.764:.2f} ft2"
-    return ""
+_imp = MF.imperial
 
 
 def write_files(pk: dict, out: Path = OUT) -> list[Path]:
     out.mkdir(parents=True, exist_ok=True)
     files = []
     ctx, g = pk["ctx"], pk["geo"]
-    bom_rows = [{**asdict(b), "imperial": _imp(b)} for b in pk["bom"]]
-    _w_csv(out / "bom.csv", bom_rows)
-    op_rows = [asdict(o) for o in pk["ops"]]
-    _w_csv(out / "op_sequence.csv", op_rows)
+    _w_csv(out / "bom.csv", MF.bom_rows(pk["bom"]))
+    _w_csv(out / "op_sequence.csv", MF.op_rows(pk["ops"]))
     _w_csv(out / "load_points.csv", pk["load_points"])
     _w_csv(out / "cutting_plan.csv", pk["cutting"])
     _w_csv(out / "qc_sheet.csv", pk["qc"])
@@ -1379,7 +1563,7 @@ def write_files(pk: dict, out: Path = OUT) -> list[Path]:
         "pattern_module": "designs/pack_5200/patterns_corrie_f_rev3.py", "date": DATE}, indent=1, default=str))
     files += [out / "costing.json", out / "manifest.json"]
     # ---- markdown
-    md = [f"# {TITLE}: manufacturing package (BL-032 part B)", "",
+    md = [f"# {TITLE}: manufacturing package (BL-032 part B, BL-034 part C)", "",
           f"Generated {DATE} by `designs/pack_5200/mfg_corrie_f_rev3.py` from `patterns_corrie_f_rev3.build()` and the "
           "part A markers. **Do not edit by hand: re-run the script.** Patterns: `../patterns/`.", "",
           "## Files", "",
@@ -1410,17 +1594,26 @@ def write_files(pk: dict, out: Path = OUT) -> list[Path]:
           f"${c['material_usd_alternate']:.0f}. CMT + materials: US contract ${c['landed_usd']['us_contract_usd_min']:.0f}, "
           f"Asia ${c['landed_usd']['asia_contract_usd_min']:.0f} (ASSUMPTION LABOUR).",
           f"- Load points: {len(pk['load_points'])}; lowest SF {checks(pk)['min_sf']} ({checks(pk)['min_sf_point']}).", "",
-          "## Re-run when BL-033 lands (volatile operations)", "",
+          "## Volatile operations (re-run when the pattern changes)", "",
           "These ops read their numbers from the pattern; re-run `python designs/pack_5200/mfg_corrie_f_rev3.py` after "
-          "the pattern module changes and they update:", ""]
+          "the pattern module changes and they update (tags name the ticket that last moved them):", ""]
     for v in pk["volatile"]:
         md.append(f"- **{v}**: ops " + ", ".join(o.seq for o in pk["ops"] if o.volatile == v)
                   + ("; load points " + ", ".join(r["point"] for r in pk["load_points"] if r["volatile"] == v)
                      if any(r["volatile"] == v for r in pk["load_points"]) else ""))
     md += ["", f"Current values: B-22 at x +/-{g['b22_x']} mm (drawn {g['b22_drawn_x']}); FP flat width "
            f"{g['fp_flat_w']} mm (finished {g['fp_finished_w']}); {g['windows']} swell windows; F-01 drafted: "
-           f"{g['fly_drafted']}.", "", "## On HOLD (cannot be sewn from the pattern as released)", ""]
-    md += [f"- {h}" for h in checks(pk)["holds"]]
+           f"{g['fly_drafted']}; B-11 tabs on the gussets: {2 * (g['b11'] or {}).get('per_gusset', 0)}; K-W keeper z: "
+           f"{g['kw_z']}.", "", "## On HOLD (cannot be sewn from the pattern as released)", ""]
+    ck_ = checks(pk)
+    md += [f"- {h}" for h in ck_["holds"]] or ["- none"]
+    md += ["", "## Pattern / ledger flags", "",
+           f"- Thread in the bag (all ops, no cone waste): {ck_['thread_bag_g']} g; booked on the ledger: "
+           f"{ck_['thread_ledger_g']} g (build_effort_rev3.json; re-run `python designs/pack_5200/build_effort_rev3.py "
+           "--write` when they differ).",
+           f"- Box-X mismatches between a panel and its tab: {'; '.join(ck_['box_mismatches']) or 'none'}.",
+           f"- Ledger hardware rows mapped by keyword (confirm): {'; '.join(ck_['hardware_rows_by_keyword']) or 'none'}.",
+           f"- Unmapped ledger hardware rows: {'; '.join(ck_['unmapped_hardware']) or 'none'}."]
     md += ["", "## Assumptions that govern", "", "| ID | Assumption | Settled by |", "|---|---|---|"]
     md += [f"| {a} | {t} | {s} |" for a, t, s in ASSUMPTIONS]
     md += ["", "## Packaging", ""] + [f"{i + 1}. {t}" for i, t in enumerate(PACKAGING)]
@@ -1574,8 +1767,9 @@ def sk_boxes(pk, path):
         ys = [(b["w_mm"] if i % 2 else 0.0) for i in range(k)]
         ax.plot(xs, ys, "-", color="#1a7f37", lw=0.8)
         ax.set_title(f"{key} bartack {b['len_mm']:.0f} x {b['w_mm']:.0f} mm, {k} st (304)", fontsize=10, loc="left")
-        ax.text(0.0, -0.3, "LK-1900 standard tack, tex 90, Nm 110 R\nB-27 slit ends, FP mouth corners, I2K",
-                transform=ax.transAxes, fontsize=8, va="top")
+        used = {"BT-S": "B-27 slit ends, FP mouth corners", "BT-M": "I2K, HE neck, lid channel ends,\nB-25 sleeve laps"}[key]
+        ax.text(0.0, -0.3, f"LK-1900 standard tack, tex 90, Nm 110 R\n{used}", transform=ax.transAxes, fontsize=8,
+                va="top")
         ax.set_ylim(-8, 10)
         ax.set_aspect("equal")
         ax.axis("off")
@@ -1733,8 +1927,9 @@ def sketches(pk, out: Path = OUT) -> dict:
                  [f"B-22 drawn x +/-{g['b22_drawn_x']:.0f}, placed +/-{g['b22_x']}", "double-row perimeter",
                   "IMP-4 placement INSIDE"], figsize=(16, 7))
     sk["SK-5"] = d / "SK-5_gusset.png"
-    sk_piece_map(pk, ["B-03", "FP-a", "FP-b"], "SK-5  Side gusset B-03 (cut L+R): kick band, FP pocket (volatile "
-                 "width), IMP-8 (R only), hose slot; corner seams carry HPL (L) and E5 (R)", sk["SK-5"],
+    sk_piece_map(pk, ["B-03", "FP-a", "FP-b"], "SK-5  Side gusset B-03 (cut L+R): kick band, FP pocket, IMP-8 (R only), "
+                 "hose slot, 4 B-11 lash tabs (op 4.07), K-W keeper notches on the aft edge; corner seams carry HPL (L) "
+                 "and E5 (R)", sk["SK-5"],
                  [f"FP z {g['fp_z'][0]:.0f}-{g['fp_z'][1]:.0f}", f"flat {g['fp_flat_w']:.0f} wide, 2 box pleats",
                   "fold = shock-cord channel"], figsize=(16, 9))
     sk["SK-6"] = d / "SK-6_crown_lid.png"
@@ -1747,203 +1942,142 @@ def sketches(pk, out: Path = OUT) -> dict:
     return sk
 
 
-# ============================================================================ tech pack PDF (reportlab)
-def tech_pack(pk: dict, sk: dict, path: Path) -> Path:
-    """CONTRACTS.md section 5 tech_pack(design, path): cover, flats, BOM, pattern list, op sequence, QC, packaging."""
-    from reportlab.lib import colors
-    from reportlab.lib.pagesizes import landscape, letter
-    from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
-    from reportlab.lib.units import mm
-    from reportlab.platypus import (Image, PageBreak, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle)
-
-    ss = getSampleStyleSheet()
-    sm = ParagraphStyle("sm", parent=ss["BodyText"], fontSize=6.6, leading=7.8)
-    sb = ParagraphStyle("sb", parent=sm, fontName="Helvetica-Bold")
-    body = ParagraphStyle("b", parent=ss["BodyText"], fontSize=9, leading=11.5)
-    h1, h2 = ss["Heading1"], ss["Heading2"]
-    ctx, g, c = pk["ctx"], pk["geo"], pk["costing"]
+# ============================================================================ tech pack content (PDF: huntkit.manufacturing)
+def techpack_design(pk: dict, sk: dict) -> MF.TechPack:
+    """CORRIE F rev 3 content for ``huntkit.manufacturing.tech_pack`` (CONTRACTS.md section 5): cover, equipment, flats,
+    BOM, cutting plan, op sequence, load points, QC, packaging, costing, delta register, assumptions."""
+    from huntkit.manufacturing import h2, image, page_break, para, space, table
+    ctx, c = pk["ctx"], pk["costing"]
     ck = checks(pk)
-    W, H = landscape(letter)
-    story = []
-
-    def P_(t, st=sm):
-        return Paragraph(str(t).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"), st)
-
-    def table(rows, widths, head=True):
-        data = [[P_(x, sb if (head and i == 0) else sm) for x in r] for i, r in enumerate(rows)]
-        t = Table(data, colWidths=[w * mm for w in widths], repeatRows=1 if head else 0)
-        t.setStyle(TableStyle([("GRID", (0, 0), (-1, -1), 0.25, colors.grey),
-                               ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#e8e4da")),
-                               ("VALIGN", (0, 0), (-1, -1), "TOP"),
-                               ("LEFTPADDING", (0, 0), (-1, -1), 2), ("RIGHTPADDING", (0, 0), (-1, -1), 2)]))
-        return t
-
-    def img(p_, maxw=250, maxh=165):
-        from PIL import Image as PI
-        with PI.open(p_) as im:
-            w, h = im.size
-        sc = min(maxw * mm / w, maxh * mm / h)
-        return Image(str(p_), width=w * sc, height=h * sc)
-
-    # ---- 1 cover
-    story += [Paragraph(f"Tech pack: {TITLE}", h1),
-              P_(f"Revision 3, door D2, crown kit M shown (S / L cut lists in cutting_plan.csv). Issued {DATE}. "
-                 "Generated by designs/pack_5200/mfg_corrie_f_rev3.py from the pattern module; patterns, DXF and markers in "
-                 "../patterns/. Units mm, N, g (imperial alongside).", body), Spacer(1, 4 * mm)]
-    key = [["Item", "Value"],
-           ["Pieces", f"{len(ctx.rs.pieces)} piece types; {sum(p.quantity for p in _fabric_pieces(ctx.rs))} fabric / sheet "
-                      f"pieces; {sum(w['qty'] for w in ctx.rs.webbing if not ('kit S' in w['kit'] or 'kit L' in w['kit']))} "
-                      "webbing / cord / elastic"],
-           ["Ledger reconciliation", f"{ck['recon_rows']} rows, {ck['recon_unmatched']} unmatched, "
-                                     f"{ck['recon_pieces_without_row']} pieces without a row"],
-           ["Mass from pattern areas", f"{pk['mass']['pattern_fabric_alt_g']} g vs ledger {pk['mass']['ledger_fabric_g']} g "
-                                       f"({pk['mass']['mass_delta_pct']:+.2f} %, limit 3 %); bag ledger base "
-                                       f"{pk['mass']['base_g']} g / as hunted {pk['mass']['as_hunted_g']} g / meat trip "
-                                       f"{pk['mass']['meat_trip_g']} g (team B basis); primary fabrics "
-                                       f"{pk['mass']['primary_minus_alt_g']:+.1f} g"],
-           ["Operations", f"{ck['ops']} ops; beginner {c['proto_hours']} h; factory SAM {c['sam_min']:.0f} min"],
-           ["Cost a bag", f"materials ${c['material_usd_primary']:.0f} primary / ${c['material_usd_alternate']:.0f} "
-                          f"alternate; + CMT: US ${c['landed_usd']['us_contract_usd_min']:.0f}, Asia "
-                          f"${c['landed_usd']['asia_contract_usd_min']:.0f} (ASSUMPTIONS)"],
-           ["Load points", f"{ck['load_points']}; lowest SF {ck['min_sf']} ({ck['min_sf_point']}); every load point "
-                           "is released by a proof test (section 7)"],
-           ["HOLD", "; ".join(ck["holds"]) or "none"],
-           ["Volatile (re-run on BL-033)", "; ".join(ck["volatile"])],
-           ["Fabric sets", "PRIMARY = today's fabrics (build this). ALTERNATE = team B set (ULTRAGrid body, 70D collar, "
-                           "ULTRA 200X floor) only after gates ALT-1..3 and FS-O5."],
-           ["Owner rules", "No hook-and-loop; coil zips; mostly solid colours, camo on accents only; width <= 394 mm "
-                           "(15.5 in); 85 L +/- 3."]]
-    story += [table(key, [55, 190], head=True), Spacer(1, 3 * mm),
-              P_("Contents: 1 cover; 2 equipment and stitch standards; 3 flats / piece maps; 4 BOM; 5 cutting plan; "
-                 "6 operation sequence; 7 load points and sketches; 8 QC, release tests, defects; 9 packaging; "
-                 "10 costing; 11 delta register; 12 assumptions.", body), PageBreak()]
-    # ---- 2 equipment
-    story += [Paragraph("2. Equipment and stitch standards", h1),
-              table([["ID", "Machine / tool"]] + [[k, v] for k, v in MACHINES.items()], [18, 227]), Spacer(1, 3 * mm),
-              table([["Use", "Thread (record)", "Needle", "SPI (mm)", "Stitch"],
-                     ["40D-100D, mesh, silpoly", THREAD["light"], NEEDLE["light"] + " / " + NEEDLE["mesh"],
-                      f"{SPI['light']} ({25.4 / SPI['light']:.1f})", "301"],
-                     ["body seams, zips, Hypalon perimeters", THREAD["body"], NEEDLE["body"],
-                      f"{SPI['body']} ({25.4 / SPI['body']:.1f})", "301"],
-                     ["load box-X", THREAD["box"], NEEDLE["box"], f"{SPI['box']} ({25.4 / SPI['box']:.1f})",
-                      "301 path (LK-1900 / AMS-210EN programmed)"],
-                     ["bartacks, elastic laps", THREAD["body"], NEEDLE["body"], "LK-1900 std", "304"]],
-                    [50, 40, 75, 25, 55]), Spacer(1, 2 * mm), P_(NEEDLE_RULE, body),
-              P_(f"Seam efficiency: a 301 seam is taken at {SEAM_EFF:.0%} of the weaker strip (clothsim/fabrics.yaml, "
-                 "attach_system.SEAM_EFF); box-X capacity = 0.5 x 1.5 x thread break / stitch length x path "
-                 "(attach_system.box_x, ETA_BOX 0.5 ASSUMPTION).", body), Spacer(1, 2 * mm),
-              table([["Code", "Seam construction"]] + [[k, v] for k, v in SEAMS.items()], [18, 227]), Spacer(1, 2 * mm),
-              table([["Jig", "What"]] + [list(j) for j in JIGS], [18, 227]), PageBreak()]
-    # ---- 3 flats
-    story += [Paragraph("3. Flats and piece maps (from the pattern pieces)", h1)]
+    S = MF.Section
+    n_web = sum(w['qty'] for w in ctx.rs.webbing if not ('kit S' in w['kit'] or 'kit L' in w['kit']))
+    cover = [
+        ["Pieces", f"{len(ctx.rs.pieces)} piece types; {sum(p.quantity for p in _fabric_pieces(ctx.rs))} fabric / sheet "
+                   f"pieces; {n_web} webbing / cord / elastic"],
+        ["Ledger reconciliation", f"{ck['recon_rows']} rows, {ck['recon_unmatched']} unmatched, "
+                                  f"{ck['recon_pieces_without_row']} pieces without a row; hardware rows unmapped: "
+                                  f"{len(ck['unmapped_hardware'])}"],
+        ["Mass from pattern areas", f"{pk['mass']['pattern_fabric_alt_g']} g vs ledger {pk['mass']['ledger_fabric_g']} g "
+                                    f"({pk['mass']['mass_delta_pct']:+.2f} %, limit 3 %); bag ledger base "
+                                    f"{pk['mass']['base_g']} g / as hunted {pk['mass']['as_hunted_g']} g / meat trip "
+                                    f"{pk['mass']['meat_trip_g']} g (team B basis); primary fabrics "
+                                    f"{pk['mass']['primary_minus_alt_g']:+.1f} g"],
+        ["Thread", f"{ck['thread_bag_g']} g in the bag from the op lengths (no cone waste); ledger books "
+                   f"{ck['thread_ledger_g']} g; purchase quantities in the BOM include {THREAD_WASTE:.0%} cone waste"],
+        ["Operations", f"{ck['ops']} ops; beginner {c['proto_hours']} h; factory SAM {c['sam_min']:.0f} min"],
+        ["Cost a bag", f"materials ${c['material_usd_primary']:.0f} primary / ${c['material_usd_alternate']:.0f} "
+                       f"alternate; + CMT: US ${c['landed_usd']['us_contract_usd_min']:.0f}, Asia "
+                       f"${c['landed_usd']['asia_contract_usd_min']:.0f} (ASSUMPTIONS)"],
+        ["Load points", f"{ck['load_points']}; lowest SF {ck['min_sf']} ({ck['min_sf_point']}); every load point "
+                        "is released by a proof test (section 8)"],
+        ["HOLD", "; ".join(ck["holds"]) or "none"],
+        ["Pattern flags", "; ".join(ck["box_mismatches"]) or "none"],
+        ["Volatile (re-run on a pattern change)", "; ".join(ck["volatile"])],
+        ["Fabric sets", "PRIMARY = today's fabrics (build this). ALTERNATE = team B set (ULTRAGrid body, 70D collar, "
+                        "ULTRA 200X floor) only after gates ALT-1..3 and FS-O5."],
+        ["Owner rules", "No hook-and-loop; coil zips; mostly solid colours, camo on accents only; width <= 394 mm "
+                        "(15.5 in); 85 L +/- 3."]]
+    secs = []
+    secs.append(S("2. Equipment and stitch standards", [
+        table([["ID", "Machine / tool"]] + [[k, v] for k, v in MACHINES.items()], [18, 227]), space(3),
+        table([["Use", "Thread (record)", "Needle", "SPI (mm)", "Stitch"],
+               ["40D-100D, mesh, silpoly", THREAD["light"], NEEDLE["light"] + " / " + NEEDLE["mesh"],
+                f"{SPI['light']} ({25.4 / SPI['light']:.1f})", "301"],
+               ["body seams, zips, Hypalon perimeters, B-11 sew-down", THREAD["body"], NEEDLE["body"],
+                f"{SPI['body']} ({25.4 / SPI['body']:.1f})", "301"],
+               ["load box-X", THREAD["box"], NEEDLE["box"], f"{SPI['box']} ({25.4 / SPI['box']:.1f})",
+                "301 path (LK-1900 / AMS-210EN programmed)"],
+               ["bartacks, elastic laps", THREAD["body"], NEEDLE["body"], "LK-1900 std", "304"]],
+              [50, 40, 75, 25, 55]), space(2), para(NEEDLE_RULE),
+        para(f"Seam efficiency: a 301 seam is taken at {SEAM_EFF:.0%} of the weaker strip (clothsim/fabrics.yaml, "
+             "attach_system.SEAM_EFF); box-X capacity = 0.5 x 1.5 x thread break / stitch length x path "
+             "(attach_system.box_x, ETA_BOX 0.5 ASSUMPTION)."), space(2),
+        table([["Code", "Seam construction"]] + [[k, v] for k, v in SEAMS.items()], [18, 227]), space(2),
+        table([["Jig", "What"]] + [list(j) for j in JIGS], [18, 227])]))
+    flats = []
     render = ROOT / "docs" / "screens" / "20261112_BL030_2.png"
     if render.exists():
-        story += [img(render, 200, 120), P_("Render of rev 3 (docs/screens/20261112_BL030_2.png, BL-030): side view, "
-                                            "lid and crown straps. Colours / camo placement as drawn there.", body),
-                  PageBreak()]
-    for k in ("SK-3", "SK-4", "SK-5", "SK-6"):
-        story += [img(sk[k]), PageBreak()]
-    # ---- 4 BOM
-    story += [Paragraph("4. Bill of materials (one bag, full build, crown kit M)", h1),
-              P_("Production qty = 10-bag marker + 3 % lay loss where part A nested one, else net / utilisation "
-                 "(ASSUMPTION). Prototype (1-bag marker) quantity in the last column. Waste % = gross / net - 1.", body)]
-    rows = [["Section", "Item", "Material id", "Qty", "Unit", "Imperial", "Waste %", "$ / unit", "$", "Alternate / kit",
-             "Proto qty", "Source"]]
-    for b in pk["bom"]:
-        rows.append([b.section, b.item, b.material_id, f"{b.qty:g}", b.unit, _imp(b), f"{b.waste_pct:g}",
-                     "" if b.unit_cost_usd is None else f"{b.unit_cost_usd:.3g}",
-                     "" if b.cost_usd is None else f"{b.cost_usd:.2f}", f"{b.alt_material_id} / {b.kit}",
-                     "" if b.proto_qty is None else f"{b.proto_qty:g}", b.source])
-    story += [table(rows, [17, 50, 30, 12, 8, 14, 10, 11, 11, 30, 12, 50]), PageBreak()]
-    # ---- 5 cutting
-    story += [Paragraph("5. Cutting plan", h1),
-              P_("Markers: ../patterns/markers/. Cut windows, slots and slits first; knife clockwise from the grain "
-                 "arrow; notches 6 mm. Ply height: woven nylon 24, laminates / mesh / silpoly 12, camo single ply "
-                 "(one way, print placement), sheet goods laser single sheet.", body)]
-    rows = [["Set", "Material", "Pieces", "1-bag m", "eff", "10-bag m / bag", "eff", "Lay", "Prototype", "Production"]]
+        flats += [image(render, 200, 120), para("Render of rev 3 (docs/screens/20261112_BL030_2.png, BL-030): side view, "
+                                                "lid and crown straps. Colours / camo placement as drawn there."),
+                  page_break()]
+    for i, k in enumerate(("SK-3", "SK-4", "SK-5", "SK-6")):
+        flats += [image(sk[k])] + ([page_break()] if i < 3 else [])
+    secs.append(S("3. Flats and piece maps (from the pattern pieces)", flats))
+    secs.append(S("4. Bill of materials (one bag, full build, crown kit M)", [
+        para("Production qty = 10-bag marker + 3 % lay loss where part A nested one, else net / utilisation "
+             "(ASSUMPTION). Prototype (1-bag marker) quantity in the Proto column. Waste % = gross / net - 1. Thread: "
+             "purchase quantity includes the cone waste; the grams in the bag (notes) do not."),
+        MF.bom_table(pk["bom"])]))
+    cut = [["Set", "Material", "Pieces", "1-bag m", "eff", "10-bag m / bag", "eff", "Lay", "Prototype", "Production"]]
     for r in pk["cutting"]:
-        if r["set"] == "webbing":
-            continue
-        rows.append([r["set"], r["material_id"], r["pieces"], r["marker_1bag_m"] or "", r["eff_1bag"] or "",
-                     r["marker_10bag_m_per_bag"] or "", r["eff_10bag"] or "", r["lay"], r["prototype_cut"],
-                     r["production_cut"]])
-    story += [table(rows, [14, 30, 50, 11, 9, 14, 9, 25, 40, 50]), Spacer(1, 3 * mm),
-              Paragraph("Webbing, cord and elastic cut lengths", h2)]
-    rows = [["ID", "Use", "Material", "Length mm (in)", "Qty", "Kit", "Source"]]
+        if r["set"] != "webbing":
+            cut.append([r["set"], r["material_id"], r["pieces"], r["marker_1bag_m"] or "", r["eff_1bag"] or "",
+                        r["marker_10bag_m_per_bag"] or "", r["eff_10bag"] or "", r["lay"], r["prototype_cut"],
+                        r["production_cut"]])
+    web = [["ID", "Use", "Material", "Length mm (in)", "Qty", "Kit", "Source"]]
     for w in ctx.rs.webbing:
-        rows.append([w["id"], w["use"], w["material_id"], f"{w['length_mm']:.0f} ({w['length_mm'] / IN:.1f})", w["qty"],
-                     w["kit"], w["source"]])
-    story += [table(rows, [14, 75, 35, 22, 8, 30, 60]), PageBreak()]
-    # ---- 6 ops
-    story += [Paragraph("6. Sewing operation sequence", h1),
-              P_("All flat work before the bag becomes 3D. Clips, never pins, in coated fabric. Swatch every new stack. "
-                 "Load points only after their proof test passes (section 8). V = volatile (re-run on BL-033).", body)]
-    rows = [["Seq", "Operation", "How (beginner)", "Pieces", "Machine", "Needle", "Thread", "SPI", "Stitch / seam",
-             "mm", "Ref", "h / SAM min"]]
-    for o in pk["ops"]:
-        rows.append([o.seq + (" V" if o.volatile else ""), o.operation, o.notes, o.pieces, o.machine, o.needle,
-                     o.thread_id.replace("bonded_nylon_", "BN "), o.spi or "-", f"{o.stitch_type} / {o.seam or '-'}",
-                     f"{o.length_mm:.0f}" if o.length_mm else "",
-                     "; ".join(x for x in (o.sketch, o.qc, o.bartack) if x),
-                     f"{o.proto_h:.2f} / {o.time_s / 60:.1f}" + ("" if o.per_bag else " 1x")])
-    story += [table(rows, [9, 28, 72, 22, 16, 18, 11, 7, 20, 9, 18, 12]), PageBreak()]
-    # ---- 7 load points
-    story += [Paragraph("7. Load points: bartack and box-X specification", h1),
-              P_("Load = factored design load from the record named (x 3.0 on the 1 g simulation per HA-LS-1 rev C). "
-                 "Capacity by attach_system rules. Proof = the test that releases the point (register).", body)]
-    rows = [["Point", "Part", "Where", "Pattern", "Stitches", "Machine", "Thread / needle", "Load N (lbf)", "Source",
-             "Capacity N", "Governs", "SF", "Proof"]]
+        web.append([w["id"], w["use"], w["material_id"], f"{w['length_mm']:.0f} ({w['length_mm'] / IN:.1f})", w["qty"],
+                    w["kit"], w["source"]])
+    secs.append(S("5. Cutting plan (pattern list, markers, cut lengths)", [
+        para("Markers: ../patterns/markers/. Cut windows, slots and slits first; knife clockwise from the grain "
+             "arrow; notches 6 mm. Ply height: woven nylon 24, laminates / mesh / silpoly 12, camo single ply "
+             "(one way, print placement), sheet goods laser single sheet."),
+        table(cut, [14, 30, 50, 11, 9, 14, 9, 25, 40, 50]), space(3), h2("Webbing, cord and elastic cut lengths"),
+        table(web, [14, 75, 35, 22, 8, 30, 60])]))
+    secs.append(S("6. Sewing operation sequence", [
+        para("All flat work before the bag becomes 3D. Clips, never pins, in coated fabric. Swatch every new stack. "
+             "Load points only after their proof test passes (section 8). V = volatile (re-run on a pattern change)."),
+        MF.ops_table(pk["ops"])]))
+    lpr = [["Point", "Part", "Where", "Pattern", "Stitches", "Machine", "Thread / needle", "Load N (lbf)", "Source",
+            "Capacity N", "Governs", "SF", "Proof"]]
     for r in pk["load_points"]:
-        rows.append([r["point"], r["part"], r["where"], r["pattern"], r["stitches"] or "", r["machine"],
-                     f"{r['thread']} / {r['needle']}", f"{r['load_n'] or '-'} ({r['load_lbf'] or '-'})",
-                     r["load_source"], r["capacity_n"] or "", r["governs"], r["sf"] or "", r["proof"] +
-                     (f"; {r['note']}" if r["note"] else "")])
-    story += [table(rows, [22, 18, 26, 28, 10, 18, 26, 14, 30, 12, 18, 7, 30]), PageBreak(),
-              img(sk["SK-1"]), PageBreak(), img(sk["SK-2"]), PageBreak(), img(sk["SK-7"], 250, 170), PageBreak()]
-    # ---- 8 QC
-    story += [Paragraph("8. QC checkpoints", h1),
-              table([["ID", "Stage", "Check", "Method", "Pass", "Frequency"]] +
-                    [[q["id"], q["stage"], q["check"], q["method"], q["pass"], q["frequency"]] for q in pk["qc"]],
-                    [12, 18, 35, 60, 85, 35]), PageBreak(),
-              Paragraph("Physical tests that gate release", h1),
-              table([["ID", "Test", "Gates", "Steps", "Pass / fail", "Source"]] +
-                    [[t["id"], t["title"], t["gates"], t["steps"], t["pass"], t["source"]] for t in pk["tests"]],
-                    [13, 45, 40, 75, 55, 17]), PageBreak(),
-              Paragraph("Defect list", h1),
-              table([["Defect", "Where", "Cause", "Prevent / fix", "Class"]] + [list(d) for d in DEFECTS],
-                    [60, 35, 50, 85, 15]), Spacer(1, 4 * mm),
-              Paragraph("9. Packaging", h1)] + [P_(f"{i + 1}. {t}", body) for i, t in enumerate(PACKAGING)] + [PageBreak()]
-    # ---- 10 costing
-    story += [Paragraph("10. Costing and hours", h1),
-              table([["Step", "Beginner h"]] + [[k, f"{v:.2f}"] for k, v in c["proto_hours_by_step"].items()] +
-                    [["Total (incl. one-off set-up)", f"{c['proto_hours']}"]], [100, 30]), Spacer(1, 3 * mm),
-              table([["Scenario", "SAM min", "Labour $", "CMT incl. overhead $", "Materials $", "Total $"]] +
-                    [[k, f"{c['sam_min']:.0f}", f"{c['labour_usd'][k]:.2f}", f"{c['cmt_usd'][k]:.2f}",
-                      f"{c['material_usd_primary']:.2f}", f"{c['landed_usd'][k]:.2f}"] for k in LABOUR], [60, 20, 25, 35, 25, 25]),
-              Spacer(1, 2 * mm),
-              P_(f"Lid on the drafted pattern {c['lid_hours_drafted']} h (booked {c['lid_hours_booked']} h). Alternate "
-                 f"set materials ${c['material_usd_alternate']:.2f}. Assumptions: {'; '.join(c['assumptions'])}.", body),
-              PageBreak()]
-    # ---- 11 delta + 12 assumptions
-    story += [Paragraph("11. Release delta register: rows this release resolves", h1),
-              table([["RD", "Status", "Evidence (checked by the script)", "Still open"]] +
-                    [[d["id"], d["status_after_rev3_package"], d["evidence"], d["still_open"]] for d in pk["delta"]],
-                    [14, 25, 110, 96]), PageBreak(),
-              Paragraph("12. Assumptions that govern", h1),
-              table([["ID", "Assumption", "Settled by"]] + [list(a) for a in ASSUMPTIONS], [30, 125, 90])]
-
-    def footer(cv, doc):
-        cv.saveState()
-        cv.setFont("Helvetica", 7)
-        cv.drawString(12 * mm, 7 * mm, f"{TITLE} - tech pack - {DATE} - generated, do not edit")
-        cv.drawRightString(W - 12 * mm, 7 * mm, f"page {doc.page}")
-        cv.restoreState()
-
-    path.parent.mkdir(parents=True, exist_ok=True)
-    doc = SimpleDocTemplate(str(path), pagesize=(W, H), leftMargin=10 * mm, rightMargin=10 * mm, topMargin=10 * mm,
-                            bottomMargin=12 * mm, title=f"Tech pack {TITLE}", author="Hunting-appeal (generated)")
-    doc.build(story, onFirstPage=footer, onLaterPages=footer)
-    return path
+        lpr.append([r["point"], r["part"], r["where"], r["pattern"], r["stitches"] or "", r["machine"],
+                    f"{r['thread']} / {r['needle']}", f"{r['load_n'] or '-'} ({r['load_lbf'] or '-'})",
+                    r["load_source"], r["capacity_n"] or "", r["governs"], r["sf"] or "",
+                    r["proof"] + (f"; {r['note']}" if r["note"] else "")])
+    secs.append(S("7. Load points: bartack and box-X specification", [
+        para("Box sizes are the box-X marks drawn on the pattern pieces. Load = factored design load from the record "
+             "named (x 3.0 on the 1 g simulation per HA-LS-1 rev C). Capacity by attach_system rules. Proof = the test "
+             "that releases the point (register)."),
+        table(lpr, [22, 18, 26, 28, 10, 18, 26, 14, 30, 12, 18, 7, 30]), page_break(),
+        image(sk["SK-1"]), page_break(), image(sk["SK-2"]), page_break(), image(sk["SK-7"], 250, 170)]))
+    secs.append(S("8. QC checkpoints, release tests, defects", [
+        table([["ID", "Stage", "Check", "Method", "Pass", "Frequency"]] +
+              [[q["id"], q["stage"], q["check"], q["method"], q["pass"], q["frequency"]] for q in pk["qc"]],
+              [12, 18, 35, 60, 85, 35]), page_break(),
+        h2("Physical tests that gate release"),
+        table([["ID", "Test", "Gates", "Steps", "Pass / fail", "Source"]] +
+              [[t["id"], t["title"], t["gates"], t["steps"], t["pass"], t["source"]] for t in pk["tests"]],
+              [13, 45, 40, 75, 55, 17]), page_break(),
+        h2("Defect list"),
+        table([["Defect", "Where", "Cause", "Prevent / fix", "Class"]] + [list(d) for d in DEFECTS],
+              [60, 35, 50, 85, 15])]))
+    secs.append(S("9. Packaging", [para(f"{i + 1}. {t}") for i, t in enumerate(PACKAGING)]))
+    secs.append(S("10. Costing and hours", [
+        table([["Step", "Beginner h"]] + [[k, f"{v:.2f}"] for k, v in c["proto_hours_by_step"].items()] +
+              [["Total (incl. one-off set-up)", f"{c['proto_hours']}"]], [100, 30]), space(3),
+        table([["Scenario", "SAM min", "Labour $", "CMT incl. overhead $", "Materials $", "Total $"]] +
+              [[k, f"{c['sam_min']:.0f}", f"{c['labour_usd'][k]:.2f}", f"{c['cmt_usd'][k]:.2f}",
+                f"{c['material_usd_primary']:.2f}", f"{c['landed_usd'][k]:.2f}"] for k in LABOUR],
+              [60, 20, 25, 35, 25, 25]), space(2),
+        para(f"Lid on the drafted pattern {c['lid_hours_drafted']} h (booked {c['lid_hours_booked']} h). Alternate "
+             f"set materials ${c['material_usd_alternate']:.2f}. Assumptions: {'; '.join(c['assumptions'])}.")]))
+    secs.append(S("11. Release delta register: rows this release resolves", [
+        table([["RD", "Status", "Evidence (checked by the script)", "Still open"]] +
+              [[d["id"], d["status_after_rev3_package"], d["evidence"], d["still_open"]] for d in pk["delta"]],
+              [14, 25, 110, 96])]))
+    secs.append(S("12. Assumptions that govern", [
+        table([["ID", "Assumption", "Settled by"]] + [list(a) for a in ASSUMPTIONS], [30, 125, 90])]))
+    return MF.TechPack(
+        title=TITLE, date=DATE, footer=f"{TITLE} - tech pack - {DATE} - generated, do not edit",
+        subtitle=(f"Revision 3, door D2, crown kit M shown (S / L cut lists in cutting_plan.csv). Issued {DATE}. "
+                  "Generated by designs/pack_5200/mfg_corrie_f_rev3.py from the pattern module; patterns, DXF and "
+                  "markers in ../patterns/. Units mm, N, g (imperial alongside)."),
+        cover=cover,
+        contents="Contents: 1 cover; 2 equipment and stitch standards; 3 flats / piece maps; 4 BOM; 5 cutting plan; "
+                 "6 operation sequence; 7 load points and sketches; 8 QC, release tests, defects; 9 packaging; "
+                 "10 costing; 11 delta register; 12 assumptions.",
+        sections=secs)
 
 
 # ============================================================================ previews and screenshots
@@ -1957,7 +2091,7 @@ def preview(pdf: Path, out: Path) -> list[Path]:
 
 
 def screenshots(pdf: Path, sk: dict) -> list[Path]:
-    """Phone-readable PNGs (<= 1.5 MB): cover page, an op-sequence page, SK-1, SK-3 (pages at 110 dpi)."""
+    """Phone-readable PNGs (<= 1.5 MB): cover page, an op-sequence page, SK-1, SK-5 (pages at 110 dpi)."""
     from PIL import Image as PI
     SCREENS.mkdir(parents=True, exist_ok=True)
     tmp = OUT / "preview" / "_hi"
@@ -1969,7 +2103,7 @@ def screenshots(pdf: Path, sk: dict) -> list[Path]:
     op_page = next((i + 1 for i, pg in enumerate(rd.pages) if "6. Sewing operation sequence" in (pg.extract_text() or "")), 2)
     subprocess.run(["pdftoppm", "-png", "-r", "110", "-f", str(op_page + 2), "-l", str(op_page + 2), str(pdf),
                     str(tmp / "ops")], check=True)
-    srcs = [sorted(tmp.glob("cover*.png"))[0], sorted(tmp.glob("ops*.png"))[0], sk["SK-1"], sk["SK-3"]]
+    srcs = [sorted(tmp.glob("cover*.png"))[0], sorted(tmp.glob("ops*.png"))[0], sk["SK-1"], sk["SK-5"]]
     out = []
     for i, s_ in enumerate(srcs, 1):
         dst = SCREENS / f"{DATE}_{TOPIC}_{i}.png"
@@ -2001,7 +2135,7 @@ def main(argv=None):
     out = Path(a.out)
     files = write_files(pk, out)
     sk = sketches(pk, out)
-    pdf = tech_pack(pk, sk, out / "techpack_corrie_f_rev3.pdf")
+    pdf = MF.tech_pack(techpack_design(pk, sk), out / "techpack_corrie_f_rev3.pdf", strict=True)
     pv = preview(pdf, out)
     print(f"wrote {len(files)} files, {len(sk)} sketches, {pdf} ({len(pv)} pages previewed)")
     if not a.no_screens and out == OUT:

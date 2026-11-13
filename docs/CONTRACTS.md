@@ -114,6 +114,20 @@ API (`huntkit.materials`):
   spi, thread_id, needle, attachment/folder, notes, time_s)`.
 - `tech_pack(design, path)` builds the PDF: cover, flats, BOM, pattern list, op sequence, QC
   points, packaging.
+- Implemented 2026-11-13 (BL-034 part C, backward compatible: field names and order unchanged from the CORRIE F rev 3
+  generator that defined them). `huntkit.manufacturing.records`: `SewingOp(seq, operation, machine, stitch_type, spi,
+  thread_id, needle, attachment, notes, time_s, step, pieces, seam, length_mm, bartack, sketch, qc, volatile, proto_h,
+  per_bag)` (`time_s` factory SAM, `proto_h` beginner hours, `length_mm` stitching length the thread is booked from);
+  `BOMLine(section, item, material_id, qty, unit, waste_pct, unit_cost_usd, cost_usd, alt_material_id, alt_qty,
+  alt_cost_usd, kit, source, notes, proto_qty)` (`qty` = purchase quantity, waste included); helpers `imperial`,
+  `bom_rows`, `op_rows`, `bom_cost`, `missing_cost`, `thread_metres(ops, factor)` (thread sewn, no cone waste).
+  `huntkit.manufacturing.techpack`: `tech_pack(design: TechPack | dict, path, strict=False) -> Path`, where
+  `TechPack(title, subtitle, date, footer, cover [[k, v]], contents, sections [Section(title, blocks)])` and blocks are
+  dicts (`para`, `h2`, `table`, `image`, `space`, `page_break`; `bom_table(bom)`, `ops_table(ops)`); `strict=True`
+  refuses a design that `missing_sections()` finds short of the contract sections. CLI `python -m
+  huntkit.manufacturing.cli fields | check spec.json | techpack spec.json out.pdf`. Product content stays in the
+  product's generator: `designs/pack_5200/mfg_corrie_f_rev3.py` (`techpack_design(pk, sk)`); consumers of its
+  records: `designs/pack_5200/build_effort_rev3.py`, `tests/test_mfg_corrie_f_rev3.py`.
 
 ## 6. Meat haul and the bag-to-frame joint
 

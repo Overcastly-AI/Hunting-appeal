@@ -731,18 +731,28 @@ weight:
   basis: 'PRODUCTION pack: printed branch frame + Sandwich v2 spreader + fairlead attachment + under-straps + soft
     goods; size M belt, J-straps, rain fly (owner: counts), meat harness'
   groups_g: {frame (printed branch body + carbon crown): 1062.6, 'back-system spreader (Sandwich v2, BP-06)': 162.3,
-    torso adjust (not in the frame line): 41.7, main bag: 394.1, bag-side load spreaders: 27.8, bag-to-frame attachment (fairleads): 144.1,
-    bag-to-frame attachment system: 131.4, under-straps US1/US2 (cradle): 122.4, float-mode stand-off links B-24: 54.4,
+    torso adjust (not in the frame line): 40.6, main bag: 394.1, bag-side load spreaders: 27.8, bag-to-frame attachment (fairleads): 147.8,
+    bag-to-frame attachment system: 131.4, under-straps US1/US2 (cradle): 138.4, float-mode stand-off links B-24: 54.4,
     accents: 52.7, rain fly: 68.4, pockets: 59.0, hipbelt (M): 334.3, harness: 212.5, back panel: 251.3, internal meat harness: 254.4,
     haul wraps (= compression): 108.1, misc: 42.2}
-  total_g: 3523.7
-  total_lb: 7.77
+  total_g: 3542.3
+  total_lb: 7.81
   target_g: 2268
-  gap_g: 1255.7
+  gap_g: 1274.3
   weight_plan: analysis/bag_weight_plan.md (bag-side savings, owner choices)
   v31_tube_baseline: {total_g: 2224.1, frame_g: 569.2, back_panel_g: 75.2, misc_g: 36.1, source: 'geometry.yaml
       v3.1 (commit 6061796): carbon-tube frame v2, single 6 mm XLPE back sheet', used_by: huntkit/gendesign/frame_production.py
       SOFT_GOODS_G (soft-goods basis of the frame studies)}
+  misc_thread:
+    thread_frac: 0.03
+    labels_g: 8.0
+    soft_goods_g: {main bag: 301.5, accents: 52.7, fly: 52.6, pockets: 52.0, hipbelt: 191.7, meat: 14.1, reinforcement: 27.8,
+      harness_J: 91.0, harness_S: 91.1, harness_common: 13.6, back_panel: 251.3}
+    bag_soft_keys: [main bag, accents, fly, pockets, meat, reinforcement]
+    bag_thread_g: 15.0
+    other_thread_g: 19.2
+    note: misc row = thread_frac x soft goods + labels (ASSUMPTION); bag_thread_g is the share on the bag's pieces
+      (main bag, accents, fly, pockets, meat ports, bag-side spreaders)
   rifle_boot_optional_g: 35.6
   lid_accessory_g: 141.2
   extension_posts_accessory_g: 60
@@ -757,7 +767,8 @@ weight:
       seal (installed)', mass_g: 162.3, basis: 'analysis/spreader_results.json chosen.mass_g (sw110c7d; owner 2026-11-06,
       7 mm core)'}
   - {group: torso adjust (not in the frame line), item: '3:1 pulley webbing 25 mm x 1.4 m, metal cam buckle, pawl
-      release cord + strap toggle', mass_g: 41.7, basis: records; cam 12 g + toggle 3 g ASSUMPTION}
+      release cord + strap toggle', mass_g: 40.6, basis: 'records: poly_webbing_25mm, cam_25mm_al (no pull tab,
+      ASSUMPTION TA-CAM), dyneema_cord_2mm, pom_toggle (BL-035; were cam 12 g + toggle 3 g ASSUMPTIONs)'}
   - {group: main bag, item: 'fabric panels (B-*, D-01, collar, tabs)', mass_g: 301.5, basis: 'computed: cut area
       x gsm'}
   - {group: main bag, item: '#10 coil diagonal zip + 2 sliders', mass_g: 23.4, basis: coil_zipper_10 g/m; sliders
@@ -787,9 +798,9 @@ weight:
       parts_g}
   - {group: bag-to-frame attachment (fairleads), item: B-01 swell patches, mass_g: 12.3, basis: analysis/bag_attachment_results.json
       parts_g}
-  - {group: bag-to-frame attachment (fairleads), item: elastic keepers, mass_g: 3.6, basis: analysis/bag_attachment_results.json
+  - {group: bag-to-frame attachment (fairleads), item: elastic keepers, mass_g: 8.1, basis: analysis/bag_attachment_results.json
       parts_g}
-  - {group: bag-to-frame attachment (fairleads), item: lifter tri-glide keepers, mass_g: 6.0, basis: analysis/bag_attachment_results.json
+  - {group: bag-to-frame attachment (fairleads), item: lifter tri-glide keepers, mass_g: 5.2, basis: analysis/bag_attachment_results.json
       parts_g}
   - {group: bag-to-frame attachment system, item: crown hood B-19 (Hypalon blank + ears + hem), mass_g: 24.3, basis: analysis/attach_system_results.json
       mass.parts_g (attachment phase 2026-11-05)}
@@ -825,7 +836,7 @@ weight:
       cradle_parts_g (meat_haul_modes.md)}
   - {group: under-straps US1/US2 (cradle), item: 38 mm cams (2), mass_g: 44.0, basis: huntkit/gendesign/meat_haul.py
       cradle_parts_g (meat_haul_modes.md)}
-  - {group: under-straps US1/US2 (cradle), item: tri-glide keepers (2), mass_g: 6.0, basis: huntkit/gendesign/meat_haul.py
+  - {group: under-straps US1/US2 (cradle), item: tri-glide keepers (2), mass_g: 22.0, basis: huntkit/gendesign/meat_haul.py
       cradle_parts_g (meat_haul_modes.md)}
   - {group: under-straps US1/US2 (cradle), item: '38 mm webbing, 1.10 m', mass_g: 30.8, basis: huntkit/gendesign/meat_haul.py
       cradle_parts_g (meat_haul_modes.md)}
