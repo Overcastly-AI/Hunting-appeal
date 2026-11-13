@@ -160,10 +160,10 @@ FREEZER_MAX_C = -18.0      # ASSUMPTION FREEZER: a home freezer holds about -18 
 def im3_ec_load() -> dict:
     """IM3-EC coupon load (adopted countersign 2026-11-13): 1.15 x 1.6 x the BL-021 governing hook + strap demand at
     1 g (28 mm cheek), pulled at the DIR_SCATTER angle (computed angle + 10 deg, the angle the release flip is set at),
-    R <= 0.02 (F_min only keeps the rig taut)."""
+    R about 0.02 (F_min only keeps the rig taut)."""
     ec = _countersign()["ec"]
     peak = ec["peak_n"]
-    fmin = math.floor(0.02 * peak)          # BL-041 n-1: 24 N was R 0.0204 > 0.02; floor keeps R <= 0.02 (23 N)
+    fmin = ec["min_n_r002"]                 # countersign F_min (24 N = R 0.0204); BL-041 n-1: the text says "R about 0.02"
     return {"combo_1g_n": ec["combo_1g_n"], "aft_deg": round(ec["aft_deg_dir"]), "aft_deg_computed": ec["aft_deg"],
             "demand_n": round(FAT_G * ec["combo_1g_n"], 1), "peak_n": peak, "min_n": fmin,
             "link_n": round(peak / 4.0), "proof_n": 2553, "r": round(fmin / peak, 4),
@@ -582,9 +582,9 @@ def patches(lv: dict, lid_g: float) -> dict:
                        what_it_proves=f"the 28 mm IM3 cheek survives 1e5 walking cycles with a 15 % load margin on the BL-021 sim demand (1.6 x {ec['combo_1g_n']:.1f} N hook + strap, 15fL = {ec['demand_n']:.0f} N) at the {ec['aft_deg']} deg DIR_SCATTER angle",
                        safety_at_stake="IM3 eye fatigue 1.218 at 0.30 (28 mm cheek, BL-021; 1.174 at DIR_SCATTER)",
                        specimen="3 eye coupons: 120 mm stay segment round z 520 with the IM3 eye and the 28 mm cheek (BL-021), cut from the H1 STL, printed with the CA-1 bars",
-                       steps=f"sewn T3 tongue + IM3 carabiner through the eye, led {ec['aft_deg']} deg aft of the stay axis (the DIR_SCATTER angle: computed {ec['aft_deg_computed']} deg + 10), coupon clamped by the stay ends; lever rig at R <= 0.02: {ec['min_n']} -> {ec['peak_n']} N (F_min only keeps the rig taut), 1 Hz, to 1e5; loupe check every 25,000; then pull to {ec['proof_n']} N on the pull bench. (Equivalent alternative: {ec['alt_r01_peak_n']} N peak at R 0.1)",
+                       steps=f"sewn T3 tongue + IM3 carabiner through the eye, led {ec['aft_deg']} deg aft of the stay axis (the DIR_SCATTER angle: computed {ec['aft_deg_computed']} deg + 10), coupon clamped by the stay ends; lever rig at R about 0.02 (F_min / peak): {ec['min_n']} -> {ec['peak_n']} N (F_min only keeps the rig taut), 1 Hz, to 1e5; loupe check every 25,000; then pull to {ec['proof_n']} N on the pull bench. (Equivalent alternative: {ec['alt_r01_peak_n']} N peak at R 0.1)",
                        pass_fail=f"3/3 run-outs to 1e5 at {ec['peak_n']} N, no crack at 10x; residual pull {ec['proof_n']} N with no crack",
-                       notes=f"BL-040: angle {ec['aft_deg']} deg and R <= 0.02 from the adopted structural countersign. BL-038: cheek 27 -> 28 mm (BL-021 adopted). BL-039: load {ec['peak_n']} N from the BL-021 sim demand (was 1017 N = 1.15 x 1.6 x 552.4 N, BL-010's 15 in IM3 force, below today's demand)"),
+                       notes=f"BL-040: angle {ec['aft_deg']} deg and R about 0.02 from the adopted structural countersign. BL-038: cheek 27 -> 28 mm (BL-021 adopted). BL-039: load {ec['peak_n']} N from the BL-021 sim demand (was 1017 N = 1.15 x 1.6 x 552.4 N, BL-010's 15 in IM3 force, below today's demand)"),
         "T9": dict(title="loaded CG (+ 15 in, 30 kg meat check); CORRIE F rev 3 items in rows T9-R3a..d (BL-038 split)",
                    specimen="P2 frame + bag (rev C CG at 15 / 19 / 23 in); the rev 3 items are rows T9-R3a..d",
                    steps="68 kg fill and meat on IM1-IM3 at 15/19/23 in; hang from haul loop, then from a hip pin, plumb both lines; add 30 kg on IM1-IM3 at 15 in; then rows T9-R3a (port guys, S kit CG), T9-R3c (crown strap path) in the same session; T9-R3b (cinch after a walk) and T9-R3d (lid) after T1-T4",

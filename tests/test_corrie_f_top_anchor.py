@@ -92,13 +92,15 @@ def test_rev3_swaps_the_pouch_for_the_lid_and_keeps_base_as_rev2():
     import strap_tails as ST
     bl031 = sum(g for s, n, g, c, src in ST.bag_rows() if c == "base")
     # BL-035: rev 3 also books the rifle muzzle keepers (corrie_f.muzzle_keeper; rev 2 stays as booked)
-    assert base3 == pytest.approx(base2 + bl031 + F.muzzle_keeper()["mass_g"], abs=0.02)
+    bl041 = sum(r["g"] for r in r3 if r["name"].startswith("BL-041") and r["cfg"] == "base")   # BL-041 rev 3 rows
+    assert base3 == pytest.approx(base2 + bl031 + F.muzzle_keeper()["mass_g"] + bl041, abs=0.02)
     hunted = lambda rows: sum(r["g"] for r in rows if r["cfg"] in ("base", "as_hunted"))  # noqa: E731
     d = hunted(r3) - hunted(r2)
     pouch = sum(r["g"] for n, r in n2.items() if "top_pouch" in n)
     # BL-033: rev 3 books the drafted F-01 fly (and its re-booked hem elastic) instead of the scaled-area estimate
     fly = lambda rows: sum(r["g"] for r in rows if r["system"] == "fly" and r["cfg"] == "as_hunted")  # noqa: E731
-    assert d == pytest.approx(lid[0]["g"] + cs[0]["g"] - pouch + bl031 + fly(r3) - fly(r2) + F.muzzle_keeper()["mass_g"],
+    assert d == pytest.approx(lid[0]["g"] + cs[0]["g"] - pouch + bl031 + fly(r3) - fly(r2) + F.muzzle_keeper()["mass_g"]
+                          + bl041,
                               abs=0.05)                                    # BL-035 muzzle keepers (rev 3 only)
 
 

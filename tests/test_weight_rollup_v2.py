@@ -119,8 +119,11 @@ def test_ticket_steps_match_the_ticket_modules():
         r0 = F.weight_table("M", "base", "D2", "today")["bag_side_g"]
     import strap_tails as ST                       # BL-031 base strap changes ride on rev 3 (strap_tails.bag_rows)
     bl031 = sum(g for s, n, g, c, src in ST.bag_rows() if c == "base")
-    assert wt["bag_side_g"] - r0 == pytest.approx(8.6 + F.guy_port()["mass_g"] + bl031 + F.muzzle_keeper()["mass_g"],
-                                                  abs=0.1)                  # + BL-035 muzzle keepers (rev 3)
+    with F.revision(3):                            # BL-041: the rev 3 parts the ledger had not booked (corrie_f.bl041_rows)
+        bl041 = sum(r["g"] for r in F.parts("M", "D2") if r["name"].startswith("BL-041") and r["cfg"] == "base")
+    assert wt["bag_side_g"] - r0 == pytest.approx(8.6 + F.guy_port()["mass_g"] + bl031 + F.muzzle_keeper()["mass_g"]
+                                                  + bl041, abs=0.2)        # + BL-035 muzzle keepers (rev 3), + BL-041
+    # (abs 0.2: the rev 3 BL-034 thread rows follow the op lengths, which BL-041's new ops moved by ~0.1 g)
 
 
 def test_six_point_six_pounds_is_not_reached_and_the_gap_is_reported():
@@ -233,8 +236,10 @@ def test_gated_savings_are_not_proven_now():
         from huntkit.gendesign import crown_diet as CD_
         bl035 = (F_.muzzle_keeper()["mass_g"] - W.misc_thread()["bag_thread_g"] + 6 * (BA_.KEEPER_G - 0.6)
                  - (41.7 - CD_.TORSO_ADJUST_ROW_G) - (CD_.CAM_G - 12.0))
+    with W._F().revision(3):                       # BL-041 rows (rev 3 parts the ledger had not booked)
+        bl041 = sum(r["g"] for r in W._F().parts("M", "D2") if r["name"].startswith("BL-041") and r["cfg"] == "base")
     upd = (st["H1B"]["base"] - 2 * (9.53 - 6.13104) + 8.6 + W._F().guy_port()["mass_g"] + bl031 + bl033 + bl034 + bl035
-           + bl036)
+           + bl036 + bl041)
     assert t["P"]["base"] == pytest.approx(bl023_p + upd, abs=0.3)
     assert 3660 < t["P"]["base"] < 3710                     # BL-036: 3679.4 g (BL-035: 3684.7 g, BL-034: 3687.7 g)
     # after tests: BL-023's 3143.5 g + the same update + the retired OD 17 legs taken back out (they were -20.6 g); the
@@ -277,4 +282,4 @@ def test_bl035_bag_thread_not_double_counted():
 
 def test_bl035_muzzle_keepers_booked_in_the_adopted_bag():
     rows = [r for r in L.adopted_bag_rows("M") if r["name"].startswith("BL-035: rifle muzzle keepers")]
-    assert len(rows) == 1 and rows[0]["system"] == "bag_shell" and rows[0]["g"] == pytest.approx(8.71, abs=0.01)
+    assert len(rows) == 1 and rows[0]["system"] == "bag_shell" and rows[0]["g"] == pytest.approx(8.59, abs=0.01)   # BL-041: 60 mm tab pitch

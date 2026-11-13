@@ -3,12 +3,12 @@
  "thread_factor": 2.75,
  "thread_waste_excluded": 0.15,
  "thread_g": {
-  "base": 12.02,
+  "base": 11.98,
   "as_hunted": 4.63,
   "meat_trip": 1.94
  },
- "thread_g_total": 18.59,
- "thread_g_package_incl_waste_and_duplicates": 21.39,
+ "thread_g_total": 18.55,
+ "thread_g_package_incl_waste_and_duplicates": 21.35,
  "hours_per_bag": {
   "base": 50.66,
   "as_hunted": 16.29,
@@ -907,8 +907,8 @@
    "cfg": "base",
    "per_bag": true,
    "thread_id": "bonded_nylon_tex135",
-   "length_mm": 344.6,
-   "thread_g": 0.128,
+   "length_mm": 247.2,
+   "thread_g": 0.092,
    "hours": 0.2,
    "duplicate_of": null
   },

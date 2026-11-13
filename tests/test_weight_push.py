@@ -25,7 +25,7 @@ def test_baseline_is_rollup_after_tests_without_bl037():
     st = W.step_deltas("M")
     a = W.scenario_table("M")["A"]["base"]
     assert WP.baseline_total("M") == pytest.approx(a - st[WP.STEP]["base"], abs=0.2)
-    assert 3200 < WP.baseline_total("M") < 3220          # 3211.4 g before BL-037 (BL-036 result)
+    assert 3200 < WP.baseline_total("M") < 3235          # 3211.4 g before BL-037 (BL-036 result); BL-041 +11.2 g
 
 
 def test_rollup_step_equals_picks(lv):

@@ -267,8 +267,8 @@ def test_bl035_b24_capacity_uses_the_drawn_boxes(rsP):
 
 def test_bl035_muzzle_keeper_in_ledger_and_bom_inputs(rsP):
     mk = PR.F.muzzle_keeper()
-    assert mk["qty"] == 2 and mk["cut_mm"] == pytest.approx(309.0)
-    assert mk["mass_g"] == pytest.approx(2 * (309.0 * 6.0 / 1000 + 2.5), abs=0.01)    # shock_cord_3mm + cord_lock_spring
+    assert mk["qty"] == 2 and mk["cut_mm"] == pytest.approx(299.0)          # BL-041 MK-GAP: tabs 60 apart (was 70: 309)
+    assert mk["mass_g"] == pytest.approx(2 * (299.0 * 6.0 / 1000 + 2.5), abs=0.01)    # shock_cord_3mm + cord_lock_spring
     row = [r for r in PR.ledger_rows() if r["name"].startswith("BL-035: rifle muzzle keepers")]
     assert len(row) == 1 and row[0]["g"] == pytest.approx(mk["mass_g"]) and row[0]["cfg"] == "base"
     w = [x for x in rsP.webbing if x["id"] == "MK-cord"]

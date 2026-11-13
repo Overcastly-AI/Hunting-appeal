@@ -90,7 +90,8 @@ def test_im3_fairlead_fatigue_and_fix(res):
 def test_masses(res):
     m = res["mass"]
     assert m["fix_g"]["BL-003"] == pytest.approx(35.0)          # 14 (IM3 free end) + 12 (hooks) + 9 (heavy locks)
-    assert m["fix_g"]["BL-004"] == pytest.approx(16.0 + 2 * (9.53 - 6.13104), abs=0.01)   # A1 + A1-CF cheek
+    assert m["fix_g"]["BL-004"] == pytest.approx(16.0 + 2 * (9.53 - 6.13104) + 3.39, abs=0.01)   # A1 + A1-CF cheek
+    # + A3 rev 3 (BL-041): B-25 in 38 mm (crown_tube_guy_loop.json b25_38 d_mass_g)
     assert m["fix_g"]["BL-006"] == 0.0
     assert m["meat_trip_kit_g"] == pytest.approx(16.0)
     assert res["booked"]["bag_hook_g"] == pytest.approx(14.0) and res["booked"]["w_hook_g"] == pytest.approx(4.0)

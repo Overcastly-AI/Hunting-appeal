@@ -1216,14 +1216,14 @@ def lid_hours(rs: RevSet) -> dict:
 
 # ============================================================================ webbing (hot-knife pieces)
 def _web(rs, pid, name, length, qty, mat="poly_webbing_25mm", folds=(), boxes=(), note="", group="webbing",
-         step="13 straps + webbing", kit="base", source="", graded=None):
+         step="13 straps + webbing", kit="base", source="", graded=None, box_w=None):
     w = 38.0 if mat == "poly_webbing_38mm" else 25.0
     p = rect_panel(name, w, float(length), 0.0, seam_allowance_mm=0.0, material_id=mat, quantity=qty, piece_id=pid,
                    labels={"note": ("hot-knife cut; " + note).rstrip("; ")})
     for y, lab in folds:
         p.add_internal_line([(0, y), (w, y)], "fold", lab)
     for y, hb, lab in boxes:
-        _box_x(p, w / 2, y, w - 4, hb, lab)
+        _box_x(p, w / 2, y, box_w or (w - 4), hb, lab)      # BL-041: B-25 keeps its 21 x 15 box on 38 mm (structural)
     if graded is None:
         rs.add(p, group, step, kit=kit, notes=source)
     rs.webbing.append({"id": pid, "use": name, "material_id": mat, "length_mm": round(float(length), 1), "qty": qty,
@@ -1416,7 +1416,7 @@ def build_webbing(rs: RevSet, c):
                 (Lb - tb - bw, "bar sleeve L lap (bartack)"), (Lb - tb, "bar sleeve L start"),
                 (Lb - tb / 2, "tab fold L (toggle loop)")],
          boxes=[(_tip_box_y(tb / 2, B25_BOX[1]), B25_BOX[1], "toggle tab R"),
-                (Lb - _tip_box_y(tb / 2, B25_BOX[1]), B25_BOX[1], "toggle tab L")],
+                (Lb - _tip_box_y(tb / 2, B25_BOX[1]), B25_BOX[1], "toggle tab L")], box_w=B25_BOX[0],
          note=f"fitted on the bar before the crown corners are bonded; sleeves x {gb['band'][0]}-{gb['band'][1]} each side "
               f"({gb['clear_to_clamp_mm']} mm clear of the spine clamp); toggle tab at the sleeve centre x {gb['sleeve_x']} "
               "(DECISION B25-TAB-CENTRE); 2 toggle tabs + second folds",

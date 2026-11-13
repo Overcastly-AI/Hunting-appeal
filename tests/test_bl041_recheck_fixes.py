@@ -253,7 +253,7 @@ def test_im_cam_has_a_sewn_anchor(pk):
 def test_minors(pk, kit):
     import physical_test_kit as K
     ec = K.im3_ec_load()
-    assert ec["min_n"] / ec["peak_n"] <= 0.02                                   # n-1
+    assert ec["min_n"] == 24 and "R <= 0.02" not in kit["register"]["IM3-EC"]["steps"]   # n-1: "R about 0.02"
     assert "0.30 then 0.40" not in kit["register"]["CA-1"]["title"]             # n-2
     lv = K.release_levels()
     assert "STOP" in K.fallback_txt(lv) and all(f"{lev}" not in K.fallback_txt(lv) for p_, lev in lv["fallback_table"]

@@ -65,7 +65,7 @@ Production a bag (10-bag markers + waste): **$379.97**. Buying for ONE bag (1-ba
 | hardware | 25 mm side-release buckle (roll top) | unit | 2 | 1.60 | 2 | 1.60 | as production (whole units / cones) |
 | hardware | spring cord lock (3): cord lock (E-5) + rifle muzzle keepers (2, BL-03 | unit | 3 | 1.20 | 3 | 1.20 | as production (whole units / cones) |
 | hardware | TPU sleeve on the IM3 carabiner (2) | unit | 2 | 0.40 | 2 | 0.40 | as production (whole units / cones) |
-| thread | bonded_nylon_tex135 (needle + bobbin) | m | 33.4 | 0.27 | 840 | 6.80 | 1 cone(s) of 4 oz = 840 m each (33.4 m used) |
+| thread | bonded_nylon_tex135 (needle + bobbin) | m | 33.1 | 0.27 | 840 | 6.80 | 1 cone(s) of 4 oz = 840 m each (33.1 m used) |
 | thread | bonded_nylon_tex70 (needle + bobbin) | m | 82 | 0.43 | 1620 | 8.42 | 1 cone(s) of 4 oz = 1620 m each (82 m used) |
 | thread | bonded_nylon_tex90 (needle + bobbin) | m | 123.8 | 0.76 | 1260 | 7.69 | 1 cone(s) of 4 oz = 1260 m each (123.8 m used) |
 | consumable | 6 mm double-sided basting tape (zips) | roll of 20 m | 3.66 | 0.18 | 1 | 6.00 | 1 roll of 20 m (ASSUMPTION SHOP-UNIT: smallest roll) |
@@ -77,8 +77,8 @@ Production a bag (10-bag markers + waste): **$379.97**. Buying for ONE bag (1-ba
 
 | Kit | Ledger, team B fabrics (g) | Primary pattern delta (g) | PRIMARY target (g) | lb |
 |---|---:|---:|---:|---:|
-| base | 1143.9 | +64.1 | 1208.0 | 2.66 |
-| as hunted | 1425.8 | +86.2 | 1512.0 | 3.33 |
+| base | 1143.9 | +64.0 | 1207.9 | 2.66 |
+| as hunted | 1425.8 | +86.1 | 1511.9 | 3.33 |
 | meat trip | 1621.8 | +95.3 | 1717.1 | 3.79 |
 
 One-off tooling (not a bag): J1-J8 jigs; LK-1900 / AMS-210EN programs; laser files are the part A DXFs; dies only above ~500 bags a year.

@@ -1534,6 +1534,8 @@ def qc_points(ctx: Ctx, g: dict, rows_mass: dict) -> list[dict]:
 RELEASE_TESTS = [   # id, why it gates this package (register row read at run time)
     ("MT-1", "every 25 mm box-X on IM1-IM3 and US1/US2"), ("MT-2", "IM free-end hooks"), ("MT-3", "IM / US cams"),
     ("PT-1", "IM3 carabiner on T3"), ("PT-2", "T3 on the 70 mm B-17 tab"), ("PT-3", "HE eye on B-18 (no binding)"),
+    ("HE-FIT", "hinge eye on the z 60 pin, 1:1 dry fit before PT-3 and before cut (BL-041 X-2, DECISION HE-PIN)"),
+    ("TL-1", "B-25 38 mm sleeve + guy and crown-strap toggles on the real crown bar at 494 N (BL-041, crown_tube_guy_loop.md)"),
     ("PT-5", "guy lock + tri-glide keeper"), ("PT-6", "B-24 float link"),
     ("LL-H", "heavy 25 mm ladder lock slip at 432 N (1.5 x 288 N), dry, wet and -20 C: guys, W1-W3 and the B-28 crown "
              "straps (the B-28 slip gate since BL-031)"),
@@ -2014,7 +2016,7 @@ RECHECK_STATUS = [
      "test; GBL deleted; ledger booked"),
     ("Y-5", "major", "fixed", "DECISION CAMO-FIRST: first build solid 630D on the camo pieces (README, BOM print line "
      "production-only, prototype buy without the print); HyperD yard + shipping in the test kit only"),
-    ("n-1", "minor", "fixed", "IM3-EC F_min 23 N (R 0.0195)"),
+    ("n-1", "minor", "fixed", "IM3-EC text says 'R about 0.02' (24 / 1178 = 0.0204, the countersign's F_min kept)"),
     ("n-2", "minor", "fixed", "CA-1 retitled 0.40 (fallback >= 0.313); table cut at 115 %, above: stop, structural re-run"),
     ("n-3", "minor", "fixed", "LL-H / MT-3 COLD is its own step; -18 C freezer accepted as the record's -20 C (ASSUMPTION FREEZER)"),
     ("n-4", "minor", "fixed", "op 7.end replaced by the real op number of 'Fit the hardware'"),

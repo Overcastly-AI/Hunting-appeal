@@ -381,11 +381,11 @@
     "item": "bonded_nylon_tex135 (needle + bobbin)",
     "material_id": "bonded_nylon_tex135",
     "unit": "m",
-    "production_qty": 33.4,
+    "production_qty": 33.1,
     "production_usd": 0.27,
     "prototype_qty": 840.0,
     "prototype_usd": 6.8,
-    "how": "1 cone(s) of 4 oz = 840 m each (33.4 m used)"
+    "how": "1 cone(s) of 4 oz = 840 m each (33.1 m used)"
    },
    {
     "section": "thread",

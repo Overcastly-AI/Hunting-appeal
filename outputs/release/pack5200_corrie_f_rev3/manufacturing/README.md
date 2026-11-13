@@ -51,7 +51,7 @@ Current values: B-22 at x +/-130.3 mm (drawn 149.0); FP flat width 260.0 mm (fin
 
 ## Pattern / ledger flags
 
-- Thread in the bag (all ops, no cone waste): 18.6 g; booked on the ledger: 18.59 g (build_effort_rev3.json; re-run `python designs/pack_5200/build_effort_rev3.py --write` when they differ).
+- Thread in the bag (all ops, no cone waste): 18.56 g; booked on the ledger: 18.55 g (build_effort_rev3.json; re-run `python designs/pack_5200/build_effort_rev3.py --write` when they differ).
 - Box-X mismatches between a panel and its tab: none.
 - Ledger hardware rows mapped by keyword (confirm): BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle -> toggle.
 - Unmapped ledger hardware rows: none.
@@ -69,7 +69,7 @@ design-reviewer re-check `analysis/review_20261113_rev3_recheck.md` (2 blockers,
 | Y-3 | major | fixed | machine minimum adds a 304 zigzag; BT-301 straight-stitch fallback, unrated (every 304 tack in the release is unrated); BUILD_PLAN 140/22 and tex 70 / 90 / 135 |
 | Y-4 | major | fixed | structural result adopted (crown_tube_guy_loop.md): B-25 in 38 mm, sleeves x 26.5-64.5, load row 323 N, bar wall SF 1.36 / 1.27 fatigue; TL-1 at 494 N on real bar stock with both toggles, TL-1b data test; GBL deleted; ledger booked |
 | Y-5 | major | fixed | DECISION CAMO-FIRST: first build solid 630D on the camo pieces (README, BOM print line production-only, prototype buy without the print); HyperD yard + shipping in the test kit only |
-| n-1 | minor | fixed | IM3-EC F_min 23 N (R 0.0195) |
+| n-1 | minor | fixed | IM3-EC text says 'R about 0.02' (24 / 1178 = 0.0204, the countersign's F_min kept) |
 | n-2 | minor | fixed | CA-1 retitled 0.40 (fallback >= 0.313); table cut at 115 %, above: stop, structural re-run |
 | n-3 | minor | fixed | LL-H / MT-3 COLD is its own step; -18 C freezer accepted as the record's -20 C (ASSUMPTION FREEZER) |
 | n-4 | minor | fixed | op 7.end replaced by the real op number of 'Fit the hardware' |

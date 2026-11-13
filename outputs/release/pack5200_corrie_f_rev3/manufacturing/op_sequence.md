@@ -315,9 +315,9 @@ Beginner rules: all flat work before the bag becomes 3D; clips, never pins, in c
 - Machine BT / PS (prototype WF2 + J1); needle Nm 140/22 DPx17, round point R; thread bonded_nylon_tex135; SPI 7; stitch 301 box-X path; seam BOX
 - stitching 1559 mm (61 in); load table: B-24; sketch SK-1, SK-7; QC QC-07; beginner 0.80 h, SAM 5.8 min
 **7.17 B-25: guy bridle on the crown top bar (38 mm, BL-041) x1**
-- How: 386 mm (15.2 in). Folds: tab fold R (toggle loop); bar sleeve R start; bar sleeve R lap (bartack); bar sleeve L lap (bartack); bar sleeve L start; tab fold L (toggle loop). Box-X: 34 x 15, 34 x 15 at the drawn marks. Toggle tabs: fold each end on its 'tab fold' line and sew the drawn tip-end box (DECISION B25-BOX: the clear loop passes the POM toggle). FRAME COORDINATION: the bar sleeves close round the crown top bar BEFORE the crown corners are bonded (H1 build); the two sleeve-lap bartacks (BT-M) are sewn at frame assembly, not here.
+- How: 386 mm (15.2 in). Folds: tab fold R (toggle loop); bar sleeve R start; bar sleeve R lap (bartack); bar sleeve L lap (bartack); bar sleeve L start; tab fold L (toggle loop). Box-X: 21 x 15, 21 x 15 at the drawn marks. Toggle tabs: fold each end on its 'tab fold' line and sew the drawn tip-end box (DECISION B25-BOX: the clear loop passes the POM toggle). FRAME COORDINATION: the bar sleeves close round the crown top bar BEFORE the crown corners are bonded (H1 build); the two sleeve-lap bartacks (BT-M) are sewn at frame assembly, not here.
 - Machine BT / PS (prototype WF2 + J1); needle Nm 140/22 DPx17, round point R; thread bonded_nylon_tex135; SPI 7; stitch 301 box-X path; seam BOX
-- stitching 345 mm (14 in); load table: B-25; sketch SK-1, SK-7; QC QC-07; beginner 0.20 h, SAM 1.4 min
+- stitching 247 mm (10 in); load table: B-25; sketch SK-1, SK-7; QC QC-07; beginner 0.20 h, SAM 1.4 min
 **7.18 TG: port guy (B-25 toggle -> B-27 port -> B-22 inside) x2**
 - How: 500 mm (19.7 in). Folds: -. Box-X: 21 x 25 at the drawn marks.
 - Machine BT / PS (prototype WF2 + J1); needle Nm 140/22 DPx17, round point R; thread bonded_nylon_tex135; SPI 7; stitch 301 box-X path; seam BOX

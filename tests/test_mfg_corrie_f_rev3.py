@@ -234,7 +234,7 @@ def test_load_points_use_the_pattern_boxes(pk):
     def sizes(part):
         return {tuple(float(v) for v in r["pattern"].split("box-X ")[1].split(" mm")[0].split(" x "))
                 for r in lp if r["part"] == part and r["pattern"].startswith("box-X")}
-    for pid in ("B-24", "B-25", "US", "IM1", "W3", "TG", "GBL"):
+    for pid in ("B-24", "B-25", "US", "IM1", "W3", "TG", "IMC"):         # BL-041: GBL deleted, IMC added
         drawn = {(w, h) for w, h, _ in M.boxes_of(rs.pieces[pid])}
         assert drawn and sizes(pid) == drawn, pid
     hook = next(r for r in lp if r["point"] == "B-24 float link: hook end")

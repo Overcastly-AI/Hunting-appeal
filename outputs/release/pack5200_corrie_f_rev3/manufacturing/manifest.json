@@ -16,8 +16,8 @@
    "BL-004 REC: guy bar loops x2: 25 mm webbing x 170 mm + POM toggle -> toggle"
   ],
   "box_mismatches": [],
-  "thread_bag_g": 18.6,
-  "thread_ledger_g": 18.59,
+  "thread_bag_g": 18.56,
+  "thread_ledger_g": 18.55,
   "proto_hours": 74.5,
   "sam_min": 507.1,
   "volatile": [
@@ -44,8 +44,8 @@
    "as_hunted": 22.1,
    "meat_trip": 9.2
   },
-  "primary_base_g": 1208.0,
-  "primary_as_hunted_g": 1512.0,
+  "primary_base_g": 1207.9,
+  "primary_as_hunted_g": 1511.9,
   "primary_meat_trip_g": 1717.1,
   "qc14_tol_pct": 3.0
  },

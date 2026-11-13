@@ -166,9 +166,9 @@ CA-1@fallback-01,CA-1@fallback,G4,R1 (only if 0.40 fails),FXY#1,only if 0.40 fai
 CA-1@fallback-02,CA-1@fallback,G4,R1 (only if 0.40 fails),FXY#2,only if 0.40 failed: cycles at the table level for the MT-1c swing (run-out 100000),cycles,min,100000,,,,,PAHT_FAT; CINCH-SWING
 CA-1@fallback-03,CA-1@fallback,G4,R1 (only if 0.40 fails),FXY#3,only if 0.40 failed: cycles at the table level for the MT-1c swing (run-out 100000),cycles,min,100000,,,,,PAHT_FAT; CINCH-SWING
 CA-1@fallback-04,CA-1@fallback,G4,R1 (only if 0.40 fails),level,"fallback level used (table, >= 0.313)",-,record,,,,,,CINCH-SWING
-IM3-EC-01,IM3-EC,G4,R1,#1,cycles at 23 -> 1178 N (run-out 100000),cycles,min,100000,,,,,P_cheek
-IM3-EC-02,IM3-EC,G4,R1,#2,cycles at 23 -> 1178 N (run-out 100000),cycles,min,100000,,,,,P_cheek
-IM3-EC-03,IM3-EC,G4,R1,#3,cycles at 23 -> 1178 N (run-out 100000),cycles,min,100000,,,,,P_cheek
+IM3-EC-01,IM3-EC,G4,R1,#1,cycles at 24 -> 1178 N (run-out 100000),cycles,min,100000,,,,,P_cheek
+IM3-EC-02,IM3-EC,G4,R1,#2,cycles at 24 -> 1178 N (run-out 100000),cycles,min,100000,,,,,P_cheek
+IM3-EC-03,IM3-EC,G4,R1,#3,cycles at 24 -> 1178 N (run-out 100000),cycles,min,100000,,,,,P_cheek
 IM3-EC-04,IM3-EC,G4,R1,p#1,no crack at 10x and held 2553 N after,Y/N,yes,Y,,,,,P_cheek
 IM3-EC-05,IM3-EC,G4,R1,p#2,no crack at 10x and held 2553 N after,Y/N,yes,Y,,,,,P_cheek
 IM3-EC-06,IM3-EC,G4,R1,p#3,no crack at 10x and held 2553 N after,Y/N,yes,Y,,,,,P_cheek
