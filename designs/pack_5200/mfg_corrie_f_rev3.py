@@ -906,6 +906,10 @@ def load_points(ctx: Ctx) -> list[dict]:
         add("IM cam anchor tab", "IMC", f"{lab.replace(' box-X', '')}: dog-bone between the cam bar and the hook / "
             "carabiner (SK-11)", w, h, 605.0, "loadpath_verification S1: 605 N (same strap)",
             "MT-1 908 N (2 IMC specimens added to the MT-1 lot)", hw=CAM)
+    for w, h, lab in box("USA"):                       # BL-044: the US cam's sewn anchor on the right pin
+        add("US cam anchor", "USA", f"{lab.replace(' box-X', '')}: dog-bone between the right pin and the cam bar", w, h,
+            720.0, "loadpath_verification S5-S7: 720 N cradle (the same strap as the left eye)",
+            "MT-1 1080 N (2 USA specimens added to the MT-1 lot)", hw=CAM)
     for w, h, lab in box("US") or [(21.0, 25.0, "ASSUMPTION US-BOX (not drawn)")]:
         add("US1/US2 sewn eye", "US", "eye on the left pin (US-EYE fold, pattern)", w, h, 720.0,
             "loadpath_verification S5-S7: 720 N", "MT-1 1080 N; SEW-F (box-X fatigue); US-BS", hw=CAM,
@@ -1116,7 +1120,10 @@ def ops(ctx: Ctx) -> list[SewingOp]:
            f"bartack that inserts it sews it (ops named in its use). {txt}.", "none",
            pieces=", ".join(f"{w['id']} x{w['qty']}" for w in early), hours=sum(w["qty"] for w in early) * WEB_CUT_H,
            sketch="SK-7")
-    op("IME fairlead eyes (frame kit)", "Fold each 38 mm IME at 100 mm into an eye, box-X 34 x 30. These go on the frame "
+    op("IME fairlead eyes (frame kit)", "NECK FIRST (BL-044, as op 4.05's HE): on the FLAT strip fold each long edge "
+       f"{P.IME_NECK_EDGE:.0f} mm in between the two 'neck lines' (18 mm wide: the eye passes the 20 mm throat of the "
+       "BL-045 fairlead) and sew one BT-M tack across each leg at the 'neck tack' lines " + step_spec("bt", "304") + ". "
+       "Then fold each 38 mm IME at 100 mm into an eye (neck folds INSIDE), box-X 34 x 30. These go on the frame "
        "fairleads, not the bag.", "box", pieces="IME x6", seam="BOX", bartack="IME", hours=6 * H["bartack"], qc="QC-07",
        length=bl(34, 30, 6))
 
@@ -1412,6 +1419,17 @@ def ops(ctx: Ctx) -> list[SewingOp]:
                    "25 mm CAM's anchor bar into the 'fold round the CAM anchor bar' loop (all 3 tabs) and the rated "
                    "G-HOOK's bar into the other loop of the IM1 and IM2 tabs; the IM3 tab's second loop stays EMPTY (the "
                    "wiregate carabiner clips in at op @FIT). Hardware for this op: 3 cams, 2 G-hooks. Then: " + how)
+        if pid in ("US", "USA"):                   # BL-044 (BL-045 imus_eye_envelope): necked where it passes the throat
+            neck = (f"NECK FIRST (BL-044, as op 4.05's HE): on the FLAT strip fold each long edge {P.US_NECK_EDGE:.1f} mm "
+                    "in between the two 'neck lines' (18 mm: the eye passes the 20 mm throat of the BL-045 fairlead), "
+                    "one BT-M tack across each leg at the 'neck tack' lines " + step_spec("bt", "304") + ". ")
+            if pid == "USA":
+                how = (neck + "HARDWARE FIRST: thread the US CAM's anchor bar into the 'fold round the CAM anchor bar' "
+                       "loop before its box is sewn; the necked 'RIGHT PIN' loop is sewn closed round the right pin's "
+                       "UHMWPE sleeve (no pin in it: the pin goes through cheek, sleeve, cheek at frame-kit assembly). "
+                       "Hardware for this op: 2 cams. Then: " + how)
+            else:
+                how = neck + how
         if pid == "B-25":
             tp = rs.geo["b25"]["topology"]
             kS = tp["kits"][tp["governing_kit"]]
@@ -1427,7 +1445,8 @@ def ops(ctx: Ctx) -> list[SewingOp]:
                     "not here. GATE B25-FIT (before the laps are tacked): dry-fit the bridle on the crown with the clamp "
                     f"fitted and the crown at kit {tp['governing_kit']}'s SHORTEST setting ({kS['torso_in']:g} in): the "
                     f"mitres sit inside the sleeve bands, the necked run passes under the clamp collar, and the spine "
-                    f"wrap clears the pawl housing (design {kS['clear_mm']:.0f} mm, ASSUMPTIONS B25-CLAMP / PAWL-TOP); a "
+                    f"wrap clears the pawl housing (design {kS['clear_mm']:.0f} mm on the BL-045 clamp and measured housing; the run "
+                    f"reaches the spine {tp['spine_fore_mm']:.2f} mm FORE of the bar plane); a "
                     "no stops the laps: photo to the pack-designer.")
         op(f"{pid}: {w['use']} x{w['qty']}", how, kind,
            pieces=f"{pid} x{w['qty']}" + (", 3 x 25 mm cam, 2 x rated G-hook" if pid == "IMC" else ""),
@@ -1996,10 +2015,11 @@ ASSUMPTIONS = [
     ("B25-TAB-CENTRE / WIDE_SLEEVE", "BL-041 (crown_tube_guy_loop.md): B-25 in 38 mm webbing, sleeves x 26.5-64.5, "
      "toggle tab at the sleeve centre x 45.5; the 25 mm tab pull spreads over the 38 mm sleeve.",
      "TL-1 at 494 N on real bar stock, specimen WITH the mitre turn and run (BL-043)"),
-    ("B25-TOPO / B25-CLAMP / PAWL-TOP / SPINE_CLAMP_HALF", "BL-043 M-4: B-25 = tab | sleeve | 45 deg mitre under the "
-     "sleeve | run necked to 25 mm | one wrap round the spine under the clamp. The frame files draw no spine clamp: "
-     "half-width 15 mm along the bar and a 12 mm collar down the spine are assumed; the pawl housing is assumed to reach "
-     "20 mm above the pawl line.", "clamp drawing (structural); op 7.17 gate B25-FIT at kit S 15 in; TL-1 specimen"),
+    ("B25-TOPO / CLAMP (BL-045)", "BL-043 M-4: B-25 = tab | sleeve | 45 deg mitre under the sleeve | run necked to "
+     "25 mm | one wrap round the spine under the clamp. BL-044: on the BL-045 sized clamp (half 12.0 along the bar, "
+     "collar 12.8) and the measured pawl housing (15.62 up, +/-24.82); the run reaches the printed spine 15.85 mm fore "
+     "of the bar (+34.1 mm cut). Was ASSUMED (B25-CLAMP / PAWL-TOP / SPINE_CLAMP_HALF).",
+     "BL-045 clamp T6 coupon (CLAMP-TYPE); op 7.17 gate B25-FIT at kit S 15 in; TL-1 specimen"),
     ("GUY-LOCK-IN", "BL-040 M-5: the guy ladder lock stays on its LLT tab at B-22 inside the hinge band; the guy length is "
      "set with the roll top open (per crown kit / load), not on the move.", "PORT-1 gloved adjustment at B-22"),
     ("KW-OVER-FP", "BL-040 B-3: haul wraps W1 / W2 cross the FP hip pockets, over the mesh (keeper loop on top).",
@@ -2951,13 +2971,14 @@ def sk_bridle(pk, path):
     ax.add_patch(Rectangle((-110, -rb), 220, 2 * rb, fc="#cfcfcf", ec="#333"))                     # bar
     ax.add_patch(Rectangle((-rsp, -kS["s_pawl_mm"] - 10), 2 * rsp, kS["s_pawl_mm"] + 10 - rb, fc="#e2e2e2", ec="#333"))
     ax.add_patch(Rectangle((-ch, -rb - cc), 2 * ch, cc + 2 * rb, fc="#9aa7b8", ec="#333", alpha=0.8))  # clamp
-    ax.text(0, rb + 3, "spine clamp\n(ASSUMED: no drawing)", ha="center", fontsize=8)
+    ax.text(0, rb + 3, f"spine clamp (BL-045 sized: half {ch:.1f}, collar {cc:.1f})\nspine axis "
+                       f"{tp['spine_fore_mm']:.2f} mm FORE of the bar plane", ha="center", fontsize=8)
     ht = -kS["housing_top_s_mm"]
     hw = F_.PAWL_HOUSING_HALF_W
     ax.add_patch(Rectangle((-hw, -kS["s_pawl_mm"] - 11), 2 * hw, kS["s_pawl_mm"] + 11 + ht, fc="#d9c7a0", ec="#7a5c1e",
                            alpha=0.7))
     ax.add_patch(Rectangle((-110, -kS["s_pawl_mm"] - 11), 220, 22, fc="#e8e0cc", ec="#7a5c1e", alpha=0.6))
-    ax.text(-108, ht - 22, f"upper bar + pawl housing at kit {tp['governing_kit']} {kS['torso_in']:g} in (housing top ASSUMED)",
+    ax.text(-108, ht - 22, f"upper bar + pawl housing at kit {tp['governing_kit']} {kS['torso_in']:g} in (housing measured on the H1 STL, BL-045)",
             fontsize=8, color="#7a5c1e")
     for sx in (-1, 1):
         a, b = sorted((sx * x0, sx * x1))
@@ -2981,7 +3002,8 @@ def sk_bridle(pk, path):
     ax.set_aspect("equal")
     ax.set_xlabel("x along the crown bar from the spine centre (mm)")
     ax.set_ylabel("z from the bar centre (mm)")
-    ax.set_title("(a) Crown seen from the bag (aft): sleeve, drop, mitre, necked run, spine wrap", fontsize=10, loc="left")
+    ax.set_title(f"(a) Crown seen from the bag (aft): sleeve, drop, mitre, necked run (+{tp['run_extra_mm']:.1f} mm a side "
+                 "to reach the spine fore of the bar), spine wrap", fontsize=10, loc="left")
     ax2 = fig.add_axes([0.68, 0.40, 0.29, 0.48])
     ax2.add_patch(Circle((0, 0), rb, fc="#cfcfcf", ec="#333"))
     th = __import__("numpy").linspace(0.5 * math.pi, 2.5 * math.pi, 60)
@@ -3014,10 +3036,11 @@ def sk_bridle(pk, path):
     ax3.set_xlim(-10, L + 10)
     ax3.set_ylim(-8, tp["width_mm"] + 14)
     ax3.set_aspect("equal")
-    ax3.set_xlabel("mm along the strip (cut %.0f mm; BL-041 drew %.0f with no turn)" % (tp["cut_mm"], tp["cut_bl041_mm"]))
+    ax3.set_xlabel("mm along the strip (cut %.0f mm; BL-043 drew %.0f in the bar plane, BL-041 %.0f with no turn)"
+                   % (tp["cut_mm"], tp["cut_bl043_mm"], tp["cut_bl041_mm"]))
     ax3.set_yticks([])
     ax3.set_title("(c) B-25 flat, 38 mm: folds blue dash-dot, boxes green (op 7.17)", fontsize=10, loc="left")
-    fig.suptitle("SK-12  B-25 guy bridle on the crown (BL-043 DECISION B25-TOPO): the 90 deg turn sits UNDER each sleeve; "
+    fig.suptitle("SK-12  B-25 guy bridle on the crown (BL-043 B25-TOPO, BL-044 on the BL-045 clamp): the turn sits UNDER each sleeve; "
                  "gate B25-FIT dry-fits it before the laps are tacked", fontsize=12, x=0.01, ha="left")
     fig.savefig(path, dpi=100)
     plt.close(fig)

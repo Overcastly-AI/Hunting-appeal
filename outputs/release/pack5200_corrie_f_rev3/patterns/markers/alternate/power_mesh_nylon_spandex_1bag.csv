@@ -1,0 +1,3 @@
+piece,size,unit,rotation_deg,mirrored,x_min_mm,y_min_mm,area_m2
+hip-reach pocket body (power mesh),,0,270.0,False,-0.0,25.0,0.0679
+hip-reach pocket body (power mesh),,0,270.0,False,-0.0,304.0,0.0679

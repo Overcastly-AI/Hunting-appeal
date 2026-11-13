@@ -332,7 +332,11 @@ SUFFIX = "_v2"
 CONFIGS_V2 = tuple(c + SUFFIX for c in CONFIGS)
 ALL_CONFIGS = CONFIGS + CONFIGS_V2
 DEFAULT_CONFIG = "corrie_b2_h1" + SUFFIX
-CORRECTIONS = ("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "H1B", "BL031", "H1F")
+CORRECTIONS = ("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "H1B", "BL031", "H1F", "BL046")
+#   BL046 (2026-11-13, BL-045 / BL-046): the spine clamp as sized (crown_spine_clamp.size_clamp on the real crown, a
+#      7075 T-fitting) less the 6 g pack5200.HW still books, in every config; and, on the H1 configs only, the H1 spine
+#      channel + pawl housing re-made for the OD 20 spine tube and its 6 mm rack (print-mesh volume delta,
+#      h1_spine_channel.add_channel). Both from analysis/h1_spine_channel.json ``mass``.
 #   BL031 (2026-11-12, BL-031 strap tails, not a booking error): the harness and belt side of the tail rule
 #      (``strap_tails.suspension_rows``: lifters, sternum and hip stabilizers cut to length, the 2:1 belt tail to the
 #      gloved grip, two belt tail keepers). The bag side of BL-031 is booked by corrie_f.parts (adopted bag rows).
@@ -411,6 +415,13 @@ def h1_fairleads_update() -> dict:
 
 
 @functools.lru_cache(maxsize=None)
+def bl046_update() -> dict:
+    """BL046: spine clamp and H1 spine channel masses (analysis/h1_spine_channel.json ``mass``, written by
+    huntkit.gendesign.h1_spine_channel)."""
+    return dict(_json("h1_spine_channel.json")["mass"])
+
+
+@functools.lru_cache(maxsize=None)
 def h1_body_update() -> dict:
     """H1B: the H1 body raster as adopted (BL-024 + BL-027 + BL-021 28 mm IM3 cheeks), from analysis/h1_buckling.json
     ``chosen`` (written by ``huntkit.gendesign.h1_buckling``). Raises if that file's H1 base is not the body the ledger
@@ -452,9 +463,21 @@ def _correction_rows(config: str, size: str) -> list:
              "analysis/h1_fairleads.json mass.net_g (print-mesh volume with / without h1_fairleads.add_fairleads x "
              "the PAHT-CF print density)", "base"),
         ]
+    b46 = bl046_update()
+    src46 = "analysis/h1_spine_channel.json mass."
+    bl046 = [("BL046", f"spine clamp: 7075 T-fitting as sized ({b46['clamp_g']:.1f} g) less the "
+                       f"{b46['clamp_booked_g']:.1f} g booked (BL-045 / BL-046)", "frame",
+              b46["clamp_g"] - b46["clamp_booked_g"],
+              src46 + "clamp_g (crown_spine_clamp.size_clamp, real crown) - clamp_booked_g (pack5200.HW spine_clamp_g)",
+              "base")]
+    if config != "corrie_b2_today":
+        bl046.append(("BL046", "H1 print: spine channel + pawl housing for the OD 20 spine tube and 6 mm rack (BL-046)",
+                      "frame", b46["channel_net_g"],
+                      src46 + "channel_net_g (print-mesh volume with / without h1_spine_channel.add_channel x the "
+                      "PAHT-CF print density)", "base"))
     import strap_tails as ST                        # BL-031 (lazy: it reads corrie_f, which reads this module)
     bl031 = [("BL031", n, sys_, g, src, cfg) for n, sys_, g, src, cfg in ST.suspension_rows(size)]
-    return h1b + bl031 + [
+    return h1b + bl031 + bl046 + [
         ("C1", f"REMOVED: {fl['name']} (already inside the printed body raster)", "attachment", -fl["g"],
          "frame_branch.frame_sdf adds bag_attach.attachment_field to the body SDF (frame_h1.md section 4: bag "
          "fairleads 100 % present); negative copy of ledger row " + fl["id"], "base"),

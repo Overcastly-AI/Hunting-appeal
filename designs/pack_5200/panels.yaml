@@ -631,7 +631,8 @@ panels:
   zone: interior
   cut_area_m2_each: 0.1215
   mass_g_total: 15.2
-  notes: sewn to B-01; hose ports at the collar seam BOTH sides
+  notes: sewn to B-01; hose ports in the side gores BOTH sides (v3.1 drawing; CORRIE F rev 3 puts them in the gussets
+    at z 558, DECISION HOSE-LOW)
   seam_line_mm: null
 - id: B-11
   name: lash tab

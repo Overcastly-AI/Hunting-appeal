@@ -11,6 +11,8 @@ MT-1-09,MT-1,G2,R1; BAG-CUT,US#4,"held 110.1 kg (1080 N) 1 min, no broken stitch
 MT-1-10,MT-1,G2,R1; BAG-CUT,US#5,"held 110.1 kg (1080 N) 1 min, no broken stitch",Y/N,yes,Y,,,,,BOX25
 MT-1-11,MT-1,G2,R1; BAG-CUT,IMC#1,"IMC cam anchor tab held 92.6 kg (908 N) 1 min, both boxes whole (BL-041)",Y/N,yes,Y,,,,,BOX25; IMC-LOOP
 MT-1-12,MT-1,G2,R1; BAG-CUT,IMC#2,"IMC cam anchor tab held 92.6 kg (908 N) 1 min, both boxes whole (BL-041)",Y/N,yes,Y,,,,,BOX25; IMC-LOOP
+MT-1-13,MT-1,G2,R1; BAG-CUT,USA#1,"USA US-cam anchor held 110.1 kg (1080 N) 1 min, both boxes whole, neck tacks whole (BL-044)",Y/N,yes,Y,,,,,BOX25; IMC-LOOP
+MT-1-14,MT-1,G2,R1; BAG-CUT,USA#2,"USA US-cam anchor held 110.1 kg (1080 N) 1 min, both boxes whole, neck tacks whole (BL-044)",Y/N,yes,Y,,,,,BOX25; IMC-LOOP
 HE-FIT-01,HE-FIT,G2,BAG-CUT,#1,pin centre above the floor seam line (pass 22-29),mm,band,22..29,,,,,HE-ENV; HE-CHEEK; HE-PIN-HI; HE-T
 HE-FIT-02,HE-FIT,G2,BAG-CUT,#1,box top to the cheeks' lower edge (feeler),mm,min,2,,,,,HE-CHEEK
 HE-FIT-03,HE-FIT,G2,BAG-CUT,#1,"webbing ply thickness, thickest of 5 readings",mm,max,1.6,,,,,HE-T

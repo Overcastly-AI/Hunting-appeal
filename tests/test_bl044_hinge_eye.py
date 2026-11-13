@@ -258,3 +258,44 @@ def test_render_scene_draws_the_released_clip_hose_and_b25():
     Vh = np.asarray(by["imp2_hose@t19"].mesh.vertices)
     assert Vh[:, 2].min() < P.HOSE_Z + 20.0                                          # the hose leaves at the low port
     assert len([n for n in by if n.startswith("s15_roll_buckle_") and "__" not in n]) == 2
+
+
+# ---------------------------------------------------------------- 9 BL-045 follow-ups (orchestrator, mid-ticket)
+def test_ime_and_us_eyes_are_necked_for_the_imus_envelope(pk):
+    rs = pk["ctx"].rs
+    for pid, w in (("IME", 38.0), ("US", 25.0), ("USA", 25.0)):
+        p = rs.pieces[pid]
+        folds = [ln for ln in p.internal_lines if (ln.label or "").startswith("neck: fold the edge in")]
+        xs = sorted(ln.points[0][0] for ln in folds)
+        neck = xs[-1] - xs[0]
+        for st in ("us1", "im3"):
+            env = BA.imus_eye_envelope(st)
+            assert neck == pytest.approx(env["neck_w_mm"]) and neck + P.HE_NECK_TOL <= env["throat_mm"] - 1.0 + 1e-9
+        assert sum(1 for ln in p.internal_lines if (ln.label or "").startswith("neck tack")) == 2
+    ime = next(o for o in pk["ops"] if o.operation.startswith("IME fairlead eyes"))
+    assert "NECK FIRST" in ime.notes
+    assert any(o.operation.startswith("US:") and "NECK FIRST" in o.notes for o in pk["ops"])
+
+
+def test_us_cam_has_a_drawn_rated_anchor(pk, kit):
+    rs = pk["ctx"].rs
+    assert rs.pieces["USA"].quantity == 2
+    row = next(r for r in pk["load_points"] if r["point"] == "US cam anchor")
+    assert row["load_n"] == 720.0 and row["sf"] >= 1.5
+    usa = next(o for o in pk["ops"] if o.operation.startswith("USA:"))
+    assert "CAM's anchor bar" in usa.notes and "RIGHT PIN" in usa.notes
+    mt1 = kit["register"]["MT-1"]
+    assert "2 USA" in mt1["specimen"] and "2 of 2 USA hold 1080 N" in mt1["pass_fail"]
+    names = [n for s, n, g, src in P.F.bl044_rows()]
+    assert any(n.startswith("BL-044: US cam anchors USA") for n in names)
+
+
+def test_b25_on_the_bl045_clamp():
+    from huntkit.gendesign import crown_spine_clamp as C
+    assert P.F.SPINE_CLAMP_HALF == C.SPINE_CLAMP_HALF_X and P.F.SPINE_CLAMP_COLLAR == C.SPINE_CLAMP_COLLAR
+    assert P.F.PAWL_HOUSING_UP == C.PAWL_HOUSING_UP and P.F.PAWL_HOUSING_HALF_W == C.PAWL_HOUSING_HALF_W
+    t = P.F.b25_topology()
+    assert t["cut_mm"] - P.F.B25_CUT_BL043_MM == pytest.approx(C.B25_CUT_CHANGE_MM + 2 * (C.SPINE_CLAMP_COLLAR - 12.0), abs=0.15)
+    assert t["pawl_ok"] and t["band_to_clamp_ok"]
+    assert t["clamp_half_x"] <= t["clamp_envelope"]["half_x_max_mm"]
+    assert P.F.guy_bridle(wide=True)["length_mm"] == pytest.approx(386.5)       # the booked BL-041 part is unchanged

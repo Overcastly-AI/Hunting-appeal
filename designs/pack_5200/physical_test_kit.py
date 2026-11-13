@@ -325,7 +325,7 @@ def he_fit_row() -> dict:
                 safety_at_stake="hinge eye position and the eye's passage under the pin: every sim and placement assumes the floor at z 35",
                 specimen=f"1 scrap HE sewn as op 4.05 (B-18 + B-01 offcut 150 x 120 + B-05 strip, floor seam sewn); one hinge fairlead printed 1:1 from `print/frame_h1/test_pieces/hefit_hinge_fairlead_R.stl` (BL-042: z 60 R, 80 mm stay segment, {e['throat_mm']:.0f} mm throat, {e['gap_under_pin_mm']:.1f} mm under the pin; ream the eye to 7.2) with its UHMWPE sleeve and the 5 mm hinge pin ({P.F.hinge_pin()['shank_hinge_mm']:.0f} mm shank)",
                 kit="A+D",
-                steps=f"(1) caliper ONE ply of the bought 38 mm webbing at 5 places: every reading <= {P.HE_T_RANGE[1]:.1f} mm, else reject the roll (3 plies of a thicker web leave < 0.7 mm under the pin); (2) clamp the printed stay segment upright; (3) slide the neck round the pin by hand: the pin goes through cheek, sleeve, eye, cheek with the eye seated, no forcing; then push the neck hard against each cheek in turn and slide it round the pin again (its folded edge passes the printed throat-corner fillet: 0.3 mm clear on the model, BL-044 he_stl_check); (4) hang 5 kg from the B-05 strip so the eye loads the pin; (5) caliper from the floor seam line to the pin centre; (6) feeler gauge between the box top and the cheeks' lower edge; (7) check the eye is not folded over the box and the neck is not pinched by the cheeks; photo",
+                steps=f"(0) BL-045 / BL-044: repeat steps 3 and 7 with one necked IME eye on the IM3-EC test piece (`print/frame_h1/test_pieces/im3ec_cheek_R.stl`) and one necked US eye on the first printed frame (P1, US1 R); (1) caliper ONE ply of the bought 38 mm webbing at 5 places: every reading <= {P.HE_T_RANGE[1]:.1f} mm, else reject the roll (3 plies of a thicker web leave < 0.7 mm under the pin); (2) clamp the printed stay segment upright; (3) slide the neck round the pin by hand: the pin goes through cheek, sleeve, eye, cheek with the eye seated, no forcing; then push the neck hard against each cheek in turn and slide it round the pin again (its folded edge passes the printed throat-corner fillet: 0.3 mm clear on the model, BL-044 he_stl_check); (4) hang 5 kg from the B-05 strip so the eye loads the pin; (5) caliper from the floor seam line to the pin centre; (6) feeler gauge between the box top and the cheeks' lower edge; (7) check the eye is not folded over the box and the neck is not pinched by the cheeks; photo",
                 pass_fail=f"ply <= {P.HE_T_RANGE[1]:.1f} mm; pin centre {lo:.0f}-{hi:.0f} mm above the floor seam line; >= {P.HE_CHEEK_MIN:.0f} mm feeler between the box top and the cheeks; the eye slides round the pin by hand; neck alone in the {e['throat_mm']:.0f} mm throat; eye points up (no fold-down)",
                 cost_usd="1", cost_basis="scrap + 32 g filament (BL-042 test piece 31.9 g)", hours_hands_on="0.5", hours_machine="2", phase="1",
                 run_order="9", first_weekend="Y",
@@ -353,7 +353,8 @@ def b25_specimen() -> str:
             f"{tp['band_x'][0]:.1f}-{tp['band_x'][1]:.1f} from the spine centre, lap bartacked as at frame assembly | the "
             f"strip down the aft side, the 45 deg MITRE under the sleeve | the run necked to {tp['neck_w_mm']:.0f} mm, "
             "wrapped once round a 20 mm spine stub (crown spine tube offcut or 20 mm steel rod) bolted upright to the rig "
-            f"at x 0, under a {tp['clamp_collar_mm']:.0f} mm collar spacer, its end clamped behind the stub")
+            f"at x 0 and {tp['spine_fore_mm']:.1f} mm FORE of the bar axis (the printed spine channel, BL-045), under a "
+            f"{tp['clamp_collar_mm']:.1f} mm collar spacer, its end clamped behind the stub")
 
 
 def tl1b_row() -> dict:
@@ -612,10 +613,11 @@ def patches(lv: dict, lid_g: float) -> dict:
     f1 = abs(float(wpd["F-1"]["g"]))
     rel = lv["release"]
     return {
-        "MT-1": dict(specimen="12 loops: 10 x 25 mm poly webbing, box-X 25 x 25, stitch 301, 7 SPI, bonded nylon tex 135; + 2 IMC cam anchor tabs cut to the pattern (BL-041; BL-043 m-4: "
-                     f"{4 * _P().IMC_FOLD:.0f} mm, {_P().IMC_FOLD:.0f} mm folds, 21 x 25 box-X both ends with {_P().IMC_LOOP:.0f} mm loops and each box {_P().IMC_TIP_GAP:.0f} mm in from its raw end; cam bar in one loop, a 5 mm pin in the other)",
-                     steps="sew the loops exactly like the pack; loop over the 5 mm pin; 5 loops to 908 N (92.6 kg) and 5 to 1080 N (110.1 kg); the 2 IMC tabs (cam bar on a 5 mm pin each end) to 908 N; hold 1 min each",
-                     pass_fail="5 of 5 hold 908 N (IM) and 5 of 5 hold 1080 N (US) for 1 min, 2 of 2 IMC hold 908 N, no broken stitch"),
+        "MT-1": dict(specimen="14 specimens: 10 x 25 mm poly webbing, box-X 25 x 25, stitch 301, 7 SPI, bonded nylon tex 135; + 2 IMC cam anchor tabs cut to the pattern (BL-041; BL-043 m-4: "
+                     f"{4 * _P().IMC_FOLD:.0f} mm, {_P().IMC_FOLD:.0f} mm folds, 21 x 25 box-X both ends with {_P().IMC_LOOP:.0f} mm loops and each box {_P().IMC_TIP_GAP:.0f} mm in from its raw end; cam bar in one loop, a 5 mm pin in the other); + 2 USA US-cam anchors cut to the pattern (BL-044: the same dog-bone, its pin loop NECKED to 18 mm, edges folded {_P().US_NECK_EDGE:.1f} mm in, BT-M per leg). The 5 US loops are sewn as the US eye: NECKED to 18 mm round the pin (BL-044, bag_attach.imus_eye_envelope)",
+                     steps="sew the loops exactly like the pack (necks folded and tacked first); loop over the 5 mm pin; 5 loops to 908 N (92.6 kg) and 5 to 1080 N (110.1 kg); the 2 IMC tabs (cam bar on a 5 mm pin each end) to 908 N; the 2 USA anchors (necked loop on a 5 mm pin, cam bar in the other) to 1080 N; hold 1 min each",
+                     pass_fail="5 of 5 hold 908 N (IM) and 5 of 5 hold 1080 N (US) for 1 min, 2 of 2 IMC hold 908 N, 2 of 2 USA hold 1080 N, no broken stitch"),
+        "IM3-EP": dict(specimen="P1 frame (the sacrificial frame), both IM3 eyes, each with its 38 mm IME eye sewn as op 'IME fairlead eyes' (BL-044: NECKED to 18 mm round the pin, the 20 mm throat of the BL-045 fairlead)"),
         "CA-1": dict(
             title=f"PAHT-CF fatigue coupons, {R1_CA1_LEVEL:.2f} (fallback >= {lv['fallback_min']})",
             gates=f"H1 print release R1: {r1_rule_txt(lv)}; 0.40 also feeds option F-1 (BL-037)",
@@ -952,7 +954,9 @@ def measures(lv: dict, lid_g: float, cut: dict) -> dict:
     m = {
         "MT-1": per(5, "held 92.6 kg (908 N) 1 min, no broken stitch", y, "yes", "Y", "BOX25", "IM#")
         + per(5, "held 110.1 kg (1080 N) 1 min, no broken stitch", y, "yes", "Y", "BOX25", "US#")
-        + per(2, "IMC cam anchor tab held 92.6 kg (908 N) 1 min, both boxes whole (BL-041)", y, "yes", "Y", "BOX25; IMC-LOOP", "IMC#"),
+        + per(2, "IMC cam anchor tab held 92.6 kg (908 N) 1 min, both boxes whole (BL-041)", y, "yes", "Y", "BOX25; IMC-LOOP", "IMC#")
+        + per(2, "USA US-cam anchor held 110.1 kg (1080 N) 1 min, both boxes whole, neck tacks whole (BL-044)", y, "yes", "Y",
+              "BOX25; IMC-LOOP", "USA#"),
         "MT-2": per(5, "G-hook held 65.7 kg (645 N) 1 min, gate closes", y, "yes", "Y", "", "G#")
         + per(5, "carabiner held 92.8 kg (910 N) 1 min, gate closes", y, "yes", "Y", "", "C#"),
         "MT-3": [x for cond in ("dry", "wet", "cold") for x in

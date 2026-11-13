@@ -37,8 +37,15 @@ def test_scenarios_are_kept_separate():
             assert W.STEP_META[s][0] in allowed, (scen, s)
     p_steps = {r["step"] for r in W.scenario_rows("P")}
     assert not any(W.STEP_META[s][0] == "A" for s in p_steps if s != "start")   # no after-tests saving in proven now
-    t = W.scenario_table()
-    assert t["B.2"]["base"] > t["P"]["base"] > t["A"]["base"]
+    assert not any(W.STEP_META[s][0] == "R" for sc in W.SCEN for s in {r["step"] for r in W.scenario_rows(sc)} - {"start"})
+    # BL-046: the scenarios are separate sums, not ordered by mass. Proven now carries the safety fixes (H1 body,
+    # fairleads, spine clamp and channel), so it may weigh more than the B.2 start; after-tests adds only its own steps.
+    t, st = W.scenario_table(), W.step_deltas("M")
+    for c in W.CFGS:
+        p_sum = sum(st[k][c] for k in W.ORDER if W.STEP_META[k][0] == "P")
+        a_sum = sum(st[k][c] for k in W.ORDER if W.STEP_META[k][0] == "A")
+        assert t["P"][c] == pytest.approx(t["B.2"][c] + p_sum, abs=0.3), c
+        assert t["A"][c] == pytest.approx(t["P"][c] + a_sum, abs=0.3), c
 
 
 def test_waterfall_closes_and_every_bar_is_a_step():

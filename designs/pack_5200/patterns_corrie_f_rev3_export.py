@@ -58,10 +58,10 @@ STEPS = [   # (file, title, piece ids) in the build order of the release README
 # ---- BL-041 n-6 / n-7: printed notes and the 1:1 webbing-marks pages ------------------------------------------------
 NOTE_MAX = 40                       # a label note longer than this goes to the NOTES page (the DXF keeps it in full)
 WEB_MARKS = [("HE", None), ("RTM", None), ("LLT", None), ("IMC", None), ("T3", None), ("US", 110.0), ("RT", 110.0),
-             ("B-25", 222.0)]
+             ("B-25", 222.0), ("IME", None), ("USA", None)]      # BL-044: the necked IME and the US cam anchor
 # BL-043 m-12: W3G deleted (W3-OVER); RT (sewn end) and B-25 (R half to the neck; the L half mirrors it) added; every
 # line gets a leader label beside the strip (not only a legend under it)
-WEB_GROUPS = (("HE", "RTM"), ("IMC", "LLT"), ("T3", "US"), ("B-25", "RT"))   # tall strip left, short one right: the
+WEB_GROUPS = (("HE", "RTM"), ("IMC", "LLT"), ("T3", "US"), ("B-25", "RT"), ("IME", "USA"))   # tall strip left, short one right: the
 #                                     test square sits bottom right, under the short strip
 WEB_LABEL_W = 46.0                  # mm of label column right of each strip
 WEB_WRAP = 30

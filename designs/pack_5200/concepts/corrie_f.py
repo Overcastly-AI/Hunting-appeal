@@ -1080,7 +1080,7 @@ def bl043_rows() -> list:
     t = b25_topology()
     return [
         ("attachment", f"BL-043: B-25 bridle drawn topology (sleeve, mitre, necked run, spine wrap) {t['cut_bl041_mm']:.0f} -> "
-         f"{t['cut_mm']:.0f} mm (DECISION B25-TOPO)", (t["cut_mm"] - t["cut_bl041_mm"]) / 1000.0 * w38,
+         f"{t['cut_bl043_mm']:.0f} mm (DECISION B25-TOPO)", (t["cut_bl043_mm"] - t["cut_bl041_mm"]) / 1000.0 * w38,
          "corrie_f.b25_topology cut_mm - BL-041 guy_bridle(wide=True) x poly_webbing_38mm mass_g_m (record)"),
         ("straps_meat", f"BL-043: IMC tabs {4 * P.IMC_FOLD_BL041:.0f} -> {4 * P.IMC_FOLD:.0f} mm (m-4, 5 mm raw-end margin, x3)",
          3 * 4 * (P.IMC_FOLD - P.IMC_FOLD_BL041) / 1000.0 * WEB25,
@@ -1095,12 +1095,20 @@ def bl044_rows() -> list:
     P = importlib.import_module("patterns_corrie_f_rev3")
     w38 = _rec("poly_webbing_38mm", "mass_g_m")
     pin = hinge_pin()
+    b25 = b25_topology()
     return [
         ("attachment", f"BL-044: HE hinge eyes {P.HE_CUT_BL041:.0f} -> {P.HE_CUT:.0f} mm (DECISION HE-ENV, x2)",
          2 * (P.HE_CUT - P.HE_CUT_BL041) / 1000.0 * w38,
          "patterns_corrie_f_rev3.HE_CUT - HE_CUT_BL041, x 2 x poly_webbing_38mm mass_g_m (record)"),
         ("attachment", f"BL-044: hinge pins +{pin['delta_mm']:.0f} mm for the 20 mm throat (x2)", 2 * pin["delta_g"],
          "corrie_f.hinge_pin: bag_attach.HINGE_EYE_ENVELOPE throat - bag_attach.THROAT, 5 mm x alu_7075_t6 density (record)"),
+        ("attachment", f"BL-044: B-25 on the BL-045 clamp and the printed spine (15.85 mm fore of the bar) "
+         f"{b25['cut_bl043_mm']:.1f} -> {b25['cut_mm']:.1f} mm", (b25["cut_mm"] - b25["cut_bl043_mm"]) / 1000.0 * w38,
+         "corrie_f.b25_topology with crown_spine_clamp constants (+34.1 run, collar 12 -> 12.8) x poly_webbing_38mm "
+         "mass_g_m (record)"),
+        ("straps_meat", f"BL-044: US cam anchors USA (2 x {4 * P.IMC_FOLD:.0f} mm, 25 mm; the US cam's sewn anchor on the "
+         "right pin, BL-045)", 2 * 4 * P.IMC_FOLD / 1000.0 * WEB25,
+         "patterns_corrie_f_rev3 USA (4 x IMC_FOLD) x poly_webbing_25mm mass_g_m (record)"),
         ("straps_compression", f"BL-044: W3 K-W keeper loops deleted (2 x {P.KW_CUT:.0f} mm, DECISION KW-W3-OFF)",
          -2 * P.KW_CUT / 1000.0 * WEB25, "patterns_corrie_f_rev3.KW_CUT x poly_webbing_25mm mass_g_m (record), negative"),
     ]
@@ -1385,7 +1393,11 @@ WRAP_ON_BAR = 30.0        # frame.yaml wrap_overlap_mm (30 mm on each tube)
 WRAP_SCARF = 8.0          # frame.yaml: wrap ends scarfed over 8 mm
 BAR_OD = 18.0             # frame.yaml bar_section od
 SPINE_OD = 20.0           # frame.yaml spine_section od
-SPINE_CLAMP_HALF = 15.0   # ASSUMPTION: spine-to-bar clamp half-width (OD 20 + 5 mm collar a side); settled by the clamp drawing
+from huntkit.gendesign import crown_spine_clamp as _CSC  # noqa: E402  (BL-045 published clamp / housing constants)
+SPINE_CLAMP_HALF_BOOKED = 15.0   # the clamp half-width the rev 1 / BL-041 bridle lengths were booked with (kept so
+#                                 their ledger rows stay as booked; rev 3 is b25_topology on the real clamp)
+SPINE_CLAMP_HALF = _CSC.SPINE_CLAMP_HALF_X   # BL-044: BL-045 sized clamp, saddle half-length 12.0 along the bar (was 15.0
+#                                             ASSUMPTION); crown_spine_clamp.size_clamp
 GUY_W = 25.0              # guy bar loop / bridle webbing (poly_webbing_25mm)
 GUY_X_REV0 = (92.0, 100.0)    # attachment_diet.md section 5: guy loops at x +/-(92-100) "beside the leg"
 MIN_CLEAR_MM = 10.0       # ASSUMPTION: gloved toggle handling + +/-5 mm webbing wander; settled by the prototype crown fit
@@ -1505,7 +1517,7 @@ def guy_bridle(wide: bool = False) -> dict:
     else:
         w, x = GUY_W, REVS[1]["guy_x"]
         mat, gm = "poly_webbing_25mm", WEB25
-    run = 2.0 * (x - w / 2.0 - SPINE_CLAMP_HALF)
+    run = 2.0 * (x - w / 2.0 - SPINE_CLAMP_HALF_BOOKED)     # the rev 1 / BL-041 booked part (its own clamp ASSUMPTION)
     mm = 2 * BAR_WRAP_MM + run + SPINE_WRAP_MM + 2 * BRIDLE_TAB_MM
     return {"id": "B-25", "length_mm": round(mm, 1), "mass_g": round(mm * gm / 1000.0, 2), "width_mm": w,
             "material_id": mat, "sleeve_x": round(x, 1), "band": (round(x - w / 2, 1), round(x + w / 2, 1)),
@@ -1525,15 +1537,21 @@ def guy_bridle(wide: bool = False) -> dict:
 #   spine, continuous into the other side's run | mirror.
 # Nothing is on the wearer side of the bar (head clearance) and no part of the turn is outside the 38 mm sleeve band.
 B25_T = 1.2                # webbing thickness used by BAR_WRAP_MM / SPINE_WRAP_MM (ASSUMPTION there)
-SPINE_CLAMP_COLLAR = 12.0  # ASSUMPTION B25-CLAMP: the spine clamp's collar reaches 12 mm down the spine below the bar's
+SPINE_CLAMP_COLLAR = _CSC.SPINE_CLAMP_COLLAR   # BL-044: 12.8 (BL-045 sized socket; was 12.0 ASSUMPTION B25-CLAMP).
+#                            BL-043 note kept: the spine clamp's collar reaches down the spine below the bar's
 #                            underside (a 6 g split collar, frame.yaml 'spine clamp: 6.0', round a 20 mm tube is ~10-20 mm
 #                            tall: 0.59 g/mm in 3 mm aluminium). The frame files draw no clamp (frame.yaml has only its
 #                            mass; print/ has no part): settled by the clamp drawing (structural) and the op 7.17 dry fit
 B25_RUN_GAP = 2.0          # run's top edge 2 mm under the clamp collar
 B25_NECK_W = 25.0          # DECISION B25-TOPO: run + spine wrap necked to 25 mm (lower edge folded 13 mm up)
-UPPER_BAR_OD = 22.0        # frame.yaml: upper bar (z 520, pawl housing) OD 22
-PAWL_HOUSING_HALF_W = 18.0  # ASSUMPTION PAWL-TOP: housing reaches 18 mm either side of the spine axis (spine r 10 + 8 mm wall)
-PAWL_HOUSING_UP = 20.0     # ASSUMPTION PAWL-TOP: the pawl housing reaches 20 mm above the pawl line on the upper bar
+UPPER_BAR_OD = 22.0        # frame.yaml: upper bar (z 520, pawl housing) OD 22 (kept for reference; BL-044 uses the printed
+#                            body top in the sleeve band, crown_spine_clamp.BODY_TOP_Z_IN_B25_BAND 519.18)
+PAWL_HOUSING_HALF_W = _CSC.PAWL_HOUSING_HALF_W   # BL-044: 24.82 measured on the H1 STL (BL-045; was 18 ASSUMPTION PAWL-TOP)
+PAWL_HOUSING_UP = _CSC.PAWL_HOUSING_UP           # BL-044: 15.62 measured (BL-045; was 20 ASSUMPTION PAWL-TOP)
+B25_CUT_BL043_MM = 479.4                         # BL-043 released B-25 cut (ledger split: BL-043 row / BL-044 row)
+B25_RUN_EXTRA = _CSC.B25_CUT_CHANGE_MM / 2.0     # BL-044: the printed spine sits 15.85 mm fore of the bar plane, so each
+#                                                 run is 17.05 mm longer than drawn in the bar plane (BL-045 run_plan)
+# (BL-043 history:) the pawl housing was assumed to reach 20 mm above the pawl line on the upper bar
 #                            (upper bar OD 22 -> 11 mm + a 9 mm housing wall); settled by the op 7.17 dry fit at the kit's
 #                            shortest setting (the spine wrap must clear the housing)
 
@@ -1554,17 +1572,18 @@ def b25_topology(kit: str | None = None) -> dict:
     run_s = (s_top, s_top + B25_NECK_W)                           # necked run + spine wrap
     # strip centre line: down from the bar to the mitre's centre, inboard to the spine, half round the spine
     drop = s_top + 0.5 * w - rb
-    run_x = xc - (rs_ + B25_T)                          # mitre centre -> spine wrap tangent
+    run_x = xc - (rs_ + B25_T) + B25_RUN_EXTRA          # mitre centre -> spine wrap tangent (+ the fore offset, BL-044)
     half_wrap = math.pi * (rs_ + B25_T / 2)
     side = drop + run_x + half_wrap
     sleeve = BAR_WRAP_MM
     cut = 2 * (BRIDLE_TAB_MM + sleeve + side)
+    cut_bl043 = B25_CUT_BL043_MM                        # as released by BL-043 (clamp / housing ASSUMPTIONS, bar plane)
     uz = CDI.geom()["uz"]
     kits = {}
     for k, (lo, hi) in CDI.SIZES.items():
         s_pawl = (CDI.crown_top_z(lo) - CDI.PAWL_Z) / uz          # spine length bar centre -> pawl line, shortest torso
         top = s_pawl - PAWL_HOUSING_UP / uz
-        bar_top = s_pawl - UPPER_BAR_OD / 2 / uz
+        bar_top = s_pawl - (_CSC.BODY_TOP_Z_IN_B25_BAND - CDI.PAWL_Z) / uz   # printed body top (BL-045)
         kits[k] = {"torso_in": lo, "s_pawl_mm": round(s_pawl, 1), "housing_top_s_mm": round(top, 1),
                    "wrap_bottom_s_mm": round(run_s[1], 1), "clear_mm": round(top - run_s[1], 1),
                    "mitre_bottom_s_mm": round(mitre["s"][1], 1),
@@ -1581,12 +1600,14 @@ def b25_topology(kit: str | None = None) -> dict:
            "pawl_ok": all(v["ok"] for v in kits.values()),
            "lengths_mm": {"tab": BRIDLE_TAB_MM, "sleeve": round(sleeve, 1), "drop": round(drop, 1),
                           "run": round(run_x, 1), "half_spine_wrap": round(half_wrap, 1)},
-           "cut_mm": round(cut, 1), "cut_bl041_mm": guy_bridle(wide=True)["length_mm"],
+           "cut_mm": round(cut, 1), "cut_bl043_mm": round(cut_bl043, 1), "run_extra_mm": B25_RUN_EXTRA, "spine_fore_mm": _CSC.SPINE_AXIS_FORE_MM,
+           "cut_bl041_mm": guy_bridle(wide=True)["length_mm"],
            "clamp_envelope": {"half_x_max_mm": round(x0 - MIN_CLEAR_MM, 1),
                               "collar_max_mm": round(min(v["housing_top_s_mm"] for v in kits.values()) - B25_NECK_W
                                                      - B25_RUN_GAP - rb, 1)},
            "source": "corrie_f.b25_topology (BL-043 DECISION B25-TOPO); bar / spine OD frame.yaml; crown heights "
-                     "geometry.yaml crown_settings; ASSUMPTIONS SPINE_CLAMP_HALF, B25-CLAMP, PAWL-TOP"}
+                     "geometry.yaml crown_settings; clamp / housing / spine offset: huntkit.gendesign."
+                     "crown_spine_clamp (BL-045, used since BL-044)"}
     return out
 
 

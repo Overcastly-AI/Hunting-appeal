@@ -92,7 +92,7 @@ def test_rev3_swaps_the_pouch_for_the_lid_and_keeps_base_as_rev2():
     import strap_tails as ST
     bl031 = sum(g for s, n, g, c, src in ST.bag_rows() if c == "base")
     # BL-035: rev 3 also books the rifle muzzle keepers (corrie_f.muzzle_keeper; rev 2 stays as booked)
-    bl041 = sum(r["g"] for r in r3 if r["name"].startswith(("BL-041", "BL-043")) and r["cfg"] == "base")   # BL-041 + BL-043 rev 3 rows
+    bl041 = sum(r["g"] for r in r3 if r["name"].startswith(("BL-041", "BL-043", "BL-044")) and r["cfg"] == "base")   # BL-041 / 043 / 044 rev 3 rows
     assert base3 == pytest.approx(base2 + bl031 + F.muzzle_keeper()["mass_g"] + bl041, abs=0.02)
     hunted = lambda rows: sum(r["g"] for r in rows if r["cfg"] in ("base", "as_hunted"))  # noqa: E731
     d = hunted(r3) - hunted(r2)

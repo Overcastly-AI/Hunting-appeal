@@ -61,6 +61,9 @@ B25_W = 38.0                       # corrie_f.BRIDLE_W_REV3
 B25_BAND = (26.5, 64.5)            # corrie_f.BRIDLE_BAND_REV3
 B25_T = 1.2                        # corrie_f.B25_T (ASSUMPTION there)
 BAR_OD, SPINE_OD = 18.0, 20.0      # frame.yaml top_bar_section / spine_section od
+REAL_CROWN = True                  # BL-046: clamp loads on the crown as built (h1_spine_channel.real_crown)
+WEB_T_MM = 2.5                     # BL-046: the fitting's two webs (h1_spine_channel.CLAMP_WEB_T); sized in web_check
+G_PER_KG = 9.81
 
 ASSUMPTIONS = {
     "CLAMP-TYPE": ("The spine clamp is built as the frame's own bonded joint (a socket on each tube, as the stay hubs "
@@ -81,14 +84,20 @@ ASSUMPTIONS = {
 
 
 # ================================================================================== 1. joint loads (frame model)
-def joint_loads(kits=KITS, log=None) -> list[dict]:
-    """Every rev C set on every kit end: the spine's end forces at TB1 (N, Vy, Vz, T, My, Mz in the member's local
+def joint_loads(kits=KITS, log=None, real: bool = REAL_CROWN) -> list[dict]:
+    """Every rev C set on every kit end: the spine's end forces at its top (N, Vy, Vz, T, My, Mz in the member's local
     axes) and the bar's force jump across TB1 (TB1-TB2 start minus TB0-TB1 end), at LIMIT load, with the case factor
-    and g. Cached in outputs/crown_spine_clamp/joint_loads.json (keyed on frame.yaml)."""
+    and g. Cached in outputs/crown_spine_clamp/joint_loads[_real].json (keyed on frame.yaml).
+
+    BL-046 ``real`` (default): the crown as built (``h1_spine_channel.real_crown``: top bar 25 mm aft of the legs'
+    plane, the spine in the legs' plane hanging from the clamp member TB1 -> SPC). The spine's end forces are then
+    taken at SPC (socket) and the clamp member's at both ends ('clamp_spc', 'clamp_tb1': the webs). ``real=False`` is
+    BL-045's model (spine rigid on TB1, in the bar's plane)."""
     from huntkit.fea.load_standard import ls1_envelope
     from . import crown_diet as CD
+    from .h1_spine_channel import real_crown
     key = FRAME_YAML.read_text()
-    cp = OUT / "joint_loads.json"
+    cp = OUT / ("joint_loads_real.json" if real else "joint_loads.json")
     if cp.exists():
         d = json.loads(cp.read_text())
         if d.get("frame_yaml") == key and d.get("kits") == list(kits):
@@ -100,6 +109,8 @@ def joint_loads(kits=KITS, log=None) -> list[dict]:
         spec = sp[kit]
         for t in spec.torsos:
             fm, fmp = CD.build(spec, t), None
+            if real:
+                fm = real_crown(fm)
             for vname, cases in env.items():
                 for c in cases:
                     c = copy.copy(c)
@@ -108,15 +119,21 @@ def joint_loads(kits=KITS, log=None) -> list[dict]:
                     m = fm
                     if c.name == "tall_load_posts":
                         fmp = fmp or CD.build(spec, t, posts=True)
+                        if real and "real_crown" not in fmp:
+                            fmp = real_crown(fmp)
                         m = fmp
                     res = c.run(m)
                     ef = {q["id"]: np.asarray(q["end_forces"], float) for q in res.members
-                          if q["id"] in ("TB0-TB1", "TB1-TB2") or q["id"].startswith("TB1-SP")}
-                    sid = next(k for k in ef if k.startswith("TB1-SP"))
-                    rows.append({"kit": kit, "torso": float(t), "variant": vname, "case": c.name,
-                                 "req": float(c.required_sf), "g": float(c.g_factor),
-                                 "spine": ef[sid][0].tolist(),
-                                 "jump": (ef["TB1-TB2"][0] - ef["TB0-TB1"][1]).tolist()})
+                          if q["id"] in ("TB0-TB1", "TB1-TB2", "TB1-SPC") or q["id"].startswith(("TB1-SP", "SPC-SP"))}
+                    sid = next(k for k in ef if k.startswith("SPC-SP" if real else "TB1-SP"))
+                    row = {"kit": kit, "torso": float(t), "variant": vname, "case": c.name,
+                           "req": float(c.required_sf), "g": float(c.g_factor),
+                           "spine": ef[sid][0].tolist(),
+                           "jump": (ef["TB1-TB2"][0] - ef["TB0-TB1"][1]).tolist()}
+                    if real:
+                        row["clamp_spc"] = ef["TB1-SPC"][1].tolist()
+                        row["clamp_tb1"] = ef["TB1-SPC"][0].tolist()
+                    rows.append(row)
             if log:
                 log(f"  {kit} {t:g} in")
     OUT.mkdir(parents=True, exist_ok=True)
@@ -201,6 +218,42 @@ def socket_bending(rows: list[dict], wall: float = FITTING_WALL_MM) -> dict:
             "sigma_walk_mpa": round(swalk, 1), "sf_fatigue_kt2": round(se / (2.0 * swalk), 2)}
 
 
+def web_check(rows: list[dict], t: float | None = None) -> dict:
+    """BL-046: the fitting's two webs between the bar saddle and the spine socket (never checked in BL-045), on the
+    clamp member's end forces at both ends (``joint_loads(real=True)``: local x along the member, fore from the bar to
+    the spine). Section: two 7075 plates t x CLAMP_WEB_H at the socket's sides. Normal stress = N / A + |M_strong| / Z_s
+    + |M_weak| / Z_w, shear = |V| / A + |T| / (h t^2 / 3 per web); von Mises. Yield SF on the factored load (S-basis);
+    fatigue at 1.6 g bag carry with Kt 2 on the record's fatigue limit (HA-LS-1 metal rule, as socket_bending)."""
+    from huntkit.materials import load
+    from .h1_spine_channel import CLAMP_WEB_GAP, CLAMP_WEB_H
+    t = WEB_T_MM if t is None else t
+    al = load(FITTING_MAT)
+    sy = float(al.require("yield_strength_sbasis_mpa"))
+    se = float(al.require("fatigue_limit_mpa"))
+    h, d = CLAMP_WEB_H, CLAMP_WEB_GAP - t
+    A = 2 * t * h
+    Zs = 2 * t * h ** 2 / 6.0                                  # bending about the member's local z (in the y-z plane)
+    Zw = 2 * (h * t ** 3 / 12.0 + h * t * (d / 2) ** 2) / (CLAMP_WEB_GAP / 2)
+    Jt = 2 * h * t ** 2 / 3.0                                  # open plates: tau = T / (h t^2 / 3) per pair
+
+    def vm(f):
+        N, Vy, Vz, T, My, Mz = f
+        sig = abs(N) / A + abs(Mz) / Zs + abs(My) / Zw
+        tau = math.hypot(Vy, Vz) / A + abs(T) / Jt
+        return math.sqrt(sig ** 2 + 3 * tau ** 2)
+    smax, wmax, gov = 0.0, 0.0, ""
+    for r in rows:
+        if "clamp_spc" not in r:
+            continue
+        s_ = max(vm(r["clamp_spc"]), vm(r["clamp_tb1"]))
+        if s_ * r["req"] > smax:
+            smax, gov = s_ * r["req"], f"{r['kit']} {r['torso']:g} in {r['case']} ({r['variant']})"
+        if r["case"] == "static_carry":
+            wmax = max(wmax, s_ * G_WALK / r["g"])
+    return {"web_t_mm": t, "web_h_mm": h, "sigma_vm_factored_mpa": round(smax, 1), "sf_yield": round(sy / smax, 2),
+            "set": gov, "sigma_vm_walk_mpa": round(wmax, 1), "sf_fatigue_kt2": round(se / (2.0 * wmax), 2)}
+
+
 def size_clamp(rows: list[dict] | None = None) -> dict:
     """The clamp's real dimensions (published as SPINE_CLAMP)."""
     rows = rows or joint_loads()
@@ -223,7 +276,8 @@ def size_clamp(rows: list[dict] | None = None) -> dict:
     t = FITTING_WALL_MM
     v_saddle = math.pi * ((ri_b + t) ** 2 - ri_b ** 2) * Lb
     v_socket = math.pi * ((ri_s + t) ** 2 - ri_s ** 2) * (s_free + Ls)
-    v_web = 2 * t * (abs(dy)) * min(Lb, socket_od)           # ASSUMPTION CLAMP-TYPE: two webs bridge the bores
+    web_t = WEB_T_MM if REAL_CROWN else 1.5
+    v_web = 2 * web_t * (abs(dy)) * min(Lb, socket_od)       # ASSUMPTION CLAMP-TYPE: two webs bridge the bores (full dy)
     from huntkit.materials import load
     adh = float(load(ADHESIVE).require("density_kg_m3")) * 1e-6
     v_bond = math.pi * ((ri_b) ** 2 - (BAR_OD / 2) ** 2) * Lb + math.pi * (ri_s ** 2 - (SPINE_OD / 2) ** 2) * Ls
@@ -239,7 +293,8 @@ def size_clamp(rows: list[dict] | None = None) -> dict:
             "margins": {"socket": bond_margins(rows, "spine", Ls), "saddle": bond_margins(rows, "jump", Lb),
                         "socket_with_shear": bond_margins(rows, "spine", Ls, True),
                         "saddle_with_shear": bond_margins(rows, "jump", Lb, True),
-                        "socket_bending": socket_bending(rows)},
+                        "socket_bending": socket_bending(rows),
+                        **({"webs": web_check(rows)} if any("clamp_spc" in r for r in rows) else {})},
             "loads_max_factored": _load_summary(rows),
             "source": "crown_spine_clamp.size_clamp: frame model TB1 forces (crown_diet kits, rev C), "
                       "huntkit.fea.joints.bond_check, H1 STL spine channel; ASSUMPTIONS CLAMP-TYPE, CLAMP-WALL, "
@@ -277,10 +332,10 @@ def h1_crown_interfaces(stl: Path = H1_STL) -> dict:
     m = trimesh.load(stl)
     v = m.vertices
     ch, top_h, xmax, y_lo, y_hi = [], None, 0.0, 0.0, -99.0
-    for z in np.arange(510.0, 530.01, 0.5):          # the channel: an inner loop 35-45 mm wide in the housing
-        for e in _section_loops(m, z):
+    for z in np.arange(510.0, 530.01, 0.5):          # the channel: an inner loop 15-45 mm each way in the housing
+        for e in _section_loops(m, z):                # (BL-045 plate channel 40.2 x 18.3; BL-046 tube channel 22 x 36.3)
             w, d = e[:, 0].max() - e[:, 0].min(), e[:, 1].max() - e[:, 1].min()
-            if 35.0 < w < 45.0 and d < 25.0 and np.abs(e[:, 0]).max() < 25.0:
+            if 15.0 < w < 45.0 and 15.0 < d < 45.0 and np.abs(e[:, 0]).max() < 25.0:
                 ch.append((z, e[:, 0].min(), e[:, 0].max(), e[:, 1].min(), e[:, 1].max()))
     for z in np.arange(520.5, 545.0, 0.25):          # the housing: above the upper bar (top z ~519 in the band)
         for e in _section_loops(m, z):
@@ -303,13 +358,33 @@ def h1_crown_interfaces(stl: Path = H1_STL) -> dict:
     out["spine_channel_centre"] = [round(0.5 * sum(out["spine_channel_x_mm"]), 2),
                                    round(0.5 * sum(out["spine_channel_y_mm"]), 2)]
     out["pawl_housing_up_mm"] = round(out["pawl_housing_top_z"] - out["pawl_z"], 2)
+    # BL-046: a channel deeper than tube + rack has a round aft end on the tube axis (h1_spine_channel.channel_section):
+    # the axis is the aft face minus the aft radius, slope-corrected to the pawl line; a shallower one (the old plate
+    # channel) has the spine at its centre
+    from . import h1_spine_channel as HSC
+    if out["spine_channel_depth_y_mm"] >= SPINE_OD + HSC.RACK_T:
+        sl = HSC.axis_slope()
+        aft = float(np.mean([r[4] - sl * (r[0] - out["pawl_z"]) for r in ch]))
+        out["spine_axis_y_at_pawl"] = round(aft - HSC.channel_dims()["aft_r"], 2)
+        out["spine_axis_rule"] = "aft face - (tube r + running clearance) (BL-046 tube channel)"
+    else:
+        out["spine_axis_y_at_pawl"] = out["spine_channel_centre"][1]
+        out["spine_axis_rule"] = "channel centre (plate channel)"
     _GEO["h1"] = out
     return out
 
 
+def top_bar_aft_mm() -> float:
+    """geometry.yaml frame.members_topology.crown.top_bar_aft_offset_mm: the crown top bar's axis aft of the legs'
+    plane (v3.1 head clearance, offset corner wraps)."""
+    g = yaml.safe_load((PACK / "geometry.yaml").read_text())
+    return float(g["frame"]["members_topology"]["crown"].get("top_bar_aft_offset_mm", 0.0))
+
+
 def spine_axis() -> dict:
-    """Spine axis (printed channel centre) against the bar axis (frame model: the spine node at the pawl line, which
-    lies on the bar plane, both parallel to the legs)."""
+    """Spine axis (printed channel, ``h1_crown_interfaces``) against the legs' plane (the frame model's spine line at
+    the pawl line) and against the crown top bar's real axis (BL-046: the legs' plane + top_bar_aft_mm aft; BL-045
+    took the bar in the legs' plane, as the beam model draws it). Both run parallel to the legs."""
     from huntkit.fea.frames import build_frame_from_yaml
     h = h1_crown_interfaces()
     fm = build_frame_from_yaml(FRAME_YAML, torso_in=15.0)
@@ -317,8 +392,11 @@ def spine_axis() -> dict:
     pts = np.array([n[k] for k in n if k.startswith("SP") or k == "TB1"], float)
     y_model = float(np.interp(520.0, *zip(*sorted(zip(pts[:, 2], pts[:, 1])))))   # the model spine at the pawl line
     rack = rack_dims()
-    return {"spine_axis_y_at_pawl_mm": h["spine_channel_centre"][1], "model_spine_y_at_pawl_mm": round(y_model, 2),
-            "spine_axis_minus_bar_axis_y_mm": round(h["spine_channel_centre"][1] - y_model, 2),
+    ys = h["spine_axis_y_at_pawl"]
+    aft = top_bar_aft_mm() if REAL_CROWN else 0.0
+    return {"spine_axis_y_at_pawl_mm": ys, "model_spine_y_at_pawl_mm": round(y_model, 2),
+            "spine_axis_minus_legs_plane_y_mm": round(ys - y_model, 2), "top_bar_aft_of_legs_plane_mm": aft,
+            "spine_axis_minus_bar_axis_y_mm": round(ys - y_model - aft, 2),
             "channel_depth_y_mm": h["spine_channel_depth_y_mm"], "channel_width_x_mm": h["spine_channel_width_x_mm"],
             "spine_od_mm": SPINE_OD, "rack_mm": rack,
             "tube_fits_channel": bool(h["spine_channel_depth_y_mm"] >= SPINE_OD and

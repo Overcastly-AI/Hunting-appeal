@@ -281,6 +281,8 @@ STEP_META = {   # id: (class, ticket, short label, kind, gate)
             "safety", "MT-1 cinch, CA-1 PAHT ratio >= 0.255, T1/T2 gauges (release R1; failing adds mass, never removes)"),
     "H1F": ("P", "BL-042", "H1 fairleads completed outside the voxel envelope (12, hinge saddle)", "correction",
             "HE-FIT / IM3-EC test pieces; first-article weigh (print/frame_h1/README.md section 7)"),
+    "BL046": ("P", "BL-045/046", "spine clamp as sized; H1 spine channel for the OD 20 tube + 6 mm rack", "safety",
+              "T6 clamp-fitting coupon; spine slide trial over the full travel (h1_spine_channel.md)"),
     "BL031": ("P", "BL-031 (owner)", "strap tails: lifters, sternum, stabilizers cut to length; belt tail + keepers",
               "design", "T9 gloved cinch trial (TAIL_GRIP 50 mm), R-06 fit trial (sternum), HB-D1 (stabilizers)"),
     "P_pkgC": ("P", "package C (2026-11-09)", "7075 belt plate; C-4 / C-7 rev C fixes", "safety",

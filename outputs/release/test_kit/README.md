@@ -167,7 +167,7 @@ Full list: `order_of_work.csv`. Inside each session the R1 tests run first, then
 
 ## Results sheet
 
-`results_template.csv` has 305 rows over 80 tests. Each row says how it is judged (`check`: max, min, band, yes, record) against `limit`. Type numbers in the unit shown; type Y or N for yes/no rows. Do not change the other columns. Read back with:
+`results_template.csv` has 307 rows over 80 tests. Each row says how it is judged (`check`: max, min, band, yes, record) against `limit`. Type numbers in the unit shown; type Y or N for yes/no rows. Do not change the other columns. Read back with:
 
 ```
 python -m huntkit.manufacturing.test_results outputs/release/test_kit/results_template.csv --md report.md

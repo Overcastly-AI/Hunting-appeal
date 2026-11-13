@@ -1,0 +1,4 @@
+piece,size,unit,rotation_deg,mirrored,x_min_mm,y_min_mm,area_m2
+bottom (full S15 width),,0,270.0,False,-0.0,38.0,0.07685
+under-strap floor channel (US1 / US2),,0,0.0,False,0.0,458.6,0.01342
+under-strap floor channel (US1 / US2),,0,0.0,False,0.0,522.6,0.01342

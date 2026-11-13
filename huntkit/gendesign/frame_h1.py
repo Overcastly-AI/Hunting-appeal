@@ -725,12 +725,14 @@ BOSS_CORE_MM = 2.0     # BL-045: voxels kept in the smoothing field up to one vo
 #                        so the smoothed body fuses with the capsule wherever the voxel body touches the boss
 
 
-def print_mesh(solid: np.ndarray, j: Joint = JOINT, log=print, fairleads: bool = True, stats: dict | None = None):
+def print_mesh(solid: np.ndarray, j: Joint = JOINT, log=print, fairleads: bool = True, stats: dict | None = None,
+               spine_channel: bool = True):
     """Smooth surface of the voxel body (2x upsampled field, Taubin), then exact features with manifold3d:
     boss capsules, sleeve bore rings re-cut at the 17.4 mm pre-ream size, bolt holes 4.8 mm (ream 5.1),
     counterbores, washer + nut traps, and (BL-042) every bag fairlead complete: the voxel model stops at the bag
     envelope (y 16), so the fairleads are added exactly (``h1_fairleads.add_fairleads``: solids, throats, pin holes
-    printed 7.0 / reamed 7.2). ``stats`` gets the fairlead step's volumes."""
+    printed 7.0 / reamed 7.2). ``stats`` gets the fairlead step's volumes. BL-046 (``spine_channel``): the pawl
+    housing and spine channel are re-made exactly for the OD 20 spine tube + 6 mm rack (``h1_spine_channel``)."""
     import manifold3d as m3d
     from .surface import _from_manifold, _to_manifold, field_to_mesh
     from scipy import ndimage
@@ -786,6 +788,15 @@ def print_mesh(solid: np.ndarray, j: Joint = JOINT, log=print, fairleads: bool =
         cuts.append(_box_local(p, uu, dirn, 0.0, j.r_boss + 6.0, j.nut_af / 2 + 0.1, n_lo, w_lo))
     for cc in cuts:
         man = man - cc
+    if spine_channel:      # BL-046: housing + channel for the OD 20 spine tube and its 6 mm rack (h1_spine_channel)
+        from .h1_spine_channel import add_channel
+        ch_stats: dict = {}
+        man = add_channel(man, stats=ch_stats)
+        if stats is not None:
+            stats["spine_channel_bl046"] = ch_stats
+        if log:
+            log(f"  spine channel (BL-046): housing +{ch_stats['housing_added_mm3'] * 1.06e-3:.1f} g, "
+                f"channel / bay -{ch_stats['cut_mm3'] * 1.06e-3:.1f} g, net {ch_stats['net_g']:+.1f} g")
     if fairleads:
         from .h1_fairleads import add_fairleads
         man = add_fairleads(man, log=log, stats=stats)

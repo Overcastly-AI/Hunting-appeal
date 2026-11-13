@@ -2,11 +2,11 @@
  "checks": {
   "recon_unmatched": 0,
   "recon_pieces_without_row": 0,
-  "recon_rows": 113,
+  "recon_rows": 115,
   "mass_delta_pct": -0.1,
   "mass_ok": true,
-  "ops": 86,
-  "load_points": 29,
+  "ops": 87,
+  "load_points": 31,
   "min_sf": 1.36,
   "min_sf_point": "B-25 bridle toggle tab",
   "holds": [],
@@ -14,10 +14,10 @@
   "unmapped_hardware": [],
   "hardware_rows_by_keyword": [],
   "box_mismatches": [],
-  "thread_bag_g": 18.56,
-  "thread_ledger_g": 18.55,
-  "proto_hours": 74.0,
-  "sam_min": 502.9,
+  "thread_bag_g": 18.79,
+  "thread_ledger_g": 18.78,
+  "proto_hours": 74.4,
+  "sam_min": 506.3,
   "volatile": [
    "pattern: B-22 x",
    "pattern: F-01",
@@ -28,9 +28,9 @@
   ]
  },
  "mass": {
-  "base_g": 1144.7,
-  "as_hunted_g": 1426.5,
-  "meat_trip_g": 1622.5,
+  "base_g": 1152.8,
+  "as_hunted_g": 1434.7,
+  "meat_trip_g": 1630.7,
   "pattern_fabric_alt_g": 570.2,
   "ledger_fabric_g": 570.7,
   "mass_delta_pct": -0.1,
@@ -42,9 +42,9 @@
    "as_hunted": 22.1,
    "meat_trip": 9.2
   },
-  "primary_base_g": 1208.7,
-  "primary_as_hunted_g": 1512.7,
-  "primary_meat_trip_g": 1717.9,
+  "primary_base_g": 1216.9,
+  "primary_as_hunted_g": 1520.8,
+  "primary_meat_trip_g": 1726.0,
   "qc14_tol_pct": 3.0
  },
  "geo": {

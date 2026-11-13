@@ -1647,10 +1647,10 @@ prints) and lays the eye into it at all 18 corners, each with the bag at its own
 | check (STL) | result | required |
 |---|---:|---:|
 | loop (legs + wrap) overlapping printed material, any corner, planes x across the neck | 0.000 mm2 | 0 |
-| stack to floor under the pin, neck centred, ply 1.2 / 1.5 / 1.6 | 1.91 / 1.01 / 0.71 mm | >= 0.5 |
-| same, neck slid against a cheek, outside the last 0.1 mm at the cheek face | >= 0.71 mm | >= 0.5 |
+| stack to floor under the pin, neck centred, ply 1.2 / 1.5 / 1.6 | 1.88 / 0.98 / 0.68 mm | >= 0.5 |
+| same, neck slid against a cheek, outside the last 0.1 mm at the cheek face | >= 0.68 mm | >= 0.5 |
 | same, in the throat-corner fillet (last 0.1 mm), ply 1.2 / 1.5 / 1.6 | 0.61 / **0.29** / **0.19** mm | > 0 |
-| throat, printed | 19.97 mm: 0.49 mm a side on the 19 mm neck | 0.5 |
+| throat, printed | 19.97 mm: 0.48 mm a side on the 19 mm neck | 0.5 (print tolerance 0.05) |
 | box top to the cheeks' lower edge, any corner | >= 3.12 mm | >= 2 |
 | box stack to printed material | >= 2.98 mm | > 0 |
 
@@ -1712,9 +1712,10 @@ the gloved open / close check with the rifle in the keeper.
 
 - Hinge pin spans 8 + 20 + 8 = 36 mm (IM / US 34): shank 36 -> **38 mm**, drawn pin 50 -> **52 mm**, BOM line split
   (6 x 36 mm + 2 x 38 mm shank); **+0.22 g** for the pair (7075 record density).
-- Ledger rows (base): HE 86 -> 96 mm **+0.56 g**, hinge pins **+0.22 g**, W3 K-W loops **-2.88 g**. Thread re-booked
-  from the ops. Roll-up regenerated with H1F (+37.2 g, BL-042): **proven now, base 3690.7 -> 3728.7 g (8.22 lb)**;
-  after tests 3141.5 g.
+- Ledger rows (base): HE 86 -> 96 mm **+0.56 g**, hinge pins **+0.22 g**, W3 K-W loops **-2.88 g**, USA US-cam
+  anchors **+6.91 g** and the B-25 on the BL-045 clamp **+1.00 g** (23.10); net **+5.81 g**. Thread re-booked from the ops. Roll-up regenerated with H1F
+  (BL-042 +37.2 g, re-read by BL-045 as 50.4 g): **proven now, base 3690.7 (before BL-043) -> 3750.0 g (8.27 lb)**;
+  after tests 3162.8 g.
 
 ### 23.9 Renders
 
@@ -1726,3 +1727,27 @@ re-rendered as `20261113_BL044_3/4.png`.
 **Status.** Z-1, M-3, m-1, m-11 are fixed (with the corner-fillet exception in 23.2); Z-2 by BL-042. All three
 reviews have 0 blockers and 0 majors open, but the release stays **NOT ready to cut** until a fourth independent
 review (`mfg_corrie_f_rev3.FOURTH_REVIEW_DONE`).
+
+### 23.10 BL-045 follow-ups (orchestrator, added mid-ticket)
+
+- **IME and US eyes necked.** BL-045 gave all ten IM / US fairleads the hinge's clearance
+  (`bag_attach.imus_eye_envelope`: 5.5 mm under the pin, 20 mm throat). The eyes that pass a throat are now necked to
+  18 mm as op 4.05 does for the HE: the 38 mm IME with each edge folded 10 mm in over its free loop (flat 45-155 mm),
+  the 25 mm US eye with each edge folded 3.5 mm in (flat 27-73 mm), one BT-M tack per leg, sewn flat before the fold
+  (pieces, op 'IME fairlead eyes', the US op, MT-1 US loops and the IM3-EP IME eyes). HE-FIT step 0 repeats the dry fit
+  on the IM3-EC test piece (IME) and on P1's US1 R fairlead.
+- **US cam anchor USA (drawn and rated).** The US cam on the right pin had only a BOM line. USA = the IMC dog-bone in
+  25 mm (192 mm, 48 mm folds, 18 mm clear loops, 21 x 25 box-X at each end): one loop sewn round the right pin's
+  UHMWPE sleeve and necked to 18 mm, the other round the cam's anchor bar (threaded before its box). Load row 720 N
+  (loadpath S5-S7 cradle), box-X 21 x 25 capacity 3186 N, **SF 4.43**, proof MT-1 at 1080 N (2 USA specimens
+  added). Ledger row `BL-044: US cam anchors USA` (2 x 192 mm of 25 mm webbing).
+- **B-25 on the BL-045 clamp.** `corrie_f` now imports `crown_spine_clamp`: clamp half 12.0 mm along the bar (was 15
+  ASSUMED), collar 12.8 mm (was 12), pawl housing 15.62 mm up and +/-24.82 mm (was 20 / 18), printed body top under the
+  sleeve band z 519.18 (was the OD 22 bar), and the run reaches the spine 15.85 mm fore of the bar: **cut 479.4 ->
+  515.1 mm** (+34.1 run, +1.6 collar). Kit S 15 in: wrap 16.6 mm under the housing top, mitre 3.6 mm above it in s and
+  1.7 mm outside its half-width in x; band 14.5 mm from the clamp. SK-12, op 7.17 (B25-FIT) and the TL-1 specimen
+  (spine stub 15.85 mm fore of the bar axis) follow. The booked rev 1 / BL-041 bridle length keeps its own 15 mm clamp
+  value so those ledger rows are unchanged.
+- Tests the orchestrator named, now green: `test_build_geometry::test_panels_yaml_matches_generator` (panels.yaml
+  regenerated after the B-09 text fix), `test_corrie_f_top_anchor::test_rev3_swaps...` and
+  `test_weight_push::test_baseline...` (both now count the BL-044 rows and the BL-045 H1F).
