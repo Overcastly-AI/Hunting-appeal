@@ -103,3 +103,4 @@ Nothing here is decided; the tickets produce the material.
 | BL-052 | Clevis hardware, kit text, belly mark (handoff from BL-051) | pack-designer | S | 051 | |
 | BL-053 | Frame fixes from review 5 (supports, cradle direction, nut trap, belly-proof root, gauge MPa, pin retention, strap wrap) | structural-fea-engineer | L | 052 | printable H1 |
 | BL-054 | Frame build path for a beginner, gate print text, review-5 minors | manufacturing-engineer | M | 052 | |
+| BL-055 | Close-out: whole-body rerun, hip inserts, Ti US1 pins (A); kit wiring of BL-053 data (B) | structural + manufacturing | M | 053, 054 | review 6 ready |
