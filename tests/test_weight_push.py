@@ -25,7 +25,7 @@ def test_baseline_is_rollup_after_tests_without_bl037():
     st = W.step_deltas("M")
     a = W.scenario_table("M")["A"]["base"]
     assert WP.baseline_total("M") == pytest.approx(a - st[WP.STEP]["base"], abs=0.2)
-    assert 3200 < WP.baseline_total("M") < 3480          # BL-050 +56.1 g (US2 clevis, 12 pins); BL-049 +90.8 g (lug arms, hinge, Ti pins), BL-047 -6.7 g now
+    assert 3200 < WP.baseline_total("M") < 3560          # BL-053 +65.2 g (lug fixes, pin retention); BL-050 +56.1 g (US2 clevis, 12 pins); BL-049 +90.8 g (lug arms, hinge, Ti pins), BL-047 -6.7 g now
     #                                                      in the roll-up; BL-046 +35.9 g; 3211.4 g before BL-037 (BL-036 result); BL-041 +11.2 g; BL-042/045 H1F +50.4 g, BL-043 +2.9 g, BL-044 rows
 
 

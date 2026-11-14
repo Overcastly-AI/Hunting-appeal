@@ -198,7 +198,7 @@ def trap_solid(p: dict, y: float, z: float, j: ClevisJoint = JOINT):
         _box(*_sx(p, w_lo, j.nut_face), yb - 1.0, y, z - j.slot_w / 2.0, z + j.slot_w / 2.0)
     af = j.nut_af + j.nut_play
     rc = af / math.sqrt(3.0)                          # circumradius of the hex slot
-    hx = m3d.Manifold.cylinder(w_lo - j.trap_x0, rc, rc, 6)        # along +z, vertices at angle 0 (+x local)
+    hx = m3d.Manifold.cylinder(w_lo + 0.05 - j.trap_x0, rc, rc, 6)        # along +z, vertices at angle 0 (+x local)
     # local z -> frame x; local x -> frame y (a vertex points along y: flats face +/- z)
     hx = hx.rotate((0.0, 0.0, 90.0)).rotate((0.0, 90.0, 0.0)).translate((min(p["sign"] * j.trap_x0, p["sign"] * w_lo), y, z))
     ns = _box(*_sx(p, j.trap_x0, w_lo), yb - 1.0, y, z - af / 2.0, z + af / 2.0)
@@ -223,10 +223,12 @@ LIP_R = 3.0                        # BL-053 (M-6): the US2 blocks' lower aft edg
 
 
 def lip_round_cut(p: dict, r: float = LIP_R):
-    """Material to take off the lower aft edge of both joint blocks of station p (edge along x at y = y_floor,
-    z = pin - BLOCK_HALF_Z): the corner square less a quarter cylinder of radius r."""
+    """Material to take off the lower aft edge of the joint blocks of station p (edge along x at y = y_floor,
+    z = pin - BLOCK_HALF_Z) across the throat width: the corner square less a quarter cylinder of radius r."""
     y1, z0 = p["y_floor"], p["z"] - BLOCK_HALF_Z
-    xa, xb = _sx(p, BODY_BLOCK_X0 - 1.0, JOINT.outer_face + 1.0)
+    # across the throat only (where the strap runs; the grown inner cheek and the outer cheek stand beside it)
+    th = p["geom"].throat / 2.0 - 0.03
+    xa, xb = _sx(p, abs(p["x"]) - th, abs(p["x"]) + th)
     sq = _box(xa, xb, y1 - r, y1 + 0.5, z0 - 0.5, z0 + r)
     return sq - _cyl_x(xa - 0.5, xb + 0.5, y1 - r, z0 + r, 2 * r, seg=64)
 

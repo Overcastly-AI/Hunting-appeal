@@ -656,6 +656,119 @@ def cradle_3d(bellies=CRADLE3D_BELLY, dys=CRADLE3D_DY, w_max: float = QUARTER_W_
     return out
 
 
+# BL-053 (fifth review M-6): the strap's wrap over its OWN fairlead and lug. The taut path (strap_path) treats only the
+# stay tube as an obstacle, so on every row it runs from the pin through the strap's own fairlead floor (US1) or the
+# clevis joint block (US2). Here, in the y-z plane at the pin x, the strap is a string from the pin over the bag-side
+# envelope of its own print (the necked eye's +/- NECK_HALF inside the cheek span, the full 25 mm ribbon below it) to
+# where the recorded path is next free of the print, then along that path: the hull vertices it wraps give the wrap
+# angle, the bearing T |u2 - u1| (vector, onto the print) and the lip radius it bends over.
+NECK_HALF = 9.0                                # eye necked to 18 mm in the 20 mm throat (US-FLEET note: 18-19); the
+#                                                throat floor rises into the cheek fillets in the last 1 mm each side
+LIP_R = {"us1": 3.0, "us2": 3.0}               # BL-053 lips: US1 floor lower end (h1_rev5.FLOOR_LIP_R), US2 block lower
+#                                                aft edge (h1_bedfit.LIP_R); 0 = the BL-051 print (sharp / r 1.5)
+
+
+def own_envelope(mesh, name: str, side: str = "R", dz: float = 0.5) -> list:
+    """(y_max, z) of the print under the strap's own footprint at the pin x, from the pin down 60 mm."""
+    st = stations(side)[name]
+    sx = 1.0 if side == "R" else -1.0
+    xp = sx * abs(st["x"])
+    g = st["geom"]
+    out = []
+    try:                                       # BL-053: the grown cheeks keep the eye necked down to their bottom
+        from huntkit.gendesign import h1_rev5 as R5
+        bq = R5.US1_BUTTRESS if name == "us1" else R5.US2_BUTTRESS
+        neck_z = max(g.half_z, bq["half_z"] if (bq and R5.FIXES) else 0.0)
+    except ImportError:                        # pragma: no cover
+        neck_z = g.half_z
+    for z in np.arange(st["z"] - 4.0, st["z"] - 60.0, -dz):
+        half = NECK_HALF if z >= st["z"] - neck_z else STRAP_W / 2.0
+        sec = mesh.section(plane_origin=[0.0, 0.0, float(z)], plane_normal=[0.0, 0.0, 1.0])
+        if sec is None:
+            continue
+        ymax = None
+        for d in sec.discrete:
+            P = np.asarray(d)
+            m = (P[:, 0] >= xp - half) & (P[:, 0] <= xp + half)
+            if m.any():
+                # densify the loop so short edges across the footprint are seen
+                Q = np.vstack([np.linspace(P[i], P[i + 1], 12) for i in range(len(P) - 1)])
+                mq = (Q[:, 0] >= xp - half) & (Q[:, 0] <= xp + half)
+                yy = float(Q[mq, 1].max())
+                ymax = yy if ymax is None else max(ymax, yy)
+        if ymax is not None:
+            out.append((ymax, float(z)))
+    return out
+
+
+def strap_wrap(mesh=None, res: dict | None = None, tens: dict | None = None) -> dict:
+    """Per recorded 'now' row (R side; L mirrors): the string from the pin over the own envelope to the recorded path
+    (upper hull in +y, z descending), its wrap angle, the bearing vector on the print and where it bears."""
+    import trimesh
+    m = mesh if mesh is not None else trimesh.load(PRINT)
+    res = res or json.loads(OUT_JSON.read_text())
+    T = tens or tensions()
+    env = {n: own_envelope(m, n) for n in ("us1", "us2")}
+    rows = []
+    for r in res["layouts"]["now"]["rows"]:
+        if r["side"] != "R":
+            continue
+        n = r["strap"]
+        st = stations("R")[n]
+        A = (st["y_pin"], st["z"])
+        P = np.asarray(r["path"], float)
+        E = env[n]
+        zlow = min(z for _, z in E) if E else st["z"]
+        # rejoin point: the recorded path 5 mm below the lowest print under the strap (the cloth holds it there)
+        zq = zlow - 5.0
+        k = int(np.argmin(np.abs(P[:, 2] - zq)))
+        Q = (float(P[k, 1]), float(P[k, 2]))
+        rp = 4.0                                   # pin 2.5 + one 1.5 mm webbing ply: the leg leaves the eye tangent
+        circ = [(A[0] + rp * math.cos(t), A[1] + rp * math.sin(t)) for t in np.linspace(-math.pi, 0.0, 13)]
+        pts = circ + [(y, z) for y, z in E] + [Q]
+        nC = len(circ)
+        order = np.argsort([-p_[1] for p_ in pts], kind="stable")
+        hull = []
+        for i in order:
+            p_ = pts[i]
+            while len(hull) >= 2:
+                (y1, z1), (y2, z2) = pts[hull[-2]], pts[hull[-1]]
+                cr = (y2 - y1) * (p_[1] - z1) - (z2 - z1) * (p_[0] - y1)
+                if cr >= 0:                        # b on or below (-y side of) the chord a-p: not on the string
+                    hull.pop()
+                else:
+                    break
+            hull.append(int(i))
+        H = [pts[i] for i in hull]
+        # wrap on the print: hull vertices that are envelope points (not the pin, not the free path)
+        nE = len(E)
+        F = np.zeros(2)
+        hull = [i - nC + 1 if i >= nC else 0 for i in hull]     # 0 = pin circle, 1..nE = print, nE + 1 = path
+        turn = 0.0
+        on = []
+        for a, b, c, i in zip(H[:-2], H[1:-1], H[2:], hull[1:-1]):
+            if not (1 <= i <= nE):
+                continue
+            u1 = np.subtract(b, a) / np.linalg.norm(np.subtract(b, a))
+            u2 = np.subtract(c, b) / np.linalg.norm(np.subtract(c, b))
+            F += T[n] * (u2 - u1)                     # force of the strap on the print at b (y, z)
+            turn += math.degrees(math.acos(np.clip(u1 @ u2, -1.0, 1.0)))
+            on.append([round(b[0], 2), round(b[1], 2)])
+        # free-strap turn from the pin to the path without the print (what the BL-050 trace assumed): 0 by definition
+        Fm = float(np.linalg.norm(F))
+        rows.append({"torso": r["torso"], "strap": n, "tension_n": T[n], "wrap_deg": round(turn, 1),
+                     "bearing_yz_n": [round(float(v), 1) for v in F], "bearing_n": round(Fm, 1),
+                     "contact_yz": on, "lip_r_mm": LIP_R[n],
+                     "lip_pressure_mpa": round(T[n] / (STRAP_W * LIP_R[n]), 2) if LIP_R[n] > 0 else None,
+                     "rejoin_yz": [round(Q[0], 2), round(Q[1], 2)],
+                     "hull": [[round(y, 2), round(z, 2)] for y, z in H]})
+    worst = {n: max((q for q in rows if q["strap"] == n), key=lambda q: q["bearing_n"]) for n in ("us1", "us2")}
+    return {"rows": rows, "worst": {n: {k: worst[n][k] for k in ("torso", "wrap_deg", "bearing_n", "bearing_yz_n",
+                                                                   "contact_yz", "lip_r_mm", "lip_pressure_mpa")}
+                                     for n in worst},
+            "neck_half_mm": NECK_HALF, "tension_basis": "us_route.tensions() bag-on cam-tight, factored 3.0"}
+
+
 def cradle_record() -> dict:
     rec = cradle_span()
     rec["sensitivity"] = {f"belly_{b:.0f}": {n: cradle_span(b)["at_float_limit"][n]["tension_n"] for n in ("us1", "us2")}

@@ -1,0 +1,151 @@
+{
+ "ticket": "BL-053 (fifth review B-1)",
+ "source": "huntkit/gendesign/h1_rev5.py print_settings / support_map",
+ "orientation": {
+  "all_files": "as exported: the STL's z is the build direction (frame y up: wearer face down, bag face up). Do not rotate or flip on the plate: the FEA assumes the layers normal to frame y",
+  "why_not_flipped": "bag face down needs as much support (lower 13 859 vs 11 164 mm2, upper 19 915 vs 18 044 mm2 supported area) and puts the support scars on the stays' bag faces and the fairlead tips (eye bearing, HE fit) instead of the wearer faces",
+  "test_pieces": "print every test piece exactly like the frame (same orientation, same supports) so it carries the frame's surfaces and scars"
+ },
+ "supports": {
+  "type": "tree supports from the build plate only ('on build plate only'), auto, threshold 45 deg",
+  "material": "PAHT-CF itself (single nozzle H2S), no breakaway material",
+  "top_z_distance_mm": [
+   0.2,
+   0.25
+  ],
+  "interface_layers": 3,
+  "interface_spacing_mm": 0.2,
+  "xy_distance_mm": 0.6,
+  "brim_mm": 8.0,
+  "blockers": [
+   "every pin hole and fairlead throat (12 stations)",
+   "both z 234 joint bores, counterbores and nut traps",
+   "the two US2 clevis bolt holes, counterbores and hex nut traps (body side)",
+   "the 18 mm stay sleeve bores",
+   "the pawl bore and the spine channel"
+  ],
+  "note": "a slicer that auto-supports everything puts supports inside the bores: paint blockers first"
+ },
+ "files": {
+  "h1_lower_flat.stl": {
+   "plate_contact_mm2": 739.0,
+   "supported_down_area_mm2": 11136.0,
+   "supported_by_region_mm2": {
+    "stay": 2224.0,
+    "lug": 6946.0,
+    "clevis": 0.0,
+    "other": 1966.0
+   },
+   "part_g": 477.6,
+   "support_g_est": 49.0,
+   "support_g_high": 94.3,
+   "filament_g_est": 527.0,
+   "filament_g_high": 572.0,
+   "print_h_est": 18.6,
+   "max_support_column_mm": 57.0
+  },
+  "h1_upper_flat.stl": {
+   "plate_contact_mm2": 223.0,
+   "supported_down_area_mm2": 18044.0,
+   "supported_by_region_mm2": {
+    "stay": 8755.0,
+    "lug": 3030.0,
+    "clevis": 0.0,
+    "other": 6259.0
+   },
+   "part_g": 544.2,
+   "support_g_est": 55.3,
+   "support_g_high": 102.7,
+   "filament_g_est": 600.0,
+   "filament_g_high": 647.0,
+   "print_h_est": 21.2,
+   "max_support_column_mm": 44.0
+  },
+  "us2_clevis_R.stl / us2_clevis_L.stl": {
+   "plate_contact_mm2": 580.0,
+   "supported_down_area_mm2": 74.0,
+   "supported_by_region_mm2": {
+    "stay": 0.0,
+    "lug": 0.0,
+    "clevis": 0.0,
+    "other": 74.0
+   },
+   "part_g": 13.8,
+   "support_g_est": 0.1,
+   "support_g_high": 0.2,
+   "filament_g_est": 14.0,
+   "filament_g_high": 14.0,
+   "print_h_est": 0.5,
+   "max_support_column_mm": 8.0,
+   "supports": "none (prints flat: 97 % of the footprint on the plate)"
+  },
+  "test_pieces/us_route_stay_R.stl": {
+   "plate_contact_mm2": 9.0,
+   "supported_down_area_mm2": 3684.0,
+   "supported_by_region_mm2": {
+    "stay": 168.0,
+    "lug": 2669.0,
+    "clevis": 561.0,
+    "other": 286.0
+   },
+   "part_g": 164.8,
+   "support_g_est": 13.0,
+   "support_g_high": 24.6,
+   "filament_g_est": 178.0,
+   "filament_g_high": 189.0,
+   "print_h_est": 6.3,
+   "max_support_column_mm": 38.0
+  },
+  "test_pieces/hefit_hinge_fairlead_R.stl": {
+   "plate_contact_mm2": 15.0,
+   "supported_down_area_mm2": 864.0,
+   "supported_by_region_mm2": {
+    "stay": 218.0,
+    "lug": 646.0,
+    "clevis": 0.0,
+    "other": 0.0
+   },
+   "part_g": 43.1,
+   "support_g_est": 1.6,
+   "support_g_high": 2.8,
+   "filament_g_est": 45.0,
+   "filament_g_high": 46.0,
+   "print_h_est": 1.6,
+   "max_support_column_mm": 22.0
+  },
+  "test_pieces/im3ec_cheek_R.stl": {
+   "plate_contact_mm2": 729.0,
+   "supported_down_area_mm2": 886.0,
+   "supported_by_region_mm2": {
+    "stay": 495.0,
+    "lug": 375.0,
+    "clevis": 0.0,
+    "other": 16.0
+   },
+   "part_g": 68.8,
+   "support_g_est": 1.8,
+   "support_g_high": 3.2,
+   "filament_g_est": 71.0,
+   "filament_g_high": 72.0,
+   "print_h_est": 2.5,
+   "max_support_column_mm": 18.0
+  }
+ },
+ "scars": {
+  "where": "support contact lands on wearer-facing (-y) surfaces only: the stays' wearer faces (2224 + 8755 mm2) and the undersides of the lugs, fairlead roots and lane blocks; the lugs' governing spots (US1 outer cheek / floor corner, US2 arm root bag face, hinge inboard cheek corner) face up or sideways and carry no scar",
+  "fatigue_critical": true,
+  "finish": "sand the support witness on the stays' wearer faces and the lug undersides flat with 240 then 400 grit, removing at most 0.2 mm (SAND-ALLOW); deburr every bore edge",
+  "allowance": {
+   "max_removed_mm": 0.2,
+   "stay_depth_mm": 18.0,
+   "section_modulus_loss": 0.022,
+   "note": "0.2 mm off one face of an 18 mm deep stay (ASSUMPTION: rectangular-equivalent) costs about 2.2 % of its bending section modulus; the body's fatigue minimum on the sim bases (1.258, h1_crown) becomes about 1.23"
+  }
+ },
+ "time_rule": "(part + support volume) / 8 mm3/s x 1.08 (h1_buckling print_h rule)",
+ "assumptions": [
+  "TREE-FILL",
+  "SAND-ALLOW",
+  "SCAR-KD"
+ ]
+}

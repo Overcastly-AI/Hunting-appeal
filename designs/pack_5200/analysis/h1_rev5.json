@@ -1,0 +1,3811 @@
+{
+ "ticket": "BL-053",
+ "date": "2026-11-13",
+ "cradle_3d": {
+  "bellies_mm": [
+   40.0,
+   50.0,
+   60.0,
+   70.0
+  ],
+  "dy_mm": [
+   0.0,
+   50.0,
+   95.0
+  ],
+  "quarter_w_max_mm": 280.0,
+  "rows": {
+   "us1|b40|dy0|in": {
+    "strap": "us1",
+    "belly_mm": 40.0,
+    "dy_mm": 0.0,
+    "legs": "in",
+    "unit": [
+     -0.8682,
+     0.0,
+     -0.4961
+    ],
+    "tension_n": 754.4,
+    "vec_n": [
+     -655.0,
+     0.0,
+     -374.3
+    ],
+    "lateral_n": 655.0,
+    "leg_below_horizontal_deg": 29.7
+   },
+   "us1|b40|dy0|out": {
+    "strap": "us1",
+    "belly_mm": 40.0,
+    "dy_mm": 0.0,
+    "legs": "out",
+    "unit": [
+     0.8682,
+     0.0,
+     -0.4961
+    ],
+    "tension_n": 754.4,
+    "vec_n": [
+     655.0,
+     0.0,
+     -374.3
+    ],
+    "lateral_n": 655.0,
+    "leg_below_horizontal_deg": 29.7
+   },
+   "us1|b40|dy50|in": {
+    "strap": "us1",
+    "belly_mm": 40.0,
+    "dy_mm": 50.0,
+    "legs": "in",
+    "unit": [
+     -0.7379,
+     0.527,
+     -0.4216
+    ],
+    "tension_n": 887.7,
+    "vec_n": [
+     -655.0,
+     467.8,
+     -374.3
+    ],
+    "lateral_n": 655.0,
+    "leg_below_horizontal_deg": 24.9
+   },
+   "us1|b40|dy50|out": {
+    "strap": "us1",
+    "belly_mm": 40.0,
+    "dy_mm": 50.0,
+    "legs": "out",
+    "unit": [
+     0.7379,
+     0.527,
+     -0.4216
+    ],
+    "tension_n": 887.7,
+    "vec_n": [
+     655.0,
+     467.8,
+     -374.3
+    ],
+    "lateral_n": 655.0,
+    "leg_below_horizontal_deg": 24.9
+   },
+   "us1|b40|dy95|in": {
+    "strap": "us1",
+    "belly_mm": 40.0,
+    "dy_mm": 95.0,
+    "legs": "in",
+    "unit": [
+     -0.5618,
+     0.7624,
+     -0.321
+    ],
+    "tension_n": 1165.9,
+    "vec_n": [
+     -655.0,
+     888.9,
+     -374.3
+    ],
+    "lateral_n": 655.0,
+    "leg_below_horizontal_deg": 18.7
+   },
+   "us1|b40|dy95|out": {
+    "strap": "us1",
+    "belly_mm": 40.0,
+    "dy_mm": 95.0,
+    "legs": "out",
+    "unit": [
+     0.5618,
+     0.7624,
+     -0.321
+    ],
+    "tension_n": 1165.9,
+    "vec_n": [
+     655.0,
+     888.9,
+     -374.3
+    ],
+    "lateral_n": 655.0,
+    "leg_below_horizontal_deg": 18.7
+   },
+   "us1|b50|dy0|in": {
+    "strap": "us1",
+    "belly_mm": 50.0,
+    "dy_mm": 0.0,
+    "legs": "in",
+    "unit": [
+     -0.8137,
+     0.0,
+     -0.5812
+    ],
+    "tension_n": 643.9,
+    "vec_n": [
+     -524.0,
+     0.0,
+     -374.3
+    ],
+    "lateral_n": 524.0,
+    "leg_below_horizontal_deg": 35.5
+   },
+   "us1|b50|dy0|out": {
+    "strap": "us1",
+    "belly_mm": 50.0,
+    "dy_mm": 0.0,
+    "legs": "out",
+    "unit": [
+     0.8137,
+     0.0,
+     -0.5812
+    ],
+    "tension_n": 643.9,
+    "vec_n": [
+     524.0,
+     0.0,
+     -374.3
+    ],
+    "lateral_n": 524.0,
+    "leg_below_horizontal_deg": 35.5
+   },
+   "us1|b50|dy50|in": {
+    "strap": "us1",
+    "belly_mm": 50.0,
+    "dy_mm": 50.0,
+    "legs": "in",
+    "unit": [
+     -0.7035,
+     0.5025,
+     -0.5025
+    ],
+    "tension_n": 744.8,
+    "vec_n": [
+     -524.0,
+     374.3,
+     -374.3
+    ],
+    "lateral_n": 524.0,
+    "leg_below_horizontal_deg": 30.2
+   },
+   "us1|b50|dy50|out": {
+    "strap": "us1",
+    "belly_mm": 50.0,
+    "dy_mm": 50.0,
+    "legs": "out",
+    "unit": [
+     0.7035,
+     0.5025,
+     -0.5025
+    ],
+    "tension_n": 744.8,
+    "vec_n": [
+     524.0,
+     374.3,
+     -374.3
+    ],
+    "lateral_n": 524.0,
+    "leg_below_horizontal_deg": 30.2
+   },
+   "us1|b50|dy95|in": {
+    "strap": "us1",
+    "belly_mm": 50.0,
+    "dy_mm": 95.0,
+    "legs": "in",
+    "unit": [
+     -0.5462,
+     0.7413,
+     -0.3901
+    ],
+    "tension_n": 959.3,
+    "vec_n": [
+     -524.0,
+     711.1,
+     -374.3
+    ],
+    "lateral_n": 524.0,
+    "leg_below_horizontal_deg": 23.0
+   },
+   "us1|b50|dy95|out": {
+    "strap": "us1",
+    "belly_mm": 50.0,
+    "dy_mm": 95.0,
+    "legs": "out",
+    "unit": [
+     0.5462,
+     0.7413,
+     -0.3901
+    ],
+    "tension_n": 959.3,
+    "vec_n": [
+     524.0,
+     711.1,
+     -374.3
+    ],
+    "lateral_n": 524.0,
+    "leg_below_horizontal_deg": 23.0
+   },
+   "us1|b60|dy0|in": {
+    "strap": "us1",
+    "belly_mm": 60.0,
+    "dy_mm": 0.0,
+    "legs": "in",
+    "unit": [
+     -0.7593,
+     0.0,
+     -0.6508
+    ],
+    "tension_n": 575.1,
+    "vec_n": [
+     -436.7,
+     0.0,
+     -374.3
+    ],
+    "lateral_n": 436.7,
+    "leg_below_horizontal_deg": 40.6
+   },
+   "us1|b60|dy0|out": {
+    "strap": "us1",
+    "belly_mm": 60.0,
+    "dy_mm": 0.0,
+    "legs": "out",
+    "unit": [
+     0.7593,
+     0.0,
+     -0.6508
+    ],
+    "tension_n": 575.1,
+    "vec_n": [
+     436.7,
+     0.0,
+     -374.3
+    ],
+    "lateral_n": 436.7,
+    "leg_below_horizontal_deg": 40.6
+   },
+   "us1|b60|dy50|in": {
+    "strap": "us1",
+    "belly_mm": 60.0,
+    "dy_mm": 50.0,
+    "legs": "in",
+    "unit": [
+     -0.6674,
+     0.4767,
+     -0.5721
+    ],
+    "tension_n": 654.2,
+    "vec_n": [
+     -436.7,
+     311.9,
+     -374.3
+    ],
+    "lateral_n": 436.7,
+    "leg_below_horizontal_deg": 34.9
+   },
+   "us1|b60|dy50|out": {
+    "strap": "us1",
+    "belly_mm": 60.0,
+    "dy_mm": 50.0,
+    "legs": "out",
+    "unit": [
+     0.6674,
+     0.4767,
+     -0.5721
+    ],
+    "tension_n": 654.2,
+    "vec_n": [
+     436.7,
+     311.9,
+     -374.3
+    ],
+    "lateral_n": 436.7,
+    "leg_below_horizontal_deg": 34.9
+   },
+   "us1|b60|dy95|in": {
+    "strap": "us1",
+    "belly_mm": 60.0,
+    "dy_mm": 95.0,
+    "legs": "in",
+    "unit": [
+     -0.5288,
+     0.7176,
+     -0.4532
+    ],
+    "tension_n": 825.8,
+    "vec_n": [
+     -436.7,
+     592.6,
+     -374.3
+    ],
+    "lateral_n": 436.7,
+    "leg_below_horizontal_deg": 27.0
+   },
+   "us1|b60|dy95|out": {
+    "strap": "us1",
+    "belly_mm": 60.0,
+    "dy_mm": 95.0,
+    "legs": "out",
+    "unit": [
+     0.5288,
+     0.7176,
+     -0.4532
+    ],
+    "tension_n": 825.8,
+    "vec_n": [
+     436.7,
+     592.6,
+     -374.3
+    ],
+    "lateral_n": 436.7,
+    "leg_below_horizontal_deg": 27.0
+   },
+   "us1|b70|dy0|in": {
+    "strap": "us1",
+    "belly_mm": 70.0,
+    "dy_mm": 0.0,
+    "legs": "in",
+    "unit": [
+     -0.7071,
+     0.0,
+     -0.7071
+    ],
+    "tension_n": 529.3,
+    "vec_n": [
+     -374.3,
+     0.0,
+     -374.3
+    ],
+    "lateral_n": 374.3,
+    "leg_below_horizontal_deg": 45.0
+   },
+   "us1|b70|dy0|out": {
+    "strap": "us1",
+    "belly_mm": 70.0,
+    "dy_mm": 0.0,
+    "legs": "out",
+    "unit": [
+     0.7071,
+     0.0,
+     -0.7071
+    ],
+    "tension_n": 529.3,
+    "vec_n": [
+     374.3,
+     0.0,
+     -374.3
+    ],
+    "lateral_n": 374.3,
+    "leg_below_horizontal_deg": 45.0
+   },
+   "us1|b70|dy50|in": {
+    "strap": "us1",
+    "belly_mm": 70.0,
+    "dy_mm": 50.0,
+    "legs": "in",
+    "unit": [
+     -0.6312,
+     0.4508,
+     -0.6312
+    ],
+    "tension_n": 593.0,
+    "vec_n": [
+     -374.3,
+     267.3,
+     -374.3
+    ],
+    "lateral_n": 374.3,
+    "leg_below_horizontal_deg": 39.1
+   },
+   "us1|b70|dy50|out": {
+    "strap": "us1",
+    "belly_mm": 70.0,
+    "dy_mm": 50.0,
+    "legs": "out",
+    "unit": [
+     0.6312,
+     0.4508,
+     -0.6312
+    ],
+    "tension_n": 593.0,
+    "vec_n": [
+     374.3,
+     267.3,
+     -374.3
+    ],
+    "lateral_n": 374.3,
+    "leg_below_horizontal_deg": 39.1
+   },
+   "us1|b70|dy95|in": {
+    "strap": "us1",
+    "belly_mm": 70.0,
+    "dy_mm": 95.0,
+    "legs": "in",
+    "unit": [
+     -0.5102,
+     0.6924,
+     -0.5102
+    ],
+    "tension_n": 733.6,
+    "vec_n": [
+     -374.3,
+     507.9,
+     -374.3
+    ],
+    "lateral_n": 374.3,
+    "leg_below_horizontal_deg": 30.7
+   },
+   "us1|b70|dy95|out": {
+    "strap": "us1",
+    "belly_mm": 70.0,
+    "dy_mm": 95.0,
+    "legs": "out",
+    "unit": [
+     0.5102,
+     0.6924,
+     -0.5102
+    ],
+    "tension_n": 733.6,
+    "vec_n": [
+     374.3,
+     507.9,
+     -374.3
+    ],
+    "lateral_n": 374.3,
+    "leg_below_horizontal_deg": 30.7
+   },
+   "us2|b40|dy0|in": {
+    "strap": "us2",
+    "belly_mm": 40.0,
+    "dy_mm": 0.0,
+    "legs": "in",
+    "unit": [
+     -0.9719,
+     0.0,
+     -0.2356
+    ],
+    "tension_n": 1058.9,
+    "vec_n": [
+     -1029.1,
+     0.0,
+     -249.5
+    ],
+    "lateral_n": 1029.1,
+    "leg_below_horizontal_deg": 13.6
+   },
+   "us2|b40|dy0|out": {
+    "strap": "us2",
+    "belly_mm": 40.0,
+    "dy_mm": 0.0,
+    "legs": "out",
+    "unit": [
+     0.0,
+     0.0,
+     -1.0
+    ],
+    "tension_n": 249.5,
+    "vec_n": [
+     0.0,
+     0.0,
+     -249.5
+    ],
+    "lateral_n": 0.0,
+    "leg_below_horizontal_deg": 90.0
+   },
+   "us2|b40|dy50|in": {
+    "strap": "us2",
+    "belly_mm": 40.0,
+    "dy_mm": 50.0,
+    "legs": "in",
+    "unit": [
+     -0.9323,
+     0.2825,
+     -0.226
+    ],
+    "tension_n": 1103.9,
+    "vec_n": [
+     -1029.1,
+     311.9,
+     -249.5
+    ],
+    "lateral_n": 1029.1,
+    "leg_below_horizontal_deg": 13.1
+   },
+   "us2|b40|dy50|out": {
+    "strap": "us2",
+    "belly_mm": 40.0,
+    "dy_mm": 50.0,
+    "legs": "out",
+    "unit": [
+     0.0,
+     0.7809,
+     -0.6247
+    ],
+    "tension_n": 399.4,
+    "vec_n": [
+     0.0,
+     311.9,
+     -249.5
+    ],
+    "lateral_n": 0.0,
+    "leg_below_horizontal_deg": 38.7
+   },
+   "us2|b40|dy95|in": {
+    "strap": "us2",
+    "belly_mm": 40.0,
+    "dy_mm": 95.0,
+    "legs": "in",
+    "unit": [
+     -0.8481,
+     0.4883,
+     -0.2056
+    ],
+    "tension_n": 1213.4,
+    "vec_n": [
+     -1029.1,
+     592.5,
+     -249.5
+    ],
+    "lateral_n": 1029.1,
+    "leg_below_horizontal_deg": 11.9
+   },
+   "us2|b40|dy95|out": {
+    "strap": "us2",
+    "belly_mm": 40.0,
+    "dy_mm": 95.0,
+    "legs": "out",
+    "unit": [
+     0.0,
+     0.9216,
+     -0.3881
+    ],
+    "tension_n": 642.9,
+    "vec_n": [
+     0.0,
+     592.5,
+     -249.5
+    ],
+    "lateral_n": 0.0,
+    "leg_below_horizontal_deg": 22.8
+   },
+   "us2|b50|dy0|in": {
+    "strap": "us2",
+    "belly_mm": 50.0,
+    "dy_mm": 0.0,
+    "legs": "in",
+    "unit": [
+     -0.957,
+     0.0,
+     -0.29
+    ],
+    "tension_n": 860.3,
+    "vec_n": [
+     -823.3,
+     0.0,
+     -249.5
+    ],
+    "lateral_n": 823.3,
+    "leg_below_horizontal_deg": 16.9
+   },
+   "us2|b50|dy0|out": {
+    "strap": "us2",
+    "belly_mm": 50.0,
+    "dy_mm": 0.0,
+    "legs": "out",
+    "unit": [
+     0.0,
+     0.0,
+     -1.0
+    ],
+    "tension_n": 249.5,
+    "vec_n": [
+     0.0,
+     0.0,
+     -249.5
+    ],
+    "lateral_n": 0.0,
+    "leg_below_horizontal_deg": 90.0
+   },
+   "us2|b50|dy50|in": {
+    "strap": "us2",
+    "belly_mm": 50.0,
+    "dy_mm": 50.0,
+    "legs": "in",
+    "unit": [
+     -0.9192,
+     0.2785,
+     -0.2785
+    ],
+    "tension_n": 895.7,
+    "vec_n": [
+     -823.3,
+     249.5,
+     -249.5
+    ],
+    "lateral_n": 823.3,
+    "leg_below_horizontal_deg": 16.2
+   },
+   "us2|b50|dy50|out": {
+    "strap": "us2",
+    "belly_mm": 50.0,
+    "dy_mm": 50.0,
+    "legs": "out",
+    "unit": [
+     0.0,
+     0.7071,
+     -0.7071
+    ],
+    "tension_n": 352.8,
+    "vec_n": [
+     0.0,
+     249.5,
+     -249.5
+    ],
+    "lateral_n": 0.0,
+    "leg_below_horizontal_deg": 45.0
+   },
+   "us2|b50|dy95|in": {
+    "strap": "us2",
+    "belly_mm": 50.0,
+    "dy_mm": 95.0,
+    "legs": "in",
+    "unit": [
+     -0.8382,
+     0.4826,
+     -0.254
+    ],
+    "tension_n": 982.2,
+    "vec_n": [
+     -823.3,
+     474.0,
+     -249.5
+    ],
+    "lateral_n": 823.3,
+    "leg_below_horizontal_deg": 14.7
+   },
+   "us2|b50|dy95|out": {
+    "strap": "us2",
+    "belly_mm": 50.0,
+    "dy_mm": 95.0,
+    "legs": "out",
+    "unit": [
+     0.0,
+     0.8849,
+     -0.4657
+    ],
+    "tension_n": 535.7,
+    "vec_n": [
+     0.0,
+     474.0,
+     -249.5
+    ],
+    "lateral_n": 0.0,
+    "leg_below_horizontal_deg": 27.8
+   },
+   "us2|b60|dy0|in": {
+    "strap": "us2",
+    "belly_mm": 60.0,
+    "dy_mm": 0.0,
+    "legs": "in",
+    "unit": [
+     -0.9398,
+     0.0,
+     -0.3417
+    ],
+    "tension_n": 730.0,
+    "vec_n": [
+     -686.1,
+     0.0,
+     -249.5
+    ],
+    "lateral_n": 686.1,
+    "leg_below_horizontal_deg": 20.0
+   },
+   "us2|b60|dy0|out": {
+    "strap": "us2",
+    "belly_mm": 60.0,
+    "dy_mm": 0.0,
+    "legs": "out",
+    "unit": [
+     0.0,
+     0.0,
+     -1.0
+    ],
+    "tension_n": 249.5,
+    "vec_n": [
+     0.0,
+     0.0,
+     -249.5
+    ],
+    "lateral_n": 0.0,
+    "leg_below_horizontal_deg": 90.0
+   },
+   "us2|b60|dy50|in": {
+    "strap": "us2",
+    "belly_mm": 60.0,
+    "dy_mm": 50.0,
+    "legs": "in",
+    "unit": [
+     -0.9039,
+     0.2739,
+     -0.3287
+    ],
+    "tension_n": 759.1,
+    "vec_n": [
+     -686.1,
+     207.9,
+     -249.5
+    ],
+    "lateral_n": 686.1,
+    "leg_below_horizontal_deg": 19.2
+   },
+   "us2|b60|dy50|out": {
+    "strap": "us2",
+    "belly_mm": 60.0,
+    "dy_mm": 50.0,
+    "legs": "out",
+    "unit": [
+     0.0,
+     0.6402,
+     -0.7682
+    ],
+    "tension_n": 324.8,
+    "vec_n": [
+     0.0,
+     207.9,
+     -249.5
+    ],
+    "lateral_n": 0.0,
+    "leg_below_horizontal_deg": 50.2
+   },
+   "us2|b60|dy95|in": {
+    "strap": "us2",
+    "belly_mm": 60.0,
+    "dy_mm": 95.0,
+    "legs": "in",
+    "unit": [
+     -0.8266,
+     0.4759,
+     -0.3006
+    ],
+    "tension_n": 830.1,
+    "vec_n": [
+     -686.1,
+     395.0,
+     -249.5
+    ],
+    "lateral_n": 686.1,
+    "leg_below_horizontal_deg": 17.5
+   },
+   "us2|b60|dy95|out": {
+    "strap": "us2",
+    "belly_mm": 60.0,
+    "dy_mm": 95.0,
+    "legs": "out",
+    "unit": [
+     0.0,
+     0.8455,
+     -0.534
+    ],
+    "tension_n": 467.2,
+    "vec_n": [
+     0.0,
+     395.0,
+     -249.5
+    ],
+    "lateral_n": 0.0,
+    "leg_below_horizontal_deg": 32.3
+   },
+   "us2|b70|dy0|in": {
+    "strap": "us2",
+    "belly_mm": 70.0,
+    "dy_mm": 0.0,
+    "legs": "in",
+    "unit": [
+     -0.9206,
+     0.0,
+     -0.3905
+    ],
+    "tension_n": 638.8,
+    "vec_n": [
+     -588.1,
+     0.0,
+     -249.5
+    ],
+    "lateral_n": 588.1,
+    "leg_below_horizontal_deg": 23.0
+   },
+   "us2|b70|dy0|out": {
+    "strap": "us2",
+    "belly_mm": 70.0,
+    "dy_mm": 0.0,
+    "legs": "out",
+    "unit": [
+     0.0,
+     0.0,
+     -1.0
+    ],
+    "tension_n": 249.5,
+    "vec_n": [
+     0.0,
+     0.0,
+     -249.5
+    ],
+    "lateral_n": 0.0,
+    "leg_below_horizontal_deg": 90.0
+   },
+   "us2|b70|dy50|in": {
+    "strap": "us2",
+    "belly_mm": 70.0,
+    "dy_mm": 50.0,
+    "legs": "in",
+    "unit": [
+     -0.8867,
+     0.2687,
+     -0.3762
+    ],
+    "tension_n": 663.2,
+    "vec_n": [
+     -588.1,
+     178.2,
+     -249.5
+    ],
+    "lateral_n": 588.1,
+    "leg_below_horizontal_deg": 22.1
+   },
+   "us2|b70|dy50|out": {
+    "strap": "us2",
+    "belly_mm": 70.0,
+    "dy_mm": 50.0,
+    "legs": "out",
+    "unit": [
+     0.0,
+     0.5812,
+     -0.8137
+    ],
+    "tension_n": 306.6,
+    "vec_n": [
+     0.0,
+     178.2,
+     -249.5
+    ],
+    "lateral_n": 0.0,
+    "leg_below_horizontal_deg": 54.5
+   },
+   "us2|b70|dy95|in": {
+    "strap": "us2",
+    "belly_mm": 70.0,
+    "dy_mm": 95.0,
+    "legs": "in",
+    "unit": [
+     -0.8134,
+     0.4683,
+     -0.3451
+    ],
+    "tension_n": 723.0,
+    "vec_n": [
+     -588.1,
+     338.6,
+     -249.5
+    ],
+    "lateral_n": 588.1,
+    "leg_below_horizontal_deg": 20.2
+   },
+   "us2|b70|dy95|out": {
+    "strap": "us2",
+    "belly_mm": 70.0,
+    "dy_mm": 95.0,
+    "legs": "out",
+    "unit": [
+     0.0,
+     0.8051,
+     -0.5932
+    ],
+    "tension_n": 420.6,
+    "vec_n": [
+     0.0,
+     338.6,
+     -249.5
+    ],
+    "lateral_n": 0.0,
+    "leg_below_horizontal_deg": 36.4
+   }
+  },
+  "vertical_n": {
+   "us1": 748.5,
+   "us2": 499.0
+  }
+ },
+ "lugs": {
+  "us1": {
+   "print": {
+    "families": {
+     "bagon|-": {
+      "load": "bagon_fore30|fleet_out",
+      "force_n": 444.4,
+      "strength": 4.62,
+      "fatigue": 2.6,
+      "region": "root",
+      "peak_xyz": [
+       102.5,
+       2.5,
+       87.5
+      ],
+      "strength_min": 4.62
+     },
+     "bl051_yz|-": {
+      "load": "cradle_lane_b50",
+      "force_n": 643.8,
+      "strength": 5.68,
+      "fatigue": 2.55,
+      "region": "root",
+      "peak_xyz": [
+       102.5,
+       2.5,
+       87.5
+      ],
+      "strength_min": 5.68
+     },
+     "cradle3d_dy95|b40": {
+      "load": "c3d|b40|dy95|out",
+      "force_n": 1165.9,
+      "strength": 2.59,
+      "fatigue": 1.16,
+      "region": "fairlead",
+      "peak_xyz": [
+       80.5,
+       11.5,
+       103.5
+      ],
+      "strength_min": 2.59
+     },
+     "cradle3d_dy95|b50": {
+      "load": "c3d|b50|dy95|out",
+      "force_n": 959.3,
+      "strength": 3.11,
+      "fatigue": 1.4,
+      "region": "fairlead",
+      "peak_xyz": [
+       80.5,
+       11.5,
+       103.5
+      ],
+      "strength_min": 3.11
+     },
+     "cradle3d_dy95|b60": {
+      "load": "c3d|b60|dy95|out",
+      "force_n": 825.8,
+      "strength": 3.63,
+      "fatigue": 1.63,
+      "region": "fairlead",
+      "peak_xyz": [
+       80.5,
+       11.5,
+       103.5
+      ],
+      "strength_min": 3.63
+     },
+     "cradle3d_dy95|b70": {
+      "load": "c3d|b70|dy95|out",
+      "force_n": 733.6,
+      "strength": 4.17,
+      "fatigue": 1.88,
+      "region": "fairlead",
+      "peak_xyz": [
+       80.5,
+       11.5,
+       103.5
+      ],
+      "strength_min": 4.17
+     },
+     "cradle3d|b40": {
+      "load": "c3d|b40|dy50|out",
+      "force_n": 887.7,
+      "strength": 2.71,
+      "fatigue": 1.22,
+      "region": "fairlead",
+      "peak_xyz": [
+       80.5,
+       11.5,
+       103.5
+      ],
+      "strength_min": 2.71
+     },
+     "cradle3d|b50": {
+      "load": "c3d|b50|dy50|out",
+      "force_n": 744.8,
+      "strength": 3.36,
+      "fatigue": 1.51,
+      "region": "fairlead",
+      "peak_xyz": [
+       80.5,
+       11.5,
+       103.5
+      ],
+      "strength_min": 3.36
+     },
+     "cradle3d|b60": {
+      "load": "c3d|b60|dy0|out",
+      "force_n": 575.2,
+      "strength": 4.01,
+      "fatigue": 1.8,
+      "region": "fairlead",
+      "peak_xyz": [
+       80.5,
+       11.5,
+       103.5
+      ],
+      "strength_min": 4.0
+     },
+     "cradle3d|b70": {
+      "load": "c3d|b70|dy50|out",
+      "force_n": 593.0,
+      "strength": 4.51,
+      "fatigue": 2.03,
+      "region": "fairlead",
+      "peak_xyz": [
+       80.5,
+       11.5,
+       103.5
+      ],
+      "strength_min": 4.51
+     }
+    },
+    "design_min": {
+     "strength": 2.71,
+     "fatigue": 1.22
+    },
+    "box": {
+     "lo": [
+      -6.0,
+      -56.0,
+      46.0
+     ],
+     "hi": [
+      140.0,
+      32.0,
+      146.0
+     ]
+    }
+   },
+   "bl051_print": {
+    "families": {
+     "bagon|-": {
+      "load": "bagon_drape|fleet_in",
+      "force_n": 444.4,
+      "strength": 3.13,
+      "fatigue": 1.76,
+      "region": "web",
+      "peak_xyz": [
+       69.5,
+       -14.5,
+       93.5
+      ],
+      "strength_min": 3.13
+     },
+     "bl051_yz|-": {
+      "load": "cradle_lane_b50",
+      "force_n": 643.8,
+      "strength": 2.59,
+      "fatigue": 1.17,
+      "region": "root",
+      "peak_xyz": [
+       106.5,
+       2.5,
+       106.5
+      ],
+      "strength_min": 2.59
+     },
+     "cradle3d_dy95|b40": {
+      "load": "c3d|b40|dy95|out",
+      "force_n": 1165.9,
+      "strength": 1.21,
+      "fatigue": 0.54,
+      "region": "web",
+      "peak_xyz": [
+       69.5,
+       -14.5,
+       93.5
+      ],
+      "strength_min": 1.21
+     },
+     "cradle3d_dy95|b50": {
+      "load": "c3d|b50|dy95|out",
+      "force_n": 959.3,
+      "strength": 1.51,
+      "fatigue": 0.68,
+      "region": "web",
+      "peak_xyz": [
+       69.5,
+       -14.5,
+       93.5
+      ],
+      "strength_min": 1.51
+     },
+     "cradle3d_dy95|b60": {
+      "load": "c3d|b60|dy95|out",
+      "force_n": 825.8,
+      "strength": 1.81,
+      "fatigue": 0.81,
+      "region": "web",
+      "peak_xyz": [
+       69.5,
+       -14.5,
+       93.5
+      ],
+      "strength_min": 1.81
+     },
+     "cradle3d_dy95|b70": {
+      "load": "c3d|b70|dy95|out",
+      "force_n": 733.6,
+      "strength": 2.1,
+      "fatigue": 0.94,
+      "region": "web",
+      "peak_xyz": [
+       69.5,
+       -14.5,
+       93.5
+      ],
+      "strength_min": 2.1
+     },
+     "cradle3d|b40": {
+      "load": "c3d|b40|dy50|out",
+      "force_n": 887.7,
+      "strength": 1.85,
+      "fatigue": 0.83,
+      "region": "web",
+      "peak_xyz": [
+       69.5,
+       -14.5,
+       93.5
+      ],
+      "strength_min": 1.85
+     },
+     "cradle3d|b50": {
+      "load": "c3d|b50|dy50|out",
+      "force_n": 744.8,
+      "strength": 2.27,
+      "fatigue": 1.02,
+      "region": "web",
+      "peak_xyz": [
+       69.5,
+       -14.5,
+       94.5
+      ],
+      "strength_min": 2.27
+     },
+     "cradle3d|b60": {
+      "load": "c3d|b60|dy50|out",
+      "force_n": 654.3,
+      "strength": 2.69,
+      "fatigue": 1.21,
+      "region": "web",
+      "peak_xyz": [
+       69.5,
+       -14.5,
+       94.5
+      ],
+      "strength_min": 2.69
+     },
+     "cradle3d|b70": {
+      "load": "c3d|b70|dy50|out",
+      "force_n": 593.0,
+      "strength": 3.07,
+      "fatigue": 1.38,
+      "region": "web",
+      "peak_xyz": [
+       69.5,
+       -14.5,
+       94.5
+      ],
+      "strength_min": 3.07
+     }
+    },
+    "design_min": {
+     "strength": 1.85,
+     "fatigue": 0.83
+    },
+    "box": {
+     "lo": [
+      -6.0,
+      -56.0,
+      46.0
+     ],
+     "hi": [
+      140.0,
+      32.0,
+      146.0
+     ]
+    }
+   }
+  },
+  "us2": {
+   "print": {
+    "families": {
+     "bagon|-": {
+      "load": "bagon_drape|fleet_out",
+      "force_n": 296.3,
+      "strength": 8.89,
+      "fatigue": 5.0,
+      "region": "root",
+      "peak_xyz": [
+       128.5,
+       6.5,
+       155.5
+      ],
+      "strength_min": 8.89
+     },
+     "bl051_yz|-": {
+      "load": "cradle_lane_b50",
+      "force_n": 860.2,
+      "strength": 3.3,
+      "fatigue": 1.48,
+      "region": "root",
+      "peak_xyz": [
+       124.5,
+       -13.5,
+       159.5
+      ],
+      "strength_min": 3.3
+     },
+     "cradle3d_dy95|b40": {
+      "load": "c3d|b40|dy95|in",
+      "force_n": 1213.4,
+      "strength": 2.55,
+      "fatigue": 1.15,
+      "region": "root",
+      "peak_xyz": [
+       129.5,
+       6.5,
+       153.5
+      ],
+      "strength_min": 2.55
+     },
+     "cradle3d_dy95|b50": {
+      "load": "c3d|b50|dy95|in",
+      "force_n": 982.2,
+      "strength": 3.16,
+      "fatigue": 1.42,
+      "region": "root",
+      "peak_xyz": [
+       129.5,
+       6.5,
+       153.5
+      ],
+      "strength_min": 3.16
+     },
+     "cradle3d_dy95|b60": {
+      "load": "c3d|b60|dy95|in",
+      "force_n": 830.1,
+      "strength": 3.75,
+      "fatigue": 1.69,
+      "region": "root",
+      "peak_xyz": [
+       126.5,
+       4.5,
+       122.5
+      ],
+      "strength_min": 3.75
+     },
+     "cradle3d_dy95|b70": {
+      "load": "c3d|b70|dy95|in",
+      "force_n": 723.0,
+      "strength": 4.34,
+      "fatigue": 1.95,
+      "region": "root",
+      "peak_xyz": [
+       126.5,
+       4.5,
+       122.5
+      ],
+      "strength_min": 4.34
+     },
+     "cradle3d|b40": {
+      "load": "c3d|b40|dy50|in",
+      "force_n": 1103.9,
+      "strength": 3.33,
+      "fatigue": 1.5,
+      "region": "root",
+      "peak_xyz": [
+       126.5,
+       4.5,
+       122.5
+      ],
+      "strength_min": 3.33
+     },
+     "cradle3d|b50": {
+      "load": "c3d|b50|dy50|in",
+      "force_n": 895.7,
+      "strength": 4.17,
+      "fatigue": 1.88,
+      "region": "root",
+      "peak_xyz": [
+       126.5,
+       4.5,
+       122.5
+      ],
+      "strength_min": 4.17
+     },
+     "cradle3d|b60": {
+      "load": "c3d|b60|dy50|in",
+      "force_n": 759.1,
+      "strength": 4.9,
+      "fatigue": 2.2,
+      "region": "root",
+      "peak_xyz": [
+       126.5,
+       4.5,
+       122.5
+      ],
+      "strength_min": 4.9
+     },
+     "cradle3d|b70": {
+      "load": "c3d|b70|dy50|in",
+      "force_n": 663.2,
+      "strength": 5.58,
+      "fatigue": 2.51,
+      "region": "root",
+      "peak_xyz": [
+       126.5,
+       4.5,
+       122.5
+      ],
+      "strength_min": 5.58
+     }
+    },
+    "design_min": {
+     "strength": 3.33,
+     "fatigue": 1.5
+    },
+    "box": {
+     "lo": [
+      80.0,
+      -50.0,
+      90.0
+     ],
+     "hi": [
+      192.0,
+      40.0,
+      196.0
+     ]
+    }
+   },
+   "bl051_print": {
+    "families": {
+     "bagon|-": {
+      "load": "bagon_drape|fleet_out",
+      "force_n": 296.3,
+      "strength": 7.9,
+      "fatigue": 4.44,
+      "region": "root",
+      "peak_xyz": [
+       128.5,
+       6.5,
+       155.5
+      ],
+      "strength_min": 7.9
+     },
+     "bl051_yz|-": {
+      "load": "cradle_lane_b50",
+      "force_n": 860.2,
+      "strength": 2.69,
+      "fatigue": 1.21,
+      "region": "root",
+      "peak_xyz": [
+       128.5,
+       -1.5,
+       156.5
+      ],
+      "strength_min": 2.69
+     },
+     "cradle3d_dy95|b40": {
+      "load": "c3d|b40|dy95|in",
+      "force_n": 1213.4,
+      "strength": 1.56,
+      "fatigue": 0.7,
+      "region": "fairlead",
+      "peak_xyz": [
+       154.5,
+       9.5,
+       150.5
+      ],
+      "strength_min": 1.56
+     },
+     "cradle3d_dy95|b50": {
+      "load": "c3d|b50|dy95|in",
+      "force_n": 982.2,
+      "strength": 1.94,
+      "fatigue": 0.87,
+      "region": "fairlead",
+      "peak_xyz": [
+       154.5,
+       9.5,
+       150.5
+      ],
+      "strength_min": 1.94
+     },
+     "cradle3d_dy95|b60": {
+      "load": "c3d|b60|dy95|in",
+      "force_n": 830.1,
+      "strength": 2.31,
+      "fatigue": 1.04,
+      "region": "fairlead",
+      "peak_xyz": [
+       154.5,
+       9.5,
+       150.5
+      ],
+      "strength_min": 2.31
+     },
+     "cradle3d_dy95|b70": {
+      "load": "c3d|b70|dy95|in",
+      "force_n": 723.0,
+      "strength": 2.7,
+      "fatigue": 1.21,
+      "region": "fairlead",
+      "peak_xyz": [
+       154.5,
+       9.5,
+       150.5
+      ],
+      "strength_min": 2.7
+     },
+     "cradle3d|b40": {
+      "load": "c3d|b40|dy50|in",
+      "force_n": 1103.9,
+      "strength": 1.58,
+      "fatigue": 0.71,
+      "region": "fairlead",
+      "peak_xyz": [
+       154.5,
+       9.5,
+       150.5
+      ],
+      "strength_min": 1.58
+     },
+     "cradle3d|b50": {
+      "load": "c3d|b50|dy50|in",
+      "force_n": 895.7,
+      "strength": 1.96,
+      "fatigue": 0.88,
+      "region": "fairlead",
+      "peak_xyz": [
+       147.5,
+       9.5,
+       133.5
+      ],
+      "strength_min": 1.96
+     },
+     "cradle3d|b60": {
+      "load": "c3d|b60|dy50|in",
+      "force_n": 759.1,
+      "strength": 2.33,
+      "fatigue": 1.05,
+      "region": "fairlead",
+      "peak_xyz": [
+       147.5,
+       9.5,
+       133.5
+      ],
+      "strength_min": 2.33
+     },
+     "cradle3d|b70": {
+      "load": "c3d|b70|dy0|in",
+      "force_n": 638.8,
+      "strength": 2.74,
+      "fatigue": 1.23,
+      "region": "fairlead",
+      "peak_xyz": [
+       147.5,
+       9.5,
+       133.5
+      ],
+      "strength_min": 2.74
+     }
+    },
+    "design_min": {
+     "strength": 1.58,
+     "fatigue": 0.71
+    },
+    "box": {
+     "lo": [
+      80.0,
+      -50.0,
+      90.0
+     ],
+     "hi": [
+      192.0,
+      40.0,
+      196.0
+     ]
+    }
+   }
+  }
+ },
+ "strap_wrap": {
+  "rows": [
+   {
+    "torso": 15,
+    "strap": "us1",
+    "tension_n": 444.4,
+    "wrap_deg": 0.0,
+    "bearing_yz_n": [
+     0.0,
+     0.0
+    ],
+    "bearing_n": 0.0,
+    "contact_yz": [],
+    "lip_r_mm": 3.0,
+    "lip_pressure_mpa": 5.93,
+    "rejoin_yz": [
+     0.2,
+     81.1
+    ],
+    "hull": [
+     [
+      13.51,
+      95.0
+     ],
+     [
+      21.51,
+      95.0
+     ],
+     [
+      21.37,
+      93.96
+     ],
+     [
+      20.97,
+      93.0
+     ],
+     [
+      20.34,
+      92.17
+     ],
+     [
+      19.51,
+      91.54
+     ],
+     [
+      0.2,
+      81.1
+     ]
+    ]
+   },
+   {
+    "torso": 15,
+    "strap": "us2",
+    "tension_n": 296.3,
+    "wrap_deg": 38.0,
+    "bearing_yz_n": [
+     -90.7,
+     170.2
+    ],
+    "bearing_n": 192.8,
+    "contact_yz": [
+     [
+      8.36,
+      127.5
+     ]
+    ],
+    "lip_r_mm": 3.0,
+    "lip_pressure_mpa": 3.95,
+    "rejoin_yz": [
+     -4.8,
+     125.4
+    ],
+    "hull": [
+     [
+      12.4,
+      142.0
+     ],
+     [
+      20.4,
+      142.0
+     ],
+     [
+      20.26,
+      140.96
+     ],
+     [
+      19.86,
+      140.0
+     ],
+     [
+      19.23,
+      139.17
+     ],
+     [
+      8.36,
+      127.5
+     ],
+     [
+      -4.8,
+      125.4
+     ]
+    ]
+   },
+   {
+    "torso": 19,
+    "strap": "us1",
+    "tension_n": 444.4,
+    "wrap_deg": 0.0,
+    "bearing_yz_n": [
+     0.0,
+     0.0
+    ],
+    "bearing_n": 0.0,
+    "contact_yz": [],
+    "lip_r_mm": 3.0,
+    "lip_pressure_mpa": 5.93,
+    "rejoin_yz": [
+     -0.1,
+     79.4
+    ],
+    "hull": [
+     [
+      13.51,
+      95.0
+     ],
+     [
+      21.51,
+      95.0
+     ],
+     [
+      21.37,
+      93.96
+     ],
+     [
+      20.97,
+      93.0
+     ],
+     [
+      20.34,
+      92.17
+     ],
+     [
+      19.51,
+      91.54
+     ],
+     [
+      -0.1,
+      79.4
+     ]
+    ]
+   },
+   {
+    "torso": 19,
+    "strap": "us2",
+    "tension_n": 296.3,
+    "wrap_deg": 26.1,
+    "bearing_yz_n": [
+     -74.8,
+     110.9
+    ],
+    "bearing_n": 133.8,
+    "contact_yz": [
+     [
+      8.36,
+      127.5
+     ]
+    ],
+    "lip_r_mm": 3.0,
+    "lip_pressure_mpa": 3.95,
+    "rejoin_yz": [
+     -6.0,
+     122.0
+    ],
+    "hull": [
+     [
+      12.4,
+      142.0
+     ],
+     [
+      20.4,
+      142.0
+     ],
+     [
+      20.26,
+      140.96
+     ],
+     [
+      19.86,
+      140.0
+     ],
+     [
+      19.23,
+      139.17
+     ],
+     [
+      8.36,
+      127.5
+     ],
+     [
+      -6.0,
+      122.0
+     ]
+    ]
+   },
+   {
+    "torso": 23,
+    "strap": "us1",
+    "tension_n": 444.4,
+    "wrap_deg": 0.0,
+    "bearing_yz_n": [
+     0.0,
+     0.0
+    ],
+    "bearing_n": 0.0,
+    "contact_yz": [],
+    "lip_r_mm": 3.0,
+    "lip_pressure_mpa": 5.93,
+    "rejoin_yz": [
+     -0.6,
+     79.9
+    ],
+    "hull": [
+     [
+      13.51,
+      95.0
+     ],
+     [
+      21.51,
+      95.0
+     ],
+     [
+      21.37,
+      93.96
+     ],
+     [
+      20.97,
+      93.0
+     ],
+     [
+      20.34,
+      92.17
+     ],
+     [
+      19.51,
+      91.54
+     ],
+     [
+      -0.6,
+      79.9
+     ]
+    ]
+   },
+   {
+    "torso": 23,
+    "strap": "us2",
+    "tension_n": 296.3,
+    "wrap_deg": 13.6,
+    "bearing_yz_n": [
+     -45.4,
+     53.6
+    ],
+    "bearing_n": 70.3,
+    "contact_yz": [
+     [
+      8.36,
+      127.5
+     ]
+    ],
+    "lip_r_mm": 3.0,
+    "lip_pressure_mpa": 3.95,
+    "rejoin_yz": [
+     -3.0,
+     120.0
+    ],
+    "hull": [
+     [
+      12.4,
+      142.0
+     ],
+     [
+      20.4,
+      142.0
+     ],
+     [
+      20.26,
+      140.96
+     ],
+     [
+      19.86,
+      140.0
+     ],
+     [
+      19.23,
+      139.17
+     ],
+     [
+      8.36,
+      127.5
+     ],
+     [
+      -3.0,
+      120.0
+     ]
+    ]
+   }
+  ],
+  "worst": {
+   "us1": {
+    "torso": 15,
+    "wrap_deg": 0.0,
+    "bearing_n": 0.0,
+    "bearing_yz_n": [
+     0.0,
+     0.0
+    ],
+    "contact_yz": [],
+    "lip_r_mm": 3.0,
+    "lip_pressure_mpa": 5.93
+   },
+   "us2": {
+    "torso": 15,
+    "wrap_deg": 38.0,
+    "bearing_n": 192.8,
+    "bearing_yz_n": [
+     -90.7,
+     170.2
+    ],
+    "contact_yz": [
+     [
+      8.36,
+      127.5
+     ]
+    ],
+    "lip_r_mm": 3.0,
+    "lip_pressure_mpa": 3.95
+   }
+  },
+  "neck_half_mm": 9.0,
+  "tension_basis": "us_route.tensions() bag-on cam-tight, factored 3.0"
+ },
+ "joint": {
+  "trap_walls": {
+   "washer_slot": {
+    "outer_wall_mm": 2.3,
+    "between_traps_mm": 3.6
+   },
+   "hex_slot": {
+    "outer_wall_mm": 3.4,
+    "between_traps_mm": 5.8
+   },
+   "min_wall_mm": 2.3,
+   "pass_2mm": true,
+   "nut_held_by_flats": true
+  },
+  "wrap_rows": {
+   "wrap|15": {
+    "vec": [
+     0.0,
+     -52.605999999999995,
+     98.71599999999998
+    ],
+    "g_times_req": 3.0,
+    "direct": true,
+    "at": [
+     170.25,
+     8.36,
+     127.5
+    ],
+    "clevis_share": 0.58
+   },
+   "wrap|19": {
+    "vec": [
+     0.0,
+     -43.38399999999999,
+     64.322
+    ],
+    "g_times_req": 3.0,
+    "direct": true,
+    "at": [
+     170.25,
+     8.36,
+     127.5
+    ],
+    "clevis_share": 0.58
+   },
+   "wrap|23": {
+    "vec": [
+     0.0,
+     -26.331999999999997,
+     31.087999999999997
+    ],
+    "g_times_req": 3.0,
+    "direct": true,
+    "at": [
+     170.25,
+     8.36,
+     127.5
+    ],
+    "clevis_share": 0.58
+   }
+  },
+  "share_0.6": {
+   "worst_strength": {
+    "load": "cradle_lane_b50",
+    "sf": 3.17,
+    "check": "net_section"
+   },
+   "worst_fatigue": {
+    "load": "cradle_lane_b50",
+    "fatigue": 1.43,
+    "check": "net_section_paht"
+   },
+   "families": {
+    "c3d": {
+     "load": "c3d|b40|dy95|in",
+     "min_sf": 4.23,
+     "min_fatigue": 1.9,
+     "force_on_clevis_n": [
+      0.0,
+      355.5,
+      -149.7
+     ],
+     "check_s": "net_section",
+     "check_f": "net_section_paht"
+    },
+    "bagon_down": {
+     "load": "bagon_down",
+     "min_sf": 7.89,
+     "min_fatigue": 4.44,
+     "force_on_clevis_n": [
+      0.0,
+      0.0,
+      -177.8
+     ],
+     "check_s": "hole_bearing",
+     "check_f": "hole_paht"
+    },
+    "bagon_fore30": {
+     "load": "bagon_fore30|fleet_out",
+     "min_sf": 6.53,
+     "min_fatigue": 3.68,
+     "force_on_clevis_n": [
+      51.5,
+      -87.5,
+      -151.6
+     ],
+     "check_s": "washer_bearing",
+     "check_f": "washer_paht"
+    },
+    "bagon_drape": {
+     "load": "bagon_drape|fleet_out",
+     "min_sf": 6.1,
+     "min_fatigue": 3.43,
+     "force_on_clevis_n": [
+      51.5,
+      -174.9,
+      -8.6
+     ],
+     "check_s": "washer_bearing",
+     "check_f": "washer_paht"
+    },
+    "cradle_lane": {
+     "load": "cradle_lane",
+     "min_sf": 4.25,
+     "min_fatigue": 1.91,
+     "force_on_clevis_n": [
+      0.0,
+      352.8,
+      -149.7
+     ],
+     "check_s": "net_section",
+     "check_f": "net_section_paht"
+    },
+    "cradle_lane_b50": {
+     "load": "cradle_lane_b50",
+     "min_sf": 3.17,
+     "min_fatigue": 1.43,
+     "force_on_clevis_n": [
+      0.0,
+      493.9,
+      -149.7
+     ],
+     "check_s": "net_section",
+     "check_f": "net_section_paht"
+    },
+    "wrap": {
+     "load": "wrap|15",
+     "min_sf": 19.01,
+     "min_fatigue": 10.69,
+     "force_on_clevis_n": [
+      0.0,
+      -52.6,
+      98.7
+     ],
+     "check_s": "net_section",
+     "check_f": "net_section_paht"
+    }
+   },
+   "min_sf_all_rows": 3.17,
+   "net_section": {
+    "A": 344.5,
+    "yc": 1.08,
+    "zc": 142.0,
+    "Iy": 27202.12,
+    "Iz": 10255.82,
+    "Iyz": 0.0
+   },
+   "capacities_n": {
+    "washer_bearing_n": 2556.7,
+    "plug_shear_out_n": 5414.4,
+    "bolt_tension_n": 8896.3,
+    "bolt_fatigue_n": 3177.2,
+    "hole_bearing_n": 2301.1,
+    "bolt_shear_n": 7193.9,
+    "contact_mpa": 70.4
+   }
+  },
+  "share_1": {
+   "worst_strength": {
+    "load": "cradle_lane_b50",
+    "sf": 1.9,
+    "check": "net_section"
+   },
+   "worst_fatigue": {
+    "load": "cradle_lane_b50",
+    "fatigue": 0.86,
+    "check": "net_section_paht"
+   },
+   "families": {
+    "c3d": {
+     "load": "c3d|b40|dy95|in",
+     "min_sf": 2.54,
+     "min_fatigue": 1.14,
+     "force_on_clevis_n": [
+      0.0,
+      592.5,
+      -249.5
+     ],
+     "check_s": "net_section",
+     "check_f": "net_section_paht"
+    },
+    "bagon_down": {
+     "load": "bagon_down",
+     "min_sf": 4.74,
+     "min_fatigue": 2.66,
+     "force_on_clevis_n": [
+      0.0,
+      0.0,
+      -296.3
+     ],
+     "check_s": "hole_bearing",
+     "check_f": "hole_paht"
+    },
+    "bagon_fore30": {
+     "load": "bagon_fore30|fleet_out",
+     "min_sf": 4.55,
+     "min_fatigue": 2.56,
+     "force_on_clevis_n": [
+      51.5,
+      -145.9,
+      -252.7
+     ],
+     "check_s": "washer_bearing",
+     "check_f": "washer_paht"
+    },
+    "bagon_drape": {
+     "load": "bagon_drape|fleet_out",
+     "min_sf": 4.21,
+     "min_fatigue": 2.37,
+     "force_on_clevis_n": [
+      51.5,
+      -291.4,
+      -14.3
+     ],
+     "check_s": "washer_bearing",
+     "check_f": "washer_paht"
+    },
+    "cradle_lane": {
+     "load": "cradle_lane",
+     "min_sf": 2.55,
+     "min_fatigue": 1.15,
+     "force_on_clevis_n": [
+      0.0,
+      588.1,
+      -249.5
+     ],
+     "check_s": "net_section",
+     "check_f": "net_section_paht"
+    },
+    "cradle_lane_b50": {
+     "load": "cradle_lane_b50",
+     "min_sf": 1.9,
+     "min_fatigue": 0.86,
+     "force_on_clevis_n": [
+      0.0,
+      823.2,
+      -249.5
+     ],
+     "check_s": "net_section",
+     "check_f": "net_section_paht"
+    },
+    "wrap": {
+     "load": "wrap|15",
+     "min_sf": 19.01,
+     "min_fatigue": 10.69,
+     "force_on_clevis_n": [
+      0.0,
+      -52.6,
+      98.7
+     ],
+     "check_s": "net_section",
+     "check_f": "net_section_paht"
+    }
+   },
+   "min_sf_all_rows": 1.9,
+   "net_section": {
+    "A": 344.5,
+    "yc": 1.08,
+    "zc": 142.0,
+    "Iy": 27202.12,
+    "Iz": 10255.82,
+    "Iyz": 0.0
+   },
+   "capacities_n": {
+    "washer_bearing_n": 2556.7,
+    "plug_shear_out_n": 5414.4,
+    "bolt_tension_n": 8896.3,
+    "bolt_fatigue_n": 3177.2,
+    "hole_bearing_n": 2301.1,
+    "bolt_shear_n": 7193.9,
+    "contact_mpa": 70.4
+   }
+  }
+ },
+ "gauges": {
+  "E_xy_mpa": 3860.0,
+  "sites": {
+   "us1": {
+    "x": 102.81,
+    "y": 8.06,
+    "z": 98.0,
+    "axis": "x (along the arm)",
+    "face": "bag face (+y)",
+    "station": "us1"
+   },
+   "us2": {
+    "x": 126.96,
+    "y": 6.81,
+    "z": 142.0,
+    "axis": "x (along the arm)",
+    "face": "bag face (+y)",
+    "station": "us2"
+   }
+  },
+  "tests": {
+   "MT-1cr|us1": {
+    "pull_unit_vector_frame_R": [
+     0.7379,
+     0.527,
+     -0.4217
+    ],
+    "row": "c3d|b40|dy50|out",
+    "basis": "pin load along the governing 3D cradle leg (40 mm belly, 53 kg float limit, factored 1.6 g x 1.5); last step = the factored row",
+    "steps": [
+     {
+      "pin_load_n": 240.0,
+      "sigma_mpa": -0.92,
+      "band_mpa": [
+       -1.03,
+       -0.71
+      ],
+      "microstrain": -238.0,
+      "pass_if_abs_microstrain_at_most": 306.0
+     },
+     {
+      "pin_load_n": 480.0,
+      "sigma_mpa": -1.84,
+      "band_mpa": [
+       -2.05,
+       -1.42
+      ],
+      "microstrain": -477.0,
+      "pass_if_abs_microstrain_at_most": 612.0
+     },
+     {
+      "pin_load_n": 720.0,
+      "sigma_mpa": -2.76,
+      "band_mpa": [
+       -3.08,
+       -2.13
+      ],
+      "microstrain": -715.0,
+      "pass_if_abs_microstrain_at_most": 918.0
+     },
+     {
+      "pin_load_n": 887.7,
+      "sigma_mpa": -3.4,
+      "band_mpa": [
+       -3.8,
+       -2.63
+      ],
+      "microstrain": -882.0,
+      "pass_if_abs_microstrain_at_most": 1132.0
+     }
+    ]
+   },
+   "T1|us1": {
+    "pull_unit_vector_frame_R": [
+     0.0,
+     -0.9641,
+     0.2655
+    ],
+    "row": "bagon_drape",
+    "basis": "T1 carry: bag-on cam-tight strap (drape path) at 1 g, scaled to the carry load (0 / 150 / 300 lb); local pin load only",
+    "steps": [
+     {
+      "pin_load_n": 0.0,
+      "sigma_mpa": -0.0,
+      "band_mpa": [
+       -0.0,
+       0.0
+      ],
+      "microstrain": -0.0,
+      "pass_if_abs_microstrain_at_most": 0.0
+     },
+     {
+      "pin_load_n": 148.1,
+      "sigma_mpa": -0.03,
+      "band_mpa": [
+       -0.09,
+       0.05
+      ],
+      "microstrain": -7.0,
+      "pass_if_abs_microstrain_at_most": 27.0
+     },
+     {
+      "pin_load_n": 296.3,
+      "sigma_mpa": -0.06,
+      "band_mpa": [
+       -0.18,
+       0.1
+      ],
+      "microstrain": -15.0,
+      "pass_if_abs_microstrain_at_most": 53.0
+     }
+    ]
+   },
+   "MT-1cr|us2": {
+    "pull_unit_vector_frame_R": [
+     -0.9322,
+     0.2825,
+     -0.226
+    ],
+    "row": "c3d|b40|dy50|in",
+    "basis": "pin load along the governing 3D cradle leg (40 mm belly, 53 kg float limit, factored 1.6 g x 1.5); last step = the factored row",
+    "steps": [
+     {
+      "pin_load_n": 240.0,
+      "sigma_mpa": -2.7,
+      "band_mpa": [
+       -3.04,
+       -1.73
+      ],
+      "microstrain": -698.0,
+      "pass_if_abs_microstrain_at_most": 904.0
+     },
+     {
+      "pin_load_n": 480.0,
+      "sigma_mpa": -5.39,
+      "band_mpa": [
+       -6.07,
+       -3.45
+      ],
+      "microstrain": -1397.0,
+      "pass_if_abs_microstrain_at_most": 1808.0
+     },
+     {
+      "pin_load_n": 720.0,
+      "sigma_mpa": -8.09,
+      "band_mpa": [
+       -9.11,
+       -5.18
+      ],
+      "microstrain": -2095.0,
+      "pass_if_abs_microstrain_at_most": 2713.0
+     },
+     {
+      "pin_load_n": 1103.9,
+      "sigma_mpa": -12.4,
+      "band_mpa": [
+       -13.96,
+       -7.94
+      ],
+      "microstrain": -3212.0,
+      "pass_if_abs_microstrain_at_most": 4159.0
+     }
+    ]
+   },
+   "T1|us2": {
+    "pull_unit_vector_frame_R": [
+     0.0,
+     -0.9988,
+     -0.0491
+    ],
+    "row": "bagon_drape",
+    "basis": "T1 carry: bag-on cam-tight strap (drape path) at 1 g, scaled to the carry load (0 / 150 / 300 lb); local pin load only",
+    "steps": [
+     {
+      "pin_load_n": 0.0,
+      "sigma_mpa": 0.0,
+      "band_mpa": [
+       0.0,
+       0.0
+      ],
+      "microstrain": 0.0,
+      "pass_if_abs_microstrain_at_most": 0.0
+     },
+     {
+      "pin_load_n": 98.8,
+      "sigma_mpa": 1.34,
+      "band_mpa": [
+       0.81,
+       1.54
+      ],
+      "microstrain": 347.0,
+      "pass_if_abs_microstrain_at_most": 459.0
+     },
+     {
+      "pin_load_n": 197.5,
+      "sigma_mpa": 2.68,
+      "band_mpa": [
+       1.62,
+       3.08
+      ],
+      "microstrain": 694.0,
+      "pass_if_abs_microstrain_at_most": 917.0
+     }
+    ]
+   },
+   "CLEVIS-SHARE|us2_inboard": {
+    "pull_unit_vector_frame_R": [
+     -0.9322,
+     0.2825,
+     -0.226
+    ],
+    "row": "c3d|b40|dy50|in",
+    "basis": "CLEVIS-SHARE A: governing inboard leg; static proof = factored row, cycle peak = x 1.6 / 2.4 (1e5 cycles, R 0.1)",
+    "steps": [
+     {
+      "pin_load_n": 1103.9,
+      "sigma_mpa": -12.4,
+      "band_mpa": [
+       -13.96,
+       -7.94
+      ],
+      "microstrain": -3212.0,
+      "pass_if_abs_microstrain_at_most": 4159.0
+     },
+     {
+      "pin_load_n": 735.9,
+      "sigma_mpa": -8.27,
+      "band_mpa": [
+       -9.31,
+       -5.29
+      ],
+      "microstrain": -2141.0,
+      "pass_if_abs_microstrain_at_most": 2773.0
+     }
+    ],
+    "eye_bears_on": "inner (body) cheek: PTFE shim between the eye and the inner cheek's throat face"
+   },
+   "CLEVIS-SHARE|us2_yz": {
+    "pull_unit_vector_frame_R": [
+     0.0,
+     0.9216,
+     -0.3881
+    ],
+    "row": "c3d|b40|dy95|out",
+    "basis": "CLEVIS-SHARE B: the leg with no lateral part (a load as wide as the span), contact 95 mm aft: all of it in y-z, the clevis's share-1.0 case; static proof = factored row, cycle peak x 1.6 / 2.4",
+    "steps": [
+     {
+      "pin_load_n": 642.9,
+      "sigma_mpa": -7.92,
+      "band_mpa": [
+       -9.0,
+       -4.82
+      ],
+      "microstrain": -2052.0,
+      "pass_if_abs_microstrain_at_most": 2681.0
+     },
+     {
+      "pin_load_n": 428.6,
+      "sigma_mpa": -5.28,
+      "band_mpa": [
+       -6.0,
+       -3.21
+      ],
+      "microstrain": -1368.0,
+      "pass_if_abs_microstrain_at_most": 1787.0
+     }
+    ],
+    "eye_bears_on": "outer (clevis) cheek, PTFE shim between the eye and the outer cheek (share 1.0 case)"
+   }
+  }
+ },
+ "pins": {
+  "scheme": "headed pin, R-clip through a cross hole on the far side, pin + clip on one tether",
+  "retainer": {
+   "part": "hitch-pin (R-) clip, 302 / 18-8 stainless, 1.2 mm wire, for 4.8-6.4 mm (3/16-1/4 in) pins",
+   "source": "https://www.mcmaster.com/products/hitch-pin-clips/ (secondary: catalogue page not fetched; any 18-8 R-clip in that size range)",
+   "mass_g": 0.6,
+   "tether": "1.5 mm Dyneema (UHMWPE) cord, 120 mm, through the pin head's 1.6 mm hole and the clip's eye, larks-head round the stay beside the fairlead: pin and clip stay on the frame when pulled",
+   "tether_g": 0.2
+  },
+  "stations": {
+   "hinge": {
+    "material": "ti_6al_4v",
+    "pin_d_mm": 5.0,
+    "span_mm": 40.0,
+    "shank_mm": 45.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole": {
+     "d_mm": 1.3,
+     "from_far_cheek_face_mm": 2.5
+    },
+    "head_side": "outboard",
+    "clip_side": "inboard",
+    "pin_g": 4.26,
+    "set_g": 5.06,
+    "qty": 2,
+    "removed_at_bag_off": true,
+    "bending": {
+     "row_n": 1019.0,
+     "sf_yield": 1.99,
+     "sf_fatigue": 2.24
+    }
+   },
+   "us1": {
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "span_mm": 36.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole": {
+     "d_mm": 1.3,
+     "from_far_cheek_face_mm": 2.5
+    },
+    "head_side": "outboard",
+    "clip_side": "inboard (towards x 0; the buttress leaves a 12 mm slot)",
+    "pin_g": 2.48,
+    "set_g": 3.28,
+    "qty": 2,
+    "removed_at_bag_off": false,
+    "bending": {
+     "design_yz_n": 599.1,
+     "sf_yield": 2.1,
+     "sf_fatigue": 1.56,
+     "dy95_yz_n": 964.5,
+     "dy95_sf_yield": 1.31,
+     "dy95_sf_fatigue": 0.97
+    }
+   },
+   "us2": {
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "span_mm": 36.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole": {
+     "d_mm": 1.3,
+     "from_far_cheek_face_mm": 2.5
+    },
+    "head_side": "outboard",
+    "clip_side": "inboard (towards x 0; the buttress leaves a 12 mm slot)",
+    "pin_g": 2.48,
+    "set_g": 3.28,
+    "qty": 2,
+    "removed_at_bag_off": false,
+    "bending": {
+     "design_yz_n": 399.4,
+     "sf_yield": 3.15,
+     "sf_fatigue": 2.34,
+     "dy95_yz_n": 642.9,
+     "dy95_sf_yield": 1.96,
+     "dy95_sf_fatigue": 1.46
+    }
+   },
+   "im1": {
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "span_mm": 36.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole": {
+     "d_mm": 1.3,
+     "from_far_cheek_face_mm": 2.5
+    },
+    "head_side": "outboard",
+    "clip_side": "inboard",
+    "pin_g": 2.48,
+    "set_g": 3.28,
+    "qty": 2,
+    "removed_at_bag_off": false
+   },
+   "im2": {
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "span_mm": 36.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole": {
+     "d_mm": 1.3,
+     "from_far_cheek_face_mm": 2.5
+    },
+    "head_side": "outboard",
+    "clip_side": "inboard",
+    "pin_g": 2.48,
+    "set_g": 3.28,
+    "qty": 2,
+    "removed_at_bag_off": false
+   },
+   "im3": {
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "span_mm": 36.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole": {
+     "d_mm": 1.3,
+     "from_far_cheek_face_mm": 2.5
+    },
+    "head_side": "outboard",
+    "clip_side": "inboard",
+    "pin_g": 2.48,
+    "set_g": 3.28,
+    "qty": 2,
+    "removed_at_bag_off": false
+   }
+  },
+  "clip_double_shear_n": 699.0,
+  "clip_uts_source": "ASSUMPTION CLIP-UTS (ASTM A240 304 minimum 515 MPa)",
+  "mass": {
+   "pins_g": 33.32,
+   "clips_tethers_g": 9.6
+  },
+  "booked_before": "bag_attach: 7075 pins 36 mm shank + 8 mm head (no retainer); Ti hinge 5 x 44",
+  "test": {
+   "id": "PIN-RET",
+   "steps": [
+    "(a) every pin in, clip seated: a 50 N push on the pin's tail along its axis (spring scale) moves it < 0.5 mm",
+    "(b) after the T9 walk and the MT-1cr / CLEVIS-SHARE cycles: every pin home, every clip fully seated, no wire wear groove deeper than 0.1 mm",
+    "(c) bag-off: each hinge pin out and back in by hand, gloved, clip off and on, <= 8 s each"
+   ]
+  }
+ },
+ "print_settings": {
+  "ticket": "BL-053 (fifth review B-1)",
+  "source": "huntkit/gendesign/h1_rev5.py print_settings / support_map",
+  "orientation": {
+   "all_files": "as exported: the STL's z is the build direction (frame y up: wearer face down, bag face up). Do not rotate or flip on the plate: the FEA assumes the layers normal to frame y",
+   "why_not_flipped": "bag face down needs as much support (lower 13 859 vs 11 164 mm2, upper 19 915 vs 18 044 mm2 supported area) and puts the support scars on the stays' bag faces and the fairlead tips (eye bearing, HE fit) instead of the wearer faces",
+   "test_pieces": "print every test piece exactly like the frame (same orientation, same supports) so it carries the frame's surfaces and scars"
+  },
+  "supports": {
+   "type": "tree supports from the build plate only ('on build plate only'), auto, threshold 45 deg",
+   "material": "PAHT-CF itself (single nozzle H2S), no breakaway material",
+   "top_z_distance_mm": [
+    0.2,
+    0.25
+   ],
+   "interface_layers": 3,
+   "interface_spacing_mm": 0.2,
+   "xy_distance_mm": 0.6,
+   "brim_mm": 8.0,
+   "blockers": [
+    "every pin hole and fairlead throat (12 stations)",
+    "both z 234 joint bores, counterbores and nut traps",
+    "the two US2 clevis bolt holes, counterbores and hex nut traps (body side)",
+    "the 18 mm stay sleeve bores",
+    "the pawl bore and the spine channel"
+   ],
+   "note": "a slicer that auto-supports everything puts supports inside the bores: paint blockers first"
+  },
+  "files": {
+   "h1_lower_flat.stl": {
+    "plate_contact_mm2": 739.0,
+    "supported_down_area_mm2": 11136.0,
+    "supported_by_region_mm2": {
+     "stay": 2224.0,
+     "lug": 6946.0,
+     "clevis": 0.0,
+     "other": 1966.0
+    },
+    "part_g": 477.6,
+    "support_g_est": 49.0,
+    "support_g_high": 94.3,
+    "filament_g_est": 527.0,
+    "filament_g_high": 572.0,
+    "print_h_est": 18.6,
+    "max_support_column_mm": 57.0
+   },
+   "h1_upper_flat.stl": {
+    "plate_contact_mm2": 223.0,
+    "supported_down_area_mm2": 18044.0,
+    "supported_by_region_mm2": {
+     "stay": 8755.0,
+     "lug": 3030.0,
+     "clevis": 0.0,
+     "other": 6259.0
+    },
+    "part_g": 544.2,
+    "support_g_est": 55.3,
+    "support_g_high": 102.7,
+    "filament_g_est": 600.0,
+    "filament_g_high": 647.0,
+    "print_h_est": 21.2,
+    "max_support_column_mm": 44.0
+   },
+   "us2_clevis_R.stl / us2_clevis_L.stl": {
+    "plate_contact_mm2": 580.0,
+    "supported_down_area_mm2": 74.0,
+    "supported_by_region_mm2": {
+     "stay": 0.0,
+     "lug": 0.0,
+     "clevis": 0.0,
+     "other": 74.0
+    },
+    "part_g": 13.8,
+    "support_g_est": 0.1,
+    "support_g_high": 0.2,
+    "filament_g_est": 14.0,
+    "filament_g_high": 14.0,
+    "print_h_est": 0.5,
+    "max_support_column_mm": 8.0,
+    "supports": "none (prints flat: 97 % of the footprint on the plate)"
+   },
+   "test_pieces/us_route_stay_R.stl": {
+    "plate_contact_mm2": 9.0,
+    "supported_down_area_mm2": 3684.0,
+    "supported_by_region_mm2": {
+     "stay": 168.0,
+     "lug": 2669.0,
+     "clevis": 561.0,
+     "other": 286.0
+    },
+    "part_g": 164.8,
+    "support_g_est": 13.0,
+    "support_g_high": 24.6,
+    "filament_g_est": 178.0,
+    "filament_g_high": 189.0,
+    "print_h_est": 6.3,
+    "max_support_column_mm": 38.0
+   },
+   "test_pieces/hefit_hinge_fairlead_R.stl": {
+    "plate_contact_mm2": 15.0,
+    "supported_down_area_mm2": 864.0,
+    "supported_by_region_mm2": {
+     "stay": 218.0,
+     "lug": 646.0,
+     "clevis": 0.0,
+     "other": 0.0
+    },
+    "part_g": 43.1,
+    "support_g_est": 1.6,
+    "support_g_high": 2.8,
+    "filament_g_est": 45.0,
+    "filament_g_high": 46.0,
+    "print_h_est": 1.6,
+    "max_support_column_mm": 22.0
+   },
+   "test_pieces/im3ec_cheek_R.stl": {
+    "plate_contact_mm2": 729.0,
+    "supported_down_area_mm2": 886.0,
+    "supported_by_region_mm2": {
+     "stay": 495.0,
+     "lug": 375.0,
+     "clevis": 0.0,
+     "other": 16.0
+    },
+    "part_g": 68.8,
+    "support_g_est": 1.8,
+    "support_g_high": 3.2,
+    "filament_g_est": 71.0,
+    "filament_g_high": 72.0,
+    "print_h_est": 2.5,
+    "max_support_column_mm": 18.0
+   }
+  },
+  "scars": {
+   "where": "support contact lands on wearer-facing (-y) surfaces only: the stays' wearer faces (2224 + 8755 mm2) and the undersides of the lugs, fairlead roots and lane blocks; the lugs' governing spots (US1 outer cheek / floor corner, US2 arm root bag face, hinge inboard cheek corner) face up or sideways and carry no scar",
+   "fatigue_critical": true,
+   "finish": "sand the support witness on the stays' wearer faces and the lug undersides flat with 240 then 400 grit, removing at most 0.2 mm (SAND-ALLOW); deburr every bore edge",
+   "allowance": {
+    "max_removed_mm": 0.2,
+    "stay_depth_mm": 18.0,
+    "section_modulus_loss": 0.022,
+    "note": "0.2 mm off one face of an 18 mm deep stay (ASSUMPTION: rectangular-equivalent) costs about 2.2 % of its bending section modulus; the body's fatigue minimum on the sim bases (1.258, h1_crown) becomes about 1.23"
+   }
+  },
+  "time_rule": "(part + support volume) / 8 mm3/s x 1.08 (h1_buckling print_h rule)",
+  "assumptions": [
+   "TREE-FILL",
+   "SAND-ALLOW",
+   "SCAR-KD"
+  ]
+ },
+ "export": {
+  "assembled": {
+   "faces": 293542,
+   "volume_cm3": 991.15,
+   "g": 1050.6,
+   "watertight": true,
+   "shells": 1,
+   "dropped": [
+    [
+     20,
+     0.0036962556644248856
+    ],
+    [
+     10,
+     0.00021920968679693212
+    ],
+    [
+     8,
+     6.374148562697061e-05
+    ],
+    [
+     4,
+     1.2262493010497163e-05
+    ],
+    [
+     8,
+     1.1364010550130033e-05
+    ],
+    [
+     4,
+     2.917689932250648e-11
+    ]
+   ]
+  },
+  "lower": {
+   "faces": 145464,
+   "volume_cm3": 452.59,
+   "g": 479.7,
+   "footprint_mm": [
+    321.1,
+    299.6,
+    76.7
+   ],
+   "watertight": true,
+   "shells": 1,
+   "dropped": [],
+   "dropped_centre_frame_mm": [],
+   "print_h": 17.0,
+   "fits_h2s_340x320x340": true,
+   "bed_bl050": {
+    "rot_deg": 163.5,
+    "extents_mm": [
+     321.05,
+     299.58,
+     76.7
+    ],
+    "fits": true,
+    "fits_with_brim": true,
+    "spare_mm": [
+     2.95,
+     4.42
+    ]
+   }
+  },
+  "upper": {
+   "faces": 146164,
+   "volume_cm3": 512.64,
+   "g": 543.4,
+   "footprint_mm": [
+    309.4,
+    280.1,
+    64.4
+   ],
+   "watertight": true,
+   "shells": 1,
+   "dropped": [],
+   "dropped_centre_frame_mm": [],
+   "print_h": 19.2,
+   "fits_h2s_340x320x340": true,
+   "bed_bl050": {
+    "rot_deg": 90.0,
+    "extents_mm": [
+     309.39,
+     280.12,
+     64.38
+    ],
+    "fits": true,
+    "fits_with_brim": true,
+    "spare_mm": [
+     14.61,
+     23.88
+    ]
+   }
+  },
+  "us2_clevis_R": {
+   "faces": 3780,
+   "g": 13.74,
+   "footprint_mm": [
+    20.7,
+    29.0,
+    36.5
+   ],
+   "watertight": true,
+   "shells": 1
+  },
+  "us2_clevis_L": {
+   "faces": 3748,
+   "g": 13.74,
+   "footprint_mm": [
+    20.7,
+    29.0,
+    36.5
+   ],
+   "watertight": true,
+   "shells": 1
+  }
+ },
+ "mass": {
+  "assembled_g": 1050.6,
+  "assembled_bl051_g": 996.6,
+  "print_delta_g": 54.0,
+  "lower_g": 479.7,
+  "upper_g": 543.4,
+  "clevis_g": {
+   "us2_clevis_R": 13.74,
+   "us2_clevis_L": 13.74
+  },
+  "lug_fixes_g": 56.05,
+  "lug_fixes_per_station_g": {
+   "us1_L": 20.93,
+   "us1_R": 20.99,
+   "us2_L": 6.99,
+   "us2_R": 7.15
+  },
+  "pins_booked_g": 31.75,
+  "pins_new_g": 33.32,
+  "clips_tethers_g": 9.6,
+  "retention_delta_g": 11.17
+ },
+ "slices": {
+  "lanes": {
+   "fairleads": {
+    "hinge_L": {
+     "pass": true,
+     "gap_under_pin": 6.49,
+     "throat": 20.0,
+     "eye_fits": true,
+     "x": -115.0,
+     "cheek_mm": 9.99,
+     "cheek_height_mm": 35.98
+    },
+    "hinge_R": {
+     "pass": true,
+     "gap_under_pin": 6.5,
+     "throat": 20.0,
+     "eye_fits": true,
+     "x": 115.0,
+     "cheek_mm": 9.99,
+     "cheek_height_mm": 35.97
+    },
+    "us1_L": {
+     "pass": true,
+     "gap_under_pin": 5.5,
+     "throat": 20.0,
+     "eye_fits": true,
+     "x": -70.0,
+     "cheek_mm": 8.0,
+     "cheek_height_mm": 18.0
+    },
+    "us1_R": {
+     "pass": true,
+     "gap_under_pin": 5.5,
+     "throat": 20.0,
+     "eye_fits": true,
+     "x": 70.0,
+     "cheek_mm": 8.0,
+     "cheek_height_mm": 18.0
+    },
+    "us2_L": {
+     "pass": true,
+     "gap_under_pin": 5.5,
+     "throat": 20.0,
+     "eye_fits": true,
+     "x": -165.0,
+     "cheek_mm": 7.99,
+     "cheek_height_mm": 18.0
+    },
+    "us2_R": {
+     "pass": true,
+     "gap_under_pin": 5.5,
+     "throat": 20.0,
+     "eye_fits": true,
+     "x": 165.0,
+     "cheek_mm": 8.0,
+     "cheek_height_mm": 17.98
+    },
+    "im1_L": {
+     "pass": true,
+     "gap_under_pin": 5.5,
+     "throat": 20.0,
+     "eye_fits": true,
+     "x": -115.0,
+     "cheek_mm": 7.99,
+     "cheek_height_mm": 17.98
+    },
+    "im1_R": {
+     "pass": true,
+     "gap_under_pin": 5.5,
+     "throat": 20.0,
+     "eye_fits": true,
+     "x": 115.0,
+     "cheek_mm": 7.99,
+     "cheek_height_mm": 17.98
+    },
+    "im2_L": {
+     "pass": true,
+     "gap_under_pin": 5.5,
+     "throat": 20.0,
+     "eye_fits": true,
+     "x": -115.0,
+     "cheek_mm": 7.99,
+     "cheek_height_mm": 18.0
+    },
+    "im2_R": {
+     "pass": true,
+     "gap_under_pin": 5.5,
+     "throat": 20.0,
+     "eye_fits": true,
+     "x": 115.0,
+     "cheek_mm": 7.99,
+     "cheek_height_mm": 17.98
+    },
+    "im3_L": {
+     "pass": true,
+     "gap_under_pin": 5.5,
+     "throat": 20.0,
+     "eye_fits": true,
+     "x": -115.0,
+     "cheek_mm": 7.98,
+     "cheek_height_mm": 27.99
+    },
+    "im3_R": {
+     "pass": true,
+     "gap_under_pin": 5.5,
+     "throat": 20.0,
+     "eye_fits": true,
+     "x": 115.0,
+     "cheek_mm": 7.98,
+     "cheek_height_mm": 27.99
+    }
+   },
+   "fairleads_pass": true,
+   "channel": {
+    "min": {
+     "clear_mm": 0.964,
+     "fore_wall_mm": 3.67,
+     "aft_wall_mm": 6.79,
+     "side_wall_mm": 13.8,
+     "walls_ok": true
+    },
+    "pass": true
+   },
+   "pawl": {
+    "swing_deg": 10.0,
+    "lp_min_dist_mm": 0.506,
+    "old_min_dist_mm": -3.551,
+    "lp_max_py": 12.307445300003362,
+    "old_max_py": 17.92286623219312,
+    "face_py": 12.84,
+    "zone_py": 9.15,
+    "lift_at_teeth_mm": 3.04,
+    "pass": true
+   },
+   "pieces": {
+    "us_route_stay_R|hinge_R": {
+     "pass": true,
+     "gap_under_pin": 6.49,
+     "throat": 20.02,
+     "eye_fits": true,
+     "watertight": true
+    },
+    "us_route_stay_R|us1_R": {
+     "pass": true,
+     "gap_under_pin": 5.49,
+     "throat": 20.0,
+     "eye_fits": true,
+     "watertight": true
+    },
+    "us_route_stay_R|us2_R": {
+     "pass": true,
+     "gap_under_pin": 5.52,
+     "throat": 20.0,
+     "eye_fits": true,
+     "watertight": true
+    },
+    "hefit_hinge_fairlead_R|hinge_R": {
+     "pass": true,
+     "gap_under_pin": 6.49,
+     "throat": 20.01,
+     "eye_fits": true,
+     "watertight": true
+    },
+    "im3ec_cheek_R|im3_R": {
+     "pass": true,
+     "gap_under_pin": 5.49,
+     "throat": 20.01,
+     "eye_fits": true,
+     "watertight": true
+    }
+   },
+   "pieces_pass": true
+  },
+  "joint": {
+   "L": {
+    "clevis_170": {
+     "outer_area_mm2": 602.8,
+     "holes": [
+      {
+       "d_eq_mm": 4.79,
+       "y": -5.47,
+       "z": 135.0
+      },
+      {
+       "d_eq_mm": 4.79,
+       "y": -5.47,
+       "z": 149.0
+      }
+     ],
+     "bounds_yz": [
+      -12.47,
+      127.5,
+      8.4,
+      156.5
+     ]
+    },
+    "body_trap": {
+     "outer_area_mm2": 868.1,
+     "holes": [
+      {
+       "d_eq_mm": 6.98,
+       "y": 16.4,
+       "z": 142.0
+      }
+     ],
+     "bounds_yz": [
+      -12.47,
+      127.5,
+      23.98,
+      156.5
+     ]
+    },
+    "face": {
+     "outer_area_mm2": 602.8,
+     "holes": [
+      {
+       "d_eq_mm": 4.79,
+       "y": -5.47,
+       "z": 135.0
+      },
+      {
+       "d_eq_mm": 4.79,
+       "y": -5.47,
+       "z": 149.0
+      }
+     ],
+     "bounds_yz": [
+      -12.47,
+      127.5,
+      8.4,
+      156.5
+     ]
+    },
+    "pass": true
+   },
+   "R": {
+    "clevis_170": {
+     "outer_area_mm2": 602.8,
+     "holes": [
+      {
+       "d_eq_mm": 4.79,
+       "y": -5.47,
+       "z": 149.0
+      },
+      {
+       "d_eq_mm": 4.79,
+       "y": -5.47,
+       "z": 135.0
+      }
+     ],
+     "bounds_yz": [
+      -12.47,
+      127.5,
+      8.4,
+      156.5
+     ]
+    },
+    "body_trap": {
+     "outer_area_mm2": 868.2,
+     "holes": [
+      {
+       "d_eq_mm": 6.98,
+       "y": 16.4,
+       "z": 142.0
+      }
+     ],
+     "bounds_yz": [
+      -12.47,
+      127.5,
+      23.98,
+      156.5
+     ]
+    },
+    "face": {
+     "outer_area_mm2": 602.8,
+     "holes": [
+      {
+       "d_eq_mm": 4.79,
+       "y": -5.47,
+       "z": 149.0
+      },
+      {
+       "d_eq_mm": 4.79,
+       "y": -5.47,
+       "z": 135.0
+      }
+     ],
+     "bounds_yz": [
+      -12.47,
+      127.5,
+      8.4,
+      156.5
+     ]
+    },
+    "pass": true
+   },
+   "pass": true
+  },
+  "crown": {
+   "R": {
+    "x": 118.0,
+    "ref_y": 9.88,
+    "min_y": 9.6,
+    "min_z": 92.0,
+    "drop_mm": 0.29,
+    "max_step_mm": 0.45,
+    "step_z": 104.0,
+    "pass": true,
+    "lines": [
+     {
+      "x": 112.0,
+      "ref_y": 8.85,
+      "min_y": 8.8,
+      "min_z": 144.0,
+      "drop_mm": 0.04,
+      "max_step_mm": 0.22,
+      "step_z": 150.0,
+      "pass": true
+     },
+     {
+      "x": 115.0,
+      "ref_y": 9.82,
+      "min_y": 9.8,
+      "min_z": 92.0,
+      "drop_mm": 0.02,
+      "max_step_mm": 0.32,
+      "step_z": 107.0,
+      "pass": true
+     },
+     {
+      "x": 118.0,
+      "ref_y": 9.88,
+      "min_y": 9.6,
+      "min_z": 92.0,
+      "drop_mm": 0.29,
+      "max_step_mm": 0.45,
+      "step_z": 104.0,
+      "pass": true
+     }
+    ],
+    "pass_all": true
+   },
+   "L": {
+    "x": -118.0,
+    "ref_y": 9.9,
+    "min_y": 9.77,
+    "min_z": 92.0,
+    "drop_mm": 0.13,
+    "max_step_mm": 0.39,
+    "step_z": 104.0,
+    "pass": true,
+    "lines": [
+     {
+      "x": -112.0,
+      "ref_y": 8.02,
+      "min_y": 7.92,
+      "min_z": 114.0,
+      "drop_mm": 0.11,
+      "max_step_mm": 0.35,
+      "step_z": 150.0,
+      "pass": true
+     },
+     {
+      "x": -115.0,
+      "ref_y": 9.66,
+      "min_y": 9.65,
+      "min_z": 96.0,
+      "drop_mm": 0.01,
+      "max_step_mm": 0.18,
+      "step_z": 104.0,
+      "pass": true
+     },
+     {
+      "x": -118.0,
+      "ref_y": 9.9,
+      "min_y": 9.77,
+      "min_z": 92.0,
+      "drop_mm": 0.13,
+      "max_step_mm": 0.39,
+      "step_z": 104.0,
+      "pass": true
+     }
+    ],
+    "pass_all": true
+   },
+   "pass": true
+  }
+ },
+ "bed": {
+  "lower": {
+   "extents_mm": [
+    321.05,
+    299.58,
+    76.7
+   ],
+   "fits": true,
+   "fits_with_brim": true,
+   "spare_mm": [
+    2.95,
+    4.42
+   ],
+   "best_rotation": {
+    "deg": 0.0,
+    "swap": false,
+    "w_mm": 321.05,
+    "h_mm": 299.58,
+    "over_mm": -2.95,
+    "fits_with_brim": true
+   }
+  },
+  "upper": {
+   "extents_mm": [
+    309.39,
+    280.12,
+    64.38
+   ],
+   "fits": true,
+   "fits_with_brim": true,
+   "spare_mm": [
+    14.61,
+    23.88
+   ],
+   "best_rotation": {
+    "deg": 0.0,
+    "swap": false,
+    "w_mm": 309.39,
+    "h_mm": 280.12,
+    "over_mm": -14.61,
+    "fits_with_brim": true
+   }
+  }
+ },
+ "trap_walls": {
+  "washer_slot": {
+   "outer_wall_mm": 2.3,
+   "between_traps_mm": 3.6
+  },
+  "hex_slot": {
+   "outer_wall_mm": 3.4,
+   "between_traps_mm": 5.8
+  },
+  "min_wall_mm": 2.3,
+  "pass_2mm": true,
+  "nut_held_by_flats": true
+ },
+ "fixes": {
+  "US1_HULL": {
+   "x": [
+    40.0,
+    104.0
+   ],
+   "y": [
+    -38.0,
+    4.0
+   ],
+   "z": [
+    -9.0,
+    15.0
+   ]
+  },
+  "US1_BUTTRESS": {
+   "half_z": 12.0,
+   "len": 16.0,
+   "top_drop": 0.0,
+   "end_y": "floor"
+  },
+  "US2_BUTTRESS": {
+   "half_z": 14.0,
+   "len": 16.0,
+   "top_drop": 0.0,
+   "end_y": "floor"
+  },
+  "US2_FLARE": {
+   "half_z_root": 22.0,
+   "len": 16.0
+  },
+  "SLOT_HALF": 6.0,
+  "FLOOR_LIP_R": 3.0,
+  "BLOCK_LIP_R": 3.0,
+  "joint": {
+   "dz": 7.0,
+   "hex_trap": true
+  }
+ },
+ "assumptions": [
+  {
+   "id": "QUARTER-CONTACT",
+   "text": "The under-strap meets the quarter 0-50 mm aft of the pin line (taut strap on the front edge against the spreader; a rounder bottom further aft): the design rows. 95 mm (half the quarter proxy's 190 mm depth) is run as a sensitivity.",
+   "settled_by": "MT-1cr with a >= 50 kg quarter-shaped load: photograph the strap contact line from the side and measure its distance aft of the pin line."
+  },
+  {
+   "id": "QUARTER-WIDTH",
+   "text": "The load in the cradle is the 280 mm wide R-08 quarter proxy (huntkit/viz3d/params.py): US1's legs run outboard to its edges, US2's straight down at its edge; a narrow load takes both legs inboard to x 0.",
+   "settled_by": "MT-1cr: legs' lateral direction at each pin, narrow (boned bag) and wide (bone-in) loads."
+  },
+  {
+   "id": "BELLY-40",
+   "text": "The cradle is designed down to a 40 mm belly at the 53 kg float limit; flatter is not credited. A hand can reach it (5th-percentile male one-arm pull 178-199 N, FAA HFDS Ch. 14 Exh. 14.5.2.1; a strong user, both hands or a braced foot pull more), so no strength cap on the hand is used.",
+   "settled_by": "MT-1cr: cam each strap as hard as a strong user can, gloved, with the 53 kg load: belly measured >= 40 mm."
+  },
+  {
+   "id": "SUB-BC",
+   "text": "The print submodel is fixed where its box cuts the frame (US1: x -6..140 incl. the lumbar hub; US2: x 80..192); the smaller boxes gave LESS severe US1 numbers (sensitivity in the record).",
+   "settled_by": "Strain gauges at the arm roots in MT-1cr (gauge table): measured <= the pass line."
+  },
+  {
+   "id": "CLEVIS-SHARE",
+   "text": "Outer cheek's share of the pin's y-z load 0.6 (1.0 as sensitivity); the inboard leg's x pull bears on the INNER (body) cheek and loads no clevis bolt.",
+   "settled_by": "CLEVIS-SHARE A and B (gauge table)."
+  },
+  {
+   "id": "GAUGE-LOCAL",
+   "text": "T1 gauge values carry only the local bag-on pin load (the submodel has no global stay stress); the T1 pass line is advisory, MT-1cr and CLEVIS-SHARE (pin loads only) are the gates.",
+   "settled_by": "Record T1 anyway; compare with the whole-body model when it is re-run on the BL-053 body."
+  },
+  {
+   "id": "TREE-FILL",
+   "text": "Tree supports use 12 % of the column volume they span (+ 3 dense 0.2 mm interface layers); high estimate 25 %.",
+   "settled_by": "Bambu Studio plate preview of each file with the README's support settings: filament and time."
+  },
+  {
+   "id": "SAND-ALLOW",
+   "text": "Sanding the support witness off the stays' wearer faces removes <= 0.2 mm (about 2.2 % of the stay's bending section modulus).",
+   "settled_by": "Caliper the stay depth at 5 points before / after sanding on the first article."
+  },
+  {
+   "id": "SCAR-KD",
+   "text": "Support witness sanded flat costs no more fatigue strength than the 2.2 % section loss.",
+   "settled_by": "CA-1: add 2 XY bars printed over tree supports and sanded as the README says, against 2 printed flat."
+  },
+  {
+   "id": "WRAP-TENSION",
+   "text": "The strap's wrap over its own lug carries the bag-on cam-tight tension (US1 444 N, US2 296 N, factored 3.0) on the recorded meat drapes; the eye is necked to 18 mm in the throat.",
+   "settled_by": "FIT-US: inspect the lip and strap for fuzz or whitening after the crank cycles."
+  },
+  {
+   "id": "CLIP-MASS",
+   "text": "R-clip 0.6 g, tether 0.2 g each.",
+   "settled_by": "Weigh one set."
+  },
+  {
+   "id": "BODY-NOT-RERUN",
+   "text": "The whole-body check (h1_buckling.full_check) was not re-run on the BL-053 body: the fixes are local lug blocks (+56 g) away from the governing body regions (lumbar struts, stay L lower sleeve z 160-240).",
+   "settled_by": "Re-run h1_crown --body on the BL-053 print body (heavy job, about an hour) before P1."
+  }
+ ],
+ "clearance": {
+  "worst_clear_mm": {
+   "us1": 12.4,
+   "us2": 14.6
+  },
+  "pass": true,
+  "rows": [
+   {
+    "torso": 15,
+    "side": "R",
+    "strap": "us1",
+    "clear_mm": {
+     "hinge": 12.4,
+     "us2": 69.0,
+     "he": 16.2,
+     "stay": -7.6
+    },
+    "min_clear_mm": 12.4,
+    "pass": true
+   },
+   {
+    "torso": 15,
+    "side": "R",
+    "strap": "us2",
+    "clear_mm": {
+     "hinge": 19.2,
+     "us1": 58.8,
+     "he": 22.6,
+     "stay": -6.5
+    },
+    "min_clear_mm": 19.2,
+    "pass": true
+   },
+   {
+    "torso": 15,
+    "side": "L",
+    "strap": "us1",
+    "clear_mm": {
+     "hinge": 13.0,
+     "us2": 69.4,
+     "he": 16.6,
+     "stay": -7.9
+    },
+    "min_clear_mm": 13.0,
+    "pass": true
+   },
+   {
+    "torso": 15,
+    "side": "L",
+    "strap": "us2",
+    "clear_mm": {
+     "hinge": 21.5,
+     "us1": 60.2,
+     "he": 28.1,
+     "stay": -5.0
+    },
+    "min_clear_mm": 21.5,
+    "pass": true
+   },
+   {
+    "torso": 19,
+    "side": "R",
+    "strap": "us1",
+    "clear_mm": {
+     "hinge": 14.0,
+     "us2": 69.0,
+     "he": 17.7,
+     "stay": -7.4
+    },
+    "min_clear_mm": 14.0,
+    "pass": true
+   },
+   {
+    "torso": 19,
+    "side": "R",
+    "strap": "us2",
+    "clear_mm": {
+     "hinge": 14.6,
+     "us1": 54.9,
+     "he": 22.2,
+     "stay": -5.7
+    },
+    "min_clear_mm": 14.6,
+    "pass": true
+   },
+   {
+    "torso": 19,
+    "side": "L",
+    "strap": "us1",
+    "clear_mm": {
+     "hinge": 12.4,
+     "us2": 70.3,
+     "he": 15.5,
+     "stay": -7.9
+    },
+    "min_clear_mm": 12.4,
+    "pass": true
+   },
+   {
+    "torso": 19,
+    "side": "L",
+    "strap": "us2",
+    "clear_mm": {
+     "hinge": 15.5,
+     "us1": 58.0,
+     "he": 22.6,
+     "stay": -5.5
+    },
+    "min_clear_mm": 15.5,
+    "pass": true
+   },
+   {
+    "torso": 23,
+    "side": "R",
+    "strap": "us1",
+    "clear_mm": {
+     "hinge": 14.0,
+     "us2": 68.8,
+     "he": 16.0,
+     "stay": -7.8
+    },
+    "min_clear_mm": 14.0,
+    "pass": true
+   },
+   {
+    "torso": 23,
+    "side": "R",
+    "strap": "us2",
+    "clear_mm": {
+     "hinge": 18.8,
+     "us1": 63.8,
+     "he": 22.0,
+     "stay": -6.8
+    },
+    "min_clear_mm": 18.8,
+    "pass": true
+   },
+   {
+    "torso": 23,
+    "side": "L",
+    "strap": "us1",
+    "clear_mm": {
+     "hinge": 12.4,
+     "us2": 69.1,
+     "he": 15.3,
+     "stay": -8.4
+    },
+    "min_clear_mm": 12.4,
+    "pass": true
+   },
+   {
+    "torso": 23,
+    "side": "L",
+    "strap": "us2",
+    "clear_mm": {
+     "hinge": 16.4,
+     "us1": 59.5,
+     "he": 22.4,
+     "stay": -5.7
+    },
+    "min_clear_mm": 16.4,
+    "pass": true
+   }
+  ]
+ },
+ "print_plan": {
+  "lower|+1": {
+   "build": "+y (wearer face down)",
+   "plate_contact_mm2": 739.0,
+   "footprint_mm2": 23922.0,
+   "down_cells_mm2": 28567.0,
+   "supported_mm2": 11136.0,
+   "supported_by_region_mm2": {
+    "stay": 2224.0,
+    "lug": 6946.0,
+    "clevis": 0.0,
+    "other": 1966.0
+   },
+   "support_column_mm3": 329168.0,
+   "part_mm3": 450580.0,
+   "max_column_mm": 57.0,
+   "support_g": 49.0
+  },
+  "lower|-1": {
+   "build": "-y (bag face down)",
+   "plate_contact_mm2": 544.0,
+   "footprint_mm2": 23922.0,
+   "down_cells_mm2": 28762.0,
+   "supported_mm2": 13829.0,
+   "supported_by_region_mm2": {
+    "stay": 2497.0,
+    "lug": 8645.0,
+    "clevis": 0.0,
+    "other": 2687.0
+   },
+   "support_column_mm3": 273870.0,
+   "part_mm3": 450580.0,
+   "max_column_mm": 59.0,
+   "support_g": 43.6
+  },
+  "upper|+1": {
+   "build": "+y (wearer face down)",
+   "plate_contact_mm2": 223.0,
+   "footprint_mm2": 31807.0,
+   "down_cells_mm2": 44491.0,
+   "supported_mm2": 18044.0,
+   "supported_by_region_mm2": {
+    "stay": 8755.0,
+    "lug": 3030.0,
+    "clevis": 0.0,
+    "other": 6259.0
+   },
+   "support_column_mm3": 344244.0,
+   "part_mm3": 513426.0,
+   "max_column_mm": 44.0,
+   "support_g": 55.3
+  },
+  "upper|-1": {
+   "build": "-y (bag face down)",
+   "plate_contact_mm2": 576.0,
+   "footprint_mm2": 31807.0,
+   "down_cells_mm2": 44138.0,
+   "supported_mm2": 19915.0,
+   "supported_by_region_mm2": {
+    "stay": 8503.0,
+    "lug": 3789.0,
+    "clevis": 0.0,
+    "other": 7623.0
+   },
+   "support_column_mm3": 363940.0,
+   "part_mm3": 513426.0,
+   "max_column_mm": 46.0,
+   "support_g": 59.0
+  },
+  "us2_clevis_R(print coords, z up)|+1": {
+   "build": "+y (wearer face down)",
+   "plate_contact_mm2": 580.0,
+   "footprint_mm2": 599.0,
+   "down_cells_mm2": 307.0,
+   "supported_mm2": 74.0,
+   "supported_by_region_mm2": {
+    "stay": 0.0,
+    "lug": 0.0,
+    "clevis": 0.0,
+    "other": 74.0
+   },
+   "support_column_mm3": 426.0,
+   "part_mm3": 13050.0,
+   "max_column_mm": 8.0,
+   "support_g": 0.1
+  },
+  "us_route_stay_R|+1": {
+   "build": "+y (wearer face down)",
+   "plate_contact_mm2": 9.0,
+   "footprint_mm2": 7267.0,
+   "down_cells_mm2": 8322.0,
+   "supported_mm2": 3684.0,
+   "supported_by_region_mm2": {
+    "stay": 168.0,
+    "lug": 2669.0,
+    "clevis": 561.0,
+    "other": 286.0
+   },
+   "support_column_mm3": 84087.0,
+   "part_mm3": 155488.0,
+   "max_column_mm": 38.0,
+   "support_g": 13.0
+  },
+  "us_route_stay_R|-1": {
+   "build": "-y (bag face down)",
+   "plate_contact_mm2": 720.0,
+   "footprint_mm2": 7267.0,
+   "down_cells_mm2": 7611.0,
+   "supported_mm2": 3890.0,
+   "supported_by_region_mm2": {
+    "stay": 205.0,
+    "lug": 2922.0,
+    "clevis": 572.0,
+    "other": 191.0
+   },
+   "support_column_mm3": 57773.0,
+   "part_mm3": 155488.0,
+   "max_column_mm": 50.0,
+   "support_g": 9.8
+  },
+  "hefit_hinge_fairlead_R|+1": {
+   "build": "+y (wearer face down)",
+   "plate_contact_mm2": 15.0,
+   "footprint_mm2": 2339.0,
+   "down_cells_mm2": 2618.0,
+   "supported_mm2": 864.0,
+   "supported_by_region_mm2": {
+    "stay": 218.0,
+    "lug": 646.0,
+    "clevis": 0.0,
+    "other": 0.0
+   },
+   "support_column_mm3": 8580.0,
+   "part_mm3": 40618.0,
+   "max_column_mm": 22.0,
+   "support_g": 1.6
+  },
+  "hefit_hinge_fairlead_R|-1": {
+   "build": "-y (bag face down)",
+   "plate_contact_mm2": 720.0,
+   "footprint_mm2": 2339.0,
+   "down_cells_mm2": 1913.0,
+   "supported_mm2": 1093.0,
+   "supported_by_region_mm2": {
+    "stay": 142.0,
+    "lug": 951.0,
+    "clevis": 0.0,
+    "other": 0.0
+   },
+   "support_column_mm3": 18544.0,
+   "part_mm3": 40618.0,
+   "max_column_mm": 31.0,
+   "support_g": 3.1
+  },
+  "im3ec_cheek_R|+1": {
+   "build": "+y (wearer face down)",
+   "plate_contact_mm2": 729.0,
+   "footprint_mm2": 3023.0,
+   "down_cells_mm2": 4180.0,
+   "supported_mm2": 886.0,
+   "supported_by_region_mm2": {
+    "stay": 495.0,
+    "lug": 375.0,
+    "clevis": 0.0,
+    "other": 16.0
+   },
+   "support_column_mm3": 9832.0,
+   "part_mm3": 64862.0,
+   "max_column_mm": 18.0,
+   "support_g": 1.8
+  },
+  "im3ec_cheek_R|-1": {
+   "build": "-y (bag face down)",
+   "plate_contact_mm2": 448.0,
+   "footprint_mm2": 3023.0,
+   "down_cells_mm2": 4461.0,
+   "supported_mm2": 1674.0,
+   "supported_by_region_mm2": {
+    "stay": 851.0,
+    "lug": 795.0,
+    "clevis": 0.0,
+    "other": 28.0
+   },
+   "support_column_mm3": 27991.0,
+   "part_mm3": 64862.0,
+   "max_column_mm": 27.0,
+   "support_g": 4.6
+  }
+ },
+ "screenshots": [
+  "outputs/screens/20261113_BL053_1.png",
+  "outputs/screens/20261113_BL053_2.png",
+  "outputs/screens/20261113_BL053_3.png",
+  "outputs/screens/20261113_BL053_4.png"
+ ]
+}

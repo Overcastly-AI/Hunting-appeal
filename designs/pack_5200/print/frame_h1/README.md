@@ -10,26 +10,26 @@ H1 is the frame the owner adopted on 2026-11-10 (`docs/DECISIONS.md`): a branchi
 
 - **Engineering release candidate, not released.** Print the first article only after the coupons CA-1 and CA-5 pass (`designs/pack_5200/tests_physical/CA1_fatigue_rig.md`, the test kit) **and** after the BL-053 print plan (orientation, supports, filament, time) has replaced the placeholder in BUILD_H1 section 3.
 - Review 5 (`analysis/review_20261113_fifth.md`) found the body files cannot be printed with the old "no supports" text (B-1). BL-053 owns the supports, cradle direction, nut traps, US1 root and pin retention; BL-054 (this package) owns the build text.
-- **[PLACEHOLDER BL-053]** BL-053 data not yet published; marked placeholders in BUILD_H1.
+- BL-053 data in use: `designs/pack_5200/print/frame_h1/print_settings_bl053.json, designs/pack_5200/analysis/h1_rev5.json`.
 
 ## Files
 
 | file | what | mass | size as written on the plate (x, y, z) | watertight |
 |---|---|---:|---|---|
-| `h1_lower_flat.stl` / `.3mf` | lower half | 425.6 g (15.01 oz) | 321.1 x 299.6 x 76.7 mm (12.6 x 11.8 x 3.0 in) | True |
-| `h1_upper_flat.stl` / `.3mf` | upper half | 543.5 g (19.17 oz) | 309.4 x 280.1 x 64.4 mm (12.2 x 11.0 x 2.5 in) | True |
-| `us2_clevis_R.stl` / `.3mf` | US2 clevis, right | 13.8 g (0.49 oz) | 20.7 x 29.0 x 36.5 mm (0.8 x 1.1 x 1.4 in) | True |
-| `us2_clevis_L.stl` / `.3mf` | US2 clevis, left | 13.8 g (0.49 oz) | 20.7 x 29.0 x 36.5 mm (0.8 x 1.1 x 1.4 in) | True |
+| `h1_lower_flat.stl` / `.3mf` | lower half | 479.7 g (16.92 oz) | 321.1 x 299.6 x 76.7 mm (12.6 x 11.8 x 3.0 in) | True |
+| `h1_upper_flat.stl` / `.3mf` | upper half | 543.4 g (19.17 oz) | 309.4 x 280.1 x 64.4 mm (12.2 x 11.0 x 2.5 in) | True |
+| `us2_clevis_R.stl` / `.3mf` | US2 clevis, right | 13.7 g (0.48 oz) | 20.7 x 29.0 x 36.5 mm (0.8 x 1.1 x 1.4 in) | True |
+| `us2_clevis_L.stl` / `.3mf` | US2 clevis, left | 13.7 g (0.48 oz) | 20.7 x 29.0 x 36.5 mm (0.8 x 1.1 x 1.4 in) | True |
 | `crown_pawl_lp_fdm_pacf.stl` / `.3mf` | low-profile pawl (P1 prototype) | 4.2 g (0.15 oz) | 33.0 x 12.4 x 16.0 mm (1.3 x 0.5 x 0.6 in) | True |
-| `h1_assembled.stl` | whole frame as assembled (checks only, do not print) | 996.6 g (35.15 oz) | 367.5 x 76.7 x 543.9 mm (14.5 x 3.0 x 21.4 in) | True |
-| `test_pieces/hefit_hinge_fairlead_R.stl` / `.3mf` | test piece HE-FIT / PT-3 / SEW-F | 41.6 g (1.47 oz) | 46.4 x 80.0 x 44.4 mm (1.8 x 3.1 x 1.7 in) | True |
-| `test_pieces/us_route_stay_R.stl` / `.3mf` | test piece US ROUTE / CLEVIS-SHARE | 127.0 g (4.48 oz) | 117.0 x 120.0 x 64.7 mm (4.6 x 4.7 x 2.5 in) | True |
+| `h1_assembled.stl` | whole frame as assembled (checks only, do not print) | 1050.6 g (37.06 oz) | 367.5 x 76.7 x 543.9 mm (14.5 x 3.0 x 21.4 in) | True |
+| `test_pieces/hefit_hinge_fairlead_R.stl` / `.3mf` | test piece HE-FIT / PT-3 / SEW-F | 42.9 g (1.51 oz) | 46.4 x 80.0 x 44.9 mm (1.8 x 3.1 x 1.8 in) | True |
+| `test_pieces/us_route_stay_R.stl` / `.3mf` | test piece US ROUTE / CLEVIS-SHARE | 150.8 g (5.32 oz) | 117.0 x 120.0 x 64.7 mm (4.6 x 4.7 x 2.5 in) | True |
 | `test_pieces/im3ec_cheek_R.stl` / `.3mf` | test piece IM3-EC | 68.5 g (2.42 oz) | 42.5 x 83.4 x 51.3 mm (1.7 x 3.3 x 2.0 in) | True |
 | `crown_pawl_lp_slm.stl` / `.3mf` | low-profile pawl, Ti-6Al-4V SLM + HIP (production), 12 mm wide | bought SLM part | | |
 | `test_pieces/*_frame_coords.stl` | the test pieces in frame coordinates, for the slice checks (do not print) | | | |
 | `drawings/spine_clamp_7075.pdf` / `.png` / `.dxf` | machined 7075 spine clamp drawing (BL-054) | | | |
 
-- Printed body (two halves): **969.1 g (34.18 oz)**, 2.14 lb; with the two clevises 996.7 g (35.16 oz); `h1_assembled.stl` 996.6 g (35.15 oz) (the same parts, as assembled).
+- Printed body (two halves): **1023.1 g (36.09 oz)**, 2.26 lb; with the two clevises 1050.5 g (37.06 oz); `h1_assembled.stl` 1050.6 g (37.06 oz) (the same parts, as assembled).
 - Masses are the mesh volume x 1.06 g/cm3 (`data/materials` `pa12_cf_fdm_paht`), before support, brim and waste.
 - The lower half is written **already turned on the plate** (163.5 deg, BL-050): do not rotate it in the slicer unless BL-053 says so.
 - Superseded files one folder up (`../crown_pawl_fdm_pacf.*`, `../crown_pawl_slm.*`): the old pawl does **not** fit H1. The rack `../crown_rack_fdm_pacf.stl` is still the rack (BUILD_H1 step 13).

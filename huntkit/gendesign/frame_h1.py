@@ -835,6 +835,12 @@ def print_mesh(solid: np.ndarray, j: Joint = JOINT, log=print, fairleads: bool =
                 stats["hinge_relief_bl047"] = rl
             if log:
                 log(f"  hinge relief (BL-047 m-1): {rl['g']:+.2f} g")
+        from . import h1_rev5 as R5
+        if LN.LANES and R5.FIXES:      # BL-053: lane lug fixes (US1 block + buttresses, US2 buttress + root flare)
+            fx: dict = {}
+            man = R5.add_fixes(man, log=log, stats=fx)
+            if stats is not None:
+                stats["lug_fixes_bl053"] = fx
     man = man.simplify(SIMPLIFY_MM)
     out = _from_manifold(man)
     if log:

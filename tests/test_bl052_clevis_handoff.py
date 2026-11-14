@@ -135,7 +135,7 @@ def test_kit_shopping_has_gauges_and_the_right_washer_count():
     w = next(x for x in sh if x["item"].startswith("US2 CLEVIS ONLY: M5 washer 10 mm"))
     assert int(float(w["qty"])) == 2 * 2 * BF.JOINT.n_washers + 2 == 6
     assert any("strain gauges" in x["item"] for x in sh)
-    assert any("quarter-bridge" in x["item"] for x in sh)
+    assert any("half-bridge" in x["item"] for x in sh)          # BL-054 (review 5 m-8): dummy-gauge compensation
 
 
 # ------------------------------------------------------------------------------------------- 4. clevis face

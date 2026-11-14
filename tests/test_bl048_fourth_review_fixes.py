@@ -36,9 +36,10 @@ def test_mb_bom_and_shopping_list_carry_the_spec():
 
 
 def test_mc_fixture_pin_is_a_hardened_m5x40_dowel():
-    assert "M5 x 40" in K.FIX_PIN and "hardened" in K.FIX_PIN and K.FIX_PIN_N >= 2
+    # BL-054 (review 5 m-4): 50 mm since the hinge span became 40 mm (BL-049)
+    assert "M5 x 50" in K.FIX_PIN and "hardened" in K.FIX_PIN and K.FIX_PIN_N >= 2
     steps = K.pt3_steps()
-    assert "M5 x 40" in steps and "PIN CHECK" in steps
+    assert "M5 x 50" in steps and "PIN CHECK" in steps
     # why: the frame's own pin model puts a 5 mm 7075 pin past yield at the PT-3 proof
     from huntkit.gendesign import h1_fairleads as H
     assert H.pin_bending(1530.0, 20.0, 8.0, 5.0, 2.4)["sf_yield"] < 1.0

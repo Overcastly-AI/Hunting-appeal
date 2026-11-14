@@ -234,35 +234,57 @@ SUPPORT_TXT = ("tree supports FROM THE BUILD PLATE under the whole piece, in PAH
                "counterbore and nut trap. After printing break the supports off, sand the scars flush ALONG the stay")
 
 
+def ps() -> dict:
+    """BL-053's print settings (``print/frame_h1/print_settings_bl053.json``), {} before it lands."""
+    return bl053().get("print_settings_bl053", {})
+
+
+def rev5() -> dict:
+    """BL-053's results (``analysis/h1_rev5.json``), {} before it lands."""
+    return bl053().get("h1_rev5", {})
+
+
+def ps_file(piece: str) -> dict:
+    """BL-053 per-file print row for one file stem (keys there are 'test_pieces/x.stl' or 'a.stl / b.stl')."""
+    for k, v in ps().get("files", {}).items():
+        if any(Path(n.strip()).stem == Path(piece).stem for n in k.split("/ ") + k.split(" / ")):
+            return v
+    return {}
+
+
 def piece_print_txt(piece: str, short: bool = False) -> str:
     """One sentence a beginner can follow for printing one test piece (kit HE-FIT / PT-3 / SEW-F / US ROUTE /
-    CLEVIS-SHARE / IM3-EC). BL-053's per-piece plan is quoted when its JSON has an entry for the piece."""
-    b = bl053()
-    hit = None
-    if b:
-        flat = dict(_flat({k: v for k, v in b.items() if k != "_path"}))
-        hit = {k: v for k, v in flat.items() if piece in k}
-    on, ov = PIECE_CONTACT.get(piece, ("?", "?"))
-    if piece.startswith("us2_clevis"):
-        sup = (f"NO supports: it prints flat ({on} of its footprint on the plate, review 5 B-1), blockers in the bolt "
-               "holes and counterbores")
+    CLEVIS-SHARE / IM3-EC), from BL-053's per-file support plan (print_settings_bl053.json) when it is on file,
+    else the review 5 B-1 interim rule (marked). No ';' in the text: the kit splits steps on it."""
+    f = ps_file(piece)
+    if f:
+        on = f"{f['plate_contact_mm2']:.0f} mm2"
+        ov = f"{f['supported_down_area_mm2']:.0f} mm2 needs support"
+        src = "BL-053 print_settings_bl053.json"
+        fil = f", filament about {f['filament_g_est']:.0f} g, about {f['print_h_est']:.1f} h"
     else:
-        sup = (f"SUPPORTS REQUIRED (it touches the plate over only {on}, {ov} overhangs more than 45 deg, review 5 "
-               f"B-1): {SUPPORT_TXT}")
-    if hit:
-        sup += ". BL-053 plan: " + ", ".join(f"{k.split('.')[-1]} {v}" for k, v in list(hit.items())[:8])
-    else:
-        sup += f" ({PLACEHOLDER.strip('*')} per-piece orientation and supports: check BUILD_H1 section 10 first)"
+        on, ov = PIECE_CONTACT.get(piece, ("?", "?"))
+        ov = f"{ov} overhangs more than 45 deg"
+        src = "review 5 B-1 interim"
+        fil = ""
+    flat_piece = piece.startswith("us2_clevis") or (f and str(f.get("supports", "")).startswith("none"))
     if short:
-        on_ = f"it touches the plate over only {on}"
-        if piece.startswith("us2_clevis"):
+        if flat_piece:
             return ("frame profile of BUILD_H1.md section 3, NO supports (it prints flat), blockers in the holes, "
-                    "annealed 90 C 6 h")
-        return (f"frame profile of BUILD_H1.md section 3 with SUPPORTS REQUIRED ({on_}): tree supports from the build "
-                "plate in PAHT-CF, blockers in every bore, pin hole, bolt hole and trap, scars sanded along the stay, "
-                "annealed 90 C 6 h" + ("" if hit else f" ({PLACEHOLDER.strip('*')}: check BUILD_H1 section 10 first)"))
-    return (f"{PROFILE_TXT}. {sup}. Anneal 90 C (194 F) 6 h with the part on a flat plate, cool in the oven, then ream "
-            "every hole as the frame (BUILD_H1 sections 7-9)")   # no ';' in this text: the kit splits steps on it
+                    f"annealed 90 C 6 h{fil}")
+        return (f"frame profile of BUILD_H1.md section 3 with SUPPORTS REQUIRED (it touches the plate over only {on}, "
+                f"{src}): tree supports from the build plate in PAHT-CF, blockers in every bore, pin hole, bolt hole and "
+                f"trap, scars sanded flat (BUILD_H1 section 4){fil}"
+                + ("" if f else f" ({PLACEHOLDER.strip('*')}: check BUILD_H1 section 10 first)"))
+    if flat_piece:
+        sup = (f"NO supports: it prints flat (plate contact {on}, {src}), blockers in the bolt holes and "
+               "counterbores")
+    else:
+        sup = f"SUPPORTS REQUIRED (it touches the plate over only {on}, {ov}, {src}): {SUPPORT_TXT}"
+        if not f:
+            sup += f" ({PLACEHOLDER.strip('*')} per-piece orientation and supports: check BUILD_H1 section 10 first)"
+    return (f"{PROFILE_TXT}. {sup}{fil}. Anneal 90 C (194 F) 6 h with the part on a flat plate, cool in the oven, "
+            "then ream every hole as the frame (BUILD_H1 sections 7-9)")
 
 
 # ================================================================================ text blocks
@@ -305,20 +327,35 @@ def _flat(d, pre=""):
 
 
 def _render_bl053(b: dict) -> list[str]:
-    """Generic render of BL-053's print plan (schema not fixed when BL-054 was written): every key under a 'print' /
-    'supports' / 'print_plan' block as a table, the rest named."""
-    L = []
-    keys = [k for k in b if any(t in k.lower() for t in ("print", "support", "orient"))]
-    for k in keys or []:
-        v = b[k]
-        L += [f"**{k}**", "", "| item | value |", "|---|---|"]
-        if isinstance(v, dict):
-            L += [f"| {a} | {json.dumps(x) if isinstance(x, (list, dict)) else x} |" for a, x in _flat(v)]
-        else:
-            L.append(f"| {k} | {v} |")
-        L.append("")
-    if not keys:
-        L += [f"{PLACEHOLDER} the BL-053 file has no print / support block yet: keys {', '.join(sorted(b)[:20])}.", ""]
+    """BL-053's print settings as beginner tables (print_settings_bl053.json schema)."""
+    p = b.get("print_settings_bl053", {})
+    if not p:
+        return [f"{PLACEHOLDER} BL-053 results are on file but no print_settings_bl053.json yet.", ""]
+    o, su = p["orientation"], p["supports"]
+    tz = su["top_z_distance_mm"]
+    L = ["Supports (BL-053, from `print/frame_h1/print_settings_bl053.json`):", "",
+         "| setting | value |", "|---|---|",
+         f"| orientation | {o['all_files']} |",
+         f"| support type | **{su['type']}** |",
+         f"| support material | {su['material']} |",
+         f"| top Z distance | {tz[0]:.2f}-{tz[1]:.2f} mm ({tz[0] / IN:.3f}-{tz[1] / IN:.3f} in) |",
+         f"| interface layers / spacing | {su['interface_layers']} / {su['interface_spacing_mm']} mm |",
+         f"| support XY distance | {su['xy_distance_mm']} mm |",
+         f"| brim | {su['brim_mm']:.0f} mm |",
+         "| **support blockers (paint them BEFORE slicing)** | " + "; ".join(su["blockers"]) + " |", "",
+         f"Why not flipped: {o['why_not_flipped']}.", "",
+         f"Slicer warning: {su['note']}.", "",
+         "Per file (support mass estimate and its high bound; time rule: " + p.get("time_rule", "") + "):", "",
+         "| file | touches the plate | needs support under | part | support (high) | filament (high) | time | "
+         "tallest support |", "|---|---:|---:|---:|---:|---:|---:|---:|"]
+    for k, f in p["files"].items():
+        L.append(f"| `{k}` | {f['plate_contact_mm2']:.0f} mm2 | {f['supported_down_area_mm2']:.0f} mm2 | "
+                 f"{f['part_g']:.1f} g | {f['support_g_est']:.1f} ({f['support_g_high']:.1f}) g | "
+                 f"{f['filament_g_est']:.0f} ({f['filament_g_high']:.0f}) g | {f['print_h_est']:.1f} h | "
+                 f"{f['max_support_column_mm']:.0f} mm ({f['max_support_column_mm'] / IN:.1f} in) |")
+    tot = sum(p["files"][k]["filament_g_high"] for k in p["files"] if "flat" in k)
+    L += ["", f"The two halves together need up to **{tot:.0f} g ({tot / 453.6:.2f} lb)** of filament with supports "
+          "(high bound).", ""]
     return L
 
 
@@ -405,9 +442,12 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
     n_tp = sum(by[f]["mass_g"] for f in ("test_pieces/hefit_hinge_fairlead_R", "test_pieces/us_route_stay_R",
                                          "test_pieces/im3ec_cheek_R") if f in by)
     hrs = lower["hours_no_support"] + upper["hours_no_support"]
-    nut_txt = b53_get(b, "nut_trap", "us2_nut_trap", default=None)
-    ret = b53_get(b, "pin_retention", "retention", default=None)
-    belly = b53_get(b, "belly_min_mm", "min_belly_mm", default=None)
+    r5, p5 = rev5(), ps()
+    tw = r5.get("trap_walls", {})
+    pr = r5.get("pins", {})
+    ret = pr.get("retainer", {}).get("part") if pr else None
+    belly = (r5.get("cradle_3d", {}).get("bellies_mm") or [None])[0]
+    scar = p5.get("scars", {})
     op_b25, op_us, op_us2, op_usa, op_bg = (op_no(k) for k in ("B-25", "US", "US2", "USA",
                                                                "US / US2 belly gauge tacks (BL-052, DECISION BELLY-GAUGE)"))
     k = kits
@@ -418,8 +458,10 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
          "Read this file top to bottom, once, before you buy anything. Do the steps in order. Each step says what you "
          "need, what to do, and how you know it worked (CHECK). Metric first, inches in brackets. If a CHECK fails, "
          "stop and send a photo; do not work round it.", "",
-         f"> {PLACEHOLDER} boxes mark what the structural-fea-engineer is still settling in BL-053 (supports, the US2 "
-         "nut trap, the US1 root, pin retention). Where a box sits in a step, that step waits for it.", "",
+         (f"> {PLACEHOLDER} boxes mark what the structural-fea-engineer is still settling in BL-053 (supports, the "
+          "US2 nut trap, the US1 root, pin retention). Where a box sits in a step, that step waits for it." if not r5
+          else f"> BL-053 data is in use (`{b['_path']}`): supports, the US2 hex nut traps, the stronger US1 / US2 "
+          "lugs and the pin retention below come from it."), "",
          "## 0. What you end up with", "",
          "| part | how it is made | mass |", "|---|---|---:|",
          f"| frame body, lower half (feet to z 234) | printed, PAHT-CF | {fg(lower['mass_g'])} |",
@@ -431,7 +473,7 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
          "Frame coordinates used below: x to the wearer's right, y aft (toward the bag), z up from the stay feet. "
          "\"Wearer face\" is the side against your back.", "",
          "## 1. Shopping list (frame only; every line has an ID: label each bag with it)", ""]
-    L += shopping_table(stl, cp, kits, pn, Z, C, pw, ret)
+    L += shopping_table(stl, cp, kits, pn, Z, C, pw, pr)
     L += ["", "> **Two screw lengths and two washer sizes look alike.** HW-J234-SCR (M5 x "
           f"{Z.bolt_len:.0f}) and HW-US2-SCR (M5 x {C.bolt_len:.0f}); HW-J234-WSH ({Z.washer_od:.0f} mm OD) and "
           f"HW-US2-WSH ({C.washer_od:.0f} mm OD). Keep each in its own bag with its ID. Check before fitting: screw "
@@ -457,8 +499,8 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
           "1. **Coupons first.** CA-1 (fatigue bars) and CA-5 (z 234 joint stubs) must pass "
           "(`outputs/release/test_kit/guides/G1.md` prints them, G4 runs them). CHECK: the engineer has written "
           "PASS against both in the results sheet.",
-          f"2. **BL-053 print plan in place.** Section 3 below must show the BL-053 table, not the {PLACEHOLDER} "
-          "box. CHECK: no placeholder box in section 3.",
+          "2. **BL-053 print plan in place.** Section 3 below must show the BL-053 support table, not a "
+          "'PLACEHOLDER BL-053' box. CHECK: no placeholder box in section 3.",
           "3. **Plate preview with supports on** (review 5 m-10). Load each half into Bambu Studio with the profile of "
           "section 3, supports on, brim on. Slice. CHECK, for each half: (a) nothing is red or outside the plate, "
           "including the support base, the brim and the purge / skirt keep-out; (b) the preview's filament and time "
@@ -496,9 +538,13 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
           "1. Let the plate cool to room temperature before you lift the part (warm PAHT-CF bends).",
           "2. Break tree supports off from their tips toward the trunk with pliers; cut stubborn ones with flush "
           "cutters. Work from the middle of each stay outward.",
-          "3. Sand support scars on the wearer face of the stays flush with 120 grit, then 240, sanding ALONG the "
-          f"stay (never across it). Take off no more than the scar. {PLACEHOLDER} BL-053 says whether the wearer face "
-          "of the stays is fatigue-critical and whether a sanding allowance is needed (review 5 B-1 fix 4).",
+          ("3. Support scars: " + scar["where"] + ". **These faces are fatigue-critical.** " + scar["finish"]
+           + f" Measure with the caliper before and after on one stay: at most {scar['allowance']['max_removed_mm']} "
+           f"mm ({scar['allowance']['max_removed_mm'] / IN:.3f} in) off. Sand ALONG the stay, never across it "
+           "(BL-053, ASSUMPTION SAND-ALLOW)." if scar else
+           "3. Sand support scars on the wearer face of the stays flush with 120 grit, then 240, sanding ALONG the "
+           f"stay (never across it). Take off no more than the scar. {PLACEHOLDER} BL-053 says whether the wearer "
+           "face of the stays is fatigue-critical and whether a sanding allowance is needed (review 5 B-1 fix 4)."),
           "4. Pick every bore, pin hole and nut trap clean with a pick and a 3 mm drill bit turned by hand.",
           "5. CHECK: no white (stress-whitened) patch on a stay; no layer split you can catch with a fingernail; "
           "every hole open end to end (hold it to a light).", ""]
@@ -536,17 +582,21 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
           "(HW-BUSH) into the tops of the bores. CHECK: a crown leg with its 70 mm bushing slides the full travel and "
           "does not catch at z 234.", ""]
     # ---- 8. clevis
+    nut_ok = bool(tw.get("nut_held_by_flats"))
     L += ["## 8. US2 clevises", "",
-          f"> {PLACEHOLDER} review 5 M-2: the clevis joint's nut traps in the current print (x +/-{C.trap_x0:.1f} to "
-          f"{C.nut_face:.0f}) are square slots sized for the {C.washer_od:.0f} mm washer, so the {C.nut_af:.0f} mm nut "
-          "spins in them. BL-053 re-cuts them as a hex pocket. "
-          + (f"BL-053 data: {nut_txt}. " if nut_txt else "") + "Until the re-cut STL is in this folder, use the "
-          "fallback in step 2.", "",
+          (f"BL-053 re-cut the nut traps (review 5 M-2): a {C.washer_od:.0f} mm washer slot at the nut face, then a hex "
+           f"pocket that holds the nut by its flats; thinnest wall {tw.get('min_wall_mm')} mm (>= 2 mm). Bolt axes at "
+           f"z +/-{r5.get('fixes', {}).get('joint', {}).get('dz', C.dz):.0f} mm about the pin." if nut_ok else
+           f"> {PLACEHOLDER} review 5 M-2: the clevis joint's nut traps in the current print (x +/-{C.trap_x0:.1f} to "
+           f"{C.nut_face:.0f}) are square slots sized for the {C.washer_od:.0f} mm washer, so the {C.nut_af:.0f} mm "
+           "nut spins in them. BL-053 re-cuts them as a hex pocket. Until the re-cut STL is in this folder, use the "
+           "fallback in step 2."), "",
           f"1. Ream the two bolt holes in each clevis and in the lower half's US2 block (printed {C.hole_print_d:.1f}) "
           f"to **{C.hole_d:.1f} mm ({C.hole_d / IN:.3f} in)**.",
           f"2. Into each side trap, from the wearer face: a {C.washer_od:.0f} mm DIN 433 washer (**HW-US2-WSH**) then an "
-          "M5 nut. If the nut turns in the trap (old print), hold it with a thin 8 mm open spanner slid in from the "
-          "wearer face while you tighten.",
+          "M5 nut. CHECK: the nut slides into its hex pocket and does not turn with a finger"
+          + ("." if nut_ok else "; if it turns (old print), hold it with a thin 8 mm open spanner slid in from the "
+             "wearer face while you tighten."),
           f"3. Put the clevis on its block, flat face to flat face at x +/-163, throat floors flush. Push the **M5 x "
           f"{C.bolt_len:.0f}** screws (**HW-US2-SCR**, not the z 234 M5 x {Z.bolt_len:.0f}) into the counterbores in "
           "the clevis's outer face, **no washer under the head**. Blue threadlocker, snug (about 1 N m).",
@@ -565,14 +615,20 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
           f"3. Pins: hinge (z 60) = **Ti-6Al-4V, {pn['hinge_d_mm']:.0f} x {pn['hinge_len_mm']:.0f} mm** "
           f"(**HW-PIN-TI**, 2; not 7075: the 1019 N hinge row fails a 7075 pin). The other 10 = 7075-T6, 5 mm "
           "(**HW-PIN-AL**).",
-          f"4. {PLACEHOLDER} pin retention (review 5 M-5): BL-053 designs one retention scheme for all 12 pins (head, "
-          "retainer, tether, removal by hand for bag-off). " + (f"BL-053 data: {ret}. " if ret else "") +
-          "The pins go in at bag fitting (bag op list), not at frame build; buy them when the BL-053 part list is in.",
+          (f"4. Pin retention (BL-053, review 5 M-5): {pr['scheme']}. Head on the outboard side, the R-clip "
+           f"(**HW-PIN-RET**: {ret}) through the {pr['stations']['hinge']['cross_hole']['d_mm']} mm cross hole "
+           f"{pr['stations']['hinge']['cross_hole']['from_far_cheek_face_mm']} mm past the far (inboard) cheek face; "
+           f"tether: {pr['retainer']['tether']}. The pins go in at bag fitting; the two hinge pins come out at "
+           "bag-off. CHECK (BL-053 test PIN-RET): " + "; ".join(pr["test"]["steps"]) + "." if pr else
+           f"4. {PLACEHOLDER} pin retention (review 5 M-5): BL-053 designs one retention scheme for all 12 pins "
+           "(head, retainer, tether, removal by hand for bag-off). The pins go in at bag fitting (bag op list), not at "
+           "frame build; buy them when the BL-053 part list is in."),
           "5. CHECK: a 5 mm pin goes through cheek, sleeve, sleeve, cheek at every station by hand, without forcing.", ""]
     # ---- 10 test pieces (gate)
     L += ["## 10. Test pieces for the bag-cut gate (HE-FIT, PT-3, SEW-F, US ROUTE, CLEVIS-SHARE, IM3-EC)", "",
           "Print, anneal and ream them exactly like the frame (sections 3-5, 8, 9). Supports per piece: "
-          + (PLACEHOLDER + " (BL-053 support plan per test piece)." if not b else "the BL-053 table in section 3."),
+          + (PLACEHOLDER + " (BL-053 support plan per test piece)." if not p5 else "the BL-053 per-file table in "
+             "section 3 (same orientation and supports as the frame, so the pieces carry the frame's scars)."),
           "",
           "| piece | file | mass | prints for | count |", "|---|---|---:|---|---:|"]
     for f, use, n in (("test_pieces/hefit_hinge_fairlead_R", "HE-FIT, PT-3, SEW-F (one fresh print each)", 3),
@@ -580,10 +636,10 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
                       ("us2_clevis_R", "bolted onto each US route piece", 2),
                       ("test_pieces/im3ec_cheek_R", "IM3-EC (with the CA-1 bars)", 3)):
         L.append(f"| {by[f]['what']} | `{f}.stl` | {fg(by[f]['mass_g'])} | {use} | {n} |")
-    L += ["", f"Interim support note (review 5 B-1 table, measured on these files): the US route piece touches the plate "
+    L += (["", "Per piece (BL-053): " + " ".join(f"`{p_}` {piece_print_txt(Path(p_).stem, short=True)}." for p_ in ("test_pieces/hefit_hinge_fairlead_R", "test_pieces/us_route_stay_R", "test_pieces/im3ec_cheek_R", "us2_clevis_R")), ""] if p5 else ["", f"Interim support note (review 5 B-1 table, measured on these files): the US route piece touches the plate "
           "over about 10 mm2, the HE-FIT piece about 29 mm2 and the IM3-EC piece 23 % of its footprint; only the US2 "
           "clevis prints flat (94 % on the plate). **All three test pieces need tree supports from the plate; the "
-          "clevis does not.** Same blockers as the frame: nothing inside a bore, pin hole, bolt hole or trap.", ""]
+          "clevis does not.** Same blockers as the frame: nothing inside a bore, pin hole, bolt hole or trap.", ""])
     # ---- 11. pawl
     L += ["## 11. Pawl", "",
           f"1. Ream the pivot bore (printed {pw['bore_print']:.1f}, at z 500 through both cheeks of the pawl housing) "
@@ -687,8 +743,10 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
     return "\n".join(L)
 
 
-def shopping_table(stl, cp, kits, pn, Z, C, pw, ret) -> list[str]:
+def shopping_table(stl, cp, kits, pn, Z, C, pw, pr) -> list[str]:
     by = {r["file"]: r for r in stl}
+    hs = pr.get("stations", {}).get("hinge", {}) if pr else {}
+    ia = pr.get("stations", {}).get("us1", {}) if pr else {}
     fil = sum(by[f]["mass_g"] for f in ("h1_lower_flat", "h1_upper_flat", "us2_clevis_R", "us2_clevis_L"))
     n_cl = 4
     rows = [
@@ -704,14 +762,19 @@ def shopping_table(stl, cp, kits, pn, Z, C, pw, ret) -> list[str]:
          "US2 clevises only, nut side", "hardware store"),
         ("HW-M5-NUT", f"M5 hex nut A2, ISO 4032 ({C.nut_af:.0f} AF x {C.nut_t:.0f} mm)", 8,
          "4 for z 234 + 4 for the clevises; thin nuts do not fit", "hardware store"),
-        ("HW-PIN-TI", f"Ti-6Al-4V pin, {pn['hinge_d_mm']:.0f} mm h8 ground, {pn['hinge_len_mm']:.0f} mm", 2,
-         f"hinge z 60 ({pn['hinge_g']:.1f} g each; yield SF {pn['hinge_sf_yield']}, fatigue {pn['hinge_sf_fat']}, "
-         "h1_lanes.hinge_pin); end form per BL-053 retention", "Ti pin / dowel vendor"),
-        ("HW-PIN-AL", "7075-T6 pin, 5 mm", pn["n_al"],
-         f"US1, US2, IM1-IM3, both sides; span cheek-to-cheek {pn['im_span_mm']:.0f} mm; length and end form per "
-         "BL-053 retention", "machinist / bag kit"),
-        ("HW-PIN-RET", f"{PLACEHOLDER} pin retention parts (review 5 M-5)" if not ret else f"pin retention: {ret}",
-         pn["stations"], "one set per station", "BL-053"),
+        ("HW-PIN-TI", f"Ti-6Al-4V pin, {pn['hinge_d_mm']:.0f} mm h8 ground, " + (
+            f"headed: shank {hs['shank_mm']} mm, head {hs['head_mm'][0]:.0f} x {hs['head_mm'][1]} mm, "
+            f"{hs['cross_hole']['d_mm']} mm cross hole {hs['cross_hole']['from_far_cheek_face_mm']} mm past the far "
+            f"cheek, 1.6 mm tether hole in the head" if hs else f"{pn['hinge_len_mm']:.0f} mm"), 2,
+         f"hinge z 60 (yield SF {pn['hinge_sf_yield']}, fatigue {pn['hinge_sf_fat']}, h1_lanes.hinge_pin)"
+         + ("" if hs else "; end form per BL-053 retention"), "machinist (Ti rod)"),
+        ("HW-PIN-AL", "7075-T6 pin, 5 mm, " + (
+            f"headed: shank {ia['shank_mm']} mm, head {ia['head_mm'][0]:.0f} x {ia['head_mm'][1]} mm, "
+            f"{ia['cross_hole']['d_mm']} mm cross hole, 1.6 mm tether hole" if ia else "length per BL-053"), pn["n_al"],
+         f"US1, US2, IM1-IM3, both sides; span cheek-to-cheek {pn['im_span_mm']:.0f} mm", "machinist / bag kit"),
+        ("HW-PIN-RET", (f"{pr['retainer']['part']} + {pr['retainer']['tether']}" if pr else
+                        f"{PLACEHOLDER} pin retention parts (review 5 M-5)"), pn["stations"], "one set per station"
+         + (f" (BL-053; source {pr['retainer']['source']})" if pr else ""), "hardware / BL-053"),
         ("HW-PIN-SLV", f"UHMWPE sleeve OD {pn['hole_d_mm']:.1f} / ID 5.2, {pn['hinge_cheek_mm']:.0f} mm (4) and "
          f"{pn['im_cheek_mm']:.0f} mm (20) long", 2 * pn["stations"],
          "one per cheek (ASSUMPTION PIN-SLEEVE); turned from UHMWPE rod (record uhmwpe_sheet)", "machinist"),
