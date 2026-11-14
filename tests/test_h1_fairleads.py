@@ -22,13 +22,13 @@ def _legacy_field(pts, stay_r):
     y_tip = y_hole + BA.HOLE_D / 2 + BA.WALL_FRONT
     sdf = np.full(len(pts), 40.0)
     for s in (1.0, -1.0):
-        a, b = s * BA.THROAT / 2, s * (BA.THROAT / 2 + BA.CHEEK)
+        a, b = s * BA.THROAT_LEGACY / 2, s * (BA.THROAT_LEGACY / 2 + BA.CHEEK)
         sdf = np.minimum(sdf, BA._box(pts, np.array([min(a, b), y_root, -BA.HALF_Z]), np.array([max(a, b), y_tip, BA.HALF_Z])))
-    root = BA._box(pts, np.array([-(BA.THROAT / 2 + BA.CHEEK), y_root, -BA.HALF_Z]),
-                   np.array([BA.THROAT / 2 + BA.CHEEK, y_hole - BA.HOLE_D / 2 - 0.8, BA.HALF_Z]))
+    root = BA._box(pts, np.array([-(BA.THROAT_LEGACY / 2 + BA.CHEEK), y_root, -BA.HALF_Z]),
+                   np.array([BA.THROAT_LEGACY / 2 + BA.CHEEK, y_hole - BA.HOLE_D / 2 - 0.8, BA.HALF_Z]))
     sdf = BA._smin(sdf, root, 3.0)
     hole = np.hypot(y - y_hole, z) - BA.HOLE_D / 2
-    hole = np.where(np.abs(x) <= BA.THROAT / 2 + BA.CHEEK + 0.5, hole, 40.0)
+    hole = np.where(np.abs(x) <= BA.THROAT_LEGACY / 2 + BA.CHEEK + 0.5, hole, 40.0)
     return np.maximum(sdf, -hole)
 
 

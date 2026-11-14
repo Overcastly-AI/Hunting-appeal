@@ -1155,7 +1155,7 @@ def bl044_rows() -> list:
          2 * (P.HE_CUT - P.HE_CUT_BL041) / 1000.0 * w38,
          "patterns_corrie_f_rev3.HE_CUT - HE_CUT_BL041, x 2 x poly_webbing_38mm mass_g_m (record)"),
         ("attachment", f"BL-044: hinge pins +{pin['delta_mm']:.0f} mm for the 20 mm throat (x2)", 2 * pin["delta_g"],
-         "corrie_f.hinge_pin: bag_attach.HINGE_EYE_ENVELOPE throat - bag_attach.THROAT, 5 mm x alu_7075_t6 density (record)"),
+         "corrie_f.hinge_pin: bag_attach.HINGE_EYE_ENVELOPE throat - bag_attach.THROAT_LEGACY, 5 mm x alu_7075_t6 density (record)"),
         ("attachment", f"BL-044: B-25 on the sized spine clamp and the printed spine ({_CSC.SPINE_AXIS_FORE_MM:g} mm fore of "
          f"the bar) "
          f"{b25['cut_bl043_mm']:.1f} -> {b25['cut_mm']:.1f} mm", (b25["cut_mm"] - b25["cut_bl043_mm"]) / 1000.0 * w38,
@@ -1179,9 +1179,9 @@ def hinge_pin() -> dict:
     from huntkit.gendesign import attach_system as AS
     env = BA.HINGE_EYE_ENVELOPE
     d = env["pin_d_mm"]
-    delta = env["throat_mm"] - BA.THROAT
+    delta = env["throat_mm"] - BA.THROAT_LEGACY        # BL-055: THROAT is now 20 (as printed); the booked basis is 18
     rho = _rec("alu_7075_t6", "density_kg_m3")
-    span_im = BA.THROAT + 2 * BA.CHEEK
+    span_im = BA.THROAT_LEGACY + 2 * BA.CHEEK         # the 2026-11-01 IM / US span as booked (printed 20 since BL-045)
     span_h = env["throat_mm"] + 2 * BA.CHEEK
     return {"d_mm": d, "span_im_mm": span_im, "span_hinge_mm": span_h, "shank_im_mm": span_im + 2.0,
             "shank_hinge_mm": span_h + 2.0, "overall_im_mm": AS.PIN["L"], "overall_hinge_mm": AS.PIN["L"] + delta,

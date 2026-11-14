@@ -393,7 +393,7 @@ def frame_side(p: dict, g: dict, Part, block, face_y) -> dict:
         (cleats if st["name"] in ("hinge", "im1", "im2", "im3") else cradle_cl).append(m)
         py = pin_y(z0, st["name"])
         pin_at[st["id"]] = np.array([x0, py, z0])
-        pl_ = PIN_L + (fg.throat - BA.THROAT if st["name"] == "hinge" else 0.0)  # BL-044: hinge pin +2 mm (20 mm throat)
+        pl_ = PIN_L + (fg.throat - BA.THROAT_LEGACY if st["name"] == "hinge" else 0.0)  # BL-044: hinge pin +2 mm (20 mm throat)
         pin = _cyl([x0 - pl_ / 2, py, z0], [x0 + pl_ / 2, py, z0], PIN_D / 2, n=16)
         if st["name"] == "hinge":
             ring = [np.array([x0 + s * (pl_ / 2 + 6), py + 9 * np.cos(a), z0 + 9 * np.sin(a)])
@@ -407,7 +407,7 @@ def frame_side(p: dict, g: dict, Part, block, face_y) -> dict:
             if shape.intersects(box(x0 - 20, ze - 32, x0 + 20, ze)):          # IM1 / IM2: hang aft of the board
                 ye = max(py, float(board_bag_y(ze)) + 3.4)
             end = np.array([x0, ye, ze])
-            eye = _eye_loop(pin_at[st["id"]], end, BA.THROAT)
+            eye = _eye_loop(pin_at[st["id"]], end, BA.THROAT_LEGACY)
             eyes.append(eye)
             dr.points(np.asarray(eye.vertices))
             eye_ends[st["id"]] = end

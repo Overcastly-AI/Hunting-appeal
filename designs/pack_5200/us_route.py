@@ -354,7 +354,9 @@ def section_bearing(grid: dict, xc: float, pin: dict, corner_yz, T: float, w: fl
         while len(hull) >= 2:
             (y1, z1_), (y2, z2_) = pts[hull[-2]], pts[hull[-1]]
             cross = (y2 - y1) * (p[1] - z1_) - (z2_ - z1_) * (p[0] - y1)
-            if cross <= 0:        # the middle point is not on the +y side of the chord: drop it
+            # BL-055: with z descending, a middle point on the +y (bag) side of the chord gives cross < 0; the old
+            # test (drop when cross <= 0) kept the -y (lower) hull, so the string never touched an obstacle
+            if cross >= 0:        # the middle point is not on the +y side of the chord: drop it
                 hull.pop()
             else:
                 break

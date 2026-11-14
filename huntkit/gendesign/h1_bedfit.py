@@ -966,6 +966,8 @@ def write_md(res: dict, shots: list) -> str:
     w = []
     a = w.append
     a("# H1 print-bed fit with the US2 lanes: bolt-on US2 outer clevis (BL-050 Part A)")
+    from .h1_closeout import SUPERSEDED_NOTE as _SN
+    a(_SN)
     a(BL051_NOTE)
     a("")
     a("structural-fea-engineer, 2026-11-13. Ticket `docs/backlog/BL-050-bed-fit-and-bag-lanes.md` Part A. Code "

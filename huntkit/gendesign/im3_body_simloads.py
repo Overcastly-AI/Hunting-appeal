@@ -221,7 +221,7 @@ def misuse_1g() -> float:
 # ======================================================================================= 2. eye FEA
 def _cheek_inner_nodes(nc, y_hole, side, h):
     from huntkit.gendesign import bag_attach as BA
-    x_in = side * BA.THROAT / 2.0
+    x_in = side * BA.THROAT_LEGACY / 2.0
     r = np.hypot(nc[:, 1] - y_hole, nc[:, 2])
     return np.where((np.abs(nc[:, 0] - x_in) <= 0.6 * h) & (r >= BA.HOLE_D / 2.0) & (r <= BA.HOLE_D))[0]
 
@@ -242,7 +242,7 @@ def eye_fea(half_z: float, cheek: float, loads: dict, h: float = 1.0, field: boo
         stay_r = 16.8
         y_hole = stay_r + BA.HOLE_PROUD
         zext = max(22.0, half_z + 8.0)
-        xext = max(20.0, BA.THROAT / 2 + cheek + 3.0)       # solve_fairlead's box (x +-20) where it fits
+        xext = max(20.0, BA.THROAT_LEGACY / 2 + cheek + 3.0)       # solve_fairlead's box (x +-20) where it fits
         lo = np.array([-xext, -(stay_r + 4.0), -zext])
         hi = np.array([xext, stay_r + BA.HOLE_PROUD + BA.HOLE_D / 2.0 + BA.WALL_FRONT + 4.0, zext])
         n = np.maximum(np.round((hi - lo) / h).astype(int), 6)
@@ -255,8 +255,8 @@ def eye_fea(half_z: float, cheek: float, loads: dict, h: float = 1.0, field: boo
         radial = np.c_[nc[:, 1] - y_hole, nc[:, 2]]
         rr = np.linalg.norm(radial, axis=1)
         band = (rr > BA.HOLE_D / 2.0 - 0.35 * h) & (rr < BA.HOLE_D / 2.0 + 0.9 * h)
-        band &= np.abs(nc[:, 0]) >= BA.THROAT / 2.0 - 0.3
-        band &= np.abs(nc[:, 0]) <= BA.THROAT / 2.0 + cheek + 0.6 * h
+        band &= np.abs(nc[:, 0]) >= BA.THROAT_LEGACY / 2.0 - 0.3
+        band &= np.abs(nc[:, 0]) <= BA.THROAT_LEGACY / 2.0 + cheek + 0.6 * h
         end = (np.abs(nc[:, 2]) >= zext - 2.5) & (np.hypot(nc[:, 0], nc[:, 1]) <= stay_r + h)
         fixed = np.zeros(g.ndof, bool)
         ids = np.where(end)[0]

@@ -28,7 +28,11 @@ G = 9.80665
 
 # One fairlead, eight places. Dimensions are mm. The pin axis is lateral (frame x).
 # Proud height is measured from the stay surface toward the bag (+y).
-THROAT = 18.0                # clear width between cheeks, for a necked webbing eye
+THROAT = 20.0                # clear width between cheeks as printed on all 12 stations (BL-042 hinge, BL-045 IM / US:
+#                              the 18 mm necked eye + 1 mm tolerance + 1 mm clearance; BL-055: was 18.0, the 2026-11-01
+#                              value no printed fairlead has had since BL-045)
+THROAT_LEGACY = 18.0         # the 2026-11-01 fairlead's throat: legacy_geom() / fairlead_local's default field (the voxel
+#                              body's fairlead stubs, the eye FEA of im3_body_simloads, the BL-044 pin booking basis)
 CHEEK = 8.0                  # cheek thickness along the pin
 HALF_Z = 9.0                 # cheek half-height along the stay
 EMBED = 2.0                  # how far the root sinks into the stay so the fillet is real material
@@ -71,7 +75,7 @@ def _box(p, lo, hi):
 class FairleadGeom:
     """One fairlead's section, mm, in stay-local coordinates (pin axis x, bag direction +y, stay axis z).
     Heights are measured from the stay surface (stay radius ``stay_r``) toward the bag."""
-    throat: float = THROAT
+    throat: float = THROAT_LEGACY       # dataclass default = the 2026-11-01 fairlead (legacy_geom)
     cheek: float = CHEEK
     half_z: float = HALF_Z
     embed: float = EMBED
@@ -112,7 +116,7 @@ class FairleadGeom:
 def legacy_geom() -> FairleadGeom:
     """The 2026-11-01 fairlead from the module constants, read at call time (callers that swap HALF_Z / CHEEK on the
     module still get their swap)."""
-    return FairleadGeom(throat=THROAT, cheek=CHEEK, half_z=HALF_Z, embed=EMBED, hole_d=HOLE_D, pin_d=PIN_D,
+    return FairleadGeom(throat=THROAT_LEGACY, cheek=CHEEK, half_z=HALF_Z, embed=EMBED, hole_d=HOLE_D, pin_d=PIN_D,
                         hole_proud=HOLE_PROUD, floor_proud=round(HOLE_PROUD - HOLE_D / 2.0 - 0.8, 9), wall_front=WALL_FRONT)
 
 
@@ -198,7 +202,8 @@ PIN_WRAP = {
     "im3": {"wraps": "IME eye, 38 mm (as im1)", "clips_on_the_eye": "IM3 strap girth hitch (L); IM3 wiregate carabiner (R); "
                                                                    "T3 bag carabiner; B-24 float-link carabiner",
             "web_w_mm": 38.0},
-    "us1": {"wraps": "L pin: US1 sewn eye, 25 mm poly webbing (pattern US, 50 mm eye fold round the pin sleeve). R pin: "
+    "us1": {"wraps": "L pin: US1 sewn eye, 25 mm poly webbing (pattern US, 50 mm eye fold round the bare pin in the throat; the UHMWPE sleeves are the two 8 mm "
+                     "bushes pressed into the cheeks, pin_check books both as one 16 mm length per station). R pin: "
                      "the US1 cam's anchor (BOM 'US-anchor', no drawn part: a webbing loop is the only thing that fits "
                      "the throat; the 32 mm cam body does not)", "clips_on_the_eye": "-", "web_w_mm": 25.0},
     "us2": {"wraps": "as us1 (US2 strap)", "clips_on_the_eye": "-", "web_w_mm": 25.0},
@@ -769,7 +774,7 @@ def plot_exploded() -> str:
         return np.minimum(stay, fairlead_local(p, stay_r))
 
     body = _march(sdf, lo, hi, 0.7)
-    pin = trimesh.creation.cylinder(radius=PIN_D / 2.0, height=THROAT + 2 * CHEEK + 6.0, sections=24)
+    pin = trimesh.creation.cylinder(radius=PIN_D / 2.0, height=THROAT_LEGACY + 2 * CHEEK + 6.0, sections=24)
     pin.apply_transform(trimesh.transformations.rotation_matrix(np.pi / 2.0, [0, 1, 0]))
     y_hole = stay_r + HOLE_PROUD
     pin.apply_translation([0.0, y_hole, 0.0])

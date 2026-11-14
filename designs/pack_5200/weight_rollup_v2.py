@@ -295,6 +295,8 @@ STEP_META = {   # id: (class, ticket, short label, kind, gate)
               "(h1_crown); first-article weigh"),
     "BL053": ("P", "BL-053", "H1 lane lug fixes for the 3D cradle down to a 40 mm belly; pin retention (12 stations)",
               "safety", "MT-1cr / CLEVIS-SHARE gauges (h1_rev5.md section 4), PIN-RET, first-article weigh"),
+    "BL055": ("P", "BL-055 A", "hip boss grown to the D44 Ti mount flange, 9 M5 inserts (was 2 booked); US1 pins in Ti",
+              "safety", "HB-6 insert pull-out as built (layer normal, hot), HB-6b hip mount proof; first-article weigh"),
     "BL031": ("P", "BL-031 (owner)", "strap tails: lifters, sternum, stabilizers cut to length; belt tail + keepers",
               "design", "T9 gloved cinch trial (TAIL_GRIP 50 mm), R-06 fit trial (sternum), HB-D1 (stabilizers)"),
     "P_pkgC": ("P", "package C (2026-11-09)", "7075 belt plate; C-4 / C-7 rev C fixes", "safety",

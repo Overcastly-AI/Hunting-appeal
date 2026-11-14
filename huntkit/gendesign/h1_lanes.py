@@ -1211,6 +1211,8 @@ def write_md(res: dict, shots: list) -> str:
     w = []
     a = w.append
     a("# H1 hinge for the inboard-up pull, and the US stations on lane lugs (BL-049)\n")
+    from .h1_closeout import SUPERSEDED_NOTE as _SN
+    a(_SN)
     a(SUPERSEDED_NOTE)
     a("structural-fea-engineer, 2026-11-13. Ticket `docs/backlog/BL-049-hinge-and-us-lanes.md`. Code "
       "`huntkit/gendesign/h1_lanes.py` (`python -m huntkit.gendesign.h1_lanes --fea | --body | --export`), geometry "

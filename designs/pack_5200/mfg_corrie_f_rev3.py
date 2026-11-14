@@ -158,6 +158,20 @@ def OP(key: str) -> str:
     return f"\u00abop:{key}\u00bb"
 
 
+# BL-055 Part B (ticket item 2): op keys the text cites, resolved by opref; never a typed op number
+K_HE = "B-18 doublers + HE hinge eyes (DECISION HE-ONE / HE-PIN, sketch SK-8)"
+K_FLOOR = "Floor B-05 (F-02 first)"
+K_FPBAND = "FP mouth band and shock-cord channel"
+K_COLLAR = "Collar tube"
+K_AFT = "Aft corner seams blade U | gussets (closes the tube)"
+K_B11 = "B-11 lash tabs (8) on the gussets"
+K_B22 = "B-22 guy anchors INSIDE the hinge band"
+K_LLT = "Guy ladder-lock tabs LLT through B-22"
+K_B27 = "B-27 guy ports (2)"
+K_SETUP = "Machine set-up and stack swatches"
+K_USCH = "US floor channels B-16 (US1) and B-16b (US2) on F-02"
+
+
 def opref(text: str) -> str:
     import re as _re
     return _re.sub("\u00abop:([^\u00bb]+)\u00bb", lambda m: _OPIDX.get(m.group(1), f"[op {m.group(1)}?]"), text)
@@ -857,7 +871,7 @@ def he_405_text(ctx) -> str:
             f"{hg['box_z_above_seam'][0]:.0f} mm, its top {hg['box_z_above_seam'][1]:.0f} mm above the floor seam line), through "
             "all four layers " + step_spec("box") + ". Its top edge must stay BELOW the fairlead cheeks: nothing but the 18 mm neck may sit above "
             f"+{hg['cheek_z'][0]:.0f} mm. "
-            "(5) BASTE the bottom of the stack (2 HE raw ends + B-18 + B-01) at 6 mm, inside the allowance, so op 4.15 "
+            "(5) BASTE the bottom of the stack (2 HE raw ends + B-18 + B-01) at 6 mm, inside the allowance, so op " + OP(K_FLOOR) + " "
             f"catches all of it {step_spec('baste')}. The free loop above the box ({hg['eye_mm']:.0f} mm, fold {hg['fold_z_flat']:.0f} mm above the "
             f"seam line) is the eye: it points UP and takes the z 60 pin with the {hg['neck_w']:.0f} mm neck in the "
             f"{hg['throat']:.0f} mm throat and the 3-ply neck through the {hg['gap_under_pin']:.1f} mm gap under the pin "
@@ -1145,7 +1159,7 @@ def ops(ctx: Ctx) -> list[SewingOp]:
        "body", seam="SSa2, LSd, BOX, SSa (swatches)", qc="QC-05, QC-06", hours=1.0, sketch="SK-1, SK-2", one_off=True)
     op("Sew the first-article load samples", "Before cutting the bag, sew the proof specimens exactly as the bag: 10 "
        "x 25 mm box-X loops + 2 IMC cam tabs (MT-1), 5 T3 tongues on 70 mm B-17 tabs on B-01 swatches (PT-2), 1 hinge "
-       "eye for the HE-FIT dry fit on a printed z 60 fairlead FIRST, then 5 hinge eyes exactly as op 4.05 and SK-8 in "
+       "eye for the HE-FIT dry fit on a printed z 60 fairlead FIRST, then 5 hinge eyes exactly as op " + OP(K_HE) + " and SK-8 in "
        f"its order (B-18 rows first through B-18 + B-01 only; then HE folded in half, eye UP, box-X {P.HE_BOX[0]:.0f} x "
        f"{P.HE_BOX[1]:.0f} through HE + B-01 + B-18 below the cheek line; B-18 and both HE raw ends caught in a B-01 | "
        "B-05 SSa2 floor seam sewn with the zipper / edge foot, no binding: PT-3), 5 B-24 links (PT-6), 5 TL-1 sleeves "
@@ -1167,7 +1181,7 @@ def ops(ctx: Ctx) -> list[SewingOp]:
     fp_seam = seam_mm(ctx, "FP body | mouth band")
     op("FP hip-reach pocket: pleats", f"Fold the 2 box pleats on each FP-a (flat {g['fp_flat_w']:.0f} mm wide, "
        f"finished {g['fp_finished_w']:.0f} mm), baste across the BOTTOM edge only, at 6 mm. The top stays "
-       f"{g['fp_flat_w']:.0f} mm wide (op 1.02 sews the band to it; the cord gathers it). Do not stretch the mesh.",
+       f"{g['fp_flat_w']:.0f} mm wide (op {OP(K_FPBAND)} sews the band to it; the cord gathers it). Do not stretch the mesh.",
        "mesh", pieces="FP-a x2", seam="SSa", length=2 * g["fp_flat_w"], hours=2 * 2 * 2 * H["pivot"] + rate(2 * g["fp_flat_w"]),
        vol="pattern: FP width", sketch="SK-5")
     op("FP mouth band and shock-cord channel", f"Sew FP-b to the FP-a top ({fp_seam:.0f} mm), fold the band on its "
@@ -1184,7 +1198,7 @@ def ops(ctx: Ctx) -> list[SewingOp]:
        hours=rate(piece_perim(rs.pieces["IMP8-b"]), "curved") + rate(piece_perim(i8) / 2))
     b9 = rs.pieces["B-09c"]
     op("IMP-2 hydration sleeve", "Fold B-09c into a tube, one side seam; turn the top edge 10 mm and edge-stitch; I2T "
-       "hang tab goes in later (op 5.01).", "light", pieces="B-09c", seam="SSa + EFa",
+       "hang tab goes in later (op " + OP(K_COLLAR) + ").", "light", pieces="B-09c", seam="SSa + EFa",
        length=b9.bounds(cut=False)[3] + b9.bounds(cut=False)[2], hours=rate(b9.bounds(cut=False)[3] + b9.bounds(cut=False)[2]))
     f2 = rs.pieces["F-02"]
     f02p = g["f02"]
@@ -1226,7 +1240,7 @@ def ops(ctx: Ctx) -> list[SewingOp]:
            f"bartack that inserts it sews it (ops named in its use). {txt}.", "none",
            pieces=", ".join(f"{w['id']} x{w['qty']}" for w in early), hours=sum(w["qty"] for w in early) * WEB_CUT_H,
            sketch="SK-7")
-    op("IME fairlead eyes (frame kit)", "NECK FIRST (BL-044, as op 4.05's HE): on the FLAT strip fold each long edge "
+    op("IME fairlead eyes (frame kit)", "NECK FIRST (BL-044, as op " + OP(K_HE) + "'s HE): on the FLAT strip fold each long edge "
        f"{P.IME_NECK_EDGE:.0f} mm in between the two 'neck lines' (18 mm wide: the eye passes the 20 mm throat of the "
        "BL-045 fairlead) and sew one BT-M tack across each leg at the 'neck tack' lines " + step_spec("bt", "304") + ". "
        "Then fold each 38 mm IME at 100 mm into an eye (neck folds INSIDE), box-X 34 x 30. These go on the frame "
@@ -1369,7 +1383,7 @@ def ops(ctx: Ctx) -> list[SewingOp]:
        f"the frame seam ({g['fp_margin'] if g['fp_margin'] is not None else '-'} mm at the tightest point, pattern "
        "fp_min_margin_mm). "
        "Bottom and FRAME-side edge 301 at 3 mm, box pleats laid flat, bartack the 2 mouth corners. The AFT edge lies "
-       "on the aft corner seam line: baste it at 6 mm inside the allowance only; the aft corner seam (op 4.13) sews it, "
+       "on the aft corner seam line: baste it at 6 mm inside the allowance only; the aft corner seam (op " + OP(K_AFT) + ") sews it, "
        "UNDER the K-W keeper loops (SK-9).", "mesh", pieces="FP x2, B-03 x2",
        seam="LSd", length=2 * (g["fp_h"] * 2 + g["fp_finished_w"]), bartack="FP corners (BT-S)",
        hours=2 * (rate(2 * g["fp_h"] + g["fp_finished_w"]) + 2 * H["bartack"]), vol="pattern: FP width",
@@ -1383,7 +1397,7 @@ def ops(ctx: Ctx) -> list[SewingOp]:
     s_l = seam_mm(ctx, "B-01 | gusset L (2 hard-point loops, FP-L edge)")
     op("Frame-side box seams B-01 | gussets", f"R ({s_r:.0f} mm): E5 pole-grip tab at z {g['pole_tab_z']:.0f} and the "
        "ONE end of the B-26 shock cord inserted 15 mm at the 'B-26 tripod keeper' notch (the other end stays loose "
-       "until op 4.13). L ({:.0f} mm): 2 HPL hard-point loops at z {:.0f} / {:.0f} inserted. Notch to notch every 50 "
+       "until op " + OP(K_AFT) + "). L ({:.0f} mm): 2 HPL hard-point loops at z {:.0f} / {:.0f} inserted. Notch to notch every 50 "
        "mm; SSa2.".format(s_l, *g["hard_z"]), "body",
        pieces="B-01, B-03 x2, E5, E5-cord, B-26, HPL x2", seam="SSa-ins + SSa2", length=2 * (s_r + s_l),
        hours=rate(s_r + s_l) + 3 * H["bartack"], sketch="SK-5", qc="QC-08")
@@ -1554,7 +1568,7 @@ def ops(ctx: Ctx) -> list[SewingOp]:
                    "G-HOOK's bar into the other loop of the IM1 and IM2 tabs; the IM3 tab's second loop stays EMPTY (the "
                    "wiregate carabiner clips in at op @FIT). Hardware for this op: 3 cams, 2 G-hooks. Then: " + how)
         if pid in ("US", "US2", "USA"):            # BL-044 (BL-045 imus_eye_envelope): necked where it passes the throat
-            neck = (f"NECK FIRST (BL-044, as op 4.05's HE): on the FLAT strip fold each long edge {P.US_NECK_EDGE:.1f} mm "
+            neck = (f"NECK FIRST (BL-044, as op {OP(K_HE)}'s HE): on the FLAT strip fold each long edge {P.US_NECK_EDGE:.1f} mm "
                     "in between the two 'neck lines' (18 mm: the eye passes the 20 mm throat of the BL-045 fairlead), "
                     "one BT-M tack across each leg at the 'neck tack' lines " + step_spec("bt", "304") + ". ")
             if pid == "USA":
@@ -1991,7 +2005,7 @@ def delta_closeout(ctx: Ctx, bom: list[BOMLine], lpts: list[dict]) -> list[dict]
         "FRAY-1 wash-swatch test; IMP-1/3/5/6 belong to the harness / belt packages")
     b11 = ctx.rs.geo.get("b11") or {}
     add("RD-18", "closed", f"B-11 x8 + BRL x2 + BRS + G-hook in the BOM: {has('B-11', 'BRL', 'BRS')}; B-11 placements "
-        f"drawn on B-03: {2 * b11.get('per_gusset', 0)} tabs (op 4.07 released)",
+        f"drawn on B-03: {2 * b11.get('per_gusset', 0)} tabs (op {opref(OP(K_B11))} released)",
         "archery / rifle loadout fit settles ASSUMPTION B11-PLACE")
     bp = ROOT / "designs" / "pack_5200" / "BUILD_PLAN.md"
     ptr = bp.exists() and "outputs/release/pack5200_corrie_f_rev3/" in bp.read_text()
@@ -2001,7 +2015,7 @@ def delta_closeout(ctx: Ctx, bom: list[BOMLine], lpts: list[dict]) -> list[dict]
         "BUILD_PLAN.md needs a pointer to this package")
     add("RD-22", "open", "the packaging card (README Packaging) carries the load limits and the "
         f"{P.F.BELLY_MIN_MM:.0f} mm minimum cradle belly with the strap gauge (BL-052)", "the user guide itself")
-    add("RD-23", "restated", f"B-25, B-27f, B-22 inside, TG, LLT drafted and sequenced (ops 3.04-3.05, 4.03): "
+    add("RD-23", "restated", f"B-25, B-27f, B-22 inside, TG, LLT drafted and sequenced (ops {opref(OP(K_B22))}-{opref(OP(K_LLT))}, {opref(OP(K_B27))}): "
         f"{has('B-25', 'B-27f', 'B-22', 'TG', 'LLT')}", "T9 rev 3 at the S kit; LL-H; PORT-1; attorney review; B-22 placed at "
         f"x +/-{ctx.rs.geo['b22']['placed_x']:.1f} vs drawn {ctx.rs.geo['b22']['drawn_x']:.0f} (ASSUMPTION B22-IN)")
     eff = _build_effort()
@@ -2100,6 +2114,8 @@ def package(ctx: Ctx | None = None) -> dict:
     oplist = ops(ctx)
     _OPIDX.clear()
     _OPIDX.update(_index_ops(oplist))
+    for o in oplist:                                # BL-055 Part B: op cross-references in op text -> op numbers
+        o.notes, o.qc = opref(o.notes), opref(o.qc)
     bom = (fabric_bom(ctx) + camo_bom(ctx) + webbing_bom(ctx) + hardware_bom(ctx) + thread_bom(oplist, ledger_thread_g())
            + consumables_bom(g))
     for b in bom:                                   # BL-040: every coloured line names the colorways.yaml standard
@@ -2150,7 +2166,7 @@ ASSUMPTIONS = [
     ("THREAD-FACTOR", f"{THREAD_FACTOR} m of thread per m of 301 stitching (both threads, ends).", "weigh the cones before / after the first bag"),
     ("SPI-LIGHT", "10 SPI on 40D-100D and mesh.", "QC-05/06 swatch: no puckering, no perforation"),
     ("THREAD-NEEDLE", "Tex 70 / Nm 90, tex 90 / Nm 110, tex 135 / Nm 140, round point (attach_system.NEEDLE for 90 / 135).",
-     "swatches in op 0.02: no skipped stitches, no shredding"),
+     "swatches in op " + OP(K_SETUP) + ": no skipped stitches, no shredding"),
     ("UTIL-SMALL", f"Small and sheet pieces nest at {UTIL_SMALL:.0%} across bags in production.", "first production markers"),
     ("UTIL-ALT", f"Alternate-set body fabrics nest at {UTIL_ALT_LARGE:.0%} in production (no 10-bag alternate marker).",
      "alternate 10-bag markers if the alternate set passes its gates"),
@@ -2176,7 +2192,7 @@ ASSUMPTIONS = [
      "rated by PT-3 on the printed fairlead and SEW-F HE specimens.",
      f"caliper gate on the roll (ply <= {P.HE_T_RANGE[1]} mm); HE-FIT on the BL-042 test piece (pin "
      f"{P.he_band()[0]:.0f}-{P.he_band()[1]:.0f} mm above the seam line, box >= {P.HE_CHEEK_MIN:.0f} mm under the cheeks), "
-     "then PT-3 and SEW-F HE on specimens sewn as op 4.05 / SK-8"),
+     "then PT-3 and SEW-F HE on specimens sewn as op " + OP(K_HE) + " / SK-8"),
     ("RT-MATE / RT-HEM / RT-FWD / RT-ORIGIN / W3-OVER / HOSE-LOW / BUCKLE-ENV / MK-GAP", "BL-040 B-2 + BL-041 Y-2 + "
      "BL-043 M-1 / M-2 / m-9: the RT strap is sewn at the roll end (gusset centre of the hem); its buckle's female half "
      "on an RTM tab forward on the gusset (hose slot + 10 mm + half a buckle), the buckle body 10 mm under the lowest W3 "
@@ -2215,7 +2231,7 @@ ASSUMPTIONS = [
      "(cinch and grip at every kit end)"),
     ("US-CHAN-EDGE", f"B-16b's turned ends stay >= {P.F.US_SIDE_SEAM_MIN:.0f} mm inside the B-03 | B-05 side seam, so the "
      "channel end and the side seam are sewn separately (drawn: patterns geo us_chan_on_b05).",
-     "lay B-16b on the cut B-05 at op 4.14 / floor op"),
+     "lay B-16b on the cut B-05 at op " + OP(K_USCH) + " / floor op " + OP(K_FLOOR)),
     ("SEAL-PU", "A urethane seam sealer bead on B-05's inside face seals the B-16b tail stitch lines on the PU-coated 500D "
      "floor (silicone does not bond to PU).", "WP-1 style hose test on a B-05 offcut with one sealed tail before the bag"),
     ("CRADLE-SPAN", "The bag-off cradle keeps meat_haul's belly on each strap's own lane span (us_route.cradle_span: US2 "
@@ -3340,7 +3356,7 @@ def sketches(pk, out: Path = OUT) -> dict:
                   "IMP-4 placement INSIDE"], figsize=(16, 7))
     sk["SK-5"] = d / "SK-5_gusset.png"
     sk_piece_map(pk, ["B-03", "FP-a", "FP-b"], "SK-5  Side gusset B-03 (cut L+R): kick band, FP pocket, IMP-8 (R only), "
-                 "hose slot, 4 B-11 lash tabs (op 4.07), K-W keeper notches on the aft edge; corner seams carry HPL (L) "
+                 "hose slot, 4 B-11 lash tabs (op " + opref(OP(K_B11)) + "), K-W keeper notches on the aft edge; corner seams carry HPL (L) "
                  "and E5 (R)", sk["SK-5"],
                  [f"FP z {g['fp_z'][0]:.0f}-{g['fp_z'][1]:.0f}", f"flat {g['fp_flat_w']:.0f} wide, 2 box pleats",
                   "fold = shock-cord channel"], figsize=(16, 9))

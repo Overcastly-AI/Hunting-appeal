@@ -1,5 +1,7 @@
 # H1 stay crown restored at the old US stub sites (BL-051)
 
+> **SUPERSEDED (2026-11-14, BL-055) by `h1_rev5.md` (BL-053) and `h1_closeout.md` (BL-055)** for the print, the lane lugs, the US2 clevis joint, the pins, the gauge pass lines and the whole-body margins. BL-053 checks the lane lugs on a submodel cut from the print itself with the 3D cradle legs (down to a 40 mm belly, no minimum-belly rule), adds the lug fixes, hex nut traps and pin retention; BL-055 re-runs the whole body on the BL-053 body (incl. the 0.2 mm sanding allowance), adds the hip-boss insert pattern and the Ti US1 pins. Numbers below that differ from those two records are history.
+
 structural-fea-engineer, 2026-11-13. Ticket `docs/backlog/BL-051-stay-crown.md`. Code `huntkit/gendesign/h1_crown.py` (`python -m huntkit.gendesign.h1_crown --lug | --body`; the report with no flag); fix in `h1_lanes.strip_old_us` (`CROWN_RESTORE`, `_crown_bridge`); lug FEA option `h1_lanes.lug_fea(stay_poly=)`; spreader rule `spreader.us2_notch_check` (`proud_mm`); tests `tests/test_h1_crown.py`. Results `h1_crown.json`. Units mm, N, g (imperial in brackets). Supersedes the print, slice, notch and lug numbers of `h1_bedfit.md` and `h1_lanes.md` where they differ.
 
 ## Summary

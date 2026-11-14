@@ -579,7 +579,7 @@ def im3_holes() -> list:
             continue
         r = float(stay_radius(st["z"], SCALE))
         y0 = float(np.asarray(_sleeve_y(st["z"]), float))
-        out.append((np.array([st["x"], y0 + r + BA.HOLE_PROUD, st["z"]]), BA.THROAT / 2.0 + BA.CHEEK + 0.5,
+        out.append((np.array([st["x"], y0 + r + BA.HOLE_PROUD, st["z"]]), BA.THROAT_LEGACY / 2.0 + BA.CHEEK + 0.5,
                     IM3_HOLE_PRINT_D / 2.0))
     return out
 

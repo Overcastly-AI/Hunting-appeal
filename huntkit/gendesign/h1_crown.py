@@ -615,6 +615,8 @@ def write_md(res: dict, shots: list) -> str:
     sp = res["spreader_us2_notch"]
     u1 = res["us1_root"]
     a("# H1 stay crown restored at the old US stub sites (BL-051)\n")
+    from .h1_closeout import SUPERSEDED_NOTE as _SN
+    a(_SN)
     a("structural-fea-engineer, 2026-11-13. Ticket `docs/backlog/BL-051-stay-crown.md`. Code "
       "`huntkit/gendesign/h1_crown.py` (`python -m huntkit.gendesign.h1_crown --lug | --body`; the report with no "
       "flag); fix in `h1_lanes.strip_old_us` (`CROWN_RESTORE`, `_crown_bridge`); lug FEA option "

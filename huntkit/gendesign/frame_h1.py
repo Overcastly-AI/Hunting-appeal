@@ -841,6 +841,12 @@ def print_mesh(solid: np.ndarray, j: Joint = JOINT, log=print, fairleads: bool =
             man = R5.add_fixes(man, log=log, stats=fx)
             if stats is not None:
                 stats["lug_fixes_bl053"] = fx
+    from . import h1_closeout as CO
+    if CO.HIP_PILOTS:                  # BL-055: hip boss grown to the D44 Ti mount flange, M5 insert pilot holes
+        hp: dict = {}
+        man = CO.add_hip_pilots(man, log=log, stats=hp)
+        if stats is not None:
+            stats["hip_boss_bl055"] = hp
     man = man.simplify(SIMPLIFY_MM)
     out = _from_manifold(man)
     if log:

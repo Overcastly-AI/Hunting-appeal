@@ -632,7 +632,7 @@ def build_rows(beam: dict, beam_rec: dict, sim: dict, fl: dict, belt: dict, fea:
         fchk.append(_chk("cheek bottom to spreader top edge vs the 6 mm notch rule (mm, as N)", clr["notch_clear_mm"],
                          clr["gap_mm"], "fit", "spreader.Z_HI, NOTCH_CLEAR"))
         fchk.append(_chk("throat for bag-hook + meat carabiner rods side by side (mm, as N; 2 x 8.5 mm ASSUMPTION)",
-                         17.0, clr["throat_mm"], "fit", "bag_attach.THROAT (unchanged)", False,
+                         17.0, clr["throat_mm"], "fit", "bag_attach.THROAT (as printed, BL-045 / BL-055)", False,
                          "carabiner fit (first delivery)"))
         row("A1-CF", "BL-004", "IM3 eyes z 520, re-check on CORRIE F (BL-011) forces, per torso",
             "IM3 printed fairlead with the A1 25 mm cheek", "aft-up along T3", 1702, sz["factored_n"],

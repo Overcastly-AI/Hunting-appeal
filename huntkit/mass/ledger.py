@@ -333,7 +333,10 @@ CONFIGS_V2 = tuple(c + SUFFIX for c in CONFIGS)
 ALL_CONFIGS = CONFIGS + CONFIGS_V2
 DEFAULT_CONFIG = "corrie_b2_h1" + SUFFIX
 CORRECTIONS = ("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "H1B", "BL031", "H1F", "BL046", "BL047", "BL049",
-               "BL050", "BL051", "BL053")
+               "BL050", "BL051", "BL053", "BL055")
+#   BL055 (2026-11-14, BL-055 A): on the H1 configs, the hip boss grown to the Ti mount's D44 flange with 9 M5
+#      insert pilot holes (print-mesh delta), the 7 hip inserts and Ti M5 screws beyond the 2 the fixed lump books,
+#      and the US1 fairlead pins in Ti-6Al-4V. From analysis/h1_closeout.json ``mass``.
 #   BL053 (2026-11-13, BL-053): on the H1 configs, the fifth review's lane lug fixes (US1 block onto the lower branch,
 #      inner-cheek buttresses, US2 root flare; hex nut traps) as a print-mesh delta, and the 12 fairlead pins
 #      re-specified with their retention (headed pin, R-clip, tether) against the pins booked. From
@@ -377,7 +380,7 @@ def adopted_bag_rows(size: str = "M") -> list:
         return F.parts(size, door=ADOPTED_BAG["door"])
 
 
-H1_ONLY = ("H1B", "H1F", "BL049", "BL050", "BL051", "BL053")   # corrections that apply to the H1 configs only (not to today's
+H1_ONLY = ("H1B", "H1F", "BL049", "BL050", "BL051", "BL053", "BL055")   # corrections that apply to the H1 configs only (not to today's
 #   production raster). BL050 joined with BL-051: its only all-config row (pins / sleeves) was a double count.
 #   H1F (2026-11-13, BL-042) the H1 fairleads completed outside the voxel envelope. The H1 raster stops at the bag
 #      envelope (frame_topopt Y_HI_GRID 16 mm), so it holds only the fairlead stubs below y 16, not the cheek tops,
@@ -470,6 +473,13 @@ def bl053_update() -> dict:
     """BL053: the lane lug fixes and the pin retention (analysis/h1_rev5.json ``mass``, written by
     huntkit.gendesign.h1_rev5)."""
     return dict(_json("h1_rev5.json")["mass"])
+
+
+@functools.lru_cache(maxsize=None)
+def bl055_update() -> dict:
+    """BL055: hip boss + insert pattern, hip hardware, US1 Ti pins (analysis/h1_closeout.json ``mass``, written by
+    huntkit.gendesign.h1_closeout)."""
+    return dict(_json("h1_closeout.json")["mass"])
 
 
 @functools.lru_cache(maxsize=None)
@@ -576,6 +586,17 @@ def _correction_rows(config: str, size: str) -> list:
         bl046.append(("BL053", "fairlead pins re-specified with retention: headed pin + R-clip + tether, 12 stations "
                       "(BL-053, M-5)", "attachment", b53["retention_delta_g"],
                       src53 + "retention_delta_g (h1_rev5.pins: pins + clips + tethers - the pins booked)", "base"))
+        b55, src55 = bl055_update(), "analysis/h1_closeout.json mass."
+        bl046.append(("BL055", f"H1 print: hip boss grown to D{b55['hip_boss']['pattern']['boss_d']:g} with "
+                      f"{b55['hip_inserts']} M5 insert pilot holes (BL-055)", "frame", b55["print_delta_g"],
+                      src55 + "print_delta_g (assembled print mesh BL-055 - BL-053)", "base"))
+        bl046.append(("BL055", f"hip mount: {b55['hip_inserts']} M5 brass heat-set inserts + {b55['hip_screw']} screws "
+                      f"({b55['hip_inserts'] - b55['hip_inserts_booked']} more than booked; BL-055)", "frame",
+                      b55["hardware_delta_g"], src55 + "hardware_delta_g (insert record mass_g, frame_comp_B.bolt_mass_g)",
+                      "base"))
+        bl046.append(("BL055", "US1 fairlead pins in Ti-6Al-4V (2; were 7075-T6; BL-055)", "attachment",
+                      b55["us1_ti_pins_delta_g"], src55 + "us1_ti_pins_delta_g (h1_closeout.pins, record densities)",
+                      "base"))
     import strap_tails as ST                        # BL-031 (lazy: it reads corrie_f, which reads this module)
     bl031 = [("BL031", n, sys_, g, src, cfg) for n, sys_, g, src, cfg in ST.suspension_rows(size)]
     return h1b + bl031 + bl046 + [
