@@ -72,6 +72,9 @@ ASSUMPTIONS = {
                     "Part A sized (h1_closeout.json: count, positions, printed pilot holes; insert pull-out 1200 N "
                     "(record ASSUMPTION) x the PAHT-CF hot knock-down x the layer-normal ratio). Buy 2 spares.",
                     "Insert pull-out coupon HB-6 (test kit) and the D-I1 coupon."),
+    "MOUNT-SEAT": ("A 20 N hand push on the mount's pin end (about 1 % of the 1601 N C2 pin load) is a seating check "
+                   "only: it finds a mount resting on a burr or an insert standing proud, not strength.",
+                   "HB-6b hip-mount proof on the frame (h1_closeout.md 6, FLANGE-RIGID) carries the strength."),
     "HIP-HEAT": ("Inserts go in with the iron at 290 C (the PAHT-CF nozzle temperature): hot enough to melt the wall "
                  "round the knurl without a blob; the insert record gives no install temperature.",
                  "HB-6 practice blocks: each insert flush within 0.2 mm, square (an M5 screw stands upright), no bulge "
@@ -246,7 +249,9 @@ def closeout() -> dict:
     scr = _find(d, lambda x: isinstance(x.get("hip_screw"), str))
     return {"pins": pins_ or {}, "hip": hip or {}, "hip_screw": (scr or {}).get("hip_screw"),
             "insert": _find(d, lambda x: "pullout_n" in x and "hole_d" in x) or {},
-            "raw": d, "_path": str(CLOSEOUT_JSON.relative_to(ROOT))}
+            "flange": _find(d, lambda x: "t_mm" in x and "holes" in x and "hole_d_mm" in x) or {},
+            "raw": d,
+            "_path": str(CLOSEOUT_JSON.relative_to(ROOT)) if CLOSEOUT_JSON.is_relative_to(ROOT) else str(CLOSEOUT_JSON)}
 
 
 def pin_rows(co: dict | None = None) -> dict:
@@ -443,6 +448,21 @@ def b53_get(b: dict, *names, default=None):
 
 
 # ================================================================================ README
+def body_status_txt(co: dict) -> str:
+    """README status line: the whole-body margins BL-055 Part A published (sanded body, every R1 basis; >= 1 passes)."""
+    bs = (co.get("raw") or {}).get("body", {}).get("bases", {})
+    if not bs:
+        return f"- {PENDING} whole-body margins on the BL-053 print (Part A)."
+    keys = ("strength", "fatigue", "creep", "buckling", "joint_strength", "joint_fatigue")
+    worst = {k: min((v.get("bl053_sanded") or v.get("bl053"))[k] for v in bs.values()) for k in keys}
+    low = {b_: v_["bl053_sanded"]["fatigue"] for b_, v_ in bs.items()
+           if v_.get("bl053_sanded", {}).get("fatigue", 9) < 1.0}
+    return ("- Whole body on this print, stays sanded 0.2 mm (BL-055 Part A, lowest over the R1 bases, pass >= 1.00): "
+            + ", ".join(f"{k.replace('_', ' ')} {v:.2f}" for k, v in worst.items())
+            + (". **Below 1.00:** " + ", ".join(f"fatigue {v:.2f} on basis {b_}" for b_, v in low.items())
+               + " (the R1 rule holds the print for MT-1c / CA-1; see `analysis/h1_closeout.md` 1)." if low else "."))
+
+
 def readme_md(stl: list[dict], b: dict) -> str:
     by = {r["file"]: r for r in stl}
     body = sum(by[f]["mass_g"] for f in ("h1_lower_flat", "h1_upper_flat") if f in by)
@@ -468,6 +488,7 @@ def readme_md(stl: list[dict], b: dict) -> str:
          "retention; BL-055 Part A the whole-body re-run, the hip insert pattern and the Ti US1 pins; the "
          "manufacturing-engineer (BL-054 / BL-055 Part B) owns the build text.",
          f"- {('BL-053 data in use: `' + b['_path'] + '`.') if b else PLACEHOLDER + ' BL-053 data not yet published; marked placeholders in BUILD_H1.'}",
+         body_status_txt(closeout()),
          f"- {('BL-055 Part A data in use: `' + closeout()['_path'] + '` (hip inserts, Ti US1 pins).') if closeout() else PENDING + ' BL-055 Part A (hip insert pattern, Ti US1 pins) not yet published; BUILD_H1 sections 9 and 12 carry pending boxes.'}",
          "",
          "## Files", "",
@@ -573,7 +594,7 @@ def hip_section(co: dict) -> list[str]:
          f"(**HW-HIP-INS**) on a boss {pat['boss_d']:.0f} mm ({pat['boss_d'] / IN:.2f} in) across; the pilot holes are "
          f"PRINTED into the boss (D {pat['hole_d']:.1f} x {pat['hole_depth']:.1f} mm deep, open on the wearer face, "
          "which is the face on the plate).", "",
-         "| insert | right of the boss centre (mm) | above the boss centre (mm) |", "|---:|---:|---:|"]
+         "| insert | towards the R stay from the boss centre (mm; minus = towards the L stay) | above the boss centre (mm) |", "|---:|---:|---:|"]
     L += [f"| {i} | {x:+.1f} | {z:+.1f} |" for i, (x, z) in enumerate(rel, 1)]
     w = pat.get("walls", {})
     L += ["",
@@ -584,17 +605,36 @@ def hip_section(co: dict) -> list[str]:
           f"{ms.get('strength', float('nan'))} (goal 1.5), fatigue {ms.get('fatigue', float('nan'))} (goal 1.15), creep "
           f"{ms.get('creep', float('nan'))}; insert capacity {cap.get('static_n', float('nan')):.0f} N each "
           f"({cap.get('basis', '')}). Pattern {'PASSES' if h.get('pass') else 'DOES NOT PASS: do not fit the mount, ask the engineer'}.", "",
+          f"0. CHECK the boss: caliper across it reads {pat['boss_d']:.0f} mm (+/- 0.5) ({pat['boss_d'] / IN:.2f} in).",
           f"1. CHECK the print: count {n} pilot holes on the boss; a {pat['hole_d']:.1f} mm drill shank slides into each "
           f"by hand; the caliper depth rod reads >= {pat['hole_depth']:.1f} mm in each. Clear any support or stringing "
           "with the drill held in your fingers (do not drill deeper).",
-          "2. Practise on the HB-6 insert blocks first (test kit). Then heat-set each insert with the M5 tip at the "
-          "soldering iron at 290 C (554 F, the PAHT-CF nozzle temperature of section 3; ASSUMPTION HIP-HEAT), square to the face, until it sits 0.0-0.2 mm below the face (caliper depth rod).",
+          "2. Practise on the HB-6 insert blocks first (test kit). Then heat-set each insert with the soldering iron's M5 insert tip at 290 C (554 F, the PAHT-CF nozzle temperature of section 3; ASSUMPTION HIP-HEAT), square to the face, until it sits 0.0-0.2 mm below the face (caliper depth rod).",
           "3. CHECK: lay a steel rule across the boss: no insert stands proud; an M5 screw starts by hand in each.",
           f"4. Fit the SLM Ti pivot mount (**HW-HIP-MNT**) with {n} **{scr}** (**HW-HIP-SCR**), blue threadlocker, "
           + (f"{min(2.0, torque):.1f} N m (insert record maximum {torque:.1f} N m)" if torque else "2 N m")
-          + ", in a star order.",
-          "5. CHECK: the mount does not rock when you push its pin end by hand in each direction.", ""]
+          + ", in a star order"
+          + (f"; neighbouring heads sit only {w['head_to_head_mm']:.1f} mm apart, so use a ball-end 3 mm key (DIN 7984 M5 socket)"
+             if "head_to_head_mm" in w else "") + ".",
+          "5. CHECK: push the mount's pin end with the spring scale to 20 N (2.0 kg, 4.5 lb; ASSUMPTION MOUNT-SEAT) up, down, left and right: "
+          "a 0.05 mm (0.002 in) feeler does not enter under the base edge at any point, and no screw head turns "
+          "(a paint mark across each head and the base).", ""]
+    fl = co.get("flange", {})
+    if fl:
+        L += [f"> **HOLD before ordering HW-HIP-MNT:** the mount's base must be the BL-055 redraw, a {fl['d_mm']:.0f} mm "
+              f"({fl['d_mm'] / IN:.2f} in) x {fl['t_mm']:.1f} mm Ti disc with {fl['holes']} holes of {fl['hole_d_mm']:.1f} mm "
+              f"on the insert positions above (the file on record is {fl.get('drawn', 'not yet redrawn')}). CHECK on "
+              f"arrival: caliper the base {fl['t_mm']:.1f} mm thick (+/- 0.1) and {fl['d_mm']:.0f} mm across; count "
+              f"{fl['holes']} holes; lay the mount on the boss: every hole shows its insert.", ""]
     return L
+
+
+def mount_txt(co: dict) -> str:
+    fl = co.get("flange", {})
+    if not fl:
+        return "SLM Ti-6Al-4V hip pivot mount"
+    return (f"SLM Ti-6Al-4V hip pivot mount, base REDRAWN (BL-055): {fl['d_mm']:.0f} x {fl['t_mm']:.1f} mm disc, "
+            f"{fl['holes']} x D{fl['hole_d_mm']:.1f} holes on the insert positions")
 
 
 def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
@@ -629,7 +669,10 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
          (f"> {PLACEHOLDER} boxes mark what the structural-fea-engineer is still settling in BL-053 (supports, the "
           "US2 nut trap, the US1 root, pin retention). Where a box sits in a step, that step waits for it." if not r5
           else f"> BL-053 data is in use (`{b['_path']}`): supports, the US2 hex nut traps, the stronger US1 / US2 "
-          "lugs and the pin retention below come from it."), "",
+          "lugs and the pin retention below come from it."
+          + (f" BL-055 Part A data is in use (`{closeout()['_path']}`): the Ti US1 pins (section 9) and the hip "
+             "insert pattern with its printed pilot holes (section 12)." if closeout() else
+             f" {PENDING} boxes mark the hip insert pattern and the Ti US1 pins (BL-055 Part A).")), "",
          "## 0. What you end up with", "",
          "| part | how it is made | mass |", "|---|---|---:|",
          f"| frame body, lower half (feet to z 234) | printed, PAHT-CF | {fg(lower['mass_g'])} |",
@@ -974,7 +1017,9 @@ def shopping_table(stl, cp, kits, pn, Z, C, pw, pr, co=None) -> list[str]:
          " (ASSUMPTION HIP-INSERTS)", "hardware"),
         ("HW-HIP-SCR", co.get("hip_screw") or f"{PENDING} M5 mount screw", hip_n(co) or 0,
          "hip mount to the inserts (section 12)", "Ti fastener vendor"),
-        ("HW-HIP-MNT", "SLM Ti-6Al-4V hip pivot mount + its M5 screws", 1, "as today's frame (frame.yaml 28.0 g)",
+        ("HW-HIP-MNT", mount_txt(co), 1,
+         ("+" + f"{co['flange']['delta_g']:.1f} g on today's 28.0 g (frame.yaml); the SLM file must be redrawn before "
+          "ordering (section 12 HOLD)") if co.get("flange") else "as today's frame (frame.yaml 28.0 g)",
          "SLM bureau"),
         ("HW-BUSH", "UHMWPE bushing, 70 mm, for the 16 mm crown legs / 18.0 mm bores", 4,
          "frame.yaml: 2 bonded on the leg bottoms + 2 stay-top bushings", "machinist"),
@@ -1178,7 +1223,54 @@ def screenshots(pk: dict, draw: list[Path]) -> list[Path]:
     fig.savefig(d, dpi=100)
     plt.close(fig)
     out.append(d)
+    h = hip_figure(SCREENS / f"{SHOT}_4.png")
+    if h:
+        out.append(h)
     return out
+
+
+def hip_figure(path: Path) -> Path | None:
+    """BUILD_H1 section 12 as a picture: the boss seen from the wearer face, the 8 pilot holes numbered as the table,
+    the mount's pin bore, dimensions in mm (BL-055 Part A pattern)."""
+    co = closeout()
+    h = co.get("hip", {})
+    if not h:
+        return None
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from huntkit.gendesign.h1_closeout import HIP_PIN_HOLE_D
+    pat = h["pattern"]
+    rel = hip_rel(pat)
+    R = pat["boss_d"] / 2
+    fig, ax = plt.subplots(figsize=(7, 7.6))
+    ax.add_patch(plt.Circle((0, 0), R, fc="#d9d9d9", ec="k", lw=1.5))
+    ax.add_patch(plt.Circle((0, 0), HIP_PIN_HOLE_D / 2, fc="white", ec="k", ls="--"))
+    ax.text(0, -HIP_PIN_HOLE_D / 2 - 2.5, f"mount pin bore D{HIP_PIN_HOLE_D:g}\n(in the Ti mount)", ha="center",
+            va="top", fontsize=9)
+    for i, (x, z) in enumerate(rel, 1):
+        ax.add_patch(plt.Circle((x, z), pat["hole_d"] / 2, fc="white", ec="#b00", lw=1.5))
+        ax.text(x, z, str(i), ha="center", va="center", fontsize=10, color="#b00", weight="bold")
+        ax.text(R + 2 if x > 0 else -R - 2, z, f"{i}: {x:+.1f}, {z:+.1f}", ha="left" if x > 0 else "right",
+                va="center", fontsize=9)
+    ax.annotate("", (-R, -R - 4), (R, -R - 4), arrowprops=dict(arrowstyle="<->"))
+    ax.text(0, -R - 5.5, f"boss D{pat['boss_d']:.0f} mm ({pat['boss_d'] / IN:.2f} in)", ha="center", va="top", fontsize=10)
+    ax.set_xlim(-R - 24, R + 24)
+    ax.set_ylim(-R - 12, R + 8)
+    ax.set_aspect("equal")
+    ax.axhline(0, color="#888", lw=0.5)
+    ax.axvline(0, color="#888", lw=0.5)
+    ax.set_xlabel("mm towards the R stay (+) / L stay (-) from the boss centre\n(the pattern is mirror-symmetric: "
+                  "it reads the same from either face)")
+    ax.set_ylabel("mm above the boss centre")
+    ms = h["min_sf"]
+    ax.set_title(f"BUILD_H1 12: hip boss, {len(rel)} x M5 insert pilots D{pat['hole_d']:.1f} x "
+                 f"{pat['hole_depth']:.1f} deep\nSF strength {ms['strength']:.2f} (goal 1.5), fatigue {ms['fatigue']:.2f} "
+                 "(goal 1.15)  BL-055 Part A", fontsize=10)
+    fig.tight_layout()
+    fig.savefig(path, dpi=110)
+    plt.close(fig)
+    return path
 
 
 def write(pk: dict) -> list[Path]:

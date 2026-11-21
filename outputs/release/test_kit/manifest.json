@@ -1,6 +1,6 @@
 {
  "ticket": "BL-038",
- "date": "2026-11-13",
+ "date": "2026-11-21",
  "levels": {
   "record_ratio": 0.3,
   "flip_body": 0.2553,
@@ -136,12 +136,12 @@
   "test_kit.pdf"
  ],
  "screens": [
-  "outputs/screens/20261114_BL055kit_1.png",
-  "outputs/screens/20261114_BL055kit_2.png",
-  "outputs/screens/20261114_BL055kit_3.png",
-  "outputs/screens/20261114_BL055kit_4.png",
-  "outputs/screens/20261114_BL055kit_5.png",
-  "outputs/screens/20261114_BL055kit_6.png"
+  "outputs/screens/20261121_BL055kit_1.png",
+  "outputs/screens/20261121_BL055kit_2.png",
+  "outputs/screens/20261121_BL055kit_3.png",
+  "outputs/screens/20261121_BL055kit_4.png",
+  "outputs/screens/20261121_BL055kit_5.png",
+  "outputs/screens/20261121_BL055kit_6.png"
  ],
  "checks": [
   "register rows for the ticket's gates: all present",

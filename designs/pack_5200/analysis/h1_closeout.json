@@ -1,0 +1,1601 @@
+{
+ "ticket": "BL-055 Part A",
+ "date": "2026-11-21",
+ "body": {
+  "bases": {
+   "fine_sm8": {
+    "bl051": {
+     "strength": 1.679,
+     "fatigue": 1.258,
+     "creep": 2.683,
+     "buckling": 1.171,
+     "joint_strength": 2.079,
+     "joint_fatigue": 1.71,
+     "governing_tag": "S_meat@a_L_fine_sm8_23"
+    },
+    "bl053": {
+     "strength": 1.706,
+     "fatigue": 1.298,
+     "creep": 2.77,
+     "buckling": 1.228,
+     "joint_strength": 2.065,
+     "joint_fatigue": 1.698,
+     "governing_tag": "S_meat@a_L_fine_sm8_23"
+    },
+    "bl053_sanded": {
+     "strength": 1.706,
+     "fatigue": 1.272,
+     "creep": 2.713,
+     "buckling": 1.228,
+     "joint_strength": 1.986,
+     "joint_fatigue": 1.633,
+     "governing_tag": "S_meat@a_L_fine_sm8_23"
+    }
+   },
+   "fine": {
+    "bl051": {
+     "strength": 1.679,
+     "fatigue": 1.271,
+     "creep": 2.712,
+     "buckling": 1.138,
+     "joint_strength": 2.079,
+     "joint_fatigue": 1.71,
+     "governing_tag": "S_meat@a_L_fine_23"
+    },
+    "bl053": {
+     "strength": 1.706,
+     "fatigue": 1.311,
+     "creep": 2.796,
+     "buckling": 1.18,
+     "joint_strength": 2.065,
+     "joint_fatigue": 1.698,
+     "governing_tag": "S_meat@a_L_fine_23"
+    },
+    "bl053_sanded": {
+     "strength": 1.706,
+     "fatigue": 1.288,
+     "creep": 2.749,
+     "buckling": 1.18,
+     "joint_strength": 1.986,
+     "joint_fatigue": 1.633,
+     "governing_tag": "S_meat@a_L_fine_23"
+    }
+   },
+   "beam": {
+    "bl051": {
+     "strength": 1.613,
+     "fatigue": 1.235,
+     "creep": 2.635,
+     "buckling": 1.256,
+     "joint_strength": 1.963,
+     "joint_fatigue": 1.249,
+     "governing_tag": "C_im3@a_L_beam_23"
+    },
+    "bl053": {
+     "strength": 1.638,
+     "fatigue": 1.243,
+     "creep": 2.652,
+     "buckling": 1.404,
+     "joint_strength": 1.972,
+     "joint_fatigue": 1.235,
+     "governing_tag": "C_im3@a_L_beam_23"
+    },
+    "bl053_sanded": {
+     "strength": 1.638,
+     "fatigue": 1.193,
+     "creep": 2.546,
+     "buckling": 1.404,
+     "joint_strength": 1.899,
+     "joint_fatigue": 1.186,
+     "governing_tag": "C_im3@a_L_beam_23"
+    }
+   },
+   "fine_sm8.cyc": {
+    "bl051": {
+     "strength": 1.679,
+     "fatigue": 0.834,
+     "creep": 1.778,
+     "buckling": 1.095,
+     "joint_strength": 2.112,
+     "joint_fatigue": 1.087,
+     "governing_tag": "S_meat@a_L_fine_sm8_cyc_23"
+    },
+    "bl053": {
+     "strength": 1.706,
+     "fatigue": 0.851,
+     "creep": 1.815,
+     "buckling": 1.173,
+     "joint_strength": 2.091,
+     "joint_fatigue": 1.097,
+     "governing_tag": "S_meat@a_L_fine_sm8_cyc_23"
+    },
+    "bl053_sanded": {
+     "strength": 1.706,
+     "fatigue": 0.842,
+     "creep": 1.796,
+     "buckling": 1.173,
+     "joint_strength": 2.01,
+     "joint_fatigue": 1.055,
+     "governing_tag": "S_meat@a_L_fine_sm8_cyc_23"
+    }
+   }
+  },
+  "raster_g": {
+   "bl051": 892.8,
+   "bl053": 939.6
+  },
+  "governing_region": {
+   "set": "S_meat@a_L_fine_sm8_23:static_carry|23",
+   "region": "lumbar struts / pan",
+   "share": 0.4276387377584331,
+   "shares": {
+    "lumbar struts / pan": 0.4276387377584331,
+    "hip-pivot boss": 0.1838955386289445,
+    "stay L lower sleeve z 160-240 (branch / strut root)": 0.1838955386289445,
+    "stay R lower sleeve z 160-240 (branch / strut root)": 0.16430903155603918,
+    "stay L below the sleeve": 0.015233949945593036,
+    "stay R below the sleeve": 0.014145810663764961,
+    "stay L sleeve (crown bore wall)": 0.004352557127312296,
+    "inboard branch": 0.002176278563656148,
+    "stay R sleeve (crown bore wall)": 0.002176278563656148,
+    "stay L sleeve (crown bore wall) at the top bushing": 0.002176278563656148
+   },
+   "n": 919,
+   "peak_region": "stay L lower sleeve z 160-240 (branch / strut root)",
+   "peak_where": [
+    -101.0,
+    -11.0,
+    167.0
+   ]
+  },
+  "top_regions_fine_sm8": {
+   "lumbar struts / pan": {
+    "n_top": 393,
+    "share_top": 0.4276387377584331,
+    "fatigue_p99_region": 0.9852089663620484,
+    "fatigue_peak_region": 0.6123326030634915
+   },
+   "hip-pivot boss": {
+    "n_top": 169,
+    "share_top": 0.1838955386289445,
+    "fatigue_p99_region": 0.8536008953137749,
+    "fatigue_peak_region": 0.6160903768434848
+   },
+   "stay foot": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 811.7615193260331,
+    "fatigue_peak_region": 459.73047498847353
+   },
+   "stay below the sleeve": {
+    "n_top": 27,
+    "share_top": 0.029379760609358,
+    "fatigue_p99_region": 1.9562887087314758,
+    "fatigue_peak_region": 0.8103879441113461
+   },
+   "stay sleeve z 160-240": {
+    "n_top": 320,
+    "share_top": 0.3482045701849837,
+    "fatigue_p99_region": 1.0340658805928833,
+    "fatigue_peak_region": 0.5383776750681215
+   },
+   "stay sleeve z 240-470": {
+    "n_top": 6,
+    "share_top": 0.006528835690968444,
+    "fatigue_p99_region": 1.5673461046810808,
+    "fatigue_peak_region": 1.2459439790508426
+   },
+   "stay top z 470-544": {
+    "n_top": 2,
+    "share_top": 0.002176278563656148,
+    "fatigue_p99_region": 1.7991400734127696,
+    "fatigue_peak_region": 1.2363225376480396
+   },
+   "inboard branch": {
+    "n_top": 2,
+    "share_top": 0.002176278563656148,
+    "fatigue_p99_region": 3.4388429332591346,
+    "fatigue_peak_region": 0.9418152304487926
+   },
+   "mid bar / upper bar": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 3.185421669787974,
+    "fatigue_peak_region": 2.1452163815992717
+   }
+  },
+  "keepouts": {
+   "sleeve_R present": 1.0,
+   "sleeve_L present": 1.0,
+   "pivot present": 1.0,
+   "pads present": 0.8405931417979611,
+   "pawl housing ring (BL-046, cheeks for the BL-047 pivot) present": 0.9673884685624837,
+   "bore_R empty": 1.0,
+   "bore_L empty": 1.0,
+   "spine channel BL-046 (tube + rack, h1_spine_channel) empty": 1.0,
+   "fairlead stubs inside the envelope present (voxel)": 0.7664326738991704,
+   "fairleads complete on the print STL (h1_fairleads.check_stl)": true,
+   "outside envelope (voxels)": 0,
+   "boss wearer face flush (rails)": true,
+   "boss bag side outboard of spreader and inside envelope": true,
+   "boss inside x half-width 152": true,
+   "stay outer radius at z 234 mm": 13.41,
+   "bag envelope local y at z 234 mm": 18.490985022210744,
+   "boss local extents (x, y) mm": [
+    [
+     16.4,
+     2.0,
+     18.0
+    ],
+    [
+     -19.0,
+     -3.0,
+     13.0
+    ]
+   ],
+   "boss top z / next spreader clip bottom z": [
+    252.0,
+    255.0
+   ],
+   "boss clear of spreader clip": true,
+   "bolt head top z": 254.5,
+   "bolt head clear of spreader clip": true,
+   "boss max |x| mm (half-width limit 152)": 142.0
+  },
+  "sand_factor": {
+   "sand_mm": 0.2,
+   "k": 1.0416,
+   "worst": {
+    "z": 40.0,
+    "side": "R",
+    "A_mm2": 112.4,
+    "depth_y_mm": 11.77,
+    "axial": 1.0223,
+    "bend_y_wearer": 1.0402,
+    "bend_y_bag": 1.0416,
+    "bend_x": 1.0294,
+    "removed_mm2": 2.45,
+    "k": 1.0416
+   },
+   "rect_equivalent_loss": 0.0221
+  }
+ },
+ "voxels": {
+  "stripped": 1851,
+  "added": 5804,
+  "bl053_fix_voxels": {
+   "us1_L": 2047,
+   "us1_R": 2045,
+   "us2_L": 717,
+   "us2_R": 716
+  },
+  "bl053_fix_g": 46.9
+ },
+ "hip": {
+  "record": {
+   "H_pin": {
+    "T_n": 1205.6,
+    "sf_record_cap": 0.995,
+    "sf_insert_record": 0.796,
+    "sf_insert_record_z": 0.425,
+    "all_directions": {
+     "M_net_nmm": 38578.6,
+     "T_max_n": 1454.8,
+     "phi_deg": 55.0
+    }
+   },
+   "H_frame": {
+    "T_n": 1050.7,
+    "sf_record_cap": 1.142,
+    "sf_insert_record": 0.914,
+    "sf_insert_record_z": 0.488,
+    "all_directions": {
+     "M_net_nmm": 33620.8,
+     "T_max_n": 1267.8,
+     "phi_deg": 55.0
+    }
+   }
+  },
+  "sweep": [
+   {
+    "n": 2,
+    "ring_r": 11.0,
+    "boss_d": 32.0,
+    "layout": "ring",
+    "walls_ok": false,
+    "walls": {
+     "edge_mm": 1.8,
+     "between_mm": 15.6,
+     "to_pin_bore_mm": 2.8,
+     "head_to_leg_mm": 10.03,
+     "head_to_head_mm": 13.5,
+     "floor_mm": 7.7
+    },
+    "z_ratio": {
+     "strength": 0.352,
+     "fatigue": 0.198,
+     "creep": 0.423,
+     "pass": false
+    },
+    "no_z_ratio": {
+     "strength": 0.66,
+     "fatigue": 0.371,
+     "creep": 0.792,
+     "pass": false
+    }
+   },
+   {
+    "n": 4,
+    "ring_r": 10.0,
+    "boss_d": 32.0,
+    "layout": "ring",
+    "walls_ok": true,
+    "walls": {
+     "edge_mm": 2.8,
+     "between_mm": 7.74,
+     "to_pin_bore_mm": 1.8,
+     "head_to_leg_mm": 2.04,
+     "head_to_head_mm": 5.64,
+     "floor_mm": 7.7
+    },
+    "z_ratio": {
+     "strength": 0.626,
+     "fatigue": 0.352,
+     "creep": 0.751,
+     "pass": false
+    },
+    "no_z_ratio": {
+     "strength": 1.171,
+     "fatigue": 0.659,
+     "creep": 1.406,
+     "pass": false
+    }
+   },
+   {
+    "n": 6,
+    "ring_r": 10.0,
+    "boss_d": 32.0,
+    "layout": "ring",
+    "walls_ok": false,
+    "walls": {
+     "edge_mm": 2.8,
+     "between_mm": 3.6,
+     "to_pin_bore_mm": 1.8,
+     "head_to_leg_mm": -0.5,
+     "head_to_head_mm": 1.5,
+     "floor_mm": 7.7
+    },
+    "z_ratio": {
+     "strength": 0.938,
+     "fatigue": 0.528,
+     "creep": 1.126,
+     "pass": false
+    },
+    "no_z_ratio": {
+     "strength": 1.757,
+     "fatigue": 0.988,
+     "creep": 2.109,
+     "pass": false
+    }
+   },
+   {
+    "n": 6,
+    "ring_r": 16.0,
+    "boss_d": 44.0,
+    "layout": "ring",
+    "walls_ok": false,
+    "walls": {
+     "edge_mm": 2.8,
+     "between_mm": 9.6,
+     "to_pin_bore_mm": 7.8,
+     "head_to_leg_mm": -0.51,
+     "head_to_head_mm": 7.5,
+     "floor_mm": 4.5
+    },
+    "z_ratio": {
+     "strength": 1.474,
+     "fatigue": 0.829,
+     "creep": 1.768,
+     "pass": false
+    },
+    "no_z_ratio": {
+     "strength": 2.759,
+     "fatigue": 1.552,
+     "creep": 3.31,
+     "pass": false
+    }
+   },
+   {
+    "n": 9,
+    "ring_r": 16.0,
+    "boss_d": 44.0,
+    "layout": "ring",
+    "walls_ok": false,
+    "walls": {
+     "edge_mm": 2.8,
+     "between_mm": 4.54,
+     "to_pin_bore_mm": 7.8,
+     "head_to_leg_mm": -4.25,
+     "head_to_head_mm": 2.44,
+     "floor_mm": 4.5
+    },
+    "z_ratio": {
+     "strength": 2.21,
+     "fatigue": 1.243,
+     "creep": 2.653,
+     "pass": false
+    },
+    "no_z_ratio": {
+     "strength": 4.138,
+     "fatigue": 2.328,
+     "creep": 4.968,
+     "pass": false
+    }
+   },
+   {
+    "n": 10,
+    "ring_r": 16.0,
+    "boss_d": 44.0,
+    "layout": "ring",
+    "walls_ok": false,
+    "walls": {
+     "edge_mm": 2.8,
+     "between_mm": 3.49,
+     "to_pin_bore_mm": 7.8,
+     "head_to_leg_mm": -3.65,
+     "head_to_head_mm": 1.39,
+     "floor_mm": 4.5
+    },
+    "z_ratio": {
+     "strength": 2.455,
+     "fatigue": 1.382,
+     "creep": 2.947,
+     "pass": false
+    },
+    "no_z_ratio": {
+     "strength": 4.598,
+     "fatigue": 2.588,
+     "creep": 5.517,
+     "pass": false
+    }
+   },
+   {
+    "n": 8,
+    "ring_r": 16.0,
+    "boss_d": 44.0,
+    "layout": "split",
+    "walls_ok": true,
+    "walls": {
+     "edge_mm": 2.8,
+     "between_mm": 2.69,
+     "to_pin_bore_mm": 7.8,
+     "head_to_leg_mm": 2.14,
+     "head_to_head_mm": 0.59,
+     "floor_mm": 4.5
+    },
+    "z_ratio": {
+     "strength": 1.904,
+     "fatigue": 1.071,
+     "creep": 2.284,
+     "pass": false
+    },
+    "no_z_ratio": {
+     "strength": 3.565,
+     "fatigue": 2.006,
+     "creep": 4.276,
+     "pass": true
+    }
+   },
+   {
+    "n": 10,
+    "ring_r": 16.0,
+    "boss_d": 44.0,
+    "layout": "split",
+    "walls_ok": false,
+    "walls": {
+     "edge_mm": 2.8,
+     "between_mm": 2.69,
+     "to_pin_bore_mm": 7.8,
+     "head_to_leg_mm": -2.06,
+     "head_to_head_mm": 0.59,
+     "floor_mm": 4.5
+    },
+    "z_ratio": {
+     "strength": 2.421,
+     "fatigue": 1.361,
+     "creep": 2.905,
+     "pass": false
+    },
+    "no_z_ratio": {
+     "strength": 4.533,
+     "fatigue": 2.549,
+     "creep": 5.439,
+     "pass": false
+    }
+   },
+   {
+    "n": 8,
+    "ring_r": 17.0,
+    "boss_d": 46.0,
+    "layout": "split",
+    "walls_ok": true,
+    "walls": {
+     "edge_mm": 2.8,
+     "between_mm": 2.69,
+     "to_pin_bore_mm": 8.8,
+     "head_to_leg_mm": 3.38,
+     "head_to_head_mm": 0.59,
+     "floor_mm": 4.5
+    },
+    "z_ratio": {
+     "strength": 1.983,
+     "fatigue": 1.116,
+     "creep": 2.379,
+     "pass": false
+    },
+    "no_z_ratio": {
+     "strength": 3.714,
+     "fatigue": 2.09,
+     "creep": 4.455,
+     "pass": true
+    }
+   },
+   {
+    "n": 8,
+    "ring_r": 18.0,
+    "boss_d": 48.0,
+    "layout": "split",
+    "walls_ok": true,
+    "walls": {
+     "edge_mm": 2.8,
+     "between_mm": 2.61,
+     "to_pin_bore_mm": 9.8,
+     "head_to_leg_mm": 4.7,
+     "head_to_head_mm": 0.51,
+     "floor_mm": 4.5
+    },
+    "z_ratio": {
+     "strength": 2.065,
+     "fatigue": 1.162,
+     "creep": 2.477,
+     "pass": true
+    },
+    "no_z_ratio": {
+     "strength": 3.866,
+     "fatigue": 2.175,
+     "creep": 4.638,
+     "pass": true
+    }
+   },
+   {
+    "n": 6,
+    "ring_r": 19.0,
+    "boss_d": 50.0,
+    "layout": "split",
+    "walls_ok": true,
+    "walls": {
+     "edge_mm": 2.8,
+     "between_mm": 2.79,
+     "to_pin_bore_mm": 10.8,
+     "head_to_leg_mm": 9.18,
+     "head_to_head_mm": 0.69,
+     "floor_mm": 4.5
+    },
+    "z_ratio": {
+     "strength": 1.648,
+     "fatigue": 0.927,
+     "creep": 1.978,
+     "pass": false
+    },
+    "no_z_ratio": {
+     "strength": 3.086,
+     "fatigue": 1.736,
+     "creep": 3.703,
+     "pass": true
+    }
+   },
+   {
+    "n": 8,
+    "ring_r": 19.0,
+    "boss_d": 50.0,
+    "layout": "split",
+    "walls_ok": true,
+    "walls": {
+     "edge_mm": 2.8,
+     "between_mm": 2.79,
+     "to_pin_bore_mm": 10.8,
+     "head_to_leg_mm": 5.71,
+     "head_to_head_mm": 0.69,
+     "floor_mm": 4.5
+    },
+    "z_ratio": {
+     "strength": 2.149,
+     "fatigue": 1.208,
+     "creep": 2.58,
+     "pass": true
+    },
+    "no_z_ratio": {
+     "strength": 4.023,
+     "fatigue": 2.262,
+     "creep": 4.83,
+     "pass": true
+    }
+   },
+   {
+    "n": 10,
+    "ring_r": 19.0,
+    "boss_d": 50.0,
+    "layout": "split",
+    "walls_ok": true,
+    "walls": {
+     "edge_mm": 2.8,
+     "between_mm": 2.79,
+     "to_pin_bore_mm": 10.8,
+     "head_to_leg_mm": 2.02,
+     "head_to_head_mm": 0.69,
+     "floor_mm": 4.5
+    },
+    "z_ratio": {
+     "strength": 2.696,
+     "fatigue": 1.515,
+     "creep": 3.235,
+     "pass": true
+    },
+    "no_z_ratio": {
+     "strength": 5.047,
+     "fatigue": 2.837,
+     "creep": 6.057,
+     "pass": true
+    }
+   }
+  ],
+  "chosen": {
+   "pattern": {
+    "n": 8,
+    "ring_r": 19.0,
+    "boss_d": 50.0,
+    "rot_deg": 0.0,
+    "layout": "split",
+    "angles_deg": [
+     -42.0,
+     -14.0,
+     14.0,
+     42.0,
+     222.0,
+     194.0,
+     166.0,
+     138.0
+    ],
+    "positions_xz": [
+     [
+      14.12,
+      107.29
+     ],
+     [
+      18.44,
+      115.4
+     ],
+     [
+      18.44,
+      124.6
+     ],
+     [
+      14.12,
+      132.71
+     ],
+     [
+      -14.12,
+      107.29
+     ],
+     [
+      -18.44,
+      115.4
+     ],
+     [
+      -18.44,
+      124.6
+     ],
+     [
+      -14.12,
+      132.71
+     ]
+    ],
+    "hole_d": 6.4,
+    "hole_depth": 11.5,
+    "pitch_mm": 9.19,
+    "walls": {
+     "edge_mm": 2.8,
+     "between_mm": 2.79,
+     "to_pin_bore_mm": 10.8,
+     "head_to_leg_mm": 5.71,
+     "head_to_head_mm": 0.69,
+     "floor_mm": 4.5
+    },
+    "wall_rule_mm": 2.6,
+    "walls_ok": true
+   },
+   "capacity": {
+    "static_n": 512.7,
+    "fatigue_n": 153.8,
+    "sustained_n": 205.1,
+    "z_ratio_applied": true,
+    "basis": "1200 N (insert record) x hot 0.8 x layer-normal 0.534 (47 / 88 MPa)"
+   },
+   "rows": {
+    "C2|H_pin": {
+     "M_net_nmm": 27423.6,
+     "T_max_n": 194.7,
+     "phi_deg": 245.0,
+     "V_n": 1601.0,
+     "H_n": 1239.4,
+     "kind": "strength",
+     "cap_n": 512.7,
+     "sf": 2.633,
+     "goal": 1.5
+    },
+    "C1|H_pin": {
+     "M_net_nmm": 18282.4,
+     "T_max_n": 129.8,
+     "phi_deg": 245.0,
+     "V_n": 1067.3,
+     "H_n": 826.3,
+     "kind": "strength",
+     "cap_n": 512.7,
+     "sf": 3.95,
+     "goal": 1.5
+    },
+    "walk|H_pin": {
+     "M_net_nmm": 14625.9,
+     "T_max_n": 103.8,
+     "phi_deg": 245.0,
+     "V_n": 853.9,
+     "H_n": 661.0,
+     "kind": "fatigue",
+     "cap_n": 153.8,
+     "sf": 1.482,
+     "goal": 1.15
+    },
+    "carry|H_pin": {
+     "M_net_nmm": 9141.2,
+     "T_max_n": 64.9,
+     "phi_deg": 245.0,
+     "V_n": 533.7,
+     "H_n": 413.1,
+     "kind": "creep",
+     "cap_n": 205.1,
+     "sf": 3.16,
+     "goal": 1.5
+    },
+    "C2|H_frame": {
+     "M_net_nmm": 33620.8,
+     "T_max_n": 238.6,
+     "phi_deg": 245.0,
+     "V_n": 1601.0,
+     "H_n": 0.0,
+     "kind": "strength",
+     "cap_n": 512.7,
+     "sf": 2.149,
+     "goal": 1.5
+    },
+    "C1|H_frame": {
+     "M_net_nmm": 22413.9,
+     "T_max_n": 159.1,
+     "phi_deg": 245.0,
+     "V_n": 1067.3,
+     "H_n": 0.0,
+     "kind": "strength",
+     "cap_n": 512.7,
+     "sf": 3.223,
+     "goal": 1.5
+    },
+    "walk|H_frame": {
+     "M_net_nmm": 17931.1,
+     "T_max_n": 127.3,
+     "phi_deg": 245.0,
+     "V_n": 853.9,
+     "H_n": 0.0,
+     "kind": "fatigue",
+     "cap_n": 153.8,
+     "sf": 1.208,
+     "goal": 1.15
+    },
+    "carry|H_frame": {
+     "M_net_nmm": 11206.9,
+     "T_max_n": 79.5,
+     "phi_deg": 245.0,
+     "V_n": 533.7,
+     "H_n": 0.0,
+     "kind": "creep",
+     "cap_n": 205.1,
+     "sf": 2.58,
+     "goal": 1.5
+    }
+   },
+   "min_sf": {
+    "strength": 2.149,
+    "fatigue": 1.208,
+    "creep": 2.58
+   },
+   "pass": true
+  },
+  "insert": {
+   "pullout_n": 1200.0,
+   "hole_d": 6.4,
+   "od": 7.1,
+   "length": 9.5,
+   "min_wall": 2.6,
+   "mass_g": 1.5,
+   "hot": 0.8,
+   "z_ratio": 0.5340909090909091,
+   "fat_ratio": 0.3,
+   "creep_ratio": 0.4,
+   "torque_max_n_m": 2.5
+  },
+  "inserts_g": 12.0
+ },
+ "mount_flange": {
+  "t_mm": 3.0,
+  "d_mm": 50.0,
+  "holes": 8,
+  "hole_d_mm": 5.5,
+  "leg_half_w_mm": 4.37,
+  "arm_mm": 9.75,
+  "strip_b_mm": 9.19,
+  "rows": {
+   "C2|H_pin": {
+    "sigma_mpa": 137.8,
+    "limit_mpa": 827.0,
+    "sf": 6.0,
+    "goal": 1.5
+   },
+   "C1|H_pin": {
+    "sigma_mpa": 91.8,
+    "limit_mpa": 827.0,
+    "sf": 9.0,
+    "goal": 1.5
+   },
+   "walk|H_pin": {
+    "sigma_mpa": 73.4,
+    "limit_mpa": 510.0,
+    "sf": 6.94,
+    "goal": 1.15
+   },
+   "carry|H_pin": {
+    "sigma_mpa": 45.9,
+    "limit_mpa": 827.0,
+    "sf": 18.01,
+    "goal": 1.5
+   },
+   "C2|H_frame": {
+    "sigma_mpa": 168.8,
+    "limit_mpa": 827.0,
+    "sf": 4.9,
+    "goal": 1.5
+   },
+   "C1|H_frame": {
+    "sigma_mpa": 112.6,
+    "limit_mpa": 827.0,
+    "sf": 7.35,
+    "goal": 1.5
+   },
+   "walk|H_frame": {
+    "sigma_mpa": 90.1,
+    "limit_mpa": 510.0,
+    "sf": 5.66,
+    "goal": 1.15
+   },
+   "carry|H_frame": {
+    "sigma_mpa": 56.3,
+    "limit_mpa": 827.0,
+    "sf": 14.7,
+    "goal": 1.5
+   }
+  },
+  "min_sf_over_goal": 3.27,
+  "delta_g": 13.82,
+  "drawn": "D44 x 1.2 mm disc, no screw holes (designs/pack_5200/print/lug_hip_pivot_mount_slm_ti.stl)"
+ },
+ "pins": {
+  "scheme": "headed pin, R-clip through a cross hole on the far side, pin + clip on one tether",
+  "retainer": {
+   "part": "hitch-pin (R-) clip, 302 / 18-8 stainless, 1.2 mm wire, for 4.8-6.4 mm (3/16-1/4 in) pins",
+   "source": "https://www.mcmaster.com/products/hitch-pin-clips/ (secondary: catalogue page not fetched; any 18-8 R-clip in that size range)",
+   "mass_g": 0.6,
+   "tether": "1.5 mm Dyneema (UHMWPE) cord, 120 mm, through the pin head's 1.6 mm hole and the clip's eye, larks-head round the stay beside the fairlead: pin and clip stay on the frame when pulled",
+   "tether_g": 0.2
+  },
+  "clip_double_shear_n": 699.0,
+  "clip_uts_source": "ASSUMPTION CLIP-UTS (ASTM A240 304 minimum 515 MPa)",
+  "booked_before": "bag_attach: 7075 pins 36 mm shank + 8 mm head (no retainer); Ti hinge 5 x 44",
+  "test": {
+   "id": "PIN-RET",
+   "steps": [
+    "(a) every pin in, clip seated: a 50 N push on the pin's tail along its axis (spring scale) moves it < 0.5 mm",
+    "(b) after the T9 walk and the MT-1cr / CLEVIS-SHARE cycles: every pin home, every clip fully seated, no wire wear groove deeper than 0.1 mm",
+    "(c) bag-off: each hinge pin out and back in by hand, gloved, clip off and on, <= 8 s each"
+   ]
+  },
+  "stations": {
+   "hinge": {
+    "material": "ti_6al_4v",
+    "pin_d_mm": 5.0,
+    "span_mm": 40.0,
+    "shank_mm": 45.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole": {
+     "d_mm": 1.3,
+     "from_far_cheek_face_mm": 2.5
+    },
+    "head_side": "outboard",
+    "clip_side": "inboard",
+    "pin_g": 4.26,
+    "set_g": 5.06,
+    "qty": 2,
+    "removed_at_bag_off": true,
+    "bending": {
+     "row_n": 1019.0,
+     "sf_yield": 1.99,
+     "sf_fatigue": 2.24
+    }
+   },
+   "us1": {
+    "material": "ti_6al_4v",
+    "pin_d_mm": 5.0,
+    "span_mm": 36.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole": {
+     "d_mm": 1.3,
+     "from_far_cheek_face_mm": 2.5
+    },
+    "head_side": "outboard",
+    "clip_side": "inboard (towards x 0; the buttress leaves a 12 mm slot)",
+    "pin_g": 3.91,
+    "set_g": 4.71,
+    "qty": 2,
+    "removed_at_bag_off": false,
+    "bending": {
+     "design_yz_n": 599.1,
+     "sf_yield": 3.76,
+     "sf_fatigue": 4.23,
+     "dy95_yz_n": 964.5,
+     "dy95_sf_yield": 2.34,
+     "dy95_sf_fatigue": 2.63
+    },
+    "was": {
+     "material": "alu_7075_t6",
+     "pin_g": 2.48,
+     "bending": {
+      "design_yz_n": 599.1,
+      "sf_yield": 2.1,
+      "sf_fatigue": 1.56,
+      "dy95_yz_n": 964.5,
+      "dy95_sf_yield": 1.31,
+      "dy95_sf_fatigue": 0.97
+     }
+    }
+   },
+   "us2": {
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "span_mm": 36.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole": {
+     "d_mm": 1.3,
+     "from_far_cheek_face_mm": 2.5
+    },
+    "head_side": "outboard",
+    "clip_side": "inboard (towards x 0; the buttress leaves a 12 mm slot)",
+    "pin_g": 2.48,
+    "set_g": 3.28,
+    "qty": 2,
+    "removed_at_bag_off": false,
+    "bending": {
+     "design_yz_n": 399.4,
+     "sf_yield": 3.15,
+     "sf_fatigue": 2.34,
+     "dy95_yz_n": 642.9,
+     "dy95_sf_yield": 1.96,
+     "dy95_sf_fatigue": 1.46
+    }
+   },
+   "im1": {
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "span_mm": 36.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole": {
+     "d_mm": 1.3,
+     "from_far_cheek_face_mm": 2.5
+    },
+    "head_side": "outboard",
+    "clip_side": "inboard",
+    "pin_g": 2.48,
+    "set_g": 3.28,
+    "qty": 2,
+    "removed_at_bag_off": false
+   },
+   "im2": {
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "span_mm": 36.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole": {
+     "d_mm": 1.3,
+     "from_far_cheek_face_mm": 2.5
+    },
+    "head_side": "outboard",
+    "clip_side": "inboard",
+    "pin_g": 2.48,
+    "set_g": 3.28,
+    "qty": 2,
+    "removed_at_bag_off": false
+   },
+   "im3": {
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "span_mm": 36.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole": {
+     "d_mm": 1.3,
+     "from_far_cheek_face_mm": 2.5
+    },
+    "head_side": "outboard",
+    "clip_side": "inboard",
+    "pin_g": 2.48,
+    "set_g": 3.28,
+    "qty": 2,
+    "removed_at_bag_off": false
+   }
+  },
+  "mass": {
+   "pins_g": 36.18,
+   "clips_tethers_g": 9.6,
+   "delta_vs_bl053_g": 2.86
+  },
+  "bom": [
+   {
+    "id": "PIN-HINGE",
+    "station": "hinge",
+    "qty": 2,
+    "material": "ti_6al_4v",
+    "pin_d_mm": 5.0,
+    "shank_mm": 45.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole_d_mm": 1.3,
+    "cross_hole_from_far_cheek_face_mm": 2.5,
+    "clip_side": "inboard",
+    "pin_g": 4.26,
+    "set_g": 5.06
+   },
+   {
+    "id": "PIN-US1",
+    "station": "us1",
+    "qty": 2,
+    "material": "ti_6al_4v",
+    "pin_d_mm": 5.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole_d_mm": 1.3,
+    "cross_hole_from_far_cheek_face_mm": 2.5,
+    "clip_side": "inboard (towards x 0; the buttress leaves a 12 mm slot)",
+    "pin_g": 3.91,
+    "set_g": 4.71
+   },
+   {
+    "id": "PIN-US2",
+    "station": "us2",
+    "qty": 2,
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole_d_mm": 1.3,
+    "cross_hole_from_far_cheek_face_mm": 2.5,
+    "clip_side": "inboard (towards x 0; the buttress leaves a 12 mm slot)",
+    "pin_g": 2.48,
+    "set_g": 3.28
+   },
+   {
+    "id": "PIN-IM1",
+    "station": "im1",
+    "qty": 2,
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole_d_mm": 1.3,
+    "cross_hole_from_far_cheek_face_mm": 2.5,
+    "clip_side": "inboard",
+    "pin_g": 2.48,
+    "set_g": 3.28
+   },
+   {
+    "id": "PIN-IM2",
+    "station": "im2",
+    "qty": 2,
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole_d_mm": 1.3,
+    "cross_hole_from_far_cheek_face_mm": 2.5,
+    "clip_side": "inboard",
+    "pin_g": 2.48,
+    "set_g": 3.28
+   },
+   {
+    "id": "PIN-IM3",
+    "station": "im3",
+    "qty": 2,
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole_d_mm": 1.3,
+    "cross_hole_from_far_cheek_face_mm": 2.5,
+    "clip_side": "inboard",
+    "pin_g": 2.48,
+    "set_g": 3.28
+   }
+  ]
+ },
+ "export": {
+  "assembled": {
+   "faces": 292474,
+   "volume_cm3": 1001.02,
+   "g": 1061.1,
+   "watertight": true,
+   "shells": 1,
+   "dropped": [
+    [
+     20,
+     0.0032492412023665076
+    ],
+    [
+     10,
+     0.0002192096867967841
+    ],
+    [
+     8,
+     6.374148562719266e-05
+    ],
+    [
+     4,
+     1.226249301048791e-05
+    ],
+    [
+     8,
+     1.136401055016704e-05
+    ],
+    [
+     4,
+     2.917689932250648e-11
+    ]
+   ]
+  },
+  "lower": {
+   "faces": 144390,
+   "volume_cm3": 462.47,
+   "g": 490.2,
+   "footprint_mm": [
+    321.1,
+    299.6,
+    76.7
+   ],
+   "watertight": true,
+   "shells": 1,
+   "dropped": [],
+   "dropped_centre_frame_mm": [],
+   "print_h": 17.3,
+   "fits_h2s_340x320x340": true,
+   "bed_bl050": {
+    "rot_deg": 163.5,
+    "extents_mm": [
+     321.05,
+     299.58,
+     76.75
+    ],
+    "fits": true,
+    "fits_with_brim": true,
+    "spare_mm": [
+     2.95,
+     4.42
+    ]
+   }
+  },
+  "upper": {
+   "faces": 146158,
+   "volume_cm3": 512.64,
+   "g": 543.4,
+   "footprint_mm": [
+    309.4,
+    280.1,
+    64.4
+   ],
+   "watertight": true,
+   "shells": 1,
+   "dropped": [],
+   "dropped_centre_frame_mm": [],
+   "print_h": 19.2,
+   "fits_h2s_340x320x340": true,
+   "bed_bl050": {
+    "rot_deg": 90.0,
+    "extents_mm": [
+     309.39,
+     280.12,
+     64.38
+    ],
+    "fits": true,
+    "fits_with_brim": true,
+    "spare_mm": [
+     14.61,
+     23.88
+    ]
+   }
+  },
+  "us2_clevis_R": {
+   "faces": 3780,
+   "g": 13.73,
+   "footprint_mm": [
+    20.7,
+    29.0,
+    36.5
+   ],
+   "watertight": true,
+   "shells": 1
+  },
+  "us2_clevis_L": {
+   "faces": 3748,
+   "g": 13.74,
+   "footprint_mm": [
+    20.7,
+    29.0,
+    36.5
+   ],
+   "watertight": true,
+   "shells": 1
+  }
+ },
+ "hip_slices": {
+  "y_face": -48.55,
+  "rows": {
+   "y_face+1": {
+    "holes_d_eq": [
+     6.39,
+     6.39,
+     6.39,
+     6.39,
+     6.39,
+     6.39,
+     6.39,
+     6.39
+    ],
+    "outer_area_mm2": 1962.1,
+    "outer_bounds_xz": [
+     -25.0,
+     95.0,
+     25.0,
+     145.0
+    ],
+    "pass": true
+   },
+   "y_face+6": {
+    "holes_d_eq": [
+     6.39,
+     6.39,
+     6.39,
+     6.39,
+     6.39,
+     6.39,
+     6.39,
+     6.39
+    ],
+    "outer_area_mm2": 2140.7,
+    "outer_bounds_xz": [
+     -35.53,
+     95.0,
+     34.21,
+     145.0
+    ],
+    "pass": true
+   },
+   "y_face+10.5": {
+    "holes_d_eq": [
+     6.39,
+     6.39,
+     6.39,
+     6.39,
+     6.39,
+     6.39,
+     6.39,
+     6.39
+    ],
+    "outer_area_mm2": 2893.4,
+    "outer_bounds_xz": [
+     -49.42,
+     95.0,
+     48.88,
+     145.0
+    ],
+    "pass": true
+   },
+   "y_face+13.5": {
+    "holes_d_eq": [
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    "outer_area_mm2": 3349.7,
+    "outer_bounds_xz": [
+     -55.55,
+     95.0,
+     54.72,
+     145.0
+    ],
+    "pass": true
+   }
+  },
+  "lower_flat_round_holes": {
+   "z0.6": 8,
+   "z6": 8,
+   "z10.5": 8
+  },
+  "pass": true
+ },
+ "stl_check": {
+  "h1_assembled": {
+   "watertight": true,
+   "shells": 1,
+   "g": 1061.1
+  },
+  "h1_lower_flat": {
+   "watertight": true,
+   "shells": 1,
+   "g": 490.2
+  },
+  "h1_upper_flat": {
+   "watertight": true,
+   "shells": 1,
+   "g": 543.4
+  },
+  "us2_clevis_L": {
+   "watertight": true,
+   "shells": 1,
+   "g": 13.7
+  },
+  "us2_clevis_R": {
+   "watertight": true,
+   "shells": 1,
+   "g": 13.7
+  },
+  "bed": {
+   "lower": {
+    "extents_mm": [
+     321.05,
+     299.58,
+     76.75
+    ],
+    "fits": true,
+    "fits_with_brim": true,
+    "spare_mm": [
+     2.95,
+     4.42
+    ],
+    "best_rotation": {
+     "deg": 0.0,
+     "swap": false,
+     "w_mm": 321.05,
+     "h_mm": 299.58,
+     "over_mm": -2.95,
+     "fits_with_brim": true
+    }
+   },
+   "upper": {
+    "extents_mm": [
+     309.39,
+     280.12,
+     64.38
+    ],
+    "fits": true,
+    "fits_with_brim": true,
+    "spare_mm": [
+     14.61,
+     23.88
+    ],
+    "best_rotation": {
+     "deg": 0.0,
+     "swap": false,
+     "w_mm": 309.39,
+     "h_mm": 280.12,
+     "over_mm": -14.61,
+     "fits_with_brim": true
+    }
+   }
+  }
+ },
+ "mass": {
+  "hip_inserts": 8,
+  "hip_inserts_booked": 2,
+  "hip_inserts_delta_g": 9.0,
+  "hip_screw": "Ti gr5 M5 x 14 DIN 7984",
+  "hip_screw_g": 2.24,
+  "hip_screws_delta_g": 13.46,
+  "us1_ti_pins_delta_g": 2.86,
+  "assembled_g": 1061.1,
+  "assembled_bl053_g": 1050.6,
+  "print_delta_g": 10.5,
+  "lower_g": 490.2,
+  "upper_g": 543.4,
+  "hip_boss": {
+   "y_face_before": -48.5,
+   "y_face": -48.55,
+   "boss_added_g": 13.58,
+   "holes_cut_g": 3.13,
+   "net_g": 10.45,
+   "pattern": {
+    "n": 8,
+    "ring_r": 19.0,
+    "boss_d": 50.0,
+    "rot_deg": 0.0,
+    "layout": "split",
+    "angles_deg": [
+     -42.0,
+     -14.0,
+     14.0,
+     42.0,
+     222.0,
+     194.0,
+     166.0,
+     138.0
+    ],
+    "positions_xz": [
+     [
+      14.12,
+      107.29
+     ],
+     [
+      18.44,
+      115.4
+     ],
+     [
+      18.44,
+      124.6
+     ],
+     [
+      14.12,
+      132.71
+     ],
+     [
+      -14.12,
+      107.29
+     ],
+     [
+      -18.44,
+      115.4
+     ],
+     [
+      -18.44,
+      124.6
+     ],
+     [
+      -14.12,
+      132.71
+     ]
+    ],
+    "hole_d": 6.4,
+    "hole_depth": 11.5,
+    "pitch_mm": 9.19,
+    "walls": {
+     "edge_mm": 2.8,
+     "between_mm": 2.79,
+     "to_pin_bore_mm": 10.8,
+     "head_to_leg_mm": 5.71,
+     "head_to_head_mm": 0.69,
+     "floor_mm": 4.5
+    },
+    "wall_rule_mm": 2.6,
+    "walls_ok": true
+   }
+  },
+  "hardware_delta_g": 22.46,
+  "mount_flange_delta_g": 13.82
+ },
+ "assumptions": [
+  {
+   "id": "MOUNT-ORIENT",
+   "text": "The SLM mount's local y is frame z: its two legs stand above and below the pin (along V), so the inserts split into two groups at the sides.",
+   "settled_by": "First-article fit of the mount on the boss; the mount drawing."
+  },
+  {
+   "id": "FLANGE-RIGID",
+   "text": "The mount base is redrawn as a 3 mm Ti disc (drawn: 1.2 mm) and acts as a rigid flange in the prying model (tipping about the boss edge, tension in proportion to the distance).",
+   "settled_by": "HB-6b hip-mount proof on the frame with the redrawn mount, a gauge on the most-loaded screw."
+  },
+  {
+   "id": "INS-Z",
+   "text": "Insert pull-out along the layer normal = record pull-out x hot 0.8 x PAHT-CF z / xy tensile ratio (47 / 88).",
+   "settled_by": "HB-6 insert pull-out on printed coupons, hole axis along the build z, at 60 C."
+  },
+  {
+   "id": "INS-DEPTH",
+   "text": "Pilot hole = insert length + 2 mm for displaced melt.",
+   "settled_by": "Section one HB-6 coupon: no melt plug under the insert."
+  },
+  {
+   "id": "HIP-LAND",
+   "text": ">= 1 mm flange between an insert hole and the mount's D10 pin bore.",
+   "settled_by": "Mount drawing."
+  },
+  {
+   "id": "HEAD-LEG",
+   "text": ">= 1 mm between a DIN 7984 head (D8.5) and a leg root, for the driver.",
+   "settled_by": "First-article assembly with a 4 mm hex key."
+  },
+  {
+   "id": "HIP-BOOKED",
+   "text": "The frame's fixed lump books 2 hip inserts and 2 screws; BL-055 books the rest.",
+   "settled_by": "Ledger audit."
+  },
+  {
+   "id": "BOSS-LOCAL",
+   "text": "The grown boss (solid, at the hard point x 0, z 120) is not in the 2 mm voxel body of the whole-body run: it adds material at a hard point the body already treats as fixed and the pilots stay inside it.",
+   "settled_by": "Next whole-body re-raster (review 6) from the exported print."
+  },
+  {
+   "id": "SAND-K",
+   "text": "The 0.2 mm sanding of the stays' wearer faces is a uniform stress factor k on every stay element (worst section ratio over 15 stations, both stays).",
+   "settled_by": "CA-1 bars printed over supports and sanded (BL-053 SCAR-KD)."
+  }
+ ],
+ "screenshots": [
+  "outputs/screens/20261121_BL055_1.png",
+  "outputs/screens/20261121_BL055_2.png",
+  "outputs/screens/20261121_BL055_3.png"
+ ]
+}

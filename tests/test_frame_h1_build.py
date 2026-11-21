@@ -69,7 +69,8 @@ def test_hardware_ids_match_the_joint_code(pk):
                 "HW-BUSH", "HW-SPINE", "HW-RACK", "HW-MMA", "HW-BEADS", "HW-CLAMP", "HW-PIN-RET"):
         assert hid in rows
     pn = B.pins()
-    assert f"| {2 * pn['stations']} |" in rows["HW-PIN-SLV"] and f"| {pn['stations'] - 2} |" in rows["HW-PIN-AL"]
+    n_ti = sum(q for _, q, _ in B.pin_groups(B.pin_rows()).get("Ti-6Al-4V", []))
+    assert f"| {2 * pn['stations']} |" in rows["HW-PIN-SLV"] and f"| {pn['stations'] - n_ti} |" in rows["HW-PIN-AL"]
     assert pn["im_span_mm"] == 36.0 and pn["hinge_span_mm"] == 40.0
 
 
@@ -156,3 +157,66 @@ def test_meat_haul_step6_is_advice():
         assert "advice, not a safety rule" in t
     else:
         assert "Never under 60 mm" in t
+
+
+# ---------------------------------------------------------------------------- BL-055 Part B (item 2)
+def _fake_closeout(tmp_path):
+    """A close-out JSON in Part A's shapes (h1_closeout.pins / hip_check / mass_rows), US1 moved to Ti."""
+    import copy
+    import json
+    pins = copy.deepcopy(B.rev5()["pins"])
+    u = pins["stations"]["us1"]
+    u.update({"material": "ti_6al_4v", "pin_g": round(u["pin_g"] * 4430 / 2810, 2),
+              "was": {"material": "alu_7075_t6", "pin_g": u["pin_g"], "bending": dict(u["bending"])}})
+    pins["bom"] = [{"id": f"PIN-{k.upper()}"} for k in pins["stations"]]
+    pat = {"boss_d": 44.0, "hole_d": 6.4, "hole_depth": 11.5, "wall_rule_mm": 2.6,
+           "positions_xz": [[16.0, 120.0], [0.0, 136.0], [-16.0, 120.0], [0.0, 104.0]],
+           "walls": {"edge_mm": 2.8, "between_mm": 16.2, "to_pin_bore_mm": 7.8, "floor_mm": 4.5}}
+    d = {"hip": {"chosen": {"pattern": pat, "min_sf": {"strength": 1.6, "fatigue": 1.2, "creep": 2.0},
+                            "capacity": {"static_n": 900.0, "basis": "test"}, "pass": True},
+                 "insert": {"pullout_n": 1200.0, "hole_d": 6.4, "torque_max_n_m": 2.5}},
+         "pins": pins, "mass": {"hip_screw": "Ti gr5 M5 x 14 DIN 7984"}}
+    p = tmp_path / "h1_closeout.json"
+    p.write_text(json.dumps(d))
+    return p
+
+
+def test_build_reads_the_part_a_pins_and_hip_pattern(tmp_path, monkeypatch):
+    monkeypatch.setattr(B, "CLOSEOUT_JSON", _fake_closeout(tmp_path))
+    co = B.closeout()
+    assert co["pins"]["stations"]["us1"]["material"] == "ti_6al_4v" and co["hip_screw"].startswith("Ti gr5 M5")
+    pk = B.package()
+    md = pk["build_md"]
+    assert B.PENDING not in md and pk["checks"]["bl055_data"]
+    shop = {r.split("|")[1].strip(" *"): r for r in md.splitlines() if r.startswith("| **HW-")}
+    assert shop["HW-PIN-TI"].split("|")[3].strip() == "4"          # hinge 2 + US1 2
+    assert shop["HW-PIN-AL"].split("|")[3].strip() == "8"
+    assert "us1" in shop["HW-PIN-TI"] and "us1" not in shop["HW-PIN-AL"]
+    assert shop["HW-HIP-INS"].split("|")[3].strip() == "6"         # 4 + 2 spare
+    assert shop["HW-HIP-SCR"].split("|")[3].strip() == "4" and "M5 x 14" in shop["HW-HIP-SCR"]
+    s12 = md.split("## 12. Hip mount")[1].split("## 13.")[0]
+    for x, z in ((+16.0, 0.0), (0.0, +16.0), (-16.0, 0.0), (0.0, -16.0)):   # positions relative to the boss centre
+        assert f"| {x:+.1f} | {z:+.1f} |" in s12
+    assert "count 4 pilot holes" in s12 and ">= 11.5 mm" in s12 and "2.0 N m" in s12 and "PASSES" in s12
+    s9 = md.split("## 9.")[1].split("## 10.")[0]
+    assert "**Ti-6Al-4V** (**HW-PIN-TI**, 4)" in s9 and "us1 (shank" in s9
+    assert "1.58 x a 7075 pin" in s9
+
+
+def test_build_marks_part_a_pending_when_not_published(tmp_path, monkeypatch):
+    monkeypatch.setattr(B, "CLOSEOUT_JSON", tmp_path / "missing.json")
+    pk = B.package()
+    md = pk["build_md"]
+    assert pk["checks"]["pending_bl055"] >= 2 and not pk["checks"]["bl055_data"]
+    assert "Do not heat-set any hip insert" in md
+
+
+def test_published_closeout_leaves_no_pending_box(pk):
+    if not B.CLOSEOUT_JSON.exists():
+        pytest.skip("BL-055 Part A has not published h1_closeout.json")
+    co = B.closeout()
+    assert co["pins"] and co["hip"], "h1_closeout.json lacks the pin rows or the hip check in the expected shape"
+    assert B.PENDING not in pk["build_md"] and B.PENDING not in pk["readme_md"]
+    n = len(co["hip"]["pattern"]["positions_xz"])
+    assert f"count {n} pilot holes" in pk["build_md"]
+    assert co["pins"]["stations"]["us1"]["material"] == "ti_6al_4v"

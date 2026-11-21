@@ -37,7 +37,7 @@ RESULTS = ANALYSIS / "h1_closeout.json"
 DOC = ANALYSIS / "h1_closeout.md"
 OUT = REPO / "outputs" / "h1_closeout"
 SCREENS = REPO / "outputs" / "screens"
-SHOT = "20261114_BL055_"
+SHOT = "20261121_BL055_"
 STAY_X = 115.0
 
 BODY_CHECK = "m1_u2.5_im3_bl053_body"            # h1_buckling.full_check cache: BL-053 body as printed
@@ -861,8 +861,8 @@ def write_md(res: dict, shots: list) -> str:
       f"{ch['min_sf']['creep']:.2f}, with the layer-normal pull-out. The 2-insert record was 0.995 on an assumed "
       f"1500 N insert; on the insert record (1200 N) and the layer-normal ratio it is "
       f"{hp['record']['H_pin']['sf_insert_record_z']:.2f}.")
-    a(f"- **Change from the 2026-11-14 WIP:** the WIP chose 9 inserts equally spaced on a D44 boss; 4 of those holes "
-      f"sit under the mount's two legs (screw heads clash, head-to-leg {next(r for r in hp['sweep'] if r['n'] == 9)['walls']['head_to_leg_mm']:.1f} mm). With the legs "
+    a(f"- **Change from the 2026-11-14 WIP:** the WIP chose 9 inserts equally spaced on a D44 boss; the holes "
+      f"next to the mount's two legs put screw heads on them ( head-to-leg {next(r for r in hp['sweep'] if r['n'] == 9)['walls']['head_to_leg_mm']:.1f} mm). With the legs "
       f"kept, no pattern under the drawn D44 disc reaches fatigue 1.15 (best 8 split, 1.07); the mount base must be "
       f"redrawn anyway (it is a 1.2 mm disc with no screw holes), so it grows to D{pat['boss_d']:g} x {fl['t_mm']:g} mm.")
     a(f"- **Pins:** US1 pins in Ti-6Al-4V (orchestrator call): dy 95 fatigue {pn['stations']['us1']['was']['bending']['dy95_sf_fatigue']} -> "
