@@ -221,3 +221,94 @@ def test_shopping_and_count(kit):
     assert any("HB-6b" in x["tests"] and "M5 x 14" in x["item"] for x in sh)
     runs = {o["test"] for o in kit["order"] if o["stage"] == "run"}
     assert "HB-6b" in runs and len(runs) == 87
+
+
+# ------------------------------------------------------------------ review 6 additions (orchestrator, BL-057)
+GUIDES = ROOT / "outputs/release/test_kit/guides"
+MFG = ROOT / "outputs/release/pack5200_corrie_f_rev3/manufacturing"
+
+
+def test_no_guide_has_raw_placeholders():
+    """review 6 m-1: a string without its f prefix printed raw {...} in G6."""
+    for g in sorted(GUIDES.glob("G*.md")):
+        txt = g.read_text()
+        assert "{" not in txt and "}" not in txt, g.name
+
+
+def test_fit_us_pass_text_is_formatted(kit):
+    pf = kit["register"]["FIT-US"]["pass_fail"]
+    assert "{" not in pf and f"r {K.fit_us_wrap()['us2']['lip_r_mm']:.0f} mm" in pf
+
+
+def test_he_fit_names_the_closeout_hinge_pin(kit):
+    st = json.loads((AN / "h1_closeout.json").read_text())["pins"]["stations"]["hinge"]
+    sp = kit["register"]["HE-FIT"]["specimen"]
+    assert f"D{st['pin_d_mm']:g} x {st['shank_mm']:g} mm shank" in sp and "headed" in sp and "cross hole" in sp
+    assert "5 mm, 44 mm" not in sp
+
+
+def test_hb6_gates_the_lower_half(kit, pk):
+    assert "LOWER-HALF PRINT" in kit["register"]["HB-6"]["gates"]
+    sec2 = pk["build_md"].split("## 2.")[1].split("## 3.")[0]
+    assert "HB-6" in sec2 and "LOWER half" in sec2
+    assert "HB-6 passes" in pk["readme_md"]
+
+
+def test_nut_spec_din934_with_caliper_check(kit, pk):
+    md = pk["build_md"]
+    row = [ln for ln in md.splitlines() if ln.startswith("| **HW-M5-NUT**")][0]
+    assert "DIN 934" in row and "m = 4.0 mm" in row and "NOT ISO 4032" in row
+    for sec in ("## 7.", "## 8."):
+        assert "thickness <= 4.1 mm" in md.split(sec)[1].split("\n## ")[0]
+    nuts = [x for x in kit["shopping"] if "hex nut" in x["item"]]
+    assert nuts and all("DIN 934" in x["item"] and "<= 4.1 mm" in x["item"] for x in nuts)
+    bom = list(csv.DictReader(open(MFG / "bom.csv", encoding="utf-8")))
+    bn = [r for r in bom if "hex nut" in r.get("item", "")]
+    assert bn and all("DIN 934" in r["item"] and "ISO 4032, 4.4-4.7" in r["item"] for r in bn)
+
+
+def test_chamber_heater_from_the_record(pk):
+    sec3 = pk["build_md"].split("## 3.")[1].split("\n## ")[0]
+    assert "chamber heater on, 50-60 C" in sec3 and "chamber_temp_c 50" in sec3
+
+
+def test_support_table_measured_on_today_meshes(pk):
+    sec3 = pk["build_md"].split("## 3.")[1].split("\n## ")[0]
+    row = [ln for ln in sec3.splitlines() if ln.startswith("| `h1_lower_flat.stl`")][0]
+    v = B.live_print_row("h1_lower_flat.stl", {"support_g_est": 49.0, "support_g_high": 94.3})
+    assert abs(v["flat_mm2"] - 1706) <= 5 and v["part_g"] == C56["mass"]["h1_lower_flat"]["g"].__round__(1)
+    assert f"flat face now {v['flat_mm2']:.0f}" in row and f"{v['part_g']:.1f} g" in row
+
+
+def test_print_readme_marks_the_fdm_proto_mount_superseded():
+    txt = (ROOT / "designs/pack_5200/print/README.md").read_text()
+    row = [ln for ln in txt.splitlines() if ln.startswith(B.HIP_PROTO_ROW)][0]
+    assert "SUPERSEDED, not for H1" in row and row.count("|") == 9       # still the 8 columns of the table
+
+
+def test_insert_record_note_is_bl056():
+    n = (ROOT / "data/materials/hardware/insert_heatset_brass_m5.yaml").read_text()
+    assert "513 N" in n and "60 C" in n and "BUILD Z" in n and "6 printed PAHT-CF coupons" in n
+    assert "pass >= 1.5 kN\n  each" not in n
+
+
+def test_bag_release_readme_cut_status_and_belly_advice():
+    import mfg_corrie_f_rev3 as M
+    rd = (MFG / "README.md").read_text()
+    head = rd.split("## Key numbers")[0]
+    assert "## Cut status (reviews 5 and 6)" in head
+    assert "cut the first bag after HE-FIT step 0 (US-ROUTE), PT-3 and SEW-F pass on printed test pieces" in head
+    for i, *_ in M.REVIEW6_STATUS:
+        assert f"| {i} |" in head
+    assert "| B-1 | closed |" in head                                   # review-5 table read from the review file
+    assert "a FIFTH independent review decides" not in rd
+    bm = [ln for ln in rd.splitlines() if ln.startswith("| BELLY-MIN |")][0]
+    assert "ADVICE, not a structural limit" in bm and "40 mm" in bm
+    ops = (MFG / "op_sequence.md").read_text()
+    o725 = ops.split("belly gauge tacks (BL-052, DECISION BELLY-GAUGE)**")[1][:900]
+    assert "ADVICE" in o725 and "minimum-belly gauge" not in o725 and "40 mm belly" in o725
+    bom = list(csv.DictReader(open(MFG / "bom.csv", encoding="utf-8")))
+    fk = [r for r in bom if r.get("item", "").startswith("printed fairleads")][0]
+    pins = json.loads((AN / "h1_closeout.json").read_text())["pins"]["bom"]
+    assert f"headed pins ({sum(int(r['qty']) for r in pins)}" in fk["item"] and "45.1 mm" in fk["item"]
+    assert "36 mm shank" not in fk["item"] and "44 mm" not in fk["item"]

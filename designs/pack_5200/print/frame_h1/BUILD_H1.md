@@ -27,7 +27,7 @@ Frame coordinates used below: x to the wearer's right, y aft (toward the bag), z
 | **HW-J234-WSH** | M5 washer 12 mm OD x 1.0 mm, A2 | 8 | z 234 joint only; the 12 mm OD is load-bearing | hardware store |
 | **HW-US2-SCR** | Ti gr5 low-head socket cap screw M5 x 35, DIN 7984 | 4 | US2 clevises only, heads in the counterbores | Ti fastener vendor |
 | **HW-US2-WSH** | M5 washer 10 mm OD x 1.0 mm, A2, DIN 433 | 4 | US2 clevises only, nut side | hardware store |
-| **HW-M5-NUT** | M5 hex nut A2, ISO 4032 (8 AF x 4 mm) | 8 | 4 for z 234 + 4 for the clevises; thin nuts do not fit | hardware store |
+| **HW-M5-NUT** | M5 hex nut A2, DIN 934, m = 4.0 mm, 8 AF (NOT ISO 4032, which is 4.4-4.7 mm thick and does not fit the trap) | 8 | 4 for z 234 + 4 for the clevises; caliper each <= 4.1 mm on arrival (review 6 M-1) | hardware store |
 | **HW-PIN-TI** | Ti-6Al-4V pin, 5 mm h8 ground, headed (1.6 mm tether hole in the head): hinge (2): shank 45.1 mm, head 8 x 1.5 mm, 1.3 mm cross hole 2.5 mm past the far cheek; us1 (2): shank 41.1 mm, head 8 x 1.5 mm, 1.3 mm cross hole 2.5 mm past the far cheek | 4 | hinge, us1, both sides (hinge bending SF 1.99 / fatigue 2.24; us1 bending SF 3.76 / fatigue 4.23) | machinist (Ti rod) |
 | **HW-PIN-AL** | 7075-T6 pin, 5 mm h8 ground, headed (1.6 mm tether hole in the head): us2 + im1 + im2 + im3 (8): shank 41.1 mm, head 8 x 1.5 mm, 1.3 mm cross hole 2.5 mm past the far cheek | 8 | us2, im1, im2, im3, both sides (us2 bending SF 3.15 / fatigue 2.34) | machinist / bag kit |
 | **HW-PIN-RET** | hitch-pin (R-) clip, 302 / 18-8 stainless, 1.2 mm wire, for 4.8-6.4 mm (3/16-1/4 in) pins + 1.5 mm Dyneema (UHMWPE) cord, 120 mm, through the pin head's 1.6 mm hole and the clip's eye, larks-head round the stay beside the fairlead: pin and clip stay on the frame when pulled | 12 | one set per station (BL-053; source https://www.mcmaster.com/products/hitch-pin-clips/ (secondary: catalogue page not fetched; any 18-8 R-clip in that size range)) | hardware / BL-053 |
@@ -71,7 +71,7 @@ Frame coordinates used below: x to the wearer's right, y aft (toward the bag), z
 
 ## 2. Before you print anything (gates)
 
-1. **Coupons first.** CA-1 (fatigue bars) and CA-5 (z 234 joint stubs) must pass (`outputs/release/test_kit/guides/G1.md` prints them, G4 runs them). CHECK: the engineer has written PASS against both in the results sheet.
+1. **Coupons first.** CA-1 (fatigue bars, with the scar bars) and CA-5 (z 234 joint stubs) must pass before either half; HB-6 (insert pull-out along the build z, hot) must pass before the LOWER half, because the hip insert pilots are printed into it (review 6 m-9) (`outputs/release/test_kit/guides/G1.md` prints them, G4 runs them). CHECK: the engineer has written PASS against all three in the results sheet.
 2. **BL-053 print plan in place.** Section 3 below must show the BL-053 support table, not a 'PLACEHOLDER BL-053' box. CHECK: no placeholder box in section 3.
 3. **Plate preview with supports on** (review 5 m-10). Load each half into Bambu Studio with the profile of section 3, supports on, brim on. Slice. CHECK, for each half: (a) nothing is red or outside the plate, including the support base, the brim and the purge / skirt keep-out; (b) the preview's filament and time are within 10 % of section 3; (c) no support is drawn inside a bore, pin hole, bolt hole or nut trap. Screenshot each preview and send it. The lower half as written is 321.9 x 300.4 mm (12.67 x 11.83 in) on a plate the retailer gives as 340 x 320 mm (`docs/research/frame_comp_A.md`, ASSUMPTION BED-ROT in `analysis/h1_bedfit.md`): only the preview settles it.
 
@@ -83,7 +83,7 @@ Same profile for both halves, the clevises and every test piece (fixtures includ
 |---|---|
 | filament | Bambu PAHT-CF, dried 80 C (176 F) for 10-12 h, printed from a dry box |
 | nozzle | hardened 0.6 mm, 290 C (554 F) |
-| bed | 100 C (212 F), chamber closed |
+| bed / chamber | 100 C (212 F) / chamber closed with the chamber heater on, 50-60 C (122-140 F) for the 18-21 h halves (record pa12_cf_fdm_paht chamber_temp_c 50, note 45-60 C) |
 | cooling | part fan <= 30 %, aux fan off |
 | layer / walls / top-bottom | 0.20 mm / 6 walls / 6 layers |
 | infill | 100 % (never a gyroid in place of the limbs) |
@@ -114,14 +114,16 @@ Per file (support mass estimate and its high bound; time rule: (part + support v
 
 | file | touches the plate | needs support under | part | support (high) | filament (high) | time | tallest support |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| `h1_lower_flat.stl` | 739 mm2 | 11136 mm2 | 477.6 g | 49.0 (94.3) g | 527 (572) g | 18.6 h | 57 mm (2.2 in) |
-| `h1_upper_flat.stl` | 223 mm2 | 18044 mm2 | 544.2 g | 55.3 (102.7) g | 600 (647) g | 21.2 h | 44 mm (1.7 in) |
-| `us2_clevis_R.stl / us2_clevis_L.stl` | 580 mm2 | 74 mm2 | 13.8 g | 0.1 (0.2) g | 14 (14) g | 0.5 h | 8 mm (0.3 in) |
-| `test_pieces/us_route_stay_R.stl` | 9 mm2 | 3684 mm2 | 164.8 g | 13.0 (24.6) g | 178 (189) g | 6.3 h | 38 mm (1.5 in) |
-| `test_pieces/hefit_hinge_fairlead_R.stl` | 15 mm2 | 864 mm2 | 43.1 g | 1.6 (2.8) g | 45 (46) g | 1.6 h | 22 mm (0.9 in) |
-| `test_pieces/im3ec_cheek_R.stl` | 729 mm2 | 886 mm2 | 68.8 g | 1.8 (3.2) g | 71 (72) g | 2.5 h | 18 mm (0.7 in) |
+| `h1_lower_flat.stl` | 739 mm2 (flat face now 1705) | 11136 mm2 | 494.6 g | 49.0 (94.3) g | 544 (589) g | 19.2 h | 57 mm (2.2 in) |
+| `h1_upper_flat.stl` | 223 mm2 (flat face now 163) | 18044 mm2 | 543.4 g | 55.3 (102.7) g | 599 (646) g | 21.2 h | 44 mm (1.7 in) |
+| `us2_clevis_R.stl / us2_clevis_L.stl` | 580 mm2 (flat face now 628) | 74 mm2 | 15.7 g | 0.1 (0.2) g | 16 (16) g | 0.6 h | 8 mm (0.3 in) |
+| `test_pieces/us_route_stay_R.stl` | 9 mm2 (flat face now 0) | 3684 mm2 | 152.5 g | 13.0 (24.6) g | 166 (177) g | 5.9 h | 38 mm (1.5 in) |
+| `test_pieces/hefit_hinge_fairlead_R.stl` | 15 mm2 (flat face now 0) | 864 mm2 | 42.9 g | 1.6 (2.8) g | 44 (46) g | 1.6 h | 22 mm (0.9 in) |
+| `test_pieces/im3ec_cheek_R.stl` | 729 mm2 (flat face now 344) | 886 mm2 | 68.5 g | 1.8 (3.2) g | 70 (72) g | 2.5 h | 18 mm (0.7 in) |
 
-The two halves together need up to **1219 g (2.69 lb)** of filament with supports (high bound).
+BL-057 (review 6 m-11): the part mass, filament and time columns are measured from the STL files in this folder now (part + BL-053's support estimate; time by BL-053's rule); 'flat face now' is the area of the part's flat underside on the plate, measured on the current mesh (the lower half now starts on the D50 hip boss face). The support columns are BL-053's voxel estimates for the BL-053 meshes.
+
+The two halves together need up to **1235 g (2.72 lb)** of filament with supports (high bound).
 
 Filament and time (from the meshes; supports not included in this table):
 
@@ -160,7 +162,7 @@ CHECK: the two halves together read **1007 to 1080 g** (35.5-38.1 oz; ASSUMPTION
 ## 7. Bolt the halves together (the z 234 joint)
 
 1. Ream the 4 bolt holes in each half to **5.1 mm (0.201 in)**, from the split face outward, slowly, square to the face (a drill guide helps).
-2. Dry-fit an M5 nut (HW-M5-NUT) in each of the 4 side traps of the lower half: it slides in from the side and does not turn. Tight: file the slot lightly, never more than 0.2 mm.
+2. CHECK each nut with the caliper before it goes in: thickness <= 4.1 mm (0.161 in); a thicker nut is the wrong standard, set it aside. Dry-fit an M5 nut (HW-M5-NUT, DIN 934) in each of the 4 side traps of the lower half: it slides in from the side and does not turn. Tight: file the slot lightly, never more than 0.2 mm.
 3. Sand both split faces flat on 120 grit taped to the flat board, about 10 strokes, until they touch over the whole stay section with no rocking.
 4. Into each side trap: a 12 mm washer (**HW-J234-WSH**) then a nut; the washer goes on the split-face side, under the ledge.
 5. Stand the halves on the board with a 16 mm rod through both crown bores.
@@ -174,7 +176,7 @@ CHECK: the two halves together read **1007 to 1080 g** (35.5-38.1 oz; ASSUMPTION
 BL-053 re-cut the nut traps (review 5 M-2): a 10 mm washer slot at the nut face, then a hex pocket that holds the nut by its flats; thinnest wall 2.3 mm (>= 2 mm). Bolt axes at z +/-7 mm about the pin. BL-056 (CLEVIS-SHARE B at share 1.0): the joint blocks grew upward to z pin +19 mm (was +14.5) and the nut face moved 1 mm (0.04 in) INBOARD: each nut trap now runs x +/-144.8 to 150 (was to 151), so the nut sits 1 mm deeper; the 35 mm screw still reaches through it (hip_mount_bl056.md 7). Use only the clevises and lower half printed from the files in this folder (dated 2026-11-21 or later): a clevis from an older print does not mate with the grown block.
 
 1. Ream the two bolt holes in each clevis and in the lower half's US2 block (printed 4.8) to **5.1 mm (0.201 in)**.
-2. Into each side trap, from the wearer face: a 10 mm DIN 433 washer (**HW-US2-WSH**) then an M5 nut. CHECK: the nut slides into its hex pocket and does not turn with a finger.
+2. CHECK each nut with the caliper before it goes in: thickness <= 4.1 mm (0.161 in); a thicker nut is the wrong standard, set it aside. Into each side trap, from the wearer face: a 10 mm DIN 433 washer (**HW-US2-WSH**) then an M5 nut (DIN 934). CHECK: the nut slides into its hex pocket and does not turn with a finger.
 3. Put the clevis on its block, flat face to flat face at x +/-163, throat floors flush. Push the **M5 x 35** screws (**HW-US2-SCR**, not the z 234 M5 x 45) into the counterbores in the clevis's outer face, **no washer under the head**. Blue threadlocker, snug (about 1 N m).
 4. CHECK: a steel rule laid across the clevis outer face does not touch the heads (design 0.5 mm below the face); no step in the throat floor across the joint line (break the edges 0.3 mm if the eye catches).
 5. Ream the US2 eye through both cheeks, assembled, to 7.2 mm so they line up (step 9).

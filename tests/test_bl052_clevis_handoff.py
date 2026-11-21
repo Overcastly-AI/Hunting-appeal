@@ -71,17 +71,19 @@ def test_gauge_op_books_its_thread():
 
 def test_card_and_records_carry_the_belly_rule():
     import mfg_corrie_f_rev3 as M
-    card = [t for t in M.PACKAGING if "meat-haul rule" in t]
-    assert len(card) == 1 and "NEVER flatter than the 60 mm" in card[0] and "contrast" in card[0]
+    # BL-057 (review 6 M-4): the 60 mm tacks are ADVICE; the frame is designed down to the BL-053 40 mm belly
+    card = [t for t in M.PACKAGING if "meat-haul advice" in t]
+    assert len(card) == 1 and "at least the 60 mm" in card[0] and "contrast" in card[0] and "40 mm belly" in card[0]
     names = {a[0] for a in M.ASSUMPTIONS}
     assert {"BELLY-MIN", "BELLY-GAUGE", "CLEVIS-FACE"} <= names
     bm = next(a for a in M.ASSUMPTIONS if a[0] == "BELLY-MIN")
     assert f"{CROWN['belly_sweep']['60']['us1']['fatigue']:.2f} at 60 mm" in bm[1] and "MT-1cr" in bm[2]
     pk = (MFG / "README.md").read_text()
-    assert "## Packaging" in pk and "NEVER flatter than the 60 mm" in pk.split("## Packaging")[1]
+    assert "## Packaging" in pk and "at least the 60 mm" in pk.split("## Packaging")[1]
+    assert "ADVICE, not a structural limit" in bm[1]
     dr = list(csv.DictReader(open(MFG / "delta_register_rev3.csv", encoding="utf-8")))
     rd22 = next(r for r in dr if r["id"] == "RD-22")
-    assert "60 mm minimum cradle belly" in rd22["evidence"]
+    assert "60 mm cradle belly advice" in rd22["evidence"]
 
 
 # ------------------------------------------------------------------------------------------- 2. kit text

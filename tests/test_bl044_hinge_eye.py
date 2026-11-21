@@ -147,8 +147,9 @@ def test_hinge_pin_two_mm_longer_in_bom_and_ledger(pk):
     rows = {n: g for s, n, g, src in P.F.bl044_rows()}
     pin = next(g for n, g in rows.items() if n.startswith("BL-044: hinge pins"))
     assert pin == pytest.approx(2 * math.pi * 2.5 ** 2 * 2.0 * 2.81 / 1000.0, rel=0.02)
-    line = next(b for b in pk["bom"] if "7075 pins" in (b.item or ""))
-    assert "Ti-6Al-4V HINGE pins (2: 5 mm h8 ground, 44 mm" in line.item     # BL-050 B: the BL-049 Ti pin (was 38 mm 7075)
+    line = next(b for b in pk["bom"] if (b.item or "").startswith("printed fairleads"))
+    # BL-057 (review 6 M-4): the frame-kit pins are read from h1_closeout.json pins.bom (BL-055: headed, 45.1 mm Ti hinge)
+    assert "2 x Ti-6Al-4V (HINGE): D5 x 45.1 mm shank" in line.item and "44 mm" not in line.item
 
 
 def test_viz_hinge_fairlead_and_eye_follow_the_envelope():
@@ -210,7 +211,7 @@ def test_stale_hose_text_and_strip_end_marks(pk):
 
 def test_test_kit_screens_are_named_for_this_ticket():
     import physical_test_kit as K
-    assert K.SHOT == "20261121_BL055kit"          # BL-055 regenerated the kit (was 20261113_BL044kit)
+    assert K.SHOT == "20261121_BL057kit"          # BL-057 regenerated the kit (was 20261121_BL055kit)
     assert "BL038_<n>" not in (K.__doc__ or "")
 
 

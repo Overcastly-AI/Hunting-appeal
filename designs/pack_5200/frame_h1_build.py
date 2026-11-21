@@ -306,12 +306,36 @@ def fg(v: float) -> str:
 # replaced by the BL-053 per-piece plan when it lands
 PIECE_CONTACT = {"hefit_hinge_fairlead_R": ("about 29 mm2", "77 %"), "us_route_stay_R": ("about 10 mm2", "79 %"),
                  "im3ec_cheek_R": ("23 % of its footprint", "most of the rest"), "us2_clevis_R": ("94 %", "little")}
-PROFILE_TXT = ("PAHT-CF dried 80 C (176 F) 10-12 h, hardened 0.6 mm nozzle at 290 C, bed 100 C, chamber closed, 0.20 mm "
+PROFILE_TXT = ("PAHT-CF dried 80 C (176 F) 10-12 h, hardened 0.6 mm nozzle at 290 C, bed 100 C, chamber heater 50-60 C, 0.20 mm "
                "layers, 6 walls, 6 top / bottom layers, 100 % infill, 8 mm brim, loaded as the file is written (do not "
                "rotate)")
 SUPPORT_TXT = ("tree supports FROM THE BUILD PLATE under the whole piece, in PAHT-CF, top Z distance 0.20-0.25 mm, 2-3 "
                "interface layers, 45 deg threshold, support blockers painted inside every bore, pin hole, bolt hole, "
                "counterbore and nut trap. After printing break the supports off, sand the scars flush ALONG the stay")
+
+
+NUT_STD = "DIN 934"           # review 6 M-1 (orchestrator call): m = 4.0 mm; ISO 4032 M5 is 4.4-4.7 mm and does not fit
+NUT_T_TOL = 0.1               # caliper limit = trap nut length + 0.1 mm (inside the trap's 0.2 mm nut play, h1_bedfit)
+
+
+def nut_txt(C) -> str:
+    """HW-M5-NUT spec (review 6 M-1): read the nut size from the joint code, the standard from NUT_STD."""
+    return (f"M5 hex nut A2, {NUT_STD}, m = {C.nut_t:.1f} mm, {C.nut_af:.0f} AF (NOT ISO 4032, which is 4.4-4.7 mm "
+            "thick and does not fit the trap)")
+
+
+def nut_check_txt(C) -> str:
+    return (f"CHECK each nut with the caliper before it goes in: thickness <= {C.nut_t + NUT_T_TOL:.1f} mm "
+            f"({(C.nut_t + NUT_T_TOL) / IN:.3f} in); a thicker nut is the wrong standard, set it aside")
+
+
+def chamber_txt() -> str:
+    """Chamber temperature for the long PAHT-CF prints (review 6 m-5): the material record's chamber_temp_c as the
+    low end, the record note's 60 C as the top."""
+    lo = float(material(MAT_PRINT).require("chamber_temp_c"))
+    hi = 60.0                 # pa12_cf_fdm_paht note: 'enclosure (chamber 45-60 C)'
+    return (f"chamber closed with the chamber heater on, {lo:.0f}-{hi:.0f} C ({lo * 1.8 + 32:.0f}-{hi * 1.8 + 32:.0f} F) "
+            f"for the 18-21 h halves (record {MAT_PRINT} chamber_temp_c {lo:.0f}, note 45-60 C)")
 
 
 def ps() -> dict:
@@ -458,15 +482,38 @@ def _render_bl053(b: dict) -> list[str]:
          "Per file (support mass estimate and its high bound; time rule: " + p.get("time_rule", "") + "):", "",
          "| file | touches the plate | needs support under | part | support (high) | filament (high) | time | "
          "tallest support |", "|---|---:|---:|---:|---:|---:|---:|---:|"]
+    live = {k: live_print_row(k, f) for k, f in p["files"].items()}
     for k, f in p["files"].items():
-        L.append(f"| `{k}` | {f['plate_contact_mm2']:.0f} mm2 | {f['supported_down_area_mm2']:.0f} mm2 | "
-                 f"{f['part_g']:.1f} g | {f['support_g_est']:.1f} ({f['support_g_high']:.1f}) g | "
-                 f"{f['filament_g_est']:.0f} ({f['filament_g_high']:.0f}) g | {f['print_h_est']:.1f} h | "
+        v = live[k]
+        L.append(f"| `{k}` | {f['plate_contact_mm2']:.0f} mm2 (flat face now {v['flat_mm2']:.0f}) | "
+                 f"{f['supported_down_area_mm2']:.0f} mm2 | "
+                 f"{v['part_g']:.1f} g | {f['support_g_est']:.1f} ({f['support_g_high']:.1f}) g | "
+                 f"{v['fil_est']:.0f} ({v['fil_high']:.0f}) g | {v['h_est']:.1f} h | "
                  f"{f['max_support_column_mm']:.0f} mm ({f['max_support_column_mm'] / IN:.1f} in) |")
-    tot = sum(p["files"][k]["filament_g_high"] for k in p["files"] if "flat" in k)
-    L += ["", f"The two halves together need up to **{tot:.0f} g ({tot / 453.6:.2f} lb)** of filament with supports "
+    tot = sum(live[k]["fil_high"] for k in p["files"] if "flat" in k)
+    L += ["", "BL-057 (review 6 m-11): the part mass, filament and time columns are measured from the STL files in this "
+          "folder now (part + BL-053's support estimate; time by BL-053's rule); 'flat face now' is the area of the "
+          "part's flat underside on the plate, measured on the current mesh (the lower half now starts on the D50 "
+          "hip boss face). The support columns are BL-053's voxel estimates for the BL-053 meshes.", "",
+          f"The two halves together need up to **{tot:.0f} g ({tot / 453.6:.2f} lb)** of filament with supports "
           "(high bound).", ""]
     return L
+
+
+def live_print_row(key: str, f: dict) -> dict:
+    """One BL-053 print row re-measured on today's STL (review 6 m-11): part mass (record density), the flat
+    underside on the plate (faces at the lowest z facing down), filament = part + BL-053 support estimate, time by the
+    BL-053 rule (part + support) / 8 mm3/s x 1.08."""
+    import trimesh
+    stem = key.split(" / ")[0].strip().removesuffix(".stl")
+    m = trimesh.load(PRINT / f"{stem}.stl")
+    z0 = float(m.bounds[0][2])
+    sel = (m.triangles_center[:, 2] < z0 + 0.05) & (m.face_normals[:, 2] < -0.99)
+    part = float(m.volume) * rho_print()
+    t = (part + f["support_g_est"]) / rho_print() / RATE_MM3_S * (1 + WASTE) / 3600.0
+    return {"part_g": round(part, 1), "flat_mm2": round(float(m.area_faces[sel].sum()), 0),
+            "fil_est": round(part + f["support_g_est"], 0), "fil_high": round(part + f["support_g_high"], 0),
+            "h_est": round(t, 1)}
 
 
 def b53_get(b: dict, *names, default=None):
@@ -514,7 +561,8 @@ def readme_md(stl: list[dict], b: dict) -> str:
          "`h1_spine_channel.md`. Code: `huntkit/gendesign/frame_h1.py`.", "",
          "## Status", "",
          "- **Engineering release candidate, not released.** Print the first article only after the coupons CA-1 "
-         "(with the scar bars) and CA-5 pass (`designs/pack_5200/tests_physical/CA1_fatigue_rig.md`, the test kit)"
+         "(with the scar bars) and CA-5 pass, and the lower half only after HB-6 passes (its hip insert pilots are "
+         "printed in; review 6 m-9) (`designs/pack_5200/tests_physical/CA1_fatigue_rig.md`, the test kit)"
          + (" and after the BL-053 print plan has replaced the placeholder in BUILD_H1 section 3." if not b else
             "; the print plan (orientation, supports, filament, time) is BL-053's, in BUILD_H1 section 3."),
          "- Review 5 (`analysis/review_20261113_fifth.md`) found the body files cannot be printed with the old "
@@ -822,9 +870,11 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
           "| MMA dispenser gun + mixing tips, IPA, nitrile gloves, PTFE tape | bonding |", ""]
     # ---- 2. gates
     L += ["## 2. Before you print anything (gates)", "",
-          "1. **Coupons first.** CA-1 (fatigue bars) and CA-5 (z 234 joint stubs) must pass "
+          "1. **Coupons first.** CA-1 (fatigue bars, with the scar bars) and CA-5 (z 234 joint stubs) must pass "
+          "before either half; HB-6 (insert pull-out along the build z, hot) must pass before the LOWER half, because "
+          "the hip insert pilots are printed into it (review 6 m-9) "
           "(`outputs/release/test_kit/guides/G1.md` prints them, G4 runs them). CHECK: the engineer has written "
-          "PASS against both in the results sheet.",
+          "PASS against all three in the results sheet.",
           "2. **BL-053 print plan in place.** Section 3 below must show the BL-053 support table, not a "
           "'PLACEHOLDER BL-053' box. CHECK: no placeholder box in section 3.",
           "3. **Plate preview with supports on** (review 5 m-10). Load each half into Bambu Studio with the profile of "
@@ -841,7 +891,7 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
           "| setting | value |", "|---|---|",
           "| filament | Bambu PAHT-CF, dried 80 C (176 F) for 10-12 h, printed from a dry box |",
           "| nozzle | hardened 0.6 mm, 290 C (554 F) |",
-          "| bed | 100 C (212 F), chamber closed |",
+          f"| bed / chamber | 100 C (212 F) / {chamber_txt()} |",
           "| cooling | part fan <= 30 %, aux fan off |",
           "| layer / walls / top-bottom | 0.20 mm / 6 walls / 6 layers |",
           "| infill | 100 % (never a gyroid in place of the limbs) |",
@@ -890,8 +940,8 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
     L += ["## 7. Bolt the halves together (the z 234 joint)", "",
           f"1. Ream the 4 bolt holes in each half to **{Z.hole_d:.1f} mm ({Z.hole_d / IN:.3f} in)**, from the split face outward, slowly, square "
           "to the face (a drill guide helps).",
-          f"2. Dry-fit an M5 nut (HW-M5-NUT) in each of the 4 side traps of the lower half: it slides in from the side "
-          "and does not turn. Tight: file the slot lightly, never more than 0.2 mm.",
+          f"2. {nut_check_txt(Z)}. Dry-fit an M5 nut (HW-M5-NUT, {NUT_STD}) in each of the 4 side traps of the "
+          "lower half: it slides in from the side and does not turn. Tight: file the slot lightly, never more than 0.2 mm.",
           "3. Sand both split faces flat on 120 grit taped to the flat board, about 10 strokes, until they touch over "
           "the whole stay section with no rocking.",
           f"4. Into each side trap: a {Z.washer_od:.0f} mm washer (**HW-J234-WSH**) then a nut; the washer goes on the "
@@ -920,8 +970,8 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
            "fallback in step 2."), "",
           f"1. Ream the two bolt holes in each clevis and in the lower half's US2 block (printed {C.hole_print_d:.1f}) "
           f"to **{C.hole_d:.1f} mm ({C.hole_d / IN:.3f} in)**.",
-          f"2. Into each side trap, from the wearer face: a {C.washer_od:.0f} mm DIN 433 washer (**HW-US2-WSH**) then an "
-          "M5 nut. CHECK: the nut slides into its hex pocket and does not turn with a finger"
+          f"2. {nut_check_txt(C)}. Into each side trap, from the wearer face: a {C.washer_od:.0f} mm DIN 433 washer "
+          f"(**HW-US2-WSH**) then an M5 nut ({NUT_STD}). CHECK: the nut slides into its hex pocket and does not turn with a finger"
           + ("." if nut_ok else "; if it turns (old print), hold it with a thin 8 mm open spanner slid in from the "
              "wearer face while you tighten."),
           f"3. Put the clevis on its block, flat face to flat face at x +/-163, throat floors flush. Push the **M5 x "
@@ -1108,8 +1158,9 @@ def shopping_table(stl, cp, kits, pn, Z, C, pw, pr, co=None) -> list[str]:
          "US2 clevises only, heads in the counterbores", "Ti fastener vendor"),
         ("HW-US2-WSH", f"M5 washer {C.washer_od:.0f} mm OD x {C.washer_t:.1f} mm, A2, DIN 433", n_cl * C.n_washers,
          "US2 clevises only, nut side", "hardware store"),
-        ("HW-M5-NUT", f"M5 hex nut A2, ISO 4032 ({C.nut_af:.0f} AF x {C.nut_t:.0f} mm)", 8,
-         "4 for z 234 + 4 for the clevises; thin nuts do not fit", "hardware store"),
+        ("HW-M5-NUT", nut_txt(C), 8,
+         f"4 for z 234 + 4 for the clevises; caliper each <= {C.nut_t + NUT_T_TOL:.1f} mm on arrival (review 6 M-1)",
+         "hardware store"),
     ] + pin_shop_rows(pn, pr) + [
         ("HW-PIN-RET", (f"{pr['retainer']['part']} + {pr['retainer']['tether']}" if pr else
                         f"{PLACEHOLDER} pin retention parts (review 5 M-5)"), pn["stations"], "one set per station"
@@ -1413,6 +1464,24 @@ def print_readme_hip_row(co: dict | None = None) -> str | None:
             f"${slm_cost(vol, 1, 'al'):.0f}) |")
 
 
+HIP_PROTO_ROW = "| lug hip pivot mount (proto)"
+
+
+def proto_superseded_txt() -> str | None:
+    """Review 6 m-4: the FDM prototype hip mount file is still the drawn D44 base with no screw holes. Measured on the
+    STL: its base width against the redraw's D. None if it has been redrawn (wide enough)."""
+    import trimesh
+    rd = mount_redraw(closeout())
+    if not rd:
+        return None
+    m = trimesh.load(PRINT.parent / "lug_hip_pivot_mount_fdm_pacf.stl")
+    w = float(sorted(m.extents)[1])                       # the base disc's width (the two larger extents)
+    if w >= rd["d"] - 1.0:
+        return None
+    return (f"base {w:.0f} mm wide with no screw holes, the drawn D44 part; H1 needs the D{rd['d']:.0f} x {rd['holes']} "
+            "hole mount: no FDM version is drawn (review 6 m-4)")
+
+
 def patch_print_readme(write: bool = True) -> str | None:
     """Replace the hip mount row of print/README.md (generated by the BL-022 gendesign run, which BL-057 guards from
     overwriting the redrawn STL; see huntkit.gendesign.lugs.PROTECTED) with print_readme_hip_row(). Idempotent."""
@@ -1423,6 +1492,13 @@ def patch_print_readme(write: bool = True) -> str | None:
     hits = [i for i, ln in enumerate(lines) if ln.startswith(HIP_ROW)]
     assert len(hits) == 1, hits
     lines[hits[0]] = row
+    proto = [i for i, ln in enumerate(lines) if ln.startswith(HIP_PROTO_ROW)]
+    assert len(proto) == 1, proto
+    why = proto_superseded_txt()
+    cells = lines[proto[0]].split(" | ")
+    first = cells[0].split(", **SUPERSEDED")[0]
+    cells[0] = first + (f", **SUPERSEDED, not for H1** ({why})" if why else "")
+    lines[proto[0]] = " | ".join(cells)
     txt = "\n".join(lines)
     if write:
         PRINT_README.write_text(txt)

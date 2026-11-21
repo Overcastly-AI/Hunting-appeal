@@ -48,7 +48,7 @@ PAT = REL / "patterns"
 OUT = REL / "manufacturing"
 SCREENS = ROOT / "outputs" / "screens"
 DATE = "20261121"
-TOPIC = "BL055mfg"            # BL-055: screenshots named for the ticket that regenerates the package
+TOPIC = "BL057mfg"            # BL-057: screenshots named for the ticket that regenerates the package (was BL055mfg)
 TITLE = "CORRIE F rev 3 (door D2) - 5200 cu in hunting pack bag"
 REGISTER = ROOT / "designs" / "pack_5200" / "tests_physical" / "test_register.csv"
 YD = 914.4
@@ -526,29 +526,53 @@ def hardware_table(ctx: Ctx) -> list[tuple]:
     ] + frame_bolt_lines()
 
 
+def closeout_pins() -> dict:
+    """BL-057 (review 6 M-4): the pin set as BUILD_H1 orders it (analysis/h1_closeout.json ``pins``: ``bom`` rows,
+    retainer), {} before BL-055 Part A published it."""
+    f = Path(__file__).resolve().parent / "analysis" / "h1_closeout.json"
+    if not f.exists():
+        return {}
+    return json.loads(f.read_text()).get("pins", {})
+
+
 def fairlead_line() -> str:
-    """BL-050 B: the frame-kit attachment set as it stands after BL-049 / 050 (12 stations, h1_bedfit 'stations'; the
-    hinge pins Ti-6Al-4V at the frame's PIN-L length, h1_lanes.hinge_pin 'chosen'). Was '8 fairleads, 8 x 7075 pins,
-    38 mm shank HINGE' (BL-044)."""
+    """The frame-kit attachment set. BL-057 (review 6 M-4): the pins from h1_closeout.json pins.bom (BL-055: Ti US1
+    and hinge, 7075 elsewhere, headed, cross-holed, R-clip + tether), grouped by material and shank; before that file,
+    BL-050 B's line (h1_lanes.hinge_pin, bag_attach stations)."""
     from huntkit.gendesign import bag_attach as BA
-    from huntkit.gendesign import h1_lanes as LN
     n = len(BA.stations())
+    pc = closeout_pins()
+    tail = (f"UHMWPE sleeves ({2 * n}: one per cheek, print/frame_h1/BUILD_H1.md ASSUMPTION PIN-SLEEVE), lifter keepers; "
+            "crown pawl = the LOW-PROFILE pawl print/frame_h1/crown_pawl_lp_fdm_pacf (P1) / _lp_slm (production), NOT "
+            "the old crown_pawl_* (it does not fit H1, BL-047)")
+    head = f"printed fairleads ({n} stations, in the H1 print; the US2 outer cheeks are the bolt-on clevises), "
+    if pc.get("bom"):
+        mat = {"ti_6al_4v": "Ti-6Al-4V", "alu_7075_t6": "7075-T6"}
+        groups: dict = {}
+        for r in pc["bom"]:
+            k = (r["material"], r["pin_d_mm"], r["shank_mm"], tuple(r["head_mm"]), r["cross_hole_d_mm"])
+            g = groups.setdefault(k, {"qty": 0, "st": []})
+            g["qty"] += int(r["qty"])
+            g["st"].append(r["station"].upper())
+        pins = "; ".join(f"{g['qty']} x {mat.get(k[0], k[0])} ({'/'.join(g['st'])}): D{k[1]:g} x {k[2]:g} mm shank, "
+                         f"head D{k[3][0]:g} x {k[3][1]:g}, D{k[4]:g} cross hole" for k, g in groups.items())
+        ret = pc.get("retainer", {})
+        rtxt = f"; each with {ret['part']} + {ret['tether']}" if ret.get("part") else ""
+        return (head + f"headed pins ({sum(g['qty'] for g in groups.values())}, BL-055 h1_closeout.json pins.bom: "
+                + pins + rtxt + "), " + tail)
+    from huntkit.gendesign import h1_lanes as LN
     hp = LN.hinge_pin()
     hc = hp[hp["chosen"]]
     im = P.F.hinge_pin()["shank_im_mm"]
-    return (f"printed fairleads ({n} stations, in the H1 print; the US2 outer cheeks are the bolt-on clevises), 7075 pins "
-            f"({n - 2}: IM1-IM3 and US1 / US2, {im:.0f} mm shank), Ti-6Al-4V HINGE pins (2: 5 mm h8 ground, "
-            f"{hc['length_mm']:.0f} mm; BL-049, NOT 7075; retention per BL-053), UHMWPE sleeves ({2 * n}: one per cheek, "
-            "print/frame_h1/BUILD_H1.md ASSUMPTION PIN-SLEEVE), lifter keepers; crown pawl "
-            "= the LOW-PROFILE pawl print/frame_h1/crown_pawl_lp_fdm_pacf (P1) / _lp_slm (production), NOT the old "
-            "crown_pawl_* (it does not fit H1, BL-047)")
+    return (head + f"7075 pins ({n - 2}: IM1-IM3 and US1 / US2, {im:.0f} mm shank), Ti-6Al-4V HINGE pins (2: 5 mm h8 "
+            f"ground, {hc['length_mm']:.0f} mm; BL-049, NOT 7075; retention per BL-053), " + tail)
 
 
 def frame_bolt_lines() -> list[tuple]:
     """BL-050 B (BL-051 mix-up risk): the two frame bolt sets on DISTINCT lines. The z 234 body joint (frame_h1.JOINT:
     M5 x 45, 12 mm washers, load-bearing) and the US2 clevis (h1_bedfit.JOINT; BL-051 counterbored heads: M5 x 35, no
     washer under the head, one 10 mm DIN 433 washer per bolt on the nut side: 12 mm does not fit its 29 mm block).
-    Both Ti gr5 DIN 7984 low head, A2 ISO 4032 nuts. BL-052: every clevis count from BF.JOINT (n_washers per bolt)."""
+    Both Ti gr5 DIN 7984 low head, A2 DIN 934 nuts (m 4.0; BL-057, review 6 M-1). BL-052: every clevis count from BF.JOINT (n_washers per bolt)."""
     from huntkit.gendesign import frame_h1 as FH
     from huntkit.gendesign import h1_bedfit as BF
     z, c = FH.JOINT, BF.JOINT
@@ -556,14 +580,14 @@ def frame_bolt_lines() -> list[tuple]:
     return [
         ("z234_bolt", f"z 234 JOINT: Ti gr5 low-head socket cap screw M5 x {z.bolt_len:.0f} DIN 7984 (NOT the M5 x "
          f"{c.bolt_len:.0f} of the US2 clevis: too short here)", "-", 4, "unit", "frame kit", True),
-        ("z234_nut", "z 234 JOINT: M5 hex nut A2 ISO 4032 (8 AF x 4)", "-", 4, "unit", "frame kit", True),
+        ("z234_nut", f"z 234 JOINT: M5 hex nut A2 DIN 934, m = {z.nut_t:.1f} mm ({z.nut_af:.0f} AF; NOT ISO 4032, 4.4-4.7 mm thick, it does not fit the trap; review 6 M-1)", "-", 4, "unit", "frame kit", True),
         ("z234_washer", f"z 234 JOINT: M5 washer {z.washer_od:.0f} mm OD x {z.washer_t:.1f} A2 ({z.washer_od:.0f} mm is "
          f"LOAD-BEARING; NOT the {c.washer_od:.0f} mm clevis washer)", "-", 8, "unit", "frame kit", True),
         ("clevis_bolt", f"US2 CLEVIS (BL-051): Ti gr5 low-head socket cap screw M5 x {c.bolt_len:.0f} DIN 7984, 2 per "
          f"side, head in the printed {c.cbore_d:.0f} mm counterbore, NO washer under the head (NOT the M5 x "
          f"{z.bolt_len:.0f} of z 234: it bottoms in the blind tail hole {z.bolt_len - c.bolt_len:.0f} mm before the "
          "head seats)", "-", n_cl, "unit", "frame kit", True),
-        ("clevis_nut", "US2 CLEVIS (BL-051): M5 hex nut A2 ISO 4032 (8 AF x 4), side traps", "-", n_cl, "unit",
+        ("clevis_nut", f"US2 CLEVIS (BL-051): M5 hex nut A2 DIN 934, m = {c.nut_t:.1f} mm ({c.nut_af:.0f} AF; NOT ISO 4032, 4.4-4.7 mm thick, it does not fit the trap; review 6 M-1), side traps", "-", n_cl, "unit",
          "frame kit", True),
         ("clevis_washer", f"US2 CLEVIS (BL-051): M5 washer {c.washer_od:.0f} mm OD x {c.washer_t:.1f} A2 DIN 433, "
          f"{c.n_washers} per bolt on the NUT side only ({z.washer_od:.0f} mm does not fit the clevis block; NOT for "
@@ -1628,8 +1652,9 @@ def ops(ctx: Ctx) -> list[SewingOp]:
            f"On the flat tail of each under-strap sew one BT-S tack {step_spec('bt', '304', GAUGE_NOTE, bt='BT-S')} across the strap centre at each of the two 'belly gauge tack' lines: "
            f"{P.F.BELLY_GAUGE_MM:.0f} mm ({P.F.BELLY_GAUGE_MM / IN:.2f} in) apart centre to centre, the first "
            f"{P.F.BELLY_GAUGE_TIP_MM:.0f} mm from the sealed tail tip. QC: steel rule, {P.F.BELLY_GAUGE_MM:.0f} +/- 2 mm "
-           "between the tack centres. This is the hunter's minimum-belly gauge (user card: cradle belly never under "
-           f"{P.F.BELLY_MIN_MM:.0f} mm).", "bt", pieces="US x1, US2 x1", seam="BT",
+           "between the tack centres. This is the hunter's belly gauge (user card ADVICE: keep the cradle belly about "
+           f"{P.F.BELLY_MIN_MM:.0f} mm or more for low strap tension; the frame itself is designed down to a "
+           f"{design_belly_mm():.0f} mm belly, BL-053).", "bt", pieces="US x1, US2 x1", seam="BT",
            length=ng * bt_path_mm("BT-S"), hours=ng * HOURS["bartack"], sketch="SK-1", qc="QC-07")
     cords = [w["id"] for w in webs if "cord" in w["material_id"] and w["id"] not in named_before]
     op("Fit the hardware", "IM1-IM3 (SK-11, DECISION IM-CAM-TAB): the cam is SEWN to the IMC tab (cam end box), the "
@@ -1849,6 +1874,13 @@ DEFECTS = [   # defect, where, cause, prevention / fix, class
 
 from huntkit.gendesign.meat_haul import BELLY_MM as _MH_BELLY  # noqa: E402  (BL-052: the design belly, 70 mm)
 
+
+def design_belly_mm() -> float:
+    """BL-057 (review 6 M-4): the smallest cradle belly the frame is designed and checked for (BL-053,
+    analysis/h1_rev5.json cradle_3d bellies_mm); the user card's 60 mm tacks are advice above it."""
+    f = Path(__file__).resolve().parent / "analysis" / "h1_rev5.json"
+    return float(min(json.loads(f.read_text())["cradle_3d"]["bellies_mm"]))
+
 PACKAGING = [
     "Bag: collar unrolled, door zipped, straps coiled inside the bag (keepers on), folded flat to about 450 x 350 mm.",
     "Base kit inside the bag: IM1-IM3, US1/US2, W1-W3 fitted; guys fitted to B-22 with the toggle end coiled.",
@@ -1858,10 +1890,11 @@ PACKAGING = [
     "carabiners, meat liner MS.",
     "Card on top: load limits (53 kg / 116 lb frame meat in float mode, RD-02), guy rule (port guys fitted for every "
     "carry, RD-23), the strap tail rule, wash cold / line dry, no hook-and-loop.",
-    f"Card, meat-haul rule (BL-052, ASSUMPTION BELLY-MIN): 'Bag-off cradle: cam the under-straps until the quarter "
-    f"hangs about a hand's width ({_MH_BELLY:.0f} mm, {_MH_BELLY / IN:.2f} in) below a pole laid across the strap's two "
-    f"pins, NEVER flatter than the {P.F.BELLY_MIN_MM:.0f} mm ({P.F.BELLY_MIN_MM / IN:.1f} in) between the two contrast "
-    "tacks on the strap tail. Flatter = more strap tension than the frame is rated for: let the cam out.'",
+    f"Card, meat-haul advice (BL-052; BL-057: advice, the frame is designed down to a {design_belly_mm():.0f} mm belly, "
+    f"BL-053): 'Bag-off cradle: cam the under-straps until the quarter hangs about a hand's width ({_MH_BELLY:.0f} mm, "
+    f"{_MH_BELLY / IN:.2f} in) below a pole laid across the strap's two pins; keep it at least the "
+    f"{P.F.BELLY_MIN_MM:.0f} mm ({P.F.BELLY_MIN_MM / IN:.1f} in) between the two contrast tacks on the strap tail where "
+    "you can. Flatter pulls the straps harder: let the cam out a little.'",
     "Outer: recycled poly bag 600 x 800 mm, 10 bags per carton; carton label: rev 3, door D2, crown kit, fabric set "
     "(primary / alternate), date, lot.",
 ]
@@ -1998,7 +2031,8 @@ def delta_closeout(ctx: Ctx, bom: list[BOMLine], lpts: list[dict]) -> list[dict]
         "nothing (v3.1 set stays superseded with its STOP notice)")
     add("RD-02", "restated", f"B-24 x2 + 2 carabiners in the meat-trip kit BOM: {has('B-24') and 'B-24 float links' in items}; "
         "PT-6 in the release gates", "user guide (RD-22) with the 53 kg limit and the belly rule (the packaging card carries "
-        f"the {P.F.BELLY_MIN_MM:.0f} mm minimum and the strap gauge since BL-052); PT-6")
+        f"the {P.F.BELLY_MIN_MM:.0f} mm belly advice and the strap gauge since BL-052; the frame is designed to "
+        f"{design_belly_mm():.0f} mm, BL-053); PT-6")
     add("RD-03", "closed" if abs(im1 - 990.0) < 1.0 else "restated", f"IM1 cut {im1:.0f} mm in the rev 3 cut list",
         "MT-1 / MT-2 on the sewn straps")
     add("RD-12", "restated", f"B-17, B-18, B-22, HE, T3, LLT, TG drafted and sequenced: {has('B-17', 'B-18', 'B-22', 'HE', 'T3', 'LLT', 'TG')}; "
@@ -2022,7 +2056,8 @@ def delta_closeout(ctx: Ctx, bom: list[BOMLine], lpts: list[dict]) -> list[dict]
         "BUILD_PLAN.md body still describes the SPINE bag (its banner says so)" if ptr else
         "BUILD_PLAN.md needs a pointer to this package")
     add("RD-22", "open", "the packaging card (README Packaging) carries the load limits and the "
-        f"{P.F.BELLY_MIN_MM:.0f} mm minimum cradle belly with the strap gauge (BL-052)", "the user guide itself")
+        f"{P.F.BELLY_MIN_MM:.0f} mm cradle belly advice with the strap gauge (BL-052; design belly "
+        f"{design_belly_mm():.0f} mm, BL-053)", "the user guide itself")
     add("RD-23", "restated", f"B-25, B-27f, B-22 inside, TG, LLT drafted and sequenced (ops {opref(OP(K_B22))}-{opref(OP(K_LLT))}, {opref(OP(K_B27))}): "
         f"{has('B-25', 'B-27f', 'B-22', 'TG', 'LLT')}", "T9 rev 3 at the S kit; LL-H; PORT-1; attorney review; B-22 placed at "
         f"x +/-{ctx.rs.geo['b22']['placed_x']:.1f} vs drawn {ctx.rs.geo['b22']['drawn_x']:.0f} (ASSUMPTION B22-IN)")
@@ -2248,19 +2283,21 @@ ASSUMPTIONS = [
      f"against the {_UCS.get('lug_check_n', float('nan')):.0f} N the frame lug was checked at; belly 50 mm would give "
      f"{_UCS.get('sensitivity', {}).get('belly_50', {}).get('us2', float('nan')):.0f} N).",     "FIT-US (5): US2 leg angle and tension with a 20 kg quarter stand-in in the cradle"),
     # BL-052 (h1_crown.md 4, orchestrator call)
-    ("BELLY-MIN", f"The hunter never cams the bag-off cradle flatter than {P.F.BELLY_MIN_MM:.0f} mm "
-     f"({P.F.BELLY_MIN_MM / IN:.1f} in) below the line between the strap's pins: US1 arm root fatigue "
+    ("BELLY-MIN", f"ADVICE, not a structural limit (BL-057, review 6 M-4): the frame is designed and checked down to a "
+     f"{design_belly_mm():.0f} mm cradle belly (BL-053, h1_rev5.json cradle_3d); the user card asks for "
+     f"{P.F.BELLY_MIN_MM:.0f} mm ({P.F.BELLY_MIN_MM / IN:.1f} in) or more for lower strap tension. History (BL-052, on "
+     "the BL-049 frame, superseded by BL-053): US1 arm root fatigue "
      f"{_BS.get('60', {}).get('us1', {}).get('fatigue', float('nan')):.2f} at 60 mm, "
      f"{_BS.get('55', {}).get('us1', {}).get('fatigue', float('nan')):.2f} at 55, "
      f"{_BS.get('50', {}).get('us1', {}).get('fatigue', float('nan')):.2f} at 50 (h1_crown.json belly_sweep). The user "
-     "card and the meat-haul instruction carry the rule; the strap carries the gauge.",
-     "MT-1cr: belly measured on 3 cradles set by the instruction; strain gauge at the US1 root (owner decision on the "
-     "rule; root fix BL-049 proposal 2 is the frame-side alternative)"),
+     "card carries the advice; the strap carries the gauge.",
+     f"MT-1cr: belly measured on 3 cradles set by the instruction, each >= {design_belly_mm():.0f} mm (the design "
+     "belly); strain gauges at the US1 / US2 roots"),
     ("BELLY-GAUGE", f"Two contrast BT-S tacks {P.F.BELLY_GAUGE_MM:.0f} mm apart on each US / US2 tail are a ruler a "
      "gloved hunter can use in the field: pole / arrow across the strap's two pins, the strap at mid-span at least "
      "one gauge below it; the 0.3-0.5 mm tacks pass the 25 mm cam and the stainless tri-glide (US2's inner tack is "
      f"{P.F.BELLY_GAUGE_TIP_MM + P.F.BELLY_GAUGE_MM:.0f} mm from the tip, at the cam at the worst bag-on drape: grip "
-     f"{_USL['us2']['grip_left_mm']:.0f} mm).", "MT-1cr (3 cradles set by the user card, belly measured >= 60 mm, 6 of 6); "
+     f"{_USL['us2']['grip_left_mm']:.0f} mm).", f"MT-1cr (3 cradles set by the user card, belly measured >= {design_belly_mm():.0f} mm, 6 of 6; the 60 mm tacks are advice); "
      "thread both tails through the bought cam + tri-glide at op @FIT (no snag)"),
     ("CLEVIS-FACE", "The bag side panel resting on the US2 clevis's flat, edge-rounded (r 1.5) outer face at "
      f"x +/-{_UH.get('outer_face_x_mm', float('nan')):.0f}, z 127-157 (free drapes "
@@ -2452,6 +2489,64 @@ def open_findings() -> list:
             if c in ("blocker", "major") and st != "fixed"]
 
 
+# BL-057: reviews 5 and 6 (analysis/review_20261113_fifth.md, review_20261121_sixth.md). Review 6 verdict on the bag:
+# ready to cut a first build once the release README is regenerated (M-4, this) and the bag-cut physical gates pass on
+# test pieces printed per BUILD_H1 sections 3 / 10. ready_to_cut() stays the UNCONDITIONAL flag (False: gates pending).
+REVIEW6 = "analysis/review_20261121_sixth.md"
+CUT_GATES = ("HE-FIT step 0 (US-ROUTE)", "PT-3", "SEW-F")
+REVIEW6_STATUS = [   # id, class, status, where it is handled
+    ("M-1", "major", "docs fixed (BL-057)", "nut spec DIN 934 m 4.0 (not ISO 4032) in bom.csv, BUILD_H1 and the kit; "
+     "caliper <= 4.1 mm at BUILD_H1 7.2 / 8.2; a longer pocket is BL-058's option"),
+    ("M-2", "major", "open (BL-058)", "R-clip envelope and orientation per station, US2 retention; frame / hardware side"),
+    ("M-3", "major", "open (BL-058)", "US2 pin head proud of the clevis face in the free drape; FIT-US marks it"),
+    ("M-4", "major", "fixed (BL-057)", "this README: cut status, belly as advice (design belly 40 mm, BL-053), op 7.25 "
+     "wording, frame-kit BOM line from h1_closeout.json pins.bom"),
+    ("M-5", "major", "open (BL-058)", "whole-body and US2 lug re-run on the 6b0cde1 STL before the halves are printed; "
+     "frame only, no cut piece"),
+    ("m-1", "minor", "fixed (BL-057)", "kit FIT-US pass text"), ("m-2", "minor", "open (BL-058)", "hip screw length"),
+    ("m-3", "minor", "open (BL-058)", "hip screw head spacing and key size"),
+    ("m-4", "minor", "fixed (BL-057)", "FDM proto hip mount marked superseded in print/README.md"),
+    ("m-5", "minor", "fixed (BL-057)", "BUILD_H1 3 chamber heater 50-60 C"),
+    ("m-6", "minor", "fixed (BL-057)", "insert record note: HB-6 per BL-056"),
+    ("m-7", "minor", "fixed (BL-057)", "kit HE-FIT hinge pin read from h1_closeout pins"),
+    ("m-8", "minor", "open (BL-058)", "us_route.json clevis_heads regenerate"),
+    ("m-9", "minor", "fixed (BL-057)", "HB-6 gates the lower-half print (kit R1, BUILD_H1 2)"),
+    ("m-10", "minor", "open (owner)", "camo commercial-swatch check before any printed or sold bag"),
+    ("m-11", "minor", "fixed (BL-057)", "BUILD_H1 / README / kit regenerated from the BL-056 meshes"),
+]
+
+
+def review5_rows() -> list[tuple]:
+    """Review 6's table of the review-5 findings (ID, status, evidence), read from the saved review."""
+    txt = (Path(__file__).resolve().parent / REVIEW6).read_text()
+    sec = txt.split("## Review-5 findings status", 1)[1].split("\n## ", 1)[0]
+    rows = []
+    for ln in sec.splitlines():
+        c = [x.strip() for x in ln.strip().strip("|").split("|")]
+        if ln.startswith("|") and len(c) == 3 and c[0] not in ("ID",) and not set(c[0]) <= set("-"):
+            rows.append(tuple(c))
+    return rows
+
+
+def cut_status_txt() -> str:
+    return (f"**Cut status (review 6, `{REVIEW6}`): cut the first bag after {', '.join(CUT_GATES[:-1])} and "
+            f"{CUT_GATES[-1]} pass on printed test pieces** (printed per `print/frame_h1/BUILD_H1.md` sections 3 and "
+            "10). Not before. No pattern or operation blocker is open; the bag-frame items still open (BL-058) are "
+            "on the frame and hardware side and change no cut piece.")
+
+
+def review56_md() -> list[str]:
+    """README section (BL-057, review 6 M-4): the cut status and the review 5 / 6 status tables."""
+    L = ["## Cut status (reviews 5 and 6)", "", cut_status_txt(), "",
+         f"Review 6 findings (`{REVIEW6}`, 0 blockers, 5 majors, 11 minors):", "",
+         "| Finding | Class | Status | How |", "|---|---|---|---|"]
+    L += [f"| {i} | {c} | {st} | {h} |" for i, c, st, h in REVIEW6_STATUS]
+    L += ["", "Review 5 findings (`analysis/review_20261113_fifth.md`), status as review 6 found it:", "",
+          "| Finding | Status | Evidence |", "|---|---|---|"]
+    L += [f"| {a} | {b} | {c} |" for a, b, c in review5_rows()]
+    return L + [""]
+
+
 def ready_to_cut() -> bool:
     return FOURTH_REVIEW_DONE and FIFTH_REVIEW_DONE and not open_findings()
 
@@ -2519,7 +2614,7 @@ def write_files(pk: dict, out: Path = OUT) -> list[Path]:
           "| `qc_sheet.md` / `qc_sheet.csv` / `release_tests.csv` / `defects.csv` | QC points, release gates, defect list |",
           "| `costing.md` / `costing.json` | material cost, beginner hours, factory SAM, CMT estimates |",
           "| `delta_register_rev3.csv` / `.md` | RD rows this release closes or restates |",
-          "| `sketches/SK-*.png` | sketches the ops refer to |", "",
+          "| `sketches/SK-*.png` | sketches the ops refer to |", ""] + review56_md() + [
           "## Key numbers", "",
           f"- Pieces: {len(ctx.rs.pieces)} piece types; {sum(p.quantity for p in _fabric_pieces(ctx.rs))} fabric / sheet "
           f"pieces + {sum(w['qty'] for w in ctx.rs.webbing if not ('kit S' in w['kit'] or 'kit L' in w['kit']))} webbing / "
@@ -2589,7 +2684,8 @@ def write_files(pk: dict, out: Path = OUT) -> list[Path]:
            "bag side fixed by BL-048 (tests/test_us_route.py, tests/test_bl048_fourth_review_fixes.py). "
            f"Open: {nb4} blockers, {nm4} majors. **NOT ready to cut**: "
            + ("open items above (BL-050 B: N-1b, the clevis bolt heads, frame side); " if nb4 or nm4 else "")
-           + "HE-FIT step 0, CLEVIS-SHARE and FIT-US are physical gates; a FIFTH independent review decides.", "",
+           + "HE-FIT step 0, CLEVIS-SHARE and FIT-US are physical gates. History: the fifth and sixth independent "
+             "reviews have since been done; the current cut status is the 'Cut status' section at the top.", "",
            "| Finding | Class | Status | How |", "|---|---|---|---|"]
     md += [f"| {i} | {c} | {st} | {opref(h).replace('|', '/')} |" for i, c, st, h in FOURTH_STATUS]
     md += ["", "## Pre-cut THIRD review status (BL-043 / BL-044)", "",

@@ -18,6 +18,47 @@ Generated 20261121 by `designs/pack_5200/mfg_corrie_f_rev3.py` from `patterns_co
 | `delta_register_rev3.csv` / `.md` | RD rows this release closes or restates |
 | `sketches/SK-*.png` | sketches the ops refer to |
 
+## Cut status (reviews 5 and 6)
+
+**Cut status (review 6, `analysis/review_20261121_sixth.md`): cut the first bag after HE-FIT step 0 (US-ROUTE), PT-3 and SEW-F pass on printed test pieces** (printed per `print/frame_h1/BUILD_H1.md` sections 3 and 10). Not before. No pattern or operation blocker is open; the bag-frame items still open (BL-058) are on the frame and hardware side and change no cut piece.
+
+Review 6 findings (`analysis/review_20261121_sixth.md`, 0 blockers, 5 majors, 11 minors):
+
+| Finding | Class | Status | How |
+|---|---|---|---|
+| M-1 | major | docs fixed (BL-057) | nut spec DIN 934 m 4.0 (not ISO 4032) in bom.csv, BUILD_H1 and the kit; caliper <= 4.1 mm at BUILD_H1 7.2 / 8.2; a longer pocket is BL-058's option |
+| M-2 | major | open (BL-058) | R-clip envelope and orientation per station, US2 retention; frame / hardware side |
+| M-3 | major | open (BL-058) | US2 pin head proud of the clevis face in the free drape; FIT-US marks it |
+| M-4 | major | fixed (BL-057) | this README: cut status, belly as advice (design belly 40 mm, BL-053), op 7.25 wording, frame-kit BOM line from h1_closeout.json pins.bom |
+| M-5 | major | open (BL-058) | whole-body and US2 lug re-run on the 6b0cde1 STL before the halves are printed; frame only, no cut piece |
+| m-1 | minor | fixed (BL-057) | kit FIT-US pass text |
+| m-2 | minor | open (BL-058) | hip screw length |
+| m-3 | minor | open (BL-058) | hip screw head spacing and key size |
+| m-4 | minor | fixed (BL-057) | FDM proto hip mount marked superseded in print/README.md |
+| m-5 | minor | fixed (BL-057) | BUILD_H1 3 chamber heater 50-60 C |
+| m-6 | minor | fixed (BL-057) | insert record note: HB-6 per BL-056 |
+| m-7 | minor | fixed (BL-057) | kit HE-FIT hinge pin read from h1_closeout pins |
+| m-8 | minor | open (BL-058) | us_route.json clevis_heads regenerate |
+| m-9 | minor | fixed (BL-057) | HB-6 gates the lower-half print (kit R1, BUILD_H1 2) |
+| m-10 | minor | open (owner) | camo commercial-swatch check before any printed or sold bag |
+| m-11 | minor | fixed (BL-057) | BUILD_H1 / README / kit regenerated from the BL-056 meshes |
+
+Review 5 findings (`analysis/review_20261113_fifth.md`), status as review 6 found it:
+
+| Finding | Status | Evidence |
+|---|---|---|
+| B-1 | closed | Supports, blockers, scar sanding, plate-preview gate in BUILD_H1 §2–4 and kit; residue m-11 |
+| M-1 | closed | 3D cradle rows h1_rev5 §1; MT-1cr along 3D vectors |
+| M-2 | closed in geometry, new issue | Two-step trap on STL (8.2 AF, 2.3 mm walls); pocket length vs nut (M-1 here) |
+| M-3 | closed on frame, not bag docs | 40 mm design belly; bag README/op 7.25 still 60 mm (M-4) |
+| M-4 | closed | Numeric µε pass lines; CLEVIS-SHARE 3D rows |
+| M-5 | partial | Scheme chosen; envelope, orientation, tether route open (M-2) |
+| M-6 | closed | Lip r 3, wrap modelled; text bug m-1 |
+| M-7 | mostly closed | Residue m-11 |
+| m-1, m-2, m-4..m-8, m-10 | closed |  |
+| m-3 | partial | m-7 here |
+| m-9 | accepted | Inspected under FIT-US |
+
 ## Key numbers
 
 - Pieces: 80 piece types; 77 fabric / sheet pieces + 78 webbing / cord / elastic pieces (crown kit M).
@@ -58,7 +99,7 @@ Current values: B-22 at x +/-130.3 mm (drawn 149.0); FP flat width 260.0 mm (fin
 
 ## Pre-cut FOURTH review status (BL-048)
 
-design-reviewer fourth review `analysis/review_20261113_rev3_fourth.md` (1 blocker, 3 majors, 9 minors), bag side fixed by BL-048 (tests/test_us_route.py, tests/test_bl048_fourth_review_fixes.py). Open: 0 blockers, 1 majors. **NOT ready to cut**: open items above (BL-050 B: N-1b, the clevis bolt heads, frame side); HE-FIT step 0, CLEVIS-SHARE and FIT-US are physical gates; a FIFTH independent review decides.
+design-reviewer fourth review `analysis/review_20261113_rev3_fourth.md` (1 blocker, 3 majors, 9 minors), bag side fixed by BL-048 (tests/test_us_route.py, tests/test_bl048_fourth_review_fixes.py). Open: 0 blockers, 1 majors. **NOT ready to cut**: open items above (BL-050 B: N-1b, the clevis bolt heads, frame side); HE-FIT step 0, CLEVIS-SHARE and FIT-US are physical gates. History: the fifth and sixth independent reviews have since been done; the current cut status is the 'Cut status' section at the top.
 
 | Finding | Class | Status | How |
 |---|---|---|---|
@@ -208,8 +249,8 @@ Open after BL-044 (all three reviews): 0 blockers, 0 majors. **NOT ready to cut.
 | US-CHAN-EDGE | B-16b's turned ends stay >= 15 mm inside the B-03 | B-05 side seam, so the channel end and the side seam are sewn separately (drawn: patterns geo us_chan_on_b05). | lay B-16b on the cut B-05 at op 4.14 / floor op 4.15 |
 | SEAL-PU | A urethane seam sealer bead on B-05's inside face seals the B-16b tail stitch lines on the PU-coated 500D floor (silicone does not bond to PU). | WP-1 style hose test on a B-05 offcut with one sealed tail before the bag |
 | CRADLE-SPAN | The bag-off cradle keeps meat_haul's belly on each strap's own lane span (us_route.cradle_span: US2 legs at 23 deg, 639 N at the float meat limit, against the 720 N the frame lug was checked at; belly 50 mm would give 860 N). | FIT-US (5): US2 leg angle and tension with a 20 kg quarter stand-in in the cradle |
-| BELLY-MIN | The hunter never cams the bag-off cradle flatter than 60 mm (2.4 in) below the line between the strap's pins: US1 arm root fatigue 1.03 at 60 mm, 1.00 at 55, 0.95 at 50 (h1_crown.json belly_sweep). The user card and the meat-haul instruction carry the rule; the strap carries the gauge. | MT-1cr: belly measured on 3 cradles set by the instruction; strain gauge at the US1 root (owner decision on the rule; root fix BL-049 proposal 2 is the frame-side alternative) |
-| BELLY-GAUGE | Two contrast BT-S tacks 60 mm apart on each US / US2 tail are a ruler a gloved hunter can use in the field: pole / arrow across the strap's two pins, the strap at mid-span at least one gauge below it; the 0.3-0.5 mm tacks pass the 25 mm cam and the stainless tri-glide (US2's inner tack is 80 mm from the tip, at the cam at the worst bag-on drape: grip 54 mm). | MT-1cr (3 cradles set by the user card, belly measured >= 60 mm, 6 of 6); thread both tails through the bought cam + tri-glide at op @FIT (no snag) |
+| BELLY-MIN | ADVICE, not a structural limit (BL-057, review 6 M-4): the frame is designed and checked down to a 40 mm cradle belly (BL-053, h1_rev5.json cradle_3d); the user card asks for 60 mm (2.4 in) or more for lower strap tension. History (BL-052, on the BL-049 frame, superseded by BL-053): US1 arm root fatigue 1.03 at 60 mm, 1.00 at 55, 0.95 at 50 (h1_crown.json belly_sweep). The user card carries the advice; the strap carries the gauge. | MT-1cr: belly measured on 3 cradles set by the instruction, each >= 40 mm (the design belly); strain gauges at the US1 / US2 roots |
+| BELLY-GAUGE | Two contrast BT-S tacks 60 mm apart on each US / US2 tail are a ruler a gloved hunter can use in the field: pole / arrow across the strap's two pins, the strap at mid-span at least one gauge below it; the 0.3-0.5 mm tacks pass the 25 mm cam and the stainless tri-glide (US2's inner tack is 80 mm from the tip, at the cam at the worst bag-on drape: grip 54 mm). | MT-1cr (3 cradles set by the user card, belly measured >= 40 mm, 6 of 6; the 60 mm tacks are advice); thread both tails through the bought cam + tri-glide at op @FIT (no snag) |
 | CLEVIS-FACE | The bag side panel resting on the US2 clevis's flat, edge-rounded (r 1.5) outer face at x +/-183, z 127-157 (free drapes 4.0 mm inside it) is not a wear point. | FIT-US step 7 and after the T9 walk: inspect B-03 / B-01 over z 127-157 for abrasion (h1_crown.md 7) |
 
 ## Packaging
@@ -219,5 +260,5 @@ Open after BL-044 (all three reviews): 0 blockers, 0 majors. **NOT ready to cut.
 3. As-hunted kit bag (poly bag 1, labelled): B-29 lid with the B-28 straps for the ordered crown kit (S / M / L), scope pod.
 4. Meat-trip kit bag (poly bag 2, labelled 'MEAT TRIP KIT'): 3 WX extenders with G-hooks, 2 B-24 links with carabiners, meat liner MS.
 5. Card on top: load limits (53 kg / 116 lb frame meat in float mode, RD-02), guy rule (port guys fitted for every carry, RD-23), the strap tail rule, wash cold / line dry, no hook-and-loop.
-6. Card, meat-haul rule (BL-052, ASSUMPTION BELLY-MIN): 'Bag-off cradle: cam the under-straps until the quarter hangs about a hand's width (70 mm, 2.76 in) below a pole laid across the strap's two pins, NEVER flatter than the 60 mm (2.4 in) between the two contrast tacks on the strap tail. Flatter = more strap tension than the frame is rated for: let the cam out.'
+6. Card, meat-haul advice (BL-052; BL-057: advice, the frame is designed down to a 40 mm belly, BL-053): 'Bag-off cradle: cam the under-straps until the quarter hangs about a hand's width (70 mm, 2.76 in) below a pole laid across the strap's two pins; keep it at least the 60 mm (2.4 in) between the two contrast tacks on the strap tail where you can. Flatter pulls the straps harder: let the cam out a little.'
 7. Outer: recycled poly bag 600 x 800 mm, 10 bags per carton; carton label: rev 3, door D2, crown kit, fabric set (primary / alternate), date, lot.

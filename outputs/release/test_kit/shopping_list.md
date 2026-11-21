@@ -32,7 +32,7 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | hardened dowel pins M5 x 22, 50-pack | 1 pack | 11.79 | [Zoro](https://www.zoro.com/zoro-select-dowel-pin-harden-stl-m5x22mm-pk50-dp5005022-050p1/i/G3163027) | pin fixture |
 | hardened dowel pin M5 x 50, DIN 6325 (m6), HRC 58-62 (NOT x 40: the hinge span is 40 mm since BL-049, review 5 m-4) | 3 each | 9.00 | Zoro / any DIN 6325 stockist; ASSUMPTION USD 3 each, as the x 40 (Heritage DOWMH-050-040 page refused fetch; the x 50 length is a standard DIN 6325 length, part number not verified); https://www.zoro.com/heritage-industrial-dowel-pin-m5-nominal-dia-alloy-steel-1-pk-dowmh-050-040/i/G100006107/ | PT-3, SEW-F (HE), HE-FIT: the fixture pin (BL-048 M-C) |
 | US2 CLEVIS ONLY: Ti gr5 low-head socket cap screw M5 x 35, DIN 7984 (NOT M5 x 45) | 7 each | 17.50 | Ti fastener shop (e.g. eBay / AliExpress Ti gr5 DIN 7984); ASSUMPTION (shop price, check at purchase) | HE-FIT step 0 (2), CLEVIS-SHARE A and B (2 + 2, BL-055), spare (1) |
-| US2 CLEVIS: M5 hex nut A2, ISO 4032 (8 AF x 4 mm; thin nuts do not fit the trap) | 7 each | 0.70 | hardware store; ASSUMPTION (shop price, check at purchase) | HE-FIT step 0, CLEVIS-SHARE |
+| US2 CLEVIS: M5 hex nut A2, DIN 934, m = 4.0 mm, 8 AF (NOT ISO 4032, which is 4.4-4.7 mm thick and does not fit the trap); caliper each <= 4.1 mm | 7 each | 0.70 | hardware store; ASSUMPTION (shop price, check at purchase) | HE-FIT step 0, CLEVIS-SHARE |
 | US2 CLEVIS ONLY: M5 washer 10 mm OD x 1 mm A2, DIN 433 (NOT the 12 mm z 234 washer; nut side only, BL-051) | 8 each | 0.40 | hardware store; ASSUMPTION (shop price, check at purchase) | HE-FIT step 0 (2), CLEVIS-SHARE A and B (4), spare (2) |
 | US2 pin set for the test pieces: headed 7075-T6 pin 5 mm (as BUILD_H1 HW-PIN-AL) + 18-8 R-clip + 120 mm 1.5 mm Dyneema tether | 2 set | 12.00 | machinist / hardware (BUILD_H1 HW-PIN-AL, HW-PIN-RET); ASSUMPTION USD 6 a set (turned pin + clip + cord; no record) | CLEVIS-SHARE A and B, PIN-RET (b) |
 | 1 mm PTFE sheet offcut 50 x 50 mm (eye shim) | 1 each | 5.00 | hardware / plastics shop; ASSUMPTION USD 5 (no record) | CLEVIS-SHARE A and B |
@@ -47,7 +47,7 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | item | qty | USD | source | for |
 |---|---:|---:|---|---|
 | z 234 JOINT ONLY: Ti gr5 low-head socket cap screw M5 x 45, DIN 7984 (NOT M5 x 35) | 8 each | 20.00 | Ti fastener shop; ASSUMPTION (shop price, check at purchase) | CA-5 (4 stub pairs x 2) |
-| z 234 JOINT: M5 hex nut A2, ISO 4032 | 8 each | 0.80 | hardware store; ASSUMPTION (shop price, check at purchase) | CA-5 |
+| z 234 JOINT: M5 hex nut A2, DIN 934, m = 4.0 mm, 8 AF (NOT ISO 4032, which is 4.4-4.7 mm thick and does not fit the trap); caliper each <= 4.1 mm | 8 each | 0.80 | hardware store; ASSUMPTION (shop price, check at purchase) | CA-5 |
 | z 234 JOINT ONLY: M5 washer 12 mm OD x 1 mm A2 (load-bearing; NOT the 10 mm clevis washer) | 16 each | 1.28 | hardware store; ASSUMPTION (shop price, check at purchase) | CA-5 |
 | S-type load cell 100 kg | 1 each | 23.60 | [Makerfabs](https://www.makerfabs.com/s-type-load-cell-100kg-200kg-300kg-500kg-1.html) | CA-*, IM3-EC, MT-1c |
 | HX711 load-cell amplifier (SparkFun) | 1 each | 11.50 | [SparkFun](https://www.sparkfun.com/sparkfun-load-cell-amplifier-hx711.html) | CA-*, MT-1c |

@@ -40,6 +40,8 @@ notes: 'No insert maker publishes pull-out for FDM PAHT-CF. The design value (12
   the same-envelope PEM ABS figure; MJF PA12 tested by Sculpteo exceeds 1800 N. Pull-out depends on hole size, wall
   (>= 2.6 mm, ruthex), install temperature and print orientation: an insert pulled normal to the layers loads the
   interlayer bond (PAHT-CF Z 47 MPa vs XY 88 MPa), so print the boss with its axis in the XY plane where possible.
-  Required test before release: hipbelt_structural HB-6, 5 inserts in printed PAHT-CF bosses as built, pass >= 1.5 kN
-  each, plus 5 torque-out samples. Brass in contact with carbon fibre: galvanic risk is low (brass is near the noble
+  Required test before release (BL-056, designs/pack_5200/analysis/hip_mount_bl056.json tests.HB-6; was "5 inserts,
+  >= 1.5 kN"): HB-6, 6 printed PAHT-CF coupons, insert pulled along the BUILD Z (layer normal, the H1 hip boss axis),
+  conditioned and pulled at 60 C, pass >= 513 N each (1200 x hot 0.8 x layer-normal 0.534); the 8-insert H1 pattern
+  needs >= 488 N each. It gates the H1 lower-half print (the pilots are printed into it). Brass in contact with carbon fibre: galvanic risk is low (brass is near the noble
   end but the PA matrix isolates); keep the Ti mount from touching exposed carbon.'

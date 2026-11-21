@@ -347,7 +347,7 @@ Beginner rules: all flat work before the bag becomes 3D; clips, never pins, in c
 - Machine bench; needle -; thread -; SPI -; stitch -; seam -
 - beginner 0.06 h, SAM 0.4 min
 **7.25 US / US2 belly gauge tacks (BL-052, DECISION BELLY-GAUGE)**
-- How: On the flat tail of each under-strap sew one BT-S tack [ZZ or BT; Nm 110/18 DPx17, round point R; bonded_nylon_tex90; ISO 304, BT-S 10 x 2 mm zigzag, 28 st; prototype without zigzag: BT-301 fallback (4 passes, UNRATED); CONTRAST colour thread, same record] across the strap centre at each of the two 'belly gauge tack' lines: 60 mm (2.36 in) apart centre to centre, the first 20 mm from the sealed tail tip. QC: steel rule, 60 +/- 2 mm between the tack centres. This is the hunter's minimum-belly gauge (user card: cradle belly never under 60 mm).
+- How: On the flat tail of each under-strap sew one BT-S tack [ZZ or BT; Nm 110/18 DPx17, round point R; bonded_nylon_tex90; ISO 304, BT-S 10 x 2 mm zigzag, 28 st; prototype without zigzag: BT-301 fallback (4 passes, UNRATED); CONTRAST colour thread, same record] across the strap centre at each of the two 'belly gauge tack' lines: 60 mm (2.36 in) apart centre to centre, the first 20 mm from the sealed tail tip. QC: steel rule, 60 +/- 2 mm between the tack centres. This is the hunter's belly gauge (user card ADVICE: keep the cradle belly about 60 mm or more for low strap tension; the frame itself is designed down to a 40 mm belly, BL-053).
 - Machine BT; needle Nm 110/18 DPx17, round point R; thread bonded_nylon_tex90; SPI -; stitch 304; seam BT
 - stitching 220 mm (9 in); sketch SK-1; QC QC-07; beginner 0.40 h, SAM 2.9 min
 **7.26 Fit the hardware**
