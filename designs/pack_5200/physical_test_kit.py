@@ -943,13 +943,86 @@ def t1_us2_record() -> dict:
     return d if d.get("stl_md5") == stl_md5() else {}
 
 
+# BL-060: every line h1_rev5.gauge_values produces (MT-1cr|us1 / us2, T1|us1 / us2, CLEVIS-SHARE A / B) re-run on the
+# current print in ONE record, md5-locked to the STL (same lock / fallback as BL-059's T1|us2 record).
+GAUGES60_JSON = TP / "gauge_lines_bl060.json"
+GAUGES60_KEYS = ("MT-1cr|us1", "MT-1cr|us2", "T1|us1", "T1|us2", "CLEVIS-SHARE|us2_inboard", "CLEVIS-SHARE|us2_yz")
+
+
+def _published_before() -> dict:
+    """{key: (source file, pass lines)} of each GAUGES60_KEYS line as the kit published it before BL-060 (h1_rev5.json,
+    overlaid by clevis_bl056.json gauges, then t1_us2_gauge_bl059.json when on this print)."""
+    out = {}
+    for src, tests in (("analysis/h1_rev5.json", rev5()["gauges"]["tests"]),
+                       ("analysis/clevis_bl056.json", clevis56()["gauges"]["tests"]),
+                       ("tests_physical/t1_us2_gauge_bl059.json", t1_us2_record().get("tests", {}))):
+        for k, v in tests.items():
+            if k in GAUGES60_KEYS:
+                out[k] = {"from": src, "pin_load_n": [s["pin_load_n"] for s in v["steps"]],
+                          "pass_if_abs_microstrain_at_most": [s["pass_if_abs_microstrain_at_most"] for s in v["steps"]]}
+    return out
+
+
+def republish_gauges(write: bool = True, g: dict | None = None) -> dict:
+    """BL-060: re-run huntkit.gendesign.h1_rev5.gauge_values (the voxel submodel, about 2 min) on the CURRENT assembled
+    print and publish EVERY line it produces that the kit uses (GAUGES60_KEYS) to tests_physical/gauge_lines_bl060.json
+    with the STL md5, so gauge_tests() only uses them while that print is the one in the folder. ``was`` keeps the
+    lines they replace (for the record and the BL-060 screenshot)."""
+    if g is None:
+        from huntkit.gendesign import h1_rev5 as R
+        g = R.gauge_values(log=None)
+    missing = [k for k in GAUGES60_KEYS if k not in g["tests"]]
+    assert not missing, missing
+    out = {"ticket": "BL-060", "source": "huntkit.gendesign.h1_rev5.gauge_values on print/frame_h1/h1_assembled.stl",
+           "stl_md5": stl_md5(), "E_xy_mpa": g["E_xy_mpa"], "sites": g["sites"],
+           "tests": {k: g["tests"][k] for k in GAUGES60_KEYS},
+           "was": _published_before(),
+           "supersedes": ["analysis/h1_rev5.json gauges.tests (MT-1cr|us1, T1|us1 on the BL-053/054 print)",
+                          "analysis/clevis_bl056.json gauges.tests (MT-1cr|us2, CLEVIS-SHARE A / B on the BL-056 print)",
+                          "tests_physical/t1_us2_gauge_bl059.json (T1|us2)"],
+           "t1_us1_shift": ("T1|us1 pass lines 27 / 53 -> 36 / 71 microstrain are real: the BL-053 lines were run on the "
+                            "BL-054 print; BL-055 grew the hip boss to D50 x 16 mm (8 inserts), which lies inside the US1 "
+                            "submodel box (+8514 voxels at x -6..25, y -49..-33, z 96..145, 93 mm from the gauge). The "
+                            "stiffer lumbar hub moves the bag-on (drape, -y) load's near-null point at the US1 gauge: "
+                            "the point value goes -0.00019 -> -0.00038 MPa/N (-7 -> -15 microstrain at 150 lb) and the "
+                            "band minimum over the +/-1.5 mm placement tolerance -0.00060 -> -0.00081 MPa/N, which sets "
+                            "the pass line (x 1.15). The same hub costs the MT-1cr|us1 line 4 % (cradle leg: -0.00383 "
+                            "-> -0.00366 MPa/N): at a near-null point the same shift is a large fraction. Re-running the "
+                            "current code on the BL-054 STL gives the old 27 / 53 back; BL-056 and BL-058 (US2 blocks, "
+                            "counterbore) leave US1 unchanged; voxel h 1.0 and GAUGE_TOL 1.5 are unchanged (no raster "
+                            "change). See docs/backlog/BL-060-gauge-republish.md.")}
+    if write:
+        GAUGES60_JSON.write_text(json.dumps(out, indent=1, default=float))
+    return out
+
+
+def gauges60_record() -> dict:
+    """The BL-060 gauge record when it was run on the print now in the folder, else {} (gauge_tests then falls back
+    to the older per-key records, which the kit marks ASSUMPTION GAUGE-GEOM)."""
+    if not GAUGES60_JSON.exists():
+        return {}
+    d = json.loads(GAUGES60_JSON.read_text())
+    return d if d.get("stl_md5") == stl_md5() else {}
+
+
+def gauge_src_txt(keys: str) -> str:
+    """Where the gauge lines ``keys`` (text) come from: BL-060's record on this print, else the ASSUMPTION."""
+    if gauges60_record():
+        return (f"; designs/pack_5200/tests_physical/gauge_lines_bl060.json (BL-060: {keys} re-run by "
+                "h1_rev5.gauge_values on the current print, STL md5-locked)")
+    return (f"; ASSUMPTION GAUGE-GEOM: {keys} are from an older print (h1_rev5.json / clevis_bl056.json); "
+            "physical_test_kit.py --republish-gauges on the current STL settles it")
+
+
 def gauge_tests() -> dict:
     """Every published gauge line: BL-053 (h1_rev5.json), overlaid by BL-056's lines for the US2 site on the re-printed
     joint blocks (clevis_bl056.json gauges: MT-1cr|us2 and CLEVIS-SHARE A / B), then BL-059's T1|us2 on the current
-    print (t1_us2_gauge_bl059.json, when its STL md5 matches), then the second US1 gauge."""
+    print (t1_us2_gauge_bl059.json, when its STL md5 matches), then BL-060's full set on the current print
+    (gauge_lines_bl060.json, when its STL md5 matches), then the second US1 gauge."""
     t = dict(rev5()["gauges"]["tests"])
     t.update(clevis56()["gauges"]["tests"])
     t.update(t1_us2_record().get("tests", {}))
+    t.update(gauges60_record().get("tests", {}))
     t.update(g2()["tests"])
     return t
 
@@ -1150,7 +1223,8 @@ def clevis_row() -> dict:
                            "'A' / 'B' (loads, vectors, cycles) and gauges.tests 'CLEVIS-SHARE|us2_inboard' / "
                            "'CLEVIS-SHARE|us2_yz' / 'MT-1cr|us2' (pass lines on the new print); h1_rev5.md 1, 3, 4 "
                            "(BL-053 3D cradle rows); h1_bedfit.md 7 (CLEVIS-DRY, CLEVIS-PRINT); "
-                           "huntkit/gendesign/h1_bedfit.py JOINT",
+                           "huntkit/gendesign/h1_bedfit.py JOINT"
+                           + gauge_src_txt("the CLEVIS-SHARE A / B and MT-1cr|us2 lines"),
                 what_it_proves=(f"A: the inboard leg's x pull bears on the INNER (body) cheek and loads no clevis bolt, "
                                 f"and the US2 root reads no more than the model on {A['row']}; B: with the whole y-z load on "
                                 f"the clevis cheek (share 1.0, {B['row']}) the dry butt joint stays shut (joint check "
@@ -1657,7 +1731,8 @@ def mt1cr_row() -> dict:
                        f"{F1[-1]:.0f} N (US1) / {F2[-1]:.0f} N (US2) with three gauges against microstrain pass lines"),
                 defined_in="designs/pack_5200/analysis/h1_rev5.md 1, 2, 4, 9 (BL-053: 3D cradle, lugs to a 40 mm belly, "
                            "gauge pass values; ASSUMPTIONS QUARTER-CONTACT, QUARTER-WIDTH, BELLY-40, SUB-BC); "
-                           "h1_rev5.json gauges.tests 'MT-1cr|us1' / 'MT-1cr|us2'; "
+                           "h1_rev5.json gauges.tests 'MT-1cr|us1' / 'MT-1cr|us2'"
+                           + gauge_src_txt("the US1 ROOT and US2 ROOT lines") + "; "
                            "designs/pack_5200/tests_physical/us1_outer_gauge.json (BL-055, the second US1 gauge)",
                 what_it_proves=(f"the cradle a strong user can cam on a {kg:.0f} kg load stays at or above the {bf:.0f} mm "
                                 f"belly the lugs are sized to (strength / fatigue at 40 mm: US1 {b40['us1']['strength']} / "
@@ -1730,7 +1805,10 @@ def t1_patch() -> dict:
                    "designs/pack_5200/analysis/weight_c_structural.md §7; designs/pack_5200/analysis/h1_rev5.md 4 "
                    "(BL-053 gauge pass values, GAUGE-LOCAL); designs/pack_5200/tests_physical/us1_outer_gauge.json "
                    "(BL-055: second US1 gauge)"
-                   + ("; designs/pack_5200/tests_physical/t1_us2_gauge_bl059.json (BL-059: the US2 ROOT lines re-run "
+                   + (gauge_src_txt("the US1 ROOT and US2 ROOT lines") + "; supersedes "
+                      "designs/pack_5200/tests_physical/t1_us2_gauge_bl059.json (BL-059, US2 ROOT only)"
+                      if gauges60_record() else
+                      "; designs/pack_5200/tests_physical/t1_us2_gauge_bl059.json (BL-059: the US2 ROOT lines re-run "
                       "by h1_rev5.gauge_values on the current print)" if t1_us2_record() else
                       "; ASSUMPTION T1-US2-GEOM: the US2 ROOT lines are BL-053's (h1_rev5.json) on an older print; "
                       "physical_test_kit.py --republish-t1-us2 on the current STL settles it"),
@@ -1950,6 +2028,48 @@ def hb6_struct_bullet() -> str:
             "`physical_test_kit.py`).")
 
 
+HB_BL056_NOTE = "> **SUPERSEDED (2026-11-21) for the insert row above:**"
+
+
+def hb_bl056_note() -> str:
+    """BL-060 (BL-059 leftover): the BL-056 note under the insert row of hipbelt_structural.md (its BL-056 'D5.5 /
+    34.3 g' text), regenerated from the current records: insert pattern SFs h1_closeout.json hip.chosen.min_sf
+    (BL-055), screw holes bl058.json hip_mount.hole_d_mm (BL-058 D5.8, which superseded BL-056's D5.5), mount mass
+    from the ledger (BUILD_H1 mount_g: BL056 + BL058, checked against bl058.json hip_mount.mass_g), FE min SF / goal
+    bl058.json hip_mount.fe_min_sf_over_goal, HB-6 from hip_mount_bl056.json tests.HB-6."""
+    co = json.loads(CLOSEOUT_JSON.read_text())["hip"]["chosen"]["min_sf"]
+    hm = bl058()["hip_mount"]
+    h6 = hip56()["tests"]["HB-6"]
+    g = _FB().mount_g()
+    d = float(hm["hole_d_mm"])
+    n = sum(1 for x in hm["geometry"]["base"]["hole_d_eq_mm"] if abs(float(x) - d) <= 0.05)
+    L = [f"{HB_BL056_NOTE} BL-055 (`h1_closeout.md` section 2) replaced the 2 inserts on",
+         f"> the D32 boss with {n} x M5 on a D50 boss (SF strength {co['strength']:.2f}, fatigue {co['fatigue']:.2f} on "
+         "the insert record and the layer-normal",
+         "> ratio), and BL-056 (`hip_mount_bl056.md`) redrew the SLM Ti mount to match: base D50 x 3 mm (1.97 x 0.12 in) "
+         "with legs and hub",
+         f"> kept. BL-058 (`bl058.json` hip_mount, review 6 m-3) opened the screw holes: now {n} x D{d:g} (BL-056's D5.5 "
+         f"is superseded), mount {g:.1f} g",
+         f"> ({g / 28.3495:.2f} oz; ledger BL056 + BL058; BL-056's {hm['bl056_g']:.1f} g is superseded). The mount rows above "
+         "(4.69 / 4.25) are the drawn D44 x 1.2",
+         f"> part's; the current part reads min SF / goal {hm['fe_min_sf_over_goal']:.2f} in the BL-058 part FE "
+         f"(BL-056: {hm['bl056_fe_min_sf_over_goal']:.2f}). HB-6 is now",
+         f"> {h6['n_coupons']} coupons pulled along the build z at 60 C, pass >= {h6['pass_line_n_each']:.0f} N each "
+         "(not 1.5 kN). Regenerated by `physical_test_kit.py` (BL-060)."]
+    return "\n".join(L)
+
+
+def _replace_block(txt: str, prefix: str, new: str) -> str:
+    """Replace the one '> ' blockquote that starts with ``prefix`` (to its last '> ' line) by ``new``."""
+    lines = txt.split("\n")
+    hits = [i for i, ln in enumerate(lines) if ln.startswith(prefix)]
+    assert len(hits) == 1, (prefix, hits)
+    a = b = hits[0]
+    while b + 1 < len(lines) and lines[b + 1].startswith(">"):
+        b += 1
+    return "\n".join(lines[:a] + new.split("\n") + lines[b + 1:])
+
+
 def _replace_line(txt: str, prefix: str, new: str) -> str:
     lines = txt.split("\n")
     hits = [i for i, ln in enumerate(lines) if ln.startswith(prefix)]
@@ -1967,8 +2087,10 @@ def update_test_plan(rk: list[dict], lv: dict, write: bool = True, reg: dict | N
     if write:
         TEST_PLAN.write_text(t, encoding="utf-8")
         if reg is not None:
-            HIPBELT_STRUCT.write_text(_replace_line(HIPBELT_STRUCT.read_text(encoding="utf-8"), HB6_STRUCT_BULLET,
-                                                    hb6_struct_bullet()), encoding="utf-8")
+            hs = _replace_line(HIPBELT_STRUCT.read_text(encoding="utf-8"), HB6_STRUCT_BULLET, hb6_struct_bullet())
+            if bl058():
+                hs = _replace_block(hs, HB_BL056_NOTE, hb_bl056_note())
+            HIPBELT_STRUCT.write_text(hs, encoding="utf-8")
     return t
 
 
@@ -3329,7 +3451,14 @@ def main(argv=None) -> int:
     ap.add_argument("--check", action="store_true", help="build in memory, print the checks, write nothing")
     ap.add_argument("--republish-t1-us2", action="store_true",
                     help="re-run h1_rev5.gauge_values on the current print and write tests_physical/t1_us2_gauge_bl059.json")
+    ap.add_argument("--republish-gauges", action="store_true",
+                    help="BL-060: re-run h1_rev5.gauge_values on the current print and write every line the kit uses "
+                         "to tests_physical/gauge_lines_bl060.json")
     a = ap.parse_args(argv)
+    if a.republish_gauges:
+        r = republish_gauges()
+        for k_, v_ in r["tests"].items():
+            print(k_, "lines:", [s_["pass_if_abs_microstrain_at_most"] for s_ in v_["steps"]])
     if a.republish_t1_us2:
         r = republish_t1_us2()
         print("T1|us2 lines:", [s_["pass_if_abs_microstrain_at_most"] for s_ in r["tests"][T1US2_KEY]["steps"]])

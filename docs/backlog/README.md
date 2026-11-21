@@ -106,4 +106,6 @@ Nothing here is decided; the tickets produce the material.
 | BL-055 | Close-out: whole-body rerun, hip inserts, Ti US1 pins (A); kit wiring of BL-053 data (B) | structural + manufacturing | M | 053, 054 | review 6 ready |
 | BL-056 | SLM Ti hip mount base for 8-insert pattern | structural-fea-engineer | S | 055A | |
 | BL-057 | Wire BL-056 into kit, register, BUILD_H1; HB-6b sideways run; lug STL guard | manufacturing-engineer | S | 056 | no stale numbers |
+| BL-058 | Review-6 frame and hardware: nut, retainers, US2 pin counterbore, M5x12 hip screws, D5.8 holes | structural-fea-engineer | M | 056 | review 6 frame findings closed |
 | BL-059 | Wire BL-058 into BUILD_H1, kit, register, print README, bag release; BL-057 leftovers | manufacturing-engineer | S | 058 | no pre-BL-058 numbers |
+| BL-060 | Republish every gauge_values line on the current print (md5-locked); BL-059 text leftovers | structural-fea-engineer | S | 059 | no gauge line from an older print |

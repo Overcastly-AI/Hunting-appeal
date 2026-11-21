@@ -1,0 +1,360 @@
+{
+ "ticket": "BL-060",
+ "source": "huntkit.gendesign.h1_rev5.gauge_values on print/frame_h1/h1_assembled.stl",
+ "stl_md5": "7bd47cbdcc3b42c0f93d57ef041efc11",
+ "E_xy_mpa": 3860.0,
+ "sites": {
+  "us1": {
+   "x": 102.81,
+   "y": 8.06,
+   "z": 98.0,
+   "axis": "x (along the arm)",
+   "face": "bag face (+y)",
+   "station": "us1"
+  },
+  "us2": {
+   "x": 126.96,
+   "y": 6.81,
+   "z": 142.0,
+   "axis": "x (along the arm)",
+   "face": "bag face (+y)",
+   "station": "us2"
+  }
+ },
+ "tests": {
+  "MT-1cr|us1": {
+   "pull_unit_vector_frame_R": [
+    0.7379,
+    0.527,
+    -0.4217
+   ],
+   "row": "c3d|b40|dy50|out",
+   "basis": "pin load along the governing 3D cradle leg (40 mm belly, 53 kg float limit, factored 1.6 g x 1.5); last step = the factored row",
+   "steps": [
+    {
+     "pin_load_n": 240.0,
+     "sigma_mpa": -0.88,
+     "band_mpa": [
+      -0.99,
+      -0.67
+     ],
+     "microstrain": -228.0,
+     "pass_if_abs_microstrain_at_most": 294.0
+    },
+    {
+     "pin_load_n": 480.0,
+     "sigma_mpa": -1.76,
+     "band_mpa": [
+      -1.97,
+      -1.34
+     ],
+     "microstrain": -455.0,
+     "pass_if_abs_microstrain_at_most": 588.0
+    },
+    {
+     "pin_load_n": 720.0,
+     "sigma_mpa": -2.64,
+     "band_mpa": [
+      -2.96,
+      -2.01
+     ],
+     "microstrain": -683.0,
+     "pass_if_abs_microstrain_at_most": 882.0
+    },
+    {
+     "pin_load_n": 887.7,
+     "sigma_mpa": -3.25,
+     "band_mpa": [
+      -3.65,
+      -2.48
+     ],
+     "microstrain": -842.0,
+     "pass_if_abs_microstrain_at_most": 1087.0
+    }
+   ]
+  },
+  "MT-1cr|us2": {
+   "pull_unit_vector_frame_R": [
+    -0.9322,
+    0.2825,
+    -0.226
+   ],
+   "row": "c3d|b40|dy50|in",
+   "basis": "pin load along the governing 3D cradle leg (40 mm belly, 53 kg float limit, factored 1.6 g x 1.5); last step = the factored row",
+   "steps": [
+    {
+     "pin_load_n": 240.0,
+     "sigma_mpa": -2.68,
+     "band_mpa": [
+      -3.02,
+      -1.72
+     ],
+     "microstrain": -694.0,
+     "pass_if_abs_microstrain_at_most": 900.0
+    },
+    {
+     "pin_load_n": 480.0,
+     "sigma_mpa": -5.36,
+     "band_mpa": [
+      -6.04,
+      -3.43
+     ],
+     "microstrain": -1389.0,
+     "pass_if_abs_microstrain_at_most": 1800.0
+    },
+    {
+     "pin_load_n": 720.0,
+     "sigma_mpa": -8.04,
+     "band_mpa": [
+      -9.06,
+      -5.15
+     ],
+     "microstrain": -2083.0,
+     "pass_if_abs_microstrain_at_most": 2699.0
+    },
+    {
+     "pin_load_n": 1103.9,
+     "sigma_mpa": -12.33,
+     "band_mpa": [
+      -13.89,
+      -7.9
+     ],
+     "microstrain": -3194.0,
+     "pass_if_abs_microstrain_at_most": 4139.0
+    }
+   ]
+  },
+  "T1|us1": {
+   "pull_unit_vector_frame_R": [
+    0.0,
+    -0.9641,
+    0.2655
+   ],
+   "row": "bagon_drape",
+   "basis": "T1 carry: bag-on cam-tight strap (drape path) at 1 g, scaled to the carry load (0 / 150 / 300 lb); local pin load only",
+   "steps": [
+    {
+     "pin_load_n": 0.0,
+     "sigma_mpa": -0.0,
+     "band_mpa": [
+      -0.0,
+      0.0
+     ],
+     "microstrain": -0.0,
+     "pass_if_abs_microstrain_at_most": 0.0
+    },
+    {
+     "pin_load_n": 148.1,
+     "sigma_mpa": -0.06,
+     "band_mpa": [
+      -0.12,
+      0.02
+     ],
+     "microstrain": -15.0,
+     "pass_if_abs_microstrain_at_most": 36.0
+    },
+    {
+     "pin_load_n": 296.3,
+     "sigma_mpa": -0.11,
+     "band_mpa": [
+      -0.24,
+      0.05
+     ],
+     "microstrain": -29.0,
+     "pass_if_abs_microstrain_at_most": 71.0
+    }
+   ]
+  },
+  "T1|us2": {
+   "pull_unit_vector_frame_R": [
+    0.0,
+    -0.9988,
+    -0.0491
+   ],
+   "row": "bagon_drape",
+   "basis": "T1 carry: bag-on cam-tight strap (drape path) at 1 g, scaled to the carry load (0 / 150 / 300 lb); local pin load only",
+   "steps": [
+    {
+     "pin_load_n": 0.0,
+     "sigma_mpa": 0.0,
+     "band_mpa": [
+      0.0,
+      0.0
+     ],
+     "microstrain": 0.0,
+     "pass_if_abs_microstrain_at_most": 0.0
+    },
+    {
+     "pin_load_n": 98.8,
+     "sigma_mpa": 1.33,
+     "band_mpa": [
+      0.8,
+      1.52
+     ],
+     "microstrain": 344.0,
+     "pass_if_abs_microstrain_at_most": 454.0
+    },
+    {
+     "pin_load_n": 197.5,
+     "sigma_mpa": 2.65,
+     "band_mpa": [
+      1.61,
+      3.05
+     ],
+     "microstrain": 687.0,
+     "pass_if_abs_microstrain_at_most": 908.0
+    }
+   ]
+  },
+  "CLEVIS-SHARE|us2_inboard": {
+   "pull_unit_vector_frame_R": [
+    -0.9322,
+    0.2825,
+    -0.226
+   ],
+   "row": "c3d|b40|dy50|in",
+   "basis": "CLEVIS-SHARE A: governing inboard leg; static proof = factored row, cycle peak = x 1.6 / 2.4 (1e5 cycles, R 0.1)",
+   "steps": [
+    {
+     "pin_load_n": 1103.9,
+     "sigma_mpa": -12.33,
+     "band_mpa": [
+      -13.89,
+      -7.9
+     ],
+     "microstrain": -3194.0,
+     "pass_if_abs_microstrain_at_most": 4139.0
+    },
+    {
+     "pin_load_n": 735.9,
+     "sigma_mpa": -8.22,
+     "band_mpa": [
+      -9.26,
+      -5.27
+     ],
+     "microstrain": -2130.0,
+     "pass_if_abs_microstrain_at_most": 2759.0
+    }
+   ],
+   "eye_bears_on": "inner (body) cheek: PTFE shim between the eye and the inner cheek's throat face"
+  },
+  "CLEVIS-SHARE|us2_yz": {
+   "pull_unit_vector_frame_R": [
+    0.0,
+    0.9216,
+    -0.3881
+   ],
+   "row": "c3d|b40|dy95|out",
+   "basis": "CLEVIS-SHARE B: the leg with no lateral part (a load as wide as the span), contact 95 mm aft: all of it in y-z, the clevis's share-1.0 case; static proof = factored row, cycle peak x 1.6 / 2.4",
+   "steps": [
+    {
+     "pin_load_n": 642.9,
+     "sigma_mpa": -7.81,
+     "band_mpa": [
+      -8.88,
+      -4.75
+     ],
+     "microstrain": -2023.0,
+     "pass_if_abs_microstrain_at_most": 2647.0
+    },
+    {
+     "pin_load_n": 428.6,
+     "sigma_mpa": -5.21,
+     "band_mpa": [
+      -5.92,
+      -3.17
+     ],
+     "microstrain": -1349.0,
+     "pass_if_abs_microstrain_at_most": 1764.0
+    }
+   ],
+   "eye_bears_on": "outer (clevis) cheek, PTFE shim between the eye and the outer cheek (share 1.0 case)"
+  }
+ },
+ "was": {
+  "MT-1cr|us1": {
+   "from": "analysis/h1_rev5.json",
+   "pin_load_n": [
+    240.0,
+    480.0,
+    720.0,
+    887.7
+   ],
+   "pass_if_abs_microstrain_at_most": [
+    306.0,
+    612.0,
+    918.0,
+    1132.0
+   ]
+  },
+  "T1|us1": {
+   "from": "analysis/h1_rev5.json",
+   "pin_load_n": [
+    0.0,
+    148.1,
+    296.3
+   ],
+   "pass_if_abs_microstrain_at_most": [
+    0.0,
+    27.0,
+    53.0
+   ]
+  },
+  "MT-1cr|us2": {
+   "from": "analysis/clevis_bl056.json",
+   "pin_load_n": [
+    240.0,
+    480.0,
+    720.0,
+    1103.9
+   ],
+   "pass_if_abs_microstrain_at_most": [
+    904.0,
+    1807.0,
+    2711.0,
+    4156.0
+   ]
+  },
+  "T1|us2": {
+   "from": "tests_physical/t1_us2_gauge_bl059.json",
+   "pin_load_n": [
+    0.0,
+    98.8,
+    197.5
+   ],
+   "pass_if_abs_microstrain_at_most": [
+    0.0,
+    454.0,
+    908.0
+   ]
+  },
+  "CLEVIS-SHARE|us2_inboard": {
+   "from": "analysis/clevis_bl056.json",
+   "pin_load_n": [
+    1103.9,
+    735.9
+   ],
+   "pass_if_abs_microstrain_at_most": [
+    4156.0,
+    2771.0
+   ]
+  },
+  "CLEVIS-SHARE|us2_yz": {
+   "from": "analysis/clevis_bl056.json",
+   "pin_load_n": [
+    642.9,
+    428.6
+   ],
+   "pass_if_abs_microstrain_at_most": [
+    2679.0,
+    1786.0
+   ]
+  }
+ },
+ "supersedes": [
+  "analysis/h1_rev5.json gauges.tests (MT-1cr|us1, T1|us1 on the BL-053/054 print)",
+  "analysis/clevis_bl056.json gauges.tests (MT-1cr|us2, CLEVIS-SHARE A / B on the BL-056 print)",
+  "tests_physical/t1_us2_gauge_bl059.json (T1|us2)"
+ ],
+ "t1_us1_shift": "T1|us1 pass lines 27 / 53 -> 36 / 71 microstrain are real: the BL-053 lines were run on the BL-054 print; BL-055 grew the hip boss to D50 x 16 mm (8 inserts), which lies inside the US1 submodel box (+8514 voxels at x -6..25, y -49..-33, z 96..145, 93 mm from the gauge). The stiffer lumbar hub moves the bag-on (drape, -y) load's near-null point at the US1 gauge: the point value goes -0.00019 -> -0.00038 MPa/N (-7 -> -15 microstrain at 150 lb) and the band minimum over the +/-1.5 mm placement tolerance -0.00060 -> -0.00081 MPa/N, which sets the pass line (x 1.15). The same hub costs the MT-1cr|us1 line 4 % (cradle leg: -0.00383 -> -0.00366 MPa/N): at a near-null point the same shift is a large fraction. Re-running the current code on the BL-054 STL gives the old 27 / 53 back; BL-056 and BL-058 (US2 blocks, counterbore) leave US1 unchanged; voxel h 1.0 and GAUGE_TOL 1.5 are unchanged (no raster change). See docs/backlog/BL-060-gauge-republish.md."
+}

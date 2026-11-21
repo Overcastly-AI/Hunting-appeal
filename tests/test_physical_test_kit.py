@@ -104,7 +104,9 @@ _REV5 = _json.loads((ROOT / "designs/pack_5200/analysis/h1_rev5.json").read_text
 _G2 = _json.loads((ROOT / "designs/pack_5200/tests_physical/us1_outer_gauge.json").read_text())
 # BL-057: the US2 lines on the BL-056 re-printed joint blocks replace BL-053's (CLEVIS-SHARE A/B and MT-1cr|us2)
 _C56 = _json.loads((ROOT / "designs/pack_5200/analysis/clevis_bl056.json").read_text())
-_US2 = {**_REV5["gauges"]["tests"], **_C56["gauges"]["tests"]}
+# BL-060: every gauge_values line re-run on the current print (gauge_lines_bl060.json, used while its STL md5 matches)
+_G60 = K.gauges60_record().get("tests", {})
+_US2 = {**_REV5["gauges"]["tests"], **_C56["gauges"]["tests"], **_G60}
 
 
 def _nums(txt: str) -> set:
@@ -136,7 +138,7 @@ def test_mt1cr_uses_the_3d_vectors_a_50kg_quarter_and_a_contact_photo(kit):
     for key in ("MT-1cr|us1", "MT-1cr|us2"):
         assert str(_REV5["gauges"]["tests"][key]["pull_unit_vector_frame_R"]) in r["steps"]
     # three gauges, each step with its number
-    for key, tests in (("MT-1cr|us1", _REV5["gauges"]["tests"]), ("MT-1cr|us2", _US2),
+    for key, tests in (("MT-1cr|us1", _US2), ("MT-1cr|us2", _US2),
                        ("MT-1cr|us1_outer", _G2["tests"])):
         for s in tests[key]["steps"]:
             if s["pin_load_n"] > 0:

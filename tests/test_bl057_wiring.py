@@ -38,7 +38,9 @@ def test_clevis_share_loads_and_lines_are_bl056(kit):
     for lab, k in C56["kit"].items():
         assert cl[lab]["proof_n"] == k["proof_n"] and cl[lab]["peak_n"] == k["cycle_peak_n"]
         assert cl[lab]["valley_n"] == round(k["R"] * k["cycle_peak_n"])
-        for g in k["gauge_lines"]:
+        # BL-060: the lines are the ones published for the print in the folder (gauge_lines_bl060.json when its md5
+        # matches, else clevis_bl056.json), read through the kit's lock-aware gauge_tests()
+        for g in K.gauge_tests()[k["test"]]["steps"]:
             assert f"PASS if size <= {g['pass_if_abs_microstrain_at_most']:.0f}" in r["pass_fail"]
     assert (cl["A"]["proof_n"], cl["B"]["proof_n"]) == (1103.9, 642.9)
     assert (cl["A"]["peak_n"], cl["B"]["peak_n"]) == (735.9, 428.6)
@@ -53,7 +55,9 @@ def test_clevis_share_loads_and_lines_are_bl056(kit):
     assert f"fatigue {s1['worst_fatigue']['fatigue']}" in r["what_it_proves"]          # 1.36, was 0.86
     # the results sheet carries the same bands
     rows = [x for x in kit["results"] if x["test_id"] == "CLEVIS-SHARE" and x["unit"] == "microstrain"]
-    assert any(x["limit"] == "-4156..4156" for x in rows) and not any(x["limit"] == "-4159..4159" for x in rows)
+    # BL-060: the band of A's proof line as published for the print in the folder (was a typed -4156..4156)
+    pa = round(K.gauge_tests()["CLEVIS-SHARE|us2_inboard"]["steps"][0]["pass_if_abs_microstrain_at_most"])
+    assert any(x["limit"] == f"-{pa}..{pa}" for x in rows) and not any(x["limit"] == "-4159..4159" for x in rows)
 
 
 def test_written_register_and_kit_match_the_build(kit):

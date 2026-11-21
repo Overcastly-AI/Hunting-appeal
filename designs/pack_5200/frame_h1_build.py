@@ -49,6 +49,16 @@ WASTE = 0.08
 SUPPORT_EXTRA = (0.15, 0.25)     # review 5 B-1 fix 2: "add about 15-25 % on the filament line" (interim, BL-053 replaces)
 MASS_BAND = (-0.03, 0.04)        # ASSUMPTION MASS-BAND: as-printed body within -3 / +4 % of the STL mass x density
 PLACEHOLDER = "**[PLACEHOLDER BL-053]**"
+MOUNT_SEAT_N = 20.0              # ASSUMPTION MOUNT-SEAT: hand push on the mount's pin end (seating check only)
+
+
+def _hip_c2_pin_n() -> float:
+    """BL-060: the C2 pin load the MOUNT-SEAT text compares against, read from the BL-056 part FE
+    (analysis/hip_mount_bl056.json fe.rows['C2|H_pin'].V_n), never typed."""
+    return float(json.loads((AN / "hip_mount_bl056.json").read_text())["fe"]["rows"]["C2|H_pin"]["V_n"])
+
+
+_C2_PIN_N = _hip_c2_pin_n()
 
 ASSUMPTIONS = {
     "MASS-BAND": ("The printed, cleaned, annealed and unreamed body weighs the STL volume x 1.06 g/cm3 within -3 / +4 % "
@@ -74,7 +84,8 @@ ASSUMPTIONS = {
                     "Part A sized (h1_closeout.json: count, positions, printed pilot holes; insert pull-out 1200 N "
                     "(record ASSUMPTION) x the PAHT-CF hot knock-down x the layer-normal ratio). Buy 2 spares.",
                     "Insert pull-out coupon HB-6 (test kit) and the D-I1 coupon."),
-    "MOUNT-SEAT": ("A 20 N hand push on the mount's pin end (about 1 % of the 1601 N C2 pin load) is a seating check "
+    "MOUNT-SEAT": (f"A {MOUNT_SEAT_N:.0f} N hand push on the mount's pin end (about {100 * MOUNT_SEAT_N / _C2_PIN_N:.0f} % of "
+                   f"the {_C2_PIN_N:.0f} N C2 pin load, hip_mount_bl056.json part FE, C2 row with H on the pin) is a seating check "
                    "only: it finds a mount resting on a burr or an insert standing proud, not strength.",
                    "HB-6b hip-mount proof on the frame (hip_mount_bl056.md 6, FLANGE-RIGID; test kit) carries the "
                    "strength."),
@@ -966,7 +977,7 @@ def hip_section(co: dict) -> list[str]:
               if "head_to_head_mm" in w else "")) + "."
           + (" FIRST ARTICLE (ASSUMPTION INSERT-SCATTER): " + b8["kit"]["hip_guide"]["procedure"][-1].split(". ", 1)[1]
              + " If one will not start, stop: do not force it or open the hole; send a photo." if b8 else ""),
-          "5. CHECK: push the mount's pin end with the spring scale to 20 N (2.0 kg, 4.5 lb; ASSUMPTION MOUNT-SEAT) up, down, left and right: "
+          f"5. CHECK: push the mount's pin end with the spring scale to {MOUNT_SEAT_N:.0f} N ({MOUNT_SEAT_N / 9.80665:.1f} kg, {MOUNT_SEAT_N / 4.44822:.1f} lb; ASSUMPTION MOUNT-SEAT) up, down, left and right: "
           "a 0.05 mm (0.002 in) feeler does not enter under the base edge at any point, and no screw head turns "
           "(a paint mark across each head and the base).", ""]
     fl = co.get("flange", {})

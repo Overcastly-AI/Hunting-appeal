@@ -45,9 +45,26 @@ VARIANTS = {
 
 # BL-057: print files a later ticket redrew with its own checked code. A re-run of the gendesign lug export
 # (huntkit.gendesign.cli lug_task) must never overwrite them: output_stem() sends that lug's export elsewhere.
+_BL058_JSON = Path(__file__).resolve().parents[2] / "designs" / "pack_5200" / "analysis" / "bl058.json"
+
+
+def _hip_mount_holes_txt() -> str:
+    """BL-060: the protected hip mount's screw holes as the current exported STL measures them (bl058.json
+    hip_mount: hole_d_mm and geometry.base.hole_d_eq_mm, the pin hole excluded), never typed; the BL-056 wording
+    without a diameter before bl058.json exists."""
+    try:
+        h = json.loads(_BL058_JSON.read_text())["hip_mount"]
+        d = float(h["hole_d_mm"])
+        n = sum(1 for x in h["geometry"]["base"]["hole_d_eq_mm"] if abs(float(x) - d) <= 0.05)
+        return f"{n} x D{d:g} holes (BL-058)"
+    except (OSError, KeyError, ValueError, TypeError):
+        return "its screw holes"
+
+
 PROTECTED = {
-    ("hip_pivot_mount", "slm_ti"): ("BL-056 redraw: D50 x 3 mm base with 8 x D5.5 holes on the 8-insert boss "
-                                    "(huntkit/gendesign/hip_mount.py, designs/pack_5200/analysis/hip_mount_bl056.json)"),
+    ("hip_pivot_mount", "slm_ti"): (f"BL-056 redraw: D50 x 3 mm base with {_hip_mount_holes_txt()} on the 8-insert "
+                                    "boss (huntkit/gendesign/hip_mount.py, designs/pack_5200/analysis/hip_mount_bl056.json"
+                                    ", bl058.json hip_mount)"),
 }
 
 

@@ -197,30 +197,30 @@ CA-5-05,CA-5,G4,R1,cyc,joint step after 1e5 cycles at 1543 N,mm,max,0.1,,,,,BOSS
 CA-5-06,CA-5,G4,R1,cyc,no crack at the boss root after 1e5 cycles,Y/N,yes,Y,,,,,BOSS-BENDING
 CLEVIS-SHARE-01,CLEVIS-SHARE,G4,R1,A static,"no joint opening at 1104 N (0.05 mm feeler does not enter, both sides, both ends)",Y/N,yes,Y,,,,,CLEVIS-SHARE; CLEVIS-DRY
 CLEVIS-SHARE-02,CLEVIS-SHARE,G4,R1,A static,pencil-line step across the joint after 1104 N,mm,max,0.05,,,,,CLEVIS-DRY
-CLEVIS-SHARE-03,CLEVIS-SHARE,G4,R1,A 240 N,"US2 root gauge at 240 N, loading A (expected about -697)",microstrain,band,-904..904,,,,,CLEVIS-SHARE; SUB-BC; PIECE-BC
-CLEVIS-SHARE-04,CLEVIS-SHARE,G4,R1,A 480 N,"US2 root gauge at 480 N, loading A (expected about -1395)",microstrain,band,-1807..1807,,,,,CLEVIS-SHARE; SUB-BC; PIECE-BC
-CLEVIS-SHARE-05,CLEVIS-SHARE,G4,R1,A 720 N,"US2 root gauge at 720 N, loading A (expected about -2092)",microstrain,band,-2711..2711,,,,,CLEVIS-SHARE; SUB-BC; PIECE-BC
-CLEVIS-SHARE-06,CLEVIS-SHARE,G4,R1,A 1104 N,"US2 root gauge at 1104 N, loading A (expected about -3208)",microstrain,band,-4156..4156,,,,,CLEVIS-SHARE; SUB-BC; PIECE-BC
+CLEVIS-SHARE-03,CLEVIS-SHARE,G4,R1,A 240 N,"US2 root gauge at 240 N, loading A (expected about -694)",microstrain,band,-900..900,,,,,CLEVIS-SHARE; SUB-BC; PIECE-BC
+CLEVIS-SHARE-04,CLEVIS-SHARE,G4,R1,A 480 N,"US2 root gauge at 480 N, loading A (expected about -1389)",microstrain,band,-1800..1800,,,,,CLEVIS-SHARE; SUB-BC; PIECE-BC
+CLEVIS-SHARE-05,CLEVIS-SHARE,G4,R1,A 720 N,"US2 root gauge at 720 N, loading A (expected about -2083)",microstrain,band,-2699..2699,,,,,CLEVIS-SHARE; SUB-BC; PIECE-BC
+CLEVIS-SHARE-06,CLEVIS-SHARE,G4,R1,A 1104 N,"US2 root gauge at 1104 N, loading A (expected about -3194)",microstrain,band,-4139..4139,,,,,CLEVIS-SHARE; SUB-BC; PIECE-BC
 CLEVIS-SHARE-07,CLEVIS-SHARE,G4,R1,A 1000 cycles,"no joint opening at 736 N (feeler), no crack (loupe)",Y/N,yes,Y,,,,,CLEVIS-SHARE; CLEVIS-PRINT
 CLEVIS-SHARE-08,CLEVIS-SHARE,G4,R1,A 10000 cycles,"no joint opening at 736 N (feeler), no crack (loupe)",Y/N,yes,Y,,,,,CLEVIS-SHARE; CLEVIS-PRINT
 CLEVIS-SHARE-09,CLEVIS-SHARE,G4,R1,A 100000 cycles,"no joint opening at 736 N (feeler), no crack (loupe)",Y/N,yes,Y,,,,,CLEVIS-SHARE; CLEVIS-PRINT
-CLEVIS-SHARE-10,CLEVIS-SHARE,G4,R1,A 1000 cycles,US2 root gauge at the 736 N peak (expected about -2139),microstrain,band,-2771..2771,,,,,CLEVIS-SHARE; SUB-BC
-CLEVIS-SHARE-11,CLEVIS-SHARE,G4,R1,A 10000 cycles,US2 root gauge at the 736 N peak (expected about -2139),microstrain,band,-2771..2771,,,,,CLEVIS-SHARE; SUB-BC
-CLEVIS-SHARE-12,CLEVIS-SHARE,G4,R1,A 100000 cycles,US2 root gauge at the 736 N peak (expected about -2139),microstrain,band,-2771..2771,,,,,CLEVIS-SHARE; SUB-BC
+CLEVIS-SHARE-10,CLEVIS-SHARE,G4,R1,A 1000 cycles,US2 root gauge at the 736 N peak (expected about -2130),microstrain,band,-2759..2759,,,,,CLEVIS-SHARE; SUB-BC
+CLEVIS-SHARE-11,CLEVIS-SHARE,G4,R1,A 10000 cycles,US2 root gauge at the 736 N peak (expected about -2130),microstrain,band,-2759..2759,,,,,CLEVIS-SHARE; SUB-BC
+CLEVIS-SHARE-12,CLEVIS-SHARE,G4,R1,A 100000 cycles,US2 root gauge at the 736 N peak (expected about -2130),microstrain,band,-2759..2759,,,,,CLEVIS-SHARE; SUB-BC
 CLEVIS-SHARE-13,CLEVIS-SHARE,G4,R1,A end,"bolt torque marks unmoved, no crack at the cheek root / arm root / bolt holes",Y/N,yes,Y,,,,,CLEVIS-DRY
 CLEVIS-SHARE-14,CLEVIS-SHARE,G4,R1,A end,"no head pull-in, no crack at the head counterbores (no washer under the head)",Y/N,yes,Y,,,,,HEAD-BEAR
 CLEVIS-SHARE-15,CLEVIS-SHARE,G4,R1,B static,"no joint opening at 643 N (0.05 mm feeler does not enter, both sides, both ends)",Y/N,yes,Y,,,,,CLEVIS-SHARE; CLEVIS-DRY
 CLEVIS-SHARE-16,CLEVIS-SHARE,G4,R1,B static,pencil-line step across the joint after 643 N,mm,max,0.05,,,,,CLEVIS-DRY
-CLEVIS-SHARE-17,CLEVIS-SHARE,G4,R1,B 161 N,"US2 root gauge at 161 N, loading B (expected about -512)",microstrain,band,-670..670,,,,,CLEVIS-SHARE; SUB-BC; PIECE-BC
-CLEVIS-SHARE-18,CLEVIS-SHARE,G4,R1,B 321 N,"US2 root gauge at 321 N, loading B (expected about -1024)",microstrain,band,-1339..1339,,,,,CLEVIS-SHARE; SUB-BC; PIECE-BC
-CLEVIS-SHARE-19,CLEVIS-SHARE,G4,R1,B 482 N,"US2 root gauge at 482 N, loading B (expected about -1537)",microstrain,band,-2009..2009,,,,,CLEVIS-SHARE; SUB-BC; PIECE-BC
-CLEVIS-SHARE-20,CLEVIS-SHARE,G4,R1,B 643 N,"US2 root gauge at 643 N, loading B (expected about -2049)",microstrain,band,-2679..2679,,,,,CLEVIS-SHARE; SUB-BC; PIECE-BC
+CLEVIS-SHARE-17,CLEVIS-SHARE,G4,R1,B 161 N,"US2 root gauge at 161 N, loading B (expected about -506)",microstrain,band,-662..662,,,,,CLEVIS-SHARE; SUB-BC; PIECE-BC
+CLEVIS-SHARE-18,CLEVIS-SHARE,G4,R1,B 321 N,"US2 root gauge at 321 N, loading B (expected about -1011)",microstrain,band,-1323..1323,,,,,CLEVIS-SHARE; SUB-BC; PIECE-BC
+CLEVIS-SHARE-19,CLEVIS-SHARE,G4,R1,B 482 N,"US2 root gauge at 482 N, loading B (expected about -1517)",microstrain,band,-1985..1985,,,,,CLEVIS-SHARE; SUB-BC; PIECE-BC
+CLEVIS-SHARE-20,CLEVIS-SHARE,G4,R1,B 643 N,"US2 root gauge at 643 N, loading B (expected about -2023)",microstrain,band,-2647..2647,,,,,CLEVIS-SHARE; SUB-BC; PIECE-BC
 CLEVIS-SHARE-21,CLEVIS-SHARE,G4,R1,B 1000 cycles,"no joint opening at 429 N (feeler), no crack (loupe)",Y/N,yes,Y,,,,,CLEVIS-SHARE; CLEVIS-PRINT
 CLEVIS-SHARE-22,CLEVIS-SHARE,G4,R1,B 10000 cycles,"no joint opening at 429 N (feeler), no crack (loupe)",Y/N,yes,Y,,,,,CLEVIS-SHARE; CLEVIS-PRINT
 CLEVIS-SHARE-23,CLEVIS-SHARE,G4,R1,B 100000 cycles,"no joint opening at 429 N (feeler), no crack (loupe)",Y/N,yes,Y,,,,,CLEVIS-SHARE; CLEVIS-PRINT
-CLEVIS-SHARE-24,CLEVIS-SHARE,G4,R1,B 1000 cycles,US2 root gauge at the 429 N peak (expected about -1366),microstrain,band,-1786..1786,,,,,CLEVIS-SHARE; SUB-BC
-CLEVIS-SHARE-25,CLEVIS-SHARE,G4,R1,B 10000 cycles,US2 root gauge at the 429 N peak (expected about -1366),microstrain,band,-1786..1786,,,,,CLEVIS-SHARE; SUB-BC
-CLEVIS-SHARE-26,CLEVIS-SHARE,G4,R1,B 100000 cycles,US2 root gauge at the 429 N peak (expected about -1366),microstrain,band,-1786..1786,,,,,CLEVIS-SHARE; SUB-BC
+CLEVIS-SHARE-24,CLEVIS-SHARE,G4,R1,B 1000 cycles,US2 root gauge at the 429 N peak (expected about -1349),microstrain,band,-1764..1764,,,,,CLEVIS-SHARE; SUB-BC
+CLEVIS-SHARE-25,CLEVIS-SHARE,G4,R1,B 10000 cycles,US2 root gauge at the 429 N peak (expected about -1349),microstrain,band,-1764..1764,,,,,CLEVIS-SHARE; SUB-BC
+CLEVIS-SHARE-26,CLEVIS-SHARE,G4,R1,B 100000 cycles,US2 root gauge at the 429 N peak (expected about -1349),microstrain,band,-1764..1764,,,,,CLEVIS-SHARE; SUB-BC
 CLEVIS-SHARE-27,CLEVIS-SHARE,G4,R1,B end,"bolt torque marks unmoved, no crack at the cheek root / arm root / bolt holes",Y/N,yes,Y,,,,,CLEVIS-DRY
 CLEVIS-SHARE-28,CLEVIS-SHARE,G4,R1,B end,"no head pull-in, no crack at the head counterbores (no washer under the head)",Y/N,yes,Y,,,,,HEAD-BEAR
 HB-6-01,HB-6,G4,R1,pull#1,pull-out peak along the build z at 60 C,N,min,513,,,,,INS-Z
@@ -312,18 +312,18 @@ MT-1cr-13,MT-1cr,G6,R1,wide load US1 R,US1 strap leaves the pin outboard (wide) 
 MT-1cr-14,MT-1cr,G6,R1,wide load US1 L,US1 strap leaves the pin outboard (wide) / inboard (narrow) as modelled,Y/N,yes,Y,,,,,QUARTER-WIDTH
 MT-1cr-15,MT-1cr,G6,R1,narrow load US1 R,US1 strap leaves the pin outboard (wide) / inboard (narrow) as modelled,Y/N,yes,Y,,,,,QUARTER-WIDTH
 MT-1cr-16,MT-1cr,G6,R1,narrow load US1 L,US1 strap leaves the pin outboard (wide) / inboard (narrow) as modelled,Y/N,yes,Y,,,,,QUARTER-WIDTH
-MT-1cr-17,MT-1cr,G6,R1,US1 pull 240 N,US1 ROOT gauge (expected about -238),microstrain,band,-306..306,,,,,SUB-BC
+MT-1cr-17,MT-1cr,G6,R1,US1 pull 240 N,US1 ROOT gauge (expected about -228),microstrain,band,-294..294,,,,,SUB-BC
 MT-1cr-18,MT-1cr,G6,R1,US1 pull 240 N,US1 OUTER CHEEK gauge (expected about -1123),microstrain,band,-1719..1719,,,,,SUB-BC; G2-AXIS
-MT-1cr-19,MT-1cr,G6,R1,US1 pull 480 N,US1 ROOT gauge (expected about -477),microstrain,band,-612..612,,,,,SUB-BC
+MT-1cr-19,MT-1cr,G6,R1,US1 pull 480 N,US1 ROOT gauge (expected about -455),microstrain,band,-588..588,,,,,SUB-BC
 MT-1cr-20,MT-1cr,G6,R1,US1 pull 480 N,US1 OUTER CHEEK gauge (expected about -2245),microstrain,band,-3439..3439,,,,,SUB-BC; G2-AXIS
-MT-1cr-21,MT-1cr,G6,R1,US1 pull 720 N,US1 ROOT gauge (expected about -715),microstrain,band,-918..918,,,,,SUB-BC
+MT-1cr-21,MT-1cr,G6,R1,US1 pull 720 N,US1 ROOT gauge (expected about -683),microstrain,band,-882..882,,,,,SUB-BC
 MT-1cr-22,MT-1cr,G6,R1,US1 pull 720 N,US1 OUTER CHEEK gauge (expected about -3368),microstrain,band,-5158..5158,,,,,SUB-BC; G2-AXIS
-MT-1cr-23,MT-1cr,G6,R1,US1 pull 888 N,US1 ROOT gauge (expected about -882),microstrain,band,-1132..1132,,,,,SUB-BC
+MT-1cr-23,MT-1cr,G6,R1,US1 pull 888 N,US1 ROOT gauge (expected about -842),microstrain,band,-1087..1087,,,,,SUB-BC
 MT-1cr-24,MT-1cr,G6,R1,US1 pull 888 N,US1 OUTER CHEEK gauge (expected about -4152),microstrain,band,-6359..6359,,,,,SUB-BC; G2-AXIS
-MT-1cr-25,MT-1cr,G6,R1,US2 pull 240 N,US2 ROOT gauge (expected about -697),microstrain,band,-904..904,,,,,SUB-BC
-MT-1cr-26,MT-1cr,G6,R1,US2 pull 480 N,US2 ROOT gauge (expected about -1395),microstrain,band,-1807..1807,,,,,SUB-BC
-MT-1cr-27,MT-1cr,G6,R1,US2 pull 720 N,US2 ROOT gauge (expected about -2092),microstrain,band,-2711..2711,,,,,SUB-BC
-MT-1cr-28,MT-1cr,G6,R1,US2 pull 1104 N,US2 ROOT gauge (expected about -3208),microstrain,band,-4156..4156,,,,,SUB-BC
+MT-1cr-25,MT-1cr,G6,R1,US2 pull 240 N,US2 ROOT gauge (expected about -694),microstrain,band,-900..900,,,,,SUB-BC
+MT-1cr-26,MT-1cr,G6,R1,US2 pull 480 N,US2 ROOT gauge (expected about -1389),microstrain,band,-1800..1800,,,,,SUB-BC
+MT-1cr-27,MT-1cr,G6,R1,US2 pull 720 N,US2 ROOT gauge (expected about -2083),microstrain,band,-2699..2699,,,,,SUB-BC
+MT-1cr-28,MT-1cr,G6,R1,US2 pull 1104 N,US2 ROOT gauge (expected about -3194),microstrain,band,-4139..4139,,,,,SUB-BC
 MT-1cr-29,MT-1cr,G6,R1,lugs,no crack or whitening at the US1 / US2 lugs; every zero returns within 5 % of the top reading,Y/N,yes,Y,,,,,SUB-BC
 HB-6b-01,HB-6b,G6,R1,run 1 carry 1 g,screw gauge at V 534 N (expected about +52),microstrain,max,60,,,,,FLANGE-RIGID; SCREW-GAUGE
 HB-6b-02,HB-6b,G6,R1,run 1 walk 1.6 g,screw gauge at V 854 N (expected about +84),microstrain,max,96,,,,,FLANGE-RIGID; SCREW-GAUGE
@@ -416,13 +416,13 @@ T9-R3c-02,T9-R3c,G6,BAG-BATCH,S-full-R,"crown strap path, S kit full",mm,max,968
 T9-R3c-03,T9-R3c,G6,BAG-BATCH,L-6day,"crown strap path, L kit 6-day (sim 438.8)",mm,record,,,,,,ROLL-PATH; TORSO-LIN
 BP-3-01,BP-3,G6,CARRY,1,"passes the register criterion: every sensor <= 14 kPa at 15, 19 and 23 in; record whether the z 100 / 160 sensors read > 1 kPa (rails bear below z 190)",Y/N,yes,Y,,,,,
 RF-1-01,RF-1,G6,CARRY,1,passes the register criterion: peak <= 14 kPa and comfort OK,Y/N,yes,Y,,,,,C-8 RAIL
-T1-01,T1,G6,R1,(a) US1 ROOT,US1 ROOT gauge at 150 lb (expected about -7; over the line = HOLD),microstrain,band,-27..27,,,,,GAUGE-LOCAL; SUB-BC
+T1-01,T1,G6,R1,(a) US1 ROOT,US1 ROOT gauge at 150 lb (expected about -15; over the line = HOLD),microstrain,band,-36..36,,,,,GAUGE-LOCAL; SUB-BC
 T1-02,T1,G6,R1,(a) US1 OUTER CHEEK,US1 OUTER CHEEK gauge at 150 lb (expected about -127; over the line = HOLD),microstrain,band,-260..260,,,,,GAUGE-LOCAL; SUB-BC
 T1-03,T1,G6,R1,(a) US2 ROOT,US2 ROOT gauge at 150 lb (expected about +344; over the line = HOLD),microstrain,band,-454..454,,,,,GAUGE-LOCAL; SUB-BC
-T1-04,T1,G6,R1,(b) US1 ROOT,US1 ROOT gauge at 300 lb (expected about -15; over the line = HOLD),microstrain,band,-53..53,,,,,GAUGE-LOCAL; SUB-BC
+T1-04,T1,G6,R1,(b) US1 ROOT,US1 ROOT gauge at 300 lb (expected about -29; over the line = HOLD),microstrain,band,-71..71,,,,,GAUGE-LOCAL; SUB-BC
 T1-05,T1,G6,R1,(b) US1 OUTER CHEEK,US1 OUTER CHEEK gauge at 300 lb (expected about -255; over the line = HOLD),microstrain,band,-520..520,,,,,GAUGE-LOCAL; SUB-BC
 T1-06,T1,G6,R1,(b) US2 ROOT,US2 ROOT gauge at 300 lb (expected about +687; over the line = HOLD),microstrain,band,-908..908,,,,,GAUGE-LOCAL; SUB-BC
-T1-07,T1,G6,R1,(c) US1 ROOT,US1 ROOT gauge at 225 lb (expected about -11; over the line = HOLD),microstrain,band,-40..40,,,,,GAUGE-LOCAL; SUB-BC
+T1-07,T1,G6,R1,(c) US1 ROOT,US1 ROOT gauge at 225 lb (expected about -22; over the line = HOLD),microstrain,band,-53..53,,,,,GAUGE-LOCAL; SUB-BC
 T1-08,T1,G6,R1,(c) US1 OUTER CHEEK,US1 OUTER CHEEK gauge at 225 lb (expected about -191; over the line = HOLD),microstrain,band,-390..390,,,,,GAUGE-LOCAL; SUB-BC
 T1-09,T1,G6,R1,(c) US2 ROOT,US2 ROOT gauge at 225 lb (expected about +515; over the line = HOLD),microstrain,band,-681..681,,,,,GAUGE-LOCAL; SUB-BC
 T1-10,T1,G6,R1,all,"T1 pass rules (no crack, crown set <= 1 mm, z 234 step <= 0.5 mm, ...)",Y/N,yes,Y,,,,,HA-LS-1 T1
