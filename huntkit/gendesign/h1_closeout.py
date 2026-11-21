@@ -263,7 +263,8 @@ def insert_record() -> dict:
     return out
 
 
-MOUNT_STL = PACK / "print" / "lug_hip_pivot_mount_slm_ti.stl"
+MOUNT_STL = PACK / "print" / "legacy" / "lug_hip_pivot_mount_slm_ti_D44_drawn.stl"   # BL-056: the drawn D44 x 1.2
+#   mount this study read, frozen; the print file itself is now the BL-056 redraw (huntkit/gendesign/hip_mount.py)
 MOUNT_FLANGE_T = 1.2               # the SLM mount's base disc as drawn (sliced: D44 disc solid to z 1.2, legs above)
 HEAD_D = 8.5                       # DIN 7984 M5 low head (frame_comp_B bolt row)
 HEAD_LEG_CLEAR = 1.0               # ASSUMPTION HEAD-LEG: >= 1 mm between a screw head and a mount leg root (driver access)

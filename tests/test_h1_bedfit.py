@@ -51,7 +51,7 @@ def test_net_section_of_the_block_without_traps_is_the_rectangle():
     j = dataclasses.replace(BF.JOINT, washer_od=-0.4)          # slot_w 0
     ns = BF.net_section(p, j, h=0.1)
     hy = p["y_floor"] - (p["yc"] + BF.BLOCK_DY_LO)
-    hz = 2 * BF.BLOCK_HALF_Z
+    hz = BF.BLOCK_HALF_Z + BF.BLOCK_UP_Z                       # BL-056: the block grows upward only
     assert ns["A"] == pytest.approx(hy * hz, rel=0.01)
     assert ns["Iz"] == pytest.approx(hz * hy ** 3 / 12.0, rel=0.02)
     assert ns["Iy"] == pytest.approx(hy * hz ** 3 / 12.0, rel=0.02)
@@ -91,10 +91,10 @@ def test_joint_check_hand_numbers():
     assert r["worst_strength"]["sf"] >= 2.0 and r["worst_fatigue"]["fatigue"] >= 1.15
     r1 = BF.joint_check(share=1.0)
     assert r1["worst_strength"]["sf"] >= 1.0
-    # BL-051: the whole pin load on the clevis (sensitivity) holds fatigue on every row but the 50 mm belly lane row
-    # (US2 860 N), where it reads about 0.84 (h1_crown.md, CLEVIS-SHARE settles it)
-    assert all(v["min_fatigue"] >= 1.0 for k, v in r1["rows"].items() if not k.startswith("cradle_lane_b50"))
-    assert 0.75 < min(v["min_fatigue"] for v in r1["rows"].values()) < 1.0
+    # BL-051 read about 0.84 on the 50 mm belly lane row at share 1.0; BL-056 grew the blocks upward (BLOCK_UP_Z 19)
+    # so the whole pin load on the clevis (CLEVIS-SHARE B bound) holds fatigue >= 1.15 and strength >= 1.5 on every row
+    assert min(v["min_fatigue"] for v in r1["rows"].values()) >= 1.15
+    assert min(v["min_sf"] for v in r1["rows"].values()) >= 1.5
     assert r1["worst_strength"]["sf"] < r["worst_strength"]["sf"]
 
 

@@ -53,6 +53,11 @@ PROBE_X = 147.0                    # largest US2 x found with the brim (footprin
 SPLIT_X = 163.0                    # |x| of the joint face: in the US2 throat floor (throat 155-175), 2 mm in of the pin
 BLOCK_DY_LO = -9.8                 # joint blocks' wearer face, from the stay centre yc (-12.5 at US2; arm tip -10.7)
 BLOCK_HALF_Z = 14.5                # joint blocks' half height about the pin (fairlead +/-9); below the throat floor only
+#                                    (BL-056: now the LOWER half only: the lip the US2 strap wraps stays at pin - 14.5)
+BLOCK_UP_Z = 19.0                  # BL-056: the blocks' UPPER half height above the pin (was 14.5 = BLOCK_HALF_Z): at the
+#                                    share-1.0 bound the net section through the traps read fatigue 0.86 (BL-051 lane row b50);
+#                                    at +19 the net section leaves the governing set (hole bearing 1.28, h1_bedfit.joint_check;
+#                                    +17 read 1.17, +18 1.28: 19 keeps 1 mm past the knee)
 BODY_BLOCK_X0 = 141.0              # body block from |x| 141 (covers the bolt tail, 1.5 mm wall) to SPLIT_X
 BLOCK_EDGE_R = 1.5                 # rounded block edges
 
@@ -75,9 +80,10 @@ class ClevisJoint:
     washer_t: float = 1.0
     nut_af: float = 8.0            # ISO 4032 M5
     nut_t: float = 4.0
-    nut_face: float = 151.0        # |x| where the nut washer bears (body plug 151 -> 163 = 12 mm: hole bearing at
-    #                                share 1.0 governs the fatigue; 8 mm gave 0.79 there)
-    trap_x0: float = 145.8         # |x| inboard end of the trap (washer 1 + nut 4 + 0.2 play)
+    nut_face: float = 150.0        # |x| where the nut washer bears (body plug 150 -> 163 = 13 mm: hole bearing at
+    #                                share 1.0 governs the fatigue; 8 mm gave 0.79 there, 12 mm (BL-051..055) 1.14 on the
+    #                                legacy cradle row; BL-056: 13 mm -> 1.23; grip 29 + 1 + 4 + 1 = 35 = the M5 x 35)
+    trap_x0: float = 144.8         # |x| inboard end of the trap (washer 1 + nut 4 + 0.2 play; BL-056: was 145.8)
     hex_trap: bool = True          # BL-053 (M-2): two-step trap as at z 234: washer slot (slot_w, washer_t + 0.2 long
     #                                at the nut face), then an AF + 0.2 hex slot that holds the nut by its flats
     nut_play: float = 0.2          # hex slot AF play
@@ -151,7 +157,7 @@ def block_boxes(p: dict) -> dict:
     # small offsets off the fairlead's own planes (floor, outer face): coplanar booleans leave slivers that an STL
     # round trip turns into non-manifold edges (as h1_fairleads' grid offsets)
     y0, y1 = p["yc"] + BLOCK_DY_LO, p["y_floor"] - 0.0371
-    z0, z1 = p["z"] - BLOCK_HALF_Z, p["z"] + BLOCK_HALF_Z
+    z0, z1 = p["z"] - BLOCK_HALF_Z, p["z"] + BLOCK_UP_Z
     return {"body": (*_sx(p, BODY_BLOCK_X0, SPLIT_X + 1.0), y0, y1, z0, z1),
             "clevis": (*_sx(p, SPLIT_X - 1.0, JOINT.outer_face - 0.0413), y0, y1, z0, z1)}
 
@@ -211,7 +217,7 @@ def trap_walls(p: dict | None = None, j: ClevisJoint = JOINT) -> dict:
     af = j.nut_af + j.nut_play
     out = {}
     for lab, w in (("washer_slot", j.slot_w), ("hex_slot", af)):
-        out[lab] = {"outer_wall_mm": round(BLOCK_HALF_Z - (j.dz + w / 2.0), 2),
+        out[lab] = {"outer_wall_mm": round(min(BLOCK_HALF_Z, BLOCK_UP_Z) - (j.dz + w / 2.0), 2),
                     "between_traps_mm": round(2 * j.dz - w, 2)}
     out["min_wall_mm"] = min(min(v.values()) for v in out.values())
     out["pass_2mm"] = bool(out["min_wall_mm"] >= 2.0)
@@ -424,7 +430,7 @@ def _face_grid(p: dict, h: float = 0.5, j: ClevisJoint = JOINT):
     y0, y1 = p["yc"] + BLOCK_DY_LO, p["y_floor"]
     yb = p["yc"] + j.dy
     u = np.arange(y0 - yb + h / 2, y1 - yb, h)
-    v = np.arange(-BLOCK_HALF_Z + h / 2, BLOCK_HALF_Z, h)
+    v = np.arange(-BLOCK_HALF_Z + h / 2, BLOCK_UP_Z, h)
     U, V = np.meshgrid(u, v, indexing="ij")
     U, V = U.ravel(), V.ravel()
     keep = np.ones(U.size, bool)
@@ -438,7 +444,7 @@ def net_section(p: dict, j: ClevisJoint = JOINT, h: float = 0.25) -> dict:
     the wearer face) and the hole. Section properties about its centroid (u along y, v along z)."""
     y0, y1 = p["yc"] + BLOCK_DY_LO, p["y_floor"]
     u = np.arange(y0 + h / 2, y1, h)
-    v = np.arange(p["z"] - BLOCK_HALF_Z + h / 2, p["z"] + BLOCK_HALF_Z, h)
+    v = np.arange(p["z"] - BLOCK_HALF_Z + h / 2, p["z"] + BLOCK_UP_Z, h)
     Y, Z = np.meshgrid(u, v, indexing="ij")
     keep = np.ones(Y.shape, bool)
     for (yb, zb) in bolt_axes(p, j):
@@ -514,7 +520,7 @@ def joint_check(share: float = CHEEK_SHARE, j: ClevisJoint = JOINT, loads: dict 
         # (axial and bending magnitudes added: conservative on the sign conventions)
         sig = abs(Fc[0]) / ns["A"] + np.abs((-(Mz_ * ns["Iy"] + My_ * ns["Iyz"]) * dy_
                                              + (My_ * ns["Iz"] + Mz_ * ns["Iyz"]) * dz_) / D)
-        tau = abs(Mn[0]) / (0.25 * (BLOCK_HALF_Z * 2) * (p["y_floor"] - p["yc"] - BLOCK_DY_LO) ** 2) \
+        tau = abs(Mn[0]) / (0.25 * (BLOCK_HALF_Z + BLOCK_UP_Z) * (p["y_floor"] - p["yc"] - BLOCK_DY_LO) ** 2) \
             + float(np.hypot(Fc[1], Fc[2])) / ns["A"] * 1.5
         S = np.zeros((1, 3))
         S[0, 0] = float(np.abs(sig).max())
@@ -818,7 +824,7 @@ def plot_joint(res: dict, path: Path) -> str:
     ax.set_aspect("equal")
     ax.set_xlabel("frame y, mm")
     ax.set_ylabel("frame z, mm")
-    ax.set_title(f"joint face |x| {SPLIT_X:.0f}: block {2 * BLOCK_HALF_Z:.0f} mm tall,\nbolts at z +/-{JOINT.dz:.0f} "
+    ax.set_title(f"joint face |x| {SPLIT_X:.0f}: block {BLOCK_HALF_Z + BLOCK_UP_Z:.0f} mm tall,\nbolts at z +/-{JOINT.dz:.0f} "
                  f"(washer OD {JOINT.washer_od:.0f} dashed)", fontsize=10)
     ax = axs[2]
     j = res["joint"]
@@ -1043,7 +1049,7 @@ def write_md(res: dict, shots: list) -> str:
     a(f"- Split plane |x| {SPLIT_X:g}: in the US2 throat floor (throat 155-175), so the body prints the arm, the "
       f"inner cheek and 8 mm of floor; the clevis is the outer 12 mm of floor and the outer cheek (175-183).")
     a(f"- Joint blocks under the throat floor: y {BLOCK_DY_LO:+g} from the stay centre (y -12.5) to the floor "
-      f"(y 8.4), z +/-{BLOCK_HALF_Z:g} about the pin; body block |x| {BODY_BLOCK_X0:g}-{SPLIT_X:g}, clevis "
+      f"(y 8.4), z -{BLOCK_HALF_Z:g} / +{BLOCK_UP_Z:g} about the pin; body block |x| {BODY_BLOCK_X0:g}-{SPLIT_X:g}, clevis "
       f"{SPLIT_X:g}-{jt['head_face']:g}. Above the floor nothing changes (throat, cheeks, pin, eye envelope).")
     a(f"- Two Ti gr5 M5 x {jt['bolt_len']:g} DIN 7984 along x at y {jt['dy']:+g} from the stay centre, z +/-{jt['dz']:g}"
       f"; DIN 433 washers (OD {jt['washer_od']:g}); head on the clevis's outer face, nut + washer in a side trap in "

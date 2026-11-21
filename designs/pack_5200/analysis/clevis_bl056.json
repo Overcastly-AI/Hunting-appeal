@@ -1,0 +1,1687 @@
+{
+ "ticket": "BL-056 (addition 1: US2 clevis)",
+ "date": "2026-11-21",
+ "strap_wrap": {
+  "rows": [
+   {
+    "torso": 15,
+    "strap": "us1",
+    "tension_n": 444.4,
+    "wrap_deg": 0.0,
+    "bearing_yz_n": [
+     0.0,
+     0.0
+    ],
+    "bearing_n": 0.0,
+    "contact_yz": [],
+    "lip_r_mm": 3.0,
+    "lip_pressure_mpa": 5.93,
+    "rejoin_yz": [
+     0.2,
+     81.1
+    ],
+    "hull": [
+     [
+      13.51,
+      95.0
+     ],
+     [
+      21.51,
+      95.0
+     ],
+     [
+      21.37,
+      93.96
+     ],
+     [
+      20.97,
+      93.0
+     ],
+     [
+      20.34,
+      92.17
+     ],
+     [
+      19.51,
+      91.54
+     ],
+     [
+      0.2,
+      81.1
+     ]
+    ]
+   },
+   {
+    "torso": 15,
+    "strap": "us2",
+    "tension_n": 296.3,
+    "wrap_deg": 38.0,
+    "bearing_yz_n": [
+     -90.7,
+     170.2
+    ],
+    "bearing_n": 192.8,
+    "contact_yz": [
+     [
+      8.36,
+      127.5
+     ]
+    ],
+    "lip_r_mm": 3.0,
+    "lip_pressure_mpa": 3.95,
+    "rejoin_yz": [
+     -4.8,
+     125.4
+    ],
+    "hull": [
+     [
+      12.4,
+      142.0
+     ],
+     [
+      20.4,
+      142.0
+     ],
+     [
+      20.26,
+      140.96
+     ],
+     [
+      19.86,
+      140.0
+     ],
+     [
+      19.23,
+      139.17
+     ],
+     [
+      8.36,
+      127.5
+     ],
+     [
+      -4.8,
+      125.4
+     ]
+    ]
+   },
+   {
+    "torso": 19,
+    "strap": "us1",
+    "tension_n": 444.4,
+    "wrap_deg": 0.0,
+    "bearing_yz_n": [
+     0.0,
+     0.0
+    ],
+    "bearing_n": 0.0,
+    "contact_yz": [],
+    "lip_r_mm": 3.0,
+    "lip_pressure_mpa": 5.93,
+    "rejoin_yz": [
+     -0.1,
+     79.4
+    ],
+    "hull": [
+     [
+      13.51,
+      95.0
+     ],
+     [
+      21.51,
+      95.0
+     ],
+     [
+      21.37,
+      93.96
+     ],
+     [
+      20.97,
+      93.0
+     ],
+     [
+      20.34,
+      92.17
+     ],
+     [
+      19.51,
+      91.54
+     ],
+     [
+      -0.1,
+      79.4
+     ]
+    ]
+   },
+   {
+    "torso": 19,
+    "strap": "us2",
+    "tension_n": 296.3,
+    "wrap_deg": 26.1,
+    "bearing_yz_n": [
+     -74.8,
+     110.9
+    ],
+    "bearing_n": 133.8,
+    "contact_yz": [
+     [
+      8.36,
+      127.5
+     ]
+    ],
+    "lip_r_mm": 3.0,
+    "lip_pressure_mpa": 3.95,
+    "rejoin_yz": [
+     -6.0,
+     122.0
+    ],
+    "hull": [
+     [
+      12.4,
+      142.0
+     ],
+     [
+      20.4,
+      142.0
+     ],
+     [
+      20.26,
+      140.96
+     ],
+     [
+      19.86,
+      140.0
+     ],
+     [
+      19.23,
+      139.17
+     ],
+     [
+      8.36,
+      127.5
+     ],
+     [
+      -6.0,
+      122.0
+     ]
+    ]
+   },
+   {
+    "torso": 23,
+    "strap": "us1",
+    "tension_n": 444.4,
+    "wrap_deg": 0.0,
+    "bearing_yz_n": [
+     0.0,
+     0.0
+    ],
+    "bearing_n": 0.0,
+    "contact_yz": [],
+    "lip_r_mm": 3.0,
+    "lip_pressure_mpa": 5.93,
+    "rejoin_yz": [
+     -0.6,
+     79.9
+    ],
+    "hull": [
+     [
+      13.51,
+      95.0
+     ],
+     [
+      21.51,
+      95.0
+     ],
+     [
+      21.37,
+      93.96
+     ],
+     [
+      20.97,
+      93.0
+     ],
+     [
+      20.34,
+      92.17
+     ],
+     [
+      19.51,
+      91.54
+     ],
+     [
+      -0.6,
+      79.9
+     ]
+    ]
+   },
+   {
+    "torso": 23,
+    "strap": "us2",
+    "tension_n": 296.3,
+    "wrap_deg": 13.6,
+    "bearing_yz_n": [
+     -45.4,
+     53.6
+    ],
+    "bearing_n": 70.3,
+    "contact_yz": [
+     [
+      8.36,
+      127.5
+     ]
+    ],
+    "lip_r_mm": 3.0,
+    "lip_pressure_mpa": 3.95,
+    "rejoin_yz": [
+     -3.0,
+     120.0
+    ],
+    "hull": [
+     [
+      12.4,
+      142.0
+     ],
+     [
+      20.4,
+      142.0
+     ],
+     [
+      20.26,
+      140.96
+     ],
+     [
+      19.86,
+      140.0
+     ],
+     [
+      19.23,
+      139.17
+     ],
+     [
+      8.36,
+      127.5
+     ],
+     [
+      -3.0,
+      120.0
+     ]
+    ]
+   }
+  ],
+  "worst": {
+   "us1": {
+    "torso": 15,
+    "wrap_deg": 0.0,
+    "bearing_n": 0.0,
+    "bearing_yz_n": [
+     0.0,
+     0.0
+    ],
+    "contact_yz": [],
+    "lip_r_mm": 3.0,
+    "lip_pressure_mpa": 5.93
+   },
+   "us2": {
+    "torso": 15,
+    "wrap_deg": 38.0,
+    "bearing_n": 192.8,
+    "bearing_yz_n": [
+     -90.7,
+     170.2
+    ],
+    "contact_yz": [
+     [
+      8.36,
+      127.5
+     ]
+    ],
+    "lip_r_mm": 3.0,
+    "lip_pressure_mpa": 3.95
+   }
+  },
+  "neck_half_mm": 9.0,
+  "tension_basis": "us_route.tensions() bag-on cam-tight, factored 3.0"
+ },
+ "joint": {
+  "trap_walls": {
+   "washer_slot": {
+    "outer_wall_mm": 2.3,
+    "between_traps_mm": 3.6
+   },
+   "hex_slot": {
+    "outer_wall_mm": 3.4,
+    "between_traps_mm": 5.8
+   },
+   "min_wall_mm": 2.3,
+   "pass_2mm": true,
+   "nut_held_by_flats": true
+  },
+  "wrap_rows": {
+   "wrap|15": {
+    "vec": [
+     0.0,
+     -52.605999999999995,
+     98.71599999999998
+    ],
+    "g_times_req": 3.0,
+    "direct": true,
+    "at": [
+     170.25,
+     8.36,
+     127.5
+    ],
+    "clevis_share": 0.58
+   },
+   "wrap|19": {
+    "vec": [
+     0.0,
+     -43.38399999999999,
+     64.322
+    ],
+    "g_times_req": 3.0,
+    "direct": true,
+    "at": [
+     170.25,
+     8.36,
+     127.5
+    ],
+    "clevis_share": 0.58
+   },
+   "wrap|23": {
+    "vec": [
+     0.0,
+     -26.331999999999997,
+     31.087999999999997
+    ],
+    "g_times_req": 3.0,
+    "direct": true,
+    "at": [
+     170.25,
+     8.36,
+     127.5
+    ],
+    "clevis_share": 0.58
+   }
+  },
+  "share_0.6": {
+   "worst_strength": {
+    "load": "cradle_lane_b50",
+    "sf": 5.03,
+    "check": "net_section"
+   },
+   "worst_fatigue": {
+    "load": "cradle_lane_b50",
+    "fatigue": 2.26,
+    "check": "net_section_paht"
+   },
+   "families": {
+    "c3d": {
+     "load": "c3d|b40|dy95|in",
+     "min_sf": 5.96,
+     "min_fatigue": 2.68,
+     "force_on_clevis_n": [
+      0.0,
+      355.5,
+      -149.7
+     ],
+     "check_s": "hole_bearing",
+     "check_f": "hole_paht"
+    },
+    "bagon_down": {
+     "load": "bagon_down",
+     "min_sf": 8.55,
+     "min_fatigue": 4.81,
+     "force_on_clevis_n": [
+      0.0,
+      0.0,
+      -177.8
+     ],
+     "check_s": "hole_bearing",
+     "check_f": "hole_paht"
+    },
+    "bagon_fore30": {
+     "load": "bagon_fore30|fleet_out",
+     "min_sf": 6.13,
+     "min_fatigue": 3.45,
+     "force_on_clevis_n": [
+      51.5,
+      -87.5,
+      -151.6
+     ],
+     "check_s": "washer_bearing",
+     "check_f": "washer_paht"
+    },
+    "bagon_drape": {
+     "load": "bagon_drape|fleet_out",
+     "min_sf": 5.29,
+     "min_fatigue": 2.97,
+     "force_on_clevis_n": [
+      51.5,
+      -174.9,
+      -8.6
+     ],
+     "check_s": "washer_bearing",
+     "check_f": "washer_paht"
+    },
+    "cradle_lane": {
+     "load": "cradle_lane",
+     "min_sf": 5.98,
+     "min_fatigue": 2.69,
+     "force_on_clevis_n": [
+      0.0,
+      352.8,
+      -149.7
+     ],
+     "check_s": "hole_bearing",
+     "check_f": "hole_paht"
+    },
+    "cradle_lane_b50": {
+     "load": "cradle_lane_b50",
+     "min_sf": 5.03,
+     "min_fatigue": 2.26,
+     "force_on_clevis_n": [
+      0.0,
+      493.9,
+      -149.7
+     ],
+     "check_s": "net_section",
+     "check_f": "net_section_paht"
+    },
+    "wrap": {
+     "load": "wrap|15",
+     "min_sf": 29.3,
+     "min_fatigue": 16.48,
+     "force_on_clevis_n": [
+      0.0,
+      -52.6,
+      98.7
+     ],
+     "check_s": "hole_bearing",
+     "check_f": "hole_paht"
+    }
+   },
+   "min_sf_all_rows": 5.03,
+   "net_section": {
+    "A": 437.88,
+    "yc": 0.41,
+    "zc": 145.57,
+    "Iy": 47970.21,
+    "Iz": 14345.56,
+    "Iyz": -3905.17
+   },
+   "capacities_n": {
+    "washer_bearing_n": 2556.7,
+    "plug_shear_out_n": 5865.6,
+    "bolt_tension_n": 8896.3,
+    "bolt_fatigue_n": 3177.2,
+    "hole_bearing_n": 2492.9,
+    "bolt_shear_n": 7193.9,
+    "contact_mpa": 70.4
+   },
+   "all_rows_min": {
+    "strength": 5.03,
+    "fatigue": 2.26
+   },
+   "net_section_rows_min": {
+    "strength": 5.03,
+    "fatigue": 2.26
+   }
+  },
+  "share_1": {
+   "worst_strength": {
+    "load": "cradle_lane_b50",
+    "sf": 3.02,
+    "check": "net_section"
+   },
+   "worst_fatigue": {
+    "load": "cradle_lane_b50",
+    "fatigue": 1.36,
+    "check": "net_section_paht"
+   },
+   "families": {
+    "c3d": {
+     "load": "c3d|b40|dy95|in",
+     "min_sf": 3.58,
+     "min_fatigue": 1.61,
+     "force_on_clevis_n": [
+      0.0,
+      592.5,
+      -249.5
+     ],
+     "check_s": "hole_bearing",
+     "check_f": "hole_paht"
+    },
+    "bagon_down": {
+     "load": "bagon_down",
+     "min_sf": 5.13,
+     "min_fatigue": 2.89,
+     "force_on_clevis_n": [
+      0.0,
+      0.0,
+      -296.3
+     ],
+     "check_s": "hole_bearing",
+     "check_f": "hole_paht"
+    },
+    "bagon_fore30": {
+     "load": "bagon_fore30|fleet_out",
+     "min_sf": 4.31,
+     "min_fatigue": 2.42,
+     "force_on_clevis_n": [
+      51.5,
+      -145.9,
+      -252.7
+     ],
+     "check_s": "washer_bearing",
+     "check_f": "washer_paht"
+    },
+    "bagon_drape": {
+     "load": "bagon_drape|fleet_out",
+     "min_sf": 3.64,
+     "min_fatigue": 2.05,
+     "force_on_clevis_n": [
+      51.5,
+      -291.4,
+      -14.3
+     ],
+     "check_s": "washer_bearing",
+     "check_f": "washer_paht"
+    },
+    "cradle_lane": {
+     "load": "cradle_lane",
+     "min_sf": 3.59,
+     "min_fatigue": 1.61,
+     "force_on_clevis_n": [
+      0.0,
+      588.1,
+      -249.5
+     ],
+     "check_s": "hole_bearing",
+     "check_f": "hole_paht"
+    },
+    "cradle_lane_b50": {
+     "load": "cradle_lane_b50",
+     "min_sf": 3.02,
+     "min_fatigue": 1.36,
+     "force_on_clevis_n": [
+      0.0,
+      823.2,
+      -249.5
+     ],
+     "check_s": "net_section",
+     "check_f": "net_section_paht"
+    },
+    "wrap": {
+     "load": "wrap|15",
+     "min_sf": 29.3,
+     "min_fatigue": 16.48,
+     "force_on_clevis_n": [
+      0.0,
+      -52.6,
+      98.7
+     ],
+     "check_s": "hole_bearing",
+     "check_f": "hole_paht"
+    }
+   },
+   "min_sf_all_rows": 3.02,
+   "net_section": {
+    "A": 437.88,
+    "yc": 0.41,
+    "zc": 145.57,
+    "Iy": 47970.21,
+    "Iz": 14345.56,
+    "Iyz": -3905.17
+   },
+   "capacities_n": {
+    "washer_bearing_n": 2556.7,
+    "plug_shear_out_n": 5865.6,
+    "bolt_tension_n": 8896.3,
+    "bolt_fatigue_n": 3177.2,
+    "hole_bearing_n": 2492.9,
+    "bolt_shear_n": 7193.9,
+    "contact_mpa": 70.4
+   },
+   "all_rows_min": {
+    "strength": 3.02,
+    "fatigue": 1.36
+   },
+   "net_section_rows_min": {
+    "strength": 3.02,
+    "fatigue": 1.36
+   }
+  },
+  "block": {
+   "lower_half_z_mm": 14.5,
+   "upper_half_z_mm": 19.0,
+   "was_upper_mm": 14.5,
+   "nut_face_x_mm": 150.0,
+   "was_nut_face_x_mm": 151.0,
+   "body_plug_mm": 13.0,
+   "trap_x0_mm": 144.8
+  },
+  "legacy_rows_share_1": {
+   "strength": 2.73,
+   "fatigue": 1.23,
+   "worst_fatigue": {
+    "load": "cradle",
+    "fatigue": 1.23,
+    "check": "hole_paht"
+   }
+  }
+ },
+ "share_1_pass": true,
+ "trap_walls": {
+  "washer_slot": {
+   "outer_wall_mm": 2.3,
+   "between_traps_mm": 3.6
+  },
+  "hex_slot": {
+   "outer_wall_mm": 3.4,
+   "between_traps_mm": 5.8
+  },
+  "min_wall_mm": 2.3,
+  "pass_2mm": true,
+  "nut_held_by_flats": true
+ },
+ "slices": {
+  "L": {
+   "clevis_170": {
+    "outer_area_mm2": 696.5,
+    "holes": [
+     {
+      "d_eq_mm": 4.79,
+      "y": -5.47,
+      "z": 149.0
+     },
+     {
+      "d_eq_mm": 4.79,
+      "y": -5.47,
+      "z": 135.0
+     }
+    ],
+    "bounds_yz": [
+     -12.47,
+     127.5,
+     8.4,
+     161.0
+    ]
+   },
+   "body_trap": {
+    "outer_area_mm2": 961.8,
+    "holes": [
+     {
+      "d_eq_mm": 6.98,
+      "y": 16.4,
+      "z": 142.0
+     }
+    ],
+    "bounds_yz": [
+     -12.47,
+     127.5,
+     23.98,
+     161.0
+    ]
+   },
+   "face": {
+    "outer_area_mm2": 696.5,
+    "holes": [
+     {
+      "d_eq_mm": 4.79,
+      "y": -5.47,
+      "z": 149.0
+     },
+     {
+      "d_eq_mm": 4.79,
+      "y": -5.47,
+      "z": 135.0
+     }
+    ],
+    "bounds_yz": [
+     -12.47,
+     127.5,
+     8.4,
+     161.0
+    ]
+   },
+   "pass": true
+  },
+  "R": {
+   "clevis_170": {
+    "outer_area_mm2": 696.5,
+    "holes": [
+     {
+      "d_eq_mm": 4.79,
+      "y": -5.47,
+      "z": 135.0
+     },
+     {
+      "d_eq_mm": 4.79,
+      "y": -5.47,
+      "z": 149.0
+     }
+    ],
+    "bounds_yz": [
+     -12.47,
+     127.5,
+     8.4,
+     161.0
+    ]
+   },
+   "body_trap": {
+    "outer_area_mm2": 961.9,
+    "holes": [
+     {
+      "d_eq_mm": 6.98,
+      "y": 16.4,
+      "z": 142.0
+     }
+    ],
+    "bounds_yz": [
+     -12.47,
+     127.5,
+     23.98,
+     161.0
+    ]
+   },
+   "face": {
+    "outer_area_mm2": 696.5,
+    "holes": [
+     {
+      "d_eq_mm": 4.79,
+      "y": -5.47,
+      "z": 135.0
+     },
+     {
+      "d_eq_mm": 4.79,
+      "y": -5.47,
+      "z": 149.0
+     }
+    ],
+    "bounds_yz": [
+     -12.47,
+     127.5,
+     8.4,
+     161.0
+    ]
+   },
+   "pass": true
+  },
+  "pass": true
+ },
+ "bed": {
+  "lower": {
+   "extents_mm": [
+    321.86,
+    300.39,
+    76.75
+   ],
+   "fits": true,
+   "fits_with_brim": true,
+   "spare_mm": [
+    2.14,
+    3.61
+   ],
+   "best_rotation": {
+    "deg": 90.0,
+    "swap": true,
+    "w_mm": 321.86,
+    "h_mm": 300.39,
+    "over_mm": -2.14,
+    "fits_with_brim": true
+   }
+  },
+  "upper": {
+   "extents_mm": [
+    309.39,
+    280.12,
+    64.38
+   ],
+   "fits": true,
+   "fits_with_brim": true,
+   "spare_mm": [
+    14.61,
+    23.88
+   ],
+   "best_rotation": {
+    "deg": 0.0,
+    "swap": false,
+    "w_mm": 309.39,
+    "h_mm": 280.12,
+    "over_mm": -14.61,
+    "fits_with_brim": true
+   }
+  }
+ },
+ "clearance": {
+  "worst_clear_mm": {
+   "us1": 12.4,
+   "us2": 14.6
+  },
+  "pass": true,
+  "rows": [
+   {
+    "torso": 15,
+    "side": "R",
+    "strap": "us1",
+    "clear_mm": {
+     "hinge": 12.4,
+     "us2": 69.0,
+     "he": 16.2,
+     "stay": -7.6
+    },
+    "min_clear_mm": 12.4,
+    "pass": true
+   },
+   {
+    "torso": 15,
+    "side": "R",
+    "strap": "us2",
+    "clear_mm": {
+     "hinge": 19.2,
+     "us1": 58.8,
+     "he": 22.6,
+     "stay": -6.5
+    },
+    "min_clear_mm": 19.2,
+    "pass": true
+   },
+   {
+    "torso": 15,
+    "side": "L",
+    "strap": "us1",
+    "clear_mm": {
+     "hinge": 13.0,
+     "us2": 69.4,
+     "he": 16.6,
+     "stay": -7.9
+    },
+    "min_clear_mm": 13.0,
+    "pass": true
+   },
+   {
+    "torso": 15,
+    "side": "L",
+    "strap": "us2",
+    "clear_mm": {
+     "hinge": 21.5,
+     "us1": 60.2,
+     "he": 28.1,
+     "stay": -5.0
+    },
+    "min_clear_mm": 21.5,
+    "pass": true
+   },
+   {
+    "torso": 19,
+    "side": "R",
+    "strap": "us1",
+    "clear_mm": {
+     "hinge": 14.0,
+     "us2": 69.0,
+     "he": 17.7,
+     "stay": -7.4
+    },
+    "min_clear_mm": 14.0,
+    "pass": true
+   },
+   {
+    "torso": 19,
+    "side": "R",
+    "strap": "us2",
+    "clear_mm": {
+     "hinge": 14.6,
+     "us1": 54.9,
+     "he": 22.2,
+     "stay": -5.7
+    },
+    "min_clear_mm": 14.6,
+    "pass": true
+   },
+   {
+    "torso": 19,
+    "side": "L",
+    "strap": "us1",
+    "clear_mm": {
+     "hinge": 12.4,
+     "us2": 70.3,
+     "he": 15.5,
+     "stay": -7.9
+    },
+    "min_clear_mm": 12.4,
+    "pass": true
+   },
+   {
+    "torso": 19,
+    "side": "L",
+    "strap": "us2",
+    "clear_mm": {
+     "hinge": 15.5,
+     "us1": 58.0,
+     "he": 22.6,
+     "stay": -5.5
+    },
+    "min_clear_mm": 15.5,
+    "pass": true
+   },
+   {
+    "torso": 23,
+    "side": "R",
+    "strap": "us1",
+    "clear_mm": {
+     "hinge": 14.0,
+     "us2": 68.8,
+     "he": 16.0,
+     "stay": -7.8
+    },
+    "min_clear_mm": 14.0,
+    "pass": true
+   },
+   {
+    "torso": 23,
+    "side": "R",
+    "strap": "us2",
+    "clear_mm": {
+     "hinge": 18.8,
+     "us1": 63.8,
+     "he": 22.0,
+     "stay": -6.8
+    },
+    "min_clear_mm": 18.8,
+    "pass": true
+   },
+   {
+    "torso": 23,
+    "side": "L",
+    "strap": "us1",
+    "clear_mm": {
+     "hinge": 12.4,
+     "us2": 69.1,
+     "he": 15.3,
+     "stay": -8.4
+    },
+    "min_clear_mm": 12.4,
+    "pass": true
+   },
+   {
+    "torso": 23,
+    "side": "L",
+    "strap": "us2",
+    "clear_mm": {
+     "hinge": 16.4,
+     "us1": 59.5,
+     "he": 22.4,
+     "stay": -5.9
+    },
+    "min_clear_mm": 16.4,
+    "pass": true
+   }
+  ]
+ },
+ "heads": {
+  "head_x_mm": [
+   179.0,
+   182.5
+  ],
+  "head_y_mm": -5.47,
+  "head_z_mm": [
+   135.0,
+   149.0
+  ],
+  "head_d_mm": 8.5,
+  "pack_half_width_mm": 197.0,
+  "rows": [
+   {
+    "torso": 15,
+    "case": "fill",
+    "side": "R",
+    "cloth_mm": 0.8,
+    "at": [
+     179.6,
+     -1.0,
+     137.4
+    ]
+   },
+   {
+    "torso": 15,
+    "case": "fill",
+    "side": "L",
+    "cloth_mm": -1.7,
+    "at": [
+     180.7,
+     -4.8,
+     134.7
+    ]
+   },
+   {
+    "torso": 15,
+    "case": "meat",
+    "side": "R",
+    "cloth_mm": 3.3,
+    "at": [
+     181.6,
+     2.1,
+     135.5
+    ]
+   },
+   {
+    "torso": 15,
+    "case": "meat",
+    "side": "L",
+    "cloth_mm": -1.1,
+    "at": [
+     180.2,
+     -7.4,
+     132.5
+    ]
+   },
+   {
+    "torso": 19,
+    "case": "fill",
+    "side": "R",
+    "cloth_mm": 13.1,
+    "at": [
+     174.7,
+     11.1,
+     146.8
+    ]
+   },
+   {
+    "torso": 19,
+    "case": "fill",
+    "side": "L",
+    "cloth_mm": 3.4,
+    "at": [
+     179.1,
+     1.9,
+     146.9
+    ]
+   },
+   {
+    "torso": 19,
+    "case": "meat",
+    "side": "R",
+    "cloth_mm": 2.1,
+    "at": [
+     181.3,
+     0.9,
+     135.2
+    ]
+   },
+   {
+    "torso": 19,
+    "case": "meat",
+    "side": "L",
+    "cloth_mm": -1.3,
+    "at": [
+     181.2,
+     -4.4,
+     148.0
+    ]
+   },
+   {
+    "torso": 23,
+    "case": "fill",
+    "side": "R",
+    "cloth_mm": 12.0,
+    "at": [
+     174.4,
+     9.7,
+     146.9
+    ]
+   },
+   {
+    "torso": 23,
+    "case": "fill",
+    "side": "L",
+    "cloth_mm": 11.3,
+    "at": [
+     175.0,
+     9.4,
+     150.3
+    ]
+   },
+   {
+    "torso": 23,
+    "case": "meat",
+    "side": "R",
+    "cloth_mm": 6.3,
+    "at": [
+     178.5,
+     5.0,
+     148.0
+    ]
+   },
+   {
+    "torso": 23,
+    "case": "meat",
+    "side": "L",
+    "cloth_mm": -1.7,
+    "at": [
+     180.8,
+     -3.1,
+     135.6
+    ]
+   }
+  ],
+  "method": "cloth = the drape's surface sampled 7 x 7 per triangle (ClothSurface.S); distance to the head cylinders, < 0 = the free drape passes through a head (the sim has no frame outboard of the stays, so the cloth would tent over it)",
+  "cloth_min_mm": -1.7,
+  "outer_face_x_mm": 183.0,
+  "head_recess_mm": 0.5,
+  "face_rows": [
+   {
+    "torso": 15,
+    "case": "fill",
+    "side": "R",
+    "face_mm": -3.4,
+    "at": [
+     179.6,
+     -1.0,
+     137.4
+    ]
+   },
+   {
+    "torso": 15,
+    "case": "fill",
+    "side": "L",
+    "face_mm": -3.8,
+    "at": [
+     178.8,
+     -5.1,
+     131.7
+    ]
+   },
+   {
+    "torso": 15,
+    "case": "meat",
+    "side": "R",
+    "face_mm": -3.3,
+    "at": [
+     179.7,
+     1.8,
+     132.4
+    ]
+   },
+   {
+    "torso": 15,
+    "case": "meat",
+    "side": "L",
+    "face_mm": -4.0,
+    "at": [
+     179.0,
+     -7.0,
+     147.9
+    ]
+   },
+   {
+    "torso": 19,
+    "case": "fill",
+    "side": "R",
+    "face_mm": -3.7,
+    "at": [
+     179.3,
+     13.0,
+     137.8
+    ]
+   },
+   {
+    "torso": 19,
+    "case": "fill",
+    "side": "L",
+    "face_mm": -3.9,
+    "at": [
+     179.1,
+     1.9,
+     146.9
+    ]
+   },
+   {
+    "torso": 19,
+    "case": "meat",
+    "side": "R",
+    "face_mm": -3.6,
+    "at": [
+     179.4,
+     0.7,
+     132.2
+    ]
+   },
+   {
+    "torso": 19,
+    "case": "meat",
+    "side": "L",
+    "face_mm": -3.7,
+    "at": [
+     179.3,
+     -4.5,
+     141.4
+    ]
+   },
+   {
+    "torso": 23,
+    "case": "fill",
+    "side": "R",
+    "face_mm": -3.9,
+    "at": [
+     178.9,
+     11.8,
+     137.9
+    ]
+   },
+   {
+    "torso": 23,
+    "case": "fill",
+    "side": "L",
+    "face_mm": -3.7,
+    "at": [
+     179.3,
+     11.0,
+     135.6
+    ]
+   },
+   {
+    "torso": 23,
+    "case": "meat",
+    "side": "R",
+    "face_mm": -3.6,
+    "at": [
+     178.6,
+     5.1,
+     151.5
+    ]
+   },
+   {
+    "torso": 23,
+    "case": "meat",
+    "side": "L",
+    "face_mm": -4.0,
+    "at": [
+     179.0,
+     -3.0,
+     132.5
+    ]
+   }
+  ],
+  "face_min_mm": -4.0
+ },
+ "gauges": {
+  "E_xy_mpa": 3860.0,
+  "site_us2": {
+   "x": 126.96,
+   "y": 6.81,
+   "z": 142.0,
+   "axis": "x (along the arm)",
+   "face": "bag face (+y)",
+   "station": "us2"
+  },
+  "tests": {
+   "MT-1cr|us2": {
+    "pull_unit_vector_frame_R": [
+     -0.9322,
+     0.2825,
+     -0.226
+    ],
+    "row": "c3d|b40|dy50|in",
+    "basis": "pin load along the governing 3D cradle leg (40 mm belly, 53 kg float limit, factored 1.6 g x 1.5); last step = the factored row",
+    "steps": [
+     {
+      "pin_load_n": 240.0,
+      "sigma_mpa": -2.69,
+      "band_mpa": [
+       -3.03,
+       -1.72
+      ],
+      "microstrain": -697.0,
+      "pass_if_abs_microstrain_at_most": 904.0
+     },
+     {
+      "pin_load_n": 480.0,
+      "sigma_mpa": -5.38,
+      "band_mpa": [
+       -6.07,
+       -3.45
+      ],
+      "microstrain": -1395.0,
+      "pass_if_abs_microstrain_at_most": 1807.0
+     },
+     {
+      "pin_load_n": 720.0,
+      "sigma_mpa": -8.08,
+      "band_mpa": [
+       -9.1,
+       -5.17
+      ],
+      "microstrain": -2092.0,
+      "pass_if_abs_microstrain_at_most": 2711.0
+     },
+     {
+      "pin_load_n": 1103.9,
+      "sigma_mpa": -12.38,
+      "band_mpa": [
+       -13.95,
+       -7.93
+      ],
+      "microstrain": -3208.0,
+      "pass_if_abs_microstrain_at_most": 4156.0
+     }
+    ]
+   },
+   "CLEVIS-SHARE|us2_inboard": {
+    "pull_unit_vector_frame_R": [
+     -0.9322,
+     0.2825,
+     -0.226
+    ],
+    "row": "c3d|b40|dy50|in",
+    "basis": "CLEVIS-SHARE A: governing inboard leg; static proof = factored row, cycle peak = x 1.6 / 2.4 (1e5 cycles, R 0.1)",
+    "steps": [
+     {
+      "pin_load_n": 1103.9,
+      "sigma_mpa": -12.38,
+      "band_mpa": [
+       -13.95,
+       -7.93
+      ],
+      "microstrain": -3208.0,
+      "pass_if_abs_microstrain_at_most": 4156.0
+     },
+     {
+      "pin_load_n": 735.9,
+      "sigma_mpa": -8.26,
+      "band_mpa": [
+       -9.3,
+       -5.29
+      ],
+      "microstrain": -2139.0,
+      "pass_if_abs_microstrain_at_most": 2771.0
+     }
+    ],
+    "eye_bears_on": "inner (body) cheek: PTFE shim between the eye and the inner cheek's throat face"
+   },
+   "CLEVIS-SHARE|us2_yz": {
+    "pull_unit_vector_frame_R": [
+     0.0,
+     0.9216,
+     -0.3881
+    ],
+    "row": "c3d|b40|dy95|out",
+    "basis": "CLEVIS-SHARE B: the leg with no lateral part (a load as wide as the span), contact 95 mm aft: all of it in y-z, the clevis's share-1.0 case; static proof = factored row, cycle peak x 1.6 / 2.4",
+    "steps": [
+     {
+      "pin_load_n": 642.9,
+      "sigma_mpa": -7.91,
+      "band_mpa": [
+       -8.99,
+       -4.82
+      ],
+      "microstrain": -2049.0,
+      "pass_if_abs_microstrain_at_most": 2679.0
+     },
+     {
+      "pin_load_n": 428.6,
+      "sigma_mpa": -5.27,
+      "band_mpa": [
+       -6.0,
+       -3.21
+      ],
+      "microstrain": -1366.0,
+      "pass_if_abs_microstrain_at_most": 1786.0
+     }
+    ],
+    "eye_bears_on": "outer (clevis) cheek, PTFE shim between the eye and the outer cheek (share 1.0 case)"
+   }
+  }
+ },
+ "gauges_bl053": {
+  "MT-1cr|us2": {
+   "pull_unit_vector_frame_R": [
+    -0.9322,
+    0.2825,
+    -0.226
+   ],
+   "row": "c3d|b40|dy50|in",
+   "basis": "pin load along the governing 3D cradle leg (40 mm belly, 53 kg float limit, factored 1.6 g x 1.5); last step = the factored row",
+   "steps": [
+    {
+     "pin_load_n": 240.0,
+     "sigma_mpa": -2.7,
+     "band_mpa": [
+      -3.04,
+      -1.73
+     ],
+     "microstrain": -698.0,
+     "pass_if_abs_microstrain_at_most": 904.0
+    },
+    {
+     "pin_load_n": 480.0,
+     "sigma_mpa": -5.39,
+     "band_mpa": [
+      -6.07,
+      -3.45
+     ],
+     "microstrain": -1397.0,
+     "pass_if_abs_microstrain_at_most": 1808.0
+    },
+    {
+     "pin_load_n": 720.0,
+     "sigma_mpa": -8.09,
+     "band_mpa": [
+      -9.11,
+      -5.18
+     ],
+     "microstrain": -2095.0,
+     "pass_if_abs_microstrain_at_most": 2713.0
+    },
+    {
+     "pin_load_n": 1103.9,
+     "sigma_mpa": -12.4,
+     "band_mpa": [
+      -13.96,
+      -7.94
+     ],
+     "microstrain": -3212.0,
+     "pass_if_abs_microstrain_at_most": 4159.0
+    }
+   ]
+  },
+  "CLEVIS-SHARE|us2_inboard": {
+   "pull_unit_vector_frame_R": [
+    -0.9322,
+    0.2825,
+    -0.226
+   ],
+   "row": "c3d|b40|dy50|in",
+   "basis": "CLEVIS-SHARE A: governing inboard leg; static proof = factored row, cycle peak = x 1.6 / 2.4 (1e5 cycles, R 0.1)",
+   "steps": [
+    {
+     "pin_load_n": 1103.9,
+     "sigma_mpa": -12.4,
+     "band_mpa": [
+      -13.96,
+      -7.94
+     ],
+     "microstrain": -3212.0,
+     "pass_if_abs_microstrain_at_most": 4159.0
+    },
+    {
+     "pin_load_n": 735.9,
+     "sigma_mpa": -8.27,
+     "band_mpa": [
+      -9.31,
+      -5.29
+     ],
+     "microstrain": -2141.0,
+     "pass_if_abs_microstrain_at_most": 2773.0
+    }
+   ],
+   "eye_bears_on": "inner (body) cheek: PTFE shim between the eye and the inner cheek's throat face"
+  },
+  "CLEVIS-SHARE|us2_yz": {
+   "pull_unit_vector_frame_R": [
+    0.0,
+    0.9216,
+    -0.3881
+   ],
+   "row": "c3d|b40|dy95|out",
+   "basis": "CLEVIS-SHARE B: the leg with no lateral part (a load as wide as the span), contact 95 mm aft: all of it in y-z, the clevis's share-1.0 case; static proof = factored row, cycle peak x 1.6 / 2.4",
+   "steps": [
+    {
+     "pin_load_n": 642.9,
+     "sigma_mpa": -7.92,
+     "band_mpa": [
+      -9.0,
+      -4.82
+     ],
+     "microstrain": -2052.0,
+     "pass_if_abs_microstrain_at_most": 2681.0
+    },
+    {
+     "pin_load_n": 428.6,
+     "sigma_mpa": -5.28,
+     "band_mpa": [
+      -6.0,
+      -3.21
+     ],
+     "microstrain": -1368.0,
+     "pass_if_abs_microstrain_at_most": 1787.0
+    }
+   ],
+   "eye_bears_on": "outer (clevis) cheek, PTFE shim between the eye and the outer cheek (share 1.0 case)"
+  }
+ },
+ "kit": {
+  "A": {
+   "test": "CLEVIS-SHARE|us2_inboard",
+   "row": "c3d|b40|dy50|in",
+   "pull_unit_vector_frame_R": [
+    -0.9322,
+    0.2825,
+    -0.226
+   ],
+   "mirror_for_L": "negate x",
+   "proof_n": 1103.9,
+   "proof_lbf": 248.0,
+   "cycle_peak_n": 735.9,
+   "cycles": 100000,
+   "R": 0.1,
+   "eye_bears_on": "inner (body) cheek: PTFE shim between the eye and the inner cheek's throat face",
+   "share_on_clevis": 0.6,
+   "model_min_strength_at_share": 5.03,
+   "model_min_fatigue_at_share": 2.26,
+   "gauge_lines": [
+    {
+     "pin_load_n": 1103.9,
+     "sigma_mpa": -12.38,
+     "band_mpa": [
+      -13.95,
+      -7.93
+     ],
+     "microstrain": -3208.0,
+     "pass_if_abs_microstrain_at_most": 4156.0
+    },
+    {
+     "pin_load_n": 735.9,
+     "sigma_mpa": -8.26,
+     "band_mpa": [
+      -9.3,
+      -5.29
+     ],
+     "microstrain": -2139.0,
+     "pass_if_abs_microstrain_at_most": 2771.0
+    }
+   ],
+   "pass": "every step |microstrain| <= the line; after the proof (60 s hold) and after the 1e5 cycles: torque marks on the 2 clevis bolts unmoved, no whitening / crack at the traps or the counterbores under a 10x loupe, joint face gap < 0.1 mm (feeler)"
+  },
+  "B": {
+   "test": "CLEVIS-SHARE|us2_yz",
+   "row": "c3d|b40|dy95|out",
+   "pull_unit_vector_frame_R": [
+    0.0,
+    0.9216,
+    -0.3881
+   ],
+   "mirror_for_L": "negate x",
+   "proof_n": 642.9,
+   "proof_lbf": 145.0,
+   "cycle_peak_n": 428.6,
+   "cycles": 100000,
+   "R": 0.1,
+   "eye_bears_on": "outer (clevis) cheek, PTFE shim between the eye and the outer cheek (share 1.0 case)",
+   "share_on_clevis": 1.0,
+   "model_min_strength_at_share": 3.02,
+   "model_min_fatigue_at_share": 1.36,
+   "gauge_lines": [
+    {
+     "pin_load_n": 642.9,
+     "sigma_mpa": -7.91,
+     "band_mpa": [
+      -8.99,
+      -4.82
+     ],
+     "microstrain": -2049.0,
+     "pass_if_abs_microstrain_at_most": 2679.0
+    },
+    {
+     "pin_load_n": 428.6,
+     "sigma_mpa": -5.27,
+     "band_mpa": [
+      -6.0,
+      -3.21
+     ],
+     "microstrain": -1366.0,
+     "pass_if_abs_microstrain_at_most": 1786.0
+    }
+   ],
+   "pass": "every step |microstrain| <= the line; after the proof (60 s hold) and after the 1e5 cycles: torque marks on the 2 clevis bolts unmoved, no whitening / crack at the traps or the counterbores under a 10x loupe, joint face gap < 0.1 mm (feeler)"
+  }
+ },
+ "mass": {
+  "h1_assembled": {
+   "g": 1069.4,
+   "bl055_g": 1061.09,
+   "delta_g": 8.32,
+   "watertight": true,
+   "shells": 1
+  },
+  "h1_lower_flat": {
+   "g": 494.58,
+   "bl055_g": 490.22,
+   "delta_g": 4.36,
+   "watertight": true,
+   "shells": 1
+  },
+  "h1_upper_flat": {
+   "g": 543.4,
+   "bl055_g": 543.4,
+   "delta_g": 0.0,
+   "watertight": true,
+   "shells": 1
+  },
+  "us2_clevis_L": {
+   "g": 15.71,
+   "bl055_g": 13.74,
+   "delta_g": 1.98,
+   "watertight": true,
+   "shells": 1
+  },
+  "us2_clevis_R": {
+   "g": 15.71,
+   "bl055_g": 13.73,
+   "delta_g": 1.98,
+   "watertight": true,
+   "shells": 1
+  },
+  "print_delta_g": 8.32
+ },
+ "assumptions": [
+  {
+   "id": "CLEVIS-SHARE",
+   "text": "Carried (BL-053): outer-cheek share 0.6, 1.0 as the bound; BL-056 makes the bound pass on every row.",
+   "settled_by": "CLEVIS-SHARE A and B (gauge lines here)."
+  },
+  {
+   "id": "BLOCK-UP",
+   "text": "Growing the blocks upward adds no new strap contact: the strap wraps the lower lip only (strap_wrap re-run on the new print).",
+   "settled_by": "FIT-US on the re-printed us_route_stay_R piece."
+  }
+ ]
+}

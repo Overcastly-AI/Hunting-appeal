@@ -226,7 +226,7 @@ def test_corrections_match_their_sources():
     # and H1B adds the 2026-11-12 body (+42.9 g, h1_buckling.md / DECISIONS BL-027 row)
     assert L.total("corrie_b2_h1_v2", "M") - L.total("corrie_b2_h1", "M") == pytest.approx(sum(c.values()), abs=0.15)
     assert sum(v for k, v in c.items() if k not in ("H1B", "BL031", "H1F", "BL046", "BL047", "BL049", "BL050",
-                                                    "BL051", "BL053", "BL055")) == \
+                                                    "BL051", "BL053", "BL055", "BL056")) == \
         pytest.approx(-49.1, abs=0.5)                                          # BL050: h1_bedfit (test_h1_bedfit)
     import strap_tails as ST                                       # BL-031: harness / belt side of the tail rule
     assert c["BL031"] == pytest.approx(sum(r[2] for r in ST.suspension_rows("M")), abs=0.05) and c["BL031"] < 0
@@ -263,7 +263,7 @@ def test_v2_shifts_systems_as_booked():
         sum(r["g"] for k in ("C6", "BL031") for r in corr[k] if r["system"] == "harness"), abs=0.15)
     assert new["frame"] - old["frame"] == pytest.approx(
         sum(r["g"] for k in ("C3", "C4", "C5", "H1B", "H1F", "BL046", "BL047", "BL049", "BL050", "BL051", "BL053",
-                                                        "BL055")
+                                                        "BL055", "BL056")
             for r in L.corrections("corrie_b2_h1", "M")[k] if r["system"] == "frame"),
         abs=0.15)                                     # H1F: BL-042 fairleads; BL046: clamp + channel; BL047: web, pawl;
     #                                                   BL049: lug arms, hinge growth (its Ti pin row is attachment)

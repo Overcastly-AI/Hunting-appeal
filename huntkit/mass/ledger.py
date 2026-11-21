@@ -333,7 +333,11 @@ CONFIGS_V2 = tuple(c + SUFFIX for c in CONFIGS)
 ALL_CONFIGS = CONFIGS + CONFIGS_V2
 DEFAULT_CONFIG = "corrie_b2_h1" + SUFFIX
 CORRECTIONS = ("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "H1B", "BL031", "H1F", "BL046", "BL047", "BL049",
-               "BL050", "BL051", "BL053", "BL055")
+               "BL050", "BL051", "BL053", "BL055", "BL056")
+#   BL056 (2026-11-21, BL-056): on the H1 configs, the SLM Ti hip mount as redrawn (STL volume, the part BL-055 booked
+#      from the flange formula; the leg-root fillets and the exact geometry) and the US2 joint blocks grown upward
+#      (h1_bedfit.BLOCK_UP_Z, print-mesh delta, clevises included). From analysis/hip_mount_bl056.json and
+#      clevis_bl056.json ``mass``.
 #   BL055 (2026-11-21, BL-055 A): on the H1 configs, the hip boss grown to D50 with 8 M5 insert pilot holes in two
 #      groups clear of the mount legs (print-mesh delta), the 6 hip inserts and Ti M5 screws beyond the 2 the fixed
 #      lump books, the Ti mount base redrawn D50 x 3 mm, and the US1 fairlead pins in Ti-6Al-4V. From analysis/h1_closeout.json ``mass``.
@@ -380,7 +384,7 @@ def adopted_bag_rows(size: str = "M") -> list:
         return F.parts(size, door=ADOPTED_BAG["door"])
 
 
-H1_ONLY = ("H1B", "H1F", "BL049", "BL050", "BL051", "BL053", "BL055")   # corrections that apply to the H1 configs only (not to today's
+H1_ONLY = ("H1B", "H1F", "BL049", "BL050", "BL051", "BL053", "BL055", "BL056")   # corrections that apply to the H1 configs only (not to today's
 #   production raster). BL050 joined with BL-051: its only all-config row (pins / sleeves) was a double count.
 #   H1F (2026-11-13, BL-042) the H1 fairleads completed outside the voxel envelope. The H1 raster stops at the bag
 #      envelope (frame_topopt Y_HI_GRID 16 mm), so it holds only the fairlead stubs below y 16, not the cheek tops,
@@ -480,6 +484,16 @@ def bl055_update() -> dict:
     """BL055: hip boss + insert pattern, hip hardware, US1 Ti pins (analysis/h1_closeout.json ``mass``, written by
     huntkit.gendesign.h1_closeout)."""
     return dict(_json("h1_closeout.json")["mass"])
+
+
+@functools.lru_cache(maxsize=None)
+def bl056_update() -> dict:
+    """BL056: the hip mount redraw against BL-055's booked flange, and the US2 block growth (analysis/hip_mount_bl056.json
+    and clevis_bl056.json ``mass``, written by huntkit.gendesign.hip_mount and clevis_bl056)."""
+    hm = _json("hip_mount_bl056.json")["mass"]
+    cl = _json("clevis_bl056.json")["mass"]
+    return {"mount_correction_g": hm["ledger_correction_g"], "mount_g": hm["redraw_g"],
+            "print_delta_g": cl["print_delta_g"]}
 
 
 @functools.lru_cache(maxsize=None)
@@ -601,6 +615,14 @@ def _correction_rows(config: str, size: str) -> list:
         bl046.append(("BL055", "US1 fairlead pins in Ti-6Al-4V (2; were 7075-T6; BL-055)", "attachment",
                       b55["us1_ti_pins_delta_g"], src55 + "us1_ti_pins_delta_g (h1_closeout.pins, record densities)",
                       "base"))
+        b56 = bl056_update()
+        bl046.append(("BL056", f"hip mount as redrawn ({b56['mount_g']:g} g STL, fillets) against the flange BL-055 "
+                      "booked (BL-056)", "frame", b56["mount_correction_g"],
+                      "analysis/hip_mount_bl056.json mass.ledger_correction_g (STL volume x ti_6al_4v_slm density - "
+                      "drawn - BL-055 booked)", "base"))
+        bl046.append(("BL056", "H1 print: US2 joint blocks grown upward to pin + 19 (CLEVIS-SHARE B bound; BL-056)",
+                      "frame", b56["print_delta_g"],
+                      "analysis/clevis_bl056.json mass.print_delta_g (assembled print mesh BL-056 - BL-055)", "base"))
     import strap_tails as ST                        # BL-031 (lazy: it reads corrie_f, which reads this module)
     bl031 = [("BL031", n, sys_, g, src, cfg) for n, sys_, g, src, cfg in ST.suspension_rows(size)]
     return h1b + bl031 + bl046 + [

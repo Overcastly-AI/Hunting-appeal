@@ -176,6 +176,13 @@ the frame) and the pad-offset moment Mx = −eH for e = ±20 mm. H per case (rev
 | Hub thrust face via POM washer (Ø36) | n/a | 18.9 |
 | 2 × M5 heat-set inserts, mount to printed boss (prying about the D32 boss edge) | 1051 N → **1.14** | 1206 N → **0.995** |
 
+> **SUPERSEDED (2026-11-21) for the insert row above:** BL-055 (`h1_closeout.md` section 2) replaced the 2 inserts on
+> the D32 boss with 8 x M5 on a D50 boss (SF strength 2.15, fatigue 1.21 on the insert record and the layer-normal
+> ratio), and BL-056 (`hip_mount_bl056.md`) redrew the SLM Ti mount to match: base D50 x 3 mm (1.97 x 0.12 in) with
+> 8 x D5.5 holes, legs and hub kept, 34.3 g (1.21 oz). The mount rows above (4.69 / 4.25) are the drawn D44 x 1.2
+> part's; the redrawn part reads min SF / goal 1.80 (leg root, C2 with H on the pin, pad offset vertical) in the
+> BL-056 part FE. HB-6 is now 6 coupons pulled along the build z at 60 C, pass >= 513 N each (not 1.5 kN).
+
 - The pivot passes either way. With the recommended plate (pad on the frame), H stays off the pin and the record
   numbers stand.
 - H is compressive: the pad pushes the plate onto the mount. The POM latch carries none of it, so the mount face must
