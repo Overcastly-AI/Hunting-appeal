@@ -89,9 +89,11 @@ def test_t1_carries_both_root_gauges_and_stays_idempotent():
     import physical_test_kit as K
     t1 = _reg()["T1"]
     assert t1["steps"].startswith(K.T1_STEPS) and t1["steps"].count("STRAIN GAUGES") == 1
-    assert "US1 and US2 arm roots" in t1["steps"] and "0 / 150 / 300 lb" in t1["steps"]
+    # BL-055 Part B: three gauges (US1 root, US1 outer cheek, US2 root)
+    assert "US1 arm root" in t1["steps"] and "US1 OUTER CHEEK" in t1["steps"] and "US2 arm root" in t1["steps"]
+    assert "0 / 150 / 300 lb" in t1["steps"]
     assert "3.86 GPa" in t1["steps"]                    # = record pa12_cf_fdm_paht youngs_modulus_xy_mpa
-    assert t1["pass_fail"].startswith(K.T1_PASS) and "US1-STUB-GOVERNS" in t1["pass_fail"]
+    assert t1["pass_fail"].startswith(K.T1_PASS) and "GAUGE-LOCAL" in t1["pass_fail"]   # BL-055: numeric lines
     # a second patch gives the same text (no double append)
     assert K.t1_patch()["steps"] == t1["steps"]
 
@@ -102,21 +104,22 @@ def test_mt1_cradle_pull_row_gauges_and_belly():
     r = _reg()["MT-1cr"]
     assert r["status"] == "ACTIVE" and r["tier"] == "safety"
     assert K.TEST_RELEASE["MT-1cr"] == "R1" and K.group_of("MT-1cr") == "G6"
-    assert "240 / 480 / 720 N" in r["title"] and round(LN.US_CRADLE_N) == 720
-    assert "arm roots" in r["specimen"] and "belly" in r["steps"] and ">= 60 mm (6 of 6)" in r["pass_fail"]
+    # BL-055 Part B: pin pulls along the 3D vectors (240 / 480 / 720 N + the factored row), belly >= 40 mm
+    assert "240 / 480 / 720 /" in r["steps"] and round(LN.US_CRADLE_N) == 720
+    assert "arm root" in r["specimen"] and "belly" in r["steps"] and ">= 40 mm (6 of 6" in r["pass_fail"]
     assert "MT-1cr" in _reg()["MT-1"]["notes"]           # the bench MT-1 points at the frame-side pull
     res = list(csv.DictReader(open(REL / "test_kit" / "results_template.csv", encoding="utf-8")))
     bel = [x for x in res if x["test_id"] == "MT-1cr" and "belly" in x["quantity"]]
-    assert len(bel) == 6 and all(x["limit"] == "60" and x["check"] == "min" for x in bel)
-    assert any(x["test_id"] == "MT-1cr" and "US1-STUB-GOVERNS" in x["settles"] for x in res)
-    assert sum(1 for x in res if x["test_id"] == "T1" and "arm-root strain" in x["quantity"]) == 6
+    assert len(bel) == 6 and all(x["limit"] == "40" and x["check"] == "min" for x in bel)
+    assert any(x["test_id"] == "MT-1cr" and "G2-AXIS" in x["settles"] for x in res)
+    assert sum(1 for x in res if x["test_id"] == "T1" and "gauge at" in x["quantity"]) == 9
 
 
 def test_clevis_share_gauge_required_and_bl051_hardware():
     from huntkit.gendesign import h1_bedfit as BF
     r = _reg()["CLEVIS-SHARE"]
-    assert "optional strain gauge" not in r["steps"] and "STRAIN GAUGE (required, BL-052)" in r["steps"]
-    assert "US2 arm root" in r["specimen"] and "REQUIRED" in r["specimen"]
+    assert "optional strain gauge" not in r["steps"] + r["specimen"]      # BL-055: the gauge set is in the specimen
+    assert "US2 arm root" in r["specimen"] and "microstrain" in r["pass_fail"]
     assert f"M5 x {BF.JOINT.bolt_len:.0f}" in r["specimen"] and "NO washer under the head" in r["specimen"]
     assert "2 x 10 mm OD DIN 433 washers on the NUT side only" in r["specimen"]
     # the joint numbers quoted are BL-051's (counterbored heads), not BL-050's 3.85 / 1.73
@@ -125,7 +128,7 @@ def test_clevis_share_gauge_required_and_bl051_hardware():
     assert "3.85" not in r["what_it_proves"] and "HEAD-BEAR" in r["pass_fail"] + r["steps"] + r["what_it_proves"]
     res = list(csv.DictReader(open(REL / "test_kit" / "results_template.csv", encoding="utf-8")))
     assert any(x["test_id"] == "CLEVIS-SHARE" and "HEAD-BEAR" in x["settles"] for x in res)
-    assert sum(1 for x in res if x["test_id"] == "CLEVIS-SHARE" and "strain" in x["quantity"]) == 3
+    assert sum(1 for x in res if x["test_id"] == "CLEVIS-SHARE" and "gauge" in x["quantity"]) == 14   # A 4+3, B 4+3
 
 
 def test_kit_shopping_has_gauges_and_the_right_washer_count():
@@ -133,7 +136,8 @@ def test_kit_shopping_has_gauges_and_the_right_washer_count():
     from huntkit.gendesign import h1_bedfit as BF
     sh = K.shopping({})
     w = next(x for x in sh if x["item"].startswith("US2 CLEVIS ONLY: M5 washer 10 mm"))
-    assert int(float(w["qty"])) == 2 * 2 * BF.JOINT.n_washers + 2 == 6
+    # HE-FIT step 0 (2) + CLEVIS-SHARE A and B (2 x 2, BL-055) + spare (2)
+    assert int(float(w["qty"])) == 2 * BF.JOINT.n_washers + 2 * 2 * BF.JOINT.n_washers + 2 == 8
     assert any("strain gauges" in x["item"] for x in sh)
     assert any("half-bridge" in x["item"] for x in sh)          # BL-054 (review 5 m-8): dummy-gauge compensation
 

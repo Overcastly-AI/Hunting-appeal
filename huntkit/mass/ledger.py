@@ -594,8 +594,8 @@ def _correction_rows(config: str, size: str) -> list:
                       f"({b55['hip_inserts'] - b55['hip_inserts_booked']} more than booked; BL-055)", "frame",
                       b55["hardware_delta_g"], src55 + "hardware_delta_g (insert record mass_g, frame_comp_B.bolt_mass_g)",
                       "base"))
-        bl046.append(("BL055", f"hip mount base redrawn D{b55['hip_boss']['pattern']['boss_d']:g} x 3 mm Ti with "
-                      f"{b55['hip_inserts']} screw holes (was a D44 x 1.2 disc; BL-055)", "frame",
+        bl046.append(("BL055", f"hip mount base redrawn D{b55['hip_boss']['pattern']['boss_d']:g} Ti disc with "
+                      f"{b55['hip_inserts']} screw holes (was the drawn thin disc; BL-055)", "frame",
                       b55["mount_flange_delta_g"], src55 + "mount_flange_delta_g (h1_closeout.mount_flange, Ti density)",
                       "base"))
         bl046.append(("BL055", "US1 fairlead pins in Ti-6Al-4V (2; were 7075-T6; BL-055)", "attachment",

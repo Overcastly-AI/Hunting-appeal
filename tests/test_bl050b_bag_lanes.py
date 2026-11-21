@@ -178,9 +178,11 @@ def test_clevis_share_and_fit_us_in_the_kit():
     reg = {r["id"]: r for r in csv.DictReader(open(K.REGISTER, encoding="utf-8"))}
     cs = reg["CLEVIS-SHARE"]
     assert cs["status"] == "ACTIVE" and K.TEST_RELEASE["CLEVIS-SHARE"] == "R1"
-    assert f"{LN.US_CRADLE_N:.0f} N" in cs["title"] and "1e5 cycles at 480 N" in cs["title"]
-    assert round(LN.US_CRADLE_N * K.FAT_G / 2.4) == 480
-    assert "no joint opening" in cs["pass_fail"] and "lever rig" in cs["steps"]
+    # BL-055 Part B: two loadings A / B on the BL-053 3D cradle rows replace the 720 / 480 N lane-line pull
+    cl = K.clevis_loadings()
+    for L in cl.values():
+        assert f"{L['proof_n']:.0f} N proof + 1e5 at {L['peak_n']:.0f} N" in cs["title"]
+    assert "0.05 mm feeler does not enter the joint face" in cs["pass_fail"] and "lever rig" in cs["steps"]
     assert K.group_of("CLEVIS-SHARE") == "G4"                      # the CA-1 lever rig session
     fu = reg["FIT-US"]
     assert fu["status"] == "ACTIVE" and K.group_of("FIT-US") == "G6"
