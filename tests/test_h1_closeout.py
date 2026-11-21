@@ -83,11 +83,43 @@ def test_insert_capacity_from_records():
 def test_chosen_hip_pattern_meets_the_ticket():
     pat = C.hip_pattern(*C.HIP_CHOSEN, depth=C.HIP_BOSS_DEPTH)
     ch = C.hip_check(pat, True)
-    assert pat["walls_ok"] and all(v >= 2.6 for k, v in pat["walls"].items() if k != "to_pin_bore_mm")
+    w = pat["walls"]
+    assert pat["walls_ok"] and w["edge_mm"] >= 2.6 and w["between_mm"] >= 2.6 and w["floor_mm"] >= 2.6
+    assert w["head_to_leg_mm"] >= C.HEAD_LEG_CLEAR and w["head_to_head_mm"] >= 0.0
     assert ch["min_sf"]["strength"] >= 1.5 and ch["min_sf"]["fatigue"] >= 1.15 and ch["pass"]
-    # one fewer insert does not pass on the same capacity: the count is the least that does
-    n, r, D, rot = C.HIP_CHOSEN
-    assert not C.hip_check(C.hip_pattern(n - 1, r, D, rot, depth=C.HIP_BOSS_DEPTH), True)["pass"]
+    # the next even count down (two equal groups) does not pass on the same boss: the count is the least that does
+    n, r, D, rot, lay = C.HIP_CHOSEN
+    assert not C.hip_check(C.hip_pattern(n - 2, r, D, rot, lay, depth=C.HIP_BOSS_DEPTH), True)["pass"]
+
+
+def test_mount_legs_and_the_2026_11_14_ring():
+    """The drawn SLM mount has two legs above and below the pin; the WIP's 9-ring on D44 puts screw heads on them,
+    and no split pattern under the drawn D44 disc reaches the fatigue goal."""
+    legs = C.mount_legs()
+    assert len(legs) == 2
+    cz = sorted(L.centroid.y for L in legs)
+    assert cz[0] < -10.0 and cz[1] > 10.0 and all(abs(L.centroid.x) < 2.0 for L in legs)
+    ring9 = C.hip_pattern(9, 16.0, 44.0, 0.0, "ring", depth=C.HIP_BOSS_DEPTH)
+    assert ring9["walls"]["head_to_leg_mm"] < 0 and not ring9["walls_ok"]
+    split44 = C.hip_pattern(8, 16.0, 44.0, 0.0, "split", depth=C.HIP_BOSS_DEPTH)    # the most that fit beside the legs
+    assert split44["walls_ok"] and C.hip_check(split44, True)["min_sf"]["fatigue"] < 1.15
+    assert not C.hip_pattern(10, 16.0, 44.0, 0.0, "split", depth=C.HIP_BOSS_DEPTH)["walls_ok"]
+
+
+def test_split_step_closed_form():
+    # chord >= max(6.4 + 2.6, 8.5) = 9.0 mm: 2 asin(4.5 / 19) = 27.4 deg -> 28
+    assert C.split_step(19.0) == 28.0
+    pat = C.hip_pattern(8, 19.0, 50.0, 0.0, "split")
+    assert pat["pitch_mm"] == pytest.approx(2 * 19.0 * math.sin(math.radians(14.0)), abs=0.01)
+    assert pat["angles_deg"][:4] == [-42.0, -14.0, 14.0, 42.0]
+
+
+def test_mount_flange_bending_and_mass():
+    hip = C.hip_study()
+    fl = C.mount_flange(hip)
+    assert fl["min_sf_over_goal"] >= 1.0
+    # mass: D50 x 3 less holes and the drawn D44 x 1.2 disc and leg roots, Ti 4430 kg/m3: about +12 to +18 g
+    assert 10.0 < fl["delta_g"] < 20.0
 
 
 @needs_res
@@ -99,6 +131,8 @@ def test_hip_pilots_on_the_exported_print():
         if row["holes_d_eq"] and any(h is not None for h in row["holes_d_eq"]):
             assert all(abs(h - 6.4) < 0.25 for h in row["holes_d_eq"])
     assert all(v == n for v in sl["lower_flat_round_holes"].values())
+    assert all(RES["stl_check"][f]["watertight"] and RES["stl_check"][f]["shells"] == 1
+               for f in ("h1_assembled", "h1_lower_flat", "h1_upper_flat", "us2_clevis_L", "us2_clevis_R"))
 
 
 # ---------------------------------------------------------------------------------------------- pins
@@ -160,6 +194,22 @@ def test_whole_body_on_the_bl053_body():
         # the sanded run divides stay stresses by k: no margin can drop by more than k
         assert s["fatigue"] >= n["fatigue"] / RES["body"]["sand_factor"]["k"] - 1e-3
     assert RES["body"]["raster_g"]["bl053"] > RES["body"]["raster_g"]["bl051"]
+    # the lug fixes add material: no basis loses strength against the BL-051 record
+    assert all(v["bl053"]["strength"] >= v["bl051"]["strength"] - 1e-6 for v in b.values())
+
+
+def test_whole_body_cache_reproduces():
+    """The resumed run read 7 basis results from the 2026-11-14 cache: a fresh beam-basis run on the same body must
+    give the same numbers (outputs/h1_buckling/check_..._verify.json, written on 2026-11-21)."""
+    from huntkit.gendesign import h1_buckling as B
+    pv = B.OUT / f"check_{C.BODY_CHECK}_verify.json"
+    pc = B.OUT / f"check_{C.BODY_CHECK}.json"
+    if not (pv.exists() and pc.exists()):
+        pytest.skip("whole-body caches not in outputs/ (regenerate with h1_closeout --body)")
+    v, c = json.loads(pv.read_text())["beam"], json.loads(pc.read_text())["beam"]
+    for k in ("strength", "fatigue", "creep"):
+        assert v["min"][k] == pytest.approx(c["min"][k], rel=1e-9)
+    assert v["buckling_min"] == pytest.approx(c["buckling_min"]) and v["joint_fatigue"] == pytest.approx(c["joint_fatigue"])
 
 
 @needs_res
@@ -168,6 +218,6 @@ def test_ledger_books_bl055():
     m = RES["mass"]
     rows = L.corrections("corrie_b2_h1", "M")["BL055"]
     assert sum(r["g"] for r in rows) == pytest.approx(m["print_delta_g"] + m["hardware_delta_g"]
-                                                      + m["us1_ti_pins_delta_g"], abs=0.05)
+                                                      + m["us1_ti_pins_delta_g"] + m["mount_flange_delta_g"], abs=0.05)
     assert L.corrections("corrie_b2_today", "M")["BL055"] == []
     assert m["hardware_delta_g"] == pytest.approx((C.HIP_CHOSEN[0] - 2) * (1.5 + m["hip_screw_g"]), abs=0.05)

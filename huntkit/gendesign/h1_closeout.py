@@ -10,7 +10,7 @@
    ratio measured on the print (``sand_factor``: the print's stay sections, each with 0.2 mm taken off every
    down-facing (-y) edge, against the section as printed).
 2. **Hip boss** (``hip_pattern`` / ``hip_check``): M5 brass heat-set inserts that hold the SLM Ti pivot mount on the
-   printed D32 hip boss. Prying model of ``hipbelt_structure.pivot_check`` (tipping about the boss edge), generalised to
+   printed hip boss (was D32 with 2 inserts; grown, the inserts split clear of the mount's two legs). Prying model of ``hipbelt_structure.pivot_check`` (tipping about the boss edge), generalised to
    any insert pattern and every tipping direction; capacity from ``data/materials`` ``insert_heatset_brass_m5`` with
    the PAHT-CF hot knock-down and the layer-normal pull. Pilot holes are cut into the print (``add_hip_pilots``, hooked
    into ``frame_h1.print_mesh``) and slice-checked on the exported STL (``hip_slices``).
@@ -21,6 +21,7 @@ Units mm, N, MPa, g (imperial in the report). Frame coordinates: x lateral (+ = 
 from __future__ import annotations
 
 import argparse
+import functools
 import json
 import math
 import time
@@ -262,24 +263,77 @@ def insert_record() -> dict:
     return out
 
 
-def hip_pattern(n: int, ring_r: float, boss_d: float, rot_deg: float = 0.0, depth: float | None = None) -> dict:
-    """``n`` inserts equally spaced on a ``ring_r`` circle about the boss axis (angle from frame +x towards +z,
-    starting at ``rot_deg``), boss face diameter ``boss_d``. Positions in frame (x, z) and the wall rules: insert hole
-    to the boss edge, between holes, to the mount's pin bore (+ HIP_LAND), and the hole floor."""
+MOUNT_STL = PACK / "print" / "lug_hip_pivot_mount_slm_ti.stl"
+MOUNT_FLANGE_T = 1.2               # the SLM mount's base disc as drawn (sliced: D44 disc solid to z 1.2, legs above)
+HEAD_D = 8.5                       # DIN 7984 M5 low head (frame_comp_B bolt row)
+HEAD_LEG_CLEAR = 1.0               # ASSUMPTION HEAD-LEG: >= 1 mm between a screw head and a mount leg root (driver access)
+
+
+@functools.lru_cache(maxsize=None)
+def mount_legs() -> tuple:
+    """Footprints of the SLM mount's two legs at their root (0.3 mm above the base disc), in frame (x, z - 120).
+    ASSUMPTION MOUNT-ORIENT: the mount's local x is frame x and its local y is frame z (the legs stand above and below
+    the pin, along the vertical pin load V); the disc centre (22, 22) is the boss axis."""
+    import trimesh
+    from shapely.geometry import Polygon
+    m = trimesh.load(MOUNT_STL, force="mesh")
+    c = m.bounds[0] + m.extents / 2.0
+    sec = m.section(plane_origin=[0.0, 0.0, MOUNT_FLANGE_T + 0.3], plane_normal=[0.0, 0.0, 1.0])
+    out = []
+    for L in sec.discrete:
+        P = Polygon(L[:, :2] - c[:2]).buffer(0)
+        if P.area > 20.0 and P.centroid.distance(Polygon([(0, 0), (0.1, 0), (0, 0.1)])) > 5.0:
+            out.append(P)
+    return tuple(out)
+
+
+def split_step(ring_r: float) -> float:
+    """The least step (whole deg) between neighbours on a ``ring_r`` circle that keeps the insert-hole wall (record
+    min_wall) and clear heads (HEAD_D): chord >= max(hole D + wall, HEAD_D)."""
     ir = insert_record()
-    a = np.radians(rot_deg + 360.0 * np.arange(n) / n)
+    c = max(ir["hole_d"] + ir["min_wall"], HEAD_D)
+    return float(math.ceil(math.degrees(2.0 * math.asin(c / 2.0 / ring_r)) - 1e-9))
+
+
+def split_angles(n: int, step: float) -> list:
+    """``n`` holes in two equal groups about the frame +x and -x axes (clear of the mount legs at +/-z), ``step`` deg
+    between neighbours in a group."""
+    k = n // 2
+    half = [-step * (k - 1) / 2.0 + i * step for i in range(k)]
+    return half + [180.0 - a for a in half]
+
+
+def hip_pattern(n: int, ring_r: float, boss_d: float, rot_deg: float = 0.0, layout: str = "ring",
+                depth: float | None = None, step: float | None = None) -> dict:
+    """``n`` inserts on a ``ring_r`` circle about the boss axis (angle from frame +x towards +z): ``layout`` 'ring' =
+    equally spaced from ``rot_deg``; 'split' = two groups of n/2 about +/-x, ``step`` deg apart (default split_step),
+    clear of the mount legs. Boss face diameter ``boss_d``. Positions in frame (x, z) and the wall rules: insert hole to
+    the boss edge, between holes, to the mount's pin bore (+ HIP_LAND), the hole floor, and the screw head to the
+    mount's leg roots (HEAD_LEG_CLEAR)."""
+    from shapely.geometry import Point
+    ir = insert_record()
+    if layout == "split":
+        ang = split_angles(n, split_step(ring_r) if step is None else step)
+    else:
+        ang = list(rot_deg + 360.0 * np.arange(n) / n)
+    a = np.radians(ang)
     pos = np.c_[HIP_C[0] + ring_r * np.cos(a), HIP_C[1] + ring_r * np.sin(a)]
     dh = ir["hole_d"]
-    pitch = 2 * ring_r * math.sin(math.pi / n) if n > 1 else float("inf")
+    rel = pos - np.asarray(HIP_C)
+    pitch = min(float(np.hypot(*(rel[i] - rel[j]))) for i in range(n) for j in range(i)) if n > 1 else float("inf")
     hole_depth = ir["length"] + INS_EXTRA_DEPTH
     walls = {"edge_mm": boss_d / 2 - ring_r - dh / 2, "between_mm": pitch - dh,
-             "to_pin_bore_mm": ring_r - dh / 2 - HIP_PIN_HOLE_D / 2}
+             "to_pin_bore_mm": ring_r - dh / 2 - HIP_PIN_HOLE_D / 2,
+             "head_to_leg_mm": min(Point(x, z).distance(L) for x, z in rel for L in mount_legs()) - HEAD_D / 2,
+             "head_to_head_mm": pitch - HEAD_D}
     if depth is not None:
         walls["floor_mm"] = depth - hole_depth
     rule = ir["min_wall"]
     ok = walls["edge_mm"] >= rule - 1e-9 and walls["between_mm"] >= rule - 1e-9 and \
-        walls["to_pin_bore_mm"] >= HIP_LAND - 1e-9 and walls.get("floor_mm", rule) >= rule - 1e-9
-    return {"n": n, "ring_r": ring_r, "boss_d": boss_d, "rot_deg": rot_deg,
+        walls["to_pin_bore_mm"] >= HIP_LAND - 1e-9 and walls.get("floor_mm", rule) >= rule - 1e-9 and \
+        walls["head_to_leg_mm"] >= HEAD_LEG_CLEAR - 1e-9 and walls["head_to_head_mm"] >= 0.0
+    return {"n": n, "ring_r": ring_r, "boss_d": boss_d, "rot_deg": rot_deg, "layout": layout,
+            "angles_deg": [round(float(v), 2) for v in ang],
             "positions_xz": [[round(float(x), 2), round(float(z), 2)] for x, z in pos],
             "hole_d": dh, "hole_depth": hole_depth, "pitch_mm": round(pitch, 2),
             "walls": {k: round(v, 2) for k, v in walls.items()}, "wall_rule_mm": rule, "walls_ok": bool(ok)}
@@ -360,19 +414,24 @@ def hip_record_check() -> dict:
     return out
 
 
-HIP_SWEEP = [(2, 11.0, 32.0, 0.0), (4, 10.0, 32.0, 45.0), (6, 10.0, 32.0, 0.0), (4, 16.0, 44.0, 45.0),
-             (6, 16.0, 44.0, 0.0), (8, 16.0, 44.0, 22.5), (9, 16.0, 44.0, 0.0), (10, 16.0, 44.0, 0.0)]
-HIP_CHOSEN = (9, 16.0, 44.0, 0.0)           # n, ring r, boss face D, rotation (deg): the fewest that pass (sweep)
+HIP_SWEEP = [(2, 11.0, 32.0, 0.0, "ring"), (4, 10.0, 32.0, 45.0, "ring"), (6, 10.0, 32.0, 0.0, "ring"),
+             (6, 16.0, 44.0, 0.0, "ring"), (9, 16.0, 44.0, 0.0, "ring"), (10, 16.0, 44.0, 0.0, "ring"),
+             (8, 16.0, 44.0, 0.0, "split"), (10, 16.0, 44.0, 0.0, "split"), (8, 17.0, 46.0, 0.0, "split"),
+             (8, 18.0, 48.0, 0.0, "split"), (6, 19.0, 50.0, 0.0, "split"), (8, 19.0, 50.0, 0.0, "split"),
+             (10, 19.0, 50.0, 0.0, "split")]
+HIP_CHOSEN = (8, 19.0, 50.0, 0.0, "split")  # n, ring r, boss face D, rotation, layout: the fewest inserts that pass with
+#   the walls and the leg clearance, on the smallest boss that keeps the fatigue row >= 5 % over its goal (the prying
+#   model assumes a rigid flange: unvalidated until HB-6); D48 / r18 passes at 1.16 (1 % over)
 HIP_BOSS_DEPTH = 16.0                       # grown boss: solid from the face HIP_FACE_Y to y + 16 (floor wall 4.5)
 
 
 def hip_study() -> dict:
     """The sweep (with and without the layer-normal ratio), the chosen pattern, and the record reproduction."""
     rows = []
-    for n, r, D, rot in HIP_SWEEP:
-        pat = hip_pattern(n, r, D, rot, depth=HIP_BOSS_DEPTH if D > 32 else 19.2)
+    for n, r, D, rot, lay in HIP_SWEEP:
+        pat = hip_pattern(n, r, D, rot, lay, depth=HIP_BOSS_DEPTH if D > 32 else 19.2)
         a, b = hip_check(pat, True), hip_check(pat, False)
-        rows.append({"n": n, "ring_r": r, "boss_d": D, "walls_ok": pat["walls_ok"], "walls": pat["walls"],
+        rows.append({"n": n, "ring_r": r, "boss_d": D, "layout": lay, "walls_ok": pat["walls_ok"], "walls": pat["walls"],
                      "z_ratio": {**a["min_sf"], "pass": a["pass"]}, "no_z_ratio": {**b["min_sf"], "pass": b["pass"]}})
     pat = hip_pattern(*HIP_CHOSEN, depth=HIP_BOSS_DEPTH)
     ch = hip_check(pat, True)
@@ -392,13 +451,13 @@ def _cyl_y(x, z, y0, y1, d, seg=96):
 
 
 def add_hip_pilots(man, log=print, stats: dict | None = None):
-    """The hip boss grown to the Ti mount's D44 flange (HIP_CHOSEN boss D, HIP_BOSS_DEPTH deep from the wearer face,
+    """The hip boss grown to the Ti mount's flange (HIP_CHOSEN boss D, HIP_BOSS_DEPTH deep from the wearer face,
     whose plane drops 0.05 mm so no face is coplanar) and the insert pilot holes (record hole D x insert length +
     INS_EXTRA_DEPTH) cut from the face. The face is the print's plate face (wearer face down): the holes print as
     vertical blind holes open to the plate, no support."""
     from . import h1_rev5 as R5
-    n, r, D, rot = HIP_CHOSEN
-    pat = hip_pattern(n, r, D, rot, depth=HIP_BOSS_DEPTH)
+    n, r, D = HIP_CHOSEN[:3]
+    pat = hip_pattern(*HIP_CHOSEN, depth=HIP_BOSS_DEPTH)
     cx, cz = HIP_C
     probe = man ^ R5._box_m((cx - 10.0, -80.0, cz - 10.0), (cx + 10.0, -20.0, cz + 10.0))
     y_face = float(probe.bounding_box()[1])
@@ -421,14 +480,14 @@ def add_hip_pilots(man, log=print, stats: dict | None = None):
 
 def hip_slices(path: Path | None = None) -> dict:
     """Slice the assembled print normal to y at the boss: 1 / 6 / 10.5 mm into the face every pilot hole is there at
-    the record's hole size on its position, the boss section is at least the D44 face less the holes; 2 mm past the
+    the record's hole size on its position, the boss section is at least the boss face less the holes; 2 mm past the
     hole floor the boss is closed (no hole). The flat lower half (print coordinates) is sliced at 0.6 / 6 / 10.5 mm
-    above the plate and must show the same 9 round holes."""
+    above the plate and must show the same n round holes."""
     import trimesh
     from shapely.geometry import Polygon
     m = trimesh.load(path or PRINT / "h1_assembled.stl", force="mesh")
-    n, r, D, rot = HIP_CHOSEN
-    pat = hip_pattern(n, r, D, rot, depth=HIP_BOSS_DEPTH)
+    n, r, D = HIP_CHOSEN[:3]
+    pat = hip_pattern(*HIP_CHOSEN, depth=HIP_BOSS_DEPTH)
     pos = np.asarray(pat["positions_xz"], float)
     y_face = float(m.bounds[0][1])
     out = {"y_face": round(y_face, 3), "rows": {}}
@@ -547,6 +606,390 @@ def mass_rows(export: dict | None, pn: dict, hip: dict) -> dict:
                     "hip_boss": export.get("fairleads_bl042", {}).get("hip_boss_bl055")})
     out["hardware_delta_g"] = round(out["hip_inserts_delta_g"] + out["hip_screws_delta_g"], 2)
     return out
+
+
+# ---------------------------------------------------------------------------------------------- Ti mount flange
+FLANGE_T = 3.0                     # ASSUMPTION FLANGE-RIGID: the SLM mount's base redrawn as a 3 mm disc (was 1.2 mm)
+FLANGE_HOLE_D = 5.5                # M5 clearance (ISO 273 medium)
+
+
+def mount_flange(hip: dict) -> dict:
+    """The SLM Ti mount's base as the chosen pattern needs it: a FLANGE_T disc of the boss D with n clearance holes
+    (the drawn mount has a 1.2 mm D44 disc and no screw holes). Mass delta against the drawn disc (record density),
+    and the flange bending between a leg root and the screw row: sigma = 6 T a / (b t^2), T the worst insert tension
+    of each row, a = screw x less the leg half width, b = the hole pitch (one screw's strip), against the Ti S-basis
+    yield (strength rows x their goal) and the fatigue limit (walk row)."""
+    from huntkit.materials import load
+    ti = load("ti_6al_4v")
+    rho = float(ti.require("density_kg_m3")) * 1e-6
+    sy = float(ti.require("yield_strength_sbasis_mpa"))
+    se = float(ti.require("fatigue_limit_mpa"))
+    pat = hip["chosen"]["pattern"]
+    D, n = pat["boss_d"], pat["n"]
+    legs = mount_legs()
+    leg_a = sum(L.area for L in legs)
+    a_new = math.pi / 4 * (D ** 2 - HIP_PIN_HOLE_D ** 2 - n * FLANGE_HOLE_D ** 2)
+    a_old = math.pi / 4 * (44.0 ** 2 - HIP_PIN_HOLE_D ** 2)
+    v_add = a_new * FLANGE_T - a_old * MOUNT_FLANGE_T - leg_a * (FLANGE_T - MOUNT_FLANGE_T)
+    leg_half = max(max(abs(L.bounds[0]), abs(L.bounds[2])) for L in legs)
+    xs = min(abs(x - HIP_C[0]) for x, _ in pat["positions_xz"])
+    arm = xs - leg_half
+    b = pat["pitch_mm"]
+    rows = {}
+    for k, r in hip["chosen"]["rows"].items():
+        sig = 6.0 * r["T_max_n"] * arm / (b * FLANGE_T ** 2)
+        lim = se if r["kind"] == "fatigue" else sy
+        rows[k] = {"sigma_mpa": round(sig, 1), "limit_mpa": lim, "sf": round(lim / sig, 2), "goal": r["goal"]}
+    return {"t_mm": FLANGE_T, "d_mm": D, "holes": n, "hole_d_mm": FLANGE_HOLE_D, "leg_half_w_mm": round(leg_half, 2),
+            "arm_mm": round(arm, 2), "strip_b_mm": b, "rows": rows,
+            "min_sf_over_goal": round(min(v["sf"] / v["goal"] for v in rows.values()), 2),
+            "delta_g": round(v_add * rho, 2),
+            "drawn": f"D44 x {MOUNT_FLANGE_T:g} mm disc, no screw holes (designs/pack_5200/print/{MOUNT_STL.name})"}
+
+
+# ============================================================================================ export + report
+def export(log=print) -> dict:
+    """Re-export the H1 print (h1_buckling.export_print at its CHOSEN settings: frame_h1.print_mesh now grows the hip
+    boss and cuts the pilots), cached as OUT/export_info.json."""
+    from . import h1_buckling as B
+    p = OUT / "export_info.json"
+    if p.exists():
+        return json.loads(p.read_text())
+    info = B.export_print(*B.CHOSEN, log=log)
+    p.write_text(json.dumps(info, indent=1, default=float))
+    return info
+
+
+def stl_check() -> dict:
+    """Closed single shells of every exported file, bed fit of the flat halves (h1_bedfit.bed_check)."""
+    import trimesh
+    from . import h1_bedfit as BF
+    out = {}
+    for f in ("h1_assembled", "h1_lower_flat", "h1_upper_flat", "us2_clevis_L", "us2_clevis_R"):
+        m = trimesh.load(PRINT / f"{f}.stl", force="mesh")
+        out[f] = {"watertight": bool(m.is_watertight), "shells": len(m.split(only_watertight=False)),
+                  "g": round(m.volume * 1.06e-3, 1)}
+    out["bed"] = {nm: BF.bed_check(PRINT / f"h1_{nm}_flat.stl") for nm in ("lower", "upper")}
+    return out
+
+
+ASSUMPTIONS = [
+    ("MOUNT-ORIENT", "The SLM mount's local y is frame z: its two legs stand above and below the pin (along V), so the "
+     "inserts split into two groups at the sides.", "First-article fit of the mount on the boss; the mount drawing."),
+    ("FLANGE-RIGID", f"The mount base is redrawn as a {FLANGE_T:g} mm Ti disc (drawn: 1.2 mm) and acts as a rigid "
+     "flange in the prying model (tipping about the boss edge, tension in proportion to the distance).",
+     "HB-6b hip-mount proof on the frame with the redrawn mount, a gauge on the most-loaded screw."),
+    ("INS-Z", "Insert pull-out along the layer normal = record pull-out x hot 0.8 x PAHT-CF z / xy tensile ratio "
+     "(47 / 88).", "HB-6 insert pull-out on printed coupons, hole axis along the build z, at 60 C."),
+    ("INS-DEPTH", f"Pilot hole = insert length + {INS_EXTRA_DEPTH:g} mm for displaced melt.",
+     "Section one HB-6 coupon: no melt plug under the insert."),
+    ("HIP-LAND", f">= {HIP_LAND:g} mm flange between an insert hole and the mount's D10 pin bore.", "Mount drawing."),
+    ("HEAD-LEG", f">= {HEAD_LEG_CLEAR:g} mm between a DIN 7984 head (D8.5) and a leg root, for the driver.",
+     "First-article assembly with a 4 mm hex key."),
+    ("HIP-BOOKED", "The frame's fixed lump books 2 hip inserts and 2 screws; BL-055 books the rest.", "Ledger audit."),
+    ("BOSS-LOCAL", "The grown boss (solid, at the hard point x 0, z 120) is not in the 2 mm voxel body of the "
+     "whole-body run: it adds material at a hard point the body already treats as fixed and the pilots stay inside it.",
+     "Next whole-body re-raster (review 6) from the exported print."),
+    ("SAND-K", "The 0.2 mm sanding of the stays' wearer faces is a uniform stress factor k on every stay element "
+     "(worst section ratio over 15 stations, both stays).", "CA-1 bars printed over supports and sanded (BL-053 SCAR-KD)."),
+]
+
+
+def compute(log=print) -> dict:
+    res = {"ticket": "BL-055 Part A", "date": "2026-11-21"}
+    res["body"] = body_summary()
+    res["voxels"] = json.loads((OUT / "body_solid.json").read_text()) if (OUT / "body_solid.json").exists() else None
+    res["hip"] = hip_study()
+    res["mount_flange"] = mount_flange(res["hip"])
+    res["pins"] = pins()
+    ex = export(log=log)
+    res["export"] = {k: ex[k] for k in ("assembled", "lower", "upper", "us2_clevis_R", "us2_clevis_L") if k in ex}
+    res["hip_slices"] = hip_slices()
+    res["stl_check"] = stl_check()
+    res["mass"] = mass_rows(ex, res["pins"], res["hip"])
+    res["mass"]["mount_flange_delta_g"] = res["mount_flange"]["delta_g"]
+    res["assumptions"] = [{"id": a, "text": t, "settled_by": s_} for a, t, s_ in ASSUMPTIONS]
+    return res
+
+
+def _save(fig, path: Path) -> str:
+    import matplotlib.pyplot as plt
+    SCREENS.mkdir(parents=True, exist_ok=True)
+    fig.savefig(path, dpi=110, bbox_inches="tight")
+    plt.close(fig)
+    if path.stat().st_size > 1.5e6:
+        from PIL import Image
+        Image.open(path).convert("P", palette=Image.ADAPTIVE).save(path, optimize=True)
+    return str(path.relative_to(REPO))
+
+
+def plot_hip(res: dict, path: Path) -> str:
+    import matplotlib.pyplot as plt
+    from matplotlib.patches import Circle, Polygon as MPoly
+    pat = res["hip"]["chosen"]["pattern"]
+    fig, (ax, bx) = plt.subplots(1, 2, figsize=(11, 5.2), gridspec_kw={"width_ratios": [1, 1.25]})
+    c = HIP_C
+    ax.add_patch(Circle(c, pat["boss_d"] / 2, fc="#d9d9d9", ec="k", lw=1.2, label=f"boss / flange D{pat['boss_d']:g}"))
+    ax.add_patch(Circle(c, 16.0, fc="none", ec="#888", ls=":", lw=1, label="old boss D32"))
+    ax.add_patch(Circle(c, 22.0, fc="none", ec="#c55", ls="--", lw=1, label="drawn mount disc D44"))
+    for L in mount_legs():
+        xy = np.asarray(L.exterior.coords) + np.asarray(c)
+        ax.add_patch(MPoly(xy, fc="#7aa0c4", ec="#2b5d8a", label="mount legs (root)"))
+    ax.add_patch(Circle(c, HIP_PIN_HOLE_D / 2, fc="w", ec="k"))
+    for i, (x, z) in enumerate(pat["positions_xz"]):
+        ax.add_patch(Circle((x, z), HEAD_D / 2, fc="none", ec="#e08a00", lw=0.8))
+        ax.add_patch(Circle((x, z), pat["hole_d"] / 2, fc="#333", ec="k"))
+    h, l_ = ax.get_legend_handles_labels()
+    keep = dict(zip(l_, h))
+    ax.legend(keep.values(), keep.keys(), fontsize=7, loc="lower left")
+    ax.set_xlim(-30, 30)
+    ax.set_ylim(c[1] - 30, c[1] + 30)
+    ax.set_aspect("equal")
+    ax.set_xlabel("frame x (mm)")
+    ax.set_ylabel("frame z (mm)")
+    ax.set_title(f"Hip boss: {pat['n']} x M5 inserts (pilot D{pat['hole_d']:g} x {pat['hole_depth']:g})\n"
+                 f"ring r{pat['ring_r']:g}, two groups clear of the mount legs", fontsize=9)
+    sw = res["hip"]["sweep"]
+    lab = [f"{r['n']} {r['layout']} D{r['boss_d']:g}" for r in sw]
+    yv = np.arange(len(sw))
+    fs = [r["z_ratio"]["fatigue"] / FAT_GOAL for r in sw]
+    ss = [r["z_ratio"]["strength"] / SF_GOAL for r in sw]
+    bx.barh(yv + 0.2, ss, 0.4, color="#7aa0c4", label="strength SF / 1.5")
+    bx.barh(yv - 0.2, fs, 0.4, color="#e08a00", label="fatigue SF / 1.15")
+    for i, r in enumerate(sw):
+        if not r["walls_ok"]:
+            bx.text(0.02, i, "walls / legs clash", fontsize=7, va="center", color="#a00")
+    bx.axvline(1.0, color="k", lw=1)
+    bx.set_yticks(yv, lab, fontsize=7)
+    i_ch = next(i for i, r in enumerate(sw) if (r["n"], r["ring_r"], r["boss_d"], r["layout"]) ==
+                (HIP_CHOSEN[0], HIP_CHOSEN[1], HIP_CHOSEN[2], HIP_CHOSEN[4]))
+    bx.get_yticklabels()[i_ch].set_fontweight("bold")
+    bx.set_xlabel("margin against the BL-055 goal (1 = goal)")
+    bx.legend(fontsize=7, loc="lower right")
+    bx.set_title("Insert patterns (layer-normal pull-out, hot)", fontsize=9)
+    fig.tight_layout()
+    return _save(fig, path)
+
+
+def plot_body(res: dict, path: Path) -> str:
+    import matplotlib.pyplot as plt
+    b = res["body"]["bases"]
+    keys = ("strength", "fatigue", "creep", "buckling", "joint_strength", "joint_fatigue")
+    fig, axs = plt.subplots(1, len(b), figsize=(13, 4.2), sharey=True)
+    for ax, (bn, v) in zip(axs, b.items()):
+        y = np.arange(len(keys))
+        for j, (tag, col) in enumerate((("bl051", "#bbbbbb"), ("bl053", "#2b5d8a"), ("bl053_sanded", "#e08a00"))):
+            if v.get(tag):
+                ax.barh(y + 0.27 * (1 - j), [v[tag][k] for k in keys], 0.27, color=col,
+                        label={"bl051": "BL-051 record", "bl053": "BL-053 body", "bl053_sanded": "BL-053 sanded 0.2"}[tag])
+        ax.axvline(1.0, color="r", lw=1)
+        ax.set_title(bn, fontsize=9)
+        ax.set_yticks(np.arange(len(keys)), keys, fontsize=8)
+        ax.set_xlabel("SF / req")
+    axs[0].legend(fontsize=7, loc="lower right")
+    fig.suptitle("H1 whole body on the BL-053 print (red line = R1: SF / req 1)", fontsize=10)
+    fig.tight_layout()
+    return _save(fig, path)
+
+
+def plot_slices(res: dict, path: Path) -> str:
+    import matplotlib.pyplot as plt
+    import trimesh
+    m = trimesh.load(PRINT / "h1_assembled.stl", force="mesh")
+    y0 = float(m.bounds[0][1])
+    pat = res["hip"]["chosen"]["pattern"]
+    dys = (1.0, 6.0, pat["hole_depth"] + 2.0)
+    fig, axs = plt.subplots(1, len(dys), figsize=(12, 4.3))
+    for ax, dy in zip(axs, dys):
+        sec = m.section(plane_origin=[0.0, y0 + dy, 0.0], plane_normal=[0.0, 1.0, 0.0])
+        for L in sec.discrete:
+            ax.fill(L[:, 0], L[:, 2], fc="#9ab", ec="k", lw=0.6, alpha=0.6)
+        ax.set_xlim(-40, 40)
+        ax.set_ylim(HIP_C[1] - 40, HIP_C[1] + 40)
+        ax.set_aspect("equal")
+        ax.set_title(f"STL slice {dy:g} mm into the boss face", fontsize=9)
+        ax.set_xlabel("x (mm)")
+    axs[0].set_ylabel("z (mm)")
+    fig.suptitle(f"Exported h1_assembled.stl at the hip boss: {pat['n']} pilot holes, closed past the floor", fontsize=10)
+    fig.tight_layout()
+    return _save(fig, path)
+
+
+def figures(res: dict) -> list:
+    out = []
+    for i, f in enumerate((plot_body, plot_hip, plot_slices), 1):
+        out.append(f(res, SCREENS / f"{SHOT}{i}.png"))
+    return out
+
+
+def _oz(g: float) -> str:
+    return f"{g / 28.3495:.2f} oz"
+
+
+def write_md(res: dict, shots: list) -> str:
+    L = []
+    a = L.append
+    b = res["body"]
+    hp = res["hip"]
+    ch = hp["chosen"]
+    pat = ch["pattern"]
+    fl = res["mount_flange"]
+    pn = res["pins"]
+    m = res["mass"]
+    sf = b["sand_factor"]
+    a("# H1 close-out before review 6 (BL-055 Part A)\n")
+    a("structural-fea-engineer, 2026-11-21 (resumed from the 2026-11-14 WIP). Ticket `docs/backlog/BL-055-close-out.md` "
+      "Part A. Code `huntkit/gendesign/h1_closeout.py` (`python -m huntkit.gendesign.h1_closeout --body` for the whole "
+      "body, the report with no flag); print hook `frame_h1.print_mesh` (`h1_closeout.add_hip_pilots`); tests "
+      "`tests/test_h1_closeout.py`. Results `h1_closeout.json`. Units mm, N, MPa, g (imperial in brackets). "
+      "Supersedes the body margins of `h1_crown.md` and the hip-insert row of `hipbelt_structural.md` section 4.\n")
+    a("## Summary\n")
+    w = {k: min(v["bl053_sanded"][k] for v in b["bases"].values() if v.get("bl053_sanded")) for k in
+         ("strength", "fatigue", "creep", "buckling", "joint_strength", "joint_fatigue")}
+    noncyc = {k: min(v["bl053_sanded"][k] for bn, v in b["bases"].items() if not bn.endswith(".cyc"))
+              for k in ("fatigue", "joint_fatigue")}
+    a(f"- **Whole body, BL-053 print, sanded 0.2 mm (governing):** strength {w['strength']:.2f}, fatigue "
+      f"{noncyc['fatigue']:.2f} on the three static-cinch bases and **{w['fatigue']:.2f} on fine_sm8.cyc** (below R1, "
+      f"as on every body since BL-024: R1 hold for MT-1), creep {w['creep']:.2f}, buckling {w['buckling']:.2f}, "
+      f"z 234 joint {w['joint_strength']:.2f} / {noncyc['joint_fatigue']:.2f} ({w['joint_fatigue']:.2f} on .cyc). "
+      f"The sanding costs at most {100 * (sf['k'] - 1):.1f} % (k {sf['k']:.3f}, worst section z {sf['worst']['z']:g} "
+      f"{sf['worst']['side']}); the BL-053 lug fixes gain 1-3 % on every basis against BL-051.")
+    a(f"- **Hip boss:** {pat['n']} x M5 brass heat-set inserts on r {pat['ring_r']:g} in two groups of "
+      f"{pat['n'] // 2} at the sides (angles {', '.join(f'{v:g}' for v in pat['angles_deg'])} deg from +x), boss and "
+      f"mount flange D{pat['boss_d']:g}, pilot D{pat['hole_d']:g} x {pat['hole_depth']:g} deep. SF strength "
+      f"**{ch['min_sf']['strength']:.2f}** (goal 1.5), fatigue **{ch['min_sf']['fatigue']:.2f}** (goal 1.15), creep "
+      f"{ch['min_sf']['creep']:.2f}, with the layer-normal pull-out. The 2-insert record was 0.995 on an assumed "
+      f"1500 N insert; on the insert record (1200 N) and the layer-normal ratio it is "
+      f"{hp['record']['H_pin']['sf_insert_record_z']:.2f}.")
+    a(f"- **Change from the 2026-11-14 WIP:** the WIP chose 9 inserts equally spaced on a D44 boss; 4 of those holes "
+      f"sit under the mount's two legs (screw heads clash, head-to-leg {next(r for r in hp['sweep'] if r['n'] == 9)['walls']['head_to_leg_mm']:.1f} mm). With the legs "
+      f"kept, no pattern under the drawn D44 disc reaches fatigue 1.15 (best 8 split, 1.07); the mount base must be "
+      f"redrawn anyway (it is a 1.2 mm disc with no screw holes), so it grows to D{pat['boss_d']:g} x {fl['t_mm']:g} mm.")
+    a(f"- **Pins:** US1 pins in Ti-6Al-4V (orchestrator call): dy 95 fatigue {pn['stations']['us1']['was']['bending']['dy95_sf_fatigue']} -> "
+      f"**{pn['stations']['us1']['bending']['dy95_sf_fatigue']}**, +{m['us1_ti_pins_delta_g']:.2f} g.")
+    tot = m["print_delta_g"] + m["hardware_delta_g"] + m["us1_ti_pins_delta_g"] + m["mount_flange_delta_g"]
+    a(f"- **Mass:** print {m['print_delta_g']:+.1f} g (assembled {m['assembled_g']:.1f} g), {m['hip_inserts'] - m['hip_inserts_booked']} more inserts "
+      f"and screws {m['hardware_delta_g']:+.2f} g, Ti mount flange {m['mount_flange_delta_g']:+.2f} g, US1 Ti pins "
+      f"{m['us1_ti_pins_delta_g']:+.2f} g: **{tot:+.1f} g ({_oz(tot)})**, booked in the ledger (BL055).")
+    a(f"- **Print:** re-exported; slice check of the pilots {'passes' if res['hip_slices']['pass'] else 'FAILS'}; "
+      f"every STL a closed single shell: {all(v['watertight'] and v['shells'] == 1 for k, v in res['stl_check'].items() if k != 'bed')}.\n")
+
+    a("## 1. Whole body on the BL-053 print\n")
+    a("`h1_buckling.full_check` (H1's FI99 rule per kit and setting, member Euler margins, the z 234 joint) on the "
+      "lane kit sets with the real crown models, as `h1_crown.body` ran it, on `h1_lanes.body_solid` plus the BL-053 "
+      f"lug fixes voxelised on the 2 mm grid ({res['voxels']['bl053_fix_g'] if res['voxels'] else '-'} g of fix voxels). "
+      "Sanded: every stay element's stress x k (below). All values SF / req; R1 needs >= 1.\n")
+    a("| basis | strength | fatigue | creep | buckling | joint str / fat | governing |")
+    a("|---|---|---|---|---|---|---|")
+    for bn, v in b["bases"].items():
+        o, n, s_ = v["bl051"], v["bl053"], v["bl053_sanded"]
+        f = lambda k: f"{o[k]:.3f} / {n[k]:.3f} / **{s_[k]:.3f}**"   # noqa: E731
+        a(f"| {bn} | {f('strength')} | {f('fatigue')} | {f('creep')} | {f('buckling')} | "
+          f"{s_['joint_strength']:.2f} / {s_['joint_fatigue']:.2f} | {n['governing_tag']} |")
+    a("\nEach cell: BL-051 record / BL-053 as printed / BL-053 sanded 0.2 mm.\n")
+    a(f"Margins against R1 (sanded): strength +{100 * (w['strength'] - 1):.0f} %, fatigue "
+      f"+{100 * (noncyc['fatigue'] - 1):.0f} % (static-cinch bases), {100 * (w['fatigue'] - 1):+.0f} % on fine_sm8.cyc, "
+      f"buckling +{100 * (w['buckling'] - 1):.0f} %, joint +{100 * (w['joint_strength'] - 1):.0f} % / "
+      f"{100 * (noncyc['joint_fatigue'] - 1):+.0f} % ({100 * (w['joint_fatigue'] - 1):+.0f} % on .cyc). Raster "
+      f"{b['raster_g']['bl051']} -> {b['raster_g']['bl053']} g.\n")
+    a(f"**Sanding factor.** The print's stay sections at {len(SAND_Z)} heights, both stays, each with 0.2 mm taken off "
+      f"every wearer-facing edge (bores and traps not sanded): worst ratio k = **{sf['k']:.4f}** (z {sf['worst']['z']:g} "
+      f"{sf['worst']['side']}, {sf['worst']['A_mm2']} mm2, {sf['worst']['depth_y_mm']} mm deep), against "
+      f"{100 * sf['rect_equivalent_loss']:.1f} % for an 18 mm rectangle (the BL-053 estimate). Applied as a uniform "
+      "factor on every stay element (ASSUMPTION SAND-K), so buckling and the joint see it too (conservative).\n")
+    a("The cache was resumed: the 2026-11-14 run had finished 7 of the 8 basis runs before the stop; the last "
+      "(sanded fine_sm8.cyc) was re-run on 2026-11-21. A fresh beam-basis run reproduced the cached nominal result "
+      "(test `test_whole_body_cache_reproduces`).\n")
+
+    a("## 2. Hip boss insert pattern\n")
+    a("Prying model of `hipbelt_structure.pivot_check` (the mount tips about the boss edge; V at the 21 mm pin "
+      "stand-off plus e H, less H R), generalised to any pattern and to every tipping direction (72 directions; the "
+      "worst is reported). Insert tension in proportion to the distance from the tipping line (rigid flange). "
+      f"Capacity per insert: {ch['capacity']['basis']} = **{ch['capacity']['static_n']} N** static, "
+      f"{ch['capacity']['fatigue_n']} N at 1e5 (x 0.3), {ch['capacity']['sustained_n']} N sustained (x 0.4). Hole "
+      "axis = the print's build z (the boss face is on the plate), so the pull is along the layer normal.\n")
+    a("| pattern | walls ok | head to leg (mm) | strength | fatigue | creep | pass |")
+    a("|---|---|---|---|---|---|---|")
+    for r in hp["sweep"]:
+        z = r["z_ratio"]
+        a(f"| {r['n']} {r['layout']} r{r['ring_r']:g} D{r['boss_d']:g} | {r['walls_ok']} | {r['walls']['head_to_leg_mm']:.1f} | "
+          f"{z['strength']:.2f} | {z['fatigue']:.2f} | {z['creep']:.2f} | {bool(z['pass']) and r['walls_ok']} |")
+    a(f"\n**Chosen: {pat['n']} split, r {pat['ring_r']:g}, boss D{pat['boss_d']:g}** (the fewest inserts that pass on "
+      "the smallest boss that keeps the fatigue row >= 5 % over its goal; 8 at D48 passes at 1.16).\n")
+    a("| item | value |")
+    a("|---|---|")
+    a(f"| insert | `insert_heatset_brass_m5`, {hp['insert']['od']:g} OD x {hp['insert']['length']:g} long, "
+      f"{hp['insert']['mass_g']:g} g |")
+    a(f"| pilot hole | D{pat['hole_d']:g} x {pat['hole_depth']:g} deep from the boss face (insert + {INS_EXTRA_DEPTH:g}) |")
+    a("| positions (frame x, z) | " + "; ".join(f"({x:g}, {z:g})" for x, z in pat["positions_xz"]) + " |")
+    a(f"| walls (rule {pat['wall_rule_mm']:g}) | " + ", ".join(f"{k} {v:g}" for k, v in pat["walls"].items()) + " |")
+    a(f"| boss | D{pat['boss_d']:g}, solid {HIP_BOSS_DEPTH:g} mm from the face (was D32) |")
+    a(f"| screws | {pat['n']} x {m['hip_screw']} ({m['hip_screw_g']} g each), torque <= {hp['insert']['torque_max_n_m']:g} N m |")
+    a(f"| mount base (redraw) | D{fl['d_mm']:g} x {fl['t_mm']:g} mm Ti disc, {fl['holes']} x D{fl['hole_d_mm']:g} on the "
+      f"same positions (drawn: {fl['drawn']}); flange bending leg root to screw row min SF / goal "
+      f"{fl['min_sf_over_goal']} |")
+    a("\n| row | V (N) | H (N) | T max (N) | capacity (N) | SF | goal |")
+    a("|---|---|---|---|---|---|---|")
+    for k, r in ch["rows"].items():
+        a(f"| {k} | {r['V_n']} | {r['H_n']} | {r['T_max_n']} | {r['cap_n']} | {r['sf']:.2f} | {r['goal']} |")
+    rc = hp["record"]
+    a(f"\nRecord reproduced: 2 x M5 at x +/-11 on D32, C2 with H on the pin T = {rc['H_pin']['T_n']} N, SF "
+      f"{rc['H_pin']['sf_record_cap']} on the record's assumed 1500 N x 0.8 (hipbelt_structural 0.995); on the insert "
+      f"record {rc['H_pin']['sf_insert_record']}, with the layer normal {rc['H_pin']['sf_insert_record_z']}.\n")
+    a("**Slice check of the exported print** (`hip_slices`, sections normal to y from the boss face):\n")
+    a("| slice | pilot holes (D eq) | boss outer bounds x/z | pass |")
+    a("|---|---|---|---|")
+    for k, r in res["hip_slices"]["rows"].items():
+        a(f"| {k} | {', '.join('-' if h is None else f'{h:g}' for h in r['holes_d_eq'])} | {r['outer_bounds_xz']} | {r['pass']} |")
+    a(f"\nFlat lower half (as it goes to the slicer), round D{pat['hole_d']:g} holes counted at 0.6 / 6 / 10.5 mm above "
+      f"the plate: {res['hip_slices']['lower_flat_round_holes']}. The holes print as vertical blind holes open to the "
+      "plate: no support.\n")
+
+    a("## 3. Pins\n")
+    a("| station | qty | material | pin g | set g | design SF yield / fatigue | dy 95 SF yield / fatigue |")
+    a("|---|---|---|---|---|---|---|")
+    for n, r in pn["stations"].items():
+        bb = r.get("bending", {})
+        a(f"| {n} | {r['qty']} | {r['material']} | {r['pin_g']} | {r['set_g']} | {bb.get('sf_yield', '-')} / "
+          f"{bb.get('sf_fatigue', '-')} | {bb.get('dy95_sf_yield', '-')} / {bb.get('dy95_sf_fatigue', '-')} |")
+    a(f"\nPins total {pn['mass']['pins_g']} g, clips + tethers {pn['mass']['clips_tethers_g']} g; US1 in Ti "
+      f"{pn['mass']['delta_vs_bl053_g']:+.2f} g against BL-053. BOM rows in `h1_closeout.json` `pins.bom`.\n")
+
+    a("## 4. Cleanup\n")
+    a("- `us_route.section_bearing`: the hull kept the -y (lower) chain; it now keeps the bag-side hull (test "
+      "`test_section_bearing_keeps_the_bag_side_hull`).")
+    a("- Superseded notes at the head of `h1_crown.md`, `h1_bedfit.md`, `h1_lanes.md` (and their generators).")
+    a("- `bag_attach.THROAT` 18 -> 20 (as printed on all 12 stations); the 2026-11-01 value kept as `THROAT_LEGACY` "
+      "for the legacy fairlead model, the eye FEA and the voxel stubs. The US1 wrap text no longer says 'pin sleeve'.\n")
+
+    a("## 5. Mass\n")
+    a("| item | g | source |")
+    a("|---|---|---|")
+    a(f"| print (assembled {m['assembled_bl053_g']} -> {m['assembled_g']} g) | {m['print_delta_g']:+.1f} | export |")
+    a(f"| {m['hip_inserts'] - m['hip_inserts_booked']} more inserts + screws | {m['hardware_delta_g']:+.2f} | insert record, frame_comp_B.bolt_mass_g |")
+    a(f"| Ti mount base D{fl['d_mm']:g} x {fl['t_mm']:g} (was D44 x 1.2) | {m['mount_flange_delta_g']:+.2f} | ti_6al_4v density |")
+    a(f"| US1 pins in Ti | {m['us1_ti_pins_delta_g']:+.2f} | pins() |")
+    a(f"| **total BL-055** | **{tot:+.1f} ({_oz(tot)})** | ledger BL055 |\n")
+    a("Mass reductions that keep the SF: (1) D48 boss / flange with the same 8 inserts passes at fatigue 1.16 "
+      "(about -4 g, 1 % margin); (2) a measured layer-normal pull-out (HB-6) above 0.534 x the record would allow 6 "
+      "inserts (-3 g + screws).\n")
+
+    a("## 6. Assumptions\n")
+    for x in res["assumptions"]:
+        a(f"- ASSUMPTION {x['id']}: {x['text']} Settled by: {x['settled_by']}")
+    a("\n## 7. Screenshots\n")
+    for s_ in shots:
+        a(f"- `{s_}`")
+    return "\n".join(L) + "\n"
+
+
+def report(log=print) -> dict:
+    res = compute(log=log)
+    shots = figures(res)
+    res["screenshots"] = shots
+    RESULTS.write_text(json.dumps(res, indent=1, default=float))
+    DOC.write_text(write_md(res, shots))
+    return res
 
 
 def main(argv=None) -> int:

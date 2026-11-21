@@ -170,6 +170,13 @@ K_LLT = "Guy ladder-lock tabs LLT through B-22"
 K_B27 = "B-27 guy ports (2)"
 K_SETUP = "Machine set-up and stack swatches"
 K_USCH = "US floor channels B-16 (US1) and B-16b (US2) on F-02"
+K_RTM = "RTM roll-clip buckle tabs on the gussets"
+K_RT = "RT roll-clip straps on the flat hem B-07"
+K_FPGUS = "Gusset flat work: FP pockets (both)"          # full title: 'Gusset flat work' alone is the first of three
+K_BOX = "Frame-side box seams B-01 | gussets"
+K_FPP = "FP hip-reach pocket"
+K_HB = "Hinge band ends to the blade U"
+K_IMC = "IMC"
 
 
 def opref(text: str) -> str:
@@ -181,6 +188,7 @@ def _index_ops(oplist) -> dict:
     out = {}
     for o in oplist:
         out.setdefault(o.operation.split(":")[0].strip(), o.seq)
+        out.setdefault(o.operation.strip(), o.seq)          # BL-055: full title, for ops that share a prefix
     return out
 
 
@@ -2276,10 +2284,10 @@ JIGS = [
 # ============================================================================ BL-040 review status
 # design-reviewer pre-cut review (analysis/review_20261113_rev3_release.md): id, class, status, how
 REVIEW_STATUS = [
-    ("B-1", "blocker", "fixed", "DECISION HE-ONE: one hinge eye on HE / B-18 / B-01 / op 4.05 / load table / PT-3; SK-8; box_mismatches covers every stack"),
-    ("B-2", "blocker", "fixed", "RTM buckle tabs on both gussets (op 4.08) + RT strap placements on the flat hem (op 5.02); SK-10; load rows (unrated)"),
-    ("B-3", "blocker", "fixed", "op 4.13 states the keeper / mesh stack; SK-9; FP aft edge basted only; W1/W2 over FP confirmed"),
-    ("M-1", "major", "fixed", "B-26: one end in op 4.12, the free end caught in op 4.13"),
+    ("B-1", "blocker", "fixed", "DECISION HE-ONE: one hinge eye on HE / B-18 / B-01 / op " + OP(K_HE) + " / load table / PT-3; SK-8; box_mismatches covers every stack"),
+    ("B-2", "blocker", "fixed", "RTM buckle tabs on both gussets (op " + OP(K_RTM) + ") + RT strap placements on the flat hem (op " + OP(K_RT) + "); SK-10; load rows (unrated)"),
+    ("B-3", "blocker", "fixed", "op " + OP(K_AFT) + " states the keeper / mesh stack; SK-9; FP aft edge basted only; W1/W2 over FP confirmed"),
+    ("M-1", "major", "fixed", "B-26: one end in op " + OP(K_BOX) + ", the free end caught in op " + OP(K_AFT) + ""),
     ("M-2", "major", "fixed", "B-17 box 34 x 34"),
     ("M-3", "major", "fixed", "collar ring one way round; one notch set on the gusset (test)"),
     ("M-4", "major", "fixed", "B-22 label: INSIDE B-02h, x placed, z 695, coated face to the band"),
@@ -2291,7 +2299,7 @@ REVIEW_STATUS = [
     ("M-10", "major", "fixed", "camo/ referenced; BOM fabric_print line from camo/bom_print_line_proposed.csv; sublimation caveat"),
     ("M-11", "major", "fixed", "prototype buy vs production in costing.md / README"),
     ("M-12", "major", "fixed", "minimum prototype machine stated (README, tech pack section 2, BUILD_PLAN pointer)"),
-    ("M-13", "major", "fixed", "op 1.01 bastes the bottom only"),
+    ("M-13", "major", "fixed", "op " + OP(K_FPP) + " bastes the bottom only"),
     ("m-1", "minor", "fixed", "already three-way max since BL-039 (test + README)"),
     ("m-2", "minor", "fixed", "hinge 1019 N"), ("m-3", "minor", "fixed", "B-17 perimeter SF labelled pending PT-2"),
     ("m-4", "minor", "fixed", "B-09p slot drawn"), ("m-5", "minor", "accepted",
@@ -2305,20 +2313,20 @@ REVIEW_STATUS = [
     ("m-16", "minor", "accepted", "test square placement is in the shared huntkit/patterns/export_pdf (pattern-maker); it already picks a free corner when one exists"),
     ("m-17", "minor", "fixed", "QC-13 records the expected 81.9-84.0 L"), ("m-18", "minor", "fixed", "FIT-R3 in G7"),
     ("m-19", "minor", "fixed", "BL-041 (re-check n-15): IMC cam anchor tab + SK-11 per strap"),
-    ("m-20", "minor", "fixed", "op 3.08 turns the allowances away from B-22"), ("m-21", "minor", "fixed", "previews 110 dpi"),
+    ("m-20", "minor", "fixed", "op " + OP(K_HB) + " turns the allowances away from B-22"), ("m-21", "minor", "fixed", "previews 110 dpi"),
 ]
 
 
 # BL-041: design-reviewer RE-CHECK (analysis/review_20261113_rev3_recheck.md): id, class, status, how
 RECHECK_STATUS = [
-    ("X-1", "blocker", "fixed", "op 4.05 reordered: NECK, B-18 ROWS (through B-18 + B-01 only), PLACE HE, BOX, BASTE; "
+    ("X-1", "blocker", "fixed", "op " + OP(K_HE) + " reordered: NECK, B-18 ROWS (through B-18 + B-01 only), PLACE HE, BOX, BASTE; "
      "test: no B-18 / B-01 stitch line crosses the eye footprint and the rows precede the HE in the op text; PT-3 specimen built from the same order"),
     ("X-2", "blocker", "fixed", "DECISION HE-PIN: eye UP on the z 60 pin, box-X 34 x 10 at +4..+14 (2 mm under the cheeks), "
      "eye 17 mm solved by he_geometry, HE 86 mm; loaded pin +23.4..+25.3 over the B-01 / webbing bracket (target 25 +/- 3, test); "
      "HE-FIT dry fit is a BAG-CUT gate before PT-3; SK-8 redrawn with the rows and the real pin [superseded by BL-044 "
      "DECISION HE-ENV: box 34 x 7 at +4..+11, eye 25 mm, HE 96 mm on the BL-042 fairlead]"),
     ("Y-1", "major", "fixed", "[BL-044: the rig is now the printed BL-042 fairlead with a spacer, see M-3] PT-3 rig: pin in an 18 mm slot fixture, B-05 strip alone in the clamp, B-01 top free, pull "
-     "down B-01; specimen = reordered op 4.05 with the B-18 rows and the baste"),
+     "down B-01; specimen = reordered op " + OP(K_HE) + " with the B-18 rows and the baste"),
     ("Y-2", "major", "fixed", "DECISION RT-FWD: clip path on the gusset at 10.9 mm from the hose slot, buckle bar 10 mm "
      "over the B-26 cord, muzzle tabs aft (111 / 171 mm, 60 apart); min clearance 10.0 mm over tabs, keeper cord, hose "
      "slot, bow tabs, B-26 cord (test on the buckle envelope + strap corridor); W3 through a W3G guide under the RT "
@@ -2343,7 +2351,7 @@ RECHECK_STATUS = [
     ("n-11", "minor", "fixed", "bag_attachment.md HE / B-18 rows marked superseded by HE-ONE / HE-PIN"),
     ("n-12", "minor", "fixed", "tautology removed; a missing stack piece is an error; HE and RTM box centres checked to +/-1 mm"),
     ("n-13", "minor", "fixed", "SEW-F peak 1.15 x 384 = 442 N"),
-    ("n-14", "minor", "fixed", "op 4.15: hinge-eye spans with the zipper / edge foot; PT-3 floor seams the same"),
+    ("n-14", "minor", "fixed", "op " + OP(K_FLOOR) + ": hinge-eye spans with the zipper / edge foot; PT-3 floor seams the same"),
     ("n-15", "minor", "fixed", "DECISION IM-CAM-TAB: IMC dog-bone sews each cam to its hook / carabiner; SK-11 per strap; load row; MT-1 specimens"),
 ]
 
@@ -2374,11 +2382,11 @@ THIRD_STATUS = [
      f"files: ASSUMPTIONS B25-CLAMP / PAWL-TOP, gate B25-FIT in op {OP('B-25')}; TL-1 specimen carries the turn and run"),
     ("m-1", "minor", "fixed", "box top +11 (5 mm under the cheeks at the design pin); HE-FIT band 22-29 keeps the box "
      ">= 2 mm under the cheeks over the whole band; the solved bracket 23.1-28.9 sits inside it (test)"),
-    ("m-2", "minor", "fixed", "ops 4.05 / 4.08 give machine / needle / thread / stitch per step (step_spec), BT-301 "
+    ("m-2", "minor", "fixed", "ops " + OP(K_HE) + " / " + OP(K_RTM) + " give machine / needle / thread / stitch per step (step_spec), BT-301 "
      "named on the 304 tacks"),
     ("m-3", "minor", "fixed", "W3G (the only 16 mm BT-S) deleted; every BT-S is 10 x 2 (SK-1)"),
     ("m-4", "minor", "fixed", "IMC 192 mm, 48 mm folds, boxes 5 mm in from each raw end; MT-1 IMC specimens cut to it"),
-    ("m-5", "minor", "fixed", "op 7.13 (IMC): cam and G-hook bars threaded before the boxes, hardware listed"),
+    ("m-5", "minor", "fixed", "op " + OP(K_IMC) + " (IMC): cam and G-hook bars threaded before the boxes, hardware listed"),
     ("m-6", "minor", "fixed", "B25-BOX exception stated on the piece and on SK-1"),
     ("m-7", "minor", "fixed", "TL-1 / TL-1b read ovalisation at the loop centre with a bore gauge"),
     ("m-8", "minor", "fixed", "bar stock 2.0 m (5 x 200 + control 200 + 2 x 160 + 10 %); TL-1b steps include 288 N; "
@@ -2427,7 +2435,7 @@ FOURTH_STATUS = [
      "pin-straight check; the frame pin check at the bag's 1019 N row is flagged to BL-047"),
     ("m-1", "minor", "frame", "BL-047 (fillet relief)"),
     ("m-2", "minor", "fixed", "RT cut rounded UP to 565 mm (grip 50.8); DECISION RT-TAIL-EXC with the K-RT keeper"),
-    ("m-3", "minor", "fixed", "op 4.08 step 0: caliper the mated buckle before chalking; re-run rt_layout if larger"),
+    ("m-3", "minor", "fixed", "op " + OP(K_RTM) + " step 0: caliper the mated buckle before chalking; re-run rt_layout if larger"),
     ("m-4", "minor", "fixed", f"op {OP('B-25')}: B-25 cut last from a scrap-strip dry fit at B25-FIT"),
     ("m-5", "minor", "fixed", f"op {OP('B-25')} text: wearer-side wording, BL-046 labels, neck-fold and mitre BT-M, laps "
      "sewn off the bar round an 18 mm dowel; op numbers are read from the op list (BL-054, review 5 m-2)"),
@@ -2975,7 +2983,7 @@ def sk_hinge_eye(pk, path):
     for i, t in enumerate(steps):
         ax.text(0.0, 0.98 - i * 0.14, t, transform=ax.transAxes, va="top", fontsize=9.2,
                 color="#b00" if i in (0, 2, 6) else "k", fontweight="bold" if i == 6 else "normal")
-    ax.set_title("(b) op 4.05 order (PT-3 / SEW-F HE specimens: the same)", fontsize=10, loc="left")
+    ax.set_title("(b) op " + opref(OP(K_HE)) + " order (PT-3 / SEW-F HE specimens: the same)", fontsize=10, loc="left")
     # (c) section through the eye on the BL-042 hinge fairlead (y towards the bag, z above the floor seam line)
     ax = axs[2]
     sr = g["stay_r"]
@@ -3056,7 +3064,7 @@ def sk_hinge_eye(pk, path):
     ax.set_xlim(-72, 72)
     ax.set_ylim(-32, 62)
     ax.set_title(f"(d) On B-01 from OUTSIDE, x +/-{P.STAY_X:.0f} (both sides)", fontsize=10, loc="left")
-    fig.suptitle("SK-8  Hinge eye HE + B-18 (DECISIONS HE-ONE + HE-PIN + HE-ENV, op 4.05; PT-3, SEW-F HE and HE-FIT "
+    fig.suptitle("SK-8  Hinge eye HE + B-18 (DECISIONS HE-ONE + HE-PIN + HE-ENV, op " + opref(OP(K_HE)) + "; PT-3, SEW-F HE and HE-FIT "
                  "specimens are sewn exactly so)", fontsize=13, x=0.01, ha="left")
     fig.tight_layout()
     fig.savefig(path, dpi=95)
@@ -3072,7 +3080,7 @@ def sk_keeper_stack(pk, path):
     fig, axs = plt.subplots(1, 2, figsize=(15, 6.4))
     ax = axs[0]
     rows = [("blade U  (face DOWN)", 3.0, "#2b6cb0", 0, 12), ("K-W keeper loop (ON TOP of the mesh)", 2.0, "#c27c0e", 1, 12),
-            ("FP mesh edge (basted, op 4.10)", 1.0, "#7a7", 2, 12), ("gusset B-03  (face UP)", 0.0, "#555", 0, 12)]
+            ("FP mesh edge (basted, op " + opref(OP(K_FPGUS)) + ")", 1.0, "#7a7", 2, 12), ("gusset B-03  (face UP)", 0.0, "#555", 0, 12)]
     for lab, y, c, x0, x1 in rows:
         ax.plot([x0, x1], [y, y], color=c, lw=6, solid_capstyle="butt")
         ax.text(x1 + 0.4, y, lab, va="center", fontsize=10, color=c)
@@ -3085,7 +3093,7 @@ def sk_keeper_stack(pk, path):
     ax.set_xlim(-3, 26)
     ax.set_ylim(-2.2, 4.5)
     ax.axis("off")
-    ax.set_title("(a) Before sewing op 4.13: layers bottom to top", fontsize=11, loc="left")
+    ax.set_title("(a) Before sewing op " + opref(OP(K_AFT)) + ": layers bottom to top", fontsize=11, loc="left")
     ax = axs[1]
     ax.add_patch(plt.Rectangle((0, 0), 10, 6, fc="#e8f0e8", ec="#7a7"))
     ax.text(4, 5.0, "FP mesh pocket\n(on the gusset)", ha="center", va="center", fontsize=10, color="#363")
@@ -3102,7 +3110,7 @@ def sk_keeper_stack(pk, path):
     ax.set_ylim(-3, 8.5)
     ax.axis("off")
     ax.set_title("(b) Turned right side out: what you must see", fontsize=11, loc="left")
-    fig.suptitle("SK-9  Aft corner seam (op 4.13): K-W keeper loop goes ON TOP of the FP mesh edge", fontsize=13, x=0.01,
+    fig.suptitle("SK-9  Aft corner seam (op " + opref(OP(K_AFT)) + "): K-W keeper loop goes ON TOP of the FP mesh edge", fontsize=13, x=0.01,
                  ha="left")
     fig.tight_layout()
     fig.savefig(path, dpi=100)
@@ -3117,7 +3125,7 @@ def sk_roll_clip(pk, path):
     fig = plt.figure(figsize=(16, 8.5))
     ax = fig.add_axes([0.04, 0.58, 0.92, 0.32])
     b07 = rs.pieces["B-07"]
-    draw_piece(ax, b07, "(a) B-07 hem, flat, OUTSIDE up: RT strap rectangles + box-X (op 5.02); red ticks = notches",
+    draw_piece(ax, b07, "(a) B-07 hem, flat, OUTSIDE up: RT strap rectangles + box-X (op " + opref(OP(K_RT)) + "); red ticks = notches",
                label_lines=False, fs=7)
     for side, d in rt.items():
         ax.annotate(f"RT {side}: sewn 60 mm on the B-07s strip,\nfree strap out across the roll-end notch",
@@ -3125,7 +3133,7 @@ def sk_roll_clip(pk, path):
     ax.set_ylim(-20, 120)
     ax2 = fig.add_axes([0.05, 0.05, 0.50, 0.47])
     G = rs.pieces["B-03"]
-    draw_piece(ax2, G, "(b) Gusset B-03 (upper part): RTM tab, strap line to the roll end, W3 sweep (op 4.08)",
+    draw_piece(ax2, G, "(b) Gusset B-03 (upper part): RTM tab, strap line to the roll end, W3 sweep (op " + opref(OP(K_RTM)) + ")",
                label_lines=False, fs=7)
     rl, rc = rs.geo["rt_layout"], rs.geo["rt_clear"]
     x0, y0, x1, y1 = rtm["rect"]

@@ -38,7 +38,7 @@ DRAW = PRINT / "drawings"
 AN = HERE / "analysis"
 OPS_CSV = ROOT / "outputs" / "release" / "pack5200_corrie_f_rev3" / "manufacturing" / "op_sequence.csv"
 SCREENS = ROOT / "outputs" / "screens"
-SHOT = "20261113_BL054"
+SHOT = "20261121_BL055build"     # BL-055: named for the ticket that regenerates the package (was 20261113_BL054)
 IN = 25.4
 OZ = 28.3495
 MAT_PRINT = "pa12_cf_fdm_paht"
@@ -68,9 +68,14 @@ ASSUMPTIONS = {
                  "24.8) rounded up to 50 mm, retained by one E-clip (DIN 6799, for a 4 mm shaft) in a groove at each end "
                  "outside the sleeves. Sleeves 8 x 4.2 x 8 (h1_pawl BORE_REAM_D, PRODUCTION op 2).",
                  "Pawl dry fit: the pin turns freely in both sleeves; no end play over 0.5 mm."),
-    "HIP-INSERTS": ("The Ti hip mount fixes to the printed hip boss with M5 brass heat-set inserts. hipbelt_structural.md "
-                    "books 2 (SF 0.995 with the load on the pin, flagged) and recommends 3-4; frame_light2 / frame_comp_C "
-                    "use 4. This build uses 4 and buys 6.", "Insert pull-out coupon HB-6 (test kit) and the D-I1 coupon."),
+    "HIP-INSERTS": ("The Ti hip mount fixes to the printed hip boss with M5 brass heat-set inserts in the pattern BL-055 "
+                    "Part A sized (h1_closeout.json: count, positions, printed pilot holes; insert pull-out 1200 N "
+                    "(record ASSUMPTION) x the PAHT-CF hot knock-down x the layer-normal ratio). Buy 2 spares.",
+                    "Insert pull-out coupon HB-6 (test kit) and the D-I1 coupon."),
+    "HIP-HEAT": ("Inserts go in with the iron at 290 C (the PAHT-CF nozzle temperature): hot enough to melt the wall "
+                 "round the knurl without a blob; the insert record gives no install temperature.",
+                 "HB-6 practice blocks: each insert flush within 0.2 mm, square (an M5 screw stands upright), no bulge "
+                 "on the far face; pull-out per HB-6."),
     "RACK-CUT": ("The printed rack (print/crown_rack_fdm_pacf, 230 mm) is cut to the kit's spine length minus the clamp "
                  "socket (15 mm) and bonded to the spine tube's fore face with MMA, teeth fore, as frame.yaml 'crown spine "
                  "tube (rack bonded on)'. Kit S's spine (173 mm) needs a cut rack.",
@@ -199,6 +204,72 @@ def pins() -> dict:
             "hinge_sf_yield": hc["sf_yield"], "hinge_sf_fat": hc["sf_fatigue"], "hinge_cheek_mm": g.cheek,
             "hinge_span_mm": g.throat + 2 * g.cheek, "im_cheek_mm": gi.cheek, "im_span_mm": span_im,
             "hole_d_mm": BA.HOLE_D, "pin_d_mm": BA.PIN_D, "n_al": n - 2}
+
+
+# ================================================================================ BL-055 Part A data (close-out)
+CLOSEOUT_JSON = AN / "h1_closeout.json"   # structural-fea-engineer, huntkit/gendesign/h1_closeout.py (BL-055 Part A)
+PENDING = "**[PENDING BL-055 Part A]**"
+TI = "ti_6al_4v"
+MAT_NAME = {"ti_6al_4v": "Ti-6Al-4V", "alu_7075_t6": "7075-T6"}
+
+
+def _find(d, pred):
+    """First dict in a nested JSON (depth first) for which ``pred`` is true."""
+    if isinstance(d, dict):
+        if pred(d):
+            return d
+        for v in d.values():
+            r = _find(v, pred)
+            if r is not None:
+                return r
+    elif isinstance(d, list):
+        for v in d:
+            r = _find(v, pred)
+            if r is not None:
+                return r
+    return None
+
+
+def closeout() -> dict:
+    """BL-055 Part A results (``analysis/h1_closeout.json``), {} before they land. Returned keys: ``pins`` (the 12 pin
+    rows with the US1 pins in Ti: h1_closeout.pins), ``hip`` (the chosen insert pattern with its check:
+    h1_closeout.hip_check), ``hip_screw`` (the mount screw), ``raw`` and ``_path``. The JSON is searched by shape, not
+    by a fixed key path, so a re-arranged report still reads."""
+    if not CLOSEOUT_JSON.exists():
+        return {}
+    try:
+        d = json.loads(CLOSEOUT_JSON.read_text())
+    except (OSError, ValueError):
+        return {}
+    pins_ = _find(d, lambda x: isinstance(x.get("stations"), dict) and isinstance(x.get("bom"), list))
+    hip = _find(d, lambda x: isinstance(x.get("pattern"), dict) and "positions_xz" in x["pattern"] and "min_sf" in x)
+    scr = _find(d, lambda x: isinstance(x.get("hip_screw"), str))
+    return {"pins": pins_ or {}, "hip": hip or {}, "hip_screw": (scr or {}).get("hip_screw"),
+            "insert": _find(d, lambda x: "pullout_n" in x and "hole_d" in x) or {},
+            "raw": d, "_path": str(CLOSEOUT_JSON.relative_to(ROOT))}
+
+
+def pin_rows(co: dict | None = None) -> dict:
+    """The pin rows the build uses: BL-055's (US1 in Ti) when published, else BL-053's (h1_rev5.json pins)."""
+    co = closeout() if co is None else co
+    if co.get("pins"):
+        return co["pins"]
+    return rev5().get("pins", {})
+
+
+def pin_groups(pr: dict) -> dict:
+    """{'Ti-6Al-4V': [(station, qty, row), ...], '7075-T6': [...]} from the pin rows."""
+    out: dict = {}
+    for name, r in pr.get("stations", {}).items():
+        out.setdefault(MAT_NAME.get(r["material"], r["material"]), []).append((name, r["qty"], r))
+    return out
+
+
+def hip_rel(pat: dict) -> list[tuple]:
+    """Insert positions relative to the boss centre: (x mm, + = R; z mm, + = up) as a beginner marks them."""
+    from huntkit.gendesign.h1_closeout import HIP_C        # the boss axis (frame x, z)
+    cx, cz = pat.get("centre_xz") or HIP_C
+    return [(round(x - cx, 1), round(z - cz, 1)) for x, z in pat["positions_xz"]]
 
 
 def joints() -> tuple:
@@ -388,13 +459,16 @@ def readme_md(stl: list[dict], b: dict) -> str:
          "records: `analysis/frame_h1.md`, `h1_lanes.md`, `h1_bedfit.md`, `h1_crown.md`, `crown_gnl.md`, "
          "`h1_spine_channel.md`. Code: `huntkit/gendesign/frame_h1.py`.", "",
          "## Status", "",
-         "- **Engineering release candidate, not released.** Print the first article only after the coupons CA-1 and "
-         "CA-5 pass (`designs/pack_5200/tests_physical/CA1_fatigue_rig.md`, the test kit) **and** after the BL-053 "
-         "print plan (orientation, supports, filament, time) has replaced the placeholder in BUILD_H1 section 3.",
+         "- **Engineering release candidate, not released.** Print the first article only after the coupons CA-1 "
+         "(with the scar bars) and CA-5 pass (`designs/pack_5200/tests_physical/CA1_fatigue_rig.md`, the test kit)"
+         + (" and after the BL-053 print plan has replaced the placeholder in BUILD_H1 section 3." if not b else
+            "; the print plan (orientation, supports, filament, time) is BL-053's, in BUILD_H1 section 3."),
          "- Review 5 (`analysis/review_20261113_fifth.md`) found the body files cannot be printed with the old "
          "\"no supports\" text (B-1). BL-053 owns the supports, cradle direction, nut traps, US1 root and pin "
-         "retention; BL-054 (this package) owns the build text.",
+         "retention; BL-055 Part A the whole-body re-run, the hip insert pattern and the Ti US1 pins; the "
+         "manufacturing-engineer (BL-054 / BL-055 Part B) owns the build text.",
          f"- {('BL-053 data in use: `' + b['_path'] + '`.') if b else PLACEHOLDER + ' BL-053 data not yet published; marked placeholders in BUILD_H1.'}",
+         f"- {('BL-055 Part A data in use: `' + closeout()['_path'] + '` (hip inserts, Ti US1 pins).') if closeout() else PENDING + ' BL-055 Part A (hip insert pattern, Ti US1 pins) not yet published; BUILD_H1 sections 9 and 12 carry pending boxes.'}",
          "",
          "## Files", "",
          "| file | what | mass | size as written on the plate (x, y, z) | watertight |", "|---|---|---:|---|---|"]
@@ -425,11 +499,104 @@ def readme_md(stl: list[dict], b: dict) -> str:
           "- BL-050: US2 outer cheek is a bolt-on clevis; lower half turned on the plate.",
           "- BL-051: stay crown restored; clevis screw heads counterbored (M5 x 35).",
           "- BL-054: print README regenerated from the meshes; build path moved to BUILD_H1.md; spine clamp drawing.",
+          "- BL-053: tree supports from the plate, hex nut traps, US1 / US2 lugs for a 40 mm cradle belly, headed pins "
+          "with R-clips and tethers.",
+          "- BL-055: " + ("hip boss with printed insert pilot holes (Part A pattern); US1 pins in Ti-6Al-4V; "
+                          if closeout() else "") + "README / BUILD_H1 regenerated (Part B).",
           ""]
     return "\n".join(L)
 
 
 # ================================================================================ BUILD_H1
+def pins_step3(pn: dict, pr: dict, co: dict) -> str:
+    """BUILD_H1 9.3: which pin goes where, from the pin rows (BL-055 Part A: US1 in Ti, orchestrator call)."""
+    gr = pin_groups(pr)
+    if not gr:
+        return (f"3. Pins: hinge (z 60) = **Ti-6Al-4V, {pn['hinge_d_mm']:.0f} x {pn['hinge_len_mm']:.0f} mm** "
+                f"(**HW-PIN-TI**, 2). The other 10 = 7075-T6, 5 mm (**HW-PIN-AL**).")
+    parts = []
+    for mat, rows in sorted(gr.items(), key=lambda kv: kv[0] != "Ti-6Al-4V"):
+        hid = "HW-PIN-TI" if mat == "Ti-6Al-4V" else "HW-PIN-AL"
+        n = sum(q for _, q, _ in rows)
+        each = ", ".join(f"{nm} (shank {r['shank_mm']} mm, {r['pin_g']:.2f} g)" for nm, _, r in rows)
+        parts.append(f"**{mat}** (**{hid}**, {n}): {each}")
+    why = []
+    for nm, _, r in gr.get("Ti-6Al-4V", []):
+        b = r.get("bending")
+        if b:
+            load = b.get("design_yz_n", b.get("row_n"))
+            t = f"{nm}: bending SF {b['sf_yield']} yield / {b['sf_fatigue']} fatigue" + (f" on {load:.0f} N" if load else "")
+            if "dy95_sf_fatigue" in b:
+                t += f", {b['dy95_sf_yield']} / {b['dy95_sf_fatigue']} with the contact line 95 mm aft ({b['dy95_yz_n']:.0f} N)"
+            if r.get("was"):
+                wb = r["was"].get("bending") or {}
+                t += (f" (in {MAT_NAME.get(r['was']['material'], r['was']['material'])}: "
+                      f"{wb.get('sf_fatigue')} / {wb.get('dy95_sf_fatigue')} fatigue)")
+            why.append(t)
+    src = co.get("_path") or "analysis/h1_rev5.json pins (BL-053)"
+    rt, ra = (float(material(m).require("density_kg_m3")) / 1000.0 for m in (TI, "alu_7075_t6"))
+    txt = (f"3. Pins, all {pn['pin_d_mm']:.0f} mm, headed: " + "; ".join(parts) + f" (source `{src}`). "
+           f"Keep the two kinds apart: a Ti pin weighs {rt / ra:.2f} x a 7075 pin of the same size ({rt:.2f} vs "
+           f"{ra:.2f} g/cm3, material records), so CHECK each pin on a 0.01 g scale against its weight above "
+           "(within 0.1 g) before it goes in.")
+    if why:
+        txt += " Why Ti: " + "; ".join(why) + "."
+    if not co:
+        txt += f" {PENDING} the US1 pins move to Ti-6Al-4V (orchestrator call); this list follows when Part A publishes."
+    return txt
+
+
+def hip_n(co: dict) -> int | None:
+    h = co.get("hip", {})
+    return len(h["pattern"]["positions_xz"]) if h else None
+
+
+def hip_section(co: dict) -> list[str]:
+    """BUILD_H1 12: the hip insert pattern from BL-055 Part A (h1_closeout.hip_check), else a marked pending box."""
+    h = co.get("hip", {})
+    if not h:
+        return ["## 12. Hip mount", "",
+                f"> {PENDING} the structural-fea-engineer is sizing the hip insert pattern (count, pilot holes, "
+                "positions, wall) for SF >= 1.5 / fatigue >= 1.15 and cutting the pilot holes into the print "
+                "(BL-055 Part A). **Do not heat-set any hip insert until this box is replaced.**", "",
+                "1. Practise heat-setting on the HB-6 insert blocks meanwhile (test kit).", ""]
+    pat = h["pattern"]
+    n = len(pat["positions_xz"])
+    rel = hip_rel(pat)
+    ir = co.get("insert", {})
+    ms = h.get("min_sf", {})
+    cap = h.get("capacity", {})
+    torque = ir.get("torque_max_n_m")
+    scr = co.get("hip_screw") or "M5 screw"
+    L = ["## 12. Hip mount", "",
+         f"Source: `{co['_path']}` (BL-055 Part A, `huntkit/gendesign/h1_closeout.py`). {n} M5 brass heat-set inserts "
+         f"(**HW-HIP-INS**) on a boss {pat['boss_d']:.0f} mm ({pat['boss_d'] / IN:.2f} in) across; the pilot holes are "
+         f"PRINTED into the boss (D {pat['hole_d']:.1f} x {pat['hole_depth']:.1f} mm deep, open on the wearer face, "
+         "which is the face on the plate).", "",
+         "| insert | right of the boss centre (mm) | above the boss centre (mm) |", "|---:|---:|---:|"]
+    L += [f"| {i} | {x:+.1f} | {z:+.1f} |" for i, (x, z) in enumerate(rel, 1)]
+    w = pat.get("walls", {})
+    L += ["",
+          f"Walls (record minimum {pat.get('wall_rule_mm', float('nan')):.1f} mm): hole to boss edge "
+          f"{w.get('edge_mm', float('nan')):.1f} mm, between holes {w.get('between_mm', float('nan')):.1f} mm, hole to the "
+          f"mount's pin bore {w.get('to_pin_bore_mm', float('nan')):.1f} mm"
+          + (f", hole floor {w['floor_mm']:.1f} mm" if "floor_mm" in w else "") + ". Checked: strength SF "
+          f"{ms.get('strength', float('nan'))} (goal 1.5), fatigue {ms.get('fatigue', float('nan'))} (goal 1.15), creep "
+          f"{ms.get('creep', float('nan'))}; insert capacity {cap.get('static_n', float('nan')):.0f} N each "
+          f"({cap.get('basis', '')}). Pattern {'PASSES' if h.get('pass') else 'DOES NOT PASS: do not fit the mount, ask the engineer'}.", "",
+          f"1. CHECK the print: count {n} pilot holes on the boss; a {pat['hole_d']:.1f} mm drill shank slides into each "
+          f"by hand; the caliper depth rod reads >= {pat['hole_depth']:.1f} mm in each. Clear any support or stringing "
+          "with the drill held in your fingers (do not drill deeper).",
+          "2. Practise on the HB-6 insert blocks first (test kit). Then heat-set each insert with the M5 tip at the "
+          "soldering iron at 290 C (554 F, the PAHT-CF nozzle temperature of section 3; ASSUMPTION HIP-HEAT), square to the face, until it sits 0.0-0.2 mm below the face (caliper depth rod).",
+          "3. CHECK: lay a steel rule across the boss: no insert stands proud; an M5 screw starts by hand in each.",
+          f"4. Fit the SLM Ti pivot mount (**HW-HIP-MNT**) with {n} **{scr}** (**HW-HIP-SCR**), blue threadlocker, "
+          + (f"{min(2.0, torque):.1f} N m (insert record maximum {torque:.1f} N m)" if torque else "2 N m")
+          + ", in a star order.",
+          "5. CHECK: the mount does not rock when you push its pin end by hand in each direction.", ""]
+    return L
+
+
 def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
     Z, C = joints()
     pw = pawl()
@@ -444,7 +611,8 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
     hrs = lower["hours_no_support"] + upper["hours_no_support"]
     r5, p5 = rev5(), ps()
     tw = r5.get("trap_walls", {})
-    pr = r5.get("pins", {})
+    co = closeout()
+    pr = pin_rows(co)
     ret = pr.get("retainer", {}).get("part") if pr else None
     belly = (r5.get("cradle_3d", {}).get("bellies_mm") or [None])[0]
     scar = p5.get("scars", {})
@@ -473,7 +641,7 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
          "Frame coordinates used below: x to the wearer's right, y aft (toward the bag), z up from the stay feet. "
          "\"Wearer face\" is the side against your back.", "",
          "## 1. Shopping list (frame only; every line has an ID: label each bag with it)", ""]
-    L += shopping_table(stl, cp, kits, pn, Z, C, pw, pr)
+    L += shopping_table(stl, cp, kits, pn, Z, C, pw, pr, co)
     L += ["", "> **Two screw lengths and two washer sizes look alike.** HW-J234-SCR (M5 x "
           f"{Z.bolt_len:.0f}) and HW-US2-SCR (M5 x {C.bolt_len:.0f}); HW-J234-WSH ({Z.washer_od:.0f} mm OD) and "
           f"HW-US2-WSH ({C.washer_od:.0f} mm OD). Keep each in its own bag with its ID. Check before fitting: screw "
@@ -612,9 +780,7 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
           f"2. Slide one UHMWPE sleeve (**HW-PIN-SLV**, OD {pn['hole_d_mm']:.1f} / ID 5.2) into each cheek, flush with "
           f"both faces: {pn['hinge_cheek_mm']:.0f} mm long at the hinge, {pn['im_cheek_mm']:.0f} mm at the other 10 "
           "stations (ASSUMPTION PIN-SLEEVE). 24 sleeves per frame.",
-          f"3. Pins: hinge (z 60) = **Ti-6Al-4V, {pn['hinge_d_mm']:.0f} x {pn['hinge_len_mm']:.0f} mm** "
-          f"(**HW-PIN-TI**, 2; not 7075: the 1019 N hinge row fails a 7075 pin). The other 10 = 7075-T6, 5 mm "
-          "(**HW-PIN-AL**).",
+          pins_step3(pn, pr, co),
           (f"4. Pin retention (BL-053, review 5 M-5): {pr['scheme']}. Head on the outboard side, the R-clip "
            f"(**HW-PIN-RET**: {ret}) through the {pr['stations']['hinge']['cross_hole']['d_mm']} mm cross hole "
            f"{pr['stations']['hinge']['cross_hole']['from_far_cheek_face_mm']} mm past the far (inboard) cheek face; "
@@ -655,12 +821,7 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
           "5. CHECK (after the crown is in, step 13): pull the cord to the stop, the rack slides both ways; let go, the "
           "pawl snaps back into the teeth. Do it 100 times.", ""]
     # ---- 12. hip
-    L += ["## 12. Hip mount", "",
-          "1. Heat-set 4 M5 brass inserts (**HW-HIP-INS**) into the printed hip boss, square to the face, flush "
-          "(ASSUMPTION HIP-INSERTS). Practise on the HB-6 insert blocks first.",
-          "2. Fit the SLM Ti pivot mount with its M5 screws, blue threadlocker, 2 N m.",
-          "3. **OPEN (found by BL-054):** the H1 print's hip-boss pilot holes are not in the H1 records; check the boss on the "
-          "print against the Ti mount's hole pattern before heat-setting; send a photo if the holes are not there.", ""]
+    L += hip_section(co)
     # ---- 13. crown
     L += ["## 13. Crown: spine clamp, B-25 sleeves, corners", "",
           "The crown is bought carbon tube, bonded with MMA. Kits (owner 2026-11-11, `crown_diet`):", "",
@@ -743,7 +904,35 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
     return "\n".join(L)
 
 
-def shopping_table(stl, cp, kits, pn, Z, C, pw, pr) -> list[str]:
+def pin_shop_rows(pn: dict, pr: dict) -> list[tuple]:
+    """HW-PIN-TI / HW-PIN-AL from the pin rows: one line per material, every station's shank, head and cross hole
+    (BL-055: US1 joins the hinge in Ti). Before any pin rows exist: the BL-049 hinge pin and 10 x 7075."""
+    gr = pin_groups(pr)
+    if not gr:
+        return [("HW-PIN-TI", f"Ti-6Al-4V pin, {pn['hinge_d_mm']:.0f} mm h8 ground, {pn['hinge_len_mm']:.0f} mm", 2,
+                 f"hinge z 60 (yield SF {pn['hinge_sf_yield']}, fatigue {pn['hinge_sf_fat']}, h1_lanes.hinge_pin)",
+                 "machinist (Ti rod)"),
+                ("HW-PIN-AL", "7075-T6 pin, 5 mm", pn["n_al"], "US1, US2, IM1-IM3, both sides", "machinist / bag kit")]
+    out = []
+    for mat, rows in sorted(gr.items(), key=lambda kv: kv[0] != "Ti-6Al-4V"):
+        hid = "HW-PIN-TI" if mat == "Ti-6Al-4V" else "HW-PIN-AL"
+        same: dict = {}                                   # stations with the same drawing share a line
+        for nm, q, r in rows:
+            k = (r["shank_mm"], tuple(r["head_mm"]), r["cross_hole"]["d_mm"], r["cross_hole"]["from_far_cheek_face_mm"])
+            same.setdefault(k, []).append((nm, q))
+        desc = f"{mat} pin, {pn['pin_d_mm']:.0f} mm h8 ground, headed (1.6 mm tether hole in the head): " + "; ".join(
+            f"{' + '.join(nm for nm, _ in v)} ({sum(q for _, q in v)}): shank {k[0]} mm, head {k[1][0]:.0f} x {k[1][1]} mm, "
+            f"{k[2]} mm cross hole {k[3]} mm past the far cheek" for k, v in same.items())
+        why = "; ".join(f"{nm} bending SF {r['bending']['sf_yield']} / fatigue {r['bending']['sf_fatigue']}"
+                        for nm, _, r in rows if r.get("bending"))
+        out.append((hid, desc, sum(q for _, q, _ in rows),
+                    ", ".join(nm for nm, _, _ in rows) + ", both sides" + (f" ({why})" if why else ""),
+                    "machinist (Ti rod)" if hid == "HW-PIN-TI" else "machinist / bag kit"))
+    return out
+
+
+def shopping_table(stl, cp, kits, pn, Z, C, pw, pr, co=None) -> list[str]:
+    co = co or {}
     by = {r["file"]: r for r in stl}
     hs = pr.get("stations", {}).get("hinge", {}) if pr else {}
     ia = pr.get("stations", {}).get("us1", {}) if pr else {}
@@ -762,16 +951,7 @@ def shopping_table(stl, cp, kits, pn, Z, C, pw, pr) -> list[str]:
          "US2 clevises only, nut side", "hardware store"),
         ("HW-M5-NUT", f"M5 hex nut A2, ISO 4032 ({C.nut_af:.0f} AF x {C.nut_t:.0f} mm)", 8,
          "4 for z 234 + 4 for the clevises; thin nuts do not fit", "hardware store"),
-        ("HW-PIN-TI", f"Ti-6Al-4V pin, {pn['hinge_d_mm']:.0f} mm h8 ground, " + (
-            f"headed: shank {hs['shank_mm']} mm, head {hs['head_mm'][0]:.0f} x {hs['head_mm'][1]} mm, "
-            f"{hs['cross_hole']['d_mm']} mm cross hole {hs['cross_hole']['from_far_cheek_face_mm']} mm past the far "
-            f"cheek, 1.6 mm tether hole in the head" if hs else f"{pn['hinge_len_mm']:.0f} mm"), 2,
-         f"hinge z 60 (yield SF {pn['hinge_sf_yield']}, fatigue {pn['hinge_sf_fat']}, h1_lanes.hinge_pin)"
-         + ("" if hs else "; end form per BL-053 retention"), "machinist (Ti rod)"),
-        ("HW-PIN-AL", "7075-T6 pin, 5 mm, " + (
-            f"headed: shank {ia['shank_mm']} mm, head {ia['head_mm'][0]:.0f} x {ia['head_mm'][1]} mm, "
-            f"{ia['cross_hole']['d_mm']} mm cross hole, 1.6 mm tether hole" if ia else "length per BL-053"), pn["n_al"],
-         f"US1, US2, IM1-IM3, both sides; span cheek-to-cheek {pn['im_span_mm']:.0f} mm", "machinist / bag kit"),
+    ] + pin_shop_rows(pn, pr) + [
         ("HW-PIN-RET", (f"{pr['retainer']['part']} + {pr['retainer']['tether']}" if pr else
                         f"{PLACEHOLDER} pin retention parts (review 5 M-5)"), pn["stations"], "one set per station"
          + (f" (BL-053; source {pr['retainer']['source']})" if pr else ""), "hardware / BL-053"),
@@ -788,8 +968,12 @@ def shopping_table(stl, cp, kits, pn, Z, C, pw, pr) -> list[str]:
         ("HW-PAWL", "low-profile pawl: P1 `crown_pawl_lp_fdm_pacf` (printed), production `crown_pawl_lp_slm` (SLM Ti)",
          1, "never the old `../crown_pawl_*`", "print / SLM bureau"),
         ("HW-CORD", "2 mm Dyneema release cord 0.6 m + POM toggle", 1, "crown_diet torso-adjust row", "bag kit"),
-        ("HW-HIP-INS", "M5 brass heat-set insert (for plastics)", 6, "4 used + 2 spare (ASSUMPTION HIP-INSERTS)",
-         "hardware"),
+        ("HW-HIP-INS", "M5 brass heat-set insert, 9.5 mm long (record insert_heatset_brass_m5)",
+         (hip_n(co) + 2) if hip_n(co) else 6,
+         (f"{hip_n(co)} used (BL-055 pattern, section 12) + 2 spare" if hip_n(co) else f"{PENDING} count") +
+         " (ASSUMPTION HIP-INSERTS)", "hardware"),
+        ("HW-HIP-SCR", co.get("hip_screw") or f"{PENDING} M5 mount screw", hip_n(co) or 0,
+         "hip mount to the inserts (section 12)", "Ti fastener vendor"),
         ("HW-HIP-MNT", "SLM Ti-6Al-4V hip pivot mount + its M5 screws", 1, "as today's frame (frame.yaml 28.0 g)",
          "SLM bureau"),
         ("HW-BUSH", "UHMWPE bushing, 70 mm, for the 16 mm crown legs / 18.0 mm bores", 4,
@@ -933,6 +1117,7 @@ def checks(pk: dict) -> dict:
             "body_g": round(by["h1_lower_flat"]["mass_g"] + by["h1_upper_flat"]["mass_g"], 1),
             "no_production_md_pointer": "as in `../frame/PRODUCTION.md`" not in md,
             "bl053_data": bool(pk["bl053"]), "placeholders": md.count(PLACEHOLDER),
+            "bl055_data": bool(closeout()), "pending_bl055": md.count(PENDING),
             "b25_before_corners": "Slide both B-25 bar sleeves onto the top bar now" in pk["build_md"],
             "clamp_mass_g": pk["clamp"]["mass_g"]}
 
@@ -986,7 +1171,7 @@ def screenshots(pk: dict, draw: list[Path]) -> list[Path]:
     for ln in crown:
         if ln[:2].rstrip(".").isdigit():
             lines += textwrap.wrap(ln.replace("**", ""), 80, subsequent_indent="     ")[:3]
-    lines += ["", f"Placeholders waiting for BL-053: {md.count(PLACEHOLDER)}"]
+    lines += ["", f"Placeholders waiting for BL-053: {md.count(PLACEHOLDER)}; for BL-055 Part A: {md.count(PENDING)}"]
     fig = plt.figure(figsize=(8, 0.21 * len(lines) + 0.6))
     fig.text(0.02, 0.99, "\n".join(lines), va="top", family="monospace", fontsize=10)
     d = SCREENS / f"{SHOT}_3.png"

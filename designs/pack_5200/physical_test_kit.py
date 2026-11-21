@@ -1035,7 +1035,7 @@ STRAP_LOSS_MAX_MM = 0.1    # more than 0.1 mm at the wear spot, is wear the mode
 
 def pin_ret_row() -> dict:
     """BL-055 Part B (BL-053 M-5): test PIN-RET, the steps and numbers from h1_rev5.json pins.test."""
-    p = rev5()["pins"]
+    p = _FB().pin_rows()
     st = p["stations"]
     n = sum(v["qty"] for v in st.values())
     steps_src = p["test"]["steps"]
@@ -1053,7 +1053,7 @@ def pin_ret_row() -> dict:
                 safety_at_stake=(f"every fairlead pin ({n}): a lost pin drops a strap or the bag hinge; clip wire "
                                  f"double shear {p['clip_double_shear_n']:.0f} N ({p['clip_uts_source']})"),
                 specimen=(f"P1 (MT-1cr) and P2 (T9 walk) with every pin set as BUILD_H1 section 9 ({n} per frame: "
-                          + ", ".join(f"{k} {v['qty']} x {v['material']} 5 x {v['shank_mm']}" for k, v in st.items())
+                          + ", ".join(f"{k} {v['qty']} x {_FB().MAT_NAME.get(v['material'], v['material'])} 5 x {v['shank_mm']}" for k, v in st.items())
                           + f"); the 2 US2 pin sets from CLEVIS-SHARE A and B; {p['retainer']['part']}; "
                             f"{p['retainer']['tether']}"),
                 kit="C, A, D",
@@ -1687,7 +1687,7 @@ def measures(lv: dict, lid_g: float, cut: dict) -> dict:
            for g_, k_ in keys]
         + [("lugs", "no crack or whitening at the US1 / US2 lugs; every zero returns within 5 % of the top reading", y,
             "yes", "Y", "SUB-BC")],
-        "PIN-RET": per(rev5()["pins"]["stations"] and sum(v["qty"] for v in rev5()["pins"]["stations"].values()),
+        "PIN-RET": per(_FB().pin_rows()["stations"] and sum(v["qty"] for v in _FB().pin_rows()["stations"].values()),
                        "(a) pin movement under a 50 N push on its tail", "mm", "max", "0.5", "PIN-RET", "pin#")
         + [(f"(b) after {w}", "every pin home (0.2 mm feeler not under any head), every clip seated", y, "yes", "Y", "PIN-RET")
            for w in ("the T9 walk (P2)", "MT-1cr (P1)", "CLEVIS-SHARE A", "CLEVIS-SHARE B")]

@@ -258,3 +258,36 @@ def test_ops_quote_the_pattern_placements(pk):
     b28 = next(o for o in pk["ops"] if o.operation.startswith("B-28 front tabs"))
     bw, bh = next((w, h) for w, h, lab in M.boxes_of(pk["ctx"].rs.pieces["B-02h"]) if "B-28" in lab)
     assert f"{bw:.0f} x {bh:.0f} mm" in b28.notes and b28.length_mm == pytest.approx(2 * M.AS.box_x(bw, bh)["path_mm"], abs=0.2)
+
+
+# ---------------------------------------------------------------------------- BL-055 Part B (item 2)
+def test_op_numbers_in_the_text_are_read_from_the_op_list(pk, tmp_path):
+    """No typed op number survives: every 'op N.NN' the written files cite is a real op, no cross-reference is left
+    unresolved, and the keys the text uses resolve to the op they name (so a renumbering moves the text with it)."""
+    import re
+    seqs = {o.seq for o in pk["ops"]}
+    files = M.write_files(pk, tmp_path)
+    M.sketches(pk, tmp_path)
+    by_title = {o.operation: o.seq for o in pk["ops"]}
+    assert M._OPIDX[M.K_HE] == by_title[M.K_HE]
+    assert M._OPIDX[M.K_FPGUS] == by_title["Gusset flat work: FP pockets (both)"]
+    assert M._OPIDX[M.K_FPGUS] != M._OPIDX["Gusset flat work"]          # the full-title key is the one that differs
+    for k in ("K_HE", "K_FLOOR", "K_FPBAND", "K_COLLAR", "K_AFT", "K_B11", "K_B22", "K_LLT", "K_B27", "K_SETUP",
+              "K_USCH", "K_RTM", "K_RT", "K_FPGUS", "K_BOX", "K_FPP", "K_HB", "K_IMC"):
+        assert getattr(M, k) in M._OPIDX, k
+    cited = 0
+    for f in files:
+        if f.suffix not in (".md", ".csv", ".txt"):
+            continue
+        t = f.read_text(encoding="utf-8")
+        assert "«op:" not in t and "[op " not in t, f
+        for m in re.finditer(r"\bops? (\d{1,2}\.\d{2})", t):
+            assert m.group(1) in seqs, (f.name, m.group(0))
+            cited += 1
+    assert cited > 10
+    for o in pk["ops"]:
+        assert "«op:" not in o.notes and "[op " not in o.notes, o.seq
+    # the review-status and assumption rows print the resolved numbers
+    rows = " ".join(M.opref(h) for _, _, _, h in M.REVIEW_STATUS + M.RECHECK_STATUS + M.THIRD_STATUS
+                    + M.FOURTH_STATUS)
+    assert f"op {by_title[M.K_HE]} reordered" in rows and "«op:" not in rows

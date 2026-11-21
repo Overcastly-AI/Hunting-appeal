@@ -94,3 +94,101 @@ def test_results_template_reads_back(kit, tmp_path):
     lid = next(r for r in rows if r.test_id == "T9-R3d" and r.check == "band")
     lo, hi = (float(x) for x in lid.limit.split(".."))
     assert hi - lo == pytest.approx(10.0) and lo < kit["lid_g"] < hi
+
+
+# ---------------------------------------------------------------------------- BL-055 Part B
+import json as _json  # noqa: E402
+import re as _re  # noqa: E402
+
+_REV5 = _json.loads((ROOT / "designs/pack_5200/analysis/h1_rev5.json").read_text())
+_G2 = _json.loads((ROOT / "designs/pack_5200/tests_physical/us1_outer_gauge.json").read_text())
+
+
+def _nums(txt: str) -> set:
+    return {float(x) for x in _re.findall(r"-?\d+(?:\.\d+)?", txt)}
+
+
+def test_clevis_share_is_two_loadings_with_vectors_and_microstrain_lines(kit):
+    r = kit["register"]["CLEVIS-SHARE"]
+    t = _REV5["gauges"]["tests"]
+    A, B = t["CLEVIS-SHARE|us2_inboard"], t["CLEVIS-SHARE|us2_yz"]
+    pa, pb = A["steps"][0]["pin_load_n"], B["steps"][0]["pin_load_n"]
+    assert round(pa) == 1104 and round(pb) == 643                     # the ticket's A / B loads
+    assert f"{pa:.0f} N proof" in r["title"] and f"{pb:.0f} N proof" in r["title"]
+    for L in (A, B):
+        # the pull vector, as 100 mm components a beginner sets with a rule
+        assert str(L["pull_unit_vector_frame_R"]) in r["steps"]
+        for s in L["steps"]:                                         # every published pass line is in the pass text
+            assert f"PASS if size <= {s['pass_if_abs_microstrain_at_most']:.0f}" in r["pass_fail"]
+    assert "LOADING A" in r["steps"] and "LOADING B" in r["steps"]
+    # the static steps of A are MT-1cr|us2's (same row, same vector), so MT-1cr and CLEVIS-SHARE A cross-check
+    assert [s["pin_load_n"] for s in t["MT-1cr|us2"]["steps"]] == K.clevis_loadings()["A"]["steps_n"]
+
+
+def test_mt1cr_uses_the_3d_vectors_a_50kg_quarter_and_a_contact_photo(kit):
+    r = kit["register"]["MT-1cr"]
+    kg = K.float_limit_kg()
+    assert kg >= 50.0 and f"{kg:.0f} kg" in r["title"]
+    assert "photograph" in r["steps"] and "contact" in r["pass_fail"]
+    for key in ("MT-1cr|us1", "MT-1cr|us2"):
+        assert str(_REV5["gauges"]["tests"][key]["pull_unit_vector_frame_R"]) in r["steps"]
+    # three gauges, each step with its number
+    for key, tests in (("MT-1cr|us1", _REV5["gauges"]["tests"]), ("MT-1cr|us2", _REV5["gauges"]["tests"]),
+                       ("MT-1cr|us1_outer", _G2["tests"])):
+        for s in tests[key]["steps"]:
+            if s["pin_load_n"] > 0:
+                assert f"PASS if size <= {s['pass_if_abs_microstrain_at_most']:.0f}" in r["pass_fail"], (key, s)
+    assert "US1 OUTER CHEEK" in r["specimen"]
+
+
+def test_t1_has_three_gauges_and_numeric_lines_with_the_outer_cheek_gauge(kit):
+    r = kit["register"]["T1"]
+    gl = K.t1_gauge_lines()
+    assert set(gl) == {"US1 ROOT", "US1 OUTER CHEEK", "US2 ROOT"}
+    for g_, v in gl.items():
+        for c in K.T1_LB:
+            assert f"at most {v[c][1]:.0f}" in r["pass_fail"]
+    # 300 lb is the published top step (h1_rev5 / us1_outer_gauge), 150 lb its half, 225 lb linear in between
+    top = _G2["tests"]["T1|us1_outer"]["steps"][-1]["pass_if_abs_microstrain_at_most"]
+    assert gl["US1 OUTER CHEEK"]["(b)"][1] == round(top)
+    assert abs(gl["US1 OUTER CHEEK"]["(c)"][1] - 0.75 * top) <= 1.0
+    assert "outboard face of the US1 fairlead's outer cheek" in r["steps"]
+
+
+def test_us1_outer_gauge_site_is_the_rev5_governing_spot():
+    s = _G2["site"]
+    assert 80.0 <= s["x"] <= 88.0 and 98.0 <= s["z"] <= 104.0          # h1_rev5.md 4: x 80-88, z 98-104
+    for k in ("MT-1cr|us1_outer", "T1|us1_outer"):
+        base = k.replace("_outer", "")
+        assert _G2["tests"][k]["pull_unit_vector_frame_R"] == _REV5["gauges"]["tests"][base]["pull_unit_vector_frame_R"]
+        assert [x["pin_load_n"] for x in _G2["tests"][k]["steps"]] == \
+               [x["pin_load_n"] for x in _REV5["gauges"]["tests"][base]["steps"]]
+
+
+def test_pin_ret_fit_us_ca1_and_t6c_rows(kit):
+    reg = kit["register"]
+    p = reg["PIN-RET"]
+    n = sum(v["qty"] for v in _REV5["pins"]["stations"].values())
+    assert n == 12 and f"all {n} fairlead pins" in p["title"]
+    assert "50 N" in p["pass_fail"] and "0.5 mm" in p["pass_fail"] and "<= 8 s" in p["pass_fail"]
+    f = reg["FIT-US"]
+    w = _REV5["strap_wrap"]["worst"]["us2"]
+    assert "LIP AND STRAP" in f["steps"] and f"{w['wrap_deg']:.0f} deg" in f["steps"]
+    assert f"r {w['lip_r_mm']:.0f} mm" in f["steps"]
+    c = reg["CA-1"]
+    assert f"{K.SCAR_BARS} SCAR BARS" in c["specimen"] and "support interface" in c["specimen"]
+    assert "SCAR BARS" in c["pass_fail"] and float(c["hours_machine"]) == pytest.approx((8 + K.SCAR_BARS) * 27.8, abs=1)
+    t = reg["T6(c)"]
+    cp = K._FB().clamp()
+    assert f"{1.5 * cp['limit_spine_axial_n']:.0f} N" in t["pass_fail"]
+    assert f"{1.5 * cp['limit_bar_torque_nm']:.1f} N m" in t["pass_fail"]
+    for tid in ("CLEVIS-SHARE", "MT-1cr", "PIN-RET", "T6(c)"):
+        assert set(reg[tid]) == set(K.COLS), tid
+
+
+def test_every_new_bl055_row_has_numeric_results_lines(kit):
+    """The beginner checks numbers: every results row of the BL-055 tests carries a unit and a limit (or a record)."""
+    rows = [r for r in kit["results"] if r.get("test_id") in ("CLEVIS-SHARE", "MT-1cr", "PIN-RET", "T6(c)", "T1")]
+    assert len(rows) > 40
+    gauge = [r for r in rows if r.get("unit") == "microstrain"]
+    assert gauge and all(_re.fullmatch(r"-\d+\.\.\d+", str(r["limit"])) for r in gauge if r.get("check") == "band")
