@@ -634,7 +634,7 @@ def _correction_rows(config: str, size: str) -> list:
                       "frame", b56["print_delta_g"],
                       "analysis/clevis_bl056.json mass.print_delta_g (assembled print mesh BL-056 - BL-055)", "base"))
         b58, src58 = bl058_update(), "analysis/bl058.json mass."
-        bl046.append(("BL058", "H1 print: US2 pin-head counterbores D9 x 2 in the clevises (review 6 M-3; BL-058)", "frame",
+        bl046.append(("BL058", "H1 print: US2 pin-head counterbores in the clevises (review 6 M-3; BL-058)", "frame",
                       b58["print_delta_g"], src58 + "print_delta_g (" + b58["print_basis"] + ")", "base"))
         bl046.append(("BL058", "hip mount: 8 x D5.8 holes (were D5.5; review 6 m-3; BL-058)", "frame",
                       b58["mount_delta_g"], src58 + "mount_delta_g (mount STL x ti_6al_4v_slm density - "

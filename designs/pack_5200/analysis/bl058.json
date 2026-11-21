@@ -478,7 +478,7 @@
     "retainer": "eclip",
     "orientation": "a ring round the pin (no leg): 4.4 mm radius inside the 12 mm slot",
     "retainer_clash_mm3_at_0.5mm": 0.0,
-    "head_clash_mm3_at_0.5mm": 0.024,
+    "head_clash_mm3_at_0.5mm": 0.018,
     "tether_clash_mm3_at_0.5mm": 0.0,
     "y_max": 21.12,
     "y_tip": 24.0,
@@ -689,13 +689,13 @@
   },
   "us2": {
    "station": "us2",
-   "head_seat_abs_x": 181.0,
+   "head_seat_abs_x": 181.5,
    "far_face_abs_x": 147.0,
-   "shank_mm": 39.14,
+   "shank_mm": 39.64,
    "tail_past_far_face_mm": 5.14,
    "head_mm": [
     8.0,
-    1.5
+    1.0
    ],
    "retainer": "eclip",
    "retainer_part": "DIN 6799 RS 4 retaining washer (E-clip), 1.4122 stainless, for 5-7 mm shafts: groove D4.0 x 0.74 wide, ring OD 8.85 (uninstalled), 0.7 thick, thrust load 210 lbf (934 N)",
@@ -719,7 +719,7 @@
      "axis": "frame z (cord exits along the slot)",
      "where": "in the tail, past the groove"
     },
-    "head": "plain (no tether hole): the head sits in the clevis counterbore D9 x 2"
+    "head": "plain (no tether hole), D8 x 1.0: the head sits in the clevis counterbore D9 x 1.5"
    },
    "tether": {
     "cord": "1.5 mm Dyneema (UHMWPE)",
@@ -895,7 +895,7 @@
   }
  },
  "pins": {
-  "scheme": "headed pin; hairpin clip (McMaster 90153A214) in a 1.5 mm cross hole on the far side at hinge / US1 / IM1-3, body pointing fore; US2: head in a D9 x 2 clevis counterbore, DIN 6799 E-clip in a groove on the far side, tether from a tail hole round the lug arm",
+  "scheme": "headed pin; hairpin clip (McMaster 90153A214) in a 1.5 mm cross hole on the far side at hinge / US1 / IM1-3, body pointing fore; US2: D8 x 1.0 head in a D9 x 1.5 clevis counterbore, DIN 6799 E-clip in a groove on the far side, tether from a tail hole round the lug arm",
   "retainer": {
    "part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm) (hinge, US1, IM1-IM3); US2: DIN 6799 RS 4 retaining washer (E-clip), 1.4122 stainless, for 5-7 mm shafts: groove D4.0 x 0.74 wide, ring OD 8.85 (uninstalled), 0.7 thick, thrust load 210 lbf (934 N)",
    "source": "https://www.mcmaster.com/hitch-pin-clips (hairpin clips, 18-8 stainless: 90153A214 for 3/16 in shaft, wire 1/32 in, length 1/2 in, pin opening 9/64 in; 90153A216 for 1/4 in, 1/32 in, 5/8 in, 7/32 in); https://www.mcmaster.com/din-6799-retaining-rings (DIN 6799, 1.4122 stainless, for OD 5-7 mm: groove dia 4, groove width 0.74, ring OD 8.85 uninstalled, thickness 0.7, thrust load 210 lbf)",
@@ -1015,10 +1015,10 @@
     "material": "alu_7075_t6",
     "pin_d_mm": 5.0,
     "span_mm": 36.0,
-    "shank_mm": 39.1,
+    "shank_mm": 39.6,
     "head_mm": [
      8.0,
-     1.5
+     1.0
     ],
     "cross_hole": {
      "d_mm": 1.6,
@@ -1027,8 +1027,8 @@
     },
     "head_side": "outboard",
     "clip_side": "inboard (far cheek): DIN 6799 E-clip in the groove",
-    "pin_g": 2.36,
-    "set_g": 2.85,
+    "pin_g": 2.31,
+    "set_g": 2.81,
     "qty": 2,
     "removed_at_bag_off": false,
     "bending": {
@@ -1051,7 +1051,7 @@
     },
     "retainer": "eclip",
     "retainer_part": "DIN 6799 RS 4 retaining washer (E-clip), 1.4122 stainless, for 5-7 mm shafts: groove D4.0 x 0.74 wide, ring OD 8.85 (uninstalled), 0.7 thick, thrust load 210 lbf (934 N)",
-    "head_seat": "clevis counterbore D9 x 2, head 0.5 below the face",
+    "head_seat": "clevis counterbore D9 x 1.5, head D8 x 1.0, 0.5 below the face",
     "tether": {
      "cord_mm": 180.0,
      "route": [
@@ -1076,7 +1076,7 @@
      "axis": "frame z (cord exits along the slot)",
      "where": "in the tail, past the groove"
     },
-    "sleeve_note": "the outer cheek's UHMWPE sleeve is cut to 6.0 mm (flush with the counterbore floor)"
+    "sleeve_note": "the outer cheek's UHMWPE sleeve is cut to 6.5 mm (flush with the counterbore floor)"
    },
    "im1": {
     "material": "alu_7075_t6",
@@ -1200,8 +1200,8 @@
    }
   },
   "mass_bl058": {
-   "pins_g": 35.94,
-   "retainers_tethers_g": 4.2
+   "pins_g": 35.84,
+   "retainers_tethers_g": 4.22
   },
   "bom": [
    {
@@ -1250,16 +1250,16 @@
     "qty": 2,
     "material": "alu_7075_t6",
     "pin_d_mm": 5.0,
-    "shank_mm": 39.1,
+    "shank_mm": 39.6,
     "head_mm": [
      8.0,
-     1.5
+     1.0
     ],
     "cross_hole_d_mm": 1.6,
     "cross_hole_from_far_cheek_face_mm": 3.34,
     "clip_side": "inboard (far cheek): DIN 6799 E-clip in the groove",
-    "pin_g": 2.36,
-    "set_g": 2.85,
+    "pin_g": 2.31,
+    "set_g": 2.81,
     "retainer": "eclip",
     "retainer_part": "DIN 6799 RS 4 retaining washer (E-clip), 1.4122 stainless, for 5-7 mm shafts: groove D4.0 x 0.74 wide, ring OD 8.85 (uninstalled), 0.7 thick, thrust load 210 lbf (934 N)",
     "groove": {
@@ -1277,7 +1277,7 @@
      "axis": "frame z (cord exits along the slot)",
      "where": "in the tail, past the groove"
     },
-    "head_seat": "clevis counterbore D9 x 2, head 0.5 below the face"
+    "head_seat": "clevis counterbore D9 x 1.5, head D8 x 1.0, 0.5 below the face"
    },
    {
     "id": "PIN-IM1",
@@ -1350,206 +1350,206 @@
   "rows": {
    "alu_7075_t6|design|eye-1": {
     "F_yz_n": 399.4,
-    "share_outer": 0.481,
+    "share_outer": 0.477,
     "M_at_groove_nmm": 0.0,
-    "M_peak_nmm": 1794.3,
+    "M_peak_nmm": 1817.9,
     "M_peak_pin_check_nmm": 1797.3,
-    "sf_yield_peak": 3.16,
-    "sf_fatigue_peak": 2.35,
+    "sf_yield_peak": 3.12,
+    "sf_fatigue_peak": 2.32,
     "sf_yield_pin_check": 3.15,
     "sf_fatigue_pin_check": 2.34,
     "misplaced_1mm": {
-     "M_nmm": 12.9,
+     "M_nmm": 13.1,
      "sigma_kt_mpa": 5.2,
-     "sf_yield": 89.71,
-     "sf_fatigue": 66.68
+     "sf_yield": 88.95,
+     "sf_fatigue": 66.11
     }
    },
    "alu_7075_t6|design|eye+0": {
     "F_yz_n": 399.4,
-    "share_outer": 0.519,
+    "share_outer": 0.514,
     "M_at_groove_nmm": 0.0,
-    "M_peak_nmm": 1794.5,
+    "M_peak_nmm": 1820.6,
     "M_peak_pin_check_nmm": 1797.3,
-    "sf_yield_peak": 3.16,
-    "sf_fatigue_peak": 2.35,
+    "sf_yield_peak": 3.11,
+    "sf_fatigue_peak": 2.31,
     "sf_yield_pin_check": 3.15,
     "sf_fatigue_pin_check": 2.34,
     "misplaced_1mm": {
-     "M_nmm": 12.0,
+     "M_nmm": 12.1,
      "sigma_kt_mpa": 4.8,
-     "sf_yield": 96.61,
-     "sf_fatigue": 71.81
+     "sf_yield": 95.66,
+     "sf_fatigue": 71.1
     }
    },
    "alu_7075_t6|design|eye+1": {
     "F_yz_n": 399.4,
-    "share_outer": 0.556,
+    "share_outer": 0.55,
     "M_at_groove_nmm": 0.0,
-    "M_peak_nmm": 1773.1,
+    "M_peak_nmm": 1801.6,
     "M_peak_pin_check_nmm": 1797.3,
-    "sf_yield_peak": 3.2,
-    "sf_fatigue_peak": 2.38,
+    "sf_yield_peak": 3.15,
+    "sf_fatigue_peak": 2.34,
     "sf_yield_pin_check": 3.15,
     "sf_fatigue_pin_check": 2.34,
     "misplaced_1mm": {
-     "M_nmm": 11.1,
-     "sigma_kt_mpa": 4.4,
-     "sf_yield": 104.66,
-     "sf_fatigue": 77.79
+     "M_nmm": 11.2,
+     "sigma_kt_mpa": 4.5,
+     "sf_yield": 103.47,
+     "sf_fatigue": 76.91
     }
    },
    "alu_7075_t6|dy95|eye-1": {
     "F_yz_n": 642.9,
-    "share_outer": 0.481,
+    "share_outer": 0.477,
     "M_at_groove_nmm": 0.0,
-    "M_peak_nmm": 2888.2,
+    "M_peak_nmm": 2926.1,
     "M_peak_pin_check_nmm": 2893.0,
-    "sf_yield_peak": 1.96,
-    "sf_fatigue_peak": 1.46,
+    "sf_yield_peak": 1.94,
+    "sf_fatigue_peak": 1.44,
     "sf_yield_pin_check": 1.96,
     "sf_fatigue_pin_check": 1.46,
     "misplaced_1mm": {
-     "M_nmm": 20.8,
-     "sigma_kt_mpa": 8.3,
-     "sf_yield": 55.73,
-     "sf_fatigue": 41.42
+     "M_nmm": 21.0,
+     "sigma_kt_mpa": 8.4,
+     "sf_yield": 55.26,
+     "sf_fatigue": 41.07
     }
    },
    "alu_7075_t6|dy95|eye+0": {
     "F_yz_n": 642.9,
-    "share_outer": 0.519,
+    "share_outer": 0.514,
     "M_at_groove_nmm": 0.0,
-    "M_peak_nmm": 2888.6,
+    "M_peak_nmm": 2930.5,
     "M_peak_pin_check_nmm": 2893.0,
-    "sf_yield_peak": 1.96,
-    "sf_fatigue_peak": 1.46,
+    "sf_yield_peak": 1.93,
+    "sf_fatigue_peak": 1.44,
     "sf_yield_pin_check": 1.96,
     "sf_fatigue_pin_check": 1.46,
     "misplaced_1mm": {
-     "M_nmm": 19.3,
-     "sigma_kt_mpa": 7.7,
-     "sf_yield": 60.02,
-     "sf_fatigue": 44.61
+     "M_nmm": 19.5,
+     "sigma_kt_mpa": 7.8,
+     "sf_yield": 59.43,
+     "sf_fatigue": 44.17
     }
    },
    "alu_7075_t6|dy95|eye+1": {
     "F_yz_n": 642.9,
-    "share_outer": 0.556,
+    "share_outer": 0.55,
     "M_at_groove_nmm": 0.0,
-    "M_peak_nmm": 2854.0,
+    "M_peak_nmm": 2900.0,
     "M_peak_pin_check_nmm": 2893.0,
-    "sf_yield_peak": 1.99,
-    "sf_fatigue_peak": 1.48,
+    "sf_yield_peak": 1.96,
+    "sf_fatigue_peak": 1.45,
     "sf_yield_pin_check": 1.96,
     "sf_fatigue_pin_check": 1.46,
     "misplaced_1mm": {
-     "M_nmm": 17.9,
-     "sigma_kt_mpa": 7.1,
-     "sf_yield": 65.02,
-     "sf_fatigue": 48.33
+     "M_nmm": 18.1,
+     "sigma_kt_mpa": 7.2,
+     "sf_yield": 64.28,
+     "sf_fatigue": 47.78
     }
    },
    "ti_6al_4v|design|eye-1": {
     "F_yz_n": 399.4,
-    "share_outer": 0.481,
+    "share_outer": 0.477,
     "M_at_groove_nmm": 0.0,
-    "M_peak_nmm": 1794.3,
+    "M_peak_nmm": 1817.9,
     "M_peak_pin_check_nmm": 1797.3,
-    "sf_yield_peak": 5.66,
-    "sf_fatigue_peak": 6.35,
+    "sf_yield_peak": 5.58,
+    "sf_fatigue_peak": 6.27,
     "sf_yield_pin_check": 5.65,
     "sf_fatigue_pin_check": 6.34,
     "misplaced_1mm": {
-     "M_nmm": 12.9,
+     "M_nmm": 13.1,
      "sigma_kt_mpa": 5.2,
-     "sf_yield": 160.58,
-     "sf_fatigue": 180.27
+     "sf_yield": 159.22,
+     "sf_fatigue": 178.75
     }
    },
    "ti_6al_4v|design|eye+0": {
     "F_yz_n": 399.4,
-    "share_outer": 0.519,
+    "share_outer": 0.514,
     "M_at_groove_nmm": 0.0,
-    "M_peak_nmm": 1794.5,
+    "M_peak_nmm": 1820.6,
     "M_peak_pin_check_nmm": 1797.3,
-    "sf_yield_peak": 5.66,
-    "sf_fatigue_peak": 6.35,
+    "sf_yield_peak": 5.57,
+    "sf_fatigue_peak": 6.26,
     "sf_yield_pin_check": 5.65,
     "sf_fatigue_pin_check": 6.34,
     "misplaced_1mm": {
-     "M_nmm": 12.0,
+     "M_nmm": 12.1,
      "sigma_kt_mpa": 4.8,
-     "sf_yield": 172.93,
-     "sf_fatigue": 194.14
+     "sf_yield": 171.24,
+     "sf_fatigue": 192.24
     }
    },
    "ti_6al_4v|design|eye+1": {
     "F_yz_n": 399.4,
-    "share_outer": 0.556,
+    "share_outer": 0.55,
     "M_at_groove_nmm": 0.0,
-    "M_peak_nmm": 1773.1,
+    "M_peak_nmm": 1801.6,
     "M_peak_pin_check_nmm": 1797.3,
-    "sf_yield_peak": 5.72,
-    "sf_fatigue_peak": 6.43,
+    "sf_yield_peak": 5.63,
+    "sf_fatigue_peak": 6.32,
     "sf_yield_pin_check": 5.65,
     "sf_fatigue_pin_check": 6.34,
     "misplaced_1mm": {
-     "M_nmm": 11.1,
-     "sigma_kt_mpa": 4.4,
-     "sf_yield": 187.34,
-     "sf_fatigue": 210.32
+     "M_nmm": 11.2,
+     "sigma_kt_mpa": 4.5,
+     "sf_yield": 185.22,
+     "sf_fatigue": 207.94
     }
    },
    "ti_6al_4v|dy95|eye-1": {
     "F_yz_n": 642.9,
-    "share_outer": 0.481,
+    "share_outer": 0.477,
     "M_at_groove_nmm": 0.0,
-    "M_peak_nmm": 2888.2,
+    "M_peak_nmm": 2926.1,
     "M_peak_pin_check_nmm": 2893.0,
-    "sf_yield_peak": 3.51,
-    "sf_fatigue_peak": 3.94,
+    "sf_yield_peak": 3.47,
+    "sf_fatigue_peak": 3.89,
     "sf_yield_pin_check": 3.51,
     "sf_fatigue_pin_check": 3.94,
     "misplaced_1mm": {
-     "M_nmm": 20.8,
-     "sigma_kt_mpa": 8.3,
-     "sf_yield": 99.76,
-     "sf_fatigue": 112.0
+     "M_nmm": 21.0,
+     "sigma_kt_mpa": 8.4,
+     "sf_yield": 98.92,
+     "sf_fatigue": 111.05
     }
    },
    "ti_6al_4v|dy95|eye+0": {
     "F_yz_n": 642.9,
-    "share_outer": 0.519,
+    "share_outer": 0.514,
     "M_at_groove_nmm": 0.0,
-    "M_peak_nmm": 2888.6,
+    "M_peak_nmm": 2930.5,
     "M_peak_pin_check_nmm": 2893.0,
-    "sf_yield_peak": 3.51,
-    "sf_fatigue_peak": 3.94,
+    "sf_yield_peak": 3.46,
+    "sf_fatigue_peak": 3.89,
     "sf_yield_pin_check": 3.51,
     "sf_fatigue_pin_check": 3.94,
     "misplaced_1mm": {
-     "M_nmm": 19.3,
-     "sigma_kt_mpa": 7.7,
-     "sf_yield": 107.43,
-     "sf_fatigue": 120.61
+     "M_nmm": 19.5,
+     "sigma_kt_mpa": 7.8,
+     "sf_yield": 106.38,
+     "sf_fatigue": 119.43
     }
    },
    "ti_6al_4v|dy95|eye+1": {
     "F_yz_n": 642.9,
-    "share_outer": 0.556,
+    "share_outer": 0.55,
     "M_at_groove_nmm": 0.0,
-    "M_peak_nmm": 2854.0,
+    "M_peak_nmm": 2900.0,
     "M_peak_pin_check_nmm": 2893.0,
-    "sf_yield_peak": 3.56,
-    "sf_fatigue_peak": 3.99,
+    "sf_yield_peak": 3.5,
+    "sf_fatigue_peak": 3.93,
     "sf_yield_pin_check": 3.51,
     "sf_fatigue_pin_check": 3.94,
     "misplaced_1mm": {
-     "M_nmm": 17.9,
-     "sigma_kt_mpa": 7.1,
-     "sf_yield": 116.39,
-     "sf_fatigue": 130.66
+     "M_nmm": 18.1,
+     "sigma_kt_mpa": 7.2,
+     "sf_yield": 115.07,
+     "sf_fatigue": 129.18
     }
    }
   },
@@ -1564,52 +1564,139 @@
  },
  "sleeve_bearing": {
   "yield_mpa": 21.0,
+  "bearing_now_mm": 6.5,
+  "goal": 1.0,
   "rows": {
-   "design|share0.6|L8": {
-    "sigma_mpa": 6.0,
-    "sf_yield": 3.51
-   },
    "design|share0.6|L6": {
-    "sigma_mpa": 8.0,
-    "sf_yield": 2.63
+    "sigma_mpa": 7.99,
+    "sf_yield": 2.629
    },
-   "design|share1|L8": {
-    "sigma_mpa": 10.0,
-    "sf_yield": 2.1
+   "design|share0.6|L6.5": {
+    "sigma_mpa": 7.37,
+    "sf_yield": 2.848
+   },
+   "design|share0.6|L8": {
+    "sigma_mpa": 5.99,
+    "sf_yield": 3.505
    },
    "design|share1|L6": {
-    "sigma_mpa": 13.3,
-    "sf_yield": 1.58
+    "sigma_mpa": 13.31,
+    "sf_yield": 1.577
    },
-   "dy95|share0.6|L8": {
-    "sigma_mpa": 9.6,
-    "sf_yield": 2.18
+   "design|share1|L6.5": {
+    "sigma_mpa": 12.29,
+    "sf_yield": 1.709
+   },
+   "design|share1|L8": {
+    "sigma_mpa": 9.98,
+    "sf_yield": 2.103
    },
    "dy95|share0.6|L6": {
-    "sigma_mpa": 12.9,
-    "sf_yield": 1.63
+    "sigma_mpa": 12.86,
+    "sf_yield": 1.633
    },
-   "dy95|share1|L8": {
-    "sigma_mpa": 16.1,
-    "sf_yield": 1.31
+   "dy95|share0.6|L6.5": {
+    "sigma_mpa": 11.87,
+    "sf_yield": 1.769
+   },
+   "dy95|share0.6|L8": {
+    "sigma_mpa": 9.64,
+    "sf_yield": 2.178
    },
    "dy95|share1|L6": {
-    "sigma_mpa": 21.4,
+    "sigma_mpa": 21.43,
     "sf_yield": 0.98
+   },
+   "dy95|share1|L6.5": {
+    "sigma_mpa": 19.78,
+    "sf_yield": 1.062
+   },
+   "dy95|share1|L8": {
+    "sigma_mpa": 16.07,
+    "sf_yield": 1.307
    }
   },
-  "note": "factored rows (2.4 basis); the liner is 1 mm thick and backed by the PAHT cheek (confined), so the uniaxial yield is a lower bound. The design rows (dy <= 50) keep SF >= 1.58 at share 1.0; the dy 95 sensitivity row at share 1.0 reads 0.98 (1.31 before the counterbore)."
+  "min_now": 1.062,
+  "min_design_now": 1.709,
+  "pass": true,
+  "note": "factored rows (2.4 basis); the 1 mm liner is backed by the PAHT cheek (confined): uniaxial yield is a lower bound. L6 = the first counterbore (2 mm), L8 = no counterbore."
+ },
+ "head_check": {
+  "head_mm": [
+   8.0,
+   1.0
+  ],
+  "loads_n": {
+   "PIN-RET (a) push": 50.0,
+   "walk (0.2 x dy95)": 128.6,
+   "proof (1.5 x max)": 192.9
+  },
+  "bearing_area_mm2": 29.0,
+  "paht_allow_mpa": 70.4,
+  "rows": {
+   "alu_7075_t6|PIN-RET (a) push": {
+    "tau_mpa": 3.18,
+    "sf_shear": 83.7,
+    "sigma_flange_mpa": 11.63,
+    "sf_flange": 39.7,
+    "bearing_mpa": 1.72,
+    "sf_pull_through": 40.9
+   },
+   "alu_7075_t6|walk (0.2 x dy95)": {
+    "tau_mpa": 8.19,
+    "sf_shear": 32.6,
+    "sigma_flange_mpa": 29.9,
+    "sf_flange": 15.4,
+    "bearing_mpa": 4.43,
+    "sf_pull_through": 15.9
+   },
+   "alu_7075_t6|proof (1.5 x max)": {
+    "tau_mpa": 12.28,
+    "sf_shear": 21.7,
+    "sigma_flange_mpa": 44.86,
+    "sf_flange": 10.3,
+    "bearing_mpa": 6.65,
+    "sf_pull_through": 10.6
+   },
+   "ti_6al_4v|PIN-RET (a) push": {
+    "tau_mpa": 3.18,
+    "sf_shear": 149.9,
+    "sigma_flange_mpa": 11.63,
+    "sf_flange": 71.1,
+    "bearing_mpa": 1.72,
+    "sf_pull_through": 40.9
+   },
+   "ti_6al_4v|walk (0.2 x dy95)": {
+    "tau_mpa": 8.19,
+    "sf_shear": 58.3,
+    "sigma_flange_mpa": 29.9,
+    "sf_flange": 27.7,
+    "bearing_mpa": 4.43,
+    "sf_pull_through": 15.9
+   },
+   "ti_6al_4v|proof (1.5 x max)": {
+    "tau_mpa": 12.28,
+    "sf_shear": 38.9,
+    "sigma_flange_mpa": 44.86,
+    "sf_flange": 18.4,
+    "bearing_mpa": 6.65,
+    "sf_pull_through": 10.6
+   }
+  },
+  "min_sf": 10.3,
+  "pass": true,
+  "note": "the US2 pins are 7075-T6 (not Ti); Ti rows for reference"
  },
  "cbore": {
   "d_mm": 9.0,
-  "depth_mm": 2.0,
+  "depth_mm": 1.5,
   "head_mm": [
    8.0,
-   1.5
+   1.0
   ],
   "recess_mm": 0.5,
   "wall_to_cheek_tip_mm": 3.1,
-  "outer_cheek_bearing_mm": 6.0
+  "outer_cheek_bearing_mm": 6.5
  },
  "us_route_heads": {
   "head_x_mm": [
@@ -1896,7 +1983,7 @@
   ],
   "face_min_mm": -4.0,
   "pin_head_x_mm": [
-   181.0,
+   181.5,
    182.5
   ],
   "pin_head_recess_mm": 0.5,
@@ -2027,7 +2114,7 @@
     "torso": 19,
     "case": "fill",
     "side": "R",
-    "pin_head_mm": -0.0,
+    "pin_head_mm": 0.5,
     "pin_head_at": [
      181.0,
      14.1,
@@ -2147,7 +2234,7 @@
     "torso": 23,
     "case": "fill",
     "side": "R",
-    "pin_head_mm": 0.3,
+    "pin_head_mm": 0.8,
     "pin_head_at": [
      180.7,
      12.5,
@@ -2264,7 +2351,7 @@
     "cloth_points_inside_clevis": 30
    }
   ],
-  "pin_head_cloth_min_mm": -0.0,
+  "pin_head_cloth_min_mm": 0.5,
   "pin_head_outside_clevis_min_mm": 1.4,
   "eclip_cloth_min_mm": 4.1,
   "tether_cloth_min_mm": -0.6,
@@ -2305,7 +2392,7 @@
     "torso": 19,
     "case": "fill",
     "side": "R",
-    "pin_head_mm": -0.0,
+    "pin_head_mm": 0.5,
     "bolt_heads_mm": 13.1,
     "pin_head_recess_mm": 0.5
    },
@@ -2337,7 +2424,7 @@
     "torso": 23,
     "case": "fill",
     "side": "R",
-    "pin_head_mm": 0.3,
+    "pin_head_mm": 0.8,
     "bolt_heads_mm": 12.0,
     "pin_head_recess_mm": 0.5
    },
@@ -2376,7 +2463,7 @@
    "us2": 14.6
   },
   "pass": true,
-  "md5": "f4994b2674822dab5fb7a584ccb11e95"
+  "md5": "7bd47cbdcc3b42c0f93d57ef041efc11"
  },
  "body": {
   "bases": {
@@ -2750,8 +2837,8 @@
   "R1": "SF / requirement >= 1 on every basis (load_standard rev C); the cinch-cycled basis is held below R1 for MT-1 since BL-024 (h1_closeout.md)",
   "us2_lug": {
    "bl058": {
-    "strength": 3.35,
-    "fatigue": 1.51
+    "strength": 3.34,
+    "fatigue": 1.5
    },
    "bl053": {
     "strength": 3.33,
@@ -2759,27 +2846,27 @@
    },
    "families_bl058": {
     "bagon|-": {
-     "strength": 9.01,
-     "fatigue": 5.07,
+     "strength": 8.98,
+     "fatigue": 5.05,
      "region": "root"
     },
     "bl051_yz|-": {
-     "strength": 3.31,
+     "strength": 3.3,
      "fatigue": 1.49,
      "region": "root"
     },
     "cradle3d_dy95|b40": {
-     "strength": 2.57,
+     "strength": 2.56,
      "fatigue": 1.15,
      "region": "root"
     },
     "cradle3d_dy95|b50": {
      "strength": 3.17,
-     "fatigue": 1.43,
+     "fatigue": 1.42,
      "region": "root"
     },
     "cradle3d_dy95|b60": {
-     "strength": 3.78,
+     "strength": 3.77,
      "fatigue": 1.7,
      "region": "root"
     },
@@ -2789,22 +2876,22 @@
      "region": "root"
     },
     "cradle3d|b40": {
-     "strength": 3.35,
-     "fatigue": 1.51,
+     "strength": 3.34,
+     "fatigue": 1.5,
      "region": "root"
     },
     "cradle3d|b50": {
-     "strength": 4.16,
+     "strength": 4.15,
      "fatigue": 1.87,
      "region": "root"
     },
     "cradle3d|b60": {
-     "strength": 4.91,
+     "strength": 4.9,
      "fatigue": 2.21,
      "region": "root"
     },
     "cradle3d|b70": {
-     "strength": 5.62,
+     "strength": 5.61,
      "fatigue": 2.53,
      "region": "root"
     }
@@ -3081,9 +3168,9 @@
   "h1_assembled": {
    "watertight": true,
    "shells": 1,
-   "g": 1069.3,
+   "g": 1069.32,
    "has_3mf": true,
-   "delta_g": -0.107
+   "delta_g": -0.08
   },
   "h1_lower_flat": {
    "watertight": true,
@@ -3102,17 +3189,17 @@
   "us2_clevis_L": {
    "watertight": true,
    "shells": 1,
-   "g": 15.66,
+   "g": 15.67,
    "has_3mf": true,
-   "delta_g": -0.053,
+   "delta_g": -0.04,
    "bed_fit_with_brim": true
   },
   "us2_clevis_R": {
    "watertight": true,
    "shells": 1,
-   "g": 15.66,
+   "g": 15.67,
    "has_3mf": true,
-   "delta_g": -0.053,
+   "delta_g": -0.04,
    "bed_fit_with_brim": true
   },
   "bed": {
@@ -3167,7 +3254,7 @@
   "us_route_stay_R_frame_coords": {
    "watertight": true,
    "shells": 1,
-   "g": 167.76
+   "g": 167.77
   },
   "hip_insert_guide": {
    "watertight": true,
@@ -3176,20 +3263,20 @@
   }
  },
  "mass": {
-  "print_delta_g": -0.107,
+  "print_delta_g": -0.08,
   "print_basis": "assembled print mesh BL-058 - the 6b0cde1 copy (outputs/bl058/before) x 1.06 g/cm3",
   "mount_delta_g": -0.28,
   "hip_screws_delta_g": -0.846,
   "hip_screws_n": 6,
-  "pins_delta_g": -0.24,
-  "retainers_delta_g": -5.4,
-  "sleeves_delta_g": -0.073,
-  "pins_bl058_g": 35.94,
-  "retainers_bl058_g": 4.2,
+  "pins_delta_g": -0.34,
+  "retainers_delta_g": -5.38,
+  "sleeves_delta_g": -0.055,
+  "pins_bl058_g": 35.84,
+  "retainers_bl058_g": 4.22,
   "pins_bl055_g": 36.18,
   "retainers_bl055_g": 9.6,
-  "frame_delta_g": -1.233,
-  "attachment_delta_g": -5.713
+  "frame_delta_g": -1.206,
+  "attachment_delta_g": -5.775
  },
  "kit": {
   "PIN-RET_d": {
@@ -3280,16 +3367,16 @@
     "qty": 2,
     "material": "alu_7075_t6",
     "pin_d_mm": 5.0,
-    "shank_mm": 39.1,
+    "shank_mm": 39.6,
     "head_mm": [
      8.0,
-     1.5
+     1.0
     ],
     "cross_hole_d_mm": 1.6,
     "cross_hole_from_far_cheek_face_mm": 3.34,
     "clip_side": "inboard (far cheek): DIN 6799 E-clip in the groove",
-    "pin_g": 2.36,
-    "set_g": 2.85,
+    "pin_g": 2.31,
+    "set_g": 2.81,
     "retainer": "eclip",
     "retainer_part": "DIN 6799 RS 4 retaining washer (E-clip), 1.4122 stainless, for 5-7 mm shafts: groove D4.0 x 0.74 wide, ring OD 8.85 (uninstalled), 0.7 thick, thrust load 210 lbf (934 N)",
     "groove": {
@@ -3307,7 +3394,7 @@
      "axis": "frame z (cord exits along the slot)",
      "where": "in the tail, past the groove"
     },
-    "head_seat": "clevis counterbore D9 x 2, head 0.5 below the face"
+    "head_seat": "clevis counterbore D9 x 1.5, head D8 x 1.0, 0.5 below the face"
    },
    {
     "id": "PIN-IM1",
@@ -3446,6 +3533,7 @@
  "screenshots": [
   "outputs/screens/20261121_BL058_1.png",
   "outputs/screens/20261121_BL058_2.png",
-  "outputs/screens/20261121_BL058_3.png"
+  "outputs/screens/20261121_BL058_3.png",
+  "outputs/screens/20261121_BL058_4.png"
  ]
 }

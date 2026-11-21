@@ -591,7 +591,7 @@ def pins(bl058: bool = True) -> dict:
                              "retainers_tethers_g": round(sum(2 * (r["set_g"] - r["pin_g"])
                                                               for r in out["stations"].values()), 2)}
         out["scheme"] = ("headed pin; hairpin clip (McMaster 90153A214) in a 1.5 mm cross hole on the far side at "
-                         "hinge / US1 / IM1-3, body pointing fore; US2: head in a D9 x 2 clevis counterbore, DIN 6799 "
+                         "hinge / US1 / IM1-3, body pointing fore; US2: D8 x 1.0 head in a D9 x 1.5 clevis counterbore, DIN 6799 "
                          "E-clip in a groove on the far side, tether from a tail hole round the lug arm")
     out["bom"] = [{"id": f"PIN-{n.upper()}", "station": n, "qty": r["qty"], "material": r["material"],
                    "pin_d_mm": r["pin_d_mm"], "shank_mm": r["shank_mm"], "head_mm": r["head_mm"],

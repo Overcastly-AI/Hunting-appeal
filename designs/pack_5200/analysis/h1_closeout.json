@@ -896,7 +896,7 @@
   "drawn": "D44 x 1.2 mm disc, no screw holes (designs/pack_5200/print/lug_hip_pivot_mount_slm_ti_D44_drawn.stl)"
  },
  "pins": {
-  "scheme": "headed pin; hairpin clip (McMaster 90153A214) in a 1.5 mm cross hole on the far side at hinge / US1 / IM1-3, body pointing fore; US2: head in a D9 x 2 clevis counterbore, DIN 6799 E-clip in a groove on the far side, tether from a tail hole round the lug arm",
+  "scheme": "headed pin; hairpin clip (McMaster 90153A214) in a 1.5 mm cross hole on the far side at hinge / US1 / IM1-3, body pointing fore; US2: D8 x 1.0 head in a D9 x 1.5 clevis counterbore, DIN 6799 E-clip in a groove on the far side, tether from a tail hole round the lug arm",
   "retainer": {
    "part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm) (hinge, US1, IM1-IM3); US2: DIN 6799 RS 4 retaining washer (E-clip), 1.4122 stainless, for 5-7 mm shafts: groove D4.0 x 0.74 wide, ring OD 8.85 (uninstalled), 0.7 thick, thrust load 210 lbf (934 N)",
    "source": "https://www.mcmaster.com/hitch-pin-clips (hairpin clips, 18-8 stainless: 90153A214 for 3/16 in shaft, wire 1/32 in, length 1/2 in, pin opening 9/64 in; 90153A216 for 1/4 in, 1/32 in, 5/8 in, 7/32 in); https://www.mcmaster.com/din-6799-retaining-rings (DIN 6799, 1.4122 stainless, for OD 5-7 mm: groove dia 4, groove width 0.74, ring OD 8.85 uninstalled, thickness 0.7, thrust load 210 lbf)",
@@ -1027,10 +1027,10 @@
     "material": "alu_7075_t6",
     "pin_d_mm": 5.0,
     "span_mm": 36.0,
-    "shank_mm": 39.1,
+    "shank_mm": 39.6,
     "head_mm": [
      8.0,
-     1.5
+     1.0
     ],
     "cross_hole": {
      "d_mm": 1.6,
@@ -1039,8 +1039,8 @@
     },
     "head_side": "outboard",
     "clip_side": "inboard (far cheek): DIN 6799 E-clip in the groove",
-    "pin_g": 2.36,
-    "set_g": 2.85,
+    "pin_g": 2.31,
+    "set_g": 2.81,
     "qty": 2,
     "removed_at_bag_off": false,
     "bending": {
@@ -1063,7 +1063,7 @@
     },
     "retainer": "eclip",
     "retainer_part": "DIN 6799 RS 4 retaining washer (E-clip), 1.4122 stainless, for 5-7 mm shafts: groove D4.0 x 0.74 wide, ring OD 8.85 (uninstalled), 0.7 thick, thrust load 210 lbf (934 N)",
-    "head_seat": "clevis counterbore D9 x 2, head 0.5 below the face",
+    "head_seat": "clevis counterbore D9 x 1.5, head D8 x 1.0, 0.5 below the face",
     "tether": {
      "cord_mm": 180.0,
      "route": [
@@ -1088,7 +1088,7 @@
      "axis": "frame z (cord exits along the slot)",
      "where": "in the tail, past the groove"
     },
-    "sleeve_note": "the outer cheek's UHMWPE sleeve is cut to 6.0 mm (flush with the counterbore floor)"
+    "sleeve_note": "the outer cheek's UHMWPE sleeve is cut to 6.5 mm (flush with the counterbore floor)"
    },
    "im1": {
     "material": "alu_7075_t6",
@@ -1261,8 +1261,8 @@
    "cross_hole_d_mm": 1.5
   },
   "mass_bl058": {
-   "pins_g": 35.94,
-   "retainers_tethers_g": 4.2
+   "pins_g": 35.84,
+   "retainers_tethers_g": 4.22
   },
   "bom": [
    {
@@ -1311,16 +1311,16 @@
     "qty": 2,
     "material": "alu_7075_t6",
     "pin_d_mm": 5.0,
-    "shank_mm": 39.1,
+    "shank_mm": 39.6,
     "head_mm": [
      8.0,
-     1.5
+     1.0
     ],
     "cross_hole_d_mm": 1.6,
     "cross_hole_from_far_cheek_face_mm": 3.34,
     "clip_side": "inboard (far cheek): DIN 6799 E-clip in the groove",
-    "pin_g": 2.36,
-    "set_g": 2.85,
+    "pin_g": 2.31,
+    "set_g": 2.81,
     "retainer": "eclip",
     "retainer_part": "DIN 6799 RS 4 retaining washer (E-clip), 1.4122 stainless, for 5-7 mm shafts: groove D4.0 x 0.74 wide, ring OD 8.85 (uninstalled), 0.7 thick, thrust load 210 lbf (934 N)",
     "groove": {
@@ -1338,7 +1338,7 @@
      "axis": "frame z (cord exits along the slot)",
      "where": "in the tail, past the groove"
     },
-    "head_seat": "clevis counterbore D9 x 2, head 0.5 below the face"
+    "head_seat": "clevis counterbore D9 x 1.5, head D8 x 1.0, 0.5 below the face"
    },
    {
     "id": "PIN-IM1",

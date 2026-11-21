@@ -104,7 +104,8 @@ def test_us2_pin_counterbore_on_the_stl(asm):
         w = B.voids(B.probe(asm, (s * 176.0, p["y_pin"], p["z"] + 5.0), (s, 0.0, 0.0), (0.0, 1.0, 0.0), 0.0, 6.9),
                     0.0, 6.9)
         assert w == []
-    assert BF.PIN_CBORE_DEPTH - B.HEAD_T == pytest.approx(BF.JOINT.head_recess - BF.JOINT.head_h)
+    assert BF.PIN_CBORE_DEPTH - B.US2_HEAD_T == pytest.approx(BF.JOINT.head_recess - BF.JOINT.head_h)
+    assert B.pin_row("us2")["head_mm"][1] == B.US2_HEAD_T and B.pin_row("hinge")["head_mm"][1] == B.HEAD_T
 
 
 # ------------------------------------------------------------------------------------------- M-2 retainers
@@ -139,6 +140,18 @@ def test_pin_rows_lengths_and_cited_parts():
     assert u["head_seat_abs_x"] == pytest.approx(BF.JOINT.outer_face - BF.PIN_CBORE_DEPTH)
     assert B.CROSS_HOLE_D == pytest.approx(1.5)
     assert B.cord_len("us2") >= B.tether_route("us2")["cord_needed_mm"] + 20.0
+
+
+def test_us2_sleeve_and_thin_head():
+    """BL-058 follow-up: 6.5 mm outer bearing keeps the sleeve SF >= 1 on every row (dy 95 / share 1.0 included) and
+    the D8 x 1.0 head carries the PIN-RET / walk loads (shear, flange bending, pull-through) with SF >= 2."""
+    sb = B.sleeve_bearing()
+    assert sb["bearing_now_mm"] == pytest.approx(6.5) and sb["pass"] and sb["min_now"] >= 1.0
+    assert sb["rows"]["dy95|share1|L6"]["sf_yield"] < 1.0                     # the first counterbore did not
+    h = B.head_check()
+    assert h["head_mm"] == [8.0, 1.0] and h["pass"]
+    r = h["rows"]["alu_7075_t6|walk (0.2 x dy95)"]
+    assert r["tau_mpa"] == pytest.approx(h["loads_n"]["walk (0.2 x dy95)"] / (math.pi * 5.0 * 1.0), abs=0.01)
 
 
 def test_groove_has_no_bending():

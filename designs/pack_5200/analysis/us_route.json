@@ -1,7 +1,7 @@
 {
  "print": {
   "file": "designs/pack_5200/print/frame_h1/h1_assembled.stl",
-  "md5": "f4994b2674822dab5fb7a584ccb11e95"
+  "md5": "7bd47cbdcc3b42c0f93d57ef041efc11"
  },
  "tension_n": {
   "us1": 444.4,
@@ -22885,7 +22885,7 @@
   ],
   "face_min_mm": -4.0,
   "pin_head_x_mm": [
-   181.0,
+   181.5,
    182.5
   ],
   "pin_head_recess_mm": 0.5,
@@ -23016,7 +23016,7 @@
     "torso": 19,
     "case": "fill",
     "side": "R",
-    "pin_head_mm": -0.0,
+    "pin_head_mm": 0.5,
     "pin_head_at": [
      181.0,
      14.1,
@@ -23136,7 +23136,7 @@
     "torso": 23,
     "case": "fill",
     "side": "R",
-    "pin_head_mm": 0.3,
+    "pin_head_mm": 0.8,
     "pin_head_at": [
      180.7,
      12.5,
@@ -23253,7 +23253,7 @@
     "cloth_points_inside_clevis": 30
    }
   ],
-  "pin_head_cloth_min_mm": -0.0,
+  "pin_head_cloth_min_mm": 0.5,
   "pin_head_outside_clevis_min_mm": 1.4,
   "eclip_cloth_min_mm": 4.1,
   "tether_cloth_min_mm": -0.6,
@@ -23294,7 +23294,7 @@
     "torso": 19,
     "case": "fill",
     "side": "R",
-    "pin_head_mm": -0.0,
+    "pin_head_mm": 0.5,
     "bolt_heads_mm": 13.1,
     "pin_head_recess_mm": 0.5
    },
@@ -23326,7 +23326,7 @@
     "torso": 23,
     "case": "fill",
     "side": "R",
-    "pin_head_mm": 0.3,
+    "pin_head_mm": 0.8,
     "bolt_heads_mm": 12.0,
     "pin_head_recess_mm": 0.5
    },

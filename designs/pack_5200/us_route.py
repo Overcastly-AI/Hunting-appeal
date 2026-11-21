@@ -838,7 +838,7 @@ def head_clearance(drapes: dict | None = None, res: dict | None = None) -> dict:
     # BL-058 (review 6 M-3 / M-2): the US2 pin head in its clevis counterbore, the far-side E-clip and the tether
     from huntkit.gendesign import bl058_frame as B58
     pr = B58.pin_row("us2")
-    ph = (pr["head_seat_abs_x"], pr["head_seat_abs_x"] + B58.HEAD_T)
+    ph = (pr["head_seat_abs_x"], pr["head_seat_abs_x"] + pr["head_mm"][1])
     yp, zp = p["y_pin"], p["z"]
     ec = B58.envelopes("us2")
     tr = B58.tether_route("us2")

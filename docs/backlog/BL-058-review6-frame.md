@@ -72,3 +72,14 @@ red until the wiring pass regenerates the print README and reads `bl058.json stl
 
 ## Screenshots
 `outputs/screens/20261121_BL058_1.png` (retainers per station), `_2.png` (US2 pin head vs drape), `_3.png` (whole body).
+
+## Follow-up (orchestrator calls, 2026-11-21): US2 head 1.0 mm in a 1.5 mm counterbore, tether kept
+- `h1_bedfit.PIN_CBORE_DEPTH` 1.5 and `bl058_frame.US2_HEAD_T` 1.0. The head still sits 0.5 mm below the face (bolt-head rule). The outer cheek now bears over 6.5 mm, and its sleeve is cut to 6.5 mm.
+- **Sleeve bearing** (factored rows, uhmwpe_sheet yield 21 MPa (3.0 ksi)): dy 95 / share 1.0 reads **1.06** (it was 0.98 at 6 mm and 1.31 at 8 mm). Design rows: 2.85 (share 0.6) and 1.71 (share 1.0). Goal is 1.0.
+- **Head D8 x 1.0, 7075-T6** (the US2 pins are 7075, not Ti; Ti rows are listed for reference). Loads: PIN-RET (a) 50 N, walk 129 N, and a 193 N proof. Shear-off SF >= 21.7, flange bending SF >= 10.3, pull-through on the counterbore floor SF >= 10.6 (minimum 10.3). Ti minimum: 10.6 (pull-through).
+- **Cloth clearance** is unchanged because the head's outer face stays 0.5 mm below the face: 19 in fill R +1.7 mm, 19 L +6.7 mm, 23 R +1.4 mm, 23 L +2.5 mm, and >= 1.4 mm on all 12 drapes. us_route regenerated: US1 12.4 mm, US2 14.6 mm, pass.
+- US2 lug submodel on the new STL: 3.34 / 1.50 (goals 1.5 / 1.15).
+- Re-exported clevises: 15.67 g each, one closed shell, bed fit with brim. Assembled STL: 1069.32 g. Halves unchanged.
+- US2 pin: shank 39.6 mm, 2.31 g. Ledger BL058: frame -1.21 g, attachment -5.78 g, total -6.99 g (-0.25 oz). Ledger total 4274.2 g (9.42 lb).
+- The US2 tether is kept (180 mm cord round the lug arm). The whole-body run was not repeated: the counterbore is in the bolt-on clevis outboard of the voxel domain, and the lug submodel covers it.
+- Screenshot: `outputs/screens/20261121_BL058_4.png`.

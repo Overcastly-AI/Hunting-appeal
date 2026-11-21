@@ -265,6 +265,12 @@ TETHER_HOLE_D = 1.6                   # h1_rev5.TETHER_HOLE_D (1.5 mm Dyneema)
 TETHER_END_WALL = 1.0                 # tether hole edge to the pin's tail end
 TETHER_G = 0.2                        # h1_rev5.RETAINER tether_g (1.5 mm Dyneema, 120 mm)
 HEAD_D, HEAD_T = 8.0, 1.5             # h1_rev5.HEAD_D / HEAD_T
+US2_HEAD_T = 1.0                      # BL-058 follow-up (orchestrator): the US2 pin head 1.0 mm in a 1.5 mm counterbore, so the
+#                                       outer cheek bears over 6.5 mm (sleeve SF >= 1 at the dy 95 / share 1.0 corner)
+
+
+def head_t(name: str) -> float:
+    return US2_HEAD_T if name == "us2" else HEAD_T
 KNOT = {"d": 4.0, "l": 3.0}           # ASSUMPTION KNOT: the tether's stopper knot at a head hole, D4 x 3 mm
 B01_RULE = 1.0                        # retainer >= 1 mm under the cheek-tip plane (B-01 rests on the tips)
 FRAME_GAP = 0.5                       # retainer >= 0.5 mm off the print (except the E-clip's thrust face)
@@ -319,11 +325,11 @@ def pin_row(name: str) -> dict:
                             "from_far_cheek_face_mm": [round(g0, 2), round(g1, 2)]},
                  "tether_hole": {"d_mm": TETHER_HOLE_D, "from_far_cheek_face_mm": round(th, 2),
                                  "axis": "frame z (cord exits along the slot)", "where": "in the tail, past the groove"},
-                 "head": "plain (no tether hole): the head sits in the clevis counterbore D9 x 2"}
+                 "head": "plain (no tether hole), D8 x 1.0: the head sits in the clevis counterbore D9 x 1.5"}
         part = ECLIP
     L = shank_in + tail
     return {"station": name, "head_seat_abs_x": round(f["head_seat"], 2), "far_face_abs_x": round(f["far"], 2),
-            "shank_mm": round(L, 2), "tail_past_far_face_mm": round(tail, 2), "head_mm": [HEAD_D, HEAD_T],
+            "shank_mm": round(L, 2), "tail_past_far_face_mm": round(tail, 2), "head_mm": [HEAD_D, head_t(name)],
             "retainer": ret, "retainer_part": part["part"], "retainer_id": part["id"], "retainer_source": part["source"],
             "orientation": STATION_RET[name]["points"], "why": STATION_RET[name]["why"], "features": feats,
             "tether": tether_route(name)}
@@ -363,7 +369,7 @@ def pin_mass_g(row: dict, material: str) -> float:
     from huntkit.materials import load
     rho = float(load(material).require("density_kg_m3")) * 1e-6
     d = 5.0
-    v = math.pi / 4 * d ** 2 * row["shank_mm"] + math.pi / 4 * HEAD_D ** 2 * HEAD_T
+    v = math.pi / 4 * d ** 2 * row["shank_mm"] + math.pi / 4 * HEAD_D ** 2 * row["head_mm"][1]
     f = row["features"]
     if "groove" in f:
         v -= math.pi / 4 * (d ** 2 - f["groove"]["d_mm"] ** 2) * f["groove"]["w_mm"]
@@ -390,7 +396,7 @@ def pin_overlay(name: str, material: str) -> dict:
               "use": "tether (axis along frame z)"}
         side = "inboard (far cheek): DIN 6799 E-clip in the groove"
     out = {"shank_mm": round(r["shank_mm"], 1), "cross_hole": ch, "clip_side": side, "retainer": r["retainer"],
-           "retainer_part": part["part"], "head_seat": ("clevis counterbore D9 x 2, head 0.5 below the face"
+           "retainer_part": part["part"], "head_mm": r["head_mm"], "head_seat": ("clevis counterbore D9 x 1.5, head D8 x 1.0, 0.5 below the face"
                                                         if name == "us2" else "on the near cheek face"),
            "pin_g": round(pg, 2), "set_g": round(pg + part["mass_g"] + tether_g(name), 2),
            "tether": {"cord_mm": cord_len(name), **{k: v for k, v in tether_route(name).items()
@@ -398,7 +404,7 @@ def pin_overlay(name: str, material: str) -> dict:
     if "groove" in f:
         out["groove"] = f["groove"]
         out["tether_hole"] = f["tether_hole"]
-        out["sleeve_note"] = "the outer cheek's UHMWPE sleeve is cut to 6.0 mm (flush with the counterbore floor)"
+        out["sleeve_note"] = "the outer cheek's UHMWPE sleeve is cut to 6.5 mm (flush with the counterbore floor)"
     return out
 
 
@@ -499,7 +505,7 @@ def envelopes(name: str, gap: float = 0.0) -> dict:
         x0 = x1 - ECLIP["t"]
         out["retainer"] = _cyl_x(x0 - gap, x1 - 0.05, yp, zp, ECLIP["od"] / 2 + 0.3 + gap)   # +0.3: installed spread
         out["tail"] = _cyl_x(f["far"] - faces_tail(name), f["far"] - 0.05, yp, zp, r_pin + gap)
-        hx = (f["head_seat"], f["head_seat"] + HEAD_T)
+        hx = (f["head_seat"], f["head_seat"] + head_t(name))
         out["head"] = _cyl_x(hx[0] + 0.02, hx[1] + gap, yp, zp, HEAD_D / 2 + gap)
         tr = tether_route(name)
         out["tether"] = _capsule(tr["polyline_free_R"][0], tr["polyline_free_R"][1], 0.75 + gap)
@@ -630,7 +636,7 @@ KT_GROOVE = 2.5                       # ASSUMPTION KT-GROOVE: Peterson, bending 
 def pin_moment(F: float, p: dict, eye_offset: float = 0.0, neck: float = 18.0, n: int = 4001) -> dict:
     """Bending moment along the US2 pin (|x|) under the eye's y-z force F: uniform over the neck, its centre
     ``eye_offset`` mm outboard of the throat centre (the 18 mm neck slides +/-1 mm in the 20 mm throat), reacted
-    uniformly over each cheek's bearing (inner 8 mm; outer 6 mm under the D9 x 2 counterbore) with the reactions from
+    uniformly over each cheek's bearing (inner 8 mm; outer 6.5 mm under the D9 x 1.5 counterbore) with the reactions from
     statics (lever rule on the bearing centroids). Integrated from the free inboard end: M is zero outboard of the
     bearings."""
     from . import h1_bedfit as BF
@@ -983,28 +989,81 @@ def body_record() -> dict | None:
     return out
 
 
+def p_us2_bearing() -> float:
+    """US2 outer cheek's pin bearing length under the counterbore (mm)."""
+    from . import h1_bedfit as BF
+    return stations_R()["us2"]["geom"].cheek - BF.PIN_CBORE_DEPTH
+
+
+SLEEVE_GOAL = 1.0                     # the pin rows are factored (2.4 = 1.6 g x 1.5): SF on yield >= 1 (as bag_attach.pin_check)
+
+
 def sleeve_bearing() -> dict:
-    """The US2 outer cheek's UHMWPE sleeve under the counterbore: 6 of 8 mm bearing. Projected bearing F_share /
-    (d_pin x L) on the pin rows' y-z forces (h1_closeout.json pins.us2 bending), against the uhmwpe_sheet yield."""
+    """The US2 outer cheek's UHMWPE sleeve under the counterbore (6.5 of 8 mm since the BL-058 follow-up; 6 with the
+    first 2 mm counterbore). Projected bearing F_share / (d_pin x L) on the pin rows' y-z forces (h1_closeout.json
+    pins.us2 bending: factored), against the uhmwpe_sheet yield; goal SLEEVE_GOAL on every row incl. dy 95 / share 1."""
     from huntkit.materials import load
     sy = float(load("uhmwpe_sheet").require("yield_strength_mpa"))
     co = json.loads((ANALYSIS / "h1_closeout.json").read_text())["pins"]["stations"]["us2"]["bending"]
+    Lnow = p_us2_bearing()
     rows = {}
     for row, F in (("design", co["design_yz_n"]), ("dy95", co["dy95_yz_n"])):
         for sh in (0.6, 1.0):
-            for L in (8.0, 6.0):
+            for L in sorted({8.0, 6.0, Lnow}):
                 s_ = sh * F / (5.0 * L)
-                rows[f"{row}|share{sh:g}|L{L:g}"] = {"sigma_mpa": round(s_, 1), "sf_yield": round(sy / s_, 2)}
-    return {"yield_mpa": sy, "rows": rows,
-            "note": "factored rows (2.4 basis); the liner is 1 mm thick and backed by the PAHT cheek (confined), so "
-                    "the uniaxial yield is a lower bound. The design rows (dy <= 50) keep SF >= 1.58 at share 1.0; "
-                    "the dy 95 sensitivity row at share 1.0 reads 0.98 (1.31 before the counterbore)."}
+                rows[f"{row}|share{sh:g}|L{L:g}"] = {"sigma_mpa": round(s_, 2), "sf_yield": round(sy / s_, 3)}
+    now = {k: v for k, v in rows.items() if k.endswith(f"|L{Lnow:g}")}
+    return {"yield_mpa": sy, "bearing_now_mm": Lnow, "goal": SLEEVE_GOAL, "rows": rows,
+            "min_now": min(v["sf_yield"] for v in now.values()),
+            "min_design_now": min(v["sf_yield"] for k, v in now.items() if k.startswith("design")),
+            "pass": bool(min(v["sf_yield"] for v in now.values()) >= SLEEVE_GOAL),
+            "note": "factored rows (2.4 basis); the 1 mm liner is backed by the PAHT cheek (confined): uniaxial yield "
+                    "is a lower bound. L6 = the first counterbore (2 mm), L8 = no counterbore."}
+
+
+def head_check() -> dict:
+    """The thinner US2 pin head (D8 x 1.0, 7075-T6 as the US2 pins; Ti-6Al-4V for reference) under the axial loads it
+    can see: PIN-RET (a) 50 N push and a walking pin (WALK-MU 0.2 x the dy 95 y-z force), the larger x 1.5 as a proof
+    margin row. Checks: head shear-off at the shank root (tau = F / (pi d t)); head flange bending as an annular strip
+    fixed at the shank (r 2.5) loaded by uniform bearing out to r 4 (sigma = 3 p (b - a)^2 / t^2, conservative against
+    the annular-plate value); pull-through bearing on the counterbore floor annulus (sleeve end + PAHT, r 2.6-4.0)
+    against the PAHT-CF xy strength with its knock-down (bag_attach._paht)."""
+    from huntkit.materials import load
+    from . import bag_attach as BA
+    co = json.loads((ANALYSIS / "h1_closeout.json").read_text())["pins"]["stations"]["us2"]["bending"]
+    loads = {"PIN-RET (a) push": 50.0, "walk (0.2 x dy95)": round(0.2 * co["dy95_yz_n"], 1)}
+    loads["proof (1.5 x max)"] = round(1.5 * max(loads.values()), 1)
+    t, a_, b_ = US2_HEAD_T, 2.5, HEAD_D / 2
+    A_bear = math.pi * (b_ ** 2 - 2.6 ** 2)
+    pa = BA._paht()
+    s_paht = pa["s_xy"] * pa["knock"]
+    out = {"head_mm": [HEAD_D, t], "loads_n": loads, "bearing_area_mm2": round(A_bear, 1), "paht_allow_mpa":
+           round(s_paht, 1), "rows": {}}
+    for mat in ("alu_7075_t6", "ti_6al_4v"):
+        m = load(mat)
+        sy = float(m.get("yield_strength_sbasis_mpa") or m.require("yield_strength_mpa"))
+        for lab, F in loads.items():
+            tau = F / (math.pi * 5.0 * t)
+            p_ = F / A_bear
+            sig = 3.0 * p_ * (b_ - a_) ** 2 / t ** 2
+            out["rows"][f"{mat}|{lab}"] = {"tau_mpa": round(tau, 2), "sf_shear": round(0.577 * sy / tau, 1),
+                                           "sigma_flange_mpa": round(sig, 2), "sf_flange": round(sy / sig, 1),
+                                           "bearing_mpa": round(p_, 2), "sf_pull_through": round(s_paht / p_, 1)}
+    out["min_sf"] = min(min(v["sf_shear"], v["sf_flange"], v["sf_pull_through"]) for v in out["rows"].values())
+    out["pass"] = bool(out["min_sf"] >= 2.0)
+    out["note"] = "the US2 pins are 7075-T6 (not Ti); Ti rows for reference"
+    return out
+
+
+def BF_CB() -> float:
+    from . import h1_bedfit as BF
+    return BF.PIN_CBORE_DEPTH
 
 
 def mass_rows(res: dict) -> dict:
     """BL058 ledger deltas, every one from a file or a record: the print (assembled now - the 6b0cde1 copy), the hip
     mount (STL now - hip_mount_bl056.json redraw_g), the 6 hip screws BL-055 booked (x 12 - x 14), the 12 pins and
-    their retainers + tethers (h1_closeout.pins with and without the BL-058 overlay), the US2 outer sleeves (8 -> 6)."""
+    their retainers + tethers (h1_closeout.pins with and without the BL-058 overlay), the US2 outer sleeves (8 -> 6.5)."""
     import trimesh
     from . import bag_attach as BA
     from . import h1_closeout as C
@@ -1025,7 +1084,7 @@ def mass_rows(res: dict) -> dict:
            "hip_screws_n": n_scr,
            "pins_delta_g": round(pr_new["mass_bl058"]["pins_g"] - pr_old["mass"]["pins_g"], 3),
            "retainers_delta_g": round(pr_new["mass_bl058"]["retainers_tethers_g"] - pr_old["mass"]["clips_tethers_g"], 3),
-           "sleeves_delta_g": round(-2 * 2.0 * sleeve_mm3_per_mm * rho_pe, 3),
+           "sleeves_delta_g": round(-2 * BF_CB() * sleeve_mm3_per_mm * rho_pe, 3),
            "pins_bl058_g": pr_new["mass_bl058"]["pins_g"], "retainers_bl058_g": pr_new["mass_bl058"]["retainers_tethers_g"],
            "pins_bl055_g": pr_old["mass"]["pins_g"], "retainers_bl055_g": pr_old["mass"]["clips_tethers_g"]}
     out["frame_delta_g"] = round(sum(out[k] or 0.0 for k in ("print_delta_g", "mount_delta_g", "hip_screws_delta_g")), 3)
@@ -1072,8 +1131,9 @@ def compute(log=print) -> dict:
     res["pins"] = {k: v for k, v in C.pins().items() if k in ("scheme", "retainer", "stations", "bom", "mass_bl058")}
     res["groove"] = groove_check()
     res["sleeve_bearing"] = sleeve_bearing()
-    res["cbore"] = {"d_mm": BF.PIN_CBORE_D, "depth_mm": BF.PIN_CBORE_DEPTH, "head_mm": [HEAD_D, HEAD_T],
-                    "recess_mm": round(BF.PIN_CBORE_DEPTH - HEAD_T, 2), "wall_to_cheek_tip_mm":
+    res["head_check"] = head_check()
+    res["cbore"] = {"d_mm": BF.PIN_CBORE_D, "depth_mm": BF.PIN_CBORE_DEPTH, "head_mm": [HEAD_D, US2_HEAD_T],
+                    "recess_mm": round(BF.PIN_CBORE_DEPTH - US2_HEAD_T, 2), "wall_to_cheek_tip_mm":
                     round(stations_R()["us2"]["y_tip"] - stations_R()["us2"]["y_pin"] - BF.PIN_CBORE_D / 2, 2),
                     "outer_cheek_bearing_mm": stations_R()["us2"]["geom"].cheek - BF.PIN_CBORE_DEPTH}
     usr = json.loads((ANALYSIS / "us_route.json").read_text())
@@ -1266,7 +1326,7 @@ def plot_retainers(res: dict) -> str:
     xh = pr["head_seat_abs_x"]
     ax.add_patch(Rectangle((pr["far_face_abs_x"] - pr["tail_past_far_face_mm"], p["y_pin"] - 2.5),
                            xh - pr["far_face_abs_x"] + pr["tail_past_far_face_mm"], 5.0, fc="#888", ec="k", lw=0.6))
-    ax.add_patch(Rectangle((xh, p["y_pin"] - 4.0), HEAD_T, 8.0, fc="#555", ec="k", lw=0.6, label="pin head D8 x 1.5"))
+    ax.add_patch(Rectangle((xh, p["y_pin"] - 4.0), US2_HEAD_T, 8.0, fc="#555", ec="k", lw=0.6, label="pin head D8 x 1.0"))
     ex = rr["us2"]["retainer_box"]
     ax.add_patch(Rectangle((ex["lo"][0], ex["lo"][1]), ex["hi"][0] - ex["lo"][0], ex["hi"][1] - ex["lo"][1], fc="#1f6fb4",
                            alpha=0.6, label="E-clip"))
@@ -1282,7 +1342,7 @@ def plot_retainers(res: dict) -> str:
     ax.set_aspect("equal")
     ax.set_xlabel("frame x (mm)", fontsize=8)
     ax.set_ylabel("frame y (mm)", fontsize=8)
-    ax.set_title(f"US2 plan at z {p['z']:.0f}: head {res['cbore']['recess_mm']:.1f} mm below the clevis\nface (D9 x 2 "
+    ax.set_title(f"US2 plan at z {p['z']:.0f}: head {res['cbore']['recess_mm']:.1f} mm below the clevis\nface (D9 x 1.5 "
                  f"cbore); E-clip groove {pr['features']['groove']['from_far_cheek_face_mm']} mm\npast the inner "
                  f"cheek; tether cord {cord_len('us2'):.0f} mm", fontsize=8.5, loc="left")
     ax.legend(fontsize=6.5, loc="lower left")
@@ -1350,7 +1410,7 @@ def plot_head(res: dict) -> str:
     a1.set_xlabel("frame x (mm)")
     a1.set_ylabel("frame y (mm)")
     a1.legend(fontsize=6.5, loc="lower left", ncol=1)
-    a1.set_title("US2 clevis at the pin (z 142): D9 x 2 counterbore; the free drape passes through the clevis\n(no "
+    a1.set_title("US2 clevis at the pin (z 142): D9 x 1.5 counterbore, head 1.0; the free drape passes through the clevis\n(no "
                  "frame outboard of the stays in the sim): the real cloth tents over the face", fontsize=9, loc="left")
     rows = [r for r in hc["pin_rows"] if r["case"] == "fill" and r["torso"] in (19, 23)]
     labs = [f"{r['torso']} in {r['side']}" for r in rows]
@@ -1440,10 +1500,89 @@ def plot_body(res: dict) -> str:
     return _save(fig, f"{SHOT}3.png")
 
 
+def plot_followup(res: dict) -> str:
+    """BL-058 follow-up: the 1.0 mm US2 head in its 1.5 mm counterbore (section at the pin), the outer sleeve's bearing
+    SF for 8 / 6 / 6.5 mm on every row, the head's own checks and the pin-head cloth clearance on the 19 / 23 in fill
+    drapes."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib.patches import Rectangle
+    from . import h1_bedfit as BF
+    p = stations_R()["us2"]
+    fig, axs = plt.subplots(1, 4, figsize=(19, 5.2), gridspec_kw={"width_ratios": [1.0, 1.25, 1.0, 1.0]})
+    ax = axs[0]
+    A = _sec_z(_mesh(), p["z"])
+    _fill(ax, A, fc="#c9c3b8", ec="#5d5a54", lw=0.8)
+    pr = res["pin_rows"]["us2"]
+    xh, t = pr["head_seat_abs_x"], pr["head_mm"][1]
+    ax.add_patch(Rectangle((150.0, p["y_pin"] - 2.5), xh - 150.0, 5.0, fc="#888", ec="k", lw=0.6))
+    ax.add_patch(Rectangle((xh, p["y_pin"] - 4.0), t, 8.0, fc="#2c3e50", ec="k", lw=0.6, label=f"head D8 x {t:g}"))
+    ax.axvline(BF.JOINT.outer_face, color="k", lw=0.8, ls=":")
+    y0 = p["y_pin"] - 6.5
+    ax.annotate("", xy=(175.0, y0), xytext=(xh, y0), arrowprops=dict(arrowstyle="<->", color="#c0392b"))
+    ax.text(0.5 * (175.0 + xh), y0 - 1.6, f"bearing {p_us2_bearing():g} mm", ha="center", fontsize=8, color="#c0392b")
+    ax.text(BF.JOINT.outer_face + 0.3, p["y_pin"] + 5.5, f"face; head {res['cbore']['recess_mm']:g} below", fontsize=7.5)
+    ax.set_xlim(168, 190)
+    ax.set_ylim(4, 28)
+    ax.set_aspect("equal")
+    ax.set_xlabel("frame x (mm)")
+    ax.set_ylabel("frame y (mm)")
+    ax.legend(fontsize=7, loc="upper left")
+    ax.set_title(f"US2 clevis at the pin (z 142): D9 x {BF.PIN_CBORE_DEPTH:g} counterbore", fontsize=9, loc="left")
+    ax = axs[1]
+    sb = res["sleeve_bearing"]
+    rows = ["design|share0.6", "design|share1", "dy95|share0.6", "dy95|share1"]
+    yy = np.arange(len(rows))
+    for i, (L, col) in enumerate(((8.0, "#bbb"), (6.0, "#e74c3c"), (sb["bearing_now_mm"], "#1f6fb4"))):
+        v = [sb["rows"][f"{r}|L{L:g}"]["sf_yield"] for r in rows]
+        ax.barh(yy + (1 - i) * 0.27, v, height=0.26, color=col, label=f"bearing {L:g} mm")
+        for k, x in enumerate(v):
+            ax.text(x + 0.03, k + (1 - i) * 0.27, f"{x:.2f}", va="center", fontsize=7)
+    ax.axvline(sb["goal"], color="k", lw=1)
+    ax.set_yticks(yy, [r.replace("|", ", ") for r in rows], fontsize=8)
+    ax.set_xlabel("UHMWPE sleeve bearing SF on yield (factored rows; goal 1.0)")
+    ax.legend(fontsize=7, loc="lower right")
+    ax.set_title(f"Outer sleeve: {sb['bearing_now_mm']:g} mm reads {sb['min_now']:.2f} at dy 95 / share 1.0\n(6 mm: 0.98; "
+                 "8 mm: 1.31)", fontsize=9, loc="left")
+    ax = axs[2]
+    hc = res["head_check"]
+    labs = list(hc["rows"])
+    sel = [k for k in labs if k.startswith("alu_7075_t6")]
+    yy = np.arange(len(sel))
+    for i, (key, col) in enumerate((("sf_shear", "#1f6fb4"), ("sf_flange", "#27ae60"), ("sf_pull_through", "#e67e22"))):
+        v = [hc["rows"][k][key] for k in sel]
+        ax.barh(yy + (1 - i) * 0.27, v, height=0.26, color=col, label=key.replace("sf_", ""))
+    ax.axvline(2.0, color="k", lw=1)
+    ax.set_xscale("log")
+    ax.set_yticks(yy, [k.split("|")[1] for k in sel], fontsize=8)
+    ax.set_xlabel("SF (log), 7075-T6 head D8 x 1.0")
+    ax.legend(fontsize=7, loc="lower right")
+    ax.set_title(f"Head under axial loads: min SF {hc['min_sf']:.1f}\n(Ti for reference is higher)", fontsize=9,
+                 loc="left")
+    ax = axs[3]
+    h = res["us_route_heads"]
+    pr_ = [r for r in h["pin_rows"] if r["case"] == "fill" and r["torso"] in (19, 23)]
+    yy = np.arange(len(pr_))
+    v = [r.get("pin_head_outside_clevis_mm", np.nan) for r in pr_]
+    ax.barh(yy, v, color="#1f6fb4")
+    for k, x in enumerate(v):
+        ax.text(x + 0.1, k, f"{x:+.1f}", va="center", fontsize=8)
+    ax.axvline(h["bolt_head_rule_recess_mm"], color="k", lw=1, ls="--", label="bolt-head rule 0.5 mm")
+    ax.set_yticks(yy, [f"{r['torso']} in fill {r['side']}" for r in pr_])
+    ax.set_xlabel("cloth clearance to the pin head (mm)")
+    ax.legend(fontsize=7, loc="lower right")
+    ax.set_title(f"Pin head vs the drapes: min {h['pin_head_outside_clevis_min_mm']:+.1f} mm over all 12\n(recess "
+                 f"{h['pin_head_recess_mm']:g} mm)", fontsize=9, loc="left")
+    fig.suptitle("BL-058 follow-up: US2 pin head 1.0 mm in a 1.5 mm counterbore", fontsize=11, x=0.01, ha="left")
+    fig.tight_layout()
+    return _save(fig, f"{SHOT}4.png")
+
+
 def figures(res: dict) -> list:
-    out = [plot_retainers(res), plot_head(res)]
+    out = [plot_retainers(res), plot_head(res), plot_followup(res)]
     if res.get("body"):
-        out.append(plot_body(res))
+        out.insert(2, plot_body(res))
     return out
 
 

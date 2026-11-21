@@ -241,9 +241,10 @@ def lip_round_cut(p: dict, r: float = LIP_R):
 
 
 PIN_CBORE_D = 9.0                  # BL-058 (review 6 M-3): counterbore for the US2 pin head (D8 x 1.5, h1_rev5.HEAD_D/T) in
-PIN_CBORE_DEPTH = 2.0              # the clevis's outer face: the head sits 0.5 mm below the face (the bolt-head rule,
+PIN_CBORE_DEPTH = 1.5              # the clevis's outer face (BL-058 follow-up: 1.5 for a 1.0 mm head, was 2.0 for 1.5;
+#                                    the outer cheek's pin bearing 6.5 of 8 mm): the head sits 0.5 mm below the face (the bolt-head rule,
 #                                    ClevisJoint.head_recess - head_h = 0.5); the outer cheek's pin bearing is 6 of 8 mm
-#                                    (its UHMWPE sleeve is cut to 6 mm, bl058_frame.pins)
+#                                    (its UHMWPE sleeve is cut to 6.5 mm, bl058_frame.pins)
 
 
 def pin_cbore_cut(p: dict, d: float | None = None, depth: float | None = None):
