@@ -22,7 +22,9 @@ from __future__ import annotations
 
 import argparse
 import csv
+import functools
 import json
+import re
 import math
 import sys
 from pathlib import Path
@@ -38,7 +40,7 @@ DRAW = PRINT / "drawings"
 AN = HERE / "analysis"
 OPS_CSV = ROOT / "outputs" / "release" / "pack5200_corrie_f_rev3" / "manufacturing" / "op_sequence.csv"
 SCREENS = ROOT / "outputs" / "screens"
-SHOT = "20261121_BL057build"     # BL-057: named for the ticket that regenerates the package (was 20261121_BL055build)
+SHOT = "20261121_BL059build"     # BL-059: named for the ticket that regenerates the package (was 20261121_BL057build)
 IN = 25.4
 OZ = 28.3495
 MAT_PRINT = "pa12_cf_fdm_paht"
@@ -126,7 +128,8 @@ def stl_table() -> list[dict]:
              ("h1_assembled", "whole frame as assembled (checks only, do not print)", "-"),
              ("test_pieces/hefit_hinge_fairlead_R", "test piece HE-FIT / PT-3 / SEW-F", "PAHT-CF"),
              ("test_pieces/us_route_stay_R", "test piece US ROUTE / CLEVIS-SHARE", "PAHT-CF"),
-             ("test_pieces/im3ec_cheek_R", "test piece IM3-EC", "PAHT-CF")]
+             ("test_pieces/im3ec_cheek_R", "test piece IM3-EC", "PAHT-CF"),
+             ("test_pieces/hip_insert_guide", "hip insert-setting guide (BL-058; a tool, print it)", "PAHT-CF")]
     out = []
     for f, what, mat in files:
         p = PRINT / f"{f}.stl"
@@ -329,6 +332,39 @@ def nut_check_txt(C) -> str:
             f"({(C.nut_t + NUT_T_TOL) / IN:.3f} in); a thicker nut is the wrong standard, set it aside")
 
 
+def bolt_window(C) -> tuple[float, float] | None:
+    """BL-058 BOLT-LEN: the caliper window for the screw of joint ``C``. US2 (M5 x 35): read from bl058.json
+    kit.nut.bolt_caliper (34.7-35.3 mm: a long one bottoms in the 0.5 mm tail room, a short one ends < 0.6 pitch past
+    the nut). z 234: the ISO 4759-1 length tolerance of BOLT-LEN (nut_check.bolt_len_tol_mm), which nut_check shows is
+    safe at both ends there (tail room and tip past the nut both > 0). None before BL-058."""
+    b8 = bl058()
+    if not b8:
+        return None
+    nc = b8["nut_check"]
+    rows = [r for r in nc["rows"] if r["bolt"].startswith(f"M5 x {C.bolt_len:.0f} ")]
+    m = re.search(rf"M5 x {C.bolt_len:.0f}\b.*?(\d+\.\d+)-(\d+\.\d+) mm", b8["kit"]["nut"]["bolt_caliper"])
+    if m:
+        return float(m.group(1)), float(m.group(2))
+    assert rows and all(r["tail_clear_long_bolt_mm"] > 0 and r["seat"]["DIN 934"]["tip_past_nut_short_bolt_mm"] > 0
+                        for r in rows), C.bolt_len
+    t = nc["bolt_len_tol_mm"]
+    return C.bolt_len - t, C.bolt_len + t
+
+
+def bolt_check_txt(C) -> str:
+    """BUILD_H1 7.2 / 8.2 (BL-058 BOLT-LEN): caliper every screw of this joint under the head before it goes in."""
+    w = bolt_window(C)
+    if not w:
+        return ""
+    rows = [r for r in bl058()["nut_check"]["rows"] if r["bolt"].startswith(f"M5 x {C.bolt_len:.0f} ")]
+    tail = min(r["tail_clear_nominal_mm"] for r in rows)
+    tip = min(r["seat"]["DIN 934"]["tip_past_nut_nominal_mm"] for r in rows)
+    return (f" CHECK each M5 x {C.bolt_len:.0f} screw with the caliper too, under the head to the tip: **{w[0]:.1f}-"
+            f"{w[1]:.1f} mm** ({w[0] / IN:.3f}-{w[1] / IN:.3f} in; ASSUMPTION BOLT-LEN). The nominal screw leaves "
+            f"{tail:.1f} mm to the end of the tail hole and ends {tip:.1f} mm past the nut (bl058.json nut_check); "
+            "outside the window set it aside")
+
+
 def chamber_txt() -> str:
     """Chamber temperature for the long PAHT-CF prints (review 6 m-5): the material record's chamber_temp_c as the
     low end, the record note's 60 C as the top."""
@@ -364,14 +400,44 @@ def bl056() -> dict:
             "_path": f"{CLEVIS56_JSON.relative_to(ROOT)}, {HIP56_JSON.relative_to(ROOT)}"}
 
 
+BL058_JSON = AN / "bl058.json"               # BL-058 (structural-fea-engineer): review 6 frame / hardware fixes
+
+
+@functools.lru_cache(maxsize=None)
+def bl058() -> dict:
+    """BL-058 results (``analysis/bl058.json``: kit.nut / hip_screw / pins_bom / PIN-RET_d / FIT-US_marks / hip_guide,
+    hip_mount, stl, mass, head_check, sleeve_bearing, assumptions), {} before it lands."""
+    if not BL058_JSON.exists():
+        return {}
+    return json.loads(BL058_JSON.read_text())
+
+
+def mount_g() -> float:
+    """The SLM Ti hip mount mass the build books: ledger BL056 mount_g + ledger BL058 mount_delta_g (the D5.8 holes),
+    checked against the STL mass BL-058 published (bl058.json hip_mount.mass_g)."""
+    from huntkit.mass import ledger
+    g = ledger.bl056_update()["mount_g"]
+    if bl058():
+        g = round(g + ledger.bl058_update()["mount_delta_g"], 2)
+        assert abs(g - bl058()["hip_mount"]["mass_g"]) <= MASS_TOL_G, (g, bl058()["hip_mount"]["mass_g"])
+    return g
+
+
 def mass_check(stl: list[dict]) -> dict:
-    """BL-057: the STL-measured masses of this folder against BL-056's published ones (clevis_bl056.json mass).
-    {file: (stl g, json g, ok)}."""
+    """The STL-measured masses of this folder against the latest published ones: BL-058's (bl058.json stl) when on
+    file, else BL-056's (clevis_bl056.json mass; BL-057). {file: (stl g, json g, ok)}."""
+    by = {r["file"]: r for r in stl}
+    out = {}
+    b8 = bl058()
+    if b8:
+        for f, v in b8["stl"].items():
+            k = f if f in by else f"test_pieces/{f}"
+            if isinstance(v, dict) and "g" in v and k in by:
+                out[k] = (by[k]["mass_g"], v["g"], abs(by[k]["mass_g"] - v["g"]) <= MASS_TOL_G)
+        return out
     b = bl056()
     if not b:
         return {}
-    by = {r["file"]: r for r in stl}
-    out = {}
     for f, v in b["clevis"]["mass"].items():
         if isinstance(v, dict) and f in by:
             out[f] = (by[f]["mass_g"], v["g"], abs(by[f]["mass_g"] - v["g"]) <= MASS_TOL_G)
@@ -531,23 +597,26 @@ def b53_get(b: dict, *names, default=None):
 # ================================================================================ README
 def body_status_txt(co: dict) -> str:
     """README status line: the whole-body margins BL-055 Part A published (sanded body, every R1 basis; >= 1 passes)."""
-    bs = (co.get("raw") or {}).get("body", {}).get("bases", {})
+    b8 = bl058().get("body", {}).get("bases", {})
+    bs, tag, who = ((b8, "bl058_sanded", "BL-058, on the exported STL") if b8 else
+                    ((co.get("raw") or {}).get("body", {}).get("bases", {}), "bl053_sanded", "BL-055 Part A"))
     if not bs:
         return f"- {PENDING} whole-body margins on the BL-053 print (Part A)."
     keys = ("strength", "fatigue", "creep", "buckling", "joint_strength", "joint_fatigue")
-    worst = {k: min((v.get("bl053_sanded") or v.get("bl053"))[k] for v in bs.values()) for k in keys}
-    low = {b_: v_["bl053_sanded"]["fatigue"] for b_, v_ in bs.items()
-           if v_.get("bl053_sanded", {}).get("fatigue", 9) < 1.0}
-    return ("- Whole body on this print, stays sanded 0.2 mm (BL-055 Part A, lowest over the R1 bases, pass >= 1.00): "
+    worst = {k: min((v.get(tag) or v.get(tag.removesuffix("_sanded")))[k] for v in bs.values()) for k in keys}
+    low = {b_: v_[tag]["fatigue"] for b_, v_ in bs.items() if v_.get(tag, {}).get("fatigue", 9) < 1.0}
+    return (f"- Whole body on this print, stays sanded 0.2 mm ({who}, lowest over the R1 bases, pass >= 1.00): "
             + ", ".join(f"{k.replace('_', ' ')} {v:.2f}" for k, v in worst.items())
             + (". **Below 1.00:** " + ", ".join(f"fatigue {v:.2f} on basis {b_}" for b_, v in low.items())
-               + " (the R1 rule holds the print for MT-1c / CA-1; see `analysis/h1_closeout.md` 1)." if low else "."))
+               + " (the R1 rule holds the print for MT-1c / CA-1; see `analysis/"
+               + ("bl058.json` body)." if b8 else "h1_closeout.md` 1).") if low else "."))
 
 
 def readme_md(stl: list[dict], b: dict) -> str:
     by = {r["file"]: r for r in stl}
-    body = sum(by[f]["mass_g"] for f in ("h1_lower_flat", "h1_upper_flat") if f in by)
-    cl = sum(by[f]["mass_g"] for f in ("us2_clevis_R", "us2_clevis_L") if f in by)
+    rho = rho_print()                                   # sums from the volumes, rounded once (BL-059)
+    body = sum(by[f]["volume_mm3"] * rho for f in ("h1_lower_flat", "h1_upper_flat") if f in by)
+    cl = sum(by[f]["volume_mm3"] * rho for f in ("us2_clevis_R", "us2_clevis_L") if f in by)
     asm = by.get("h1_assembled", {}).get("mass_g", float("nan"))
     L = ["# H1 printed frame body: files (Pack 5200)", "",
          "Generated by `designs/pack_5200/frame_h1_build.py` (BL-054). **Do not edit by hand: re-run the script.** "
@@ -573,6 +642,7 @@ def readme_md(stl: list[dict], b: dict) -> str:
          body_status_txt(closeout()),
          f"- {('BL-055 Part A data in use: `' + closeout()['_path'] + '` (hip inserts, Ti US1 pins).') if closeout() else PENDING + ' BL-055 Part A (hip insert pattern, Ti US1 pins) not yet published; BUILD_H1 sections 9 and 12 carry pending boxes.'}",
          bl056_status_txt(stl),
+         bl058_status_txt(stl),
          "",
          "## Files", "",
          "| file | what | mass | size as written on the plate (x, y, z) | watertight |", "|---|---|---:|---|---|"]
@@ -604,12 +674,15 @@ def readme_md(stl: list[dict], b: dict) -> str:
           "- BL-051: stay crown restored; clevis screw heads counterbored (M5 x 35).",
           "- BL-054: print README regenerated from the meshes; build path moved to BUILD_H1.md; spine clamp drawing.",
           "- BL-053: tree supports from the plate, hex nut traps, US1 / US2 lugs for a 40 mm cradle belly, headed pins "
-          "with R-clips and tethers.",
+          "with clips and tethers (the clips are BL-058's).",
           "- BL-055: " + ("hip boss with printed insert pilot holes (Part A pattern); US1 pins in Ti-6Al-4V; "
                           if closeout() else "") + "README / BUILD_H1 regenerated (Part B).",
           ("- BL-056: US2 joint blocks grown upward and the clevis nut face moved 1 mm inboard (CLEVIS-SHARE B now "
            "passes); the SLM Ti hip mount redrawn on the 8-insert boss. BL-057: README / BUILD_H1 regenerated."
            if bl056() else ""),
+          ("- BL-058: DIN 934 nuts, a retainer per pin station (hairpin clips; US2 groove + E-clip + tether), US2 pin "
+           "head counterbored into the clevises, hip screws shortened, mount holes opened, insert-setting guide. "
+           "BL-059: README / BUILD_H1 regenerated from bl058.json." if bl058() else ""),
           ""]
     return "\n".join(L)
 
@@ -619,15 +692,47 @@ def bl056_status_txt(stl: list[dict]) -> str:
     b = bl056()
     if not b:
         return ""
-    mc = mass_check(stl)
     blk = b["clevis"]["joint"]["block"]
+    txt = (f"- BL-056 data in use: `{b['_path']}`. US2 joint blocks grown to z pin +{blk['upper_half_z_mm']:g} mm (was "
+           f"+{blk['was_upper_mm']:g}), clevis nut face at x +/-{blk['nut_face_x_mm']:g} (was {blk['was_nut_face_x_mm']:g}; "
+           f"nut trap {blk['trap_x0_mm']:g}-{blk['nut_face_x_mm']:g}).")
+    if bl058():
+        return txt
+    mc = mass_check(stl)
     ok = all(v[2] for v in mc.values())
     parts = ", ".join(f"`{f}` {fg(v[0])} (JSON {v[1]:.2f} g, was {b['clevis']['mass'][f]['bl055_g']:.2f})"
                       for f, v in mc.items() if f in ("us2_clevis_R", "h1_assembled"))
-    return (f"- BL-056 data in use: `{b['_path']}`. US2 joint blocks grown to z pin +{blk['upper_half_z_mm']:g} mm (was "
-            f"+{blk['was_upper_mm']:g}), clevis nut face at x +/-{blk['nut_face_x_mm']:g} (was {blk['was_nut_face_x_mm']:g}; "
-            f"nut trap {blk['trap_x0_mm']:g}-{blk['nut_face_x_mm']:g}). Masses: {parts}; "
+    return (txt + f" Masses: {parts}; "
             + ("every STL mass here matches the JSON." if ok else "**STL MASS DIFFERS FROM THE JSON: ask the engineer.**"))
+
+
+def bl058_status_txt(stl: list[dict]) -> str:
+    """README status line for BL-058: what changed on the print and the hardware, the masses from the STL checked
+    against bl058.json stl (BL-059 wiring)."""
+    b8 = bl058()
+    if not b8:
+        return ""
+    mc = mass_check(stl)
+    ok = all(v[2] for v in mc.values())
+    parts = ", ".join(f"`{f}` {fg(v[0])} (bl058.json {v[1]:.2f} g)" for f, v in mc.items()
+                      if f in ("us2_clevis_R", "h1_assembled"))
+    cb, bd = b8["cbore"], b8["body"]
+    return (f"- BL-058 data in use: `{BL058_JSON.relative_to(ROOT)}`. US2 pin head D{cb['head_mm'][0]:g} x "
+            f"{cb['head_mm'][1]:g} in a D{cb['d_mm']:g} x {cb['depth_mm']:g} counterbore cut into both clevises (head "
+            f"{cb['recess_mm']:g} mm below the face); DIN 934 nuts; hairpin clips / US2 E-clip; hip screws "
+            f"{b8['kit']['hip_screw']['spec']}; mount holes D{b8['hip_mount']['hole_d_mm']:g} with the printed insert "
+            f"guide. Whole body re-run on this print: {body_line(bd)}. Masses: {parts}; "
+            + ("every STL mass here matches bl058.json." if ok else "**STL MASS DIFFERS FROM bl058.json: ask the engineer.**"))
+
+
+def body_line(bd: dict) -> str:
+    """The whole-body margins BL-058 ran on the exported STL (bl058.json body, sanded), lowest over the static bases."""
+    bs = bd.get("bases", {})
+    keys = ("strength", "fatigue", "creep", "buckling")
+    st = [v["bl058_sanded"] for k, v in bs.items() if "bl058_sanded" in v and not k.endswith(".cyc")]
+    if not st:
+        return "see `analysis/bl058.json` body"
+    return ", ".join(f"{k} {min(r[k] for r in st):.2f}" for k in keys)
 
 
 # ================================================================================ BUILD_H1
@@ -669,6 +774,72 @@ def pins_step3(pn: dict, pr: dict, co: dict) -> str:
     return txt
 
 
+def us2_sleeve_mm() -> float | None:
+    """BL-058 follow-up: the US2 outer cheek's sleeve length under the pin-head counterbore (bl058.json
+    sleeve_bearing.bearing_now_mm = cbore.outer_cheek_bearing_mm), None before BL-058."""
+    b8 = bl058()
+    if not b8:
+        return None
+    L = float(b8["sleeve_bearing"]["bearing_now_mm"])
+    assert abs(L - b8["cbore"]["outer_cheek_bearing_mm"]) < 1e-6
+    return L
+
+
+def sleeve_counts(pn: dict) -> list[tuple[float, int, str]]:
+    """(length mm, count, where) of the UHMWPE pin sleeves: one per cheek (PIN-SLEEVE); BL-058 cuts the two US2 outer
+    (clevis) sleeves to the counterbore floor."""
+    n = pn["stations"]                        # 12 stations, 2 cheeks each
+    L2 = us2_sleeve_mm()
+    hinge = (pn["hinge_cheek_mm"], 4, "hinge cheeks")
+    if L2 is None:
+        return [hinge, (pn["im_cheek_mm"], 2 * n - 4, "every other cheek")]
+    return [hinge, (pn["im_cheek_mm"], 2 * n - 6, "US1, IM1-IM3 and the US2 inner cheeks"),
+            (L2, 2, "US2 OUTER (clevis) cheeks: the pin head's counterbore takes the rest")]
+
+
+def sleeve_step_txt(pn: dict) -> str:
+    sc = sleeve_counts(pn)
+    return (f"2. Slide one UHMWPE sleeve (**HW-PIN-SLV**, OD {pn['hole_d_mm']:.1f} / ID 5.2) into each cheek, flush with "
+            "the faces (ASSUMPTION PIN-SLEEVE): " + "; ".join(f"{L:g} mm long x {k} ({w})" for L, k, w in sc)
+            + f". {sum(k for _, k, _ in sc)} sleeves per frame."
+            + (" The US2 outer sleeve ends flush with the counterbore floor, under the pin head (BL-058: bearing "
+               f"SF {bl058()['sleeve_bearing']['min_now']:.2f} at the bounding corner, goal "
+               f"{bl058()['sleeve_bearing']['goal']:.1f}). CHECK: caliper each US2 outer sleeve "
+               f"{us2_sleeve_mm():g} mm before it goes in." if us2_sleeve_mm() else ""))
+
+
+def retention_txt(pr: dict) -> str:
+    """BUILD_H1 9.4 (BL-058, review 6 M-2 / M-3): the retainer per station from h1_closeout.json pins (BL-058
+    overlay: retainers_bl058, stations) and the PIN-RET steps incl. (d) from bl058.json kit."""
+    rb = pr["retainers_bl058"]
+    hp, ec = rb["hairpin"], rb["eclip"]
+    st = pr["stations"]
+    hs = [k for k, v in st.items() if v["retainer"] == "hairpin"]
+    es = [k for k, v in st.items() if v["retainer"] == "eclip"]
+    h0, e0 = st[hs[0]], st[es[0]]
+    ch = h0["cross_hole"]
+    gr = e0["groove"]
+    th = e0["tether"]
+    cb = bl058()["cbore"]
+    pd = bl058()["kit"]["PIN-RET_d"]
+    names = lambda ks: "/".join(k.upper() for k in ks)
+    return (f"4. Pin retention (BL-058, review 6 M-2): head on the outboard side at every station. "
+            f"**{names(hs)}:** a hairpin clip (**HW-PIN-RET-H**: {hp['part']}) through the D{ch['d_mm']:g} mm cross "
+            f"hole {ch['from_far_cheek_face_mm']:g} mm past the far (inboard) cheek face, the clip's straight leg "
+            "through the hole and its BODY POINTING FORE (towards the wearer, -y), never aft into the bag: "
+            + "; ".join(f"{k.upper()} {rb['stations'][k]['points']}" for k in hs)
+            + f". Fallback clip: {hp['fallback']} (ASSUMPTION CLIP-FIT). "
+            f"Tether at these stations: {pr['retainer']['tether'].split(';')[0]}. "
+            f"**{names(es)}:** the 7075 pin's head (D{cb['head_mm'][0]:g} x {cb['head_mm'][1]:g}) sits in the clevis "
+            f"counterbore D{cb['d_mm']:g} x {cb['depth_mm']:g}, {cb['recess_mm']:g} mm below the face; on the far side a "
+            f"DIN 6799 E-clip (**HW-PIN-RET-E**: {ec['part']}) snaps into the groove D{gr['d_mm']:g} x {gr['w_mm']:g} "
+            f"mm ({gr['from_far_cheek_face_mm'][0]:g}-{gr['from_far_cheek_face_mm'][1]:g} mm past the inner cheek face; "
+            f"{ec['tool']}). Tether (**HW-PIN-TETH**, {th['cord_mm']:.0f} mm of 1.5 mm Dyneema): "
+            + "; ".join(th["route"]) + f"; it never goes {th['never']}. The pins go in at bag fitting; the two hinge "
+            "pins come out at bag-off (the US2 pins only at the bench, bag off). CHECK (test PIN-RET): "
+            + "; ".join(pr["test"]["steps"]) + f"; (d) {pd['what']}: PASS {pd['pass']}.")
+
+
 def clevis56_txt(C) -> str:
     """BL-056 note for section 8: the blocks grew and the nut face moved inboard (clevis_bl056.json joint.block, checked
     against the joint code h1_bedfit.JOINT)."""
@@ -691,13 +862,56 @@ def hip_n(co: dict) -> int | None:
     return len(h["pattern"]["positions_xz"]) if h else None
 
 
-HIP_TORQUE_N_M = 2.0        # BL-055 Part B build text: the mount screws' service torque, capped by the insert record
+HIP_TORQUE_N_M = 2.0        # fallback only: BL-055 Part B's build-text value, which traces to no record (BL-059)
 
 
 def hip_torque_n_m(co: dict) -> float:
-    """Service torque of the hip mount screws: HIP_TORQUE_N_M, never above the insert record's maximum."""
+    """Service torque of the hip mount screws. BL-059 (HB-6b torque mismatch): the sourced value is the insert record's
+    ``tightening_torque_max_n_m`` (data/materials/hardware/insert_heatset_brass_m5.yaml, 2.5 N m, read through
+    h1_closeout.json hip.insert.torque_max_n_m), which hip_mount_bl056.json HB-6b also quotes; BL-055's 2.0 N m was typed
+    in this script with no source. HIP_TORQUE_N_M is used only when the record value is not on file."""
     t = (co or {}).get("insert", {}).get("torque_max_n_m")
-    return min(HIP_TORQUE_N_M, float(t)) if t else HIP_TORQUE_N_M
+    return float(t) if t else HIP_TORQUE_N_M
+
+
+def hip_screw_spec(co: dict) -> str:
+    """The hip mount screw: BL-058's (bl058.json kit.hip_screw: M5 x 12, review 6 m-2) when on file, else the one
+    h1_closeout.json carries (BL-055's booking, M5 x 14)."""
+    b8 = bl058()
+    if b8:
+        return re.sub(r"\s*\(\d+\)$", "", b8["kit"]["hip_screw"]["spec"])
+    return co.get("hip_screw") or "M5 screw"
+
+
+def guide_bore_max() -> float:
+    """ASSUMPTION GUIDE-HEAT's replace-the-guide line (bl058.json assumptions: 'Bore <= 7.4 mm after use')."""
+    a = {x["id"]: x for x in bl058()["assumptions"]}["GUIDE-HEAT"]
+    m = re.search(r"<=\s*(\d+(?:\.\d+)?)\s*mm", a["settled_by"])
+    assert m, a
+    return float(m.group(1))
+
+
+def guide_steps(n: int) -> list[str]:
+    """BUILD_H1 12 steps 2-3 with BL-058's printed insert-setting guide (bl058.json insert_guide / kit.hip_guide):
+    print it, start every insert through it, finish flush, INSERT-SET check."""
+    b8 = bl058()
+    ig, pro = b8["insert_guide"], b8["kit"]["hip_guide"]["procedure"]
+    f = Path(b8["kit"]["hip_guide"]["file"]).relative_to(PRINT.relative_to(ROOT))
+    gp = ig["params"]
+    bmax = guide_bore_max()
+    body = lambda t: t.split(". ", 1)[1]
+    return [
+        f"2. **Insert-setting guide (BL-058, review 6 m-3).** Print `{f}` (+ `.3mf`; {fg(piece_mass_g(str(f.with_suffix(''))))}, "
+        f"{ig['extents_mm'][0]:.1f} x {ig['extents_mm'][1]:.1f} x {ig['extents_mm'][2]:.1f} mm) with the frame profile "
+        f"of section 3: {ig['print']}; anneal as section 5. CHECK: caliper each of its {ig['bores']} bores "
+        f"{gp['bore_d']:.2f} mm (record <= {bmax:.1f} mm, ASSUMPTION GUIDE-HEAT). The guide is what lets the D"
+        f"{b8['hip_mount']['hole_d_mm']:g} mount holes line up: freehand inserts scatter too far "
+        f"({b8['hip_holes']['choice']['why']}). Practise the whole sequence on the HB-6 insert blocks first (test kit).",
+        f"3. START, then FINISH, each insert (ASSUMPTION HIP-HEAT: the insert record gives no install temperature, "
+        "so 'the vendor temperature' below is 290 C (554 F), the PAHT-CF nozzle temperature of section 3): (a) " + body(pro[0]) + " (b) " + body(pro[1]) + " (c) " + body(pro[2]) + " (d) " + body(pro[3])
+        + f" (e) CHECK (ASSUMPTION INSERT-SET): " + body(pro[4]) + f" (f) CHECK the guide after use: every bore still "
+        f"<= {bmax:.1f} mm on the caliper, else print a new guide before the next frame (GUIDE-HEAT).",
+    ]
 
 
 def hip_section(co: dict) -> list[str]:
@@ -716,7 +930,8 @@ def hip_section(co: dict) -> list[str]:
     ms = h.get("min_sf", {})
     cap = h.get("capacity", {})
     torque = ir.get("torque_max_n_m")
-    scr = co.get("hip_screw") or "M5 screw"
+    scr = hip_screw_spec(co)
+    b8 = bl058()
     L = ["## 12. Hip mount", "",
          f"Source: `{co['_path']}` (BL-055 Part A, `huntkit/gendesign/h1_closeout.py`). {n} M5 brass heat-set inserts "
          f"(**HW-HIP-INS**) on a boss {pat['boss_d']:.0f} mm ({pat['boss_d'] / IN:.2f} in) across; the pilot holes are "
@@ -737,28 +952,38 @@ def hip_section(co: dict) -> list[str]:
           f"1. CHECK the print: count {n} pilot holes on the boss; a {pat['hole_d']:.1f} mm drill shank slides into each "
           f"by hand; the caliper depth rod reads >= {pat['hole_depth']:.1f} mm in each. Clear any support or stringing "
           "with the drill held in your fingers (do not drill deeper).",
+          ] + (guide_steps(n) if b8 else [
           "2. Practise on the HB-6 insert blocks first (test kit). Then heat-set each insert with the soldering iron's M5 insert tip at 290 C (554 F, the PAHT-CF nozzle temperature of section 3; ASSUMPTION HIP-HEAT), square to the face, until it sits 0.0-0.2 mm below the face (caliper depth rod).",
-          "3. CHECK: lay a steel rule across the boss: no insert stands proud; an M5 screw starts by hand in each.",
+          "3. CHECK: lay a steel rule across the boss: no insert stands proud; an M5 screw starts by hand in each."]) + [
           f"4. Fit the SLM Ti pivot mount (**HW-HIP-MNT**) with {n} **{scr}** (**HW-HIP-SCR**), blue threadlocker, "
-          + (f"{min(2.0, torque):.1f} N m (insert record maximum {torque:.1f} N m)" if torque else "2 N m")
+          + (f"{hip_torque_n_m(co):.1f} N m (the insert record's maximum, tightening_torque_max_n_m; do not exceed it)"
+             if torque else f"{HIP_TORQUE_N_M:.1f} N m")
           + ", in a star order"
-          + (f"; neighbouring heads sit only {w['head_to_head_mm']:.1f} mm apart, so use a ball-end 3 mm key (DIN 7984 M5 socket)"
-             if "head_to_head_mm" in w else "") + ".",
+          + ((f"; neighbouring heads sit only {b8['hip_holes']['head_to_head_worst_mm']:.2f} mm apart at the worst "
+              f"insert scatter, so use the {b8['hip_screws']['key']['tool'].split(';')[0]} (DIN 7984 M5 socket "
+              f"s {b8['hip_screws']['key']['socket_s_mm']:g}; ASSUMPTION KEY-D)") if b8 else
+             (f"; neighbouring heads sit only {w['head_to_head_mm']:.1f} mm apart, so use a ball-end 3 mm key (DIN 7984 M5 socket)"
+              if "head_to_head_mm" in w else "")) + "."
+          + (" FIRST ARTICLE (ASSUMPTION INSERT-SCATTER): " + b8["kit"]["hip_guide"]["procedure"][-1].split(". ", 1)[1]
+             + " If one will not start, stop: do not force it or open the hole; send a photo." if b8 else ""),
           "5. CHECK: push the mount's pin end with the spring scale to 20 N (2.0 kg, 4.5 lb; ASSUMPTION MOUNT-SEAT) up, down, left and right: "
           "a 0.05 mm (0.002 in) feeler does not enter under the base edge at any point, and no screw head turns "
           "(a paint mark across each head and the base).", ""]
     fl = co.get("flange", {})
-    b6 = bl056()
     rd = mount_redraw(co)
     if fl and rd:
         L += [f"> **HOLD LIFTED (BL-056): order HW-HIP-MNT.** The SLM file `../{rd['stl']}` (+ `.3mf`) is now the "
               f"redraw: a {rd['d']:.0f} mm ({rd['d'] / IN:.2f} in) x {rd['t']:.1f} mm Ti base with {rd['holes']} holes "
               f"of {rd['hole_d']:.1f} mm on the insert positions above (position error {rd['pos_err']:.2f} mm), "
-              f"{fg(b6['mount_g'])} (ledger BL056). Send the print service `analysis/hip_mount_bl056.md` section 4 "
+              f"{fg(rd['mass_g'])} ({rd['mass_src']})"
+              + (f"; BL-058 opened the holes to D{rd['hole_d']:.1f} for the guided inserts (FE min SF / goal "
+                 f"{bl058()['hip_mount']['fe_min_sf_over_goal']}, was {bl058()['hip_mount']['bl056_fe_min_sf_over_goal']})"
+                 if bl058() else "")
+              + ". Send the print service `analysis/hip_mount_bl056.md` section 4 "
               "(build direction base down on the plate, supports, HIP, ream the D10 pin bore). The drawn D44 x 1.2 mm "
               "part is kept only in `../legacy/` for the record: never order it. CHECK on arrival: caliper the base "
               f"{rd['t']:.1f} mm thick (+/- 0.1) and {rd['d']:.0f} mm across; count {rd['holes']} holes; weigh it: "
-              f"{fg(b6['mount_g'])} +/- {100 * SLM_MASS_TOL:.0f} % (ASSUMPTION SLM-MASS); lay the mount on the boss: every hole shows its insert.", "",
+              f"{fg(rd['mass_g'])} +/- {100 * SLM_MASS_TOL:.0f} % (ASSUMPTION SLM-MASS); lay the mount on the boss: every hole shows its insert.", "",
               "> The orchestrator kept the drawn legs for P1 (DECISIONS 2026-11-21): HB-6b run 2 (test kit, pad 20 mm "
               "sideways) decides whether they stay. Order ONE mount for P1; order P2's after HB-6b passes.", ""]
     elif fl:
@@ -777,15 +1002,18 @@ def mount_redraw(co: dict) -> dict:
     fl = co.get("flange", {}) if co else {}
     if not b or not fl:
         return {}
-    h = b["hip"]
+    b8 = bl058()
+    h = b8["hip_mount"] if b8 else b["hip"]               # BL-058 re-exported the mount with D5.8 holes
+    hole_d = float(h["hole_d_mm"]) if b8 else fl["hole_d_mm"]
     g = h["geometry"]["base"]
-    n = sum(1 for d in g["hole_d_eq_mm"] if abs(d - fl["hole_d_mm"]) < 0.05)
+    n = sum(1 for d in g["hole_d_eq_mm"] if abs(d - hole_d) < 0.05)
     ok = (abs(g["d_eq_mm"] - fl["d_mm"]) < 0.1 and n == fl["holes"] and bool(h["frame_fit"].get("pass"))
           and abs(g["top_z_mm"] - fl["t_mm"]) < 0.1 and h["geometry"].get("watertight", False))
     if not ok:
         return {}
-    return {"stl": Path(h["stl"]).name, "d": fl["d_mm"], "t": fl["t_mm"], "holes": n, "hole_d": fl["hole_d_mm"],
-            "pos_err": g["hole_pos_err_mm"], "mass_g": b["mount_g"]}
+    return {"stl": Path(h["stl"]).name, "d": fl["d_mm"], "t": fl["t_mm"], "holes": n, "hole_d": hole_d,
+            "pos_err": g["hole_pos_err_mm"], "mass_g": mount_g(),
+            "mass_src": "ledger BL056 + BL058" if b8 else "ledger BL056"}
 
 
 def mount_txt(co: dict) -> str:
@@ -794,7 +1022,7 @@ def mount_txt(co: dict) -> str:
         return "SLM Ti-6Al-4V hip pivot mount"
     rd = mount_redraw(co)
     if rd:
-        return (f"SLM Ti-6Al-4V hip pivot mount `print/{rd['stl']}` (BL-056 redraw): {rd['d']:.0f} x {rd['t']:.1f} mm "
+        return (f"SLM Ti-6Al-4V hip pivot mount `print/{rd['stl']}` ({'BL-056 redraw, BL-058 holes' if bl058() else 'BL-056 redraw'}): {rd['d']:.0f} x {rd['t']:.1f} mm "
                 f"base, {rd['holes']} x D{rd['hole_d']:.1f} holes on the insert positions, {fg(rd['mass_g'])}")
     return (f"SLM Ti-6Al-4V hip pivot mount, base REDRAWN (BL-055): {fl['d_mm']:.0f} x {fl['t_mm']:.1f} mm disc, "
             f"{fl['holes']} x D{fl['hole_d_mm']:.1f} holes on the insert positions")
@@ -864,9 +1092,12 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
           "crown-leg bores |",
           "| flush cutters, needle-nose pliers, deburring tool, 120 / 240 grit paper, flat board | support removal "
           "and clean-up |",
-          "| soldering iron with a heat-set insert tip (M5) | hip inserts |",
+          ("| soldering iron with a heat-set insert tip (M5) and a flat-faced tip (to finish the inserts flush) | "
+           "hip inserts (section 12) |" if bl058() else "| soldering iron with a heat-set insert tip (M5) | hip inserts |"),
           "| digital caliper, steel rule, feeler gauges 0.05-1.0 mm | checks |",
-          "| hex keys 3 and 4 mm, small torque screwdriver (0.5-2 N m) | bolts |",
+          ("| " + (f"{bl058()['hip_screws']['key']['tool'].split(';')[0]} (DIN 7984 M5 socket s {bl058()['hip_screws']['key']['socket_s_mm']:g}, "
+                   f"every M5 screw on the frame), small torque screwdriver (0.5-{hip_torque_n_m(closeout()):.1f} N m)" if bl058() else
+                   "hex keys 3 and 4 mm, small torque screwdriver (0.5-2 N m)") + " | bolts, hip mount |"),
           "| MMA dispenser gun + mixing tips, IPA, nitrile gloves, PTFE tape | bonding |", ""]
     # ---- 2. gates
     L += ["## 2. Before you print anything (gates)", "",
@@ -907,8 +1138,10 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
         L.append(f"| `{f}` | {fg(r['mass_g'])} | {fg(r['mass_g'] * (1 + WASTE))} | {r['hours_no_support']:.1f} h |")
     L += ["", f"Body without supports: {fg(fil_body)} of filament, about {hrs:.0f} h. Buy one 1 kg spool per half "
           "plus one for the clevises, test pieces and reprints (section 1).", "",
-          "Print order: (1) the CA coupons (G1); (2) the test pieces of section 10; (3) the clevises and the pawl; "
-          "(4) the upper half; (5) the lower half (longest, fullest plate).", ""]
+          "Print order: (1) the CA coupons (G1); (2) the test pieces of section 10"
+          + (" and the hip insert-setting guide (section 12 step 2: it is needed before HB-6b and before the lower "
+             "half's inserts)" if bl058() else "")
+          + "; (3) the clevises and the pawl; (4) the upper half; (5) the lower half (longest, fullest plate).", ""]
     # ---- 4. supports off
     L += ["## 4. Take the supports off and clean up", "",
           "1. Let the plate cool to room temperature before you lift the part (warm PAHT-CF bends).",
@@ -940,7 +1173,7 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
     L += ["## 7. Bolt the halves together (the z 234 joint)", "",
           f"1. Ream the 4 bolt holes in each half to **{Z.hole_d:.1f} mm ({Z.hole_d / IN:.3f} in)**, from the split face outward, slowly, square "
           "to the face (a drill guide helps).",
-          f"2. {nut_check_txt(Z)}. Dry-fit an M5 nut (HW-M5-NUT, {NUT_STD}) in each of the 4 side traps of the "
+          f"2. {nut_check_txt(Z)}.{bolt_check_txt(Z)}{'.' if bolt_window(Z) else ''} Dry-fit an M5 nut (HW-M5-NUT, {NUT_STD}) in each of the 4 side traps of the "
           "lower half: it slides in from the side and does not turn. Tight: file the slot lightly, never more than 0.2 mm.",
           "3. Sand both split faces flat on 120 grit taped to the flat board, about 10 strokes, until they touch over "
           "the whole stay section with no rocking.",
@@ -970,7 +1203,7 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
            "fallback in step 2."), "",
           f"1. Ream the two bolt holes in each clevis and in the lower half's US2 block (printed {C.hole_print_d:.1f}) "
           f"to **{C.hole_d:.1f} mm ({C.hole_d / IN:.3f} in)**.",
-          f"2. {nut_check_txt(C)}. Into each side trap, from the wearer face: a {C.washer_od:.0f} mm DIN 433 washer "
+          f"2. {nut_check_txt(C)}.{bolt_check_txt(C)}{'.' if bolt_window(C) else ''} Into each side trap, from the wearer face: a {C.washer_od:.0f} mm DIN 433 washer "
           f"(**HW-US2-WSH**) then an M5 nut ({NUT_STD}). CHECK: the nut slides into its hex pocket and does not turn with a finger"
           + ("." if nut_ok else "; if it turns (old print), hold it with a thin 8 mm open spanner slid in from the "
              "wearer face while you tighten."),
@@ -986,11 +1219,10 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
           "Stations, both stays: hinge z 60, US1 z 95 (lane x +/-70), US2 z 142 (lane x +/-165), IM1 z 190, IM2 z 330, "
           "IM3 z 520.", "",
           f"1. Ream every eye hole to **{pn['hole_d_mm']:.1f} mm ({pn['hole_d_mm'] / IN:.3f} in)** from both sides (24 cheeks).",
-          f"2. Slide one UHMWPE sleeve (**HW-PIN-SLV**, OD {pn['hole_d_mm']:.1f} / ID 5.2) into each cheek, flush with "
-          f"both faces: {pn['hinge_cheek_mm']:.0f} mm long at the hinge, {pn['im_cheek_mm']:.0f} mm at the other 10 "
-          "stations (ASSUMPTION PIN-SLEEVE). 24 sleeves per frame.",
+          sleeve_step_txt(pn),
           pins_step3(pn, pr, co),
-          (f"4. Pin retention (BL-053, review 5 M-5): {pr['scheme']}. Head on the outboard side, the R-clip "
+          (retention_txt(pr) if pr.get("retainers_bl058") else
+           f"4. Pin retention (BL-053, review 5 M-5): {pr['scheme']}. Head on the outboard side, the clip "
            f"(**HW-PIN-RET**: {ret}) through the {pr['stations']['hinge']['cross_hole']['d_mm']} mm cross hole "
            f"{pr['stations']['hinge']['cross_hole']['from_far_cheek_face_mm']} mm past the far (inboard) cheek face; "
            f"tether: {pr['retainer']['tether']}. The pins go in at bag fitting; the two hinge pins come out at "
@@ -1098,7 +1330,17 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
           "| 6 | spreader seat | 1.5 mm feeler between sheet and the US2 arm root | passes (ASSUMPTION ROOT-AIR) |",
           "| 7 | proof loads | HA-LS-1 T9, T1-T5, T4b dial on the branch, T4c at -20 C "
           "(`analysis/load_standard.md`); MT-1cr on P1 first (test kit G6) | as written there |",
-          "| 8 | re-torque | after 24 h and after the first trip | z 234 bolts back to 1.0 N m |", "",
+          "| 8 | re-torque | after 24 h and after the first trip | z 234 bolts back to 1.0 N m |"]
+    if bl058():
+        Wz, Wc = bolt_window(Z), bolt_window(C)
+        L += [f"| 9 | screw lengths (BOLT-LEN) | caliper every M5 x {Z.bolt_len:.0f} and M5 x {C.bolt_len:.0f} "
+              f"(sections 7.2, 8.2) | {Wz[0]:.1f}-{Wz[1]:.1f} / {Wc[0]:.1f}-{Wc[1]:.1f} mm |",
+              "| 10 | hip inserts (INSERT-SET, INSERT-SCATTER) | straight-edge + 0.2 mm feeler; the mount's screws "
+              "(section 12) | none proud, none > 0.2 mm low; all "
+              f"{hip_n(co)} start by hand through the D{bl058()['hip_mount']['hole_d_mm']:g} holes |",
+              "| 11 | retainers (PIN-RET (d), FIT-US marks) | test kit PIN-RET (d) and FIT-US | no colour from a "
+              "clip, E-clip, tether or pin head on the bag |"]
+    L += ["",
           f"Bag fitting that needs the frame: under-straps US (op {op_us}), US2 (op {op_us2}), cam anchors USA (op "
           f"{op_usa}), belly gauge tacks (op {op_bg}), B-25 (op {op_b25}).", ""]
     if belly:
@@ -1106,6 +1348,9 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
               "advice, not a safety rule.", ""]
     L += ["## Assumptions", "", "| ID | assumption | settled by |", "|---|---|---|"]
     L += [f"| {a} | {t} | {s} |" for a, (t, s) in ASSUMPTIONS.items()]
+    if bl058():
+        L += [f"| {a['id']} | {a['text']} | {a['settled_by']} (BL-058, `analysis/bl058.json` assumptions) |"
+              for a in bl058()["assumptions"]]
     L += ["| BED-ROT, CLEVIS-*, HEAD-*, CROWN-BRIDGE, ROOT-AIR | carried from `analysis/h1_bedfit.md` 7 and "
           "`h1_crown.md` 7 | as there |",
           "| CLAMP-TYPE, CLAMP-WALL, SOCKET-MIN, SPINE-AXIS, TRANSVERSE-SHEAR | carried from "
@@ -1127,17 +1372,63 @@ def pin_shop_rows(pn: dict, pr: dict) -> list[tuple]:
         hid = "HW-PIN-TI" if mat == "Ti-6Al-4V" else "HW-PIN-AL"
         same: dict = {}                                   # stations with the same drawing share a line
         for nm, q, r in rows:
-            k = (r["shank_mm"], tuple(r["head_mm"]), r["cross_hole"]["d_mm"], r["cross_hole"]["from_far_cheek_face_mm"])
+            g = r.get("groove")
+            k = (r["shank_mm"], tuple(r["head_mm"]), r["cross_hole"]["d_mm"], r["cross_hole"]["from_far_cheek_face_mm"],
+                 (g["d_mm"], g["w_mm"], tuple(g["from_far_cheek_face_mm"])) if g else None)
             same.setdefault(k, []).append((nm, q))
-        desc = f"{mat} pin, {pn['pin_d_mm']:.0f} mm h8 ground, headed (1.6 mm tether hole in the head): " + "; ".join(
-            f"{' + '.join(nm for nm, _ in v)} ({sum(q for _, q in v)}): shank {k[0]} mm, head {k[1][0]:.0f} x {k[1][1]} mm, "
-            f"{k[2]} mm cross hole {k[3]} mm past the far cheek" for k, v in same.items())
+
+        def feat(k):
+            if k[4]:                                      # BL-058 US2: plain head in the counterbore, groove, tail hole
+                gd, gw, gx = k[4]
+                return (f"plain head {k[1][0]:.0f} x {k[1][1]:g} mm (no head hole), E-clip groove D{gd:g} x {gw:g} mm "
+                        f"{gx[0]:g}-{gx[1]:g} mm past the far cheek, D{k[2]:g} tether hole {k[3]:g} mm past it")
+            return (f"head {k[1][0]:.0f} x {k[1][1]:g} mm with the 1.6 mm tether hole, D{k[2]:g} clip cross hole "
+                    f"{k[3]:g} mm past the far cheek")
+        desc = f"{mat} pin, {pn['pin_d_mm']:.0f} mm h8 ground, headed: " + "; ".join(
+            f"{' + '.join(nm for nm, _ in v)} ({sum(q for _, q in v)}): shank {k[0]} mm, {feat(k)}" for k, v in same.items())
         why = "; ".join(f"{nm} bending SF {r['bending']['sf_yield']} / fatigue {r['bending']['sf_fatigue']}"
                         for nm, _, r in rows if r.get("bending"))
         out.append((hid, desc, sum(q for _, q, _ in rows),
                     ", ".join(nm for nm, _, _ in rows) + ", both sides" + (f" ({why})" if why else ""),
                     "machinist (Ti rod)" if hid == "HW-PIN-TI" else "machinist / bag kit"))
     return out
+
+
+def _tally(pairs) -> dict:
+    out: dict = {}
+    for k, n in pairs:
+        out[k] = out.get(k, 0) + n
+    return out
+
+
+def retainer_shop_rows(pn: dict, pr: dict) -> list[tuple]:
+    """BL-058 (review 6 M-2): the retainer line split in two, HW-PIN-RET-H (hairpin clips) and HW-PIN-RET-E (US2
+    E-clips), plus the tether cord, from h1_closeout.json pins (BL-058 overlay). Before BL-058: one HW-PIN-RET line."""
+    if not pr:
+        return [("HW-PIN-RET", f"{PLACEHOLDER} pin retention parts (review 5 M-5)", pn["stations"],
+                 "one set per station", "hardware / BL-053")]
+    rb = pr.get("retainers_bl058")
+    if not rb:
+        return [("HW-PIN-RET", f"{pr['retainer']['part']} + {pr['retainer']['tether']}", pn["stations"],
+                 f"one set per station (BL-053; source {pr['retainer']['source']})", "hardware / BL-053")]
+    st = pr["stations"]
+    nh = sum(v["qty"] for v in st.values() if v["retainer"] == "hairpin")
+    ne = sum(v["qty"] for v in st.values() if v["retainer"] == "eclip")
+    hs = "/".join(k.upper() for k, v in st.items() if v["retainer"] == "hairpin")
+    es = "/".join(k.upper() for k, v in st.items() if v["retainer"] == "eclip")
+    cord = sum(v["qty"] * v["tether"]["cord_mm"] for v in st.values() if v.get("tether"))
+    return [
+        ("HW-PIN-RET-H", rb["hairpin"]["part"], nh,
+         f"{hs}, both sides: through the D{rb['cross_hole_d_mm']:g} cross hole, body fore (BUILD_H1 9.4); fallback "
+         f"{rb['hairpin']['fallback']}; source {rb['hairpin']['source'].split(' (')[0]}", "McMaster-Carr"),
+        ("HW-PIN-RET-E", rb["eclip"]["part"], ne,
+         f"{es}, both sides, in the pin's groove; source {rb['eclip']['source'].split(' (')[0]}", "McMaster-Carr"),
+        ("HW-PIN-TETH", "1.5 mm Dyneema (UHMWPE) cord", 1,
+         f"{cord / 1000:.2f} m for the {sum(v['qty'] for v in st.values())} tethers ("
+         + ", ".join(f"{L:.0f} mm x {n}" for L, n in sorted(_tally((v["tether"]["cord_mm"], v["qty"]) for v in st.values()
+                                                                   if v.get("tether")).items()))
+         + ": BUILD_H1 9.4); buy 2 m", "bag kit"),
+    ]
 
 
 def shopping_table(stl, cp, kits, pn, Z, C, pw, pr, co=None) -> list[str]:
@@ -1155,19 +1446,19 @@ def shopping_table(stl, cp, kits, pn, Z, C, pw, pr, co=None) -> list[str]:
         ("HW-J234-WSH", f"M5 washer {Z.washer_od:.0f} mm OD x {Z.washer_t:.1f} mm, A2", 8,
          "z 234 joint only; the 12 mm OD is load-bearing", "hardware store"),
         ("HW-US2-SCR", f"Ti gr5 low-head socket cap screw M5 x {C.bolt_len:.0f}, DIN 7984", n_cl,
-         "US2 clevises only, heads in the counterbores", "Ti fastener vendor"),
+         "US2 clevises only, heads in the counterbores" + (
+             f"; caliper each {bolt_window(C)[0]:.1f}-{bolt_window(C)[1]:.1f} mm on arrival (BOLT-LEN, BL-058)"
+             if bolt_window(C) else ""), "Ti fastener vendor"),
         ("HW-US2-WSH", f"M5 washer {C.washer_od:.0f} mm OD x {C.washer_t:.1f} mm, A2, DIN 433", n_cl * C.n_washers,
          "US2 clevises only, nut side", "hardware store"),
         ("HW-M5-NUT", nut_txt(C), 8,
          f"4 for z 234 + 4 for the clevises; caliper each <= {C.nut_t + NUT_T_TOL:.1f} mm on arrival (review 6 M-1)",
          "hardware store"),
-    ] + pin_shop_rows(pn, pr) + [
-        ("HW-PIN-RET", (f"{pr['retainer']['part']} + {pr['retainer']['tether']}" if pr else
-                        f"{PLACEHOLDER} pin retention parts (review 5 M-5)"), pn["stations"], "one set per station"
-         + (f" (BL-053; source {pr['retainer']['source']})" if pr else ""), "hardware / BL-053"),
-        ("HW-PIN-SLV", f"UHMWPE sleeve OD {pn['hole_d_mm']:.1f} / ID 5.2, {pn['hinge_cheek_mm']:.0f} mm (4) and "
-         f"{pn['im_cheek_mm']:.0f} mm (20) long", 2 * pn["stations"],
-         "one per cheek (ASSUMPTION PIN-SLEEVE); turned from UHMWPE rod (record uhmwpe_sheet)", "machinist"),
+    ] + pin_shop_rows(pn, pr) + retainer_shop_rows(pn, pr) + [
+        ("HW-PIN-SLV", f"UHMWPE sleeve OD {pn['hole_d_mm']:.1f} / ID 5.2, "
+         + ", ".join(f"{L:g} mm ({k})" for L, k, _ in sleeve_counts(pn)) + " long", 2 * pn["stations"],
+         "one per cheek (ASSUMPTION PIN-SLEEVE); turned from UHMWPE rod (record uhmwpe_sheet)"
+         + ("; the 2 short ones are the US2 outer cheeks (BL-058 counterbore)" if us2_sleeve_mm() else ""), "machinist"),
         ("HW-PAWL-PIN", "stainless pin 4 mm x 50 mm with an E-clip groove at each end", 1,
          f"pawl pivot; cheek bosses out to x +/-{pw['boss_x']:.1f} (ASSUMPTION PAWL-PIN)", "machinist / McMaster-type"),
         ("HW-PAWL-CLIP", "E-clip DIN 6799 for a 4 mm shaft (size 3.2), stainless", 2, "pawl pin ends", "hardware"),
@@ -1182,8 +1473,18 @@ def shopping_table(stl, cp, kits, pn, Z, C, pw, pr, co=None) -> list[str]:
          (hip_n(co) + 2) if hip_n(co) else 6,
          (f"{hip_n(co)} used (BL-055 pattern, section 12) + 2 spare" if hip_n(co) else f"{PENDING} count") +
          " (ASSUMPTION HIP-INSERTS)", "hardware"),
-        ("HW-HIP-SCR", co.get("hip_screw") or f"{PENDING} M5 mount screw", hip_n(co) or 0,
-         "hip mount to the inserts (section 12)", "Ti fastener vendor"),
+    ] + ([("HW-HIP-GUIDE", f"insert-setting guide, printed `{Path(bl058()['kit']['hip_guide']['file']).relative_to(PRINT.relative_to(ROOT))}` "
+           "(PAHT-CF, the frame spool)", 1,
+           f"section 12 step 2 (BL-058); print a new one when a bore reads > {guide_bore_max():.1f} mm (GUIDE-HEAT)",
+           "print")] if bl058() else []) + [
+        ("HW-HIP-SCR", (hip_screw_spec(co) if (bl058() or co.get("hip_screw")) else f"{PENDING} M5 mount screw"),
+         hip_n(co) or 0,
+         "hip mount to the inserts (section 12)" + (
+             f"; {bl058()['kit']['hip_screw']['key']}; was {bl058()['kit']['hip_screw']['was']} (BL-058, review 6 m-2 / "
+             f"m-3: {bl058()['hip_screws']['rows']['x12']['engagement_mm']['insert_0.2_low']:g}-"
+             f"{bl058()['hip_screws']['rows']['x12']['engagement_mm']['insert_flush']:g} mm of thread in the insert, tip "
+             f"{bl058()['hip_screws']['rows']['x12']['tip_to_pilot_floor_mm']:g} mm above the pilot floor)"
+             if bl058() else ""), "Ti fastener vendor"),
         ("HW-HIP-MNT", mount_txt(co), 1,
          (("BL-056 redraw on file: order now (section 12; HOLD lifted). One for P1; P2's after HB-6b (test kit)")
           if mount_redraw(co) else
@@ -1447,20 +1748,25 @@ HIP_ROW = "| lug hip pivot mount |"
 
 
 def print_readme_hip_row(co: dict | None = None) -> str | None:
-    """BL-057: the SLM Ti hip mount row of ``print/README.md`` for the BL-056 redraw. The mass is the ledger's
-    (BL056 mount_g); the cost is huntkit.gendesign.printables.slm_cost on the redrawn STL's volume with the lug's one
-    reamed bore (lugs.build_specs: plate flange + pivot pin), the same rule the gendesign run used for 20.2 g.
-    None until the redraw is on file."""
+    """BL-057: the SLM Ti hip mount row of ``print/README.md`` for the BL-056 redraw (BL-059: with BL-058's D5.8
+    holes). The mass is the ledger's (mount_g(): BL056 mount_g + BL058 mount_delta_g); the cost is
+    huntkit.gendesign.printables.slm_cost on the redrawn STL's volume with the lug's one reamed bore (lugs.build_specs:
+    plate flange + pivot pin), the same rule the gendesign run used for its own (superseded) lug. The time cell: "96 h"
+    is the JLC3DP Ti SLM service time of the README's cost source (docs.SRC jlc_ti); the door-to-door weeks are an
+    ASSUMPTION a vendor quote settles. huntkit.gendesign.docs.write_print_readme writes this same row. None until the
+    redraw is on file."""
     rd = mount_redraw(closeout() if co is None else co)
     if not rd:
         return None
     import trimesh
     from huntkit.gendesign.printables import slm_cost
     vol = float(trimesh.load(PRINT.parent / rd["stl"]).volume)
-    return (f"{HIP_ROW} `{Path(rd['stl']).stem}.stl`, `{Path(rd['stl']).stem}.3mf` (BL-056 redraw: D{rd['d']:.0f} x "
+    tag = "BL-056 redraw, BL-058 holes" if bl058() else "BL-056 redraw"
+    return (f"{HIP_ROW} `{Path(rd['stl']).stem}.stl`, `{Path(rd['stl']).stem}.3mf` ({tag}: D{rd['d']:.0f} x "
             f"{rd['t']:.0f} mm base, {rd['holes']} x D{rd['hole_d']:.1f} holes; SLM notes in "
             f"`analysis/hip_mount_bl056.md` 4) | Ti-6Al-4V (ti_6al_4v_slm) | 1 | SLM + HIP + ream the pin bore | "
-            f"{rd['mass_g']:.1f} g | 96 h print + HIP (3-4 wk door to door) | ${slm_cost(vol, 1, 'ti'):.0f} (AlSi10Mg "
+            f"{rd['mass_g']:.1f} g | 96 h SLM service (JLC3DP, the cost source below) + HIP (3-4 wk door to door: "
+            f"ASSUMPTION, a vendor quote settles it) | ${slm_cost(vol, 1, 'ti'):.0f} (AlSi10Mg "
             f"${slm_cost(vol, 1, 'al'):.0f}) |")
 
 

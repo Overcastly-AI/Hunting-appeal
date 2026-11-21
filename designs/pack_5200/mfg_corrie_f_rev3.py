@@ -26,6 +26,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import re
 import math
 import subprocess
 import sys
@@ -537,12 +538,15 @@ def closeout_pins() -> dict:
 
 def fairlead_line() -> str:
     """The frame-kit attachment set. BL-057 (review 6 M-4): the pins from h1_closeout.json pins.bom (BL-055: Ti US1
-    and hinge, 7075 elsewhere, headed, cross-holed, R-clip + tether), grouped by material and shank; before that file,
-    BL-050 B's line (h1_lanes.hinge_pin, bag_attach stations)."""
+    and hinge, 7075 elsewhere, headed, cross-holed), grouped by material and shank; BL-059: the BL-058 retainers
+    (hairpin clips, US2 groove + E-clip, tethers) from the same file; before that file, BL-050 B's line
+    (h1_lanes.hinge_pin, bag_attach stations)."""
     from huntkit.gendesign import bag_attach as BA
     n = len(BA.stations())
     pc = closeout_pins()
-    tail = (f"UHMWPE sleeves ({2 * n}: one per cheek, print/frame_h1/BUILD_H1.md ASSUMPTION PIN-SLEEVE), lifter keepers; "
+    us2s = (pc.get("stations", {}).get("us2", {}).get("sleeve_note") or "")
+    tail = (f"UHMWPE sleeves ({2 * n}: one per cheek, print/frame_h1/BUILD_H1.md ASSUMPTION PIN-SLEEVE"
+            + (f"; {us2s}" if us2s else "") + "), lifter keepers; "
             "crown pawl = the LOW-PROFILE pawl print/frame_h1/crown_pawl_lp_fdm_pacf (P1) / _lp_slm (production), NOT "
             "the old crown_pawl_* (it does not fit H1, BL-047)")
     head = f"printed fairleads ({n} stations, in the H1 print; the US2 outer cheeks are the bolt-on clevises), "
@@ -550,14 +554,30 @@ def fairlead_line() -> str:
         mat = {"ti_6al_4v": "Ti-6Al-4V", "alu_7075_t6": "7075-T6"}
         groups: dict = {}
         for r in pc["bom"]:
-            k = (r["material"], r["pin_d_mm"], r["shank_mm"], tuple(r["head_mm"]), r["cross_hole_d_mm"])
+            k = (r["material"], r["pin_d_mm"], r["shank_mm"], tuple(r["head_mm"]), r["cross_hole_d_mm"],
+                 (r["groove"]["d_mm"], r["groove"]["w_mm"]) if r.get("groove") else None)
             g = groups.setdefault(k, {"qty": 0, "st": []})
             g["qty"] += int(r["qty"])
             g["st"].append(r["station"].upper())
         pins = "; ".join(f"{g['qty']} x {mat.get(k[0], k[0])} ({'/'.join(g['st'])}): D{k[1]:g} x {k[2]:g} mm shank, "
-                         f"head D{k[3][0]:g} x {k[3][1]:g}, D{k[4]:g} cross hole" for k, g in groups.items())
+                         f"head D{k[3][0]:g} x {k[3][1]:g}, "
+                         + (f"E-clip groove D{k[5][0]:g} x {k[5][1]:g} + D{k[4]:g} tether hole in the tail" if k[5]
+                            else f"D{k[4]:g} cross hole") for k, g in groups.items())
         ret = pc.get("retainer", {})
-        rtxt = f"; each with {ret['part']} + {ret['tether']}" if ret.get("part") else ""
+        rb = pc.get("retainers_bl058")
+        if rb:                                     # BL-059: BL-058's two retainer lines (BUILD_H1 HW-PIN-RET-H / -E)
+            st = pc["stations"]
+            hs = "/".join(k.upper() for k, v in st.items() if v.get("retainer") == "hairpin")
+            es = "/".join(k.upper() for k, v in st.items() if v.get("retainer") == "eclip")
+            nh = sum(int(v["qty"]) for v in st.values() if v.get("retainer") == "hairpin")
+            ne = sum(int(v["qty"]) for v in st.values() if v.get("retainer") == "eclip")
+            g = next(v["groove"] for v in st.values() if v.get("retainer") == "eclip")
+            rtxt = (f"; retainers (BL-058, analysis/bl058.json): {nh} x {rb['hairpin']['part']} at {hs} (D"
+                    f"{rb['cross_hole_d_mm']:g} cross hole, clip body toward the wearer; fallback "
+                    f"{rb['hairpin']['fallback'].split(' (')[0]}), {ne} x {rb['eclip']['part']} at {es} (groove D"
+                    f"{g['d_mm']:g} x {g['w_mm']:g}); tethers: {ret['tether']}")
+        else:
+            rtxt = f"; each with {ret['part']} + {ret['tether']}" if ret.get("part") else ""
         return (head + f"headed pins ({sum(g['qty'] for g in groups.values())}, BL-055 h1_closeout.json pins.bom: "
                 + pins + rtxt + "), " + tail)
     from huntkit.gendesign import h1_lanes as LN
@@ -2494,26 +2514,76 @@ def open_findings() -> list:
 # test pieces printed per BUILD_H1 sections 3 / 10. ready_to_cut() stays the UNCONDITIONAL flag (False: gates pending).
 REVIEW6 = "analysis/review_20261121_sixth.md"
 CUT_GATES = ("HE-FIT step 0 (US-ROUTE)", "PT-3", "SEW-F")
-REVIEW6_STATUS = [   # id, class, status, where it is handled
-    ("M-1", "major", "docs fixed (BL-057)", "nut spec DIN 934 m 4.0 (not ISO 4032) in bom.csv, BUILD_H1 and the kit; "
-     "caliper <= 4.1 mm at BUILD_H1 7.2 / 8.2; a longer pocket is BL-058's option"),
-    ("M-2", "major", "open (BL-058)", "R-clip envelope and orientation per station, US2 retention; frame / hardware side"),
-    ("M-3", "major", "open (BL-058)", "US2 pin head proud of the clevis face in the free drape; FIT-US marks it"),
-    ("M-4", "major", "fixed (BL-057)", "this README: cut status, belly as advice (design belly 40 mm, BL-053), op 7.25 "
-     "wording, frame-kit BOM line from h1_closeout.json pins.bom"),
-    ("M-5", "major", "open (BL-058)", "whole-body and US2 lug re-run on the 6b0cde1 STL before the halves are printed; "
-     "frame only, no cut piece"),
-    ("m-1", "minor", "fixed (BL-057)", "kit FIT-US pass text"), ("m-2", "minor", "open (BL-058)", "hip screw length"),
-    ("m-3", "minor", "open (BL-058)", "hip screw head spacing and key size"),
-    ("m-4", "minor", "fixed (BL-057)", "FDM proto hip mount marked superseded in print/README.md"),
-    ("m-5", "minor", "fixed (BL-057)", "BUILD_H1 3 chamber heater 50-60 C"),
-    ("m-6", "minor", "fixed (BL-057)", "insert record note: HB-6 per BL-056"),
-    ("m-7", "minor", "fixed (BL-057)", "kit HE-FIT hinge pin read from h1_closeout pins"),
-    ("m-8", "minor", "open (BL-058)", "us_route.json clevis_heads regenerate"),
-    ("m-9", "minor", "fixed (BL-057)", "HB-6 gates the lower-half print (kit R1, BUILD_H1 2)"),
-    ("m-10", "minor", "open (owner)", "camo commercial-swatch check before any printed or sold bag"),
-    ("m-11", "minor", "fixed (BL-057)", "BUILD_H1 / README / kit regenerated from the BL-056 meshes"),
-]
+BL058_JSON = Path(__file__).resolve().parent / "analysis" / "bl058.json"
+
+
+def _bl058() -> dict:
+    return json.loads(BL058_JSON.read_text()) if BL058_JSON.exists() else {}
+
+
+def review6_status() -> list[tuple]:
+    """Review 6 findings: id, class, status, how. BL-059: the frame / hardware findings BL-058 closed carry its
+    evidence, read from analysis/bl058.json (numbers never typed)."""
+    b = _bl058()
+    if b:
+        nc, rt, cb, hs, hh, hm = (b["nut_check"], b["retainers"]["rows"], b["cbore"], b["hip_screws"], b["hip_holes"],
+                                  b["hip_mount"])
+        din = min(min(r["seat"]["DIN 934"]["at_m_max_mm"] for r in nc["rows"]), 9)
+        bw = re.search(r"(\d+\.\d+)-(\d+\.\d+) mm", b["kit"]["nut"]["bolt_caliper"])
+        sb = b["body"]["bases"]
+        st = [v["bl058_sanded"] for k, v in sb.items() if not k.endswith(".cyc")]
+        cyc = [v["bl058_sanded"]["fatigue"] for k, v in sb.items() if k.endswith(".cyc")]
+        below = min(r["below_b01_plane_mm"] for r in rt.values())
+        x12 = hs["rows"]["x12"]
+        m1 = (f"DIN 934 seats in all 8 traps (room >= +{din:.2f} mm at m max; ISO 4032 does not seat at US2); caliper "
+              f"m <= 4.1 mm and the US2 M5 x 35 window {bw.group(1)}-{bw.group(2)} mm (BOLT-LEN) in BUILD_H1 7.2 / 8.2")
+        m2 = (f"{b['kit']['pins_bom'][0]['retainer_part'].split(':')[0]} hairpin clips at hinge / US1 / IM (body toward "
+              f"the wearer), groove + DIN 6799 E-clip and tether at US2; every envelope >= {below:.1f} mm below the B-01 "
+              "plane; PIN-RET (d) and the FIT-US marks check it on the bag")
+        m3 = (f"US2 pin head D{cb['head_mm'][0]:g} x {cb['head_mm'][1]:g} in a D{cb['d_mm']:g} x {cb['depth_mm']:g} "
+              f"counterbore, {cb['recess_mm']:g} mm below the clevis face; sleeve bearing SF "
+              f"{b['sleeve_bearing']['min_now']:.2f} at the bounding corner")
+        m5 = (f"whole body re-run on the exported STL: strength {min(r['strength'] for r in st):.2f}, fatigue "
+              f"{min(r['fatigue'] for r in st):.2f}, buckling {min(r['buckling'] for r in st):.2f}; cinch-cycled "
+              f"fatigue {min(cyc):.2f} (the R1 hold, as before)")
+        n2 = (f"{b['kit']['hip_screw']['spec']}: {x12['engagement_mm']['insert_0.2_low']:g}-"
+              f"{x12['engagement_mm']['insert_flush']:g} mm in the insert, tip {x12['tip_to_pilot_floor_mm']:g} mm above "
+              "the pilot floor")
+        n3 = (f"{b['kit']['hip_screw']['key']}; mount holes D{hm['hole_d_mm']:g} + printed insert-setting guide "
+              f"({hh['choice']['why'].split(':')[0]})")
+        ul = b["us_route_layout"]
+        n8 = (f"us_route.json regenerated on the BL-058 STL (md5 {ul['md5'][:8]}; clevis_heads head_z "
+              f"{[int(z) if float(z).is_integer() else z for z in b['us_route_heads']['head_z_mm']]}); route US1 "
+              f"{ul['worst_clear_mm']['us1']} / US2 {ul['worst_clear_mm']['us2']} mm, "
+              + ("pass" if ul["pass"] else "FAIL"))
+        closed = "closed (BL-058, wired BL-059)"
+        ev = {"M-1": m1, "M-2": m2, "M-3": m3, "M-5": m5, "m-2": n2, "m-3": n3, "m-8": n8}
+    else:
+        closed, ev = None, {}
+    base = [
+        ("M-1", "major", "docs fixed (BL-057)", "nut spec DIN 934 m 4.0 (not ISO 4032) in bom.csv, BUILD_H1 and the kit; "
+         "caliper <= 4.1 mm at BUILD_H1 7.2 / 8.2; a longer pocket is BL-058's option"),
+        ("M-2", "major", "open (BL-058)", "clip envelope and orientation per station, US2 retention; frame / hardware side"),
+        ("M-3", "major", "open (BL-058)", "US2 pin head proud of the clevis face in the free drape; FIT-US marks it"),
+        ("M-4", "major", "fixed (BL-057)", "this README: cut status, belly as advice (design belly 40 mm, BL-053), op 7.25 "
+         "wording, frame-kit BOM line from h1_closeout.json pins.bom"),
+        ("M-5", "major", "open (BL-058)", "whole-body and US2 lug re-run on the 6b0cde1 STL before the halves are printed; "
+         "frame only, no cut piece"),
+        ("m-1", "minor", "fixed (BL-057)", "kit FIT-US pass text"), ("m-2", "minor", "open (BL-058)", "hip screw length"),
+        ("m-3", "minor", "open (BL-058)", "hip screw head spacing and key size"),
+        ("m-4", "minor", "fixed (BL-057)", "FDM proto hip mount marked superseded in print/README.md"),
+        ("m-5", "minor", "fixed (BL-057)", "BUILD_H1 3 chamber heater 50-60 C"),
+        ("m-6", "minor", "fixed (BL-057)", "insert record note: HB-6 per BL-056"),
+        ("m-7", "minor", "fixed (BL-057)", "kit HE-FIT hinge pin read from h1_closeout pins"),
+        ("m-8", "minor", "open (BL-058)", "us_route.json clevis_heads regenerate"),
+        ("m-9", "minor", "fixed (BL-057)", "HB-6 gates the lower-half print (kit R1, BUILD_H1 2)"),
+        ("m-10", "minor", "open (owner)", "camo commercial-swatch check before any printed or sold bag"),
+        ("m-11", "minor", "fixed (BL-057)", "BUILD_H1 / README / kit regenerated from the BL-056 meshes"),
+    ]
+    return [(i, c, closed, ev[i]) if i in ev else (i, c, st_, h) for i, c, st_, h in base]
+
+
+REVIEW6_STATUS = review6_status()   # BL-059: read from analysis/bl058.json when it is on file
 
 
 def review5_rows() -> list[tuple]:
@@ -2531,8 +2601,10 @@ def review5_rows() -> list[tuple]:
 def cut_status_txt() -> str:
     return (f"**Cut status (review 6, `{REVIEW6}`): cut the first bag after {', '.join(CUT_GATES[:-1])} and "
             f"{CUT_GATES[-1]} pass on printed test pieces** (printed per `print/frame_h1/BUILD_H1.md` sections 3 and "
-            "10). Not before. No pattern or operation blocker is open; the bag-frame items still open (BL-058) are "
-            "on the frame and hardware side and change no cut piece.")
+            "10). Not before. No pattern or operation blocker is open; "
+            + ("the frame and hardware findings are closed by BL-058 (table below) and change no cut piece."
+               if _bl058() else
+               "the bag-frame items still open (BL-058) are on the frame and hardware side and change no cut piece."))
 
 
 def review56_md() -> list[str]:

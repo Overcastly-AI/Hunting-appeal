@@ -162,17 +162,22 @@ def test_order_of_work_legend_sits_below_the_bars(kit, tmp_path, monkeypatch):
 
 # ------------------------------------------------------------------ 3. frame README / BUILD_H1 / print README
 def test_frame_package_reads_bl056(pk):
+    """BL-059: the STL masses must match the CURRENT published JSON (bl058.json stl, BL-058 re-exported the clevises
+    and the assembled print) and the mount mass is the ledger's current one (BL056 + BL058), not BL-056's values."""
     md, rd = pk["build_md"], pk["readme_md"]
     mc = B.mass_check(pk["stl"])
     assert mc and all(v[2] for v in mc.values())
-    assert mc["us2_clevis_R"][1] == C56["mass"]["us2_clevis_R"]["g"] == 15.71
-    assert mc["h1_assembled"][1] == C56["mass"]["h1_assembled"]["g"] == 1069.4
-    assert "15.7 g" in rd and "1069.4 g" in rd and "1061.1 g" not in rd and "13.7 g" not in rd
+    S58 = json.loads((AN / "bl058.json").read_text())["stl"]
+    assert mc["us2_clevis_R"][1] == S58["us2_clevis_R"]["g"]
+    assert mc["h1_assembled"][1] == S58["h1_assembled"]["g"]
+    assert f"{S58['h1_assembled']['g']:.2f} g" in rd and f"{S58['us2_clevis_R']['g']:.2f} g" in rd
+    assert f"{C56['mass']['h1_assembled']['g']:.2f} g" not in rd and "1061.1 g" not in rd and "13.7 g" not in rd
     blk = C56["joint"]["block"]
     assert f"x +/-{blk['trap_x0_mm']:.1f} to {blk['nut_face_x_mm']:.0f}" in md and "INBOARD" in md
     from huntkit.mass import ledger
-    g = ledger.bl056_update()["mount_g"]
+    g = ledger.bl056_update()["mount_g"] + ledger.bl058_update()["mount_delta_g"]
     assert f"{g:.1f} g" in md and "HOLD LIFTED" in md and "HOLD before ordering" not in md
+    assert f"{ledger.bl056_update()['mount_g']:.1f} g" not in md
     row = [ln for ln in md.splitlines() if ln.startswith("| **HW-HIP-MNT**")][0]
     assert f"{g:.1f} g" in row and "must be redrawn" not in row
     assert "SLM-MASS" in md
@@ -183,8 +188,8 @@ def test_print_readme_hip_row_from_the_ledger_and_cost_rule():
     from huntkit.mass import ledger
     import trimesh
     row = B.print_readme_hip_row()
-    g = ledger.bl056_update()["mount_g"]
-    assert f"| {g:.1f} g |" in row
+    g = ledger.bl056_update()["mount_g"] + ledger.bl058_update()["mount_delta_g"]     # BL-059: the D5.8 mount
+    assert f"| {g:.1f} g |" in row and f"| {ledger.bl056_update()['mount_g']:.1f} g |" not in row
     vol = float(trimesh.load(ROOT / "designs/pack_5200/print/lug_hip_pivot_mount_slm_ti.stl").volume)
     assert f"${slm_cost(vol, 1, 'ti'):.0f}" in row
     # the same rule gives the old README's $73 on the drawn part
@@ -218,7 +223,10 @@ def test_lug_export_never_targets_the_redrawn_mount(tmp_path):
 def test_shopping_and_count(kit):
     sh = kit["shopping"]
     assert any("HB-6b" in x["tests"] and "Ti / steel-matched" in x["item"] for x in sh)
-    assert any("HB-6b" in x["tests"] and "M5 x 14" in x["item"] for x in sh)
+    b58 = json.loads((AN / "bl058.json").read_text())["kit"]["hip_screw"]["spec"]        # BL-059: M5 x 12
+    scr = b58.split("Ti gr5 ")[1].split(" DIN")[0]
+    assert any("HB-6b" in x["tests"] and scr in x["item"] for x in sh)
+    assert not any("HB-6b" in x["tests"] and "M5 x 14" in x["item"] for x in sh)
     runs = {o["test"] for o in kit["order"] if o["stage"] == "run"}
     assert "HB-6b" in runs and len(runs) == 87
 

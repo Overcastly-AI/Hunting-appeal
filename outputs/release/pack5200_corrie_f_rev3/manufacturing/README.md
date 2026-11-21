@@ -20,25 +20,25 @@ Generated 20261121 by `designs/pack_5200/mfg_corrie_f_rev3.py` from `patterns_co
 
 ## Cut status (reviews 5 and 6)
 
-**Cut status (review 6, `analysis/review_20261121_sixth.md`): cut the first bag after HE-FIT step 0 (US-ROUTE), PT-3 and SEW-F pass on printed test pieces** (printed per `print/frame_h1/BUILD_H1.md` sections 3 and 10). Not before. No pattern or operation blocker is open; the bag-frame items still open (BL-058) are on the frame and hardware side and change no cut piece.
+**Cut status (review 6, `analysis/review_20261121_sixth.md`): cut the first bag after HE-FIT step 0 (US-ROUTE), PT-3 and SEW-F pass on printed test pieces** (printed per `print/frame_h1/BUILD_H1.md` sections 3 and 10). Not before. No pattern or operation blocker is open; the frame and hardware findings are closed by BL-058 (table below) and change no cut piece.
 
 Review 6 findings (`analysis/review_20261121_sixth.md`, 0 blockers, 5 majors, 11 minors):
 
 | Finding | Class | Status | How |
 |---|---|---|---|
-| M-1 | major | docs fixed (BL-057) | nut spec DIN 934 m 4.0 (not ISO 4032) in bom.csv, BUILD_H1 and the kit; caliper <= 4.1 mm at BUILD_H1 7.2 / 8.2; a longer pocket is BL-058's option |
-| M-2 | major | open (BL-058) | R-clip envelope and orientation per station, US2 retention; frame / hardware side |
-| M-3 | major | open (BL-058) | US2 pin head proud of the clevis face in the free drape; FIT-US marks it |
+| M-1 | major | closed (BL-058, wired BL-059) | DIN 934 seats in all 8 traps (room >= +0.20 mm at m max; ISO 4032 does not seat at US2); caliper m <= 4.1 mm and the US2 M5 x 35 window 34.7-35.3 mm (BOLT-LEN) in BUILD_H1 7.2 / 8.2 |
+| M-2 | major | closed (BL-058, wired BL-059) | McMaster-Carr 90153A214 hairpin clips at hinge / US1 / IM (body toward the wearer), groove + DIN 6799 E-clip and tether at US2; every envelope >= 2.1 mm below the B-01 plane; PIN-RET (d) and the FIT-US marks check it on the bag |
+| M-3 | major | closed (BL-058, wired BL-059) | US2 pin head D8 x 1 in a D9 x 1.5 counterbore, 0.5 mm below the clevis face; sleeve bearing SF 1.06 at the bounding corner |
 | M-4 | major | fixed (BL-057) | this README: cut status, belly as advice (design belly 40 mm, BL-053), op 7.25 wording, frame-kit BOM line from h1_closeout.json pins.bom |
-| M-5 | major | open (BL-058) | whole-body and US2 lug re-run on the 6b0cde1 STL before the halves are printed; frame only, no cut piece |
+| M-5 | major | closed (BL-058, wired BL-059) | whole body re-run on the exported STL: strength 1.63, fatigue 1.25, buckling 1.05; cinch-cycled fatigue 0.86 (the R1 hold, as before) |
 | m-1 | minor | fixed (BL-057) | kit FIT-US pass text |
-| m-2 | minor | open (BL-058) | hip screw length |
-| m-3 | minor | open (BL-058) | hip screw head spacing and key size |
+| m-2 | minor | closed (BL-058, wired BL-059) | Ti gr5 M5 x 12 DIN 7984 (8): 8.8-9 mm in the insert, tip 2.5 mm above the pilot floor |
+| m-3 | minor | closed (BL-058, wired BL-059) | 3 mm hex screwdriver; mount holes D5.8 + printed insert-setting guide (guided scatter 0.2 mm fits D5.8's 0.3 mm (and not D5.5's 0.15); freehand 0.4 mm fits neither) |
 | m-4 | minor | fixed (BL-057) | FDM proto hip mount marked superseded in print/README.md |
 | m-5 | minor | fixed (BL-057) | BUILD_H1 3 chamber heater 50-60 C |
 | m-6 | minor | fixed (BL-057) | insert record note: HB-6 per BL-056 |
 | m-7 | minor | fixed (BL-057) | kit HE-FIT hinge pin read from h1_closeout pins |
-| m-8 | minor | open (BL-058) | us_route.json clevis_heads regenerate |
+| m-8 | minor | closed (BL-058, wired BL-059) | us_route.json regenerated on the BL-058 STL (md5 7bd47cbd; clevis_heads head_z [135, 149]); route US1 12.4 / US2 14.6 mm, pass |
 | m-9 | minor | fixed (BL-057) | HB-6 gates the lower-half print (kit R1, BUILD_H1 2) |
 | m-10 | minor | open (owner) | camo commercial-swatch check before any printed or sold bag |
 | m-11 | minor | fixed (BL-057) | BUILD_H1 / README / kit regenerated from the BL-056 meshes |

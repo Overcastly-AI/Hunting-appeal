@@ -67,7 +67,8 @@ def test_hardware_ids_match_the_joint_code(pk):
     # M-7's missing items are on the list
     for hid in ("HW-PIN-TI", "HW-PIN-AL", "HW-PIN-SLV", "HW-PAWL-PIN", "HW-PAWL-SLV", "HW-PAWL-SPR", "HW-HIP-INS",
                 "HW-BUSH", "HW-SPINE", "HW-RACK", "HW-MMA", "HW-BEADS", "HW-CLAMP", "HW-PIN-RET"):
-        assert hid in rows
+        # BL-059: BL-058 split HW-PIN-RET into HW-PIN-RET-H (hairpin clips) and HW-PIN-RET-E (US2 E-clips)
+        assert hid in rows or any(k.startswith(hid + "-") for k in rows), hid
     pn = B.pins()
     n_ti = sum(q for _, q, _ in B.pin_groups(B.pin_rows()).get("Ti-6Al-4V", []))
     assert f"| {2 * pn['stations']} |" in rows["HW-PIN-SLV"] and f"| {pn['stations'] - n_ti} |" in rows["HW-PIN-AL"]
@@ -193,11 +194,14 @@ def test_build_reads_the_part_a_pins_and_hip_pattern(tmp_path, monkeypatch):
     assert shop["HW-PIN-AL"].split("|")[3].strip() == "8"
     assert "us1" in shop["HW-PIN-TI"] and "us1" not in shop["HW-PIN-AL"]
     assert shop["HW-HIP-INS"].split("|")[3].strip() == "6"         # 4 + 2 spare
-    assert shop["HW-HIP-SCR"].split("|")[3].strip() == "4" and "M5 x 14" in shop["HW-HIP-SCR"]
+    # BL-059: the screw is BL-058's when bl058.json is on file (M5 x 12), else the close-out's booking
+    scr = "M5 x 12" if B.bl058() else "M5 x 14"
+    assert shop["HW-HIP-SCR"].split("|")[3].strip() == "4" and scr in shop["HW-HIP-SCR"]
     s12 = md.split("## 12. Hip mount")[1].split("## 13.")[0]
     for x, z in ((+16.0, 0.0), (0.0, +16.0), (-16.0, 0.0), (0.0, -16.0)):   # positions relative to the boss centre
         assert f"| {x:+.1f} | {z:+.1f} |" in s12
-    assert "count 4 pilot holes" in s12 and ">= 11.5 mm" in s12 and "2.0 N m" in s12 and "PASSES" in s12
+    # BL-059: service torque = the insert record's maximum (2.5 N m in the fake close-out), not BL-055's untraced 2.0
+    assert "count 4 pilot holes" in s12 and ">= 11.5 mm" in s12 and "2.5 N m" in s12 and "PASSES" in s12
     s9 = md.split("## 9.")[1].split("## 10.")[0]
     assert "**Ti-6Al-4V** (**HW-PIN-TI**, 4)" in s9 and "us1 (shank" in s9
     assert "1.58 x a 7075 pin" in s9

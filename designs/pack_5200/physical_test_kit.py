@@ -47,7 +47,7 @@ REGISTER = TP / "test_register.csv"
 TEST_PLAN = TP / "TEST_PLAN.md"
 OUT = ROOT / "outputs" / "release" / "test_kit"
 SCREENS = ROOT / "outputs" / "screens"
-SHOT = "20261121_BL057kit"     # BL-057: named for the ticket that regenerates the kit (was BL055kit)
+SHOT = "20261121_BL059kit"     # BL-059: named for the ticket that regenerates the kit (was BL057kit)
 DATE = "2026-11-21"       # BL-055: regenerated
 G = 9.81                    # N per kg on the crane scale
 LB_PER_N = 0.224809
@@ -445,13 +445,28 @@ def us_route_record() -> dict:
 
 def hinge_pin_txt() -> str:
     """BL-057 (review 6 m-7): the hinge pin as BUILD_H1 orders it, from h1_closeout.json pins (BL-055: headed, cross
-    hole, R-clip), not the BL-049 plain 44 mm pin."""
+    hole; BL-059: the BL-058 hairpin clip), not the BL-049 plain 44 mm pin."""
     st = json.loads(CLOSEOUT_JSON.read_text())["pins"]["stations"]["hinge"]
     mat = {"ti_6al_4v": "Ti-6Al-4V", "alu_7075_t6": "7075-T6"}.get(st["material"], st["material"])
     h, ch = st["head_mm"], st["cross_hole"]
+    clip = st.get("retainer_part", "the clip").split(":")[0]
     return (f"{mat} hinge pin, headed: D{st['pin_d_mm']:g} x {st['shank_mm']:g} mm shank, head D{h[0]:g} x {h[1]:g} "
-            f"mm, D{ch['d_mm']:g} cross hole {ch['from_far_cheek_face_mm']:g} mm past the far cheek for the R-clip "
-            "(BUILD_H1 HW-PIN, h1_closeout.json pins)")
+            f"mm, D{ch['d_mm']:g} cross hole {ch['from_far_cheek_face_mm']:g} mm past the far cheek for the {clip} "
+            "hairpin clip (BUILD_H1 HW-PIN-TI / HW-PIN-RET-H, h1_closeout.json pins)")
+
+
+def us2_pin_set_txt() -> str:
+    """BL-059: the US2 pin set as BUILD_H1 9.4 orders it (h1_closeout.json pins, BL-058 overlay): 7075 pin with the
+    plain head in the clevis counterbore, DIN 6799 E-clip in the groove, tail tether round the lug arm."""
+    st = json.loads(CLOSEOUT_JSON.read_text())["pins"]["stations"]["us2"]
+    mat = {"ti_6al_4v": "Ti-6Al-4V", "alu_7075_t6": "7075-T6"}.get(st["material"], st["material"])
+    h = st["head_mm"]
+    if st.get("retainer") != "eclip":
+        return f"headed {mat} pin + clip + tether (BUILD_H1 section 9)"
+    g = st["groove"]
+    return (f"headed {mat} pin D{st['pin_d_mm']:g} x {st['shank_mm']:g} mm, head D{h[0]:g} x {h[1]:g} in the clevis "
+            f"counterbore, DIN 6799 E-clip in the D{g['d_mm']:g} groove, {st['tether']['cord_mm']:.0f} mm Dyneema "
+            "tether round the lug arm (BUILD_H1 HW-PIN-AL / HW-PIN-RET-E / HW-PIN-TETH, section 9.4)")
 
 
 def hinge_pin_len() -> float:
@@ -486,19 +501,30 @@ def fit_us_row() -> dict:
     zf = clevis_face_z()
     ww = fit_us_wrap()
     w1, w2 = ww["us1"], ww["us2"]
+    mk = fit_us_marks()
+    marks_txt = ("every one of these (BL-058, bl058.json kit.FIT-US_marks): " + "; ".join(mk)) if bl058() else \
+        "each clevis bolt head"
+    pass_marks = "HEADS, PIN HEADS, E-CLIPS, TETHERS OR CLIPS" if bl058() else "HEADS"
+    fit_pass = f" ({bl058()['kit']['FIT-US_pass']})" if bl058() else ""
     return dict(id="FIT-US", status="ACTIVE", tier="safety",
-                title="US fit on P1 with the bag: clevis bolt heads and clevis face vs the bag at every crown kit end (+ CLEVIS-FACE wear inspection); US straps on their lanes; US2 eye over the clevis seam",
+                title="US fit on P1 with the bag: clevis bolt heads, US2 pin heads, E-clips, tethers and clips and the clevis face vs the bag at every crown kit end (+ CLEVIS-FACE wear inspection); US straps on their lanes; US2 eye over the clevis seam",
                 defined_in="designs/pack_5200/analysis/h1_bedfit.md 7 (ASSUMPTIONS HEAD-PROUD, SEAM-FLOOR); designs/pack_5200/analysis/corrie_f_body.md 25-26 (BL-050 B: us_route.head_clearance; BL-052); designs/pack_5200/analysis/h1_crown.md 3a, 7 (ASSUMPTION CLEVIS-FACE); designs/pack_5200/analysis/h1_rev5.md 3 and h1_rev5.json strap_wrap (BL-053 M-6, ASSUMPTION WRAP-TENSION)",
                 what_it_proves=f"the 4 US2 clevis bolt heads (BL-051: sunk in counterbores, x +/-{hx[0]:.1f}-{hx[1]:.1f}, {h.get('head_recess_mm', '?')} mm below the clevis outer face, z {h.get('head_z_mm', ['?', '?'])[0]} / {h.get('head_z_mm', ['?', '?'])[1]}) do not rub the bag (free drapes: worst {worst.get('cloth_mm', '?')} mm, {worst.get('torso', '?')} in {worst.get('case', '?')} {worst.get('side', '?')}; within 0 mm at {', '.join(touch) or 'none'}), and the bag side panel resting on the clevis's flat outer face (x +/-{h.get('outer_face_x_mm', '?')}, z {zf[0]:.0f}-{zf[1]:.0f}; the free drapes pass {-float(h.get('face_min_mm', 0.0)):.1f} mm inside it on every drape) does not wear (CLEVIS-FACE)",
                 gates="bag first article (BAG-BATCH): a FAIL means a frame-side head change (counterbore or cap, owner decision) before more bags", grams_at_stake_g="0",
                 safety_at_stake="bag abrasion at the B-01 | B-03 corner over a Ti socket head under load; US strap route",
                 specimen="P1 frame with both US2 clevises bolted on (as built), the first sewn bag, US1 / US2 straps rigged (bag on), crown kits S, M, L",
                 kit="C, D",
-                steps=f"(1) colour each clevis bolt head AND each clevis outer face (x +/-183, z {zf[0]:.0f}-{zf[1]:.0f}) with lipstick or chalk paste, a different colour on the face; (2) mount the bag; 30 kg sand meat on IM1-IM3, cinch the US straps; set the crown to 15 in (kit S shortest), run the T5 crank 200 cycles (or walk 5 min if T1-T4 have passed); (3) take the bag off and look for colour on B-01, B-03 and the B-18 / floor corner; photo; (4) repeat at 19 in and 23 in (kits M, L); (5) bag-off cradle: rig the US straps round a 20 kg sand bag as a quarter, check the US2 strap and its tail clear the heads; (6) slide the US2 eye across the clevis seam in the throat floor under load (SEAM-FLOOR); (7) CLEVIS-FACE INSPECTION (BL-052, ASSUMPTION CLEVIS-FACE), after step 4 and again after the T9 / T9-R3a walk on the same bag: bag off, lay it flat, find the face-colour patch on B-03 / the B-01 | B-03 corner (frame z {zf[0]:.0f}-{zf[1]:.0f} = about {zf[0] - FLOOR_Z:.0f}-{zf[1] - FLOOR_Z:.0f} mm above the floor seam, at the side seam), look at it under the 10x loupe against an unworn spot of the same panel: fuzz, pilled or broken face yarns, shine, coating worn through (hold to a light: pin-holes); photo both sides; record; LIP AND STRAP (BL-055, BL-053 M-6 / ASSUMPTION WRAP-TENSION; before step 2 colour each lip with a third colour and caliper each US strap's thickness 20 mm either side of where it crosses the lip): the US2 strap wraps the clevis block's lower aft edge (frame z {w2['contact_yz'][0][1]:.0f}, about {w2['contact_yz'][0][1] - FLOOR_Z:.0f} mm above the floor seam, lip r {w2['lip_r_mm']:.0f} mm) by up to {w2['wrap_deg']:.0f} deg at {w2['torso']} in, {w2['bearing_n']:.0f} N on the lip ({w2['lip_pressure_mpa']:.2f} MPa); the US1 strap is modelled clear of its own fairlead floor end (wrap {w1['wrap_deg']:.0f} deg). Look at each lip and at the strap where it crossed it: put the r {w2['lip_r_mm']:.0f} mm leaf of a radius gauge on the lip (light gap = worn), caliper any flat across the lip, count broken yarns on the strap, caliper the strap at the colour mark and 20 mm away; photo; (8) US STRAP CLEARANCE ON THE REAL BAG (BL-054, review 5 m-5: the HE-FIT bench check sets the dowel under its pin, so it cannot show the bag pulling the strap sideways): bag ON, 30 kg sand meat on IM1-IM3, both US cams cinched tight as the user card says; at 15, 19 and 23 in (kits S, M, L) slide a 10 mm (0.39 in) feeler block between each US strap and the hinge fairlead cheeks and between each US strap and the HE (eye, legs, box), both sides, along the whole strap run you can reach; record the smallest gap per strap per setting",
-                pass_fail=f"no colour from the HEADS on the bag at any crown setting; (8) the 10 mm feeler passes between every US strap and the hinge cheeks / HE at S, M and L, both sides (a gap under 10 mm or contact = FAIL, photo to the pack-designer); the strap and its tail clear the heads in the cradle; the US2 eye slides across the seam without catching; CLEVIS-FACE: face colour on the panel is expected, but no fuzz, pilling, broken yarn, shine or pin-hole there after the crank cycles and after the T9 walk; FAIL: photo to the pack-designer (panel let out about 7 mm over that band, or a wear patch) and the structural-fea-engineer; LIP AND STRAP (step 7, ASSUMPTION LIP-WEAR), after the crank cycles and after the T9 walk: US2 lip still takes the r {w2['lip_r_mm']:.0f} mm leaf with no light gap, any worn flat <= {LIP_FLAT_MAX_MM:.0f} mm wide, no whitening; US2 strap 0 broken yarns, thickness at the lip mark >= the reading 20 mm away minus {STRAP_LOSS_MAX_MM:.1f} mm, no glazed (shiny) band longer than 5 mm; US1: no lip colour on the US1 strap (wrap {w1['wrap_deg']:.0f} deg modelled; colour there = the route is not as modelled: FAIL, photo to the structural-fea-engineer)",
+                steps=f"(1) colour {marks_txt} AND each clevis outer face (x +/-183, z {zf[0]:.0f}-{zf[1]:.0f}) with lipstick or chalk paste, a different colour on the face; (2) mount the bag; 30 kg sand meat on IM1-IM3, cinch the US straps; set the crown to 15 in (kit S shortest), run the T5 crank 200 cycles (or walk 5 min if T1-T4 have passed); (3) take the bag off and look for colour on B-01, B-03 and the B-18 / floor corner; photo; (4) repeat at 19 in and 23 in (kits M, L); (5) bag-off cradle: rig the US straps round a 20 kg sand bag as a quarter, check the US2 strap and its tail clear the heads; (6) slide the US2 eye across the clevis seam in the throat floor under load (SEAM-FLOOR); (7) CLEVIS-FACE INSPECTION (BL-052, ASSUMPTION CLEVIS-FACE), after step 4 and again after the T9 / T9-R3a walk on the same bag: bag off, lay it flat, find the face-colour patch on B-03 / the B-01 | B-03 corner (frame z {zf[0]:.0f}-{zf[1]:.0f} = about {zf[0] - FLOOR_Z:.0f}-{zf[1] - FLOOR_Z:.0f} mm above the floor seam, at the side seam), look at it under the 10x loupe against an unworn spot of the same panel: fuzz, pilled or broken face yarns, shine, coating worn through (hold to a light: pin-holes); photo both sides; record; LIP AND STRAP (BL-055, BL-053 M-6 / ASSUMPTION WRAP-TENSION; before step 2 colour each lip with a third colour and caliper each US strap's thickness 20 mm either side of where it crosses the lip): the US2 strap wraps the clevis block's lower aft edge (frame z {w2['contact_yz'][0][1]:.0f}, about {w2['contact_yz'][0][1] - FLOOR_Z:.0f} mm above the floor seam, lip r {w2['lip_r_mm']:.0f} mm) by up to {w2['wrap_deg']:.0f} deg at {w2['torso']} in, {w2['bearing_n']:.0f} N on the lip ({w2['lip_pressure_mpa']:.2f} MPa); the US1 strap is modelled clear of its own fairlead floor end (wrap {w1['wrap_deg']:.0f} deg). Look at each lip and at the strap where it crossed it: put the r {w2['lip_r_mm']:.0f} mm leaf of a radius gauge on the lip (light gap = worn), caliper any flat across the lip, count broken yarns on the strap, caliper the strap at the colour mark and 20 mm away; photo; (8) US STRAP CLEARANCE ON THE REAL BAG (BL-054, review 5 m-5: the HE-FIT bench check sets the dowel under its pin, so it cannot show the bag pulling the strap sideways): bag ON, 30 kg sand meat on IM1-IM3, both US cams cinched tight as the user card says; at 15, 19 and 23 in (kits S, M, L) slide a 10 mm (0.39 in) feeler block between each US strap and the hinge fairlead cheeks and between each US strap and the HE (eye, legs, box), both sides, along the whole strap run you can reach; record the smallest gap per strap per setting",
+                pass_fail=f"no colour from the {pass_marks} on the bag at any crown setting{fit_pass}; (8) the 10 mm feeler passes between every US strap and the hinge cheeks / HE at S, M and L, both sides (a gap under 10 mm or contact = FAIL, photo to the pack-designer); the strap and its tail clear the heads in the cradle; the US2 eye slides across the seam without catching; CLEVIS-FACE: face colour on the panel is expected, but no fuzz, pilling, broken yarn, shine or pin-hole there after the crank cycles and after the T9 walk; FAIL: photo to the pack-designer (panel let out about 7 mm over that band, or a wear patch) and the structural-fea-engineer; LIP AND STRAP (step 7, ASSUMPTION LIP-WEAR), after the crank cycles and after the T9 walk: US2 lip still takes the r {w2['lip_r_mm']:.0f} mm leaf with no light gap, any worn flat <= {LIP_FLAT_MAX_MM:.0f} mm wide, no whitening; US2 strap 0 broken yarns, thickness at the lip mark >= the reading 20 mm away minus {STRAP_LOSS_MAX_MM:.1f} mm, no glazed (shiny) band longer than 5 mm; US1: no lip colour on the US1 strap (wrap {w1['wrap_deg']:.0f} deg modelled; colour there = the route is not as modelled: FAIL, photo to the structural-fea-engineer)",
                 cost_usd="2", cost_basis="lipstick / chalk paste; P1, bag and sand from kits C / D",
                 hours_hands_on="2.0", hours_machine="", phase="4", run_order="37", first_weekend="N",
                 notes="BL-050 B (orchestrator): new. Run with T9-R3a on P1 / the first sewn bag. BL-052: heads counterbored (BL-051), the clevis face colour and the CLEVIS-FACE wear inspection (step 7) added. BL-054 (review 5 m-5 / m-9): step 8 (US strap clearance on the real bag, every kit) and the strap / lip look in step 7. BL-055: the lip and strap inspection gets numbers (BL-053 strap_wrap: wrap angle, lip load, r 3 lip) and a radius-gauge / caliper pass line", g_per_usd_eq="")
+
+
+def fit_us_marks() -> list[str]:
+    """FIT-US colour marks (BL-058 kit.FIT-US_marks: bolt heads, pin head, clevis face edges, E-clip, tether strand,
+    US1 clip); before BL-058 the bolt heads only."""
+    return list(bl058()["kit"]["FIT-US_marks"]) if bl058() else ["US2 clevis bolt heads (2 per side)"]
 
 
 def he_fit_row() -> dict:
@@ -863,16 +889,67 @@ def clevis56() -> dict:
     return json.loads(CLEVIS56_JSON.read_text())
 
 
+BL058_JSON = AN / "bl058.json"           # BL-058 (review 6 frame / hardware): kit.*, hip_mount, assumptions
+
+
+def bl058() -> dict:
+    """BL-058 results (designs/pack_5200/analysis/bl058.json), {} before it lands."""
+    return json.loads(BL058_JSON.read_text()) if BL058_JSON.exists() else {}
+
+
+def hip_screw_txt() -> str:
+    """The hip mount screw as BUILD_H1 orders it (BL-058 kit.hip_screw, M5 x 12; else the BL-055 booking)."""
+    return _FB().hip_screw_spec(_FB().closeout())
+
+
 def hip56() -> dict:
     """BL-056 Ti hip mount results (designs/pack_5200/analysis/hip_mount_bl056.json)."""
     return json.loads(HIP56_JSON.read_text())
 
 
+T1US2_JSON = TP / "t1_us2_gauge_bl059.json"     # BL-059: T1 US2 lines re-run on the current print (h1_rev5.gauge_values)
+T1US2_KEY = "T1|us2"
+
+
+def stl_md5(path: Path | None = None) -> str:
+    import hashlib
+    p = path or (ROOT / "designs/pack_5200/print/frame_h1/h1_assembled.stl")
+    return hashlib.md5(p.read_bytes()).hexdigest()
+
+
+def republish_t1_us2(write: bool = True) -> dict:
+    """BL-059 (BL-057 leftover): the T1 gauge lines at the US2 root on the CURRENT assembled print. The source function
+    is huntkit.gendesign.h1_rev5.gauge_values (the BL-053 submodel; BL-056 re-ran it for MT-1cr|us2 / CLEVIS-SHARE but
+    kept only those keys). It runs the voxel submodel (about 2 min). Writes tests_physical/t1_us2_gauge_bl059.json with
+    the STL md5, so gauge_tests() only uses it while the print it was run on is the one in the folder."""
+    from huntkit.gendesign import h1_rev5 as R
+    g = R.gauge_values(log=None)
+    out = {"ticket": "BL-059", "source": "huntkit.gendesign.h1_rev5.gauge_values on print/frame_h1/h1_assembled.stl",
+           "stl_md5": stl_md5(), "E_xy_mpa": g["E_xy_mpa"], "site_us2": g["sites"]["us2"],
+           "tests": {T1US2_KEY: g["tests"][T1US2_KEY]},
+           "also_computed_not_published": {k: [s["pass_if_abs_microstrain_at_most"] for s in v["steps"]]
+                                           for k, v in g["tests"].items() if k != T1US2_KEY}}
+    if write:
+        T1US2_JSON.write_text(json.dumps(out, indent=1, default=float))
+    return out
+
+
+def t1_us2_record() -> dict:
+    """The BL-059 T1 US2 record when it was run on the print now in the folder, else {} (gauge_tests then falls back
+    to BL-053's h1_rev5.json line, which the kit marks ASSUMPTION T1-US2-GEOM)."""
+    if not T1US2_JSON.exists():
+        return {}
+    d = json.loads(T1US2_JSON.read_text())
+    return d if d.get("stl_md5") == stl_md5() else {}
+
+
 def gauge_tests() -> dict:
     """Every published gauge line: BL-053 (h1_rev5.json), overlaid by BL-056's lines for the US2 site on the re-printed
-    joint blocks (clevis_bl056.json gauges: MT-1cr|us2 and CLEVIS-SHARE A / B), then the second US1 gauge."""
+    joint blocks (clevis_bl056.json gauges: MT-1cr|us2 and CLEVIS-SHARE A / B), then BL-059's T1|us2 on the current
+    print (t1_us2_gauge_bl059.json, when its STL md5 matches), then the second US1 gauge."""
     t = dict(rev5()["gauges"]["tests"])
     t.update(clevis56()["gauges"]["tests"])
+    t.update(t1_us2_record().get("tests", {}))
     t.update(g2()["tests"])
     return t
 
@@ -1018,8 +1095,8 @@ def clevis_row() -> dict:
     """BL-055 Part B (BL-053 M-1 / M-4): CLEVIS-SHARE as two loadings on the governing 3D cradle rows, with the pull
     vectors and microstrain pass lines. BL-057: loads and lines from clevis_bl056.json (the BL-056 re-printed joint
     blocks; A: the inboard leg, eye on the INNER cheek; B: the straight-aft leg, eye on the OUTER (clevis) cheek, the
-    share-1.0 case). One specimen set per loading. The real US2 pin set (headed 7075, R-clip, tether) is used so
-    PIN-RET (b) sees the cycles."""
+    share-1.0 case). One specimen set per loading. The real US2 pin set (us2_pin_set_txt: BL-058's E-clip and tether)
+    is used so PIN-RET (b) sees the cycles."""
     from huntkit.gendesign import h1_bedfit as BF
     j = BF.JOINT
     cl = clevis_loadings()
@@ -1062,8 +1139,8 @@ def clevis_row() -> dict:
           f"A static {lines(A)}; A cycle peak {ue_line(A['key'], A['peak_n'])}; "
           f"B static {lines(B)}; B cycle peak {ue_line(B['key'], B['peak_n'])}; "
           "the gauge's zero after unloading within 5 % of its proof reading, and its cycle-peak reading at 1e5 within "
-          "10 % of the 1e3 reading (the CA-1 stiffness rule); the US2 pin home and its R-clip seated after the cycles "
-          "(PIN-RET b)")
+          "10 % of the 1e3 reading (the CA-1 stiffness rule); the US2 pin home and its E-clip seated in the groove "
+          "after the cycles (PIN-RET b)")
     return dict(id="CLEVIS-SHARE", status="ACTIVE", tier="safety",
                 title=(f"US2 bolt-on clevis joint, two loadings on the 3D cradle rows: A inboard leg (eye on the inner "
                        f"cheek) {A['proof_n']:.0f} N proof + 1e5 at {A['peak_n']:.0f} N; B straight-aft leg (eye on the "
@@ -1090,8 +1167,8 @@ def clevis_row() -> dict:
                           f"route piece: {piece_print('us_route_stay_R')}. The clevis: {piece_print('us2_clevis_R')}. "
                           f"Clevis holes reamed {j.hole_d:.1f}, bolted with {clevis_hw_txt()} (no preload credited, "
                           f"CLEVIS-DRY); {gauge_set_txt(('us2',))}; one sewn US eye (25 mm, necked as op "
-                          f"{op_no('US')}, 18.6 mm slot) on the REAL US2 pin set (HW-PIN-AL headed 7075 pin + R-clip + "
-                          "tether, BUILD_H1 section 9) in the US2 throat with its UHMWPE sleeves"),
+                          f"{op_no('US')}, 18.6 mm slot) on the REAL US2 pin set ({us2_pin_set_txt()}) in the US2 "
+                          "throat with its UHMWPE sleeves"),
                 kit="B, A, D",
                 steps=steps, pass_fail=pf,
                 cost_usd="20", cost_basis=f"2 x (about 178 g route piece (print_settings_bl053.json filament_g_est) + "
@@ -1285,9 +1362,14 @@ def hb6b_row() -> dict:
     rr = hb6b_runs()
     r1, r2 = rr["run1"], rr["run2"]
     gx, gz = rr["gauged_screw_xz"]
-    from huntkit.mass import ledger
-    mount_g = ledger.bl056_update()["mount_g"]
-    tq = _FB().hip_torque_n_m(_FB().closeout())
+    mount_g = _FB().mount_g()                        # ledger BL056 + BL058 (D5.8 holes), BL-059
+    tq = _FB().hip_torque_n_m(_FB().closeout())       # insert record maximum (BL-059: the sourced value)
+    scr = hip_screw_txt()
+    scr_short = re.sub(r"^Ti gr5 |\s*DIN 7984$", "", scr)    # 'M5 x 12'
+    setup = hb["setup"].replace("M5 x 14", scr_short)
+    tq_src = f"{tq:.1f} N m"
+    setup = setup.replace(f"the {tq_src} service torque", f"the BUILD_H1 service torque ({tq_src}, the insert record's "
+                          "tightening_torque_max_n_m)")
     e = rr["pad_offset_mm"]
 
     def st1(s):
@@ -1303,10 +1385,10 @@ def hb6b_row() -> dict:
                 "towards the pad-offset side (frame +x for run 2), centre 3 mm (0.12 in) above the base top face (just "
                 "above the 1.2 mm root fillet), gauge axis along the leg (square to the base); the side offset bends the "
                 "legs about their thin axis and the root is the part's weak point (hip_mount_bl056.md 3)")
-    steps = (f"SET-UP: {hb['setup'].replace('the 2.5 N m service torque', f'the BUILD_H1 service torque ({tq:.1f} N m)')}. "
+    steps = (f"SET-UP: {setup}. "
              f"SCREW GAUGE: {hb['gauge']}; on the R side of the frame this is the screw at frame (x {gx:+.2f}, z {gz:.2f}). "
-             f"{leg_site}. Metal-pattern gauges (Ti), each a half bridge with its dummy on a Ti offcut (a spare M5 x 14 "
-             "screw for the screw gauge). "
+             f"{leg_site}. Metal-pattern gauges (Ti), each a half bridge with its dummy on a Ti offcut (a spare "
+             f"{scr_short} screw for the screw gauge). "
              f"(1) RUN 1 (BL-056, the pad on the pin axis, V only): bring V up through the pin in steps "
              + " / ".join(f"{s['V_n']:.0f}" for s in r1)
              + " N, hold 10 s and read all three gauges at each step, hold the last 60 s; unload, read the zeros; "
@@ -1356,8 +1438,9 @@ def hb6b_row() -> dict:
                 safety_at_stake=(f"hip mount legs: sideways pad offset SF / goal {min(s['leg_sf_over_goal'] for s in r2)} "
                                  f"(hip_mount_bl056.json lateral sensitivity); inserts: {hb['settles'][1]}"),
                 specimen=(f"P1 frame (the sacrificial frame) with its 8 inserts set as BUILD_H1 section 12 and the "
-                          f"frame's own Ti hip mount HW-HIP-MNT (the BL-056 redraw, {mount_g:.1f} g / "
-                          f"{mount_g / OZ:.2f} oz; SLM lead time 3-4 weeks: order it in G1); 8 x M5 x 14 Ti DIN 7984 "
+                          f"frame's own Ti hip mount HW-HIP-MNT (the BL-056 redraw with BL-058's D"
+                          f"{bl058()['hip_mount']['hole_d_mm']:g} holes, {mount_g:.2f} g / "
+                          f"{mount_g / OZ:.2f} oz; SLM lead time 3-4 weeks: order it in G1); 8 x {scr} "
                           "(HW-HIP-SCR) + 2 more (one turned to D4.2 for the gauge, one dummy); 3 metal-pattern foil "
                           "gauges + 3 dummies; the dummy pin (D10, run 1) and the run-2 loading bar set"),
                 kit="C, A, B, D",
@@ -1365,15 +1448,17 @@ def hb6b_row() -> dict:
                 cost_usd=f"{SIDE_RIG_COST_USD:.2f}",
                 cost_basis=(f"ASSUMPTION SIDE-RIG USD {SIDE_RIG_COST_USD:.0f} (steel loading bar, M10 x 60 8.8 bolt + "
                             "nut, M12 push screw, steel angle, 6 mm ball); the Ti-matched gauges and the 2 extra Ti "
-                            "M5 x 14 are kit B shopping lines; the mount and its 8 screws are the frame's (BUILD_H1)"),
+                            f"{scr_short} are kit B shopping lines; the mount and its 8 screws are the frame's (BUILD_H1)"),
                 hours_hands_on="4.0", hours_machine=f"{hb['cycles']['n'] / 3.0 / 3600:.0f}",
                 phase="4", run_order="36", first_weekend="N",
                 notes=("BL-057: new register row. Run 1 is BL-056's published test; run 2 (sideways pad) is the "
                        "orchestrator's call of 2026-11-21. BL-056 published no run-2 line: the leg line is the part-FE "
                        "leg-root p99.5 / E x 1.15 (LEG-GAUGE-LINE), the screw line h1_closeout.tip_tension x 1.15 "
                        "(SIDE-SCREW-LINE). The screw gauge cannot see the leg bending that governs run 2, hence the "
-                       "two leg gauges. Service-torque repeat at the BUILD_H1 torque, not the 2.5 N m in the JSON text "
-                       "(the insert record's maximum)"),
+                       "two leg gauges. BL-059: the service-torque repeat is at the insert record's "
+                       f"tightening_torque_max_n_m ({tq:.1f} N m), the value the BL-056 JSON quotes; BUILD_H1 now uses it "
+                       "too (BL-055's lower build-text value traced to no record). Screws and mount mass from BL-058 "
+                       f"({scr_short}, D{bl058()['hip_mount']['hole_d_mm']:g} holes)"),
                 g_per_usd_eq="")
 
 
@@ -1387,47 +1472,81 @@ LIP_FLAT_MAX_MM = 1.0      # ASSUMPTION LIP-WEAR: a worn flat on the r 3 lip wid
 STRAP_LOSS_MAX_MM = 0.1    # more than 0.1 mm at the wear spot, is wear the model did not book (WRAP-TENSION)
 
 
+def clip_wire_mm() -> float:
+    """Hairpin clip wire diameter (BL-058 HAIRPIN: McMaster 90153A214, 1/32 in = 0.79 mm); the BL-053 R-clip's 1.2 mm
+    before BL-058."""
+    if bl058():
+        from huntkit.gendesign.bl058_frame import HAIRPIN
+        return float(HAIRPIN["wire_d"])
+    return 1.2
+
+
+WIRE_WEAR_MM = 0.1           # PIN-RET (b): 'no wire wear groove deeper than 0.1 mm' (h1_closeout.json pins.test)
+
+
 def pin_ret_row() -> dict:
-    """BL-055 Part B (BL-053 M-5): test PIN-RET, the steps and numbers from h1_rev5.json pins.test."""
+    """BL-055 Part B (BL-053 M-5): test PIN-RET, the steps and numbers from h1_closeout.json pins.test. BL-059: the
+    BL-058 retainers (hairpin clips at hinge / US1 / IM, groove + E-clip at US2) and step (d) from bl058.json
+    kit.PIN-RET_d (bag on and loaded, no retainer marks on B-01)."""
     p = _FB().pin_rows()
     st = p["stations"]
     n = sum(v["qty"] for v in st.values())
     steps_src = p["test"]["steps"]
-    clip_d = 1.2                                                 # retainer wire, h1_rev5 RETAINER 'part'
+    clip_d = clip_wire_mm()
+    b8 = bl058()
+    pd = b8.get("kit", {}).get("PIN-RET_d")
+    rb = p.get("retainers_bl058", {})
+    nh = sum(v["qty"] for v in st.values() if v.get("retainer") == "hairpin")
+    ne = sum(v["qty"] for v in st.values() if v.get("retainer") == "eclip")
+    hs = "/".join(k.upper() for k, v in st.items() if v.get("retainer") == "hairpin")
+    es = "/".join(k.upper() for k, v in st.items() if v.get("retainer") == "eclip")
+    ret_txt = (f"{nh} hairpin clips ({hs}: {rb['hairpin']['part']}, body pointing fore, towards the wearer) and {ne} "
+               f"E-clips ({es}: {rb['eclip']['part']})" if rb else p["retainer"]["part"])
+    d_steps = (f"; (d) PIN-RET (d) (BL-058, ASSUMPTIONS {', '.join(pd['settles'])}): {pd['what']}; before it, colour "
+               "every hairpin clip, both US2 E-clips, the US2 tethers and the US2 pin heads with lipstick or chalk "
+               "paste; after it, lay the bag flat and look at B-01 and the side panel for colour; photo" if pd else "")
+    d_pass = f"; (d) {pd['pass']}" if pd else ""
     return dict(id="PIN-RET", status="ACTIVE", tier="safety",
                 title=f"pin retention on all {n} fairlead pins: 50 N push < 0.5 mm, still home after the walk and the "
-                      "cycles, hinge pins out and in by hand in <= 8 s",
-                defined_in="designs/pack_5200/analysis/h1_rev5.md 5 (BL-053 M-5: headed pin, R-clip, tether); "
-                           "designs/pack_5200/analysis/h1_rev5.json pins (test PIN-RET); "
-                           "designs/pack_5200/print/frame_h1/BUILD_H1.md section 9",
-                what_it_proves=(f"{p['scheme']}: an R-clip is spring-held round the pin, so it does not back out in "
-                                "vibration; the hinge pins come out by hand at bag-off"),
-                gates="bag first article (BAG-BATCH): a pin that walks or a clip that wears is a retention redesign "
-                      "before more bags are fitted", grams_at_stake_g="0",
-                safety_at_stake=(f"every fairlead pin ({n}): a lost pin drops a strap or the bag hinge; clip wire "
-                                 f"double shear {p['clip_double_shear_n']:.0f} N ({p['clip_uts_source']})"),
+                      "cycles, hinge pins out and in by hand in <= 8 s" + (", no retainer marks on the bag (d)" if pd else ""),
+                defined_in="designs/pack_5200/analysis/h1_rev5.md 5 (BL-053 M-5: headed pin, clip, tether); "
+                           "designs/pack_5200/analysis/h1_closeout.json pins (test PIN-RET, BL-058 retainers); "
+                           + ("docs/backlog/BL-058-review6-frame.md and analysis/bl058.json kit.PIN-RET_d (step d); "
+                              if pd else "")
+                           + "designs/pack_5200/print/frame_h1/BUILD_H1.md section 9",
+                what_it_proves=(f"{p['scheme']}: the hairpin clip springs round the pin and the E-clip sits in its "
+                                "groove, so neither backs out in vibration; the hinge pins come out by hand at bag-off"
+                                + ("; no clip, E-clip, tether or pin head marks the bag under load (review 6 M-2 / M-3)"
+                                   if pd else "")),
+                gates="bag first article (BAG-BATCH): a pin that walks, a clip that wears or a retainer that marks the "
+                      "bag is a retention redesign before more bags are fitted", grams_at_stake_g="0",
+                safety_at_stake=(f"every fairlead pin ({n}): a lost pin drops a strap or the bag hinge; hairpin wire "
+                                 f"double shear {p['clip_double_shear_n']:.0f} N ({p['clip_uts_source']})"
+                                 + (f"; E-clip thrust {b8['groove']['thrust']['ring_thrust_n']:.0f} N, SF "
+                                    f"{b8['groove']['thrust']['sf']} on a walking pin" if b8 else "")),
                 specimen=(f"P1 (MT-1cr) and P2 (T9 walk) with every pin set as BUILD_H1 section 9 ({n} per frame: "
                           + ", ".join(f"{k} {v['qty']} x {_FB().MAT_NAME.get(v['material'], v['material'])} 5 x {v['shank_mm']}" for k, v in st.items())
-                          + f"); the 2 US2 pin sets from CLEVIS-SHARE A and B; {p['retainer']['part']}; "
-                            f"{p['retainer']['tether']}"),
+                          + f"); the 2 US2 pin sets from CLEVIS-SHARE A and B; {ret_txt}; {p['retainer']['tether']}"),
                 kit="C, A, D",
                 steps=(f"(a) AT BAG FITTING, each of the {n} pins, clip seated: put the caliper's depth rod on the pin "
                        "tail and zero it on the cheek face; push the tail along the pin axis with a spring scale to 50 N "
                        "(5.1 kg, 11.2 lb), read the movement; "
                        "(b) AFTER the T9 / T9-R3a walk (P2), after MT-1cr's pin pulls (P1) and after CLEVIS-SHARE A and B "
                        "(1e5 cycles each): every pin home (a 0.2 mm feeler does not go under the head at the cheek), "
-                       "every clip fully seated (both legs round the pin), each clip's wire where it touches the pin "
-                       f"measured with the caliper (new wire {clip_d:.1f} mm), photo each station; "
+                       "every hairpin clip fully seated (straight leg through the cross hole, body round the pin, "
+                       "pointing fore) and every E-clip fully in its groove, each clip's wire where it touches the pin "
+                       f"measured with the caliper (new wire {clip_d:.2f} mm), photo each station; "
                        "(c) BAG-OFF: with gloves on, take each hinge pin out and put it back (clip off, pin out, pin in, "
-                       "clip on), 5 times each pin, timed with a phone stopwatch"),
+                       "clip on), 5 times each pin, timed with a phone stopwatch" + d_steps),
                 pass_fail=(f"(a) every pin moves < 0.5 mm at 50 N ({n} of {n}); (b) every pin home and every clip seated; "
-                           f"clip wire at the contact >= {clip_d - 0.1:.1f} mm (wear groove <= 0.1 mm); "
-                           "(c) every hinge pin out and back in, clip on, in <= 8 s, 10 of 10. Source steps: "
-                           + " | ".join(steps_src)),
-                cost_usd="0", cost_basis="the frame's own pin sets (BUILD_H1 HW-PIN-*, HW-PIN-RET); spring scale and caliper in kits A / D",
+                           f"clip wire at the contact >= {clip_d - WIRE_WEAR_MM:.2f} mm (wear groove <= "
+                           f"{WIRE_WEAR_MM:.1f} mm); (c) every hinge pin out and back in, clip on, in <= 8 s, 10 of 10"
+                           + d_pass + ". Source steps: " + " | ".join(steps_src)),
+                cost_usd="0", cost_basis="the frame's own pin sets (BUILD_H1 HW-PIN-*, HW-PIN-RET-H / -E); spring scale, caliper and lipstick in kits A / D",
                 hours_hands_on="1.5", hours_machine="", phase="4", run_order="38", first_weekend="N",
                 notes="BL-055 (Part B): new, from BL-053 M-5 (h1_rev5.md 5). Run (a) when the pins first go in, (b) after "
-                      "the named tests, (c) at the first bag-off",
+                      "the named tests, (c) at the first bag-off" + ("; BL-059: BL-058's retainers and step (d) (with "
+                      "FIT-US on the first loaded bag)" if pd else ""),
                 g_per_usd_eq="")
 
 
@@ -1610,7 +1729,11 @@ def t1_patch() -> dict:
         defined_in="designs/pack_5200/analysis/load_standard.md §5.3; designs/pack_5200/analysis/frame_h1.md §8; "
                    "designs/pack_5200/analysis/weight_c_structural.md §7; designs/pack_5200/analysis/h1_rev5.md 4 "
                    "(BL-053 gauge pass values, GAUGE-LOCAL); designs/pack_5200/tests_physical/us1_outer_gauge.json "
-                   "(BL-055: second US1 gauge)",
+                   "(BL-055: second US1 gauge)"
+                   + ("; designs/pack_5200/tests_physical/t1_us2_gauge_bl059.json (BL-059: the US2 ROOT lines re-run "
+                      "by h1_rev5.gauge_values on the current print)" if t1_us2_record() else
+                      "; ASSUMPTION T1-US2-GEOM: the US2 ROOT lines are BL-053's (h1_rev5.json) on an older print; "
+                      "physical_test_kit.py --republish-t1-us2 on the current STL settles it"),
         what_it_proves="C1, C2 limit, C8; H1 joint and yoke; the US1 / US2 lug strain under the whole-body load",
         steps=T1_STEPS + "; STRAIN GAUGES (BL-055): before loading, " + gauge_set_txt() + "; zero all 3 with the "
               "frame unloaded on the stand; read all 3 at 0 / 150 / 300 lb in (a) / (b) and at the end of (c), and "
@@ -1799,12 +1922,53 @@ def ranking_md(rk: list[dict]) -> str:
     return "\n".join(L)
 
 
-def update_test_plan(rk: list[dict], lv: dict, write: bool = True) -> str:
+HIPBELT_STRUCT = AN / "hipbelt_structural.md"
+HB6_PLAN_ROW = "| 18 | **HB-6**"
+HB6_STRUCT_BULLET = "- **HB-6 M5 insert pull-out**"
+
+
+def hb6_plan_row(reg: dict) -> str:
+    """BL-059 (BL-057 leftover): TEST_PLAN.md row 18 (HB-6) from hip_mount_bl056.json tests.HB-6 and the register row
+    (hours, cost), replacing BL-023's '5 inserts, >= 1.5 kN' row."""
+    h = hip56()["tests"]["HB-6"]
+    r = reg["HB-6"]
+    return (f"{HB6_PLAN_ROW} (rev BL-056) | M5 heat-set insert pull-out along the BUILD Z at 60 C: {h['n_coupons']} "
+            f"printed PAHT-CF coupons, every one >= {h['pass_line_n_each']:.0f} N ({h['pass_line_n_each'] * LB_PER_N:.0f} "
+            f"lbf) | {r['tier']} | hip pivot mount on H1; LOWER-HALF PRINT | – | {r['kit'].split(',')[0].strip()} | "
+            f"{r['hours_hands_on']} | – | {r['cost_usd']} | designs/pack_5200/analysis/hip_mount_bl056.md 6 and "
+            "hip_mount_bl056.json tests.HB-6 (BL-056); designs/pack_5200/analysis/hipbelt_structural.md §8 |")
+
+
+def hb6_struct_bullet() -> str:
+    """BL-059: the HB-6 bullet of hipbelt_structural.md §8 rewritten from hip_mount_bl056.json tests.HB-6 (was 5
+    inserts, >= 1.5 kN)."""
+    h = hip56()["tests"]["HB-6"]
+    return (f"{HB6_STRUCT_BULLET} in the printed body material along the BUILD Z at 60 C (140 F), "
+            f"{h['n_coupons']} coupons. Pass: every one >= {h['pass_line_n_each']:.0f} N "
+            f"({h['pass_line_n_each'] * LB_PER_N:.0f} lbf) ({h['pass_line_basis']}). Superseded the 2026-11-09 "
+            "'5 inserts, >= 1.5 kN' line: BL-056, `hip_mount_bl056.json` tests.HB-6 (regenerated by "
+            "`physical_test_kit.py`).")
+
+
+def _replace_line(txt: str, prefix: str, new: str) -> str:
+    lines = txt.split("\n")
+    hits = [i for i, ln in enumerate(lines) if ln.startswith(prefix)]
+    assert len(hits) == 1, (prefix, hits)
+    lines[hits[0]] = new
+    return "\n".join(lines)
+
+
+def update_test_plan(rk: list[dict], lv: dict, write: bool = True, reg: dict | None = None) -> str:
     t = TEST_PLAN.read_text(encoding="utf-8")
     a, b = t.index("## 5. Value ranking"), t.index("## 6. Duplicates")
     t = t[:a] + ranking_md(rk) + "\n" + t[b:]
+    if reg is not None:
+        t = _replace_line(t, HB6_PLAN_ROW, hb6_plan_row(reg))
     if write:
         TEST_PLAN.write_text(t, encoding="utf-8")
+        if reg is not None:
+            HIPBELT_STRUCT.write_text(_replace_line(HIPBELT_STRUCT.read_text(encoding="utf-8"), HB6_STRUCT_BULLET,
+                                                    hb6_struct_bullet()), encoding="utf-8")
     return t
 
 
@@ -2020,6 +2184,8 @@ def measures(lv: dict, lid_g: float, cut: dict) -> dict:
                 "Y", "HEAD-BEAR")])],
         "FIT-US": [(f"{k} ({t} in)", "no colour from the clevis bolt heads on the bag", y, "yes", "Y", "HEAD-PROUD")
                    for k, t in (("S", 15), ("M", 19), ("L", 23))]
+        + ([(f"{k} ({t} in)", f"no colour on the bag from: {m_}", y, "yes", "Y", "PIN-HEAD; CLIP-ENV; TETHER-US2")
+            for k, t in (("S", 15), ("M", 19), ("L", 23)) for m_ in fit_us_marks()[1:]] if bl058() else [])
         + [("cradle", "US2 strap and tail clear the bolt heads in the bag-off cradle", y, "yes", "Y", "HEAD-PROUD"),
            ("seam", "US2 eye slides across the clevis seam under load without catching", y, "yes", "Y", "SEAM-FLOOR")]
         + [(f"face {when}", "bag panel over the clevis face (z 127-157): no fuzz, pilling, broken yarn, shine or "
@@ -2055,8 +2221,12 @@ def measures(lv: dict, lid_g: float, cut: dict) -> dict:
                        "(a) pin movement under a 50 N push on its tail", "mm", "max", "0.5", "PIN-RET", "pin#")
         + [(f"(b) after {w}", "every pin home (0.2 mm feeler not under any head), every clip seated", y, "yes", "Y", "PIN-RET")
            for w in ("the T9 walk (P2)", "MT-1cr (P1)", "CLEVIS-SHARE A", "CLEVIS-SHARE B")]
-        + [("(b) clips", "thinnest clip wire at the pin contact (caliper; new 1.2)", "mm", "min", "1.1", "PIN-RET; CLIP-UTS")]
-        + per(2, "(c) hinge pin out and back in with the clip, gloved, slowest of 5 tries", "s", "max", "8", "PIN-RET", "hinge#"),
+        + [("(b) clips", f"thinnest hairpin wire at the pin contact (caliper; new {clip_wire_mm():.2f})", "mm", "min",
+            f"{clip_wire_mm() - WIRE_WEAR_MM:.2f}", "PIN-RET; CLIP-UTS")]
+        + per(2, "(c) hinge pin out and back in with the clip, gloved, slowest of 5 tries", "s", "max", "8", "PIN-RET", "hinge#")
+        + ([(f"(d) {m_}", "no colour on B-01 or the side panel from it after 10 min bag on and loaded", y, "yes", "Y",
+             "; ".join(bl058()["kit"]["PIN-RET_d"]["settles"]))
+            for m_ in ("hairpin clips (all)", "US2 E-clips", "US2 tethers", "US2 pin heads")] if bl058() else []),
         # BL-057: HB-6 / HB-6b from hip_mount_bl056.json (run-2 lines: hb6b_runs)
         "HB-6": per(int(hip56()["tests"]["HB-6"]["n_coupons"]), "pull-out peak along the build z at 60 C", "N", "min",
                     f"{hip56()['tests']['HB-6']['pass_line_n_each']:.0f}", "INS-Z", "pull#")
@@ -2297,8 +2467,8 @@ def shopping(reg: dict) -> list[dict]:
            "hardware store", A, "A",
            f"HE-FIT step 0 ({2 * CLEVIS.n_washers}), CLEVIS-SHARE A and B ({2 * 2 * CLEVIS.n_washers}), spare (2)"),
         # BL-055 (BL-053 M-5): CLEVIS-SHARE runs on the real US2 pin set so PIN-RET (b) sees the cycles
-        _l("US2 pin set for the test pieces: headed 7075-T6 pin 5 mm (as BUILD_H1 HW-PIN-AL) + 18-8 R-clip + 120 mm "
-           "1.5 mm Dyneema tether", 2, "set", 6.00, "machinist / hardware (BUILD_H1 HW-PIN-AL, HW-PIN-RET)",
+        _l(f"US2 pin set for the test pieces: {us2_pin_set_txt()}", 2, "set", 6.00,
+           "machinist / hardware (BUILD_H1 HW-PIN-AL, HW-PIN-RET-E, HW-PIN-TETH)",
            "ASSUMPTION USD 6 a set (turned pin + clip + cord; no record)", "A", "CLEVIS-SHARE A and B, PIN-RET (b)"),
         _l("1 mm PTFE sheet offcut 50 x 50 mm (eye shim)", 1, "each", 5.00, "hardware / plastics shop",
            "ASSUMPTION USD 5 (no record)", "A", "CLEVIS-SHARE A and B"),
@@ -2325,7 +2495,7 @@ def shopping(reg: dict) -> list[dict]:
         # BL-057: HB-6b on the Ti mount: 1 screw-shank gauge + 2 leg-root gauges, each with a dummy on Ti
         _l("foil strain gauges 120 ohm, 1 mm grid, pre-wired, Ti / steel-matched (11 ppm/K), pack of 10", 1, "pack",
            25.00, "electronics shop", A, "B", "HB-6b: screw shank + 2 leg roots = 3 active + 3 dummies + 4 spare"),
-        _l("Ti gr5 low-head socket cap screw M5 x 14, DIN 7984 (as BUILD_H1 HW-HIP-SCR)", 2, "each", 2.50,
+        _l(f"{re.sub('^Ti gr5 ', 'Ti gr5 low-head socket cap screw ', hip_screw_txt())} (as BUILD_H1 HW-HIP-SCR)", 2, "each", 2.50,
            "Ti fastener shop", A, "B", "HB-6b: one turned to D4.2 for the screw gauge (calibrate it first), one dummy"),
         _l("half-bridge completion: 120 ohm 0.1 % resistors (2 per channel) + 2nd and 3rd HX711 modules; the dummy "
            "gauges come from the same pack of 10 (one per active gauge, on an unloaded offcut of the same print)", 1,
@@ -3116,7 +3286,7 @@ def build(write: bool = True) -> dict:
     rows = update_register(lv, lid_g, cut, write=write)
     reg = {r["id"]: r for r in rows}
     rk = ranking(reg)
-    update_test_plan(rk, lv, write=write)
+    update_test_plan(rk, lv, write=write, reg=reg)
     ow = order_of_work(reg)
     res = results_rows(reg, ow, lv, lid_g, cut)
     sh = shopping(reg)
@@ -3157,7 +3327,12 @@ def build(write: bool = True) -> dict:
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--check", action="store_true", help="build in memory, print the checks, write nothing")
+    ap.add_argument("--republish-t1-us2", action="store_true",
+                    help="re-run h1_rev5.gauge_values on the current print and write tests_physical/t1_us2_gauge_bl059.json")
     a = ap.parse_args(argv)
+    if a.republish_t1_us2:
+        r = republish_t1_us2()
+        print("T1|us2 lines:", [s_["pass_if_abs_microstrain_at_most"] for s_ in r["tests"][T1US2_KEY]["steps"]])
     out = build(write=not a.check)
     for m in out["checks"]:
         print("-", m)

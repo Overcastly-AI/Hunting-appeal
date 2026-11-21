@@ -56,8 +56,8 @@ seq,group,test,stage,release,also,tier,title,hands_on_h,machine_h,status
 55,G6,HB-6b,run,R1,,safety,"Ti hip mount proof on the frame (BL-056 redraw, 8 x M5 on the D50 boss): screw gauge <= 60 / 96 / 180 microstrain at 534 / 854 / 1601 N; run 2 with the pad 20 mm SIDEWAYS, leg-root gauges <= 1808 / 2893 / 5424; 1e5 at 854 N",4.0,9.0,ACTIVE
 56,G6,T9,run,R1,BAG-BATCH,safety,"loaded CG (+ 15 in, 30 kg meat check); CORRIE F rev 3 items in rows T9-R3a..d (BL-038 split)",5.0,0.0,ACTIVE
 57,G6,T9-R3a,run,BAG-BATCH,,safety,"T9 rev 3 (a): port guys hold the S-kit top, meat CG at 15 in",1.5,0.0,ACTIVE
-58,G6,FIT-US,run,BAG-BATCH,,safety,US fit on P1 with the bag: clevis bolt heads and clevis face vs the bag at every crown kit end (+ CLEVIS-FACE wear inspection); US straps on their lanes; US2 eye over the clevis seam,2.0,0.0,ACTIVE
-59,G6,PIN-RET,run,BAG-BATCH,,safety,"pin retention on all 12 fairlead pins: 50 N push < 0.5 mm, still home after the walk and the cycles, hinge pins out and in by hand in <= 8 s",1.5,0.0,ACTIVE
+58,G6,FIT-US,run,BAG-BATCH,,safety,"US fit on P1 with the bag: clevis bolt heads, US2 pin heads, E-clips, tethers and clips and the clevis face vs the bag at every crown kit end (+ CLEVIS-FACE wear inspection); US straps on their lanes; US2 eye over the clevis seam",2.0,0.0,ACTIVE
+59,G6,PIN-RET,run,BAG-BATCH,,safety,"pin retention on all 12 fairlead pins: 50 N push < 0.5 mm, still home after the walk and the cycles, hinge pins out and in by hand in <= 8 s, no retainer marks on the bag (d)",1.5,0.0,ACTIVE
 60,G6,T9-R3c,run,BAG-BATCH,,safety,"T9 rev 3 (c): crown strap free length (ROLL-PATH, TORSO-LIN)",0.7,0.0,ACTIVE
 61,G6,BP-3,run,CARRY,,safety,"back pressure on the rails, below and above z 190",3.0,0.0,ACTIVE
 62,G6,RF-1,run,CARRY,,grams,back rail fit 130/70 on 3 backs (C-8),3.0,0.0,ACTIVE

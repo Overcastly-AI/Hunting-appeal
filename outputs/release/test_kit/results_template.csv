@@ -359,20 +359,35 @@ T9-R3a-01,T9-R3a,G6,BAG-BATCH,S15,"meat CG aft, S kit, top full, lid + 1 kg (sim
 FIT-US-01,FIT-US,G6,BAG-BATCH,S (15 in),no colour from the clevis bolt heads on the bag,Y/N,yes,Y,,,,,HEAD-PROUD
 FIT-US-02,FIT-US,G6,BAG-BATCH,M (19 in),no colour from the clevis bolt heads on the bag,Y/N,yes,Y,,,,,HEAD-PROUD
 FIT-US-03,FIT-US,G6,BAG-BATCH,L (23 in),no colour from the clevis bolt heads on the bag,Y/N,yes,Y,,,,,HEAD-PROUD
-FIT-US-04,FIT-US,G6,BAG-BATCH,cradle,US2 strap and tail clear the bolt heads in the bag-off cradle,Y/N,yes,Y,,,,,HEAD-PROUD
-FIT-US-05,FIT-US,G6,BAG-BATCH,seam,US2 eye slides across the clevis seam under load without catching,Y/N,yes,Y,,,,,SEAM-FLOOR
-FIT-US-06,FIT-US,G6,BAG-BATCH,face after FIT-US,"bag panel over the clevis face (z 127-157): no fuzz, pilling, broken yarn, shine or pin-hole under the 10x loupe (face colour itself is expected)",Y/N,yes,Y,,,,,CLEVIS-FACE
-FIT-US-07,FIT-US,G6,BAG-BATCH,face after the T9 walk,"bag panel over the clevis face (z 127-157): no fuzz, pilling, broken yarn, shine or pin-hole under the 10x loupe (face colour itself is expected)",Y/N,yes,Y,,,,,CLEVIS-FACE
-FIT-US-08,FIT-US,G6,BAG-BATCH,US2 lip after FIT-US,r 3 mm radius-gauge leaf sits on the US2 clevis-block lip with no light gap,Y/N,yes,Y,,,,,WRAP-TENSION; LIP-WEAR
-FIT-US-09,FIT-US,G6,BAG-BATCH,US2 lip after FIT-US,widest worn flat across the US2 lip (caliper; none = 0),mm,max,1,,,,,LIP-WEAR
-FIT-US-10,FIT-US,G6,BAG-BATCH,US2 strap after FIT-US,broken yarns on the US2 strap where it crosses the lip,count,max,0,,,,,LIP-WEAR
-FIT-US-11,FIT-US,G6,BAG-BATCH,US2 strap after FIT-US,US2 strap thickness lost at the lip mark (reading 20 mm away minus reading at the mark),mm,max,0.1,,,,,LIP-WEAR
-FIT-US-12,FIT-US,G6,BAG-BATCH,US1 strap after FIT-US,no lip colour on the US1 strap (US1 modelled clear of its own lip),Y/N,yes,Y,,,,,WRAP-TENSION
-FIT-US-13,FIT-US,G6,BAG-BATCH,US2 lip after the T9 walk,r 3 mm radius-gauge leaf sits on the US2 clevis-block lip with no light gap,Y/N,yes,Y,,,,,WRAP-TENSION; LIP-WEAR
-FIT-US-14,FIT-US,G6,BAG-BATCH,US2 lip after the T9 walk,widest worn flat across the US2 lip (caliper; none = 0),mm,max,1,,,,,LIP-WEAR
-FIT-US-15,FIT-US,G6,BAG-BATCH,US2 strap after the T9 walk,broken yarns on the US2 strap where it crosses the lip,count,max,0,,,,,LIP-WEAR
-FIT-US-16,FIT-US,G6,BAG-BATCH,US2 strap after the T9 walk,US2 strap thickness lost at the lip mark (reading 20 mm away minus reading at the mark),mm,max,0.1,,,,,LIP-WEAR
-FIT-US-17,FIT-US,G6,BAG-BATCH,US1 strap after the T9 walk,no lip colour on the US1 strap (US1 modelled clear of its own lip),Y/N,yes,Y,,,,,WRAP-TENSION
+FIT-US-04,FIT-US,G6,BAG-BATCH,S (15 in),no colour on the bag from: US2 pin head in its counterbore (1 per side),Y/N,yes,Y,,,,,PIN-HEAD; CLIP-ENV; TETHER-US2
+FIT-US-05,FIT-US,G6,BAG-BATCH,S (15 in),no colour on the bag from: US2 clevis outer face edges,Y/N,yes,Y,,,,,PIN-HEAD; CLIP-ENV; TETHER-US2
+FIT-US-06,FIT-US,G6,BAG-BATCH,S (15 in),"no colour on the bag from: US2 E-clip (inboard, 1 per side)",Y/N,yes,Y,,,,,PIN-HEAD; CLIP-ENV; TETHER-US2
+FIT-US-07,FIT-US,G6,BAG-BATCH,S (15 in),no colour on the bag from: US2 tether strand on the lug arm's bag face (1 per side),Y/N,yes,Y,,,,,PIN-HEAD; CLIP-ENV; TETHER-US2
+FIT-US-08,FIT-US,G6,BAG-BATCH,S (15 in),"no colour on the bag from: US1 hairpin clip body (inboard, fore of the pin)",Y/N,yes,Y,,,,,PIN-HEAD; CLIP-ENV; TETHER-US2
+FIT-US-09,FIT-US,G6,BAG-BATCH,M (19 in),no colour on the bag from: US2 pin head in its counterbore (1 per side),Y/N,yes,Y,,,,,PIN-HEAD; CLIP-ENV; TETHER-US2
+FIT-US-10,FIT-US,G6,BAG-BATCH,M (19 in),no colour on the bag from: US2 clevis outer face edges,Y/N,yes,Y,,,,,PIN-HEAD; CLIP-ENV; TETHER-US2
+FIT-US-11,FIT-US,G6,BAG-BATCH,M (19 in),"no colour on the bag from: US2 E-clip (inboard, 1 per side)",Y/N,yes,Y,,,,,PIN-HEAD; CLIP-ENV; TETHER-US2
+FIT-US-12,FIT-US,G6,BAG-BATCH,M (19 in),no colour on the bag from: US2 tether strand on the lug arm's bag face (1 per side),Y/N,yes,Y,,,,,PIN-HEAD; CLIP-ENV; TETHER-US2
+FIT-US-13,FIT-US,G6,BAG-BATCH,M (19 in),"no colour on the bag from: US1 hairpin clip body (inboard, fore of the pin)",Y/N,yes,Y,,,,,PIN-HEAD; CLIP-ENV; TETHER-US2
+FIT-US-14,FIT-US,G6,BAG-BATCH,L (23 in),no colour on the bag from: US2 pin head in its counterbore (1 per side),Y/N,yes,Y,,,,,PIN-HEAD; CLIP-ENV; TETHER-US2
+FIT-US-15,FIT-US,G6,BAG-BATCH,L (23 in),no colour on the bag from: US2 clevis outer face edges,Y/N,yes,Y,,,,,PIN-HEAD; CLIP-ENV; TETHER-US2
+FIT-US-16,FIT-US,G6,BAG-BATCH,L (23 in),"no colour on the bag from: US2 E-clip (inboard, 1 per side)",Y/N,yes,Y,,,,,PIN-HEAD; CLIP-ENV; TETHER-US2
+FIT-US-17,FIT-US,G6,BAG-BATCH,L (23 in),no colour on the bag from: US2 tether strand on the lug arm's bag face (1 per side),Y/N,yes,Y,,,,,PIN-HEAD; CLIP-ENV; TETHER-US2
+FIT-US-18,FIT-US,G6,BAG-BATCH,L (23 in),"no colour on the bag from: US1 hairpin clip body (inboard, fore of the pin)",Y/N,yes,Y,,,,,PIN-HEAD; CLIP-ENV; TETHER-US2
+FIT-US-19,FIT-US,G6,BAG-BATCH,cradle,US2 strap and tail clear the bolt heads in the bag-off cradle,Y/N,yes,Y,,,,,HEAD-PROUD
+FIT-US-20,FIT-US,G6,BAG-BATCH,seam,US2 eye slides across the clevis seam under load without catching,Y/N,yes,Y,,,,,SEAM-FLOOR
+FIT-US-21,FIT-US,G6,BAG-BATCH,face after FIT-US,"bag panel over the clevis face (z 127-157): no fuzz, pilling, broken yarn, shine or pin-hole under the 10x loupe (face colour itself is expected)",Y/N,yes,Y,,,,,CLEVIS-FACE
+FIT-US-22,FIT-US,G6,BAG-BATCH,face after the T9 walk,"bag panel over the clevis face (z 127-157): no fuzz, pilling, broken yarn, shine or pin-hole under the 10x loupe (face colour itself is expected)",Y/N,yes,Y,,,,,CLEVIS-FACE
+FIT-US-23,FIT-US,G6,BAG-BATCH,US2 lip after FIT-US,r 3 mm radius-gauge leaf sits on the US2 clevis-block lip with no light gap,Y/N,yes,Y,,,,,WRAP-TENSION; LIP-WEAR
+FIT-US-24,FIT-US,G6,BAG-BATCH,US2 lip after FIT-US,widest worn flat across the US2 lip (caliper; none = 0),mm,max,1,,,,,LIP-WEAR
+FIT-US-25,FIT-US,G6,BAG-BATCH,US2 strap after FIT-US,broken yarns on the US2 strap where it crosses the lip,count,max,0,,,,,LIP-WEAR
+FIT-US-26,FIT-US,G6,BAG-BATCH,US2 strap after FIT-US,US2 strap thickness lost at the lip mark (reading 20 mm away minus reading at the mark),mm,max,0.1,,,,,LIP-WEAR
+FIT-US-27,FIT-US,G6,BAG-BATCH,US1 strap after FIT-US,no lip colour on the US1 strap (US1 modelled clear of its own lip),Y/N,yes,Y,,,,,WRAP-TENSION
+FIT-US-28,FIT-US,G6,BAG-BATCH,US2 lip after the T9 walk,r 3 mm radius-gauge leaf sits on the US2 clevis-block lip with no light gap,Y/N,yes,Y,,,,,WRAP-TENSION; LIP-WEAR
+FIT-US-29,FIT-US,G6,BAG-BATCH,US2 lip after the T9 walk,widest worn flat across the US2 lip (caliper; none = 0),mm,max,1,,,,,LIP-WEAR
+FIT-US-30,FIT-US,G6,BAG-BATCH,US2 strap after the T9 walk,broken yarns on the US2 strap where it crosses the lip,count,max,0,,,,,LIP-WEAR
+FIT-US-31,FIT-US,G6,BAG-BATCH,US2 strap after the T9 walk,US2 strap thickness lost at the lip mark (reading 20 mm away minus reading at the mark),mm,max,0.1,,,,,LIP-WEAR
+FIT-US-32,FIT-US,G6,BAG-BATCH,US1 strap after the T9 walk,no lip colour on the US1 strap (US1 modelled clear of its own lip),Y/N,yes,Y,,,,,WRAP-TENSION
 PIN-RET-01,PIN-RET,G6,BAG-BATCH,pin#1,(a) pin movement under a 50 N push on its tail,mm,max,0.5,,,,,PIN-RET
 PIN-RET-02,PIN-RET,G6,BAG-BATCH,pin#2,(a) pin movement under a 50 N push on its tail,mm,max,0.5,,,,,PIN-RET
 PIN-RET-03,PIN-RET,G6,BAG-BATCH,pin#3,(a) pin movement under a 50 N push on its tail,mm,max,0.5,,,,,PIN-RET
@@ -389,9 +404,13 @@ PIN-RET-13,PIN-RET,G6,BAG-BATCH,(b) after the T9 walk (P2),"every pin home (0.2 
 PIN-RET-14,PIN-RET,G6,BAG-BATCH,(b) after MT-1cr (P1),"every pin home (0.2 mm feeler not under any head), every clip seated",Y/N,yes,Y,,,,,PIN-RET
 PIN-RET-15,PIN-RET,G6,BAG-BATCH,(b) after CLEVIS-SHARE A,"every pin home (0.2 mm feeler not under any head), every clip seated",Y/N,yes,Y,,,,,PIN-RET
 PIN-RET-16,PIN-RET,G6,BAG-BATCH,(b) after CLEVIS-SHARE B,"every pin home (0.2 mm feeler not under any head), every clip seated",Y/N,yes,Y,,,,,PIN-RET
-PIN-RET-17,PIN-RET,G6,BAG-BATCH,(b) clips,thinnest clip wire at the pin contact (caliper; new 1.2),mm,min,1.1,,,,,PIN-RET; CLIP-UTS
+PIN-RET-17,PIN-RET,G6,BAG-BATCH,(b) clips,thinnest hairpin wire at the pin contact (caliper; new 0.79),mm,min,0.69,,,,,PIN-RET; CLIP-UTS
 PIN-RET-18,PIN-RET,G6,BAG-BATCH,hinge#1,"(c) hinge pin out and back in with the clip, gloved, slowest of 5 tries",s,max,8,,,,,PIN-RET
 PIN-RET-19,PIN-RET,G6,BAG-BATCH,hinge#2,"(c) hinge pin out and back in with the clip, gloved, slowest of 5 tries",s,max,8,,,,,PIN-RET
+PIN-RET-20,PIN-RET,G6,BAG-BATCH,(d) hairpin clips (all),no colour on B-01 or the side panel from it after 10 min bag on and loaded,Y/N,yes,Y,,,,,CLIP-ENV; TETHER-US2; PIN-HEAD
+PIN-RET-21,PIN-RET,G6,BAG-BATCH,(d) US2 E-clips,no colour on B-01 or the side panel from it after 10 min bag on and loaded,Y/N,yes,Y,,,,,CLIP-ENV; TETHER-US2; PIN-HEAD
+PIN-RET-22,PIN-RET,G6,BAG-BATCH,(d) US2 tethers,no colour on B-01 or the side panel from it after 10 min bag on and loaded,Y/N,yes,Y,,,,,CLIP-ENV; TETHER-US2; PIN-HEAD
+PIN-RET-23,PIN-RET,G6,BAG-BATCH,(d) US2 pin heads,no colour on B-01 or the side panel from it after 10 min bag on and loaded,Y/N,yes,Y,,,,,CLIP-ENV; TETHER-US2; PIN-HEAD
 T9-R3c-01,T9-R3c,G6,BAG-BATCH,S-full-L,"crown strap path, S kit full",mm,max,968.1,,,,,ROLL-PATH; TORSO-LIN
 T9-R3c-02,T9-R3c,G6,BAG-BATCH,S-full-R,"crown strap path, S kit full",mm,max,968.1,,,,,ROLL-PATH; TORSO-LIN
 T9-R3c-03,T9-R3c,G6,BAG-BATCH,L-6day,"crown strap path, L kit 6-day (sim 438.8)",mm,record,,,,,,ROLL-PATH; TORSO-LIN
@@ -399,13 +418,13 @@ BP-3-01,BP-3,G6,CARRY,1,"passes the register criterion: every sensor <= 14 kPa a
 RF-1-01,RF-1,G6,CARRY,1,passes the register criterion: peak <= 14 kPa and comfort OK,Y/N,yes,Y,,,,,C-8 RAIL
 T1-01,T1,G6,R1,(a) US1 ROOT,US1 ROOT gauge at 150 lb (expected about -7; over the line = HOLD),microstrain,band,-27..27,,,,,GAUGE-LOCAL; SUB-BC
 T1-02,T1,G6,R1,(a) US1 OUTER CHEEK,US1 OUTER CHEEK gauge at 150 lb (expected about -127; over the line = HOLD),microstrain,band,-260..260,,,,,GAUGE-LOCAL; SUB-BC
-T1-03,T1,G6,R1,(a) US2 ROOT,US2 ROOT gauge at 150 lb (expected about +347; over the line = HOLD),microstrain,band,-459..459,,,,,GAUGE-LOCAL; SUB-BC
+T1-03,T1,G6,R1,(a) US2 ROOT,US2 ROOT gauge at 150 lb (expected about +344; over the line = HOLD),microstrain,band,-454..454,,,,,GAUGE-LOCAL; SUB-BC
 T1-04,T1,G6,R1,(b) US1 ROOT,US1 ROOT gauge at 300 lb (expected about -15; over the line = HOLD),microstrain,band,-53..53,,,,,GAUGE-LOCAL; SUB-BC
 T1-05,T1,G6,R1,(b) US1 OUTER CHEEK,US1 OUTER CHEEK gauge at 300 lb (expected about -255; over the line = HOLD),microstrain,band,-520..520,,,,,GAUGE-LOCAL; SUB-BC
-T1-06,T1,G6,R1,(b) US2 ROOT,US2 ROOT gauge at 300 lb (expected about +694; over the line = HOLD),microstrain,band,-917..917,,,,,GAUGE-LOCAL; SUB-BC
+T1-06,T1,G6,R1,(b) US2 ROOT,US2 ROOT gauge at 300 lb (expected about +687; over the line = HOLD),microstrain,band,-908..908,,,,,GAUGE-LOCAL; SUB-BC
 T1-07,T1,G6,R1,(c) US1 ROOT,US1 ROOT gauge at 225 lb (expected about -11; over the line = HOLD),microstrain,band,-40..40,,,,,GAUGE-LOCAL; SUB-BC
 T1-08,T1,G6,R1,(c) US1 OUTER CHEEK,US1 OUTER CHEEK gauge at 225 lb (expected about -191; over the line = HOLD),microstrain,band,-390..390,,,,,GAUGE-LOCAL; SUB-BC
-T1-09,T1,G6,R1,(c) US2 ROOT,US2 ROOT gauge at 225 lb (expected about +520; over the line = HOLD),microstrain,band,-688..688,,,,,GAUGE-LOCAL; SUB-BC
+T1-09,T1,G6,R1,(c) US2 ROOT,US2 ROOT gauge at 225 lb (expected about +515; over the line = HOLD),microstrain,band,-681..681,,,,,GAUGE-LOCAL; SUB-BC
 T1-10,T1,G6,R1,all,"T1 pass rules (no crack, crown set <= 1 mm, z 234 step <= 0.5 mm, ...)",Y/N,yes,Y,,,,,HA-LS-1 T1
 T1c-SW-01,T1c-SW,G6,R1,run1,"sway |D1-D2|/2 at 225 lb, lifters snug",mm,max,3,,,,,GNL-CROWN
 T1c-SW-02,T1c-SW,G6,R1,run1,sway after unloading,mm,max,0.5,,,,,GNL-CROWN

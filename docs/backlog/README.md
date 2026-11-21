@@ -106,3 +106,4 @@ Nothing here is decided; the tickets produce the material.
 | BL-055 | Close-out: whole-body rerun, hip inserts, Ti US1 pins (A); kit wiring of BL-053 data (B) | structural + manufacturing | M | 053, 054 | review 6 ready |
 | BL-056 | SLM Ti hip mount base for 8-insert pattern | structural-fea-engineer | S | 055A | |
 | BL-057 | Wire BL-056 into kit, register, BUILD_H1; HB-6b sideways run; lug STL guard | manufacturing-engineer | S | 056 | no stale numbers |
+| BL-059 | Wire BL-058 into BUILD_H1, kit, register, print README, bag release; BL-057 leftovers | manufacturing-engineer | S | 058 | no pre-BL-058 numbers |

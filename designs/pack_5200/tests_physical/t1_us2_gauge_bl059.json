@@ -1,0 +1,84 @@
+{
+ "ticket": "BL-059",
+ "source": "huntkit.gendesign.h1_rev5.gauge_values on print/frame_h1/h1_assembled.stl",
+ "stl_md5": "7bd47cbdcc3b42c0f93d57ef041efc11",
+ "E_xy_mpa": 3860.0,
+ "site_us2": {
+  "x": 126.96,
+  "y": 6.81,
+  "z": 142.0,
+  "axis": "x (along the arm)",
+  "face": "bag face (+y)",
+  "station": "us2"
+ },
+ "tests": {
+  "T1|us2": {
+   "pull_unit_vector_frame_R": [
+    0.0,
+    -0.9988,
+    -0.0491
+   ],
+   "row": "bagon_drape",
+   "basis": "T1 carry: bag-on cam-tight strap (drape path) at 1 g, scaled to the carry load (0 / 150 / 300 lb); local pin load only",
+   "steps": [
+    {
+     "pin_load_n": 0.0,
+     "sigma_mpa": 0.0,
+     "band_mpa": [
+      0.0,
+      0.0
+     ],
+     "microstrain": 0.0,
+     "pass_if_abs_microstrain_at_most": 0.0
+    },
+    {
+     "pin_load_n": 98.8,
+     "sigma_mpa": 1.33,
+     "band_mpa": [
+      0.8,
+      1.52
+     ],
+     "microstrain": 344.0,
+     "pass_if_abs_microstrain_at_most": 454.0
+    },
+    {
+     "pin_load_n": 197.5,
+     "sigma_mpa": 2.65,
+     "band_mpa": [
+      1.61,
+      3.05
+     ],
+     "microstrain": 687.0,
+     "pass_if_abs_microstrain_at_most": 908.0
+    }
+   ]
+  }
+ },
+ "also_computed_not_published": {
+  "MT-1cr|us1": [
+   294.0,
+   588.0,
+   882.0,
+   1087.0
+  ],
+  "T1|us1": [
+   0.0,
+   36.0,
+   71.0
+  ],
+  "MT-1cr|us2": [
+   900.0,
+   1800.0,
+   2699.0,
+   4139.0
+  ],
+  "CLEVIS-SHARE|us2_inboard": [
+   4139.0,
+   2759.0
+  ],
+  "CLEVIS-SHARE|us2_yz": [
+   2647.0,
+   1764.0
+  ]
+ }
+}
