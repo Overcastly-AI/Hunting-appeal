@@ -30,7 +30,7 @@ def test_redrawn_stl_slices():
     b = g["base"]
     assert b["d_eq_mm"] == pytest.approx(50.0, abs=0.1)
     assert b["top_z_mm"] == pytest.approx(3.0, abs=0.1)
-    assert b["holes"] == 9 and b["hole_d_eq_mm"][:8] == pytest.approx([5.5] * 8, abs=0.05)
+    assert b["holes"] == 9 and b["hole_d_eq_mm"][:8] == pytest.approx([H.HOLE_D] * 8, abs=0.05)   # BL-058: D5.8
     assert b["pin_hole_d_eq_mm"] == pytest.approx(10.0, abs=0.05)
     assert b["hole_pos_err_mm"] < 0.05
     assert g["legs_and_hub_kept"] and g["hub_top_z_mm"] == pytest.approx(28.1, abs=0.05)
@@ -72,7 +72,7 @@ def test_strip_formula_on_slm_allowables():
 def test_mass_against_the_booked_delta():
     m = H.mass()
     # D50 x 3 annulus less 8 holes, less the drawn D44 x 1.2 disc, less the leg volume swallowed, plus fillets
-    a50 = math.pi / 4 * (50 ** 2 - 10 ** 2 - 8 * 5.5 ** 2) * 3.0
+    a50 = math.pi / 4 * (50 ** 2 - 10 ** 2 - 8 * H.HOLE_D ** 2) * 3.0
     a44 = math.pi / 4 * (44 ** 2 - 10 ** 2) * 1.2
     assert m["delta_g"] == pytest.approx((a50 - a44) * 4.43e-3, abs=2.0)
     assert m["ledger_correction_g"] == pytest.approx(m["delta_g"] - m["booked_bl055_g"], abs=0.01)

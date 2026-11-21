@@ -167,27 +167,32 @@ def stay_mask(cen: np.ndarray) -> np.ndarray:
     return np.array([S.region(p).startswith("stay") for p in cen], bool)
 
 
-def body(log=print, sanded: bool = True) -> dict:
+def body(log=print, sanded: bool = True, solid=None, info=None, names=(BODY_CHECK, BODY_SANDED),
+         out=None) -> dict:
     """``h1_buckling.full_check`` on the BL-053 body as h1_crown.body ran it (lane kit sets, real crown models), and
     the same with the stays sanded (stresses x sand_factor k on every stay element; buckling and the z 234 joint see
-    the same scaled stress, which is conservative for both)."""
+    the same scaled stress, which is conservative for both). BL-058: ``solid`` / ``info`` / ``names`` / ``out`` run
+    the same check on another voxel body (bl058_frame.body_stl: the exported print re-rastered) under other cache
+    names; the defaults are the BL-055 run."""
     from . import h1_buckling as B
     from . import h1_lanes as LN
     from . import h1_sleeve as S
     from . import h1_spine_channel as SC
-    solid, info = body_solid_bl053()
-    OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / "body_solid.json").write_text(json.dumps(info, default=float))
-    np.savez_compressed(OUT / "body_solid.npz", solid=solid)
+    out = OUT if out is None else out
+    if solid is None:
+        solid, info = body_solid_bl053()
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "body_solid.json").write_text(json.dumps(info, default=float))
+    np.savez_compressed(out / "body_solid.npz", solid=solid)
     res = {"voxels": info}
     orig = S.kit_sets
     with SC.real_crown_models(), SC._real_caches():
         S.kit_sets = LN.lane_kit_sets(orig)
         try:
-            res["nominal"] = B.full_check(BODY_CHECK, solid, log=log)
+            res["nominal"] = B.full_check(names[0], solid, log=log)
             if sanded:
                 sf = sand_factor()
-                (OUT / "sand_factor.json").write_text(json.dumps(sf, default=float))
+                (out / "sand_factor.json").write_text(json.dumps(sf, default=float))
                 k = sf["k"]
                 o_solve = S.solve_fields_w
 
@@ -199,7 +204,7 @@ def body(log=print, sanded: bool = True) -> dict:
                     return f
                 S.solve_fields_w = solve_sanded
                 try:
-                    res["sanded"] = B.full_check(BODY_SANDED, solid, log=log)
+                    res["sanded"] = B.full_check(names[1], solid, log=log)
                 finally:
                     S.solve_fields_w = o_solve
         finally:
@@ -535,10 +540,12 @@ def hip_slices(path: Path | None = None) -> dict:
 PIN_MATERIAL = {"hinge": "ti_6al_4v", "us1": "ti_6al_4v"}   # BL-055 (orchestrator call): US1 in Ti; the rest 7075-T6
 
 
-def pins() -> dict:
+def pins(bl058: bool = True) -> dict:
     """The 12 fairlead pin rows of h1_rev5.pins (BL-053 retention scheme, shank, head, cross hole, clip, tether) with
     the US1 pins in Ti-6Al-4V: mass from the record density on the same shank + head, bending re-checked on the same
-    rows (h1_lanes.pin_check: S-basis yield, fatigue limit x 0.9, Goodman to R 0)."""
+    rows (h1_lanes.pin_check: S-basis yield, fatigue limit x 0.9, Goodman to R 0). ``mass`` stays the BL-055 booking
+    (ledger BL055 row). BL-058 (``bl058``): each station's pin, retainer and tether as bl058_frame.pin_overlay
+    re-specifies them (rows, BOM, ``mass_bl058``; the ledger's BL058 row books the change)."""
     from huntkit.materials import load
     from . import h1_fairleads as HF
     from . import h1_lanes as LN
@@ -571,11 +578,26 @@ def pins() -> dict:
         out["stations"][name] = r
     out["mass"] = {"pins_g": round(sum(2 * r["pin_g"] for r in out["stations"].values()), 2),
                    "clips_tethers_g": base["mass"]["clips_tethers_g"], "delta_vs_bl053_g": round(delta, 2)}
+    if bl058:                          # BL-058 (review 6 M-2 / M-3): retainer per station, US2 groove + E-clip
+        from . import bl058_frame as B58
+        for n, r in out["stations"].items():
+            ov = B58.pin_overlay(n, r["material"])
+            r["bl055"] = {k: r[k] for k in ("shank_mm", "cross_hole", "clip_side", "pin_g", "set_g")}
+            r.update(ov)
+        out["retainer"] = B58.retainer_summary()
+        out["mass_bl058"] = {"pins_g": round(sum(2 * r["pin_g"] for r in out["stations"].values()), 2),
+                             "retainers_tethers_g": round(sum(2 * (r["set_g"] - r["pin_g"])
+                                                              for r in out["stations"].values()), 2)}
+        out["scheme"] = ("headed pin; hairpin clip (McMaster 90153A214) in a 1.5 mm cross hole on the far side at "
+                         "hinge / US1 / IM1-3, body pointing fore; US2: head in a D9 x 2 clevis counterbore, DIN 6799 "
+                         "E-clip in a groove on the far side, tether from a tail hole round the lug arm")
     out["bom"] = [{"id": f"PIN-{n.upper()}", "station": n, "qty": r["qty"], "material": r["material"],
                    "pin_d_mm": r["pin_d_mm"], "shank_mm": r["shank_mm"], "head_mm": r["head_mm"],
                    "cross_hole_d_mm": r["cross_hole"]["d_mm"],
                    "cross_hole_from_far_cheek_face_mm": r["cross_hole"]["from_far_cheek_face_mm"],
-                   "clip_side": r["clip_side"], "pin_g": r["pin_g"], "set_g": r["set_g"]}
+                   "clip_side": r["clip_side"], "pin_g": r["pin_g"], "set_g": r["set_g"],
+                   **({k: r[k] for k in ("retainer", "retainer_part", "groove", "tether_hole", "head_seat")
+                       if k in r})}
                   for n, r in out["stations"].items()]
     return out
 
@@ -584,7 +606,9 @@ def pins() -> dict:
 HIP_INSERTS_BOOKED = 2             # ASSUMPTION HIP-BOOKED: the frame's fixed lump (frame_h1.FIXED_G 'Ti mount, inserts';
 #                                    frame_eval.INSERTS_G 'brass heat-set inserts ... joint bolts (2 x M5 x 2)') books
 #                                    the 2 hip-mount inserts and 2 screws of hipbelt_structural 4
-HIP_SCREW_L = 14.0                 # M5 screw length: Ti mount base (3 mm, ASSUMPTION FLANGE-RIGID) + 9.5 mm insert + 1.5
+HIP_SCREW_L = 12.0                 # BL-058 (review 6 m-2): M5 x 12 = Ti mount base 3 + 9.0 in the 9.5 mm insert; the x 14
+#                                    tip reached 11.0 mm into the 11.5 mm pilot whose bottom 2 mm is the melt reservoir
+HIP_SCREW_L_BOOKED = 14.0          # the length BL-055 booked in the ledger (mass_rows; the BL058 ledger row books the change)
 
 
 def mass_rows(export: dict | None, pn: dict, hip: dict) -> dict:
@@ -593,10 +617,12 @@ def mass_rows(export: dict | None, pn: dict, hip: dict) -> dict:
     from .frame_comp_B import bolt_mass_g
     n = HIP_CHOSEN[0]
     ins_g = hip["insert"]["mass_g"]
-    scr = bolt_mass_g(HIP_SCREW_L)
+    scr = bolt_mass_g(HIP_SCREW_L_BOOKED)
     out = {"hip_inserts": n, "hip_inserts_booked": HIP_INSERTS_BOOKED,
            "hip_inserts_delta_g": round((n - HIP_INSERTS_BOOKED) * ins_g, 2),
-           "hip_screw": f"Ti gr5 M5 x {HIP_SCREW_L:g} DIN 7984", "hip_screw_g": round(scr, 2),
+           "hip_screw": f"Ti gr5 M5 x {HIP_SCREW_L:g} DIN 7984", "hip_screw_g": round(bolt_mass_g(HIP_SCREW_L), 2),
+           "hip_screw_booked": f"Ti gr5 M5 x {HIP_SCREW_L_BOOKED:g} DIN 7984 (BL-055; BL-058 books the change)",
+           "hip_screw_booked_g": round(scr, 2),
            "hip_screws_delta_g": round((n - HIP_INSERTS_BOOKED) * scr, 2),
            "us1_ti_pins_delta_g": pn["mass"]["delta_vs_bl053_g"]}
     if export:
@@ -611,7 +637,8 @@ def mass_rows(export: dict | None, pn: dict, hip: dict) -> dict:
 
 # ---------------------------------------------------------------------------------------------- Ti mount flange
 FLANGE_T = 3.0                     # ASSUMPTION FLANGE-RIGID: the SLM mount's base redrawn as a 3 mm disc (was 1.2 mm)
-FLANGE_HOLE_D = 5.5                # M5 clearance (ISO 273 medium)
+FLANGE_HOLE_D = 5.5                # M5 clearance (ISO 273 medium) as BL-055 booked the flange; the mount is drawn with
+#                                    D5.8 since BL-058 (hip_mount.HOLE_D; its mass change is in the BL058 ledger row)
 
 
 def mount_flange(hip: dict) -> dict:
@@ -686,11 +713,13 @@ ASSUMPTIONS = [
      "Section one HB-6 coupon: no melt plug under the insert."),
     ("HIP-LAND", f">= {HIP_LAND:g} mm flange between an insert hole and the mount's D10 pin bore.", "Mount drawing."),
     ("HEAD-LEG", f">= {HEAD_LEG_CLEAR:g} mm between a DIN 7984 head (D8.5) and a leg root, for the driver.",
-     "First-article assembly with a 4 mm hex key."),
+     "First-article assembly with a 3 mm hex screwdriver (DIN 7984 M5: socket s 3; BL-058)."),
     ("HIP-BOOKED", "The frame's fixed lump books 2 hip inserts and 2 screws; BL-055 books the rest.", "Ledger audit."),
     ("BOSS-LOCAL", "The grown boss (solid, at the hard point x 0, z 120) is not in the 2 mm voxel body of the "
-     "whole-body run: it adds material at a hard point the body already treats as fixed and the pilots stay inside it.",
-     "Next whole-body re-raster (review 6) from the exported print."),
+     "BL-055 whole-body run: it adds material at a hard point the body already treats as fixed and the pilots stay "
+     "inside it.", "BL-058: the whole body re-run on the exported print re-rastered (the boss, the BL-056 blocks and "
+     "the fairleads in it): analysis/bl058.json body (bl058_frame.heavy, h1_buckling caches "
+     "check_m1_u2.5_im3_bl058_stl / _sanded)."),
     ("SAND-K", "The 0.2 mm sanding of the stays' wearer faces is a uniform stress factor k on every stay element "
      "(worst section ratio over 15 stations, both stays).", "CA-1 bars printed over supports and sanded (BL-053 SCAR-KD)."),
 ]

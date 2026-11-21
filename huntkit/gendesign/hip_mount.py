@@ -3,7 +3,7 @@
 The drawn mount (``print/legacy/lug_hip_pivot_mount_slm_ti_D44_drawn.stl``: a D44 x 1.2 mm disc with a D10 pin hole,
 two legs above and below the pin, the D10 pivot hub at 13-28 mm) gets:
 
-* a D50 x 3 mm base (annulus about the D10 pin hole) with 8 x D5.5 clearance holes at the BL-055 insert positions
+* a D50 x 3 mm base (annulus about the D10 pin hole) with 8 x D5.5 clearance holes (BL-058: D5.8, HOLE_D) at the BL-055 insert positions
   (``analysis/h1_closeout.json`` hip.chosen.pattern.positions_xz), the legs and the pivot hub kept where they were
   (the hub height above the boss face, the 21 mm stand-off of the prying model, is unchanged: the base grows into the
   legs' lower 1.8 mm);
@@ -45,13 +45,16 @@ C_LOCAL = np.array([22.0, 22.0])      # disc centre of the drawn mount (local x,
 BASE_D = 50.0                         # BL-055 flange D (= boss D)
 BASE_T = 3.0                          # BL-055 FLANGE_T
 DRAWN_T = 1.2                         # the drawn disc
-HOLE_D = 5.5                          # M5 clearance (ISO 273 medium; h1_closeout.FLANGE_HOLE_D)
+HOLE_D = 5.8                          # BL-058 (review 6 m-3): M5 clearance ISO 273 coarse (was 5.5 medium): the insert
+#                                       position scatter needs the fixed-fastener room (bl058_frame.hip_holes)
 PIN_HOLE_D = 10.0                     # pin hole through the base (h1_closeout.HIP_PIN_HOLE_D)
 FILLET = 1.2                          # leg-root chamfer fillet leg (mm), 45 deg (self-supporting on the base-down build)
 HEAD_D, HEAD_H = 8.5, 3.5             # DIN 7984 M5 low head (h1_closeout.HEAD_D)
 HEAD_LEG_CLEAR = 1.0                  # ASSUMPTION HEAD-LEG (h1_closeout)
-KEY_D = 5.0                           # ASSUMPTION KEY-D: 4 mm hex key / bit, 5 mm swept envelope straight above the head
-SCREW_L = 14.0                        # h1_closeout.HIP_SCREW_L: M5 x 14 Ti gr5 DIN 7984
+KEY_D = 4.0                           # ASSUMPTION KEY-D (BL-058, review 6 m-3): DIN 7984 M5 takes a 3 mm key (s 3); a
+#                                       3 mm hex screwdriver blade (3.46 across corners) + 0.5, straight above the head
+SCREW_L = 12.0                        # h1_closeout.HIP_SCREW_L: M5 x 12 Ti gr5 DIN 7984 (BL-058, review 6 m-2: x 14 reached
+#                                       11.0 mm into the 11.5 mm pilot whose bottom 2 mm is the melt reservoir)
 FACE_Y = -48.55                       # the boss's wearer face on the BL-055 print, measured (frame_fit 'face_y_measured':
 #                                       the extreme -y of the print over the D50 boss); h1_closeout.HIP_FACE_Y -48.4 is its
 #                                       slice level, 0.15 mm inside the face (a first placement there clashed 244 mm3)
@@ -600,7 +603,7 @@ def insert_tests() -> dict:
                "pass": "no insert movement > 0.1 mm (dial on the bolt head) after 1e5 at the BL-055 fatigue design "
                        "value per insert; 2 coupons"}}
     hb6b = {"id": "HB-6b", "what": "hip-mount proof on the frame: the redrawn Ti mount on the D50 boss with 8 inserts",
-            "setup": "frame lumbar hub clamped on the stays; mount screwed with 8 x M5 x 14 Ti DIN 7984 SNUG "
+            "setup": f"frame lumbar hub clamped on the stays; mount screwed with 8 x M5 x {SCREW_L:g} Ti DIN 7984 SNUG "
                      "(0.3 N m, no preload: the prying model credits none), gauge zeroed after snugging; a repeat at "
                      "the 2.5 N m service torque is recorded for information only (preload hides the prying); a dummy pin in the D10 hub; load V along frame -z through the pin at its "
                      "21 mm stand-off (no H: the H_frame rows, the inserts' governing case)",
@@ -634,9 +637,9 @@ ASSUMPTIONS = [
     ("FLANGE-RIGID", "Carried from BL-055: the insert tensions come from the rigid-flange prying model; the 3 mm base "
      "is checked for its own bending with the bound above.", "HB-6b."),
     ("HEAD-LEG", ">= 1 mm between a DIN 7984 head (D8.5) and a leg root (fillet included), for the driver.",
-     "First-article assembly with a 4 mm hex key."),
-    ("KEY-D", "A 4 mm hex key / bit sweeps a D5 envelope straight above the head (checked clear of the part and the "
-     "frame for 60-80 mm).", "First-article assembly."),
+     "First-article assembly with a 3 mm hex screwdriver."),
+    ("KEY-D", f"A 3 mm hex screwdriver blade (DIN 7984 M5 socket s 3) sweeps a D{KEY_D:g} envelope straight above the "
+     "head (checked clear of the part and the frame for 60-80 mm).", "First-article assembly."),
     ("SLM-FAT", "Fatigue on the as-built HIP limit 200 MPa (R -1, 1e7) with Goodman on Su 850 for the 0 -> peak "
      "walk cycle; the base faces are not machined except the datum face.", "Vendor coupon (ti_6al_4v_slm record "
      "note)."),
@@ -802,7 +805,7 @@ def plot_fit(res: dict) -> str:
             axs[1].add_patch(plt.Rectangle((x - HEAD_D / 2, yb - HEAD_H), HEAD_D, HEAD_H, fc="#c55", alpha=0.8))
     ff = res["frame_fit"]
     axs[1].set_aspect("equal"); axs[1].set_xlim(-45, 45); axs[1].set_ylim(-85, -15)
-    axs[1].set_title(f"section z {z0:g} (lower screw row): screws M5 x 14, tip {ff['tip_to_pilot_floor_mm']:.2f} mm "
+    axs[1].set_title(f"section z {z0:g} (lower screw row): screws M5 x {SCREW_L:g}, tip {ff['tip_to_pilot_floor_mm']:.2f} mm "
                      f"above the pilot floor\nclash {ff['clash_mm3']:.1f} mm3, boss face y {ff['face_y_measured']:g}",
                      fontsize=9)
     axs[1].set_xlabel("frame x"); axs[1].set_ylabel("frame y (wearer at -y)")
@@ -841,7 +844,7 @@ def write_md(res: dict, shots: list, clevis: dict | None = None) -> str:
       f"and the frame.")
     a(f"- **Frame fit (sliced):** boss face measured at y {ff['face_y_measured']:g} (h1_closeout's -48.4 is a slice "
       f"level 0.15 mm inside it); clash {ff['clash_mm3']:.1f} mm3; 8 pilots under the 8 holes at face +1 / +6 / +10.5 "
-      f"(offset 0.00 mm); screw M5 x 14 tip {ff['tip_to_pilot_floor_mm']:.2f} mm above the measured pilot floor "
+      f"(offset 0.00 mm); screw M5 x {SCREW_L:g} tip {ff['tip_to_pilot_floor_mm']:.2f} mm above the measured pilot floor "
       f"({ff['pilot_depth_measured_mm']:g} mm); full 9.5 mm insert engagement; base bears on the boss over its whole "
       f"area. **Pass: {ff['pass']}.**")
     worst = fe["rows"][fe["governing"]]
@@ -929,8 +932,8 @@ def write_md(res: dict, shots: list, clevis: dict | None = None) -> str:
       "920 C / 100 MPa / 2 h (ASTM F3001), per `data/materials/metals/ti_6al_4v_slm.yaml`.")
     a("- Plate side: print the base on 2-3 mm of block supports (not fused flat to the plate), wire-cut off, face the "
       "base underside flat (0.05 mm) as the datum: it is the face that bears on the boss.")
-    a("- Holes: 8 x D5.5 and D10 printed vertical, no support; ream the D10 pin bore to the pin fit (the drawn part's "
-      "note); the D5.5 holes as printed (clearance), deburr.")
+    a(f"- Holes: 8 x D{HOLE_D:g} and D10 printed vertical, no support; ream the D10 pin bore to the pin fit (the drawn part's "
+      f"note); the D{HOLE_D:g} holes as printed (clearance), deburr.")
     a("- Supports to remove by hand: under the hub's lower face between the legs (not a bearing face).")
     a("- Do not machine or blast the leg roots beyond the vendor's standard bead blast (the fatigue check uses the "
       "as-built HIP limit).")

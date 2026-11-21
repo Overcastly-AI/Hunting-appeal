@@ -835,12 +835,38 @@ def head_clearance(drapes: dict | None = None, res: dict | None = None) -> dict:
                          np.hypot(np.maximum(rad, 0), ax_))
             best = np.minimum(best, d)
         return best
+    # BL-058 (review 6 M-3 / M-2): the US2 pin head in its clevis counterbore, the far-side E-clip and the tether
+    from huntkit.gendesign import bl058_frame as B58
+    pr = B58.pin_row("us2")
+    ph = (pr["head_seat_abs_x"], pr["head_seat_abs_x"] + B58.HEAD_T)
+    yp, zp = p["y_pin"], p["z"]
+    ec = B58.envelopes("us2")
+    tr = B58.tether_route("us2")
+
+    def dist_cyl(Q, xa, xb, yy, zz, rr):                # signed distance to one x-axis cylinder
+        ax_ = np.maximum.reduce([xa - Q[:, 0], np.zeros(len(Q)), Q[:, 0] - xb])
+        rad = np.hypot(Q[:, 1] - yy, Q[:, 2] - zz) - rr
+        inside = (rad < 0) & (ax_ == 0)
+        return np.where(inside, np.maximum(rad, -np.minimum(Q[:, 0] - xa, xb - Q[:, 0])), np.hypot(np.maximum(rad, 0), ax_))
+
+    def dist_seg(Q, a, b, rr):
+        a, b = np.asarray(a, float), np.asarray(b, float)
+        t = np.clip(((Q - a) @ (b - a)) / max((b - a) @ (b - a), 1e-9), 0.0, 1.0)
+        return np.linalg.norm(Q - (a + t[:, None] * (b - a)), axis=1) - rr
+
+    def dist_bl058(Q):
+        lo, hi = B58._bounds(ec["retainer"])
+        segs = [tr["polyline_free_R"]] + [[a, b] for a, b in zip(tr["loop_R"][:-1], tr["loop_R"][1:])]
+        return {"pin_head": dist_cyl(Q, ph[0], ph[1], yp, zp, B58.HEAD_D / 2),
+                "eclip": dist_cyl(Q, lo[0], hi[0], yp, zp, (hi[1] - lo[1]) / 2),
+                "tether": np.min([dist_seg(Q, a, b, 0.75) for a, b in segs], axis=0)}
     out = {"head_x_mm": [round(x0, 1), round(x1, 1)], "head_y_mm": round(yc, 2), "head_z_mm": heads,
            "head_d_mm": j.head_d, "pack_half_width_mm": 394.0 / 2, "rows": [],
            "method": "cloth = the drape's surface sampled 7 x 7 per triangle (ClothSurface.S); distance to the head "
                      "cylinders, < 0 = the free drape passes through a head (the sim has no frame outboard of the stays, "
                      "so the cloth would tent over it)"}
     face_rows = []
+    pin_rows = []
     for t in TORSOS:
         m = F.fine_mesh(t)
         for case in ("fill", "meat"):
@@ -859,6 +885,29 @@ def head_clearance(drapes: dict | None = None, res: dict | None = None) -> dict:
                 q = Q[near][k] if near.any() else None
                 out["rows"].append({"torso": t, "case": case, "side": side, "cloth_mm": round(float(d[k]), 1),
                                     "at": [round(float(v), 1) for v in q] if q is not None else None})
+                near2 = (Q[:, 0] > 120.0) & (np.abs(Q[:, 2] - zc) < 60)
+                if near2.any():
+                    Q2 = Q[near2]
+                    db = dist_bl058(Q2)
+                    row = {"torso": t, "case": case, "side": side}
+                    for kk, vv in db.items():
+                        i = int(np.argmin(vv))
+                        row[f"{kk}_mm"] = round(float(vv[i]), 1)
+                        row[f"{kk}_at"] = [round(float(v), 1) for v in Q2[i]]
+                    # cloth points inside the clevis's outer cheek / blocks cannot be there (the sim has no frame
+                    # outboard of the stays): the real cloth tents over the face; the head's clearance from the
+                    # cloth that can be there
+                    inside = ((Q2[:, 0] > j.outer_face - 8.0) & (Q2[:, 0] < j.outer_face)
+                              & (Q2[:, 1] > p["yc"] - 9.8) & (Q2[:, 1] < p["y_tip"])
+                              & (Q2[:, 2] > zc - BF.BLOCK_HALF_Z) & (Q2[:, 2] < zc + BF.BLOCK_UP_Z))
+                    ok = ~inside
+                    if ok.any():
+                        dv = db["pin_head"][ok]
+                        i = int(np.argmin(dv))
+                        row["pin_head_outside_clevis_mm"] = round(float(dv[i]), 1)
+                        row["pin_head_outside_clevis_at"] = [round(float(v), 1) for v in Q2[ok][i]]
+                    row["cloth_points_inside_clevis"] = int(inside.sum())
+                    pin_rows.append(row)
                 if hasattr(j, "outer_face") and near.any():     # BL-051: the clevis's outer slab (cheek x 8 mm deep)
                     lo = np.array([j.outer_face - 8.0, p["yc"] - 9.8, zc - 14.5])
                     hi = np.array([j.outer_face, p["y_tip"], zc + 14.5])
@@ -878,6 +927,27 @@ def head_clearance(drapes: dict | None = None, res: dict | None = None) -> dict:
         out["head_recess_mm"] = round(of - x1, 2)
         out["face_rows"] = face_rows
         out["face_min_mm"] = min(r_["face_mm"] for r_ in face_rows) if face_rows else None
+    # BL-058: the pin head sits in its counterbore like the bolt heads in theirs; the rule is the bolt heads' (nothing
+    # proud of the clevis outer face the cloth tents over: recess >= ClevisJoint.head_recess - head_h)
+    out["pin_head_x_mm"] = [round(ph[0], 2), round(ph[1], 2)]
+    out["pin_head_recess_mm"] = round(j.outer_face - ph[1], 2)
+    out["bolt_head_rule_recess_mm"] = round(j.head_recess - j.head_h, 2)
+    out["pin_head_pass"] = bool(out["pin_head_recess_mm"] >= out["bolt_head_rule_recess_mm"] - 1e-9)
+    out["pin_rows"] = pin_rows
+    if pin_rows:
+        out["pin_head_cloth_min_mm"] = min(r_["pin_head_mm"] for r_ in pin_rows)
+        out["pin_head_outside_clevis_min_mm"] = min(r_.get("pin_head_outside_clevis_mm", 99.0) for r_ in pin_rows)
+        out["eclip_cloth_min_mm"] = min(r_["eclip_mm"] for r_ in pin_rows)
+        out["tether_cloth_min_mm"] = min(r_["tether_mm"] for r_ in pin_rows)
+        bh = {(b["torso"], b["case"], b["side"]): b["cloth_mm"] for b in out["rows"]}
+        out["pin_head_vs_bolt_heads"] = [
+            {"torso": a["torso"], "case": a["case"], "side": a["side"], "pin_head_mm": a["pin_head_mm"],
+             "bolt_heads_mm": bh.get((a["torso"], a["case"], a["side"])),
+             "pin_head_recess_mm": out["pin_head_recess_mm"]} for a in pin_rows]
+    out["pin_note"] = ("BL-058: the free drapes have no frame outboard of the stays, so they pass through the clevis's "
+                       "own outer face (face_rows < 0); the cloth tents over that face. The pin head (0.5 mm below the "
+                       "face, as the bolt heads) and the E-clip and tether (inboard of the inner cheek, under the "
+                       "cheek-tip plane B-01 rests on) stand proud of nothing the cloth meets; FIT-US marks check it.")
     if res is not None:
         strap = []
         for r_ in res["layouts"]["now"]["rows"]:

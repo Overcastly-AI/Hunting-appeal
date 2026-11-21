@@ -255,7 +255,8 @@ def test_gated_savings_are_not_proven_now():
            + st["BL051"]["base"]                           # BL-051 stay crown restored
            + st["BL053"]["base"]                           # BL-053 lane lug fixes + pin retention
            + st["BL055"]["base"]                           # BL-055 hip boss + inserts, US1 Ti pins
-           + st["BL056"]["base"])                          # BL-056 hip mount as redrawn, US2 blocks grown
+           + st["BL056"]["base"]                           # BL-056 hip mount as redrawn, US2 blocks grown
+           + st["BL058"]["base"])                          # BL-058 review 6: counterbores, D5.8, M5 x 12, retainers
     #                                                        BL-049 lug arms, hinge growth, Ti hinge pins
     assert t["P"]["base"] == pytest.approx(bl023_p + upd, abs=0.3)
     assert 3660 < t["P"]["base"] < 4050       # BL-053 +65.2 (lug fixes + pin retention), BL-050 +56.1, BL-049 +90.8, BL-047 -6.7; BL-046 +35.9 g; BL-042 +37.2 g

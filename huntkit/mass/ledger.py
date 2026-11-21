@@ -333,7 +333,11 @@ CONFIGS_V2 = tuple(c + SUFFIX for c in CONFIGS)
 ALL_CONFIGS = CONFIGS + CONFIGS_V2
 DEFAULT_CONFIG = "corrie_b2_h1" + SUFFIX
 CORRECTIONS = ("C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "H1B", "BL031", "H1F", "BL046", "BL047", "BL049",
-               "BL050", "BL051", "BL053", "BL055", "BL056")
+               "BL050", "BL051", "BL053", "BL055", "BL056", "BL058")
+#   BL058 (2026-11-21, BL-058, review 6): on the H1 configs, the US2 pin-head counterbores in the clevises (print-mesh
+#      delta), the hip mount's D5.8 holes (mount STL against BL-056's), the 6 hip screws BL-055 booked now M5 x 12, and
+#      the 12 fairlead pins re-specified with a retainer per station (hairpin clips; US2 groove + E-clip + tail tether)
+#      and the US2 outer sleeves cut to 6 mm. From analysis/bl058.json ``mass``.
 #   BL056 (2026-11-21, BL-056): on the H1 configs, the SLM Ti hip mount as redrawn (STL volume, the part BL-055 booked
 #      from the flange formula; the leg-root fillets and the exact geometry) and the US2 joint blocks grown upward
 #      (h1_bedfit.BLOCK_UP_Z, print-mesh delta, clevises included). From analysis/hip_mount_bl056.json and
@@ -384,7 +388,7 @@ def adopted_bag_rows(size: str = "M") -> list:
         return F.parts(size, door=ADOPTED_BAG["door"])
 
 
-H1_ONLY = ("H1B", "H1F", "BL049", "BL050", "BL051", "BL053", "BL055", "BL056")   # corrections that apply to the H1 configs only (not to today's
+H1_ONLY = ("H1B", "H1F", "BL049", "BL050", "BL051", "BL053", "BL055", "BL056", "BL058")   # corrections that apply to the H1 configs only (not to today's
 #   production raster). BL050 joined with BL-051: its only all-config row (pins / sleeves) was a double count.
 #   H1F (2026-11-13, BL-042) the H1 fairleads completed outside the voxel envelope. The H1 raster stops at the bag
 #      envelope (frame_topopt Y_HI_GRID 16 mm), so it holds only the fairlead stubs below y 16, not the cheek tops,
@@ -494,6 +498,12 @@ def bl056_update() -> dict:
     cl = _json("clevis_bl056.json")["mass"]
     return {"mount_correction_g": hm["ledger_correction_g"], "mount_g": hm["redraw_g"],
             "print_delta_g": cl["print_delta_g"]}
+
+
+@functools.lru_cache(maxsize=None)
+def bl058_update() -> dict:
+    """BL058: review 6 frame / hardware (analysis/bl058.json ``mass``, written by huntkit.gendesign.bl058_frame)."""
+    return dict(_json("bl058.json")["mass"])
 
 
 @functools.lru_cache(maxsize=None)
@@ -623,6 +633,19 @@ def _correction_rows(config: str, size: str) -> list:
         bl046.append(("BL056", "H1 print: US2 joint blocks grown upward to pin + 19 (CLEVIS-SHARE B bound; BL-056)",
                       "frame", b56["print_delta_g"],
                       "analysis/clevis_bl056.json mass.print_delta_g (assembled print mesh BL-056 - BL-055)", "base"))
+        b58, src58 = bl058_update(), "analysis/bl058.json mass."
+        bl046.append(("BL058", "H1 print: US2 pin-head counterbores D9 x 2 in the clevises (review 6 M-3; BL-058)", "frame",
+                      b58["print_delta_g"], src58 + "print_delta_g (" + b58["print_basis"] + ")", "base"))
+        bl046.append(("BL058", "hip mount: 8 x D5.8 holes (were D5.5; review 6 m-3; BL-058)", "frame",
+                      b58["mount_delta_g"], src58 + "mount_delta_g (mount STL x ti_6al_4v_slm density - "
+                      "hip_mount_bl056.json redraw_g)", "base"))
+        bl046.append(("BL058", f"hip screws: the {b58['hip_screws_n']} BL-055 booked now Ti M5 x 12 (were x 14; review 6 "
+                      "m-2; BL-058)", "frame", b58["hip_screws_delta_g"],
+                      src58 + "hip_screws_delta_g (frame_comp_B.bolt_mass_g x 12 - x 14)", "base"))
+        bl046.append(("BL058", "fairlead pins re-specified with a retainer per station (hairpin clips; US2 groove + "
+                      "E-clip + tail tether), US2 outer sleeves 6 mm (review 6 M-2 / M-3; BL-058)", "attachment",
+                      b58["attachment_delta_g"], src58 + "attachment_delta_g (h1_closeout.pins with / without the "
+                      "BL-058 overlay: pins + retainers + tethers; sleeves uhmwpe_sheet density)", "base"))
     import strap_tails as ST                        # BL-031 (lazy: it reads corrie_f, which reads this module)
     bl031 = [("BL031", n, sys_, g, src, cfg) for n, sys_, g, src, cfg in ST.suspension_rows(size)]
     return h1b + bl031 + bl046 + [

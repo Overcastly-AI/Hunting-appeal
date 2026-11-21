@@ -300,6 +300,9 @@ STEP_META = {   # id: (class, ticket, short label, kind, gate)
     "BL056": ("P", "BL-056", "SLM Ti hip mount as redrawn (D50 x 3, 8 holes, fillets); US2 joint blocks grown upward "
               "(CLEVIS-SHARE B bound)", "safety", "HB-6b hip mount proof; CLEVIS-SHARE B on the re-printed clevis; "
               "first-article weigh"),
+    "BL058": ("P", "BL-058", "review 6: US2 pin-head counterbores, hip mount D5.8 holes, hip screws M5 x 12, a retainer "
+              "per fairlead pin (hairpin clips; US2 E-clip + tail tether)", "safety", "PIN-RET (a)-(d), FIT-US marks, "
+              "HB-6b with the insert guide; first-article weigh"),
     "BL031": ("P", "BL-031 (owner)", "strap tails: lifters, sternum, stabilizers cut to length; belt tail + keepers",
               "design", "T9 gloved cinch trial (TAIL_GRIP 50 mm), R-06 fit trial (sternum), HB-D1 (stabilizers)"),
     "P_pkgC": ("P", "package C (2026-11-09)", "7075 belt plate; C-4 / C-7 rev C fixes", "safety",

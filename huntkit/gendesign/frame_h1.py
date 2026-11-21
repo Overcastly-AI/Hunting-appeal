@@ -78,7 +78,7 @@ class Joint:
     washer_od: float = 12.0    # M5 x 12 x 1.0 washer (both ends)
     washer_t: float = 1.0
     nut_af: float = 8.0
-    nut_t: float = 4.0
+    nut_t: float = 4.0         # BL-058 (review 6 M-1): DIN 934 A2 M5, m 4.0 (ISO 4032 is 4.4-4.7: bl058_frame.nut_check)
     tail_z: float = 202.0      # bolt tail clearance bottom
     bolt_len: float = 45.0     # M5 x 45 Ti gr5 low head DIN 7984 (grip 38 + 2 washers + nut 4 + 1)
     head_h: float = 3.5        # DIN 7984 low head (ISO 4762 is 5.0 and would reach 1 mm into the z 255 clip band)

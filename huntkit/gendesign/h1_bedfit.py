@@ -78,8 +78,9 @@ class ClevisJoint:
     hole_print_d: float = 4.8
     washer_od: float = 10.0        # DIN 433 5.3 x 10 x 1 (z room: 8 + 5 = 13 < 14.5)
     washer_t: float = 1.0
-    nut_af: float = 8.0            # ISO 4032 M5
-    nut_t: float = 4.0
+    nut_af: float = 8.0            # M5 hex nut, 8 AF
+    nut_t: float = 4.0             # BL-058 (review 6 M-1): DIN 934 A2 M5 (m 4.0 max, 3.7 min); ISO 4032 M5 (m 4.4-4.7)
+    #                                does not seat in the 4.0 mm hex pocket (bl058_frame.nut_check measures it on the STL)
     nut_face: float = 150.0        # |x| where the nut washer bears (body plug 150 -> 163 = 13 mm: hole bearing at
     #                                share 1.0 governs the fatigue; 8 mm gave 0.79 there, 12 mm (BL-051..055) 1.14 on the
     #                                legacy cradle row; BL-056: 13 mm -> 1.23; grip 29 + 1 + 4 + 1 = 35 = the M5 x 35)
@@ -239,6 +240,21 @@ def lip_round_cut(p: dict, r: float = LIP_R):
     return sq - _cyl_x(xa - 0.5, xb + 0.5, y1 - r, z0 + r, 2 * r, seg=64)
 
 
+PIN_CBORE_D = 9.0                  # BL-058 (review 6 M-3): counterbore for the US2 pin head (D8 x 1.5, h1_rev5.HEAD_D/T) in
+PIN_CBORE_DEPTH = 2.0              # the clevis's outer face: the head sits 0.5 mm below the face (the bolt-head rule,
+#                                    ClevisJoint.head_recess - head_h = 0.5); the outer cheek's pin bearing is 6 of 8 mm
+#                                    (its UHMWPE sleeve is cut to 6 mm, bl058_frame.pins)
+
+
+def pin_cbore_cut(p: dict, d: float | None = None, depth: float | None = None):
+    """The US2 pin-head counterbore of station p: D ``PIN_CBORE_D`` x ``PIN_CBORE_DEPTH`` on the pin axis (y_pin, z),
+    from the clevis's outer face (|x| JOINT.outer_face) inward."""
+    d = PIN_CBORE_D if d is None else d
+    depth = PIN_CBORE_DEPTH if depth is None else depth
+    s = p["sign"]
+    return _cyl_x(s * (JOINT.outer_face - depth), s * (JOINT.outer_face + 1.0), p["y_pin"], p["z"], d, seg=64)
+
+
 def split_box(p: dict):
     """Everything of the US2 lug outboard of the joint face (frame coordinates)."""
     return _box(*_sx(p, SPLIT_X + 0.0187, SPLIT_X + 40.0), p["yc"] - 30.0, p["yc"] + 45.0, p["z"] - 30.0, p["z"] + 30.0)
@@ -259,6 +275,8 @@ def split_us2(mesh, log=print) -> tuple:
         man = man - cuts(p)
         if LIP_R > 0.0:                # BL-053 (M-6): r 3 lip on the blocks' lower aft edge
             man = man - lip_round_cut(p)
+        if PIN_CBORE_DEPTH > 0.0:      # BL-058 (review 6 M-3): the US2 pin head sinks into the clevis's outer face
+            man = man - pin_cbore_cut(p)
     v2 = man.volume()
     body = man
     pieces = {}
