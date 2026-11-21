@@ -38,7 +38,7 @@ DRAW = PRINT / "drawings"
 AN = HERE / "analysis"
 OPS_CSV = ROOT / "outputs" / "release" / "pack5200_corrie_f_rev3" / "manufacturing" / "op_sequence.csv"
 SCREENS = ROOT / "outputs" / "screens"
-SHOT = "20261121_BL055build"     # BL-055: named for the ticket that regenerates the package (was 20261113_BL054)
+SHOT = "20261121_BL057build"     # BL-057: named for the ticket that regenerates the package (was 20261121_BL055build)
 IN = 25.4
 OZ = 28.3495
 MAT_PRINT = "pa12_cf_fdm_paht"
@@ -74,11 +74,15 @@ ASSUMPTIONS = {
                     "Insert pull-out coupon HB-6 (test kit) and the D-I1 coupon."),
     "MOUNT-SEAT": ("A 20 N hand push on the mount's pin end (about 1 % of the 1601 N C2 pin load) is a seating check "
                    "only: it finds a mount resting on a burr or an insert standing proud, not strength.",
-                   "HB-6b hip-mount proof on the frame (h1_closeout.md 6, FLANGE-RIGID) carries the strength."),
+                   "HB-6b hip-mount proof on the frame (hip_mount_bl056.md 6, FLANGE-RIGID; test kit) carries the "
+                   "strength."),
     "HIP-HEAT": ("Inserts go in with the iron at 290 C (the PAHT-CF nozzle temperature): hot enough to melt the wall "
                  "round the knurl without a blob; the insert record gives no install temperature.",
                  "HB-6 practice blocks: each insert flush within 0.2 mm, square (an M5 screw stands upright), no bulge "
                  "on the far face; pull-out per HB-6."),
+    "SLM-MASS": ("The SLM Ti hip mount as delivered (HIPed, supports off, base faced, pin bore reamed) weighs the "
+                 "redrawn STL volume x 4430 kg/m3 (ledger BL056) within +/- 5 %: more = support left on, less = "
+                 "porosity or a short build.", "Weigh the first mount on arrival; the engineer resets the band."),
     "RACK-CUT": ("The printed rack (print/crown_rack_fdm_pacf, 230 mm) is cut to the kit's spine length minus the clamp "
                  "socket (15 mm) and bonded to the spine tube's fore face with MMA, teeth fore, as frame.yaml 'crown spine "
                  "tube (rack bonded on)'. Kit S's spine (173 mm) needs a cut rack.",
@@ -320,6 +324,36 @@ def rev5() -> dict:
     return bl053().get("h1_rev5", {})
 
 
+CLEVIS56_JSON = AN / "clevis_bl056.json"     # BL-056 (structural-fea-engineer): US2 joint blocks re-printed
+HIP56_JSON = AN / "hip_mount_bl056.json"     # BL-056: the Ti hip mount redrawn on the 8-insert boss
+SLM_MASS_TOL = 0.05                          # ASSUMPTION SLM-MASS (see ASSUMPTIONS)
+MASS_TOL_G = 0.06                            # STL mass here vs the BL-056 JSON: same mesh, same density, rounding only
+
+
+def bl056() -> dict:
+    """BL-056 results: {'clevis': clevis_bl056.json, 'hip': hip_mount_bl056.json, 'mount_g': ledger} or {} before."""
+    if not (CLEVIS56_JSON.exists() and HIP56_JSON.exists()):
+        return {}
+    from huntkit.mass import ledger
+    return {"clevis": json.loads(CLEVIS56_JSON.read_text()), "hip": json.loads(HIP56_JSON.read_text()),
+            "mount_g": ledger.bl056_update()["mount_g"],
+            "_path": f"{CLEVIS56_JSON.relative_to(ROOT)}, {HIP56_JSON.relative_to(ROOT)}"}
+
+
+def mass_check(stl: list[dict]) -> dict:
+    """BL-057: the STL-measured masses of this folder against BL-056's published ones (clevis_bl056.json mass).
+    {file: (stl g, json g, ok)}."""
+    b = bl056()
+    if not b:
+        return {}
+    by = {r["file"]: r for r in stl}
+    out = {}
+    for f, v in b["clevis"]["mass"].items():
+        if isinstance(v, dict) and f in by:
+            out[f] = (by[f]["mass_g"], v["g"], abs(by[f]["mass_g"] - v["g"]) <= MASS_TOL_G)
+    return out
+
+
 def ps_file(piece: str) -> dict:
     """BL-053 per-file print row for one file stem (keys there are 'test_pieces/x.stl' or 'a.stl / b.stl')."""
     for k, v in ps().get("files", {}).items():
@@ -490,6 +524,7 @@ def readme_md(stl: list[dict], b: dict) -> str:
          f"- {('BL-053 data in use: `' + b['_path'] + '`.') if b else PLACEHOLDER + ' BL-053 data not yet published; marked placeholders in BUILD_H1.'}",
          body_status_txt(closeout()),
          f"- {('BL-055 Part A data in use: `' + closeout()['_path'] + '` (hip inserts, Ti US1 pins).') if closeout() else PENDING + ' BL-055 Part A (hip insert pattern, Ti US1 pins) not yet published; BUILD_H1 sections 9 and 12 carry pending boxes.'}",
+         bl056_status_txt(stl),
          "",
          "## Files", "",
          "| file | what | mass | size as written on the plate (x, y, z) | watertight |", "|---|---|---:|---|---|"]
@@ -524,8 +559,27 @@ def readme_md(stl: list[dict], b: dict) -> str:
           "with R-clips and tethers.",
           "- BL-055: " + ("hip boss with printed insert pilot holes (Part A pattern); US1 pins in Ti-6Al-4V; "
                           if closeout() else "") + "README / BUILD_H1 regenerated (Part B).",
+          ("- BL-056: US2 joint blocks grown upward and the clevis nut face moved 1 mm inboard (CLEVIS-SHARE B now "
+           "passes); the SLM Ti hip mount redrawn on the 8-insert boss. BL-057: README / BUILD_H1 regenerated."
+           if bl056() else ""),
           ""]
     return "\n".join(L)
+
+
+def bl056_status_txt(stl: list[dict]) -> str:
+    """README status line for BL-056: the clevis / assembled masses from the STL, checked against clevis_bl056.json."""
+    b = bl056()
+    if not b:
+        return ""
+    mc = mass_check(stl)
+    blk = b["clevis"]["joint"]["block"]
+    ok = all(v[2] for v in mc.values())
+    parts = ", ".join(f"`{f}` {fg(v[0])} (JSON {v[1]:.2f} g, was {b['clevis']['mass'][f]['bl055_g']:.2f})"
+                      for f, v in mc.items() if f in ("us2_clevis_R", "h1_assembled"))
+    return (f"- BL-056 data in use: `{b['_path']}`. US2 joint blocks grown to z pin +{blk['upper_half_z_mm']:g} mm (was "
+            f"+{blk['was_upper_mm']:g}), clevis nut face at x +/-{blk['nut_face_x_mm']:g} (was {blk['was_nut_face_x_mm']:g}; "
+            f"nut trap {blk['trap_x0_mm']:g}-{blk['nut_face_x_mm']:g}). Masses: {parts}; "
+            + ("every STL mass here matches the JSON." if ok else "**STL MASS DIFFERS FROM THE JSON: ask the engineer.**"))
 
 
 # ================================================================================ BUILD_H1
@@ -567,9 +621,35 @@ def pins_step3(pn: dict, pr: dict, co: dict) -> str:
     return txt
 
 
+def clevis56_txt(C) -> str:
+    """BL-056 note for section 8: the blocks grew and the nut face moved inboard (clevis_bl056.json joint.block, checked
+    against the joint code h1_bedfit.JOINT)."""
+    b = bl056()
+    if not b:
+        return ""
+    blk = b["clevis"]["joint"]["block"]
+    assert abs(blk["nut_face_x_mm"] - C.nut_face) < 1e-6 and abs(blk["trap_x0_mm"] - C.trap_x0) < 1e-6
+    d = blk["was_nut_face_x_mm"] - blk["nut_face_x_mm"]
+    return (f" BL-056 (CLEVIS-SHARE B at share 1.0): the joint blocks grew upward to z pin +{blk['upper_half_z_mm']:g} mm "
+            f"(was +{blk['was_upper_mm']:g}) and the nut face moved {d:g} mm ({d / IN:.2f} in) INBOARD: each nut trap now "
+            f"runs x +/-{C.trap_x0:.1f} to {C.nut_face:.0f} (was to {blk['was_nut_face_x_mm']:g}), so the nut sits "
+            f"{d:g} mm deeper; the {C.bolt_len:.0f} mm screw still reaches through it (hip_mount_bl056.md 7). Use only "
+            "the clevises and lower half printed from the files in this folder (dated 2026-11-21 or later): a clevis "
+            "from an older print does not mate with the grown block.")
+
+
 def hip_n(co: dict) -> int | None:
     h = co.get("hip", {})
     return len(h["pattern"]["positions_xz"]) if h else None
+
+
+HIP_TORQUE_N_M = 2.0        # BL-055 Part B build text: the mount screws' service torque, capped by the insert record
+
+
+def hip_torque_n_m(co: dict) -> float:
+    """Service torque of the hip mount screws: HIP_TORQUE_N_M, never above the insert record's maximum."""
+    t = (co or {}).get("insert", {}).get("torque_max_n_m")
+    return min(HIP_TORQUE_N_M, float(t)) if t else HIP_TORQUE_N_M
 
 
 def hip_section(co: dict) -> list[str]:
@@ -620,7 +700,20 @@ def hip_section(co: dict) -> list[str]:
           "a 0.05 mm (0.002 in) feeler does not enter under the base edge at any point, and no screw head turns "
           "(a paint mark across each head and the base).", ""]
     fl = co.get("flange", {})
-    if fl:
+    b6 = bl056()
+    rd = mount_redraw(co)
+    if fl and rd:
+        L += [f"> **HOLD LIFTED (BL-056): order HW-HIP-MNT.** The SLM file `../{rd['stl']}` (+ `.3mf`) is now the "
+              f"redraw: a {rd['d']:.0f} mm ({rd['d'] / IN:.2f} in) x {rd['t']:.1f} mm Ti base with {rd['holes']} holes "
+              f"of {rd['hole_d']:.1f} mm on the insert positions above (position error {rd['pos_err']:.2f} mm), "
+              f"{fg(b6['mount_g'])} (ledger BL056). Send the print service `analysis/hip_mount_bl056.md` section 4 "
+              "(build direction base down on the plate, supports, HIP, ream the D10 pin bore). The drawn D44 x 1.2 mm "
+              "part is kept only in `../legacy/` for the record: never order it. CHECK on arrival: caliper the base "
+              f"{rd['t']:.1f} mm thick (+/- 0.1) and {rd['d']:.0f} mm across; count {rd['holes']} holes; weigh it: "
+              f"{fg(b6['mount_g'])} +/- {100 * SLM_MASS_TOL:.0f} % (ASSUMPTION SLM-MASS); lay the mount on the boss: every hole shows its insert.", "",
+              "> The orchestrator kept the drawn legs for P1 (DECISIONS 2026-11-21): HB-6b run 2 (test kit, pad 20 mm "
+              "sideways) decides whether they stay. Order ONE mount for P1; order P2's after HB-6b passes.", ""]
+    elif fl:
         L += [f"> **HOLD before ordering HW-HIP-MNT:** the mount's base must be the BL-055 redraw, a {fl['d_mm']:.0f} mm "
               f"({fl['d_mm'] / IN:.2f} in) x {fl['t_mm']:.1f} mm Ti disc with {fl['holes']} holes of {fl['hole_d_mm']:.1f} mm "
               f"on the insert positions above (the file on record is {fl.get('drawn', 'not yet redrawn')}). CHECK on "
@@ -629,10 +722,32 @@ def hip_section(co: dict) -> list[str]:
     return L
 
 
+def mount_redraw(co: dict) -> dict:
+    """BL-056's redrawn mount, {} until hip_mount_bl056.json says the print file is the redraw (D, t and the 8 holes
+    match BL-055's flange and the file passes its fit check)."""
+    b = bl056()
+    fl = co.get("flange", {}) if co else {}
+    if not b or not fl:
+        return {}
+    h = b["hip"]
+    g = h["geometry"]["base"]
+    n = sum(1 for d in g["hole_d_eq_mm"] if abs(d - fl["hole_d_mm"]) < 0.05)
+    ok = (abs(g["d_eq_mm"] - fl["d_mm"]) < 0.1 and n == fl["holes"] and bool(h["frame_fit"].get("pass"))
+          and abs(g["top_z_mm"] - fl["t_mm"]) < 0.1 and h["geometry"].get("watertight", False))
+    if not ok:
+        return {}
+    return {"stl": Path(h["stl"]).name, "d": fl["d_mm"], "t": fl["t_mm"], "holes": n, "hole_d": fl["hole_d_mm"],
+            "pos_err": g["hole_pos_err_mm"], "mass_g": b["mount_g"]}
+
+
 def mount_txt(co: dict) -> str:
     fl = co.get("flange", {})
     if not fl:
         return "SLM Ti-6Al-4V hip pivot mount"
+    rd = mount_redraw(co)
+    if rd:
+        return (f"SLM Ti-6Al-4V hip pivot mount `print/{rd['stl']}` (BL-056 redraw): {rd['d']:.0f} x {rd['t']:.1f} mm "
+                f"base, {rd['holes']} x D{rd['hole_d']:.1f} holes on the insert positions, {fg(rd['mass_g'])}")
     return (f"SLM Ti-6Al-4V hip pivot mount, base REDRAWN (BL-055): {fl['d_mm']:.0f} x {fl['t_mm']:.1f} mm disc, "
             f"{fl['holes']} x D{fl['hole_d_mm']:.1f} holes on the insert positions")
 
@@ -650,7 +765,7 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
                                          "test_pieces/im3ec_cheek_R") if f in by)
     hrs = lower["hours_no_support"] + upper["hours_no_support"]
     r5, p5 = rev5(), ps()
-    tw = r5.get("trap_walls", {})
+    tw = (bl056().get("clevis", {}).get("joint", {}).get("trap_walls") or r5.get("trap_walls", {}))   # BL-056 first
     co = closeout()
     pr = pin_rows(co)
     ret = pr.get("retainer", {}).get("part") if pr else None
@@ -797,7 +912,8 @@ def build_md(stl: list[dict], b: dict, cp: dict, kits: dict, pn: dict) -> str:
     L += ["## 8. US2 clevises", "",
           (f"BL-053 re-cut the nut traps (review 5 M-2): a {C.washer_od:.0f} mm washer slot at the nut face, then a hex "
            f"pocket that holds the nut by its flats; thinnest wall {tw.get('min_wall_mm')} mm (>= 2 mm). Bolt axes at "
-           f"z +/-{r5.get('fixes', {}).get('joint', {}).get('dz', C.dz):.0f} mm about the pin." if nut_ok else
+           f"z +/-{r5.get('fixes', {}).get('joint', {}).get('dz', C.dz):.0f} mm about the pin." + clevis56_txt(C)
+           if nut_ok else
            f"> {PLACEHOLDER} review 5 M-2: the clevis joint's nut traps in the current print (x +/-{C.trap_x0:.1f} to "
            f"{C.nut_face:.0f}) are square slots sized for the {C.washer_od:.0f} mm washer, so the {C.nut_af:.0f} mm "
            "nut spins in them. BL-053 re-cuts them as a hex pocket. Until the re-cut STL is in this folder, use the "
@@ -1018,8 +1134,10 @@ def shopping_table(stl, cp, kits, pn, Z, C, pw, pr, co=None) -> list[str]:
         ("HW-HIP-SCR", co.get("hip_screw") or f"{PENDING} M5 mount screw", hip_n(co) or 0,
          "hip mount to the inserts (section 12)", "Ti fastener vendor"),
         ("HW-HIP-MNT", mount_txt(co), 1,
-         ("+" + f"{co['flange']['delta_g']:.1f} g on today's 28.0 g (frame.yaml); the SLM file must be redrawn before "
-          "ordering (section 12 HOLD)") if co.get("flange") else "as today's frame (frame.yaml 28.0 g)",
+         (("BL-056 redraw on file: order now (section 12; HOLD lifted). One for P1; P2's after HB-6b (test kit)")
+          if mount_redraw(co) else
+          ("+" + f"{co['flange']['delta_g']:.1f} g on today's 28.0 g (frame.yaml); the SLM file must be redrawn before "
+           "ordering (section 12 HOLD)")) if co.get("flange") else "as today's frame (frame.yaml 28.0 g)",
          "SLM bureau"),
         ("HW-BUSH", "UHMWPE bushing, 70 mm, for the 16 mm crown legs / 18.0 mm bores", 4,
          "frame.yaml: 2 bonded on the leg bottoms + 2 stay-top bushings", "machinist"),
@@ -1273,11 +1391,52 @@ def hip_figure(path: Path) -> Path | None:
     return path
 
 
+PRINT_README = PRINT.parent / "README.md"      # designs/pack_5200/print/README.md (huntkit.gendesign.docs writes it)
+HIP_ROW = "| lug hip pivot mount |"
+
+
+def print_readme_hip_row(co: dict | None = None) -> str | None:
+    """BL-057: the SLM Ti hip mount row of ``print/README.md`` for the BL-056 redraw. The mass is the ledger's
+    (BL056 mount_g); the cost is huntkit.gendesign.printables.slm_cost on the redrawn STL's volume with the lug's one
+    reamed bore (lugs.build_specs: plate flange + pivot pin), the same rule the gendesign run used for 20.2 g.
+    None until the redraw is on file."""
+    rd = mount_redraw(closeout() if co is None else co)
+    if not rd:
+        return None
+    import trimesh
+    from huntkit.gendesign.printables import slm_cost
+    vol = float(trimesh.load(PRINT.parent / rd["stl"]).volume)
+    return (f"{HIP_ROW} `{Path(rd['stl']).stem}.stl`, `{Path(rd['stl']).stem}.3mf` (BL-056 redraw: D{rd['d']:.0f} x "
+            f"{rd['t']:.0f} mm base, {rd['holes']} x D{rd['hole_d']:.1f} holes; SLM notes in "
+            f"`analysis/hip_mount_bl056.md` 4) | Ti-6Al-4V (ti_6al_4v_slm) | 1 | SLM + HIP + ream the pin bore | "
+            f"{rd['mass_g']:.1f} g | 96 h print + HIP (3-4 wk door to door) | ${slm_cost(vol, 1, 'ti'):.0f} (AlSi10Mg "
+            f"${slm_cost(vol, 1, 'al'):.0f}) |")
+
+
+def patch_print_readme(write: bool = True) -> str | None:
+    """Replace the hip mount row of print/README.md (generated by the BL-022 gendesign run, which BL-057 guards from
+    overwriting the redrawn STL; see huntkit.gendesign.lugs.PROTECTED) with print_readme_hip_row(). Idempotent."""
+    row = print_readme_hip_row()
+    if row is None or not PRINT_README.exists():
+        return None
+    lines = PRINT_README.read_text().split("\n")
+    hits = [i for i, ln in enumerate(lines) if ln.startswith(HIP_ROW)]
+    assert len(hits) == 1, hits
+    lines[hits[0]] = row
+    txt = "\n".join(lines)
+    if write:
+        PRINT_README.write_text(txt)
+    return txt
+
+
 def write(pk: dict) -> list[Path]:
     PRINT.mkdir(parents=True, exist_ok=True)
     (PRINT / "README.md").write_text(pk["readme_md"])
     (PRINT / "BUILD_H1.md").write_text(pk["build_md"])
-    return [PRINT / "README.md", PRINT / "BUILD_H1.md"] + clamp_drawing(pk["clamp"])
+    out = [PRINT / "README.md", PRINT / "BUILD_H1.md"]
+    if patch_print_readme():
+        out.append(PRINT_README)
+    return out + clamp_drawing(pk["clamp"])
 
 
 def main(argv=None):

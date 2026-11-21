@@ -122,9 +122,9 @@ def test_clevis_share_gauge_required_and_bl051_hardware():
     assert "US2 arm root" in r["specimen"] and "microstrain" in r["pass_fail"]
     assert f"M5 x {BF.JOINT.bolt_len:.0f}" in r["specimen"] and "NO washer under the head" in r["specimen"]
     assert "2 x 10 mm OD DIN 433 washers on the NUT side only" in r["specimen"]
-    # BL-055: the joint numbers quoted are BL-053's (h1_rev5.json joint, share 1.0 and 0.6), not BL-050's 3.85 / 1.73
+    # BL-057: the joint numbers quoted are BL-056's (clevis_bl056.json joint, share 1.0 and 0.6; was BL-053's 1.90 / 0.86)
     import json
-    j = json.loads((ROOT / "designs/pack_5200/analysis/h1_rev5.json").read_text())["joint"]["share_1"]
+    j = json.loads((ROOT / "designs/pack_5200/analysis/clevis_bl056.json").read_text())["joint"]["share_1"]
     assert f"strength {j['worst_strength']['sf']}, fatigue {j['worst_fatigue']['fatigue']}" in r["what_it_proves"]
     assert "3.85" not in r["what_it_proves"] and "HEAD-BEAR" in r["pass_fail"] + r["steps"] + r["what_it_proves"]
     res = list(csv.DictReader(open(REL / "test_kit" / "results_template.csv", encoding="utf-8")))

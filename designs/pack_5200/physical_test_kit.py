@@ -33,6 +33,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import numpy as np
+
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
 if str(ROOT) not in sys.path:
@@ -45,10 +47,11 @@ REGISTER = TP / "test_register.csv"
 TEST_PLAN = TP / "TEST_PLAN.md"
 OUT = ROOT / "outputs" / "release" / "test_kit"
 SCREENS = ROOT / "outputs" / "screens"
-SHOT = "20261121_BL055kit"     # BL-055: named for the ticket that regenerates the kit (was BL044kit)
+SHOT = "20261121_BL057kit"     # BL-057: named for the ticket that regenerates the kit (was BL055kit)
 DATE = "2026-11-21"       # BL-055: regenerated
 G = 9.81                    # N per kg on the crane scale
 LB_PER_N = 0.224809
+OZ = 28.3495                 # g per oz
 USD_PER_EUR = 1.09          # ASSUMPTION, the material records' own conversion (cam_25mm_al, triglide_25mm notes)
 OWNER_HOUR_USD = 15.0       # ASSUMPTION used only to rank (TEST_PLAN section 5)
 MAT = ROOT / "data" / "materials"
@@ -785,6 +788,7 @@ def new_rows(lv: dict, lid_g: float, cut: dict) -> list[dict]:
         mt1cr_row(),
         pin_ret_row(),
         t6c_row(),
+        hb6b_row(),
     ]
     return rows
 
@@ -819,6 +823,11 @@ T1_PASS = ("no crack, tap clean, crown set <= 1 mm, crown slip 0, re-load within
 # submodel by us1_outer_gauge.py (tests_physical/us1_outer_gauge.json). Every number below comes from those two files.
 REV5_JSON = AN / "h1_rev5.json"
 G2_JSON = TP / "us1_outer_gauge.json"
+# BL-057: BL-056 re-printed the US2 joint blocks (clevis_bl056.json: CLEVIS-SHARE A/B loads in ``kit``, the US2 gauge
+# lines on the new print in ``gauges``) and redrew the Ti hip mount (hip_mount_bl056.json ``tests``: HB-6, HB-6b).
+CLEVIS56_JSON = AN / "clevis_bl056.json"
+HIP56_JSON = AN / "hip_mount_bl056.json"
+CLOSEOUT_JSON = AN / "h1_closeout.json"
 PULL_TOL_MM = 5.0          # ASSUMPTION PULL-TOL: +/- 5 mm per 100 mm on each direction component (about 3 deg)
 
 
@@ -832,8 +841,27 @@ def g2() -> dict:
     return json.loads(G2_JSON.read_text())
 
 
+def ncyc(n: float) -> str:
+    """Cycle count as the kit writes it: 100000 -> '1e5'."""
+    e = round(math.log10(n)) if n > 0 else 0
+    return f"1e{e}" if 10 ** e == n else f"{n:,.0f}"
+
+
+def clevis56() -> dict:
+    """BL-056 US2 clevis results (designs/pack_5200/analysis/clevis_bl056.json)."""
+    return json.loads(CLEVIS56_JSON.read_text())
+
+
+def hip56() -> dict:
+    """BL-056 Ti hip mount results (designs/pack_5200/analysis/hip_mount_bl056.json)."""
+    return json.loads(HIP56_JSON.read_text())
+
+
 def gauge_tests() -> dict:
+    """Every published gauge line: BL-053 (h1_rev5.json), overlaid by BL-056's lines for the US2 site on the re-printed
+    joint blocks (clevis_bl056.json gauges: MT-1cr|us2 and CLEVIS-SHARE A / B), then the second US1 gauge."""
     t = dict(rev5()["gauges"]["tests"])
+    t.update(clevis56()["gauges"]["tests"])
     t.update(g2()["tests"])
     return t
 
@@ -912,20 +940,58 @@ def gauge_set_txt(sites=("us1", "us1o", "us2")) -> str:
             + f"; stress = strain x {e / 1000:.2f} GPa (youngs_modulus_xy_mpa, record pa12_cf_fdm_paht); TEMPERATURE "
               "(review 5 m-8): wire each gauge as a HALF bridge with a dummy gauge of the same lot bonded on an "
               "unloaded offcut of the same print, lying beside the specimen; write the room temperature at every "
-              "reading; with no dummy, re-zero the bridge unloaded at every stop and log the temperature. SIGN: the "
-              "model reads compression (minus) at every US1 and cradle site; judge the SIZE of the reading against the "
-              "pass line, and if a gauge reads the opposite sign, check its wiring before going on")
+              "reading; with no dummy, re-zero the bridge unloaded at every stop and log the temperature. "
+            + sign_note())
+
+
+GAUGE_SITE_NAME = {"us1": "US1 root", "us2": "US2 root", "us1_outer": "US1 outer cheek", "us2_inboard": "US2 root",
+                   "us2_yz": "US2 root"}
+
+
+def gauge_signs() -> dict:
+    """BL-057 (BL-055B leftover): the model's sign per published gauge line, read from the data (never typed):
+    {'minus': [...], 'plus': [...]} as 'TEST at SITE' labels. Steps at zero load are skipped."""
+    out = {"minus": [], "plus": []}
+    for key, v in gauge_tests().items():
+        test, _, site = key.partition("|")
+        if site.endswith("other_axis"):
+            continue
+        sg = {("plus" if s_["microstrain"] > 0 else "minus") for s_ in v["steps"] if abs(s_["microstrain"]) > 0.5}
+        lab = f"{test} at the {GAUGE_SITE_NAME.get(site, site)}"
+        for k in sorted(sg):
+            if lab not in out[k]:
+                out[k].append(lab)
+    return out
+
+
+def sign_note() -> str:
+    """The SIGN sentence of the gauge text, from gauge_signs(): BL-055B wrote 'compression at every site', but the
+    published T1 line at the US2 root is tension (h1_rev5.json T1|us2 +)."""
+    sg = gauge_signs()
+    txt = ("SIGN (expected, from the published lines): compression (minus) for "
+           + ", ".join(sg["minus"]))
+    if sg["plus"]:
+        txt += "; TENSION (plus) for " + ", ".join(sg["plus"])
+    return (txt + ". Judge the SIZE of the reading against the pass line; if a gauge reads the opposite sign to the "
+            "one listed here, stop and check its wiring (swap the bridge leads on a known pull) before going on")
 
 
 def clevis_loadings() -> dict:
-    """CLEVIS-SHARE A and B from h1_rev5.json gauges (static proof = the factored row, cycle peak x 1.6 / 2.4)."""
-    t = rev5()["gauges"]["tests"]
+    """CLEVIS-SHARE A and B (BL-057): loads, vectors, cycles and R from clevis_bl056.json ``kit`` (static proof = the
+    factored row, cycle peak x 1.6 / 2.4); the gauge lines from clevis_bl056.json ``gauges`` (via gauge_tests)."""
+    t = gauge_tests()
     out = {}
-    for lab, key in (("A", "CLEVIS-SHARE|us2_inboard"), ("B", "CLEVIS-SHARE|us2_yz")):
+    for lab, k in clevis56()["kit"].items():
+        key = k["test"]
         st = t[key]["steps"]
-        out[lab] = {"key": key, "unit": t[key]["pull_unit_vector_frame_R"], "row": t[key]["row"],
-                    "proof_n": st[0]["pin_load_n"], "peak_n": st[1]["pin_load_n"],
-                    "valley_n": round(0.1 * st[1]["pin_load_n"]), "bears_on": t[key]["eye_bears_on"]}
+        # the kit loads and the gauge steps are one record: proof = step 1, cycle peak = step 2
+        assert abs(st[0]["pin_load_n"] - k["proof_n"]) < 0.05 and abs(st[1]["pin_load_n"] - k["cycle_peak_n"]) < 0.05
+        assert t[key]["pull_unit_vector_frame_R"] == k["pull_unit_vector_frame_R"]
+        out[lab] = {"key": key, "unit": k["pull_unit_vector_frame_R"], "row": k["row"],
+                    "proof_n": k["proof_n"], "peak_n": k["cycle_peak_n"], "cycles": int(k["cycles"]), "R": k["R"],
+                    "valley_n": round(k["R"] * k["cycle_peak_n"]), "bears_on": k["eye_bears_on"],
+                    "share": k["share_on_clevis"], "sf": k["model_min_strength_at_share"],
+                    "fat": k["model_min_fatigue_at_share"]}
     # A's steps under the proof: MT-1cr|us2 (same row, same vector, same gauge)
     a = t["MT-1cr|us2"]
     assert a["row"] == out["A"]["row"] and a["pull_unit_vector_frame_R"] == out["A"]["unit"]
@@ -939,14 +1005,16 @@ def clevis_loadings() -> dict:
 
 def clevis_row() -> dict:
     """BL-055 Part B (BL-053 M-1 / M-4): CLEVIS-SHARE as two loadings on the governing 3D cradle rows, with the pull
-    vectors and microstrain pass lines published in h1_rev5.json (A: the inboard leg, eye on the INNER cheek, 1104 N;
-    B: the straight-aft leg, eye on the OUTER (clevis) cheek, the share-1.0 case, 643 N). One specimen set per
-    loading. The real US2 pin set (headed 7075, R-clip, tether) is used so PIN-RET (b) sees the cycles."""
+    vectors and microstrain pass lines. BL-057: loads and lines from clevis_bl056.json (the BL-056 re-printed joint
+    blocks; A: the inboard leg, eye on the INNER cheek; B: the straight-aft leg, eye on the OUTER (clevis) cheek, the
+    share-1.0 case). One specimen set per loading. The real US2 pin set (headed 7075, R-clip, tether) is used so
+    PIN-RET (b) sees the cycles."""
     from huntkit.gendesign import h1_bedfit as BF
     j = BF.JOINT
     cl = clevis_loadings()
     A, B = cl["A"], cl["B"]
-    js = rev5()["joint"]
+    js = clevis56()["joint"]
+    blk = js["block"]
     s6, s1 = js["share_0.6"], js["share_1"]
     zf = clevis_face_z()
 
@@ -963,8 +1031,8 @@ def clevis_row() -> dict:
                 + f" N, hold 10 s at each and read the gauge, hold the last step ({L['proof_n']:.0f} N, "
                 f"{L['proof_n'] / G:.1f} kg) 60 s and try the 0.05 mm feeler at the joint face from both sides and both "
                 f"ends, unload, read the zero again, check the pencil lines; ({k + 2}) LOADING {lab} CYCLES: spring back "
-                f"in, {L['valley_n']} -> {L['peak_n']:.0f} N (R 0.1), 1 Hz, 1e5 cycles, stop at 1e3, 1e4 and 1e5 for the "
-                f"feeler at {L['peak_n']:.0f} N, the pencil lines and the gauge at the peak; ({k + 3}) LOADING {lab} END: "
+                f"in, {L['valley_n']} -> {L['peak_n']:.0f} N (R {L['R']:g}), 1 Hz, {ncyc(L['cycles'])} cycles, stop at 1e3, 1e4 "
+                f"and {ncyc(L['cycles'])} for the feeler at {L['peak_n']:.0f} N, the pencil lines and the gauge at the peak; ({k + 3}) LOADING {lab} END: "
                 "bolt torque marks, loupe on the arm root, throat floor, cheeks, bolt holes and head counterbores "
                 "(HEAD-BEAR), then the pin set for PIN-RET (b)")
 
@@ -978,7 +1046,7 @@ def clevis_row() -> dict:
                            "on that cheek through the shim", 5))
     pf = (f"EACH LOADING: the 0.05 mm feeler does not enter the joint face at the proof (A {A['proof_n']:.0f} N, B "
           f"{B['proof_n']:.0f} N) or at the cycle peak at any stop (A {A['peak_n']:.0f} N, B {B['peak_n']:.0f} N); "
-          "pencil-line step <= 0.05 mm; 1e5 cycles run out; no crack at the cheek root, arm root, bolt holes or head "
+          f"pencil-line step <= 0.05 mm; {ncyc(A['cycles'])} cycles run out; no crack at the cheek root, arm root, bolt holes or head "
           "counterbores, no head pull-in, torque marks unmoved; US2 gauge, size of the reading (microstrain) at most: "
           f"A static {lines(A)}; A cycle peak {ue_line(A['key'], A['peak_n'])}; "
           f"B static {lines(B)}; B cycle peak {ue_line(B['key'], B['peak_n'])}; "
@@ -989,19 +1057,22 @@ def clevis_row() -> dict:
                 title=(f"US2 bolt-on clevis joint, two loadings on the 3D cradle rows: A inboard leg (eye on the inner "
                        f"cheek) {A['proof_n']:.0f} N proof + 1e5 at {A['peak_n']:.0f} N; B straight-aft leg (eye on the "
                        f"clevis cheek) {B['proof_n']:.0f} N proof + 1e5 at {B['peak_n']:.0f} N; gauge pass lines in microstrain"),
-                defined_in="designs/pack_5200/analysis/h1_rev5.md 1, 3, 4 (BL-053: 3D cradle rows, joint check, gauge "
-                           "pass values; ASSUMPTION CLEVIS-SHARE); designs/pack_5200/analysis/h1_rev5.json gauges.tests "
-                           "'CLEVIS-SHARE|us2_inboard' / 'CLEVIS-SHARE|us2_yz' / 'MT-1cr|us2'; h1_bedfit.md 7 "
-                           "(CLEVIS-DRY, CLEVIS-PRINT); huntkit/gendesign/h1_bedfit.py JOINT",
+                defined_in="designs/pack_5200/analysis/hip_mount_bl056.md 7 (BL-056: US2 joint blocks re-printed, "
+                           "share 1.0 passes; ASSUMPTION CLEVIS-SHARE); designs/pack_5200/analysis/clevis_bl056.json kit "
+                           "'A' / 'B' (loads, vectors, cycles) and gauges.tests 'CLEVIS-SHARE|us2_inboard' / "
+                           "'CLEVIS-SHARE|us2_yz' / 'MT-1cr|us2' (pass lines on the new print); h1_rev5.md 1, 3, 4 "
+                           "(BL-053 3D cradle rows); h1_bedfit.md 7 (CLEVIS-DRY, CLEVIS-PRINT); "
+                           "huntkit/gendesign/h1_bedfit.py JOINT",
                 what_it_proves=(f"A: the inboard leg's x pull bears on the INNER (body) cheek and loads no clevis bolt, "
                                 f"and the US2 root reads no more than the model on {A['row']}; B: with the whole y-z load on "
                                 f"the clevis cheek (share 1.0, {B['row']}) the dry butt joint stays shut (joint check "
                                 f"share 1.0: strength {s1['worst_strength']['sf']}, fatigue {s1['worst_fatigue']['fatigue']}; "
                                 f"at the design share 0.6: {s6['worst_strength']['sf']} / {s6['worst_fatigue']['fatigue']}; "
-                                "h1_rev5.json joint)"),
+                                "clevis_bl056.json joint, on the BL-056 blocks grown to z pin "
+                                f"+{blk['upper_half_z_mm']:g} mm with the nut face at x +/-{blk['nut_face_x_mm']:g})"),
                 gates="frame release R1 (the US2 lug as built from two printed parts)", grams_at_stake_g="0",
                 safety_at_stake=(f"US2 cradle anchor: joint fatigue {s6['worst_fatigue']['fatigue']} at share 0.6, "
-                                 f"{s1['worst_fatigue']['fatigue']} at share 1.0 (h1_rev5.json joint, worst row "
+                                 f"{s1['worst_fatigue']['fatigue']} at share 1.0 (clevis_bl056.json joint, worst row "
                                  f"{s1['worst_fatigue']['load']})"),
                 specimen=(f"TWO sets, one per loading: `{US_PIECE_PATH}` + `{US_CLEVIS_PATH}` (the 2nd and 3rd print of "
                           "each: HE-FIT step 0 uses the first), printed with the CA-1 bars and conditioned 7 days. The "
@@ -1012,14 +1083,285 @@ def clevis_row() -> dict:
                           "tether, BUILD_H1 section 9) in the US2 throat with its UHMWPE sleeves"),
                 kit="B, A, D",
                 steps=steps, pass_fail=pf,
-                cost_usd="20", cost_basis="2 x (about 178 g route piece + 14 g clevis) PAHT-CF at USD 80/kg "
-                                          "(print_settings_bl053.json filament_g_est) + the clevis bolts and 2 US2 pin sets on the shopping list",
+                cost_usd="20", cost_basis=f"2 x (about 178 g route piece (print_settings_bl053.json filament_g_est) + "
+                                          f"{_FB().piece_mass_g('us2_clevis_R'):.1f} g clevis (BL-056 STL, before support)) "
+                                          "PAHT-CF at USD 80/kg + the clevis bolts and 2 US2 pin sets on the shopping list",
                 hours_hands_on="3.0", hours_machine="60", phase="2", run_order="20", first_weekend="N",
-                notes=("BL-055 (Part B): two loadings A / B on the BL-053 3D cradle rows (was 720 N / 480 N at the old "
-                       "31 deg lane line, review 5 M-1 / M-4); numeric gauge pass lines from h1_rev5.json; the real US2 "
+                notes=("BL-057: loads and gauge lines from clevis_bl056.json (BL-056 re-printed blocks; B now predicted "
+                       f"to pass its cycles, fatigue {B['fat']} at share {B['share']:g}, was 0.86). "
+                       "BL-055 (Part B): two loadings A / B on the BL-053 3D cradle rows (was 720 N / 480 N at the old "
+                       "31 deg lane line, review 5 M-1 / M-4); numeric gauge pass lines; the real US2 "
                        "pin set in the throat (PIN-RET b). Cross-check: A at 720 N on "
                        "the piece and MT-1cr (B) US2 at 720 N on P1 use the same vector and gauge; within 15 % of each "
                        "other settles PIECE-BC"),
+                g_per_usd_eq="")
+
+
+# ============================================================================ BL-057: HB-6 / HB-6b from BL-056
+# BL-056 (structural-fea-engineer) published HB-6 (insert pull-out along the build z at 60 C) and HB-6b (the redrawn
+# Ti mount on the frame, a screw gauge) in hip_mount_bl056.json ``tests``. The orchestrator (DECISIONS 2026-11-21)
+# kept the drawn mount legs for P1 and added a SECOND HB-6b run with the lumbar pad offset 20 mm SIDEWAYS: the legs
+# are reopened (+1 mm sideways) only if that run's gauge reads above its line. BL-056 published no line for that run;
+# it is derived below from the same two BL-056 models (ASSUMPTIONS SIDE-SCREW-LINE, LEG-GAUGE-LINE).
+HB6B_STEP_ROWS = (("carry 1 g", "carry"), ("walk 1.6 g", "walk"), ("C2 proof", "C2"))
+SIDE_RIG_COST_USD = 25.0     # ASSUMPTION SIDE-RIG cost: loading bar, M10 bolt + nut, push screw + angle (no record)
+SET_RETURN_MM = 0.02         # ASSUMPTION SIDE-RIG: hub zero returns within 0.02 mm (dial 0.01 mm) after the side proof
+
+
+def _hb6_hole() -> str:
+    """The HB-6 coupon pilot: the printed boss pilot of the BL-055 pattern (h1_closeout.json)."""
+    p = hb_closeout()["pattern"]
+    return f"{p['hole_d']:g} x {p['hole_depth']:g}"
+
+
+def hb_closeout() -> dict:
+    """The BL-055 hip pattern and its prying rows (h1_closeout.json hip.chosen)."""
+    return json.loads(CLOSEOUT_JSON.read_text())["hip"]["chosen"]
+
+
+def screw_gauge_area() -> float:
+    """Gauge section of the turned screw, read from hip_mount_bl056.json screw_gauge_basis ('D4.2 = 13.85 mm2')."""
+    m = re.search(r"D(\d+(?:\.\d+)?) = (\d+(?:\.\d+)?) mm2", hip56()["tests"]["screw_gauge_basis"])
+    return math.pi / 4 * float(m.group(1)) ** 2
+
+
+def ti_e_mpa() -> float:
+    from huntkit.gendesign.hip_mount import ti_slm
+    return float(ti_slm()["E"])
+
+
+def screw_ue(T: float) -> float:
+    """Screw-shank microstrain at tension T (N), as BL-056 hip_mount.insert_tests (SCREW-GAUGE)."""
+    return T / screw_gauge_area() / ti_e_mpa() * 1e6
+
+
+def tip_vector(pat: dict, V: float, H: float, e: float, at_xz, lift_v=(0.0, -1.0), lift_h=(1.0, 0.0),
+               stand: float | None = None, n_dir: int = 72) -> float:
+    """Tension at one insert (frame x, z) by the rigid-flange prying model of h1_closeout.tip_tension (tipping about
+    the boss edge, tension in proportion to the distance from the tipping line, the worst tipping direction phi),
+    with one change: the two tipping moments are summed as VECTORS, M = |stand V lift_v + e H lift_h| - R H, instead
+    of arithmetically. For parallel lifts (a vertical pad offset, or H = 0) it is tip_tension exactly; for the
+    sideways pad offset the moments are at right angles. Used only for the 'expected' screw reading of HB-6b run 2;
+    that run's pass line is tip_tension's (ASSUMPTION SIDE-SCREW-LINE)."""
+    from huntkit.gendesign import h1_closeout as C
+    stand = C.HIP_STAND if stand is None else stand
+    R = pat["boss_d"] / 2
+    P = np.asarray(pat["positions_xz"], float) - np.asarray(C.HIP_C)
+    g = np.asarray(at_xz, float) - np.asarray(C.HIP_C)
+    M = float(np.linalg.norm(stand * V * np.asarray(lift_v, float) + e * H * np.asarray(lift_h, float))) - R * H
+    best = 0.0
+    for ph in np.linspace(0.0, 2 * math.pi, n_dir, endpoint=False):
+        u = np.array([math.cos(ph), math.sin(ph)])
+        d = R + P @ u
+        best = max(best, max(M, 0.0) * float(R + g @ u) / float((d ** 2).sum()))
+    return best
+
+
+def hb6b_gauged_screw() -> tuple:
+    """The most-loaded insert under the HB-6b run-1 load (V only), from the BL-055 pattern: the lower group's
+    outermost (hip_mount_bl056.json names frame (+/-14.12, 107.29)); the -x one is used (mirror for +x)."""
+    from huntkit.gendesign import h1_closeout as C
+    pat = hb_closeout()["pattern"]
+    V = hb_closeout()["rows"]["C2|H_frame"]["V_n"]
+    t = [tip_vector(pat, V, 0.0, 0.0, p, n_dir=72) for p in pat["positions_xz"]]
+    best = max(t)
+    cands = [tuple(p) for p, v in zip(pat["positions_xz"], t) if v > best - 1e-6]
+    # the model is symmetric about the pin (the outermost screws of both groups tie); V along frame -z (the rig) lifts
+    # the lower group, as BL-056 says
+    low = [c for c in cands if c[1] < C.HIP_C[1]]
+    assert low
+    return min(low)                                     # the -x one
+
+
+def hb6b_runs() -> dict:
+    """HB-6b run 1 (BL-056, as published) and run 2 (BL-057: the pad 20 mm sideways), step by step.
+    Run 1: V only (the H_frame rows); screw line = the published one; leg-root gauges record against the part FE
+    (hip_mount_bl056.json fe.rows X|H_frame leg_root p99.5).
+    Run 2: the H_pin rows (V and H) with H pushed 20 mm (hipbelt E_PAD_MM) sideways of the pin axis, the part-FE
+    sensitivity case (fe.lateral_offset_sensitivity, leg_root p99.5) -> leg-root gauge line; screw line from
+    h1_closeout.tip_tension (the published scalar model, an upper bound for a sideways arm)."""
+    from huntkit.gendesign import h1_closeout as C
+    from huntkit.gendesign import hipbelt_structure as HS
+    hb = hip56()["tests"]["HB-6b"]
+    fe = hip56()["fe"]
+    lat = fe["lateral_offset_sensitivity"]["rows"]
+    ch = hb_closeout()
+    pat, rows = ch["pattern"], ch["rows"]
+    E = ti_e_mpa()
+    gx, gz = hb6b_gauged_screw()
+    e = float(HS.E_PAD_MM)
+    run1, run2 = [], []
+    for (name, k), st in zip(HB6B_STEP_ROWS, hb["steps"]):
+        assert st["step"] == name
+        rf, rp = rows[f"{k}|H_frame"], rows[f"{k}|H_pin"]
+        assert abs(st["pin_load_v_n"] - rf["V_n"]) < 0.5
+        assert abs(round(screw_ue(st["model_screw_tension_n"])) - st["model_microstrain"]) <= 1   # same basis as BL-056
+        leg1 = fe["rows"][f"{k}|H_frame"]["regions"]["leg_root"]["sigma_p995_mpa"]
+        run1.append({"step": name, "V_n": st["pin_load_v_n"], "H_n": 0.0,
+                     "screw_ue": st["model_microstrain"], "screw_line": st["pass_if_microstrain_at_most"],
+                     "leg_ue": round(leg1 / E * 1e6), "leg_line": round(1.15 * leg1 / E * 1e6), "leg_mpa": leg1})
+        tt = C.tip_tension(pat, rp["V_n"], rp["H_n"], e=e)
+        assert abs(tt["T_max_n"] - rp["T_max_n"]) < 0.2                   # the published H_pin row
+        assert lat[f"{k}|H_pin"]["region"] == "leg_root"
+        leg2 = lat[f"{k}|H_pin"]["sigma_p995_mpa"]
+        tv = tip_vector(pat, rp["V_n"], rp["H_n"], e, (gx, gz), lift_h=(1.0, 0.0))     # sideways: at right angles
+        run2.append({"step": name, "V_n": round(rp["V_n"], 0), "H_n": round(rp["H_n"], 0),
+                     "screw_t_scalar_n": tt["T_max_n"], "screw_t_vector_n": round(tv, 1),
+                     "screw_ue": round(screw_ue(tv)), "screw_line": round(screw_ue(1.15 * tt["T_max_n"])),
+                     "leg_ue": round(leg2 / E * 1e6), "leg_line": round(1.15 * leg2 / E * 1e6), "leg_mpa": leg2,
+                     "leg_sf_over_goal": round(lat[f"{k}|H_pin"]["min_sf_all"] / lat[f"{k}|H_pin"]["goal"], 2)})
+    return {"run1": run1, "run2": run2, "gauged_screw_xz": (gx, gz), "pad_offset_mm": e, "E_mpa": E,
+            "screw_area_mm2": round(screw_gauge_area(), 2), "cycles": hb["cycles"],
+            "h_over_v": round(run2[-1]["H_n"] / run2[-1]["V_n"], 3)}
+
+
+def hb6_patch() -> dict:
+    """BL-057: HB-6 rewritten from hip_mount_bl056.json tests.HB-6 (was 5 inserts >= 1.5 kN, axis and temperature
+    unstated)."""
+    h = hip56()["tests"]["HB-6"]
+    fo = h["fatigue_option"]
+    n, line, mn = int(h["n_coupons"]), h["pass_line_n_each"], h["minimum_for_8_inserts_n"]
+    nf = 2                                                       # fatigue option: 2 coupons (hip_mount_bl056 'pass')
+    blocks = n + nf + 1                                          # + 1 unpulled coupon to section (INS-DEPTH)
+    g_block = 30 * 30 * 20 * _FB().rho_print()                   # coupon volume (mm3) x the record density (g/mm3)
+    fil = blocks * g_block * 1.08                                # + 8 % waste (frame build basis)
+    usd = blocks * rec_price("insert_heatset_brass_m5") + fil / 1000 * 80.0
+    return dict(
+        title=(f"M5 heat-set insert pull-out along the BUILD Z at 60 C (140 F): {n} printed PAHT-CF coupons, every one "
+               f">= {line:.0f} N ({line * LB_PER_N:.0f} lbf)"),
+        defined_in=("designs/pack_5200/analysis/hip_mount_bl056.md 6 and hip_mount_bl056.json tests.HB-6 (BL-056); "
+                    "designs/pack_5200/analysis/h1_closeout.md (ASSUMPTIONS INS-Z, INS-DEPTH); "
+                    "huntkit/gendesign/h1_closeout.py hip_capacity"),
+        what_it_proves=(f"the insert design value the 8-insert hip pattern was sized on ({h['pass_line_basis']}) holds in "
+                        "the printed boss material pulled along the layer normal, hot (INS-Z); the pilot depth leaves no "
+                        "melt plug under the insert (INS-DEPTH)"),
+        gates="frame release R1: the 8-insert hip boss before the Ti hip mount carries load (HB-6b, T1)",
+        safety_at_stake=(f"hip mount inserts: the 8-insert pattern keeps its goals down to {mn:.0f} N per insert "
+                         f"(the fatigue row); pass line {line:.0f} N"),
+        specimen=(f"{blocks} coupons: {h['coupon']}; {n} to pull, {nf} for the fatigue option, 1 to section (INS-DEPTH). "
+                  "Print them with the frame halves' settings, from the same dried spool"),
+        kit="A, B, D",
+        steps=(f"(1) print the {blocks} coupons flat on the plate, the pilot holes upward (the hole axis is the BUILD Z), "
+               "anneal and condition them with the frame coupons (G1); (2) set the inserts as BUILD_H1 section 12 step 2 "
+               "(the same iron, tip and temperature as the frame); caliper each insert 0.0-0.2 mm below the face; "
+               f"(3) cut coupon {blocks} in half through the insert axis with a fine saw; photograph the section: the "
+               "pilot floor below the insert is clear (no melt plug) (INS-DEPTH); (4) conditioning: "
+               f"{h['conditioning']}; (5) rig: {h['rig']}; the 200 kg S-type load cell (kit B, logging at 80 Hz) in line "
+               "with the crane scale, so the peak is caught; turn the come-along slowly (about one click every 5 s "
+               "is close to 5 mm/min on the bench); (6) pull each coupon to failure; write the peak and the failure "
+               f"mode (insert pull-out / cone of plastic / thread strip); (7) FATIGUE OPTION ({nf} coupons, lever rig, "
+               f"after the static pulls pass): {ncyc(fo['cycles'])} cycles at {fo['peak_n']:.0f} N peak, R {fo['R']:g}, "
+               "a dial on the bolt head zeroed at the valley"),
+        pass_fail=(f"{h['pass_rule']}: every one of the {n} coupons >= {line:.0f} N ({line / G:.1f} kg). IF IT FAILS: "
+                   f"{h['if_it_fails']} (8-insert minimum {mn:.0f} N). Fatigue option: {fo['pass']}"),
+        cost_usd=f"{usd:.2f}",
+        cost_basis=(f"{blocks} x insert_heatset_brass_m5 (record USD {rec_price('insert_heatset_brass_m5'):.2f}) + "
+                    f"{fil:.0f} g PAHT-CF ({blocks} x {g_block:.1f} g, coupon volume x record density, + 8 %) at USD 80/kg"),
+        hours_hands_on="2.5",
+        hours_machine=f"{blocks * 30 * 30 * 20 * 1.08 / 8.0 / 3600 + nf * fo['cycles'] / 3600:.0f}",
+        first_weekend="print blocks only",
+        notes=(f"BL-057: rewritten from hip_mount_bl056.json tests.HB-6 (was 5 inserts, >= 1.5 kN, axis and "
+               "temperature not stated: the record's 1500 N cold value). Now part of frame release R1 (the hip boss "
+               f"pattern rests on INS-Z). Fatigue option {ncyc(fo['cycles'])} at {fo['peak_n']:.0f} N on the lever "
+               "rig (machine hours include it at 1 Hz). D-I1 (frame D) and CT-B5 (frame B) merged here"))
+
+
+def hb6b_row() -> dict:
+    """BL-057: HB-6b, the redrawn Ti hip mount proof on the frame. Run 1 = hip_mount_bl056.json tests.HB-6b; run 2 =
+    the orchestrator's sideways pad run (DECISIONS 2026-11-21), lines from hb6b_runs()."""
+    hb = hip56()["tests"]["HB-6b"]
+    rr = hb6b_runs()
+    r1, r2 = rr["run1"], rr["run2"]
+    gx, gz = rr["gauged_screw_xz"]
+    from huntkit.mass import ledger
+    mount_g = ledger.bl056_update()["mount_g"]
+    tq = _FB().hip_torque_n_m(_FB().closeout())
+    e = rr["pad_offset_mm"]
+
+    def st1(s):
+        return (f"V {s['V_n']:.0f} N ({s['V_n'] / G:.1f} kg, {s['V_n'] * LB_PER_N:.0f} lbf): screw about "
+                f"{s['screw_ue']:+.0f}, PASS if <= {s['screw_line']:.0f}; each leg size about {s['leg_ue']:.0f} "
+                f"(record, FE line {s['leg_line']:.0f})")
+
+    def st2(s):
+        return (f"V {s['V_n']:.0f} N + H {s['H_n']:.0f} N ({s['V_n'] / G:.1f} + {s['H_n'] / G:.1f} kg): LEG size "
+                f"about {s['leg_ue']:.0f}, PASS if <= {s['leg_line']:.0f}; screw about {s['screw_ue']:+.0f}, PASS if "
+                f"<= {s['screw_line']:.0f}")
+    leg_site = ("LEG-ROOT GAUGES (BL-057): one 1 mm foil gauge on EACH mount leg, on the leg's side face that looks "
+                "towards the pad-offset side (frame +x for run 2), centre 3 mm (0.12 in) above the base top face (just "
+                "above the 1.2 mm root fillet), gauge axis along the leg (square to the base); the side offset bends the "
+                "legs about their thin axis and the root is the part's weak point (hip_mount_bl056.md 3)")
+    steps = (f"SET-UP: {hb['setup'].replace('the 2.5 N m service torque', f'the BUILD_H1 service torque ({tq:.1f} N m)')}. "
+             f"SCREW GAUGE: {hb['gauge']}; on the R side of the frame this is the screw at frame (x {gx:+.2f}, z {gz:.2f}). "
+             f"{leg_site}. Metal-pattern gauges (Ti), each a half bridge with its dummy on a Ti offcut (a spare M5 x 14 "
+             "screw for the screw gauge). "
+             f"(1) RUN 1 (BL-056, the pad on the pin axis, V only): bring V up through the pin in steps "
+             + " / ".join(f"{s['V_n']:.0f}" for s in r1)
+             + " N, hold 10 s and read all three gauges at each step, hold the last 60 s; unload, read the zeros; "
+             "(2) after run 1: torque marks, dial on each insert's screw head (< 0.1 mm), 10x loupe on the boss; "
+             f"(3) RUN 2 (BL-057, orchestrator call 2026-11-21: the lumbar pad {e:.0f} mm ({e / 25.4:.2f} in) SIDEWAYS): "
+             "replace the dummy pin with an M10 x 60 8.8 bolt through a 60 x 20 x 8 mm steel loading bar (D10.5 hole "
+             "in its middle, long side along frame x) lying on the hub's top face, a washer and M10 nut under the hub "
+             "in the gap between the legs, snug, so the bar is clamped to the hub; centre-punch a dimple in the bar "
+             f"{e:.0f} mm to the side of the pin axis, on the side AWAY from the gauged screw (that screw then lifts "
+             f"most); V pulls on the bolt as in run 1; H pushes on a 6 mm ball in the dimple, along frame +y (towards "
+             "the frame), from an M12 push screw in a steel angle bolted to the stand, through the 200 kg S-type load "
+             f"cell (kit B) in compression. Bring V and H up together (H = {rr['h_over_v']:.2f} x V, the hipbelt "
+             "H_pin rows) in steps "
+             + " / ".join(f"{s['V_n']:.0f} + {s['H_n']:.0f}" for s in r2)
+             + " N, hold 10 s and read all three gauges at each step, hold the last 60 s; a dial on the hub's side "
+             "face (frame x) zeroed before loading; unload, read the zeros and the dial; (4) bolt the dummy pin back "
+             f"(run-1 set-up) and run the cycles: {ncyc(hb['cycles']['n'])} cycles 0 -> {hb['cycles']['peak_v_n']:.0f} "
+             "N V at <= 3 Hz (T5 crank or the lever rig on a link), checks at 1e3, 1e4 and at the end; "
+             f"(5) last: the information repeat at {tq:.1f} N m (run 1 steps only)")
+    pf = ("RUN 1 (BL-056): " + "; ".join(st1(s) for s in r1)
+          + f". {hb['pass_rule']} RUN 2, SIDEWAYS PAD (BL-057): " + "; ".join(st2(s) for s in r2)
+          + ". A LEG gauge above its line at any step: STOP there (do not go to the next step), unload; the mount legs "
+            "are reopened (+1 mm sideways, orchestrator call 2026-11-21, docs/DECISIONS.md) and the mount is not "
+            "ordered for P2 until the structural-fea-engineer redraws them. A SCREW gauge above its line in run 2: "
+            "FLANGE-RIGID is wrong, as in run 1. After run 2: the hub dial returns within "
+            f"{SET_RETURN_MM:.2f} mm (no set in the legs), no crack at the leg roots under the 10x loupe, torque marks "
+            "unmoved. Expected screw readings in run 2 are small (the side moment adds to the V moment at right "
+            "angles); its line is the published scalar model's, an upper bound (ASSUMPTION SIDE-SCREW-LINE)")
+    return dict(id="HB-6b", status="ACTIVE", tier="safety",
+                title=(f"Ti hip mount proof on the frame (BL-056 redraw, 8 x M5 on the D50 boss): screw gauge <= "
+                       + " / ".join(f"{s['screw_line']:.0f}" for s in r1) + " microstrain at "
+                       + " / ".join(f"{s['V_n']:.0f}" for s in r1)
+                       + f" N; run 2 with the pad {e:.0f} mm SIDEWAYS, leg-root gauges <= "
+                       + " / ".join(f"{s['leg_line']:.0f}" for s in r2)
+                       + f"; {ncyc(hb['cycles']['n'])} at {hb['cycles']['peak_v_n']:.0f} N"),
+                defined_in=("designs/pack_5200/analysis/hip_mount_bl056.md 3, 6 and hip_mount_bl056.json tests.HB-6b, "
+                            "fe.rows, fe.lateral_offset_sensitivity (BL-056; ASSUMPTIONS FLANGE-RIGID, FE-BOLT-ONLY, "
+                            "SCREW-GAUGE); docs/DECISIONS.md 2026-11-21 orchestrator call (run 2); "
+                            "huntkit/gendesign/h1_closeout.py tip_tension; designs/pack_5200/physical_test_kit.py "
+                            "hb6b_runs (BL-057: run-2 lines, ASSUMPTIONS SIDE-SCREW-LINE, LEG-GAUGE-LINE, SIDE-RIG)"),
+                what_it_proves=(f"run 1: the 8 inserts share the prying as the rigid-flange model says ({', '.join(hb['settles'])}); "
+                                f"run 2: the drawn mount legs carry the {e:.0f} mm sideways pad offset (part FE leg root "
+                                f"{r2[-1]['leg_mpa']:.0f} MPa p99.5 at C2, SF / goal {r2[-1]['leg_sf_over_goal']}) without "
+                                "reading above the FE (the orchestrator's keep-or-reopen test for the legs)"),
+                gates="frame release R1: the Ti hip mount on a load-carrying frame (before T1); P2's mount order",
+                grams_at_stake_g="0",
+                safety_at_stake=(f"hip mount legs: sideways pad offset SF / goal {min(s['leg_sf_over_goal'] for s in r2)} "
+                                 f"(hip_mount_bl056.json lateral sensitivity); inserts: {hb['settles'][1]}"),
+                specimen=(f"P1 frame (the sacrificial frame) with its 8 inserts set as BUILD_H1 section 12 and the "
+                          f"frame's own Ti hip mount HW-HIP-MNT (the BL-056 redraw, {mount_g:.1f} g / "
+                          f"{mount_g / OZ:.2f} oz; SLM lead time 3-4 weeks: order it in G1); 8 x M5 x 14 Ti DIN 7984 "
+                          "(HW-HIP-SCR) + 2 more (one turned to D4.2 for the gauge, one dummy); 3 metal-pattern foil "
+                          "gauges + 3 dummies; the dummy pin (D10, run 1) and the run-2 loading bar set"),
+                kit="C, A, B, D",
+                steps=steps, pass_fail=pf,
+                cost_usd=f"{SIDE_RIG_COST_USD:.2f}",
+                cost_basis=(f"ASSUMPTION SIDE-RIG USD {SIDE_RIG_COST_USD:.0f} (steel loading bar, M10 x 60 8.8 bolt + "
+                            "nut, M12 push screw, steel angle, 6 mm ball); the Ti-matched gauges and the 2 extra Ti "
+                            "M5 x 14 are kit B shopping lines; the mount and its 8 screws are the frame's (BUILD_H1)"),
+                hours_hands_on="4.0", hours_machine=f"{hb['cycles']['n'] / 3.0 / 3600:.0f}",
+                phase="4", run_order="36", first_weekend="N",
+                notes=("BL-057: new register row. Run 1 is BL-056's published test; run 2 (sideways pad) is the "
+                       "orchestrator's call of 2026-11-21. BL-056 published no run-2 line: the leg line is the part-FE "
+                       "leg-root p99.5 / E x 1.15 (LEG-GAUGE-LINE), the screw line h1_closeout.tip_tension x 1.15 "
+                       "(SIDE-SCREW-LINE). The screw gauge cannot see the leg bending that governs run 2, hence the "
+                       "two leg gauges. Service-torque repeat at the BUILD_H1 torque, not the 2.5 N m in the JSON text "
+                       "(the insert record's maximum)"),
                 g_per_usd_eq="")
 
 
@@ -1316,6 +1658,7 @@ def patches(lv: dict, lid_g: float) -> dict:
                      hours_hands_on="2.0",
                      notes=f"BL-040 (review M-7, M-8): load {LLH_N:.0f} N (was 366 N = 1.5 x the old 244 N A3 load); wet and -20 C conditions added from the record"),
         "TL-1": tl1_patch(),
+        "HB-6": hb6_patch(),
         "MT-3": dict(cost_usd=f"{5 * rec_price('cam_25mm_al'):.2f}", cost_basis="cam_25mm_al record 25.50 x 5 (re-used for US-BS)",
                      title="25 mm cam buckle slip at the BL-010 per-row loads, dry, wet and cold",
                      specimen="5 x 25 mm Al cams, re-used for 3 conditions on FRESH 25 mm webbing each time (15 lengths of 600 mm)",
@@ -1468,6 +1811,7 @@ TEST_RELEASE = {
     # R1
     "CA-1": "R1", "IM3-EC": "R1", "CA-5": "R1", "MT-1": "R1", "MT-1c": "R1", "IM3-EP": "R1", "W-PULL": "R1",
     "T9": "R1", "T1": "R1", "T2": "R1", "T1c-SW": "R1", "CLEVIS-SHARE": "R1", "MT-1cr": "R1", "T6(c)": "R1",
+    "HB-6": "R1", "HB-6b": "R1",      # BL-057: the 8-insert hip boss and the redrawn Ti mount carry load in T1
     # bag
     "MT-2": "BAG-CUT", "MT-3": "BAG-CUT", "US-BS": "BAG-CUT", "PT-1": "BAG-CUT", "PT-2": "BAG-CUT", "PT-3": "BAG-CUT",
     "PT-5": "BAG-CUT", "PT-6": "BAG-CUT", "LL-H": "BAG-CUT", "B-28 slip": "BAG-CUT", "PORT-1": "BAG-CUT",
@@ -1511,7 +1855,7 @@ GROUPS = [
                "the lab takes about 4 weeks."),
     dict(id="G6", title="First-article frames on the stand (P1 then P2)", when="after G4's CA-1, IM3-EC and CA-5 pass (about week 5-6)",
          rig="kit C frame test stand (hip log, shoulder bar, sand bags, T5 crank) + kit A scale and come-along", kits="C, A, B (load cell), D",
-         tests=["IM3-EP", "W-PULL", "MT-1cr", "T9", "T9-R3a", "FIT-US", "PIN-RET", "T9-R3c", "BP-3", "RF-1", "T1", "T1c-SW", "T3", "T2", "MT-1c", "CR-1", "BU-1",
+         tests=["IM3-EP", "W-PULL", "MT-1cr", "HB-6b", "T9", "T9-R3a", "FIT-US", "PIN-RET", "T9-R3c", "BP-3", "RF-1", "T1", "T1c-SW", "T3", "T2", "MT-1c", "CR-1", "BU-1",
                 "SP-1", "T4a", "T4b", "T4c", "T5", "T5f", "T2u"],
          intro="Frame release R1 completes here: IM3-EP on P1, then T9, T1, T2 and MT-1c on P2. Nobody carries the "
                "frame until T1 to T4 have passed. T2u destroys P1 and is always last."),
@@ -1603,6 +1947,14 @@ def loads(lv: dict) -> dict:
         + [(f"{lab} cycle peak (1e5, R 0.1)", L["peak_n"]) for lab, L in clevis_loadings().items()]
         + [(f"{lab} cycle valley", L["valley_n"]) for lab, L in clevis_loadings().items()],
         "PIN-RET": [("(a) push on each pin tail", 50.0)],
+        # BL-057 (hip_mount_bl056.json tests; run 2 lines: hb6b_runs)
+        "HB-6": [("every coupon must reach (pass line)", hip56()["tests"]["HB-6"]["pass_line_n_each"]),
+                 ("8-insert minimum (below: re-open the pattern)", hip56()["tests"]["HB-6"]["minimum_for_8_inserts_n"]),
+                 ("fatigue option peak (1e5, R 0.1)", hip56()["tests"]["HB-6"]["fatigue_option"]["peak_n"])],
+        "HB-6b": [(f"run 1 V, {s_['step']}", s_["V_n"]) for s_ in hb6b_runs()["run1"]]
+        + [x for s_ in hb6b_runs()["run2"] for x in ((f"run 2 V, {s_['step']}", s_["V_n"]),
+                                                      (f"run 2 H (pad 20 mm sideways), {s_['step']}", s_["H_n"]))]
+        + [("cycles: V peak (1e5, 0 -> peak)", hip56()["tests"]["HB-6b"]["cycles"]["peak_v_n"])],
         "T6(c)": [("pull: mean must reach (1.5 x limit)", 1.5 * _FB().clamp()["limit_spine_axial_n"]),
                   ("pull: lowest coupon (1.25 x limit)", 1.25 * _FB().clamp()["limit_spine_axial_n"])],
         "HS-1": [("pack, run 1", 30 * G), ("pack, run 2", 68 * G)], "ST-1": [("pack", 15 * G)],
@@ -1693,6 +2045,31 @@ def measures(lv: dict, lid_g: float, cut: dict) -> dict:
            for w in ("the T9 walk (P2)", "MT-1cr (P1)", "CLEVIS-SHARE A", "CLEVIS-SHARE B")]
         + [("(b) clips", "thinnest clip wire at the pin contact (caliper; new 1.2)", "mm", "min", "1.1", "PIN-RET; CLIP-UTS")]
         + per(2, "(c) hinge pin out and back in with the clip, gloved, slowest of 5 tries", "s", "max", "8", "PIN-RET", "hinge#"),
+        # BL-057: HB-6 / HB-6b from hip_mount_bl056.json (run-2 lines: hb6b_runs)
+        "HB-6": per(int(hip56()["tests"]["HB-6"]["n_coupons"]), "pull-out peak along the build z at 60 C", "N", "min",
+                    f"{hip56()['tests']['HB-6']['pass_line_n_each']:.0f}", "INS-Z", "pull#")
+        + per(int(hip56()["tests"]["HB-6"]["n_coupons"]), "failure mode (insert pull-out / cone / thread strip)",
+              "-", "record", "", "INS-Z", "mode#")
+        + [("section", "no melt plug under the insert (sectioned coupon, photo)", y, "yes", "Y", "INS-DEPTH")]
+        + per(2, "fatigue option: insert movement after 1e5 at "
+                 f"{hip56()['tests']['HB-6']['fatigue_option']['peak_n']:.0f} N (dial)", "mm", "max", "0.1", "INS-Z", "fat#"),
+        "HB-6b": [(f"run 1 {s_['step']}", f"screw gauge at V {s_['V_n']:.0f} N (expected about {s_['screw_ue']:+.0f})",
+                   "microstrain", "max", f"{s_['screw_line']:.0f}", "FLANGE-RIGID; SCREW-GAUGE") for s_ in hb6b_runs()["run1"]]
+        + [(f"run 1 {s_['step']} {lg}", f"leg-root gauge at V {s_['V_n']:.0f} N (FE about {s_['leg_ue']:.0f}; record)",
+            "microstrain", "record", "", "FE-BOLT-ONLY; LEG-GAUGE-LINE") for s_ in hb6b_runs()["run1"] for lg in ("upper leg", "lower leg")]
+        + [("run 1", "after the C2 proof: torque marks unmoved, no insert moved (dial < 0.1 mm), no boss crack (10x)", y,
+            "yes", "Y", "FLANGE-RIGID")]
+        + [(f"run 2 {s_['step']} {lg}", f"leg-root gauge, pad 20 mm sideways, V {s_['V_n']:.0f} + H {s_['H_n']:.0f} N "
+            f"(FE about {s_['leg_ue']:.0f}; over the line = STOP, legs reopened)", "microstrain", "band",
+            f"-{s_['leg_line']:.0f}..{s_['leg_line']:.0f}", "LEG-GAUGE-LINE; FE-BOLT-ONLY")
+           for s_ in hb6b_runs()["run2"] for lg in ("upper leg", "lower leg")]
+        + [(f"run 2 {s_['step']}", f"screw gauge, pad 20 mm sideways (expected about {s_['screw_ue']:+.0f})",
+            "microstrain", "max", f"{s_['screw_line']:.0f}", "SIDE-SCREW-LINE; FLANGE-RIGID") for s_ in hb6b_runs()["run2"]]
+        + [("run 2", "hub side dial back to zero after unloading", "mm", "max", f"{SET_RETURN_MM:.2f}", "SIDE-RIG"),
+           ("run 2", "no crack at the leg roots (10x), torque marks unmoved", y, "yes", "Y", "LEG-GAUGE-LINE")]
+        + [(f"{n:g} cycles", f"screw gauge at the {hip56()['tests']['HB-6b']['cycles']['peak_v_n']:.0f} N peak",
+            "microstrain", "max", f"{hb6b_runs()['run1'][1]['screw_line']:.0f}", "FLANGE-RIGID") for n in (1e3, 1e4, 1e5)]
+        + [("1e5 end", "no screw loosened, no insert moved (dial < 0.1 mm), no crack (10x)", y, "yes", "Y", "FLANGE-RIGID")],
         "T6(c)": per(3, "pull: peak force", "N", "record", "", "CLAMP-TYPE; T6", "pull#")
         + [("pull", "mean of the 3 pulls", "N", "min", f"{1.5 * _FB().clamp()['limit_spine_axial_n']:.0f}", "CLAMP-TYPE; T6"),
            ("pull", "lowest of the 3 pulls", "N", "min", f"{1.25 * _FB().clamp()['limit_spine_axial_n']:.0f}", "CLAMP-TYPE; T6")]
@@ -1823,7 +2200,7 @@ def measures(lv: dict, lid_g: float, cut: dict) -> dict:
     return m
 
 
-SETTLES_DEFAULT = {"T1": "HA-LS-1 T1", "T2": "HA-LS-1 T2", "IM3-EP": "P_cheek", "HB-6": "INSERT-PULL",
+SETTLES_DEFAULT = {"T1": "HA-LS-1 T1", "T2": "HA-LS-1 T2", "IM3-EP": "P_cheek", "HB-6": "INS-Z; INS-DEPTH",
                    "TL-1": "GUY-TOGGLE", "FS-O5": "ULTRA-200X STRIP", "WP-3": "A-2 TAIL", "WP-5": "B-10 TPU TRIM",
                    "WP-2": "C-6 TPU TAB", "HB-5": "C-1..C-3 7075 PLATE", "RF-1": "C-8 RAIL", "BP-2": "BL-005 STRIP",
                    "FT-S2": "W1/W2 NO WINGS", "HB-D1": "BL-006 B", "HB-D3": "BL-006 F"}
@@ -1930,8 +2307,13 @@ def shopping(reg: dict) -> list[dict]:
         _l("S-type load cell 100 kg", 1, "each", 23.60, "Makerfabs", LINKS["lc"], "B", "CA-*, IM3-EC, MT-1c"),
         _l("HX711 load-cell amplifier (SparkFun)", 1, "each", 11.50, "SparkFun", LINKS["hx"], "B", "CA-*, MT-1c"),
         # BL-052 (h1_crown.md 4): the US arm-root gauges (T1, MT-1cr, CLEVIS-SHARE). Prices ASSUMPTION (no record).
-        _l("foil strain gauges 120 ohm, 1 mm grid, pre-wired, pack of 10", 2, "pack", 25.00, "electronics shop", A, "B",
+        _l("foil strain gauges 120 ohm, 1 mm grid, pre-wired, pack of 10 (for PAHT-CF)", 2, "pack", 25.00, "electronics shop", A, "B",
            "T1 (P2) and MT-1cr (P1): US1 root, US1 outer cheek, US2 root = 3 + 3 active; CLEVIS-SHARE A and B: US2 root 1 + 1 (BL-055); each with a dummy (BL-054 m-8): 16 + 4 spare"),
+        # BL-057: HB-6b on the Ti mount: 1 screw-shank gauge + 2 leg-root gauges, each with a dummy on Ti
+        _l("foil strain gauges 120 ohm, 1 mm grid, pre-wired, Ti / steel-matched (11 ppm/K), pack of 10", 1, "pack",
+           25.00, "electronics shop", A, "B", "HB-6b: screw shank + 2 leg roots = 3 active + 3 dummies + 4 spare"),
+        _l("Ti gr5 low-head socket cap screw M5 x 14, DIN 7984 (as BUILD_H1 HW-HIP-SCR)", 2, "each", 2.50,
+           "Ti fastener shop", A, "B", "HB-6b: one turned to D4.2 for the screw gauge (calibrate it first), one dummy"),
         _l("half-bridge completion: 120 ohm 0.1 % resistors (2 per channel) + 2nd and 3rd HX711 modules; the dummy "
            "gauges come from the same pack of 10 (one per active gauge, on an unloaded offcut of the same print)", 1,
            "set", 30.00, "electronics shop", A, "B",
@@ -2297,7 +2679,8 @@ def guide_md(gr: dict, reg: dict, lv: dict, lds: dict, res: list[dict], ow: list
               "| IM3 eye coupons, 120 mm stay at z 520, **28 mm cheek** (`test_pieces/im3ec_cheek_R`, SUPPORTS) | IM3-EC | 3 |",
               "| US route piece `test_pieces/us_route_stay_R` (SUPPORTS) + US2 clevis `us2_clevis_R` (flat, no supports), "
               "a 2nd and 3rd set (HE-FIT step 0 prints the first), one per loading A / B | CLEVIS-SHARE | 2 + 2 |",
-              "| insert blocks (M5 heat-set) | HB-6 | 5 |",
+              f"| insert blocks 30 x 30 x 20, pilot D{_hb6_hole()} along the BUILD Z (BL-056) | HB-6 | "
+              f"{int(hip56()['tests']['HB-6']['n_coupons'])} + 2 fatigue + 1 to section |",
               "| 150 mm H1 sleeve segment | T7 | 1 |", "",
               "Steps:", "",
               "1. Dry the spool. Print with the frame profile (`designs/pack_5200/print/frame_h1/BUILD_H1.md` section "
@@ -2544,7 +2927,9 @@ def charts(ow, sh, lv, rk, outdir: Path) -> list[Path]:
     for s in ("top", "right", "bottom"):
         ax.spines[s].set_visible(False)
     handles = [plt.Rectangle((0, 0), 1, 1, color=c) for c in colors.values()]
-    ax.legend(handles, [rel_name[k] for k in colors], loc="lower right", fontsize=8, frameon=False)
+    # BL-057 (BL-055B leftover): the legend sat on the G7 bars (loc lower right); now in its own band under the bars
+    ax.legend(handles, [rel_name[k] for k in colors], loc="upper left", bbox_to_anchor=(0.0, 0.0), ncol=2,
+              fontsize=8, frameon=False, borderaxespad=0.5)
     ax.set_title(f"BL-038 order of work: {len(runs)} test runs in 6 sessions (colour = what it releases)",
                  fontsize=10, loc="left")
     p = outdir / "order_of_work.png"

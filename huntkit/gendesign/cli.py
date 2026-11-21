@@ -40,7 +40,7 @@ def lug_task(args):
     from threadpoolctl import threadpool_limits
     threadpool_limits(1)
     from . import surface
-    from .lugs import (VARIANTS, lug_mesh, mass_g, optimize_lug, strength_check, verify_lug)
+    from .lugs import (VARIANTS, lug_mesh, mass_g, optimize_lug, output_stem, strength_check, verify_lug)
     from .printables import fdm_time_cost, slm_cost
     from .simp import min_feature_mm
     spec, variant, fatigue_g, iters = args
@@ -80,7 +80,7 @@ def lug_task(args):
     m_g = mass_g(mesh, variant)
     solid = ver["grid"].to_array(ver["solid_mask"])
     tmin = min_feature_mm(solid, ver["grid"].h)
-    stem = PRINT / ("lug_" + spec.name + ("_slm_ti" if variant == "slm_ti" else "_fdm_pacf"))
+    stem = output_stem(spec.name, variant, PRINT, redirect_dir=WORK)     # BL-057: never over a PROTECTED redraw
     if variant == "slm_ti":
         orient = surface.best_orientation(mesh, var["overhang_deg"])
         build_dir = surface.CANDIDATE_DIRS[orient["best"]]

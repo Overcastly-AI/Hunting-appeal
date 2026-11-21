@@ -43,6 +43,39 @@ VARIANTS = {
 }
 
 
+# BL-057: print files a later ticket redrew with its own checked code. A re-run of the gendesign lug export
+# (huntkit.gendesign.cli lug_task) must never overwrite them: output_stem() sends that lug's export elsewhere.
+PROTECTED = {
+    ("hip_pivot_mount", "slm_ti"): ("BL-056 redraw: D50 x 3 mm base with 8 x D5.5 holes on the 8-insert boss "
+                                    "(huntkit/gendesign/hip_mount.py, designs/pack_5200/analysis/hip_mount_bl056.json)"),
+}
+
+
+class ProtectedFileError(RuntimeError):
+    """Raised when a gendesign export would overwrite a PROTECTED print file and no other place was given."""
+
+
+def print_stem(name: str, variant: str, print_dir: Path) -> Path:
+    """The print-folder stem the gendesign run writes for a lug (no extension), as cli.lug_task named it."""
+    return Path(print_dir) / ("lug_" + name + ("_slm_ti" if variant == "slm_ti" else "_fdm_pacf"))
+
+
+def output_stem(name: str, variant: str, print_dir: Path, redirect_dir: Path | None = None) -> Path:
+    """Where a gendesign lug export may write. Unprotected lugs: their print-folder stem. A PROTECTED lug: the same
+    name with '_gendesign' in ``redirect_dir`` (outside the print folder); with no ``redirect_dir``, refuse
+    (ProtectedFileError). The redrawn print file is never touched."""
+    stem = print_stem(name, variant, print_dir)
+    why = PROTECTED.get((name, variant))
+    if why is None:
+        return stem
+    if redirect_dir is None:
+        raise ProtectedFileError(f"{stem.name}.stl is protected ({why}); refusing to overwrite it")
+    out = Path(redirect_dir) / f"{stem.name}_gendesign"
+    if out.resolve().parent == Path(print_dir).resolve():
+        raise ProtectedFileError(f"redirect for {stem.name} lands in the print folder; refusing")
+    return out
+
+
 @dataclass
 class Socket:
     name: str
