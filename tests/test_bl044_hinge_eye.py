@@ -211,7 +211,7 @@ def test_stale_hose_text_and_strip_end_marks(pk):
 
 def test_test_kit_screens_are_named_for_this_ticket():
     import physical_test_kit as K
-    assert K.SHOT == "20261121_BL057kit"          # BL-057 regenerated the kit (was 20261121_BL055kit)
+    assert K.SHOT == "20261121_BL059kit"          # BL-059 regenerated the kit (was 20261121_BL057kit)
     assert "BL038_<n>" not in (K.__doc__ or "")
 
 
