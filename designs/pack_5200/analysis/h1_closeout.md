@@ -59,8 +59,8 @@ Prying model of `hipbelt_structure.pivot_check` (the mount tips about the boss e
 | positions (frame x, z) | (14.12, 107.29); (18.44, 115.4); (18.44, 124.6); (14.12, 132.71); (-14.12, 107.29); (-18.44, 115.4); (-18.44, 124.6); (-14.12, 132.71) |
 | walls (rule 2.6) | edge_mm 2.8, between_mm 2.79, to_pin_bore_mm 10.8, head_to_leg_mm 5.71, head_to_head_mm 0.69, floor_mm 4.5 |
 | boss | D50, solid 16 mm from the face (was D32) |
-| screws | 8 x Ti gr5 M5 x 14 DIN 7984 (2.24 g each), torque <= 2.5 N m |
-| mount base (redraw) | D50 x 3 mm Ti disc, 8 x D5.5 on the same positions (drawn: D44 x 1.2 mm disc, no screw holes (designs/pack_5200/print/lug_hip_pivot_mount_slm_ti.stl)); flange bending leg root to screw row min SF / goal 3.27 |
+| screws | 8 x Ti gr5 M5 x 12 DIN 7984 (BL-058; BL-055 booked Ti gr5 M5 x 14 DIN 7984, 2.24 g each), 3 mm hex key, torque <= 2.5 N m |
+| mount base (redraw) | D50 x 3 mm Ti disc, 8 x D5.5 on the same positions (BL-058: drawn D5.8, hip_mount.HOLE_D) (drawn: D44 x 1.2 mm disc, no screw holes (designs/pack_5200/print/lug_hip_pivot_mount_slm_ti_D44_drawn.stl)); flange bending leg root to screw row min SF / goal 3.27 |
 
 | row | V (N) | H (N) | T max (N) | capacity (N) | SF | goal |
 |---|---|---|---|---|---|---|
@@ -90,12 +90,12 @@ Flat lower half (as it goes to the slicer), round D6.4 holes counted at 0.6 / 6 
 
 | station | qty | material | pin g | set g | design SF yield / fatigue | dy 95 SF yield / fatigue |
 |---|---|---|---|---|---|---|
-| hinge | 2 | ti_6al_4v | 4.26 | 5.06 | 1.99 / 2.24 | - / - |
-| us1 | 2 | ti_6al_4v | 3.91 | 4.71 | 3.76 / 4.23 | 2.34 / 2.63 |
-| us2 | 2 | alu_7075_t6 | 2.48 | 3.28 | 3.15 / 2.34 | 1.96 / 1.46 |
-| im1 | 2 | alu_7075_t6 | 2.48 | 3.28 | - / - | - / - |
-| im2 | 2 | alu_7075_t6 | 2.48 | 3.28 | - / - | - / - |
-| im3 | 2 | alu_7075_t6 | 2.48 | 3.28 | - / - | - / - |
+| hinge | 2 | ti_6al_4v | 4.26 | 4.58 | 1.99 / 2.24 | - / - |
+| us1 | 2 | ti_6al_4v | 3.91 | 4.24 | 3.76 / 4.23 | 2.34 / 2.63 |
+| us2 | 2 | alu_7075_t6 | 2.36 | 2.85 | 3.15 / 2.34 | 1.96 / 1.46 |
+| im1 | 2 | alu_7075_t6 | 2.48 | 2.8 | - / - | - / - |
+| im2 | 2 | alu_7075_t6 | 2.48 | 2.8 | - / - | - / - |
+| im3 | 2 | alu_7075_t6 | 2.48 | 2.8 | - / - | - / - |
 
 Pins total 36.18 g, clips + tethers 9.6 g; US1 in Ti +2.86 g against BL-053. BOM rows in `h1_closeout.json` `pins.bom`.
 
@@ -124,9 +124,9 @@ Mass reductions that keep the SF: (1) D48 boss / flange with the same 8 inserts 
 - ASSUMPTION INS-Z: Insert pull-out along the layer normal = record pull-out x hot 0.8 x PAHT-CF z / xy tensile ratio (47 / 88). Settled by: HB-6 insert pull-out on printed coupons, hole axis along the build z, at 60 C.
 - ASSUMPTION INS-DEPTH: Pilot hole = insert length + 2 mm for displaced melt. Settled by: Section one HB-6 coupon: no melt plug under the insert.
 - ASSUMPTION HIP-LAND: >= 1 mm flange between an insert hole and the mount's D10 pin bore. Settled by: Mount drawing.
-- ASSUMPTION HEAD-LEG: >= 1 mm between a DIN 7984 head (D8.5) and a leg root, for the driver. Settled by: First-article assembly with a 4 mm hex key.
+- ASSUMPTION HEAD-LEG: >= 1 mm between a DIN 7984 head (D8.5) and a leg root, for the driver. Settled by: First-article assembly with a 3 mm hex screwdriver (DIN 7984 M5: socket s 3; BL-058).
 - ASSUMPTION HIP-BOOKED: The frame's fixed lump books 2 hip inserts and 2 screws; BL-055 books the rest. Settled by: Ledger audit.
-- ASSUMPTION BOSS-LOCAL: The grown boss (solid, at the hard point x 0, z 120) is not in the 2 mm voxel body of the whole-body run: it adds material at a hard point the body already treats as fixed and the pilots stay inside it. Settled by: Next whole-body re-raster (review 6) from the exported print.
+- ASSUMPTION BOSS-LOCAL: The grown boss (solid, at the hard point x 0, z 120) is not in the 2 mm voxel body of the BL-055 whole-body run: it adds material at a hard point the body already treats as fixed and the pilots stay inside it. Settled by: BL-058: the whole body re-run on the exported print re-rastered (the boss, the BL-056 blocks and the fairleads in it): analysis/bl058.json body (bl058_frame.heavy, h1_buckling caches check_m1_u2.5_im3_bl058_stl / _sanded).
 - ASSUMPTION SAND-K: The 0.2 mm sanding of the stays' wearer faces is a uniform stress factor k on every stay element (worst section ratio over 15 stations, both stays). Settled by: CA-1 bars printed over supports and sanded (BL-053 SCAR-KD).
 
 ## 7. Screenshots

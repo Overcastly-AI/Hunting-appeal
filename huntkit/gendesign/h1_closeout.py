@@ -584,7 +584,9 @@ def pins(bl058: bool = True) -> dict:
             ov = B58.pin_overlay(n, r["material"])
             r["bl055"] = {k: r[k] for k in ("shank_mm", "cross_hole", "clip_side", "pin_g", "set_g")}
             r.update(ov)
-        out["retainer"] = B58.retainer_summary()
+        out["retainer"] = B58.retainer_record(out["retainer"])
+        out["retainers_bl058"] = B58.retainer_summary()
+        out["clip_double_shear_n"] = B58.clip_double_shear_n()
         out["mass_bl058"] = {"pins_g": round(sum(2 * r["pin_g"] for r in out["stations"].values()), 2),
                              "retainers_tethers_g": round(sum(2 * (r["set_g"] - r["pin_g"])
                                                               for r in out["stations"].values()), 2)}
@@ -620,9 +622,9 @@ def mass_rows(export: dict | None, pn: dict, hip: dict) -> dict:
     scr = bolt_mass_g(HIP_SCREW_L_BOOKED)
     out = {"hip_inserts": n, "hip_inserts_booked": HIP_INSERTS_BOOKED,
            "hip_inserts_delta_g": round((n - HIP_INSERTS_BOOKED) * ins_g, 2),
-           "hip_screw": f"Ti gr5 M5 x {HIP_SCREW_L:g} DIN 7984", "hip_screw_g": round(bolt_mass_g(HIP_SCREW_L), 2),
-           "hip_screw_booked": f"Ti gr5 M5 x {HIP_SCREW_L_BOOKED:g} DIN 7984 (BL-055; BL-058 books the change)",
-           "hip_screw_booked_g": round(scr, 2),
+           "hip_screw": f"Ti gr5 M5 x {HIP_SCREW_L_BOOKED:g} DIN 7984", "hip_screw_g": round(scr, 2),
+           "booked_note": f"the BL-055 booking (ledger BL055); the screw is now M5 x {HIP_SCREW_L:g} (BL-058, "
+                          "analysis/bl058.json hip_screws; the ledger's BL058 row books the change)",
            "hip_screws_delta_g": round((n - HIP_INSERTS_BOOKED) * scr, 2),
            "us1_ti_pins_delta_g": pn["mass"]["delta_vs_bl053_g"]}
     if export:
@@ -738,6 +740,8 @@ def compute(log=print) -> dict:
     res["stl_check"] = stl_check()
     res["mass"] = mass_rows(ex, res["pins"], res["hip"])
     res["mass"]["mount_flange_delta_g"] = res["mount_flange"]["delta_g"]
+    res["bl058"] = {"screw_spec": f"Ti gr5 M5 x {HIP_SCREW_L:g} DIN 7984 (8), 3 mm hex key",
+                    "mount_holes": "D5.8 (hip_mount.HOLE_D)", "record": "analysis/bl058.json"}
     res["assumptions"] = [{"id": a, "text": t, "settled_by": s_} for a, t, s_ in ASSUMPTIONS]
     return res
 
@@ -954,9 +958,10 @@ def write_md(res: dict, shots: list) -> str:
     a("| positions (frame x, z) | " + "; ".join(f"({x:g}, {z:g})" for x, z in pat["positions_xz"]) + " |")
     a(f"| walls (rule {pat['wall_rule_mm']:g}) | " + ", ".join(f"{k} {v:g}" for k, v in pat["walls"].items()) + " |")
     a(f"| boss | D{pat['boss_d']:g}, solid {HIP_BOSS_DEPTH:g} mm from the face (was D32) |")
-    a(f"| screws | {pat['n']} x {m['hip_screw']} ({m['hip_screw_g']} g each), torque <= {hp['insert']['torque_max_n_m']:g} N m |")
+    a(f"| screws | {pat['n']} x Ti gr5 M5 x {HIP_SCREW_L:g} DIN 7984 (BL-058; BL-055 booked {m['hip_screw']}, "
+      f"{m['hip_screw_g']} g each), 3 mm hex key, torque <= {hp['insert']['torque_max_n_m']:g} N m |")
     a(f"| mount base (redraw) | D{fl['d_mm']:g} x {fl['t_mm']:g} mm Ti disc, {fl['holes']} x D{fl['hole_d_mm']:g} on the "
-      f"same positions (drawn: {fl['drawn']}); flange bending leg root to screw row min SF / goal "
+      f"same positions (BL-058: drawn D5.8, hip_mount.HOLE_D) (drawn: {fl['drawn']}); flange bending leg root to screw row min SF / goal "
       f"{fl['min_sf_over_goal']} |")
     a("\n| row | V (N) | H (N) | T max (N) | capacity (N) | SF | goal |")
     a("|---|---|---|---|---|---|---|")

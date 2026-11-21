@@ -1,7 +1,7 @@
 {
  "print": {
   "file": "designs/pack_5200/print/frame_h1/h1_assembled.stl",
-  "md5": "3db902620586b7e2fa983dee1ca2ebb1"
+  "md5": "f4994b2674822dab5fb7a584ccb11e95"
  },
  "tension_n": {
   "us1": 444.4,
@@ -76,8 +76,8 @@
  "symmetry_mm2": {
   "x100": 3.36,
   "x115": 38.27,
-  "x130": 2.26,
-  "x150": 0.79
+  "x130": 2.39,
+  "x150": 0.12
  },
  "guide": {
   "rows": [
@@ -224,7 +224,7 @@
       "hinge": 12.4,
       "us2": 69.0,
       "he": 16.2,
-      "stay": -6.6
+      "stay": -7.6
      },
      "entry": [
       68.3,
@@ -541,7 +541,7 @@
       "hinge": 19.2,
       "us1": 58.8,
       "he": 22.6,
-      "stay": -7.1
+      "stay": -6.5
      },
      "entry": [
       155.3,
@@ -834,7 +834,7 @@
       "hinge": 13.0,
       "us2": 69.4,
       "he": 16.6,
-      "stay": -7.1
+      "stay": -7.9
      },
      "entry": [
       -69.1,
@@ -1134,7 +1134,7 @@
       "hinge": 21.5,
       "us1": 60.2,
       "he": 28.1,
-      "stay": -5.9
+      "stay": -5.0
      },
      "entry": [
       -154.5,
@@ -1410,7 +1410,7 @@
       "hinge": 14.0,
       "us2": 69.0,
       "he": 17.7,
-      "stay": -6.0
+      "stay": -7.4
      },
      "entry": [
       68.3,
@@ -1727,7 +1727,7 @@
       "hinge": 14.6,
       "us1": 54.9,
       "he": 22.2,
-      "stay": -6.6
+      "stay": -5.7
      },
      "entry": [
       157.4,
@@ -2020,7 +2020,7 @@
       "hinge": 12.4,
       "us2": 70.3,
       "he": 15.5,
-      "stay": -7.1
+      "stay": -7.9
      },
      "entry": [
       -69.3,
@@ -2320,7 +2320,7 @@
       "hinge": 15.5,
       "us1": 58.0,
       "he": 22.6,
-      "stay": -6.4
+      "stay": -5.5
      },
      "entry": [
       -150.9,
@@ -2596,7 +2596,7 @@
       "hinge": 14.0,
       "us2": 68.8,
       "he": 16.0,
-      "stay": -6.3
+      "stay": -7.8
      },
      "entry": [
       68.7,
@@ -2913,7 +2913,7 @@
       "hinge": 18.8,
       "us1": 63.8,
       "he": 22.0,
-      "stay": -7.0
+      "stay": -6.8
      },
      "entry": [
       151.6,
@@ -3206,7 +3206,7 @@
       "hinge": 12.4,
       "us2": 69.1,
       "he": 15.3,
-      "stay": -6.4
+      "stay": -8.4
      },
      "entry": [
       -69.8,
@@ -3506,7 +3506,7 @@
       "hinge": 16.4,
       "us1": 59.5,
       "he": 22.4,
-      "stay": -6.3
+      "stay": -5.9
      },
      "entry": [
       -156.5,
@@ -3799,7 +3799,7 @@
       "hinge": 7.0,
       "us2": 69.0,
       "he": 8.0,
-      "stay": -6.0
+      "stay": -8.3
      },
      "entry": [
       92.1,
@@ -4116,7 +4116,7 @@
       "hinge": 12.3,
       "us1": 55.0,
       "he": 16.1,
-      "stay": -7.2
+      "stay": -6.5
      },
      "entry": [
       93.5,
@@ -4409,7 +4409,7 @@
       "hinge": 6.7,
       "us2": 69.5,
       "he": 8.1,
-      "stay": -6.2
+      "stay": -7.9
      },
      "entry": [
       -93.5,
@@ -4709,7 +4709,7 @@
       "hinge": 10.6,
       "us1": 57.2,
       "he": 9.2,
-      "stay": -5.9
+      "stay": -5.0
      },
      "entry": [
       -95.3,
@@ -4985,7 +4985,7 @@
       "hinge": 4.9,
       "us2": 69.0,
       "he": 6.4,
-      "stay": -6.5
+      "stay": -7.4
      },
      "entry": [
       92.2,
@@ -5302,7 +5302,7 @@
       "hinge": 9.5,
       "us1": 49.6,
       "he": 14.5,
-      "stay": -6.8
+      "stay": -5.9
      },
      "entry": [
       94.3,
@@ -5595,7 +5595,7 @@
       "hinge": 7.3,
       "us2": 70.3,
       "he": 7.7,
-      "stay": -6.2
+      "stay": -8.0
      },
      "entry": [
       -94.1,
@@ -5895,7 +5895,7 @@
       "hinge": 1.1,
       "us1": 48.9,
       "he": 7.6,
-      "stay": -6.4
+      "stay": -5.5
      },
      "entry": [
       -95.0,
@@ -6171,7 +6171,7 @@
       "hinge": 6.7,
       "us2": 68.8,
       "he": 7.3,
-      "stay": -6.5
+      "stay": -8.0
      },
      "entry": [
       93.4,
@@ -6488,7 +6488,7 @@
       "hinge": -3.2,
       "us1": 44.8,
       "he": 3.6,
-      "stay": -7.0
+      "stay": -6.8
      },
      "entry": [
       93.8,
@@ -6715,7 +6715,7 @@
         2
        ],
        [
-        12.5,
+        24.5,
         87.0,
         2
        ]
@@ -6726,12 +6726,12 @@
         142.0
        ],
        [
-        12.5,
-        87.0
+        25.5,
+        86.0
        ],
        [
-        14.5,
-        50.0
+        25.5,
+        52.0
        ],
        [
         24.3,
@@ -6739,9 +6739,9 @@
        ]
       ],
       "bearing_n": {
-       "hinge": 72.0
+       "hinge": 54.0
       },
-      "turn_deg": 13.9,
+      "turn_deg": 10.4,
       "obstacle_top_y": 25.5,
       "touches": [
        "he",
@@ -7015,7 +7015,7 @@
       "hinge": 5.3,
       "us2": 69.1,
       "he": 5.9,
-      "stay": -6.4
+      "stay": -7.9
      },
      "entry": [
       -94.6,
@@ -7315,7 +7315,7 @@
       "hinge": -0.7,
       "us1": 50.0,
       "he": 4.7,
-      "stay": -6.5
+      "stay": -5.7
      },
      "entry": [
       -95.9,
@@ -7608,7 +7608,7 @@
       "hinge": 12.4,
       "us2": 69.0,
       "he": 16.2,
-      "stay": -6.6
+      "stay": -7.6
      },
      "entry": [
       68.3,
@@ -7925,7 +7925,7 @@
       "hinge": 19.2,
       "us1": 58.8,
       "he": 22.6,
-      "stay": -7.1
+      "stay": -6.5
      },
      "entry": [
       155.3,
@@ -8218,7 +8218,7 @@
       "hinge": 13.0,
       "us2": 69.4,
       "he": 16.6,
-      "stay": -7.1
+      "stay": -7.9
      },
      "entry": [
       -69.1,
@@ -8518,7 +8518,7 @@
       "hinge": 21.5,
       "us1": 60.2,
       "he": 28.1,
-      "stay": -5.9
+      "stay": -5.0
      },
      "entry": [
       -154.5,
@@ -8794,7 +8794,7 @@
       "hinge": 14.0,
       "us2": 69.0,
       "he": 17.7,
-      "stay": -6.0
+      "stay": -7.4
      },
      "entry": [
       68.3,
@@ -9111,7 +9111,7 @@
       "hinge": 14.6,
       "us1": 54.9,
       "he": 22.2,
-      "stay": -6.6
+      "stay": -5.7
      },
      "entry": [
       157.4,
@@ -9404,7 +9404,7 @@
       "hinge": 12.4,
       "us2": 70.3,
       "he": 15.5,
-      "stay": -7.1
+      "stay": -7.9
      },
      "entry": [
       -69.3,
@@ -9704,7 +9704,7 @@
       "hinge": 15.5,
       "us1": 58.0,
       "he": 22.6,
-      "stay": -6.4
+      "stay": -5.5
      },
      "entry": [
       -150.9,
@@ -9980,7 +9980,7 @@
       "hinge": 14.0,
       "us2": 68.8,
       "he": 16.0,
-      "stay": -6.3
+      "stay": -7.8
      },
      "entry": [
       68.7,
@@ -10297,7 +10297,7 @@
       "hinge": 18.8,
       "us1": 63.8,
       "he": 22.0,
-      "stay": -7.0
+      "stay": -6.8
      },
      "entry": [
       151.6,
@@ -10590,7 +10590,7 @@
       "hinge": 12.4,
       "us2": 69.1,
       "he": 15.3,
-      "stay": -6.4
+      "stay": -8.4
      },
      "entry": [
       -69.8,
@@ -10890,7 +10890,7 @@
       "hinge": 16.4,
       "us1": 59.5,
       "he": 22.4,
-      "stay": -6.3
+      "stay": -5.9
      },
      "entry": [
       -156.5,
@@ -11183,7 +11183,7 @@
       "hinge": 10.9,
       "us2": 62.5,
       "he": 16.0,
-      "stay": -5.1
+      "stay": -7.0
      },
      "entry": [
       70.6,
@@ -11500,7 +11500,7 @@
       "hinge": 14.7,
       "us1": 53.8,
       "he": 21.9,
-      "stay": -4.6
+      "stay": -4.5
      },
      "entry": [
       151.3,
@@ -11793,7 +11793,7 @@
       "hinge": 10.4,
       "us2": 62.3,
       "he": 14.3,
-      "stay": -5.3
+      "stay": -6.2
      },
      "entry": [
       -71.5,
@@ -12093,7 +12093,7 @@
       "hinge": 14.5,
       "us1": 49.0,
       "he": 23.9,
-      "stay": -4.4
+      "stay": -5.0
      },
      "entry": [
       -152.4,
@@ -12369,7 +12369,7 @@
       "hinge": 11.3,
       "us2": 63.7,
       "he": 15.6,
-      "stay": -5.5
+      "stay": -6.9
      },
      "entry": [
       70.7,
@@ -12686,7 +12686,7 @@
       "hinge": 14.6,
       "us1": 53.8,
       "he": 22.2,
-      "stay": -4.4
+      "stay": -4.5
      },
      "entry": [
       153.2,
@@ -12979,7 +12979,7 @@
       "hinge": 11.4,
       "us2": 62.7,
       "he": 15.2,
-      "stay": -5.2
+      "stay": -6.1
      },
      "entry": [
       -71.8,
@@ -13279,7 +13279,7 @@
       "hinge": 8.0,
       "us1": 49.7,
       "he": 15.3,
-      "stay": -4.0
+      "stay": -4.7
      },
      "entry": [
       -144.7,
@@ -13555,7 +13555,7 @@
       "hinge": 9.9,
       "us2": 62.3,
       "he": 12.4,
-      "stay": -5.3
+      "stay": -6.9
      },
      "entry": [
       71.2,
@@ -13872,7 +13872,7 @@
       "hinge": 9.0,
       "us1": 54.6,
       "he": 12.0,
-      "stay": -4.7
+      "stay": -4.9
      },
      "entry": [
       146.8,
@@ -14165,7 +14165,7 @@
       "hinge": 11.5,
       "us2": 61.4,
       "he": 13.8,
-      "stay": -5.6
+      "stay": -6.6
      },
      "entry": [
       -72.3,
@@ -14465,7 +14465,7 @@
       "hinge": 8.0,
       "us1": 49.4,
       "he": 15.9,
-      "stay": -4.0
+      "stay": -5.0
      },
      "entry": [
       -150.8,
@@ -14758,7 +14758,7 @@
       "hinge": 5.2,
       "us2": 63.5,
       "he": 6.7,
-      "stay": -5.6
+      "stay": -6.9
      },
      "entry": [
       92.1,
@@ -15075,7 +15075,7 @@
       "hinge": 6.7,
       "us1": 46.5,
       "he": 12.4,
-      "stay": -3.9
+      "stay": -4.8
      },
      "entry": [
       93.5,
@@ -15368,7 +15368,7 @@
       "hinge": 6.3,
       "us2": 62.3,
       "he": 7.7,
-      "stay": -5.1
+      "stay": -6.6
      },
      "entry": [
       -93.5,
@@ -15668,7 +15668,7 @@
       "hinge": -1.1,
       "us1": 39.8,
       "he": 7.8,
-      "stay": -4.5
+      "stay": -4.8
      },
      "entry": [
       -95.3,
@@ -15944,7 +15944,7 @@
       "hinge": 4.7,
       "us2": 62.1,
       "he": 6.1,
-      "stay": -5.6
+      "stay": -6.7
      },
      "entry": [
       92.2,
@@ -16483,7 +16483,7 @@
         2
        ],
        [
-        12.5,
+        24.5,
         87.0,
         2
        ]
@@ -16494,12 +16494,12 @@
         142.0
        ],
        [
-        12.5,
-        87.0
+        25.5,
+        86.0
        ],
        [
-        13.5,
-        51.0
+        25.5,
+        52.0
        ],
        [
         23.6,
@@ -16507,9 +16507,9 @@
        ]
       ],
       "bearing_n": {
-       "hinge": 63.0
+       "hinge": 56.0
       },
-      "turn_deg": 12.2,
+      "turn_deg": 10.8,
       "obstacle_top_y": 25.5,
       "touches": [
        "he",
@@ -16783,7 +16783,7 @@
       "hinge": 5.4,
       "us2": 62.7,
       "he": 6.3,
-      "stay": -5.3
+      "stay": -6.3
      },
      "entry": [
       -94.1,
@@ -17083,7 +17083,7 @@
       "hinge": -4.7,
       "us1": 37.4,
       "he": -3.0,
-      "stay": -4.1
+      "stay": -4.7
      },
      "entry": [
       -95.0,
@@ -17359,7 +17359,7 @@
       "hinge": 4.5,
       "us2": 62.0,
       "he": 5.9,
-      "stay": -6.2
+      "stay": -6.9
      },
      "entry": [
       93.4,
@@ -17676,7 +17676,7 @@
       "hinge": -3.4,
       "us1": 43.1,
       "he": -0.8,
-      "stay": -4.5
+      "stay": -5.3
      },
      "entry": [
       93.8,
@@ -17903,7 +17903,7 @@
         2
        ],
        [
-        12.5,
+        24.5,
         87.0,
         2
        ]
@@ -17914,12 +17914,12 @@
         142.0
        ],
        [
-        12.5,
-        87.0
+        25.5,
+        86.0
        ],
        [
-        14.5,
-        50.0
+        25.5,
+        52.0
        ],
        [
         22.9,
@@ -17927,9 +17927,9 @@
        ]
       ],
       "bearing_n": {
-       "hinge": 66.0
+       "hinge": 61.0
       },
-      "turn_deg": 12.7,
+      "turn_deg": 11.8,
       "obstacle_top_y": 25.5,
       "touches": [
        "he",
@@ -18203,7 +18203,7 @@
       "hinge": 5.3,
       "us2": 61.4,
       "he": 5.8,
-      "stay": -5.3
+      "stay": -6.2
      },
      "entry": [
       -94.6,
@@ -18503,7 +18503,7 @@
       "hinge": -4.5,
       "us1": 37.8,
       "he": -2.9,
-      "stay": -4.0
+      "stay": -5.0
      },
      "entry": [
       -95.9,
@@ -18796,7 +18796,7 @@
       "hinge": 14.7,
       "us2": 74.6,
       "he": 19.4,
-      "stay": -4.8
+      "stay": -6.6
      },
      "entry": [
       66.3,
@@ -19113,7 +19113,7 @@
       "hinge": 20.9,
       "us1": 69.3,
       "he": 22.6,
-      "stay": -6.5
+      "stay": -5.6
      },
      "entry": [
       155.6,
@@ -19406,7 +19406,7 @@
       "hinge": 15.2,
       "us2": 75.1,
       "he": 19.3,
-      "stay": -6.0
+      "stay": -6.8
      },
      "entry": [
       -67.1,
@@ -19706,7 +19706,7 @@
       "hinge": 19.4,
       "us1": 61.1,
       "he": 31.8,
-      "stay": -5.9
+      "stay": -4.9
      },
      "entry": [
       -155.4,
@@ -19982,7 +19982,7 @@
       "hinge": 14.5,
       "us2": 74.9,
       "he": 19.0,
-      "stay": -5.1
+      "stay": -6.0
      },
      "entry": [
       66.4,
@@ -20299,7 +20299,7 @@
       "hinge": 20.4,
       "us1": 67.6,
       "he": 22.2,
-      "stay": -6.3
+      "stay": -5.8
      },
      "entry": [
       157.7,
@@ -20592,7 +20592,7 @@
       "hinge": 15.2,
       "us2": 75.1,
       "he": 18.8,
-      "stay": -6.0
+      "stay": -6.8
      },
      "entry": [
       -67.4,
@@ -20892,7 +20892,7 @@
       "hinge": 15.5,
       "us1": 61.0,
       "he": 26.5,
-      "stay": -6.4
+      "stay": -5.5
      },
      "entry": [
       -152.1,
@@ -21168,7 +21168,7 @@
       "hinge": 14.9,
       "us2": 75.2,
       "he": 19.2,
-      "stay": -5.6
+      "stay": -7.0
      },
      "entry": [
       66.8,
@@ -21485,7 +21485,7 @@
       "hinge": 18.2,
       "us1": 66.3,
       "he": 21.8,
-      "stay": -6.3
+      "stay": -6.0
      },
      "entry": [
       152.8,
@@ -21778,7 +21778,7 @@
       "hinge": 15.4,
       "us2": 75.5,
       "he": 18.4,
-      "stay": -6.0
+      "stay": -6.9
      },
      "entry": [
       -67.8,
@@ -22078,7 +22078,7 @@
       "hinge": 16.7,
       "us1": 62.5,
       "he": 26.7,
-      "stay": -5.9
+      "stay": -5.4
      },
      "entry": [
       -157.8,
@@ -22606,8 +22606,8 @@
   ],
   "head_y_mm": -5.47,
   "head_z_mm": [
-   134.0,
-   150.0
+   135.0,
+   149.0
   ],
   "head_d_mm": 8.5,
   "pack_half_width_mm": 197.0,
@@ -22616,11 +22616,11 @@
     "torso": 15,
     "case": "fill",
     "side": "R",
-    "cloth_mm": 0.9,
+    "cloth_mm": 0.8,
     "at": [
-     182.9,
-     -0.4,
-     134.4
+     179.6,
+     -1.0,
+     137.4
     ]
    },
    {
@@ -22638,18 +22638,18 @@
     "torso": 15,
     "case": "meat",
     "side": "R",
-    "cloth_mm": 3.2,
+    "cloth_mm": 3.3,
     "at": [
-     179.7,
-     1.8,
-     132.4
+     181.6,
+     2.1,
+     135.5
     ]
    },
    {
     "torso": 15,
     "case": "meat",
     "side": "L",
-    "cloth_mm": -1.2,
+    "cloth_mm": -1.1,
     "at": [
      180.2,
      -7.4,
@@ -22662,9 +22662,9 @@
     "side": "R",
     "cloth_mm": 13.1,
     "at": [
-     172.6,
-     10.2,
-     134.8
+     174.7,
+     11.1,
+     146.8
     ]
    },
    {
@@ -22673,9 +22673,9 @@
     "side": "L",
     "cloth_mm": 3.4,
     "at": [
-     179.2,
-     2.1,
-     150.5
+     179.1,
+     1.9,
+     146.9
     ]
    },
    {
@@ -22684,9 +22684,9 @@
     "side": "R",
     "cloth_mm": 2.1,
     "at": [
-     179.4,
-     0.7,
-     132.2
+     181.3,
+     0.9,
+     135.2
     ]
    },
    {
@@ -22704,11 +22704,11 @@
     "torso": 23,
     "case": "fill",
     "side": "R",
-    "cloth_mm": 12.1,
+    "cloth_mm": 12.0,
     "at": [
-     174.5,
-     9.9,
-     150.4
+     174.4,
+     9.7,
+     146.9
     ]
    },
    {
@@ -22726,18 +22726,18 @@
     "torso": 23,
     "case": "meat",
     "side": "R",
-    "cloth_mm": 6.4,
+    "cloth_mm": 6.3,
     "at": [
-     178.1,
+     178.5,
      5.0,
-     135.4
+     148.0
     ]
    },
    {
     "torso": 23,
     "case": "meat",
     "side": "L",
-    "cloth_mm": -1.4,
+    "cloth_mm": -1.7,
     "at": [
      180.8,
      -3.1,
@@ -22884,7 +22884,479 @@
    }
   ],
   "face_min_mm": -4.0,
-  "strap_min_mm": -2.8,
+  "pin_head_x_mm": [
+   181.0,
+   182.5
+  ],
+  "pin_head_recess_mm": 0.5,
+  "bolt_head_rule_recess_mm": 0.5,
+  "pin_head_pass": true,
+  "pin_rows": [
+   {
+    "torso": 15,
+    "case": "fill",
+    "side": "R",
+    "pin_head_mm": 6.3,
+    "pin_head_at": [
+     188.5,
+     10.9,
+     140.1
+    ],
+    "eclip_mm": 12.6,
+    "eclip_at": [
+     138.4,
+     2.1,
+     138.5
+    ],
+    "tether_mm": 0.2,
+    "tether_at": [
+     131.1,
+     7.7,
+     123.2
+    ],
+    "pin_head_outside_clevis_mm": 6.3,
+    "pin_head_outside_clevis_at": [
+     188.5,
+     10.9,
+     140.1
+    ],
+    "cloth_points_inside_clevis": 27
+   },
+   {
+    "torso": 15,
+    "case": "fill",
+    "side": "L",
+    "pin_head_mm": 8.5,
+    "pin_head_at": [
+     187.9,
+     7.3,
+     136.5
+    ],
+    "eclip_mm": 13.5,
+    "eclip_at": [
+     137.8,
+     1.1,
+     144.4
+    ],
+    "tether_mm": 0.4,
+    "tether_at": [
+     133.2,
+     4.4,
+     122.9
+    ],
+    "pin_head_outside_clevis_mm": 8.5,
+    "pin_head_outside_clevis_at": [
+     187.9,
+     7.3,
+     136.5
+    ],
+    "cloth_points_inside_clevis": 34
+   },
+   {
+    "torso": 15,
+    "case": "meat",
+    "side": "R",
+    "pin_head_mm": 8.0,
+    "pin_head_at": [
+     190.5,
+     13.5,
+     139.1
+    ],
+    "eclip_mm": 9.4,
+    "eclip_at": [
+     141.1,
+     4.1,
+     138.6
+    ],
+    "tether_mm": -0.3,
+    "tether_at": [
+     132.2,
+     9.9,
+     132.5
+    ],
+    "pin_head_outside_clevis_mm": 8.0,
+    "pin_head_outside_clevis_at": [
+     190.5,
+     13.5,
+     139.1
+    ],
+    "cloth_points_inside_clevis": 22
+   },
+   {
+    "torso": 15,
+    "case": "meat",
+    "side": "L",
+    "pin_head_mm": 10.3,
+    "pin_head_at": [
+     189.5,
+     6.8,
+     135.5
+    ],
+    "eclip_mm": 7.3,
+    "eclip_at": [
+     142.7,
+     5.2,
+     141.5
+    ],
+    "tether_mm": -0.6,
+    "tether_at": [
+     132.0,
+     10.4,
+     138.4
+    ],
+    "pin_head_outside_clevis_mm": 10.3,
+    "pin_head_outside_clevis_at": [
+     189.5,
+     6.8,
+     135.5
+    ],
+    "cloth_points_inside_clevis": 32
+   },
+   {
+    "torso": 19,
+    "case": "fill",
+    "side": "R",
+    "pin_head_mm": -0.0,
+    "pin_head_at": [
+     181.0,
+     14.1,
+     144.4
+    ],
+    "eclip_mm": 7.3,
+    "eclip_at": [
+     143.8,
+     4.7,
+     141.2
+    ],
+    "tether_mm": 0.3,
+    "tether_at": [
+     133.0,
+     6.6,
+     122.8
+    ],
+    "pin_head_outside_clevis_mm": 1.7,
+    "pin_head_outside_clevis_at": [
+     184.2,
+     15.4,
+     141.4
+    ],
+    "cloth_points_inside_clevis": 25
+   },
+   {
+    "torso": 19,
+    "case": "fill",
+    "side": "L",
+    "pin_head_mm": 6.7,
+    "pin_head_at": [
+     188.6,
+     13.3,
+     136.1
+    ],
+    "eclip_mm": 9.4,
+    "eclip_at": [
+     145.6,
+     2.3,
+     141.0
+    ],
+    "tether_mm": -0.4,
+    "tether_at": [
+     132.3,
+     7.7,
+     122.8
+    ],
+    "pin_head_outside_clevis_mm": 6.7,
+    "pin_head_outside_clevis_at": [
+     188.6,
+     13.3,
+     136.1
+    ],
+    "cloth_points_inside_clevis": 31
+   },
+   {
+    "torso": 19,
+    "case": "meat",
+    "side": "R",
+    "pin_head_mm": 8.5,
+    "pin_head_at": [
+     191.0,
+     12.2,
+     139.2
+    ],
+    "eclip_mm": 9.8,
+    "eclip_at": [
+     141.0,
+     3.7,
+     138.4
+    ],
+    "tether_mm": -0.3,
+    "tether_at": [
+     132.3,
+     9.9,
+     132.4
+    ],
+    "pin_head_outside_clevis_mm": 8.5,
+    "pin_head_outside_clevis_at": [
+     191.0,
+     12.2,
+     139.2
+    ],
+    "cloth_points_inside_clevis": 22
+   },
+   {
+    "torso": 19,
+    "case": "meat",
+    "side": "L",
+    "pin_head_mm": 9.7,
+    "pin_head_at": [
+     189.0,
+     7.7,
+     134.9
+    ],
+    "eclip_mm": 6.3,
+    "eclip_at": [
+     143.7,
+     5.9,
+     141.2
+    ],
+    "tether_mm": -0.6,
+    "tether_at": [
+     132.1,
+     10.2,
+     156.6
+    ],
+    "pin_head_outside_clevis_mm": 9.7,
+    "pin_head_outside_clevis_at": [
+     189.0,
+     7.7,
+     134.9
+    ],
+    "cloth_points_inside_clevis": 31
+   },
+   {
+    "torso": 23,
+    "case": "fill",
+    "side": "R",
+    "pin_head_mm": 0.3,
+    "pin_head_at": [
+     180.7,
+     12.5,
+     140.9
+    ],
+    "eclip_mm": 8.2,
+    "eclip_at": [
+     143.3,
+     4.0,
+     141.2
+    ],
+    "tether_mm": -0.1,
+    "tether_at": [
+     132.7,
+     6.2,
+     122.8
+    ],
+    "pin_head_outside_clevis_mm": 1.4,
+    "pin_head_outside_clevis_at": [
+     183.9,
+     14.1,
+     141.4
+    ],
+    "cloth_points_inside_clevis": 25
+   },
+   {
+    "torso": 23,
+    "case": "fill",
+    "side": "L",
+    "pin_head_mm": 0.9,
+    "pin_head_at": [
+     182.8,
+     11.5,
+     141.8
+    ],
+    "eclip_mm": 4.1,
+    "eclip_at": [
+     144.9,
+     7.7,
+     141.2
+    ],
+    "tether_mm": -0.1,
+    "tether_at": [
+     132.7,
+     10.2,
+     156.8
+    ],
+    "pin_head_outside_clevis_mm": 2.5,
+    "pin_head_outside_clevis_at": [
+     184.5,
+     11.8,
+     144.8
+    ],
+    "cloth_points_inside_clevis": 36
+   },
+   {
+    "torso": 23,
+    "case": "meat",
+    "side": "R",
+    "pin_head_mm": 6.2,
+    "pin_head_at": [
+     185.2,
+     6.8,
+     142.1
+    ],
+    "eclip_mm": 8.4,
+    "eclip_at": [
+     143.9,
+     3.6,
+     141.4
+    ],
+    "tether_mm": 0.4,
+    "tether_at": [
+     130.9,
+     9.0,
+     123.0
+    ],
+    "pin_head_outside_clevis_mm": 6.2,
+    "pin_head_outside_clevis_at": [
+     185.2,
+     6.8,
+     142.1
+    ],
+    "cloth_points_inside_clevis": 29
+   },
+   {
+    "torso": 23,
+    "case": "meat",
+    "side": "L",
+    "pin_head_mm": 10.1,
+    "pin_head_at": [
+     191.2,
+     9.8,
+     135.6
+    ],
+    "eclip_mm": 6.4,
+    "eclip_at": [
+     143.7,
+     5.8,
+     141.2
+    ],
+    "tether_mm": -0.3,
+    "tether_at": [
+     132.3,
+     10.5,
+     144.3
+    ],
+    "pin_head_outside_clevis_mm": 10.1,
+    "pin_head_outside_clevis_at": [
+     191.2,
+     9.8,
+     135.6
+    ],
+    "cloth_points_inside_clevis": 30
+   }
+  ],
+  "pin_head_cloth_min_mm": -0.0,
+  "pin_head_outside_clevis_min_mm": 1.4,
+  "eclip_cloth_min_mm": 4.1,
+  "tether_cloth_min_mm": -0.6,
+  "pin_head_vs_bolt_heads": [
+   {
+    "torso": 15,
+    "case": "fill",
+    "side": "R",
+    "pin_head_mm": 6.3,
+    "bolt_heads_mm": 0.8,
+    "pin_head_recess_mm": 0.5
+   },
+   {
+    "torso": 15,
+    "case": "fill",
+    "side": "L",
+    "pin_head_mm": 8.5,
+    "bolt_heads_mm": -1.7,
+    "pin_head_recess_mm": 0.5
+   },
+   {
+    "torso": 15,
+    "case": "meat",
+    "side": "R",
+    "pin_head_mm": 8.0,
+    "bolt_heads_mm": 3.3,
+    "pin_head_recess_mm": 0.5
+   },
+   {
+    "torso": 15,
+    "case": "meat",
+    "side": "L",
+    "pin_head_mm": 10.3,
+    "bolt_heads_mm": -1.1,
+    "pin_head_recess_mm": 0.5
+   },
+   {
+    "torso": 19,
+    "case": "fill",
+    "side": "R",
+    "pin_head_mm": -0.0,
+    "bolt_heads_mm": 13.1,
+    "pin_head_recess_mm": 0.5
+   },
+   {
+    "torso": 19,
+    "case": "fill",
+    "side": "L",
+    "pin_head_mm": 6.7,
+    "bolt_heads_mm": 3.4,
+    "pin_head_recess_mm": 0.5
+   },
+   {
+    "torso": 19,
+    "case": "meat",
+    "side": "R",
+    "pin_head_mm": 8.5,
+    "bolt_heads_mm": 2.1,
+    "pin_head_recess_mm": 0.5
+   },
+   {
+    "torso": 19,
+    "case": "meat",
+    "side": "L",
+    "pin_head_mm": 9.7,
+    "bolt_heads_mm": -1.3,
+    "pin_head_recess_mm": 0.5
+   },
+   {
+    "torso": 23,
+    "case": "fill",
+    "side": "R",
+    "pin_head_mm": 0.3,
+    "bolt_heads_mm": 12.0,
+    "pin_head_recess_mm": 0.5
+   },
+   {
+    "torso": 23,
+    "case": "fill",
+    "side": "L",
+    "pin_head_mm": 0.9,
+    "bolt_heads_mm": 11.3,
+    "pin_head_recess_mm": 0.5
+   },
+   {
+    "torso": 23,
+    "case": "meat",
+    "side": "R",
+    "pin_head_mm": 6.2,
+    "bolt_heads_mm": 6.3,
+    "pin_head_recess_mm": 0.5
+   },
+   {
+    "torso": 23,
+    "case": "meat",
+    "side": "L",
+    "pin_head_mm": 10.1,
+    "bolt_heads_mm": -1.7,
+    "pin_head_recess_mm": 0.5
+   }
+  ],
+  "pin_note": "BL-058: the free drapes have no frame outboard of the stays, so they pass through the clevis's own outer face (face_rows < 0); the cloth tents over that face. The pin head (0.5 mm below the face, as the bolt heads) and the E-clip and tether (inboard of the inner cheek, under the cheek-tip plane B-01 rests on) stand proud of nothing the cloth meets; FIT-US marks check it.",
+  "strap_min_mm": -3.0,
   "strap_note": "centre-line distance less half the 25 mm width (a lower bound on the gap)"
  },
  "test_piece": {
@@ -22897,8 +23369,8 @@
    46.0,
    189.0
   ],
-  "g": 127.0,
-  "g_as_assembled": 140.7,
+  "g": 152.5,
+  "g_as_assembled": 167.8,
   "bolt_on": "us2_clevis_R",
   "watertight": true,
   "shells": 1,

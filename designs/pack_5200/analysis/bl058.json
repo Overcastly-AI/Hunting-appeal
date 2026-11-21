@@ -1,0 +1,3451 @@
+{
+ "ticket": "BL-058",
+ "date": "2026-11-21",
+ "review": "designs/pack_5200/analysis/review_20261121_sixth.md",
+ "sources": {
+  "din934": "https://aspenfasteners.com/m5-0-8-din-934-iso-4032-metric-hex-finished-nuts-class-10-steel-plain (DIN 934 M5: s 8 (7.78-8), height 4 basic, 3.7 min, 4 max); https://accu-components.com/us/hexagon-nuts/7891-HPN-M5-A2 (A2 DIN 934 M5: 4 mm +0/-0.3)",
+  "iso4032": "https://fasten.it/norms/norm/din_en_iso_4032 (DIN EN ISO 4032 M5: m max 4.70, m min 4.40, s 8, e min 8.79)",
+  "din7984": "https://www.westfieldfasteners.co.uk/A4_ScrewBolt_SHCapLow_M5.html (DIN 7984 M5: s 3, t 2.7) and https://westfieldfasteners.co.uk/Standards/ScrewBolt-SHCapLow-M.html (dk 8.5 max, k 3.5 max); https://eshop-pl.boellhoff.com/out/media/pdf/DIN_7984_Stahl_08.8___en.pdf (M5 SW 3)",
+  "din6799": "https://www.mcmaster.com/din-6799-retaining-rings (DIN 6799, 1.4122 stainless, for OD 5-7 mm: groove dia 4, groove width 0.74, ring OD 8.85 uninstalled, thickness 0.7, thrust load 210 lbf)",
+  "hairpin": "https://www.mcmaster.com/hitch-pin-clips (hairpin clips, 18-8 stainless: 90153A214 for 3/16 in shaft, wire 1/32 in, length 1/2 in, pin opening 9/64 in; 90153A216 for 1/4 in, 1/32 in, 5/8 in, 7/32 in)",
+  "din11024": "https://fasten.it/norms/norm/din_11024 (DIN 11024 spring cotters start at 2.5 mm wire for 9-11.2 mm pins: no DIN R-clip exists for a 5 mm pin)",
+  "iso273": "https://www.iso.org/standard/4183.html (ISO 273 clearance holes, fine / medium / coarse; M5 5.3 / 5.5 / 5.8: secondary, the table is behind the paywall)",
+  "fdm_tol": "https://www.hubs.com/3d-printing/dimensional-accuracy/ and https://formlabs.com/blog/understanding-accuracy-precision-tolerance-in-3d-printing/ (FDM prototyping +/-0.5 % with a +/-0.5 mm lower limit)"
+ },
+ "nut_check": {
+  "rows": [
+   {
+    "joint": "US2 clevis",
+    "side": "L",
+    "bolt_no": 0,
+    "pocket_inner_end_abs_x": 144.75,
+    "washer_slot_abs_x": [
+     148.8,
+     150.0
+    ],
+    "nut_face_abs_x": 150.0,
+    "hex_pocket_mm": 4.05,
+    "slot_to_nut_face_mm": 5.25,
+    "head_face_abs_x": 179.0,
+    "tail_hole_end_abs_x": 143.5,
+    "bolt": "M5 x 35 DIN 7984",
+    "bolt_tip_abs_x": 144.0,
+    "model": {
+     "trap_x0": 144.8,
+     "nut_face": 150.0,
+     "head_face": 179.0
+    },
+    "seat": {
+     "DIN 934": {
+      "at_m_max_mm": 0.25,
+      "at_m_min_mm": 0.55,
+      "m_that_just_seats_mm": 4.25,
+      "tip_past_nut_nominal_mm": 1.0,
+      "tip_past_nut_short_bolt_mm": 0.5,
+      "tip_past_nut_pitches": 1.25
+     },
+     "ISO 4032": {
+      "at_m_max_mm": -0.45,
+      "at_m_min_mm": -0.15,
+      "m_that_just_seats_mm": 4.25,
+      "tip_past_nut_nominal_mm": 0.3,
+      "tip_past_nut_short_bolt_mm": -0.2,
+      "tip_past_nut_pitches": 0.38
+     }
+    },
+    "tail_clear_nominal_mm": 0.5,
+    "tail_clear_long_bolt_mm": 0.0
+   },
+   {
+    "joint": "US2 clevis",
+    "side": "L",
+    "bolt_no": 1,
+    "pocket_inner_end_abs_x": 144.75,
+    "washer_slot_abs_x": [
+     148.8,
+     150.0
+    ],
+    "nut_face_abs_x": 150.0,
+    "hex_pocket_mm": 4.05,
+    "slot_to_nut_face_mm": 5.25,
+    "head_face_abs_x": 179.0,
+    "tail_hole_end_abs_x": 143.5,
+    "bolt": "M5 x 35 DIN 7984",
+    "bolt_tip_abs_x": 144.0,
+    "model": {
+     "trap_x0": 144.8,
+     "nut_face": 150.0,
+     "head_face": 179.0
+    },
+    "seat": {
+     "DIN 934": {
+      "at_m_max_mm": 0.25,
+      "at_m_min_mm": 0.55,
+      "m_that_just_seats_mm": 4.25,
+      "tip_past_nut_nominal_mm": 1.0,
+      "tip_past_nut_short_bolt_mm": 0.5,
+      "tip_past_nut_pitches": 1.25
+     },
+     "ISO 4032": {
+      "at_m_max_mm": -0.45,
+      "at_m_min_mm": -0.15,
+      "m_that_just_seats_mm": 4.25,
+      "tip_past_nut_nominal_mm": 0.3,
+      "tip_past_nut_short_bolt_mm": -0.2,
+      "tip_past_nut_pitches": 0.38
+     }
+    },
+    "tail_clear_nominal_mm": 0.5,
+    "tail_clear_long_bolt_mm": 0.0
+   },
+   {
+    "joint": "US2 clevis",
+    "side": "R",
+    "bolt_no": 0,
+    "pocket_inner_end_abs_x": 144.8,
+    "washer_slot_abs_x": [
+     148.8,
+     150.0
+    ],
+    "nut_face_abs_x": 150.0,
+    "hex_pocket_mm": 4.0,
+    "slot_to_nut_face_mm": 5.2,
+    "head_face_abs_x": 179.0,
+    "tail_hole_end_abs_x": 143.5,
+    "bolt": "M5 x 35 DIN 7984",
+    "bolt_tip_abs_x": 144.0,
+    "model": {
+     "trap_x0": 144.8,
+     "nut_face": 150.0,
+     "head_face": 179.0
+    },
+    "seat": {
+     "DIN 934": {
+      "at_m_max_mm": 0.2,
+      "at_m_min_mm": 0.5,
+      "m_that_just_seats_mm": 4.2,
+      "tip_past_nut_nominal_mm": 1.0,
+      "tip_past_nut_short_bolt_mm": 0.5,
+      "tip_past_nut_pitches": 1.25
+     },
+     "ISO 4032": {
+      "at_m_max_mm": -0.5,
+      "at_m_min_mm": -0.2,
+      "m_that_just_seats_mm": 4.2,
+      "tip_past_nut_nominal_mm": 0.3,
+      "tip_past_nut_short_bolt_mm": -0.2,
+      "tip_past_nut_pitches": 0.38
+     }
+    },
+    "tail_clear_nominal_mm": 0.5,
+    "tail_clear_long_bolt_mm": 0.0
+   },
+   {
+    "joint": "US2 clevis",
+    "side": "R",
+    "bolt_no": 1,
+    "pocket_inner_end_abs_x": 144.8,
+    "washer_slot_abs_x": [
+     148.8,
+     150.0
+    ],
+    "nut_face_abs_x": 150.0,
+    "hex_pocket_mm": 4.0,
+    "slot_to_nut_face_mm": 5.2,
+    "head_face_abs_x": 179.0,
+    "tail_hole_end_abs_x": 143.5,
+    "bolt": "M5 x 35 DIN 7984",
+    "bolt_tip_abs_x": 144.0,
+    "model": {
+     "trap_x0": 144.8,
+     "nut_face": 150.0,
+     "head_face": 179.0
+    },
+    "seat": {
+     "DIN 934": {
+      "at_m_max_mm": 0.2,
+      "at_m_min_mm": 0.5,
+      "m_that_just_seats_mm": 4.2,
+      "tip_past_nut_nominal_mm": 1.0,
+      "tip_past_nut_short_bolt_mm": 0.5,
+      "tip_past_nut_pitches": 1.25
+     },
+     "ISO 4032": {
+      "at_m_max_mm": -0.5,
+      "at_m_min_mm": -0.2,
+      "m_that_just_seats_mm": 4.2,
+      "tip_past_nut_nominal_mm": 0.3,
+      "tip_past_nut_short_bolt_mm": -0.2,
+      "tip_past_nut_pitches": 0.38
+     }
+    },
+    "tail_clear_nominal_mm": 0.5,
+    "tail_clear_long_bolt_mm": 0.0
+   },
+   {
+    "joint": "z 234",
+    "side": "R",
+    "bolt_no": 0,
+    "pocket_inner_end_z": 206.368,
+    "washer_slot_z": [
+     210.745,
+     211.945
+    ],
+    "nut_face_z": 211.945,
+    "hex_pocket_mm": 4.377,
+    "slot_to_nut_face_mm": 5.577,
+    "tail_hole_end_z": 202.004,
+    "bolt": "M5 x 45 DIN 7984",
+    "bolt_tip_z": 206.0,
+    "model": {
+     "n_lo": 206.4,
+     "nut_face": 212.0,
+     "tail_z": 202.0
+    },
+    "seat": {
+     "DIN 934": {
+      "at_m_max_mm": 0.577,
+      "at_m_min_mm": 0.877,
+      "m_that_just_seats_mm": 4.577,
+      "tip_past_nut_nominal_mm": 0.945,
+      "tip_past_nut_short_bolt_mm": 0.445,
+      "tip_past_nut_pitches": 1.18
+     },
+     "ISO 4032": {
+      "at_m_max_mm": -0.123,
+      "at_m_min_mm": 0.177,
+      "m_that_just_seats_mm": 4.577,
+      "tip_past_nut_nominal_mm": 0.245,
+      "tip_past_nut_short_bolt_mm": -0.255,
+      "tip_past_nut_pitches": 0.31
+     }
+    },
+    "tail_clear_nominal_mm": 3.996,
+    "tail_clear_long_bolt_mm": 3.496
+   },
+   {
+    "joint": "z 234",
+    "side": "R",
+    "bolt_no": 1,
+    "pocket_inner_end_z": 206.463,
+    "washer_slot_z": [
+     210.906,
+     212.106
+    ],
+    "nut_face_z": 212.106,
+    "hex_pocket_mm": 4.443,
+    "slot_to_nut_face_mm": 5.643,
+    "tail_hole_end_z": 202.004,
+    "bolt": "M5 x 45 DIN 7984",
+    "bolt_tip_z": 206.0,
+    "model": {
+     "n_lo": 206.4,
+     "nut_face": 212.0,
+     "tail_z": 202.0
+    },
+    "seat": {
+     "DIN 934": {
+      "at_m_max_mm": 0.643,
+      "at_m_min_mm": 0.943,
+      "m_that_just_seats_mm": 4.643,
+      "tip_past_nut_nominal_mm": 1.106,
+      "tip_past_nut_short_bolt_mm": 0.606,
+      "tip_past_nut_pitches": 1.38
+     },
+     "ISO 4032": {
+      "at_m_max_mm": -0.057,
+      "at_m_min_mm": 0.243,
+      "m_that_just_seats_mm": 4.643,
+      "tip_past_nut_nominal_mm": 0.406,
+      "tip_past_nut_short_bolt_mm": -0.094,
+      "tip_past_nut_pitches": 0.51
+     }
+    },
+    "tail_clear_nominal_mm": 3.996,
+    "tail_clear_long_bolt_mm": 3.496
+   },
+   {
+    "joint": "z 234",
+    "side": "L",
+    "bolt_no": 0,
+    "pocket_inner_end_z": 206.368,
+    "washer_slot_z": [
+     210.745,
+     211.945
+    ],
+    "nut_face_z": 211.945,
+    "hex_pocket_mm": 4.377,
+    "slot_to_nut_face_mm": 5.577,
+    "tail_hole_end_z": 202.004,
+    "bolt": "M5 x 45 DIN 7984",
+    "bolt_tip_z": 206.0,
+    "model": {
+     "n_lo": 206.4,
+     "nut_face": 212.0,
+     "tail_z": 202.0
+    },
+    "seat": {
+     "DIN 934": {
+      "at_m_max_mm": 0.577,
+      "at_m_min_mm": 0.877,
+      "m_that_just_seats_mm": 4.577,
+      "tip_past_nut_nominal_mm": 0.945,
+      "tip_past_nut_short_bolt_mm": 0.445,
+      "tip_past_nut_pitches": 1.18
+     },
+     "ISO 4032": {
+      "at_m_max_mm": -0.123,
+      "at_m_min_mm": 0.177,
+      "m_that_just_seats_mm": 4.577,
+      "tip_past_nut_nominal_mm": 0.245,
+      "tip_past_nut_short_bolt_mm": -0.255,
+      "tip_past_nut_pitches": 0.31
+     }
+    },
+    "tail_clear_nominal_mm": 3.996,
+    "tail_clear_long_bolt_mm": 3.496
+   },
+   {
+    "joint": "z 234",
+    "side": "L",
+    "bolt_no": 1,
+    "pocket_inner_end_z": 206.463,
+    "washer_slot_z": [
+     210.906,
+     212.106
+    ],
+    "nut_face_z": 212.106,
+    "hex_pocket_mm": 4.443,
+    "slot_to_nut_face_mm": 5.643,
+    "tail_hole_end_z": 202.004,
+    "bolt": "M5 x 45 DIN 7984",
+    "bolt_tip_z": 206.0,
+    "model": {
+     "n_lo": 206.4,
+     "nut_face": 212.0,
+     "tail_z": 202.0
+    },
+    "seat": {
+     "DIN 934": {
+      "at_m_max_mm": 0.643,
+      "at_m_min_mm": 0.943,
+      "m_that_just_seats_mm": 4.643,
+      "tip_past_nut_nominal_mm": 1.106,
+      "tip_past_nut_short_bolt_mm": 0.606,
+      "tip_past_nut_pitches": 1.38
+     },
+     "ISO 4032": {
+      "at_m_max_mm": -0.057,
+      "at_m_min_mm": 0.243,
+      "m_that_just_seats_mm": 4.643,
+      "tip_past_nut_nominal_mm": 0.406,
+      "tip_past_nut_short_bolt_mm": -0.094,
+      "tip_past_nut_pitches": 0.51
+     }
+    },
+    "tail_clear_nominal_mm": 3.996,
+    "tail_clear_long_bolt_mm": 3.496
+   }
+  ],
+  "nuts": {
+   "DIN 934": {
+    "m_max": 4.0,
+    "m_min": 3.7,
+    "s": 8.0,
+    "e_sharp": 9.237604307034012,
+    "source": "https://aspenfasteners.com/m5-0-8-din-934-iso-4032-metric-hex-finished-nuts-class-10-steel-plain (DIN 934 M5: s 8 (7.78-8), height 4 basic, 3.7 min, 4 max); https://accu-components.com/us/hexagon-nuts/7891-HPN-M5-A2 (A2 DIN 934 M5: 4 mm +0/-0.3)"
+   },
+   "ISO 4032": {
+    "m_max": 4.7,
+    "m_min": 4.4,
+    "s": 8.0,
+    "e_min": 8.79,
+    "e_sharp": 9.237604307034012,
+    "source": "https://fasten.it/norms/norm/din_en_iso_4032 (DIN EN ISO 4032 M5: m max 4.70, m min 4.40, s 8, e min 8.79)"
+   }
+  },
+  "bolt_len_tol_mm": 0.5,
+  "pitch_mm": 0.8,
+  "DIN 934_seats_everywhere_at_m_max": true,
+  "DIN 934_seats_everywhere_at_m_min": true,
+  "ISO 4032_seats_everywhere_at_m_max": false,
+  "ISO 4032_seats_everywhere_at_m_min": false,
+  "din934_tip_through_nut_everywhere": true,
+  "verdict": "DIN 934 seats in every trap (US2 and z 234) with the screw tip through the nut; ISO 4032 does not seat at US2 at any thickness in its range, and at z 234 only below m 4.58: the caliper check (m <= 4.1) matters"
+ },
+ "retainers": {
+  "rows": {
+   "hinge": {
+    "retainer": "hairpin",
+    "orientation": "fore (-y, towards the wearer: 60+ mm free at the far face)",
+    "retainer_clash_mm3_at_0.5mm": 0.0,
+    "head_clash_mm3_at_0.5mm": 0.0,
+    "y_max": 23.84,
+    "y_tip": 25.94,
+    "below_b01_plane_mm": 2.1,
+    "retainer_box": {
+     "lo": [
+      91.71,
+      4.85,
+      56.21
+     ],
+     "hi": [
+      93.29,
+      23.84,
+      63.79
+     ]
+    },
+    "fore_room_needed_mm": 13.49,
+    "he": {
+     "eye_legs": {
+      "lateral_gap_mm": 12.41,
+      "yz_gap_mm": 0.0,
+      "gap_mm": 12.41
+     },
+     "box": {
+      "lateral_gap_mm": 4.71,
+      "yz_gap_mm": 10.21,
+      "gap_mm": 10.21
+     },
+     "min_mm": 10.21
+    },
+    "pass": true
+   },
+   "us1": {
+    "retainer": "hairpin",
+    "orientation": "fore (-y, inside the buttress's 12 mm slot: 24 mm free)",
+    "retainer_clash_mm3_at_0.5mm": 0.0,
+    "head_clash_mm3_at_0.5mm": 0.0,
+    "y_max": 23.01,
+    "y_tip": 25.11,
+    "below_b01_plane_mm": 2.1,
+    "retainer_box": {
+     "lo": [
+      48.71,
+      4.02,
+      91.21
+     ],
+     "hi": [
+      50.29,
+      23.01,
+      98.79
+     ]
+    },
+    "fore_room_needed_mm": 13.49,
+    "strap_mm": {
+     "rows": [
+      {
+       "torso": 15,
+       "side": "R",
+       "mm": 15.1
+      },
+      {
+       "torso": 15,
+       "side": "L",
+       "mm": 15.0
+      },
+      {
+       "torso": 19,
+       "side": "R",
+       "mm": 13.8
+      },
+      {
+       "torso": 19,
+       "side": "L",
+       "mm": 15.0
+      },
+      {
+       "torso": 23,
+       "side": "R",
+       "mm": 14.2
+      },
+      {
+       "torso": 23,
+       "side": "L",
+       "mm": 16.0
+      }
+     ],
+     "min_mm": 13.8,
+     "in_throat": {
+      "cheek_wall_mm": 8.0,
+      "note": "from the pin to the lip the strap runs between the cheeks; the head and the retainer sit outside them"
+     },
+     "note": "envelope box surface points to the ribbon (25 mm wide along x, 11 lines), below the lip"
+    },
+    "pass": true
+   },
+   "us2": {
+    "retainer": "eclip",
+    "orientation": "a ring round the pin (no leg): 4.4 mm radius inside the 12 mm slot",
+    "retainer_clash_mm3_at_0.5mm": 0.0,
+    "head_clash_mm3_at_0.5mm": 0.024,
+    "tether_clash_mm3_at_0.5mm": 0.0,
+    "y_max": 21.12,
+    "y_tip": 24.0,
+    "below_b01_plane_mm": 2.88,
+    "retainer_box": {
+     "lo": [
+      146.0,
+      11.67,
+      137.28
+     ],
+     "hi": [
+      146.65,
+      21.12,
+      146.72
+     ]
+    },
+    "fore_room_needed_mm": 4.72,
+    "strap_mm": {
+     "rows": [
+      {
+       "torso": 15,
+       "side": "R",
+       "mm": 19.5
+      },
+      {
+       "torso": 15,
+       "side": "L",
+       "mm": 15.9
+      },
+      {
+       "torso": 19,
+       "side": "R",
+       "mm": 16.8
+      },
+      {
+       "torso": 19,
+       "side": "L",
+       "mm": 12.9
+      },
+      {
+       "torso": 23,
+       "side": "R",
+       "mm": 17.9
+      },
+      {
+       "torso": 23,
+       "side": "L",
+       "mm": 14.5
+      }
+     ],
+     "min_mm": 12.9,
+     "in_throat": {
+      "cheek_wall_mm": 8.0,
+      "note": "from the pin to the lip the strap runs between the cheeks; the head and the retainer sit outside them"
+     },
+     "note": "envelope box surface points to the ribbon (25 mm wide along x, 11 lines), below the lip"
+    },
+    "pass": true
+   },
+   "im1": {
+    "retainer": "hairpin",
+    "orientation": "fore (-y: 60+ mm free)",
+    "retainer_clash_mm3_at_0.5mm": 0.0,
+    "head_clash_mm3_at_0.5mm": 0.0,
+    "y_max": 26.1,
+    "y_tip": 28.2,
+    "below_b01_plane_mm": 2.1,
+    "retainer_box": {
+     "lo": [
+      93.71,
+      7.11,
+      186.21
+     ],
+     "hi": [
+      95.29,
+      26.1,
+      193.79
+     ]
+    },
+    "fore_room_needed_mm": 13.49,
+    "pass": true
+   },
+   "im2": {
+    "retainer": "hairpin",
+    "orientation": "fore (-y: 18.2 mm free, STL)",
+    "retainer_clash_mm3_at_0.5mm": 0.0,
+    "head_clash_mm3_at_0.5mm": 0.0,
+    "y_max": 23.2,
+    "y_tip": 25.3,
+    "below_b01_plane_mm": 2.1,
+    "retainer_box": {
+     "lo": [
+      93.71,
+      4.21,
+      326.21
+     ],
+     "hi": [
+      95.29,
+      23.2,
+      333.79
+     ]
+    },
+    "fore_room_needed_mm": 13.49,
+    "pass": true
+   },
+   "im3": {
+    "retainer": "hairpin",
+    "orientation": "fore (-y: 22.7 mm free, STL)",
+    "retainer_clash_mm3_at_0.5mm": 0.0,
+    "head_clash_mm3_at_0.5mm": 0.0,
+    "y_max": 22.59,
+    "y_tip": 24.69,
+    "below_b01_plane_mm": 2.1,
+    "retainer_box": {
+     "lo": [
+      93.71,
+      3.6,
+      516.21
+     ],
+     "hi": [
+      95.29,
+      22.59,
+      523.79
+     ]
+    },
+    "fore_room_needed_mm": 13.49,
+    "pass": true
+   }
+  },
+  "rules": {
+   "frame_gap_mm": 0.5,
+   "b01_plane_mm": 1.0,
+   "strap_mm": "us_route.CLEAR_REQ 10 (the strap's own rule)",
+   "he_mm": 1.0
+  },
+  "pass": true
+ },
+ "pin_rows": {
+  "hinge": {
+   "station": "hinge",
+   "head_seat_abs_x": 135.0,
+   "far_face_abs_x": 95.0,
+   "shank_mm": 45.15,
+   "tail_past_far_face_mm": 5.15,
+   "head_mm": [
+    8.0,
+    1.5
+   ],
+   "retainer": "hairpin",
+   "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+   "retainer_id": "HW-PIN-RET-H",
+   "retainer_source": "https://www.mcmaster.com/hitch-pin-clips (hairpin clips, 18-8 stainless: 90153A214 for 3/16 in shaft, wire 1/32 in, length 1/2 in, pin opening 9/64 in; 90153A216 for 1/4 in, 1/32 in, 5/8 in, 7/32 in)",
+   "orientation": "fore (-y, towards the wearer: 60+ mm free at the far face)",
+   "why": "the hinge pin comes out at every bag-off: a gloved, tool-free clip",
+   "features": {
+    "cross_hole": {
+     "d_mm": 1.5,
+     "from_far_cheek_face_mm": 2.5,
+     "axis": "frame y (the clip lies in the y-z plane, body fore)"
+    },
+    "tether_hole": {
+     "d_mm": 1.6,
+     "where": "in the head (as BL-053)"
+    }
+   },
+   "tether": {
+    "cord": "1.5 mm Dyneema (UHMWPE), 120 mm",
+    "route": [
+     "head hole (as BL-053) to a larks-head round the stay beside the fairlead"
+    ],
+    "polyline_free_R": null
+   }
+  },
+  "us1": {
+   "station": "us1",
+   "head_seat_abs_x": 88.0,
+   "far_face_abs_x": 52.0,
+   "shank_mm": 41.15,
+   "tail_past_far_face_mm": 5.15,
+   "head_mm": [
+    8.0,
+    1.5
+   ],
+   "retainer": "hairpin",
+   "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+   "retainer_id": "HW-PIN-RET-H",
+   "retainer_source": "https://www.mcmaster.com/hitch-pin-clips (hairpin clips, 18-8 stainless: 90153A214 for 3/16 in shaft, wire 1/32 in, length 1/2 in, pin opening 9/64 in; 90153A216 for 1/4 in, 1/32 in, 5/8 in, 7/32 in)",
+   "orientation": "fore (-y, inside the buttress's 12 mm slot: 24 mm free)",
+   "why": "fore room 24.2 mm (STL) for a 13.5 mm clip body",
+   "features": {
+    "cross_hole": {
+     "d_mm": 1.5,
+     "from_far_cheek_face_mm": 2.5,
+     "axis": "frame y (the clip lies in the y-z plane, body fore)"
+    },
+    "tether_hole": {
+     "d_mm": 1.6,
+     "where": "in the head (as BL-053)"
+    }
+   },
+   "tether": {
+    "cord": "1.5 mm Dyneema (UHMWPE), 120 mm",
+    "route": [
+     "head hole (as BL-053) to a larks-head round the stay beside the fairlead"
+    ],
+    "polyline_free_R": null
+   }
+  },
+  "us2": {
+   "station": "us2",
+   "head_seat_abs_x": 181.0,
+   "far_face_abs_x": 147.0,
+   "shank_mm": 39.14,
+   "tail_past_far_face_mm": 5.14,
+   "head_mm": [
+    8.0,
+    1.5
+   ],
+   "retainer": "eclip",
+   "retainer_part": "DIN 6799 RS 4 retaining washer (E-clip), 1.4122 stainless, for 5-7 mm shafts: groove D4.0 x 0.74 wide, ring OD 8.85 (uninstalled), 0.7 thick, thrust load 210 lbf (934 N)",
+   "retainer_id": "HW-PIN-RET-E",
+   "retainer_source": "https://www.mcmaster.com/din-6799-retaining-rings (DIN 6799, 1.4122 stainless, for OD 5-7 mm: groove dia 4, groove width 0.74, ring OD 8.85 uninstalled, thickness 0.7, thrust load 210 lbf)",
+   "orientation": "a ring round the pin (no leg): 4.4 mm radius inside the 12 mm slot",
+   "why": "fore room 8.0 mm (STL) is shorter than any clip body; aft is B-01 and the meat (review 6 M-2)",
+   "features": {
+    "groove": {
+     "d_mm": 4.0,
+     "w_mm": 0.74,
+     "tol": "d h11 / w H13 (DIN 6799)",
+     "from_far_cheek_face_mm": [
+      0.3,
+      1.04
+     ]
+    },
+    "tether_hole": {
+     "d_mm": 1.6,
+     "from_far_cheek_face_mm": 3.34,
+     "axis": "frame z (cord exits along the slot)",
+     "where": "in the tail, past the groove"
+    },
+    "head": "plain (no tether hole): the head sits in the clevis counterbore D9 x 2"
+   },
+   "tether": {
+    "cord": "1.5 mm Dyneema (UHMWPE)",
+    "route": [
+     "through the pin's tail hole at |x| 143.7 (y 16.4, z 142), the hole axis along z",
+     "inboard 11 mm along the buttress slot (z 136-148), onto the lug arm's bag face (y 9.3)",
+     "larks-head round the lug arm at |x| 132 (section y -13..9, z 124..160, perimeter 121 mm), knot on the bag face"
+    ],
+    "polyline_free_R": [
+     [
+      143.66,
+      16.397848751568496,
+      142.0
+     ],
+     [
+      134.0,
+      10.3,
+      142.0
+     ]
+    ],
+    "loop_R": [
+     [
+      132.0,
+      10.3,
+      142.0
+     ],
+     [
+      132.0,
+      10.3,
+      122.9
+     ],
+     [
+      132.0,
+      -13.86,
+      122.9
+     ],
+     [
+      132.0,
+      -13.86,
+      161.1
+     ],
+     [
+      132.0,
+      10.3,
+      161.1
+     ],
+     [
+      132.0,
+      10.3,
+      142.0
+     ]
+    ],
+    "arm_section": {
+     "x": 132.0,
+     "y": [
+      -12.86,
+      9.3
+     ],
+     "z": [
+      123.9,
+      160.1
+     ],
+     "perimeter_mm": 120.9
+    },
+    "cord_needed_mm": 157.0,
+    "never": "outboard of the clevis face, aft of the cheek-tip plane, or across the US2 throat"
+   }
+  },
+  "im1": {
+   "station": "im1",
+   "head_seat_abs_x": 133.0,
+   "far_face_abs_x": 97.0,
+   "shank_mm": 41.15,
+   "tail_past_far_face_mm": 5.15,
+   "head_mm": [
+    8.0,
+    1.5
+   ],
+   "retainer": "hairpin",
+   "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+   "retainer_id": "HW-PIN-RET-H",
+   "retainer_source": "https://www.mcmaster.com/hitch-pin-clips (hairpin clips, 18-8 stainless: 90153A214 for 3/16 in shaft, wire 1/32 in, length 1/2 in, pin opening 9/64 in; 90153A216 for 1/4 in, 1/32 in, 5/8 in, 7/32 in)",
+   "orientation": "fore (-y: 60+ mm free)",
+   "why": "as the hinge",
+   "features": {
+    "cross_hole": {
+     "d_mm": 1.5,
+     "from_far_cheek_face_mm": 2.5,
+     "axis": "frame y (the clip lies in the y-z plane, body fore)"
+    },
+    "tether_hole": {
+     "d_mm": 1.6,
+     "where": "in the head (as BL-053)"
+    }
+   },
+   "tether": {
+    "cord": "1.5 mm Dyneema (UHMWPE), 120 mm",
+    "route": [
+     "head hole (as BL-053) to a larks-head round the stay beside the fairlead"
+    ],
+    "polyline_free_R": null
+   }
+  },
+  "im2": {
+   "station": "im2",
+   "head_seat_abs_x": 133.0,
+   "far_face_abs_x": 97.0,
+   "shank_mm": 41.15,
+   "tail_past_far_face_mm": 5.15,
+   "head_mm": [
+    8.0,
+    1.5
+   ],
+   "retainer": "hairpin",
+   "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+   "retainer_id": "HW-PIN-RET-H",
+   "retainer_source": "https://www.mcmaster.com/hitch-pin-clips (hairpin clips, 18-8 stainless: 90153A214 for 3/16 in shaft, wire 1/32 in, length 1/2 in, pin opening 9/64 in; 90153A216 for 1/4 in, 1/32 in, 5/8 in, 7/32 in)",
+   "orientation": "fore (-y: 18.2 mm free, STL)",
+   "why": "18.2 mm fore room > 13.5 mm",
+   "features": {
+    "cross_hole": {
+     "d_mm": 1.5,
+     "from_far_cheek_face_mm": 2.5,
+     "axis": "frame y (the clip lies in the y-z plane, body fore)"
+    },
+    "tether_hole": {
+     "d_mm": 1.6,
+     "where": "in the head (as BL-053)"
+    }
+   },
+   "tether": {
+    "cord": "1.5 mm Dyneema (UHMWPE), 120 mm",
+    "route": [
+     "head hole (as BL-053) to a larks-head round the stay beside the fairlead"
+    ],
+    "polyline_free_R": null
+   }
+  },
+  "im3": {
+   "station": "im3",
+   "head_seat_abs_x": 133.0,
+   "far_face_abs_x": 97.0,
+   "shank_mm": 41.15,
+   "tail_past_far_face_mm": 5.15,
+   "head_mm": [
+    8.0,
+    1.5
+   ],
+   "retainer": "hairpin",
+   "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+   "retainer_id": "HW-PIN-RET-H",
+   "retainer_source": "https://www.mcmaster.com/hitch-pin-clips (hairpin clips, 18-8 stainless: 90153A214 for 3/16 in shaft, wire 1/32 in, length 1/2 in, pin opening 9/64 in; 90153A216 for 1/4 in, 1/32 in, 5/8 in, 7/32 in)",
+   "orientation": "fore (-y: 22.7 mm free, STL)",
+   "why": "22.7 mm fore room > 13.5 mm",
+   "features": {
+    "cross_hole": {
+     "d_mm": 1.5,
+     "from_far_cheek_face_mm": 2.5,
+     "axis": "frame y (the clip lies in the y-z plane, body fore)"
+    },
+    "tether_hole": {
+     "d_mm": 1.6,
+     "where": "in the head (as BL-053)"
+    }
+   },
+   "tether": {
+    "cord": "1.5 mm Dyneema (UHMWPE), 120 mm",
+    "route": [
+     "head hole (as BL-053) to a larks-head round the stay beside the fairlead"
+    ],
+    "polyline_free_R": null
+   }
+  }
+ },
+ "pins": {
+  "scheme": "headed pin; hairpin clip (McMaster 90153A214) in a 1.5 mm cross hole on the far side at hinge / US1 / IM1-3, body pointing fore; US2: head in a D9 x 2 clevis counterbore, DIN 6799 E-clip in a groove on the far side, tether from a tail hole round the lug arm",
+  "retainer": {
+   "part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm) (hinge, US1, IM1-IM3); US2: DIN 6799 RS 4 retaining washer (E-clip), 1.4122 stainless, for 5-7 mm shafts: groove D4.0 x 0.74 wide, ring OD 8.85 (uninstalled), 0.7 thick, thrust load 210 lbf (934 N)",
+   "source": "https://www.mcmaster.com/hitch-pin-clips (hairpin clips, 18-8 stainless: 90153A214 for 3/16 in shaft, wire 1/32 in, length 1/2 in, pin opening 9/64 in; 90153A216 for 1/4 in, 1/32 in, 5/8 in, 7/32 in); https://www.mcmaster.com/din-6799-retaining-rings (DIN 6799, 1.4122 stainless, for OD 5-7 mm: groove dia 4, groove width 0.74, ring OD 8.85 uninstalled, thickness 0.7, thrust load 210 lbf)",
+   "mass_g": 0.122,
+   "tether": "1.5 mm Dyneema (UHMWPE): 120 mm through the head hole and the clip's bend, larks-head round the stay (hairpin stations); US2: 180 mm from the pin's tail hole along the buttress slot, larks-head round the lug arm at |x| 132",
+   "tether_g": 0.2,
+   "mass_eclip_g": 0.198,
+   "tether_us2_g": 0.3
+  },
+  "stations": {
+   "hinge": {
+    "material": "ti_6al_4v",
+    "pin_d_mm": 5.0,
+    "span_mm": 40.0,
+    "shank_mm": 45.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole": {
+     "d_mm": 1.5,
+     "from_far_cheek_face_mm": 2.5,
+     "use": "hairpin clip (axis along frame y)"
+    },
+    "head_side": "outboard",
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
+    "pin_g": 4.26,
+    "set_g": 4.58,
+    "qty": 2,
+    "removed_at_bag_off": true,
+    "bending": {
+     "row_n": 1019.0,
+     "sf_yield": 1.99,
+     "sf_fatigue": 2.24
+    },
+    "bl055": {
+     "shank_mm": 45.1,
+     "cross_hole": {
+      "d_mm": 1.3,
+      "from_far_cheek_face_mm": 2.5
+     },
+     "clip_side": "inboard",
+     "pin_g": 4.26,
+     "set_g": 5.06
+    },
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face",
+    "tether": {
+     "cord_mm": 120.0,
+     "route": [
+      "head hole (as BL-053) to a larks-head round the stay beside the fairlead"
+     ]
+    }
+   },
+   "us1": {
+    "material": "ti_6al_4v",
+    "pin_d_mm": 5.0,
+    "span_mm": 36.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole": {
+     "d_mm": 1.5,
+     "from_far_cheek_face_mm": 2.5,
+     "use": "hairpin clip (axis along frame y)"
+    },
+    "head_side": "outboard",
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
+    "pin_g": 3.91,
+    "set_g": 4.24,
+    "qty": 2,
+    "removed_at_bag_off": false,
+    "bending": {
+     "design_yz_n": 599.1,
+     "sf_yield": 3.76,
+     "sf_fatigue": 4.23,
+     "dy95_yz_n": 964.5,
+     "dy95_sf_yield": 2.34,
+     "dy95_sf_fatigue": 2.63
+    },
+    "was": {
+     "material": "alu_7075_t6",
+     "pin_g": 2.48,
+     "bending": {
+      "design_yz_n": 599.1,
+      "sf_yield": 2.1,
+      "sf_fatigue": 1.56,
+      "dy95_yz_n": 964.5,
+      "dy95_sf_yield": 1.31,
+      "dy95_sf_fatigue": 0.97
+     }
+    },
+    "bl055": {
+     "shank_mm": 41.1,
+     "cross_hole": {
+      "d_mm": 1.3,
+      "from_far_cheek_face_mm": 2.5
+     },
+     "clip_side": "inboard (towards x 0; the buttress leaves a 12 mm slot)",
+     "pin_g": 3.91,
+     "set_g": 4.71
+    },
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face",
+    "tether": {
+     "cord_mm": 120.0,
+     "route": [
+      "head hole (as BL-053) to a larks-head round the stay beside the fairlead"
+     ]
+    }
+   },
+   "us2": {
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "span_mm": 36.0,
+    "shank_mm": 39.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole": {
+     "d_mm": 1.6,
+     "from_far_cheek_face_mm": 3.34,
+     "use": "tether (axis along frame z)"
+    },
+    "head_side": "outboard",
+    "clip_side": "inboard (far cheek): DIN 6799 E-clip in the groove",
+    "pin_g": 2.36,
+    "set_g": 2.85,
+    "qty": 2,
+    "removed_at_bag_off": false,
+    "bending": {
+     "design_yz_n": 399.4,
+     "sf_yield": 3.15,
+     "sf_fatigue": 2.34,
+     "dy95_yz_n": 642.9,
+     "dy95_sf_yield": 1.96,
+     "dy95_sf_fatigue": 1.46
+    },
+    "bl055": {
+     "shank_mm": 41.1,
+     "cross_hole": {
+      "d_mm": 1.3,
+      "from_far_cheek_face_mm": 2.5
+     },
+     "clip_side": "inboard (towards x 0; the buttress leaves a 12 mm slot)",
+     "pin_g": 2.48,
+     "set_g": 3.28
+    },
+    "retainer": "eclip",
+    "retainer_part": "DIN 6799 RS 4 retaining washer (E-clip), 1.4122 stainless, for 5-7 mm shafts: groove D4.0 x 0.74 wide, ring OD 8.85 (uninstalled), 0.7 thick, thrust load 210 lbf (934 N)",
+    "head_seat": "clevis counterbore D9 x 2, head 0.5 below the face",
+    "tether": {
+     "cord_mm": 180.0,
+     "route": [
+      "through the pin's tail hole at |x| 143.7 (y 16.4, z 142), the hole axis along z",
+      "inboard 11 mm along the buttress slot (z 136-148), onto the lug arm's bag face (y 9.3)",
+      "larks-head round the lug arm at |x| 132 (section y -13..9, z 124..160, perimeter 121 mm), knot on the bag face"
+     ],
+     "never": "outboard of the clevis face, aft of the cheek-tip plane, or across the US2 throat"
+    },
+    "groove": {
+     "d_mm": 4.0,
+     "w_mm": 0.74,
+     "tol": "d h11 / w H13 (DIN 6799)",
+     "from_far_cheek_face_mm": [
+      0.3,
+      1.04
+     ]
+    },
+    "tether_hole": {
+     "d_mm": 1.6,
+     "from_far_cheek_face_mm": 3.34,
+     "axis": "frame z (cord exits along the slot)",
+     "where": "in the tail, past the groove"
+    },
+    "sleeve_note": "the outer cheek's UHMWPE sleeve is cut to 6.0 mm (flush with the counterbore floor)"
+   },
+   "im1": {
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "span_mm": 36.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole": {
+     "d_mm": 1.5,
+     "from_far_cheek_face_mm": 2.5,
+     "use": "hairpin clip (axis along frame y)"
+    },
+    "head_side": "outboard",
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
+    "pin_g": 2.48,
+    "set_g": 2.8,
+    "qty": 2,
+    "removed_at_bag_off": false,
+    "bl055": {
+     "shank_mm": 41.1,
+     "cross_hole": {
+      "d_mm": 1.3,
+      "from_far_cheek_face_mm": 2.5
+     },
+     "clip_side": "inboard",
+     "pin_g": 2.48,
+     "set_g": 3.28
+    },
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face",
+    "tether": {
+     "cord_mm": 120.0,
+     "route": [
+      "head hole (as BL-053) to a larks-head round the stay beside the fairlead"
+     ]
+    }
+   },
+   "im2": {
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "span_mm": 36.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole": {
+     "d_mm": 1.5,
+     "from_far_cheek_face_mm": 2.5,
+     "use": "hairpin clip (axis along frame y)"
+    },
+    "head_side": "outboard",
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
+    "pin_g": 2.48,
+    "set_g": 2.8,
+    "qty": 2,
+    "removed_at_bag_off": false,
+    "bl055": {
+     "shank_mm": 41.1,
+     "cross_hole": {
+      "d_mm": 1.3,
+      "from_far_cheek_face_mm": 2.5
+     },
+     "clip_side": "inboard",
+     "pin_g": 2.48,
+     "set_g": 3.28
+    },
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face",
+    "tether": {
+     "cord_mm": 120.0,
+     "route": [
+      "head hole (as BL-053) to a larks-head round the stay beside the fairlead"
+     ]
+    }
+   },
+   "im3": {
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "span_mm": 36.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole": {
+     "d_mm": 1.5,
+     "from_far_cheek_face_mm": 2.5,
+     "use": "hairpin clip (axis along frame y)"
+    },
+    "head_side": "outboard",
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
+    "pin_g": 2.48,
+    "set_g": 2.8,
+    "qty": 2,
+    "removed_at_bag_off": false,
+    "bl055": {
+     "shank_mm": 41.1,
+     "cross_hole": {
+      "d_mm": 1.3,
+      "from_far_cheek_face_mm": 2.5
+     },
+     "clip_side": "inboard",
+     "pin_g": 2.48,
+     "set_g": 3.28
+    },
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face",
+    "tether": {
+     "cord_mm": 120.0,
+     "route": [
+      "head hole (as BL-053) to a larks-head round the stay beside the fairlead"
+     ]
+    }
+   }
+  },
+  "mass_bl058": {
+   "pins_g": 35.94,
+   "retainers_tethers_g": 4.2
+  },
+  "bom": [
+   {
+    "id": "PIN-HINGE",
+    "station": "hinge",
+    "qty": 2,
+    "material": "ti_6al_4v",
+    "pin_d_mm": 5.0,
+    "shank_mm": 45.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole_d_mm": 1.5,
+    "cross_hole_from_far_cheek_face_mm": 2.5,
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
+    "pin_g": 4.26,
+    "set_g": 4.58,
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face"
+   },
+   {
+    "id": "PIN-US1",
+    "station": "us1",
+    "qty": 2,
+    "material": "ti_6al_4v",
+    "pin_d_mm": 5.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole_d_mm": 1.5,
+    "cross_hole_from_far_cheek_face_mm": 2.5,
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
+    "pin_g": 3.91,
+    "set_g": 4.24,
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face"
+   },
+   {
+    "id": "PIN-US2",
+    "station": "us2",
+    "qty": 2,
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "shank_mm": 39.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole_d_mm": 1.6,
+    "cross_hole_from_far_cheek_face_mm": 3.34,
+    "clip_side": "inboard (far cheek): DIN 6799 E-clip in the groove",
+    "pin_g": 2.36,
+    "set_g": 2.85,
+    "retainer": "eclip",
+    "retainer_part": "DIN 6799 RS 4 retaining washer (E-clip), 1.4122 stainless, for 5-7 mm shafts: groove D4.0 x 0.74 wide, ring OD 8.85 (uninstalled), 0.7 thick, thrust load 210 lbf (934 N)",
+    "groove": {
+     "d_mm": 4.0,
+     "w_mm": 0.74,
+     "tol": "d h11 / w H13 (DIN 6799)",
+     "from_far_cheek_face_mm": [
+      0.3,
+      1.04
+     ]
+    },
+    "tether_hole": {
+     "d_mm": 1.6,
+     "from_far_cheek_face_mm": 3.34,
+     "axis": "frame z (cord exits along the slot)",
+     "where": "in the tail, past the groove"
+    },
+    "head_seat": "clevis counterbore D9 x 2, head 0.5 below the face"
+   },
+   {
+    "id": "PIN-IM1",
+    "station": "im1",
+    "qty": 2,
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole_d_mm": 1.5,
+    "cross_hole_from_far_cheek_face_mm": 2.5,
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
+    "pin_g": 2.48,
+    "set_g": 2.8,
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face"
+   },
+   {
+    "id": "PIN-IM2",
+    "station": "im2",
+    "qty": 2,
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole_d_mm": 1.5,
+    "cross_hole_from_far_cheek_face_mm": 2.5,
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
+    "pin_g": 2.48,
+    "set_g": 2.8,
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face"
+   },
+   {
+    "id": "PIN-IM3",
+    "station": "im3",
+    "qty": 2,
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole_d_mm": 1.5,
+    "cross_hole_from_far_cheek_face_mm": 2.5,
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
+    "pin_g": 2.48,
+    "set_g": 2.8,
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face"
+   }
+  ]
+ },
+ "groove": {
+  "groove_abs_x": [
+   145.96,
+   146.7
+  ],
+  "kt": 2.5,
+  "rows": {
+   "alu_7075_t6|design|eye-1": {
+    "F_yz_n": 399.4,
+    "share_outer": 0.481,
+    "M_at_groove_nmm": 0.0,
+    "M_peak_nmm": 1794.3,
+    "M_peak_pin_check_nmm": 1797.3,
+    "sf_yield_peak": 3.16,
+    "sf_fatigue_peak": 2.35,
+    "sf_yield_pin_check": 3.15,
+    "sf_fatigue_pin_check": 2.34,
+    "misplaced_1mm": {
+     "M_nmm": 12.9,
+     "sigma_kt_mpa": 5.2,
+     "sf_yield": 89.71,
+     "sf_fatigue": 66.68
+    }
+   },
+   "alu_7075_t6|design|eye+0": {
+    "F_yz_n": 399.4,
+    "share_outer": 0.519,
+    "M_at_groove_nmm": 0.0,
+    "M_peak_nmm": 1794.5,
+    "M_peak_pin_check_nmm": 1797.3,
+    "sf_yield_peak": 3.16,
+    "sf_fatigue_peak": 2.35,
+    "sf_yield_pin_check": 3.15,
+    "sf_fatigue_pin_check": 2.34,
+    "misplaced_1mm": {
+     "M_nmm": 12.0,
+     "sigma_kt_mpa": 4.8,
+     "sf_yield": 96.61,
+     "sf_fatigue": 71.81
+    }
+   },
+   "alu_7075_t6|design|eye+1": {
+    "F_yz_n": 399.4,
+    "share_outer": 0.556,
+    "M_at_groove_nmm": 0.0,
+    "M_peak_nmm": 1773.1,
+    "M_peak_pin_check_nmm": 1797.3,
+    "sf_yield_peak": 3.2,
+    "sf_fatigue_peak": 2.38,
+    "sf_yield_pin_check": 3.15,
+    "sf_fatigue_pin_check": 2.34,
+    "misplaced_1mm": {
+     "M_nmm": 11.1,
+     "sigma_kt_mpa": 4.4,
+     "sf_yield": 104.66,
+     "sf_fatigue": 77.79
+    }
+   },
+   "alu_7075_t6|dy95|eye-1": {
+    "F_yz_n": 642.9,
+    "share_outer": 0.481,
+    "M_at_groove_nmm": 0.0,
+    "M_peak_nmm": 2888.2,
+    "M_peak_pin_check_nmm": 2893.0,
+    "sf_yield_peak": 1.96,
+    "sf_fatigue_peak": 1.46,
+    "sf_yield_pin_check": 1.96,
+    "sf_fatigue_pin_check": 1.46,
+    "misplaced_1mm": {
+     "M_nmm": 20.8,
+     "sigma_kt_mpa": 8.3,
+     "sf_yield": 55.73,
+     "sf_fatigue": 41.42
+    }
+   },
+   "alu_7075_t6|dy95|eye+0": {
+    "F_yz_n": 642.9,
+    "share_outer": 0.519,
+    "M_at_groove_nmm": 0.0,
+    "M_peak_nmm": 2888.6,
+    "M_peak_pin_check_nmm": 2893.0,
+    "sf_yield_peak": 1.96,
+    "sf_fatigue_peak": 1.46,
+    "sf_yield_pin_check": 1.96,
+    "sf_fatigue_pin_check": 1.46,
+    "misplaced_1mm": {
+     "M_nmm": 19.3,
+     "sigma_kt_mpa": 7.7,
+     "sf_yield": 60.02,
+     "sf_fatigue": 44.61
+    }
+   },
+   "alu_7075_t6|dy95|eye+1": {
+    "F_yz_n": 642.9,
+    "share_outer": 0.556,
+    "M_at_groove_nmm": 0.0,
+    "M_peak_nmm": 2854.0,
+    "M_peak_pin_check_nmm": 2893.0,
+    "sf_yield_peak": 1.99,
+    "sf_fatigue_peak": 1.48,
+    "sf_yield_pin_check": 1.96,
+    "sf_fatigue_pin_check": 1.46,
+    "misplaced_1mm": {
+     "M_nmm": 17.9,
+     "sigma_kt_mpa": 7.1,
+     "sf_yield": 65.02,
+     "sf_fatigue": 48.33
+    }
+   },
+   "ti_6al_4v|design|eye-1": {
+    "F_yz_n": 399.4,
+    "share_outer": 0.481,
+    "M_at_groove_nmm": 0.0,
+    "M_peak_nmm": 1794.3,
+    "M_peak_pin_check_nmm": 1797.3,
+    "sf_yield_peak": 5.66,
+    "sf_fatigue_peak": 6.35,
+    "sf_yield_pin_check": 5.65,
+    "sf_fatigue_pin_check": 6.34,
+    "misplaced_1mm": {
+     "M_nmm": 12.9,
+     "sigma_kt_mpa": 5.2,
+     "sf_yield": 160.58,
+     "sf_fatigue": 180.27
+    }
+   },
+   "ti_6al_4v|design|eye+0": {
+    "F_yz_n": 399.4,
+    "share_outer": 0.519,
+    "M_at_groove_nmm": 0.0,
+    "M_peak_nmm": 1794.5,
+    "M_peak_pin_check_nmm": 1797.3,
+    "sf_yield_peak": 5.66,
+    "sf_fatigue_peak": 6.35,
+    "sf_yield_pin_check": 5.65,
+    "sf_fatigue_pin_check": 6.34,
+    "misplaced_1mm": {
+     "M_nmm": 12.0,
+     "sigma_kt_mpa": 4.8,
+     "sf_yield": 172.93,
+     "sf_fatigue": 194.14
+    }
+   },
+   "ti_6al_4v|design|eye+1": {
+    "F_yz_n": 399.4,
+    "share_outer": 0.556,
+    "M_at_groove_nmm": 0.0,
+    "M_peak_nmm": 1773.1,
+    "M_peak_pin_check_nmm": 1797.3,
+    "sf_yield_peak": 5.72,
+    "sf_fatigue_peak": 6.43,
+    "sf_yield_pin_check": 5.65,
+    "sf_fatigue_pin_check": 6.34,
+    "misplaced_1mm": {
+     "M_nmm": 11.1,
+     "sigma_kt_mpa": 4.4,
+     "sf_yield": 187.34,
+     "sf_fatigue": 210.32
+    }
+   },
+   "ti_6al_4v|dy95|eye-1": {
+    "F_yz_n": 642.9,
+    "share_outer": 0.481,
+    "M_at_groove_nmm": 0.0,
+    "M_peak_nmm": 2888.2,
+    "M_peak_pin_check_nmm": 2893.0,
+    "sf_yield_peak": 3.51,
+    "sf_fatigue_peak": 3.94,
+    "sf_yield_pin_check": 3.51,
+    "sf_fatigue_pin_check": 3.94,
+    "misplaced_1mm": {
+     "M_nmm": 20.8,
+     "sigma_kt_mpa": 8.3,
+     "sf_yield": 99.76,
+     "sf_fatigue": 112.0
+    }
+   },
+   "ti_6al_4v|dy95|eye+0": {
+    "F_yz_n": 642.9,
+    "share_outer": 0.519,
+    "M_at_groove_nmm": 0.0,
+    "M_peak_nmm": 2888.6,
+    "M_peak_pin_check_nmm": 2893.0,
+    "sf_yield_peak": 3.51,
+    "sf_fatigue_peak": 3.94,
+    "sf_yield_pin_check": 3.51,
+    "sf_fatigue_pin_check": 3.94,
+    "misplaced_1mm": {
+     "M_nmm": 19.3,
+     "sigma_kt_mpa": 7.7,
+     "sf_yield": 107.43,
+     "sf_fatigue": 120.61
+    }
+   },
+   "ti_6al_4v|dy95|eye+1": {
+    "F_yz_n": 642.9,
+    "share_outer": 0.556,
+    "M_at_groove_nmm": 0.0,
+    "M_peak_nmm": 2854.0,
+    "M_peak_pin_check_nmm": 2893.0,
+    "sf_yield_peak": 3.56,
+    "sf_fatigue_peak": 3.99,
+    "sf_yield_pin_check": 3.51,
+    "sf_fatigue_pin_check": 3.94,
+    "misplaced_1mm": {
+     "M_nmm": 17.9,
+     "sigma_kt_mpa": 7.1,
+     "sf_yield": 116.39,
+     "sf_fatigue": 130.66
+    }
+   }
+  },
+  "verdict": "the groove sits 0.3-1.04 mm outboard of the inner cheek's face, outboard of every bearing: its bending moment and shear are zero, so the groove costs the pin nothing; the pin's peak is at mid-span, where the counterbore's shorter outer bearing moves the outer reaction inboard and lowers it against pin_check. Cut 1 mm inside the cheek by mistake, the groove would read the 'misplaced' SFs; the machinist's drawing dimensions it from the head seat.",
+  "thrust": {
+   "walk_force_n": 128.6,
+   "ring_thrust_n": 934.0,
+   "sf": 7.26,
+   "land_shear_mpa": 6.82,
+   "basis": "ASSUMPTION WALK-MU: 0.2 x the dy95 y-z force; vendor ring thrust (McMaster DIN 6799)"
+  }
+ },
+ "sleeve_bearing": {
+  "yield_mpa": 21.0,
+  "rows": {
+   "design|share0.6|L8": {
+    "sigma_mpa": 6.0,
+    "sf_yield": 3.51
+   },
+   "design|share0.6|L6": {
+    "sigma_mpa": 8.0,
+    "sf_yield": 2.63
+   },
+   "design|share1|L8": {
+    "sigma_mpa": 10.0,
+    "sf_yield": 2.1
+   },
+   "design|share1|L6": {
+    "sigma_mpa": 13.3,
+    "sf_yield": 1.58
+   },
+   "dy95|share0.6|L8": {
+    "sigma_mpa": 9.6,
+    "sf_yield": 2.18
+   },
+   "dy95|share0.6|L6": {
+    "sigma_mpa": 12.9,
+    "sf_yield": 1.63
+   },
+   "dy95|share1|L8": {
+    "sigma_mpa": 16.1,
+    "sf_yield": 1.31
+   },
+   "dy95|share1|L6": {
+    "sigma_mpa": 21.4,
+    "sf_yield": 0.98
+   }
+  },
+  "note": "factored rows (2.4 basis); the liner is 1 mm thick and backed by the PAHT cheek (confined), so the uniaxial yield is a lower bound. The design rows (dy <= 50) keep SF >= 1.58 at share 1.0; the dy 95 sensitivity row at share 1.0 reads 0.98 (1.31 before the counterbore)."
+ },
+ "cbore": {
+  "d_mm": 9.0,
+  "depth_mm": 2.0,
+  "head_mm": [
+   8.0,
+   1.5
+  ],
+  "recess_mm": 0.5,
+  "wall_to_cheek_tip_mm": 3.1,
+  "outer_cheek_bearing_mm": 6.0
+ },
+ "us_route_heads": {
+  "head_x_mm": [
+   179.0,
+   182.5
+  ],
+  "head_y_mm": -5.47,
+  "head_z_mm": [
+   135.0,
+   149.0
+  ],
+  "head_d_mm": 8.5,
+  "pack_half_width_mm": 197.0,
+  "rows": [
+   {
+    "torso": 15,
+    "case": "fill",
+    "side": "R",
+    "cloth_mm": 0.8,
+    "at": [
+     179.6,
+     -1.0,
+     137.4
+    ]
+   },
+   {
+    "torso": 15,
+    "case": "fill",
+    "side": "L",
+    "cloth_mm": -1.7,
+    "at": [
+     180.7,
+     -4.8,
+     134.7
+    ]
+   },
+   {
+    "torso": 15,
+    "case": "meat",
+    "side": "R",
+    "cloth_mm": 3.3,
+    "at": [
+     181.6,
+     2.1,
+     135.5
+    ]
+   },
+   {
+    "torso": 15,
+    "case": "meat",
+    "side": "L",
+    "cloth_mm": -1.1,
+    "at": [
+     180.2,
+     -7.4,
+     132.5
+    ]
+   },
+   {
+    "torso": 19,
+    "case": "fill",
+    "side": "R",
+    "cloth_mm": 13.1,
+    "at": [
+     174.7,
+     11.1,
+     146.8
+    ]
+   },
+   {
+    "torso": 19,
+    "case": "fill",
+    "side": "L",
+    "cloth_mm": 3.4,
+    "at": [
+     179.1,
+     1.9,
+     146.9
+    ]
+   },
+   {
+    "torso": 19,
+    "case": "meat",
+    "side": "R",
+    "cloth_mm": 2.1,
+    "at": [
+     181.3,
+     0.9,
+     135.2
+    ]
+   },
+   {
+    "torso": 19,
+    "case": "meat",
+    "side": "L",
+    "cloth_mm": -1.3,
+    "at": [
+     181.2,
+     -4.4,
+     148.0
+    ]
+   },
+   {
+    "torso": 23,
+    "case": "fill",
+    "side": "R",
+    "cloth_mm": 12.0,
+    "at": [
+     174.4,
+     9.7,
+     146.9
+    ]
+   },
+   {
+    "torso": 23,
+    "case": "fill",
+    "side": "L",
+    "cloth_mm": 11.3,
+    "at": [
+     175.0,
+     9.4,
+     150.3
+    ]
+   },
+   {
+    "torso": 23,
+    "case": "meat",
+    "side": "R",
+    "cloth_mm": 6.3,
+    "at": [
+     178.5,
+     5.0,
+     148.0
+    ]
+   },
+   {
+    "torso": 23,
+    "case": "meat",
+    "side": "L",
+    "cloth_mm": -1.7,
+    "at": [
+     180.8,
+     -3.1,
+     135.6
+    ]
+   }
+  ],
+  "cloth_min_mm": -1.7,
+  "outer_face_x_mm": 183.0,
+  "head_recess_mm": 0.5,
+  "face_rows": [
+   {
+    "torso": 15,
+    "case": "fill",
+    "side": "R",
+    "face_mm": -3.4,
+    "at": [
+     179.6,
+     -1.0,
+     137.4
+    ]
+   },
+   {
+    "torso": 15,
+    "case": "fill",
+    "side": "L",
+    "face_mm": -3.8,
+    "at": [
+     178.8,
+     -5.1,
+     131.7
+    ]
+   },
+   {
+    "torso": 15,
+    "case": "meat",
+    "side": "R",
+    "face_mm": -3.3,
+    "at": [
+     179.7,
+     1.8,
+     132.4
+    ]
+   },
+   {
+    "torso": 15,
+    "case": "meat",
+    "side": "L",
+    "face_mm": -4.0,
+    "at": [
+     179.0,
+     -7.0,
+     147.9
+    ]
+   },
+   {
+    "torso": 19,
+    "case": "fill",
+    "side": "R",
+    "face_mm": -3.7,
+    "at": [
+     179.3,
+     13.0,
+     137.8
+    ]
+   },
+   {
+    "torso": 19,
+    "case": "fill",
+    "side": "L",
+    "face_mm": -3.9,
+    "at": [
+     179.1,
+     1.9,
+     146.9
+    ]
+   },
+   {
+    "torso": 19,
+    "case": "meat",
+    "side": "R",
+    "face_mm": -3.6,
+    "at": [
+     179.4,
+     0.7,
+     132.2
+    ]
+   },
+   {
+    "torso": 19,
+    "case": "meat",
+    "side": "L",
+    "face_mm": -3.7,
+    "at": [
+     179.3,
+     -4.5,
+     141.4
+    ]
+   },
+   {
+    "torso": 23,
+    "case": "fill",
+    "side": "R",
+    "face_mm": -3.9,
+    "at": [
+     178.9,
+     11.8,
+     137.9
+    ]
+   },
+   {
+    "torso": 23,
+    "case": "fill",
+    "side": "L",
+    "face_mm": -3.7,
+    "at": [
+     179.3,
+     11.0,
+     135.6
+    ]
+   },
+   {
+    "torso": 23,
+    "case": "meat",
+    "side": "R",
+    "face_mm": -3.6,
+    "at": [
+     178.6,
+     5.1,
+     151.5
+    ]
+   },
+   {
+    "torso": 23,
+    "case": "meat",
+    "side": "L",
+    "face_mm": -4.0,
+    "at": [
+     179.0,
+     -3.0,
+     132.5
+    ]
+   }
+  ],
+  "face_min_mm": -4.0,
+  "pin_head_x_mm": [
+   181.0,
+   182.5
+  ],
+  "pin_head_recess_mm": 0.5,
+  "bolt_head_rule_recess_mm": 0.5,
+  "pin_head_pass": true,
+  "pin_rows": [
+   {
+    "torso": 15,
+    "case": "fill",
+    "side": "R",
+    "pin_head_mm": 6.3,
+    "pin_head_at": [
+     188.5,
+     10.9,
+     140.1
+    ],
+    "eclip_mm": 12.6,
+    "eclip_at": [
+     138.4,
+     2.1,
+     138.5
+    ],
+    "tether_mm": 0.2,
+    "tether_at": [
+     131.1,
+     7.7,
+     123.2
+    ],
+    "pin_head_outside_clevis_mm": 6.3,
+    "pin_head_outside_clevis_at": [
+     188.5,
+     10.9,
+     140.1
+    ],
+    "cloth_points_inside_clevis": 27
+   },
+   {
+    "torso": 15,
+    "case": "fill",
+    "side": "L",
+    "pin_head_mm": 8.5,
+    "pin_head_at": [
+     187.9,
+     7.3,
+     136.5
+    ],
+    "eclip_mm": 13.5,
+    "eclip_at": [
+     137.8,
+     1.1,
+     144.4
+    ],
+    "tether_mm": 0.4,
+    "tether_at": [
+     133.2,
+     4.4,
+     122.9
+    ],
+    "pin_head_outside_clevis_mm": 8.5,
+    "pin_head_outside_clevis_at": [
+     187.9,
+     7.3,
+     136.5
+    ],
+    "cloth_points_inside_clevis": 34
+   },
+   {
+    "torso": 15,
+    "case": "meat",
+    "side": "R",
+    "pin_head_mm": 8.0,
+    "pin_head_at": [
+     190.5,
+     13.5,
+     139.1
+    ],
+    "eclip_mm": 9.4,
+    "eclip_at": [
+     141.1,
+     4.1,
+     138.6
+    ],
+    "tether_mm": -0.3,
+    "tether_at": [
+     132.2,
+     9.9,
+     132.5
+    ],
+    "pin_head_outside_clevis_mm": 8.0,
+    "pin_head_outside_clevis_at": [
+     190.5,
+     13.5,
+     139.1
+    ],
+    "cloth_points_inside_clevis": 22
+   },
+   {
+    "torso": 15,
+    "case": "meat",
+    "side": "L",
+    "pin_head_mm": 10.3,
+    "pin_head_at": [
+     189.5,
+     6.8,
+     135.5
+    ],
+    "eclip_mm": 7.3,
+    "eclip_at": [
+     142.7,
+     5.2,
+     141.5
+    ],
+    "tether_mm": -0.6,
+    "tether_at": [
+     132.0,
+     10.4,
+     138.4
+    ],
+    "pin_head_outside_clevis_mm": 10.3,
+    "pin_head_outside_clevis_at": [
+     189.5,
+     6.8,
+     135.5
+    ],
+    "cloth_points_inside_clevis": 32
+   },
+   {
+    "torso": 19,
+    "case": "fill",
+    "side": "R",
+    "pin_head_mm": -0.0,
+    "pin_head_at": [
+     181.0,
+     14.1,
+     144.4
+    ],
+    "eclip_mm": 7.3,
+    "eclip_at": [
+     143.8,
+     4.7,
+     141.2
+    ],
+    "tether_mm": 0.3,
+    "tether_at": [
+     133.0,
+     6.6,
+     122.8
+    ],
+    "pin_head_outside_clevis_mm": 1.7,
+    "pin_head_outside_clevis_at": [
+     184.2,
+     15.4,
+     141.4
+    ],
+    "cloth_points_inside_clevis": 25
+   },
+   {
+    "torso": 19,
+    "case": "fill",
+    "side": "L",
+    "pin_head_mm": 6.7,
+    "pin_head_at": [
+     188.6,
+     13.3,
+     136.1
+    ],
+    "eclip_mm": 9.4,
+    "eclip_at": [
+     145.6,
+     2.3,
+     141.0
+    ],
+    "tether_mm": -0.4,
+    "tether_at": [
+     132.3,
+     7.7,
+     122.8
+    ],
+    "pin_head_outside_clevis_mm": 6.7,
+    "pin_head_outside_clevis_at": [
+     188.6,
+     13.3,
+     136.1
+    ],
+    "cloth_points_inside_clevis": 31
+   },
+   {
+    "torso": 19,
+    "case": "meat",
+    "side": "R",
+    "pin_head_mm": 8.5,
+    "pin_head_at": [
+     191.0,
+     12.2,
+     139.2
+    ],
+    "eclip_mm": 9.8,
+    "eclip_at": [
+     141.0,
+     3.7,
+     138.4
+    ],
+    "tether_mm": -0.3,
+    "tether_at": [
+     132.3,
+     9.9,
+     132.4
+    ],
+    "pin_head_outside_clevis_mm": 8.5,
+    "pin_head_outside_clevis_at": [
+     191.0,
+     12.2,
+     139.2
+    ],
+    "cloth_points_inside_clevis": 22
+   },
+   {
+    "torso": 19,
+    "case": "meat",
+    "side": "L",
+    "pin_head_mm": 9.7,
+    "pin_head_at": [
+     189.0,
+     7.7,
+     134.9
+    ],
+    "eclip_mm": 6.3,
+    "eclip_at": [
+     143.7,
+     5.9,
+     141.2
+    ],
+    "tether_mm": -0.6,
+    "tether_at": [
+     132.1,
+     10.2,
+     156.6
+    ],
+    "pin_head_outside_clevis_mm": 9.7,
+    "pin_head_outside_clevis_at": [
+     189.0,
+     7.7,
+     134.9
+    ],
+    "cloth_points_inside_clevis": 31
+   },
+   {
+    "torso": 23,
+    "case": "fill",
+    "side": "R",
+    "pin_head_mm": 0.3,
+    "pin_head_at": [
+     180.7,
+     12.5,
+     140.9
+    ],
+    "eclip_mm": 8.2,
+    "eclip_at": [
+     143.3,
+     4.0,
+     141.2
+    ],
+    "tether_mm": -0.1,
+    "tether_at": [
+     132.7,
+     6.2,
+     122.8
+    ],
+    "pin_head_outside_clevis_mm": 1.4,
+    "pin_head_outside_clevis_at": [
+     183.9,
+     14.1,
+     141.4
+    ],
+    "cloth_points_inside_clevis": 25
+   },
+   {
+    "torso": 23,
+    "case": "fill",
+    "side": "L",
+    "pin_head_mm": 0.9,
+    "pin_head_at": [
+     182.8,
+     11.5,
+     141.8
+    ],
+    "eclip_mm": 4.1,
+    "eclip_at": [
+     144.9,
+     7.7,
+     141.2
+    ],
+    "tether_mm": -0.1,
+    "tether_at": [
+     132.7,
+     10.2,
+     156.8
+    ],
+    "pin_head_outside_clevis_mm": 2.5,
+    "pin_head_outside_clevis_at": [
+     184.5,
+     11.8,
+     144.8
+    ],
+    "cloth_points_inside_clevis": 36
+   },
+   {
+    "torso": 23,
+    "case": "meat",
+    "side": "R",
+    "pin_head_mm": 6.2,
+    "pin_head_at": [
+     185.2,
+     6.8,
+     142.1
+    ],
+    "eclip_mm": 8.4,
+    "eclip_at": [
+     143.9,
+     3.6,
+     141.4
+    ],
+    "tether_mm": 0.4,
+    "tether_at": [
+     130.9,
+     9.0,
+     123.0
+    ],
+    "pin_head_outside_clevis_mm": 6.2,
+    "pin_head_outside_clevis_at": [
+     185.2,
+     6.8,
+     142.1
+    ],
+    "cloth_points_inside_clevis": 29
+   },
+   {
+    "torso": 23,
+    "case": "meat",
+    "side": "L",
+    "pin_head_mm": 10.1,
+    "pin_head_at": [
+     191.2,
+     9.8,
+     135.6
+    ],
+    "eclip_mm": 6.4,
+    "eclip_at": [
+     143.7,
+     5.8,
+     141.2
+    ],
+    "tether_mm": -0.3,
+    "tether_at": [
+     132.3,
+     10.5,
+     144.3
+    ],
+    "pin_head_outside_clevis_mm": 10.1,
+    "pin_head_outside_clevis_at": [
+     191.2,
+     9.8,
+     135.6
+    ],
+    "cloth_points_inside_clevis": 30
+   }
+  ],
+  "pin_head_cloth_min_mm": -0.0,
+  "pin_head_outside_clevis_min_mm": 1.4,
+  "eclip_cloth_min_mm": 4.1,
+  "tether_cloth_min_mm": -0.6,
+  "pin_head_vs_bolt_heads": [
+   {
+    "torso": 15,
+    "case": "fill",
+    "side": "R",
+    "pin_head_mm": 6.3,
+    "bolt_heads_mm": 0.8,
+    "pin_head_recess_mm": 0.5
+   },
+   {
+    "torso": 15,
+    "case": "fill",
+    "side": "L",
+    "pin_head_mm": 8.5,
+    "bolt_heads_mm": -1.7,
+    "pin_head_recess_mm": 0.5
+   },
+   {
+    "torso": 15,
+    "case": "meat",
+    "side": "R",
+    "pin_head_mm": 8.0,
+    "bolt_heads_mm": 3.3,
+    "pin_head_recess_mm": 0.5
+   },
+   {
+    "torso": 15,
+    "case": "meat",
+    "side": "L",
+    "pin_head_mm": 10.3,
+    "bolt_heads_mm": -1.1,
+    "pin_head_recess_mm": 0.5
+   },
+   {
+    "torso": 19,
+    "case": "fill",
+    "side": "R",
+    "pin_head_mm": -0.0,
+    "bolt_heads_mm": 13.1,
+    "pin_head_recess_mm": 0.5
+   },
+   {
+    "torso": 19,
+    "case": "fill",
+    "side": "L",
+    "pin_head_mm": 6.7,
+    "bolt_heads_mm": 3.4,
+    "pin_head_recess_mm": 0.5
+   },
+   {
+    "torso": 19,
+    "case": "meat",
+    "side": "R",
+    "pin_head_mm": 8.5,
+    "bolt_heads_mm": 2.1,
+    "pin_head_recess_mm": 0.5
+   },
+   {
+    "torso": 19,
+    "case": "meat",
+    "side": "L",
+    "pin_head_mm": 9.7,
+    "bolt_heads_mm": -1.3,
+    "pin_head_recess_mm": 0.5
+   },
+   {
+    "torso": 23,
+    "case": "fill",
+    "side": "R",
+    "pin_head_mm": 0.3,
+    "bolt_heads_mm": 12.0,
+    "pin_head_recess_mm": 0.5
+   },
+   {
+    "torso": 23,
+    "case": "fill",
+    "side": "L",
+    "pin_head_mm": 0.9,
+    "bolt_heads_mm": 11.3,
+    "pin_head_recess_mm": 0.5
+   },
+   {
+    "torso": 23,
+    "case": "meat",
+    "side": "R",
+    "pin_head_mm": 6.2,
+    "bolt_heads_mm": 6.3,
+    "pin_head_recess_mm": 0.5
+   },
+   {
+    "torso": 23,
+    "case": "meat",
+    "side": "L",
+    "pin_head_mm": 10.1,
+    "bolt_heads_mm": -1.7,
+    "pin_head_recess_mm": 0.5
+   }
+  ],
+  "pin_note": "BL-058: the free drapes have no frame outboard of the stays, so they pass through the clevis's own outer face (face_rows < 0); the cloth tents over that face. The pin head (0.5 mm below the face, as the bolt heads) and the E-clip and tether (inboard of the inner cheek, under the cheek-tip plane B-01 rests on) stand proud of nothing the cloth meets; FIT-US marks check it.",
+  "strap_min_mm": -3.0,
+  "strap_note": "centre-line distance less half the 25 mm width (a lower bound on the gap)"
+ },
+ "us_route_layout": {
+  "worst_clear_mm": {
+   "us1": 12.4,
+   "us2": 14.6
+  },
+  "pass": true,
+  "md5": "f4994b2674822dab5fb7a584ccb11e95"
+ },
+ "body": {
+  "bases": {
+   "fine_sm8": {
+    "bl053": {
+     "strength": 1.706,
+     "fatigue": 1.298,
+     "creep": 2.77,
+     "buckling": 1.228,
+     "joint_strength": 2.065,
+     "joint_fatigue": 1.698,
+     "governing_tag": "S_meat@a_L_fine_sm8_23"
+    },
+    "bl053_sanded": {
+     "strength": 1.706,
+     "fatigue": 1.272,
+     "creep": 2.713,
+     "buckling": 1.228,
+     "joint_strength": 1.986,
+     "joint_fatigue": 1.633,
+     "governing_tag": "S_meat@a_L_fine_sm8_23"
+    },
+    "bl058": {
+     "strength": 1.692,
+     "fatigue": 1.319,
+     "creep": 2.814,
+     "buckling": 1.066,
+     "joint_strength": 2.057,
+     "joint_fatigue": 1.689,
+     "governing_tag": "S_meat@a_L_fine_sm8_23"
+    },
+    "bl058_sanded": {
+     "strength": 1.692,
+     "fatigue": 1.298,
+     "creep": 2.769,
+     "buckling": 1.066,
+     "joint_strength": 1.978,
+     "joint_fatigue": 1.623,
+     "governing_tag": "S_meat@a_L_fine_sm8_23"
+    }
+   },
+   "fine": {
+    "bl053": {
+     "strength": 1.706,
+     "fatigue": 1.311,
+     "creep": 2.796,
+     "buckling": 1.18,
+     "joint_strength": 2.065,
+     "joint_fatigue": 1.698,
+     "governing_tag": "S_meat@a_L_fine_23"
+    },
+    "bl053_sanded": {
+     "strength": 1.706,
+     "fatigue": 1.288,
+     "creep": 2.749,
+     "buckling": 1.18,
+     "joint_strength": 1.986,
+     "joint_fatigue": 1.633,
+     "governing_tag": "S_meat@a_L_fine_23"
+    },
+    "bl058": {
+     "strength": 1.692,
+     "fatigue": 1.331,
+     "creep": 2.84,
+     "buckling": 1.053,
+     "joint_strength": 2.057,
+     "joint_fatigue": 1.689,
+     "governing_tag": "S_meat@a_L_fine_23"
+    },
+    "bl058_sanded": {
+     "strength": 1.692,
+     "fatigue": 1.31,
+     "creep": 2.796,
+     "buckling": 1.053,
+     "joint_strength": 1.978,
+     "joint_fatigue": 1.623,
+     "governing_tag": "S_meat@a_M_fine_20.5"
+    }
+   },
+   "beam": {
+    "bl053": {
+     "strength": 1.638,
+     "fatigue": 1.243,
+     "creep": 2.652,
+     "buckling": 1.404,
+     "joint_strength": 1.972,
+     "joint_fatigue": 1.235,
+     "governing_tag": "C_im3@a_L_beam_23"
+    },
+    "bl053_sanded": {
+     "strength": 1.638,
+     "fatigue": 1.193,
+     "creep": 2.546,
+     "buckling": 1.404,
+     "joint_strength": 1.899,
+     "joint_fatigue": 1.186,
+     "governing_tag": "C_im3@a_L_beam_23"
+    },
+    "bl058": {
+     "strength": 1.631,
+     "fatigue": 1.301,
+     "creep": 2.775,
+     "buckling": 1.298,
+     "joint_strength": 2.094,
+     "joint_fatigue": 1.205,
+     "governing_tag": "C_im3@a_L_beam_23"
+    },
+    "bl058_sanded": {
+     "strength": 1.63,
+     "fatigue": 1.249,
+     "creep": 2.664,
+     "buckling": 1.298,
+     "joint_strength": 2.012,
+     "joint_fatigue": 1.158,
+     "governing_tag": "C_im3@a_L_beam_23"
+    }
+   },
+   "fine_sm8.cyc": {
+    "bl053": {
+     "strength": 1.706,
+     "fatigue": 0.851,
+     "creep": 1.815,
+     "buckling": 1.173,
+     "joint_strength": 2.091,
+     "joint_fatigue": 1.097,
+     "governing_tag": "S_meat@a_L_fine_sm8_cyc_23"
+    },
+    "bl053_sanded": {
+     "strength": 1.706,
+     "fatigue": 0.842,
+     "creep": 1.796,
+     "buckling": 1.173,
+     "joint_strength": 2.01,
+     "joint_fatigue": 1.055,
+     "governing_tag": "S_meat@a_L_fine_sm8_cyc_23"
+    },
+    "bl058": {
+     "strength": 1.692,
+     "fatigue": 0.864,
+     "creep": 1.843,
+     "buckling": 1.022,
+     "joint_strength": 2.081,
+     "joint_fatigue": 1.092,
+     "governing_tag": "S_meat@a_L_fine_sm8_cyc_23"
+    },
+    "bl058_sanded": {
+     "strength": 1.692,
+     "fatigue": 0.856,
+     "creep": 1.825,
+     "buckling": 1.022,
+     "joint_strength": 2.001,
+     "joint_fatigue": 1.05,
+     "governing_tag": "S_meat@a_L_fine_sm8_cyc_23"
+    }
+   }
+  },
+  "voxels": {
+   "source": "print/frame_h1/h1_assembled.stl (BL-058 export), 2 mm element-centre raster",
+   "stl_voxels": 114784,
+   "run_voxels": 115037,
+   "bl053_body_voxels": 110805,
+   "in_both": 107055,
+   "stl_only": 7982,
+   "bl053_only": 3750,
+   "stl_only_outside_envelope": 2589,
+   "pads_added": 358,
+   "boss_voxels": {
+    "run": 3867,
+    "bl053": 2626
+   },
+   "raster_g": 975.5,
+   "bl053_raster_g": 939.6
+  },
+  "governing_run": "bl058_sanded",
+  "min": {
+   "static_cinch": {
+    "strength": 1.63,
+    "fatigue": 1.249,
+    "creep": 2.664,
+    "buckling": 1.053,
+    "joint_strength": 1.978,
+    "joint_fatigue": 1.158
+   },
+   "cinch_cycled": {
+    "strength": 1.692,
+    "fatigue": 0.856,
+    "creep": 1.825,
+    "buckling": 1.022,
+    "joint_strength": 2.001,
+    "joint_fatigue": 1.05
+   }
+  },
+  "min_bl055": {
+   "static_cinch": {
+    "strength": 1.638,
+    "fatigue": 1.193,
+    "creep": 2.546,
+    "buckling": 1.18
+   },
+   "cinch_cycled": {
+    "strength": 1.706,
+    "fatigue": 0.842,
+    "creep": 1.796,
+    "buckling": 1.173
+   }
+  },
+  "members_fine_sm8": {
+   "branch lower (z 165-330) L": {
+    "A_mm2": 108.0,
+    "A_bl053_mm2": 116.0,
+    "Pcr_n": 458.4,
+    "P_factored_n": 235.4,
+    "margin": 1.298,
+    "margin_bl053": 1.404
+   },
+   "branch lower (z 165-330) R": {
+    "A_mm2": 112.0,
+    "A_bl053_mm2": 116.0,
+    "Pcr_n": 493.0,
+    "P_factored_n": 288.5,
+    "margin": 1.139,
+    "margin_bl053": 1.272
+   },
+   "branch upper (z 330-495) L": {
+    "A_mm2": 140.0,
+    "A_bl053_mm2": 152.0,
+    "Pcr_n": 770.3,
+    "P_factored_n": 112.9,
+    "margin": 4.549,
+    "margin_bl053": 6.367
+   },
+   "branch upper (z 330-495) R": {
+    "A_mm2": 148.0,
+    "A_bl053_mm2": 160.0,
+    "Pcr_n": 860.8,
+    "P_factored_n": 538.3,
+    "margin": 1.066,
+    "margin_bl053": 1.236
+   },
+   "mid bar (x -115..115) all": {
+    "A_mm2": 124.0,
+    "A_bl053_mm2": 128.0,
+    "Pcr_n": 370.1,
+    "P_factored_n": 223.0,
+    "margin": 1.106,
+    "margin_bl053": 1.228
+   }
+  },
+  "governing_region": {
+   "set": "S_meat@a_L_fine_sm8_23:static_carry|23",
+   "region": "lumbar struts / pan",
+   "share": 0.44363256784968685,
+   "shares": {
+    "lumbar struts / pan": 0.44363256784968685,
+    "hip-pivot boss": 0.18684759916492694,
+    "stay L lower sleeve z 160-240 (branch / strut root)": 0.1847599164926931,
+    "stay R lower sleeve z 160-240 (branch / strut root)": 0.13778705636743216,
+    "stay L below the sleeve": 0.018789144050104383,
+    "stay R below the sleeve": 0.017745302713987474,
+    "stay R sleeve (crown bore wall)": 0.0041753653444676405,
+    "stay L sleeve (crown bore wall)": 0.003131524008350731,
+    "inboard branch": 0.0020876826722338203,
+    "stay L sleeve (crown bore wall) at the top bushing": 0.0010438413361169101
+   },
+   "n": 958,
+   "peak_region": "lumbar struts / pan",
+   "peak_where": [
+    41.0,
+    -31.0,
+    109.0
+   ]
+  },
+  "top_regions_fine_sm8": {
+   "lumbar struts / pan": {
+    "n_top": 425,
+    "share_top": 0.44363256784968685,
+    "fatigue_p99_region": 0.9964291310854343,
+    "fatigue_peak_region": 0.49241650364071926
+   },
+   "hip-pivot boss": {
+    "n_top": 179,
+    "share_top": 0.18684759916492694,
+    "fatigue_p99_region": 0.9192510760136556,
+    "fatigue_peak_region": 0.6342826919002349
+   },
+   "stay foot": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 655.8187303277246,
+    "fatigue_peak_region": 395.91118160181475
+   },
+   "stay below the sleeve": {
+    "n_top": 35,
+    "share_top": 0.03653444676409186,
+    "fatigue_p99_region": 1.9348558495372568,
+    "fatigue_peak_region": 0.7663032251421351
+   },
+   "stay sleeve z 160-240": {
+    "n_top": 309,
+    "share_top": 0.32254697286012524,
+    "fatigue_p99_region": 1.0400273068244854,
+    "fatigue_peak_region": 0.5647190583797699
+   },
+   "stay sleeve z 240-470": {
+    "n_top": 7,
+    "share_top": 0.007306889352818371,
+    "fatigue_p99_region": 1.6610985272749088,
+    "fatigue_peak_region": 1.2074654622858974
+   },
+   "stay top z 470-544": {
+    "n_top": 1,
+    "share_top": 0.0010438413361169101,
+    "fatigue_p99_region": 1.898427033216313,
+    "fatigue_peak_region": 1.0730354239285338
+   },
+   "inboard branch": {
+    "n_top": 2,
+    "share_top": 0.0020876826722338203,
+    "fatigue_p99_region": 3.631991829641402,
+    "fatigue_peak_region": 1.0263781889149637
+   },
+   "mid bar / upper bar": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 3.2374885481258073,
+    "fatigue_peak_region": 2.0163138266450287
+   }
+  },
+  "keepouts": {
+   "sleeve_R present": 1.0,
+   "sleeve_L present": 1.0,
+   "pivot present": 1.0,
+   "pads present": 0.8405931417979611,
+   "pawl housing ring (BL-046, cheeks for the BL-047 pivot) present": 0.9186016175319593,
+   "bore_R empty": 0.940785204412719,
+   "bore_L empty": 0.9402173913043478,
+   "spine channel BL-046 (tube + rack, h1_spine_channel) empty": 1.0,
+   "fairlead stubs inside the envelope present (voxel)": 0.7533503509891513,
+   "fairleads complete on the print STL (h1_fairleads.check_stl)": true,
+   "outside envelope (voxels)": 2589,
+   "boss wearer face flush (rails)": true,
+   "boss bag side outboard of spreader and inside envelope": true,
+   "boss inside x half-width 152": true,
+   "stay outer radius at z 234 mm": 13.41,
+   "bag envelope local y at z 234 mm": 18.490985022210744,
+   "boss local extents (x, y) mm": [
+    [
+     16.4,
+     2.0,
+     18.0
+    ],
+    [
+     -19.0,
+     -3.0,
+     13.0
+    ]
+   ],
+   "boss top z / next spreader clip bottom z": [
+    252.0,
+    255.0
+   ],
+   "boss clear of spreader clip": true,
+   "bolt head top z": 254.5,
+   "bolt head clear of spreader clip": true,
+   "boss max |x| mm (half-width limit 152)": 142.0
+  },
+  "raster_g": {
+   "bl053": 939.6,
+   "bl058_stl": 975.5
+  },
+  "R1": "SF / requirement >= 1 on every basis (load_standard rev C); the cinch-cycled basis is held below R1 for MT-1 since BL-024 (h1_closeout.md)",
+  "us2_lug": {
+   "bl058": {
+    "strength": 3.35,
+    "fatigue": 1.51
+   },
+   "bl053": {
+    "strength": 3.33,
+    "fatigue": 1.5
+   },
+   "families_bl058": {
+    "bagon|-": {
+     "strength": 9.01,
+     "fatigue": 5.07,
+     "region": "root"
+    },
+    "bl051_yz|-": {
+     "strength": 3.31,
+     "fatigue": 1.49,
+     "region": "root"
+    },
+    "cradle3d_dy95|b40": {
+     "strength": 2.57,
+     "fatigue": 1.15,
+     "region": "root"
+    },
+    "cradle3d_dy95|b50": {
+     "strength": 3.17,
+     "fatigue": 1.43,
+     "region": "root"
+    },
+    "cradle3d_dy95|b60": {
+     "strength": 3.78,
+     "fatigue": 1.7,
+     "region": "root"
+    },
+    "cradle3d_dy95|b70": {
+     "strength": 4.38,
+     "fatigue": 1.97,
+     "region": "root"
+    },
+    "cradle3d|b40": {
+     "strength": 3.35,
+     "fatigue": 1.51,
+     "region": "root"
+    },
+    "cradle3d|b50": {
+     "strength": 4.16,
+     "fatigue": 1.87,
+     "region": "root"
+    },
+    "cradle3d|b60": {
+     "strength": 4.91,
+     "fatigue": 2.21,
+     "region": "root"
+    },
+    "cradle3d|b70": {
+     "strength": 5.62,
+     "fatigue": 2.53,
+     "region": "root"
+    }
+   },
+   "families_bl053": {
+    "bagon|-": {
+     "strength": 8.89,
+     "fatigue": 5.0,
+     "region": "root"
+    },
+    "bl051_yz|-": {
+     "strength": 3.3,
+     "fatigue": 1.48,
+     "region": "root"
+    },
+    "cradle3d_dy95|b40": {
+     "strength": 2.55,
+     "fatigue": 1.15,
+     "region": "root"
+    },
+    "cradle3d_dy95|b50": {
+     "strength": 3.16,
+     "fatigue": 1.42,
+     "region": "root"
+    },
+    "cradle3d_dy95|b60": {
+     "strength": 3.75,
+     "fatigue": 1.69,
+     "region": "root"
+    },
+    "cradle3d_dy95|b70": {
+     "strength": 4.34,
+     "fatigue": 1.95,
+     "region": "root"
+    },
+    "cradle3d|b40": {
+     "strength": 3.33,
+     "fatigue": 1.5,
+     "region": "root"
+    },
+    "cradle3d|b50": {
+     "strength": 4.17,
+     "fatigue": 1.88,
+     "region": "root"
+    },
+    "cradle3d|b60": {
+     "strength": 4.9,
+     "fatigue": 2.2,
+     "region": "root"
+    },
+    "cradle3d|b70": {
+     "strength": 5.58,
+     "fatigue": 2.51,
+     "region": "root"
+    }
+   }
+  }
+ },
+ "hip_screws": {
+  "screw": "Ti gr5 M5 x 12 DIN 7984",
+  "was": "M5 x 14",
+  "insert_len_mm": 9.5,
+  "base_t_mm": 3.0,
+  "pilot_depth_measured_mm": 11.5,
+  "rows": {
+   "x14": {
+    "tip_depth_below_face_mm": 11.0,
+    "engagement_mm": {
+     "insert_flush": 9.5,
+     "insert_0.2_low": 9.5
+    },
+    "engagement_d": 1.9,
+    "tip_past_insert_end_mm": 1.5,
+    "tip_to_pilot_floor_mm": 0.5,
+    "tip_in_melt_reservoir": true,
+    "mass_g": 2.243
+   },
+   "x12": {
+    "tip_depth_below_face_mm": 9.0,
+    "engagement_mm": {
+     "insert_flush": 9.0,
+     "insert_0.2_low": 8.8
+    },
+    "engagement_d": 1.76,
+    "tip_past_insert_end_mm": -0.5,
+    "tip_to_pilot_floor_mm": 2.5,
+    "tip_in_melt_reservoir": false,
+    "mass_g": 2.102
+   }
+  },
+  "pass": true,
+  "rule": ">= 1.5 d of thread in the insert (8.8-9.0 of its 9.5 mm), tip inside the insert, >= 2 mm above the floor",
+  "key": {
+   "socket_s_mm": 3.0,
+   "source": "https://www.westfieldfasteners.co.uk/A4_ScrewBolt_SHCapLow_M5.html (DIN 7984 M5: s 3, t 2.7) and https://westfieldfasteners.co.uk/Standards/ScrewBolt-SHCapLow-M.html (dk 8.5 max, k 3.5 max); https://eshop-pl.boellhoff.com/out/media/pdf/DIN_7984_Stahl_08.8___en.pdf (M5 SW 3)",
+   "tool": "3 mm hex screwdriver (blade >= 60 mm); the socket depth t 2.7 mm",
+   "envelope_d_mm": 4.0,
+   "was": "4 mm key, D5 envelope (BL-056)",
+   "driver_access_ok": true,
+   "frame_key_clash_mm3": 0.0
+  }
+ },
+ "hip_holes": {
+  "source": "https://www.iso.org/standard/4183.html (ISO 273 clearance holes, fine / medium / coarse; M5 5.3 / 5.5 / 5.8: secondary, the table is behind the paywall)",
+  "mount_pos_T_mm": 0.2,
+  "scatter_radial_mm": {
+   "guided": 0.2,
+   "freehand": 0.4
+  },
+  "rows": {
+   "D5.5": {
+    "H_minus_F_mm": 0.5,
+    "inserts_radial_allowed_mm": 0.15,
+    "guided_pass": false,
+    "freehand_pass": false
+   },
+   "D5.8": {
+    "H_minus_F_mm": 0.8,
+    "inserts_radial_allowed_mm": 0.3,
+    "guided_pass": true,
+    "freehand_pass": false
+   }
+  },
+  "choice": {
+   "hole_d_mm": 5.8,
+   "guide": true,
+   "why": "guided scatter 0.2 mm fits D5.8's 0.3 mm (and not D5.5's 0.15); freehand 0.4 mm fits neither: print the insert-setting guide (test_pieces/hip_insert_guide)"
+  },
+  "head_to_head_worst_mm": 0.29
+ },
+ "insert_guide": {
+  "files": [
+   "designs/pack_5200/print/frame_h1/test_pieces/hip_insert_guide.stl",
+   "designs/pack_5200/print/frame_h1/test_pieces/hip_insert_guide.3mf"
+  ],
+  "watertight": true,
+  "shells": 1,
+  "extents_mm": [
+   56.3,
+   56.3,
+   8.5
+  ],
+  "g_paht": 13.1,
+  "params": {
+   "bore_d": 7.25,
+   "block_h": 6.0,
+   "skirt_depth": 2.5,
+   "skirt_clear": 0.15,
+   "wall": 3.0,
+   "window_d": 20.0
+  },
+  "bores": 8,
+  "bore_d_eq_mm": [
+   7.24
+  ],
+  "bore_pos_err_mm": 0.0,
+  "bed_fit_with_brim": true,
+  "frame_clash_mm3": 0.0,
+  "material": "PAHT-CF as the frame (ASSUMPTION GUIDE-HEAT: the iron tip works inside the insert; replace the guide when a bore reads > 7.4 mm)",
+  "print": "block face down, skirt up (no supports: the bores and the window are vertical)",
+  "procedure": [
+   "1. Guide on the boss, skirt over the D50 rim, pressed flat on the face.",
+   "2. START each insert through its bore: iron at the vendor temperature, push until the insert's top is level with the guide's top face (6 mm above the boss face; the insert is then 3.5 mm into the pilot with 6 mm held straight in the bore).",
+   "3. After insert 1: M5 x 12 + a 10 mm washer on the guide top, into insert 1, snug: the guide cannot turn; start inserts 2-8 the same way, let them cool 30 s each.",
+   "4. Unscrew, lift the guide off. FINISH each insert with a flat-faced tip: press it straight down the last 6 mm until flush with the boss face (the started axis guides it).",
+   "5. Straight-edge + 0.2 mm feeler: no insert proud, none more than 0.2 mm low (INSERT-SET).",
+   "6. Ti mount on: all 8 x M5 x 12 must start by hand through the D5.8 holes (first-article check of the scatter)."
+  ],
+  "pass": true
+ },
+ "hip_mount": {
+  "stl": "designs/pack_5200/print/lug_hip_pivot_mount_slm_ti.stl",
+  "hole_d_mm": 5.8,
+  "geometry": {
+   "watertight": true,
+   "shells": 1,
+   "base": {
+    "d_eq_mm": 49.99,
+    "holes": 9,
+    "hole_d_eq_mm": [
+     5.8,
+     5.8,
+     5.8,
+     5.8,
+     5.8,
+     5.8,
+     5.8,
+     5.8,
+     10.0
+    ],
+    "top_z_mm": 2.95,
+    "hole_pos_err_mm": 0.0,
+    "pin_hole_d_eq_mm": 10.0
+   },
+   "head_to_leg_mm": 5.23,
+   "head_to_head_mm": 0.69,
+   "driver_access_ok": true,
+   "hole_edge_to_rim_mm": 3.09,
+   "hole_to_pin_hole_mm": 11.1
+  },
+  "frame_fit": {
+   "clash_mm3": -0.0,
+   "tip_to_pilot_floor_mm": 2.5,
+   "thread_engagement_in_insert_mm": 9.0,
+   "boss_contact_mm2": 1705.4,
+   "base_area_mm2": 1673.6,
+   "pass": true
+  },
+  "strip": {
+   "leg_half_w_at_base_top_mm": 4.82,
+   "arm_mm": 9.3,
+   "strip_b_mm": 9.19,
+   "rows": {
+    "C2|H_pin": {
+     "sigma_mpa": 131.4,
+     "sf": 5.97,
+     "goal": 1.5
+    },
+    "C1|H_pin": {
+     "sigma_mpa": 87.6,
+     "sf": 8.96,
+     "goal": 1.5
+    },
+    "walk|H_pin": {
+     "sigma_mpa": 70.0,
+     "sf": 4.62,
+     "goal": 1.15
+    },
+    "carry|H_pin": {
+     "sigma_mpa": 43.8,
+     "sf": 17.92,
+     "goal": 1.5
+    },
+    "C2|H_frame": {
+     "sigma_mpa": 161.0,
+     "sf": 4.88,
+     "goal": 1.5
+    },
+    "C1|H_frame": {
+     "sigma_mpa": 107.4,
+     "sf": 7.31,
+     "goal": 1.5
+    },
+    "walk|H_frame": {
+     "sigma_mpa": 85.9,
+     "sf": 3.77,
+     "goal": 1.15
+    },
+    "carry|H_frame": {
+     "sigma_mpa": 53.6,
+     "sf": 14.63,
+     "goal": 1.5
+    }
+   },
+   "min_sf_over_goal": 3.25
+  },
+  "fe_min_sf_over_goal": 1.79,
+  "fe_rows": {
+   "C2|H_pin": 2.69,
+   "C1|H_pin": 4.04,
+   "walk|H_pin": 2.08,
+   "carry|H_pin": 8.08,
+   "C2|H_frame": 7.91,
+   "C1|H_frame": 11.87,
+   "walk|H_frame": 6.12,
+   "carry|H_frame": 23.73
+  },
+  "bl056_fe_min_sf_over_goal": 1.8,
+  "mass_g": 33.98,
+  "bl056_g": 34.26,
+  "delta_g": -0.28
+ },
+ "stl": {
+  "h1_assembled": {
+   "watertight": true,
+   "shells": 1,
+   "g": 1069.3,
+   "has_3mf": true,
+   "delta_g": -0.107
+  },
+  "h1_lower_flat": {
+   "watertight": true,
+   "shells": 1,
+   "g": 494.58,
+   "has_3mf": true,
+   "delta_g": 0.0
+  },
+  "h1_upper_flat": {
+   "watertight": true,
+   "shells": 1,
+   "g": 543.4,
+   "has_3mf": true,
+   "delta_g": 0.0
+  },
+  "us2_clevis_L": {
+   "watertight": true,
+   "shells": 1,
+   "g": 15.66,
+   "has_3mf": true,
+   "delta_g": -0.053,
+   "bed_fit_with_brim": true
+  },
+  "us2_clevis_R": {
+   "watertight": true,
+   "shells": 1,
+   "g": 15.66,
+   "has_3mf": true,
+   "delta_g": -0.053,
+   "bed_fit_with_brim": true
+  },
+  "bed": {
+   "lower": {
+    "extents_mm": [
+     321.86,
+     300.39,
+     76.75
+    ],
+    "fits": true,
+    "fits_with_brim": true,
+    "spare_mm": [
+     2.14,
+     3.61
+    ],
+    "best_rotation": {
+     "deg": 90.0,
+     "swap": true,
+     "w_mm": 321.86,
+     "h_mm": 300.39,
+     "over_mm": -2.14,
+     "fits_with_brim": true
+    }
+   },
+   "upper": {
+    "extents_mm": [
+     309.39,
+     280.12,
+     64.38
+    ],
+    "fits": true,
+    "fits_with_brim": true,
+    "spare_mm": [
+     14.61,
+     23.88
+    ],
+    "best_rotation": {
+     "deg": 0.0,
+     "swap": false,
+     "w_mm": 309.39,
+     "h_mm": 280.12,
+     "over_mm": -14.61,
+     "fits_with_brim": true
+    }
+   }
+  },
+  "us_route_stay_R": {
+   "watertight": true,
+   "shells": 1,
+   "g": 152.54
+  },
+  "us_route_stay_R_frame_coords": {
+   "watertight": true,
+   "shells": 1,
+   "g": 167.76
+  },
+  "hip_insert_guide": {
+   "watertight": true,
+   "shells": 1,
+   "g": 13.07
+  }
+ },
+ "mass": {
+  "print_delta_g": -0.107,
+  "print_basis": "assembled print mesh BL-058 - the 6b0cde1 copy (outputs/bl058/before) x 1.06 g/cm3",
+  "mount_delta_g": -0.28,
+  "hip_screws_delta_g": -0.846,
+  "hip_screws_n": 6,
+  "pins_delta_g": -0.24,
+  "retainers_delta_g": -5.4,
+  "sleeves_delta_g": -0.073,
+  "pins_bl058_g": 35.94,
+  "retainers_bl058_g": 4.2,
+  "pins_bl055_g": 36.18,
+  "retainers_bl055_g": 9.6,
+  "frame_delta_g": -1.233,
+  "attachment_delta_g": -5.713
+ },
+ "kit": {
+  "PIN-RET_d": {
+   "id": "PIN-RET",
+   "step": "(d)",
+   "what": "bag on, loaded (the FIT-US 20 kg stand-in quarter in the cradle, US straps cam-tight), 10 min, then bag off",
+   "pass": "no retainer, tether or pin-head marks on B-01 or the bag's side panel (chalk / lipstick on every hairpin clip, the two US2 E-clips, the US2 tethers and pin heads before; look for colour on the cloth)",
+   "settles": [
+    "CLIP-ENV",
+    "TETHER-US2",
+    "PIN-HEAD"
+   ]
+  },
+  "FIT-US_marks": [
+   "US2 clevis bolt heads (2 per side)",
+   "US2 pin head in its counterbore (1 per side)",
+   "US2 clevis outer face edges",
+   "US2 E-clip (inboard, 1 per side)",
+   "US2 tether strand on the lug arm's bag face (1 per side)",
+   "US1 hairpin clip body (inboard, fore of the pin)"
+  ],
+  "FIT-US_pass": "no colour on the bag from any mark; pin head recess 0.5 mm below the clevis face (0.5 mm feeler across the head)",
+  "nut": {
+   "spec": "M5 hex nut A2 DIN 934, m = 4.0 mm (3.7-4.0), 8 AF",
+   "caliper": "m <= 4.1 mm on every nut before assembly (ISO 4032 M5 is 4.4-4.7 and does not seat at US2)",
+   "bolt_caliper": "M5 x 35 (US2) length 34.7-35.3 mm: longer bottoms in the tail hole (0.5 mm room), shorter leaves < 0.6 pitch past the nut"
+  },
+  "hip_screw": {
+   "spec": "Ti gr5 M5 x 12 DIN 7984 (8)",
+   "key": "3 mm hex screwdriver",
+   "was": "M5 x 14, 4 mm key"
+  },
+  "hip_guide": {
+   "file": "designs/pack_5200/print/frame_h1/test_pieces/hip_insert_guide.stl",
+   "procedure": [
+    "1. Guide on the boss, skirt over the D50 rim, pressed flat on the face.",
+    "2. START each insert through its bore: iron at the vendor temperature, push until the insert's top is level with the guide's top face (6 mm above the boss face; the insert is then 3.5 mm into the pilot with 6 mm held straight in the bore).",
+    "3. After insert 1: M5 x 12 + a 10 mm washer on the guide top, into insert 1, snug: the guide cannot turn; start inserts 2-8 the same way, let them cool 30 s each.",
+    "4. Unscrew, lift the guide off. FINISH each insert with a flat-faced tip: press it straight down the last 6 mm until flush with the boss face (the started axis guides it).",
+    "5. Straight-edge + 0.2 mm feeler: no insert proud, none more than 0.2 mm low (INSERT-SET).",
+    "6. Ti mount on: all 8 x M5 x 12 must start by hand through the D5.8 holes (first-article check of the scatter)."
+   ]
+  },
+  "pins_bom": [
+   {
+    "id": "PIN-HINGE",
+    "station": "hinge",
+    "qty": 2,
+    "material": "ti_6al_4v",
+    "pin_d_mm": 5.0,
+    "shank_mm": 45.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole_d_mm": 1.5,
+    "cross_hole_from_far_cheek_face_mm": 2.5,
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
+    "pin_g": 4.26,
+    "set_g": 4.58,
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face"
+   },
+   {
+    "id": "PIN-US1",
+    "station": "us1",
+    "qty": 2,
+    "material": "ti_6al_4v",
+    "pin_d_mm": 5.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole_d_mm": 1.5,
+    "cross_hole_from_far_cheek_face_mm": 2.5,
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
+    "pin_g": 3.91,
+    "set_g": 4.24,
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face"
+   },
+   {
+    "id": "PIN-US2",
+    "station": "us2",
+    "qty": 2,
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "shank_mm": 39.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole_d_mm": 1.6,
+    "cross_hole_from_far_cheek_face_mm": 3.34,
+    "clip_side": "inboard (far cheek): DIN 6799 E-clip in the groove",
+    "pin_g": 2.36,
+    "set_g": 2.85,
+    "retainer": "eclip",
+    "retainer_part": "DIN 6799 RS 4 retaining washer (E-clip), 1.4122 stainless, for 5-7 mm shafts: groove D4.0 x 0.74 wide, ring OD 8.85 (uninstalled), 0.7 thick, thrust load 210 lbf (934 N)",
+    "groove": {
+     "d_mm": 4.0,
+     "w_mm": 0.74,
+     "tol": "d h11 / w H13 (DIN 6799)",
+     "from_far_cheek_face_mm": [
+      0.3,
+      1.04
+     ]
+    },
+    "tether_hole": {
+     "d_mm": 1.6,
+     "from_far_cheek_face_mm": 3.34,
+     "axis": "frame z (cord exits along the slot)",
+     "where": "in the tail, past the groove"
+    },
+    "head_seat": "clevis counterbore D9 x 2, head 0.5 below the face"
+   },
+   {
+    "id": "PIN-IM1",
+    "station": "im1",
+    "qty": 2,
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole_d_mm": 1.5,
+    "cross_hole_from_far_cheek_face_mm": 2.5,
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
+    "pin_g": 2.48,
+    "set_g": 2.8,
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face"
+   },
+   {
+    "id": "PIN-IM2",
+    "station": "im2",
+    "qty": 2,
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole_d_mm": 1.5,
+    "cross_hole_from_far_cheek_face_mm": 2.5,
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
+    "pin_g": 2.48,
+    "set_g": 2.8,
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face"
+   },
+   {
+    "id": "PIN-IM3",
+    "station": "im3",
+    "qty": 2,
+    "material": "alu_7075_t6",
+    "pin_d_mm": 5.0,
+    "shank_mm": 41.1,
+    "head_mm": [
+     8.0,
+     1.5
+    ],
+    "cross_hole_d_mm": 1.5,
+    "cross_hole_from_far_cheek_face_mm": 2.5,
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
+    "pin_g": 2.48,
+    "set_g": 2.8,
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face"
+   }
+  ]
+ },
+ "assumptions": [
+  {
+   "id": "BOLT-LEN",
+   "text": "M5 x 35 / x 45 length within +/-0.5 mm (ISO 4759-1 grade A js15).",
+   "settled_by": "Caliper every bolt: US2 M5 x 35 must read 34.7-35.3 (tail room 0.5 mm, tip past the nut 1.0 mm nominal)."
+  },
+  {
+   "id": "CLIP-FIT",
+   "text": "McMaster 90153A214 (for a 3/16 in = 4.76 mm shaft) springs over the 5.0 mm pin and holds.",
+   "settled_by": "PIN-RET (a): 50 N push on the tail moves the pin < 0.5 mm; fallback 90153A216."
+  },
+  {
+   "id": "CLIP-ENV",
+   "text": "The hairpin clip's straight leg stands <= 3 mm past the pin aft; the clip body (<= 13.5 mm) lies fore, within +/-3.8 mm of the pin axis in z.",
+   "settled_by": "Caliper one clip seated on a pin; PIN-RET (d)."
+  },
+  {
+   "id": "CLIP-MASS",
+   "text": "Hairpin clip 0.122 g (wire volume), E-clip 0.198 g (75 % of the annulus).",
+   "settled_by": "Weigh 10 of each on receipt."
+  },
+  {
+   "id": "GROOVE-LAND",
+   "text": "1.5 mm from the E-clip groove to the tether hole (3 x the 0.5 mm groove depth).",
+   "settled_by": "PIN-RET (a) on the US2 pin: 50 N push, the ring stays seated."
+  },
+  {
+   "id": "WALK-MU",
+   "text": "A walking pin pushes on its retainer with <= 0.2 x the largest y-z pin force (the eye's pull along the pin bears on the cheek).",
+   "settled_by": "PIN-RET (b): every retainer seated after the T9 walk and the cycle tests."
+  },
+  {
+   "id": "KT-GROOVE",
+   "text": "Kt 2.5 for the groove in bending (only used for the misplaced-groove sensitivity).",
+   "settled_by": "Not needed while the groove is outboard of the cheek (M = 0 there); PIN-RET (a) measures its position."
+  },
+  {
+   "id": "TETHER-US2",
+   "text": "The US2 tether's strand across the lug arm's bag face (1.5 mm cord) leaves no mark on B-01; the free drapes reach it (-0.6 mm, the bag rests on the arm there).",
+   "settled_by": "PIN-RET (d) and FIT-US marks."
+  },
+  {
+   "id": "INSERT-SET",
+   "text": "Inserts set flush to 0.2 mm low.",
+   "settled_by": "Straight-edge + feeler before the mount goes on."
+  },
+  {
+   "id": "SLM-POS",
+   "text": "SLM hole-pattern position 0.2 mm diametral.",
+   "settled_by": "Vendor CMM report or a pin-gauge plate."
+  },
+  {
+   "id": "INSERT-SCATTER",
+   "text": "Set-insert position error 0.2 mm radial with the guide, 0.4 mm freehand (no published figure found).",
+   "settled_by": "First article: all 8 M5 x 12 start by hand through the D5.8 mount; pin gauge per insert."
+  },
+  {
+   "id": "GUIDE-HEAT",
+   "text": "The PAHT-CF guide's bores survive 8 insert starts (the iron tip works inside the insert).",
+   "settled_by": "Bore <= 7.4 mm after use (caliper)."
+  },
+  {
+   "id": "KEY-D",
+   "text": "A 3 mm hex screwdriver blade sweeps a D4 envelope (3.46 across corners + 0.5).",
+   "settled_by": "First-article assembly."
+  },
+  {
+   "id": "RASTER-2MM",
+   "text": "The whole-body check on the print uses the assembled STL rastered on the 2 mm H1 grid: member sections read 3-8 % below the BL-053 voxel body (the print surface is smoother; the STL slice of the upper branch is 144-147 mm2 against 152-160 voxel mm2), so the member buckling margins drop.",
+   "settled_by": "CA-5 / BU-1 member tests."
+  }
+ ],
+ "screenshots": [
+  "outputs/screens/20261121_BL058_1.png",
+  "outputs/screens/20261121_BL058_2.png",
+  "outputs/screens/20261121_BL058_3.png"
+ ]
+}

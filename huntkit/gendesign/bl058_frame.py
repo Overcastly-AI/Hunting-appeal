@@ -254,6 +254,8 @@ CROSS_HOLE_D = 1.5                    # orchestrator call: 1.5-1.6 mm if kept (0
 #                                       wire spare clips too)
 CLIP_EDGE = 2.5                       # cross-hole centre beyond the far cheek's outer face (h1_rev5.CLIP_EDGE)
 TAIL_BEYOND_HOLE = 2.0                # h1_rev5.TAIL_BEYOND_HOLE
+TAIL_HAIRPIN = CLIP_EDGE + 1.3 / 2.0 + TAIL_BEYOND_HOLE   # BL-053's tail (1.3 hole): 5.15 mm; with the D1.5 hole the
+#                                       end wall past the hole is 1.9 mm (was 2.0) and the shanks (45.1 / 41.1) stay
 CLIP_TIP_PAST_PIN = 3.0               # ASSUMPTION CLIP-ENV: the hairpin's straight-leg tip stands <= 3 mm past the pin
 #                                       surface on the side opposite the clip body (catalogue gives the overall length
 #                                       only); settled by a caliper on one clip seated on a pin (PIN-RET a)
@@ -303,7 +305,7 @@ def pin_row(name: str) -> dict:
     ret = STATION_RET[name]["retainer"]
     shank_in = f["head_seat"] - f["far"]                 # head seat to far cheek face
     if ret == "hairpin":
-        tail = CLIP_EDGE + CROSS_HOLE_D / 2.0 + TAIL_BEYOND_HOLE
+        tail = TAIL_HAIRPIN                              # BL-053's tail kept: the shank lengths do not change
         feats = {"cross_hole": {"d_mm": CROSS_HOLE_D, "from_far_cheek_face_mm": CLIP_EDGE,
                                 "axis": "frame y (the clip lies in the y-z plane, body fore)"},
                  "tether_hole": {"d_mm": TETHER_HOLE_D, "where": "in the head (as BL-053)"}}
@@ -365,10 +367,7 @@ def pin_mass_g(row: dict, material: str) -> float:
     f = row["features"]
     if "groove" in f:
         v -= math.pi / 4 * (d ** 2 - f["groove"]["d_mm"] ** 2) * f["groove"]["w_mm"]
-    for k in ("cross_hole", "tether_hole"):
-        if k in f and "from_far_cheek_face_mm" in f[k]:
-            v -= math.pi / 4 * f[k]["d_mm"] ** 2 * d
-    return v * rho
+    return v * rho                                       # cross / tether holes not deducted (as h1_rev5.pins)
 
 
 def tether_g(name: str) -> float:
@@ -401,6 +400,28 @@ def pin_overlay(name: str, material: str) -> dict:
         out["tether_hole"] = f["tether_hole"]
         out["sleeve_note"] = "the outer cheek's UHMWPE sleeve is cut to 6.0 mm (flush with the counterbore floor)"
     return out
+
+
+def retainer_record(base: dict) -> dict:
+    """h1_rev5.RETAINER's shape (part, source, mass_g, tether, tether_g) with the BL-058 parts, so the kit and the
+    build guide keep reading ``pins.retainer``."""
+    return {**base, "part": f"{HAIRPIN['part']} (hinge, US1, IM1-IM3); US2: {ECLIP['part']}",
+            "source": f"{HAIRPIN['source']}; {ECLIP['source']}", "mass_g": HAIRPIN["mass_g"],
+            "mass_eclip_g": ECLIP["mass_g"],
+            "tether": "1.5 mm Dyneema (UHMWPE): 120 mm through the head hole and the clip's bend, larks-head round the "
+                      f"stay (hairpin stations); US2: {cord_len('us2'):.0f} mm from the pin's tail hole along the "
+                      "buttress slot, larks-head round the lug arm at |x| 132",
+            "tether_g": TETHER_G, "tether_us2_g": tether_g("us2")}
+
+
+def clip_double_shear_n() -> float:
+    """Hairpin wire (0.79 mm, 18-8) in double shear against a walking pin, on the h1_rev5 basis (0.6 x UTS)."""
+    from huntkit.materials import load
+    try:
+        su = float(load("ss_304").require("ultimate_strength_mpa"))
+    except Exception:
+        su = 515.0                 # ASSUMPTION CLIP-UTS (h1_rev5): ASTM A240 304 minimum
+    return round(2 * math.pi / 4 * HAIRPIN["wire_d"] ** 2 * 0.6 * su, 0)
 
 
 def retainer_summary() -> dict:
@@ -606,33 +627,40 @@ KT_GROOVE = 2.5                       # ASSUMPTION KT-GROOVE: Peterson, bending 
 #                                       d/D 0.8, r/d about 0.03 (DIN 6799 groove corners r <= 0.1): Kt 2.4-2.6
 
 
-def pin_moment(F: float, share_outer: float, p: dict, neck: float = 18.0, n: int = 4001) -> dict:
-    """Bending moment along the US2 pin (|x|) under the eye's y-z force F: uniform over the neck (centred in the
-    throat), reacted uniformly over each cheek's bearing length (inner 8 mm; outer 6 mm under the D9 x 2 counterbore),
-    the outer cheek taking ``share_outer``. Free-body integration; zero outboard of the bearings."""
+def pin_moment(F: float, p: dict, eye_offset: float = 0.0, neck: float = 18.0, n: int = 4001) -> dict:
+    """Bending moment along the US2 pin (|x|) under the eye's y-z force F: uniform over the neck, its centre
+    ``eye_offset`` mm outboard of the throat centre (the 18 mm neck slides +/-1 mm in the 20 mm throat), reacted
+    uniformly over each cheek's bearing (inner 8 mm; outer 6 mm under the D9 x 2 counterbore) with the reactions from
+    statics (lever rule on the bearing centroids). Integrated from the free inboard end: M is zero outboard of the
+    bearings."""
     from . import h1_bedfit as BF
     g = p["geom"]
-    xc = abs(p["x"])
+    xc = abs(p["x"]) + eye_offset
     f = faces(p)
     inner = (f["far"], f["far"] + g.cheek)
-    outer = (xc + g.throat / 2.0, f["near"] - BF.PIN_CBORE_DEPTH)
+    outer = (abs(p["x"]) + g.throat / 2.0, f["near"] - BF.PIN_CBORE_DEPTH)
+    ci, co = 0.5 * sum(inner), 0.5 * sum(outer)
+    share = (xc - ci) / (co - ci)                            # outer cheek's share by statics
     eye = (xc - neck / 2.0, xc + neck / 2.0)
     x = np.linspace(f["far"] - 8.0, f["near"] + 1.0, n)
     w = np.zeros_like(x)                                     # distributed load per mm (+ = eye direction)
     w[(x >= eye[0]) & (x <= eye[1])] += F / neck
-    w[(x >= inner[0]) & (x <= inner[1])] -= (1.0 - share_outer) * F / (inner[1] - inner[0])
-    w[(x >= outer[0]) & (x <= outer[1])] -= share_outer * F / (outer[1] - outer[0])
+    w[(x >= inner[0]) & (x <= inner[1])] -= (1.0 - share) * F / (inner[1] - inner[0])
+    w[(x >= outer[0]) & (x <= outer[1])] -= share * F / (outer[1] - outer[0])
     dx = x[1] - x[0]
     V = np.cumsum(w) * dx
     M = np.cumsum(V) * dx
-    return {"x": x, "M": M, "inner": inner, "outer": outer, "eye": eye}
+    return {"x": x, "M": M, "inner": inner, "outer": outer, "eye": eye, "share_outer": share,
+            "R_inner": (1.0 - share) * F}
 
 
 def groove_check() -> dict:
     """US2: bending at the E-clip groove (|x| far face - 0.3 .. - 1.04, d 4.0) for Ti-6Al-4V and 7075-T6 on the design
-    and dy 95 rows (h1_closeout.json pins.us2 bending: y-z force), outer share 0.6 and 1.0: M there is zero (the groove
-    is outboard of every bearing), so the pin's SF is the unchanged peak at mid-span. Sensitivity: the groove cut 1 mm
-    INSIDE the cheek face (a machining / assembly error): M = R_in x 1^2 / (2 x 8), stress x KT_GROOVE on d 4."""
+    and dy 95 rows (h1_closeout.json pins.us2 bending: y-z force), eye centred and slid 1 mm either way: M at the groove
+    is zero (outboard of every bearing), so the pin's SF is its mid-span value: pin_check (the record) and this
+    integration with the counterbore's 6 mm outer bearing. Sensitivity: the groove cut 1 mm INSIDE the cheek face by
+    mistake: M = R_in x 1^2 / (2 x 8), stress x KT_GROOVE on d 4. The CLEVIS-SHARE 0.6 / 1.0 splits come from cheek
+    compliance, not this rigid statics; the groove moment is zero for any split."""
     from huntkit.materials import load
     from . import h1_lanes as LN
     from . import h1_rev5 as R5
@@ -643,6 +671,7 @@ def groove_check() -> dict:
     gx = (f["far"] - ECLIP_PLAY - ECLIP["groove_w"], f["far"] - ECLIP_PLAY)
     out = {"groove_abs_x": [round(v, 2) for v in gx], "kt": KT_GROOVE, "rows": {}}
     Zg = math.pi * ECLIP["groove_d"] ** 3 / 32.0
+    Zp = math.pi * g.pin_d ** 3 / 32.0
     for mat in ("alu_7075_t6", "ti_6al_4v"):
         m = load(mat)
         sy = float(m.get("yield_strength_sbasis_mpa") or m.require("yield_strength_mpa"))
@@ -651,29 +680,27 @@ def groove_check() -> dict:
         smax = 2.0 / (1.0 / se + 1.0 / su)
         for row, F in (("design", co["design_yz_n"]), ("dy95", co["dy95_yz_n"])):
             pc = LN.pin_check(F, g.throat, g.cheek, g.pin_d, mat, R5.G_CRADLE)
-            for sh in (0.6, 1.0):
-                pm = pin_moment(F, sh, p)
+            for off in (-1.0, 0.0, 1.0):
+                pm = pin_moment(F, p, off)
                 sel = (pm["x"] >= gx[0]) & (pm["x"] <= gx[1])
                 Mg = float(np.max(np.abs(pm["M"][sel])))
                 Mpk = float(np.max(np.abs(pm["M"])))
-                Rin = (1.0 - sh) * F
-                Mmis = Rin * 1.0 ** 2 / (2.0 * g.cheek)
+                s_pk = Mpk / Zp
+                Mmis = pm["R_inner"] * 1.0 ** 2 / (2.0 * g.cheek)
                 s_mis = KT_GROOVE * Mmis / Zg
-                s_walk = s_mis * 1.6 / R5.G_CRADLE
-                out["rows"][f"{mat}|{row}|share{sh:g}"] = {
-                    "F_yz_n": F, "M_at_groove_nmm": round(Mg, 3), "M_peak_nmm": round(Mpk, 1),
-                    "M_peak_pin_check_nmm": round(pc["M_nmm"], 1),
-                    "sf_yield_peak": round(sy / (Mpk / (math.pi * g.pin_d ** 3 / 32)), 2),
+                out["rows"][f"{mat}|{row}|eye{off:+g}"] = {
+                    "F_yz_n": F, "share_outer": round(pm["share_outer"], 3), "M_at_groove_nmm": round(Mg, 4),
+                    "M_peak_nmm": round(Mpk, 1), "M_peak_pin_check_nmm": round(pc["M_nmm"], 1),
+                    "sf_yield_peak": round(sy / s_pk, 2), "sf_fatigue_peak": round(smax / (s_pk * 1.6 / R5.G_CRADLE), 2),
                     "sf_yield_pin_check": round(pc["sf_yield"], 2), "sf_fatigue_pin_check": round(pc["sf_fatigue"], 2),
                     "misplaced_1mm": {"M_nmm": round(Mmis, 1), "sigma_kt_mpa": round(s_mis, 1),
-                                      "sf_yield": round(sy / s_mis, 2) if s_mis > 0 else None,
-                                      "sf_fatigue": round(smax / s_walk, 2) if s_walk > 0 else None}}
+                                      "sf_yield": round(sy / s_mis, 2),
+                                      "sf_fatigue": round(smax / (s_mis * 1.6 / R5.G_CRADLE), 2)}}
     out["verdict"] = ("the groove sits 0.3-1.04 mm outboard of the inner cheek's face, outboard of every bearing: its "
-                      "bending moment and shear are zero for any split of the load between the cheeks, so the pin's "
-                      "bending SF is the unchanged mid-span value (pin_check). Cut 1 mm inside the cheek by mistake it "
-                      "would still read the 'misplaced' SFs; PIN-RET (a) measures the groove position.")
-    # the E-clip's thrust: the eye's pull along the pin bears on the cheek, not the pin; a walking pin pushes on the
-    # clip by friction only (ASSUMPTION WALK-MU 0.2 x the largest y-z force)
+                      "bending moment and shear are zero, so the groove costs the pin nothing; the pin's peak is at "
+                      "mid-span, where the counterbore's shorter outer bearing moves the outer reaction inboard and "
+                      "lowers it against pin_check. Cut 1 mm inside the cheek by mistake, the groove would read the "
+                      "'misplaced' SFs; the machinist's drawing dimensions it from the head seat.")
     Fw = 0.2 * co["dy95_yz_n"]
     out["thrust"] = {"walk_force_n": round(Fw, 1), "ring_thrust_n": ECLIP["thrust_n"],
                      "sf": round(ECLIP["thrust_n"] / Fw, 2),
@@ -990,7 +1017,8 @@ def mass_rows(res: dict) -> dict:
     n_scr = C.HIP_CHOSEN[0] - C.HIP_INSERTS_BOOKED
     rho_pe = float(load("uhmwpe_sheet").require("density_kg_m3")) * 1e-6
     sleeve_mm3_per_mm = math.pi * ((BA.HOLE_D / 2) ** 2 - (BA.PIN_D / 2 + 0.1) ** 2)
-    out = {"print_delta_g": round((a - b) * RHO_PAHT, 3) if b is not None else None,
+    prev = json.loads(RESULTS.read_text())["mass"]["print_delta_g"] if b is None and RESULTS.exists() else None
+    out = {"print_delta_g": round((a - b) * RHO_PAHT, 3) if b is not None else prev,   # no copy: keep the published
            "print_basis": "assembled print mesh BL-058 - the 6b0cde1 copy (outputs/bl058/before) x 1.06 g/cm3",
            "mount_delta_g": res["hip_mount"]["delta_g"],
            "hip_screws_delta_g": round(n_scr * (hs[f"x{C.HIP_SCREW_L:g}"]["mass_g"] - hs[f"x{C.HIP_SCREW_L_BOOKED:g}"]["mass_g"]), 3),
@@ -1254,9 +1282,9 @@ def plot_retainers(res: dict) -> str:
     ax.set_aspect("equal")
     ax.set_xlabel("frame x (mm)", fontsize=8)
     ax.set_ylabel("frame y (mm)", fontsize=8)
-    ax.set_title(f"US2 plan at z {p['z']:.0f}: head {res['cbore']['recess_mm']:.1f} mm below the clevis face (D9 x 2 "
-                 f"counterbore),\nE-clip groove {pr['features']['groove']['from_far_cheek_face_mm']} mm past the inner "
-                 f"cheek, cord {cord_len('us2'):.0f} mm", fontsize=8.5, loc="left")
+    ax.set_title(f"US2 plan at z {p['z']:.0f}: head {res['cbore']['recess_mm']:.1f} mm below the clevis\nface (D9 x 2 "
+                 f"cbore); E-clip groove {pr['features']['groove']['from_far_cheek_face_mm']} mm\npast the inner "
+                 f"cheek; tether cord {cord_len('us2'):.0f} mm", fontsize=8.5, loc="left")
     ax.legend(fontsize=6.5, loc="lower left")
     ax = axs[1, 3]
     ax.axis("off")
@@ -1351,32 +1379,29 @@ def plot_body(res: dict) -> str:
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
     from . import frame_h1 as H1
+    from . import h1_closeout as C
     b = res["body"]
-    fig, axs = plt.subplots(1, 3, figsize=(17, 6.0), gridspec_kw={"width_ratios": [1.2, 1.0, 1.0]})
+    fig, axs = plt.subplots(1, 3, figsize=(18, 8.0), gridspec_kw={"width_ratios": [1.15, 1.0, 0.9]})
     ax = axs[0]
     keys = ("strength", "fatigue", "creep", "buckling", "joint_strength", "joint_fatigue")
-    bases = list(b["bases"])
-    runs = [("bl053_sanded", "#bbb", "BL-055 record (voxel body, sanded)"), ("bl058_sanded", "#1f6fb4",
-                                                                              "BL-058 print STL re-rastered, sanded")]
-    w = 0.38
-    labels, k0 = [], 0
-    for bi, bs in enumerate(bases):
-        for ki, k in enumerate(keys):
-            x = k0
-            for ri, (rn, col, lab) in enumerate(runs):
-                v = b["bases"][bs].get(rn, {}).get(k)
-                if v is not None:
-                    ax.bar(x + (ri - 0.5) * w, v, width=w, color=col, label=lab if (bi == 0 and ki == 0) else None)
-            labels.append(f"{bs}\n{k.replace('_', ' ')}")
-            k0 += 1
-        k0 += 0.6
-    ax.axhline(1.0, color="k", lw=1)
-    ax.set_xticks([i + (i // len(keys)) * 0.6 for i in range(len(labels))], labels, rotation=90, fontsize=6)
-    ax.set_ylabel("SF / requirement (R1: >= 1)")
-    ax.set_title("Whole body on every basis: the exported print (boss, BL-056 blocks, fairleads in)\nvs the BL-055 "
-                 "voxel-body record; fine_sm8.cyc = cinch-cycled basis (held below R1 since BL-024)", fontsize=9,
-                 loc="left")
-    ax.legend(fontsize=7, loc="upper right")
+    labs, old, new = [], [], []
+    for bs in b["bases"]:
+        for k in keys:
+            labs.append(f"{bs}  {k.replace('_', ' ')}")
+            old.append(b["bases"][bs].get("bl053_sanded", {}).get(k, np.nan))
+            new.append(b["bases"][bs].get("bl058_sanded", {}).get(k, np.nan))
+    yy = np.arange(len(labs))[::-1]
+    ax.barh(yy + 0.2, old, height=0.38, color="#bbb", label="BL-055 record (voxel body, sanded)")
+    ax.barh(yy - 0.2, new, height=0.38, color="#1f6fb4", label="BL-058: exported print re-rastered, sanded")
+    for y_, v in zip(yy, new):
+        ax.text(v + 0.03, y_ - 0.2, f"{v:.2f}", va="center", fontsize=6.5)
+    ax.axvline(1.0, color="k", lw=1)
+    ax.set_yticks(yy, labs, fontsize=7)
+    ax.set_xlabel("SF / requirement (R1: >= 1)")
+    ax.set_xlim(0, 3.1)
+    ax.legend(fontsize=7, loc="lower right")
+    ax.set_title("Whole body on every basis, the print as exported (boss, BL-056 blocks in).\nfine_sm8.cyc = cinch-"
+                 "cycled basis (held below R1 for MT-1 since BL-024)", fontsize=9, loc="left")
     ax = axs[1]
     mem = b["members_fine_sm8"]
     names = list(mem)
@@ -1384,33 +1409,33 @@ def plot_body(res: dict) -> str:
     ax.barh(yy + 0.2, [mem[n]["margin_bl053"] for n in names], height=0.38, color="#bbb", label="BL-053 voxel body")
     ax.barh(yy - 0.2, [mem[n]["margin"] for n in names], height=0.38, color="#1f6fb4", label="print STL raster")
     for i, n in enumerate(names):
-        ax.text(mem[n]["margin"] + 0.05, i - 0.2, f"{mem[n]['margin']:.2f} (A {mem[n]['A_mm2']:g} / "
-                f"{mem[n]['A_bl053_mm2']:g} mm2)", va="center", fontsize=7)
+        v = mem[n]["margin"]
+        ax.text(min(v, 2.3) + 0.03, i - 0.2, f"{v:.2f}  (A {mem[n]['A_mm2']:g} vs {mem[n]['A_bl053_mm2']:g} mm2)",
+                va="center", fontsize=7)
     ax.axvline(1.0, color="k", lw=1)
-    ax.set_yticks(yy, names, fontsize=7)
-    ax.set_xlim(0, 3.2)
-    ax.set_xlabel("member buckling margin, fine_sm8 (P_cr / 1.5 x factored)")
+    ax.set_yticks(yy, [n.replace(" (", "\n(") for n in names], fontsize=7)
+    ax.set_xlim(0, 3.3)
+    ax.set_xlabel("member buckling margin, fine_sm8 (bars clipped at 3.3)")
     ax.legend(fontsize=7, loc="lower right")
-    ax.set_title("Member buckling: the print's members are 3-8 % thinner than the voxel body", fontsize=9, loc="left")
+    ax.set_title("Member buckling: the print's members are 3-8 % thinner\nthan the voxel body (STL slice 144-147 mm2 "
+                 "at the upper branch)", fontsize=9, loc="left")
     ax = axs[2]
-    c = H1.base()
-    cen = c["cen"]
-    new = np.load(OUT / "body" / "body_solid.npz")["solid"]
-    from . import h1_closeout as C
-    old, _ = C.body_solid_bl053()
-    both = new & old
-    for msk, col, lab, sz in ((both, "#d5d0c8", "in both", 1.0), (new & ~old, "#1f6fb4", "print only", 2.0),
-                              (old & ~new, "#e67e22", "voxel body only", 2.0)):
+    cen = H1.base()["cen"]
+    new_s = np.load(OUT / "body" / "body_solid.npz")["solid"]
+    old_s, _ = C.body_solid_bl053()
+    for msk, col, lab, sz in ((new_s & old_s, "#d5d0c8", "in both", 1.0), (new_s & ~old_s, "#1f6fb4", "print only", 2.0),
+                              (old_s & ~new_s, "#e67e22", "voxel body only", 2.0)):
         P = cen[msk]
         ax.scatter(P[:, 0], P[:, 2], s=sz, c=col, label=f"{lab} ({msk.sum()})", lw=0)
     ax.set_aspect("equal")
     ax.set_xlabel("frame x (mm)")
     ax.set_ylabel("frame z (mm)")
-    ax.legend(fontsize=7, markerscale=4, loc="upper right")
+    ax.legend(fontsize=7, markerscale=4, loc="upper center", bbox_to_anchor=(0.5, -0.08), ncol=3)
     lug = b.get("us2_lug", {})
-    ax.set_title(f"Raster of the run (front view): hip boss voxels {b['voxels']['boss_voxels']['run']} (was "
-                 f"{b['voxels']['boss_voxels']['bl053']})\nUS2 lug submodel on the print: {lug.get('bl058')} (was "
-                 f"{lug.get('bl053')})", fontsize=9, loc="left")
+    ax.set_title(f"Voxels of the run (front): hip boss {b['voxels']['boss_voxels']['run']} (BL-053 body "
+                 f"{b['voxels']['boss_voxels']['bl053']})\nUS2 lug on the print: SF {lug['bl058']['strength']} / fatigue "
+                 f"{lug['bl058']['fatigue']} (was {lug['bl053']['strength']} / {lug['bl053']['fatigue']})", fontsize=9,
+                 loc="left")
     fig.tight_layout()
     return _save(fig, f"{SHOT}3.png")
 

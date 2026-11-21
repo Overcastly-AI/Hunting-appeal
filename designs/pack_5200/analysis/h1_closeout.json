@@ -893,18 +893,20 @@
   },
   "min_sf_over_goal": 3.27,
   "delta_g": 13.82,
-  "drawn": "D44 x 1.2 mm disc, no screw holes (designs/pack_5200/print/lug_hip_pivot_mount_slm_ti.stl)"
+  "drawn": "D44 x 1.2 mm disc, no screw holes (designs/pack_5200/print/lug_hip_pivot_mount_slm_ti_D44_drawn.stl)"
  },
  "pins": {
-  "scheme": "headed pin, R-clip through a cross hole on the far side, pin + clip on one tether",
+  "scheme": "headed pin; hairpin clip (McMaster 90153A214) in a 1.5 mm cross hole on the far side at hinge / US1 / IM1-3, body pointing fore; US2: head in a D9 x 2 clevis counterbore, DIN 6799 E-clip in a groove on the far side, tether from a tail hole round the lug arm",
   "retainer": {
-   "part": "hitch-pin (R-) clip, 302 / 18-8 stainless, 1.2 mm wire, for 4.8-6.4 mm (3/16-1/4 in) pins",
-   "source": "https://www.mcmaster.com/products/hitch-pin-clips/ (secondary: catalogue page not fetched; any 18-8 R-clip in that size range)",
-   "mass_g": 0.6,
-   "tether": "1.5 mm Dyneema (UHMWPE) cord, 120 mm, through the pin head's 1.6 mm hole and the clip's eye, larks-head round the stay beside the fairlead: pin and clip stay on the frame when pulled",
-   "tether_g": 0.2
+   "part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm) (hinge, US1, IM1-IM3); US2: DIN 6799 RS 4 retaining washer (E-clip), 1.4122 stainless, for 5-7 mm shafts: groove D4.0 x 0.74 wide, ring OD 8.85 (uninstalled), 0.7 thick, thrust load 210 lbf (934 N)",
+   "source": "https://www.mcmaster.com/hitch-pin-clips (hairpin clips, 18-8 stainless: 90153A214 for 3/16 in shaft, wire 1/32 in, length 1/2 in, pin opening 9/64 in; 90153A216 for 1/4 in, 1/32 in, 5/8 in, 7/32 in); https://www.mcmaster.com/din-6799-retaining-rings (DIN 6799, 1.4122 stainless, for OD 5-7 mm: groove dia 4, groove width 0.74, ring OD 8.85 uninstalled, thickness 0.7, thrust load 210 lbf)",
+   "mass_g": 0.122,
+   "tether": "1.5 mm Dyneema (UHMWPE): 120 mm through the head hole and the clip's bend, larks-head round the stay (hairpin stations); US2: 180 mm from the pin's tail hole along the buttress slot, larks-head round the lug arm at |x| 132",
+   "tether_g": 0.2,
+   "mass_eclip_g": 0.198,
+   "tether_us2_g": 0.3
   },
-  "clip_double_shear_n": 699.0,
+  "clip_double_shear_n": 303.0,
   "clip_uts_source": "ASSUMPTION CLIP-UTS (ASTM A240 304 minimum 515 MPa)",
   "booked_before": "bag_attach: 7075 pins 36 mm shank + 8 mm head (no retainer); Ti hinge 5 x 44",
   "test": {
@@ -926,19 +928,39 @@
      1.5
     ],
     "cross_hole": {
-     "d_mm": 1.3,
-     "from_far_cheek_face_mm": 2.5
+     "d_mm": 1.5,
+     "from_far_cheek_face_mm": 2.5,
+     "use": "hairpin clip (axis along frame y)"
     },
     "head_side": "outboard",
-    "clip_side": "inboard",
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
     "pin_g": 4.26,
-    "set_g": 5.06,
+    "set_g": 4.58,
     "qty": 2,
     "removed_at_bag_off": true,
     "bending": {
      "row_n": 1019.0,
      "sf_yield": 1.99,
      "sf_fatigue": 2.24
+    },
+    "bl055": {
+     "shank_mm": 45.1,
+     "cross_hole": {
+      "d_mm": 1.3,
+      "from_far_cheek_face_mm": 2.5
+     },
+     "clip_side": "inboard",
+     "pin_g": 4.26,
+     "set_g": 5.06
+    },
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face",
+    "tether": {
+     "cord_mm": 120.0,
+     "route": [
+      "head hole (as BL-053) to a larks-head round the stay beside the fairlead"
+     ]
     }
    },
    "us1": {
@@ -951,13 +973,14 @@
      1.5
     ],
     "cross_hole": {
-     "d_mm": 1.3,
-     "from_far_cheek_face_mm": 2.5
+     "d_mm": 1.5,
+     "from_far_cheek_face_mm": 2.5,
+     "use": "hairpin clip (axis along frame y)"
     },
     "head_side": "outboard",
-    "clip_side": "inboard (towards x 0; the buttress leaves a 12 mm slot)",
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
     "pin_g": 3.91,
-    "set_g": 4.71,
+    "set_g": 4.24,
     "qty": 2,
     "removed_at_bag_off": false,
     "bending": {
@@ -979,25 +1002,45 @@
       "dy95_sf_yield": 1.31,
       "dy95_sf_fatigue": 0.97
      }
+    },
+    "bl055": {
+     "shank_mm": 41.1,
+     "cross_hole": {
+      "d_mm": 1.3,
+      "from_far_cheek_face_mm": 2.5
+     },
+     "clip_side": "inboard (towards x 0; the buttress leaves a 12 mm slot)",
+     "pin_g": 3.91,
+     "set_g": 4.71
+    },
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face",
+    "tether": {
+     "cord_mm": 120.0,
+     "route": [
+      "head hole (as BL-053) to a larks-head round the stay beside the fairlead"
+     ]
     }
    },
    "us2": {
     "material": "alu_7075_t6",
     "pin_d_mm": 5.0,
     "span_mm": 36.0,
-    "shank_mm": 41.1,
+    "shank_mm": 39.1,
     "head_mm": [
      8.0,
      1.5
     ],
     "cross_hole": {
-     "d_mm": 1.3,
-     "from_far_cheek_face_mm": 2.5
+     "d_mm": 1.6,
+     "from_far_cheek_face_mm": 3.34,
+     "use": "tether (axis along frame z)"
     },
     "head_side": "outboard",
-    "clip_side": "inboard (towards x 0; the buttress leaves a 12 mm slot)",
-    "pin_g": 2.48,
-    "set_g": 3.28,
+    "clip_side": "inboard (far cheek): DIN 6799 E-clip in the groove",
+    "pin_g": 2.36,
+    "set_g": 2.85,
     "qty": 2,
     "removed_at_bag_off": false,
     "bending": {
@@ -1007,7 +1050,45 @@
      "dy95_yz_n": 642.9,
      "dy95_sf_yield": 1.96,
      "dy95_sf_fatigue": 1.46
-    }
+    },
+    "bl055": {
+     "shank_mm": 41.1,
+     "cross_hole": {
+      "d_mm": 1.3,
+      "from_far_cheek_face_mm": 2.5
+     },
+     "clip_side": "inboard (towards x 0; the buttress leaves a 12 mm slot)",
+     "pin_g": 2.48,
+     "set_g": 3.28
+    },
+    "retainer": "eclip",
+    "retainer_part": "DIN 6799 RS 4 retaining washer (E-clip), 1.4122 stainless, for 5-7 mm shafts: groove D4.0 x 0.74 wide, ring OD 8.85 (uninstalled), 0.7 thick, thrust load 210 lbf (934 N)",
+    "head_seat": "clevis counterbore D9 x 2, head 0.5 below the face",
+    "tether": {
+     "cord_mm": 180.0,
+     "route": [
+      "through the pin's tail hole at |x| 143.7 (y 16.4, z 142), the hole axis along z",
+      "inboard 11 mm along the buttress slot (z 136-148), onto the lug arm's bag face (y 9.3)",
+      "larks-head round the lug arm at |x| 132 (section y -13..9, z 124..160, perimeter 121 mm), knot on the bag face"
+     ],
+     "never": "outboard of the clevis face, aft of the cheek-tip plane, or across the US2 throat"
+    },
+    "groove": {
+     "d_mm": 4.0,
+     "w_mm": 0.74,
+     "tol": "d h11 / w H13 (DIN 6799)",
+     "from_far_cheek_face_mm": [
+      0.3,
+      1.04
+     ]
+    },
+    "tether_hole": {
+     "d_mm": 1.6,
+     "from_far_cheek_face_mm": 3.34,
+     "axis": "frame z (cord exits along the slot)",
+     "where": "in the tail, past the groove"
+    },
+    "sleeve_note": "the outer cheek's UHMWPE sleeve is cut to 6.0 mm (flush with the counterbore floor)"
    },
    "im1": {
     "material": "alu_7075_t6",
@@ -1019,15 +1100,35 @@
      1.5
     ],
     "cross_hole": {
-     "d_mm": 1.3,
-     "from_far_cheek_face_mm": 2.5
+     "d_mm": 1.5,
+     "from_far_cheek_face_mm": 2.5,
+     "use": "hairpin clip (axis along frame y)"
     },
     "head_side": "outboard",
-    "clip_side": "inboard",
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
     "pin_g": 2.48,
-    "set_g": 3.28,
+    "set_g": 2.8,
     "qty": 2,
-    "removed_at_bag_off": false
+    "removed_at_bag_off": false,
+    "bl055": {
+     "shank_mm": 41.1,
+     "cross_hole": {
+      "d_mm": 1.3,
+      "from_far_cheek_face_mm": 2.5
+     },
+     "clip_side": "inboard",
+     "pin_g": 2.48,
+     "set_g": 3.28
+    },
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face",
+    "tether": {
+     "cord_mm": 120.0,
+     "route": [
+      "head hole (as BL-053) to a larks-head round the stay beside the fairlead"
+     ]
+    }
    },
    "im2": {
     "material": "alu_7075_t6",
@@ -1039,15 +1140,35 @@
      1.5
     ],
     "cross_hole": {
-     "d_mm": 1.3,
-     "from_far_cheek_face_mm": 2.5
+     "d_mm": 1.5,
+     "from_far_cheek_face_mm": 2.5,
+     "use": "hairpin clip (axis along frame y)"
     },
     "head_side": "outboard",
-    "clip_side": "inboard",
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
     "pin_g": 2.48,
-    "set_g": 3.28,
+    "set_g": 2.8,
     "qty": 2,
-    "removed_at_bag_off": false
+    "removed_at_bag_off": false,
+    "bl055": {
+     "shank_mm": 41.1,
+     "cross_hole": {
+      "d_mm": 1.3,
+      "from_far_cheek_face_mm": 2.5
+     },
+     "clip_side": "inboard",
+     "pin_g": 2.48,
+     "set_g": 3.28
+    },
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face",
+    "tether": {
+     "cord_mm": 120.0,
+     "route": [
+      "head hole (as BL-053) to a larks-head round the stay beside the fairlead"
+     ]
+    }
    },
    "im3": {
     "material": "alu_7075_t6",
@@ -1059,21 +1180,89 @@
      1.5
     ],
     "cross_hole": {
-     "d_mm": 1.3,
-     "from_far_cheek_face_mm": 2.5
+     "d_mm": 1.5,
+     "from_far_cheek_face_mm": 2.5,
+     "use": "hairpin clip (axis along frame y)"
     },
     "head_side": "outboard",
-    "clip_side": "inboard",
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
     "pin_g": 2.48,
-    "set_g": 3.28,
+    "set_g": 2.8,
     "qty": 2,
-    "removed_at_bag_off": false
+    "removed_at_bag_off": false,
+    "bl055": {
+     "shank_mm": 41.1,
+     "cross_hole": {
+      "d_mm": 1.3,
+      "from_far_cheek_face_mm": 2.5
+     },
+     "clip_side": "inboard",
+     "pin_g": 2.48,
+     "set_g": 3.28
+    },
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face",
+    "tether": {
+     "cord_mm": 120.0,
+     "route": [
+      "head hole (as BL-053) to a larks-head round the stay beside the fairlead"
+     ]
+    }
    }
   },
   "mass": {
    "pins_g": 36.18,
    "clips_tethers_g": 9.6,
    "delta_vs_bl053_g": 2.86
+  },
+  "retainers_bl058": {
+   "hairpin": {
+    "id": "HW-PIN-RET-H",
+    "part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "source": "https://www.mcmaster.com/hitch-pin-clips (hairpin clips, 18-8 stainless: 90153A214 for 3/16 in shaft, wire 1/32 in, length 1/2 in, pin opening 9/64 in; 90153A216 for 1/4 in, 1/32 in, 5/8 in, 7/32 in)",
+    "mass_g": 0.122,
+    "fallback": "90153A216 (1/4 in shaft, 5/8 in long) if the 3/16 in clip will not spring over the 5.0 mm pin",
+    "note": "DIN 11024 spring cotters start at 2.5 mm wire for 9-11.2 mm pins (https://fasten.it/norms/norm/din_11024 (DIN 11024 spring cotters start at 2.5 mm wire for 9-11.2 mm pins: no DIN R-clip exists for a 5 mm pin)): there is no DIN R-clip for a 5 mm pin, so the clip is a catalogue hairpin clip"
+   },
+   "eclip": {
+    "id": "HW-PIN-RET-E",
+    "part": "DIN 6799 RS 4 retaining washer (E-clip), 1.4122 stainless, for 5-7 mm shafts: groove D4.0 x 0.74 wide, ring OD 8.85 (uninstalled), 0.7 thick, thrust load 210 lbf (934 N)",
+    "source": "https://www.mcmaster.com/din-6799-retaining-rings (DIN 6799, 1.4122 stainless, for OD 5-7 mm: groove dia 4, groove width 0.74, ring OD 8.85 uninstalled, thickness 0.7, thrust load 210 lbf)",
+    "mass_g": 0.198,
+    "tool": "fit by pushing it radially onto the groove with flat pliers; remove with a small flat screwdriver in the opening (the pin comes out only at the bench, bag off)"
+   },
+   "stations": {
+    "hinge": {
+     "retainer": "hairpin",
+     "points": "fore (-y, towards the wearer: 60+ mm free at the far face)"
+    },
+    "us1": {
+     "retainer": "hairpin",
+     "points": "fore (-y, inside the buttress's 12 mm slot: 24 mm free)"
+    },
+    "us2": {
+     "retainer": "eclip",
+     "points": "a ring round the pin (no leg): 4.4 mm radius inside the 12 mm slot"
+    },
+    "im1": {
+     "retainer": "hairpin",
+     "points": "fore (-y: 60+ mm free)"
+    },
+    "im2": {
+     "retainer": "hairpin",
+     "points": "fore (-y: 18.2 mm free, STL)"
+    },
+    "im3": {
+     "retainer": "hairpin",
+     "points": "fore (-y: 22.7 mm free, STL)"
+    }
+   },
+   "cross_hole_d_mm": 1.5
+  },
+  "mass_bl058": {
+   "pins_g": 35.94,
+   "retainers_tethers_g": 4.2
   },
   "bom": [
    {
@@ -1087,11 +1276,14 @@
      8.0,
      1.5
     ],
-    "cross_hole_d_mm": 1.3,
+    "cross_hole_d_mm": 1.5,
     "cross_hole_from_far_cheek_face_mm": 2.5,
-    "clip_side": "inboard",
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
     "pin_g": 4.26,
-    "set_g": 5.06
+    "set_g": 4.58,
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face"
    },
    {
     "id": "PIN-US1",
@@ -1104,11 +1296,14 @@
      8.0,
      1.5
     ],
-    "cross_hole_d_mm": 1.3,
+    "cross_hole_d_mm": 1.5,
     "cross_hole_from_far_cheek_face_mm": 2.5,
-    "clip_side": "inboard (towards x 0; the buttress leaves a 12 mm slot)",
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
     "pin_g": 3.91,
-    "set_g": 4.71
+    "set_g": 4.24,
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face"
    },
    {
     "id": "PIN-US2",
@@ -1116,16 +1311,34 @@
     "qty": 2,
     "material": "alu_7075_t6",
     "pin_d_mm": 5.0,
-    "shank_mm": 41.1,
+    "shank_mm": 39.1,
     "head_mm": [
      8.0,
      1.5
     ],
-    "cross_hole_d_mm": 1.3,
-    "cross_hole_from_far_cheek_face_mm": 2.5,
-    "clip_side": "inboard (towards x 0; the buttress leaves a 12 mm slot)",
-    "pin_g": 2.48,
-    "set_g": 3.28
+    "cross_hole_d_mm": 1.6,
+    "cross_hole_from_far_cheek_face_mm": 3.34,
+    "clip_side": "inboard (far cheek): DIN 6799 E-clip in the groove",
+    "pin_g": 2.36,
+    "set_g": 2.85,
+    "retainer": "eclip",
+    "retainer_part": "DIN 6799 RS 4 retaining washer (E-clip), 1.4122 stainless, for 5-7 mm shafts: groove D4.0 x 0.74 wide, ring OD 8.85 (uninstalled), 0.7 thick, thrust load 210 lbf (934 N)",
+    "groove": {
+     "d_mm": 4.0,
+     "w_mm": 0.74,
+     "tol": "d h11 / w H13 (DIN 6799)",
+     "from_far_cheek_face_mm": [
+      0.3,
+      1.04
+     ]
+    },
+    "tether_hole": {
+     "d_mm": 1.6,
+     "from_far_cheek_face_mm": 3.34,
+     "axis": "frame z (cord exits along the slot)",
+     "where": "in the tail, past the groove"
+    },
+    "head_seat": "clevis counterbore D9 x 2, head 0.5 below the face"
    },
    {
     "id": "PIN-IM1",
@@ -1138,11 +1351,14 @@
      8.0,
      1.5
     ],
-    "cross_hole_d_mm": 1.3,
+    "cross_hole_d_mm": 1.5,
     "cross_hole_from_far_cheek_face_mm": 2.5,
-    "clip_side": "inboard",
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
     "pin_g": 2.48,
-    "set_g": 3.28
+    "set_g": 2.8,
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face"
    },
    {
     "id": "PIN-IM2",
@@ -1155,11 +1371,14 @@
      8.0,
      1.5
     ],
-    "cross_hole_d_mm": 1.3,
+    "cross_hole_d_mm": 1.5,
     "cross_hole_from_far_cheek_face_mm": 2.5,
-    "clip_side": "inboard",
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
     "pin_g": 2.48,
-    "set_g": 3.28
+    "set_g": 2.8,
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face"
    },
    {
     "id": "PIN-IM3",
@@ -1172,11 +1391,14 @@
      8.0,
      1.5
     ],
-    "cross_hole_d_mm": 1.3,
+    "cross_hole_d_mm": 1.5,
     "cross_hole_from_far_cheek_face_mm": 2.5,
-    "clip_side": "inboard",
+    "clip_side": "inboard (far cheek), clip body pointing fore (-y)",
     "pin_g": 2.48,
-    "set_g": 3.28
+    "set_g": 2.8,
+    "retainer": "hairpin",
+    "retainer_part": "McMaster-Carr 90153A214: hairpin (R-) clip, 18-8 stainless, for 3/16 in (4.76 mm) shaft, wire 1/32 in (0.79 mm), length 1/2 in (12.7 mm), pin opening 9/64 in (3.57 mm)",
+    "head_seat": "on the near cheek face"
    }
   ]
  },
@@ -1392,12 +1614,12 @@
   "h1_assembled": {
    "watertight": true,
    "shells": 1,
-   "g": 1061.1
+   "g": 1069.3
   },
   "h1_lower_flat": {
    "watertight": true,
    "shells": 1,
-   "g": 490.2
+   "g": 494.6
   },
   "h1_upper_flat": {
    "watertight": true,
@@ -1407,32 +1629,32 @@
   "us2_clevis_L": {
    "watertight": true,
    "shells": 1,
-   "g": 13.7
+   "g": 15.7
   },
   "us2_clevis_R": {
    "watertight": true,
    "shells": 1,
-   "g": 13.7
+   "g": 15.7
   },
   "bed": {
    "lower": {
     "extents_mm": [
-     321.05,
-     299.58,
+     321.86,
+     300.39,
      76.75
     ],
     "fits": true,
     "fits_with_brim": true,
     "spare_mm": [
-     2.95,
-     4.42
+     2.14,
+     3.61
     ],
     "best_rotation": {
-     "deg": 0.0,
-     "swap": false,
-     "w_mm": 321.05,
-     "h_mm": 299.58,
-     "over_mm": -2.95,
+     "deg": 90.0,
+     "swap": true,
+     "w_mm": 321.86,
+     "h_mm": 300.39,
+     "over_mm": -2.14,
      "fits_with_brim": true
     }
    },
@@ -1465,6 +1687,7 @@
   "hip_inserts_delta_g": 9.0,
   "hip_screw": "Ti gr5 M5 x 14 DIN 7984",
   "hip_screw_g": 2.24,
+  "booked_note": "the BL-055 booking (ledger BL055); the screw is now M5 x 12 (BL-058, analysis/bl058.json hip_screws; the ledger's BL058 row books the change)",
   "hip_screws_delta_g": 13.46,
   "us1_ti_pins_delta_g": 2.86,
   "assembled_g": 1061.1,
@@ -1546,6 +1769,11 @@
   "hardware_delta_g": 22.46,
   "mount_flange_delta_g": 13.82
  },
+ "bl058": {
+  "screw_spec": "Ti gr5 M5 x 12 DIN 7984 (8), 3 mm hex key",
+  "mount_holes": "D5.8 (hip_mount.HOLE_D)",
+  "record": "analysis/bl058.json"
+ },
  "assumptions": [
   {
    "id": "MOUNT-ORIENT",
@@ -1575,7 +1803,7 @@
   {
    "id": "HEAD-LEG",
    "text": ">= 1 mm between a DIN 7984 head (D8.5) and a leg root, for the driver.",
-   "settled_by": "First-article assembly with a 4 mm hex key."
+   "settled_by": "First-article assembly with a 3 mm hex screwdriver (DIN 7984 M5: socket s 3; BL-058)."
   },
   {
    "id": "HIP-BOOKED",
@@ -1584,8 +1812,8 @@
   },
   {
    "id": "BOSS-LOCAL",
-   "text": "The grown boss (solid, at the hard point x 0, z 120) is not in the 2 mm voxel body of the whole-body run: it adds material at a hard point the body already treats as fixed and the pilots stay inside it.",
-   "settled_by": "Next whole-body re-raster (review 6) from the exported print."
+   "text": "The grown boss (solid, at the hard point x 0, z 120) is not in the 2 mm voxel body of the BL-055 whole-body run: it adds material at a hard point the body already treats as fixed and the pilots stay inside it.",
+   "settled_by": "BL-058: the whole body re-run on the exported print re-rastered (the boss, the BL-056 blocks and the fairleads in it): analysis/bl058.json body (bl058_frame.heavy, h1_buckling caches check_m1_u2.5_im3_bl058_stl / _sanded)."
   },
   {
    "id": "SAND-K",
