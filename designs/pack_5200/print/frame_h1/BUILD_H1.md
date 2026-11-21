@@ -10,9 +10,9 @@ Read this file top to bottom, once, before you buy anything. Do the steps in ord
 
 | part | how it is made | mass |
 |---|---|---:|
-| frame body, lower half (feet to z 234) | printed, PAHT-CF | 490.2 g (17.29 oz) |
+| frame body, lower half (feet to z 234) | printed, PAHT-CF | 494.6 g (17.45 oz) |
 | frame body, upper half (z 234 to the top) | printed, PAHT-CF | 543.4 g (19.17 oz) |
-| US2 clevis x 2 | printed, PAHT-CF | 13.7 g (0.48 oz) each |
+| US2 clevis x 2 | printed, PAHT-CF | 15.7 g (0.55 oz) each |
 | crown: 2 legs, top bar, spine tube + rack, spine clamp | bought carbon tube, printed rack, machined 7075 clamp (14.2 g (0.50 oz)), bonded | see the crown records |
 | pins, sleeves, bolts, pawl, bushings, hip mount | bought or machined | shopping list, section 1 |
 
@@ -22,7 +22,7 @@ Frame coordinates used below: x to the wearer's right, y aft (toward the bag), z
 
 | ID | part | qty | note | where |
 |---|---|---:|---|---|
-| **HW-FIL** | Bambu PAHT-CF filament, 1 kg spool | 3 | frame parts 1061 g + 8 % waste + supports (section 3) + test pieces + a reprint; buy 3 spools | Bambu Lab |
+| **HW-FIL** | Bambu PAHT-CF filament, 1 kg spool | 3 | frame parts 1069 g + 8 % waste + supports (section 3) + test pieces + a reprint; buy 3 spools | Bambu Lab |
 | **HW-J234-SCR** | Ti gr5 low-head socket cap screw M5 x 45, DIN 7984 (3.5 mm head) | 4 | z 234 joint only (ISO 7380 button head M5 x 45 also fits); not M5 x 40 | Ti fastener vendor |
 | **HW-J234-WSH** | M5 washer 12 mm OD x 1.0 mm, A2 | 8 | z 234 joint only; the 12 mm OD is load-bearing | hardware store |
 | **HW-US2-SCR** | Ti gr5 low-head socket cap screw M5 x 35, DIN 7984 | 4 | US2 clevises only, heads in the counterbores | Ti fastener vendor |
@@ -40,7 +40,7 @@ Frame coordinates used below: x to the wearer's right, y aft (toward the bag), z
 | **HW-CORD** | 2 mm Dyneema release cord 0.6 m + POM toggle | 1 | crown_diet torso-adjust row | bag kit |
 | **HW-HIP-INS** | M5 brass heat-set insert, 9.5 mm long (record insert_heatset_brass_m5) | 10 | 8 used (BL-055 pattern, section 12) + 2 spare (ASSUMPTION HIP-INSERTS) | hardware |
 | **HW-HIP-SCR** | Ti gr5 M5 x 14 DIN 7984 | 8 | hip mount to the inserts (section 12) | Ti fastener vendor |
-| **HW-HIP-MNT** | SLM Ti-6Al-4V hip pivot mount, base REDRAWN (BL-055): 50 x 3.0 mm disc, 8 x D5.5 holes on the insert positions | 1 | +13.8 g on today's 28.0 g (frame.yaml); the SLM file must be redrawn before ordering (section 12 HOLD) | SLM bureau |
+| **HW-HIP-MNT** | SLM Ti-6Al-4V hip pivot mount `print/lug_hip_pivot_mount_slm_ti.stl` (BL-056 redraw): 50 x 3.0 mm base, 8 x D5.5 holes on the insert positions, 34.3 g (1.21 oz) | 1 | BL-056 redraw on file: order now (section 12; HOLD lifted). One for P1; P2's after HB-6b (test kit) | SLM bureau |
 | **HW-BUSH** | UHMWPE bushing, 70 mm, for the 16 mm crown legs / 18.0 mm bores | 4 | frame.yaml: 2 bonded on the leg bottoms + 2 stay-top bushings | machinist |
 | **HW-CLAMP** | spine clamp, machined 7075-T6 (14.2 g (0.50 oz)) | 1 | + 6 more for the T6(c) coupons (3 pulled, 3 twisted): order 7 | CNC shop |
 | **HW-LEG** | carbon crown leg, OD 16.0, twill +-45 / UD 0 x 8 / twill +-45 (wall 1.44) | 2 | cut per kit (section 13): S 303.0 mm, M 366.5 mm, L 430.0 mm | tube vendor |
@@ -73,7 +73,7 @@ Frame coordinates used below: x to the wearer's right, y aft (toward the bag), z
 
 1. **Coupons first.** CA-1 (fatigue bars) and CA-5 (z 234 joint stubs) must pass (`outputs/release/test_kit/guides/G1.md` prints them, G4 runs them). CHECK: the engineer has written PASS against both in the results sheet.
 2. **BL-053 print plan in place.** Section 3 below must show the BL-053 support table, not a 'PLACEHOLDER BL-053' box. CHECK: no placeholder box in section 3.
-3. **Plate preview with supports on** (review 5 m-10). Load each half into Bambu Studio with the profile of section 3, supports on, brim on. Slice. CHECK, for each half: (a) nothing is red or outside the plate, including the support base, the brim and the purge / skirt keep-out; (b) the preview's filament and time are within 10 % of section 3; (c) no support is drawn inside a bore, pin hole, bolt hole or nut trap. Screenshot each preview and send it. The lower half as written is 321.1 x 299.6 mm (12.64 x 11.80 in) on a plate the retailer gives as 340 x 320 mm (`docs/research/frame_comp_A.md`, ASSUMPTION BED-ROT in `analysis/h1_bedfit.md`): only the preview settles it.
+3. **Plate preview with supports on** (review 5 m-10). Load each half into Bambu Studio with the profile of section 3, supports on, brim on. Slice. CHECK, for each half: (a) nothing is red or outside the plate, including the support base, the brim and the purge / skirt keep-out; (b) the preview's filament and time are within 10 % of section 3; (c) no support is drawn inside a bore, pin hole, bolt hole or nut trap. Screenshot each preview and send it. The lower half as written is 321.9 x 300.4 mm (12.67 x 11.83 in) on a plate the retailer gives as 340 x 320 mm (`docs/research/frame_comp_A.md`, ASSUMPTION BED-ROT in `analysis/h1_bedfit.md`): only the preview settles it.
 
 ## 3. Print settings and supports
 
@@ -127,13 +127,13 @@ Filament and time (from the meshes; supports not included in this table):
 
 | file | part mass | filament + 8 % waste | time without supports |
 |---|---:|---:|---:|
-| `h1_lower_flat` | 490.2 g (17.29 oz) | 529.4 g (18.67 oz) | 17.3 h |
+| `h1_lower_flat` | 494.6 g (17.45 oz) | 534.2 g (18.84 oz) | 17.5 h |
 | `h1_upper_flat` | 543.4 g (19.17 oz) | 586.9 g (20.70 oz) | 19.2 h |
-| `us2_clevis_R` | 13.7 g (0.48 oz) | 14.8 g (0.52 oz) | 0.5 h |
-| `us2_clevis_L` | 13.7 g (0.48 oz) | 14.8 g (0.52 oz) | 0.5 h |
+| `us2_clevis_R` | 15.7 g (0.55 oz) | 17.0 g (0.60 oz) | 0.6 h |
+| `us2_clevis_L` | 15.7 g (0.55 oz) | 17.0 g (0.60 oz) | 0.6 h |
 | `crown_pawl_lp_fdm_pacf` | 4.2 g (0.15 oz) | 4.5 g (0.16 oz) | 0.2 h |
 
-Body without supports: 1116.3 g (39.38 oz) of filament, about 36 h. Buy one 1 kg spool per half plus one for the clevises, test pieces and reprints (section 1).
+Body without supports: 1121.0 g (39.54 oz) of filament, about 37 h. Buy one 1 kg spool per half plus one for the clevises, test pieces and reprints (section 1).
 
 Print order: (1) the CA coupons (G1); (2) the test pieces of section 10; (3) the clevises and the pawl; (4) the upper half; (5) the lower half (longest, fullest plate).
 
@@ -153,9 +153,9 @@ Print order: (1) the CA coupons (G1); (2) the test pieces of section 10; (3) the
 
 ## 6. Weigh (before reaming)
 
-Weigh each half after support removal and annealing. Expected (STL x density): lower 490.2 g (17.29 oz), upper 543.4 g (19.17 oz), together 1033.6 g (36.46 oz) (2.28 lb).
+Weigh each half after support removal and annealing. Expected (STL x density): lower 494.6 g (17.45 oz), upper 543.4 g (19.17 oz), together 1038.0 g (36.61 oz) (2.29 lb).
 
-CHECK: the two halves together read **1003 to 1075 g** (35.4-37.9 oz; ASSUMPTION MASS-BAND). Heavier: over-extrusion, check the flow ratio before the next print. Lighter: gaps or wet filament; look at a broken support stub for voids. Write both weights on the build sheet.
+CHECK: the two halves together read **1007 to 1080 g** (35.5-38.1 oz; ASSUMPTION MASS-BAND). Heavier: over-extrusion, check the flow ratio before the next print. Lighter: gaps or wet filament; look at a broken support stub for voids. Write both weights on the build sheet.
 
 ## 7. Bolt the halves together (the z 234 joint)
 
@@ -171,7 +171,7 @@ CHECK: the two halves together read **1003 to 1075 g** (35.4-37.9 oz; ASSUMPTION
 
 ## 8. US2 clevises
 
-BL-053 re-cut the nut traps (review 5 M-2): a 10 mm washer slot at the nut face, then a hex pocket that holds the nut by its flats; thinnest wall 2.3 mm (>= 2 mm). Bolt axes at z +/-7 mm about the pin.
+BL-053 re-cut the nut traps (review 5 M-2): a 10 mm washer slot at the nut face, then a hex pocket that holds the nut by its flats; thinnest wall 2.3 mm (>= 2 mm). Bolt axes at z +/-7 mm about the pin. BL-056 (CLEVIS-SHARE B at share 1.0): the joint blocks grew upward to z pin +19 mm (was +14.5) and the nut face moved 1 mm (0.04 in) INBOARD: each nut trap now runs x +/-144.8 to 150 (was to 151), so the nut sits 1 mm deeper; the 35 mm screw still reaches through it (hip_mount_bl056.md 7). Use only the clevises and lower half printed from the files in this folder (dated 2026-11-21 or later): a clevis from an older print does not mate with the grown block.
 
 1. Ream the two bolt holes in each clevis and in the lower half's US2 block (printed 4.8) to **5.1 mm (0.201 in)**.
 2. Into each side trap, from the wearer face: a 10 mm DIN 433 washer (**HW-US2-WSH**) then an M5 nut. CHECK: the nut slides into its hex pocket and does not turn with a finger.
@@ -196,8 +196,8 @@ Print, anneal and ream them exactly like the frame (sections 3-5, 8, 9). Support
 | piece | file | mass | prints for | count |
 |---|---|---:|---|---:|
 | test piece HE-FIT / PT-3 / SEW-F | `test_pieces/hefit_hinge_fairlead_R.stl` | 42.9 g (1.51 oz) | HE-FIT, PT-3, SEW-F (one fresh print each) | 3 |
-| test piece US ROUTE / CLEVIS-SHARE | `test_pieces/us_route_stay_R.stl` | 150.8 g (5.32 oz) | HE-FIT step 0 (US ROUTE) and CLEVIS-SHARE (second print) | 2 |
-| US2 clevis, right | `us2_clevis_R.stl` | 13.7 g (0.48 oz) | bolted onto each US route piece | 2 |
+| test piece US ROUTE / CLEVIS-SHARE | `test_pieces/us_route_stay_R.stl` | 152.5 g (5.38 oz) | HE-FIT step 0 (US ROUTE) and CLEVIS-SHARE (second print) | 2 |
+| US2 clevis, right | `us2_clevis_R.stl` | 15.7 g (0.55 oz) | bolted onto each US route piece | 2 |
 | test piece IM3-EC | `test_pieces/im3ec_cheek_R.stl` | 68.5 g (2.42 oz) | IM3-EC (with the CA-1 bars) | 3 |
 
 Per piece (BL-053): `test_pieces/hefit_hinge_fairlead_R` frame profile of BUILD_H1.md section 3 with SUPPORTS REQUIRED (it touches the plate over only 15 mm2, BL-053 print_settings_bl053.json): tree supports from the build plate in PAHT-CF, blockers in every bore, pin hole, bolt hole and trap, scars sanded flat (BUILD_H1 section 4), filament about 45 g, about 1.6 h. `test_pieces/us_route_stay_R` frame profile of BUILD_H1.md section 3 with SUPPORTS REQUIRED (it touches the plate over only 9 mm2, BL-053 print_settings_bl053.json): tree supports from the build plate in PAHT-CF, blockers in every bore, pin hole, bolt hole and trap, scars sanded flat (BUILD_H1 section 4), filament about 178 g, about 6.3 h. `test_pieces/im3ec_cheek_R` frame profile of BUILD_H1.md section 3 with SUPPORTS REQUIRED (it touches the plate over only 729 mm2, BL-053 print_settings_bl053.json): tree supports from the build plate in PAHT-CF, blockers in every bore, pin hole, bolt hole and trap, scars sanded flat (BUILD_H1 section 4), filament about 71 g, about 2.5 h. `us2_clevis_R` frame profile of BUILD_H1.md section 3, NO supports (it prints flat), blockers in the holes, annealed 90 C 6 h, filament about 14 g, about 0.5 h.
@@ -234,7 +234,9 @@ Walls (record minimum 2.6 mm): hole to boss edge 2.8 mm, between holes 2.8 mm, h
 4. Fit the SLM Ti pivot mount (**HW-HIP-MNT**) with 8 **Ti gr5 M5 x 14 DIN 7984** (**HW-HIP-SCR**), blue threadlocker, 2.0 N m (insert record maximum 2.5 N m), in a star order; neighbouring heads sit only 0.7 mm apart, so use a ball-end 3 mm key (DIN 7984 M5 socket).
 5. CHECK: push the mount's pin end with the spring scale to 20 N (2.0 kg, 4.5 lb; ASSUMPTION MOUNT-SEAT) up, down, left and right: a 0.05 mm (0.002 in) feeler does not enter under the base edge at any point, and no screw head turns (a paint mark across each head and the base).
 
-> **HOLD before ordering HW-HIP-MNT:** the mount's base must be the BL-055 redraw, a 50 mm (1.97 in) x 3.0 mm Ti disc with 8 holes of 5.5 mm on the insert positions above (the file on record is D44 x 1.2 mm disc, no screw holes (designs/pack_5200/print/lug_hip_pivot_mount_slm_ti.stl)). CHECK on arrival: caliper the base 3.0 mm thick (+/- 0.1) and 50 mm across; count 8 holes; lay the mount on the boss: every hole shows its insert.
+> **HOLD LIFTED (BL-056): order HW-HIP-MNT.** The SLM file `../lug_hip_pivot_mount_slm_ti.stl` (+ `.3mf`) is now the redraw: a 50 mm (1.97 in) x 3.0 mm Ti base with 8 holes of 5.5 mm on the insert positions above (position error 0.00 mm), 34.3 g (1.21 oz) (ledger BL056). Send the print service `analysis/hip_mount_bl056.md` section 4 (build direction base down on the plate, supports, HIP, ream the D10 pin bore). The drawn D44 x 1.2 mm part is kept only in `../legacy/` for the record: never order it. CHECK on arrival: caliper the base 3.0 mm thick (+/- 0.1) and 50 mm across; count 8 holes; weigh it: 34.3 g (1.21 oz) +/- 5 % (ASSUMPTION SLM-MASS); lay the mount on the boss: every hole shows its insert.
+
+> The orchestrator kept the drawn legs for P1 (DECISIONS 2026-11-21): HB-6b run 2 (test kit, pad 20 mm sideways) decides whether they stay. Order ONE mount for P1; order P2's after HB-6b passes.
 
 ## 13. Crown: spine clamp, B-25 sleeves, corners
 
@@ -271,7 +273,7 @@ Sandwich v2 (BP-06 rev C, 7 mm core), from `designs/pack_5200/cut/spreader/`. Cl
 
 | # | check | how | pass |
 |---:|---|---|---|
-| 1 | body mass | step 6 | 1003-1075 g |
+| 1 | body mass | step 6 | 1007-1080 g |
 | 2 | z 234 joint | fingernail across the split; pencil marks | no step; marks within 0.5 mm after every load test |
 | 3 | crown travel | section 13b check 8 at every kit | full range, pawl clicks, cord releases |
 | 4 | clevis heads | steel rule over the clevis face | does not touch the heads |
@@ -294,8 +296,9 @@ Cradle belly: the frame is checked down to a 40.0 mm belly (BL-053); the user ca
 | FRAME-AS-JIG | The crown is bonded on the printed frame itself (legs in their bushings at the 15 in setting, the spine in its channel), so the spine axis lands where the channel puts it (crown_spine_clamp SPINE-AXIS) without a separate jig; PTFE tape keeps MMA off the print. | Dry fit of the crown on P1 before any bond: the spine slides the full channel with the clamp on. |
 | PAWL-PIN | The pawl pin is a 4 mm stainless pin, length = the cheek bosses' outer faces (2 x the measured x +/-24.8) rounded up to 50 mm, retained by one E-clip (DIN 6799, for a 4 mm shaft) in a groove at each end outside the sleeves. Sleeves 8 x 4.2 x 8 (h1_pawl BORE_REAM_D, PRODUCTION op 2). | Pawl dry fit: the pin turns freely in both sleeves; no end play over 0.5 mm. |
 | HIP-INSERTS | The Ti hip mount fixes to the printed hip boss with M5 brass heat-set inserts in the pattern BL-055 Part A sized (h1_closeout.json: count, positions, printed pilot holes; insert pull-out 1200 N (record ASSUMPTION) x the PAHT-CF hot knock-down x the layer-normal ratio). Buy 2 spares. | Insert pull-out coupon HB-6 (test kit) and the D-I1 coupon. |
-| MOUNT-SEAT | A 20 N hand push on the mount's pin end (about 1 % of the 1601 N C2 pin load) is a seating check only: it finds a mount resting on a burr or an insert standing proud, not strength. | HB-6b hip-mount proof on the frame (h1_closeout.md 6, FLANGE-RIGID) carries the strength. |
+| MOUNT-SEAT | A 20 N hand push on the mount's pin end (about 1 % of the 1601 N C2 pin load) is a seating check only: it finds a mount resting on a burr or an insert standing proud, not strength. | HB-6b hip-mount proof on the frame (hip_mount_bl056.md 6, FLANGE-RIGID; test kit) carries the strength. |
 | HIP-HEAT | Inserts go in with the iron at 290 C (the PAHT-CF nozzle temperature): hot enough to melt the wall round the knurl without a blob; the insert record gives no install temperature. | HB-6 practice blocks: each insert flush within 0.2 mm, square (an M5 screw stands upright), no bulge on the far face; pull-out per HB-6. |
+| SLM-MASS | The SLM Ti hip mount as delivered (HIPed, supports off, base faced, pin bore reamed) weighs the redrawn STL volume x 4430 kg/m3 (ledger BL056) within +/- 5 %: more = support left on, less = porosity or a short build. | Weigh the first mount on arrival; the engineer resets the band. |
 | RACK-CUT | The printed rack (print/crown_rack_fdm_pacf, 230 mm) is cut to the kit's spine length minus the clamp socket (15 mm) and bonded to the spine tube's fore face with MMA, teeth fore, as frame.yaml 'crown spine tube (rack bonded on)'. Kit S's spine (173 mm) needs a cut rack. | Crown dry fit: the pawl engages the rack over the kit's whole torso range. |
 | BED-ROT, CLEVIS-*, HEAD-*, CROWN-BRIDGE, ROOT-AIR | carried from `analysis/h1_bedfit.md` 7 and `h1_crown.md` 7 | as there |
 | CLAMP-TYPE, CLAMP-WALL, SOCKET-MIN, SPINE-AXIS, TRANSVERSE-SHEAR | carried from `huntkit/gendesign/crown_spine_clamp.py` | T6(c) coupon (13a), crown dry fit (13b.1) |
