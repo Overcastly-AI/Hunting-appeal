@@ -106,7 +106,7 @@ def test_mt1_cradle_pull_row_gauges_and_belly():
     assert K.TEST_RELEASE["MT-1cr"] == "R1" and K.group_of("MT-1cr") == "G6"
     # BL-055 Part B: pin pulls along the 3D vectors (240 / 480 / 720 N + the factored row), belly >= 40 mm
     assert "240 / 480 / 720 /" in r["steps"] and round(LN.US_CRADLE_N) == 720
-    assert "arm root" in r["specimen"] and "belly" in r["steps"] and ">= 40 mm (6 of 6" in r["pass_fail"]
+    assert "arm root" in r["specimen"] and "drop at mid-span" in r["steps"] and ">= 40 mm (6 of 6" in r["pass_fail"]
     assert "MT-1cr" in _reg()["MT-1"]["notes"]           # the bench MT-1 points at the frame-side pull
     res = list(csv.DictReader(open(REL / "test_kit" / "results_template.csv", encoding="utf-8")))
     bel = [x for x in res if x["test_id"] == "MT-1cr" and "belly" in x["quantity"]]
@@ -122,8 +122,9 @@ def test_clevis_share_gauge_required_and_bl051_hardware():
     assert "US2 arm root" in r["specimen"] and "microstrain" in r["pass_fail"]
     assert f"M5 x {BF.JOINT.bolt_len:.0f}" in r["specimen"] and "NO washer under the head" in r["specimen"]
     assert "2 x 10 mm OD DIN 433 washers on the NUT side only" in r["specimen"]
-    # the joint numbers quoted are BL-051's (counterbored heads), not BL-050's 3.85 / 1.73
-    j = CROWN["joint"]
+    # BL-055: the joint numbers quoted are BL-053's (h1_rev5.json joint, share 1.0 and 0.6), not BL-050's 3.85 / 1.73
+    import json
+    j = json.loads((ROOT / "designs/pack_5200/analysis/h1_rev5.json").read_text())["joint"]["share_1"]
     assert f"strength {j['worst_strength']['sf']}, fatigue {j['worst_fatigue']['fatigue']}" in r["what_it_proves"]
     assert "3.85" not in r["what_it_proves"] and "HEAD-BEAR" in r["pass_fail"] + r["steps"] + r["what_it_proves"]
     res = list(csv.DictReader(open(REL / "test_kit" / "results_template.csv", encoding="utf-8")))
