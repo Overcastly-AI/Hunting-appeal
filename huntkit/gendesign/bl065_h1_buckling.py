@@ -237,8 +237,9 @@ def _sets(basis: str):
 
 
 def run_basis(basis: str, b: dict | None = None, solid: np.ndarray | None = None, tag: str = "h1", log=print,
-              refresh: bool = False, members_only: bool = False) -> dict:
-    """All readings on one basis, cached OUT/<tag>_<basis>.json."""
+              refresh: bool = False, members_only: bool = False, weights: np.ndarray | None = None) -> dict:
+    """All readings on one basis, cached OUT/<tag>_<basis>.json. ``weights`` (g.ne): per-voxel stiffness weights
+    (BL-066: the carbon ring of CF-LITE); None = uniform PAHT-CF as BL-065."""
     from huntkit.fea.voxel_buckling import VoxelBuckler, mode_q, sym_full
     from . import frame_topopt as ft
     OUT.mkdir(parents=True, exist_ok=True)
@@ -252,7 +253,7 @@ def run_basis(basis: str, b: dict | None = None, solid: np.ndarray | None = None
     with FI._ctx():
         sets = _sets(basis)
         _, fixed = ft.assemble_loads(dom, sets[:1], solid_mask=solid)
-        vb = VoxelBuckler(g, solid, fixed, ft.NU, extra_fixed=brace_dofs(b, solid))
+        vb = VoxelBuckler(g, solid, fixed, ft.NU, weights=weights, extra_fixed=brace_dofs(b, solid))
         log(f"[{time.strftime('%H:%M:%S')}] {tag} {basis}: {len(sets)} sets, system {vb.rs.n} dof "
             f"({time.time() - t0:.0f} s)")
         stress, keys = [], []
@@ -394,7 +395,7 @@ def setdown_side(F: np.ndarray, g) -> str:
 
 
 def run_setdown(basis: str, b: dict | None = None, solid: np.ndarray | None = None, tag: str = "h1", log=print,
-                refresh: bool = False, n: int = 1) -> dict:
+                refresh: bool = False, n: int = 1, weights: np.ndarray | None = None) -> dict:
     """Single-stay set-down with the loaded foot on the ground (held in x, y in the eigen problem), with and
     without the crown brace, on the record-governing set-down set and the n lowest screened set-down sets."""
     from huntkit.fea.voxel_buckling import VoxelBuckler
@@ -418,7 +419,7 @@ def run_setdown(basis: str, b: dict | None = None, solid: np.ndarray | None = No
     with FI._ctx():
         sets = {s_.key: s_ for s_ in _sets(basis)}
         _, fixed = ft.assemble_loads(dom, [sets[cand[0]]], solid_mask=solid)
-        vb = VoxelBuckler(g, solid, fixed, ft.NU)
+        vb = VoxelBuckler(g, solid, fixed, ft.NU, weights=weights)
         regions = region_of(g.elem_centers()[vb.ae], b["grp"][vb.ae])
         top = brace_dofs(b, solid)
         for k in cand:
@@ -447,7 +448,7 @@ def run_setdown(basis: str, b: dict | None = None, solid: np.ndarray | None = No
 
 
 def run_extra(basis: str, b: dict | None = None, solid: np.ndarray | None = None, tag: str = "h1", log=print,
-              refresh: bool = False, n: int = N_SCREEN) -> dict:
+              refresh: bool = False, n: int = N_SCREEN, weights: np.ndarray | None = None) -> dict:
     """Braced full runs on the n lowest screened sets that are NOT set-down (the set-down sets fill the first screen
     slots with their foot mode, which run_setdown treats on its own)."""
     from huntkit.fea.voxel_buckling import VoxelBuckler
@@ -467,7 +468,7 @@ def run_extra(basis: str, b: dict | None = None, solid: np.ndarray | None = None
     with FI._ctx():
         sets = {s_.key: s_ for s_ in _sets(basis)}
         _, fixed = ft.assemble_loads(dom, [sets[next(iter(sets))]], solid_mask=solid)
-        vb = VoxelBuckler(g, solid, fixed, ft.NU, extra_fixed=brace_dofs(b, solid))
+        vb = VoxelBuckler(g, solid, fixed, ft.NU, weights=weights, extra_fixed=brace_dofs(b, solid))
         regions = region_of(g.elem_centers()[vb.ae], b["grp"][vb.ae])
         for k in cand:
             F, _ = ft.assemble_loads(dom, [sets[k]], solid_mask=solid)
