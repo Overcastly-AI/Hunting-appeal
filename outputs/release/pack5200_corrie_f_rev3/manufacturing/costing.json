@@ -1,5 +1,5 @@
 {
- "material_usd_primary": 381.06,
+ "material_usd_primary": 375.01,
  "prototype_buy": {
   "rows": [
    {
@@ -7,8 +7,8 @@
     "item": "challenge_ultra_200: B-01x1 B-06fx1 B-13xx6 B-27fx2",
     "material_id": "challenge_ultra_200",
     "unit": "m",
-    "production_qty": 0.487,
-    "production_usd": 31.94,
+    "production_qty": 0.464,
+    "production_usd": 30.46,
     "prototype_qty": 0.914,
     "prototype_usd": 60.0,
     "how": "1-bag marker 0.743 m -> 1.0 yd"
@@ -18,8 +18,8 @@
     "item": "cordura_330d_nylon66: B-03x2 B-02doorx1 B-02hx1 B-07x1 IMP8-ax1 F-02x1",
     "material_id": "cordura_330d_nylon66",
     "unit": "m",
-    "production_qty": 0.824,
-    "production_usd": 12.61,
+    "production_qty": 0.813,
+    "production_usd": 12.45,
     "prototype_qty": 1.372,
     "prototype_usd": 21.0,
     "how": "1-bag marker 1.135 m -> 1.5 yd"
@@ -40,8 +40,8 @@
     "item": "hdpe_sheet: B-07sx2 MS-sx2",
     "material_id": "hdpe_sheet",
     "unit": "m2",
-    "production_qty": 0.047,
-    "production_usd": 0.21,
+    "production_qty": 0.039,
+    "production_usd": 0.18,
     "prototype_qty": 0.25,
     "prototype_usd": 1.15,
     "how": "one sheet >= 0.25 m2"
@@ -128,11 +128,11 @@
     "item": "elastic_25mm: K-28 K-G K-IM K-RT",
     "material_id": "elastic_25mm",
     "unit": "m",
-    "production_qty": 1.04,
-    "production_usd": 1.14,
-    "prototype_qty": 1.829,
-    "prototype_usd": 2.01,
-    "how": "1.04 m -> 2 yd"
+    "production_qty": 0.851,
+    "production_usd": 0.94,
+    "prototype_qty": 0.914,
+    "prototype_usd": 1.01,
+    "how": "0.851 m -> 1 yd"
    },
    {
     "section": "webbing",
@@ -150,11 +150,11 @@
     "item": "poly_webbing_25mm: B-28 B-28s B-28t BRL BRS E5 HPL I2K I2T IM1 IM2 IM3",
     "material_id": "poly_webbing_25mm",
     "unit": "m",
-    "production_qty": 17.36,
-    "production_usd": 12.15,
-    "prototype_qty": 17.374,
-    "prototype_usd": 12.16,
-    "how": "17.36 m -> 19 yd"
+    "production_qty": 17.406,
+    "production_usd": 12.18,
+    "prototype_qty": 18.288,
+    "prototype_usd": 12.8,
+    "how": "17.406 m -> 20 yd"
    },
    {
     "section": "webbing",
@@ -290,13 +290,13 @@
    },
    {
     "section": "hardware",
-    "item": "heavy 25 mm ladder lock (9): B-28 (4) + guys (2) + W1-W3 (3)",
+    "item": "heavy 25 mm ladder lock (7): B-28 (2) + guys (2) + W1-W3 (3)",
     "material_id": "ladder_lock_25mm_heavy",
     "unit": "unit",
-    "production_qty": 9,
-    "production_usd": 18.9,
-    "prototype_qty": 9,
-    "prototype_usd": 18.9,
+    "production_qty": 7,
+    "production_usd": 14.7,
+    "prototype_qty": 7,
+    "prototype_usd": 14.7,
     "how": "as production (whole units / cones)"
    },
    {
@@ -403,11 +403,11 @@
     "item": "bonded_nylon_tex90 (needle + bobbin)",
     "material_id": "bonded_nylon_tex90",
     "unit": "m",
-    "production_qty": 125.1,
-    "production_usd": 0.76,
+    "production_qty": 123.3,
+    "production_usd": 0.75,
     "prototype_qty": 1260.0,
     "prototype_usd": 7.69,
-    "how": "1 cone(s) of 4 oz = 1260 m each (125.1 m used)"
+    "how": "1 cone(s) of 4 oz = 1260 m each (123.3 m used)"
    },
    {
     "section": "consumable",
@@ -465,41 +465,41 @@
     "how": "as production (whole units / cones)"
    }
   ],
-  "total_usd": 510.49,
+  "total_usd": 505.93,
   "fabric_usd": 185.15,
   "assumption": "SHOP-INCR: roll goods in 0.5 yd steps at full width, webbing whole yards, HDPE one 0.25 m2 sheet; hardware as production (whole units); thread by the 4 oz cone, basting tape and seam sealer by the smallest pack (SHOP-UNIT, BL-041 n-10); no camo print (CAMO-FIRST, BL-041 Y-5)"
  },
- "prototype_usd": 510.49,
- "material_usd_alternate": 381.14,
- "fabric_usd_primary": 88.09,
- "fabric_usd_alternate": 88.17,
+ "prototype_usd": 505.93,
+ "material_usd_alternate": 373.95,
+ "fabric_usd_primary": 86.42,
+ "fabric_usd_alternate": 85.36,
  "missing_cost": [],
- "proto_hours": 75.2,
+ "proto_hours": 74.7,
  "proto_hours_by_step": {
-  "0 Prep and cutting": 16.28,
+  "0 Prep and cutting": 16.19,
   "1 Pockets": 6.06,
-  "2 Small parts": 4.33,
+  "2 Small parts": 4.3,
   "3 Door D2 and hinge band": 5.0,
   "4 Main bag": 14.36,
-  "5 Collar and roll top": 3.5,
+  "5 Collar and roll top": 3.33,
   "6 Crown lid B-29 (as hunted)": 8.46,
-  "7 Straps and webbing": 6.86,
+  "7 Straps and webbing": 6.66,
   "8 Add-ons (scope pod as hunted, meat liner meat trip)": 3.71,
   "9 Rain fly F-01": 5.4,
   "10 Finish, inspect, pack": 1.2
  },
- "sam_min": 511.6,
+ "sam_min": 508.1,
  "labour_usd": {
-  "us_contract_usd_min": 434.89,
-  "asia_contract_usd_min": 61.4
+  "us_contract_usd_min": 431.91,
+  "asia_contract_usd_min": 60.98
  },
  "cmt_usd": {
-  "us_contract_usd_min": 543.61,
-  "asia_contract_usd_min": 76.74
+  "us_contract_usd_min": 539.89,
+  "asia_contract_usd_min": 76.22
  },
  "landed_usd": {
-  "us_contract_usd_min": 924.67,
-  "asia_contract_usd_min": 457.81
+  "us_contract_usd_min": 914.9,
+  "asia_contract_usd_min": 451.23
  },
  "lid_hours_drafted": 9.53,
  "lid_hours_booked": 7.76,

@@ -81,8 +81,9 @@ def test_bl064_records_wired():
 
 
 def test_option_A_on_real_mesh(res):
-    """Review 7 M8: option A on the 350 basis (N1 -36.1, N2 -3.2, N3 -14, N4 -8.2, N5 -8.7)."""
-    assert res["options"]["A"]["base_delta_g"] == pytest.approx(-70.2, abs=0.3)
+    """Review 7 M8: option A on the 350 basis (N1 -36.1, N2 -3.2, N3 -14, N4 -8.2, N5 -8.7) was -70.2 g; BL-068 P2's
+    tapered collar makes the B-06f frame-side collar (the 200 -> 70D lever) smaller: -68.7 g."""
+    assert res["options"]["A"]["base_delta_g"] == pytest.approx(-68.7, abs=0.3)
 
 
 def test_kuiu_arithmetic(res):

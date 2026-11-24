@@ -1,0 +1,1672 @@
+{
+ "ticket": "BL-065",
+ "date": "2026-11-24",
+ "stl": "designs/pack_5200/print/frame_h1/h1_assembled.stl",
+ "stl_md5": "7bd47cbdcc3b42c0f93d57ef041efc11",
+ "method": "linear eigenvalue buckling of the 2 mm voxel raster of the print (huntkit.fea.voxel_buckling, H8 initial-stress stiffness, Lanczos), E 1621 MPa (E_xy x 0.6 hot x 0.7 creep, the record rule's), prestress = the BL-058 whole-body solve of every rev C set; margin = lam / 1.5 / 1.02 (H8)",
+ "requirement": "HA-LS-1 4: eigenvalue >= 1.5 x case factor (margin >= 1); BL-061 goal >= 1.15",
+ "summary": {
+  "static_cinch": {
+   "record_rule": 1.053,
+   "section_rule": 0.855,
+   "member_eigen_unbraced": 1.47,
+   "member_eigen_unbraced_where": "upper branch R (fine, S_meat@a_L_fine_23:side_hill_torsion|23)",
+   "member_eigen_braced": 6.349,
+   "member_eigen_braced_where": "upper branch R (fine, S_meat@a_L_fine_23:side_hill_torsion|23)",
+   "frame_eigen_braced": 1.336,
+   "frame_eigen_braced_mode": {
+    "basis": "fine_sm8",
+    "set": "S_meat@a_L_fine_sm8_23:side_hill_torsion|23",
+    "lead": "stay lower L",
+    "drives": {
+     "stay lower L": 0.51,
+     "lumbar strut L": 0.43
+    },
+    "driver_peak_mm": [
+     -39.0,
+     -25.0,
+     103.0
+    ],
+    "max_disp_at_mm": [
+     -126.0,
+     -2.0,
+     0.0
+    ],
+    "reading": "crown held"
+   },
+   "setdown_foot_held_crown_free": 0.979,
+   "channel_lip_local": {
+    "margin": 0.702,
+    "basis": "fine",
+    "set": "S_fill@a_S_fine_15:hipbelt_off_abuse|15",
+    "frame_with_lip_deleted": 1.84
+   },
+   "record_model_free": 0.16,
+   "record_model_free_mode": {
+    "basis": "fine_sm8",
+    "set": "S_meat@a_L_fine_sm8_23:side_hill_torsion|23",
+    "lead": "stay sleeve L",
+    "top_disp_share": 0.32,
+    "max_disp_at_mm": [
+     128.0,
+     -4.0,
+     544.0
+    ]
+   }
+  },
+  "cinch_cycled": {
+   "record_rule": 1.022,
+   "section_rule": 0.865,
+   "member_eigen_unbraced": 1.485,
+   "member_eigen_unbraced_where": "upper branch R (fine_sm8.cyc, S_meat@a_L_fine_sm8_cyc_23:side_hill_torsion|23)",
+   "member_eigen_braced": 5.755,
+   "member_eigen_braced_where": "mid bar (fine_sm8.cyc, S_meat@a_S_fine_sm8_cyc_15:hipbelt_off_abuse|15)",
+   "frame_eigen_braced": 1.336,
+   "frame_eigen_braced_mode": {
+    "basis": "fine_sm8.cyc",
+    "set": "S_meat@a_L_fine_sm8_cyc_23:side_hill_torsion|23",
+    "lead": "stay lower L",
+    "drives": {
+     "stay lower L": 0.51,
+     "lumbar strut L": 0.43
+    },
+    "driver_peak_mm": [
+     -39.0,
+     -25.0,
+     103.0
+    ],
+    "max_disp_at_mm": [
+     -126.0,
+     -2.0,
+     0.0
+    ],
+    "reading": "crown held"
+   },
+   "setdown_foot_held_crown_free": 1.022,
+   "channel_lip_local": {
+    "margin": 0.702,
+    "basis": "fine_sm8.cyc",
+    "set": "S_fill@a_S_fine_sm8_cyc_15:hipbelt_off_abuse|15",
+    "frame_with_lip_deleted": 1.84
+   },
+   "record_model_free": 0.19,
+   "record_model_free_mode": {
+    "basis": "fine_sm8.cyc",
+    "set": "S_meat@a_S_fine_sm8_cyc_15:static_carry|15",
+    "lead": "stay sleeve L",
+    "top_disp_share": 0.32,
+    "max_disp_at_mm": [
+     -118.0,
+     4.0,
+     544.0
+    ]
+   }
+  }
+ },
+ "members": [
+  {
+   "basis": "fine_sm8",
+   "member": "upper branch R",
+   "set": "S_meat@a_L_fine_sm8_23:side_hill_torsion|23",
+   "P_factored_n": 538.3,
+   "I_min_mm4": 1415,
+   "L_mm": 180.0,
+   "margin_record": 1.066,
+   "margin_section": 0.865,
+   "eigen_unbraced": 1.485,
+   "Pcr_unbraced_n": 1200.0,
+   "K_eff_unbraced": 0.763,
+   "eigen_braced": 6.406,
+   "K_eff_braced": 0.367
+  },
+  {
+   "basis": "fine_sm8",
+   "member": "upper branch L",
+   "set": "S_meat@a_S_fine_sm8_15:drop_2p5g|15",
+   "P_factored_n": 112.9,
+   "I_min_mm4": 1403,
+   "L_mm": 180.0,
+   "margin_record": 4.549,
+   "margin_section": 4.091,
+   "eigen_unbraced": 6.831,
+   "Pcr_unbraced_n": 1157.0,
+   "K_eff_unbraced": 0.774,
+   "eigen_braced": 28.226,
+   "K_eff_braced": 0.381
+  },
+  {
+   "basis": "fine_sm8",
+   "member": "lower branch R",
+   "set": "S_meat@a_L_fine_sm8_23:side_hill_torsion|23",
+   "P_factored_n": 288.5,
+   "I_min_mm4": 1017,
+   "L_mm": 180.0,
+   "margin_record": 1.139,
+   "margin_section": 1.16,
+   "eigen_unbraced": 1.677,
+   "Pcr_unbraced_n": 726.0,
+   "K_eff_unbraced": 0.832,
+   "eigen_braced": 7.471,
+   "K_eff_braced": 0.394
+  },
+  {
+   "basis": "fine_sm8",
+   "member": "lower branch L",
+   "set": "S_fill@a_S_fine_sm8_15:single_stay_setdown|15",
+   "P_factored_n": 235.4,
+   "I_min_mm4": 907,
+   "L_mm": 180.0,
+   "margin_record": 1.298,
+   "margin_section": 1.268,
+   "eigen_unbraced": 4.405,
+   "Pcr_unbraced_n": 1556.0,
+   "K_eff_unbraced": 0.537,
+   "eigen_braced": 10.521,
+   "K_eff_braced": 0.347
+  },
+  {
+   "basis": "fine_sm8",
+   "member": "mid bar",
+   "set": "S_meat@a_L_fine_sm8_alt_20:hipbelt_off_abuse|20",
+   "P_factored_n": 223.0,
+   "I_min_mm4": 1109,
+   "L_mm": 230.0,
+   "margin_record": 1.106,
+   "margin_section": 1.002,
+   "eigen_unbraced": 3.666,
+   "Pcr_unbraced_n": 1227.0,
+   "K_eff_unbraced": 0.523,
+   "eigen_braced": 6.704,
+   "K_eff_braced": 0.387
+  },
+  {
+   "basis": "fine",
+   "member": "upper branch R",
+   "set": "S_meat@a_L_fine_23:side_hill_torsion|23",
+   "P_factored_n": 544.9,
+   "I_min_mm4": 1415,
+   "L_mm": 180.0,
+   "margin_record": 1.053,
+   "margin_section": 0.855,
+   "eigen_unbraced": 1.47,
+   "Pcr_unbraced_n": 1202.0,
+   "K_eff_unbraced": 0.763,
+   "eigen_braced": 6.349,
+   "K_eff_braced": 0.367
+  },
+  {
+   "basis": "fine",
+   "member": "upper branch L",
+   "set": "S_meat@a_S_fine_15:drop_2p5g|15",
+   "P_factored_n": 112.9,
+   "I_min_mm4": 1403,
+   "L_mm": 180.0,
+   "margin_record": 4.549,
+   "margin_section": 4.091,
+   "eigen_unbraced": 6.831,
+   "Pcr_unbraced_n": 1157.0,
+   "K_eff_unbraced": 0.774,
+   "eigen_braced": 28.226,
+   "K_eff_braced": 0.381
+  },
+  {
+   "basis": "fine",
+   "member": "lower branch R",
+   "set": "S_meat@a_L_fine_23:side_hill_torsion|23",
+   "P_factored_n": 310.2,
+   "I_min_mm4": 1017,
+   "L_mm": 180.0,
+   "margin_record": 1.059,
+   "margin_section": 1.079,
+   "eigen_unbraced": 1.643,
+   "Pcr_unbraced_n": 765.0,
+   "K_eff_unbraced": 0.81,
+   "eigen_braced": 7.483,
+   "K_eff_braced": 0.38
+  },
+  {
+   "basis": "fine",
+   "member": "lower branch L",
+   "set": "S_fill@a_S_fine_15:single_stay_setdown|15",
+   "P_factored_n": 235.4,
+   "I_min_mm4": 907,
+   "L_mm": 180.0,
+   "margin_record": 1.298,
+   "margin_section": 1.268,
+   "eigen_unbraced": 4.405,
+   "Pcr_unbraced_n": 1556.0,
+   "K_eff_unbraced": 0.537,
+   "eigen_braced": 10.521,
+   "K_eff_braced": 0.347
+  },
+  {
+   "basis": "fine",
+   "member": "mid bar",
+   "set": "S_meat@a_L_fine_alt_20:hipbelt_off_abuse|20",
+   "P_factored_n": 229.5,
+   "I_min_mm4": 1109,
+   "L_mm": 230.0,
+   "margin_record": 1.075,
+   "margin_section": 0.974,
+   "eigen_unbraced": 3.566,
+   "Pcr_unbraced_n": 1228.0,
+   "K_eff_unbraced": 0.523,
+   "eigen_braced": 6.526,
+   "K_eff_braced": 0.386
+  },
+  {
+   "basis": "beam",
+   "member": "upper branch R",
+   "set": "C@a_L_beam_23:single_stay_setdown|23",
+   "P_factored_n": 372.5,
+   "I_min_mm4": 1415,
+   "L_mm": 180.0,
+   "margin_record": 1.541,
+   "margin_section": 1.25,
+   "eigen_unbraced": 2.042,
+   "Pcr_unbraced_n": 1141.0,
+   "K_eff_unbraced": 0.783,
+   "eigen_braced": 9.194,
+   "K_eff_braced": 0.369
+  },
+  {
+   "basis": "beam",
+   "member": "lower branch R",
+   "set": "C@a_L_beam_23:single_stay_setdown|23",
+   "P_factored_n": 66.4,
+   "I_min_mm4": 1017,
+   "L_mm": 180.0,
+   "margin_record": 4.95,
+   "margin_section": 5.042,
+   "eigen_unbraced": 4.05,
+   "Pcr_unbraced_n": 403.0,
+   "K_eff_unbraced": 1.116,
+   "eigen_braced": 15.481,
+   "K_eff_braced": 0.571
+  },
+  {
+   "basis": "beam",
+   "member": "lower branch L",
+   "set": "C@a_S_beam_15:single_stay_setdown|15",
+   "P_factored_n": 235.4,
+   "I_min_mm4": 907,
+   "L_mm": 180.0,
+   "margin_record": 1.298,
+   "margin_section": 1.268,
+   "eigen_unbraced": 4.405,
+   "Pcr_unbraced_n": 1556.0,
+   "K_eff_unbraced": 0.537,
+   "eigen_braced": 10.521,
+   "K_eff_braced": 0.347
+  },
+  {
+   "basis": "fine_sm8.cyc",
+   "member": "upper branch R",
+   "set": "S_meat@a_L_fine_sm8_cyc_23:side_hill_torsion|23",
+   "P_factored_n": 538.3,
+   "I_min_mm4": 1415,
+   "L_mm": 180.0,
+   "margin_record": 1.066,
+   "margin_section": 0.865,
+   "eigen_unbraced": 1.485,
+   "Pcr_unbraced_n": 1200.0,
+   "K_eff_unbraced": 0.763,
+   "eigen_braced": 6.406,
+   "K_eff_braced": 0.367
+  },
+  {
+   "basis": "fine_sm8.cyc",
+   "member": "upper branch L",
+   "set": "S_meat@a_S_fine_sm8_cyc_15:static_carry|15",
+   "P_factored_n": 232.1,
+   "I_min_mm4": 1403,
+   "L_mm": 180.0,
+   "margin_record": 2.213,
+   "margin_section": 1.99,
+   "eigen_unbraced": 3.073,
+   "Pcr_unbraced_n": 1070.0,
+   "K_eff_unbraced": 0.805,
+   "eigen_braced": 15.321,
+   "K_eff_braced": 0.36
+  },
+  {
+   "basis": "fine_sm8.cyc",
+   "member": "lower branch R",
+   "set": "S_meat@a_L_fine_sm8_cyc_23:side_hill_torsion|23",
+   "P_factored_n": 288.5,
+   "I_min_mm4": 1017,
+   "L_mm": 180.0,
+   "margin_record": 1.139,
+   "margin_section": 1.16,
+   "eigen_unbraced": 1.677,
+   "Pcr_unbraced_n": 726.0,
+   "K_eff_unbraced": 0.832,
+   "eigen_braced": 7.471,
+   "K_eff_braced": 0.394
+  },
+  {
+   "basis": "fine_sm8.cyc",
+   "member": "lower branch L",
+   "set": "S_meat@a_S_fine_sm8_cyc_15:static_carry|15",
+   "P_factored_n": 298.9,
+   "I_min_mm4": 907,
+   "L_mm": 180.0,
+   "margin_record": 1.022,
+   "margin_section": 0.999,
+   "eigen_unbraced": 2.263,
+   "Pcr_unbraced_n": 1015.0,
+   "K_eff_unbraced": 0.664,
+   "eigen_braced": 9.022,
+   "K_eff_braced": 0.333
+  },
+  {
+   "basis": "fine_sm8.cyc",
+   "member": "mid bar",
+   "set": "S_meat@a_S_fine_sm8_cyc_15:hipbelt_off_abuse|15",
+   "P_factored_n": 209.4,
+   "I_min_mm4": 1109,
+   "L_mm": 230.0,
+   "margin_record": 1.178,
+   "margin_section": 1.068,
+   "eigen_unbraced": 3.248,
+   "Pcr_unbraced_n": 1020.0,
+   "K_eff_unbraced": 0.573,
+   "eigen_braced": 5.755,
+   "K_eff_braced": 0.431
+  }
+ ],
+ "squeeze": {
+  "Q_per_side_n": 416.0,
+  "braced_margin": 3.715,
+  "braced_lead": "lumbar strut L",
+  "braced_bifurcation_n_per_side": 2318.0,
+  "free_margin": 2.676,
+  "free_lead": "lumbar strut L",
+  "free_bifurcation_n_per_side": 1670.0,
+  "member_compression_n": {
+   "branch lower (z 165-330) L": 186.1,
+   "branch lower (z 165-330) R": 190.7,
+   "branch upper (z 330-495) L": 154.8,
+   "branch upper (z 330-495) R": 153.3,
+   "mid bar (x -115..115) all": 28.6
+  }
+ },
+ "per_basis": {
+  "fine_sm8": {
+   "record_rule_min": 1.066,
+   "frame_min": {
+    "set": "S_meat@a_L_fine_sm8_23:side_hill_torsion|23",
+    "reading": "crown held",
+    "margin": 1.336,
+    "drives": {
+     "stay lower L": 0.51,
+     "lumbar strut L": 0.43
+    },
+    "lead": "stay lower L"
+   },
+   "setdown": {
+    "S_fill@a_S_fine_sm8_15:single_stay_setdown|15": {
+     "foot": "L",
+     "foot_held_crown_free": 1.04,
+     "foot_held_crown_free_lead": "stay sleeve L",
+     "foot_held_crown_free_top_disp_share": 0.321,
+     "foot_and_crown_held": 4.109,
+     "foot_and_crown_held_lead": "stay lower L"
+    },
+    "S_fill@a_L_fine_sm8_23:single_stay_setdown|23": {
+     "foot": "L",
+     "foot_held_crown_free": 0.979,
+     "foot_held_crown_free_lead": "stay sleeve L",
+     "foot_held_crown_free_top_disp_share": 0.325,
+     "foot_and_crown_held": 4.113,
+     "foot_and_crown_held_lead": "stay lower L"
+    }
+   },
+   "free_min": {
+    "margin": 0.16,
+    "set": "S_meat@a_L_fine_sm8_23:side_hill_torsion|23",
+    "lead": "stay sleeve L",
+    "top_disp_share": 0.32
+   },
+   "full_runs_crown_held": {
+    "S_meat@a_L_fine_sm8_23:side_hill_torsion|23": [
+     {
+      "margin": 1.336,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 3.017,
+      "lead": "stay sleeve L"
+     },
+     {
+      "margin": 4.181,
+      "lead": "lumbar strut R"
+     },
+     {
+      "margin": 4.741,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 4.981,
+      "lead": "upper branch R"
+     },
+     {
+      "margin": 5.39,
+      "lead": "lumbar strut R"
+     }
+    ],
+    "S_meat@a_L_fine_sm8_alt_20:hipbelt_off_abuse|20": [
+     {
+      "margin": 1.647,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 3.041,
+      "lead": "stay top R"
+     },
+     {
+      "margin": 3.367,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 4.032,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 4.536,
+      "lead": "lumbar strut R"
+     },
+     {
+      "margin": 5.12,
+      "lead": "stay top R"
+     }
+    ],
+    "S_fill@a_S_fine_sm8_15:single_stay_setdown|15": [
+     {
+      "margin": 0.528,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 0.845,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 2.164,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 4.289,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 5.178,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 6.501,
+      "lead": "stay lower L"
+     }
+    ],
+    "S_meat@a_S_fine_sm8_15:drop_2p5g|15": [
+     {
+      "margin": 1.845,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 1.936,
+      "lead": "lumbar strut R"
+     },
+     {
+      "margin": 2.683,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 3.464,
+      "lead": "lumbar strut R"
+     },
+     {
+      "margin": 4.184,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 4.767,
+      "lead": "lumbar strut R"
+     }
+    ],
+    "S_fill@a_L_fine_sm8_23:single_stay_setdown|23": [
+     {
+      "margin": 0.526,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 0.843,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 2.174,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 4.246,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 5.132,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 6.215,
+      "lead": "stay lower L"
+     }
+    ],
+    "S_fill@a_M_fine_sm8_20.5:single_stay_setdown|20.5": [
+     {
+      "margin": 0.526,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 0.843,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 2.171,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 4.259,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 5.153,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 6.324,
+      "lead": "stay lower L"
+     }
+    ],
+    "S_fill@a_M_fine_sm8_alt_20.5:single_stay_setdown|20.5": [
+     {
+      "margin": 0.526,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 0.843,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 2.171,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 4.259,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 5.153,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 6.324,
+      "lead": "stay lower L"
+     }
+    ],
+    "S_fill@a_S_fine_sm8_15:hipbelt_off_abuse|15": [
+     {
+      "margin": 0.702,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 1.297,
+      "lead": "stay top R"
+     },
+     {
+      "margin": 1.436,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 2.18,
+      "lead": "stay top R"
+     },
+     {
+      "margin": 2.286,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 2.529,
+      "lead": "stay top R"
+     }
+    ],
+    "S_meat@a_S_fine_sm8_15:hipbelt_off_abuse|15": [
+     {
+      "margin": 0.766,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 1.415,
+      "lead": "stay top R"
+     },
+     {
+      "margin": 1.567,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 2.379,
+      "lead": "stay top R"
+     },
+     {
+      "margin": 2.494,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 2.743,
+      "lead": "stay top R"
+     }
+    ],
+    "S_fill@a_M_fine_sm8_alt_17.5:hipbelt_off_abuse|17.5": [
+     {
+      "margin": 0.938,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 1.732,
+      "lead": "stay top R"
+     },
+     {
+      "margin": 1.918,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 2.913,
+      "lead": "stay top R"
+     },
+     {
+      "margin": 3.052,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 3.821,
+      "lead": "stay top L"
+     }
+    ]
+   },
+   "screen_lowest": [
+    [
+     "S_fill@a_M_fine_sm8_20.5:single_stay_setdown|20.5",
+     0.526
+    ],
+    [
+     "S_fill@a_M_fine_sm8_alt_20.5:single_stay_setdown|20.5",
+     0.526
+    ],
+    [
+     "S_fill@a_L_fine_sm8_20:single_stay_setdown|20",
+     0.526
+    ],
+    [
+     "S_fill@a_L_fine_sm8_23:single_stay_setdown|23",
+     0.526
+    ],
+    [
+     "S_fill@a_L_fine_sm8_alt_20:single_stay_setdown|20",
+     0.526
+    ]
+   ]
+  },
+  "fine": {
+   "record_rule_min": 1.053,
+   "frame_min": {
+    "set": "S_meat@a_L_fine_23:side_hill_torsion|23",
+    "reading": "crown held",
+    "margin": 1.375,
+    "drives": {
+     "stay lower L": 0.53,
+     "lumbar strut L": 0.41
+    },
+    "lead": "stay lower L"
+   },
+   "setdown": {
+    "S_fill@a_S_fine_15:single_stay_setdown|15": {
+     "foot": "L",
+     "foot_held_crown_free": 1.04,
+     "foot_held_crown_free_lead": "stay sleeve L",
+     "foot_held_crown_free_top_disp_share": 0.321,
+     "foot_and_crown_held": 4.109,
+     "foot_and_crown_held_lead": "stay lower L"
+    },
+    "S_fill@a_L_fine_23:single_stay_setdown|23": {
+     "foot": "L",
+     "foot_held_crown_free": 0.979,
+     "foot_held_crown_free_lead": "stay sleeve L",
+     "foot_held_crown_free_top_disp_share": 0.325,
+     "foot_and_crown_held": 4.113,
+     "foot_and_crown_held_lead": "stay lower L"
+    },
+    "S_fill@a_M_fine_20.5:single_stay_setdown|20.5": {
+     "foot": "L",
+     "foot_held_crown_free": 0.997,
+     "foot_held_crown_free_lead": "stay sleeve L",
+     "foot_held_crown_free_top_disp_share": 0.324,
+     "foot_and_crown_held": 4.112,
+     "foot_and_crown_held_lead": "stay lower L"
+    },
+    "S_fill@a_M_fine_alt_20.5:single_stay_setdown|20.5": {
+     "foot": "L",
+     "foot_held_crown_free": 0.997,
+     "foot_held_crown_free_lead": "stay sleeve L",
+     "foot_held_crown_free_top_disp_share": 0.324,
+     "foot_and_crown_held": 4.112,
+     "foot_and_crown_held_lead": "stay lower L"
+    }
+   },
+   "free_min": {
+    "margin": 0.171,
+    "set": "S_meat@a_L_fine_23:side_hill_torsion|23",
+    "lead": "stay sleeve L",
+    "top_disp_share": 0.32
+   },
+   "full_runs_crown_held": {
+    "S_meat@a_L_fine_23:side_hill_torsion|23": [
+     {
+      "margin": 1.375,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 3.108,
+      "lead": "stay sleeve L"
+     },
+     {
+      "margin": 4.287,
+      "lead": "lumbar strut R"
+     },
+     {
+      "margin": 4.856,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 4.964,
+      "lead": "upper branch R"
+     },
+     {
+      "margin": 5.546,
+      "lead": "lumbar strut R"
+     }
+    ],
+    "S_meat@a_L_fine_alt_20:hipbelt_off_abuse|20": [
+     {
+      "margin": 1.63,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 3.011,
+      "lead": "stay top R"
+     },
+     {
+      "margin": 3.334,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 4.204,
+      "lead": "mid bar"
+     },
+     {
+      "margin": 4.871,
+      "lead": "lumbar strut R"
+     },
+     {
+      "margin": 5.07,
+      "lead": "stay top R"
+     }
+    ],
+    "S_fill@a_S_fine_15:single_stay_setdown|15": [
+     {
+      "margin": 0.528,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 0.845,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 2.164,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 4.289,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 5.178,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 6.501,
+      "lead": "stay lower L"
+     }
+    ],
+    "S_meat@a_S_fine_15:drop_2p5g|15": [
+     {
+      "margin": 1.845,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 1.936,
+      "lead": "lumbar strut R"
+     },
+     {
+      "margin": 2.683,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 3.464,
+      "lead": "lumbar strut R"
+     },
+     {
+      "margin": 4.184,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 4.767,
+      "lead": "lumbar strut R"
+     }
+    ],
+    "S_fill@a_L_fine_23:single_stay_setdown|23": [
+     {
+      "margin": 0.526,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 0.843,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 2.174,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 4.246,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 5.132,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 6.215,
+      "lead": "stay lower L"
+     }
+    ],
+    "S_fill@a_M_fine_20.5:single_stay_setdown|20.5": [
+     {
+      "margin": 0.526,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 0.843,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 2.171,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 4.259,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 5.153,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 6.324,
+      "lead": "stay lower L"
+     }
+    ],
+    "S_fill@a_M_fine_alt_20.5:single_stay_setdown|20.5": [
+     {
+      "margin": 0.526,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 0.843,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 2.171,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 4.259,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 5.153,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 6.324,
+      "lead": "stay lower L"
+     }
+    ],
+    "S_fill@a_S_fine_15:hipbelt_off_abuse|15": [
+     {
+      "margin": 0.702,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 1.297,
+      "lead": "stay top R"
+     },
+     {
+      "margin": 1.436,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 2.18,
+      "lead": "stay top R"
+     },
+     {
+      "margin": 2.286,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 2.529,
+      "lead": "stay top R"
+     }
+    ],
+    "S_meat@a_S_fine_15:hipbelt_off_abuse|15": [
+     {
+      "margin": 0.766,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 1.415,
+      "lead": "stay top R"
+     },
+     {
+      "margin": 1.567,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 2.379,
+      "lead": "stay top R"
+     },
+     {
+      "margin": 2.494,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 2.743,
+      "lead": "stay top R"
+     }
+    ],
+    "S_fill@a_M_fine_alt_17.5:hipbelt_off_abuse|17.5": [
+     {
+      "margin": 0.938,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 1.732,
+      "lead": "stay top R"
+     },
+     {
+      "margin": 1.918,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 2.913,
+      "lead": "stay top R"
+     },
+     {
+      "margin": 3.052,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 3.821,
+      "lead": "stay top L"
+     }
+    ]
+   },
+   "screen_lowest": [
+    [
+     "S_fill@a_M_fine_20.5:single_stay_setdown|20.5",
+     0.526
+    ],
+    [
+     "S_fill@a_M_fine_alt_20.5:single_stay_setdown|20.5",
+     0.526
+    ],
+    [
+     "S_fill@a_L_fine_20:single_stay_setdown|20",
+     0.526
+    ],
+    [
+     "S_fill@a_L_fine_23:single_stay_setdown|23",
+     0.526
+    ],
+    [
+     "S_fill@a_L_fine_alt_20:single_stay_setdown|20",
+     0.526
+    ]
+   ]
+  },
+  "beam": {
+   "record_rule_min": 1.298,
+   "frame_min": {
+    "set": "C_im3@a_S_beam_15:side_hill_torsion|15",
+    "reading": "crown held",
+    "margin": 2.637,
+    "drives": {
+     "lumbar strut L": 0.56,
+     "stay lower L": 0.4,
+     "stay sleeve L": 0.09
+    },
+    "lead": "lumbar strut L"
+   },
+   "setdown": {
+    "C@a_S_beam_15:single_stay_setdown|15": {
+     "foot": "L",
+     "foot_held_crown_free": 1.04,
+     "foot_held_crown_free_lead": "stay sleeve L",
+     "foot_held_crown_free_top_disp_share": 0.321,
+     "foot_and_crown_held": 4.109,
+     "foot_and_crown_held_lead": "stay lower L"
+    },
+    "C@a_L_beam_23:single_stay_setdown|23": {
+     "foot": "L",
+     "foot_held_crown_free": 0.979,
+     "foot_held_crown_free_lead": "stay sleeve L",
+     "foot_held_crown_free_top_disp_share": 0.325,
+     "foot_and_crown_held": 4.113,
+     "foot_and_crown_held_lead": "stay lower L"
+    }
+   },
+   "free_min": {
+    "margin": 0.312,
+    "set": "C@a_S_beam_15:single_stay_setdown|15",
+    "lead": "stay lower L",
+    "top_disp_share": 0.306
+   },
+   "full_runs_crown_held": {
+    "C@a_S_beam_15:single_stay_setdown|15": [
+     {
+      "margin": 0.528,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 0.845,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 2.164,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 4.289,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 5.178,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 6.501,
+      "lead": "stay lower L"
+     }
+    ],
+    "C@a_L_beam_23:single_stay_setdown|23": [
+     {
+      "margin": 0.526,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 0.843,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 2.174,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 4.246,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 5.132,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 6.215,
+      "lead": "stay lower L"
+     }
+    ],
+    "C_im3@a_L_beam_23:single_stay_setdown|23": [
+     {
+      "margin": 0.526,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 0.843,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 2.174,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 4.246,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 5.132,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 6.215,
+      "lead": "stay lower L"
+     }
+    ],
+    "C@a_M_beam_20.5:single_stay_setdown|20.5": [
+     {
+      "margin": 0.526,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 0.843,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 2.171,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 4.259,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 5.153,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 6.324,
+      "lead": "stay lower L"
+     }
+    ],
+    "C_im3@a_M_beam_20.5:single_stay_setdown|20.5": [
+     {
+      "margin": 0.526,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 0.843,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 2.171,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 4.259,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 5.153,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 6.324,
+      "lead": "stay lower L"
+     }
+    ],
+    "C_im3@a_S_beam_15:side_hill_torsion|15": [
+     {
+      "margin": 2.637,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 4.455,
+      "lead": "lumbar strut R"
+     },
+     {
+      "margin": 5.121,
+      "lead": "stay sleeve L"
+     },
+     {
+      "margin": 5.905,
+      "lead": "lumbar strut R"
+     },
+     {
+      "margin": 8.35,
+      "lead": "lumbar strut R"
+     },
+     {
+      "margin": 9.019,
+      "lead": "lumbar strut R"
+     }
+    ],
+    "C@a_S_beam_15:side_hill_torsion|15": [
+     {
+      "margin": 2.766,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 4.437,
+      "lead": "lumbar strut R"
+     },
+     {
+      "margin": 5.317,
+      "lead": "lumbar strut R"
+     },
+     {
+      "margin": 5.937,
+      "lead": "lumbar strut R"
+     },
+     {
+      "margin": 8.268,
+      "lead": "lumbar strut R"
+     },
+     {
+      "margin": 9.017,
+      "lead": "lumbar strut R"
+     }
+    ],
+    "C_im3@a_M_beam_17.5:side_hill_torsion|17.5": [
+     {
+      "margin": 2.657,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 4.676,
+      "lead": "lumbar strut R"
+     },
+     {
+      "margin": 5.157,
+      "lead": "stay sleeve L"
+     },
+     {
+      "margin": 6.158,
+      "lead": "lumbar strut R"
+     },
+     {
+      "margin": 8.721,
+      "lead": "lumbar strut R"
+     },
+     {
+      "margin": 9.232,
+      "lead": "stay sleeve R"
+     }
+    ]
+   },
+   "screen_lowest": [
+    [
+     "C@a_M_beam_20.5:single_stay_setdown|20.5",
+     0.526
+    ],
+    [
+     "C_im3@a_M_beam_20.5:single_stay_setdown|20.5",
+     0.526
+    ],
+    [
+     "C@a_L_beam_20:single_stay_setdown|20",
+     0.526
+    ],
+    [
+     "C_im3@a_L_beam_20:single_stay_setdown|20",
+     0.526
+    ],
+    [
+     "C_im3@a_L_beam_23:single_stay_setdown|23",
+     0.526
+    ]
+   ]
+  },
+  "fine_sm8.cyc": {
+   "record_rule_min": 1.022,
+   "frame_min": {
+    "set": "S_meat@a_L_fine_sm8_cyc_23:side_hill_torsion|23",
+    "reading": "crown held",
+    "margin": 1.336,
+    "drives": {
+     "stay lower L": 0.51,
+     "lumbar strut L": 0.43
+    },
+    "lead": "stay lower L"
+   },
+   "setdown": {
+    "S_fill@a_S_fine_sm8_cyc_15:single_stay_setdown|15": {
+     "foot": "L",
+     "foot_held_crown_free": 1.04,
+     "foot_held_crown_free_lead": "stay sleeve L",
+     "foot_held_crown_free_top_disp_share": 0.321,
+     "foot_and_crown_held": 4.109,
+     "foot_and_crown_held_lead": "stay lower L"
+    },
+    "S_fill@a_M_fine_sm8_cyc_17.5:single_stay_setdown|17.5": {
+     "foot": "L",
+     "foot_held_crown_free": 1.022,
+     "foot_held_crown_free_lead": "stay sleeve L",
+     "foot_held_crown_free_top_disp_share": 0.322,
+     "foot_and_crown_held": 4.109,
+     "foot_and_crown_held_lead": "stay lower L"
+    }
+   },
+   "free_min": {
+    "margin": 0.19,
+    "set": "S_meat@a_S_fine_sm8_cyc_15:static_carry|15",
+    "lead": "stay sleeve L",
+    "top_disp_share": 0.32
+   },
+   "full_runs_crown_held": {
+    "S_meat@a_L_fine_sm8_cyc_23:side_hill_torsion|23": [
+     {
+      "margin": 1.336,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 3.017,
+      "lead": "stay sleeve L"
+     },
+     {
+      "margin": 4.181,
+      "lead": "lumbar strut R"
+     },
+     {
+      "margin": 4.741,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 4.981,
+      "lead": "upper branch R"
+     },
+     {
+      "margin": 5.39,
+      "lead": "lumbar strut R"
+     }
+    ],
+    "S_meat@a_S_fine_sm8_cyc_15:hipbelt_off_abuse|15": [
+     {
+      "margin": 0.766,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 1.415,
+      "lead": "stay top R"
+     },
+     {
+      "margin": 1.567,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 2.379,
+      "lead": "stay top R"
+     },
+     {
+      "margin": 2.494,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 2.743,
+      "lead": "stay top R"
+     }
+    ],
+    "S_meat@a_S_fine_sm8_cyc_15:static_carry|15": [
+     {
+      "margin": 2.858,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 2.996,
+      "lead": "lumbar strut R"
+     },
+     {
+      "margin": 4.139,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 4.991,
+      "lead": "lumbar strut R"
+     },
+     {
+      "margin": 6.146,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 6.848,
+      "lead": "lumbar strut R"
+     }
+    ],
+    "S_fill@a_S_fine_sm8_cyc_15:single_stay_setdown|15": [
+     {
+      "margin": 0.528,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 0.845,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 2.164,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 4.289,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 5.178,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 6.501,
+      "lead": "stay lower L"
+     }
+    ],
+    "S_fill@a_M_fine_sm8_cyc_17.5:single_stay_setdown|17.5": [
+     {
+      "margin": 0.527,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 0.844,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 2.166,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 4.275,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 5.143,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 6.375,
+      "lead": "stay lower L"
+     }
+    ],
+    "S_fill@a_L_fine_sm8_cyc_20:single_stay_setdown|20": [
+     {
+      "margin": 0.526,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 0.843,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 2.168,
+      "lead": "lumbar strut L"
+     },
+     {
+      "margin": 4.262,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 5.105,
+      "lead": "stay lower L"
+     },
+     {
+      "margin": 6.241,
+      "lead": "stay lower L"
+     }
+    ],
+    "S_fill@a_S_fine_sm8_cyc_15:hipbelt_off_abuse|15": [
+     {
+      "margin": 0.702,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 1.297,
+      "lead": "stay top R"
+     },
+     {
+      "margin": 1.436,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 2.18,
+      "lead": "stay top R"
+     },
+     {
+      "margin": 2.286,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 2.529,
+      "lead": "stay top R"
+     }
+    ],
+    "S_fill@a_M_fine_sm8_cyc_17.5:hipbelt_off_abuse|17.5": [
+     {
+      "margin": 1.036,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 1.914,
+      "lead": "stay top R"
+     },
+     {
+      "margin": 2.119,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 3.219,
+      "lead": "stay top R"
+     },
+     {
+      "margin": 3.373,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 4.195,
+      "lead": "stay top R"
+     }
+    ],
+    "S_fill@a_S_fine_sm8_cyc_18:hipbelt_off_abuse|18": [
+     {
+      "margin": 1.092,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 2.017,
+      "lead": "stay top R"
+     },
+     {
+      "margin": 2.234,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 3.393,
+      "lead": "stay top R"
+     },
+     {
+      "margin": 3.555,
+      "lead": "stay top L"
+     },
+     {
+      "margin": 4.5,
+      "lead": "stay top L"
+     }
+    ]
+   },
+   "screen_lowest": [
+    [
+     "S_fill@a_S_fine_sm8_cyc_15:single_stay_setdown|15",
+     0.696
+    ],
+    [
+     "S_fill@a_M_fine_sm8_cyc_17.5:single_stay_setdown|17.5",
+     0.696
+    ],
+    [
+     "S_fill@a_L_fine_sm8_cyc_20:single_stay_setdown|20",
+     0.696
+    ],
+    [
+     "S_fill@a_S_fine_sm8_cyc_18:single_stay_setdown|18",
+     0.697
+    ],
+    [
+     "S_fill@a_M_fine_sm8_cyc_19:single_stay_setdown|19",
+     0.697
+    ]
+   ]
+  }
+ },
+ "assumptions": {
+  "DEAD-LOAD": {
+   "text": "The load sets' forces are dead loads (fixed direction) and the hip boss is the only support, as in the record solve. Body, harness and crown reactions do not follow the deformed frame.",
+   "settled_by": "Conservative for members; makes the 'free' reading's global modes artefacts (see BRACE-TOP)."
+  },
+  "BRACE-TOP": {
+   "text": "The crown bar and the shoulder harness hold the stay tops (z >= 526) in x and y against buckling motion, carrying no load in the reference state (eigen problem only).",
+   "settled_by": "T1 rig (shoulder straps ratcheted, hipbelt on the log) and the side-squeeze test: no sway at the crown before the member readings are reached."
+  },
+  "H8-STIFF": {
+   "text": "Full-integration H8 voxels are 2 % stiff in bending at 2 mm on a 12 mm depth (verified on a 16 x 12 x 180 column: cantilever 1.020, pinned 1.002, 1 mm 1.006); every eigen margin here is divided by 1.02.",
+   "settled_by": "tests/test_voxel_buckling.py"
+  },
+  "CENTROID-STRESS": {
+   "text": "K_sigma uses each voxel's centroid stress (constant per element), the stress the record check uses.",
+   "settled_by": "Standard for linear bricks; converges with the grid."
+  },
+  "SQUEEZE": {
+   "text": "Side-squeeze case: the hinge pins pull each stay foot inboard by 208 N at 1 g (largest converged meat run, h1_buckling.md 2.1) x 2.0 (static factor, the largest HA-LS-1 case factor) = 416 N a side, spread over the eye nodes within 7 mm of the pin axis, alone (every other load off).",
+   "settled_by": "T1 side-squeeze test: 1.5 x 416 = 624 N a side with no buckle."
+  },
+  "SCREEN": {
+   "text": "Sets not run in full are ranked by the Rayleigh quotient of the braced modes from the governing sets; the 3 lowest per basis are run in full. A set with a lower first eigenvalue whose mode is unlike every trial mode could be missed.",
+   "settled_by": "Optional: all-set run (about 6 h)."
+  },
+  "FOOT-GROUND": {
+   "text": "In single-stay set-down the loaded foot stands on the ground: its sole nodes (z <= 4) are held in x and y in the eigen problem (friction 0.2 x the impact load is far above any buckling perturbation); the record's inertia-relief hip clamp stays.",
+   "settled_by": "T4b set-down drop test."
+  },
+  "SLIVER": {
+   "text": "The bridge lip under the spine-channel opening (upper bar underside z 496-498, 3.7 x ~2 mm in the STL, one voxel layer) is a local, non-load-path detail: its buckle is reported on its own and the frame reading is taken with it deleted (which removes material, so it is conservative for the rest).",
+   "settled_by": "Look at the printed lip after the T1 hipbelt-off variant; trim it in the next CAD revision."
+  },
+  "SAND": {
+   "text": "The stays' sanding factor (k 1.0416, a strength rule) is not applied: it changes no member stiffness.",
+   "settled_by": "-"
+  }
+ },
+ "fix": {
+  "real_margin": {
+   "static_cinch": 1.336,
+   "cinch_cycled": 1.336
+  },
+  "fix_required": false,
+  "bonus_met": true,
+  "text": "no fix required: the real buckling margin is >= 1.0 on every basis and >= 1.15 (BL-061 goal)",
+  "mass_change_g": 0.0,
+  "sized": null
+ },
+ "screenshots": [
+  "outputs/screens/20261124_bl065_1.png",
+  "outputs/screens/20261124_bl065_2.png"
+ ]
+}

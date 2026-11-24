@@ -67,8 +67,8 @@ S,"YKK #10 coil slider, metal (cord pull fitted)",5,each,1.99,9.95,Rockywoods; a
 S,#10 coil zipper chain,0.4,m,4.0,1.6,Ripstop by the Roll,record coil_zipper_10,SL-1,,
 S,Dyneema cord 3 mm (slider pulls),1,m,0.9,0.9,Ripstop by the Roll,record dyneema_cord_3mm,SL-1,,
 S,"printed label (one, heat transfer)",1,each,5.0,5.0,label printer,"ASSUMPTION (shop price, check at purchase)",SL-1,,
-S,side-release buckle 25 mm,2,each,0.8,1.6,Strapworks,record buckle_side_release_25mm,ST-1,,
-S,poly webbing 25 mm,32,m,0.7,22.4,Strapworks,record poly_webbing_25mm,"MT-1, MT-3 (dry/wet/cold), US-BS, LL-H (dry/wet/cold), SEW-F, HB-7, PT-5, PT-6, PORT-1, GT-1",,BL-040: +12 m for the MT-3 and LL-H wet and cold sets (fresh webbing per condition)
+S,side-release buckle 25 mm,7,each,0.8,5.6,Strapworks,record buckle_side_release_25mm,"ST-1 (2), RT-PULL (5)",,
+S,poly webbing 25 mm,37,m,0.7,25.9,Strapworks,record poly_webbing_25mm,"MT-1, MT-3 (dry/wet/cold), US-BS, LL-H (dry/wet/cold), SEW-F, HB-7, PT-5, PT-6, PORT-1, GT-1, RT-PULL",,BL-040: +12 m for the MT-3 and LL-H wet and cold sets (fresh webbing per condition)
 S,"poly webbing 38 mm, PLY 1.2-1.6 mm (1.5 nominal), break >= 6 kN: BUY A SAMPLE FIRST and caliper one ply at 5 places, reject > 1.6 mm (heavyweight / mil-spec rolls are 1.8-2.3 mm); fallback in the record notes",3,m,1.0,3.0,Strapworks / extremtextil (see record),record poly_webbing_38mm (BL-048 M-B purchase spec),"PT-6 links, WP-3, HE-FIT, PT-3, SEW-F",,
 S,XLPE L200 foam 5 + 6 mm,0.35,m2,15.0,5.25,Foam By Mail,record xlpe_foam_l200,"CS-1 (0.25), HS-1 (0.1)",,minimum order not known
 S,EVA 45C foam 5 mm,0.1,m2,25.0,2.5,Seattle Fabrics,record eva_foam_45c,HS-1,,

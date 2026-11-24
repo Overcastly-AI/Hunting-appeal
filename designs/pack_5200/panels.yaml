@@ -1542,9 +1542,9 @@ panels:
   notes: '#8 AquaGuard zip across the front 260 mm'
   seam_line_mm: null
 webbing_cut_list:
-- {use: haul wrap W1 (load_wing_lash_z80_R), material_id: poly_webbing_25mm, colour: coyote (HAUL family), length_mm: 1440,
+- {use: haul wrap W1 (load_wing_lash_z250_R), material_id: poly_webbing_25mm, colour: coyote (HAUL family), length_mm: 1450,
   qty: 1}
-- {use: haul wrap W2 (load_wing_lash_z250_R), material_id: poly_webbing_25mm, colour: coyote (HAUL family), length_mm: 1512,
+- {use: haul wrap W2 (load_wing_lash_z420_R), material_id: poly_webbing_25mm, colour: coyote (HAUL family), length_mm: 1526,
   qty: 1}
 - {use: haul wrap W3 (crown top bar R (moves with torso)), material_id: poly_webbing_25mm, colour: coyote (HAUL
     family), length_mm: 1718, qty: 1}

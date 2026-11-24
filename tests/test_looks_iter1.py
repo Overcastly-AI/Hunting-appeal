@@ -59,10 +59,12 @@ def test_ledger_rows_match_cut_area_times_gsm():
 
 
 def test_concept_C_reproduces_review7(L):
-    """Review 7 M5: C is +3.0 g base proven now, +15.2 g base after tests, +7.0 g as hunted after tests."""
+    """Review 7 M5: C is +3.0 g base proven now, +15.2 g base after tests, +7.0 g as hunted after tests, on the release
+    cut list as it was then. BL-068 P2 tapered the roll collar (B-06 cut area -10 %), so the same C swap on today's
+    release cut list reads +2.7 / +13.7 / +5.5 g."""
     C = L["C"]
-    assert (C["base_P"], C["base_A"], C["hunted_A"]) == (pytest.approx(3.0, abs=0.1), pytest.approx(15.2, abs=0.1),
-                                                          pytest.approx(7.0, abs=0.1))
+    assert (C["base_P"], C["base_A"], C["hunted_A"]) == (pytest.approx(2.7, abs=0.1), pytest.approx(13.7, abs=0.1),
+                                                          pytest.approx(5.5, abs=0.1))
 
 
 def test_concept_Cp_never_heavier(L):

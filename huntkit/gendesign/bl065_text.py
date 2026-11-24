@@ -80,7 +80,7 @@ def analysis_md(rec: dict) -> str:
         a(f"- Single-stay set-down with the foot on the ground but nothing at the top reads "
           f"{_f(s['setdown_foot_held_crown_free'])}: the same whole-frame pitch on the inertia-relief clamp (the top "
           "band moves). With the crown held it is a stay-foot mode well above 1 (per-basis table).")
-    a(f"- **Fix:** {'see section 5' if v['fix_required'] else 'none needed on this result. H1 can be printed as released as far as buckling goes; the BL-061 hold on the full H1 frame print can be lifted on this item'}.\n")
+    a(f"- **Fix:** {'see section 5' if v['fix_required'] else 'none needed on this result. H1 meets the >= 1.0 condition the orchestrator set for the full H1 frame print (DECISIONS 2026-11-24); lifting the hold is for the orchestrator to decide'}.\n")
     a("## 1. Solver checks\n")
     a("`tests/test_voxel_buckling.py`: the geometric stiffness of one voxel (symmetric, zero on rigid translation, "
       "exact on a linear field); voxel columns against Euler: 16 x 12 x 180 mm pinned-pinned within 3 % (H1's upper "

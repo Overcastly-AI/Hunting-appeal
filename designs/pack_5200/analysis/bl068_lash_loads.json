@@ -1,0 +1,326 @@
+{
+ "ticket": "BL-068 P1 (DECISION W-LEVEL)",
+ "for": "structural-fea-engineer (BL-066 frame rework)",
+ "frame_coords": "FCS: x + wearer's right, y + aft, z up, mm (geometry.yaml frame.hard_points)",
+ "load_basis": {
+  "design_n": 225.0,
+  "design_src": "loadpath_verification.md S9 (W1-W3 float clamp), the W G-hook end row of mfg load_points",
+  "proof_n": 337.5,
+  "proof_src": "W-PULL / LL-H (1.5 x)",
+  "cinch_n": 80.0,
+  "cinch_src": "corrie_f.CROWN_PRE_N note (W1-W3 hand cinch)",
+  "direction": "strap's first run from the lash point to the bag's frame-face corner at the point's height, with the wrap's rise (ASSUMPTION KW-PATH); force ON the point = T x unit"
+ },
+ "after": {
+  "load_wing_lash_z250_R": {
+   "wrap": "W1",
+   "end": "R",
+   "hardware": "heavy ladder lock (ladder_lock_25mm_heavy)",
+   "point_xyz_mm": [
+    115.0,
+    7.3,
+    250.0
+   ],
+   "strap_dir_unit": [
+    0.995,
+    0.097,
+    0.0
+   ],
+   "force_design_n": [
+    223.9,
+    21.8,
+    0.0
+   ],
+   "force_proof_n": [
+    335.9,
+    32.8,
+    0.0
+   ],
+   "force_cinch_n": [
+    79.6,
+    7.8,
+    0.0
+   ],
+   "rise_deg": 0.0
+  },
+  "load_wing_lash_z250_L": {
+   "wrap": "W1",
+   "end": "L",
+   "hardware": "rated 25 mm G-hook (g_hook_25mm_aluminium)",
+   "point_xyz_mm": [
+    -115.0,
+    7.3,
+    250.0
+   ],
+   "strap_dir_unit": [
+    -0.995,
+    0.097,
+    -0.0
+   ],
+   "force_design_n": [
+    -223.9,
+    21.8,
+    -0.0
+   ],
+   "force_proof_n": [
+    -335.9,
+    32.8,
+    -0.0
+   ],
+   "force_cinch_n": [
+    -79.6,
+    7.8,
+    -0.0
+   ],
+   "rise_deg": -0.0
+  },
+  "load_wing_lash_z420_R": {
+   "wrap": "W2",
+   "end": "R",
+   "hardware": "heavy ladder lock (ladder_lock_25mm_heavy)",
+   "point_xyz_mm": [
+    115.0,
+    4.1,
+    420.0
+   ],
+   "strap_dir_unit": [
+    0.995,
+    0.097,
+    0.0
+   ],
+   "force_design_n": [
+    223.9,
+    21.8,
+    0.0
+   ],
+   "force_proof_n": [
+    335.9,
+    32.7,
+    0.0
+   ],
+   "force_cinch_n": [
+    79.6,
+    7.8,
+    0.0
+   ],
+   "rise_deg": 0.0
+  },
+  "load_wing_lash_z420_L": {
+   "wrap": "W2",
+   "end": "L",
+   "hardware": "rated 25 mm G-hook (g_hook_25mm_aluminium)",
+   "point_xyz_mm": [
+    -115.0,
+    4.1,
+    420.0
+   ],
+   "strap_dir_unit": [
+    -0.995,
+    0.097,
+    -0.0
+   ],
+   "force_design_n": [
+    -223.9,
+    21.8,
+    -0.0
+   ],
+   "force_proof_n": [
+    -335.9,
+    32.7,
+    -0.0
+   ],
+   "force_cinch_n": [
+    -79.6,
+    7.8,
+    -0.0
+   ],
+   "rise_deg": -0.0
+  }
+ },
+ "before": {
+  "load_wing_lash_z80_R": {
+   "wrap": "W1",
+   "end": "R",
+   "hardware": "heavy ladder lock (ladder_lock_25mm_heavy)",
+   "point_xyz_mm": [
+    115.0,
+    10.5,
+    80.0
+   ],
+   "strap_dir_unit": [
+    0.978,
+    0.096,
+    0.184
+   ],
+   "force_design_n": [
+    220.1,
+    21.5,
+    41.3
+   ],
+   "force_proof_n": [
+    330.2,
+    32.2,
+    62.0
+   ],
+   "force_cinch_n": [
+    78.3,
+    7.6,
+    14.7
+   ],
+   "rise_deg": 10.6
+  },
+  "load_wing_lash_z250_L": {
+   "wrap": "W1",
+   "end": "L",
+   "hardware": "rated 25 mm G-hook (g_hook_25mm_aluminium)",
+   "point_xyz_mm": [
+    -115.0,
+    7.3,
+    250.0
+   ],
+   "strap_dir_unit": [
+    -0.978,
+    0.095,
+    -0.184
+   ],
+   "force_design_n": [
+    -220.1,
+    21.5,
+    -41.3
+   ],
+   "force_proof_n": [
+    -330.2,
+    32.2,
+    -62.0
+   ],
+   "force_cinch_n": [
+    -78.3,
+    7.6,
+    -14.7
+   ],
+   "rise_deg": -10.6
+  },
+  "load_wing_lash_z250_R": {
+   "wrap": "W2",
+   "end": "R",
+   "hardware": "heavy ladder lock (ladder_lock_25mm_heavy)",
+   "point_xyz_mm": [
+    115.0,
+    7.3,
+    250.0
+   ],
+   "strap_dir_unit": [
+    0.98,
+    0.096,
+    0.176
+   ],
+   "force_design_n": [
+    220.5,
+    21.5,
+    39.5
+   ],
+   "force_proof_n": [
+    330.7,
+    32.3,
+    59.3
+   ],
+   "force_cinch_n": [
+    78.4,
+    7.6,
+    14.1
+   ],
+   "rise_deg": 10.1
+  },
+  "load_wing_lash_z420_L": {
+   "wrap": "W2",
+   "end": "L",
+   "hardware": "rated 25 mm G-hook (g_hook_25mm_aluminium)",
+   "point_xyz_mm": [
+    -115.0,
+    4.1,
+    420.0
+   ],
+   "strap_dir_unit": [
+    -0.98,
+    0.096,
+    -0.176
+   ],
+   "force_design_n": [
+    -220.5,
+    21.5,
+    -39.5
+   ],
+   "force_proof_n": [
+    -330.7,
+    32.2,
+    -59.3
+   ],
+   "force_cinch_n": [
+    -78.4,
+    7.6,
+    -14.1
+   ],
+   "rise_deg": -10.1
+  }
+ },
+ "status": {
+  "load_wing_lash_z250_L": "same wrap / end; direction changes (level instead of a helix)",
+  "load_wing_lash_z420_L": "same wrap / end; direction changes (level instead of a helix)",
+  "load_wing_lash_z80_R": "UNLOADED after BL-068 (was loaded)",
+  "load_wing_lash_z250_R": "CHANGED: W2 R -> W1 R",
+  "load_wing_lash_z420_R": "NEW: loaded by W after BL-068, not before"
+ },
+ "mirror_check": {
+  "load_wing_lash_z250_R": {
+   "mirror_point_loaded_before": "load_wing_lash_z250_L",
+   "this_dir": [
+    0.995,
+    0.097,
+    0.0
+   ],
+   "mirror_dir_before": [
+    -0.978,
+    0.095,
+    -0.184
+   ],
+   "is_mirror_image": true
+  },
+  "load_wing_lash_z250_L": {
+   "mirror_point_loaded_before": "load_wing_lash_z250_R",
+   "this_dir": [
+    -0.995,
+    0.097,
+    -0.0
+   ],
+   "mirror_dir_before": [
+    0.98,
+    0.096,
+    0.176
+   ],
+   "is_mirror_image": true
+  },
+  "load_wing_lash_z420_R": {
+   "mirror_point_loaded_before": "load_wing_lash_z420_L",
+   "this_dir": [
+    0.995,
+    0.097,
+    0.0
+   ],
+   "mirror_dir_before": [
+    -0.98,
+    0.096,
+    -0.176
+   ],
+   "is_mirror_image": true
+  }
+ },
+ "new_points": [
+  "load_wing_lash_z420_R"
+ ],
+ "changed_points": [
+  "load_wing_lash_z250_L",
+  "load_wing_lash_z420_L",
+  "load_wing_lash_z250_R"
+ ],
+ "note": "do not run frame FE here (BL-068 scope); the frame agent checks these points"
+}

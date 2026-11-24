@@ -47,8 +47,8 @@ REGISTER = TP / "test_register.csv"
 TEST_PLAN = TP / "TEST_PLAN.md"
 OUT = ROOT / "outputs" / "release" / "test_kit"
 SCREENS = ROOT / "outputs" / "screens"
-SHOT = "20261121_BL059kit"     # BL-059: named for the ticket that regenerates the kit (was BL057kit)
-DATE = "2026-11-21"       # BL-055: regenerated
+SHOT = "20261124_BL068kit"     # BL-068: named for the ticket that regenerates the kit (was BL059kit)
+DATE = "2026-11-24"       # BL-068: regenerated (RT-PULL)
 G = 9.81                    # N per kg on the crane scale
 LB_PER_N = 0.224809
 OZ = 28.3495                 # g per oz
@@ -307,7 +307,13 @@ def crown_cut_mm() -> dict:
             out[k] = {"cut_mm": round(float(d["cut_mm"]), 1), "longest_mm": round(float(d["path_max_mm"]), 1),
                       "spare_mm": round(float(d["spare_mm"]), 1), "path_limit_mm": round(float(d["path_limit_mm"]), 1),
                       "sixday_mid_mm": round(float(d["paths_mm"]["sixday"]["mid_torso"]), 1),
-                      "torso_in": tuple(d["torso_in"])}
+                      "torso_in": tuple(d["torso_in"]),
+                      # BL-068 P3: one front lock + a 30 mm rear fold box-X'd on B-28t (was a lock each end)
+                      "ends_txt": ("a 50 mm grip tail at the front lock and the 30 mm rear fold (BL-068, rear end box-X'd)"
+                                   if d.get("rear") == "box" else "50 mm grip tail each end"),
+                      "less_txt": ("50 mm grip tail - 30 mm rear fold" if d.get("rear") == "box"
+                                   else "2 x 50 mm grip tail"),
+                      "lock_txt": "the front ladder lock" if d.get("rear") == "box" else "the ladder lock"}
         return out
     except Exception:                                    # pragma: no cover - fall back to corrie_f_body.md 16.2
         return {"S": {"cut_mm": 1068.1, "longest_mm": 928.1, "spare_mm": 40.0, "path_limit_mm": 968.1,
@@ -696,10 +702,10 @@ def new_rows(lv: dict, lid_g: float, cut: dict) -> list[dict]:
              defined_in=f"{CFB} 15.6, 16.2, 16.5",
              what_it_proves="ASSUMPTION ROLL-PATH: the cloth-pass rolled top gives the sewn bag's crown strap path",
              gates="B-28 cut per crown kit (bag batch release)", grams_at_stake_g="0",
-             safety_at_stake=f"S kit cut {cut['S']['cut_mm']} mm against a {cut['S']['longest_mm']} mm sim path: 50 mm grip tail each end plus {cut['S']['spare_mm']:g} mm spare (BL-039, CROWN-SPARE)",
+             safety_at_stake=f"S kit cut {cut['S']['cut_mm']} mm against a {cut['S']['longest_mm']} mm sim path: {cut['S'].get('ends_txt', '50 mm grip tail each end')} plus {cut['S']['spare_mm']:g} mm spare (BL-039, CROWN-SPARE)",
              specimen=f"sewn rev 3 bag on P2 with the S kit at its short end ({cut['S']['torso_in'][0]:g} in) packed full, collar standing; then the L kit at {0.5 * sum(cut['L']['torso_in']):g} in, 6-day load", kit="C",
-             steps="cinch both crown straps; measure the strap path from the bar tab to the ladder lock along the strap with a tape (both straps); repeat at the L kit 6-day setting",
-             pass_fail=f"S kit full: path <= {s_path} mm (cut {cut['S']['cut_mm']} - 2 x 50 mm grip tail; sim {cut['S']['longest_mm']} mm); L kit 6-day: record against the sim's {cut['L']['sixday_mid_mm']} mm",
+             steps=f"cinch both crown straps; measure the strap path from the bar tab to {cut['S'].get('lock_txt', 'the ladder lock')} along the strap with a tape (both straps); repeat at the L kit 6-day setting",
+             pass_fail=f"S kit full: path <= {s_path} mm (cut {cut['S']['cut_mm']} - {cut['S'].get('less_txt', '2 x 50 mm grip tail')}; sim {cut['S']['longest_mm']} mm); L kit 6-day: record against the sim's {cut['L']['sixday_mid_mm']} mm",
              cost_usd="0", cost_basis="kit", hours_hands_on="0.7", hours_machine="", phase="4", run_order="70",
              first_weekend="N",
              notes=f"BL-038: split out of T9 (item c). BL-030's 1138 mm single 20 mm cut is replaced by BL-031's per-kit 25 mm cuts. BL-039 added {cut['S']['spare_mm']:g} mm spare to every kit (BL-031 had none: the S sim path {cut['S']['longest_mm']} mm equalled its limit); a path above {s_path} mm still means a longer S cut",
@@ -826,8 +832,65 @@ def new_rows(lv: dict, lid_g: float, cut: dict) -> list[dict]:
         pin_ret_row(),
         t6c_row(),
         hb6b_row(),
+        rt_pull_row(),
     ]
     return rows
+
+
+# ---- BL-068: RT-PULL into the register and the kit (BL-067 review 7 m9 rated the roll-top clip; mfg_corrie_f_rev3
+# EXTRA_GATES carried it outside the register). ASSUMPTION RT-LOAD 225 N = the W haul-wrap envelope (loadpath_verification
+# S9): a lashed load or a lift by the roll. Proof = 1.5 x factored (loadpath_verification proof rule).
+RT_N = 225.0
+RT_PULL_N = 1.5 * RT_N          # 338 N (337.5)
+RT_PULL_SPEC = 5                # buckle_side_release_25mm record note: "proof-test 5 samples to the design load"
+
+
+def rt_pull_webbing() -> tuple:
+    """(RT cut mm, 25 mm webbing m for the RT-PULL specimens): RT as cut (strap_tails.roll_row) + RTM 70 mm + a 200 mm
+    bench tail per specimen."""
+    import importlib
+    if str(HERE) not in sys.path:
+        sys.path.insert(0, str(HERE))
+    if str(HERE / "concepts") not in sys.path:
+        sys.path.insert(0, str(HERE / "concepts"))
+    rt_cut = importlib.import_module("strap_tails").roll_row()["after"]["cut_mm"]
+    return rt_cut, RT_PULL_SPEC * (rt_cut + 70.0 + 200.0) / 1000.0
+
+
+def rt_pull_row() -> dict:
+    """RT-PULL: the roll-top clip as built (RT strap box-X'd on a B-07 hem offcut, buckle, RTM tab box-X'd on a B-03
+    gusset offcut) pulled to the proof. Specimen fabrics are the release's (patterns_corrie_f_rev3 primary map)."""
+    rt_cut, web_m = rt_pull_webbing()
+    cost = RT_PULL_SPEC * rec_price("buckle_side_release_25mm") + web_m * rec_price("poly_webbing_25mm")
+    kg = RT_PULL_N / G
+    return dict(id="RT-PULL", status="ACTIVE", tier="safety",
+                title=f"roll-top clip RT + RTM + 25 mm side-release, sewn as built, proof {RT_PULL_N:.0f} N",
+                defined_in=("outputs/release/pack5200_corrie_f_rev3/manufacturing/load_points.csv (roll-top clip RT / "
+                            "RTM rows); designs/pack_5200/mfg_corrie_f_rev3.py ASSUMPTION RT-LOAD (BL-067, review 7 m9); "
+                            "docs/backlog/BL-068-cprime-patterns.md"),
+                what_it_proves=(f"ASSUMPTION RT-LOAD: the clip, its two box-X (RT on the hem B-07, RTM on the gusset B-03) "
+                                f"and the buckle (record 450 N ESTIMATE) hold 1.5 x {RT_N:.0f} N; sewn side SF 2.28 by "
+                                "analysis (box-X / base fabric)"),
+                gates="roll-top clips RT / RTM (bag cut release); the buckle record's own proof request",
+                grams_at_stake_g="0", safety_at_stake=f"buckle margin {450.0 / RT_N:.2f} (record ESTIMATE); sewn SF 2.28",
+                specimen=(f"{RT_PULL_SPEC} specimens: an RT strap ({rt_cut:.0f} mm, BL-068 cut) box-X'd 25 x 21 on a "
+                          "B-07 hem offcut (330D, as op RT), threaded through the male half; the RTM tab (70 mm) round "
+                          "the female half, box-X'd 21 x 25 on a B-03 gusset offcut; each offcut clamped flat in a "
+                          "bar-clamp jaw 30 mm from the box"),
+                kit="A",
+                steps=(f"buckle closed, strap cinched to a 50 mm tail; pull with the come-along to {RT_PULL_N:.0f} N "
+                       f"({kg:.1f} kg on the scale) at about 50 mm/min; hold 60 s; release; paint-pen mark at the buckle "
+                       "before and after; look at both box-X with the loupe; repeat on each specimen; one specimen "
+                       "after 2 h in the freezer (record the reading)"),
+                pass_fail=(f"{RT_PULL_SPEC} of {RT_PULL_SPEC} hold {RT_PULL_N:.0f} N 60 s: buckle stays closed and "
+                           "unbroken, strap slip at the buckle < 5 mm, no broken stitch, no seam slip > 2 mm; a fail: "
+                           "tell the pack-designer (fallback: a rated aluminium side-release or a 38 mm box)"),
+                cost_usd=f"{cost:.2f}",
+                cost_basis=f"buckle_side_release_25mm x {RT_PULL_SPEC} + poly_webbing_25mm {web_m:.2f} m (records); "
+                           "hem / gusset offcuts from the bag fabric",
+                hours_hands_on="1.0", hours_machine="", phase="1", run_order="80", first_weekend="Y",
+                notes="BL-068: added (was only in mfg EXTRA_GATES as 3 specimens; the buckle record asks for 5)",
+                g_per_usd_eq="")
 
 
 def tl1_patch() -> dict:
@@ -2137,6 +2200,7 @@ TEST_RELEASE = {
     # bag
     "MT-2": "BAG-CUT", "MT-3": "BAG-CUT", "US-BS": "BAG-CUT", "PT-1": "BAG-CUT", "PT-2": "BAG-CUT", "PT-3": "BAG-CUT",
     "PT-5": "BAG-CUT", "PT-6": "BAG-CUT", "LL-H": "BAG-CUT", "B-28 slip": "BAG-CUT", "PORT-1": "BAG-CUT",
+    "RT-PULL": "BAG-CUT",
     "FRAY-1": "BAG-CUT", "WP-1": "BAG-CUT", "TL-1": "BAG-CUT", "FS-O5": "BAG-CUT", "HE-FIT": "BAG-CUT",
     "TL-1b": "DATA",
     "SEW-F": "BAG-BATCH", "FIT-R3": "BAG-BATCH",
@@ -2158,7 +2222,7 @@ GROUPS = [
     dict(id="G2", title="Pull bench weekend: hooks, cams, bartacks, ladder locks", when="weekend 1 (week 1)",
          rig="kit A pull bench (come-along, 300 kg crane scale, 5 mm pin fixture, bar clamps)", kits="A, D (caliper, loupe, pocket scale), E",
          tests=["HE-FIT", "MT-1", "PT-1", "MT-2", "MT-3", "US-BS", "PT-2", "PT-3", "PT-5", "PT-6", "LL-H", "B-28 slip",
-                "PORT-1", "TL-1", "TL-1b", "FS-O5", "HB-7", "WP-3", "SL-1"],
+                "RT-PULL", "PORT-1", "TL-1", "TL-1b", "FS-O5", "HB-7", "WP-3", "SL-1"],
          intro="One bench, one weekend. MT-1 goes first because frame release R1 needs it; the rest are every sewn "
                "load point on the bag. After this weekend you may cut the bag (if G3's wash also passes)."),
     dict(id="G3", title="Wash and look: seams without binding", when="weekend 1, evenings",
@@ -2240,6 +2304,7 @@ def loads(lv: dict) -> dict:
         "TL-1b": [(f"step {k}", v) for k, v in enumerate((100, 200, 288, 300, 400), 1)] + [("last step (stop at a knee)", crown_tube()["proof_n"])],
         "PT-5": [("10 cycles to", 170)], "PT-6": [("proof, 60 s", 1410)],
         "LL-H": [("dead load: dry 1 h, wet 1 h, cold 10 min", LLH_N)], "B-28 slip": [("covered by LL-H", LLH_N)],
+        "RT-PULL": [("proof, 60 s", RT_PULL_N)],
         "SEW-F": [("loop peak (1.15 scatter x 1.6 g x the S6 1 g load)", SEWF_PEAK), ("valley (R 0.1)", SEWF_MIN),
                   ("HE peak (1.15 x 1.6 g x the rev C hinge 1 g load, BL-044)", SEWF_HE_PEAK), ("HE valley (R 0.1)", SEWF_HE_MIN),
                   ("HE after run-out, PT-3 proof", 1530),
@@ -2428,6 +2493,10 @@ def measures(lv: dict, lid_g: float, cut: dict) -> dict:
         + per(TL1B_N_SPEC, "load at the first knee or sound (none: write the last step)", "N", "record", "-", "BASIS_A", "knee"),
         "PT-5": per(1, "total slip after 10 cycles to 17.3 kg", "mm", "max", "5"),
         "PT-6": per(5, "held 143.7 kg (1410 N) 60 s, no box-X break, gate closes", y, "yes", "Y"),
+        "RT-PULL": per(RT_PULL_SPEC, f"held {RT_PULL_N / G:.1f} kg ({RT_PULL_N:.0f} N) 60 s, buckle closed and whole, "
+                       "no broken stitch", y, "yes", "Y", "RT-LOAD", "hold#")
+        + per(RT_PULL_SPEC, "strap slip at the buckle (paint mark)", "mm", "max", "5", "RT-LOAD", "slip#")
+        + [("cold", "freezer reading", "C", "record", "", "RT-LOAD")],
         "LL-H": [x for cond, hold in (("dry", "1 h"), ("wet", "1 h"), ("cold", "10 min")) for x in
                  per(5, f"{cond}: slip after {hold} at {LLH_N / G:.1f} kg ({LLH_N:.0f} N)", "mm", "max", "5",
                      "LL-SLIP; LL-H-5MM", f"{cond}-#")]
@@ -2700,8 +2769,9 @@ def shopping(reg: dict) -> list[dict]:
         _l("#10 coil zipper chain", 0.4, "m", rp("coil_zipper_10"), "Ripstop by the Roll", "record coil_zipper_10", "S", "SL-1"),
         _l("Dyneema cord 3 mm (slider pulls)", 1, "m", rp("dyneema_cord_3mm"), "Ripstop by the Roll", "record dyneema_cord_3mm", "S", "SL-1"),
         _l("printed label (one, heat transfer)", 1, "each", 5.00, "label printer", A, "S", "SL-1"),
-        _l("side-release buckle 25 mm", 2, "each", rp("buckle_side_release_25mm"), "Strapworks", "record buckle_side_release_25mm", "S", "ST-1"),
-        _l("poly webbing 25 mm", 32, "m", rp("poly_webbing_25mm"), "Strapworks", "record poly_webbing_25mm", "S", "MT-1, MT-3 (dry/wet/cold), US-BS, LL-H (dry/wet/cold), SEW-F, HB-7, PT-5, PT-6, PORT-1, GT-1",
+        _l("side-release buckle 25 mm", 2 + RT_PULL_SPEC, "each", rp("buckle_side_release_25mm"), "Strapworks",
+           "record buckle_side_release_25mm", "S", f"ST-1 (2), RT-PULL ({RT_PULL_SPEC})"),
+        _l("poly webbing 25 mm", 32 + math.ceil(rt_pull_webbing()[1]), "m", rp("poly_webbing_25mm"), "Strapworks", "record poly_webbing_25mm", "S", "MT-1, MT-3 (dry/wet/cold), US-BS, LL-H (dry/wet/cold), SEW-F, HB-7, PT-5, PT-6, PORT-1, GT-1, RT-PULL",
            note="BL-040: +12 m for the MT-3 and LL-H wet and cold sets (fresh webbing per condition)"),
         _l(f"poly webbing 38 mm, PLY {WEB38['thickness_min_mm']:.1f}-{WEB38['thickness_max_mm']:.1f} mm ({WEB38['thickness_mm']:.1f} nominal), "
            f"break >= {WEB38['breaking_strength_min_n'] / 1000:.0f} kN: BUY A SAMPLE FIRST and caliper one ply at 5 places, reject > "
@@ -2724,7 +2794,7 @@ def shopping(reg: dict) -> list[dict]:
            "LONG LEAD: about 4 weeks after the samples arrive", "the listed price is the ISO 12947-2 Martindale method; ask for ASTM D4966 to 8000 rev"),
     ]
     itemized = {"PT-1", "MT-2", "MT-3", "US-BS", "HB-7", "PT-5", "LL-H", "SL-1", "ST-1", "MT-1", "PT-6", "CS-1", "HS-1",
-                "AB-1", "MT-1c", "B-28 slip", "BP-1"}
+                "AB-1", "MT-1c", "B-28 slip", "BP-1", "RT-PULL"}
     for tid, r in reg.items():
         if not r["status"].startswith(("ACTIVE", "PROPOSED")) or tid in itemized:
             continue

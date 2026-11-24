@@ -509,8 +509,9 @@ def rt_rifle_clearance(M: dict, rl: dict) -> dict:
                                    "to_buckle_mm": round(float(bar.distance(env)), 1)}
     so = {}
     try:
-        d = json.loads(ROLL_CLIPS_JSON.read_text())
-        for st, r in d["states"].items():
+        import strap_tails as ST          # BL-068: the clip paths of the collar as cut (tapered roll: cp_checks Cp)
+        states, _src = ST.roll_clip_states()
+        for st, r in (states or {}).items():
             for side, v in r["standoff"].items():
                 so[f"{st} {side}"] = v["at_muzzle_tabs_mm"]
     except (OSError, KeyError, ValueError):
@@ -519,8 +520,11 @@ def rt_rifle_clearance(M: dict, rl: dict) -> dict:
     return {"rows": rows, "min_flat_mm": mn, "req": RT_CLEAR, "ok": mn >= RT_CLEAR, "keeper_xy": [round(v, 1) for v in K],
             "strap_standoff_at_muzzle_mm": so, "barrel_od": F.MUZZLE_BARREL_D,
             "standoff_min_mm": min(so.values()) if so else None,
-            "note": "the strap passes forward of the barrel in the flat at every boot position; where it stands off "
-                    "the cloth (27-40 mm at the muzzle tabs) it is also outboard of a barrel lying on the cloth"}
+            "standoff_below_barrel_od": bool(so) and min(so.values()) < F.MUZZLE_BARREL_D,
+            "note": "the strap passes forward of the barrel in the flat at every boot position (min_flat_mm), so it "
+                    "never crosses the barrel line; its stand-off off the cloth at the muzzle-tab height is recorded "
+                    "(BL-068 tapered roll: 14-15 mm, under the barrel OD, i.e. the strap now lies almost on the gusset "
+                    "there; the flat clearance is the gate, FIT-R3 row 5 settles it)"}
 
 
 def w3_corners(G: Piece, rl: dict, path: dict, obs: dict, M: dict | None = None) -> dict:
@@ -745,6 +749,24 @@ def kw_heights(c) -> dict:
 # move with the torso setting). Unhooked, W3 hangs from its R anchor on the crown bar as before (the loops never held
 # that end).
 KW_WRAPS = ("W1", "W2")
+KW_HP_SHARE = 15.0                # BL-068 DECISION KW-HP-L (pattern-maker): a K-W crossing within 15 mm (KW-PATH's own
+#                                   +/-15 mm keeper tolerance) of a scope-pod hard-point loop in the SAME corner seam (L aft
+#                                   seam, HARD_Z) gets no K-W loop: the wrap runs through the hard-point loop (25 mm webbing,
+#                                   the same 80 mm loop size), which is then its keeper. Level W2 (z 420) lands exactly on the
+#                                   z 420 hard-point loop of the L aft seam: two loops there would stack 4 webbing plies in one
+#                                   spot of the seam. With the scope pod fitted the pod's clip shares the loop and W2 lies over
+#                                   the pod's foot (it holds the pod low). Settled by the T9 add-on fit (pod + W2 cinched).
+
+
+def kw_shared(kw: dict) -> list:
+    """K-W crossings that coincide with a hard-point loop in the L aft corner seam (DECISION KW-HP-L)."""
+    out = []
+    for wid, zz in kw.items():
+        z = zz["L"]
+        h = min(HARD_Z, key=lambda q: abs(q - z))
+        if abs(z - h) <= KW_HP_SHARE:
+            out.append({"wrap": wid, "side": "L", "z": z, "hard_point_z": h, "offset_mm": round(z - h, 1)})
+    return out
 KW_CUT = 80.0                     # ASSUMPTION (ledger 'keepers: 6 haul-wrap keeper loops'): 25 mm webbing, 80 mm cut
 W3_HAUL_N = 225.0                 # loadpath_verification S9 (the W G-hook end load row, mfg load_points)
 
@@ -767,6 +789,156 @@ def kw_w3_kink(c) -> dict:
     worst = max(rows.values(), key=lambda r: r["slope_deg"])
     return {"loop_z": z_k, "gusset_depth_mm": round(d, 1), "corners": rows, "worst": worst, "haul_n": W3_HAUL_N,
             "decision": "KW-W3-OFF: W3 loops deleted, W3 level at its anchor height at every corner"}
+
+
+# ============================================================================ BL-068 checks (pattern-maker, 2026-11-24)
+W_HALF = STRAP_W / 2
+
+
+def _band_gap(lo1, hi1, lo2, hi2) -> float:
+    """Clear distance between two height bands (negative = overlap depth)."""
+    return max(lo2 - hi1, lo1 - hi2) if (hi1 < lo2 or hi2 < lo1) else -min(hi1 - lo2, hi2 - lo1)
+
+
+def w_gusset_z(c, wrap: dict, side: str = "R", frac: float = 0.5) -> float:
+    """Height of a haul wrap on a gusset at fraction ``frac`` of the gusset depth from the frame seam (ASSUMPTION
+    KW-PATH, kw_heights: z linear in the developed path from the R anchor round the frame face, R gusset, aft face,
+    L gusset to the L anchor; a and depth at the wrap's mid height)."""
+    hp = BC.GEOM["frame"]["hard_points"]
+    zR, zL = float(wrap["z_R_at_19in"]), float(wrap["z_L_at_19in"])
+    xa = abs(float(hp[wrap["anchor_R"]][0])) if wrap["anchor_R"] in hp else 0.0
+    zm = 0.5 * (zR + zL)
+    with F.frame_face(c):
+        a, d = float(c.a([zm])[0]), float(c.depth([zm])[0])
+    run = max(a - xa, 0.0) if xa else 0.0
+    T = 2 * run + 2 * d + 2 * a
+    s_ = run + frac * d if side == "R" else run + d + 2 * a + (1.0 - frac) * d
+    return zR + (zL - zR) * s_ / T
+
+
+def _helix_wraps() -> list:
+    """geometry.yaml's W1 / W2 as they were before BL-068 (build_geometry.W_HELIX: the climbing helix), for the
+    before / after comparisons; W3 unchanged."""
+    import build_geometry as BG
+    hp = BC.GEOM["frame"]["hard_points"]
+    out = []
+    for i, (r, l_) in enumerate(BG.W_HELIX):
+        out.append({"id": f"W{i + 1}", "anchor_R": r, "anchor_L": l_, "z_R_at_19in": float(hp[r][2]),
+                    "z_L_at_19in": float(hp[l_][2])})
+    return out
+
+
+def w_level_checks(c, M: dict) -> dict:
+    """BL-068 P1 (DECISION W-LEVEL): the clearances design_language.md 10.4 item 1 names, on the gusset (z ~ sigma: the
+    gusset is vertical below the shoulder crease) for the level wraps (geometry.yaml) and the helix they replace.
+    Bands are the 25 mm strap centred on the wrap's height at mid-gusset."""
+    lev = {w["id"]: w for w in BC.GEOM["haul_wraps"] if w["id"] in KW_WRAPS}
+    hel = {w["id"]: w for w in _helix_wraps()}
+    bow_lo = B11_BOW_Z[0] - B11_H / 2
+    imp8, fp = IMP8_Z, FP_Z
+    out = {"level": {}, "helix": {}}
+    for tag, ws in (("level", lev), ("helix", hel)):
+        r = {}
+        for side in ("R", "L"):
+            z1, z2 = (w_gusset_z(c, ws[k], side) for k in ("W1", "W2"))
+            r[side] = {"W1_z": round(z1, 1), "W2_z": round(z2, 1),
+                       "bow_tab_bottom_to_W2_top_mm": round(bow_lo - (z2 + W_HALF), 1),
+                       "bow_tab_centre_to_W2_top_mm": round(B11_BOW_Z[0] - (z2 + W_HALF), 1),
+                       "W1_band_to_IMP8_mm": round(_band_gap(z1 - W_HALF, z1 + W_HALF, *imp8), 1),
+                       "W1_crosses_FP": fp[0] < z1 < fp[1], "W2_crosses_FP": fp[0] < z2 < fp[1],
+                       "W2_to_hose_slot_mm": round(_band_gap(z2 - W_HALF, z2 + W_HALF, HOSE_Z - HOSE_SLOT[1] / 2,
+                                                             HOSE_Z + HOSE_SLOT[1] / 2), 1)}
+        r["min_bow_gap_mm"] = min(r[s]["bow_tab_bottom_to_W2_top_mm"] for s in ("R", "L"))
+        out[tag] = r
+    zs = {k: float(w["z_R_at_19in"]) for k, w in lev.items()}
+    b17 = (B17_Z - B17[1] / 2, B17_Z + B17[1] / 2)
+    out["b17_on_frame_face"] = {k: round(_band_gap(z - W_HALF, z + W_HALF, *b17), 1) for k, z in zs.items()}
+    out["b17_note"] = ("W2 at z 420 crosses the B-17 IM3 bag-hook tab (z 385-455, OUTSIDE on B-01) between its anchor "
+                       "and the bag corner on BOTH sides now: the L side did so before BL-068 (W2 L anchor z 420); the R "
+                       "side is its mirror. Webbing over a flat Hypalon tab, soft on soft")
+    out["req_mm"] = RT_CLEAR
+    out["ok"] = out["level"]["min_bow_gap_mm"] >= RT_CLEAR and all(
+        out["level"][s]["W1_band_to_IMP8_mm"] > 0 for s in ("R", "L"))
+    return out
+
+
+TRIPODS = ("tripod_light", "tripod_heavy")      # loadouts.yaml items (SLIK Pro CF 635; Outdoorsman's medium)
+TRIPOD_PLACES = {
+    "cup": "feet in the IMP-8 cup (R gusset foot, z 35-150), legs up the R gusset under W1 / W2 (strap_arch F5 REC)",
+    "fp_top": "feet on FP-R's top edge (z 380), legs up the R gusset under the B-26 cord (corrie_f.TRIPOD_KEEPER_Z note)",
+}
+TRIPOD_LOWER_THIRD = 1.0 / 3.0    # ASSUMPTION TRIPOD-HOLD: the lower end is HELD when the feet are captured (IMP-8 cup) or
+#                                   a wrap / cord crosses the bundle within its lower third; and the load is STABLE with
+#                                   >= 2 holds at least a third of its length apart. Settled by FT-S2 (5 km side-hill with
+#                                   the tripod on; no shift > 20 mm) and the T9 add-on fit
+
+
+def tripod_fit(c, wraps: list | None = None) -> dict:
+    """BL-068 P1 risk gate: the tripod (loadouts.yaml, folded length) on the R gusset, for each placement, with the
+    wraps given (default geometry.yaml, level) and with the helix they replace. Holds = IMP-8 cup (feet), W1 / W2
+    bands at mid-gusset (w_gusset_z), the B-26 cord (z TRIPOD_KEEPER_Z)."""
+    import yaml as _y
+    items = _y.safe_load((HERE / "loadouts.yaml").read_text())["items"]
+    sets = {"level": [w for w in BC.GEOM["haul_wraps"] if w["id"] in KW_WRAPS] if wraps is None else wraps,
+            "helix": _helix_wraps()}
+    out = {"placements": TRIPOD_PLACES, "rule": "TRIPOD-HOLD (ASSUMPTION)", "rows": {}}
+    for tag, ws in sets.items():
+        wz = {w["id"]: w_gusset_z(c, w, "R") for w in ws}
+        for tid in TRIPODS:
+            L = float(items[tid]["dims_mm"][0])
+            for place in TRIPOD_PLACES:
+                foot = IMP8_Z[0] if place == "cup" else FP_Z[1]
+                top = foot + L
+                holds = []
+                if place == "cup":
+                    holds.append(("IMP-8 cup", 0.5 * (IMP8_Z[0] + IMP8_Z[1])))
+                for k, z in sorted(wz.items()):
+                    if foot <= z <= top:
+                        holds.append((k, z))
+                if foot <= F.TRIPOD_KEEPER_Z <= top:
+                    holds.append(("B-26 cord", F.TRIPOD_KEEPER_Z))
+                rel = [(n, round((z - foot) / L, 2)) for n, z in holds]
+                lower = place == "cup" or any(f <= TRIPOD_LOWER_THIRD for _, f in rel)
+                span = (max(f for _, f in rel) - min(f for _, f in rel)) if len(rel) > 1 else 0.0
+                out["rows"][f"{tag} {tid} {place}"] = {
+                    "length_mm": L, "feet_z": foot, "top_z": top, "holds": [(n, round(z, 1)) for n, z in holds],
+                    "holds_frac": rel, "lower_end_held": lower, "stable": len(rel) >= 2 and span >= TRIPOD_LOWER_THIRD,
+                    "top_free_mm": round(top - max(z for _, z in holds), 1) if holds else L}
+    lv = {k: v for k, v in out["rows"].items() if k.startswith("level")}
+    out["lower_end_held_all"] = all(v["lower_end_held"] for v in lv.values())
+    out["ok"] = out["lower_end_held_all"]
+    out["fallback_needed"] = not out["ok"]
+    return out
+
+
+def rtm_raise_check(G: Piece, rl: dict, M: dict, raises=(60.0, 66.0, 70.0)) -> dict:
+    """BL-068 P2 call: keep the 565 mm RT cut by raising the RTM buckle tab 60-70 mm. The release puts the buckle bar
+    BUCKLE_ENV + RT_CLEAR under the lowest W3 edge (DECISION W3-OVER, BL-043 M-1: nothing hard in W3's sweep, z 601-804
+    over the crown kits). Re-run rt_clearances with the tab raised (same x, same corridor top): the W3 hard gap at the
+    six kit-end corners, the other clearances, and the RT cut strap_tails.roll_row gives on the tapered roll."""
+    import strap_tails as ST
+    sig = M["sig"]
+    out = {"release": {"z_bar": rl["z_bar"], "rt_cut_mm": ST.roll_row()["after"]["cut_mm"]}, "raised": {}}
+    for d in raises:
+        z2 = rl["z_bar"] + d
+        yb = sig(z2)
+        r2 = dict(rl, y_bar=yb, y_env=yb + BUCKLE_ENV[1], z_bar=z2,
+                  corridor=[(rl["x"], yb + BUCKLE_ENV[1]), tuple(rl["corridor"][1])])
+        cl = rt_clearances(G, r2, M)
+        gb = {k: v["hard_gaps"].get("buckle envelope") for k, v in cl["w3_corners"].items()}
+        gb = {k: v for k, v in gb.items() if v is not None}          # None: that corner's W3 is above the collar seam
+        bad = {k: v for k, v in gb.items() if v < RT_CLEAR}
+        out["raised"][f"{d:.0f}"] = {"z_bar": round(z2, 1), "buckle_top_z": round(z2 + BUCKLE_ENV[1], 1),
+                                     "w3_buckle_gap_min_mm": round(min(gb.values()), 1) if gb else None,
+                                     "w3_corners_failing": bad, "other_min_gap_mm": cl["min_gap"],
+                                     "other_min_pair": cl["min_pair"],
+                                     "rt_cut_mm": ST.roll_row(d)["after"]["cut_mm"],
+                                     "ok": not bad and cl["min_gap"] >= RT_CLEAR}
+    out["any_ok"] = any(v["ok"] for v in out["raised"].values())
+    out["decision"] = ("RTM tab raised (565 mm cut kept)" if out["any_ok"] else
+                       "RTM tab stays: raised 60-70 mm its buckle body sits inside W3's sweep (DECISION W3-OVER); RT cut "
+                       f"{out['release']['rt_cut_mm']:.0f} mm by strap_tails' rule on the tapered roll")
+    return out
 
 
 def _b11_marks(G, xc, yc, label):
@@ -866,6 +1038,7 @@ def build_shell(rs: RevSet, c):
     _, ctop = _side_pts(tops)
     _, ccol = _side_pts([E(col["B-06f"], "bottom"), E(col["B-06"], "bottom")])
     L06f, L06 = col["B-06f"].edge_length("bottom"), col["B-06"].edge_length("bottom")
+    T06f, T06 = col["B-06f"].edge_length("top"), col["B-06"].edge_length("top")     # BL-068 P2: the tapered mouth
     L07 = col["B-07"].edge_length("bottom")
     Lg = float(ctop[2] - ctop[1])
     rt = {}
@@ -881,9 +1054,12 @@ def build_shell(rs: RevSet, c):
                bl041_front_layer_mm=round(front, 1), bl041_back_layer_mm=round(L07 - front, 1),
                bl041_tuck_each_mm=round(0.5 * ((L07 - front) - front), 1))
     for side, s_ring, sgn in (("L", float(ctop[1]) + 0.5 * Lg, -1), ("R", float(ctop[-1]) - 0.5 * Lg, 1)):
-        x06 = s_ring * ccol[-1] / ctop[-1] - L06f                  # on B-06 (bottom = top x)
-        s_hem = L06f + (L06 - x06)
-        xc = s_hem * L07 / (L06f + L06)
+        x06 = s_ring * ccol[-1] / ctop[-1] - L06f                  # on B-06's bottom edge
+        # BL-068 P2: the taper takes the same amount off each side edge, so the roll end (gusset centre) keeps its
+        # distance from the nearer B-06f | B-06 side seam along the top edge (straight collar: top x = bottom x)
+        x06t = x06 if x06 <= 0.5 * L06 else T06 - (L06 - x06)
+        s_hem = T06f + (T06 - x06t)
+        xc = s_hem * L07 / (T06f + T06)
         # R: hem runs frame -> aft at the R gusset, so the frame side is x < xc; L: aft -> frame, frame side x > xc
         x0, x1 = (xc - RT_SEWN, xc) if sgn > 0 else (xc, xc + RT_SEWN)
         B07 = col["B-07"]
@@ -901,6 +1077,10 @@ def build_shell(rs: RevSet, c):
             B07.add_internal_line([(xg, hy0), (xg, hy1)], "placement", "B-07s strip end (HDPE strip stops here)")
         rt[side] = {"x_centre": round(xc, 1), "x0": round(x0, 1), "x1": round(x1, 1), "box_x": round(bx, 1),
                     "box_to_gap_mm": round(abs(bx - xc) - RT_BOX[0] / 2 - HEM_GAP / 2, 1)}
+    xs = sorted(float(v["x_centre"]) for v in rt.values())
+    hem.update(mouth_mm=round(L07, 1), mouth_flat_mm=round(0.5 * L07, 1),
+               layers_at_roll_ends_mm=[round(xs[1] - xs[0], 1), round(L07 - (xs[1] - xs[0]), 1)],
+               collar_side_cut_mm=round(0.5 * (L06f - T06f), 1), b07s_mm=round(col["B-07s"].edge_length("bottom"), 1))
     rs.geo["rt_origin"] = hem
     rs.geo["rt_on_b07"] = rt
     # door zip corner tangents (corrie_f_body.md section 9.3)
@@ -1008,10 +1188,18 @@ def build_shell(rs: RevSet, c):
     # KW-W3-OFF: only W1 / W2 get keepers (frame-fixed anchors); W3 rides at the crown-bar height (kw_w3_kink)
     kw = {k: v for k, v in kw_heights(c).items() if k in KW_WRAPS}
     rs.geo["kw_z"] = kw
+    rs.geo["kw_shared"] = kw_shared(kw)
     rs.geo["kw_w3"] = kw_w3_kink(c)
+    rs.geo["bl068"] = {"w_level": w_level_checks(c, M), "tripod": tripod_fit(c),
+                       "rtm_raise": rtm_raise_check(G, rl, M)}
+    shared = {(r["wrap"], r["side"]) for r in rs.geo["kw_shared"]}
     for wid, zz in kw.items():
         for side, sx in (("R", 1), ("L", -1)):
             z = zz[side]
+            if (wid, side) in shared:          # BL-068 DECISION KW-HP-L: the hard-point loop is this wrap's keeper
+                G.add_notch(ga(z), sig(z), "v", f"{wid} runs through this loop ({side} only; no K-W, KW-HP-L)")
+                U.add_notch(sx * M["A"](z), M["S"](z), "v", f"{wid} keeper = hard-point loop")
+                continue
             G.add_notch(ga(z), sig(z), "v", f"K-W keeper {wid} ({side} only)")
             U.add_notch(sx * M["A"](z), M["S"](z), "v", f"K-W keeper {wid}")
     # ---- D2 face marks
@@ -1632,13 +1820,21 @@ def build_webbing(rs: RevSet, c):
     g = {}
     for k in CROWN_KITS:
         cs = F.crown_kit_straps(k)
+        boxed = cs.get("rear") == "box"          # BL-068 P3 DECISION LID-LOCK: rear end box-X'd on the rear B-28t
+        note = (f"hot-knife; torso {cs['torso_in'][0]}-{cs['torso_in'][1]} in; " +
+                ("heavy ladder lock at the FRONT end only; REAR end folded 30 mm and box-X'd on the rear B-28t (toggle) "
+                 f"tab; {cs['keepers_per_strap']} elastic keeper" if boxed else
+                 "heavy ladder lock each end on its tab; 2 elastic keepers"))
         p = rect_panel(f"B-28 crown strap kit {k}", 25.0, float(cs["cut_mm"]), 0.0, seam_allowance_mm=0.0,
-                       material_id="poly_webbing_25mm", quantity=2, piece_id="B-28", size=k,
-                       labels={"note": f"hot-knife; torso {cs['torso_in'][0]}-{cs['torso_in'][1]} in; heavy ladder "
-                                       "lock each end on its tab; 2 elastic keepers"})
-        p.add_internal_line([(0, F.TAIL_GRIP_MM), (25, F.TAIL_GRIP_MM)], "placement", "grip tail mark (each end)")
+                       material_id="poly_webbing_25mm", quantity=2, piece_id="B-28", size=k, labels={"note": note})
+        if boxed:
+            f_ = cs["rear_fold_mm"]
+            p.add_internal_line([(0, f_), (25, f_)], "fold", "REAR end: fold under 30 mm (box-X on the rear B-28t)")
+            _box_x(p, 12.5, f_ / 2.0 + B28_BOX[1] / 2.0, B28_BOX[0], B28_BOX[1], "B-28 rear end on B-28t")
+        else:
+            p.add_internal_line([(0, F.TAIL_GRIP_MM), (25, F.TAIL_GRIP_MM)], "placement", "grip tail mark (each end)")
         p.add_internal_line([(0, cs["cut_mm"] - F.TAIL_GRIP_MM), (25, cs["cut_mm"] - F.TAIL_GRIP_MM)], "placement",
-                            "grip tail mark")
+                            "grip tail mark (FRONT end)" if boxed else "grip tail mark")
         g[k] = p
         rs.webbing.append({"id": "B-28", "use": f"B-28 crown strap, kit {k}", "material_id": "poly_webbing_25mm",
                            "length_mm": round(cs["cut_mm"], 1), "qty": 2, "kit": f"crown kit {k} (as hunted)",
@@ -1651,17 +1847,26 @@ def build_webbing(rs: RevSet, c):
     # 21 x 20 box (B28-FACE); the third tab, the B-25 second fold the rear toggle passes into, is its own piece B-28s
     # with the B25-BOX rule: 21 x 15 at the tip end leaves the 13 mm loop the 30 x 8 x 5 toggle needs (a 21 x 20 box
     # at 0.75 x tab left 5 mm: the toggle did not pass).
-    _web(rs, "B-28t", "lock tab", F.CROWN_TAB, 4,
-         folds=[(F.CROWN_TAB / 2, "fold round the lock bar")],
-         boxes=[(F.CROWN_TAB * 0.75, B28_BOX[1], "box-X")], kit="as_hunted",
-         note="B-28 front + rear lock tabs; front: OUTSIDE the hinge band; rear: POM toggle sewn across the tip",
-         source="corrie_f.CROWN_TAB, 2 per strap (front + rear lock)")
+    cs_m = F.crown_kit_straps(KIT)
+    if cs_m.get("rear") == "box":     # BL-068 P3: the rear tab no longer carries a lock; the strap end is boxed on it
+        _web(rs, "B-28t", "lock / end tab", F.CROWN_TAB, 4,
+             folds=[(F.CROWN_TAB / 2, "fold (front: round the lock bar; rear: over the strap's folded end)")],
+             boxes=[(F.CROWN_TAB * 0.75, B28_BOX[1], "box-X")], kit="as_hunted",
+             note="B-28 front lock tab (OUTSIDE the hinge band, heavy ladder lock) + rear end tab (no lock: the strap's "
+                  "30 mm folded rear end sewn in the same 21 x 20 box-X; POM toggle sewn across the tip)",
+             source="corrie_f.CROWN_TAB, 2 per strap (front lock + rear end, BL-068 DECISION LID-LOCK)")
+    else:
+        _web(rs, "B-28t", "lock tab", F.CROWN_TAB, 4,
+             folds=[(F.CROWN_TAB / 2, "fold round the lock bar")],
+             boxes=[(F.CROWN_TAB * 0.75, B28_BOX[1], "box-X")], kit="as_hunted",
+             note="B-28 front + rear lock tabs; front: OUTSIDE the hinge band; rear: POM toggle sewn across the tip",
+             source="corrie_f.CROWN_TAB, 2 per strap (front + rear lock)")
     _web(rs, "B-28s", "toggle loop", F.CROWN_TAB, 2,
          folds=[(F.CROWN_TAB / 2, "fold: toggle loop")],
          boxes=[(_tip_box_y(F.CROWN_TAB / 2, B25_BOX[1]), B25_BOX[1], "box-X 21x15 tip")], kit="as_hunted",
          note="B-28 toggle loop = the B-25 second fold, sewn on the B-25 tab; 13 mm loop passes the POM toggle (B25-BOX)",
          source="corrie_f.CROWN_TAB, 1 per strap (the B-25 second fold)")
-    _web(rs, "K-28", "B-28 tail keeper (25 mm elastic loop)", KEEPER_CUT, 4, mat=ELASTIC,
+    _web(rs, "K-28", "B-28 tail keeper (25 mm elastic loop)", KEEPER_CUT, 2 * cs_m["keepers_per_strap"], mat=ELASTIC,
          folds=[(15.0, "lap 15 mm, zigzag")], kit="as_hunted", source="corrie_f.crown_kit_straps keepers_per_strap x 2")
     # W1-W3 cut for carry + meat-trip haul extenders (strap_tails.wrap_rows, kit M; W3 per kit)
     for r in ST.wrap_rows(KIT):
@@ -1690,8 +1895,10 @@ def build_webbing(rs: RevSet, c):
          folds=[(30.0, "G-hook fold"), (ext - 60.0, "sewn loop fold (takes the W's own G-hook)")],
          boxes=[(45.0, 25, "box-X hook end"), (ext - 30.0, 25, "box-X loop")], kit="meat_trip",
          note="rated 25 mm G-hook on the hook end", source="strap_tails.wrap_rows haul extender_mm")
-    _web(rs, "K-W", f"W gore keeper loop ({2 * len(KW_WRAPS)}, in the aft corner seams: W1, W2)", KW_CUT,
-         2 * len(KW_WRAPS), folds=[(KW_CUT / 2, "fold, raw ends in the seam")],
+    n_kw = 2 * len(KW_WRAPS) - len(rs.geo.get("kw_shared", []))
+    _web(rs, "K-W", f"W gore keeper loop ({n_kw}, in the aft corner seams: W1, W2"
+         + ("; W2 L uses the z 420 hard-point loop, KW-HP-L" if n_kw < 2 * len(KW_WRAPS) else "") + ")", KW_CUT,
+         n_kw, folds=[(KW_CUT / 2, "fold, raw ends in the seam")],
          source="ledger 'keepers: 6 haul-wrap keeper loops' (ASSUMPTION 80 mm cut) less the 2 W3 loops (BL-044 "
                 "DECISION KW-W3-OFF row)")
     rr = ST.roll_row()
@@ -1892,8 +2099,8 @@ def build_webbing(rs: RevSet, c):
          "length_mm": LID["zip_mm"] + 60.0, "qty": 1},
         {"item": "#5 coil zip, IMP-4 + slider + pull", "material_id": "coil_zipper_5", "length_mm": 210.0, "qty": 1},
         {"item": "#5 coil zip, F-02 fly pocket", "material_id": "coil_zipper_5", "length_mm": 230.0, "qty": 1},
-        {"item": "heavy 25 mm ladder locks: B-28 (4) + guys (2) + W1-W3 (3)", "material_id": "ladder_lock_25mm_heavy",
-         "length_mm": None, "qty": 9},
+        {"item": f"heavy 25 mm ladder locks: B-28 ({2 * cs_m['locks_per_strap']}) + guys (2) + W1-W3 (3)",
+         "material_id": "ladder_lock_25mm_heavy", "length_mm": None, "qty": 2 * cs_m["locks_per_strap"] + 5},
         {"item": "POM toggles: B-28 rear (2) + guy loops (2)", "material_id": "pom_toggle",
          "length_mm": None, "qty": 4},
         {"item": "rated 25 mm G-hooks: W1-W3 (3) + extenders (3)", "material_id": "g_hook_25mm_aluminium",
@@ -2085,6 +2292,7 @@ RECON = [
     ("BL-044: B-25 on the sized spine clamp", "webbing", [], ["B-25"], "crown_spine_clamp run_plan"),
     ("BL-044: US cam anchors USA", "webbing", [], ["USA"], "BL-045 found-not-fixed; USA-LOOP"),
     ("BL-050 B: US2 under-strap cut", "webbing", [], ["US2"], "DECISION US-CUT (corrie_f.US_CUT_MM)"),
+    ("BL-068: K-W keeper loop(s) dropped", "removed", [], [], "DECISION KW-HP-L (W2 L through the hard-point loop)"),
 ]
 
 

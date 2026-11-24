@@ -3,8 +3,8 @@ piece,size,unit,rotation_deg,mirrored,x_min_mm,y_min_mm,area_m2
 side gusset,,0,270.0,False,-0.0,366.6,0.15964
 side gusset,,0,90.0,True,0.0,619.8,0.15964
 crown lid: crown (4 corner darts),,0,0.0,False,-0.0,880.6,0.10618
-roll-top hem,,0,270.0,False,738.2,12.5,0.10093
 glass pod back panel (hooks to 4 loops),,0,270.0,False,-0.0,1178.3,0.10066
+roll-top hem,,0,270.0,False,738.2,12.5,0.07445
 D2 hinge band (z 650 to the collar seam),,0,90.0,False,469.0,873.4,0.04139
 crown lid: front wall run,,0,0.0,False,0.0,1397.3,0.02933
 "crown lid: aft wall, upper (zip)",,0,0.0,False,469.0,1237.7,0.01828

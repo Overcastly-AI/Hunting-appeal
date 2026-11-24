@@ -2,11 +2,11 @@
  "checks": {
   "recon_unmatched": 0,
   "recon_pieces_without_row": 0,
-  "recon_rows": 116,
+  "recon_rows": 117,
   "mass_delta_pct": -0.1,
   "mass_ok": true,
   "ops": 89,
-  "load_points": 32,
+  "load_points": 33,
   "min_sf": 1.36,
   "min_sf_point": "B-25 bridle toggle tab",
   "holds": [],
@@ -14,10 +14,10 @@
   "unmapped_hardware": [],
   "hardware_rows_by_keyword": [],
   "box_mismatches": [],
-  "thread_bag_g": 18.89,
+  "thread_bag_g": 18.75,
   "thread_ledger_g": 18.88,
-  "proto_hours": 75.2,
-  "sam_min": 511.6,
+  "proto_hours": 74.7,
+  "sam_min": 508.1,
   "volatile": [
    "pattern: B-22 x",
    "pattern: F-01",
@@ -28,23 +28,23 @@
   ]
  },
  "mass": {
-  "base_g": 1160.9,
-  "as_hunted_g": 1442.7,
-  "meat_trip_g": 1638.7,
-  "pattern_fabric_alt_g": 570.9,
-  "ledger_fabric_g": 571.5,
+  "base_g": 1146.3,
+  "as_hunted_g": 1410.8,
+  "meat_trip_g": 1606.8,
+  "pattern_fabric_alt_g": 554.9,
+  "ledger_fabric_g": 555.5,
   "mass_delta_pct": -0.1,
   "mass_ok": true,
-  "pattern_fabric_primary_g": 666.4,
-  "primary_minus_alt_g": 95.5,
+  "pattern_fabric_primary_g": 647.9,
+  "primary_minus_alt_g": 93.0,
   "primary_delta_by_kit_g": {
-   "base": 64.7,
+   "base": 62.2,
    "as_hunted": 22.1,
    "meat_trip": 9.2
   },
-  "primary_base_g": 1225.6,
-  "primary_as_hunted_g": 1529.6,
-  "primary_meat_trip_g": 1734.7,
+  "primary_base_g": 1208.6,
+  "primary_as_hunted_g": 1495.2,
+  "primary_meat_trip_g": 1700.3,
   "qc14_tol_pct": 3.0
  },
  "geo": {
@@ -63,6 +63,15 @@
   "b11_box": [
    24.0,
    19.0
+  ],
+  "kw_shared": [
+   {
+    "wrap": "W2",
+    "side": "L",
+    "z": 420.0,
+    "hard_point_z": 420.0,
+    "offset_mm": 0.0
+   }
   ],
   "swell_ids": [
    "B-13x"
@@ -97,5 +106,5 @@
  },
  "generator": "designs/pack_5200/mfg_corrie_f_rev3.py",
  "pattern_module": "designs/pack_5200/patterns_corrie_f_rev3.py",
- "date": "20261121"
+ "date": "20261124"
 }

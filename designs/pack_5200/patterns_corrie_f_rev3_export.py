@@ -32,8 +32,8 @@ ROOT = PR.ROOT
 REL = ROOT / "outputs" / "release" / "pack5200_corrie_f_rev3" / "patterns"
 OUT = ROOT / "outputs" / "patterns_corrie_f_rev3"
 SCREENS = ROOT / "outputs" / "screens"
-DATE = "20261113"
-SHOT_TAG = "BL044pat"                 # BL-044 re-export: screenshot prefix 20261113_BL044pat_ (earlier tickets kept their own)
+DATE = "20261124"
+SHOT_TAG = "BL068pat"                 # BL-068 re-export: screenshot prefix 20261124_BL068pat_ (earlier tickets kept their own)
 YD = 914.4
 WASTE_PROD = PVX.WASTE_PROD        # 3 % lay loss ASSUMPTION (v3.1 rule)
 NEST_UNITS = 10
@@ -751,6 +751,14 @@ diamonds. Tape on the back, then check the test square again.
 - BL-050 B (US lanes): the floor channels end at the US lane x (B-16 US1 on F-02, x +/-70; B-16b US2 across F-02 and
   onto B-05, x +/-165: its tails are stitched through the floor and seam-sealed inside); the under-straps are cut
   apart: US 550 mm (US1), US2 925 mm (its own 1:1 webbing-marks page). Do not swap them.
+- **BL-068 (C' looks calls, 2026-11-24)**: (P1) W1 and W2 run LEVEL: W1 on the z 250 lash points both sides, W2 on z 420
+  both sides; the K-W keeper notches on the gusset aft edges and the blade U sit at z {kw1:.0f} / {kw2:.0f} on both sides.
+  (P2) the roll collar is TAPERED: B-06f and B-06 each lose {taper:.1f} mm at both side edges at the mouth, 0 at the
+  collar seam (side seams {side_l:.1f} mm, matched); hem B-07 {hem:.1f} mm (was 1049.7), B-07s strips {b07s:.1f} mm; the
+  'roll end' and 'B-07s strip end' marks moved with the hem; the rolled top is {mouth_flat:.0f} mm wide flat. The RTM tab
+  stays where it was (raising it puts its buckle in W3's sweep, DECISION W3-OVER), so the RT strap is cut {rt_cut:.0f} mm.
+  (P3) the B-28 crown straps keep ONE ladder lock (front): the rear end folds under 30 mm and is box-X'd on the rear
+  B-28t toggle tab (one 21 x 20 box through 4 plies; mark drawn on B-28); one K-28 keeper per strap.
 
 ## 5. Build order and what to print
 
@@ -872,7 +880,10 @@ def export_all(nest10=True, log=print):
         dpct=mc["delta_pct"], pages="\n".join(f"| `print_letter/{fn}.pdf` | {title} | {pages[fn]} |" for fn, title, _ in STEPS),
         yd1=t[1], yd10=t[10], yd50=t[50], yd100=t[100], rtm_z=rsP.geo["rtm"]["z"], rtm_x=rsP.geo["rtm"]["x"],
         hose_z=PR.HOSE_Z, rt_cut=next(w["length_mm"] for w in rsP.webbing if w["id"] == "RT"),
-        mk0=rsP.geo["rt_layout"]["mk_dx"][0], mk1=rsP.geo["rt_layout"]["mk_dx"][1], b25=rsP.geo["b25"]["length_mm"]))
+        mk0=rsP.geo["rt_layout"]["mk_dx"][0], mk1=rsP.geo["rt_layout"]["mk_dx"][1], b25=rsP.geo["b25"]["length_mm"],
+        kw1=rsP.geo["kw_z"]["W1"]["R"], kw2=rsP.geo["kw_z"]["W2"]["R"], taper=rsP.geo["rt_origin"]["collar_side_cut_mm"],
+        side_l=rsP.pieces["B-06"].edge_length("left"), hem=rsP.geo["rt_origin"]["hem_mm"],
+        b07s=rsP.geo["rt_origin"]["b07s_mm"], mouth_flat=rsP.geo["rt_origin"]["mouth_flat_mm"]))
     shots = make_screens(rsP, mkP, mk10, log)
     summ = {**s, "seam_mismatches": [r.seam.name for r in rep.mismatches], "mass_check": {k: v for k, v in mc.items() if k != "rows"},
             "reconcile": {k: v for k, v in rec.items() if k != "rows"}, "lid_hours": {k: v for k, v in hours.items() if k != "rows"},

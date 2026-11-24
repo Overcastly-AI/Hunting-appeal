@@ -135,6 +135,62 @@ REVS = {0: {"setback": 30.0, "guy_x": 100.0, "guy_bridle": False, "tripod_keeper
 # B-22 (turned to the inside). ``with revision(2):`` gives its parts. Rev 1's straight guy was a model artefact (it ran
 # through the bag); its real path wraps the bag's side. Revs 0-2 stay reproducible with ``with revision(n):``.
 REVISION = 3
+# ---- BL-068 (pattern-maker, 2026-11-24): the C' geometry calls (DECISIONS 2026-11-24, orchestrator; design_language.md
+# section 10.4 P2 / P3), on rev 3 itself (the release): ``cprime(False)`` gives the rev 3 geometry before BL-068 back.
+#  * P2 DECISION ROLL-TAPER: the collar B-06f / B-06 tapers from the collar seam (the body ring, unchanged) to a mouth of
+#    2 x ROLL_MOUTH_FLAT_MM, taken equally off the four collar side edges (70.4 mm each at the mouth, 0 at the seam:
+#    bag_concepts.frame_collar's equal side shift). Hem B-07 = the mouth; the two B-07s HDPE strips = half the mouth less
+#    the 40 mm fold gap (bag_concepts.collar_set). 384 mm flattened = 10 mm under the 394 mm width cap (RULES 9), so the
+#    rolled top finishes inside the bag's side line (looks_render.ROLL_HALF_MM 192).
+#  * P3 DECISION LID-LOCK: B-28 crown straps keep ONE heavy ladder lock (front, hinge band); the rear end is folded
+#    CROWN_REAR_FOLD and box-X'd on the rear B-28t tab (the tab that carries the POM toggle; same 21 x 20 box).
+ROLL_TAPER = True
+ROLL_MOUTH_FLAT_MM = 384.0
+CROWN_REAR = "box"          # "lock" = BL-031 (a heavy ladder lock each end), "box" = BL-068
+CROWN_REAR_FOLD = 30.0      # mm of the strap's rear end folded under and caught in the 21 x 20 box on B-28t
+
+
+@contextlib.contextmanager
+def cprime(on: bool = True, roll_taper: bool | None = None, crown_rear: str | None = None):
+    """Temporarily switch BL-068's C' geometry (P2 roll taper, P3 rear lid locks) on / off; restored after. P1 (level
+    W1 / W2) lives in build_geometry.W_LEVEL (geometry.yaml haul_wraps)."""
+    g = globals()
+    old = (g["ROLL_TAPER"], g["CROWN_REAR"])
+    g["ROLL_TAPER"] = on if roll_taper is None else roll_taper
+    g["CROWN_REAR"] = ("box" if on else "lock") if crown_rear is None else crown_rear
+    try:
+        yield
+    finally:
+        g["ROLL_TAPER"], g["CROWN_REAR"] = old
+
+
+def crown_adjusters() -> int:
+    """Adjusters per B-28 crown strap: 2 (BL-031, a lock each end) or 1 (BL-068 P3, rear end box-X'd)."""
+    return 1 if CROWN_REAR == "box" else 2
+
+
+def collar_mouth_mm(c=None) -> float | None:
+    """Mouth (hem) perimeter the collar is cut to: 2 x ROLL_MOUTH_FLAT_MM with the taper, None = bag_concepts' rule."""
+    return 2.0 * ROLL_MOUTH_FLAT_MM if ROLL_TAPER else None
+
+
+def _add_collar(b, c, tops):
+    """bag_concepts_wide._add_collar with BL-068's mouth (ROLL-TAPER): collar_set reads ``COLLAR_TOP`` at call time, so
+    the mouth is set there and frame_collar spreads the cut equally over the four side edges."""
+    m = collar_mouth_mm(c)
+    if m is None:
+        return W._add_collar(b, c, tops)
+    per = BC.ring_perimeter(c, c.z_c)
+    if not 0.0 < m < per:
+        raise ValueError(f"ROLL-TAPER mouth {m:.1f} mm must be under the collar seam ring {per:.1f} mm")
+    old = BC.COLLAR_TOP
+    BC.COLLAR_TOP = m
+    try:
+        return W._add_collar(b, c, tops)
+    finally:
+        BC.COLLAR_TOP = old
+
+
 TOP_SETBACK_MM = REVS[REVISION]["setback"]   # DECISION (R-28, doc sections 5 / 12): sized by the corrie_f_sim R-28 runs
 GUY_X = REVS[REVISION]["guy_x"]               # DECISION (BL-022 S6, doc section 12.3): guy bar-end centre, x +/- mm
 
@@ -478,7 +534,8 @@ def build(c: ShellF | None = None, door: str = DOOR_DEFAULT, fabrics: str = "B")
             W.add_hw(b, "6 gusset loops 25 mm x 0.10 m (lid straps H1-H3), caught in the flap seam + bartack",
                      6 * 0.10 * WEB25, 6)
             b.extra["lid_straps"] = lid_straps(c)
-        W._add_collar(b, c, tops)
+        _add_collar(b, c, tops)           # BL-068 P2: tapered to the ROLL-TAPER mouth (W._add_collar if off)
+        b.extra["collar_mouth_mm"] = collar_mouth_mm(c)
         for p, g in b.pieces:
             if p.piece_id == "B-06":
                 p.material_id = fab("collar", fabrics)
@@ -1084,6 +1141,8 @@ def parts(size: str = "M", door: str = DOOR_DEFAULT, fabrics: str = "B", c: Shel
             add(s_, n, g, "base", src)
         for s_, n, g, src in bl050_rows():
             add(s_, n, g, "base", src)
+        for s_, n, g, src in bl068_rows():
+            add(s_, n, g, "base", src)
     return out
 
 
@@ -1168,6 +1227,21 @@ def bl044_rows() -> list:
         ("straps_compression", f"BL-044: W3 K-W keeper loops deleted (2 x {P.KW_CUT:.0f} mm, DECISION KW-W3-OFF)",
          -2 * P.KW_CUT / 1000.0 * WEB25, "patterns_corrie_f_rev3.KW_CUT x poly_webbing_25mm mass_g_m (record), negative"),
     ]
+
+
+def bl068_rows() -> list:
+    """BL-068 ledger rows (system, name, g, source) the geometry switches do not already move: the K-W keeper loop that
+    DECISION KW-HP-L drops where a level wrap lands on a hard-point loop (W2 L, z 420)."""
+    import importlib
+    P = importlib.import_module("patterns_corrie_f_rev3")
+    kw = {k: v for k, v in P.kw_heights(make()).items() if k in P.KW_WRAPS}
+    sh = P.kw_shared(kw)
+    if not sh:
+        return []
+    return [("straps_compression", f"BL-068: K-W keeper loop(s) dropped ({', '.join(r['wrap'] + ' ' + r['side'] for r in sh)}"
+             f": the wrap runs through the hard-point loop, DECISION KW-HP-L; {len(sh)} x {P.KW_CUT:.0f} mm)",
+             -len(sh) * P.KW_CUT / 1000.0 * WEB25,
+             "patterns_corrie_f_rev3.kw_shared x KW_CUT x poly_webbing_25mm mass_g_m (record), negative")]
 
 
 def hinge_pin() -> dict:
@@ -2823,7 +2897,7 @@ def _crown_delta_at(t_in: float) -> list:
     return [float(np.interp(t_in, (15.0, 19.0, 23.0), (a, 0.0, b))) for a, b in zip(td[15], td[23])]
 
 
-def crown_kit_straps(kit: str = CROWN_KIT_DEFAULT, adjusters: int = CROWN_ADJ) -> dict:
+def crown_kit_straps(kit: str = CROWN_KIT_DEFAULT, adjusters: int | None = None, rear: str | None = None) -> dict:
     """B-28 crown strap pair for one crown kit (BL-031), 25 mm, from the BL-030 rolled-top paths (``CROWN_ROLLED``,
     19 in, day / 6-day / full with the collar standing) moved to the kit's own torso range (``_crown_delta_at``).
 
@@ -2836,8 +2910,16 @@ def crown_kit_straps(kit: str = CROWN_KIT_DEFAULT, adjusters: int = CROWN_ADJ) -
     * hardware per strap: ``adjusters`` heavy ladder locks (ladder_lock_25mm_heavy, BL-010 A3), a 60 mm tab per lock
       (front: hinge band at z 700; rear: the POM toggle into the second fold of the B-25 tab, which stays), the
       toggle (attach_diet.TOGGLE_G), the B-25 second fold; a tail keeper per adjuster when a tail can pass
-      KEEPER_OVER_MM. ``adjusters`` 1 gives the one-lock comparison (rear end a sewn toggle loop, as BL-029)."""
+      KEEPER_OVER_MM. ``adjusters`` 1 gives the one-lock comparison (rear end a sewn toggle loop, as BL-029).
+    * BL-068 P3 (``rear`` "box", the default with ``CROWN_REAR``): one adjuster (front lock); the rear end is folded
+      CROWN_REAR_FOLD and box-X'd on the rear B-28t tab, which keeps its toggle, so the three tabs per strap stay and
+      the cut is longest + spare + one grip + the fold. ``rear`` "lock" = BL-031 (two adjusters)."""
     import attach_diet as AD
+    rear = rear or (CROWN_REAR if adjusters is None else ("lock" if adjusters == 2 else "loop"))
+    if adjusters is None:
+        adjusters = 1 if rear == "box" else CROWN_ADJ
+    if rear == "box" and adjusters != 1:
+        raise ValueError("rear 'box' has one adjuster (the front lock)")
     lo, hi = crown_kits()[kit]
     mid = 0.5 * (lo + hi)
     rp = json.loads(CROWN_ROLLED.read_text())["states"]
@@ -2855,7 +2937,7 @@ def crown_kit_straps(kit: str = CROWN_KIT_DEFAULT, adjusters: int = CROWN_ADJ) -
                   "mid_torso": round(Lmean_s[st] + float(np.mean(d_mid)), 1),
                   "long_torso": round(Lmean_s[st] + float(np.mean(d_hi)), 1)}
     L_used = by[MOST_USED_STATE]["mid_torso"]
-    loop = 0.0 if adjusters == 2 else CROWN_LOOP
+    loop = {"lock": 0.0, "loop": CROWN_LOOP, "box": CROWN_REAR_FOLD}[rear]
     cut = L_max + CROWN_SPARE_MM + adjusters * TAIL_GRIP_MM + loop    # BL-039: + the spare (CROWN-SPARE)
 
     def tail(L):
@@ -2865,10 +2947,12 @@ def crown_kit_straps(kit: str = CROWN_KIT_DEFAULT, adjusters: int = CROWN_ADJ) -
     worst = tail(L_min)
     keepers = adjusters if worst > KEEPER_OVER_MM else 0
     tog, llh = AD.TOGGLE_G, _rec("ladder_lock_25mm_heavy", "mass_g")
-    tabs = (adjusters + 1) * CROWN_TAB             # a tab per lock (one-lock: the front tab) + the B-25 second fold
+    # a tab per lock (one-lock: the front tab) + the B-25 second fold; BL-068 'box': the rear tab stays (toggle + box)
+    tabs = (3 if rear == "box" else adjusters + 1) * CROWN_TAB
     kg = tail_keeper_g()
     g = 2 * (cut * WEB25 / 1000.0 + tabs * WEB25 / 1000.0 + tog + adjusters * llh + keepers * kg)
-    return {"kit": kit, "torso_in": (lo, hi), "width_mm": 25.0, "adjusters": adjusters,
+    return {"kit": kit, "torso_in": (lo, hi), "width_mm": 25.0, "adjusters": adjusters, "rear": rear,
+            "rear_fold_mm": loop if rear == "box" else 0.0, "locks_per_strap": adjusters, "tabs_per_strap": round(tabs / CROWN_TAB),
             "path_max_mm": round(L_max, 1), "path_min_mm": round(L_min, 1), "path_used_mm": round(L_used, 1),
             "adjust_range_mm": round(L_max - L_min, 1), "spare_mm": CROWN_SPARE_MM,
             "path_limit_mm": round(cut - loop - adjusters * TAIL_GRIP_MM, 1), "cut_mm": round(cut, 1), "paths_mm": by, "tails_mm": tails,
@@ -2893,7 +2977,8 @@ def crown_kit_table() -> dict:
         a["margin_slip"] = round(a["slip_n"] / demand, 2)
         a["margin_tensile"] = round(a["tensile_n"] / demand, 2)
         out["kits"][k] = a
-        out["one_lock"][k] = crown_kit_straps(k, adjusters=1)
+        out["one_lock"][k] = crown_kit_straps(k, adjusters=1, rear="loop")
+        out.setdefault("two_lock", {})[k] = crown_kit_straps(k, rear="lock")
     out["bl030_single_cut"] = {"cut_mm": d["cut_mm"], "tail_at_shortest_mm": d["tail_at_shortest_mm"],
                                "mass_g_25": d["options"]["w25"]["mass_g"], "mass_g_20": d["options"]["w20"]["mass_g"]}
     return out
@@ -2911,7 +2996,12 @@ def rev3_addons(ad: dict) -> dict:
                         "pieces": lid["pieces"], "zip_mm": LID["zip_mm"], "source": lid["source"]}
     cs = crown_straps()
     lock = "heavy ladder lock" if cs["width_mm"] == 25.0 else f"{cs['width_mm']:.0f} mm ladder lock"
-    if cs.get("adjusters") == 2:      # BL-031: per kit, a lock at each end, tail keepers
+    if cs.get("rear") == "box":       # BL-068 P3: one front lock, rear end box-X'd on the rear (toggle) tab
+        nm = (f"B-28 crown straps (2), kit {cs['kit']}: {cs['width_mm']:.0f} mm {cs['cut_mm'] / 1000:.3f} m, heavy "
+              f"ladder lock at the front (hinge-band tab), rear end box-X'd on the B-25 toggle tab, "
+              f"{cs['keepers_per_strap']} tail keeper each")
+        bt = 2 * (3 + 1) * BC.HOURS["bartack"]     # tabs: front, rear (+ toggle), B-25 second fold + the rear end box
+    elif cs.get("adjusters") == 2:      # BL-031: per kit, a lock at each end, tail keepers
         nm = (f"B-28 crown straps (2), kit {cs['kit']}: {cs['width_mm']:.0f} mm {cs['cut_mm'] / 1000:.3f} m, heavy "
               f"ladder lock at each end (B-25 toggle tab, hinge-band tab), {cs['keepers_per_strap']} tail keepers each")
         bt = 2 * (2 + 1) * BC.HOURS["bartack"]     # tabs: front, rear (+ toggle), B-25 second fold

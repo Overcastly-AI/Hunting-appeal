@@ -126,12 +126,14 @@ def crown_row(kit: str = "M") -> dict:
     a = F.crown_kit_straps(kit)
     d = F.crown_strap_diet()
     P = {"max": a["path_max_mm"], "used": a["path_used_mm"], "min": a["path_min_mm"]}
+    kp = ("25 mm elastic keeper at the front lock (BL-068: rear end box-X'd, no rear lock)" if a.get("rear") == "box"
+          else "25 mm elastic keeper at each lock")
     r = _row("B-28", f"crown straps (kit {kit}, {a['torso_in'][0]:g}-{a['torso_in'][1]:g} in)", "bag (as hunted)", 2,
-             2, 0.0, 0.0, 0.0, P, None, "25 mm elastic keeper at each lock", a["source"])
+             a["adjusters"], 0.0, 0.0, 0.0, P, None, kp, a["source"])
     # before: one adjuster, 20 mm, the 1138 mm cut with a 60 mm rear loop (BL-030)
     b_used = d["cut_mm"] - F.CROWN_LOOP - P["used"]
     b_worst = d["cut_mm"] - F.CROWN_LOOP - P["min"]
-    r["adjusters"] = "1 -> 2"
+    r["adjusters"] = "1 -> 2" if a["adjusters"] == 2 else "1 -> 2 -> 1 (BL-068 rear end box-X'd)"
     r["before"].update(cut_mm=d["cut_mm"], tail_used_mm=round(b_used, 1), tail_worst_mm=round(b_worst, 1),
                        rule_used=b_used <= F.TAIL_RULE_MM, needs_keeper=b_worst > F.KEEPER_OVER_MM, pass_=False)
     r["before"]["pass"] = False
@@ -294,9 +296,30 @@ def us_rows() -> list:
 
 
 ROLL_CLIPS = HERE / "corrie_f_sim" / "corrie_f_roll_clips.json"   # huntkit.viz3d.corrie_f --roll-clips (BL-031)
+# BL-068 P2: with the ROLL-TAPER collar the clip paths are BL-067's cloth pass on the tapered roll (looks_render
+# --cp-checks, ROLL_HALF_MM 192 = corrie_f.ROLL_MOUTH_FLAT_MM / 2; RTM tab where the release has it)
+ROLL_CLIPS_CP = PACK / "iter1" / "looks" / "cp_checks.json"
+RTM_RAISE_PATH = 1.0       # ASSUMPTION RTM-RAISE: raising the RTM tab shortens the clip path 1:1 (the strap runs straight
+#                            down the gusset from the roll end to the tab); used only for the BL-068 raise check
 
 
-def roll_row() -> dict:
+def roll_clip_states() -> tuple:
+    """(states, source): the roll-clip paths at day / 6-day / full for the collar as cut (tapered or straight)."""
+    F = _F()
+    if getattr(F, "ROLL_TAPER", False):
+        d = json.loads(ROLL_CLIPS_CP.read_text())
+        half = float(d["roll_half_mm"]["Cp"])
+        if abs(2.0 * half - F.ROLL_MOUTH_FLAT_MM) > 0.5:
+            raise ValueError(f"cp_checks roll half {half} mm is not corrie_f.ROLL_MOUTH_FLAT_MM / 2")
+        return d["roll_clip"]["Cp"]["states"], ("cp_checks.json roll_clip.Cp (BL-067 cloth pass on the tapered roll, "
+                                                "ROLL-CLIP-PATH ASSUMPTION)")
+    if ROLL_CLIPS.exists():
+        return json.loads(ROLL_CLIPS.read_text())["states"], ("corrie_f_roll_clips.json (cloth-pass roll model, "
+                                                               "ROLL-CLIP-PATH ASSUMPTION)")
+    return None, None
+
+
+def roll_row(rtm_raise_mm: float = 0.0) -> dict:
     """Roll-top side clips (2): roll end -> 25 mm side-release on the gusset tab. Paths from the cloth-pass roll model
     at day / 6-day / full (``ROLL_CLIPS``; ASSUMPTION ROLL-CLIP-PATH: the render's roll (ends bent down towards the
     tabs, cloth_pass clip_run / clip_below_seam) stands in for the sewn roll; settled by T9, clip free length at the
@@ -304,13 +327,14 @@ def roll_row() -> dict:
     height). The cut is unchanged (350 mm, panels.yaml) unless the paths say otherwise."""
     F = _F()
     cut = _cut("roll-top clips")
-    if ROLL_CLIPS.exists():
-        st = json.loads(ROLL_CLIPS.read_text())["states"]
-        L = {k: max(v["roll_clip_mm"].values()) for k, v in st.items() if v.get("roll_clip_mm")}
-        Lmin = {k: min(v["roll_clip_mm"].values()) for k, v in st.items() if v.get("roll_clip_mm")}
-        P = {"max": max(L.values()), "used": float(np.mean(list(st["sixday"]["roll_clip_mm"].values()))),
+    st, src_st = roll_clip_states()
+    if st:
+        dr = RTM_RAISE_PATH * float(rtm_raise_mm)
+        L = {k: max(v["roll_clip_mm"].values()) - dr for k, v in st.items() if v.get("roll_clip_mm")}
+        Lmin = {k: min(v["roll_clip_mm"].values()) - dr for k, v in st.items() if v.get("roll_clip_mm")}
+        P = {"max": max(L.values()), "used": float(np.mean(list(st["sixday"]["roll_clip_mm"].values()))) - dr,
              "min": min(Lmin.values())}
-        src = "corrie_f_roll_clips.json (cloth-pass roll model, ROLL-CLIP-PATH ASSUMPTION); cut panels.yaml"
+        src = src_st + "; cut panels.yaml" + (f"; RTM raised {rtm_raise_mm:.0f} mm (RTM-RAISE)" if rtm_raise_mm else "")
         after = _ceil5(ROLL_END_MM + P["max"] + F.TAIL_GRIP_MM)     # BL-048 m-2: up, so the grip is >= TAIL_GRIP
     else:
         z = {k: v["lid_top_z"] for k, v in json.loads(F.CROWN_ROLLED.read_text())["states"].items()}

@@ -48,8 +48,8 @@ REL = ROOT / "outputs" / "release" / "pack5200_corrie_f_rev3"
 PAT = REL / "patterns"
 OUT = REL / "manufacturing"
 SCREENS = ROOT / "outputs" / "screens"
-DATE = "20261121"
-TOPIC = "BL057mfg"            # BL-057: screenshots named for the ticket that regenerates the package (was BL055mfg)
+DATE = "20261124"
+TOPIC = "BL068mfg"            # BL-057: screenshots named for the ticket that regenerates the package (was BL055mfg)
 TITLE = "CORRIE F rev 3 (door D2) - 5200 cu in hunting pack bag"
 REGISTER = ROOT / "designs" / "pack_5200" / "tests_physical" / "test_register.csv"
 YD = 914.4
@@ -364,6 +364,7 @@ def geo(ctx: Ctx) -> dict:
         "fp_finished_w": (F.fp_spec() if hasattr(F, "fp_spec") else F._A().FP)["w"], "fp_z": P.FP_Z,
         "fp_margin": rs.geo.get("fp_min_margin_mm"), "fp_clear_req": rs.geo.get("fp_clear_req_mm"),
         "b11": rs.geo.get("b11"), "b11_box": _b11_box(rs), "kw_z": rs.geo.get("kw_z") or {},
+        "kw_shared": rs.geo.get("kw_shared") or [],
         "f02": rs.geo.get("f02_on_b05"),
         "swell_ids": sorted(pid for pid in rs.pieces if pid.startswith("B-13")),
         "swell_n": sum(q.quantity for pid, q in rs.pieces.items() if pid.startswith("B-13")),
@@ -512,7 +513,7 @@ def hardware_table(ctx: Ctx) -> list[tuple]:
          "unit", "base", False),
         ("cara_x", "wiregate carabiner 22 kN: B-24 float links", "carabiner_wiregate_22kn", 2, "unit", "meat_trip",
          False),
-        ("ll_heavy", f"heavy 25 mm ladder lock ({ll}): B-28 (4) + guys (2) + W1-W3 (3)", "ladder_lock_25mm_heavy", ll,
+        ("ll_heavy", f"heavy 25 mm ladder lock ({ll}): B-28 ({ll - 5}) + guys (2) + W1-W3 (3)", "ladder_lock_25mm_heavy", ll,
          "unit", "base,as_hunted", False),
         ("cam", "25 mm aluminium cam buckle: IM1-IM3 (3) + US1/US2 (2)", "cam_25mm_al", 5, "unit", "base", False),
         ("triglide_ss", "25 mm STAINLESS tri-glide: US1/US2 cradle backstop behind the cam (2; orchestrator "
@@ -931,6 +932,43 @@ def he_405_text(ctx) -> str:
             f"HE-FIT band {hg['pin_band'][0]:.0f}-{hg['pin_band'][1]:.0f}). No stitching crosses the eye after step 3.")
 
 
+def bl068_md(ctx: Ctx) -> list[str]:
+    """BL-068 (C' looks calls, DECISIONS 2026-11-24): what changed in this regeneration, from the pattern's own geo."""
+    g = ctx.rs.geo
+    if "bl068" not in g:
+        return []
+    b = g["bl068"]
+    o = g["rt_origin"]
+    rr = b["rtm_raise"]
+    cs = P.F.crown_kit_straps(P.KIT)
+    rt = next(w["length_mm"] for w in ctx.rs.webbing if w["id"] == "RT")
+    tp = b["tripod"]
+    return ["## BL-068 changes (C' looks calls, 2026-11-24)", "",
+            f"- **P1 level wraps:** W1 on the z 250 lash points both sides, W2 on z 420 both sides (were 80 -> 250 and "
+            f"250 -> 420). K-W keepers at z {g['kw_z']['W1']['R']:.0f} / {g['kw_z']['W2']['R']:.0f} on both aft corner "
+            f"seams. B-11 bow tabs sit {b['w_level']['level']['min_bow_gap_mm']:.1f} mm above W2's top edge (>= 10 mm); "
+            f"IMP-8 is clear of W1 ({b['w_level']['level']['R']['W1_band_to_IMP8_mm']:.1f} mm). Tripod lower end held in "
+            f"every placement: {'yes' if tp['lower_end_held_all'] else 'NO'} (feet in the IMP-8 cup + W1 at z 250, or "
+            "feet on FP-R + W2 at z 420 + the B-26 cord).",
+            f"- **P2 roll taper:** B-06f / B-06 lose {o['collar_side_cut_mm']:.1f} mm at each side edge at the mouth (0 at "
+            f"the collar seam); hem B-07 {o['hem_mm']:.1f} mm, B-07s {o['b07s_mm']:.1f} mm each; rolled top "
+            f"{o['mouth_flat_mm']:.0f} mm flat. RTM tab NOT raised: {rr['decision']}. RT strap cut {rt:.0f} mm.",
+            f"- **P3 lid locks:** B-28 has one heavy ladder lock (front); the rear end is folded 30 mm and box-X'd on the "
+            f"rear B-28t (same 21 x 20 box, LL-H row, hardware 'none'). Cut {cs['cut_mm']:.0f} mm (kit {P.KIT}); "
+            f"front tail at the 6-day load {cs['tail_used_mm']:.0f} mm, rolled in its keeper.",
+            "- **RT-PULL** is now a register row (`designs/pack_5200/tests_physical/test_register.csv`) and in the test kit "
+            "(5 specimens, 338 N, 60 s).", ""]
+
+
+def _b28_fit_text() -> str:
+    """The B-28 line of 'Fit the hardware' (BL-068 P3: one lock; BL-031: a lock each end)."""
+    cs = P.F.crown_kit_straps(P.KIT)
+    if cs.get("rear") == "box":
+        return ("B-28: rear end already box-X'd on its toggle tab (no rear lock, BL-068 DECISION LID-LOCK), heavy "
+                f"ladder lock at the front tab only, {cs['keepers_per_strap']} elastic keeper on the front tail")
+    return "B-28: toggle rear, ladder lock both ends, 2 elastic keepers"
+
+
 def load_points(ctx: Ctx) -> list[dict]:
     """Every sewn load point: pattern box size, stitch count, thread / needle, the factored load from the record that
     sets it, the capacity (attach_system rules) and the proof test that releases it. Box sizes are the box-X marks drawn
@@ -1009,9 +1047,25 @@ def load_points(ctx: Ctx) -> list[dict]:
         0, 0, None, "no rated load (lap only); port mock-up: 100 N guy pull through the lap", "port mock-up (13.9)",
         kind="BT-S")
     # crown strap tabs: every B-28 tab piece the pattern draws (B-28t today; BL-035 may split it) + the band box
+    rear_box = box("B-28", "rear end")                 # BL-068 P3 DECISION LID-LOCK: rear end box-X'd on its B-28t tab
     for pid in sorted(i for i in rs.pieces if i.startswith("B-28") and i != "B-28"):
         use = next((w["use"] for w in rs.webbing if w["id"] == pid), rs.pieces[pid].name)
         for w, h, lab in box(pid):
+            if pid == "B-28t" and rear_box:
+                n2 = rs.pieces[pid].quantity // 2
+                add(f"crown strap front lock tab ({pid} x{n2})", pid, "front tab, heavy ladder lock on its bar", w, h, guy,
+                    f"corrie_f_body.md 15.2: {guy:.0f} N envelope (port guy) if a crown strap ever holds the top",
+                    f"LL-H {LLH_N:.0f} N (1.5 x {guy:.0f} N; BL-031 dropped the 20 mm gate)", hw=LL)
+                rw, rh = rear_box[0][:2]
+                if (rw, rh) != (w, h):
+                    raise ValueError(f"B-28 rear-end box {rw}x{rh} is not the B-28t box {w}x{h} (BL-068: same box)")
+                add(f"crown strap rear end on its tab ({pid} x{n2} + B-28 rear end)", pid,
+                    "rear tab (POM toggle at the tip): the strap's 30 mm folded rear end sewn in the same box-X, 4 plies "
+                    "(BL-068 DECISION LID-LOCK)", w, h, guy,
+                    f"corrie_f_body.md 15.2: {guy:.0f} N envelope (the strap tension reaches the rear end unchanged)",
+                    f"LL-H {LLH_N:.0f} N row (same proof; no lock to slip: pull the sewn end to {LLH_N:.0f} N)",
+                    hw=("none (BL-068: no rear lock)", None, "-"))
+                continue
             add(f"crown strap tab ({pid} x{rs.pieces[pid].quantity})", pid, use, w, h, guy,
                 f"corrie_f_body.md 15.2: {guy:.0f} N envelope (port guy) if a crown strap ever holds the top",
                 f"LL-H {LLH_N:.0f} N (1.5 x {guy:.0f} N; BL-031 dropped the 20 mm gate)", hw=LL)
@@ -1121,7 +1175,7 @@ def load_points(ctx: Ctx) -> list[dict]:
                 "lashed load or a lift by the roll; the closure itself is a hand cinch", f"RT-PULL {PROOF * RT_N:.0f} N",
                 bm, hw=BUCKLE, note="buckle record 450 N (ESTIMATE) governs the hardware column")
     # any other webbing piece with drawn boxes (a piece a later ticket adds): listed, UNRATED until it has a load case
-    named = {r["part"].split(" ")[0] for r in rows}
+    named = {r["part"].split(" ")[0] for r in rows} | ({"B-28"} if rear_box else set())
     for pid, p in sorted(rs.pieces.items()):
         if p.material_id in P.WEBBING and pid not in named:
             for w, h, lab in boxes_of(p):
@@ -1467,11 +1521,16 @@ def ops(ctx: Ctx) -> list[SewingOp]:
               + f" ({', '.join(sorted(kwz))}; the drawn 'K-W keeper' notches on B-03 and B-02u, pattern ASSUMPTION "
               "KW-PATH)") if kwz else "heights NOT drawn: HOLD the keepers"
     n_kw = next((w["qty"] for w in rs.webbing if w["id"] == "K-W"), 6)
+    kws = {(r["wrap"], r["side"]) for r in g.get("kw_shared", [])}          # BL-068 DECISION KW-HP-L
+    n_side = {s: sum(1 for w in kwz if (w, s) not in kws) for s in ("R", "L")}
+    kw_share_txt = "".join(f" {w} {s}: NO K-W loop, {w} runs through the z {kwz[w][s]:.0f} hard-point loop (DECISION "
+                           "KW-HP-L)." for w, s in sorted(kws))
     kw_fp = [(wid, side, z) for wid in sorted(kwz) for side, z in kwz[wid].items() if P.FP_Z[0] <= z <= P.FP_Z[1]]
     kw_fp_txt = ", ".join(f"{side} z {z:.0f} ({wid})" for wid, side, z in kw_fp) or "none"
     op("Aft corner seams blade U | gussets (closes the tube)", f"R and L ({s_br:.0f} / {s_bl:.0f} mm): 2 HPL loops in "
-       f"the L seam at the hard-point notches; {n_kw // 2} K-W keeper loops in each seam, raw ends in the seam, at the "
-       f"W1-W3 crossings: {kw_txt}. R seam: the B-26 free end inserted 15 mm at the 'B-26 keeper' notch. SSa2. "
+       f"the L seam at the hard-point notches; K-W keeper loops R seam {n_side['R']}, L seam {n_side['L']}, raw ends in "
+       f"the seam, at the W1 / W2 crossings: {kw_txt}.{kw_share_txt} R seam: the B-26 free end inserted 15 mm at the "
+       "'B-26 keeper' notch. SSa2. "
        "LAYER ORDER where a K-W keeper meets the FP pocket edge (SK-9; it happens at "
        f"{kw_fp_txt}): gusset B-03 face up, FP mesh edge on it (already basted), the K-W loop ON TOP of the mesh "
        "(raw ends at the cut edge, loop pointing into the gusset), then the blade U face down. Sew. Turned out, the "
@@ -1665,6 +1724,17 @@ def ops(ctx: Ctx) -> list[SewingOp]:
                     f"wrap clears the pawl housing (design {kS['clear_mm']:.0f} mm on the BL-046 clamp constants and the measured "
                     f"housing; the run reaches the spine {tp['spine_fore_mm']:.2f} mm FORE of the bar plane); a "
                     "no stops the laps: photo to the pack-designer.")
+        if pid == "B-28" and any("rear end" in b_[2] for b_ in bxs):     # BL-068 P3 DECISION LID-LOCK
+            how = (f"{w['length_mm']:.0f} mm ({w['length_mm'] / IN:.1f} in), hot-knife. REAR end: fold under on the "
+                   "'REAR end: fold under 30 mm' line and pin; it is NOT sewn here: the drawn 21 x 20 box is sewn in the "
+                   "next op together with the rear B-28t (one box-X through strap fold + tab, 4 plies). FRONT end free "
+                   "(threads the front ladder lock at op @FIT).")
+            kind, hrs, wl = "none", 0.0, 0.0
+        if pid == "B-28t" and P.F.crown_kit_straps(P.KIT).get("rear") == "box":
+            how += (" REAR tabs (BL-068 DECISION LID-LOCK, no rear lock): fold the tab over the B-28's pinned 30 mm "
+                    "rear-end fold (strap end inside the tab fold, POM toggle sewn across the tab tip as before) and sew "
+                    "the drawn 21 x 20 box-X once through all 4 plies; check the B-28 strap's rear-end box mark lies "
+                    "under the tab's box mark.")
         op(f"{pid}: {w['use']} x{w['qty']}", how, kind,
            pieces=f"{pid} x{w['qty']}" + (", 3 x 25 mm cam, 2 x rated G-hook" if pid == "IMC" else ""),
            seam="BOX" if kind == "box" else ("BT" if kind == "bt" else "-"),
@@ -1691,7 +1761,7 @@ def ops(ctx: Ctx) -> list[SewingOp]:
        "2026-11-13; gate US-BS); T3 loops: wiregate carabiner + TPU sleeve; W1-W3: rated G-hook end, heavy ladder lock on "
        "the gusset side; W3 is the OUTER layer (BL-043 DECISION W3-OVER): it may lie over the RT straps and the roll, "
        "so slacken W3 (G-hook off) before opening the roll top; guys: toggle in the B-25 tab, through the B-27 port, heavy ladder lock on LLT, nylon tri-glide "
-       "tail keeper; B-28: toggle rear, ladder lock both ends, 2 elastic keepers; RT: thread the free end through the "
+       "tail keeper; " + _b28_fit_text() + "; RT: thread the free end through the "
        "ADJUSTABLE (male) half of each side-release buckle (its female half is already on the RTM gusset tab), K-RT "
        "keeper below it; E5: cord "
        "lock" + (f"; cords {', '.join(cords)} per their use" if cords else "") + ".", "none",
@@ -1834,6 +1904,8 @@ RELEASE_TESTS = [   # id, why it gates this package (register row read at run ti
                "(BL-041 X-2, BL-044 DECISION HE-ENV); step 0 = gate US-ROUTE on the US test piece (BL-048 N-1)"),
     ("TL-1", f"B-25 38 mm sleeve + guy and crown-strap toggles on the real crown bar at {TL1_N} N, two rigs: A guy 22 deg below horizontal, B 58 deg and 13.6 % outboard, crown strap 43 N, run anchored on a spine stub (BL-047 record bl047_frame_items.json tl1; BL-048 M-A)"),
     ("PT-5", "guy lock + tri-glide keeper"), ("PT-6", "B-24 float link"),
+    ("RT-PULL", "roll-top clip RT + RTM + side-release buckle, proof 1.5 x 225 N (ASSUMPTION RT-LOAD, BL-067; register "
+                "row BL-068)"),
     ("LL-H", "heavy 25 mm ladder lock slip at 432 N (1.5 x 288 N), dry, wet and -20 C: guys, W1-W3 and the B-28 crown "
              "straps (the B-28 slip gate since BL-031)"),
     ("SEW-F", "box-X fatigue (ASSUMPTION SEW_FAT 0.40 x box strength): IM end loops (S1), US eyes (S6), belt tabs (H1), "
@@ -1841,7 +1913,8 @@ RELEASE_TESTS = [   # id, why it gates this package (register row read at run ti
     ("T9", "loaded CG on the first article (rev C basis); its rev 3 items are the T9-R3a..d rows below (BL-038 split)"),
     ("T9-R3a", "rev 3 (a): B-27 port guys hold the S-kit top, CG at the S kit (BL-030)"),
     ("T9-R3b", "rev 3 (b): B-28 crown strap cinch force and retention"),
-    ("T9-R3c", "rev 3 (c): B-28 crown strap free length per crown kit (cut = longest path + 40 mm spare + 2 grips, BL-039)"),
+    ("T9-R3c", "rev 3 (c): B-28 crown strap free length per crown kit (cut = longest path + 40 mm spare + 1 grip + the "
+               "30 mm rear fold since BL-068 P3; BL-039 spare)"),
     ("T9-R3d", "rev 3 (d): sewn B-29 lid mass and seat"),
     ("FS-O5", "alternate fabric gate: ULTRA 200X 50 mm strip (floor / frame side)"),
     ("FIT-US", "BL-050 B: US straps on their lanes and the US2 clevis bolt heads on P1 with the first bag (colour "
@@ -1849,9 +1922,6 @@ RELEASE_TESTS = [   # id, why it gates this package (register row read at run ti
 ]
 RT_N = 225.0                     # ASSUMPTION RT-LOAD (BL-067): roll-top clip design load = W wrap envelope (S9)
 EXTRA_GATES = [
-    ("RT-PULL", f"roll-top clip RT + RTM with its 25 mm side-release, sewn as built on a hem / gusset offcut: pull to "
-                f"{PROOF * RT_N:.0f} N (1.5 x {RT_N:.0f} N, ASSUMPTION RT-LOAD) for 1 min, dry, 3 specimens",
-     "no broken stitch, no seam slip > 2 mm, buckle holds, 3 of 3", "BL-067 (review 7 m9)"),
     ("B-28 slip", f"B-28 crown strap on its heavy ladder lock: covered by LL-H at {LLH_N:.0f} N (BL-031 dropped the 20 mm "
                   "gate; 25 mm strap on ladder_lock_25mm_heavy)", "LL-H pass", "corrie_f_body.md 15.6 / 16"),
     ("PORT-1", "B-27 port mock-up: hose from above 1 min with the guy pulled at 45 deg; 100 N guy pull through the lap; "
@@ -2697,7 +2767,7 @@ def write_files(pk: dict, out: Path = OUT) -> list[Path]:
           "| `qc_sheet.md` / `qc_sheet.csv` / `release_tests.csv` / `defects.csv` | QC points, release gates, defect list |",
           "| `costing.md` / `costing.json` | material cost, beginner hours, factory SAM, CMT estimates |",
           "| `delta_register_rev3.csv` / `.md` | RD rows this release closes or restates |",
-          "| `sketches/SK-*.png` | sketches the ops refer to |", ""] + review56_md() + [
+          "| `sketches/SK-*.png` | sketches the ops refer to |", ""] + bl068_md(ctx) + review56_md() + [
           "## Key numbers", "",
           f"- Pieces: {len(ctx.rs.pieces)} piece types; {sum(p.quantity for p in _fabric_pieces(ctx.rs))} fabric / sheet "
           f"pieces + {sum(w['qty'] for w in ctx.rs.webbing if not ('kit S' in w['kit'] or 'kit L' in w['kit']))} webbing / "

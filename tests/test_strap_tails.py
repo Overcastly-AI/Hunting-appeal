@@ -31,7 +31,11 @@ def test_rev3_default_is_25mm_per_kit_and_bl030_20mm_is_history():
     _need_paths()
     assert F.REVISION == 3 and F.crown_strap_w() == 25.0 and F.REVS[3]["crown_kits"]
     cs = F.crown_straps()
-    assert cs["width_mm"] == 25.0 and cs["kit"] == F.CROWN_KIT_DEFAULT == "M" and cs["adjusters"] == 2
+    # BL-068 P3 DECISION LID-LOCK: one front lock, rear end box-X'd; BL-031's two locks stay reproducible
+    assert cs["width_mm"] == 25.0 and cs["kit"] == F.CROWN_KIT_DEFAULT == "M" and cs["adjusters"] == 1
+    assert cs["rear"] == "box"
+    with F.cprime(False):
+        assert F.crown_straps()["adjusters"] == 2
     assert F.crown_straps(25.0, "S")["kit"] == "S"
     assert F.crown_straps(20.0)["width_mm"] == 20.0                     # BL-030's diet, still reproducible
     assert F.crown_strap_diet()["chosen"]["width_mm"] == 20.0
@@ -56,7 +60,7 @@ def test_kits_take_their_own_torso_range_from_the_paths():
     assert kits == {"S": (15.0, 18.0), "M": (17.5, 20.5), "L": (20.0, 23.0)}
     cuts = []
     for k, (lo, hi) in kits.items():
-        a = F.crown_kit_straps(k)
+        a = F.crown_kit_straps(k, rear="lock")          # BL-031's two-lock arithmetic (BL-068 default: one lock)
         ds = F._crown_delta_at(lo) + F._crown_delta_at(hi)
         assert a["path_max_mm"] == pytest.approx(full + max(ds), abs=0.1)
         assert a["path_min_mm"] == pytest.approx(day + min(ds), abs=0.1)
@@ -82,7 +86,7 @@ def test_kits_take_their_own_torso_range_from_the_paths():
 
 def test_crown_strap_mass_from_records_and_keepers():
     _need_paths()
-    a = F.crown_kit_straps("M")
+    a = F.crown_kit_straps("M", rear="lock")            # BL-031 (two locks); BL-068's one-lock mass: test_bl068_cprime
     import attach_diet as AD
     tabs = 3 * F.CROWN_TAB
     want = 2 * ((a["cut_mm"] + tabs) * F.WEB25 / 1000 + AD.TOGGLE_G + 2 * F._rec("ladder_lock_25mm_heavy", "mass_g")

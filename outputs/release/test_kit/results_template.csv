@@ -100,6 +100,17 @@ LL-H-13,LL-H,G2,BAG-CUT,cold-#3,cold: slip after 10 min at 44.0 kg (432 N),mm,ma
 LL-H-14,LL-H,G2,BAG-CUT,cold-#4,cold: slip after 10 min at 44.0 kg (432 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
 LL-H-15,LL-H,G2,BAG-CUT,cold-#5,cold: slip after 10 min at 44.0 kg (432 N),mm,max,5,,,,,LL-SLIP; LL-H-5MM
 LL-H-16,LL-H,G2,BAG-CUT,cold,freezer reading,C,record,,,,,,LL-SLIP
+RT-PULL-01,RT-PULL,G2,BAG-CUT,hold#1,"held 34.4 kg (338 N) 60 s, buckle closed and whole, no broken stitch",Y/N,yes,Y,,,,,RT-LOAD
+RT-PULL-02,RT-PULL,G2,BAG-CUT,hold#2,"held 34.4 kg (338 N) 60 s, buckle closed and whole, no broken stitch",Y/N,yes,Y,,,,,RT-LOAD
+RT-PULL-03,RT-PULL,G2,BAG-CUT,hold#3,"held 34.4 kg (338 N) 60 s, buckle closed and whole, no broken stitch",Y/N,yes,Y,,,,,RT-LOAD
+RT-PULL-04,RT-PULL,G2,BAG-CUT,hold#4,"held 34.4 kg (338 N) 60 s, buckle closed and whole, no broken stitch",Y/N,yes,Y,,,,,RT-LOAD
+RT-PULL-05,RT-PULL,G2,BAG-CUT,hold#5,"held 34.4 kg (338 N) 60 s, buckle closed and whole, no broken stitch",Y/N,yes,Y,,,,,RT-LOAD
+RT-PULL-06,RT-PULL,G2,BAG-CUT,slip#1,strap slip at the buckle (paint mark),mm,max,5,,,,,RT-LOAD
+RT-PULL-07,RT-PULL,G2,BAG-CUT,slip#2,strap slip at the buckle (paint mark),mm,max,5,,,,,RT-LOAD
+RT-PULL-08,RT-PULL,G2,BAG-CUT,slip#3,strap slip at the buckle (paint mark),mm,max,5,,,,,RT-LOAD
+RT-PULL-09,RT-PULL,G2,BAG-CUT,slip#4,strap slip at the buckle (paint mark),mm,max,5,,,,,RT-LOAD
+RT-PULL-10,RT-PULL,G2,BAG-CUT,slip#5,strap slip at the buckle (paint mark),mm,max,5,,,,,RT-LOAD
+RT-PULL-11,RT-PULL,G2,BAG-CUT,cold,freezer reading,C,record,,,,,,RT-LOAD
 PORT-1-01,PORT-1,G2,BAG-CUT,1,towel dry after 1 min hose,Y/N,yes,Y,,,,,PORT_FACING_W; PORT_TURN
 PORT-1-02,PORT-1,G2,BAG-CUT,1,lap gap at 10.2 kg (100 N),mm,max,2,,,,,PORT_FACING_W; PORT_TURN
 PORT-1-03,PORT-1,G2,BAG-CUT,1,gloved lock adjustments OK out of 5,count,min,5,,,,,GLOVE-T

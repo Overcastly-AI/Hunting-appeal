@@ -9,10 +9,10 @@ B-05 bottom (full S15 width) (challenge_ultra_200),bag_shell,base,10.22,pattern,
 B-02h D2 hinge band (z 650 to the collar seam) (ultragrid_210d_uhmwpe_ripstop),bag_shell,base,5.46,pattern,B-02h,,
 "SH-07 slider garage, top of the right blade (camo) (polyester_ht_630d_printable)",bag_shell,base,1.23,pattern,SH-07,,
 "SH-01b kick band, gusset (camo) (polyester_ht_630d_printable, x2)",bag_shell,base,8.78,pattern,SH-01b,,
-"B-06f roll-top collar, frame side (ULTRA) (challenge_ultra_200)",bag_shell,base,26.5,pattern,B-06f,,
-B-06 roll-top collar (nylon_ripstop_70d),bag_shell,base,34.06,pattern,B-06,,
-B-07 roll-top hem (ultragrid_210d_uhmwpe_ripstop),bag_shell,base,13.32,pattern,B-07,,
-"B-07s roll-top HDPE strip (hdpe_sheet, x2)",bag_shell,base,14.82,pattern,B-07s,,
+"B-06f roll-top collar, frame side (ULTRA) (challenge_ultra_200)",bag_shell,base,21.65,pattern,B-06f,,
+B-06 roll-top collar (nylon_ripstop_70d),bag_shell,base,30.71,pattern,B-06,,
+B-07 roll-top hem (ultragrid_210d_uhmwpe_ripstop),bag_shell,base,9.83,pattern,B-07,,
+"B-07s roll-top HDPE strip (hdpe_sheet, x2)",bag_shell,base,10.51,pattern,B-07s,,
 "D2 door zip #10 in the blade | door seam, 2 sliders",bag_shell,base,66.36,hardware,,,#10 coil zip
 door: 2 cord pulls (3 mm Dyneema + rubber sleeve),bag_shell,base,3.0,hardware,,,
 "4 hard-point loops: 25 mm webbing 0.08 m each, in the left gusset's corner seams at z 420 / 640 (scope pod)",bag_shell,base,5.76,webbing,,HPL,
@@ -24,7 +24,7 @@ E-5 pole quiver: 40 mm boot in FP-R's front pleat + 3 mm shock-cord grip loop an
 "add-on scope_pod: scope pod (team B glass pod), left gusset",bag_pockets,as_hunted,83.7,pattern,A1-a A1-b A1-d,,add-on (as hunted)
 "add-on meat_liner: meat liner (team D SWAP slab, wipeable silpoly / 70D, 330 x 110 x 560)",bag_pockets,meat_trip,61.7,pattern,MS-a MS-b MS-c MS-s,,add-on (meat trip)
 "add-on crown_lid: B-29 crown lid 5.0 L (350 x 210 x 85 mm, domed, camo corner caps, #5 coil zip)",pouch,as_hunted,47.8,pattern,B-29a B-29b B-29c B-29d B-29e B-29f B-29g,,+ #5 zip
-"add-on crown_straps: B-28 crown straps (2), kit M: 25 mm 1.007 m, heavy ladder lock at each end (B-25 toggle tab, hinge-band tab), 2 tail keepers each",straps_compression,as_hunted,79.53,webbing,,B-28 B-28t B-28s K-28,"+ locks, toggles"
+"add-on crown_straps: B-28 crown straps (2), kit M: 25 mm 0.987 m, heavy ladder lock at the front (hinge-band tab), rear end box-X'd on the B-25 toggle tab, 1 tail keeper each",straps_compression,as_hunted,62.11,webbing,,B-28 B-28t B-28s K-28,"+ locks, toggles"
 "F-01 rain fly, drafted for CORRIE F rev 3 (spine F-01a + sides F-01b x2, 1.116 m2 cut)",fly,as_hunted,50.21,pattern,F-01a F-01b,,drafted by BL-033
 F-02 fly base pocket (stays on the bag),fly,base,5.9,pattern,F-02,,
 "rain fly: fly elastic hem 2.44 m (drafted), #5 pocket zip + slider, tether",fly,as_hunted,14.11,webbing,,F-EL,"+ #5 zip, slider, tether"
@@ -41,7 +41,7 @@ US-web: US1/US2 25 mm webbing 1.10 m,straps_meat,base,19.8,webbing,,US US2,
 "B-24-web: B-24 float links, 38 mm webbing 2 x 435 mm",straps_meat,meat_trip,24.4,webbing,,B-24,
 "B-24-hooks: B-24 rated 38 mm hooks (2), same part as the bag hooks",straps_meat,meat_trip,28.0,hardware,,,
 B-24-thr: B-24 thread,straps_meat,meat_trip,2.0,hardware,,,thread
-"W-web: W1-W3 haul wraps, 25 mm coyote webbing 4.67 m",straps_compression,base,84.1,webbing,,W1 W2 W3,with A-2 and BL-031 rows
+"W-web: W1-W3 haul wraps, 25 mm coyote webbing 4.67 m",straps_compression,base,84.5,webbing,,W1 W2 W3,with A-2 and BL-031 rows
 W-hw: W1-W3 G-hooks (3) + ladder locks (3),straps_compression,base,24.0,hardware,,,
 A-2: A-2 wrap tails 250 -> 150 mm,straps_compression,base,-5.4,webbing,,W1 W2 W3,"tail trim, in the cut"
 keepers: 6 haul-wrap keeper loops in the gore seams,straps_compression,base,8.6,webbing,,K-W,
@@ -88,16 +88,16 @@ BL-022 rev 1: B-25 guy bridle on the top bar at x +/-52,attachment,base,7.43,web
 "BL-041: B-25 bridle 25 -> 38 mm webbing, sleeves x 26.5-64.5 (crown_tube_guy_loop.md, orchestrator 2026-11-13)",attachment,base,3.39,webbing,,B-25,crown_tube_guy_loop.md
 "BL-022 rev 1: B-26 tripod keeper (3 mm shock cord, right gusset)",straps_compression,base,1.21,webbing,,B-26,shock cord
 "BL-028 rev 2: B-27 guy ports (2), lapped slits in B-01 at x +/-52, z 595-745",attachment,base,2.84,pattern,B-27f,,slits drawn on B-01
-"BL-031: W1-W3 cut for carry (1340->750, 1412->822, 1618->987 mm)",straps_compression,base,-32.61,webbing,,W1 W2 W3,
+"BL-031: W1-W3 cut for carry (1350->760, 1426->836, 1618->987 mm)",straps_compression,base,-32.61,webbing,,W1 W2 W3,
 "BL-031: W1-W3 haul extenders (3, 2.22 m 25 mm + rated G-hook each; meat haul, float clamp, antler / cape lash)",straps_compression,meat_trip,63.96,webbing,,WX,+ rated G-hooks
 "BL-031: IM1-IM3 tail keepers (3, 25 mm elastic)",straps_meat,base,4.05,webbing,,K-IM,
-BL-031: roll-top clip straps cut 350 -> 565 mm (2),straps_compression,base,7.74,webbing,,RT,
+BL-031: roll-top clip straps cut 350 -> 635 mm (2),straps_compression,base,10.26,webbing,,RT,
 "BL-031: roll-top clip tail keepers (2, 25 mm elastic)",straps_compression,base,2.7,webbing,,K-RT,
 "BL-034 records: US1/US2 backstop tri-glides -> stainless 25 mm (2 x 11 g, 3.75 kN; orchestrator 2026-11-13: stops cradle slip)",straps_meat,base,0.0,hardware,,,hardware / elastic re-booked on the BL-034 records
 BL-034 records: lifter tri-glide keepers (2 x 2.6 g nylon),attachment,base,0.0,hardware,,,hardware / elastic re-booked on the BL-034 records
 "BL-034 records: guy tri-glides in the guy lock row (2 x 2.6 g, booked 2.6 g)",attachment,base,0.0,hardware,,,hardware / elastic re-booked on the BL-034 records
 BL-034 records: guy tail elastic keepers (2 x 1.35 g),attachment,base,1.5,hardware,,,hardware / elastic re-booked on the BL-034 records
-"BL-034 thread: base ops, 12.3 g from the op stitch lengths (booked 2.0 g)",attachment,base,10.26,hardware,,,thread from the op lengths (build_effort_rev3)
+"BL-034 thread: base ops, 12.3 g from the op stitch lengths (booked 2.0 g)",attachment,base,10.31,hardware,,,thread from the op lengths (build_effort_rev3)
 "BL-034 thread: as_hunted ops, 4.6 g from the op stitch lengths (booked 0.0 g)",attachment,as_hunted,4.63,hardware,,,thread from the op lengths (build_effort_rev3)
 "BL-034 thread: meat_trip ops, 1.9 g from the op stitch lengths (booked 2.0 g)",straps_meat,meat_trip,-0.06,hardware,,,thread from the op lengths (build_effort_rev3)
 "BL-034 records: F-02 fly pocket #5 slider (4.9 g, booked 3.0 g)",fly,as_hunted,1.9,hardware,,,hardware / elastic re-booked on the BL-034 records
@@ -115,3 +115,4 @@ BL-044: B-25 on the sized spine clamp and the printed spine (25.02 mm fore of th
 "BL-044: US cam anchors USA (2 x 202 mm, 25 mm; the US cam's sewn anchor on the right pin, BL-045; DECISION USA-LOOP)",straps_meat,base,7.27,webbing,,USA,BL-045 found-not-fixed; USA-LOOP
 "BL-044: W3 K-W keeper loops deleted (2 x 80 mm, DECISION KW-W3-OFF)",straps_compression,base,-2.88,removed,,,DECISION KW-W3-OFF
 "BL-050 B: US2 under-strap cut 550 -> 925 mm (US1 550 mm, DECISION US-CUT)",straps_meat,base,6.75,webbing,,US2,DECISION US-CUT (corrie_f.US_CUT_MM)
+"BL-068: K-W keeper loop(s) dropped (W2 L: the wrap runs through the hard-point loop, DECISION KW-HP-L; 1 x 80 mm)",straps_compression,base,-1.44,removed,,,DECISION KW-HP-L (W2 L through the hard-point loop)

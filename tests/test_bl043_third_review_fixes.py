@@ -145,8 +145,12 @@ def test_rt_origin_at_the_roll_end_and_clear_of_the_fold(pk):
 
 def test_rt_cut_comes_from_the_rerun_roll_model(pk):
     import strap_tails as ST
-    d = json.loads(P.ROLL_CLIPS_JSON.read_text())
-    mx = max(v for s in d["states"].values() for v in s["roll_clip_mm"].values())
+    states, _src = ST.roll_clip_states()            # BL-068 P2: the tapered roll's paths (cp_checks.json Cp)
+    mx = max(v for s in states.values() for v in s["roll_clip_mm"].values())
+    with F.cprime(roll_taper=False):                # the straight collar keeps BL-043's rerun roll model
+        d = json.loads(P.ROLL_CLIPS_JSON.read_text())
+        mx0 = max(v for s in d["states"].values() for v in s["roll_clip_mm"].values())
+        assert ST.roll_row()["paths_mm"]["max"] == pytest.approx(mx0)
     r = ST.roll_row()
     assert r["paths_mm"]["max"] == pytest.approx(mx)
     assert r["after"]["cut_mm"] == 5 * math.ceil((ST.ROLL_END_MM + mx + F.TAIL_GRIP_MM) / 5 - 1e-9)   # BL-048 m-2: up

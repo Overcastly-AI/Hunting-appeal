@@ -993,16 +993,32 @@ YOKE_OUTLINE = [(-108, -18), (-84, -46), (84, -46), (108, -18), (96, 34), (42, 5
 YOKE_AREA_MM2 = 0.5 * abs(sum(x0 * y1 - x1 * y0 for (x0, y0), (x1, y1) in zip(YOKE_OUTLINE, YOKE_OUTLINE[1:] + YOKE_OUTLINE[:1])))
 
 
-def haul_wraps(Hf, topo):
+# BL-068 P1 DECISION W-LEVEL (orchestrator 2026-11-24, C' looks call, design_language.md 10.4 item 1): W1 and W2 run
+# LEVEL across the bag, each on the same lash-point height both sides (W1 z 250 R + L, W2 z 420 R + L; the frame has
+# lash points at 80 / 250 / 420 on both sides). Until BL-068 they climbed right-low -> left-high (W1 80 -> 250,
+# W2 250 -> 420: the SPINE 'angled bands', research section 5); ``W_LEVEL = False`` reproduces that (tests, history).
+# Fallback named in the call (if the tripod's lower end were not held): level at z 80 / z 250 (``W_LEVEL_FALLBACK``).
+W_LEVEL = True
+W_LEVEL_Z = (250, 420)            # W1, W2 lash-point heights (both sides)
+W_LEVEL_FALLBACK_Z = (80, 250)
+W_HELIX = (("load_wing_lash_z80_R", "load_wing_lash_z250_L"), ("load_wing_lash_z250_R", "load_wing_lash_z420_L"))
+
+
+def haul_wraps(Hf, topo, level: bool | None = None, level_z=None):
     """3 frame-anchored wraps: compression in carry mode, meat sling in haul mode (one strap set).
-    W1/W2 climb from a low RIGHT anchor to a higher LEFT anchor, parallel in sense to the SPINE zip
-    (right hip -> left shoulder): angled bands instead of the dated horizontal strap stack (research §5)."""
+    BL-068 (``W_LEVEL``): W1 / W2 level, on the same lash-point height both sides. ``level=False``: the v3.1 helix,
+    W1/W2 climbing from a low RIGHT anchor to a higher LEFT anchor (right hip -> left shoulder, research section 5)."""
     hp = topo["hard_points"]
     cs19 = min(topo["crown_settings"], key=lambda c: abs(c["torso_in"] - 19.0))
     crown = [115.0, cs19["lifter_anchor_R"][1], cs19["crown_top_z"]]
-    spec = [("W1", "load_wing_lash_z80_R", hp["load_wing_lash_z80_R"], "load_wing_lash_z250_L", hp["load_wing_lash_z250_L"]),
-            ("W2", "load_wing_lash_z250_R", hp["load_wing_lash_z250_R"], "load_wing_lash_z420_L", hp["load_wing_lash_z420_L"]),
-            ("W3", "crown top bar R (moves with torso)", crown, "crown top bar L (moves with torso)", [-crown[0]] + crown[1:])]
+    level = W_LEVEL if level is None else level
+    if level:
+        zz = tuple(level_z or W_LEVEL_Z)
+        ab = [(f"load_wing_lash_z{z}_R", f"load_wing_lash_z{z}_L") for z in zz]
+    else:
+        ab = list(W_HELIX)
+    spec = [(f"W{i + 1}", r, hp[r], l_, hp[l_]) for i, (r, l_) in enumerate(ab)] + \
+           [("W3", "crown top bar R (moves with torso)", crown, "crown top bar L (moves with torso)", [-crown[0]] + crown[1:])]
     out = []
     for wid, nR, aR, nL, aL in spec:
         z = (aR[2] + aL[2]) / 2

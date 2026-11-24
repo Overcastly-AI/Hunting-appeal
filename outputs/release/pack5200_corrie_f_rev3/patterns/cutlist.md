@@ -59,28 +59,28 @@ Nested at the record's roll width. 1 bag = single-bag marker; 10 / 50 / 100 = th
 
 | Set | Material | Roll in (usable) | Pieces | 1-bag eff. | Yd / 1 bag | m / 1 bag | 10-bag eff. | Yd / 10 | Yd / 50 | Yd / 100 |
 |---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| primary | challenge_ultra_200 | 56 (55.0) | 10 | 58 % | 0.81 | 0.74 | 92 % | 5.3 | 26.6 | 53.2 |
-| primary | cordura_330d_nylon66 | 60 (57.0) | 14 | 62 % | 1.24 | 1.13 | 88 % | 9.0 | 45.0 | 90.1 |
+| primary | challenge_ultra_200 | 56 (55.0) | 10 | 55 % | 0.81 | 0.74 | 90 % | 5.1 | 25.4 | 50.8 |
+| primary | cordura_330d_nylon66 | 60 (57.0) | 14 | 60 % | 1.24 | 1.13 | 87 % | 8.9 | 44.5 | 88.9 |
 | primary | cordura_500d_nylon66 | 60 (57.0) | 3 | 21 % | 0.39 | 0.36 | 82 % | 1.0 | 5.2 | 10.4 |
-| primary | hdpe_sheet | 48 (48.0) | 4 | 62 % | 0.05 | 0.04 | 62 % | 0.5 | 2.4 | 4.8 |
+| primary | hdpe_sheet | 48 (48.0) | 4 | 51 % | 0.05 | 0.04 | 51 % | 0.5 | 2.4 | 4.8 |
 | primary | hypalon_coated_nylon | 54 (53.1) | 14 | 44 % | 0.08 | 0.07 | 44 % | 0.8 | 3.9 | 7.9 |
 | primary | polyester_ht_630d_printable | 59 (57.1) | 9 | 19 % | 0.81 | 0.74 | 47 % | 3.3 | 16.7 | 33.4 |
 | primary | power_mesh_nylon_spandex | 59 (57.1) | 2 | 38 % | 0.27 | 0.25 | 38 % | 2.8 | 13.9 | 27.7 |
-| primary | robic_100d_ripstop | 60 (58.0) | 8 | 70 % | 1.32 | 1.21 | 90 % | 10.5 | 52.4 | 104.8 |
+| primary | robic_100d_ripstop | 60 (58.0) | 8 | 68 % | 1.32 | 1.21 | 88 % | 10.5 | 52.4 | 104.8 |
 | primary | silicone_coated_poly_ripstop_40d | 60 (58.0) | 4 | 59 % | 1.88 | 1.71 | 59 % | 19.3 | 96.6 | 193.1 |
 | primary | tpu_coated_nylon_840d | 59 (57.1) | 9 | 29 % | 0.07 | 0.06 | 29 % | 0.7 | 3.4 | 6.8 |
-| **primary total** | | | | | **6.91** | | | **53.2** | **266.1** | **532.2** |
-| alternate | challenge_ultra_200 | 56 (55.0) | 13 | 69 % | 0.81 | 0.74 | 69 % | 8.4 | 41.8 | 83.7 |
+| **primary total** | | | | | **6.91** | | | **52.9** | **264.3** | **528.6** |
+| alternate | challenge_ultra_200 | 56 (55.0) | 13 | 65 % | 0.81 | 0.74 | 65 % | 8.4 | 41.8 | 83.7 |
 | alternate | cordura_330d_nylon66 | 60 (57.0) | 2 | 23 % | 0.19 | 0.18 | 23 % | 2.0 | 9.9 | 19.8 |
-| alternate | hdpe_sheet | 48 (48.0) | 4 | 62 % | 0.05 | 0.04 | 62 % | 0.5 | 2.4 | 4.8 |
+| alternate | hdpe_sheet | 48 (48.0) | 4 | 51 % | 0.05 | 0.04 | 51 % | 0.5 | 2.4 | 4.8 |
 | alternate | hypalon_coated_nylon | 54 (53.1) | 14 | 44 % | 0.08 | 0.07 | 44 % | 0.8 | 3.9 | 7.9 |
-| alternate | nylon_ripstop_70d | 58 (58.0) | 6 | 67 % | 1.23 | 1.13 | 67 % | 12.7 | 63.6 | 127.2 |
+| alternate | nylon_ripstop_70d | 58 (58.0) | 6 | 65 % | 1.23 | 1.13 | 65 % | 12.7 | 63.6 | 127.2 |
 | alternate | polyester_ht_630d_printable | 59 (57.1) | 9 | 19 % | 0.81 | 0.74 | 19 % | 8.3 | 41.6 | 83.1 |
 | alternate | power_mesh_nylon_spandex | 59 (57.1) | 2 | 38 % | 0.27 | 0.25 | 38 % | 2.8 | 13.9 | 27.7 |
 | alternate | robic_100d_ripstop | 60 (58.0) | 2 | 28 % | 0.32 | 0.30 | 28 % | 3.3 | 16.7 | 33.3 |
 | alternate | silicone_coated_poly_ripstop_40d | 60 (58.0) | 4 | 59 % | 1.88 | 1.71 | 59 % | 19.3 | 96.6 | 193.1 |
 | alternate | tpu_coated_nylon_840d | 59 (57.1) | 9 | 29 % | 0.07 | 0.06 | 29 % | 0.7 | 3.4 | 6.8 |
-| alternate | ultragrid_210d_uhmwpe_ripstop | 59 (58.1) | 12 | 67 % | 1.05 | 0.96 | 67 % | 10.8 | 54.2 | 108.5 |
+| alternate | ultragrid_210d_uhmwpe_ripstop | 59 (58.1) | 12 | 65 % | 1.05 | 0.96 | 65 % | 10.8 | 54.2 | 108.5 |
 | **alternate total** | | | | | **6.76** | | | **69.6** | **348.0** | **696.0** |
 
 10-bag markers are for the primary set only; the alternate column uses its 1-bag marker x N.
@@ -109,20 +109,20 @@ Knife: CW from the grain-arrow head; cut windows and slits first. Notches 6 mm d
 
 | ID | Use | Material | Length mm (in) | Qty | Kit | Source |
 |---|---|---|---:|---:|---|---|
-| B-28 | B-28 crown strap, kit S | poly_webbing_25mm | 1068 (42.1) | 2 | crown kit S (as hunted) | corrie_f.crown_kit_straps |
-| B-28 | B-28 crown strap, kit M | poly_webbing_25mm | 1007 (39.6) | 2 | crown kit M (as hunted) | corrie_f.crown_kit_straps |
-| B-28 | B-28 crown strap, kit L | poly_webbing_25mm | 948 (37.3) | 2 | crown kit L (as hunted) | corrie_f.crown_kit_straps |
-| B-28t | lock tab | poly_webbing_25mm | 60 (2.4) | 4 | as_hunted | corrie_f.CROWN_TAB, 2 per strap (front + rear lock) |
+| B-28 | B-28 crown strap, kit S | poly_webbing_25mm | 1048 (41.3) | 2 | crown kit S (as hunted) | corrie_f.crown_kit_straps |
+| B-28 | B-28 crown strap, kit M | poly_webbing_25mm | 987 (38.9) | 2 | crown kit M (as hunted) | corrie_f.crown_kit_straps |
+| B-28 | B-28 crown strap, kit L | poly_webbing_25mm | 928 (36.5) | 2 | crown kit L (as hunted) | corrie_f.crown_kit_straps |
+| B-28t | lock / end tab | poly_webbing_25mm | 60 (2.4) | 4 | as_hunted | corrie_f.CROWN_TAB, 2 per strap (front lock + rear end, BL-068 DECISION LID-LOCK) |
 | B-28s | toggle loop | poly_webbing_25mm | 60 (2.4) | 2 | as_hunted | corrie_f.CROWN_TAB, 1 per strap (the B-25 second fold) |
-| K-28 | B-28 tail keeper (25 mm elastic loop) | elastic_25mm | 90 (3.5) | 4 | as_hunted | corrie_f.crown_kit_straps keepers_per_strap x 2 |
-| W1 | haul wrap W1 (cut for carry) | poly_webbing_25mm | 750 (29.5) | 1 | base | strap_tails.wrap_rows |
-| W2 | haul wrap W2 (cut for carry) | poly_webbing_25mm | 822 (32.4) | 1 | base | strap_tails.wrap_rows |
+| K-28 | B-28 tail keeper (25 mm elastic loop) | elastic_25mm | 90 (3.5) | 2 | as_hunted | corrie_f.crown_kit_straps keepers_per_strap x 2 |
+| W1 | haul wrap W1 (cut for carry) | poly_webbing_25mm | 760 (29.9) | 1 | base | strap_tails.wrap_rows |
+| W2 | haul wrap W2 (cut for carry) | poly_webbing_25mm | 836 (32.9) | 1 | base | strap_tails.wrap_rows |
 | W3 | haul wrap W3, kit S | poly_webbing_25mm | 1034 (40.7) | 1 | crown kit S | strap_tails.wrap_rows |
 | W3 | haul wrap W3, kit M | poly_webbing_25mm | 987 (38.8) | 1 | crown kit M | strap_tails.wrap_rows |
 | W3 | haul wrap W3, kit L | poly_webbing_25mm | 935 (36.8) | 1 | crown kit L | strap_tails.wrap_rows |
 | WX | W haul extender (meat-trip kit) | poly_webbing_25mm | 740 (29.1) | 3 | meat_trip | strap_tails.wrap_rows haul extender_mm |
-| K-W | W gore keeper loop (4, in the aft corner seams: W1, W2) | poly_webbing_25mm | 80 (3.1) | 4 | base | ledger 'keepers: 6 haul-wrap keeper loops' (ASSUMPTION 80 mm cut) less the 2 W3 loops (BL-044 DECISION KW-W3-OFF row) |
-| RT | roll-top side clip strap | poly_webbing_25mm | 565 (22.2) | 2 | base | strap_tails.roll_row |
+| K-W | W gore keeper loop (3, in the aft corner seams: W1, W2; W2 L uses the z 420 hard-point loop, KW-HP-L) | poly_webbing_25mm | 80 (3.1) | 3 | base | ledger 'keepers: 6 haul-wrap keeper loops' (ASSUMPTION 80 mm cut) less the 2 W3 loops (BL-044 DECISION KW-W3-OFF row) |
+| RT | roll-top side clip strap | poly_webbing_25mm | 635 (25.0) | 2 | base | strap_tails.roll_row |
 | RTM | roll-clip buckle tab on the gusset (female half) | poly_webbing_25mm | 70 (2.8) | 2 | base | BL-040 DECISION RT-MATE (LLT tab rule); BL-041 RT-FWD placement (rt_layout) |
 | K-RT | roll clip tail keeper (25 mm elastic) | elastic_25mm | 90 (3.5) | 2 | base | BL-031 |
 | IM1 | internal meat strap IM1 | poly_webbing_25mm | 990 (39.0) | 1 | base | strap_tails.im_rows (unchanged) |
@@ -163,7 +163,7 @@ Purchase quantities with waste and prices: `../manufacturing/bom.csv`.
 | #5 coil zip, B-29 lid aft wall + slider + pull | coil_zipper_5 | 530.0 | 1 |
 | #5 coil zip, IMP-4 + slider + pull | coil_zipper_5 | 210.0 | 1 |
 | #5 coil zip, F-02 fly pocket | coil_zipper_5 | 230.0 | 1 |
-| heavy 25 mm ladder locks: B-28 (4) + guys (2) + W1-W3 (3) | ladder_lock_25mm_heavy |  | 9 |
+| heavy 25 mm ladder locks: B-28 (2) + guys (2) + W1-W3 (3) | ladder_lock_25mm_heavy |  | 7 |
 | POM toggles: B-28 rear (2) + guy loops (2) | pom_toggle |  | 4 |
 | rated 25 mm G-hooks: W1-W3 (3) + extenders (3) | g_hook_25mm_aluminium |  | 6 |
 | 25 mm side-release buckles (roll top): male on RT, female on RTM | buckle_side_release_25mm |  | 2 |
@@ -186,10 +186,10 @@ Purchase quantities with waste and prices: `../manufacturing/bom.csv`.
 | B-02h | D2 hinge band (z 650 to the collar seam) | cordura_330d_nylon66 |  | 1 |  | UP | 0.04139 | 0.04139 | 933.4 | 12 | 7.4 |
 | SH-07 | slider garage, top of the right blade (camo) | polyester_ht_630d_printable |  | 1 |  | UP | 0.00426 | 0.00426 | 264.0 | 8 | 1.2 |
 | SH-01b | kick band, gusset (camo) | polyester_ht_630d_printable |  | 2 |  | UP | 0.01514 | 0.03027 | 524.0 | 8 | 8.8 |
-| B-06f | roll-top collar, frame side (ULTRA) | challenge_ultra_200 |  | 1 |  | UP | 0.19922 | 0.19922 | 1805.6 | 12 | 26.5 |
-| B-06 | roll-top collar | robic_100d_ripstop |  | 1 |  | UP | 0.37026 | 0.37026 | 2465.0 | 12 | 46.3 |
-| B-07 | roll-top hem | cordura_330d_nylon66 |  | 1 |  | UP | 0.10093 | 0.10093 | 2335.4 | 12 | 18.2 |
-| B-07s | roll-top HDPE strip | hdpe_sheet |  | 2 |  | UP | 0.0097 | 0.01939 | 1009.7 | 0 |  |
+| B-06f | roll-top collar, frame side (ULTRA) | challenge_ultra_200 |  | 1 |  | UP | 0.16281 | 0.16281 | 1675.7 | 12 | 21.7 |
+| B-06 | roll-top collar | robic_100d_ripstop |  | 1 |  | UP | 0.33385 | 0.33385 | 2335.1 | 12 | 41.7 |
+| B-07 | roll-top hem | cordura_330d_nylon66 |  | 1 |  | UP | 0.07445 | 0.07445 | 1772.0 | 12 | 13.4 |
+| B-07s | roll-top HDPE strip | hdpe_sheet |  | 2 |  | UP | 0.00688 | 0.01376 | 728.0 | 0 |  |
 | B-13x | boxed fairlead swell, IM1-IM3 (with port) | challenge_ultra_200 |  | 6 |  | UP | 0.01352 | 0.08114 | 472.0 | 8 | 10.8 |
 | B-12 | strap-port patch | tpu_coated_nylon_840d |  | 6 |  | UP | 0.00239 | 0.01432 | 193.1 | 0 | 6.9 |
 | B-17 | IM3 bag-hook tab (trimmed) | hypalon_coated_nylon |  | 2 |  | UP | 0.00627 | 0.01254 | 309.6 | 0 | 12.5 |
@@ -225,4 +225,4 @@ Purchase quantities with waste and prices: `../manufacturing/bom.csv`.
 | MS-c | SWAP slab (sleep kit / meat liner) floor | robic_100d_ripstop |  | 1 |  | UP | 0.0436 | 0.0436 | 944.0 | 8 | 5.4 |
 | MS-s | SWAP slab (sleep kit / meat liner) roll stiffener (HDPE, x2 faces) | hdpe_sheet |  | 2 |  | UP | 0.0066 | 0.0132 | 700.0 | 0 |  |
 
-**Net piece area by material** (before marker waste): challenge_ultra_200: 0.6059 m² (6.522 ft²), cordura_330d_nylon66: 1.0151 m² (10.926 ft²), cordura_500d_nylon66: 0.1092 m² (1.175 ft²), polyester_ht_630d_printable: 0.2010 m² (2.163 ft²), robic_100d_ripstop: 1.2395 m² (13.341 ft²), hdpe_sheet: 0.0326 m² (0.351 ft²), tpu_coated_nylon_840d: 0.0251 m² (0.270 ft²), hypalon_coated_nylon: 0.0415 m² (0.446 ft²), power_mesh_nylon_spandex: 0.1358 m² (1.462 ft²), silicone_coated_poly_ripstop_40d: 1.4983 m² (16.127 ft²)
+**Net piece area by material** (before marker waste): challenge_ultra_200: 0.5695 m² (6.130 ft²), cordura_330d_nylon66: 0.9886 m² (10.641 ft²), cordura_500d_nylon66: 0.1092 m² (1.175 ft²), polyester_ht_630d_printable: 0.2010 m² (2.163 ft²), robic_100d_ripstop: 1.2031 m² (12.950 ft²), hdpe_sheet: 0.0270 m² (0.290 ft²), tpu_coated_nylon_840d: 0.0251 m² (0.270 ft²), hypalon_coated_nylon: 0.0415 m² (0.446 ft²), power_mesh_nylon_spandex: 0.1358 m² (1.462 ft²), silicone_coated_poly_ripstop_40d: 1.4983 m² (16.127 ft²)

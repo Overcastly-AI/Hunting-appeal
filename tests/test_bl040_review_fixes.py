@@ -159,7 +159,8 @@ def test_m3_collar_ring_gusset_has_one_notch_set(pk):
 
 def test_m6_qc14_primary_targets(pk):
     m = pk["mass"]
-    assert m["primary_delta_by_kit_g"]["base"] == pytest.approx(64.1, abs=1.0)   # the review's +64.1 g
+    # the review's +64.1 g; BL-068 P2 (tapered collar: less B-06 / B-06f / B-07 cloth on both fabric sets) -> +62.2 g
+    assert m["primary_delta_by_kit_g"]["base"] == pytest.approx(62.2, abs=1.0)
     assert m["primary_base_g"] == pytest.approx(m["base_g"] + m["primary_delta_by_kit_g"]["base"], abs=0.2)
     qc14 = next(q for q in pk["qc"] if q["id"] == "QC-14")
     assert f"{m['primary_base_g']:.0f} g" in qc14["pass"] and "PRIMARY" in qc14["check"]

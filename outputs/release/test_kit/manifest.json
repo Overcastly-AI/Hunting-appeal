@@ -1,6 +1,6 @@
 {
  "ticket": "BL-038",
- "date": "2026-11-21",
+ "date": "2026-11-24",
  "levels": {
   "record_ratio": 0.3,
   "flip_body": 0.2553,
@@ -70,7 +70,7 @@
  "lid_g": 47.8,
  "crown_cut": {
   "S": {
-   "cut_mm": 1068.1,
+   "cut_mm": 1048.1,
    "longest_mm": 928.1,
    "spare_mm": 40.0,
    "path_limit_mm": 968.1,
@@ -78,10 +78,13 @@
    "torso_in": [
     15.0,
     18.0
-   ]
+   ],
+   "ends_txt": "a 50 mm grip tail at the front lock and the 30 mm rear fold (BL-068, rear end box-X'd)",
+   "less_txt": "50 mm grip tail - 30 mm rear fold",
+   "lock_txt": "the front ladder lock"
   },
   "M": {
-   "cut_mm": 1006.9,
+   "cut_mm": 986.9,
    "longest_mm": 866.9,
    "spare_mm": 40.0,
    "path_limit_mm": 906.9,
@@ -89,10 +92,13 @@
    "torso_in": [
     17.5,
     20.5
-   ]
+   ],
+   "ends_txt": "a 50 mm grip tail at the front lock and the 30 mm rear fold (BL-068, rear end box-X'd)",
+   "less_txt": "50 mm grip tail - 30 mm rear fold",
+   "lock_txt": "the front ladder lock"
   },
   "L": {
-   "cut_mm": 948.0,
+   "cut_mm": 928.0,
    "longest_mm": 808.0,
    "spare_mm": 40.0,
    "path_limit_mm": 848.0,
@@ -100,14 +106,17 @@
    "torso_in": [
     20.0,
     23.0
-   ]
+   ],
+   "ends_txt": "a 50 mm grip tail at the front lock and the 30 mm rear fold (BL-068, rear end box-X'd)",
+   "less_txt": "50 mm grip tail - 30 mm rear fold",
+   "lock_txt": "the front ladder lock"
   }
  },
  "totals": {
-  "usd": 2819.27,
-  "hands_on_h": 172.5,
+  "usd": 2826.77,
+  "hands_on_h": 173.5,
   "machine_h": 928.0,
-  "results_rows": 498
+  "results_rows": 509
  },
  "files": [
   "README.md",
@@ -136,20 +145,20 @@
   "test_kit.pdf"
  ],
  "screens": [
-  "outputs/screens/20261121_BL059kit_1.png",
-  "outputs/screens/20261121_BL059kit_2.png",
-  "outputs/screens/20261121_BL059kit_3.png",
-  "outputs/screens/20261121_BL059kit_4.png",
-  "outputs/screens/20261121_BL059kit_5.png",
-  "outputs/screens/20261121_BL059kit_6.png"
+  "outputs/screens/20261124_BL068kit_1.png",
+  "outputs/screens/20261124_BL068kit_2.png",
+  "outputs/screens/20261124_BL068kit_3.png",
+  "outputs/screens/20261124_BL068kit_4.png",
+  "outputs/screens/20261124_BL068kit_5.png",
+  "outputs/screens/20261124_BL068kit_6.png"
  ],
  "checks": [
   "register rows for the ticket's gates: all present",
   "release_tests.csv ids without a register row (ALT-* are alternate-set checks): none",
   "active tests not in the order of work: none",
-  "first run per release: {'R1': 9, 'BAG-CUT': 10, 'BAG-BATCH': 24, 'BL037': 25, 'CARRY': 26, 'DATA': 27}",
+  "first run per release: {'R1': 9, 'BAG-CUT': 10, 'BAG-BATCH': 25, 'BL037': 26, 'CARRY': 27, 'DATA': 28}",
   "R1: CA-1 at 0.40 + MT-1c swing <= 117 % at <= 150 N (fallback >= 0.313)",
-  "shopping list 114 lines, USD 2,819.27; long lead: 6",
-  "results template 498 rows, 87 tests"
+  "shopping list 114 lines, USD 2,826.77; long lead: 6",
+  "results template 509 rows, 88 tests"
  ]
 }

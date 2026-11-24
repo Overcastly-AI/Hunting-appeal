@@ -194,7 +194,12 @@ def test_w3_has_no_bag_fixed_keeper(pk):
 def test_rt_strap_clear_of_the_rifle(pk):
     r = pk["ctx"].rs.geo["rt_rifle"]
     assert r["ok"] and r["min_flat_mm"] >= P.RT_CLEAR
-    assert r["standoff_min_mm"] is not None and r["standoff_min_mm"] > r["barrel_od"]
+    assert r["standoff_min_mm"] is not None
+    # BL-068 P2: on the tapered roll the strap lies 14 mm off the cloth at the muzzle tabs (was 27-40 mm), under the
+    # 25 mm barrel OD, so the stand-off no longer clears a barrel by itself; the strap still passes FORWARD of the barrel
+    # line in the flat at every boot position (min_flat_mm >= RT_CLEAR), so it never crosses it. FIT-R3 row 5 settles.
+    if r["standoff_min_mm"] <= r["barrel_od"]:
+        assert r["standoff_below_barrel_od"] and r["min_flat_mm"] >= 2 * P.RT_CLEAR
 
 
 def test_stale_hose_text_and_strip_end_marks(pk):
@@ -211,7 +216,7 @@ def test_stale_hose_text_and_strip_end_marks(pk):
 
 def test_test_kit_screens_are_named_for_this_ticket():
     import physical_test_kit as K
-    assert K.SHOT == "20261121_BL059kit"          # BL-059 regenerated the kit (was 20261121_BL057kit)
+    assert K.SHOT == "20261124_BL068kit"          # BL-068 regenerated the kit (was 20261121_BL059kit)
     assert "BL038_<n>" not in (K.__doc__ or "")
 
 

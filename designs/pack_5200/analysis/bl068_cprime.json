@@ -1,0 +1,841 @@
+{
+ "ticket": "BL-068",
+ "date": "2026-11-24",
+ "seams": {
+  "n": 30,
+  "mismatches_1mm": 0
+ },
+ "grain_missing": [],
+ "P1": {
+  "kw_z": {
+   "W1": {
+    "R": 250.0,
+    "L": 250.0
+   },
+   "W2": {
+    "R": 420.0,
+    "L": 420.0
+   }
+  },
+  "w_level": {
+   "level": {
+    "R": {
+     "W1_z": 250.0,
+     "W2_z": 420.0,
+     "bow_tab_bottom_to_W2_top_mm": 12.5,
+     "bow_tab_centre_to_W2_top_mm": 37.5,
+     "W1_band_to_IMP8_mm": 87.5,
+     "W1_crosses_FP": true,
+     "W2_crosses_FP": false,
+     "W2_to_hose_slot_mm": 105.5
+    },
+    "L": {
+     "W1_z": 250.0,
+     "W2_z": 420.0,
+     "bow_tab_bottom_to_W2_top_mm": 12.5,
+     "bow_tab_centre_to_W2_top_mm": 37.5,
+     "W1_band_to_IMP8_mm": 87.5,
+     "W1_crosses_FP": true,
+     "W2_crosses_FP": false,
+     "W2_to_hose_slot_mm": 105.5
+    },
+    "min_bow_gap_mm": 12.5
+   },
+   "helix": {
+    "R": {
+     "W1_z": 111.8,
+     "W2_z": 282.2,
+     "bow_tab_bottom_to_W2_top_mm": 150.3,
+     "bow_tab_centre_to_W2_top_mm": 175.3,
+     "W1_band_to_IMP8_mm": -50.7,
+     "W1_crosses_FP": false,
+     "W2_crosses_FP": true,
+     "W2_to_hose_slot_mm": 243.3
+    },
+    "L": {
+     "W1_z": 218.2,
+     "W2_z": 387.8,
+     "bow_tab_bottom_to_W2_top_mm": 44.7,
+     "bow_tab_centre_to_W2_top_mm": 69.7,
+     "W1_band_to_IMP8_mm": 55.7,
+     "W1_crosses_FP": true,
+     "W2_crosses_FP": false,
+     "W2_to_hose_slot_mm": 137.7
+    },
+    "min_bow_gap_mm": 44.7
+   },
+   "b17_on_frame_face": {
+    "W1": 122.5,
+    "W2": -47.5
+   },
+   "b17_note": "W2 at z 420 crosses the B-17 IM3 bag-hook tab (z 385-455, OUTSIDE on B-01) between its anchor and the bag corner on BOTH sides now: the L side did so before BL-068 (W2 L anchor z 420); the R side is its mirror. Webbing over a flat Hypalon tab, soft on soft",
+   "req_mm": 10.0,
+   "ok": true
+  },
+  "tripod": {
+   "placements": {
+    "cup": "feet in the IMP-8 cup (R gusset foot, z 35-150), legs up the R gusset under W1 / W2 (strap_arch F5 REC)",
+    "fp_top": "feet on FP-R's top edge (z 380), legs up the R gusset under the B-26 cord (corrie_f.TRIPOD_KEEPER_Z note)"
+   },
+   "rule": "TRIPOD-HOLD (ASSUMPTION)",
+   "rows": {
+    "level tripod_light cup": {
+     "length_mm": 371.0,
+     "feet_z": 35.0,
+     "top_z": 406.0,
+     "holds": [
+      [
+       "IMP-8 cup",
+       92.5
+      ],
+      [
+       "W1",
+       250.0
+      ]
+     ],
+     "holds_frac": [
+      [
+       "IMP-8 cup",
+       0.15
+      ],
+      [
+       "W1",
+       0.58
+      ]
+     ],
+     "lower_end_held": true,
+     "stable": true,
+     "top_free_mm": 156.0
+    },
+    "level tripod_light fp_top": {
+     "length_mm": 371.0,
+     "feet_z": 380.0,
+     "top_z": 751.0,
+     "holds": [
+      [
+       "W2",
+       420.0
+      ],
+      [
+       "B-26 cord",
+       600.0
+      ]
+     ],
+     "holds_frac": [
+      [
+       "W2",
+       0.11
+      ],
+      [
+       "B-26 cord",
+       0.59
+      ]
+     ],
+     "lower_end_held": true,
+     "stable": true,
+     "top_free_mm": 151.0
+    },
+    "level tripod_heavy cup": {
+     "length_mm": 470.0,
+     "feet_z": 35.0,
+     "top_z": 505.0,
+     "holds": [
+      [
+       "IMP-8 cup",
+       92.5
+      ],
+      [
+       "W1",
+       250.0
+      ],
+      [
+       "W2",
+       420.0
+      ]
+     ],
+     "holds_frac": [
+      [
+       "IMP-8 cup",
+       0.12
+      ],
+      [
+       "W1",
+       0.46
+      ],
+      [
+       "W2",
+       0.82
+      ]
+     ],
+     "lower_end_held": true,
+     "stable": true,
+     "top_free_mm": 85.0
+    },
+    "level tripod_heavy fp_top": {
+     "length_mm": 470.0,
+     "feet_z": 380.0,
+     "top_z": 850.0,
+     "holds": [
+      [
+       "W2",
+       420.0
+      ],
+      [
+       "B-26 cord",
+       600.0
+      ]
+     ],
+     "holds_frac": [
+      [
+       "W2",
+       0.09
+      ],
+      [
+       "B-26 cord",
+       0.47
+      ]
+     ],
+     "lower_end_held": true,
+     "stable": true,
+     "top_free_mm": 250.0
+    },
+    "helix tripod_light cup": {
+     "length_mm": 371.0,
+     "feet_z": 35.0,
+     "top_z": 406.0,
+     "holds": [
+      [
+       "IMP-8 cup",
+       92.5
+      ],
+      [
+       "W1",
+       111.8
+      ],
+      [
+       "W2",
+       282.2
+      ]
+     ],
+     "holds_frac": [
+      [
+       "IMP-8 cup",
+       0.15
+      ],
+      [
+       "W1",
+       0.21
+      ],
+      [
+       "W2",
+       0.67
+      ]
+     ],
+     "lower_end_held": true,
+     "stable": true,
+     "top_free_mm": 123.8
+    },
+    "helix tripod_light fp_top": {
+     "length_mm": 371.0,
+     "feet_z": 380.0,
+     "top_z": 751.0,
+     "holds": [
+      [
+       "B-26 cord",
+       600.0
+      ]
+     ],
+     "holds_frac": [
+      [
+       "B-26 cord",
+       0.59
+      ]
+     ],
+     "lower_end_held": false,
+     "stable": false,
+     "top_free_mm": 151.0
+    },
+    "helix tripod_heavy cup": {
+     "length_mm": 470.0,
+     "feet_z": 35.0,
+     "top_z": 505.0,
+     "holds": [
+      [
+       "IMP-8 cup",
+       92.5
+      ],
+      [
+       "W1",
+       111.8
+      ],
+      [
+       "W2",
+       282.2
+      ]
+     ],
+     "holds_frac": [
+      [
+       "IMP-8 cup",
+       0.12
+      ],
+      [
+       "W1",
+       0.16
+      ],
+      [
+       "W2",
+       0.53
+      ]
+     ],
+     "lower_end_held": true,
+     "stable": true,
+     "top_free_mm": 222.8
+    },
+    "helix tripod_heavy fp_top": {
+     "length_mm": 470.0,
+     "feet_z": 380.0,
+     "top_z": 850.0,
+     "holds": [
+      [
+       "B-26 cord",
+       600.0
+      ]
+     ],
+     "holds_frac": [
+      [
+       "B-26 cord",
+       0.47
+      ]
+     ],
+     "lower_end_held": false,
+     "stable": false,
+     "top_free_mm": 250.0
+    }
+   },
+   "lower_end_held_all": true,
+   "ok": true,
+   "fallback_needed": false
+  },
+  "w_cuts_mm": {
+   "before": {
+    "W1": 750.0,
+    "W2": 822.0,
+    "W3": 986.6
+   },
+   "after": {
+    "W1": 760.0,
+    "W2": 836.0,
+    "W3": 986.6
+   }
+  }
+ },
+ "P2": {
+  "rt_origin": {
+   "hem_mm": 768.0,
+   "frame_mm": 263.3,
+   "gusset_mm": 120.7,
+   "fold": "gusset centre (B-07s strip gap)",
+   "front_layer_mm": 384.0,
+   "bl041_front_layer_mm": 328.2,
+   "bl041_back_layer_mm": 439.8,
+   "bl041_tuck_each_mm": 55.8,
+   "mouth_mm": 768.0,
+   "mouth_flat_mm": 384.0,
+   "layers_at_roll_ends_mm": [
+    384.0,
+    384.0
+   ],
+   "collar_side_cut_mm": 70.4,
+   "b07s_mm": 344.0
+  },
+  "rt_on_b07": {
+   "L": {
+    "x_centre": 685.6,
+    "x0": 685.6,
+    "x1": 745.6,
+    "box_x": 725.6,
+    "box_to_gap_mm": 7.5
+   },
+   "R": {
+    "x_centre": 301.6,
+    "x0": 241.6,
+    "x1": 301.6,
+    "box_x": 261.6,
+    "box_to_gap_mm": 7.5
+   }
+  },
+  "rtm_raise": {
+   "release": {
+    "z_bar": 543.5,
+    "rt_cut_mm": 635.0
+   },
+   "raised": {
+    "60": {
+     "z_bar": 603.5,
+     "buckle_top_z": 638.5,
+     "w3_buckle_gap_min_mm": 0.0,
+     "w3_corners_failing": {
+      "S 15 in": 0.0
+     },
+     "other_min_gap_mm": 2.0,
+     "other_min_pair": "buckle envelope | B-26 cord (R)",
+     "rt_cut_mm": 575.0,
+     "ok": false
+    },
+    "66": {
+     "z_bar": 609.5,
+     "buckle_top_z": 644.5,
+     "w3_buckle_gap_min_mm": 0.0,
+     "w3_corners_failing": {
+      "S 15 in": 0.0,
+      "M 17.5 in": 7.7
+     },
+     "other_min_gap_mm": 8.0,
+     "other_min_pair": "buckle envelope | B-26 cord (R)",
+     "rt_cut_mm": 565.0,
+     "ok": false
+    },
+    "70": {
+     "z_bar": 613.5,
+     "buckle_top_z": 648.5,
+     "w3_buckle_gap_min_mm": 0.0,
+     "w3_corners_failing": {
+      "S 15 in": 0.0,
+      "M 17.5 in": 3.7
+     },
+     "other_min_gap_mm": 12.0,
+     "other_min_pair": "buckle envelope | B-26 cord (R)",
+     "rt_cut_mm": 565.0,
+     "ok": false
+    }
+   },
+   "any_ok": false,
+   "decision": "RTM tab stays: raised 60-70 mm its buckle body sits inside W3's sweep (DECISION W3-OVER); RT cut 635 mm by strap_tails' rule on the tapered roll"
+  },
+  "rt_cut_mm": {
+   "before": 565.0,
+   "after": 635.0
+  },
+  "rifle": {
+   "min_flat_mm": 27.1,
+   "standoff_min_mm": 14.2,
+   "standoff_below_barrel_od": true,
+   "ok": true
+  },
+  "rifle_before": {
+   "min_flat_mm": 27.1,
+   "standoff_min_mm": 27.3
+  },
+  "volume_loadout": {
+   "mouth_perimeter_mm": {
+    "before": 1049.8,
+    "after": 768.0
+   },
+   "mouth_flat_mm": 384.0,
+   "perimeter_change_pct": -26.8,
+   "collar_loss_L": 0.76,
+   "collar_loss_basis": "concepts_mass.collar_volume_loss_L (ASSUMPTION COLLAR-RULED), scaled to the mouth as cut",
+   "volume_headline_L": {
+    "before": 84.6,
+    "after": 83.84,
+    "basis": "corrie_f.sim_table fill closed volume, mean 15 / 19 / 23 in (coarse)"
+   },
+   "volume_rev3_fine_L": {
+    "15": {
+     "before": 82.7,
+     "after": 81.94
+    },
+    "19": {
+     "before": 83.5,
+     "after": 82.74
+    },
+    "23": {
+     "before": 83.4,
+     "after": 82.64
+    }
+   },
+   "band_L": [
+    82.0,
+    88.0
+   ],
+   "headline_in_band": true,
+   "fine_min_after_L": 81.94,
+   "fine_in_band": false,
+   "loadout_items_checked": 40,
+   "loadout_fails": [],
+   "largest_rigid_girth_mm": 520.0,
+   "largest_soft_girth_mm": 712.0,
+   "round_bundle_through_mouth": {
+    "diameter_mm": 244.5,
+    "litres_per_100mm": 4.69,
+    "meat_kg_per_100mm": 4.93,
+    "basis": "a soft game bag of boned meat as a round bundle of the mouth's perimeter; ASSUMPTION MEAT-DENS"
+   },
+   "meat_route": "boned meat in game bags goes in through the D2 door (z 110-650, the main access since BL-011) and is cinched by IM1-IM3; the top is the secondary route"
+  }
+ },
+ "P3": {
+  "b28": {
+   "before": {
+    "adjusters": 2,
+    "rear": "lock",
+    "cut_mm": 1006.9,
+    "tail_used_mm": 255.6,
+    "tail_worst_mm": 314.3,
+    "keepers_per_strap": 2,
+    "mass_g": 79.53
+   },
+   "after": {
+    "adjusters": 1,
+    "rear": "box",
+    "cut_mm": 986.9,
+    "tail_used_mm": 461.2,
+    "tail_worst_mm": 578.5,
+    "keepers_per_strap": 1,
+    "mass_g": 62.11
+   }
+  }
+ },
+ "ledger": {
+  "states": {
+   "before": {
+    "state": [
+     0,
+     0,
+     0
+    ],
+    "adopted_bag_g": {
+     "base": 1160.86,
+     "as_hunted": 1442.74,
+     "meat_trip": 1638.74
+    },
+    "iter1_g": {
+     "P_base": 4038.1,
+     "P_as_hunted": 4356.6,
+     "A_base": 3450.9,
+     "A_as_hunted": 3769.4
+    },
+    "rows": {
+     "B-06f roll-top collar, frame side (ULTRA) (challenge_ultra_200)": 26.5,
+     "B-06 roll-top collar (nylon_ripstop_70d)": 34.06,
+     "B-07 roll-top hem (ultragrid_210d_uhmwpe_ripstop)": 13.32,
+     "B-07s roll-top HDPE strip (hdpe_sheet, x2)": 14.82
+    },
+    "w_cuts_mm": {
+     "W1": 750.0,
+     "W2": 822.0,
+     "W3": 986.6
+    },
+    "rt_cut_mm": 565.0,
+    "b28": {
+     "adjusters": 2,
+     "rear": "lock",
+     "cut_mm": 1006.9,
+     "tail_used_mm": 255.6,
+     "tail_worst_mm": 314.3,
+     "keepers_per_strap": 2,
+     "mass_g": 79.53
+    }
+   },
+   "P1": {
+    "state": [
+     1,
+     0,
+     0
+    ],
+    "adopted_bag_g": {
+     "base": 1159.82,
+     "as_hunted": 1441.7,
+     "meat_trip": 1637.7
+    },
+    "iter1_g": {
+     "P_base": 4037.0,
+     "P_as_hunted": 4355.6,
+     "A_base": 3449.9,
+     "A_as_hunted": 3768.4
+    },
+    "rows": {
+     "B-06f roll-top collar, frame side (ULTRA) (challenge_ultra_200)": 26.5,
+     "B-06 roll-top collar (nylon_ripstop_70d)": 34.06,
+     "B-07 roll-top hem (ultragrid_210d_uhmwpe_ripstop)": 13.32,
+     "B-07s roll-top HDPE strip (hdpe_sheet, x2)": 14.82
+    },
+    "w_cuts_mm": {
+     "W1": 760.0,
+     "W2": 836.0,
+     "W3": 986.6
+    },
+    "rt_cut_mm": 565.0,
+    "b28": {
+     "adjusters": 2,
+     "rear": "lock",
+     "cut_mm": 1006.9,
+     "tail_used_mm": 255.6,
+     "tail_worst_mm": 314.3,
+     "keepers_per_strap": 2,
+     "mass_g": 79.53
+    }
+   },
+   "P2": {
+    "state": [
+     0,
+     1,
+     0
+    ],
+    "adopted_bag_g": {
+     "base": 1147.38,
+     "as_hunted": 1429.26,
+     "meat_trip": 1625.26
+    },
+    "iter1_g": {
+     "P_base": 4022.1,
+     "P_as_hunted": 4340.6,
+     "A_base": 3437.4,
+     "A_as_hunted": 3756.0
+    },
+    "rows": {
+     "B-06f roll-top collar, frame side (ULTRA) (challenge_ultra_200)": 21.65,
+     "B-06 roll-top collar (nylon_ripstop_70d)": 30.71,
+     "B-07 roll-top hem (ultragrid_210d_uhmwpe_ripstop)": 9.83,
+     "B-07s roll-top HDPE strip (hdpe_sheet, x2)": 10.51
+    },
+    "w_cuts_mm": {
+     "W1": 750.0,
+     "W2": 822.0,
+     "W3": 986.6
+    },
+    "rt_cut_mm": 635.0,
+    "b28": {
+     "adjusters": 2,
+     "rear": "lock",
+     "cut_mm": 1006.9,
+     "tail_used_mm": 255.6,
+     "tail_worst_mm": 314.3,
+     "keepers_per_strap": 2,
+     "mass_g": 79.53
+    }
+   },
+   "P3": {
+    "state": [
+     0,
+     0,
+     1
+    ],
+    "adopted_bag_g": {
+     "base": 1160.86,
+     "as_hunted": 1425.32,
+     "meat_trip": 1621.32
+    },
+    "iter1_g": {
+     "P_base": 4038.1,
+     "P_as_hunted": 4339.2,
+     "A_base": 3450.9,
+     "A_as_hunted": 3752.0
+    },
+    "rows": {
+     "B-06f roll-top collar, frame side (ULTRA) (challenge_ultra_200)": 26.5,
+     "B-06 roll-top collar (nylon_ripstop_70d)": 34.06,
+     "B-07 roll-top hem (ultragrid_210d_uhmwpe_ripstop)": 13.32,
+     "B-07s roll-top HDPE strip (hdpe_sheet, x2)": 14.82
+    },
+    "w_cuts_mm": {
+     "W1": 750.0,
+     "W2": 822.0,
+     "W3": 986.6
+    },
+    "rt_cut_mm": 565.0,
+    "b28": {
+     "adjusters": 1,
+     "rear": "box",
+     "cut_mm": 986.9,
+     "tail_used_mm": 461.2,
+     "tail_worst_mm": 578.5,
+     "keepers_per_strap": 1,
+     "mass_g": 62.11
+    }
+   },
+   "P1+P2": {
+    "state": [
+     1,
+     1,
+     0
+    ],
+    "adopted_bag_g": {
+     "base": 1146.34,
+     "as_hunted": 1428.22,
+     "meat_trip": 1624.22
+    },
+    "iter1_g": {
+     "P_base": 4021.1,
+     "P_as_hunted": 4339.6,
+     "A_base": 3436.4,
+     "A_as_hunted": 3754.9
+    },
+    "rows": {
+     "B-06f roll-top collar, frame side (ULTRA) (challenge_ultra_200)": 21.65,
+     "B-06 roll-top collar (nylon_ripstop_70d)": 30.71,
+     "B-07 roll-top hem (ultragrid_210d_uhmwpe_ripstop)": 9.83,
+     "B-07s roll-top HDPE strip (hdpe_sheet, x2)": 10.51
+    },
+    "w_cuts_mm": {
+     "W1": 760.0,
+     "W2": 836.0,
+     "W3": 986.6
+    },
+    "rt_cut_mm": 635.0,
+    "b28": {
+     "adjusters": 2,
+     "rear": "lock",
+     "cut_mm": 1006.9,
+     "tail_used_mm": 255.6,
+     "tail_worst_mm": 314.3,
+     "keepers_per_strap": 2,
+     "mass_g": 79.53
+    }
+   },
+   "after": {
+    "state": [
+     1,
+     1,
+     1
+    ],
+    "adopted_bag_g": {
+     "base": 1146.34,
+     "as_hunted": 1410.8,
+     "meat_trip": 1606.8
+    },
+    "iter1_g": {
+     "P_base": 4021.1,
+     "P_as_hunted": 4322.2,
+     "A_base": 3436.4,
+     "A_as_hunted": 3737.5
+    },
+    "rows": {
+     "B-06f roll-top collar, frame side (ULTRA) (challenge_ultra_200)": 21.65,
+     "B-06 roll-top collar (nylon_ripstop_70d)": 30.71,
+     "B-07 roll-top hem (ultragrid_210d_uhmwpe_ripstop)": 9.83,
+     "B-07s roll-top HDPE strip (hdpe_sheet, x2)": 10.51
+    },
+    "w_cuts_mm": {
+     "W1": 760.0,
+     "W2": 836.0,
+     "W3": 986.6
+    },
+    "rt_cut_mm": 635.0,
+    "b28": {
+     "adjusters": 1,
+     "rear": "box",
+     "cut_mm": 986.9,
+     "tail_used_mm": 461.2,
+     "tail_worst_mm": 578.5,
+     "keepers_per_strap": 1,
+     "mass_g": 62.11
+    }
+   }
+  },
+  "alone": {
+   "P1": {
+    "adopted_bag_g": {
+     "base": -1.0,
+     "as_hunted": -1.0,
+     "meat_trip": -1.0
+    },
+    "iter1_g": {
+     "P_base": -1.1,
+     "P_as_hunted": -1.0,
+     "A_base": -1.0,
+     "A_as_hunted": -1.0
+    }
+   },
+   "P2": {
+    "adopted_bag_g": {
+     "base": -13.5,
+     "as_hunted": -13.5,
+     "meat_trip": -13.5
+    },
+    "iter1_g": {
+     "P_base": -16.0,
+     "P_as_hunted": -16.0,
+     "A_base": -13.5,
+     "A_as_hunted": -13.4
+    }
+   },
+   "P3": {
+    "adopted_bag_g": {
+     "base": 0.0,
+     "as_hunted": -17.4,
+     "meat_trip": -17.4
+    },
+    "iter1_g": {
+     "P_base": 0.0,
+     "P_as_hunted": -17.4,
+     "A_base": 0.0,
+     "A_as_hunted": -17.4
+    }
+   }
+  },
+  "in_sequence": {
+   "P1": {
+    "adopted_bag_g": {
+     "base": -1.0,
+     "as_hunted": -1.0,
+     "meat_trip": -1.0
+    },
+    "iter1_g": {
+     "P_base": -1.1,
+     "P_as_hunted": -1.0,
+     "A_base": -1.0,
+     "A_as_hunted": -1.0
+    }
+   },
+   "P2": {
+    "adopted_bag_g": {
+     "base": -13.5,
+     "as_hunted": -13.5,
+     "meat_trip": -13.5
+    },
+    "iter1_g": {
+     "P_base": -15.9,
+     "P_as_hunted": -16.0,
+     "A_base": -13.5,
+     "A_as_hunted": -13.5
+    }
+   },
+   "P3": {
+    "adopted_bag_g": {
+     "base": 0.0,
+     "as_hunted": -17.4,
+     "meat_trip": -17.4
+    },
+    "iter1_g": {
+     "P_base": 0.0,
+     "P_as_hunted": -17.4,
+     "A_base": 0.0,
+     "A_as_hunted": -17.4
+    }
+   }
+  },
+  "total": {
+   "adopted_bag_g": {
+    "base": -14.5,
+    "as_hunted": -31.9,
+    "meat_trip": -31.9
+   },
+   "iter1_g": {
+    "P_base": -17.0,
+    "P_as_hunted": -34.4,
+    "A_base": -14.5,
+    "A_as_hunted": -31.9
+   }
+  },
+  "basis": "adopted_bag_g: corrie_f.parts (rev 3, D2, belt M) summed per configuration = the ledger's adopted bag rows (huntkit.mass.ledger.adopted_bag_rows); iter1_g: iter1_weight.total (roll-up scenarios P proven now / A after tests, belt M, crown kit M), the BL-062 / BL-067 basis"
+ },
+ "lash_loads_json": "designs/pack_5200/analysis/bl068_lash_loads.json",
+ "screens": [
+  "outputs/screens/20261124_bl068_1.png",
+  "outputs/screens/20261124_bl068_2.png",
+  "outputs/screens/20261124_bl068_3.png",
+  "outputs/screens/20261124_bl068_4.png",
+  "outputs/screens/20261124_bl068_5.png"
+ ]
+}

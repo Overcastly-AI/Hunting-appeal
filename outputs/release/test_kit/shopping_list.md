@@ -1,6 +1,6 @@
 # Shopping list (BL-038)
 
-Total **USD 2,819.27**. Prices from material records, cited shop pages (links), or marked ASSUMPTION (check at purchase). Cited or record-priced: USD 1,037.04; ASSUMPTION: USD 1,782.23. Prices checked 2026-11-10 (TEST_PLAN §4) and 2026-11-13.
+Total **USD 2,826.77**. Prices from material records, cited shop pages (links), or marked ASSUMPTION (check at purchase). Cited or record-priced: USD 1,044.54; ASSUMPTION: USD 1,782.23. Prices checked 2026-11-10 (TEST_PLAN §4) and 2026-11-13.
 
 **Order these first (long lead):**
 
@@ -17,8 +17,8 @@ Total **USD 2,819.27**. Prices from material records, cited shop pages (links), 
 | Kit D measuring | 150.46 |
 | Kit B lever rig | 461.58 |
 | Kit C frame stand | 227.39 |
-| Specimens and lab | 1,711.16 |
-| **total** | **2,819.27** |
+| Specimens and lab | 1,718.66 |
+| **total** | **2,826.77** |
 
 Not in this list: the bag, harness and belt materials themselves (pack BOM, `outputs/release/pack5200_corrie_f_rev3/manufacturing/bom.csv`). Swatches are cut from that fabric order, so buy the bag fabric with the kit. You already own (kit E): washing machine, winter gloves, freezer, hose, tape, paint pen, phone.
 
@@ -114,8 +114,8 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | #10 coil zipper chain | 0.4 m | 1.60 | Ripstop by the Roll; record coil_zipper_10 | SL-1 |
 | Dyneema cord 3 mm (slider pulls) | 1 m | 0.90 | Ripstop by the Roll; record dyneema_cord_3mm | SL-1 |
 | printed label (one, heat transfer) | 1 each | 5.00 | label printer; ASSUMPTION (shop price, check at purchase) | SL-1 |
-| side-release buckle 25 mm | 2 each | 1.60 | Strapworks; record buckle_side_release_25mm | ST-1 |
-| poly webbing 25 mm | 32 m | 22.40 | Strapworks; record poly_webbing_25mm | MT-1, MT-3 (dry/wet/cold), US-BS, LL-H (dry/wet/cold), SEW-F, HB-7, PT-5, PT-6, PORT-1, GT-1 |
+| side-release buckle 25 mm | 7 each | 5.60 | Strapworks; record buckle_side_release_25mm | ST-1 (2), RT-PULL (5) |
+| poly webbing 25 mm | 37 m | 25.90 | Strapworks; record poly_webbing_25mm | MT-1, MT-3 (dry/wet/cold), US-BS, LL-H (dry/wet/cold), SEW-F, HB-7, PT-5, PT-6, PORT-1, GT-1, RT-PULL |
 | poly webbing 38 mm, PLY 1.2-1.6 mm (1.5 nominal), break >= 6 kN: BUY A SAMPLE FIRST and caliper one ply at 5 places, reject > 1.6 mm (heavyweight / mil-spec rolls are 1.8-2.3 mm); fallback in the record notes | 3 m | 3.00 | Strapworks / extremtextil (see record); record poly_webbing_38mm (BL-048 M-B purchase spec) | PT-6 links, WP-3, HE-FIT, PT-3, SEW-F |
 | XLPE L200 foam 5 + 6 mm | 0.35 m2 | 5.25 | Foam By Mail; record xlpe_foam_l200 | CS-1 (0.25), HS-1 (0.1) |
 | EVA 45C foam 5 mm | 0.1 m2 | 2.50 | Seattle Fabrics; record eva_foam_45c | HS-1 |
