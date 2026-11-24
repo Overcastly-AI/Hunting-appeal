@@ -141,6 +141,17 @@ def protected(solid: np.ndarray) -> np.ndarray:
     return m & solid
 
 
+def hard_points(solid: np.ndarray, dil: int = 1) -> np.ndarray:
+    """Load pads and the fairlead field only (no lug-block or foot rule), dilated ``dil`` voxels: what a bare carbon
+    span must keep as a printed clip."""
+    from .bag_attach import attachment_field
+    from .spreader import SCALE
+    c = _base()
+    dom, cen = c["dom"], c["cen"]
+    m = np.asarray(dom.masks["pads"], bool) | (attachment_field(cen, SCALE) <= 0.0)
+    return _dilate(m, dil) & solid if dil else m & solid
+
+
 def tube_axis_r(cen: np.ndarray) -> np.ndarray:
     return np.hypot(np.abs(cen[:, 0]) - TUBE["x"], cen[:, 1] - TUBE["y"])
 
@@ -289,10 +300,11 @@ def build(name: str) -> dict:
             in_sleeve |= (cen[:, 2] >= z0) & (cen[:, 2] <= z1)
         solid = s0.copy()
         # bare spans: the printed stay goes, except the pads (spreader-clip seats, fairleads) and the bag hard points
-        bare = col & ~in_sleeve & ~protected(s0)
+        hp = hard_points(s0)
+        bare = col & ~in_sleeve & ~hp
         solid &= ~bare
-        # in the sleeves the printed wall is cut to SLEEVE_R_OUT only where it is plain stay (inside the column)
-        solid &= ~(col & in_sleeve & (r >= SLEEVE_R_OUT) & ~protected(s0) & (cen[:, 2] > 165.0))
+        # in the sleeves above the lower node the printed wall is cut to SLEEVE_R_OUT where it is plain stay
+        solid &= ~(col & in_sleeve & (r >= SLEEVE_R_OUT) & ~hp & ~protected(s0) & (cen[:, 2] > 195.0))
         # the parts are separate: one empty layer through the stay column at each part boundary
         for zg in PART_GAPS:
             solid &= ~(col & (np.abs(cen[:, 2] - zg) < H / 2 + 1e-6) & (r >= TUBE["od"] / 2))
@@ -452,7 +464,7 @@ def tube_checks(f: dict, cf_loc: np.ndarray, meta: list) -> dict:
     return {k: {"margin": round(v[0], 3), "set": v[1]} for k, v in worst.items()}
 
 
-TUBE_CUTS = (40.0, 100.0, 186.0, 200.0, 250.0, 306.0, 354.0, 436.0, 476.0, 520.0)
+TUBE_CUTS = (100.0, 192.0, 250.0, 306.0, 354.0, 436.0, 468.0, 520.0)   # bare-tube cuts between the sleeves
 
 
 def tube_resultants(f: dict, cf_loc: np.ndarray, meta: list) -> dict:
@@ -475,6 +487,72 @@ def tube_resultants(f: dict, cf_loc: np.ndarray, meta: list) -> dict:
                 rows.append([float(s[:, 2].sum() * a), float((s[:, 2] * dy).sum() * a), float((s[:, 2] * dx).sum() * a),
                              float(s[:, 5].sum() * a), float(s[:, 4].sum() * a)])
             out[f"{sd}|{zc:g}"] = np.array(rows)
+    return out
+
+
+# sleeve -> (cut below, cut above) on the bare tube; None = the tube's free end (resultant 0)
+SLEEVE_CUTS = {"P1 lower node": (None, 192.0), "P2 lower-branch root": (192.0, 250.0),
+               "P2 mid-bar knuckle": (306.0, 354.0), "P2 upper-branch root": (436.0, 468.0),
+               "P3 top node": (468.0, None)}
+BEARING_PAHT = 47.0 * 0.8           # MPa: Z tensile strength x 0.8 as a bearing floor (ASSUMPTION SLEEVE-BEARING)
+
+
+def bonds(name: str, bases=BASES) -> dict:
+    """Tube-to-sleeve joints of a carbon-stay concept, from the tube resultants of every set: transferred axial
+    force dN and moment dM over each sleeve (difference of the bare-tube cuts that bound it).
+    - shear: dN / (2 pi r) line load over the sleeve length, Volkersen peak with the PAHT-CF sleeve (3 mm) as the soft
+      adherend; average >= 1 at the factored load, peak >= 1 at limit (factored / case factor), fatigue: 1.6 g
+      static-carry peak <= 0.3 x allowable. Allowable 5.0 x 0.8 = 4.0 MPa (ASSUMPTION BOND-PA);
+    - moment: by bearing of the tube on the sleeve over its length, p = 6 dM / (d L^2) against BEARING_PAHT;
+    - fail-safe: one Ti M4 cross bolt in P1 and P3 carries dN alone at factor 1.0 (ultimate), bearing in the
+      tube's two walls against TUBE_BEARING_MPA (ASSUMPTION TUBE-BEARING)."""
+    from huntkit.fea.joints import volkersen_factor
+    r = TUBE["od"] / 2
+    t = (TUBE["od"] - TUBE["id"]) / 2
+    allow = BOND_PA_MPA * BOND_HOT_WET
+    E1t, E2t = TUBE["E"] * t, E_PAHT * 3.0
+    om = math.sqrt(MMA_G_MPA / MMA_T * (1 / E1t + 1 / E2t))
+    out = {}
+    for sl, (lo, hi) in SLEEVE_CUTS.items():
+        z0, z1 = SLEEVES[sl]
+        L = z1 - max(z0, TUBE["z0"])
+        k = volkersen_factor(om * L, min(E1t, E2t) / max(E1t, E2t))
+        w = {"avg": (9e9, ""), "peak": (9e9, ""), "fatigue": (9e9, ""), "bearing": (9e9, ""), "pin": (9e9, "")}
+        for b in bases:
+            p = OUT / f"tube_{name}_{b}.npz"
+            if not p.exists():
+                continue
+            z = np.load(p)
+            meta = [json.loads(m) for m in z["meta"]]
+            for sd in ("R", "L"):
+                A = z[f"{sd}_{lo:g}"] if lo is not None else 0.0
+                B = z[f"{sd}_{hi:g}"] if hi is not None else 0.0
+                d = np.asarray(B) - np.asarray(A) if not (np.isscalar(A) and np.isscalar(B)) else None
+                if d is None:
+                    continue
+                if d.ndim == 1:
+                    d = d[None, :]
+                for i, mt in enumerate(meta):
+                    dN = abs(float(d[i, 0]))
+                    dM = float(np.hypot(d[i, 1], d[i, 2]))
+                    tau = dN / (2 * math.pi * r) / L
+                    pb = 6 * dM / (TUBE["od"] * L ** 2)
+                    tag = f"{b}|{sd}|{mt['set']}"
+                    for key, val in (("avg", allow / max(tau, 1e-9)),
+                                     ("peak", allow / max(k * tau / mt["factor"], 1e-9)),
+                                     ("bearing", BEARING_PAHT / max(pb, 1e-9))):
+                        if val < w[key][0]:
+                            w[key] = (val, tag)
+                    if mt["case"] == "static_carry":
+                        v = 0.3 * allow / max(k * tau * 1.6 / mt["factor"], 1e-9)
+                        if v < w["fatigue"][0]:
+                            w["fatigue"] = (v, tag)
+                    if sl in ("P1 lower node", "P3 top node"):
+                        v = TUBE_BEARING_MPA / max(dN / mt["factor"] / (2 * CROSS_PIN_D * t), 1e-9)
+                        if v < w["pin"][0]:
+                            w["pin"] = (v, tag)
+        out[sl] = {"L_mm": L, "volkersen_k": round(k, 2),
+                   **{kk: {"margin": round(v[0], 2) if v[0] < 9e8 else None, "where": v[1]} for kk, v in w.items()}}
     return out
 
 

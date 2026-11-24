@@ -117,8 +117,25 @@ def compute(log=print) -> dict:
     return out
 
 
+def stl_md5() -> str:
+    """md5 of the assembled print the submodel reads (h1_rev5._mesh default)."""
+    import hashlib
+    return hashlib.md5((ROOT / "designs/pack_5200/print/frame_h1/h1_assembled.stl").read_bytes()).hexdigest()
+
+
+def republish(res: dict, old: dict | None) -> dict:
+    """BL-061: the record locked to the STL md5 it was run on (as gauge_lines_bl060.json), with the lines it replaces."""
+    out = {**res, "ticket": "BL-061 (re-run of BL-055 Part B on the current print)", "stl_md5": stl_md5()}
+    if old:
+        out["was"] = {"ticket": old.get("ticket"), "stl_md5": old.get("stl_md5"),
+                      "lines": {k: [s["pass_if_abs_microstrain_at_most"] for s in v["steps"]]
+                                for k, v in old.get("tests", {}).items()}}
+    return out
+
+
 def main(argv=None) -> int:
-    res = compute()
+    old = json.loads(OUT.read_text()) if OUT.exists() else None
+    res = republish(compute(), old)
     OUT.write_text(json.dumps(res, indent=1, default=float))
     print(f"wrote {OUT}")
     return 0

@@ -874,8 +874,23 @@ def rev5() -> dict:
 
 
 def g2() -> dict:
-    """BL-055: the second US1 gauge (outer cheek), us1_outer_gauge.py."""
+    """The second US1 gauge (outer cheek), us1_outer_gauge.py: BL-055's lines, re-run by BL-061 on the current print
+    and md5-locked (same lock as gauge_lines_bl060.json). Use g2_locked() to know whether the lines are on this print."""
     return json.loads(G2_JSON.read_text())
+
+
+def g2_locked() -> bool:
+    """True when us1_outer_gauge.json was run on the assembled print now in the folder (its stl_md5 matches)."""
+    return g2().get("stl_md5") == stl_md5()
+
+
+def g2_src_txt() -> str:
+    """Where the US1 OUTER CHEEK lines come from (BL-061 lock, else the ASSUMPTION)."""
+    if g2_locked():
+        return ("designs/pack_5200/tests_physical/us1_outer_gauge.json (BL-061: the second US1 gauge re-run by "
+                "us1_outer_gauge.py on the current print, STL md5-locked)")
+    return ("designs/pack_5200/tests_physical/us1_outer_gauge.json; ASSUMPTION GAUGE-GEOM: the US1 OUTER CHEEK lines "
+            "are from an older print; python designs/pack_5200/us1_outer_gauge.py on the current STL settles it")
 
 
 def ncyc(n: float) -> str:
@@ -1732,8 +1747,7 @@ def mt1cr_row() -> dict:
                 defined_in="designs/pack_5200/analysis/h1_rev5.md 1, 2, 4, 9 (BL-053: 3D cradle, lugs to a 40 mm belly, "
                            "gauge pass values; ASSUMPTIONS QUARTER-CONTACT, QUARTER-WIDTH, BELLY-40, SUB-BC); "
                            "h1_rev5.json gauges.tests 'MT-1cr|us1' / 'MT-1cr|us2'"
-                           + gauge_src_txt("the US1 ROOT and US2 ROOT lines") + "; "
-                           "designs/pack_5200/tests_physical/us1_outer_gauge.json (BL-055, the second US1 gauge)",
+                           + gauge_src_txt("the US1 ROOT and US2 ROOT lines") + "; " + g2_src_txt(),
                 what_it_proves=(f"the cradle a strong user can cam on a {kg:.0f} kg load stays at or above the {bf:.0f} mm "
                                 f"belly the lugs are sized to (strength / fatigue at 40 mm: US1 {b40['us1']['strength']} / "
                                 f"{b40['us1']['fatigue']}, US2 {b40['us2']['strength']} / {b40['us2']['fatigue']}, h1_rev5.json "
@@ -1778,6 +1792,14 @@ def mt1cr_row() -> dict:
 
 
 T1_LB = {"(a)": 150.0, "(b)": 300.0, "(c)": 225.0}
+# BL-061 side task (orchestrator call 2026-11-24): the T1 US1 ROOT gauge is RECORD ONLY. Its line (36 / 71 microstrain
+# at 150 / 300 lb, gauge_lines_bl060.json T1|us1) sits at a near-null point of the bag-on load and is inside the zero
+# drift of a PAHT-CF half-bridge (BL-060 "Found, not fixed": the +9 / +18 microstrain shift is about that drift), so a
+# reading over it says nothing about the frame. It is read and logged; it is not a pass / fail line.
+T1_RECORD_ONLY = ("US1 ROOT",)
+T1_RECORD_ONLY_WHY = ("US1 ROOT is RECORD ONLY (BL-061): its line sits at a near-null point of the bag-on load and is "
+                      "inside the zero drift of a PAHT-CF half-bridge (BL-060), so it is read and logged, never a pass / "
+                      "fail or HOLD")
 
 
 def t1_gauge_lines() -> dict:
@@ -1799,12 +1821,14 @@ def t1_patch() -> dict:
     are the register's own (T1_STEPS / T1_PASS), so the patch is idempotent."""
     gl = t1_gauge_lines()
     txt = "; ".join(f"{g_} " + ", ".join(f"{c} {T1_LB[c]:.0f} lb: about {v[c][0]:+.0f}, at most {v[c][1]:.0f}"
-                                        for c in T1_LB) for g_, v in gl.items())
+                                        for c in T1_LB) for g_, v in gl.items() if g_ not in T1_RECORD_ONLY)
+    rec = "; ".join(f"{g_} " + ", ".join(f"{c} {T1_LB[c]:.0f} lb: about {v[c][0]:+.0f} (model line {v[c][1]:.0f})"
+                                        for c in T1_LB) for g_, v in gl.items() if g_ in T1_RECORD_ONLY)
+    txt += ". " + T1_RECORD_ONLY_WHY + ": " + rec
     return dict(
         defined_in="designs/pack_5200/analysis/load_standard.md §5.3; designs/pack_5200/analysis/frame_h1.md §8; "
                    "designs/pack_5200/analysis/weight_c_structural.md §7; designs/pack_5200/analysis/h1_rev5.md 4 "
-                   "(BL-053 gauge pass values, GAUGE-LOCAL); designs/pack_5200/tests_physical/us1_outer_gauge.json "
-                   "(BL-055: second US1 gauge)"
+                   "(BL-053 gauge pass values, GAUGE-LOCAL); " + g2_src_txt()
                    + (gauge_src_txt("the US1 ROOT and US2 ROOT lines") + "; supersedes "
                       "designs/pack_5200/tests_physical/t1_us2_gauge_bl059.json (BL-059, US2 ROOT only)"
                       if gauges60_record() else
@@ -2321,6 +2345,10 @@ def measures(lv: dict, lid_g: float, cut: dict) -> dict:
             (f"US1 strap {when}", "no lip colour on the US1 strap (US1 modelled clear of its own lip)", y, "yes", "Y", "WRAP-TENSION"))],
         "T1": [(f"{c} {g_}", f"{g_} gauge at {T1_LB[c]:.0f} lb (expected about {v[c][0]:+.0f}; over the line = HOLD)",
                 "microstrain", "band", f"-{v[c][1]:.0f}..{v[c][1]:.0f}", "GAUGE-LOCAL; SUB-BC")
+               if g_ not in T1_RECORD_ONLY else
+               (f"{c} {g_}", f"{g_} gauge at {T1_LB[c]:.0f} lb (expected about {v[c][0]:+.0f}, model line "
+                f"{v[c][1]:.0f}; RECORD ONLY, BL-061: inside the half-bridge drift band, no pass / fail)",
+                "microstrain", "record", "", "GAUGE-LOCAL; SUB-BC")
                for c in T1_LB for g_, v in t1_gauge_lines().items()]
         + [("all", "T1 pass rules (no crack, crown set <= 1 mm, z 234 step <= 0.5 mm, ...)", y, "yes", "Y", "HA-LS-1 T1")],
         "MT-1cr": [(f"try {t} US{n}", "cradle belly below the pin line, strong user, gloved, wide quarter load", "mm",
