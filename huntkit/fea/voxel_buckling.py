@@ -155,11 +155,18 @@ def element_stress_active(rs, U: np.ndarray, h: float, nu: float, weights: np.nd
 
 
 def linear_buckling(g: Grid, active: np.ndarray, fixed: np.ndarray, F: np.ndarray, E: float, nu: float = 0.35,
-                    k: int = 6, weights: np.ndarray | None = None) -> dict:
+                    k: int = 6, weights: np.ndarray | None = None, extra_fixed: np.ndarray | None = None,
+                    kg_weight: np.ndarray | None = None, tol: float = 1e-8) -> dict:
     """Whole pipeline on a voxel body: K (unit modulus x weights), linear solve of F (ndof,), centroid stresses,
-    K_sigma, eigen. Returns lam (load multipliers on F), modes as global (ndof, k), U, stresses, rs."""
+    K_sigma, eigen. Returns lam (load multipliers on F), modes as global (ndof, k), U, stresses, rs (eigen system).
+
+    extra_fixed: DOFs held in the EIGEN problem only (bracing that carries no load in the reference state, e.g. a
+    harness that is in equilibrium); the prestress comes from the ``fixed`` solve.
+    kg_weight: per-element factor (g.ne) on K_sigma: 0 outside a member isolates that member's buckling with the rest
+    of the body as its elastic end restraint (stress-free)."""
     from huntkit.gendesign import frame_topopt as ft
-    rs = ft.ReducedSystem(g, active, fixed, ke_h8(g.h, 1.0, nu))
+    KE = ke_h8(g.h, 1.0, nu)
+    rs = ft.ReducedSystem(g, active, fixed, KE)
     w = np.ones(rs.ae.size) if weights is None else np.asarray(weights, float)[rs.ae]
     Ku = rs.assemble(w)
     Ku.sort_indices()
@@ -168,8 +175,15 @@ def linear_buckling(g: Grid, active: np.ndarray, fixed: np.ndarray, F: np.ndarra
     U = np.zeros(g.ndof)
     U[rs.free] = Ur                                          # unit-modulus displacement
     S = element_stress_active(rs, U, g.h, nu, w)             # physical stress (independent of E)
-    KG = assemble_geometric(rs, S, g.h)
-    lam, V = eig_buckling(Ku, KG, E=E, k=k, factor=fac)
+    if extra_fixed is not None and np.any(extra_fixed & ~fixed):
+        fac.free()
+        rs = ft.ReducedSystem(g, active, fixed | extra_fixed, KE)
+        Ku = rs.assemble(w)
+        Ku.sort_indices()
+        fac = Factor(Ku)
+    Sk = S if kg_weight is None else S * np.asarray(kg_weight, float)[rs.ae][:, None]
+    KG = assemble_geometric(rs, Sk, g.h)
+    lam, V = eig_buckling(Ku, KG, E=E, k=k, factor=fac, tol=tol)
     fac.free()
     modes = np.zeros((g.ndof, V.shape[1]))
     modes[rs.free] = V
