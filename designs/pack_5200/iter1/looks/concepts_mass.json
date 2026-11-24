@@ -1,0 +1,131 @@
+{
+ "A": {
+  "rows": [
+   {
+    "piece": "webbing / binding / zip tape / thread",
+    "what": "dyed Elk Wallow instead of Deadfall Shadow, same records (ASSUMPTION TONAL-WEB: same g/m in the olive dye lot)",
+    "area_m2": null,
+    "delta_g": 0.0
+   },
+   {
+    "piece": "SH-07, B-29f",
+    "what": "printed solid body colour instead of camo (print-file change, same 630D piece)",
+    "area_m2": null,
+    "delta_g": 0.0
+   },
+   {
+    "piece": "guy toggles",
+    "what": "tonal instead of blaze (same POM part, other colour)",
+    "area_m2": null,
+    "delta_g": 0.0
+   }
+  ],
+  "total_g": 0.0,
+  "camo_print_area_m2": 0.182
+ },
+ "B": {
+  "rows": [
+   {
+    "piece": "webbing / binding / zip tape / thread",
+    "what": "dyed Elk Wallow instead of Deadfall Shadow, same records (ASSUMPTION TONAL-WEB: same g/m in the olive dye lot)",
+    "area_m2": null,
+    "delta_g": 0.0
+   },
+   {
+    "piece": "B-03",
+    "what": "side gusset: cordura_330d_nylon66 -> polyester_300d_printable",
+    "area_m2": 0.31927,
+    "delta_g": -15.0
+   },
+   {
+    "piece": "B-02u, SH-07",
+    "what": "printed solid body colour (print-file change); the zip-carrying blade stays 630D",
+    "area_m2": null,
+    "delta_g": 0.0
+   }
+  ],
+  "total_g": -15.0,
+  "camo_print_area_m2": 0.406
+ },
+ "C": {
+  "rows": [
+   {
+    "piece": "webbing / binding / zip tape / thread",
+    "what": "dyed Elk Wallow instead of Deadfall Shadow, same records (ASSUMPTION TONAL-WEB: same g/m in the olive dye lot)",
+    "area_m2": null,
+    "delta_g": 0.0
+   },
+   {
+    "piece": "B-06",
+    "what": "roll-top collar: robic_100d_ripstop -> polyester_300d_printable",
+    "area_m2": 0.37026,
+    "delta_g": 3.0
+   },
+   {
+    "piece": "B-29a",
+    "what": "crown lid: crown (4 corner darts): cordura_330d_nylon66 -> polyester_300d_printable",
+    "area_m2": 0.10618,
+    "delta_g": -5.0
+   },
+   {
+    "piece": "B-29c",
+    "what": "crown lid: front wall run: cordura_330d_nylon66 -> polyester_300d_printable",
+    "area_m2": 0.02933,
+    "delta_g": -1.4
+   },
+   {
+    "piece": "B-29d",
+    "what": "crown lid: aft wall, upper (zip): cordura_330d_nylon66 -> polyester_300d_printable",
+    "area_m2": 0.01828,
+    "delta_g": -0.9
+   },
+   {
+    "piece": "B-29e",
+    "what": "crown lid: aft wall, lower (zip): cordura_330d_nylon66 -> polyester_300d_printable",
+    "area_m2": 0.01828,
+    "delta_g": -0.9
+   },
+   {
+    "piece": "B-07, B-29g",
+    "what": "stay cordura 330D, solid body colour (strap / clip load points)",
+    "area_m2": null,
+    "delta_g": 0.0
+   },
+   {
+    "piece": "B-02u",
+    "what": "printed camo on the 75 mm kick strip only, blades solid (print-file split, no seam)",
+    "area_m2": null,
+    "delta_g": 0.0
+   },
+   {
+    "piece": "SH-07",
+    "what": "printed solid body colour",
+    "area_m2": null,
+    "delta_g": 0.0
+   }
+  ],
+  "total_g": -5.2,
+  "camo_print_area_m2": 0.651
+ },
+ "note_C_print": "C keeps ~20 % of B-02u printed (the 75 mm kick strip is about 1/5 of the U's area: ASSUMPTION KICK-SHARE)",
+ "options": {
+  "B alt: gussets on 630D printable instead of HyperD 300": {
+   "piece": "B-03",
+   "what": "side gusset: cordura_330d_nylon66 -> polyester_ht_630d_printable",
+   "area_m2": 0.31927,
+   "delta_g": 35.1
+  },
+  "C option: delete the B-29f camo corner caps (overlay; lid is camo already)": {
+   "piece": "B-29f",
+   "what": "delete overlay",
+   "area_m2": 0.0145,
+   "delta_g": -4.2
+  }
+ },
+ "gsm": {
+  "cordura_330d_nylon66": 180.0,
+  "robic_100d_ripstop": 125.0,
+  "polyester_300d_printable": 133.0,
+  "polyester_ht_630d_printable": 290.0
+ }
+}
