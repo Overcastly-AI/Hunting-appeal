@@ -18,6 +18,20 @@ import weight_rollup_v2 as W  # noqa: E402
 from huntkit.mass import ledger as L  # noqa: E402
 
 
+def _bl068_base(F, fabrics: str = "today") -> float:
+    """BL-068 base change on rev 3 (D2, belt M): its own ledger rows (W cut for the level path, KW-HP-L keeper) + the
+    tapered collar (B-06f / B-06 / B-07 / B-07s rows against the straight collar, ``corrie_f.cprime(roll_taper=False)``).
+    The RT re-cut rides in strap_tails.bag_rows (BL-031 rows) already. ``fabrics`` "today" = the roll-up's proven-now
+    and weight-table basis (100D collar)."""
+    col = lambda rows: sum(r["g"] for r in rows if r["name"].split(" ")[0] in ("B-06f", "B-06", "B-07", "B-07s"))  # noqa: E731
+    with F.revision(3):
+        rows = F.parts("M", "D2", fabrics)
+        with F.cprime(roll_taper=False):
+            rows0 = F.parts("M", "D2", fabrics)
+    return (sum(r["g"] for r in rows if r["name"].startswith("BL-068") and r["cfg"] == "base")
+            + col(rows) - col(rows0))
+
+
 @pytest.mark.parametrize("size", L.SIZES)
 def test_start_reconciles_to_the_ledger_at_every_belt_size(size):
     rows = W.b2_rows(size)
@@ -130,7 +144,7 @@ def test_ticket_steps_match_the_ticket_modules():
         bl041 = sum(r["g"] for r in F.parts("M", "D2") if r["name"].startswith(("BL-041", "BL-043", "BL-044", "BL-050"))
                     and r["cfg"] == "base")                # BL-043: B-25 drawn topology, IMC 192 mm (corrie_f.bl043_rows)
     assert wt["bag_side_g"] - r0 == pytest.approx(8.6 + F.guy_port()["mass_g"] + bl031 + F.muzzle_keeper()["mass_g"]
-                                                  + bl041, abs=0.2)        # + BL-035 muzzle keepers (rev 3), + BL-041
+                                                  + bl041 + _bl068_base(F), abs=0.2)   # + BL-035 muzzle keepers (rev 3), + BL-041, + BL-068
     # (abs 0.2: the rev 3 BL-034 thread rows follow the op lengths, which BL-041's new ops moved by ~0.1 g)
 
 
@@ -256,7 +270,8 @@ def test_gated_savings_are_not_proven_now():
            + st["BL053"]["base"]                           # BL-053 lane lug fixes + pin retention
            + st["BL055"]["base"]                           # BL-055 hip boss + inserts, US1 Ti pins
            + st["BL056"]["base"]                           # BL-056 hip mount as redrawn, US2 blocks grown
-           + st["BL058"]["base"])                          # BL-058 review 6: counterbores, D5.8, M5 x 12, retainers
+           + st["BL058"]["base"]                           # BL-058 review 6: counterbores, D5.8, M5 x 12, retainers
+           + _bl068_base(W._F()))                          # BL-068: level-wrap cut, KW-HP-L keeper, tapered collar
     #                                                        BL-049 lug arms, hinge growth, Ti hinge pins
     assert t["P"]["base"] == pytest.approx(bl023_p + upd, abs=0.3)
     assert 3660 < t["P"]["base"] < 4050       # BL-053 +65.2 (lug fixes + pin retention), BL-050 +56.1, BL-049 +90.8, BL-047 -6.7; BL-046 +35.9 g; BL-042 +37.2 g
@@ -264,7 +279,9 @@ def test_gated_savings_are_not_proven_now():
     # A_b step also deletes BL-031's shortened stabilizers (its compensating row)
     # BL-037: the weight-push picks are their own after-tests step (weight_push.picked_rows)
     assert t["A"]["base"] == pytest.approx(3143.5 + upd - bl034_tog + bl035_a + bl036_hood - st["A_c17"]["base"]
-                                           - ST.stabilizer_delta_g("M") + st["A_bl037"]["base"], abs=0.3)
+                                           - ST.stabilizer_delta_g("M") + st["A_bl037"]["base"]
+                                           # BL-068: after tests the collar is on the B fabrics (70D), not 100D
+                                           - _bl068_base(W._F()) + _bl068_base(W._F(), "B"), abs=0.3)
     assert st["A_c17"]["base"] == pytest.approx(-20.6, abs=0.1)
 
 

@@ -69,11 +69,11 @@ Review 5 findings (`analysis/review_20261113_fifth.md`), status as review 6 foun
 ## Key numbers
 
 - Pieces: 80 piece types; 77 fabric / sheet pieces + 75 webbing / cord / elastic pieces (crown kit M).
-- Ledger 1:1: 117 rows, 0 unmatched, 0 pieces without a row. Mass from pattern areas (ledger basis, team B fabrics): 554.9 g vs 555.5 g (-0.10 %, limit +/-3 %). Primary fabrics weigh +93.0 g more on the same pieces.
+- Ledger 1:1: 118 rows, 0 unmatched, 0 pieces without a row. Mass from pattern areas (ledger basis, team B fabrics): 554.9 g vs 555.5 g (-0.10 %, limit +/-3 %). Primary fabrics weigh +93.0 g more on the same pieces.
 - Operations: 89; beginner hours 74.7 h (one-off set-up 4.1 h of it); factory SAM 508 min (8.5 h, ASSUMPTION SAM-RATIO).
 - Material cost a bag, PRODUCTION (10-bag markers, record prices): primary $375, alternate $374. CMT + materials: US contract $915, Asia $451 (ASSUMPTION LABOUR).
 - **What ONE bag costs to buy (prototype, 1-bag markers rounded to shop steps): $506** (fabric $185 vs $86 in production; ASSUMPTION SHOP-INCR; thread by the 4 oz cone, sealer and tape by the smallest pack, ASSUMPTION SHOP-UNIT; no camo print: DECISION CAMO-FIRST; table in costing.md).
-- **Mass targets, PRIMARY fabrics (the set you build): base 1209 g (2.66 lb), as hunted 1495 g, meat trip 1700 g** (QC-14, +/- 3 %); ledger (team B basis) 1146 / 1411 / 1607 g.
+- **Mass targets, PRIMARY fabrics (the set you build): base 1208 g (2.66 lb), as hunted 1495 g, meat trip 1700 g** (QC-14, +/- 3 %); ledger (team B basis) 1146 / 1411 / 1607 g.
 - **Sewing machine:** MINIMUM PROTOTYPE MACHINE (buy this or better): a walking-foot (compound or upper-and-lower feed) lockstitch that takes the 135x17 / DPx17 needle system up to size 140/22, sews tex 135 (V-138 / No. 138) bonded nylon top and bobbin, and clears at least 6 mm under the raised foot (38 mm webbing folded in half + Hypalon + laminate is about 5 mm), AND sews a 304 zigzag up to 5 mm wide (BL-041 Y-3: the BT-S / BT-M tacks and elastic laps are ISO 304; e.g. a portable straight / zigzag walking foot). A straight-stitch-only walking foot (the WF2 class) may be used if every 304 tack is sewn as the BT-301 fallback below. A domestic or 'heavy-duty domestic' machine (130/705H needles, tex 90 max) CANNOT sew the load points as specified. The alternative, re-rating every box-X for Nm 120/19 + tex 90 and re-running MT-1 / PT-1..PT-6 on it, is an owner decision, not taken here. Fallback for the 304 tacks: BT-301 (prototype, straight stitch only): 4 passes over the tack length (16 mm for BT-M, 10 mm for BT-S and slit ends, the full lap width for elastic laps) at 2 mm stitch, needle down and pivot at each end, 3-stitch backtack, same thread and needle as the 304 tack it replaces. UNRATED, like every 304 tack in this release (none is on a load-table path); the PT-3 neck tacks are sewn the same way as the bag's.
 - **First build fabric for the camo pieces (DECISION CAMO-FIRST, orchestrator 2026-11-13):** solid 630D (polyester_ht_630d_printable, unprinted) on B-02u, SH-07, SH-01b, FP-b, B-29f and A1-d. B-02u is structural (two 715 mm corner seams, the floor seam and the #10 door zip): it is cut from 630D, the base the patterns, the BOM `fabric` line and QC-14 assume. The HyperD 300 print yard is a test-kit specimen only (AB-1 / FRAY-1, not a bag-cut gate); a printed bag waits for AB-1, FRAY-1 (HyperD | 330D) and a QC-14 target on that base.
 - **Camo (later builds):** the print comes from the camo-designer's release: read `../camo/README.md` first (print file `../camo/print/`, colours, placement, vendors, 1- and 10-bag costs). BOM section `fabric_print` (production only). **Caveat:** 630D printable base is TPU-coated and sublimation transfer runs at about 200 C: print BEFORE the coating is applied (mill print), or order a strike-off and check the coat survives, before buying yardage.
@@ -99,7 +99,7 @@ Current values: B-22 at x +/-130.3 mm (drawn 149.0); FP flat width 260.0 mm (fin
 
 ## Pattern / ledger flags
 
-- Thread in the bag (all ops, no cone waste): 18.75 g; booked on the ledger: 18.88 g (build_effort_rev3.json; re-run `python designs/pack_5200/build_effort_rev3.py --write` when they differ).
+- Thread in the bag (all ops, no cone waste): 18.75 g; booked on the ledger: 18.75 g (build_effort_rev3.json; re-run `python designs/pack_5200/build_effort_rev3.py --write` when they differ).
 - Box-X mismatches between a panel and its tab: none.
 - Ledger hardware rows mapped by keyword (confirm): none.
 - Unmapped ledger hardware rows: none.

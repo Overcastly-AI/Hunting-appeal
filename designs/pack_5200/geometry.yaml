@@ -685,13 +685,16 @@ head_clearance:
 haul_wraps:
 - {id: W1, anchor_R: load_wing_lash_z250_R, anchor_L: load_wing_lash_z250_L, z_R_at_19in: 250.0, z_L_at_19in: 250.0,
   z_at_19in: 250.0, anchor: load_wing_lash_z250_R, hardware: 'ladder lock at R anchor, aluminium G-hook at L anchor
-    (HAUL family)', carry_path_mm: 580, haul_path_mm: 1200, cut_length_mm: 1450}
+    (HAUL family)', carry_path_mm: 580, haul_path_mm: 1200, cut_length_mm: 1450, carry_path_helix_mm: 570, cut_length_helix_mm: 1440,
+  haul_path_helix_mm: 1190, z_at_19in_helix: 165.0}
 - {id: W2, anchor_R: load_wing_lash_z420_R, anchor_L: load_wing_lash_z420_L, z_R_at_19in: 420.0, z_L_at_19in: 420.0,
   z_at_19in: 420.0, anchor: load_wing_lash_z420_R, hardware: 'ladder lock at R anchor, aluminium G-hook at L anchor
-    (HAUL family)', carry_path_mm: 656, haul_path_mm: 1276, cut_length_mm: 1526}
+    (HAUL family)', carry_path_mm: 656, haul_path_mm: 1276, cut_length_mm: 1526, carry_path_helix_mm: 642, cut_length_helix_mm: 1512,
+  haul_path_helix_mm: 1262, z_at_19in_helix: 335.0}
 - {id: W3, anchor_R: crown top bar R (moves with torso), anchor_L: crown top bar L (moves with torso), z_R_at_19in: 702.6,
   z_L_at_19in: 702.6, z_at_19in: 702.6, anchor: crown top bar R (moves with torso), hardware: 'ladder lock at R
-    anchor, aluminium G-hook at L anchor (HAUL family)', carry_path_mm: 848, haul_path_mm: 1468, cut_length_mm: 1718}
+    anchor, aluminium G-hook at L anchor (HAUL family)', carry_path_mm: 848, haul_path_mm: 1468, cut_length_mm: 1718,
+  carry_path_helix_mm: 848, cut_length_helix_mm: 1718, haul_path_helix_mm: 1468, z_at_19in_helix: 702.6}
 hardware_families:
 - {family: HIP, function: hipbelt closure, hardware: 50 mm side-release (the only 50 mm buckle), qty: 1, feel: 'biggest
     buckle, at the waist'}
@@ -734,11 +737,11 @@ weight:
     torso adjust (not in the frame line): 40.6, main bag: 394.1, bag-side load spreaders: 27.8, bag-to-frame attachment (fairleads): 147.8,
     bag-to-frame attachment system: 128.0, under-straps US1/US2 (cradle): 138.4, float-mode stand-off links B-24: 54.4,
     accents: 52.7, rain fly: 68.4, pockets: 59.0, hipbelt (M): 334.3, harness: 212.5, back panel: 251.3, internal meat harness: 254.4,
-    haul wraps (= compression): 108.5, misc: 39.5}
-  total_g: 3536.6
+    haul wraps (= compression): 108.1, misc: 39.5}
+  total_g: 3536.2
   total_lb: 7.8
   target_g: 2268
-  gap_g: 1268.6
+  gap_g: 1268.2
   weight_plan: analysis/bag_weight_plan.md (bag-side savings, owner choices)
   v31_tube_baseline: {total_g: 2224.1, frame_g: 569.2, back_panel_g: 75.2, misc_g: 36.1, source: 'geometry.yaml
       v3.1 (commit 6061796): carbon-tube frame v2, single 6 mm XLPE back sheet', used_by: huntkit/gendesign/frame_production.py
@@ -870,7 +873,7 @@ weight:
       (MEAT family)', mass_g: 240.3, basis: 'poly_webbing_38mm record x cut lengths (meat_harness); hook 9 g, cam
       22 g ASSUMPTION. The stubs became fairlead eyes: net in the attachment line ''webbing eyes, net of old stubs'''}
   - {group: internal meat harness, item: 'B-01 strap ports: 6 Hypalon patches (B-12)', mass_g: 14.1, basis: computed}
-  - {group: haul wraps (= compression), item: '3 frame-anchored wraps, 25 mm coyote poly webbing 4.69 m', mass_g: 84.5,
+  - {group: haul wraps (= compression), item: '3 frame-anchored wraps, 25 mm coyote poly webbing 4.67 m', mass_g: 84.1,
     basis: records; lengths from the 3D teardrop (haul_wraps)}
   - {group: haul wraps (= compression), item: 3 aluminium G-hooks (HAUL family) + 3 ladder locks, mass_g: 24, basis: G-hook
       4 g ASSUMPTION (no record); ladder lock record}

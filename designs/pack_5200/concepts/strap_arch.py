@@ -289,8 +289,10 @@ def _delete_wings(P: list) -> list:
 def b1_strap_cuts_mm() -> list:
     """S1-S3 at the IM heights: cut = haul path at that height (linear in z between the geometry.yaml wraps) + 150 mm
     tail (A-2). ASSUMPTION: interpolated, not a 3D path; settled by re-running build_geometry.haul_wraps at those z."""
-    W = sorted(GEO["haul_wraps"], key=lambda w: w["z_at_19in"])
-    zs, hp = [w["z_at_19in"] for w in W], [w["haul_path_mm"] for w in W]
+    # BL-068: B.1's straps were cut on the v3.1 helix wraps (geometry.yaml keeps them as *_helix since W-LEVEL)
+    zk = lambda w: w.get("z_at_19in_helix", w["z_at_19in"])  # noqa: E731
+    W = sorted(GEO["haul_wraps"], key=zk)
+    zs, hp = [zk(w) for w in W], [w.get("haul_path_helix_mm", w["haul_path_mm"]) for w in W]
     out = []
     for z in (190.0, 330.0, 520.0):
         for i in range(len(zs) - 1):

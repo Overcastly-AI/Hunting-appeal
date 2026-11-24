@@ -505,15 +505,15 @@
      0
     ],
     "adopted_bag_g": {
-     "base": 1160.86,
-     "as_hunted": 1442.74,
-     "meat_trip": 1638.74
+     "base": 1160.73,
+     "as_hunted": 1442.61,
+     "meat_trip": 1638.61
     },
     "iter1_g": {
-     "P_base": 4038.1,
-     "P_as_hunted": 4356.6,
-     "A_base": 3450.9,
-     "A_as_hunted": 3769.4
+     "P_base": 4038.0,
+     "P_as_hunted": 4356.5,
+     "A_base": 3450.8,
+     "A_as_hunted": 3769.3
     },
     "rows": {
      "B-06f roll-top collar, frame side (ULTRA) (challenge_ultra_200)": 26.5,
@@ -544,15 +544,15 @@
      0
     ],
     "adopted_bag_g": {
-     "base": 1159.82,
-     "as_hunted": 1441.7,
-     "meat_trip": 1637.7
+     "base": 1159.72,
+     "as_hunted": 1441.6,
+     "meat_trip": 1637.6
     },
     "iter1_g": {
-     "P_base": 4037.0,
-     "P_as_hunted": 4355.6,
-     "A_base": 3449.9,
-     "A_as_hunted": 3768.4
+     "P_base": 4036.9,
+     "P_as_hunted": 4355.5,
+     "A_base": 3449.8,
+     "A_as_hunted": 3768.3
     },
     "rows": {
      "B-06f roll-top collar, frame side (ULTRA) (challenge_ultra_200)": 26.5,
@@ -583,15 +583,15 @@
      0
     ],
     "adopted_bag_g": {
-     "base": 1147.38,
-     "as_hunted": 1429.26,
-     "meat_trip": 1625.26
+     "base": 1147.25,
+     "as_hunted": 1429.13,
+     "meat_trip": 1625.13
     },
     "iter1_g": {
-     "P_base": 4022.1,
-     "P_as_hunted": 4340.6,
-     "A_base": 3437.4,
-     "A_as_hunted": 3756.0
+     "P_base": 4022.0,
+     "P_as_hunted": 4340.5,
+     "A_base": 3437.3,
+     "A_as_hunted": 3755.8
     },
     "rows": {
      "B-06f roll-top collar, frame side (ULTRA) (challenge_ultra_200)": 21.65,
@@ -622,15 +622,15 @@
      1
     ],
     "adopted_bag_g": {
-     "base": 1160.86,
-     "as_hunted": 1425.32,
-     "meat_trip": 1621.32
+     "base": 1160.73,
+     "as_hunted": 1425.19,
+     "meat_trip": 1621.19
     },
     "iter1_g": {
-     "P_base": 4038.1,
-     "P_as_hunted": 4339.2,
-     "A_base": 3450.9,
-     "A_as_hunted": 3752.0
+     "P_base": 4038.0,
+     "P_as_hunted": 4339.1,
+     "A_base": 3450.8,
+     "A_as_hunted": 3751.9
     },
     "rows": {
      "B-06f roll-top collar, frame side (ULTRA) (challenge_ultra_200)": 26.5,
@@ -661,15 +661,15 @@
      0
     ],
     "adopted_bag_g": {
-     "base": 1146.34,
-     "as_hunted": 1428.22,
-     "meat_trip": 1624.22
+     "base": 1146.24,
+     "as_hunted": 1428.12,
+     "meat_trip": 1624.12
     },
     "iter1_g": {
-     "P_base": 4021.1,
-     "P_as_hunted": 4339.6,
-     "A_base": 3436.4,
-     "A_as_hunted": 3754.9
+     "P_base": 4021.0,
+     "P_as_hunted": 4339.5,
+     "A_base": 3436.3,
+     "A_as_hunted": 3754.8
     },
     "rows": {
      "B-06f roll-top collar, frame side (ULTRA) (challenge_ultra_200)": 21.65,
@@ -700,15 +700,15 @@
      1
     ],
     "adopted_bag_g": {
-     "base": 1146.34,
-     "as_hunted": 1410.8,
-     "meat_trip": 1606.8
+     "base": 1146.24,
+     "as_hunted": 1410.7,
+     "meat_trip": 1606.7
     },
     "iter1_g": {
-     "P_base": 4021.1,
-     "P_as_hunted": 4322.2,
-     "A_base": 3436.4,
-     "A_as_hunted": 3737.5
+     "P_base": 4021.0,
+     "P_as_hunted": 4322.1,
+     "A_base": 3436.3,
+     "A_as_hunted": 3737.4
     },
     "rows": {
      "B-06f roll-top collar, frame side (ULTRA) (challenge_ultra_200)": 21.65,
@@ -757,7 +757,7 @@
      "P_base": -16.0,
      "P_as_hunted": -16.0,
      "A_base": -13.5,
-     "A_as_hunted": -13.4
+     "A_as_hunted": -13.5
     }
    },
    "P3": {

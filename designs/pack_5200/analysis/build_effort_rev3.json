@@ -3,29 +3,29 @@
  "thread_factor": 2.75,
  "thread_waste_excluded": 0.15,
  "thread_g": {
-  "base": 12.31,
+  "base": 12.18,
   "as_hunted": 4.63,
   "meat_trip": 1.94
  },
- "thread_g_total": 18.88,
- "thread_g_package_incl_waste_and_duplicates": 21.72,
+ "thread_g_total": 18.75,
+ "thread_g_package_incl_waste_and_duplicates": 21.57,
  "hours_per_bag": {
-  "base": 51.29,
-  "as_hunted": 16.29,
+  "base": 51.0,
+  "as_hunted": 16.09,
   "meat_trip": 3.48
  },
- "hours_per_bag_total": 71.06,
+ "hours_per_bag_total": 70.57,
  "hours_one_off": 4.1,
- "hours_package_total": 75.16,
+ "hours_package_total": 74.68,
  "hours_by_step": {
-  "0 Prep and cutting": 12.18,
+  "0 Prep and cutting": 12.09,
   "1 Pockets": 6.06,
-  "2 Small parts": 4.33,
+  "2 Small parts": 4.3,
   "3 Door D2 and hinge band": 5.0,
   "4 Main bag": 14.37,
-  "5 Collar and roll top": 3.49,
+  "5 Collar and roll top": 3.33,
   "6 Crown lid B-29 (as hunted)": 8.46,
-  "7 Straps and webbing": 6.86,
+  "7 Straps and webbing": 6.66,
   "8 Add-ons (scope pod as hunted, meat liner meat trip)": 3.71,
   "9 Rain fly F-01": 5.4,
   "10 Finish, inspect, pack": 1.2
@@ -86,14 +86,14 @@
   },
   {
    "seq": "0.05",
-   "op": "Hot-knife 78 webbing / elastic / cord pieces",
+   "op": "Hot-knife 75 webbing / elastic / cord pieces",
    "step": "0 Prep and cutting",
    "cfg": "base",
    "per_bag": true,
    "thread_id": "-",
    "length_mm": 0.0,
    "thread_g": 0.0,
-   "hours": 2.34,
+   "hours": 2.25,
    "duplicate_of": null
   },
   {
@@ -225,7 +225,7 @@
    "thread_id": "-",
    "length_mm": 0.0,
    "thread_g": 0.0,
-   "hours": 0.36,
+   "hours": 0.33,
    "duplicate_of": null
   },
   {
@@ -523,9 +523,9 @@
    "cfg": "base",
    "per_bag": true,
    "thread_id": "bonded_nylon_tex70",
-   "length_mm": 1979.2,
-   "thread_g": 0.381,
-   "hours": 0.694,
+   "length_mm": 1999.2,
+   "thread_g": 0.385,
+   "hours": 0.7,
    "duplicate_of": null
   },
   {
@@ -547,9 +547,9 @@
    "cfg": "base",
    "per_bag": true,
    "thread_id": "bonded_nylon_tex90",
-   "length_mm": 2169.4,
-   "thread_g": 0.537,
-   "hours": 1.172,
+   "length_mm": 1606.0,
+   "thread_g": 0.397,
+   "hours": 1.003,
    "duplicate_of": null
   },
   {
@@ -722,7 +722,7 @@
   },
   {
    "seq": "7.02",
-   "op": "B-28t: lock tab (the other 2 are boxed in an earlier op) x2",
+   "op": "B-28t: lock / end tab (the other 2 are boxed in an earlier op) x2",
    "step": "7 Straps and webbing",
    "cfg": "as_hunted",
    "per_bag": true,
@@ -746,14 +746,14 @@
   },
   {
    "seq": "7.04",
-   "op": "K-28: B-28 tail keeper (25 mm elastic loop) x4",
+   "op": "K-28: B-28 tail keeper (25 mm elastic loop) x2",
    "step": "7 Straps and webbing",
    "cfg": "as_hunted",
    "per_bag": true,
    "thread_id": "bonded_nylon_tex90",
    "length_mm": 0.0,
    "thread_g": 0.0,
-   "hours": 0.4,
+   "hours": 0.2,
    "duplicate_of": null
   },
   {

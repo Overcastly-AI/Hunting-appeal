@@ -170,8 +170,9 @@ def crown_adjusters() -> int:
 
 
 def collar_mouth_mm(c=None) -> float | None:
-    """Mouth (hem) perimeter the collar is cut to: 2 x ROLL_MOUTH_FLAT_MM with the taper, None = bag_concepts' rule."""
-    return 2.0 * ROLL_MOUTH_FLAT_MM if ROLL_TAPER else None
+    """Mouth (hem) perimeter the collar is cut to: 2 x ROLL_MOUTH_FLAT_MM with the taper (rev 3 only: revs 0-2 stay as
+    released), None = bag_concepts' rule."""
+    return 2.0 * ROLL_MOUTH_FLAT_MM if (ROLL_TAPER and REVISION >= 3) else None
 
 
 def _add_collar(b, c, tops):
@@ -1230,18 +1231,27 @@ def bl044_rows() -> list:
 
 
 def bl068_rows() -> list:
-    """BL-068 ledger rows (system, name, g, source) the geometry switches do not already move: the K-W keeper loop that
-    DECISION KW-HP-L drops where a level wrap lands on a hard-point loop (W2 L, z 420)."""
+    """BL-068 ledger rows (system, name, g, source) the geometry switches do not already move: (1) P1 W-LEVEL: the W1 / W2
+    cut change (strap_tails cuts carry + fixed ends, so the change is the carry-path change against the v3.1 helix the
+    ledger's W webbing row books, geometry.yaml ``carry_path_helix_mm``); (2) the K-W keeper loop DECISION KW-HP-L drops
+    where a level wrap lands on a hard-point loop (W2 L, z 420)."""
     import importlib
     P = importlib.import_module("patterns_corrie_f_rev3")
+    out = []
+    ws = [w for w in BC.GEOM["haul_wraps"] if w["id"] in P.KW_WRAPS]
+    d = sum(float(w["carry_path_mm"]) - float(w.get("carry_path_helix_mm", w["carry_path_mm"])) for w in ws)
+    if d:
+        out.append(("straps_compression", f"BL-068: W1 / W2 cut for the level path ({d:+.0f} mm, DECISION W-LEVEL)",
+                    d / 1000.0 * WEB25, "geometry.yaml haul_wraps carry_path_mm - carry_path_helix_mm (strap_tails cut "
+                    "rule: cut = ends + carry + tripod + grip) x poly_webbing_25mm mass_g_m (record)"))
     kw = {k: v for k, v in P.kw_heights(make()).items() if k in P.KW_WRAPS}
     sh = P.kw_shared(kw)
-    if not sh:
-        return []
-    return [("straps_compression", f"BL-068: K-W keeper loop(s) dropped ({', '.join(r['wrap'] + ' ' + r['side'] for r in sh)}"
-             f": the wrap runs through the hard-point loop, DECISION KW-HP-L; {len(sh)} x {P.KW_CUT:.0f} mm)",
-             -len(sh) * P.KW_CUT / 1000.0 * WEB25,
-             "patterns_corrie_f_rev3.kw_shared x KW_CUT x poly_webbing_25mm mass_g_m (record), negative")]
+    if sh:
+        out.append(("straps_compression", f"BL-068: K-W keeper loop(s) dropped ({', '.join(r['wrap'] + ' ' + r['side'] for r in sh)}"
+                    f": the wrap runs through the hard-point loop, DECISION KW-HP-L; {len(sh)} x {P.KW_CUT:.0f} mm)",
+                    -len(sh) * P.KW_CUT / 1000.0 * WEB25,
+                    "patterns_corrie_f_rev3.kw_shared x KW_CUT x poly_webbing_25mm mass_g_m (record), negative"))
+    return out
 
 
 def hinge_pin() -> dict:

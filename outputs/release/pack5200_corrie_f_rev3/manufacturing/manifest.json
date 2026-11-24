@@ -2,7 +2,7 @@
  "checks": {
   "recon_unmatched": 0,
   "recon_pieces_without_row": 0,
-  "recon_rows": 117,
+  "recon_rows": 118,
   "mass_delta_pct": -0.1,
   "mass_ok": true,
   "ops": 89,
@@ -15,7 +15,7 @@
   "hardware_rows_by_keyword": [],
   "box_mismatches": [],
   "thread_bag_g": 18.75,
-  "thread_ledger_g": 18.88,
+  "thread_ledger_g": 18.75,
   "proto_hours": 74.7,
   "sam_min": 508.1,
   "volatile": [
@@ -28,9 +28,9 @@
   ]
  },
  "mass": {
-  "base_g": 1146.3,
-  "as_hunted_g": 1410.8,
-  "meat_trip_g": 1606.8,
+  "base_g": 1146.2,
+  "as_hunted_g": 1410.7,
+  "meat_trip_g": 1606.7,
   "pattern_fabric_alt_g": 554.9,
   "ledger_fabric_g": 555.5,
   "mass_delta_pct": -0.1,
@@ -42,9 +42,9 @@
    "as_hunted": 22.1,
    "meat_trip": 9.2
   },
-  "primary_base_g": 1208.6,
-  "primary_as_hunted_g": 1495.2,
-  "primary_meat_trip_g": 1700.3,
+  "primary_base_g": 1208.5,
+  "primary_as_hunted_g": 1495.1,
+  "primary_meat_trip_g": 1700.2,
   "qc14_tol_pct": 3.0
  },
  "geo": {

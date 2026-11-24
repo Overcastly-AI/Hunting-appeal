@@ -2293,6 +2293,7 @@ RECON = [
     ("BL-044: US cam anchors USA", "webbing", [], ["USA"], "BL-045 found-not-fixed; USA-LOOP"),
     ("BL-050 B: US2 under-strap cut", "webbing", [], ["US2"], "DECISION US-CUT (corrie_f.US_CUT_MM)"),
     ("BL-068: K-W keeper loop(s) dropped", "removed", [], [], "DECISION KW-HP-L (W2 L through the hard-point loop)"),
+    ("BL-068: W1 / W2 cut for the level path", "webbing", [], ["W1", "W2"], "DECISION W-LEVEL"),
 ]
 
 

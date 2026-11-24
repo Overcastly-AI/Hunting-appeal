@@ -212,10 +212,11 @@ def test_bl068_record_written():
 
 def test_before_state_reproduces_the_bl067_ledger():
     """state(0, 0, 0) is rev 3 as released before BL-068: the BL-067 ledger basis (proven now 4038.1 g, after tests
-    3450.9 g, belt M, crown kit M; iter1_weight)."""
+    3450.9 g, belt M, crown kit M; iter1_weight), less the bag thread the build-effort cache books from today's op
+    lengths in every state (-0.13 g: the cache is not switched)."""
     import bl068_cprime as X
     s = X._run_state((0, 0, 0))
-    assert s["iter1_g"]["P_base"] == pytest.approx(4038.1, abs=0.05)
-    assert s["iter1_g"]["A_base"] == pytest.approx(3450.9, abs=0.05)
+    assert s["iter1_g"]["P_base"] == pytest.approx(4038.1 - 0.13, abs=0.06)
+    assert s["iter1_g"]["A_base"] == pytest.approx(3450.9 - 0.13, abs=0.06)
     assert s["w_cuts_mm"] == {"W1": 750.0, "W2": 822.0, "W3": 986.6} and s["rt_cut_mm"] == 565.0
     assert s["b28"]["adjusters"] == 2 and s["b28"]["cut_mm"] == pytest.approx(1006.9, abs=0.05)

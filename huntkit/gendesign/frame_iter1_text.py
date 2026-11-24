@@ -12,6 +12,12 @@ def _oz(g):
     return f"{g / 28.3495:.1f} oz"
 
 
+# BL-066 m4: frame-line rows outside the print (designs/pack_5200/iter1/system/iter1_weight.py rows('A'), system
+# 'frame', every row not named 'frame: H1 PAHT-CF printed body...', 'H1 body: ...' or 'H1 print: ...'): 1387.1 g frame
+# line - 1058.8 g print rows = 328.3 g
+NONPRINT_G = 328.3
+
+
 def narrative(res: dict, part: str) -> list:
     cs = res["concepts"]
     h = cs["h1"]
@@ -31,7 +37,7 @@ def narrative(res: dict, part: str) -> list:
             f"**buckling {rs['buckling_record']:.2f} ({hs['buckling_record']:.2f})** on the record rule and "
             f"{rs['buckling_section']:.2f} ({hs['buckling_section']:.2f}) on the stricter section rule, and "
             f"**cinch-cycled fatigue {rc['fatigue']:.2f} ({hc['fatigue']:.2f})**: both rubric bonuses are met "
-            "(buckling >= 1.15, cinch-cycled >= 1.0, which lifts the R1 hold). Carbon tube strength / fatigue "
+            "(buckling >= 1.15, cinch-cycled >= 1.0; CF-LITE's own reading: it does not lift the R1 hold on H1, it would only avoid the hold if CF-LITE replaced H1). Carbon tube strength / fatigue "
             f"{rs.get('tube_strength', 0):.2f} / {rs.get('tube_fatigue', 0):.2f}, tube-to-node bonds min {rs.get('bond_min', 0):.2f}.",
             f"- **The mass target is not met.** The ticket aimed at >= 150 g off the frame; the best concept that keeps every "
             f"margin saves {-r['mass']['delta_g']:.0f} g. Section 3 shows where the rest of the mass sits: the three printed "
@@ -185,7 +191,8 @@ def narrative(res: dict, part: str) -> list:
             "",
             f"It is the only concept that passes the strength gate against H1 on every row and is lighter "
             f"({r['mass']['delta_g']:+.0f} g). It also takes both bonuses: buckling {rs['buckling_record']:.2f} "
-            f"(target 1.15) and cinch-cycled fatigue {rc['fatigue']:.2f} (target 1.0, lifts the R1 hold for MT-1). "
+            f"(target 1.15) and cinch-cycled fatigue {rc['fatigue']:.2f} (target 1.0; CF-LITE's own reading: H1's R1 hold for MT-1 "
+            "stays on H1; CF-LITE would only avoid it if it replaced H1). "
             "It reads as carbon stays with printed knuckles (the look the owner asked frame_light2 for on 2026-11-09), "
             "and it removes the z 234 bolted split, the part of H1 with the most hardware and two review cycles.",
             "",
@@ -210,12 +217,14 @@ def narrative(res: dict, part: str) -> list:
             "",
             "### 5.2 Why not 900 g",
             "",
-            f"H1's frame line is {fl:.0f} g, of which {fl - 1069.3:.0f} g is outside the print (crown, rack / pawl, "
-            "bushings, Ti hip mount, inserts, pins, clevis hardware, torso-adjust webbing). Holding that, 900 g leaves "
-            f"about {900 - (fl - 1069.3):.0f} g for the print-plus-tubes; CF-LITE's print-plus-tubes is "
+            f"H1's frame line is {fl:.0f} g, of which {NONPRINT_G:.0f} g is outside the print (crown, rack / pawl, "
+            "bushings, Ti hip mount, inserts, pins, clevis hardware, torso-adjust webbing; the iter1_weight.py frame rows "
+            "that are not 'printed body' / 'H1 body:' / 'H1 print:' rows, BL-066 m4: the earlier 318 g subtracted the "
+            "STL's 1069.3 g from a frame line whose print rows book 1058.8 g). Holding that, 900 g leaves "
+            f"about {900 - NONPRINT_G:.0f} g for the print-plus-tubes; CF-LITE's print-plus-tubes is "
             f"{r['mass']['frame_print_g']:.0f} g. The only architecture in the repo that gets there is the v2 ladder "
             "(frame_light2 TENDON: printed nodes 238 g + tubes 103 g + wraps 40 g + bonds 22 g + pan 123 g, about "
-            "526 g + 318 g = about 844 g with H1's crown and hardware), but its rev C minimum was strength 1.04 / "
+            f"526 g + {NONPRINT_G:.0f} g = about {526 + NONPRINT_G:.0f} g with H1's crown and hardware), but its rev C minimum was strength 1.04 / "
             "fatigue 1.07 on the beam model, against H1's 1.63 / 1.25: it loses margin, and it lacks H1's lug arms, "
             "clevises and spine channel. So **no 900 g concept is offered as passing**. Iteration 2 could FE a "
             "TENDON-class ladder with H1's interfaces, sized to H1's margins (estimate 900-1000 g).",

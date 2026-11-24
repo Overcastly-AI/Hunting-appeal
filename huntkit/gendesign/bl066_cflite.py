@@ -75,14 +75,15 @@ def variant_defaults() -> dict:
             "sleeves": {"P1 lower node": {"bands": ((40.0, 80.0), (150.0, 190.0)), "bondline": 0.8},
                         "P2 lower-branch root": {"bands": ((196.0, 246.0),), "bondline": 0.5},
                         "P2 mid-bar knuckle": {"bands": ((312.0, 348.0),), "bondline": 0.5},
-                        "P2 z 420 lash collar": {"bands": ((411.0, 429.0),), "bondline": 0.5},
+                        "P2 z 420 lash collar": {"bands": ((411.0, 429.0),), "bondline": 0.5, "sleeve_t": 4.0},
                         "P2 upper-branch root": {"bands": ((440.0, 466.0),), "bondline": 0.5},
                         "P3 top node": {"bands": ((472.0, 543.5),), "bondline": 0.8}},
             # fail-safe: P1 one Ti M4 cross bolt at z 60 across x (below every crown-leg position: leg bottom z 171 at
             # torso 15); P3: no cross bolt is possible (the crown leg slides through the tube bore at every torso
-            # setting, z 171-601), so P3's fail-safe is a printed end cap over the tube's top end
+            # setting, z 171-601), so P3's fail-safe is two steel D4 dowel pins per side, each through the printed
+            # sleeve and ONE tube wall (opposite walls), flush with the bore, the 18.0 bore reamed through after
             "failsafe": {"P1 lower node": {"kind": "bolt", "z": 60.0},
-                         "P3 top node": {"kind": "end_cap"}}}
+                         "P3 top node": {"kind": "pins"}}}
 
 
 # sleeve -> (cut below, cut above) on bare tube; None = the tube's free end
@@ -133,7 +134,7 @@ def split(solid: np.ndarray, cf: np.ndarray, v: dict | None = None) -> dict:
     pr |= ring_mask(cen, *P1_SLEEVE_Z, r_out) & ok
     for sl, d in v["sleeves"].items():
         for z0, z1 in d["bands"]:
-            pr |= ring_mask(cen, z0, z1, r_out) & ok
+            pr |= ring_mask(cen, z0, z1, TUBE["od"] / 2 + d.get("sleeve_t", v["sleeve_t"])) & ok
     lab_part = part_of(cen)
     cut = pr & (lab_part == 0)
     pr &= lab_part > 0
@@ -303,11 +304,15 @@ def rerastered(meshes: dict, cf: np.ndarray, v: dict | None = None) -> dict:
             m &= lab_part == lv
             label[m] = lv
             added += int(m.sum())
-    # raster crumbs: keep each part's largest 26-connected body
+    # raster crumbs: keep each part's largest FACE-connected (6) body. A voxel hanging on by an edge or a corner shares
+    # 2 or 1 nodes: a hinge in the FE (BL-066 first eigen run: an 8-voxel toe of the L stay foot gave lam ~ 0)
+    from scipy import ndimage
+    g = FI._base()["dom"].grid
     crumbs = []
     for lv in np.unique(label[label > 0]):
         m = label == lv
-        L, n = _label26(m)
+        lab6, n = ndimage.label(g.to_array(m))
+        L = g.from_array(lab6)
         if n > 1:
             sizes = np.bincount(L[m])
             main = int(np.argmax(sizes))
@@ -464,7 +469,8 @@ def bond_stresses(dN: float, dT: float, L: float, k_ax: float, k_T: float) -> di
 ULTIMATE_CASES = ("hipbelt_off_abuse", "overload")
 
 
-def bonds(name: str, v: dict | None = None, bases=FI.BASES, gw: float = 1.0) -> dict:
+def bonds(name: str, v: dict | None = None, bases=FI.BASES, gw: float = 1.0, alt: str | None = None,
+          walls: dict | None = None) -> dict:
     """Per sleeve, from the stored tube resultants (``make_resultants``): transfer dN / dT / dM per set; checks
     - avg: allowable / average >= 1 at the factored load (HA-LS-1);
     - peak: allowable / Volkersen peak >= 1 at LIMIT (factored / case factor) for limit cases, and at the factored load
@@ -475,6 +481,10 @@ def bonds(name: str, v: dict | None = None, bases=FI.BASES, gw: float = 1.0) -> 
       and printed-sleeve bearing (37.6 MPa, M2), each wall / pin taking half the axial force plus the torque couple;
     - tube open hole at the fail-safe stations (M2).
     ``gw``: divide every model torque by gw (sensitivity: the voxel ring over-attracts torsion by GJ x 2.3).
+    ``alt``: a second run of the same sets (``check_gj``): the torque per set is the lower of the two upper bounds;
+    bases without an alt run keep the main torque.
+    ``walls``: measured printed adherend per sleeve (``sleeve_walls``): the Volkersen adherend is
+    max(design sleeve wall, measured mean).
     Returns per sleeve: margins with their governing set, and the largest limit transfers dN / dT (T6p-T)."""
     v = v or variant_defaults()
     allow = BOND_DRY_MPA * BOND_HOT_WET
@@ -486,15 +496,19 @@ def bonds(name: str, v: dict | None = None, bases=FI.BASES, gw: float = 1.0) -> 
         bands = d["bands"]
         L = min(b1 - b0 for b0, b1 in bands)          # P1: one band takes all (ASSUMPTION P1-BANDS)
         Lb = max(b1 for _, b1 in bands) - min(b0 for b0, _ in bands)
-        k_ax = volkersen_k(L, d["bondline"], "axial", v["sleeve_t"])
-        k_T = volkersen_k(L, d["bondline"], "torque", v["sleeve_t"])
+        t_s = d.get("sleeve_t", v["sleeve_t"])
+        if walls and sl in walls:
+            t_s = max(t_s, walls[sl]["t_mean_mm"])
+        k_ax = volkersen_k(L, d["bondline"], "axial", t_s)
+        k_T = volkersen_k(L, d["bondline"], "torque", t_s)
         W = {}
 
         def keep(key, val, tag, extra=None):
             if key not in W or val < W[key]["margin"]:
                 W[key] = {"margin": val, "where": tag, **(extra or {})}
         lim = {"dN_n": 0.0, "dT_nmm": 0.0, "dN_set": "", "dT_set": "", "dN_with_dT": 0.0, "dT_with_dN": 0.0,
-               "fat_dN_n": 0.0, "fat_dT_nmm": 0.0, "c8_dN_n": 0.0, "c8_dT_nmm": 0.0}
+               "fat_dN_n": 0.0, "fat_dT_nmm": 0.0, "c8_dN_n": 0.0, "c8_dT_nmm": 0.0,
+               "factored_dN_n": 0.0, "factored_dT_nmm": 0.0, "factored_dN_set": "", "factored_dT_set": ""}
         fs = v["failsafe"].get(sl)
         for b in bases:
             p = FI.OUT / f"tube_{name}_{b}.npz"
@@ -502,14 +516,24 @@ def bonds(name: str, v: dict | None = None, bases=FI.BASES, gw: float = 1.0) -> 
                 continue
             z = np.load(p)
             meta = [json.loads(m) for m in z["meta"]]
+            pa = FI.OUT / f"tube_{alt}_{b}.npz" if alt else None
+            za = np.load(pa) if (pa is not None and pa.exists()) else None
+            if za is not None and [json.loads(m)["set"] for m in za["meta"]] != [m["set"] for m in meta]:
+                raise RuntimeError("alt run sets differ")
             for sd in ("R", "L"):
                 A = z[f"{sd}_{lo:g}"] if lo is not None else np.zeros((len(meta), 6))
                 B = z[f"{sd}_{hi:g}"] if hi is not None else np.zeros((len(meta), 6))
                 dd = np.asarray(B) - np.asarray(A)
+                if za is not None:
+                    Aa = za[f"{sd}_{lo:g}"] if lo is not None else np.zeros((len(meta), 6))
+                    Ba = za[f"{sd}_{hi:g}"] if hi is not None else np.zeros((len(meta), 6))
+                    dT_alt = np.abs(np.asarray(Ba) - np.asarray(Aa))[:, 5]
                 for i, mt in enumerate(meta):
                     fac = float(mt["factor"])
                     dN = abs(float(dd[i, 0]))
                     dT = abs(float(dd[i, 5])) / gw
+                    if za is not None:
+                        dT = min(dT, float(dT_alt[i]))
                     dM = float(np.hypot(dd[i, 1], dd[i, 2]))
                     tag = f"{b}|{sd}|{mt['set']}"
                     ultimate = fac <= 1.0
@@ -530,6 +554,10 @@ def bonds(name: str, v: dict | None = None, bases=FI.BASES, gw: float = 1.0) -> 
                         keep("fatigue", 0.3 * BOND_DRY_MPA / max(st["avg"] * f16, 1e-9), tag)
                         lim["fat_dN_n"] = max(lim["fat_dN_n"], dN * f16)
                         lim["fat_dT_nmm"] = max(lim["fat_dT_nmm"], dT * f16)
+                    if dN > lim["factored_dN_n"]:
+                        lim.update(factored_dN_n=dN, factored_dN_set=tag)
+                    if dT > lim["factored_dT_nmm"]:
+                        lim.update(factored_dT_nmm=dT, factored_dT_set=tag)
                     # transfers at limit (the T6p-T pass lines; C7 / C8 are limit = factored)
                     dNl, dTl = dN / (1.0 if ultimate else fac), dT / (1.0 if ultimate else fac)
                     if dNl > lim["dN_n"]:
@@ -538,10 +566,14 @@ def bonds(name: str, v: dict | None = None, bases=FI.BASES, gw: float = 1.0) -> 
                         lim.update(dT_nmm=dTl, dT_set=tag, dN_with_dT=dNl)
                     if fs:
                         Fw = math.hypot(dNl / 2, dTl / TUBE["od"])
-                        keep("failsafe_tube_bearing", FI.TUBE_BEARING_MPA / max(Fw / (FAILSAFE_BOLT_D * t_tube), 1e-9), tag)
-                        keep("failsafe_print_bearing", BEARING_PRINT / max(Fw / (FAILSAFE_BOLT_D * v["sleeve_t"]), 1e-9),
+                        fd = fs.get("d", FAILSAFE_BOLT_D)
+                        n_fs = fs.get("n", 1)          # fail-safe elements in parallel per side (pairs of walls)
+                        Fw = Fw / n_fs
+                        keep("failsafe_tube_bearing", FI.TUBE_BEARING_MPA / max(Fw / (fd * t_tube), 1e-9), tag)
+                        keep("failsafe_print_bearing", BEARING_PRINT / max(Fw / (fd * fs.get("print_t", t_s)), 1e-9),
                              tag)
-        out[sl] = {"L_bond_mm": L, "L_bearing_mm": Lb, "bondline_mm": d["bondline"], "k_axial": round(k_ax, 2),
+        out[sl] = {"L_bond_mm": L, "L_bearing_mm": Lb, "bondline_mm": d["bondline"], "adherend_t_mm": round(t_s, 2),
+                   "k_axial": round(k_ax, 2),
                    "k_torque": round(k_T, 2),
                    **{kk: {**vv, "margin": round(float(vv["margin"]), 3)} for kk, vv in W.items()},
                    "limit_transfer": {k: (round(v_, 1) if isinstance(v_, float) else v_) for k, v_ in lim.items()},
@@ -646,7 +678,8 @@ def lash_check(solid: np.ndarray | None = None, weight: np.ndarray | None = None
                log=print) -> dict:
     """BL-068 levelled W straps: the wrap pulls (bl068_lash_loads.json, design 225 N per end, proof 337.5 N) applied
     to the lash pads of the body (nodes of the body within 8 mm of each lash point), hip boss clamped as the record
-    solve, alone (the wraps' own pulls are near self-equilibrated). After (levelled) and before (helix) states.
+    solve, alone (the wraps' own pulls are near self-equilibrated). Load-patch and clamp elements are left out of the
+    FI population, as the record check does. After (levelled) and before (helix) states.
     Margin = 1 / (FI of the 99th percentile printed voxel outside the load patches at LASH_FACTOR x design), FI
     by the record material rule (frame_comp_d.fi_material, PAHT-CF 88 / 47 MPa x 0.8); the max-voxel FI is reported
     too."""
@@ -684,7 +717,9 @@ def lash_check(solid: np.ndarray | None = None, weight: np.ndarray | None = None
             patch[n] = True
             pts[k] = {"nodes": int(n.size), "F_factored_n": [round(float(q), 1) for q in f]}
         Sx = vb.prestress(F)[0]
-        ex = patch[g.enodes[vb.ae]].any(axis=1) | (np.linalg.norm(
+        clamp = np.zeros(g.nn, bool)
+        clamp[np.where(fixed[0::3])[0]] = True
+        ex = (patch | clamp)[g.enodes[vb.ae]].any(axis=1) | (np.linalg.norm(
             cen_a[:, None, :] - np.array([r["point_xyz_mm"] for r in d[state].values()])[None], axis=2).min(axis=1)
             < 10.0)
         fi = D.fi_material(Sx[printed_a & ~ex].astype(float), D.MATERIALS[H1.MAT])
@@ -696,4 +731,215 @@ def lash_check(solid: np.ndarray | None = None, weight: np.ndarray | None = None
                                 "max_at_mm": [round(float(q), 1) for q in cen_a[printed_a & ~ex][wi]]}
         log(f"  lash {tag} {state}: margin p99 {1 / k99:.2f}, max {1 / kmax:.2f} at {out['states'][state]['max_at_mm']}")
     vb.free()
+    return out
+
+
+# ================================================================================================ sleeve wall (measured)
+T_EFF_CAP = 10.0           # ASSUMPTION SHEAR-LAG: printed material beyond 10 mm off the bore is not counted as adherend
+
+
+def sleeve_walls(label: np.ndarray, v: dict | None = None, sectors: int = 16) -> dict:
+    """Printed adherend thickness over each bonded band, measured on the re-rastered body: per voxel layer and per
+    angular sector about each tube axis, the contiguous printed depth from the tube OD outward (2 mm steps), capped at
+    T_EFF_CAP; reported as the circumferential mean (used for the Volkersen adherend E t / G t) and the thinnest
+    sector."""
+    v = v or variant_defaults()
+    c = FI._base()
+    cen = c["cen"]
+    pr = label > 0
+    out = {}
+    for sl, d in v["sleeves"].items():
+        lv = {"P1": 1, "P2": 2, "P3": 3}[sl[:2]]
+        rows = []
+        for sd, sg in (("R", 1.0), ("L", -1.0)):
+            dx = cen[:, 0] - sg * TUBE["x"]
+            dy = cen[:, 1] - TUBE["y"]
+            r = np.hypot(dx, dy)
+            th = np.arctan2(dy, dx)
+            near = (np.sign(cen[:, 0]) == sg) & (r < TUBE["od"] / 2 + T_EFF_CAP + H) & (r >= TUBE["od"] / 2 - 1e-6)
+            for b0, b1 in d["bands"]:
+                for z in np.unique(cen[near & (cen[:, 2] >= b0) & (cen[:, 2] <= b1), 2]):
+                    lay = near & np.isclose(cen[:, 2], z)
+                    for k in range(sectors):
+                        a0 = -np.pi + 2 * np.pi * k / sectors
+                        s = lay & (th >= a0) & (th < a0 + 2 * np.pi / sectors)
+                        if not s.any():
+                            continue
+                        rr = np.sort(np.unique(np.round(r[s & pr & (label == lv)] / H)))
+                        # contiguous from the first ring
+                        t = 0.0
+                        r0 = round((TUBE["od"] / 2 + 1.0) / H)
+                        for q in rr:
+                            if q <= r0 + t / H + 0.5:
+                                t = (q - r0 + 1) * H
+                            else:
+                                break
+                        rows.append(min(t, T_EFF_CAP))
+        a = np.asarray(rows)
+        out[sl] = {"t_mean_mm": round(float(a.mean()), 2), "t_p10_mm": round(float(np.percentile(a, 10)), 2),
+                   "t_min_mm": round(float(a.min()), 2), "samples": int(a.size)}
+    return out
+
+
+# ================================================================================================ mass
+RHO_MMA = 0.98e-3
+RHO_STEEL = 7.85e-3
+
+
+def h1_stl_in_grid_g() -> float:
+    """The released H1 STL clipped to the FE grid's box (manifold3d intersection), g: the part of the print the voxel
+    model (and the CF-LITE parts) covers; outside it (fairlead tops, US2 clevises, about 92 g) nothing changes."""
+    import manifold3d as m3d
+    import trimesh
+    from .surface import _to_manifold
+    g = FI._base()["dom"].grid
+    nc = g.node_coords()
+    lo, hi = nc.min(axis=0), nc.max(axis=0)
+    box = m3d.Manifold.cube(tuple((hi - lo).tolist())).translate(tuple(lo.tolist()))
+    return float((_to_manifold(trimesh.load(FI.STL)) ^ box).volume()) * FI.RHO_PAHT
+
+
+def mass(con: dict, v: dict | None = None, extra_rows: dict | None = None) -> dict:
+    """Frame-line mass on the EXPORTED parts: printed delta = the part STLs' exact volume - the H1 STL's exact volume
+    inside the same grid box (both x 1.06 g/cm3), applied to the 1069.32 g released STL; plus tubes, bond (every band,
+    both sides), fail-safe hardware (P1: Ti M4 x 30 cross bolt + nut per side; P3: 2 steel D4 x 6 flush dowel pins
+    per side), less the z 234 joint hardware. The 2 mm raster delta (frame_iter1.mass's rule) is reported as a
+    cross-check: the raster over-reads 3 mm walls and counts the bond layer voxels as print. ``extra_rows``: sizing
+    changes (g)."""
+    v = v or variant_defaults()
+    s0 = FI.baseline_solid()
+    vv = H ** 3
+    g_raster = float(con["printed"].sum()) * vv * FI.RHO_PAHT
+    g0 = float(s0.sum()) * vv * FI.RHO_PAHT
+    g_stl = sum(r["g"] for r in con["info"]["stl"].values())
+    g_h1box = h1_stl_in_grid_g()
+    stl_g = json.loads((PACK / "analysis" / "bl058.json").read_text())["stl"]["h1_assembled"]["g"]
+    ts = FI.tube_section()
+    L = TUBE["z1"] - TUBE["z0"]
+    bond_v = 2 * sum(math.pi * TUBE["od"] * (b1 - b0) * d["bondline"] for d in v["sleeves"].values()
+                     for b0, b1 in d["bands"])
+    bolt = math.pi / 4 * FAILSAFE_BOLT_D ** 2 * 30.0 * 4.43e-3 + 0.8
+    pin = math.pi / 4 * FAILSAFE_BOLT_D ** 2 * 6.0 * RHO_STEEL
+    j = json.loads((PACK / "analysis" / "frame_mass_h1.json").read_text())["h1"]["joint_hardware_g"]
+    rows = {"print (released STL, bl058.json stl)": stl_g,
+            "printed delta: P1 + P2 + P3 STLs - H1 STL inside the FE box (exact volumes)": round(g_stl - g_h1box, 1),
+            f"2 carbon tubes 22 x 18 x {L:.0f} mm (record density)": round(2 * ts["g_per_mm"] * L, 1),
+            "MMA bond, every band both sides (0.98 g/cm3)": round(bond_v * RHO_MMA, 1),
+            "P1 fail-safe: 2 Ti M4 x 30 cross bolts + nuts (ASSUMPTION BOLT-G)": round(2 * bolt, 1),
+            "P3 fail-safe: 4 steel D4 x 6 flush dowel pins": round(4 * pin, 1),
+            "z 234 joint hardware deleted (frame_mass_h1.json)": -round(sum(j.values()), 1)}
+    rows.update(extra_rows or {})
+    total = round(sum(rows.values()), 1)
+    fl0 = json.loads((PACK / "iter1" / "frame" / "frame_iter1.json").read_text())["frame_line_h1_g"]
+    return {"rows": rows, "frame_print_g": total, "delta_g": round(total - stl_g, 1),
+            "frame_line_g": round(fl0 + total - stl_g, 1), "frame_line_h1_g": fl0,
+            "parts_stl_g": {k: r["g"] for k, r in con["info"]["stl"].items()},
+            "h1_stl_in_box_g": round(g_h1box, 1),
+            "cross_check_raster_delta_g": round(g_raster - g0, 1),
+            "cross_check_bond_layer_voxels_g": round(con["info"]["bond_layer_voxels"] * vv * FI.RHO_PAHT, 1)}
+
+
+def check_gj(v: dict | None = None, bases=("fine_sm8", "fine"), log=print) -> dict:
+    """B2 torque submodel: the same body with the carbon ring's weight divided by its GJ over-stiffness (so the ring's
+    GJ is the real tube's and its EI is 2.3 x low). With EI low the stays' bending path is softer than real and the
+    tube attracts MORE torsion than the real tube would; with EI matched (the main run) GJ is 2.3 x high and it also
+    attracts more. Both are upper bounds on the real tube torque; the bond check takes the lower of the two per
+    sleeve and set (``torque_bound``)."""
+    v = v or variant_defaults()
+    con = dict(build(v, log=log))
+    gj = con["info"]["tube"]["GJ_ratio_vox_over_tube"]
+    w = con["weight"].copy()
+    w[con["cf"]] = w[con["cf"]] / gj
+    con.update(weight=w, name=v["name"] + "_gj")
+    old_tr = FI.tube_resultants
+    FI.tube_resultants = make_resultants(w)
+    try:
+        return FI.check(con["name"], bases=bases, log=log, con=con)
+    finally:
+        FI.tube_resultants = old_tr
+
+
+# ================================================================================================ sizing (item 7)
+BOND_KEYS = ("avg", "peak", "peak_c8", "fatigue", "bearing", "failsafe_tube_bearing", "failsafe_print_bearing")
+MAX_BONDLINE = 1.5          # ASSUMPTION GAP-FILL: MMA bondline up to 1.5 mm (glass beads), coupons at that line
+MAX_SLEEVE_T = 10.0
+
+
+def bond_min(b: dict) -> tuple:
+    best = (9e9, "")
+    for sl, r in b.items():
+        for k in BOND_KEYS:
+            if k in r and r[k]["margin"] < best[0]:
+                best = (r[k]["margin"], f"{sl} {k}")
+    return best
+
+
+def sleeve_ring_g(sl: str, d: dict, t_new: float, t_have: float) -> float:
+    """Printed mass to thicken a bonded band's sleeve from t_have (measured mean) to t_new, both sides."""
+    if t_new <= t_have:
+        return 0.0
+    r0 = TUBE["od"] / 2
+    L = sum(b1 - b0 for b0, b1 in d["bands"])
+    return 2 * math.pi * ((r0 + t_new) ** 2 - (r0 + t_have) ** 2) * L * FI.RHO_PAHT
+
+
+def failsafe_g(fs: dict) -> float:
+    """Fail-safe hardware, both sides: P1 Ti cross bolts (length 30 mm) + nut / washer (0.8 g x (d / 4)^2 each);
+    P3 flush steel dowel pins, two per element (opposite walls), length = printed wall + tube wall."""
+    n, d = fs.get("n", 1), fs.get("d", FAILSAFE_BOLT_D)
+    if fs["kind"] == "bolt":
+        return 2 * n * (math.pi / 4 * d ** 2 * 30.0 * 4.43e-3 + 0.8 * (d / 4) ** 2)
+    L = fs.get("print_t", SLEEVE_T) + 2.0
+    return 2 * 2 * n * math.pi / 4 * d ** 2 * L * RHO_STEEL
+
+
+def size_bonds(name: str, alt: str | None, walls: dict, v: dict | None = None, bases=FI.BASES) -> dict:
+    """Smallest per-sleeve change (sleeve wall t from the measured mean up to 10 mm in 1 mm steps, bondline 0.5 / 0.8 /
+    1.0 / 1.25 / 1.5 mm, fail-safe: elements 1-3 per side, d 4 / 5 / 6 mm, printed wall at the fail-safe up to 10 mm)
+    that brings every bond row of the sleeve to >= 1 on the stored transfers, cheapest in grams first. Transfers are
+    held at the run's values (a thicker sleeve stiffens the node a little: the sized variant is re-run to confirm)."""
+    import copy
+    v = v or variant_defaults()
+    out = {}
+    for sl, d in v["sleeves"].items():
+        t_have = max(d.get("sleeve_t", v["sleeve_t"]), walls[sl]["t_mean_mm"])
+        best = None
+        for t in [t_have] + [float(x) for x in range(int(math.ceil(t_have)), int(MAX_SLEEVE_T) + 1)]:
+            for bl in sorted({d["bondline"], 0.8, 1.0, 1.25, MAX_BONDLINE}):
+                if bl < d["bondline"]:
+                    continue
+                fsl = [None] if sl not in v["failsafe"] else [
+                    {**v["failsafe"][sl], "n": n, "d": dd, "print_t": pt}
+                    for n in (1, 2, 3) for dd in (4.0, 5.0, 6.0) for pt in (t, MAX_SLEEVE_T)]
+                for fs in fsl:
+                    vv = copy.deepcopy(v)
+                    vv["sleeves"] = {sl: {**d, "bondline": bl, "sleeve_t": t}}
+                    if fs is not None:
+                        vv["failsafe"] = {sl: fs}
+                    b = bonds(name, vv, bases=bases, alt=alt)
+                    m = bond_min(b)
+                    g = sleeve_ring_g(sl, d, t, t_have) + 2 * math.pi * TUBE["od"] * sum(
+                        b1 - b0 for b0, b1 in d["bands"]) * (bl - d["bondline"]) * RHO_MMA
+                    if fs is not None:
+                        g += failsafe_g(fs) - failsafe_g(v["failsafe"][sl])
+                        if fs["print_t"] > t:
+                            g += 2 * fs["n"] * math.pi * ((fs["print_t"] + 11) ** 2 - (t + 11) ** 2) * 0.25 * \
+                                (3 * fs["d"]) * FI.RHO_PAHT
+                    if m[0] >= 1.0 and (best is None or g < best["g"]):
+                        best = {"g": round(g, 1), "sleeve_t": t, "bondline": bl, "failsafe": fs, "min": round(m[0], 3),
+                                "gov": m[1]}
+        if best is None:
+            vv = copy.deepcopy(v)
+            vv["sleeves"] = {sl: {**d, "bondline": MAX_BONDLINE, "sleeve_t": MAX_SLEEVE_T}}
+            if sl in v["failsafe"]:
+                vv["failsafe"] = {sl: {**v["failsafe"][sl], "n": 3, "d": 6.0, "print_t": MAX_SLEEVE_T}}
+            m = bond_min(bonds(name, vv, bases=bases, alt=alt))
+            gl = sleeve_ring_g(sl, d, MAX_SLEEVE_T, t_have) + 2 * math.pi * TUBE["od"] * sum(
+                b1 - b0 for b0, b1 in d["bands"]) * (MAX_BONDLINE - d["bondline"]) * RHO_MMA
+            if sl in v["failsafe"]:
+                gl += failsafe_g(vv["failsafe"][sl]) - failsafe_g(v["failsafe"][sl])
+            # bond strength a T6p-T coupon would have to show (dry, MPa) for the sleeve at the limits to pass
+            best = {"g": None, "feasible": False, "at_limits_min": round(m[0], 3), "gov": m[1],
+                    "g_at_limits": round(gl, 1), "dry_bond_needed_mpa": round(BOND_DRY_MPA / m[0], 2)}
+        out[sl] = best
     return out

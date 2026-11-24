@@ -126,7 +126,7 @@ def analysis_md(rec: dict) -> str:
         a(f"None. The real margin ({_f(v['real_margin']['static_cinch'])} static, "
           f"{_f(v['real_margin']['cinch_cycled'])} cinch-cycled) is above 1.0"
           + (" and above the 1.15 goal" if v["bonus_met"] else "") + ". No geometry, mass or bag interface changes. "
-          "If the owner wants margin on the record rule itself, BL-061's box members (+55 g) remain the option.\n")
+          "If the owner wants margin on the record rule itself, BL-061's box members (+57 g: `frame_iter1.grow_members` on the released print, 2 mm raster at 1.06 g/cm3, BL-066 m3) remain the option.\n")
     a("## 6. Record changes\n")
     a("- `bl058.json` gains a `bl065_eigen` block (written by `bl065_report.update_bl058`): the eigen readings, the "
       "governing mode, the squeeze case and `buckling_of_record` = min(member eigen with the stay tops free, frame "

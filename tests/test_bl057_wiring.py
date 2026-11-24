@@ -232,7 +232,7 @@ def test_shopping_and_count(kit):
     assert any("HB-6b" in x["tests"] and scr in x["item"] for x in sh)
     assert not any("HB-6b" in x["tests"] and "M5 x 14" in x["item"] for x in sh)
     runs = {o["test"] for o in kit["order"] if o["stage"] == "run"}
-    assert "HB-6b" in runs and len(runs) == 87
+    assert "HB-6b" in runs and len(runs) == 88          # BL-068: + RT-PULL
 
 
 # ------------------------------------------------------------------ review 6 additions (orchestrator, BL-057)

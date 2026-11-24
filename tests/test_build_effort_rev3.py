@@ -79,8 +79,9 @@ def test_pattern_marks(rs):
     assert sum(1 for ln in g3.internal_lines if ln.kind == "placement" and ln.label.startswith("B-11 lash tab")) == 4
     assert rs.pieces["B-11"].quantity == 8 and rs.geo["b11"]["per_gusset"] * 2 == 8
     kw = sum(n.label.count("K-W keeper") for n in g3.notches)
-    assert kw == 4                                       # BL-044 KW-W3-OFF: W1 / W2 only (R and L each)
-    assert rs.geo["kw_z"]["W1"]["R"] < rs.geo["kw_z"]["W1"]["L"] < rs.geo["kw_z"]["W2"]["R"]
+    # BL-044 KW-W3-OFF: W1 / W2 only; BL-068 W-LEVEL + KW-HP-L: W1 R / L and W2 R (W2 L uses the z 420 hard-point loop)
+    assert kw == 3
+    assert rs.geo["kw_z"]["W1"]["R"] == rs.geo["kw_z"]["W1"]["L"] < rs.geo["kw_z"]["W2"]["R"] == rs.geo["kw_z"]["W2"]["L"]
     b28 = [ln.label for ln in rs.pieces["B-02h"].internal_lines if "B-28 front tab" in (ln.label or "")
            and "box-X" in ln.label]
     assert b28 and all("21x20" in s and "OUTSIDE" in s for s in b28)

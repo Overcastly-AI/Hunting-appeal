@@ -19,7 +19,8 @@ Original IP only: nothing here is copied; the leaders are mass and construction 
 | Mystery Ranch Guide Light MT | **sources disagree**: MR's own workbook says a removable 7000-series aluminium frame; a goHUNT article says three flat composite stays | no frame-only mass published; Metcalf on Guide Light 6.1 lb complete | | [MR workbook][mr-wb] (secondary), [goHUNT 2022][gh-2022] (secondary) |
 
 All of these masses **include the belt and harness** (frame system). Our like-for-like "frame" in the ledger is the
-structure only (body, crown, torso adjust, hip mount): 1453 g, plus belt 536 g and harness 217 g
+structure only (body, crown, torso adjust, hip mount): 1391.1 g proven now / 1387.1 g after tests
+(`designs/pack_5200/iter1/system/iter1_weight.json` totals, BL-062; the 1453 g quoted here before predates BL-062's re-roll, BL-066 m2), plus belt 536 g and harness 217 g
 (`huntkit/mass/ledger.py`, BL-058). The H1 print alone (1069 g) is about the leaders' whole frame system. That gap is
 the case for this track: the leaders carry the load on **straight carbon stays** (SG, Exo) or a **carbon sheet**
 (Kifaru), and spend their mass on soft goods.

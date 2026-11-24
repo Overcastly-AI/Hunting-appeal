@@ -63,10 +63,7 @@ def state(p1: bool = True, p2: bool = True, p3: bool = True):
     import bag_concepts as BC
     import corrie_f as F
     import strap_tails as ST
-    import weight_pass_corrie as WPC
     old_geo, old_bc = ST._geo, BC.GEOM["haul_wraps"]
-    wrow = next(r for r in WPC.GEO["weight"]["rows"] if r["item"].startswith("3 frame-anchored wraps"))
-    old_w = (wrow["item"], wrow["mass_g"])
     if not p1:
         helix = helix_wraps()
         g0 = ST._geo()
@@ -77,23 +74,12 @@ def state(p1: bool = True, p2: bool = True, p3: bool = True):
             return g
         ST._geo = _geo
         BC.GEOM["haul_wraps"] = helix
-        # the ledger's B.2 basis books the W webbing from geometry.yaml's weight row (weight_pass_corrie.GEO): the
-        # helix cut lengths, as build_geometry.weight_budget writes that row
-        L_m = sum(w["cut_length_mm"] for w in helix) / 1000.0
-        wrow["mass_g"] = round(_BG().hw("poly_webbing_25mm", length_m=L_m), 1)
-        wrow["item"] = f"3 frame-anchored wraps, 25 mm coyote poly webbing {L_m:.2f} m"
     try:
         with F.cprime(roll_taper=bool(p2), crown_rear="box" if p3 else "lock"):
             yield
     finally:
         ST._geo = old_geo
         BC.GEOM["haul_wraps"] = old_bc
-        wrow["item"], wrow["mass_g"] = old_w
-
-
-def yaml_geo() -> dict:
-    import yaml
-    return yaml.safe_load((HERE / "geometry.yaml").read_text())
 
 
 def helix_wraps() -> list:
@@ -119,14 +105,6 @@ def measure_state(p1: bool, p2: bool, p3: bool) -> dict:
         inc = {"base": ("base",), "as_hunted": ("base", "as_hunted"), "meat_trip": ("base", "as_hunted", "meat_trip")}
         bag = {k: round(sum(r["g"] for r in rows if r["cfg"] in v), 2) for k, v in inc.items()}
         iw = {f"{sc}_{cfg}": IW.total(sc, cfg) for sc in ("P", "A") for cfg in ("base", "as_hunted")}
-        if not p1:
-            # the roll-up reads geometry.yaml's W webbing row through its own cached sources (strap_arch / ledger), which
-            # the in-process switch does not reach: book the helix row there by hand (build_geometry.weight_budget rule)
-            BG = _BG()
-            lev = [w for w in yaml_geo()["haul_wraps"]]
-            d_row = round(BG.hw("poly_webbing_25mm", length_m=sum(w["cut_length_mm"] for w in lev) / 1000.0), 1) - \
-                round(BG.hw("poly_webbing_25mm", length_m=sum(w["cut_length_mm"] for w in helix_wraps()) / 1000.0), 1)
-            iw = {k: round(v - d_row, 1) for k, v in iw.items()}
         cs = F.crown_kit_straps("M")
         wr = {w["id"]: w["after"]["cut_mm"] for w in ST.wrap_rows("M")}
         rr = ST.roll_row()
@@ -504,10 +482,13 @@ def screens(before, after, lv: dict, out_dir: Path = SCREENS) -> list:
     return shots
 
 
+BEFORE_REF = "0a42492"       # the BL-067 commit: the last release before BL-068 (the "before" markers)
+
+
 def marker_before() -> dict | None:
-    """markers.json as committed before this regeneration (git HEAD), for the before / after table."""
+    """markers.json as released before BL-068 (git BEFORE_REF), for the before / after table."""
     try:
-        r = subprocess.run(["git", "show", "HEAD:outputs/release/pack5200_corrie_f_rev3/patterns/markers/markers.json"],
+        r = subprocess.run(["git", "show", f"{BEFORE_REF}:outputs/release/pack5200_corrie_f_rev3/patterns/markers/markers.json"],
                            cwd=ROOT, capture_output=True, text=True, check=True)
         return json.loads(r.stdout)
     except (subprocess.CalledProcessError, ValueError, FileNotFoundError):

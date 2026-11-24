@@ -1019,6 +1019,7 @@ def haul_wraps(Hf, topo, level: bool | None = None, level_z=None):
         ab = list(W_HELIX)
     spec = [(f"W{i + 1}", r, hp[r], l_, hp[l_]) for i, (r, l_) in enumerate(ab)] + \
            [("W3", "crown top bar R (moves with torso)", crown, "crown top bar L (moves with torso)", [-crown[0]] + crown[1:])]
+    helix = {} if not level else {w["id"]: w for w in haul_wraps(Hf, topo, level=False)}
     out = []
     for wid, nR, aR, nL, aL in spec:
         z = (aR[2] + aL[2]) / 2
@@ -1034,7 +1035,12 @@ def haul_wraps(Hf, topo, level: bool | None = None, level_z=None):
         out.append({"id": wid, "anchor_R": nR, "anchor_L": nL, "z_R_at_19in": round(aR[2], 1),
                     "z_L_at_19in": round(aL[2], 1), "z_at_19in": round(z, 1),
                     "anchor": nR, "hardware": "ladder lock at R anchor, aluminium G-hook at L anchor (HAUL family)",
-                    "carry_path_mm": round(carry), "haul_path_mm": round(haul), "cut_length_mm": round(haul + 250)})
+                    "carry_path_mm": round(carry), "haul_path_mm": round(haul), "cut_length_mm": round(haul + 250),
+                    # BL-068: the v3.1 helix values (the released SPINE record and every mass booked on it keep these)
+                    "carry_path_helix_mm": helix[wid]["carry_path_mm"] if wid in helix else round(carry),
+                    "cut_length_helix_mm": helix[wid]["cut_length_mm"] if wid in helix else round(haul + 250),
+                    "haul_path_helix_mm": helix[wid]["haul_path_mm"] if wid in helix else round(haul),
+                    "z_at_19in_helix": helix[wid]["z_at_19in"] if wid in helix else round(z, 1)})
     return out
 
 
@@ -1335,7 +1341,9 @@ def weight_budget(P, Hf, diag, wraps, info):
         mh["mass_g"], "poly_webbing_38mm record x cut lengths (meat_harness); hook 9 g, cam 22 g ASSUMPTION. The stubs "
                       "became fairlead eyes: net in the attachment line 'webbing eyes, net of old stubs'")
     row("internal meat harness", "B-01 strap ports: 6 Hypalon patches (B-12)", sub_mass.get("meat", 0.0), "computed")
-    wrap_len = sum(w["cut_length_mm"] for w in wraps) / 1000
+    # BL-068: the v3.1 record books the helix wraps it was released with (frozen, as v31_tube_baseline); the level-wrap
+    # cut change is booked on the adopted bag (corrie_f.bl068_rows)
+    wrap_len = sum(w.get("cut_length_helix_mm", w["cut_length_mm"]) for w in wraps) / 1000
     row("haul wraps (= compression)", f"3 frame-anchored wraps, 25 mm coyote poly webbing {wrap_len:.2f} m",
         hw("poly_webbing_25mm", length_m=wrap_len), "records; lengths from the 3D teardrop (haul_wraps)")
     row("haul wraps (= compression)", "3 aluminium G-hooks (HAUL family) + 3 ladder locks", 3 * 4 + 3 * hw("ladder_lock_25mm"),

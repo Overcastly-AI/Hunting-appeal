@@ -183,7 +183,8 @@ def test_w3_has_no_bag_fixed_keeper(pk):
     assert set(rs.geo["kw_z"]) == {"W1", "W2"}
     g3 = rs.pieces["B-03"]
     assert not any("K-W keeper W3" in (n.label or "") for n in g3.notches)
-    assert next(w for w in rs.webbing if w["id"] == "K-W")["qty"] == 4
+    # BL-068 DECISION KW-HP-L: level W2 runs through the L z 420 hard-point loop, so 3 K-W loops (W1 R / L, W2 R)
+    assert next(w for w in rs.webbing if w["id"] == "K-W")["qty"] == 3
     k = rs.geo["kw_w3"]
     assert k["worst"]["dz_mm"] == pytest.approx(-101.6) and k["worst"]["loop_cross_load_n"] > 100.0
     rows = {n: g for s, n, g, src in P.F.bl044_rows()}

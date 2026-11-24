@@ -97,7 +97,8 @@ def test_bl039_register_fixes():
     cut = K.crown_cut_mm()
     for k, d in cut.items():
         assert d["path_limit_mm"] - d["longest_mm"] == pytest.approx(d["spare_mm"], abs=0.1) and d["spare_mm"] >= 40
-        assert d["cut_mm"] == pytest.approx(d["path_limit_mm"] + 2 * 50.0, abs=0.1)
+        # BL-068 P3: one grip at the front lock + the 30 mm rear fold (BL-031 / 039: two grips)
+        assert d["cut_mm"] == pytest.approx(d["path_limit_mm"] + 50.0 + 30.0, abs=0.1)
     assert str(cut["S"]["path_limit_mm"]) in reg["T9-R3c"]["pass_fail"]
 
 
