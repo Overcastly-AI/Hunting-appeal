@@ -175,3 +175,13 @@ def test_t1_us1_root_is_record_only():
     assert "US2 ROOT" in head and "US1 OUTER CHEEK" in head
     assert "US1 ROOT (a)" not in head                     # no pass line for it before the record-only note
     assert "us1_outer_gauge.json (BL-061" in p["defined_in"]
+
+
+def test_t1_us1_root_results_rows_are_record_only():
+    import csv
+    p = ROOT / "outputs" / "release" / "test_kit" / "results_template.csv"
+    rows = [r for r in csv.reader(p.open(encoding="utf-8")) if len(r) > 7 and r[1] == "T1" and "US1 ROOT" in r[4]]
+    assert len(rows) == 3
+    assert all(r[7] == "record" and "RECORD ONLY" in r[5] for r in rows)
+    other = [r for r in csv.reader(p.open(encoding="utf-8")) if len(r) > 7 and r[1] == "T1" and "US2 ROOT" in r[4]]
+    assert other and all(r[7] == "band" for r in other)

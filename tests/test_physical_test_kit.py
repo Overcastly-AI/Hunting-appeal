@@ -152,7 +152,9 @@ def test_t1_has_three_gauges_and_numeric_lines_with_the_outer_cheek_gauge(kit):
     assert set(gl) == {"US1 ROOT", "US1 OUTER CHEEK", "US2 ROOT"}
     for g_, v in gl.items():
         for c in K.T1_LB:
-            assert f"at most {v[c][1]:.0f}" in r["pass_fail"]
+            # BL-061: US1 ROOT is record only (its line is logged as the model line, never a pass / fail)
+            want = f"model line {v[c][1]:.0f}" if g_ in K.T1_RECORD_ONLY else f"at most {v[c][1]:.0f}"
+            assert want in r["pass_fail"]
     # 300 lb is the published top step (h1_rev5 / us1_outer_gauge), 150 lb its half, 225 lb linear in between
     top = _G2["tests"]["T1|us1_outer"]["steps"][-1]["pass_if_abs_microstrain_at_most"]
     assert gl["US1 OUTER CHEEK"]["(b)"][1] == round(top)

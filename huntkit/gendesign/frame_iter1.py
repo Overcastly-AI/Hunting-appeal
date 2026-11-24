@@ -257,6 +257,21 @@ def grow_hotspot(solid: np.ndarray, frac: float = 0.80) -> np.ndarray:
     return solid | add
 
 
+def bond_sleeve_mask() -> np.ndarray:
+    """Printed sleeve ring r 11..14 mm round each tube over every bonded length (P1 bands, P2 and P3 sleeves)."""
+    c = _base()
+    cen = c["cen"]
+    r = tube_axis_r(cen)
+    ring = (r >= TUBE["od"] / 2 - 1e-6) & (r < SLEEVE_R_OUT) & (np.abs(cen[:, 0]) > 95.0)
+    zz = np.zeros(len(cen), bool)
+    for k, (z0, z1) in SLEEVES.items():
+        if k == "P1 lower node":
+            zz |= ((cen[:, 2] >= 40.0) & (cen[:, 2] <= 80.0)) | ((cen[:, 2] >= 150.0) & (cen[:, 2] <= 190.0))
+        else:
+            zz |= (cen[:, 2] >= z0) & (cen[:, 2] <= z1)
+    return ring & zz & c["dom"].design() & ~c["dom"].passive_void
+
+
 def tube_masks() -> dict:
     """Carbon tube voxels (ring r 9..11 about the stay axis, z0..z1), the tube bore (r < 9) and per-side tube."""
     c = _base()
@@ -347,6 +362,9 @@ def build(name: str) -> dict:
             solid &= ~(col & (np.abs(cen[:, 2] - zg) < H / 2 + 1e-6) & (r >= TUBE["od"] / 2))
         solid &= ~tm["bore"]
         solid |= tm["ring"]
+        # a full printed sleeve (r 11..14, 3 mm) wherever the tube is bonded: H1's stay was narrower than 28 mm in
+        # places (the lower legs), which would leave windows in the bond bands
+        solid |= bond_sleeve_mask()
         # z 234 split deleted: its bosses / holes are no longer needed; fill the holes inside the remaining print
         solid &= ~((c["holes"] | (__import__("huntkit.gendesign.frame_h1", fromlist=["x"]).boss_sdf(cen) <= 0.0))
                    & ~tm["ring"] & col & (r >= SLEEVE_R_OUT))
@@ -580,8 +598,8 @@ def bonds(name: str, bases=BASES) -> dict:
       adherend; average >= 1 at the factored load, peak >= 1 at limit (factored / case factor), fatigue: 1.6 g
       static-carry average <= 0.3 x the dry allowable (HA-LS-1 as frame_light2 applies it). Allowable 5.0 x 0.8 = 4.0 MPa (ASSUMPTION BOND-PA);
     - moment: by bearing of the tube on the sleeve over its length, p = 6 dM / (d L^2) against BEARING_PAHT;
-    - fail-safe: one Ti M4 cross bolt in P1 and P3 carries dN alone at factor 1.0 (ultimate), bearing in the
-      tube's two walls against TUBE_BEARING_MPA (ASSUMPTION TUBE-BEARING)."""
+    - fail-safe: one Ti M4 cross bolt in P1 and P3 carries dN and the torque alone at the limit load (factor 1.0
+      on limit), bearing in the tube's two walls against TUBE_BEARING_MPA (ASSUMPTION TUBE-BEARING)."""
     from huntkit.fea.joints import volkersen_factor
     r = TUBE["od"] / 2
     t = (TUBE["od"] - TUBE["id"]) / 2
@@ -595,7 +613,8 @@ def bonds(name: str, bases=BASES) -> dict:
             L = L / 2              # two bands: checked as if the nearer band took the whole transfer (conservative)
         om = math.sqrt(MMA_G_MPA / BONDLINE.get(sl, MMA_T) * (1 / E1t + 1 / E2t))
         k = volkersen_factor(om * L, min(E1t, E2t) / max(E1t, E2t))
-        w = {"avg": (9e9, ""), "peak": (9e9, ""), "fatigue": (9e9, ""), "bearing": (9e9, ""), "pin": (9e9, "")}
+        w = {"avg": (9e9, ""), "peak": (9e9, ""), "peak_ultimate_info": (9e9, ""), "fatigue": (9e9, ""),
+             "bearing": (9e9, ""), "pin": (9e9, "")}
         for b in bases:
             p = OUT / f"tube_{name}_{b}.npz"
             if not p.exists():
@@ -617,8 +636,12 @@ def bonds(name: str, bases=BASES) -> dict:
                     tau = math.hypot(dN / (2 * math.pi * r), dT / (2 * math.pi * r * r)) / L
                     pb = 6 * dM / (TUBE["od"] * L ** 2)
                     tag = f"{b}|{sd}|{mt['set']}"
+                    # HA-LS-1 4: Volkersen peak >= 1 at LIMIT load (limit cases, factor > 1); the ultimate cases
+                    # C7 / C8 (factor 1.0) are judged on the average (toughened MMA yields and redistributes); their
+                    # peak is kept as information ("peak_ultimate_info")
+                    pk = allow / max(k * tau / mt["factor"], 1e-9)
                     for key, val in (("avg", allow / max(tau, 1e-9)),
-                                     ("peak", allow / max(k * tau / mt["factor"], 1e-9)),
+                                     ("peak" if mt["factor"] > 1.0 else "peak_ultimate_info", pk),
                                      ("bearing", BEARING_PAHT / max(pb, 1e-9))):
                         if val < w[key][0]:
                             w[key] = (val, tag)
@@ -627,7 +650,9 @@ def bonds(name: str, bases=BASES) -> dict:
                         if v < w["fatigue"][0]:
                             w["fatigue"] = (v, tag)
                     if sl in ("P1 lower node", "P3 top node"):
-                        v = TUBE_BEARING_MPA / max(dN / mt["factor"] / (2 * CROSS_PIN_D * t), 1e-9)
+                        # each tube wall bears half the axial force plus the torque couple T / OD
+                        Fw = math.hypot(dN / 2, dT / TUBE["od"]) / mt["factor"]
+                        v = TUBE_BEARING_MPA / max(Fw / (CROSS_PIN_D * t), 1e-9)
                         if v < w["pin"][0]:
                             w["pin"] = (v, tag)
         out[sl] = {"L_mm": L, "volkersen_k": round(k, 2),

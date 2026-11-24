@@ -68,7 +68,14 @@ def collect() -> dict:
         if r is None or F.summary(r) is None:
             continue
         sm = F.summary(r)
-        mrow = F.mass(F.build(n))        # re-booked with the current mass rules (bond bands), same geometry
+        con = F.build(n)
+        mrow = F.mass(con)               # re-booked with the current mass rules (bond bands, full bond sleeves)
+        if n.startswith("cf"):
+            z = F._base()["cen"][:, 2]
+            v = F.H ** 3 * F.RHO_PAHT
+            mrow["parts_raster_g"] = {"P1 lower node (z < 193)": round(float((con["printed"] & (z < 193)).sum()) * v, 1),
+                                      "P2 branch X (z 193-469)": round(float((con["printed"] & (z >= 193) & (z < 469)).sum()) * v, 1),
+                                      "P3 top node (z > 469)": round(float((con["printed"] & (z >= 469)).sum()) * v, 1)}
         row = {"label": F.LABEL[n], "mass": mrow, "frame_line_g": round(fl + mrow["delta_g"], 1),
                "static_cinch": sm["static_cinch"], "cinch_cycled": sm["cinch_cycled"],
                "members_fine_sm8": r["fine_sm8"]["buckling"], "governing_tag": r["fine_sm8.cyc"]["governing_tag"],
@@ -238,11 +245,12 @@ def renders(res: dict) -> list:
     from .frame_light2_render import _cyl
     work = F.OUT / "render"
     work.mkdir(parents=True, exist_ok=True)
-    names = [n for n in F.CONCEPTS if n in res["concepts"]]
-    dx = 360.0
+    # GRADED and CF-BOX look like H1 and CF-LITE from outside: four bodies keep the frames large enough to read
+    names = [n for n in ("h1", "box", "cfstay", "cflite") if n in res["concepts"]]
+    dx = 390.0
     files = []
     for i, n in enumerate(names):
-        off = (i - (len(names) - 1) / 2) * dx
+        off = -(i - (len(names) - 1) / 2) * dx           # seen from the wearer side (az 180): first on the left
         con = F.build(n)
         if n in ("h1", "graded"):
             m = trimesh.load(F.STL)
@@ -250,9 +258,9 @@ def renders(res: dict) -> list:
             # the voxel envelope stops at y 16 and |x| 152: the fairlead tops and the US2 clevises outside it are
             # unchanged in every concept, so they are taken from the released STL
             t0 = trimesh.load(F.STL)
-            outside = [t0.slice_plane((0, 15.0, 0), (0, 1, 0), cap=True),
-                       t0.slice_plane((151.0, 0, 0), (1, 0, 0), cap=True),
-                       t0.slice_plane((-151.0, 0, 0), (-1, 0, 0), cap=True)]
+            outside = [t0.slice_plane((0, 15.0, 0), (0, 1, 0)),
+                       t0.slice_plane((151.0, 0, 0), (1, 0, 0)),
+                       t0.slice_plane((-151.0, 0, 0), (-1, 0, 0))]
             m = trimesh.util.concatenate([_mesh_of(con["printed"])] + [o for o in outside if o is not None])
         m.apply_translation((off, 0, 0))
         m.export(work / f"{n}.stl")
@@ -264,11 +272,11 @@ def renders(res: dict) -> list:
             t.export(work / f"{n}_tubes.stl")
             files.append({"path": str(work / f"{n}_tubes.stl"), "mat": "carbon"})
     cs = res["concepts"]
-    cap = "BL-061 frame concepts, left to right: " + " | ".join(n.upper() for n in names)
-    sub = "  |  ".join(f"{n.upper()} {cs[n]['frame_line_g']:.0f} g, min {cs[n]['min_margin_static']:.2f}, "
-                       f"buckle {cs[n]['static_cinch']['buckling_record']:.2f}" for n in names)
+    cap = "Frame concepts (wearer side): " + "  |  ".join(n.upper() for n in names)
+    sub = " | ".join(f"{n.upper()} {cs[n]['frame_line_g']:.0f} g, buckl. {cs[n]['static_cinch']['buckling_record']:.2f}"
+                     + ("" if cs[n]["gate"]["at_least_as_strong"] else " (weaker)") for n in names)
     p = F.SCREENS / f"{F.SHOT}1.png"
-    render(p, files, cap, sub, az=200.0, el=10.0, zoom=1.0, samples=24)
+    render(p, files, cap, sub, az=180.0, el=6.0, zoom=1.0, samples=32)
     return [str(p)]
 
 
@@ -326,7 +334,7 @@ def write_md(res: dict) -> str:
     for n, r in cs.items():
         s, c = r["static_cinch"], r["cinch_cycled"]
         L.append(f"| **{n.upper()}** {r['label'].split(':', 1)[-1].strip()} | {r['frame_line_g']:.1f} "
-                 f"({r['frame_line_g'] / 453.592:.2f}) | {r['mass']['delta_g']:+.1f} | {_f(s['strength'])} | "
+                 f"({r['frame_line_g'] / 453.592:.2f}) | {r['mass']['delta_g'] + 0.0:+.1f} | {_f(s['strength'])} | "
                  f"{_f(s['fatigue'])} | {_f(s['creep'])} | {_f(s['buckling_record'])} / {_f(s['buckling_section'])} | "
                  f"{_f(c['fatigue'])} / {_f(c['buckling_record'])} | "
                  f"{_f(s.get('joint_strength'))} / {_f(s.get('joint_fatigue'))} | "
@@ -335,7 +343,7 @@ def write_md(res: dict) -> str:
     L.append("")
     L.append("Margins are SF / requirement (R1: >= 1). Static-cinch = minimum over fine_sm8, fine and beam; cinch-cycled "
              "= fine_sm8.cyc. All with the stays' sanding factor 1.0416 on printed stay voxels (BL-055). 'Section' "
-             "buckling uses each cut's real weighted I_min (section 2.2).")
+             "buckling uses each cut's real weighted I_min (section 2.1).")
     L.append("")
     for n, r in cs.items():
         if r["gate"]["R1_fails"] or r["gate"]["weaker_rows"]:
@@ -386,7 +394,22 @@ def write_md(res: dict) -> str:
     L.append("## 6. Assumptions")
     L += narrative(res, "assumptions")
     L.append("")
-    L.append("## 7. Screenshots")
+    L.append("## 7. Side task: T1 US1 ROOT record only; second US1 gauge re-run")
+    L.append("")
+    import json as _j
+    g2 = _j.loads((F.PACK / "tests_physical" / "us1_outer_gauge.json").read_text())
+    L.append("- `physical_test_kit.py`: `T1_RECORD_ONLY = ('US1 ROOT',)`. Its T1 line (gauge_lines_bl060.json T1|us1) sits "
+             "at a near-null point of the bag-on load and inside a PAHT-CF half-bridge's zero drift (BL-060), so the "
+             "register's T1 pass / fail text lists it as RECORD ONLY with its model line, and its three results rows "
+             "are `record` (no band). US2 ROOT and US1 OUTER CHEEK keep their pass lines.")
+    L.append(f"- `us1_outer_gauge.py` re-run on the current STL (md5 `{g2['stl_md5']}`), locked like "
+             "gauge_lines_bl060.json (`g2_locked`, `g2_src_txt`; another print falls back to ASSUMPTION GAUGE-GEOM). "
+             "Lines now / before (microstrain): " + "; ".join(
+                 f"{k} {[s_['pass_if_abs_microstrain_at_most'] for s_ in v['steps']]} / {g2['was']['lines'].get(k)}"
+                 for k, v in g2["tests"].items()) + ". The outer cheek did not change since BL-055 (< 0.2 %).")
+    L.append("- Kit regenerated: `test_register.csv`, `outputs/release/test_kit/` (results template, guide G6, PDF).")
+    L.append("")
+    L.append("## 8. Screenshots")
     L.append("")
     for sh in res.get("screenshots", []):
         L.append(f"- `{Path(sh).relative_to(F.REPO) if Path(sh).is_absolute() else sh}`")
