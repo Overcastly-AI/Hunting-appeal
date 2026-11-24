@@ -1,0 +1,840 @@
+{
+ "date": "2026-11-24",
+ "ticket": "BL-062",
+ "code": "designs/pack_5200/iter1/system/iter1_weight.py",
+ "size": "M",
+ "totals": {
+  "proven_now_base_g": 4038.1,
+  "after_tests_base_g": 3450.9,
+  "after_tests_as_hunted_g": 3769.4,
+  "frame_proven_now_g": 1391.1,
+  "frame_after_tests_g": 1387.1,
+  "non_frame_after_tests_g": 2063.8,
+  "target_g": 2993.7
+ },
+ "items_after_tests": {
+  "frame": 1387.1,
+  "spreader": 162.3,
+  "belt_trims": 14.0,
+  "belt_closure": 92.4,
+  "j_straps": 68.7,
+  "yoke": 64.4,
+  "lifters_sternum": 52.6,
+  "back_panel": 201.3,
+  "thread_labels": 18.8,
+  "imp6": 11.1,
+  "belt_padding": 129.6,
+  "imp5": 15.2,
+  "belt_loadpath": 85.7,
+  "belt_padseat": 56.4,
+  "carry": 39.7,
+  "rolltop": 132.3,
+  "haul_wraps": 96.8,
+  "attach_soft": 54.9,
+  "frame_hw": 32.9,
+  "bag_hooks": 42.4,
+  "hood": 0.0,
+  "guys": 68.9,
+  "us_cradle": 120.1,
+  "fly_pocket": 5.9,
+  "im_straps": 188.3,
+  "shell_panels": 144.9,
+  "door_zip": 61.4,
+  "wings": 0.0,
+  "other_bag_pockets": 0.0,
+  "imp2": 32.6,
+  "imp4": 23.9,
+  "small_carry": 12.9,
+  "fp": 33.5
+ },
+ "items_proven_now": {
+  "frame": 1391.1,
+  "spreader": 162.3,
+  "belt_trims": 18.6,
+  "belt_closure": 110.4,
+  "j_straps": 91.0,
+  "yoke": 64.4,
+  "lifters_sternum": 58.6,
+  "back_panel": 251.3,
+  "thread_labels": 25.8,
+  "imp6": 11.1,
+  "belt_padding": 183.4,
+  "imp5": 15.2,
+  "belt_loadpath": 85.7,
+  "belt_padseat": 69.0,
+  "carry": 39.7,
+  "rolltop": 149.3,
+  "haul_wraps": 96.8,
+  "attach_soft": 62.1,
+  "frame_hw": 32.9,
+  "bag_hooks": 91.2,
+  "hood": 58.1,
+  "guys": 59.4,
+  "us_cradle": 148.7,
+  "fly_pocket": 5.9,
+  "im_straps": 275.6,
+  "shell_panels": 198.9,
+  "door_zip": 69.4,
+  "wings": 101.6,
+  "other_bag_pockets": 0.0,
+  "imp2": 40.3,
+  "imp4": 23.9,
+  "small_carry": 12.9,
+  "fp": 33.5
+ },
+ "pareto": [
+  {
+   "item": "back_panel",
+   "label": "back panel: mesh, rail foam, backer strip, sleeves, upper pad",
+   "after_tests_g": 201.3,
+   "proven_now_g": 251.3,
+   "best": "N1",
+   "best_change": "spacer mesh 380 -> 230 g/m2 on the back panel BP-01, crown pad face BP-03 and J-strap faces HS-J2",
+   "best_status": "new",
+   "best_delta_g": -33.4,
+   "all_levers": [
+    "N1",
+    "N5"
+   ]
+  },
+  {
+   "item": "im_straps",
+   "label": "internal meat straps IM1-IM3: webbing, cams, hooks, eyes, ports",
+   "after_tests_g": 188.3,
+   "proven_now_g": 275.6,
+   "best": null,
+   "best_change": "25 mm already (A_imus); the 38 mm eyes are captive in the print (R-1); aluminium cams owner-fixed (O-cams fails the gate: ladder-lock slip 490 N < 720 N)",
+   "best_status": "-",
+   "best_delta_g": 0.0,
+   "all_levers": []
+  },
+  {
+   "item": "spreader",
+   "label": "back spreader, Sandwich v2 (structural)",
+   "after_tests_g": 162.3,
+   "proven_now_g": 162.3,
+   "best": null,
+   "best_change": "structural, owner decision Sandwich v2 at FPF 1.25 / fatigue 1.09 (R-3); structural-fea-engineer",
+   "best_status": "-",
+   "best_delta_g": 0.0,
+   "all_levers": []
+  },
+  {
+   "item": "shell_panels",
+   "label": "shell panels: B-01, gussets, door, hinge band, floor, camo blade + kick bands",
+   "after_tests_g": 144.9,
+   "proven_now_g": 198.9,
+   "best": null,
+   "best_change": "already ULTRAGrid / ULTRA 200X / HyperD 300 in after tests; the only lighter Challenge cloth (ULTRA 100X, 122 g/m2) is a louder PET laminate only 8 % lighter (research 3.1); DCF breaks quiet",
+   "best_status": "-",
+   "best_delta_g": 0.0,
+   "all_levers": []
+  },
+  {
+   "item": "rolltop",
+   "label": "roll-top: collars, hem, HDPE strip, clips",
+   "after_tests_g": 132.3,
+   "proven_now_g": 149.3,
+   "best": "N4",
+   "best_change": "frame-side roll-top collar B-06f ULTRA 200X -> 70D ripstop (the aft collar B-06 is already 70D)",
+   "best_status": "new",
+   "best_delta_g": -8.2,
+   "all_levers": [
+    "N4"
+   ]
+  },
+  {
+   "item": "belt_padding",
+   "label": "belt wings + lumbar: foams, stiffener, mesh faces, shells",
+   "after_tests_g": 129.6,
+   "proven_now_g": 183.4,
+   "best": "N2",
+   "best_change": "belt wing and lumbar mesh faces 380 -> 320 g/m2 (hip faces keep a dense mesh)",
+   "best_status": "new",
+   "best_delta_g": -6.3,
+   "all_levers": [
+    "N2",
+    "N7"
+   ]
+  },
+  {
+   "item": "us_cradle",
+   "label": "under-strap cradle US1/US2: webbing, cams, backstops, anchors",
+   "after_tests_g": 120.1,
+   "proven_now_g": 148.7,
+   "best": "N3",
+   "best_change": "US1/US2 tri-glide backstops stainless 11 g -> titanium 4 g (2)",
+   "best_status": "new",
+   "best_delta_g": -14.0,
+   "all_levers": [
+    "N3"
+   ]
+  },
+  {
+   "item": "haul_wraps",
+   "label": "haul wraps W1-W3: webbing, rated hooks, heavy ladder locks, keepers",
+   "after_tests_g": 96.8,
+   "proven_now_g": 96.8,
+   "best": "N6",
+   "best_change": "haul-wrap webbing W1-W3 (cut for carry) polyester 18 g/m -> thin Dyneema 25 mm 10.2 g/m",
+   "best_status": "new",
+   "best_delta_g": -20.0,
+   "all_levers": [
+    "N6"
+   ]
+  },
+  {
+   "item": "belt_closure",
+   "label": "belt 50 mm closure, 2:1 pull, stabilizers",
+   "after_tests_g": 92.4,
+   "proven_now_g": 110.4,
+   "best": null,
+   "best_change": "50 mm buckle and 2:1 already re-booked (C8, BL-006 b); heavy lock legs are the HB-7 slip parts",
+   "best_status": "-",
+   "best_delta_g": 0.0,
+   "all_levers": []
+  },
+  {
+   "item": "belt_loadpath",
+   "label": "belt plate, hub, latch, doublers (rev C load path)",
+   "after_tests_g": 85.7,
+   "proven_now_g": 85.7,
+   "best": null,
+   "best_change": "rev C fixes C-1..3 (7075 plate) (R-6); structural",
+   "best_status": "-",
+   "best_delta_g": 0.0,
+   "all_levers": []
+  },
+  {
+   "item": "guys",
+   "label": "port guys, B-25 bridle, B-22 tabs, guy hardware",
+   "after_tests_g": 68.9,
+   "proven_now_g": 59.4,
+   "best": null,
+   "best_change": "small parts at the 1.36 minimum (B-25 bridle tab): not touched",
+   "best_status": "-",
+   "best_delta_g": 0.0,
+   "all_levers": []
+  },
+  {
+   "item": "j_straps",
+   "label": "J-straps: shell, mesh face, foams",
+   "after_tests_g": 68.7,
+   "proven_now_g": 91.0,
+   "best": "N1",
+   "best_change": "spacer mesh 380 -> 230 g/m2 on the back panel BP-01, crown pad face BP-03 and J-strap faces HS-J2",
+   "best_status": "new",
+   "best_delta_g": -11.7,
+   "all_levers": [
+    "N1",
+    "N7"
+   ]
+  },
+  {
+   "item": "yoke",
+   "label": "yoke plate + cover (rev C fix C-7)",
+   "after_tests_g": 64.4,
+   "proven_now_g": 64.4,
+   "best": null,
+   "best_change": "rev C fix C-7 (R-6)",
+   "best_status": "-",
+   "best_delta_g": 0.0,
+   "all_levers": []
+  },
+  {
+   "item": "door_zip",
+   "label": "D2 door zip #10 + 2 sliders + cord pulls",
+   "after_tests_g": 61.4,
+   "proven_now_g": 69.4,
+   "best": "O-slider",
+   "best_change": "D2 door with one slider instead of two",
+   "best_status": "BL-037 owner option",
+   "best_delta_g": -15.0,
+   "all_levers": [
+    "G-3",
+    "O-slider"
+   ]
+  },
+  {
+   "item": "belt_padseat",
+   "label": "lumbar pad seat",
+   "after_tests_g": 56.4,
+   "proven_now_g": 69.0,
+   "best": null,
+   "best_change": "pad backer is a rev C fix (C-4); cord tie already in A_f",
+   "best_status": "-",
+   "best_delta_g": 0.0,
+   "all_levers": []
+  }
+ ],
+ "levers": [
+  {
+   "key": "N1",
+   "item": "back_panel + j_straps",
+   "status": "new",
+   "risk": "medium",
+   "change": "spacer mesh 380 -> 230 g/m2 on the back panel BP-01, crown pad face BP-03 and J-strap faces HS-J2",
+   "base_delta_g": -45.1,
+   "cost_usd": -0.65,
+   "strength": "no load path (body-contact face); no HA-LS-1 row or bag load point touches it",
+   "durability": "thinner (3.0 vs 4.5 mm) face: less air gap, faster wear where the pack rubs. The record's own note says the mesh abrades in 1-2 seasons at the hip, so the hip faces are left out (N2)",
+   "test": "MESH-1 Martindale (ASTM D4966) both meshes to 20 000 rev + MESH-2 3-tester 2 h sweat carry at 30 kg (BP-3 back-pressure strips under the rails); fallback today's mesh",
+   "look": "none visible from outside (wearer face); finer texture on the back panel",
+   "records": [
+    "spacer_mesh_3d_230 (3 mm, 230 g/m2): gsm, thickness, compression, abrasion, roll width, price"
+   ],
+   "source": "build_geometry panels BP-01/BP-03/HS-J2 x (1 - 230/380); research 3.2",
+   "split": {
+    "back_panel": -33.4,
+    "j_straps": -11.7
+   },
+   "as_hunted_delta_g": -45.1
+  },
+  {
+   "key": "N2",
+   "item": "belt_padding",
+   "status": "new",
+   "risk": "low",
+   "change": "belt wing and lumbar mesh faces 380 -> 320 g/m2 (hip faces keep a dense mesh)",
+   "base_delta_g": -6.3,
+   "cost_usd": 0.28,
+   "strength": "no load path (face fabric)",
+   "durability": "320 g/m2 is a 3 mm inelastic mesh sold for backpacks; hip abrasion is the risk",
+   "test": "MESH-1 (same lot) + HB-1 hipbelt pressure / hold with the 3 mm face; fallback today's mesh",
+   "look": "none visible",
+   "records": [
+    "spacer_mesh_3d_320 (3 mm inelastic): gsm (listing 320 vs page title 390), abrasion, roll width"
+   ],
+   "source": "ledger belt rows 'spacer_mesh_3d' x (1 - 320/380); research 3.2",
+   "as_hunted_delta_g": -6.3
+  },
+  {
+   "key": "N3",
+   "item": "us_cradle",
+   "status": "new",
+   "risk": "medium",
+   "change": "US1/US2 tri-glide backstops stainless 11 g -> titanium 4 g (2)",
+   "base_delta_g": -14.0,
+   "cost_usd": 17.24,
+   "strength": "the US rows are governed by the 25 mm cam (1100 N slip, margin 1.53 on 720 N) and the box-X (4.43); the backstop is not credited in any SF row. It must still stop a slipping cam: same US-BS gate as the stainless part. Ti-6Al-4V (record) is stronger than 304 per section",
+   "durability": "titanium does not corrode; webbing wear on a thinner bar edge unknown",
+   "test": "US-BS run on the Ti tri-glide (cam slipped to the backstop, 1080 N hold, dry / wet / -20 C, 5 samples) + weigh 5; fallback stainless",
+   "look": "none (inside the cradle)",
+   "records": [
+    "triglide_25mm_ti: mass (4 g secondary), bar section, rated hold"
+   ],
+   "source": "triglide_25mm record stainless_alt_mass_g; research 3.4",
+   "as_hunted_delta_g": -14.0
+  },
+  {
+   "key": "N4",
+   "item": "rolltop",
+   "status": "new",
+   "risk": "medium",
+   "change": "frame-side roll-top collar B-06f ULTRA 200X -> 70D ripstop (the aft collar B-06 is already 70D)",
+   "base_delta_g": -8.2,
+   "cost_usd": -7.6,
+   "strength": "no load point: the roll-top clips RT / RTM sit on the hem B-07 and the gusset B-03, not on B-06f",
+   "durability": "B-06f rides against the crown top bar and the B-25 bridle when rolled: 70D (Martindale >10 000) against ULTRA's Taber 4400 is a real abrasion step down",
+   "test": "AB-2 crown-bar rub: a rolled 70D collar on a bar offcut with the bridle, 5 000 cycles of the pack's pitch swing, no hole; fallback ULTRA 200X",
+   "look": "better: 70D comes in the solid house colours (ULTRA has few colours, record ir_notes)",
+   "records": [],
+   "source": "corrie_f row B-06f x (1 - 92/133); records",
+   "as_hunted_delta_g": -8.2
+  },
+  {
+   "key": "N5",
+   "item": "back_panel",
+   "status": "new",
+   "risk": "low",
+   "change": "rail sleeves BP-05 (pair) and crown pad back BP-07: Robic 210D -> 70D ripstop",
+   "base_delta_g": -8.7,
+   "cost_usd": -0.9,
+   "strength": "no rated load: the sleeve holds the rail foam and the carbon backer on the stay line",
+   "durability": "the sleeve back sits between the backer strip and the stay; carbon-edge chafe on 70D is the risk",
+   "test": "SLV-1: sleeve on the backer strip edge, 10 000 rub cycles at the rev C skin pressure, no wear-through; fallback 210D",
+   "look": "none (hidden)",
+   "records": [],
+   "source": "build_geometry panels BP-05/BP-07 x (1 - 92/140); records",
+   "as_hunted_delta_g": -8.7
+  },
+  {
+   "key": "N6",
+   "item": "haul_wraps",
+   "status": "new",
+   "risk": "high",
+   "change": "haul-wrap webbing W1-W3 (cut for carry) polyester 18 g/m -> thin Dyneema 25 mm 10.2 g/m",
+   "base_delta_g": -20.0,
+   "cost_usd": 6.3,
+   "strength": "webbing break 11768 N vs 225 N factored (S9): x52; box-X 3186 N is the thread path (unchanged); the governing part is the heavy ladder lock slip (490 N ASSUMPTION on polyester): unknown on 0.7 mm UHMWPE, which the maker says suits buckles only in limited use. Gate before booking",
+   "durability": "UHMWPE creeps under constant load and is slick in a ladder lock; it twists; cuts need a hot knife",
+   "test": "LL-D: 5 heavy ladder locks on the Dyneema webbing, 338 N proof (W-PULL) dry / wet / -20 C, slip < 5 mm; W-box pull to 338 N on a 0.7 mm specimen; fallback polyester",
+   "look": "black only (Dyneema dyes poorly); thinner, slightly sheened straps on the outside of the bag",
+   "records": [
+    "dyneema_webbing_25mm_thin: g/m, break, ladder-lock slip (Extremtextil art. 72979)"
+   ],
+   "source": "corrie_f W-web / A-2 / BL-031 rows / 18 g/m x (10.2 - 18) g/m; research 3.3",
+   "as_hunted_delta_g": -20.0
+  },
+  {
+   "key": "N7",
+   "item": "j_straps + belt_padding",
+   "status": "new",
+   "risk": "medium",
+   "change": "J-strap shells HS-J1 and belt wing / lumbar shells: 330D CORDURA -> ULTRAGrid 210D (the bag-body cloth)",
+   "base_delta_g": -8.8,
+   "cost_usd": 0.83,
+   "strength": "the strap and belt shells carry part of the strap and wing tension; ULTRAGrid's grab (1300 / 1100 N) is above 330D's (1000 / 800 N), but both are record ESTIMATEs / ASSUMPTIONs, so a seam pull decides",
+   "durability": "Taber 1100 vs 330D 800 (records): level or better; UHMWPE grid yarns need tighter SPI and bartacks",
+   "test": "SH-1 strap-to-yoke and wing-root seam pulls on ULTRAGrid (1.5 x the HS-1 strap load), plus the owner swatch already gated for the bag body (A_fab); fallback 330D",
+   "look": "grid lines visible on straps and belt; matches the bag body (one cloth language)",
+   "records": [],
+   "source": "build_geometry HS-J1 + ledger belt shell rows x (1 - 132/180); records",
+   "split": {
+    "j_straps": -3.8,
+    "belt_padding": -5.1
+   },
+   "as_hunted_delta_g": -8.8
+  },
+  {
+   "key": "G-3",
+   "item": "door_zip",
+   "status": "BL-037 option",
+   "risk": "low",
+   "change": "door chain #10 -> #8 coil (sliders unchanged)",
+   "base_delta_g": -7.1,
+   "cost_usd": -1.42,
+   "strength": "door zip unloaded (SF 78 on #10, about 61 on #8; weight_push G-3)",
+   "durability": "#8 under gloved hands and grit; leaders use #10 on the main zip",
+   "test": "PT-7 door zip proof on #8 + slider_8 record",
+   "look": "slightly narrower zip line",
+   "records": [
+    "slider_8 (#8 slider mass and pull)"
+   ],
+   "source": "weight_push.door_zip8()",
+   "as_hunted_delta_g": -7.1
+  },
+  {
+   "key": "M1",
+   "item": "fp",
+   "status": "modular (owner)",
+   "risk": "low",
+   "change": "FP-L/R hip-reach pockets: sewn -> clip-on module shipped in the box (4 loops on the pack, 4 toggle tabs on the module)",
+   "base_delta_g": -27.7,
+   "as_hunted_delta_g": 16.9,
+   "cost_usd": 0.87,
+   "strength": "no load path",
+   "durability": "a toggle can be lost; spare toggle in the box",
+   "test": "MOD-1 gloved fit / remove x 10 and a 5 km brush walk with no loss; owner decision first",
+   "look": "cleaner base silhouette without the pocket; visible empty loops",
+   "records": [],
+   "source": "roll-up item 'fp' + 4 x loop (poly_webbing_25mm x 0.08 m) / tab (pom_toggle + 0.06 m webbing, ASSUMPTION TAB-L)",
+   "owner_rule": "not frozen, not a DESIGN requirement; the E-5 pole quiver (R-20) moves from FP-R's pleat to the gusset so pole carry stays in base"
+  },
+  {
+   "key": "M2",
+   "item": "imp4",
+   "status": "modular (owner)",
+   "risk": "low",
+   "change": "IMP-4 door kill-kit pocket: sewn -> clip-on module shipped in the box (2 loops on the pack, 2 toggle tabs on the module)",
+   "base_delta_g": -21.0,
+   "as_hunted_delta_g": 8.4,
+   "cost_usd": 0.44,
+   "strength": "no load path",
+   "durability": "a toggle can be lost; spare toggle in the box",
+   "test": "MOD-1 gloved fit / remove x 10 and a 5 km brush walk with no loss; owner decision first",
+   "look": "cleaner base silhouette without the pocket; visible empty loops",
+   "records": [],
+   "source": "roll-up item 'imp4' + 2 x loop (poly_webbing_25mm x 0.08 m) / tab (pom_toggle + 0.06 m webbing, ASSUMPTION TAB-L)",
+   "owner_rule": "not frozen, not a DESIGN requirement"
+  },
+  {
+   "key": "M3",
+   "item": "imp6",
+   "status": "modular (owner)",
+   "risk": "low",
+   "change": "IMP-6 phone pocket (clips to the J-strap): sewn -> clip-on module shipped in the box (2 loops on the pack, 2 toggle tabs on the module)",
+   "base_delta_g": -8.2,
+   "as_hunted_delta_g": 8.4,
+   "cost_usd": 0.44,
+   "strength": "no load path",
+   "durability": "a toggle can be lost; spare toggle in the box",
+   "test": "MOD-1 gloved fit / remove x 10 and a 5 km brush walk with no loss; owner decision first",
+   "look": "cleaner base silhouette without the pocket; visible empty loops",
+   "records": [],
+   "source": "roll-up item 'imp6' + 2 x loop (poly_webbing_25mm x 0.08 m) / tab (pom_toggle + 0.06 m webbing, ASSUMPTION TAB-L)",
+   "owner_rule": "not frozen, not a DESIGN requirement"
+  },
+  {
+   "key": "M4",
+   "item": "imp2",
+   "status": "modular (owner)",
+   "risk": "low",
+   "change": "IMP-2 hydration sleeve (hangs on 2 loops above IM3): sewn -> clip-on module shipped in the box (2 loops on the pack, 2 toggle tabs on the module)",
+   "base_delta_g": -29.7,
+   "as_hunted_delta_g": 8.4,
+   "cost_usd": 0.44,
+   "strength": "no load path",
+   "durability": "a toggle can be lost; spare toggle in the box",
+   "test": "MOD-1 gloved fit / remove x 10 and a 5 km brush walk with no loss; owner decision first",
+   "look": "cleaner base silhouette without the pocket; visible empty loops",
+   "records": [],
+   "source": "roll-up item 'imp2' + 2 x loop (poly_webbing_25mm x 0.08 m) / tab (pom_toggle + 0.06 m webbing, ASSUMPTION TAB-L)",
+   "owner_rule": "DESIGN requirement R-19: met by a shipped add-on (SG sells it separately)"
+  },
+  {
+   "key": "M5",
+   "item": "imp5",
+   "status": "modular (owner)",
+   "risk": "low",
+   "change": "IMP-5L hipbelt pocket (removable, as KUIU): sewn -> clip-on module shipped in the box (2 loops on the pack, 2 toggle tabs on the module)",
+   "base_delta_g": -12.3,
+   "as_hunted_delta_g": 8.4,
+   "cost_usd": 0.44,
+   "strength": "no load path",
+   "durability": "a toggle can be lost; spare toggle in the box",
+   "test": "MOD-1 gloved fit / remove x 10 and a 5 km brush walk with no loss; owner decision first",
+   "look": "cleaner base silhouette without the pocket; visible empty loops",
+   "records": [],
+   "source": "roll-up item 'imp5' + 2 x loop (poly_webbing_25mm x 0.08 m) / tab (pom_toggle + 0.06 m webbing, ASSUMPTION TAB-L)",
+   "owner_rule": "DESIGN requirement (hipbelt pockets): met by a shipped add-on"
+  },
+  {
+   "key": "O-cams",
+   "item": "im_straps + us_cradle",
+   "status": "BL-037 owner option",
+   "risk": "medium",
+   "change": "IM1-IM3 and US1/US2 aluminium cams -> heavy 25 mm ladder locks",
+   "base_delta_g": -26.0,
+   "cost_usd": -117.0,
+   "strength": "IM / US hardware margin moves from the cam (1100 N, 1.82 / 1.53) to the ladder-lock slip (490 N ASSUMPTION): 490 / 720 = 0.68 on the US rows, BELOW 1.0. Fails the gate unless a rated lock is found; listed for completeness only",
+   "durability": "-",
+   "test": "MT-1..3 with ladder locks",
+   "look": "none",
+   "records": [],
+   "source": "weight_push.cams_to_ladders()",
+   "owner_rule": "changes 'aluminium cams' (DECISIONS)",
+   "as_hunted_delta_g": -26.0
+  },
+  {
+   "key": "O-slider",
+   "item": "door_zip",
+   "status": "BL-037 owner option",
+   "risk": "low",
+   "change": "D2 door with one slider instead of two",
+   "base_delta_g": -15.0,
+   "cost_usd": -1.99,
+   "strength": "no load path",
+   "durability": "-",
+   "test": "owner decision",
+   "look": "none",
+   "records": [],
+   "source": "weight_push ASSUMPTION SLIDER-CORD",
+   "owner_rule": "door opens from one side only (no top peek)",
+   "as_hunted_delta_g": -15.0
+  }
+ ],
+ "strength": {
+  "min_sf": 1.36,
+  "min_point": "B-25 bridle toggle tab",
+  "n_points": 32,
+  "levers": {
+   "N3": {
+    "rows": [
+     {
+      "point": "US cam anchor",
+      "load_n": 720.0,
+      "sf": 4.43,
+      "hw_before": 1.53,
+      "hw_after": 1.53,
+      "effect": "unchanged"
+     },
+     {
+      "point": "US1 sewn eye",
+      "load_n": 720.0,
+      "sf": 4.43,
+      "hw_before": 1.53,
+      "hw_after": 1.53,
+      "effect": "unchanged"
+     },
+     {
+      "point": "US2 sewn eye",
+      "load_n": 720.0,
+      "sf": 4.43,
+      "hw_before": 1.53,
+      "hw_after": 1.53,
+      "effect": "unchanged"
+     }
+    ],
+    "verdict": "PASS"
+   },
+   "N6": {
+    "rows": [
+     {
+      "point": "W1 G-hook end",
+      "load_n": 225.0,
+      "sf": 14.16,
+      "hw_before": 2.18,
+      "hw_after": null,
+      "effect": "pending"
+     },
+     {
+      "point": "W2 G-hook end",
+      "load_n": 225.0,
+      "sf": 14.16,
+      "hw_before": 2.18,
+      "hw_after": null,
+      "effect": "pending"
+     },
+     {
+      "point": "W3 G-hook end",
+      "load_n": 225.0,
+      "sf": 14.16,
+      "hw_before": 2.18,
+      "hw_after": null,
+      "effect": "pending"
+     },
+     {
+      "point": "W haul extender",
+      "load_n": 225.0,
+      "sf": 14.16,
+      "hw_before": 4.0,
+      "hw_after": null,
+      "effect": "pending"
+     }
+    ],
+    "verdict": "PENDING test"
+   },
+   "O-cams": {
+    "rows": [
+     {
+      "point": "IM1 end loop",
+      "load_n": 605.0,
+      "sf": 5.27,
+      "hw_before": 1.82,
+      "hw_after": 0.81,
+      "effect": "ladder"
+     },
+     {
+      "point": "IM2 end loop",
+      "load_n": 605.0,
+      "sf": 5.27,
+      "hw_before": 1.82,
+      "hw_after": 0.81,
+      "effect": "ladder"
+     },
+     {
+      "point": "IM3 end loop",
+      "load_n": 605.0,
+      "sf": 5.27,
+      "hw_before": 1.82,
+      "hw_after": 0.81,
+      "effect": "ladder"
+     },
+     {
+      "point": "IM cam anchor tab",
+      "load_n": 605.0,
+      "sf": 5.27,
+      "hw_before": 1.82,
+      "hw_after": 0.81,
+      "effect": "ladder"
+     },
+     {
+      "point": "US cam anchor",
+      "load_n": 720.0,
+      "sf": 4.43,
+      "hw_before": 1.53,
+      "hw_after": 0.68,
+      "effect": "ladder"
+     },
+     {
+      "point": "US1 sewn eye",
+      "load_n": 720.0,
+      "sf": 4.43,
+      "hw_before": 1.53,
+      "hw_after": 0.68,
+      "effect": "ladder"
+     },
+     {
+      "point": "US2 sewn eye",
+      "load_n": 720.0,
+      "sf": 4.43,
+      "hw_before": 1.53,
+      "hw_after": 0.68,
+      "effect": "ladder"
+     }
+    ],
+    "verdict": "FAIL"
+   }
+  }
+ },
+ "options": {
+  "A": {
+   "name": "Same look, lighter hidden materials",
+   "keys": [
+    "N1",
+    "N2",
+    "N3",
+    "N4",
+    "N5"
+   ],
+   "idea": "change only what the hunter does not see or that matches the house colours: body-face mesh, backstops, sleeves, frame-side collar",
+   "base_delta_g": -82.3,
+   "as_hunted_delta_g": -82.3,
+   "material_delta_g": -82.3,
+   "modular_delta_g": 0,
+   "new_material_g": -82.3,
+   "modular_as_hunted_g": 0,
+   "after_tests_base_g": 3368.6,
+   "after_tests_as_hunted_g": 3687.1,
+   "proven_now_base_g": 4038.1,
+   "gap_to_target_g": 374.9,
+   "cost_usd": 8.37,
+   "risk_max": "medium",
+   "strong": "PASS on paper (each lever gated by its test)",
+   "looks": [
+    "N1: none visible from outside (wearer face); finer texture on the back panel",
+    "N4: better: 70D comes in the solid house colours (ULTRA has few colours, record ir_notes)"
+   ],
+   "tests": [
+    "AB-2",
+    "MESH-1",
+    "SLV-1",
+    "US-BS"
+   ]
+  },
+  "B": {
+   "name": "Modular: A + lighter base, pockets as shipped add-ons",
+   "keys": [
+    "N1",
+    "N2",
+    "N3",
+    "N4",
+    "N5",
+    "M1",
+    "M2",
+    "M3"
+   ],
+   "idea": "A, plus the three unfrozen, non-required pockets become clip-on modules in the box (SG / Exo / KUIU practice); base drops, as hunted rises",
+   "base_delta_g": -139.2,
+   "as_hunted_delta_g": -48.6,
+   "material_delta_g": -82.3,
+   "modular_delta_g": -56.9,
+   "new_material_g": -82.3,
+   "modular_as_hunted_g": 33.7,
+   "after_tests_base_g": 3311.7,
+   "after_tests_as_hunted_g": 3720.8,
+   "proven_now_base_g": 3981.2,
+   "gap_to_target_g": 318.0,
+   "cost_usd": 10.12,
+   "risk_max": "medium",
+   "strong": "PASS on paper (each lever gated by its test)",
+   "looks": [
+    "N1: none visible from outside (wearer face); finer texture on the back panel",
+    "N4: better: 70D comes in the solid house colours (ULTRA has few colours, record ir_notes)",
+    "M1/M2/M3: cleaner base silhouette without the pocket; visible empty loops"
+   ],
+   "tests": [
+    "AB-2",
+    "MESH-1",
+    "MOD-1",
+    "SLV-1",
+    "US-BS"
+   ]
+  },
+  "C": {
+   "name": "Aggressive: B + Dyneema wraps, ULTRAGrid straps / belt, #8 door, required pockets modular",
+   "keys": [
+    "N1",
+    "N2",
+    "N3",
+    "N4",
+    "N5",
+    "M1",
+    "M2",
+    "M3",
+    "N6",
+    "N7",
+    "G-3",
+    "M4",
+    "M5",
+    "O-slider"
+   ],
+   "idea": "every lever that keeps the strength gate on paper; O-cams is left out because it fails the gate",
+   "base_delta_g": -232.1,
+   "as_hunted_delta_g": -82.7,
+   "material_delta_g": -133.2,
+   "modular_delta_g": -98.9,
+   "new_material_g": -111.1,
+   "modular_as_hunted_g": 50.5,
+   "after_tests_base_g": 3218.8,
+   "after_tests_as_hunted_g": 3686.7,
+   "proven_now_base_g": 3939.2,
+   "gap_to_target_g": 225.1,
+   "cost_usd": 14.72,
+   "risk_max": "high",
+   "strong": "PASS on paper; N6 pending its slip test",
+   "looks": [
+    "N1: none visible from outside (wearer face); finer texture on the back panel",
+    "N4: better: 70D comes in the solid house colours (ULTRA has few colours, record ir_notes)",
+    "M1/M2/M3/M4/M5: cleaner base silhouette without the pocket; visible empty loops",
+    "N6: black only (Dyneema dyes poorly); thinner, slightly sheened straps on the outside of the bag",
+    "N7: grid lines visible on straps and belt; matches the bag body (one cloth language)",
+    "G-3: slightly narrower zip line"
+   ],
+   "tests": [
+    "AB-2",
+    "LL-D",
+    "MESH-1",
+    "MOD-1",
+    "PT-7",
+    "SH-1",
+    "SLV-1",
+    "US-BS",
+    "owner"
+   ]
+  }
+ },
+ "recommended": "A",
+ "assumptions": [
+  [
+   "MESH-230",
+   "a 3 mm, 230 g/m2 spacer mesh exists at the listed weight and wears acceptably on the back and straps (secondary listing; no record)",
+   "materials record + MESH-1 / MESH-2"
+  ],
+  [
+   "MESH-320",
+   "the 3 mm inelastic mesh is 320 g/m2 (category listing) not 390 (page title)",
+   "weigh a 1 m swatch"
+  ],
+  [
+   "TI-TG",
+   "a 25 mm Ti tri-glide weighs 4 g (secondary) and holds a slipped cam like the stainless part",
+   "weigh 5 + US-BS on Ti"
+  ],
+  [
+   "TI-TG-COST",
+   "USD 12 each (price not found)",
+   "quote"
+  ],
+  [
+   "TAB-L",
+   "a clip-on pocket's toggle tab is 25 mm webbing x 60 mm + one POM toggle",
+   "pattern-maker draft"
+  ],
+  [
+   "FX",
+   "USD 1.09 per EUR",
+   "-"
+  ],
+  [
+   "MESH-ROLL",
+   "the 320 g/m2 mesh roll is 1.6 m wide (not on the listing)",
+   "supplier"
+  ]
+ ],
+ "screenshots": [
+  "outputs/screens/20261124_iter1_weight_1.png",
+  "outputs/screens/20261124_iter1_weight_2.png"
+ ]
+}
