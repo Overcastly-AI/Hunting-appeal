@@ -12,6 +12,7 @@ from huntkit.gendesign import frame_iter1 as F
 
 ROOT = Path(__file__).resolve().parents[1]
 T = F.TUBE
+T_ = T
 R = T["od"] / 2
 TW = (T["od"] - T["id"]) / 2
 
@@ -171,3 +172,58 @@ def test_exported_stls_rerastered_are_separate():
     assert rr["raster_clash_voxels"] == 0
     assert B.separation(rr["label"])["separate"]
     assert (rr["printed"] == con["printed"]).mean() > 0.999
+
+
+def test_exported_stls_keep_the_stay_foot():
+    """The STL export must not drill the tube bore through the solid stay foot below the tube end (z < 30): the
+    re-rastered foot keeps >= 90 % of the voxel model's printed foot per side (BL-066 v2 kept about 10 %)."""
+    con = _body()
+    cen = F._base()["cen"]
+    foot = cen[:, 2] < T["z0"]
+    for sg in (1.0, -1.0):
+        m = foot & (np.sign(cen[:, 0]) == sg)
+        vox = (con["label_vox"][m] > 0).sum()
+        assert vox > 400
+        assert (con["printed"][m]).sum() >= 0.9 * vox
+
+
+def test_bond_coverage_closed_sleeves_and_c_collar():
+    """Every bonded band is a closed sleeve except the z 420 collar, which a keep-out lane cuts to a C."""
+    con = _body()
+    cov = B.bond_coverage(con["label"])
+    for sl, f in cov.items():
+        if sl == "P2 z 420 lash collar":
+            assert 0.5 < f < 0.8
+        else:
+            assert f == pytest.approx(1.0)
+
+
+def test_coverage_scales_bond_shear(tmp_path, monkeypatch):
+    lim = {"set": "a", "case": "side_hill_torsion", "factor": 1.5, "scenario": "x"}
+    _record(tmp_path, monkeypatch, [(lim, (900.0, 30000.0))])
+    v = B.variant_defaults()
+    full = B.bonds("t", v, bases=("fine",))["P3 top node"]
+    half = B.bonds("t", v, bases=("fine",), cover={"P3 top node": 0.5})["P3 top node"]
+    assert half["avg"]["margin"] == pytest.approx(full["avg"]["margin"] / 2, rel=1e-3)
+    assert half["limit_transfer"]["dN_n"] == pytest.approx(full["limit_transfer"]["dN_n"])
+
+
+def test_lash_torque_arm():
+    """A horizontal pull at the lash point (aft of the tube axis) twists the sleeve by |r x F|."""
+    d = json.loads(B.LASH_JSON.read_text())["after"]["load_wing_lash_z420_R"]
+    p, F = np.asarray(d["point_xyz_mm"]), np.asarray(d["force_design_n"])
+    T = abs((p[0] - T_["x"]) * F[1] - (p[1] - T_["y"]) * F[0])
+    walls = {sl: {"t_mean_mm": 3.0} for sl in B.variant_defaults()["sleeves"]}
+    r = B.lash_bonds(walls, {})["after|load_wing_lash_z420_R"]
+    assert r["T_design_nmm"] == pytest.approx(T, abs=1.0)
+    assert r["sleeve"] == "P2 z 420 lash collar"
+
+
+def test_pinned_bearing_closed_form(tmp_path, monkeypatch):
+    lim = {"set": "a", "case": "side_hill_torsion", "factor": 1.5, "scenario": "x"}
+    _record(tmp_path, monkeypatch, [(lim, (900.0, 30000.0))])
+    b = B.bonds("t", B.variant_defaults(), bases=("fine",))
+    r = B.pinned_option(b, "t", sleeves=("P3 top node",), n=2, d=5.0, print_t=8.0, bases=("fine",))["P3 top node"]
+    F = math.hypot(600.0 / 2, 20000.0 / T["od"]) / 2
+    assert r["F_limit_n"] == pytest.approx(F, abs=0.1)
+    assert r["print_bearing"] == pytest.approx(B.BEARING_PRINT / (F / 40.0), abs=0.01)

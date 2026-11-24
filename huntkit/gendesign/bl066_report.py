@@ -28,8 +28,6 @@ def eigen_summary(tag: str) -> dict | None:
     out = {}
     for b in ("fine_sm8", "fine", "fine_sm8.cyc"):
         p = BL065 / f"{tag}_{b}.json"
-        if not (BL065 / f"{tag}_{b}_extra.json").exists():
-            continue
         if not p.exists():
             continue
         r = json.loads(p.read_text())
@@ -177,20 +175,24 @@ def record() -> dict:
     res = json.loads((FI.OUT / f"check_{name}.json").read_text())
     summ = FI.summary(res)
     walls = B.sleeve_walls(con["label"], v)
+    cover = B.bond_coverage(con["label"], v)
     alt = name + "_gj"
-    bonds_model = B.bonds(name, v, walls=walls)
-    bonds_bound = B.bonds(name, v, walls=walls, alt=alt)
-    bonds_imposed = B.bonds(name, v, walls=walls, gw=con["info"]["tube"]["GJ_ratio_vox_over_tube"])
+    bonds_model = B.bonds(name, v, walls=walls, cover=cover)
+    bonds_bound = B.bonds(name, v, walls=walls, alt=alt, cover=cover)
+    bonds_imposed = B.bonds(name, v, walls=walls, gw=con["info"]["tube"]["GJ_ratio_vox_over_tube"], cover=cover)
     beam = B.tube_beam_check(name)
     oh = B.tube_open_hole(name)
     eig = eigen_summary(name)
     mass = B.mass(con, v)
-    sizing = B.size_bonds(name, alt, walls, v)
-    sizing_imposed = None
-    lash = json.loads((B.OUT / "lash_h1.json").read_text()) if (B.OUT / "lash_h1.json").exists() else None
-    return {"con": con, "v": v, "res": res, "summary": summ, "walls": walls, "bonds_model": bonds_model,
-            "bonds_bound": bonds_bound, "bonds_imposed": bonds_imposed, "tube_beam": beam, "open_hole": oh,
-            "eigen": eig, "mass": mass, "sizing": sizing, "sizing_imposed": sizing_imposed, "lash": lash}
+    sizing = B.size_bonds(name, alt, walls, v, cover=cover)
+    pinned = {f"{n} x D{d:g}, boss {t:g} mm": B.pinned_option(bonds_bound, name, n=n, d=d, print_t=t)
+              for n, d, t in ((2, 4.0, 6.0), (2, 5.0, 6.0), (2, 5.0, 8.0))}
+    rd = lambda f: json.loads((B.OUT / f).read_text()) if (B.OUT / f).exists() else None   # noqa: E731
+    return {"con": con, "v": v, "res": res, "summary": summ, "walls": walls, "cover": cover,
+            "bonds_model": bonds_model, "bonds_bound": bonds_bound, "bonds_imposed": bonds_imposed, "tube_beam": beam,
+            "open_hole": oh, "eigen": eig, "mass": mass, "sizing": sizing, "pinned": pinned,
+            "lash": rd("lash_h1.json"), "lash_cflite": rd("lash_cflite.json"),
+            "lash_bonds": B.lash_bonds(walls, cover, v)}
 
 
 def tube_upsize(beam_margin: float, target: float) -> list:
@@ -208,33 +210,102 @@ def tube_upsize(beam_margin: float, target: float) -> list:
     return out
 
 
+# m3: H1 box members (frame_iter1.grow_members on the released print, 2 mm raster x 1.06 g/cm3), recomputed BL-066:
+# +57.5 g. The "+55 g" of DECISIONS 2026-11-24 had no source; BL-065 / BL-066 carry 57.5.
+H1_BOX_G = 57.5
+
+
+def voxsplit_members() -> dict | None:
+    """Member eigen (stay tops free / crown held) on the PRE-EXPORT voxel split of the same parts: shows which
+    readings the STL export moves (BL-066: lower branch L 1.52 on the voxel split, 0.46 on the exported STL)."""
+    p = BL065 / "cflite_p_voxsplit_fine_sm8.json"
+    if not p.exists():
+        return None
+    r = json.loads(p.read_text())
+    return {m: {"eig_free": round(v["unbraced"]["margin"], 3), "eig_crown": round(v["braced"]["margin"], 3),
+                "K_eff": round(v["unbraced"]["K_eff"], 2), "set": v["set"]} for m, v in r["members"].items()}
+
+
+def fix_options(r: dict) -> dict:
+    """Item 7: the smallest fix per failing row and the frame line it gives (g). Bonded sizing per sleeve
+    (size_bonds); the pinned screen (pinned_option, 2 x D5, 8 mm bosses, the lightest that clears fatigue bearing);
+    the lower-branch-L buckling fix as a first-order estimate (ASSUMPTION LB-FIX)."""
+    fl = r["mass"]["frame_line_g"]
+    sz = r["sizing"]
+    bonded_feasible = all(x.get("g") is not None for x in sz.values())
+    bonded_add = sum(x["g"] if x.get("g") is not None else x["g_at_limits"] for x in sz.values())
+    pin = r["pinned"]["2 x D5, boss 8 mm"]
+    pin_add = sum(x["delta_g_vs_bonded"] for x in pin.values())
+    lb_fix = LB_FIX_G
+    return {"as_drawn_frame_line_g": fl,
+            "bonded": {"feasible": bonded_feasible, "add_g": round(bonded_add, 1),
+                       "frame_line_g": round(fl + bonded_add + lb_fix, 1),
+                       "note": "P3 bonded cannot pass at the search limits (10 mm wall, 1.5 mm line, 3 x D6): "
+                               f"min {sz['P3 top node'].get('at_limits_min')}, needs "
+                               f"{sz['P3 top node'].get('dry_bond_needed_mpa')} MPa dry bond (cited 3.7)"},
+            "pinned_P1_P3": {"add_g": round(pin_add, 1), "lower_branch_fix_g": lb_fix,
+                             "frame_line_g": round(fl + pin_add + lb_fix, 1), "rows": pin,
+                             "note": "first-order screen only: no contact FE, backlash or PA creep under the pins"},
+            "h1_frame_line_g": r["mass"]["frame_line_h1_g"]}
+
+
+def t6p_spec(bb: dict, v: dict) -> list:
+    """M3: T6p-T coupon pass lines per sleeve (load_standard.md T6 rule: mean failure >= 1.5 x the largest FE limit
+    transfer, lowest >= 1.25 x; C7 / C8 transfers are limit = factored), the fatigue line (1e5 cycles 0 -> the 1.6 g
+    static-carry transfer, no debond, stiffness change <= 10 %), and the dry bond strength the coupon must imply for
+    the Volkersen peak to reach 1.0 (2.96 / 0.8 hot-wet / peak margin x 3.7 dry ... = 3.7 / peak margin)."""
+    rows = []
+    coupon = {"P1 lower node": "T6p-T1: P1 band (40 mm, 0.8 mm line)",
+              "P2 lower-branch root": "T6p-T2a: P2 root (50 mm, 0.5 mm line)",
+              "P2 mid-bar knuckle": "T6p-T2b: P2 knuckle (36 mm, 0.5 mm line)",
+              "P2 z 420 lash collar": "T6p-T2c: P2 C-collar (18 mm, 0.5 mm line, 62 % arc)",
+              "P2 upper-branch root": "T6p-T2d: P2 upper root (26 mm, 0.5 mm line)",
+              "P3 top node": "T6p-T3: P3 node (71.5 mm, 0.8 mm line)"}
+    for sl, r in bb.items():
+        lt = r["limit_transfer"]
+        rows.append({"coupon": coupon[sl], "sleeve": sl, "n": "3 pull + 3 torsion + 1 fatigue",
+                     "pull_mean_n": round(1.5 * lt["dN_n"], 0), "pull_lowest_n": round(1.25 * lt["dN_n"], 0),
+                     "torque_mean_nm": round(1.5 * lt["dT_nmm"] / 1000, 1),
+                     "torque_lowest_nm": round(1.25 * lt["dT_nmm"] / 1000, 1),
+                     "fatigue_1e5_pull_n": round(lt["fat_dN_n"], 0),
+                     "fatigue_1e5_torque_nm": round(lt["fat_dT_nmm"] / 1000, 1),
+                     "dry_bond_implied_needed_mpa": round(B.BOND_DRY_MPA / min(1.0, r["peak"]["margin"]) if
+                                                          r["peak"]["margin"] < 1 else B.BOND_DRY_MPA, 2),
+                     "governing_dN": lt["dN_set"], "governing_dT": lt["dT_set"]})
+    return rows
+
+
+# ASSUMPTION LB-FIX: lower branch L root (z 195-247, x 76-98, about 900 voxels = 7.6 g a side): the eigen margin
+# 0.46 -> 1.0 needs P_cr x 2.2; by depth (I ~ h^3) about +30 % depth on that stub, about +2.3 g a side. Not run.
+LB_FIX_G = 4.6
+
+
 def write(log=print) -> dict:
     r = record()
     con, v, s = r["con"], r["v"], r["summary"]
     B.SCREENS.mkdir(parents=True, exist_ok=True)
     shots = [fig_parts(con, B.SCREENS / f"{B.SHOT}1.png")]
     bb = r["bonds_bound"]
-    bm = r["bonds_model"]
     eig = r["eigen"] or {}
     eig_rec = min((e["buckling_of_record"] for e in eig.values()), default=None)
-    eig_cyc = eig.get("fine_sm8.cyc", {}).get("buckling_of_record")
-    bmin_model = B.bond_min(bm)
-    bmin_bound = B.bond_min(bb)
+    bmin = B.bond_min(bb)
     sc, cc = s["static_cinch"], s["cinch_cycled"]
+    lh, lc = r["lash"], r["lash_cflite"]
     rows = [("printed strength (FI99, static-cinch)", 1.63, sc["strength"]),
             ("printed fatigue (static-cinch)", 1.249, sc["fatigue"]),
             ("printed creep", 2.664, sc["creep"]),
             ("cinch-cycled fatigue (R1)", 0.856, cc["fatigue"]),
             ("buckling of record (eigen, BL-065 rule)", 1.34, eig_rec if eig_rec is not None else float("nan")),
-            ("member buckling, record rule", 1.053, sc["buckling_record"]),
             ("tube strength, beam on resultants", None, float(r["tube_beam"]["margin"])),
             ("tube fatigue (voxel ring, 1.6 g)", None, sc.get("tube_fatigue")),
             ("tube open hole at P3 pins", None, float(r["open_hole"]["P3 pins (bound: cut z 468)"]["margin_open_hole"])),
-            ("joint / bond strength: peak, model torque", 1.978, bmin_model[0]),
-            ("bond peak, torque bound (min of 2 runs)", 1.978, bmin_bound[0]),
-            ("joint / bond fatigue", 1.158, min(x["fatigue"]["margin"] for x in bb.values())),
-            ("fail-safe: printed bearing", None, min(x.get("failsafe_print_bearing", {"margin": 9e9})["margin"]
-                                                  for x in bb.values()))]
+            ("joints / bonds: strength (Volkersen peak, C8 at limit)", 1.158, bmin[0]),
+            ("joints / bonds: fatigue", 1.158, min(x["fatigue"]["margin"] for x in bb.values())),
+            ("fail-safe: printed-sleeve bearing", None, min(x.get("failsafe_print_bearing", {"margin": 9e9})["margin"]
+                                                         for x in bb.values())),
+            ("BL-068 lash (after), body p99", lh["states"]["after"]["margin_p99"] if lh else None,
+             lc["states"]["after"]["margin_p99"] if lc else None),
+            ("BL-068 lash bonds (peak at limit)", None, min(x["peak_margin_limit"] for x in r["lash_bonds"].values()))]
     rows = [(a, b_, float(c_)) for a, b_, c_ in rows if c_ is not None]
     shots.append(fig_margins(rows, B.SCREENS / f"{B.SHOT}2.png"))
     shots.append(fig_util(con, bb, B.SCREENS / f"{B.SHOT}3.png"))
@@ -242,17 +313,10 @@ def write(log=print) -> dict:
         sz = Path(p).stat().st_size
         if sz > 1_500_000:
             raise RuntimeError(f"{p} is {sz} bytes")
-    fails = [(a, c_) for a, b_, c_ in rows if c_ < 1.0]
-    below_h1 = [(a, b_, c_) for a, b_, c_ in rows if b_ is not None and c_ < b_]
-    tube_up = tube_upsize(float(r["tube_beam"]["margin"]), 1.63)
-    # sizing (item 7)
-    sz_rows = r["sizing"]
-    feasible = all(x.get("g") is not None for x in sz_rows.values())
-    add_g = sum(x["g"] if x.get("g") is not None else x["g_at_limits"] for x in sz_rows.values())
-    fl = r["mass"]["frame_line_g"]
-    fl_sized = round(fl + add_g, 1)          # with infeasible sleeves at the sizing limits (still failing)
-    tube_g = next(t for t in tube_up if t["meets"])["tubes_delta_g"] if any(t["meets"] for t in tube_up) else None
+    fails = [(a, round(c_, 3)) for a, b_, c_ in rows if c_ < 1.0]
+    below_h1 = [(a, b_, round(c_, 3)) for a, b_, c_ in rows if b_ is not None and c_ < b_]
     out = {"ticket": "BL-066", "date": "2026-11-24", "code": "huntkit/gendesign/bl066_cflite.py, bl066_report.py",
+           "model": "v3: STL bore over the tube length only (v2 drilled the stay foot); runs of 2026-11-24 22:47-23:40",
            "variant": v, "parts": {"split_voxel": con["info"]["split_voxel"],
                                    "separation_rerastered": con["info"]["separation_rerastered"],
                                    "raster_crumbs_deleted": con["info"]["raster_crumbs_deleted"],
@@ -261,11 +325,13 @@ def write(log=print) -> dict:
            "summary": s, "per_basis": {b: {k: r["res"][b][k] for k in ("min", "governing_tag", "buckling_record_min",
                                                                      "buckling_section_min", "tube")}
                                        for b in FI.BASES},
-           "sleeve_walls": r["walls"], "bonds_model_torque": bm, "bonds_torque_bound": bb,
-           "bonds_torque_imposed_twist_lower_bound": r["bonds_imposed"],
-           "tube_beam": r["tube_beam"], "tube_open_hole": r["open_hole"], "tube_upsize": tube_up,
-           "eigen": eig, "mass": r["mass"], "sizing": sz_rows, "sizing_feasible": feasible,
-           "sizing_add_g": round(add_g, 1), "frame_line_sized_g": fl_sized, "lash_h1": r["lash"],
+           "sleeve_walls": r["walls"], "bond_coverage": r["cover"], "bonds_model_torque": r["bonds_model"],
+           "bonds_torque_bound": bb, "bonds_torque_imposed_twist_lower_bound": r["bonds_imposed"],
+           "tube_beam": r["tube_beam"], "tube_open_hole": r["open_hole"],
+           "tube_upsize": tube_upsize(float(r["tube_beam"]["margin"]), 1.63),
+           "eigen": eig, "eigen_voxel_split_members_diagnostic": voxsplit_members(),
+           "h1_box_members_g": H1_BOX_G, "mass": r["mass"], "sizing_bonded": r["sizing"], "pinned_screen": r["pinned"],
+           "fix_options": fix_options(r), "t6p_t_spec": t6p_spec(bb, v), "lash_h1": lh, "lash_cflite": lc, "lash_bonds_cflite": r["lash_bonds"],
            "gate_rows": [{"row": a, "h1": b_, "cflite": round(c_, 3)} for a, b_, c_ in rows],
            "fails_hals1": fails, "below_h1": below_h1, "screenshots": shots}
     B.REC_JSON.write_text(json.dumps(out, indent=1, default=FI._jd))
