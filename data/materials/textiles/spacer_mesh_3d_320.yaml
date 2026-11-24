@@ -1,0 +1,47 @@
+id: spacer_mesh_3d_320
+name: 3D spacer mesh, polyester, 3 mm, inelastic, 320 g/m2 (Extremtextil art. 70807, from July 2026)
+category: textiles
+generic: false
+trade_names:
+- 'Extremtextil "3D Mesh, 3mm, inelastic, 320g/sqm, black" art. 70807 (small piece art. 70815)'
+supplier_examples:
+- Extremtextil (art. 70807, EUR 19.90/m incl. 19 % VAT, 1600 mm roll; small piece art. 70815 EUR 4.10)
+- 'Alternative with test data: Shelby Outdoor "3D Spacer Mesh 3 mm", 330 g/m2 +/- 10 %, 160 cm, EUR 22.90, free samples'
+- 'Alternative, US: Ripstop by the Roll "3D Spacer Mesh - 1/8 in", ~10 oz/yd2 (~340 g/m2), 59-60 in'
+properties:
+  areal_density_gsm: 320
+  areal_density_old_lot_gsm: 390
+  thickness_mm: 3.0
+  fiber: polyester (PES), 100 %
+  weave: warp-knit spacer (mesh face + closed face, 3 mm of spacer filaments)
+  stretch: inelastic (listing)
+  coating: none
+  shrinkage_wash_pct: 5
+  roll_width_mm: 1600
+  alt_shelby_areal_density_gsm: 330
+  alt_shelby_thickness_mm: 3.0
+  alt_shelby_roll_width_mm: 1600
+  alt_shelby_martindale_9kpa_cycles: 35000
+  alt_shelby_breaking_force_n: 150
+  alt_rbtr_areal_density_gsm: 340
+  quietness_1to5: 5
+  uv_brighteners: none confirmed (specify optical-brightener-free dye and finish in the PO)
+confidence: datasheet
+sources:
+- "areal_density_gsm (320g/sqm), thickness_mm (3mm), roll_width_mm (1600mm), 100 % polyester, coating none, inelastic, 'ideal for the back part of backpacks', 'can shrink up to 5% when washed', EUR 19.90/m incl. 19 % VAT: Extremtextil art. 70807 product page https://www.extremtextil.de/en/3d-mesh-3mm-inelastic-320g-sqm-black/70807 (fetched 2026-11-24)"
+- "areal_density_old_lot_gsm and the 320 vs 390 conflict: the same page says 'From July 2026, this product has changed slightly. The weight is now 320g/sqm instead of 390g/sqm.' Older search-engine titles of art. 70807 still read '390g/sqm' (search 2026-11-24). Conflict RESOLVED as a product change, not a typo"
+- "alt_shelby_*: Shelby Outdoor '3D Spacer Mesh 3 mm': '330 g/m2 +/- 10 %', 'about 3 mm', '160 cm (+/- 5 %)', 100 % polyester, 'minimal stretch', abrasion '>= 35 0000 r Martindale method 9 kPa' (read as >= 35 000 rev; the page has a typo), breaking force '>= 150 N (EN ISO 13934-1)', EUR 22.90: https://shelbyoutdoor.com/en/p106303/3d-padded-mesh-3mm (fetched 2026-11-24)"
+- "alt_rbtr_areal_density_gsm: Ripstop by the Roll '3D Spacer Mesh - 1/8\"', '~ 10 oz/yd2 (~ 340 g/m2)', 59-60 in, 100 % polyester, USD 16.75 'sold by the linear foot' (unit as fetched; check), 'values listed represent average values or estimates': https://ripstopbytheroll.com/products/3d-spacer-mesh-1-8 (fetched 2026-11-24)"
+- "ASSUMPTION quietness_1to5 = 5 (open knit, no film; same basis as spacer_mesh_3d)"
+cost_usd:
+  value: 11.39
+  per: m2
+notes: 'Candidate for the iter1 lever N2 (belt wing and lumbar faces, 380 -> 320 g/m2). Cost = EUR 19.90/m incl. VAT
+  / 1.19 x 1.09 USD/EUR (ASSUMPTION, repo rate) / 1.6 m = USD 11.39/m2 ex VAT. Roll width 1600 mm is now on the maker page,
+  which settles iter1 ASSUMPTION MESH-ROLL. The 320 vs 390 g/m2 conflict is a product change in July 2026: stock from
+  before then, or a reseller lot, can still be 390 g/m2. WEIGH A SWATCH on receipt (100 x 100 mm, 5 punches across the
+  width): accept 320 +/- 10 %; at 390 the N2 saving is gone (380 -> 390 is +2.6 %). Extremtextil publishes no abrasion
+  number ("highly abrasion-resistant" only). The Shelby 3 mm mesh is the only spacer mesh found with published
+  Martindale (>= 35 000 rev at 9 kPa) and EN ISO 13934-1 strip data, at about the same weight: if MESH-1 is to be
+  skipped, buy the Shelby mesh instead and keep its certificate. Washing shrinkage up to 5 %: pre-wash or cut 5 % long
+  in the knit direction only after a wash test on a swatch.'

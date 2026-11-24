@@ -1,0 +1,36 @@
+id: triglide_25mm_ti
+name: Tri-glide 25 mm (1 in), titanium Grade 5 (Brautigam Expedition Works)
+category: hardware
+generic: false
+trade_names:
+- Brautigam Expedition Works (BEW) Titanium Tri-Glide, 1 in
+supplier_examples:
+- Brautigam Expedition Works (USD 8.50 per pack of 2; both sizes SOLD OUT 2026-11-24)
+- 'Not a substitute: TGCode G15 titanium tri-glide 25 mm, ~12 g, USD 89.99 (heavier than the 11 g stainless part)'
+properties:
+  width_mm: 25
+  mass_g: 4.0
+  mass_3_4in_g: 3.0
+  alloy: Ti-6Al-4V (Grade 5), stone-washed, non-magnetic
+  quietness_1to5: 4
+confidence: datasheet
+sources:
+- "mass_g ('1\" weighs 4 grams'), mass_3_4in_g ('3/4\" weighs 3 grams'), alloy ('Grade 5 Titanium Alloy', 'stone washed, tumbled finish', non-magnetic, corrosion-proof), USD 8.50 'Sold in packs of 2', both sizes sold out: Brautigam Expedition Works, https://brautigamexpeditionworks.com/products/titanium-tri-glide (fetched 2026-11-24). The page gives NO load or strength rating and NO bar dimensions. The earlier reach.dog reseller URL in docs/research/weight_iter1.md now returns HTTP 410"
+- "TGCode G15 Titanium Tri-Glide Buckle, size S 25 mm 'Approx. 12g', 44.5 x 33 mm, no rating, USD 89.99: https://www.geekedcstore.com/products/tgcode-g15-titanium-tri-glide-buckle (fetched 2026-11-24)"
+- "Search for any other 25 mm Ti tri-glide with a published rating (2026-11-24, extended web search): none found. Dutchware's Ti tri-glide is for <= 1/2 in webbing (~1.4 g), not 25 mm"
+- "ASSUMPTION quietness_1to5 = 4: bare metal on webbing, may tick against the cam; sleeve or tape if it does"
+cost_usd:
+  value: 8.5
+  per: pair
+notes: 'NO PUBLISHED RATING. The mass is the maker''s own figure (4 g a piece; weigh 5 on receipt). Availability: sold
+  out on 2026-11-24, small maker, no MOQ quoted; ask BEW for a restock date before booking N3. Price per part = USD 4.25
+  (pack of 2), not the USD 12 that iter1_weight.py assumes (TI_TRIGLIDE_USD). Strength by inference only (NOT a
+  rating): the stainless part (triglide_25mm stainless_alt, 304, 11 g, 3.75 kN break) has about 1.4 cm3 of metal
+  (11 g / 7.9 g/cm3); the Ti part has about 0.9 cm3 (4 g / 4.43 g/cm3, record ti_6al_4v), so its bars are thinner. Ti-6Al-4V
+  is about 1.9x stronger in UTS (950 vs 505 MPa) and 4x in yield (880 vs 215 MPa) than annealed 304 per area (records
+  ti_6al_4v, sst_304_annealed), so the break could land
+  anywhere near the stainless part, but a thinner centre bar bends and has a sharper edge on the webbing. Do not
+  credit any number until TG-TI and US-BS-Ti (docs/backlog/BL-064-iter1-materials.md) pass. Proposed bench test TG-TI:
+  weigh 5 and caliper the centre and end bars; then on 2 parts thread 25 mm poly webbing as the US backstop and
+  ramp-pull at 50 mm/min to failure (bar yield, webbing cut or slip), reporting peak load and the failure mode;
+  pass line (ASSUMPTION): peak >= 1620 N (1.5 x the 1080 N US-BS proof) with no webbing cut below 1080 N.'

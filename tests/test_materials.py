@@ -93,7 +93,7 @@ def test_query_in_contains_eq_and_missing():
     merino = mat.query("textiles", fiber__contains="merino")
     assert len(merino) >= 4
     zips = mat.query("hardware", zipper_size=8)
-    assert {m.id for m in zips} == {"coil_zipper_8", "aquaguard_zipper_8"}
+    assert {m.id for m in zips} == {"coil_zipper_8", "aquaguard_zipper_8", "slider_8"}
     closed = mat.query("foams", closed_cell=True)
     assert "pu_memory_foam" not in {m.id for m in closed}
     # records lacking the filtered property are excluded, not errors

@@ -1,0 +1,36 @@
+id: slider_8
+name: 'YKK #8 coil (CN) slider, metal, single non-locking pull'
+category: hardware
+generic: false
+trade_names:
+- 'YKK #8 coil metal slider, single pull, non-lock (Rockywoods SKU 34-PU-C8-Black)'
+- 'YKK 8C double-pull non-lock slider (Shelby Outdoor, YKK 8 C DW1L EJ black)'
+supplier_examples:
+- Rockywoods (USD 0.82 each; sold out 2026-11-24)
+- Shelby Outdoor EU (double pull 8C, EUR 2.00 single, 1.60 at 5+, 1.20 at 100+, 1.00 at 500+)
+- Ripstop by the Roll (YKK coil slider standard, #3 / #5 / #8)
+- Weaver Leather Supply (#8 coil sliders, zinc alloy)
+properties:
+  zipper_size: 8
+  mass_g: 8.5
+  mass_alt_double_pull_g: 7.3
+  alt_double_pull_length_mm: 16
+  alt_double_pull_width_mm: 13
+  alt_double_pull_height_mm: 11
+  body_material: zinc alloy die cast (painted black or nickel)
+  locking: false
+  quietness_1to5: 3
+confidence: datasheet
+sources:
+- "mass_g (nominal weight 0.301 oz = 8.53 g), metal, single pull, non-locking ('The pull-tab does not lock at any position on the body'), #8 coil, USD 0.82, SKU 34-PU-C8-Black, sold out: Rockywoods, https://rockywoods.com/products/metal-slider-with-pull-for-8-coil-ykk-zipper (fetched 2026-11-24)"
+- "mass_alt_double_pull_g (7.3 g), alt_double_pull_length/width/height (16 / 13 / 11 mm), manufacturer code '8 C', black YKK 8 C DW1L EJ, EUR 2.00 / 1.60 (5+) / 1.40 (50+) / 1.20 (100+) / 1.00 (500+): Shelby Outdoor 'YKK Double Pull Non-Lock Slider for 8C Coil Zipper', https://shelbyoutdoor.com/en/p105339/ykk-double-pull-non-lock-slider-for-8c-coil-zipper (fetched 2026-11-24)"
+- "body_material zinc alloy: Weaver Leather Supply lists its YKK #8 coil sliders as 'Zinc Alloy' (https://www.weaverleathersupply.com/products/8c-1-np, search result 2026-11-24, page not fetched: secondary)"
+- "ASSUMPTION quietness_1to5 = 3: metal tab taps the body; fit a cord pull (same rule as slider_5 / slider_10)"
+cost_usd:
+  value: 0.82
+  per: unit
+notes: 'Two listings put a YKK #8 coil slider at 7.3-8.5 g, against 19.0 g for the #10 (record slider_10). For the
+  BL-037 / iter1 G-3 door option (#10 -> #8 chain), weight_push.door_zip8() keeps the two #10 sliders (bag_concepts.SLIDER_G
+  = 19.0 g); with two slider_8 the door gets a further 2 x (19.0 - 8.5) = -21.0 g. Buy YKK sliders for YKK #8 CN chain
+  (coil_zipper_8); YKK does not guarantee fit on other chain. A #8 slider is smaller under gloves: fit the door cord
+  pull (dyneema_cord_3mm + sleeve). Weigh 5 on receipt (target <= 9 g with the tab). Gate: PT-7 door zip proof on #8.'

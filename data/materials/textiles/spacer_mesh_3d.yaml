@@ -1,15 +1,22 @@
 id: spacer_mesh_3d
-name: 3D spacer mesh, polyester, ~4-5 mm
+name: 3D spacer mesh, polyester, ~4 mm (booked 380 g/m2; stand-in Shelby Outdoor 3D Spacer Mesh 4 mm)
 category: textiles
 generic: true
-trade_names: []
+trade_names:
+- 'Stand-in product: Shelby Outdoor "3D Spacer Mesh 4 mm" (350 g/m2 +/- 5 %, 150 cm)'
 supplier_examples:
-- Seattle Fabrics
-- Rockywoods
-- Extremtextil
+- Shelby Outdoor (3D Spacer Mesh 4 mm, EUR 26.90, Ranger Green listed, free samples)
+- Ripstop by the Roll (3D Spacer Mesh 1/8 in ~340 g/m2; 1/4 in 499 g/m2)
+- Extremtextil (3D mesh 3 mm 320 g/m2, 2.7 mm 400 g/m2, 6 mm 780 g/m2)
+- Rockywoods (3 mm military spacer mesh DNB138, 270 g/m2)
 properties:
   areal_density_gsm: 380
-  thickness_mm: 4.5
+  thickness_mm: 4.0
+  stand_in_areal_density_gsm: 350
+  stand_in_areal_density_tol_pct: 5
+  stand_in_thickness_mm: 4.0
+  bracket_low_gsm: 340
+  bracket_high_gsm: 400
   fiber: polyester
   weave: warp-knit spacer
   stretch_pct: 10
@@ -24,10 +31,21 @@ properties:
   usable_width_mm: 1450
 confidence: estimate
 sources:
-- Supplier listings for 3D spacer mesh (300-450 gsm, 3-6 mm)
-- "ASSUMPTION (pattern-maker 2026-11-04): ~59 in typical 3D spacer mesh roll; confirm with the supplier"
+- "stand_in_areal_density_gsm (350 g/m2 +/- 5 %), stand_in_thickness_mm ('approx. 4 mm'), roll width 150 cm, 100 % polyester, 'minimal stretch', EUR 26.90 (Ranger Green 9517): Shelby Outdoor '3D Spacer Mesh 4 mm', https://shelbyoutdoor.com/en/p109518/3d-spacer-mesh-4-mm (fetched 2026-11-24). No abrasion or strength data on that page"
+- "bracket_low_gsm: Ripstop by the Roll '3D Spacer Mesh - 1/8\"', ~10 oz/yd2 (~340 g/m2), 59-60 in, https://ripstopbytheroll.com/products/3d-spacer-mesh-1-8 (fetched 2026-11-24); bracket_high_gsm: Extremtextil '3D Mesh, 2,7mm, inelastic, 400g/sqm' art. 73187, https://www.extremtextil.de/en/fabrics/spacer-fabrics/3d-mesh (fetched 2026-11-24). Extremtextil art. 70807 was 390 g/m2 at 3 mm until July 2026 (now 320, record spacer_mesh_3d_320)"
+- "ASSUMPTION areal_density_gsm = 380 (BOOKED value, unchanged since 2026-11-04 so every ledger row stays valid): 8.6 % above the stand-in nominal 350 and 3.4 % above its +5 % upper bound (367.5), inside the 340-400 g/m2 bracket of real backpack spacer meshes listed above. Conservative for mass. Settled by: weigh a 1 m length of the mesh actually bought"
+- "roll_width_mm 1500: matches the stand-in (150 cm). ASSUMPTION usable_width_mm = 1450 (pattern-maker 2026-11-04, 25 mm per selvedge)"
+- "ASSUMPTION stretch_pct, air_permeability_cfm and the *_1to5 ratings: unchanged earlier estimates; no maker of the meshes above publishes them"
 cost_usd:
   value: 15
   per: yd
-notes: ESTIMATE. Body-contact face for back panel, shoulder straps and hipbelt; ventilates and stays quiet. Abrades
-  in ~1-2 seasons at hip contact; consider a tighter-face mesh there.
+notes: 'RE-SOURCED 2026-11-24 (BL-064). No 4.5 mm / 380 g/m2 product was found at any small-batch supplier. The
+  record now stands for the Shelby Outdoor 3D Spacer Mesh 4 mm (350 g/m2 +/- 5 %, 150 cm); thickness changed 4.5 -> 4.0 mm
+  to match it (no code reads thickness_mm). The booked areal density stays 380 g/m2 on purpose: it is conservative
+  against the stand-in and inside the market bracket, and changing it would move every released ledger row; buying
+  the stand-in would credit about -7.9 % on every spacer_mesh_3d row (350/380), to be booked only after a weighed
+  metre. Price: USD 15/yd kept as the earlier estimate; the stand-in lists EUR 26.90 (the page does not state the unit
+  or the VAT; the slider_10 record reads Shelby prices as incl. 25.5 % VAT): ask Shelby for an ex-VAT quote per metre. Body-contact face for back panel, shoulder straps
+  and hipbelt; ventilates and stays quiet. Abrades in ~1-2 seasons at hip contact (earlier estimate, no data); the
+  only spacer mesh with published Martindale data found is Shelby''s 3 mm (>= 35 000 rev at 9 kPa, record
+  spacer_mesh_3d_320).'

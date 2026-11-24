@@ -1,0 +1,37 @@
+id: dyneema_webbing_25mm_thin
+name: UHMWPE webbing 25 mm, 100 % Dyneema, thin 0.7 mm (Extremtextil art. 72979)
+category: webbing
+generic: false
+trade_names:
+- 'Extremtextil "Dyneema webbing, 100% Dyneema, thin, 25mm" art. 72979 (black 72979.SW, also orange)'
+supplier_examples:
+- Extremtextil (art. 72979, EUR 2.90/m incl. 19 % VAT; up to 10 m in one piece; whole rolls from stock)
+- 'Similar, US: Ripstop by the Roll Venom UHMWPE webbing 1 in (0.6 mm, 2.2 g/ft = 7.2 g/m, 1800 lb)'
+properties:
+  width_mm: 25
+  thickness_mm: 0.7
+  mass_g_m: 10.2
+  breaking_strength_n: 12000
+  fiber: UHMWPE (Dyneema), 100 %
+  colour: black or orange (Dyneema dyes poorly; slight irregularities)
+  alt_venom_thickness_mm: 0.6
+  alt_venom_mass_g_m: 7.2
+  alt_venom_breaking_strength_n: 8007
+  quietness_1to5: 5
+confidence: datasheet
+sources:
+- "width_mm (25mm), thickness_mm (0,7mm), mass_g_m (10,2g/m), breaking_strength_n ('1200daN' = 12 000 N; 1 daN = 10 N), 100 % Dyneema UHMW-PE, black / orange, EUR 2.90/m incl. 19 % VAT, 'The webbing is onny suitable for limited use with buckles', 'it can twist relatively easily', cut with micro-serrated scissors or a heat cutter, 'Dyneema is difficult to dye, there may be slight irregularities in the dyeing': Extremtextil art. 72979, https://www.extremtextil.de/en/dyneema-webbing-100-dyneema-thin-25mm/72979 (fetched 2026-11-24)"
+- "alt_venom_*: Ripstop by the Roll 'Venom UHMWPE Ultralight Webbing', 1 in: 0.6 mm, '2.2 grams/ft' (= 7.2 g/m), '1800 lb' (= 8007 N), 'UHMWPE fiber is naturally more slippery than nylon and polyester. This combined with the thinness of Venom webbing can result in increased chance for slippage. We do not recommend using this webbing with cinch buckles, or other buckles in your hammock suspension system.': https://ripstopbytheroll.com/products/venom-uhmwpe-ultralight-webbing (fetched 2026-11-24)"
+- "Buckle / ladder-lock slip data for thin UHMWPE webbing: NONE PUBLISHED. Searched 2026-11-24 (extended web search): no maker (Extremtextil, RBTR, ITW, Duraflex) gives a slip load; the only reports are hammock-forum anecdotes without numbers (e.g. https://www.hammockforums.net/forum/showthread.php/159464 : slip in cinch buckles, fix is a safety knot or becket hitch). Settled by: test LL-D (docs/backlog/BL-064-iter1-materials.md)"
+- "ASSUMPTION quietness_1to5 = 5 (soft flat webbing, same as polyester)"
+cost_usd:
+  value: 2.66
+  per: m
+notes: 'Cost = EUR 2.90 / 1.19 x 1.09 USD/EUR (ASSUMPTION, repo rate) = USD 2.66/m ex VAT. 43 % lighter than
+  poly_webbing_25mm (18 g/m) with a published break (12 kN) close to the polyester estimate (13.3 kN). The governing
+  property is SLIP in hardware, which is unpublished and which both vendors warn about: use it only where a sewn eye
+  or a box-X ends the run, or after LL-D passes on the exact ladder lock. Other cautions: UHMWPE creeps under
+  sustained load (fibre property; LL-D includes a 24 h hold), twists easily (keep it square in a ladder lock), cuts
+  on bare metal edges, and sews slippery (baste or clip before box-X; check the box-X in LL-D). Black only for our
+  palette; the face has a slight sheen. Note: iter1_weight.py DYNEEMA_N = 11768 N reads daN as kgf (1200 x 9.807);
+  the correct value is 12 000 N (the iter1 figure is 1.9 % conservative).'

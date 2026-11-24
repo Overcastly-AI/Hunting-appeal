@@ -1,0 +1,42 @@
+id: spacer_mesh_3d_230
+name: 3D spacer mesh, polyester, 3 mm, slightly elastic, 230 g/m2 (Extremtextil art. 73068)
+category: textiles
+generic: false
+trade_names:
+- 'Extremtextil "3D Mesh, 3mm, slighly elastic, 230g/sqm" art. 73068 (SPECIAL PRICE)'
+supplier_examples:
+- Extremtextil (art. 73068, EUR 12.90/m incl. 19 % VAT, 1600 mm roll; special-price item, stock may end)
+- 'Fallback, US: Rockywoods 3.0 mm colored spacer mesh, 7.7 oz/yd2 = 261 g/m2, 48-54 in, USD 6.23/ft (sold out 2026-11-24)'
+- 'Fallback, US mil-spec: Rockywoods DNB138 3.0 mm military spacer mesh, 7.95 oz/yd2 = 270 g/m2, 2.8 +/- 0.5 mm, 58-60 in, USD 13.04/ft (sold out 2026-11-24)'
+properties:
+  areal_density_gsm: 230
+  thickness_mm: 3.0
+  fiber: polyester (PES), 100 %
+  weave: warp-knit spacer (3D mesh)
+  stretch: slightly elastic (listing wording; no number published)
+  coating: none
+  roll_width_mm: 1600
+  fallback_rockywoods_colored_gsm: 261
+  fallback_rockywoods_dnb138_gsm: 270
+  fallback_rockywoods_dnb138_thickness_mm: 2.8
+  quietness_1to5: 5
+  uv_brighteners: none confirmed (specify optical-brightener-free dye and finish in the PO; ask Extremtextil)
+confidence: estimate
+sources:
+- "areal_density_gsm (230 g/sqm), thickness_mm (3 mm), roll_width_mm (1600 mm), 100 % polyester, coating none, 'slightly elastic', art. 73068.OCK, EUR 12.90/m incl. 19 % VAT, 'SPECIAL PRICE': SECONDARY, search-engine summary of the Extremtextil listing (queries 'extremtextil 3D mesh 3mm 230g/sqm 73068' and '\"3D Mesh, 3mm, slightly elastic, 230g/sqm\"', 2026-11-24). The product page https://www.extremtextil.de/en/3d-mesh-3mm-slightly-elastic-230g-sqm/73068 and the cart-detail URL returned HTTP 404 to the fetch tool on 2026-11-24, and the 3D-mesh category page (https://www.extremtextil.de/en/fabrics/spacer-fabrics/3d-mesh, fetched 2026-11-24) no longer lists it. UNVERIFIED: the item may be sold out or discontinued"
+- "fallback_rockywoods_colored_gsm: Rockywoods '3.0mm Colored Spacer Mesh (Sold per Foot)', nominal weight 7.7 oz/sq yd, 3.0 mm (+/- 1.0 mm), 48-54 in, polyester, USD 6.23/ft regular, sold out, 'Limited Quantities': https://rockywoods.com/products/3-0mm-colored-spacer-mesh (fetched 2026-11-24). 7.7 x 33.906 = 261 g/m2"
+- "fallback_rockywoods_dnb138_gsm / _thickness_mm: Rockywoods 'DNB138 3.0mm Military Spacer Mesh', nominal weight 7.95 oz/sq yd, finished thickness 'about 2.8mm +/- 0.5mm', 58-60 in, 100 % polyester (porthole mesh face, tricot back, filament spacer), Made in USA, Berry compliant, for 'backpack cushions and straps', USD 13.04/ft, sold out: https://rockywoods.com/products/3mm-military-spacer-mesh (fetched 2026-11-24). 7.95 x 33.906 = 270 g/m2. Its data sheet PDF (PRODUCT_DATA_SHEET-DNB138.pdf) was not reachable"
+- "ASSUMPTION quietness_1to5 = 5 (open knit, no film; same basis as spacer_mesh_3d)"
+- "No supplier publishes abrasion, compression or burst data for any of these three meshes (searched 2026-11-24). Settled by MESH-1 / MESH-2 (docs/backlog/BL-064-iter1-materials.md)"
+cost_usd:
+  value: 7.38
+  per: m2
+notes: 'ESTIMATE (secondary source only). Candidate for the iter1 lever N1 (back panel BP-01, crown pad face BP-03,
+  J-strap faces HS-J2). Cost = EUR 12.90/m incl. VAT / 1.19 x 1.09 USD/EUR (ASSUMPTION, repo rate) / 1.6 m roll =
+  USD 7.38/m2 ex VAT. RISK: the 230 g/m2 article is a special-price item that the category page no longer shows; if it
+  cannot be bought, the nearest real alternatives are the Rockywoods 3 mm meshes at 261-270 g/m2. At 270 g/m2 the N1
+  saving is about 45.1 x (380-270)/(380-230) = 33 g, not 45 g (scaling of the iter1_weight N1 figure). Order a 0.5 m
+  piece before committing and WEIGH A 100 x 100 mm SWATCH (5 punches, target 230 +/- 10 %). A slightly elastic mesh on a
+  back panel can creep into the rail gutter: check MESH-2. Thinner (3 vs 4-4.5 mm) means less air gap and less
+  cushion over the rail edges; the hip faces are not candidates (iter1 N1 leaves them out). Body face: put the open
+  mesh side to the wearer, rib direction on the grain (patterns_v31 ONE_WAY rule for spacer mesh).'
