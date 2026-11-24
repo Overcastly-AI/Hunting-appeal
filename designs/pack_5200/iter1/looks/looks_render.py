@@ -84,11 +84,15 @@ def _setmat(sc, prefix_or_names, mat):
 
 
 def _planar_uv(mesh):
-    """Camo UV for picture parts built without a pattern UV (the roll, the lid): x and arc-ish height, in the
-    500 mm texture-tile unit the cloth skin uses (geom.TILE_MM)."""
+    """Camo UV for picture parts built without a pattern UV (the roll, the lid): cylindrical about the bag's x axis
+    (both are rounded along x), u = x, v = arc length round the axis, in the 500 mm texture-tile unit of the cloth
+    skin (geom.TILE_MM). A flat (x, z) projection stretched the print on the lid top (checked on the first C render)."""
     from huntkit.viz3d import geom as G
     V = np.asarray(mesh.vertices)
-    uv = np.c_[V[:, 0], V[:, 2] + 0.6 * V[:, 1]] / G.TILE_MM
+    yc, zc = V[:, 1].mean(), V[:, 2].mean()
+    r = np.hypot(V[:, 1] - yc, V[:, 2] - zc)
+    th = np.arctan2(V[:, 2] - zc, V[:, 1] - yc)
+    uv = np.c_[V[:, 0], th * max(float(np.median(r)), 1.0)] / G.TILE_MM
     mesh.metadata["uv"] = uv
 
 
@@ -205,7 +209,7 @@ def render(concept, states, views, quality=None):
 
 # ------------------------------------------------------------------------------------------------ sheets
 SHEET_BG = (236, 234, 228)
-CROP = (300, 40, 1300, 1200)        # the pack and torso in a 1600 x 1200 frame (caption band dropped)
+CROP = (430, 120, 1170, 980)        # the pack and torso in a 1600 x 1200 frame (caption band dropped)
 
 
 def _font(size, bold=False):
@@ -234,25 +238,27 @@ def _save(im, out, limit=1.5e6):
         q = im.resize((int(q.width * 0.9), int(q.height * 0.9)), Image.LANCZOS)
 
 
-def sheet(rows, cols, title, sub, out, w=420, row_label=None, col_label=None):
-    """rows x cols grid of cropped renders. rows/cols: keys; file = file_for(row_key, col_key) via the callable."""
+def sheet(grid, title, sub, out, w=600):
+    """grid: rows of (concept, state, view, label) cells, cropped renders, one title band."""
     from PIL import Image, ImageDraw
-    head, lab, foot = 92, 34, 8
-    left = 0 if row_label is None else 0
-    tiles = [[_tile(file_for(*row_label(r, c)), w) for c in cols] for r in rows]
+    head, lab, foot = 96, 36, 8
+    tiles = [[_tile(file_for(c, st, v), w) for c, st, v, _ in row] for row in grid]
     th = tiles[0][0].height
-    W = left + w * len(cols)
-    H = head + len(rows) * (th + lab) + foot
+    W = w * max(len(r) for r in grid)
+    H = head + len(grid) * (th + lab) + foot
     im = Image.new("RGB", (W, H), SHEET_BG)
     d = ImageDraw.Draw(im)
-    d.text((14, 10), title, fill=(34, 33, 30), font=_font(30, True))
-    d.text((14, 52), sub, fill=(90, 88, 82), font=_font(19))
-    for i, r in enumerate(rows):
+    d.text((14, 10), title, fill=(34, 33, 30), font=_font(32 if W > 1000 else 24, True))
+    d.text((14, 56), sub, fill=(90, 88, 82), font=_font(20 if W > 1000 else 15))
+    for i, row in enumerate(grid):
         y = head + i * (th + lab)
-        for j, c in enumerate(cols):
-            im.paste(tiles[i][j], (left + j * w, y + lab))
-            d.text((left + j * w + 10, y + 6), col_label(r, c), fill=(34, 33, 30), font=_font(21, True))
+        for j, (_, _, _, text) in enumerate(row):
+            im.paste(tiles[i][j], (j * w, y + lab))
+            d.text((j * w + 12, y + 6), text, fill=(34, 33, 30), font=_font(24, True))
     return _save(im, out)
+
+
+SHORT = {"base": "TODAY", "A": "A tonal", "B": "B flanks", "C": "C crown + plinth"}
 
 
 def sheets():
@@ -261,21 +267,18 @@ def sheets():
     lab = {"back": "back", "q34": "3/4 rear", "side": "side", "front": "front"}
     for c, states, n in (("base", ("sixday", "day"), 1), ("A", ("sixday",), 3), ("B", ("sixday",), 4),
                          ("C", ("sixday",), 5)):
-        if not all(file_for(c, st, v).exists() for st in states for v in V):
-            continue
         for st in states:
+            if not all(file_for(c, st, v).exists() for v in V):
+                continue
             k = n if st == "sixday" else 2
-            made.append(sheet([st], V, f"{CONCEPT_LABEL[c]}: {STATE_LABEL[st]}",
-                              "CORRIE F rev 3 on a 6 ft hunter. Rendered 3D model, not a photograph.",
-                              SCREENS / f"{PREFIX}_{k}.png", w=400, row_label=lambda r, v, c=c: (c, r, v),
-                              col_label=lambda r, v: lab[v]))
+            grid = [[(c, st, v, lab[v]) for v in V[:2]], [(c, st, v, lab[v]) for v in V[2:]]]
+            made.append(sheet(grid, f"{CONCEPT_LABEL[c]}", f"{STATE_LABEL[st]}. CORRIE F rev 3 on a 6 ft hunter. "
+                              "Rendered 3D model, not a photograph.", SCREENS / f"{PREFIX}_{k}.png", w=600))
     cs = [c for c in ("base", "A", "B", "C") if all(file_for(c, "sixday", v).exists() for v in ("q34", "side", "back"))]
     if len(cs) > 1:
-        made.append(sheet(cs, ("back", "q34", "side"), "Looks iteration 1: today against concepts A, B, C",
-                          "6-day load (45 L), same cameras. Geometry identical; only colour, print and trim change.",
-                          SCREENS / f"{PREFIX}_6.png", w=360, row_label=lambda c, v: (c, "sixday", v),
-                          col_label=lambda c, v: f"{ {'base': 'TODAY', 'A': 'A tonal', 'B': 'B flanks', 'C': 'C crown'}[c]}"
-                                                 f" - {lab[v]}"))
+        grid = [[(c, "sixday", v, f"{SHORT[c]}, {lab[v]}") for v in ("back", "q34", "side")] for c in cs]
+        made.append(sheet(grid, "Looks iter 1: today vs concepts", "6-day load, same cameras, same geometry; only "
+                          "colour, print and trim change.", SCREENS / f"{PREFIX}_6.png", w=420))
     for m in made:
         print(m, round(m.stat().st_size / 1e6, 2), "MB")
     return made

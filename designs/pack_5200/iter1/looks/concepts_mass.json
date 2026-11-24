@@ -98,14 +98,14 @@
     "delta_g": 0.0
    },
    {
-    "piece": "SH-07",
-    "what": "printed solid body colour",
+    "piece": "SH-07, FP-b",
+    "what": "printed solid body colour (two camo zones only: cap and plinth)",
     "area_m2": null,
     "delta_g": 0.0
    }
   ],
   "total_g": -5.2,
-  "camo_print_area_m2": 0.651
+  "camo_print_area_m2": 0.628
  },
  "note_C_print": "C keeps ~20 % of B-02u printed (the 75 mm kick strip is about 1/5 of the U's area: ASSUMPTION KICK-SHARE)",
  "options": {

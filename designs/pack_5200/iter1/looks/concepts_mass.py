@@ -61,7 +61,7 @@ def concepts() -> dict:
                  swap(c, "B-29c", HYPERD), swap(c, "B-29d", HYPERD), swap(c, "B-29e", HYPERD),
                  zero("B-07, B-29g", "stay cordura 330D, solid body colour (strap / clip load points)"),
                  zero("B-02u", "printed camo on the 75 mm kick strip only, blades solid (print-file split, no seam)"),
-                 zero("SH-07", "printed solid body colour")]
+                 zero("SH-07, FP-b", "printed solid body colour (two camo zones only: cap and plinth)")]
     opt = {"B alt: gussets on 630D printable instead of HyperD 300": swap(c, "B-03", "polyester_ht_630d_printable"),
            "C option: delete the B-29f camo corner caps (overlay; lid is camo already)":
                {"piece": "B-29f", "what": "delete overlay", "area_m2": c["B-29f"]["area"],
@@ -74,7 +74,7 @@ def concepts() -> dict:
     out["A"]["camo_print_area_m2"] = round(base_print - c["SH-07"]["area"] - c["B-29f"]["area"], 3)
     out["B"]["camo_print_area_m2"] = round(base_print - c["SH-07"]["area"] - c["B-02u"]["area"] + c["B-03"]["area"], 3)
     out["C"]["camo_print_area_m2"] = round(base_print - c["SH-07"]["area"] + sum(c[p]["area"] for p in (
-        "B-06", "B-29a", "B-29c", "B-29d", "B-29e")) - 0.8 * c["B-02u"]["area"], 3)
+        "B-06", "B-29a", "B-29c", "B-29d", "B-29e")) - 0.8 * c["B-02u"]["area"] - c["FP-b"]["area"], 3)
     out["note_C_print"] = ("C keeps ~20 % of B-02u printed (the 75 mm kick strip is about 1/5 of the U's area: "
                            "ASSUMPTION KICK-SHARE)")
     out["options"] = opt

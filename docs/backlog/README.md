@@ -109,3 +109,7 @@ Nothing here is decided; the tickets produce the material.
 | BL-058 | Review-6 frame and hardware: nut, retainers, US2 pin counterbore, M5x12 hip screws, D5.8 holes | structural-fea-engineer | M | 056 | review 6 frame findings closed |
 | BL-059 | Wire BL-058 into BUILD_H1, kit, register, print README, bag release; BL-057 leftovers | manufacturing-engineer | S | 058 | no pre-BL-058 numbers |
 | BL-060 | Republish every gauge_values line on the current print (md5-locked); BL-059 text leftovers | structural-fea-engineer | S | 059 | no gauge line from an older print |
+| BL-061 | Iteration 1 frame: lighter, lift buckling and cinch-cycled fatigue | structural-fea-engineer | L | 060 | concepts scored on RUBRIC |
+| BL-062 | Iteration 1 system weight (everything but the frame) | pack-designer | M | 060 | done: option A gated |
+| BL-063 | Iteration 1 looks: design language, A/B/C colour concepts | pack-designer | M | 060 | done: C + tonal trim gated by AB-1 |
+| BL-064 | Source mesh/Ti/Dyneema/slider records and test specs for BL-062 option A | materials-engineer | S | 062 | done |
