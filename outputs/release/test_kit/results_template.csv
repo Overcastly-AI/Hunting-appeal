@@ -313,13 +313,13 @@ MT-1cr-14,MT-1cr,G6,R1,wide load US1 L,US1 strap leaves the pin outboard (wide) 
 MT-1cr-15,MT-1cr,G6,R1,narrow load US1 R,US1 strap leaves the pin outboard (wide) / inboard (narrow) as modelled,Y/N,yes,Y,,,,,QUARTER-WIDTH
 MT-1cr-16,MT-1cr,G6,R1,narrow load US1 L,US1 strap leaves the pin outboard (wide) / inboard (narrow) as modelled,Y/N,yes,Y,,,,,QUARTER-WIDTH
 MT-1cr-17,MT-1cr,G6,R1,US1 pull 240 N,US1 ROOT gauge (expected about -228),microstrain,band,-294..294,,,,,SUB-BC
-MT-1cr-18,MT-1cr,G6,R1,US1 pull 240 N,US1 OUTER CHEEK gauge (expected about -1123),microstrain,band,-1719..1719,,,,,SUB-BC; G2-AXIS
+MT-1cr-18,MT-1cr,G6,R1,US1 pull 240 N,US1 OUTER CHEEK gauge (expected about -1123),microstrain,band,-1718..1718,,,,,SUB-BC; G2-AXIS
 MT-1cr-19,MT-1cr,G6,R1,US1 pull 480 N,US1 ROOT gauge (expected about -455),microstrain,band,-588..588,,,,,SUB-BC
-MT-1cr-20,MT-1cr,G6,R1,US1 pull 480 N,US1 OUTER CHEEK gauge (expected about -2245),microstrain,band,-3439..3439,,,,,SUB-BC; G2-AXIS
+MT-1cr-20,MT-1cr,G6,R1,US1 pull 480 N,US1 OUTER CHEEK gauge (expected about -2246),microstrain,band,-3437..3437,,,,,SUB-BC; G2-AXIS
 MT-1cr-21,MT-1cr,G6,R1,US1 pull 720 N,US1 ROOT gauge (expected about -683),microstrain,band,-882..882,,,,,SUB-BC
-MT-1cr-22,MT-1cr,G6,R1,US1 pull 720 N,US1 OUTER CHEEK gauge (expected about -3368),microstrain,band,-5158..5158,,,,,SUB-BC; G2-AXIS
+MT-1cr-22,MT-1cr,G6,R1,US1 pull 720 N,US1 OUTER CHEEK gauge (expected about -3369),microstrain,band,-5155..5155,,,,,SUB-BC; G2-AXIS
 MT-1cr-23,MT-1cr,G6,R1,US1 pull 888 N,US1 ROOT gauge (expected about -842),microstrain,band,-1087..1087,,,,,SUB-BC
-MT-1cr-24,MT-1cr,G6,R1,US1 pull 888 N,US1 OUTER CHEEK gauge (expected about -4152),microstrain,band,-6359..6359,,,,,SUB-BC; G2-AXIS
+MT-1cr-24,MT-1cr,G6,R1,US1 pull 888 N,US1 OUTER CHEEK gauge (expected about -4153),microstrain,band,-6356..6356,,,,,SUB-BC; G2-AXIS
 MT-1cr-25,MT-1cr,G6,R1,US2 pull 240 N,US2 ROOT gauge (expected about -694),microstrain,band,-900..900,,,,,SUB-BC
 MT-1cr-26,MT-1cr,G6,R1,US2 pull 480 N,US2 ROOT gauge (expected about -1389),microstrain,band,-1800..1800,,,,,SUB-BC
 MT-1cr-27,MT-1cr,G6,R1,US2 pull 720 N,US2 ROOT gauge (expected about -2083),microstrain,band,-2699..2699,,,,,SUB-BC
@@ -416,14 +416,14 @@ T9-R3c-02,T9-R3c,G6,BAG-BATCH,S-full-R,"crown strap path, S kit full",mm,max,968
 T9-R3c-03,T9-R3c,G6,BAG-BATCH,L-6day,"crown strap path, L kit 6-day (sim 438.8)",mm,record,,,,,,ROLL-PATH; TORSO-LIN
 BP-3-01,BP-3,G6,CARRY,1,"passes the register criterion: every sensor <= 14 kPa at 15, 19 and 23 in; record whether the z 100 / 160 sensors read > 1 kPa (rails bear below z 190)",Y/N,yes,Y,,,,,
 RF-1-01,RF-1,G6,CARRY,1,passes the register criterion: peak <= 14 kPa and comfort OK,Y/N,yes,Y,,,,,C-8 RAIL
-T1-01,T1,G6,R1,(a) US1 ROOT,US1 ROOT gauge at 150 lb (expected about -15; over the line = HOLD),microstrain,band,-36..36,,,,,GAUGE-LOCAL; SUB-BC
-T1-02,T1,G6,R1,(a) US1 OUTER CHEEK,US1 OUTER CHEEK gauge at 150 lb (expected about -127; over the line = HOLD),microstrain,band,-260..260,,,,,GAUGE-LOCAL; SUB-BC
+T1-01,T1,G6,R1,(a) US1 ROOT,"US1 ROOT gauge at 150 lb (expected about -15, model line 36; RECORD ONLY, BL-061: inside the half-bridge drift band, no pass / fail)",microstrain,record,,,,,,GAUGE-LOCAL; SUB-BC
+T1-02,T1,G6,R1,(a) US1 OUTER CHEEK,US1 OUTER CHEEK gauge at 150 lb (expected about -127; over the line = HOLD),microstrain,band,-261..261,,,,,GAUGE-LOCAL; SUB-BC
 T1-03,T1,G6,R1,(a) US2 ROOT,US2 ROOT gauge at 150 lb (expected about +344; over the line = HOLD),microstrain,band,-454..454,,,,,GAUGE-LOCAL; SUB-BC
-T1-04,T1,G6,R1,(b) US1 ROOT,US1 ROOT gauge at 300 lb (expected about -29; over the line = HOLD),microstrain,band,-71..71,,,,,GAUGE-LOCAL; SUB-BC
-T1-05,T1,G6,R1,(b) US1 OUTER CHEEK,US1 OUTER CHEEK gauge at 300 lb (expected about -255; over the line = HOLD),microstrain,band,-520..520,,,,,GAUGE-LOCAL; SUB-BC
+T1-04,T1,G6,R1,(b) US1 ROOT,"US1 ROOT gauge at 300 lb (expected about -29, model line 71; RECORD ONLY, BL-061: inside the half-bridge drift band, no pass / fail)",microstrain,record,,,,,,GAUGE-LOCAL; SUB-BC
+T1-05,T1,G6,R1,(b) US1 OUTER CHEEK,US1 OUTER CHEEK gauge at 300 lb (expected about -254; over the line = HOLD),microstrain,band,-521..521,,,,,GAUGE-LOCAL; SUB-BC
 T1-06,T1,G6,R1,(b) US2 ROOT,US2 ROOT gauge at 300 lb (expected about +687; over the line = HOLD),microstrain,band,-908..908,,,,,GAUGE-LOCAL; SUB-BC
-T1-07,T1,G6,R1,(c) US1 ROOT,US1 ROOT gauge at 225 lb (expected about -22; over the line = HOLD),microstrain,band,-53..53,,,,,GAUGE-LOCAL; SUB-BC
-T1-08,T1,G6,R1,(c) US1 OUTER CHEEK,US1 OUTER CHEEK gauge at 225 lb (expected about -191; over the line = HOLD),microstrain,band,-390..390,,,,,GAUGE-LOCAL; SUB-BC
+T1-07,T1,G6,R1,(c) US1 ROOT,"US1 ROOT gauge at 225 lb (expected about -22, model line 53; RECORD ONLY, BL-061: inside the half-bridge drift band, no pass / fail)",microstrain,record,,,,,,GAUGE-LOCAL; SUB-BC
+T1-08,T1,G6,R1,(c) US1 OUTER CHEEK,US1 OUTER CHEEK gauge at 225 lb (expected about -190; over the line = HOLD),microstrain,band,-391..391,,,,,GAUGE-LOCAL; SUB-BC
 T1-09,T1,G6,R1,(c) US2 ROOT,US2 ROOT gauge at 225 lb (expected about +515; over the line = HOLD),microstrain,band,-681..681,,,,,GAUGE-LOCAL; SUB-BC
 T1-10,T1,G6,R1,all,"T1 pass rules (no crack, crown set <= 1 mm, z 234 step <= 0.5 mm, ...)",Y/N,yes,Y,,,,,HA-LS-1 T1
 T1c-SW-01,T1c-SW,G6,R1,run1,"sway |D1-D2|/2 at 225 lb, lifters snug",mm,max,3,,,,,GNL-CROWN

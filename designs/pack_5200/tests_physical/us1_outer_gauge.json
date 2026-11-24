@@ -1,5 +1,5 @@
 {
- "ticket": "BL-055 Part B",
+ "ticket": "BL-061 (re-run of BL-055 Part B on the current print)",
  "source": "designs/pack_5200/us1_outer_gauge.py (h1_rev5.sub_fea, read-only)",
  "E_xy_mpa": 3860.0,
  "site": {
@@ -36,37 +36,37 @@
       -3.49
      ],
      "microstrain": -1123.0,
-     "pass_if_abs_microstrain_at_most": 1719.0
+     "pass_if_abs_microstrain_at_most": 1718.0
     },
     {
      "pin_load_n": 480.0,
      "sigma_mpa": -8.67,
      "band_mpa": [
       -11.54,
-      -6.97
+      -6.98
      ],
-     "microstrain": -2245.0,
-     "pass_if_abs_microstrain_at_most": 3439.0
+     "microstrain": -2246.0,
+     "pass_if_abs_microstrain_at_most": 3437.0
     },
     {
      "pin_load_n": 720.0,
      "sigma_mpa": -13.0,
      "band_mpa": [
-      -17.31,
+      -17.3,
       -10.46
      ],
-     "microstrain": -3368.0,
-     "pass_if_abs_microstrain_at_most": 5158.0
+     "microstrain": -3369.0,
+     "pass_if_abs_microstrain_at_most": 5155.0
     },
     {
      "pin_load_n": 887.7,
      "sigma_mpa": -16.03,
      "band_mpa": [
-      -21.34,
+      -21.33,
       -12.9
      ],
-     "microstrain": -4152.0,
-     "pass_if_abs_microstrain_at_most": 6359.0
+     "microstrain": -4153.0,
+     "pass_if_abs_microstrain_at_most": 6356.0
     }
    ]
   },
@@ -98,7 +98,7 @@
       -0.32
      ],
      "microstrain": -127.0,
-     "pass_if_abs_microstrain_at_most": 260.0
+     "pass_if_abs_microstrain_at_most": 261.0
     },
     {
      "pin_load_n": 296.3,
@@ -107,8 +107,8 @@
       -1.75,
       -0.65
      ],
-     "microstrain": -255.0,
-     "pass_if_abs_microstrain_at_most": 520.0
+     "microstrain": -254.0,
+     "pass_if_abs_microstrain_at_most": 521.0
     }
    ]
   },
@@ -124,7 +124,7 @@
    "steps": [
     {
      "pin_load_n": 240.0,
-     "sigma_mpa": -0.06,
+     "sigma_mpa": -0.07,
      "band_mpa": [
       -1.38,
       -0.02
@@ -139,17 +139,17 @@
       -2.76,
       -0.04
      ],
-     "microstrain": -33.0,
+     "microstrain": -34.0,
      "pass_if_abs_microstrain_at_most": 822.0
     },
     {
      "pin_load_n": 720.0,
-     "sigma_mpa": -0.19,
+     "sigma_mpa": -0.2,
      "band_mpa": [
       -4.14,
-      -0.06
+      -0.07
      ],
-     "microstrain": -50.0,
+     "microstrain": -51.0,
      "pass_if_abs_microstrain_at_most": 1233.0
     },
     {
@@ -159,9 +159,33 @@
       -5.1,
       -0.08
      ],
-     "microstrain": -61.0,
+     "microstrain": -62.0,
      "pass_if_abs_microstrain_at_most": 1521.0
     }
+   ]
+  }
+ },
+ "stl_md5": "7bd47cbdcc3b42c0f93d57ef041efc11",
+ "was": {
+  "ticket": "BL-055 Part B",
+  "stl_md5": null,
+  "lines": {
+   "MT-1cr|us1_outer": [
+    1719.0,
+    3439.0,
+    5158.0,
+    6359.0
+   ],
+   "T1|us1_outer": [
+    0.0,
+    260.0,
+    520.0
+   ],
+   "MT-1cr|us1_outer_other_axis": [
+    411.0,
+    822.0,
+    1233.0,
+    1521.0
    ]
   }
  }

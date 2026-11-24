@@ -79,6 +79,12 @@ BOND_PA_MPA = 5.0
 BOND_HOT_WET = 0.8
 MMA_G_MPA = 300.0                                    # ASSUMPTION MMA-G: toughened MMA shear modulus (Plexus class)
 MMA_T = 0.5                                          # bondline, adhesive_methacrylate_ma record
+# P1 and P3 carry the whole pack into the tubes: 0.8 mm bondline (glass beads), as the rev C crown corners, which
+# lowers the Volkersen peak by sqrt(0.5 / 0.8) (load_standard.md 4.2, T6 rev C coupons at 0.8 mm)
+BONDLINE = {"P1 lower node": 0.8, "P3 top node": 0.8}
+# bonded length where it differs from the sleeve: P1 is bonded in two 40 mm bands (z 40-80 at the hinge eyes and
+# z 150-190 under the strut / lug roots); the rest of its bore is a 0.2 mm slip fit (ASSUMPTION P1-BANDS)
+BOND_L = {"P1 lower node": 80.0}
 CROSS_PIN_D = 4.0                                    # fail-safe Ti M4 cross bolt through P1 and P3 sleeves
 TUBE_BEARING_MPA = 250.0                             # ASSUMPTION TUBE-BEARING: pin bearing of a roll-wrapped tube
 
@@ -169,6 +175,17 @@ def diaphragms(cen: np.ndarray, pitch: float = DIAPHRAGM_PITCH) -> np.ndarray:
     return on(cen[:, 2]) | on(cen[:, 0])
 
 
+def util_of(name: str, cyc: bool = False) -> np.ndarray | None:
+    """Max utilisation per element of a checked concept (static bases, or the cinch-cycled basis)."""
+    p = OUT / f"util_{name}{'_cyc' if cyc else ''}.npz"
+    if not p.exists():
+        return None
+    z = np.load(p)
+    u = np.zeros(_base()["dom"].grid.ne, np.float32)
+    u[z["idx"]] = z["util"]
+    return u
+
+
 def util_ref() -> np.ndarray | None:
     p = OUT / "util_h1.npz"
     if not p.exists():
@@ -189,13 +206,27 @@ def util_cyc_ref() -> np.ndarray | None:
     return u
 
 
-def core_mask(solid: np.ndarray, u_cut: float = U_CUT) -> np.ndarray:
+def core_mask(solid: np.ndarray, u_cut: float = U_CUT, util: np.ndarray | None = None) -> np.ndarray:
     """Voxels a shell + core print can put in the core: depth >= CORE_DEPTH, outside the hard points, where the
-    baseline max utilisation over every basis (util_h1.npz) is below ``u_cut``."""
-    u = util_ref()
+    reference max utilisation over every basis (default: H1's, util_h1.npz) is below ``u_cut``."""
+    u = util_ref() if util is None else util
     if u is None:
         raise RuntimeError("run the baseline check first (util_h1.npz)")
     return solid & (depth_mm(solid) >= CORE_DEPTH - 1e-6) & ~protected(solid) & (u < u_cut)
+
+
+def grow_members_y(solid: np.ndarray) -> np.ndarray:
+    """Members deepened 2 mm on each face in frame y only (the out-of-plane, I_min direction of these sections), same
+    limits as grow_members."""
+    c = _base()
+    dom, cen = c["dom"], c["cen"]
+    mem = member_mask(solid)
+    st = np.zeros((3, 3, 3), bool)
+    st[1, :, 1] = True                                       # grid axis 1 = frame y
+    grown = _dilate(mem, 1, structure=st) & ~solid
+    ok = dom.design() & ~dom.passive_void & (cen[:, 1] >= -23.0) & (cen[:, 1] <= 9.0) & (cen[:, 2] > 165.0)
+    ok &= ~np.asarray(dom.masks["bore_R"], bool) & ~np.asarray(dom.masks["bore_L"], bool) & ~c["holes"]
+    return solid | (grown & ok)
 
 
 def grow_members(solid: np.ndarray) -> np.ndarray:
@@ -261,10 +292,12 @@ def tube_section() -> dict:
 
 
 # ================================================================================================ concepts
-CONCEPTS = ("h1", "graded", "box", "cfstay", "cfbox")
+CONCEPTS = ("h1", "graded", "box", "cfstay", "cfbox", "cflite")
+CFLITE_UCUT = 0.60        # cflite: hollow where CF-STAY's own utilisation (static max and cinch-cycled) is below this
 LABEL = {"h1": "H1 today (released print)", "graded": "C  GRADED: same STL, shell + 15 % gyroid core",
          "box": "A  BOX: closed-box members + ribbed cavities", "cfstay": "B  CF-STAY: carbon-tube stays + 3 printed nodes",
-         "cfbox": "D  CF-BOX: CF-STAY + box members + ribbed node cavities"}
+         "cfbox": "D  CF-BOX: CF-STAY + box members + ribbed node cavities",
+         "cflite": "E  CF-LITE: CF-STAY + box members + cavities sized on CF-STAY's own utilisation"}
 
 
 def build(name: str) -> dict:
@@ -291,7 +324,7 @@ def build(name: str) -> dict:
         info["cavity_voxels"] = int(cav.sum())
         solid = solid & ~cav
         core, cf, joint = zero, zero, True
-    elif name in ("cfstay", "cfbox"):
+    elif name in ("cfstay", "cfbox", "cflite"):
         tm = tube_masks()
         r = tube_axis_r(cen)
         col = (r < STAY_COL_R) & (np.abs(cen[:, 0]) > 95.0)
@@ -301,10 +334,14 @@ def build(name: str) -> dict:
         solid = s0.copy()
         # bare spans: the printed stay goes, except the pads (spreader-clip seats, fairleads) and the bag hard points
         hp = hard_points(s0)
-        bare = col & ~in_sleeve & ~hp
+        from . import frame_comp_A as A
+        stay_grp = np.isin(c["grp"], [A.GROUPS.index(g_) for g_ in ("sleeve", "low", "top", "foot")])
+        bare = col & ~in_sleeve & ~hp & (stay_grp | (r < TUBE["od"] / 2 + 1e-6))
         solid &= ~bare
-        # in the sleeves above the lower node the printed wall is cut to SLEEVE_R_OUT where it is plain stay
-        solid &= ~(col & in_sleeve & (r >= SLEEVE_R_OUT) & ~hp & ~protected(s0) & (cen[:, 2] > 195.0))
+        # in the P2 sleeves the printed stay wall is cut to SLEEVE_R_OUT (stay groups only: the branch and mid-bar
+        # roots that enter the column stay whole; the P1 lower node and the P3 top node keep their print)
+        solid &= ~(col & in_sleeve & stay_grp & (r >= SLEEVE_R_OUT) & ~hp & ~protected(s0)
+                   & (cen[:, 2] > 195.0) & (cen[:, 2] < 470.0))
         # the parts are separate: one empty layer through the stay column at each part boundary
         for zg in PART_GAPS:
             solid &= ~(col & (np.abs(cen[:, 2] - zg) < H / 2 + 1e-6) & (r >= TUBE["od"] / 2))
@@ -325,6 +362,30 @@ def build(name: str) -> dict:
             mem = member_mask(solid & ~cf)
             dep = depth_mm(solid & ~cf)
             cav = ((core_mask(solid & ~cf)) | (mem & (dep >= CORE_DEPTH - 1e-6))) & ~diaphragms(cen) & ~cf
+            info["cavity_voxels"] = int(cav.sum())
+            solid &= ~cav
+        if name == "cflite":
+            uu = util_of("cfstay")
+            uc = util_of("cfstay", cyc=True)
+            if uu is None or uc is None:
+                raise RuntimeError("check cfstay first (util_cfstay*.npz)")
+            u = np.maximum(uu, uc)
+            # the tube carries the stay: every printed stay voxel outside the 14 mm sleeve goes (P1 and P3 too),
+            # except the hard points (pads, fairleads, 4 mm round them), the lug arms (|x| > 126 below z 175) and
+            # any voxel CF-STAY used above 0.4
+            keep = hard_points(s0, 2) | ((np.abs(cen[:, 0]) > 126.0) & (cen[:, 2] < 175.0)) | (u >= 0.4)
+            keep |= cen[:, 2] > 466.0      # v1 trimmed P3 too: strength fell to 1.50 at the top bushing (check_cflite_v1)
+            solid &= ~(col & stay_grp & (r >= SLEEVE_R_OUT) & ~keep & ~cf)
+            solid = _connected(solid)
+            pr = solid & ~cf
+            # v1 deepened the members in y only: upper branch R buckling 0.91 (1067 N, side-hill); full box as CF-BOX
+            solid = solid | grow_members(pr)
+            pr = solid & ~cf
+            mem = member_mask(pr)
+            dep = depth_mm(pr)
+            cav = (core_mask(pr, CFLITE_UCUT, util=u) | (mem & (dep >= CORE_DEPTH - 1e-6))) & ~diaphragms(cen) & ~cf
+            # no cavity in the upper bar / pawl housing (BOX and CF-BOX lost strength there: hipbelt-off abuse)
+            cav &= ~(cen[:, 2] > 470.0)
             info["cavity_voxels"] = int(cav.sum())
             solid &= ~cav
     else:
@@ -366,8 +427,9 @@ def mass(con: dict) -> dict:
         ts = tube_section()
         L = TUBE["z1"] - TUBE["z0"]
         rows["2 carbon tubes 22 x 18 x %.0f mm (record density)" % L] = round(2 * ts["g_per_mm"] * L, 1)
-        bond_area = sum(math.pi * TUBE["od"] * (z1 - max(z0, TUBE["z0"])) for z0, z1 in SLEEVES.values()) * 2
-        rows["MMA bond, 0.5 mm over every sleeve (record density 0.98)"] = round(bond_area * MMA_T * 0.98e-3, 1)
+        bond_v = sum(math.pi * TUBE["od"] * BOND_L.get(k, z1 - max(z0, TUBE["z0"])) * BONDLINE.get(k, MMA_T)
+                     for k, (z0, z1) in SLEEVES.items()) * 2
+        rows["MMA bond, 0.8 mm in P1 (2 x 40 mm bands) / P3, 0.5 mm in P2 (record density 0.98)"] = round(bond_v * 0.98e-3, 1)
         pin = math.pi / 4 * CROSS_PIN_D ** 2 * 30.0 * 4.43e-3 + 0.8        # Ti M4 x 30 shank + head/nut (ASSUMPTION)
         rows["4 fail-safe Ti M4 x 30 cross bolts (P1, P3)"] = round(4 * pin, 1)
         j = json.loads((PACK / "analysis" / "frame_mass_h1.json").read_text())["h1"]["joint_hardware_g"]
@@ -397,6 +459,24 @@ def _ctx():
     return cm()
 
 
+def section_props(u: np.ndarray, v: np.ndarray, w: np.ndarray, h: float = H) -> dict:
+    """Weighted voxel section (cells h x h at (u, v), stiffness weight w): A_eff, centroid, I_u, I_v, I_uv and the
+    minimum principal I_min (each cell's own h^4/12 included, so a voxelised rectangle gives b d^3 / 12 exactly)."""
+    w = np.asarray(w, float)
+    a = h * h
+    uc, vc = float((w * u).sum() / w.sum()), float((w * v).sum() / w.sum())
+    own = a * a / 12.0
+    Iu = float((w * ((v - vc) ** 2 * a + own)).sum())
+    Iv = float((w * ((u - uc) ** 2 * a + own)).sum())
+    Iuv = float((w * (u - uc) * (v - vc) * a).sum())
+    Imin = (Iu + Iv) / 2 - math.sqrt(((Iu - Iv) / 2) ** 2 + Iuv ** 2)
+    return {"A": float(w.sum() * a), "uc": uc, "vc": vc, "Iu": Iu, "Iv": Iv, "Iuv": Iuv, "Imin": Imin}
+
+
+def euler_pcr(E: float, I: float, L: float, K: float = 1.0) -> float:
+    return math.pi ** 2 * E * I / (K * L) ** 2
+
+
 def section_buckling(cen, solid_idx_mask_fn, stress, meta, wloc) -> dict:
     """Record rule and section rule for the three team A cuts (per side)."""
     from . import frame_comp_A as A
@@ -412,17 +492,11 @@ def section_buckling(cen, solid_idx_mask_fn, stress, meta, wloc) -> dict:
             if len(P) == 0:
                 continue
             o = [i for i in range(3) if i != ax]
-            u, v = P[:, o[0]], P[:, o[1]]
+            sp = section_props(P[:, o[0]], P[:, o[1]], ww)
             a = H * H
-            Aeff = float(ww.sum() * a)
-            uc, vc = float((ww * u).sum() / ww.sum()), float((ww * v).sum() / ww.sum())
-            own = a * a / 12.0
-            Iu = float((ww * ((v - vc) ** 2 * a + own)).sum())
-            Iv = float((ww * ((u - uc) ** 2 * a + own)).sum())
-            Iuv = float((ww * (u - uc) * (v - vc) * a).sum())
-            Imin = (Iu + Iv) / 2 - math.sqrt(((Iu - Iv) / 2) ** 2 + Iuv ** 2)
-            pcr_rec = math.pi ** 2 * E_BUCKLE * (Aeff ** 2 / (4 * math.pi)) / L ** 2
-            pcr_sec = math.pi ** 2 * E_BUCKLE * Imin / L ** 2
+            Aeff, Imin = sp["A"], sp["Imin"]
+            pcr_rec = euler_pcr(E_BUCKLE, Aeff ** 2 / (4 * math.pi), L)
+            pcr_sec = euler_pcr(E_BUCKLE, Imin, L)
             N = np.array([float((S[msk, ax].astype(float)).sum() * a) for S in stress])
             k = int(np.argmin(N))
             Pc = -float(N[k])
@@ -469,7 +543,8 @@ TUBE_CUTS = (100.0, 192.0, 250.0, 306.0, 354.0, 436.0, 468.0, 520.0)   # bare-tu
 
 def tube_resultants(f: dict, cf_loc: np.ndarray, meta: list) -> dict:
     """Tube section resultants (real tube stresses) at z cuts, per side and set: N (N), Mx, My (N mm about the tube
-    axis), Vx, Vy (N)."""
+    axis), Vx, Vy (N), T (N mm; the voxel ring is about 2.3x too stiff in torsion, tube_section, so T is an upper
+    bound on what the tube attracts)."""
     scale = TUBE["E"] / E_PAHT
     cen = f["cen"]
     out = {}
@@ -485,7 +560,8 @@ def tube_resultants(f: dict, cf_loc: np.ndarray, meta: list) -> dict:
             for S in f["stress"]:
                 s = S[m].astype(float) * scale
                 rows.append([float(s[:, 2].sum() * a), float((s[:, 2] * dy).sum() * a), float((s[:, 2] * dx).sum() * a),
-                             float(s[:, 5].sum() * a), float(s[:, 4].sum() * a)])
+                             float(s[:, 5].sum() * a), float(s[:, 4].sum() * a),
+                             float((dx * s[:, 4] - dy * s[:, 5]).sum() * a)])
             out[f"{sd}|{zc:g}"] = np.array(rows)
     return out
 
@@ -502,7 +578,7 @@ def bonds(name: str, bases=BASES) -> dict:
     force dN and moment dM over each sleeve (difference of the bare-tube cuts that bound it).
     - shear: dN / (2 pi r) line load over the sleeve length, Volkersen peak with the PAHT-CF sleeve (3 mm) as the soft
       adherend; average >= 1 at the factored load, peak >= 1 at limit (factored / case factor), fatigue: 1.6 g
-      static-carry peak <= 0.3 x allowable. Allowable 5.0 x 0.8 = 4.0 MPa (ASSUMPTION BOND-PA);
+      static-carry average <= 0.3 x the dry allowable (HA-LS-1 as frame_light2 applies it). Allowable 5.0 x 0.8 = 4.0 MPa (ASSUMPTION BOND-PA);
     - moment: by bearing of the tube on the sleeve over its length, p = 6 dM / (d L^2) against BEARING_PAHT;
     - fail-safe: one Ti M4 cross bolt in P1 and P3 carries dN alone at factor 1.0 (ultimate), bearing in the
       tube's two walls against TUBE_BEARING_MPA (ASSUMPTION TUBE-BEARING)."""
@@ -511,11 +587,13 @@ def bonds(name: str, bases=BASES) -> dict:
     t = (TUBE["od"] - TUBE["id"]) / 2
     allow = BOND_PA_MPA * BOND_HOT_WET
     E1t, E2t = TUBE["E"] * t, E_PAHT * 3.0
-    om = math.sqrt(MMA_G_MPA / MMA_T * (1 / E1t + 1 / E2t))
     out = {}
     for sl, (lo, hi) in SLEEVE_CUTS.items():
         z0, z1 = SLEEVES[sl]
-        L = z1 - max(z0, TUBE["z0"])
+        L = BOND_L.get(sl, z1 - max(z0, TUBE["z0"]))
+        if sl in BOND_L:
+            L = L / 2              # two bands: checked as if the nearer band took the whole transfer (conservative)
+        om = math.sqrt(MMA_G_MPA / BONDLINE.get(sl, MMA_T) * (1 / E1t + 1 / E2t))
         k = volkersen_factor(om * L, min(E1t, E2t) / max(E1t, E2t))
         w = {"avg": (9e9, ""), "peak": (9e9, ""), "fatigue": (9e9, ""), "bearing": (9e9, ""), "pin": (9e9, "")}
         for b in bases:
@@ -535,7 +613,8 @@ def bonds(name: str, bases=BASES) -> dict:
                 for i, mt in enumerate(meta):
                     dN = abs(float(d[i, 0]))
                     dM = float(np.hypot(d[i, 1], d[i, 2]))
-                    tau = dN / (2 * math.pi * r) / L
+                    dT = abs(float(d[i, 5])) if d.shape[1] > 5 else 0.0
+                    tau = math.hypot(dN / (2 * math.pi * r), dT / (2 * math.pi * r * r)) / L
                     pb = 6 * dM / (TUBE["od"] * L ** 2)
                     tag = f"{b}|{sd}|{mt['set']}"
                     for key, val in (("avg", allow / max(tau, 1e-9)),
@@ -543,8 +622,8 @@ def bonds(name: str, bases=BASES) -> dict:
                                      ("bearing", BEARING_PAHT / max(pb, 1e-9))):
                         if val < w[key][0]:
                             w[key] = (val, tag)
-                    if mt["case"] == "static_carry":
-                        v = 0.3 * allow / max(k * tau * 1.6 / mt["factor"], 1e-9)
+                    if mt["case"] == "static_carry":       # HA-LS-1 / frame_light2: average shear <= 0.3 x dry
+                        v = 0.3 * BOND_PA_MPA / max(tau * 1.6 / mt["factor"], 1e-9)
                         if v < w["fatigue"][0]:
                             w["fatigue"] = (v, tag)
                     if sl in ("P1 lower node", "P3 top node"):
@@ -552,7 +631,7 @@ def bonds(name: str, bases=BASES) -> dict:
                         if v < w["pin"][0]:
                             w["pin"] = (v, tag)
         out[sl] = {"L_mm": L, "volkersen_k": round(k, 2),
-                   **{kk: {"margin": round(v[0], 2) if v[0] < 9e8 else None, "where": v[1]} for kk, v in w.items()}}
+                   **{kk: {"margin": round(float(v[0]), 2) if v[0] < 9e8 else None, "where": v[1]} for kk, v in w.items()}}
     return out
 
 
