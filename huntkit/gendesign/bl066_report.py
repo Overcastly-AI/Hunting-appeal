@@ -28,6 +28,8 @@ def eigen_summary(tag: str) -> dict | None:
     out = {}
     for b in ("fine_sm8", "fine", "fine_sm8.cyc"):
         p = BL065 / f"{tag}_{b}.json"
+        if not (BL065 / f"{tag}_{b}_extra.json").exists():
+            continue
         if not p.exists():
             continue
         r = json.loads(p.read_text())
@@ -35,7 +37,9 @@ def eigen_summary(tag: str) -> dict | None:
         pe = BL065 / f"{tag}_{b}_extra.json"
         if pe.exists():
             full.update(json.loads(pe.read_text())["full"])
-        frame = min(((v["modes"][0]["margin"], k, v["modes"][0]["lead"]) for k, v in full.items()), default=None)
+        # set-down sets are read with the loaded foot on the ground (run_setdown), as BL-065 does
+        frame = min(((v["modes"][0]["margin"], k, v["modes"][0]["lead"]) for k, v in full.items()
+                     if "single_stay_setdown" not in k), default=None)
         mem = {m: {"eig_free": round(v["unbraced"]["margin"], 3), "eig_crown": round(v["braced"]["margin"], 3),
                    "record": round(v["margin_record"], 3), "section": round(v["margin_section"], 3), "set": v["set"],
                    "K_eff": round(v["unbraced"]["K_eff"], 2)} for m, v in r["members"].items()}
