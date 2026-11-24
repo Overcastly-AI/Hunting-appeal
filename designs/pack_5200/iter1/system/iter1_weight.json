@@ -89,9 +89,9 @@
    "after_tests_g": 201.3,
    "proven_now_g": 251.3,
    "best": "N1",
-   "best_change": "spacer mesh 380 -> 230 g/m2 on the back panel BP-01, crown pad face BP-03 and J-strap faces HS-J2",
+   "best_change": "spacer mesh 350 (real; booked 380) -> 230 g/m2 on the back panel BP-01, crown pad face BP-03 and J-strap faces HS-J2",
    "best_status": "new",
-   "best_delta_g": -33.4,
+   "best_delta_g": -26.7,
    "all_levers": [
     "N1",
     "N5"
@@ -148,10 +148,10 @@
    "label": "belt wings + lumbar: foams, stiffener, mesh faces, shells",
    "after_tests_g": 129.6,
    "proven_now_g": 183.4,
-   "best": "N2",
-   "best_change": "belt wing and lumbar mesh faces 380 -> 320 g/m2 (hip faces keep a dense mesh)",
+   "best": "N7",
+   "best_change": "J-strap shells HS-J1 and belt wing / lumbar shells: 330D CORDURA -> ULTRAGrid 210D (the bag-body cloth)",
    "best_status": "new",
-   "best_delta_g": -6.3,
+   "best_delta_g": -5.1,
    "all_levers": [
     "N2",
     "N7"
@@ -163,7 +163,7 @@
    "after_tests_g": 120.1,
    "proven_now_g": 148.7,
    "best": "N3",
-   "best_change": "US1/US2 tri-glide backstops stainless 11 g -> titanium 4 g (2)",
+   "best_change": "US1/US2 tri-glide backstops stainless 11 g -> titanium 4 g (2), USD 4.25 each",
    "best_status": "new",
    "best_delta_g": -14.0,
    "all_levers": [
@@ -222,9 +222,9 @@
    "after_tests_g": 68.7,
    "proven_now_g": 91.0,
    "best": "N1",
-   "best_change": "spacer mesh 380 -> 230 g/m2 on the back panel BP-01, crown pad face BP-03 and J-strap faces HS-J2",
+   "best_change": "spacer mesh 350 (real; booked 380) -> 230 g/m2 on the back panel BP-01, crown pad face BP-03 and J-strap faces HS-J2",
    "best_status": "new",
-   "best_delta_g": -11.7,
+   "best_delta_g": -9.4,
    "all_levers": [
     "N1",
     "N7"
@@ -246,10 +246,10 @@
    "label": "D2 door zip #10 + 2 sliders + cord pulls",
    "after_tests_g": 61.4,
    "proven_now_g": 69.4,
-   "best": "O-slider",
-   "best_change": "D2 door with one slider instead of two",
-   "best_status": "BL-037 owner option",
-   "best_delta_g": -15.0,
+   "best": "G-3",
+   "best_change": "door chain #10 -> #8 coil (-7.1 g) and both sliders -> slider_8 (-13.0 g vs the 15 g G-1 cord-pull #10)",
+   "best_status": "BL-037 option",
+   "best_delta_g": -20.1,
    "all_levers": [
     "G-3",
     "O-slider"
@@ -273,57 +273,57 @@
    "item": "back_panel + j_straps",
    "status": "new",
    "risk": "medium",
-   "change": "spacer mesh 380 -> 230 g/m2 on the back panel BP-01, crown pad face BP-03 and J-strap faces HS-J2",
-   "base_delta_g": -45.1,
+   "change": "spacer mesh 350 (real; booked 380) -> 230 g/m2 on the back panel BP-01, crown pad face BP-03 and J-strap faces HS-J2",
+   "base_delta_g": -36.1,
    "cost_usd": -0.65,
    "strength": "no load path (body-contact face); no HA-LS-1 row or bag load point touches it",
-   "durability": "thinner (3.0 vs 4.5 mm) face: less air gap, faster wear where the pack rubs. The record's own note says the mesh abrades in 1-2 seasons at the hip, so the hip faces are left out (N2)",
+   "durability": "thinner (3.0 vs 4.0 mm) face: less air gap, faster wear where the pack rubs. The record's own note says the mesh abrades in 1-2 seasons at the hip, so the hip faces are left out (N2). Supply: the 230 article is a special-price item (record); without it the Rockywoods 261-270 g/m2 meshes give about -28 g",
    "test": "MESH-1 Martindale (ASTM D4966) both meshes to 20 000 rev + MESH-2 3-tester 2 h sweat carry at 30 kg (BP-3 back-pressure strips under the rails); fallback today's mesh",
    "look": "none visible from outside (wearer face); finer texture on the back panel",
    "records": [
-    "spacer_mesh_3d_230 (3 mm, 230 g/m2): gsm, thickness, compression, abrasion, roll width, price"
+    "spacer_mesh_3d_230 (estimate record, BL-064): confirm stock and weigh a swatch"
    ],
-   "source": "build_geometry panels BP-01/BP-03/HS-J2 x (1 - 230/380); research 3.2",
+   "source": "build_geometry panels BP-01/BP-03/HS-J2 / 380 x (350 - 230) (records spacer_mesh_3d stand-in, spacer_mesh_3d_230; review 7 M8)",
    "split": {
-    "back_panel": -33.4,
-    "j_straps": -11.7
+    "back_panel": -26.7,
+    "j_straps": -9.4
    },
-   "as_hunted_delta_g": -45.1
+   "as_hunted_delta_g": -36.1
   },
   {
    "key": "N2",
    "item": "belt_padding",
    "status": "new",
    "risk": "low",
-   "change": "belt wing and lumbar mesh faces 380 -> 320 g/m2 (hip faces keep a dense mesh)",
-   "base_delta_g": -6.3,
+   "change": "belt wing and lumbar mesh faces 350 (real; booked 380) -> 320 g/m2 (hip faces keep a dense mesh)",
+   "base_delta_g": -3.2,
    "cost_usd": 0.28,
    "strength": "no load path (face fabric)",
    "durability": "320 g/m2 is a 3 mm inelastic mesh sold for backpacks; hip abrasion is the risk",
    "test": "MESH-1 (same lot) + HB-1 hipbelt pressure / hold with the 3 mm face; fallback today's mesh",
    "look": "none visible",
    "records": [
-    "spacer_mesh_3d_320 (3 mm inelastic): gsm (listing 320 vs page title 390), abrasion, roll width"
+    "spacer_mesh_3d_320 (datasheet record, BL-064): weigh on receipt, an old 390 g/m2 lot kills the lever"
    ],
-   "source": "ledger belt rows 'spacer_mesh_3d' x (1 - 320/380); research 3.2",
-   "as_hunted_delta_g": -6.3
+   "source": "ledger belt rows 'spacer_mesh_3d' / 380 x (350 - 320) (records; review 7 M8)",
+   "as_hunted_delta_g": -3.2
   },
   {
    "key": "N3",
    "item": "us_cradle",
    "status": "new",
    "risk": "medium",
-   "change": "US1/US2 tri-glide backstops stainless 11 g -> titanium 4 g (2)",
+   "change": "US1/US2 tri-glide backstops stainless 11 g -> titanium 4 g (2), USD 4.25 each",
    "base_delta_g": -14.0,
-   "cost_usd": 17.24,
+   "cost_usd": 1.74,
    "strength": "the US rows are governed by the 25 mm cam (1100 N slip, margin 1.53 on 720 N) and the box-X (4.43); the backstop is not credited in any SF row. It must still stop a slipping cam: same US-BS gate as the stainless part. Ti-6Al-4V (record) is stronger than 304 per section",
    "durability": "titanium does not corrode; webbing wear on a thinner bar edge unknown",
    "test": "US-BS run on the Ti tri-glide (cam slipped to the backstop, 1080 N hold, dry / wet / -20 C, 5 samples) + weigh 5; fallback stainless",
    "look": "none (inside the cradle)",
    "records": [
-    "triglide_25mm_ti: mass (4 g secondary), bar section, rated hold"
+    "triglide_25mm_ti (BL-064: 4.0 g maker figure, USD 8.50 a pair; no rating; sold out, ask BEW)"
    ],
-   "source": "triglide_25mm record stainless_alt_mass_g; research 3.4",
+   "source": "records triglide_25mm stainless_alt_mass_g, triglide_25mm_ti mass_g / cost_usd",
    "as_hunted_delta_g": -14.0
   },
   {
@@ -365,15 +365,15 @@
    "risk": "high",
    "change": "haul-wrap webbing W1-W3 (cut for carry) polyester 18 g/m -> thin Dyneema 25 mm 10.2 g/m",
    "base_delta_g": -20.0,
-   "cost_usd": 6.3,
-   "strength": "webbing break 11768 N vs 225 N factored (S9): x52; box-X 3186 N is the thread path (unchanged); the governing part is the heavy ladder lock slip (490 N ASSUMPTION on polyester): unknown on 0.7 mm UHMWPE, which the maker says suits buckles only in limited use. Gate before booking",
+   "cost_usd": 5.02,
+   "strength": "webbing break 12000 N vs 225 N factored (S9): x53; box-X 3186 N is the thread path (unchanged); the governing part is the heavy ladder lock slip (490 N ASSUMPTION on polyester): unknown on 0.7 mm UHMWPE, which the maker says suits buckles only in limited use. Gate before booking",
    "durability": "UHMWPE creeps under constant load and is slick in a ladder lock; it twists; cuts need a hot knife",
    "test": "LL-D: 5 heavy ladder locks on the Dyneema webbing, 338 N proof (W-PULL) dry / wet / -20 C, slip < 5 mm; W-box pull to 338 N on a 0.7 mm specimen; fallback polyester",
    "look": "black only (Dyneema dyes poorly); thinner, slightly sheened straps on the outside of the bag",
    "records": [
-    "dyneema_webbing_25mm_thin: g/m, break, ladder-lock slip (Extremtextil art. 72979)"
+    "dyneema_webbing_25mm_thin (BL-064): ladder-lock slip unpublished -> LL-D"
    ],
-   "source": "corrie_f W-web / A-2 / BL-031 rows / 18 g/m x (10.2 - 18) g/m; research 3.3",
+   "source": "corrie_f W-web / A-2 / BL-031 rows / 18 g/m x (10.2 - 18) g/m; record dyneema_webbing_25mm_thin",
    "as_hunted_delta_g": -20.0
   },
   {
@@ -401,18 +401,16 @@
    "item": "door_zip",
    "status": "BL-037 option",
    "risk": "low",
-   "change": "door chain #10 -> #8 coil (sliders unchanged)",
-   "base_delta_g": -7.1,
-   "cost_usd": -1.42,
+   "change": "door chain #10 -> #8 coil (-7.1 g) and both sliders -> slider_8 (-13.0 g vs the 15 g G-1 cord-pull #10)",
+   "base_delta_g": -20.1,
+   "cost_usd": -3.76,
    "strength": "door zip unloaded (SF 78 on #10, about 61 on #8; weight_push G-3)",
    "durability": "#8 under gloved hands and grit; leaders use #10 on the main zip",
    "test": "PT-7 door zip proof on #8 + slider_8 record",
    "look": "slightly narrower zip line",
-   "records": [
-    "slider_8 (#8 slider mass and pull)"
-   ],
-   "source": "weight_push.door_zip8()",
-   "as_hunted_delta_g": -7.1
+   "records": [],
+   "source": "weight_push.door_zip8() + record slider_8 (BL-064) against SLIDER_CORD_G (BL-037 G-1)",
+   "as_hunted_delta_g": -20.1
   },
   {
    "key": "M1",
@@ -679,17 +677,17 @@
     "N5"
    ],
    "idea": "change only what the hunter does not see or that matches the house colours: body-face mesh, backstops, sleeves, frame-side collar",
-   "base_delta_g": -82.3,
-   "as_hunted_delta_g": -82.3,
-   "material_delta_g": -82.3,
+   "base_delta_g": -70.2,
+   "as_hunted_delta_g": -70.2,
+   "material_delta_g": -70.2,
    "modular_delta_g": 0,
-   "new_material_g": -82.3,
+   "new_material_g": -70.2,
    "modular_as_hunted_g": 0,
-   "after_tests_base_g": 3368.6,
-   "after_tests_as_hunted_g": 3687.1,
+   "after_tests_base_g": 3380.7,
+   "after_tests_as_hunted_g": 3699.2,
    "proven_now_base_g": 4038.1,
-   "gap_to_target_g": 374.9,
-   "cost_usd": 8.37,
+   "gap_to_target_g": 387.0,
+   "cost_usd": -7.13,
    "risk_max": "medium",
    "strong": "PASS on paper (each lever gated by its test)",
    "looks": [
@@ -716,17 +714,17 @@
     "M3"
    ],
    "idea": "A, plus the three unfrozen, non-required pockets become clip-on modules in the box (SG / Exo / KUIU practice); base drops, as hunted rises",
-   "base_delta_g": -139.2,
-   "as_hunted_delta_g": -48.6,
-   "material_delta_g": -82.3,
+   "base_delta_g": -127.1,
+   "as_hunted_delta_g": -36.5,
+   "material_delta_g": -70.2,
    "modular_delta_g": -56.9,
-   "new_material_g": -82.3,
+   "new_material_g": -70.2,
    "modular_as_hunted_g": 33.7,
-   "after_tests_base_g": 3311.7,
-   "after_tests_as_hunted_g": 3720.8,
+   "after_tests_base_g": 3323.8,
+   "after_tests_as_hunted_g": 3732.9,
    "proven_now_base_g": 3981.2,
-   "gap_to_target_g": 318.0,
-   "cost_usd": 10.12,
+   "gap_to_target_g": 330.1,
+   "cost_usd": -5.38,
    "risk_max": "medium",
    "strong": "PASS on paper (each lever gated by its test)",
    "looks": [
@@ -761,17 +759,17 @@
     "O-slider"
    ],
    "idea": "every lever that keeps the strength gate on paper; O-cams is left out because it fails the gate",
-   "base_delta_g": -232.1,
-   "as_hunted_delta_g": -82.7,
-   "material_delta_g": -133.2,
+   "base_delta_g": -233.0,
+   "as_hunted_delta_g": -83.6,
+   "material_delta_g": -134.1,
    "modular_delta_g": -98.9,
-   "new_material_g": -111.1,
+   "new_material_g": -99.0,
    "modular_as_hunted_g": 50.5,
-   "after_tests_base_g": 3218.8,
-   "after_tests_as_hunted_g": 3686.7,
+   "after_tests_base_g": 3217.9,
+   "after_tests_as_hunted_g": 3685.8,
    "proven_now_base_g": 3939.2,
-   "gap_to_target_g": 225.1,
-   "cost_usd": 14.72,
+   "gap_to_target_g": 224.2,
+   "cost_usd": -4.4,
    "risk_max": "high",
    "strong": "PASS on paper; N6 pending its slip test",
    "looks": [
@@ -799,23 +797,18 @@
  "assumptions": [
   [
    "MESH-230",
-   "a 3 mm, 230 g/m2 spacer mesh exists at the listed weight and wears acceptably on the back and straps (secondary listing; no record)",
-   "materials record + MESH-1 / MESH-2"
+   "a 3 mm, 230 g/m2 spacer mesh can be bought (record spacer_mesh_3d_230 is an estimate from a secondary source; special-price item) and wears acceptably on the back and straps",
+   "supplier stock + swatch weigh + MESH-1 / MESH-2"
   ],
   [
-   "MESH-320",
-   "the 3 mm inelastic mesh is 320 g/m2 (category listing) not 390 (page title)",
-   "weigh a 1 m swatch"
+   "MESH-BASE",
+   "today's mesh really weighs the stand-in's 350 g/m2 (lever deltas are taken from 350; the ledger keeps the booked 380, so the 380 -> 350 booking correction is reported apart and never as a lever)",
+   "weigh 1 m of the mesh bought"
   ],
   [
    "TI-TG",
-   "a 25 mm Ti tri-glide weighs 4 g (secondary) and holds a slipped cam like the stainless part",
-   "weigh 5 + US-BS on Ti"
-  ],
-  [
-   "TI-TG-COST",
-   "USD 12 each (price not found)",
-   "quote"
+   "the 4.0 g Ti tri-glide (maker figure, record) holds a slipped cam like the stainless part (no rating published)",
+   "TG-TI + US-BS-Ti"
   ],
   [
    "TAB-L",
@@ -828,11 +821,44 @@
    "-"
   ],
   [
-   "MESH-ROLL",
-   "the 320 g/m2 mesh roll is 1.6 m wide (not on the listing)",
-   "supplier"
+   "SLIDER8-CORD",
+   "the #8 door slider is booked with its metal pull (8.5 g, record); a cord pull would be lighter",
+   "SL-1 weigh"
   ]
  ],
+ "settled": [
+  [
+   "MESH-320",
+   "320 g/m2, not 390: maker page, 'from July 2026 ... 320 g/sqm instead of 390' (record spacer_mesh_3d_320); weigh on receipt, an old 390 lot exists"
+  ],
+  [
+   "MESH-ROLL",
+   "320 g/m2 roll 1600 mm wide (record spacer_mesh_3d_320 roll_width_mm)"
+  ],
+  [
+   "TI-TG-COST",
+   "USD 8.50 a pair = 4.25 a part (record triglide_25mm_ti; was ASSUMPTION USD 12)"
+  ],
+  [
+   "DYNEEMA-BREAK",
+   "12 000 N (1200 daN; record dyneema_webbing_25mm_thin; BL-062 read 11 768 N)"
+  ]
+ ],
+ "mesh_rebook": {
+  "booked_mesh_g": 154.4,
+  "delta_g": -12.2
+ },
+ "kuiu": {
+  "g": {
+   "frame_tall": 388.4,
+   "bag_6000": 1357.9,
+   "lid": 218.3,
+   "full_kit": 2789.6
+  },
+  "suspension_lid_out_g": 1043.3,
+  "suspension_lid_in_g": 825.0
+ },
+ "bl067": "2026-11-24 BL-067: mesh levers from the 350 g/m2 stand-in (review 7 M8), BL-064 records (Ti tri-glide price, Dyneema 12 000 N, slider_8 on G-3, mesh thickness 4.0 mm), KUIU arithmetic (m1)",
  "screenshots": [
   "outputs/screens/20261124_iter1_weight_1.png",
   "outputs/screens/20261124_iter1_weight_2.png"

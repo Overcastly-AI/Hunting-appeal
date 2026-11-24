@@ -49,12 +49,52 @@ def test_pareto_is_top15_non_frame_sorted(res):
 
 
 def test_mesh_lever_from_records():
-    sp = load("spacer_mesh_3d").require("areal_density_gsm")
+    """BL-067 (review 7 M8): the lever saves real grams, from the 350 g/m2 stand-in, not the booked 380."""
+    rec = load("spacer_mesh_3d")
+    booked, real = rec.require("areal_density_gsm"), rec.require("stand_in_areal_density_gsm")
+    assert (booked, real) == (380, 350)
     m = I.mesh_light()
     g0 = sum(m["pieces_g"].values())
-    assert m["delta_g"] == pytest.approx(-g0 * (1 - 230 / sp))
+    lite = load("spacer_mesh_3d_230").require("areal_density_gsm")
+    assert m["delta_g"] == pytest.approx(-g0 / booked * (real - lite))
+    assert m["delta_g"] == pytest.approx(-36.1, abs=0.3)                 # review 7: N1 about -36 g
+    assert m["delta_g_booked_basis"] == pytest.approx(-45.1, abs=0.2)    # the BL-062 figure, kept for the trail
     assert sum(m["split"].values()) == pytest.approx(m["delta_g"])
     assert m["pieces_g"]["BP-01"] == pytest.approx(67.6, abs=0.2)     # the booked back-panel mesh
+    assert m["thickness_mm"] == (3.0, 4.0)
+    b = I.mesh_belt()
+    assert b["delta_g"] == pytest.approx(-3.2, abs=0.1)                 # review 7: N2 about -3.2 g
+    rb = I.mesh_rebook()
+    assert rb["delta_g"] < 0 and rb["delta_g"] == pytest.approx(-rb["booked_mesh_g"] * 30 / 380, abs=0.1)
+
+
+def test_bl064_records_wired():
+    ti = I.ti_backstops()
+    assert ti["ti_usd"] == pytest.approx(4.25) and ti["ti_g"] == 4.0
+    assert I.wraps_dyneema()["web_break_n"] == 12000.0
+    z = I.door_zip8_slider8()
+    assert z["slider_g"] == pytest.approx(2 * (8.5 - 15.0))            # on top of BL-037 G-1 cord pulls
+    assert z["delta_g"] == pytest.approx(z["chain_g"] + z["slider_g"])
+    keys = {k for k, _, _ in I.ASSUMPTIONS}
+    assert not {"MESH-320", "MESH-ROLL", "TI-TG-COST"} & keys          # settled by records
+    assert {"MESH-320", "MESH-ROLL", "TI-TG-COST"} <= {k for k, _ in I.SETTLED}
+
+
+def test_option_A_on_real_mesh(res):
+    """Review 7 M8: option A on the 350 basis (N1 -36.1, N2 -3.2, N3 -14, N4 -8.2, N5 -8.7)."""
+    assert res["options"]["A"]["base_delta_g"] == pytest.approx(-70.2, abs=0.3)
+
+
+def test_kuiu_arithmetic(res):
+    """Review 7 m1: 2 lb 15.9 oz = 1358 g; suspension 1044 g (lid out) or 826 g (lid in)."""
+    k = res["kuiu"]
+    assert k["g"]["bag_6000"] == pytest.approx(1358, abs=1)
+    assert k["suspension_lid_out_g"] == pytest.approx(1044, abs=1)
+    assert k["suspension_lid_in_g"] == pytest.approx(826, abs=1)
+    ours = I.a_sus(res)
+    md = I.report(res, [])
+    if k["suspension_lid_in_g"] < ours < k["suspension_lid_out_g"]:
+        assert "NOT claimed" in md and "1052" not in md
 
 
 def test_fabric_and_hardware_levers_from_records():

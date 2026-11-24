@@ -173,14 +173,13 @@ def items(scen: str) -> dict:
 # =====================================================================================================================
 # 2. levers (each one computed from rows / panels / records; status says where it comes from)
 # =====================================================================================================================
-MESH_LIGHT_GSM = 230.0     # ASSUMPTION MESH-230 (Extremtextil art. 73068, secondary; record pending), research 3.2
-MESH_MID_GSM = 320.0       # ASSUMPTION MESH-320 (Extremtextil art. 70807 category listing; page title says 390)
-MESH_LIGHT_EUR_M, MESH_LIGHT_ROLL_M = 12.90, 1.6     # research 3.2 (secondary)
-MESH_MID_EUR_M, MESH_MID_ROLL_M = 19.90, 1.6         # roll width ASSUMPTION (not on the listing)
-TI_TRIGLIDE_G = 4.0        # ASSUMPTION TI-TG (Brautigam 1 in Ti tri-glide, secondary; no rating published)
-TI_TRIGLIDE_USD = 12.0     # ASSUMPTION TI-TG-COST (price not found)
+# BL-067 (review 7 M8 + the BL-064 records): every lever number below is read from a material record.
+MESH_LIGHT = "spacer_mesh_3d_230"   # N1, 230 g/m2 (estimate record: secondary source, ASSUMPTION MESH-230)
+MESH_MID = "spacer_mesh_3d_320"     # N2, 320 g/m2 (datasheet record: maker page, 320 since July 2026; 1600 mm roll)
+MESH_BASE = "spacer_mesh_3d"        # today's mesh: BOOKED 380 g/m2 (ledger), re-sourced stand-in 350 g/m2 (Shelby 4 mm)
+MESH_LIGHT_EUR_M, MESH_LIGHT_ROLL_M = 12.90, 1.6     # record spacer_mesh_3d_230 supplier line (EUR/m incl. VAT)
+MESH_MID_EUR_M = 19.90                               # record spacer_mesh_3d_320 (EUR/m incl. VAT)
 SS_TRIGLIDE_EUR = 3.10     # triglide_25mm record source (Extremtextil art. 70460, incl. VAT)
-DYNEEMA_G_M, DYNEEMA_N, DYNEEMA_EUR_M = 10.2, 11768.0, 2.90   # Extremtextil Dyneema thin 25 mm (fetched), research 3.3
 LOOP_M = 0.08              # hard-point loop length, CORRIE F row '4 hard-point loops: 25 mm webbing 0.08 m each'
 TAB_M = 0.06               # ASSUMPTION TAB-L: a toggle tab on a clip-on pocket, 25 mm webbing x 60 mm
 
@@ -197,32 +196,60 @@ def tab_g() -> float:
     return float(rec("pom_toggle").require("mass_g")) + _poly_g_m() * TAB_M
 
 
+def mesh_real_gsm() -> float:
+    """What today's mesh really weighs: the re-sourced stand-in (record ``stand_in_areal_density_gsm``, 350 g/m2). The
+    ledger keeps the booked 380 (conservative); a lever saves only real grams, so its delta is taken from 350
+    (review 7 M8). The 380 -> 350 difference is a booking correction, reported apart (``mesh_rebook``), never a lever."""
+    return float(rec(MESH_BASE).require("stand_in_areal_density_gsm"))
+
+
+def _mesh_swap(g_booked: float, new: str) -> float:
+    """Real saving of a mesh swap on rows booked at the record's 380 g/m2: area x (350 - new)."""
+    return -(g_booked / gsm(MESH_BASE)) * (mesh_real_gsm() - gsm(new))
+
+
 def mesh_light() -> dict:
-    """N1: BP-01 back mesh, BP-03 crown pad face and HS-J2 J-strap faces from the 380 gsm estimate to 230 gsm."""
+    """N1: BP-01 back mesh, BP-03 crown pad face and HS-J2 J-strap faces from today's mesh (350 real) to 230 g/m2."""
     P = panels()
     pieces = {k: P[k]["mass_g_total"] for k in ("BP-01", "BP-03", "HS-J2")}
     g0 = sum(pieces.values())
-    area = g0 / gsm("spacer_mesh_3d")
+    area = g0 / gsm(MESH_BASE)
     new_usd = MESH_LIGHT_EUR_M * USD_PER_EUR / MESH_LIGHT_ROLL_M
-    f = 1 - MESH_LIGHT_GSM / gsm("spacer_mesh_3d")
-    return {"pieces_g": pieces, "delta_g": -g0 * f, "cost_usd": area * (new_usd - usd_m2("spacer_mesh_3d")),
-            "split": {"back_panel": -(pieces["BP-01"] + pieces["BP-03"]) * f, "j_straps": -pieces["HS-J2"] * f}}
+    d = _mesh_swap(g0, MESH_LIGHT)
+    f = d / g0
+    return {"pieces_g": pieces, "delta_g": d, "delta_g_booked_basis": -g0 * (1 - gsm(MESH_LIGHT) / gsm(MESH_BASE)),
+            "cost_usd": area * (new_usd - usd_m2(MESH_BASE)),
+            "split": {"back_panel": (pieces["BP-01"] + pieces["BP-03"]) * f, "j_straps": pieces["HS-J2"] * f},
+            "thickness_mm": (float(rec(MESH_LIGHT).require("thickness_mm")), float(rec(MESH_BASE).require("thickness_mm")))}
 
 
 def mesh_belt() -> dict:
-    """N2: belt wing and lumbar mesh faces 380 -> 320 gsm (the hip contact faces keep a heavier mesh)."""
+    """N2: belt wing and lumbar mesh faces from today's mesh (350 real) to 320 g/m2 (hip faces keep a denser mesh)."""
     g0 = row_g("A", r"spacer_mesh_3d", "belt")
-    area = g0 / gsm("spacer_mesh_3d")
-    new_usd = MESH_MID_EUR_M * USD_PER_EUR / MESH_MID_ROLL_M
-    return {"pieces_g": {"belt faces": g0}, "delta_g": -g0 * (1 - MESH_MID_GSM / gsm("spacer_mesh_3d")),
-            "cost_usd": area * (new_usd - usd_m2("spacer_mesh_3d"))}
+    area = g0 / gsm(MESH_BASE)
+    new_usd = MESH_MID_EUR_M * USD_PER_EUR / (float(rec(MESH_MID).require("roll_width_mm")) / 1000.0)
+    return {"pieces_g": {"belt faces": g0}, "delta_g": _mesh_swap(g0, MESH_MID),
+            "delta_g_booked_basis": -g0 * (1 - gsm(MESH_MID) / gsm(MESH_BASE)),
+            "cost_usd": area * (new_usd - usd_m2(MESH_BASE))}
+
+
+def mesh_rebook() -> dict:
+    """Not a lever: what every booked spacer-mesh row would lose if the bought mesh weighs the stand-in's 350 g/m2
+    (after tests, base). Shown so nobody books it twice; settled by weighing 1 m of the mesh actually bought."""
+    g = row_g("A", r"spacer_mesh_3d") + sum(panels()[k]["mass_g_total"] for k in ("BP-01", "BP-03", "HS-J2"))
+    return {"booked_mesh_g": round(g, 1), "delta_g": round(-g * (1 - mesh_real_gsm() / gsm(MESH_BASE)), 1)}
 
 
 def ti_backstops() -> dict:
-    """N3: the two US stainless tri-glide backstops (orchestrator 2026-11-13, gate US-BS) in titanium."""
+    """N3: the two US stainless tri-glide backstops (orchestrator 2026-11-13, gate US-BS) in titanium (record
+    triglide_25mm_ti: 4.0 g maker figure, USD 8.50 a pair = 4.25 a part; no rating, gate TG-TI / US-BS-Ti)."""
     ss = float(rec("triglide_25mm").require("stainless_alt_mass_g"))
-    return {"n": 2, "ss_g": ss, "ti_g": TI_TRIGLIDE_G, "delta_g": 2 * (TI_TRIGLIDE_G - ss),
-            "cost_usd": 2 * (TI_TRIGLIDE_USD - SS_TRIGLIDE_EUR * USD_PER_EUR)}
+    ti = rec("triglide_25mm_ti")
+    c = ti.cost_usd
+    ti_usd = c["value"] / (2.0 if c["per"] == "pair" else 1.0)
+    ti_g = float(ti.require("mass_g"))
+    return {"n": 2, "ss_g": ss, "ti_g": ti_g, "ti_usd": ti_usd, "delta_g": 2 * (ti_g - ss),
+            "cost_usd": 2 * (ti_usd - SS_TRIGLIDE_EUR * USD_PER_EUR)}
 
 
 def fabric_swap(g0: float, old: str, new: str) -> dict:
@@ -247,9 +274,26 @@ def wraps_dyneema() -> dict:
     """N6: haul-wrap webbing W1-W3 (as cut for carry, BL-031, A-2 tails) 25 mm polyester -> thin Dyneema 25 mm."""
     g0 = row_g("A", r"W-web|A-2|W1-W3 cut for carry", "straps_compression")
     length = g0 / _poly_g_m()
-    return {"length_m": length, "g0": g0, "delta_g": length * (DYNEEMA_G_M - _poly_g_m()),
-            "cost_usd": length * (DYNEEMA_EUR_M * USD_PER_EUR - rec("poly_webbing_25mm").cost_usd["value"]),
-            "web_break_n": DYNEEMA_N}
+    dy = rec("dyneema_webbing_25mm_thin")
+    return {"length_m": length, "g0": g0, "delta_g": length * (float(dy.require("mass_g_m")) - _poly_g_m()),
+            "cost_usd": length * (dy.cost_usd["value"] - rec("poly_webbing_25mm").cost_usd["value"]),
+            "web_break_n": float(dy.require("breaking_strength_n"))}
+
+
+def door_zip8_slider8() -> dict:
+    """G-3 with the #8 slider record (BL-064): chain #10 -> #8 (weight_push.door_zip8) plus both door sliders
+    #10 -> slider_8. Basis: after tests, where BL-037 G-1 already books each #10 slider at SLIDER_CORD_G (cord pull
+    instead of the metal tab), so the slider step is 2 x (8.5 - 15.0) = -13.0 g, not the 2 x (19.0 - 8.5) = -21.0 g of
+    the BL-064 note (which starts from the 19 g metal-pull #10). slider_8's 8.5 g includes its metal pull, so this is
+    conservative; a cord pull on #8 settles on the SL-1 weigh."""
+    WP = _WP()
+    z8 = WP.door_zip8()
+    s8 = float(rec("slider_8").require("mass_g"))
+    sl = 2 * (s8 - WP.SLIDER_CORD_G)
+    cost = (z8["length_m"] * (rec("coil_zipper_8").cost_usd["value"] - rec("coil_zipper_10").cost_usd["value"])
+            + 2 * (rec("slider_8").cost_usd["value"] - rec("slider_10").cost_usd["value"]))
+    return {"chain_g": z8["delta_g"], "slider_g": sl, "delta_g": z8["delta_g"] + sl, "length_m": z8["length_m"],
+            "cost_usd": cost, "slider_8_g": s8, "slider_10_cord_g": WP.SLIDER_CORD_G}
 
 
 def shells_ultragrid() -> dict:
@@ -275,7 +319,7 @@ def levers() -> list:
     WP = _WP()
     m1, m2, ti, col, slv, dy, sh = (mesh_light(), mesh_belt(), ti_backstops(), collar_frame_side(), sleeves_70d(),
                                     wraps_dyneema(), shells_ultragrid())
-    z8, cams = WP.door_zip8(), WP.cams_to_ladders()
+    z8, cams = door_zip8_slider8(), WP.cams_to_ladders()
     cam_usd = rec("cam_25mm_al").cost_usd["value"] - rec("ladder_lock_25mm_heavy").cost_usd["value"]
     L = []
 
@@ -287,28 +331,33 @@ def levers() -> list:
         L.append(k)
 
     add(key="N1", item="back_panel + j_straps", status="new", risk="medium",
-        change="spacer mesh 380 -> 230 g/m2 on the back panel BP-01, crown pad face BP-03 and J-strap faces HS-J2",
+        change="spacer mesh 350 (real; booked 380) -> 230 g/m2 on the back panel BP-01, crown pad face BP-03 and "
+               "J-strap faces HS-J2",
         base_delta_g=m1["delta_g"], cost_usd=m1["cost_usd"],
         strength="no load path (body-contact face); no HA-LS-1 row or bag load point touches it",
-        durability="thinner (3.0 vs 4.5 mm) face: less air gap, faster wear where the pack rubs. The record's own note "
-                   "says the mesh abrades in 1-2 seasons at the hip, so the hip faces are left out (N2)",
+        durability=f"thinner ({m1['thickness_mm'][0]:.1f} vs {m1['thickness_mm'][1]:.1f} mm) face: less air gap, faster "
+                   "wear where the pack rubs. The record's own note says the mesh abrades in 1-2 seasons at the hip, so "
+                   "the hip faces are left out (N2). Supply: the 230 article is a special-price item (record); without "
+                   "it the Rockywoods 261-270 g/m2 meshes give about -28 g",
         test="MESH-1 Martindale (ASTM D4966) both meshes to 20 000 rev + MESH-2 3-tester 2 h sweat carry at 30 kg "
              "(BP-3 back-pressure strips under the rails); fallback today's mesh",
         look="none visible from outside (wearer face); finer texture on the back panel",
-        records=["spacer_mesh_3d_230 (3 mm, 230 g/m2): gsm, thickness, compression, abrasion, roll width, price"],
-        source="build_geometry panels BP-01/BP-03/HS-J2 x (1 - 230/380); research 3.2",
+        records=["spacer_mesh_3d_230 (estimate record, BL-064): confirm stock and weigh a swatch"],
+        source="build_geometry panels BP-01/BP-03/HS-J2 / 380 x (350 - 230) (records spacer_mesh_3d stand-in, "
+               "spacer_mesh_3d_230; review 7 M8)",
         split={k: round(v, 1) for k, v in m1["split"].items()})
     add(key="N2", item="belt_padding", status="new", risk="low",
-        change="belt wing and lumbar mesh faces 380 -> 320 g/m2 (hip faces keep a dense mesh)",
+        change="belt wing and lumbar mesh faces 350 (real; booked 380) -> 320 g/m2 (hip faces keep a dense mesh)",
         base_delta_g=m2["delta_g"], cost_usd=m2["cost_usd"],
         strength="no load path (face fabric)",
         durability="320 g/m2 is a 3 mm inelastic mesh sold for backpacks; hip abrasion is the risk",
         test="MESH-1 (same lot) + HB-1 hipbelt pressure / hold with the 3 mm face; fallback today's mesh",
         look="none visible",
-        records=["spacer_mesh_3d_320 (3 mm inelastic): gsm (listing 320 vs page title 390), abrasion, roll width"],
-        source="ledger belt rows 'spacer_mesh_3d' x (1 - 320/380); research 3.2")
+        records=["spacer_mesh_3d_320 (datasheet record, BL-064): weigh on receipt, an old 390 g/m2 lot kills the lever"],
+        source="ledger belt rows 'spacer_mesh_3d' / 380 x (350 - 320) (records; review 7 M8)")
     add(key="N3", item="us_cradle", status="new", risk="medium",
-        change="US1/US2 tri-glide backstops stainless 11 g -> titanium 4 g (2)",
+        change=f"US1/US2 tri-glide backstops stainless {ti['ss_g']:.0f} g -> titanium {ti['ti_g']:.0f} g (2), "
+               f"USD {ti['ti_usd']:.2f} each",
         base_delta_g=ti["delta_g"], cost_usd=ti["cost_usd"],
         strength="the US rows are governed by the 25 mm cam (1100 N slip, margin 1.53 on 720 N) and the box-X "
                  "(4.43); the backstop is not credited in any SF row. It must still stop a slipping cam: same US-BS "
@@ -317,8 +366,8 @@ def levers() -> list:
         test="US-BS run on the Ti tri-glide (cam slipped to the backstop, 1080 N hold, dry / wet / -20 C, 5 samples) "
              "+ weigh 5; fallback stainless",
         look="none (inside the cradle)",
-        records=["triglide_25mm_ti: mass (4 g secondary), bar section, rated hold"],
-        source="triglide_25mm record stainless_alt_mass_g; research 3.4")
+        records=["triglide_25mm_ti (BL-064: 4.0 g maker figure, USD 8.50 a pair; no rating; sold out, ask BEW)"],
+        source="records triglide_25mm stainless_alt_mass_g, triglide_25mm_ti mass_g / cost_usd")
     add(key="N4", item="rolltop", status="new", risk="medium",
         change="frame-side roll-top collar B-06f ULTRA 200X -> 70D ripstop (the aft collar B-06 is already 70D)",
         base_delta_g=col["delta_g"], cost_usd=col["cost_usd"],
@@ -348,8 +397,8 @@ def levers() -> list:
         test="LL-D: 5 heavy ladder locks on the Dyneema webbing, 338 N proof (W-PULL) dry / wet / -20 C, slip < 5 mm; "
              "W-box pull to 338 N on a 0.7 mm specimen; fallback polyester",
         look="black only (Dyneema dyes poorly); thinner, slightly sheened straps on the outside of the bag",
-        records=["dyneema_webbing_25mm_thin: g/m, break, ladder-lock slip (Extremtextil art. 72979)"],
-        source="corrie_f W-web / A-2 / BL-031 rows / 18 g/m x (10.2 - 18) g/m; research 3.3")
+        records=["dyneema_webbing_25mm_thin (BL-064): ladder-lock slip unpublished -> LL-D"],
+        source="corrie_f W-web / A-2 / BL-031 rows / 18 g/m x (10.2 - 18) g/m; record dyneema_webbing_25mm_thin")
     add(key="N7", item="j_straps + belt_padding", status="new", risk="medium",
         change="J-strap shells HS-J1 and belt wing / lumbar shells: 330D CORDURA -> ULTRAGrid 210D (the bag-body cloth)",
         base_delta_g=sh["delta_g"], cost_usd=sh["cost_usd"],
@@ -362,12 +411,13 @@ def levers() -> list:
         records=[], source="build_geometry HS-J1 + ledger belt shell rows x (1 - 132/180); records",
         split={k: round(v, 1) for k, v in sh["split"].items()})
     add(key="G-3", item="door_zip", status="BL-037 option", risk="low",
-        change="door chain #10 -> #8 coil (sliders unchanged)", base_delta_g=z8["delta_g"],
-        cost_usd=z8["length_m"] * (rec("coil_zipper_8").cost_usd["value"] - rec("coil_zipper_10").cost_usd["value"]),
+        change=f"door chain #10 -> #8 coil ({z8['chain_g']:+.1f} g) and both sliders -> slider_8 ({z8['slider_g']:+.1f} g "
+               f"vs the {z8['slider_10_cord_g']:.0f} g G-1 cord-pull #10)", base_delta_g=z8["delta_g"],
+        cost_usd=z8["cost_usd"],
         strength="door zip unloaded (SF 78 on #10, about 61 on #8; weight_push G-3)",
         durability="#8 under gloved hands and grit; leaders use #10 on the main zip",
         test="PT-7 door zip proof on #8 + slider_8 record", look="slightly narrower zip line",
-        records=["slider_8 (#8 slider mass and pull)"], source="weight_push.door_zip8()")
+        records=[], source="weight_push.door_zip8() + record slider_8 (BL-064) against SLIDER_CORD_G (BL-037 G-1)")
     for key, item, what, req in (("M1", "fp", "FP-L/R hip-reach pockets", "not frozen, not a DESIGN requirement; the "
                                   "E-5 pole quiver (R-20) moves from FP-R's pleat to the gusset so pole carry stays in base"),
                                  ("M2", "imp4", "IMP-4 door kill-kit pocket", "not frozen, not a DESIGN requirement"),
@@ -630,14 +680,23 @@ def plot_pareto(path: Path) -> Path:
 # 7. report
 # =====================================================================================================================
 ASSUMPTIONS = [
-    ("MESH-230", "a 3 mm, 230 g/m2 spacer mesh exists at the listed weight and wears acceptably on the back and straps "
-     "(secondary listing; no record)", "materials record + MESH-1 / MESH-2"),
-    ("MESH-320", "the 3 mm inelastic mesh is 320 g/m2 (category listing) not 390 (page title)", "weigh a 1 m swatch"),
-    ("TI-TG", "a 25 mm Ti tri-glide weighs 4 g (secondary) and holds a slipped cam like the stainless part", "weigh 5 + US-BS on Ti"),
-    ("TI-TG-COST", "USD 12 each (price not found)", "quote"),
+    ("MESH-230", "a 3 mm, 230 g/m2 spacer mesh can be bought (record spacer_mesh_3d_230 is an estimate from a secondary "
+     "source; special-price item) and wears acceptably on the back and straps", "supplier stock + swatch weigh + MESH-1 / MESH-2"),
+    ("MESH-BASE", "today's mesh really weighs the stand-in's 350 g/m2 (lever deltas are taken from 350; the ledger keeps "
+     "the booked 380, so the 380 -> 350 booking correction is reported apart and never as a lever)", "weigh 1 m of the mesh bought"),
+    ("TI-TG", "the 4.0 g Ti tri-glide (maker figure, record) holds a slipped cam like the stainless part (no rating published)",
+     "TG-TI + US-BS-Ti"),
     ("TAB-L", "a clip-on pocket's toggle tab is 25 mm webbing x 60 mm + one POM toggle", "pattern-maker draft"),
     ("FX", f"USD {USD_PER_EUR} per EUR", "-"),
-    ("MESH-ROLL", "the 320 g/m2 mesh roll is 1.6 m wide (not on the listing)", "supplier"),
+    ("SLIDER8-CORD", "the #8 door slider is booked with its metal pull (8.5 g, record); a cord pull would be lighter",
+     "SL-1 weigh"),
+]
+SETTLED = [   # BL-067: assumptions of BL-062 that a record now settles (kept listed so the trail is visible)
+    ("MESH-320", "320 g/m2, not 390: maker page, 'from July 2026 ... 320 g/sqm instead of 390' (record spacer_mesh_3d_320); "
+     "weigh on receipt, an old 390 lot exists"),
+    ("MESH-ROLL", "320 g/m2 roll 1600 mm wide (record spacer_mesh_3d_320 roll_width_mm)"),
+    ("TI-TG-COST", "USD 8.50 a pair = 4.25 a part (record triglide_25mm_ti; was ASSUMPTION USD 12)"),
+    ("DYNEEMA-BREAK", "12 000 N (1200 daN; record dyneema_webbing_25mm_thin; BL-062 read 11 768 N)"),
 ]
 
 
@@ -659,7 +718,23 @@ def compute() -> dict:
                        "target_g": round(_R().TARGET_G, 1)},
             "items_after_tests": a, "items_proven_now": p, "pareto": pareto(), "levers": levers(),
             "strength": strength_table(), "options": option_table(), "recommended": RECOMMENDED,
-            "assumptions": ASSUMPTIONS}
+            "assumptions": ASSUMPTIONS, "settled": SETTLED, "mesh_rebook": mesh_rebook(), "kuiu": kuiu(),
+            "bl067": "2026-11-24 BL-067: mesh levers from the 350 g/m2 stand-in (review 7 M8), BL-064 records (Ti "
+                     "tri-glide price, Dyneema 12 000 N, slider_8 on G-3, mesh thickness 4.0 mm), KUIU arithmetic (m1)"}
+
+
+# KUIU ICON 6 (docs/research/weight_iter1.md section 1, KUIU whitepaper SPECS table, fetched 2026-11-24)
+KUIU_OZ = {"frame_tall": 13.7, "bag_6000": 2 * 16 + 15.9, "lid": 7.7, "full_kit": 6 * 16 + 2.4}
+
+
+def kuiu() -> dict:
+    """Review 7 m1: 2 lb 15.9 oz is 1358 g (not 1350). Suspension (belt + harness + hip pouches) by inference =
+    full kit - bag - TALL frame = 1044 g if the full-kit figure leaves the lid out (the table lists the lid apart), or
+    826 g if the lid is inside the full kit. The table does not say, so both are carried and 'ours lighter' is claimed
+    only where it holds for both."""
+    g = {k: round(v * OZ, 1) for k, v in KUIU_OZ.items()}
+    no_lid = round(g["full_kit"] - g["bag_6000"] - g["frame_tall"], 1)
+    return {"g": g, "suspension_lid_out_g": no_lid, "suspension_lid_in_g": round(no_lid - g["lid"], 1)}
 
 
 def _j(o):
@@ -677,7 +752,7 @@ def report(res: dict, shots: list) -> str:
     st = res["strength"]
     L = []
     w = L.append
-    w("# Iteration 1, system weight: options (BL-062)\n")
+    w("# Iteration 1, system weight: options (BL-062, corrected by BL-067)\n")
     w(f"Owner: pack-designer. Date: {res['date']}. Code: `{OWN_CODE}` (tests `tests/test_iter1_weight.py`); numbers: "
       "`iter1_weight.json`. Research: `docs/research/weight_iter1.md`. Base configuration, belt M, crown kit M, as the "
       "roll-up (`analysis/weight_rollup_v2.md`). **Generated: re-run the code rather than quoting this file after any "
@@ -688,9 +763,21 @@ def report(res: dict, shots: list) -> str:
     w(f"- Today: proven now **{t['proven_now_base_g']:.1f} g ({_lb(t['proven_now_base_g'])})**; after the gated tests "
       f"**{t['after_tests_base_g']:.1f} g ({_lb(t['after_tests_base_g'])})**. Of that, the frame is "
       f"{t['frame_after_tests_g']:.1f} g and everything in this ticket's scope is **{t['non_frame_after_tests_g']:.1f} g**.")
-    w(f"- In scope we are already level with the leaders (research section 2): back panel + spreader + belt + harness "
-      f"after tests {a_sus(res):.0f} g against KUIU ICON 6's belt + harness + hip pouches at about 1052 g (inference). The bag side is lighter than "
-      "SG / Exo bags. The 6.6 lb gap is the frame body, so these options can only shave it.")
+    k = res["kuiu"]
+    ours = a_sus(res)
+    lo, hi = k["suspension_lid_in_g"], k["suspension_lid_out_g"]
+    verdict = ("lighter than both readings" if ours < lo else "heavier than both readings" if ours > hi else
+               f"between the two readings: lighter than {hi:.0f} g, heavier than {lo:.0f} g, so 'ours lighter' is NOT "
+               "claimed")
+    w(f"- Against the leaders (research section 2): back panel + spreader + belt + harness after tests {ours:.0f} g. "
+      f"KUIU ICON 6 belt + harness + hip pouches by inference is {hi:.0f} g (full kit {k['g']['full_kit']:.0f} - bag "
+      f"{k['g']['bag_6000']:.0f} (2 lb 15.9 oz) - TALL frame {k['g']['frame_tall']:.0f}) if the full-kit figure leaves "
+      f"the {k['g']['lid']:.0f} g lid out, or {lo:.0f} g if it includes it; KUIU's table does not say. Ours is {verdict} "
+      "(and ours has no hip pouches in that sum). The 6.6 lb gap is the frame body, so these options can only shave it.")
+    rb = res["mesh_rebook"]
+    w(f"- Not a lever (review 7 M8): the ledger books today's spacer mesh at 380 g/m2; the re-sourced stand-in is 350. "
+      f"If the bought mesh weighs 350, every booked mesh row ({rb['booked_mesh_g']:.0f} g) drops by {rb['delta_g']:+.1f} g "
+      "as a booking correction once weighed. Lever deltas N1 / N2 are taken from 350, so that saving is never counted twice.")
     for k in ("A", "B", "C"):
         o = O[k]
         w(f"- **Option {k}, {o['name']}:** base **{o['base_delta_g']:+.1f} g ({_oz(o['base_delta_g'])})** -> after "
@@ -770,7 +857,7 @@ def report(res: dict, shots: list) -> str:
       f"{lv['N6']['base_delta_g'] + lv['N7']['base_delta_g']:+.1f} g with no feature loss.\n")
     w("## 5. Honest reading against the target\n")
     w(f"Even option C leaves {O['C']['gap_to_target_g']:.0f} g over 6.6 lb after every test passes. The frame body "
-      f"({t['frame_after_tests_g']:.0f} g after tests, against KUIU's 388 g frame) is the lever, as BL-037 found. "
+      f"({t['frame_after_tests_g']:.0f} g after tests, against KUIU's {res['kuiu']['g']['frame_tall']:.0f} g TALL frame) is the lever, as BL-037 found. "
       "Outside the frame there is no architecture lever left that keeps the owner-frozen features: meat straps, "
       "under-straps, bow carry, the fly pocket and the quiet fabrics are where the remaining non-frame mass sits, and "
       "the leaders carry the same functions in their frame weights.\n")
@@ -778,6 +865,7 @@ def report(res: dict, shots: list) -> str:
     for k, txt, test in res["assumptions"]:
         w(f"- ASSUMPTION {k}: {txt}. Settled by: {test}.")
     w("")
+    w("Settled by the BL-064 records (BL-067): " + "; ".join(f"**{k}** {txt}" for k, txt in res["settled"]) + ".\n")
     w("## 7. Screenshots\n")
     for s in shots:
         w(f"- `{s}`")

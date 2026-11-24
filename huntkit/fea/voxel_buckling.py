@@ -154,40 +154,99 @@ def element_stress_active(rs, U: np.ndarray, h: float, nu: float, weights: np.nd
     return S
 
 
+class VoxelBuckler:
+    """One voxel body, factorised once: prestress solves for any number of load vectors, then eigen runs on each.
+
+    fixed: supports of the reference (prestress) solve. extra_fixed: DOFs held in the EIGEN problem only (bracing
+    that carries no load in the reference state, e.g. a harness in equilibrium with the load set)."""
+
+    def __init__(self, g: Grid, active: np.ndarray, fixed: np.ndarray, nu: float = 0.35,
+                 weights: np.ndarray | None = None, extra_fixed: np.ndarray | None = None):
+        from huntkit.gendesign import frame_topopt as ft
+        self.g, self.nu = g, nu
+        KE = ke_h8(g.h, 1.0, nu)
+        self.rs0 = ft.ReducedSystem(g, active, fixed, KE)
+        self.w = np.ones(self.rs0.ae.size) if weights is None else np.asarray(weights, float)[self.rs0.ae]
+        K0 = self.rs0.assemble(self.w)
+        K0.sort_indices()
+        self.K0 = K0
+        self.fac0 = Factor(K0)
+        if extra_fixed is not None and np.any(extra_fixed & ~fixed):
+            self.rs = ft.ReducedSystem(g, active, fixed | extra_fixed, KE)
+            self.K = self.rs.assemble(self.w)
+            self.K.sort_indices()
+            self.fac = Factor(self.K)
+        else:
+            self.rs, self.K, self.fac = self.rs0, K0, self.fac0
+        self.ae = self.rs.ae
+        self._fixed = fixed
+        self._active = active
+        self.variants = {}
+
+    def add_variant(self, name: str, extra_fixed: np.ndarray):
+        """Another eigen support (reference supports + extra_fixed), sharing the prestress system."""
+        from huntkit.gendesign import frame_topopt as ft
+        rs = ft.ReducedSystem(self.g, self._active, self._fixed | extra_fixed, ke_h8(self.g.h, 1.0, self.nu))
+        K = rs.assemble(self.w)
+        K.sort_indices()
+        self.variants[name] = (rs, K, Factor(K))
+
+    def view(self, variant: str | None = None, braced: bool = True):
+        from types import SimpleNamespace
+        rs = self.variants[variant][0] if variant else (self.rs if braced else self.rs0)
+        return SimpleNamespace(rs=rs, g=self.g, ae=rs.ae)
+
+    def prestress(self, F: np.ndarray) -> list:
+        """Physical centroid stresses (n_active, 6) for each column of F (ndof,) or (ndof, m)."""
+        F2 = F.reshape(F.shape[0], -1)
+        Ur = self.fac0.solve(F2[self.rs0.free]).reshape(self.rs0.free.size, -1)
+        out = []
+        for j in range(Ur.shape[1]):
+            U = np.zeros(self.g.ndof)
+            U[self.rs0.free] = Ur[:, j]
+            out.append(element_stress_active(self.rs0, U, self.g.h, self.nu, self.w))
+        return out
+
+    def eig(self, S: np.ndarray, E: float, k: int = 6, kg_weight: np.ndarray | None = None, tol: float = 1e-8,
+            braced: bool = True, variant: str | None = None):
+        """(lam, modes (ndof, k) global) for the prestress S (active order). kg_weight (g.ne) scales K_sigma per
+        element: 0 outside a member isolates that member, the rest of the body acting as its stress-free elastic
+        end restraint. braced=False solves on the reference supports only (no extra_fixed)."""
+        if variant is not None:
+            rs, K, fac = self.variants[variant]
+        else:
+            rs, K, fac = (self.rs, self.K, self.fac) if braced else (self.rs0, self.K0, self.fac0)
+        Sk = S if kg_weight is None else S * np.asarray(kg_weight, float)[self.ae][:, None]
+        KG = assemble_geometric(rs, Sk, self.g.h)
+        lam, V = eig_buckling(K, KG, E=E, k=k, factor=fac, tol=tol)
+        modes = np.zeros((self.g.ndof, V.shape[1]))
+        modes[rs.free] = V
+        return lam, modes
+
+    def unbraced(self):
+        """A view with the reference-support system (for mode energy on the unbraced eigen problem)."""
+        from types import SimpleNamespace
+        return SimpleNamespace(rs=self.rs0, g=self.g, ae=self.rs0.ae)
+
+    def free(self):
+        for _, _, f in self.variants.values():
+            f.free()
+        self.variants = {}
+        self.fac.free()
+        if self.fac0 is not self.fac:
+            self.fac0.free()
+
+
 def linear_buckling(g: Grid, active: np.ndarray, fixed: np.ndarray, F: np.ndarray, E: float, nu: float = 0.35,
                     k: int = 6, weights: np.ndarray | None = None, extra_fixed: np.ndarray | None = None,
                     kg_weight: np.ndarray | None = None, tol: float = 1e-8) -> dict:
-    """Whole pipeline on a voxel body: K (unit modulus x weights), linear solve of F (ndof,), centroid stresses,
-    K_sigma, eigen. Returns lam (load multipliers on F), modes as global (ndof, k), U, stresses, rs (eigen system).
-
-    extra_fixed: DOFs held in the EIGEN problem only (bracing that carries no load in the reference state, e.g. a
-    harness that is in equilibrium); the prestress comes from the ``fixed`` solve.
-    kg_weight: per-element factor (g.ne) on K_sigma: 0 outside a member isolates that member's buckling with the rest
-    of the body as its elastic end restraint (stress-free)."""
-    from huntkit.gendesign import frame_topopt as ft
-    KE = ke_h8(g.h, 1.0, nu)
-    rs = ft.ReducedSystem(g, active, fixed, KE)
-    w = np.ones(rs.ae.size) if weights is None else np.asarray(weights, float)[rs.ae]
-    Ku = rs.assemble(w)
-    Ku.sort_indices()
-    fac = Factor(Ku)
-    Ur = fac.solve(F[rs.free])
-    U = np.zeros(g.ndof)
-    U[rs.free] = Ur                                          # unit-modulus displacement
-    S = element_stress_active(rs, U, g.h, nu, w)             # physical stress (independent of E)
-    if extra_fixed is not None and np.any(extra_fixed & ~fixed):
-        fac.free()
-        rs = ft.ReducedSystem(g, active, fixed | extra_fixed, KE)
-        Ku = rs.assemble(w)
-        Ku.sort_indices()
-        fac = Factor(Ku)
-    Sk = S if kg_weight is None else S * np.asarray(kg_weight, float)[rs.ae][:, None]
-    KG = assemble_geometric(rs, Sk, g.h)
-    lam, V = eig_buckling(Ku, KG, E=E, k=k, factor=fac, tol=tol)
-    fac.free()
-    modes = np.zeros((g.ndof, V.shape[1]))
-    modes[rs.free] = V
-    return {"lam": lam, "modes": modes, "U": U / E, "stress": S, "rs": rs}
+    """Whole pipeline for one load vector F (ndof,): returns lam (load multipliers on F), modes (ndof, k), the
+    physical stresses and the eigen system ``rs``. See VoxelBuckler for extra_fixed / kg_weight."""
+    vb = VoxelBuckler(g, active, fixed, nu, weights, extra_fixed)
+    S = vb.prestress(F)[0]
+    lam, modes = vb.eig(S, E, k, kg_weight, tol)
+    vb.free()
+    return {"lam": lam, "modes": modes, "stress": S, "rs": vb.rs}
 
 
 # ---------------------------------------------------------------------------------------------- verification helpers
@@ -235,15 +294,20 @@ def column_ratio(b_mm: float, d_mm: float, L_mm: float, h: float, ends: str = "c
     return {"Pcr_fe": float(r["lam"][0]), "Pcr_euler": pe, "ratio": float(r["lam"][0]) / pe}
 
 
-def geometric_energy(rs, stress_active: np.ndarray, phi_global: np.ndarray, h: float) -> np.ndarray:
-    """Per active element -phi_e^T K_sigma^e phi_e (positive = the element's compression drives the mode). Its sum
-    over the body equals mu x phi^T K phi for an eigenpair, so the shares say WHERE a mode is driven."""
-    G = geo_blocks(h)                                      # (6, 24, 24)
-    out = np.zeros(rs.ae.size)
+def mode_q(rs, phi_global: np.ndarray, h: float) -> np.ndarray:
+    """(n_active, 6): phi_e^T K_sigma(unit Voigt component c)^e phi_e. The geometric energy of the mode under any
+    prestress S is then -(q * S).sum(axis=1) per element."""
+    G = geo_blocks(h)
+    out = np.zeros((rs.ae.size, 6))
     step = 50000
     for a in range(0, rs.ae.size, step):
         b = min(rs.ae.size, a + step)
-        pe = phi_global[rs.g.edof[rs.ae[a:b]]]             # (n, 24)
-        q = np.einsum("ni,cij,nj->nc", pe, G, pe)          # (n, 6)
-        out[a:b] = -(q * stress_active[a:b]).sum(axis=1)
+        pe = np.asarray(phi_global[rs.g.edof[rs.ae[a:b]]], float)
+        out[a:b] = np.einsum("ni,cij,nj->nc", pe, G, pe)
     return out
+
+
+def geometric_energy(rs, stress_active: np.ndarray, phi_global: np.ndarray, h: float) -> np.ndarray:
+    """Per active element -phi_e^T K_sigma^e phi_e (positive = the element's compression drives the mode). Its sum
+    over the body equals mu x phi^T K phi for an eigenpair, so the shares say WHERE a mode is driven."""
+    return -(mode_q(rs, phi_global, h) * stress_active).sum(axis=1)

@@ -1104,15 +1104,22 @@ def load_points(ctx: Ctx) -> list[dict]:
             w, h, 941.0,
             "loadpath_verification S12 / RD-02: 941 N misuse", "PT-6 1410 N", b24caps,
             note="loop boxes close each T3 loop across both plies" if not hook else "", hw=CARA)
-    # BL-040 B-2: the roll-top clip (no load case: a hand cinch on the closure)
+    # BL-040 B-2 / BL-067 (review 7 m9): the roll-top clip. No HA-LS-1 path, but hunters lash to it and lift the
+    # pack by the roll, so it gets the W wraps' envelope as its design load (ASSUMPTION RT-LOAD) and a proof pull
+    # RT-PULL; the sewn side is checked on the box-X and on the base fabric under the 25 mm loaded edge.
     rtm_g = rs.geo["rtm"]
-    for pid, where in (("RT", "strap end box-X'd on the hem B-07, free end at the clip-path notch (BL-041 RT-FWD)"),
-                       ("RTM", f"female buckle tab box-X'd on the gusset B-03, {rtm_g['depth_from_frame_mm']:.0f} mm aft of "
-                               f"the frame seam, {rtm_g['below_seam_mm']:.0f} mm under the collar seam (BL-041 RT-FWD)")):
+    for pid, where, base in (("RT", "strap end box-X'd on the hem B-07, free end at the clip-path notch (BL-041 RT-FWD)",
+                              "B-07"),
+                             ("RTM", f"female buckle tab box-X'd on the gusset B-03, {rtm_g['depth_from_frame_mm']:.0f} mm "
+                                     f"aft of the frame seam, {rtm_g['below_seam_mm']:.0f} mm under the collar seam "
+                                     "(BL-041 RT-FWD)", "B-03")):
+        bm = {f"{base} fabric under the 25 mm loaded edge ({m})": AS.patch_seam(25.0, m, m)["cap_n"]
+              for m in sorted({rs.pieces[base].material_id, ctx.rsA.pieces[base].material_id})}
         for w, h, lab in box(pid):
-            add(f"roll-top clip ({pid})", pid, where, w, h, None, "UNRATED: hand cinch on the roll-top closure, no load "
-                "case (not on an HA-LS-1 path)", "QC-11 hand pull", hw=BUCKLE,
-                note="buckle record 450 N (ESTIMATE) governs anything put on it")
+            add(f"roll-top clip ({pid})", pid, where, w, h, RT_N,
+                f"ASSUMPTION RT-LOAD (BL-067): {RT_N:.0f} N, the W haul-wrap envelope (loadpath_verification S9): a "
+                "lashed load or a lift by the roll; the closure itself is a hand cinch", f"RT-PULL {PROOF * RT_N:.0f} N",
+                bm, hw=BUCKLE, note="buckle record 450 N (ESTIMATE) governs the hardware column")
     # any other webbing piece with drawn boxes (a piece a later ticket adds): listed, UNRATED until it has a load case
     named = {r["part"].split(" ")[0] for r in rows}
     for pid, p in sorted(rs.pieces.items()):
@@ -1840,7 +1847,11 @@ RELEASE_TESTS = [   # id, why it gates this package (register row read at run ti
     ("FIT-US", "BL-050 B: US straps on their lanes and the US2 clevis bolt heads on P1 with the first bag (colour "
                "transfer at kits S / M / L; the free drapes reach the heads: ASSUMPTION HEAD-PROUD)"),
 ]
+RT_N = 225.0                     # ASSUMPTION RT-LOAD (BL-067): roll-top clip design load = W wrap envelope (S9)
 EXTRA_GATES = [
+    ("RT-PULL", f"roll-top clip RT + RTM with its 25 mm side-release, sewn as built on a hem / gusset offcut: pull to "
+                f"{PROOF * RT_N:.0f} N (1.5 x {RT_N:.0f} N, ASSUMPTION RT-LOAD) for 1 min, dry, 3 specimens",
+     "no broken stitch, no seam slip > 2 mm, buckle holds, 3 of 3", "BL-067 (review 7 m9)"),
     ("B-28 slip", f"B-28 crown strap on its heavy ladder lock: covered by LL-H at {LLH_N:.0f} N (BL-031 dropped the 20 mm "
                   "gate; 25 mm strap on ladder_lock_25mm_heavy)", "LL-H pass", "corrie_f_body.md 15.6 / 16"),
     ("PORT-1", "B-27 port mock-up: hose from above 1 min with the guy pulled at 45 deg; 100 N guy pull through the lap; "

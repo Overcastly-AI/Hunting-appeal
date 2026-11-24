@@ -53,11 +53,12 @@ VIEWS = {   # name: (pose, az, el)  az 0 = straight behind the hunter (studio co
     "q34": ("stand", -36, 9),
     "side": ("side", 90, 4),
     "front": ("front", 180, 6),
+    "bagoff": ("stand", -36, 9),        # BL-067 (review 7 m7): bag off, frame + harness + belt on the hunter
 }
-VIEW_LABEL = {"back": "back", "q34": "3/4 rear", "side": "side", "front": "front"}
+VIEW_LABEL = {"back": "back", "q34": "3/4 rear", "side": "side", "front": "front", "bagoff": "bag off, 3/4 rear"}
 STATE_LABEL = {"sixday": "6-day load 45 L (loaded)", "day": "day load 12 L, lid off (near empty)"}
 CONCEPT_LABEL = {"base": "TODAY (rev 3 Krummholz)", "A": "Concept A: TONAL", "B": "Concept B: FLANKS",
-                 "C": "Concept C: CROWN + PLINTH"}
+                 "C": "Concept C: CROWN + PLINTH", "Cp": "Concept C': CAMO LID CAP, LEVEL WRAPS, TAPERED ROLL"}
 
 
 # ------------------------------------------------------------------------------------------------ concept paint
@@ -155,7 +156,134 @@ def concept_C(sc, state):
     _ = G
 
 
-CONCEPTS = {"base": None, "A": concept_A, "B": concept_B, "C": concept_C}
+# ------------------------------------------------------------------------------------------------ C' (BL-067)
+# C' = camo on the lid crown B-29a only, A's Elk Wallow trim, no plinth (B-02u printed solid), the roll collar B-06
+# solid on its own fabric, plus the geometry the rubric failed (looks 1, 2, 4). Unlike A-C this is NOT a paint-over:
+# the cloth is re-solved (own cache folder) with the two geometry proposals below, which are specs for the pattern
+# release (BL-067 follow-ups P1 / P2), drawn here so they can be judged. Rationale and numbers: design_language.md 10.
+WRAP_LEVEL_Z = {"W1": 250.0, "W2": 420.0}   # PROPOSAL W-LEVEL: each wrap on the frame lash points at ONE height
+#   (geometry.yaml hard_points load_wing_lash_z250_R/L and z420_R/L exist on both sides; today W1 runs z80 R -> z250 L
+#   and W2 z250 R -> z420 L, a helix that crosses the door on a slant). Same lash points, same rated W rows.
+ROLL_HALF_MM = 192.0        # PROPOSAL ROLL-TAPER: flattened mouth half-width (today 262.4 = (W + D) / 2); the collar
+#   tapers from the seam to a mouth of 2 x 192 = 384 mm flattened, 10 mm under the 394 mm bag width cap (RULES 9)
+OLIVE_MESH = "#4b4e36"      # ASSUMPTION MESH-COL: a dark olive nylon/spandex power mesh, same 170 g/m2 record
+FOLIAGE = "#5a5947"         # ASSUMPTION HW-TONAL: ITW-type 'Foliage' acetal (sample card ordered, DECISIONS 2026-11-24)
+HEM_MM = 34.0               # B-07 hem finished width (cut 92 mm: (92 - 2 x 12 SA) / 2), the roll's first turns
+STOW_TAIL_MM = 100.0        # stowed tail drawn flat under its keeper, <= TAIL_RULE 100 mm visible
+
+
+def _arch_scale():
+    return ROLL_HALF_MM / 262.4495911544663
+
+
+def geometry_patch():
+    """Cloth-pass patches for C': level W1 / W2 anchors and the tapered mouth (the lip arch compressed in x so the
+    flattened mouth is 2 x ROLL_HALF_MM). Own cache folder so the release scenes' cloth is untouched."""
+    from huntkit.viz3d import cloth_pass as CP
+    if getattr(CP, "_bl067", False):
+        return CP
+    CP.WORK = WORK / "Cp_cloth"
+    w0, a0 = CP.wraps, CP.arch
+    k = _arch_scale()
+
+    def wraps(torso=19, shell="S15"):
+        out = []
+        for w in w0(torso, shell):
+            if w["id"] in WRAP_LEVEL_Z:
+                z = WRAP_LEVEL_Z[w["id"]]
+                hp = {80.0: 10.5, 250.0: 7.3, 420.0: 4.1}[z]          # geometry.yaml lash points (y by height)
+                w = dict(w, R=np.array([w["R"][0], hp, z]), L=np.array([w["L"][0], hp, z]))
+            out.append(w)
+        return out
+
+    def arch(s, z_mid, p):
+        return a0(np.asarray(s, float) * k, z_mid, p)
+    CP.wraps, CP.arch, CP._bl067 = wraps, arch, True
+    return CP
+
+
+def _split_faces(mesh, keep):
+    from huntkit.viz3d.assets import mesh as amesh
+    V, F = np.asarray(mesh.vertices), np.asarray(mesh.faces)
+    uv = mesh.metadata.get("uv")
+    out = []
+    for m in (keep, ~keep):
+        if not m.any():
+            out.append(None)
+            continue
+        used = np.unique(F[m])
+        remap = -np.ones(len(V), int)
+        remap[used] = np.arange(len(used))
+        u = None if uv is None or len(uv) != len(V) else np.asarray(uv)[used]
+        out.append(amesh(V[used], remap[F[m]], u))
+    return out
+
+
+def concept_Cp(sc, state):
+    tonal(sc)
+    m = sc.materials
+    m["mesh_olive"] = {"shader": "fabric", "record": "power_mesh_nylon_spandex (olive, ASSUMPTION MESH-COL)",
+                       "hex": OLIVE_MESH, "weave_mm": 1.1, "grid_mm": 2.6, "rough": 0.86, "sheen": 0.55}
+    m["hardware"] = dict(m["hardware"], hex=FOLIAGE)
+    m["collar"] = dict(m["pocket"], color="body")                       # B-06 ripstop collar, body colour
+    _setmat(sc, ("corrie_kick", "corrie_zip_garages"), "body_print")    # no plinth: B-02u printed solid
+    for nm in ("beltB_holster_mesh", f"imp6_mesh@t{CF.TORSO}"):
+        _setmat(sc, nm, "mesh_olive")
+    # roll: B-06 collar ripstop in body colour, the B-07 hem (330D) as the first turns at the core (as built)
+    r = next((p for p in sc.parts if p.name == "s15_roll"), None)
+    if r is not None:
+        uv = r.mesh.metadata.get("uv")
+        F = np.asarray(r.mesh.faces)
+        if uv is not None and len(uv) == len(r.mesh.vertices):
+            al = np.asarray(uv)[:, 1] * 500.0
+            hem = al[F].mean(1) < HEM_MM
+            a, b = _split_faces(r.mesh, hem)
+            _replace(sc, "s15_roll", [("s15_roll_hem", a, "body"), ("s15_roll", b, "collar")])
+        else:
+            r.material = "collar"
+    # lid: crown B-29a camo (and its corner caps), walls / base / channels solid
+    lid = next((p for p in sc.parts if p.name == "cf3_lid"), None)
+    ridge = next((p for p in sc.parts if p.name == "cf3_lid_seam_top__ridge"), None)
+    if lid is not None:
+        if _needs_uv(lid.mesh):
+            _planar_uv(lid.mesh)
+        if ridge is not None:
+            from scipy.spatial import cKDTree
+            R = np.asarray(ridge.mesh.vertices)
+            V, F = np.asarray(lid.mesh.vertices), np.asarray(lid.mesh.faces)
+            c = V[F].mean(1)
+            _, j = cKDTree(R[:, :2]).query(c[:, :2])
+            crown = c[:, 2] > R[j, 2] - 1.0
+            a, b = _split_faces(lid.mesh, crown)
+            _replace(sc, "cf3_lid", [("cf3_lid_crown", a, "camo"), ("cf3_lid_walls", b, "body")])
+        else:
+            lid.material = "camo"
+    _setmat(sc, ("cf3_lid_caps",), "camo")
+    _setmat(sc, ("cf3_lid_base",), "collar")
+    # lid locks: rear crown-strap locks deleted (PROPOSAL LID-LOCK: the strap's rear end becomes a sewn loop on the
+    # same B-28t tab box, so the rated tab row stays); front locks tonal
+    sc.parts = [p for p in sc.parts if not p.name.startswith(("cf3_crown_lock_rear_", "cf3_crown_tail_rear_"))]
+    # roll-clip tails stowed: flat under the strap, pointing down the gusset, at most STOW_TAIL_MM visible
+    from huntkit.viz3d.assets import webbing as WB
+    vis = dict(group="bag", modes=("pack", "pack_haul"))
+    for side, sx in (("R", 1.0), ("L", -1.0)):
+        b = next((p for p in sc.parts if p.name == f"s15_roll_buckle_{side}"), None)
+        if b is None:
+            continue
+        sc.parts = [p for p in sc.parts if not p.name.startswith(f"cf_roll_clip_tail_{side}")]
+        V = np.asarray(b.mesh.vertices, float)
+        p0 = np.array([V[:, 0].max() if sx > 0 else V[:, 0].min(), V[:, 1].mean(), V[:, 2].min() - 2.0])
+        p0[0] += sx * 1.8
+        tm = WB.tail(p0, np.array([0.0, 0.0, -1.0]), np.array([sx, 0.0, 0.0]), STOW_TAIL_MM, 25.0, stiffness=1.0,
+                     fold=10.0)
+        sc.add_part(f"cf_roll_clip_tail_{side}", tm, "webbing", label="roll-clip tail stowed flat under the K-RT keeper",
+                    **vis)
+        kp = WB.tail(p0 + np.array([sx * 1.6, 0.0, -30.0]), np.array([0.0, 0.0, -1.0]), np.array([sx, 0.0, 0.0]),
+                     25.0, 27.0, stiffness=1.0, fold=0.0)
+        sc.add_part(f"cf_roll_clip_tail_{side}__keeper", kp, "elastic", label="K-RT keeper", **vis)
+
+
+CONCEPTS = {"base": None, "A": concept_A, "B": concept_B, "C": concept_C, "Cp": concept_Cp}
 
 
 def install(concept):
@@ -164,6 +292,8 @@ def install(concept):
     CF.WORK = WORK / concept
     if fn is None:
         return
+    if concept == "Cp":
+        geometry_patch()
     orig = CF.finish
 
     def finish(sc, state, **kw):
@@ -184,6 +314,8 @@ def shots(concept, states, views):
             CF.SHOTS[key] = CF._hunter(pose, st, az, el, cap,
                                        "CORRIE F rev 3 geometry, Krummholz Sage body, Owner Base camo. 6 ft hunter. ",
                                        box=LOOK_BOX, zoom=1.08)
+            if v == "bagoff":
+                CF.SHOTS[key]["state"] = {"lid": False, "mode": "frame"}
             out.append(key)
     return out
 
@@ -279,9 +411,86 @@ def sheets():
         grid = [[(c, "sixday", v, f"{SHORT[c]}, {lab[v]}") for v in ("back", "q34", "side")] for c in cs]
         made.append(sheet(grid, "Looks iter 1: today vs concepts", "6-day load, same cameras, same geometry; only "
                           "colour, print and trim change.", SCREENS / f"{PREFIX}_6.png", w=420))
+    made += sheets_bl067()
     for m in made:
         print(m, round(m.stat().st_size / 1e6, 2), "MB")
     return made
+
+
+BL067 = "20261124_bl067"
+
+
+def sheets_bl067():
+    """BL-067: 1 today vs C' (and C) comparison, 2 C' loaded 4 views, 3 C' day load 4 views, 4 bag off."""
+    made = []
+    V = ("back", "q34", "side", "front")
+    lab = {"back": "back", "q34": "3/4 rear", "side": "side", "front": "front"}
+    short = {"base": "TODAY", "C": "C (review 7)", "Cp": "C'"}
+    rows = [c for c in ("base", "C", "Cp") if all(file_for(c, "sixday", v).exists() for v in ("back", "q34", "side"))]
+    if "Cp" in rows:
+        grid = [[(c, "sixday", v, f"{short[c]}, {lab[v]}") for v in ("back", "q34", "side")] for c in rows]
+        made.append(sheet(grid, "BL-067: today vs C vs C'", "6-day load, same cameras. C': camo lid crown only, level W1/W2, "
+                          "roll at bag width, olive mesh, tonal hw.",
+                          SCREENS / f"{BL067}_1.png", w=420))
+    for st, n in (("sixday", 2), ("day", 3)):
+        if all(file_for("Cp", st, v).exists() for v in V):
+            grid = [[("Cp", st, v, lab[v]) for v in V[:2]], [("Cp", st, v, lab[v]) for v in V[2:]]]
+            made.append(sheet(grid, CONCEPT_LABEL["Cp"], f"{STATE_LABEL[st]}. Rendered 3D model. Proposals, not yet in the release.", SCREENS / f"{BL067}_{n}.png",
+                              w=600))
+    if file_for("Cp", "sixday", "bagoff").exists() and file_for("Cp", "sixday", "q34").exists():
+        grid = [[("Cp", "sixday", "q34", "bag on, 3/4 rear"), ("Cp", "sixday", "bagoff", "bag off, 3/4 rear")]]
+        made.append(sheet(grid, "C': bag on / bag off", "Bag off shows the H1 frame (looks criterion 5 is the frame "
+                          "track's). Rendered 3D model.", SCREENS / f"{BL067}_4.png", w=600))
+    return made
+
+
+def _strap_len(meta_file, wid):
+    m = json.loads(Path(meta_file).read_text())
+    for st in m["straps"]:
+        if st["id"] == wid:
+            P = np.vstack([st["R"], np.asarray(st["P1"]), st["L"]])
+            return float(np.linalg.norm(np.diff(P, axis=0), axis=1).sum()), [float(st["R"][2]), float(st["L"][2])]
+    return None, None
+
+
+def cp_checks(states=("day", "sixday", "full"), write=True) -> dict:
+    """BL-067: re-run the roll-clip path (the BL-043 check, ``corrie_f.roll_clip_paths``) on the tapered roll and the
+    level wraps, size the RT cut as strap_tails.roll_row does, and compare the W1 / W2 strap paths with today's
+    cached cloth. Writes ``cp_checks.json`` next to this file. Nothing in the release is written."""
+    import importlib
+    import math
+    base = json.loads((ROOT / "designs" / "pack_5200" / "concepts" / "corrie_f_sim" / "corrie_f_roll_clips.json")
+                      .read_text())
+    CP = geometry_patch()
+    new = CF.roll_clip_paths(states, write=False)
+    sys.path.insert(0, str(ROOT / "designs" / "pack_5200" / "concepts"))
+    STT = importlib.import_module("strap_tails")
+    F = STT._F()
+
+    def cut_of(st_rows):
+        L = max(max(v["roll_clip_mm"].values()) for v in st_rows.values())
+        used = float(np.mean(list(st_rows["sixday"]["roll_clip_mm"].values())))
+        lmin = min(min(v["roll_clip_mm"].values()) for v in st_rows.values())
+        cut = 5.0 * math.ceil((STT.ROLL_END_MM + L + F.TAIL_GRIP_MM) / 5.0)
+        return {"path_max_mm": round(L, 1), "path_used_mm": round(used, 1), "path_min_mm": round(lmin, 1),
+                "cut_mm": cut, "tail_used_mm": round(cut - STT.ROLL_END_MM - used, 1),
+                "tail_longest_mm": round(cut - STT.ROLL_END_MM - lmin, 1),
+                "tail_rule_met": bool(cut - STT.ROLL_END_MM - used <= F.TAIL_RULE_MM)}
+    out = {"date": "2026-11-24", "ticket": "BL-067", "roll_half_mm": {"today": 262.45, "Cp": ROLL_HALF_MM},
+           "roll_clip": {"today": {"states": base["states"], **cut_of(base["states"])},
+                         "Cp": {"states": new["states"], **cut_of(new["states"])}},
+           "w3_roll": {"today": base.get("w3_roll"), "Cp": new.get("w3_roll")},
+           "tail_rule_mm": F.TAIL_RULE_MM, "tail_grip_mm": F.TAIL_GRIP_MM, "roll_end_mm": STT.ROLL_END_MM,
+           "wraps": {}}
+    for st in states:
+        for wid in ("W1", "W2"):
+            a, za = _strap_len(ROOT / "outputs" / "cloth_pass" / "CF_PR19" / f"{st}_L2.meta.json", wid)
+            b, zb = _strap_len(CP.WORK / "CF_PR19" / f"{st}_L2.meta.json", wid)
+            out["wraps"].setdefault(wid, {})[st] = {"today_mm": round(a, 1) if a else None, "today_z_RL": za,
+                                                    "Cp_mm": round(b, 1) if b else None, "Cp_z_RL": zb}
+    if write:
+        (HERE / "cp_checks.json").write_text(json.dumps(out, indent=1))
+    return out
 
 
 def main(argv=None):
@@ -291,7 +500,10 @@ def main(argv=None):
     ap.add_argument("--views", default="back,q34,side,front")
     ap.add_argument("--draft", action="store_true", help="600 x 450, 16 samples (check the paint)")
     ap.add_argument("--sheets", action="store_true")
+    ap.add_argument("--cp-checks", action="store_true", help="BL-067: roll-clip path + W paths on C' geometry")
     a = ap.parse_args(argv)
+    if a.cp_checks:
+        print(json.dumps(cp_checks(), indent=1)[:3000])
     if a.sheets:
         sheets()
     if a.concept:

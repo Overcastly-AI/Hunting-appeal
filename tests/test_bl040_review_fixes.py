@@ -100,7 +100,11 @@ def test_roll_top_has_a_mating_buckle_tab(pk):
     assert seqs.index(rtm.seq) < seqs.index(frame.seq)                  # flat work before the gusset seams
     rt = _op(pk, "RT roll-clip straps on the flat hem")
     assert seqs.index(rt.seq) < seqs.index(_op(pk, "Roll-top hem").seq)
-    assert any(r["part"] in ("RT", "RTM") and r["load_n"] is None for r in pk["load_points"])
+    # BL-067 (review 7 m9): RT / RTM now rated on ASSUMPTION RT-LOAD (225 N, the W envelope), proof RT-PULL
+    rt_rows = [r for r in pk["load_points"] if r["part"] in ("RT", "RTM")]
+    assert len(rt_rows) == 2 and all(r["load_n"] == 225.0 and r["sf"] >= 1.36 for r in rt_rows)
+    assert all("RT-PULL" in r["proof"] for r in rt_rows)
+    assert "RT-PULL" in {t["id"] for t in pk["tests"]}
     assert any(h["material_id"] == "buckle_side_release_25mm" for h in rs.hardware)
 
 

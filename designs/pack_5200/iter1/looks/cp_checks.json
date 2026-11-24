@@ -1,0 +1,371 @@
+{
+ "date": "2026-11-24",
+ "ticket": "BL-067",
+ "roll_half_mm": {
+  "today": 262.45,
+  "Cp": 192.0
+ },
+ "roll_clip": {
+  "today": {
+   "states": {
+    "day": {
+     "roll_clip_mm": {
+      "R": 210.8,
+      "L": 202.3
+     },
+     "bl031_roll_clip_mm": {
+      "R": 165.5,
+      "L": 161.3
+     },
+     "bend_deg": 75.0,
+     "roll_end_z": 692.8,
+     "roll_z_span": [
+      681.1,
+      790.3
+     ],
+     "standoff": {
+      "R": {
+       "bears_on_cloth_z": [
+        501.6,
+        580.4
+       ],
+       "at_muzzle_tabs_mm": 31.4
+      },
+      "L": {
+       "bears_on_cloth_z": [
+        508.3,
+        583.8
+       ],
+       "at_muzzle_tabs_mm": 40.4
+      }
+     }
+    },
+    "sixday": {
+     "roll_clip_mm": {
+      "R": 222.8,
+      "L": 222.0
+     },
+     "bl031_roll_clip_mm": {
+      "R": 170.5,
+      "L": 179.7
+     },
+     "bend_deg": 75.0,
+     "roll_end_z": 729.7,
+     "roll_z_span": [
+      718.4,
+      826.6
+     ],
+     "standoff": {
+      "R": {
+       "bears_on_cloth_z": [
+        514.0,
+        555.3
+       ],
+       "at_muzzle_tabs_mm": 36.8
+      },
+      "L": {
+       "bears_on_cloth_z": [
+        515.9,
+        559.7
+       ],
+       "at_muzzle_tabs_mm": 32.7
+      }
+     }
+    },
+    "full": {
+     "roll_clip_mm": {
+      "R": 424.2,
+      "L": 421.1
+     },
+     "bl031_roll_clip_mm": {
+      "R": 369.1,
+      "L": 374.9
+     },
+     "bend_deg": 75.0,
+     "roll_end_z": 917.8,
+     "roll_z_span": [
+      911.3,
+      1006.4
+     ],
+     "standoff": {
+      "R": {
+       "bears_on_cloth_z": [
+        506.7,
+        553.8
+       ],
+       "at_muzzle_tabs_mm": 28.7
+      },
+      "L": {
+       "bears_on_cloth_z": [
+        511.1,
+        558.2
+       ],
+       "at_muzzle_tabs_mm": 27.3
+      }
+     }
+    }
+   },
+   "path_max_mm": 424.2,
+   "path_used_mm": 222.4,
+   "path_min_mm": 202.3,
+   "cut_mm": 565.0,
+   "tail_used_mm": 252.6,
+   "tail_longest_mm": 272.7,
+   "tail_rule_met": false
+  },
+  "Cp": {
+   "states": {
+    "day": {
+     "roll_clip_mm": {
+      "R": 265.0,
+      "L": 261.3
+     },
+     "bl031_roll_clip_mm": {
+      "R": 219.8,
+      "L": 217.7
+     },
+     "bend_deg": 75.0,
+     "roll_end_z": 761.8,
+     "roll_z_span": [
+      750.2,
+      790.3
+     ],
+     "standoff": {
+      "R": {
+       "bears_on_cloth_z": [
+        502.9,
+        760.5
+       ],
+       "at_muzzle_tabs_mm": 29.3
+      },
+      "L": {
+       "bears_on_cloth_z": [
+        508.4,
+        610.5
+       ],
+       "at_muzzle_tabs_mm": 20.7
+      }
+     }
+    },
+    "sixday": {
+     "roll_clip_mm": {
+      "R": 294.6,
+      "L": 286.5
+     },
+     "bl031_roll_clip_mm": {
+      "R": 238.8,
+      "L": 241.7
+     },
+     "bend_deg": 75.0,
+     "roll_end_z": 798.5,
+     "roll_z_span": [
+      787.2,
+      826.6
+     ],
+     "standoff": {
+      "R": {
+       "bears_on_cloth_z": [
+        516.5,
+        799.9
+       ],
+       "at_muzzle_tabs_mm": 15.4
+      },
+      "L": {
+       "bears_on_cloth_z": [
+        516.7,
+        575.7
+       ],
+       "at_muzzle_tabs_mm": 14.2
+      }
+     }
+    },
+    "full": {
+     "roll_clip_mm": {
+      "R": 491.0,
+      "L": 486.9
+     },
+     "bl031_roll_clip_mm": {
+      "R": 436.8,
+      "L": 443.2
+     },
+     "bend_deg": 75.0,
+     "roll_end_z": 984.2,
+     "roll_z_span": [
+      977.7,
+      1006.4
+     ],
+     "standoff": {
+      "R": {
+       "bears_on_cloth_z": [
+        505.4,
+        934.0
+       ],
+       "at_muzzle_tabs_mm": 21.5
+      },
+      "L": {
+       "bears_on_cloth_z": [
+        510.7,
+        948.4
+       ],
+       "at_muzzle_tabs_mm": 20.4
+      }
+     }
+    }
+   },
+   "path_max_mm": 491.0,
+   "path_used_mm": 290.6,
+   "path_min_mm": 261.3,
+   "cut_mm": 635.0,
+   "tail_used_mm": 254.4,
+   "tail_longest_mm": 283.7,
+   "tail_rule_met": false
+  }
+ },
+ "w3_roll": {
+  "today": {
+   "S 15 in": {
+    "day": "below the roll",
+    "sixday": "below the roll",
+    "full": "below the roll"
+   },
+   "S 18 in": {
+    "day": "on the roll",
+    "sixday": "below the roll",
+    "full": "below the roll"
+   },
+   "M 17.5 in": {
+    "day": "below the roll",
+    "sixday": "below the roll",
+    "full": "below the roll"
+   },
+   "M 20.5 in": {
+    "day": "on the roll",
+    "sixday": "on the roll",
+    "full": "below the roll"
+   },
+   "L 20 in": {
+    "day": "on the roll",
+    "sixday": "on the roll",
+    "full": "below the roll"
+   },
+   "L 23 in": {
+    "day": "above the roll top",
+    "sixday": "on the roll",
+    "full": "below the roll"
+   }
+  },
+  "Cp": {
+   "S 15 in": {
+    "day": "below the roll",
+    "sixday": "below the roll",
+    "full": "below the roll"
+   },
+   "S 18 in": {
+    "day": "below the roll",
+    "sixday": "below the roll",
+    "full": "below the roll"
+   },
+   "M 17.5 in": {
+    "day": "below the roll",
+    "sixday": "below the roll",
+    "full": "below the roll"
+   },
+   "M 20.5 in": {
+    "day": "on the roll",
+    "sixday": "below the roll",
+    "full": "below the roll"
+   },
+   "L 20 in": {
+    "day": "below the roll",
+    "sixday": "below the roll",
+    "full": "below the roll"
+   },
+   "L 23 in": {
+    "day": "above the roll top",
+    "sixday": "on the roll",
+    "full": "below the roll"
+   }
+  }
+ },
+ "tail_rule_mm": 100.0,
+ "tail_grip_mm": 50.0,
+ "roll_end_mm": 90.0,
+ "wraps": {
+  "W1": {
+   "day": {
+    "today_mm": 696.7,
+    "today_z_RL": [
+     80.0,
+     250.0
+    ],
+    "Cp_mm": 678.4,
+    "Cp_z_RL": [
+     250.0,
+     250.0
+    ]
+   },
+   "sixday": {
+    "today_mm": 822.4,
+    "today_z_RL": [
+     80.0,
+     250.0
+    ],
+    "Cp_mm": 819.4,
+    "Cp_z_RL": [
+     250.0,
+     250.0
+    ]
+   },
+   "full": {
+    "today_mm": 905.6,
+    "today_z_RL": [
+     80.0,
+     250.0
+    ],
+    "Cp_mm": 911.9,
+    "Cp_z_RL": [
+     250.0,
+     250.0
+    ]
+   }
+  },
+  "W2": {
+   "day": {
+    "today_mm": 689.2,
+    "today_z_RL": [
+     250.0,
+     420.0
+    ],
+    "Cp_mm": 646.5,
+    "Cp_z_RL": [
+     420.0,
+     420.0
+    ]
+   },
+   "sixday": {
+    "today_mm": 837.1,
+    "today_z_RL": [
+     250.0,
+     420.0
+    ],
+    "Cp_mm": 818.6,
+    "Cp_z_RL": [
+     420.0,
+     420.0
+    ]
+   },
+   "full": {
+    "today_mm": 951.0,
+    "today_z_RL": [
+     250.0,
+     420.0
+    ],
+    "Cp_mm": 954.3,
+    "Cp_z_RL": [
+     420.0,
+     420.0
+    ]
+   }
+  }
+ }
+}

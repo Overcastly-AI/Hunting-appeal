@@ -83,9 +83,12 @@ body-colour panel binding (BL-026); a dark, matte frame that sits inside the bag
 
 Rules:
 1. **Camo reads as a panel or not at all.** Minimum camo dimension 120 mm (about one third of the 380 mm repeat, so
-   at least two ink shapes show across it). Narrower camo pieces print solid body colour.
-2. **One accent zone per view**, and it sits at an edge: the top (skyline, concept C), the sides (concept B) or the
-   base (kick strip). Never as a stripe through the middle of a face.
+   at least two ink shapes show across it). Narrower camo pieces print solid body colour. (BL-067, review 7 m6: this
+   rule is absolute; concept C's 75 mm kick strip broke it, which is one reason C' drops the plinth. The lid walls,
+   85 mm tall, print solid for the same reason.)
+2. **One accent zone per pack** (BL-067: was "per view", which C's cap + plinth broke in the back and 3/4 views), and
+   it sits at an edge: the top (skyline, concepts C and C'), the sides (concept B) or the base (kick strip). Never as
+   a stripe through the middle of a face.
 3. The Cirquefall alternate camo may replace Owner Base 1 : 1 in the same zones (apparel accent mocks,
    `docs/screens/accent_mocks_jacket_pack.png`); never both on one pack.
 4. The pack and the apparel share the body and skeleton colours; the apparel's camo yoke/shoulder accent and the
@@ -94,7 +97,9 @@ Rules:
 ## 6. Hardware and strap-tail rules
 
 1. **One family, one finish**: 25 mm acetal (G-hooks, ladder locks, side releases) in one colour, matte. Option for
-   the owner: ITW Foliage instead of black (S13); confirm against the sage with a sample card.
+   the owner: ITW Foliage instead of black (S13); confirm against the sage with a sample card. (BL-067, review 7 m6:
+   hardware that sits ON a camo zone must be tonal or hidden. Black locks on the light cap ink read as the loudest
+   marks on the pack; C' takes the rear crown locks off and draws the rest in Foliage.)
 2. **Locks live on the right gusset** (today) or under a fold; nothing on the door face.
 3. **Tails**: ≤ 100 mm loose, rolled into an elastic keeper, pointing down or aft (BL-031 rule, kept). Webbing
    colour tonal, so a tail that does escape reads as a shadow, not a stripe.
@@ -130,8 +135,8 @@ off: everything facing aft or outboard):
 4. **Finish**: matte, as printed PAHT-CF; layer lines vertical on stays (the print orientation already gives this).
    No paint (mass, chips, noise). Colour stays black/Deadfall: the frame is the dark skeleton.
 5. **Mass**: a cosmetic face must be mass-neutral or lighter: trade a fillet's added material against removed
-   blob material in the same region; any section change goes back through HA-LS-1 rev C (buckling margin 1.05 is the
-   tightest row, `docs/RUBRIC.md`). That check belongs to structural-fea-engineer.
+   blob material in the same region; any section change goes back through HA-LS-1 rev C (buckling is the
+   tightest row: 1.05 of record, 0.85 on the real section I_min per BL-061, under re-check in BL-065 / BL-066). That check belongs to structural-fea-engineer.
 
 ## 9. Concepts against today's baseline
 
@@ -231,3 +236,107 @@ survives on 630D), which is the camo README's solid-630D fallback with one print
    instead of grey; 0 g if the same mesh comes in that colour (ASSUMPTION MESH-COL).
 4. **Frame surfaces**: section 8 rules on the next frame revision.
 5. **Back-panel overhang (D-4)**: owner decision, back-system track.
+
+## 10. Concept C′ (BL-067, after review 7)
+
+Orchestrator call 2026-11-24 (review 7 M5 to M7, m6, m7): C is replaced by **C′ = camo on the lid crown only + A's
+Elk Wallow trim, no plinth, B-06 solid on its own fabric**, plus the clutter fixes the rubric failed. Unlike A to C,
+C′ is **not a paint-over**: `looks_render.py --concept Cp` re-solves the cloth (own cache, `outputs/looks_iter1/Cp_cloth`)
+with two geometry proposals drawn in, so they can be judged on real drape. The release is untouched; every geometry
+item below is a precise follow-up for pattern-maker (section 10.4). Mass: `concepts_mass.py` (`ledger_concepts`), checks:
+`looks_render.py --cp-checks` -> `cp_checks.json`. Renders: `outputs/screens/20261124_bl067_{1..4}.png`.
+
+### 10.1 What C′ changes
+
+| # | Change | Kind | Rubric criterion |
+|---|---|---|---|
+| 1 | Camo on the lid crown **B-29a only** (HyperD 300 printed, 0.106 m², > 120 mm both ways); B-29f corner caps printed to match; lid walls B-29c/d/e (85 mm tall, under the 120 mm rule) and base B-29b solid | fabric / print | 3 |
+| 2 | B-02u blade U printed **solid** body colour (no plinth); SH-07, FP-b solid; roll collar B-06 solid on its scenario fabric (robic 100D now, 70D after tests) | print | 3, 2 |
+| 3 | A's trim: webbing, binding, zip tape, cord, thread Elk Wallow; guy toggles tonal | colour | 4 |
+| 4 | **W-LEVEL:** W1 on the frame lash points z 250 R + z 250 L, W2 on z 420 R + z 420 L (today a helix: W1 80 → 250, W2 250 → 420). Same hard points (they exist both sides at 80 / 250 / 420, `geometry.yaml`), same W rows; both wraps cross the door level | anchor choice | 2 |
+| 5 | **ROLL-TAPER:** collar tapered so the flattened mouth is 2 × 192 = 384 mm (today 2 × 262.4 = 525 = W + D); the roll finishes inside the bag's side line instead of 28 mm proud and bent down 75° ("handlebars") | pattern | 1, 4 |
+| 6 | **LID-LOCK:** the two rear crown-strap ladder locks deleted; the strap's rear end is folded and box-X'd on the same B-28t tab (the rated row keeps its box) → 2 visible lid locks instead of 4 | pattern / BOM | 4 |
+| 7 | Hardware drawn in an ITW-type **Foliage** acetal (ASSUMPTION HW-TONAL; the owner's build-1 call is matte black, sample card ordered) | colour | 4 |
+| 8 | Mesh (IMP-3 holster, IMP-6 phone pocket, FP-a) drawn **dark olive** (ASSUMPTION MESH-COL, 10.3) | colour | 4 |
+| 9 | Roll-clip tails drawn stowed flat under the K-RT keeper, pointing down (no outward roll) | assembly | 4 |
+
+### 10.2 Mass on the ledger basis (review 7 M5; `iter1_weight.rows(scen, cfg)`)
+
+Every concept against the ledger's own fabric per scenario (the lid is an as-hunted add-on, never base):
+
+| Concept | base, proven now | base, after tests | as hunted, proven now | as hunted, after tests |
+|---|---:|---:|---:|---:|
+| A tonal | 0.0 | 0.0 | 0.0 | 0.0 |
+| B flanks (HyperD gussets) | -15.0 | +0.3 | -15.0 | +0.3 |
+| C (review 7 reproduced) | +3.0 | +15.2 | -5.2 | +7.0 |
+| **C′ colour/print only** | **0.0** | **0.0** | **-5.0** | **-5.0** |
+| **C′ with geometry (taper + RT re-cut + lid locks)** | **-15.4** | **-12.9** | **-34.4** | **-31.9** |
+
+Geometry rows (`concepts_mass.json` ledger.Cp.geometry): ROLL-TAPER -17.9 g P / -15.4 g A (wedge 0.070 m² off
+B-06 + B-06f at their side seams, hem B-07 and the two B-07s strips -26.8 %; ASSUMPTION TAPER-WEDGE: linear over the
+494.8 mm collar); RT re-cut +2.5 g (cut 565 → 635 mm, 10.4); LID-LOCK -14.0 g as hunted (2 × 7 g heavy ladder lock;
+ASSUMPTION LOCK-WEB: net webbing 0 g). B was the only concept the old cut-list basis made look lighter that the
+after-tests basis does not (+0.3 g: A already swaps the gussets to ULTRAGrid).
+
+Volume: the standing collar (full load) loses about **0.8 L** (`collar_volume_loss_L`, ASSUMPTION COLLAR-RULED), so
+the main bag stays inside 85 L ± 3. Access: the mouth opening falls from 1050 to 768 mm perimeter (-27 %); the D2 door
+is the main access, but a game bag through the top gets tighter (LOADOUT check in 10.4).
+
+### 10.3 Checks re-run
+
+- **Roll-clip path** (`corrie_f.roll_clip_paths` on the C′ cloth, the BL-043 check; `cp_checks.json`): today 202-424 mm
+  (day / full), C′ **261-491 mm**. The tapered roll's ends no longer bend 75° down toward the tab, so with the RTM tab
+  where the release has it (201 mm under the collar seam) the strap is ~68 mm longer: RT cut 565 → **635 mm** by
+  strap_tails' rule (grip 50 mm at the longest path). Tail at the 6-day setting 254 mm (today 253): the RT-TAIL-EXC
+  exception stays, kept by the K-RT keeper. The strap now lies on the gusset over its whole run (bears on the cloth
+  from z ~505 up to the roll end) and passes the B-11 muzzle tabs at **14-15 mm** stand-off (today 33-37 mm).
+  W3 vs roll: C′ moves the roll out of W3's band at M 20.5 / L 20 in on the 6-day load (from "on the roll" to "below").
+- **W paths** (cloth meta): W1 6-day 822 → 819 mm, W2 837 → 819 mm; day load W2 -43 mm. Cuts unchanged (sized for haul),
+  tails stowed in the existing K-W keepers.
+- **Bag load points** (`mfg_corrie_f_rev3.py --check`): unchanged by C′ as drawn (no pattern edit made): 32 points,
+  min SF **1.36** (B-25), no holds. **RT / RTM are now rated** (review 7 m9): ASSUMPTION RT-LOAD 225 N (the W wrap
+  envelope, S9: a lashed load or a lift by the roll), box-X + base fabric under the loaded edge → **SF 2.28**, buckle
+  margin 2.0 (450 N ESTIMATE), proof **RT-PULL 338 N** added to the release gates.
+- **Mesh colour:** no stocked olive *stretch* power mesh was confirmed. A retail listing shows a nylon/spandex power
+  mesh in "Dark Olive" (search summary only, the page blocks fetching: secondary), and an inelastic MIL-C-8061 nylon
+  raschel mesh is stocked in ranger green / foliage / coyote (ahh.biz, fetched 2026-11-24) but is not a drop-in for
+  the stretch pockets. The olive in the renders is **ASSUMPTION MESH-COL**; the build stays on the grey/black mesh
+  until materials-engineer sources a brightener-free olive power mesh (Shelby lists its 4 mm spacer mesh in Ranger
+  Green, which covers the back panel only).
+
+### 10.4 Follow-ups for pattern-maker (precise; nothing half-done in the release)
+
+1. **P1 W-LEVEL** — `geometry.yaml haul_wraps`: W1 `anchor_R: load_wing_lash_z250_R`, `anchor_L: load_wing_lash_z250_L`,
+   z_R = z_L = z_at_19in = 250; W2 `z420_R` / `z420_L`, 420. Re-run `kw_heights` (K-W keeper notches on the aft corner
+   seams move to the level crossings), strap_tails W rows (BL-031 cuts; carry path -3 / -18 mm at 6-day), `--check`.
+   Clearances to confirm: B-11 bow tabs z 470-560 stay 38 mm above W2's top edge; IMP-8 (z 35-150) is freed of W1;
+   FP (z 150-380) already crossed at z 250 both sides today. **Risk:** the tripod loses its lowest wrap (z 80 → 250);
+   the T9 / add-on fit must show the tripod's lower end held (B-26 keeper or IMP-8). **Structural:** W now loads the
+   R z 420 and L z 250 lash points (mirror images of points loaded today); structural-fea-engineer to confirm the mirror.
+2. **P2 ROLL-TAPER** — B-06 and B-06f: at each B-06 | B-06f side seam take 70.4 mm off each piece's edge at the mouth,
+   tapering straight to 0 at the collar seam (mouth perimeter 1049.8 → 768.0 mm, flattened 384 mm). B-07 hem
+   -281.8 mm in length; B-07s strips each shortened to the 384 mm flattened mouth less the current end margin; RT box
+   and the clip-path notch move with the hem ends (DECISION RT-ORIGIN stays: the strap leaves the roll end). RT cut
+   635 mm (`cp_checks.json`) **or** raise the RTM tab by about 60-70 mm (the roll end no longer drops) to keep the
+   565 mm cut; either way re-check the B-11 muzzle-tab stand-off (14-15 mm drawn; BL-041 RT-FWD `mk_dx`) and W3 / hose
+   port clearances, then `--check` (must stay min SF ≥ 1.36, no holds) and LOADOUT (game bag through the top).
+3. **P3 LID-LOCK** — B-28 rear end: no ladder lock; fold 30 mm and box-X on the B-28t tab (same box, same LL-H proof
+   row; the hardware column becomes "none"). Re-run strap_tails B-28 rows: the front lock now takes the whole
+   adjustment, its tail grows (keeper already there). BOM -2 heavy ladder locks.
+
+### 10.5 Score (pass / fail per criterion, my own reading of `20261124_bl067_1..4.png`; the design-reviewer's is the real one)
+
+| Criterion | Today | C (review 7) | **C′ as drawn** | C′ with build-1 hardware (matte black) and grey mesh |
+|---|---|---|---|---|
+| Strong gate | baseline | pass (pending AB-1) | **pass**: no load piece changes fabric; min SF 1.36 unchanged; RT now rated 2.28; geometry items gated by `--check` in P1-P3 | same |
+| Lighter | 0 | heavier (+3.0 / +15.2 base) | **0 base, -5.0 as hunted**; with geometry -15.4 / -12.9 base | same |
+| 1 one silhouette and line language, bag + frame | F | F | **F** — the bag column now reads clean (roll inside the side line, one cap), but the back-panel overhang (D-4) still shows as a dark slab in the 3/4 and side views, the frame line shows below the bag and in the side view, and the day load is a crumpled shell (L7) | F |
+| 2 clean panel and seam lines | F | F | **P** — W1 / W2 level across the door, no camo piping, plain blade U | P |
+| 3 solid colourway, camo as edgy accent panels | F | P | **P** — one zone, at the top edge, one piece | P |
+| 4 no hardware clutter or hanging tails | F | F | **P** — 2 lid locks instead of 4, tonal; tails stowed; olive mesh; the right gusset still carries the W lock column + roll buckle in the side view (tonal) | **F** (black locks on the camo cap, grey mesh pocket) |
+| 5 frame surfaces look intentional | F | F | **F** (frame track; bag-off view in `_4`) | F |
+| **Total** | 0/5 | 1/5 | **3/5** | **2/5** |
+
+Not fixed and why: criterion 1 needs the D-4 back-panel decision (owner, back-system track) and the frame line;
+criterion 5 is the frame track (section 8). The day-load crumple (L7) is cloth physics on a near-empty bag; only a
+lighter, stiffer shell or a compression sleeve would change it.

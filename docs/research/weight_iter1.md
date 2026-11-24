@@ -17,7 +17,7 @@ Scope (ticket): everything except the frame body and its pins and hardware. The 
    Exo, Kifaru and KUIU sell the frame "with belt" (and harness) as one number. The only split we can get is by
    inference (section 2).
 2. **Our non-frame suspension (back panel + spreader + belt + harness) is already level with the leaders.** After the
-   tests it is 954 g. KUIU's ICON 6 "suspension" by inference is 1052 g (with hip pouches), and SG's whole Krux
+   tests it is 954 g. KUIU's ICON 6 "suspension" by inference is 826-1044 g (with hip pouches; the lid's place in the full-kit figure is unknown, BL-067), and SG's whole Krux
    (frame, belt, harness, shelf) is 1105 g. The excess is the frame body: 1387 g after the tests, against a 388 g
    KUIU frame. The frame track owns that lever, not this ticket.
 3. **On quiet woven fabrics the bag shell is at the floor.** ULTRAGrid 210D (132 g/m²) is already in after-tests.
@@ -48,9 +48,9 @@ Scope (ticket): everything except the frame body and its pins and hardware. The 
 | Exo | K4 5000 bag only / lid | 2 lb 6 oz / 8.1 oz | 1077 / 230 | [Exo K4 5000][exo-5000], [Exo lid][exo-lid] (repo 2.1) |
 | Exo | hipbelt pouch / Nalgene holder | 3.4 / 3.8 oz | 96 / 108 | [Exo pouch][exo-pouch] (repo 3, **secondary**) |
 | KUIU | ICON 6 frame REG / TALL | 13.1 / 13.7 oz | 371 / 388 | SPECS table ([KUIU whitepaper][kuiu-wp], fetched 2026-11-24) |
-| KUIU | ICON 6 6000 bag only / lid | 2 lb 15.9 oz / 7.7 oz | 1350 / 218 | same |
+| KUIU | ICON 6 6000 bag only / lid | 2 lb 15.9 oz / 7.7 oz | 1358 / 218 | same (BL-067: 47.9 oz = 1358 g; was mis-converted as 1350) |
 | KUIU | ICON 6 6000 full kit (frame, suspension, bag) | 6 lb 2.4 oz | 2790 | same |
-| KUIU | **suspension (belt + harness + hip pouches), inference** | – | **1052** | 2790 − 1350 − 388 (TALL frame; lid assumed out, as the table lists it separately). Inference |
+| KUIU | **suspension (belt + harness + hip pouches), inference** | – | **1044 (lid out) / 826 (lid in)** | 2790 − 1358 − 388 (TALL frame) = 1044 if the full-kit figure excludes the lid; − 218 more = 826 if it includes it. The table does not say. Inference (BL-067, review 7 m1) |
 | Kifaru | ARK frame with M / L belt | 3 lb 1.4 oz / 3 lb 2 oz | 1400 / 1417 | [goHunt ARK][gh-ark] (repo 2.1) |
 | Kifaru | Duplex Lite frame, M belt, long straps | 3.5 lb | 1588 | **secondary** (search summary of [Kifaru Duplex Lite][kf-dl]) |
 | Kifaru | small belt pocket | 2.8 oz | 79.5 | **secondary**, forum weighing ([Rokslide Kifaru weights][rs-kf], 403 to the fetch tool) |
@@ -63,7 +63,7 @@ Scope (ticket): everything except the frame body and its pins and hardware. The 
 | our function | g | nearest leader figure | g | note |
 |---|---:|---|---:|---|
 | frame body + crown + hip mount (out of scope) | 1387 | KUIU ICON 6 frame (TALL) | 388 | the gap: 3.6x |
-| back panel + spreader + belt + harness | 954 | KUIU suspension (inference) | 1052 | ours is lighter, without hip pouches |
+| back panel + spreader + belt + harness | 954 | KUIU suspension (inference) | 826-1044 | between the two readings: lighter only if KUIU's full kit excludes the lid; no 'ours lighter' claim (BL-067) |
 | frame + suspension | 2341 | SG Krux EVO (frame, belt, harness, shelf) | 1105 | +1236 g, nearly all frame body |
 | hipbelt | 393 | SG 3-piece belt (repo `hipbelt_fit.md` 3) | 363 | +30 g |
 | bag shell + pockets + fly pocket + compression | 584 | SG Sky 5900 bag only | 1026 | SG's bag includes its own compression |

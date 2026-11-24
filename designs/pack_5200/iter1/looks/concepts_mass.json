@@ -127,5 +127,163 @@
   "robic_100d_ripstop": 125.0,
   "polyester_300d_printable": 133.0,
   "polyester_ht_630d_printable": 290.0
+ },
+ "ledger": {
+  "A": {
+   "swaps": [],
+   "base_P": 0,
+   "hunted_P": 0,
+   "base_A": 0,
+   "hunted_A": 0
+  },
+  "B": {
+   "swaps": [
+    {
+     "piece": "B-03",
+     "to": "polyester_300d_printable",
+     "area_m2": 0.31927,
+     "cfg": "base",
+     "from_P": "cordura_330d_nylon66",
+     "d_P": -15.0,
+     "from_A": "ultragrid_210d_uhmwpe_ripstop",
+     "d_A": 0.3
+    }
+   ],
+   "base_P": -15.0,
+   "hunted_P": -15.0,
+   "base_A": 0.3,
+   "hunted_A": 0.3
+  },
+  "C": {
+   "swaps": [
+    {
+     "piece": "B-06",
+     "to": "polyester_300d_printable",
+     "area_m2": 0.37026,
+     "cfg": "base",
+     "from_P": "robic_100d_ripstop",
+     "d_P": 3.0,
+     "from_A": "nylon_ripstop_70d",
+     "d_A": 15.2
+    },
+    {
+     "piece": "B-29a",
+     "to": "polyester_300d_printable",
+     "area_m2": 0.10618,
+     "cfg": "as_hunted",
+     "from_P": "cordura_330d_nylon66",
+     "d_P": -5.0,
+     "from_A": "cordura_330d_nylon66",
+     "d_A": -5.0
+    },
+    {
+     "piece": "B-29c",
+     "to": "polyester_300d_printable",
+     "area_m2": 0.02933,
+     "cfg": "as_hunted",
+     "from_P": "cordura_330d_nylon66",
+     "d_P": -1.4,
+     "from_A": "cordura_330d_nylon66",
+     "d_A": -1.4
+    },
+    {
+     "piece": "B-29d",
+     "to": "polyester_300d_printable",
+     "area_m2": 0.01828,
+     "cfg": "as_hunted",
+     "from_P": "cordura_330d_nylon66",
+     "d_P": -0.9,
+     "from_A": "cordura_330d_nylon66",
+     "d_A": -0.9
+    },
+    {
+     "piece": "B-29e",
+     "to": "polyester_300d_printable",
+     "area_m2": 0.01828,
+     "cfg": "as_hunted",
+     "from_P": "cordura_330d_nylon66",
+     "d_P": -0.9,
+     "from_A": "cordura_330d_nylon66",
+     "d_A": -0.9
+    }
+   ],
+   "base_P": 3.0,
+   "hunted_P": -5.2,
+   "base_A": 15.2,
+   "hunted_A": 7.0
+  },
+  "Cp": {
+   "swaps": [
+    {
+     "piece": "B-29a",
+     "to": "polyester_300d_printable",
+     "area_m2": 0.10618,
+     "cfg": "as_hunted",
+     "from_P": "cordura_330d_nylon66",
+     "d_P": -5.0,
+     "from_A": "cordura_330d_nylon66",
+     "d_A": -5.0
+    }
+   ],
+   "base_P": 0,
+   "hunted_P": -5.0,
+   "base_A": 0,
+   "hunted_A": -5.0,
+   "geometry": {
+    "ROLL-TAPER": {
+     "perimeter_cut_mm": 281.8,
+     "mouth_today_mm": 1049.8,
+     "wedge_m2": 0.0697,
+     "hem_fraction": 0.268,
+     "P": {
+      "B-06": -4.4,
+      "B-06f": -4.6,
+      "B-07": -4.9,
+      "B-07s": -4.0
+     },
+     "A": {
+      "B-06": -3.2,
+      "B-06f": -4.6,
+      "B-07": -3.6,
+      "B-07s": -4.0
+     },
+     "d_P": -17.9,
+     "d_A": -15.4
+    },
+    "LID-LOCK": {
+     "n": 2,
+     "lock_g": 7.0,
+     "d": -14.0
+    },
+    "RT-CUT": {
+     "today_mm": 565.0,
+     "Cp_mm": 635.0,
+     "g_m": 18.0,
+     "d": 2.5
+    },
+    "collar_volume_loss_L": 0.76
+   },
+   "base_P_with_geometry": -15.4,
+   "hunted_P_with_geometry": -34.4,
+   "base_A_with_geometry": -12.9,
+   "hunted_A_with_geometry": -31.9
+  },
+  "options": {
+   "B-29f caps deleted (C / C')": {
+    "P": -4.2,
+    "A": -4.2,
+    "cfg": "as_hunted"
+   },
+   "B-02u solid in the door's dyed cloth instead of a solid print (C')": {
+    "P": -12.1,
+    "A": -0.1,
+    "cfg": "base",
+    "note": "loses the camo-ready blade U; the zip-carrying blade on 330D / ULTRAGrid needs the AB-1 / A_fab gates of the door cloth"
+   }
+  }
+ },
+ "Cp": {
+  "what": "C' (BL-067): camo on the lid crown B-29a only (HyperD 300 printed), A's Elk Wallow trim, B-02u / SH-07 / FP-b / B-29 walls printed or dyed solid, B-06 solid on its own fabric",
+  "camo_print_area_m2": 0.121
  }
 }
