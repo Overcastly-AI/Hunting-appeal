@@ -660,8 +660,9 @@ def bonds(name: str, bases=BASES) -> dict:
     return out
 
 
-def check(name: str, bases=BASES, log=print, refresh: bool = False) -> dict:
-    """The BL-058 whole-body check on a concept (sanded stays, 4 bases). Cached OUT/check_<name>.json."""
+def check(name: str, bases=BASES, log=print, refresh: bool = False, con: dict | None = None) -> dict:
+    """The BL-058 whole-body check on a concept (sanded stays, 4 bases). Cached OUT/check_<name>.json. ``con``: a
+    prebuilt concept dict (as ``build`` returns) for bodies defined outside CONCEPTS (BL-065 fix)."""
     from . import frame_comp_d as D
     from . import frame_h1 as H1
     from . import h1_closeout as C
@@ -672,7 +673,7 @@ def check(name: str, bases=BASES, log=print, refresh: bool = False) -> dict:
     todo = [b for b in bases if b not in res]
     if not todo:
         return res
-    con = build(name)
+    con = build(name) if con is None else con
     c = _base()
     res["mass"] = mass(con)
     res["info"] = {k: v for k, v in con["info"].items()}
