@@ -1,6 +1,6 @@
 # Shopping list (BL-038)
 
-Total **USD 2,908.77**. Prices from material records, cited shop pages (links), or marked ASSUMPTION (check at purchase). Cited or record-priced: USD 1,044.54; ASSUMPTION: USD 1,864.23. Prices checked 2026-11-10 (TEST_PLAN §4) and 2026-11-13.
+Total **USD 2,975.88**. Prices from material records, cited shop pages (links), or marked ASSUMPTION (check at purchase). Cited or record-priced: USD 1,044.54; ASSUMPTION: USD 1,931.34. Prices checked 2026-11-10 (TEST_PLAN §4) and 2026-11-13.
 
 **Order these first (long lead):**
 
@@ -17,8 +17,8 @@ Total **USD 2,908.77**. Prices from material records, cited shop pages (links), 
 | Kit D measuring | 202.46 |
 | Kit B lever rig | 471.58 |
 | Kit C frame stand | 227.39 |
-| Specimens and lab | 1,718.66 |
-| **total** | **2,908.77** |
+| Specimens and lab | 1,785.77 |
+| **total** | **2,975.88** |
 
 Not in this list: the bag, harness and belt materials themselves (pack BOM, `outputs/release/pack5200_corrie_f_rev3/manufacturing/bom.csv`). Swatches are cut from that fabric order, so buy the bag fabric with the kit. You already own (kit E): washing machine, winter gloves, freezer, hose, tape, paint pen, phone.
 
@@ -70,7 +70,7 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | 40 C box: cooler + 60 W heater + thermostat | 1 set | 35.00 | hardware store; ASSUMPTION (shop price, check at purchase) | CA-3, CA-4, CS-1 |
 | 3-point bend fixture | 1 set | 10.00 | hardware store; ASSUMPTION (shop price, check at purchase) | CA-3, BP-1 |
 | SD-card logger module + USB power bank (MT-1c, logs while the rig moves) | 1 set | 15.00 | electronics shop; ASSUMPTION (shop price, check at purchase) | MT-1c |
-| short-beam jig pins: 2 x D3 + 1 x D6 hardened dowels, 30 mm, on a 12 mm span block | 1 set | 10.00 | hardware store / Zoro; ASSUMPTION (shop price, check at purchase) | CA-3-HW, CA-1-HW |
+| short-beam jig pins: 2 x D3 + 1 x D6 hardened dowels, 30 mm, on a 12 mm span block | 1 set | 10.00 | hardware store / Zoro; ASSUMPTION (shop price, check at purchase) | CA-3-PAHT, CA-1-PAHT; CA-3-HW, CA-1-HW |
 
 ## Kit C frame stand
 
@@ -100,8 +100,8 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | compression-set jig: 2 Al plates 100 x 100 x 6, 3.0 + 2.5 mm spacers, 4 M6 | 1 set | 10.00 | hardware store; ASSUMPTION (shop price, check at purchase) | CS-1 |
 | stiff nylon scrub brush + 2 kg weight | 1 set | 5.00 | hardware store; ASSUMPTION (shop price, check at purchase) | AB-1 |
 | phyphox app | 1 each | 0.00 | [free](https://apps.apple.com/app/phyphox/id1127319693) | HB-2, T4a, GT-1 |
-| jewellery scale 0.001 g, 50 g capacity (traveller weighing to constant mass) | 1 each | 25.00 | Amazon / any; ASSUMPTION (shop price, check at purchase) | CA-3-HW, CA-1-HW, CA-4-HW, US2-LUG-PPA |
-| non-iodised salt 1 kg + 2 L sealed glass jar with a rack (50 C NaCl conditioning) | 1 set | 12.00 | grocery / hardware store; ASSUMPTION (shop price, check at purchase) | CA-3-HW, CA-1-HW, CA-4-HW |
+| jewellery scale 0.001 g, 50 g capacity (traveller weighing to constant mass) | 1 each | 25.00 | Amazon / any; ASSUMPTION (shop price, check at purchase) | CA-3-PAHT, CA-1-PAHT, CA-4-PAHT; CA-3-HW, CA-1-HW, CA-4-HW, US2-LUG-PPA |
+| non-iodised salt 1 kg + 2 L sealed glass jar with a rack (50 C NaCl conditioning) | 1 set | 12.00 | grocery / hardware store; ASSUMPTION (shop price, check at purchase) | CA-3-PAHT, CA-1-PAHT, CA-4-PAHT; CA-3-HW, CA-1-HW, CA-4-HW |
 | dye penetrant kit (cleaner, red penetrant, developer) | 1 set | 15.00 | welding supply; ASSUMPTION (shop price, check at purchase) | T4c-PPA-HW, T4c-PPA-CROWN |
 
 ## Specimens and lab
@@ -165,3 +165,6 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | specimens for MT-1cr: P1 frame (the sacrificial frame) on the kit C stand, bag OFF, both US2 clevises  | 1 lot | 20.00 | see register; test_register.csv MT-1cr: strain gauges and bridge parts on the shopping list (kit B); P1, stand and sand from kits  | MT-1cr |
 | specimens for T6(c): 6 coupons made exactly as the frame: a machined 7075 clamp (HW-CLAMP, `print/fra | 1 lot | 40.00 | see register; test_register.csv T6(c): ASSUMPTION 6 extra machined clamps are on the BUILD_H1 order (HW-CLAMP, order 7) + 1 m bar | T6(c) |
 | specimens for HB-6b: P1 frame (the sacrificial frame) with its 8 inserts set as BUILD_H1 section 12 a | 1 lot | 25.00 | see register; test_register.csv HB-6b: ASSUMPTION SIDE-RIG USD 25 (steel loading bar, M10 x 60 8.8 bolt + nut, M12 push screw, st | HB-6b |
+| specimens for CA-3-PAHT: hot/wet 10 Z + 10 SBS; dry 6 Z + 6 SBS; Z bars ISO 527-2 1BA from the combs (job | 1 lot | 20.68 | see register; test_register.csv CA-3-PAHT: PAHT-CF filament of the SBS block (share) and the Z combs, towers pro rata (record pa12_cf | CA-3-PAHT |
+| specimens for CA-1-PAHT: 6 SBS fatigue + 3 SBS static from the job A block | 1 lot | 1.04 | see register; test_register.csv CA-1-PAHT: PAHT-CF filament of the SBS block (share); lever rig kit B | CA-1-PAHT |
+| specimens for CA-4-PAHT: 5 XY bend bars 80 x 10 x 4 per condition (job B) | 1 lot | 45.39 | see register; test_register.csv CA-4-PAHT: PAHT-CF filament of the bend bars and the traveller; 40 C box kit B | CA-4-PAHT |

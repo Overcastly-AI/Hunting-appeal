@@ -1,4 +1,83 @@
 row_id,test_id,group,release,sample,quantity,unit,check,limit,measured,date,photo,notes,settles
+CA-3-PAHT-01,CA-3-PAHT,G0,PAHT-COUPONS,job A,shortest layer time (slicer preview),s,min,237,,,,,LAYER-TIME
+CA-3-PAHT-02,CA-3-PAHT,G0,PAHT-COUPONS,job B,shortest layer time (slicer preview),s,min,237,,,,,LAYER-TIME
+CA-3-PAHT-03,CA-3-PAHT,G0,PAHT-COUPONS,traveller,dry mass after the anneal,g,record,,,,,,
+CA-3-PAHT-04,CA-3-PAHT,G0,PAHT-COUPONS,traveller,mass change over the last 24 h at the end of conditioning,%,max,0.1,,,,,WET-PAHT
+CA-3-PAHT-05,CA-3-PAHT,G0,PAHT-COUPONS,traveller,water uptake at constant mass (TDS 0.88 %),%,record,,,,,,WET-PAHT
+CA-3-PAHT-06,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet 1,"Z tensile strength, hot/wet",MPa,record,,,,,,
+CA-3-PAHT-07,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet 2,"Z tensile strength, hot/wet",MPa,record,,,,,,
+CA-3-PAHT-08,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet 3,"Z tensile strength, hot/wet",MPa,record,,,,,,
+CA-3-PAHT-09,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet 4,"Z tensile strength, hot/wet",MPa,record,,,,,,
+CA-3-PAHT-10,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet 5,"Z tensile strength, hot/wet",MPa,record,,,,,,
+CA-3-PAHT-11,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet 6,"Z tensile strength, hot/wet",MPa,record,,,,,,
+CA-3-PAHT-12,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet 7,"Z tensile strength, hot/wet",MPa,record,,,,,,
+CA-3-PAHT-13,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet 8,"Z tensile strength, hot/wet",MPa,record,,,,,,
+CA-3-PAHT-14,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet 9,"Z tensile strength, hot/wet",MPa,record,,,,,,
+CA-3-PAHT-15,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet 10,"Z tensile strength, hot/wet",MPa,record,,,,,,
+CA-3-PAHT-16,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet 1,"SBS strength, hot/wet",MPa,record,,,,,,
+CA-3-PAHT-17,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet 2,"SBS strength, hot/wet",MPa,record,,,,,,
+CA-3-PAHT-18,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet 3,"SBS strength, hot/wet",MPa,record,,,,,,
+CA-3-PAHT-19,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet 4,"SBS strength, hot/wet",MPa,record,,,,,,
+CA-3-PAHT-20,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet 5,"SBS strength, hot/wet",MPa,record,,,,,,
+CA-3-PAHT-21,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet 6,"SBS strength, hot/wet",MPa,record,,,,,,
+CA-3-PAHT-22,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet 7,"SBS strength, hot/wet",MPa,record,,,,,,
+CA-3-PAHT-23,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet 8,"SBS strength, hot/wet",MPa,record,,,,,,
+CA-3-PAHT-24,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet 9,"SBS strength, hot/wet",MPa,record,,,,,,
+CA-3-PAHT-25,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet 10,"SBS strength, hot/wet",MPa,record,,,,,,
+CA-3-PAHT-26,CA-3-PAHT,G0,PAHT-COUPONS,dry 1,"Z tensile strength, dry",MPa,record,,,,,,
+CA-3-PAHT-27,CA-3-PAHT,G0,PAHT-COUPONS,dry 2,"Z tensile strength, dry",MPa,record,,,,,,
+CA-3-PAHT-28,CA-3-PAHT,G0,PAHT-COUPONS,dry 3,"Z tensile strength, dry",MPa,record,,,,,,
+CA-3-PAHT-29,CA-3-PAHT,G0,PAHT-COUPONS,dry 4,"Z tensile strength, dry",MPa,record,,,,,,
+CA-3-PAHT-30,CA-3-PAHT,G0,PAHT-COUPONS,dry 5,"Z tensile strength, dry",MPa,record,,,,,,
+CA-3-PAHT-31,CA-3-PAHT,G0,PAHT-COUPONS,dry 6,"Z tensile strength, dry",MPa,record,,,,,,
+CA-3-PAHT-32,CA-3-PAHT,G0,PAHT-COUPONS,dry 1,"SBS strength, dry",MPa,record,,,,,,
+CA-3-PAHT-33,CA-3-PAHT,G0,PAHT-COUPONS,dry 2,"SBS strength, dry",MPa,record,,,,,,
+CA-3-PAHT-34,CA-3-PAHT,G0,PAHT-COUPONS,dry 3,"SBS strength, dry",MPa,record,,,,,,
+CA-3-PAHT-35,CA-3-PAHT,G0,PAHT-COUPONS,dry 4,"SBS strength, dry",MPa,record,,,,,,
+CA-3-PAHT-36,CA-3-PAHT,G0,PAHT-COUPONS,dry 5,"SBS strength, dry",MPa,record,,,,,,
+CA-3-PAHT-37,CA-3-PAHT,G0,PAHT-COUPONS,dry 6,"SBS strength, dry",MPa,record,,,,,,
+CA-3-PAHT-38,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet set,Z tensile B-basis (mean - 2.355 SD). Below 19: H1c fails too -> REDESIGN. 19 or more: H1c body rows pass,MPa,min,19,,,,,B-BASIS-N5; WET-PAHT; HOT-40-PAHT
+CA-3-PAHT-39,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet set,SBS B-basis (mean - 2.355 SD). Below 11: H1c fails too -> REDESIGN,MPa,min,11,,,,,TAU-VM
+CA-3-PAHT-40,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet set,"Z B-basis again, for the z 234 joint: 26.7 or more (with SBS 15.4 or more) closes the H1c joint too; below it the joint stays open",MPa,record,,,,,,
+CA-3-PAHT-41,CA-3-PAHT,G0,PAHT-COUPONS,both sets,hot/wet / dry Z B-basis (booked 0.656),ratio,record,,,,,,WET-PAHT; HOT-40-PAHT
+CA-3-PAHT-42,CA-3-PAHT,G0,PAHT-COUPONS,H1 as is,no bl077.json line for the released H1: the SAFETY HOLD stays until structural re-runs H1 on these numbers,Y/N,record,,,,,,
+CA-1-PAHT-01,CA-1-PAHT,G0,PAHT-COUPONS,static 1,"SBS strength, hot/wet 40 C (below 11: REDESIGN)",MPa,min,11,,,,,FAT-0.30
+CA-1-PAHT-02,CA-1-PAHT,G0,PAHT-COUPONS,static 2,"SBS strength, hot/wet 40 C (below 11: REDESIGN)",MPa,min,11,,,,,FAT-0.30
+CA-1-PAHT-03,CA-1-PAHT,G0,PAHT-COUPONS,static 3,"SBS strength, hot/wet 40 C (below 11: REDESIGN)",MPa,min,11,,,,,FAT-0.30
+CA-1-PAHT-04,CA-1-PAHT,G0,PAHT-COUPONS,fatigue 1,"cycles reached at Smax 5.425 MPa (a break before 100,000: REDESIGN)",cycles,min,100000,,,,,FAT-0.30
+CA-1-PAHT-05,CA-1-PAHT,G0,PAHT-COUPONS,fatigue 2,"cycles reached at Smax 5.425 MPa (a break before 100,000: REDESIGN)",cycles,min,100000,,,,,FAT-0.30
+CA-1-PAHT-06,CA-1-PAHT,G0,PAHT-COUPONS,fatigue 3,"cycles reached at Smax 5.425 MPa (a break before 100,000: REDESIGN)",cycles,min,100000,,,,,FAT-0.30
+CA-1-PAHT-07,CA-1-PAHT,G0,PAHT-COUPONS,fatigue 4,"cycles reached at Smax 5.425 MPa (a break before 100,000: REDESIGN)",cycles,min,100000,,,,,FAT-0.30
+CA-1-PAHT-08,CA-1-PAHT,G0,PAHT-COUPONS,fatigue 5,"cycles reached at Smax 5.425 MPa (a break before 100,000: REDESIGN)",cycles,min,100000,,,,,FAT-0.30
+CA-1-PAHT-09,CA-1-PAHT,G0,PAHT-COUPONS,fatigue 6,"cycles reached at Smax 5.425 MPa (a break before 100,000: REDESIGN)",cycles,min,100000,,,,,FAT-0.30
+CA-1-PAHT-10,CA-1-PAHT,G0,PAHT-COUPONS,40 C box,thermometer during the runs,C,band,38..42,,,,,HOT-40-PAHT
+CA-4-PAHT-01,CA-4-PAHT,G0,PAHT-COUPONS,23 C dry,E mean,MPa,record,,,,,,
+CA-4-PAHT-02,CA-4-PAHT,G0,PAHT-COUPONS,40 C conditioned,E(40 C conditioned) / E(23 C dry) (below 0.35: H1c buckling fails -> REDESIGN),ratio,min,0.35,,,,,E-WET
+CA-4-PAHT-03,CA-4-PAHT,G0,PAHT-COUPONS,40 C conditioned,flexural strength ratio to 23 C dry (booked 0.672),ratio,record,,,,,,E-WET
+CA-4-PAHT-04,CA-4-PAHT,G0,PAHT-COUPONS,60 C dry,E mean (record),MPa,record,,,,,,
+CA-4-PAHT-05,CA-4-PAHT,G0,PAHT-COUPONS,40 C box,thermometer during the 40 C tests,C,band,38..42,,,,,HOT-40-PAHT
+CA-4-PAHT-06,CA-4-PAHT,G0,PAHT-COUPONS,60 C box,thermometer during the 60 C tests,C,band,58..62,,,,,BOX-60
+HB-6b-SLV-01,HB-6b-SLV,G0,PAHT-COUPONS,sleeve 1,proud of the boss back,mm,band,0.05..0.15,,,,,SLEEVE-PROUD
+HB-6b-SLV-02,HB-6b-SLV,G0,PAHT-COUPONS,sleeve 2,proud of the boss back,mm,band,0.05..0.15,,,,,SLEEVE-PROUD
+HB-6b-SLV-03,HB-6b-SLV,G0,PAHT-COUPONS,sleeve 3,proud of the boss back,mm,band,0.05..0.15,,,,,SLEEVE-PROUD
+HB-6b-SLV-04,HB-6b-SLV,G0,PAHT-COUPONS,sleeve 4,proud of the boss back,mm,band,0.05..0.15,,,,,SLEEVE-PROUD
+HB-6b-SLV-05,HB-6b-SLV,G0,PAHT-COUPONS,sleeve 5,proud of the boss back,mm,band,0.05..0.15,,,,,SLEEVE-PROUD
+HB-6b-SLV-06,HB-6b-SLV,G0,PAHT-COUPONS,sleeve 6,proud of the boss back,mm,band,0.05..0.15,,,,,SLEEVE-PROUD
+HB-6b-SLV-07,HB-6b-SLV,G0,PAHT-COUPONS,sleeve 7,proud of the boss back,mm,band,0.05..0.15,,,,,SLEEVE-PROUD
+HB-6b-SLV-08,HB-6b-SLV,G0,PAHT-COUPONS,sleeve 8,proud of the boss back,mm,band,0.05..0.15,,,,,SLEEVE-PROUD
+HB-6b-SLV-09,HB-6b-SLV,G0,PAHT-COUPONS,plates,no witness mark on the PAHT-CF before the load,Y/N,yes,Y,,,,,SLEEVE-PROUD
+HB-6b-SLV-10,HB-6b-SLV,G0,PAHT-COUPONS,HB-6b,the kit's HB-6b pass rule,Y/N,yes,Y,,,,,SLEEVE-PROUD
+HB-6b-SLV-11,HB-6b-SLV,G0,PAHT-COUPONS,after T5,paint marks unmoved,Y/N,yes,Y,,,,,SLEEVE-PROUD
+CLEVIS-SHARE-B-PAHT-01,CLEVIS-SHARE-B-PAHT,G0,PAHT-COUPONS,set 1,"u1, shim on the outer cheek, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PAHT-02,CLEVIS-SHARE-B-PAHT,G0,PAHT-COUPONS,set 1,"u0, shim on the inner cheek, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PAHT-03,CLEVIS-SHARE-B-PAHT,G0,PAHT-COUPONS,set 1,"u, as built, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PAHT-04,CLEVIS-SHARE-B-PAHT,G0,PAHT-COUPONS,set 2,"u1, shim on the outer cheek, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PAHT-05,CLEVIS-SHARE-B-PAHT,G0,PAHT-COUPONS,set 2,"u0, shim on the inner cheek, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PAHT-06,CLEVIS-SHARE-B-PAHT,G0,PAHT-COUPONS,set 2,"u, as built, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PAHT-07,CLEVIS-SHARE-B-PAHT,G0,PAHT-COUPONS,set 3,"u1, shim on the outer cheek, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PAHT-08,CLEVIS-SHARE-B-PAHT,G0,PAHT-COUPONS,set 3,"u0, shim on the inner cheek, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PAHT-09,CLEVIS-SHARE-B-PAHT,G0,PAHT-COUPONS,set 3,"u, as built, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PAHT-10,CLEVIS-SHARE-B-PAHT,G0,PAHT-COUPONS,all sets,largest share (u - u0) / (u1 - u0),ratio,max,0.6,,,,,CLEVIS-SHARE
 MT-1-01,MT-1,G2,R1; BAG-CUT,IM#1,"held 92.6 kg (908 N) 1 min, no broken stitch",Y/N,yes,Y,,,,,BOX25
 MT-1-02,MT-1,G2,R1; BAG-CUT,IM#2,"held 92.6 kg (908 N) 1 min, no broken stitch",Y/N,yes,Y,,,,,BOX25
 MT-1-03,MT-1,G2,R1; BAG-CUT,IM#3,"held 92.6 kg (908 N) 1 min, no broken stitch",Y/N,yes,Y,,,,,BOX25

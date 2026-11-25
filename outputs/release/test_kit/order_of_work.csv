@@ -1,107 +1,112 @@
 seq,group,test,stage,release,also,tier,title,hands_on_h,machine_h,status
-1,G1,CA-1,print + condition,R1,,safety,"PAHT-CF fatigue coupons, 0.40 (fallback >= 0.313)",0.0,0.0,ACTIVE-REVISED
-2,G1,IM3-EC,print + condition,R1,,safety,"IM3 eye cycle coupons, 3 x 1e5 at >= 1.15 x 1024 N",0.0,0.0,ACTIVE
-3,G1,CA-5,print + condition,R1,,safety,dry z 234 joint stub pulls + 1e5 cycle,0.0,0.0,ACTIVE
-4,G1,CLEVIS-SHARE,print + condition,R1,,safety,"US2 bolt-on clevis joint, two loadings on the 3D cradle rows: A inboard leg (eye on the inner cheek) 1104 N proof + 1e5 at 736 N; B straight-aft leg (eye on the clevis cheek) 643 N proof + 1e5 at 429 N; gauge pass lines in microstrain",0.0,0.0,ACTIVE
-5,G1,HB-6,print + condition,R1,,safety,"M5 heat-set insert pull-out along the BUILD Z at 60 C (140 F): 6 printed PAHT-CF coupons, every one >= 513 N (115 lbf)",0.0,0.0,ACTIVE
-6,G1,CA-3,print + condition,CARRY,,safety,interlayer after 40 C water soak,0.0,0.0,ACTIVE
-7,G1,CA-4,print + condition,CARRY,,safety,creep-rupture 40 C 8 h,0.0,0.0,ACTIVE
-8,G1,T7,print + condition,CARRY,,safety,bushing crush coupon,0.0,0.0,ACTIVE-REVISED
-9,G2,MT-1,run,R1,BAG-CUT,safety,25 mm box-X bartack proof at the BL-010 per-row loads,1.0,0.0,ACTIVE-REVISED
-10,G2,HE-FIT,run,BAG-CUT,,safety,"hinge eye 1:1 dry fit on the printed BL-049 z 60 hinge fairlead (eye on the pin, neck in the throat)",0.5,2.0,ACTIVE
-11,G2,PT-1,run,BAG-CUT,,safety,"IM3 bag carabiner on the sewn T3 tongue, per-row proof (BL-010)",1.0,0.0,ACTIVE-REVISED
-12,G2,MT-2,run,BAG-CUT,,safety,meat-strap hook proof per strap (BL-010),0.5,0.0,ACTIVE-REVISED
-13,G2,MT-3,run,BAG-CUT,,safety,"25 mm cam buckle slip at the BL-010 per-row loads, dry, wet and cold",2.0,0.0,ACTIVE-REVISED
-14,G2,US-BS,run,BAG-CUT,,safety,US backstop: stainless tri-glide behind an open cam stops the cradle strap,0.5,0.0,ACTIVE
-15,G2,PT-2,run,BAG-CUT,,safety,T3 tongue on the 70 mm B-17 tab on a B-01 swatch (BL-010 load),2.5,0.0,ACTIVE-REVISED
-16,G2,PT-3,run,BAG-CUT,,safety,"HE hinge eye on B-18 + B-01 + B-05 floor seam, sewn as op 4.05 (HE-ONE / HE-PIN), no binding",2.5,0.0,ACTIVE-REVISED
-17,G2,PT-5,run,BAG-CUT,,safety,guy ladder lock + tri-glide keeper slip,0.5,0.0,ACTIVE
-18,G2,PT-6,run,BAG-CUT,,safety,B-24 float stand-off link,2.0,0.0,ACTIVE
-19,G2,LL-H,run,BAG-CUT,,safety,"heavy 25 mm ladder lock slip at 432 N, dry, wet and cold (guys, W1-W3, B-28)",2.0,1.0,ACTIVE
-20,G2,B-28 slip,run,BAG-CUT,,safety,B-28 crown strap on its heavy ladder lock,0.0,0.0,COVERED->LL-H
-21,G2,RT-PULL,run,BAG-CUT,,safety,"roll-top clip RT + RTM + 25 mm side-release, sewn as built, proof 338 N",1.0,0.0,ACTIVE
-22,G2,PORT-1,run,BAG-CUT,,safety,"B-27 guy port mock-up: hose, 100 N lap pull, gloved lock use",1.5,0.0,ACTIVE
-23,G2,TL-1,run,BAG-CUT,,safety,"guy + crown-strap toggles in the 38 mm B-25 sleeve on the real crown bar, 497 N",2.0,4.0,ACTIVE
-24,G2,FS-O5,run,BAG-CUT,,grams,ULTRA 200X 50 mm strip tensile (C-5 / O-5),3.5,0.0,ACTIVE
-25,G2,WP-3,run,BAG-BATCH,,grams,gloved tail on W1-W3 ladder locks,0.3,0.0,ACTIVE
-26,G2,SL-1,run,BL037,,grams,weigh the cord-pull door sliders and the printed label; gloved door cycles,1.0,0.0,ACTIVE
-27,G2,HB-7,run,CARRY,,safety,"hipbelt heavy ladder-lock slip, corrected 2:1 routing",0.7,0.0,ACTIVE
-28,G2,TL-1b,run,DATA,,data,"bare crown bar under today's 25 mm sleeve: step load, ovalisation vs load (which ring model is real)",1.0,0.0,ACTIVE
-29,G3,FRAY-1,run,BAG-CUT,,safety,"wash-swatch fray of the un-bound SSa2 body seam (rev 3 fabrics, as cut)",1.0,4.5,ACTIVE
-30,G3,WP-1,run,BAG-CUT,,grams,"wash-swatch fray, seams without binding",2.0,4.5,ACTIVE
-31,G4,CA-1,run,R1,,safety,"PAHT-CF fatigue coupons, 0.40 (fallback >= 0.313)",6.0,278.0,ACTIVE-REVISED
-32,G4,IM3-EC,run,R1,,safety,"IM3 eye cycle coupons, 3 x 1e5 at >= 1.15 x 1024 N",3.0,83.4,ACTIVE
-33,G4,CA-5,run,R1,,safety,dry z 234 joint stub pulls + 1e5 cycle,4.0,27.8,ACTIVE
-34,G4,CLEVIS-SHARE,run,R1,,safety,"US2 bolt-on clevis joint, two loadings on the 3D cradle rows: A inboard leg (eye on the inner cheek) 1104 N proof + 1e5 at 736 N; B straight-aft leg (eye on the clevis cheek) 643 N proof + 1e5 at 429 N; gauge pass lines in microstrain",3.0,60.0,ACTIVE
-35,G4,HB-6,run,R1,,safety,"M5 heat-set insert pull-out along the BUILD Z at 60 C (140 F): 6 printed PAHT-CF coupons, every one >= 513 N (115 lbf)",2.5,62.0,ACTIVE
-36,G4,T6(c),run,R1,,safety,"spine clamp coupons (7075 clamp, 0.8 mm MMA bondline): 3 pulled >= 576 N mean, 3 twisted >= 53.4 N m mean",3.0,24.0,ACTIVE
-37,G4,SEW-F,run,BAG-BATCH,,safety,"box-X fatigue on the lever rig: 25 mm box-X loops, 1e5 cycles 44 -> 442 N (R 0.1); HE hinge eyes 62 -> 625 N on the printed fairlead (BL-044)",2.0,166.8,ACTIVE
-38,G4,CS-1,run,BL037,,grams,"XLPE L200 compression set, 50 % for 22 h at 40 C",1.0,46.0,ACTIVE
-39,G4,BP-1,run,BL037,CARRY,grams,sandwich backer strip 3-point bend coupon,1.0,0.0,ACTIVE
-40,G4,CA-3,run,CARRY,,safety,interlayer after 40 C water soak,3.0,48.0,ACTIVE
-41,G4,CA-4,run,CARRY,,safety,creep-rupture 40 C 8 h,2.0,8.0,ACTIVE
-42,G4,HB-5,run,CARRY,,safety,7075-T6 1.2 bow-tie plate proof + 1e5 cycles,4.0,27.8,ACTIVE-REVISED
-43,G4,T6,run,CARRY,,safety,crown-corner bond coupons (0.8 mm bondline),4.0,24.0,ACTIVE-REVISED
-44,G4,T7,run,CARRY,,safety,bushing crush coupon,2.0,0.0,ACTIVE-REVISED
-45,G4,CA-2,run,CARRY,,function,anneal 90 C vs 120 C,3.0,0.0,ACTIVE-OPTIONAL
-46,G5,WP-2,run,BAG-BATCH,,grams,TPU 840D lash-tab slot pull (C-6 / O-15),0.7,0.0,ACTIVE
-47,G5,AB-1,run,BL037,,grams,"HyperD 300 vs 630D printable: Martindale 8000 rev, brush drag, print swatch",1.5,0.0,ACTIVE
-48,G5,HB-4,run,CARRY,,safety,hipbelt stitched-ear joint,2.0,0.0,ACTIVE
-49,G5,HB-T,run,CARRY,,safety,50 mm buckle tab + 25 mm anchor and lock-tab box-X pull,1.5,0.0,ACTIVE
-50,G5,PS-1,run,CARRY,,safety,pad-seat backer sag,2.0,8.0,ACTIVE-REVISED
-51,G5,BP-2,run,CARRY,,grams,stay contact width on the backer strip (pressure film),0.7,0.0,ACTIVE
-52,G5,HB-2,run,CARRY,,function,belt face friction,1.5,0.0,ACTIVE-REVISED
-53,G6,IM3-EP,run,R1,,safety,IM3 eye pull on the first printed frame,2.0,0.0,ACTIVE
-54,G6,W-PULL,run,R1,,safety,W1-W3 lash points on the first frame,1.5,0.0,ACTIVE
-55,G6,MT-1cr,run,R1,,safety,"MT-1 cradle pull on P1: (A) 53 kg quarter-shaped load cammed hard: belly >= 40 mm, contact line <= 95 mm aft; (B) each R pin pulled along its 3D cradle vector to 888 N (US1) / 1104 N (US2) with three gauges against microstrain pass lines",3.5,0.0,ACTIVE
-56,G6,HB-6b,run,R1,,safety,"Ti hip mount proof on the frame (BL-056 redraw, 8 x M5 on the D50 boss): screw gauge <= 60 / 96 / 180 microstrain at 534 / 854 / 1601 N; run 2 with the pad 20 mm SIDEWAYS, leg-root gauges <= 1808 / 2893 / 5424; 1e5 at 854 N",4.0,9.0,ACTIVE
-57,G6,T9,run,R1,BAG-BATCH,safety,"loaded CG (+ 15 in, 30 kg meat check); CORRIE F rev 3 items in rows T9-R3a..d (BL-038 split)",5.0,0.0,ACTIVE
-58,G6,T9-R3a,run,BAG-BATCH,,safety,"T9 rev 3 (a): port guys hold the S-kit top, meat CG at 15 in",1.5,0.0,ACTIVE
-59,G6,FIT-US,run,BAG-BATCH,,safety,"US fit on P1 with the bag: clevis bolt heads, US2 pin heads, E-clips, tethers and clips and the clevis face vs the bag at every crown kit end (+ CLEVIS-FACE wear inspection); US straps on their lanes; US2 eye over the clevis seam",2.0,0.0,ACTIVE
-60,G6,PIN-RET,run,BAG-BATCH,,safety,"pin retention on all 12 fairlead pins: 50 N push < 0.5 mm, still home after the walk and the cycles, hinge pins out and in by hand in <= 8 s, no retainer marks on the bag (d)",1.5,0.0,ACTIVE
-61,G6,T9-R3c,run,BAG-BATCH,,safety,"T9 rev 3 (c): crown strap free length (ROLL-PATH, TORSO-LIN)",0.7,0.0,ACTIVE
-62,G6,BP-3,run,CARRY,,safety,"back pressure on the rails, below and above z 190",3.0,0.0,ACTIVE
-63,G6,RF-1,run,CARRY,,grams,back rail fit 130/70 on 3 backs (C-8),3.0,0.0,ACTIVE
-64,G6,T1,run,R1,,safety,"static proof 150 / 300 / 225 lb (+ joint marks, yoke dial)",4.0,0.0,ACTIVE
-65,G6,T1c-SW,run,R1,,safety,T1(c) hipbelt-off frame test with sway gauges (crown buckling check of the GNL model),2.0,0.0,ACTIVE
-66,G6,T3,run,CARRY,,safety,side-hill 240 lb at 25 deg,3.0,0.0,ACTIVE
-67,G6,T2,run,R1,,safety,meat / tall-load proof 300 lb,3.0,0.0,ACTIVE
-68,G6,MT-1c,run,R1,,safety,meat-strap cinch readout: does the IM cinch cycle with the walking g (CINCH_STATIC),2.0,0.2,ACTIVE
-69,G6,CR-1,run,CARRY,,safety,crown retention hang 136 kg,1.0,0.0,ACTIVE
-70,G6,BU-1,run,BL037,,grams,"50 mm crown bushings: kit change and pawl travel, gloved",1.0,0.0,ACTIVE
-71,G6,SP-1,run,CARRY,,safety,spreader bone-end proof 400 N,1.5,0.0,ACTIVE
-72,G6,T4a,run,CARRY,,safety,"drop-step 2.0 g, 20 drops",3.0,0.0,ACTIVE
-73,G6,T4b,run,CARRY,,safety,single-foot set-down (+ dial on the branch),2.0,0.0,ACTIVE
-74,G6,T4c,run,CARRY,,safety,empty abuse drop 122 cm at -20 C,2.0,4.0,ACTIVE-REVISED
-75,G6,T5,run,CARRY,,safety,"cycle 0.4 -> 1.6 g, 1e5 cycles (H1 body)",6.0,33.0,ACTIVE-REVISED
-76,G6,T5f,run,CARRY,,safety,float US1 share 56 kg,4.0,0.0,PROPOSED
-77,G6,T2u,run,CARRY,,safety,ultimate demo 450 lb on P1 (destroys P1),3.0,0.0,ACTIVE
-78,G7,T9-R3b,run,BAG-BATCH,,safety,"T9 rev 3 (b): crown strap cinch force and retention (CROWN_PRE_N, MU_LID)",1.0,0.0,ACTIVE
-79,G7,T9-R3d,run,BAG-BATCH,,function,"T9 rev 3 (d): sewn lid mass and seat (LID_SLIDER5_G, LID_THREAD, LID-SEAT)",0.3,0.0,ACTIVE
-80,G7,GT-1,run,BAG-BATCH,,safety,capstan pull: guy webbing over the packed bag's corner (MU_WEB_FAB),0.5,0.0,ACTIVE
-81,G7,FIT-R3,run,BAG-BATCH,,function,"rev 3 first-article fit checks (yes / no): lid dart, B-11 loadouts, IM2 notch, carabiner gate on T3, roll clip with rifle + W3, muzzle gap",1.0,0.0,ACTIVE
-82,G7,PT-7,run,BAG-BATCH,,safety,door zip proof,2.0,0.0,ACTIVE
-83,G7,WP-4,run,BAG-BATCH,,function,rain-fly fit,1.0,0.0,ACTIVE
-84,G7,WP-5,run,BAG-BATCH,,grams,TPU trim tick,0.5,0.0,ACTIVE
-85,G7,HS-1,run,BL037,,grams,shoulder pressure: XLPE L200 vs EVA 45C J-strap load foam,3.0,0.0,ACTIVE
-86,G7,ST-1,run,BL037,,grams,"gloved one-hand sternum clip-on, 25 mm side-release",0.3,0.0,ACTIVE
-87,G7,HB-1,run,BL037,CARRY,function,"hipbelt pressure map, 3 testers, + front-strap sensor",4.0,0.0,ACTIVE-REVISED
-88,G7,HB-D2,run,BL037,CARRY,grams,wing stiffener 0.75 mm roll-over (one wing each),2.0,0.0,ACTIVE
-89,G7,HB-3,run,CARRY,,function,hipbelt slip / settle hike,1.5,0.0,ACTIVE
-90,G7,HB-D1,run,CARRY,,grams,no stabilizer straps: side-hill stability,1.5,0.0,ACTIVE
-91,G7,HB-D3,run,CARRY,,grams,pad-seat cord tie and 1000D sleeve retention,0.5,0.0,ACTIVE
-92,G7,FT-S2,run,CARRY,,grams,no wings: 5 km side-hill + door cycles with the tripod loaded,3.0,0.0,ACTIVE
-93,G7,MH-1,run,CARRY,,function,bag-on meat mode walk,1.5,0.0,ACTIVE
-94,G7,MH-2,run,CARRY,,function,frame-only meat haul (float / bag-off),1.5,0.0,ACTIVE-REVISED
-95,G7,MH-3,run,CARRY,,function,meat strap wash,0.5,2.0,ACTIVE
-96,G7,R28-1,run,CARRY,,function,head-clearance photo,0.3,0.0,ACTIVE
-97,G8,FA-H1P-UP,run,R1-PPA,,build,"First-article H1-P upper half (PPA-CF): snap-off pads, planned filament change, layer time",3.0,21.0,ACTIVE
-98,G8,CA-3-HW,run,R1-PPA,,safety,"PPA-CF Z tensile + SBS, hot/wet B-basis at n 10, dry set, pause-layer SBS",8.0,336.0,ACTIVE
-99,G8,CA-1-HW,run,R1-PPA,,safety,"PPA-CF short-beam-shear fatigue at 40 C, conditioned, 1.15 x Smax",6.0,167.0,ACTIVE
-100,G8,CA-4-HW,run,R1-PPA,,safety,PPA-CF 3-point bend modulus at 23 C dry / 40 C conditioned / 60 C dry,4.0,3.0,ACTIVE
-101,G8,T4c-PPA-HW,run,R1-PPA,,safety,-20 C drop of 5 H1-P stay coupons (z 0-140) at 34 J + cantilever bend,3.0,4.0,ACTIVE
-102,G8,T4c-PPA-CROWN,run,R1-PPA,,safety,-20 C drop of 3 H1-P crown-corner coupons at 24 J,2.0,4.0,ACTIVE
-103,G8,CLEVIS-SHARE-B-PPA,run,R1-PPA,,safety,"US2 clevis outer-cheek share measured on H1-P PPA parts (loading B), pass <= 0.79",3.0,0.0,ACTIVE
-104,G8,US2-LUG-PPA,run,R1-PPA,,safety,"US2 lug proof on H1-P PPA parts at x 1.08 the CLEVIS-SHARE B load, hot/wet, 40 C",4.0,28.0,ACTIVE
-105,G8,T4b-PPA-COLD,run,R1-PPA,,safety,P1 H1-P frame T4b set-down after 4 h at -20 C (33 J),3.0,0.0,ACTIVE
-106,G8,T4c-PPA-COLD,run,R1-PPA,,safety,P1 empty-pack T4c drops after 4 h at -20 C,3.0,0.0,ACTIVE
+1,G0,CA-3-PAHT,run,PAHT-COUPONS,,safety,"PAHT-CF Z tensile + SBS, hot/wet B-basis at n 10, dry set, layer time >= 237 s",8.0,504.0,ACTIVE
+2,G0,CA-1-PAHT,run,PAHT-COUPONS,,safety,"PAHT-CF short-beam-shear fatigue at 40 C, conditioned, 1.15 x Smax",6.0,167.0,ACTIVE
+3,G0,CA-4-PAHT,run,PAHT-COUPONS,,safety,PAHT-CF 3-point bend modulus at 23 C dry / 40 C conditioned / 60 C dry,4.0,3.0,ACTIVE
+4,G0,HB-6b-SLV,run,PAHT-COUPONS,,safety,"hip mount proof on the first H1c frame with the 304 sleeves, 0.6 N m",3.0,0.0,ACTIVE
+5,G0,CLEVIS-SHARE-B-PAHT,run,PAHT-COUPONS,,safety,"US2 clevis outer-cheek share on the first frame (loading B), pass <= 0.6",3.0,0.0,ACTIVE
+6,G1,CA-1,print + condition,R1,,safety,"PAHT-CF fatigue coupons, 0.40 (fallback >= 0.313)",0.0,0.0,ACTIVE-REVISED
+7,G1,IM3-EC,print + condition,R1,,safety,"IM3 eye cycle coupons, 3 x 1e5 at >= 1.15 x 1024 N",0.0,0.0,ACTIVE
+8,G1,CA-5,print + condition,R1,,safety,dry z 234 joint stub pulls + 1e5 cycle,0.0,0.0,ACTIVE
+9,G1,CLEVIS-SHARE,print + condition,R1,,safety,"US2 bolt-on clevis joint, two loadings on the 3D cradle rows: A inboard leg (eye on the inner cheek) 1104 N proof + 1e5 at 736 N; B straight-aft leg (eye on the clevis cheek) 643 N proof + 1e5 at 429 N; gauge pass lines in microstrain",0.0,0.0,ACTIVE
+10,G1,HB-6,print + condition,R1,,safety,"M5 heat-set insert pull-out along the BUILD Z at 60 C (140 F): 6 printed PAHT-CF coupons, every one >= 513 N (115 lbf)",0.0,0.0,ACTIVE
+11,G1,CA-3,print + condition,CARRY,,safety,interlayer after 40 C water soak,0.0,0.0,ACTIVE
+12,G1,CA-4,print + condition,CARRY,,safety,creep-rupture 40 C 8 h,0.0,0.0,ACTIVE
+13,G1,T7,print + condition,CARRY,,safety,bushing crush coupon,0.0,0.0,ACTIVE-REVISED
+14,G2,MT-1,run,R1,BAG-CUT,safety,25 mm box-X bartack proof at the BL-010 per-row loads,1.0,0.0,ACTIVE-REVISED
+15,G2,HE-FIT,run,BAG-CUT,,safety,"hinge eye 1:1 dry fit on the printed BL-049 z 60 hinge fairlead (eye on the pin, neck in the throat)",0.5,2.0,ACTIVE
+16,G2,PT-1,run,BAG-CUT,,safety,"IM3 bag carabiner on the sewn T3 tongue, per-row proof (BL-010)",1.0,0.0,ACTIVE-REVISED
+17,G2,MT-2,run,BAG-CUT,,safety,meat-strap hook proof per strap (BL-010),0.5,0.0,ACTIVE-REVISED
+18,G2,MT-3,run,BAG-CUT,,safety,"25 mm cam buckle slip at the BL-010 per-row loads, dry, wet and cold",2.0,0.0,ACTIVE-REVISED
+19,G2,US-BS,run,BAG-CUT,,safety,US backstop: stainless tri-glide behind an open cam stops the cradle strap,0.5,0.0,ACTIVE
+20,G2,PT-2,run,BAG-CUT,,safety,T3 tongue on the 70 mm B-17 tab on a B-01 swatch (BL-010 load),2.5,0.0,ACTIVE-REVISED
+21,G2,PT-3,run,BAG-CUT,,safety,"HE hinge eye on B-18 + B-01 + B-05 floor seam, sewn as op 4.05 (HE-ONE / HE-PIN), no binding",2.5,0.0,ACTIVE-REVISED
+22,G2,PT-5,run,BAG-CUT,,safety,guy ladder lock + tri-glide keeper slip,0.5,0.0,ACTIVE
+23,G2,PT-6,run,BAG-CUT,,safety,B-24 float stand-off link,2.0,0.0,ACTIVE
+24,G2,LL-H,run,BAG-CUT,,safety,"heavy 25 mm ladder lock slip at 432 N, dry, wet and cold (guys, W1-W3, B-28)",2.0,1.0,ACTIVE
+25,G2,B-28 slip,run,BAG-CUT,,safety,B-28 crown strap on its heavy ladder lock,0.0,0.0,COVERED->LL-H
+26,G2,RT-PULL,run,BAG-CUT,,safety,"roll-top clip RT + RTM + 25 mm side-release, sewn as built, proof 338 N",1.0,0.0,ACTIVE
+27,G2,PORT-1,run,BAG-CUT,,safety,"B-27 guy port mock-up: hose, 100 N lap pull, gloved lock use",1.5,0.0,ACTIVE
+28,G2,TL-1,run,BAG-CUT,,safety,"guy + crown-strap toggles in the 38 mm B-25 sleeve on the real crown bar, 497 N",2.0,4.0,ACTIVE
+29,G2,FS-O5,run,BAG-CUT,,grams,ULTRA 200X 50 mm strip tensile (C-5 / O-5),3.5,0.0,ACTIVE
+30,G2,WP-3,run,BAG-BATCH,,grams,gloved tail on W1-W3 ladder locks,0.3,0.0,ACTIVE
+31,G2,SL-1,run,BL037,,grams,weigh the cord-pull door sliders and the printed label; gloved door cycles,1.0,0.0,ACTIVE
+32,G2,HB-7,run,CARRY,,safety,"hipbelt heavy ladder-lock slip, corrected 2:1 routing",0.7,0.0,ACTIVE
+33,G2,TL-1b,run,DATA,,data,"bare crown bar under today's 25 mm sleeve: step load, ovalisation vs load (which ring model is real)",1.0,0.0,ACTIVE
+34,G3,FRAY-1,run,BAG-CUT,,safety,"wash-swatch fray of the un-bound SSa2 body seam (rev 3 fabrics, as cut)",1.0,4.5,ACTIVE
+35,G3,WP-1,run,BAG-CUT,,grams,"wash-swatch fray, seams without binding",2.0,4.5,ACTIVE
+36,G4,CA-1,run,R1,,safety,"PAHT-CF fatigue coupons, 0.40 (fallback >= 0.313)",6.0,278.0,ACTIVE-REVISED
+37,G4,IM3-EC,run,R1,,safety,"IM3 eye cycle coupons, 3 x 1e5 at >= 1.15 x 1024 N",3.0,83.4,ACTIVE
+38,G4,CA-5,run,R1,,safety,dry z 234 joint stub pulls + 1e5 cycle,4.0,27.8,ACTIVE
+39,G4,CLEVIS-SHARE,run,R1,,safety,"US2 bolt-on clevis joint, two loadings on the 3D cradle rows: A inboard leg (eye on the inner cheek) 1104 N proof + 1e5 at 736 N; B straight-aft leg (eye on the clevis cheek) 643 N proof + 1e5 at 429 N; gauge pass lines in microstrain",3.0,60.0,ACTIVE
+40,G4,HB-6,run,R1,,safety,"M5 heat-set insert pull-out along the BUILD Z at 60 C (140 F): 6 printed PAHT-CF coupons, every one >= 513 N (115 lbf)",2.5,62.0,ACTIVE
+41,G4,T6(c),run,R1,,safety,"spine clamp coupons (7075 clamp, 0.8 mm MMA bondline): 3 pulled >= 576 N mean, 3 twisted >= 53.4 N m mean",3.0,24.0,ACTIVE
+42,G4,SEW-F,run,BAG-BATCH,,safety,"box-X fatigue on the lever rig: 25 mm box-X loops, 1e5 cycles 44 -> 442 N (R 0.1); HE hinge eyes 62 -> 625 N on the printed fairlead (BL-044)",2.0,166.8,ACTIVE
+43,G4,CS-1,run,BL037,,grams,"XLPE L200 compression set, 50 % for 22 h at 40 C",1.0,46.0,ACTIVE
+44,G4,BP-1,run,BL037,CARRY,grams,sandwich backer strip 3-point bend coupon,1.0,0.0,ACTIVE
+45,G4,CA-3,run,CARRY,,safety,interlayer after 40 C water soak,3.0,48.0,ACTIVE
+46,G4,CA-4,run,CARRY,,safety,creep-rupture 40 C 8 h,2.0,8.0,ACTIVE
+47,G4,HB-5,run,CARRY,,safety,7075-T6 1.2 bow-tie plate proof + 1e5 cycles,4.0,27.8,ACTIVE-REVISED
+48,G4,T6,run,CARRY,,safety,crown-corner bond coupons (0.8 mm bondline),4.0,24.0,ACTIVE-REVISED
+49,G4,T7,run,CARRY,,safety,bushing crush coupon,2.0,0.0,ACTIVE-REVISED
+50,G4,CA-2,run,CARRY,,function,anneal 90 C vs 120 C,3.0,0.0,ACTIVE-OPTIONAL
+51,G5,WP-2,run,BAG-BATCH,,grams,TPU 840D lash-tab slot pull (C-6 / O-15),0.7,0.0,ACTIVE
+52,G5,AB-1,run,BL037,,grams,"HyperD 300 vs 630D printable: Martindale 8000 rev, brush drag, print swatch",1.5,0.0,ACTIVE
+53,G5,HB-4,run,CARRY,,safety,hipbelt stitched-ear joint,2.0,0.0,ACTIVE
+54,G5,HB-T,run,CARRY,,safety,50 mm buckle tab + 25 mm anchor and lock-tab box-X pull,1.5,0.0,ACTIVE
+55,G5,PS-1,run,CARRY,,safety,pad-seat backer sag,2.0,8.0,ACTIVE-REVISED
+56,G5,BP-2,run,CARRY,,grams,stay contact width on the backer strip (pressure film),0.7,0.0,ACTIVE
+57,G5,HB-2,run,CARRY,,function,belt face friction,1.5,0.0,ACTIVE-REVISED
+58,G6,IM3-EP,run,R1,,safety,IM3 eye pull on the first printed frame,2.0,0.0,ACTIVE
+59,G6,W-PULL,run,R1,,safety,W1-W3 lash points on the first frame,1.5,0.0,ACTIVE
+60,G6,MT-1cr,run,R1,,safety,"MT-1 cradle pull on P1: (A) 53 kg quarter-shaped load cammed hard: belly >= 40 mm, contact line <= 95 mm aft; (B) each R pin pulled along its 3D cradle vector to 888 N (US1) / 1104 N (US2) with three gauges against microstrain pass lines",3.5,0.0,ACTIVE
+61,G6,HB-6b,run,R1,,safety,"Ti hip mount proof on the frame (BL-056 redraw, 8 x M5 on the D50 boss): screw gauge <= 60 / 96 / 180 microstrain at 534 / 854 / 1601 N; run 2 with the pad 20 mm SIDEWAYS, leg-root gauges <= 1808 / 2893 / 5424; 1e5 at 854 N",4.0,9.0,ACTIVE
+62,G6,T9,run,R1,BAG-BATCH,safety,"loaded CG (+ 15 in, 30 kg meat check); CORRIE F rev 3 items in rows T9-R3a..d (BL-038 split)",5.0,0.0,ACTIVE
+63,G6,T9-R3a,run,BAG-BATCH,,safety,"T9 rev 3 (a): port guys hold the S-kit top, meat CG at 15 in",1.5,0.0,ACTIVE
+64,G6,FIT-US,run,BAG-BATCH,,safety,"US fit on P1 with the bag: clevis bolt heads, US2 pin heads, E-clips, tethers and clips and the clevis face vs the bag at every crown kit end (+ CLEVIS-FACE wear inspection); US straps on their lanes; US2 eye over the clevis seam",2.0,0.0,ACTIVE
+65,G6,PIN-RET,run,BAG-BATCH,,safety,"pin retention on all 12 fairlead pins: 50 N push < 0.5 mm, still home after the walk and the cycles, hinge pins out and in by hand in <= 8 s, no retainer marks on the bag (d)",1.5,0.0,ACTIVE
+66,G6,T9-R3c,run,BAG-BATCH,,safety,"T9 rev 3 (c): crown strap free length (ROLL-PATH, TORSO-LIN)",0.7,0.0,ACTIVE
+67,G6,BP-3,run,CARRY,,safety,"back pressure on the rails, below and above z 190",3.0,0.0,ACTIVE
+68,G6,RF-1,run,CARRY,,grams,back rail fit 130/70 on 3 backs (C-8),3.0,0.0,ACTIVE
+69,G6,T1,run,R1,,safety,"static proof 150 / 300 / 225 lb (+ joint marks, yoke dial)",4.0,0.0,ACTIVE
+70,G6,T1c-SW,run,R1,,safety,T1(c) hipbelt-off frame test with sway gauges (crown buckling check of the GNL model),2.0,0.0,ACTIVE
+71,G6,T3,run,CARRY,,safety,side-hill 240 lb at 25 deg,3.0,0.0,ACTIVE
+72,G6,T2,run,R1,,safety,meat / tall-load proof 300 lb,3.0,0.0,ACTIVE
+73,G6,MT-1c,run,R1,,safety,meat-strap cinch readout: does the IM cinch cycle with the walking g (CINCH_STATIC),2.0,0.2,ACTIVE
+74,G6,CR-1,run,CARRY,,safety,crown retention hang 136 kg,1.0,0.0,ACTIVE
+75,G6,BU-1,run,BL037,,grams,"50 mm crown bushings: kit change and pawl travel, gloved",1.0,0.0,ACTIVE
+76,G6,SP-1,run,CARRY,,safety,spreader bone-end proof 400 N,1.5,0.0,ACTIVE
+77,G6,T4a,run,CARRY,,safety,"drop-step 2.0 g, 20 drops",3.0,0.0,ACTIVE
+78,G6,T4b,run,CARRY,,safety,single-foot set-down (+ dial on the branch),2.0,0.0,ACTIVE
+79,G6,T4c,run,CARRY,,safety,empty abuse drop 122 cm at -20 C,2.0,4.0,ACTIVE-REVISED
+80,G6,T5,run,CARRY,,safety,"cycle 0.4 -> 1.6 g, 1e5 cycles (H1 body)",6.0,33.0,ACTIVE-REVISED
+81,G6,T5f,run,CARRY,,safety,float US1 share 56 kg,4.0,0.0,PROPOSED
+82,G6,T2u,run,CARRY,,safety,ultimate demo 450 lb on P1 (destroys P1),3.0,0.0,ACTIVE
+83,G7,T9-R3b,run,BAG-BATCH,,safety,"T9 rev 3 (b): crown strap cinch force and retention (CROWN_PRE_N, MU_LID)",1.0,0.0,ACTIVE
+84,G7,T9-R3d,run,BAG-BATCH,,function,"T9 rev 3 (d): sewn lid mass and seat (LID_SLIDER5_G, LID_THREAD, LID-SEAT)",0.3,0.0,ACTIVE
+85,G7,GT-1,run,BAG-BATCH,,safety,capstan pull: guy webbing over the packed bag's corner (MU_WEB_FAB),0.5,0.0,ACTIVE
+86,G7,FIT-R3,run,BAG-BATCH,,function,"rev 3 first-article fit checks (yes / no): lid dart, B-11 loadouts, IM2 notch, carabiner gate on T3, roll clip with rifle + W3, muzzle gap",1.0,0.0,ACTIVE
+87,G7,PT-7,run,BAG-BATCH,,safety,door zip proof,2.0,0.0,ACTIVE
+88,G7,WP-4,run,BAG-BATCH,,function,rain-fly fit,1.0,0.0,ACTIVE
+89,G7,WP-5,run,BAG-BATCH,,grams,TPU trim tick,0.5,0.0,ACTIVE
+90,G7,HS-1,run,BL037,,grams,shoulder pressure: XLPE L200 vs EVA 45C J-strap load foam,3.0,0.0,ACTIVE
+91,G7,ST-1,run,BL037,,grams,"gloved one-hand sternum clip-on, 25 mm side-release",0.3,0.0,ACTIVE
+92,G7,HB-1,run,BL037,CARRY,function,"hipbelt pressure map, 3 testers, + front-strap sensor",4.0,0.0,ACTIVE-REVISED
+93,G7,HB-D2,run,BL037,CARRY,grams,wing stiffener 0.75 mm roll-over (one wing each),2.0,0.0,ACTIVE
+94,G7,HB-3,run,CARRY,,function,hipbelt slip / settle hike,1.5,0.0,ACTIVE
+95,G7,HB-D1,run,CARRY,,grams,no stabilizer straps: side-hill stability,1.5,0.0,ACTIVE
+96,G7,HB-D3,run,CARRY,,grams,pad-seat cord tie and 1000D sleeve retention,0.5,0.0,ACTIVE
+97,G7,FT-S2,run,CARRY,,grams,no wings: 5 km side-hill + door cycles with the tripod loaded,3.0,0.0,ACTIVE
+98,G7,MH-1,run,CARRY,,function,bag-on meat mode walk,1.5,0.0,ACTIVE
+99,G7,MH-2,run,CARRY,,function,frame-only meat haul (float / bag-off),1.5,0.0,ACTIVE-REVISED
+100,G7,MH-3,run,CARRY,,function,meat strap wash,0.5,2.0,ACTIVE
+101,G7,R28-1,run,CARRY,,function,head-clearance photo,0.3,0.0,ACTIVE
+102,G8,FA-H1P-UP,run,R1-PPA,,build,"First-article H1-P upper half (PPA-CF): snap-off pads, planned filament change, layer time",3.0,21.0,ACTIVE
+103,G8,CA-3-HW,run,R1-PPA,,safety,"PPA-CF Z tensile + SBS, hot/wet B-basis at n 10, dry set, pause-layer SBS",8.0,336.0,ACTIVE
+104,G8,CA-1-HW,run,R1-PPA,,safety,"PPA-CF short-beam-shear fatigue at 40 C, conditioned, 1.15 x Smax",6.0,167.0,ACTIVE
+105,G8,CA-4-HW,run,R1-PPA,,safety,PPA-CF 3-point bend modulus at 23 C dry / 40 C conditioned / 60 C dry,4.0,3.0,ACTIVE
+106,G8,T4c-PPA-HW,run,R1-PPA,,safety,-20 C drop of 5 H1-P stay coupons (z 0-140) at 34 J + cantilever bend,3.0,4.0,ACTIVE
+107,G8,T4c-PPA-CROWN,run,R1-PPA,,safety,-20 C drop of 3 H1-P crown-corner coupons at 24 J,2.0,4.0,ACTIVE
+108,G8,CLEVIS-SHARE-B-PPA,run,R1-PPA,,safety,"US2 clevis outer-cheek share measured on H1-P PPA parts (loading B), pass <= 0.79",3.0,0.0,ACTIVE
+109,G8,US2-LUG-PPA,run,R1-PPA,,safety,"US2 lug proof on H1-P PPA parts at x 1.08 the CLEVIS-SHARE B load, hot/wet, 40 C",4.0,28.0,ACTIVE
+110,G8,T4b-PPA-COLD,run,R1-PPA,,safety,P1 H1-P frame T4b set-down after 4 h at -20 C (33 J),3.0,0.0,ACTIVE
+111,G8,T4c-PPA-COLD,run,R1-PPA,,safety,P1 empty-pack T4c drops after 4 h at -20 C,3.0,0.0,ACTIVE

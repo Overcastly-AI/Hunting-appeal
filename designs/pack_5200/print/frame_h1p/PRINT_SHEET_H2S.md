@@ -1,5 +1,7 @@
 # PRINT_SHEET_H2S: printing the H1-P halves in PPA-CF on the Bambu H2S
 
+> **PARKED (cost, 2026-11-25).** The owner parked the PPA-CF path on cost (docs/RUBRIC.md section 1b, docs/DECISIONS.md 2026-11-25). Nothing in this file is to be bought or printed. The PAHT-CF H1 path is current: `designs/pack_5200/print/frame_h1/COUPONS_PAHT.md` is the next print.
+
 > **FRAME PRINT ON HOLD (BL-073 gate: coupons pass + US2 lug proof x lug factor + CLEVIS-SHARE B share).** The H1-P frame halves stay on hold until all three are true: (a) the BL-073 coupons pass: CA-3-HW, CA-1-HW, CA-4-HW (a), T4c-PPA-HW and T4c-PPA-CROWN; (b) US2-LUG-PPA, the US2 lug proof at x 1.08 load, passes; (c) CLEVIS-SHARE-B-PPA measures an outer-cheek share <= 0.79. The engineer writes PASS against each in the results sheet, then the frame halves may be printed (DECISIONS 2026-11-25).
 >
 > **RELEASED TO PRINT NOW: the first-article upper half (FA-H1P-UP) and the coupon jobs A-G** (COUPONS_H1P.md section 2).

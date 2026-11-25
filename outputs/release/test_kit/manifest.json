@@ -113,13 +113,14 @@
   }
  },
  "totals": {
-  "usd": 2908.77,
-  "hands_on_h": 212.5,
-  "machine_h": 1491.0,
-  "results_rows": 626
+  "usd": 2975.88,
+  "hands_on_h": 236.5,
+  "machine_h": 2165.0,
+  "results_rows": 705
  },
  "files": [
   "README.md",
+  "guides/G0.md",
   "guides/G1.md",
   "guides/G2.md",
   "guides/G3.md",
@@ -133,6 +134,7 @@
   "results_template.csv",
   "shopping_list.csv",
   "shopping_list.md",
+  "sketches/G0_rig.png",
   "sketches/G1_rig.png",
   "sketches/G2_rig.png",
   "sketches/G3_rig.png",
@@ -158,9 +160,9 @@
   "register rows for the ticket's gates: all present",
   "release_tests.csv ids without a register row (ALT-* are alternate-set checks): none",
   "active tests not in the order of work: none",
-  "first run per release: {'R1': 9, 'BAG-CUT': 10, 'BAG-BATCH': 25, 'BL037': 26, 'CARRY': 27, 'DATA': 28, 'R1-PPA': 97}",
+  "first run per release: {'PAHT-COUPONS': 1, 'R1': 14, 'BAG-CUT': 15, 'BAG-BATCH': 30, 'BL037': 31, 'CARRY': 32, 'DATA': 33, 'R1-PPA': 102}",
   "R1: CA-1 at 0.40 + MT-1c swing <= 117 % at <= 150 N (fallback >= 0.313)",
-  "shopping list 119 lines, USD 2,908.77; long lead: 6",
-  "results template 626 rows, 98 tests"
+  "shopping list 122 lines, USD 2,975.88; long lead: 6",
+  "results template 705 rows, 103 tests"
  ]
 }

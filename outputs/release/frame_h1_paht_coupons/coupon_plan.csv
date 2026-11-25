@@ -1,0 +1,8 @@
+job,item,count,g_each,material
+A,"SBS block 82 x 70 x 3.6 mm, 27 bars",1,21.9,PAHT-CF
+A,dummy tower tower_A.stl (max 3038 mm2),1,11.6,PAHT-CF
+B,"Z comb 1: 10 standing 1BA bars, 3 mm thick",1,17.0,PAHT-CF
+B,"Z comb 2: 7 standing 1BA bars, 3 mm thick",1,11.9,PAHT-CF
+B,bend bar 80 x 10 x 4 flat,16,3.4,PAHT-CF
+B,traveller plate 60 x 60 x 4,1,15.3,PAHT-CF
+B,dummy tower tower_B.stl (max 8523 mm2),1,645.0,PAHT-CF
