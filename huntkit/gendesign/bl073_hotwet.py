@@ -545,7 +545,9 @@ def layer_profile(flat, dz: float = LAYER_H) -> dict:
     """Cross-section area per print layer of a laid-flat half (z = print height = frame y - y_min)."""
     zs = np.arange(dz / 2, flat.bounds[1][2], dz)
     secs = flat.section_multiplane(plane_origin=[0, 0, 0], plane_normal=[0, 0, 1], heights=list(zs))
-    area = np.array([s.area if s is not None else 0.0 for s in secs])
+    from shapely.geometry import LineString
+    area = np.array([_evenodd([LineString(L) for L in s.discrete if len(L) > 2]).area if s is not None else 0.0
+                     for s in secs])          # even-odd fill in shapely (trimesh's Path.area needs rtree)
     return {"z": zs, "area": area}
 
 
@@ -676,7 +678,12 @@ def plot_tornado(M: dict, tor: list, path: Path, title: str) -> str:
 
 
 # ================================================================================================ coupons (M-3, M-4, M-7, M-8)
-SBS_G = {"L": 24.0, "w": 8.0, "t": 4.0, "span": 16.0}      # ASTM D2344: L 6t, w 2t, span 4t
+SBS_G = {"L": 18.0, "w": 6.0, "t": 3.0, "span": 12.0}      # ASTM D2344 proportions (L 6t, w 2t, span 4t) at t 3:
+#                                                            keeps the dry static under the 1 kN rig cell (BL-071)
+RIG_CELL_N = 981.0                                           # kit B S-type cell, 100 kg (frame_h1p_build CELL_KG)
+Z_BAR = {"type": "ISO 527-2 type 1BA", "gauge_w": 5.0, "t": 2.0, "L": 75.0}   # small Z bar: 10 mm2 gauge
+T4C_CUT_Z = 140.0                                            # stay coupon z 0-140 (foot + hinge eye): was 0-240
+STAY_LEVER_MM = 140.0                                        # C4 friction lever at the coupon's cut (ASSUMPTION C4-M)
 ISO1A_MM3 = 170.0 * 10.0 * 4.0 + 2 * 45.0 * 10.0 * 4.0       # ~1A bar volume (gauge 10 wide, shoulders 20 wide)
 FLEX_MM3 = 80.0 * 10.0 * 4.0
 T4B_J = 68.0 * 9.81 * 0.050                                  # HA-LS-1 T4b: 68 kg dropped 50 mm onto one foot
@@ -692,12 +699,41 @@ def layer_time_s(flat, rate_mm3_s: float = 8.0, k: float = 1.08) -> dict:
             "layers": int(len(t))}
 
 
+def t4c_bend(arm: float = 120.0) -> dict:
+    """1.5 x the C4 set-down stay moment at the coupon's cut, as a CANTILEVER load (BL-071 asked for it; a 3-point
+    bend on a 100 mm span would need 2.2 kN, over the 100 kg cell). C4 (HA-LS-1): 68 kg x 2.0 g on one foot with 0.2
+    friction; the stay bends under the friction force at the lever from the foot to the cut (ASSUMPTION C4-M: the
+    axial part goes straight up the stay). M_C4 = 0.2 x 68 x 9.81 x 2.0 x 140 mm; test moment = 1.5 x M_C4; the
+    coupon is clamped over its top 20 mm (vise, z 120-140) and pulled sideways at the foot, ``arm`` from the clamp
+    edge: P = M_test / arm."""
+    f = 68.0 * 9.81 * 2.0
+    m = 0.2 * f * STAY_LEVER_MM
+    mt = 1.5 * m
+    p = mt / arm
+    return {"foot_force_n": round(f, 1), "friction_n": round(0.2 * f, 1), "lever_mm": STAY_LEVER_MM,
+            "m_c4_nmm": round(m, 0), "m_test_nmm": round(mt, 0), "set_up": "cantilever: clamp z 120-140, pull at the "
+            "foot", "arm_mm": arm, "p_tip_n": round(p, 0), "p_tip_lbf": round(p / 4.448, 0),
+            "under_rig_cell": bool(p <= RIG_CELL_N)}
+
+
+def rig_loads(b: dict) -> dict:
+    """Peak static loads of the BL-073 coupons against the 100 kg cell (dry 23 C TDS means: the highest case)."""
+    sbs = 0.6 * 57.0 * SBS_G["w"] * SBS_G["t"] / 0.75            # dry interlayer 0.6 x Z mean, tau = 0.75 P / (b h)
+    zb = 57.0 * Z_BAR["gauge_w"] * Z_BAR["t"]
+    flex = 2 * 208.0 * 10.0 * 4.0 ** 2 / (3 * 64.0)              # ISO 178 80 x 10 x 4, span 64
+    out = {"sbs_static_dry_n": round(sbs, 0), "z_bar_static_dry_n": round(zb, 0), "flex_xy_static_n": round(flex, 0),
+           "t4c_bend_n": t4c_bend()["p_tip_n"], "cell_n": RIG_CELL_N}
+    out["all_under_cell"] = all(v <= RIG_CELL_N for k, v in out.items() if k.endswith("_n") and k != "cell_n")
+    return out
+
+
 def coupons_hw(M: dict, b: dict, lt: dict) -> list:
     """Register rows for the hot/wet basis (written to bl070_h1p.json 'coupons_bl073'; the BL-070 'coupons' rows stay
     as they were). ``M``: governing margins on ppa_hw; ``b``: basis(); ``lt``: layer_time_s of each half."""
     zk = b["z_knocked_hw"]
     tau = b["tau_il_hw"]
     k10 = b["k_n10"]
+    t4c = t4c_bend()
     m_fat = min(M["R1"], M["z 234 joint fatigue"], M["US2 lug fatigue"] / 1.15,
                 M["US2 clevis fatigue (share 0.6)"] / 1.15, M["hip mount fatigue"] / 1.15)
     m_z = min(M["R1"], M["z 234 joint fatigue"])
@@ -713,12 +749,13 @@ def coupons_hw(M: dict, b: dict, lt: dict) -> list:
              f"layer takes >= {lt_med:.0f} s (the median layer time of a frame half by the BL-053 rule, "
              f"LAYER-H 0.3 mm); log the layer time of each batch from the slicer preview")
     return [
-        {"id": "CA-1-HW", "replaces": "CA-1-PPA (review 8 M-3)",
+        {"id": "CA-1-HW", "replaces": "CA-1-PPA (review 8 M-3; the XY / Z tension fatigue bars are dropped: their "
+                                      "static pulls exceed the 100 kg cell, BL-071)",
          "what": "short-beam-shear FATIGUE (the governing interlayer mode, shear_xy): ASTM D2344 bars "
                  f"{SBS_G['L']:g} x {SBS_G['w']:g} x {SBS_G['t']:g}, span {SBS_G['span']:g}, mid-plane on a layer "
                  f"interface, {block}; {cond}; tested at 40 +/- 2 C, R 0.1, <= 5 Hz",
-         "coupons": "6 SBS fatigue + 3 SBS static from the same block (+ 6 Z-tension R 0.1 bars kept from CA-1-PPA "
-                    "for the layer-normal share)",
+         "coupons": "6 SBS fatigue + 3 SBS static from the same block (the layer-normal share, 7 % of the R1 top "
+                    "1 %, is covered by the CA-3-HW Z bars)",
          "load": f"Smax (shear) = 1.15 x {s_des:.2f} = {s_test:.2f} MPa, i.e. peak load {p_sbs:.0f} N "
                  f"({p_sbs / 4.448:.0f} lbf) on the SBS jig (tau = 0.75 P / (b h)); {s_des:.2f} MPa = 0.30 x "
                  f"interlayer {tau:.2f} MPa / governing fatigue margin {m_fat:.3f}",
@@ -730,7 +767,8 @@ def coupons_hw(M: dict, b: dict, lt: dict) -> list:
                         f"hip / 1.15) = {m_fat:.3f}",
          "smax_design_mpa": round(s_des, 3), "smax_test_mpa": round(s_test, 3), "peak_load_n": round(p_sbs, 0)},
         {"id": "CA-3-HW", "replaces": "CA-3-PPA (review 8 B-2, M-4, M-6)",
-         "what": f"Z tensile (ISO 527-2 1A, standing, tied in threes) and SBS (ASTM D2344), {block}; hot/wet set "
+         "what": f"Z tensile ({Z_BAR['type']}, 5 x 2 mm gauge, cut from the block so the gauge crosses the layers) "
+                 f"and SBS (ASTM D2344 proportions at t 3), {block}; hot/wet set "
                  f"{cond}, tested at 40 +/- 2 C; dry set as printed (sealed, tested within 24 h at 23 C); plus 6 "
                  "SBS with a planned 20 min pause at the mid-plane layer (the spool-change layer, M-6)",
          "coupons": "hot/wet: 10 Z + 10 SBS; dry: 6 Z + 6 SBS; pause-layer: 6 SBS (hot/wet)",
@@ -768,14 +806,17 @@ def coupons_hw(M: dict, b: dict, lt: dict) -> list:
          "coupons": "P1", "pass": "HA-LS-1 T4c pass rule; no crack at the crown corners, pawl housing, upper bar",
          "settles": "COLD on the upper half / crown"},
         {"id": "T4c-PPA-HW", "replaces": "T4c-PPA (review 8 M-7)",
-         "what": "-20 C drop of printed stay coupons (H1-P lower stay z 0-240, R side, cut from the lower-half "
-                 "file) with a steel slug pinned through the hinge eye",
+         "what": f"-20 C drop of printed stay coupons (H1-P lower stay z 0-{T4C_CUT_Z:g}, R side: foot and hinge eye, "
+                 "cut from the lower-half file; was z 0-240, BL-071 filament budget) with a steel slug pinned through "
+                 "the hinge eye",
          "coupons": "5 PPA-CF + 1 PAHT-CF control (was 3 + 1)",
          "load": f"2.8 kg slug from 1.22 m (48 in): {2.8 * 9.81 * 1.22:.0f} J = the T4b set-down energy "
                  f"({T4B_J:.0f} J), foot first then side-on",
-         "pass": "no crack or whitening (10x loupe, dye penetrant), then 3-point bend at 1.5 x the C4 stay moment "
-                 "without a crack; 5 / 5 shows R 0.55 at C 0.95 only (0.05^(1/5)), which is why T4b-PPA-COLD on "
-                 "the frame is added",
+         "pass": f"no crack or whitening (10x loupe, dye penetrant), then 3-point bend at 1.5 x the C4 stay moment "
+                 f"({t4c['m_test_nmm'] / 1000:.1f} N m: coupon clamped at z 120-140, {t4c['p_tip_n']:.0f} N "
+                 f"({t4c['p_tip_lbf']:.0f} lbf) sideways at the foot, {t4c['arm_mm']:g} mm arm) without a crack; 5 / 5 shows "
+                 "R 0.55 at C 0.95 only (0.05^(1/5)), which is why T4b-PPA-COLD on the frame is added",
+         "bend": t4c,
          "settles": "COLD on the stay foot at the T4b energy"},
         {"id": "T4c-PPA-CROWN", "replaces": "new (review 8 M-7)",
          "what": "-20 C drop of a crown-corner coupon cut from the upper-half file (crown corner, pawl housing, "
@@ -937,7 +978,7 @@ def plot_plate_contact(stl_dir: Path, pf: dict, path: Path) -> str:
 
 
 # ================================================================================================ record
-FINAL = "p1"               # set by the design loop (OUT/run_*.log); the lightest step with R1 and joint >= 1.0
+FINAL = "p3"               # BL-073 design loop: p1 (grow, 1334.0 g, R1 1.126), p2 (thin, 1329.6 g, 1.158), p3 (thin x3, 1312.1 g, R1 1.048): lightest passing
 BEFORE = "g1"              # BL-070 H1-P, re-checked on the hot/wet basis (no geometry change)
 ROWMAP = [  # (BL-070 row name, short key)
     ("strength (min of 3 static bases)", "strength"), ("fatigue, static carry", "static carry fatigue"),
@@ -1099,8 +1140,14 @@ def report(final: str = FINAL, log=print) -> dict:
     rr = raster_of(final)
     m = trimesh.load(P.STL_DIR / "h1_assembled.stl", force="mesh")
     chk_raster, _ = P.reraster()
-    if not np.array_equal(chk_raster, rr):
-        raise RuntimeError(f"the STLs in {P.STL_DIR} are not the checked {final} export")
+    if not np.array_equal(chk_raster, rr):          # a later step overwrote the STLs: re-export the chosen one
+        with plate_hook():
+            info = P.export(np.load(OUT / f"{final}_design.npz")["solid"], log=None)
+        (OUT / f"{final}_export_info.json").write_text(json.dumps(info, default=FI._jd, indent=1))
+        chk_raster, _ = P.reraster()
+        if not np.array_equal(chk_raster, rr):
+            raise RuntimeError(f"re-export of {final} does not reproduce its checked raster")
+        m = trimesh.load(P.STL_DIR / "h1_assembled.stl", force="mesh")
     lug = P.us2_lug(mesh=m, mat=MAT, tag=final)
     la = P.lash(rr, mat=MAT, tag=final)
     ep = OUT / f"eigen_{final}.json"
@@ -1221,6 +1268,13 @@ def report(final: str = FINAL, log=print) -> dict:
                     "lug": lug["design_min"], "lash_p99": la["states"]["after"]["margin_p99"],
                     "clevis": {k: clev[k]["all_rows_min"] for k in ("share_0.6", "share_1")}}
     rec["coupons_bl073"] = cps
+    rec["bl071_requests"] = {"t4c_bend_load": t4c_bend(), "hip_torque_nm": hip["torque_nm"],
+                             "hip_preload_n": hip["preload_n"], "hip_screw": hip["screw"],
+                             "rig_loads": rig_loads(b),
+                             "t4c_stay_cut_z_mm": T4C_CUT_Z,
+                             "note": "BL-073 answers to BL-071 items 1-5: bend load (cantilever, under the 100 kg cell), "
+                                     "hip torque on the bearing ring (not the bare nut ring), coupons sized under 1 kN, "
+                                     "M5 x 35 with 5 threads proud, stay drop coupon cut to z 0-140"}
     # review 8 m-4: the BL-070 CA-3-PPA 'if below' band, corrected in place (the row itself stays as recorded)
     ob = {q["name"]: q["value"] for q in rec["h1p_bl070"]["rows"]}
     fix = {c["id"]: c for c in P.coupons(ob["fatigue, cinch-cycled (R1)"], ob["fatigue, static carry"],
@@ -1228,7 +1282,7 @@ def report(final: str = FINAL, log=print) -> dict:
                                          ob["z 234 joint fatigue"])}
     for c in rec["coupons"]:
         if c["id"] == "CA-3-PPA":
-            c["if_below"] = fix["CA-3-PPA"]["if_below"]
+            c["if_below_corrected"] = fix["CA-3-PPA"]["if_below"]     # new key: BL-071 parses 'if_below' as written
     _, rinfo = P.reraster()
     rec["bl073"]["reraster"] = {k: rinfo[k] for k in ("stl_voxels", "run_voxels", "pads_added") if k in rinfo}
     rec["assumptions_bl073"] = [{"id": a, "text": t, "settled_by": s_} for a, t, s_ in ASSUMPTIONS_BL073]
@@ -1362,13 +1416,14 @@ def write_md_section(rec: dict) -> str:
     pf, sp = x["print_files"], x["spool_plan"]
     L += ["", "### Printability (M-5, M-6, m-5, m-6)", "",
           "| half | plate contact part only mm2 | with pads mm2 | pads | pad filament g | filament total g | "
-          "0.75 kg spools | planned change at print z (layer) | layer-plane fatigue util there (half max) |",
+          "0.75 kg spools | planned change at print z | hot/wet fatigue util in that layer plane, 2 mm voxels |",
           "|---|---:|---:|---:|---:|---:|---:|---|---|"]
     for n in ("lower", "upper"):
         s_ = sp[n]["swap"] or {}
         L.append(f"| {n} | {pf[n]['plate_contact_part_mm2']:.0f} | {pf[n]['plate_contact_with_pads_mm2']:.0f} | "
                  f"{pf[n]['n_pads']} | {pf[n]['pad_g']} | {sp[n]['filament_total_g']:.0f} | {sp[n]['spools']} | "
-                 f"{s_.get('print_z_mm')} mm ({s_.get('layer')}) | {s_.get('fat_u_max')} ({sp[n]['global_fat_u_max_half']}) |")
+                 f"{s_.get('print_z_mm')} mm (layer {s_.get('layer')}, frame y {s_.get('frame_y_mm')}) | max "
+                 f"{s_.get('fat_u_max')}, p99 {s_.get('fat_u_p99')} (half max {sp[n]['global_fat_u_max_half']}) |")
     L += ["", "- **Pads (M-5):** print `h1p/h1_<half>_flat_print.stl` (part + pads); the clean `h1_<half>_flat.stl` "
           "stay as the geometry of record. Each pad is a D24 x 0.6 mm foot (a mouse ear), a D12 column and a D6 -> D3 "
           "neck fused 0.6 mm into the part: snap or nip it off with flush cutters and sand the scar. Pads sit at the "
@@ -1383,8 +1438,14 @@ def write_md_section(rec: dict) -> str:
           "- **Dryer (m-5):** 120 C x 10 h is under the 145 C rating of Bambu's cardboard spool (retailer copy of the "
           "Bambu listing); feed from a dry box with a hygrometer reading < 20 % RH for the whole print.",
           f"- **Spool count (m-6):** halves {sp['lower']['filament_total_g']:.0f} + {sp['upper']['filament_total_g']:.0f} g "
-          "plus the BL-073 coupons (CA-1/3/4-HW, T4c-PPA-HW / CROWN: estimate 700-900 g with blocks and towers): "
-          "**book 5 spools** (3.75 kg).", ""]
+          "plus the BL-073 coupons (CA-1/3/4-HW with blocks and towers, T4c-PPA-HW cut to z 0-140 so about 500 g "
+          "instead of BL-071's 854 g, T4c-PPA-CROWN: about 750 g in all, ASSUMPTION) plus the first-article upper "
+          "half (M-5): **book 5 spools** (3.75 kg); without the first article, 4.", "",
+          "- **BL-071 requests (JSON `bl071_requests`):** T4c bend load as a cantilever "
+          f"({rec['bl071_requests']['t4c_bend_load']['p_tip_n']:.0f} N at the foot, 120 mm arm), hip torque "
+          f"{rec['bl071_requests']['hip_torque_nm']} N m on the bearing ring, every coupon static under the 100 kg "
+          f"cell ({rec['bl071_requests']['rig_loads']}), M5 x {rec['bl071_requests']['hip_screw']['screw_l_mm']:g} "
+          f"with {rec['bl071_requests']['hip_screw']['protrusion_threads']:.0f} threads proud.", ""]
     L += ["### ASSUMPTIONS (BL-073)", ""]
     for a in rec["assumptions_bl073"]:
         L.append(f"- ASSUMPTION {a['id']}: {a['text']} Settled by: {a['settled_by']}.")

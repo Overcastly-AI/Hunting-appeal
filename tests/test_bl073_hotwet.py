@@ -129,10 +129,11 @@ def test_coupon_lines():
     m_fat = min(1.02, 1.05, 1.10 / 1.15, 1.5 / 1.15, 5.0 / 1.15)
     assert c["CA-1-HW"]["smax_design_mpa"] == pytest.approx(0.30 * b["tau_il_hw"] / m_fat, abs=1e-3)
     assert c["CA-1-HW"]["smax_test_mpa"] == pytest.approx(1.15 * c["CA-1-HW"]["smax_design_mpa"], abs=1e-3)
-    assert c["CA-1-HW"]["peak_load_n"] == pytest.approx(c["CA-1-HW"]["smax_test_mpa"] * 8 * 4 / 0.75, abs=1)
+    assert c["CA-1-HW"]["peak_load_n"] == pytest.approx(c["CA-1-HW"]["smax_test_mpa"] * B.SBS_G["w"] * B.SBS_G["t"] / 0.75, abs=1)
     assert c["CA-3-HW"]["need_z_mpa"] == pytest.approx(b["z_knocked_hw"] / 1.02, abs=0.01)
     assert "2.355" in c["CA-3-HW"]["statistic"] and "140 s" in c["CA-3-HW"]["what"]
     assert "33 J" in c["T4c-PPA-HW"]["load"] and "5 PPA-CF" in c["T4c-PPA-HW"]["coupons"]
+    assert c["T4c-PPA-HW"]["bend"]["under_rig_cell"] and B.rig_loads(b)["all_under_cell"]
     assert {"T4b-PPA-COLD", "T4c-PPA-COLD", "T4c-PPA-CROWN"} <= set(c)
 
 

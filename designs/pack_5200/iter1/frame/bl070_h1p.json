@@ -715,6 +715,1323 @@
   }
  },
  "h1p": {
+  "checked_on": "exported STL re-rastered on the H1 2 mm grid (bl058_frame.body_stl rule); BL-073 hot/wet B-basis (materials ppa_hw)",
+  "stl_dir": "designs/pack_5200/iter1/frame/h1p",
+  "final_iter": "p3",
+  "steps": [
+   {
+    "name": "b1",
+    "prev": "h1",
+    "u_lo": 0.45,
+    "u_hi": 0.9,
+    "grow": true,
+    "n_thin": 2,
+    "removed": 3309,
+    "added": 4494,
+    "body_g_ppa": 1272.8,
+    "geometry": "voxel model",
+    "cyc": 1.106,
+    "static_fatigue": 1.786,
+    "strength": 1.963,
+    "joint_fatigue": 1.063
+   },
+   {
+    "name": "b2",
+    "prev": "b1",
+    "u_lo": 0.55,
+    "u_hi": 99.0,
+    "grow": false,
+    "n_thin": 2,
+    "removed": 2409,
+    "added": 0,
+    "body_g_ppa": 1248.5,
+    "geometry": "voxel model",
+    "cyc": 1.076,
+    "static_fatigue": 1.688,
+    "strength": 1.847,
+    "joint_fatigue": 1.071
+   },
+   {
+    "name": "b3",
+    "prev": "b2",
+    "u_lo": 0.55,
+    "u_hi": 99.0,
+    "grow": false,
+    "n_thin": 2,
+    "removed": 579,
+    "added": 0,
+    "body_g_ppa": 1242.7,
+    "geometry": "voxel model",
+    "cyc": 1.069,
+    "static_fatigue": 1.672,
+    "strength": 1.831,
+    "joint_fatigue": 1.072
+   },
+   {
+    "name": "b4",
+    "prev": "b3",
+    "u_lo": 0.55,
+    "u_hi": 99.0,
+    "grow": false,
+    "n_thin": 2,
+    "removed": 174,
+    "added": 0,
+    "body_g_ppa": 1241.0,
+    "geometry": "voxel model",
+    "cyc": 1.068,
+    "static_fatigue": 1.671,
+    "strength": 1.829,
+    "joint_fatigue": 1.071
+   },
+   {
+    "name": "c1",
+    "prev": "b4",
+    "u_lo": 0.7,
+    "u_hi": 99.0,
+    "grow": false,
+    "n_thin": 2,
+    "removed": 797,
+    "added": 0,
+    "body_g_ppa": 1233.0,
+    "geometry": "voxel model",
+    "cyc": 1.06,
+    "static_fatigue": 1.647,
+    "strength": 1.773,
+    "joint_fatigue": 1.07
+   },
+   {
+    "name": "c2",
+    "prev": "c1",
+    "u_lo": 0.8,
+    "u_hi": 99.0,
+    "grow": false,
+    "n_thin": 2,
+    "removed": 470,
+    "added": 0,
+    "body_g_ppa": 1228.3,
+    "geometry": "voxel model",
+    "cyc": 1.041,
+    "static_fatigue": 1.621,
+    "strength": 1.736,
+    "joint_fatigue": 1.07
+   },
+   {
+    "name": "c3",
+    "prev": "c2",
+    "u_lo": 0.9,
+    "u_hi": 99.0,
+    "grow": false,
+    "n_thin": 2,
+    "removed": 283,
+    "added": 0,
+    "body_g_ppa": 1225.5,
+    "geometry": "voxel model",
+    "cyc": 1.035,
+    "static_fatigue": 1.611,
+    "strength": 1.713,
+    "joint_fatigue": 1.069
+   },
+   {
+    "name": "e1",
+    "prev": "h1p_stl",
+    "u_lo": 0.6,
+    "u_hi": 0.9,
+    "grow": true,
+    "n_thin": 1,
+    "removed": 176,
+    "added": 4753,
+    "body_g_ppa": 1294.6,
+    "design_not_in_export": 2430,
+    "export_not_in_design": 1700,
+    "geometry": "export re-raster",
+    "cyc": 1.152,
+    "static_fatigue": 2.023,
+    "strength": 2.041,
+    "joint_fatigue": 1.046
+   },
+   {
+    "name": "f1",
+    "prev": "h1p_stl",
+    "u_lo": 0.6,
+    "u_hi": 1.1,
+    "grow": true,
+    "n_thin": 1,
+    "grow_bases": [
+     "fine_sm8.cyc"
+    ],
+    "pinches_fused": [
+     {
+      "at_mm": [
+       -114.0,
+       8.9,
+       113.0
+      ],
+      "voxels": 20,
+      "why": "h1p/h1_assembled.stl: not watertight after an STL round trip"
+     }
+    ],
+    "removed": 176,
+    "added": 2464,
+    "body_g_ppa": 1275.1,
+    "design_not_in_export": 2013,
+    "export_not_in_design": 1568,
+    "geometry": "export re-raster",
+    "cyc": 1.098,
+    "static_fatigue": 1.903,
+    "strength": 1.794,
+    "joint_fatigue": 1.05
+   },
+   {
+    "name": "h1p_stl",
+    "prev": "c3 (exported as is)",
+    "u_lo": 0.0,
+    "u_hi": 99.0,
+    "grow": false,
+    "n_thin": 0,
+    "removed": 0,
+    "added": 0,
+    "body_g_ppa": 1256.2,
+    "design_not_in_export": 3108,
+    "export_not_in_design": 6175,
+    "geometry": "export re-raster",
+    "cyc": 0.987,
+    "static_fatigue": 1.677,
+    "strength": 1.687,
+    "joint_fatigue": 1.058
+   },
+   {
+    "name": "g1",
+    "prev": "h1p_stl",
+    "u_lo": 0.7,
+    "u_hi": 1.3,
+    "grow": true,
+    "n_thin": 1,
+    "grow_bases": [
+     "fine_sm8.cyc"
+    ],
+    "pinches_fused": [
+     {
+      "at_mm": [
+       -114.0,
+       8.9,
+       113.0
+      ],
+      "voxels": 20,
+      "why": "h1p/h1_assembled.stl: not watertight after an STL round trip"
+     }
+    ],
+    "removed": 241,
+    "added": 1777,
+    "body_g_ppa": 1268.1,
+    "design_not_in_export": 1927,
+    "export_not_in_design": 1569,
+    "geometry": "export re-raster",
+    "cyc": 1.076,
+    "static_fatigue": 1.866,
+    "strength": 1.699,
+    "joint_fatigue": 1.051
+   },
+   {
+    "name": "p1",
+    "prev": "g1",
+    "u_lo": 0.75,
+    "u_hi": 1.0,
+    "grow": true,
+    "n_thin": 1,
+    "basis": "ppa_hw",
+    "pinches_fused": [],
+    "removed": 125,
+    "added": 5870,
+    "body_g_ppa": 1334.0,
+    "lower_g": 659.8,
+    "design_not_in_export": 2661,
+    "export_not_in_design": 3309,
+    "geometry": "export re-raster (BL-073 hip boss, z 234 bolts moved)",
+    "cyc": 1.126,
+    "static_fatigue": 1.639,
+    "strength": 1.641,
+    "joint_fatigue": 1.087
+   },
+   {
+    "name": "p2",
+    "prev": "p1",
+    "u_lo": 0.9,
+    "u_hi": 1.25,
+    "grow": true,
+    "n_thin": 2,
+    "basis": "ppa_hw",
+    "pinches_fused": [],
+    "removed": 2017,
+    "added": 1111,
+    "body_g_ppa": 1329.6,
+    "lower_g": 660.2,
+    "design_not_in_export": 1718,
+    "export_not_in_design": 2184,
+    "geometry": "export re-raster (BL-073 hip boss, z 234 bolts moved)",
+    "cyc": 1.158,
+    "static_fatigue": 1.515,
+    "strength": 1.554,
+    "joint_fatigue": 1.078
+   },
+   {
+    "name": "p3",
+    "prev": "p2",
+    "u_lo": 1.1,
+    "u_hi": 99.0,
+    "grow": true,
+    "n_thin": 3,
+    "basis": "ppa_hw",
+    "pinches_fused": [],
+    "removed": 2590,
+    "added": 0,
+    "body_g_ppa": 1312.1,
+    "lower_g": 649.7,
+    "design_not_in_export": 1532,
+    "export_not_in_design": 2293,
+    "geometry": "export re-raster (BL-073 hip boss, z 234 bolts moved)",
+    "cyc": 1.048,
+    "static_fatigue": 1.429,
+    "strength": 1.41,
+    "joint_fatigue": 1.072
+   }
+  ],
+  "body_g": 1312.1,
+  "delta_vs_paht_h1_g": 242.8,
+  "delta_vs_h1_ppa_g": 51.1,
+  "summary": {
+   "static_cinch": {
+    "strength": 1.41,
+    "fatigue": 1.429,
+    "creep": 4.192,
+    "buckling_record": 2.064,
+    "joint_strength": 1.669,
+    "joint_fatigue": 1.072
+   },
+   "cinch_cycled": {
+    "strength": 1.41,
+    "fatigue": 1.048,
+    "creep": 3.074,
+    "buckling_record": 2.064,
+    "joint_strength": 1.948,
+    "joint_fatigue": 1.234
+   }
+  },
+  "rows": [
+   {
+    "name": "strength (min of 3 static bases)",
+    "value": 1.41,
+    "goal": 1.0,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   {
+    "name": "fatigue, static carry",
+    "value": 1.429,
+    "goal": 1.0,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   {
+    "name": "fatigue, cinch-cycled (R1)",
+    "value": 1.048,
+    "goal": 1.0,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   {
+    "name": "creep (static / cinch-cycled, min)",
+    "value": 3.074,
+    "goal": 1.0,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   {
+    "name": "z 234 joint strength",
+    "value": 1.669,
+    "goal": 1.0,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   {
+    "name": "z 234 joint fatigue",
+    "value": 1.072,
+    "goal": 1.0,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   {
+    "name": "US2 lug strength",
+    "value": 2.37,
+    "goal": 1.5,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   {
+    "name": "US2 lug fatigue",
+    "value": 1.07,
+    "goal": 1.15,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": false,
+    "gated_by": "CLEVIS-SHARE B lug proof (kit) + CA-1-HW; >= 1.0 on hot/wet, goal 1.15 is the BL-021 scatter goal: see OPEN"
+   },
+   {
+    "name": "US2 clevis joint strength (share 1.0)",
+    "value": 2.03,
+    "goal": 1.5,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   {
+    "name": "US2 clevis joint fatigue (share 1.0)",
+    "value": 0.91,
+    "goal": 1.15,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": false,
+    "gated_by": "CLEVIS-SHARE B (kit): the measured outer-cheek share must be <= the share at which the row reads 1.15; design share 0.6 reads 1.52"
+   },
+   {
+    "name": "hip mount strength (through_bolt)",
+    "value": 2.22,
+    "goal": 1.5,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   {
+    "name": "hip mount fatigue (through_bolt)",
+    "value": 5.74,
+    "goal": 1.15,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   {
+    "name": "hip mount creep (through_bolt)",
+    "value": 1.56,
+    "goal": 1.5,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   {
+    "name": "lash pulls W1 / W2 (BL-068, p99)",
+    "value": 4.95,
+    "goal": 1.0,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   {
+    "name": "buckling, eigen, frame crown held",
+    "value": 3.101,
+    "goal": 1.0,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   {
+    "name": "buckling, eigen, set-down (foot + crown held)",
+    "value": 14.257,
+    "goal": 1.0,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   {
+    "name": "buckling, eigen, members (stay tops free)",
+    "value": 5.707,
+    "goal": 1.0,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   }
+  ],
+  "rows_by_name": {
+   "strength (min of 3 static bases)": {
+    "name": "strength (min of 3 static bases)",
+    "value": 1.41,
+    "goal": 1.0,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   "fatigue, static carry": {
+    "name": "fatigue, static carry",
+    "value": 1.429,
+    "goal": 1.0,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   "fatigue, cinch-cycled (R1)": {
+    "name": "fatigue, cinch-cycled (R1)",
+    "value": 1.048,
+    "goal": 1.0,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   "creep (static / cinch-cycled, min)": {
+    "name": "creep (static / cinch-cycled, min)",
+    "value": 3.074,
+    "goal": 1.0,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   "z 234 joint strength": {
+    "name": "z 234 joint strength",
+    "value": 1.669,
+    "goal": 1.0,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   "z 234 joint fatigue": {
+    "name": "z 234 joint fatigue",
+    "value": 1.072,
+    "goal": 1.0,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   "US2 lug strength": {
+    "name": "US2 lug strength",
+    "value": 2.37,
+    "goal": 1.5,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   "US2 lug fatigue": {
+    "name": "US2 lug fatigue",
+    "value": 1.07,
+    "goal": 1.15,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": false,
+    "gated_by": "CLEVIS-SHARE B lug proof (kit) + CA-1-HW; >= 1.0 on hot/wet, goal 1.15 is the BL-021 scatter goal: see OPEN"
+   },
+   "US2 clevis joint strength (share 1.0)": {
+    "name": "US2 clevis joint strength (share 1.0)",
+    "value": 2.03,
+    "goal": 1.5,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   "US2 clevis joint fatigue (share 1.0)": {
+    "name": "US2 clevis joint fatigue (share 1.0)",
+    "value": 0.91,
+    "goal": 1.15,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": false,
+    "gated_by": "CLEVIS-SHARE B (kit): the measured outer-cheek share must be <= the share at which the row reads 1.15; design share 0.6 reads 1.52"
+   },
+   "hip mount strength (through_bolt)": {
+    "name": "hip mount strength (through_bolt)",
+    "value": 2.22,
+    "goal": 1.5,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   "hip mount fatigue (through_bolt)": {
+    "name": "hip mount fatigue (through_bolt)",
+    "value": 5.74,
+    "goal": 1.15,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   "hip mount creep (through_bolt)": {
+    "name": "hip mount creep (through_bolt)",
+    "value": 1.56,
+    "goal": 1.5,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   "lash pulls W1 / W2 (BL-068, p99)": {
+    "name": "lash pulls W1 / W2 (BL-068, p99)",
+    "value": 4.95,
+    "goal": 1.0,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   "buckling, eigen, frame crown held": {
+    "name": "buckling, eigen, frame crown held",
+    "value": 3.101,
+    "goal": 1.0,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   "buckling, eigen, set-down (foot + crown held)": {
+    "name": "buckling, eigen, set-down (foot + crown held)",
+    "value": 14.257,
+    "goal": 1.0,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   },
+   "buckling, eigen, members (stay tops free)": {
+    "name": "buckling, eigen, members (stay tops free)",
+    "value": 5.707,
+    "goal": 1.0,
+    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "pass": true
+   }
+  },
+  "fatigue_top1pct_term_share": {
+   "in_plane": 0.054966248794599805,
+   "layer_normal": 0.022179363548698167,
+   "shear_xy": 0.7984570877531341,
+   "shear_yz": 0.12439729990356799
+  },
+  "orientation": {
+   "fine_sm8": {
+    "y/y (as printed)": {
+     "strength": 1.6994306356480737,
+     "fatigue": 1.8658153792375907,
+     "creep": 5.473058445763601
+    },
+    "x/y": {
+     "strength": 1.5557848032882815,
+     "fatigue": 1.0889825564260298,
+     "creep": 3.1943488321830213
+    },
+    "z/y": {
+     "strength": 1.3939269358829702,
+     "fatigue": 0.9040695426502178,
+     "creep": 2.6519373251073057
+    },
+    "y/x": {
+     "strength": 0.9552141166380154,
+     "fatigue": 1.3180845214085428,
+     "creep": 3.866381262798393
+    },
+    "y/z": {
+     "strength": 1.1776408603751063,
+     "fatigue": 0.9373807278653115,
+     "creep": 2.7496501350715805
+    }
+   },
+   "fine": {
+    "y/y (as printed)": {
+     "strength": 1.6994306356480737,
+     "fatigue": 1.8658153792375907,
+     "creep": 5.473058445763601
+    },
+    "x/y": {
+     "strength": 1.5614299514825216,
+     "fatigue": 1.1010251157065307,
+     "creep": 3.229673672739157
+    },
+    "z/y": {
+     "strength": 1.3939269358829702,
+     "fatigue": 0.9040695426502178,
+     "creep": 2.6519373251073057
+    },
+    "y/x": {
+     "strength": 0.9552141166380154,
+     "fatigue": 1.3180845214085428,
+     "creep": 3.866381262798393
+    },
+    "y/z": {
+     "strength": 1.1776408603751063,
+     "fatigue": 0.9373807278653115,
+     "creep": 2.7496501350715805
+    }
+   },
+   "beam": {
+    "y/y (as printed)": {
+     "strength": 1.721640522192195,
+     "fatigue": 1.979197117226287,
+     "creep": 5.80564487719711
+    },
+    "x/y": {
+     "strength": 1.7153714861541713,
+     "fatigue": 1.6573933621431935,
+     "creep": 4.861687195620036
+    },
+    "z/y": {
+     "strength": 1.3620238391258284,
+     "fatigue": 0.7661383792142771,
+     "creep": 2.2473392456952133
+    },
+    "y/x": {
+     "strength": 0.8933597658059113,
+     "fatigue": 1.5099769224073738,
+     "creep": 4.42926563906163
+    },
+    "y/z": {
+     "strength": 1.0719373196543307,
+     "fatigue": 0.602964738740396,
+     "creep": 1.7686965669718286
+    }
+   },
+   "fine_sm8.cyc": {
+    "y/y (as printed)": {
+     "strength": 1.6994306356480737,
+     "fatigue": 1.075725665365403,
+     "creep": 3.155461951738516
+    },
+    "x/y": {
+     "strength": 1.5557848032882815,
+     "fatigue": 0.6951072810468535,
+     "creep": 2.038981357737437
+    },
+    "z/y": {
+     "strength": 1.400776781451233,
+     "fatigue": 0.6861518915339746,
+     "creep": 2.0127122151663257
+    },
+    "y/x": {
+     "strength": 0.9552141166380154,
+     "fatigue": 0.7615785729804495,
+     "creep": 2.233963814075986
+    },
+    "y/z": {
+     "strength": 1.1776408603751063,
+     "fatigue": 0.7437003515513763,
+     "creep": 2.1815210312173705
+    }
+   }
+  },
+  "eigen": {
+   "fine_sm8": {
+    "frame_crown_held": 3.100847252530468,
+    "setdown_foot_and_crown_held": 14.257279555279771,
+    "members_unbraced_min": 5.706780649001744,
+    "solved": true
+   },
+   "E_buckle_mpa": 5893.6,
+   "layer_normal_bound_factor": 0.364
+  },
+  "print": {
+   "lower": {
+    "plate_contact_mm2": 1773.0,
+    "plate_contact_voxel_mm2": 2047.0,
+    "supported_mm2": 12842.0,
+    "supported_by_region_mm2": {
+     "stay": 2186.0,
+     "lug": 6706.0,
+     "clevis": 1417.0,
+     "other": 2533.0
+    },
+    "max_support_column_mm": 57.0,
+    "part_g_ppa": 649.8,
+    "support_g_ppa_est": 66.2,
+    "support_g_ppa_high": 127.5,
+    "filament_g_high_with_waste": 839.0,
+    "spools": 1.12,
+    "needs_spool_swap": true,
+    "print_h_est": 21.5,
+    "extents_mm": [
+     322.7,
+     298.3,
+     76.7
+    ],
+    "fits_h2s_340x320x340": true
+   },
+   "upper": {
+    "plate_contact_mm2": 163.0,
+    "plate_contact_voxel_mm2": 921.0,
+    "supported_mm2": 17862.0,
+    "supported_by_region_mm2": {
+     "stay": 8789.0,
+     "lug": 3103.0,
+     "clevis": 0.0,
+     "other": 5970.0
+    },
+    "max_support_column_mm": 43.0,
+    "part_g_ppa": 625.4,
+    "support_g_ppa_est": 66.0,
+    "support_g_ppa_high": 122.9,
+    "filament_g_high_with_waste": 808.0,
+    "spools": 1.08,
+    "needs_spool_swap": true,
+    "print_h_est": 20.7,
+    "extents_mm": [
+     309.4,
+     284.7,
+     64.4
+    ],
+    "fits_h2s_340x320x340": true
+   }
+  },
+  "export": {
+   "d_mid": 1.0,
+   "d_up": 2.5,
+   "im3_half_z": 14.0,
+   "fairleads_bl042": {
+    "spine_channel_bl046": {
+     "body_mm3": 785128.6075847693,
+     "housing_added_mm3": 55505.93086673238,
+     "cut_mm3": 31885.973487846903,
+     "net_mm3": 23619.957378885476,
+     "net_g": 25.037154821618604
+    },
+    "pawl_bl047": {
+     "boss_mm3": 2269.7533356107306,
+     "cut_mm3": 3300.468574136379,
+     "net_mm3": -1030.7152385256486,
+     "net_g": -1.0925581528371875
+    },
+    "lugs_bl049": {
+     "arms_mm3": 66252.33907353482,
+     "arms_g": 70.22747941794691
+    },
+    "body_mm3": 873970.1887986639,
+    "fairleads_added_mm3": 87345.87479088479,
+    "throats_cut_mm3": 4222.431691624806,
+    "holes_cut_mm3": 2033.9975455119275,
+    "net_mm3": 81089.44555374805,
+    "net_g": 85.95481228697294,
+    "per_station": {
+     "hinge_L": {
+      "throat_cut_from_body_mm3": 1315.2
+     },
+     "hinge_R": {
+      "throat_cut_from_body_mm3": 1273.0
+     },
+     "us1_L": {
+      "throat_cut_from_body_mm3": 7.7
+     },
+     "us1_R": {
+      "throat_cut_from_body_mm3": 7.7
+     },
+     "us2_L": {
+      "throat_cut_from_body_mm3": 2.6
+     },
+     "us2_R": {
+      "throat_cut_from_body_mm3": 2.6
+     },
+     "im1_L": {
+      "throat_cut_from_body_mm3": 298.7
+     },
+     "im1_R": {
+      "throat_cut_from_body_mm3": 303.6
+     },
+     "im2_L": {
+      "throat_cut_from_body_mm3": 206.9
+     },
+     "im2_R": {
+      "throat_cut_from_body_mm3": 224.8
+     },
+     "im3_L": {
+      "throat_cut_from_body_mm3": 289.8
+     },
+     "im3_R": {
+      "throat_cut_from_body_mm3": 289.8
+     }
+    },
+    "lug_fixes_bl053": {
+     "added_g": 63.26,
+     "per_station_g": {
+      "us1_L": 24.21,
+      "us1_R": 24.91,
+      "us2_L": 6.98,
+      "us2_R": 7.16
+     }
+    },
+    "hip_boss_bl055": {
+     "y_face": -48.55,
+     "y_back": -26.5,
+     "boss_added_mm3": 14309.5,
+     "spot_face_cut_mm3": 7.5,
+     "holes_cut_mm3": 4179.0,
+     "pattern": [
+      [
+       14.12,
+       107.29
+      ],
+      [
+       18.44,
+       115.4
+      ],
+      [
+       18.44,
+       124.6
+      ],
+      [
+       14.12,
+       132.71
+      ],
+      [
+       -14.12,
+       107.29
+      ],
+      [
+       -18.44,
+       115.4
+      ],
+      [
+       -18.44,
+       124.6
+      ],
+      [
+       -14.12,
+       132.71
+      ]
+     ],
+     "traps": 0
+    },
+    "us2_clevis_bl050": {
+     "blocks_g": 31.79,
+     "cuts_g": 5.6,
+     "net_g": 26.19,
+     "pieces_g": {
+      "us2_clevis_L": 15.67,
+      "us2_clevis_R": 15.67
+     },
+     "body_g": 1081.3,
+     "assembled_g": 1112.7,
+     "dropped": []
+    }
+   },
+   "assembled": {
+    "faces": 353242,
+    "volume_cm3": 1049.67,
+    "g": 1112.7,
+    "watertight": true,
+    "shells": 1,
+    "dropped": [
+     [
+      130,
+      2.2444210838707
+     ],
+     [
+      82,
+      1.8549847948722504
+     ],
+     [
+      108,
+      1.4576033765484013
+     ],
+     [
+      88,
+      0.35615666049728745
+     ],
+     [
+      68,
+      0.23867336990802382
+     ],
+     [
+      50,
+      0.08336943465108353
+     ],
+     [
+      50,
+      0.0644140584348973
+     ],
+     [
+      44,
+      0.039637177606359465
+     ],
+     [
+      24,
+      0.003835986858842233
+     ],
+     [
+      28,
+      0.0034813935219495475
+     ],
+     [
+      8,
+      0.0018807472491238857
+     ],
+     [
+      6,
+      0.0008701683341196809
+     ],
+     [
+      10,
+      0.00019882848470145764
+     ],
+     [
+      8,
+      9.622229386481902e-05
+     ],
+     [
+      8,
+      9.01023790469228e-05
+     ],
+     [
+      6,
+      4.695583398452163e-05
+     ],
+     [
+      8,
+      2.5682082894551428e-05
+     ],
+     [
+      6,
+      8.29341234009906e-06
+     ],
+     [
+      4,
+      7.737355072571598e-07
+     ],
+     [
+      4,
+      4.2674567583371e-12
+     ],
+     [
+      4,
+      2.7239321909178216e-12
+     ]
+    ],
+    "g_ppa": 1312.1
+   },
+   "lower": {
+    "faces": 182938,
+    "volume_cm3": 519.8,
+    "g": 551.0,
+    "footprint_mm": [
+     322.7,
+     298.3,
+     76.7
+    ],
+    "watertight": true,
+    "shells": 1,
+    "dropped": [],
+    "dropped_centre_frame_mm": [],
+    "print_h": 19.5,
+    "fits_h2s_340x320x340": true,
+    "bed_bl050": {
+     "rot_deg": 196.0,
+     "extents_mm": [
+      322.73,
+      298.32,
+      76.75
+     ],
+     "fits": true,
+     "fits_with_brim": true,
+     "spare_mm": [
+      1.27,
+      5.68
+     ]
+    },
+    "g_ppa": 649.7
+   },
+   "upper": {
+    "faces": 167698,
+    "volume_cm3": 500.3,
+    "g": 530.3,
+    "footprint_mm": [
+     309.4,
+     284.7,
+     64.4
+    ],
+    "watertight": true,
+    "shells": 1,
+    "dropped": [],
+    "dropped_centre_frame_mm": [],
+    "print_h": 18.8,
+    "fits_h2s_340x320x340": true,
+    "bed_bl050": {
+     "rot_deg": 90.0,
+     "extents_mm": [
+      309.39,
+      284.65,
+      64.38
+     ],
+     "fits": true,
+     "fits_with_brim": true,
+     "spare_mm": [
+      14.61,
+      19.35
+     ]
+    },
+    "g_ppa": 625.4
+   },
+   "us2_clevis_L": {
+    "faces": 4014,
+    "g": 15.67,
+    "footprint_mm": [
+     20.7,
+     33.5,
+     36.5
+    ],
+    "watertight": true,
+    "shells": 1
+   },
+   "us2_clevis_R": {
+    "faces": 4146,
+    "g": 15.67,
+    "footprint_mm": [
+     20.7,
+     33.5,
+     36.5
+    ],
+    "watertight": true,
+    "shells": 1
+   }
+  },
+  "reraster": {
+   "source": "print/frame_h1/h1_assembled.stl (BL-058 export), 2 mm element-centre raster",
+   "stl_voxels": 115493,
+   "run_voxels": 115749,
+   "bl053_body_voxels": 110805,
+   "in_both": 103520,
+   "stl_only": 12229,
+   "bl053_only": 7285,
+   "stl_only_outside_envelope": 2576,
+   "pads_added": 360,
+   "boss_voxels": {
+    "run": 3671,
+    "bl053": 2626
+   },
+   "raster_g": 981.6,
+   "bl053_raster_g": 939.6
+  },
+  "voxels": {
+   "exported_raster": 119860
+  },
+  "hip_mount": {
+   "nut_seat_depth_mm": 24.0,
+   "bearing_ring_mm2": 1092.5,
+   "bearing_n": 2436.1,
+   "rows": {
+    "C2|H_pin": {
+     "T_max_n": 194.7,
+     "kind": "strength",
+     "pressure_mpa": 10.71,
+     "sf": 2.32,
+     "goal": 1.5
+    },
+    "C1|H_pin": {
+     "T_max_n": 129.8,
+     "kind": "strength",
+     "pressure_mpa": 10.05,
+     "sf": 2.47,
+     "goal": 1.5
+    },
+    "walk|H_pin": {
+     "T_max_n": 103.8,
+     "kind": "fatigue",
+     "pressure_mpa": 1.06,
+     "sf": 7.04,
+     "goal": 1.15
+    },
+    "carry|H_pin": {
+     "T_max_n": 64.9,
+     "kind": "creep",
+     "pressure_mpa": 8.73,
+     "sf": 1.56,
+     "goal": 1.5
+    },
+    "C2|H_frame": {
+     "T_max_n": 238.6,
+     "kind": "strength",
+     "pressure_mpa": 11.16,
+     "sf": 2.22,
+     "goal": 1.5
+    },
+    "C1|H_frame": {
+     "T_max_n": 159.1,
+     "kind": "strength",
+     "pressure_mpa": 10.35,
+     "sf": 2.4,
+     "goal": 1.5
+    },
+    "walk|H_frame": {
+     "T_max_n": 127.3,
+     "kind": "fatigue",
+     "pressure_mpa": 1.3,
+     "sf": 5.74,
+     "goal": 1.15
+    },
+    "carry|H_frame": {
+     "T_max_n": 79.5,
+     "kind": "creep",
+     "pressure_mpa": 8.73,
+     "sf": 1.56,
+     "goal": 1.5
+    }
+   },
+   "min_sf": {
+    "strength": 2.22,
+    "fatigue": 5.74,
+    "creep": 1.56
+   },
+   "pass": true,
+   "hardware": "8 x Ti gr5 M5 x 35 DIN 7984 + 8 x A2 M5 DIN 934 nuts (Loctite 243) on one 6061-T6 bearing ring 47 / 24 x 2 mm (8 holes D5.5 on r 19, the mount pattern) and a printed PPA-CF nut keeper (3 mm, holds the nuts while the screws are turned from the mount side) replace 8 x M5 x 9.5 brass inserts + 8 x M5 x 12; torque 0.6 N m",
+   "torque_nm": 0.6,
+   "preload_n": {
+    "nom": 600.0,
+    "max": 857.0,
+    "min": 462.0
+   },
+   "screw": {
+    "stack_mm": 31.0,
+    "screw_l_mm": 35.0,
+    "protrusion_mm": 4.0,
+    "protrusion_threads": 5.0,
+    "bl070_l_mm": 20.0,
+    "bl070_protrusion_mm": 0.0
+   },
+   "ring": {
+    "material": "6061-T6 (data/materials/metals/alu_6061_t6.yaml)",
+    "od_mm": 47.0,
+    "id_mm": 24.0,
+    "t_mm": 2.0,
+    "holes": "8 x D5.5 on r 19 (HIP_CHOSEN)",
+    "g": 5.9
+   },
+   "boss": {
+    "depth_mm": 22.0,
+    "flat_back": true,
+    "spot_face_d_mm": 49.0,
+    "holes_d_mm": 5.5,
+    "traps": 0
+   },
+   "relaxation": {
+    "kb_n_mm": 50387,
+    "km0_n_mm": 15684,
+    "creep_long_ratio": 0.5,
+    "residual_fraction": 0.567,
+    "residual_preload_min_n": 262.0,
+    "walk_bolt_tension_n": 127.3,
+    "c2_bolt_tension_n": 238.6,
+    "closed_at_walk": true
+   },
+   "cold": {
+    "dT": 43.0,
+    "shrink_mm": 0.0499,
+    "k_series_n_mm": 20073,
+    "preload_loss_n": 1001.0,
+    "slack_at_minus20": true
+   },
+   "webs": {
+    "between_holes_mm": 3.69,
+    "hole_to_boss_edge_mm": 3.25,
+    "ring_outer_ligament_mm": 1.75,
+    "ring_inner_ligament_mm": 4.25,
+    "traps": 0
+   }
+  },
+  "z234_joint_xy": {
+   "bl073": [
+    [
+     18.5,
+     6.0
+    ],
+    [
+     -19.0,
+     5.5
+    ]
+   ],
+   "bl070": [
+    [
+     16.4,
+     10.0
+    ],
+    [
+     -19.0,
+     5.0
+    ]
+   ]
+  }
+ },
+ "coupons": [
+  {
+   "id": "CA-1-PPA",
+   "what": "R 0.1 tension-tension fatigue, PPA-CF printed on the owner's H2S (H1 profile: 0.6 hardened nozzle, 290 C, bed 110 C, chamber 65 C, 100 % infill), conditioned 14 d at 23 C / 50 % RH",
+   "coupons": "6 Z-built (load across the layers, the H1-P governing direction) + 6 XY-built, ISO 527-2 1A shape, plus 3 static of each from the same plate for the batch UTS",
+   "load": "Smax = 0.279 x the batch's own conditioned mean UTS, 1e5 cycles at <= 5 Hz, 23 C",
+   "pass": "all 6 Z-built and all 6 XY-built run out to 1e5 cycles at Smax / UTS = 0.279 (= fatigue ratio 0.30 / H1-P cinch-cycled margin 1.076)",
+   "settles": "FAT-PPA (fatigue_1e5_ratio 0.30)",
+   "margin_tied": "R1 1.076"
+  },
+  {
+   "id": "CA-3-PPA",
+   "what": "Z tensile (ISO 527-2 1A, printed standing: load across the layers) and interlayer shear (short-beam shear, ASTM D2344 4:1 bar printed flat so the mid-plane is a layer interface), dry (as printed, sealed with desiccant, tested within 24 h) and conditioned (14 d at 23 C / 50 % RH)",
+   "coupons": "6 Z tensile + 6 SBS dry; 6 + 6 conditioned; same spool, same H2S profile as the frame",
+   "pass": "(a) conditioned Z tensile mean - 2.4 SD >= 31.3 MPa (H1-P needs knocked Z 32.85 / 1.051); (b) conditioned SBS mean - 2.4 SD >= 18.8 MPa (0.6 x (a), ASSUMPTION INTERLAYER-0.6); (c) for the record: dry Z mean >= 45 MPa and conditioned / dry >= 0.73 means the design values hold as booked",
+   "settles": "WET-PPA (knock 0.73), design Z 45 MPa, INTERLAYER-0.6",
+   "margin_tied": "R1 1.076, z 234 joint fatigue 1.051",
+   "if_below": "between 31.3 and 0.9 x that: R1 reads 0.9-1.0, hold the PPA build and add the hot-spot growth of the next H1-P step; below: stay on PAHT-CF",
+   "if_below_corrected": "(review 8 m-4, corrected) with a measured knocked Z_m: R1 = 1.076 x Z_m / 32.85 and z 234 joint fatigue = 1.051 x Z_m / 32.85; at 28 MPa they read 0.917 / 0.896. Below 31.3 MPa hold the PPA build (superseded by BL-073 CA-3-HW)"
+  },
+  {
+   "id": "CA-4-PPA",
+   "what": "3-point bend modulus and strength (ISO 178, XY-built bars 80 x 10 x 4), at 23 C dry, at 40 C after 14 d at 23 C / 50 % RH ('40 C wet'), and at 60 C dry (truck cab)",
+   "coupons": "5 per condition",
+   "pass": "E(40 C wet) / E(23 C dry) >= 0.85 (the booked ratio; the H1-P buckling margin 3.72 alone would allow 0.23); E(60 C) / E(23 C) >= 0.75 (record); flexural strength at 60 C >= 0.73 x 208 = 152 MPa",
+   "settles": "modulus_40c_wet_ratio 0.85, modulus_60c_ratio 0.75 (E-SCALE)",
+   "margin_tied": "buckling 3.72, strength 1.70"
+  },
+  {
+   "id": "T4c-PPA",
+   "what": "-20 C drop of a printed stay coupon: the H1-P lower stay z 0-240 (R side) cut from the lower-half file (foot, hinge eye, US1 lug root), printed in PPA-CF with the frame profile, a 2.0 kg steel slug pinned through the hinge eye (half the empty pack, 4.04 kg)",
+   "coupons": "3 PPA-CF + 1 PAHT-CF control; soaked >= 4 h at -20 C, dropped within 60 s of removal",
+   "load": "1.22 m (48 in, HA-LS-1 T4c) onto 19 mm plywood over concrete, foot first, then side-on (about 24 J each)",
+   "pass": "no crack or whitening (10x loupe, dye penetrant on the foot and the eye), tap test clean, and the coupon then carries 3-point bend at 1.5 x its C4 set-down stay moment without a crack; any Z crack (along a layer) is a fail",
+   "settles": "COLD (impact_minus20c_ratio 0.5; Z Charpy 4.3 kJ/m2 vs PAHT 13.3)",
+   "margin_tied": "not in the FI check (impact); this is the PPA risk BL-069 flagged"
+  }
+ ],
+ "assumptions": [
+  {
+   "id": "PPU=PPA",
+   "text": "'PPU' is Bambu PPA-CF (BL-069).",
+   "settled_by": "owner confirmation"
+  },
+  {
+   "id": "WET-PPA",
+   "text": "Design Z 45 MPa (57 - 2.4 SD) x wet knock 0.73 (Raise3D conditioned / Bambu dry).",
+   "settled_by": "CA-3-PPA"
+  },
+  {
+   "id": "FAT-PPA",
+   "text": "fatigue_1e5_ratio 0.30 (PA12-CF lower bound), on the layer rule's FI.",
+   "settled_by": "CA-1-PPA"
+  },
+  {
+   "id": "INTERLAYER-0.6",
+   "text": "Interlayer shear strength = 0.6 x Z tensile (frame_topopt layer rule, as PAHT).",
+   "settled_by": "CA-3-PPA SBS"
+  },
+  {
+   "id": "LINEAR-Z",
+   "text": "Where interlayer shear governs (92 % of the R1 top 1 %), a margin scales with knock x Z.",
+   "settled_by": "re-run check_body with the coupon values"
+  },
+  {
+   "id": "E-ISO / E-SCALE",
+   "text": "Voxel FE isotropic at E_xy (the stress fields are unit-modulus, so strength checks do not depend on it); buckling at E_xy x 0.85 hot x 0.85 creep = 8526 MPa. Layer-normal bound x E_z / E_xy = 0.364.",
+   "settled_by": "CA-4-PPA (40 C wet, 60 C); T1 deflection at 150 lb"
+  },
+  {
+   "id": "JOINT-Z",
+   "text": "z 234 joint and US2 clevis capacities on the PPA joint dict: washer / contact bearing on knock x XY, plug shear-out and clevis hole bearing on knock x Z; contact stiffness E x 0.85.",
+   "settled_by": "CA-3-PPA"
+  },
+  {
+   "id": "INS-PPA",
+   "text": "Insert pull-out on PPA either by the record rule (hot x Z/XY TDS ratio 0.339: 297 N) or by the PAHT HB-6 basis scaled by knocked Z (448 N); both fail the 8-insert fatigue row (needs 488 N).",
+   "settled_by": "HB-6-PPA only if inserts are kept"
+  },
+  {
+   "id": "NUT-BEAR",
+   "text": "H1-P hip mount through-bolts: nut / D10 washer bearing on the layers in compression taken at knock x design Z (32.9 MPa) on the ring D10 / D5.5; tipping model and rigid flange as BL-055 (FLANGE-RIGID).",
+   "settled_by": "HB-6b on the frame (hip mount proof) with the through-bolts"
+  },
+  {
+   "id": "H1P-RULES",
+   "text": "H1-P moves material only on the 2 mm voxel model of the released print: interfaces, crown sleeves, member floors, lash points and the wearer (plate) face frozen; thinning one surface layer at a time where the PPA utilisation (6 mm max filter) is low, growth where it is high.",
+   "settled_by": "the checks on the export"
+  },
+  {
+   "id": "PPA-TIME",
+   "text": "Print time by the BL-053 rule (8 mm3/s x 1.08) at the PAHT volume rate; TDS speed < 100 mm/s.",
+   "settled_by": "slicer preview"
+  },
+  {
+   "id": "WARP",
+   "text": "PPA-CF (E x 3, crystallises at 178 C) warps more than PAHT on a small plate contact; chamber pre-heat 30 min at 65 C, glue, brim 15 mm, mouse ears at the stay feet.",
+   "settled_by": "first article"
+  },
+  {
+   "id": "COLD",
+   "text": "impact_minus20c_ratio 0.5; Z Charpy 4.3 kJ/m2.",
+   "settled_by": "T4c-PPA"
+  },
+  {
+   "id": "SPOOL-SWAP",
+   "text": "A half that needs > 0.75 kg is started on a full dried spool with a second dried spool staged (AMS feed of PPA-CF on the H2S not verified).",
+   "settled_by": "first article"
+  }
+ ],
+ "screenshots": [
+  "outputs/screens/20261125_bl070_1.png",
+  "outputs/screens/20261125_bl070_2.png",
+  "outputs/screens/20261125_bl070_3.png",
+  "outputs/screens/20261125_bl070_4.png"
+ ],
+ "h1p_bl070": {
   "checked_on": "exported STL re-rastered on the H1 2 mm grid (bl058_frame.body_stl rule)",
   "stl_dir": "designs/pack_5200/iter1/frame/h1p",
   "final_iter": "g1",
@@ -1790,119 +3107,1184 @@
    "hardware": "8 x Ti gr5 M5 x 20 DIN 7984 + 8 x A2 M5 DIN 934 nuts (Loctite 243) replace 8 x M5 x 9.5 brass inserts + 8 x M5 x 12"
   }
  },
- "coupons": [
+ "bl073": {
+  "ticket": "BL-073",
+  "date": "2026-11-25",
+  "review": "designs/pack_5200/analysis/review_20261125_eighth.md",
+  "basis": {
+   "k_n5": 3.4066,
+   "k_n6": 3.0063,
+   "k_n10": 2.3546,
+   "s_z_b": 39.97,
+   "s_xy_b": 154.37,
+   "hot": {
+    "fiberlogy_40_20_dry": 0.864,
+    "PA66 (Wetzel 2023, DSC)": {
+     "drop_c_per_pct": 11.3,
+     "water_basis": "matrix",
+     "water_pct": 1.625,
+     "tg_wet_c": 66.6,
+     "ratio": 0.886
+    },
+    "ForTii PPA (Envalior)": {
+     "drop_c_per_pct": 26.5,
+     "water_basis": "composite",
+     "water_pct": 1.3,
+     "tg_wet_c": 50.6,
+     "ratio": 0.852
+    },
+    "chosen": 0.85,
+    "modulus_hot": 0.889
+   },
+   "wet": 0.73,
+   "knock_hw": 0.6205,
+   "z_knocked_bl069": 32.85,
+   "z_knocked_hw": 24.8,
+   "tau_il_hw": 14.88,
+   "xy_knocked_hw": 95.8,
+   "z_scale_vs_bl069": 0.755,
+   "xy_scale_vs_bl069": 0.7812,
+   "E_hot_hw": 0.5876,
+   "E_hot_bl069": 0.85,
+   "e_buckle_hw": 5893.6,
+   "raise3d_cond_z_vs_hw_23c": 29.18
+  },
+  "material_key": "ppa_hw",
+  "materials_ppa_hw": {
+   "rule": "layer",
+   "rho": 1250.0,
+   "E": 11800.0,
+   "s_xy": 154.4,
+   "fat": 0.3,
+   "rup": 0.55,
+   "usd_g": null,
+   "label": "PPA-CF hot/wet B-basis",
+   "s_z": 39.97,
+   "knock": 0.6205
+  },
+  "margins_bl070_booked": {
+   "strength": 1.699,
+   "static carry fatigue": 1.866,
+   "R1": 1.076,
+   "creep": 3.155,
+   "z 234 joint strength": 1.646,
+   "z 234 joint fatigue": 1.051,
+   "US2 lug strength": 3.18,
+   "US2 lug fatigue": 1.43,
+   "US2 clevis strength (share 1.0)": 2.69,
+   "US2 clevis fatigue (share 1.0)": 1.21,
+   "hip mount strength": 7.54,
+   "hip mount fatigue": 4.24,
+   "hip mount creep": 12.45,
+   "lash": 5.15,
+   "buckling": 3.72,
+   "buckling set-down": 20.629,
+   "buckling members": 6.48,
+   "US2 clevis fatigue (share 0.6)": 2.01
+  },
+  "margins_bl070_on_hw": {
+   "strength": 1.284,
+   "static carry fatigue": 1.411,
+   "R1": 0.813,
+   "creep": 2.385,
+   "z 234 joint strength": 1.217,
+   "z 234 joint fatigue": 0.776,
+   "US2 lug strength": 2.4,
+   "US2 lug fatigue": 1.08,
+   "US2 clevis strength (share 1.0)": 2.03,
+   "US2 clevis fatigue (share 1.0)": 0.91,
+   "US2 clevis fatigue (share 0.6)": 1.52,
+   "hip mount strength": 1.42,
+   "hip mount fatigue": 0.8,
+   "hip mount creep": 2.34,
+   "lash": 3.89,
+   "buckling": 2.5719210246046695,
+   "buckling set-down": 14.260783510361314,
+   "buckling members": 4.479848844511851
+  },
+  "margins_bl073_hw": {
+   "strength": 1.41,
+   "static carry fatigue": 1.429,
+   "R1": 1.048,
+   "creep": 3.074,
+   "z 234 joint strength": 1.669,
+   "z 234 joint fatigue": 1.072,
+   "US2 lug strength": 2.37,
+   "US2 lug fatigue": 1.07,
+   "US2 clevis strength (share 1.0)": 2.03,
+   "US2 clevis fatigue (share 1.0)": 0.91,
+   "US2 clevis fatigue (share 0.6)": 1.52,
+   "hip mount strength": 2.22,
+   "hip mount fatigue": 5.74,
+   "hip mount creep": 1.56,
+   "lash": 4.95,
+   "buckling": 3.100847252530468,
+   "buckling set-down": 14.257279555279771,
+   "buckling members": 5.706780649001744
+  },
+  "tornado": [
+   {
+    "variation": "fatigue ratio 0.25 (was 0.30)",
+    "source": "low end of the PA12-CF15 range the record cites (Sofia 0.25-0.32)",
+    "retired_by": "CA-1-HW (SBS shear fatigue at 40 C, conditioned)",
+    "rows": {
+     "R1": 0.873,
+     "z 234 joint fatigue": 0.893,
+     "static carry fatigue": 1.191,
+     "strength": 1.41,
+     "z 234 joint strength": 1.669,
+     "US2 lug fatigue": 0.892,
+     "US2 clevis fatigue (share 0.6)": 1.267,
+     "US2 clevis fatigue (share 1.0)": 0.758,
+     "hip mount fatigue": 4.783,
+     "hip mount creep": 1.56,
+     "buckling": 3.101
+    }
+   },
+   {
+    "variation": "interlayer shear 0.55 x Z (was 0.6)",
+    "source": "no PPA source for 0.6 (INTERLAYER-0.6)",
+    "retired_by": "CA-3-HW SBS",
+    "rows": {
+     "R1": 0.967,
+     "z 234 joint fatigue": 0.983,
+     "static carry fatigue": 1.322,
+     "strength": 1.304,
+     "z 234 joint strength": 1.53,
+     "US2 lug fatigue": 0.981,
+     "US2 clevis fatigue (share 0.6)": 1.52,
+     "US2 clevis fatigue (share 1.0)": 0.91,
+     "hip mount fatigue": 5.74,
+     "hip mount creep": 1.56,
+     "buckling": 3.101
+    }
+   },
+   {
+    "variation": "hot 40 C ratio 0.82 (was 0.85)",
+    "source": "ForTii Tg drop on the matrix water (the harshest Tg reading)",
+    "retired_by": "CA-3-HW (Z and SBS at 40 C)",
+    "rows": {
+     "R1": 1.011,
+     "z 234 joint fatigue": 1.034,
+     "static carry fatigue": 1.379,
+     "strength": 1.36,
+     "z 234 joint strength": 1.61,
+     "US2 lug fatigue": 1.032,
+     "US2 clevis fatigue (share 0.6)": 1.466,
+     "US2 clevis fatigue (share 1.0)": 0.878,
+     "hip mount fatigue": 5.537,
+     "hip mount creep": 1.505,
+     "buckling": 3.101
+    }
+   },
+   {
+    "variation": "wet loss on Z = conditioned modulus ratio 0.66 (was the XY strength ratio 0.73)",
+    "source": "Raise3D E 7800 / Bambu 11800: a matrix-dominated ratio",
+    "retired_by": "CA-3-HW (conditioned vs dry Z)",
+    "rows": {
+     "R1": 0.953,
+     "z 234 joint fatigue": 0.969,
+     "static carry fatigue": 1.297,
+     "strength": 1.28,
+     "z 234 joint strength": 1.509,
+     "US2 lug fatigue": 0.967,
+     "US2 clevis fatigue (share 0.6)": 1.374,
+     "US2 clevis fatigue (share 1.0)": 0.823,
+     "hip mount fatigue": 5.19,
+     "hip mount creep": 1.41,
+     "buckling": 3.101
+    }
+   },
+   {
+    "variation": "design Z on n 6 coupons, k 3.01 (was the TDS n 5, k 3.41)",
+    "source": "the owner's batch at n 6",
+    "retired_by": "CA-3-HW at n 10",
+    "rows": {
+     "R1": 1.1,
+     "z 234 joint fatigue": 1.126,
+     "static carry fatigue": 1.501,
+     "strength": 1.481,
+     "z 234 joint strength": 1.753,
+     "US2 lug fatigue": 1.124,
+     "US2 clevis fatigue (share 0.6)": 1.596,
+     "US2 clevis fatigue (share 1.0)": 0.956,
+     "hip mount fatigue": 6.027,
+     "hip mount creep": 1.638,
+     "buckling": 3.101
+    }
+   },
+   {
+    "variation": "hot/wet modulus 0.50 (was 0.5876)",
+    "source": "a further 15 % modulus loss",
+    "retired_by": "CA-4-HW (E at 40 C conditioned)",
+    "rows": {
+     "R1": 1.048,
+     "z 234 joint fatigue": 1.064,
+     "static carry fatigue": 1.429,
+     "strength": 1.41,
+     "z 234 joint strength": 1.669,
+     "US2 lug fatigue": 1.07,
+     "US2 clevis fatigue (share 0.6)": 1.52,
+     "US2 clevis fatigue (share 1.0)": 0.91,
+     "hip mount fatigue": 5.74,
+     "hip mount creep": 1.56,
+     "buckling": 2.639
+    }
+   }
+  ],
+  "tornado_shares": {
+   "R1": 0.922854387656702,
+   "static carry fatigue": 0.8910318225650915,
+   "strength": 0.8910318225650915,
+   "creep": 0.8910318225650915,
+   "z 234 joint fatigue": 1.0,
+   "z 234 joint strength": 1.0,
+   "US2 lug fatigue": 1.0,
+   "US2 lug strength": 1.0,
+   "R1|z": 0.9450337512054002,
+   "static carry fatigue|z": 0.9604628736740598,
+   "strength|z": 0.9604628736740598,
+   "creep|z": 0.9604628736740598,
+   "US2 clevis fatigue (share 0.6)|z": 1.0,
+   "US2 clevis fatigue (share 1.0)|z": 1.0,
+   "US2 clevis strength (share 1.0)|z": 1.0,
+   "hip mount fatigue|z": 1.0,
+   "hip mount strength|z": 1.0,
+   "hip mount creep|z": 1.0
+  },
+  "joint_e050_ratio": 0.9927,
+  "hip_plate": {
+   "mat": "ppa_hw",
+   "allow_mpa": 24.8,
+   "hetenyi": {
+    "k0": 244.3,
+    "beta": 0.191,
+    "group_factor": 1.227,
+    "b": 11.5,
+    "mpa_per_n": 0.010183951043703463,
+    "char_len_mm": 5.24
+   },
+   "ring_area_mm2": 1092.5,
+   "pressure_mpa_per_kn": 10.18,
+   "torque_nm": 0.6,
+   "preload_n": {
+    "nom": 600.0,
+    "max": 857.0,
+    "min": 462.0
+   },
+   "nut_factor": {
+    "nominal": 0.2,
+    "range": [
+     0.14,
+     0.26
+    ]
+   },
+   "rows": {
+    "C2|H_pin": {
+     "T_max_n": 194.7,
+     "kind": "strength",
+     "pressure_mpa": 10.71,
+     "sf": 2.32,
+     "goal": 1.5
+    },
+    "C1|H_pin": {
+     "T_max_n": 129.8,
+     "kind": "strength",
+     "pressure_mpa": 10.05,
+     "sf": 2.47,
+     "goal": 1.5
+    },
+    "walk|H_pin": {
+     "T_max_n": 103.8,
+     "kind": "fatigue",
+     "pressure_mpa": 1.06,
+     "sf": 7.04,
+     "goal": 1.15
+    },
+    "carry|H_pin": {
+     "T_max_n": 64.9,
+     "kind": "creep",
+     "pressure_mpa": 8.73,
+     "sf": 1.56,
+     "goal": 1.5
+    },
+    "C2|H_frame": {
+     "T_max_n": 238.6,
+     "kind": "strength",
+     "pressure_mpa": 11.16,
+     "sf": 2.22,
+     "goal": 1.5
+    },
+    "C1|H_frame": {
+     "T_max_n": 159.1,
+     "kind": "strength",
+     "pressure_mpa": 10.35,
+     "sf": 2.4,
+     "goal": 1.5
+    },
+    "walk|H_frame": {
+     "T_max_n": 127.3,
+     "kind": "fatigue",
+     "pressure_mpa": 1.3,
+     "sf": 5.74,
+     "goal": 1.15
+    },
+    "carry|H_frame": {
+     "T_max_n": 79.5,
+     "kind": "creep",
+     "pressure_mpa": 8.73,
+     "sf": 1.56,
+     "goal": 1.5
+    }
+   },
+   "min_sf": {
+    "strength": 2.22,
+    "fatigue": 5.74,
+    "creep": 1.56
+   },
+   "pass": true,
+   "relaxation": {
+    "kb_n_mm": 50387,
+    "km0_n_mm": 15684,
+    "creep_long_ratio": 0.5,
+    "residual_fraction": 0.567,
+    "residual_preload_min_n": 262.0,
+    "walk_bolt_tension_n": 127.3,
+    "c2_bolt_tension_n": 238.6,
+    "closed_at_walk": true
+   },
+   "cold": {
+    "dT": 43.0,
+    "shrink_mm": 0.0499,
+    "k_series_n_mm": 20073,
+    "preload_loss_n": 1001.0,
+    "slack_at_minus20": true
+   },
+   "screw": {
+    "stack_mm": 31.0,
+    "screw_l_mm": 35.0,
+    "protrusion_mm": 4.0,
+    "protrusion_threads": 5.0,
+    "bl070_l_mm": 20.0,
+    "bl070_protrusion_mm": 0.0
+   },
+   "hardware_g": {
+    "screws_extra_g": 8.45,
+    "ring_g": 5.9,
+    "keeper_g": 3.58
+   },
+   "webs": {
+    "between_holes_mm": 3.69,
+    "hole_to_boss_edge_mm": 3.25,
+    "ring_outer_ligament_mm": 1.75,
+    "ring_inner_ligament_mm": 4.25,
+    "traps": 0
+   },
+   "hardware": "8 x Ti gr5 M5 x 35 DIN 7984 + 8 x A2 M5 DIN 934 nuts (Loctite 243) on one 6061-T6 bearing ring 47 / 24 x 2 mm (8 holes D5.5 on r 19, the mount pattern) and a printed PPA-CF nut keeper (3 mm, holds the nuts while the screws are turned from the mount side) replace 8 x M5 x 9.5 brass inserts + 8 x M5 x 12; torque 0.6 N m",
+   "hip_rows_source": "h1_closeout.hip_check T (BL-055 tipping model, FLANGE-RIGID)",
+   "bl070_dw_ring_check": {
+    "a_dw_mm2": 13.6,
+    "fatigue_on_dw_bl069_basis": 1.06,
+    "fatigue_on_dw_hw": 0.8
+   }
+  },
+  "hip_parts": {
+   "hip_bearing_ring": {
+    "volume_mm3": 2185.3,
+    "watertight": true,
+    "g": 5.9
+   },
+   "hip_nut_keeper": {
+    "volume_mm3": 2860.6,
+    "watertight": true,
+    "g": 3.58
+   },
+   "keeper_pockets": 2,
+   "keeper_min_wall_mm": 1.14,
+   "files": [
+    "designs/pack_5200/iter1/frame/h1p/hip_bearing_ring.dxf",
+    "designs/pack_5200/iter1/frame/h1p/hip_bearing_ring.stl",
+    "designs/pack_5200/iter1/frame/h1p/hip_nut_keeper.stl"
+   ]
+  },
+  "hip_bl070_dw_on_hw": {
+   "nut_seat_depth_mm": 13.0,
+   "bearing_ring_mm2": 13.6,
+   "bearing_n": 338.2,
+   "rows": {
+    "C2|H_pin": {
+     "T_max_n": 194.7,
+     "kind": "strength",
+     "sf": 1.74,
+     "goal": 1.5
+    },
+    "C1|H_pin": {
+     "T_max_n": 129.8,
+     "kind": "strength",
+     "sf": 2.61,
+     "goal": 1.5
+    },
+    "walk|H_pin": {
+     "T_max_n": 103.8,
+     "kind": "fatigue",
+     "sf": 0.98,
+     "goal": 1.15
+    },
+    "carry|H_pin": {
+     "T_max_n": 64.9,
+     "kind": "creep",
+     "sf": 2.87,
+     "goal": 1.5
+    },
+    "C2|H_frame": {
+     "T_max_n": 238.6,
+     "kind": "strength",
+     "sf": 1.42,
+     "goal": 1.5
+    },
+    "C1|H_frame": {
+     "T_max_n": 159.1,
+     "kind": "strength",
+     "sf": 2.13,
+     "goal": 1.5
+    },
+    "walk|H_frame": {
+     "T_max_n": 127.3,
+     "kind": "fatigue",
+     "sf": 0.8,
+     "goal": 1.15
+    },
+    "carry|H_frame": {
+     "T_max_n": 79.5,
+     "kind": "creep",
+     "sf": 2.34,
+     "goal": 1.5
+    }
+   },
+   "min_sf": {
+    "strength": 1.42,
+    "fatigue": 0.8,
+    "creep": 2.34
+   },
+   "pass": false,
+   "hardware": "8 x Ti gr5 M5 x 20 DIN 7984 + 8 x A2 M5 DIN 934 nuts (Loctite 243) replace 8 x M5 x 9.5 brass inserts + 8 x M5 x 12"
+  },
+  "hotspot": {
+   "h1_ppa_design": {
+    "name": "h1",
+    "mat": "ppa_design",
+    "basis": "fine_sm8.cyc",
+    "max": 2.236,
+    "voxels_over_1": 48,
+    "at_mm": [
+     21.0,
+     -31.0,
+     107.0
+    ],
+    "n_voxels": 1664,
+    "top1pct_within_35mm_of_boss": 242,
+    "top1pct_total": 994
+   },
+   "bl070_g1_ppa_design": {
+    "name": "g1",
+    "mat": "ppa_design",
+    "basis": "fine_sm8.cyc",
+    "max": 3.61,
+    "voxels_over_1": 128,
+    "at_mm": [
+     17.0,
+     -33.0,
+     103.0
+    ],
+    "n_voxels": 1458,
+    "top1pct_within_35mm_of_boss": 550,
+    "top1pct_total": 999
+   },
+   "bl070_g1_hw": {
+    "name": "g1",
+    "mat": "ppa_hw",
+    "basis": "fine_sm8.cyc",
+    "max": 4.781,
+    "voxels_over_1": 210,
+    "at_mm": [
+     17.0,
+     -33.0,
+     103.0
+    ],
+    "n_voxels": 1458,
+    "top1pct_within_35mm_of_boss": 549,
+    "top1pct_total": 999
+   },
+   "bl073_hw": {
+    "name": "p3",
+    "mat": "ppa_hw",
+    "basis": "fine_sm8.cyc",
+    "max": 1.896,
+    "voxels_over_1": 59,
+    "at_mm": [
+     -15.0,
+     -35.0,
+     101.0
+    ],
+    "n_voxels": 2039,
+    "top1pct_within_35mm_of_boss": 203,
+    "top1pct_total": 1037
+   }
+  },
+  "print_files": {
+   "lower": {
+    "sites_xyz_mm": [
+     [
+      87.0,
+      7.0,
+      37.6
+     ],
+     [
+      313.0,
+      73.0,
+      37.2
+     ],
+     [
+      37.0,
+      181.0,
+      33.9
+     ],
+     [
+      263.0,
+      245.0,
+      32.2
+     ],
+     [
+      71.0,
+      83.0,
+      40.3
+     ],
+     [
+      285.0,
+      141.0,
+      39.7
+     ]
+    ],
+    "n_pads": 6,
+    "plate_contact_part_mm2": 1773.0,
+    "plate_contact_with_pads_mm2": 4483.0,
+    "pad_g": 31.1,
+    "watertight": true,
+    "contact_span_mm": [
+     300.0,
+     260.0
+    ],
+    "part_extent_mm": [
+     323.0,
+     298.0
+    ]
+   },
+   "upper": {
+    "sites_xyz_mm": [
+     [
+      7.0,
+      49.0,
+      34.0
+     ],
+     [
+      45.0,
+      259.0,
+      21.4
+     ],
+     [
+      161.0,
+      27.0,
+      19.1
+     ],
+     [
+      177.0,
+      227.0,
+      32.3
+     ],
+     [
+      95.0,
+      117.0,
+      27.8
+     ],
+     [
+      95.0,
+      197.0,
+      28.3
+     ]
+    ],
+    "n_pads": 6,
+    "plate_contact_part_mm2": 163.0,
+    "plate_contact_with_pads_mm2": 2873.0,
+    "pad_g": 22.8,
+    "watertight": true,
+    "contact_span_mm": [
+     304.0,
+     251.0
+    ],
+    "part_extent_mm": [
+     309.0,
+     285.0
+    ]
+   }
+  },
+  "spool_plan": {
+   "lower": {
+    "filament_total_g": 873.0,
+    "spools": 1.16,
+    "window_print_z_mm": [
+     32.25,
+     52.35
+    ],
+    "swap": {
+     "print_z_mm": 40.05,
+     "layer": 134,
+     "frame_y_mm": -7.95,
+     "spool1_g_range": [
+      293.0,
+      464.0
+     ],
+     "fat_u_max": 1.142,
+     "fat_u_p99": 0.789,
+     "env_max": 0.873
+    },
+    "global_fat_u_max_half": 3.463,
+    "profile": [
+     {
+      "frame_y_mm": -47.9,
+      "fat_u_max": 1.268
+     },
+     {
+      "frame_y_mm": -45.8,
+      "fat_u_max": 1.24
+     },
+     {
+      "frame_y_mm": -43.6,
+      "fat_u_max": 2.209
+     },
+     {
+      "frame_y_mm": -41.5,
+      "fat_u_max": 2.302
+     },
+     {
+      "frame_y_mm": -39.5,
+      "fat_u_max": 2.146
+     },
+     {
+      "frame_y_mm": -37.4,
+      "fat_u_max": 1.561
+     },
+     {
+      "frame_y_mm": -35.2,
+      "fat_u_max": 3.463
+     },
+     {
+      "frame_y_mm": -33.2,
+      "fat_u_max": 2.605
+     },
+     {
+      "frame_y_mm": -31.1,
+      "fat_u_max": 1.937
+     },
+     {
+      "frame_y_mm": -29.0,
+      "fat_u_max": 1.82
+     },
+     {
+      "frame_y_mm": -26.9,
+      "fat_u_max": 2.53
+     },
+     {
+      "frame_y_mm": -24.8,
+      "fat_u_max": 2.298
+     },
+     {
+      "frame_y_mm": -22.7,
+      "fat_u_max": 2.176
+     },
+     {
+      "frame_y_mm": -20.6,
+      "fat_u_max": 2.318
+     },
+     {
+      "frame_y_mm": -18.5,
+      "fat_u_max": 2.179
+     },
+     {
+      "frame_y_mm": -16.4,
+      "fat_u_max": 1.898
+     },
+     {
+      "frame_y_mm": -14.3,
+      "fat_u_max": 2.479
+     },
+     {
+      "frame_y_mm": -12.2,
+      "fat_u_max": 1.871
+     },
+     {
+      "frame_y_mm": -10.1,
+      "fat_u_max": 1.464
+     },
+     {
+      "frame_y_mm": -8.0,
+      "fat_u_max": 1.142
+     },
+     {
+      "frame_y_mm": -5.9,
+      "fat_u_max": 1.403
+     },
+     {
+      "frame_y_mm": -3.8,
+      "fat_u_max": 1.392
+     },
+     {
+      "frame_y_mm": -1.7,
+      "fat_u_max": 1.236
+     },
+     {
+      "frame_y_mm": 0.4,
+      "fat_u_max": 1.23
+     },
+     {
+      "frame_y_mm": 2.5,
+      "fat_u_max": 1.909
+     },
+     {
+      "frame_y_mm": 4.6,
+      "fat_u_max": 2.258
+     },
+     {
+      "frame_y_mm": 6.7,
+      "fat_u_max": 1.12
+     },
+     {
+      "frame_y_mm": 8.8,
+      "fat_u_max": 1.369
+     },
+     {
+      "frame_y_mm": 10.9,
+      "fat_u_max": 1.311
+     },
+     {
+      "frame_y_mm": 13.0,
+      "fat_u_max": 1.612
+     },
+     {
+      "frame_y_mm": 15.1,
+      "fat_u_max": 1.007
+     },
+     {
+      "frame_y_mm": 17.2,
+      "fat_u_max": 0.0
+     },
+     {
+      "frame_y_mm": 19.3,
+      "fat_u_max": 0.0
+     },
+     {
+      "frame_y_mm": 21.4,
+      "fat_u_max": 0.0
+     },
+     {
+      "frame_y_mm": 23.5,
+      "fat_u_max": 0.0
+     },
+     {
+      "frame_y_mm": 25.6,
+      "fat_u_max": 0.0
+     },
+     {
+      "frame_y_mm": 27.7,
+      "fat_u_max": 0.0
+     }
+    ]
+   },
+   "upper": {
+    "filament_total_g": 833.0,
+    "spools": 1.11,
+    "window_print_z_mm": [
+     22.95,
+     40.95
+    ],
+    "swap": {
+     "print_z_mm": 30.15,
+     "layer": 101,
+     "frame_y_mm": -9.85,
+     "spool1_g_range": [
+      281.0,
+      439.0
+     ],
+     "fat_u_max": 0.833,
+     "fat_u_p99": 0.536,
+     "env_max": 1.847
+    },
+    "global_fat_u_max_half": 1.972,
+    "profile": [
+     {
+      "frame_y_mm": -39.9,
+      "fat_u_max": 0.0
+     },
+     {
+      "frame_y_mm": -37.8,
+      "fat_u_max": 0.246
+     },
+     {
+      "frame_y_mm": -35.6,
+      "fat_u_max": 0.26
+     },
+     {
+      "frame_y_mm": -33.5,
+      "fat_u_max": 0.502
+     },
+     {
+      "frame_y_mm": -31.5,
+      "fat_u_max": 0.558
+     },
+     {
+      "frame_y_mm": -29.4,
+      "fat_u_max": 0.625
+     },
+     {
+      "frame_y_mm": -27.2,
+      "fat_u_max": 0.915
+     },
+     {
+      "frame_y_mm": -25.2,
+      "fat_u_max": 1.299
+     },
+     {
+      "frame_y_mm": -23.1,
+      "fat_u_max": 1.399
+     },
+     {
+      "frame_y_mm": -21.0,
+      "fat_u_max": 1.061
+     },
+     {
+      "frame_y_mm": -18.9,
+      "fat_u_max": 1.409
+     },
+     {
+      "frame_y_mm": -16.8,
+      "fat_u_max": 0.874
+     },
+     {
+      "frame_y_mm": -14.7,
+      "fat_u_max": 0.927
+     },
+     {
+      "frame_y_mm": -12.6,
+      "fat_u_max": 0.854
+     },
+     {
+      "frame_y_mm": -10.5,
+      "fat_u_max": 0.931
+     },
+     {
+      "frame_y_mm": -8.4,
+      "fat_u_max": 0.833
+     },
+     {
+      "frame_y_mm": -6.3,
+      "fat_u_max": 0.953
+     },
+     {
+      "frame_y_mm": -4.2,
+      "fat_u_max": 1.291
+     },
+     {
+      "frame_y_mm": -2.1,
+      "fat_u_max": 1.1
+     },
+     {
+      "frame_y_mm": 0.0,
+      "fat_u_max": 1.437
+     },
+     {
+      "frame_y_mm": 2.1,
+      "fat_u_max": 0.921
+     },
+     {
+      "frame_y_mm": 4.2,
+      "fat_u_max": 0.95
+     },
+     {
+      "frame_y_mm": 6.3,
+      "fat_u_max": 1.091
+     },
+     {
+      "frame_y_mm": 8.4,
+      "fat_u_max": 1.49
+     },
+     {
+      "frame_y_mm": 10.5,
+      "fat_u_max": 0.777
+     },
+     {
+      "frame_y_mm": 12.6,
+      "fat_u_max": 1.553
+     },
+     {
+      "frame_y_mm": 14.7,
+      "fat_u_max": 0.369
+     },
+     {
+      "frame_y_mm": 16.8,
+      "fat_u_max": 0.0
+     },
+     {
+      "frame_y_mm": 18.9,
+      "fat_u_max": 0.0
+     },
+     {
+      "frame_y_mm": 21.0,
+      "fat_u_max": 0.0
+     },
+     {
+      "frame_y_mm": 23.1,
+      "fat_u_max": 0.0
+     }
+    ]
+   }
+  },
+  "layer_time": {
+   "lower": {
+    "median_s": 192.0,
+    "p10_s": 107.0,
+    "layers": 256
+   },
+   "upper": {
+    "median_s": 181.0,
+    "p10_s": 45.0,
+    "layers": 215
+   }
+  },
+  "mass": {
+   "body_g": 1312.1,
+   "bl070_body_g": 1268.1,
+   "body_delta_vs_bl070_g": 44.0,
+   "body_delta_vs_paht_h1_g": 242.8,
+   "hip_hardware_delta_vs_bl070_g": 17.9,
+   "frame_delta_vs_bl070_g": 61.9,
+   "pads_filament_g": {
+    "lower": 31.1,
+    "upper": 22.8
+   }
+  },
+  "eigen": {
+   "frame_crown_held": 3.100847252530468,
+   "setdown": 14.257279555279771,
+   "members": 5.706780649001744,
+   "solved": true,
+   "note": "BL-065 eigen re-solved on the final export"
+  },
+  "lug": {
+   "strength": 2.37,
+   "fatigue": 1.07
+  },
+  "lash_p99": 4.95,
+  "clevis": {
+   "share_0.6": {
+    "strength": 3.38,
+    "fatigue": 1.52
+   },
+   "share_1": {
+    "strength": 2.03,
+    "fatigue": 0.91
+   }
+  },
+  "reraster": {
+   "stl_voxels": 119945,
+   "run_voxels": 119860,
+   "pads_added": 280
+  }
+ },
+ "coupons_bl073": [
   {
-   "id": "CA-1-PPA",
-   "what": "R 0.1 tension-tension fatigue, PPA-CF printed on the owner's H2S (H1 profile: 0.6 hardened nozzle, 290 C, bed 110 C, chamber 65 C, 100 % infill), conditioned 14 d at 23 C / 50 % RH",
-   "coupons": "6 Z-built (load across the layers, the H1-P governing direction) + 6 XY-built, ISO 527-2 1A shape, plus 3 static of each from the same plate for the batch UTS",
-   "load": "Smax = 0.279 x the batch's own conditioned mean UTS, 1e5 cycles at <= 5 Hz, 23 C",
-   "pass": "all 6 Z-built and all 6 XY-built run out to 1e5 cycles at Smax / UTS = 0.279 (= fatigue ratio 0.30 / H1-P cinch-cycled margin 1.076)",
-   "settles": "FAT-PPA (fatigue_1e5_ratio 0.30)",
-   "margin_tied": "R1 1.076"
+   "id": "CA-1-HW",
+   "replaces": "CA-1-PPA (review 8 M-3; the XY / Z tension fatigue bars are dropped: their static pulls exceed the 100 kg cell, BL-071)",
+   "what": "short-beam-shear FATIGUE (the governing interlayer mode, shear_xy): ASTM D2344 bars 18 x 6 x 3, span 12, mid-plane on a layer interface, cut from a solid block printed on the H2S with the frame profile beside a dummy tower sized so every layer takes >= 181 s (the median layer time of a frame half by the BL-053 rule, LAYER-H 0.3 mm); log the layer time of each batch from the slicer preview; conditioned to constant mass at 50 C over saturated NaCl (74.4 % RH, Greenspan 1977; above the TDS 55 % RH, so conservative): weigh daily, done when the mass changes < 0.1 % in 24 h (ISO 62 practice); record the uptake against the TDS 1.30 %; tested at 40 +/- 2 C, R 0.1, <= 5 Hz",
+   "coupons": "6 SBS fatigue + 3 SBS static from the same block (the layer-normal share, 7 % of the R1 top 1 %, is covered by the CA-3-HW Z bars)",
+   "load": "Smax (shear) = 1.15 x 4.80 = 5.52 MPa, i.e. peak load 132 N (30 lbf) on the SBS jig (tau = 0.75 P / (b h)); 4.80 MPa = 0.30 x interlayer 14.88 MPa / governing fatigue margin 0.930",
+   "pass": "all 6 run out to 1e5 cycles at 1.15 x Smax (life factor by load: the 1.15 load factor on a Basquin slope of about 10 is about a factor 4 on life, review 8 M-3); the 3 static SBS >= the CA-3-HW SBS line",
+   "settles": "FAT-PPA (0.30) in the governing shear mode, hot/wet",
+   "margin_tied": "min(R1 1.048, joint 1.072, lug / 1.15, clevis(0.6) / 1.15, hip / 1.15) = 0.930",
+   "smax_design_mpa": 4.798,
+   "smax_test_mpa": 5.517,
+   "peak_load_n": 132.0
   },
   {
-   "id": "CA-3-PPA",
-   "what": "Z tensile (ISO 527-2 1A, printed standing: load across the layers) and interlayer shear (short-beam shear, ASTM D2344 4:1 bar printed flat so the mid-plane is a layer interface), dry (as printed, sealed with desiccant, tested within 24 h) and conditioned (14 d at 23 C / 50 % RH)",
-   "coupons": "6 Z tensile + 6 SBS dry; 6 + 6 conditioned; same spool, same H2S profile as the frame",
-   "pass": "(a) conditioned Z tensile mean - 2.4 SD >= 31.3 MPa (H1-P needs knocked Z 32.85 / 1.051); (b) conditioned SBS mean - 2.4 SD >= 18.8 MPa (0.6 x (a), ASSUMPTION INTERLAYER-0.6); (c) for the record: dry Z mean >= 45 MPa and conditioned / dry >= 0.73 means the design values hold as booked",
-   "settles": "WET-PPA (knock 0.73), design Z 45 MPa, INTERLAYER-0.6",
-   "margin_tied": "R1 1.076, z 234 joint fatigue 1.051",
-   "if_below": "between 31.3 and 0.9 x that: R1 reads 0.9-1.0, hold the PPA build and add the hot-spot growth of the next H1-P step; below: stay on PAHT-CF"
+   "id": "CA-3-HW",
+   "replaces": "CA-3-PPA (review 8 B-2, M-4, M-6)",
+   "what": "Z tensile (ISO 527-2 type 1BA, 5 x 2 mm gauge, cut from the block so the gauge crosses the layers) and SBS (ASTM D2344 proportions at t 3), cut from a solid block printed on the H2S with the frame profile beside a dummy tower sized so every layer takes >= 181 s (the median layer time of a frame half by the BL-053 rule, LAYER-H 0.3 mm); log the layer time of each batch from the slicer preview; hot/wet set conditioned to constant mass at 50 C over saturated NaCl (74.4 % RH, Greenspan 1977; above the TDS 55 % RH, so conservative): weigh daily, done when the mass changes < 0.1 % in 24 h (ISO 62 practice); record the uptake against the TDS 1.30 %, tested at 40 +/- 2 C; dry set as printed (sealed, tested within 24 h at 23 C); plus 6 SBS with a planned 20 min pause at the mid-plane layer (the spool-change layer, M-6)",
+   "coupons": "hot/wet: 10 Z + 10 SBS; dry: 6 Z + 6 SBS; pause-layer: 6 SBS (hot/wet)",
+   "statistic": "B-basis = mean - k SD, k 2.355 at n 10 (one-sided 90/95 normal tolerance factor, CMH-17-1G Vol 1 8.3.4.3 / NIST e-Handbook 7.2.6.3)",
+   "pass": "(a) hot/wet Z B-basis >= 23.7 MPa (= 24.80 / 1.048, the interlayer-governed rows R1 and z 234 joint fatigue); (b) hot/wet SBS B-basis >= 14.2 MPa (0.6 x (a)); (c) pause-layer SBS mean >= 0.9 x the no-pause hot/wet SBS mean and its B-basis >= (b); (d) for the record: uptake, hot/wet / dry Z (booked 0.73 x 0.85 = 0.621 on the B-basis)",
+   "settles": "WET-PPA 0.73, HOT-40 0.85, B-basis Z 39.97, INTERLAYER-0.6, the pause layer",
+   "if_below": "with a measured hot/wet B-basis Z_m: R1 = 1.048 x Z_m / 24.80, z 234 joint fatigue = 1.072 x Z_m / 24.80 (LINEAR-Z); below 23.7 MPa hold the build and grow the hot spot by the shortfall",
+   "need_z_mpa": 23.66,
+   "need_sbs_mpa": 14.2
   },
   {
-   "id": "CA-4-PPA",
-   "what": "3-point bend modulus and strength (ISO 178, XY-built bars 80 x 10 x 4), at 23 C dry, at 40 C after 14 d at 23 C / 50 % RH ('40 C wet'), and at 60 C dry (truck cab)",
+   "id": "CA-4-HW",
+   "replaces": "CA-4-PPA (review 8 M-8, m-8)",
+   "what": "ISO 178 3-point bend, XY bars 80 x 10 x 4: 23 C dry; 40 C conditioned to constant mass at 50 C over saturated NaCl (74.4 % RH, Greenspan 1977; above the TDS 55 % RH, so conservative); 60 C dry",
    "coupons": "5 per condition",
-   "pass": "E(40 C wet) / E(23 C dry) >= 0.85 (the booked ratio; the H1-P buckling margin 3.72 alone would allow 0.23); E(60 C) / E(23 C) >= 0.75 (record); flexural strength at 60 C >= 0.73 x 208 = 152 MPa",
-   "settles": "modulus_40c_wet_ratio 0.85, modulus_60c_ratio 0.75 (E-SCALE)",
-   "margin_tied": "buckling 3.72, strength 1.70"
+   "pass": "(a) modulus, mean of 5: E(40 C conditioned) / E(23 C dry) >= 0.50 (the governing need: buckling 3.10 at the booked 0.588 and the z 234 joint contact stiffness, re-run at E_hot 0.50 in the tornado); (b) flexural strength at 60 C dry, mean - 3.41 SD (n 5) >= 143 MPa (hot ratio 60 / 20 C 0.688, Fiberlogy; for the record, no row rests on it)",
+   "settles": "modulus_40c_wet_hw 0.588 (E-SCALE), modulus_60c 0.75"
   },
   {
-   "id": "T4c-PPA",
-   "what": "-20 C drop of a printed stay coupon: the H1-P lower stay z 0-240 (R side) cut from the lower-half file (foot, hinge eye, US1 lug root), printed in PPA-CF with the frame profile, a 2.0 kg steel slug pinned through the hinge eye (half the empty pack, 4.04 kg)",
-   "coupons": "3 PPA-CF + 1 PAHT-CF control; soaked >= 4 h at -20 C, dropped within 60 s of removal",
-   "load": "1.22 m (48 in, HA-LS-1 T4c) onto 19 mm plywood over concrete, foot first, then side-on (about 24 J each)",
-   "pass": "no crack or whitening (10x loupe, dye penetrant on the foot and the eye), tap test clean, and the coupon then carries 3-point bend at 1.5 x its C4 set-down stay moment without a crack; any Z crack (along a layer) is a fail",
-   "settles": "COLD (impact_minus20c_ratio 0.5; Z Charpy 4.3 kJ/m2 vs PAHT 13.3)",
-   "margin_tied": "not in the FI check (impact); this is the PPA risk BL-069 flagged"
+   "id": "T4b-PPA-COLD",
+   "replaces": "adds to HA-LS-1 T4b on P1 (review 8 M-7)",
+   "what": "the PPA frame's own T4b set-down after >= 4 h at -20 C (chest freezer; frame + bag, no load in the freezer), loaded to 68 kg and dropped within 10 min of removal, at the end of the P1 sequence before T2u",
+   "coupons": "P1, 5 drops per foot",
+   "load": "68 kg (150 lb) from 50 mm (2 in) onto one stay foot: 33 J per drop",
+   "pass": "HA-LS-1 T4b pass rule, and no crack along a layer (10x loupe on both stay feet, the hip boss and the z 234 bosses)",
+   "settles": "COLD on the frame (T4b energy, both halves)"
+  },
+  {
+   "id": "T4c-PPA-COLD",
+   "replaces": "adds a temperature to HA-LS-1 T4c on P1",
+   "what": "HA-LS-1 T4c empty-pack drops (48 in, 6 orientations incl. crown top and side) after >= 4 h at -20 C, each drop within 5 min of removal (re-soak 30 min between drops)",
+   "coupons": "P1",
+   "pass": "HA-LS-1 T4c pass rule; no crack at the crown corners, pawl housing, upper bar",
+   "settles": "COLD on the upper half / crown"
+  },
+  {
+   "id": "T4c-PPA-HW",
+   "replaces": "T4c-PPA (review 8 M-7)",
+   "what": "-20 C drop of printed stay coupons (H1-P lower stay z 0-140, R side: foot and hinge eye, cut from the lower-half file; was z 0-240, BL-071 filament budget) with a steel slug pinned through the hinge eye",
+   "coupons": "5 PPA-CF + 1 PAHT-CF control (was 3 + 1)",
+   "load": "2.8 kg slug from 1.22 m (48 in): 34 J = the T4b set-down energy (33 J), foot first then side-on",
+   "pass": "no crack or whitening (10x loupe, dye penetrant), then 3-point bend at 1.5 x the C4 stay moment (56.0 N m: coupon clamped at z 120-140, 467 N (105 lbf) sideways at the foot, 120 mm arm) without a crack; 5 / 5 shows R 0.55 at C 0.95 only (0.05^(1/5)), which is why T4b-PPA-COLD on the frame is added",
+   "bend": {
+    "foot_force_n": 1334.2,
+    "friction_n": 266.8,
+    "lever_mm": 140.0,
+    "m_c4_nmm": 37356.0,
+    "m_test_nmm": 56035.0,
+    "set_up": "cantilever: clamp z 120-140, pull at the foot",
+    "arm_mm": 120.0,
+    "p_tip_n": 467.0,
+    "p_tip_lbf": 105.0,
+    "under_rig_cell": true
+   },
+   "settles": "COLD on the stay foot at the T4b energy"
+  },
+  {
+   "id": "T4c-PPA-CROWN",
+   "replaces": "new (review 8 M-7)",
+   "what": "-20 C drop of a crown-corner coupon cut from the upper-half file (crown corner, pawl housing, 120 mm of upper bar) with a 2.0 kg slug through the crown bore",
+   "coupons": "3 PPA-CF + 1 PAHT-CF control",
+   "load": "1.22 m crown-corner first then side-on: 24 J (half the empty pack, as T4c)",
+   "pass": "no crack or whitening; pawl still locks on the rack",
+   "settles": "COLD on the upper half"
   }
  ],
- "assumptions": [
+ "bl071_requests": {
+  "t4c_bend_load": {
+   "foot_force_n": 1334.2,
+   "friction_n": 266.8,
+   "lever_mm": 140.0,
+   "m_c4_nmm": 37356.0,
+   "m_test_nmm": 56035.0,
+   "set_up": "cantilever: clamp z 120-140, pull at the foot",
+   "arm_mm": 120.0,
+   "p_tip_n": 467.0,
+   "p_tip_lbf": 105.0,
+   "under_rig_cell": true
+  },
+  "hip_torque_nm": 0.6,
+  "hip_preload_n": {
+   "nom": 600.0,
+   "max": 857.0,
+   "min": 462.0
+  },
+  "hip_screw": {
+   "stack_mm": 31.0,
+   "screw_l_mm": 35.0,
+   "protrusion_mm": 4.0,
+   "protrusion_threads": 5.0,
+   "bl070_l_mm": 20.0,
+   "bl070_protrusion_mm": 0.0
+  },
+  "rig_loads": {
+   "sbs_static_dry_n": 821.0,
+   "z_bar_static_dry_n": 570.0,
+   "flex_xy_static_n": 347.0,
+   "t4c_bend_n": 467.0,
+   "cell_n": 981.0,
+   "all_under_cell": true
+  },
+  "t4c_stay_cut_z_mm": 140.0,
+  "note": "BL-073 answers to BL-071 items 1-5: bend load (cantilever, under the 100 kg cell), hip torque on the bearing ring (not the bare nut ring), coupons sized under 1 kN, M5 x 35 with 5 threads proud, stay drop coupon cut to z 0-140"
+ },
+ "assumptions_bl073": [
   {
-   "id": "PPU=PPA",
-   "text": "'PPU' is Bambu PPA-CF (BL-069).",
-   "settled_by": "owner confirmation"
+   "id": "B-BASIS-N5",
+   "text": "The Bambu TDS +/- values are standard deviations of an ISO 527 set of n = 5 (the ISO 527-1 minimum; the TDS gives no n): B-basis k 3.4066.",
+   "settled_by": "CA-3-HW at n 10 (k 2.355)"
   },
   {
-   "id": "WET-PPA",
-   "text": "Design Z 45 MPa (57 - 2.4 SD) x wet knock 0.73 (Raise3D conditioned / Bambu dry).",
-   "settled_by": "CA-3-PPA"
+   "id": "HOT-40",
+   "text": "Hot ratio of wet PPA-CF at 40 C = 0.85, the lowest of the Fiberlogy 40 / 20 C UTS ratio (0.864) and its Tg-shift readings (0.852-0.886) with the wet Tg 51-67 C.",
+   "settled_by": "CA-3-HW at 40 C"
   },
   {
-   "id": "FAT-PPA",
-   "text": "fatigue_1e5_ratio 0.30 (PA12-CF lower bound), on the layer rule's FI.",
-   "settled_by": "CA-1-PPA"
+   "id": "MATRIX-FRAC",
+   "text": "20 wt % carbon fibre (matrix fraction 0.8) for the water-in-matrix reading.",
+   "settled_by": "not governing (the composite-basis reading is lower and taken)"
   },
   {
-   "id": "INTERLAYER-0.6",
-   "text": "Interlayer shear strength = 0.6 x Z tensile (frame_topopt layer rule, as PAHT).",
-   "settled_by": "CA-3-PPA SBS"
+   "id": "E-HW",
+   "text": "Hot/wet modulus = Raise3D conditioned / Bambu dry 0.661 x Fiberlogy E 40 / 20 C 0.889 = 0.5876 (was 0.85).",
+   "settled_by": "CA-4-HW"
   },
   {
-   "id": "LINEAR-Z",
-   "text": "Where interlayer shear governs (92 % of the R1 top 1 %), a margin scales with knock x Z.",
-   "settled_by": "re-run check_body with the coupon values"
+   "id": "BEARING-RING",
+   "text": "Hip nut load spread by the 2 mm 6061 ring as a beam on a Winkler foundation (k0 = E_z / boss depth, cold E_z x 1.25), group of 4 at the 28 deg pitch; the larger of that peak and the ring average.",
+   "settled_by": "HB-6b hip-mount proof on the first H1-P frame"
   },
   {
-   "id": "E-ISO / E-SCALE",
-   "text": "Voxel FE isotropic at E_xy (the stress fields are unit-modulus, so strength checks do not depend on it); buckling at E_xy x 0.85 hot x 0.85 creep = 8526 MPa. Layer-normal bound x E_z / E_xy = 0.364.",
-   "settled_by": "CA-4-PPA (40 C wet, 60 C); T1 deflection at 150 lb"
+   "id": "K-NUT",
+   "text": "Nut factor 0.20, scatter 0.14-0.26, for the Ti screw in an A2 nut with Loctite 243; the creep row uses the high preload (K 0.14), the closure check the low one (K 0.26).",
+   "settled_by": "HB-6b paint marks"
   },
   {
-   "id": "JOINT-Z",
-   "text": "z 234 joint and US2 clevis capacities on the PPA joint dict: washer / contact bearing on knock x XY, plug shear-out and clevis hole bearing on knock x Z; contact stiffness E x 0.85.",
-   "settled_by": "CA-3-PPA"
+   "id": "CREEP-LONG",
+   "text": "Long-term layer-normal creep modulus of the boss at 40 C wet = 0.5 x short term (no curve published; 8 h is 0.85).",
+   "settled_by": "HB-6b re-torque check after T5"
   },
   {
-   "id": "INS-PPA",
-   "text": "Insert pull-out on PPA either by the record rule (hot x Z/XY TDS ratio 0.339: 297 N) or by the PAHT HB-6 basis scaled by knocked Z (448 N); both fail the 8-insert fatigue row (needs 488 N).",
-   "settled_by": "HB-6-PPA only if inserts are kept"
+   "id": "CTE-Z",
+   "text": "PPA-CF across the layers 60e-6 / K (not in the TDS): at -20 C the hip nuts lose their preload; no row credits preload, Loctite 243 holds the nuts.",
+   "settled_by": "T4b-PPA-COLD paint marks"
   },
   {
-   "id": "NUT-BEAR",
-   "text": "H1-P hip mount through-bolts: nut / D10 washer bearing on the layers in compression taken at knock x design Z (32.9 MPa) on the ring D10 / D5.5; tipping model and rigid flange as BL-055 (FLANGE-RIGID).",
-   "settled_by": "HB-6b on the frame (hip mount proof) with the through-bolts"
-  },
-  {
-   "id": "H1P-RULES",
-   "text": "H1-P moves material only on the 2 mm voxel model of the released print: interfaces, crown sleeves, member floors, lash points and the wearer (plate) face frozen; thinning one surface layer at a time where the PPA utilisation (6 mm max filter) is low, growth where it is high.",
-   "settled_by": "the checks on the export"
-  },
-  {
-   "id": "PPA-TIME",
-   "text": "Print time by the BL-053 rule (8 mm3/s x 1.08) at the PAHT volume rate; TDS speed < 100 mm/s.",
+   "id": "LAYER-H",
+   "text": "0.30 mm layers (Bambu Studio 0.6 nozzle standard) for the layer-time and the swap layer.",
    "settled_by": "slicer preview"
   },
   {
-   "id": "WARP",
-   "text": "PPA-CF (E x 3, crystallises at 178 C) warps more than PAHT on a small plate contact; chamber pre-heat 30 min at 65 C, glue, brim 15 mm, mouse ears at the stay feet.",
+   "id": "SPOOL-RESERVE",
+   "text": "60 g of each 750 g spool kept back for purge and net-weight tolerance.",
    "settled_by": "first article"
   },
   {
-   "id": "COLD",
-   "text": "impact_minus20c_ratio 0.5; Z Charpy 4.3 kJ/m2.",
-   "settled_by": "T4c-PPA"
+   "id": "PAD",
+   "text": "Sacrificial pads (D24 x 0.6 foot, D12 column, D6 -> D3 neck fused 0.6 mm into the part) hold the far ends of each half on the plate and snap off; the neck scar is sanded.",
+   "settled_by": "first-article upper half"
   },
   {
-   "id": "SPOOL-SWAP",
-   "text": "A half that needs > 0.75 kg is started on a full dried spool with a second dried spool staged (AMS feed of PPA-CF on the H2S not verified).",
-   "settled_by": "first article"
+   "id": "JOINT-XY",
+   "text": "z 234 bolts moved to (18.5, 6) / (-19, 5.5) local: checked on the BL-070 g1 cut sections for the choice, then on the exported body.",
+   "settled_by": "the checks on the export; CA-5 z 234 stub coupons"
   }
  ],
- "screenshots": [
-  "outputs/screens/20261125_bl070_1.png",
-  "outputs/screens/20261125_bl070_2.png",
-  "outputs/screens/20261125_bl070_3.png",
-  "outputs/screens/20261125_bl070_4.png"
+ "screenshots_bl073": [
+  "outputs/screens/20261125_bl073_1.png",
+  "outputs/screens/20261125_bl073_2.png",
+  "outputs/screens/20261125_bl073_3.png",
+  "outputs/screens/20261125_bl073_4.png"
  ]
 }
