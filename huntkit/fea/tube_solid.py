@@ -280,7 +280,7 @@ class TubeFE:
         """Sum of nodal forces per global component."""
         return np.array([f[self._comp == k].sum() for k in range(3)])
 
-    def patch_pressure(self, x0, x1, theta0, half_angle, F, surface="inner"):
+    def patch_pressure(self, x0, x1, theta0, half_angle, F, surface="inner", uniform=False):
         """Radial contact load F (N) over x0..x1 and theta0 +/- half_angle, cosine distribution, on the inner
         (load pushes outward, e.g. a bushing) or outer surface (load pushes inward, e.g. a clamp jaw)."""
         m = self.m
@@ -297,7 +297,8 @@ class TubeFE:
         def fun(x, n):
             th = np.arctan2(x[2], x[1])
             dth = np.angle(np.exp(1j * (th - theta0)))
-            p = np.clip(np.cos(np.pi / 2 * dth / half_angle), 0.0, None)
+            p = (np.abs(dth) <= half_angle + 1e-9).astype(float) if uniform else \
+                np.clip(np.cos(np.pi / 2 * dth / half_angle), 0.0, None)
             er = np.array([np.zeros_like(th), np.cos(th), np.sin(th)])
             return sgn * p * er
         f = self._traction(fac, fun)
@@ -393,6 +394,37 @@ class TubeFE:
                     smax = max(smax, w[-1])
                     vm = max(vm, np.sqrt(0.5 * ((w[0] - w[1]) ** 2 + (w[1] - w[2]) ** 2 + (w[2] - w[0]) ** 2)))
         return {"max_principal": float(smax), "von_mises": float(vm)}
+
+    def surface_hoop(self, u, x0, x1):
+        """Max |hoop stress| (sigma_theta_theta) on the inner and outer surface vertices with x0 <= X <= x1: the ring
+        (local) part of a contact / clamp load, free of the beam bending (axial) stress of the submodel's supports."""
+        p = self.mesh.p
+        r = np.hypot(p[1], p[2])
+        ro, ri = self.m.od / 2, self.m.od / 2 - self.m.t
+        surf = (np.abs(r - ro) < 1e-6) | (np.abs(r - ri) < 1e-6)
+        on = surf & (p[0] >= x0) & (p[0] <= x1)
+        el = np.nonzero(on[self.mesh.t].any(axis=0))[0]
+        S = self.stress_at(u, el)
+        verts = self.mesh.t[:, el]
+        best = 0.0
+        for k in range(4):
+            v = verts[k]
+            sel = on[v]
+            th = np.arctan2(p[2, v[sel]], p[1, v[sel]])
+            et = np.array([np.zeros_like(th), -np.sin(th), np.cos(th)])
+            s_tt = np.einsum("in,ijn,jn->n", et, S[:, :, sel, k], et)
+            if s_tt.size:
+                best = max(best, float(np.abs(s_tt).max()))
+        return best
+
+    def ovalisation(self, u, x, surface="inner"):
+        """Diametral change of the bore from the n = 2 Fourier harmonic of u_r(theta) at station x (the n = 1 term is
+        rigid translation / beam deflection and is excluded). Also the inward n = 0 term (uniform squeeze)."""
+        th, ur = self.radial_disp(u, x, surface)
+        A = np.c_[np.ones_like(th), np.cos(th), np.sin(th), np.cos(2 * th), np.sin(2 * th)]
+        c, *_ = np.linalg.lstsq(A, ur, rcond=None)
+        return {"oval_diam_mm": float(2 * np.hypot(c[3], c[4])), "uniform_inward_mm": float(-c[0]),
+                "min_gap_change_mm": float(-c[0] + np.hypot(c[3], c[4]))}
 
     def radial_disp(self, u, x, surface="inner"):
         """Radial displacement around the circumference at axial station x on a surface: (theta, u_r)."""
