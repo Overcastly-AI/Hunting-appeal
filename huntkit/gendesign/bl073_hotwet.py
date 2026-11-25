@@ -474,8 +474,9 @@ def pad_sites(flat, n_max: int = 6) -> list:
     for (i, j), z in cells.items():
         if not (1.0 < z <= PAD_MAX_H):
             continue
-        nb = [cells.get((i + a, j + b)) for a in (-1, 0, 1) for b in (-1, 0, 1)]
-        if any(v is None for v in nb) or max(nb) - min(nb) > 3.0:
+        rng = range(-3, 4)            # the D12 column sits fully under the part (7 x 7 cells of 2 mm)
+        nb = [cells.get((i + a, j + b)) for a in rng for b in rng if a * a + b * b <= 10]
+        if any(v is None for v in nb) or max(nb) - min(nb) > 4.0:
             continue
         cand.append(((i + 0.5) * h, (j + 0.5) * h, float(max(nb))))
     cand = np.array(cand)
@@ -904,7 +905,7 @@ def plot_plate_contact(stl_dir: Path, pf: dict, path: Path) -> str:
     import matplotlib.pyplot as plt
     import trimesh
     from matplotlib.patches import Circle
-    fig, axs = plt.subplots(1, 2, figsize=(11.0, 5.6), dpi=100)
+    fig, axs = plt.subplots(1, 2, figsize=(12.0, 6.4), dpi=100)
     for ax, nm in zip(axs, ("lower", "upper")):
         f = trimesh.load(stl_dir / f"h1_{nm}_flat.stl", force="mesh")
         U = underside(f)
@@ -923,8 +924,8 @@ def plot_plate_contact(stl_dir: Path, pf: dict, path: Path) -> str:
         ax.set_xlim(-15, 345)
         ax.set_ylim(-15, 325)
         ax.set_title(f"{nm} half: plate contact {pf[nm]['plate_contact_part_mm2']:.0f} -> "
-                     f"{pf[nm]['plate_contact_with_pads_mm2']:.0f} mm2 with {pf[nm]['n_pads']} pads "
-                     f"(+{pf[nm]['pad_g']:.0f} g)", fontsize=9)
+                     f"{pf[nm]['plate_contact_with_pads_mm2']:.0f} mm2\n{pf[nm]['n_pads']} pads, "
+                     f"+{pf[nm]['pad_g']:.0f} g filament", fontsize=9)
     cb = fig.colorbar(sc, ax=axs, shrink=0.8)
     cb.set_label("underside height above the plate, mm (black = on the plate)")
     fig.suptitle("BL-073 M-5: sacrificial pads (orange, D24 foot, D12 column, snap-off neck D3; label = height mm). "

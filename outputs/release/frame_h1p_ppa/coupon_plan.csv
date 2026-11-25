@@ -6,4 +6,4 @@ A flat,bend bar 80 x 10 x 4 (ISO 178),"CA-4-PPA, 3 conditions",flat on its 10 mm
 B standing,"Z tensile bar, ISO 527-2 1A, standing, tied in threes",CA-3-PPA Z tensile dry,standing on a 20 x 4 end,6,12.6,75.6,81.6,2.3
 B standing,"Z tensile bar, ISO 527-2 1A, standing","CA-3-PPA Z tensile conditioned = CA-1-PPA Z static (same plate, same conditioning)",standing,6,12.6,75.6,81.6,2.3
 B standing,"Z tensile bar, ISO 527-2 1A, standing",CA-1-PPA fatigue,standing,7,12.6,88.2,95.3,2.6
-C stay,T4c-PPA stay `test_pieces/t4c_stay_R.stl` (H1-P R stay z 0-240),T4c-PPA,"wearer face down, tree supports as the frame",3,212.2,636.6,832.3,23.1
+C stay,T4c-PPA stay `test_pieces/t4c_stay_R.stl` (H1-P R stay z 0-240),T4c-PPA,"wearer face down, tree supports as the frame",3,217.8,653.5,854.5,23.7

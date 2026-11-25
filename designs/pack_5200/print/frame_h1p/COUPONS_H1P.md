@@ -35,7 +35,7 @@ Dry spool 1 first (PRINT_SHEET_H2S.md: 120 C, 10 h). Print with the frame settin
 | | **gate coupons (jobs A + B)** | | | | | **471 g (16.6 oz), 0.63 spool** | **13** |
 
 - Spool 1 holds 750 g. After the gate coupons about 279 g is left: keep it sealed and dried. It is the run-out reserve for both frame halves (101 g needed; fits; ASSUMPTION SPOOL-PLAN).
-- Job C, the 3 T4c-PPA stays, needs 832 g (212 g each + supports): **a 4th spool** plus 82 g of spool 1's last 178 g, so print job C AFTER both frame halves (T4c-PPA does not hold the frame print), or buy a 5th spool to print it earlier. BL-070's '3 spools, about $450' covers the frame and the gate coupons only.
+- Job C, the 3 T4c-PPA stays, needs 854 g (218 g each + supports): **a 4th spool** plus 104 g of spool 1's last 178 g, so print job C AFTER both frame halves (T4c-PPA does not hold the frame print), or buy a 5th spool to print it earlier. BL-070's '3 spools, about $450' covers the frame and the gate coupons only.
 
 | spool | feeds | g |
 |---|---|---:|
