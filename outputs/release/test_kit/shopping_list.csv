@@ -78,10 +78,11 @@ S,200 g 2x2 carbon twill + epoxy for the 2 mm BP-1 coupon skins,0.028,m2,45.0,1.
 S,"HyperD 300 printable, custom camo print",1,yd,30.25,30.25,"Ripstop by the Roll (custom print, 1 yd min)",record polyester_300d_printable,"AB-1, FRAY-1","LONG LEAD: custom print, lead time not published",
 S,shipping for the HyperD print order,1,order,12.0,12.0,Ripstop by the Roll,ASSUMPTION SHIP (camo/cost_1_and_10_bags.csv),"AB-1, FRAY-1",,BL-041 (re-review n-10 / Y-5): the print yard is a test-kit specimen only; the first bag is solid 630D
 S,"Martindale abrasion test, accredited lab (2 samples + order fee)",1,order,249.61,249.61,Measurlabs (EUR 66 / sample + EUR 97 fee),https://measurlabs.com/products/textile-abrasion-resistance-martindale,AB-1,LONG LEAD: about 4 weeks after the samples arrive,the listed price is the ISO 12947-2 Martindale method; ask for ASTM D4966 to 8000 rev
-B,S-type load cell 200 kg (the Makerfabs listing covers 100-500 kg),1,each,30.0,30.0,Makerfabs,"ASSUMPTION (shop price, check at purchase); listing https://www.makerfabs.com/s-type-load-cell-100kg-200kg-300kg-500kg-1.html",CA-1-PPA XY static pulls (ASSUMPTION LEVER-XY),,
-B,second 6061 flat bar 40 x 10 x 600 + 2 x M8 bolts (doubles the lever for the XY statics),1,set,15.0,15.0,hardware store,"ASSUMPTION (shop price, check at purchase)",CA-1-PPA XY static pulls,,
-B,"short-beam pins: 2 x D3 + 1 x D6 hardened dowels, 30 mm, on a 16 mm span block",1,set,10.0,10.0,hardware store / Zoro,"ASSUMPTION (shop price, check at purchase)",CA-3-PPA,,
-D,"dye penetrant kit (cleaner, red penetrant, developer)",1,set,15.0,15.0,welding supply,"ASSUMPTION (shop price, check at purchase)",T4c-PPA,,
+B,"short-beam jig pins: 2 x D3 + 1 x D6 hardened dowels, 30 mm, on a 12 mm span block",1,set,10.0,10.0,hardware store / Zoro,"ASSUMPTION (shop price, check at purchase)","CA-3-HW, CA-1-HW",,
+D,"jewellery scale 0.001 g, 50 g capacity (traveller weighing to constant mass)",1,each,25.0,25.0,Amazon / any,"ASSUMPTION (shop price, check at purchase)","CA-3-HW, CA-1-HW, CA-4-HW, US2-LUG-PPA",,
+D,non-iodised salt 1 kg + 2 L sealed glass jar with a rack (50 C NaCl conditioning),1,set,12.0,12.0,grocery / hardware store,"ASSUMPTION (shop price, check at purchase)","CA-3-HW, CA-1-HW, CA-4-HW",,
+A,"steel slugs 2.8 kg and 2.0 kg (bar offcuts, drilled 5 mm)",1,set,20.0,20.0,metal supplier offcuts,"ASSUMPTION (shop price, check at purchase)","T4c-PPA-HW, T4c-PPA-CROWN",,
+D,"dye penetrant kit (cleaner, red penetrant, developer)",1,set,15.0,15.0,welding supply,"ASSUMPTION (shop price, check at purchase)","T4c-PPA-HW, T4c-PPA-CROWN",,
 S,"specimens for PT-2: 5 swatches built like the pack, B-17 cut 70 mm tall",1,lot,15.0,15.0,see register,test_register.csv PT-2: ASSUMPTION Hypalon + laminate offcuts,PT-2,,
 S,"specimens for PT-3: 5 swatches sewn exactly as op 4.05 / SK-8, in the op 4.05 order (BL-041): B-01 (",1,lot,15.0,15.0,see register,test_register.csv PT-3: ASSUMPTION offcuts,PT-3,,
 S,"specimens for WP-1: 4 seam pairings 330D|330D, 330D|ULTRA 200, 500D|330D, 100D|ULTRA; 301 + 2nd row ",1,lot,5.0,5.0,see register,test_register.csv WP-1: offcuts,WP-1,,

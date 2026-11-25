@@ -837,7 +837,7 @@ def new_rows(lv: dict, lid_g: float, cut: dict) -> list[dict]:
         hb6b_row(),
         rt_pull_row(),
     ]
-    rows += H1P.register_rows()          # BL-071: CA-3/CA-1/CA-4/T4c-PPA (pass lines from bl070_h1p.json), HB-6-PPA not needed
+    rows += H1P.register_rows()          # BL-071/074: the BL-073 PPA rows (pass lines from bl070_h1p.json), BL-070 rows SUPERSEDED
     return rows
 
 
@@ -2193,9 +2193,10 @@ RELEASES = [  # key, label, what it releases
     ("BL037", "BL-037 weight gates", "the -119.1 g A_bl037 picks (weight_push.md)"),
     ("CARRY", "Field release and the rest", "first loaded carry, meat haul, belt and comfort tests"),
     ("DATA", "Data only (no gate)", "measurements that credit a model; nothing waits on them (BL-041 TL-1b)"),
-    ("R1-PPA", "PPA-CF frame path (H1-P, BL-071)", "only if you build the PPA-CF frame: CA-3-PPA and CA-1-PPA release the "
-     "H1-P print (print/frame_h1p/COUPONS_H1P.md); CA-4-PPA the first carry; T4c-PPA cold use. The PAHT-CF H1 path "
-     "(R1) is the fallback"),
+    ("R1-PPA", "PPA-CF frame path (H1-P, BL-071 / BL-074)", "only if you build the PPA-CF frame: the first-article upper "
+     "half, then the BL-073 coupons (CA-3-HW, CA-1-HW, CA-4-HW, T4c-PPA-HW, T4c-PPA-CROWN), the US2 lug proof "
+     "(US2-LUG-PPA) and CLEVIS-SHARE-B-PPA release the H1-P print (print/frame_h1p/COUPONS_H1P.md); T4b/T4c-PPA-COLD on "
+     "P1 gate cold use. The PAHT-CF H1 path (R1) is the fallback"),
 ]
 REL_ORDER = {k: i for i, (k, _, _) in enumerate(RELEASES)}
 
@@ -2216,8 +2217,8 @@ TEST_RELEASE = {
     # BL-037
     "HS-1": "BL037", "CS-1": "BL037", "AB-1": "BL037", "SL-1": "BL037", "ST-1": "BL037", "BU-1": "BL037",
     "HB-1": "BL037", "HB-D2": "BL037", "BP-1": "BL037",
-    # BL-071: PPA-CF H1-P path
-    "CA-3-PPA": "R1-PPA", "CA-1-PPA": "R1-PPA", "CA-4-PPA": "R1-PPA", "T4c-PPA": "R1-PPA",
+    # BL-071 / BL-074: PPA-CF H1-P path (the BL-070 rows CA-1/3/4-PPA and T4c-PPA are SUPERSEDED in the register)
+    **{t: "R1-PPA" for t in H1P.ACTIVE_IDS},
 }
 # tests that also serve a second release (shown in the order of work and the results sheet)
 ALSO = {"MT-1": "BAG-CUT", "BP-1": "CARRY", "HB-1": "CARRY", "HB-D2": "CARRY", "T9": "BAG-BATCH"}
@@ -2262,11 +2263,14 @@ GROUPS = [
                "gates, then the field tests."),
     dict(id="G8", title="PPA-CF frame path (H1-P): coupons first, then the gate", when="only if you build the PPA-CF frame; "
          "start the day the PPA-CF spools and the 120 C dryer arrive",
-         rig="H2S (PPA-CF profile), 120 C dryer, conditioning box, kit B lever rig (+ 200 kg cell), 3-point fixture, 40 C box, freezer",
-         kits="B, A, D", tests=["CA-3-PPA", "CA-1-PPA", "CA-4-PPA", "T4c-PPA"],
-         intro="The PPA-CF H1-P frame (BL-070) is printed only after CA-3-PPA and CA-1-PPA pass on coupons printed on "
-               "your H2S. The PAHT-CF H1 (G1 to G7) stays the fallback. Full sheets, print plan and pictures: "
-               "`designs/pack_5200/print/frame_h1p/COUPONS_H1P.md` (also in `outputs/release/frame_h1p_ppa/`)."),
+         rig="H2S (PPA-CF profile), 120 C dryer, 50 C salt conditioning jar, 0.001 g scale, kit B lever rig (100 kg cell), "
+             "short-beam jig, 3-point fixture, 40 C box, chest freezer",
+         kits="B, A, D", tests=list(H1P.ACTIVE_IDS),
+         intro="The PPA-CF H1-P frame (BL-073 p3) is printed only after the BL-073 coupons, the US2 lug proof and "
+               "CLEVIS-SHARE-B-PPA pass. Print the first-article upper half first, then the coupon jobs, each beside its "
+               "dummy tower. T4b/T4c-PPA-COLD run on the P1 frame later. The PAHT-CF H1 (G1 to G7) stays the fallback. "
+               "Full sheets, print plan and pictures: `designs/pack_5200/print/frame_h1p/COUPONS_H1P.md` (also in "
+               "`outputs/release/frame_h1p_ppa/`)."),
 ]
 
 
@@ -2682,13 +2686,17 @@ def H1P_shopping() -> list[dict]:
     BUILD_H1P BOM (print/frame_h1p/BUILD_H1P.md section 1) and are not counted twice here."""
     A = "ASSUMPTION (shop price, check at purchase)"
     return [
-        _l("S-type load cell 200 kg (the Makerfabs listing covers 100-500 kg)", 1, "each", 30.00, "Makerfabs", A + "; listing " + LINKS["lc"],
-           "B", "CA-1-PPA XY static pulls (ASSUMPTION LEVER-XY)"),
-        _l("second 6061 flat bar 40 x 10 x 600 + 2 x M8 bolts (doubles the lever for the XY statics)", 1, "set", 15.00,
-           "hardware store", A, "B", "CA-1-PPA XY static pulls"),
-        _l("short-beam pins: 2 x D3 + 1 x D6 hardened dowels, 30 mm, on a 16 mm span block", 1, "set", 10.00,
-           "hardware store / Zoro", A, "B", "CA-3-PPA"),
-        _l("dye penetrant kit (cleaner, red penetrant, developer)", 1, "set", 15.00, "welding supply", A, "D", "T4c-PPA"),
+        # BL-074: every static load stays under the kit B 100 kg cell (frame_h1p_build.rig_check), so BL-071's 200 kg
+        # cell and second lever bar are gone.
+        _l(f"short-beam jig pins: 2 x D3 + 1 x D6 hardened dowels, 30 mm, on a {H1P.pass_lines()['ca1_span']:g} mm span block",
+           1, "set", 10.00, "hardware store / Zoro", A, "B", "CA-3-HW, CA-1-HW"),
+        _l("jewellery scale 0.001 g, 50 g capacity (traveller weighing to constant mass)", 1, "each", 25.00, "Amazon / any", A,
+           "D", "CA-3-HW, CA-1-HW, CA-4-HW, US2-LUG-PPA"),
+        _l("non-iodised salt 1 kg + 2 L sealed glass jar with a rack (50 C NaCl conditioning)", 1, "set", 12.00,
+           "grocery / hardware store", A, "D", "CA-3-HW, CA-1-HW, CA-4-HW"),
+        _l("steel slugs 2.8 kg and 2.0 kg (bar offcuts, drilled 5 mm)", 1, "set", 20.00, "metal supplier offcuts", A, "A",
+           "T4c-PPA-HW, T4c-PPA-CROWN"),
+        _l("dye penetrant kit (cleaner, red penetrant, developer)", 1, "set", 15.00, "welding supply", A, "D", "T4c-PPA-HW, T4c-PPA-CROWN"),
     ]
 
 
@@ -2826,7 +2834,7 @@ def shopping(reg: dict) -> list[dict]:
            "LONG LEAD: about 4 weeks after the samples arrive", "the listed price is the ISO 12947-2 Martindale method; ask for ASTM D4966 to 8000 rev"),
     ]
     itemized = {"PT-1", "MT-2", "MT-3", "US-BS", "HB-7", "PT-5", "LL-H", "SL-1", "ST-1", "MT-1", "PT-6", "CS-1", "HS-1",
-                "AB-1", "MT-1c", "B-28 slip", "BP-1", "RT-PULL", "CA-3-PPA", "CA-1-PPA", "CA-4-PPA", "T4c-PPA"}
+                "AB-1", "MT-1c", "B-28 slip", "BP-1", "RT-PULL", *H1P.ACTIVE_IDS}
     L += H1P_shopping()
     for tid, r in reg.items():
         if not r["status"].startswith(("ACTIVE", "PROPOSED")) or tid in itemized:
@@ -2942,9 +2950,10 @@ FS-O5 strip:  bar clamp -- 50 mm strip, 200 mm between the clamps -- bar clamp  
 AB-1 brush:   board + taped strip;  brush + 2 kg;  50 passes along 200 mm
 ```""",
     "G8": """```
-dry spool 1 at 120 C 10 h -> job A (flat bars, blocks) + job B (standing Z bars) -> dry set: test within 24 h
--> conditioned set: box 14 days -> CA-3-PPA statics -> CA-1-PPA fatigue (12 x ~28 h) -> GATE -> H1-P halves
-CA-4-PPA: bend bars at 23 C / 40 C wet / 60 C        T4c-PPA: stays, freezer >= 4 h at -20 C, drop 1.22 m
+FA upper half (pads, pause at layer 101) -> coupon jobs, each beside a dummy tower (every layer >= frame time)
+-> dry sets: test within 24 h; hot/wet sets: 50 C over salt to constant mass -> CA-3-HW, CA-1-HW (SBS fatigue, 40 C)
+CA-4-HW bend 23 / 40 wet / 60 C   T4c-PPA-HW + CROWN: -20 C drops   CLEVIS-SHARE-B-PPA -> US2-LUG-PPA (x lug factor)
+-> GATE (coupons + lug proof + share) -> H1-P halves -> P1: T4b-PPA-COLD, T4c-PPA-COLD
 ```""",
     "G1": """```
 dry the spool -> print (frame profile, same job as a frame half) -> anneal 90 C 6 h -> cool in the oven
@@ -2969,9 +2978,11 @@ GROUP_SAFETY = {
     "G6": ["Back-up sling under every load. Nobody under the load. T2u (P1, 204 kg) outdoors with a 3 m exclusion zone.",
            "Nobody carries the frame until T1, T3, T2 and T4 have passed. MT-1c stage 1 runs on the stand for that reason.",
            "T4c: -20 C parts are brittle; gloves and glasses."],
-    "G8": ["The 120 C dryer and the 110 C bed burn: gloves. PPA-CF dust from sanding the tie ribs: mask and glasses.",
-           "XY static pulls reach about 5 kN at the bar: the 200 kg cell and the doubled lever, blanket over the rig, "
-           "stand to the side.", "T4c-PPA: -20 C parts are brittle and can shatter: glasses and gloves for the drops."],
+    "G8": ["The 120 C dryer, the 50 C jar and the 110 C bed burn: gloves. PPA-CF dust from sawing and sanding the "
+           "blocks: mask and glasses, vacuum not compressed air.",
+           "Every static pull stays under the 100 kg cell (max about 821 N, the dry short-beam bars): blanket over the "
+           "rig, stand to the side.", "-20 C parts are brittle and can shatter: glasses and gloves for every drop; the "
+           "T4b-PPA-COLD frame drop is loaded to 68 kg: nobody's feet under it."],
     "G7": ["Loaded walks: a second person nearby, flat ground first, stop at any crack noise. Float meat limit 53 kg "
            "(56 kg only after T5f)."],
 }
@@ -3028,11 +3039,10 @@ PREP = {
            "from the released files, same spool and profile as the coupons. Sew the bag (G2 + G3 passed).", ""],
     "G7": ["**Before:** T1, T3, T2 and T4 have passed on P2 (G6). Then the pack may be carried.", ""],
     "G8": ["**Before:** the PPA-CF spools, the 120 C dryer and the hip hardware are bought "
-           "(`designs/pack_5200/print/frame_h1p/BUILD_H1P.md` section 1). Print the coupons as "
-           "`COUPONS_H1P.md` section 2 says: job A (flat) and job B (standing Z bars) from spool 1. "
-           "**No H1-P frame half is printed before CA-3-PPA and CA-1-PPA pass.** HB-6-PPA is not needed (through-bolts).", "",
-           f"> **{H1P.HOLD}.** Review 8 holds the H1-P frame; the coupons may be printed now, but BL-073 is re-specifying "
-           "their pass lines (`COUPONS_H1P.md` section 9). Re-read this guide before you run a test.", ""],
+           "(`designs/pack_5200/print/frame_h1p/BUILD_H1P.md` section 1). Print the first-article upper half "
+           "(FA-H1P-UP), then the coupon jobs of `COUPONS_H1P.md` section 2, each beside its dummy tower. "
+           "HB-6-PPA is not needed (through-bolts).", "",
+           f"> **{H1P.HOLD}.** The frame halves wait for: {H1P.gate_txt()}. **{H1P.RELEASED}.**", ""],
     "G4": ["**Before:** the coupons have had their 7 days (G1). Build the rig (one weekend, `CA1_fatigue_rig.md` 4) "
            "and calibrate it with the 20 L jug. Sew the 3 SEW-F box-X loops with the MT-1 loops (G2 prep).", ""],
 }

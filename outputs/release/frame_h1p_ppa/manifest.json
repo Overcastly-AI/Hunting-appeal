@@ -1,47 +1,64 @@
 {
- "ticket": "BL-071",
+ "ticket": "BL-074",
  "date": "2026-11-25",
  "checks": [
-  "ca1_smax_ratio: JSON text 0.279 vs recomputed 0.2788 OK",
-  "ca3_z_mpa: JSON text 31.3 vs recomputed 31.2559 OK",
-  "ca3_sbs_mpa: JSON text 18.8 vs recomputed 18.7536 OK",
-  "ca3_dry_z_mpa: JSON text 45 vs recomputed 45.0000 OK",
-  "ca3_wet_dry: JSON text 0.73 vs recomputed 0.7300 OK",
-  "ca4_e40: JSON text 0.85 vs recomputed 0.8500 OK",
-  "ca4_e60: JSON text 0.75 vs recomputed 0.7500 OK",
-  "ca4_flex60_mpa: JSON text 152 vs recomputed 151.8400 OK",
-  "gate coupons 471 g = 0.63 spool; swap reserve fits: True",
-  "T4c stays 854 g (4th spool)",
-  "hip torque: TBD by BL-073 (review 8 B-1): ASSUMPTION, no value set; screw tip vs nut top +0.0 mm",
-  "review 8 rows read: ['B-1', 'B-2', 'M-1', 'M-2', 'M-3', 'M-4', 'M-5', 'M-6', 'M-7', 'M-8']",
-  "cost {'filament_frame_usd': 449.97, 'filament_t4c_usd': 149.99, 'hip_hw_usd': 32.5, 'dryer_usd': 376.9, 'tools_usd': 482.9, 'per_frame_usd': 482.47, 'first_frame_all_usd': 1115.36}"
+  "ca3_z_mpa: JSON text 23.7 vs numeric 23.6641 OK",
+  "ca3_sbs_mpa: JSON text 14.2 vs numeric 14.1985 OK",
+  "ca3_k: JSON text 2.355 vs numeric 2.3546 OK",
+  "ca1_smax_mpa: JSON text 5.52 vs numeric 5.5170 OK",
+  "ca1_peak_n: JSON text 132 vs numeric 132.0000 OK",
+  "t4c_p_n: JSON text 467 vs numeric 467.0000 OK",
+  "layer_s: JSON text 181 vs numeric 181.0000 OK",
+  "ca3_r1: JSON text 1.048 vs numeric 1.0480 OK",
+  "ca3_z_hw: JSON text 24.8 vs numeric 24.8000 OK",
+  "ca3_knock_booked: JSON text 0.621 vs numeric 0.6205 OK",
+  "lug_factor: JSON text 1.08 vs numeric 1.0748 OK",
+  "share_max: JSON text 0.79 vs numeric 0.7913 OK",
+  "t4c_z_max: JSON text 140 vs numeric 140.0000 OK",
+  "coupon jobs PPA 2259 g, PAHT 417 g; shortest layer 181 s (need 181)",
+  "spools 10 (BL-073 booked 5), total 4798 g",
+  "hip torque 0.6 N m; 5 threads proud (rule >= 2)",
+  "rig: all static loads under the cell: True (max 821 N)",
+  "cost {'filament_usd': 1499.9, 'spools': 10, 'booked_bl073': 5, 'booked_bl073_usd': 749.95, 'hip_hw_usd': 61.0, 'dryer_usd': 376.9, 'tools_usd': 574.41, 'per_frame_usd': 660.96, 'first_frame_all_usd': 2135.31}"
  ],
  "cost": {
-  "filament_frame_usd": 449.97,
-  "filament_t4c_usd": 149.99,
-  "hip_hw_usd": 32.5,
+  "filament_usd": 1499.9,
+  "spools": 10,
+  "booked_bl073": 5,
+  "booked_bl073_usd": 749.95,
+  "hip_hw_usd": 61.0,
   "dryer_usd": 376.9,
-  "tools_usd": 482.9,
-  "per_frame_usd": 482.47,
-  "first_frame_all_usd": 1115.36
+  "tools_usd": 574.41,
+  "per_frame_usd": 660.96,
+  "first_frame_all_usd": 2135.31
  },
  "files": [
   "BUILD_H1P.md",
+  "BUILD_H1P.pdf",
   "COUPONS_H1P.md",
   "COUPONS_H1P.pdf",
   "PRINT_SHEET_H2S.md",
   "PRINT_SHEET_H2S.pdf",
   "README.md",
   "bom_h1p_ppa.csv",
+  "coupon_pieces.png",
   "coupon_plan.csv",
   "h1p_ppa_techpack.pdf",
+  "hip_assembly.png",
   "manifest.json",
-  "t4c_stay_R.png"
+  "print_pads_change.png",
+  "spool_plan.csv"
  ],
  "screens": [
-  "outputs/screens/20261125_bl071_1.png",
-  "outputs/screens/20261125_bl071_2.png",
-  "outputs/screens/20261125_bl071_3.png",
-  "outputs/screens/20261125_bl071_4.png"
+  "outputs/screens/20261125_bl074_1.png",
+  "outputs/screens/20261125_bl074_2.png",
+  "outputs/screens/20261125_bl074_3.png",
+  "outputs/screens/20261125_bl074_4.png"
+ ],
+ "pdfs": [
+  "outputs/release/frame_h1p_ppa/h1p_ppa_techpack.pdf",
+  "outputs/release/frame_h1p_ppa/COUPONS_H1P.pdf",
+  "outputs/release/frame_h1p_ppa/PRINT_SHEET_H2S.pdf",
+  "outputs/release/frame_h1p_ppa/BUILD_H1P.pdf"
  ]
 }

@@ -1,9 +1,21 @@
-job,coupon,for,orientation,count,g_each,g,filament_g,print_h
-A flat,"XY tensile bar, ISO 527-2 1A (170 x 20, gauge 10 x 4 x 80)",CA-1-PPA fatigue,flat on its 20 mm face,7,12.0,84.0,90.7,2.5
-A flat,"XY tensile bar, ISO 527-2 1A",CA-1-PPA static (batch XY UTS),flat,3,12.0,36.0,38.9,1.1
-A flat,"short-beam block 24 x 8 x 4 (ASTM D2344, 4:1 span)","CA-3-PPA interlayer shear, dry + conditioned",flat (the mid-plane is a layer line),13,0.96,12.5,13.5,0.4
-A flat,bend bar 80 x 10 x 4 (ISO 178),"CA-4-PPA, 3 conditions",flat on its 10 mm face,16,4.0,64.0,69.1,1.9
-B standing,"Z tensile bar, ISO 527-2 1A, standing, tied in threes",CA-3-PPA Z tensile dry,standing on a 20 x 4 end,6,12.6,75.6,81.6,2.3
-B standing,"Z tensile bar, ISO 527-2 1A, standing","CA-3-PPA Z tensile conditioned = CA-1-PPA Z static (same plate, same conditioning)",standing,6,12.6,75.6,81.6,2.3
-B standing,"Z tensile bar, ISO 527-2 1A, standing",CA-1-PPA fatigue,standing,7,12.6,88.2,95.3,2.6
-C stay,T4c-PPA stay `test_pieces/t4c_stay_R.stl` (H1-P R stay z 0-240),T4c-PPA,"wearer face down, tree supports as the frame",3,217.8,653.5,854.5,23.7
+job,item,count,g_each,material
+A,"SBS block 82 x 70 x 3.6 mm, 27 bars (`block_sbs.stl`)",1,25.8,PPA-CF
+A,dummy tower `tower_A.stl` (max 225 mm2),1,1.0,PPA-CF
+B,"SBS block 42 x 50 x 3.6 mm, 7 bars (`block_sbs_pause.stl`)",1,9.4,PPA-CF
+B,dummy tower `tower_B.stl` (max 2369 mm2),1,10.7,PPA-CF
+C,crown corner `crown_corner_R.stl`,2,145.1,PPA-CF
+C,"Z slab 214 x 3 x 80 mm standing, 17 1BA bars (`block_z.stl`)",1,64.2,PPA-CF
+C,dummy tower `tower_C.stl` (max 3827 mm2),1,202.8,PPA-CF
+D,T4c stay `t4c_stay_R.stl`,2,96.9,PPA-CF
+D,bend bar 80 x 10 x 4 flat,16,4.0,PPA-CF
+D,dummy tower `tower_D.stl` (max 4224 mm2),1,113.9,PPA-CF
+E,US2 route piece `us2_route_stay_R_h1p.stl`,1,207.5,PPA-CF
+E,US2 clevis `h1p/us2_clevis_R.stl`,1,18.5,PPA-CF
+E,crown corner `crown_corner_R.stl`,1,145.1,PPA-CF
+E,hip nut keeper `h1p/hip_nut_keeper.stl` (1 + 1 spare),2,3.6,PPA-CF
+E,dummy tower `tower_E.stl` (max 3751 mm2),1,118.8,PPA-CF
+F,T4c stay `t4c_stay_R.stl`,3,96.9,PPA-CF
+F,dummy tower `tower_F.stl` (max 4469 mm2),1,106.3,PPA-CF
+G,T4c stay control,1,82.2,PAHT-CF
+G,crown corner control,1,123.1,PAHT-CF
+G,dummy tower `tower_G.stl` (max 4170 mm2),1,140.8,PAHT-CF

@@ -95,7 +95,13 @@ seq,group,test,stage,release,also,tier,title,hands_on_h,machine_h,status
 94,G7,MH-2,run,CARRY,,function,frame-only meat haul (float / bag-off),1.5,0.0,ACTIVE-REVISED
 95,G7,MH-3,run,CARRY,,function,meat strap wash,0.5,2.0,ACTIVE
 96,G7,R28-1,run,CARRY,,function,head-clearance photo,0.3,0.0,ACTIVE
-97,G8,CA-3-PPA,run,R1-PPA,,safety,"PPA-CF Z tensile + interlayer shear, dry and conditioned 14 d (H2S prints)",4.0,336.0,ACTIVE
-98,G8,CA-1-PPA,run,R1-PPA,,safety,"PPA-CF R 0.1 fatigue coupons, Z and XY, at 0.279 x conditioned UTS",6.0,333.0,ACTIVE
-99,G8,CA-4-PPA,run,R1-PPA,,safety,"PPA-CF 3-point bend modulus and strength at 23 C dry, 40 C wet, 60 C",4.0,3.0,ACTIVE
-100,G8,T4c-PPA,run,R1-PPA,,safety,"-20 C drop of a printed H1-P stay, PPA-CF vs a PAHT-CF control",3.0,4.0,ACTIVE
+97,G8,FA-H1P-UP,run,R1-PPA,,build,"First-article H1-P upper half (PPA-CF): snap-off pads, planned filament change, layer time",3.0,21.0,ACTIVE
+98,G8,CA-3-HW,run,R1-PPA,,safety,"PPA-CF Z tensile + SBS, hot/wet B-basis at n 10, dry set, pause-layer SBS",8.0,336.0,ACTIVE
+99,G8,CA-1-HW,run,R1-PPA,,safety,"PPA-CF short-beam-shear fatigue at 40 C, conditioned, 1.15 x Smax",6.0,167.0,ACTIVE
+100,G8,CA-4-HW,run,R1-PPA,,safety,PPA-CF 3-point bend modulus at 23 C dry / 40 C conditioned / 60 C dry,4.0,3.0,ACTIVE
+101,G8,T4c-PPA-HW,run,R1-PPA,,safety,-20 C drop of 5 H1-P stay coupons (z 0-140) at 34 J + cantilever bend,3.0,4.0,ACTIVE
+102,G8,T4c-PPA-CROWN,run,R1-PPA,,safety,-20 C drop of 3 H1-P crown-corner coupons at 24 J,2.0,4.0,ACTIVE
+103,G8,CLEVIS-SHARE-B-PPA,run,R1-PPA,,safety,"US2 clevis outer-cheek share measured on H1-P PPA parts (loading B), pass <= 0.79",3.0,0.0,ACTIVE
+104,G8,US2-LUG-PPA,run,R1-PPA,,safety,"US2 lug proof on H1-P PPA parts at x 1.08 the CLEVIS-SHARE B load, hot/wet, 40 C",4.0,28.0,ACTIVE
+105,G8,T4b-PPA-COLD,run,R1-PPA,,safety,P1 H1-P frame T4b set-down after 4 h at -20 C (33 J),3.0,0.0,ACTIVE
+106,G8,T4c-PPA-COLD,run,R1-PPA,,safety,P1 empty-pack T4c drops after 4 h at -20 C,3.0,0.0,ACTIVE

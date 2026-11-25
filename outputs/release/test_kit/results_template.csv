@@ -508,62 +508,114 @@ MH-1-01,MH-1,G7,CARRY,1,passes the register criterion: no load shift you can fee
 MH-2-01,MH-2,G7,CARRY,1,passes the register criterion: < 25 mm slip after 30 min,Y/N,yes,Y,,,,,
 MH-3-01,MH-3,G7,CARRY,1,passes the register criterion: hooks and cams still work,Y/N,yes,Y,,,,,
 R28-1-01,R28-1,G7,CARRY,1,passes the register criterion: ~30 deg tilt before contact,Y/N,yes,Y,,,,,
-CA-3-PPA-01,CA-3-PPA,G8,R1-PPA,dry 1,"Z tensile strength, dry",MPa,record,,,,,,
-CA-3-PPA-02,CA-3-PPA,G8,R1-PPA,dry 2,"Z tensile strength, dry",MPa,record,,,,,,
-CA-3-PPA-03,CA-3-PPA,G8,R1-PPA,dry 3,"Z tensile strength, dry",MPa,record,,,,,,
-CA-3-PPA-04,CA-3-PPA,G8,R1-PPA,dry 4,"Z tensile strength, dry",MPa,record,,,,,,
-CA-3-PPA-05,CA-3-PPA,G8,R1-PPA,dry 5,"Z tensile strength, dry",MPa,record,,,,,,
-CA-3-PPA-06,CA-3-PPA,G8,R1-PPA,dry 6,"Z tensile strength, dry",MPa,record,,,,,,
-CA-3-PPA-07,CA-3-PPA,G8,R1-PPA,dry 1,"short-beam shear strength, dry",MPa,record,,,,,,
-CA-3-PPA-08,CA-3-PPA,G8,R1-PPA,dry 2,"short-beam shear strength, dry",MPa,record,,,,,,
-CA-3-PPA-09,CA-3-PPA,G8,R1-PPA,dry 3,"short-beam shear strength, dry",MPa,record,,,,,,
-CA-3-PPA-10,CA-3-PPA,G8,R1-PPA,dry 4,"short-beam shear strength, dry",MPa,record,,,,,,
-CA-3-PPA-11,CA-3-PPA,G8,R1-PPA,dry 5,"short-beam shear strength, dry",MPa,record,,,,,,
-CA-3-PPA-12,CA-3-PPA,G8,R1-PPA,dry 6,"short-beam shear strength, dry",MPa,record,,,,,,
-CA-3-PPA-13,CA-3-PPA,G8,R1-PPA,conditioned 1,"Z tensile strength, conditioned",MPa,record,,,,,,
-CA-3-PPA-14,CA-3-PPA,G8,R1-PPA,conditioned 2,"Z tensile strength, conditioned",MPa,record,,,,,,
-CA-3-PPA-15,CA-3-PPA,G8,R1-PPA,conditioned 3,"Z tensile strength, conditioned",MPa,record,,,,,,
-CA-3-PPA-16,CA-3-PPA,G8,R1-PPA,conditioned 4,"Z tensile strength, conditioned",MPa,record,,,,,,
-CA-3-PPA-17,CA-3-PPA,G8,R1-PPA,conditioned 5,"Z tensile strength, conditioned",MPa,record,,,,,,
-CA-3-PPA-18,CA-3-PPA,G8,R1-PPA,conditioned 6,"Z tensile strength, conditioned",MPa,record,,,,,,
-CA-3-PPA-19,CA-3-PPA,G8,R1-PPA,conditioned 1,"short-beam shear strength, conditioned",MPa,record,,,,,,
-CA-3-PPA-20,CA-3-PPA,G8,R1-PPA,conditioned 2,"short-beam shear strength, conditioned",MPa,record,,,,,,
-CA-3-PPA-21,CA-3-PPA,G8,R1-PPA,conditioned 3,"short-beam shear strength, conditioned",MPa,record,,,,,,
-CA-3-PPA-22,CA-3-PPA,G8,R1-PPA,conditioned 4,"short-beam shear strength, conditioned",MPa,record,,,,,,
-CA-3-PPA-23,CA-3-PPA,G8,R1-PPA,conditioned 5,"short-beam shear strength, conditioned",MPa,record,,,,,,
-CA-3-PPA-24,CA-3-PPA,G8,R1-PPA,conditioned 6,"short-beam shear strength, conditioned",MPa,record,,,,,,
-CA-3-PPA-25,CA-3-PPA,G8,R1-PPA,conditioned set,"Z tensile, mean - 2.4 SD",MPa,min,31.3,,,,,WET-PPA; LINEAR-Z
-CA-3-PPA-26,CA-3-PPA,G8,R1-PPA,conditioned set,"short-beam shear, mean - 2.4 SD",MPa,min,18.8,,,,,INTERLAYER-0.6
-CA-3-PPA-27,CA-3-PPA,G8,R1-PPA,dry set,Z tensile mean (booked >= 45),MPa,record,,,,,,WET-PPA
-CA-3-PPA-28,CA-3-PPA,G8,R1-PPA,both sets,conditioned / dry Z mean (booked >= 0.73),ratio,record,,,,,,WET-PPA
-CA-1-PPA-01,CA-1-PPA,G8,R1-PPA,XY static 1,"XY tensile strength, conditioned",MPa,record,,,,,,
-CA-1-PPA-02,CA-1-PPA,G8,R1-PPA,XY static 2,"XY tensile strength, conditioned",MPa,record,,,,,,
-CA-1-PPA-03,CA-1-PPA,G8,R1-PPA,XY static 3,"XY tensile strength, conditioned",MPa,record,,,,,,
-CA-1-PPA-04,CA-1-PPA,G8,R1-PPA,Z 1,cycles reached at 0.279 x UTS_z,cycles,min,100000,,,,,FAT-PPA
-CA-1-PPA-05,CA-1-PPA,G8,R1-PPA,Z 2,cycles reached at 0.279 x UTS_z,cycles,min,100000,,,,,FAT-PPA
-CA-1-PPA-06,CA-1-PPA,G8,R1-PPA,Z 3,cycles reached at 0.279 x UTS_z,cycles,min,100000,,,,,FAT-PPA
-CA-1-PPA-07,CA-1-PPA,G8,R1-PPA,Z 4,cycles reached at 0.279 x UTS_z,cycles,min,100000,,,,,FAT-PPA
-CA-1-PPA-08,CA-1-PPA,G8,R1-PPA,Z 5,cycles reached at 0.279 x UTS_z,cycles,min,100000,,,,,FAT-PPA
-CA-1-PPA-09,CA-1-PPA,G8,R1-PPA,Z 6,cycles reached at 0.279 x UTS_z,cycles,min,100000,,,,,FAT-PPA
-CA-1-PPA-10,CA-1-PPA,G8,R1-PPA,XY 1,cycles reached at 0.279 x UTS_xy,cycles,min,100000,,,,,FAT-PPA
-CA-1-PPA-11,CA-1-PPA,G8,R1-PPA,XY 2,cycles reached at 0.279 x UTS_xy,cycles,min,100000,,,,,FAT-PPA
-CA-1-PPA-12,CA-1-PPA,G8,R1-PPA,XY 3,cycles reached at 0.279 x UTS_xy,cycles,min,100000,,,,,FAT-PPA
-CA-1-PPA-13,CA-1-PPA,G8,R1-PPA,XY 4,cycles reached at 0.279 x UTS_xy,cycles,min,100000,,,,,FAT-PPA
-CA-1-PPA-14,CA-1-PPA,G8,R1-PPA,XY 5,cycles reached at 0.279 x UTS_xy,cycles,min,100000,,,,,FAT-PPA
-CA-1-PPA-15,CA-1-PPA,G8,R1-PPA,XY 6,cycles reached at 0.279 x UTS_xy,cycles,min,100000,,,,,FAT-PPA
-CA-4-PPA-01,CA-4-PPA,G8,R1-PPA,"23 C dry, 5 bars",E mean,MPa,record,,,,,,
-CA-4-PPA-02,CA-4-PPA,G8,R1-PPA,"40 C wet, 5 bars",E(40 C wet) / E(23 C dry),ratio,min,0.85,,,,,E-SCALE
-CA-4-PPA-03,CA-4-PPA,G8,R1-PPA,"60 C, 5 bars",E(60 C) / E(23 C dry),ratio,min,0.75,,,,,E-SCALE
-CA-4-PPA-04,CA-4-PPA,G8,R1-PPA,"60 C, 5 bars",flexural strength mean,MPa,min,152,,,,,E-SCALE
-CA-4-PPA-05,CA-4-PPA,G8,R1-PPA,60 C box,thermometer reading during the 60 C tests,C,band,58..62,,,,,BOX-60
-T4c-PPA-01,T4c-PPA,G8,R1-PPA,freezer,thermometer reading at the end of the soak,C,max,-20,,,,,COLD
-T4c-PPA-02,T4c-PPA,G8,R1-PPA,PPA stay 1,"foot-first drop: no crack, no whitening, dye clean, tap clean",Y/N,yes,Y,,,,,COLD
-T4c-PPA-03,T4c-PPA,G8,R1-PPA,PPA stay 1,"side-on drop: no crack, no whitening, dye clean, tap clean",Y/N,yes,Y,,,,,COLD
-T4c-PPA-04,T4c-PPA,G8,R1-PPA,PPA stay 1,"bend at the posted load, 1 min: no crack",Y/N,yes,Y,,,,,COLD
-T4c-PPA-05,T4c-PPA,G8,R1-PPA,PPA stay 2,"foot-first drop: no crack, no whitening, dye clean, tap clean",Y/N,yes,Y,,,,,COLD
-T4c-PPA-06,T4c-PPA,G8,R1-PPA,PPA stay 2,"side-on drop: no crack, no whitening, dye clean, tap clean",Y/N,yes,Y,,,,,COLD
-T4c-PPA-07,T4c-PPA,G8,R1-PPA,PPA stay 2,"bend at the posted load, 1 min: no crack",Y/N,yes,Y,,,,,COLD
-T4c-PPA-08,T4c-PPA,G8,R1-PPA,PPA stay 3,"foot-first drop: no crack, no whitening, dye clean, tap clean",Y/N,yes,Y,,,,,COLD
-T4c-PPA-09,T4c-PPA,G8,R1-PPA,PPA stay 3,"side-on drop: no crack, no whitening, dye clean, tap clean",Y/N,yes,Y,,,,,COLD
-T4c-PPA-10,T4c-PPA,G8,R1-PPA,PPA stay 3,"bend at the posted load, 1 min: no crack",Y/N,yes,Y,,,,,COLD
-T4c-PPA-11,T4c-PPA,G8,R1-PPA,PAHT control,both drops and the bend: no crack (record Y or N),Y/N,record,,,,,,
+FA-H1P-UP-01,FA-H1P-UP,G8,R1-PPA,slicer,shortest layer time (preview),s,record,,,,,,LAYER-H
+FA-H1P-UP-02,FA-H1P-UP,G8,R1-PPA,slicer,median layer time (preview),s,record,,,,,,LAYER-H
+FA-H1P-UP-03,FA-H1P-UP,G8,R1-PPA,plate,largest gap under a pad foot or the brim,mm,max,0.5,,,,,PAD
+FA-H1P-UP-04,FA-H1P-UP,G8,R1-PPA,pads,deepest scar after sanding,mm,max,0.6,,,,,PAD
+FA-H1P-UP-05,FA-H1P-UP,G8,R1-PPA,change,spool change at layer 101: minutes paused,min,max,10,,,,,SPOOL-RESERVE
+FA-H1P-UP-06,FA-H1P-UP,G8,R1-PPA,change,chamber at resume,C,record,,,,,,
+FA-H1P-UP-07,FA-H1P-UP,G8,R1-PPA,filament,filament used (spool weights before and after),g,band,750..916,,,,,SPOOL-RESERVE
+FA-H1P-UP-08,FA-H1P-UP,G8,R1-PPA,half,"mass, pads and supports off",g,band,607..650,,,,,
+CA-3-HW-01,CA-3-HW,G8,R1-PPA,hot/wet 1,"Z tensile strength, hot/wet",MPa,record,,,,,,
+CA-3-HW-02,CA-3-HW,G8,R1-PPA,hot/wet 2,"Z tensile strength, hot/wet",MPa,record,,,,,,
+CA-3-HW-03,CA-3-HW,G8,R1-PPA,hot/wet 3,"Z tensile strength, hot/wet",MPa,record,,,,,,
+CA-3-HW-04,CA-3-HW,G8,R1-PPA,hot/wet 4,"Z tensile strength, hot/wet",MPa,record,,,,,,
+CA-3-HW-05,CA-3-HW,G8,R1-PPA,hot/wet 5,"Z tensile strength, hot/wet",MPa,record,,,,,,
+CA-3-HW-06,CA-3-HW,G8,R1-PPA,hot/wet 6,"Z tensile strength, hot/wet",MPa,record,,,,,,
+CA-3-HW-07,CA-3-HW,G8,R1-PPA,hot/wet 7,"Z tensile strength, hot/wet",MPa,record,,,,,,
+CA-3-HW-08,CA-3-HW,G8,R1-PPA,hot/wet 8,"Z tensile strength, hot/wet",MPa,record,,,,,,
+CA-3-HW-09,CA-3-HW,G8,R1-PPA,hot/wet 9,"Z tensile strength, hot/wet",MPa,record,,,,,,
+CA-3-HW-10,CA-3-HW,G8,R1-PPA,hot/wet 10,"Z tensile strength, hot/wet",MPa,record,,,,,,
+CA-3-HW-11,CA-3-HW,G8,R1-PPA,hot/wet 1,"SBS strength, hot/wet",MPa,record,,,,,,
+CA-3-HW-12,CA-3-HW,G8,R1-PPA,hot/wet 2,"SBS strength, hot/wet",MPa,record,,,,,,
+CA-3-HW-13,CA-3-HW,G8,R1-PPA,hot/wet 3,"SBS strength, hot/wet",MPa,record,,,,,,
+CA-3-HW-14,CA-3-HW,G8,R1-PPA,hot/wet 4,"SBS strength, hot/wet",MPa,record,,,,,,
+CA-3-HW-15,CA-3-HW,G8,R1-PPA,hot/wet 5,"SBS strength, hot/wet",MPa,record,,,,,,
+CA-3-HW-16,CA-3-HW,G8,R1-PPA,hot/wet 6,"SBS strength, hot/wet",MPa,record,,,,,,
+CA-3-HW-17,CA-3-HW,G8,R1-PPA,hot/wet 7,"SBS strength, hot/wet",MPa,record,,,,,,
+CA-3-HW-18,CA-3-HW,G8,R1-PPA,hot/wet 8,"SBS strength, hot/wet",MPa,record,,,,,,
+CA-3-HW-19,CA-3-HW,G8,R1-PPA,hot/wet 9,"SBS strength, hot/wet",MPa,record,,,,,,
+CA-3-HW-20,CA-3-HW,G8,R1-PPA,hot/wet 10,"SBS strength, hot/wet",MPa,record,,,,,,
+CA-3-HW-21,CA-3-HW,G8,R1-PPA,dry 1,"Z tensile strength, dry",MPa,record,,,,,,
+CA-3-HW-22,CA-3-HW,G8,R1-PPA,dry 2,"Z tensile strength, dry",MPa,record,,,,,,
+CA-3-HW-23,CA-3-HW,G8,R1-PPA,dry 3,"Z tensile strength, dry",MPa,record,,,,,,
+CA-3-HW-24,CA-3-HW,G8,R1-PPA,dry 4,"Z tensile strength, dry",MPa,record,,,,,,
+CA-3-HW-25,CA-3-HW,G8,R1-PPA,dry 5,"Z tensile strength, dry",MPa,record,,,,,,
+CA-3-HW-26,CA-3-HW,G8,R1-PPA,dry 6,"Z tensile strength, dry",MPa,record,,,,,,
+CA-3-HW-27,CA-3-HW,G8,R1-PPA,dry 1,"SBS strength, dry",MPa,record,,,,,,
+CA-3-HW-28,CA-3-HW,G8,R1-PPA,dry 2,"SBS strength, dry",MPa,record,,,,,,
+CA-3-HW-29,CA-3-HW,G8,R1-PPA,dry 3,"SBS strength, dry",MPa,record,,,,,,
+CA-3-HW-30,CA-3-HW,G8,R1-PPA,dry 4,"SBS strength, dry",MPa,record,,,,,,
+CA-3-HW-31,CA-3-HW,G8,R1-PPA,dry 5,"SBS strength, dry",MPa,record,,,,,,
+CA-3-HW-32,CA-3-HW,G8,R1-PPA,dry 6,"SBS strength, dry",MPa,record,,,,,,
+CA-3-HW-33,CA-3-HW,G8,R1-PPA,pause 1,"SBS strength, pause",MPa,record,,,,,,
+CA-3-HW-34,CA-3-HW,G8,R1-PPA,pause 2,"SBS strength, pause",MPa,record,,,,,,
+CA-3-HW-35,CA-3-HW,G8,R1-PPA,pause 3,"SBS strength, pause",MPa,record,,,,,,
+CA-3-HW-36,CA-3-HW,G8,R1-PPA,pause 4,"SBS strength, pause",MPa,record,,,,,,
+CA-3-HW-37,CA-3-HW,G8,R1-PPA,pause 5,"SBS strength, pause",MPa,record,,,,,,
+CA-3-HW-38,CA-3-HW,G8,R1-PPA,pause 6,"SBS strength, pause",MPa,record,,,,,,
+CA-3-HW-39,CA-3-HW,G8,R1-PPA,hot/wet set,Z tensile B-basis (mean - 2.355 SD),MPa,min,23.7,,,,,WET-PPA; HOT-40; B-BASIS-N5
+CA-3-HW-40,CA-3-HW,G8,R1-PPA,hot/wet set,SBS B-basis (mean - 2.355 SD),MPa,min,14.2,,,,,INTERLAYER-0.6
+CA-3-HW-41,CA-3-HW,G8,R1-PPA,pause set,pause SBS mean / no-pause hot/wet SBS mean,ratio,min,0.9,,,,,pause layer
+CA-3-HW-42,CA-3-HW,G8,R1-PPA,pause set,pause SBS B-basis (mean - 3.0063 SD),MPa,min,14.2,,,,,pause layer
+CA-3-HW-43,CA-3-HW,G8,R1-PPA,traveller,water uptake at constant mass,%,record,,,,,,WET-PPA
+CA-3-HW-44,CA-3-HW,G8,R1-PPA,both sets,hot/wet / dry Z B-basis (booked 0.621),ratio,record,,,,,,WET-PPA; HOT-40
+CA-1-HW-01,CA-1-HW,G8,R1-PPA,static 1,"SBS strength, hot/wet 40 C",MPa,min,14.2,,,,,FAT-PPA
+CA-1-HW-02,CA-1-HW,G8,R1-PPA,static 2,"SBS strength, hot/wet 40 C",MPa,min,14.2,,,,,FAT-PPA
+CA-1-HW-03,CA-1-HW,G8,R1-PPA,static 3,"SBS strength, hot/wet 40 C",MPa,min,14.2,,,,,FAT-PPA
+CA-1-HW-04,CA-1-HW,G8,R1-PPA,fatigue 1,cycles reached at Smax 5.52 MPa,cycles,min,100000,,,,,FAT-PPA
+CA-1-HW-05,CA-1-HW,G8,R1-PPA,fatigue 2,cycles reached at Smax 5.52 MPa,cycles,min,100000,,,,,FAT-PPA
+CA-1-HW-06,CA-1-HW,G8,R1-PPA,fatigue 3,cycles reached at Smax 5.52 MPa,cycles,min,100000,,,,,FAT-PPA
+CA-1-HW-07,CA-1-HW,G8,R1-PPA,fatigue 4,cycles reached at Smax 5.52 MPa,cycles,min,100000,,,,,FAT-PPA
+CA-1-HW-08,CA-1-HW,G8,R1-PPA,fatigue 5,cycles reached at Smax 5.52 MPa,cycles,min,100000,,,,,FAT-PPA
+CA-1-HW-09,CA-1-HW,G8,R1-PPA,fatigue 6,cycles reached at Smax 5.52 MPa,cycles,min,100000,,,,,FAT-PPA
+CA-1-HW-10,CA-1-HW,G8,R1-PPA,40 C box,thermometer during the runs,C,band,38..42,,,,,HOT-40
+CA-4-HW-01,CA-4-HW,G8,R1-PPA,23 C dry,E mean,MPa,record,,,,,,
+CA-4-HW-02,CA-4-HW,G8,R1-PPA,40 C conditioned,E(40 C conditioned) / E(23 C dry),ratio,min,0.5,,,,,E-HW
+CA-4-HW-03,CA-4-HW,G8,R1-PPA,60 C dry,flexural strength mean - 3.41 SD (record),MPa,record,143,,,,,E-HW
+CA-4-HW-04,CA-4-HW,G8,R1-PPA,60 C box,thermometer reading during the 60 C tests,C,band,58..62,,,,,BOX-60
+T4c-PPA-HW-01,T4c-PPA-HW,G8,R1-PPA,freezer,thermometer at the end of the soak,C,max,-20,,,,,COLD
+T4c-PPA-HW-02,T4c-PPA-HW,G8,R1-PPA,PPA stay 1,"foot-first drop: no crack, no whitening, dye clean",Y/N,yes,Y,,,,,COLD
+T4c-PPA-HW-03,T4c-PPA-HW,G8,R1-PPA,PPA stay 1,"side-on drop: no crack, no whitening, dye clean",Y/N,yes,Y,,,,,COLD
+T4c-PPA-HW-04,T4c-PPA-HW,G8,R1-PPA,PPA stay 1,"cantilever bend 467 N at 120 mm, 1 min: no crack",Y/N,yes,Y,,,,,COLD
+T4c-PPA-HW-05,T4c-PPA-HW,G8,R1-PPA,PPA stay 2,"foot-first drop: no crack, no whitening, dye clean",Y/N,yes,Y,,,,,COLD
+T4c-PPA-HW-06,T4c-PPA-HW,G8,R1-PPA,PPA stay 2,"side-on drop: no crack, no whitening, dye clean",Y/N,yes,Y,,,,,COLD
+T4c-PPA-HW-07,T4c-PPA-HW,G8,R1-PPA,PPA stay 2,"cantilever bend 467 N at 120 mm, 1 min: no crack",Y/N,yes,Y,,,,,COLD
+T4c-PPA-HW-08,T4c-PPA-HW,G8,R1-PPA,PPA stay 3,"foot-first drop: no crack, no whitening, dye clean",Y/N,yes,Y,,,,,COLD
+T4c-PPA-HW-09,T4c-PPA-HW,G8,R1-PPA,PPA stay 3,"side-on drop: no crack, no whitening, dye clean",Y/N,yes,Y,,,,,COLD
+T4c-PPA-HW-10,T4c-PPA-HW,G8,R1-PPA,PPA stay 3,"cantilever bend 467 N at 120 mm, 1 min: no crack",Y/N,yes,Y,,,,,COLD
+T4c-PPA-HW-11,T4c-PPA-HW,G8,R1-PPA,PPA stay 4,"foot-first drop: no crack, no whitening, dye clean",Y/N,yes,Y,,,,,COLD
+T4c-PPA-HW-12,T4c-PPA-HW,G8,R1-PPA,PPA stay 4,"side-on drop: no crack, no whitening, dye clean",Y/N,yes,Y,,,,,COLD
+T4c-PPA-HW-13,T4c-PPA-HW,G8,R1-PPA,PPA stay 4,"cantilever bend 467 N at 120 mm, 1 min: no crack",Y/N,yes,Y,,,,,COLD
+T4c-PPA-HW-14,T4c-PPA-HW,G8,R1-PPA,PPA stay 5,"foot-first drop: no crack, no whitening, dye clean",Y/N,yes,Y,,,,,COLD
+T4c-PPA-HW-15,T4c-PPA-HW,G8,R1-PPA,PPA stay 5,"side-on drop: no crack, no whitening, dye clean",Y/N,yes,Y,,,,,COLD
+T4c-PPA-HW-16,T4c-PPA-HW,G8,R1-PPA,PPA stay 5,"cantilever bend 467 N at 120 mm, 1 min: no crack",Y/N,yes,Y,,,,,COLD
+T4c-PPA-HW-17,T4c-PPA-HW,G8,R1-PPA,PAHT control,both drops and the bend (record),Y/N,record,,,,,,
+T4c-PPA-CROWN-01,T4c-PPA-CROWN,G8,R1-PPA,freezer,thermometer at the end of the soak,C,max,-20,,,,,COLD
+T4c-PPA-CROWN-02,T4c-PPA-CROWN,G8,R1-PPA,PPA crown 1,"corner-first drop: no crack, no whitening",Y/N,yes,Y,,,,,COLD
+T4c-PPA-CROWN-03,T4c-PPA-CROWN,G8,R1-PPA,PPA crown 1,"side-on drop: no crack, no whitening",Y/N,yes,Y,,,,,COLD
+T4c-PPA-CROWN-04,T4c-PPA-CROWN,G8,R1-PPA,PPA crown 1,pawl still locks on the rack,Y/N,yes,Y,,,,,COLD
+T4c-PPA-CROWN-05,T4c-PPA-CROWN,G8,R1-PPA,PPA crown 2,"corner-first drop: no crack, no whitening",Y/N,yes,Y,,,,,COLD
+T4c-PPA-CROWN-06,T4c-PPA-CROWN,G8,R1-PPA,PPA crown 2,"side-on drop: no crack, no whitening",Y/N,yes,Y,,,,,COLD
+T4c-PPA-CROWN-07,T4c-PPA-CROWN,G8,R1-PPA,PPA crown 2,pawl still locks on the rack,Y/N,yes,Y,,,,,COLD
+T4c-PPA-CROWN-08,T4c-PPA-CROWN,G8,R1-PPA,PPA crown 3,"corner-first drop: no crack, no whitening",Y/N,yes,Y,,,,,COLD
+T4c-PPA-CROWN-09,T4c-PPA-CROWN,G8,R1-PPA,PPA crown 3,"side-on drop: no crack, no whitening",Y/N,yes,Y,,,,,COLD
+T4c-PPA-CROWN-10,T4c-PPA-CROWN,G8,R1-PPA,PPA crown 3,pawl still locks on the rack,Y/N,yes,Y,,,,,COLD
+T4c-PPA-CROWN-11,T4c-PPA-CROWN,G8,R1-PPA,PAHT control,drops (record),Y/N,record,,,,,,
+CLEVIS-SHARE-B-PPA-01,CLEVIS-SHARE-B-PPA,G8,R1-PPA,pair 1,"u1, shim on the outer cheek, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PPA-02,CLEVIS-SHARE-B-PPA,G8,R1-PPA,pair 1,"u, as built, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PPA-03,CLEVIS-SHARE-B-PPA,G8,R1-PPA,pair 2,"u1, shim on the outer cheek, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PPA-04,CLEVIS-SHARE-B-PPA,G8,R1-PPA,pair 2,"u, as built, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PPA-05,CLEVIS-SHARE-B-PPA,G8,R1-PPA,pair 3,"u1, shim on the outer cheek, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PPA-06,CLEVIS-SHARE-B-PPA,G8,R1-PPA,pair 3,"u, as built, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PPA-07,CLEVIS-SHARE-B-PPA,G8,R1-PPA,all pairs,largest share u / u1,ratio,max,0.79,,,,,US2 clevis fatigue (share)
+US2-LUG-PPA-01,US2-LUG-PPA,G8,R1-PPA,traveller,uptake at the test (days conditioned in the notes),%,record,,,,,,LUG-COND
+US2-LUG-PPA-02,US2-LUG-PPA,G8,R1-PPA,proof,"feeler at 694 N, 60 s: does not enter",Y/N,yes,Y,,,,,US2 lug fatigue
+US2-LUG-PPA-03,US2-LUG-PPA,G8,R1-PPA,cycles,cycles reached at 463 N,cycles,min,100000,,,,,US2 lug fatigue
+US2-LUG-PPA-04,US2-LUG-PPA,G8,R1-PPA,end,"no crack (loupe) at the lug root, arm root, cheeks, bolt holes",Y/N,yes,Y,,,,,US2 lug fatigue
+US2-LUG-PPA-05,US2-LUG-PPA,G8,R1-PPA,end,gauge peak at the end / at 1e3,ratio,band,0.9..1.1,,,,,US2 lug fatigue
+T4b-PPA-COLD-01,T4b-PPA-COLD,G8,R1-PPA,freezer,thermometer at the end of the soak,C,max,-20,,,,,COLD
+T4b-PPA-COLD-02,T4b-PPA-COLD,G8,R1-PPA,P1,HA-LS-1 T4b rule + no crack along a layer,Y/N,yes,Y,,,,,COLD
+T4b-PPA-COLD-03,T4b-PPA-COLD,G8,R1-PPA,P1,hip paint marks unmoved,Y/N,yes,Y,,,,,CTE-Z
+T4c-PPA-COLD-01,T4c-PPA-COLD,G8,R1-PPA,freezer,thermometer at the end of the soak,C,max,-20,,,,,COLD
+T4c-PPA-COLD-02,T4c-PPA-COLD,G8,R1-PPA,P1,"HA-LS-1 T4c rule; no crack at the crown corners, pawl housing, upper bar",Y/N,yes,Y,,,,,COLD

@@ -122,5 +122,6 @@ Nothing here is decided; the tickets produce the material.
 | BL-071 | Wire H1-P into BUILD, test kit and register: PPA coupons, through-bolt hip, H2S print sheet | manufacturing-engineer | M | 070 | done: PPA path wired (G8, R1-PPA); frame on HOLD (review 8), torque TBD (BL-073) |
 | BL-072 | Review 8: independent review of BL-069/BL-070 | design-reviewer | S | 070 | done: 2 blockers, 8 majors |
 | BL-073 | Close review-8 frame findings on H1-P (B-1, B-2, M-1, M-2, M-3, M-4, M-5, M-6, M-7, M-8) | structural-fea-engineer | L | 072 | done: p3 1312.1 g; lug/clevis gated by tests |
-| BL-074 | Rebuild PPA build pack and kit from BL-073 (coupons_bl073, bearing ring, 0.6 N·m, M5×35, z 234 bolt positions, pads, filament-change heights) | manufacturing-engineer | M | 073 | full suite green |
+| BL-074 | Rebuild PPA build pack and kit from BL-073 (coupons_bl073, bearing ring, 0.6 N·m, M5×35, z 234 bolt positions, pads, filament-change heights) | manufacturing-engineer | M | 073 | done: 1485 passed; 10 spools |
 | BL-075 | Hip hardware stack (~10 mm aft of boss) vs bag and lumbar pad clearance | pack-designer | S | 073 | done: clears, 0 g |
+| BL-076 | H1-P leftovers from BL-074: ring edge distance, OPEN section, SHARE-GAUGE, spool booking | structural-fea-engineer | S | 074 | no FOUND item open |

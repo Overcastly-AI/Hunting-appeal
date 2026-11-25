@@ -1,6 +1,6 @@
 # Shopping list (BL-038)
 
-Total **USD 2,896.77**. Prices from material records, cited shop pages (links), or marked ASSUMPTION (check at purchase). Cited or record-priced: USD 1,044.54; ASSUMPTION: USD 1,852.23. Prices checked 2026-11-10 (TEST_PLAN §4) and 2026-11-13.
+Total **USD 2,908.77**. Prices from material records, cited shop pages (links), or marked ASSUMPTION (check at purchase). Cited or record-priced: USD 1,044.54; ASSUMPTION: USD 1,864.23. Prices checked 2026-11-10 (TEST_PLAN §4) and 2026-11-13.
 
 **Order these first (long lead):**
 
@@ -13,12 +13,12 @@ Total **USD 2,896.77**. Prices from material records, cited shop pages (links), 
 
 | kit | USD |
 |---|---:|
-| Kit A pull bench | 268.68 |
-| Kit D measuring | 165.46 |
-| Kit B lever rig | 516.58 |
+| Kit A pull bench | 288.68 |
+| Kit D measuring | 202.46 |
+| Kit B lever rig | 471.58 |
 | Kit C frame stand | 227.39 |
 | Specimens and lab | 1,718.66 |
-| **total** | **2,896.77** |
+| **total** | **2,908.77** |
 
 Not in this list: the bag, harness and belt materials themselves (pack BOM, `outputs/release/pack5200_corrie_f_rev3/manufacturing/bom.csv`). Swatches are cut from that fabric order, so buy the bag fabric with the kit. You already own (kit E): washing machine, winter gloves, freezer, hose, tape, paint pen, phone.
 
@@ -41,6 +41,7 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | bar clamps: 2 pairs Al 150 x 25 x 10, M6 bolts, grit cloth | 1 set | 15.00 | hardware store; ASSUMPTION (shop price, check at purchase) | PT-2, PT-3, FS-O5 |
 | safety: glasses, gloves, moving blanket, back-up sling | 1 set | 20.00 | hardware store; ASSUMPTION (shop price, check at purchase) | all |
 | calibration jug 20 L | 1 each | 10.00 | hardware store; ASSUMPTION (shop price, check at purchase) | scale check |
+| steel slugs 2.8 kg and 2.0 kg (bar offcuts, drilled 5 mm) | 1 set | 20.00 | metal supplier offcuts; ASSUMPTION (shop price, check at purchase) | T4c-PPA-HW, T4c-PPA-CROWN |
 
 ## Kit B lever rig
 
@@ -69,9 +70,7 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | 40 C box: cooler + 60 W heater + thermostat | 1 set | 35.00 | hardware store; ASSUMPTION (shop price, check at purchase) | CA-3, CA-4, CS-1 |
 | 3-point bend fixture | 1 set | 10.00 | hardware store; ASSUMPTION (shop price, check at purchase) | CA-3, BP-1 |
 | SD-card logger module + USB power bank (MT-1c, logs while the rig moves) | 1 set | 15.00 | electronics shop; ASSUMPTION (shop price, check at purchase) | MT-1c |
-| S-type load cell 200 kg (the Makerfabs listing covers 100-500 kg) | 1 each | 30.00 | Makerfabs; ASSUMPTION (shop price, check at purchase); listing https://www.makerfabs.com/s-type-load-cell-100kg-200kg-300kg-500kg-1.html | CA-1-PPA XY static pulls (ASSUMPTION LEVER-XY) |
-| second 6061 flat bar 40 x 10 x 600 + 2 x M8 bolts (doubles the lever for the XY statics) | 1 set | 15.00 | hardware store; ASSUMPTION (shop price, check at purchase) | CA-1-PPA XY static pulls |
-| short-beam pins: 2 x D3 + 1 x D6 hardened dowels, 30 mm, on a 16 mm span block | 1 set | 10.00 | hardware store / Zoro; ASSUMPTION (shop price, check at purchase) | CA-3-PPA |
+| short-beam jig pins: 2 x D3 + 1 x D6 hardened dowels, 30 mm, on a 12 mm span block | 1 set | 10.00 | hardware store / Zoro; ASSUMPTION (shop price, check at purchase) | CA-3-HW, CA-1-HW |
 
 ## Kit C frame stand
 
@@ -101,7 +100,9 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | compression-set jig: 2 Al plates 100 x 100 x 6, 3.0 + 2.5 mm spacers, 4 M6 | 1 set | 10.00 | hardware store; ASSUMPTION (shop price, check at purchase) | CS-1 |
 | stiff nylon scrub brush + 2 kg weight | 1 set | 5.00 | hardware store; ASSUMPTION (shop price, check at purchase) | AB-1 |
 | phyphox app | 1 each | 0.00 | [free](https://apps.apple.com/app/phyphox/id1127319693) | HB-2, T4a, GT-1 |
-| dye penetrant kit (cleaner, red penetrant, developer) | 1 set | 15.00 | welding supply; ASSUMPTION (shop price, check at purchase) | T4c-PPA |
+| jewellery scale 0.001 g, 50 g capacity (traveller weighing to constant mass) | 1 each | 25.00 | Amazon / any; ASSUMPTION (shop price, check at purchase) | CA-3-HW, CA-1-HW, CA-4-HW, US2-LUG-PPA |
+| non-iodised salt 1 kg + 2 L sealed glass jar with a rack (50 C NaCl conditioning) | 1 set | 12.00 | grocery / hardware store; ASSUMPTION (shop price, check at purchase) | CA-3-HW, CA-1-HW, CA-4-HW |
+| dye penetrant kit (cleaner, red penetrant, developer) | 1 set | 15.00 | welding supply; ASSUMPTION (shop price, check at purchase) | T4c-PPA-HW, T4c-PPA-CROWN |
 
 ## Specimens and lab
 
