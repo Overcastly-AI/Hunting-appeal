@@ -1,0 +1,215 @@
+{
+ "ticket": "BL-075",
+ "date": "2026-11-25",
+ "inputs": {
+  "frame": "designs/pack_5200/iter1/frame/h1p/h1_assembled.stl",
+  "bl073": "designs/pack_5200/iter1/frame/bl070_h1p.json"
+ },
+ "planes": {
+  "face_y": -48.55,
+  "back_y": -26.5
+ },
+ "stack": {
+  "ring": {
+   "r": 23.5,
+   "y": [
+    -26.5,
+    -24.5
+   ]
+  },
+  "keeper": {
+   "r": 24.25,
+   "y": [
+    -24.5,
+    -21.5
+   ]
+  },
+  "nuts": {
+   "r": 4.62,
+   "y": [
+    -24.5,
+    -20.5
+   ]
+  },
+  "tails": {
+   "r": 2.5,
+   "y": [
+    -20.5,
+    -16.5
+   ]
+  },
+  "nut_m": 4.0,
+  "keeper_t": 3.0,
+  "ring_t": 2.0,
+  "tip_y": -16.5,
+  "aft_mm": 10.0
+ },
+ "frame": {
+  "ring": {
+   "min_mm": 0.99,
+   "at": [
+    23.4,
+    -26.4,
+    127.1
+   ]
+  },
+  "keeper": {
+   "min_mm": 0.95,
+   "at": [
+    21.8,
+    -25.4,
+    108.8
+   ]
+  },
+  "nuts": {
+   "min_mm": 1.87,
+   "at": [
+    23.8,
+    -26.2,
+    125.6
+   ]
+  },
+  "tails": {
+   "min_mm": 6.06,
+   "at": [
+    18.5,
+    -26.6,
+    121.9
+   ]
+  },
+  "rim_lip": {
+   "r_min_mm": 24.49,
+   "proud_of_back_mm": 3.68
+  }
+ },
+ "bag": {
+  "spreader": {
+   "key": "sw110c7d",
+   "t_mm": 7.44,
+   "crown_y": {
+    "min": 5.51,
+    "max": 9.71
+   },
+   "wearer_face_y": 5.51,
+   "w_fact_max_mm": 3.53,
+   "w_where": "x 0, z 124",
+   "gap_nominal_mm": 22.0,
+   "gap_factored_mm": 18.5,
+   "bottom_edge_z": 112.0
+  },
+  "b01": {
+   "y_at_tails": [
+    18.02,
+    17.45
+   ],
+   "gap_mm": 33.9,
+   "tails_z": [
+    104.8,
+    135.2
+   ],
+   "floor_seam_z": 35.0,
+   "bay_span_mm": 77.0,
+   "strain_needed": 0.518,
+   "strain_needed_arc": 0.457,
+   "strain_cap": 0.05,
+   "bulge_at_cap_mm": 10.5,
+   "clears": true
+  }
+ },
+ "wearer": {
+  "aft_is": "+y: away from the wearer's back, toward the bag",
+  "mount_face_y": -48.55,
+  "flat_back_y": -26.5,
+  "boss_depth_mm": 22.05,
+  "tail_tip_y": -16.5,
+  "solid_between_tails_and_wearer_side_mm": 25.05,
+  "tail_tip_to_mount_face_mm": 32.05,
+  "head_top_y": -55.05,
+  "hub_top_y": -76.65,
+  "heads_below_hub_face_mm": 21.6,
+  "heads_changed_by_bl073": false
+ },
+ "protrusion": {
+  "stack_nom_mm": 31.0,
+  "stack_max_mm": 31.35,
+  "stack_min_mm": 30.35,
+  "need_proud_mm": 2.1,
+  "shortest_length_needed_mm": 33.95,
+  "standard": {
+   "M5x30": {
+    "min_proud_mm": -1.85,
+    "max_proud_mm": 0.15,
+    "ok_2_threads": false
+   },
+   "M5x35": {
+    "min_proud_mm": 3.15,
+    "max_proud_mm": 5.15,
+    "ok_2_threads": true
+   },
+   "M5x40": {
+    "min_proud_mm": 8.15,
+    "max_proud_mm": 10.15,
+    "ok_2_threads": true
+   }
+  },
+  "shortest_standard_ok": 35
+ },
+ "fixes": {
+  "none (keep M5 x 35, no part)": {
+   "g": 0.0,
+   "works": true,
+   "why": "nothing reaches the tails in any carry mode (sections 2-4)"
+  },
+  "shorter screw (cut 35 -> needed length)": {
+   "g": -0.53,
+   "works": true,
+   "why": "no standard length between 33.95 and 35; cutting saves 1.0 mm per screw"
+  },
+  "8 TPU push-on caps": {
+   "g": 1.45,
+   "works": true,
+   "why": "covers the thread ends; can be lost"
+  },
+  "keeper grown into a closed cover (PPA-CF)": {
+   "g": 3.65,
+   "works": true,
+   "why": "one part, hides nuts and tails; reprint the keeper"
+  },
+  "B-01 doubler 60 x 60 (ULTRA 200X)": {
+   "g": 0.48,
+   "works": true,
+   "why": "protects B-01 only; B-01 is 34 mm away already"
+  },
+  "lumbar foam relief cut-out": {
+   "g": 0.0,
+   "works": false,
+   "why": "the foam is on the wearer side; no tail points at it"
+  }
+ },
+ "assumptions": {
+  "B01-STRAIN": {
+   "text": "B-01 (ULTRA 200X: UHMWPE / HT-polyester face, 45 deg CrossPly, PET film) strains at most 5 % before the face yarns fail; no elongation is published (record challenge_ultra_200 has none). Used only as the bound that B-01 cannot bulge into the bottom bay as deep as the tails.",
+   "settled_by": "PT-3 strip pull on ULTRA 200X (already in the register): record the elongation at break"
+  },
+  "SPREADER-REV-C": {
+   "text": "The BP-06 Sandwich v2 sits on the stay crowns with its wearer face at the LOWEST crown height in its bottom band (z 112-145 on the H1-P STL): the conservative (closest-to-wearer) reading; its factored deflection is spreader_results.json chosen.w_fact_max.",
+   "settled_by": "first H1-P frame dry fit with the spreader clipped on: feeler gauge from a tail tip to the sheet"
+  },
+  "STACK-TOL": {
+   "text": "Stack and length tolerances for the protrusion band: boss 22 +/- 0.2 (print), ring 2 +/- 0.1 (sheet), DIN 934 m 4.0 -0.3, Ti mount base 3 +/- 0.05; DIN 7984 M5 x 35 length js15 +/- 0.5; end chamfer about one thread depth (0.5 mm, ISO 4753).",
+   "settled_by": "BUILD_H1P hip step: measure tail protrusion with calipers on all 8 after torque"
+  },
+  "PADSEAT-ROUTE": {
+   "text": "The lumbar pad-seat bottom cord tie (BL-006 f1, 2 mm Dyneema) has no drawn route on H1-P; it is taken round the lower lumbar struts outboard of |x| 35 mm, not across the boss back.",
+   "settled_by": "HB-D3 pad-seat retention fit on the first H1-P frame"
+  }
+ },
+ "clears": {
+  "frame": true,
+  "bag_spreader": true,
+  "bag_b01": true,
+  "wearer_side": true,
+  "hipbelt": true
+ },
+ "fix": "none (keep M5 x 35, no part)"
+}
