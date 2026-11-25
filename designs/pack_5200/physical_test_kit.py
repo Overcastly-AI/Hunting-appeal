@@ -2689,8 +2689,6 @@ def H1P_shopping() -> list[dict]:
         _l("short-beam pins: 2 x D3 + 1 x D6 hardened dowels, 30 mm, on a 16 mm span block", 1, "set", 10.00,
            "hardware store / Zoro", A, "B", "CA-3-PPA"),
         _l("dye penetrant kit (cleaner, red penetrant, developer)", 1, "set", 15.00, "welding supply", A, "D", "T4c-PPA"),
-        _l("PPA-CF spools (4), 120 C dryer, hip bolts and nuts: on the BUILD_H1P BOM, bought there", 1, "note", 0.0,
-           "see designs/pack_5200/print/frame_h1p/BUILD_H1P.md section 1", "BUILD_H1P BOM", "B", "G8"),
     ]
 
 
@@ -3032,7 +3030,9 @@ PREP = {
     "G8": ["**Before:** the PPA-CF spools, the 120 C dryer and the hip hardware are bought "
            "(`designs/pack_5200/print/frame_h1p/BUILD_H1P.md` section 1). Print the coupons as "
            "`COUPONS_H1P.md` section 2 says: job A (flat) and job B (standing Z bars) from spool 1. "
-           "**No H1-P frame half is printed before CA-3-PPA and CA-1-PPA pass.** HB-6-PPA is not needed (through-bolts).", ""],
+           "**No H1-P frame half is printed before CA-3-PPA and CA-1-PPA pass.** HB-6-PPA is not needed (through-bolts).", "",
+           f"> **{H1P.HOLD}.** Review 8 holds the H1-P frame; the coupons may be printed now, but BL-073 is re-specifying "
+           "their pass lines (`COUPONS_H1P.md` section 9). Re-read this guide before you run a test.", ""],
     "G4": ["**Before:** the coupons have had their 7 days (G1). Build the rig (one weekend, `CA1_fatigue_rig.md` 4) "
            "and calibrate it with the 20 L jug. Sew the 3 SEW-F box-X loops with the MT-1 loops (G2 prep).", ""],
 }

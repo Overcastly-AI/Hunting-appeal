@@ -12,7 +12,8 @@
   "ca4_flex60_mpa: JSON text 152 vs recomputed 151.8400 OK",
   "gate coupons 471 g = 0.63 spool; swap reserve fits: True",
   "T4c stays 832 g (4th spool)",
-  "hip torque 0.15 N m (calc 0.164); screw tip vs nut top +0.0 mm",
+  "hip torque: TBD by BL-073 (review 8 B-1): ASSUMPTION, no value set; screw tip vs nut top +0.0 mm",
+  "review 8 rows read: ['B-1', 'B-2', 'M-1', 'M-2', 'M-3', 'M-4', 'M-5', 'M-6', 'M-7', 'M-8']",
   "cost {'filament_frame_usd': 449.97, 'filament_t4c_usd': 149.99, 'hip_hw_usd': 32.5, 'dryer_usd': 376.9, 'tools_usd': 482.9, 'per_frame_usd': 482.47, 'first_frame_all_usd': 1115.36}"
  ],
  "cost": {

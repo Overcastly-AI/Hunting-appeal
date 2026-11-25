@@ -72,7 +72,6 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | S-type load cell 200 kg (the Makerfabs listing covers 100-500 kg) | 1 each | 30.00 | Makerfabs; ASSUMPTION (shop price, check at purchase); listing https://www.makerfabs.com/s-type-load-cell-100kg-200kg-300kg-500kg-1.html | CA-1-PPA XY static pulls (ASSUMPTION LEVER-XY) |
 | second 6061 flat bar 40 x 10 x 600 + 2 x M8 bolts (doubles the lever for the XY statics) | 1 set | 15.00 | hardware store; ASSUMPTION (shop price, check at purchase) | CA-1-PPA XY static pulls |
 | short-beam pins: 2 x D3 + 1 x D6 hardened dowels, 30 mm, on a 16 mm span block | 1 set | 10.00 | hardware store / Zoro; ASSUMPTION (shop price, check at purchase) | CA-3-PPA |
-| PPA-CF spools (4), 120 C dryer, hip bolts and nuts: on the BUILD_H1P BOM, bought there | 1 note | 0.00 | see designs/pack_5200/print/frame_h1p/BUILD_H1P.md section 1; BUILD_H1P BOM | G8 |
 
 ## Kit C frame stand
 

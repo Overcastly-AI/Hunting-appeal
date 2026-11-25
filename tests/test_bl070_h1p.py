@@ -96,9 +96,14 @@ def test_hip_inserts_paht_reproduces_bl055_and_ppa_needs_the_through_bolt():
     assert h["abs_z"]["capacity"]["static_n"] == pytest.approx(1200 * 0.73 * 45 / 88, abs=0.2)
     assert h["hb6_ppa_min_static_n"] == pytest.approx(488.0, abs=1.0)
     assert h["abs_z"]["min_sf"]["fatigue"] < 1.15 and h["record_rule"]["min_sf"]["fatigue"] < 1.15
-    assert h["through_bolt"]["pass"]
-    ring = math.pi / 4 * (P.NUT_WASHER_OD ** 2 - P.NUT_HOLE_D ** 2)
+    # review 8 B-1: the BL-070 hex-trap seat bears on the nut face only (dw 6.9, ISO 4032 / DIN 934 M5), not a D10
+    # washer: 13.6 mm2, and the fatigue row fails its 1.15 goal (1.06). H1-P uses the BL-073 bearing ring instead.
+    assert P.NUT_WASHER_OD == pytest.approx(6.9)
+    ring = math.pi / 4 * (6.9 ** 2 - P.NUT_HOLE_D ** 2)
+    assert ring == pytest.approx(13.6, abs=0.05)
     assert h["through_bolt"]["bearing_n"] == pytest.approx(ring * 0.73 * 45, abs=0.1)
+    assert h["through_bolt"]["min_sf"]["fatigue"] == pytest.approx(1.06, abs=0.01)
+    assert not h["through_bolt"]["pass"]
 
 
 # ------------------------------------------------------------------------------------------------ geometry rules
@@ -134,8 +139,8 @@ def test_record_h1p_rows_meet_goals_on_exported_geometry():
     r = json.loads(REC.read_text())
     h = r["h1p"]
     assert h["checked_on"].startswith("exported STL re-rastered")
-    for row in h["rows"]:
-        assert row["value"] >= row["goal"] - 1e-9, row
+    for row in h["rows"]:        # BL-073: a row below its goal on the hot/wet basis must name the test that gates it
+        assert row["value"] >= row["goal"] - 1e-9 or row.get("gated_by"), row
     assert h["rows_by_name"]["fatigue, cinch-cycled (R1)"]["value"] >= 1.0
 
 
@@ -155,10 +160,9 @@ def test_record_mass_and_print_files():
 @pytest.mark.skipif(not REC.exists(), reason="run python -m huntkit.gendesign.bl070_h1p report")
 def test_checked_raster_is_the_exported_stl():
     """RUBRIC 1: the H1-P rows were computed on the exported assembled STL re-rastered, not on the design voxels."""
-    r = json.loads(REC.read_text())
-    npz = P.OUT / f"{r['h1p']['final_iter']}_solid.npz"
+    npz = P.STL_DIR / "h1p_checked_raster.npz"     # review 8 m-3: tracked with the STLs (was the scratch cache)
     if not npz.exists():
-        pytest.skip("outputs/bl070 cache not present (scratch)")
+        pytest.skip("run python -m huntkit.gendesign.bl073_hotwet report")
     solid, _ = P.reraster()
     checked = np.load(npz)["solid"]
     assert np.array_equal(solid, checked)

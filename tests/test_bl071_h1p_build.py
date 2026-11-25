@@ -85,20 +85,35 @@ def test_coupons_are_about_one_spool_and_the_spool_plan_closes(pk):
     assert by["CA-1-PPA fatigue"]["count"] == 7 and by["CA-4-PPA, 3 conditions"]["count"] == 16
 
 
-def test_hip_through_bolts_torque_traces_and_inserts_are_gone(pk):
+def test_hip_through_bolts_torque_tbd_and_inserts_are_gone(pk):
     h = pk["hip"]
     assert h["n"] == 8 and h["screw_len"] == pytest.approx(h["flange_t"] + h["seat"] + h["nut_t"])
-    assert h["torque"] <= h["torque_calc"] < h["torque"] + 0.05
-    assert h["f_pre"] == pytest.approx(h["rup"] * h["z_allow"] * h["a_dw"] / P.CREEP_GOAL)
+    # review 8 B-1: no torque is invented; it is ASSUMPTION / TBD from BL-073
+    assert h["torque"] is None and "TBD" in h["torque_txt"] and "ASSUMPTION" in h["torque_txt"]
     b = pk["docs"]["BUILD_H1P.md"]
     sec5 = b.split("## 5. Hip mount")[1].split("## 6.")[0]
-    assert "TB-TORQUE" in sec5 and f"{h['torque']:.2f} N m" in sec5 and "in lbf" in sec5
+    assert "TBD" in sec5 and "TORQUE-TBD" in sec5 and not re.search(r"Torque: \*?\*?\d", sec5)
     assert "soldering" not in sec5.lower() and "insert-setting guide" not in sec5.lower()
     assert "heat-set" not in sec5.lower()
-    assert "TB-TORQUE" in P.ASSUMPTIONS and "K-NUT" in P.ASSUMPTIONS
+    assert "TORQUE-TBD" in P.ASSUMPTIONS
     items = [x.item for x in P.bom()]
     assert any("M5 x 20" in i and "DIN 7984" in i for i in items) and any("DIN 934" in i for i in items)
     assert not any("heat-set" in i.lower() for i in items)
+    assert "13.6 mm2" in b and "B-1" in b                        # the nut-face finding is written up
+
+
+def test_review8_hold_and_findings(pk, kit):
+    d = pk["docs"]
+    for name in ("PRINT_SHEET_H2S.md", "BUILD_H1P.md", "COUPONS_H1P.md", "README.md"):
+        assert P.HOLD in d[name], name
+    assert "Coupon prints are allowed" in d["COUPONS_H1P.md"]
+    rv = P.review8_rows()
+    assert {"B-1", "B-2", "M-3", "M-4", "M-6", "M-7", "M-8"} <= set(rv)
+    sec9 = d["COUPONS_H1P.md"].split("## 9.")[1]
+    for k in ("M-3", "M-4", "M-6", "M-7", "M-8"):
+        assert f"**{k}**" in sec9 and rv[k]["found"] in sec9, k
+    for t in PPA_TESTS:
+        assert "REVIEW 8" in kit["register"][t]["notes"], t
 
 
 def test_print_sheet_values_and_sources(pk):
@@ -155,4 +170,4 @@ def test_sheets_are_beginner_steps_with_imperial():
     for t in PPA_TESTS:
         assert len(st[t]) >= 6, t
         txt = " ".join(st[t])
-        assert re.search(r"\(\d+(\.\d+)? ?(in|F|lb|lbf)\)", txt) or " F)" in txt or "in)" in txt, t
+        assert re.search(r"\d[\d,]*(\.\d+)? ?(in|F|lb|lbf|oz)\b", txt), t

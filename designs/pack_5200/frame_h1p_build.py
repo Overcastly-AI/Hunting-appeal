@@ -89,6 +89,9 @@ CREEP_GOAL = 1.5        # hip mount creep goal (bl070_h1p.json h1p.hip_mount row
 MOUNT_SEAT_N = 20.0     # BUILD_H1 section 12 step 5 (ASSUMPTION MOUNT-SEAT there)
 
 FACE_DOWN = "y/y (as printed)"
+HOLD = "HOLD — not released (review 8 B-1/B-2)"
+REVIEW8 = AN / "review_20261125_eighth.md"
+TORQUE_TBD = "TBD by BL-073 (review 8 B-1): ASSUMPTION, no value set"
 FREEZER_C = -20.0       # T4c-PPA soak (bl070_h1p.json)
 COND_RH_BOX = 53.0      # the kit's magnesium nitrate box (physical_test_kit G1), against the 50 % the JSON names
 
@@ -128,6 +131,19 @@ def _yield_6061() -> float:
         return float(record("alu_6061_t6")["properties"]["yield_strength_mpa"])
     except Exception:                                         # pragma: no cover
         return AL6061_YIELD
+
+
+def review8_rows() -> dict:
+    """Review 8's summary table rows ('| id | class | what | booked | found | where |'), read at generation time."""
+    out = {}
+    if not REVIEW8.exists():
+        return out
+    for line in REVIEW8.read_text(encoding="utf-8").splitlines():
+        m = re.match(r"^\|\s*([BM]-\d+)\s*\|\s*(\w+)\s*\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|", line)
+        if m:
+            out[m.group(1)] = {"class": m.group(2), "what": m.group(3).strip(), "booked": m.group(4).strip(),
+                               "found": m.group(5).replace("**", "").strip(), "where": m.group(6).strip()}
+    return out
 
 
 def coupons() -> dict:
@@ -352,8 +368,7 @@ def hip() -> dict:
     a_dw = math.pi / 4 * (NUT_DW_MIN ** 2 - nut_hole ** 2)
     rup = ppa()["properties"]["creep_rupture_8h_40c_ratio"]
     f_pre = rup * z_allow * a_dw / CREEP_GOAL
-    torque = K_NUT * 5.0 / 1000.0 * f_pre
-    torque_spec = math.floor(torque / 0.05) * 0.05            # round DOWN to the 0.05 N m a torque driver sets
+    torque = K_NUT * 5.0 / 1000.0 * f_pre                      # information for BL-073 only, NOT a build value
     grip = fl["t_mm"] + hm["nut_seat_depth_mm"]
     rows = hm["rows"]
     walk = rows["walk|H_frame"]["T_max_n"]
@@ -367,7 +382,7 @@ def hip() -> dict:
             "grip": grip, "screw_len": 20.0, "tip_vs_nut_top_mm": 20.0 - grip - JOINT.nut_t,
             "hole_d": nut_hole, "mount_hole_d": json.loads((AN / "bl058.json").read_text())["hip_mount"]["hole_d_mm"],
             "z_allow": z_allow, "a_dw": a_dw, "a_model": hm["bearing_ring_mm2"], "rup": rup, "f_pre": f_pre,
-            "torque_calc": torque, "torque": torque_spec, "min_sf": hm["min_sf"], "hardware": hm["hardware"],
+            "torque_info_creep_cap": torque, "torque": None, "torque_txt": TORQUE_TBD, "min_sf": hm["min_sf"], "hardware": hm["hardware"],
             "nut_bear_n_dw": nut_bear_n, "sf_strength_dw": nut_bear_n / c2, "sf_fatigue_dw": fat * nut_bear_n / walk,
             "sf_creep_dw": rup * nut_bear_n / carry}
 
@@ -516,6 +531,11 @@ def register_rows() -> list[dict]:
              hours_hands_on="0", hours_machine="", phase="-", run_order="", first_weekend="N",
              notes=f"BL-071: NOT NEEDED while through-bolts are used ({hm['hardware']})", g_per_usd_eq=""),
     ]
+    rv = review8_rows()
+    for r in rows:
+        if r["status"] == "ACTIVE" and rv:
+            r["notes"] += (f". REVIEW 8: the H1-P frame is on {HOLD}; these pass lines are BL-070's and BL-073 is "
+                           "re-specifying them (COUPONS_H1P.md section 9: " + ", ".join(k for k in ("B-2", "M-3", "M-4", "M-6", "M-7", "M-8") if k in rv) + ")")
     for r in rows:
         assert list(r) == REG_COLS or set(r) == set(REG_COLS), set(r) ^ set(REG_COLS)
     return rows
@@ -598,8 +618,8 @@ def bom() -> list:
                 notes="NOT ISO 4032 (4.4-4.7 mm thick); caliper each <= 4.1 mm", proto_qty=hm["n"] + 2),
         BOMLine("hip mount", "Loctite 243 medium-strength threadlocker, 10 ml", "", 1, "bottle", 0.0, 9.00, 9.00,
                 kit="FRAME", source=A, notes="one drop per screw, on the screw thread only (keep it off the print)"),
-        BOMLine("tools", "torque screwdriver 0.1-0.6 N m (1-5 in lbf) with a 3 mm hex bit", "", 1, "each", 0.0, 60.00, 60.00,
-                kit="TOOL", source=A, notes=f"hip nut torque {hm['torque']:.2f} N m is below the PAHT path's 0.5-2.5 N m driver"),
+        BOMLine("tools", "small torque screwdriver with a 3 mm hex bit, range to suit the hip nut torque", "", 1, "each", 0.0, 60.00, 60.00,
+                kit="TOOL", source=A, notes=f"hip nut torque {hm['torque_txt']}; buy when it is set (it may sit below the PAHT path's 0.5-2.5 N m driver)"),
         BOMLine("tools", DRYER["item"], "", 1, "each", 0.0, DRYER["usd"], DRYER["usd"], kit="TOOL (one-time)",
                 source=DRYER["source"], notes="PPA-CF drying 100-140 C, 8-12 h (record ppa_cf_fdm, Bambu TDS); DECISIONS 2026-11-25: >= 120 C"),
         BOMLine("tools", "spare hardened-steel 0.6 mm H2 nozzle", "", 1, "each", 0.0, 40.00, 40.00, kit="TOOL", source=A,
@@ -635,6 +655,9 @@ ASSUMPTIONS = {
                  "lever for those 3 pulls only (fatigue loads stay inside the rig as built).", "engineer check of the rig before the XY statics"),
     "BOX-60": ("The 40 C box (cooler + 60 W heater + thermostat) holds 60 C for the CA-4-PPA 60 C set.", "the thermometer row in the results sheet"),
     "FREEZER": ("A chest freezer on its coldest setting reaches -20 C; a home upright freezer often holds only -18 C.", "the thermometer row in the results sheet"),
+    "TORQUE-TBD": ("The H1-P hip nut torque is not set. Review 8 B-1 found the D10 washer of NUT-BEAR cannot fit the hex trap, "
+                   "and on the nut's own face the fatigue row reads below its goal; BL-073 owns the fix and the torque.",
+                   "BL-073, then HB-6b on the first H1-P frame"),
     "K-NUT": ("Nut factor K = 0.2 for a Ti screw in an A2 nut with Loctite 243 (as frame_h1.Joint.torque_nm).", "first article: the paint mark does not move in HB-6b"),
     "TB-TORQUE": ("Hip nut torque = K x d x F, with the preload F capped so the nut's bearing ring (dw 6.9 mm, D5.5 hole) "
                   "stays at or below the PPA creep line / 1.5: F = creep-rupture 0.55 x knocked design Z x ring area / 1.5. "
@@ -666,7 +689,8 @@ def print_sheet() -> dict:
         ("chamber", f"{p['chamber_temp_c']} C ({p['chamber_temp_c'] * 9 / 5 + 32:.0f} F), chamber heater on", f"{rec} chamber_temp_c (the H2S maximum); {tds}: 50-80 C"),
         ("chamber pre-heat", "30 min at 65 C with the plate in, BEFORE the print starts", f"bl070_h1p.json ASSUMPTION WARP: {w['WARP']['text']}"),
         ("brim", "15 mm (0.59 in)", "bl070_h1p.json ASSUMPTION WARP / bl070_h1p.md section 3"),
-        ("mouse ears", "20 mm (0.79 in) discs, 1 layer, at both stay feet (lower half) and both upper stay ends (upper half)", "bl070_h1p.md section 3 (WARP)"),
+        ("mouse ears", "20 mm (0.79 in) discs, 1 layer, at both stay feet (lower half) and both upper stay ends (upper half). "
+         "CANNOT BE BUILT AS WRITTEN: review 8 M-5 (those ends are not on the plate); BL-073 owns the fix", "bl070_h1p.md section 3 (WARP); review 8 M-5"),
         ("part cooling", "off for the first 3 mm (0.12 in) of height; then <= 30 %, aux fan off", "bl070_h1p.md section 3 (WARP: no part cooling below z 3 mm); above it ASSUMPTION FAN (the PAHT-CF profile, BUILD_H1 section 3)"),
         ("layers / walls / infill", "0.20 mm / 6 walls / 6 top-bottom / 100 % infill", f"{BUILD_H1} section 3 (the H1 profile the FE layer rule assumes); bl070_h1p.json coupon profile '100 % infill'"),
         ("speed", "outer walls and the default profile <= 100 mm/s", f"bl070_h1p.json ASSUMPTION PPA-TIME ('TDS speed < 100 mm/s')"),
@@ -686,6 +710,43 @@ def print_sheet() -> dict:
     return {"rows": rows, "halves": halves}
 
 
+FINDING_EFFECT = {
+    "B-1": "the hip-mount nut face: fatigue below goal on the real nut ring; the torque is TBD (BUILD_H1P section 5).",
+    "B-2": "the hot/wet knock-down is wet-only at 23 C and CA-3-PPA tests at 23 C, so it cannot catch the hot loss: "
+           "the CA-3-PPA and CA-1-PPA test temperatures and pass lines are expected to change.",
+    "M-3": "CA-1-PPA tests R 0.1 TENSION, but interlayer SHEAR governs H1-P's fatigue; 6/6 run-outs at 1e5 show little "
+           "reliability, and the ratio is set from R1 only (the z 234 joint and clevis need a little more). Expect a "
+           "short-beam-shear fatigue coupon, a longer run or a higher load, and a 40 C test.",
+    "M-4": "'mean - 2.4 SD' at n = 6 is not B-basis (the one-sided 90/95 factor is 3.01 at n = 6), and lone standing Z bars "
+           "lay each layer in seconds where a frame half takes minutes, so they over-read the interlayer bond. Expect the "
+           "Z and short-beam coupons to be cut from a block printed with a frame-half layer time, and a new factor or n.",
+    "M-5": "both halves stand on supports: the upper half touches the plate at one end only and the stay feet are not on "
+           "the plate, so the mouse ears of section 1 cannot be added as written.",
+    "M-6": "the mid-print spool swap leaves a pause layer at a random height in an interlayer-governed frame. Expect a "
+           "planned filament change outside the hot-spot band (or verified auto-refill), and a pause-layer SBS coupon.",
+    "M-7": "T4c-PPA covers one stay at about 24 J; the T4b set-down (33 J) and the crown / upper bar are never tested "
+           "cold, and 3/3 on a brittle material is weak. Expect 5 stays sized to 33 J, a crown-corner coupon, and a cold "
+           "soak on the frame's own T4b / T4c.",
+    "M-8": "the booked 40 C wet modulus ratio (0.85) contradicts the record's own conditioned data (about 0.66 at 23 C), "
+           "so CA-4-PPA's '>= 0.85' will probably fail on a number the frame does not need; expect a new CA-4 line.",
+}
+
+
+def review8_md(ids: tuple, head: str) -> list[str]:
+    """Review 8 findings, as bullets: what the review booked / found (read from its summary table) and the effect."""
+    rv = review8_rows()
+    L = [head, ""]
+    if not rv:
+        return L + [f"- Review 8 file not found (`{REVIEW8.relative_to(ROOT)}`).", ""]
+    for i in ids:
+        r = rv.get(i)
+        if not r:
+            continue
+        L.append(f"- **{i}** ({r['class']}, {r['what']}): booked {r['booked']}, review 8 found {r['found']}. "
+                 f"{FINDING_EFFECT.get(i, '')[:1].upper() + FINDING_EFFECT.get(i, '')[1:]} Owner: BL-073. Not fixed here.")
+    return L + [""]
+
+
 def _gt(x: float) -> str:
     return f"{x:,.1f} g ({x / OZ:.1f} oz)"
 
@@ -701,6 +762,10 @@ def coupons_md(cp: dict, spl: dict) -> str:
          "(BL-070). Metric first, imperial in brackets.", "",
          "This is the PPA-CF path (frame H1-P). The PAHT-CF H1 path (`designs/pack_5200/print/frame_h1/BUILD_H1.md`) "
          "is still the fallback and is unchanged.", "",
+         f"> **{HOLD}.** The H1-P frame halves and the frame build are held by review 8 "
+         f"(`{REVIEW8.relative_to(ROOT)}`). **Coupon prints are allowed as the first step.** The pass lines below are "
+         "BL-070's, read from `bl070_h1p.json` when this file is generated; BL-073 is re-specifying them (section 9), so "
+         "re-read this file before you run a test.", "",
          "## 1. The gate (read this first)", "",
          f"> **Do not print either H1-P frame half until CA-3-PPA and CA-1-PPA have both passed** and the engineer has "
          "written PASS against them in the results sheet. The coupons are the first thing you print in PPA-CF.", "",
@@ -708,7 +773,8 @@ def coupons_md(cp: dict, spl: dict) -> str:
          f"**{pl['ca3_sbs_mpa']:g} MPa** (both as mean - {pl['ca3_k_sd']:g} SD).",
          f"2. CA-1-PPA passes: all {int(pl['ca1_n_z'] + pl['ca1_n_xy'])} bars reach {pl['ca1_cycles']:,.0f} cycles at "
          f"{pl['ca1_smax_ratio']:g} x their conditioned strength.",
-         "3. The independent review BL-072 of BL-069 / BL-070 is closed (DECISIONS 2026-11-25: no full-frame print before it).",
+         "3. Review 8 (BL-072) blockers B-1 and B-2 are closed by BL-073 and the HOLD above is lifted (review 8: do not "
+         "release H1-P for printing until then).",
          f"4. If CA-3-PPA reads between {pl['ca3_z_mpa']:g} and {pl['ca3_hold_frac'] * pl['ca3_z_mpa']:.1f} MPa: HOLD "
          "(the engineer adds material at the hot spot). Below that: build the PAHT-CF H1 instead.", "",
          "CA-4-PPA (stiffness hot and wet) and T4c-PPA (cold drop) do not hold the print. They must pass before the "
@@ -769,6 +835,12 @@ def coupons_md(cp: dict, spl: dict) -> str:
     hb = reg["HB-6-PPA"]
     L += ["## 8. HB-6-PPA: not needed", "", f"{hb['title']}. **Status: {hb['status']}.** {hb['notes']}. "
           "If the engineer ever goes back to heat-set inserts in PPA-CF, this test comes back as a gate.", "",
+          ]
+    L += review8_md(("B-2", "M-3", "M-4", "M-6", "M-7", "M-8"),
+                    "## 9. Review 8 findings on the coupons (BL-073 owns the new pass lines; nothing here is fixed by BL-071)")
+    L += ["What this means for you now: job A's XY tensile and bend bars are the least likely to change. Job B's "
+          "standing Z bars and the short-beam blocks are the most likely to change (M-4, M-6), and the stays of job C "
+          "may grow to 5 (M-7). If you print before BL-073 reports, expect to reprint those.", "",
           "## ASSUMPTIONS used on these sheets", ""]
     L += [f"- **{k}**: {v[0]} Settled by: {v[1]}." for k, v in ASSUMPTIONS.items()
           if k in ("Z-TIE", "SPARE", "COND-BOX", "LEVER-XY", "BOX-60", "FREEZER", "SPOOL-PLAN")]
@@ -778,6 +850,9 @@ def coupons_md(cp: dict, spl: dict) -> str:
 
 def print_sheet_md(ps: dict) -> str:
     L = ["# PRINT_SHEET_H2S: printing the H1-P halves in PPA-CF on the Bambu H2S", "",
+         f"> **{HOLD}. Do not print an H1-P half from this sheet.** Review 8 holds the frame (B-1, B-2) and finds the "
+         "plate contact and spool-swap rows below cannot be used as written (M-5, M-6, section 4). The settings in "
+         "section 1 also apply to the coupons, which may be printed now.", "",
          f"Generated by `designs/pack_5200/frame_h1p_build.py` ({TICKET}, {DATE}). Every value has its source in the last "
          "column. Do not print a half until the gate in `COUPONS_H1P.md` section 1 is passed.", "",
          "## 1. Settings (both halves, the clevises and every PPA-CF coupon)", "",
@@ -814,7 +889,9 @@ def print_sheet_md(ps: dict) -> str:
           "10. CHECK: a corner or a stay foot lifted from the plate by more than 0.5 mm (feeler gauge under the brim "
           "edge before removal)? Write it down with a photo: the plate contact of the upper half is only 163 mm2 and "
           "warp is the main print risk (BL-070).", "",
-          "## ASSUMPTIONS", "",
+          ]
+    L += review8_md(("B-1", "B-2", "M-5", "M-6"), "## 4. Review 8 findings on this sheet (BL-073 owns the fixes)")
+    L += ["## ASSUMPTIONS", "",
           "- PPA-TIME, WARP, SPOOL-SWAP: `bl070_h1p.json` assumptions (settled by the slicer preview and the first article).",
           f"- RUNOUT: {ASSUMPTIONS['RUNOUT'][0]} Settled by: {ASSUMPTIONS['RUNOUT'][1]}.",
           f"- FAN: {ASSUMPTIONS['FAN'][0]} Settled by: {ASSUMPTIONS['FAN'][1]}.", ""]
@@ -840,6 +917,8 @@ def build_md(cp: dict, spl: dict, ps: dict) -> str:
          f"position as H1, {body:.1f} g ({body / LB_G:.2f} lb) printed body, +{d['h1p']['delta_vs_paht_h1_g']:.1f} g "
          f"(+{d['h1p']['delta_vs_paht_h1_g'] / OZ:.1f} oz) on the PAHT-CF H1. **The PAHT-CF H1 (`../frame_h1/BUILD_H1.md`) "
          "stays the fallback.** Status: candidate, gated on the PPA coupons (DECISIONS 2026-11-25).", "",
+         f"> **{HOLD}.** Review 8 (`{REVIEW8.relative_to(ROOT)}`) holds the H1-P frame from printing and building. "
+         "Only the coupons (`COUPONS_H1P.md`) may be printed now. Sections 3-6 below are for when BL-073 lifts the hold.", "",
          "## 0. Read in this order", "",
          "1. `COUPONS_H1P.md`: print the coupons FIRST, then wait for CA-3-PPA and CA-1-PPA to pass (the gate).",
          "2. This file, section 1 (shopping) and section 2 (what is different from BUILD_H1).",
@@ -871,30 +950,26 @@ def build_md(cp: dict, spl: dict, ps: dict) -> str:
           "| 7-11. z 234 joint, crown bores, pins, clevises, pawl | same steps, same hardware, H1-P halves |",
           "| 12. hip mount (inserts) | **replaced: section 5 below (through-bolts). The insert-setting steps are deleted on this path** |",
           "| 13 onward. crown, first-article checks | same; add section 6 below |", "",
-          "## 3. Weigh (after support removal, before reaming)", "",
+          "## 3. Weigh (after support removal, before reaming) [HOLD]", "",
           "| part | expected (STL x 1.25 g/cm3) |", "|---|---:|",
           f"| lower half | {_gt(ex['lower']['g_ppa'])} |", f"| upper half | {_gt(ex['upper']['g_ppa'])} |",
           f"| US2 clevis, each | {_gt(ex['us2_clevis_R']['g'] * rho_r)} |",
           f"| body (halves + 2 clevises) | **{_gt(body)}** |", "",
           f"CHECK: the body reads **{lo_b:.0f} to {hi_b:.0f} g** ({lo_b / OZ:.1f}-{hi_b / OZ:.1f} oz), the BUILD_H1 MASS-BAND "
           "(-3 / +4 %) on the PPA mass. Lighter: wet filament or gaps; heavier: over-extrusion.", "",
-          "## 4. Joints", "",
+          "## 4. Joints [HOLD]", "",
           "Bolt the halves (z 234 joint), ream the crown bores, fit the pins, clevises and pawl exactly as BUILD_H1 "
           "sections 7-11. Same screws, nuts, washers and torques.", "",
-          "## 5. Hip mount: through-bolts (replaces BUILD_H1 section 12)", "",
+          "## 5. Hip mount: through-bolts (replaces BUILD_H1 section 12) [HOLD]", "",
           f"The Ti hip pivot mount (HW-HIP-MNT, unchanged, {hm['flange_t']:.1f} mm base, D{hm['mount_hole_d']:g} holes) sits "
           f"on the D{pat['boss_d']:.0f} boss face as on H1. On H1-P its {hm['n']} screws go **straight through** the boss "
           f"(D{hm['hole_d']:.1f} holes) into **A2 hex nuts** sitting in hex traps that open on the boss's back face; each "
           f"nut seat is {hm['seat']:.0f} mm behind the mount face. Hardware (bl070_h1p.json): {hm['hardware']}.", "",
           f"Stack: mount base {hm['flange_t']:.1f} + boss to the nut seat {hm['seat']:.0f} + nut {hm['nut_t']:.1f} = "
           f"{hm['grip'] + hm['nut_t']:.0f} mm = the screw length, so each screw tip ends flush with the nut's top.", "",
-          f"**Torque: {hm['torque']:.2f} N m ({hm['torque'] / NM_PER_INLBF:.1f} in lbf).** Source: calculation in "
-          f"`frame_h1p_build.hip()`: preload F = creep-rupture {hm['rup']} x knocked design Z {hm['z_allow']:.2f} MPa x "
-          f"nut ring {hm['a_dw']:.1f} mm2 (dw {NUT_DW_MIN} / D{hm['hole_d']}) / {CREEP_GOAL} = {hm['f_pre']:.0f} N; "
-          f"T = K {K_NUT} x 5 mm x F = {hm['torque_calc']:.3f} N m, rounded down. ASSUMPTIONS TB-TORQUE and K-NUT. "
-          "This is light: snug, not tight. The threadlocker, not the torque, keeps the nut; the BL-070 hip rows book "
-          "no preload. Do not use the PAHT path's 2.5 N m: that is the brass insert's limit, and on PPA-CF it "
-          "would crush the layers under the nut.", "",
+          f"**Torque: {hm['torque_txt']}.** Do not tighten the hip nuts for load until BL-073 sets the torque "
+          "(ASSUMPTION TORQUE-TBD). Do not use the PAHT path's 2.5 N m: that is the brass insert's limit, not a value "
+          "for a nut bearing on PPA-CF layers.", "",
           "| screw | towards the R stay from the boss centre (mm) | above the boss centre (mm) |", "|---:|---:|---:|"]
     cx = sum(p[0] for p in pat["positions_xz"]) / len(pat["positions_xz"])
     cz = sum(p[1] for p in pat["positions_xz"]) / len(pat["positions_xz"])
@@ -913,8 +988,8 @@ def build_md(cp: dict, spl: dict, ps: dict) -> str:
           "print (wipe any drip with IPA at once).",
           "7. Start every screw by hand through the mount into its nut; if one does not start, back it out, check the nut "
           "sits flat in its trap, try again. Never force it.",
-          f"8. Tighten in a star order to **{hm['torque']:.2f} N m** with the 0.1-0.6 N m torque screwdriver and the 3 mm "
-          "hex bit. Go round twice.",
+          f"8. Tighten in a star order to the BL-073 torque (**{hm['torque_txt']}**) with the small torque screwdriver "
+          "and the 3 mm hex bit. Go round twice. Until the torque is set: finger-snug only, for a dry fit.",
           f"9. CHECK from the back face: each screw tip is level with the nut's top face (0 to 0.8 mm below it is OK: the "
           f"nut still has 4 full threads). A tip more than 0.8 mm below: wrong screw length, stop.",
           f"10. CHECK seating (BUILD_H1 section 12 step 5): push the mount's pin end with the spring scale to "
@@ -922,20 +997,23 @@ def build_md(cp: dict, spl: dict, ps: dict) -> str:
           "0.05 mm (0.002 in) feeler does not enter under the base edge.",
           "11. Paint mark across every screw head and the mount base, and across every nut and the boss back face. "
           "Remove the tape. Let the Loctite cure 24 h before any load.", "",
-          "## 6. First-article checks added on the PPA path", "",
+          "## 6. First-article checks added on the PPA path [HOLD]", "",
           "1. Before the first carry: CA-4-PPA passed. Before any use below 0 C (32 F): T4c-PPA passed.",
           "2. HB-6b (test kit G6) runs on this frame with the through-bolts: no paint mark moves.",
           "3. Every 10 outings: paint marks on the hip nuts unmoved; no white line under any nut (look from the back face).", "",
           "## ASSUMPTIONS on this path", ""]
-    L += [f"- **{k}**: {v[0]} Settled by: {v[1]}." for k, v in ASSUMPTIONS.items() if k in ("TB-TORQUE", "K-NUT", "SPOOL-PLAN")]
+    L += [f"- **{k}**: {v[0]} Settled by: {v[1]}." for k, v in ASSUMPTIONS.items() if k in ("TORQUE-TBD", "SPOOL-PLAN")]
     L += ["- The BL-070 assumptions (PPU=PPA, WET-PPA, FAT-PPA, INTERLAYER-0.6, NUT-BEAR, WARP, PPA-TIME, COLD, SPOOL-SWAP) "
           "are in `bl070_h1p.json` with what settles each.", "",
-          "## FOUND (for the structural-fea-engineer, BL-072)", "",
+          "## FOUND (for the structural-fea-engineer: review 8 B-1, BL-073)", "",
           f"- NUT-BEAR booked the nut bearing on a D10 ring ({hm['a_model']:.1f} mm2). An {hm['nut_af']:.0f} AF hex trap "
           f"cannot hold a D10 washer, so the seat sees only the nut's own bearing ring (dw {NUT_DW_MIN} mm: "
           f"{hm['a_dw']:.1f} mm2). On the same rule that reads strength {hm['sf_strength_dw']:.2f} (goal 1.5), fatigue "
           f"**{hm['sf_fatigue_dw']:.2f} (goal 1.15)**, creep {hm['sf_creep_dw']:.2f} (goal 1.5). The rule takes Z "
-          "TENSILE strength for compression across the layers, which is conservative; HB-6b settles it. Not changed here.", ""]
+          "TENSILE strength for compression across the layers, which is conservative; HB-6b settles it. Review 8 B-1 found "
+          "the same. Not changed here (BL-073 owns it).",
+          f"- For BL-073 only, not a build value: capping the preload at the creep line / {CREEP_GOAL} on that dw ring, with "
+          f"K {K_NUT} (ASSUMPTION K-NUT, as frame_h1.Joint), gives {hm['torque_info_creep_cap']:.2f} N m: barely snug.", ""]
     return "\n".join(L)
 
 
@@ -946,6 +1024,7 @@ def readme_md(cp: dict) -> str:
         "# H1-P printed frame in PPA-CF: files (Pack 5200)", "",
         f"Generated by `designs/pack_5200/frame_h1p_build.py` ({TICKET}). **Do not edit by hand.**", "",
         "The PPA-CF build path, alongside the PAHT-CF H1 path in `../frame_h1/` (still the fallback).", "",
+        f"**{HOLD}.** Frame halves and build held by review 8; coupon prints allowed (COUPONS_H1P.md).", "",
         "| file | what |", "|---|---|",
         "| `COUPONS_H1P.md` | **start here**: the first print (coupons), the gate, and the CA-3-PPA, CA-1-PPA, CA-4-PPA, T4c-PPA sheets |",
         "| `PRINT_SHEET_H2S.md` | the H2S settings for both halves, each with its source |",
@@ -1009,7 +1088,7 @@ def techpack(docs: dict, path: Path, images: list[Path]) -> Path:
                                          ["CA-1-PPA all bars", f"{pl['ca1_cycles']:,.0f} cycles at {pl['ca1_smax_ratio']:g} x UTS"],
                                          ["body mass", "-3 / +4 % of 1268.1 g"],
                                          ["hip screw tip", "0 to 0.8 mm below the nut top"],
-                                         ["hip torque", f"{hm['torque']:.2f} N m, paint marks"]], [150, 100])]),
+                                         ["hip torque", f"{hm['torque_txt']}; paint marks"]], [150, 100])]),
         T.Section("Packaging", [T.para("Each printed half bagged with a desiccant pack in a 4 mil poly bag, labelled with the "
                                        "half, the spool lot and the print date; hip hardware in its own labelled bag (HW-HIP-SCR-P, "
                                        "HW-HIP-NUT-P). Ship flat in a carton with 25 mm foam each side.")]),
@@ -1018,7 +1097,7 @@ def techpack(docs: dict, path: Path, images: list[Path]) -> Path:
                     date=DATE, footer="Hunting-appeal BL-071 H1-P build path",
                     cover=[["generated by", "designs/pack_5200/frame_h1p_build.py"],
                            ["data", "designs/pack_5200/iter1/frame/bl070_h1p.json; data/materials/polymers/ppa_cf_fdm.yaml"],
-                           ["status", "candidate, gated on CA-3-PPA and CA-1-PPA; PAHT-CF H1 is the fallback"]],
+                           ["status", f"{HOLD}: frame print and build held; coupon prints allowed. PAHT-CF H1 is the fallback"]],
                     sections=sec)
     return T.tech_pack(tp, path, strict=False)
 
@@ -1064,7 +1143,8 @@ def checks(pk: dict) -> list[str]:
     msgs.append(f"gate coupons {cp['gate_filament_g']:.0f} g = {cp['gate_spools']:.2f} spool; swap reserve fits: {cp['swap_fits_spool_b']}")
     msgs.append(f"T4c stays {cp['t4c_filament_g']:.0f} g (4th spool)")
     h = pk["hip"]
-    msgs.append(f"hip torque {h['torque']:.2f} N m (calc {h['torque_calc']:.3f}); screw tip vs nut top {h['tip_vs_nut_top_mm']:+.1f} mm")
+    msgs.append(f"hip torque: {h['torque_txt']}; screw tip vs nut top {h['tip_vs_nut_top_mm']:+.1f} mm")
+    msgs.append(f"review 8 rows read: {sorted(review8_rows())}")
     msgs.append(f"cost {pk['cost']}")
     return msgs
 

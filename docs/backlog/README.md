@@ -119,6 +119,6 @@ Nothing here is decided; the tickets produce the material.
 | BL-068 | C′ patterns, lash loads, RT strap | pattern-maker | M | 067 | done |
 | BL-069 | "PPU" frame material: read as Bambu PPA-CF; H1 re-check | materials-engineer | S | 065 | done: H1-in-PPA not buildable |
 | BL-070 | H1-P: H1 re-tuned for PPA-CF, through-bolt hip mount, PPA coupons | structural-fea-engineer | L | 069 | done: all rows pass, 1268.1 g |
-| BL-071 | Wire H1-P into BUILD, test kit and register: PPA coupons, through-bolt hip, H2S print sheet | manufacturing-engineer | M | 070 | no PAHT-only text on the PPA path |
+| BL-071 | Wire H1-P into BUILD, test kit and register: PPA coupons, through-bolt hip, H2S print sheet | manufacturing-engineer | M | 070 | done: PPA path wired (G8, R1-PPA); frame on HOLD (review 8), torque TBD (BL-073) |
 | BL-072 | Review 8: independent review of BL-069/BL-070 | design-reviewer | S | 070 | done: 2 blockers, 8 majors |
 | BL-073 | Close review-8 frame findings on H1-P (B-1, B-2, M-1, M-2, M-3, M-4, M-5, M-6, M-7, M-8) | structural-fea-engineer | L | 072 | no blocker open; every row ≥ goal on hot/wet basis |

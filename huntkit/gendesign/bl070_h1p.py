@@ -63,7 +63,11 @@ def ppa_record() -> dict:
             "fat": g("fatigue_1e5_ratio"), "rup": g("creep_rupture_8h_40c_ratio"),
             "E_hot": g("modulus_40c_wet_ratio"), "E_creep": g("creep_modulus_8h_40c_ratio"),
             "E_60": g("modulus_60c_ratio"), "impact_cold": g("impact_minus20c_ratio"),
-            "impact_z": g("impact_z_kj_m2"), "elong_z": g("elongation_z_pct")}
+            "impact_z": g("impact_z_kj_m2"), "elong_z": g("elongation_z_pct"),
+            # BL-073 hot/wet basis (review 8 B-2 / M-1 / M-8)
+            "s_xy_b": g("tensile_strength_xy_b_basis_mpa"), "s_z_b": g("tensile_strength_z_b_basis_mpa"),
+            "knock_hw": g("hot_wet_knockdown_ratio"), "wet": g("wet_knockdown_ratio"), "hot": g("hot_40c_ratio"),
+            "E_hot_hw": g("modulus_40c_wet_hw_ratio")}
 
 
 def materials() -> dict:
@@ -73,21 +77,25 @@ def materials() -> dict:
     base = {"rule": "layer", "rho": r["rho"], "E": r["E"], "s_xy": r["s_xy"], "fat": r["fat"], "rup": r["rup"],
             "usd_g": None}
     return {"ppa_design": {**base, "label": "PPA-CF design", "s_z": r["s_z_design"], "knock": r["knock"]},
-            "ppa_tds": {**base, "label": "PPA-CF TDS mean", "s_z": r["s_z"], "knock": 0.8}}
+            "ppa_tds": {**base, "label": "PPA-CF TDS mean", "s_z": r["s_z"], "knock": 0.8},
+            # BL-073: B-basis (k 3.4066, n 5) x wet 0.73 x hot 40 C 0.85 on XY, Z and interlayer shear
+            "ppa_hw": {**base, "label": "PPA-CF hot/wet B-basis", "s_xy": r["s_xy_b"], "s_z": r["s_z_b"],
+                       "knock": r["knock_hw"]}}
 
 
 def joint_material(mat: str = "ppa_design") -> dict:
     """frame_h1.PAHT-shaped dict for the z 234 joint (contact stiffness uses E x E_hot)."""
     r = ppa_record()
     m = materials()[mat]
-    return {"s_xy": m["s_xy"], "s_z": m["s_z"], "knock": m["knock"], "fat": m["fat"], "E": r["E"], "E_hot": r["E_hot"]}
+    return {"s_xy": m["s_xy"], "s_z": m["s_z"], "knock": m["knock"], "fat": m["fat"], "E": r["E"],
+            "E_hot": r["E_hot_hw"] if mat == "ppa_hw" else r["E_hot"]}
 
 
-def e_buckle() -> float:
+def e_buckle(mat: str = "ppa_design") -> float:
     """Buckling modulus on the record rule's footing (E_xy x hot x creep): 11800 x 0.85 x 0.85 = 8526 MPa
-    (PAHT-CF: 3860 x 0.6 x 0.7 = 1621)."""
+    (PAHT-CF: 3860 x 0.6 x 0.7 = 1621). BL-073 ``ppa_hw``: 11800 x 0.5876 (conditioned 0.661 x hot 0.889) x 0.85."""
     r = ppa_record()
-    return r["E"] * r["E_hot"] * r["E_creep"]
+    return r["E"] * (r["E_hot_hw"] if mat == "ppa_hw" else r["E_hot"]) * r["E_creep"]
 
 
 @contextlib.contextmanager
@@ -103,7 +111,7 @@ def material(mat: str = "ppa_design"):
             H1.MAT = mat
             H1.PAHT.clear()
             H1.PAHT.update(joint_material(mat))
-            FI.E_BUCKLE = e_buckle()
+            FI.E_BUCKLE = e_buckle(mat)
         yield D.MATERIALS[mat]
     finally:
         H1.MAT = saved[0]
@@ -422,8 +430,10 @@ def us2_clevis(mat: str = "ppa_design") -> dict:
 
 
 NUT_SEAT_DEPTH = 13.0      # H1-P hip boss: hex nut seat 13 mm behind the mount face (M5 x 20 DIN 7984 + 3 mm flange)
-NUT_WASHER_OD = 10.0       # ASSUMPTION NUT-BEAR: the hex nut's own bearing ring (DIN 934 M5, 8 AF ~ D8.8) or a D10
-#                            washer; bearing across the layers is compression, taken at knock x Z design (conservative)
+NUT_WASHER_OD = 6.9        # BL-073 (review 8 B-1): the 8.12 AF hex trap cannot hold a D10 washer, so the BL-070 seat sees
+#                            only the nut's own bearing face, dw min 6.9 mm (ISO 4032 / DIN 934 M5): 13.6 mm2. Was 10.0.
+#                            The BL-070 through-bolt row therefore FAILS fatigue (1.06 < 1.15 on the BL-069 basis); H1-P
+#                            now uses the BL-073 bearing ring (bl073_hotwet.hip_plate), no traps.
 NUT_HOLE_D = 5.5
 
 
@@ -535,7 +545,7 @@ def design_step(prev: str, it_name: str, u_lo: float, u_hi: float, log=print, gr
 
 # ================================================================================================ eigen buckling
 def eigen(name: str, solid: np.ndarray, bases=("fine_sm8", "fine_sm8.cyc"), setdown: bool = True,
-          log=print) -> dict:
+          log=print, mat: str = "ppa_design") -> dict:
     """BL-065 linear eigen buckling (bl065_h1_buckling.run_basis: crown held, member isolation, Rayleigh screen,
     record model free; run_setdown: foot on the ground) at the PPA buckling modulus (``e_buckle``: 8526 MPa, the
     record rule's footing E_xy x hot x creep). Isotropic voxels at E_xy (ASSUMPTION E-ISO: the members buckle in
@@ -545,8 +555,8 @@ def eigen(name: str, solid: np.ndarray, bases=("fine_sm8", "fine_sm8.cyc"), setd
     saved = (B.E_B, B.OUT)
     out = {}
     try:
-        B.E_B = e_buckle()
-        B.OUT = OUT / "eigen"
+        B.E_B = e_buckle(mat)
+        B.OUT = OUT / ("eigen" if mat == "ppa_design" else f"eigen_{mat}")
         B.OUT.mkdir(parents=True, exist_ok=True)
         b = B.body()
         for bs in bases:
@@ -571,7 +581,7 @@ def eigen(name: str, solid: np.ndarray, bases=("fine_sm8", "fine_sm8.cyc"), setd
     finally:
         B.E_B, B.OUT = saved
     r = ppa_record()
-    out["E_buckle_mpa"] = round(e_buckle(), 1)
+    out["E_buckle_mpa"] = round(e_buckle(mat), 1)
     out["layer_normal_bound_factor"] = round(r["E_z"] / r["E"], 3)
     return out
 
@@ -695,8 +705,10 @@ def coupons(m_cyc: float, m_static_fat: float, m_strength: float, m_buckle: floa
                  f"conditioned / dry >= 0.73 means the design values hold as booked",
          "settles": "WET-PPA (knock 0.73), design Z 45 MPa, INTERLAYER-0.6",
          "margin_tied": f"R1 {m_cyc:.3f}, z 234 joint fatigue {m_joint_f:.3f}",
-         "if_below": f"between {need_zk:.1f} and 0.9 x that: R1 reads 0.9-1.0, hold the PPA build and add the "
-                     "hot-spot growth of the next H1-P step; below: stay on PAHT-CF"},
+         "if_below": f"(review 8 m-4, corrected) with a measured knocked Z_m: R1 = {m_cyc:.3f} x Z_m / {zk:.2f} and "
+                     f"z 234 joint fatigue = {m_joint_f:.3f} x Z_m / {zk:.2f}; at 28 MPa they read "
+                     f"{m_cyc * 28 / zk:.3f} / {m_joint_f * 28 / zk:.3f}. Below {need_zk:.1f} MPa hold the PPA build "
+                     "(superseded by BL-073 CA-3-HW)"},
         {"id": "CA-4-PPA", "what": "3-point bend modulus and strength (ISO 178, XY-built bars 80 x 10 x 4), at 23 C "
          "dry, at 40 C after 14 d at 23 C / 50 % RH ('40 C wet'), and at 60 C dry (truck cab)",
          "coupons": "5 per condition",
@@ -1177,6 +1189,7 @@ def write_md(rec: dict) -> str:
          "values (XY 168, Z 45 MPa, wet knock 0.73, fatigue ratio 0.30, creep-rupture 0.55); buckling modulus "
          f"{rec['e_buckle_mpa']:.0f} MPa.", "",
          "## HA-LS-1 rows", "",
+         "PAHT and PPA H1 columns: BL-069 design basis. **H1-P column: " + p.get("checked_on", "") + "**.", "",
          "| row | goal | PAHT-CF H1 (record) | PPA-CF H1 (released print) | **PPA-CF H1-P (exported)** | basis |",
          "|---|---:|---:|---:|---:|---|"]
     a = {_key(r["name"]): r for r in h["rows"]}
@@ -1185,12 +1198,10 @@ def write_md(rec: dict) -> str:
         pa = PAHT_H1.get(k)
         hv = a.get(k)
         L.append(f"| {r['name']} | {r['goal']:g} | {pa if pa is not None else '-'} | "
-                 f"{hv['value'] if hv else '-'} | **{r['value']}**{'' if r['pass'] else ' FAIL'} | {r['basis']} |")
+                 f"{hv['value'] if hv else '-'} | **{r['value']}**{'' if r['pass'] else ' (below goal: ' + r.get('gated_by', 'FAIL') + ')'} | {r['basis']} |")
     L += ["", f"PPA H1 hip mount: inserts on the HB-6 basis scaled by knocked Z (abs_z); on the record rule (INS-Z, "
           f"hot x Z/XY): " + ", ".join(f"{x['name'].split(' (')[0]} {x['value']}" for x in h["hip_record_rule_rows"])
-          + ". H1-P uses M5 through-bolts with hex nuts in traps on the boss back face (nut seat 13 mm behind the "
-          "mount face; 8 x Ti M5 x 20 DIN 7984 + A2 DIN 934 nuts, Loctite 243): the screw load bears on the layers in "
-          "compression, no pull-out row. Mount, screw positions and face unchanged.", "",
+          + ". H1-P hip mount: " + p["hip_mount"]["hardware"] + ". Mount, screw positions and face unchanged.", "",
           "## Mass", "",
           "| body (printed halves + US2 clevises) | g | lb |", "|---|---:|---:|",
           f"| PAHT-CF H1 (released) | {PAHT_BODY_G:.1f} | {_lb(PAHT_BODY_G)} |",
