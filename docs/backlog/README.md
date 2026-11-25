@@ -131,4 +131,5 @@ Nothing here is decided; the tickets produce the material.
 | BL-080 | Research-first study: metal-stay frame with printed joints vs H1c (Strong, cost cap, mass, looks) | pack-designer + structural-fea-engineer | L | 079 | done: concept B picked |
 | BL-081 | Concept B tube-ladder frame: detailed FEA per frame_concepts.md §8 | structural-fea-engineer | L | 080, 082 | done: B81 strong (min 1.02), 1991 g, USD 176 (over cap); decision open |
 | BL-082 | 6061-T6 notched/clamped S-N and wet friction on liners (records, cited) | materials-engineer | S | 080 | done |
-| BL-083 | Concept D with real joints + free hip pivot offset; target ≤ 1300 g, ≤ USD 150 | structural-fea-engineer | L | 081 | every row ≥ goal; mass and cost vs target |
+| BL-083 | Concept D with real joints + free hip pivot offset; target ≤ 1300 g, ≤ USD 150 | structural-fea-engineer | L | 081 | done: no option meets ≤ 1300 g / ≤ USD 150; ranking D83-L (1674 g, USD 243), B81-Lb (1816 g, USD 157), D83 (1850 g, USD 262), all min 1.02 |
+| BL-084 | Independent review of B81-Lb (lead) and D83-L (BL-081, BL-083 files) | design-reviewer | M | 083 | blockers listed with file:line; verdict per row |

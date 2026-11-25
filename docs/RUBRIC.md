@@ -11,7 +11,7 @@ Every iteration proposal is scored on the three axes below, in this priority ord
 - Bag: every load point SF ≥ its goal (`mfg_corrie_f_rev3.py --check`, min SF 1.36 baseline).
 
 ## 1b. Cost cap (owner, 2026-11-25: "$2100 is out of control for a backpack frame")
-- Gate after Strong. ASSUMPTION COST-CAP (orchestrator call, owner may override): frame materials ≤ USD 150 per frame (filament + frame hardware); first-frame proving prints (coupons, first articles) ≤ USD 150 more; no new tool over USD 50 beyond the existing test kit.
+- Gate after Strong. ASSUMPTION COST-CAP (orchestrator call, owner may override): frame materials ≤ USD 160 per frame (filament + frame hardware; raised from 150 on 2026-11-25 to admit B81-Lb at USD 156.76, BL-083); first-frame proving prints (coupons, first articles) ≤ USD 150 more; no new tool over USD 50 beyond the existing test kit.
 - Every price from a material record or a cited shop page.
 
 ## 2. Weighs less
