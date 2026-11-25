@@ -10,6 +10,10 @@ Every iteration proposal is scored on the three axes below, in this priority ord
 - Bonus: lifting the R1 hold (cinch-cycled fatigue **0.86 → ≥ 1.0**) and the buckling margin (1.05 → ≥ 1.15).
 - Bag: every load point SF ≥ its goal (`mfg_corrie_f_rev3.py --check`, min SF 1.36 baseline).
 
+## 1b. Cost cap (owner, 2026-11-25: "$2100 is out of control for a backpack frame")
+- Gate after Strong. ASSUMPTION COST-CAP (orchestrator call, owner may override): frame materials ≤ USD 150 per frame (filament + frame hardware); first-frame proving prints (coupons, first articles) ≤ USD 150 more; no new tool over USD 50 beyond the existing test kit.
+- Every price from a material record or a cited shop page.
+
 ## 2. Weighs less
 - Metric: ledger base mass, belt M, crown kit M ("proven now"), `designs/pack_5200/analysis/weight_rollup_v2.md`. Baseline 4038.1 g (8.90 lb) proven now, 3450.9 g (7.61 lb) after tests (`weight_rollup_v2.py` re-run 2026-11-24, BL-067; the old 3.99 kg / 3986.8 g predates BL-053 to BL-058); ledger default config total 4274.2 g after BL-058.
 - Standing target 2993.7 g (6.6 lb) base; the previous push (`weight_push.md`) found only 119 g of incremental levers, so further gains must come from architecture (frame material/topology, part count, fabric/system choices), not trims.
