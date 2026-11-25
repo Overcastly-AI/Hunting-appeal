@@ -130,4 +130,4 @@ Nothing here is decided; the tickets produce the material.
 | BL-079 | bl077.json fixes from BL-078: H1-as-is thresholds, 0.20 mm layer-time floor, D2344 nose, conditioning wording; regenerate kit | structural-fea-engineer | S | 078 | done: H1 not clearable; coupons USD 59 |
 | BL-080 | Research-first study: metal-stay frame with printed joints vs H1c (Strong, cost cap, mass, looks) | pack-designer + structural-fea-engineer | L | 079 | done: concept B picked |
 | BL-081 | Concept B tube-ladder frame: detailed FEA per frame_concepts.md §8 | structural-fea-engineer | L | 080, 082 | every row ≥ goal with real joints |
-| BL-082 | 6061-T6 notched/clamped S-N and wet friction on liners (records, cited) | materials-engineer | S | 080 | records with sources |
+| BL-082 | 6061-T6 notched/clamped S-N and wet friction on liners (records, cited) | materials-engineer | S | 080 | done |
