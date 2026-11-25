@@ -57,7 +57,8 @@ def test_single_case_runs():
     assert all(math.isfinite(mm["sf"]) for mm in r.members)
     lf = r.meta["link_forces"]
     # the hip torque goes through the ties as a couple: upper and lower ties pull / push in opposite y
-    assert np.sign(lf["tie_L150"][1]) != np.sign(lf["tie_L90"][1])
+    z0, z1 = BQ.CFG0["rung_z"]
+    assert np.sign(lf[f"tie_L{z1:g}"][1]) != np.sign(lf[f"tie_L{z0:g}"][1])
 
 
 def test_cut_list_and_bill():

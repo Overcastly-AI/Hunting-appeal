@@ -53,14 +53,16 @@ def test_bending_and_torsion_vs_beam(plain_tube):
 
 
 def test_ring_diametral_load_vs_roark(plain_tube):
-    """Two opposite narrow full-length patches pulling the wall out: ring moment at the load 0.318 P R
-    (Roark Table 9.2 case 1), sigma = 6 M / t^2, checked on the hoop stress in the middle (end effects away)."""
+    """Two opposite full-length cosine patches (+/- 20 deg) pulling the wall out: ring moment at the load from
+    huntkit.fea.rings (Roark Table 9.2 case 1 generalised to a contact arc; 0.318 P R for a point load),
+    sigma = 6 M / t^2, checked on the hoop stress in the middle (end effects away)."""
     fe = plain_tube
-    a = math.radians(4.0)
+    a = math.radians(20.0)
     F = 1000.0
     f = fe.patch_pressure(0.0, 100.0, 0.0, a, F, "inner") + fe.patch_pressure(0.0, 100.0, math.pi, a, F, "inner")
     u = fe.solve(f)
     P = F / 100.0
     Rm = 12.7 - 1.651 / 2
-    sig = 6 * 0.318 * P * Rm / 1.651 ** 2
+    from huntkit.fea.rings import ring_moment_coeff
+    sig = 6 * ring_moment_coeff(20.0) * P * Rm / 1.651 ** 2
     assert fe.surface_hoop(u, 40, 60) == pytest.approx(sig, rel=0.2)

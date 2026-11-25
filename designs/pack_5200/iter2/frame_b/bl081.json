@@ -18,11 +18,11 @@
    62.0
   ],
   "rung_z": [
-   90.0,
-   150.0
+   85.0,
+   155.0
   ],
-  "tie_x": 22.0,
-  "post_len": 80.0,
+  "tie_x": 30.0,
+  "post_len": 90.0,
   "clamp_len": 50.0,
   "clamp_preload_n": 2600.0,
   "clamp_preload_upper_n": 2000.0,
@@ -41,10 +41,10 @@
   "friction": "BL-082 wet: Al/Al 0.15, PAHT 0.15",
   "paht": "BL-077 hot/wet B-basis: Z 19.66, interlayer shear 11.35, fatigue 0.30, creep 0.40"
  },
- "min_margin": 1.037,
+ "min_margin": 1.019,
  "governing": "stay wall under the upper tee: fatigue (preload mean + walking cycle)",
  "strong_pass": true,
- "fatigue_min": 1.037,
+ "fatigue_min": 1.019,
  "margins_table": [
   {
    "item": "1",
@@ -55,37 +55,37 @@
   {
    "item": "1",
    "kind": "fatigue",
-   "margin": 5.794,
+   "margin": 5.164,
    "row": "lumbar L-gussets: fatigue at the bolt holes"
   },
   {
    "item": "1",
    "kind": "joint",
-   "margin": 3.102,
+   "margin": 2.886,
    "row": "M5 A2-70 through-bolts: shear at each wall (gussets, hip ties)"
   },
   {
    "item": "2",
    "kind": "strength",
-   "margin": 2.833,
-   "row": "rung z150 x-22 hip tie bolt: static (bearing / net section)"
+   "margin": 2.776,
+   "row": "rung z155 x+30 hip tie bolt: static (bearing / net section)"
   },
   {
    "item": "2",
    "kind": "fatigue",
-   "margin": 1.266,
-   "row": "rung z150 x-22 hip tie bolt: fatigue 1e5 x 0-1.6 g"
+   "margin": 1.195,
+   "row": "rung z155 x-30 hip tie bolt: fatigue 1e5 x 0-1.6 g"
   },
   {
    "item": "3",
    "kind": "strength",
-   "margin": 1.892,
-   "row": "stay z135 gusset bolt L: static (bearing / net section)"
+   "margin": 1.921,
+   "row": "stay at the stay-top bushing (z 460-530, free tube end): static (ring + beam)"
   },
   {
    "item": "3",
    "kind": "fatigue",
-   "margin": 1.152,
+   "margin": 1.055,
    "row": "stay z135 gusset bolt L: fatigue 1e5 x 0-1.6 g"
   },
   {
@@ -97,49 +97,49 @@
   {
    "item": "4",
    "kind": "strength",
-   "margin": 1.747,
+   "margin": 1.775,
    "row": "spreader sandwich local (bone patch)"
   },
   {
    "item": "4",
    "kind": "fatigue",
-   "margin": 1.629,
+   "margin": 1.736,
    "row": "spreader sheet fatigue (FI <= 0.5 at 1.6 g)"
   },
   {
    "item": "5",
    "kind": "strength",
-   "margin": 1.134,
+   "margin": 1.122,
    "row": "stay wall under the upper tee at limit (clamp + IM3 loop + couple + beam)"
   },
   {
    "item": "5",
    "kind": "fatigue",
-   "margin": 1.037,
+   "margin": 1.019,
    "row": "stay wall under the upper tee: fatigue (preload mean + walking cycle)"
   },
   {
    "item": "5",
    "kind": "joint",
-   "margin": 1.199,
+   "margin": 1.19,
    "row": "tee clamp z 520: slip (axial + torque about the stay)"
   },
   {
    "item": "6",
    "kind": "strength",
-   "margin": 1.895,
+   "margin": 1.896,
    "row": "front angle leg: plate bending under the mount tipping couple"
   },
   {
    "item": "6",
    "kind": "fatigue",
-   "margin": 1.44,
+   "margin": 1.441,
    "row": "front angle leg: fatigue at the mount holes"
   },
   {
    "item": "6",
    "kind": "joint",
-   "margin": 5.21,
+   "margin": 4.842,
    "row": "tie bolts (M5 A2) tension"
   },
   {
@@ -190,91 +190,91 @@
    "item": "1",
    "row": "stays: member strength (beam, all cases)",
    "kind": "strength",
-   "value": 2.7457363440650635,
+   "value": 2.6498437967364343,
    "allow": 1.5,
-   "margin": 1.8304908960433757,
-   "basis": "SL135-SL150 side_hill_torsion|strap_upper|15, S-basis yield 241 MPa"
+   "margin": 1.766562531157623,
+   "basis": "SL330-SL374.3 meat_straps|crown_bar|23, S-basis yield 241 MPa"
   },
   {
    "item": "1",
    "row": "bars: member strength (beam, all cases)",
    "kind": "strength",
-   "value": 1.3197599585141924,
+   "value": 1.3196405895990704,
    "allow": 1.0,
-   "margin": 1.3197599585141924,
+   "margin": 1.3196405895990704,
    "basis": "UB1-UBhp15 hipbelt_off_abuse|crown_bar|15, S-basis yield 241 MPa"
   },
   {
    "item": "1",
    "row": "lumbar rungs: member strength (beam, all cases)",
    "kind": "strength",
-   "value": 4.979067811675981,
+   "value": 4.854612346778389,
    "allow": 1.5,
-   "margin": 3.3193785411173207,
-   "basis": "R150m62-R150m22 drop_2p5g|crown_bar|15, S-basis yield 241 MPa"
+   "margin": 3.2364082311855924,
+   "basis": "R155p30-R155p62 drop_2p5g|crown_bar|15, S-basis yield 241 MPa"
   },
   {
    "item": "1",
    "row": "hip post (2 angles): member strength (beam, all cases)",
    "kind": "strength",
-   "value": 7.130411408081149,
+   "value": 5.134518346266563,
    "allow": 1.5,
-   "margin": 4.753607605387432,
-   "basis": "PO150-TPR150 meat_straps|crown_bar|23, S-basis yield 241 MPa"
+   "margin": 3.423012230844375,
+   "basis": "PO155-TPL155 meat_straps|crown_bar|23, S-basis yield 241 MPa"
   },
   {
    "item": "1",
    "row": "hip ties (spacer columns): member strength (beam, all cases)",
    "kind": "strength",
-   "value": 4.589544698791507,
+   "value": 3.475621175331795,
    "allow": 1.5,
-   "margin": 3.059696465861005,
-   "basis": "tie_R150 meat_straps|crown_bar|23, S-basis yield 241 MPa"
+   "margin": 2.31708078355453,
+   "basis": "tie_L155 meat_straps|crown_bar|23, S-basis yield 241 MPa"
   },
   {
    "item": "1",
    "row": "frame buckling eigenvalue / (1.5 x case factor)",
    "kind": "strength",
-   "value": 4.3195835301567325,
+   "value": 5.248588502277363,
    "allow": null,
-   "margin": 1.9198149022918811,
+   "margin": 2.332706001012161,
    "basis": "side_hill_torsion|crown_bar|15"
   },
   {
    "item": "3",
    "row": "stay z105 gusset bolt L: static (bearing / net section)",
    "kind": "strength",
-   "value": 56.027268483591605,
+   "value": 56.64487888194282,
    "allow": 386.0,
-   "margin": 3.1195844045279273,
-   "basis": "bearing 56 MPa vs 386 (AA e/D 2), net-section VM 77 vs S-basis Fy 241; drop_2p5g|strap_upper|15"
+   "margin": 2.882281934650511,
+   "basis": "bearing 57 MPa vs 386 (AA e/D 2), net-section VM 84 vs S-basis Fy 241; drop_2p5g|strap_upper|15"
   },
   {
    "item": "3",
    "row": "stay z105 gusset bolt L: fatigue 1e5 x 0-1.6 g",
    "kind": "fatigue",
-   "value": 130.8551949018532,
+   "value": 140.43469047251176,
    "allow": 190.906299426545,
-   "margin": 1.4589126520329025,
-   "basis": "solid FE bore peak 131 MPa (Kt_eff 4.87 on 27), q 1.00 -> 131 vs smooth R0 191; static_carry|strap_upper|15"
+   "margin": 1.3593955936685913,
+   "basis": "solid FE bore peak 140 MPa (Kt_eff 4.69 on 30), q 1.00 -> 140 vs smooth R0 191; static_carry|strap_upper|15"
   },
   {
    "item": "3",
    "row": "stay z135 gusset bolt L: static (bearing / net section)",
    "kind": "strength",
-   "value": 20.089412478353932,
+   "value": 38.82408635307117,
    "allow": 386.0,
-   "margin": 1.892128050881955,
-   "basis": "bearing 20 MPa vs 386 (AA e/D 2), net-section VM 127 vs S-basis Fy 241; side_hill_torsion|strap_upper|15"
+   "margin": 1.9512230182683168,
+   "basis": "bearing 39 MPa vs 386 (AA e/D 2), net-section VM 124 vs S-basis Fy 241; drop_2p5g|strap_upper|23"
   },
   {
    "item": "3",
    "row": "stay z135 gusset bolt L: fatigue 1e5 x 0-1.6 g",
    "kind": "fatigue",
-   "value": 165.66861352134677,
+   "value": 180.88691740502549,
    "allow": 190.906299426545,
-   "margin": 1.1523383661440874,
-   "basis": "solid FE bore peak 166 MPa (Kt_eff 3.35 on 49), q 1.00 -> 166 vs smooth R0 191; static_carry|strap_upper|23"
+   "margin": 1.0553903077417424,
+   "basis": "solid FE bore peak 181 MPa (Kt_eff 3.34 on 54), q 1.00 -> 181 vs smooth R0 191; static_carry|strap_upper|23"
   },
   {
    "item": "7",
@@ -282,179 +282,179 @@
    "kind": "strength",
    "value": 58.21514690924884,
    "allow": 386.0,
-   "margin": 4.553614057004067,
+   "margin": 4.527270064108181,
    "basis": "bearing 58 MPa vs 386 (AA e/D 2), net-section VM 53 vs S-basis Fy 241; single_stay_setdown|crown_bar|15"
   },
   {
    "item": "7",
    "row": "stay z60 hinge pin L: fatigue 1e5 x 0-1.6 g",
    "kind": "fatigue",
-   "value": 39.646278467961125,
+   "value": 39.646576611295245,
    "allow": 190.906299426545,
-   "margin": 4.815238827039462,
-   "basis": "solid FE bore peak 40 MPa (Kt_eff 6.67 on 6), q 1.00 -> 40 vs smooth R0 191; static_carry|crown_bar|23"
+   "margin": 4.815202616312554,
+   "basis": "solid FE bore peak 40 MPa (Kt_eff 6.46 on 6), q 1.00 -> 40 vs smooth R0 191; static_carry|crown_bar|23"
   },
   {
    "item": "5",
    "row": "upper bar x-15 pawl-housing bolt: static (bearing / net section)",
    "kind": "strength",
-   "value": 24.291640122230348,
+   "value": 24.291632240937222,
    "allow": 386.0,
-   "margin": 1.3187821501961692,
+   "margin": 1.3186433386901852,
    "basis": "bearing 24 MPa vs 386 (AA e/D 2), net-section VM 183 vs S-basis Fy 241; hipbelt_off_abuse|crown_bar|15"
   },
   {
    "item": "5",
    "row": "upper bar x-15 pawl-housing bolt: fatigue 1e5 x 0-1.6 g",
    "kind": "fatigue",
-   "value": 23.4061166270561,
+   "value": 24.432989772674517,
    "allow": 190.906299426545,
-   "margin": 8.156256865176365,
-   "basis": "solid FE bore peak 23 MPa (Kt_eff 3.27 on 7), q 1.00 -> 23 vs smooth R0 191; static_carry|strap_upper|15"
+   "margin": 7.813464549477759,
+   "basis": "solid FE bore peak 24 MPa (Kt_eff 3.27 on 7), q 1.00 -> 24 vs smooth R0 191; static_carry|strap_upper|15"
   },
   {
    "item": "2",
-   "row": "rung z90 x-90 gusset bolt: static (bearing / net section)",
+   "row": "rung z85 x-90 gusset bolt: static (bearing / net section)",
    "kind": "strength",
-   "value": 50.74114292507034,
+   "value": 15.796034157358006,
    "allow": 386.0,
-   "margin": 7.148705768038052,
-   "basis": "bearing 51 MPa vs 386 (AA e/D 2), net-section VM 34 vs S-basis Fy 241; side_hill_torsion|crown_bar|15"
+   "margin": 5.946320941478785,
+   "basis": "bearing 16 MPa vs 386 (AA e/D 2), net-section VM 41 vs S-basis Fy 241; meat_straps|crown_bar|23"
   },
   {
    "item": "2",
-   "row": "rung z90 x-90 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "row": "rung z85 x-90 gusset bolt: fatigue 1e5 x 0-1.6 g",
    "kind": "fatigue",
-   "value": 29.006531131742825,
+   "value": 52.94791603148697,
    "allow": 190.906299426545,
-   "margin": 6.5814936146442475,
-   "basis": "solid FE bore peak 29 MPa (Kt_eff 2.79 on 10), q 1.00 -> 29 vs smooth R0 191; static_carry|crown_bar|23"
+   "margin": 3.6055488815275973,
+   "basis": "solid FE bore peak 53 MPa (Kt_eff 3.68 on 14), q 1.00 -> 53 vs smooth R0 191; static_carry|crown_bar|23"
   },
   {
    "item": "2",
-   "row": "rung z90 x-62 gusset bolt: static (bearing / net section)",
+   "row": "rung z85 x-62 gusset bolt: static (bearing / net section)",
    "kind": "strength",
-   "value": 48.50045219428221,
+   "value": 30.516810363202396,
    "allow": 386.0,
-   "margin": 5.405925347674734,
-   "basis": "bearing 49 MPa vs 386 (AA e/D 2), net-section VM 45 vs S-basis Fy 241; side_hill_torsion|crown_bar|15"
+   "margin": 4.95921193481881,
+   "basis": "bearing 31 MPa vs 386 (AA e/D 2), net-section VM 49 vs S-basis Fy 241; meat_straps|crown_bar|23"
   },
   {
    "item": "2",
-   "row": "rung z90 x-62 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "row": "rung z85 x-62 gusset bolt: fatigue 1e5 x 0-1.6 g",
    "kind": "fatigue",
-   "value": 46.456314036396094,
+   "value": 63.57700956037705,
    "allow": 190.906299426545,
-   "margin": 4.1093725015932145,
-   "basis": "solid FE bore peak 46 MPa (Kt_eff 4.20 on 11), q 1.00 -> 46 vs smooth R0 191; static_carry|crown_bar|23"
+   "margin": 3.0027568258813337,
+   "basis": "solid FE bore peak 64 MPa (Kt_eff 3.72 on 17), q 1.00 -> 64 vs smooth R0 191; static_carry|crown_bar|23"
   },
   {
    "item": "2",
-   "row": "rung z90 x-22 hip tie bolt: static (bearing / net section)",
+   "row": "rung z85 x-30 hip tie bolt: static (bearing / net section)",
    "kind": "strength",
-   "value": 22.23165421397458,
+   "value": 22.4172132104641,
    "allow": 386.0,
-   "margin": 3.4047814263371214,
-   "basis": "bearing 22 MPa vs 386 (AA e/D 2), net-section VM 71 vs S-basis Fy 241; meat_straps|crown_bar|23"
+   "margin": 3.3652519094851,
+   "basis": "bearing 22 MPa vs 386 (AA e/D 2), net-section VM 72 vs S-basis Fy 241; meat_straps|crown_bar|23"
   },
   {
    "item": "2",
-   "row": "rung z90 x-22 hip tie bolt: fatigue 1e5 x 0-1.6 g",
+   "row": "rung z85 x-30 hip tie bolt: fatigue 1e5 x 0-1.6 g",
    "kind": "fatigue",
-   "value": 124.74943994613034,
+   "value": 129.975224935953,
    "allow": 190.906299426545,
-   "margin": 1.530317887671341,
-   "basis": "solid FE bore peak 125 MPa (Kt_eff 5.27 on 24), q 1.00 -> 125 vs smooth R0 191; static_carry|crown_bar|23"
+   "margin": 1.4687899137748488,
+   "basis": "solid FE bore peak 130 MPa (Kt_eff 5.25 on 25), q 1.00 -> 130 vs smooth R0 191; static_carry|crown_bar|23"
   },
   {
    "item": "2",
-   "row": "rung z150 x-90 gusset bolt: static (bearing / net section)",
+   "row": "rung z155 x-90 gusset bolt: static (bearing / net section)",
    "kind": "strength",
-   "value": 50.23998393739198,
+   "value": 16.798570075514533,
    "allow": 386.0,
-   "margin": 5.923572217562117,
-   "basis": "bearing 50 MPa vs 386 (AA e/D 2), net-section VM 41 vs S-basis Fy 241; side_hill_torsion|crown_bar|15"
+   "margin": 5.943932204494158,
+   "basis": "bearing 17 MPa vs 386 (AA e/D 2), net-section VM 41 vs S-basis Fy 241; meat_straps|crown_bar|23"
   },
   {
    "item": "2",
-   "row": "rung z150 x-90 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "row": "rung z155 x-90 gusset bolt: fatigue 1e5 x 0-1.6 g",
    "kind": "fatigue",
-   "value": 30.40352350848343,
+   "value": 54.95885934008092,
    "allow": 190.906299426545,
-   "margin": 6.27908470455001,
-   "basis": "solid FE bore peak 30 MPa (Kt_eff 2.89 on 11), q 1.00 -> 30 vs smooth R0 191; static_carry|strap_upper|15"
+   "margin": 3.4736219368242787,
+   "basis": "solid FE bore peak 55 MPa (Kt_eff 3.81 on 14), q 1.00 -> 55 vs smooth R0 191; static_carry|strap_upper|23"
   },
   {
    "item": "2",
-   "row": "rung z150 x-62 gusset bolt: static (bearing / net section)",
+   "row": "rung z155 x-62 gusset bolt: static (bearing / net section)",
    "kind": "strength",
-   "value": 45.801418650659144,
+   "value": 31.74746629649269,
    "allow": 386.0,
-   "margin": 4.698199042743933,
-   "basis": "bearing 46 MPa vs 386 (AA e/D 2), net-section VM 51 vs S-basis Fy 241; side_hill_torsion|crown_bar|15"
+   "margin": 4.379963272734206,
+   "basis": "bearing 32 MPa vs 386 (AA e/D 2), net-section VM 55 vs S-basis Fy 241; drop_2p5g|crown_bar|15"
   },
   {
    "item": "2",
-   "row": "rung z150 x-62 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "row": "rung z155 x-62 gusset bolt: fatigue 1e5 x 0-1.6 g",
    "kind": "fatigue",
-   "value": 57.29551324485698,
+   "value": 74.95749536629182,
    "allow": 190.906299426545,
-   "margin": 3.3319589722617824,
-   "basis": "solid FE bore peak 57 MPa (Kt_eff 3.56 on 16), q 1.00 -> 57 vs smooth R0 191; static_carry|crown_bar|15"
+   "margin": 2.5468607041050495,
+   "basis": "solid FE bore peak 75 MPa (Kt_eff 3.35 on 22), q 1.00 -> 75 vs smooth R0 191; static_carry|crown_bar|15"
   },
   {
    "item": "2",
-   "row": "rung z150 x-22 hip tie bolt: static (bearing / net section)",
+   "row": "rung z155 x-30 hip tie bolt: static (bearing / net section)",
    "kind": "strength",
-   "value": 23.81542436340775,
+   "value": 23.58253244974127,
    "allow": 386.0,
-   "margin": 2.833339256562223,
-   "basis": "bearing 24 MPa vs 386 (AA e/D 2), net-section VM 85 vs S-basis Fy 241; drop_2p5g|crown_bar|15"
+   "margin": 2.775971490526315,
+   "basis": "bearing 24 MPa vs 386 (AA e/D 2), net-section VM 87 vs S-basis Fy 241; drop_2p5g|crown_bar|15"
   },
   {
    "item": "2",
-   "row": "rung z150 x-22 hip tie bolt: fatigue 1e5 x 0-1.6 g",
+   "row": "rung z155 x-30 hip tie bolt: fatigue 1e5 x 0-1.6 g",
    "kind": "fatigue",
-   "value": 150.79799787240893,
+   "value": 159.73008448386537,
    "allow": 190.906299426545,
-   "margin": 1.2659737007123393,
-   "basis": "solid FE bore peak 151 MPa (Kt_eff 4.36 on 35), q 1.00 -> 151 vs smooth R0 191; static_carry|crown_bar|15"
+   "margin": 1.1951806076070084,
+   "basis": "solid FE bore peak 160 MPa (Kt_eff 4.42 on 36), q 1.00 -> 160 vs smooth R0 191; static_carry|crown_bar|15"
   },
   {
    "item": "3",
    "row": "stay z105 gusset bolt R: static (bearing / net section)",
    "kind": "strength",
-   "value": 56.02723571520577,
+   "value": 56.644888708806306,
    "allow": 386.0,
-   "margin": 3.11958451337596,
-   "basis": "bearing 56 MPa vs 386 (AA e/D 2), net-section VM 77 vs S-basis Fy 241; drop_2p5g|strap_upper|15"
+   "margin": 2.8822820613272215,
+   "basis": "bearing 57 MPa vs 386 (AA e/D 2), net-section VM 84 vs S-basis Fy 241; drop_2p5g|strap_upper|15"
   },
   {
    "item": "3",
    "row": "stay z105 gusset bolt R: fatigue 1e5 x 0-1.6 g",
    "kind": "fatigue",
-   "value": 131.4182269636193,
+   "value": 139.50612484775257,
    "allow": 190.906299426545,
-   "margin": 1.4526622663947053,
-   "basis": "solid FE bore peak 131 MPa (Kt_eff 4.89 on 27), q 1.00 -> 131 vs smooth R0 191; static_carry|strap_upper|15"
+   "margin": 1.3684438560306011,
+   "basis": "solid FE bore peak 140 MPa (Kt_eff 4.66 on 30), q 1.00 -> 140 vs smooth R0 191; static_carry|strap_upper|15"
   },
   {
    "item": "3",
    "row": "stay z135 gusset bolt R: static (bearing / net section)",
    "kind": "strength",
-   "value": 39.89232013184653,
+   "value": 38.824084003598365,
    "allow": 386.0,
-   "margin": 2.1276882619357713,
-   "basis": "bearing 40 MPa vs 386 (AA e/D 2), net-section VM 113 vs S-basis Fy 241; drop_2p5g|strap_upper|23"
+   "margin": 1.9512230480814028,
+   "basis": "bearing 39 MPa vs 386 (AA e/D 2), net-section VM 124 vs S-basis Fy 241; drop_2p5g|strap_upper|23"
   },
   {
    "item": "3",
    "row": "stay z135 gusset bolt R: fatigue 1e5 x 0-1.6 g",
    "kind": "fatigue",
-   "value": 162.76937080345112,
+   "value": 178.45641207747173,
    "allow": 190.906299426545,
-   "margin": 1.1728637794949153,
-   "basis": "solid FE bore peak 163 MPa (Kt_eff 3.29 on 49), q 1.00 -> 163 vs smooth R0 191; static_carry|strap_upper|23"
+   "margin": 1.0697643038103248,
+   "basis": "solid FE bore peak 178 MPa (Kt_eff 3.29 on 54), q 1.00 -> 178 vs smooth R0 191; static_carry|strap_upper|23"
   },
   {
    "item": "7",
@@ -469,172 +469,172 @@
    "item": "7",
    "row": "stay z60 hinge pin R: fatigue 1e5 x 0-1.6 g",
    "kind": "fatigue",
-   "value": 44.07187532560835,
+   "value": 44.23333789719138,
    "allow": 190.906299426545,
-   "margin": 4.331703564146207,
-   "basis": "solid FE bore peak 44 MPa (Kt_eff 4.31 on 10), q 1.00 -> 44 vs smooth R0 191; static_carry|strap_upper|15"
+   "margin": 4.315891779866486,
+   "basis": "solid FE bore peak 44 MPa (Kt_eff 4.24 on 10), q 1.00 -> 44 vs smooth R0 191; static_carry|strap_upper|15"
   },
   {
    "item": "5",
    "row": "upper bar x+15 pawl-housing bolt: static (bearing / net section)",
    "kind": "strength",
-   "value": 24.291640122230348,
+   "value": 24.291632240937222,
    "allow": 386.0,
-   "margin": 1.3187821595975422,
+   "margin": 1.3186434289546216,
    "basis": "bearing 24 MPa vs 386 (AA e/D 2), net-section VM 183 vs S-basis Fy 241; hipbelt_off_abuse|crown_bar|15"
   },
   {
    "item": "5",
    "row": "upper bar x+15 pawl-housing bolt: fatigue 1e5 x 0-1.6 g",
    "kind": "fatigue",
-   "value": 23.443481526644494,
+   "value": 24.474921830083552,
    "allow": 190.906299426545,
-   "margin": 8.143257186846247,
-   "basis": "solid FE bore peak 23 MPa (Kt_eff 3.28 on 7), q 1.00 -> 23 vs smooth R0 191; static_carry|strap_upper|15"
+   "margin": 7.800078004412294,
+   "basis": "solid FE bore peak 24 MPa (Kt_eff 3.27 on 7), q 1.00 -> 24 vs smooth R0 191; static_carry|strap_upper|15"
   },
   {
    "item": "2",
-   "row": "rung z90 x+90 gusset bolt: static (bearing / net section)",
+   "row": "rung z85 x+90 gusset bolt: static (bearing / net section)",
    "kind": "strength",
-   "value": 57.22516085800229,
+   "value": 15.796033683416729,
    "allow": 386.0,
-   "margin": 6.74528466521597,
-   "basis": "bearing 57 MPa vs 386 (AA e/D 2), net-section VM 31 vs S-basis Fy 241; side_hill_torsion|crown_bar|15"
+   "margin": 5.946320970331198,
+   "basis": "bearing 16 MPa vs 386 (AA e/D 2), net-section VM 41 vs S-basis Fy 241; meat_straps|crown_bar|23"
   },
   {
    "item": "2",
-   "row": "rung z90 x+90 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "row": "rung z85 x+90 gusset bolt: fatigue 1e5 x 0-1.6 g",
    "kind": "fatigue",
-   "value": 35.07567673763574,
+   "value": 54.6879419363931,
    "allow": 190.906299426545,
-   "margin": 5.442697538083564,
-   "basis": "solid FE bore peak 35 MPa (Kt_eff 3.29 on 11), q 1.00 -> 35 vs smooth R0 191; static_carry|crown_bar|15"
+   "margin": 3.490829836832877,
+   "basis": "solid FE bore peak 55 MPa (Kt_eff 3.80 on 14), q 1.00 -> 55 vs smooth R0 191; static_carry|crown_bar|23"
   },
   {
    "item": "2",
-   "row": "rung z90 x+62 gusset bolt: static (bearing / net section)",
+   "row": "rung z85 x+62 gusset bolt: static (bearing / net section)",
    "kind": "strength",
-   "value": 88.16079862244372,
+   "value": 30.516811858755712,
    "allow": 386.0,
-   "margin": 4.378363241162079,
-   "basis": "bearing 88 MPa vs 386 (AA e/D 2), net-section VM 46 vs S-basis Fy 241; side_hill_torsion|crown_bar|15"
+   "margin": 4.959211955617093,
+   "basis": "bearing 31 MPa vs 386 (AA e/D 2), net-section VM 49 vs S-basis Fy 241; meat_straps|crown_bar|23"
   },
   {
    "item": "2",
-   "row": "rung z90 x+62 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "row": "rung z85 x+62 gusset bolt: fatigue 1e5 x 0-1.6 g",
    "kind": "fatigue",
-   "value": 59.34195455877859,
+   "value": 75.9011108854998,
    "allow": 190.906299426545,
-   "margin": 3.2170544574404114,
-   "basis": "solid FE bore peak 59 MPa (Kt_eff 5.37 on 11), q 1.00 -> 59 vs smooth R0 191; static_carry|crown_bar|23"
+   "margin": 2.515197698681059,
+   "basis": "solid FE bore peak 76 MPa (Kt_eff 4.44 on 17), q 1.00 -> 76 vs smooth R0 191; static_carry|crown_bar|23"
   },
   {
    "item": "2",
-   "row": "rung z90 x+22 hip tie bolt: static (bearing / net section)",
+   "row": "rung z85 x+30 hip tie bolt: static (bearing / net section)",
    "kind": "strength",
-   "value": 22.23165464405375,
+   "value": 22.417213117627266,
    "allow": 386.0,
-   "margin": 3.4047813773376263,
-   "basis": "bearing 22 MPa vs 386 (AA e/D 2), net-section VM 71 vs S-basis Fy 241; meat_straps|crown_bar|23"
+   "margin": 3.3652518996231557,
+   "basis": "bearing 22 MPa vs 386 (AA e/D 2), net-section VM 72 vs S-basis Fy 241; meat_straps|crown_bar|23"
   },
   {
    "item": "2",
-   "row": "rung z90 x+22 hip tie bolt: fatigue 1e5 x 0-1.6 g",
+   "row": "rung z85 x+30 hip tie bolt: fatigue 1e5 x 0-1.6 g",
    "kind": "fatigue",
-   "value": 124.69088891407964,
+   "value": 130.71067885427811,
    "allow": 190.906299426545,
-   "margin": 1.5310364781992387,
-   "basis": "solid FE bore peak 125 MPa (Kt_eff 5.27 on 24), q 1.00 -> 125 vs smooth R0 191; static_carry|crown_bar|23"
+   "margin": 1.4605256517669496,
+   "basis": "solid FE bore peak 131 MPa (Kt_eff 5.28 on 25), q 1.00 -> 131 vs smooth R0 191; static_carry|crown_bar|23"
   },
   {
    "item": "2",
-   "row": "rung z150 x+90 gusset bolt: static (bearing / net section)",
+   "row": "rung z155 x+90 gusset bolt: static (bearing / net section)",
    "kind": "strength",
-   "value": 59.52099830685225,
+   "value": 16.79856957403554,
    "allow": 386.0,
-   "margin": 6.485106281484571,
-   "basis": "bearing 60 MPa vs 386 (AA e/D 2), net-section VM 28 vs S-basis Fy 241; side_hill_torsion|crown_bar|15"
+   "margin": 5.94393223040823,
+   "basis": "bearing 17 MPa vs 386 (AA e/D 2), net-section VM 41 vs S-basis Fy 241; meat_straps|crown_bar|23"
   },
   {
    "item": "2",
-   "row": "rung z150 x+90 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "row": "rung z155 x+90 gusset bolt: fatigue 1e5 x 0-1.6 g",
    "kind": "fatigue",
-   "value": 31.10768015229519,
+   "value": 55.3871855828236,
    "allow": 190.906299426545,
-   "margin": 6.136950698088604,
-   "basis": "solid FE bore peak 31 MPa (Kt_eff 2.96 on 11), q 1.00 -> 31 vs smooth R0 191; static_carry|strap_upper|23"
+   "margin": 3.446759343658507,
+   "basis": "solid FE bore peak 55 MPa (Kt_eff 3.84 on 14), q 1.00 -> 55 vs smooth R0 191; static_carry|strap_upper|23"
   },
   {
    "item": "2",
-   "row": "rung z150 x+62 gusset bolt: static (bearing / net section)",
+   "row": "rung z155 x+62 gusset bolt: static (bearing / net section)",
    "kind": "strength",
-   "value": 90.43938517403075,
+   "value": 31.747464596678707,
    "allow": 386.0,
-   "margin": 4.133175686324583,
-   "basis": "bearing 90 MPa vs 386 (AA e/D 2), net-section VM 58 vs S-basis Fy 241; side_hill_torsion|crown_bar|15"
+   "margin": 4.379963211462765,
+   "basis": "bearing 32 MPa vs 386 (AA e/D 2), net-section VM 55 vs S-basis Fy 241; drop_2p5g|crown_bar|15"
   },
   {
    "item": "2",
-   "row": "rung z150 x+62 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "row": "rung z155 x+62 gusset bolt: fatigue 1e5 x 0-1.6 g",
    "kind": "fatigue",
-   "value": 65.47275533212081,
+   "value": 83.00935263928415,
    "allow": 190.906299426545,
-   "margin": 2.9158128210450722,
-   "basis": "solid FE bore peak 65 MPa (Kt_eff 4.06 on 16), q 1.00 -> 65 vs smooth R0 191; static_carry|crown_bar|15"
+   "margin": 2.299816747832324,
+   "basis": "solid FE bore peak 83 MPa (Kt_eff 3.71 on 22), q 1.00 -> 83 vs smooth R0 191; static_carry|crown_bar|15"
   },
   {
    "item": "2",
-   "row": "rung z150 x+22 hip tie bolt: static (bearing / net section)",
+   "row": "rung z155 x+30 hip tie bolt: static (bearing / net section)",
    "kind": "strength",
-   "value": 23.815425433132155,
+   "value": 23.582532859364985,
    "allow": 386.0,
-   "margin": 2.833339374246351,
-   "basis": "bearing 24 MPa vs 386 (AA e/D 2), net-section VM 85 vs S-basis Fy 241; drop_2p5g|crown_bar|15"
+   "margin": 2.7759714875845125,
+   "basis": "bearing 24 MPa vs 386 (AA e/D 2), net-section VM 87 vs S-basis Fy 241; drop_2p5g|crown_bar|15"
   },
   {
    "item": "2",
-   "row": "rung z150 x+22 hip tie bolt: fatigue 1e5 x 0-1.6 g",
+   "row": "rung z155 x+30 hip tie bolt: fatigue 1e5 x 0-1.6 g",
    "kind": "fatigue",
-   "value": 150.28519236819204,
+   "value": 158.78968086388662,
    "allow": 190.906299426545,
-   "margin": 1.2702934761452283,
-   "basis": "solid FE bore peak 150 MPa (Kt_eff 4.35 on 35), q 1.00 -> 150 vs smooth R0 191; static_carry|crown_bar|15"
+   "margin": 1.2022588520105946,
+   "basis": "solid FE bore peak 159 MPa (Kt_eff 4.40 on 36), q 1.00 -> 159 vs smooth R0 191; static_carry|crown_bar|15"
   },
   {
    "item": "1",
    "row": "lumbar L-gussets (0.090 in x 38.1 mm): plate strength",
    "kind": "strength",
-   "value": 26.93804062513212,
+   "value": 26.27396109113876,
    "allow": 241.0,
-   "margin": 8.946456178967841,
-   "basis": "per-plate axial + in-plane + couple + torsion-as-differential-bending on the net section (w - d)/w 0.86; GRs135-GRs150 side_hill_torsion|crown_bar|15"
+   "margin": 9.172579618429916,
+   "basis": "per-plate axial + in-plane + couple + torsion-as-differential-bending on the net section (w - d)/w 0.86; GRs85-GRs105 drop_2p5g|crown_bar|15"
   },
   {
    "item": "1",
    "row": "lumbar L-gussets: fatigue at the bolt holes",
    "kind": "fatigue",
-   "value": 32.94974508071832,
+   "value": 36.966245359861276,
    "allow": 190.906299426545,
-   "margin": 5.793862713015658,
-   "basis": "walk plate stress x Kf 3.06 (Heywood Kt 3.06, q 1.00); GLs90-GLs105 static_carry|crown_bar|15"
+   "margin": 5.164341078410821,
+   "basis": "walk plate stress x Kf 3.06 (Heywood Kt 3.06, q 1.00); GRs85-GRs105 static_carry|crown_bar|15"
   },
   {
    "item": "1",
    "row": "lumbar gussets: bolt bearing in the .090 plate",
    "kind": "joint",
-   "value": 96.43542677773219,
+   "value": 103.63044584831607,
    "allow": 366.7,
-   "margin": 3.802544482383878,
-   "basis": "(F / 2 + T / 2R) / (d t), e/D 1.9 -> 386 x 0.95; lc_R90_62 side_hill_torsion|crown_bar|15"
+   "margin": 3.5385353888830986,
+   "basis": "(F / 2 + T / 2R) / (d t), e/D 1.9 -> 386 x 0.95; lc_R85_62 side_hill_torsion|strap_upper|15"
   },
   {
    "item": "1",
    "row": "M5 A2-70 through-bolts: shear at each wall (gussets, hip ties)",
    "kind": "joint",
-   "value": 87.04781544393346,
+   "value": 93.54242757040137,
    "allow": 270.0,
-   "margin": 3.101743548910817,
-   "basis": "(F/2 + T/2R) on the minor-diameter area, 0.6 x 450 MPa proof; lc_R90_62 side_hill_torsion|crown_bar|15"
+   "margin": 2.8863907748897595,
+   "basis": "(F/2 + T/2R) on the minor-diameter area, 0.6 x 450 MPa proof; lc_R85_62 side_hill_torsion|strap_upper|15"
   },
   {
    "item": "1",
@@ -658,108 +658,108 @@
    "item": "6",
    "row": "Ti mount on the front angle: 6 x M5 A2 tension (tipping)",
    "kind": "joint",
-   "value": 319.9,
+   "value": 319.8,
    "allow": 3790.0,
-   "margin": 11.847452328852768,
-   "basis": "h1_closeout.tip_tension on the 6 used positions, V 1630 N (global, factored) + H 1239 N; capacity proof x As - preload 2.6 kN"
+   "margin": 11.851156973108193,
+   "basis": "h1_closeout.tip_tension on the 6 used positions, V 1629 N (global, factored) + H 1239 N; capacity proof x As - preload 2.6 kN"
   },
   {
    "item": "6",
    "row": "front angle leg: plate bending under the mount tipping couple",
    "kind": "strength",
-   "value": 127.14350306749397,
+   "value": 127.10584933364993,
    "allow": 241.0,
-   "margin": 1.895495988277635,
+   "margin": 1.896057508473749,
    "basis": "M_net 28.0 N m shared by the web corner and the key-bolt row (1/2 each), strip 66 mm (2 holes out) x 3.175"
   },
   {
    "item": "6",
    "row": "front angle leg: fatigue at the mount holes",
    "kind": "fatigue",
-   "value": 132.54386508773018,
+   "value": 132.46129906893964,
    "allow": 190.906299426545,
-   "margin": 1.4403254296242605,
+   "margin": 1.4412232159008767,
    "basis": "walk M_net 14.6 N m, Kf from Kt 2"
   },
   {
    "item": "6",
    "row": "front leg + backer strip at the tie bolts (plate bending)",
    "kind": "strength",
-   "value": 110.15311796766082,
+   "value": 45.16930418464435,
    "allow": 241.0,
-   "margin": 2.187863625165415,
-   "basis": "tie axial 727 N (meat_straps|crown_bar|23) x 12.9 mm from the stem, two 1/8 in layers 25.4 wide (no composite action)"
+   "margin": 5.335481791236664,
+   "basis": "tie axial 783 N (meat_straps|crown_bar|23) x 4.9 mm from the stem, two 1/8 in layers 25.4 wide (no composite action)"
   },
   {
    "item": "6",
    "row": "front leg + backer strip at the tie bolts: fatigue",
    "kind": "fatigue",
-   "value": 115.31451444296836,
+   "value": 47.27320837982748,
    "allow": 190.906299426545,
-   "margin": 1.6555270630824397,
-   "basis": "walk tie 381 N, Kf 2.00 (Kt 2)"
+   "margin": 4.038361388392858,
+   "basis": "walk tie 410 N, Kf 2.00 (Kt 2)"
   },
   {
    "item": "6",
    "row": "tie bolts (M5 A2) tension",
    "kind": "joint",
-   "value": 727.3880536491006,
+   "value": 782.7752522305786,
    "allow": 3790.0,
-   "margin": 5.210423763473485,
+   "margin": 4.841747345997592,
    "basis": "proof x As - preload 2.6 kN"
   },
   {
    "item": "6",
    "row": "tie spacer columns (3/4 x .035): fatigue, Kt 2 at the clamped ends",
    "kind": "fatigue",
-   "value": 76.634387958496,
+   "value": 104.59225061462452,
    "allow": 190.906299426545,
-   "margin": 2.491130998918356,
-   "basis": "tie_R150 static_carry|crown_bar|23"
+   "margin": 1.82524324990337,
+   "basis": "tie_L155 static_carry|crown_bar|23"
   },
   {
    "item": "6",
    "row": "hip post (2 angles): fatigue at the mount / tie holes",
    "kind": "fatigue",
-   "value": 13.401900304393079,
+   "value": 18.381594914493597,
    "allow": 190.906299426545,
-   "margin": 14.244718666051172,
-   "basis": "walk, Kf 2.00; HM-PO150 static_carry|crown_bar|23"
+   "margin": 10.385730961572785,
+   "basis": "walk, Kf 2.00; HM-PO155 static_carry|crown_bar|23"
   },
   {
    "item": "6",
    "row": "tie spacer end on the rung wall (Al on Al, coped)",
    "kind": "strength",
-   "value": 65.60124187588407,
+   "value": 66.69323023203218,
    "allow": 386.0,
-   "margin": 5.884034950592894,
+   "margin": 5.787693873232242,
    "basis": "tie axial + M5 preload on the spacer end annulus; no printed part in the preload path (BL-082)"
   },
   {
    "item": "1",
    "row": "lumbar saddle plug (printed): bearing on the stay",
    "kind": "strength",
-   "value": 2.9102047557702986,
+   "value": 2.504622143616666,
    "allow": 19.66,
-   "margin": 6.755538407054874,
-   "basis": "1084 N factored (plug link) on a 140 deg x 20 mm saddle, 60 % effective"
+   "margin": 7.849487416737052,
+   "basis": "933 N factored (plug link) on a 140 deg x 20 mm saddle, 60 % effective"
   },
   {
    "item": "1",
    "row": "lumbar saddle plug: shear in the plug body (in the layer plane)",
    "kind": "strength",
-   "value": 2.8256482413092066,
+   "value": 2.431849903764341,
    "allow": 11.35,
-   "margin": 4.016777401401248,
+   "margin": 4.667228837779404,
    "basis": "printed with the plug axis in the layer plane: in-plane shear, interlayer value 11.35 used (lower)"
   },
   {
    "item": "1",
    "row": "lumbar saddle plug: bearing fatigue",
    "kind": "fatigue",
-   "value": 1.0049615316810976,
+   "value": 1.064758306299294,
    "allow": 5.898,
-   "margin": 5.868881359203708,
+   "margin": 5.5392852679396,
    "basis": "walk plug force, 0.30 x 19.66"
   },
   {
@@ -838,73 +838,73 @@
    "item": "3",
    "row": "stay at the leg-end bushing (z 171-374): static (ring + beam)",
    "kind": "strength",
-   "value": 113.00351369426272,
+   "value": 116.03309552655732,
    "allow": 241.0,
-   "margin": 2.132677048007895,
-   "basis": "solid FE 70 mm bushing, 30 deg contact, F 655 N factored -> hoop 40 MPa; with the worst stay beam stress 88 MPa (VM, opposite signs)"
+   "margin": 2.0769936276055017,
+   "basis": "solid FE 70 mm bushing, 30 deg contact, F 655 N factored -> hoop 40 MPa; with the worst stay beam stress 91 MPa (VM, opposite signs)"
   },
   {
    "item": "3",
    "row": "stay at the leg-end bushing (z 171-374): fatigue",
    "kind": "fatigue",
-   "value": 104.04840429931562,
+   "value": 107.90159724847277,
    "allow": 190.906299426545,
-   "margin": 1.834783538605413,
-   "basis": "walk bushing 303 N -> hoop 18 MPa, Kt 2 x beam 47 MPa (HA-LS-1 Kt 2 at the bushing end; UHMWPE on 6061 does not fret)"
+   "margin": 1.769262960833947,
+   "basis": "walk bushing 317 N -> hoop 19 MPa, Kt 2 x beam 49 MPa (HA-LS-1 Kt 2 at the bushing end; UHMWPE on 6061 does not fret)"
   },
   {
    "item": "3",
    "row": "leg-end bushing (z 171-374): bore ovalisation at limit vs leg clearance",
    "kind": "joint",
-   "value": 0.034379189698512974,
+   "value": 0.034379262218646546,
    "allow": 1.0,
-   "margin": 29.087363860796685,
+   "margin": 29.08730250347322,
    "basis": "n = 2 diametral change under the bushing load vs 2 x radial leg clearance (ASSUMPTION FIT)"
   },
   {
    "item": "3",
    "row": "stay at the stay-top bushing (z 460-530, free tube end): static (ring + beam)",
    "kind": "strength",
-   "value": 124.29043833461273,
+   "value": 125.471341876747,
    "allow": 241.0,
-   "margin": 1.9390067589204543,
-   "basis": "solid FE 70 mm bushing, 30 deg contact, F 1393 N factored -> hoop 96 MPa; with the worst stay beam stress 44 MPa (VM, opposite signs)"
+   "margin": 1.9207573330708385,
+   "basis": "solid FE 70 mm bushing, 30 deg contact, F 1393 N factored -> hoop 96 MPa; with the worst stay beam stress 45 MPa (VM, opposite signs)"
   },
   {
    "item": "3",
    "row": "stay at the stay-top bushing (z 460-530, free tube end): fatigue",
    "kind": "fatigue",
-   "value": 70.31408895113447,
+   "value": 73.0708198815601,
    "allow": 190.906299426545,
-   "margin": 2.715050458226336,
-   "basis": "walk bushing 492 N -> hoop 34 MPa, Kt 2 x beam 23 MPa (HA-LS-1 Kt 2 at the bushing end; UHMWPE on 6061 does not fret)"
+   "margin": 2.612620191425024,
+   "basis": "walk bushing 514 N -> hoop 36 MPa, Kt 2 x beam 24 MPa (HA-LS-1 Kt 2 at the bushing end; UHMWPE on 6061 does not fret)"
   },
   {
    "item": "3",
    "row": "stay-top bushing (z 460-530, free tube end): bore ovalisation at limit vs leg clearance",
    "kind": "joint",
-   "value": 0.0854395238310818,
+   "value": 0.0854392929257266,
    "allow": 1.0,
-   "margin": 11.704185079226914,
+   "margin": 11.704216710563276,
    "basis": "n = 2 diametral change under the bushing load vs 2 x radial leg clearance (ASSUMPTION FIT)"
   },
   {
    "item": "5",
    "row": "tee clamp z 330: slip (axial + torque about the stay)",
    "kind": "joint",
-   "value": 0.8157273616014722,
+   "value": 0.17897140111495677,
    "allow": 1.0,
-   "margin": 1.225899788425333,
+   "margin": 5.587484892950471,
    "basis": "mu 0.15 wet Al/Al (BL-082) x 2 pi Fb ret = 2205 N / 28.0 N m (2 x M5 A2 Fb 2600 N, retention 0.9 metal stack, ASSUMPTION EMBED); side_hill_torsion|crown_bar|15"
   },
   {
    "item": "5",
    "row": "tee clamp z 520: slip (axial + torque about the stay)",
    "kind": "joint",
-   "value": 0.8338665383251023,
+   "value": 0.84068804034071,
    "allow": 1.0,
-   "margin": 1.1992326757811773,
-   "basis": "mu 0.15 wet Al/Al (BL-082) x 2 pi Fb ret = 1696 N / 21.5 N m (2 x M5 A2 Fb 2000 N, retention 0.9 metal stack, ASSUMPTION EMBED); hipbelt_off_abuse|crown_bar|15"
+   "margin": 1.1895018746724704,
+   "basis": "mu 0.15 wet Al/Al (BL-082) x 2 pi Fb ret = 1696 N / 21.5 N m (2 x M5 A2 Fb 2000 N, retention 0.9 metal stack, ASSUMPTION EMBED); side_hill_torsion|crown_bar|23"
   },
   {
    "item": "5",
@@ -955,36 +955,36 @@
    "item": "5",
    "row": "upper tee: leg radial clearance at preload",
    "kind": "joint",
-   "value": 0.030843491535202675,
+   "value": 0.030843491535203823,
    "allow": 0.2,
-   "margin": 6.484350183627348,
+   "margin": 6.4843501836271065,
    "basis": "bore gap loss 0.031 mm (solid FE, n 0 + n 2) vs nominal 0.5 mm - 0.3 required (remaining 0.47 mm); ASSUMPTION FIT: bushing bore = leg OD + 1.00 mm"
   },
   {
    "item": "5",
    "row": "upper tee: leg radial clearance at limit (preload + IM3 hook 1415 N + bar-end couple)",
    "kind": "joint",
-   "value": 0.06905186381278211,
+   "value": 0.06898721582427195,
    "allow": 0.2,
-   "margin": 2.896373666933205,
+   "margin": 2.8990878615749778,
    "basis": "bore gap loss 0.069 mm (solid FE, n 0 + n 2) vs nominal 0.5 mm - 0.3 required (remaining 0.43 mm); ASSUMPTION FIT: bushing bore = leg OD + 1.00 mm"
   },
   {
    "item": "5",
    "row": "stay wall under the upper tee at limit (clamp + IM3 loop + couple + beam)",
    "kind": "strength",
-   "value": 212.4502601876105,
+   "value": 214.80636690826165,
    "allow": 241.0,
-   "margin": 1.1343831717936133,
-   "basis": "solid FE hoop peak 155 MPa of the superposed field (preload + IM3 1415 N + bar-end couple 1.50 kN) with the worst stay beam stress 88 MPa (VM, opposite signs)"
+   "margin": 1.1219406736808923,
+   "basis": "solid FE hoop peak 154 MPa of the superposed field (preload + IM3 1415 N + bar-end couple 1.49 kN) with the worst stay beam stress 91 MPa (VM, opposite signs)"
   },
   {
    "item": "5",
    "row": "stay wall under the upper tee: fatigue (preload mean + walking cycle)",
    "kind": "fatigue",
-   "value": 0.9640231795479457,
+   "value": 0.9814243323895842,
    "allow": 1.0,
-   "margin": 1.0373194558132146,
+   "margin": 1.018927253989299,
    "basis": "Goodman sa/Sf + sm/Su: hoop 93 -> 122 MPa plus Kt 2 x stay beam walk, Sf 142.3 (Yahr 1e5), Su 290"
   },
   {
@@ -1117,178 +1117,178 @@
    "item": "4",
    "row": "spreader sheet first-ply (factored)",
    "kind": "strength",
-   "value": 0.5340313984315774,
+   "value": 0.5111084434459499,
    "allow": 1.0,
-   "margin": 1.8725490728390657,
+   "margin": 1.9565319509454568,
    "basis": "spreader.evaluate(sw110c7d, h 4) on the B81 supports"
   },
   {
    "item": "4",
    "row": "spreader sheet fatigue (FI <= 0.5 at 1.6 g)",
    "kind": "fatigue",
-   "value": 0.6140092535711605,
+   "value": 0.5759748096129059,
    "allow": 1.0,
-   "margin": 1.6286399499419029,
+   "margin": 1.7361870403187731,
    "basis": "spreader.evaluate(sw110c7d, h 4) on the B81 supports"
   },
   {
    "item": "4",
    "row": "spreader sandwich local (bone patch)",
    "kind": "strength",
-   "value": 0.5723934287512361,
+   "value": 0.5634214149656378,
    "allow": 1.0,
-   "margin": 1.7470501053473886,
+   "margin": 1.7748704139351685,
    "basis": "spreader.evaluate(sw110c7d, h 4) on the B81 supports"
   },
   {
    "item": "4",
    "row": "spreader clearance to the skin at the factored case (>= 0 mm)",
    "kind": "info",
-   "value": 14.999492156630772,
+   "value": 15.060036823345667,
    "allow": 0.0,
    "margin": null,
-   "basis": "walk clearance 20.8 mm (>= 3 mm mesh rule); skin peak 14.0 kPa (<= 14)"
+   "basis": "walk clearance 20.8 mm (>= 3 mm mesh rule); skin peak 14.1 kPa (<= 14)"
   }
  ],
  "global": {
   "strength": {
    "stays": {
-    "margin": 1.8304908960433757,
-    "case": "side_hill_torsion|strap_upper|15",
-    "member": "SL135-SL150",
-    "sf": 2.7457363440650635,
+    "margin": 1.766562531157623,
+    "case": "meat_straps|crown_bar|23",
+    "member": "SL330-SL374.3",
+    "sf": 2.6498437967364343,
     "required": 1.5
    },
    "bars": {
-    "margin": 1.3197599585141924,
+    "margin": 1.3196405895990704,
     "case": "hipbelt_off_abuse|crown_bar|15",
     "member": "UB1-UBhp15",
-    "sf": 1.3197599585141924,
+    "sf": 1.3196405895990704,
     "required": 1.0
    },
    "lumbar rungs": {
-    "margin": 3.3193785411173207,
+    "margin": 3.2364082311855924,
     "case": "drop_2p5g|crown_bar|15",
-    "member": "R150m62-R150m22",
-    "sf": 4.979067811675981,
+    "member": "R155p30-R155p62",
+    "sf": 4.854612346778389,
     "required": 1.5
    },
    "hip post (2 angles)": {
-    "margin": 4.753607605387432,
+    "margin": 3.423012230844375,
     "case": "meat_straps|crown_bar|23",
-    "member": "PO150-TPR150",
-    "sf": 7.130411408081149,
+    "member": "PO155-TPL155",
+    "sf": 5.134518346266563,
     "required": 1.5
    },
    "hip ties (spacer columns)": {
-    "margin": 3.059696465861005,
+    "margin": 2.31708078355453,
     "case": "meat_straps|crown_bar|23",
-    "member": "tie_R150",
-    "sf": 4.589544698791507,
+    "member": "tie_L155",
+    "sf": 3.475621175331795,
     "required": 1.5
    }
   },
   "buckling": {
-   "margin": 1.9198149022918811,
-   "eigen": 4.3195835301567325,
+   "margin": 2.332706001012161,
+   "eigen": 5.248588502277363,
    "case": "side_hill_torsion|crown_bar|15"
   },
   "deflection_t1": {
    "15": {
-    "crown_rel_hip_y_mm": 147.8518691218423,
-    "crown_elastic_mm": -2.4653656305510125,
-    "band_lo": -1.7257559413857086,
-    "band_hi": -3.204975319716316,
-    "crown_abs_mm": 58.46773737672792
+    "crown_rel_hip_y_mm": 154.30368706528407,
+    "crown_elastic_mm": -2.947571730127038,
+    "band_lo": -2.0633002110889263,
+    "band_hi": -3.8318432491651495,
+    "crown_abs_mm": 63.02511069629822
    },
    "19": {
-    "crown_rel_hip_y_mm": 120.02782581581573,
-    "crown_elastic_mm": -3.6143461240381143,
-    "band_lo": -2.5300422868266796,
-    "band_hi": -4.698649961249549,
-    "crown_abs_mm": 44.92324132328738
+    "crown_rel_hip_y_mm": 125.28088483228623,
+    "crown_elastic_mm": -4.365875077178671,
+    "band_lo": -3.05611255402507,
+    "band_hi": -5.675637600332273,
+    "crown_abs_mm": 48.26694500137891
    },
    "23": {
-    "crown_rel_hip_y_mm": 100.30259795817103,
-    "crown_elastic_mm": -5.298906864848984,
-    "band_lo": -3.7092348053942885,
-    "band_hi": -6.88857892430368,
-    "crown_abs_mm": 36.54486920695909
+    "crown_rel_hip_y_mm": 104.68719993615534,
+    "crown_elastic_mm": -6.42757684929564,
+    "band_lo": -4.499303794506948,
+    "band_hi": -8.355849904084332,
+    "crown_abs_mm": 39.1628906627678
    }
   },
   "rigid_joints": {
    "strength": {
     "stays": {
-     "margin": 1.9063015072963225,
-     "case": "drop_2p5g|strap_upper|23",
-     "member": "SR374.3-SR380",
-     "sf": 2.859452260944484,
+     "margin": 1.7666318961766583,
+     "case": "meat_straps|crown_bar|23",
+     "member": "SR330-SR374.3",
+     "sf": 2.6499478442649873,
      "required": 1.5
     },
     "bars": {
-     "margin": 1.3309841143842487,
+     "margin": 1.3279900504146063,
      "case": "hipbelt_off_abuse|crown_bar|15",
-     "member": "UBhm15-UB1",
-     "sf": 1.3309841143842487,
+     "member": "UB1-UBhp15",
+     "sf": 1.3279900504146063,
      "required": 1.0
     },
     "lumbar rungs": {
-     "margin": 1.0845271573780628,
-     "case": "side_hill_torsion|strap_upper|19",
-     "member": "R150p90-R150p101.3",
-     "sf": 1.6267907360670941,
+     "margin": 2.718871777804615,
+     "case": "drop_2p5g|strap_upper|23",
+     "member": "R155p90-R155p115",
+     "sf": 4.078307666706922,
      "required": 1.5
     },
     "hip post (2 angles)": {
-     "margin": 7.304725085707092,
-     "case": "side_hill_torsion|crown_bar|15",
-     "member": "HM-PO150",
-     "sf": 10.957087628560638,
+     "margin": 14.410117882785576,
+     "case": "meat_straps|crown_bar|23",
+     "member": "PO155-TPR155",
+     "sf": 21.615176824178363,
      "required": 1.5
     },
     "hip ties (spacer columns)": {
-     "margin": 2.4356714822049392,
-     "case": "side_hill_torsion|strap_upper|23",
-     "member": "tie_R90",
-     "sf": 3.653507223307409,
+     "margin": 2.7693878828717935,
+     "case": "drop_2p5g|strap_upper|15",
+     "member": "tie_R155",
+     "sf": 4.15408182430769,
      "required": 1.5
     }
    },
    "buckling": {
-    "margin": 9.13747151945332,
-    "eigen": 20.559310918769967,
+    "margin": 2.476937864039206,
+    "eigen": 5.573110194088214,
     "case": "side_hill_torsion|crown_bar|15"
    },
    "deflection_t1": {
     "15": {
-     "crown_rel_hip_y_mm": 147.82654050332542,
-     "crown_elastic_mm": -2.2209197855182623,
-     "band_lo": -1.5546438498627835,
-     "band_hi": -2.887195721173741,
-     "crown_abs_mm": 58.35074316492494
+     "crown_rel_hip_y_mm": 154.26820189761696,
+     "crown_elastic_mm": -2.596642412662405,
+     "band_lo": -1.8176496888636833,
+     "band_hi": -3.3756351364611263,
+     "crown_abs_mm": 62.79767617477283
     },
     "19": {
-     "crown_rel_hip_y_mm": 120.00664144760977,
-     "crown_elastic_mm": -3.330992670977068,
-     "band_lo": -2.3316948696839472,
-     "band_hi": -4.330290472270188,
-     "crown_abs_mm": 44.79781396455627
+     "crown_rel_hip_y_mm": 125.25146326511995,
+     "crown_elastic_mm": -3.9565734198431457,
+     "band_lo": -2.769601393890202,
+     "band_hi": -5.143545445796089,
+     "crown_abs_mm": 48.02929946112917
     },
     "23": {
-     "crown_rel_hip_y_mm": 100.28445994535706,
-     "crown_elastic_mm": -4.978736881481769,
-     "band_lo": -3.4851158170372383,
-     "band_hi": -6.4723579459263,
-     "crown_abs_mm": 36.40995195167957
+     "crown_rel_hip_y_mm": 104.66203910381188,
+     "crown_elastic_mm": -5.961667462024749,
+     "band_lo": -4.173167223417324,
+     "band_hi": -7.750167700632175,
+     "crown_abs_mm": 38.91141538686765
     }
    }
   },
   "links_factored": {
    "bush_low_L": {
-    "F": 655.1746031735489,
+    "F": 655.1752870737555,
     "vec": [
-     -2.819797165871038,
-     655.1685351018932,
+     -2.8193471699806265,
+     655.1692209450266,
      0.0,
      -0.0,
      -0.0,
@@ -1299,8 +1299,8 @@
    "bush_low_L|M": {
     "M": 0.0,
     "vec": [
-     -0.18084645572647232,
-     5.801126819733327,
+     -0.19931736230957217,
+     8.089187076620874,
      -0.0,
      0.0,
      0.0,
@@ -1309,10 +1309,10 @@
     "case": "static_carry|crown_bar|15"
    },
    "bush_top_L": {
-    "F": 1393.10742076789,
+    "F": 1393.1026638487888,
     "vec": [
-     15.631922755146368,
-     -1393.0197158653357,
+     15.645439999558974,
+     -1393.014806895394,
      0.0,
      0.0,
      0.0,
@@ -1323,8 +1323,8 @@
    "bush_top_L|M": {
     "M": 0.0,
     "vec": [
-     18.380544007008513,
-     -39.99189126972169,
+     18.51215489916914,
+     -53.46178728927953,
      -0.0,
      -0.0,
      0.0,
@@ -1333,10 +1333,10 @@
     "case": "static_carry|crown_bar|15"
    },
    "bush_low_R": {
-    "F": 655.17501140775,
+    "F": 655.1763934453452,
     "vec": [
-     2.819816164994424,
-     655.1689432581043,
+     2.8193566153864036,
+     655.1703272862142,
      0.0,
      -0.0,
      0.0,
@@ -1347,8 +1347,8 @@
    "bush_low_R|M": {
     "M": 0.0,
     "vec": [
-     0.18084630696768925,
-     5.801122675848092,
+     0.19931762487521848,
+     8.089191248927818,
      -0.0,
      0.0,
      -0.0,
@@ -1357,10 +1357,10 @@
     "case": "static_carry|crown_bar|15"
    },
    "bush_top_R": {
-    "F": 1393.1075623087313,
+    "F": 1393.1037973533394,
     "vec": [
-     -15.631939329980165,
-     -1393.019857229092,
+     -15.645443330270513,
+     -1393.0159404340259,
      0.0,
      0.0,
      -0.0,
@@ -1371,8 +1371,8 @@
    "bush_top_R|M": {
     "M": 0.0,
     "vec": [
-     -18.380543327425578,
-     -39.99186859957149,
+     -18.5121561497378,
+     -53.461827405953954,
      -0.0,
      -0.0,
      -0.0,
@@ -1381,94 +1381,94 @@
     "case": "static_carry|crown_bar|15"
    },
    "pawl": {
-    "F": 2427.0883102675025,
+    "F": 2427.079474016924,
     "vec": [
-     1.644337563818667e-05,
-     2273.291769144624,
-     850.2365542462087,
+     4.029336630108647e-06,
+     2273.282438259983,
+     850.2362783914919,
      0.0,
-     -0.0,
-     0.0
+     0.0,
+     -0.0
     ],
     "case": "hipbelt_off_abuse|crown_bar|15"
    },
    "pawl|M": {
     "M": 0.0,
     "vec": [
-     -6.381114060255753e-07,
-     -150.13691691447661,
-     70.2957027737483,
+     7.938113721936386e-07,
+     -158.85865485556394,
+     72.3944195783588,
      -0.0,
-     0.0,
+     -0.0,
      -0.0
     ],
     "case": "static_carry|crown_bar|15"
    },
-   "lc_L90_90": {
-    "F": 441.5944648162701,
+   "lc_L85_90": {
+    "F": 441.789941879221,
     "vec": [
-     -53.16135461004373,
-     94.27366093250669,
-     -428.1261713406177,
-     5441.864357889024,
+     -61.09674953135588,
+     6.935223719573003,
+     -437.4899343005593,
+     1780.6239847767565,
      -0.0,
-     11935.515908511157
+     18805.62189635609
     ],
     "case": "side_hill_torsion|crown_bar|15"
    },
-   "lc_L90_90|M": {
-    "M": 15959.685591057054,
+   "lc_L85_90|M": {
+    "M": 19816.39324433549,
     "vec": [
-     296.3311121668254,
-     5.636368994679231,
-     15.078570097273914,
-     300.8673371957005,
+     253.69782229462987,
+     11.197205838985269,
+     12.62063020435258,
+     388.95984338470856,
      0.0,
-     15956.849407411317
+     19812.575588609863
     ],
     "case": "drop_2p5g|crown_bar|15"
    },
-   "lc_L90_62": {
-    "F": 535.2809336594155,
+   "lc_L85_62": {
+    "F": 562.0856821730646,
     "vec": [
-     -164.73498259659374,
-     -0.2617433299906773,
-     509.3014774557646,
-     333.08719992312456,
+     -171.3848427675875,
+     -0.21111989616486654,
+     535.3200026170124,
+     322.9057243061558,
      -0.0,
-     251.6538899294443
+     259.14042624924883
     ],
     "case": "single_stay_setdown|crown_bar|15"
    },
-   "lc_L90_62|M": {
-    "M": 15201.619885868788,
+   "lc_L85_62|M": {
+    "M": 17385.118123548185,
     "vec": [
-     327.9141652938042,
-     14.755297160934333,
-     -395.83888068399267,
-     -300.86987749906945,
+     281.80636316987335,
+     22.05456072425136,
+     -395.88805641143733,
+     -388.9606490383722,
      0.0,
-     15198.642191697752
+     17380.76643256054
     ],
     "case": "drop_2p5g|crown_bar|15"
    },
-   "plug_L90": {
-    "F": 784.8653738686583,
+   "plug_L85": {
+    "F": 767.511542081764,
     "vec": [
-     784.8521391532031,
-     -4.557934250274121,
-     0.0,
+     767.5050122416708,
+     -3.165977359403348,
+     -0.0,
      0.0,
      -0.0,
      0.0
     ],
     "case": "single_stay_setdown|crown_bar|15"
    },
-   "plug_L90|M": {
+   "plug_L85|M": {
     "M": 0.0,
     "vec": [
-     29.523855160438032,
-     461.01815730963835,
+     33.03712737050387,
+     487.70001985388944,
      -0.0,
      -0.0,
      0.0,
@@ -1476,71 +1476,71 @@
     ],
     "case": "static_carry|crown_bar|15"
    },
-   "lc_L150_90": {
-    "F": 434.82532196744074,
+   "lc_L155_90": {
+    "F": 449.4594730331464,
     "vec": [
-     100.50578990226046,
-     98.53237242648447,
-     -411.41587038448057,
-     5486.620278721493,
+     130.06753316062668,
+     -5.0985647553631,
+     -430.1979304392088,
+     1796.9981234058782,
      -0.0,
-     -17209.627154715472
+     -7909.155990173202
     ],
     "case": "side_hill_torsion|crown_bar|15"
    },
-   "lc_L150_90|M": {
-    "M": 18063.06366282304,
+   "lc_L155_90|M": {
+    "M": 15285.176452400783,
     "vec": [
-     100.50578990226046,
-     98.53237242648447,
-     -411.41587038448057,
-     5486.620278721493,
-     -0.0,
-     -17209.627154715472
-    ],
-    "case": "side_hill_torsion|crown_bar|15"
-   },
-   "lc_L150_62": {
-    "F": 577.6500127067013,
-    "vec": [
-     -356.4945655552205,
-     -10.469063369157894,
-     -454.4024214524162,
-     -322.35521636567773,
+     -288.43057557020416,
+     -9.528126497252742,
+     21.922389659059274,
+     415.07089876594415,
      0.0,
-     -9979.594739867258
+     -15279.539761721393
     ],
     "case": "meat_straps|crown_bar|23"
    },
-   "lc_L150_62|M": {
-    "M": 17293.645020873002,
+   "lc_L155_62": {
+    "F": 566.7618783998724,
     "vec": [
-     44.19707483933524,
-     88.72176656493735,
-     310.64315627072176,
-     5814.820631876455,
+     185.7668171540169,
+     0.08839734778207137,
+     535.4528071060295,
+     323.19329670845775,
      -0.0,
-     -16286.743662471927
+     -359.2835739010403
     ],
-    "case": "side_hill_torsion|crown_bar|15"
+    "case": "single_stay_setdown|crown_bar|15"
    },
-   "plug_L150": {
-    "F": 1083.7120848480229,
+   "lc_L155_62|M": {
+    "M": 11939.04518535789,
     "vec": [
-     -653.8040453183669,
-     -864.2755076773767,
+     -313.29598802804503,
+     -17.543396827274194,
+     -444.2896593972039,
+     -415.07049706122336,
      0.0,
+     -11931.827874239838
+    ],
+    "case": "meat_straps|crown_bar|23"
+   },
+   "plug_L155": {
+    "F": 837.9500717006498,
+    "vec": [
+     -678.1483495084829,
+     -492.2145251026677,
+     -0.0,
      0.0,
      -0.0,
-     -0.0
+     0.0
     ],
-    "case": "side_hill_torsion|crown_bar|15"
+    "case": "side_hill_torsion|strap_upper|15"
    },
-   "plug_L150|M": {
+   "plug_L155|M": {
     "M": 0.0,
     "vec": [
-     2.346627623248986,
-     -466.85147895487944,
+     2.7885353910089403,
+     -493.65238510205245,
      -0.0,
      0.0,
      0.0,
@@ -1549,118 +1549,118 @@
     "case": "static_carry|crown_bar|15"
    },
    "lb_L105": {
-    "F": 493.66742446745553,
+    "F": 436.1738175386247,
     "vec": [
-     -440.44804155529243,
-     -0.07706517033874002,
-     -222.96421850018402,
-     -738.4994581604357,
-     0.0,
-     -243.7832460096397
+     120.98191693679354,
+     -2.4857504759516758,
+     419.05225918146243,
+     2480.1095195775674,
+     -0.0,
+     -2688.653269752461
     ],
-    "case": "single_stay_setdown|crown_bar|15"
+    "case": "meat_straps|crown_bar|23"
    },
    "lb_L105|M": {
-    "M": 9548.49452498387,
+    "M": 12025.01620063304,
     "vec": [
-     177.9700575472382,
-     -4.510931172865185,
-     404.8881657967637,
-     4365.382047482714,
-     -0.0,
-     -8492.183893037323
+     -253.85378303570693,
+     -6.11791731611504,
+     44.289300185402254,
+     -71.72407044006982,
+     0.0,
+     -12024.80229705281
     ],
-    "case": "drop_2p5g|strap_upper|15"
+    "case": "side_hill_torsion|crown_bar|15"
    },
    "lb_L135": {
-    "F": 434.8326461602945,
+    "F": 407.53213024870684,
     "vec": [
-     421.59206749530154,
-     0.27718650568620345,
-     -106.4870037114485,
-     -429.2913406206952,
-     0.0,
-     -302.4885979100011
+     -107.93445638794246,
+     -3.8782499687471272,
+     392.9599845868129,
+     -5632.903158123585,
+     -0.0,
+     -6066.835276135049
     ],
-    "case": "single_stay_setdown|crown_bar|15"
+    "case": "drop_2p5g|crown_bar|19"
    },
    "lb_L135|M": {
-    "M": 15657.320510540569,
+    "M": 13643.33757680903,
     "vec": [
-     228.67843805545132,
-     -187.45029138530356,
-     131.56440447571663,
-     -15615.827059303338,
+     143.39491976917353,
+     -4.140362916984941,
+     108.6575136019662,
+     -8054.970481279597,
      0.0,
-     -1139.1359987832957
+     -11011.726058183778
     ],
     "case": "side_hill_torsion|strap_upper|15"
    },
-   "lc_R90_90": {
-    "F": 668.7640406805018,
+   "lc_R85_90": {
+    "F": 632.6578861322603,
     "vec": [
-     -480.35101805148406,
-     -86.06081828434213,
-     457.2764777685861,
-     -5004.873901766536,
+     -432.70430760660804,
+     9.469700391660751,
+     461.44697185973394,
+     -1209.2713063152876,
      -0.0,
-     -11522.311814989436
+     -10355.078645090907
     ],
-    "case": "side_hill_torsion|crown_bar|15"
+    "case": "side_hill_torsion|strap_upper|15"
    },
-   "lc_R90_90|M": {
-    "M": 15959.68048022507,
+   "lc_R85_90|M": {
+    "M": 19816.39468584001,
     "vec": [
-     -296.3310859365862,
-     5.63644646932886,
-     15.078522267774584,
-     300.8696757118207,
+     -253.697835300573,
+     11.197204318170861,
+     12.620646626930998,
+     388.960597205663,
      -0.0,
-     -15956.844251577884
-    ],
-    "case": "drop_2p5g|crown_bar|15"
-   },
-   "lc_R90_62": {
-    "F": 1056.5948007117927,
-    "vec": [
-     -475.67481486778877,
-     -79.6054427271983,
-     -940.1005355172896,
-     -6265.094590360056,
-     -0.0,
-     -10482.721992136754
-    ],
-    "case": "side_hill_torsion|crown_bar|15"
-   },
-   "lc_R90_62|M": {
-    "M": 15201.614810753188,
-    "vec": [
-     -327.91414039687965,
-     14.755371683470742,
-     -395.83881690972066,
-     -300.86715144467587,
-     -0.0,
-     -15198.637169552152
+     -19812.57701559314
     ],
     "case": "drop_2p5g|crown_bar|15"
    },
-   "plug_R90": {
-    "F": 792.2177503197653,
+   "lc_R85_62": {
+    "F": 1047.0597975515377,
     "vec": [
-     521.9129176574455,
-     595.9998911946229,
+     -426.86899142908743,
+     15.052887633467549,
+     -955.9761996926884,
+     -2008.6438859992272,
+     -0.0,
+     -8695.034692189369
+    ],
+    "case": "side_hill_torsion|strap_upper|15"
+   },
+   "lc_R85_62|M": {
+    "M": 17385.119568682858,
+    "vec": [
+     -281.80637449474756,
+     22.054560037551596,
+     -395.88808234416547,
+     -388.9597918100686,
+     -0.0,
+     -17380.767897240752
+    ],
+    "case": "drop_2p5g|crown_bar|15"
+   },
+   "plug_R85": {
+    "F": 751.9251317910042,
+    "vec": [
+     -36.41850792581371,
+     751.0426726221198,
      -0.0,
      -0.0,
      -0.0,
      -0.0
     ],
-    "case": "side_hill_torsion|crown_bar|15"
+    "case": "meat_straps|crown_bar|23"
    },
-   "plug_R90|M": {
+   "plug_R85|M": {
     "M": 0.0,
     "vec": [
-     -29.52388289804839,
-     461.01802145329884,
+     -33.03710872175203,
+     487.7000415086741,
      -0.0,
      -0.0,
      -0.0,
@@ -1668,71 +1668,71 @@
     ],
     "case": "static_carry|crown_bar|15"
    },
-   "lc_R150_90": {
-    "F": 728.664694193755,
+   "lc_R155_90": {
+    "F": 706.8911398960862,
     "vec": [
-     559.1679472359709,
-     -103.63744627597526,
-     455.56857121380017,
-     -5026.223154555211,
+     534.4629324993014,
+     -8.087271846450506,
+     462.5786997710951,
+     -1197.8610744507341,
      -0.0,
-     -4967.5693388777545
-    ],
-    "case": "side_hill_torsion|crown_bar|15"
-   },
-   "lc_R150_90|M": {
-    "M": 11555.281756158536,
-    "vec": [
-     327.1299009838088,
-     -4.091204219497868,
-     28.596069057306636,
-     322.35513592424184,
-     -0.0,
-     11550.78454610567
-    ],
-    "case": "meat_straps|crown_bar|23"
-   },
-   "lc_R150_62": {
-    "F": 1104.9661608687713,
-    "vec": [
-     537.3958930457319,
-     -100.3130685298018,
-     -960.2568193378202,
-     -6275.217756055804,
-     -0.0,
-     -6964.602103880854
-    ],
-    "case": "side_hill_torsion|crown_bar|15"
-   },
-   "lc_R150_62|M": {
-    "M": 9984.804141416089,
-    "vec": [
-     356.49455531148743,
-     -10.469032054341554,
-     -454.4023987879681,
-     -322.3541132425464,
-     -0.0,
-     9979.599268914333
-    ],
-    "case": "meat_straps|crown_bar|23"
-   },
-   "plug_R150": {
-    "F": 723.0780612758808,
-    "vec": [
-     -706.2650102383827,
-     -155.02134695410064,
-     -0.0,
-     -0.0,
-     -0.0,
-     -0.0
+     9710.938472685295
     ],
     "case": "side_hill_torsion|strap_upper|15"
    },
-   "plug_R150|M": {
+   "lc_R155_90|M": {
+    "M": 15285.176416433314,
+    "vec": [
+     288.43057323948983,
+     -9.528128197813501,
+     21.92238568241109,
+     415.0705476832123,
+     -0.0,
+     15279.539735277864
+    ],
+    "case": "meat_straps|crown_bar|23"
+   },
+   "lc_R155_62": {
+    "F": 1100.8966660845053,
+    "vec": [
+     505.621957706874,
+     -12.935448675823835,
+     -977.8305474100316,
+     -2023.2345094020352,
+     -0.0,
+     6597.335325014938
+    ],
+    "case": "side_hill_torsion|strap_upper|15"
+   },
+   "lc_R155_62|M": {
+    "M": 11939.045190962948,
+    "vec": [
+     313.29598619805915,
+     -17.543398515963915,
+     -444.2896530508025,
+     -415.07094917478094,
+     -0.0,
+     11931.827864120678
+    ],
+    "case": "meat_straps|crown_bar|23"
+   },
+   "plug_R155": {
+    "F": 932.6798327964726,
+    "vec": [
+     -722.3594035150427,
+     -589.9903072582191,
+     0.0,
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "case": "side_hill_torsion|strap_upper|15"
+   },
+   "plug_R155|M": {
     "M": 0.0,
     "vec": [
-     -2.3465985054160106,
-     -466.8518355626361,
+     -2.7885535787576825,
+     -493.6523920878244,
      -0.0,
      0.0,
      -0.0,
@@ -1741,143 +1741,143 @@
     "case": "static_carry|crown_bar|15"
    },
    "lb_R105": {
-    "F": 844.5942993737525,
+    "F": 752.3323144154309,
     "vec": [
-     -614.2731172803991,
-     188.17408930929105,
-     548.268711521896,
-     13003.710713588931,
+     -520.3584363432735,
+     -0.8965761476282808,
+     543.3509042886316,
+     6012.990431699768,
      0.0,
-     8651.42146628755
-    ],
-    "case": "side_hill_torsion|crown_bar|15"
-   },
-   "lb_R105|M": {
-    "M": 15879.148725535115,
-    "vec": [
-     -614.2806018301087,
-     187.37363481673555,
-     548.2242993393198,
-     13340.611193101446,
-     0.0,
-     8612.517474127986
+     1604.0124590895307
     ],
     "case": "side_hill_torsion|strap_upper|15"
    },
-   "lb_R135": {
-    "F": 671.0300680945965,
+   "lb_R105|M": {
+    "M": 9945.23103204454,
     "vec": [
-     473.73511209432036,
-     181.4427155643486,
-     439.2435962249823,
-     8274.969454659627,
+     -153.54781117562794,
+     -4.839001942639243,
+     402.78921389636,
+     4369.118649641239,
      0.0,
-     9537.875834270742
+     8934.115653275305
     ],
-    "case": "side_hill_torsion|crown_bar|15"
+    "case": "drop_2p5g|strap_upper|15"
+   },
+   "lb_R135": {
+    "F": 577.1132946081444,
+    "vec": [
+     339.84684222941405,
+     -2.6033076378936926,
+     466.4301677952501,
+     -1229.121791909042,
+     0.0,
+     -213.3329185217994
+    ],
+    "case": "side_hill_torsion|strap_upper|15"
    },
    "lb_R135|M": {
-    "M": 12627.20059655012,
+    "M": 9552.467729266536,
     "vec": [
-     473.73511209432036,
-     181.4427155643486,
-     439.2435962249823,
-     8274.969454659627,
+     104.95323855614885,
+     -4.55065138152122,
+     393.0975717615062,
+     -6397.713008094883,
      0.0,
-     9537.875834270742
+     7093.582168744652
     ],
-    "case": "side_hill_torsion|crown_bar|15"
+    "case": "drop_2p5g|strap_upper|15"
    },
-   "tie_L90": {
-    "F": 824.904061268255,
+   "tie_L85": {
+    "F": 875.5843206180035,
     "vec": [
-     -4.819688212893684,
-     -727.388036683152,
-     389.03743392200835,
+     5.32241202261393,
+     -782.7752507476049,
+     392.2785760902277,
      -0.0,
      0.0,
      0.0
     ],
     "case": "meat_straps|crown_bar|23"
    },
-   "tie_L90|M": {
+   "tie_L85|M": {
     "M": 0.0,
     "vec": [
-     -2.947597825993873,
-     -474.61257051651273,
-     253.84019645670185,
+     3.5444559520668504,
+     -509.8678727341621,
+     255.51162033816883,
      -0.0,
      0.0,
      0.0
     ],
     "case": "static_carry|crown_bar|15"
    },
-   "tie_R90": {
-    "F": 824.9040782038608,
+   "tie_R85": {
+    "F": 875.5843169491902,
     "vec": [
-     4.819684905611587,
-     -727.3880518633291,
-     389.0374414902025,
+     -5.322409560606576,
+     -782.7752474580763,
+     392.27857449878223,
      -0.0,
      -0.0,
      -0.0
     ],
     "case": "meat_straps|crown_bar|23"
    },
-   "tie_R90|M": {
+   "tie_R85|M": {
     "M": 0.0,
     "vec": [
-     2.9475915115819102,
-     -474.6125956083347,
-     253.84020764170882,
+     -3.5444583134157504,
+     -509.8678806083967,
+     255.51162304743673,
      -0.0,
      -0.0,
      -0.0
     ],
     "case": "static_carry|crown_bar|15"
    },
-   "tie_L150": {
-    "F": 842.8729869993942,
+   "tie_L155": {
+    "F": 889.4714953340329,
     "vec": [
-     5.521127529573034,
-     727.3880397082521,
-     425.8063281040682,
+     -5.32310887375718,
+     782.7752522305786,
+     422.367269114254,
      -0.0,
      0.0,
      -0.0
     ],
     "case": "meat_straps|crown_bar|23"
    },
-   "tie_L150|M": {
+   "tie_L155|M": {
     "M": 0.0,
     "vec": [
-     3.319779433158686,
-     474.612575934259,
-     277.8363109461299,
+     -3.593419922195566,
+     509.8678725593686,
+     275.11551154233064,
      -0.0,
      0.0,
      -0.0
     ],
     "case": "static_carry|crown_bar|15"
    },
-   "tie_R150": {
-    "F": 842.8730032780593,
+   "tie_R155": {
+    "F": 889.4714895911817,
     "vec": [
-     -5.521124329747087,
-     727.3880536491006,
-     425.806336554171,
+     5.323106053638372,
+     782.7752463351345,
+     422.3672679818677,
      -0.0,
      -0.0,
      0.0
     ],
     "case": "meat_straps|crown_bar|23"
    },
-   "tie_R150|M": {
+   "tie_R155|M": {
     "M": 0.0,
     "vec": [
-     -3.3197727921292097,
-     474.6125994563499,
-     277.83632350691823,
+     3.593422808352221,
+     509.86788054274257,
+     275.11551628414793,
      -0.0,
      -0.0,
      0.0
@@ -1885,130 +1885,130 @@
     "case": "static_carry|crown_bar|15"
    },
    "tee_L330": {
-    "F": 276.8868482802109,
+    "F": 222.49723582539454,
     "vec": [
-     14.122788243184914,
-     -162.3449393338916,
-     -223.85485090893553,
-     -7003.103402547506,
-     25710.690477231954,
-     -20004.388183189614
+     10.778509026749816,
+     -7.967406883579997,
+     -222.0931428942663,
+     -2270.9667590103954,
+     25523.676258654148,
+     -2192.147442536818
     ],
     "case": "side_hill_torsion|crown_bar|15"
    },
    "tee_L330|M": {
-    "M": 33320.54334290686,
+    "M": 25718.103549580326,
     "vec": [
-     14.122788243184914,
-     -162.3449393338916,
-     -223.85485090893553,
-     -7003.103402547506,
-     25710.690477231954,
-     -20004.388183189614
+     10.778509026749816,
+     -7.967406883579997,
+     -222.0931428942663,
+     -2270.9667590103954,
+     25523.676258654148,
+     -2192.147442536818
     ],
     "case": "side_hill_torsion|crown_bar|15"
    },
    "tee_R330": {
-    "F": 276.88684774732656,
+    "F": 222.49723571227977,
     "vec": [
-     -14.122788248300822,
-     162.3449383317066,
-     223.85485097629498,
-     7003.10340371324,
-     25775.925252879973,
-     -17334.947730379692
+     -10.778509072792986,
+     7.967406253150955,
+     222.0931428013273,
+     2270.9667567788474,
+     25557.74658641319,
+     359.64401869925666
     ],
     "case": "side_hill_torsion|crown_bar|15"
    },
    "tee_R330|M": {
-    "M": 31842.458961897893,
+    "M": 25660.963434873127,
     "vec": [
-     -14.122788248300822,
-     162.3449383317066,
-     223.85485097629498,
-     7003.10340371324,
-     25775.925252879973,
-     -17334.947730379692
+     -10.778509072792986,
+     7.967406253150955,
+     222.0931428013273,
+     2270.9667567788474,
+     25557.74658641319,
+     359.64401869925666
     ],
     "case": "side_hill_torsion|crown_bar|15"
    },
    "tee_L520": {
-    "F": 1216.3828889950241,
+    "F": 1216.3837404705173,
     "vec": [
-     83.05414695298767,
-     1136.6458508297228,
-     425.11827895935994,
-     -0.01162536733545494,
-     -15357.096620747212,
-     12566.680070950215
+     83.13562595407026,
+     1136.6408600420286,
+     425.1181330656095,
+     0.038129766011252286,
+     -15358.833432109303,
+     12554.134775698625
     ],
     "case": "hipbelt_off_abuse|crown_bar|15"
    },
    "tee_L520|M": {
-    "M": 46646.59047134996,
+    "M": 46402.19870683089,
     "vec": [
-     -137.0091803755713,
-     63.35500379354819,
-     -365.94948645145564,
-     -10051.059957510988,
-     44862.44148291796,
-     7889.356153965811
+     -141.32087359030265,
+     70.94180274094697,
+     -359.6120499277333,
+     -11141.68089545453,
+     44210.41969432382,
+     8629.355833654485
     ],
     "case": "side_hill_torsion|crown_bar|23"
    },
    "tee_R520": {
-    "F": 1216.3829493927972,
+    "F": 1216.3844164239688,
     "vec": [
-     -83.05413050961202,
-     1136.6459184919008,
-     425.1182740773629,
-     0.01162545615329691,
-     15357.096036385356,
-     -12566.687858648478
+     -83.1356219247336,
+     1136.641579549078,
+     425.1181441981089,
+     -0.038129677193410316,
+     15358.834789704848,
+     -12554.217390186792
     ],
     "case": "hipbelt_off_abuse|crown_bar|15"
    },
    "tee_R520|M": {
-    "M": 50165.14065077217,
+    "M": 50073.04590975232,
     "vec": [
-     -135.98446109483575,
-     -106.85162933284253,
-     439.27862322675537,
-     10051.059957510988,
-     47738.79105014478,
-     11684.406673549609
+     -143.72888009745566,
+     -113.56142012257209,
+     434.97202239294097,
+     11141.68089545453,
+     47166.748547045056,
+     12588.514805323553
     ],
     "case": "side_hill_torsion|crown_bar|23"
    }
   }
  },
  "torsion": {
-  "b81_Nm_deg": 22.918866049392467,
-  "b81_rigid_Nm_deg": 67.93137338256462,
+  "b81_Nm_deg": 19.881783120531068,
+  "b81_rigid_Nm_deg": 22.11801527478385,
   "tube_Nm_deg": 2.887990068854133,
   "h1_Nm_deg": 2.714710664722885,
   "h1_basis": "production_frame.md: H1 cold torsion 0.94 x the tube frame (printed_frame_study.md)",
-  "vs_h1": 8.442470995977025
+  "vs_h1": 7.323720858687009
  },
  "spreader": {
-  "sf_fpf": 1.8725490728390657,
-  "fpf_where": "IM1 notch root",
-  "sf_fatigue": 1.6286399499419029,
-  "sandwich_sf_min": 1.7470501053473886,
-  "clear_walk_min": 20.781228888375317,
-  "clear_fact_min": 14.999492156630772,
-  "clear_fact_lean_min": 11.492245779819177,
-  "skin_peak_kpa": 14.00124761701161,
+  "sf_fpf": 1.9565319509454568,
+  "fpf_where": "center",
+  "sf_fatigue": 1.7361870403187731,
+  "sandwich_sf_min": 1.7748704139351685,
+  "clear_walk_min": 20.79226132663772,
+  "clear_fact_min": 15.060036823345667,
+  "clear_fact_lean_min": 11.552790446534072,
+  "skin_peak_kpa": 14.058346964178126,
   "skin_where": "US2 corner relief",
-  "w_fact_max": 2.7362724076169544,
+  "w_fact_max": 2.6628019014441158,
   "meat_force_fact_n": 1831.5180330826122,
   "meat_force_by_tag": {
-   "clip": -2.450004808880894,
-   "stay": 491.73992841624863,
-   "tube_bond": -1.922835224377195e-09,
-   "bar": 598.7127374398383
+   "stay": 475.621237668628,
+   "clip": -2.2076200381600346,
+   "bar": 614.5890434221158,
+   "tube_bond": -1.3557439615397016e-09
   },
-  "clip_lift_max_n": 0.7415732082915691,
+  "clip_lift_max_n": 0.6181846221138997,
   "plane_lift_mm": -0.039431292394484174,
   "checks": {
    "fpf": true,
@@ -2118,14 +2118,14 @@
    },
    "jig_gusset_template": {
     "file": "designs/pack_5200/iter2/frame_b/jigs/jig_gusset_template.stl",
-    "volume_mm3": 11272.0,
-    "pla_g": 14.0,
+    "volume_mm3": 12034.0,
+    "pla_g": 14.9,
     "watertight": true
    },
    "jig_angle_template": {
     "file": "designs/pack_5200/iter2/frame_b/jigs/jig_angle_template.stl",
-    "volume_mm3": 20307.6,
-    "pla_g": 25.2,
+    "volume_mm3": 22833.6,
+    "pla_g": 28.3,
     "watertight": true
    }
   }
@@ -2144,7 +2144,7 @@
    "stock": "t1000_065",
    "qty": 2,
    "length_mm": 202.6,
-   "holes": "along y at x +/-90, +/-62 (gussets), +/-22 (hip ties); crush sleeve in each; saddle plug in each end",
+   "holes": "along y at x +/-90, +/-62 (gussets), +/-30 (hip ties); crush sleeve in each; saddle plug in each end",
    "jig": "jig_rung_half (stop on each end)"
   },
   {
@@ -2191,7 +2191,7 @@
    "part": "hip post angle",
    "stock": "angle_15",
    "qty": 2,
-   "length_mm": 80.0,
+   "length_mm": 90.0,
    "holes": "front leg: 3 mount + 2 tie (+ half the D10.5 pin bore at the shared edge)",
    "jig": "jig_angle_template"
   },
@@ -2235,13 +2235,13 @@
    "upper bar x 1 (1\" OD x .065\" 6061-T6 drawn tube, 202.6 mm)": 67.4,
    "mid bar x 1 (3/4\" OD x .035\" 6061-T6 drawn tube, 202.6 mm)": 27.7,
    "hip tie spacer (one end coped R 12.7 with a half-round file) x 4 (3/4\" OD x .035\" 6061-T6 drawn tube, 31.0 mm)": 17.0,
-   "hip post angles x 2 (1-1/2 x 1/8, 80 mm)": 100.2,
+   "hip post angles x 2 (1-1/2 x 1/8, 90 mm)": 112.7,
    "foot plates x 2 (38.1 x 38.1 x 1/8)": 24.9,
    "tee backers x 8 (1 x 1/4 x 55)": 191.6,
    "hip tie backer strips x 2 (1 x 1/8 x 76)": 33.1,
    "clamp half-shells, 4 tees (1-1/4 x .125, 50 mm less kerf)": 148.8,
    "crush sleeves x 18 (5/16 x .035 6061, 22.1 mm)": 21.2,
-   "lumbar L-gussets x 4 (.090 6061)": 142.3,
+   "lumbar L-gussets x 4 (.090 6061)": 151.7,
    "printed: foot_cup x 2": 134.2,
    "printed: im1_collar x 2": 5.8,
    "printed: rung_saddle_plug x 4": 40.0,
@@ -2255,12 +2255,12 @@
    "M5 A2 screws + nuts (joints)": 291.5,
    "TPU foot pads x 2 (6 mm, ASSUMPTION PAD)": 20.9
   },
-  "body_g": 1969.0,
+  "body_g": 1990.9,
   "printed_g": 361.4,
   "hip_hw_g": 34.8,
-  "vs_bl080_b_g": 955.7,
-  "frame_delta_vs_h1_g": 905.7,
-  "frame_delta_vs_h1c_g": 550.9
+  "vs_bl080_b_g": 977.6,
+  "frame_delta_vs_h1_g": 927.6,
+  "frame_delta_vs_h1c_g": 572.8
  },
  "cost": {
   "lines": [
@@ -2341,8 +2341,8 @@
     "source": "record"
    },
    {
-    "item": "PLA for the jigs (356 g) at USD 20/kg",
-    "usd": 7.13,
+    "item": "PLA for the jigs (360 g) at USD 20/kg",
+    "usd": 7.21,
     "source": "ASSUMPTION PLA-PRICE"
    },
    {
@@ -2361,21 +2361,21 @@
     "source": "Zoro A2 M5 (BL-077)"
    }
   ],
-  "total_usd": 66.56,
+  "total_usd": 66.64,
   "note": "the BL-079 PAHT coupons (USD 59.01) are already booked and qualify the printed parts' Z basis"
  },
  "coupons": [
   {
    "id": "CL-1",
    "what": "clamp slip: 6061 half-shells + 1 x 1/4 backers + 2 x M5 A2 on a 120 mm offcut of 1 x .065, bare tube; dry / wet / wet after 24 h at 40 C under preload / -15 C, n 5 each (BL-082 spec, tube record)",
-   "pass": "minimum wet slip load >= 1201 N at the upper-tee torque (1.2 x the larger of the pawl half-load 1000.5 N and the factored tee force 439 N); no tube dent > 0.1 mm",
+   "pass": "minimum wet slip load >= 1201 N at the upper-tee torque (1.2 x the larger of the pawl half-load 1000.5 N and the factored tee force 435 N); no tube dent > 0.1 mm",
    "settles": "ASSUMPTIONS MU (0.15 wet), EMBED (retention 0.9), CLAMP-UNIFORM",
    "usd": 6.0
   },
   {
    "id": "BB-1",
    "what": "bolt bearing: 1 x .065 offcut, M5 + crush sleeve between two .090 gusset strips, pulled along the tube on the rig (come-along + crane scale), n 3",
-   "pass": "hole elongation <= 0.2 mm at 1105 N (largest factored gusset-bolt force) and ultimate >= 1657 N",
+   "pass": "hole elongation <= 0.2 mm at 1101 N (largest factored gusset-bolt force) and ultimate >= 1651 N",
    "settles": "bearing allowable at e/D 2, GAP-K joint stiffness",
    "usd": 3.0
   },
@@ -2395,7 +2395,7 @@
   },
   {
    "id": "KF-1",
-   "what": "notched tube fatigue (BL-082 rule: B fatigue margin 1.04 < 1.2): 1 x .065 offcuts with an M5 crush-sleeved through-bolt, 4-point bending on the T5 crank rig, R 0.1, n 3",
+   "what": "notched tube fatigue (BL-082 rule: B fatigue margin 1.02 < 1.2): 1 x .065 offcuts with an M5 crush-sleeved through-bolt, 4-point bending on the T5 crank rig, R 0.1, n 3",
    "pass": "no crack (dye check) after 1e5 cycles at 1.2 x the walk bore stress of the worst stay hole (nominal 49 MPa x 1.2 at the hole fibre)",
    "settles": "Yahr mean curve, Kf = Kt, BJ-NOCREDIT",
    "usd": 2.0
@@ -2417,7 +2417,7 @@
   {
    "id": "PL-1",
    "what": "saddle plug: printed plug in a rung offcut pressed on a stay offcut sideways",
-   "pass": ">= 1626 N without crack (1.5 x the largest factored plug force)",
+   "pass": ">= 1399 N without crack (1.5 x the largest factored plug force)",
    "settles": "PLUG-K, BEAR-PAHT",
    "usd": 0.5
   }
@@ -2444,5 +2444,5 @@
   "alu_6061_t6 sn_fit_*, fatigue_smax_*, notch_sensitivity_design_ratio, anodize knockdown",
   "alu_6061_t6_drawn_tube friction, ring crush / hoop, shipping"
  ],
- "seconds": 269.3
+ "seconds": 265.4
 }

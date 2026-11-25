@@ -167,8 +167,8 @@ HOLE_D = 5.3                # M5 through-bolt, drilled 5.2 then reamed / 5.3 jig
 CFG0 = {
     "stay": "t1000_065", "ubar": "t1000_065", "bar": "t750_035", "ctube": "t1000_065",
     "gusset_t": SHEET_090["t"], "gusset_w": 38.1,
-    "stay_bolt_z": (105.0, 135.0), "ct_bolt_x": (90.0, 62.0), "rung_z": (90.0, 150.0), "tie_x": 22.0,
-    "post_len": 80.0, "clamp_len": 50.0, "clamp_preload_n": 2600.0, "clamp_preload_upper_n": 2000.0, "backer_t": 0.25 * IN, "backer_len": 55.0,
+    "stay_bolt_z": (105.0, 135.0), "ct_bolt_x": (90.0, 62.0), "rung_z": (85.0, 155.0), "tie_x": 30.0,
+    "post_len": 90.0, "clamp_len": 50.0, "clamp_preload_n": 2600.0, "clamp_preload_upper_n": 2000.0, "backer_t": 0.25 * IN, "backer_len": 55.0,
     "mu": 0.15, "preload_retention": 0.9, "shell": "t1250_125", "bush_len": 70.0, "bush_contact_deg": 30.0, "leg_clear_mm": 0.50,
 }
 Y_MOUNT = -48.55            # Ti mount face (hip_mount.FACE_Y)
@@ -325,7 +325,8 @@ def build(cfg: dict | None = None, torso: float = 19.0, rigid: bool = False) -> 
     zr = tuple(cfg["rung_z"])
     xb1, xb2 = cfg["ct_bolt_x"]
     xt = cfg["tie_x"]
-    x_end = 115.0 - R_st - 1.0
+    x_end = 115.0           # rung end node on the stay axis: the plug link is then between coincident nodes (an offset
+    #                         translational link would resist the frame's rigid rotation on the body springs)
     rn = lambda z, x: f"R{z:g}{'m' if x < 0 else 'p'}{abs(x):g}" if abs(x) > 1e-9 else f"R{z:g}c"   # noqa: E731
     for z in zr:
         yz = yline(z)
@@ -390,7 +391,7 @@ def build(cfg: dict | None = None, torso: float = 19.0, rigid: bool = False) -> 
         for tag, sx in (("L", -1.0), ("R", 1.0)):
             tp, tr = f"TP{tag}{z:g}", f"TR{tag}{z:g}"
             nodes[tp] = [sx * xt, y_post, float(z)]
-            nodes[tr] = [sx * xt, yline(z) - R_st - 1.0, float(z)]
+            nodes[tr] = [sx * xt, yline(z), float(z)]      # tie column modelled to the rung axis (coincident link)
             m["members"].append({"id": f"{po}-{tp}", "nodes": [po, tp], "section": ps, "material": "alu_6061_t6",
                                  "group": "hip_bracket", "ref": [0.0, 0.0, 1.0]})
             m["members"].append({"id": f"tie_{tag}{z:g}", "nodes": [tp, tr], "section": sp, "material": "alu_6061_t6",

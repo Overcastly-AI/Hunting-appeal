@@ -185,8 +185,23 @@ def screens(rec, g=None):
     files = []
     # 1 deformed shape (drop case, 15 in, x 5)
     key = next((k for k in gp["disp"] if k.startswith("drop_2p5g|crown_bar|15")), next(iter(gp["disp"])))
-    U = gp["disp"][key]
-    sc = 5.0
+    U = {k: np.asarray(v, float) for k, v in gp["disp"][key].items()}
+    # remove the rigid-body part (the frame floats on the body springs): least-squares u = t + w x r on the frame nodes
+    ks = [k for k in U if k in nodes and (k.startswith(("S", "R", "G")) and not k.startswith("SP"))]
+    A, bvec = [], []
+    for k in ks:
+        r = np.asarray(nodes[k], float)
+        for i in range(3):
+            row = np.zeros(6)
+            row[i] = 1.0
+            e = np.zeros(3)
+            e[i] = 1.0
+            row[3:] = np.cross(r, e)          # (w x r)_i = w . (r x e_i)
+            A.append(row)
+            bvec.append(U[k][i])
+    sol = np.linalg.lstsq(np.array(A), np.array(bvec), rcond=None)[0]
+    U = {k: v - (sol[:3] + np.cross(sol[3:], np.asarray(nodes[k], float))) for k, v in U.items() if k in nodes}
+    sc = 30.0
     fig = plt.figure(figsize=(9, 7), dpi=110)
     for i, (az, el, ttl) in enumerate(((-90, 0, "side (y-z)"), (0, 0, "back (x-z)"))):
         ax = fig.add_subplot(1, 2, i + 1)
@@ -205,7 +220,8 @@ def screens(rec, g=None):
         ax.set_xlabel("y aft (mm)" if i == 0 else "x (mm)")
         ax.set_ylabel("z (mm)")
         ax.grid(alpha=0.3)
-    fig.suptitle(f"BL-081 B81: deformed shape, C2 stumble 2.0 g x 1.5, torso 15 in (x{sc:g}); grey = undeformed\n"
+    fig.suptitle(f"BL-081 B81: elastic deformed shape (rigid-body motion on the body springs removed), C2 stumble "
+                 f"2.0 g x 1.5, torso 15 in, x{sc:g}; grey = undeformed\n"
                  f"T1 prediction at 150 lb, 19 in: crown {rec['global']['deflection_t1']['19']['crown_elastic_mm']:.1f} mm "
                  f"elastic (band +/-30 %)", fontsize=10)
     p = BQ.SCREENS / f"{BQ.SHOT}1.png"
@@ -321,7 +337,7 @@ def write_md(rec: dict) -> None:
       "except where an ASSUMPTION says so.")
     w(f"- **It is not the BL-080 concept B any more.** The first-order B passed only because its joints were rigid "
       "and its printed tees carried everything for free. On the honest basis three of its joints could not be made "
-      "to work, so B81 changes them (section 2): twin lumbar rungs (z 90 / 150) instead of one cross tube; a hip post "
+      "to work, so B81 changes them (section 2): twin lumbar rungs (z 85 / 155) instead of one cross tube; a hip post "
       "of two angles tied to both rungs instead of a bracket bolted through one tube; 6061 half-shell clamps instead "
       "of printed clamp tees; 1 x .065 tube for stays, rungs and upper bar; crush sleeves in every through-bolt.")
     w(f"- **Mass {m['body_g']:.0f} g ({m['body_g'] / 453.6:.2f} lb) body**, {m['vs_bl080_b_g']:+.0f} g against the BL-080 "
@@ -340,13 +356,13 @@ def write_md(rec: dict) -> None:
     w("## 2. What B81 is (and why each change)\n")
     w("| node | BL-080 B (first order) | B81 | why |\n|---|---|---|---|")
     w("| lumbar | 1 x .049 cross tube z 120, printed tees bolted to stays, Ti mount on a 20 x 3 tube stand-in | twin 1 x "
-      ".065 rungs z 90 / 150; per side a pair of .090 6061 gussets (front / back), 2 stay bolts z 105 / 135, 2 bolts per "
+      ".065 rungs z 85 / 155; per side a pair of .090 6061 gussets (front / back), 2 stay bolts z 105 / 135, 2 bolts per "
       "rung end x 90 / 62; a printed saddle plug in each rung end takes the fore-aft load in bearing | the hip pin is "
       "67 mm in front of the tube line (V x 67 = 110 N m factored); a single 1 in tube can only take that as torsion "
       "through bolt couples across 24 mm, which failed bearing (0.95) and fatigue (0.49); two rungs turn it into "
       "axial tie forces. Thin plates cannot carry fore-aft shear out of plane, hence the plug |")
-    w("| hip | 2 x 1-1/2 angle bracket (not modelled) | hip post: two 1-1/2 x 1/8 angles 80 mm, front legs = Ti mount face "
-      "(6 of the 8 BL-055 positions, through-bolted), stems aft; 4 x M5 ties at (+/-22, z 90 / 150) through 3/4 x .035 "
+    w("| hip | 2 x 1-1/2 angle bracket (not modelled) | hip post: two 1-1/2 x 1/8 angles 90 mm, front legs = Ti mount face "
+      "(6 of the 8 BL-055 positions, through-bolted), stems aft; 4 x M5 ties at (+/-30, z 85 / 155) through 3/4 x .035 "
       "spacers and crush-sleeved rungs; 1 x 1/8 backer strips behind the front legs at the ties | the post carries "
       "the torque as bending (2 x 32.4e3 mm4), the ties as axial load |")
     w("| upper / mid tees | printed split tees, metal-backed, mu 0.2 | two half-shells sawn from 1-1/4 x .125 6061 "
@@ -405,8 +421,8 @@ def write_md(rec: dict) -> None:
     if "error" in sp:
         w(f"spreader.evaluate failed: {sp['error']} (open item).\n")
     else:
-        w(f"`spreader.evaluate({sp['sheet']}, h {sp['h']:g})` with the B81 supports patched in (round stays, rungs z 90 / "
-          f"150 and the mid bar as beams, gusset plates as lands, clips z 166 / 260 / 400): first-ply SF "
+        w(f"`spreader.evaluate({sp['sheet']}, h {sp['h']:g})` with the B81 supports patched in (round stays, rungs z 85 / "
+          f"155 and the mid bar as beams, gusset plates as lands, clips z 166 / 260 / 400): first-ply SF "
           f"{sp['sf_fpf']:.2f}, fatigue {sp['sf_fatigue']:.2f}, sandwich local {sp.get('sandwich_sf_min') or float('nan'):.2f}, "
           f"walk clearance {sp['clear_walk_min']:.1f} mm, factored clearance {sp['clear_fact_min']:.1f} mm, skin peak "
           f"{sp['skin_peak_kpa']:.1f} kPa (limit 14), checks {sp['checks']}.\n")
