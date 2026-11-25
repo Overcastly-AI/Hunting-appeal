@@ -35,6 +35,9 @@ from pathlib import Path
 
 import numpy as np
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import frame_h1p_build as H1P  # noqa: E402  BL-071: the PPA-CF H1-P path (rows, sheets, results)
+
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
 if str(ROOT) not in sys.path:
@@ -834,6 +837,7 @@ def new_rows(lv: dict, lid_g: float, cut: dict) -> list[dict]:
         hb6b_row(),
         rt_pull_row(),
     ]
+    rows += H1P.register_rows()          # BL-071: CA-3/CA-1/CA-4/T4c-PPA (pass lines from bl070_h1p.json), HB-6-PPA not needed
     return rows
 
 
@@ -2189,6 +2193,9 @@ RELEASES = [  # key, label, what it releases
     ("BL037", "BL-037 weight gates", "the -119.1 g A_bl037 picks (weight_push.md)"),
     ("CARRY", "Field release and the rest", "first loaded carry, meat haul, belt and comfort tests"),
     ("DATA", "Data only (no gate)", "measurements that credit a model; nothing waits on them (BL-041 TL-1b)"),
+    ("R1-PPA", "PPA-CF frame path (H1-P, BL-071)", "only if you build the PPA-CF frame: CA-3-PPA and CA-1-PPA release the "
+     "H1-P print (print/frame_h1p/COUPONS_H1P.md); CA-4-PPA the first carry; T4c-PPA cold use. The PAHT-CF H1 path "
+     "(R1) is the fallback"),
 ]
 REL_ORDER = {k: i for i, (k, _, _) in enumerate(RELEASES)}
 
@@ -2209,6 +2216,8 @@ TEST_RELEASE = {
     # BL-037
     "HS-1": "BL037", "CS-1": "BL037", "AB-1": "BL037", "SL-1": "BL037", "ST-1": "BL037", "BU-1": "BL037",
     "HB-1": "BL037", "HB-D2": "BL037", "BP-1": "BL037",
+    # BL-071: PPA-CF H1-P path
+    "CA-3-PPA": "R1-PPA", "CA-1-PPA": "R1-PPA", "CA-4-PPA": "R1-PPA", "T4c-PPA": "R1-PPA",
 }
 # tests that also serve a second release (shown in the order of work and the results sheet)
 ALSO = {"MT-1": "BAG-CUT", "BP-1": "CARRY", "HB-1": "CARRY", "HB-D2": "CARRY", "T9": "BAG-BATCH"}
@@ -2251,6 +2260,13 @@ GROUPS = [
                 "HB-D3", "FT-S2", "MH-1", "MH-2", "MH-3", "R28-1"],
          intro="The bag's batch release (T9-R3b/d, GT-1, PT-7) comes first in this session, then the BL-037 comfort "
                "gates, then the field tests."),
+    dict(id="G8", title="PPA-CF frame path (H1-P): coupons first, then the gate", when="only if you build the PPA-CF frame; "
+         "start the day the PPA-CF spools and the 120 C dryer arrive",
+         rig="H2S (PPA-CF profile), 120 C dryer, conditioning box, kit B lever rig (+ 200 kg cell), 3-point fixture, 40 C box, freezer",
+         kits="B, A, D", tests=["CA-3-PPA", "CA-1-PPA", "CA-4-PPA", "T4c-PPA"],
+         intro="The PPA-CF H1-P frame (BL-070) is printed only after CA-3-PPA and CA-1-PPA pass on coupons printed on "
+               "your H2S. The PAHT-CF H1 (G1 to G7) stays the fallback. Full sheets, print plan and pictures: "
+               "`designs/pack_5200/print/frame_h1p/COUPONS_H1P.md` (also in `outputs/release/frame_h1p_ppa/`)."),
 ]
 
 
@@ -2609,6 +2625,7 @@ SETTLES_DEFAULT = {"T1": "HA-LS-1 T1", "T2": "HA-LS-1 T2", "IM3-EP": "P_cheek", 
 
 def results_rows(reg: dict, ow: list[dict], lv: dict, lid_g: float, cut: dict) -> list[dict]:
     m = measures(lv, lid_g, cut)
+    m.update(H1P.results_items())                  # BL-071: the PPA coupons
     out = []
     seen = set()
 
@@ -2658,6 +2675,23 @@ def _l(item, qty, unit, usd_each, supplier, source, kit, tests, long_lead="", no
     return {"kit": kit, "item": item, "qty": qty, "unit": unit, "unit_usd": round(usd_each, 2),
             "total_usd": round(qty * usd_each, 2), "supplier": supplier, "price_source": source, "tests": tests,
             "long_lead": long_lead, "note": note}
+
+
+def H1P_shopping() -> list[dict]:
+    """BL-071: the PPA coupon rigs' extra parts. The PPA-CF spools, the 120 C dryer and the hip hardware are on the
+    BUILD_H1P BOM (print/frame_h1p/BUILD_H1P.md section 1) and are not counted twice here."""
+    A = "ASSUMPTION (shop price, check at purchase)"
+    return [
+        _l("S-type load cell 200 kg (the Makerfabs listing covers 100-500 kg)", 1, "each", 30.00, "Makerfabs", A + "; listing " + LINKS["lc"],
+           "B", "CA-1-PPA XY static pulls (ASSUMPTION LEVER-XY)"),
+        _l("second 6061 flat bar 40 x 10 x 600 + 2 x M8 bolts (doubles the lever for the XY statics)", 1, "set", 15.00,
+           "hardware store", A, "B", "CA-1-PPA XY static pulls"),
+        _l("short-beam pins: 2 x D3 + 1 x D6 hardened dowels, 30 mm, on a 16 mm span block", 1, "set", 10.00,
+           "hardware store / Zoro", A, "B", "CA-3-PPA"),
+        _l("dye penetrant kit (cleaner, red penetrant, developer)", 1, "set", 15.00, "welding supply", A, "D", "T4c-PPA"),
+        _l("PPA-CF spools (4), 120 C dryer, hip bolts and nuts: on the BUILD_H1P BOM, bought there", 1, "note", 0.0,
+           "see designs/pack_5200/print/frame_h1p/BUILD_H1P.md section 1", "BUILD_H1P BOM", "B", "G8"),
+    ]
 
 
 def shopping(reg: dict) -> list[dict]:
@@ -2794,7 +2828,8 @@ def shopping(reg: dict) -> list[dict]:
            "LONG LEAD: about 4 weeks after the samples arrive", "the listed price is the ISO 12947-2 Martindale method; ask for ASTM D4966 to 8000 rev"),
     ]
     itemized = {"PT-1", "MT-2", "MT-3", "US-BS", "HB-7", "PT-5", "LL-H", "SL-1", "ST-1", "MT-1", "PT-6", "CS-1", "HS-1",
-                "AB-1", "MT-1c", "B-28 slip", "BP-1", "RT-PULL"}
+                "AB-1", "MT-1c", "B-28 slip", "BP-1", "RT-PULL", "CA-3-PPA", "CA-1-PPA", "CA-4-PPA", "T4c-PPA"}
+    L += H1P_shopping()
     for tid, r in reg.items():
         if not r["status"].startswith(("ACTIVE", "PROPOSED")) or tid in itemized:
             continue
@@ -2908,6 +2943,11 @@ mesh laundry bag + towel + all swatches  ->  normal cold cycle  ->  line dry  ->
 FS-O5 strip:  bar clamp -- 50 mm strip, 200 mm between the clamps -- bar clamp      (pull to break)
 AB-1 brush:   board + taped strip;  brush + 2 kg;  50 passes along 200 mm
 ```""",
+    "G8": """```
+dry spool 1 at 120 C 10 h -> job A (flat bars, blocks) + job B (standing Z bars) -> dry set: test within 24 h
+-> conditioned set: box 14 days -> CA-3-PPA statics -> CA-1-PPA fatigue (12 x ~28 h) -> GATE -> H1-P halves
+CA-4-PPA: bend bars at 23 C / 40 C wet / 60 C        T4c-PPA: stays, freezer >= 4 h at -20 C, drop 1.22 m
+```""",
     "G1": """```
 dry the spool -> print (frame profile, same job as a frame half) -> anneal 90 C 6 h -> cool in the oven
 -> conditioning box (saturated magnesium nitrate, ~53 % RH) 7 days -> lever rig (G4)
@@ -2931,6 +2971,9 @@ GROUP_SAFETY = {
     "G6": ["Back-up sling under every load. Nobody under the load. T2u (P1, 204 kg) outdoors with a 3 m exclusion zone.",
            "Nobody carries the frame until T1, T3, T2 and T4 have passed. MT-1c stage 1 runs on the stand for that reason.",
            "T4c: -20 C parts are brittle; gloves and glasses."],
+    "G8": ["The 120 C dryer and the 110 C bed burn: gloves. PPA-CF dust from sanding the tie ribs: mask and glasses.",
+           "XY static pulls reach about 5 kN at the bar: the 200 kg cell and the doubled lever, blanket over the rig, "
+           "stand to the side.", "T4c-PPA: -20 C parts are brittle and can shatter: glasses and gloves for the drops."],
     "G7": ["Loaded walks: a second person nearby, flat ground first, stop at any crack noise. Float meat limit 53 kg "
            "(56 kg only after T5f)."],
 }
@@ -2986,6 +3029,10 @@ PREP = {
     "G6": ["**Before:** CA-1 at the release level, IM3-EC and CA-5 have passed (G4), and MT-1 (G2). Print P1 and P2 "
            "from the released files, same spool and profile as the coupons. Sew the bag (G2 + G3 passed).", ""],
     "G7": ["**Before:** T1, T3, T2 and T4 have passed on P2 (G6). Then the pack may be carried.", ""],
+    "G8": ["**Before:** the PPA-CF spools, the 120 C dryer and the hip hardware are bought "
+           "(`designs/pack_5200/print/frame_h1p/BUILD_H1P.md` section 1). Print the coupons as "
+           "`COUPONS_H1P.md` section 2 says: job A (flat) and job B (standing Z bars) from spool 1. "
+           "**No H1-P frame half is printed before CA-3-PPA and CA-1-PPA pass.** HB-6-PPA is not needed (through-bolts).", ""],
     "G4": ["**Before:** the coupons have had their 7 days (G1). Build the rig (one weekend, `CA1_fatigue_rig.md` 4) "
            "and calibrate it with the 20 L jug. Sew the 3 SEW-F box-X loops with the MT-1 loops (G2 prep).", ""],
 }
@@ -3147,7 +3194,8 @@ def readme_md(ow, sh, lv, rk, reg, res) -> str:
          "## Start here", "",
          "1. Read **G1** today: order the long-lead parts and print the frame coupons (they need 7 days).",
          "2. Buy the rest from `shopping_list.md` " f"(total **USD {tot:,.0f}**).",
-         "3. Run the sessions G2 to G7 in order. Each guide is one session, written for a phone.",
+         "3. Run the sessions G2 to G7 in order. Each guide is one session, written for a phone. G8 is only for "
+         "the PPA-CF frame (H1-P, BL-071): its coupons come before any PPA-CF frame half.",
          "4. Fill `results_template.csv` (columns `measured`, `date`, `photo`, `notes`) and send it after each session.", "",
          "## What gets released, in this order", ""]
     for k, lab, what in RELEASES:
@@ -3182,7 +3230,7 @@ def readme_md(ow, sh, lv, rk, reg, res) -> str:
           "```", "python -m huntkit.manufacturing.test_results outputs/release/test_kit/results_template.csv --md report.md", "```", "",
           "It reports each test as PASS / FAIL / PARTIAL / OPEN, each release, and each ASSUMPTION as VERIFIED / "
           "FAILED / OPEN (`settles` column).", "",
-          "## Files", "", "- `guides/G1.md` ... `guides/G7.md`: one session each", "- `shopping_list.md`, `shopping_list.csv`",
+          "## Files", "", "- `guides/G1.md` ... `guides/G7.md`: one session each; `guides/G8.md`: the PPA-CF H1-P path (BL-071)", "- `shopping_list.md`, `shopping_list.csv`",
           "- `order_of_work.csv`", "- `results_template.csv`", "- `sketches/*.png`: rig sketches", "- `test_kit.pdf`: everything above in one PDF",
           f"- US test piece (HE-FIT step 0, CLEVIS-SHARE): `{US_PIECE_PATH}` (+ `.3mf`, `_frame_coords.stl`) plus the "
           f"bolt-on clevis `{US_CLEVIS_PATH}` (+ `.3mf`), both in the frame print folder (BL-049 / BL-050: R stay z 40-160 "
@@ -3285,7 +3333,8 @@ def sketches(outdir: Path) -> list[Path]:
     save(fig, "G7_rig.png")
 
     for gid, title, text in [("G1", "G1 coupons: print, anneal, condition", ASCII["G1"]),
-                             ("G3", "G3 wash swatches", ASCII["G3"]), ("G5", "G5 bench session 2", ASCII["G5"])]:
+                             ("G3", "G3 wash swatches", ASCII["G3"]), ("G5", "G5 bench session 2", ASCII["G5"]),
+                             ("G8", "G8 PPA-CF H1-P coupons and the gate", ASCII["G8"])]:
         fig, ax = new(title, h=3.2)
         ax.set_ylim(0, 20)
         ax.text(1, 10, text.strip("`\n"), family="monospace", fontsize=8, va="center")
@@ -3299,7 +3348,7 @@ def charts(ow, sh, lv, rk, outdir: Path) -> list[Path]:
     import matplotlib.pyplot as plt
 
     paths = []
-    colors = {"R1": "#2f5d8a", "BAG-CUT": "#4f8a3a", "BAG-BATCH": "#8ab26a", "BL037": "#c7882a", "CARRY": "#9a9a9a", "DATA": "#c9c9c9"}
+    colors = {"R1": "#2f5d8a", "BAG-CUT": "#4f8a3a", "BAG-BATCH": "#8ab26a", "BL037": "#c7882a", "CARRY": "#9a9a9a", "DATA": "#c9c9c9", "R1-PPA": "#7a3a8a"}
     rel_name = {k: lab for k, lab, _ in RELEASES}
 
     # 1. order of work, one bar per test, grouped by session
@@ -3460,6 +3509,8 @@ def screenshots(pdf_path: Path, imgs: list[Path]) -> list[Path]:
     try:
         tmp = OUT / "preview"
         tmp.mkdir(exist_ok=True)
+        for old in tmp.glob("page*.png"):          # BL-071: pdftoppm pads to the page count's digits; drop stale names
+            old.unlink()
         subprocess.run(["pdftoppm", "-png", "-r", "80", "-f", "1", "-l", "4", str(pdf_path), str(tmp / "page")],
                        check=True, capture_output=True)
         pages = sorted(tmp.glob("page*.png"))
@@ -3522,6 +3573,7 @@ def build(write: bool = True) -> dict:
     _csv(OUT / "results_template.csv", res, COLUMNS)
     lds = loads(lv)
     GUIDE_STEPS["CA-1"] = _ca1_steps(lv)
+    GUIDE_STEPS.update(H1P.guide_steps())          # BL-071
     gfiles = []
     for gr in GROUPS:
         p = OUT / "guides" / f"{gr['id']}.md"

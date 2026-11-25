@@ -95,3 +95,7 @@ seq,group,test,stage,release,also,tier,title,hands_on_h,machine_h,status
 94,G7,MH-2,run,CARRY,,function,frame-only meat haul (float / bag-off),1.5,0.0,ACTIVE-REVISED
 95,G7,MH-3,run,CARRY,,function,meat strap wash,0.5,2.0,ACTIVE
 96,G7,R28-1,run,CARRY,,function,head-clearance photo,0.3,0.0,ACTIVE
+97,G8,CA-3-PPA,run,R1-PPA,,safety,"PPA-CF Z tensile + interlayer shear, dry and conditioned 14 d (H2S prints)",4.0,336.0,ACTIVE
+98,G8,CA-1-PPA,run,R1-PPA,,safety,"PPA-CF R 0.1 fatigue coupons, Z and XY, at 0.279 x conditioned UTS",6.0,333.0,ACTIVE
+99,G8,CA-4-PPA,run,R1-PPA,,safety,"PPA-CF 3-point bend modulus and strength at 23 C dry, 40 C wet, 60 C",4.0,3.0,ACTIVE
+100,G8,T4c-PPA,run,R1-PPA,,safety,"-20 C drop of a printed H1-P stay, PPA-CF vs a PAHT-CF control",3.0,4.0,ACTIVE

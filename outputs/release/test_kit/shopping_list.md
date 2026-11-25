@@ -1,6 +1,6 @@
 # Shopping list (BL-038)
 
-Total **USD 2,826.77**. Prices from material records, cited shop pages (links), or marked ASSUMPTION (check at purchase). Cited or record-priced: USD 1,044.54; ASSUMPTION: USD 1,782.23. Prices checked 2026-11-10 (TEST_PLAN §4) and 2026-11-13.
+Total **USD 2,896.77**. Prices from material records, cited shop pages (links), or marked ASSUMPTION (check at purchase). Cited or record-priced: USD 1,044.54; ASSUMPTION: USD 1,852.23. Prices checked 2026-11-10 (TEST_PLAN §4) and 2026-11-13.
 
 **Order these first (long lead):**
 
@@ -14,11 +14,11 @@ Total **USD 2,826.77**. Prices from material records, cited shop pages (links), 
 | kit | USD |
 |---|---:|
 | Kit A pull bench | 268.68 |
-| Kit D measuring | 150.46 |
-| Kit B lever rig | 461.58 |
+| Kit D measuring | 165.46 |
+| Kit B lever rig | 516.58 |
 | Kit C frame stand | 227.39 |
 | Specimens and lab | 1,718.66 |
-| **total** | **2,826.77** |
+| **total** | **2,896.77** |
 
 Not in this list: the bag, harness and belt materials themselves (pack BOM, `outputs/release/pack5200_corrie_f_rev3/manufacturing/bom.csv`). Swatches are cut from that fabric order, so buy the bag fabric with the kit. You already own (kit E): washing machine, winter gloves, freezer, hose, tape, paint pen, phone.
 
@@ -69,6 +69,10 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | 40 C box: cooler + 60 W heater + thermostat | 1 set | 35.00 | hardware store; ASSUMPTION (shop price, check at purchase) | CA-3, CA-4, CS-1 |
 | 3-point bend fixture | 1 set | 10.00 | hardware store; ASSUMPTION (shop price, check at purchase) | CA-3, BP-1 |
 | SD-card logger module + USB power bank (MT-1c, logs while the rig moves) | 1 set | 15.00 | electronics shop; ASSUMPTION (shop price, check at purchase) | MT-1c |
+| S-type load cell 200 kg (the Makerfabs listing covers 100-500 kg) | 1 each | 30.00 | Makerfabs; ASSUMPTION (shop price, check at purchase); listing https://www.makerfabs.com/s-type-load-cell-100kg-200kg-300kg-500kg-1.html | CA-1-PPA XY static pulls (ASSUMPTION LEVER-XY) |
+| second 6061 flat bar 40 x 10 x 600 + 2 x M8 bolts (doubles the lever for the XY statics) | 1 set | 15.00 | hardware store; ASSUMPTION (shop price, check at purchase) | CA-1-PPA XY static pulls |
+| short-beam pins: 2 x D3 + 1 x D6 hardened dowels, 30 mm, on a 16 mm span block | 1 set | 10.00 | hardware store / Zoro; ASSUMPTION (shop price, check at purchase) | CA-3-PPA |
+| PPA-CF spools (4), 120 C dryer, hip bolts and nuts: on the BUILD_H1P BOM, bought there | 1 note | 0.00 | see designs/pack_5200/print/frame_h1p/BUILD_H1P.md section 1; BUILD_H1P BOM | G8 |
 
 ## Kit C frame stand
 
@@ -98,6 +102,7 @@ Not in this list: the bag, harness and belt materials themselves (pack BOM, `out
 | compression-set jig: 2 Al plates 100 x 100 x 6, 3.0 + 2.5 mm spacers, 4 M6 | 1 set | 10.00 | hardware store; ASSUMPTION (shop price, check at purchase) | CS-1 |
 | stiff nylon scrub brush + 2 kg weight | 1 set | 5.00 | hardware store; ASSUMPTION (shop price, check at purchase) | AB-1 |
 | phyphox app | 1 each | 0.00 | [free](https://apps.apple.com/app/phyphox/id1127319693) | HB-2, T4a, GT-1 |
+| dye penetrant kit (cleaner, red penetrant, developer) | 1 set | 15.00 | welding supply; ASSUMPTION (shop price, check at purchase) | T4c-PPA |
 
 ## Specimens and lab
 

@@ -639,6 +639,9 @@ def readme_md(stl: list[dict], b: dict) -> str:
          "z = 234 mm into two halves that are **bolted, not glued**, plus two bolt-on US2 clevises. Engineering "
          "records: `analysis/frame_h1.md`, `h1_lanes.md`, `h1_bedfit.md`, `h1_crown.md`, `crown_gnl.md`, "
          "`h1_spine_channel.md`. Code: `huntkit/gendesign/frame_h1.py`.", "",
+         "> **PPA-CF alternative (BL-071):** the H1-P frame in Bambu PPA-CF has its own build path in "
+         "`../frame_h1p/` (COUPONS_H1P.md first, then PRINT_SHEET_H2S.md and BUILD_H1P.md). Everything in THIS folder "
+         "is the PAHT-CF H1, which stays the fallback; do not mix files or settings between the two paths.", "",
          "## Status", "",
          "- **Engineering release candidate, not released.** Print the first article only after the coupons CA-1 "
          "(with the scar bars) and CA-5 pass, and the lower half only after HB-6 passes (its hip insert pilots are "
