@@ -126,6 +126,5 @@ Nothing here is decided; the tickets produce the material.
 | BL-075 | Hip hardware stack (~10 mm aft of boss) vs bag and lumbar pad clearance | pack-designer | S | 073 | done: clears, 0 g |
 | BL-076 | H1-P leftovers from BL-074: ring edge distance, OPEN section, SHARE-GAUGE, spool booking | structural-fea-engineer | S | 074 | done: arc plates, 0.45 N·m |
 | BL-077 | PAHT-CF H1 under the cost cap: hot/wet + B-basis re-check, close R1, coupons ≤ cap | structural-fea-engineer | L | 076 | done: R1 not closable in cap; H1c fallback |
-| BL-078 | PAHT coupons (CA-3/CA-1/CA-4-PAHT, HB-6b-SLV, CLEVIS-SHARE-B-PAHT) into the kit as the next print; H1 safety hold text | manufacturing-engineer | S | 077 | owner can print the coupons |
-| BL-078 | (row above) | | | | done: G0 next print, USD 114 |
+| BL-078 | PAHT coupons (CA-3/CA-1/CA-4-PAHT, HB-6b-SLV, CLEVIS-SHARE-B-PAHT) into the kit as the next print; H1 safety hold text | manufacturing-engineer | S | 077 | done: G0 next print, USD 114 |
 | BL-079 | bl077.json fixes from BL-078: H1-as-is thresholds, 0.20 mm layer-time floor, D2344 nose, conditioning wording; regenerate kit | structural-fea-engineer | S | 078 | coupon job ≤ USD 60 new money if possible |
