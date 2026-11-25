@@ -1,7 +1,7 @@
 item,usd,source,kind
-"PAHT-CF filament, jobs A + B with towers and +8% waste (839 g)",67.12,"record pa12_cf_fdm_paht print_cost_usd_per_g 0.08 (filament only, record cost $80/kg)",new
-"NaCl, 1 kg (saturated salt for the conditioning box)",3.0,bl077.json coupon_cost: ASSUMPTION (shop price),new
-"short-beam jig pins: 2 x D3 + 1 x D6 hardened dowels on a span block (ASTM D2344: D6 loading nose, D3 supports)",10.0,"ASSUMPTION (shop price, check at purchase): kit shopping_list line (BL-074)",new
+"PAHT-CF filament, jobs A + B with 15 x 15 mm prime pillars (no dummy towers: layer time by dwell) and +8% waste (150 g)",12.01,"record pa12_cf_fdm_paht print_cost_usd_per_g 0.08 (filament only, record cost $80/kg)",new
+"ASTM D2344 short-beam pins: 1 x D6 loading nose + 2 x D3 supports, hardened dowels, on a span block",10.0,"bl077.json coupon_cost: ASSUMPTION (shop price, check at purchase): kit shopping_list line (BL-074)",new
+"NaCl, 1 kg (saturated salt for the heated 50 C conditioning jar)",3.0,bl077.json coupon_cost: ASSUMPTION (shop price),new
 "jewellery scale 0.001 g, 50 g (traveller to constant mass)",25.0,"ASSUMPTION (shop price, check at purchase): kit shopping_list line (BL-074)",new
 2 L sealed glass jar with a wire rack (salt conditioning jar),9.0,"ASSUMPTION (shop price, check at purchase): the BL-074 'salt + jar' kit line USD 12 less the salt USD 3",new
 40 C box: cooler + 60 W heater + thermostat (kit B; also runs 50 C and 60 C),35.0,"ASSUMPTION (shop price): kit shopping_list line; the thermostat alone, e.g. Inkbird ITC-308, USD 37.99 (eBay US listing 'Inkbird Thermostat Temperature Controller ITC-308' USD 37.99 (store windemomo, search snapshot 2026-11-25, https://www.ebay.com/str/windemomo); other US listings USD 25-38)",kit

@@ -29,26 +29,38 @@ def test_pass_lines_come_from_bl077_and_match_its_numbers():
     pl, rc = P.pass_lines(), P.pass_lines_recomputed()
     for k, v in rc.items():
         assert pl[k] == pytest.approx(v, abs=max(0.005 * abs(v), 0.051)), k      # the JSON text rounds to 3 figures
-    assert (pl["z_line"], pl["sbs_line"], pl["z_joint"], pl["sbs_joint"]) == (19.0, 11.0, 26.7, 15.4)
-    assert (pl["k10"], pl["c1_smax"], pl["c1_peak_n"], pl["c4_e_ratio"], pl["share_max"]) == (2.355, 5.425, 130.0, 0.35, 0.6)
-    assert pl["layer_s"] == pl["layer_s_json"] == 237.0
+    # BL-079: every minimum line rounded UP to 0.1 MPa (was 19.0 / 26.7 / 15.4, slightly lenient)
+    assert (pl["z_line"], pl["sbs_line"], pl["z_joint"], pl["sbs_joint"]) == (19.1, 11.0, 26.8, 15.5)
+    for k in ("z_line", "sbs_line"):
+        assert pl[k] >= rc[k] - 1e-9 and pl[k] >= {"z_line": pl["z_hw"], "sbs_line": pl["tau_hw"]}[k] / pl["m_body"]
+    # BL-079: test load rounded up; E ratio covers the record-rule buckling row too (0.6 / 1.654 = 0.363)
+    assert (pl["k10"], pl["c1_smax"], pl["c1_peak_n"], pl["c4_e_ratio"], pl["share_max"]) == (2.355, 5.43, 131.0, 0.37, 0.6)
+    # BL-079: the floor at the real 0.20 mm profile (was 237 s at 0.3 mm)
+    assert pl["layer_s"] == pl["layer_s_json"] == 175.0 and pl["layer_h_bl077"] == P.frame_layer_h() == 0.2
+    assert (pl["c1_nose_d"], pl["c1_pin_d"], pl["c1_span"]) == (6.0, 3.0, 12.0)       # ASTM D2344 nose and supports
+    assert pl["cond_c"] == 50.0
     assert (pl["n_z_hw"], pl["n_z_dry"], pl["n_sbs_hw"], pl["n_sbs_dry"]) == (10, 6, 10, 6)
 
 
 def test_no_pass_line_is_typed_in_the_generator():
     src = (ROOT / "designs" / "pack_5200" / "frame_h1_paht_coupons.py").read_text()
     code = "\n".join(l for l in src.splitlines() if not l.strip().startswith("#"))
-    for lit in ("19.0", "26.7", "11.0", "15.4", "2.355", "5.425", "5.43", "0.35", "0.60", "0.909", "0.481", "237", "1.034"):
+    for lit in ("19.1", "26.8", "11.0", "15.5", "2.355", "5.425", "5.43", "0.37", "0.60", "0.909", "0.481", "175", "1.034",
+                "36.8", "21.3", "89.7", "40.9", "23.6", "0.52", "0.59"):
         assert not re.search(rf"(?<![\d.]){re.escape(lit)}(?![\d])", code), lit
 
 
-def test_jobs_have_towers_and_the_frame_layer_time(pk):
+def test_jobs_hold_the_frame_layer_time_by_dwell_not_towers(pk):
     pl = P.pass_lines()
     J = pk["coupons"]["jobs"]
     assert {it["kind"] for j in J for it in j["items"]} == {"sbs", "z", "flex", "traveller"}
     for j in J:
-        assert j["tower_steps"] and min(s for _, _, s in j["tower_steps"]) >= P.TOWER_MIN_MM2
-        assert j["min_layer_s"] >= pl["layer_s"] - 0.5, j["job"]
+        # BL-079: only the 15 x 15 mm prime pillar, the layer time comes from the per-layer dwell
+        assert [s for _, _, s in j["tower_steps"]] == [P.TOWER_MIN_MM2]
+        assert j["min_layer_s"] >= pl["layer_s"] - 0.5 and j["min_printed_s"] + j["dwell_s"] >= pl["layer_s"], j["job"]
+        assert j["dwell_s"] < pl["layer_s"]
+    assert pk["coupons"]["tower_g"] < 30.0                     # BL-078 towers were 709 g
+    assert "Layer change G-code" in " ".join(P.print_steps()) and "G4" in " ".join(P.print_steps())
     bk = P.blocks()
     assert bk["z"]["n"] == pl["n_z_hw"] + pl["n_z_dry"] + P.SPARES and max(bk["z"]["combs"]) == pl["comb_n"]
     assert bk["sbs"]["n"] >= pl["n_sbs_hw"] + pl["n_sbs_dry"] + pl["c1_n_fat"] + pl["c1_n_static"]
@@ -62,17 +74,26 @@ def test_jobs_have_towers_and_the_frame_layer_time(pk):
 def test_cost_inside_the_proving_cap(pk):
     c = pk["cost"]
     assert c["within_cap"] and c["all_in_usd"] <= c["cap_usd"] == 150.0
+    assert c["new_usd"] <= 60.0                                 # BL-079 aim (was USD 114.12 with the towers)
+    assert c["new_usd"] + P.fallback_tower_usd() <= c["cap_usd"]   # the tower fallback still fits the cap
+    assert sum("D2344" in x["item"] for x in c["lines"]) == 1    # one pin set, no double count
     assert c["filament_usd"] == pytest.approx(c["filament_g"] * P.usd_per_g(), abs=0.02)
     assert all(x["source"].startswith(("record", "bl077", "ASSUMPTION")) for x in c["lines"])
     assert P.rig_check()["all_under_cell"]
 
 
-def test_outcomes_name_the_three_paths_and_no_invented_h1_line():
+def test_outcomes_name_the_three_paths_and_the_h1_line_from_bl077():
     oc = P.outcomes()
     means = " ".join(o["means"] for o in oc)
     assert P.OUT_RE in means and P.OUT_H1C in means and P.OUT_H1 in means
-    h1 = next(o for o in oc if o["means"] == P.OUT_H1)
-    assert "NO coupon line" in h1["why"] and "MPa" not in h1["if"]
+    assert oc[0]["means"].startswith(P.OUT_H1)                  # read top-down: H1 as is is checked first
+    h = P.b77()["h1_as_is"]
+    pl = P.pass_lines()
+    # BL-079: the released H1 is not reachable on Z / SBS (in-plane terms saturate), so the row says it is not cleared
+    assert not h["sleeved"]["layer_route"]["reachable"] and not pl["h1_sleeved_ok"]
+    assert "NOT cleared" in oc[0]["means"]
+    for v in (pl["h1_sleeved_ratio"], pl["h1_sleeved_ratio_z"], *pl["h1_sleeved_all"], pl["h1_e_ratio"]):
+        assert f"{v:g}" in oc[0]["if"], v
 
 
 def test_kit_wiring_g0_first(kit):
@@ -126,3 +147,5 @@ def test_written_files(pk):
     for n in (1, 2, 3):
         s = P.SCREENS / f"{P.SHOT}_{n}.png"
         assert s.exists() and s.stat().st_size <= 1.5e6
+    s = P.SCREENS / f"{P.SHOT_BL079}.png"
+    assert s.exists() and s.stat().st_size <= 1.5e6

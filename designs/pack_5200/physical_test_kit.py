@@ -2920,10 +2920,10 @@ def shopping_md(sh: list[dict]) -> str:
 
 ASCII = {
     "G0": """```
-job A: SBS block + tower_A   job B: Z combs + bend bars + traveller + tower_B   (every layer >= frame layer time)
+job A: SBS block + prime pillar   job B: Z combs + bend bars + traveller + pillar   (G4 dwell: every layer >= frame time)
 -> anneal 90 C 6 h -> dry set: test within 24 h at 23 C
 -> hot/wet set: salt jar at 50 C to constant mass (traveller on the 0.001 g scale) -> 40 C box on the lever rig
-CA-3-PAHT (Z + SBS B-basis) + CA-4-PAHT (E ratio) + CA-1-PAHT (SBS fatigue) -> DECISION: H1 as is / H1c / redesign
+CA-3-PAHT (Z + SBS B-basis) + CA-4-PAHT (E ratio) + CA-1-PAHT (SBS fatigue; + H1 bars) -> H1 as is / H1c / redesign
 ```""",
     "G2": """```
 ANCHOR 1 -- sling -- COME-ALONG -- CRANE SCALE -- PIN FIXTURE -- SAMPLE -- PIN / BAR CLAMP -- sling -- ANCHOR 2
@@ -3044,7 +3044,8 @@ PREP = {
            "hot/wet set (section 4). Buy what the cost table lists (about USD " + f"{PC.cost()['new_usd']:.0f}" + ").", "",
            "### Print", ""] + [f"{i}. {s_}" for i, s_ in enumerate(PC.print_steps(), 1)] + [
            "", "### Conditioning to constant mass", ""] + [f"{i}. {s_}" for i, s_ in enumerate(PC.cond_steps(), 1)] + [
-           "", "### What the results mean", "", "| if the results show | it means | why |", "|---|---|---|"] + [
+           "", "### What the results mean (top-down: the first row that matches decides)", "",
+           "| if the results show | it means | why |", "|---|---|---|"] + [
            f"| {o['if']} | **{o['means']}** | {o['why']} |" for o in PC.outcomes()] + [""],
     "G2": ["**Sew before the weekend (about 5 h, same machine, thread and needle as the pack):**", "",
            "1. MT-1: 10 loops of 25 mm poly webbing; fold each end into a 20 mm loop and close it with a 25 x 25 mm "

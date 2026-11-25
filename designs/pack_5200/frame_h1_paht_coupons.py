@@ -12,7 +12,8 @@ the BL-077 coupon rows (``coupons``) into the owner's next print and next sessio
 * CA-3-PAHT (Z tensile + short-beam shear, hot/wet n 10 + dry n 6), CA-1-PAHT (short-beam-shear fatigue at 40 C),
   CA-4-PAHT (3-point bend modulus 23 C dry / 40 C conditioned / 60 C dry); then, only if the coupons pick H1c, the two
   first-frame checks HB-6b-SLV and CLEVIS-SHARE-B-PAHT;
-* two print jobs, each beside a stepped dummy tower so every layer takes at least the BL-077 frame layer time;
+* two print jobs, each with a 15 x 15 mm prime pillar and a per-layer dwell so every layer takes at least the frame
+  layer time (BL-079: re-derived at the real 0.20 mm layers; dummy towers dropped);
 * conditioning to constant mass over saturated salt and a 40 C test method on kit equipment (<= USD 50);
 * a results sheet that says which frame each outcome points to (H1 as is, H1c, or a redesign), from the BL-077 lines;
 * the SAFETY HOLD text and the per-test hold marks the build pack (``frame_h1_build.py``) and the kit use.
@@ -166,8 +167,8 @@ def pass_lines() -> dict:
     return {
         # CA-3-PAHT
         "z_line": _num(r"\(a\) hot/wet Z B-basis >= ([0-9.]+) MPa", p3),
-        "z_hw": _num(r"\(= ([0-9.]+) / ([0-9.]+), the body rows", p3),
-        "m_body": _num(r"\(= ([0-9.]+) / ([0-9.]+), the body rows", p3, 2),
+        "z_hw": _num(r"\(= ([0-9.]+) / ([0-9.]+) rounded up, the H1c body rows", p3),
+        "m_body": _num(r"\(= ([0-9.]+) / ([0-9.]+) rounded up, the H1c body rows", p3, 2),
         "z_joint": _num(r">= ([0-9.]+) MPa also lifts the open z 234 joint fatigue", p3),
         "joint_now": _num(r"joint fatigue \(([0-9.]+)\)", p3),
         "sbs_line": _num(r"\(b\) hot/wet SBS B-basis >= ([0-9.]+) MPa", p3),
@@ -186,11 +187,12 @@ def pass_lines() -> dict:
         "sbs_l": _num(r"proportions ([0-9.]+) x ([0-9.]+) x ([0-9.]+)", w3),
         "sbs_w": _num(r"proportions ([0-9.]+) x ([0-9.]+) x ([0-9.]+)", w3, 2),
         "sbs_t": _num(r"proportions ([0-9.]+) x ([0-9.]+) x ([0-9.]+)", w3, 3),
-        "layer_s": _num(r"layer-time threshold to (\d+) s", w3),
+        "layer_s": _num(r"every layer >= (\d+) s", w3),
         "layer_s_json": float(d["layer_time_median_s"]),
-        "layer_h_bl077": _num(r"LAYER-H ([0-9.]+) mm", w3),
-        "cond_c": _num(r"constant mass at (\d+) C over saturated NaCl", w3),
-        "cond_rh": _num(r"NaCl \(([0-9.]+) % RH", w3),
+        "layer_h_bl077": _num(r"at the BUILD_H1 ([0-9.]+) mm layers", w3),
+        "layer_s_bl077_0p3": float(d["layer_time"]["bl077_floor_s_at_0p3"]),
+        "cond_c": _num(r"saturated NaCl HEATED TO (\d+) C", w3),
+        "cond_rh": _num(r"HEATED TO \d+ C \(([0-9.]+) % RH", w3),
         "cond_dm_pct": _num(r"mass changes < ([0-9.]+) % in 24 h", w3),
         "uptake_tds_pct": _num(r"against the TDS ([0-9.]+) %", w3),
         "test_c": _num(r"tested at (\d+) \+/- (\d+) C", w3),
@@ -203,8 +205,9 @@ def pass_lines() -> dict:
         "c1_cycles": float(re.search(r"run out to (1e\d)", c1["pass"]).group(1)),
         "c1_r": _num(r"R ([0-9.]+), <= (\d+) Hz", c1["what"]),
         "c1_hz_max": _num(r"R ([0-9.]+), <= (\d+) Hz", c1["what"], 2),
-        "c1_span": _num(r"span (\d+), ([0-9.]+) mm pins", c1["what"]),
-        "c1_pin_d": _num(r"span (\d+), ([0-9.]+) mm pins", c1["what"], 2),
+        "c1_nose_d": _num(r"D(\d+) loading nose, two D(\d+) supports, span (\d+)", c1["what"]),
+        "c1_pin_d": _num(r"D(\d+) loading nose, two D(\d+) supports, span (\d+)", c1["what"], 2),
+        "c1_span": _num(r"D(\d+) loading nose, two D(\d+) supports, span (\d+)", c1["what"], 3),
         "c1_temp": _num(r"<= \d+ Hz, (\d+) \+/- (\d+) C", c1["what"]),
         "c1_tol": _num(r"<= \d+ Hz, (\d+) \+/- (\d+) C", c1["what"], 2),
         # CA-4-PAHT
@@ -213,7 +216,7 @@ def pass_lines() -> dict:
         "c4_t": _num(r"XY bars (\d+) x (\d+) x (\d+)", c4["what"], 3),
         "c4_n": c4["n"]["per_condition"],
         "c4_hot_c": _num(r"; (\d+) C dry$", c4["what"]),
-        "c4_e_ratio": _num(r"mean of \d+ >= ([0-9.]+) \(the eigen buckling need\)", c4["pass"]),
+        "c4_e_ratio": _num(r"mean of \d+ >= ([0-9.]+) \(the H1c buckling need", c4["pass"]),
         "c4_flex_booked": _num(r"vs the booked ([0-9.]+)", c4["pass"]),
         # HB-6b-SLV
         "slv_lo": _num(r"boss back by ([0-9.]+)-([0-9.]+) mm", hb["what"]),
@@ -222,10 +225,36 @@ def pass_lines() -> dict:
         # CLEVIS-SHARE-B-PAHT
         "share_max": _num(r"measured share <= ([0-9.]+)", cs["pass"]),
         "share_json": float(d["clevis_share_max"]),
+        # BL-079: H1 as is (bl077.json h1_as_is; sleeved hip, and the inserts kept)
+        **h1_lines(),
         # rows (honest basis), for the hold banner and the outcome table
         "h1_strength": R["strength"]["h1_hw"], "strength_goal": R["strength"]["goal"],
         "h1_r1": R["R1"]["h1_hw"], "h1c_r1": R["R1"]["after"],
     }
+
+
+def h1_lines() -> dict:
+    """The BL-079 H1-as-is lines (bl077.json h1_as_is), the sleeved hip and the inserts kept, three routes each."""
+    h = b77()["h1_as_is"]
+    out = {"h1_e_ratio": float(h["e_ratio_min"]), "h1_plaus": h["plausibility"], "h1_verdict": h["verdict"],
+           "h1_z_typ": float(h["plausible"]["z_typ_mpa"]), "h1_z_best": float(h["plausible"]["z_best_mpa"]),
+           "h1_fat_cited": h["plausible"]["fat_cited"]}
+    for lab in ("sleeved", "inserts"):
+        A, Bm, C = (h[lab][r] for r in ("layer_route", "ratio_route", "all_route"))
+        out[f"h1_{lab}_ok"] = bool(A["reachable"])
+        out[f"h1_{lab}_z_b_mpa"] = float(A["z_b_mpa"]) if A["reachable"] else None
+        out[f"h1_{lab}_sbs_b_mpa"] = float(A["sbs_b_mpa"]) if A["reachable"] else None
+        out[f"h1_{lab}_sat"] = ", ".join(f"{k} {v:g}" for k, v in A.get("at_fmax", {}).items())
+        out[f"h1_{lab}_ratio"] = float(Bm["fat_ratio_min"])
+        out[f"h1_{lab}_ratio_z"] = Bm.get("z_b_mpa")
+        out[f"h1_{lab}_ratio_sbs"] = Bm.get("sbs_b_mpa")
+        out[f"h1_{lab}_all"] = (float(C["xy_b_mpa"]), float(C["z_b_mpa"]), float(C["sbs_b_mpa"]))
+    c1 = coupons()["CA-1-PAHT"]
+    out["c1_n_fat_h1"] = int(c1["n"].get("fatigue_h1", 0))
+    out["h1_c1_smax"] = float(c1.get("smax_h1_mpa", 0.0))
+    out["h1_c1_peak_n"] = float(c1.get("peak_h1_n", 0.0))
+    out["h1_xy_limited"] = [v["why"] for v in h["xy_limited"].values()]
+    return out
 
 
 def pass_lines_recomputed() -> dict:
@@ -234,8 +263,11 @@ def pass_lines_recomputed() -> dict:
     R = rows_by_key()
     c = coupons()
     m_body = min(R["R1"]["after"], R["static_fatigue"]["after"])
-    return {"z_line": d["basis"]["hw"]["z"] / m_body, "m_body": m_body, "z_hw": d["basis"]["hw"]["z"],
-            "z_joint": c["CA-3-PAHT"]["need_z_mpa"], "sbs_line": d["basis"]["hw"]["tau"] / m_body,
+
+    def up(x, st=0.1):                     # BL-079: every minimum line rounds UP
+        return math.ceil(x / st - 1e-9) * st
+    return {"z_line": up(d["basis"]["hw"]["z"] / m_body), "m_body": m_body, "z_hw": d["basis"]["hw"]["z"],
+            "z_joint": c["CA-3-PAHT"]["need_z_mpa"], "sbs_line": up(d["basis"]["hw"]["tau"] / m_body),
             "tau_hw": d["basis"]["hw"]["tau"], "sbs_joint": c["CA-3-PAHT"]["need_sbs_mpa"],
             "knock_booked": d["basis"]["knock_z"], "joint_now": R["joint_fatigue"]["after"],
             "layer_s": d["layer_time_median_s"], "share_max": d["clevis_share_max"]}
@@ -258,7 +290,8 @@ def blocks() -> dict:
     pl = pass_lines()
     lh = frame_layer_h()
     L, w, t = pl["sbs_l"], pl["sbs_w"], pl["sbs_t"]
-    n_sbs = int(pl["n_sbs_hw"] + pl["n_sbs_dry"] + SPARES + pl["c1_n_fat"] + pl["c1_n_static"] + SPARES)
+    n_sbs = int(pl["n_sbs_hw"] + pl["n_sbs_dry"] + SPARES + pl["c1_n_fat"] + pl["c1_n_static"] + SPARES
+                + pl["c1_n_fat_h1"])
     cols = 9
     rows = math.ceil(n_sbs / cols)
     h_sbs = round((t + 2 * FACE) / lh) * lh
@@ -339,8 +372,9 @@ def _area_req() -> float:
 
 @functools.lru_cache(maxsize=None)
 def jobs() -> list[dict]:
-    """Job A: the SBS block. Job B: the Z combs, the bend bars and the traveller plate. Each beside a stepped dummy
-    tower so every layer takes >= the BL-077 layer time by the BL-053 rule."""
+    """Job A: the SBS block. Job B: the Z combs, the bend bars and the traveller plate. Each with a 15 x 15 mm prime
+    pillar and a per-layer park-and-dwell so every layer takes >= the frame layer time (bl077.json, BL-079 at the
+    real 0.20 mm profile) by the BL-053 rule."""
     import numpy as np
     lh = frame_layer_h()
     rate, k = rate_rule()
@@ -363,8 +397,7 @@ def jobs() -> list[dict]:
                             fx["L"], fx["w"], fx["t"], fx["n"]))
     items_b.append(box_item(f"traveller plate {tv['x']:.0f} x {tv['y']:.0f} x {tv['h']:.0f} (`coupons_paht/traveller.stl`)",
                             "traveller", tv["x"], tv["y"], tv["h"]))
-    areq = _area_req()
-    band = int(round(TOWER_BAND_MM / lh))
+    target = pl_layer_s()
     J = []
     for job, title, items in (("A", "SBS block (CA-3-PAHT and CA-1-PAHT short-beam bars)", items_a),
                               ("B", "Z combs (CA-3-PAHT), bend bars (CA-4-PAHT), traveller plate", items_b)):
@@ -372,21 +405,33 @@ def jobs() -> list[dict]:
         a = np.zeros(n)
         for it in items:
             a[:len(it["area"])] += it["count"] * it["area"]
-        tw = np.maximum(areq - a, 0.0)
-        steps, per = [], np.zeros(n)
-        for i0 in range(0, n, band):
-            sq = max(float(tw[i0:i0 + band].max()), TOWER_MIN_MM2)
-            steps.append((i0 * lh, min(n, i0 + band) * lh, sq))
-            per[i0:i0 + band] = sq
-        tower_g = sum((z1 - z0) * sq for z0, z1, sq in steps) * r
+        # BL-079: no dummy tower. A 15 x 15 mm prime pillar (TOWER_MIN_MM2) takes the ooze after each dwell; the
+        # layer time is held by a per-layer park-and-dwell (bl077.json layer_time.method), one dwell per job:
+        # dwell = target - the job's shortest printed layer, rounded up to 1 s, so every layer >= target.
+        steps = [(0.0, n * lh, TOWER_MIN_MM2)]
+        per = np.full(n, TOWER_MIN_MM2)
+        tower_g = n * lh * TOWER_MIN_MM2 * r
         parts_g = sum(it["count"] * it["g"] for it in items)
-        layer_t = (a + per) * lh / rate * k
+        printed_t = (a + per) * lh / rate * k
+        dwell = float(max(0, math.ceil(target - float(printed_t.min()))))
+        layer_t = printed_t + dwell
         fil = (parts_g + tower_g) * (1 + WASTE)
         J.append(dict(job=job, title=title, items=items, layers=n, height=n * lh, tower_steps=steps, tower_g=tower_g,
-                      parts_g=parts_g, support_g=0.0, filament_g=fil, usd=fil * usd_per_g(),
-                      min_layer_s=float(layer_t.min()), median_layer_s=float(np.median(layer_t)),
-                      print_h=float(layer_t.sum()) / 3600.0, tower_max_mm2=max(sq for _, _, sq in steps), mat="PAHT-CF"))
+                      parts_g=parts_g, support_g=0.0, filament_g=fil, usd=fil * usd_per_g(), dwell_s=dwell,
+                      min_printed_s=float(printed_t.min()), min_layer_s=float(layer_t.min()),
+                      median_layer_s=float(np.median(layer_t)), print_h=float(layer_t.sum()) / 3600.0,
+                      tower_max_mm2=TOWER_MIN_MM2, mat="PAHT-CF",
+                      fallback_tower_g=float(np.maximum(_area_req() - a, TOWER_MIN_MM2).sum() * lh * r)))
     return J
+
+
+def fallback_tower_usd() -> float:
+    """Filament of the BL-078 style dummy towers at the BL-079 floor (the fallback if the dwell oozes)."""
+    return sum(j["fallback_tower_g"] for j in jobs()) * (1 + WASTE) * usd_per_g()
+
+
+def pl_layer_s() -> float:
+    return pass_lines()["layer_s"]
 
 
 @functools.lru_cache(maxsize=None)
@@ -412,16 +457,12 @@ def cost() -> dict:
     40 C box is a kit line already; it is shown both ways so the cap holds even if it is not built yet."""
     cp = coupon_plan()
     cc = b77()["coupon_cost"]
-    lines = [{"item": f"PAHT-CF filament, jobs A + B with towers and +{WASTE:.0%} waste ({cp['filament_g']:.0f} g)",
+    lines = [{"item": f"PAHT-CF filament, jobs A + B with 15 x 15 mm prime pillars (no dummy towers: layer time by dwell) and +{WASTE:.0%} waste ({cp['filament_g']:.0f} g)",
               "usd": cp["filament_usd"], "source": f"record pa12_cf_fdm_paht print_cost_usd_per_g {usd_per_g():g} "
                                                     f"({paht()['print_cost_basis']})", "kind": "new"}]
-    for nm, usd, src in cc["new_items"]:
-        if nm.startswith("printed SBS jig"):
-            continue          # replaced by the kit's ASTM D2344 pin set below (D6 loading nose; FOUND in bl077)
+    for nm, usd, src in cc["new_items"]:      # bl077: ASTM D2344 pins (D6 nose, D3 supports) and the NaCl (BL-079)
         lines.append({"item": nm, "usd": float(usd), "source": f"bl077.json coupon_cost: {src}", "kind": "new"})
     lines += [
-        {"item": "short-beam jig pins: 2 x D3 + 1 x D6 hardened dowels on a span block (ASTM D2344: D6 loading nose, D3 supports)",
-         "usd": 10.0, "source": "ASSUMPTION (shop price, check at purchase): kit shopping_list line (BL-074)", "kind": "new"},
         {"item": "jewellery scale 0.001 g, 50 g (traveller to constant mass)", "usd": 25.0,
          "source": "ASSUMPTION (shop price, check at purchase): kit shopping_list line (BL-074)", "kind": "new"},
         {"item": "2 L sealed glass jar with a wire rack (salt conditioning jar)", "usd": 9.0,
@@ -527,7 +568,7 @@ def outcomes() -> list[dict]:
     cap = d["cost"]["H1c_ti"]["cap_usd"]
     tail = (f" Still open on H1c whatever the coupons say: {'; '.join(open_after)}; H1c costs USD {h1c_cost:.2f} a frame "
             f"(A2 screws) against the USD {cap:.0f} cap (orchestrator / owner call).")
-    return [
+    rows = [
         {"if": (f"any of: CA-3-PAHT hot/wet Z B-basis < {pl['z_line']:g} MPa; hot/wet SBS B-basis < {pl['sbs_line']:g} MPa; "
                 f"a CA-1-PAHT bar breaks before {pl['c1_cycles']:,.0f} cycles or a static SBS bar reads < {pl['sbs_line']:g} MPa; "
                 f"CA-4-PAHT E ratio < {pl['c4_e_ratio']:g}"),
@@ -544,12 +585,33 @@ def outcomes() -> list[dict]:
         {"if": (f"as above and Z B-basis >= {pl['z_joint']:g} MPa and SBS B-basis >= {pl['sbs_joint']:g} MPa"),
          "means": f"{OUT_H1C} (z 234 joint closed by the coupons)",
          "why": f"the z 234 joint fatigue reaches 1.0 as well.{tail} Then HB-6b-SLV and CLEVIS-SHARE-B-PAHT on the first H1c frame."},
-        {"if": "any result",
-         "means": OUT_H1,
-         "why": ("bl077.json gives NO coupon line for the released H1 (every CA-3-PAHT / CA-1-PAHT / CA-4-PAHT line is "
-                 "H1c's). The sheet cannot clear H1 as is: the SAFETY HOLD on H1 stays until the structural engineer "
-                 "re-runs the H1 rows (huntkit.gendesign.bl077_paht) on the measured allowables and publishes a line.")},
     ]
+    return [h1_outcome()] + rows
+
+
+def h1_outcome() -> dict:
+    """BL-079: the H1-as-is row, from bl077.json h1_as_is (every HA-LS-1 row of the released H1 at goal)."""
+    pl = pass_lines()
+    xy = "; ".join(pl["h1_xy_limited"])
+    xa, za, sa = pl["h1_sleeved_all"]
+    if not pl["h1_sleeved_ok"]:
+        return {"if": ("no result these coupons can give: H1 as is needs EITHER a fatigue ratio >= "
+                       f"{pl['h1_sleeved_ratio']:g} on every term (in-plane too) with Z >= {pl['h1_sleeved_ratio_z']:g} and "
+                       f"SBS >= {pl['h1_sleeved_ratio_sbs']:g} MPa, OR XY >= {xa:g}, Z >= {za:g} and SBS >= {sa:g} MPa "
+                       f"hot/wet B-basis (same with the inserts kept); and E ratio >= {pl['h1_e_ratio']:g}"),
+                "means": f"{OUT_H1}: NOT cleared (the SAFETY HOLD on H1 stays)",
+                "why": (f"bl077.json h1_as_is (BL-079): on Z / SBS alone the released H1 never reaches goal "
+                        f"(saturates: {pl['h1_sleeved_sat']}; the in-plane terms govern once the layers are strong). "
+                        f"CA-1-PAHT tests the shear ratio only, and the cited PA12-CF fatigue ratios are "
+                        f"{pl['h1_fat_cited']}; the XY line is above the dry TDS mean. So the coupons choose between "
+                        f"H1c and a redesign. Not closable by any coupon, on H1 as on H1c: {xy}.")}
+    return {"if": (f"CA-3-PAHT hot/wet Z B-basis >= {pl['h1_sleeved_z_b_mpa']:g} MPa and SBS B-basis >= "
+                   f"{pl['h1_sleeved_sbs_b_mpa']:g} MPa; the {pl['c1_n_fat_h1']} extra CA-1-PAHT bars all run out "
+                   f"at Smax {pl['h1_c1_smax']:g} MPa (as well as the H1c set); CA-4-PAHT E ratio >= {pl['h1_e_ratio']:g}"),
+            "means": f"{OUT_H1} (hip moved to sleeved through-bolts)",
+            "why": (f"every H1 row reaches goal on the measured allowables, with the hip on the BL-077 sleeved "
+                    f"through-bolts (HB-6b-SLV on the frame). Not closed by any coupon, on H1 as on H1c: {xy}. "
+                    f"How likely: {pl['h1_plaus']} The SAFETY HOLD lifts only on this row.")}
 
 
 # ============================================================================ sheets
@@ -605,13 +667,21 @@ def print_steps() -> list[str]:
         "in one go: start it on a full 1 kg spool (ASSUMPTION SPOOL-FRESH); job A fits on any spool with 60 g left.",
         f"Profile: the frame profile of BUILD_H1 section 3 ({lh:g} mm layers, 6 walls, 100 % infill, chamber heater on), "
         "same printer and spool lot as the frame. Do not change it for the coupons.",
-        f"Load the job's STLs from `designs/pack_5200/print/frame_h1/coupons_paht/` and its tower (`tower_A.stl` or "
-        f"`tower_B.stl`), tower 10 mm (0.4 in) from the parts. The tower makes every layer take >= {pl['layer_s']:.0f} s.",
-        "Slice. Open the preview's layer-time view: no layer may show less than "
-        f"{pl['layer_s']:.0f} s. If one does, scale the tower up in x and y (not z) until none does. Write the shortest "
-        "and the median layer time of each job in the results sheet.",
+        f"Load the job's STLs from `designs/pack_5200/print/frame_h1/coupons_paht/` and its 15 x 15 mm prime pillar "
+        f"(`tower_A.stl` or `tower_B.stl`), pillar 10 mm (0.4 in) from the parts, parts spaced as in the files.",
+        "Layer time by a dwell, not a tower (BL-079): save a copy of the printer preset as 'PAHT coupons dwell' and, in "
+        "Printer settings > Machine G-code > 'Layer change G-code', add at the end: a move that parks the nozzle clear "
+        f"of the parts (copy the park / wipe move your printer's own timelapse code uses) and `G4 S<dwell>`, with the "
+        "dwell of the job from the table below (job A " + f"{jobs()[0]['dwell_s']:.0f} s, job B {jobs()[1]['dwell_s']:.0f} s). "
+        "Do NOT use the filament's 'Slow printing down for better layer cooling' for this: it keeps the hot nozzle over "
+        "the coupon and stops at the minimum speed. Everything else stays the frame profile.",
+        "Slice. Open the preview's layer-time view (it may not count the G4 dwell): every layer must show at least "
+        f"{pl['layer_s']:.0f} s minus the dwell. On the printer, time 3 layers of each job with a watch: each >= "
+        f"{pl['layer_s']:.0f} s. Write the shortest and the median layer time of each job in the results sheet. If the "
+        "dwell leaves blobs or gaps at the restart, fall back to a dummy tower sized to the same layer time (one "
+        "more filament, about USD " + f"{fallback_tower_usd():.0f}" + ", still inside the cap).",
         "Print. Watch the first layer: every comb tie, bar and plate flat on the plate.",
-        "When cool: weigh each job's parts (tower off), write it. Anneal everything as the frame (BUILD_H1 section 5: "
+        "When cool: weigh each job's parts (pillar off), write it. Anneal everything as the frame (BUILD_H1 section 5: "
         "90 C (194 F) 6 h, cool in the oven); weigh the traveller straight after (its dry mass).",
     ]
 
@@ -643,7 +713,8 @@ def guide_steps() -> dict:
             hot,
             f"Z tensile: lever rig static (turnbuckle in place of the spring), the bar's grips 10 mm deep. Strength = peak "
             f"cell force x {LEVER_RATIO:.0f} / (width x thickness). Dry bars about {_n(pl['z_dry_n'])} at the bar.",
-            f"Short-beam shear: jig with the D6 loading nose on top and two D3 supports {pl['c1_span']:g} mm "
+            f"Short-beam shear: jig with the D{pl['c1_nose_d']:g} loading nose on top and two D{pl['c1_pin_d']:g} "
+            f"supports {pl['c1_span']:g} mm "
             f"({pl['c1_span'] / IN:.2f} in) apart (ASTM D2344), bar flat as printed. Load slowly to the drop. Shear "
             f"strength = 0.75 x F_max / (width x thickness).",
             f"Sheet: B-basis of the {pl['n_z_hw']} = AVERAGE - {k10:g} x STDEV (the sheet does it). Type every bar; send the "
@@ -663,7 +734,11 @@ def guide_steps() -> dict:
             "stops itself on a break, a stiffness drop over 10 % or a force drift over 5 %.",
             "After each run-out: loupe on the bar's middle layer line, photograph, type the cycles. A bar that breaks: stop "
             "and send the sheet; never swap in the spare to make the count.",
-        ],
+        ] + ([f"H1 AS IS only (BL-079): if CA-3-PAHT reads Z >= {pl['h1_sleeved_z_b_mpa']:g} and SBS >= "
+              f"{pl['h1_sleeved_sbs_b_mpa']:g} MPa, run the {pl['c1_n_fat_h1']} bars CA1-H1..H{pl['c1_n_fat_h1']} the same way "
+              f"at Smax {pl['h1_sleeved_ca1_smax_mpa']:g} MPa (F_max = {pl['h1_sleeved_ca1_smax_mpa']:g} x width x thickness / "
+              f"0.75, about {_n(pl['h1_sleeved_ca1_peak_n'])} at the bar). Otherwise leave them in the jar."]
+             if pl["c1_n_fat_h1"] else []),
         "CA-4-PAHT": [
             f"Bend bars from job B: {pl['c4_n']} for 23 C dry (CA4-D), {pl['c4_n']} for 40 C conditioned (CA4-W), "
             f"{pl['c4_n']} for {pl['c4_hot_c']:g} C dry (CA4-H), +1 spare. Measure width and thickness (caliper, 3 points).",
@@ -765,10 +840,14 @@ def register_rows() -> list[dict]:
              defined_in=DEF + "; designs/pack_5200/tests_physical/CA1_fatigue_rig.md (rig)",
              what_it_proves=c["CA-1-PAHT"]["settles"], gates=gate_txt(),
              safety_at_stake=f"R1 {pl['h1c_r1']:g} on H1c (fatigue ratio 0.30 booked)",
-             specimen=f"{pl['c1_n_fat']} SBS fatigue + {pl['c1_n_static']} SBS static from the job A block", steps=steps("CA-1-PAHT"),
+             specimen=(f"{pl['c1_n_fat']} SBS fatigue + {pl['c1_n_static']} SBS static from the job A block"
+                       + (f", + {pl['c1_n_fat_h1']} SBS fatigue at the H1-as-is level (run only if CA-3-PAHT reaches "
+                          "the H1 lines)" if pl["c1_n_fat_h1"] else "")), steps=steps("CA-1-PAHT"),
              pass_fail=(f"all {pl['c1_n_fat']} SBS bars run out to {pl['c1_cycles']:,.0f} cycles at Smax {pl['c1_smax']:g} MPa "
                         f"(peak {pl['c1_peak_n']:g} N on the jig), R {pl['c1_r']:g}, {pl['c1_temp']:g} +/- {pl['c1_tol']:g} C; "
-                        f"the {pl['c1_n_static']} static SBS >= the CA-3-PAHT SBS line {pl['sbs_line']:g} MPa"),
+                        f"the {pl['c1_n_static']} static SBS >= the CA-3-PAHT SBS line {pl['sbs_line']:g} MPa"
+                        + (f"; H1 AS IS: the {pl['c1_n_fat_h1']} H1 bars run out at Smax {pl['h1_sleeved_ca1_smax_mpa']:g} MPa"
+                           if pl["c1_n_fat_h1"] else "")),
              cost_usd=f"{kind_g('sbs') * (1 - sbs_share) * up:.2f}", cost_basis="PAHT-CF filament of the SBS block (share); lever rig kit B",
              hours_hands_on="6", hours_machine=f"{pl['c1_n_fat'] * pl['c1_cycles'] / 3600:.0f}", notes=nxt),
         _row(id="CA-4-PAHT", title=f"PAHT-CF 3-point bend modulus at 23 C dry / 40 C conditioned / {pl['c4_hot_c']:g} C dry",
@@ -804,8 +883,8 @@ def results_items() -> dict:
     pl = pass_lines()
     cb = H1P.clevis_b()
     out = {}
-    rows = [("job A", "shortest layer time (slicer preview)", "s", "min", f"{pl['layer_s']:.0f}", "LAYER-TIME"),
-            ("job B", "shortest layer time (slicer preview)", "s", "min", f"{pl['layer_s']:.0f}", "LAYER-TIME"),
+    rows = [("job A", "shortest layer time, timed on the printer (print + dwell)", "s", "min", f"{pl['layer_s']:.0f}", "LAYER-DWELL"),
+            ("job B", "shortest layer time, timed on the printer (print + dwell)", "s", "min", f"{pl['layer_s']:.0f}", "LAYER-DWELL"),
             ("traveller", "dry mass after the anneal", "g", "record", "", ""),
             ("traveller", f"mass change over the last 24 h at the end of conditioning", "%", "max", f"{pl['cond_dm_pct']:g}", "WET-PAHT"),
             ("traveller", f"water uptake at constant mass (TDS {pl['uptake_tds_pct']:g} %)", "%", "record", "", "WET-PAHT")]
@@ -821,14 +900,29 @@ def results_items() -> dict:
         ("hot/wet set", (f"Z B-basis again, for the z 234 joint: {pl['z_joint']:g} or more (with SBS {pl['sbs_joint']:g} or "
                          f"more) closes the H1c joint too; below it the joint stays open"), "MPa", "record", "", ""),
         ("both sets", f"hot/wet / dry Z B-basis (booked {pl['knock_booked']:g})", "ratio", "record", "", "WET-PAHT; HOT-40-PAHT"),
-        ("H1 as is", "no bl077.json line for the released H1: the SAFETY HOLD stays until structural re-runs H1 on these numbers",
-         "Y/N", "record", "", ""),
     ]
+    if pl["h1_sleeved_ok"]:
+        rows += [
+            ("H1 as is", (f"Z B-basis again, for H1 AS IS (hip on sleeved through-bolts): {pl['h1_sleeved_z_b_mpa']:g} or more "
+                          f"(with SBS {pl['h1_sleeved_sbs_b_mpa']:g} or more, the extra CA-1-PAHT bars and E ratio "
+                          f"{pl['h1_e_ratio']:g}) -> H1 AS IS; below it H1 as is stays on hold"), "MPa", "record", "",
+             "BL-079 h1_as_is"),
+            ("H1 as is", f"SBS B-basis again, for H1 AS IS: {pl['h1_sleeved_sbs_b_mpa']:g} or more", "MPa", "record", "",
+             "BL-079 h1_as_is"),
+            ("H1 as is", "outcome: H1 AS IS / H1c / REDESIGN (COUPONS_PAHT.md section 1, first matching row)", "text",
+             "record", "", "BL-079 h1_as_is")]
+    else:
+        rows += [("H1 as is", "no coupon value clears H1 as is (bl077.json h1_as_is): the SAFETY HOLD stays", "Y/N",
+                  "record", "", "BL-079 h1_as_is")]
     out["CA-3-PAHT"] = rows
     rows = [(f"static {i}", f"SBS strength, hot/wet {pl['c1_temp']:g} C (below {pl['sbs_line']:g}: REDESIGN)", "MPa", "min",
              f"{pl['sbs_line']:g}", "FAT-0.30") for i in range(1, pl["c1_n_static"] + 1)]
     rows += [(f"fatigue {i}", f"cycles reached at Smax {pl['c1_smax']:g} MPa (a break before {pl['c1_cycles']:,.0f}: REDESIGN)",
               "cycles", "min", f"{pl['c1_cycles']:.0f}", "FAT-0.30") for i in range(1, pl["c1_n_fat"] + 1)]
+    if pl["c1_n_fat_h1"]:
+        rows += [(f"fatigue H1 {i}", (f"cycles reached at Smax {pl['h1_sleeved_ca1_smax_mpa']:g} MPa (run only if CA-3-PAHT "
+                                      f"reaches the H1 lines; all to {pl['c1_cycles']:,.0f} -> H1 AS IS possible)"),
+                  "cycles", "record", "", "BL-079 h1_as_is") for i in range(1, pl["c1_n_fat_h1"] + 1)]
     rows += [("40 C box", "thermometer during the runs", "C", "band",
               f"{pl['c1_temp'] - pl['c1_tol']:g}..{pl['c1_temp'] + pl['c1_tol']:g}", "HOT-40-PAHT")]
     out["CA-1-PAHT"] = rows
@@ -860,11 +954,13 @@ def results_items() -> dict:
 
 # ============================================================================ documents
 ASSUMPTIONS = {
-    "LAYER-MATCH": (lambda pl, lh: (f"The coupons print with the frame profile ({lh:g} mm layers, BUILD_H1 section 3) and "
-                                    f"every layer takes >= {pl['layer_s']:.0f} s, bl077.json's frame layer time (computed "
-                                    f"there at LAYER-H {pl['layer_h_bl077']:g} mm). At {lh:g} mm the frame's own layers "
-                                    "are shorter by the same rule, so the coupons' layers are as cold or colder than the "
-                                    "frame's: conservative.", "the slicer layer-time view of each job (results sheet)")),
+    "LAYER-DWELL": (lambda pl, lh: (f"The coupons print with the frame profile ({lh:g} mm layers, BUILD_H1 section 3) "
+                                    f"and every layer takes >= {pl['layer_s']:.0f} s (bl077.json layer_time: the slowest "
+                                    f"frame half's median at {pl['layer_h_bl077']:g} mm), by a per-layer park-and-dwell "
+                                    "(G4) in the coupon preset; the cooling time between layers, with the nozzle away, "
+                                    "is what sets the interlayer weld (Seppala 2017; Vaes 2021), not the tower volume. "
+                                    "The slicer slow-down is not used (nozzle stays on the coupon; min-speed floor).",
+                                    "the timed layers of each job (results sheet)")),
     "COMB": (lambda pl, lh: (f"Z bars print standing in combs of {COMB_N}, {COMB_GAP:g} mm apart, tied by {TIE_H:g} mm strips "
                              "at the plate and inside the top grip; the ties are snipped off and sit in the grips.", "first print")),
     "CUT / SPARE": (lambda pl, lh: (f"BL-074 rules: {KERF:g} mm saw kerf, {TRIM:g} mm edge strip trimmed, one spare per set.",
@@ -886,34 +982,32 @@ ASSUMPTIONS = {
 
 
 def found() -> list[str]:
-    """Problems in bl077.json / bl077.md the build found (not edited here: ticket scope)."""
+    """What BL-078 found in bl077.json and how BL-079 (structural) settled each one (all now read from bl077.json)."""
     pl = pass_lines()
     cs = cost()
     lh = frame_layer_h()
-    out = [
-        f"No coupon line for the released H1 as is: every CA-3-PAHT / CA-1-PAHT / CA-4-PAHT line is H1c's (m_body "
-        f"{pl['m_body']:g} = H1c R1). The results sheet therefore cannot clear H1 as is (section 1).",
-        f"Layer height: bl077.json computes the {pl['layer_s']:.0f} s frame layer time at LAYER-H {pl['layer_h_bl077']:g} mm "
-        f"(the PPA ASSUMPTION of BL-073); BUILD_H1 prints PAHT-CF at {lh:g} mm. This build keeps the frame profile and "
-        f"the {pl['layer_s']:.0f} s floor (ASSUMPTION LAYER-MATCH, conservative); the structural engineer may restate the "
-        "frame layer time at the real layer height.",
-        "CA-1-PAHT names 'a printed SBS jig (span 12, 3 mm pins)': three 3 mm pins puts a D3 loading nose on the bar; "
-        "ASTM D2344 uses a D6 nose and D3 supports. This build uses the kit's D2344 pin set (2 x D3 + 1 x D6).",
-        f"Coupon cost: bl077.json books {cs['bl077_g']:g} g / USD {cs['bl077_usd']:.2f} with no dummy towers; with the "
-        f"towers at {pl['layer_s']:.0f} s the job uses {cs['filament_g']:.0f} g (towers {cs['tower_g']:.0f} g).",
-        "CA-3-PAHT and CA-1-PAHT say 'in the kit's conditioning box': the kit's box is magnesium nitrate at room "
-        f"temperature (G1). The {pl['cond_c']:g} C salt conditioning needs a heated jar (section 4).",
+    hs = (f"Z >= {pl['h1_sleeved_z_b_mpa']:g} / SBS >= {pl['h1_sleeved_sbs_b_mpa']:g} MPa with the hip on sleeved "
+          "through-bolts" if pl["h1_sleeved_ok"] else "not reachable")
+    return [
+        f"H1 as is had no coupon line. FIXED (BL-079): bl077.json h1_as_is gives the lines at which every row of the "
+        f"released H1 reaches goal: {hs}; E ratio >= {pl['h1_e_ratio']:g}. {pl['h1_plaus']}",
+        f"Layer time: bl077 put the floor at {pl['layer_s_bl077_0p3']:.0f} s from 0.3 mm layers. FIXED (BL-079): "
+        f"re-derived at the real {lh:g} mm profile, {pl['layer_s']:.0f} s (slowest frame half's median), held by a "
+        f"per-layer dwell, not by dummy towers (towers at this floor would still be "
+        f"{sum(j['fallback_tower_g'] for j in jobs()) * (1 + WASTE):.0f} g, USD {fallback_tower_usd():.2f}: the fallback only).",
+        f"CA-1-PAHT jig. FIXED (BL-079): ASTM D2344 D{pl['c1_nose_d']:g} loading nose, D{pl['c1_pin_d']:g} supports, "
+        f"span {pl['c1_span']:g} mm.",
+        f"Conditioning. FIXED (BL-079): the sealed salt jar heated to {pl['cond_c']:g} C (section 4), not the kit's "
+        "room-temperature box.",
+        "Rounding. FIXED (BL-079): every minimum line rounds UP to 0.1 MPa (E ratio to 0.01; the CA-1 test load up), "
+        f"e.g. the Z line {pl['z_line']:g} MPa = {pass_lines_recomputed()['z_hw']:.2f} / {pl['m_body']:g} rounded up.",
+        "CA-4 claim. FIXED (BL-079): kit_needs now says the PAHT rows are added and do not replace the kit's CA-1/3/4 "
+        "(the kit's CA-4 is creep-rupture, which the bend-modulus test does not cover).",
         f"CA-3-PAHT's cell check uses a dry Z pull of {pl['z_dry_mpa']:g} MPa (TDS V2.0) while the record's Z mean is "
         f"{paht()['tensile_strength_z_mpa']} MPa (V3.0): conservative for the cell, no action.",
-        "kit_needs says 'replace CA-1 / CA-3 / CA-4 (PAHT)': the kit's CA-4 is creep-rupture, which CA-4-PAHT (bend "
-        "modulus) does not cover; CA-1/3/4 stay in the register (R1), the new rows run first (G0).",
-        f"Rounding: the CA-3-PAHT Z line reads {pl['z_line']:g} MPa in the text but {pass_lines_recomputed()['z_line']:.2f} "
-        f"from the fields ({pl['z_hw']:g} / {pl['m_body']:g}): the text line is slightly lenient; the SBS line rounds the "
-        "other way. The sheet uses the text lines as published.",
-        "HB-6b-SLV and CLEVIS-SHARE-B-PAHT run on 'the first H1c frame', but BUILD_H1 still builds H1 (bl077.md section 10: "
-        "the H1c build pack is not written yet).",
+        "HB-6b-SLV and CLEVIS-SHARE-B-PAHT run on the first frame that the coupons pick (H1c, or H1 as is on sleeved "
+        "through-bolts); BUILD_H1 still builds H1 with inserts (the H1c / sleeved hip build pack is not written yet).",
     ]
-    return out
 
 
 def coupons_md() -> str:
@@ -935,7 +1029,8 @@ def coupons_md() -> str:
           f"Cost USD {cs['new_usd']:.2f} new (USD {cs['all_in_usd']:.2f} if the 40 C box is not built yet), inside the "
           f"USD {cs['cap_usd']:.0f} proving-print cap.", "",
           "## 1. What the results mean (read this first)", "",
-          "The coupons measure the real hot/wet strength of your PAHT-CF as printed. They choose between three paths:", "",
+          "The coupons measure the real hot/wet strength of your PAHT-CF as printed. They choose between three paths. "
+          "Read the table top-down: the first row that matches decides.", "",
           "| if the results show | it means | why |", "|---|---|---|"]
     for o in outcomes():
         L.append(f"| {o['if']} | **{o['means']}** | {o['why']} |")
@@ -954,21 +1049,24 @@ def coupons_md() -> str:
           f"{'within' if cs['within_cap'] else '**OVER**'} |", "",
           "Reused from the kit (shopping_list.csv): kit B lever rig (gear motor, lever, 100 kg cell, HX711, Arduino), the "
           "3-point bend fixture, caliper, dial indicator, crane scale and come-along. No new tool over USD 50.", "",
-          "## 3. Print jobs (each beside a dummy tower)", "",
-          f"Every layer must take >= **{pl['layer_s']:.0f} s** (bl077.json `layer_time_median_s`, the frame layer time). By "
-          f"the BL-053 rule (t = area x {lh:g} mm / {rate:g} mm3/s x {k:g}) that is {cp['area_req_mm2']:,.0f} mm2 of print "
-          "per layer; the tower adds what the parts lack, band by band.", ""]
+          "## 3. Print jobs (layer time by a dwell, no dummy towers)", "",
+          f"Every layer must take >= **{pl['layer_s']:.0f} s** (bl077.json `layer_time`: the slowest frame half's median "
+          f"layer time at the real {pl['layer_h_bl077']:g} mm layers, BL-079; it was {pl['layer_s_bl077_0p3']:.0f} s at "
+          f"0.3 mm). By the BL-053 rule (t = area x {lh:g} mm / {rate:g} mm3/s x {k:g}) a tower would need "
+          f"{cp['area_req_mm2']:,.0f} mm2 per layer. What sets the bond between layers is how long the layer below "
+          "cools with the nozzle away (Seppala 2017; Vaes 2021: bl077.json layer_time.sources), not the tower's volume, "
+          "so each job prints at the frame speed and then parks the nozzle for a fixed dwell every layer.", ""]
     L += [f"{i}. {s}" for i, s in enumerate(print_steps(), 1)]
-    L += ["", "| job | prints | layers | tower max mm2 | parts g | tower g | filament + 8 % | USD | about h | shortest layer s |",
+    L += ["", "| job | prints | layers | dwell s | parts g | prime pillar g | filament + 8 % | USD | about h | shortest layer s |",
           "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|"]
     for j in cp["jobs"]:
         its = "; ".join(f"{it['count']} x {it['name']}" for it in j["items"])
-        L.append(f"| {j['job']} | {its} | {j['layers']} | {j['tower_max_mm2']:,.0f} | {j['parts_g']:.0f} | {j['tower_g']:.0f} | "
+        L.append(f"| {j['job']} | {its} | {j['layers']} | {j['dwell_s']:.0f} | {j['parts_g']:.0f} | {j['tower_g']:.0f} | "
                  f"{j['filament_g']:.0f} g | {j['usd']:.2f} | {j['print_h']:.1f} | {j['min_layer_s']:.0f} |")
     L += [f"| | **total** | | | | | **{cp['filament_g']:.0f} g ({cp['filament_g'] / OZ:.1f} oz)** | **{cp['filament_usd']:.2f}** | "
           f"**{cp['print_h']:.0f}** | |", "",
           f"- SBS block: {bk['sbs']['n']} bars ({pl['n_sbs_hw']} + {pl['n_sbs_dry']} CA-3-PAHT, {pl['c1_n_fat']} + "
-          f"{pl['c1_n_static']} CA-1-PAHT, {2 * SPARES} spare), {bk['sbs']['layers']} layers; the bars are faced to "
+          f"{pl['c1_n_static']} CA-1-PAHT, {pl['c1_n_fat_h1']} CA-1-PAHT H1-as-is, {2 * SPARES} spare), {bk['sbs']['layers']} layers; the bars are faced to "
           f"{pl['sbs_t']:g} mm so the shear mid-plane is the line between layers {bk['sbs']['mid_line']} and "
           f"{bk['sbs']['mid_line'] + 1}.",
           f"- Z combs: {bk['z']['n']} bars ({pl['n_z_hw']} hot/wet + {pl['n_z_dry']} dry + {SPARES} spare) in combs of "
@@ -1001,7 +1099,7 @@ def coupons_md() -> str:
     for aid, fn in ASSUMPTIONS.items():
         a, s = fn(pl, lh)
         L.append(f"| {aid} | {a} | {s} |")
-    L += ["", f"## {n + 3}. Found in bl077.json (not edited: ticket scope)", ""] + [f"- {x}" for x in found()] + [""]
+    L += ["", f"## {n + 3}. Found in bl077.json by BL-078, settled by BL-079", ""] + [f"- {x}" for x in found()] + [""]
     return "\n".join(L)
 
 
@@ -1015,7 +1113,7 @@ def readme_md() -> str:
         "| `block_sbs.stl` | job A: the short-beam-shear block (bars sawn from it) |",
         "| `z_comb_*.stl` | job B: standing ISO 527-2 1BA Z bars in combs |",
         "| `bend_bar.stl`, `traveller.stl` | job B: ISO 178 bend bar and the conditioning traveller plate |",
-        "| `tower_A.stl`, `tower_B.stl` | the dummy towers that hold each layer to the frame layer time |", "",
+        "| `tower_A.stl`, `tower_B.stl` | 15 x 15 mm prime pillars (the layer time is held by a per-layer dwell, BL-079) |", "",
         f"Cost USD {cs['new_usd']:.2f} new, USD {cs['all_in_usd']:.2f} all-in (cap {cs['cap_usd']:.0f}). "
         "Release copies, CSVs, PDF: `outputs/release/frame_h1_paht_coupons/`.", ""])
 
@@ -1048,21 +1146,73 @@ def coupon_figure(path: Path) -> Path:
     parts = [j["parts_g"] for j in J]
     tw = [j["tower_g"] for j in J]
     ax[1].barh(y, parts, color="#4a6fa5", label="coupons")
-    ax[1].barh(y, tw, left=parts, color="#c9a227", label="dummy tower")
+    ax[1].barh(y, tw, left=parts, color="#c9a227", label="prime pillar")
     ax[1].set_yticks(y)
     ax[1].set_yticklabels([f"job {j['job']}" for j in J])
     for i, j in enumerate(J):
-        ax[1].text(parts[i] + tw[i] + 8, i, f"{j['filament_g']:.0f} g, USD {j['usd']:.2f}\nshortest layer {j['min_layer_s']:.0f} s",
+        ax[1].text(parts[i] + tw[i] + 8, i, f"{j['filament_g']:.0f} g, USD {j['usd']:.2f}\ndwell {j['dwell_s']:.0f} s, shortest layer {j['min_layer_s']:.0f} s",
                    va="center", fontsize=9)
     ax[1].invert_yaxis()
     ax[1].set_xlim(0, max(p + t for p, t in zip(parts, tw)) * 1.6)
     ax[1].legend(fontsize=9, loc="lower right")
     ax[1].set_xlabel("g")
-    ax[1].set_title(f"two print jobs: every layer >= {pl['layer_s']:.0f} s (frame layer time)", fontsize=10)
+    ax[1].set_title(f"two print jobs, no dummy towers: every layer >= {pl['layer_s']:.0f} s by a dwell", fontsize=10)
     fig.tight_layout()
     fig.savefig(path)
     plt.close(fig)
     return path
+
+
+SHOT_BL079 = "20261125_bl079_1"
+
+
+def results_figure(path: Path) -> Path:
+    """BL-079 screenshot: the results-meaning table (top-down) and the coupon cost, phone-readable."""
+    import textwrap
+    plt = _plt()
+    oc = outcomes()
+    cs = cost()
+    fig = plt.figure(figsize=(8, 13.5), dpi=100)
+    ax = fig.add_axes([0, 0, 1, 1])
+    ax.axis("off")
+    ax.text(0.04, 0.985, "PAHT-CF coupons: what the results mean", fontsize=17, weight="bold", va="top")
+    ax.text(0.04, 0.958, "Read top-down: the first row that matches decides (BL-079).", fontsize=11, va="top",
+            style="italic")
+    col = {OUT_H1: "#1f5f99", OUT_RE: "#b00000", OUT_H1C: "#2f6b2f"}
+    y = 0.93
+    for o in oc:
+        c = next(v for k, v in col.items() if o["means"].startswith(k))
+        ax.text(0.04, y, o["means"], fontsize=13, weight="bold", color=c, va="top")
+        y -= 0.024
+        t = textwrap.fill("IF " + o["if"], 78)
+        ax.text(0.06, y, t, fontsize=9.6, va="top", family="DejaVu Sans")
+        y -= 0.0158 * (t.count("\n") + 1) + 0.006
+        w = textwrap.fill(textwrap.shorten(o["why"], 560), 84)
+        ax.text(0.06, y, w, fontsize=8.6, va="top", color="#444")
+        y -= 0.0142 * (w.count("\n") + 1) + 0.018
+    y -= 0.005
+    ax.plot([0.04, 0.96], [y + 0.008, y + 0.008], color="#999", lw=1)
+    ax.text(0.04, y, "Coupon cost (RUBRIC 1b: proving prints <= USD 150)", fontsize=13, weight="bold", va="top")
+    y -= 0.028
+    for x in cs["lines"]:
+        tag = " (kit line)" if x["kind"] != "new" else ""
+        ax.text(0.06, y, textwrap.shorten(x["item"] + tag, 74), fontsize=9.4, va="top")
+        ax.text(0.94, y, f"{x['usd']:.2f}", fontsize=9.4, va="top", ha="right")
+        y -= 0.019
+    ax.text(0.06, y, "new money", fontsize=11, weight="bold", va="top")
+    ax.text(0.94, y, f"USD {cs['new_usd']:.2f}", fontsize=11, weight="bold", va="top", ha="right")
+    y -= 0.022
+    ax.text(0.06, y, "all-in, if the 40 C box is not built yet", fontsize=10, va="top")
+    ax.text(0.94, y, f"USD {cs['all_in_usd']:.2f}", fontsize=10, va="top", ha="right")
+    y -= 0.024
+    ax.text(0.06, y, textwrap.fill(f"Filament {cs['filament_g']:.0f} g: no dummy towers; every layer >= "
+                                   f"{pass_lines()['layer_s']:.0f} s by a per-layer dwell (frame layer time at 0.20 mm).", 90),
+            fontsize=9, va="top", color="#444")
+    ax.set_xlim(0, 1)
+    ax.set_ylim(min(0.0, y - 0.05), 1)
+    fig.savefig(path, facecolor="white")
+    plt.close(fig)
+    return H1P._shrink(path)
 
 
 def banner_figure(path: Path) -> Path:
@@ -1121,7 +1271,7 @@ def checks(pk: dict) -> list[str]:
         ok = abs(pl[k_] - v) <= max(0.005 * abs(v), 0.051)
         msgs.append(f"{k_}: JSON text {pl[k_]:g} vs numeric {v:.4f} {'OK' if ok else 'MISMATCH'}")
     cp = pk["coupons"]
-    msgs.append(f"coupon jobs {cp['filament_g']:.0f} g (towers {cp['tower_g']:.0f} g); shortest layer "
+    msgs.append(f"coupon jobs {cp['filament_g']:.0f} g (prime pillars {cp['tower_g']:.0f} g); shortest layer "
                 f"{min(j['min_layer_s'] for j in cp['jobs']):.0f} s (need {pl['layer_s']:.0f})")
     c = pk["cost"]
     msgs.append(f"cost new USD {c['new_usd']:.2f}, all-in USD {c['all_in_usd']:.2f}, cap {c['cap_usd']:.0f}: within {c['within_cap']}")
@@ -1180,6 +1330,7 @@ def write(pk: dict) -> dict:
     pdf = doc_pdf("PAHT-CF coupons: the H1 decision", md, REL / "COUPONS_PAHT.pdf", [f2, f1])
     SCREENS.mkdir(parents=True, exist_ok=True)
     shots = [H1P._raster(pdf, _page_with(pdf, "What the results mean"), SCREENS / f"{SHOT}_1.png")]
+    shots.append(results_figure(SCREENS / f"{SHOT_BL079}.png"))
     for src, n in ((f2, 2), (f1, 3)):
         dst = SCREENS / f"{SHOT}_{n}.png"
         shutil.copyfile(src, dst)

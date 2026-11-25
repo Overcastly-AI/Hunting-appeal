@@ -113,7 +113,7 @@
   }
  },
  "totals": {
-  "usd": 2975.88,
+  "usd": 2920.78,
   "hands_on_h": 236.5,
   "machine_h": 2165.0,
   "results_rows": 705
@@ -162,7 +162,7 @@
   "active tests not in the order of work: none",
   "first run per release: {'PAHT-COUPONS': 1, 'R1': 14, 'BAG-CUT': 15, 'BAG-BATCH': 30, 'BL037': 31, 'CARRY': 32, 'DATA': 33, 'R1-PPA': 102}",
   "R1: CA-1 at 0.40 + MT-1c swing <= 117 % at <= 150 N (fallback >= 0.313)",
-  "shopping list 122 lines, USD 2,975.88; long lead: 6",
+  "shopping list 122 lines, USD 2,920.78; long lead: 6",
   "results template 705 rows, 103 tests"
  ]
 }

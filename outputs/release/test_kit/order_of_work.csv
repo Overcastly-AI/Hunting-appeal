@@ -1,5 +1,5 @@
 seq,group,test,stage,release,also,tier,title,hands_on_h,machine_h,status
-1,G0,CA-3-PAHT,run,PAHT-COUPONS,,safety,"PAHT-CF Z tensile + SBS, hot/wet B-basis at n 10, dry set, layer time >= 237 s",8.0,504.0,ACTIVE
+1,G0,CA-3-PAHT,run,PAHT-COUPONS,,safety,"PAHT-CF Z tensile + SBS, hot/wet B-basis at n 10, dry set, layer time >= 175 s",8.0,504.0,ACTIVE
 2,G0,CA-1-PAHT,run,PAHT-COUPONS,,safety,"PAHT-CF short-beam-shear fatigue at 40 C, conditioned, 1.15 x Smax",6.0,167.0,ACTIVE
 3,G0,CA-4-PAHT,run,PAHT-COUPONS,,safety,PAHT-CF 3-point bend modulus at 23 C dry / 40 C conditioned / 60 C dry,4.0,3.0,ACTIVE
 4,G0,HB-6b-SLV,run,PAHT-COUPONS,,safety,"hip mount proof on the first H1c frame with the 304 sleeves, 0.6 N m",3.0,0.0,ACTIVE

@@ -1,6 +1,6 @@
 row_id,test_id,group,release,sample,quantity,unit,check,limit,measured,date,photo,notes,settles
-CA-3-PAHT-01,CA-3-PAHT,G0,PAHT-COUPONS,job A,shortest layer time (slicer preview),s,min,237,,,,,LAYER-TIME
-CA-3-PAHT-02,CA-3-PAHT,G0,PAHT-COUPONS,job B,shortest layer time (slicer preview),s,min,237,,,,,LAYER-TIME
+CA-3-PAHT-01,CA-3-PAHT,G0,PAHT-COUPONS,job A,"shortest layer time, timed on the printer (print + dwell)",s,min,175,,,,,LAYER-DWELL
+CA-3-PAHT-02,CA-3-PAHT,G0,PAHT-COUPONS,job B,"shortest layer time, timed on the printer (print + dwell)",s,min,175,,,,,LAYER-DWELL
 CA-3-PAHT-03,CA-3-PAHT,G0,PAHT-COUPONS,traveller,dry mass after the anneal,g,record,,,,,,
 CA-3-PAHT-04,CA-3-PAHT,G0,PAHT-COUPONS,traveller,mass change over the last 24 h at the end of conditioning,%,max,0.1,,,,,WET-PAHT
 CA-3-PAHT-05,CA-3-PAHT,G0,PAHT-COUPONS,traveller,water uptake at constant mass (TDS 0.88 %),%,record,,,,,,WET-PAHT
@@ -36,23 +36,23 @@ CA-3-PAHT-34,CA-3-PAHT,G0,PAHT-COUPONS,dry 3,"SBS strength, dry",MPa,record,,,,,
 CA-3-PAHT-35,CA-3-PAHT,G0,PAHT-COUPONS,dry 4,"SBS strength, dry",MPa,record,,,,,,
 CA-3-PAHT-36,CA-3-PAHT,G0,PAHT-COUPONS,dry 5,"SBS strength, dry",MPa,record,,,,,,
 CA-3-PAHT-37,CA-3-PAHT,G0,PAHT-COUPONS,dry 6,"SBS strength, dry",MPa,record,,,,,,
-CA-3-PAHT-38,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet set,Z tensile B-basis (mean - 2.355 SD). Below 19: H1c fails too -> REDESIGN. 19 or more: H1c body rows pass,MPa,min,19,,,,,B-BASIS-N5; WET-PAHT; HOT-40-PAHT
+CA-3-PAHT-38,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet set,Z tensile B-basis (mean - 2.355 SD). Below 19.1: H1c fails too -> REDESIGN. 19.1 or more: H1c body rows pass,MPa,min,19.1,,,,,B-BASIS-N5; WET-PAHT; HOT-40-PAHT
 CA-3-PAHT-39,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet set,SBS B-basis (mean - 2.355 SD). Below 11: H1c fails too -> REDESIGN,MPa,min,11,,,,,TAU-VM
-CA-3-PAHT-40,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet set,"Z B-basis again, for the z 234 joint: 26.7 or more (with SBS 15.4 or more) closes the H1c joint too; below it the joint stays open",MPa,record,,,,,,
+CA-3-PAHT-40,CA-3-PAHT,G0,PAHT-COUPONS,hot/wet set,"Z B-basis again, for the z 234 joint: 26.8 or more (with SBS 15.5 or more) closes the H1c joint too; below it the joint stays open",MPa,record,,,,,,
 CA-3-PAHT-41,CA-3-PAHT,G0,PAHT-COUPONS,both sets,hot/wet / dry Z B-basis (booked 0.656),ratio,record,,,,,,WET-PAHT; HOT-40-PAHT
-CA-3-PAHT-42,CA-3-PAHT,G0,PAHT-COUPONS,H1 as is,no bl077.json line for the released H1: the SAFETY HOLD stays until structural re-runs H1 on these numbers,Y/N,record,,,,,,
+CA-3-PAHT-42,CA-3-PAHT,G0,PAHT-COUPONS,H1 as is,no coupon value clears H1 as is (bl077.json h1_as_is): the SAFETY HOLD stays,Y/N,record,,,,,,BL-079 h1_as_is
 CA-1-PAHT-01,CA-1-PAHT,G0,PAHT-COUPONS,static 1,"SBS strength, hot/wet 40 C (below 11: REDESIGN)",MPa,min,11,,,,,FAT-0.30
 CA-1-PAHT-02,CA-1-PAHT,G0,PAHT-COUPONS,static 2,"SBS strength, hot/wet 40 C (below 11: REDESIGN)",MPa,min,11,,,,,FAT-0.30
 CA-1-PAHT-03,CA-1-PAHT,G0,PAHT-COUPONS,static 3,"SBS strength, hot/wet 40 C (below 11: REDESIGN)",MPa,min,11,,,,,FAT-0.30
-CA-1-PAHT-04,CA-1-PAHT,G0,PAHT-COUPONS,fatigue 1,"cycles reached at Smax 5.425 MPa (a break before 100,000: REDESIGN)",cycles,min,100000,,,,,FAT-0.30
-CA-1-PAHT-05,CA-1-PAHT,G0,PAHT-COUPONS,fatigue 2,"cycles reached at Smax 5.425 MPa (a break before 100,000: REDESIGN)",cycles,min,100000,,,,,FAT-0.30
-CA-1-PAHT-06,CA-1-PAHT,G0,PAHT-COUPONS,fatigue 3,"cycles reached at Smax 5.425 MPa (a break before 100,000: REDESIGN)",cycles,min,100000,,,,,FAT-0.30
-CA-1-PAHT-07,CA-1-PAHT,G0,PAHT-COUPONS,fatigue 4,"cycles reached at Smax 5.425 MPa (a break before 100,000: REDESIGN)",cycles,min,100000,,,,,FAT-0.30
-CA-1-PAHT-08,CA-1-PAHT,G0,PAHT-COUPONS,fatigue 5,"cycles reached at Smax 5.425 MPa (a break before 100,000: REDESIGN)",cycles,min,100000,,,,,FAT-0.30
-CA-1-PAHT-09,CA-1-PAHT,G0,PAHT-COUPONS,fatigue 6,"cycles reached at Smax 5.425 MPa (a break before 100,000: REDESIGN)",cycles,min,100000,,,,,FAT-0.30
+CA-1-PAHT-04,CA-1-PAHT,G0,PAHT-COUPONS,fatigue 1,"cycles reached at Smax 5.43 MPa (a break before 100,000: REDESIGN)",cycles,min,100000,,,,,FAT-0.30
+CA-1-PAHT-05,CA-1-PAHT,G0,PAHT-COUPONS,fatigue 2,"cycles reached at Smax 5.43 MPa (a break before 100,000: REDESIGN)",cycles,min,100000,,,,,FAT-0.30
+CA-1-PAHT-06,CA-1-PAHT,G0,PAHT-COUPONS,fatigue 3,"cycles reached at Smax 5.43 MPa (a break before 100,000: REDESIGN)",cycles,min,100000,,,,,FAT-0.30
+CA-1-PAHT-07,CA-1-PAHT,G0,PAHT-COUPONS,fatigue 4,"cycles reached at Smax 5.43 MPa (a break before 100,000: REDESIGN)",cycles,min,100000,,,,,FAT-0.30
+CA-1-PAHT-08,CA-1-PAHT,G0,PAHT-COUPONS,fatigue 5,"cycles reached at Smax 5.43 MPa (a break before 100,000: REDESIGN)",cycles,min,100000,,,,,FAT-0.30
+CA-1-PAHT-09,CA-1-PAHT,G0,PAHT-COUPONS,fatigue 6,"cycles reached at Smax 5.43 MPa (a break before 100,000: REDESIGN)",cycles,min,100000,,,,,FAT-0.30
 CA-1-PAHT-10,CA-1-PAHT,G0,PAHT-COUPONS,40 C box,thermometer during the runs,C,band,38..42,,,,,HOT-40-PAHT
 CA-4-PAHT-01,CA-4-PAHT,G0,PAHT-COUPONS,23 C dry,E mean,MPa,record,,,,,,
-CA-4-PAHT-02,CA-4-PAHT,G0,PAHT-COUPONS,40 C conditioned,E(40 C conditioned) / E(23 C dry) (below 0.35: H1c buckling fails -> REDESIGN),ratio,min,0.35,,,,,E-WET
+CA-4-PAHT-02,CA-4-PAHT,G0,PAHT-COUPONS,40 C conditioned,E(40 C conditioned) / E(23 C dry) (below 0.37: H1c buckling fails -> REDESIGN),ratio,min,0.37,,,,,E-WET
 CA-4-PAHT-03,CA-4-PAHT,G0,PAHT-COUPONS,40 C conditioned,flexural strength ratio to 23 C dry (booked 0.672),ratio,record,,,,,,E-WET
 CA-4-PAHT-04,CA-4-PAHT,G0,PAHT-COUPONS,60 C dry,E mean (record),MPa,record,,,,,,
 CA-4-PAHT-05,CA-4-PAHT,G0,PAHT-COUPONS,40 C box,thermometer during the 40 C tests,C,band,38..42,,,,,HOT-40-PAHT

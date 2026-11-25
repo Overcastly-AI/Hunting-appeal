@@ -2,31 +2,31 @@
  "ticket": "BL-078",
  "date": "2026-11-25",
  "checks": [
-  "z_line: JSON text 19 vs numeric 19.0135 OK",
+  "z_line: JSON text 19.1 vs numeric 19.1000 OK",
   "m_body: JSON text 1.034 vs numeric 1.0340 OK",
   "z_hw: JSON text 19.66 vs numeric 19.6600 OK",
-  "z_joint: JSON text 26.7 vs numeric 26.7500 OK",
-  "sbs_line: JSON text 11 vs numeric 10.9768 OK",
+  "z_joint: JSON text 26.8 vs numeric 26.8000 OK",
+  "sbs_line: JSON text 11 vs numeric 11.0000 OK",
   "tau_hw: JSON text 11.35 vs numeric 11.3500 OK",
-  "sbs_joint: JSON text 15.4 vs numeric 15.4400 OK",
+  "sbs_joint: JSON text 15.5 vs numeric 15.5000 OK",
   "knock_booked: JSON text 0.656 vs numeric 0.6560 OK",
   "joint_now: JSON text 0.735 vs numeric 0.7350 OK",
-  "layer_s: JSON text 237 vs numeric 237.0000 OK",
+  "layer_s: JSON text 175 vs numeric 175.0000 OK",
   "share_max: JSON text 0.6 vs numeric 0.6050 OK",
-  "coupon jobs 839 g (towers 709 g); shortest layer 237 s (need 237)",
-  "cost new USD 114.12, all-in USD 149.12, cap 150: within True",
+  "coupon jobs 150 g (prime pillars 20 g); shortest layer 175 s (need 175)",
+  "cost new USD 59.01, all-in USD 94.01, cap 150: within True",
   "rig: all under the cell True (max 960 N)"
  ],
  "cost": {
-  "new_usd": 114.12,
-  "all_in_usd": 149.12,
+  "new_usd": 59.01,
+  "all_in_usd": 94.01,
   "cap_usd": 150.0,
   "within_cap": true,
-  "bl077_usd": 20.72,
+  "bl077_usd": 24.72,
   "bl077_g": 146.5,
-  "filament_g": 839.0,
-  "filament_usd": 67.12,
-  "tower_g": 709.1
+  "filament_g": 150.2,
+  "filament_usd": 12.01,
+  "tower_g": 20.2
  },
  "files": [
   "COUPONS_PAHT.md",
@@ -48,6 +48,7 @@
  ],
  "screens": [
   "outputs/screens/20261125_bl078_1.png",
+  "outputs/screens/20261125_bl079_1.png",
   "outputs/screens/20261125_bl078_2.png",
   "outputs/screens/20261125_bl078_3.png"
  ],

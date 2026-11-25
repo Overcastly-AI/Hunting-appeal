@@ -687,9 +687,80 @@ SBS_MM3 = SBS["L"] * SBS["w"] * SBS["t"]
 BRIM_K = 1.3                         # ASSUMPTION COUPON-WASTE: brim, purge, ties and skirt on the coupon jobs
 
 
-def coupons(M: dict, b: dict, lt_s: float) -> list:
+# BL-079: the coupon layer-time floor at the real frame profile, and the honest way to hold it
+LAYER_H_PAHT = 0.20                  # BUILD_H1 section 3: PAHT-CF frame profile 0.20 mm layers (BL-077 used 0.30)
+LAYER_SRC = {
+    "weld": ("Seppala, Han, Hillgartner, Davis, Migler, 'Weld formation during material extrusion additive "
+             "manufacturing', Soft Matter 13 (2017) 6761-6769, doi:10.1039/C7SM00950J (NIST): the interface "
+             "temperature history (time above Tg, via the rheological shift factor) sets interdiffusion and the weld "
+             "strength"),
+    "speed": ("Vaes, Coppens, Goderis, Zoetelief, Van Puyvelde, 'The extent of interlayer bond strength during fused "
+              "filament fabrication of nylon copolymers', Polymers 13 (2021) 2677, doi:10.3390/polym13162677: weld "
+              "time from the measured thermal history predicts the PA bond; halving the print speed (11 -> 5.5 mm/s) "
+              "doubled the build time but gave no clear change in weld time or bond strength"),
+    "slowdown": ("Bambu Lab wiki 'auto cooling' (https://wiki.bambulab.com/en/software/bambu-studio/auto-cooling) and "
+                 "OrcaSlicer wiki 'Material cooling' (https://www.orcaslicer.com/wiki/material_settings/cooling/"
+                 "material_cooling): 'Slow printing down for better layer cooling' lowers the print speed until the "
+                 "layer takes the 'Layer time' threshold, never below 'Min print speed'; forum request 'Park hotend for "
+                 "minimum layer time' (https://forum.bambulab.com/t/park-hotend-for-minimum-layer-time/70222): Bambu "
+                 "Studio cannot park the nozzle to make up the time"),
+    "gcode": ("OrcaSlicer wiki 'Machine G-code' (https://www.orcaslicer.com/wiki/printer_settings/machine%20gcode/"
+              "printer_machine_gcode): the 'Layer change G-code' is inserted at every layer change after the Z lift "
+              "(same field in Bambu Studio, Printer settings > Machine G-code; forum 'Custom G-code for Pause - Wipe - "
+              "Resume', https://forum.bambulab.com/t/solved-custom-g-code-for-pause-wipe-resume/40620)"),
+}
+
+
+def frame_layer_time(layer_h: float = LAYER_H_PAHT) -> dict:
+    """Median / p10 layer time of every frame half (released H1 and H1c) at ``layer_h`` by the BL-053 rule
+    (t = area x h / 8 mm3/s x 1.08, bl073_hotwet.layer_time_s), and the coupon floor: the slowest half's median,
+    rounded up to 1 s (the coupons' interfaces then cool at least as long as the median interface of either frame)."""
+    import trimesh
+    rate, k = 8.0, 1.08
+    out = {}
+    for lab, d in (("H1", REPO / "designs" / "pack_5200" / "print" / "frame_h1"), ("H1c", STL_DIR)):
+        for h in ("h1_lower_flat", "h1_upper_flat"):
+            lp = B.layer_profile(trimesh.load(d / f"{h}.stl", force="mesh"), dz=layer_h)
+            t = lp["area"] * layer_h / rate * k
+            t = t[t > 0]
+            out[f"{lab} {h}"] = {"median_s": round(float(np.median(t)), 1), "p10_s": round(float(np.percentile(t, 10)), 1),
+                                 "layers": int(len(t))}
+    floor = math.ceil(max(v["median_s"] for v in out.values()) - 1e-9)
+    gov = max(out, key=lambda q: out[q]["median_s"])
+    return {"layer_h_mm": layer_h, "rule": f"t = layer area x {layer_h:g} mm / {rate:g} mm3/s x {k:g} (BL-053)",
+            "halves": out, "floor_s": float(floor), "governing_half": gov,
+            "bl077_floor_s_at_0p3": 237.0,
+            "method": ("park-and-dwell: the coupon job's printer preset gets a per-layer dwell in 'Layer change G-code' "
+                       "(park the nozzle clear of the parts, G4 S<dwell>), so each layer is printed at the frame "
+                       "profile's own speed and then cools with the nozzle away, as a frame interface does while the "
+                       "nozzle works elsewhere on the part; a 15 x 15 mm prime pillar beside the parts takes the ooze "
+                       "after each dwell. Not the slicer slow-down: it keeps the hot nozzle over the small coupon for "
+                       "the whole layer (Vaes 2021: slower printing did not lengthen the cooling that sets the weld) and "
+                       "it stops at 'Min print speed'. Dummy towers only as the fallback if the dwell oozes."),
+            "why_time_not_volume": ("The weld between layers is set by the interface temperature history (Seppala "
+                                    "2017; Vaes 2021): the time the layer below cools before the next road lands, with "
+                                    "the nozzle away. A tower only buys that time; its volume does nothing else, so a "
+                                    "dwell with the nozzle parked gives the same history without the filament."),
+            "sources": LAYER_SRC}
+
+
+def up(x: float, step: float = 0.1) -> float:
+    """Round a pass line UP to ``step`` (BL-079 rule: every minimum on a measured value rounds up, never lenient)."""
+    return round(math.ceil(x / step - 1e-9) * step, 10)
+
+
+COND = ("conditioned to constant mass in a sealed glass jar over saturated NaCl HEATED TO 50 C (74.4 % RH, Greenspan "
+        "1977; above the TDS 55 % RH, conservative): the jar in the kit's 40 C box set to 50 C (or the filament dryer "
+        "at 50 C); NOT the kit's room-temperature magnesium nitrate box; weigh the traveller daily, done when the mass "
+        "changes < 0.1 % in 24 h; record the uptake against the TDS 0.88 %")
+JIG = ("ASTM D2344 short-beam jig: D6 loading nose, two D3 supports, span 12 (4 x thickness); the kit's hardened "
+       "dowel pin set on a span block")
+
+
+def coupons(M: dict, b: dict, lt: dict, h1: dict | None = None) -> list:
     """The PAHT coupon program (review 8 M-3 / M-4 rules): shear-mode fatigue at 40 C on conditioned coupons, layer
-    time matched to the frame, B-basis at n 10. ``M``: governing margins of the adopted design on paht_hw."""
+    time matched to the frame, B-basis at n 10. ``M``: governing margins of the adopted design (H1c) on paht_hw.
+    ``lt``: frame_layer_time(). ``h1``: BL-079 thresholds of the released H1 (bl079_h1_thresholds.thresholds)."""
     k10 = B.k_factor(10)
     tau, zk = b["hw"]["tau"], b["hw"]["z"]
     m_fat = min(M["R1"], M["joint_fatigue"], M["lug_fatigue"] / 1.15, M["clevis_fatigue_06"] / 1.15,
@@ -697,49 +768,60 @@ def coupons(M: dict, b: dict, lt_s: float) -> list:
     m_z = min(M["R1"], M["joint_fatigue"], M["static_fatigue"])
     m_body = min(M["R1"], M["static_fatigue"])
     s_des = 0.30 * tau / m_fat
-    s_test = 1.15 * s_des
-    p_sbs = s_test * SBS["w"] * SBS["t"] / 0.75
+    s_test = up(1.15 * s_des, 0.01)
+    p_sbs = math.ceil(s_test * SBS["w"] * SBS["t"] / 0.75)
     need_z = zk / m_z
-    cond = ("conditioned to constant mass at 50 C over saturated NaCl (74.4 % RH, Greenspan 1977; above the TDS "
-            "55 % RH, conservative) in the kit's conditioning box: weigh daily, done when the mass changes < 0.1 % "
-            "in 24 h; record the uptake against the TDS 0.88 %")
-    lt = (f"layer time matched to the frame: set Bambu Studio's filament cooling 'slow down for layer cooling' "
-          f"layer-time threshold to {lt_s:.0f} s (the median layer time of an H1c half, LAYER-H 0.3 mm) and check "
-          f"the layer-time view of the preview; if the minimum speed floor stops it, add a 2-wall ring around the "
-          f"coupons (ASSUMPTION LAYER-TIME); log each job's layer time")
+    z_line, sbs_line = up(zk / m_body), up(tau / m_body)
+    z_joint, sbs_joint = up(need_z), up(tau / m_z)
+    e_line = up(M["_e_need"], 0.01)
+    lts = (f"layer time matched to the frame: every layer >= {lt['floor_s']:.0f} s (the slowest frame half's median "
+           f"layer time at the BUILD_H1 {lt['layer_h_mm']:g} mm layers, {lt['governing_half']}), held by a per-layer "
+           "park-and-dwell in the coupon preset's 'Layer change G-code' (not the slicer slow-down, not a dummy tower; "
+           "ASSUMPTION LAYER-DWELL); log each job's shortest layer time")
+    h1_txt = ""
+    if h1:
+        A = {m: h1[m]["layer_route"] for m in ("sleeved", "inserts")}
+        h1_txt = "; H1 AS IS (BL-079, h1_as_is): " + "; ".join(
+            (f"{m}: Z B-basis >= {a['z_b_mpa']:g} and SBS B-basis >= {a['sbs_b_mpa']:g} MPa" if a["reachable"] else
+             f"{m}: no Z / SBS value clears it ({', '.join(a['saturate_below_goal'])} saturate below goal)")
+            for m, a in A.items())
     rows = [
         {"id": "CA-3-PAHT", "what": f"Z tensile ({Z_1BA['type']}, printed standing in a 10-bar comb tied at the "
                                     f"grips) and SBS (ASTM D2344 proportions {SBS['L']:g} x {SBS['w']:g} x "
-                                    f"{SBS['t']:g}, printed flat: the shear plane is a layer interface); {lt}; hot/wet "
-                                    f"set {cond}, tested at 40 +/- 2 C (kit 40 C box); dry set annealed as the frame "
-                                    "(BUILD_H1 step 5), tested within 24 h at 23 C",
+                                    f"{SBS['t']:g}, printed flat: the shear plane is a layer interface, {JIG}); {lts}; "
+                                    f"hot/wet set {COND}, tested at 40 +/- 2 C (kit 40 C box); dry set annealed as the "
+                                    "frame (BUILD_H1 step 5), tested within 24 h at 23 C",
          "n": {"z_hw": 10, "z_dry": 6, "sbs_hw": 10, "sbs_dry": 6},
          "grams": round((22 * Z_1BA["mm3"] + 22 * SBS_MM3) * 1.06e-3 * BRIM_K, 1),
          "statistic": f"B-basis = mean - k SD, k {k10:.3f} at n 10 (one-sided 90/95 normal tolerance factor, "
                       "CMH-17-1G Vol 1 8.3.4.3; NIST e-Handbook 7.2.6.3)",
-         "pass": f"(a) hot/wet Z B-basis >= {zk / m_body:.1f} MPa (= {zk:.2f} / {m_body:.3f}, the body rows R1 and "
-                 f"static fatigue); >= {need_z:.1f} MPa also lifts the open z 234 joint fatigue ({M['joint_fatigue']:.3f}) "
-                 f"to 1.0; (b) hot/wet SBS B-basis >= {tau / m_body:.1f} MPa (= tau_hw {tau:.2f} / {m_body:.3f}; "
-                 f">= {tau / m_z:.1f} for the joint); (c) for the record: hot/wet / dry Z (booked 0.656) and the uptake",
-         "settles": "B-BASIS-N5, WET-Z 0.80, HOT-40 0.82, TAU von Mises 0.577", "need_z_mpa": round(need_z, 2),
-         "need_sbs_mpa": round(TAU_RATIO * need_z, 2)},
-        {"id": "CA-1-PAHT", "what": f"SBS FATIGUE (the governing interlayer mode): the CA-3 SBS bar, {lt}; {cond}; "
+         "pass": f"(a) hot/wet Z B-basis >= {z_line:.1f} MPa (= {zk:.2f} / {m_body:.3f} rounded up, the H1c body rows R1 "
+                 f"and static fatigue); >= {z_joint:.1f} MPa also lifts the open z 234 joint fatigue ({M['joint_fatigue']:.3f}) "
+                 f"to 1.0; (b) hot/wet SBS B-basis >= {sbs_line:.1f} MPa (= tau_hw {tau:.2f} / {m_body:.3f} rounded up; "
+                 f">= {sbs_joint:.1f} for the joint); (c) for the record: hot/wet / dry Z (booked 0.656) and the "
+                 f"uptake{h1_txt}",
+         "settles": "B-BASIS-N5, WET-Z 0.80, HOT-40 0.82, TAU von Mises 0.577",
+         "z_line_mpa": z_line, "sbs_line_mpa": sbs_line, "need_z_mpa": z_joint, "need_sbs_mpa": sbs_joint,
+         "rounding": "every line rounded UP to 0.1 MPa (BL-079)"},
+        {"id": "CA-1-PAHT", "what": f"SBS FATIGUE (the governing interlayer mode): the CA-3 SBS bar, {lts}; {COND}; "
                                     "R 0.1, <= 5 Hz, 40 +/- 2 C, on the kit's CA rig (gear motor, lever, 100 kg "
-                                    "cell) with a printed SBS jig (span 12, 3 mm pins)",
+                                    f"cell) with the {JIG}",
          "n": {"fatigue": 6, "static": 3}, "grams": round(9 * SBS_MM3 * 1.06e-3 * BRIM_K + 15.0, 1),
-         "load": f"Smax (shear) = 1.15 x {s_des:.2f} = {s_test:.2f} MPa, peak load {p_sbs:.0f} N ({p_sbs / 4.448:.0f} "
-                 f"lbf), tau = 0.75 P / (b h); {s_des:.2f} = 0.30 x tau_hw {tau:.2f} / governing fatigue margin "
-                 f"{m_fat:.3f}",
+         "load": f"Smax (shear) = 1.15 x {s_des:.3f} rounded up = {s_test:.2f} MPa, peak load {p_sbs:.0f} N "
+                 f"({p_sbs / 4.448:.0f} lbf), tau = 0.75 P / (b h); {s_des:.3f} = 0.30 x tau_hw {tau:.2f} / governing "
+                 f"fatigue margin {m_fat:.3f}",
          "pass": "all 6 run out to 1e5 cycles at 1.15 x Smax (about a factor 4 on life at a Basquin slope near 10); "
                  "the 3 static SBS >= the CA-3-PAHT SBS line",
-         "settles": "FAT 0.30 in shear, hot/wet", "smax_test_mpa": round(s_test, 3), "peak_load_n": round(p_sbs, 0)},
-        {"id": "CA-4-PAHT", "what": f"ISO 178 3-point bend, XY bars 80 x 10 x 4: 23 C dry; 40 C {cond.split(':')[0]}; "
+         "settles": "FAT 0.30 in shear, hot/wet", "smax_test_mpa": s_test, "peak_load_n": float(p_sbs)},
+        {"id": "CA-4-PAHT", "what": f"ISO 178 3-point bend, XY bars 80 x 10 x 4: 23 C dry; 40 C {COND.split(':')[0]}; "
                                     "60 C dry", "n": {"per_condition": 5},
          "grams": round(15 * FLEX_MM3 * 1.06e-3 * BRIM_K, 1),
-         "pass": f"E(40 C conditioned) / E(23 C dry), mean of 5 >= {M['_e_need']:.2f} (the eigen buckling need); for the record the flexural strength ratio vs the booked 0.672",
-         "settles": "E-WET 0.587 / modulus_40c_wet 0.6"},
-        {"id": "HB-6b-SLV", "what": "the kit's HB-6b hip-mount proof on the first H1c frame, with the 304 sleeves: "
-                                    "sleeve proud of the boss back by 0.05-0.15 mm (caliper), plates seated, 0.6 N m",
+         "pass": f"E(40 C conditioned) / E(23 C dry), mean of 5 >= {e_line:.2f} (the H1c buckling need, eigen and record "
+                 "rule, rounded up); for the record the flexural strength ratio vs the booked 0.672",
+         "settles": "E-WET 0.587 / modulus_40c_wet 0.6", "e_ratio_min": e_line},
+        {"id": "HB-6b-SLV", "what": "the kit's HB-6b hip-mount proof on the first frame with the 304 sleeves (H1c, or "
+                                    "H1 as is on sleeved through-bolts): sleeve proud of the boss back by 0.05-0.15 mm "
+                                    "(caliper), plates seated, 0.6 N m",
          "n": {"frames": 1}, "grams": 0.0,
          "pass": "HB-6b pass rule; no witness mark of the plates on the PAHT before the load (the preload sits on "
                  "the sleeves), paint marks unmoved after T5",
@@ -750,15 +832,31 @@ def coupons(M: dict, b: dict, lt_s: float) -> list:
                  "fatigue row reaches 1.15 on the hot/wet basis)",
          "settles": "CLEVIS-SHARE"},
     ]
+    if h1 and h1["sleeved"]["layer_route"]["reachable"]:
+        a = h1["sleeved"]["layer_route"]
+        sm = up(1.15 * 0.30 * tau * a["f"], 0.01)
+        c1 = rows[1]
+        c1["n"]["fatigue_h1"] = 6
+        c1["grams"] = round(c1["grams"] + 6 * SBS_MM3 * 1.06e-3 * BRIM_K, 1)
+        c1["smax_h1_mpa"], c1["peak_h1_n"] = sm, float(math.ceil(sm * SBS["w"] * SBS["t"] / 0.75))
+        c1["pass"] += (f"; H1 AS IS (BL-079, run only if CA-3-PAHT reaches the H1 lines): 6 more bars run out to 1e5 "
+                       f"at Smax {sm:.2f} MPa")
+    if h1:
+        er = h1["e_ratio_rows"]
+        rows[2]["pass"] += (f"; H1 AS IS (BL-079) would need >= {h1['e_ratio_min']:.2f} (its buckling rows need "
+                            f"{er['buckling eigen']:.3f} eigen, {er['buckling record rule']:.3f} record rule)")
+        rows[2]["e_ratio_min_h1"] = h1["e_ratio_min"]
     return rows
 
 
 def coupon_cost(rows: list) -> dict:
     g = sum(r["grams"] for r in rows)
-    new = [("printed SBS jig + 3 x 3 mm dowel pins", 6.0, "ASSUMPTION (shop price)"),
-           ("NaCl, 1 kg (saturated salt for the conditioning box)", 3.0, "ASSUMPTION (shop price)")]
+    new = [("ASTM D2344 short-beam pins: 1 x D6 loading nose + 2 x D3 supports, hardened dowels, on a span block",
+            10.0, "ASSUMPTION (shop price, check at purchase): kit shopping_list line (BL-074)"),
+           ("NaCl, 1 kg (saturated salt for the heated 50 C conditioning jar)", 3.0, "ASSUMPTION (shop price)")]
     fil = g * SPOOL_USD / SPOOL_G
-    return {"grams": round(g, 1), "filament_usd": round(fil, 2), "kit_reused": "40 C box, conditioning box, CA rig "
+    return {"grams": round(g, 1), "filament_usd": round(fil, 2), "kit_reused": "40 C box (set to 50 C for the salt "
+            "jar), CA rig "
             "(gear motor, lever, 100 kg cell, HX711, Arduino), 3-point bend fixture, caliper (shopping_list.csv)",
             "new_items": new, "new_items_usd": sum(n[1] for n in new),
             "usd": round(fil + sum(n[1] for n in new), 2), "cap_usd": CAP_PROVING_USD}
@@ -969,8 +1067,17 @@ ASSUMPTIONS = [
      "annealed record yield 215 MPa (sleeve SF 1.22 at the K 0.14 preload).", "caliper on receipt; HB-6b-SLV"),
     ("COST-SCOPE", "The cap covers PAHT filament + the fasteners / metal parts that join or clamp the printed body; "
      "crown, pins, bushings and the SLM Ti hip mount carry over and are outside it.", "orchestrator / owner"),
-    ("LAYER-TIME", "Bambu Studio's layer-time slowdown can hold each coupon job at the frame's median layer time "
-     "without a dummy tower (check the preview's layer-time view; else add a 2-wall ring).", "slicer preview"),
+    ("LAYER-DWELL", "BL-079 (replaces LAYER-TIME): the coupon jobs hold every layer >= the slowest frame half's median "
+     "layer time at the real 0.20 mm profile with a per-layer park-and-dwell in 'Layer change G-code' (normal print speed, "
+     "then the nozzle parked clear for the dwell); matching the cooling time, not the tower volume, is what matches the "
+     "interlayer weld (Seppala 2017, Vaes 2021). The slicer slow-down is not used: it keeps the nozzle on the part and "
+     "stops at the minimum speed.", "slicer preview (layer-time view) and the job's logged shortest layer time"),
+    ("XY-HELD", "BL-079 thresholds for H1 as is hold the in-plane (XY) allowable at the booked hot/wet B-basis 43.14 MPa: "
+     "no coupon here measures the XY tensile B-basis (CA-4-PAHT flexural strength is for the record).", "not settled "
+     "by these coupons (a later XY coupon if H1 as is comes within reach)"),
+    ("FAT-COMMON", "BL-079: the fatigue ratio measured in shear (CA-1-PAHT) is booked to every term of the layer rule (the "
+     "record's single ratio 0.30); the thresholds are given at the booked 0.30, so a better measured ratio is not "
+     "credited to the in-plane term.", "CA-1-PAHT"),
     ("A2-45", "The A2 M5 x 45 DIN 7984 costs the same as the cited A2 M5 x 35 (Zoro 50-pack); the Ti lines are the "
      "kit's USD 2.50 shop-price ASSUMPTION.", "price check at purchase"),
     ("LOC-SHARE", "One 10 ml threadlocker bottle covers about 10 frames (per-frame share USD 0.90).", "n/a (cost)"),
@@ -1009,6 +1116,63 @@ def rows_of(name: str, hip_key: str, hip: dict, clev: dict, eig: float) -> dict:
     return r
 
 
+def h1_as_is(h1: dict, eig_h1: float) -> dict | None:
+    """BL-079: coupon thresholds at which the RELEASED H1 passes every row (bl079_h1_thresholds scan, cached
+    outputs/bl079/scan_h1.json), plus the modulus ratio its buckling rows need."""
+    from . import bl079_h1_thresholds as T
+    if not T.SCAN_JSON.exists():
+        return None
+    t = T.thresholds()
+    e_need = max(basis()["E_hot_cited"] / eig_h1, 0.6 / h1["buckling_record"])
+    t["e_ratio_min"] = up(e_need, 0.01)
+    t["e_ratio_rows"] = {"buckling eigen": round(basis()["E_hot_cited"] / eig_h1, 4),
+                         "buckling record rule": round(0.6 / h1["buckling_record"], 4)}
+    t["plausible"] = pr = plausible_range()
+    sl = t["sleeved"]
+    A, Bm, C = sl["layer_route"], sl["ratio_route"], sl["all_route"]
+    if A["reachable"]:
+        a_t = f"Z >= {A['z_b_mpa']:g}, SBS >= {A['sbs_b_mpa']:g} MPa"
+        ok = A["z_b_mpa"] <= pr["z_best_mpa"] and A["sbs_b_mpa"] <= pr["sbs_best_mpa"]
+    else:
+        a_t = ("NOT reachable at any Z / SBS: " + ", ".join(f"{k} saturates at {v:g}" for k, v in A["at_fmax"].items())
+               + " (the in-plane terms govern once the layers are strong)")
+        ok = False
+    t["verdict"] = ("reachable by the kit coupons" if ok else
+                    "H1 as is needs values the coupons cannot plausibly reach (or measure)")
+    t["plausibility"] = (
+        f"A (Z / SBS, booked fatigue ratio 0.30 and XY): {a_t}. "
+        f"B (fatigue ratio credited to every term, in-plane too): ratio >= {Bm['fat_ratio_min']:.2f} with Z >= "
+        f"{Bm.get('z_b_mpa')} and SBS >= {Bm.get('sbs_b_mpa')} MPa; cited PA12-CF ratios are {pr['fat_cited']}, and "
+        "CA-1-PAHT tests the shear term only, so the in-plane ratio would need its own coupon. "
+        f"C (all allowables x {C['F']:.3f}): XY >= {C['xy_b_mpa']:g}, Z >= {C['z_b_mpa']:g}, SBS >= {C['sbs_b_mpa']:g} "
+        f"MPa hot/wet B-basis, against a dry TDS XY mean of {pr['xy_dry_means']} and a kindest cited hot/wet Z "
+        f"B-basis of {pr['z_best_mpa']:.1f} MPa (typical {pr['z_typ_mpa']:.1f}). Verdict: {t['verdict']}.")
+    return t
+
+
+def plausible_range() -> dict:
+    """What the coupons can plausibly read (hot/wet B-basis at n 10) from the cited data already in the basis: the two
+    Bambu TDS Z values (V3.0 47 +/- 5, V2.0 64 +/- 3) with the booked knock (0.656) and the kindest cited knock
+    (wet Z bending pair 49 / 61 x the highest hot reading)."""
+    b = basis()
+    k10 = B.k_factor(10)
+    kb = b["knock_z"]
+    hot_best = max([b["hot"]["direct_40_23_dry"]] + [v["ratio"] for v in b["hot"].values() if isinstance(v, dict)])
+    kbest = b["wet"]["z_bending"] * hot_best
+    v3, v2 = TDS_V3["z"], TDS_V2["z"]
+    z_typ = (v3[0] - k10 * v3[1]) * kb
+    z_best = (max(v2[0], v3[0]) - k10 * (v2[1] if v2[0] >= v3[0] else v3[1])) * kbest
+    return {"k10": round(k10, 3), "z_v3": list(v3[:2]), "z_v2": list(v2[:2]), "knock_booked": kb,
+            "knock_best": round(kbest, 4), "z_typ_mpa": round(z_typ, 2), "z_best_mpa": round(z_best, 2),
+            "sbs_typ_mpa": round(z_typ * TAU_RATIO, 2), "sbs_best_mpa": round(z_best * TAU_RATIO, 2),
+            "xy_dry_means": f"{TDS_V2['xy'][0]:g} (V2.0) / {TDS_V3['xy'][0]:g} (V3.0) MPa",
+            "fat_cited": ("0.25-0.32 x UTS (Siebert et al., Proc. TU Sofia 76(3) 2025, FFF PA12-CF15, 1e6 cycles) and "
+                          "0.40 at best (Stratasys FDM Nylon 12CF white paper, run-outs at 1e6; docs/research/"
+                          "frame_comp_A.md)"),
+            "sources": "Bambu PAHT-CF TDS V3.0 / V2.0 (basis()); wet: Bambu dry/wet Z bending 61/49; hot: Ciganas 2026 "
+                       "and the two Tg-shift readings (basis()['hot'])"}
+
+
 def report(final: str = FINAL, log=print) -> dict:
     import shutil
     b = basis()
@@ -1032,12 +1196,13 @@ def report(final: str = FINAL, log=print) -> dict:
                       mass[final]["h1_lower_flat"] + mass[final]["h1_upper_flat"], 0.0)
     clevis_share_max = round(min(fin["clevis_fatigue"] * 1.0, fin["clevis_fatigue_06"] * 0.6) / 1.15, 3)
     M = {k: fin[k] for k, _n, _g in ROWS}
-    M["_e_need"] = round((basis()["E_hot_cited"] if eig_p.exists() else 0.6) / eig_f, 3)
+    # E ratio the buckling rows need: the eigen row (solved at the cited 0.587) and the record rule (booked 0.6)
+    M["_e_need"] = round(max((basis()["E_hot_cited"] if eig_p.exists() else 0.6) / eig_f,
+                             0.6 / fin["buckling_record"]), 4)
     M["_clevis_share_max"] = clevis_share_max
-    import trimesh
-    lt = min(B.layer_time_s(trimesh.load(OUT / f"stl_{final}" / f"{h}.stl", force="mesh"))["median_s"]
-             for h in ("h1_lower_flat", "h1_upper_flat"))
-    cps = coupons(M, b, lt)
+    lt = frame_layer_time()
+    h1t = h1_as_is(h1, eig_h1)
+    cps = coupons(M, b, lt, h1t)
     cc = coupon_cost(cps)
     cost = cost_table(mass["H1"]["h1_lower_flat"] + mass["H1"]["h1_upper_flat"],
                       mass[final]["h1_lower_flat"] + mass[final]["h1_upper_flat"], cc["grams"])
@@ -1071,7 +1236,8 @@ def report(final: str = FINAL, log=print) -> dict:
                           "glass_transition_wet_c": 47},
            "rows": rows, "fails_after": fails, "open_rows": opens, "joint_variants": jv, "steps": steps, "candidates": cands, "hip": hip,
            "clevis_share_max": clevis_share_max, "tornado": tor, "coupons": cps, "coupon_cost": cc, "cost": cost,
-           "mass": mass, "layer_time_median_s": lt, "stl_dir": str(STL_DIR.relative_to(REPO)), "stl_md5": md5,
+           "mass": mass, "layer_time_median_s": lt["floor_s"], "layer_time": lt, "h1_as_is": h1t,
+           "stl_dir": str(STL_DIR.relative_to(REPO)), "stl_md5": md5,
            "eigen": {"h1_scaled": round(eig_h1, 3), "final": round(eig_f, 3), "final_solved": eig_p.exists()},
            "assumptions": [{"id": a, "text": t, "settled_by": s} for a, t, s in ASSUMPTIONS],
            "screenshots": [str(Path(s).relative_to(REPO)) for s in shots],
@@ -1090,13 +1256,77 @@ def kit_needs(cps: list, cc: dict) -> list:
         "8 x Ti M5 x 35 through-bolts + 8 DIN 934 nuts + two BL-076 arc plates + 8 x 304 sleeves (1/4 x 0.010 in, cut "
         "to boss depth + 0.05-0.15 mm), torque 0.6 N m with the existing 0.5-2.5 N m driver; drop the heat-set inserts, "
         "the insert guide and HB-6 (inserts no longer used); support / time table from the H1c halves",
-        "physical_test_kit: replace CA-1 / CA-3 / CA-4 (PAHT) with CA-1-PAHT (SBS fatigue at 40 C), CA-3-PAHT (Z + SBS, "
-        "n 10 hot/wet + 6 dry, layer-time matched), CA-4-PAHT (flex 23 / 40 wet / 60 C), add HB-6b-SLV and "
-        "CLEVIS-SHARE-B-PAHT; coupon filament " + f"{cc['grams']:.0f} g",
+        "physical_test_kit: ADD CA-1-PAHT (SBS fatigue at 40 C), CA-3-PAHT (Z + SBS, n 10 hot/wet + 6 dry, layer-time "
+        "matched by a per-layer dwell), CA-4-PAHT (flex modulus 23 / 40 wet / 60 C), HB-6b-SLV and CLEVIS-SHARE-B-PAHT "
+        "as the first session (G0). They do NOT replace the kit's CA-1 / CA-3 / CA-4: the kit's CA-4 is creep-rupture, "
+        "which the CA-4-PAHT bend-modulus test does not cover (BL-079 correction); those rows stay in the register; "
+        "coupon filament " + f"{cc['grams']:.0f} g",
         "shopping_list: + mini tubing cutter, + 304 tube 1/4 x 0.010 in 12 in, + printed SBS jig pins, + NaCl; "
         "- the Wera 0.3-1.2 N m driver and the 120 C oven (PPA only); PAHT spools 1 kg at the record price",
         "bom: per-frame cost table of bl077.json (cost.H1c) replaces the PPA BOM for the frame",
     ]
+
+
+def md_h1_as_is(rec: dict) -> list:
+    """BL-079 section 6b: the coupon lines at which the released H1 passes every row."""
+    h = rec.get("h1_as_is")
+    if not h:
+        return []
+    bz = rec["basis"]["hw"]
+    L = ["### 6b. Thresholds for H1 as is (BL-079)", "",
+         f"Layer allowables scaled together by f (Z = f x {bz['z']:.2f}, SBS = f x {bz['tau']:.2f} MPa; XY held at "
+         f"{bz['xy']:.2f}, ASSUMPTION XY-HELD; fatigue ratio 0.30), every H1 row re-run on the released raster (one FE "
+         "solve per basis, `huntkit/gendesign/bl079_h1_thresholds.py`; the f 1 column reproduces the H1 hot/wet column "
+         "of section 2 exactly). f needed = chord interpolation on the grid (conservative for a concave margin); every "
+         "line rounded UP to 0.1 MPa. Fatigue rows are linear in the fatigue ratio (checked at x "
+         f"{h['fatigue_linearity_g']['g']:g}: {min(h['fatigue_linearity_g']['ratio'].values()):.3f}-"
+         f"{max(h['fatigue_linearity_g']['ratio'].values()):.3f}).", "",
+         "| row | goal | " + " | ".join(f"f {f:g}" for f in h["factors"]) + " | f needed |",
+         "|---|---:|" + "---:|" * len(h["factors"]) + "---:|"]
+    for k, r in h["rows"].items():
+        L.append(f"| {k} | {r['goal']:g} | " + " | ".join(f"{v:.3f}" for v in h["table"][k]) + " | "
+                 + (f"{r['f_need']:.3f}" if r["f_need"] else "**never**") + " |")
+    for k, x in h["xy_limited"].items():
+        L.append(f"| {k} (gated) | {x['goal']:g} | " + " | ".join(f"{v:.3f}" for v in h["table"][k]) + " | gate |")
+    L += ["", "| route | hip on sleeved through-bolts | hip on the 8 brass inserts (as released) |", "|---|---|---|"]
+
+    def a_txt(a):
+        return (f"Z >= {a['z_b_mpa']:g}, SBS >= {a['sbs_b_mpa']:g} MPa" if a["reachable"] else
+                "never: " + ", ".join(f"{k} saturates at {v:g}" for k, v in a["at_fmax"].items()))
+
+    def b_txt(b_):
+        return (f"ratio >= {b_['fat_ratio_min']:.2f} AND Z >= {b_.get('z_b_mpa')}, SBS >= {b_.get('sbs_b_mpa')} MPa; "
+                + "; ".join(f"at {c['fat_ratio']:.2f}: " + (f"Z {c['z_b_mpa']:g} / SBS {c['sbs_b_mpa']:g}" if c["f"]
+                                                           else "never") for c in b_["curve"]))
+
+    def c_txt(c):
+        return f"XY >= {c['xy_b_mpa']:g}, Z >= {c['z_b_mpa']:g}, SBS >= {c['sbs_b_mpa']:g} MPa (x {c['F']:.3f}, {c['governing']})"
+    S, I = h["sleeved"], h["inserts"]
+    L += [f"| A. Z / SBS only (what CA-3-PAHT measures) | {a_txt(S['layer_route'])} | {a_txt(I['layer_route'])} |",
+          f"| B. + a fatigue ratio on every term (CA-1-PAHT tests shear only) | {b_txt(S['ratio_route'])} | "
+          f"{b_txt(I['ratio_route'])} |",
+          f"| C. every allowable stronger (XY too) | {c_txt(S['all_route'])} | {c_txt(I['all_route'])} |",
+          f"| E ratio (CA-4-PAHT) | >= {h['e_ratio_min']:.2f} | >= {h['e_ratio_min']:.2f} |", "",
+          "Not closable by any coupon on H1 as on H1c: " + "; ".join(x["why"] for x in h["xy_limited"].values()) + ".", "",
+          f"**Plausibility.** {h['plausibility']}", ""]
+    return L
+
+
+def md_layer_time(rec: dict) -> list:
+    lt = rec.get("layer_time")
+    if not lt:
+        return []
+    L = ["### 6c. Coupon layer-time floor (BL-079)", "",
+         f"BL-077 put the floor at {lt['bl077_floor_s_at_0p3']:.0f} s from 0.30 mm layers; BUILD_H1 prints PAHT-CF at "
+         f"{lt['layer_h_mm']:g} mm, so every frame layer takes 2/3 as long. Rule: {lt['rule']}.", "",
+         "| frame half | layers | median s | p10 s |", "|---|---:|---:|---:|"]
+    for k, v in lt["halves"].items():
+        L.append(f"| {k} | {v['layers']} | {v['median_s']:.1f} | {v['p10_s']:.1f} |")
+    L += ["", f"Floor = the slowest half's median, rounded up: **{lt['floor_s']:.0f} s** ({lt['governing_half']}); it is "
+          "longer than both released H1 medians, so the coupons are as cold or colder than either frame.", "",
+          f"Method: {lt['method']}", "", f"Why time, not volume: {lt['why_time_not_volume']}", "",
+          "Sources: " + "; ".join(lt["sources"].values()) + ".", ""]
+    return L
 
 
 def write_md(rec: dict) -> str:
@@ -1223,6 +1453,7 @@ def write_md(rec: dict) -> str:
           f"{cc['usd']:.2f} (cap 150).** CA-1-PAHT governing shear Smax {rec['coupons'][1]['smax_test_mpa']} MPa at the test, "
           f"peak {rec['coupons'][1]['peak_load_n']:.0f} N on the SBS jig (under the 100 kg cell). Layer time target "
           f"{rec['layer_time_median_s']:.0f} s.", ""]
+    L += md_h1_as_is(rec) + md_layer_time(rec)
     L += ["## 7. Cost (RUBRIC 1b)", "", "| line | H1 (Ti) | H1c (Ti) | H1c (A2) |", "|---|---:|---:|---:|",
           f"| PAHT filament (halves x {SUPPORT_EST_K:.3f} BL-053 support estimate, clevises x 1.08, pawl) | "
           + " | ".join(f"{c[k]['filament']['filament_g']:.0f} g = {c[k]['filament']['usd']:.2f}" for k in ("H1_ti", "H1c_ti", "H1c_a2")) + " |",
