@@ -5,8 +5,11 @@ generic: false
 trade_names:
 - Bambu Lab PPA-CF
 supplier_examples:
-- Bambu Lab store
+- Bambu Lab store (0.75 kg spool, no MOQ)
+- MatterHackers
+- Ultimate 3D Printing Store
 properties:
+  # --- Bambu PPA-CF TDS V1.0, dry as printed, unannealed, X1C, chamber 52 C, 100 % infill, 23 C
   density_kg_m3: 1250
   youngs_modulus_xy_mpa: 11800
   youngs_modulus_z_mpa: 4300
@@ -17,26 +20,41 @@ properties:
   bending_strength_xy_mpa: 208
   bending_strength_z_mpa: 63
   bending_modulus_xy_mpa: 9860
+  bending_modulus_z_mpa: 3240
   elongation_xy_pct: 3.2
   elongation_z_pct: 0.9
-  heat_deflection_temp_c: 227
-  heat_deflection_temp_1_8_mpa_c: 196
-  glass_transition_c: 85
-  melting_temp_c: 258
-  water_absorption_pct: 1.30
   impact_xy_unnotched_kj_m2: 41.7
   impact_xy_notched_kj_m2: 6.5
   impact_z_kj_m2: 4.3
+  heat_deflection_temp_c: 227
+  heat_deflection_temp_1_8_mpa_c: 196
+  vicat_softening_temp_c: 232
+  glass_transition_c: 85
+  melting_temp_c: 258
+  crystallization_temp_c: 178
+  water_absorption_pct: 1.30
+  # --- design values (BL-069, same rule as research/frame_comp_A.md 2.1)
+  tensile_strength_z_design_mpa: 45
+  # --- conditioned (wet) data: Raise3D Industrial PPA CF (different brand, 15 wt % CF), annealed 100 C 8 h + 3 days
+  #     ambient; used only for the wet knock-down ratio
+  tensile_strength_xy_conditioned_mpa: 122
+  youngs_modulus_xy_conditioned_mpa: 7800
+  tensile_strength_z_conditioned_mpa: 30.2
+  elongation_xy_conditioned_pct: 1.9
+  # --- process (H2S)
   drying_temp_c: 120
   drying_time_hours: 10
   nozzle_temp_c: 290
+  nozzle_diameter_mm: 0.6
   bed_temp_c: 110
+  chamber_temp_c: 65
   anneal_temp_c: 130
   anneal_time_hours: 8
   min_wall_mm: 2.0
-  process: FDM (enclosed printer, hardened 0.6 mm nozzle)
+  process: FDM (Bambu H2S, hardened 0.6 mm nozzle, chamber heater on at its 65 C maximum, dry box)
   anisotropic: true
-  env_knockdown_ratio: 0.8
+  # --- frame-study ratios (ASSUMPTIONS, see notes)
+  env_knockdown_ratio: 0.73
   modulus_40c_wet_ratio: 0.85
   modulus_60c_ratio: 0.75
   creep_modulus_8h_40c_ratio: 0.85
@@ -44,13 +62,17 @@ properties:
   fatigue_1e5_ratio: 0.3
   modulus_minus20c_ratio: 1.25
   impact_minus20c_ratio: 0.5
-  print_cost_usd_per_g: 0.12
-  print_cost_basis: US store 0.75 kg spool at $89.99 (2026-11-01), about $120/kg
+  print_cost_usd_per_g: 0.20
+  print_cost_basis: Bambu US store 0.75 kg spool $149.99 (search snapshot 2026-11-25; MatterHackers $198) = $200/kg; was $89.99 on 2026-11-01
 confidence: datasheet
 sources:
-- 'Bambu Lab PPA-CF Technical Data Sheet (density 1.25 g/cm3, Tg 85 C, HDT 196 C at 1.8 MPa and 227 C at 0.45 MPa, E XY 11800 / Z 4300 MPa, tensile XY 168 / Z 57 MPa, elongation Z 0.9 %, Charpy Z 4.3 kJ/m2; specimens unannealed, X1C, 100 % infill); https://www.3d-printerstore.ch/mediafiles/Sonstiges/BambuLab/Filament/PPA/Bambu_PPA-CF_Technical_Data_Sheet.pdf'
-- 'Bambu Lab PPA-CF product page: dry 100-140 C for 8-12 h, nozzle 280-310 C, bed 100-120 C, anneal 120-140 C for 6-12 h; spool 0.75 kg at $89.99; https://us.store.bambulab.com/products/ppa-cf'
+- 'Bambu Lab PPA-CF Technical Data Sheet V1.0 (read 2026-11-25 via pdftotext): density 1.25 g/cm3 ISO 1183; Tg 85 C, Tm 258 C, Tc 178 C (DSC); Vicat 232 C; HDT 196 C at 1.8 MPa, 227 C at 0.45 MPa; saturated water 1.30 % at 25 C / 55 % RH; E XY 11800 +/- 670, Z 4300 +/- 340 MPa; tensile XY 168 +/- 4, Z 57 +/- 5 MPa; elongation XY 3.2, Z 0.9 %; flexural modulus XY 9860, Z 3240 MPa; flexural strength XY 208, Z 63 MPa; Charpy XY 41.7 unnotched / 6.5 notched, Z 4.3 kJ/m2; drying 100-140 C 8-12 h (blast oven); nozzle 0.4/0.6 (recommended)/0.8 mm, 280-310 C; bed 100-120 C, glue; chamber 50-80 C (70-80 C gives higher Z); max overhang ~70 deg; specimens X1C, chamber 52 C, 290 C, 80 mm/s, not annealed; anneal 120-140 C 6-12 h may warp and lower toughness; https://www.additive-x.com/shop/mpattachments/file/viewonline/id/916/product_id/2729'
+- 'Raise3D Industrial PPA CF TDS V1.0 (Dec 2021), conditioned (annealed 100 C 8 h, 3 days ambient): XY 122 +/- 4 MPa, E 7800 MPa, elongation 1.9 %, mono-layer Z 30.2 +/- 1.4 MPa, density 1.15; https://cdn.shopify.com/s/files/1/2104/4351/files/Raise3D-Industrial-PPA-CF_TDS.pdf'
+- 'Polymers 18(12):1422 (2026), Fiberlogy PPA CF15 FFF (Tg 60.5 C, density 1.06, a different grade): E 2.437 / 2.166 / 1.489 GPa and UTS 64.5 / 55.7 / 44.4 MPa at 20 / 40 / 60 C; R 0.1 fatigue, run-outs at 1e6, authors state a safe window below about 60-70 % UTS (their 20 C max stress 65.5 MPa exceeds their 20 C UTS, so not used as an allowable); no creep test; https://pmc.ncbi.nlm.nih.gov/articles/PMC13306934/'
+- 'SimplyPrint filament page: abrasive, hardened steel nozzle; H2S / H2D / X1C listed among printers that print it well; 750 g spool; https://simplyprint.io/filaments/bambu-lab/ppa-cf'
+- 'Price (search snapshots 2026-11-25, store pages block fetching): Bambu US store and Ultimate 3D Printing Store $149.99 / 0.75 kg; MatterHackers $198.00; https://ultimate3dprintingstore.com/products/bambu-lab-ppa-cf-filament-1-75mm-0-75kg , https://www.matterhackers.com/store/l/bambu-lab-ppa-cf-filament/sk/MF7C2ZUL'
+- 'Bambu Lab PPA-CF product page (2026-11-01 read): dry 100-140 C 8-12 h, nozzle 280-310 C, bed 100-120 C, anneal 120-140 C 6-12 h; https://us.store.bambulab.com/products/ppa-cf'
 cost_usd:
-  value: 120
+  value: 200
   per: kg
-notes: 'TDS mechanicals are unannealed. Annealing (120-140 C, 6-12 h) can raise properties and can also warp a large flat part and cut toughness; the TDS says so. Environmental ratios are ASSUMPTIONS (no published E(T) or creep curve): 40 C and 60 C are still below Tg 85 C, so modulus_40c_wet_ratio 0.85, modulus_60c_ratio 0.75, creep_modulus_8h_40c_ratio 0.85, creep_rupture_8h_40c_ratio 0.55. env_knockdown_ratio 0.8 and fatigue_1e5_ratio 0.3 match the PAHT frame study (no printed-PPA fatigue curve). impact_minus20c_ratio 0.5 is an ASSUMPTION; Z elongation is already 0.9 %, so a cold drop is the risk. Saturated water absorption 1.30 % at 25 C / 55 % RH (TDS), higher than PAHT-CF.'
+notes: 'TDS mechanicals are dry as printed and unannealed (chamber 52 C). Annealing (120-140 C, 6-12 h, forced-air oven only) can raise properties but can warp a large flat part and cut toughness (TDS): no annealing credit is taken. DESIGN VALUES (BL-069, same as research/frame_comp_A.md 2.1): tensile_strength_z_design_mpa 45 = 57 - 2.4 SD (5 MPa); env_knockdown_ratio 0.73 = Raise3D conditioned XY 122 / Bambu dry XY 168 (cross-brand, conservative; ASSUMPTION WET-PPA, settled by coupon CA-3 on H2S prints conditioned 14 d at 23 C / 50 % RH); knocked-down design strengths XY 122.6, Z 32.9 MPa (PAHT-CF: 70.4 / 37.6) - PPA-CF is 1.74x PAHT in the layer plane but 0.87x across the layers. Raise3D mono-layer conditioned Z 30.2 MPa sits at the design Z. Environmental ratios are ASSUMPTIONS (no published E(T) or creep curve for the Bambu grade): modulus_40c_wet_ratio 0.85, modulus_60c_ratio 0.75, creep_modulus_8h_40c_ratio 0.85, creep_rupture_8h_40c_ratio 0.55, all because 40 and 60 C are below Tg 85 C; cross-check: the Fiberlogy PPA CF15 grade (Tg 60.5 C) keeps E 0.89 at 40 C and 0.61 at 60 C, so 0.75 at 60 C for the Tg 85 C Bambu grade is plausible, not shown (settled by a 3-point bend coupon at 60 C, test CA-4). fatigue_1e5_ratio 0.30 matches the PAHT frame study (no Bambu S-N curve; the PA12-CF lower bound 0.25-0.32 at 1e6, research/frame_comp_A.md 2.2); the Fiberlogy PPA CF15 paper suggests 0.6-0.7 at 1e6 but its own max stress exceeds its UTS, so it is not credited (settled by CA-1 R 0.1 coupons in PPA-CF). impact_minus20c_ratio 0.5 is an ASSUMPTION; Z elongation is already 0.9 % and Z Charpy 4.3 kJ/m2 (PAHT 13.3), so a cold drop (HA-LS-1 T4c) is the main risk. Saturated water absorption 1.30 % at 25 C / 55 % RH (TDS), higher than PAHT-CF 0.88 %. H2S: chamber heater max 65 C (inside the TDS 50-80 C range, below the 70-80 C that Bambu says raises Z); hardened nozzle required (abrasive); dry to < 20 % RH and print from a dry box; glue on smooth or textured PEI; support material "for PA/PET". chamber_temp_c 65 is the H2S maximum, not a TDS optimum.'

@@ -1,0 +1,67 @@
+id: pps_cf_fdm_bambu
+name: PPS-CF (polyphenylene sulfide + carbon fiber) FDM filament, Bambu, printed, unannealed TDS values
+category: polymers
+generic: false
+trade_names:
+- Bambu Lab PPS-CF
+supplier_examples:
+- Bambu Lab store (0.75 kg spool, no MOQ)
+- MatterHackers
+- Ultimate 3D Printing Store
+properties:
+  # --- Bambu PPS-CF TDS V1.0, dry as printed, unannealed, X1E, chamber 60 C, 320 C, 100 % infill, 23 C
+  density_kg_m3: 1260
+  youngs_modulus_xy_mpa: 8230
+  youngs_modulus_z_mpa: 2850
+  youngs_modulus_mpa: 8230
+  poisson: 0.35
+  tensile_strength_xy_mpa: 87
+  tensile_strength_z_mpa: 24
+  bending_strength_xy_mpa: 142
+  bending_strength_z_mpa: 36
+  bending_modulus_xy_mpa: 7160
+  bending_modulus_z_mpa: 2460
+  elongation_xy_pct: 1.2
+  elongation_z_pct: 0.7
+  impact_xy_unnotched_kj_m2: 27.8
+  impact_xy_notched_kj_m2: 6.2
+  impact_z_kj_m2: 2.8
+  heat_deflection_temp_c: 264
+  heat_deflection_temp_1_8_mpa_c: 235
+  vicat_softening_temp_c: 268
+  glass_transition_c: 100
+  melting_temp_c: 284
+  crystallization_temp_c: 214
+  water_absorption_pct: 0.05
+  # --- process (H2S)
+  drying_temp_c: 120
+  drying_time_hours: 10
+  nozzle_temp_c: 320
+  nozzle_diameter_mm: 0.6
+  bed_temp_c: 110
+  chamber_temp_c: 65
+  anneal_temp_c: 200
+  anneal_time_hours: 8
+  min_wall_mm: 2.0
+  process: FDM (Bambu H2S, hardened 0.6 mm nozzle, chamber heater on at its 65 C maximum, external spool, no AMS)
+  anisotropic: true
+  # --- frame-study ratios (ASSUMPTIONS, see notes)
+  env_knockdown_ratio: 0.9
+  modulus_40c_wet_ratio: 0.9
+  modulus_60c_ratio: 0.8
+  creep_modulus_8h_40c_ratio: 0.85
+  creep_rupture_8h_40c_ratio: 0.55
+  fatigue_1e5_ratio: 0.3
+  modulus_minus20c_ratio: 1.1
+  impact_minus20c_ratio: 0.5
+  print_cost_usd_per_g: 0.17
+  print_cost_basis: Ultimate 3D Printing Store 0.75 kg spool $129.99 (search snapshot 2026-11-25; MatterHackers $189.99) = $173/kg
+confidence: datasheet
+sources:
+- 'Bambu Lab PPS-CF Technical Data Sheet V1.0 (PDF dated 2024-08-23, read 2026-11-25 via pdftotext): density 1.26 g/cm3 ISO 1183; Tg 100 C, Tm 284 C, Tc 214 C; Vicat 268 C; HDT 235 C at 1.8 MPa, 264 C at 0.45 MPa; saturated water 0.05 % at 25 C / 55 % RH; E XY 8230 +/- 270, Z 2850 +/- 160 MPa; tensile XY 87 +/- 5, Z 24 +/- 3 MPa; elongation XY 1.2, Z 0.7 %; flexural modulus XY 7160, Z 2460 MPa; flexural strength XY 142, Z 36 MPa; Charpy XY 27.8 unnotched / 6.2 notched, Z 2.8 kJ/m2; drying 100-140 C 8-12 h; nozzle 0.4/0.6 (recommended)/0.8 mm, 310-340 C; bed 100-120 C, glue; fan 0-40 %; chamber 60-90 C (90 C and 335 C give higher Z); max overhang ~70 deg; anneal 180-220 C 6-12 h may warp and lower toughness; specimens X1E, chamber 60 C, not annealed; https://www.additive-x.com/shop/mpattachments/file/viewonline/id/918/product_id/2730'
+- 'Bambu Lab JP store PPS-CF page (search snippet, page not fetchable): compatible with X1E / H2D / H2S only, 0.2 mm nozzle not supported, AMS not supported; https://jp.store.bambulab.com/en/products/pps-cf'
+- 'Price (search snapshots 2026-11-25): Ultimate 3D Printing Store $129.99 / 0.75 kg; MatterHackers $189.99; https://ultimate3dprintingstore.com/collections/bambu-lab-filaments/products/bambu-lab-pps-cf-filament-1-75mm-0-75kg , https://www.matterhackers.com/store/l/bambu-lab-pps-cf-advanced-filament-175mm-075kg/sk/MFDCUGZU'
+cost_usd:
+  value: 173
+  per: kg
+notes: 'Alternative to PPA-CF, NOT recommended for the H1 frame: Z tensile 24 MPa (PAHT-CF 47, PPA-CF 57) and Z Charpy 2.8 kJ/m2 (PAHT 13.3) on a body whose layer normal is frame y; XY tensile 87 MPa is no better than PAHT-CF 88. Its strengths are chemistry and moisture: 0.05 % saturated water (PAHT 0.88, PPA 1.30), Tg 100 C, self-extinguishing. The H2S chamber (65 C max) is at the bottom of the TDS 60-90 C range, so Z on the owner printer is unlikely to beat the TDS 24 MPa (ASSUMPTION, settled by Z coupons). Frame-study ratios are ASSUMPTIONS (no published E(T), creep or S-N data for printed PPS-CF): env_knockdown_ratio 0.9 (hot only: PPS takes up almost no water, so no wet loss is taken; 0.9 covers 40 C below Tg 100 C), modulus_40c_wet_ratio 0.9, modulus_60c_ratio 0.8, creep_modulus_8h_40c_ratio 0.85, creep_rupture_8h_40c_ratio 0.55 (as PPA-CF, Tg higher still), fatigue_1e5_ratio 0.30 (the PA12-CF lower bound used for every printed frame material; a brittle 1.2 % elongation matrix could be lower: settled by CA-1 style R 0.1 coupons), modulus_minus20c_ratio 1.1 (already glassy at 23 C), impact_minus20c_ratio 0.5 (as PPA). Anneal 180-220 C is above anything the owner oven plan covers.'
