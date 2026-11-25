@@ -2,6 +2,7 @@
  "ticket": "BL-066",
  "date": "2026-11-24",
  "code": "huntkit/gendesign/bl066_cflite.py, bl066_report.py",
+ "model": "v3: STL bore over the tube length only (v2 drilled the stay foot); runs of 2026-11-24 22:47-23:40",
  "variant": {
   "name": "cflite_p",
   "sleeve_t": 3.0,
@@ -44,7 +45,8 @@
       429.0
      ]
     ],
-    "bondline": 0.5
+    "bondline": 0.5,
+    "sleeve_t": 4.0
    },
    "P2 upper-branch root": {
     "bands": [
@@ -79,7 +81,88 @@
   "split_voxel": {
    "gap_voxels_cut": 176,
    "gap_g": 1.5,
-   "orphans": [],
+   "orphans": [
+    {
+     "part": "P2",
+     "voxels": 29,
+     "g": 0.25,
+     "at_mm": [
+      -125.0,
+      -17.0,
+      419.7
+     ]
+    },
+    {
+     "part": "P2",
+     "voxels": 10,
+     "g": 0.08,
+     "at_mm": [
+      -119.0,
+      -21.0,
+      420.0
+     ]
+    },
+    {
+     "part": "P2",
+     "voxels": 10,
+     "g": 0.08,
+     "at_mm": [
+      -111.0,
+      -21.0,
+      420.0
+     ]
+    },
+    {
+     "part": "P2",
+     "voxels": 29,
+     "g": 0.25,
+     "at_mm": [
+      -105.0,
+      -17.0,
+      419.7
+     ]
+    },
+    {
+     "part": "P2",
+     "voxels": 29,
+     "g": 0.25,
+     "at_mm": [
+      105.0,
+      -17.0,
+      419.7
+     ]
+    },
+    {
+     "part": "P2",
+     "voxels": 10,
+     "g": 0.08,
+     "at_mm": [
+      111.0,
+      -21.0,
+      420.0
+     ]
+    },
+    {
+     "part": "P2",
+     "voxels": 10,
+     "g": 0.08,
+     "at_mm": [
+      119.0,
+      -21.0,
+      420.0
+     ]
+    },
+    {
+     "part": "P2",
+     "voxels": 29,
+     "g": 0.25,
+     "at_mm": [
+      125.0,
+      -17.0,
+      419.7
+     ]
+    }
+   ],
    "clips": {}
   },
   "separation_rerastered": {
@@ -87,7 +170,7 @@
    "parts": {
     "P1": {
      "components": 1,
-     "voxels": 37725,
+     "voxels": 39061,
      "comp_parts": {
       "1": [
        "P1"
@@ -96,7 +179,7 @@
     },
     "P2": {
      "components": 1,
-     "voxels": 28875,
+     "voxels": 28823,
      "comp_parts": {
       "2": [
        "P2"
@@ -124,22 +207,76 @@
      11.0,
      167.0
     ]
+   },
+   {
+    "part": 2,
+    "voxels": 50,
+    "at_mm": [
+     -123.4,
+     -15.4,
+     420.0
+    ]
+   },
+   {
+    "part": 2,
+    "voxels": 50,
+    "at_mm": [
+     -115.0,
+     -19.0,
+     420.0
+    ]
+   },
+   {
+    "part": 2,
+    "voxels": 50,
+    "at_mm": [
+     -106.6,
+     -15.4,
+     420.0
+    ]
+   },
+   {
+    "part": 2,
+    "voxels": 50,
+    "at_mm": [
+     106.6,
+     -15.4,
+     420.0
+    ]
+   },
+   {
+    "part": 2,
+    "voxels": 50,
+    "at_mm": [
+     115.0,
+     -19.0,
+     420.0
+    ]
+   },
+   {
+    "part": 2,
+    "voxels": 50,
+    "at_mm": [
+     123.4,
+     -15.4,
+     420.0
+    ]
    }
   ],
   "stl": {
    "P1": {
     "file": "designs/pack_5200/iter1/frame/print_cflite/cflite_p/cflite_P1.stl",
     "watertight": true,
-    "volume_mm3": 289733.0,
-    "g": 307.1,
-    "faces": 235158
+    "volume_mm3": 300594.0,
+    "g": 318.6,
+    "faces": 242070
    },
    "P2": {
     "file": "designs/pack_5200/iter1/frame/print_cflite/cflite_p/cflite_P2.stl",
     "watertight": true,
-    "volume_mm3": 215120.0,
-    "g": 228.0,
-    "faces": 207312
+    "volume_mm3": 218300.0,
+    "g": 231.4,
+    "faces": 215252
    },
    "P3": {
     "file": "designs/pack_5200/iter1/frame/print_cflite/cflite_p/cflite_P3.stl",
@@ -150,19 +287,19 @@
    }
   },
   "voxels": {
-   "voxel_model_printed": 88958,
-   "rerastered_printed": 91000,
-   "in_both": 82798
+   "voxel_model_printed": 89324,
+   "rerastered_printed": 92284,
+   "in_both": 84350
   },
-  "bond_layer_voxels": 3781
+  "bond_layer_voxels": 3632
  },
  "summary": {
   "static_cinch": {
    "strength": 1.739,
-   "fatigue": 2.01,
-   "creep": 4.289,
-   "buckling_record": 1.587,
-   "buckling_section": 1.367,
+   "fatigue": 2.014,
+   "creep": 4.296,
+   "buckling_record": 1.575,
+   "buckling_section": 1.357,
    "joint_strength": null,
    "joint_fatigue": null,
    "tube_strength": 1.566,
@@ -170,10 +307,10 @@
   },
   "cinch_cycled": {
    "strength": 1.777,
-   "fatigue": 1.151,
-   "creep": 2.454,
-   "buckling_record": 1.606,
-   "buckling_section": 1.384,
+   "fatigue": 1.153,
+   "creep": 2.459,
+   "buckling_record": 1.594,
+   "buckling_section": 1.373,
    "joint_strength": null,
    "joint_fatigue": null,
    "tube_strength": 1.566,
@@ -183,21 +320,21 @@
  "per_basis": {
   "fine_sm8": {
    "min": {
-    "strength": 1.7769961537337131,
-    "fatigue": 2.0103691441752813,
-    "creep": 4.288787507573934
+    "strength": 1.777307887870645,
+    "fatigue": 2.013977800300144,
+    "creep": 4.296485973973641
    },
    "governing_tag": "S_meat@a_S_fine_sm8_15",
-   "buckling_record_min": 1.606,
-   "buckling_section_min": 1.384,
+   "buckling_record_min": 1.594,
+   "buckling_section_min": 1.373,
    "tube": {
     "strength": {
      "margin": 1.566,
      "set": "S_meat@a_L_fine_sm8_23:drop_2p5g|23"
     },
     "strength_max": {
-     "margin": 0.162,
-     "set": "S_fill@a_L_fine_sm8_23:single_stay_setdown|23"
+     "margin": 0.26,
+     "set": "S_fill@a_S_fine_sm8_15:single_stay_setdown|15"
     },
     "fatigue": {
      "margin": 1.679,
@@ -207,21 +344,21 @@
   },
   "fine": {
    "min": {
-    "strength": 1.7769961537337131,
-    "fatigue": 2.0103691441752813,
-    "creep": 4.288787507573934
+    "strength": 1.777307887870645,
+    "fatigue": 2.013977800300144,
+    "creep": 4.296485973973641
    },
    "governing_tag": "S_meat@a_S_fine_15",
-   "buckling_record_min": 1.587,
-   "buckling_section_min": 1.367,
+   "buckling_record_min": 1.575,
+   "buckling_section_min": 1.357,
    "tube": {
     "strength": {
      "margin": 1.576,
      "set": "S_meat@a_S_fine_alt_18:drop_2p5g|18"
     },
     "strength_max": {
-     "margin": 0.162,
-     "set": "S_fill@a_L_fine_23:single_stay_setdown|23"
+     "margin": 0.26,
+     "set": "S_fill@a_S_fine_15:single_stay_setdown|15"
     },
     "fatigue": {
      "margin": 1.679,
@@ -231,21 +368,21 @@
   },
   "beam": {
    "min": {
-    "strength": 1.7385872561505953,
-    "fatigue": 2.614271293817304,
-    "creep": 5.577112093476916
+    "strength": 1.7391398348971971,
+    "fatigue": 2.615430192463149,
+    "creep": 5.579584410588052
    },
    "governing_tag": "C@a_S_beam_15",
-   "buckling_record_min": 2.756,
-   "buckling_section_min": 2.374,
+   "buckling_record_min": 2.606,
+   "buckling_section_min": 2.245,
    "tube": {
     "strength": {
-     "margin": 2.097,
+     "margin": 2.108,
      "set": "C_im3@a_S_beam_15:side_hill_torsion|15"
     },
     "strength_max": {
-     "margin": 0.162,
-     "set": "C@a_L_beam_23:single_stay_setdown|23"
+     "margin": 0.26,
+     "set": "C@a_S_beam_15:single_stay_setdown|15"
     },
     "fatigue": {
      "margin": 2.032,
@@ -255,21 +392,21 @@
   },
   "fine_sm8.cyc": {
    "min": {
-    "strength": 1.7769961537337131,
-    "fatigue": 1.1505267007188733,
-    "creep": 2.454456961533597
+    "strength": 1.777307887870645,
+    "fatigue": 1.1527549720380137,
+    "creep": 2.4592106070144295
    },
    "governing_tag": "S_meat@a_S_fine_sm8_cyc_15",
-   "buckling_record_min": 1.606,
-   "buckling_section_min": 1.384,
+   "buckling_record_min": 1.594,
+   "buckling_section_min": 1.373,
    "tube": {
     "strength": {
      "margin": 1.566,
      "set": "S_meat@a_L_fine_sm8_cyc_23:drop_2p5g|23"
     },
     "strength_max": {
-     "margin": 0.162,
-     "set": "S_fill@a_L_fine_sm8_cyc_23:single_stay_setdown|23"
+     "margin": 0.26,
+     "set": "S_fill@a_S_fine_sm8_cyc_15:single_stay_setdown|15"
     },
     "fatigue": {
      "margin": 1.336,
@@ -298,9 +435,9 @@
    "samples": 576
   },
   "P2 z 420 lash collar": {
-   "t_mean_mm": 2.17,
-   "t_p10_mm": 2.0,
-   "t_min_mm": 2.0,
+   "t_mean_mm": 2.41,
+   "t_p10_mm": 0.0,
+   "t_min_mm": 0.0,
    "samples": 320
   },
   "P2 upper-branch root": {
@@ -316,16 +453,25 @@
    "samples": 1152
   }
  },
+ "bond_coverage": {
+  "P1 lower node": 1.0,
+  "P2 lower-branch root": 1.0,
+  "P2 mid-bar knuckle": 1.0,
+  "P2 z 420 lash collar": 0.625,
+  "P2 upper-branch root": 1.0,
+  "P3 top node": 1.0
+ },
  "bonds_model_torque": {
   "P1 lower node": {
    "L_bond_mm": 40.0,
    "L_bearing_mm": 150.0,
    "bondline_mm": 0.8,
    "adherend_t_mm": 4.6,
+   "bond_coverage": 1.0,
    "k_axial": 5.5,
    "k_torque": 8.46,
    "avg": {
-    "margin": 4.021,
+    "margin": 4.022,
     "where": "fine_sm8|L|S_meat@a_L_fine_sm8_23:side_hill_torsion|23"
    },
    "peak": {
@@ -334,7 +480,7 @@
     "rule": "ultimate: peak at factored = limit (M1)"
    },
    "bearing": {
-    "margin": 28.829,
+    "margin": 28.836,
     "where": "fine_sm8|R|S_meat@a_S_fine_sm8_15:side_hill_torsion|15"
    },
    "fatigue": {
@@ -355,17 +501,17 @@
    },
    "limit_transfer": {
     "dN_n": 1031.7,
-    "dT_nmm": 21885.2,
+    "dT_nmm": 21883.1,
     "dN_set": "fine_sm8|L|S_meat@a_L_fine_sm8_23:drop_2p5g|23",
     "dT_set": "fine_sm8|R|S_meat@a_S_fine_sm8_15:hipbelt_off_abuse|15",
     "dN_with_dT": 288.5,
-    "dT_with_dN": 6591.4,
+    "dT_with_dN": 6588.7,
     "fat_dN_n": 826.0,
-    "fat_dT_nmm": 8774.4,
-    "c8_dN_n": 352.1,
-    "c8_dT_nmm": 21885.2,
+    "fat_dT_nmm": 8772.2,
+    "c8_dN_n": 352.2,
+    "c8_dT_nmm": 21883.1,
     "factored_dN_n": 1547.5,
-    "factored_dT_nmm": 21885.2,
+    "factored_dT_nmm": 21883.1,
     "factored_dN_set": "fine_sm8|L|S_meat@a_L_fine_sm8_23:drop_2p5g|23",
     "factored_dT_set": "fine_sm8|R|S_meat@a_S_fine_sm8_15:hipbelt_off_abuse|15"
    },
@@ -379,42 +525,43 @@
    "L_bearing_mm": 50.0,
    "bondline_mm": 0.5,
    "adherend_t_mm": 3.66,
+   "bond_coverage": 1.0,
    "k_axial": 9.85,
    "k_torque": 15.34,
    "avg": {
-    "margin": 14.09,
+    "margin": 14.073,
     "where": "fine_sm8.cyc|R|S_meat@a_S_fine_sm8_cyc_15:static_carry|15"
    },
    "peak": {
-    "margin": 1.52,
+    "margin": 1.521,
     "where": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15",
     "rule": "ultimate: peak at factored = limit (M1)"
    },
    "bearing": {
-    "margin": 8.149,
+    "margin": 8.134,
     "where": "fine_sm8|R|S_meat@a_S_fine_sm8_15:side_hill_torsion|15"
    },
    "fatigue": {
-    "margin": 6.604,
+    "margin": 6.597,
     "where": "fine_sm8.cyc|R|S_meat@a_S_fine_sm8_cyc_15:static_carry|15"
    },
    "peak_c8": {
-    "margin": 1.52,
+    "margin": 1.521,
     "where": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15"
    },
    "limit_transfer": {
-    "dN_n": 659.0,
-    "dT_nmm": 4633.0,
+    "dN_n": 658.7,
+    "dT_nmm": 4630.6,
     "dN_set": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15",
     "dT_set": "fine_sm8|R|S_meat@a_M_fine_sm8_17.5:side_hill_torsion|17.5",
-    "dN_with_dT": 152.8,
-    "dT_with_dN": 1273.5,
-    "fat_dN_n": 324.5,
-    "fat_dT_nmm": 5441.6,
-    "c8_dN_n": 659.0,
-    "c8_dT_nmm": 4064.1,
-    "factored_dN_n": 659.0,
-    "factored_dT_nmm": 6949.5,
+    "dN_with_dT": 154.8,
+    "dT_with_dN": 1272.8,
+    "fat_dN_n": 325.1,
+    "fat_dT_nmm": 5441.8,
+    "c8_dN_n": 658.7,
+    "c8_dT_nmm": 4063.8,
+    "factored_dN_n": 658.7,
+    "factored_dT_nmm": 6945.9,
     "factored_dN_set": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15",
     "factored_dT_set": "fine_sm8|R|S_meat@a_M_fine_sm8_17.5:side_hill_torsion|17.5"
    },
@@ -425,42 +572,43 @@
    "L_bearing_mm": 36.0,
    "bondline_mm": 0.5,
    "adherend_t_mm": 4.6,
+   "bond_coverage": 1.0,
    "k_axial": 6.26,
    "k_torque": 9.63,
    "avg": {
-    "margin": 10.222,
+    "margin": 10.235,
     "where": "beam|R|C_im3@a_L_beam_23:side_hill_torsion|23"
    },
    "peak": {
-    "margin": 1.239,
+    "margin": 1.249,
     "where": "fine_sm8|R|S_fill@a_S_fine_sm8_15:hipbelt_off_abuse|15",
     "rule": "ultimate: peak at factored = limit (M1)"
    },
    "bearing": {
-    "margin": 9.282,
+    "margin": 9.258,
     "where": "fine|R|S_meat@a_L_fine_alt_20:side_hill_torsion|20"
    },
    "fatigue": {
-    "margin": 16.072,
+    "margin": 16.158,
     "where": "fine_sm8|L|S_fill@a_S_fine_sm8_alt_18:static_carry|18"
    },
    "peak_c8": {
-    "margin": 1.239,
+    "margin": 1.249,
     "where": "fine_sm8|R|S_fill@a_S_fine_sm8_15:hipbelt_off_abuse|15"
    },
    "limit_transfer": {
-    "dN_n": 468.3,
-    "dT_nmm": 6775.9,
+    "dN_n": 467.9,
+    "dT_nmm": 6719.1,
     "dN_set": "beam|R|C@a_L_beam_23:side_hill_torsion|23",
     "dT_set": "fine_sm8|R|S_fill@a_S_fine_sm8_15:hipbelt_off_abuse|15",
-    "dN_with_dT": 55.0,
-    "dT_with_dN": 973.7,
-    "fat_dN_n": 99.8,
-    "fat_dT_nmm": 1829.6,
-    "c8_dN_n": 97.0,
-    "c8_dT_nmm": 6775.9,
-    "factored_dN_n": 702.4,
-    "factored_dT_nmm": 6775.9,
+    "dN_with_dT": 57.2,
+    "dT_with_dN": 969.7,
+    "fat_dN_n": 98.5,
+    "fat_dT_nmm": 1818.4,
+    "c8_dN_n": 95.8,
+    "c8_dT_nmm": 6719.1,
+    "factored_dN_n": 701.8,
+    "factored_dT_nmm": 6719.1,
     "factored_dN_set": "beam|R|C@a_L_beam_23:side_hill_torsion|23",
     "factored_dT_set": "fine_sm8|R|S_fill@a_S_fine_sm8_15:hipbelt_off_abuse|15"
    },
@@ -470,43 +618,44 @@
    "L_bond_mm": 18.0,
    "L_bearing_mm": 18.0,
    "bondline_mm": 0.5,
-   "adherend_t_mm": 3.0,
-   "k_axial": 3.96,
-   "k_torque": 6.2,
+   "adherend_t_mm": 4.0,
+   "bond_coverage": 0.625,
+   "k_axial": 3.4,
+   "k_torque": 5.24,
    "avg": {
-    "margin": 17.202,
+    "margin": 7.932,
     "where": "beam|L|C_im3@a_S_beam_15:side_hill_torsion|15"
    },
    "peak": {
-    "margin": 6.275,
+    "margin": 3.437,
     "where": "beam|L|C_im3@a_S_beam_15:side_hill_torsion|15",
     "rule": "limit"
    },
    "bearing": {
-    "margin": 2.999,
+    "margin": 3.014,
     "where": "beam|L|C_im3@a_L_beam_23:hipbelt_off_abuse|23"
    },
    "fatigue": {
-    "margin": 25.808,
+    "margin": 11.558,
     "where": "fine_sm8.cyc|L|S_meat@a_S_fine_sm8_cyc_15:static_carry|15"
    },
    "peak_c8": {
-    "margin": 11.723,
+    "margin": 5.765,
     "where": "fine|L|S_meat@a_L_fine_23:hipbelt_off_abuse|23"
    },
    "limit_transfer": {
-    "dN_n": 138.8,
-    "dT_nmm": 368.0,
+    "dN_n": 190.8,
+    "dT_nmm": 389.5,
     "dN_set": "beam|L|C_im3@a_S_beam_15:side_hill_torsion|15",
     "dT_set": "fine_sm8|L|S_fill@a_S_fine_sm8_15:side_hill_torsion|15",
-    "dN_with_dT": 112.4,
-    "dT_with_dN": 366.5,
-    "fat_dN_n": 53.3,
-    "fat_dT_nmm": 203.4,
-    "c8_dN_n": 79.4,
-    "c8_dT_nmm": 276.0,
-    "factored_dN_n": 208.2,
-    "factored_dT_nmm": 552.0,
+    "dN_with_dT": 150.9,
+    "dT_with_dN": 347.5,
+    "fat_dN_n": 74.7,
+    "fat_dT_nmm": 212.9,
+    "c8_dN_n": 117.4,
+    "c8_dT_nmm": 357.1,
+    "factored_dN_n": 286.3,
+    "factored_dT_nmm": 584.3,
     "factored_dN_set": "beam|L|C_im3@a_S_beam_15:side_hill_torsion|15",
     "factored_dT_set": "fine_sm8|L|S_fill@a_S_fine_sm8_15:side_hill_torsion|15"
    },
@@ -517,44 +666,45 @@
    "L_bearing_mm": 26.0,
    "bondline_mm": 0.5,
    "adherend_t_mm": 4.39,
+   "bond_coverage": 1.0,
    "k_axial": 4.64,
    "k_torque": 7.16,
    "avg": {
-    "margin": 6.374,
+    "margin": 6.913,
     "where": "beam|L|C_im3@a_L_beam_23:side_hill_torsion|23"
    },
    "peak": {
-    "margin": 1.58,
+    "margin": 1.527,
     "where": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15",
     "rule": "ultimate: peak at factored = limit (M1)"
    },
    "bearing": {
-    "margin": 5.878,
+    "margin": 5.834,
     "where": "beam|R|C_im3@a_L_beam_23:hipbelt_off_abuse|23"
    },
    "fatigue": {
-    "margin": 6.225,
+    "margin": 6.604,
     "where": "fine_sm8.cyc|L|S_meat@a_S_fine_sm8_cyc_15:static_carry|15"
    },
    "peak_c8": {
-    "margin": 1.58,
+    "margin": 1.527,
     "where": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15"
    },
    "limit_transfer": {
-    "dN_n": 638.2,
-    "dT_nmm": 2882.3,
+    "dN_n": 664.8,
+    "dT_nmm": 2973.1,
     "dN_set": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15",
-    "dT_set": "fine_sm8|R|S_fill@a_S_fine_sm8_15:hipbelt_off_abuse|15",
-    "dN_with_dT": 493.1,
-    "dT_with_dN": 2456.9,
-    "fat_dN_n": 319.8,
-    "fat_dT_nmm": 827.9,
-    "c8_dN_n": 638.2,
-    "c8_dT_nmm": 2882.3,
-    "factored_dN_n": 833.9,
-    "factored_dT_nmm": 2882.3,
+    "dT_set": "fine_sm8|R|S_meat@a_S_fine_sm8_15:hipbelt_off_abuse|15",
+    "dN_with_dT": 281.6,
+    "dT_with_dN": 2476.4,
+    "fat_dN_n": 301.5,
+    "fat_dT_nmm": 855.9,
+    "c8_dN_n": 664.8,
+    "c8_dT_nmm": 2973.1,
+    "factored_dN_n": 769.2,
+    "factored_dT_nmm": 2973.1,
     "factored_dN_set": "beam|L|C_im3@a_L_beam_23:side_hill_torsion|23",
-    "factored_dT_set": "fine_sm8|R|S_fill@a_S_fine_sm8_15:hipbelt_off_abuse|15"
+    "factored_dT_set": "fine_sm8|R|S_meat@a_S_fine_sm8_15:hipbelt_off_abuse|15"
    },
    "failsafe": null
   },
@@ -563,6 +713,7 @@
    "L_bearing_mm": 71.5,
    "bondline_mm": 0.8,
    "adherend_t_mm": 6.92,
+   "bond_coverage": 1.0,
    "k_axial": 7.81,
    "k_torque": 11.71,
    "avg": {
@@ -575,11 +726,11 @@
     "rule": "ultimate: peak at factored = limit (M1)"
    },
    "bearing": {
-    "margin": 22.311,
+    "margin": 22.302,
     "where": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15"
    },
    "fatigue": {
-    "margin": 3.9,
+    "margin": 3.902,
     "where": "fine_sm8.cyc|R|S_meat@a_L_fine_sm8_cyc_23:static_carry|23"
    },
    "failsafe_tube_bearing": {
@@ -596,17 +747,17 @@
    },
    "limit_transfer": {
     "dN_n": 999.0,
-    "dT_nmm": 33436.5,
+    "dT_nmm": 33435.8,
     "dN_set": "fine_sm8|L|S_meat@a_M_fine_sm8_alt_20.5:drop_2p5g|20.5",
     "dT_set": "fine_sm8|R|S_meat@a_S_fine_sm8_15:hipbelt_off_abuse|15",
     "dN_with_dT": 233.4,
-    "dT_with_dN": 8988.9,
+    "dT_with_dN": 8987.7,
     "fat_dN_n": 799.7,
-    "fat_dT_nmm": 13206.2,
-    "c8_dN_n": 428.1,
-    "c8_dT_nmm": 33436.5,
+    "fat_dT_nmm": 13199.5,
+    "c8_dN_n": 428.2,
+    "c8_dT_nmm": 33435.8,
     "factored_dN_n": 1498.6,
-    "factored_dT_nmm": 33436.5,
+    "factored_dT_nmm": 33435.8,
     "factored_dN_set": "fine_sm8|L|S_meat@a_M_fine_sm8_alt_20.5:drop_2p5g|20.5",
     "factored_dT_set": "fine_sm8|R|S_meat@a_S_fine_sm8_15:hipbelt_off_abuse|15"
    },
@@ -621,10 +772,11 @@
    "L_bearing_mm": 150.0,
    "bondline_mm": 0.8,
    "adherend_t_mm": 4.6,
+   "bond_coverage": 1.0,
    "k_axial": 5.5,
    "k_torque": 8.46,
    "avg": {
-    "margin": 4.021,
+    "margin": 4.022,
     "where": "fine_sm8.cyc|L|S_meat@a_L_fine_sm8_cyc_23:side_hill_torsion|23"
    },
    "peak": {
@@ -633,7 +785,7 @@
     "rule": "ultimate: peak at factored = limit (M1)"
    },
    "bearing": {
-    "margin": 28.829,
+    "margin": 28.836,
     "where": "fine_sm8|R|S_meat@a_S_fine_sm8_15:side_hill_torsion|15"
    },
    "fatigue": {
@@ -654,17 +806,17 @@
    },
    "limit_transfer": {
     "dN_n": 1031.7,
-    "dT_nmm": 21885.2,
+    "dT_nmm": 21883.1,
     "dN_set": "fine_sm8|L|S_meat@a_L_fine_sm8_23:drop_2p5g|23",
     "dT_set": "fine_sm8.cyc|R|S_meat@a_S_fine_sm8_cyc_15:hipbelt_off_abuse|15",
     "dN_with_dT": 288.5,
-    "dT_with_dN": 5592.5,
+    "dT_with_dN": 5589.0,
     "fat_dN_n": 826.0,
-    "fat_dT_nmm": 8774.4,
-    "c8_dN_n": 352.1,
-    "c8_dT_nmm": 21885.2,
+    "fat_dT_nmm": 8772.2,
+    "c8_dN_n": 352.2,
+    "c8_dT_nmm": 21883.1,
     "factored_dN_n": 1547.5,
-    "factored_dT_nmm": 21885.2,
+    "factored_dT_nmm": 21883.1,
     "factored_dN_set": "fine_sm8|L|S_meat@a_L_fine_sm8_23:drop_2p5g|23",
     "factored_dT_set": "fine_sm8.cyc|R|S_meat@a_S_fine_sm8_cyc_15:hipbelt_off_abuse|15"
    },
@@ -678,42 +830,43 @@
    "L_bearing_mm": 50.0,
    "bondline_mm": 0.5,
    "adherend_t_mm": 3.66,
+   "bond_coverage": 1.0,
    "k_axial": 9.85,
    "k_torque": 15.34,
    "avg": {
-    "margin": 14.09,
+    "margin": 14.073,
     "where": "fine_sm8.cyc|R|S_meat@a_S_fine_sm8_cyc_15:static_carry|15"
    },
    "peak": {
-    "margin": 1.52,
+    "margin": 1.521,
     "where": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15",
     "rule": "ultimate: peak at factored = limit (M1)"
    },
    "bearing": {
-    "margin": 8.149,
+    "margin": 8.134,
     "where": "fine_sm8|R|S_meat@a_S_fine_sm8_15:side_hill_torsion|15"
    },
    "fatigue": {
-    "margin": 6.604,
+    "margin": 6.597,
     "where": "fine_sm8.cyc|R|S_meat@a_S_fine_sm8_cyc_15:static_carry|15"
    },
    "peak_c8": {
-    "margin": 1.52,
+    "margin": 1.521,
     "where": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15"
    },
    "limit_transfer": {
-    "dN_n": 659.0,
-    "dT_nmm": 4633.0,
+    "dN_n": 658.7,
+    "dT_nmm": 4630.6,
     "dN_set": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15",
     "dT_set": "fine_sm8|R|S_meat@a_M_fine_sm8_17.5:side_hill_torsion|17.5",
-    "dN_with_dT": 152.8,
-    "dT_with_dN": 1273.5,
-    "fat_dN_n": 324.5,
-    "fat_dT_nmm": 5441.6,
-    "c8_dN_n": 659.0,
-    "c8_dT_nmm": 4064.1,
-    "factored_dN_n": 659.0,
-    "factored_dT_nmm": 6949.5,
+    "dN_with_dT": 154.8,
+    "dT_with_dN": 1272.8,
+    "fat_dN_n": 325.1,
+    "fat_dT_nmm": 5441.8,
+    "c8_dN_n": 658.7,
+    "c8_dT_nmm": 4063.8,
+    "factored_dN_n": 658.7,
+    "factored_dT_nmm": 6945.9,
     "factored_dN_set": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15",
     "factored_dT_set": "fine_sm8|R|S_meat@a_M_fine_sm8_17.5:side_hill_torsion|17.5"
    },
@@ -724,42 +877,43 @@
    "L_bearing_mm": 36.0,
    "bondline_mm": 0.5,
    "adherend_t_mm": 4.6,
+   "bond_coverage": 1.0,
    "k_axial": 6.26,
    "k_torque": 9.63,
    "avg": {
-    "margin": 10.222,
+    "margin": 10.235,
     "where": "beam|R|C_im3@a_L_beam_23:side_hill_torsion|23"
    },
    "peak": {
-    "margin": 1.239,
+    "margin": 1.249,
     "where": "fine_sm8.cyc|R|S_fill@a_S_fine_sm8_cyc_15:hipbelt_off_abuse|15",
     "rule": "ultimate: peak at factored = limit (M1)"
    },
    "bearing": {
-    "margin": 9.282,
+    "margin": 9.258,
     "where": "fine|R|S_meat@a_L_fine_alt_20:side_hill_torsion|20"
    },
    "fatigue": {
-    "margin": 17.055,
+    "margin": 17.13,
     "where": "fine_sm8|L|S_fill@a_S_fine_sm8_alt_18:static_carry|18"
    },
    "peak_c8": {
-    "margin": 1.239,
+    "margin": 1.249,
     "where": "fine_sm8.cyc|R|S_fill@a_S_fine_sm8_cyc_15:hipbelt_off_abuse|15"
    },
    "limit_transfer": {
-    "dN_n": 468.3,
-    "dT_nmm": 6775.9,
+    "dN_n": 467.9,
+    "dT_nmm": 6719.1,
     "dN_set": "beam|R|C@a_L_beam_23:side_hill_torsion|23",
     "dT_set": "fine_sm8.cyc|R|S_fill@a_S_fine_sm8_cyc_15:hipbelt_off_abuse|15",
-    "dN_with_dT": 55.0,
-    "dT_with_dN": 973.7,
-    "fat_dN_n": 99.8,
-    "fat_dT_nmm": 1716.8,
-    "c8_dN_n": 97.0,
-    "c8_dT_nmm": 6775.9,
-    "factored_dN_n": 702.4,
-    "factored_dT_nmm": 6775.9,
+    "dN_with_dT": 57.2,
+    "dT_with_dN": 969.7,
+    "fat_dN_n": 98.5,
+    "fat_dT_nmm": 1707.9,
+    "c8_dN_n": 95.8,
+    "c8_dT_nmm": 6719.1,
+    "factored_dN_n": 701.8,
+    "factored_dT_nmm": 6719.1,
     "factored_dN_set": "beam|R|C@a_L_beam_23:side_hill_torsion|23",
     "factored_dT_set": "fine_sm8.cyc|R|S_fill@a_S_fine_sm8_cyc_15:hipbelt_off_abuse|15"
    },
@@ -769,45 +923,46 @@
    "L_bond_mm": 18.0,
    "L_bearing_mm": 18.0,
    "bondline_mm": 0.5,
-   "adherend_t_mm": 3.0,
-   "k_axial": 3.96,
-   "k_torque": 6.2,
+   "adherend_t_mm": 4.0,
+   "bond_coverage": 0.625,
+   "k_axial": 3.4,
+   "k_torque": 5.24,
    "avg": {
-    "margin": 17.202,
+    "margin": 7.932,
     "where": "beam|L|C_im3@a_S_beam_15:side_hill_torsion|15"
    },
    "peak": {
-    "margin": 6.275,
+    "margin": 3.437,
     "where": "beam|L|C_im3@a_S_beam_15:side_hill_torsion|15",
     "rule": "limit"
    },
    "bearing": {
-    "margin": 2.999,
+    "margin": 3.014,
     "where": "beam|L|C_im3@a_L_beam_23:hipbelt_off_abuse|23"
    },
    "fatigue": {
-    "margin": 25.808,
+    "margin": 11.558,
     "where": "fine_sm8.cyc|L|S_meat@a_S_fine_sm8_cyc_15:static_carry|15"
    },
    "peak_c8": {
-    "margin": 11.723,
+    "margin": 5.765,
     "where": "fine|L|S_meat@a_L_fine_23:hipbelt_off_abuse|23"
    },
    "limit_transfer": {
-    "dN_n": 138.8,
-    "dT_nmm": 368.0,
+    "dN_n": 190.8,
+    "dT_nmm": 389.5,
     "dN_set": "beam|L|C_im3@a_S_beam_15:side_hill_torsion|15",
-    "dT_set": "fine_sm8|L|S_fill@a_S_fine_sm8_15:side_hill_torsion|15",
-    "dN_with_dT": 112.4,
-    "dT_with_dN": 366.5,
-    "fat_dN_n": 53.3,
-    "fat_dT_nmm": 203.4,
-    "c8_dN_n": 79.4,
-    "c8_dT_nmm": 276.0,
-    "factored_dN_n": 208.2,
-    "factored_dT_nmm": 552.0,
+    "dT_set": "fine_sm8.cyc|L|S_fill@a_S_fine_sm8_cyc_15:side_hill_torsion|15",
+    "dN_with_dT": 150.9,
+    "dT_with_dN": 347.5,
+    "fat_dN_n": 74.7,
+    "fat_dT_nmm": 212.9,
+    "c8_dN_n": 117.4,
+    "c8_dT_nmm": 357.1,
+    "factored_dN_n": 286.3,
+    "factored_dT_nmm": 584.3,
     "factored_dN_set": "beam|L|C_im3@a_S_beam_15:side_hill_torsion|15",
-    "factored_dT_set": "fine_sm8|L|S_fill@a_S_fine_sm8_15:side_hill_torsion|15"
+    "factored_dT_set": "fine_sm8.cyc|L|S_fill@a_S_fine_sm8_cyc_15:side_hill_torsion|15"
    },
    "failsafe": null
   },
@@ -816,44 +971,45 @@
    "L_bearing_mm": 26.0,
    "bondline_mm": 0.5,
    "adherend_t_mm": 4.39,
+   "bond_coverage": 1.0,
    "k_axial": 4.64,
    "k_torque": 7.16,
    "avg": {
-    "margin": 6.374,
+    "margin": 6.913,
     "where": "beam|L|C_im3@a_L_beam_23:side_hill_torsion|23"
    },
    "peak": {
-    "margin": 1.58,
+    "margin": 1.527,
     "where": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15",
     "rule": "ultimate: peak at factored = limit (M1)"
    },
    "bearing": {
-    "margin": 5.878,
+    "margin": 5.834,
     "where": "beam|R|C_im3@a_L_beam_23:hipbelt_off_abuse|23"
    },
    "fatigue": {
-    "margin": 6.225,
+    "margin": 6.604,
     "where": "fine_sm8.cyc|L|S_meat@a_S_fine_sm8_cyc_15:static_carry|15"
    },
    "peak_c8": {
-    "margin": 1.58,
+    "margin": 1.527,
     "where": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15"
    },
    "limit_transfer": {
-    "dN_n": 638.2,
-    "dT_nmm": 2882.3,
+    "dN_n": 664.8,
+    "dT_nmm": 2973.1,
     "dN_set": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15",
-    "dT_set": "fine_sm8|R|S_fill@a_S_fine_sm8_15:hipbelt_off_abuse|15",
-    "dN_with_dT": 493.1,
-    "dT_with_dN": 2456.9,
-    "fat_dN_n": 319.8,
-    "fat_dT_nmm": 827.9,
-    "c8_dN_n": 638.2,
-    "c8_dT_nmm": 2882.3,
-    "factored_dN_n": 833.9,
-    "factored_dT_nmm": 2882.3,
+    "dT_set": "fine_sm8|R|S_meat@a_S_fine_sm8_15:hipbelt_off_abuse|15",
+    "dN_with_dT": 281.6,
+    "dT_with_dN": 2476.4,
+    "fat_dN_n": 301.5,
+    "fat_dT_nmm": 855.9,
+    "c8_dN_n": 664.8,
+    "c8_dT_nmm": 2973.1,
+    "factored_dN_n": 769.2,
+    "factored_dT_nmm": 2973.1,
     "factored_dN_set": "beam|L|C_im3@a_L_beam_23:side_hill_torsion|23",
-    "factored_dT_set": "fine_sm8|R|S_fill@a_S_fine_sm8_15:hipbelt_off_abuse|15"
+    "factored_dT_set": "fine_sm8|R|S_meat@a_S_fine_sm8_15:hipbelt_off_abuse|15"
    },
    "failsafe": null
   },
@@ -862,6 +1018,7 @@
    "L_bearing_mm": 71.5,
    "bondline_mm": 0.8,
    "adherend_t_mm": 6.92,
+   "bond_coverage": 1.0,
    "k_axial": 7.81,
    "k_torque": 11.71,
    "avg": {
@@ -874,11 +1031,11 @@
     "rule": "ultimate: peak at factored = limit (M1)"
    },
    "bearing": {
-    "margin": 22.311,
+    "margin": 22.302,
     "where": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15"
    },
    "fatigue": {
-    "margin": 3.9,
+    "margin": 3.902,
     "where": "fine_sm8.cyc|R|S_meat@a_L_fine_sm8_cyc_23:static_carry|23"
    },
    "failsafe_tube_bearing": {
@@ -895,17 +1052,17 @@
    },
    "limit_transfer": {
     "dN_n": 999.0,
-    "dT_nmm": 33436.5,
+    "dT_nmm": 33435.8,
     "dN_set": "fine_sm8|L|S_meat@a_M_fine_sm8_alt_20.5:drop_2p5g|20.5",
     "dT_set": "fine_sm8.cyc|R|S_meat@a_S_fine_sm8_cyc_15:hipbelt_off_abuse|15",
     "dN_with_dT": 233.4,
-    "dT_with_dN": 7982.4,
+    "dT_with_dN": 7979.9,
     "fat_dN_n": 799.7,
-    "fat_dT_nmm": 13206.2,
-    "c8_dN_n": 428.1,
-    "c8_dT_nmm": 33436.5,
+    "fat_dT_nmm": 13199.5,
+    "c8_dN_n": 428.2,
+    "c8_dT_nmm": 33435.8,
     "factored_dN_n": 1498.6,
-    "factored_dT_nmm": 33436.5,
+    "factored_dT_nmm": 33435.8,
     "factored_dN_set": "fine_sm8|L|S_meat@a_M_fine_sm8_alt_20.5:drop_2p5g|20.5",
     "factored_dT_set": "fine_sm8.cyc|R|S_meat@a_S_fine_sm8_cyc_15:hipbelt_off_abuse|15"
    },
@@ -920,6 +1077,7 @@
    "L_bearing_mm": 150.0,
    "bondline_mm": 0.8,
    "adherend_t_mm": 4.6,
+   "bond_coverage": 1.0,
    "k_axial": 5.5,
    "k_torque": 8.46,
    "avg": {
@@ -932,7 +1090,7 @@
     "rule": "ultimate: peak at factored = limit (M1)"
    },
    "bearing": {
-    "margin": 28.829,
+    "margin": 28.836,
     "where": "fine_sm8|R|S_meat@a_S_fine_sm8_15:side_hill_torsion|15"
    },
    "fatigue": {
@@ -953,17 +1111,17 @@
    },
    "limit_transfer": {
     "dN_n": 1031.7,
-    "dT_nmm": 9454.4,
+    "dT_nmm": 9453.5,
     "dN_set": "fine_sm8|L|S_meat@a_L_fine_sm8_23:drop_2p5g|23",
     "dT_set": "fine_sm8|R|S_meat@a_S_fine_sm8_15:hipbelt_off_abuse|15",
     "dN_with_dT": 288.5,
-    "dT_with_dN": 2847.5,
+    "dT_with_dN": 2846.3,
     "fat_dN_n": 826.0,
-    "fat_dT_nmm": 3790.5,
-    "c8_dN_n": 352.1,
-    "c8_dT_nmm": 9454.4,
+    "fat_dT_nmm": 3789.6,
+    "c8_dN_n": 352.2,
+    "c8_dT_nmm": 9453.5,
     "factored_dN_n": 1547.5,
-    "factored_dT_nmm": 9454.4,
+    "factored_dT_nmm": 9453.5,
     "factored_dN_set": "fine_sm8|L|S_meat@a_L_fine_sm8_23:drop_2p5g|23",
     "factored_dT_set": "fine_sm8|R|S_meat@a_S_fine_sm8_15:hipbelt_off_abuse|15"
    },
@@ -977,42 +1135,43 @@
    "L_bearing_mm": 50.0,
    "bondline_mm": 0.5,
    "adherend_t_mm": 3.66,
+   "bond_coverage": 1.0,
    "k_axial": 9.85,
    "k_torque": 15.34,
    "avg": {
-    "margin": 15.478,
+    "margin": 15.484,
     "where": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15"
    },
    "peak": {
-    "margin": 1.565,
+    "margin": 1.566,
     "where": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15",
     "rule": "ultimate: peak at factored = limit (M1)"
    },
    "bearing": {
-    "margin": 8.149,
+    "margin": 8.134,
     "where": "fine_sm8|R|S_meat@a_S_fine_sm8_15:side_hill_torsion|15"
    },
    "fatigue": {
-    "margin": 10.151,
+    "margin": 10.124,
     "where": "fine_sm8.cyc|R|S_meat@a_S_fine_sm8_cyc_15:static_carry|15"
    },
    "peak_c8": {
-    "margin": 1.565,
+    "margin": 1.566,
     "where": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15"
    },
    "limit_transfer": {
-    "dN_n": 659.0,
-    "dT_nmm": 2001.4,
+    "dN_n": 658.7,
+    "dT_nmm": 2000.4,
     "dN_set": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15",
     "dT_set": "fine_sm8|R|S_meat@a_M_fine_sm8_17.5:side_hill_torsion|17.5",
-    "dN_with_dT": 152.8,
-    "dT_with_dN": 550.2,
-    "fat_dN_n": 324.5,
+    "dN_with_dT": 154.8,
+    "dT_with_dN": 549.9,
+    "fat_dN_n": 325.1,
     "fat_dT_nmm": 2350.8,
-    "c8_dN_n": 659.0,
-    "c8_dT_nmm": 1755.7,
-    "factored_dN_n": 659.0,
-    "factored_dT_nmm": 3002.2,
+    "c8_dN_n": 658.7,
+    "c8_dT_nmm": 1755.5,
+    "factored_dN_n": 658.7,
+    "factored_dT_nmm": 3000.6,
     "factored_dN_set": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15",
     "factored_dT_set": "fine_sm8|R|S_meat@a_M_fine_sm8_17.5:side_hill_torsion|17.5"
    },
@@ -1023,42 +1182,43 @@
    "L_bearing_mm": 36.0,
    "bondline_mm": 0.5,
    "adherend_t_mm": 4.6,
+   "bond_coverage": 1.0,
    "k_axial": 6.26,
    "k_torque": 9.63,
    "avg": {
-    "margin": 10.451,
+    "margin": 10.459,
     "where": "beam|R|C@a_L_beam_23:side_hill_torsion|23"
    },
    "peak": {
-    "margin": 2.487,
+    "margin": 2.49,
     "where": "beam|R|C_im3@a_L_beam_23:side_hill_torsion|23",
     "rule": "limit"
    },
    "bearing": {
-    "margin": 9.282,
+    "margin": 9.258,
     "where": "fine|R|S_meat@a_L_fine_alt_20:side_hill_torsion|20"
    },
    "fatigue": {
-    "margin": 27.037,
+    "margin": 27.394,
     "where": "beam|R|C_im3@a_L_beam_20:static_carry|20"
    },
    "peak_c8": {
-    "margin": 2.847,
+    "margin": 2.869,
     "where": "fine_sm8|R|S_fill@a_S_fine_sm8_15:hipbelt_off_abuse|15"
    },
    "limit_transfer": {
-    "dN_n": 468.3,
-    "dT_nmm": 2927.2,
+    "dN_n": 467.9,
+    "dT_nmm": 2902.6,
     "dN_set": "beam|R|C@a_L_beam_23:side_hill_torsion|23",
     "dT_set": "fine_sm8|R|S_fill@a_S_fine_sm8_15:hipbelt_off_abuse|15",
-    "dN_with_dT": 55.0,
-    "dT_with_dN": 420.7,
-    "fat_dN_n": 99.8,
-    "fat_dT_nmm": 790.4,
-    "c8_dN_n": 97.0,
-    "c8_dT_nmm": 2927.2,
-    "factored_dN_n": 702.4,
-    "factored_dT_nmm": 2927.2,
+    "dN_with_dT": 57.2,
+    "dT_with_dN": 418.9,
+    "fat_dN_n": 98.5,
+    "fat_dT_nmm": 785.6,
+    "c8_dN_n": 95.8,
+    "c8_dT_nmm": 2902.6,
+    "factored_dN_n": 701.8,
+    "factored_dT_nmm": 2902.6,
     "factored_dN_set": "beam|R|C@a_L_beam_23:side_hill_torsion|23",
     "factored_dT_set": "fine_sm8|R|S_fill@a_S_fine_sm8_15:hipbelt_off_abuse|15"
    },
@@ -1068,43 +1228,44 @@
    "L_bond_mm": 18.0,
    "L_bearing_mm": 18.0,
    "bondline_mm": 0.5,
-   "adherend_t_mm": 3.0,
-   "k_axial": 3.96,
-   "k_torque": 6.2,
+   "adherend_t_mm": 4.0,
+   "bond_coverage": 0.625,
+   "k_axial": 3.4,
+   "k_torque": 5.24,
    "avg": {
-    "margin": 17.597,
+    "margin": 8.019,
     "where": "beam|L|C_im3@a_S_beam_15:side_hill_torsion|15"
    },
    "peak": {
-    "margin": 6.618,
+    "margin": 3.526,
     "where": "beam|L|C_im3@a_S_beam_15:side_hill_torsion|15",
     "rule": "limit"
    },
    "bearing": {
-    "margin": 2.999,
+    "margin": 3.014,
     "where": "beam|L|C_im3@a_L_beam_23:hipbelt_off_abuse|23"
    },
    "fatigue": {
-    "margin": 25.895,
+    "margin": 11.559,
     "where": "fine_sm8.cyc|L|S_meat@a_S_fine_sm8_cyc_15:static_carry|15"
    },
    "peak_c8": {
-    "margin": 11.723,
+    "margin": 5.766,
     "where": "fine|L|S_meat@a_L_fine_23:hipbelt_off_abuse|23"
    },
    "limit_transfer": {
-    "dN_n": 138.8,
-    "dT_nmm": 159.0,
+    "dN_n": 190.8,
+    "dT_nmm": 168.3,
     "dN_set": "beam|L|C_im3@a_S_beam_15:side_hill_torsion|15",
     "dT_set": "fine_sm8|L|S_fill@a_S_fine_sm8_15:side_hill_torsion|15",
-    "dN_with_dT": 112.4,
-    "dT_with_dN": 158.3,
-    "fat_dN_n": 53.3,
-    "fat_dT_nmm": 87.9,
-    "c8_dN_n": 79.4,
-    "c8_dT_nmm": 119.2,
-    "factored_dN_n": 208.2,
-    "factored_dT_nmm": 238.5,
+    "dN_with_dT": 150.9,
+    "dT_with_dN": 150.1,
+    "fat_dN_n": 74.7,
+    "fat_dT_nmm": 92.0,
+    "c8_dN_n": 117.4,
+    "c8_dT_nmm": 154.3,
+    "factored_dN_n": 286.3,
+    "factored_dT_nmm": 252.4,
     "factored_dN_set": "beam|L|C_im3@a_S_beam_15:side_hill_torsion|15",
     "factored_dT_set": "fine_sm8|L|S_fill@a_S_fine_sm8_15:side_hill_torsion|15"
    },
@@ -1115,44 +1276,45 @@
    "L_bearing_mm": 26.0,
    "bondline_mm": 0.5,
    "adherend_t_mm": 4.39,
+   "bond_coverage": 1.0,
    "k_axial": 4.64,
    "k_torque": 7.16,
    "avg": {
-    "margin": 6.378,
+    "margin": 6.915,
     "where": "beam|L|C_im3@a_L_beam_23:side_hill_torsion|23"
    },
    "peak": {
-    "margin": 1.748,
+    "margin": 1.681,
     "where": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15",
     "rule": "ultimate: peak at factored = limit (M1)"
    },
    "bearing": {
-    "margin": 5.878,
+    "margin": 5.834,
     "where": "beam|R|C_im3@a_L_beam_23:hipbelt_off_abuse|23"
    },
    "fatigue": {
-    "margin": 6.235,
+    "margin": 6.613,
     "where": "fine_sm8.cyc|L|S_meat@a_S_fine_sm8_cyc_15:static_carry|15"
    },
    "peak_c8": {
-    "margin": 1.748,
+    "margin": 1.681,
     "where": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15"
    },
    "limit_transfer": {
-    "dN_n": 638.2,
-    "dT_nmm": 1245.2,
+    "dN_n": 664.8,
+    "dT_nmm": 1284.4,
     "dN_set": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15",
-    "dT_set": "fine_sm8|R|S_fill@a_S_fine_sm8_15:hipbelt_off_abuse|15",
-    "dN_with_dT": 493.1,
-    "dT_with_dN": 1061.4,
-    "fat_dN_n": 319.8,
-    "fat_dT_nmm": 357.6,
-    "c8_dN_n": 638.2,
-    "c8_dT_nmm": 1245.2,
-    "factored_dN_n": 833.9,
-    "factored_dT_nmm": 1245.2,
+    "dT_set": "fine_sm8|R|S_meat@a_S_fine_sm8_15:hipbelt_off_abuse|15",
+    "dN_with_dT": 281.6,
+    "dT_with_dN": 1069.8,
+    "fat_dN_n": 301.5,
+    "fat_dT_nmm": 369.7,
+    "c8_dN_n": 664.8,
+    "c8_dT_nmm": 1284.4,
+    "factored_dN_n": 769.2,
+    "factored_dT_nmm": 1284.4,
     "factored_dN_set": "beam|L|C_im3@a_L_beam_23:side_hill_torsion|23",
-    "factored_dT_set": "fine_sm8|R|S_fill@a_S_fine_sm8_15:hipbelt_off_abuse|15"
+    "factored_dT_set": "fine_sm8|R|S_meat@a_S_fine_sm8_15:hipbelt_off_abuse|15"
    },
    "failsafe": null
   },
@@ -1161,6 +1323,7 @@
    "L_bearing_mm": 71.5,
    "bondline_mm": 0.8,
    "adherend_t_mm": 6.92,
+   "bond_coverage": 1.0,
    "k_axial": 7.81,
    "k_torque": 11.71,
    "avg": {
@@ -1173,7 +1336,7 @@
     "rule": "ultimate: peak at factored = limit (M1)"
    },
    "bearing": {
-    "margin": 22.311,
+    "margin": 22.302,
     "where": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15"
    },
    "fatigue": {
@@ -1194,17 +1357,17 @@
    },
    "limit_transfer": {
     "dN_n": 999.0,
-    "dT_nmm": 14444.6,
+    "dT_nmm": 14444.3,
     "dN_set": "fine_sm8|L|S_meat@a_M_fine_sm8_alt_20.5:drop_2p5g|20.5",
     "dT_set": "fine_sm8|R|S_meat@a_S_fine_sm8_15:hipbelt_off_abuse|15",
     "dN_with_dT": 233.4,
-    "dT_with_dN": 3883.2,
+    "dT_with_dN": 3882.7,
     "fat_dN_n": 799.7,
-    "fat_dT_nmm": 5705.1,
-    "c8_dN_n": 428.1,
-    "c8_dT_nmm": 14444.6,
+    "fat_dT_nmm": 5702.2,
+    "c8_dN_n": 428.2,
+    "c8_dT_nmm": 14444.3,
     "factored_dN_n": 1498.6,
-    "factored_dT_nmm": 14444.6,
+    "factored_dT_nmm": 14444.3,
     "factored_dN_set": "fine_sm8|L|S_meat@a_M_fine_sm8_alt_20.5:drop_2p5g|20.5",
     "factored_dT_set": "fine_sm8|R|S_meat@a_S_fine_sm8_15:hipbelt_off_abuse|15"
    },
@@ -1214,14 +1377,14 @@
   }
  },
  "tube_beam": {
-  "margin": 1.177,
+  "margin": 1.178,
   "where": "fine_sm8|R|z192|S_meat@a_S_fine_sm8_15:side_hill_torsion|15"
  },
  "tube_open_hole": {
   "P1 bolt z 60": {
-   "margin_open_hole": 4.486,
+   "margin_open_hole": 3.692,
    "where": "fine_sm8|L|S_fill@a_S_fine_sm8_15:single_stay_setdown|15",
-   "margin_plain": 6.069,
+   "margin_plain": 4.994,
    "where_plain": "fine_sm8|L|S_fill@a_S_fine_sm8_15:single_stay_setdown|15"
   },
   "P3 pins (bound: cut z 468)": {
@@ -1251,31 +1414,169 @@
    "tubes_delta_g": 176.3
   }
  ],
- "eigen": {},
+ "eigen": {
+  "fine_sm8": {
+   "frame_crown_held": 0.468,
+   "frame_set": "S_meat@a_S_fine_sm8_15:drop_2p5g|15",
+   "frame_lead": "lower branch L",
+   "member_min": "lower branch L",
+   "member_min_eig_free": 0.464,
+   "setdown_foot_crown_held": 2.754,
+   "buckling_of_record": 0.464,
+   "members": {
+    "upper branch R": {
+     "eig_free": 1.722,
+     "eig_crown": 9.693,
+     "record": 1.635,
+     "section": 1.408,
+     "set": "S_meat@a_L_fine_sm8_23:side_hill_torsion|23",
+     "K_eff": 0.9
+    },
+    "upper branch L": {
+     "eig_free": 2.775,
+     "eig_crown": 16.011,
+     "record": 2.418,
+     "section": 2.371,
+     "set": "S_meat@a_S_fine_sm8_15:drop_2p5g|15",
+     "K_eff": 0.92
+    },
+    "lower branch R": {
+     "eig_free": 1.287,
+     "eig_crown": 1.307,
+     "record": 1.74,
+     "section": 1.651,
+     "set": "S_meat@a_S_fine_sm8_15:drop_2p5g|15",
+     "K_eff": 1.13
+    },
+    "lower branch L": {
+     "eig_free": 0.464,
+     "eig_crown": 0.468,
+     "record": 1.658,
+     "section": 1.543,
+     "set": "S_meat@a_S_fine_sm8_15:drop_2p5g|15",
+     "K_eff": 1.82
+    },
+    "mid bar": {
+     "eig_free": 4.444,
+     "eig_crown": 11.6,
+     "record": 1.815,
+     "section": 1.667,
+     "set": "S_meat@a_L_fine_sm8_23:hipbelt_off_abuse|23",
+     "K_eff": 0.61
+    }
+   },
+   "free_reading": 0.258
+  },
+  "fine_sm8.cyc": {
+   "frame_crown_held": 0.415,
+   "frame_set": "S_meat@a_M_fine_sm8_cyc_17.5:static_carry|17.5",
+   "frame_lead": "lower branch L",
+   "member_min": "lower branch L",
+   "member_min_eig_free": 0.464,
+   "setdown_foot_crown_held": null,
+   "buckling_of_record": 0.415,
+   "members": {
+    "upper branch R": {
+     "eig_free": 1.722,
+     "eig_crown": 9.693,
+     "record": 1.635,
+     "section": 1.408,
+     "set": "S_meat@a_L_fine_sm8_cyc_23:side_hill_torsion|23",
+     "K_eff": 0.9
+    },
+    "upper branch L": {
+     "eig_free": 2.775,
+     "eig_crown": 16.011,
+     "record": 2.418,
+     "section": 2.371,
+     "set": "S_meat@a_S_fine_sm8_cyc_15:drop_2p5g|15",
+     "K_eff": 0.92
+    },
+    "lower branch R": {
+     "eig_free": 1.287,
+     "eig_crown": 1.307,
+     "record": 1.74,
+     "section": 1.651,
+     "set": "S_meat@a_S_fine_sm8_cyc_15:drop_2p5g|15",
+     "K_eff": 1.13
+    },
+    "lower branch L": {
+     "eig_free": 0.464,
+     "eig_crown": 0.468,
+     "record": 1.658,
+     "section": 1.543,
+     "set": "S_meat@a_S_fine_sm8_cyc_15:drop_2p5g|15",
+     "K_eff": 1.82
+    },
+    "mid bar": {
+     "eig_free": 4.444,
+     "eig_crown": 11.6,
+     "record": 1.815,
+     "section": 1.667,
+     "set": "S_meat@a_L_fine_sm8_cyc_23:hipbelt_off_abuse|23",
+     "K_eff": 0.61
+    }
+   },
+   "free_reading": 0.258
+  }
+ },
+ "eigen_voxel_split_members_diagnostic": {
+  "upper branch R": {
+   "eig_free": 1.71,
+   "eig_crown": 9.553,
+   "K_eff": 0.93,
+   "set": "S_meat@a_L_fine_sm8_23:side_hill_torsion|23"
+  },
+  "upper branch L": {
+   "eig_free": 2.762,
+   "eig_crown": 16.043,
+   "K_eff": 0.94,
+   "set": "S_meat@a_S_fine_sm8_15:drop_2p5g|15"
+  },
+  "lower branch R": {
+   "eig_free": 1.285,
+   "eig_crown": 1.306,
+   "K_eff": 1.21,
+   "set": "S_meat@a_S_fine_sm8_15:drop_2p5g|15"
+  },
+  "lower branch L": {
+   "eig_free": 1.524,
+   "eig_crown": 1.553,
+   "K_eff": 1.08,
+   "set": "S_meat@a_S_fine_sm8_15:drop_2p5g|15"
+  },
+  "mid bar": {
+   "eig_free": 4.334,
+   "eig_crown": 12.212,
+   "K_eff": 0.66,
+   "set": "S_meat@a_L_fine_sm8_23:hipbelt_off_abuse|23"
+  }
+ },
+ "h1_box_members_g": 57.5,
  "mass": {
   "rows": {
    "print (released STL, bl058.json stl)": 1069.32,
-   "printed delta: P1 + P2 + P3 STLs - H1 STL inside the FE box (exact volumes)": -242.8,
+   "printed delta: P1 + P2 + P3 STLs - H1 STL inside the FE box (exact volumes)": -227.9,
    "2 carbon tubes 22 x 18 x 514 mm (record density)": 200.0,
    "MMA bond, every band both sides (0.98 g/cm3)": 25.2,
    "P1 fail-safe: 2 Ti M4 x 30 cross bolts + nuts (ASSUMPTION BOLT-G)": 4.9,
    "P3 fail-safe: 4 steel D4 x 6 flush dowel pins": 2.4,
    "z 234 joint hardware deleted (frame_mass_h1.json)": -28.0
   },
-  "frame_print_g": 1031.0,
-  "delta_g": -38.3,
-  "frame_line_g": 1348.8,
+  "frame_print_g": 1045.9,
+  "delta_g": -23.4,
+  "frame_line_g": 1363.7,
   "frame_line_h1_g": 1387.1,
   "parts_stl_g": {
-   "P1": 307.1,
-   "P2": 228.0,
+   "P1": 318.6,
+   "P2": 231.4,
    "P3": 199.5
   },
   "h1_stl_in_box_g": 977.4,
-  "cross_check_raster_delta_g": -203.8,
-  "cross_check_bond_layer_voxels_g": 32.1
+  "cross_check_raster_delta_g": -192.9,
+  "cross_check_bond_layer_voxels_g": 30.8
  },
- "sizing": {
+ "sizing_bonded": {
   "P1 lower node": {
    "g": 91.0,
    "sleeve_t": 9.0,
@@ -1295,7 +1596,7 @@
    "sleeve_t": 3.66,
    "bondline": 0.5,
    "failsafe": null,
-   "min": 1.52,
+   "min": 1.521,
    "gov": "P2 lower-branch root peak"
   },
   "P2 mid-bar knuckle": {
@@ -1303,15 +1604,15 @@
    "sleeve_t": 4.6,
    "bondline": 0.5,
    "failsafe": null,
-   "min": 1.239,
+   "min": 1.249,
    "gov": "P2 mid-bar knuckle peak"
   },
   "P2 z 420 lash collar": {
    "g": 0.0,
-   "sleeve_t": 3.0,
+   "sleeve_t": 4.0,
    "bondline": 0.5,
    "failsafe": null,
-   "min": 2.999,
+   "min": 3.014,
    "gov": "P2 z 420 lash collar bearing"
   },
   "P2 upper-branch root": {
@@ -1319,19 +1620,218 @@
    "sleeve_t": 4.39,
    "bondline": 0.5,
    "failsafe": null,
-   "min": 1.58,
+   "min": 1.527,
    "gov": "P2 upper-branch root peak"
   },
   "P3 top node": {
    "g": null,
    "feasible": false,
    "at_limits_min": 0.718,
-   "gov": "P3 top node peak"
+   "gov": "P3 top node peak",
+   "g_at_limits": 93.9,
+   "dry_bond_needed_mpa": 5.15
   }
  },
- "sizing_feasible": false,
- "sizing_add_g": 91.0,
- "frame_line_sized_g": null,
+ "pinned_screen": {
+  "2 x D4, boss 6 mm": {
+   "P1 lower node": {
+    "n_per_side": 2,
+    "d_mm": 4.0,
+    "boss_t_mm": 6.0,
+    "F_limit_n": 502.5,
+    "print_bearing": 1.8,
+    "tube_bearing": 3.98,
+    "fatigue_bearing": 0.94,
+    "tube_open_hole": 3.13,
+    "delta_g_vs_bonded": 5.0
+   },
+   "P3 top node": {
+    "n_per_side": 2,
+    "d_mm": 4.0,
+    "boss_t_mm": 6.0,
+    "F_limit_n": 762.1,
+    "print_bearing": 1.18,
+    "tube_bearing": 2.62,
+    "fatigue_bearing": 0.75,
+    "tube_open_hole": 1.49,
+    "delta_g_vs_bonded": 5.9
+   }
+  },
+  "2 x D5, boss 6 mm": {
+   "P1 lower node": {
+    "n_per_side": 2,
+    "d_mm": 5.0,
+    "boss_t_mm": 6.0,
+    "F_limit_n": 502.5,
+    "print_bearing": 2.24,
+    "tube_bearing": 4.97,
+    "fatigue_bearing": 1.18,
+    "tube_open_hole": 2.85,
+    "delta_g_vs_bonded": 12.6
+   },
+   "P3 top node": {
+    "n_per_side": 2,
+    "d_mm": 5.0,
+    "boss_t_mm": 6.0,
+    "F_limit_n": 762.1,
+    "print_bearing": 1.48,
+    "tube_bearing": 3.28,
+    "fatigue_bearing": 0.94,
+    "tube_open_hole": 1.3,
+    "delta_g_vs_bonded": 13.6
+   }
+  },
+  "2 x D5, boss 8 mm": {
+   "P1 lower node": {
+    "n_per_side": 2,
+    "d_mm": 5.0,
+    "boss_t_mm": 8.0,
+    "F_limit_n": 502.5,
+    "print_bearing": 2.99,
+    "tube_bearing": 4.97,
+    "fatigue_bearing": 1.57,
+    "tube_open_hole": 2.85,
+    "delta_g_vs_bonded": 18.9
+   },
+   "P3 top node": {
+    "n_per_side": 2,
+    "d_mm": 5.0,
+    "boss_t_mm": 8.0,
+    "F_limit_n": 762.1,
+    "print_bearing": 1.97,
+    "tube_bearing": 3.28,
+    "fatigue_bearing": 1.25,
+    "tube_open_hole": 1.3,
+    "delta_g_vs_bonded": 19.8
+   }
+  }
+ },
+ "fix_options": {
+  "as_drawn_frame_line_g": 1363.7,
+  "bonded": {
+   "feasible": false,
+   "add_g": 184.9,
+   "frame_line_g": 1553.2,
+   "note": "P3 bonded cannot pass at the search limits (10 mm wall, 1.5 mm line, 3 x D6): min 0.718, needs 5.15 MPa dry bond (cited 3.7)"
+  },
+  "pinned_P1_P3": {
+   "add_g": 38.7,
+   "lower_branch_fix_g": 4.6,
+   "frame_line_g": 1407.0,
+   "rows": {
+    "P1 lower node": {
+     "n_per_side": 2,
+     "d_mm": 5.0,
+     "boss_t_mm": 8.0,
+     "F_limit_n": 502.5,
+     "print_bearing": 2.99,
+     "tube_bearing": 4.97,
+     "fatigue_bearing": 1.57,
+     "tube_open_hole": 2.85,
+     "delta_g_vs_bonded": 18.9
+    },
+    "P3 top node": {
+     "n_per_side": 2,
+     "d_mm": 5.0,
+     "boss_t_mm": 8.0,
+     "F_limit_n": 762.1,
+     "print_bearing": 1.97,
+     "tube_bearing": 3.28,
+     "fatigue_bearing": 1.25,
+     "tube_open_hole": 1.3,
+     "delta_g_vs_bonded": 19.8
+    }
+   },
+   "note": "first-order screen only: no contact FE, backlash or PA creep under the pins"
+  },
+  "h1_frame_line_g": 1387.1
+ },
+ "t6p_t_spec": [
+  {
+   "coupon": "T6p-T1: P1 band (40 mm, 0.8 mm line)",
+   "sleeve": "P1 lower node",
+   "n": "3 pull + 3 torsion + 1 fatigue",
+   "pull_mean_n": 1548.0,
+   "pull_lowest_n": 1290.0,
+   "torque_mean_nm": 32.8,
+   "torque_lowest_nm": 27.4,
+   "fatigue_1e5_pull_n": 826.0,
+   "fatigue_1e5_torque_nm": 8.8,
+   "dry_bond_implied_needed_mpa": 7.64,
+   "governing_dN": "fine_sm8|L|S_meat@a_L_fine_sm8_23:drop_2p5g|23",
+   "governing_dT": "fine_sm8.cyc|R|S_meat@a_S_fine_sm8_cyc_15:hipbelt_off_abuse|15"
+  },
+  {
+   "coupon": "T6p-T2a: P2 root (50 mm, 0.5 mm line)",
+   "sleeve": "P2 lower-branch root",
+   "n": "3 pull + 3 torsion + 1 fatigue",
+   "pull_mean_n": 988.0,
+   "pull_lowest_n": 823.0,
+   "torque_mean_nm": 6.9,
+   "torque_lowest_nm": 5.8,
+   "fatigue_1e5_pull_n": 325.0,
+   "fatigue_1e5_torque_nm": 5.4,
+   "dry_bond_implied_needed_mpa": 3.7,
+   "governing_dN": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15",
+   "governing_dT": "fine_sm8|R|S_meat@a_M_fine_sm8_17.5:side_hill_torsion|17.5"
+  },
+  {
+   "coupon": "T6p-T2b: P2 knuckle (36 mm, 0.5 mm line)",
+   "sleeve": "P2 mid-bar knuckle",
+   "n": "3 pull + 3 torsion + 1 fatigue",
+   "pull_mean_n": 702.0,
+   "pull_lowest_n": 585.0,
+   "torque_mean_nm": 10.1,
+   "torque_lowest_nm": 8.4,
+   "fatigue_1e5_pull_n": 98.0,
+   "fatigue_1e5_torque_nm": 1.7,
+   "dry_bond_implied_needed_mpa": 3.7,
+   "governing_dN": "beam|R|C@a_L_beam_23:side_hill_torsion|23",
+   "governing_dT": "fine_sm8.cyc|R|S_fill@a_S_fine_sm8_cyc_15:hipbelt_off_abuse|15"
+  },
+  {
+   "coupon": "T6p-T2c: P2 C-collar (18 mm, 0.5 mm line, 62 % arc)",
+   "sleeve": "P2 z 420 lash collar",
+   "n": "3 pull + 3 torsion + 1 fatigue",
+   "pull_mean_n": 286.0,
+   "pull_lowest_n": 238.0,
+   "torque_mean_nm": 0.6,
+   "torque_lowest_nm": 0.5,
+   "fatigue_1e5_pull_n": 75.0,
+   "fatigue_1e5_torque_nm": 0.2,
+   "dry_bond_implied_needed_mpa": 3.7,
+   "governing_dN": "beam|L|C_im3@a_S_beam_15:side_hill_torsion|15",
+   "governing_dT": "fine_sm8.cyc|L|S_fill@a_S_fine_sm8_cyc_15:side_hill_torsion|15"
+  },
+  {
+   "coupon": "T6p-T2d: P2 upper root (26 mm, 0.5 mm line)",
+   "sleeve": "P2 upper-branch root",
+   "n": "3 pull + 3 torsion + 1 fatigue",
+   "pull_mean_n": 997.0,
+   "pull_lowest_n": 831.0,
+   "torque_mean_nm": 4.5,
+   "torque_lowest_nm": 3.7,
+   "fatigue_1e5_pull_n": 302.0,
+   "fatigue_1e5_torque_nm": 0.9,
+   "dry_bond_implied_needed_mpa": 3.7,
+   "governing_dN": "beam|R|C_im3@a_S_beam_15:hipbelt_off_abuse|15",
+   "governing_dT": "fine_sm8|R|S_meat@a_S_fine_sm8_15:hipbelt_off_abuse|15"
+  },
+  {
+   "coupon": "T6p-T3: P3 node (71.5 mm, 0.8 mm line)",
+   "sleeve": "P3 top node",
+   "n": "3 pull + 3 torsion + 1 fatigue",
+   "pull_mean_n": 1498.0,
+   "pull_lowest_n": 1249.0,
+   "torque_mean_nm": 50.2,
+   "torque_lowest_nm": 41.8,
+   "fatigue_1e5_pull_n": 800.0,
+   "fatigue_1e5_torque_nm": 13.2,
+   "dry_bond_implied_needed_mpa": 9.02,
+   "governing_dN": "fine_sm8|L|S_meat@a_M_fine_sm8_alt_20.5:drop_2p5g|20.5",
+   "governing_dT": "fine_sm8.cyc|R|S_meat@a_S_fine_sm8_cyc_15:hipbelt_off_abuse|15"
+  }
+ ],
  "lash_h1": {
   "source": "designs/pack_5200/analysis/bl068_lash_loads.json",
   "factor": 2.0,
@@ -1371,9 +1871,9 @@
       ]
      }
     },
-    "fi_p99": 0.2363,
+    "fi_p99": 0.239,
     "fi_max": 0.7234,
-    "margin_p99": 4.23,
+    "margin_p99": 4.18,
     "margin_max": 1.38,
     "max_at_mm": [
      39.0,
@@ -1416,9 +1916,9 @@
       ]
      }
     },
-    "fi_p99": 0.4824,
+    "fi_p99": 0.4809,
     "fi_max": 1.5578,
-    "margin_p99": 2.07,
+    "margin_p99": 2.08,
     "margin_max": 0.64,
     "max_at_mm": [
      -39.0,
@@ -1426,6 +1926,160 @@
      111.0
     ]
    }
+  }
+ },
+ "lash_cflite": {
+  "source": "designs/pack_5200/analysis/bl068_lash_loads.json",
+  "factor": 2.0,
+  "states": {
+   "after": {
+    "points": {
+     "load_wing_lash_z250_R": {
+      "nodes": 216,
+      "F_factored_n": [
+       447.8,
+       43.6,
+       0.0
+      ]
+     },
+     "load_wing_lash_z250_L": {
+      "nodes": 212,
+      "F_factored_n": [
+       -447.8,
+       43.6,
+       -0.0
+      ]
+     },
+     "load_wing_lash_z420_R": {
+      "nodes": 192,
+      "F_factored_n": [
+       447.8,
+       43.6,
+       0.0
+      ]
+     },
+     "load_wing_lash_z420_L": {
+      "nodes": 191,
+      "F_factored_n": [
+       -447.8,
+       43.6,
+       -0.0
+      ]
+     }
+    },
+    "fi_p99": 0.2411,
+    "fi_max": 0.7112,
+    "margin_p99": 4.15,
+    "margin_max": 1.41,
+    "max_at_mm": [
+     39.0,
+     -31.0,
+     101.0
+    ]
+   },
+   "before": {
+    "points": {
+     "load_wing_lash_z80_R": {
+      "nodes": 139,
+      "F_factored_n": [
+       440.2,
+       43.0,
+       82.6
+      ]
+     },
+     "load_wing_lash_z250_L": {
+      "nodes": 212,
+      "F_factored_n": [
+       -440.2,
+       43.0,
+       -82.6
+      ]
+     },
+     "load_wing_lash_z250_R": {
+      "nodes": 216,
+      "F_factored_n": [
+       441.0,
+       43.0,
+       79.0
+      ]
+     },
+     "load_wing_lash_z420_L": {
+      "nodes": 191,
+      "F_factored_n": [
+       -441.0,
+       43.0,
+       -79.0
+      ]
+     }
+    },
+    "fi_p99": 0.5035,
+    "fi_max": 1.4373,
+    "margin_p99": 1.99,
+    "margin_max": 0.7,
+    "max_at_mm": [
+     -39.0,
+     -29.0,
+     111.0
+    ]
+   }
+  }
+ },
+ "lash_bonds_cflite": {
+  "after|load_wing_lash_z250_R": {
+   "sleeve": "P2 lower-branch root",
+   "T_design_nmm": 3202.0,
+   "F_design_n": 225.0,
+   "avg_margin_factored": 13.9,
+   "peak_margin_limit": 2.05
+  },
+  "after|load_wing_lash_z250_L": {
+   "sleeve": "P2 lower-branch root",
+   "T_design_nmm": 3202.0,
+   "F_design_n": 225.0,
+   "avg_margin_factored": 13.9,
+   "peak_margin_limit": 2.05
+  },
+  "after|load_wing_lash_z420_R": {
+   "sleeve": "P2 z 420 lash collar",
+   "T_design_nmm": 2485.0,
+   "F_design_n": 225.0,
+   "avg_margin_factored": 3.61,
+   "peak_margin_limit": 1.63
+  },
+  "after|load_wing_lash_z420_L": {
+   "sleeve": "P2 z 420 lash collar",
+   "T_design_nmm": 2485.0,
+   "F_design_n": 225.0,
+   "avg_margin_factored": 3.61,
+   "peak_margin_limit": 1.63
+  },
+  "before|load_wing_lash_z80_R": {
+   "sleeve": "P1 lower node",
+   "T_design_nmm": 3852.0,
+   "F_design_n": 221.1,
+   "avg_margin_factored": 9.88,
+   "peak_margin_limit": 2.55
+  },
+  "before|load_wing_lash_z250_L": {
+   "sleeve": "P2 lower-branch root",
+   "T_design_nmm": 3147.0,
+   "F_design_n": 221.1,
+   "avg_margin_factored": 14.14,
+   "peak_margin_limit": 2.09
+  },
+  "before|load_wing_lash_z250_R": {
+   "sleeve": "P2 lower-branch root",
+   "T_design_nmm": 3153.0,
+   "F_design_n": 221.5,
+   "avg_margin_factored": 14.12,
+   "peak_margin_limit": 2.08
+  },
+  "before|load_wing_lash_z420_L": {
+   "sleeve": "P2 z 420 lash collar",
+   "T_design_nmm": 2448.0,
+   "F_design_n": 221.5,
+   "avg_margin_factored": 3.66,
+   "peak_margin_limit": 1.66
   }
  },
  "gate_rows": [
@@ -1437,32 +2091,27 @@
   {
    "row": "printed fatigue (static-cinch)",
    "h1": 1.249,
-   "cflite": 2.01
+   "cflite": 2.014
   },
   {
    "row": "printed creep",
    "h1": 2.664,
-   "cflite": 4.289
+   "cflite": 4.296
   },
   {
    "row": "cinch-cycled fatigue (R1)",
    "h1": 0.856,
-   "cflite": 1.151
+   "cflite": 1.153
   },
   {
    "row": "buckling of record (eigen, BL-065 rule)",
    "h1": 1.34,
-   "cflite": NaN
-  },
-  {
-   "row": "member buckling, record rule",
-   "h1": 1.053,
-   "cflite": 1.587
+   "cflite": 0.415
   },
   {
    "row": "tube strength, beam on resultants",
    "h1": null,
-   "cflite": 1.177
+   "cflite": 1.178
   },
   {
    "row": "tube fatigue (voxel ring, 1.6 g)",
@@ -1475,50 +2124,60 @@
    "cflite": 1.89
   },
   {
-   "row": "joint / bond strength: peak, model torque",
-   "h1": 1.978,
+   "row": "joints / bonds: strength (Volkersen peak, C8 at limit)",
+   "h1": 1.158,
    "cflite": 0.41
   },
   {
-   "row": "bond peak, torque bound (min of 2 runs)",
-   "h1": 1.978,
-   "cflite": 0.41
-  },
-  {
-   "row": "joint / bond fatigue",
+   "row": "joints / bonds: fatigue",
    "h1": 1.158,
    "cflite": 2.911
   },
   {
-   "row": "fail-safe: printed bearing",
+   "row": "fail-safe: printed-sleeve bearing",
    "h1": null,
    "cflite": 0.683
+  },
+  {
+   "row": "BL-068 lash (after), body p99",
+   "h1": 4.18,
+   "cflite": 4.15
+  },
+  {
+   "row": "BL-068 lash bonds (peak at limit)",
+   "h1": null,
+   "cflite": 1.63
   }
  ],
  "fails_hals1": [
   [
-   "joint / bond strength: peak, model torque",
+   "buckling of record (eigen, BL-065 rule)",
+   0.415
+  ],
+  [
+   "joints / bonds: strength (Volkersen peak, C8 at limit)",
    0.41
   ],
   [
-   "bond peak, torque bound (min of 2 runs)",
-   0.41
-  ],
-  [
-   "fail-safe: printed bearing",
+   "fail-safe: printed-sleeve bearing",
    0.683
   ]
  ],
  "below_h1": [
   [
-   "joint / bond strength: peak, model torque",
-   1.978,
+   "buckling of record (eigen, BL-065 rule)",
+   1.34,
+   0.415
+  ],
+  [
+   "joints / bonds: strength (Volkersen peak, C8 at limit)",
+   1.158,
    0.41
   ],
   [
-   "bond peak, torque bound (min of 2 runs)",
-   1.978,
-   0.41
+   "BL-068 lash (after), body p99",
+   4.18,
+   4.15
   ]
  ],
  "screenshots": [
