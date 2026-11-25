@@ -602,13 +602,19 @@ T4c-PPA-CROWN-08,T4c-PPA-CROWN,G8,R1-PPA,PPA crown 3,"corner-first drop: no crac
 T4c-PPA-CROWN-09,T4c-PPA-CROWN,G8,R1-PPA,PPA crown 3,"side-on drop: no crack, no whitening",Y/N,yes,Y,,,,,COLD
 T4c-PPA-CROWN-10,T4c-PPA-CROWN,G8,R1-PPA,PPA crown 3,pawl still locks on the rack,Y/N,yes,Y,,,,,COLD
 T4c-PPA-CROWN-11,T4c-PPA-CROWN,G8,R1-PPA,PAHT control,drops (record),Y/N,record,,,,,,
-CLEVIS-SHARE-B-PPA-01,CLEVIS-SHARE-B-PPA,G8,R1-PPA,pair 1,"u1, shim on the outer cheek, 429 N",microstrain,record,,,,,,SHARE-GAUGE
-CLEVIS-SHARE-B-PPA-02,CLEVIS-SHARE-B-PPA,G8,R1-PPA,pair 1,"u, as built, 429 N",microstrain,record,,,,,,SHARE-GAUGE
-CLEVIS-SHARE-B-PPA-03,CLEVIS-SHARE-B-PPA,G8,R1-PPA,pair 2,"u1, shim on the outer cheek, 429 N",microstrain,record,,,,,,SHARE-GAUGE
-CLEVIS-SHARE-B-PPA-04,CLEVIS-SHARE-B-PPA,G8,R1-PPA,pair 2,"u, as built, 429 N",microstrain,record,,,,,,SHARE-GAUGE
-CLEVIS-SHARE-B-PPA-05,CLEVIS-SHARE-B-PPA,G8,R1-PPA,pair 3,"u1, shim on the outer cheek, 429 N",microstrain,record,,,,,,SHARE-GAUGE
-CLEVIS-SHARE-B-PPA-06,CLEVIS-SHARE-B-PPA,G8,R1-PPA,pair 3,"u, as built, 429 N",microstrain,record,,,,,,SHARE-GAUGE
-CLEVIS-SHARE-B-PPA-07,CLEVIS-SHARE-B-PPA,G8,R1-PPA,all pairs,largest share u / u1,ratio,max,0.79,,,,,US2 clevis fatigue (share)
+CLEVIS-SHARE-B-PPA-01,CLEVIS-SHARE-B-PPA,G8,R1-PPA,set 1,"u1, shim on the outer cheek, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PPA-02,CLEVIS-SHARE-B-PPA,G8,R1-PPA,set 1,"u0, shim on the inner cheek, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PPA-03,CLEVIS-SHARE-B-PPA,G8,R1-PPA,set 1,u0 / u1 (gauge on its site),ratio,band,0.41..0.44,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PPA-04,CLEVIS-SHARE-B-PPA,G8,R1-PPA,set 1,"u, as built, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PPA-05,CLEVIS-SHARE-B-PPA,G8,R1-PPA,set 2,"u1, shim on the outer cheek, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PPA-06,CLEVIS-SHARE-B-PPA,G8,R1-PPA,set 2,"u0, shim on the inner cheek, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PPA-07,CLEVIS-SHARE-B-PPA,G8,R1-PPA,set 2,u0 / u1 (gauge on its site),ratio,band,0.41..0.44,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PPA-08,CLEVIS-SHARE-B-PPA,G8,R1-PPA,set 2,"u, as built, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PPA-09,CLEVIS-SHARE-B-PPA,G8,R1-PPA,set 3,"u1, shim on the outer cheek, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PPA-10,CLEVIS-SHARE-B-PPA,G8,R1-PPA,set 3,"u0, shim on the inner cheek, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PPA-11,CLEVIS-SHARE-B-PPA,G8,R1-PPA,set 3,u0 / u1 (gauge on its site),ratio,band,0.41..0.44,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PPA-12,CLEVIS-SHARE-B-PPA,G8,R1-PPA,set 3,"u, as built, 429 N",microstrain,record,,,,,,SHARE-GAUGE
+CLEVIS-SHARE-B-PPA-13,CLEVIS-SHARE-B-PPA,G8,R1-PPA,all sets,largest share (u - u0) / (u1 - u0),ratio,max,0.79,,,,,US2 clevis fatigue (share)
 US2-LUG-PPA-01,US2-LUG-PPA,G8,R1-PPA,traveller,uptake at the test (days conditioned in the notes),%,record,,,,,,LUG-COND
 US2-LUG-PPA-02,US2-LUG-PPA,G8,R1-PPA,proof,"feeler at 694 N, 60 s: does not enter",Y/N,yes,Y,,,,,US2 lug fatigue
 US2-LUG-PPA-03,US2-LUG-PPA,G8,R1-PPA,cycles,cycles reached at 463 N,cycles,min,100000,,,,,US2 lug fatigue

@@ -121,10 +121,12 @@ def regions(name: str, c: np.ndarray, p: dict) -> dict:
 
 
 def sub_fea(name: str, loads: dict, extra=None, h: float = 1.0, box: dict | None = None, mesh=None,
-            split_gap: bool = True, field: str | None = None) -> dict:
+            split_gap: bool = True, field: str | None = None, cheek: str | None = None) -> dict:
     """FEA of lane lug ``name`` cut from the print (see the module docstring). ``loads`` {label: [Fx, Fy, Fz]} on the
     R pin (frame, factored); ``extra(c, p, solid)`` -> bool mask of voxels to add (the BL-053 fixes); ``field`` keeps one
-    load's element FI and stresses for figures and the gauge read-out."""
+    load's element FI and stresses for figures and the gauge read-out. ``cheek`` (BL-076 SHARE-GAUGE): None puts the
+    pin load on both cheek bores (the default, as before); 'inner' / 'outer' puts all of it on the body-side / the
+    far (clevis) cheek, i.e. outer-cheek share 0 / 1."""
     from . import bag_attach as BA
     from . import h1_bedfit as BF
     from .fem import ke_h8
@@ -164,6 +166,9 @@ def sub_fea(name: str, loads: dict, extra=None, h: float = 1.0, box: dict | None
     band = (rr > hole_r - 0.35 * h) & (rr < hole_r + 1.2 * h)
     band &= np.abs(xl) >= geom.throat / 2.0 - 0.3
     band &= np.abs(xl) <= geom.throat / 2.0 + geom.cheek + 0.6 * h
+    if cheek is not None:
+        out_side = 1.0 if p["x"] > STAY_X else -1.0          # the outer (clevis) cheek is the one away from the stay
+        band &= (xl * out_side > 0) if cheek == "outer" else (xl * out_side < 0)
     in_solid = np.zeros(g.nn, bool)
     in_solid[np.unique(g.enodes[solid])] = True
     band &= in_solid

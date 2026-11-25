@@ -55,7 +55,7 @@ A half starts on a spool that holds its pre-change use plus the 60 g reserve and
 | 9 | frame upper half to the change at layer 101: 439 g | 311 |
 | 10 | frame upper half from layer 101: 552 g | 198 |
 
-**10 spools** (6 before the gate). BL-073 booked 5: see BUILD_H1P.md FOUND.
+**10 spools** (6 before the gate). bl070_h1p.md books the same 10 (BL-076 reads this plan); 8 if the first-article upper half becomes the frame's upper half (orchestrator call).
 
 ## 3. Rig loads: everything stays under the 100 kg cell
 
@@ -200,12 +200,13 @@ Note: BL-074: released to print now. ASSUMPTION CROWN-CUT (the cut box).
 1. Print job E: the H1-P route piece `test_pieces/us2_route_stay_R_h1p.stl` and the H1-P clevis `iter1/frame/h1p/us2_clevis_R.stl`. Ream and bolt the clevis as BUILD_H1 section 10; fit the US2 gauge as CLEVIS-SHARE.
 2. Set up as CLEVIS-SHARE loading B: piece clamped on the bare stay only (z 40-48 and 110-122), pull direction [0.0, 0.9216, -0.3881] (frame R), the real US2 pin set and a sewn US eye.
 3. Reading 1 (share 1.0): 1 mm PTFE shim between the eye and the OUTER (clevis) cheek, eye pushed against it. Pull to 429 N (43.7 kg on the scale, 96 lbf), hold 10 s, read the gauge (microstrain) = u1. Unload, read the zero.
-4. Reading 2 (as built): shim out, eye centred in the throat as sewn. Pull to the same 429 N, read u. Unload.
-5. Repeat readings 1 and 2 three times (take the eye off and refit it each time).
-6. Share = u / u1 for each pair (ASSUMPTION SHARE-GAUGE). Type all six readings; the sheet takes the largest share.
-7. Keep the piece: it goes on to US2-LUG-PPA.
+4. Reading 0 (share 0, BL-076): the same 1 mm PTFE shim between the eye and the INNER (body) cheek, eye pushed against it. Pull to the same 429 N, read u0. Unload. u0 / u1 must read 0.41-0.44; outside that the gauge is off its site: stop and flag it.
+5. Reading 2 (as built): shim out, eye centred in the throat as sewn. Pull to the same 429 N, read u. Unload.
+6. Repeat readings 1, 0 and 2 three times (take the eye off and refit it each time).
+7. Share = (u - u0) / (u1 - u0) for each set (ASSUMPTION SHARE-GAUGE, BL-076: the gauge does not read zero at share 0, so u / u1 over-reads). Type all nine readings; the sheet takes the largest share.
+8. Keep the piece: it goes on to US2-LUG-PPA.
 
-**Pass:** the largest of 3 measured shares u / u1 <= 0.79; otherwise metal clevis hole sleeves (DECISIONS alt).
+**Pass:** the largest of 3 measured shares (u - u0) / (u1 - u0) <= 0.79 (BL-076; without u0: u / u1 <= 0.87); otherwise metal clevis hole sleeves (DECISIONS alt).
 
 Note: BL-074: released to print now. ASSUMPTION SHARE-GAUGE.
 
@@ -276,7 +277,7 @@ CA-3-PPA corrected 'if below' band (review 8 m-4, kept for the record): (review 
 
 ## 15. HB-6-PPA: not needed
 
-M5 heat-set insert pull-out in PPA-CF at 60 C (only if inserts replace the through-bolts). **NOT-NEEDED.** NOT NEEDED while through-bolts are used (8 x Ti gr5 M5 x 35 DIN 7984 + 8 x A2 M5 DIN 934 nuts (Loctite 243) on one 6061-T6 bearing ring 47 / 24 x 2 mm (8 holes D5.5 on r 19, the mount pattern) and a printed PPA-CF nut keeper (3 mm, holds the nuts while the screws are turned from the mount side) replace 8 x M5 x 9.5 brass inserts + 8 x M5 x 12; torque 0.6 N m).
+M5 heat-set insert pull-out in PPA-CF at 60 C (only if inserts replace the through-bolts). **NOT-NEEDED.** NOT NEEDED while through-bolts are used (8 x Ti gr5 M5 x 35 DIN 7984 + 8 x A2 M5 DIN 934 nuts (Loctite 243) on one two 6061-T6 bearing plates .063 in (1.6 mm), arcs r 13-24.2 (26 / 48.4 mm), 4 holes each (8 holes D5.5 on r 19, the mount pattern) and a printed PPA-CF nut keeper (3 mm, holds the nuts while the screws are turned from the mount side) replace 8 x M5 x 9.5 brass inserts + 8 x M5 x 12; torque 0.45 N m).
 
 ## ASSUMPTIONS used on these sheets
 
@@ -287,7 +288,7 @@ M5 heat-set insert pull-out in PPA-CF at 60 C (only if inserts replace the throu
 - **BOX-ON-RIG**: The 40 C box (cooler, 60 W heater, thermostat) fits round the lever rig's coupon station with the link through a slot in its lid; the coupon holds 40 +/- 2 C. Settled by: the thermometer row in the results sheet.
 - **BOX-60**: The 40 C box holds 60 C for the CA-4-HW 60 C set. Settled by: the thermometer row in the results sheet.
 - **FREEZER**: A chest freezer on its coldest setting reaches -20 C; a home upright freezer often holds only -18 C. Settled by: the thermometer row in the results sheet.
-- **SHARE-GAUGE**: The US2 gauge reading is linear in the outer-cheek share at the B peak load, so share = reading as built / reading with the shim on the outer cheek (share 1.0). Settled by: structural-fea-engineer check of the gauge sensitivity on the BL-056 submodel before the readings are used.
+- **SHARE-GAUGE**: The US2 gauge reading is linear in the outer-cheek share at the B peak load (BL-076 checked it on the H1-P voxel model: inner cheek only, outer cheek only and both superpose) but it is NOT proportional: at share 0 it still reads about 0.43 of the share-1 reading (the inner cheek's load bends the arm root too), so share = (u - u0) / (u1 - u0) with u0 the reading with the shim on the inner cheek. Settled by: the u0 / u1 band check in the CLEVIS-SHARE-B-PPA readings (bl070_h1p.json bl076.share_gauge).
 - **LUG-COND**: The US2 piece is thick: it is conditioned with the coupons to constant mass or 28 days, whichever comes first, and tested at 40 C; the uptake is written down. Settled by: engineer review of the uptake.
 - **PAHT-STOCK**: The PAHT-CF controls (the PAHT-CF job) come from the PAHT-CF spool of the fallback path. Settled by: coupon print.
 - BL-073: B-BASIS-N5, HOT-40, MATRIX-FRAC, E-HW, BEARING-RING, K-NUT, CREEP-LONG, CTE-Z, LAYER-H, SPOOL-RESERVE, PAD, JOINT-XY (bl070_h1p.json `assumptions_bl073`).

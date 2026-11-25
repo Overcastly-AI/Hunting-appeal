@@ -1072,7 +1072,7 @@
     "goal": 1.15,
     "basis": "BL-073 hot/wet B-basis (ppa_hw)",
     "pass": false,
-    "gated_by": "CLEVIS-SHARE B lug proof (kit) + CA-1-HW; >= 1.0 on hot/wet, goal 1.15 is the BL-021 scatter goal: see OPEN"
+    "gated_by": "CLEVIS-SHARE B lug proof (kit) + CA-1-HW; >= 1.0 on hot/wet, goal 1.15 is the BL-021 scatter goal: see OPEN (bl070_h1p.md 'Open items')"
    },
    {
     "name": "US2 clevis joint strength (share 1.0)",
@@ -1091,23 +1091,23 @@
    },
    {
     "name": "hip mount strength (through_bolt)",
-    "value": 2.22,
+    "value": 2.07,
     "goal": 1.5,
-    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "basis": "BL-073 hot/wet B-basis (ppa_hw); BL-076 plates",
     "pass": true
    },
    {
     "name": "hip mount fatigue (through_bolt)",
-    "value": 5.74,
+    "value": 4.31,
     "goal": 1.15,
-    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "basis": "BL-073 hot/wet B-basis (ppa_hw); BL-076 plates",
     "pass": true
    },
    {
     "name": "hip mount creep (through_bolt)",
     "value": 1.56,
     "goal": 1.5,
-    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "basis": "BL-073 hot/wet B-basis (ppa_hw); BL-076 plates",
     "pass": true
    },
    {
@@ -1195,7 +1195,7 @@
     "goal": 1.15,
     "basis": "BL-073 hot/wet B-basis (ppa_hw)",
     "pass": false,
-    "gated_by": "CLEVIS-SHARE B lug proof (kit) + CA-1-HW; >= 1.0 on hot/wet, goal 1.15 is the BL-021 scatter goal: see OPEN"
+    "gated_by": "CLEVIS-SHARE B lug proof (kit) + CA-1-HW; >= 1.0 on hot/wet, goal 1.15 is the BL-021 scatter goal: see OPEN (bl070_h1p.md 'Open items')"
    },
    "US2 clevis joint strength (share 1.0)": {
     "name": "US2 clevis joint strength (share 1.0)",
@@ -1214,23 +1214,23 @@
    },
    "hip mount strength (through_bolt)": {
     "name": "hip mount strength (through_bolt)",
-    "value": 2.22,
+    "value": 2.07,
     "goal": 1.5,
-    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "basis": "BL-073 hot/wet B-basis (ppa_hw); BL-076 plates",
     "pass": true
    },
    "hip mount fatigue (through_bolt)": {
     "name": "hip mount fatigue (through_bolt)",
-    "value": 5.74,
+    "value": 4.31,
     "goal": 1.15,
-    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "basis": "BL-073 hot/wet B-basis (ppa_hw); BL-076 plates",
     "pass": true
    },
    "hip mount creep (through_bolt)": {
     "name": "hip mount creep (through_bolt)",
     "value": 1.56,
     "goal": 1.5,
-    "basis": "BL-073 hot/wet B-basis (ppa_hw)",
+    "basis": "BL-073 hot/wet B-basis (ppa_hw); BL-076 plates",
     "pass": true
    },
    "lash pulls W1 / W2 (BL-068, p99)": {
@@ -1770,29 +1770,29 @@
    "exported_raster": 119860
   },
   "hip_mount": {
-   "nut_seat_depth_mm": 24.0,
-   "bearing_ring_mm2": 1092.5,
-   "bearing_n": 2436.1,
+   "nut_seat_depth_mm": 23.6,
+   "bearing_ring_mm2": 645.6,
+   "bearing_n": 1826.2,
    "rows": {
     "C2|H_pin": {
      "T_max_n": 194.7,
      "kind": "strength",
-     "pressure_mpa": 10.71,
-     "sf": 2.32,
+     "pressure_mpa": 11.37,
+     "sf": 2.18,
      "goal": 1.5
     },
     "C1|H_pin": {
      "T_max_n": 129.8,
      "kind": "strength",
-     "pressure_mpa": 10.05,
-     "sf": 2.47,
+     "pressure_mpa": 10.49,
+     "sf": 2.36,
      "goal": 1.5
     },
     "walk|H_pin": {
      "T_max_n": 103.8,
      "kind": "fatigue",
-     "pressure_mpa": 1.06,
-     "sf": 7.04,
+     "pressure_mpa": 1.41,
+     "sf": 5.28,
      "goal": 1.15
     },
     "carry|H_pin": {
@@ -1805,22 +1805,22 @@
     "C2|H_frame": {
      "T_max_n": 238.6,
      "kind": "strength",
-     "pressure_mpa": 11.16,
-     "sf": 2.22,
+     "pressure_mpa": 11.97,
+     "sf": 2.07,
      "goal": 1.5
     },
     "C1|H_frame": {
      "T_max_n": 159.1,
      "kind": "strength",
-     "pressure_mpa": 10.35,
-     "sf": 2.4,
+     "pressure_mpa": 10.89,
+     "sf": 2.28,
      "goal": 1.5
     },
     "walk|H_frame": {
      "T_max_n": 127.3,
      "kind": "fatigue",
-     "pressure_mpa": 1.3,
-     "sf": 5.74,
+     "pressure_mpa": 1.73,
+     "sf": 4.31,
      "goal": 1.15
     },
     "carry|H_frame": {
@@ -1832,33 +1832,37 @@
     }
    },
    "min_sf": {
-    "strength": 2.22,
-    "fatigue": 5.74,
+    "strength": 2.07,
+    "fatigue": 4.31,
     "creep": 1.56
    },
    "pass": true,
-   "hardware": "8 x Ti gr5 M5 x 35 DIN 7984 + 8 x A2 M5 DIN 934 nuts (Loctite 243) on one 6061-T6 bearing ring 47 / 24 x 2 mm (8 holes D5.5 on r 19, the mount pattern) and a printed PPA-CF nut keeper (3 mm, holds the nuts while the screws are turned from the mount side) replace 8 x M5 x 9.5 brass inserts + 8 x M5 x 12; torque 0.6 N m",
-   "torque_nm": 0.6,
+   "hardware": "8 x Ti gr5 M5 x 35 DIN 7984 + 8 x A2 M5 DIN 934 nuts (Loctite 243) on one two 6061-T6 bearing plates .063 in (1.6 mm), arcs r 13-24.2 (26 / 48.4 mm), 4 holes each (8 holes D5.5 on r 19, the mount pattern) and a printed PPA-CF nut keeper (3 mm, holds the nuts while the screws are turned from the mount side) replace 8 x M5 x 9.5 brass inserts + 8 x M5 x 12; torque 0.45 N m",
+   "torque_nm": 0.45,
    "preload_n": {
-    "nom": 600.0,
-    "max": 857.0,
-    "min": 462.0
+    "nom": 450.0,
+    "max": 643.0,
+    "min": 346.0
    },
    "screw": {
-    "stack_mm": 31.0,
+    "stack_mm": 30.6,
     "screw_l_mm": 35.0,
-    "protrusion_mm": 4.0,
-    "protrusion_threads": 5.0,
+    "protrusion_mm": 4.4,
+    "protrusion_threads": 5.5,
     "bl070_l_mm": 20.0,
     "bl070_protrusion_mm": 0.0
    },
    "ring": {
     "material": "6061-T6 (data/materials/metals/alu_6061_t6.yaml)",
-    "od_mm": 47.0,
-    "id_mm": 24.0,
-    "t_mm": 2.0,
-    "holes": "8 x D5.5 on r 19 (HIP_CHOSEN)",
-    "g": 5.9
+    "od_mm": 48.4,
+    "id_mm": 26.0,
+    "t_mm": 1.6,
+    "holes": "8 x D5.5 on r 19 (HIP_CHOSEN), 4 per plate",
+    "g": 2.79,
+    "layout": "arcs",
+    "pieces": 2,
+    "stock": "6061-T6 .063 in (1.6 mm) sheet",
+    "outline": "two arc plates r 13-24.2, ends 2.4 mm past the end holes, R1.5 corners"
    },
    "boss": {
     "depth_mm": 22.0,
@@ -1868,27 +1872,28 @@
     "traps": 0
    },
    "relaxation": {
-    "kb_n_mm": 50387,
-    "km0_n_mm": 15684,
+    "kb_n_mm": 51046,
+    "km0_n_mm": 9268,
     "creep_long_ratio": 0.5,
-    "residual_fraction": 0.567,
-    "residual_preload_min_n": 262.0,
+    "residual_fraction": 0.542,
+    "residual_preload_min_n": 187.0,
     "walk_bolt_tension_n": 127.3,
     "c2_bolt_tension_n": 238.6,
     "closed_at_walk": true
    },
    "cold": {
     "dT": 43.0,
-    "shrink_mm": 0.0499,
-    "k_series_n_mm": 20073,
-    "preload_loss_n": 1001.0,
+    "shrink_mm": 0.0496,
+    "k_series_n_mm": 14223,
+    "preload_loss_n": 706.0,
     "slack_at_minus20": true
    },
    "webs": {
     "between_holes_mm": 3.69,
     "hole_to_boss_edge_mm": 3.25,
-    "ring_outer_ligament_mm": 1.75,
-    "ring_inner_ligament_mm": 4.25,
+    "ring_outer_ligament_mm": 2.45,
+    "ring_inner_ligament_mm": 3.25,
+    "ring_end_ligament_mm": 2.4,
     "traps": 0
    }
   },
@@ -3214,8 +3219,8 @@
    "US2 clevis strength (share 1.0)": 2.03,
    "US2 clevis fatigue (share 1.0)": 0.91,
    "US2 clevis fatigue (share 0.6)": 1.52,
-   "hip mount strength": 2.22,
-   "hip mount fatigue": 5.74,
+   "hip mount strength": 2.07,
+   "hip mount fatigue": 4.31,
    "hip mount creep": 1.56,
    "lash": 4.95,
    "buckling": 3.100847252530468,
@@ -3236,7 +3241,7 @@
      "US2 lug fatigue": 0.892,
      "US2 clevis fatigue (share 0.6)": 1.267,
      "US2 clevis fatigue (share 1.0)": 0.758,
-     "hip mount fatigue": 4.783,
+     "hip mount fatigue": 3.592,
      "hip mount creep": 1.56,
      "buckling": 3.101
     }
@@ -3254,7 +3259,7 @@
      "US2 lug fatigue": 0.981,
      "US2 clevis fatigue (share 0.6)": 1.52,
      "US2 clevis fatigue (share 1.0)": 0.91,
-     "hip mount fatigue": 5.74,
+     "hip mount fatigue": 4.31,
      "hip mount creep": 1.56,
      "buckling": 3.101
     }
@@ -3272,7 +3277,7 @@
      "US2 lug fatigue": 1.032,
      "US2 clevis fatigue (share 0.6)": 1.466,
      "US2 clevis fatigue (share 1.0)": 0.878,
-     "hip mount fatigue": 5.537,
+     "hip mount fatigue": 4.158,
      "hip mount creep": 1.505,
      "buckling": 3.101
     }
@@ -3290,7 +3295,7 @@
      "US2 lug fatigue": 0.967,
      "US2 clevis fatigue (share 0.6)": 1.374,
      "US2 clevis fatigue (share 1.0)": 0.823,
-     "hip mount fatigue": 5.19,
+     "hip mount fatigue": 3.897,
      "hip mount creep": 1.41,
      "buckling": 3.101
     }
@@ -3308,7 +3313,7 @@
      "US2 lug fatigue": 1.124,
      "US2 clevis fatigue (share 0.6)": 1.596,
      "US2 clevis fatigue (share 1.0)": 0.956,
-     "hip mount fatigue": 6.027,
+     "hip mount fatigue": 4.526,
      "hip mount creep": 1.638,
      "buckling": 3.101
     }
@@ -3326,7 +3331,7 @@
      "US2 lug fatigue": 1.07,
      "US2 clevis fatigue (share 0.6)": 1.52,
      "US2 clevis fatigue (share 1.0)": 0.91,
-     "hip mount fatigue": 5.74,
+     "hip mount fatigue": 4.31,
      "hip mount creep": 1.56,
      "buckling": 2.639
     }
@@ -3358,19 +3363,128 @@
    "allow_mpa": 24.8,
    "hetenyi": {
     "k0": 244.3,
-    "beta": 0.191,
-    "group_factor": 1.227,
-    "b": 11.5,
-    "mpa_per_n": 0.010183951043703463,
-    "char_len_mm": 5.24
+    "beta": 0.2257,
+    "group_factor": 1.069,
+    "b": 11.2,
+    "mpa_per_n": 0.010771352588817493,
+    "char_len_mm": 4.43
    },
-   "ring_area_mm2": 1092.5,
-   "pressure_mpa_per_kn": 10.18,
-   "torque_nm": 0.6,
+   "ring_area_mm2": 645.6,
+   "pressure_source": "bl076 plate FE (cold foundation)",
+   "ring_checks": {
+    "torque_nm": 0.45,
+    "preload_n": {
+     "nom": 450.0,
+     "max": 643.0,
+     "min": 346.0
+    },
+    "p_per_n_cold": 0.013576665864633842,
+    "bearing": {
+     "C2|H_pin": {
+      "T_n": 194.7,
+      "kind": "strength",
+      "pressure_mpa": 11.37,
+      "sf": 2.18,
+      "goal": 1.5
+     },
+     "C1|H_pin": {
+      "T_n": 129.8,
+      "kind": "strength",
+      "pressure_mpa": 10.49,
+      "sf": 2.36,
+      "goal": 1.5
+     },
+     "walk|H_pin": {
+      "T_n": 103.8,
+      "kind": "fatigue",
+      "pressure_mpa": 1.41,
+      "sf": 5.28,
+      "goal": 1.15
+     },
+     "carry|H_pin": {
+      "T_n": 64.9,
+      "kind": "creep",
+      "pressure_mpa": 8.73,
+      "sf": 1.56,
+      "goal": 1.5
+     },
+     "C2|H_frame": {
+      "T_n": 238.6,
+      "kind": "strength",
+      "pressure_mpa": 11.97,
+      "sf": 2.07,
+      "goal": 1.5
+     },
+     "C1|H_frame": {
+      "T_n": 159.1,
+      "kind": "strength",
+      "pressure_mpa": 10.89,
+      "sf": 2.28,
+      "goal": 1.5
+     },
+     "walk|H_frame": {
+      "T_n": 127.3,
+      "kind": "fatigue",
+      "pressure_mpa": 1.73,
+      "sf": 4.31,
+      "goal": 1.15
+     },
+     "carry|H_frame": {
+      "T_n": 79.5,
+      "kind": "creep",
+      "pressure_mpa": 8.73,
+      "sf": 1.56,
+      "goal": 1.5
+     }
+    },
+    "bearing_min": {
+     "strength": 2.07,
+     "fatigue": 4.31,
+     "creep": 1.56
+    },
+    "bending_mpa": {
+     "cold": 121.6,
+     "hw": 124.4,
+     "hw_long": 126.7
+    },
+    "bending_sf": 1.9,
+    "plate_fatigue_sf": 1.81,
+    "punch_sf": 5.47,
+    "tearout_sf": 4.22,
+    "hole_bearing_sf": 7.62,
+    "nut_face_sf": 3.73,
+    "lateral_per_bolt_n": 253.1,
+    "c2_t_n": 238.6,
+    "walk_t_n": 127.3,
+    "min_contact_pressure_mpa": 6.271,
+    "residual_preload_min_n": 187.0,
+    "closed_at_walk": true,
+    "pass": true
+   },
+   "ring_design": {
+    "layout": "arcs",
+    "r_o": 24.2,
+    "r_i": 13.0,
+    "t": 1.6,
+    "end_lig": 2.4,
+    "fillet": 1.5
+   },
+   "ring_laser": {
+    "stock_gauge": true,
+    "fits_spot_face": true,
+    "edge_min_over_t": 1.5,
+    "edge_ok_1p5t": true,
+    "edge_ok_2t": false,
+    "edge_min_at_tol_mm": 2.273,
+    "hole_ok": true,
+    "ok": true
+   },
+   "pressure_mpa_per_kn": 13.58,
+   "torque_nm": 0.45,
    "preload_n": {
-    "nom": 600.0,
-    "max": 857.0,
-    "min": 462.0
+    "nom": 450.0,
+    "max": 643.0,
+    "min": 346.0
    },
    "nut_factor": {
     "nominal": 0.2,
@@ -3383,22 +3497,22 @@
     "C2|H_pin": {
      "T_max_n": 194.7,
      "kind": "strength",
-     "pressure_mpa": 10.71,
-     "sf": 2.32,
+     "pressure_mpa": 11.37,
+     "sf": 2.18,
      "goal": 1.5
     },
     "C1|H_pin": {
      "T_max_n": 129.8,
      "kind": "strength",
-     "pressure_mpa": 10.05,
-     "sf": 2.47,
+     "pressure_mpa": 10.49,
+     "sf": 2.36,
      "goal": 1.5
     },
     "walk|H_pin": {
      "T_max_n": 103.8,
      "kind": "fatigue",
-     "pressure_mpa": 1.06,
-     "sf": 7.04,
+     "pressure_mpa": 1.41,
+     "sf": 5.28,
      "goal": 1.15
     },
     "carry|H_pin": {
@@ -3411,22 +3525,22 @@
     "C2|H_frame": {
      "T_max_n": 238.6,
      "kind": "strength",
-     "pressure_mpa": 11.16,
-     "sf": 2.22,
+     "pressure_mpa": 11.97,
+     "sf": 2.07,
      "goal": 1.5
     },
     "C1|H_frame": {
      "T_max_n": 159.1,
      "kind": "strength",
-     "pressure_mpa": 10.35,
-     "sf": 2.4,
+     "pressure_mpa": 10.89,
+     "sf": 2.28,
      "goal": 1.5
     },
     "walk|H_frame": {
      "T_max_n": 127.3,
      "kind": "fatigue",
-     "pressure_mpa": 1.3,
-     "sf": 5.74,
+     "pressure_mpa": 1.73,
+     "sf": 4.31,
      "goal": 1.15
     },
     "carry|H_frame": {
@@ -3438,49 +3552,50 @@
     }
    },
    "min_sf": {
-    "strength": 2.22,
-    "fatigue": 5.74,
+    "strength": 2.07,
+    "fatigue": 4.31,
     "creep": 1.56
    },
    "pass": true,
    "relaxation": {
-    "kb_n_mm": 50387,
-    "km0_n_mm": 15684,
+    "kb_n_mm": 51046,
+    "km0_n_mm": 9268,
     "creep_long_ratio": 0.5,
-    "residual_fraction": 0.567,
-    "residual_preload_min_n": 262.0,
+    "residual_fraction": 0.542,
+    "residual_preload_min_n": 187.0,
     "walk_bolt_tension_n": 127.3,
     "c2_bolt_tension_n": 238.6,
     "closed_at_walk": true
    },
    "cold": {
     "dT": 43.0,
-    "shrink_mm": 0.0499,
-    "k_series_n_mm": 20073,
-    "preload_loss_n": 1001.0,
+    "shrink_mm": 0.0496,
+    "k_series_n_mm": 14223,
+    "preload_loss_n": 706.0,
     "slack_at_minus20": true
    },
    "screw": {
-    "stack_mm": 31.0,
+    "stack_mm": 30.6,
     "screw_l_mm": 35.0,
-    "protrusion_mm": 4.0,
-    "protrusion_threads": 5.0,
+    "protrusion_mm": 4.4,
+    "protrusion_threads": 5.5,
     "bl070_l_mm": 20.0,
     "bl070_protrusion_mm": 0.0
    },
    "hardware_g": {
     "screws_extra_g": 8.45,
-    "ring_g": 5.9,
+    "ring_g": 2.79,
     "keeper_g": 3.58
    },
    "webs": {
     "between_holes_mm": 3.69,
     "hole_to_boss_edge_mm": 3.25,
-    "ring_outer_ligament_mm": 1.75,
-    "ring_inner_ligament_mm": 4.25,
+    "ring_outer_ligament_mm": 2.45,
+    "ring_inner_ligament_mm": 3.25,
+    "ring_end_ligament_mm": 2.4,
     "traps": 0
    },
-   "hardware": "8 x Ti gr5 M5 x 35 DIN 7984 + 8 x A2 M5 DIN 934 nuts (Loctite 243) on one 6061-T6 bearing ring 47 / 24 x 2 mm (8 holes D5.5 on r 19, the mount pattern) and a printed PPA-CF nut keeper (3 mm, holds the nuts while the screws are turned from the mount side) replace 8 x M5 x 9.5 brass inserts + 8 x M5 x 12; torque 0.6 N m",
+   "hardware": "8 x Ti gr5 M5 x 35 DIN 7984 + 8 x A2 M5 DIN 934 nuts (Loctite 243) on one two 6061-T6 bearing plates .063 in (1.6 mm), arcs r 13-24.2 (26 / 48.4 mm), 4 holes each (8 holes D5.5 on r 19, the mount pattern) and a printed PPA-CF nut keeper (3 mm, holds the nuts while the screws are turned from the mount side) replace 8 x M5 x 9.5 brass inserts + 8 x M5 x 12; torque 0.45 N m",
    "hip_rows_source": "h1_closeout.hip_check T (BL-055 tipping model, FLANGE-RIGID)",
    "bl070_dw_ring_check": {
     "a_dw_mm2": 13.6,
@@ -3490,9 +3605,13 @@
   },
   "hip_parts": {
    "hip_bearing_ring": {
-    "volume_mm3": 2185.3,
+    "volume_mm3": 1033.0,
     "watertight": true,
-    "g": 5.9
+    "g": 2.79,
+    "pieces": 2,
+    "dxf_layers": [
+     "CUT"
+    ]
    },
    "hip_nut_keeper": {
     "volume_mm3": 2860.6,
@@ -4064,8 +4183,8 @@
    "bl070_body_g": 1268.1,
    "body_delta_vs_bl070_g": 44.0,
    "body_delta_vs_paht_h1_g": 242.8,
-   "hip_hardware_delta_vs_bl070_g": 17.9,
-   "frame_delta_vs_bl070_g": 61.9,
+   "hip_hardware_delta_vs_bl070_g": 14.8,
+   "frame_delta_vs_bl070_g": 58.8,
    "pads_filament_g": {
     "lower": 31.1,
     "upper": 22.8
@@ -4194,17 +4313,17 @@
    "p_tip_lbf": 105.0,
    "under_rig_cell": true
   },
-  "hip_torque_nm": 0.6,
+  "hip_torque_nm": 0.45,
   "hip_preload_n": {
-   "nom": 600.0,
-   "max": 857.0,
-   "min": 462.0
+   "nom": 450.0,
+   "max": 643.0,
+   "min": 346.0
   },
   "hip_screw": {
-   "stack_mm": 31.0,
+   "stack_mm": 30.6,
    "screw_l_mm": 35.0,
-   "protrusion_mm": 4.0,
-   "protrusion_threads": 5.0,
+   "protrusion_mm": 4.4,
+   "protrusion_threads": 5.5,
    "bl070_l_mm": 20.0,
    "bl070_protrusion_mm": 0.0
   },
@@ -4286,5 +4405,877 @@
   "outputs/screens/20261125_bl073_2.png",
   "outputs/screens/20261125_bl073_3.png",
   "outputs/screens/20261125_bl073_4.png"
- ]
+ ],
+ "bl076": {
+  "ticket": "BL-076",
+  "date": "2026-11-25",
+  "before": {
+   "hip_plate": {
+    "mat": "ppa_hw",
+    "allow_mpa": 24.8,
+    "hetenyi": {
+     "k0": 244.3,
+     "beta": 0.191,
+     "group_factor": 1.227,
+     "b": 11.5,
+     "mpa_per_n": 0.010183951043703463,
+     "char_len_mm": 5.24
+    },
+    "ring_area_mm2": 1092.5,
+    "pressure_mpa_per_kn": 10.18,
+    "torque_nm": 0.6,
+    "preload_n": {
+     "nom": 600.0,
+     "max": 857.0,
+     "min": 462.0
+    },
+    "nut_factor": {
+     "nominal": 0.2,
+     "range": [
+      0.14,
+      0.26
+     ]
+    },
+    "rows": {
+     "C2|H_pin": {
+      "T_max_n": 194.7,
+      "kind": "strength",
+      "pressure_mpa": 10.71,
+      "sf": 2.32,
+      "goal": 1.5
+     },
+     "C1|H_pin": {
+      "T_max_n": 129.8,
+      "kind": "strength",
+      "pressure_mpa": 10.05,
+      "sf": 2.47,
+      "goal": 1.5
+     },
+     "walk|H_pin": {
+      "T_max_n": 103.8,
+      "kind": "fatigue",
+      "pressure_mpa": 1.06,
+      "sf": 7.04,
+      "goal": 1.15
+     },
+     "carry|H_pin": {
+      "T_max_n": 64.9,
+      "kind": "creep",
+      "pressure_mpa": 8.73,
+      "sf": 1.56,
+      "goal": 1.5
+     },
+     "C2|H_frame": {
+      "T_max_n": 238.6,
+      "kind": "strength",
+      "pressure_mpa": 11.16,
+      "sf": 2.22,
+      "goal": 1.5
+     },
+     "C1|H_frame": {
+      "T_max_n": 159.1,
+      "kind": "strength",
+      "pressure_mpa": 10.35,
+      "sf": 2.4,
+      "goal": 1.5
+     },
+     "walk|H_frame": {
+      "T_max_n": 127.3,
+      "kind": "fatigue",
+      "pressure_mpa": 1.3,
+      "sf": 5.74,
+      "goal": 1.15
+     },
+     "carry|H_frame": {
+      "T_max_n": 79.5,
+      "kind": "creep",
+      "pressure_mpa": 8.73,
+      "sf": 1.56,
+      "goal": 1.5
+     }
+    },
+    "min_sf": {
+     "strength": 2.22,
+     "fatigue": 5.74,
+     "creep": 1.56
+    },
+    "pass": true,
+    "relaxation": {
+     "kb_n_mm": 50387,
+     "km0_n_mm": 15684,
+     "creep_long_ratio": 0.5,
+     "residual_fraction": 0.567,
+     "residual_preload_min_n": 262.0,
+     "walk_bolt_tension_n": 127.3,
+     "c2_bolt_tension_n": 238.6,
+     "closed_at_walk": true
+    },
+    "cold": {
+     "dT": 43.0,
+     "shrink_mm": 0.0499,
+     "k_series_n_mm": 20073,
+     "preload_loss_n": 1001.0,
+     "slack_at_minus20": true
+    },
+    "screw": {
+     "stack_mm": 31.0,
+     "screw_l_mm": 35.0,
+     "protrusion_mm": 4.0,
+     "protrusion_threads": 5.0,
+     "bl070_l_mm": 20.0,
+     "bl070_protrusion_mm": 0.0
+    },
+    "hardware_g": {
+     "screws_extra_g": 8.45,
+     "ring_g": 5.9,
+     "keeper_g": 3.58
+    },
+    "webs": {
+     "between_holes_mm": 3.69,
+     "hole_to_boss_edge_mm": 3.25,
+     "ring_outer_ligament_mm": 1.75,
+     "ring_inner_ligament_mm": 4.25,
+     "traps": 0
+    },
+    "hardware": "8 x Ti gr5 M5 x 35 DIN 7984 + 8 x A2 M5 DIN 934 nuts (Loctite 243) on one 6061-T6 bearing ring 47 / 24 x 2 mm (8 holes D5.5 on r 19, the mount pattern) and a printed PPA-CF nut keeper (3 mm, holds the nuts while the screws are turned from the mount side) replace 8 x M5 x 9.5 brass inserts + 8 x M5 x 12; torque 0.6 N m",
+    "hip_rows_source": "h1_closeout.hip_check T (BL-055 tipping model, FLANGE-RIGID)",
+    "bl070_dw_ring_check": {
+     "a_dw_mm2": 13.6,
+     "fatigue_on_dw_bl069_basis": 1.06,
+     "fatigue_on_dw_hw": 0.8
+    }
+   },
+   "hip_parts": {
+    "hip_bearing_ring": {
+     "volume_mm3": 2185.3,
+     "watertight": true,
+     "g": 5.9
+    },
+    "hip_nut_keeper": {
+     "volume_mm3": 2860.6,
+     "watertight": true,
+     "g": 3.58
+    },
+    "keeper_pockets": 2,
+    "keeper_min_wall_mm": 1.14,
+    "files": [
+     "designs/pack_5200/iter1/frame/h1p/hip_bearing_ring.dxf",
+     "designs/pack_5200/iter1/frame/h1p/hip_bearing_ring.stl",
+     "designs/pack_5200/iter1/frame/h1p/hip_nut_keeper.stl"
+    ]
+   },
+   "rows": {
+    "hip mount strength (through_bolt)": 2.22,
+    "hip mount fatigue (through_bolt)": 5.74,
+    "hip mount creep (through_bolt)": 1.56
+   },
+   "ring": {
+    "material": "6061-T6 (data/materials/metals/alu_6061_t6.yaml)",
+    "od_mm": 48.4,
+    "id_mm": 26.0,
+    "t_mm": 1.6,
+    "holes": "8 x D5.5 on r 19 (HIP_CHOSEN), 4 per plate",
+    "g": 2.79,
+    "layout": "arcs",
+    "pieces": 2,
+    "stock": "6061-T6 .063 in (1.6 mm) sheet",
+    "outline": "two arc plates r 13-24.2, ends 2.4 mm past the end holes, R1.5 corners"
+   },
+   "torque_nm": 0.6
+  },
+  "laser": {
+   "service": "SendCutSend laser cut 6061-T6",
+   "url": "https://sendcutsend.com/materials/6061-aluminum",
+   "read": "2026-11-25",
+   "gauges_in": [
+    0.04,
+    0.063,
+    0.08,
+    0.1,
+    0.125,
+    0.187,
+    0.25
+   ],
+   "gauges_mm": [
+    1.02,
+    1.6,
+    2.03,
+    2.54,
+    3.18,
+    4.75,
+    6.35
+   ],
+   "tol_mm": 0.127,
+   "edge_factor": [
+    1.5,
+    2.0
+   ],
+   "hole_min_factor": 1.0,
+   "min_part_in": [
+    0.25,
+    0.375
+   ]
+  },
+  "options": [
+   {
+    "name": "BL-073 ring 47/24 x 2.03 (as ordered)",
+    "design": {
+     "layout": "ring",
+     "r_o": 23.5,
+     "r_i": 12.0,
+     "t": 2.03
+    },
+    "g": 5.99,
+    "laser_ok": false,
+    "edge_min_over_t": 0.862,
+    "torque_nm": null,
+    "ok": false,
+    "study_ok": null,
+    "rows": {
+     "bearing_min": {
+      "strength": 1.63,
+      "fatigue": 2.84,
+      "creep": 1.33
+     },
+     "bending_sf": 1.21,
+     "plate_fatigue_sf": 1.26,
+     "punch_sf": 8.29,
+     "tearout_sf": 3.91,
+     "hole_bearing_sf": 9.67,
+     "closed_at_walk": false
+    },
+    "rows_at_torque": 0.35
+   },
+   {
+    "name": "one ring 48.4/24 x 1.02",
+    "design": {
+     "layout": "ring",
+     "r_o": 24.2,
+     "r_i": 12.0,
+     "t": 1.02
+    },
+    "g": 3.3,
+    "laser_ok": true,
+    "edge_min_over_t": 2.402,
+    "torque_nm": null,
+    "ok": false,
+    "study_ok": null,
+    "rows": {
+     "bearing_min": {
+      "strength": 2.23,
+      "fatigue": 3.88,
+      "creep": 1.81
+     },
+     "bending_sf": 0.56,
+     "plate_fatigue_sf": 0.65,
+     "punch_sf": 4.17,
+     "tearout_sf": 2.75,
+     "hole_bearing_sf": 4.86,
+     "closed_at_walk": false
+    },
+    "rows_at_torque": 0.35
+   },
+   {
+    "name": "two arc plates r 12-24.2 x 1.02",
+    "design": {
+     "layout": "arcs",
+     "r_o": 24.2,
+     "r_i": 12.0,
+     "end_lig": 1.53,
+     "fillet": 1.5,
+     "t": 1.02
+    },
+    "g": 1.8,
+    "laser_ok": true,
+    "edge_min_over_t": 1.5,
+    "torque_nm": null,
+    "ok": false,
+    "study_ok": null,
+    "rows": {
+     "bearing_min": {
+      "strength": 2.2,
+      "fatigue": 3.82,
+      "creep": 1.78
+     },
+     "bending_sf": 0.65,
+     "plate_fatigue_sf": 0.77,
+     "punch_sf": 4.17,
+     "tearout_sf": 1.72,
+     "hole_bearing_sf": 4.86,
+     "closed_at_walk": false
+    },
+    "rows_at_torque": 0.35
+   },
+   {
+    "name": "two arc plates r 12.5-24.2 x 1.02",
+    "design": {
+     "layout": "arcs",
+     "r_o": 24.2,
+     "r_i": 12.5,
+     "end_lig": 1.53,
+     "fillet": 1.5,
+     "t": 1.02
+    },
+    "g": 1.74,
+    "laser_ok": true,
+    "edge_min_over_t": 1.5,
+    "torque_nm": null,
+    "ok": false,
+    "study_ok": null,
+    "rows": {
+     "bearing_min": {
+      "strength": 2.23,
+      "fatigue": 3.88,
+      "creep": 1.81
+     },
+     "bending_sf": 0.79,
+     "plate_fatigue_sf": 0.9,
+     "punch_sf": 4.17,
+     "tearout_sf": 1.72,
+     "hole_bearing_sf": 4.86,
+     "closed_at_walk": false
+    },
+    "rows_at_torque": 0.35
+   },
+   {
+    "name": "two arc plates r 13-24.2 x 1.02",
+    "design": {
+     "layout": "arcs",
+     "r_o": 24.2,
+     "r_i": 13.0,
+     "end_lig": 1.53,
+     "fillet": 1.5,
+     "t": 1.02
+    },
+    "g": 1.67,
+    "laser_ok": true,
+    "edge_min_over_t": 1.5,
+    "torque_nm": null,
+    "ok": false,
+    "study_ok": null,
+    "rows": {
+     "bearing_min": {
+      "strength": 2.19,
+      "fatigue": 3.82,
+      "creep": 1.78
+     },
+     "bending_sf": 0.99,
+     "plate_fatigue_sf": 1.08,
+     "punch_sf": 4.17,
+     "tearout_sf": 1.72,
+     "hole_bearing_sf": 4.86,
+     "closed_at_walk": false
+    },
+    "rows_at_torque": 0.35
+   },
+   {
+    "name": "two arc plates r 13.4-24.2 x 1.02",
+    "design": {
+     "layout": "arcs",
+     "r_o": 24.2,
+     "r_i": 13.4,
+     "end_lig": 1.53,
+     "fillet": 1.5,
+     "t": 1.02
+    },
+    "g": 1.61,
+    "laser_ok": true,
+    "edge_min_over_t": 1.5,
+    "torque_nm": null,
+    "ok": false,
+    "study_ok": null,
+    "rows": {
+     "bearing_min": {
+      "strength": 2.07,
+      "fatigue": 3.6,
+      "creep": 1.68
+     },
+     "bending_sf": 1.02,
+     "plate_fatigue_sf": 1.09,
+     "punch_sf": 4.17,
+     "tearout_sf": 1.72,
+     "hole_bearing_sf": 4.86,
+     "closed_at_walk": false
+    },
+    "rows_at_torque": 0.35
+   },
+   {
+    "name": "two arc plates r 13.8-24.2 x 1.02",
+    "design": {
+     "layout": "arcs",
+     "r_o": 24.2,
+     "r_i": 13.8,
+     "end_lig": 1.53,
+     "fillet": 1.5,
+     "t": 1.02
+    },
+    "g": 1.56,
+    "laser_ok": true,
+    "edge_min_over_t": 1.5,
+    "torque_nm": null,
+    "ok": false,
+    "study_ok": null,
+    "rows": {
+     "bearing_min": {
+      "strength": 1.88,
+      "fatigue": 3.27,
+      "creep": 1.53
+     },
+     "bending_sf": 1.0,
+     "plate_fatigue_sf": 1.09,
+     "punch_sf": 4.17,
+     "tearout_sf": 1.72,
+     "hole_bearing_sf": 4.86,
+     "closed_at_walk": false
+    },
+    "rows_at_torque": 0.35
+   },
+   {
+    "name": "one ring 48.4/24 x 1.6",
+    "design": {
+     "layout": "ring",
+     "r_o": 24.2,
+     "r_i": 12.0,
+     "t": 1.6
+    },
+    "g": 5.17,
+    "laser_ok": true,
+    "edge_min_over_t": 1.531,
+    "torque_nm": null,
+    "ok": false,
+    "study_ok": null,
+    "rows": {
+     "bearing_min": {
+      "strength": 2.12,
+      "fatigue": 3.7,
+      "creep": 1.73
+     },
+     "bending_sf": 0.78,
+     "plate_fatigue_sf": 0.91,
+     "punch_sf": 6.53,
+     "tearout_sf": 4.31,
+     "hole_bearing_sf": 7.62,
+     "closed_at_walk": false
+    },
+    "rows_at_torque": 0.35
+   },
+   {
+    "name": "two arc plates r 12-24.2 x 1.6",
+    "design": {
+     "layout": "arcs",
+     "r_o": 24.2,
+     "r_i": 12.0,
+     "end_lig": 2.4,
+     "fillet": 1.5,
+     "t": 1.6
+    },
+    "g": 3.01,
+    "laser_ok": true,
+    "edge_min_over_t": 1.5,
+    "torque_nm": null,
+    "ok": false,
+    "study_ok": null,
+    "rows": {
+     "bearing_min": {
+      "strength": 2.29,
+      "fatigue": 3.99,
+      "creep": 1.86
+     },
+     "bending_sf": 1.59,
+     "plate_fatigue_sf": 1.73,
+     "punch_sf": 6.53,
+     "tearout_sf": 4.22,
+     "hole_bearing_sf": 7.62,
+     "closed_at_walk": false
+    },
+    "rows_at_torque": 0.35
+   },
+   {
+    "name": "two arc plates r 12.5-24.2 x 1.6",
+    "design": {
+     "layout": "arcs",
+     "r_o": 24.2,
+     "r_i": 12.5,
+     "end_lig": 2.4,
+     "fillet": 1.5,
+     "t": 1.6
+    },
+    "g": 2.9,
+    "laser_ok": true,
+    "edge_min_over_t": 1.5,
+    "torque_nm": 0.45,
+    "ok": true,
+    "study_ok": false,
+    "rows": {
+     "bearing_min": {
+      "strength": 1.99,
+      "fatigue": 4.13,
+      "creep": 1.5
+     },
+     "bending_sf": 1.64,
+     "plate_fatigue_sf": 1.75,
+     "punch_sf": 5.47,
+     "tearout_sf": 4.22,
+     "hole_bearing_sf": 7.62,
+     "closed_at_walk": true
+    },
+    "rows_at_torque": 0.45
+   },
+   {
+    "name": "two arc plates r 13-24.2 x 1.6",
+    "design": {
+     "layout": "arcs",
+     "r_o": 24.2,
+     "r_i": 13.0,
+     "end_lig": 2.4,
+     "fillet": 1.5,
+     "t": 1.6
+    },
+    "g": 2.79,
+    "laser_ok": true,
+    "edge_min_over_t": 1.5,
+    "torque_nm": 0.45,
+    "ok": true,
+    "study_ok": true,
+    "rows": {
+     "bearing_min": {
+      "strength": 2.08,
+      "fatigue": 4.32,
+      "creep": 1.57
+     },
+     "bending_sf": 1.85,
+     "plate_fatigue_sf": 1.86,
+     "punch_sf": 5.47,
+     "tearout_sf": 4.22,
+     "hole_bearing_sf": 7.62,
+     "closed_at_walk": true
+    },
+    "rows_at_torque": 0.45
+   },
+   {
+    "name": "two arc plates r 13.4-24.2 x 1.6",
+    "design": {
+     "layout": "arcs",
+     "r_o": 24.2,
+     "r_i": 13.4,
+     "end_lig": 2.4,
+     "fillet": 1.5,
+     "t": 1.6
+    },
+    "g": 2.7,
+    "laser_ok": true,
+    "edge_min_over_t": 1.5,
+    "torque_nm": 0.45,
+    "ok": true,
+    "study_ok": false,
+    "rows": {
+     "bearing_min": {
+      "strength": 2.01,
+      "fatigue": 4.17,
+      "creep": 1.51
+     },
+     "bending_sf": 1.55,
+     "plate_fatigue_sf": 1.73,
+     "punch_sf": 5.47,
+     "tearout_sf": 4.22,
+     "hole_bearing_sf": 7.62,
+     "closed_at_walk": true
+    },
+    "rows_at_torque": 0.45
+   },
+   {
+    "name": "two arc plates r 13.8-24.2 x 1.6",
+    "design": {
+     "layout": "arcs",
+     "r_o": 24.2,
+     "r_i": 13.8,
+     "end_lig": 2.4,
+     "fillet": 1.5,
+     "t": 1.6
+    },
+    "g": 2.6,
+    "laser_ok": true,
+    "edge_min_over_t": 1.5,
+    "torque_nm": null,
+    "ok": false,
+    "study_ok": null,
+    "rows": {
+     "bearing_min": {
+      "strength": 2.12,
+      "fatigue": 3.68,
+      "creep": 1.72
+     },
+     "bending_sf": 1.27,
+     "plate_fatigue_sf": 1.5,
+     "punch_sf": 6.53,
+     "tearout_sf": 4.22,
+     "hole_bearing_sf": 7.62,
+     "closed_at_walk": false
+    },
+    "rows_at_torque": 0.35
+   }
+  ],
+  "bl073_ring_on_plate_model": {
+   "torque_nm": 0.6,
+   "bearing_min": {
+    "strength": 1.11,
+    "fatigue": 2.85,
+    "creep": 0.78
+   },
+   "bending_sf": 0.85,
+   "edge_min_over_t": 0.862
+  },
+  "chosen": "two arc plates r 13-24.2 x 1.6",
+  "torque_nm": 0.45,
+  "plates": {
+   "layout": "arcs",
+   "t_mm": 1.6,
+   "t_in": 0.063,
+   "r_o_mm": 24.2,
+   "r_i_mm": 13.0,
+   "end_lig_mm": 2.4,
+   "fillet_mm": 1.5,
+   "area_mm2": 645.6,
+   "g_pair": 2.79,
+   "ligaments": {
+    "outer_mm": 2.45,
+    "inner_mm": 3.25,
+    "end_mm": 2.4,
+    "between_holes_mm": 3.689,
+    "min_mm": 2.4
+   },
+   "laser": {
+    "stock_gauge": true,
+    "fits_spot_face": true,
+    "edge_min_over_t": 1.5,
+    "edge_ok_1p5t": true,
+    "edge_ok_2t": false,
+    "edge_min_at_tol_mm": 2.273,
+    "hole_ok": true,
+    "ok": true
+   }
+  },
+  "checks": {
+   "torque_nm": 0.45,
+   "preload_n": {
+    "nom": 450.0,
+    "max": 643.0,
+    "min": 346.0
+   },
+   "p_per_n_cold": 0.013576665864633842,
+   "bearing": {
+    "C2|H_pin": {
+     "T_n": 194.7,
+     "kind": "strength",
+     "pressure_mpa": 11.37,
+     "sf": 2.18,
+     "goal": 1.5
+    },
+    "C1|H_pin": {
+     "T_n": 129.8,
+     "kind": "strength",
+     "pressure_mpa": 10.49,
+     "sf": 2.36,
+     "goal": 1.5
+    },
+    "walk|H_pin": {
+     "T_n": 103.8,
+     "kind": "fatigue",
+     "pressure_mpa": 1.41,
+     "sf": 5.28,
+     "goal": 1.15
+    },
+    "carry|H_pin": {
+     "T_n": 64.9,
+     "kind": "creep",
+     "pressure_mpa": 8.73,
+     "sf": 1.56,
+     "goal": 1.5
+    },
+    "C2|H_frame": {
+     "T_n": 238.6,
+     "kind": "strength",
+     "pressure_mpa": 11.97,
+     "sf": 2.07,
+     "goal": 1.5
+    },
+    "C1|H_frame": {
+     "T_n": 159.1,
+     "kind": "strength",
+     "pressure_mpa": 10.89,
+     "sf": 2.28,
+     "goal": 1.5
+    },
+    "walk|H_frame": {
+     "T_n": 127.3,
+     "kind": "fatigue",
+     "pressure_mpa": 1.73,
+     "sf": 4.31,
+     "goal": 1.15
+    },
+    "carry|H_frame": {
+     "T_n": 79.5,
+     "kind": "creep",
+     "pressure_mpa": 8.73,
+     "sf": 1.56,
+     "goal": 1.5
+    }
+   },
+   "bearing_min": {
+    "strength": 2.07,
+    "fatigue": 4.31,
+    "creep": 1.56
+   },
+   "bending_mpa": {
+    "cold": 121.6,
+    "hw": 124.4,
+    "hw_long": 126.7
+   },
+   "bending_sf": 1.9,
+   "plate_fatigue_sf": 1.81,
+   "punch_sf": 5.47,
+   "tearout_sf": 4.22,
+   "hole_bearing_sf": 7.62,
+   "nut_face_sf": 3.73,
+   "lateral_per_bolt_n": 253.1,
+   "c2_t_n": 238.6,
+   "walk_t_n": 127.3,
+   "min_contact_pressure_mpa": 6.271,
+   "residual_preload_min_n": 187.0,
+   "closed_at_walk": true,
+   "pass": true
+  },
+  "mesh_study": [
+   {
+    "h": 0.25,
+    "p_max_cold_fmax": 8.7,
+    "sig_max_hwlong": 130.1,
+    "sig_at": [
+     -20.45,
+     8.4
+    ],
+    "reaction_err": -0.0,
+    "contact": 1.0
+   },
+   {
+    "h": 0.2,
+    "p_max_cold_fmax": 8.73,
+    "sig_max_hwlong": 126.7,
+    "sig_at": [
+     22.0,
+     -2.25
+    ],
+    "reaction_err": -0.0,
+    "contact": 1.0
+   },
+   {
+    "h": 0.15,
+    "p_max_cold_fmax": 8.69,
+    "sig_max_hwlong": 140.7,
+    "sig_at": [
+     21.85,
+     -2.15
+    ],
+    "reaction_err": -0.0,
+    "contact": 1.0
+   },
+   {
+    "h": 0.12,
+    "p_max_cold_fmax": 8.68,
+    "sig_max_hwlong": 138.2,
+    "sig_at": [
+     -13.16,
+     -16.73
+    ],
+    "reaction_err": 0.0,
+    "contact": 1.0
+   }
+  ],
+  "bending_sf_study_max": 1.71,
+  "hetenyi_mpa_per_kn": 10.771352588817493,
+  "mass": {
+   "ring_bl073_g": 5.9,
+   "plates_g": 2.79,
+   "delta_g": -3.11,
+   "screws_delta_g": 0.0
+  },
+  "share_gauge": {
+   "r_point": 0.428,
+   "r_band": [
+    0.413,
+    0.439
+   ],
+   "r_beam": 0.462,
+   "superposition_check": 1.0101,
+   "linear": true,
+   "proportional": false,
+   "bl074_rule_reads_at_s_max": 0.88,
+   "bl074_rule_reads_at_design_0p6": 0.771,
+   "share_max": 0.79,
+   "pass_line_with_u0": "(u - u0) / (u1 - u0) <= 0.79",
+   "pass_ratio_no_u0": 0.87,
+   "u0_over_u1_expected": [
+    0.41,
+    0.44
+   ],
+   "share_per_ratio": 1.75,
+   "read": {
+    "both": -0.010200014230744334,
+    "inner": -0.006180815921680697,
+    "outer": -0.014426181782101918
+   },
+   "site": {
+    "x": 126.96,
+    "y": 6.81,
+    "z": 142.0,
+    "axis": "x (along the arm)",
+    "face": "bag face (+y)",
+    "station": "us2"
+   },
+   "cheek_x": {
+    "inner": 151.0,
+    "outer": 179.0
+   },
+   "mesh": "designs/pack_5200/iter1/frame/h1p/h1_assembled.stl"
+  },
+  "spools": {
+   "spools": 10,
+   "spools_fa_as_frame": 8,
+   "upper_only": [
+    9,
+    10
+   ],
+   "source": "outputs/release/frame_h1p_ppa/spool_plan.csv"
+  },
+  "assumptions": [
+   {
+    "id": "NUT-RIGID",
+    "text": "The DIN 934 M5 nut is a rigid punch of radius s / 2 = 4.0 mm on the plate; the load enters on the dw ring 5.5-6.9 mm. A softer nut or a smaller contact lowers the plate peak.",
+    "settled_by": "HB-6b paint marks on the first frame; no plate dishing visible after T5 (straight edge across the plate)"
+   },
+   {
+    "id": "WINKLER-PLATE",
+    "text": "The boss under the plates is a Winkler foundation k0 = E_z' / 22 mm (cold x 1.25, hot/wet, hot/wet long term x 0.5), springs act in compression only; the plates as Kirchhoff plates (ACM grid, plate_grid). Peak plate stress at the rigid-punch edge grows slowly with the grid (mesh study in the record); the check uses the h 0.20 mm peak and the study's largest value.",
+    "settled_by": "HB-6b hip-mount proof with the plates"
+   },
+   {
+    "id": "TORQUE-045",
+    "text": "Hip nut torque 0.45 N m (was 0.6): the plate model reads the bearing peak 1.33 x the BL-073 Hetenyi value, so the high-end preload (K 0.14) must come down for the creep row; at the low end (K 0.26) and after long-term creep the joint still stays closed at the walk bolt tension.",
+    "settled_by": "HB-6b re-torque check after T5"
+   },
+   {
+    "id": "CLOSE-1.3",
+    "text": "The hip joint counts as closed when the low-end preload (K 0.26) after long-term creep is >= 1.3 x the walk bolt tension; this sets the lowest torque step (0.35 N m reads 1.2).",
+    "settled_by": "HB-6b re-torque check after T5"
+   },
+   {
+    "id": "SHARE-LIN",
+    "text": "The US2 arm-root reading is linear in the outer-cheek share (one elastic body, load moved along the pin axis); it is not proportional: u(0) / u(1) = r from the H1-P voxel model.",
+    "settled_by": "CLEVIS-SHARE-B-PPA reading u0"
+   }
+  ],
+  "screenshots": [
+   "outputs/screens/20261125_bl076_1.png"
+  ]
+ }
 }

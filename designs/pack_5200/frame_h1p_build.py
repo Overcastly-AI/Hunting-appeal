@@ -631,15 +631,15 @@ def clevis_b() -> dict:
 
 # ============================================================================ hip mount (trap-free boss)
 RING_SOURCE = {
-    "service": "SendCutSend (laser cut, 6061-T6, .080 in = 2.03 mm, +/-0.005 in)",
+    "service": "SendCutSend (laser cut, 6061-T6, .063 in = 1.60 mm, +/-0.005 in)",
     "url": "https://sendcutsend.com/materials/6061-aluminum",
-    "read": "2026-11-25: 6061-T6 laser cut in .040-.750 in, .080 in listed; design guide: holes and cut-outs 1.5-2x the "
-            "thickness from an edge; instant quote from 0.25 x 0.375 in",
-    "usd_each": 12.00,
-    "price": "ASSUMPTION RING-PRICE: USD 12 each in an order of 2 (one spare), shipping in; no price is published, "
-             "check the instant quote with hip_bearing_ring.dxf",
-    "fallback": "cut by hand from 2 mm (0.080 in) 6061-T6 plate: print the DXF 1:1, glue it on, centre-punch, drill "
-                "D5.5 and the D24 bore (step drill), saw and file the D47 outside, deburr",
+    "read": "2026-11-25: 6061-T6 laser cut in .040-.750 in, .063 in listed; design guide: holes and cut-outs 1.5-2x the "
+            "thickness from an edge, holes no smaller than the thickness; instant quote from 0.25 x 0.375 in",
+    "usd_each": 8.00,
+    "price": "ASSUMPTION RING-PRICE: USD 8 per plate in an order of 4 (two sets: one spare), shipping in; no price is "
+             "published, check the instant quote with hip_bearing_ring.dxf (BL-076: two arc plates per frame)",
+    "fallback": "cut by hand from 1.6 mm (0.063 in) 6061-T6 sheet: print the DXF 1:1, glue it on, centre-punch, drill "
+                "the D5.5 holes, saw and file the two arc outlines to the line (R1.5 corners), deburr",
 }
 TORQUE_DRIVER = {
     "item": "Wera 7440 Kraftform adjustable torque screwdriver 0.3-1.2 N m (2.7-10.6 in lbf), 1/4 in hex drive, "
@@ -648,6 +648,15 @@ TORQUE_DRIVER = {
     "source": "TestEquity listing USD 137.51 (search snapshot 2026-11-25, https://www.testequity.com/product/10238639-05074700001); "
               "Rapid Online GBP 95 ex VAT (https://rapidonline.com/wera-05074700001-7440-kraftform-adjustable-torque-screwdriver-0-3-1-2nm-54-8011)",
 }
+
+
+def ring_pieces(hm: dict) -> int:
+    return int(hm["ring"].get("pieces", 1))
+
+
+def share_gauge() -> dict:
+    """BL-076 SHARE-GAUGE: the US2 gauge read with the pin load on each cheek (bl070_h1p.json bl076.share_gauge)."""
+    return h1p_json()["bl076"]["share_gauge"]
 
 
 def hip() -> dict:
@@ -797,9 +806,10 @@ def guide_steps() -> dict:
             f"Print {_job_txt('us2')}: the H1-P route piece `test_pieces/us2_route_stay_R_h1p.stl` and the H1-P clevis `iter1/frame/h1p/us2_clevis_R.stl`. Ream and bolt the clevis as BUILD_H1 section 10; fit the US2 gauge as CLEVIS-SHARE.",
             f"Set up as CLEVIS-SHARE loading B: piece clamped on the bare stay only (z 40-48 and 110-122), pull direction {cb['unit']} (frame R), the real US2 pin set and a sewn US eye.",
             f"Reading 1 (share 1.0): 1 mm PTFE shim between the eye and the OUTER (clevis) cheek, eye pushed against it. Pull to {_n(cb['peak_n'])}, hold 10 s, read the gauge (microstrain) = u1. Unload, read the zero.",
+            f"Reading 0 (share 0, BL-076): the same 1 mm PTFE shim between the eye and the INNER (body) cheek, eye pushed against it. Pull to the same {cb['peak_n']:.0f} N, read u0. Unload. u0 / u1 must read {share_gauge()['u0_over_u1_expected'][0]:g}-{share_gauge()['u0_over_u1_expected'][1]:g}; outside that the gauge is off its site: stop and flag it.",
             f"Reading 2 (as built): shim out, eye centred in the throat as sewn. Pull to the same {cb['peak_n']:.0f} N, read u. Unload.",
-            "Repeat readings 1 and 2 three times (take the eye off and refit it each time).",
-            f"Share = u / u1 for each pair (ASSUMPTION SHARE-GAUGE). Type all six readings; the sheet takes the largest share.",
+            "Repeat readings 1, 0 and 2 three times (take the eye off and refit it each time).",
+            f"Share = (u - u0) / (u1 - u0) for each set (ASSUMPTION SHARE-GAUGE, BL-076: the gauge does not read zero at share 0, so u / u1 over-reads). Type all nine readings; the sheet takes the largest share.",
             "Keep the piece: it goes on to US2-LUG-PPA.",
         ],
         "US2-LUG-PPA": [
@@ -925,7 +935,8 @@ def register_rows() -> list[dict]:
              gates=gate, safety_at_stake="US2 cradle anchor fatigue (clevis cheek)",
              specimen=f"{_job_txt('us2')}: `test_pieces/us2_route_stay_R_h1p.stl` + `iter1/frame/h1p/us2_clevis_R.stl`, clevis hardware and US2 gauge as CLEVIS-SHARE",
              steps=steps("CLEVIS-SHARE-B-PPA"),
-             pass_fail=f"the largest of 3 measured shares u / u1 <= {pl['share_max']:g}; otherwise metal clevis hole sleeves (DECISIONS alt)",
+             pass_fail=(f"the largest of 3 measured shares (u - u0) / (u1 - u0) <= {pl['share_max']:g} (BL-076; without u0: "
+                        f"u / u1 <= {share_gauge()['pass_ratio_no_u0']:g}); otherwise metal clevis hole sleeves (DECISIONS alt)"),
              cost_usd=f"{(kind_g('us2') + kind_g('clevis')) * up:.2f}", cost_basis="PPA-CF filament of the US2 piece and clevis; gauge set from CLEVIS-SHARE",
              hours_hands_on="3", run_order="95", notes=rel + ". ASSUMPTION SHARE-GAUGE"),
         _row(id="US2-LUG-PPA", title=f"US2 lug proof on H1-P PPA parts at x {pl['lug_factor']:g} the CLEVIS-SHARE B load, hot/wet, 40 C",
@@ -1035,9 +1046,13 @@ def results_items() -> dict:
     out["T4c-PPA-CROWN"] = rows
     rows = []
     for i in range(1, 4):
-        rows += [(f"pair {i}", f"u1, shim on the outer cheek, {cb['peak_n']:.0f} N", "microstrain", "record", "", "SHARE-GAUGE"),
-                 (f"pair {i}", f"u, as built, {cb['peak_n']:.0f} N", "microstrain", "record", "", "SHARE-GAUGE")]
-    rows += [("all pairs", "largest share u / u1", "ratio", "max", f"{pl['share_max']:g}", "US2 clevis fatigue (share)")]
+        sg = share_gauge()
+        rows += [(f"set {i}", f"u1, shim on the outer cheek, {cb['peak_n']:.0f} N", "microstrain", "record", "", "SHARE-GAUGE"),
+                 (f"set {i}", f"u0, shim on the inner cheek, {cb['peak_n']:.0f} N", "microstrain", "record", "", "SHARE-GAUGE"),
+                 (f"set {i}", "u0 / u1 (gauge on its site)", "ratio", "band",
+                  f"{sg['u0_over_u1_expected'][0]:g}..{sg['u0_over_u1_expected'][1]:g}", "SHARE-GAUGE"),
+                 (f"set {i}", f"u, as built, {cb['peak_n']:.0f} N", "microstrain", "record", "", "SHARE-GAUGE")]
+    rows += [("all sets", "largest share (u - u0) / (u1 - u0)", "ratio", "max", f"{pl['share_max']:g}", "US2 clevis fatigue (share)")]
     out["CLEVIS-SHARE-B-PPA"] = rows
     out["US2-LUG-PPA"] = [
         ("traveller", "uptake at the test (days conditioned in the notes)", "%", "record", "", "LUG-COND"),
@@ -1084,12 +1099,14 @@ def bom() -> list:
         BOMLine("hip mount", f"HW-HIP-NUT-P: {hm['nut']}", "sst_304_annealed", hm["n"] + 2, "each", 0.0, 0.10,
                 round((hm["n"] + 2) * 0.10, 2), kit="FRAME", source=A,
                 notes="NOT ISO 4032 (4.4-4.7 mm thick); caliper each <= 4.1 mm", proto_qty=hm["n"] + 2),
-        BOMLine("hip mount", (f"HW-HIP-RING: bearing ring 6061-T6 {hm['ring']['od_mm']:g} / {hm['ring']['id_mm']:g} x "
-                              f"{hm['ring']['t_mm']:g} mm ({hm['ring']['od_mm'] / IN:.2f} / {hm['ring']['id_mm'] / IN:.2f} x 0.080 in), "
-                              f"{hm['ring']['holes']}, laser cut from `{hm['files'][0]}`"),
-                "alu_6061_t6", 2, "each", 0.0, RING_SOURCE["usd_each"], round(2 * RING_SOURCE["usd_each"], 2), kit="FRAME",
+        BOMLine("hip mount", (f"HW-HIP-RING: bearing plates (BL-076), 6061-T6 {hm['ring']['t_mm']:g} mm "
+                              f"({hm['ring']['t_mm'] / IN:.3f} in), {hm['ring'].get('outline', 'ring')} "
+                              f"({hm['ring']['id_mm']:g} / {hm['ring']['od_mm']:g} mm), {hm['ring']['holes']}, laser cut from `{hm['files'][0]}`"),
+                "alu_6061_t6", 2 * ring_pieces(hm), "each", 0.0, RING_SOURCE["usd_each"],
+                round(2 * ring_pieces(hm) * RING_SOURCE["usd_each"], 2), kit="FRAME",
                 source=f"{RING_SOURCE['service']}, {RING_SOURCE['url']} ({RING_SOURCE['read']}); {RING_SOURCE['price']}",
-                notes=f"1 + 1 spare, {hm['ring']['g']:g} g each. Fallback: {RING_SOURCE['fallback']}", proto_qty=2),
+                notes=f"{ring_pieces(hm)} per frame + {ring_pieces(hm)} spare, {hm['ring']['g']:g} g per frame set. "
+                      f"Fallback: {RING_SOURCE['fallback']}", proto_qty=2 * ring_pieces(hm)),
         BOMLine("hip mount", f"HW-HIP-KEEP: printed PPA-CF nut keeper `{hm['files'][2]}` (3 mm, 2 pockets)", "ppa_cf_fdm",
                 2, "each", 0.0, 0.0, 0.0, kit="FRAME", source=f"printed on coupon {_job_txt('keeper')} (filament in the spool line)",
                 notes=f"1 + 1 spare, {hm['keeper_g']:.2f} g; non-structural", proto_qty=2),
@@ -1143,9 +1160,11 @@ ASSUMPTIONS = {
     "BOX-60": ("The 40 C box holds 60 C for the CA-4-HW 60 C set.", "the thermometer row in the results sheet"),
     "FREEZER": ("A chest freezer on its coldest setting reaches -20 C; a home upright freezer often holds only -18 C.",
                 "the thermometer row in the results sheet"),
-    "SHARE-GAUGE": ("The US2 gauge reading is linear in the outer-cheek share at the B peak load, so share = reading as built / "
-                    "reading with the shim on the outer cheek (share 1.0).", "structural-fea-engineer check of the gauge "
-                    "sensitivity on the BL-056 submodel before the readings are used"),
+    "SHARE-GAUGE": ("The US2 gauge reading is linear in the outer-cheek share at the B peak load (BL-076 checked it on the "
+                    "H1-P voxel model: inner cheek only, outer cheek only and both superpose) but it is NOT proportional: "
+                    "at share 0 it still reads about 0.43 of the share-1 reading (the inner cheek's load bends the arm root "
+                    "too), so share = (u - u0) / (u1 - u0) with u0 the reading with the shim on the inner cheek.",
+                    "the u0 / u1 band check in the CLEVIS-SHARE-B-PPA readings (bl070_h1p.json bl076.share_gauge)"),
     "LUG-COND": ("The US2 piece is thick: it is conditioned with the coupons to constant mass or 28 days, whichever comes "
                  "first, and tested at 40 C; the uptake is written down.", "engineer review of the uptake"),
     "RING-PRICE": (RING_SOURCE["price"].split(": ", 1)[1], "the SendCutSend instant quote"),
@@ -1227,8 +1246,11 @@ def coupons_md(cp: dict, spl: dict) -> str:
           "coupons).", "",
           "| spool | feeds | left g |", "|---:|---|---:|"] + [f"| {r['spool']} | {r['uses']} | {r['left_g']:.0f} |" for r in spl["rows"]] + [
           "",
-          f"**{spl['spools']} spools** ({spl['before_gate']} before the gate). BL-073 booked {spl['booked_bl073']}: see "
-          "BUILD_H1P.md FOUND.", "",
+          f"**{spl['spools']} spools** ({spl['before_gate']} before the gate). "
+          + (f"BL-073 booked {spl['booked_bl073']}: see BUILD_H1P.md FOUND." if spl['booked_bl073'] != spl['spools'] else
+             f"bl070_h1p.md books the same {spl['booked_bl073']} (BL-076 reads this plan); "
+             f"{spl['spools'] - len([r for r in spl['rows'] if r['uses'].startswith('frame upper half')])} if the first-article "
+             "upper half becomes the frame's upper half (orchestrator call)."), "",
           "## 3. Rig loads: everything stays under the 100 kg cell", "",
           "| load | N | lbf | under the cell |", "|---|---:|---:|---|"]
     for k, v in rk["loads"].items():
@@ -1400,18 +1422,19 @@ def hip_steps(hm: dict) -> list[str]:
         f"CHECK the print: the D50 boss is solid (no nut traps); {hm['n']} D{hm['boss']['holes_d_mm']:g} holes go straight "
         f"through its {hm['boss']['depth_mm']:g} mm; the back is a flat D{hm['boss']['spot_face_d_mm']:g} spot face. A "
         f"{hm['boss']['holes_d_mm']:g} mm drill shank slides through each hole by hand; clear stringing by turning the drill in your fingers.",
-        f"CHECK the ring (HW-HIP-RING): flat on glass (no rock), burr-free (file and 320 grit), {hm['ring']['t_mm']:g} mm "
-        f"({hm['ring']['t_mm'] / IN:.3f} in) thick. Lay it on the boss back: every ring hole shows a boss hole.",
+        f"CHECK the {ring_pieces(hm)} bearing plates (HW-HIP-RING): flat on glass (no rock), burr-free (file and 320 grit), "
+        f"{hm['ring']['t_mm']:g} mm ({hm['ring']['t_mm'] / IN:.3f} in) thick. Lay them on the boss back, one under each "
+        "group of 4 holes, curved edges following the spot face: every plate hole shows a boss hole.",
         f"CHECK the nuts: caliper each **HW-HIP-NUT-P** <= {hm['nut_t'] + 0.1:.1f} mm thick (a thicker nut is ISO 4032: set it aside).",
-        f"Keeper dry fit (BL-075): set the empty printed keeper in the D{hm['boss']['spot_face_d_mm']:g} spot face on the ring. "
+        f"Keeper dry fit (BL-075): set the empty printed keeper in the D{hm['boss']['spot_face_d_mm']:g} spot face on the plates. "
         f"It has only about {c['keeper_play']:.2f} mm radial play inside the printed lip: if it binds, sand its outside edge "
         "(240 grit on a block, turning it evenly) until it drops in and sits flat. If it still binds after light sanding, "
         "STOP and flag it to the engineer: do not force it.",
-        "Push the 8 nuts into the printed keeper's pockets, flats radial. Put the keeper on the ring (pockets over the "
-        "holes), the ring on the boss back. Tape the keeper to the boss with masking tape at two edges.",
+        "Push the 8 nuts into the printed keeper's pockets, flats radial. Put the keeper on the plates (pockets over the "
+        "holes), the plates on the boss back. Tape the keeper to the boss with masking tape at two edges.",
         f"Turn the frame wearer face up. Lay the Ti mount on the boss face: its {hm['n']} holes over the boss holes.",
         "One drop of Loctite 243 on the last 5 mm of each **HW-HIP-SCR-P** (M5 x 35) thread. Keep it off the print.",
-        "Start every screw by hand through the mount, the boss and the ring into its nut, turning with the 3 mm hex bit; "
+        "Start every screw by hand through the mount, the boss and the plate into its nut, turning with the 3 mm hex bit; "
         "if one does not catch, back it out, press the keeper flat, try again. Never force it.",
         f"Set the Wera 7440 to **{hm['torque']:g} N m ({hm['torque_inlbf']:.1f} in lbf)**. Tighten in a star order "
         "(1-5-3-7-2-6-4-8), then go round again at the same setting: stop at the first click each time.",
@@ -1421,7 +1444,7 @@ def hip_steps(hm: dict) -> list[str]:
         "all 8. Outside the band: wrong screw, a nut or the keeper not seated, or a thick nut: stop.",
         f"CHECK seating: push the mount's pin end with the spring scale to {MOUNT_SEAT_N:.0f} N ({MOUNT_SEAT_N / G:.1f} kg, "
         f"{MOUNT_SEAT_N / N_PER_LBF:.1f} lb) up, down, left and right: a 0.05 mm (0.002 in) feeler does not enter under the base edge.",
-        "Paint marks across every screw head and the mount, and across every nut, the keeper and the ring. Remove the "
+        "Paint marks across every screw head and the mount, and across every nut, the keeper and the plates. Remove the "
         "tape. Let the Loctite cure 24 h before any load.",
         f"CORD RULE BL075-CORD: route the lumbar pad-seat bottom cord tie round the lower struts OUTBOARD of |x| "
         f"{c['cord_x']:g} mm ({c['cord_x'] / IN:.1f} in) each side of the frame centre. It must NEVER cross the back of the "
@@ -1462,8 +1485,10 @@ def build_md(cp: dict, spl: dict, ps: dict) -> str:
                  f"{x.source[:200]} | {x.notes} |")
     L += ["",
           f"- **Filament: {cs['spools']} spools, USD {cs['filament_usd']:.2f}** (first-article upper half, coupon jobs A-F, "
-          f"both halves; SPOOL_PLAN in COUPONS_H1P.md section 2). BL-073 booked {cs['booked_bl073']} (USD "
-          f"{cs['booked_bl073_usd']:.2f}): it does not close, see FOUND.",
+          f"both halves; SPOOL_PLAN in COUPONS_H1P.md section 2). "
+          + (f"BL-073 booked {cs['booked_bl073']} (USD {cs['booked_bl073_usd']:.2f}): it does not close, see FOUND."
+             if cs['booked_bl073'] != cs['spools'] else
+             f"bl070_h1p.md books the same {cs['booked_bl073']} (BL-076)."),
           f"- Hip mount hardware: USD {cs['hip_hw_usd']:.2f}. A later frame (4 spools for two halves + hip hardware): "
           f"about USD {cs['per_frame_usd']:.0f}.",
           f"- One-time tools: dryer USD {cs['dryer_usd']:.2f}; all new tools USD {cs['tools_usd']:.2f}.",
@@ -1481,7 +1506,7 @@ def build_md(cp: dict, spl: dict, ps: dict) -> str:
           "| 6. weigh | replaced: section 3 below |",
           "| 7. z 234 joint | same hardware, **new bolt positions** (section 4 below) |",
           "| 8-11. crown bores, pins, clevises, pawl | same steps, same hardware, H1-P halves |",
-          "| 12. hip mount (inserts) | **replaced: section 5 below (trap-free boss, bearing ring, 0.6 N m)** |",
+          f"| 12. hip mount (inserts) | **replaced: section 5 below (trap-free boss, bearing plates, {hm['torque']:g} N m)** |",
           "| 13 onward. crown, first-article checks | same; add section 6 below |", "",
           "## 3. Weigh (after pad and support removal, before reaming)", "",
           "| part | expected (STL x 1.25 g/cm3) |", "|---|---:|",
@@ -1500,9 +1525,9 @@ def build_md(cp: dict, spl: dict, ps: dict) -> str:
                  f"{math.hypot(a[0] - o[0], a[1] - o[1]):.1f} mm |")
     L += ["", "CHECK before bolting: a 5 mm drill shank passes each joint hole of both halves; the halves meet flat at "
           "the joint face with the two holes in line (a 5 mm pin goes through both).", "",
-          "## 5. Hip mount: trap-free boss, bearing ring, nut keeper (replaces BUILD_H1 section 12)", "",
+          "## 5. Hip mount: trap-free boss, bearing plates, nut keeper (replaces BUILD_H1 section 12)", "",
           f"Hardware (bl070_h1p.json `h1p.hip_mount`): {hm['hardware']}.", "",
-          f"Stack: mount base {hm['flange_t']:.1f} + boss {hm['boss']['depth_mm']:g} + ring {hm['ring']['t_mm']:g} + nut "
+          f"Stack: mount base {hm['flange_t']:.1f} + boss {hm['boss']['depth_mm']:g} + plate {hm['ring']['t_mm']:g} + nut "
           f"{hm['nut_t']:.1f} = {hm['stack']:g} mm; the M5 x {hm['screw_len']:g} screw stands {hm['protrusion_mm']:g} mm "
           f"= {hm['protrusion_threads']:g} threads proud. **Rule: at least {hm['threads_min']} full threads proud** "
           f"({hm['proud_min_mm']:.1f} mm).", "",
@@ -1514,7 +1539,7 @@ def build_md(cp: dict, spl: dict, ps: dict) -> str:
           "**the preload is gone at -20 C**. No HA-LS-1 row relies on it: the BL-055 tipping model the hip rows use "
           f"(strength {hm['min_sf']['strength']:g}, fatigue {hm['min_sf']['fatigue']:g}, creep {hm['min_sf']['creep']:g}) "
           "is preload-free; Loctite 243 keeps the nuts on, and T4b-PPA-COLD checks the paint marks after the cold drops.", "",
-          f"Ring source: **{RING_SOURCE['service']}** from `{hm['files'][0]}` ({RING_SOURCE['url']}); {RING_SOURCE['price']}. "
+          f"Plate source: **{RING_SOURCE['service']}** from `{hm['files'][0]}` ({RING_SOURCE['url']}); {RING_SOURCE['price']}. "
           f"Fallback: {RING_SOURCE['fallback']}.", "",
           f"**BL-075 hip clearance** (`{bl075()['src']}`): the stack clears the frame, the bag, the spreader, the wearer "
           f"side and the hipbelt ({'all clear' if bl075()['clears'] else 'NOT all clear'}); decision: {bl075()['fix']}. "
@@ -1527,9 +1552,9 @@ def build_md(cp: dict, spl: dict, ps: dict) -> str:
     L += [""] + [f"{i}. {s}" for i, s in enumerate(hip_steps(hm), 1)]
     L += ["", "## 6. First-article checks added on the PPA path", "",
           "1. Before any use below 0 C (32 F): T4b-PPA-COLD and T4c-PPA-COLD passed on P1.",
-          "2. HB-6b (test kit G6) runs on this frame: no paint mark moves; after T5, re-torque check at 0.6 N m: no screw "
+          f"2. HB-6b (test kit G6) runs on this frame: no paint mark moves; after T5, re-torque check at {hm['torque']:g} N m: no screw "
           "turns more than 1/8 turn (ASSUMPTION CREEP-LONG).",
-          "3. Every 10 outings: paint marks on the hip screws and nuts unmoved; no white ring on the boss round the ring.", "",
+          "3. Every 10 outings: paint marks on the hip screws and nuts unmoved; no white ring on the boss round the plates.", "",
           "## ASSUMPTIONS on this path", "",
           f"- **RING-PRICE**: {ASSUMPTIONS['RING-PRICE'][0]} Settled by: {ASSUMPTIONS['RING-PRICE'][1]}.",
           "- BL-073: K-NUT, CTE-Z, CREEP-LONG, BEARING-RING, JOINT-XY, PAD, SPOOL-RESERVE, LAYER-H are in "
@@ -1543,22 +1568,35 @@ def build_md(cp: dict, spl: dict, ps: dict) -> str:
 def found_lines() -> list[str]:
     spl = spool_plan()
     hm = hip()
-    out = [f"- **Spools:** BL-073 books {spl['booked_bl073']} spools (a text line in its md, written by "
-           "`bl073_hotwet.py`; not a JSON number). With its own fixed change layers each half needs a start spool with "
-           f">= {spl['lower']['start_needs_g']:.0f} / {spl['upper']['start_needs_g']:.0f} g and a change spool with >= "
-           f"{spl['lower']['finish_needs_g']:.0f} / {spl['upper']['finish_needs_g']:.0f} g (lower / upper), which only fresh "
-           f"spools give, and the coupon jobs come to {spl['coupons_g']:.0f} g (BL-073 guessed about 750 g; the 5 stays, "
-           f"3 crown corners and the US2 piece alone are most of it). The plan books **{spl['spools']}** spools; "
-           f"{spl['left_g']:.0f} g is left over on part spools for reprints or P2. Using the first-article upper half as "
-           "the frame's upper half (if it passes) would save 2 spools: an owner call."]
+    saved = len([r for r in spl["rows"] if all(u.strip().startswith("frame upper half") for u in r["uses"].split(";"))])
+    if spl["booked_bl073"] != spl["spools"]:
+        out = [f"- **Spools:** BL-073 books {spl['booked_bl073']} spools (a text line in its md, written by "
+               "`bl073_hotwet.py`; not a JSON number). With its own fixed change layers each half needs a start spool with "
+               f">= {spl['lower']['start_needs_g']:.0f} / {spl['upper']['start_needs_g']:.0f} g and a change spool with >= "
+               f"{spl['lower']['finish_needs_g']:.0f} / {spl['upper']['finish_needs_g']:.0f} g (lower / upper), which only fresh "
+               f"spools give, and the coupon jobs come to {spl['coupons_g']:.0f} g. The plan books **{spl['spools']}** spools; "
+               f"{spl['left_g']:.0f} g is left over on part spools for reprints or P2. Using the first-article upper half as "
+               f"the frame's upper half (if it passes) would save {saved} spools: an owner call."]
+    else:
+        out = [f"- **Spools (closed, BL-076):** bl070_h1p.md now books the plan's **{spl['spools']}** spools, read from "
+               f"`spool_plan.csv`; {spl['spools'] - saved} if the first-article upper half becomes the frame's upper half "
+               f"(orchestrator call). {spl['left_g']:.0f} g is left over on part spools for reprints or P2."]
     rl = hm["webs"]["ring_outer_ligament_mm"]
-    out.append(f"- **Ring edge distance:** the ring's hole-to-OD ligament is {rl:g} mm, under SendCutSend's guide of "
-               f"1.5-2 x the thickness ({1.5 * hm['ring']['t_mm']:.1f}-{2 * hm['ring']['t_mm']:.1f} mm). The quote may flag "
-               "it or the holes may distort; the hand-cut fallback is in the BOM. Even the largest ring the D49 pocket takes "
-               "(OD about 48.9) gives only 2.7 mm, so the fix (fewer, larger-radius holes or a thicker ring) is for the "
-               "structural-fea-engineer, not a BOM change.")
-    out.append("- **'see OPEN':** the US2 lug fatigue row's `gated_by` text points to an OPEN section that bl070_h1p.md "
-               "does not have.")
+    t = hm["ring"]["t_mm"]
+    if rl >= 1.5 * t - 1e-9:
+        out.append(f"- **Ring edge distance (closed, BL-076):** {ring_pieces(hm)} arc plates, .063 in ({t:g} mm); smallest "
+                   f"hole-to-edge ligament {min(v for k, v in hm['webs'].items() if k.startswith('ring_') and v):g} mm "
+                   f">= 1.5 x t ({1.5 * t:.1f} mm), SendCutSend's guide 1.5-2 x t. Torque {hm['torque']:g} N m "
+                   "(bl070_h1p.md BL-076).")
+    else:
+        out.append(f"- **Ring edge distance:** the ring's hole-to-OD ligament is {rl:g} mm, under SendCutSend's guide of "
+                   f"1.5-2 x the thickness ({1.5 * t:.1f}-{2 * t:.1f} mm).")
+    if "## Open items" in BL070_MD.read_text(encoding="utf-8"):
+        out.append("- **'see OPEN' (closed, BL-076):** bl070_h1p.md has an 'Open items' section, generated by "
+                   "`huntkit/gendesign/bl076.py`.")
+    else:
+        out.append("- **'see OPEN':** the US2 lug fatigue row's `gated_by` text points to an OPEN section that bl070_h1p.md "
+                   "does not have.")
     return out
 
 
@@ -1575,7 +1613,7 @@ def readme_md(cp: dict) -> str:
         "| `BUILD_H1P.md` | BOM and cost, z 234 bolt positions, the trap-free hip mount at 0.6 N m |",
         "| `test_pieces/*.stl` | coupon pieces cut from H1-P (stay, crown corner, US2 piece), blocks, dummy towers |",
         "| `../../iter1/frame/h1p/*_flat_print.stl` | the halves with their snap-off pads (print these) |",
-        "| `../../iter1/frame/h1p/hip_bearing_ring.dxf` | the 6061 ring, for the laser-cut order |", "",
+        "| `../../iter1/frame/h1p/hip_bearing_ring.dxf` | the two 6061 bearing plates (BL-076), for the laser-cut order |", "",
         f"Gate summary: CA-3-HW Z >= {pl['ca3_z_mpa']:g} MPa and SBS >= {pl['ca3_sbs_mpa']:g} MPa (B-basis), CA-1-HW "
         f"{int(pl['ca1_n_fat'])} run-outs, CA-4-HW >= {pl['ca4_e_ratio']:g}, the cold coupons, US2 lug x {pl['lug_factor']:g}, "
         f"clevis share <= {pl['share_max']:g}.", "",

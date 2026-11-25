@@ -16,21 +16,21 @@
   "share_max: JSON text 0.79 vs numeric 0.7913 OK",
   "t4c_z_max: JSON text 140 vs numeric 140.0000 OK",
   "coupon jobs PPA 2259 g, PAHT 417 g; shortest layer 181 s (need 181)",
-  "spools 10 (BL-073 booked 5), total 4798 g",
-  "hip torque 0.6 N m; 5 threads proud (rule >= 2)",
+  "spools 10 (BL-073 booked 10), total 4798 g",
+  "hip torque 0.45 N m; 5.5 threads proud (rule >= 2)",
   "rig: all static loads under the cell: True (max 821 N)",
-  "cost {'filament_usd': 1499.9, 'spools': 10, 'booked_bl073': 5, 'booked_bl073_usd': 749.95, 'hip_hw_usd': 61.0, 'dryer_usd': 376.9, 'tools_usd': 574.41, 'per_frame_usd': 660.96, 'first_frame_all_usd': 2135.31}"
+  "cost {'filament_usd': 1499.9, 'spools': 10, 'booked_bl073': 10, 'booked_bl073_usd': 1499.9, 'hip_hw_usd': 69.0, 'dryer_usd': 376.9, 'tools_usd': 574.41, 'per_frame_usd': 668.96, 'first_frame_all_usd': 2143.31}"
  ],
  "cost": {
   "filament_usd": 1499.9,
   "spools": 10,
-  "booked_bl073": 5,
-  "booked_bl073_usd": 749.95,
-  "hip_hw_usd": 61.0,
+  "booked_bl073": 10,
+  "booked_bl073_usd": 1499.9,
+  "hip_hw_usd": 69.0,
   "dryer_usd": 376.9,
   "tools_usd": 574.41,
-  "per_frame_usd": 660.96,
-  "first_frame_all_usd": 2135.31
+  "per_frame_usd": 668.96,
+  "first_frame_all_usd": 2143.31
  },
  "files": [
   "BUILD_H1P.md",

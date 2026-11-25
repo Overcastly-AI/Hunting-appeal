@@ -117,14 +117,19 @@ def basis() -> dict:
 # (RING_OD / RING_ID x RING_T, 8 holes D5.5) sits on the flat; the 8 nuts bear on the ring.
 BOSS_DEPTH = 22.0          # mount face -> flat back (the lumbar struts reach y -24.3 inside r 25; flat at y -26.4)
 SPOT_D = 49.0              # spot face: ring OD 47 + 2 x 1 mm
-RING_OD, RING_ID, RING_T = 47.0, 24.0, 2.0
+# BL-076 (huntkit.gendesign.bl076): the 47 / 24 x 2 ring had a 1.75 mm hole-to-OD ligament (laser guide 1.5-2 x t);
+# replaced by TWO 6061-T6 arc plates, .063 in (1.6 mm), r 13.0-24.2, ends 2.4 mm past the end holes, R1.5 corners:
+# bl076.choose() (lightest passing option) must return exactly these (tests/test_bl076.py).
+RING_BL073 = {"od": 47.0, "id": 24.0, "t": 2.0, "layout": "ring", "torque_nm": 0.6}
+RING_OD, RING_ID, RING_T = 48.4, 26.0, 1.6
+RING_LAYOUT, RING_END_LIG, RING_FILLET = "arcs", 2.4, 1.5
 HOLE_D = 5.5
 FLANGE_T = 3.0             # hip_mount.BASE_T (the BL-056 redraw; the D44 x 1.2 drawn mount is not the print file)
 NUT_M, NUT_DW = 4.0, 6.9   # DIN 934 A2 M5: m 4.0 (frame_h1.JOINT.nut_t); bearing face dw min 6.9 (ISO 4032 / DIN 934)
 PITCH = 0.8                # M5 coarse
 SCREW_LS = (20.0, 25.0, 30.0, 35.0, 40.0)   # DIN 7984 M5 stock lengths
 MIN_PROTRUDE_THREADS = 2.0
-TORQUE_NM = 0.6            # BL-073 hip nut torque (see hip_plate: creep cap at the low nut factor)
+TORQUE_NM = 0.45           # BL-076 hip nut torque (was 0.6, BL-073): the highest 0.05 step at which the plate rows pass
 K_NOM, K_LO, K_HI = 0.20, 0.14, 0.26   # nut factor: 0.2 typical, scatter 0.14-0.26 (Bossard / Machine Design, cited)
 CREEP_LONG = 0.5           # ASSUMPTION CREEP-LONG: PPA-CF layer-normal creep modulus after years at 40 C wet = 0.5 x
 #                            short-term (record has 0.85 at 8 h only; no long-term curve published)
@@ -165,6 +170,13 @@ def hetenyi(t: float = RING_T, E_found: float = 4300.0, depth: float = BOSS_DEPT
             "mpa_per_n": beta * G / (2.0 * b), "char_len_mm": round(1 / beta, 2)}
 
 
+def _ring_txt() -> str:
+    if RING_LAYOUT == "arcs":
+        return (f"two 6061-T6 bearing plates .063 in ({RING_T:g} mm), arcs r {RING_ID / 2:g}-{RING_OD / 2:g} "
+                f"({RING_ID:g} / {RING_OD:g} mm), 4 holes each")
+    return f"6061-T6 bearing ring {RING_OD:g} / {RING_ID:g} x {RING_T:g} mm"
+
+
 def hip_plate(mat: str = MAT) -> dict:
     """B-1: the hip through-bolt joint on a real bearing geometry (no traps), on the hot/wet allowable.
     Rows (per bolt, the BL-055 tipping model T from h1_closeout.hip_check, H on the pin and on the frame):
@@ -185,9 +197,11 @@ def hip_plate(mat: str = MAT) -> dict:
     pat = C.hip_pattern(*C.HIP_CHOSEN, depth=C.HIP_BOSS_DEPTH)
     # T per row (the tipping model does not depend on the fastener): take them from the abs_z run
     C_rows = C.hip_check(pat, True)["rows"]
-    ring_a = math.pi / 4 * (RING_OD ** 2 - RING_ID ** 2) - 8 * math.pi / 4 * HOLE_D ** 2
+    from . import bl076 as X
+    ring_a = X.outline(X.design()).area
     het = hetenyi(E_found=r["E_z"] * 1.25)          # cold foundation (modulus_minus20c 1.25): the most peaked
-    p_per_n = max(het["mpa_per_n"], 8.0 / ring_a)
+    fe = X.ring_fe_for_hip_plate()                  # BL-076: Kirchhoff plate on a Winkler foundation (cold)
+    p_per_n = max(het["mpa_per_n"], 8.0 / ring_a, fe["p_per_n"])
     d = 5.0
     F = {k: TORQUE_NM / (kk * d * 1e-3) for k, kk in (("nom", K_NOM), ("max", K_LO), ("min", K_HI))}
     ti_t, ti_f = 0.7 * H1.TI["uts"] * H1.TI["As"], 0.25 * H1.TI["uts"] * H1.TI["As"]
@@ -226,6 +240,8 @@ def hip_plate(mat: str = MAT) -> dict:
     hw = {"screws_extra_g": round(8 * (sl["screw_l_mm"] - 20.0) * TI_MM_G, 2), "ring_g": round(ring_g, 2),
           "keeper_g": 3.58}       # hip_parts(): printed PPA-CF nut keeper 48.5 / 24 x 3 (2 pockets)
     return {"mat": mat, "allow_mpa": round(allow, 2), "hetenyi": het, "ring_area_mm2": round(ring_a, 1),
+            "pressure_source": "bl076 plate FE (cold foundation)" if fe["p_per_n"] >= het["mpa_per_n"] else "Hetenyi",
+            "ring_checks": fe["checks"], "ring_design": fe["design"], "ring_laser": fe["laser"],
             "pressure_mpa_per_kn": round(p_per_n * 1e3, 2), "torque_nm": TORQUE_NM,
             "preload_n": {k: round(v, 0) for k, v in F.items()},
             "nut_factor": {"nominal": K_NOM, "range": [K_LO, K_HI]},
@@ -242,9 +258,10 @@ def hip_plate(mat: str = MAT) -> dict:
             "webs": {"between_holes_mm": round(pat["pitch_mm"] - HOLE_D, 2),
                      "hole_to_boss_edge_mm": round(50.0 / 2 - 19.0 - HOLE_D / 2, 2),
                      "ring_outer_ligament_mm": round(RING_OD / 2 - 19.0 - HOLE_D / 2, 2),
-                     "ring_inner_ligament_mm": round(19.0 - HOLE_D / 2 - RING_ID / 2, 2), "traps": 0},
+                     "ring_inner_ligament_mm": round(19.0 - HOLE_D / 2 - RING_ID / 2, 2),
+                     "ring_end_ligament_mm": RING_END_LIG if RING_LAYOUT == "arcs" else None, "traps": 0},
             "hardware": f"8 x Ti gr5 M5 x {sl['screw_l_mm']:g} DIN 7984 + 8 x A2 M5 DIN 934 nuts (Loctite 243) on one "
-                        f"6061-T6 bearing ring {RING_OD:g} / {RING_ID:g} x {RING_T:g} mm (8 holes D{HOLE_D:g} on r 19, "
+                        f"{_ring_txt()} (8 holes D{HOLE_D:g} on r 19, "
                         f"the mount pattern) and a printed PPA-CF nut keeper (3 mm, holds the nuts while the screws are "
                         f"turned from the mount side) replace 8 x M5 x 9.5 brass inserts + 8 x M5 x 12; torque "
                         f"{TORQUE_NM} N m",
@@ -309,7 +326,8 @@ def plate_hook():
 # ================================================================================================ hip ring + nut keeper
 KEEPER_T = 3.0             # printed PPA-CF nut keeper (holds the 8 nuts while the screws are torqued from the mount side)
 KEEPER_AF = 8.2            # DIN 934 M5 s 8.0 + 0.2 play
-KEEPER_OD = SPOT_D - 0.5   # the keeper fills the spot face (the ring is 47)
+KEEPER_OD = SPOT_D - 0.5   # the keeper fills the spot face
+KEEPER_ID = 24.0           # BL-073 keeper bore (kept when BL-076 changed the plates)
 
 
 def hip_parts(out_dir: Path | None = None) -> dict:
@@ -324,20 +342,25 @@ def hip_parts(out_dir: Path | None = None) -> dict:
     d = out_dir or P.STL_DIR
     pat = C.hip_pattern(*C.HIP_CHOSEN, depth=C.HIP_BOSS_DEPTH)
     pos = [(x - C.HIP_C[0], z - C.HIP_C[1]) for x, z in pat["positions_xz"]]
+    from . import bl076 as X
+    geom = X.outline(X.design())
+    solid = geom
     doc = ezdxf.new("R2010")
     doc.units = ezdxf.units.MM
     msp = doc.modelspace()
-    msp.add_circle((0, 0), RING_OD / 2)
-    msp.add_circle((0, 0), RING_ID / 2)
+    doc.layers.add("CUT")
+    for pg in getattr(geom, "geoms", [geom]):
+        msp.add_lwpolyline(list(pg.exterior.coords)[:-1], close=True, dxfattribs={"layer": "CUT"})
     for x, y in pos:
-        msp.add_circle((x, y), HOLE_D / 2)
-    msp.add_text(f"BL-073 hip bearing ring 6061-T6 {RING_T:g} mm, OD {RING_OD:g} ID {RING_ID:g}, 8 x D{HOLE_D:g}",
-                 dxfattribs={"height": 2.0}).set_placement((-RING_OD / 2, -RING_OD / 2 - 6))
+        msp.add_circle((x, y), HOLE_D / 2, dxfattribs={"layer": "CUT"})
+    # no text in the cut file (a laser service cuts every entity); the spec is in bl070_h1p.md BL-076 and the BOM
     doc.saveas(d / "hip_bearing_ring.dxf")
-    ring = (m3d.Manifold.cylinder(RING_T, RING_OD / 2, RING_OD / 2, 128)
-            - m3d.Manifold.cylinder(RING_T + 2, RING_ID / 2, RING_ID / 2, 96).translate((0, 0, -1)))
-    for x, y in pos:
-        ring = ring - m3d.Manifold.cylinder(RING_T + 2, HOLE_D / 2, HOLE_D / 2, 48).translate((x, y, -1))
+    ring = None
+    for pg in getattr(solid, "geoms", [solid]):
+        cs = m3d.CrossSection([list(pg.exterior.coords)[:-1]] + [list(h.coords)[:-1] for h in pg.interiors],
+                              m3d.FillRule.EvenOdd)
+        k_ = m3d.Manifold.extrude(cs, RING_T)
+        ring = k_ if ring is None else ring + k_
     # keeper: the ring outline less one pocket per group = the union of its 4 hexes (flats facing the neighbour)
     import math as _m
     hexes = []
@@ -349,7 +372,7 @@ def hip_parts(out_dir: Path | None = None) -> dict:
     from shapely.geometry import LineString
     chans = [LineString(pos[:4]).buffer(3.0), LineString(pos[4:]).buffer(3.0)]   # one pocket per group of 4
     pockets = unary_union(hexes + chans)
-    outline = Point(0, 0).buffer(KEEPER_OD / 2, 128).difference(Point(0, 0).buffer(RING_ID / 2, 96)).difference(pockets)
+    outline = Point(0, 0).buffer(KEEPER_OD / 2, 128).difference(Point(0, 0).buffer(KEEPER_ID / 2, 96)).difference(pockets)
     polys = list(getattr(outline, "geoms", [outline]))
     keeper = None
     for pg in polys:
@@ -365,12 +388,14 @@ def hip_parts(out_dir: Path | None = None) -> dict:
         out[nm] = {"volume_mm3": round(float(man.volume()), 1), "watertight": bool(tm.is_watertight)}
     al = _alu()
     out["hip_bearing_ring"]["g"] = round(out["hip_bearing_ring"]["volume_mm3"] * al["rho"], 2)
+    out["hip_bearing_ring"]["pieces"] = len(list(getattr(geom, "geoms", [geom])))
+    out["hip_bearing_ring"]["dxf_layers"] = ["CUT"]
     out["hip_nut_keeper"]["g"] = round(out["hip_nut_keeper"]["volume_mm3"] * P.RHO_PPA, 2)
     out["keeper_pockets"] = len(list(getattr(pockets, "geoms", [pockets])))
     out["keeper_min_wall_mm"] = round(min(KEEPER_OD / 2 - max(_m.hypot(x, y) for x, y in pos) - KEEPER_AF / 2,
-                                          min(_m.hypot(x, y) for x, y in pos) - KEEPER_AF / 2 - RING_ID / 2), 2)
-    out["files"] = [str((d / f).relative_to(REPO)) for f in ("hip_bearing_ring.dxf", "hip_bearing_ring.stl",
-                                                             "hip_nut_keeper.stl")]
+                                          min(_m.hypot(x, y) for x, y in pos) - KEEPER_AF / 2 - KEEPER_ID / 2), 2)
+    out["files"] = [str((d / f).relative_to(REPO)) if (d / f).is_relative_to(REPO) else str(d / f)
+                    for f in ("hip_bearing_ring.dxf", "hip_bearing_ring.stl", "hip_nut_keeper.stl")]
     return out
 
 
@@ -1252,7 +1277,8 @@ def report(final: str = FINAL, log=print) -> dict:
                             "preload_n": hip["preload_n"], "screw": hip["screw"],
                             "ring": {"material": "6061-T6 (data/materials/metals/alu_6061_t6.yaml)", "od_mm": RING_OD,
                                      "id_mm": RING_ID, "t_mm": RING_T, "holes": "8 x D5.5 on r 19 (HIP_CHOSEN)",
-                                     "g": hip["hardware_g"]["ring_g"]},
+                                     "g": hip["hardware_g"]["ring_g"], "layout": RING_LAYOUT,
+                                     "pieces": 2 if RING_LAYOUT == "arcs" else 1},
                             "boss": {"depth_mm": BOSS_DEPTH, "flat_back": True, "spot_face_d_mm": SPOT_D,
                                      "holes_d_mm": HOLE_D, "traps": 0},
                             "relaxation": hip["relaxation"], "cold": hip["cold"], "webs": hip["webs"]},
@@ -1293,6 +1319,17 @@ def report(final: str = FINAL, log=print) -> dict:
     if log:
         log(f"record {P.REC_JSON}")
     return rec
+
+
+def _spool_line() -> str:
+    """The BL-074 spool count, read from the build output (BL-076: no hand-typed count)."""
+    from . import bl076 as X
+    if not X.SPOOL_CSV.exists():
+        return "spool count: run `python designs/pack_5200/frame_h1p_build.py` (writes the spool plan)."
+    sc = X.spool_count()
+    return (f"**book {sc['spools']} spools** ({sc['spools']} x 0.75 kg, BL-074 plan `{sc['source']}`); "
+            f"{sc['spools_fa_as_frame']} if the first-article upper half becomes the frame's upper half (orchestrator "
+            "call, DECISIONS 2026-11-25).")
 
 
 def _oz(g: float) -> str:
@@ -1348,7 +1385,7 @@ def write_md_section(rec: dict) -> str:
           "| item | g | change vs BL-070 H1-P |", "|---|---:|---:|",
           f"| printed body (halves + US2 clevises), PPA-CF | **{ms['body_g']}** ({ms['body_g'] / 453.6:.2f} lb) | "
           f"{ms['body_delta_vs_bl070_g']:+.1f} g ({_oz(ms['body_delta_vs_bl070_g'])}) |",
-          f"| hip hardware: 6061 ring + printed nut keeper + M5 x {hp['screw']['screw_l_mm']:g} for x 20 | "
+          f"| hip hardware: 6061 bearing plates (BL-076) + printed nut keeper + M5 x {hp['screw']['screw_l_mm']:g} for x 20 | "
           f"{ms['hip_hardware_delta_vs_bl070_g']:.1f} | {ms['hip_hardware_delta_vs_bl070_g']:+.1f} g |",
           f"| **frame total change** | | **{ms['frame_delta_vs_bl070_g']:+.1f} g ({_oz(ms['frame_delta_vs_bl070_g'])})** |",
           f"| vs PAHT-CF H1 (1069.3 g body) | | {ms['body_delta_vs_paht_h1_g']:+.1f} g body |",
@@ -1359,17 +1396,21 @@ def write_md_section(rec: dict) -> str:
           f"(spot face D{SPOT_D:g}); 8 x D{HOLE_D:g} through holes on the BL-055 positions. Webs between holes "
           f"{hp['webs']['between_holes_mm']} mm (6 lines at 0.6), hole to boss edge {hp['webs']['hole_to_boss_edge_mm']} mm, "
           "no side-wall breakout (the holes sit inside the solid D50 cylinder over the full depth).",
-          f"- **Bearing ring** 6061-T6 {RING_OD:g} / {RING_ID:g} x {RING_T:g} mm ({RING_OD / 25.4:.2f} x {RING_T / 25.4:.3f} in), "
-          f"8 holes D{HOLE_D:g} on r 19, {hp['hardware_g']['ring_g']} g, laser or waterjet cut. Nuts bear on the ring; "
-          f"the ring bears on the PPA over {hp['ring_area_mm2']:.0f} mm2. Bearing read as a beam on an elastic "
-          f"foundation (Hetenyi; cold boss, beta {hp['hetenyi']['beta']} /mm, group factor "
-          f"{hp['hetenyi']['group_factor']}): {hp['pressure_mpa_per_kn']} MPa per kN of bolt force.",
+          (f"- **Bearing plates (BL-076, replace the BL-073 47 / 24 x 2 ring):** {_ring_txt()} "
+           f"({RING_OD / 25.4:.2f} / {RING_ID / 25.4:.2f} x {RING_T / 25.4:.3f} in), 8 holes D{HOLE_D:g} on r 19, "
+           f"{hp['hardware_g']['ring_g']} g the pair, laser cut. Nuts bear on the plates; the plates bear on the PPA "
+           f"over {hp['ring_area_mm2']:.0f} mm2. Bearing read from the BL-076 plate model (Kirchhoff plate on a "
+           f"Winkler foundation, cold boss, nuts rigid): {hp['pressure_mpa_per_kn']} MPa per kN of bolt force (the "
+           f"BL-073 1D Hetenyi read gives {hp['hetenyi']['mpa_per_n'] * 1e3:.2f}). See the BL-076 section."
+           if RING_LAYOUT == "arcs" else
+           f"- **Bearing ring** 6061-T6 {RING_OD:g} / {RING_ID:g} x {RING_T:g} mm, {hp['hardware_g']['ring_g']} g, "
+           f"{hp['pressure_mpa_per_kn']} MPa per kN of bolt force."),
           f"- **Nut keeper:** printed PPA-CF, {KEEPER_T:g} mm, two pockets (each the union of 4 hexes {KEEPER_AF} AF, "
-          f"flats radial); it sits on the ring around the nuts so the screws can be turned from the mount side with "
+          f"flats radial); it sits on the plates around the nuts so the screws can be turned from the mount side with "
           f"the 3 mm hex bit (an 8 mm spanner does not fit between nuts 9.2 mm apart). Non-structural; min wall "
           f"{x['hip_parts']['keeper_min_wall_mm']} mm. Files: " + ", ".join(f"`{q}`" for q in x["hip_parts"]["files"]) + ".",
           f"- **Screw:** Ti gr5 M5 x {hp['screw']['screw_l_mm']:g} DIN 7984: stack {hp['screw']['stack_mm']:g} mm (flange 3 "
-          f"+ boss {BOSS_DEPTH:g} + ring {RING_T:g} + nut 4), {hp['screw']['protrusion_mm']} mm = "
+          f"+ boss {BOSS_DEPTH:g} + plate {RING_T:g} + nut 4), {hp['screw']['protrusion_mm']} mm = "
           f"{hp['screw']['protrusion_threads']:.0f} threads proud (BL-070: 0).",
           f"- **Torque {hp['torque_nm']} N m ({hp['torque_nm'] / 0.112985:.1f} in lbf)**, star order, twice, Loctite 243. "
           f"Preload T = K F d, K 0.20 (0.14-0.26): {hp['preload_n']['nom']:.0f} N nominal, "
@@ -1439,8 +1480,7 @@ def write_md_section(rec: dict) -> str:
           "Bambu listing); feed from a dry box with a hygrometer reading < 20 % RH for the whole print.",
           f"- **Spool count (m-6):** halves {sp['lower']['filament_total_g']:.0f} + {sp['upper']['filament_total_g']:.0f} g "
           "plus the BL-073 coupons (CA-1/3/4-HW with blocks and towers, T4c-PPA-HW cut to z 0-140 so about 500 g "
-          "instead of BL-071's 854 g, T4c-PPA-CROWN: about 750 g in all, ASSUMPTION) plus the first-article upper "
-          "half (M-5): **book 5 spools** (3.75 kg); without the first article, 4.", "",
+          "instead of BL-071's 854 g, T4c-PPA-CROWN) plus the first-article upper half (M-5): " + _spool_line(), "",
           "- **BL-071 requests (JSON `bl071_requests`):** T4c bend load as a cantilever "
           f"({rec['bl071_requests']['t4c_bend_load']['p_tip_n']:.0f} N at the foot, 120 mm arm), hip torque "
           f"{rec['bl071_requests']['hip_torque_nm']} N m on the bearing ring, every coupon static under the 100 kg "

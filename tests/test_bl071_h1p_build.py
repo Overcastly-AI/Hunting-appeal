@@ -114,28 +114,29 @@ def test_static_loads_stay_under_the_100kg_cell_and_the_extras_are_gone(kit):
 def test_spools_and_cost_follow_the_plan(pk):
     s, c, sp = pk["spools"], pk["cost"], P.spool()
     assert c["filament_usd"] == pytest.approx(s["spools"] * sp["usd"])
-    assert s["booked_bl073"] == 5
+    assert s["booked_bl073"] == s["spools"]           # BL-076: bl070_h1p.md books the plan count (spool_plan.csv)
     used = s["spools"] * sp["g"] - s["left_g"]
     sw = P.h1p_json()["bl073"]["spool_plan"]
     band = sum(k * (sw[h]["swap"]["spool1_g_range"][1] - sw[h]["swap"]["spool1_g_range"][0]) for h, k in (("lower", 1), ("upper", 2)))
     assert used == pytest.approx(s["total_g"] + band, abs=3)       # each change booked high on both spools
     for r in s["rows"]:
         assert r["left_g"] >= s["reserve_g"] - 0.5
-    assert "BL-073 booked 5" in pk["docs"]["BUILD_H1P.md"]
+    assert f"bl070_h1p.md books the same {s['spools']} (BL-076)" in pk["docs"]["BUILD_H1P.md"]
 
 
 def test_hip_trap_free_ring_torque_and_threads_proud(pk):
     h = pk["hip"]
     pl = P.pass_lines()
-    assert h["n"] == 8 and h["screw_len"] == 35 and h["torque"] == pytest.approx(0.6)
-    assert h["torque_inlbf"] == pytest.approx(5.3, abs=0.05)
-    # BL-073 rule: >= 2 threads proud (BL-071's zero-protrusion test retired); the JSON gives 5
-    assert h["protrusion_threads"] >= P.THREADS_PROUD_MIN and h["protrusion_threads"] == 5
+    # BL-076: torque 0.45 N m on the two 1.6 mm bearing plates (was 0.6 on the 2 mm ring)
+    assert h["n"] == 8 and h["screw_len"] == 35 and h["torque"] == pytest.approx(0.45)
+    assert h["torque_inlbf"] == pytest.approx(4.0, abs=0.05)
+    # BL-073 rule: >= 2 threads proud (BL-071's zero-protrusion test retired); the JSON gives 5.5 (4.4 mm)
+    assert h["protrusion_threads"] >= P.THREADS_PROUD_MIN and h["protrusion_threads"] == pytest.approx(5.5)
     assert h["threads_calc"] == pytest.approx(h["protrusion_threads"])
     assert h["boss"]["traps"] == 0
     b = pk["docs"]["BUILD_H1P.md"]
     sec5 = b.split("## 5. Hip mount")[1].split("## 6.")[0]
-    assert "0.6 N m (5.3 in lbf)" in sec5 and "Wera 7440" in sec5 and "preload is gone at -20 C" in sec5
+    assert "0.45 N m (4.0 in lbf)" in sec5 and "Wera 7440" in sec5 and "preload is gone at -20 C" in sec5
     assert "No HA-LS-1 row relies on it" in sec5 and "SendCutSend" in sec5
     # BL-075 additions
     c = P.bl075()

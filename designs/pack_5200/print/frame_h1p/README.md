@@ -15,10 +15,10 @@ The PPA-CF build path, alongside the PAHT-CF H1 path in `../frame_h1/` (still th
 | `BUILD_H1P.md` | BOM and cost, z 234 bolt positions, the trap-free hip mount at 0.6 N m |
 | `test_pieces/*.stl` | coupon pieces cut from H1-P (stay, crown corner, US2 piece), blocks, dummy towers |
 | `../../iter1/frame/h1p/*_flat_print.stl` | the halves with their snap-off pads (print these) |
-| `../../iter1/frame/h1p/hip_bearing_ring.dxf` | the 6061 ring, for the laser-cut order |
+| `../../iter1/frame/h1p/hip_bearing_ring.dxf` | the two 6061 bearing plates (BL-076), for the laser-cut order |
 
 Gate summary: CA-3-HW Z >= 23.7 MPa and SBS >= 14.2 MPa (B-basis), CA-1-HW 6 run-outs, CA-4-HW >= 0.5, the cold coupons, US2 lug x 1.08, clevis share <= 0.79.
 
-Cost: filament 10 spools USD 1499.90; hip hardware USD 61.00; tools USD 574.41 (one-time).
+Cost: filament 10 spools USD 1499.90; hip hardware USD 69.00; tools USD 574.41 (one-time).
 
 Release copies, CSVs and a tech pack PDF: `outputs/release/frame_h1p_ppa/`.
