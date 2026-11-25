@@ -1,0 +1,1608 @@
+{
+ "ticket": "BL-077",
+ "date": "2026-11-25",
+ "final": "r3",
+ "basis": {
+  "k": 3.4066,
+  "n": 5,
+  "xy_mean": 88.0,
+  "xy_sd": 7.0,
+  "z_mean": 47.0,
+  "z_sd": 5.0,
+  "xy_b": 64.15,
+  "z_b": 29.97,
+  "wet": {
+   "xy_bending": 0.92,
+   "z_bending": 0.803,
+   "decline_floor": 0.82,
+   "xy": 0.82,
+   "z": 0.8
+  },
+  "hot": {
+   "direct_40_23_dry": 0.8215,
+   "PA66 (Wetzel 2023, DSC)": {
+    "drop_c_per_pct": 11.3,
+    "water_basis": "matrix",
+    "water_pct": 1.1,
+    "tg_wet_c": 57.5,
+    "read_at_c": [
+     20.5,
+     37.5
+    ],
+    "ratio": 0.8261
+   },
+   "ForTii PPA (Envalior)": {
+    "drop_c_per_pct": 26.5,
+    "water_basis": "composite",
+    "water_pct": 0.88,
+    "tg_wet_c": 46.7,
+    "read_at_c": [
+     31.3,
+     48.3
+    ],
+    "ratio": 0.8294
+   },
+   "chosen": 0.82,
+   "modulus_40_23": 0.716
+  },
+  "knock_xy": 0.6724,
+  "knock_z": 0.656,
+  "tau_ratio": 0.5774,
+  "rec": {
+   "xy": 70.4,
+   "z": 37.6,
+   "tau": 22.56
+  },
+  "hw": {
+   "xy": 43.14,
+   "z": 19.66,
+   "tau": 11.35
+  },
+  "scale": {
+   "xy": 0.6127,
+   "z": 0.5228,
+   "tau": 0.5031
+  },
+  "E_hot_booked": 0.6,
+  "E_hot_cited": 0.587
+ },
+ "record_fix": {
+  "glass_transition_c": {
+   "was": 45,
+   "now": 70,
+   "source": "Bambu PAHT-CF TDS V3.0 (uwaterloo.ca RPC mirror, file name 'v2'; read 2026-11-25): dry, annealed 80 C 12 h; ISO 527 / ISO 178; Tg 70 C (DSC 10 C/min)"
+  },
+  "glass_transition_wet_c": 47
+ },
+ "rows": [
+  {
+   "key": "strength",
+   "name": "strength (min of 3 static bases)",
+   "goal": 1.0,
+   "before": 1.63,
+   "h1_hw": 0.909,
+   "after": 1.86,
+   "pass_h1_hw": false,
+   "pass_after": true
+  },
+  {
+   "key": "static_fatigue",
+   "name": "fatigue, static carry",
+   "goal": 1.0,
+   "before": 1.249,
+   "h1_hw": 0.737,
+   "after": 1.371,
+   "pass_h1_hw": false,
+   "pass_after": true
+  },
+  {
+   "key": "R1",
+   "name": "fatigue, cinch-cycled (R1)",
+   "goal": 1.0,
+   "before": 0.856,
+   "h1_hw": 0.481,
+   "after": 1.034,
+   "pass_h1_hw": false,
+   "pass_after": true
+  },
+  {
+   "key": "creep",
+   "name": "creep (static / cinch-cycled, min)",
+   "goal": 1.0,
+   "before": 1.825,
+   "h1_hw": 1.027,
+   "after": 2.205,
+   "pass_h1_hw": true,
+   "pass_after": true
+  },
+  {
+   "key": "joint_strength",
+   "name": "z 234 joint strength",
+   "goal": 1.0,
+   "before": 1.978,
+   "h1_hw": 0.995,
+   "after": 1.307,
+   "pass_h1_hw": false,
+   "pass_after": true
+  },
+  {
+   "key": "joint_fatigue",
+   "name": "z 234 joint fatigue",
+   "goal": 1.0,
+   "before": 1.05,
+   "h1_hw": 0.528,
+   "after": 0.735,
+   "pass_h1_hw": false,
+   "pass_after": false
+  },
+  {
+   "key": "lug_strength",
+   "name": "US2 lug strength",
+   "goal": 1.5,
+   "before": 3.34,
+   "h1_hw": 1.86,
+   "after": 1.85,
+   "pass_h1_hw": true,
+   "pass_after": true
+  },
+  {
+   "key": "lug_fatigue",
+   "name": "US2 lug fatigue",
+   "goal": 1.15,
+   "before": 1.5,
+   "h1_hw": 0.84,
+   "after": 0.83,
+   "pass_h1_hw": false,
+   "pass_after": false
+  },
+  {
+   "key": "clevis_strength",
+   "name": "US2 clevis strength (share 1.0)",
+   "goal": 1.5,
+   "before": 3.02,
+   "h1_hw": 1.55,
+   "after": 1.55,
+   "pass_h1_hw": true,
+   "pass_after": true
+  },
+  {
+   "key": "clevis_fatigue",
+   "name": "US2 clevis fatigue (share 1.0)",
+   "goal": 1.15,
+   "before": 1.36,
+   "h1_hw": 0.7,
+   "after": 0.7,
+   "pass_h1_hw": false,
+   "pass_after": false,
+   "gated_by": "CLEVIS-SHARE-B-PAHT: share <= 0.60"
+  },
+  {
+   "key": "clevis_fatigue_06",
+   "name": "US2 clevis fatigue (share 0.6, design)",
+   "goal": 1.15,
+   "before": 2.26,
+   "h1_hw": 1.16,
+   "after": 1.16,
+   "pass_h1_hw": true,
+   "pass_after": true
+  },
+  {
+   "key": "hip_strength",
+   "name": "hip mount strength",
+   "goal": 1.5,
+   "before": 2.149,
+   "h1_hw": 1.081,
+   "after": 5.86,
+   "pass_h1_hw": false,
+   "pass_after": true
+  },
+  {
+   "key": "hip_fatigue",
+   "name": "hip mount fatigue",
+   "goal": 1.15,
+   "before": 1.208,
+   "h1_hw": 0.608,
+   "after": 3.29,
+   "pass_h1_hw": false,
+   "pass_after": true
+  },
+  {
+   "key": "hip_creep",
+   "name": "hip mount creep",
+   "goal": 1.5,
+   "before": 2.58,
+   "h1_hw": 1.298,
+   "after": 7.03,
+   "pass_h1_hw": false,
+   "pass_after": true
+  },
+  {
+   "key": "lash",
+   "name": "lash pulls W1 / W2 (p99)",
+   "goal": 1.0,
+   "before": 4.18,
+   "h1_hw": 2.15,
+   "after": 5.24,
+   "pass_h1_hw": true,
+   "pass_after": true
+  },
+  {
+   "key": "buckling",
+   "name": "buckling, eigen, frame crown held",
+   "goal": 1.0,
+   "before": 1.336,
+   "h1_hw": 1.307,
+   "after": 1.672,
+   "pass_h1_hw": true,
+   "pass_after": true
+  },
+  {
+   "key": "buckling_record",
+   "name": "buckling, record rule (export raster)",
+   "goal": 1.0,
+   "before": 1.022,
+   "h1_hw": 1.022,
+   "after": 1.654,
+   "pass_h1_hw": true,
+   "pass_after": true
+  }
+ ],
+ "fails_after": [
+  "z 234 joint fatigue",
+  "US2 lug fatigue"
+ ],
+ "open_rows": [
+  {
+   "row": "z 234 joint fatigue",
+   "value": 0.735,
+   "goal": 1.0,
+   "why": "washer bearing (XY), plug shear-out (interlayer) and boss bending at the frozen BL-073 joint; the re-tune cannot reach the joint (bosses and holes frozen)",
+   "options": [
+    "bigger washers + bosses inside frame_h1.boss_envelope (scan of 114 variants on the r2 cut sections): best yo4.0_yi4.0_rb9.0_wo16.0 reads 0.988 (plug shear-out governs; the upper plug is capped at 16 mm by the z 255 spreader clip). A D16 washer is 6061 laser-cut (USD ~2 each in the plate order) but a 1.0 mm Al washer fails bending and a 1.6 mm one puts the head 0.1 mm into the clip band: NOT closed",
+    "coupon route (USD 0 extra, kit CA-5 stub pulls at 40 C on conditioned stubs + CA-3-PAHT SBS): the joint passes if the hot/wet XY B-basis >= 58.7 MPa and the SBS B-basis >= 15.4 MPa (booked 43.1 / 11.35)",
+    "architecture: move the z 255-265 spreader clip up 6 mm so the upper plug can grow (pack-designer)"
+   ]
+  },
+  {
+   "row": "US2 lug fatigue",
+   "value": 0.83,
+   "goal": 1.15,
+   "why": "inner-cheek arm root (x 130, z 154), the frozen lug block; governed by the 40 mm strap belly (cradle3d b40)",
+   "options": [
+    "strap belly >= 60 mm: fatigue 1.2 (b70 1.38); USD 0, but BL-054 found the belly cannot be held by feel (needs a sewn stop on the US2 strap: pack-designer)",
+    "grow the US2 inner cheek / buttress again (the BL-053 M-3 fix pattern: h1_rev5 extra hulls), needs an interface change: not done here",
+    "6061 strap under the two clevis bolts along the arm (laser-cut, same order): not modelled here"
+   ]
+  },
+  {
+   "row": "US2 clevis fatigue (share 1.0)",
+   "value": 0.7,
+   "goal": 1.15,
+   "why": "hole bearing in the clevis (XY); passes at the design share 0.6",
+   "options": [
+    "gate: CLEVIS-SHARE-B-PAHT measured share <= 0.60",
+    "304 sleeves (the hip tube, 6.35 mm) in reamed clevis holes: bearing x 1.27, gate <= 0.77"
+   ]
+  },
+  {
+   "row": "hip sleeve-hole web",
+   "value": 2.69,
+   "goal": 3.0,
+   "why": "review 8 M-2 rule (3 extrusion widths); the D6.5 sleeve holes on the 9.19 mm pitch",
+   "options": [
+    "first article: section the lower half's boss on a spare print and check the web fills (no gap) before the frame half",
+    "6-bolt hip pattern (new SLM mount)"
+   ]
+  }
+ ],
+ "joint_variants": {
+  "source": "cut sections of r2",
+  "n_variants": 150,
+  "n_in_envelope": 114,
+  "baseline": {
+   "key": "yo6.0_yi5.5_rb8.0_wo12.0",
+   "fatigue": 0.751
+  },
+  "best": {
+   "key": "yo4.0_yi4.0_rb9.0_wo16.0",
+   "fatigue": 0.988,
+   "strength": 1.303,
+   "governs": {
+    "beam": [
+     "plug shear-out (interlayer) at 1.6 g",
+     0.988
+    ],
+    "fine_sm8.cyc": [
+     "plug shear-out (interlayer) at 1.6 g",
+     1.011
+    ]
+   }
+  }
+ },
+ "steps": {
+  "r1": {
+   "body_g": 1233.2,
+   "strength": 1.285,
+   "static_fatigue": 1.017,
+   "R1": 0.675,
+   "creep": 1.44,
+   "joint_strength": 1.347,
+   "joint_fatigue": 0.721
+  },
+  "r2": {
+   "body_g": 1335.9,
+   "strength": 1.663,
+   "static_fatigue": 1.25,
+   "R1": 0.86,
+   "creep": 1.835,
+   "joint_strength": 1.336,
+   "joint_fatigue": 0.751
+  },
+  "r3": {
+   "body_g": 1404.7,
+   "strength": 1.86,
+   "static_fatigue": 1.371,
+   "R1": 1.034,
+   "creep": 2.205,
+   "joint_strength": 1.307,
+   "joint_fatigue": 0.735
+  }
+ },
+ "candidates": [
+  {
+   "id": "A",
+   "name": "6061 doubler / strap bolted across the lumbar struts + hip boss",
+   "strong": "FAIL by bound: even a PERFECT local part (lumbar + hip boss + lower stay sleeve removed from the utilisation population) leaves R1 <= 0.75, static fatigue <= 0.89 (lumbar + hip only); the over-utilised voxels are spread over the stays, mid bar and lumbar (10008 voxels > 1 on the R1 field)",
+   "bound": {
+    "R1": {
+     "all": 0.482,
+     "voxels_over_1_by_region": {
+      "hip-pivot boss": 1522,
+      "inboard branch": 9,
+      "lumbar struts / pan": 2288,
+      "mid bar / upper bar": 1437,
+      "stay below the sleeve": 372,
+      "stay sleeve z 160-240": 2411,
+      "stay sleeve z 240-470": 1809,
+      "stay top z 470-544": 160
+     },
+     "lumbar + hip boss": 0.691,
+     "lumbar + hip boss + stay sleeve z 160-240": 0.754
+    },
+    "static_fatigue": {
+     "all": 0.728,
+     "voxels_over_1_by_region": {
+      "hip-pivot boss": 435,
+      "inboard branch": 5,
+      "lumbar struts / pan": 1142,
+      "mid bar / upper bar": 41,
+      "stay below the sleeve": 181,
+      "stay sleeve z 160-240": 895,
+      "stay sleeve z 240-470": 307,
+      "stay top z 470-544": 117
+     },
+     "lumbar + hip boss": 0.889,
+     "lumbar + hip boss + stay sleeve z 160-240": 1.019
+    },
+    "strength_env": {
+     "all": 0.843,
+     "voxels_over_1_by_region": {
+      "hip-pivot boss": 249,
+      "inboard branch": 1,
+      "lumbar struts / pan": 411,
+      "mid bar / upper bar": 1288,
+      "stay below the sleeve": 63,
+      "stay foot": 32,
+      "stay sleeve z 160-240": 187,
+      "stay sleeve z 240-470": 1,
+      "stay top z 470-544": 29
+     },
+     "lumbar + hip boss": 0.876,
+     "lumbar + hip boss + stay sleeve z 160-240": 0.868
+    }
+   },
+   "verdict": "rejected (cannot close R1 at any cost)"
+  },
+  {
+   "id": "B",
+   "name": "through-bolt clamps (layers in compression) at the lumbar struts",
+   "strong": "FAIL by the same bound (a local fix, no better than a perfect one); at the hip boss the clamp is candidate F",
+   "verdict": "rejected"
+  },
+  {
+   "id": "C",
+   "name": "print orientation (layer normal along x or z per half)",
+   "strong": "FAIL: the as-printed y/y is the best of 5 (R1 0.481; best alternative y/z 0.393; check_body orient, export raster of H1)",
+   "orientation": {
+    "y/y (as printed)": {
+     "strength": 0.9315689584439605,
+     "fatigue": 0.48120772108701565,
+     "creep": 1.0265764716523003
+    },
+    "x/y": {
+     "strength": 0.7028064551158959,
+     "fatigue": 0.3033132827979524,
+     "creep": 0.6470683366356318
+    },
+    "z/y": {
+     "strength": 0.706888661599162,
+     "fatigue": 0.3483311432810794,
+     "creep": 0.7431064389996361
+    },
+    "y/x": {
+     "strength": 0.5784130758346393,
+     "fatigue": 0.37987204995374324,
+     "creep": 0.8103937065679858
+    },
+    "y/z": {
+     "strength": 0.6843110348069775,
+     "fatigue": 0.39265078538690185,
+     "creep": 0.8376550088253908
+    }
+   },
+   "verdict": "rejected (keep face-down y/y)"
+  },
+  {
+   "id": "D",
+   "name": "reshape within the frozen interfaces (export-space re-tune on the hot/wet utilisation)",
+   "strong": "body rows PASS at r3: R1 1.034, strength 1.860, static fatigue 1.371, joint fatigue 0.735",
+   "verdict": "adopted (H1c)"
+  },
+  {
+   "id": "E",
+   "name": "local PPA-CF insert at the hot spot",
+   "strong": "FAIL by the bound of A; and PPA-CF hot/wet Z is only 24.8 MPa vs PAHT 19.7 (x 1.26)",
+   "verdict": "rejected (and one PPA spool is USD 150)"
+  },
+  {
+   "id": "F",
+   "name": "hip mount: through-bolts on the BL-076 6061 arc plates + 304 compression-limiter sleeves",
+   "strong": "rows {'strength': 5.86, 'fatigue': 3.29, 'creep': 7.03} (goals 1.5 / 1.15 / 1.5); plates alone fail creep (0.78 at 0.5 N m, no torque window: creep needs <= 0.26, closure >= 0.40 N m); inserts fail fatigue 0.61",
+   "verdict": "adopted for the hip (web 2.69 mm < 3 mm rule: open item)"
+  }
+ ],
+ "hip": {
+  "inserts": {
+   "min_sf": {
+    "strength": 1.081,
+    "fatigue": 0.608,
+    "creep": 1.298
+   },
+   "capacity_n": {
+    "static_n": 258.0,
+    "fatigue_n": 77.4,
+    "sustained_n": 103.2,
+    "z_ratio_applied": true,
+    "basis": "1200 N (insert record) x hot 1.0 x layer-normal 0.215 (47 / 88 MPa)"
+   }
+  },
+  "plates": {
+   "0.5": {
+    "bearing_min": {
+     "strength": 1.47,
+     "fatigue": 3.29,
+     "creep": 0.78
+    },
+    "bending_sf": 1.72,
+    "plate_fatigue_sf": 1.76,
+    "closed_at_walk": true,
+    "pass": false,
+    "preload_n": {
+     "nom": 500.0,
+     "max": 714.0,
+     "min": 385.0
+    }
+   },
+   "0.6": {
+    "bearing_min": {
+     "strength": 1.28,
+     "fatigue": 3.29,
+     "creep": 0.65
+    },
+    "bending_sf": 1.49,
+    "plate_fatigue_sf": 1.58,
+    "closed_at_walk": true,
+    "pass": false,
+    "preload_n": {
+     "nom": 600.0,
+     "max": 857.0,
+     "min": 462.0
+    }
+   },
+   "0.8": {
+    "bearing_min": {
+     "strength": 1.01,
+     "fatigue": 3.29,
+     "creep": 0.49
+    },
+    "bending_sf": 1.18,
+    "plate_fatigue_sf": 1.3,
+    "closed_at_walk": true,
+    "pass": false,
+    "preload_n": {
+     "nom": 800.0,
+     "max": 1143.0,
+     "min": 615.0
+    }
+   },
+   "1": {
+    "bearing_min": {
+     "strength": 0.84,
+     "fatigue": 3.29,
+     "creep": 0.39
+    },
+    "bending_sf": 0.98,
+    "plate_fatigue_sf": 1.1,
+    "closed_at_walk": true,
+    "pass": false,
+    "preload_n": {
+     "nom": 1000.0,
+     "max": 1429.0,
+     "min": 769.0
+    }
+   }
+  },
+  "plates_window": {
+   "creep_needs_torque_max_nm": 0.261,
+   "closure_needs_torque_min_nm": 0.397,
+   "window": false
+  },
+  "sleeves": {
+   "torque_nm": 0.6,
+   "preload_max_n": 857.0,
+   "sleeve_area_mm2": 4.88,
+   "sleeve_yield_sf": 1.22,
+   "sleeve_fy_mpa": 215.0,
+   "rows": {
+    "C2|H_pin": {
+     "T_n": 194.7,
+     "kind": "strength",
+     "pressure_mpa": 2.64,
+     "sf": 7.18,
+     "goal": 1.5
+    },
+    "C1|H_pin": {
+     "T_n": 129.8,
+     "kind": "strength",
+     "pressure_mpa": 1.76,
+     "sf": 10.76,
+     "goal": 1.5
+    },
+    "walk|H_pin": {
+     "T_n": 103.8,
+     "kind": "fatigue",
+     "pressure_mpa": 1.41,
+     "sf": 4.04,
+     "goal": 1.15
+    },
+    "carry|H_pin": {
+     "T_n": 64.9,
+     "kind": "creep",
+     "pressure_mpa": 0.88,
+     "sf": 8.61,
+     "goal": 1.5
+    },
+    "C2|H_frame": {
+     "T_n": 238.6,
+     "kind": "strength",
+     "pressure_mpa": 3.23,
+     "sf": 5.86,
+     "goal": 1.5
+    },
+    "C1|H_frame": {
+     "T_n": 159.1,
+     "kind": "strength",
+     "pressure_mpa": 2.15,
+     "sf": 8.78,
+     "goal": 1.5
+    },
+    "walk|H_frame": {
+     "T_n": 127.3,
+     "kind": "fatigue",
+     "pressure_mpa": 1.72,
+     "sf": 3.29,
+     "goal": 1.15
+    },
+    "carry|H_frame": {
+     "T_n": 79.5,
+     "kind": "creep",
+     "pressure_mpa": 1.08,
+     "sf": 7.03,
+     "goal": 1.5
+    }
+   },
+   "min_sf": {
+    "strength": 5.86,
+    "fatigue": 3.29,
+    "creep": 7.03
+   },
+   "pc_mpa_per_n": 0.01354,
+   "web_between_holes_mm": 2.69,
+   "web_rule_mm": 3.0,
+   "web_ok": false,
+   "pass_rows": true,
+   "sleeve_mass_g": 6.79
+  }
+ },
+ "clevis_share_max": 0.605,
+ "tornado": [
+  {
+   "variation": "fatigue ratio 0.25 (was 0.30)",
+   "source": "low end of the PA12-CF range in the record (0.25-0.32)",
+   "retired_by": "CA-1-PAHT",
+   "rows": {
+    "strength": 1.86,
+    "static_fatigue": 1.143,
+    "R1": 0.862,
+    "creep": 2.205,
+    "joint_strength": 1.307,
+    "joint_fatigue": 0.613,
+    "lug_strength": 1.85,
+    "lug_fatigue": 0.692,
+    "clevis_strength": 1.55,
+    "clevis_fatigue": 0.7,
+    "clevis_fatigue_06": 0.967,
+    "hip_strength": 5.86,
+    "hip_fatigue": 2.742,
+    "hip_creep": 7.03,
+    "lash": 5.24,
+    "buckling": 1.672,
+    "buckling_record": 1.654
+   }
+  },
+  {
+   "variation": "interlayer shear 0.5 x Z, Tresca (was von Mises 0.577)",
+   "source": "no PAHT SBS data",
+   "retired_by": "CA-3-PAHT SBS",
+   "rows": {
+    "strength": 1.715,
+    "static_fatigue": 1.264,
+    "R1": 0.953,
+    "creep": 2.033,
+    "joint_strength": 1.307,
+    "joint_fatigue": 0.678,
+    "lug_strength": 1.85,
+    "lug_fatigue": 0.83,
+    "clevis_strength": 1.55,
+    "clevis_fatigue": 0.7,
+    "clevis_fatigue_06": 1.16,
+    "hip_strength": 5.86,
+    "hip_fatigue": 3.29,
+    "hip_creep": 7.03,
+    "lash": 5.24,
+    "buckling": 1.672,
+    "buckling_record": 1.654
+   }
+  },
+  {
+   "variation": "wet Z = 0.75 (was 0.80)",
+   "source": "a further 5 % on the Bambu Z bending pair",
+   "retired_by": "CA-3-PAHT hot/wet vs dry",
+   "rows": {
+    "strength": 1.795,
+    "static_fatigue": 1.323,
+    "R1": 0.998,
+    "creep": 2.128,
+    "joint_strength": 1.307,
+    "joint_fatigue": 0.709,
+    "lug_strength": 1.85,
+    "lug_fatigue": 0.83,
+    "clevis_strength": 1.55,
+    "clevis_fatigue": 0.7,
+    "clevis_fatigue_06": 1.16,
+    "hip_strength": 5.86,
+    "hip_fatigue": 3.29,
+    "hip_creep": 7.03,
+    "lash": 5.24,
+    "buckling": 1.672,
+    "buckling_record": 1.654
+   }
+  },
+  {
+   "variation": "hot 40 C = 0.78 (was 0.82)",
+   "source": "a 5 % harsher Tg-shift reading",
+   "retired_by": "CA-3-PAHT at 40 C",
+   "rows": {
+    "strength": 1.769,
+    "static_fatigue": 1.304,
+    "R1": 0.984,
+    "creep": 2.097,
+    "joint_strength": 1.307,
+    "joint_fatigue": 0.699,
+    "lug_strength": 1.85,
+    "lug_fatigue": 0.79,
+    "clevis_strength": 1.55,
+    "clevis_fatigue": 0.7,
+    "clevis_fatigue_06": 1.103,
+    "hip_strength": 5.86,
+    "hip_fatigue": 3.13,
+    "hip_creep": 7.03,
+    "lash": 5.24,
+    "buckling": 1.672,
+    "buckling_record": 1.654
+   }
+  },
+  {
+   "variation": "E hot/wet 0.50 (was 0.587 cited / 0.6 booked)",
+   "source": "a further 15 % modulus loss",
+   "retired_by": "CA-4-PAHT",
+   "rows": {
+    "strength": 1.86,
+    "static_fatigue": 1.371,
+    "R1": 1.034,
+    "creep": 2.205,
+    "joint_strength": 1.307,
+    "joint_fatigue": 0.735,
+    "lug_strength": 1.85,
+    "lug_fatigue": 0.83,
+    "clevis_strength": 1.55,
+    "clevis_fatigue": 0.7,
+    "clevis_fatigue_06": 1.16,
+    "hip_strength": 5.86,
+    "hip_fatigue": 3.29,
+    "hip_creep": 7.03,
+    "lash": 5.24,
+    "buckling": 1.424,
+    "buckling_record": 1.654
+   }
+  }
+ ],
+ "coupons": [
+  {
+   "id": "CA-3-PAHT",
+   "what": "Z tensile (ISO 527-2 1BA, 3 mm thick (dry pull 64 MPa x 15 mm2 = 960 N, under the 981 N cell), printed standing in a 10-bar comb tied at the grips) and SBS (ASTM D2344 proportions 18 x 6 x 3, printed flat: the shear plane is a layer interface); layer time matched to the frame: set Bambu Studio's filament cooling 'slow down for layer cooling' layer-time threshold to 237 s (the median layer time of an H1c half, LAYER-H 0.3 mm) and check the layer-time view of the preview; if the minimum speed floor stops it, add a 2-wall ring around the coupons (ASSUMPTION LAYER-TIME); log each job's layer time; hot/wet set conditioned to constant mass at 50 C over saturated NaCl (74.4 % RH, Greenspan 1977; above the TDS 55 % RH, conservative) in the kit's conditioning box: weigh daily, done when the mass changes < 0.1 % in 24 h; record the uptake against the TDS 0.88 %, tested at 40 +/- 2 C (kit 40 C box); dry set annealed as the frame (BUILD_H1 step 5), tested within 24 h at 23 C",
+   "n": {
+    "z_hw": 10,
+    "z_dry": 6,
+    "sbs_hw": 10,
+    "sbs_dry": 6
+   },
+   "grams": 61.4,
+   "statistic": "B-basis = mean - k SD, k 2.355 at n 10 (one-sided 90/95 normal tolerance factor, CMH-17-1G Vol 1 8.3.4.3; NIST e-Handbook 7.2.6.3)",
+   "pass": "(a) hot/wet Z B-basis >= 19.0 MPa (= 19.66 / 1.034, the body rows R1 and static fatigue); >= 26.7 MPa also lifts the open z 234 joint fatigue (0.735) to 1.0; (b) hot/wet SBS B-basis >= 11.0 MPa (= tau_hw 11.35 / 1.034; >= 15.4 for the joint); (c) for the record: hot/wet / dry Z (booked 0.656) and the uptake",
+   "settles": "B-BASIS-N5, WET-Z 0.80, HOT-40 0.82, TAU von Mises 0.577",
+   "need_z_mpa": 26.75,
+   "need_sbs_mpa": 15.44
+  },
+  {
+   "id": "CA-1-PAHT",
+   "what": "SBS FATIGUE (the governing interlayer mode): the CA-3 SBS bar, layer time matched to the frame: set Bambu Studio's filament cooling 'slow down for layer cooling' layer-time threshold to 237 s (the median layer time of an H1c half, LAYER-H 0.3 mm) and check the layer-time view of the preview; if the minimum speed floor stops it, add a 2-wall ring around the coupons (ASSUMPTION LAYER-TIME); log each job's layer time; conditioned to constant mass at 50 C over saturated NaCl (74.4 % RH, Greenspan 1977; above the TDS 55 % RH, conservative) in the kit's conditioning box: weigh daily, done when the mass changes < 0.1 % in 24 h; record the uptake against the TDS 0.88 %; R 0.1, <= 5 Hz, 40 +/- 2 C, on the kit's CA rig (gear motor, lever, 100 kg cell) with a printed SBS jig (span 12, 3 mm pins)",
+   "n": {
+    "fatigue": 6,
+    "static": 3
+   },
+   "grams": 19.0,
+   "load": "Smax (shear) = 1.15 x 4.72 = 5.43 MPa, peak load 130 N (29 lbf), tau = 0.75 P / (b h); 4.72 = 0.30 x tau_hw 11.35 / governing fatigue margin 0.722",
+   "pass": "all 6 run out to 1e5 cycles at 1.15 x Smax (about a factor 4 on life at a Basquin slope near 10); the 3 static SBS >= the CA-3-PAHT SBS line",
+   "settles": "FAT 0.30 in shear, hot/wet",
+   "smax_test_mpa": 5.425,
+   "peak_load_n": 130.0
+  },
+  {
+   "id": "CA-4-PAHT",
+   "what": "ISO 178 3-point bend, XY bars 80 x 10 x 4: 23 C dry; 40 C conditioned to constant mass at 50 C over saturated NaCl (74.4 % RH, Greenspan 1977; above the TDS 55 % RH, conservative) in the kit's conditioning box; 60 C dry",
+   "n": {
+    "per_condition": 5
+   },
+   "grams": 66.1,
+   "pass": "E(40 C conditioned) / E(23 C dry), mean of 5 >= 0.35 (the eigen buckling need); for the record the flexural strength ratio vs the booked 0.672",
+   "settles": "E-WET 0.587 / modulus_40c_wet 0.6"
+  },
+  {
+   "id": "HB-6b-SLV",
+   "what": "the kit's HB-6b hip-mount proof on the first H1c frame, with the 304 sleeves: sleeve proud of the boss back by 0.05-0.15 mm (caliper), plates seated, 0.6 N m",
+   "n": {
+    "frames": 1
+   },
+   "grams": 0.0,
+   "pass": "HB-6b pass rule; no witness mark of the plates on the PAHT before the load (the preload sits on the sleeves), paint marks unmoved after T5",
+   "settles": "SLEEVE-PROUD (the preload stays in the steel)"
+  },
+  {
+   "id": "CLEVIS-SHARE-B-PAHT",
+   "what": "the kit's CLEVIS-SHARE B test on the first frame (BL-076 gauge rule share = (u - u0) / (u1 - u0))",
+   "n": {
+    "frames": 1
+   },
+   "grams": 0.0,
+   "pass": "measured share <= 0.60 (the share at which the clevis hole-bearing fatigue row reaches 1.15 on the hot/wet basis)",
+   "settles": "CLEVIS-SHARE"
+  }
+ ],
+ "coupon_cost": {
+  "grams": 146.5,
+  "filament_usd": 11.72,
+  "kit_reused": "40 C box, conditioning box, CA rig (gear motor, lever, 100 kg cell, HX711, Arduino), 3-point bend fixture, caliper (shopping_list.csv)",
+  "new_items": [
+   [
+    "printed SBS jig + 3 x 3 mm dowel pins",
+    6.0,
+    "ASSUMPTION (shop price)"
+   ],
+   [
+    "NaCl, 1 kg (saturated salt for the conditioning box)",
+    3.0,
+    "ASSUMPTION (shop price)"
+   ]
+  ],
+  "new_items_usd": 9.0,
+  "usd": 20.72,
+  "cap_usd": 150.0
+ },
+ "cost": {
+  "H1_ti": {
+   "filament": {
+    "halves_g": 1038.0,
+    "clevis_g": 31.4,
+    "filament_g": 1180.7,
+    "basis": "BL-053 support estimate",
+    "usd": 94.46
+   },
+   "filament_high": {
+    "halves_g": 1038.0,
+    "clevis_g": 31.4,
+    "filament_g": 1273.4,
+    "basis": "BL-053 support high bound",
+    "usd": 101.87
+   },
+   "hardware_usd": 43.16,
+   "hardware": [
+    {
+     "item": "z 234: M5 x 45 DIN 7984",
+     "price_key": "ti_m5_din7984",
+     "qty": 4,
+     "unit_usd": 2.5,
+     "usd": 10.0,
+     "source": "ASSUMPTION (shop price, check at purchase): test kit shopping_list.csv Ti DIN 7984 lines"
+    },
+    {
+     "item": "z 234: washer 12 x 1 A2",
+     "price_key": "washer_12",
+     "qty": 8,
+     "unit_usd": 0.08,
+     "usd": 0.64,
+     "source": "ASSUMPTION (shop price): shopping_list.csv z 234 washer line"
+    },
+    {
+     "item": "z 234: nut DIN 934 A2",
+     "price_key": "nut_a2_m5",
+     "qty": 4,
+     "unit_usd": 0.1,
+     "usd": 0.4,
+     "source": "ASSUMPTION (shop price, check at purchase): shopping_list.csv"
+    },
+    {
+     "item": "US2 clevis: M5 x 35 DIN 7984",
+     "price_key": "ti_m5_din7984",
+     "qty": 4,
+     "unit_usd": 2.5,
+     "usd": 10.0,
+     "source": "ASSUMPTION (shop price, check at purchase): test kit shopping_list.csv Ti DIN 7984 lines"
+    },
+    {
+     "item": "US2 clevis: washer 10 x 1 A2",
+     "price_key": "washer_10",
+     "qty": 4,
+     "unit_usd": 0.05,
+     "usd": 0.2,
+     "source": "ASSUMPTION (shop price): shopping_list.csv clevis washer line"
+    },
+    {
+     "item": "US2 clevis: nut DIN 934 A2",
+     "price_key": "nut_a2_m5",
+     "qty": 4,
+     "unit_usd": 0.1,
+     "usd": 0.4,
+     "source": "ASSUMPTION (shop price, check at purchase): shopping_list.csv"
+    },
+    {
+     "item": "hip: brass heat-set insert M5",
+     "price_key": "insert_m5",
+     "qty": 8,
+     "unit_usd": 0.19,
+     "usd": 1.52,
+     "source": "record insert_heatset_brass_m5 cost_usd (ruthex 50 pcs USD 9.30, 3djake)"
+    },
+    {
+     "item": "hip: M5 x 12 DIN 7984",
+     "price_key": "ti_m5_din7984",
+     "qty": 8,
+     "unit_usd": 2.5,
+     "usd": 20.0,
+     "source": "ASSUMPTION (shop price, check at purchase): test kit shopping_list.csv Ti DIN 7984 lines"
+    }
+   ],
+   "threadlocker_share_usd": 0.9,
+   "per_frame_usd": 138.52,
+   "per_frame_high_usd": 145.93,
+   "cap_usd": 150.0,
+   "within_cap": true
+  },
+  "H1c_ti": {
+   "filament": {
+    "halves_g": 1373.4,
+    "clevis_g": 31.4,
+    "filament_g": 1549.8,
+    "basis": "BL-053 support estimate",
+    "usd": 123.99
+   },
+   "filament_high": {
+    "halves_g": 1373.4,
+    "clevis_g": 31.4,
+    "filament_g": 1672.5,
+    "basis": "BL-053 support high bound",
+    "usd": 133.8
+   },
+   "hardware_usd": 66.33,
+   "hardware": [
+    {
+     "item": "z 234: M5 x 45 DIN 7984",
+     "price_key": "ti_m5_din7984",
+     "qty": 4,
+     "unit_usd": 2.5,
+     "usd": 10.0,
+     "source": "ASSUMPTION (shop price, check at purchase): test kit shopping_list.csv Ti DIN 7984 lines"
+    },
+    {
+     "item": "z 234: washer 12 x 1 A2",
+     "price_key": "washer_12",
+     "qty": 8,
+     "unit_usd": 0.08,
+     "usd": 0.64,
+     "source": "ASSUMPTION (shop price): shopping_list.csv z 234 washer line"
+    },
+    {
+     "item": "z 234: nut DIN 934 A2",
+     "price_key": "nut_a2_m5",
+     "qty": 4,
+     "unit_usd": 0.1,
+     "usd": 0.4,
+     "source": "ASSUMPTION (shop price, check at purchase): shopping_list.csv"
+    },
+    {
+     "item": "US2 clevis: M5 x 35 DIN 7984",
+     "price_key": "ti_m5_din7984",
+     "qty": 4,
+     "unit_usd": 2.5,
+     "usd": 10.0,
+     "source": "ASSUMPTION (shop price, check at purchase): test kit shopping_list.csv Ti DIN 7984 lines"
+    },
+    {
+     "item": "US2 clevis: washer 10 x 1 A2",
+     "price_key": "washer_10",
+     "qty": 4,
+     "unit_usd": 0.05,
+     "usd": 0.2,
+     "source": "ASSUMPTION (shop price): shopping_list.csv clevis washer line"
+    },
+    {
+     "item": "US2 clevis: nut DIN 934 A2",
+     "price_key": "nut_a2_m5",
+     "qty": 4,
+     "unit_usd": 0.1,
+     "usd": 0.4,
+     "source": "ASSUMPTION (shop price, check at purchase): shopping_list.csv"
+    },
+    {
+     "item": "hip: M5 x 35 DIN 7984",
+     "price_key": "ti_m5_din7984",
+     "qty": 8,
+     "unit_usd": 2.5,
+     "usd": 20.0,
+     "source": "ASSUMPTION (shop price, check at purchase): test kit shopping_list.csv Ti DIN 7984 lines"
+    },
+    {
+     "item": "hip: nut DIN 934 A2",
+     "price_key": "nut_a2_m5",
+     "qty": 8,
+     "unit_usd": 0.1,
+     "usd": 0.8,
+     "source": "ASSUMPTION (shop price, check at purchase): shopping_list.csv"
+    },
+    {
+     "item": "hip: 6061-T6 arc plate .063 in (BL-076 DXF)",
+     "price_key": "arc_plate",
+     "qty": 2,
+     "unit_usd": 8.0,
+     "usd": 16.0,
+     "source": "ASSUMPTION RING-PRICE (BL-076 BOM): SendCutSend 6061-T6 .063 in laser cut, no published price; SendCutSend order minimum USD 29 (third-party reports) / free US shipping from USD 39 (https://sendcutsend.com/), 'about USD 3 per part at 10 off' (steel example, https://sendcutsend.com/blog/the-true-cost-of-custom-sheet-metal-parts/)"
+    },
+    {
+     "item": "hip: 304 tube 1/4 x 0.010 in, 12 in (8 sleeves x 22 mm)",
+     "price_key": "tube_304",
+     "qty": 1,
+     "unit_usd": 7.89,
+     "usd": 7.89,
+     "source": "Zoro, Vita Needle 304 tubing 1/4 in OD x 0.005 in wall x 12 in, USD 7.89 (https://www.zoro.com/vita-needle-co-stainless-steel-304-tubing-14-od-x-005-wall-at-12-g1368/i/G1195803/); ASSUMPTION TUBE-PRICE: the 0.010 in wall (ID 5.84 mm, clears M5) at the same price"
+    }
+   ],
+   "threadlocker_share_usd": 0.9,
+   "per_frame_usd": 191.22,
+   "per_frame_high_usd": 201.03,
+   "cap_usd": 150.0,
+   "within_cap": false
+  },
+  "H1_a2": {
+   "filament": {
+    "halves_g": 1038.0,
+    "clevis_g": 31.4,
+    "filament_g": 1180.7,
+    "basis": "BL-053 support estimate",
+    "usd": 94.46
+   },
+   "filament_high": {
+    "halves_g": 1038.0,
+    "clevis_g": 31.4,
+    "filament_g": 1273.4,
+    "basis": "BL-053 support high bound",
+    "usd": 101.87
+   },
+   "hardware_usd": 16.53,
+   "hardware": [
+    {
+     "item": "z 234: M5 x 45 DIN 7984",
+     "price_key": "a2_m5x35_din7984",
+     "qty": 4,
+     "unit_usd": 0.84,
+     "usd": 3.34,
+     "source": "Zoro, M5-0.80 x 35 low-profile SHCS 18-8 (A2), 50 pk USD 41.79, https://www.zoro.com/boltsandnutscom-m5-080-socket-head-cap-screw-low-profile-plain-18-8-stainless-steel-35-mm-length-50-pk-m5c35lshcsa2d-50/i/G214478661/"
+    },
+    {
+     "item": "z 234: washer 12 x 1 A2",
+     "price_key": "washer_12",
+     "qty": 8,
+     "unit_usd": 0.08,
+     "usd": 0.64,
+     "source": "ASSUMPTION (shop price): shopping_list.csv z 234 washer line"
+    },
+    {
+     "item": "z 234: nut DIN 934 A2",
+     "price_key": "nut_a2_m5",
+     "qty": 4,
+     "unit_usd": 0.1,
+     "usd": 0.4,
+     "source": "ASSUMPTION (shop price, check at purchase): shopping_list.csv"
+    },
+    {
+     "item": "US2 clevis: M5 x 35 DIN 7984",
+     "price_key": "a2_m5x35_din7984",
+     "qty": 4,
+     "unit_usd": 0.84,
+     "usd": 3.34,
+     "source": "Zoro, M5-0.80 x 35 low-profile SHCS 18-8 (A2), 50 pk USD 41.79, https://www.zoro.com/boltsandnutscom-m5-080-socket-head-cap-screw-low-profile-plain-18-8-stainless-steel-35-mm-length-50-pk-m5c35lshcsa2d-50/i/G214478661/"
+    },
+    {
+     "item": "US2 clevis: washer 10 x 1 A2",
+     "price_key": "washer_10",
+     "qty": 4,
+     "unit_usd": 0.05,
+     "usd": 0.2,
+     "source": "ASSUMPTION (shop price): shopping_list.csv clevis washer line"
+    },
+    {
+     "item": "US2 clevis: nut DIN 934 A2",
+     "price_key": "nut_a2_m5",
+     "qty": 4,
+     "unit_usd": 0.1,
+     "usd": 0.4,
+     "source": "ASSUMPTION (shop price, check at purchase): shopping_list.csv"
+    },
+    {
+     "item": "hip: brass heat-set insert M5",
+     "price_key": "insert_m5",
+     "qty": 8,
+     "unit_usd": 0.19,
+     "usd": 1.52,
+     "source": "record insert_heatset_brass_m5 cost_usd (ruthex 50 pcs USD 9.30, 3djake)"
+    },
+    {
+     "item": "hip: M5 x 12 DIN 7984",
+     "price_key": "a2_m5x35_din7984",
+     "qty": 8,
+     "unit_usd": 0.84,
+     "usd": 6.69,
+     "source": "Zoro, M5-0.80 x 35 low-profile SHCS 18-8 (A2), 50 pk USD 41.79, https://www.zoro.com/boltsandnutscom-m5-080-socket-head-cap-screw-low-profile-plain-18-8-stainless-steel-35-mm-length-50-pk-m5c35lshcsa2d-50/i/G214478661/"
+    }
+   ],
+   "threadlocker_share_usd": 0.9,
+   "per_frame_usd": 111.89,
+   "per_frame_high_usd": 119.3,
+   "cap_usd": 150.0,
+   "within_cap": true
+  },
+  "H1c_a2": {
+   "filament": {
+    "halves_g": 1373.4,
+    "clevis_g": 31.4,
+    "filament_g": 1549.8,
+    "basis": "BL-053 support estimate",
+    "usd": 123.99
+   },
+   "filament_high": {
+    "halves_g": 1373.4,
+    "clevis_g": 31.4,
+    "filament_g": 1672.5,
+    "basis": "BL-053 support high bound",
+    "usd": 133.8
+   },
+   "hardware_usd": 39.7,
+   "hardware": [
+    {
+     "item": "z 234: M5 x 45 DIN 7984",
+     "price_key": "a2_m5x35_din7984",
+     "qty": 4,
+     "unit_usd": 0.84,
+     "usd": 3.34,
+     "source": "Zoro, M5-0.80 x 35 low-profile SHCS 18-8 (A2), 50 pk USD 41.79, https://www.zoro.com/boltsandnutscom-m5-080-socket-head-cap-screw-low-profile-plain-18-8-stainless-steel-35-mm-length-50-pk-m5c35lshcsa2d-50/i/G214478661/"
+    },
+    {
+     "item": "z 234: washer 12 x 1 A2",
+     "price_key": "washer_12",
+     "qty": 8,
+     "unit_usd": 0.08,
+     "usd": 0.64,
+     "source": "ASSUMPTION (shop price): shopping_list.csv z 234 washer line"
+    },
+    {
+     "item": "z 234: nut DIN 934 A2",
+     "price_key": "nut_a2_m5",
+     "qty": 4,
+     "unit_usd": 0.1,
+     "usd": 0.4,
+     "source": "ASSUMPTION (shop price, check at purchase): shopping_list.csv"
+    },
+    {
+     "item": "US2 clevis: M5 x 35 DIN 7984",
+     "price_key": "a2_m5x35_din7984",
+     "qty": 4,
+     "unit_usd": 0.84,
+     "usd": 3.34,
+     "source": "Zoro, M5-0.80 x 35 low-profile SHCS 18-8 (A2), 50 pk USD 41.79, https://www.zoro.com/boltsandnutscom-m5-080-socket-head-cap-screw-low-profile-plain-18-8-stainless-steel-35-mm-length-50-pk-m5c35lshcsa2d-50/i/G214478661/"
+    },
+    {
+     "item": "US2 clevis: washer 10 x 1 A2",
+     "price_key": "washer_10",
+     "qty": 4,
+     "unit_usd": 0.05,
+     "usd": 0.2,
+     "source": "ASSUMPTION (shop price): shopping_list.csv clevis washer line"
+    },
+    {
+     "item": "US2 clevis: nut DIN 934 A2",
+     "price_key": "nut_a2_m5",
+     "qty": 4,
+     "unit_usd": 0.1,
+     "usd": 0.4,
+     "source": "ASSUMPTION (shop price, check at purchase): shopping_list.csv"
+    },
+    {
+     "item": "hip: M5 x 35 DIN 7984",
+     "price_key": "a2_m5x35_din7984",
+     "qty": 8,
+     "unit_usd": 0.84,
+     "usd": 6.69,
+     "source": "Zoro, M5-0.80 x 35 low-profile SHCS 18-8 (A2), 50 pk USD 41.79, https://www.zoro.com/boltsandnutscom-m5-080-socket-head-cap-screw-low-profile-plain-18-8-stainless-steel-35-mm-length-50-pk-m5c35lshcsa2d-50/i/G214478661/"
+    },
+    {
+     "item": "hip: nut DIN 934 A2",
+     "price_key": "nut_a2_m5",
+     "qty": 8,
+     "unit_usd": 0.1,
+     "usd": 0.8,
+     "source": "ASSUMPTION (shop price, check at purchase): shopping_list.csv"
+    },
+    {
+     "item": "hip: 6061-T6 arc plate .063 in (BL-076 DXF)",
+     "price_key": "arc_plate",
+     "qty": 2,
+     "unit_usd": 8.0,
+     "usd": 16.0,
+     "source": "ASSUMPTION RING-PRICE (BL-076 BOM): SendCutSend 6061-T6 .063 in laser cut, no published price; SendCutSend order minimum USD 29 (third-party reports) / free US shipping from USD 39 (https://sendcutsend.com/), 'about USD 3 per part at 10 off' (steel example, https://sendcutsend.com/blog/the-true-cost-of-custom-sheet-metal-parts/)"
+    },
+    {
+     "item": "hip: 304 tube 1/4 x 0.010 in, 12 in (8 sleeves x 22 mm)",
+     "price_key": "tube_304",
+     "qty": 1,
+     "unit_usd": 7.89,
+     "usd": 7.89,
+     "source": "Zoro, Vita Needle 304 tubing 1/4 in OD x 0.005 in wall x 12 in, USD 7.89 (https://www.zoro.com/vita-needle-co-stainless-steel-304-tubing-14-od-x-005-wall-at-12-g1368/i/G1195803/); ASSUMPTION TUBE-PRICE: the 0.010 in wall (ID 5.84 mm, clears M5) at the same price"
+    }
+   ],
+   "threadlocker_share_usd": 0.9,
+   "per_frame_usd": 164.59,
+   "per_frame_high_usd": 174.4,
+   "cap_usd": 150.0,
+   "within_cap": false
+  },
+  "a2_mass_penalty_g": {
+   "H1": 33.1,
+   "H1c": 43.3
+  },
+  "H1": {
+   "filament": {
+    "halves_g": 1038.0,
+    "clevis_g": 31.4,
+    "filament_g": 1180.7,
+    "basis": "BL-053 support estimate",
+    "usd": 94.46
+   },
+   "filament_high": {
+    "halves_g": 1038.0,
+    "clevis_g": 31.4,
+    "filament_g": 1273.4,
+    "basis": "BL-053 support high bound",
+    "usd": 101.87
+   },
+   "hardware_usd": 43.16,
+   "hardware": [
+    {
+     "item": "z 234: M5 x 45 DIN 7984",
+     "price_key": "ti_m5_din7984",
+     "qty": 4,
+     "unit_usd": 2.5,
+     "usd": 10.0,
+     "source": "ASSUMPTION (shop price, check at purchase): test kit shopping_list.csv Ti DIN 7984 lines"
+    },
+    {
+     "item": "z 234: washer 12 x 1 A2",
+     "price_key": "washer_12",
+     "qty": 8,
+     "unit_usd": 0.08,
+     "usd": 0.64,
+     "source": "ASSUMPTION (shop price): shopping_list.csv z 234 washer line"
+    },
+    {
+     "item": "z 234: nut DIN 934 A2",
+     "price_key": "nut_a2_m5",
+     "qty": 4,
+     "unit_usd": 0.1,
+     "usd": 0.4,
+     "source": "ASSUMPTION (shop price, check at purchase): shopping_list.csv"
+    },
+    {
+     "item": "US2 clevis: M5 x 35 DIN 7984",
+     "price_key": "ti_m5_din7984",
+     "qty": 4,
+     "unit_usd": 2.5,
+     "usd": 10.0,
+     "source": "ASSUMPTION (shop price, check at purchase): test kit shopping_list.csv Ti DIN 7984 lines"
+    },
+    {
+     "item": "US2 clevis: washer 10 x 1 A2",
+     "price_key": "washer_10",
+     "qty": 4,
+     "unit_usd": 0.05,
+     "usd": 0.2,
+     "source": "ASSUMPTION (shop price): shopping_list.csv clevis washer line"
+    },
+    {
+     "item": "US2 clevis: nut DIN 934 A2",
+     "price_key": "nut_a2_m5",
+     "qty": 4,
+     "unit_usd": 0.1,
+     "usd": 0.4,
+     "source": "ASSUMPTION (shop price, check at purchase): shopping_list.csv"
+    },
+    {
+     "item": "hip: brass heat-set insert M5",
+     "price_key": "insert_m5",
+     "qty": 8,
+     "unit_usd": 0.19,
+     "usd": 1.52,
+     "source": "record insert_heatset_brass_m5 cost_usd (ruthex 50 pcs USD 9.30, 3djake)"
+    },
+    {
+     "item": "hip: M5 x 12 DIN 7984",
+     "price_key": "ti_m5_din7984",
+     "qty": 8,
+     "unit_usd": 2.5,
+     "usd": 20.0,
+     "source": "ASSUMPTION (shop price, check at purchase): test kit shopping_list.csv Ti DIN 7984 lines"
+    }
+   ],
+   "threadlocker_share_usd": 0.9,
+   "per_frame_usd": 138.52,
+   "per_frame_high_usd": 145.93,
+   "cap_usd": 150.0,
+   "within_cap": true
+  },
+  "H1c": {
+   "filament": {
+    "halves_g": 1373.4,
+    "clevis_g": 31.4,
+    "filament_g": 1549.8,
+    "basis": "BL-053 support estimate",
+    "usd": 123.99
+   },
+   "filament_high": {
+    "halves_g": 1373.4,
+    "clevis_g": 31.4,
+    "filament_g": 1672.5,
+    "basis": "BL-053 support high bound",
+    "usd": 133.8
+   },
+   "hardware_usd": 66.33,
+   "hardware": [
+    {
+     "item": "z 234: M5 x 45 DIN 7984",
+     "price_key": "ti_m5_din7984",
+     "qty": 4,
+     "unit_usd": 2.5,
+     "usd": 10.0,
+     "source": "ASSUMPTION (shop price, check at purchase): test kit shopping_list.csv Ti DIN 7984 lines"
+    },
+    {
+     "item": "z 234: washer 12 x 1 A2",
+     "price_key": "washer_12",
+     "qty": 8,
+     "unit_usd": 0.08,
+     "usd": 0.64,
+     "source": "ASSUMPTION (shop price): shopping_list.csv z 234 washer line"
+    },
+    {
+     "item": "z 234: nut DIN 934 A2",
+     "price_key": "nut_a2_m5",
+     "qty": 4,
+     "unit_usd": 0.1,
+     "usd": 0.4,
+     "source": "ASSUMPTION (shop price, check at purchase): shopping_list.csv"
+    },
+    {
+     "item": "US2 clevis: M5 x 35 DIN 7984",
+     "price_key": "ti_m5_din7984",
+     "qty": 4,
+     "unit_usd": 2.5,
+     "usd": 10.0,
+     "source": "ASSUMPTION (shop price, check at purchase): test kit shopping_list.csv Ti DIN 7984 lines"
+    },
+    {
+     "item": "US2 clevis: washer 10 x 1 A2",
+     "price_key": "washer_10",
+     "qty": 4,
+     "unit_usd": 0.05,
+     "usd": 0.2,
+     "source": "ASSUMPTION (shop price): shopping_list.csv clevis washer line"
+    },
+    {
+     "item": "US2 clevis: nut DIN 934 A2",
+     "price_key": "nut_a2_m5",
+     "qty": 4,
+     "unit_usd": 0.1,
+     "usd": 0.4,
+     "source": "ASSUMPTION (shop price, check at purchase): shopping_list.csv"
+    },
+    {
+     "item": "hip: M5 x 35 DIN 7984",
+     "price_key": "ti_m5_din7984",
+     "qty": 8,
+     "unit_usd": 2.5,
+     "usd": 20.0,
+     "source": "ASSUMPTION (shop price, check at purchase): test kit shopping_list.csv Ti DIN 7984 lines"
+    },
+    {
+     "item": "hip: nut DIN 934 A2",
+     "price_key": "nut_a2_m5",
+     "qty": 8,
+     "unit_usd": 0.1,
+     "usd": 0.8,
+     "source": "ASSUMPTION (shop price, check at purchase): shopping_list.csv"
+    },
+    {
+     "item": "hip: 6061-T6 arc plate .063 in (BL-076 DXF)",
+     "price_key": "arc_plate",
+     "qty": 2,
+     "unit_usd": 8.0,
+     "usd": 16.0,
+     "source": "ASSUMPTION RING-PRICE (BL-076 BOM): SendCutSend 6061-T6 .063 in laser cut, no published price; SendCutSend order minimum USD 29 (third-party reports) / free US shipping from USD 39 (https://sendcutsend.com/), 'about USD 3 per part at 10 off' (steel example, https://sendcutsend.com/blog/the-true-cost-of-custom-sheet-metal-parts/)"
+    },
+    {
+     "item": "hip: 304 tube 1/4 x 0.010 in, 12 in (8 sleeves x 22 mm)",
+     "price_key": "tube_304",
+     "qty": 1,
+     "unit_usd": 7.89,
+     "usd": 7.89,
+     "source": "Zoro, Vita Needle 304 tubing 1/4 in OD x 0.005 in wall x 12 in, USD 7.89 (https://www.zoro.com/vita-needle-co-stainless-steel-304-tubing-14-od-x-005-wall-at-12-g1368/i/G1195803/); ASSUMPTION TUBE-PRICE: the 0.010 in wall (ID 5.84 mm, clears M5) at the same price"
+    }
+   ],
+   "threadlocker_share_usd": 0.9,
+   "per_frame_usd": 191.22,
+   "per_frame_high_usd": 201.03,
+   "cap_usd": 150.0,
+   "within_cap": false
+  },
+  "cheapest": "H1c_a2",
+  "cap_body_halves_max_g": 1207.7,
+  "first_frame_variants": {
+   "H1c_ti": {
+    "variant": "H1c_ti",
+    "filament_g_frame_plus_coupons": 1696.3,
+    "spools_1kg": 2,
+    "spools_usd": 160.0,
+    "hardware_usd": 82.33,
+    "laser_order_usd": 32.0,
+    "threadlocker_usd": 9.0,
+    "new_tools_usd": 16.0,
+    "tools": [
+     [
+      "mini tubing cutter (3-22 mm), for the 304 sleeves",
+      10.0,
+      "ASSUMPTION (shop price, check at purchase)"
+     ],
+     [
+      "flat needle file + 400 grit paper, sleeve length to the caliper",
+      6.0,
+      "ASSUMPTION (shop price)"
+     ]
+    ],
+    "all_in_usd": 267.33
+   },
+   "H1c_a2": {
+    "variant": "H1c_a2",
+    "filament_g_frame_plus_coupons": 1696.3,
+    "spools_1kg": 2,
+    "spools_usd": 160.0,
+    "hardware_usd": 125.91,
+    "laser_order_usd": 32.0,
+    "threadlocker_usd": 9.0,
+    "new_tools_usd": 16.0,
+    "tools": [
+     [
+      "mini tubing cutter (3-22 mm), for the 304 sleeves",
+      10.0,
+      "ASSUMPTION (shop price, check at purchase)"
+     ],
+     [
+      "flat needle file + 400 grit paper, sleeve length to the caliper",
+      6.0,
+      "ASSUMPTION (shop price)"
+     ]
+    ],
+    "all_in_usd": 310.91
+   }
+  },
+  "first_frame": {
+   "variant": "H1c_ti",
+   "filament_g_frame_plus_coupons": 1696.3,
+   "spools_1kg": 2,
+   "spools_usd": 160.0,
+   "hardware_usd": 82.33,
+   "laser_order_usd": 32.0,
+   "threadlocker_usd": 9.0,
+   "new_tools_usd": 16.0,
+   "tools": [
+    [
+     "mini tubing cutter (3-22 mm), for the 304 sleeves",
+     10.0,
+     "ASSUMPTION (shop price, check at purchase)"
+    ],
+    [
+     "flat needle file + 400 grit paper, sleeve length to the caliper",
+     6.0,
+     "ASSUMPTION (shop price)"
+    ]
+   ],
+   "all_in_usd": 267.33
+  }
+ },
+ "mass": {
+  "H1": {
+   "h1_lower_flat": 494.6,
+   "h1_upper_flat": 543.4,
+   "us2_clevis_L": 15.7,
+   "us2_clevis_R": 15.7,
+   "body": 1069.3
+  },
+  "r3": {
+   "h1_lower_flat": 660.1,
+   "h1_upper_flat": 713.3,
+   "us2_clevis_L": 15.7,
+   "us2_clevis_R": 15.7,
+   "body": 1404.7
+  },
+  "hip_hardware_g": {
+   "H1": 28.82,
+   "H1c": 48.16,
+   "delta": 19.34,
+   "ti_m5x35_g": 3.72,
+   "plates_g": 2.79
+  },
+  "frame_delta_g": 354.7
+ },
+ "layer_time_median_s": 237.0,
+ "stl_dir": "designs/pack_5200/iter1/frame/h1c",
+ "stl_md5": {
+  "h1_assembled.stl": "9966ab8aced43e8941b4726cd3f33c9a",
+  "h1_lower_flat.stl": "a60b3b5df27358f4fae1e502e04dfbe7",
+  "h1_upper_flat.stl": "f9e93562f1677560a2d8b9c68171f72c",
+  "us2_clevis_L.stl": "922a15250c9dafbd9750e846f5a9b41f",
+  "us2_clevis_R.stl": "e28ac24c1e9da2688a2ca63d077e01bc"
+ },
+ "eigen": {
+  "h1_scaled": 1.307,
+  "final": 1.672,
+  "final_solved": true
+ },
+ "assumptions": [
+  {
+   "id": "B-BASIS-N5",
+   "text": "The Bambu TDS +/- values are standard deviations of an ISO 527 set of n 5 (the ISO 527-1 minimum; the TDS gives no n): B-basis k 3.4066 on the lower published mean of each property.",
+   "settled_by": "CA-3-PAHT at n 10"
+  },
+  {
+   "id": "WET-PAHT",
+   "text": "Wet / dry = 0.82 XY (Bambu's 12-18 % decline, the 18 % floor; the XY bending pair reads 0.92) and 0.80 Z (the Z bending pair 49 / 61): bending pairs stand in for tensile.",
+   "settled_by": "CA-3-PAHT hot/wet vs dry"
+  },
+  {
+   "id": "HOT-40-PAHT",
+   "text": "40 C / 23 C = 0.82 from the Fiberlogy PA12 CF15 UTS curve (Ciganas 2026), the lowest of the direct and two Tg-shift readings; a PA12-CF15 grade stands in for PAHT-CF.",
+   "settled_by": "CA-3-PAHT at 40 C"
+  },
+  {
+   "id": "TAU-VM",
+   "text": "Interlayer shear allowable = Z / sqrt 3 (von Mises), was 0.6 x Z with no source; the frame code's 0.6 x s_z rule is fed s_z = tau / 0.6, so the layer-normal term reads 3.8 % harsh.",
+   "settled_by": "CA-3-PAHT SBS"
+  },
+  {
+   "id": "E-WET",
+   "text": "Hot/wet modulus = 0.716 (Ciganas E 40 / 23 C) x 0.82 (wet strength ratio) = 0.587; buckling rows are scaled by 0.587 / 0.6 from the booked basis.",
+   "settled_by": "CA-4-PAHT"
+  },
+  {
+   "id": "FAT-0.30",
+   "text": "PAHT fatigue at 1e5 = 0.30 x the hot/wet B-basis static strength (record ratio, unchanged).",
+   "settled_by": "CA-1-PAHT"
+  },
+  {
+   "id": "PERFECT-LOCAL",
+   "text": "The bound on any local fix removes the hot-spot regions from the utilisation population and assumes nothing else changes (a real doubler also attracts load: the bound is optimistic for it).",
+   "settled_by": "not needed: the bound already fails"
+  },
+  {
+   "id": "SLEEVE-PROUD",
+   "text": "Each 304 sleeve is cut to the measured boss depth + 0.05-0.15 mm, so the 0.6 N m preload sits on the steel and the PAHT under the plates sees only the hip tipping load (BL-055 model, FLANGE-RIGID).",
+   "settled_by": "HB-6b-SLV (no plate witness mark before load, paint marks after T5)"
+  },
+  {
+   "id": "SLEEVE-TUBE",
+   "text": "304 tube 1/4 in OD x 0.010 in wall (ID 5.84 mm) is bought as cold-drawn tube; the check uses the annealed record yield 215 MPa (sleeve SF 1.22 at the K 0.14 preload).",
+   "settled_by": "caliper on receipt; HB-6b-SLV"
+  },
+  {
+   "id": "COST-SCOPE",
+   "text": "The cap covers PAHT filament + the fasteners / metal parts that join or clamp the printed body; crown, pins, bushings and the SLM Ti hip mount carry over and are outside it.",
+   "settled_by": "orchestrator / owner"
+  },
+  {
+   "id": "LAYER-TIME",
+   "text": "Bambu Studio's layer-time slowdown can hold each coupon job at the frame's median layer time without a dummy tower (check the preview's layer-time view; else add a 2-wall ring).",
+   "settled_by": "slicer preview"
+  },
+  {
+   "id": "A2-45",
+   "text": "The A2 M5 x 45 DIN 7984 costs the same as the cited A2 M5 x 35 (Zoro 50-pack); the Ti lines are the kit's USD 2.50 shop-price ASSUMPTION.",
+   "settled_by": "price check at purchase"
+  },
+  {
+   "id": "LOC-SHARE",
+   "text": "One 10 ml threadlocker bottle covers about 10 frames (per-frame share USD 0.90).",
+   "settled_by": "n/a (cost)"
+  },
+  {
+   "id": "COUPON-WASTE",
+   "text": "Coupon jobs use 1.3 x the coupon volume (brim, ties, purge).",
+   "settled_by": "slicer preview"
+  }
+ ],
+ "screenshots": [
+  "outputs/screens/20261125_bl077_1.png",
+  "outputs/screens/20261125_bl077_2.png",
+  "outputs/screens/20261125_bl077_3.png"
+ ],
+ "kit_needs": [
+  "frame_h1_build.py / BUILD_H1: H1c STLs (designs/pack_5200/iter1/frame/h1c/), hip section 12 rewritten for 8 x Ti M5 x 35 through-bolts + 8 DIN 934 nuts + two BL-076 arc plates + 8 x 304 sleeves (1/4 x 0.010 in, cut to boss depth + 0.05-0.15 mm), torque 0.6 N m with the existing 0.5-2.5 N m driver; drop the heat-set inserts, the insert guide and HB-6 (inserts no longer used); support / time table from the H1c halves",
+  "physical_test_kit: replace CA-1 / CA-3 / CA-4 (PAHT) with CA-1-PAHT (SBS fatigue at 40 C), CA-3-PAHT (Z + SBS, n 10 hot/wet + 6 dry, layer-time matched), CA-4-PAHT (flex 23 / 40 wet / 60 C), add HB-6b-SLV and CLEVIS-SHARE-B-PAHT; coupon filament 146 g",
+  "shopping_list: + mini tubing cutter, + 304 tube 1/4 x 0.010 in 12 in, + printed SBS jig pins, + NaCl; - the Wera 0.3-1.2 N m driver and the 120 C oven (PPA only); PAHT spools 1 kg at the record price",
+  "bom: per-frame cost table of bl077.json (cost.H1c) replaces the PPA BOM for the frame"
+ ]
+}

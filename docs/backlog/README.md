@@ -125,4 +125,5 @@ Nothing here is decided; the tickets produce the material.
 | BL-074 | Rebuild PPA build pack and kit from BL-073 (coupons_bl073, bearing ring, 0.6 N·m, M5×35, z 234 bolt positions, pads, filament-change heights) | manufacturing-engineer | M | 073 | done: 1485 passed; 10 spools |
 | BL-075 | Hip hardware stack (~10 mm aft of boss) vs bag and lumbar pad clearance | pack-designer | S | 073 | done: clears, 0 g |
 | BL-076 | H1-P leftovers from BL-074: ring edge distance, OPEN section, SHARE-GAUGE, spool booking | structural-fea-engineer | S | 074 | done: arc plates, 0.45 N·m |
-| BL-077 | PAHT-CF H1 under the cost cap: hot/wet + B-basis re-check, close R1, coupons ≤ cap | structural-fea-engineer | L | 076 | every row ≥ goal, cost ≤ cap |
+| BL-077 | PAHT-CF H1 under the cost cap: hot/wet + B-basis re-check, close R1, coupons ≤ cap | structural-fea-engineer | L | 076 | done: R1 not closable in cap; H1c fallback |
+| BL-078 | PAHT coupons (CA-3/CA-1/CA-4-PAHT, HB-6b-SLV, CLEVIS-SHARE-B-PAHT) into the kit as the next print; H1 safety hold text | manufacturing-engineer | S | 077 | owner can print the coupons |

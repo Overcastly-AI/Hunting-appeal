@@ -29,7 +29,8 @@ properties:
   min_wall_mm: 2.0
   process: FDM (Bambu H2S, hardened nozzle, enclosed)
   anisotropic: true
-  glass_transition_c: 45
+  glass_transition_c: 70
+  glass_transition_wet_c: 47
   env_knockdown_ratio: 0.8
   modulus_40c_wet_ratio: 0.6
   modulus_minus20c_ratio: 1.3
@@ -38,15 +39,32 @@ properties:
   creep_rupture_8h_40c_ratio: 0.4
   fatigue_1e5_ratio: 0.3
   modulus_60c_ratio: 0.35
+  # BL-077 honest hot/wet B-basis (review 8 B-2 / M-1 / M-4 rules applied to PAHT; huntkit/gendesign/bl077_paht.basis)
+  b_basis_k_n5_ratio: 3.4066
+  tensile_strength_xy_b_basis_mpa: 64.15
+  tensile_strength_z_b_basis_mpa: 29.97
+  wet_knockdown_xy_ratio: 0.82
+  wet_knockdown_z_ratio: 0.80
+  hot_40c_ratio: 0.82
+  hot_wet_knockdown_xy_ratio: 0.6724
+  hot_wet_knockdown_z_ratio: 0.656
+  interlayer_shear_ratio: 0.5774
+  tensile_strength_xy_hw_mpa: 43.14
+  tensile_strength_z_hw_mpa: 19.66
+  interlayer_shear_hw_mpa: 11.35
+  modulus_hot_40c_ratio: 0.716
   print_cost_usd_per_g: 0.08
   print_cost_basis: filament only, record cost $80/kg
 confidence: datasheet
 sources:
 - 'Bambu PAHT-CF Technical Data Sheet V2.0 (XY 88 +/- 7 MPa, Z 64 +/- 3 MPa, E XY 3860 / Z 2180 MPa; dry 80 C 8-12 h; anneal 80-130 C 5-12 h); https://cdn.shopify.com/s/files/1/0380/5149/files/Bambu_PAHT-CF_Technical_Data_Sheet.pdf'
 - 'Bambu PAHT-CF TDS v2 mirror at U Waterloo RPC (XY 92 +/- 7, Z 47 +/- 5 MPa); https://uwaterloo.ca/rapid-prototyping-centre/sites/default/files/uploads/documents/bambu_paht-cf_technical_data_sheet_v2.pdf'
+- 'Bambu PAHT-CF Technical Data Sheet V3.0 (uwaterloo.ca RPC mirror; the file name says v2, the sheet says V3.0; read 2026-11-25): Tg 70 C (DSC 10 C/min), HDT 170 C at 1.8 MPa / 194 C at 0.45 MPa, saturated water 0.88 % (25 C / 55 % RH), XY 92 +/- 7, Z 47 +/- 5 MPa, bending XY 125 +/- 7 / Z 61 +/- 5 MPa, elongation XY 8.4 / Z 4.1 %, all dry and annealed 80 C 12 h, ISO 527 / ISO 178; https://uwaterloo.ca/rapid-prototyping-centre/sites/default/files/uploads/documents/bambu_paht-cf_technical_data_sheet_v2.pdf'
+- 'Bambu PAHT-CF dry / wet table (product page, as quoted by crea3d.com, read 2026-11-25): bending XY 125 / 115 MPa, Z 61 / 49 MPa dry / wet, decline after water absorption 12-18 % (normal PA-CF 40-45 %); https://www.crea3d.com/en/filaments/1302-bambu-paht-cf.html'
+- 'Ciganas J., Kalinauskis T., Cigane U., Thermo-Mechanical and Fatigue Behavior of 3D-Printed PA12 CF15 for Engineering Application, Polymers 18(5):563 (2026), doi 10.3390/polym18050563, Table 3 (Fiberlogy PA12 CF15, printed flat): UTS 49.07 / 40.31 / 32.70 / 26.60 MPa and E 2.18 / 1.56 / 1.00 / 0.82 GPa at 23 / 40 / 60 / 80 C; Tg (DMA tan delta 1 Hz) about 55 C; https://pmc.ncbi.nlm.nih.gov/articles/PMC12986956/'
 cost_usd:
   value: 80
   per: kg
 notes: 'Design uses the LOWER published Z strength (47 MPa) because two revisions of the same sheet disagree
   (64 vs 47). Max overhang ~70 deg from vertical per TDS (= 20 deg from horizontal). PA12-based: retains
-  properties wet better than PA6-CF (TDS). Needs hardened nozzle, enclosure (chamber 45-60 C), dry box. Frame-study fields (2026-11-01, ASSUMPTIONS, no published creep data): env_knockdown_ratio 0.8, modulus_40c_wet_ratio 0.6, creep_modulus_8h_40c_ratio 0.7, creep_rupture_8h_40c_ratio 0.4, fatigue_1e5_ratio 0.3, Tg ~45 C. modulus_60c_ratio 0.35 is an ASSUMPTION for a 60 C truck cab (above Tg): the printed-frame study cites NETZSCH DMA on LS-PA12, E prime falling through the glass transition (about 1438 to 500 MPa).'
+  properties wet better than PA6-CF (TDS). Needs hardened nozzle, enclosure (chamber 45-60 C), dry box. Frame-study fields (2026-11-01, ASSUMPTIONS, no published creep data): env_knockdown_ratio 0.8, modulus_40c_wet_ratio 0.6, creep_modulus_8h_40c_ratio 0.7, creep_rupture_8h_40c_ratio 0.4, fatigue_1e5_ratio 0.3, Tg ~45 C. modulus_60c_ratio 0.35 is an ASSUMPTION for a 60 C truck cab (above Tg): the printed-frame study cites NETZSCH DMA on LS-PA12, E prime falling through the glass transition (about 1438 to 500 MPa). BL-077 HOT/WET BASIS (supersedes env_knockdown_ratio 0.8 for any PAHT frame check from BL-077 on; the old fields are kept for the legacy studies that read them): B-basis at the TDS n (n not stated; ISO 527-1 minimum 5, k 3.4066) on the LOWER published mean of each property: XY 88 - 3.4066 x 7 = 64.15 MPa (V2.0 mean), Z 47 - 3.4066 x 5 = 29.97 MPa (V3.0 mean). Wet (23-25 C, saturated at 55 % RH): Bambu bending pairs XY 115 / 125 = 0.92 and Z 49 / 61 = 0.803 with a stated 12-18 % decline: XY 0.82 (the 18 % floor), Z 0.80 (lowest reading taken, review 8 rule). Hot 40 C: 0.82, the lowest of the Ciganas PA12 CF15 UTS ratio 40 / 23 C = 0.8215 and the Tg-shift readings of that curve (0.826-0.829) with the wet Tg 47-58 C (Bambu dry DSC Tg 70 C depressed by 11.3-26.5 C per wt % water, the BL-073 rates; glass_transition_wet_c 47 is the lower estimate). Knocked: XY 43.14, Z 19.66 MPa; interlayer shear tau = Z / sqrt 3 = 11.35 MPa (von Mises; the frame code rule 0.6 x Z had no source). Modulus 40 C / 23 C 0.716 (Ciganas); x wet strength ratio 0.82 = 0.587 (ASSUMPTION E-WET), 2 % under the booked modulus_40c_wet_ratio 0.6. Tg was 45 C (ASSUMPTION, 2026-11-01); TDS V3.0 says 70 C (DSC, dry). TDS V3.0 also lists lower bending (XY 125 vs 140 here) and elongation (8.4 / 4.1 vs 10.4 / 5.2) than V2.0; the V2.0 values are kept for the legacy studies that read them, no H1 row uses them (BL-077 open item). Settled by the BL-077 coupons CA-3-PAHT (Z and SBS at 40 C on conditioned, layer-time-matched coupons, n 10) and CA-1-PAHT (SBS fatigue at 40 C).'
