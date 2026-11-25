@@ -1,0 +1,44 @@
+id: alu_6061_t6_drawn_tube
+name: Aluminum 6061-T6 drawn seamless round tube (stock form for frame stays and bars)
+category: metals
+generic: true
+trade_names: []
+supplier_examples:
+- Speedy Metals (cut by the inch)
+- OnlineMetals
+- McMaster-Carr
+- Zoro (TW Metals / Zoro Select)
+properties:
+  density_kg_m3: 2700
+  youngs_modulus_mpa: 68900
+  shear_modulus_mpa: 26000
+  poisson: 0.33
+  ultimate_strength_mpa: 290
+  yield_strength_mpa: 240
+  ultimate_strength_typical_mpa: 310
+  yield_strength_typical_mpa: 270
+  elongation_pct: 8
+  bearing_yield_ed2_mpa: 386
+  fatigue_limit_mpa: 96.5
+  min_bend_radius_ratio: 3.5
+  od_7_8_in_mm: 22.225
+  wall_035_in_mm: 0.889
+  wall_049_in_mm: 1.245
+  wall_065_in_mm: 1.651
+confidence: datasheet
+sources:
+- 'Minimum tensile / yield 290 / 240 MPa (42 / 35 ksi), typical 310 / 270 MPa, elongation >= 8 % up to 6.35 mm, fatigue limit 97 MPa at 5e8 fully reversed (R. R. Moore), E 68.9 GPa, density 2.70 g/cm3: https://en.wikipedia.org/wiki/6061_aluminium_alloy (read 2026-11-25)'
+- 'Drawn tube under 1 in: 42.0 ksi tensile, 35.0 ksi yield, 8 % (ASTM B241 inch table as quoted in search; B210/B210M metric 290 / 240 MPa): https://store.astm.org/b0210_b0210m-26.html (secondary, standard not purchased)'
+- 'Bearing yield 386 MPa (56 ksi) at e/D 2.0, Aluminum Association typical data as quoted in a search snippet of a 6061-T6 data sheet (secondary; AA typical, not a design allowable)'
+- 'Bend radius: target 3.5-4 D, 3 D is on the edge for 6061-T6: https://www.roguefab.com/aluminum-pipe-benders/ (vendor guidance)'
+- 'Prices: Speedy Metals 7/8 x .049 in 48 in USD 30.00 https://speedymetals.com/p-4568-78-od-x-0049-wall-tube-6061-t6-aluminum.aspx ; 7/8 x .065 in 48 in USD 38.88 https://speedymetals.com/p-4569-78-od-x-0065-wall-tube-6061-t6-aluminum.aspx ; 1 x .049 in 48 in USD 34.56 https://speedymetals.com/p-4586-1-od-x-049-wall-tube-6061-t6-aluminum.aspx ; 3/4 x .035 in 48 in USD 19.96 https://www.speedymetals.com/pc-4563-8371-34-od-x-0035-wall-tube-6061-t6-aluminum.aspx (all read 2026-11-25)'
+cost_usd:
+  value: 24.6
+  per: m
+notes: 'Stock form chosen by BL-080 (docs/research/20261125_metal_stay_frames.md). Strength fields are the ASTM drawn-tube
+  MINIMUMS (290 / 240 MPa), equal to the MMPDS S-basis in alu_6061_t6 (290 / 241); frame checks read alu_6061_t6 so the
+  two records agree. cost_usd is the 7/8 x .049 in size (USD 30.00 / 48 in). Price per metre by size, 48 in lengths:
+  3/4 x .035 in 16.4, 7/8 x .049 in 24.6, 7/8 x .065 in 31.9, 1 x .049 in 28.3 USD/m. Fatigue limit is unnotched
+  R. R. Moore; apply Kt (clamp edge 2, transverse hole 3 in BL-080) and Goodman. Do not anneal and re-bend at home:
+  natural ageing only reaches T4. Anodise or wax against squeak; keep a UHMWPE bushing between the tube and the carbon
+  crown legs (galvanic).'

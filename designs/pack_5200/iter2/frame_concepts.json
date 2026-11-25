@@ -1,0 +1,1373 @@
+{
+ "ticket": "BL-080",
+ "date": "2026-11-25",
+ "standard": "HA-LS-1 rev C (ls1_envelope, torsos 15/19/23)",
+ "baselines": {
+  "H1": {
+   "body_g": 1069.3,
+   "hip_hw_g": 28.8,
+   "usd": 138.52,
+   "label": "H1 (retired, PAHT)"
+  },
+  "H1c": {
+   "body_g": 1404.7,
+   "hip_hw_g": 48.2,
+   "usd": 164.59,
+   "label": "H1c (PAHT reshape, A2)"
+  },
+  "cap_usd": 150.0
+ },
+ "concepts": {
+  "A": {
+   "name": "A  Flat-bar twin stays + printed hub",
+   "short": "7075 flat-bar stays, PAHT hub + crown sleeves",
+   "story": "Classic internal-frame stays (Kifaru-style flat bar, hand-bent to the back) on a printed lower hub that carries the Ti hip mount; the crown legs ride in printed sleeves clamped to the bars.",
+   "stay": "f7075_1x1_4",
+   "stay_desc": "1\" x 1/4\" 7075-T6 flat bar",
+   "bar_desc": "3/4\" OD x .035\" 6061-T6 drawn tube",
+   "lumbar": {
+    "kind": "paht",
+    "t": 8.0,
+    "flange": 15.0
+   },
+   "checks": {
+    "strength": {
+     "stays": {
+      "margin": 0.9724728819240077,
+      "case": "drop_2p5g",
+      "variant": "strap_upper",
+      "torso_in": 23.0,
+      "member": "SL190-SL250",
+      "sf": 1.4587093228860115,
+      "required": 1.5
+     },
+     "hub": {
+      "margin": 1.0951778355366655,
+      "case": "drop_2p5g",
+      "variant": "strap_upper",
+      "torso_in": 23.0,
+      "member": "plh40",
+      "sf": 1.6427667533049983,
+      "required": 1.5
+     },
+     "bars": {
+      "margin": 1.013150155633516,
+      "case": "hipbelt_off_abuse",
+      "variant": "crown_bar",
+      "torso_in": 15.0,
+      "member": "UB0-UB1",
+      "sf": 1.013150155633516,
+      "required": 1.0
+     }
+    },
+    "buckling": {
+     "margin": 2.723974396702403,
+     "case": "side_hill_torsion",
+     "variant": "crown_bar",
+     "torso_in": 15.0,
+     "eigen": 6.128942392580407
+    },
+    "fatigue": {
+     "stays": {
+      "margin": 0.7722158895693745,
+      "sigma_max_mpa": 253.37467458476087,
+      "allow_mpa": 195.65994972882189,
+      "member": "SL190-SL250",
+      "z_mm": 220.0,
+      "basis": "alu_7075_t6 Basquin 1e5 R0 Kt 2",
+      "variant": "strap_upper",
+      "torso_in": 23.0
+     },
+     "hub": {
+      "margin": 0.6160375324893743,
+      "sigma_max_mpa": 21.00846022758074,
+      "allow_mpa": 12.942,
+      "member": "plh40",
+      "z_mm": 190.0,
+      "basis": "PAHT hot/wet B 43.14 x 0.30",
+      "variant": "strap_upper",
+      "torso_in": 23.0
+     },
+     "bars": {
+      "margin": 1.4440131309827764,
+      "sigma_max_mpa": 51.24330064365096,
+      "allow_mpa": 73.99599900433014,
+      "member": "UB0-UB1",
+      "z_mm": 520.0,
+      "basis": "alu_6061_t6 Basquin 1e5 R0 Kt 3",
+      "variant": "strap_upper",
+      "torso_in": 15.0
+     }
+    },
+    "joints": {
+     "hub_L_force_n": {
+      "value": 1136.0186706103023,
+      "case": "drop_2p5g",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "hub_L_moment_nmm": {
+      "value": 97882.99127384654,
+      "case": "drop_2p5g",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "mid_bar_L_axial_n": {
+      "value": 694.2079558167359,
+      "case": "drop_2p5g",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "mid_bar_L_shear_n": {
+      "value": 260.4323426548249,
+      "case": "side_hill_torsion",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "upper_bar_L_axial_n": {
+      "value": 584.0134678781033,
+      "case": "side_hill_torsion",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "upper_bar_L_shear_n": {
+      "value": 1171.2326804834202,
+      "case": "hipbelt_off_abuse",
+      "torso_in": 15.0,
+      "factored": 1.0
+     },
+     "hub_R_force_n": {
+      "value": 1182.4337838519866,
+      "case": "side_hill_torsion",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "hub_R_moment_nmm": {
+      "value": 128271.73173585572,
+      "case": "side_hill_torsion",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "mid_bar_R_axial_n": {
+      "value": 694.2079558148174,
+      "case": "drop_2p5g",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "mid_bar_R_shear_n": {
+      "value": 260.43234259683834,
+      "case": "side_hill_torsion",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "upper_bar_R_axial_n": {
+      "value": 251.68070831894875,
+      "case": "side_hill_torsion",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "upper_bar_R_shear_n": {
+      "value": 1171.2326805537018,
+      "case": "hipbelt_off_abuse",
+      "torso_in": 15.0,
+      "factored": 1.0
+     }
+    },
+    "bushing_n": 1343.8723733230627,
+    "crown_info": 1.1155415097892347,
+    "checks": [
+     {
+      "label": "stay bearing on the printed hub bore (120 mm land)",
+      "value_mpa": 0.3879375931272922,
+      "allow_mpa": 19.66,
+      "margin": 50.67825430764338,
+      "basis": "PAHT Z hot/wet B 19.66 MPa (ASSUMPTION BEAR-PAHT)"
+     },
+     {
+      "label": "mid_bar tee clamp slip on the stay (2 x M5 metal-backed)",
+      "value_n": 741.4510712244816,
+      "allow_n": 2080.0,
+      "margin": 2.805309858902692,
+      "basis": "mu 0.2 x 2 faces x 2 x 2.6 kN (ASSUMPTIONS MU, CLAMP-PRELOAD; coupon CL-1)"
+     },
+     {
+      "label": "upper_bar tee clamp slip on the stay (2 x M5 metal-backed)",
+      "value_n": 1308.7619044960081,
+      "allow_n": 2080.0,
+      "margin": 1.5892883135232978,
+      "basis": "mu 0.2 x 2 faces x 2 x 2.6 kN (ASSUMPTIONS MU, CLAMP-PRELOAD; coupon CL-1)"
+     },
+     {
+      "label": "printed crown sleeve ring bending (static)",
+      "value_mpa": 74.78649757542844,
+      "allow_mpa": 43.14,
+      "margin": 0.5768420958140165,
+      "basis": "Roark point-load ring 0.318 F R, PAHT XY hot/wet"
+     },
+     {
+      "label": "printed crown sleeve ring bending (fatigue)",
+      "value_mpa": 39.8861320402285,
+      "allow_mpa": 12.942,
+      "margin": 0.32447367889538425,
+      "basis": "0.30 x 43.14 MPa"
+     }
+    ],
+    "min_margin": 0.32447367889538425,
+    "governing": "printed crown sleeve ring bending (fatigue)",
+    "sizing_log": [
+     {
+      "part": "stay",
+      "option": "f7075_1x3_16",
+      "margin": 0.477
+     },
+     {
+      "part": "stay",
+      "option": "f7075_1x1_4",
+      "margin": 0.772
+     },
+     {
+      "part": "upper bar",
+      "option": "t750_035",
+      "margin": 0.477
+     },
+     {
+      "part": "upper bar",
+      "option": "t875_049",
+      "margin": 0.792
+     },
+     {
+      "part": "upper bar",
+      "option": "t1000_049",
+      "margin": 1.013
+     }
+    ]
+   },
+   "mass": {
+    "rows": {
+     "stays x 2 (1\" x 1/4\" 7075-T6 flat bar)": 489.5,
+     "mid bar (3/4\" OD x .035\" 6061-T6 drawn tube, 220 mm)": 30.1,
+     "upper bar (1\" OD x .049\" 6061-T6 drawn tube, 220 mm)": 56.1,
+     "printed: lower hub (hip boss, struts, foot sockets, US1 lugs, hinge fairleads)": 288.3,
+     "printed: crown sleeves on the bars x 2 (bore 18, 3 mm wall, z 330-530)": 76.0,
+     "printed: mid / upper bar nodes x 4 (IM2 / IM3 cheeks)": 88.0,
+     "printed: pawl housing + spine guide": 30.0,
+     "printed: lash clips z 250 / 420 x 4": 24.0,
+     "printed: US2 clevis x 2 (BL-050 part)": 31.4,
+     "6061 clamp backers (4)": 0.0,
+     "joint screws + nuts (A2)": 73.3
+    },
+    "body_g": 1186.8,
+    "printed_g": 537.7,
+    "hip_hw_g": 28.8,
+    "frame_delta_vs_h1_g": 117.5,
+    "frame_delta_vs_h1c_g": -237.3
+   },
+   "cost": {
+    "lines": [
+     {
+      "item": "1\" x 1/4\" 7075-T6 flat bar: 2 piece(s) 540, 540 mm, buy ASSUMPTION by the inch",
+      "usd": 26.88,
+      "source": "ASSUMPTION FLAT-PRICE: Speedy 1/2 x 1 in 7075 base USD 1.11/in x area ratio 0.5 = USD 0.56/in; fixed-length price table PRICE_LENGTHS"
+     },
+     {
+      "item": "3/4\" OD x .035\" 6061-T6 drawn tube: 1 piece(s) 220 mm, buy 12 in",
+      "usd": 8.32,
+      "source": "Speedy Metals pc-4563 (48 in USD 19.96); fixed-length price table PRICE_LENGTHS"
+     },
+     {
+      "item": "1\" OD x .049\" 6061-T6 drawn tube: 1 piece(s) 220 mm, buy 12 in",
+      "usd": 14.4,
+      "source": "Speedy Metals p-4586 (48 in USD 34.56); fixed-length price table PRICE_LENGTHS"
+     },
+     {
+      "item": "PAHT-CF filament 538 g x 1.10 support",
+      "usd": 47.32,
+      "source": "record USD 80/kg; BL-053 support x1.10"
+     },
+     {
+      "item": "A2 screws + nuts (4 x M5, 12 x M4)",
+      "usd": 9.76,
+      "source": "Zoro A2 M5 x 35 50-pk USD 41.79 (BL-077); M4 ASSUMPTION USD 0.50"
+     },
+     {
+      "item": "threadlocker share",
+      "usd": 0.9,
+      "source": "BL-077 LOC-SHARE"
+     },
+     {
+      "item": "shipping (metal order), ASSUMPTION SHIP",
+      "usd": 12.0,
+      "source": "ASSUMPTION: Speedy UPS ground, small parcel"
+     }
+    ],
+    "per_frame_usd": 119.58,
+    "within_cap": true
+   },
+   "proving": {
+    "lines": [
+     {
+      "item": "spare stay bar for coupons (24 in)",
+      "usd": 13.44,
+      "source": "ASSUMPTION FLAT-PRICE: Speedy 1/2 x 1 in 7075 base USD 1.11/in x area ratio 0.5 = USD 0.56/in"
+     },
+     {
+      "item": "CL-1 clamp-slip + BB-1 bolt-bearing coupons: printed tees / saddles (60 g PAHT)",
+      "usd": 5.28,
+      "source": "record"
+     },
+     {
+      "item": "tubing cutter to 1-1/8 in (new tool)",
+      "usd": 15.0,
+      "source": "ASSUMPTION TOOL-PRICE (hardware-store class)"
+     },
+     {
+      "item": "deburr tool + 5.2 / 4.2 mm cobalt bits (new tools)",
+      "usd": 14.0,
+      "source": "ASSUMPTION TOOL-PRICE"
+     },
+     {
+      "item": "flat-bar bending jig (plywood + printed formers)",
+      "usd": 8.0,
+      "source": "ASSUMPTION"
+     },
+     {
+      "item": "PAHT hub coupons (beyond the BL-079 G0 set)",
+      "usd": 20.0,
+      "source": "ASSUMPTION"
+     }
+    ],
+    "total_usd": 75.72,
+    "note": "the BL-079 PAHT coupons (USD 59.01, session G0) are already booked and also serve the printed parts"
+   },
+   "hub_needed": {
+    "t_mm": 14,
+    "hub_margin": 1.0843898451680354,
+    "hub_g": 504.6
+   },
+   "strong_pass": false,
+   "ubar": "t1000_049"
+  },
+  "B": {
+   "name": "B  Tube ladder (perimeter) + printed corners",
+   "short": "6061 tube stays + lumbar cross tube, printed tees",
+   "story": "Straight 6061 tubes (two stays, a lumbar cross tube at z 120, mid and upper bars) joined by printed tees that are through-bolted below the crown-leg travel and clamped above it; the Ti hip mount bolts to two hand-cut 6061 angle brackets through-bolted to the cross tube. Every part is cut by hand from stock with printed drill jigs: no laser order, no bending. A bent U (bending service) could replace the two lower tees; not booked.",
+   "stay": "t1000_049",
+   "stay_desc": "1\" OD x .049\" 6061-T6 drawn tube",
+   "bar_desc": "3/4\" OD x .035\" 6061-T6 drawn tube",
+   "lumbar": {
+    "kind": "cross_tube",
+    "tube": "t1000_049"
+   },
+   "checks": {
+    "strength": {
+     "stays": {
+      "margin": 1.644884996717878,
+      "case": "meat_straps",
+      "variant": "crown_bar",
+      "torso_in": 23.0,
+      "member": "SL330-SL374.3",
+      "sf": 2.467327495076817,
+      "required": 1.5
+     },
+     "hub": {
+      "margin": 1.7682109535161616,
+      "case": "drop_2p5g",
+      "variant": "crown_bar",
+      "torso_in": 15.0,
+      "member": "plh22",
+      "sf": 2.6523164302742424,
+      "required": 1.5
+     },
+     "bars": {
+      "margin": 1.0560874181796234,
+      "case": "hipbelt_off_abuse",
+      "variant": "crown_bar",
+      "torso_in": 15.0,
+      "member": "UB0-UB1",
+      "sf": 1.0560874181796234,
+      "required": 1.0
+     }
+    },
+    "buckling": {
+     "margin": 1.3980070009555257,
+     "case": "side_hill_torsion",
+     "variant": "crown_bar",
+     "torso_in": 15.0,
+     "eigen": 3.1455157521499326
+    },
+    "fatigue": {
+     "stays": {
+      "margin": 1.048971343647542,
+      "sigma_max_mpa": 70.54148757489132,
+      "allow_mpa": 73.99599900433014,
+      "member": "SL130-SL155",
+      "z_mm": 142.5,
+      "basis": "alu_6061_t6 Basquin 1e5 R0 Kt 3",
+      "variant": "strap_upper",
+      "torso_in": 23.0
+     },
+     "hub": {
+      "margin": 1.0179502278721022,
+      "sigma_max_mpa": 72.69117583382199,
+      "allow_mpa": 73.99599900433014,
+      "member": "plh22",
+      "z_mm": 120.0,
+      "basis": "alu_6061_t6 Basquin 1e5 R0 Kt 3",
+      "variant": "crown_bar",
+      "torso_in": 15.0
+     },
+     "bars": {
+      "margin": 1.8717046435337932,
+      "sigma_max_mpa": 39.534014760269606,
+      "allow_mpa": 73.99599900433014,
+      "member": "UB1-UB2",
+      "z_mm": 520.0,
+      "basis": "alu_6061_t6 Basquin 1e5 R0 Kt 3",
+      "variant": "strap_upper",
+      "torso_in": 15.0
+     }
+    },
+    "joints": {
+     "hub_L_force_n": {
+      "value": 992.4141439850389,
+      "case": "drop_2p5g",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "hub_L_moment_nmm": {
+      "value": 73020.98629077601,
+      "case": "single_stay_setdown",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "mid_bar_L_axial_n": {
+      "value": 150.32996968721923,
+      "case": "drop_2p5g",
+      "torso_in": 23.0,
+      "factored": 1.5
+     },
+     "mid_bar_L_shear_n": {
+      "value": 255.09054589515108,
+      "case": "side_hill_torsion",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "upper_bar_L_axial_n": {
+      "value": 422.33242224901915,
+      "case": "side_hill_torsion",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "upper_bar_L_shear_n": {
+      "value": 1206.1637456257301,
+      "case": "hipbelt_off_abuse",
+      "torso_in": 15.0,
+      "factored": 1.0
+     },
+     "hub_R_force_n": {
+      "value": 1140.963924930631,
+      "case": "side_hill_torsion",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "hub_R_moment_nmm": {
+      "value": 79231.6170511849,
+      "case": "side_hill_torsion",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "mid_bar_R_axial_n": {
+      "value": 150.3299696865372,
+      "case": "drop_2p5g",
+      "torso_in": 23.0,
+      "factored": 1.5
+     },
+     "mid_bar_R_shear_n": {
+      "value": 255.09054588234181,
+      "case": "side_hill_torsion",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "upper_bar_R_axial_n": {
+      "value": 204.19144725054502,
+      "case": "side_hill_torsion",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "upper_bar_R_shear_n": {
+      "value": 1206.163739470784,
+      "case": "hipbelt_off_abuse",
+      "torso_in": 15.0,
+      "factored": 1.0
+     }
+    },
+    "bushing_n": 1385.3825711300772,
+    "crown_info": 1.1157639501992462,
+    "checks": [
+     {
+      "label": "hub-to-stay bolt bearing in 6061 tube (2 x M5 / side)",
+      "value_mpa": 136.7798655032678,
+      "allow_mpa": 347.40000000000003,
+      "margin": 2.5398475040297526,
+      "basis": "bearing yield 386 MPa at e/D 2 (AA typical, cited) x 0.9 for e/D 1.5 (ASSUMPTION BRG-ED)",
+      "force_n": 1702.3622060536713
+     },
+     {
+      "label": "hub-to-stay bolt shear (A2-70, double shear)",
+      "value_mpa": 67.73484000656637,
+      "allow_mpa": 270.0,
+      "margin": 3.9861318041620173,
+      "basis": "A2-70 yield 450 MPa x 0.6 on the minor-diameter area"
+     },
+     {
+      "label": "mid_bar tee clamp slip on the stay (2 x M5 metal-backed)",
+      "value_n": 296.0916857854108,
+      "allow_n": 2080.0,
+      "margin": 7.024851084496365,
+      "basis": "mu 0.2 x 2 faces x 2 x 2.6 kN (ASSUMPTIONS MU, CLAMP-PRELOAD; coupon CL-1)"
+     },
+     {
+      "label": "upper_bar tee clamp slip on the stay (2 x M5 metal-backed)",
+      "value_n": 1277.9654362089043,
+      "allow_n": 2080.0,
+      "margin": 1.6275870544436148,
+      "basis": "mu 0.2 x 2 faces x 2 x 2.6 kN (ASSUMPTIONS MU, CLAMP-PRELOAD; coupon CL-1)"
+     }
+    ],
+    "min_margin": 1.0179502278721022,
+    "governing": "fatigue hub (alu_6061_t6 Basquin 1e5 R0 Kt 3)",
+    "sizing_log": [
+     {
+      "part": "stay",
+      "option": "t875_035",
+      "margin": 0.602
+     },
+     {
+      "part": "stay",
+      "option": "t875_049",
+      "margin": 0.799
+     },
+     {
+      "part": "stay",
+      "option": "t1000_049",
+      "margin": 1.049
+     },
+     {
+      "part": "upper bar",
+      "option": "t750_035",
+      "margin": 0.531
+     },
+     {
+      "part": "upper bar",
+      "option": "t875_049",
+      "margin": 0.845
+     },
+     {
+      "part": "upper bar",
+      "option": "t1000_049",
+      "margin": 1.056
+     },
+     {
+      "part": "cross tube",
+      "option": "t875_049",
+      "margin": 0.832
+     },
+     {
+      "part": "cross tube",
+      "option": "t1000_049",
+      "margin": 1.018
+     }
+    ]
+   },
+   "mass": {
+    "rows": {
+     "stays x 2 (1\" OD x .049\" 6061-T6 drawn tube)": 275.4,
+     "mid bar (3/4\" OD x .035\" 6061-T6 drawn tube, 220 mm)": 30.1,
+     "upper bar (1\" OD x .049\" 6061-T6 drawn tube, 220 mm)": 56.1,
+     "lumbar cross tube (1\" OD x .049\" 6061-T6 drawn tube, 220 mm)": 56.1,
+     "6061 hip bracket: 2 x 60 mm of 1-1/2 x 1-1/2 x 1/8 in angle, 20 % lightening (ASSUMPTION)": 60.1,
+     "printed: foot cups x 2 (hinge fairlead z 60, US1 lug, stabilizer anchor)": 90.0,
+     "printed: lumbar tees x 2 (cross tube to stay, IM1 z 190 fairlead)": 44.0,
+     "printed: mid-bar tees x 2 (IM2 / bag-mid fairlead)": 50.0,
+     "printed: upper tees + stay-top collars x 2 (IM3 cheeks, bushing seat)": 70.0,
+     "printed: pawl housing + spine guide": 30.0,
+     "printed: lash clips z 250 / 420 x 4": 24.0,
+     "printed: lumbar pad-seat spacers x 2": 20.0,
+     "printed: US2 clevis x 2 (BL-050 part)": 31.4,
+     "crown bushing growth (4 x 70 mm UHMWPE, bore 18 -> 22.9 mm)": 41.3,
+     "6061 clamp backers (4)": 34.8,
+     "joint screws + nuts (A2)": 99.9
+    },
+    "body_g": 1013.3,
+    "printed_g": 359.4,
+    "hip_hw_g": 41.8,
+    "frame_delta_vs_h1_g": -43.0,
+    "frame_delta_vs_h1c_g": -397.8
+   },
+   "cost": {
+    "lines": [
+     {
+      "item": "1\" OD x .049\" 6061-T6 drawn tube: 4 piece(s) 540, 540, 220, 220 mm, buy 72 in",
+      "usd": 43.2,
+      "source": "Speedy Metals p-4586 (48 in USD 34.56); fixed-length price table PRICE_LENGTHS"
+     },
+     {
+      "item": "3/4\" OD x .035\" 6061-T6 drawn tube: 1 piece(s) 220 mm, buy 12 in",
+      "usd": 8.32,
+      "source": "Speedy Metals pc-4563 (48 in USD 19.96); fixed-length price table PRICE_LENGTHS"
+     },
+     {
+      "item": "6061-T6 1-1/2 x 1-1/2 x 1/8 in angle, 18 in (hip bracket, hand cut + drilled on a printed jig)",
+      "usd": 4.92,
+      "source": "Speedy Metals p-2183 18 in USD 4.92 (search snippet, secondary)"
+     },
+     {
+      "item": "6061 1/8 x 1 in flat, 18 in (4 clamp backers, hand cut)",
+      "usd": 3.25,
+      "source": "Speedy Metals p-2225 18 in USD 3.25 (search snippet, secondary)"
+     },
+     {
+      "item": "PAHT-CF filament 359 g x 1.10 support",
+      "usd": 31.63,
+      "source": "record USD 80/kg; BL-053 support x1.10"
+     },
+     {
+      "item": "A2 screws + nuts (6 x M5, 14 x M4)",
+      "usd": 12.64,
+      "source": "Zoro A2 M5 x 35 50-pk USD 41.79 (BL-077); M4 ASSUMPTION USD 0.50"
+     },
+     {
+      "item": "threadlocker share",
+      "usd": 0.9,
+      "source": "BL-077 LOC-SHARE"
+     },
+     {
+      "item": "shipping (metal order), ASSUMPTION SHIP",
+      "usd": 12.0,
+      "source": "ASSUMPTION: Speedy UPS ground, small parcel"
+     }
+    ],
+    "per_frame_usd": 116.86,
+    "within_cap": true
+   },
+   "proving": {
+    "lines": [
+     {
+      "item": "spare stay tube for coupons and a fit-up trial (24 in, 1\" OD x .049\" 6061-T6 drawn tube)",
+      "usd": 21.6,
+      "source": "Speedy Metals p-4586 (48 in USD 34.56); 24 in price"
+     },
+     {
+      "item": "CL-1 clamp-slip + BB-1 bolt-bearing coupons: printed tees / saddles (60 g PAHT)",
+      "usd": 5.28,
+      "source": "record"
+     },
+     {
+      "item": "tubing cutter to 1-1/8 in (new tool)",
+      "usd": 15.0,
+      "source": "ASSUMPTION TOOL-PRICE (hardware-store class)"
+     },
+     {
+      "item": "deburr tool + 5.2 / 4.2 mm cobalt bits (new tools)",
+      "usd": 14.0,
+      "source": "ASSUMPTION TOOL-PRICE"
+     },
+     {
+      "item": "bending-service quote option for a U (not booked)",
+      "usd": 0.0,
+      "source": "Xometry instant quote (no price cited)"
+     }
+    ],
+    "total_usd": 55.88,
+    "note": "the BL-079 PAHT coupons (USD 59.01, session G0) are already booked and also serve the printed parts"
+   },
+   "strong_pass": true,
+   "ubar": "t1000_049"
+  },
+  "C": {
+   "name": "C  Hybrid: H1 printed lower hub + metal stays",
+   "short": "H1 lower half re-cut for 6061 tubes, tube bars",
+   "story": "Keeps the H1 lower half (hip boss, US1 lugs, hinge fairleads) re-cut with through-bores; 6061 tube stays run foot to crown, the upper half is replaced by tube bars and printed tees.",
+   "stay": "t875_049",
+   "stay_desc": "7/8\" OD x .049\" 6061-T6 drawn tube",
+   "bar_desc": "3/4\" OD x .035\" 6061-T6 drawn tube",
+   "lumbar": {
+    "kind": "paht",
+    "t": 10.0,
+    "flange": 20.0
+   },
+   "checks": {
+    "strength": {
+     "stays": {
+      "margin": 1.2486598233967485,
+      "case": "meat_straps",
+      "variant": "crown_bar",
+      "torso_in": 23.0,
+      "member": "SL330-SL374.3",
+      "sf": 1.8729897350951228,
+      "required": 1.5
+     },
+     "hub": {
+      "margin": 2.809831927546902,
+      "case": "drop_2p5g",
+      "variant": "strap_upper",
+      "torso_in": 15.0,
+      "member": "plh40",
+      "sf": 4.214747891320353,
+      "required": 1.5
+     },
+     "bars": {
+      "margin": 1.0294626571166519,
+      "case": "hipbelt_off_abuse",
+      "variant": "crown_bar",
+      "torso_in": 15.0,
+      "member": "UB1-UB2",
+      "sf": 1.0294626571166519,
+      "required": 1.0
+     }
+    },
+    "buckling": {
+     "margin": 1.691904045436051,
+     "case": "side_hill_torsion",
+     "variant": "crown_bar",
+     "torso_in": 15.0,
+     "eigen": 3.8067841022311146
+    },
+    "fatigue": {
+     "stays": {
+      "margin": 1.084448555451846,
+      "sigma_max_mpa": 102.35063521316461,
+      "allow_mpa": 110.9939985064952,
+      "member": "SR374.3-SR380",
+      "z_mm": 377.15000000000003,
+      "basis": "alu_6061_t6 Basquin 1e5 R0 Kt 2",
+      "variant": "strap_upper",
+      "torso_in": 23.0
+     },
+     "hub": {
+      "margin": 1.5805304592451324,
+      "sigma_max_mpa": 8.188390121998124,
+      "allow_mpa": 12.942,
+      "member": "plh40",
+      "z_mm": 190.0,
+      "basis": "PAHT hot/wet B 43.14 x 0.30",
+      "variant": "strap_upper",
+      "torso_in": 15.0
+     },
+     "bars": {
+      "margin": 1.8355866209132952,
+      "sigma_max_mpa": 40.31190800873972,
+      "allow_mpa": 73.99599900433014,
+      "member": "UB0-UB1",
+      "z_mm": 520.0,
+      "basis": "alu_6061_t6 Basquin 1e5 R0 Kt 3",
+      "variant": "strap_upper",
+      "torso_in": 15.0
+     }
+    },
+    "joints": {
+     "hub_L_force_n": {
+      "value": 1012.6053344175402,
+      "case": "drop_2p5g",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "hub_L_moment_nmm": {
+      "value": 83051.55164527782,
+      "case": "single_stay_setdown",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "mid_bar_L_axial_n": {
+      "value": 259.4455636001553,
+      "case": "drop_2p5g",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "mid_bar_L_shear_n": {
+      "value": 274.8477495464065,
+      "case": "side_hill_torsion",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "upper_bar_L_axial_n": {
+      "value": 421.5963895395398,
+      "case": "side_hill_torsion",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "upper_bar_L_shear_n": {
+      "value": 1202.7521331082094,
+      "case": "hipbelt_off_abuse",
+      "torso_in": 15.0,
+      "factored": 1.0
+     },
+     "hub_R_force_n": {
+      "value": 1152.9815143226456,
+      "case": "side_hill_torsion",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "hub_R_moment_nmm": {
+      "value": 93447.0956284655,
+      "case": "side_hill_torsion",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "mid_bar_R_axial_n": {
+      "value": 259.4455635998893,
+      "case": "drop_2p5g",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "mid_bar_R_shear_n": {
+      "value": 274.8477495565618,
+      "case": "side_hill_torsion",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "upper_bar_R_axial_n": {
+      "value": 171.22511438280344,
+      "case": "side_hill_torsion",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "upper_bar_R_shear_n": {
+      "value": 1202.7521334938672,
+      "case": "hipbelt_off_abuse",
+      "torso_in": 15.0,
+      "factored": 1.0
+     }
+    },
+    "bushing_n": 1381.633133874806,
+    "crown_info": 1.1157487469217162,
+    "checks": [
+     {
+      "label": "stay bearing on the printed hub bore (120 mm land)",
+      "value_mpa": 0.43231402861741497,
+      "allow_mpa": 19.66,
+      "margin": 45.47620178525022,
+      "basis": "PAHT Z hot/wet B 19.66 MPa (ASSUMPTION BEAR-PAHT)"
+     },
+     {
+      "label": "mid_bar tee clamp slip on the stay (2 x M5 metal-backed)",
+      "value_n": 377.95937071080635,
+      "allow_n": 2080.0,
+      "margin": 5.503237017482234,
+      "basis": "mu 0.2 x 2 faces x 2 x 2.6 kN (ASSUMPTIONS MU, CLAMP-PRELOAD; coupon CL-1)"
+     },
+     {
+      "label": "upper_bar tee clamp slip on the stay (2 x M5 metal-backed)",
+      "value_n": 1274.5023382861345,
+      "allow_n": 2080.0,
+      "margin": 1.632009559744743,
+      "basis": "mu 0.2 x 2 faces x 2 x 2.6 kN (ASSUMPTIONS MU, CLAMP-PRELOAD; coupon CL-1)"
+     }
+    ],
+    "min_margin": 1.0294626571166519,
+    "governing": "strength bars (hipbelt_off_abuse, 15 in)",
+    "sizing_log": [
+     {
+      "part": "stay",
+      "option": "t875_035",
+      "margin": 0.816
+     },
+     {
+      "part": "stay",
+      "option": "t875_049",
+      "margin": 1.084
+     },
+     {
+      "part": "upper bar",
+      "option": "t750_035",
+      "margin": 0.511
+     },
+     {
+      "part": "upper bar",
+      "option": "t875_049",
+      "margin": 0.819
+     },
+     {
+      "part": "upper bar",
+      "option": "t1000_049",
+      "margin": 1.029
+     }
+    ]
+   },
+   "mass": {
+    "rows": {
+     "stays x 2 (7/8\" OD x .049\" 6061-T6 drawn tube)": 239.2,
+     "mid bar (3/4\" OD x .035\" 6061-T6 drawn tube, 220 mm)": 30.1,
+     "upper bar (1\" OD x .049\" 6061-T6 drawn tube, 220 mm)": 56.1,
+     "printed: H1 lower half re-cut with D22.4 through-bores (h1_lower_flat 494.6 g - 2 bores)": 434.6,
+     "printed: mid-bar tees x 2": 50.0,
+     "printed: upper tees + stay-top collars x 2": 70.0,
+     "printed: pawl housing + spine guide": 30.0,
+     "printed: lash clips z 250 / 420 x 4": 24.0,
+     "printed: US2 clevis x 2 (BL-050 part)": 31.4,
+     "crown bushing growth (4 x 70 mm UHMWPE, bore 18 -> 19.7 mm)": 13.5,
+     "6061 clamp backers (4)": 34.8,
+     "joint screws + nuts (A2)": 68.6
+    },
+    "body_g": 1082.4,
+    "printed_g": 640.0,
+    "hip_hw_g": 28.8,
+    "frame_delta_vs_h1_g": 13.1,
+    "frame_delta_vs_h1c_g": -341.7
+   },
+   "cost": {
+    "lines": [
+     {
+      "item": "7/8\" OD x .049\" 6061-T6 drawn tube: 2 piece(s) 540, 540 mm, buy 48 in",
+      "usd": 30.0,
+      "source": "Speedy Metals p-4568 (48 in USD 30.00); fixed-length price table PRICE_LENGTHS"
+     },
+     {
+      "item": "3/4\" OD x .035\" 6061-T6 drawn tube: 1 piece(s) 220 mm, buy 12 in",
+      "usd": 8.32,
+      "source": "Speedy Metals pc-4563 (48 in USD 19.96); fixed-length price table PRICE_LENGTHS"
+     },
+     {
+      "item": "1\" OD x .049\" 6061-T6 drawn tube: 1 piece(s) 220 mm, buy 12 in",
+      "usd": 14.4,
+      "source": "Speedy Metals p-4586 (48 in USD 34.56); fixed-length price table PRICE_LENGTHS"
+     },
+     {
+      "item": "6061 1/8 x 1 in flat, 18 in (4 clamp backers, hand cut)",
+      "usd": 3.25,
+      "source": "Speedy Metals p-2225 18 in USD 3.25 (search snippet, secondary)"
+     },
+     {
+      "item": "PAHT-CF filament 640 g x 1.10 support",
+      "usd": 56.32,
+      "source": "record USD 80/kg; BL-053 support x1.10"
+     },
+     {
+      "item": "A2 screws + nuts (2 x M5, 14 x M4)",
+      "usd": 8.88,
+      "source": "Zoro A2 M5 x 35 50-pk USD 41.79 (BL-077); M4 ASSUMPTION USD 0.50"
+     },
+     {
+      "item": "threadlocker share",
+      "usd": 0.9,
+      "source": "BL-077 LOC-SHARE"
+     },
+     {
+      "item": "shipping (metal order), ASSUMPTION SHIP",
+      "usd": 12.0,
+      "source": "ASSUMPTION: Speedy UPS ground, small parcel"
+     }
+    ],
+    "per_frame_usd": 134.07,
+    "within_cap": true
+   },
+   "proving": {
+    "lines": [
+     {
+      "item": "spare stay tube for coupons and a fit-up trial (24 in, 7/8\" OD x .049\" 6061-T6 drawn tube)",
+      "usd": 18.75,
+      "source": "Speedy Metals p-4568 (48 in USD 30.00); 24 in price"
+     },
+     {
+      "item": "CL-1 clamp-slip + BB-1 bolt-bearing coupons: printed tees / saddles (60 g PAHT)",
+      "usd": 5.28,
+      "source": "record"
+     },
+     {
+      "item": "tubing cutter to 1-1/8 in (new tool)",
+      "usd": 15.0,
+      "source": "ASSUMPTION TOOL-PRICE (hardware-store class)"
+     },
+     {
+      "item": "deburr tool + 5.2 / 4.2 mm cobalt bits (new tools)",
+      "usd": 14.0,
+      "source": "ASSUMPTION TOOL-PRICE"
+     }
+    ],
+    "total_usd": 53.03,
+    "note": "the BL-079 PAHT coupons (USD 59.01, session G0) are already booked and also serve the printed parts"
+   },
+   "hub_needed": {
+    "t_mm": 8,
+    "hub_margin": 1.1891625790053129,
+    "hub_g": 305.3
+   },
+   "strong_pass": true,
+   "ubar": "t1000_049"
+  },
+  "D": {
+   "name": "D  Tube stays + formed 6061 hip pan (own idea)",
+   "short": "6061 tube stays, laser-cut + bent 6061 pan, printed parts in bearing only",
+   "story": "6061 tube stays (crown legs telescope inside, as the v2 frame), a laser-cut and press-brake-formed 6061 .063 in hat pan with a .125 in doubler under the mount (SendCutSend; no holes within 25 mm of the bends) carries the Ti hip mount and bolts through the stays below the leg travel; tube bars clamp on with metal-backed printed tees. Every printed part is in bearing or clamped.",
+   "stay": "t875_049",
+   "stay_desc": "7/8\" OD x .049\" 6061-T6 drawn tube",
+   "bar_desc": "3/4\" OD x .035\" 6061-T6 drawn tube",
+   "ubar": "t1000_049",
+   "lumbar": {
+    "kind": "metal_pan",
+    "mat": "alu_6061_t6",
+    "t": 1.6001999999999998,
+    "flange": 20.0,
+    "flange_kt": 2.0,
+    "padup": 3.175
+   },
+   "checks": {
+    "strength": {
+     "stays": {
+      "margin": 1.2485247260940369,
+      "case": "meat_straps",
+      "variant": "crown_bar",
+      "torso_in": 23.0,
+      "member": "SR330-SR374.3",
+      "sf": 1.8727870891410554,
+      "required": 1.5
+     },
+     "hub": {
+      "margin": 1.446832287974556,
+      "case": "drop_2p5g",
+      "variant": "crown_bar",
+      "torso_in": 15.0,
+      "member": "plh42",
+      "sf": 2.1702484319618343,
+      "required": 1.5
+     },
+     "bars": {
+      "margin": 1.0333473699601157,
+      "case": "hipbelt_off_abuse",
+      "variant": "crown_bar",
+      "torso_in": 15.0,
+      "member": "UB0-UB1",
+      "sf": 1.0333473699601157,
+      "required": 1.0
+     }
+    },
+    "buckling": {
+     "margin": 1.9751350427692778,
+     "case": "side_hill_torsion",
+     "variant": "crown_bar",
+     "torso_in": 15.0,
+     "eigen": 4.444053846230875
+    },
+    "fatigue": {
+     "stays": {
+      "margin": 1.086309614463561,
+      "sigma_max_mpa": 102.1752887286246,
+      "allow_mpa": 110.9939985064952,
+      "member": "SR374.3-SR380",
+      "z_mm": 377.15000000000003,
+      "basis": "alu_6061_t6 Basquin 1e5 R0 Kt 2",
+      "variant": "strap_upper",
+      "torso_in": 23.0
+     },
+     "hub": {
+      "margin": 1.2494011992525693,
+      "sigma_max_mpa": 88.83775569680522,
+      "allow_mpa": 110.9939985064952,
+      "member": "plh42",
+      "z_mm": 190.0,
+      "basis": "alu_6061_t6 Basquin 1e5 R0 Kt 2",
+      "variant": "crown_bar",
+      "torso_in": 15.0
+     },
+     "bars": {
+      "margin": 1.7722351888300323,
+      "sigma_max_mpa": 41.75292278965509,
+      "allow_mpa": 73.99599900433014,
+      "member": "UB0-UB1",
+      "z_mm": 520.0,
+      "basis": "alu_6061_t6 Basquin 1e5 R0 Kt 3",
+      "variant": "strap_upper",
+      "torso_in": 15.0
+     }
+    },
+    "joints": {
+     "hub_L_force_n": {
+      "value": 1006.2027336167832,
+      "case": "drop_2p5g",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "hub_L_moment_nmm": {
+      "value": 85141.14381958659,
+      "case": "single_stay_setdown",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "mid_bar_L_axial_n": {
+      "value": 220.7822810359664,
+      "case": "drop_2p5g",
+      "torso_in": 23.0,
+      "factored": 1.5
+     },
+     "mid_bar_L_shear_n": {
+      "value": 262.09970491914873,
+      "case": "side_hill_torsion",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "upper_bar_L_axial_n": {
+      "value": 412.4779707714915,
+      "case": "side_hill_torsion",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "upper_bar_L_shear_n": {
+      "value": 1203.0862763919656,
+      "case": "hipbelt_off_abuse",
+      "torso_in": 15.0,
+      "factored": 1.0
+     },
+     "hub_R_force_n": {
+      "value": 1170.8092713627811,
+      "case": "side_hill_torsion",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "hub_R_moment_nmm": {
+      "value": 93475.00790773213,
+      "case": "side_hill_torsion",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "mid_bar_R_axial_n": {
+      "value": 220.78228103758713,
+      "case": "drop_2p5g",
+      "torso_in": 23.0,
+      "factored": 1.5
+     },
+     "mid_bar_R_shear_n": {
+      "value": 262.0997049403858,
+      "case": "side_hill_torsion",
+      "torso_in": 15.0,
+      "factored": 1.5
+     },
+     "upper_bar_R_axial_n": {
+      "value": 173.495919495821,
+      "case": "side_hill_torsion",
+      "torso_in": 19.0,
+      "factored": 1.5
+     },
+     "upper_bar_R_shear_n": {
+      "value": 1203.086260300261,
+      "case": "hipbelt_off_abuse",
+      "torso_in": 15.0,
+      "factored": 1.0
+     }
+    },
+    "bushing_n": 1381.9991844756044,
+    "crown_info": 1.1157499497765697,
+    "checks": [
+     {
+      "label": "hub-to-stay bolt bearing in 6061 tube (2 x M5 / side)",
+      "value_mpa": 154.32764675447012,
+      "allow_mpa": 347.40000000000003,
+      "margin": 2.2510548648013877,
+      "basis": "bearing yield 386 MPa at e/D 2 (AA typical, cited) x 0.9 for e/D 1.5 (ASSUMPTION BRG-ED)",
+      "force_n": 1920.7618915061353
+     },
+     {
+      "label": "hub-to-stay bolt shear (A2-70, double shear)",
+      "value_mpa": 76.42468738393505,
+      "allow_mpa": 270.0,
+      "margin": 3.532889819275279,
+      "basis": "A2-70 yield 450 MPa x 0.6 on the minor-diameter area"
+     },
+     {
+      "label": "mid_bar tee clamp slip on the stay (2 x M5 metal-backed)",
+      "value_n": 342.6967623862201,
+      "allow_n": 2080.0,
+      "margin": 6.069505838096699,
+      "basis": "mu 0.2 x 2 faces x 2 x 2.6 kN (ASSUMPTIONS MU, CLAMP-PRELOAD; coupon CL-1)"
+     },
+     {
+      "label": "upper_bar tee clamp slip on the stay (2 x M5 metal-backed)",
+      "value_n": 1271.831224972265,
+      "allow_n": 2080.0,
+      "margin": 1.6354371233851086,
+      "basis": "mu 0.2 x 2 faces x 2 x 2.6 kN (ASSUMPTIONS MU, CLAMP-PRELOAD; coupon CL-1)"
+     }
+    ],
+    "min_margin": 1.0333473699601157,
+    "governing": "strength bars (hipbelt_off_abuse, 15 in)",
+    "sizing_log": [
+     {
+      "part": "stay",
+      "option": "t875_035",
+      "margin": 0.817
+     },
+     {
+      "part": "stay",
+      "option": "t875_049",
+      "margin": 1.087
+     },
+     {
+      "part": "upper bar",
+      "option": "t750_035",
+      "margin": 0.516
+     },
+     {
+      "part": "upper bar",
+      "option": "t875_049",
+      "margin": 0.825
+     },
+     {
+      "part": "upper bar",
+      "option": "t1000_049",
+      "margin": 1.035
+     },
+     {
+      "part": "pan (t, doubler)",
+      "option": "(1.6001999999999998, 0.0)",
+      "margin": 0.336
+     },
+     {
+      "part": "pan (t, doubler)",
+      "option": "(1.6001999999999998, 1.6001999999999998)",
+      "margin": 0.93
+     },
+     {
+      "part": "pan (t, doubler)",
+      "option": "(1.6001999999999998, 3.175)",
+      "margin": 1.249
+     }
+    ]
+   },
+   "mass": {
+    "rows": {
+     "stays x 2 (7/8\" OD x .049\" 6061-T6 drawn tube)": 239.2,
+     "mid bar (3/4\" OD x .035\" 6061-T6 drawn tube, 220 mm)": 30.1,
+     "upper bar (1\" OD x .049\" 6061-T6 drawn tube, 220 mm)": 56.1,
+     "formed 6061 0.063 in hip pan, 30 % lightening (ASSUMPTION PAN-CUTOUT)": 146.3,
+     "6061 0.125 in hip doubler 60 x 140 mm, riveted / bolted under the Ti mount": 72.0,
+     "printed: foot cups x 2 (hinge fairlead z 60, US1 lug, stabilizer anchor)": 90.0,
+     "printed: pan saddles x 2 (tube cradle, IM1 z 190 fairlead)": 36.0,
+     "printed: mid-bar tees x 2 (IM2 / bag-mid fairlead)": 50.0,
+     "printed: upper tees + stay-top collars x 2 (IM3 cheeks, bushing seat)": 70.0,
+     "printed: pawl housing + spine guide": 30.0,
+     "printed: lash clips z 250 / 420 x 4": 24.0,
+     "printed: US2 clevis x 2 (BL-050 part)": 31.4,
+     "crown bushing growth (4 x 70 mm UHMWPE, bore 18 -> 19.7 mm)": 13.5,
+     "6061 clamp backers (4)": 24.0,
+     "joint screws + nuts (A2)": 99.9
+    },
+    "body_g": 1012.4,
+    "printed_g": 331.4,
+    "hip_hw_g": 41.8,
+    "frame_delta_vs_h1_g": -43.8,
+    "frame_delta_vs_h1c_g": -398.6
+   },
+   "cost": {
+    "lines": [
+     {
+      "item": "7/8\" OD x .049\" 6061-T6 drawn tube: 2 piece(s) 540, 540 mm, buy 48 in",
+      "usd": 30.0,
+      "source": "Speedy Metals p-4568 (48 in USD 30.00); fixed-length price table PRICE_LENGTHS"
+     },
+     {
+      "item": "3/4\" OD x .035\" 6061-T6 drawn tube: 1 piece(s) 220 mm, buy 12 in",
+      "usd": 8.32,
+      "source": "Speedy Metals pc-4563 (48 in USD 19.96); fixed-length price table PRICE_LENGTHS"
+     },
+     {
+      "item": "1\" OD x .049\" 6061-T6 drawn tube: 1 piece(s) 220 mm, buy 12 in",
+      "usd": 14.4,
+      "source": "Speedy Metals p-4586 (48 in USD 34.56); fixed-length price table PRICE_LENGTHS"
+     },
+     {
+      "item": "SendCutSend 6061 0.063 in pan cut + 2 bends + 4 clamp backers + 0.125 in doubler (one order)",
+      "usd": 53.0,
+      "source": "ASSUMPTION PAN-PRICE: no published bend price; order minimum USD 29 (BL-077 booking) + bends; +8 doubler, +10 for .125 in"
+     },
+     {
+      "item": "PAHT-CF filament 331 g x 1.10 support",
+      "usd": 29.16,
+      "source": "record USD 80/kg; BL-053 support x1.10"
+     },
+     {
+      "item": "A2 screws + nuts (6 x M5, 14 x M4)",
+      "usd": 12.64,
+      "source": "Zoro A2 M5 x 35 50-pk USD 41.79 (BL-077); M4 ASSUMPTION USD 0.50"
+     },
+     {
+      "item": "threadlocker share",
+      "usd": 0.9,
+      "source": "BL-077 LOC-SHARE"
+     },
+     {
+      "item": "shipping (metal order), ASSUMPTION SHIP",
+      "usd": 12.0,
+      "source": "ASSUMPTION: Speedy UPS ground, small parcel"
+     }
+    ],
+    "per_frame_usd": 160.42,
+    "within_cap": false
+   },
+   "proving": {
+    "lines": [
+     {
+      "item": "spare stay tube for coupons and a fit-up trial (24 in, 7/8\" OD x .049\" 6061-T6 drawn tube)",
+      "usd": 18.75,
+      "source": "Speedy Metals p-4568 (48 in USD 30.00); 24 in price"
+     },
+     {
+      "item": "CL-1 clamp-slip + BB-1 bolt-bearing coupons: printed tees / saddles (60 g PAHT)",
+      "usd": 5.28,
+      "source": "record"
+     },
+     {
+      "item": "tubing cutter to 1-1/8 in (new tool)",
+      "usd": 15.0,
+      "source": "ASSUMPTION TOOL-PRICE (hardware-store class)"
+     },
+     {
+      "item": "deburr tool + 5.2 / 4.2 mm cobalt bits (new tools)",
+      "usd": 14.0,
+      "source": "ASSUMPTION TOOL-PRICE"
+     }
+    ],
+    "total_usd": 53.03,
+    "note": "the BL-079 PAHT coupons (USD 59.01, session G0) are already booked and also serve the printed parts"
+   },
+   "strong_pass": true
+  }
+ },
+ "ranking": [
+  {
+   "concept": "B",
+   "strong": true,
+   "min_margin": 1.018,
+   "within_cap": true,
+   "usd": 116.86,
+   "body_g": 1013.3,
+   "rank": 1
+  },
+  {
+   "concept": "C",
+   "strong": true,
+   "min_margin": 1.029,
+   "within_cap": true,
+   "usd": 134.07,
+   "body_g": 1082.4,
+   "rank": 2
+  },
+  {
+   "concept": "D",
+   "strong": true,
+   "min_margin": 1.033,
+   "within_cap": false,
+   "usd": 160.42,
+   "body_g": 1012.4,
+   "rank": 3
+  },
+  {
+   "concept": "A",
+   "strong": false,
+   "min_margin": 0.324,
+   "within_cap": true,
+   "usd": 119.58,
+   "body_g": 1186.8,
+   "rank": 4
+  }
+ ],
+ "pick": "B"
+}
