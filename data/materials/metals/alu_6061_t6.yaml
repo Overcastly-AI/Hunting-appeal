@@ -20,14 +20,70 @@ properties:
   yield_strength_sbasis_mpa: 241
   ultimate_strength_sbasis_mpa: 290
   thermal_expansion_ppm_c: 23.6
+  # BL-082 S-N (2026-11-25). Unnotched mean curve, fully reversed: Sa = sn_fit_coeff_mpa / sqrt(N) + sn_fit_floor_mpa
+  # (Yahr, ORNL 1993 fit to MIL-HDBK-5D + Battelle + Alcoa + AFML data). Stresses are amplitudes (R -1) or maxima (R 0 / 0.1).
+  sn_fit_coeff_mpa: 14479
+  sn_fit_floor_mpa: 96.5
+  fatigue_strength_1e5_r_minus1_mpa: 142.3
+  fatigue_strength_1e6_r_minus1_mpa: 111.0
+  fatigue_strength_1e7_r_minus1_mpa: 101.1
+  fatigue_smax_1e5_r01_goodman_mpa: 197.7
+  fatigue_smax_1e6_r01_goodman_mpa: 168.0
+  fatigue_smax_1e7_r01_goodman_mpa: 157.5
+  fatigue_smax_1e5_r01_gerber_mpa: 240.0
+  fatigue_smax_1e6_r01_gerber_mpa: 208.2
+  fatigue_smax_1e7_r01_gerber_mpa: 194.2
+  fatigue_smax_1e5_r0_goodman_mpa: 190.9
+  fatigue_smax_1e6_r0_goodman_mpa: 160.5
+  fatigue_smax_1e7_r0_goodman_mpa: 149.9
+  goodman_ultimate_mpa: 290
+  cyclic_yield_strength_mpa: 262
+  asme_design_sa_1e6_zero_mean_mpa: 55.5
+  asme_design_sa_1e7_zero_mean_mpa: 50.55
+  asme_design_sa_1e6_max_mean_mpa: 26.68
+  asme_design_sa_1e7_max_mean_mpa: 21.79
+  # notch: Bennett & Weinberg 1954, 61S-T6, R. R. Moore, fillet r 0.635 mm, Kt 1.79
+  notch_kt_test_ratio: 1.79
+  notch_radius_test_mm: 0.635
+  notch_kf_1e6_ratio: 1.75
+  notch_kf_1e7_ratio: 1.79
+  notch_sensitivity_1e6_ratio: 0.95
+  notch_sensitivity_1e7_ratio: 1.0
+  notch_sensitivity_design_ratio: 1.0
+  anodize_fatigue_knockdown_ratio: 0.7
+  bolted_joint_preload_credit_ratio: 1.0
 confidence: handbook
 sources:
 - ASM Handbook Vol. 2, 6061-T6 typical properties
 - MMPDS-01 Table 3.6.2.0(b) (S-basis, sheet/extrusion)
 - 'MatWeb: Aluminum 6061-T6; 6061-T651'
+- 'BL-082 unnotched S-N: G. T. Yahr, Fatigue Design Curves for 6061-T6 Aluminum, ORNL (ASME PVP / Code Case basis), 1993, OSTI 10157028: best fit to fully reversed data (MIL-HDBK-5D 1984, Battelle Structural Alloys Handbook 1989, Alcoa Structural Handbook 1960, AFML-TDR-64-280, Brodrick & Spiering 1972) S = 2,100,000 / sqrt(N) + 14,000 psi (= 14479 / sqrt(N) + 96.5 MPa, checked against Table 1: 55.50 x 2 = 111.0 MPa at 1e6, 50.55 x 2 = 101.1 at 1e7); Gerber fits Al mean-stress data better than Goodman, Goodman is the conservative choice; cyclic yield 262 MPa; design curve = fit / 2 on stress or / 20 on life (Table 1); https://digital.library.unt.edu/ark:/67531/metadc1385799/m2/1/high_res_d/10157028.pdf (read 2026-11-25)'
+- 'BL-082 notch sensitivity: J. A. Bennett and J. G. Weinberg, Fatigue Notch Sensitivity of Some Aluminum Alloys, J. Res. NBS 52(5):235-245, 1954, RP2495, Table 4: 61S-T6 (= 6061-T6) R. R. Moore rotating beam, Kt 1.79 (0.025 in fillet): Kf 1.75 / 1.79, q 0.95 / 1.00 at 1e6 / 1e7 cycles (crack initiation basis); Kt 1.40 (1/16 in fillet) q 0.68 -> 0.48 (authors call it an unexplained anomaly); unnotched fatigue / tensile 0.50 at 1e6 (48 ksi material); https://nvlpubs.nist.gov/nistpubs/jres/52/jresv52n5p235_A1b.pdf (read 2026-11-25)'
+- 'BL-082 bolted joints: T. N. Chakherlou, R. H. Oskouei, J. Vogwell, Experimental and numerical investigation of the effect of clamping force on the fatigue behaviour of bolted plates, Eng. Failure Analysis 15(5):563-574 (2008), doi 10.1016/j.engfailanal.2007.04.009 (2024-T3 plates: clamping raises life, most at high cycle; no 6061 or thin-tube data found)'
+- 'BL-082 anodising: fatigue strength loss up to about 30 % for sulfuric anodising (Chalmers MSc thesis, https://odr.chalmers.se/bitstreams/4a8ebe79-bacf-4c28-90b7-905f4d81ff06/download ; finishing.com expert letters 153/54 and 444/19, possibly about 50 % on thin sheet anodised both sides) (secondary; no 6061-T6 thin-tube series found)'
 cost_usd:
   value: 8
   per: kg
 notes: 'Cheapest, most available tube/flat bar; weldable (weld HAZ drops to ~T4/O strength, do not weld load-path
   parts without re-heat-treat). Fatigue: R.R. Moore 5e8 cycles. Good for prototype stays and jigs; 7075/7001 preferred
-  for production stays by ~1.8x specific strength.'
+  for production stays by ~1.8x specific strength.
+
+  BL-082 FATIGUE (2026-11-25; fatigue_limit_mpa 96.5 is kept for the legacy checks that read it). (1) UNNOTCHED: mean
+  curve Sa = 14479 / sqrt(N) + 96.5 MPa, fully reversed (Yahr 1993 fit to the MIL-HDBK-5D / Battelle / Alcoa data, rotating
+  beam and axial). Mean-stress correction: modified Goodman on Su 290 MPa (the S-basis / ASTM drawn-tube minimum), sigma_a /
+  S_f + sigma_m / S_u = 1, so S_max(R) = 2 S_f S_u / ((1 - R) S_u + (1 + R) S_f). Gerber values are listed for reference
+  (Yahr: better fit for Al); the R 0.1 Gerber value at 1e5 is capped at yield 240. These are MEAN curves, not
+  allowables: no scatter factor is applied (Yahr design curve = fit / 2 on stress, listed as asme_design_*). Note the
+  BL-080 Basquin line (0.9 Su at 1e3 to 90.3 MPa at 5e8) gives S_a(1e5) = 180 MPa, 26 % above this fit (142.3): the BL-080
+  notched R 0 allowable 74.0 MPa at Kt 3 becomes 63.6 MPa (Goodman) or 79.0 MPa (Gerber). (2) NOTCHED: 6061-T6 is
+  fully notch-sensitive at small radii (q 0.95-1.00 at r 0.635 mm, 1e6-1e7). The D5.3 hole in the 1.24 mm wall has r
+  2.65 mm; Peterson q = 1 / (1 + a / r) only rises with r, so take q = 1, Kf = Kt (notch_sensitivity_design_ratio).
+  Kt comes from FEA or Peterson''s tube-with-transverse-hole charts; for a bolt-LOADED hole use the pin-loaded-hole Kt,
+  not the open-hole one. Apply Kf to both alternating and mean (nominal allowable = unnotched S_max / Kf) unless local
+  Kf S_max exceeds yield. (3) BOLTED / CLAMPED WITH PRELOAD: no cited 6061-T6 thin-tube data found. Clamping helps
+  in plates (Chakherlou 2008, 2024-T3), but a through-bolt across a 1.24 mm tube wall cannot hold a useful preload
+  (it crushes the tube unless a crush sleeve carries it, see alu_6061_t6_drawn_tube) and PAHT under the head creeps
+  (BL-076). ASSUMPTION BJ-NOCREDIT: bolted_joint_preload_credit_ratio 1.0 = no preload credit; check the joint as a
+  loaded hole at Kf = Kt. (4) ASSUMPTION ANODISE-FAT: sulfuric (Type II) anodised parts take 0.7 x fatigue strength
+  (cited up to 30 % loss; thin parts possibly more), so leave fatigue-critical holes and clamp zones bare or use thin
+  Type II (<= 10 um, no Type III). Settle with notched tube coupons at R 0.1 if B''s fatigue margin stays under 1.2.'

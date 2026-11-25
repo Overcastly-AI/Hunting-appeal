@@ -25,6 +25,48 @@ properties:
   wall_035_in_mm: 0.889
   wall_049_in_mm: 1.245
   wall_065_in_mm: 1.651
+  # BL-082 (2026-11-25). Fatigue S-N, notch q, mean-stress rule and anodise knockdown live in alu_6061_t6.
+  # Ring crush / ovalisation, thin-ring theory (Roark Table 9.2 case 1; DeRuntz & Hodge 1963), Sy 240 MPa, E 68.9 GPa.
+  # Line load w is N per mm of tube length, diametrally opposite (flat jaws / point saddles: the worst case).
+  od_1_in_mm: 25.4
+  od_3_4_in_mm: 19.05
+  diametral_first_yield_1x049_n_mm: 16.13
+  diametral_collapse_1x049_n_mm: 30.8
+  ovalisation_at_10_n_mm_1x049_mm: 0.237
+  hoop_yield_pressure_1x049_mpa: 24.74
+  ring_buckling_pressure_1x049_mpa: 21.17
+  diametral_first_yield_3_4x035_n_mm: 10.94
+  diametral_collapse_3_4x035_n_mm: 20.89
+  ovalisation_at_10_n_mm_3_4x035_mm: 0.276
+  hoop_yield_pressure_3_4x035_mpa: 23.5
+  ring_buckling_pressure_3_4x035_mpa: 18.14
+  # Friction against the tube (bare or anodised; static, design lower bounds). Only al-al has a cited range; the rest
+  # are ASSUMPTIONS (FRICTION-POLY) to be settled by CL-1. Counterface keys per contract §1.
+  alu_6061_dry_cof: 0.19
+  alu_6061_wet_cof: 0.15
+  alu_6061_dry_upper_cof: 0.41
+  alu_6061_lubricated_upper_cof: 0.12
+  paht_cf_dry_cof: 0.2
+  paht_cf_wet_cof: 0.15
+  tpu_95a_dry_cof: 0.3
+  tpu_95a_wet_cof: 0.15
+  epdm_tape_dry_cof: 0.4
+  epdm_tape_wet_cof: 0.2
+  # Speedy Metals list prices read 2026-11-25 (tube only; shipping quoted per order, not published)
+  price_1x049_12in_usd: 14.4
+  price_1x049_36in_usd: 28.8
+  price_1x049_48in_usd: 34.56
+  price_1x049_60in_usd: 39.27
+  price_1x049_72in_usd: 43.2
+  price_3_4x035_12in_usd: 8.32
+  price_3_4x035_36in_usd: 16.63
+  price_3_4x035_48in_usd: 19.96
+  price_3_4x035_72in_usd: 24.95
+  ups_additional_handling_min_usd: 30.0
+  ups_additional_handling_max_usd: 40.5
+  ups_additional_handling_length_mm: 1219
+  ship_ground_base_estimate_usd: 18.0
+  ship_72in_box_estimate_usd: 58.0
 confidence: datasheet
 sources:
 - 'Minimum tensile / yield 290 / 240 MPa (42 / 35 ksi), typical 310 / 270 MPa, elongation >= 8 % up to 6.35 mm, fatigue limit 97 MPa at 5e8 fully reversed (R. R. Moore), E 68.9 GPa, density 2.70 g/cm3: https://en.wikipedia.org/wiki/6061_aluminium_alloy (read 2026-11-25)'
@@ -32,6 +74,13 @@ sources:
 - 'Bearing yield 386 MPa (56 ksi) at e/D 2.0, Aluminum Association typical data as quoted in a search snippet of a 6061-T6 data sheet (secondary; AA typical, not a design allowable)'
 - 'Bend radius: target 3.5-4 D, 3 D is on the edge for 6061-T6: https://www.roguefab.com/aluminum-pipe-benders/ (vendor guidance)'
 - 'Prices: Speedy Metals 7/8 x .049 in 48 in USD 30.00 https://speedymetals.com/p-4568-78-od-x-0049-wall-tube-6061-t6-aluminum.aspx ; 7/8 x .065 in 48 in USD 38.88 https://speedymetals.com/p-4569-78-od-x-0065-wall-tube-6061-t6-aluminum.aspx ; 1 x .049 in 48 in USD 34.56 https://speedymetals.com/p-4586-1-od-x-049-wall-tube-6061-t6-aluminum.aspx ; 3/4 x .035 in 48 in USD 19.96 https://www.speedymetals.com/pc-4563-8371-34-od-x-0035-wall-tube-6061-t6-aluminum.aspx (all read 2026-11-25)'
+- 'BL-082 ring theory: Roark''s Formulas for Stress and Strain (Young & Budynas, 7th ed.), Table 9.2 case 1, thin ring under two diametral loads W: M at the load = W R / pi, dD along the load = -0.1488 W R^3 / (E I), across = +0.1366 W R^3 / (E I); per unit tube length I = t^3 / 12 (handbook, page not re-read 2026-11-25)'
+- 'BL-082 plastic collapse: R. A. DeRuntz Jr. and P. G. Hodge Jr., Crushing of a tube between rigid plates, J. Appl. Mech. 30(3):391-395, 1963: rigid-plastic 4-hinge collapse P0 = 4 Mp / R per unit length, Mp = Sy t^2 / 4 (initial collapse; geometry change then stiffens; handbook-level citation, paper not re-read)'
+- 'BL-082 external-pressure ring buckling p_cr = E / (4 (1 - nu^2)) (t / R)^3, long tube (Timoshenko & Gere, Theory of Elastic Stability, 2nd ed., 1961, sec. 7.3; Roark Table 15.2 case 19a)'
+- 'BL-082 Al-Al interface friction: VDI 2230 Part 1 (2015) Table A6 static friction in the joint interface, aluminium-aluminium 0.19-0.41 dry, 0.07-0.12 lubricated; steel-aluminium 0.07-0.28 dry (as reproduced in Bossard technical guideline F-045 and quoted by search; the standard itself not read): https://media.bossard.com/-/media/bossard-group/website/documents/technical-resources/en/f-045-en.pdf'
+- 'BL-082 polymer friction bases: Engineering ToolBox friction table, nylon-steel 0.4, nylon-nylon 0.15-0.25, Al-Al 1.05-1.35 clean dry / 0.3 lubricated, rubber on dry / wet concrete 0.6-0.85 / 0.45-0.75 (https://engineeringtoolbox.com/friction-coefficients-d_778.html, read 2026-11-25); A. Gadelmoula and S. A. Aldahash, Effect of Reinforcement with Short Carbon Fibers on the Friction and Wear Resistance of Additively Manufactured PA12, Polymers 15(15):3187 (2023), doi 10.3390/polym15153187: CF-PA12 kinetic COF about 25 % below neat PA12 against steel; M. Herr et al., Materials 16:131 (2023), doi 10.3390/ma16010131: soft PU on steel modelled at mu 0.5 (dry seal test). No cited Al / PA12-CF, Al / TPU or Al / EPDM pair value found.'
+- 'BL-082 prices: Speedy Metals length tables (no cut charge listed; UPS max 90 in; longer by phone): 1 x .049 in 12 / 36 / 48 / 60 / 72 in USD 14.40 / 28.80 / 34.56 / 39.27 / 43.20, https://speedymetals.com/p-4586-1-od-x-049-wall-tube-6061-t6-aluminum.aspx ; 3/4 x .035 in 12 / 36 / 48 / 60 / 72 in USD 8.32 / 16.63 / 19.96 / 22.68 / 24.95, https://www.speedymetals.com/pc-4563-8371-34-od-x-0035-wall-tube-6061-t6-aluminum.aspx (both read 2026-11-25). Shipping is not published (https://speedymetals.com/t-shipping.aspx: ask sales).'
+- 'BL-082 UPS Additional Handling (longest side > 48 in) USD 30.00-40.50 by zone before fuel, 2026, plus a peak surcharge USD 8.75-11.90 in the peak window (secondary, Easyship 2026 list: https://www.easyship.com/blog/ups-surcharges ; trigger also per https://parcelpath.com/shipping-companies/ups/additional-handling-ups/)'
 cost_usd:
   value: 24.6
   per: m
@@ -41,4 +90,45 @@ notes: 'Stock form chosen by BL-080 (docs/research/20261125_metal_stay_frames.md
   3/4 x .035 in 16.4, 7/8 x .049 in 24.6, 7/8 x .065 in 31.9, 1 x .049 in 28.3 USD/m. Fatigue limit is unnotched
   R. R. Moore; apply Kt (clamp edge 2, transverse hole 3 in BL-080) and Goodman. Do not anneal and re-bend at home:
   natural ageing only reaches T4. Anodise or wax against squeak; keep a UHMWPE bushing between the tube and the carbon
-  crown legs (galvanic).'
+  crown legs (galvanic).
+
+  BL-082 CLAMP AND CRUSH (2026-11-25). Ring formulas, per mm of tube length, R = mean radius (D - t) / 2: first yield
+  of a diametral line load w_y = pi Sy t^2 / (6 R) (M = w R / pi, sigma = 6 M / t^2); plastic collapse w_c = Sy t^2 / R;
+  ovalisation dD = 0.1488 x 12 w R^3 / (E t^3) (closes along the load, opens about 0.92 x that across). 1 x .049 in:
+  16.1 / 30.8 N/mm, 0.024 mm per N/mm; 3/4 x .035 in: 10.9 / 20.9 N/mm, 0.028 mm per N/mm. A conforming clamp
+  (full wrap, uniform pressure p) instead takes hoop compression p R / t: yield at about 24 MPa and elastic ring buckling
+  at about 18-21 MPa, far above any clamp pressure, so ovalisation under a clamp comes from the gaps and edges of a split
+  clamp, not the average pressure. Rule for BL-081: model each clamp half as a cos-distributed or edge-line load and
+  check against w_y over the effective contact length; keep the closing ovalisation below the crown-leg radial
+  clearance (>= 0.3 mm required). CRUSH AT THROUGH-BOLTS: 2.6 kN M5 preload across a bare tube over a 20 mm saddle is
+  130 N/mm, 4.2 x the 1 x .049 collapse load: the lower-node through-bolts need a crush sleeve (bore spacer, e.g. 5.5 x 7.9
+  mm Al or steel tube cut to the tube ID span) or a torque cap below w_y x saddle length (about 320 N preload
+  for 20 mm, useless for slip). ASSUMPTION CRUSH-SLEEVE.
+
+  BL-082 FRICTION (static design values; ASSUMPTION FRICTION-POLY except al-al dry). Al-al dry 0.19 is the VDI 2230
+  lower bound (range 0.19-0.41); wet al-al 0.15 is an ASSUMPTION between the lubricated band 0.07-0.12 and the dry
+  minimum: the concept-B upper tee slip margin 1.63 at mu 0.2 becomes 1.22 at 0.15. PAHT-CF 0.20 dry / 0.15 wet: nylon on
+  steel 0.4 kinetic less 25 % for carbon fibre (Gadelmoula 2023) is 0.30, taken at 2/3 for a design lower bound, wet
+  lower again (water lubricates PA). TPU 95A 0.30 / 0.15 and EPDM tape 0.40 / 0.20: soft elastomers grip dry (PU about
+  0.5 on steel) but a water film on smooth anodise can drop them to the polymer range. Same values for bare and
+  anodised 6061 (the polymer side governs; anodise is harder and slightly rougher). PAHT creeps under a clamp
+  (BL-076): no liner or printed part may sit in the preload path.
+
+  CL-1 CLAMP-SLIP COUPON (settles every COF above, about USD 20 beyond the booked spare tube): 5 x 120 mm offcuts of 1 in
+  x .049 tube (bare; repeat on anodised if anodising stays in the BOM); the production clamp (metal backers, liner as
+  built: none, TPU 95A 1 mm, EPDM tape) on each, M5 A2 torqued with a click wrench to the release value, torque mark.
+  Clamp the tube vertically in a vise, pull the clamp along the tube with a 50 kg digital hanging scale through a
+  webbing loop at the clamp centreline, slowly (about 5 mm/s); record the peak (static slip) and plateau (kinetic).
+  Conditions, n 5 each: dry 23 C; wet (soaked 1 h, tested dripping); wet after 24 h at 40 C under preload (liner creep and
+  preload relaxation, re-pull without re-torque); cold -15 C from the freezer. Report slip load per clamp and
+  mu_eff = F_slip / (sum of bolt preloads), preload from T = 0.2 F d (ASSUMPTION K 0.2, A2 dry). Accept: the minimum
+  wet slip load >= the factored bar-end force (1278 N in frame_concepts.md) with no liner extrusion and no tube
+  dent > 0.1 mm (feeler gauge across a straightedge).
+
+  BL-082 PRICES / SHIPPING. Speedy Metals list: 72 in 1 x .049 USD 43.20, 3/4 x .035 USD 24.95 (tube only). A 72 in piece
+  ships in a box over 48 in, which takes UPS Additional Handling USD 30-40.50 (+ peak 8.75-11.90): ESTIMATE about USD 58
+  delivered on top of the tube (ship_72in_box_estimate_usd = 18 base ASSUMPTION SHIP-BASE + 40 handling, before fuel),
+  so 72 in 1 x .049 + 12 in 3/4 x .035 lands at about USD 110 vs the USD 12 shipping booked in frame_concepts.md.
+  Concept B needs 540 + 540 + 220 + 220 mm = 1520 mm of 1 in tube: 2 x 36 in (each 540 + 220 = 760 mm + kerf, USD 57.60)
+  plus 12 in of 3/4 x .035 (USD 8.32) all ships under 48 in, about USD 84 delivered (ASSUMPTION SHIP-BASE 18), and is
+  the cheaper buy. Get the shipping quote at checkout before ordering.'
