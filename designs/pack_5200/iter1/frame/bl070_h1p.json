@@ -1,0 +1,1908 @@
+{
+ "ticket": "BL-070",
+ "date": "2026-11-25",
+ "material": "data/materials/polymers/ppa_cf_fdm.yaml",
+ "materials": {
+  "ppa_design": {
+   "rule": "layer",
+   "rho": 1250.0,
+   "E": 11800.0,
+   "s_xy": 168.0,
+   "fat": 0.3,
+   "rup": 0.55,
+   "usd_g": null,
+   "label": "PPA-CF design",
+   "s_z": 45.0,
+   "knock": 0.73
+  },
+  "ppa_tds": {
+   "rule": "layer",
+   "rho": 1250.0,
+   "E": 11800.0,
+   "s_xy": 168.0,
+   "fat": 0.3,
+   "rup": 0.55,
+   "usd_g": null,
+   "label": "PPA-CF TDS mean",
+   "s_z": 57.0,
+   "knock": 0.8
+  }
+ },
+ "e_buckle_mpa": 8525.5,
+ "h1_paht_record": {
+  "strength (min of 3 static bases)": 1.63,
+  "fatigue, static carry": 1.249,
+  "fatigue, cinch-cycled (R1)": 0.856,
+  "creep (static / cinch-cycled, min)": 1.825,
+  "z 234 joint strength": 1.978,
+  "z 234 joint fatigue": 1.05,
+  "US2 lug strength": 3.34,
+  "US2 lug fatigue": 1.5,
+  "US2 clevis joint strength (share 1.0)": 3.02,
+  "US2 clevis joint fatigue (share 1.0)": 1.36,
+  "hip mount strength": 2.149,
+  "hip mount fatigue": 1.208,
+  "hip mount creep": 2.58,
+  "lash pulls W1 / W2 (BL-068, p99)": 4.18,
+  "buckling, eigen, frame crown held": 1.336,
+  "buckling, eigen, set-down (foot + crown held)": 4.11,
+  "buckling, eigen, members (stay tops free)": 1.47
+ },
+ "h1_ppa": {
+  "stl": "designs/pack_5200/print/frame_h1/h1_assembled.stl",
+  "stl_md5": "7bd47cbdcc3b42c0f93d57ef041efc11",
+  "body_g": 1261.0,
+  "summary": {
+   "static_cinch": {
+    "strength": 1.707,
+    "fatigue": 1.482,
+    "creep": 4.346,
+    "buckling_record": 5.538,
+    "joint_strength": 1.888,
+    "joint_fatigue": 1.098
+   },
+   "cinch_cycled": {
+    "strength": 1.729,
+    "fatigue": 0.937,
+    "creep": 2.749,
+    "buckling_record": 5.376,
+    "joint_strength": 1.952,
+    "joint_fatigue": 1.039
+   }
+  },
+  "rows": [
+   {
+    "name": "strength (min of 3 static bases)",
+    "value": 1.707,
+    "goal": 1.0,
+    "basis": "FI99 layer rule, factored rev C sets",
+    "pass": true
+   },
+   {
+    "name": "fatigue, static carry",
+    "value": 1.482,
+    "goal": 1.0,
+    "basis": "1e5 x 1.6 g, ratio 0.30",
+    "pass": true
+   },
+   {
+    "name": "fatigue, cinch-cycled (R1)",
+    "value": 0.937,
+    "goal": 1.0,
+    "basis": "fine_sm8.cyc",
+    "pass": false
+   },
+   {
+    "name": "creep (static / cinch-cycled, min)",
+    "value": 2.749,
+    "goal": 1.0,
+    "basis": "8 h 40 C rupture ratio 0.55",
+    "pass": true
+   },
+   {
+    "name": "z 234 joint strength",
+    "value": 1.888,
+    "goal": 1.0,
+    "basis": "frame_h1.joint_check, PPA joint material",
+    "pass": true
+   },
+   {
+    "name": "z 234 joint fatigue",
+    "value": 1.039,
+    "goal": 1.0,
+    "basis": "boss bending + prying, plug shear-out (interlayer)",
+    "pass": true
+   },
+   {
+    "name": "US2 lug strength",
+    "value": 3.25,
+    "goal": 1.5,
+    "basis": "h1_rev5.lug_check",
+    "pass": true
+   },
+   {
+    "name": "US2 lug fatigue",
+    "value": 1.46,
+    "goal": 1.15,
+    "basis": "h1_rev5.lug_check",
+    "pass": true
+   },
+   {
+    "name": "US2 clevis joint strength (share 1.0)",
+    "value": 2.69,
+    "goal": 1.5,
+    "basis": "clevis_bl056.joint_rows",
+    "pass": true
+   },
+   {
+    "name": "US2 clevis joint fatigue (share 1.0)",
+    "value": 1.21,
+    "goal": 1.15,
+    "basis": "clevis_bl056.joint_rows",
+    "pass": true
+   },
+   {
+    "name": "hip mount strength (abs_z)",
+    "value": 1.878,
+    "goal": 1.5,
+    "basis": "HB-6 basis",
+    "pass": true
+   },
+   {
+    "name": "hip mount fatigue (abs_z)",
+    "value": 1.056,
+    "goal": 1.15,
+    "basis": "HB-6 basis",
+    "pass": false
+   },
+   {
+    "name": "hip mount creep (abs_z)",
+    "value": 3.099,
+    "goal": 1.5,
+    "basis": "HB-6 basis",
+    "pass": true
+   },
+   {
+    "name": "lash pulls W1 / W2 (BL-068, p99)",
+    "value": 3.76,
+    "goal": 1.0,
+    "basis": "bl066_cflite.lash_check x 2.0",
+    "pass": true
+   },
+   {
+    "name": "buckling, eigen, frame crown held",
+    "value": 7.028,
+    "goal": 1.0,
+    "basis": "voxel_buckling, E 8526 MPa, BL-065 supports",
+    "pass": true
+   },
+   {
+    "name": "buckling, eigen, set-down (foot + crown held)",
+    "value": 21.61,
+    "goal": 1.0,
+    "basis": "run_setdown",
+    "pass": true
+   },
+   {
+    "name": "buckling, eigen, members (stay tops free)",
+    "value": 7.812,
+    "goal": 1.0,
+    "basis": "member isolation",
+    "pass": true
+   }
+  ],
+  "hip_record_rule_rows": [
+   {
+    "name": "hip mount strength (record_rule)",
+    "value": 1.246,
+    "goal": 1.5,
+    "basis": "HB-6 basis",
+    "pass": false
+   },
+   {
+    "name": "hip mount fatigue (record_rule)",
+    "value": 0.701,
+    "goal": 1.15,
+    "basis": "HB-6 basis",
+    "pass": false
+   },
+   {
+    "name": "hip mount creep (record_rule)",
+    "value": 2.057,
+    "goal": 1.5,
+    "basis": "HB-6 basis",
+    "pass": true
+   }
+  ],
+  "fatigue_top1pct_term_share": {
+   "in_plane": 0.01710261569416499,
+   "layer_normal": 0.004024144869215292,
+   "shear_xy": 0.9175050301810865,
+   "shear_yz": 0.0613682092555332
+  },
+  "top_regions_cyc": {
+   "lumbar struts / pan": {
+    "n_top": 577,
+    "share_top": 0.6022964509394572,
+    "fatigue_p99_region": 0.6263309795443297,
+    "fatigue_peak_region": 0.2598441877793138
+   },
+   "hip-pivot boss": {
+    "n_top": 320,
+    "share_top": 0.33402922755741127,
+    "fatigue_p99_region": 0.48961398040668697,
+    "fatigue_peak_region": 0.35191937703407533
+   },
+   "stay foot": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 559.4667307724843,
+    "fatigue_peak_region": 331.736253734716
+   },
+   "stay below the sleeve": {
+    "n_top": 36,
+    "share_top": 0.037578288100208766,
+    "fatigue_p99_region": 1.5024933932386846,
+    "fatigue_peak_region": 0.44793580110029757
+   },
+   "stay sleeve z 160-240": {
+    "n_top": 23,
+    "share_top": 0.024008350730688934,
+    "fatigue_p99_region": 1.242330098458408,
+    "fatigue_peak_region": 0.621559733084077
+   },
+   "stay sleeve z 240-470": {
+    "n_top": 1,
+    "share_top": 0.0010438413361169101,
+    "fatigue_p99_region": 1.5333533232986238,
+    "fatigue_peak_region": 0.8090903895839789
+   },
+   "stay top z 470-544": {
+    "n_top": 1,
+    "share_top": 0.0010438413361169101,
+    "fatigue_p99_region": 1.5668629166192656,
+    "fatigue_peak_region": 0.8975306685280877
+   },
+   "inboard branch": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 3.5025099653313787,
+    "fatigue_peak_region": 1.4977222598612017
+   },
+   "mid bar / upper bar": {
+    "n_top": 0,
+    "share_top": 0.0,
+    "fatigue_p99_region": 2.2318361653581467,
+    "fatigue_peak_region": 0.9854714921615008
+   }
+  },
+  "orientation": {
+   "fine_sm8": {
+    "y/y (as printed)": {
+     "strength": 1.72868062727494,
+     "fatigue": 1.4817020234171552,
+     "creep": 4.346325935356989
+    },
+    "x/y": {
+     "strength": 1.2261846468309794,
+     "fatigue": 0.8881789466020781,
+     "creep": 2.605324910032763
+    },
+    "z/y": {
+     "strength": 1.2175335598062564,
+     "fatigue": 0.7729215972960363,
+     "creep": 2.2672366854017065
+    },
+    "y/x": {
+     "strength": 1.0044512532775982,
+     "fatigue": 1.1576460819853547,
+     "creep": 3.395761840490374
+    },
+    "y/z": {
+     "strength": 1.1884608244843402,
+     "fatigue": 0.9015008557538424,
+     "creep": 2.6444025102112714
+    }
+   },
+   "fine": {
+    "y/y (as printed)": {
+     "strength": 1.72868062727494,
+     "fatigue": 1.4978792931897642,
+     "creep": 4.393779260023309
+    },
+    "x/y": {
+     "strength": 1.2219154358581634,
+     "fatigue": 0.8969875524057874,
+     "creep": 2.631163487056977
+    },
+    "z/y": {
+     "strength": 1.2175335598062564,
+     "fatigue": 0.7729215972960363,
+     "creep": 2.2672366854017065
+    },
+    "y/x": {
+     "strength": 1.0044512532775982,
+     "fatigue": 1.1576460819853547,
+     "creep": 3.395761840490374
+    },
+    "y/z": {
+     "strength": 1.1884608244843402,
+     "fatigue": 0.9015008557538424,
+     "creep": 2.6444025102112714
+    }
+   },
+   "beam": {
+    "y/y (as printed)": {
+     "strength": 1.7069646858750538,
+     "fatigue": 2.009870064676534,
+     "creep": 5.895618856384501
+    },
+    "x/y": {
+     "strength": 1.6781081761852767,
+     "fatigue": 1.475203094243869,
+     "creep": 4.3272624097820165
+    },
+    "z/y": {
+     "strength": 1.3050828169375253,
+     "fatigue": 0.7341091312548735,
+     "creep": 2.153386785014296
+    },
+    "y/x": {
+     "strength": 0.9292261703177829,
+     "fatigue": 1.560330836901256,
+     "creep": 4.576970454910352
+    },
+    "y/z": {
+     "strength": 1.0778089451323318,
+     "fatigue": 0.6062675119079795,
+     "creep": 1.77838470159674
+    }
+   },
+   "fine_sm8.cyc": {
+    "y/y (as printed)": {
+     "strength": 1.72868062727494,
+     "fatigue": 0.9372174648059725,
+     "creep": 2.7491712300975197
+    },
+    "x/y": {
+     "strength": 1.2261846468309794,
+     "fatigue": 0.5274882051585562,
+     "creep": 1.547298735131765
+    },
+    "z/y": {
+     "strength": 1.2324956455798048,
+     "fatigue": 0.6091039167704594,
+     "creep": 1.7867048225266813
+    },
+    "y/x": {
+     "strength": 1.0044512532775982,
+     "fatigue": 0.6671869657418681,
+     "creep": 1.9570817661761466
+    },
+    "y/z": {
+     "strength": 1.1884608244843402,
+     "fatigue": 0.6921985549382791,
+     "creep": 2.030449094485619
+    }
+   }
+  },
+  "joint_cyc": {
+   "washer bearing (XY) at 1.6 g": {
+    "margin": 2.262,
+    "set": "S_meat@a_M_fine_sm8_cyc_20.5:static_carry|20.5 L"
+   },
+   "plug shear-out (interlayer) at 1.6 g": {
+    "margin": 1.506,
+    "set": "S_meat@a_M_fine_sm8_cyc_20.5:static_carry|20.5 L"
+   },
+   "fitted-bolt hole bearing (shear) at 1.6 g": {
+    "margin": 8.045,
+    "set": "S_meat@a_L_fine_sm8_cyc_23:static_carry|23 R"
+   },
+   "bolt thread Ti at 1.6 g (0.25 UTS)": {
+    "margin": 2.108,
+    "set": "S_meat@a_M_fine_sm8_cyc_20.5:static_carry|20.5 L"
+   },
+   "boss bending + prying at 1.6 g": {
+    "margin": 1.039,
+    "set": "S_meat@a_M_fine_sm8_cyc_20.5:static_carry|20.5 L"
+   }
+  },
+  "eigen": {
+   "fine_sm8": {
+    "frame_crown_held": 7.0282216668844875,
+    "frame_lead": "stay lower L",
+    "frame_set": "S_meat@a_L_fine_sm8_23:side_hill_torsion|23",
+    "setdown_sets_crown_held_foot_free": 2.7649232009530107,
+    "record_model_free": 0.839625086089455,
+    "members_unbraced_min": 7.811870242104899,
+    "members_braced_min": 33.68953333272062,
+    "seconds": 820,
+    "setdown_foot_held_top_free": 5.1509448853759965,
+    "setdown_foot_and_crown_held": 21.609995799422784
+   },
+   "E_buckle_mpa": 8525.5,
+   "layer_normal_bound_factor": 0.364
+  },
+  "us2_clevis": {
+   "share_0.6": {
+    "all_rows_min": {
+     "strength": 4.48,
+     "fatigue": 2.01
+    },
+    "worst_strength": {
+     "load": "cradle_lane_b50",
+     "sf": 4.48,
+     "check": "hole_bearing"
+    },
+    "worst_fatigue": {
+     "load": "cradle_lane_b50",
+     "fatigue": 2.01,
+     "check": "hole_paht"
+    },
+    "capacities_n": {
+     "washer_bearing_n": 4453.9,
+     "plug_shear_out_n": 5124.6,
+     "bolt_tension_n": 8896.3,
+     "bolt_fatigue_n": 3177.2,
+     "hole_bearing_n": 2178.0,
+     "bolt_shear_n": 7193.9,
+     "contact_mpa": 122.6
+    }
+   },
+   "share_1": {
+    "all_rows_min": {
+     "strength": 2.69,
+     "fatigue": 1.21
+    },
+    "worst_strength": {
+     "load": "cradle_lane_b50",
+     "sf": 2.69,
+     "check": "hole_bearing"
+    },
+    "worst_fatigue": {
+     "load": "cradle_lane_b50",
+     "fatigue": 1.21,
+     "check": "hole_paht"
+    },
+    "capacities_n": {
+     "washer_bearing_n": 4453.9,
+     "plug_shear_out_n": 5124.6,
+     "bolt_tension_n": 8896.3,
+     "bolt_fatigue_n": 3177.2,
+     "hole_bearing_n": 2178.0,
+     "bolt_shear_n": 7193.9,
+     "contact_mpa": 122.6
+    }
+   }
+  },
+  "hip_inserts": {
+   "pattern": {
+    "n": 8,
+    "ring_r": 19.0,
+    "boss_d": 50.0,
+    "positions_xz": [
+     [
+      14.12,
+      107.29
+     ],
+     [
+      18.44,
+      115.4
+     ],
+     [
+      18.44,
+      124.6
+     ],
+     [
+      14.12,
+      132.71
+     ],
+     [
+      -14.12,
+      107.29
+     ],
+     [
+      -18.44,
+      115.4
+     ],
+     [
+      -18.44,
+      124.6
+     ],
+     [
+      -14.12,
+      132.71
+     ]
+    ]
+   },
+   "record_rule": {
+    "capacity": {
+     "static_n": 297.2,
+     "fatigue_n": 89.2,
+     "sustained_n": 163.5,
+     "z_ratio_applied": true,
+     "basis": "1200 N (insert record) x hot 0.73 x layer-normal 0.339 (47 / 88 MPa)"
+    },
+    "min_sf": {
+     "strength": 1.246,
+     "fatigue": 0.701,
+     "creep": 2.057
+    },
+    "pass": false
+   },
+   "abs_z": {
+    "capacity": {
+     "static_n": 448.0,
+     "fatigue_n": 134.4,
+     "sustained_n": 246.4,
+     "z_ratio_applied": true,
+     "basis": "1200 N (insert record) x hot 1.0 x layer-normal 0.373 (47 / 88 MPa)"
+    },
+    "min_sf": {
+     "strength": 1.878,
+     "fatigue": 1.056,
+     "creep": 3.099
+    },
+    "pass": false
+   },
+   "hb6_ppa_min_static_n": 488.0,
+   "hb6_ppa_min_static_basis": "fatigue goal 1.15 x T_walk 127.3 N / fatigue ratio 0.3",
+   "through_bolt": {
+    "nut_seat_depth_mm": 13.0,
+    "bearing_ring_mm2": 54.8,
+    "bearing_n": 1799.6,
+    "rows": {
+     "C2|H_pin": {
+      "T_max_n": 194.7,
+      "kind": "strength",
+      "sf": 9.24,
+      "goal": 1.5
+     },
+     "C1|H_pin": {
+      "T_max_n": 129.8,
+      "kind": "strength",
+      "sf": 13.86,
+      "goal": 1.5
+     },
+     "walk|H_pin": {
+      "T_max_n": 103.8,
+      "kind": "fatigue",
+      "sf": 5.2,
+      "goal": 1.15
+     },
+     "carry|H_pin": {
+      "T_max_n": 64.9,
+      "kind": "creep",
+      "sf": 15.25,
+      "goal": 1.5
+     },
+     "C2|H_frame": {
+      "T_max_n": 238.6,
+      "kind": "strength",
+      "sf": 7.54,
+      "goal": 1.5
+     },
+     "C1|H_frame": {
+      "T_max_n": 159.1,
+      "kind": "strength",
+      "sf": 11.31,
+      "goal": 1.5
+     },
+     "walk|H_frame": {
+      "T_max_n": 127.3,
+      "kind": "fatigue",
+      "sf": 4.24,
+      "goal": 1.15
+     },
+     "carry|H_frame": {
+      "T_max_n": 79.5,
+      "kind": "creep",
+      "sf": 12.45,
+      "goal": 1.5
+     }
+    },
+    "min_sf": {
+     "strength": 7.54,
+     "fatigue": 4.24,
+     "creep": 12.45
+    },
+    "pass": true,
+    "hardware": "8 x Ti gr5 M5 x 20 DIN 7984 + 8 x A2 M5 DIN 934 nuts (Loctite 243) replace 8 x M5 x 9.5 brass inserts + 8 x M5 x 12"
+   }
+  },
+  "lash": {
+   "points": {
+    "load_wing_lash_z250_R": {
+     "nodes": 222,
+     "F_factored_n": [
+      447.8,
+      43.6,
+      0.0
+     ]
+    },
+    "load_wing_lash_z250_L": {
+     "nodes": 225,
+     "F_factored_n": [
+      -447.8,
+      43.6,
+      -0.0
+     ]
+    },
+    "load_wing_lash_z420_R": {
+     "nodes": 220,
+     "F_factored_n": [
+      447.8,
+      43.6,
+      0.0
+     ]
+    },
+    "load_wing_lash_z420_L": {
+     "nodes": 223,
+     "F_factored_n": [
+      -447.8,
+      43.6,
+      -0.0
+     ]
+    }
+   },
+   "fi_p99": 0.2658,
+   "fi_max": 0.828,
+   "margin_p99": 3.76,
+   "margin_max": 1.21,
+   "max_at_mm": [
+    39.0,
+    -27.0,
+    109.0
+   ]
+  },
+  "print": {
+   "lower": {
+    "plate_contact_mm2": 1705,
+    "plate_contact_voxel_mm2": 1707.0,
+    "supported_mm2": 12693.0,
+    "supported_by_region_mm2": {
+     "stay": 2212.0,
+     "lug": 7143.0,
+     "clevis": 1417.0,
+     "other": 1921.0
+    },
+    "max_support_column_mm": 57.0,
+    "part_g_ppa": 583.2,
+    "support_g_ppa_est": 67.1,
+    "support_g_ppa_high": 129.5,
+    "filament_g_high_with_waste": 770.0,
+    "spools": 1.03,
+    "needs_spool_swap": true,
+    "print_h_est": 19.5,
+    "extents_mm": [
+     321.9,
+     300.4,
+     76.7
+    ],
+    "fits_h2s_340x320x340": true
+   },
+   "upper": {
+    "plate_contact_mm2": 163,
+    "plate_contact_voxel_mm2": 927.0,
+    "supported_mm2": 17699.0,
+    "supported_by_region_mm2": {
+     "stay": 8812.0,
+     "lug": 3034.0,
+     "clevis": 0.0,
+     "other": 5853.0
+    },
+    "max_support_column_mm": 43.0,
+    "part_g_ppa": 640.8,
+    "support_g_ppa_est": 65.9,
+    "support_g_ppa_high": 122.9,
+    "filament_g_high_with_waste": 825.0,
+    "spools": 1.1,
+    "needs_spool_swap": true,
+    "print_h_est": 21.2,
+    "extents_mm": [
+     309.4,
+     280.1,
+     64.4
+    ],
+    "fits_h2s_340x320x340": true
+   }
+  },
+  "paht_control_cyc": {
+   "strength": 1.691890158947479,
+   "fatigue": 0.8556609694053905,
+   "creep": 1.8254100680648333
+  }
+ },
+ "h1p": {
+  "checked_on": "exported STL re-rastered on the H1 2 mm grid (bl058_frame.body_stl rule)",
+  "stl_dir": "designs/pack_5200/iter1/frame/h1p",
+  "final_iter": "g1",
+  "steps": [
+   {
+    "name": "b1",
+    "prev": "h1",
+    "u_lo": 0.45,
+    "u_hi": 0.9,
+    "grow": true,
+    "n_thin": 2,
+    "removed": 3309,
+    "added": 4494,
+    "body_g_ppa": 1272.8,
+    "geometry": "voxel model",
+    "cyc": 1.106,
+    "static_fatigue": 1.786,
+    "strength": 1.963,
+    "joint_fatigue": 1.063
+   },
+   {
+    "name": "b2",
+    "prev": "b1",
+    "u_lo": 0.55,
+    "u_hi": 99.0,
+    "grow": false,
+    "n_thin": 2,
+    "removed": 2409,
+    "added": 0,
+    "body_g_ppa": 1248.5,
+    "geometry": "voxel model",
+    "cyc": 1.076,
+    "static_fatigue": 1.688,
+    "strength": 1.847,
+    "joint_fatigue": 1.071
+   },
+   {
+    "name": "b3",
+    "prev": "b2",
+    "u_lo": 0.55,
+    "u_hi": 99.0,
+    "grow": false,
+    "n_thin": 2,
+    "removed": 579,
+    "added": 0,
+    "body_g_ppa": 1242.7,
+    "geometry": "voxel model",
+    "cyc": 1.069,
+    "static_fatigue": 1.672,
+    "strength": 1.831,
+    "joint_fatigue": 1.072
+   },
+   {
+    "name": "b4",
+    "prev": "b3",
+    "u_lo": 0.55,
+    "u_hi": 99.0,
+    "grow": false,
+    "n_thin": 2,
+    "removed": 174,
+    "added": 0,
+    "body_g_ppa": 1241.0,
+    "geometry": "voxel model",
+    "cyc": 1.068,
+    "static_fatigue": 1.671,
+    "strength": 1.829,
+    "joint_fatigue": 1.071
+   },
+   {
+    "name": "c1",
+    "prev": "b4",
+    "u_lo": 0.7,
+    "u_hi": 99.0,
+    "grow": false,
+    "n_thin": 2,
+    "removed": 797,
+    "added": 0,
+    "body_g_ppa": 1233.0,
+    "geometry": "voxel model",
+    "cyc": 1.06,
+    "static_fatigue": 1.647,
+    "strength": 1.773,
+    "joint_fatigue": 1.07
+   },
+   {
+    "name": "c2",
+    "prev": "c1",
+    "u_lo": 0.8,
+    "u_hi": 99.0,
+    "grow": false,
+    "n_thin": 2,
+    "removed": 470,
+    "added": 0,
+    "body_g_ppa": 1228.3,
+    "geometry": "voxel model",
+    "cyc": 1.041,
+    "static_fatigue": 1.621,
+    "strength": 1.736,
+    "joint_fatigue": 1.07
+   },
+   {
+    "name": "c3",
+    "prev": "c2",
+    "u_lo": 0.9,
+    "u_hi": 99.0,
+    "grow": false,
+    "n_thin": 2,
+    "removed": 283,
+    "added": 0,
+    "body_g_ppa": 1225.5,
+    "geometry": "voxel model",
+    "cyc": 1.035,
+    "static_fatigue": 1.611,
+    "strength": 1.713,
+    "joint_fatigue": 1.069
+   },
+   {
+    "name": "e1",
+    "prev": "h1p_stl",
+    "u_lo": 0.6,
+    "u_hi": 0.9,
+    "grow": true,
+    "n_thin": 1,
+    "removed": 176,
+    "added": 4753,
+    "body_g_ppa": 1294.6,
+    "design_not_in_export": 2430,
+    "export_not_in_design": 1700,
+    "geometry": "export re-raster",
+    "cyc": 1.152,
+    "static_fatigue": 2.023,
+    "strength": 2.041,
+    "joint_fatigue": 1.046
+   },
+   {
+    "name": "f1",
+    "prev": "h1p_stl",
+    "u_lo": 0.6,
+    "u_hi": 1.1,
+    "grow": true,
+    "n_thin": 1,
+    "grow_bases": [
+     "fine_sm8.cyc"
+    ],
+    "pinches_fused": [
+     {
+      "at_mm": [
+       -114.0,
+       8.9,
+       113.0
+      ],
+      "voxels": 20,
+      "why": "h1p/h1_assembled.stl: not watertight after an STL round trip"
+     }
+    ],
+    "removed": 176,
+    "added": 2464,
+    "body_g_ppa": 1275.1,
+    "design_not_in_export": 2013,
+    "export_not_in_design": 1568,
+    "geometry": "export re-raster",
+    "cyc": 1.098,
+    "static_fatigue": 1.903,
+    "strength": 1.794,
+    "joint_fatigue": 1.05
+   },
+   {
+    "name": "h1p_stl",
+    "prev": "c3 (exported as is)",
+    "u_lo": 0.0,
+    "u_hi": 99.0,
+    "grow": false,
+    "n_thin": 0,
+    "removed": 0,
+    "added": 0,
+    "body_g_ppa": 1256.2,
+    "design_not_in_export": 3108,
+    "export_not_in_design": 6175,
+    "geometry": "export re-raster",
+    "cyc": 0.987,
+    "static_fatigue": 1.677,
+    "strength": 1.687,
+    "joint_fatigue": 1.058
+   },
+   {
+    "name": "g1",
+    "prev": "h1p_stl",
+    "u_lo": 0.7,
+    "u_hi": 1.3,
+    "grow": true,
+    "n_thin": 1,
+    "grow_bases": [
+     "fine_sm8.cyc"
+    ],
+    "pinches_fused": [
+     {
+      "at_mm": [
+       -114.0,
+       8.9,
+       113.0
+      ],
+      "voxels": 20,
+      "why": "h1p/h1_assembled.stl: not watertight after an STL round trip"
+     }
+    ],
+    "removed": 241,
+    "added": 1777,
+    "body_g_ppa": 1268.1,
+    "design_not_in_export": 1927,
+    "export_not_in_design": 1569,
+    "geometry": "export re-raster",
+    "cyc": 1.076,
+    "static_fatigue": 1.866,
+    "strength": 1.699,
+    "joint_fatigue": 1.051
+   }
+  ],
+  "body_g": 1268.1,
+  "delta_vs_paht_h1_g": 198.8,
+  "delta_vs_h1_ppa_g": 7.1,
+  "summary": {
+   "static_cinch": {
+    "strength": 1.699,
+    "fatigue": 1.866,
+    "creep": 5.473,
+    "buckling_record": 2.711,
+    "joint_strength": 1.646,
+    "joint_fatigue": 1.051
+   },
+   "cinch_cycled": {
+    "strength": 1.699,
+    "fatigue": 1.076,
+    "creep": 3.155,
+    "buckling_record": 2.716,
+    "joint_strength": 1.839,
+    "joint_fatigue": 1.109
+   }
+  },
+  "rows": [
+   {
+    "name": "strength (min of 3 static bases)",
+    "value": 1.699,
+    "goal": 1.0,
+    "basis": "FI99 layer rule, factored rev C sets",
+    "pass": true
+   },
+   {
+    "name": "fatigue, static carry",
+    "value": 1.866,
+    "goal": 1.0,
+    "basis": "1e5 x 1.6 g, ratio 0.30",
+    "pass": true
+   },
+   {
+    "name": "fatigue, cinch-cycled (R1)",
+    "value": 1.076,
+    "goal": 1.0,
+    "basis": "fine_sm8.cyc",
+    "pass": true
+   },
+   {
+    "name": "creep (static / cinch-cycled, min)",
+    "value": 3.155,
+    "goal": 1.0,
+    "basis": "8 h 40 C rupture ratio 0.55",
+    "pass": true
+   },
+   {
+    "name": "z 234 joint strength",
+    "value": 1.646,
+    "goal": 1.0,
+    "basis": "frame_h1.joint_check, PPA joint material",
+    "pass": true
+   },
+   {
+    "name": "z 234 joint fatigue",
+    "value": 1.051,
+    "goal": 1.0,
+    "basis": "boss bending + prying, plug shear-out (interlayer)",
+    "pass": true
+   },
+   {
+    "name": "US2 lug strength",
+    "value": 3.18,
+    "goal": 1.5,
+    "basis": "h1_rev5.lug_check",
+    "pass": true
+   },
+   {
+    "name": "US2 lug fatigue",
+    "value": 1.43,
+    "goal": 1.15,
+    "basis": "h1_rev5.lug_check",
+    "pass": true
+   },
+   {
+    "name": "US2 clevis joint strength (share 1.0)",
+    "value": 2.69,
+    "goal": 1.5,
+    "basis": "clevis_bl056.joint_rows",
+    "pass": true
+   },
+   {
+    "name": "US2 clevis joint fatigue (share 1.0)",
+    "value": 1.21,
+    "goal": 1.15,
+    "basis": "clevis_bl056.joint_rows",
+    "pass": true
+   },
+   {
+    "name": "hip mount strength (through_bolt)",
+    "value": 7.54,
+    "goal": 1.5,
+    "basis": "HB-6 basis",
+    "pass": true
+   },
+   {
+    "name": "hip mount fatigue (through_bolt)",
+    "value": 4.24,
+    "goal": 1.15,
+    "basis": "HB-6 basis",
+    "pass": true
+   },
+   {
+    "name": "hip mount creep (through_bolt)",
+    "value": 12.45,
+    "goal": 1.5,
+    "basis": "HB-6 basis",
+    "pass": true
+   },
+   {
+    "name": "lash pulls W1 / W2 (BL-068, p99)",
+    "value": 5.15,
+    "goal": 1.0,
+    "basis": "bl066_cflite.lash_check x 2.0",
+    "pass": true
+   },
+   {
+    "name": "buckling, eigen, frame crown held",
+    "value": 3.72,
+    "goal": 1.0,
+    "basis": "voxel_buckling, E 8526 MPa, BL-065 supports",
+    "pass": true
+   },
+   {
+    "name": "buckling, eigen, set-down (foot + crown held)",
+    "value": 20.629,
+    "goal": 1.0,
+    "basis": "run_setdown",
+    "pass": true
+   },
+   {
+    "name": "buckling, eigen, members (stay tops free)",
+    "value": 6.48,
+    "goal": 1.0,
+    "basis": "member isolation",
+    "pass": true
+   }
+  ],
+  "rows_by_name": {
+   "strength (min of 3 static bases)": {
+    "name": "strength (min of 3 static bases)",
+    "value": 1.699,
+    "goal": 1.0,
+    "basis": "FI99 layer rule, factored rev C sets",
+    "pass": true
+   },
+   "fatigue, static carry": {
+    "name": "fatigue, static carry",
+    "value": 1.866,
+    "goal": 1.0,
+    "basis": "1e5 x 1.6 g, ratio 0.30",
+    "pass": true
+   },
+   "fatigue, cinch-cycled (R1)": {
+    "name": "fatigue, cinch-cycled (R1)",
+    "value": 1.076,
+    "goal": 1.0,
+    "basis": "fine_sm8.cyc",
+    "pass": true
+   },
+   "creep (static / cinch-cycled, min)": {
+    "name": "creep (static / cinch-cycled, min)",
+    "value": 3.155,
+    "goal": 1.0,
+    "basis": "8 h 40 C rupture ratio 0.55",
+    "pass": true
+   },
+   "z 234 joint strength": {
+    "name": "z 234 joint strength",
+    "value": 1.646,
+    "goal": 1.0,
+    "basis": "frame_h1.joint_check, PPA joint material",
+    "pass": true
+   },
+   "z 234 joint fatigue": {
+    "name": "z 234 joint fatigue",
+    "value": 1.051,
+    "goal": 1.0,
+    "basis": "boss bending + prying, plug shear-out (interlayer)",
+    "pass": true
+   },
+   "US2 lug strength": {
+    "name": "US2 lug strength",
+    "value": 3.18,
+    "goal": 1.5,
+    "basis": "h1_rev5.lug_check",
+    "pass": true
+   },
+   "US2 lug fatigue": {
+    "name": "US2 lug fatigue",
+    "value": 1.43,
+    "goal": 1.15,
+    "basis": "h1_rev5.lug_check",
+    "pass": true
+   },
+   "US2 clevis joint strength (share 1.0)": {
+    "name": "US2 clevis joint strength (share 1.0)",
+    "value": 2.69,
+    "goal": 1.5,
+    "basis": "clevis_bl056.joint_rows",
+    "pass": true
+   },
+   "US2 clevis joint fatigue (share 1.0)": {
+    "name": "US2 clevis joint fatigue (share 1.0)",
+    "value": 1.21,
+    "goal": 1.15,
+    "basis": "clevis_bl056.joint_rows",
+    "pass": true
+   },
+   "hip mount strength (through_bolt)": {
+    "name": "hip mount strength (through_bolt)",
+    "value": 7.54,
+    "goal": 1.5,
+    "basis": "HB-6 basis",
+    "pass": true
+   },
+   "hip mount fatigue (through_bolt)": {
+    "name": "hip mount fatigue (through_bolt)",
+    "value": 4.24,
+    "goal": 1.15,
+    "basis": "HB-6 basis",
+    "pass": true
+   },
+   "hip mount creep (through_bolt)": {
+    "name": "hip mount creep (through_bolt)",
+    "value": 12.45,
+    "goal": 1.5,
+    "basis": "HB-6 basis",
+    "pass": true
+   },
+   "lash pulls W1 / W2 (BL-068, p99)": {
+    "name": "lash pulls W1 / W2 (BL-068, p99)",
+    "value": 5.15,
+    "goal": 1.0,
+    "basis": "bl066_cflite.lash_check x 2.0",
+    "pass": true
+   },
+   "buckling, eigen, frame crown held": {
+    "name": "buckling, eigen, frame crown held",
+    "value": 3.72,
+    "goal": 1.0,
+    "basis": "voxel_buckling, E 8526 MPa, BL-065 supports",
+    "pass": true
+   },
+   "buckling, eigen, set-down (foot + crown held)": {
+    "name": "buckling, eigen, set-down (foot + crown held)",
+    "value": 20.629,
+    "goal": 1.0,
+    "basis": "run_setdown",
+    "pass": true
+   },
+   "buckling, eigen, members (stay tops free)": {
+    "name": "buckling, eigen, members (stay tops free)",
+    "value": 6.48,
+    "goal": 1.0,
+    "basis": "member isolation",
+    "pass": true
+   }
+  },
+  "fatigue_top1pct_term_share": {
+   "in_plane": 0.03303303303303303,
+   "layer_normal": 0.03803803803803804,
+   "shear_xy": 0.8348348348348348,
+   "shear_yz": 0.0940940940940941
+  },
+  "orientation": {
+   "fine_sm8": {
+    "y/y (as printed)": {
+     "strength": 1.6994306356480737,
+     "fatigue": 1.8658153792375907,
+     "creep": 5.473058445763601
+    },
+    "x/y": {
+     "strength": 1.5557848032882815,
+     "fatigue": 1.0889825564260298,
+     "creep": 3.1943488321830213
+    },
+    "z/y": {
+     "strength": 1.3939269358829702,
+     "fatigue": 0.9040695426502178,
+     "creep": 2.6519373251073057
+    },
+    "y/x": {
+     "strength": 0.9552141166380154,
+     "fatigue": 1.3180845214085428,
+     "creep": 3.866381262798393
+    },
+    "y/z": {
+     "strength": 1.1776408603751063,
+     "fatigue": 0.9373807278653115,
+     "creep": 2.7496501350715805
+    }
+   },
+   "fine": {
+    "y/y (as printed)": {
+     "strength": 1.6994306356480737,
+     "fatigue": 1.8658153792375907,
+     "creep": 5.473058445763601
+    },
+    "x/y": {
+     "strength": 1.5614299514825216,
+     "fatigue": 1.1010251157065307,
+     "creep": 3.229673672739157
+    },
+    "z/y": {
+     "strength": 1.3939269358829702,
+     "fatigue": 0.9040695426502178,
+     "creep": 2.6519373251073057
+    },
+    "y/x": {
+     "strength": 0.9552141166380154,
+     "fatigue": 1.3180845214085428,
+     "creep": 3.866381262798393
+    },
+    "y/z": {
+     "strength": 1.1776408603751063,
+     "fatigue": 0.9373807278653115,
+     "creep": 2.7496501350715805
+    }
+   },
+   "beam": {
+    "y/y (as printed)": {
+     "strength": 1.721640522192195,
+     "fatigue": 1.979197117226287,
+     "creep": 5.80564487719711
+    },
+    "x/y": {
+     "strength": 1.7153714861541713,
+     "fatigue": 1.6573933621431935,
+     "creep": 4.861687195620036
+    },
+    "z/y": {
+     "strength": 1.3620238391258284,
+     "fatigue": 0.7661383792142771,
+     "creep": 2.2473392456952133
+    },
+    "y/x": {
+     "strength": 0.8933597658059113,
+     "fatigue": 1.5099769224073738,
+     "creep": 4.42926563906163
+    },
+    "y/z": {
+     "strength": 1.0719373196543307,
+     "fatigue": 0.602964738740396,
+     "creep": 1.7686965669718286
+    }
+   },
+   "fine_sm8.cyc": {
+    "y/y (as printed)": {
+     "strength": 1.6994306356480737,
+     "fatigue": 1.075725665365403,
+     "creep": 3.155461951738516
+    },
+    "x/y": {
+     "strength": 1.5557848032882815,
+     "fatigue": 0.6951072810468535,
+     "creep": 2.038981357737437
+    },
+    "z/y": {
+     "strength": 1.400776781451233,
+     "fatigue": 0.6861518915339746,
+     "creep": 2.0127122151663257
+    },
+    "y/x": {
+     "strength": 0.9552141166380154,
+     "fatigue": 0.7615785729804495,
+     "creep": 2.233963814075986
+    },
+    "y/z": {
+     "strength": 1.1776408603751063,
+     "fatigue": 0.7437003515513763,
+     "creep": 2.1815210312173705
+    }
+   }
+  },
+  "eigen": {
+   "fine_sm8": {
+    "frame_crown_held": 3.7204439600305808,
+    "frame_lead": "stay top L",
+    "frame_set": "S_fill@a_S_fine_sm8_15:hipbelt_off_abuse|15",
+    "setdown_sets_crown_held_foot_free": 2.988693397951938,
+    "record_model_free": 1.2448826770057593,
+    "members_unbraced_min": 6.4803803911420585,
+    "members_braced_min": 18.193758307656818,
+    "seconds": 710,
+    "setdown_foot_held_top_free": 5.864868535242588,
+    "setdown_foot_and_crown_held": 20.629111613014153
+   },
+   "fine_sm8.cyc": {
+    "frame_crown_held": 3.7204439600306407,
+    "frame_lead": "stay top L",
+    "frame_set": "S_fill@a_S_fine_sm8_cyc_15:hipbelt_off_abuse|15",
+    "setdown_sets_crown_held_foot_free": 2.9886933979515957,
+    "record_model_free": 1.2448826770892378,
+    "members_unbraced_min": 6.4803803906188815,
+    "members_braced_min": 18.193758307656818,
+    "seconds": 622
+   },
+   "E_buckle_mpa": 8525.5,
+   "layer_normal_bound_factor": 0.364
+  },
+  "print": {
+   "lower": {
+    "plate_contact_mm2": 1773.0,
+    "plate_contact_voxel_mm2": 1782.0,
+    "supported_mm2": 12828.0,
+    "supported_by_region_mm2": {
+     "stay": 2210.0,
+     "lug": 7077.0,
+     "clevis": 1417.0,
+     "other": 2124.0
+    },
+    "max_support_column_mm": 57.0,
+    "part_g_ppa": 610.8,
+    "support_g_ppa_est": 66.8,
+    "support_g_ppa_high": 128.7,
+    "filament_g_high_with_waste": 799.0,
+    "spools": 1.07,
+    "needs_spool_swap": true,
+    "print_h_est": 20.3,
+    "extents_mm": [
+     321.9,
+     300.4,
+     76.7
+    ],
+    "fits_h2s_340x320x340": true
+   },
+   "upper": {
+    "plate_contact_mm2": 163.0,
+    "plate_contact_voxel_mm2": 927.0,
+    "supported_mm2": 17723.0,
+    "supported_by_region_mm2": {
+     "stay": 8785.0,
+     "lug": 3041.0,
+     "clevis": 0.0,
+     "other": 5897.0
+    },
+    "max_support_column_mm": 43.0,
+    "part_g_ppa": 620.3,
+    "support_g_ppa_est": 65.6,
+    "support_g_ppa_high": 122.4,
+    "filament_g_high_with_waste": 802.0,
+    "spools": 1.07,
+    "needs_spool_swap": true,
+    "print_h_est": 20.6,
+    "extents_mm": [
+     309.4,
+     280.1,
+     64.4
+    ],
+    "fits_h2s_340x320x340": true
+   }
+  },
+  "export": {
+   "d_mid": 1.0,
+   "d_up": 2.5,
+   "im3_half_z": 14.0,
+   "fairleads_bl042": {
+    "spine_channel_bl046": {
+     "body_mm3": 755034.4096777851,
+     "housing_added_mm3": 55702.09262676083,
+     "cut_mm3": 31857.953854901716,
+     "net_mm3": 23844.138771859114,
+     "net_g": 25.27478709817066
+    },
+    "pawl_bl047": {
+     "boss_mm3": 2271.503997091204,
+     "cut_mm3": 3290.084193843417,
+     "net_mm3": -1018.5801967522129,
+     "net_g": -1.0796950085573456
+    },
+    "lugs_bl049": {
+     "arms_mm3": 66052.09800047637,
+     "arms_g": 70.01522388050495
+    },
+    "body_mm3": 843912.0662533684,
+    "fairleads_added_mm3": 87412.5722183492,
+    "throats_cut_mm3": 4140.548161599087,
+    "holes_cut_mm3": 2033.9975455119275,
+    "net_mm3": 81238.02651123819,
+    "net_g": 86.11230810191248,
+    "per_station": {
+     "hinge_L": {
+      "throat_cut_from_body_mm3": 1275.1
+     },
+     "hinge_R": {
+      "throat_cut_from_body_mm3": 1270.5
+     },
+     "us1_L": {
+      "throat_cut_from_body_mm3": 7.7
+     },
+     "us1_R": {
+      "throat_cut_from_body_mm3": 7.7
+     },
+     "us2_L": {
+      "throat_cut_from_body_mm3": 2.6
+     },
+     "us2_R": {
+      "throat_cut_from_body_mm3": 2.6
+     },
+     "im1_L": {
+      "throat_cut_from_body_mm3": 304.6
+     },
+     "im1_R": {
+      "throat_cut_from_body_mm3": 288.0
+     },
+     "im2_L": {
+      "throat_cut_from_body_mm3": 206.7
+     },
+     "im2_R": {
+      "throat_cut_from_body_mm3": 195.5
+     },
+     "im3_L": {
+      "throat_cut_from_body_mm3": 289.8
+     },
+     "im3_R": {
+      "throat_cut_from_body_mm3": 289.8
+     }
+    },
+    "lug_fixes_bl053": {
+     "added_g": 61.27,
+     "per_station_g": {
+      "us1_L": 23.49,
+      "us1_R": 23.63,
+      "us2_L": 6.99,
+      "us2_R": 7.15
+     }
+    },
+    "hip_boss_bl055": {
+     "y_face": -48.55,
+     "nut_seat_y": -35.55,
+     "boss_added_mm3": 11574.3,
+     "holes_traps_cut_mm3": 4897.7,
+     "pattern": [
+      [
+       14.12,
+       107.29
+      ],
+      [
+       18.44,
+       115.4
+      ],
+      [
+       18.44,
+       124.6
+      ],
+      [
+       14.12,
+       132.71
+      ],
+      [
+       -14.12,
+       107.29
+      ],
+      [
+       -18.44,
+       115.4
+      ],
+      [
+       -18.44,
+       124.6
+      ],
+      [
+       -14.12,
+       132.71
+      ]
+     ]
+    },
+    "us2_clevis_bl050": {
+     "blocks_g": 31.79,
+     "cuts_g": 5.6,
+     "net_g": 26.19,
+     "pieces_g": {
+      "us2_clevis_L": 15.67,
+      "us2_clevis_R": 15.67
+     },
+     "body_g": 1044.0,
+     "assembled_g": 1075.4,
+     "dropped": []
+    }
+   },
+   "assembled": {
+    "faces": 330440,
+    "volume_cm3": 1014.49,
+    "g": 1075.4,
+    "watertight": true,
+    "shells": 1,
+    "dropped": [
+     [
+      156,
+      8.51007738840166
+     ],
+     [
+      156,
+      6.462130247968133
+     ],
+     [
+      48,
+      0.07111274519858135
+     ],
+     [
+      50,
+      0.06444914312896281
+     ],
+     [
+      42,
+      0.03145539630894412
+     ],
+     [
+      34,
+      0.00375758336284814
+     ],
+     [
+      14,
+      0.0023078052850901143
+     ],
+     [
+      40,
+      0.0018748921207711506
+     ],
+     [
+      36,
+      0.0017970511728871614
+     ],
+     [
+      28,
+      0.0013776650121625582
+     ],
+     [
+      38,
+      0.0013680874527849014
+     ],
+     [
+      10,
+      0.00019883278464608947
+     ],
+     [
+      4,
+      7.451906744998515e-05
+     ],
+     [
+      6,
+      4.653462689348705e-05
+     ],
+     [
+      8,
+      2.5756407160256362e-05
+     ],
+     [
+      6,
+      2.4728733642074657e-05
+     ],
+     [
+      4,
+      2.372310974459631e-05
+     ],
+     [
+      4,
+      2.1351991017530086e-05
+     ],
+     [
+      6,
+      8.352520347957674e-06
+     ],
+     [
+      4,
+      6.489077083569421e-06
+     ],
+     [
+      4,
+      4.919759525397656e-06
+     ],
+     [
+      4,
+      8.35957881436163e-08
+     ],
+     [
+      4,
+      4.2674567583371e-12
+     ]
+    ],
+    "g_ppa": 1268.1
+   },
+   "lower": {
+    "faces": 165506,
+    "volume_cm3": 488.67,
+    "g": 518.0,
+    "footprint_mm": [
+     321.9,
+     300.4,
+     76.7
+    ],
+    "watertight": true,
+    "shells": 1,
+    "dropped": [],
+    "dropped_centre_frame_mm": [],
+    "print_h": 18.3,
+    "fits_h2s_340x320x340": true,
+    "bed_bl050": {
+     "rot_deg": 163.25,
+     "extents_mm": [
+      321.86,
+      300.39,
+      76.75
+     ],
+     "fits": true,
+     "fits_with_brim": true,
+     "spare_mm": [
+      2.14,
+      3.61
+     ]
+    },
+    "g_ppa": 610.8
+   },
+   "upper": {
+    "faces": 162364,
+    "volume_cm3": 496.25,
+    "g": 526.0,
+    "footprint_mm": [
+     309.4,
+     280.1,
+     64.4
+    ],
+    "watertight": true,
+    "shells": 1,
+    "dropped": [],
+    "dropped_centre_frame_mm": [],
+    "print_h": 18.6,
+    "fits_h2s_340x320x340": true,
+    "bed_bl050": {
+     "rot_deg": 90.0,
+     "extents_mm": [
+      309.39,
+      280.12,
+      64.38
+     ],
+     "fits": true,
+     "fits_with_brim": true,
+     "spare_mm": [
+      14.61,
+      23.88
+     ]
+    },
+    "g_ppa": 620.3
+   },
+   "us2_clevis_L": {
+    "faces": 4014,
+    "g": 15.67,
+    "footprint_mm": [
+     20.7,
+     33.5,
+     36.5
+    ],
+    "watertight": true,
+    "shells": 1
+   },
+   "us2_clevis_R": {
+    "faces": 4146,
+    "g": 15.67,
+    "footprint_mm": [
+     20.7,
+     33.5,
+     36.5
+    ],
+    "watertight": true,
+    "shells": 1
+   }
+  },
+  "reraster": {
+   "source": "print/frame_h1/h1_assembled.stl (BL-058 export), 2 mm element-centre raster",
+   "stl_voxels": 115493,
+   "run_voxels": 115749,
+   "bl053_body_voxels": 110805,
+   "in_both": 103520,
+   "stl_only": 12229,
+   "bl053_only": 7285,
+   "stl_only_outside_envelope": 2576,
+   "pads_added": 360,
+   "boss_voxels": {
+    "run": 3671,
+    "bl053": 2626
+   },
+   "raster_g": 981.6,
+   "bl053_raster_g": 939.6
+  },
+  "voxels": {
+   "design_raster": 116107,
+   "exported_raster": 115749,
+   "design_not_in_export": 1927,
+   "export_not_in_design": 1569
+  },
+  "hip_mount": {
+   "nut_seat_depth_mm": 13.0,
+   "bearing_ring_mm2": 54.8,
+   "bearing_n": 1799.6,
+   "rows": {
+    "C2|H_pin": {
+     "T_max_n": 194.7,
+     "kind": "strength",
+     "sf": 9.24,
+     "goal": 1.5
+    },
+    "C1|H_pin": {
+     "T_max_n": 129.8,
+     "kind": "strength",
+     "sf": 13.86,
+     "goal": 1.5
+    },
+    "walk|H_pin": {
+     "T_max_n": 103.8,
+     "kind": "fatigue",
+     "sf": 5.2,
+     "goal": 1.15
+    },
+    "carry|H_pin": {
+     "T_max_n": 64.9,
+     "kind": "creep",
+     "sf": 15.25,
+     "goal": 1.5
+    },
+    "C2|H_frame": {
+     "T_max_n": 238.6,
+     "kind": "strength",
+     "sf": 7.54,
+     "goal": 1.5
+    },
+    "C1|H_frame": {
+     "T_max_n": 159.1,
+     "kind": "strength",
+     "sf": 11.31,
+     "goal": 1.5
+    },
+    "walk|H_frame": {
+     "T_max_n": 127.3,
+     "kind": "fatigue",
+     "sf": 4.24,
+     "goal": 1.15
+    },
+    "carry|H_frame": {
+     "T_max_n": 79.5,
+     "kind": "creep",
+     "sf": 12.45,
+     "goal": 1.5
+    }
+   },
+   "min_sf": {
+    "strength": 7.54,
+    "fatigue": 4.24,
+    "creep": 12.45
+   },
+   "pass": true,
+   "hardware": "8 x Ti gr5 M5 x 20 DIN 7984 + 8 x A2 M5 DIN 934 nuts (Loctite 243) replace 8 x M5 x 9.5 brass inserts + 8 x M5 x 12"
+  }
+ },
+ "coupons": [
+  {
+   "id": "CA-1-PPA",
+   "what": "R 0.1 tension-tension fatigue, PPA-CF printed on the owner's H2S (H1 profile: 0.6 hardened nozzle, 290 C, bed 110 C, chamber 65 C, 100 % infill), conditioned 14 d at 23 C / 50 % RH",
+   "coupons": "6 Z-built (load across the layers, the H1-P governing direction) + 6 XY-built, ISO 527-2 1A shape, plus 3 static of each from the same plate for the batch UTS",
+   "load": "Smax = 0.279 x the batch's own conditioned mean UTS, 1e5 cycles at <= 5 Hz, 23 C",
+   "pass": "all 6 Z-built and all 6 XY-built run out to 1e5 cycles at Smax / UTS = 0.279 (= fatigue ratio 0.30 / H1-P cinch-cycled margin 1.076)",
+   "settles": "FAT-PPA (fatigue_1e5_ratio 0.30)",
+   "margin_tied": "R1 1.076"
+  },
+  {
+   "id": "CA-3-PPA",
+   "what": "Z tensile (ISO 527-2 1A, printed standing: load across the layers) and interlayer shear (short-beam shear, ASTM D2344 4:1 bar printed flat so the mid-plane is a layer interface), dry (as printed, sealed with desiccant, tested within 24 h) and conditioned (14 d at 23 C / 50 % RH)",
+   "coupons": "6 Z tensile + 6 SBS dry; 6 + 6 conditioned; same spool, same H2S profile as the frame",
+   "pass": "(a) conditioned Z tensile mean - 2.4 SD >= 31.3 MPa (H1-P needs knocked Z 32.85 / 1.051); (b) conditioned SBS mean - 2.4 SD >= 18.8 MPa (0.6 x (a), ASSUMPTION INTERLAYER-0.6); (c) for the record: dry Z mean >= 45 MPa and conditioned / dry >= 0.73 means the design values hold as booked",
+   "settles": "WET-PPA (knock 0.73), design Z 45 MPa, INTERLAYER-0.6",
+   "margin_tied": "R1 1.076, z 234 joint fatigue 1.051",
+   "if_below": "between 31.3 and 0.9 x that: R1 reads 0.9-1.0, hold the PPA build and add the hot-spot growth of the next H1-P step; below: stay on PAHT-CF"
+  },
+  {
+   "id": "CA-4-PPA",
+   "what": "3-point bend modulus and strength (ISO 178, XY-built bars 80 x 10 x 4), at 23 C dry, at 40 C after 14 d at 23 C / 50 % RH ('40 C wet'), and at 60 C dry (truck cab)",
+   "coupons": "5 per condition",
+   "pass": "E(40 C wet) / E(23 C dry) >= 0.85 (the booked ratio; the H1-P buckling margin 3.72 alone would allow 0.23); E(60 C) / E(23 C) >= 0.75 (record); flexural strength at 60 C >= 0.73 x 208 = 152 MPa",
+   "settles": "modulus_40c_wet_ratio 0.85, modulus_60c_ratio 0.75 (E-SCALE)",
+   "margin_tied": "buckling 3.72, strength 1.70"
+  },
+  {
+   "id": "T4c-PPA",
+   "what": "-20 C drop of a printed stay coupon: the H1-P lower stay z 0-240 (R side) cut from the lower-half file (foot, hinge eye, US1 lug root), printed in PPA-CF with the frame profile, a 2.0 kg steel slug pinned through the hinge eye (half the empty pack, 4.04 kg)",
+   "coupons": "3 PPA-CF + 1 PAHT-CF control; soaked >= 4 h at -20 C, dropped within 60 s of removal",
+   "load": "1.22 m (48 in, HA-LS-1 T4c) onto 19 mm plywood over concrete, foot first, then side-on (about 24 J each)",
+   "pass": "no crack or whitening (10x loupe, dye penetrant on the foot and the eye), tap test clean, and the coupon then carries 3-point bend at 1.5 x its C4 set-down stay moment without a crack; any Z crack (along a layer) is a fail",
+   "settles": "COLD (impact_minus20c_ratio 0.5; Z Charpy 4.3 kJ/m2 vs PAHT 13.3)",
+   "margin_tied": "not in the FI check (impact); this is the PPA risk BL-069 flagged"
+  }
+ ],
+ "assumptions": [
+  {
+   "id": "PPU=PPA",
+   "text": "'PPU' is Bambu PPA-CF (BL-069).",
+   "settled_by": "owner confirmation"
+  },
+  {
+   "id": "WET-PPA",
+   "text": "Design Z 45 MPa (57 - 2.4 SD) x wet knock 0.73 (Raise3D conditioned / Bambu dry).",
+   "settled_by": "CA-3-PPA"
+  },
+  {
+   "id": "FAT-PPA",
+   "text": "fatigue_1e5_ratio 0.30 (PA12-CF lower bound), on the layer rule's FI.",
+   "settled_by": "CA-1-PPA"
+  },
+  {
+   "id": "INTERLAYER-0.6",
+   "text": "Interlayer shear strength = 0.6 x Z tensile (frame_topopt layer rule, as PAHT).",
+   "settled_by": "CA-3-PPA SBS"
+  },
+  {
+   "id": "LINEAR-Z",
+   "text": "Where interlayer shear governs (92 % of the R1 top 1 %), a margin scales with knock x Z.",
+   "settled_by": "re-run check_body with the coupon values"
+  },
+  {
+   "id": "E-ISO / E-SCALE",
+   "text": "Voxel FE isotropic at E_xy (the stress fields are unit-modulus, so strength checks do not depend on it); buckling at E_xy x 0.85 hot x 0.85 creep = 8526 MPa. Layer-normal bound x E_z / E_xy = 0.364.",
+   "settled_by": "CA-4-PPA (40 C wet, 60 C); T1 deflection at 150 lb"
+  },
+  {
+   "id": "JOINT-Z",
+   "text": "z 234 joint and US2 clevis capacities on the PPA joint dict: washer / contact bearing on knock x XY, plug shear-out and clevis hole bearing on knock x Z; contact stiffness E x 0.85.",
+   "settled_by": "CA-3-PPA"
+  },
+  {
+   "id": "INS-PPA",
+   "text": "Insert pull-out on PPA either by the record rule (hot x Z/XY TDS ratio 0.339: 297 N) or by the PAHT HB-6 basis scaled by knocked Z (448 N); both fail the 8-insert fatigue row (needs 488 N).",
+   "settled_by": "HB-6-PPA only if inserts are kept"
+  },
+  {
+   "id": "NUT-BEAR",
+   "text": "H1-P hip mount through-bolts: nut / D10 washer bearing on the layers in compression taken at knock x design Z (32.9 MPa) on the ring D10 / D5.5; tipping model and rigid flange as BL-055 (FLANGE-RIGID).",
+   "settled_by": "HB-6b on the frame (hip mount proof) with the through-bolts"
+  },
+  {
+   "id": "H1P-RULES",
+   "text": "H1-P moves material only on the 2 mm voxel model of the released print: interfaces, crown sleeves, member floors, lash points and the wearer (plate) face frozen; thinning one surface layer at a time where the PPA utilisation (6 mm max filter) is low, growth where it is high.",
+   "settled_by": "the checks on the export"
+  },
+  {
+   "id": "PPA-TIME",
+   "text": "Print time by the BL-053 rule (8 mm3/s x 1.08) at the PAHT volume rate; TDS speed < 100 mm/s.",
+   "settled_by": "slicer preview"
+  },
+  {
+   "id": "WARP",
+   "text": "PPA-CF (E x 3, crystallises at 178 C) warps more than PAHT on a small plate contact; chamber pre-heat 30 min at 65 C, glue, brim 15 mm, mouse ears at the stay feet.",
+   "settled_by": "first article"
+  },
+  {
+   "id": "COLD",
+   "text": "impact_minus20c_ratio 0.5; Z Charpy 4.3 kJ/m2.",
+   "settled_by": "T4c-PPA"
+  },
+  {
+   "id": "SPOOL-SWAP",
+   "text": "A half that needs > 0.75 kg is started on a full dried spool with a second dried spool staged (AMS feed of PPA-CF on the H2S not verified).",
+   "settled_by": "first article"
+  }
+ ],
+ "screenshots": [
+  "outputs/screens/20261125_bl070_1.png",
+  "outputs/screens/20261125_bl070_2.png",
+  "outputs/screens/20261125_bl070_3.png",
+  "outputs/screens/20261125_bl070_4.png"
+ ]
+}

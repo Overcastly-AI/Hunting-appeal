@@ -113,3 +113,11 @@ Nothing here is decided; the tickets produce the material.
 | BL-062 | Iteration 1 system weight (everything but the frame) | pack-designer | M | 060 | done: option A gated |
 | BL-063 | Iteration 1 looks: design language, A/B/C colour concepts | pack-designer | M | 060 | done: C + tonal trim gated by AB-1 |
 | BL-064 | Source mesh/Ti/Dyneema/slider records and test specs for BL-062 option A | materials-engineer | S | 062 | done |
+| BL-065 | H1 eigen buckling (voxel solver), lift the full-print hold | structural-fea-engineer | M | 061 | done: 1.34 |
+| BL-066 | CF-LITE rework on a buildable three-part model | structural-fea-engineer | L | 061 | done: dropped (fails Strong) |
+| BL-067 | Looks C′ and weight fixes from review 7 | pack-designer | M | 063 | done |
+| BL-068 | C′ patterns, lash loads, RT strap | pattern-maker | M | 067 | done |
+| BL-069 | "PPU" frame material: read as Bambu PPA-CF; H1 re-check | materials-engineer | S | 065 | done: H1-in-PPA not buildable |
+| BL-070 | H1-P: H1 re-tuned for PPA-CF, through-bolt hip mount, PPA coupons | structural-fea-engineer | L | 069 | done: all rows pass, 1268.1 g |
+| BL-071 | Wire H1-P into BUILD, test kit and register: PPA coupons, through-bolt hip, H2S print sheet | manufacturing-engineer | M | 070 | no PAHT-only text on the PPA path |
+| BL-072 | Review 8: independent review of BL-069/BL-070 | design-reviewer | S | 070 | findings logged |
