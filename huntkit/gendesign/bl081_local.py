@@ -209,7 +209,7 @@ def gusset_rows(glob: dict, cfg: dict) -> list[dict]:
     from huntkit.fea.tube_solid import heywood_kt
     t, w = cfg["gusset_t"], cfg["gusset_w"]
     st = BQ.STOCK[cfg["stay"]]
-    d = st["od"] / 2 + 1.0 + t / 2
+    d = st["od"] / 2 + t / 2
     rows = []
     net = (w - BQ.HOLE_D) / w
     kt = heywood_kt(BQ.HOLE_D / w)
@@ -366,15 +366,11 @@ def hip_rows(glob: dict, cfg: dict) -> list[dict]:
                  "value": worst_t[0], "allow": fa, "margin": fa / worst_t[0], "basis": worst_t[1]})
     rows.append({"item": "6", "row": "hip post (2 angles): fatigue at the mount / tie holes", "kind": "fatigue",
                  "value": worst_p[0], "allow": fa, "margin": fa / worst_p[0], "basis": f"walk, Kf {kf2:.2f}; {worst_p[1]}"})
-    # spacer end on the lower rung through the printed hip saddle (compression)
-    P_ = BQ.paht()
-    a_sh = math.pi / 4 * (sp["od"] ** 2 - 5.6 ** 2)
-    rows.append({"item": "6", "row": "printed hip saddle under the tie spacer ends (compression)", "kind": "strength",
-                 "value": Ft / a_sh, "allow": P_["z_hw"], "margin": P_["z_hw"] / (Ft / a_sh),
-                 "basis": "tie axial on the spacer end annulus, layers in compression"})
-    rows.append({"item": "6", "row": "printed hip saddle: compression fatigue", "kind": "fatigue",
-                 "value": Ftw / a_sh, "allow": P_["fat"] * P_["z_hw"], "margin": P_["fat"] * P_["z_hw"] / (Ftw / a_sh),
-                 "basis": "walk tie force, 0.30 x 19.66"})
+    # tie spacer end (coped by file to R 12.7) bearing on the rung, crush sleeve inside the rung
+    a_sh = math.pi / 4 * (sp["od"] ** 2 - sp["od"] ** 2 * 0 - (sp["od"] - 2 * sp["t"]) ** 2)
+    rows.append({"item": "6", "row": "tie spacer end on the rung wall (Al on Al, coped)", "kind": "strength",
+                 "value": (Ft + 2600.0) / a_sh, "allow": BQ.BRG_Y_ED2, "margin": BQ.BRG_Y_ED2 / ((Ft + 2600.0) / a_sh),
+                 "basis": "tie axial + M5 preload on the spacer end annulus; no printed part in the preload path (BL-082)"})
     ct = BQ.STOCK[cfg["ctube"]]
     # saddle plugs (lumbar node fore-aft): PAHT in compression on the stay saddle, in-plane shear in the plug body
     P = BQ.paht()
@@ -451,26 +447,39 @@ def bushing_rows(glob: dict, cfg: dict) -> list[dict]:
 
 
 # ============================================================================ clamp tees (items 5, 8, 9)
+_CLAMP_FE: dict = {}
+
+
+def clamp_combined_hoop(tube_key, clamp_len, jaw_kN, loop_kN, edge_kN) -> float:
+    """Hoop peak of the superposed field (same points), not the sum of the separate peaks."""
+    clamp_units(tube_key, clamp_len)
+    fe, ua, ub, uc, x0, x1 = _CLAMP_FE[(tube_key, clamp_len)]
+    u = jaw_kN * ua + loop_kN * ub + edge_kN * uc
+    return fe.surface_hoop(u, x0 - 31, x1 + 4)
+
+
 @lru_cache(maxsize=None)
 def clamp_units(tube_key: str, clamp_len: float) -> dict:
-    """Stay under (a) the two clamp halves at preload: uniform pressure over +/- 80 deg each (2 x 10 deg split gaps;
-    the printed halves conform, ASSUMPTION CLAMP-UNIFORM), 1 kN resultant per half; (b) the IM3 webbing loop (1 kN
-    aft, uniform on the front half of the outer surface, 25 mm wide, just under the clamp); (c) a clamp-edge couple
-    (1 kN on 8 mm at each clamp end, opposite sides). Ring part only (hoop) and bore change (n 0 + n 2 harmonics)."""
+    """Stay under (a) the two 6061 half-shells at preload: uniform pressure over +/- 86.5 deg each (1.5 mm saw-kerf gaps,
+    conforming metal shells, ASSUMPTION CLAMP-UNIFORM), 1 kN resultant per half; (b) the IM3 webbing loop (1 kN
+    aft, uniform on the front half of the outer surface, 25 mm wide, just under the clamp); (c) a clamp-end couple
+    (1 kN cos over 180 deg on a quarter of the length at each end, opposite sides). Ring part only (hoop) and bore change (n 0 + n 2 harmonics)."""
     from huntkit.fea.tube_solid import TubeFE, TubeModel
     st = BQ.STOCK[tube_key]
     L = 130.0
     x0, x1 = L / 2 - clamp_len / 2, L / 2 + clamp_len / 2
     m = TubeModel(L=L, od=st["od"], t=st["t"], h=2.0, refine_x=((x0 - 30, x1 + 4, 1.6),))
     fe = TubeFE(m)
-    jaw = math.radians(80.0)
+    jaw = math.radians(86.5)          # 1.5 mm saw kerf at each split of the 1-1/4 x .125 shells
     fa_ = fe.patch_pressure(x0, x1, 0.0, jaw, 1000.0, "outer", uniform=True) + \
         fe.patch_pressure(x0, x1, math.pi, jaw, 1000.0, "outer", uniform=True)
     ua = fe.solve(fa_)
     ub = fe.solve(fe.patch_pressure(x0 - 27, x0 - 2, math.pi, math.pi / 2, 1000.0, "outer", uniform=True))
-    fc = fe.patch_pressure(x0, x0 + 8, 0.0, math.radians(60), 1000.0, "outer") + \
-        fe.patch_pressure(x1 - 8, x1, math.pi, math.radians(60), 1000.0, "outer")
+    q4 = clamp_len / 4                # conforming shells: the end-couple pressure over a quarter length, cos over 180 deg
+    fc = fe.patch_pressure(x0, x0 + q4, 0.0, math.radians(90), 1000.0, "outer") + \
+        fe.patch_pressure(x1 - q4, x1, math.pi, math.radians(90), 1000.0, "outer")
     uc = fe.solve(fc)
+    _CLAMP_FE[(tube_key, clamp_len)] = (fe, ua, ub, uc, x0, x1)
     out = {}
     for k, u, (xa, xb) in (("jaws", ua, (x0, x1)), ("loop", ub, (x0 - 27, x0 - 2)), ("edge", uc, (x0, x1))):
         xs = np.linspace(xa + 2, xb - 2, 5)
@@ -482,16 +491,21 @@ def clamp_units(tube_key: str, clamp_len: float) -> dict:
 
 
 def clamp_rows(glob: dict, cfg: dict) -> list[dict]:
-    P = BQ.paht()
+    """Mid / upper tee clamps, all-metal preload path (BL-082: no printed part or liner under preload, PAHT creeps):
+    two half-shells sawn from 1-1/4 x .125 in 6061 tube (bore = 1 in, conforming) squeezed by two 6061 1 x 1/8 backers
+    with 2 x M5 A2 beside the stay (the 1/8 in backer of BL-080 bends to 0.26 under the clamp load: 1 x 1/4 in flat,
+    55 mm); the bar end sits in a printed socket that bears on the shells (PAHT in bearing only, not under preload)."""
+    TP = BQ.tube_props()
     rows = []
     Fb = cfg["clamp_preload_n"]
     ret = cfg["preload_retention"]
     mu = cfg["mu"]
     st = BQ.STOCK[cfg["stay"]]
     R = st["od"] / 2
-    N_tot = 16 * Fb * ret / math.pi            # cosine jaw pressure, 2 bolts, both halves
-    F_cap, T_cap = mu * N_tot, mu * N_tot * R
+    Fb_up = cfg.get("clamp_preload_upper_n", Fb)
+    cap = lambda F: (mu * 2 * math.pi * F * ret, mu * 2 * math.pi * F * ret * R)   # noqa: E731  total normal 2 pi Fb
     for z in (330.0, 520.0):
+        F_cap, T_cap = cap(Fb if z < 400 else Fb_up)
         worst = (0.0, None)
         for tag in ("L", "R"):
             for k in (f"tee_{tag}{z:g}", f"tee_{tag}{z:g}|M"):
@@ -501,9 +515,9 @@ def clamp_rows(glob: dict, cfg: dict) -> list[dict]:
                     worst = (u, glob["links"][k]["case"], v)
         rows.append({"item": "5", "row": f"tee clamp z {z:g}: slip (axial + torque about the stay)", "kind": "joint",
                      "value": worst[0], "allow": 1.0, "margin": 1.0 / worst[0],
-                     "basis": f"mu {mu} x 16 Fb ret / pi = {F_cap:.0f} N / {T_cap / 1e3:.1f} N m (Fb {Fb:.0f} N, retention "
-                              f"{ret} after PAHT creep, ASSUMPTIONS MU / CLAMP-PRELOAD / CREEP-RET, CL-1); {worst[1]}"})
-    # pawl explicit: 1334 N x 1.5 (geometry.yaml crown_retention compression, ultimate) and 1001 N (C8)
+                     "basis": f"mu {mu} wet Al/Al (BL-082) x 2 pi Fb ret = {F_cap:.0f} N / {T_cap / 1e3:.1f} N m (2 x M5 A2 "
+                              f"Fb {Fb if z < 400 else Fb_up:.0f} N, retention {ret} metal stack, ASSUMPTION EMBED); {worst[1]}"})
+    F_cap, T_cap = cap(Fb_up)
     for P_pawl, lab in ((1334.0 * 1.5, "1334 N x 1.5 tall-load compression"), (1001.0, "1001 N C8 hipbelt-off")):
         u = (P_pawl / 2) / F_cap
         rows.append({"item": "5", "row": f"upper tee slip under the pawl {lab}", "kind": "joint", "value": u,
@@ -511,48 +525,98 @@ def clamp_rows(glob: dict, cfg: dict) -> list[dict]:
         ub = BQ.STOCK[cfg["ubar"]]
         I = math.pi / 64 * (ub["od"] ** 4 - (ub["od"] - 2 * ub["t"]) ** 4)
         Lb = 2 * (115.0 - 12.7 - 2.0)
-        s = P_pawl * Lb / 8 / (I / (ub["od"] / 2)) * (ub["od"] * ub["t"] * math.pi / (ub["od"] * ub["t"] * math.pi - 2 * BQ.HOLE_D * ub["t"]))
+        A = math.pi / 4 * (ub["od"] ** 2 - (ub["od"] - 2 * ub["t"]) ** 2)
+        s = P_pawl * Lb / 8 / (I / (ub["od"] / 2)) * A / (A - 2 * BQ.HOLE_D * ub["t"])
         rows.append({"item": "5", "row": f"upper bar bending at the pawl housing, {lab}", "kind": "strength",
                      "value": s, "allow": BQ.FY_6061, "margin": BQ.FY_6061 / s,
-                     "basis": f"fixed-fixed bar (clamp k_r 2e8 >> EI/L), P L / 8 over {Lb:.0f} mm, net section at the 2 holes"})
-    # ovalisation with the leg inside
+                     "basis": f"fixed-fixed bar (clamp k_r >> EI/L), P L / 8 over {Lb:.0f} mm, net section at the 2 holes"})
+    F_cap, T_cap = cap(Fb)
+    p = 2 * Fb / (st["od"] * cfg["clamp_len"])
+    rows.append({"item": "5", "row": "stay under the shells: clamp pressure vs hoop yield / ring buckling", "kind": "strength",
+                 "value": p, "allow": TP["p_buckle"], "margin": TP["p_buckle"] / p,
+                 "basis": f"2 Fb / (D L) = {p:.1f} MPa (full preload) vs ring buckling {TP['p_buckle']} MPa "
+                          f"(hoop yield {TP['p_hoop_yield']}), BL-082 tube record"})
+    # ovalisation with the leg inside (uniform jaws; the split gaps give the n 2 term)
     U = clamp_units(cfg["stay"], cfg["clamp_len"])
-    jaw_F = 2 * Fb / 1000.0                  # kN resultant per jaw at full preload
+    jaw_F = 2 * Fb_up / 1000.0               # the upper tee (z 520) carries the leg / bushing
     d_pre = U["jaws"]["gap_loss_mm"] * jaw_F
     im3 = 1415.1
     edge = max(glob["links"][f"tee_{t}520|M"]["M"] for t in "LR") / (0.67 * cfg["clamp_len"]) / 1000.0
     d_lim = d_pre + U["loop"]["gap_loss_mm"] * im3 / 1000.0 + U["edge"]["gap_loss_mm"] * edge
     c0 = cfg["leg_clear_mm"]
     for lab, dd in (("preload", d_pre), ("limit (preload + IM3 hook 1415 N + bar-end couple)", d_lim)):
-        rem = c0 - dd
         rows.append({"item": "5", "row": f"upper tee: leg radial clearance at {lab}", "kind": "joint", "value": dd,
-                     "allow": c0 - 0.3, "margin": (c0 - 0.3) / max(dd, 1e-9) if c0 > 0.3 else 0.0,
-                     "basis": f"bore inward {dd:.3f} mm (solid FE) vs nominal clearance {c0} mm - 0.3 required "
-                              f"(remaining {rem:.2f} mm); ASSUMPTION FIT: bushing bore = leg OD + 0.80 mm"})
-    sh = U["jaws"]["hoop_peak"] * jaw_F + U["loop"]["hoop_peak"] * im3 / 1000 + U["edge"]["hoop_peak"] * edge
+                     "allow": c0 - 0.3, "margin": (c0 - 0.3) / max(dd, 1e-9),
+                     "basis": f"bore gap loss {dd:.3f} mm (solid FE, n 0 + n 2) vs nominal {c0} mm - 0.3 required "
+                              f"(remaining {c0 - dd:.2f} mm); ASSUMPTION FIT: bushing bore = leg OD + {2 * c0:.2f} mm"})
+    sh = clamp_combined_hoop(cfg["stay"], cfg["clamp_len"], jaw_F, im3 / 1000, edge)
     sb = BQ.FY_6061 / glob["strength"]["stays"]["sf"]
     s_lim = math.sqrt(sh ** 2 + sb ** 2 + sh * sb)
     rows.append({"item": "5", "row": "stay wall under the upper tee at limit (clamp + IM3 loop + couple + beam)",
                  "kind": "strength", "value": s_lim, "allow": BQ.FY_6061, "margin": BQ.FY_6061 / s_lim,
-                 "basis": f"solid FE hoop peaks summed {sh:.0f} MPa with the worst stay beam stress {sb:.0f} MPa (VM)"})
-    # printed halves: clamp pressure in compression across the layers (printed split face down, layer normal y)
-    p = 2 * Fb / (st["od"] * cfg["clamp_len"])
-    rows.append({"item": "5", "row": "printed tee halves: clamp pressure (compression, layer normal)", "kind": "strength",
-                 "value": p, "allow": P["z_hw"], "margin": P["z_hw"] / p,
-                 "basis": "2 Fb / (D L) at full preload vs PAHT Z hot/wet B 19.66 MPa (tension value used for compression)"})
-    rows.append({"item": "5", "row": "printed tee halves: sustained clamp pressure (creep rupture)", "kind": "creep",
-                 "value": p, "allow": P["creep"] * P["z_hw"], "margin": P["creep"] * P["z_hw"] / p,
-                 "basis": "creep_rupture_8h_40c_ratio 0.4 x 19.66"})
-    # item 9: static cinch 150 N x 1e5 at the anchors
+                 "basis": f"solid FE hoop peak {sh:.0f} MPa of the superposed field (preload + IM3 1415 N + bar-end couple "
+                          f"{edge:.2f} kN) with the worst stay beam stress {sb:.0f} MPa (VM, opposite signs)"})
+    # same at the walking load (fatigue: preload is the mean, the loop and couple cycle 0 -> 1.6 g)
+    im3w = im3 / 3.0 * BQ.G_WALK / 1000
+    edw = edge / 3.0 * BQ.G_WALK
+    smax = clamp_combined_hoop(cfg["stay"], cfg["clamp_len"], jaw_F, im3w, edw)
+    smin = clamp_combined_hoop(cfg["stay"], cfg["clamp_len"], jaw_F, 0.0, 0.0)
+    sa = abs(smax - smin) / 2 + sb / 3.0 * BQ.G_WALK * 2.0 / 2
+    sm = (smax + smin) / 2 + sb / 3.0 * BQ.G_WALK * 2.0 / 2
+    d = BQ.sn_6061()
+    Sf = d["C"] / math.sqrt(1e5) + d["floor"]
+    u_g = sa / Sf + sm / d["Su"]
+    rows.append({"item": "5", "row": "stay wall under the upper tee: fatigue (preload mean + walking cycle)", "kind": "fatigue",
+                 "value": u_g, "allow": 1.0, "margin": 1.0 / u_g,
+                 "basis": f"Goodman sa/Sf + sm/Su: hoop {smin:.0f} -> {smax:.0f} MPa plus Kt 2 x stay beam walk, "
+                          f"Sf {Sf:.1f} (Yahr 1e5), Su 290"})
+    # shells: a 3.175 mm half ring under the backer line load; backers in bending between the bolts
+    sw = BQ.STOCK[cfg["shell"]]
+    t_sh = sw["t"]
+    w_line = 2 * Fb / cfg["clamp_len"]
+    # the shell is backed by the stay over its whole bore: beam on elastic foundation (Hetenyi), M = w / (4 beta),
+    # foundation k = E t_stay / R^2 (hoop stiffness of the stay wall), shell strip EI = E t^3 / 12 per mm
+    k_f = BQ.E_AL * st["t"] / (R - st["t"] / 2) ** 2
+    beta = (k_f / (4 * BQ.E_AL * t_sh ** 3 / 12)) ** 0.25
+    M_sh = w_line / (4 * beta)
+    s_sh = 6 * M_sh / t_sh ** 2
+    rows.append({"item": "5", "row": "clamp half-shell (1-1/4 x .125) under the backer line load", "kind": "strength",
+                 "value": s_sh, "allow": BQ.FY_6061, "margin": BQ.FY_6061 / s_sh,
+                 "basis": f"beam on elastic foundation (Hetenyi): w {w_line:.0f} N/mm, beta {beta:.3f} /mm, M = w / 4 beta; "
+                          f"the free-ring rule w R / pi would give {6 * w_line * (sw['od'] / 2) / math.pi / t_sh ** 2:.0f} MPa"})
+    span = 2 * (sw["od"] / 2 + 3.0)
+    tb = cfg["backer_t"]
+    s_bk = 6 * (2 * Fb * span / 4 / 2) / (BQ.IN * tb ** 2)
+    rows.append({"item": "5", "row": f"tee backer (1 x {tb / BQ.IN:.3f} in) bending between the clamp bolts", "kind": "strength",
+                 "value": s_bk, "allow": BQ.FY_6061, "margin": BQ.FY_6061 / s_bk,
+                 "basis": f"2 Fb on the shell crown, bolts {span:.1f} mm apart, half fixity (P L / 8)"})
+    # item 9: static cinch 150 N x 1e5
     cyc = 150.0 * 0.3                          # ASSUMPTION CINCH-ANGLE: 30 % of the aft cinch acts along the stay
+    P_ = BQ.paht()
+    a_sock = BQ.STOCK[cfg["ubar"]]["od"] * 20.0
+    rows.append({"item": "5", "row": "printed bar socket bearing on the shells (pawl 1334 N x 1.5 / 2)", "kind": "strength",
+                 "value": 1000.5 / a_sock, "allow": P_["z_hw"], "margin": P_["z_hw"] / (1000.5 / a_sock),
+                 "basis": "bar end on a 20 mm socket land, compression; the socket carries no preload"})
     rows.append({"item": "9", "row": "static-cinch cycles 150 N x 1e5: clamp micro-slip (fretting) criterion", "kind": "fatigue",
                  "value": cyc, "allow": 0.5 * F_cap, "margin": 0.5 * F_cap / cyc,
                  "basis": "cyclic tangential <= 0.5 x retained slip capacity (no gross or partial slip, ASSUMPTION FRET-50)"})
-    pc = (2 * Fb + 150.0) / (st["od"] * cfg["clamp_len"])
-    rows.append({"item": "9", "row": "static-cinch cycles: PAHT clamp halves, compression fatigue", "kind": "fatigue",
-                 "value": 150.0 / (st["od"] * cfg["clamp_len"]), "allow": P["fat"] * P["z_hw"],
-                 "margin": P["fat"] * P["z_hw"] / (150.0 / (st["od"] * cfg["clamp_len"])),
-                 "basis": f"cyclic part 150 N on the jaw (mean {pc:.1f} MPa) vs 0.30 x 19.66"})
+    return rows
+
+
+def crush_rows(glob: dict, cfg: dict) -> list[dict]:
+    """BL-082 CRUSH-SLEEVE: every preloaded through-bolt in a 1 in tube carries its preload through a 5.5 x 7.9 mm
+    sleeve between the walls; the tube wall then sees bearing under the sleeve end and the plate / spacer face."""
+    TP = BQ.tube_props()
+    sl = BQ.CRUSH_SLEEVE
+    Fb = 2600.0
+    a_end = math.pi / 4 * (sl["od"] ** 2 - sl["id"] ** 2)
+    rows = [{"item": "1", "row": "crush sleeve end on the tube wall (M5 2.6 kN preload)", "kind": "strength",
+             "value": Fb / a_end, "allow": BQ.BRG_Y_ED2, "margin": BQ.BRG_Y_ED2 / (Fb / a_end),
+             "basis": f"sleeve end annulus {a_end:.0f} mm2; without the sleeve 2.6 kN over a 20 mm saddle is "
+                      f"{Fb / 20:.0f} N/mm vs collapse {TP['w_collapse']} N/mm (BL-082): sleeves are mandatory"}]
+    sl_A = a_end
+    rows.append({"item": "1", "row": "crush sleeve column (Al, 22 mm long)", "kind": "strength",
+                 "value": Fb / sl_A, "allow": BQ.FY_6061, "margin": BQ.FY_6061 / (Fb / sl_A), "basis": "axial"})
     return rows
 
 
@@ -674,15 +738,16 @@ def spreader_b(cfg: dict | None = None, h: float = 4.0, log=print) -> dict:
         dx = np.abs(np.abs(X) - 115.0)
         on = dx <= R_st
         top[on] = yline(Z[on]) + np.sqrt(R_st ** 2 - dx[on] ** 2)
-        for zb, rb in ((120.0, 12.7), (330.0, 9.525)):
+        for zb, rb in ((cfg["rung_z"][0], 12.7), (cfg["rung_z"][1], 12.7), (330.0, 9.525)):
             dz = np.abs(Z - zb)
             ok = (dz <= rb) & (np.abs(X) <= 115.0)
             v = yline(zb) + np.sqrt(np.clip(rb ** 2 - dz ** 2, 0, None))
             top = np.where(ok, np.fmax(top, v), top)
         # gusset back plates (aft face) z 75-165 at the stays and along the cross tube x 50-115
         g1 = (np.abs(np.abs(X) - 115.0) <= 12.7) & (Z >= 75.0) & (Z <= 165.0)
-        g2 = (np.abs(X) >= 50.0) & (np.abs(X) <= 115.0) & (np.abs(Z - 120.0) <= 12.7)
-        gy = yline(120.0) + R_st + 1.0 + t_g
+        g2 = (np.abs(X) >= 50.0) & (np.abs(X) <= 115.0) & ((np.abs(Z - cfg["rung_z"][0]) <= 12.7) |
+                                                            (np.abs(Z - cfg["rung_z"][1]) <= 12.7))
+        gy = yline(120.0) + R_st + t_g
         top = np.where(g1 | g2, np.fmax(np.nan_to_num(top, nan=-99), gy), top)
         return xs, zs, top
 
@@ -726,7 +791,8 @@ def spreader_b(cfg: dict | None = None, h: float = 4.0, log=print) -> dict:
         info.update(plane=plane, gap=gap, lift=float(lift))
         E = float(load("alu_6061_t6").require("youngs_modulus_mpa"))
         beams = {}
-        for zb, sec in ((120.0, BQ.STOCK[cfg_default()["ctube"]]), (330.0, BQ.STOCK[cfg_default()["bar"]])):
+        for zb, sec in ((cfg["rung_z"][0], BQ.STOCK[cfg["ctube"]]), (cfg["rung_z"][1], BQ.STOCK[cfg["ctube"]]),
+                        (330.0, BQ.STOCK[cfg["bar"]])):
             xb = np.arange(-S.STAY_X, S.STAY_X + 1e-6, h)
             I = math.pi / 64 * (sec["od"] ** 4 - (sec["od"] - 2 * sec["t"]) ** 4)
             bm = pl.add_beam(S.Beam(np.c_[xb, np.full_like(xb, zb)], E * I, tag=f"bar{zb:.0f}"))
@@ -736,7 +802,7 @@ def spreader_b(cfg: dict | None = None, h: float = 4.0, log=print) -> dict:
             x, z = nxy[n]
             g = max(float(gap[n]), 0.0)
             hit = None
-            for zb, rb in ((120.0, 12.7), (330.0, 9.525)):
+            for zb, rb in ((cfg["rung_z"][0], 12.7), (cfg["rung_z"][1], 12.7), (330.0, 9.525)):
                 if abs(z - zb) <= rb and abs(x) <= 115.0 - R_st:
                     hit = zb
             if hit is not None:

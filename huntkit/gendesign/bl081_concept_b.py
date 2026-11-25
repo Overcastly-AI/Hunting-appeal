@@ -61,6 +61,11 @@ STOCK = dict(B80.STOCK)
 STOCK["t1000_065"] = {"desc": '1" OD x .065" 6061-T6 drawn tube', "od": 1.0 * IN, "t": 0.065 * IN,
                       "usd": 12.57, "len_in": 48,
                       "src": "Speedy Metals p-4588 (12 in 5.24, 24 in 7.85, 48 in 12.57, 72 in 15.71; read 2026-11-25)"}
+STOCK["t1250_125"] = {"desc": '1-1/4" OD x .125" 6061-T6 tube (ID 1.000")', "od": 1.25 * IN, "t": 0.125 * IN,
+                      "usd": 15.0, "len_in": 12, "src": "ASSUMPTION SHELL-PRICE: 12 in about USD 15 (Speedy-class list, "
+                      "no cited listing read); bore = 1 in, so a sawn half is a conforming clamp shell"}
+CRUSH_SLEEVE = {"od": 7.9, "id": 5.5, "src": "BL-082 ASSUMPTION CRUSH-SLEEVE (5.5 x 7.9 mm Al or steel tube cut to the "
+                "tube ID span); booked as 5/16 in x .035 6061 tube offcut, ASSUMPTION SLEEVE-PRICE USD 3 per frame"}
 PRICE = dict(B80.PRICE_LENGTHS)
 PRICE["t1000_065"] = {12: 5.24, 18: 6.73, 24: 7.85, 36: 10.47, 48: 12.57, 60: 14.28, 72: 15.71}
 PRICE["t1000_049"] = {12: 14.40, 18: 18.51, 24: 21.60, 36: 28.80, 48: 34.56, 60: 39.27, 72: 43.20}
@@ -113,26 +118,58 @@ def bl082_records() -> dict:
     return out
 
 
-def fat_allow_local(kt: float = 1.0) -> float:
-    """Allowable LOCAL peak stress (R 0, 1e5 cycles) on the BL-080 basis: Basquin through 0.9 Su at 1e3 and the
-    record fatigue limit at 5e8 (S-basis scaled), Goodman on the mean. With kt 1 this is the smooth limit the
-    Kf-corrected local stress is compared with."""
-    return B80.metal_fatigue_allow("alu_6061_t6", kt)
+def sn_6061() -> dict:
+    """BL-082 6061-T6 fatigue basis (data/materials/metals/alu_6061_t6.yaml): Yahr (ORNL 1993) mean curve
+    Sa = C / sqrt(N) + floor, fully reversed; modified Goodman on Su 290 (the conservative choice: Yahr notes Gerber fits
+    aluminium better; Goodman is kept because the curve is a MEAN curve with no scatter factor); notch q 1 (Kf = Kt,
+    Bennett & Weinberg 1954); no preload credit in bolted tube joints (BJ-NOCREDIT); anodise 0.7 (ANODISE-FAT)."""
+    from huntkit.materials import load
+    m = load("alu_6061_t6")
+    g = lambda k: float(m.require(k))   # noqa: E731
+    return {"C": g("sn_fit_coeff_mpa"), "floor": g("sn_fit_floor_mpa"), "Su": g("goodman_ultimate_mpa"),
+            "q": g("notch_sensitivity_design_ratio"), "anodise": g("anodize_fatigue_knockdown_ratio"),
+            "smax_r0_1e5": g("fatigue_smax_1e5_r0_goodman_mpa")}
+
+
+ANODISED_HOLES = False      # recommendation: holes and clamp zones bare (or thin Type II); True applies ANODISE-FAT 0.7
+
+
+def fat_allow_local(kt: float = 1.0, N: float = 1e5) -> float:
+    """Allowable max stress at R 0 (0 -> peak) for N cycles: Goodman on the Yahr mean curve, S_max = 2 Sf Su / (Su + Sf),
+    divided by Kf = Kt (q 1). With kt 1 this is the smooth limit the local (FE, Kt-including) peak is compared with:
+    190.9 MPa at 1e5 (record fatigue_smax_1e5_r0_goodman_mpa)."""
+    d = sn_6061()
+    Sf = d["C"] / math.sqrt(N) + d["floor"]
+    smax = 2 * Sf * d["Su"] / (d["Su"] + Sf)
+    if ANODISED_HOLES:
+        smax *= d["anodise"]
+    return smax / kt
 
 
 def notch_q(r_mm: float) -> float:
-    """Peterson notch sensitivity q = 1 / (1 + a / r), a 0.635 mm for aluminium alloys."""
-    return 1.0 / (1.0 + PETERSON_A_AL / r_mm)
+    """BL-082: 6061-T6 is fully notch sensitive at these radii, design q = 1 (Kf = Kt)."""
+    return sn_6061()["q"]
+
+
+def tube_props() -> dict:
+    """BL-082 tube record: ring crush / hoop limits and wet friction (alu_6061_t6_drawn_tube.yaml)."""
+    from huntkit.materials import load
+    m = load("alu_6061_t6_drawn_tube")
+    g = lambda k: float(m.require(k))   # noqa: E731
+    return {"w_yield": g("diametral_first_yield_1x049_n_mm"), "w_collapse": g("diametral_collapse_1x049_n_mm"),
+            "p_hoop_yield": g("hoop_yield_pressure_1x049_mpa"), "p_buckle": g("ring_buckling_pressure_1x049_mpa"),
+            "mu_al_wet": g("alu_6061_wet_cof"), "mu_paht_wet": g("paht_cf_wet_cof"),
+            "ship_base": g("ship_ground_base_estimate_usd")}
 
 
 # ----------------------------------------------------------------------------- design (B81)
 HOLE_D = 5.3                # M5 through-bolt, drilled 5.2 then reamed / 5.3 jig bush (ISO 273 fine)
 CFG0 = {
-    "stay": "t1000_049", "ubar": "t1000_065", "bar": "t750_035", "ctube": "t1000_049",
+    "stay": "t1000_065", "ubar": "t1000_065", "bar": "t750_035", "ctube": "t1000_065",
     "gusset_t": SHEET_090["t"], "gusset_w": 38.1,
     "stay_bolt_z": (105.0, 135.0), "ct_bolt_x": (90.0, 62.0), "rung_z": (90.0, 150.0), "tie_x": 22.0,
-    "post_len": 80.0, "clamp_len": 50.0, "clamp_preload_n": 0.45 * 450.0 * 20.1, "preload_retention": 0.5,
-    "mu": 0.20, "bush_len": 70.0, "bush_contact_deg": 30.0, "leg_clear_mm": 0.40,
+    "post_len": 80.0, "clamp_len": 50.0, "clamp_preload_n": 2600.0, "clamp_preload_upper_n": 2000.0, "backer_t": 0.25 * IN, "backer_len": 55.0,
+    "mu": 0.15, "preload_retention": 0.9, "shell": "t1250_125", "bush_len": 70.0, "bush_contact_deg": 30.0, "leg_clear_mm": 0.50,
 }
 Y_MOUNT = -48.55            # Ti mount face (hip_mount.FACE_Y)
 HIP_STAND = 21.0            # pin load stand-off from the mount face (h1_closeout.HIP_STAND)
@@ -300,7 +337,7 @@ def build(cfg: dict | None = None, torso: float = 19.0, rigid: bool = False) -> 
                                  "material": "alu_6061_t6", "group": "lumbar_cross_tube", "ref": [0.0, 0.0, 1.0]})
     # ---- lumbar gussets: plate pair on the stay (z rung_z[0] .. rung_z[1]) with an arm along each rung
     t, w = cfg["gusset_t"], cfg["gusset_w"]
-    d = R_st + 1.0 + t / 2
+    d = R_st + t / 2              # plates on the tube crowns (no shim: BL-082, nothing printed under preload)
     gs = _gusset_sec(t, w, d)
     zs1, zs2 = cfg["stay_bolt_z"]
     bolts = []
@@ -540,11 +577,38 @@ def evaluate_global(cfg: dict | None = None, torsos=TORSOS, rigid: bool = False,
 
 
 def t1_deflection(res) -> dict:
-    """T1 measurement: fore-aft deflection of the crown top bar centre relative to the hip pivot at 150 lb (1 g)."""
+    """T1 measurement at 150 lb (1 g static carry): fore-aft movement of the crown top bar centre (a) relative to the
+    hip pin (includes the frame's rotation on the body springs, which the rig's ratcheted shoulder straps also allow)
+    and (b) ELASTIC: relative to the lumbar block (stay nodes z 90..150) extrapolated as a rigid body, i.e. the crown
+    reading minus the lumbar dial-gauge reading and its rotation (load_standard 5.2 records both). (b) is the number
+    to compare with the +/-30 % band."""
     U = res.displacements
+    ids = res.node_ids
+    X = res.coords
+    zs, uy = [], []
+    for tag in "LR":
+        for z in (90.0, 105.0, 120.0, 135.0, 150.0):
+            n = f"S{tag}{z:g}"
+            if n in U:
+                zs.append(X[ids.index(n)][2])
+                uy.append(U[n][1])
+    a, b = np.polyfit(zs, uy, 1)
+    z_tb = X[ids.index("TB1")][2]
+    d_el = float(U["TB1"][1] - (a * z_tb + b))
     d = float(U["TB1"][1] - U["HP"][1])
-    return {"crown_rel_hip_y_mm": d, "band_lo": 0.7 * d, "band_hi": 1.3 * d,
+    return {"crown_rel_hip_y_mm": d, "crown_elastic_mm": d_el, "band_lo": 0.7 * d_el, "band_hi": 1.3 * d_el,
             "crown_abs_mm": float(np.linalg.norm(U["TB1"][:3]))}
+
+
+def t1_all(cfg=None, torsos=TORSOS) -> dict:
+    """T1 numbers for the B81 joints and for rigid joints (static carry, crown-bar couple)."""
+    from huntkit.fea.load_standard import ls1_cases
+    case = [c for c in ls1_cases() if c.name == "static_carry"][0]
+    out = {}
+    for rigid in (False, True):
+        for t in torsos:
+            out.setdefault("rigid" if rigid else "b81", {})[f"{t:g}"] = t1_deflection(case.run(build(cfg, t, rigid)))
+    return out
 
 
 def torsion_stiffness(cfg=None, torso=19.0, rigid=False) -> float:
