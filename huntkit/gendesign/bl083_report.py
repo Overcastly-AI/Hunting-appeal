@@ -109,7 +109,10 @@ def check_b81l(log=print, stay="t1000_049", name="B81-L") -> dict:
                              "od": BQ.IN, "t": 2 * 0.049 * BQ.IN, "usd": 0.0, "len_in": 12, "src": DP.DOUBLER["src"]}
     cfg = {**BQ.CFG0, "stay": stay, "tees": "bands", "band_n": 2, "band_T_upper": D.CFG_D["band_T_upper"]}
     log(f"[{name}] global model")
-    with D._as_b81(builder=D._B81_BUILD, stations_fn=_b81l_stations, role=D._B81_ROLE):
+    # BL-085 (review 9 M7): the doubled-wall stations only where the doubler exists (.049 stays); B81-Lb (.065, no
+    # doubler in its bill) keeps the plain B81 stations
+    st_fn = _b81l_stations if stay == "t1000_049" else D._B81_STATIONS
+    with D._as_b81(builder=D._B81_BUILD, stations_fn=st_fn, role=D._B81_ROLE):
         g = BQ.evaluate_global(cfg, log=log)
         rows = _global_rows(g)
         for f in (BL.hole_rows, BL.gusset_rows, BL.bolt_rows, BL.crush_rows, BL.hip_rows, BL.foot_rows, BL.bushing_rows,

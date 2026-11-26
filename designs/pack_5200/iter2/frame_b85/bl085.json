@@ -1,0 +1,2110 @@
+{
+ "ticket": "BL-085",
+ "date": "2026-11-25",
+ "design": "B85 = B81 + BL-085 tees",
+ "cfg": {
+  "stay_len": 545.0,
+  "stay_ext": 15.0,
+  "shell_len": 100.0,
+  "shell_top_z": 530.0,
+  "free_above": 15.0,
+  "bolt_pairs": 2,
+  "Fb_nom": 1500.0,
+  "scatter": 0.3,
+  "retention": 0.9,
+  "mu": 0.15,
+  "torque_nm": 1.5,
+  "K_nut": 0.2,
+  "backer_len_upper": 80.0,
+  "backer_len_lower": 55.0,
+  "backer_t": 4.762499999999999,
+  "backer_w": 25.4,
+  "bar_bolt_pitch": 16.0,
+  "bar_bolt_edge": 10.0,
+  "spacer_t": 3.2,
+  "im3_width": 28.0,
+  "saddle_len": 40.0,
+  "saddle_wall": 1.5,
+  "band_torque_nm": 1.5,
+  "finish": "bare",
+  "fret_metal": 0.6,
+  "fret_poly": 0.85,
+  "kt_clamp_edge": 2.0,
+  "kt_saddle": 1.15
+ },
+ "basis": {
+  "sn": {
+   "mean": 142.28661824157797,
+   "design": 71.14330912078898,
+   "Su": 290.0,
+   "anodise": 0.7
+  },
+  "fret_metal": 0.6,
+  "fret_poly": 0.85,
+  "scatter": 0.3,
+  "finish": "bare"
+ },
+ "rows": [
+  {
+   "item": "G",
+   "row": "stays: member strength (beam, all cases incl. C6p)",
+   "kind": "strength",
+   "value": 2.614975911461344,
+   "allow": 1.5,
+   "margin": 1.7433172743075627,
+   "basis": "SL330-SL374.3 tall_load_posts|crown_bar|23"
+  },
+  {
+   "item": "G",
+   "row": "bars: member strength (beam, all cases incl. C6p)",
+   "kind": "strength",
+   "value": 1.291447666444476,
+   "allow": 1.0,
+   "margin": 1.291447666444476,
+   "basis": "UB1-UBhp15 hipbelt_off_abuse|crown_bar|15"
+  },
+  {
+   "item": "G",
+   "row": "lumbar rungs: member strength (beam, all cases incl. C6p)",
+   "kind": "strength",
+   "value": 4.817598022359088,
+   "allow": 1.5,
+   "margin": 3.2117320149060586,
+   "basis": "R155p30-R155p62 drop_2p5g|crown_bar|15"
+  },
+  {
+   "item": "G",
+   "row": "hip post (2 angles): member strength (beam, all cases incl. C6p)",
+   "kind": "strength",
+   "value": 5.134514935526825,
+   "allow": 1.5,
+   "margin": 3.4230099570178836,
+   "basis": "PO155-TPL155 meat_straps|crown_bar|23"
+  },
+  {
+   "item": "G",
+   "row": "hip ties (spacer columns): member strength (beam, all cases incl. C6p)",
+   "kind": "strength",
+   "value": 3.475621067795847,
+   "allow": 1.5,
+   "margin": 2.317080711863898,
+   "basis": "tie_L155 meat_straps|crown_bar|23"
+  },
+  {
+   "item": "G",
+   "row": "frame buckling eigenvalue / (1.5 x case factor), incl. C6p",
+   "kind": "strength",
+   "value": 5.1897476232977615,
+   "allow": null,
+   "margin": 2.3065544992434495,
+   "basis": "side_hill_torsion|crown_bar|15"
+  },
+  {
+   "item": "3",
+   "row": "stay z105 gusset bolt L: static (bearing / net section)",
+   "kind": "strength",
+   "value": 58.15805319318274,
+   "allow": 386.0,
+   "margin": 2.882383890910095,
+   "basis": "bearing 58 MPa vs 386 (AA e/D 2), net-section VM 84 vs S-basis Fy 241; drop_2p5g|strap_upper|15"
+  },
+  {
+   "item": "3",
+   "row": "stay z105 gusset bolt L: fatigue 1e5 x 0-1.6 g",
+   "kind": "fatigue",
+   "value": 140.99844039286197,
+   "allow": 190.906299426545,
+   "margin": 1.3539603622183725,
+   "basis": "solid FE bore peak 141 MPa (Kt_eff 4.71 on 30), q 1.00 -> 141 vs smooth R0 191; static_carry|strap_upper|15"
+  },
+  {
+   "item": "3",
+   "row": "stay z135 gusset bolt L: static (bearing / net section)",
+   "kind": "strength",
+   "value": 40.52276762832992,
+   "allow": 386.0,
+   "margin": 1.9461797950430269,
+   "basis": "bearing 41 MPa vs 386 (AA e/D 2), net-section VM 124 vs S-basis Fy 241; drop_2p5g|strap_upper|23"
+  },
+  {
+   "item": "3",
+   "row": "stay z135 gusset bolt L: fatigue 1e5 x 0-1.6 g",
+   "kind": "fatigue",
+   "value": 181.18095412632866,
+   "allow": 190.906299426545,
+   "margin": 1.0536775255827129,
+   "basis": "solid FE bore peak 181 MPa (Kt_eff 3.34 on 54), q 1.00 -> 181 vs smooth R0 191; static_carry|strap_upper|23"
+  },
+  {
+   "item": "7",
+   "row": "stay z60 hinge pin L: static (bearing / net section)",
+   "kind": "strength",
+   "value": 58.21514690924884,
+   "allow": 386.0,
+   "margin": 4.545635137309737,
+   "basis": "bearing 58 MPa vs 386 (AA e/D 2), net-section VM 53 vs S-basis Fy 241; single_stay_setdown|crown_bar|15"
+  },
+  {
+   "item": "7",
+   "row": "stay z60 hinge pin L: fatigue 1e5 x 0-1.6 g",
+   "kind": "fatigue",
+   "value": 39.646576441469705,
+   "allow": 190.906299426545,
+   "margin": 4.815202636938405,
+   "basis": "solid FE bore peak 40 MPa (Kt_eff 6.46 on 6), q 1.00 -> 40 vs smooth R0 191; static_carry|crown_bar|23"
+  },
+  {
+   "item": "5",
+   "row": "upper bar x-15 pawl-housing bolt: static (bearing / net section)",
+   "kind": "strength",
+   "value": 24.291632374027465,
+   "allow": 386.0,
+   "margin": 1.2858670222476802,
+   "basis": "bearing 24 MPa vs 386 (AA e/D 2), net-section VM 187 vs S-basis Fy 241; hipbelt_off_abuse|crown_bar|15"
+  },
+  {
+   "item": "5",
+   "row": "upper bar x-15 pawl-housing bolt: fatigue 1e5 x 0-1.6 g",
+   "kind": "fatigue",
+   "value": 22.451292073381968,
+   "allow": 190.906299426545,
+   "margin": 8.50313197131677,
+   "basis": "solid FE bore peak 22 MPa (Kt_eff 3.29 on 7), q 1.00 -> 22 vs smooth R0 191; static_carry|strap_upper|15"
+  },
+  {
+   "item": "2",
+   "row": "rung z85 x-90 gusset bolt: static (bearing / net section)",
+   "kind": "strength",
+   "value": 15.795915708472513,
+   "allow": 386.0,
+   "margin": 5.946009905096551,
+   "basis": "bearing 16 MPa vs 386 (AA e/D 2), net-section VM 41 vs S-basis Fy 241; meat_straps|crown_bar|23"
+  },
+  {
+   "item": "2",
+   "row": "rung z85 x-90 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "kind": "fatigue",
+   "value": 52.93735470450379,
+   "allow": 190.906299426545,
+   "margin": 3.606268210646028,
+   "basis": "solid FE bore peak 53 MPa (Kt_eff 3.68 on 14), q 1.00 -> 53 vs smooth R0 191; static_carry|crown_bar|23"
+  },
+  {
+   "item": "2",
+   "row": "rung z85 x-62 gusset bolt: static (bearing / net section)",
+   "kind": "strength",
+   "value": 34.78829031789448,
+   "allow": 386.0,
+   "margin": 4.954044926078967,
+   "basis": "bearing 35 MPa vs 386 (AA e/D 2), net-section VM 49 vs S-basis Fy 241; side_hill_torsion|strap_upper|15"
+  },
+  {
+   "item": "2",
+   "row": "rung z85 x-62 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "kind": "fatigue",
+   "value": 63.174760529319116,
+   "allow": 190.906299426545,
+   "margin": 3.0218761072777833,
+   "basis": "solid FE bore peak 63 MPa (Kt_eff 3.73 on 17), q 1.00 -> 63 vs smooth R0 191; static_carry|crown_bar|23"
+  },
+  {
+   "item": "2",
+   "row": "rung z85 x-30 hip tie bolt: static (bearing / net section)",
+   "kind": "strength",
+   "value": 22.417210690245177,
+   "allow": 386.0,
+   "margin": 3.3671358187482014,
+   "basis": "bearing 22 MPa vs 386 (AA e/D 2), net-section VM 72 vs S-basis Fy 241; meat_straps|crown_bar|23"
+  },
+  {
+   "item": "2",
+   "row": "rung z85 x-30 hip tie bolt: fatigue 1e5 x 0-1.6 g",
+   "kind": "fatigue",
+   "value": 129.17427863239539,
+   "allow": 190.906299426545,
+   "margin": 1.4778971591536951,
+   "basis": "solid FE bore peak 129 MPa (Kt_eff 5.28 on 24), q 1.00 -> 129 vs smooth R0 191; static_carry|crown_bar|23"
+  },
+  {
+   "item": "2",
+   "row": "rung z155 x-90 gusset bolt: static (bearing / net section)",
+   "kind": "strength",
+   "value": 16.797442616391297,
+   "allow": 386.0,
+   "margin": 5.942710263665852,
+   "basis": "bearing 17 MPa vs 386 (AA e/D 2), net-section VM 41 vs S-basis Fy 241; meat_straps|crown_bar|23"
+  },
+  {
+   "item": "2",
+   "row": "rung z155 x-90 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "kind": "fatigue",
+   "value": 54.95438031852514,
+   "allow": 190.906299426545,
+   "margin": 3.4739050521545125,
+   "basis": "solid FE bore peak 55 MPa (Kt_eff 3.81 on 14), q 1.00 -> 55 vs smooth R0 191; static_carry|strap_upper|23"
+  },
+  {
+   "item": "2",
+   "row": "rung z155 x-62 gusset bolt: static (bearing / net section)",
+   "kind": "strength",
+   "value": 31.731677333584347,
+   "allow": 386.0,
+   "margin": 4.355643488115987,
+   "basis": "bearing 32 MPa vs 386 (AA e/D 2), net-section VM 55 vs S-basis Fy 241; drop_2p5g|crown_bar|15"
+  },
+  {
+   "item": "2",
+   "row": "rung z155 x-62 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "kind": "fatigue",
+   "value": 75.40383110547376,
+   "allow": 190.906299426545,
+   "margin": 2.531785144437928,
+   "basis": "solid FE bore peak 75 MPa (Kt_eff 3.35 on 23), q 1.00 -> 75 vs smooth R0 191; static_carry|crown_bar|15"
+  },
+  {
+   "item": "2",
+   "row": "rung z155 x-30 hip tie bolt: static (bearing / net section)",
+   "kind": "strength",
+   "value": 23.582528095252922,
+   "allow": 386.0,
+   "margin": 2.754929129429526,
+   "basis": "bearing 24 MPa vs 386 (AA e/D 2), net-section VM 87 vs S-basis Fy 241; drop_2p5g|crown_bar|15"
+  },
+  {
+   "item": "2",
+   "row": "rung z155 x-30 hip tie bolt: fatigue 1e5 x 0-1.6 g",
+   "kind": "fatigue",
+   "value": 160.6911136482815,
+   "allow": 190.906299426545,
+   "margin": 1.1880327112823308,
+   "basis": "solid FE bore peak 161 MPa (Kt_eff 4.41 on 36), q 1.00 -> 161 vs smooth R0 191; static_carry|crown_bar|15"
+  },
+  {
+   "item": "3",
+   "row": "stay z105 gusset bolt R: static (bearing / net section)",
+   "kind": "strength",
+   "value": 58.158056450638114,
+   "allow": 386.0,
+   "margin": 2.8823839835333875,
+   "basis": "bearing 58 MPa vs 386 (AA e/D 2), net-section VM 84 vs S-basis Fy 241; drop_2p5g|strap_upper|15"
+  },
+  {
+   "item": "3",
+   "row": "stay z105 gusset bolt R: fatigue 1e5 x 0-1.6 g",
+   "kind": "fatigue",
+   "value": 140.13499539440454,
+   "allow": 190.906299426545,
+   "margin": 1.3623028201431524,
+   "basis": "solid FE bore peak 140 MPa (Kt_eff 4.68 on 30), q 1.00 -> 140 vs smooth R0 191; static_carry|strap_upper|15"
+  },
+  {
+   "item": "3",
+   "row": "stay z135 gusset bolt R: static (bearing / net section)",
+   "kind": "strength",
+   "value": 40.52276377974779,
+   "allow": 386.0,
+   "margin": 1.9461798301172955,
+   "basis": "bearing 41 MPa vs 386 (AA e/D 2), net-section VM 124 vs S-basis Fy 241; drop_2p5g|strap_upper|23"
+  },
+  {
+   "item": "3",
+   "row": "stay z135 gusset bolt R: fatigue 1e5 x 0-1.6 g",
+   "kind": "fatigue",
+   "value": 179.65892901809463,
+   "allow": 190.906299426545,
+   "margin": 1.0626040156752663,
+   "basis": "solid FE bore peak 180 MPa (Kt_eff 3.32 on 54), q 1.00 -> 180 vs smooth R0 191; static_carry|strap_upper|23"
+  },
+  {
+   "item": "7",
+   "row": "stay z60 hinge pin R: static (bearing / net section)",
+   "kind": "strength",
+   "value": 58.21514690924884,
+   "allow": 386.0,
+   "margin": 6.630576756968982,
+   "basis": "bearing 58 MPa vs 386 (AA e/D 2), net-section VM 16 vs S-basis Fy 241; static_carry|crown_bar|15"
+  },
+  {
+   "item": "7",
+   "row": "stay z60 hinge pin R: fatigue 1e5 x 0-1.6 g",
+   "kind": "fatigue",
+   "value": 44.23339969412929,
+   "allow": 190.906299426545,
+   "margin": 4.315885750284808,
+   "basis": "solid FE bore peak 44 MPa (Kt_eff 4.24 on 10), q 1.00 -> 44 vs smooth R0 191; static_carry|strap_upper|15"
+  },
+  {
+   "item": "5",
+   "row": "upper bar x+15 pawl-housing bolt: static (bearing / net section)",
+   "kind": "strength",
+   "value": 24.291632374027465,
+   "allow": 386.0,
+   "margin": 1.2858670687167466,
+   "basis": "bearing 24 MPa vs 386 (AA e/D 2), net-section VM 187 vs S-basis Fy 241; hipbelt_off_abuse|crown_bar|15"
+  },
+  {
+   "item": "5",
+   "row": "upper bar x+15 pawl-housing bolt: fatigue 1e5 x 0-1.6 g",
+   "kind": "fatigue",
+   "value": 22.484373094123967,
+   "allow": 190.906299426545,
+   "margin": 8.490621403023958,
+   "basis": "solid FE bore peak 22 MPa (Kt_eff 3.29 on 7), q 1.00 -> 22 vs smooth R0 191; static_carry|strap_upper|15"
+  },
+  {
+   "item": "2",
+   "row": "rung z85 x+90 gusset bolt: static (bearing / net section)",
+   "kind": "strength",
+   "value": 15.795915404076096,
+   "allow": 386.0,
+   "margin": 5.946009979474533,
+   "basis": "bearing 16 MPa vs 386 (AA e/D 2), net-section VM 41 vs S-basis Fy 241; meat_straps|crown_bar|23"
+  },
+  {
+   "item": "2",
+   "row": "rung z85 x+90 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "kind": "fatigue",
+   "value": 54.68283430848942,
+   "allow": 190.906299426545,
+   "margin": 3.49115589637436,
+   "basis": "solid FE bore peak 55 MPa (Kt_eff 3.80 on 14), q 1.00 -> 55 vs smooth R0 191; static_carry|crown_bar|23"
+  },
+  {
+   "item": "2",
+   "row": "rung z85 x+62 gusset bolt: static (bearing / net section)",
+   "kind": "strength",
+   "value": 30.515317183488932,
+   "allow": 386.0,
+   "margin": 4.961049258963019,
+   "basis": "bearing 31 MPa vs 386 (AA e/D 2), net-section VM 49 vs S-basis Fy 241; meat_straps|crown_bar|23"
+  },
+  {
+   "item": "2",
+   "row": "rung z85 x+62 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "kind": "fatigue",
+   "value": 75.50939520927385,
+   "allow": 190.906299426545,
+   "margin": 2.528245642776628,
+   "basis": "solid FE bore peak 76 MPa (Kt_eff 4.45 on 17), q 1.00 -> 76 vs smooth R0 191; static_carry|crown_bar|23"
+  },
+  {
+   "item": "2",
+   "row": "rung z85 x+30 hip tie bolt: static (bearing / net section)",
+   "kind": "strength",
+   "value": 22.417210656920503,
+   "allow": 386.0,
+   "margin": 3.367135810677644,
+   "basis": "bearing 22 MPa vs 386 (AA e/D 2), net-section VM 72 vs S-basis Fy 241; meat_straps|crown_bar|23"
+  },
+  {
+   "item": "2",
+   "row": "rung z85 x+30 hip tie bolt: fatigue 1e5 x 0-1.6 g",
+   "kind": "fatigue",
+   "value": 129.88655410754998,
+   "allow": 190.906299426545,
+   "margin": 1.4697926258669456,
+   "basis": "solid FE bore peak 130 MPa (Kt_eff 5.31 on 24), q 1.00 -> 130 vs smooth R0 191; static_carry|crown_bar|23"
+  },
+  {
+   "item": "2",
+   "row": "rung z155 x+90 gusset bolt: static (bearing / net section)",
+   "kind": "strength",
+   "value": 16.797442292438006,
+   "allow": 386.0,
+   "margin": 5.94271025121672,
+   "basis": "bearing 17 MPa vs 386 (AA e/D 2), net-section VM 41 vs S-basis Fy 241; meat_straps|crown_bar|23"
+  },
+  {
+   "item": "2",
+   "row": "rung z155 x+90 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "kind": "fatigue",
+   "value": 55.39458564481323,
+   "allow": 190.906299426545,
+   "margin": 3.4462988973439526,
+   "basis": "solid FE bore peak 55 MPa (Kt_eff 3.84 on 14), q 1.00 -> 55 vs smooth R0 191; static_carry|strap_upper|23"
+  },
+  {
+   "item": "2",
+   "row": "rung z155 x+62 gusset bolt: static (bearing / net section)",
+   "kind": "strength",
+   "value": 79.14962665864073,
+   "allow": 386.0,
+   "margin": 4.346240319059603,
+   "basis": "bearing 79 MPa vs 386 (AA e/D 2), net-section VM 55 vs S-basis Fy 241; side_hill_torsion|crown_bar|15"
+  },
+  {
+   "item": "2",
+   "row": "rung z155 x+62 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "kind": "fatigue",
+   "value": 83.47857732999475,
+   "allow": 190.906299426545,
+   "margin": 2.2868897091032516,
+   "basis": "solid FE bore peak 83 MPa (Kt_eff 3.70 on 23), q 1.00 -> 83 vs smooth R0 191; static_carry|crown_bar|15"
+  },
+  {
+   "item": "2",
+   "row": "rung z155 x+30 hip tie bolt: static (bearing / net section)",
+   "kind": "strength",
+   "value": 23.582528637553114,
+   "allow": 386.0,
+   "margin": 2.7549291200961843,
+   "basis": "bearing 24 MPa vs 386 (AA e/D 2), net-section VM 87 vs S-basis Fy 241; drop_2p5g|crown_bar|15"
+  },
+  {
+   "item": "2",
+   "row": "rung z155 x+30 hip tie bolt: fatigue 1e5 x 0-1.6 g",
+   "kind": "fatigue",
+   "value": 159.75134764733303,
+   "allow": 190.906299426545,
+   "margin": 1.195021527129709,
+   "basis": "solid FE bore peak 160 MPa (Kt_eff 4.38 on 36), q 1.00 -> 160 vs smooth R0 191; static_carry|crown_bar|15"
+  },
+  {
+   "item": "1",
+   "row": "lumbar L-gussets (0.090 in x 38.1 mm): plate strength",
+   "kind": "strength",
+   "value": 26.74452315702068,
+   "allow": 241.0,
+   "margin": 9.011190761751731,
+   "basis": "per-plate axial + in-plane + couple + torsion-as-differential-bending on the net section (w - d)/w 0.86; GRs85-GRs105 drop_2p5g|crown_bar|15"
+  },
+  {
+   "item": "1",
+   "row": "lumbar L-gussets: fatigue at the bolt holes",
+   "kind": "fatigue",
+   "value": 37.62830437426321,
+   "allow": 190.906299426545,
+   "margin": 5.0734760069900995,
+   "basis": "walk plate stress x Kf 3.06 (Heywood Kt 3.06, q 1.00); GRs85-GRs105 static_carry|crown_bar|15"
+  },
+  {
+   "item": "1",
+   "row": "lumbar gussets: bolt bearing in the .090 plate",
+   "kind": "joint",
+   "value": 109.06446550657203,
+   "allow": 366.7,
+   "margin": 3.3622316700199963,
+   "basis": "(F / 2 + T / 2R) / (d t), e/D 1.9 -> 386 x 0.95; lc_R85_62 side_hill_torsion|strap_upper|15"
+  },
+  {
+   "item": "1",
+   "row": "M5 A2-70 through-bolts: shear at each wall (gussets, hip ties)",
+   "kind": "joint",
+   "value": 98.44746668451037,
+   "allow": 270.0,
+   "margin": 2.742579459817441,
+   "basis": "(F/2 + T/2R) on the minor-diameter area, 0.6 x 450 MPa proof; lc_R85_62 side_hill_torsion|strap_upper|15"
+  },
+  {
+   "item": "1",
+   "row": "crush sleeve end on the tube wall (M5 2.6 kN preload)",
+   "kind": "strength",
+   "value": 102.93603284550444,
+   "allow": 386.0,
+   "margin": 3.7499016557141185,
+   "basis": "sleeve end annulus 25 mm2; without the sleeve 2.6 kN over a 20 mm saddle is 130 N/mm vs collapse 30.8 N/mm (BL-082): sleeves are mandatory"
+  },
+  {
+   "item": "1",
+   "row": "crush sleeve column (Al, 22 mm long)",
+   "kind": "strength",
+   "value": 102.93603284550444,
+   "allow": 241.0,
+   "margin": 2.341259842039126,
+   "basis": "axial"
+  },
+  {
+   "item": "6",
+   "row": "Ti mount on the front angle: 6 x M5 A2 tension (tipping)",
+   "kind": "joint",
+   "value": 319.8,
+   "allow": 3790.0,
+   "margin": 11.851156973108193,
+   "basis": "h1_closeout.tip_tension on the 6 used positions, V 1629 N (global, factored) + H 1239 N; capacity proof x As - preload 2.6 kN"
+  },
+  {
+   "item": "6",
+   "row": "front angle leg: plate bending under the mount tipping couple",
+   "kind": "strength",
+   "value": 127.10584933364993,
+   "allow": 241.0,
+   "margin": 1.896057508473749,
+   "basis": "M_net 28.0 N m shared by the web corner and the key-bolt row (1/2 each), strip 66 mm (2 holes out) x 3.175"
+  },
+  {
+   "item": "6",
+   "row": "front angle leg: fatigue at the mount holes",
+   "kind": "fatigue",
+   "value": 132.46129906893964,
+   "allow": 190.906299426545,
+   "margin": 1.4412232159008767,
+   "basis": "walk M_net 14.6 N m, Kf from Kt 2"
+  },
+  {
+   "item": "6",
+   "row": "front leg + backer strip at the tie bolts (plate bending)",
+   "kind": "strength",
+   "value": 45.16930722994253,
+   "allow": 241.0,
+   "margin": 5.335481431520432,
+   "basis": "tie axial 783 N (meat_straps|crown_bar|23) x 4.9 mm from the stem, two 1/8 in layers 25.4 wide (no composite action)"
+  },
+  {
+   "item": "6",
+   "row": "front leg + backer strip at the tie bolts: fatigue",
+   "kind": "fatigue",
+   "value": 47.27320979517562,
+   "allow": 190.906299426545,
+   "margin": 4.038361267485323,
+   "basis": "walk tie 410 N, Kf 2.00 (Kt 2)"
+  },
+  {
+   "item": "6",
+   "row": "tie bolts (M5 A2) tension",
+   "kind": "joint",
+   "value": 782.7753050050035,
+   "allow": 3790.0,
+   "margin": 4.841747019568756,
+   "basis": "proof x As - preload 2.6 kN"
+  },
+  {
+   "item": "6",
+   "row": "tie spacer columns (3/4 x .035): fatigue, Kt 2 at the clamped ends",
+   "kind": "fatigue",
+   "value": 104.59223017691765,
+   "allow": 190.906299426545,
+   "margin": 1.8252436065626212,
+   "basis": "tie_L155 static_carry|crown_bar|23"
+  },
+  {
+   "item": "6",
+   "row": "hip post (2 angles): fatigue at the mount / tie holes",
+   "kind": "fatigue",
+   "value": 18.381593784436117,
+   "allow": 190.906299426545,
+   "margin": 10.385731600063282,
+   "basis": "walk, Kf 2.00; HM-PO155 static_carry|crown_bar|23"
+  },
+  {
+   "item": "6",
+   "row": "tie spacer end on the rung wall (Al on Al, coped)",
+   "kind": "strength",
+   "value": 66.6932312725083,
+   "allow": 386.0,
+   "margin": 5.787693782938862,
+   "basis": "tie axial + M5 preload on the spacer end annulus; no printed part in the preload path (BL-082)"
+  },
+  {
+   "item": "1",
+   "row": "lumbar saddle plug (printed): bearing on the stay",
+   "kind": "strength",
+   "value": 2.836399696613294,
+   "allow": 19.66,
+   "margin": 6.931322134702789,
+   "basis": "1056 N factored (plug link) on a 140 deg x 20 mm saddle, 60 % effective"
+  },
+  {
+   "item": "1",
+   "row": "lumbar saddle plug: shear in the plug body (in the layer plane)",
+   "kind": "strength",
+   "value": 2.753987601213966,
+   "allow": 11.35,
+   "margin": 4.121296695379778,
+   "basis": "printed with the plug axis in the layer plane: in-plane shear, interlayer value 11.35 used (lower)"
+  },
+  {
+   "item": "1",
+   "row": "lumbar saddle plug: bearing fatigue",
+   "kind": "fatigue",
+   "value": 1.0648964751401107,
+   "allow": 5.898,
+   "margin": 5.5385665533581445,
+   "basis": "walk plug force, 0.30 x 19.66"
+  },
+  {
+   "item": "7",
+   "row": "foot cup floor under the 38 x 38 6061 foot plate, C4 set-down",
+   "kind": "strength",
+   "value": 1.3781639696612724,
+   "allow": 19.66,
+   "margin": 14.26535625135525,
+   "basis": "2001 N (68 kg x 2.0 g x 1.5) on 1452 mm2, layers in compression"
+  },
+  {
+   "item": "7",
+   "row": "tube rim on the foot plate (Al on Al), C4",
+   "kind": "strength",
+   "value": 16.240843056064694,
+   "allow": 241.0,
+   "margin": 14.839131144119099,
+   "basis": "rim area pi D t"
+  },
+  {
+   "item": "7",
+   "row": "hinge pin z 60 (5 mm 7075-T6), bending",
+   "kind": "strength",
+   "value": 269.81270122064626,
+   "allow": 462.0,
+   "margin": 1.712298931480574,
+   "basis": "bag-on hinge 1019 N factored (attach_system factored_n.hinge), simply supported 22 mm, eye load spread over 18 mm; 7075-T6 S-basis yield 462"
+  },
+  {
+   "item": "7",
+   "row": "foot cup outer cheek: pin bearing (PAHT, compression)",
+   "kind": "strength",
+   "value": 8.49,
+   "allow": 19.66,
+   "margin": 2.315665488810365,
+   "basis": "F/2 on 5 x 12 mm vs 19.66 (bearing, printed cheek layers in compression)"
+  },
+  {
+   "item": "7",
+   "row": "foot cup outer cheek: pin bearing fatigue",
+   "kind": "fatigue",
+   "value": 4.5280000000000005,
+   "allow": 5.898,
+   "margin": 1.30256183745583,
+   "basis": "walk 543 N, 0.30 x 19.66"
+  },
+  {
+   "item": "7",
+   "row": "US1 float cradle on the hinge pin (489 N factored)",
+   "kind": "joint",
+   "value": 489.0,
+   "allow": 1018.8,
+   "margin": 2.083435582822086,
+   "basis": "same pin and cheek as the 1019 N hinge case (load_standard 4.3 float cradle)"
+  },
+  {
+   "item": "7",
+   "row": "T4c 122 cm drop on one foot: stay end axial (estimate)",
+   "kind": "strength",
+   "value": 145.71694153761922,
+   "allow": 241.0,
+   "margin": 1.653891424407792,
+   "basis": "F = v sqrt(k m): m 1.6 kg rigid (frame + crown), TPU pad 6 mm + plywood, k 8413 N/mm -> 17.9 kN; test T4c decides (ASSUMPTION PAD / DROP-MASS)"
+  },
+  {
+   "item": "7",
+   "row": "T4c drop: cup floor under the foot plate (estimate)",
+   "kind": "strength",
+   "value": 12.365234852841798,
+   "allow": 47.184,
+   "margin": 3.8158595903381562,
+   "basis": "abuse, no-collapse: compressive crush ~ 2.4 x Z tension hot/wet (ASSUMPTION COMP-Z, PA12-CF compressive / Z-tensile; settled by the CF-1 cup crush coupon)"
+  },
+  {
+   "item": "8",
+   "row": "IM1 z 190 (loop on the stay above the gusset): stay ring + local stress",
+   "kind": "strength",
+   "value": 6.752026409597968,
+   "allow": 241.0,
+   "margin": 35.69298835345487,
+   "basis": "272 N factored (attach_system_results factored_n; IM1 from the C5 load case) as a 25 mm loop on the outer half, solid FE hoop (ring) stress; the beam part is in the stay rows"
+  },
+  {
+   "item": "8",
+   "row": "IM1 z 190 (loop on the stay above the gusset): fatigue",
+   "kind": "fatigue",
+   "value": 7.2021615035711655,
+   "allow": 190.906299426545,
+   "margin": 26.50680623197422,
+   "basis": "walk = factored / 3 x 1.6; Kt 2 on the FE peak (webbing edge)"
+  },
+  {
+   "item": "8",
+   "row": "IM1 z 190 (loop on the stay above the gusset): printed collar in compression",
+   "kind": "strength",
+   "value": 0.451244999752148,
+   "allow": 19.66,
+   "margin": 43.56834981173975,
+   "basis": "vertical friction share (1 - floor 0.5) x P x 3.0 / 6 anchors on a 4 mm collar ring"
+  },
+  {
+   "item": "8",
+   "row": "IM2 z 330 (loop under the mid tee): stay ring + local stress",
+   "kind": "strength",
+   "value": 10.014430783939616,
+   "allow": 241.0,
+   "margin": 24.065271926038722,
+   "basis": "403 N factored (attach_system_results factored_n; IM1 from the C5 load case) as a 25 mm loop on the outer half, solid FE hoop (ring) stress; the beam part is in the stay rows"
+  },
+  {
+   "item": "8",
+   "row": "IM2 z 330 (loop under the mid tee): fatigue",
+   "kind": "fatigue",
+   "value": 10.682059502868926,
+   "allow": 190.906299426545,
+   "margin": 17.87167534268766,
+   "basis": "walk = factored / 3 x 1.6; Kt 2 on the FE peak (webbing edge)"
+  },
+  {
+   "item": "8",
+   "row": "IM2 z 330 (loop under the mid tee): printed collar in compression",
+   "kind": "strength",
+   "value": 0.451244999752148,
+   "allow": 19.66,
+   "margin": 43.56834981173975,
+   "basis": "vertical friction share (1 - floor 0.5) x P x 3.0 / 6 anchors on a 4 mm collar ring"
+  },
+  {
+   "item": "8",
+   "row": "IM3 z 520 (loop under the upper tee, bag-on hook case): stay ring + local stress",
+   "kind": "strength",
+   "value": 35.138658572657945,
+   "allow": 241.0,
+   "margin": 6.858542977719891,
+   "basis": "1415 N factored (attach_system_results factored_n; IM1 from the C5 load case) as a 25 mm loop on the outer half, solid FE hoop (ring) stress; the beam part is in the stay rows"
+  },
+  {
+   "item": "8",
+   "row": "IM3 z 520 (loop under the upper tee, bag-on hook case): fatigue",
+   "kind": "fatigue",
+   "value": 37.48123581083514,
+   "allow": 190.906299426545,
+   "margin": 5.093383270232447,
+   "basis": "walk = factored / 3 x 1.6; Kt 2 on the FE peak (webbing edge)"
+  },
+  {
+   "item": "8",
+   "row": "IM3 z 520 (loop under the upper tee, bag-on hook case): printed collar in compression",
+   "kind": "strength",
+   "value": 0.451244999752148,
+   "allow": 19.66,
+   "margin": 43.56834981173975,
+   "basis": "vertical friction share (1 - floor 0.5) x P x 3.0 / 6 anchors on a 4 mm collar ring"
+  },
+  {
+   "item": "8",
+   "row": "float design / misuse IM3 eye 559 / 1142 N",
+   "kind": "joint",
+   "value": 1142.0,
+   "allow": 1415.1,
+   "margin": 1.2391418563922942,
+   "basis": "inside the bag-on IM3 hook case checked above (load_standard 4.3)"
+  },
+  {
+   "item": "3",
+   "row": "stay at the leg-end bushing (z 171-374): static (ring + beam), corrected beam stress",
+   "kind": "strength",
+   "value": 161.80836852314863,
+   "allow": 241.0,
+   "margin": 1.489416166788197,
+   "basis": "bushing 655 N factored -> hoop 40 MPa; stay beam 138 MPa factored (BL-081 used Fy / sf, 1.5 x low)"
+  },
+  {
+   "item": "3",
+   "row": "stay at the leg-end bushing (z 171-374): fatigue (BL-081 basis, corrected beam stress)",
+   "kind": "fatigue",
+   "value": 155.78673700889263,
+   "allow": 190.906299426545,
+   "margin": 1.2254335837051884,
+   "basis": "walk 317 N -> hoop 19 MPa, Kt 2 x beam walk 73 MPa (B85 global); mean curve"
+  },
+  {
+   "item": "3",
+   "row": "stay at the leg-end bushing (z 171-374): fatigue on the design curve + polymer contact (sensitivity)",
+   "kind": "info",
+   "value": 1.0266885652378979,
+   "allow": 1.0,
+   "margin": 0.9740051987121199,
+   "basis": "R 0 walk Kt 1.15 x 73 + hoop 19 MPa; Sa 60.5; not gated (non-tee row); KF-S runs with the leg + bushing inside to settle it"
+  },
+  {
+   "item": "3",
+   "row": "leg-end bushing (z 171-374): bore ovalisation at limit vs leg clearance",
+   "kind": "joint",
+   "value": 0.03437940545641629,
+   "allow": 1.0,
+   "margin": 29.08718131463115,
+   "basis": "n = 2 diametral change (BL-081 method)"
+  },
+  {
+   "item": "3",
+   "row": "stay at the stay-top bushing (z 475-545): static (ring + beam), corrected beam stress",
+   "kind": "strength",
+   "value": 160.64669841772556,
+   "allow": 241.0,
+   "margin": 1.5001864487331933,
+   "basis": "bushing 1392 N factored -> hoop 96 MPa; stay beam 89 MPa factored (BL-081 used Fy / sf, 1.5 x low)"
+  },
+  {
+   "item": "3",
+   "row": "stay at the stay-top bushing (z 475-545): fatigue (BL-081 basis, corrected beam stress)",
+   "kind": "fatigue",
+   "value": 48.26365911912531,
+   "allow": 190.906299426545,
+   "margin": 3.9554874808672573,
+   "basis": "walk 514 N -> hoop 36 MPa, Kt 2 x beam walk 10 MPa (B85 global); mean curve"
+  },
+  {
+   "item": "3",
+   "row": "stay at the stay-top bushing (z 475-545): fatigue on the design curve + polymer contact (sensitivity)",
+   "kind": "info",
+   "value": 0.4666164558570921,
+   "allow": 1.0,
+   "margin": 2.1430877275066873,
+   "basis": "R 0 walk Kt 1.15 x 10 + hoop 36 MPa; Sa 60.5; not gated (non-tee row); KF-S runs with the leg + bushing inside to settle it"
+  },
+  {
+   "item": "3",
+   "row": "stay-top bushing (z 475-545): bore ovalisation at limit vs leg clearance",
+   "kind": "joint",
+   "value": 0.08534215455007362,
+   "allow": 1.0,
+   "margin": 11.717538715445254,
+   "basis": "n = 2 diametral change (BL-081 method)"
+  },
+  {
+   "item": "4",
+   "row": "spreader sheet first-ply (factored)",
+   "kind": "strength",
+   "value": 0.5111084434459499,
+   "allow": 1.0,
+   "margin": 1.9565319509454568,
+   "basis": "spreader.evaluate(sw110c7d, h 4) on the B81 supports (B81 record; the spreader supports are unchanged)"
+  },
+  {
+   "item": "4",
+   "row": "spreader sheet fatigue (FI <= 0.5 at 1.6 g)",
+   "kind": "fatigue",
+   "value": 0.5759748096129059,
+   "allow": 1.0,
+   "margin": 1.7361870403187731,
+   "basis": "spreader.evaluate(sw110c7d, h 4) on the B81 supports (B81 record; the spreader supports are unchanged)"
+  },
+  {
+   "item": "4",
+   "row": "spreader sandwich local (bone patch)",
+   "kind": "strength",
+   "value": 0.5634214149656378,
+   "allow": 1.0,
+   "margin": 1.7748704139351685,
+   "basis": "spreader.evaluate(sw110c7d, h 4) on the B81 supports (B81 record; the spreader supports are unchanged)"
+  },
+  {
+   "item": "4",
+   "row": "spreader clearance to the skin at the factored case (>= 0 mm)",
+   "kind": "info",
+   "value": 15.060036823345667,
+   "allow": 0.0,
+   "margin": null,
+   "basis": "walk clearance 20.8 mm (>= 3 mm mesh rule); skin peak 14.1 kPa (<= 14) (B81 record; the spreader supports are unchanged)"
+  },
+  {
+   "item": "5",
+   "row": "upper tee slip (axial + torque about the stay), preload lo (4200 N per half)",
+   "kind": "joint",
+   "value": 0.8536299182268119,
+   "allow": 1.0,
+   "margin": 1.1714678441416777,
+   "basis": "mu 0.15 wet Al/Al x pi x P x ret 0.9 = 1781 N / 22.6 N m; worst of every case incl. C6p and the pawl rows: side_hill_torsion|crown_bar|23",
+   "tee": "upper"
+  },
+  {
+   "item": "5",
+   "row": "upper tee slip (axial + torque about the stay), preload nom (6000 N per half)",
+   "kind": "joint",
+   "value": 0.5975409427587683,
+   "allow": 1.0,
+   "margin": 1.673525491630968,
+   "basis": "mu 0.15 wet Al/Al x pi x P x ret 0.9 = 2545 N / 32.3 N m; worst of every case incl. C6p and the pawl rows: side_hill_torsion|crown_bar|23",
+   "tee": "upper"
+  },
+  {
+   "item": "5",
+   "row": "upper tee: stay wall at limit, preload +30 % (clamp + IM3 + bar couple + side + beam)",
+   "kind": "strength",
+   "value": 233.95903596795964,
+   "allow": 241.0,
+   "margin": 1.0300948582853822,
+   "basis": "solid FE hoop 176 MPa (100 mm shells, free end 15 mm above, couple on the jaws 0.88 kN, jaw pressure fit, side 1.14 kN, IM3 1415 N) with the stay beam stress at the tee 89 MPa (side_hill_torsion|strap_upper|23), VM opposite signs",
+   "tee": "upper"
+  },
+  {
+   "item": "5",
+   "row": "upper tee: stay wall fatigue, preload lo (4200 N per half), design curve + fretting",
+   "kind": "fatigue",
+   "value": 0.6811704317605232,
+   "allow": 1.0,
+   "margin": 1.4680613740315238,
+   "basis": "Goodman sa 13.6 / Sa 42.7 (Yahr design 71.1 x fretting 0.6) + sm 105 / 290; hoop 92 -> 99 MPa (fit jaws, closing force 1422 N), Kt 2 x stay beam walk 9.7 MPa (meat_straps|crown_bar|23); on the mean curve without fretting: 2.18",
+   "tee": "upper"
+  },
+  {
+   "item": "5",
+   "row": "upper tee: stay wall fatigue, preload nom (6000 N per half), design curve + fretting",
+   "kind": "fatigue",
+   "value": 0.7688867742507531,
+   "allow": 1.0,
+   "margin": 1.3005816116091433,
+   "basis": "Goodman sa 13.3 / Sa 42.7 (Yahr design 71.1 x fretting 0.6) + sm 133 / 290; hoop 120 -> 127 MPa (fit jaws, closing force 1422 N), Kt 2 x stay beam walk 9.7 MPa (meat_straps|crown_bar|23); on the mean curve without fretting: 1.81",
+   "tee": "upper"
+  },
+  {
+   "item": "5",
+   "row": "upper tee: stay wall fatigue, preload hi (7800 N per half), design curve + fretting",
+   "kind": "fatigue",
+   "value": 0.8629554408140816,
+   "allow": 1.0,
+   "margin": 1.1588083841926247,
+   "basis": "Goodman sa 13.2 / Sa 42.7 (Yahr design 71.1 x fretting 0.6) + sm 161 / 290; hoop 148 -> 155 MPa (fit jaws, closing force 1422 N), Kt 2 x stay beam walk 9.7 MPa (meat_straps|crown_bar|23); on the mean curve without fretting: 1.55",
+   "tee": "upper"
+  },
+  {
+   "item": "5",
+   "row": "upper tee: crown-leg radial clearance at +30 % preload + limit loads",
+   "kind": "joint",
+   "value": 0.08310945215648004,
+   "allow": 0.2,
+   "margin": 2.4064651469899747,
+   "basis": "bore gap loss 0.083 mm (n 0 + n 2, solid FE) vs 0.5 - 0.3 mm (ASSUMPTION FIT)",
+   "tee": "upper"
+  },
+  {
+   "item": "5",
+   "row": "upper tee clamp bolts (M5 A2-70): tension at +30 % preload + side push",
+   "kind": "joint",
+   "value": 2233.7507896143875,
+   "allow": 6390.0,
+   "margin": 2.8606593133440397,
+   "basis": "proof 450 MPa x As 14.2 = 6390 N; preload 1950 + 284 N",
+   "tee": "upper"
+  },
+  {
+   "item": "5",
+   "row": "clamp half-shell: backer line load (+30 %) + closing the 1.010 in bore onto the stay",
+   "kind": "strength",
+   "value": 197.42602495017013,
+   "allow": 241.0,
+   "margin": 1.2207103904403072,
+   "basis": "beam on elastic foundation (Hetenyi, BL-081 method): w 154 N/mm, beta 0.188 -> 132 MPa; + fit bending 65 MPa (ASSUMPTION SHELL-FIT)",
+   "tee": "upper"
+  },
+  {
+   "item": "5",
+   "row": "tee backer (1 x 3/16) bending between the clamp bolts (+30 %)",
+   "kind": "strength",
+   "value": 191.66337545273518,
+   "allow": 241.0,
+   "margin": 1.2574128960774325,
+   "basis": "2 Fb on the shell crown, bolts 37.8 mm apart, P L / 8",
+   "tee": "upper"
+  },
+  {
+   "item": "5",
+   "row": "upper bar end: 2 x M5 A2 in double shear (bar couple + shear)",
+   "kind": "joint",
+   "value": 160.86839548926034,
+   "allow": 270.0,
+   "margin": 1.678390582431248,
+   "basis": "per bolt M / pitch 16 + V / 2 = 4318 N, two shear planes on the minor area",
+   "tee": "upper"
+  },
+  {
+   "item": "5",
+   "row": "upper bar wall: bolt bearing at the bar end (e/D 1.9)",
+   "kind": "strength",
+   "value": 246.76218847600458,
+   "allow": 364.1509433962264,
+   "margin": 1.4757161364356957,
+   "basis": "4318 N on two walls 5.3 x 1.65; allowable 386 x min(1, e/D / 2)",
+   "tee": "upper"
+  },
+  {
+   "item": "5",
+   "row": "upper backer: bar-bolt bearing (3/16 flat)",
+   "kind": "strength",
+   "value": 85.54422533834827,
+   "allow": 386.0,
+   "margin": 4.512285878716837,
+   "basis": "half the bolt force per backer",
+   "tee": "upper"
+  },
+  {
+   "item": "5",
+   "row": "upper bar end bolt holes: fatigue (design curve)",
+   "kind": "fatigue",
+   "value": 30.944062964719446,
+   "allow": 114.25691200125941,
+   "margin": 3.6923694258096695,
+   "basis": "walk bolt force 406 N; pin-loaded Kt 1.28 on P/dt + Kt 3.35 on the walk axial; R 0 design S_max 114 MPa (Goodman)",
+   "tee": "upper"
+  },
+  {
+   "item": "5",
+   "row": "printed bar saddle plug: bar compression (PAHT, across the layers)",
+   "kind": "strength",
+   "value": 2.0985361807501994,
+   "allow": 19.66,
+   "margin": 9.368435093157082,
+   "basis": "bar axial 805 N on the 384 mm2 plug face; the bolts carry the bar if the plug is absent",
+   "tee": "upper"
+  },
+  {
+   "item": "9",
+   "row": "static-cinch cycles 150 N x 1e5: clamp micro-slip criterion at -30 % preload",
+   "kind": "fatigue",
+   "value": 45.0,
+   "allow": 890.6415172927063,
+   "margin": 19.792033717615695,
+   "basis": "cyclic tangential <= 0.5 x retained slip capacity (ASSUMPTION FRET-50)",
+   "tee": "upper"
+  },
+  {
+   "item": "5",
+   "row": "upper tee preload window (info)",
+   "kind": "info",
+   "value": null,
+   "allow": null,
+   "margin": null,
+   "basis": "4 x M5 A2 at 1500 N (1.5 N m at K 0.2, torque screwdriver); rows above at 0.70 / 1.00 / 1.30 x nominal",
+   "tee": "upper"
+  },
+  {
+   "item": "5",
+   "row": "mid tee (pinned saddle): stay wall at limit (beam + saddle bearing)",
+   "kind": "strength",
+   "value": 139.5614980240522,
+   "allow": 241.0,
+   "margin": 1.7268372969059542,
+   "basis": "stay beam stress at z 330 138 MPa (tall_load_posts|crown_bar|23, C6p included) + saddle ring 2.9 MPa from the bar force 122 N",
+   "tee": "mid"
+  },
+  {
+   "item": "5",
+   "row": "mid tee (pinned saddle): stay wall fatigue, design curve + polymer-contact fretting",
+   "kind": "fatigue",
+   "value": 0.8442260350211042,
+   "allow": 1.0,
+   "margin": 1.1845168930084011,
+   "basis": "R 0 walk: Kt 1.15 (ASSUMPTION SADDLE-KT, PAHT pad edge, no metal clamp) x beam 72.6 MPa (meat_straps|crown_bar|23) + ring 0.9; Sa 60.5 (design 71.1 x 0.85); preload-free: the band only positions the saddle",
+   "tee": "mid"
+  },
+  {
+   "item": "5",
+   "row": "mid tee saddle (PAHT): bearing on the stay",
+   "kind": "strength",
+   "value": 0.1994858438245403,
+   "allow": 19.66,
+   "margin": 98.55335909094454,
+   "basis": "122 N factored on D x 40 mm x 0.6 (cos), compression",
+   "tee": "mid"
+  },
+  {
+   "item": "5",
+   "row": "mid bar socket bolt: bearing in PAHT",
+   "kind": "strength",
+   "value": 1.91205299363899,
+   "allow": 19.66,
+   "margin": 10.282141794921378,
+   "basis": "bar axial 122 N factored on 2 x 5.3 x 6 mm",
+   "tee": "mid"
+  },
+  {
+   "item": "5",
+   "row": "mid bar socket: sustained bearing (creep, 1 g carry)",
+   "kind": "creep",
+   "value": 0.39277269058425696,
+   "allow": 7.864000000000001,
+   "margin": 20.021758611328472,
+   "basis": "1 g share of the walk bar force vs z_hw x creep_rupture_8h_40c_ratio (review 9 m8)",
+   "tee": "mid"
+  },
+  {
+   "item": "5",
+   "row": "mid bar (3/4 x .035) wall: socket bolt bearing",
+   "kind": "strength",
+   "value": 12.904744613986436,
+   "allow": 231.6,
+   "margin": 17.946887515231182,
+   "basis": "e/D 1.2 at the bar end -> 0.6 x 386",
+   "tee": "mid"
+  },
+  {
+   "item": "5",
+   "row": "mid tee: force along the stay (band positioning only)",
+   "kind": "info",
+   "value": 0.10160344369580798,
+   "allow": null,
+   "margin": null,
+   "basis": "0.1 N factored on the 200 N/mm positioning spring: the band carries no strength load",
+   "tee": "mid"
+  }
+ ],
+ "min_margin": 1.0300948582853822,
+ "governing": "upper tee: stay wall at limit, preload +30 % (clamp + IM3 + bar couple + side + beam)",
+ "tee_min": 1.0300948582853822,
+ "tee_governing": "upper tee: stay wall at limit, preload +30 % (clamp + IM3 + bar couple + side + beam)",
+ "strong_pass": true,
+ "anodised_tee_fatigue": {
+  "upper tee: stay wall fatigue, preload lo (4200 N per half), design curve + fretting": 1.223308990853393,
+  "upper tee: stay wall fatigue, preload nom (6000 N per half), design curve + fretting": 1.1087215326612998,
+  "upper tee: stay wall fatigue, preload hi (7800 N per half), design curve + fretting": 1.004873693400831,
+  "upper bar end bolt holes: fatigue (design curve)": 2.7470020304423914,
+  "static-cinch cycles 150 N x 1e5: clamp micro-slip criterion at -30 % preload": 19.792033717615695,
+  "mid tee (pinned saddle): stay wall fatigue, design curve + polymer-contact fretting": 0.8744248570813092
+ },
+ "preload_sweep": [
+  {
+   "factor": 0.5,
+   "Fb": 750.0,
+   "slip": 0.836762745815484,
+   "fatigue": 1.579486708869651,
+   "static": 1.429463793576371
+  },
+  {
+   "factor": 0.6,
+   "Fb": 900.0,
+   "slip": 1.0041152949785808,
+   "fatigue": 1.5217370587781547,
+   "static": 1.3663286533293804
+  },
+  {
+   "factor": 0.7,
+   "Fb": 1050.0,
+   "slip": 1.1714678441416777,
+   "fatigue": 1.4680613740200048,
+   "static": 1.3079476373346388
+  },
+  {
+   "factor": 0.8,
+   "Fb": 1200.0,
+   "slip": 1.3388203933047744,
+   "fatigue": 1.4160809274296018,
+   "static": 1.2538781249179327
+  },
+  {
+   "factor": 0.9,
+   "Fb": 1350.0,
+   "slip": 1.506172942467871,
+   "fatigue": 1.3558760341187983,
+   "static": 1.2037174447384653
+  },
+  {
+   "factor": 1.0,
+   "Fb": 1500.0,
+   "slip": 1.673525491630968,
+   "fatigue": 1.3005816115721702,
+   "static": 1.1571017373159544
+  },
+  {
+   "factor": 1.1,
+   "Fb": 1650.0000000000002,
+   "slip": 1.8408780407940653,
+   "fatigue": 1.2496204333249095,
+   "static": 1.1128271839119712
+  },
+  {
+   "factor": 1.2,
+   "Fb": 1800.0,
+   "slip": 2.0082305899571615,
+   "fatigue": 1.2025023323414665,
+   "static": 1.0699703882897975
+  },
+  {
+   "factor": 1.3,
+   "Fb": 1950.0,
+   "slip": 2.1755831391202585,
+   "fatigue": 1.158808384156188,
+   "static": 1.0300948582789944
+  },
+  {
+   "factor": 1.4,
+   "Fb": 2100.0,
+   "slip": 2.3429356882833554,
+   "fatigue": 1.1181784173742102,
+   "static": 0.9929211438449169
+  },
+  {
+   "factor": 1.5,
+   "Fb": 2250.0,
+   "slip": 2.510288237446452,
+   "fatigue": 1.080301062578967,
+   "static": 0.9582006056050045
+  },
+  {
+   "factor": 1.7,
+   "Fb": 2550.0,
+   "slip": 2.8449933357726453,
+   "fatigue": 1.0117562744359352,
+   "static": 0.8952574953744111
+  }
+ ],
+ "b81_asbuilt": {
+  "hoop_limit": 377.8518954027426,
+  "static_margin": 0.5596521418317407,
+  "hoop_walk": [
+   182.85098684369046,
+   286.5354214781255
+  ],
+  "fatigue_mean": 0.5944987199583694,
+  "fatigue_design_fret": 0.3004689884533604,
+  "dofs": 151800,
+  "note": "B81 basis (record beam stress 91 MPa, Kt 2, IM3 loop under the shell); review 9 got 0.65 / 0.67"
+ },
+ "design_curve_sensitivity": [
+  {
+   "row": "stay z135 gusset bolt L: fatigue 1e5 x 0-1.6 g",
+   "mean_margin": 1.0536775255827129,
+   "design_margin": 0.6306231941001571
+  },
+  {
+   "row": "stay z135 gusset bolt R: fatigue 1e5 x 0-1.6 g",
+   "mean_margin": 1.0626040156752663,
+   "design_margin": 0.6359656746576278
+  },
+  {
+   "row": "rung z155 x-30 hip tie bolt: fatigue 1e5 x 0-1.6 g",
+   "mean_margin": 1.1880327112823308,
+   "design_margin": 0.7110344150787541
+  },
+  {
+   "row": "rung z155 x+30 hip tie bolt: fatigue 1e5 x 0-1.6 g",
+   "mean_margin": 1.195021527129709,
+   "design_margin": 0.7152172027587077
+  },
+  {
+   "row": "stay at the leg-end bushing (z 171-374): fatigue (BL-081 basis, corrected beam stress)",
+   "mean_margin": 1.2254335837051884,
+   "design_margin": 0.7334187376601731
+  },
+  {
+   "row": "stay z105 gusset bolt L: fatigue 1e5 x 0-1.6 g",
+   "mean_margin": 1.3539603622183725,
+   "design_margin": 0.810341672453305
+  },
+  {
+   "row": "stay z105 gusset bolt R: fatigue 1e5 x 0-1.6 g",
+   "mean_margin": 1.3623028201431524,
+   "design_margin": 0.8153346113130966
+  },
+  {
+   "row": "front angle leg: fatigue at the mount holes",
+   "mean_margin": 1.4412232159008767,
+   "design_margin": 0.8625682580826438
+  },
+  {
+   "row": "rung z85 x+30 hip tie bolt: fatigue 1e5 x 0-1.6 g",
+   "mean_margin": 1.4697926258669456,
+   "design_margin": 0.8796669738936276
+  },
+  {
+   "row": "rung z85 x-30 hip tie bolt: fatigue 1e5 x 0-1.6 g",
+   "mean_margin": 1.4778971591536951,
+   "design_margin": 0.8845175154909294
+  },
+  {
+   "row": "tie spacer columns (3/4 x .035): fatigue, Kt 2 at the clamped ends",
+   "mean_margin": 1.8252436065626212,
+   "design_margin": 1.0924034396053508
+  },
+  {
+   "row": "rung z155 x+62 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "mean_margin": 2.2868897091032516,
+   "design_margin": 1.3686974030426566
+  },
+  {
+   "row": "rung z85 x+62 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "mean_margin": 2.528245642776628,
+   "design_margin": 1.5131482868402937
+  },
+  {
+   "row": "rung z155 x-62 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "mean_margin": 2.531785144437928,
+   "design_margin": 1.515266669162188
+  },
+  {
+   "row": "rung z85 x-62 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "mean_margin": 3.0218761072777833,
+   "design_margin": 1.808584805766431
+  },
+  {
+   "row": "rung z155 x+90 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "mean_margin": 3.4462988973439526,
+   "design_margin": 2.0626007157787565
+  },
+  {
+   "row": "rung z155 x-90 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "mean_margin": 3.4739050521545125,
+   "design_margin": 2.0791229259434187
+  },
+  {
+   "row": "rung z85 x+90 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "mean_margin": 3.49115589637436,
+   "design_margin": 2.0894475102860794
+  },
+  {
+   "row": "rung z85 x-90 gusset bolt: fatigue 1e5 x 0-1.6 g",
+   "mean_margin": 3.606268210646028,
+   "design_margin": 2.158341923940878
+  },
+  {
+   "row": "stay at the stay-top bushing (z 475-545): fatigue (BL-081 basis, corrected beam stress)",
+   "mean_margin": 3.9554874808672573,
+   "design_margin": 2.3673487275228817
+  },
+  {
+   "row": "front leg + backer strip at the tie bolts: fatigue",
+   "mean_margin": 4.038361267485323,
+   "design_margin": 2.4169484681981483
+  },
+  {
+   "row": "stay z60 hinge pin R: fatigue 1e5 x 0-1.6 g",
+   "mean_margin": 4.315885750284808,
+   "design_margin": 2.583046132364629
+  },
+  {
+   "row": "stay z60 hinge pin L: fatigue 1e5 x 0-1.6 g",
+   "mean_margin": 4.815202636938405,
+   "design_margin": 2.8818859598113606
+  },
+  {
+   "row": "lumbar L-gussets: fatigue at the bolt holes",
+   "mean_margin": 5.0734760069900995,
+   "design_margin": 3.0364618842460573
+  },
+  {
+   "row": "IM3 z 520 (loop under the upper tee, bag-on hook case): fatigue",
+   "mean_margin": 5.093383270232447,
+   "design_margin": 3.048376328302116
+  },
+  {
+   "row": "upper bar x+15 pawl-housing bolt: fatigue 1e5 x 0-1.6 g",
+   "mean_margin": 8.490621403023958,
+   "design_margin": 5.081614307099322
+  },
+  {
+   "row": "upper bar x-15 pawl-housing bolt: fatigue 1e5 x 0-1.6 g",
+   "mean_margin": 8.50313197131677,
+   "design_margin": 5.089101848918588
+  },
+  {
+   "row": "hip post (2 angles): fatigue at the mount / tie holes",
+   "mean_margin": 10.385731600063282,
+   "design_margin": 6.215832715115373
+  },
+  {
+   "row": "IM2 z 330 (loop under the mid tee): fatigue",
+   "mean_margin": 17.87167534268766,
+   "design_margin": 10.696150116985674
+  },
+  {
+   "row": "IM1 z 190 (loop on the stay above the gusset): fatigue",
+   "mean_margin": 26.50680623197422,
+   "design_margin": 15.864252966919103
+  }
+ ],
+ "global": {
+  "strength": {
+   "stays": {
+    "margin": 1.7433172743075627,
+    "case": "tall_load_posts|crown_bar|23",
+    "member": "SL330-SL374.3",
+    "sf": 2.614975911461344,
+    "required": 1.5
+   },
+   "bars": {
+    "margin": 1.291447666444476,
+    "case": "hipbelt_off_abuse|crown_bar|15",
+    "member": "UB1-UBhp15",
+    "sf": 1.291447666444476,
+    "required": 1.0
+   },
+   "lumbar rungs": {
+    "margin": 3.2117320149060586,
+    "case": "drop_2p5g|crown_bar|15",
+    "member": "R155p30-R155p62",
+    "sf": 4.817598022359088,
+    "required": 1.5
+   },
+   "hip post (2 angles)": {
+    "margin": 3.4230099570178836,
+    "case": "meat_straps|crown_bar|23",
+    "member": "PO155-TPL155",
+    "sf": 5.134514935526825,
+    "required": 1.5
+   },
+   "hip ties (spacer columns)": {
+    "margin": 2.317080711863898,
+    "case": "meat_straps|crown_bar|23",
+    "member": "tie_L155",
+    "sf": 3.475621067795847,
+    "required": 1.5
+   }
+  },
+  "buckling": {
+   "margin": 2.3065544992434495,
+   "eigen": 5.1897476232977615,
+   "case": "side_hill_torsion|crown_bar|15"
+  },
+  "c6p": {
+   "included": true,
+   "stays": {
+    "margin": 1.7433172743075627,
+    "case": "tall_load_posts|crown_bar|23",
+    "member": "SL330-SL374.3"
+   },
+   "bars": {
+    "margin": 5.72867670790339,
+    "case": "tall_load_posts|crown_bar|15",
+    "member": "UBhm15-UB1"
+   },
+   "lumbar rungs": {
+    "margin": 3.4629384773072416,
+    "case": "tall_load_posts|crown_bar|15",
+    "member": "R155p30-R155p62"
+   },
+   "hip post (2 angles)": {
+    "margin": 3.4858653548191714,
+    "case": "tall_load_posts|crown_bar|23",
+    "member": "PO155-TPL155"
+   },
+   "hip ties (spacer columns)": {
+    "margin": 2.359628332411189,
+    "case": "tall_load_posts|crown_bar|23",
+    "member": "tie_L155"
+   }
+  },
+  "b81_c6p": {
+   "included": true,
+   "stays": {
+    "margin": 1.7434580395325294,
+    "case": "tall_load_posts|crown_bar|23",
+    "member": "SL330-SL374.3"
+   },
+   "bars": {
+    "margin": 5.718300552278165,
+    "case": "tall_load_posts|crown_bar|15",
+    "member": "UBhm15-UB1"
+   },
+   "lumbar rungs": {
+    "margin": 3.4656529954883886,
+    "case": "tall_load_posts|crown_bar|15",
+    "member": "R155m62-R155m30"
+   },
+   "hip post (2 angles)": {
+    "margin": 3.4858677392255597,
+    "case": "tall_load_posts|crown_bar|23",
+    "member": "PO155-TPL155"
+   },
+   "hip ties (spacer columns)": {
+    "margin": 2.3596283178267097,
+    "case": "tall_load_posts|crown_bar|23",
+    "member": "tie_L155"
+   }
+  }
+ },
+ "seconds": 669.9,
+ "margins_table": [
+  {
+   "item": "1",
+   "kind": "strength",
+   "margin": 2.341,
+   "row": "crush sleeve column (Al, 22 mm long)"
+  },
+  {
+   "item": "1",
+   "kind": "fatigue",
+   "margin": 5.073,
+   "row": "lumbar L-gussets: fatigue at the bolt holes"
+  },
+  {
+   "item": "1",
+   "kind": "joint",
+   "margin": 2.743,
+   "row": "M5 A2-70 through-bolts: shear at each wall (gussets, hip ties)"
+  },
+  {
+   "item": "2",
+   "kind": "strength",
+   "margin": 2.755,
+   "row": "rung z155 x+30 hip tie bolt: static (bearing / net section)"
+  },
+  {
+   "item": "2",
+   "kind": "fatigue",
+   "margin": 1.188,
+   "row": "rung z155 x-30 hip tie bolt: fatigue 1e5 x 0-1.6 g"
+  },
+  {
+   "item": "3",
+   "kind": "strength",
+   "margin": 1.489,
+   "row": "stay at the leg-end bushing (z 171-374): static (ring + beam), corrected beam stress"
+  },
+  {
+   "item": "3",
+   "kind": "fatigue",
+   "margin": 1.054,
+   "row": "stay z135 gusset bolt L: fatigue 1e5 x 0-1.6 g"
+  },
+  {
+   "item": "3",
+   "kind": "joint",
+   "margin": 11.718,
+   "row": "stay-top bushing (z 475-545): bore ovalisation at limit vs leg clearance"
+  },
+  {
+   "item": "4",
+   "kind": "strength",
+   "margin": 1.775,
+   "row": "spreader sandwich local (bone patch)"
+  },
+  {
+   "item": "4",
+   "kind": "fatigue",
+   "margin": 1.736,
+   "row": "spreader sheet fatigue (FI <= 0.5 at 1.6 g)"
+  },
+  {
+   "item": "5",
+   "kind": "strength",
+   "margin": 1.03,
+   "row": "upper tee: stay wall at limit, preload +30 % (clamp + IM3 + bar couple + side + beam)"
+  },
+  {
+   "item": "5",
+   "kind": "fatigue",
+   "margin": 1.159,
+   "row": "upper tee: stay wall fatigue, preload hi (7800 N per half), design curve + fretting"
+  },
+  {
+   "item": "5",
+   "kind": "joint",
+   "margin": 1.171,
+   "row": "upper tee slip (axial + torque about the stay), preload lo (4200 N per half)"
+  },
+  {
+   "item": "5",
+   "kind": "creep",
+   "margin": 20.022,
+   "row": "mid bar socket: sustained bearing (creep, 1 g carry)"
+  },
+  {
+   "item": "6",
+   "kind": "strength",
+   "margin": 1.896,
+   "row": "front angle leg: plate bending under the mount tipping couple"
+  },
+  {
+   "item": "6",
+   "kind": "fatigue",
+   "margin": 1.441,
+   "row": "front angle leg: fatigue at the mount holes"
+  },
+  {
+   "item": "6",
+   "kind": "joint",
+   "margin": 4.842,
+   "row": "tie bolts (M5 A2) tension"
+  },
+  {
+   "item": "7",
+   "kind": "strength",
+   "margin": 1.654,
+   "row": "T4c 122 cm drop on one foot: stay end axial (estimate)"
+  },
+  {
+   "item": "7",
+   "kind": "fatigue",
+   "margin": 1.303,
+   "row": "foot cup outer cheek: pin bearing fatigue"
+  },
+  {
+   "item": "7",
+   "kind": "joint",
+   "margin": 2.083,
+   "row": "US1 float cradle on the hinge pin (489 N factored)"
+  },
+  {
+   "item": "8",
+   "kind": "strength",
+   "margin": 6.859,
+   "row": "IM3 z 520 (loop under the upper tee, bag-on hook case): stay ring + local stress"
+  },
+  {
+   "item": "8",
+   "kind": "fatigue",
+   "margin": 5.093,
+   "row": "IM3 z 520 (loop under the upper tee, bag-on hook case): fatigue"
+  },
+  {
+   "item": "8",
+   "kind": "joint",
+   "margin": 1.239,
+   "row": "float design / misuse IM3 eye 559 / 1142 N"
+  },
+  {
+   "item": "9",
+   "kind": "fatigue",
+   "margin": 19.792,
+   "row": "static-cinch cycles 150 N x 1e5: clamp micro-slip criterion at -30 % preload"
+  },
+  {
+   "item": "G",
+   "kind": "strength",
+   "margin": 1.291,
+   "row": "bars: member strength (beam, all cases incl. C6p)"
+  }
+ ],
+ "interference": {
+  "shell_vs_collar_mm3": 0.0,
+  "plug_vs_shell_mm3": 0.0,
+  "backer_vs_collar_mm3": 0.0,
+  "tube_above_shell_mm": 15.0,
+  "gap_shell_to_collar_mm": 5.0,
+  "ok": true
+ },
+ "printed": {
+  "bar_saddle_plug_upper": {
+   "file": "designs/pack_5200/iter2/frame_b85/print/bar_saddle_plug_upper_R.stl",
+   "count": 2,
+   "volume_mm3": 9231.7,
+   "mass_g_each": 9.8,
+   "watertight": true,
+   "bbox_mm": [
+    30.0,
+    25.4,
+    25.4
+   ]
+  },
+  "mid_saddle_socket": {
+   "file": "designs/pack_5200/iter2/frame_b85/print/mid_saddle_socket_R.stl",
+   "count": 2,
+   "volume_mm3": 7708.2,
+   "mass_g_each": 8.2,
+   "watertight": true,
+   "bbox_mm": [
+    36.7,
+    28.7,
+    40.0
+   ]
+  },
+  "mid_saddle_outer": {
+   "file": "designs/pack_5200/iter2/frame_b85/print/mid_saddle_outer_R.stl",
+   "count": 2,
+   "volume_mm3": 2361.2,
+   "mass_g_each": 2.5,
+   "watertight": true,
+   "bbox_mm": [
+    14.4,
+    28.7,
+    40.0
+   ]
+  },
+  "stay_top_collar_85": {
+   "file": "designs/pack_5200/iter2/frame_b85/print/stay_top_collar_85_R.stl",
+   "count": 2,
+   "volume_mm3": 3969.2,
+   "mass_g_each": 4.2,
+   "watertight": true,
+   "bbox_mm": [
+    31.4,
+    31.4,
+    13.0
+   ]
+  }
+ },
+ "cut_list": [
+  {
+   "part": "stay",
+   "stock": "t1000_065",
+   "qty": 2,
+   "length_mm": 545.0,
+   "holes": "z 60 along x (hinge pin); z 105 / 135 along y (gusset bolts, crush sleeve); NO hole above z 160",
+   "note": "BL-085: 15 mm longer than B81 so 15 mm of bare tube stand above the upper-tee shells (B1)"
+  },
+  {
+   "part": "lumbar rung",
+   "stock": "t1000_065",
+   "qty": 2,
+   "length_mm": 202.6,
+   "holes": "B81",
+   "note": ""
+  },
+  {
+   "part": "upper bar",
+   "stock": "t1000_065",
+   "qty": 1,
+   "length_mm": 210.9,
+   "holes": "along y at x +/-15 (pawl), and at 10 / 26 mm from each end (bar bolts, crush sleeve each); ends coped R 15.9 to the shell OD",
+   "note": "BL-085: bar runs to the shell OD (no printed socket in the load path)"
+  },
+  {
+   "part": "mid bar",
+   "stock": "t750_035",
+   "qty": 1,
+   "length_mm": 197.6,
+   "holes": "along y 12 mm from each end (socket cross bolt)",
+   "note": "pinned saddle tee"
+  },
+  {
+   "part": "hip tie spacer",
+   "stock": "t750_035",
+   "qty": 4,
+   "length_mm": 31.0,
+   "holes": "B81",
+   "note": ""
+  },
+  {
+   "part": "upper-tee half-shell (100 mm ring sawn in half on the x-z plane, 1.5 mm kerf)",
+   "stock": "shell_120",
+   "qty": 2,
+   "length_mm": 100.0,
+   "holes": "none",
+   "note": "4 halves; Speedy p-4573 (ID 1.010 in, see SHELL-FIT)"
+  },
+  {
+   "part": "upper-tee backer, upper pair (bar bolts + clamp bolts)",
+   "stock": "flat_1x316",
+   "qty": 4,
+   "length_mm": 80.0,
+   "holes": "2 clamp holes D5.3 at x 115 +/- 18.9, 2 bar-bolt holes",
+   "note": ""
+  },
+  {
+   "part": "upper-tee backer, lower pair (clamp only)",
+   "stock": "flat_1x316",
+   "qty": 4,
+   "length_mm": 55.0,
+   "holes": "2 x D5.3 at 37.8 mm",
+   "note": ""
+  },
+  {
+   "part": "bar-bolt spacer washer 1/8 x 1 x 14 (between backer and bar wall)",
+   "stock": "flat_1x18",
+   "qty": 8,
+   "length_mm": 14.0,
+   "holes": "D5.3 centre",
+   "note": ""
+  },
+  {
+   "part": "crush sleeve in the upper bar (bar bolts)",
+   "stock": "sleeve_5_16",
+   "qty": 4,
+   "length_mm": 22.1,
+   "holes": "-",
+   "note": "added to B81's 18 (pawl 2 + lumbar 16)"
+  },
+  {
+   "part": "B81 parts not listed here (gussets, hip post, foot plates, tie strips, crush sleeves)",
+   "stock": "-",
+   "qty": null,
+   "length_mm": null,
+   "holes": "B81 cut list",
+   "note": "unchanged"
+  }
+ ],
+ "mass": {
+  "rows": {
+   "lumbar rung x 2 (1\" OD x .065\" 6061-T6 drawn tube, 202.6 mm)": 134.8,
+   "hip tie spacer (one end coped R 12.7 with a half-round file) x 4 (3/4\" OD x .035\" 6061-T6 drawn tube, 31.0 mm)": 17.0,
+   "hip post angles x 2 (1-1/2 x 1/8, 90 mm)": 112.7,
+   "foot plates x 2 (38.1 x 38.1 x 1/8)": 24.9,
+   "hip tie backer strips x 2 (1 x 1/8 x 76)": 33.1,
+   "lumbar L-gussets x 4 (.090 6061)": 151.7,
+   "printed: foot_cup x 2": 134.2,
+   "printed: im1_collar x 2": 5.8,
+   "printed: rung_saddle_plug x 4": 40.0,
+   "printed: pawl housing + spine guide (BL-080 estimate)": 30.0,
+   "printed: lash clips z 250 / 420 x 4": 24.0,
+   "printed: US2 clevis x 2 (BL-050 part)": 31.4,
+   "crown bushing growth (4 x 70 mm UHMWPE, bore 18 -> 22.1)": 33.8,
+   "TPU foot pads x 2 (6 mm, ASSUMPTION PAD)": 20.9,
+   "stay x 2 (1 x .065, 545 mm)": 362.5,
+   "upper bar x 1 (1 x .065, to the shell OD)": 70.1,
+   "mid bar x 1 (3/4 x .035)": 27.1,
+   "upper-tee half-shells, 2 tees (1-1/4 x .120, 100 mm less kerf)": 143.5,
+   "upper-tee backers x 8 (1 x 3/16; 4 x 80 + 4 x 55)": 176.4,
+   "bar-bolt spacer washers x 8 (1/8 x 1 x 14)": 23.2,
+   "crush sleeves x 22 (5/16 x .035, 22.1 mm)": 25.9,
+   "printed: bar_saddle_plug_upper x 2": 19.6,
+   "printed: mid_saddle_socket x 2": 16.4,
+   "printed: mid_saddle_outer x 2": 5.0,
+   "printed: stay_top_collar_85 x 2": 8.4,
+   "mid-tee hose bands x 2 (9 mm stainless)": 24.0,
+   "M5 screws + nuts (joints)": 320.0
+  },
+  "body_g": 2016.3,
+  "printed_g": 314.8,
+  "hip_hw_g": 34.8,
+  "vs_b81_g": 25.4
+ },
+ "cost": {
+  "lines": [
+   {
+    "item": "1 x .065 6061-T6 tube: 545, 545, 202.6, 202.6, 210.9 mm, buy 18 in + 24 in + 36 in",
+    "usd": 25.05,
+    "source": "Speedy Metals p-4588 1 x .065 6061-T6 (12 in 5.24, 18 in 6.73, 24 in 7.85, 36 in 10.47; read 2026-11-25)"
+   },
+   {
+    "item": "3/4 x .035 6061-T6 tube: 197.6, 31, 31, 31, 31 mm, buy 24 in",
+    "usd": 12.47,
+    "source": "Speedy Metals pc-4563 3/4 x .035 6061-T6 (12 in 8.32, 24 in 12.47; BL-082 read 2026-11-25)"
+   },
+   {
+    "item": ".090 6061-T6 sheet 12 x 12 in (4 L-gussets, B81)",
+    "usd": 22.05,
+    "source": "Speedy Metals p-84 .090 6061-T6 sheet 12 x 12 in USD 22.05 (read 2026-11-25; no smaller size listed)"
+   },
+   {
+    "item": "1-1/2 x 1-1/2 x 1/8 6061 angle 18 in (post + foot plates, B81)",
+    "usd": 4.92,
+    "source": "Speedy Metals p-2183 18 in USD 4.92 (BL-080 booking, search snippet, secondary)"
+   },
+   {
+    "item": "1/8 x 1 6061 flat 18 in (2 tie strips 76 + 8 spacer washers 14)",
+    "usd": 4.5,
+    "source": "Speedy Metals p-2225 1/8 x 1 6061-T6511 flat (18 in 4.50; read 2026-11-25; BL-081 booked 3.25)"
+   },
+   {
+    "item": "3/16 x 1 6061 flat 24 in (8 backers, 564 mm with kerfs)",
+    "usd": 6.59,
+    "source": "Speedy Metals p-2233 3/16 x 1 6061-T6511 flat (18 in 5.65, 24 in 6.59; read 2026-11-25)"
+   },
+   {
+    "item": "1-1/4 x .120 6061 tube by the inch, 9 in (2 tees of half-shells)",
+    "usd": 13.41,
+    "source": "Speedy Metals p-4573 1-1/4 OD x 1.010 ID x .120 6061-T6, by the inch USD 1.49 (12 in 26.75; read 2026-11-25)"
+   },
+   {
+    "item": "5/16 x .035 tube for 22 crush sleeves",
+    "usd": 3.0,
+    "source": "BL-082 ASSUMPTION CRUSH-SLEEVE (5.5 x 7.9 mm Al or steel tube cut to the tube ID span); booked as 5/16 in x .035 6061 tube offcut, ASSUMPTION SLEEVE-PRICE USD 3 per frame"
+   },
+   {
+    "item": "PAHT-CF filament 315 g x 1.10 support",
+    "usd": 27.7,
+    "source": "record USD 80/kg; BL-053 support x1.10"
+   },
+   {
+    "item": "M5 A4 screws + nuts (38)",
+    "usd": 9.12,
+    "source": "Zoro G5321942 M5-0.80 x 35 socket head cap screw, 316 (A4) stainless, 50-pk USD 6.79 = 0.14 each (search snippet 2026-11-25, secondary; A4-70 proof = A2-70 450 MPa, ISO 3506-1); other lengths booked at the same each price (ASSUMPTION SCREW-LEN); nut USD 0.10 (BL-077 line)"
+   },
+   {
+    "item": "9 mm stainless hose bands x 2 (mid tee)",
+    "usd": 2.5,
+    "source": "Zoro G208391365 9 mm stainless worm-drive clamp 20-32 mm, 10-pk USD 12.49 = 1.25 each (search snippet 2026-11-25, secondary)"
+   },
+   {
+    "item": "threadlocker share",
+    "usd": 0.9,
+    "source": "BL-077 LOC-SHARE"
+   },
+   {
+    "item": "shipping, one FedEx Ground box <= 36 in, zone 8 + fuel",
+    "usd": 24.52,
+    "source": "FedEx Ground Economy 2026 list (eFulfillment Service table, read 2026-11-25, secondary): 10 lb at zone 8 USD 20.43 (zone 5 13.24); one 36 x 6 x 6 in box = 9.3 lb dimensional -> 10 lb; ASSUMPTION FUEL-20: +20 % fuel / residential. Speedy Metals publishes no rates (t-shipping.aspx: 'FedEx ... ask sales')"
+   }
+  ],
+  "per_frame_usd": 156.73,
+  "within_cap": false,
+  "ship_zone": 8
+ },
+ "cost_zone5": {
+  "lines": [
+   {
+    "item": "1 x .065 6061-T6 tube: 545, 545, 202.6, 202.6, 210.9 mm, buy 18 in + 24 in + 36 in",
+    "usd": 25.05,
+    "source": "Speedy Metals p-4588 1 x .065 6061-T6 (12 in 5.24, 18 in 6.73, 24 in 7.85, 36 in 10.47; read 2026-11-25)"
+   },
+   {
+    "item": "3/4 x .035 6061-T6 tube: 197.6, 31, 31, 31, 31 mm, buy 24 in",
+    "usd": 12.47,
+    "source": "Speedy Metals pc-4563 3/4 x .035 6061-T6 (12 in 8.32, 24 in 12.47; BL-082 read 2026-11-25)"
+   },
+   {
+    "item": ".090 6061-T6 sheet 12 x 12 in (4 L-gussets, B81)",
+    "usd": 22.05,
+    "source": "Speedy Metals p-84 .090 6061-T6 sheet 12 x 12 in USD 22.05 (read 2026-11-25; no smaller size listed)"
+   },
+   {
+    "item": "1-1/2 x 1-1/2 x 1/8 6061 angle 18 in (post + foot plates, B81)",
+    "usd": 4.92,
+    "source": "Speedy Metals p-2183 18 in USD 4.92 (BL-080 booking, search snippet, secondary)"
+   },
+   {
+    "item": "1/8 x 1 6061 flat 18 in (2 tie strips 76 + 8 spacer washers 14)",
+    "usd": 4.5,
+    "source": "Speedy Metals p-2225 1/8 x 1 6061-T6511 flat (18 in 4.50; read 2026-11-25; BL-081 booked 3.25)"
+   },
+   {
+    "item": "3/16 x 1 6061 flat 24 in (8 backers, 564 mm with kerfs)",
+    "usd": 6.59,
+    "source": "Speedy Metals p-2233 3/16 x 1 6061-T6511 flat (18 in 5.65, 24 in 6.59; read 2026-11-25)"
+   },
+   {
+    "item": "1-1/4 x .120 6061 tube by the inch, 9 in (2 tees of half-shells)",
+    "usd": 13.41,
+    "source": "Speedy Metals p-4573 1-1/4 OD x 1.010 ID x .120 6061-T6, by the inch USD 1.49 (12 in 26.75; read 2026-11-25)"
+   },
+   {
+    "item": "5/16 x .035 tube for 22 crush sleeves",
+    "usd": 3.0,
+    "source": "BL-082 ASSUMPTION CRUSH-SLEEVE (5.5 x 7.9 mm Al or steel tube cut to the tube ID span); booked as 5/16 in x .035 6061 tube offcut, ASSUMPTION SLEEVE-PRICE USD 3 per frame"
+   },
+   {
+    "item": "PAHT-CF filament 315 g x 1.10 support",
+    "usd": 27.7,
+    "source": "record USD 80/kg; BL-053 support x1.10"
+   },
+   {
+    "item": "M5 A4 screws + nuts (38)",
+    "usd": 9.12,
+    "source": "Zoro G5321942 M5-0.80 x 35 socket head cap screw, 316 (A4) stainless, 50-pk USD 6.79 = 0.14 each (search snippet 2026-11-25, secondary; A4-70 proof = A2-70 450 MPa, ISO 3506-1); other lengths booked at the same each price (ASSUMPTION SCREW-LEN); nut USD 0.10 (BL-077 line)"
+   },
+   {
+    "item": "9 mm stainless hose bands x 2 (mid tee)",
+    "usd": 2.5,
+    "source": "Zoro G208391365 9 mm stainless worm-drive clamp 20-32 mm, 10-pk USD 12.49 = 1.25 each (search snippet 2026-11-25, secondary)"
+   },
+   {
+    "item": "threadlocker share",
+    "usd": 0.9,
+    "source": "BL-077 LOC-SHARE"
+   },
+   {
+    "item": "shipping, one FedEx Ground box <= 36 in, zone 5 + fuel",
+    "usd": 15.89,
+    "source": "FedEx Ground Economy 2026 list (eFulfillment Service table, read 2026-11-25, secondary): 10 lb at zone 8 USD 20.43 (zone 5 13.24); one 36 x 6 x 6 in box = 9.3 lb dimensional -> 10 lb; ASSUMPTION FUEL-20: +20 % fuel / residential. Speedy Metals publishes no rates (t-shipping.aspx: 'FedEx ... ask sales')"
+   }
+  ],
+  "per_frame_usd": 148.1,
+  "within_cap": true,
+  "ship_zone": 5
+ },
+ "proving": {
+  "lines": [
+   {
+    "item": "1 x .065 tube 36 in for KF-T / CL-T / OV-2 coupons (3 tee coupons + 1 mid-saddle coupon)",
+    "usd": 10.47,
+    "source": "Speedy Metals p-4588 1 x .065 6061-T6 (12 in 5.24, 18 in 6.73, 24 in 7.85, 36 in 10.47; read 2026-11-25)"
+   },
+   {
+    "item": "1-1/4 x .120 tube by the inch, 15 in (3 coupon tees + CL-T)",
+    "usd": 22.35,
+    "source": "Speedy Metals p-4573 1-1/4 OD x 1.010 ID x .120 6061-T6, by the inch USD 1.49 (12 in 26.75; read 2026-11-25)"
+   },
+   {
+    "item": "3/16 x 1 flat 18 in (coupon backers)",
+    "usd": 5.65,
+    "source": "Speedy Metals p-2233 3/16 x 1 6061-T6511 flat (18 in 5.65, 24 in 6.59; read 2026-11-25)"
+   },
+   {
+    "item": "PAHT for coupon saddles / plugs, 60 g",
+    "usd": 5.28,
+    "source": "record"
+   },
+   {
+    "item": "screws for coupons (20)",
+    "usd": 4.8,
+    "source": "Zoro G5321942 M5-0.80 x 35 socket head cap screw, 316 (A4) stainless, 50-pk USD 6.79 = 0.14 each (search snippet 2026-11-25, secondary; A4-70 proof = A2-70 450 MPa, ISO 3506-1); other lengths booked at the same each price (ASSUMPTION SCREW-LEN); nut USD 0.10 (BL-077 line)"
+   },
+   {
+    "item": "dye penetrant kit (KF-T crack check; BL-081 KF-1 already books it)",
+    "usd": 0.0,
+    "source": "BL-081 proving"
+   },
+   {
+    "item": "tubing cutter to 1-3/8 in (review m5; shells are 1-1/4 in) - new tool",
+    "usd": 15.0,
+    "source": "BL-080 ASSUMPTION TOOL-PRICE"
+   },
+   {
+    "item": "torque: hex key + 50 kg hanging scale on a marked 50 mm lever (30 N = 1.5 N m), no new tool",
+    "usd": 0.0,
+    "source": "test kit (CL-1 hanging scale)"
+   }
+  ],
+  "total_usd": 63.55
+ },
+ "comparison": [
+  {
+   "option": "H1c",
+   "body_g": 1404.7,
+   "usd": 164.59,
+   "strong": "FAIL",
+   "note": "two PAHT joints below goal (BL-077)"
+  },
+  {
+   "option": "B81",
+   "body_g": 1990.9,
+   "usd": 176.28,
+   "strong": "FAIL",
+   "note": "as-built upper tee 0.65 static / 0.67 fatigue (review 9 B1); mid tee unchecked (M1)"
+  },
+  {
+   "option": "B81-Lb",
+   "body_g": 1815.6,
+   "usd": 174.76,
+   "strong": "FAIL",
+   "note": "B1-B3 + band tee has no geometry (B2); USD incl. the SHIP-BASE 18 it dropped (M6); doubler leak M7: stay z135 gusset-bolt fatigue 1.05, not 1.48"
+  },
+  {
+   "option": "D83-L",
+   "body_g": 1674.3,
+   "usd": 260.54,
+   "strong": "FAIL",
+   "note": "shares B81-Lb tees (B1-B3); USD 92 over cap before shipping: dropped from play"
+  },
+  {
+   "option": "B85 (this record)",
+   "body_g": 2016.3,
+   "usd": 156.73,
+   "strong": "PASS",
+   "note": "shipping booked at FedEx zone 8 + fuel (USD 24.52)"
+  }
+ ],
+ "coupons": [
+  {
+   "id": "CL-T",
+   "what": "upper-tee slip, WET, at the LOW scatter torque 1.05 N m on all 4 bolts: 300 mm offcut of the 545 mm stay, 15 mm free end above 100 mm shells from Speedy p-4573, 3/16 backers; (a) pull along the stay, (b) twist about the stay with a 300 mm lever on the bar stub; n 5; also dry, and wet after 24 h at 40 C",
+   "pass": "(a) every wet axial slip load >= 1825 N and (b) every wet torque slip >= 23.2 N m (1.2 x the factored demand 1521 N / 19.3 N m, side hill C3 incl. C6p); no tube dent > 0.1 mm",
+   "settles": "MU 0.15 wet, EMBED 0.9, K 0.2 at the low limit, SHELL-FIT",
+   "usd": 0.0
+  },
+  {
+   "id": "KF-T",
+   "what": "upper-tee fatigue (review 9 B4): same coupon at the HIGH scatter torque 1.95 N m, clamped 75 mm below the shells; on the T5 crank rig cycle 0 -> 1.2 x walk: bar couple 5.8 N m, bar push 253 N, IM3 loop 906 N; R 0, n 3, 2e5 cycles (2 x life)",
+   "pass": "no crack (dye penetrant under and beside both shell edges and at the free end), no fretting debris track > 0.5 mm wide, re-torque check: >= 80 % of the set torque to move the bolts",
+   "settles": "design curve + fretting 0.6 (FRET-METAL), CLAMP-UNIFORM / SHELL-FIT, Kt 2",
+   "usd": 0.0
+  },
+  {
+   "id": "KF-S",
+   "what": "mid-saddle fatigue: 400 mm stay offcut in 4-point bending on the T5 rig with the printed saddle + a crown-leg offcut and its UHMWPE leg-end bushing inside under the saddle (covers the bushing row too) + band at 1.5 N m in the constant-moment span; R 0.1, S_max at the saddle 87 MPa (1.2 x the walk 73 MPa, M 60 N m), n 3, 2e5 cycles",
+   "pass": "no crack at the saddle edges (dye penetrant); saddle not cracked",
+   "settles": "SADDLE-KT 1.15, FRET-POLY 0.85",
+   "usd": 0.0
+  },
+  {
+   "id": "BS-T",
+   "what": "upper bar end in double shear: bar stub + 2 bolts + spacers between the two upper backers, held as in the tee; load the bar as a cantilever to the factored couple 59 N m, hold 2 min, then to failure",
+   "pass": "no permanent set > 0.2 mm at the bar tip after 59 N m; ultimate >= 89 N m",
+   "settles": "bar-wall bearing at e/D 1.9, bolt double shear, backer bending (M8 metal path)",
+   "usd": 0.0
+  },
+  {
+   "id": "OV-2",
+   "what": "fit-up on the built frame: (a) torque the upper tees to the high limit with leg + bushing inside, pull the leg with a spring scale; (b) set the crown to the 15 in torso and gauge the stay-top collar to the crown corner; (c) ID of the p-4573 shells vs the stay OD with calipers before sawing",
+   "pass": "(a) leg slide <= 20 N, feeler >= 0.3 mm radial at the bushing mouth; (b) >= 5 mm clear (else shorten the stay extension and re-run with the measured free end); (c) shell ID - stay OD <= 0.35 mm",
+   "settles": "FIT, CROWN-CLEAR, SHELL-FIT",
+   "usd": 0.0
+  },
+  {
+   "id": "SD-1",
+   "what": "mid saddle pull-off: socket + bar stub on a stay offcut, pull the bar away from the stay",
+   "pass": ">= 182 N (1.5 x factored bar axial) without crack; band not slipping on the saddle",
+   "settles": "saddle socket geometry, PAHT bearing",
+   "usd": 0.0
+  }
+ ],
+ "cap_pass": false,
+ "screens": [
+  "outputs/screens/20261125_bl085_1.png",
+  "outputs/screens/20261125_bl085_2.png",
+  "outputs/screens/20261125_bl085_3.png"
+ ]
+}
