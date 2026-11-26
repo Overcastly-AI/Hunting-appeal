@@ -135,4 +135,4 @@ Nothing here is decided; the tickets produce the material.
 | BL-084 | Independent review of B81-Lb (lead) and D83-L (BL-081, BL-083 files) | design-reviewer | M | 083 | done: both NOT ready (4 blockers: upper tee as-built 0.67, band tee undesigned, preload window, mean S-N); review_20261125_ninth.md |
 | BL-085 | Upper tee redesign on as-built geometry; design-curve fatigue; close review 9 blockers and M1/M2/M5-M7 | structural-fea-engineer | L | 084 | done: B85 tees pass (min 1.03) at 2016 g, USD 148-157 landed; non-tee rows fail on design S-N (0.63) |
 | BL-086 | B85 non-tee fatigue rows (gusset bolts, rung ties, leg bushing) on the design S-N curve; last metal round | structural-fea-engineer | M | 085 | done: B86 passes (min 1.03, design curve frame-wide) at 2089 g; USD 148.78 zone 5 / 157.41 zone 8 |
-| BL-087 | Independent review of B86 (BL-085, BL-086 files) | design-reviewer | M | 086 | blockers with file:line; verdict |
+| BL-087 | Independent review of B86 (BL-085, BL-086 files) | design-reviewer | M | 086 | done: B86 NOT ready (upper-tee edge at z430 0.53-0.58, gusset tip 0.54-0.60); metal track parked |
